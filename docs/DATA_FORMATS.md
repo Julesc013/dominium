@@ -1,506 +1,312 @@
-# Dominium — DATA FORMATS (V4)
+# Dominium — DATA FORMATS (V5)
 
-All Dominium data formats are:
+All Dominium runtime formats are **deterministic**, **little-endian**, **strictly versioned**, and **integer/fixed-point only**. Unknown blocks must be safely skipped, not rejected. No platform padding is permitted; all structs are manually packed.
 
-- **Deterministic**
-- **Endian-defined (little-endian only)**
-- **Portable across platforms**
-- **Strictly versioned**
-- **No floating point** (integer and fixed-point only)
-- **No platform-defined padding**
-- **Forward- and backward-compatible** via block headers and version tags
-
-This file defines:
-
-1. Savegame / State format  
-2. Replay formats  
-3. Mod package formats  
-4. Blueprint formats  
-5. Draw-command formats (for renderers)  
-6. Universe / Galaxy / System / Surface metadata formats  
-7. Chunked world storage formats  
-8. Network formats (power, data, fluids)  
-9. Serialization constraints
-
-All serialization code lives in `/engine/sim`, `/engine/net`, and `/engine/core`, with public read/write helpers exposed as C89 functions.
+This document aligns the spec layer with the dev addenda for data, mods, networking, and serialization.
 
 ---
 
-# 0. GLOBAL RULES (BINDING)
-
-### 0.1 Endianness
-All binary formats are **little-endian** regardless of platform.
-
-### 0.2 Integer / Fixed-Point Only
-- Coordinates use `int64`
-- Fixed-point uses q16.16 or q32.32
-- No floats appear in any file or packet
-
-### 0.3 Versioning
-Every top-level block begins with:
-
-uint32 block_magic
-uint16 block_version
-uint16 block_flags
-uint32 block_size_bytes // payload only
-
-pgsql
-Copy code
-
-Blocks may appear in any order unless otherwise specified.
-
-### 0.4 Forward-Compatibility
-- Unknown block types must be **skipped**, not rejected.
-- Unknown fields at end of known blocks must be skipped.
-
-### 0.5 IDs Must Be Stable
-- Entity IDs are 64-bit.
-- Network node IDs are 32–64 bit depending on subsystem.
-- Chunk and surface IDs are 64-bit signed integers.
+## 0. GLOBAL RULES
+- Endianness: little-endian everywhere.
+- Numeric domain: `int64` for coordinates/IDs; `q16.16` / `q32.32` for fixed-point; **no floats** in any on-disk or on-wire format.
+- Block framing (for any top-level block):
+```
+uint32 block_magic;
+uint16 block_version;
+uint16 block_flags;
+uint32 block_size_bytes; /* payload only */
+```
+- Unknown blocks and trailing fields must be skipped; forward/backward compatibility is mandatory.
+- IDs are stable: entity (uint64), network nodes (uint32–uint64), chunks/surfaces (uint64 signed).
 
 ---
 
-# 1. SAVEGAME FORMAT (V4)
+## 1. SAVEGAME FORMAT (`*.dom`)
+A save is a container header followed by ordered blocks. Required blocks must appear once. Optional blocks may appear zero or more times.
 
-A Dominium save (`*.dom`) is a binary file consisting of a **container header** followed by a series of **blocks**.
+### 1.1 File header (fixed-size)
+```
+char    magic[8] = "DOMSAVE";
+uint32  format_version;     /* e.g., 0x00050000 for V5 */
+uint32  engine_version;     /* semantic + build encoded */
+uint128 world_uuid;         /* universe identifier */
+uint128 surface_uuid;       /* specific surface identifier */
+uint64  tick_id;            /* current deterministic tick */
+uint32  endian_tag = 0x01020304;
+uint32  reserved[8] = {0};
+```
 
-## 1.1 File Header (fixed-size)
+### 1.2 Required blocks
+- **WORLD_METADATA**  
+  - Universe/galaxy/system/planet/surface IDs and parameters.  
+  - Seeds for deterministic worldgen.  
+  - Spatial hierarchy settings (chunk sizes, z-layer counts).
 
-char magic[8] = "DOMSAVE"
-uint32 format_version // e.g. 0x00040000 for V4
-uint32 engine_version // encoded engine build
-uint128 world_uuid // unique per universe
-uint128 surface_uuid // identifies specific planet/surface
-uint64 tick_id // deterministic tick number
-uint32 endian_tag // always 0x01020304
-uint32 reserved[8] // future use, must be zero
+- **PACK_SET**  
+  - Active data packs (base + DLC + asset packs).  
+  - Fields per entry: `pack_id`, `version`, `priority`, `content_hash`.
 
-shell
-Copy code
+- **MOD_SET**  
+  - Active mods with deterministic ordering.  
+  - Fields per entry: `mod_id`, `version`, `order`, `determinism_flags`, `content_hash`.  
+  - Save must refuse to load if the mod set does not match (or mark non-deterministic mode explicitly).
 
-## 1.2 Required Blocks
+- **CHUNK_TABLE**  
+  ```
+  uint32 count;
+  repeat count:
+      int64  chunk_x;
+      int64  chunk_y;
+      int64  chunk_z;
+      uint64 chunk_id;
+      uint32 flags;
+  ```
+  Sorted by (x, y, z).
 
-### 1.2.1 WORLD_METADATA
-Contains:
-- universe/galaxy/system identifiers
-- surface parameters (radius, gravity, rotation)
-- seed values for deterministic worldgen
-- spatial hierarchy settings (chunk sizes, etc.)
+- **CHUNK_DATA**  
+  - Per chunk: compressed (deterministic) tile data, terrain heightfield, cut/fill overlays, entities-in-chunk index, chunk-local network nodes, blueprint fragments.  
+  - Compression: deterministic LZ4 or equivalent; same input → same bytes.
 
-### 1.2.2 CHUNK_TABLE
-List of all allocated chunks:
+- **ENTITY_LIST**  
+  ```
+  uint32 entity_count;
+  repeat entity_count:
+      uint64 entity_id;
+      uint32 prefab_id;
+      uint8  active;
+      uint8  lane_id;
+      int64  pos_x, pos_y, pos_z;
+      uint32 component_mask;
+      /* component payloads follow in deterministic component-id order */
+  ```
 
-uint32 count
-for each:
-int64 chunk_x
-int64 chunk_y
-int64 chunk_z
-uint64 chunk_id
-uint32 flags
+- **NETWORK_POWER**  
+  - Node table, edge table, per-node voltage/current/frequency, transformer/breaker states. Component-level ordering must be deterministic.
 
-sql
-Copy code
+- **NETWORK_DATA**  
+  - Routers/switches, routing tables, deterministic tick queues, packet buffers (fixed depths), signal channels.
 
-Chunks appear in sorted order (x, then y, then z).
+- **NETWORK_FLUIDS**  
+  - Tanks, pipes, valves/pumps; per-node pressure, temperature, fluid type, volume.
 
-### 1.2.3 CHUNK_DATA
-For each chunk:
+- **NETWORK_THERMAL**  
+  - Thermal nodes/cells and their temperature fields; multi-rate scheduling metadata if applicable.
 
-- Tile data (compressed)
-- Terrain heightfield
-- Cut/fill overrides
-- Entities-in-chunk index
-- Local network nodes (power/data/fluids)
-- Local blueprint fragments
+- **ECONOMY**  
+  - Accounts, inventories, price indices (local/global), outstanding trades/logistics queues.
 
-Compression allowed: LZ4, deterministic mode only.
+- **RESEARCH**  
+  - Research nodes, required science, progress counters, unlock flags, infinite/levelled tech states.
 
-### 1.2.4 ENTITY_LIST
-Contains full ECS entity table:
+- **CLIMATE**  
+  - Climate cell parameters; temperature/precipitation/wind indices; CO₂eq and forcing fields; multi-rate tick offsets.
 
-uint64 entity_id
-uint32 prefab_id
-uint8 active
-uint8 lane_id
-int64 pos_x, pos_y, pos_z
-uint32 component_mask
-... component payloads, deterministic order ...
+- **WORKERS**  
+  - Worker agents, skills, job queues, current assignments; deterministic ordering.
 
-diff
-Copy code
+- **RNG_STATE**  
+  - Global and per-lane deterministic RNG states (per §3 in SPEC_CORE).
 
-### 1.2.5 NETWORK_POWER
-Includes:
-- Node table
-- Edge table
-- Per-node voltage/current/frequency
-- Transformer/breaker states
+- **BLUEPRINTS**  
+  - Blueprint instances: id, prefab references, placement, orientation, stage, pending jobs/resources.
 
-### 1.2.6 NETWORK_DATA
-Includes:
-- Routers/switches
-- Routing tables
-- Deterministic tick queues
-- Packet buffers (max depth fixed)
-
-### 1.2.7 NETWORK_FLUIDS
-Includes:
-- Tanks
-- Pipes
-- Valves/pumps
-- Per-node pressure, temperature, fluid type
-
-### 1.2.8 ECONOMY
-Contains:
-- Accounts (integer)
-- Resource inventories (per property/company)
-- Price indices (local/global)
-
-### 1.2.9 RESEARCH
-Contains:
-- Research nodes
-- Required science amounts
-- Progress counters
-- Unlock flags
-
-### 1.2.10 CLIMATE
-Contains:
-- Regional climate cell parameters
-- Temperature/precip/wind indices
-- CO₂eq and radiative forcing fields
-
-### 1.2.11 WORKERS
-Contains:
-- Worker agents
-- Skills
-- Job queues
-- Assigned job state
-
-### 1.2.12 RNG_STATE
-Contains:
-- Global deterministic RNG state (xoshiro or chosen algorithm)
-- Per-lane RNG states (if used)
-
-### 1.2.13 BLUEPRINTS
-Contains:
-- Blueprint instances
-- Construction stage
-- Required resources
-- Pending worker tasks
-
-## 1.3 Optional Blocks
-
-- SNAPSHOT_METADATA
-- DEBUG_VARS
-- CUSTOM_MOD_DATA (namespaced)
+### 1.3 Optional blocks
+- **SNAPSHOT_METADATA** — hashes, profiling info, build metadata.
+- **DEBUG_VARS** — non-authoritative debug overlays.
+- **CUSTOM_MOD_DATA** — namespaced mod payloads; must not affect core without explicit mod determinism flags.
 
 ---
 
-# 2. REPLAY FORMATS (V4)
+## 2. REPLAY FORMATS
+Two deterministic replay modes are supported.
 
-Dominium supports **two** deterministic replay modes.
+### 2.1 Input replay (`*.dreplay`)
+- **Header:** `"DOMREP\0"`, `format_version`, `world_uuid`, `surface_uuid`, optional `mod_set_hash`, `pack_set_hash`.
+- **Event stream per tick:**
+  ```
+  uint64 tick_id;
+  uint16 event_count;
+  repeat event_count:
+      uint16 event_type;
+      uint16 size;
+      uint8  payload[size];
+  ```
+- No delta compression; strict ordering; identical input streams must yield identical sim state across platforms.
 
-## 2.1 Input Replay (`*.dreplay`)
-
-### 2.1.1 File Header
-"DOMREP\0"
-format_version
-world_uuid
-surface_uuid
-
-perl
-Copy code
-
-### 2.1.2 Event Stream
-For each tick:
-
-uint64 tick_id
-uint16 event_count
-[event entries...]
-
-vbnet
-Copy code
-
-Each event entry:
-
-uint16 event_type
-uint16 size
-uint8 payload[size]
-
-shell
-Copy code
-
-No delta compression; fully deterministic.
-
-## 2.2 Snapshot + Delta Replay (`*.drepd`)
-
-Used for long replays.
-
-### 2.2.1 Snapshots
-Every N ticks:
-
-SNAPSHOT
-serialized save blocks subset
-
-shell
-Copy code
-
-### 2.2.2 Deltas
-Between snapshots:
-
-DELTA
-changes to entity component tables
-changes to networks
-changes to climate and research
-
-yaml
-Copy code
-
-Compression allowed but deterministic only.
+### 2.2 Snapshot + delta replay (`*.drepd`)
+- **SNAPSHOT** blocks every N ticks: subset of save blocks needed for resync (WORLD_METADATA, PACK_SET, MOD_SET, CHUNK_TABLE/DATA, ENTITY_LIST, NETWORK_* subsets, RNG_STATE).
+- **DELTA** blocks between snapshots: changes to entities, networks, climate, research, economy.
+- Compression allowed only in deterministic mode; delta application must be order-stable.
 
 ---
 
-# 3. MOD PACKAGE FORMAT (V4)
+## 3. MOD PACKAGE FORMAT (`*.dmod`)
+- Container: ZIP.
+- Required: `mod.json` manifest (see `docs/dev/dominium_new_mods.txt` for fields: id, version, engine version bounds, dependencies, conflicts, determinism flags).
+- Directory layout inside ZIP:
+  ```
+  mod.json
+  data/      # entities, recipes, tech, networks, etc.
+  scripts/   # deterministic sandboxed scripts (optional)
+  gfx/       # tiles, sprites, ui, vector sets (optional)
+  audio/     # sfx/music (optional)
+  locale/    # translations (optional)
+  docs/      # optional
+  tests/     # optional
+  ```
+- Prohibitions: no native binaries auto-loaded by engine; no OS/network/wallclock access from scripts; no schema changes inside mods.
+- Mod IDs must be namespaced and unique; overrides require explicit `override:true` semantics as defined by the modding spec.
 
-Mod files have extension: `*.dmod`.
+---
 
-A mod is a **ZIP container** with:
-
-manifest.json
-data/
-data/entities/
-data/networks/
-data/recipes/
-data/terrain/
-lua/
-textures/
-sounds/
-music/
-blueprints/
-tech_tree.json
-
-bash
-Copy code
-
-## 3.1 manifest.json (required)
-
-Example minimal:
-
-```json
-{
-  "mod_id": "example.mod",
-  "name": "Example Mod",
-  "version": "1.0.0",
-  "engine_version_min": "3.0.0",
-  "engine_version_max": "3.999",
-  "load_after": ["base"],
-  "scripts": ["lua/init.lua"]
-}
-Rules:
-
-All strings Unicode UTF-8.
-
-No executable binaries permitted.
-
-No engine-side .dll/.so allowed for mods.
-
-All mod identifiers canonical ASCII.
-
-4. BLUEPRINT FORMAT (V4)
+## 4. BLUEPRINT FORMATS
 Blueprints describe prefab placement and construction.
 
-Blueprints can exist as JSON or compact binary.
-
-4.1 JSON form
-json
-Copy code
+### 4.1 JSON form
+```json
 {
-  "blueprint_id": "bp_example",
-  "nodes": [
-    {"prefab": 1001, "x": 123, "y": 45, "z": 0, "o": 1}
+  "blueprint_id": "mod.namespace.bp_example",
+  "name_key": "bp.example.name",
+  "size_tiles": [32, 8],
+  "anchor": [0, 0],
+  "dlc_required": [],
+  "entities": [
+    {"prefab": "mod.namespace.machine_basic", "x": 4, "y": 2, "z": 0, "o": 0}
   ],
-  "edges": [
-    {"a": 0, "b": 1, "type": "connection"}
-  ],
-  "resources": {
-    "iron_plate": 50,
-    "copper_wire": 20
-  }
+  "networks": {
+    "power": [{ "type": "pole_small", "x": 2, "y": 1, "z": 0 }],
+    "belts": [{ "type": "belt_basic", "path": [[0,4,0],[31,4,0]] }]
+  },
+  "resources": { "iron_plate": 50 },
+  "metadata": { "intended_throughput": { "item_id": "iron_plate", "items_per_second": 30 } }
 }
-4.2 Binary form
-go
-Copy code
-uint32 magic = 0x424C5054 ("BLPT")
-uint16 version
-uint16 flags
-uint32 node_count
-nodes...
-uint32 edge_count
-edges...
-resource table...
-Nodes stored in sorted order (prefab, then coordinate).
+```
+- Entities ordered by (prefab, coord) for determinism. Paths use integer coordinates only.
 
-5. DRAW-COMMAND FORMAT (V4)
-Renderer backends do not access simulation directly.
-Simulation outputs DomDrawCmd[] arrays every frame.
+### 4.2 Binary form
+```
+uint32 magic = 0x424C5054; /* "BLPT" */
+uint16 version;
+uint16 flags;
+uint32 node_count;
+/* nodes... (sorted) */
+uint32 edge_count;
+/* edges... (sorted) */
+/* resource table ... */
+```
 
-5.1 DomDrawCmd
-go
-Copy code
-uint16 cmd_type    // rect, line, poly, sprite, text, model, etc.
-uint16 flags
-int64  x0, y0, z0
-int64  x1, y1, z1
-int64  x2, y2, z2
-int64  x3, y3, z3
-uint32 color_rgba
-uint32 stroke_width_q16
-uint32 extra_index     // index into renderer-side tables for UVs, sprites, meshes
-5.2 Draw Command Stream
-Stream block:
+---
 
-csharp
-Copy code
+## 5. DRAW-COMMAND FORMAT
+Renderer backends never read simulation directly; they consume deterministic draw-command buffers produced by game/engine.
+
+### 5.1 Command types (screen-space integers)
+```
+uint16 cmd_type;  /* rect, line, poly, sprite, text */
+uint16 flags;
+int32  x0, y0, x1, y1;    /* semantics depend on cmd */
+int32  x2, y2, x3, y3;    /* optional */
+uint32 color_rgba;        /* 0xAARRGGBB */
+uint32 stroke_width_q16;  /* fixed-point stroke */
+uint32 extra_index;       /* sprite/font/vector set index */
+```
+- Commands are stored in order; max count is fixed by the renderer buffer (`DOM_RENDER_CMD_MAX`). Overflow is a deterministic error.
+- Backends convert to floats internally if needed but must not mutate simulation state.
+
+### 5.2 Command stream block
+```
 DCMD
-block_version
-camera_id
-count
+uint16 block_version;
+uint16 camera_id;
+uint32 count;
 [commands...]
-No floating point; renderers convert to floats internally if needed.
+```
 
-6. UNIVERSE / GALAXY / SYSTEM / SURFACE METADATA (V4)
-Stored in WORLD_METADATA block.
+---
 
-Contains:
+## 6. UNIVERSE / GALAXY / SYSTEM / SURFACE METADATA
+Stored in `WORLD_METADATA`:
+- IDs for universe/galaxy/system/planet/surface.
+- Orbital parameters (integer/fixed) for on-rails orbits.
+- Planet properties: radius, gravity, rotation, atmosphere composition/pressure.
+- Seeds used for orbital layout and worldgen.
+- No N-body data; orbital paths are deterministic rails.
 
-Versioned descriptors for:
+---
 
-Universe ID
+## 7. CHUNK STORAGE FORMAT
+- **CHUNK_HEADER**
+  ```
+  uint64 chunk_id;
+  int64  origin_x, origin_y, origin_z;
+  uint32 flags;
+  uint32 tile_count;
+  ```
+- **TILE_DATA** — compact terrain/material IDs, height offsets, cut/fill overrides, water level indices; compressed deterministically.
+- **NETWORK_SUBSECTIONS** — chunk-local node tables for power/data/fluids/thermal.
+- **ENTITY_INDEX** — list of entity IDs inside the chunk (sorted).
 
-Galaxy ID
+---
 
-System ID
+## 8. NETWORK FORMATS (SAVE/REPLAY)
+### 8.1 Power
+```
+uint32 node_count; [nodes...]
+uint32 edge_count; [edges...]
 
-Planet ID
-
-Surface ID
-
-Orbital parameters (integer only)
-
-Seeds used for orbital layout
-
-Planet physical properties (radius, rotation period, gravity)
-
-Atmospheric properties (pressure, composition IDs)
-
-No N-body data—system is “on rails”, deterministic.
-
-7. CHUNK STORAGE FORMAT (V4)
-Each chunk stores:
-
-7.1 CHUNK_HEADER
-go
-Copy code
-uint64 chunk_id
-int64  origin_x, origin_y, origin_z
-uint32 flags
-uint32 tile_count
-7.2 TILE_DATA
-1–few bytes per tile for:
-
-terrain type
-
-height offset
-
-cut/fill override
-
-water level index
-
-7.3 NETWORK_SUBSECTIONS
-Per-network chunk-local node tables:
-
-power nodes
-
-data nodes
-
-fluids nodes
-
-7.4 ENTITY_INDEX
-List of entity IDs inside the chunk.
-
-8. NETWORK FORMATS (V4)
-Networks appear in both savegames and snapshots.
-
-8.1 Power
-csharp
-Copy code
-uint32 node_count
-[nodes...]
-uint32 edge_count
-[edges...]
-Each node:
-
-go
-Copy code
-uint32 node_id
-int64  x, y, z
-uint32 voltage_mv
-uint32 frequency_millihz
-uint16 type_flags
-Edge:
-
-go
-Copy code
-uint32 a, b
-uint32 capacity_va
-uint32 flags
-8.2 Data
-go
-Copy code
-uint32 node_count
-uint32 edge_count
-uint32 queue_size
-Packets:
-
-go
-Copy code
-uint32 src
-uint32 dst
-uint32 payload_size
-uint8  payload[]
-8.3 Fluids
-makefile
-Copy code
 node:
-    fluid_id
-    pressure_q16
-    temperature_q16
-    volume_q16
-Edges carry capacities and conductances.
+  uint32 node_id;
+  int64  x, y, z;
+  uint32 voltage_mv;
+  uint32 frequency_millihz;
+  uint16 type_flags;
+edge:
+  uint32 a, b;
+  uint32 capacity_va;
+  uint32 flags;
+```
 
-9. SERIALIZATION CONSTRAINTS
-No pointer values written to disk.
+### 8.2 Data
+```
+uint32 node_count;
+uint32 edge_count;
+uint32 queue_size;
 
-All structs packed manually; no compiler padding.
+packet:
+  uint32 src;
+  uint32 dst;
+  uint32 payload_size;
+  uint8  payload[];
+```
+Packets are logged in deterministic order per tick; overflow drops oldest with a flag.
 
-All arrays sorted to guarantee deterministic iteration.
+### 8.3 Fluids
+```
+node:
+  uint32 fluid_id;
+  int32  pressure_q16;
+  int32  temperature_q16;
+  int32  volume_q16;
+edge:
+  uint32 a, b;
+  int32  conductance_q16;
+  int32  capacity_q16;
+  uint32 flags;
+```
 
-No hash tables serialized directly—only sorted lists.
+### 8.4 Thermal
+- Grid/graph cells with integer/fixed temperatures; stored in deterministic scan order.
 
-No floats anywhere in on-disk formats.
+---
 
-All seeds, IDs, and timestamps must be explicitly saved.
+## 9. SERIALIZATION CONSTRAINTS
+- No pointers serialized; only stable IDs and value types.
+- Arrays/lists are **sorted** (by ID or coordinate) before serialization.
+- Hash maps are not serialized directly; convert to sorted lists.
+- No floats anywhere in authoritative formats.
+- All block sizes/versions must be correct; tools must not guess defaults silently.
+- Savefiles must record the exact mod and pack sets; loading with a mismatched set is a hard error unless explicitly marked as non-deterministic.
+- Breaking changes require new block versions and migration tooling.
+- Only `/engine/core`, `/engine/sim`, `/engine/io`, and `/engine/net` may serialize core state.
 
-All block sizes must be correct—Codex must not guess.
-
-Unknown blocks/fields must be skipped safely.
-
-Breaking changes require:
-
-new block version
-
-optional migration tool
-
-Only /engine/core, /engine/sim, and /engine/net may serialize core state.
-
-End of DATA_FORMATS.md (V4).
+End of DATA_FORMATS.md (V5).
