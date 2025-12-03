@@ -1,403 +1,198 @@
-# Dominium — BUILDING & PLATFORM COMPILATION SPECIFICATION (v4)
+# Dominium — BUILDING & PLATFORM COMPILATION SPECIFICATION (v5)
 
-This document defines the **authoritative rules** for:
-
-- Build system structure  
-- Toolchains and compilers  
-- Deterministic build modes  
-- Platform and renderer backends  
-- Threading and scheduling constraints  
-- UPS/FPS policies  
-- Packaging outputs  
-- Prohibitions and required invariants  
-
-This file binds all modules under:
-
-- `/engine`
-- `/game`
-- `/tools`
-- `/tests`
-- `/ports`
-
-This version incorporates and supersedes earlier texts by enforcing the **Platform/Renderer/Engine Split** defined in:
-
-docs/dev/dominium_new_addendum.txt
-
-markdown
-Copy code
+This file is the **binding build contract** for all code under `/engine`, `/game`, `/tools`, `/tests`, and `/ports`. It reconciles the spec layer with the dev addenda (`docs/dev/dominium_new_build.txt`, `docs/dev/dominium_new_addendum.txt`, renderer/platform specs, and the `/ports` rules).
 
 ---
 
-# 1. BUILD SYSTEMS (CANONICAL)
-
-Dominium uses a **single, authoritative build system**:
-
-## 1.1 Primary Build System — CMake
-
-- **Minimum CMake version: 3.15**
-- CMake is the only official build system for:
-  - `/engine`
-  - `/game`
-  - `/tools`
-  - `/tests`
-  - `/packaging`
-
-### CMake Requirements
-
-All CMake modules must follow:
-
-- **Explicit file lists (no globbing)**
-- **Identical compiler flags across platforms for deterministic builds**
-- **All configuration options registered in root `CMakeLists.txt`**
-
-Supported CMake variables:
-
-DOM_PLATFORM=<win32|win32_sdl2|posix_sdl2|macos_cocoa|retro>
-DOM_RENDER_BACKEND=<dx9|dx11|gl1|gl2|vk1|dx12|software>
-DOM_AUDIO_BACKEND=<sdl|openal|null>
-DOM_BUILD_MODE=<Debug|Release|DeterministicRelease>
-DOM_HEADLESS=<ON|OFF>
-DOM_CANONICAL_UPS=1..1000
-DOM_LTO=<ON|OFF>
-DOM_SFN_MODE=<ON|OFF>
-
-yaml
-Copy code
-
-### Hard Separation Rules (Addendum Integration)
-
-- No `/engine/sim` or `/engine/core` file may reference:
-  - Win32, SDL, X11, Cocoa, Android, Vulkan, OpenGL, DirectX, etc.
-- Only `/engine/platform/*` may include OS headers.
-- Only `/engine/render/*` may include graphics headers (DX, GL, VK, etc.).
-- All build definitions must strictly reflect this.
+## 0. SCOPE
+- Canonical build system layout and responsibilities.
+- Supported toolchains and language levels.
+- Deterministic build modes and flags.
+- Platform, renderer, and audio backend policies.
+- Determinism validation, UPS/FPS policies, and outputs.
+- Prohibitions that protect the tick-deterministic core.
 
 ---
 
-## 1.2 Secondary Build Systems (Retro)
+## 1. BUILD SYSTEM ARCHITECTURE
 
-Retro platforms do **not** use CMake:
+### 1.1 Primary build system — CMake
+- **Minimum CMake version: 3.15.**
+- Sole authority for `/engine`, `/game`, `/tools`, `/tests`, `/packaging`.
+- **No globbing**; all sources are explicitly listed.
+- All options live in the root `CMakeLists.txt` and are mirrored under `/build/cmake/modules/`.
+- **CMake cache must never download dependencies**; all third-party code comes from `/external` (or `/third_party` if present) with pinned hashes.
 
-### Retrobuild Layer (for `/ports`)
-- Used for:
-  - DOS (Watcom)
-  - Windows 3.x (OpenWatcom)
-  - Windows 9x (OpenWatcom + DX8/GL1)
-  - macOS Classic (MPW/CodeWarrior)
-- Must respect:
-  - 8.3 SFN filenames
-  - No dynamic linking
-  - Reduced feature surface
-  - Stubs for unsupported modules
+#### /build layout (canonical)
+```
+/build/
+  README.md
+  cmake/
+    toolchains/   # win32_msvc, win32_mingw, linux_gcc, macos_clang, dos_watcom, win9x_mingw32
+    modules/      # DominiumPlatform, DominiumDeterminism, DominiumThirdParty, DominiumTesting, LegacySupport
+    presets/      # debug, release, retro_lowmem, headless
+  scripts/        # build_all, package_release, generate_version_header, lint_sources
+  output/         # ignored; ephemeral per-platform artifacts and logs
+```
+- **Retro targets** (DOS, Win3.x, Win9x, macOS Classic) may use dedicated makefiles under `/ports/*/config`, but must not add new directory structure.
 
-Retro builds may not add new directories or modify `/engine`.
+#### Required CMake cache variables
+- `DOM_PLATFORM` = `win32` | `win32_sdl2` | `posix_sdl2` | `macos_cocoa` | `retro`
+- `DOM_RENDER_BACKEND` = `dx9` | `dx11` | `gl1` | `gl2` | `vk1` | `dx12` | `software`
+- `DOM_AUDIO_BACKEND` = `null` | `sdl` | `openal`
+- `DOM_BUILD_MODE` = `Debug` | `Release` | `DeterministicRelease`
+- `DOM_HEADLESS` = `ON` | `OFF`
+- `DOM_CANONICAL_UPS` = {1, 2, 5, 10, 20, 30, 45, 60, 90, 120, 180, 240, 500, 1000}
+- `DOM_LTO` = `ON` | `OFF` (see §8)
+- `DOM_SFN_MODE` = `ON` | `OFF` (retro 8.3 enforcement)
 
----
+### 1.2 Hard layering (renderer / platform / engine split)
+- `/engine/core`, `/engine/sim`, `/engine/spatial`, `/engine/path`, `/engine/physics`, `/engine/ecs`, `/engine/net` **must not include** OS, windowing, graphics, or audio headers.
+- Only `/engine/platform/**` may include OS headers.
+- Only `/engine/render/**` may include graphics API headers.
+- Audio backends live under `/engine/audio/**` and follow the same isolation.
 
-# 2. COMPILERS & TOOLCHAINS
-
-## 2.1 Supported Compilers (MVP First)
-
-| Platform             | Compilers                                    |
-|----------------------|-----------------------------------------------|
-| Windows NT 2000–11   | MSVC 2010+, MinGW-w64, clang-cl               |
-| Windows NT 2000-only | MSVC 2010 (with legacy SDK)                   |
-| Linux (glibc ≥ 2.5)  | GCC 4.8+, Clang 3.2+                           |
-| macOS 10.6–10.14     | Apple Clang / GCC-Apple                       |
-| macOS 10.15+         | Modern Clang (later phases)                   |
-| DOS / Win3.x / 9x    | OpenWatcom 1.9+ (retro build system)          |
-
-### Deterministic Core Requirements
-
-- `/engine/core` and `/engine/sim` must compile under **strict C89**.  
-- All other engine modules may use **strict C++98**, no later.  
-- No C99/C11/C++11 features allowed.
-
----
-
-# 3. BUILD MODES
-
-Dominium defines three build modes:
-
-## 3.1 Debug
-- No optimisation
-- Full assertions
-- Full logging
-- Development-only
-
-## 3.2 Release
-- O2/O3 optimisations
-- Reduced logging
-- Fast-math allowed *only in renderer code*
-- Not used for authoritative simulation
-
-## 3.3 DeterministicRelease (DR)
-**This is the canonical mode for actual gameplay simulation.**
-
-Mandatory constraints:
-
-- Simulation uses **fixed-point**, not FP
-- No FMA or fused operations
-- No unsafe math optimisations
-- No CPU-specific vectorisation except **SSE2 baseline**
-- Identical compiler flags across platforms
-- No link-time reordering of functions used by sim
-
-DR builds across Win2000, Win11, Linux, macOS must produce **bit-identical simulation behaviour**.
+### 1.3 Retro build layer
+- Applies only to `/ports/*`.
+- Enforces: 8.3 filenames, no dynamic linking, reduced feature surface, deterministic fixed-point math, and stubs for unsupported modules.
 
 ---
 
-# 4. PLATFORM TARGETS & BACKENDS
+## 2. COMPILERS, LANGUAGE LEVELS, AND TOOLCHAINS
 
-This section replaces earlier platform descriptions with the new backend model.
+| Target                      | Compilers (minimum)                         |
+|-----------------------------|---------------------------------------------|
+| Win NT 2000–11              | MSVC 2010+, MinGW-w64, clang-cl             |
+| Win NT 2000-only            | MSVC 2010 + legacy SDK                      |
+| Linux (glibc ≥ 2.5)         | GCC 4.8+, Clang 3.2+                        |
+| macOS 10.6–10.14            | Apple Clang / GCC-Apple                     |
+| macOS 10.15+                | Modern Clang (when enabled)                 |
+| DOS / Win3.x / Win9x        | OpenWatcom 1.9+ (retro makefiles)           |
 
-## 4.1 Phase 1 (MVP Required)
-Only the following configuration is officially supported during MVP:
+Language constraints:
+- `/engine/core` and `/engine/sim`: **strict C89**.
+- Other engine modules: **strict C++98** (no C++11/C99 features).
+- Fast-math and non-standard extensions **forbidden** outside renderer/audio backends.
+- SIMD: **SSE2 baseline only**; no AVX/NEON/AVX512 in deterministic builds.
 
-- **Platform backend:** `dom_platform_win32`  
-- **OS target:** Windows NT 2000 SP4 → Windows 11  
-- **Renderer backend:** `dom_render_dx9`  
-- **Audio backend:** `null` (optional SDL later)
+Toolchain files under `/build/cmake/toolchains/` must set the above and pin all compiler versions.
 
-No other platforms/renderers may be compiled or used during MVP until the MVP core is complete.
+---
 
-## 4.2 Phase 2 (Post-MVP Early)
+## 3. BUILD MODES
+
+### 3.1 Debug
+- No optimisation; full assertions and logging; determinism checks may be relaxed but ordering rules still apply.
+
+### 3.2 Release
+- O2/O3 optimisations; reduced logging; fast-math permitted **only inside renderer/audio backends**; not authoritative for simulation.
+
+### 3.3 DeterministicRelease (DR)
+- Authoritative gameplay mode; must be bit-stable across platforms.
+- Fixed-point math in simulation; no fused ops; identical flags across platforms; no link-time function reordering for sim entrypoints.
+- Output binaries must produce identical simulation behaviour on Win2000, Win11, Linux, macOS given identical inputs and mod/data sets.
+
+---
+
+## 4. PLATFORM TARGETS & BACKEND ROADMAP
+
+### 4.1 MVP (Phase 1)
+- Platform backend: `dom_platform_win32`
+- Renderer backend: `dom_render_dx9` (vector-only; wireframe 3D)
+- Audio backend: `dom_audio_null`
+- OS: Windows NT 2000 SP4 → Windows 11
+- Headless server builds use the same platform layer without renderer/audio.
+
+### 4.2 Post-MVP (Phase 2)
 - Platform: `dom_platform_win32_sdl2`
-- Renderer: DX11, GL1, GL2 (via SDL2), Software
+- Renderers: DX11, GL1, GL2, Software
+- Audio: SDL_mixer, OpenAL Soft
 
-## 4.3 Phase 3 (Linux/macOS)
-- Platform: `dom_platform_posix_sdl2`, `dom_platform_macos_cocoa`
-- Renderer: GL2, Vulkan, Software
+### 4.3 Linux/macOS (Phase 3)
+- Platform: `dom_platform_posix_sdl2`, `dom_platform_macos_cocoa` (or _sdl2)
+- Renderers: GL2, Vulkan, Software
 
-## 4.4 Phase 4 (Retro)
-- Platforms under `/ports` (DOS, Win3.x, Win9x, macOS Classic)
-- Renderers: GL1, Software
-- Must comply with 8.3 naming + component stubs
+### 4.4 Retro (Phase 4)
+- Platforms: `/ports/dos`, `/ports/win3x`, `/ports/win9x`, `/ports/macos_classic`
+- Renderers: GL1 (where possible) or Software
+- Must respect 8.3 naming, memory limits, and stubbed features.
 
----
-
-# 5. RENDERING BACKENDS (UPDATED)
-
-This section replaces earlier listings.
-
-### 5.1 Renderer API (Canonical)
-
-All renderer backends must implement the API defined in:
-
-/engine/render/dom_render_api.h
-docs/dev/dominium_new_addendum.txt
-
-yaml
-Copy code
-
-### 5.2 MVP Renderer Set
-
-Only one backend is required for MVP:
-
-- **Direct3D 9.0c (dom_render_dx9)**  
-  - No fixed-function; shader path only  
-  - Compatible with Windows 2000 → 11  
-  - Must support:
-    - 2D vector primitives
-    - 3D wireframe primitives
-
-### 5.3 Future Renderer Backends
-
-May be added after MVP:
-
-- DX11
-- DX12
-- OpenGL 1.1
-- OpenGL 2.0
-- Vulkan 1.x
-- Software (CPU)
-
-All must follow the standard backend vtable defined in `dom_render_api.h`.  
-All capability probing is runtime, not compile-time.
+Backend selection is runtime-driven through the backend registry (see `/engine/render/dom_render_backend.h` and addendum), never by ad-hoc compile-time ifdefs.
 
 ---
 
-# 6. AUDIO BACKENDS
-
-### MVP:
-- `null` (no sound)
-
-### Post-MVP:
-- SDL2_mixer
-- OpenAL Soft
-
-Audio backends must follow the platform/renderer separation.  
-No audio code may appear in `/engine/sim`.
+## 5. RENDERER AND AUDIO BACKEND POLICY
+- All renderer backends implement `dom_render_backend.h`; all commands flow through `DomRenderCommandBuffer`.
+- All platform backends expose only `dom_platform.h`; renderer creation uses platform-provided handles.
+- Audio backends implement `dom_audio_backend.h` and consume deterministic audio command buffers; no audio logic in `/engine/sim`.
+- Renderer/audio code **never** mutates simulation state or tick timing.
 
 ---
 
-# 7. THREADING & MULTICORE RULES
-
-Simulation thread is **single and deterministic**.
-
-Allowed background threads:
-
-- Asset loading  
-- Shader compilation  
-- Editor-only tasks  
-- Async file IO  
-
-Prohibitions:
-
-- No engine/sim mutation from background threads  
-- No job stealing  
-- No OS thread priorities or dynamic scheduling in sim  
-
-All inter-thread messages must be ordered deterministically.
+## 6. THREADING, UPS/FPS, AND RUNTIME LOOPS
+- Simulation runs single-threaded and deterministic. Background threads permitted only for asset loading, shader/audio preprocessing, editor tasks, or async I/O, and must not mutate sim state.
+- UPS options (canonical): 1, 2, 5, 10, 20, 30, 45, 60, 90, 120, 180, 240, 500, 1000. Default set via `DOM_CANONICAL_UPS`.
+- FPS options: fixed list plus `vsync` and `match_UPS`; rendering never dictates simulation tick rate.
+- On insufficient CPU, simulation slows deterministically; UPS is not auto-changed.
 
 ---
 
-# 8. UPS & FPS RULES
-
-UPS and FPS are runtime-configurable but reflected in build metadata.
-
-### UPS Options:
-1, 2, 5, 10, 20, 30, 45, 60, 90, 120, 180, 240, 500, 1000, unlimited
-
-shell
-Copy code
-
-### FPS Options:
-18, 24, 25, 30, 48, 50, 60, 75, 90, 120, 150, 180, 240, 500, 1000,
-unlimited, vsync, match_UPS
-
-yaml
-Copy code
-
-Simulation slows gracefully if CPU cannot maintain UPS.  
-Rendering does **not** affect simulation tick rate.
+## 7. DETERMINISM REQUIREMENTS
+- No OS API calls in deterministic modules.
+- No floating point in `/engine/core` or `/engine/sim`; fixed-point only.
+- Identical compiler flags across platforms for deterministic modules; no `-ffast-math`, `-march=native`, or unordered optimisations.
+- Deterministic archives/static libs: fixed file order, stripped timestamps for DR builds.
+- All schema, component layouts, and serialization formats are versioned; unknown blocks must be skipped, not rejected.
+- Build scripts **must not fetch** network dependencies. All hashes live under `/external/pin/` (or equivalent).
+- Retro builds enforce `DOM_SFN_MODE=ON` and avoid dynamic linking.
 
 ---
 
-# 9. PACKAGE OUTPUTS
-
-CMake must generate:
-
-### 9.1 Executables
-- `dom_client`
-- `dom_server`
-- `dom_hclient`
-- `dom_tools_editor`
-- `dom_tools_converter`
-
-### 9.2 Data Packs
-- Base game
-- DLC packs
-- Graphics/sound/music packs
-
-### 9.3 Retro Images (Phase 4)
-- DOS floppy (1.44MB)
-- Win9x ISO
-- Win3.x ZIP package
-
-All using 8.3 filenames from mapping tables.
+## 8. OPTIONAL EXTENSIONS
+- **LTO:** Allowed only after cross-toolchain reproducibility is proven; forbidden in DR until bit-identical output is demonstrated for MSVC/Clang/GCC.
+- **SIMD:** SSE2 allowed; all later SIMD families are disabled in DR builds.
 
 ---
 
-# 10. BUILD RESTRICTIONS (UPDATED)
-
-- NO rendering API calls outside `/engine/render/**`.
-- NO OS API calls outside `/engine/platform/**`.
-- NO dynamic symbol lookup in sim code.
-- NO dependence on filesystem case sensitivity.
-- NO C99/C11/C++11 features anywhere in engine.
-- NO AVX/AVX2/AVX512 in deterministic builds.
-- NO backends may create more than one rendering thread.
-
-Renderer and platform backends must not interfere with simulation determinism.
+## 9. OUTPUTS
+- Executables: `dom_client`, `dom_server`, `dom_hclient`, `dom_tools_editor`, `dom_tools_converter` (names may vary per target but must be declared in CMake explicitly).
+- Data packs: base, DLC, graphics/sound/music packs; built deterministically.
+- Retro images: DOS floppy (1.44MB), Win3.x ZIP, Win9x ISO, macOS Classic SMI; all 8.3 mapped.
+- Packaging layouts live under `/packaging/**` and must follow `/package/common/layout` schema; no build products live in `/package`.
 
 ---
 
-# 11. OPTIONAL EXTENSIONS
-
-### 11.1 LTO
-Allowed only when build reproducibility is verified across:
-- MSVC
-- Clang
-- GCC
-
-Forbidden in DeterministicRelease builds unless cross-platform bit-identical.
-
-### 11.2 SIMD
-- Allowed: SSE2
-- Forbidden: SSE3+, AVX, NEON, AVX512 in DR mode
+## 10. ENVIRONMENT VARIABLES
+- `DOM_FORCE_DETERMINISTIC=1` — forces DR behaviours.
+- `DOM_BUILD_PLATFORM` / `DOM_BUILD_RENDERER` — explicit backend selection.
+- `DOM_ASSET_PATH_OVERRIDE` — optional asset override for tools (not used in DR runs).
+- `DOM_DISABLE_BACKENDS` — comma-separated backend deny-list for debug.
+- `DOM_SFN_MODE=1` — enforce 8.3 naming for retro/ports.
 
 ---
 
-# 12. ENVIRONMENT VARIABLES
-
-DOM_FORCE_DETERMINISTIC=1
-DOM_BUILD_PLATFORM=<backend>
-DOM_BUILD_RENDERER=<backend>
-DOM_ASSET_PATH_OVERRIDE=<path>
-DOM_DISABLE_BACKENDS=<list>
-DOM_SFN_MODE=<1|0>
-
-yaml
-Copy code
+## 11. BUILD VERIFICATION & CI
+- **Determinism hash** emitted per build from: binary, serialization schemas, component layouts, tick pipeline config, constants, and merge rules.
+- **Replay cross-checks:** identical replays must produce identical hashes on Windows, Linux, macOS.
+- **API boundary validation:** CI checks that OS headers appear only in `/engine/platform/**` and graphics headers only in `/engine/render/**`; sanitizers must not report UB in deterministic code paths.
+- **Spec validation:** `/build/scripts/validate_specs.py` ensures `/docs/spec` is internally consistent and matches schema IDs used by serializers.
+- **Third-party validation:** `/build/scripts/verify_hashes.py` and `/external/pin/` hashes must pass.
 
 ---
 
-# 13. BUILD VERIFICATION
-
-Every build outputs:
-
-### 13.1 Determinism Hash
-Generated from:
-- Engine binary
-- Serialization schema
-- Component layouts
-- Tick pipeline configuration
-- Constants, merge rules
-
-### 13.2 Cross-Platform Replay Test
-Same replay must produce same hash across:
-- Windows
-- Linux
-- macOS
-
-### 13.3 API Boundary Validation
-- No forbidden OS headers in simulation modules
-- No graphics headers outside render backends
-- No data races or UB detectable via sanitizers
-
-### 13.4 Build Metadata
-Stored in:
-build_info.json
-
-yaml
-Copy code
+## 12. FUTURE-PROOFING
+- New platforms are added by new `/engine/platform/*` backends only; engine/sim code must not change for platform bring-up.
+- New renderers/audio backends plug into existing vtables with no engine API changes.
+- Multi-surface/planet/system/galaxy/universe support must not require new build flags.
+- Headless server clusters use the same DR binaries with `DOM_HEADLESS=ON`.
 
 ---
 
-# 14. FUTURE-PROOFING
-
-The build system must:
-
-- Accept new renderers (DX11, Vulkan, Metal) without rewriting engine code.
-- Accept new platform targets by adding new `/engine/platform/*` directories only.
-- Preserve determinism across all expansions.
-- Handle multi-surface, multi-planet, multi-galaxy worlds with no new build flags.
-- Allow headless server clusters.
-
----
-
-# 15. SUMMARY (FOR CODEGEN)
-
-- Engine deterministic core = C89.
-- Non-core modules = C++98.
-- CMake is canonical.
-- Platform and renderer layers strictly separated.
-- MVP build = Win32 + DX9 only.
-- All rendering is vector-only in MVP.
-- DeterministicRelease mode is required for real gameplay.
-- No directory additions beyond DIRECTORY_CONTEXT.md.
-- All backends are modular and pluggable through vtables.
-- Retro builds isolated under `/ports`.
-
-End of BUILDING.md.
+## 13. SUMMARY (QUICK REFERENCE)
+- CMake is canonical; no auto-fetching; explicit sources.
+- Core/sim = C89; rest of engine = C++98; no C99/C++11.
+- DR mode is authoritative; identical flags across platforms; SSE2 max.
+- MVP: Win32 + DX9 renderer + null audio.
+- Platform/render/audio separation is strict and enforced by build/CI.
+- Retro builds live under `/ports`; 8.3 names and no dynamic linking.
+- Packaging is separate (`/packaging/**`); build outputs stay under `/build/output`.
