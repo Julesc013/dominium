@@ -1,0 +1,418 @@
+This message is the dev-spec for /data/packs/.
+/data/packs provides first-party graphics, sound, and music packs, loaded like OpenTTD-style asset packs.
+They change how the game looks and sounds, but never how it simulates.
+Each pack is:
+• Self-contained.
+• Versioned.
+• Deterministic (no procedural randomness at runtime).
+• Optional: base game must run with at least one default pack.
+
+0. Directory layout
+Canonical structure:
+/data/packs/
+├─ README.md
+├─ packs_manifest.json          # index of known packs
+├─ base_gfx/
+│  ├─ manifest.json
+│  ├─ gfx/
+│  │  ├─ tiles/
+│  │  ├─ sprites/
+│  │  ├─ ui/
+│  │  └─ vector/
+│  ├─ models/
+│  ├─ shaders/
+│  ├─ fonts/
+│  └─ metadata/
+├─ base_audio/
+│  ├─ manifest.json
+│  ├─ sfx/
+│  ├─ music/
+│  └─ metadata/
+└─ minimal_vector/
+   ├─ manifest.json
+   ├─ gfx/
+   └─ fonts/
+Pack root names (base_gfx, base_audio, minimal_vector) are examples; you’ll pick your own.
+
+1. /data/packs/README.md
+Human-facing explanation:
+• What a “pack” is.
+• Difference between data packs (/data/base, /data/dlc) and asset packs (/data/packs).
+• How packs are selected at runtime (launcher, in-game options).
+• Determinism constraints: packs must not alter simulation behaviour.
+No executable content, no authoritative spec here.
+
+2. packs_manifest.json — global asset pack index
+This file enumerates all ship-ready asset packs that ship with the game.
+Example:
+{
+  "packs": [
+    {
+      "id": "base_gfx",
+      "type": "graphics",
+      "priority": 10,
+      "path": "base_gfx",
+      "default": true
+    },
+    {
+      "id": "base_audio",
+      "type": "audio",
+      "priority": 10,
+      "path": "base_audio",
+      "default": true
+    },
+    {
+      "id": "minimal_vector",
+      "type": "graphics",
+      "priority": 5,
+      "path": "minimal_vector",
+      "default": false
+    }
+  ]
+}
+Engine obligations:
+• Always load at least one graphics pack and one audio pack.
+• default: true indicates what to use when user has not selected one.
+• Packs with higher priority override lower ones for the same resource ID, if both active.
+• Paths are relative to /data/packs.
+Prohibitions:
+• No wildcard directories; engine must not “discover” packs by scanning the filesystem in shipping builds.
+• No executable code referenced here.
+
+3. Generic pack directory structure
+Every pack under /data/packs/<pack_id>/ has:
+/data/packs/<pack_id>/
+├─ manifest.json      # required
+├─ gfx/               # required for graphics packs
+├─ sfx/               # required for audio packs (if audio)
+├─ music/             # optional
+├─ models/            # optional, renderer-dependent
+├─ shaders/           # optional, renderer-dependent
+├─ fonts/             # optional but recommended
+└─ metadata/          # optional (palettes, style guides, atlases)
+Not all subdirs appear for all packs; the pack’s manifest.json determines what it provides.
+
+4. Pack manifest.json — core pack descriptor
+Example for a graphics pack:
+{
+  "id": "base_gfx",
+  "kind": "graphics",
+  "version": "1.0.0",
+  "engine_min_version": "3.0.0",
+  "engine_max_version": "3.x",
+  "description": "Default Dominium tile, sprite, and UI graphics.",
+  "author": "Dominium Team",
+  "license": "Proprietary",
+  "provides": {
+    "tiles": "gfx/tiles/tiles.json",
+    "sprites": "gfx/sprites/sprites.json",
+    "ui": "gfx/ui/ui.json",
+    "vector_sets": "gfx/vector/vector_sets.json",
+    "fonts": "fonts/fonts.json",
+    "models": "models/models.json",
+    "shaders": "shaders/shaders.json"
+  },
+  "overrides": {
+    "packs": [],
+    "base_assets": true
+  },
+  "tags": [
+    "official",
+    "default"
+  ]
+}
+Example for an audio pack:
+{
+  "id": "base_audio",
+  "kind": "audio",
+  "version": "1.0.0",
+  "engine_min_version": "3.0.0",
+  "engine_max_version": "3.x",
+  "description": "Default sound effects and music.",
+  "author": "Dominium Team",
+  "license": "Proprietary",
+  "provides": {
+    "sfx": "sfx/sfx.json",
+    "music": "music/music.json"
+  },
+  "overrides": {
+    "packs": [],
+    "base_assets": true
+  },
+  "tags": [
+    "official",
+    "default"
+  ]
+}
+Engine behaviour:
+• Uses kind to enforce compatibility (graphics vs audio vs mixed; you can allow mixed but must document rules).
+• Uses provides keys to locate index JSONs that define actual resources.
+• Uses overrides to decide how this pack interacts with others:
+o overrides.base_assets: true means “if another pack isn’t active, I cover base visuals/sfx”.
+o overrides.packs: [] can list other pack IDs whose assets this pack deliberately masks.
+Prohibitions:
+• No references to /engine, /game, /mods paths.
+• No scripting or code references.
+• No behaviour knobs that change simulation (only visual/audio representation).
+
+5. Graphics packs — /gfx/, /models/, /shaders/, /fonts/
+5.1 Tiles — /gfx/tiles/
+Tiles define how the world grid is visually represented.
+/data/packs/base_gfx/gfx/tiles/
+├─ tiles.json
+├─ ground/
+│  ├─ grass_01.png
+│  ├─ dirt_01.png
+│  └─ ...
+├─ buildings/
+│  ├─ foundation_basic.png
+│  └─ ...
+└─ overlays/
+   ├─ selection_box.png
+   └─ ...
+tiles.json maps logical resource IDs (defined by /data/base) to image paths and parameters:
+{
+  "tile_sets": [
+    {
+      "id": "ground_grass_default",
+      "resource_id": "tile.ground.grass",
+      "image": "ground/grass_01.png",
+      "size_px": [32, 32],
+      "scale": {
+        "pixels_per_meter": 32
+      },
+      "variants": [
+        { "id": "v1", "image": "ground/grass_01.png" },
+        { "id": "v2", "image": "ground/grass_02.png" }
+      ],
+      "auto_tile": {
+        "mode": "simple_4way"
+      }
+    }
+  ]
+}
+Determinism rule:
+• Any variant selection must be derived deterministically (e.g. tile coordinates hashed with world seed) — no random picks at draw time.
+5.2 Sprites — /gfx/sprites/
+Sprites for entities, vehicles, workers, etc.:
+/data/packs/base_gfx/gfx/sprites/
+├─ sprites.json
+├─ vehicles/
+├─ workers/
+└─ fx/
+sprites.json:
+{
+  "sprites": [
+    {
+      "id": "vehicle_train_small_diesel",
+      "resource_id": "sprite.vehicle.train_small_diesel",
+      "image": "vehicles/train_small_diesel_strip.png",
+      "frame_size_px": [64, 32],
+      "directions": 8,
+      "frames_per_direction": 4,
+      "render_layer": "vehicles",
+      "offset_px": [0, -8]
+    }
+  ]
+}
+The engine bridges prefab IDs to sprite resource IDs via a mapping table (likely in /engine/ui or /game/client). This pack only defines the sprite parameters.
+5.3 UI graphics — /gfx/ui/
+UI skinning and icons:
+/data/packs/base_gfx/gfx/ui/
+├─ ui.json
+├─ windows/
+├─ icons/
+└─ widgets/
+ui.json:
+• Defines base “theme” (colors, border images, margins).
+• Maps logical UI widget types to textures:
+o e.g. "ui.window.background" → windows/background.png
+o "ui.icon.rail" → icons/rail.png
+Non-simulation-critical.
+5.4 Vector sets — /gfx/vector/
+Resources for vector rendering mode:
+/data/packs/base_gfx/gfx/vector/
+└─ vector_sets.json
+Contains symbolic definitions: shapes, stroke widths, layers.
+Example:
+{
+  "vector_sets": [
+    {
+      "id": "rail_standard",
+      "resource_id": "vector.rail.standard",
+      "primitives": [
+        { "type": "line", "from": [0, 0], "to": [1, 0], "width": 0.1, "layer": "rails" },
+        { "type": "rect", "pos": [-0.5, -0.1], "size": [1.0, 0.2], "layer": "sleepers" }
+      ]
+    }
+  ]
+}
+Engine-side rasterisation or scaled vector rendering uses integer/fixed-point; this file just defines the primitives.
+5.5 Models — /models/
+3D model assets for 3D view modes:
+/data/packs/base_gfx/models/
+├─ models.json
+├─ buildings/
+├─ vehicles/
+└─ misc/
+models.json maps logical resource IDs to model files and LODs:
+{
+  "models": [
+    {
+      "id": "building_factory_small",
+      "resource_id": "model.building.factory_small",
+      "mesh": "buildings/factory_small.mesh",
+      "lods": [
+        { "mesh": "buildings/factory_small_lod1.mesh", "screen_height_px": 80 },
+        { "mesh": "buildings/factory_small_lod2.mesh", "screen_height_px": 40 }
+      ]
+    }
+  ]
+}
+Mesh format is engine-defined (binary or text).
+No physics data here; collision is defined in sim data.
+5.6 Shaders — /shaders/
+Renderer-specific shader definitions:
+/data/packs/base_gfx/shaders/
+├─ shaders.json
+├─ gl2/
+│  ├─ terrain.vert
+│  ├─ terrain.frag
+│  └─ ...
+└─ dx9/
+   ├─ terrain.hlsl
+   └─ ...
+shaders.json:
+• Lists shader programs by logical ID.
+• Associates each with backend-specific source files.
+Example:
+{
+  "shaders": [
+    {
+      "id": "terrain_basic",
+      "resource_id": "shader.terrain.basic",
+      "backends": {
+        "gl2": { "vertex": "gl2/terrain.vert", "fragment": "gl2/terrain.frag" },
+        "dx9": { "file": "dx9/terrain.hlsl", "entry_vs": "VSMain", "entry_ps": "PSMain" }
+      }
+    }
+  ]
+}
+Determinism note:
+• Shader differences must not alter simulation results, only visuals.
+• Backends may render differently but must not change logic.
+5.7 Fonts — /fonts/
+Fonts for UI and possibly vector overlays:
+/data/packs/base_gfx/fonts/
+├─ fonts.json
+├─ DejaVuSansM-NF.ttf
+└─ ...
+fonts.json:
+{
+  "fonts": [
+    {
+      "id": "ui_primary",
+      "file": "DejaVuSansM-NF.ttf",
+      "size_px_default": 14,
+      "ranges": [
+        ["U+0020", "U+007F"],
+        ["U+00A0", "U+00FF"]
+      ]
+    }
+  ]
+}
+Engine:
+• Pre-bakes glyph atlases deterministically (using fixed rasterization settings across builds).
+• Avoid font-specific behaviour in the sim.
+
+6. Audio packs — /sfx/, /music/
+6.1 Sound effects — /sfx/
+/data/packs/base_audio/sfx/
+├─ sfx.json
+├─ ui/
+├─ vehicles/
+├─ environment/
+└─ machines/
+sfx.json maps logical SFX IDs to audio files:
+{
+  "sfx": [
+    {
+      "id": "ui_click",
+      "resource_id": "sfx.ui.click",
+      "file": "ui/click_01.ogg",
+      "volume_db": -6,
+      "pitch_cents": 0
+    },
+    {
+      "id": "train_start",
+      "resource_id": "sfx.vehicle.train_start",
+      "file": "vehicles/train_start.ogg",
+      "volume_db": 0,
+      "pitch_cents": 0
+    }
+  ]
+}
+The simulation emits symbolic events (event_train_start) which the audio system maps to SFX IDs; packs only provide audio for those IDs.
+6.2 Music — /music/
+/data/packs/base_audio/music/
+├─ music.json
+├─ tracks/
+│  ├─ track_01.ogg
+│  ├─ track_02.ogg
+│  └─ ...
+└─ playlists/
+   ├─ calm.json
+   └─ intense.json
+music.json:
+{
+  "tracks": [
+    {
+      "id": "track_main_theme",
+      "file": "tracks/main_theme.ogg",
+      "length_seconds": 240,
+      "tags": ["menu", "calm"]
+    }
+  ],
+  "playlists": [
+    {
+      "id": "playlist_default",
+      "tracks": [
+        "track_main_theme",
+        "track_exploration_01"
+      ]
+    }
+  ]
+}
+Music selection logic lives in /engine/audio / /game/client.
+Packs only define what tracks exist and how they group.
+
+7. /metadata/ — atlases, palettes, style guides
+Optional, but useful:
+/data/packs/base_gfx/metadata/
+├─ atlas_terrain.json
+├─ atlas_ui.json
+└─ palettes.json
+Examples:
+• Texture atlas definitions (for batching).
+• Color palettes for palette-based modes.
+• Layering hints (z-order groups).
+These files are read by rendering backend and tooling, not the sim.
+
+8. Determinism and prohibitions for /data/packs
+Determinism constraints:
+• No asset pack may introduce or influence simulation logic; only visual/audio representation.
+• Any randomness in visuals (e.g. sprite variant choice, ambient SFX) must be:
+o Derived from deterministic seeds (coordinates, entity IDs, ticks).
+o Implemented in /engine/render or /engine/audio, not in pack data.
+Prohibited:
+• Scripting in packs (no .lua, .js, etc.) — scripting belongs only under /data/base/scripts or /data/dlc/*/scripts with strict API.
+• Platform-specific conditionals inside pack data (“if Windows use this file, if Linux use that”).
+• Embedding engine or game binaries.
+• Using asset packs to sneak in extra game logic (e.g. encoding rules in filenames).
+
+9. Interactions with /data/base and /data/dlc
+• Logical resource IDs (like tile.ground.grass, sprite.vehicle.train_small_diesel, sfx.ui.click) are defined by data packs (/data/base, /data/dlc), not by /data/packs.
+• Asset packs bind those logical IDs to actual assets.
+• Multiple packs can provide assets for the same logical ID:
+o Selection is determined by active pack set and their priorities.
+o Engine must resolve collisions deterministically (priority, then pack id).

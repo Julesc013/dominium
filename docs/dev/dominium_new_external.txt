@@ -1,0 +1,213 @@
+This message defines the dev-spec for /external/ — the authoritative structure and rules for vendored external libraries, headers, assets, and licences within Dominium.
+/external must behave as a hermetically controlled dependency depot.
+It ensures:
+• Determinism: external code cannot change without explicit review.
+• Reproducibility: all vendored libraries are version-pinned and immutable.
+• Isolation: no foreign code leaks into engine, game, mods, or tools.
+
+0. Directory layout
+Canonical structure:
+/external/
+├─ README.md
+├─ src/
+│  ├─ <libname>/
+│  │  ├─ upstream/
+│  │  ├─ patches/
+│  │  ├─ dominium_integration/
+│  │  └─ BUILD_INSTRUCTIONS.md
+│  └─ ...
+├─ include/
+│  ├─ <libname>/
+│  └─ ...
+├─ assets/
+│  ├─ test/
+│  ├─ reference/
+│  └─ fonts/
+├─ licenses/
+│  ├─ <libname>.LICENSE
+│  └─ external_NOTICES.md
+└─ pin/
+   ├─ versions.json
+   └─ hashes/
+This structure is binding unless extended via /docs/spec and approved.
+
+1. /external/README.md
+Must explain:
+• Purpose: contain all non-Dominium code or data.
+• Policy: vendoring only, no dynamic fetching.
+• Workflow: update requires approval, license check, reproducible hash, and patch audit.
+• Separation: engine code must never be mixed into vendor folders.
+• Allowed languages: C, C++, headers, specific asset types.
+Also documents:
+• Which external libs are mandatory (e.g., zlib, stb_image, Lua VM if embedded).
+• Which libs are optional (editor GUI libs, codecs, etc.).
+
+2. /external/src/ — source code of vendored dependencies
+Structure under each library:
+/external/src/<libname>/
+├─ upstream/                # untouched from official source release
+│  ├─ <original files>
+│  └─ VERSION
+├─ patches/                 # minimal patch files only
+│  ├─ 0001-dominium-fix-int-overflow.patch
+│  ├─ 0002-remove-io-syscalls.patch
+│  └─ SERIES
+├─ dominium_integration/    # thin wrappers or glue code
+│  ├─ <libname>_shim.c
+│  ├─ <libname>_shim.h
+│  └─ BUILD_NOTES.md
+└─ BUILD_INSTRUCTIONS.md
+2.1 upstream/ rules
+• MUST reflect a verbatim release of the upstream library.
+• May not be modified or rearranged.
+• Must contain a VERSION file with upstream version + checksum:
+version: 1.2.11
+sha256: <hash>
+source_url: https://...
+• Must be exactly reproducible across machines and commits.
+2.2 patches/ rules
+• Only patches that cannot be avoided may appear here.
+• Patches must be:
+o Minimal
+o Documented
+o Reversible
+o Justified in the SERIES file
+• Patch types allowed:
+o Remove OS syscalls (filesystem/network).
+o Strip nondeterministic operations.
+o Fix UB or memory violations.
+o Remove float/time randomness.
+o Add a shim to expose fixed-point interfaces.
+Forbidden patch types:
+• Adding new features unrelated to Dominium integration.
+• Invasive rewrites.
+• Changing library licensing or metadata.
+• Depending on Dominium’s engine code.
+2.3 dominium_integration/
+Contains only:
+• Wrapper headers
+• Deterministic wrappers
+• Fixed-point replacement of float APIs
+• Build flags
+• Bridge interfaces used by the engine’s build system
+Must never contain partial re-implementations of the library.
+
+3. /external/include/
+Contains public headers from dependencies that engine/game may include.
+Structure:
+/external/include/<libname>/
+│  ├─ <public headers>
+Rules:
+• These files mirror upstream headers after patches.
+• May not contain Dominium engine headers.
+• No circular dependency may appear between include/<libname> and engine/.
+
+4. /external/assets/
+Contains external data used for tests, editors, or examples:
+/external/assets/
+├─ test/
+│  ├─ sample_images/
+│  ├─ sample_audio/
+│  └─ sample_meshes/
+├─ reference/
+│  ├─ benchmark_worlds/
+│  └─ regression_inputs/
+└─ fonts/
+   └─ dejavu/
+Rules:
+• Asset licenses must permit redistribution.
+• These assets must not become base game content.
+• Can be used by /tests, /tools, and /docs.
+• Not used by /game except in explicit debug builds.
+
+5. /external/licenses/
+Contains:
+• Explicit license texts for each vendored library
+• external_NOTICES.md which enumerates:
+o Library name
+o Version
+o SPDX license
+o URL
+o Notes about modifications (patches applied)
+Example entry:
+zlib 1.2.11
+License: Zlib
+Modifications:
+  - 0002-remove-file-io.patch
+  - 0003-fixed-point-adapter.patch
+Rules:
+• Must pass CI license audit.
+• Must not contain ambiguous or missing licenses.
+• Library licence must allow static linking and redistribution with the engine.
+Forbidden:
+• Any library requiring copyleft linking over closed parts of Dominium.
+• GPL libraries (unless fully isolated in a tool only, not in engine/game).
+
+6. /external/pin/ — version locking
+This is critical for reproducibility.
+/external/pin/
+├─ versions.json
+└─ hashes/
+   ├─ <libname>-<version>.sha256
+6.1 versions.json
+Defines the canonical versions in use:
+{
+  "libs": {
+    "zlib":  { "version": "1.2.11", "hash": "abc123..." },
+    "stb_image": { "version": "2.28", "hash": "def456..." },
+    "lua": { "version": "5.4.6", "hash": "789abc..." },
+    "tinyxml2": { "version": "9.0.0", "hash": "..." }
+  }
+}
+CI policy:
+• If hash mismatches, refuse build.
+• If version changes, require maintainer review.
+• If patchset changes, require review + update to SERIES file.
+
+7. General rules & prohibitions
+7.1 Hard prohibitions
+• No code in /external may include engine headers.
+• No mod content in /external.
+• No unlicensed or unverifiable code.
+• No auto-updating or build-time network fetching.
+• No circular dependency between libraries.
+• No mixing of two different versions of the same upstream library.
+7.2 Determinism requirements
+Libraries used within the runtime engine should satisfy:
+• No hidden randomness
+• No wallclock time reads
+• No filesystem or network IO except via shims
+• No thread creation or mutexes unless explicitly wrapped
+If the library cannot satisfy determinism, it must be used only in:
+• Tools
+• Editors
+• Offline asset pipelines
+Never engine/sim runtime.
+7.3 Build/Integration constraints
+• Build system must never build directly from upstream:
+Only from upstream + patches + integration.
+• All build flags must be recorded in /external/src/<libname>/BUILD_INSTRUCTIONS.md.
+• No inline source modifications are allowed; changes must be patches.
+
+8. Updating workflow (high-level)
+1. Download upstream release.
+2. Verify checksum.
+3. Place in upstream/.
+4. Produce new patches under patches/.
+5. Update SERIES file.
+6. Update licence file under /external/licenses.
+7. Update versions.json & hashes.
+8. Run determinism tests.
+9. Run integration tests & replays.
+10. Submit for maintainer review.
+
+9. Summary
+/external ensures:
+• Controlled, deterministic vendoring
+• Strict version pinning
+• License compliance
+• Isolation from engine logic
+• Reproducible builds across all platforms
+• A single source of truth for all external code
+It is not a dumping ground.
+It is a curated, audited subsystem with exact constraints.

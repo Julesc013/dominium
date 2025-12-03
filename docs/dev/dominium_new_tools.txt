@@ -1,0 +1,328 @@
+This message is the dev-spec for /tools/ — the non-runtime toolkit layer of the Dominium project.
+/tools contains editors, devkits, asset pipelines, validators, converters, generators, and debugging utilities.
+No code here runs in the simulation thread of the game runtime; these tools operate offline or in editor environments.
+They must never contain authoritative game logic.
+They also must never break determinism: the runtime sim must not depend on anything inside /tools.
+
+0. Directory layout
+Canonical:
+/tools/
+├─ README.md
+├─ editor/
+│  ├─ world_editor/
+│  ├─ blueprint_editor/
+│  ├─ asset_inspector/
+│  ├─ editor_common/
+│  └─ plugins/
+├─ devkit/
+│  ├─ schema/
+│  ├─ codegen/
+│  ├─ mod_sdk/
+│  ├─ validators/
+│  └─ generators/
+├─ pipeline/
+│  ├─ images/
+│  ├─ audio/
+│  ├─ models/
+│  ├─ shaders/
+│  └─ packager/
+├─ debug/
+│  ├─ profilers/
+│  ├─ inspectors/
+│  └─ replay_tools/
+└─ scripts/
+   ├─ helper_python/
+   ├─ helper_shell/
+   └─ helper_batch/
+This general form is binding, though subdirectories may grow.
+
+1. /tools/README.md
+Explains:
+• Tools are never shipped in runtime distributions unless intentionally bundled.
+• Tools must not contain simulation-critical code.
+• Tools may contain:
+o Editor GUI code (SDL/OpenGL/Qt/etc.).
+o Asset processing command-line tools.
+o Validation scripts.
+o Generators for schema, code stubs, documentation.
+Also clarifies:
+• Tools may use floats, nondeterminism, and OS features freely, so long as their outputs are deterministic when given fixed inputs (e.g., seeded generators).
+• Tools never participate in runtime tick execution.
+
+2. /tools/editor/ — official editors
+Editors are applications or toolkits that:
+• Allow world/blueprint/asset editing.
+• Are allowed to be non-deterministic internally (UI interactions, mouse locations, OS timestamps), but their saved outputs must be deterministic.
+Editor binaries do not enforce retro compatibility; they can be modern C++ with GUI frameworks.
+
+2.1 /tools/editor/world_editor/
+Purpose:
+• Edit surfaces, terrain, heightmaps.
+• Place prefabs, roads, rails, utilities, blueprints.
+• Adjust worldgen seeds and presets.
+• Validate terrain against engineering constraints.
+Contains:
+world_editor/
+├─ src/
+│  ├─ editor_main.cpp
+│  ├─ ui_panels.cpp
+│  ├─ ui_panels.h
+│  ├─ world_ops.cpp
+│  ├─ world_ops.h
+│  ├─ terrain_ops.cpp
+│  ├─ terrain_ops.h
+│  ├─ asset_browser.cpp
+│  ├─ asset_browser.h
+│  └─ io/
+│     ├─ save_export.cpp
+│     └─ save_import.cpp
+├─ resources/
+│  ├─ icons/
+│  ├─ ui_layouts/
+│  └─ themes/
+└─ plugins/
+Required API endpoints exposed via tools libraries:
+• editor_load_world(path)
+• editor_save_world(path)
+• editor_apply_heightmap(surface_id, height_data)
+• editor_place_prefab(surface_id, prefab_id, pos, rot)
+• editor_delete_entity(entity_id)
+• editor_validate_world(surface_id) → returns structured errors/warnings
+Prohibitions:
+• No simulation stepping in the editor.
+• No engine tick.
+• Editor only manipulates data via the engine’s deterministic world format.
+
+2.2 /tools/editor/blueprint_editor/
+Purpose:
+• Create blueprint templates (local coordinates only).
+• Manage anchor, orientation rules.
+• Manage entity arrays and network paths.
+• Export blueprint.json under /data/templates/blueprints.
+Contains:
+• Visual grid editor.
+• Snapping tools.
+• Prefab palette browser.
+Exports:
+• blueprint_export(path, blueprint_struct)
+• blueprint_validate(blueprint_struct) → structured error set.
+Prohibitions:
+• No worldgen functions.
+• No collision with /data/base ID space; editor must require mod namespace for new prefabs.
+
+2.3 /tools/editor/asset_inspector/
+Purpose:
+• Inspect packed assets (tiles, sprites, models).
+• Display metadata, slices, atlases.
+• Visualize shader parameters.
+No simulation logic.
+
+2.4 /tools/editor/editor_common/
+Library code shared by all editors:
+• GUI widgets (if not using external frameworks).
+• Scene graph and camera manip.
+• File import/export utilities.
+This code must not leak into /engine.
+
+2.5 /tools/editor/plugins/
+Editor plug-ins:
+• Implemented as shared libs or loadable scripts.
+• Extend UI only.
+• Must never alter game runtime or determinism rules.
+Engine never loads editor plugins.
+
+3. /tools/devkit/ — SDK, schemas, validators, generators
+This is the most important part for modders, designers, and CI.
+
+3.1 /tools/devkit/schema/
+Holds machine-readable schemas for all data formats:
+schema/
+├─ prefab_schema.json
+├─ tech_schema.json
+├─ network_schema.json
+├─ worldgen_schema.json
+├─ economy_schema.json
+├─ blueprint_schema.json
+├─ scenario_schema.json
+└─ pack_asset_schema.json
+Rules:
+• No floats except where the format explicitly accepts fixed-point.
+• No ambiguous field types.
+• Schemas must match /docs/spec/DATA_FORMATS.md.
+Tools in /tools/devkit/validators consume these schemas.
+
+3.2 /tools/devkit/codegen/
+Tools that generate:
+• C89/C++98 header stubs for ECS components.
+• Serialization/deserialization code.
+• Deterministic hashing tables for resource IDs.
+• Lua API stubs for mod scripting.
+Files:
+codegen/
+├─ gen_components.py
+├─ gen_resource_ids.py
+├─ gen_lua_api.py
+└─ templates/
+Outputs go to /engine/* or /game/* but code here is tools-only.
+Rules:
+• Generated code must be deterministic.
+• Templates must be version controlled.
+• Running codegen must never break compatibility without version bump.
+
+3.3 /tools/devkit/mod_sdk/
+Provides:
+• Documentation templates.
+• Starter mod folder structure.
+• Example mod.json.
+• Sample scripts: init.lua, control.lua.
+• Validation helpers for mod authors.
+Engine does not load anything from this directory.
+Editors and external documentation tools do.
+
+3.4 /tools/devkit/validators/
+Validation tools:
+validators/
+├─ validate_prefabs.py
+├─ validate_tech.py
+├─ validate_networks.py
+├─ validate_worldgen.py
+├─ validate_recipes.py
+├─ validate_blueprints.py
+└─ validate_mod.py
+These validate the entire tree of:
+• /data/base,
+• /data/dlc/*,
+• /mods/…,
+• any template world or scenario.
+Outputs:
+• JSON or text error reports.
+• Optional CI summary.
+Rules:
+• Must strictly enforce determinism constraints.
+• Missing references (bad prefab ID, bad tech ID) must error out.
+• Tools may use floats for analysis but must output deterministic results.
+
+3.5 /tools/devkit/generators/
+Procedural generation tools:
+• Heightmap generators (noise, erosion, river placement) for world seeds.
+• Road/rail auto-lay generators for templates.
+• Asset atlas generators.
+Example:
+generators/
+├─ gen_heightmap.py
+├─ gen_resource_map.py
+└─ gen_asset_atlas.py
+These tools output files under /data/templates/worlds or /data/packs.
+They may use nondeterministic algorithms internally, but should accept explicit seeds for reproducibility.
+
+4. /tools/pipeline/ — asset import/export pipeline
+These tools convert raw materials (images, audio, models, shaders) to runtime formats.
+
+4.1 /tools/pipeline/images/
+Tools:
+• png_to_tileatlas.py
+• sprite_strip_slicer.py
+• vector_rasterizer.py
+• compress_textures.py
+Outputs:
+• .png, .dds, or whatever internal format.
+• JSON atlases for /data/packs.
+Rules:
+• Lossy compression must be deterministic per input + flags.
+• Pipeline must be versioned; changes require bumping pack asset version.
+
+4.2 /tools/pipeline/audio/
+Tools:
+• OGG/FLAC/WAV converters.
+• Normalization and batching.
+• Loop point injectors.
+Outputs:
+• .ogg or .wav files.
+• sfx.json, music.json entries for packs.
+No runtime audio logic.
+
+4.3 /tools/pipeline/models/
+Tools:
+• Mesh import/export (OBJ → engine mesh).
+• LOD generator.
+• Normal/tangent calculator.
+Outputs:
+• Engine-compatible mesh files → consumed by /data/packs/<pack>/models.
+
+4.4 /tools/pipeline/shaders/
+Tools:
+• Shader compiler frontends (GLSL → SPIR-V, HLSL → DX9 shader binary).
+• Reflection generators (uniforms, attributes).
+Outputs:
+• Shader binaries grouped in /data/packs/<pack>/shaders.
+Rules:
+• Must produce deterministic binaries on same compiler version.
+• Compiler versions must be pinned in CI.
+
+4.5 /tools/pipeline/packager/
+Builds full asset packs:
+• Collects images/models/audio.
+• Generates manifest.json.
+• Builds atlases and bundles.
+• Produces a .dpack (Dominium Pack) or directory tree.
+Used by CI and developers.
+Outputs go to /data/packs.
+
+5. /tools/debug/ — analyzers, profilers, replay inspectors
+Debug tools do not ship with release build unless you choose to.
+
+5.1 /tools/debug/profilers/
+• Flame graph generator for engine functions.
+• Memory pool inspector.
+• Hotspot analyzers.
+Must not run in shipping “deterministic lockstep” mode.
+Tools are for developers.
+
+5.2 /tools/debug/inspectors/
+• ECS inspector.
+• Network graph viewer (rail/road/power/data).
+• Entity footprint renderer.
+• Pathfinding visualizer.
+Reads save files or running instances in offline mode; no simulation mutation.
+
+5.3 /tools/debug/replay_tools/
+Replay utilities:
+• Replay diffing (compare two replays for determinism).
+• Replay timeline scrubber.
+• Tick-to-tick state auditor.
+Used heavily in deterministic engine CI.
+
+6. /tools/scripts/ — generic helper scripts
+Support scripts in Python, Bash, Powershell:
+scripts/
+├─ helper_python/
+│  ├─ bump_version.py
+│  ├─ asset_checksum.py
+│  └─ generate_license_list.py
+├─ helper_shell/
+│  ├─ build_all.sh
+├─ helper_batch/
+│  ├─ build_all.bat
+└─ ...
+Allowed:
+• Build orchestration.
+• Data validation.
+• Repo maintenance.
+Not allowed:
+• Anything that changes runtime behaviour directly.
+• Anything nondeterministic unless clearly isolated from core data output.
+
+7. Global prohibitions for /tools
+• /tools must not contain or depend on /engine runtime code directly, except through clearly-separated headers/interfaces.
+• No tool may generate runtime-dependent behaviour (e.g. “dynamic rule updates”).
+• No tool may silently write into /engine, /game, or /data/base without CI checks.
+• No scripts here run automatically inside runtime; all tools are developer-invoked only.
+
+8. Summary
+/tools provides:
+• Editors: world, blueprint, asset inspector.
+• SDK: schemas, validators, codegenerators, modkit.
+• Pipelines: import/export/packaging for assets.
+• Debug tools: profilers and replay inspectors.
+• Helper scripts: repo-automation utilities.
+It is the universe of offline tooling, strictly isolated from deterministic runtime logic.

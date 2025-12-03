@@ -1,0 +1,1323 @@
+GPT-5.1 Thinking • build 2025-12-03
+dominium/
+├─ .gitignore
+├─ LICENSE
+├─ README.md
+├─ VERSION              # engine+game semantic version
+│
+├─ docs/                # design + spec; not a source of truth for code layout
+│  ├─ spec/             # binding technical specs that code must obey
+│  │  ├─ SPEC-core.md           # determinism kernel, math rules
+│  │  ├─ SPEC-ecs.md            # entity/component/system contract
+│  │  ├─ SPEC-space.md          # frames, lattice hierarchy, grids
+│  │  ├─ SPEC-networks.md       # graphs, fields, utilities (power, data, etc.)
+│  │  ├─ SPEC-io.md             # save/load, replay, formats
+│  │  └─ SPEC-modding.md        # mod API, data formats, guarantees
+│  ├─ design/           # higher-level design, non-binding
+│  │  ├─ DESIGN-game.md
+│  │  ├─ DESIGN-ui.md
+│  │  ├─ DESIGN-orbit.md
+│  │  └─ DESIGN-content-packs.md
+│  ├─ legal/
+│  │  ├─ LICENCE.md
+│  │  ├─ EULA.md
+│  │  └─ ATTRIBUTION.md
+│  └─ archive/          # obsolete docs only
+│
+├─ engine/              # deterministic, platform-agnostic core
+│  ├─ core/             # primitive utilities, no sim state
+│  │  ├─ dom_core_types.[ch]
+│  │  ├─ dom_core_log.[ch]
+│  │  ├─ dom_core_mem.[ch]
+│  │  ├─ dom_core_fp.[ch]       # fixed-point, no floats
+│  │  ├─ dom_core_rng.[ch]      # deterministic RNG only
+│  │  └─ dom_core_bits.[ch]
+│  │
+│  ├─ sim/              # deterministic simulation kernel
+│  │  ├─ dom_sim_tick.[ch]      # tick phases, UPS, lane scheduling
+│  │  ├─ dom_sim_lanes.[ch]     # virtual lanes, merge rules
+│  │  ├─ dom_sim_events.[ch]    # buses, command buffers, deferred ops
+│  │  ├─ dom_sim_jobs.[ch]      # job system core
+│  │  ├─ dom_sim_world.[ch]     # world/surface/system hierarchy
+│  │  ├─ dom_sim_network_power.[ch]
+│  │  ├─ dom_sim_network_fluid.[ch]
+│  │  ├─ dom_sim_network_data.[ch]
+│  │  ├─ dom_sim_network_thermal.[ch]
+│  │  ├─ dom_sim_orbit.[ch]     # orbit rails / integer orbital model
+│  │  └─ dom_sim_economy.[ch]
+│  │
+│  ├─ ecs/              # entity/component/system architecture
+│  │  ├─ dom_ecs.[ch]
+│  │  ├─ dom_ecs_components.[ch]   # registry of component types
+│  │  ├─ dom_ecs_systems.[ch]      # system registry, fixed order
+│  │  └─ dom_ecs_archetypes.[ch]   # engine-level archetypes
+│  │
+│  ├─ spatial/          # grids, chunks, BVH, queries
+│  │  ├─ dom_space_frames.[ch]   # universe → galaxy → system → surface
+│  │  ├─ dom_space_lattice.[ch]  # subnano..surface lattice ops
+│  │  ├─ dom_space_chunks.[ch]   # chunk/subchunk/subregion indexing
+│  │  ├─ dom_space_grid.[ch]     # tile-level operations
+│  │  ├─ dom_space_bvh.[ch]      # BVH / wide grid
+│  │  └─ dom_space_query.[ch]
+│  │
+│  ├─ physics/          # integer physics, no randomness
+│  │  ├─ dom_phys_core.[ch]
+│  │  ├─ dom_phys_colliders.[ch]  # AABB, slabs, simple hulls
+│  │  ├─ dom_phys_contacts.[ch]
+│  │  └─ dom_phys_raycast.[ch]    # integer DDA
+│  │
+│  ├─ render/           # engine render API + backends (no OS windows)
+│  │  ├─ dom_render_api.[ch]      # abstract draw calls
+│  │  ├─ software/
+│  │  │  ├─ dom_render_sw.[ch]
+│  │  ├─ gl1/
+│  │  │  ├─ dom_render_gl1.[ch]
+│  │  ├─ gl2/
+│  │  │  ├─ dom_render_gl2.[ch]
+│  │  ├─ dx9/
+│  │  │  ├─ dom_render_dx9.[ch]
+│  │  └─ dx11/
+│  │     ├─ dom_render_dx11.[ch]
+│  │
+│  ├─ audio/
+│  │  ├─ dom_audio_api.[ch]
+│  │  ├─ sdl_mixer/
+│  │  │  ├─ dom_audio_sdl.[ch]
+│  │  └─ null/
+│  │     ├─ dom_audio_null.[ch]
+│  │
+│  ├─ platform/         # OS/CRT layer only, behind dom_platform_* APIs
+│  │  ├─ dom_platform_api.[ch]     # stable interface to rest of engine
+│  │  ├─ win32/
+│  │  │  ├─ dom_platform_win32.[ch]
+│  │  ├─ linux/
+│  │  │  ├─ dom_platform_linux.[ch]
+│  │  ├─ macos/
+│  │  │  ├─ dom_platform_macos.[ch]
+│  │  └─ shared_sdl/
+│  │     ├─ dom_platform_sdl.[ch]
+│  │
+│  ├─ net/              # deterministic network protocol
+│  │  ├─ dom_net_proto.[ch]      # lockstep protocol
+│  │  ├─ dom_net_serialise.[ch]
+│  │  └─ dom_net_session.[ch]
+│  │
+│  ├─ ui/               # engine-level UI widgets/layout (game-agnostic)
+│  │  ├─ dom_ui_core.[ch]
+│  │  ├─ dom_ui_widgets.[ch]
+│  │  └─ dom_ui_layout.[ch]
+│  │
+│  ├─ io/               # save/load, replay, data packs
+│  │  ├─ dom_io_filesys.[ch]     # virtual FS over platform
+│  │  ├─ dom_io_save.[ch]
+│  │  ├─ dom_io_load.[ch]
+│  │  ├─ dom_io_replay.[ch]
+│  │  └─ dom_io_packs.[ch]       # .domdata archives
+│  │
+│  ├─ modding/          # engine-side mod loading + API exposure
+│  │  ├─ dom_mod_loader.[ch]
+│  │  ├─ dom_mod_registry.[ch]
+│  │  └─ dom_mod_lua.[ch]        # if Lua is enabled
+│  │
+│  └─ api/              # C API used by /game and tools
+│     ├─ dom_api.h
+│     └─ dom_api.c
+│
+├─ game/                # Dominium-specific logic, not engine
+│  ├─ shared/           # logic used by both client and server
+│  │  ├─ dm_worldgen.[ch]      # Earth/Sol/MilkyWay defaults, surfaces
+│  │  ├─ dm_archetypes.[ch]    # game-level archetypes built on engine
+│  │  ├─ dm_blueprints.[ch]    # blueprint families, patterns
+│  │  ├─ dm_transport.[ch]     # game-specific rail/road/air/sea rules
+│  │  ├─ dm_utilities.[ch]     # power/data/fluids game rules
+│  │  ├─ dm_research.[ch]
+│  │  ├─ dm_companies.[ch]
+│  │  └─ dm_workers.[ch]
+│  │
+│  ├─ client/           # UI, cameras, views, client-side control
+│  │  ├─ dm_client_main.[ch]
+│  │  ├─ dm_client_views.[ch]        # 2D/3D, overlays
+│  │  ├─ dm_client_hud.[ch]
+│  │  ├─ dm_client_input.[ch]
+│  │  ├─ dm_client_menus.[ch]
+│  │  └─ dm_client_debug.[ch]
+│  │
+│  ├─ server/           # dedicated/headless server
+│  │  ├─ dm_server_main.[ch]
+│  │  ├─ dm_server_config.[ch]
+│  │  └─ dm_server_admin.[ch]
+│  │
+│  └─ launcher/         # launcher and mode selector
+│     ├─ dm_launcher_main.[ch]
+│     └─ dm_launcher_config.[ch]
+│
+├─ data/                # first-party, versioned game data
+│  ├─ base/             # always present base game
+│  │  ├─ archetypes/
+│  │  ├─ prefabs/
+│  │  ├─ blueprints/
+│  │  ├─ research/
+│  │  ├─ economy/
+│  │  ├─ languages/
+│  │  ├─ gfx/           # base sprites/textures
+│  │  ├─ audio/         # base sfx/music
+│  │  └─ ui/            # base UI layouts/themes
+│  ├─ dlc/
+│  │  ├─ interstellar/
+│  │  ├─ extras/
+│  │  └─ wargames/
+│  ├─ packs/            # alternative graphics/audio packs
+│  │  ├─ gfx_lowres/
+│  │  ├─ gfx_vector/
+│  │  └─ audio_alt/
+│  └─ templates/        # example universes/saves
+│     ├─ earth_sandbox.domsave
+│     └─ tutorial.domsave
+│
+├─ mods/                # third-party / local mods only
+│  ├─ local/
+│  ├─ workshop/
+│  └─ disabled/
+│
+├─ tools/               # non-runtime tools
+│  ├─ editor/           # world/blueprint/prefab editor
+│  │  ├─ src/
+│  │  └─ CMakeLists.txt
+│  ├─ devkit/           # modding SDK, schema, codegen
+│  │  ├─ schemas/
+│  │  ├─ codegen/
+│  │  └─ examples/
+│  ├─ pipeline/         # asset pipeline
+│  │  ├─ atlas_builder/
+│  │  ├─ audio_packer/
+│  │  └─ mesh_converter/
+│  └─ debug/            # inspectors and analyzers
+│     ├─ graph_inspector/
+│     ├─ field_viewer/
+│     ├─ ecs_dump/
+│     └─ replay_viewer/
+│
+├─ tests/               # tests only
+│  ├─ unit/             # module-level
+│  │  ├─ test_core.c
+│  │  ├─ test_fixed.c
+│  │  ├─ test_ecs.c
+│  │  ├─ test_space.c
+│  │  ├─ test_sim_tick.c
+│  │  └─ test_io_save.c
+│  ├─ integration/      # multi-module, headless engine runs
+│  ├─ replay/           # deterministic replay scenarios
+│  └─ perf/             # performance / load-shedding tests
+│
+├─ third_party/         # vendored libraries only
+│  ├─ src/
+│  ├─ include/
+│  └─ licenses/
+│
+├─ build/               # build system glue and local outputs
+│  ├─ cmake/            # shared CMake modules
+│  ├─ scripts/          # build helpers (invoked by /scripts wrappers)
+│  └─ output/           # ignored; local build artifacts
+│
+├─ packaging/           # installers, images, retro media layouts
+│  ├─ windows/
+│  ├─ linux/
+│  ├─ macos/
+│  └─ retro/            # floppy/CD/DVD layouts, 8.3 mappings
+│
+├─ scripts/             # repo automation (not core build logic)
+│  ├─ check_style.py
+│  ├─ regen_schemas.py
+│  ├─ regen_docs_index.py
+│  └─ ci_entry.sh
+│
+└─ ports/               # experimental/secondary targets
+   ├─ dos/
+   ├─ win9x/
+   ├─ macos_classic/
+   └─ wasm/
+Key properties that give you modularity, extensibility, and determinism:
+• Hard separation of concerns
+o /engine = deterministic, platform-agnostic core. No game rules, no OS calls.
+o /game = Dominium-specific rules and modes, purely a client of dom_api.
+o /data vs /mods = first-party vs third-party content separated at the filesystem level.
+o /tools and /tests never bleed into runtime logic.
+• Determinism enforced by structure
+o All determinism-sensitive code lives in /engine/core, /engine/sim, /engine/ecs, /engine/spatial, /engine/physics, /engine/io.
+o Platform and rendering are segregated under /engine/platform and /engine/render and can be swapped without touching the simulation kernel.
+o /tests/replay and /tests/perf are explicit hooks to continuously verify determinism and performance under load.
+• Extensibility without rot
+o /engine/api is the single interface surface for /game and most tools.
+o /engine/modding plus /data/base//data/dlc//mods gives you a clean content + mod stack.
+o /ports isolates weird target hacks away from the main platform layer; they can die or stabilise without contaminating core.
+• Backward-compatibility & longevity
+o Binary formats centralised in /engine/io and described in /docs/spec.
+o Packaging and retro media support sit in /packaging and /ports, not scattered.
+This is the directory structure you can commit to and grow for a decade without painting yourself into a corner.
+You said:
+Okay, give me a full as-long-as-you-can-generate message the describes the function for each directory and it's files, and what those files need to do and expose
+ChatGPT said:
+GPT-5.1 Thinking • build 2025-12-03
+I’ll walk the tree top-down and state, for each directory and key file group:
+• What its responsibilities are.
+• What it must not do.
+• What it must expose (APIs, invariants, behaviours).
+Assume C89/C++98 where applicable, and that determinism rules from your V3 spec are binding.
+
+0. Repository root
+dominium/
+• Holds only:
+o VCS and legal/identity files: .gitignore, LICENSE, README.md, VERSION.
+• No code here, no build artifacts.
+VERSION
+• Single source of truth for engine+game semantic version (e.g. 3.0.0).
+• Read at build time and embedded into:
+o Engine binary metadata.
+o Savefiles.
+o Net protocol version.
+• Never parsed by runtime determinism logic; it’s metadata only.
+
+1. /docs — Specification and design
+/docs/spec/
+These files are the binding contract. Code that violates them is wrong.
+SPEC-core.md
+• Defines:
+o Determinism philosophy (tick model, lanes, merge, UPS/FPS).
+o Integer/fixed-point math rules.
+o Prohibited operations (floats, UB, nondeterministic RNG).
+• Must specify:
+o Allowed numeric types.
+o Overflow semantics.
+o Ordering guarantees (tick phases, entity iteration, lane merge).
+• Every subsystem in /engine must trace back to rules here.
+SPEC-ecs.md
+• Defines:
+o Entity handle format (id + generation).
+o Component storage layout (dense arrays, active lists).
+o System ordering and multi-rate scheduling.
+• Must specify:
+o How creation/destruction works.
+o How component masks are stored.
+o What is allowed to reference entities (handles only).
+SPEC-space.md
+• Defines:
+o Subnano → Surface lattice.
+o Chunk/subchunk/subregion hierarchy.
+o Surface, system, galaxy, universe identity and ranges.
+• Must specify:
+o Coordinate systems.
+o Valid ranges and wrapping rules.
+o How spatial indices (chunks, BVH, grids) must behave.
+SPEC-networks.md
+• Defines:
+o Power, fluid, data, thermal networks.
+o Signal propagation rules (1-tick latency etc.).
+• Must specify:
+o Network graph model.
+o Node/edge semantics.
+o Deterministic update equations.
+SPEC-io.md
+• Defines:
+o Savefile format.
+o Replay format.
+o Block headers, checksums, endian rules.
+• Must specify:
+o Required blocks and their ordering.
+o How versioning and migration works.
+SPEC-modding.md
+• Defines:
+o Mod manifest format.
+o What mods are allowed to change.
+o How mods are loaded and resolved.
+• Must specify:
+o Stability guarantees.
+o Extension points and prohibitions.
+/docs/design/
+Non-binding but influential. Describes:
+• Game vision.
+• UX design.
+• Content structure (rails, roads, orbits, buildings).
+These guides decisions but engine code may diverge if specs demand it.
+/docs/legal/
+Legal and licensing only:
+• LICENCE.md – effective license.
+• EULA.md – player-facing agreement.
+• ATTRIBUTION.md – third-party credits.
+No technical content.
+/docs/archive/
+• Superseded specs and designs.
+• Must be clearly marked as obsolete.
+• Never referenced by new code.
+
+2. /engine — Deterministic, platform-agnostic core
+Global rules:
+• C89 C (or minimal C++98 where agreed) only.
+• No platform headers except under /engine/platform.
+• No floats, no wall clock, no OS RNG.
+• No direct file I/O except via /engine/io and platform API.
+
+2.1 /engine/core/ — Primitive utilities
+dom_core_types.[ch]
+• Defines canonical types:
+o dom_int32, dom_uint32, dom_int64, etc.
+o Fixed-point types dom_q16_16, dom_q32_32.
+• Exposes:
+o Compile-time asserts about sizes.
+o Macros for min/max/clamp that are deterministic.
+• No logic beyond trivial inline utilities.
+dom_core_log.[ch]
+• Provides:
+o Deterministic logging API: dom_log_info, dom_log_warn, dom_log_error.
+• Constraints:
+o Cannot influence simulation state.
+o Must be safe to disable fully in release builds.
+• Output ordering must reflect deterministic call order, but log loss under load is allowed if bounded.
+dom_core_mem.[ch]
+• Provides:
+o Deterministic allocation wrappers for engine use.
+o Pool allocators for simulation structures (chunks, entities).
+• Rules:
+o No heap allocation inside the simulation tick path except via pre-allocated pools.
+o Must support “bail out if full” in a deterministic way (no partial allocations).
+dom_core_fp.[ch]
+• Implements fixed-point math as specified in SPEC-core.
+• Exposes:
+o dom_q16_mul, dom_q16_div, etc.
+o All operations implemented via 64-bit intermediates; right-shifts are exact.
+• Constraints:
+o Identical semantics across all compilers and platforms.
+o No undefined shift behaviour.
+dom_core_rng.[ch]
+• Provides:
+o Deterministic PRNG (e.g., xorshift or splitmix) with explicit 64-bit state.
+• Exposes:
+o dom_rng_step, dom_rng_u32, dom_rng_range.
+• Usage rules:
+o Only allowed in systems that are explicitly marked pseudo-random but deterministic (worldgen, cosmetic effects).
+o Simulation core must not use RNG for gameplay decisions unless clearly defined.
+dom_core_bits.[ch]
+• Bit manipulation utilities:
+o dom_ctz, dom_clz, dom_popcount with deterministic fallbacks if intrinsics absent.
+• Used across ECS, bitmasks, etc.
+
+2.2 /engine/sim/ — Simulation kernel
+dom_sim_tick.[ch]
+• Implements tick pipeline:
+o Phases 1–7 (input → finalize).
+• Exposes:
+o dom_sim_step(World *w).
+o Functions to set UPS and to reconfigure multi-rate schedules, with deterministic rules.
+• Must orchestrate calls into ECS systems and lane executor.
+dom_sim_lanes.[ch]
+• Manages virtual lanes.
+• Exposes:
+o Lane assignment function: dom_lane_id(entity_id).
+o Lane iteration and merge routines.
+• Responsibilities:
+o Ensure lane-local buffers and merge sequences obey the ordering in the spec.
+dom_sim_events.[ch]
+• Implements:
+o Local, lane, cross-lane, global event buses.
+o Command buffers.
+o Deferred op queues.
+• Exposes:
+o Typed APIs to emit and consume events.
+o Strict lifetime and scope functions.
+• Restrictions:
+o No dynamic allocation; bounded ring buffers.
+o Hard overflow behaviour (drop oldest + flag).
+dom_sim_jobs.[ch]
+• Implements the job system:
+o Job structs, queues, assignment logic.
+• Exposes:
+o APIs to submit, cancel, and query jobs.
+o Worker assignment functions.
+• Must be fully deterministic:
+o Sorted queues.
+o Tie-breaking by worker id, etc.
+dom_sim_world.[ch]
+• Defines:
+o World state object(s): universe → galaxy → system → surface.
+o Tick counter, seeds, global stats.
+• Exposes:
+o API functions to create/destroy world.
+o Accessors for surfaces, regions, chunks.
+• Must integrate with ECS and spatial modules.
+dom_sim_network_power.[ch], *_fluid, *_data, *_thermal
+• Each implements its network’s deterministic behaviour.
+• Expose:
+o Graph build/update functions.
+o Per-tick update entrypoints called from the network phase.
+• Must:
+o Use integer/fixed-point only.
+o Obey latency and scheduling rules from SPEC-networks.
+dom_sim_orbit.[ch]
+• Implements:
+o Orbital rails model (discrete orbits, transfer arcs).
+• Exposes:
+o Functions to step orbital objects.
+o Query functions: current orbital band, SoI, possible transfers.
+• Must be:
+o Deterministic, no continuous floating mechanics; integer or fixed-point rails.
+dom_sim_economy.[ch]
+• Implements:
+o Markets, prices, trades in pure integer math.
+• Exposes:
+o APIs to add/remove orders.
+o Functions for price updates per tick.
+• Must:
+o Never consult real-time.
+o Only depend on sim state and deterministic RNG where explicitly allowed.
+
+2.3 /engine/ecs/ — ECS core
+dom_ecs.[ch]
+• Central ECS API.
+• Exposes:
+o Entity creation/destruction.
+o Handle validation.
+o Component add/remove.
+• Must enforce:
+o Sorted active lists.
+o No component modifications outside permitted phases.
+dom_ecs_components.[ch]
+• Component type registry.
+• Exposes:
+o Registration of component types (internal).
+o Lookup by type id.
+• Must:
+o Know component sizes/layout for serialization.
+dom_ecs_systems.[ch]
+• System registry and fixed ordering.
+• Exposes:
+o System registration at startup.
+o Run lists for each phase.
+• No runtime reordering.
+dom_ecs_archetypes.[ch]
+• Engine-level archetypes:
+o Predefined combinations of components for entity categories (e.g., “machine”, “worker”, “vehicle”).
+• Exposes:
+o APIs to instantiate archetypes (not game-specific; just patterns).
+
+2.4 /engine/spatial/
+dom_space_frames.[ch]
+• Encodes:
+o Universe, galaxy, system, surface identifiers.
+• Exposes:
+o Mapping between global IDs and indices.
+o Utility to validate frames.
+dom_space_lattice.[ch]
+• Implements:
+o Subnano → Surface scale lattice definitions and utilities.
+• Exposes:
+o Functions to convert between scales (e.g. meter ↔ tile index).
+• Must use integer arithmetic only.
+dom_space_chunks.[ch]
+• Manages:
+o Chunk/subchunk/subregion maps per surface.
+• Exposes:
+o Functions to look up or create chunks.
+o Iteration over non-empty chunks.
+• Must:
+o Avoid dynamic allocation in the hot path (use pools).
+dom_space_grid.[ch]
+• Tile-level operations:
+o Get/set tile material/flags.
+o Query for passability, occupancy.
+• Exposes:
+o API used by game logic and physics.
+dom_space_bvh.[ch]
+• BVH / wide grid structures for entities.
+• Exposes:
+o Build/update functions (post-process).
+o Query functions (broadphase, area queries).
+• Must have:
+o Deterministic build order and layout.
+dom_space_query.[ch]
+• High-level spatial queries:
+• “Find nearest X by criteria.”
+• Internally calls BVH/grid functions.
+• Must be stable: same inputs → same entity set in same order.
+
+2.5 /engine/physics/
+dom_phys_core.[ch]
+• Integrators for simple rigid body (if you choose to have them).
+• Exposes:
+o API to step body positions/velocities using fixed-point.
+• Constraints:
+o No chaotic, nondeterministic solvers.
+o No random jitter; must be stable enough for lockstep.
+dom_phys_colliders.[ch]
+• Defines:
+o Collider types (AABB, slab, multi-AABB hull).
+• Exposes:
+o Intersection tests and Minkowski operations if needed.
+dom_phys_contacts.[ch]
+• Contact generation and simple resolution.
+• Exposes:
+o Functions to build contact lists between colliders.
+o Functions to resolve overlaps deterministically (order by entity id).
+dom_phys_raycast.[ch]
+• Integer DDA raycaster.
+• Exposes:
+o dom_raycast_tile, dom_raycast_entities.
+• Must:
+o Traverse tiles in a fixed, reproducible order.
+o Apply ordering rules when multiple hits are coincident.
+
+2.6 /engine/render/
+dom_render_api.[ch]
+• The engine’s render abstraction.
+• Exposes:
+o dom_render_context struct.
+o API for draw commands (lines, quads, sprites, meshes, text).
+• Constraints:
+o No game-specific knowledge.
+o No OS windowing; that’s platform layer.
+Backends (software, gl1, gl2, dx9, dx11):
+• Each implements the API using its underlying API.
+• No simulation logic; only takes prepared draw lists from /game/client.
+
+2.7 /engine/audio/
+dom_audio_api.[ch]
+• Abstract audio interface.
+• Exposes:
+o Functions to register sounds/music.
+o Play/stop events with sample-accurate scheduling relative to sim ticks.
+• Must:
+o Treat audio as effect; determinism only matters in terms of event ordering, not playback jitter.
+Backends sdl_mixer, null:
+• Provide actual output or no-op.
+
+2.8 /engine/platform/
+dom_platform_api.[ch]
+• Defines:
+o OS-level abstractions:
+• Filesystem open/read/write.
+• Time sources.
+• Threads (if used).
+• Window/input creation for client.
+• Exposes functions:
+o dom_platform_fs_open, dom_platform_fs_read.
+o dom_platform_time_monotonic_ms (for FPS scheduling only).
+o dom_platform_input_poll.
+• No simulation state here.
+Subdirs: win32, linux, macos, shared_sdl implement this API.
+
+2.9 /engine/net/
+dom_net_proto.[ch]
+• Defines:
+o Lockstep/net protocol:
+• Packet formats.
+• Connection states.
+• Exposes:
+o APIs to encode/decode messages, not to use sockets directly (that’s platform).
+dom_net_serialise.[ch]
+• Serialisation routines for net packets.
+• Must:
+o Be purely deterministic, versioned.
+dom_net_session.[ch]
+• Session state for client/server:
+o Queues for outgoing/incoming packets.
+• Exposes:
+o Functions to feed data in/out through platform layer.
+
+2.10 /engine/ui/
+dom_ui_core.[ch]
+• Abstract UI tree:
+o Panels, buttons, labels, lists.
+• Exposes:
+o Structures for UI elements.
+o Layout, input dispatch from /game/client.
+dom_ui_widgets.[ch]
+• Standard widgets:
+o Buttons, sliders, checkboxes, list views, etc.
+dom_ui_layout.[ch]
+• Layout engine:
+o Anchors, grids, etc.
+• No game logic.
+
+2.11 /engine/io/
+dom_io_filesys.[ch]
+• Virtual filesystem abstraction over platform.
+• Exposes:
+o Paths for data packs, saves, mods.
+o Mount points.
+dom_io_save.[ch] / dom_io_load.[ch]
+• Implement:
+o Savefile writing/reading per SPEC-io.
+• Exposes:
+o dom_save_world(World*, const char *path).
+o dom_load_world(World*, const char *path).
+dom_io_replay.[ch]
+• Replay log writer/reader.
+• Exposes:
+o APIs to record inputs.
+o APIs to play them back into sim.
+dom_io_packs.[ch]
+• Data pack/archive format loader.
+• Exposes:
+o APIs to mount .domdata archives from /data.
+
+2.12 /engine/modding/
+dom_mod_loader.[ch]
+• Discovers mod directories.
+• Reads manifest files.
+• Resolves load order.
+• Exposes:
+o dom_mod_scan, dom_mod_load, dom_mod_activate.
+dom_mod_registry.[ch]
+• Central registry of modded resources:
+o Prefabs, archetypes, blueprints, etc.
+• Enforces:
+o No type/layout changes to core components at runtime.
+dom_mod_lua.[ch] (optional)
+• Lua bridge.
+• Exposes:
+o Safe subset of engine API to scripts.
+• Must:
+o Avoid exposing anything that can break determinism.
+
+2.13 /engine/api/
+dom_api.h / dom_api.c
+• Single public API header for /game and /tools.
+• Exposes:
+o High-level creation of engine instance.
+o Hooks to drive ticks, pass input, get render data.
+o Accessors to world state through stable handles (never direct struct dependence).
+• This is the main seam for later porting or partial rewriting.
+
+3. /game — Dominium gameplay logic
+Rules:
+• Uses only dom_api and high-level engine headers.
+• Contains all Dominium-specific rules, research trees, economic tweaks.
+• No platform code; no OS headers.
+
+3.1 /game/shared/
+Game logic used by both client and server.
+dm_worldgen.[ch]
+• Generates:
+o Default Earth/Sol/Milky Way surfaces.
+• Exposes:
+o Functions to create new game worlds with seeds.
+• Must:
+o Use deterministic RNG from /engine/core.
+dm_archetypes.[ch]
+• Game-level archetypes:
+o E.g., “light industrial building”, “heavy rail locomotive”.
+• Exposes:
+o Registration functions to map game archetype IDs to engine prefabs/components.
+dm_blueprints.[ch]
+• High-level blueprint logic:
+o Families:
+• Rail line with signals.
+• Power line runs.
+• Road segments, etc.
+• Exposes:
+o Blueprint creation APIs for tools and game UI.
+o Functions to expand blueprint into commands for the engine (construction jobs, prefab placements).
+dm_transport.[ch]
+• Game rules for:
+o Railways, roads, waterways, air, orbital routes.
+• Exposes:
+o Functions that set up engine networks (graph nodes, track segments).
+• Works only via engine ECS and spatial APIs.
+dm_utilities.[ch]
+• Game rules for:
+o Power grids, data networks, fluid pipes, thermal systems.
+• Exposes:
+o Domain-specific tuning of networks (losses, capacities, thresholds).
+dm_research.[ch]
+• Implements:
+o Dominium tech tree.
+• Exposes:
+o APIs to unlock technologies, check prerequisites, apply modifiers.
+dm_companies.[ch]
+• Game logic for companies, finances.
+• Exposes:
+o Company creation/management functions used by UI and scripts.
+dm_workers.[ch]
+• High-level worker and robot rules on top of engine job system.
+• Exposes:
+o Functions to define job types and worker capabilities.
+
+3.2 /game/client/
+Client-side host.
+dm_client_main.[ch]
+• Application entrypoint for client binary.
+• Exposes:
+o main() or equivalent; boots platform + engine + game state.
+dm_client_views.[ch]
+• Implements:
+o 2D/3D camera logic.
+o View modes (map view, building view, orbit view).
+• Exposes:
+o View state and projection parameters passed to render layer.
+dm_client_hud.[ch]
+• UI overlays for the player:
+o Resource bars, minimap, status panels.
+dm_client_input.[ch]
+• Input binding and mapping to sim commands:
+o Mouse/keyboard → engine input events.
+• Exposes:
+o Functions to translate raw input (via dom_platform_*) into dom_api commands.
+dm_client_menus.[ch]
+• Main menus, options, loading screens.
+dm_client_debug.[ch]
+• Debug visualization:
+o Network overlays, tick timings, lane visualisation.
+
+3.3 /game/server/
+Server-side headless host.
+dm_server_main.[ch]
+• Entry for dedicated server.
+• Sets up:
+o Engine instance.
+o Network session.
+o World.
+dm_server_config.[ch]
+• Server configuration:
+o Max players.
+o Tick rates.
+o Universe layout.
+dm_server_admin.[ch]
+• Administrative commands:
+o Save/rollback.
+o Kick/ban.
+o Telemetry.
+
+3.4 /game/launcher/
+dm_launcher_main.[ch]
+• Launcher app entrypoint.
+• Tasks:
+o Config detection.
+o Graphics/audio options.
+o Mod selection.
+o Starts the appropriate client/server binary.
+dm_launcher_config.[ch]
+• Configuration storage:
+o INI or JSON-like config for user options.
+
+4. /data — First-party game data
+No source code here. Stable, versioned packs.
+• /data/base/: minimal base content.
+• /data/dlc/: official DLC sets.
+• /data/packs/: alternative graphics/audio packs.
+• /data/templates/: sample saves.
+Each pack should have:
+• A manifest file describing its version and dependencies.
+• Data in engine-defined binary or JSON/binary schema formats.
+
+5. /mods — Third-party content
+• /mods/local: user-installed.
+• /mods/workshop: downloaded.
+• /mods/disabled: installed but inactive.
+Each mod directory must contain:
+• Manifest (as per SPEC-modding).
+• Data packs, scripts, and resources.
+No engine binaries.
+
+6. /tools — Editors, SDK, pipeline, debug viewers
+/tools/editor/
+• World editor and blueprint/prefab editor.
+• Uses dom_api to act as a client with elevated privileges (edit mode).
+• Must not access engine internals directly; only via API.
+/tools/devkit/
+• schemas/: schema definitions for data formats.
+• codegen/: code generators for bindings, data structures.
+• examples/: example mod projects.
+/tools/pipeline/
+• atlas_builder/: packs spritesheets.
+• audio_packer/: builds soundbanks.
+• mesh_converter/: for future 3D or complex 2D assets.
+All offline; no determinism requirements beyond reproducible outputs.
+/tools/debug/
+• graph_inspector/: view engine network graphs.
+• field_viewer/: visualise scalar/vector fields.
+• ecs_dump/: inspect entity/component tables.
+• replay_viewer/: replay logs in a visual tool.
+
+7. /tests — Tests only
+/tests/unit/
+• Unit tests for engine modules.
+• Mirror /engine structure.
+Example:
+• test_core.c tests dom_core_*.
+• test_ecs.c tests entity creation/destroy, component operations.
+• test_sim_tick.c tests tick pipeline invariants.
+/tests/integration/
+• Full engine runs in headless mode.
+• Tests:
+o Worldgen determinism.
+o Orbits.
+o Networks.
+/tests/replay/
+• Prebuilt replay logs to confirm deterministic replay end state.
+/tests/perf/
+• Stress tests:
+o High entity counts.
+o Large networks.
+These enforce performance envelope and safe degradation behaviour.
+
+8. /third_party — Vendored libraries
+• /src/: library source.
+• /include/: headers.
+• /licenses/: license texts.
+No Dominium code in this subtree.
+
+9. /build — Build glue, not source of truth
+• /build/cmake/:
+o CMake modules.
+• /build/scripts/:
+o Build helper scripts used by build system.
+• /build/output/:
+o Local build artefacts. Should be ignored by VCS.
+
+10. /packaging — Installers and media layouts
+• /windows/: NSIS/Inno/etc. installer configs.
+• /linux/: deb/rpm/flatpak/appimage metadata.
+• /macos/: DMG, bundle setup.
+• /retro/:
+o Floppy/CD/DVD layout files.
+o 8.3 filename mapping tables.
+This is pure packaging logic; no core code.
+
+11. /scripts — Repo automation
+• Scripts for:
+o Style checks.
+o Doc index regeneration.
+o Schema generation.
+o CI entrypoints.
+Must not be required at runtime; they operate around the repo.
+
+12. /ports — Experimental targets
+• /dos/, /win9x/, /macos_classic/, /wasm/.
+Each contains:
+• Glue code for those platforms, but only through /engine/platform abstractions.
+• Port-specific docs describing:
+o Memory limits.
+o Filesystem constraints.
+o Special build rules.
+No duplication of core engine logic; only adaptation and shims.
+
+This structure and the described responsibilities give you:
+• A strict layering between platform, engine, game, and content.
+• A clearly bounded deterministic core.
+• Stable extension points for mods, tools, ports, and future features.
+You said:
+Excellent, give me a full git dir tree with ASCII box drawing chars
+ChatGPT said:
+GPT-5.1 Thinking • build 2025-12-03
+dominium/
+├── .gitignore
+├── LICENSE
+├── README.md
+├── VERSION
+├── CMakeLists.txt
+│
+├── docs/
+│   ├── spec/
+│   │   ├── SPEC-core.md
+│   │   ├── SPEC-ecs.md
+│   │   ├── SPEC-space.md
+│   │   ├── SPEC-networks.md
+│   │   ├── SPEC-io.md
+│   │   ├── SPEC-modding.md
+│   │   └── MILESTONES.md
+│   │
+│   ├── design/
+│   │   ├── DESIGN-overview.md
+│   │   ├── DESIGN-dominium-book-v3.md
+│   │   └── DESIGN-ui-ux.md
+│   │
+│   ├── legal/
+│   │   ├── LICENCE.md
+│   │   ├── EULA.md
+│   │   └── ATTRIBUTION.md
+│   │
+│   └── archive/
+│       └── SPEC-legacy-v2.md
+│
+├── engine/
+│   ├── core/
+│   │   ├── dom_core_types.h
+│   │   ├── dom_core_types.c
+│   │   ├── dom_core_log.h
+│   │   ├── dom_core_log.c
+│   │   ├── dom_core_mem.h
+│   │   ├── dom_core_mem.c
+│   │   ├── dom_core_fp.h
+│   │   ├── dom_core_fp.c
+│   │   ├── dom_core_rng.h
+│   │   ├── dom_core_rng.c
+│   │   ├── dom_core_bits.h
+│   │   └── dom_core_bits.c
+│   │
+│   ├── sim/
+│   │   ├── dom_sim_tick.h
+│   │   ├── dom_sim_tick.c
+│   │   ├── dom_sim_lanes.h
+│   │   ├── dom_sim_lanes.c
+│   │   ├── dom_sim_events.h
+│   │   ├── dom_sim_events.c
+│   │   ├── dom_sim_jobs.h
+│   │   ├── dom_sim_jobs.c
+│   │   ├── dom_sim_world.h
+│   │   ├── dom_sim_world.c
+│   │   ├── dom_sim_network_power.h
+│   │   ├── dom_sim_network_power.c
+│   │   ├── dom_sim_network_fluid.h
+│   │   ├── dom_sim_network_fluid.c
+│   │   ├── dom_sim_network_data.h
+│   │   ├── dom_sim_network_data.c
+│   │   ├── dom_sim_network_thermal.h
+│   │   ├── dom_sim_network_thermal.c
+│   │   ├── dom_sim_orbit.h
+│   │   ├── dom_sim_orbit.c
+│   │   ├── dom_sim_economy.h
+│   │   └── dom_sim_economy.c
+│   │
+│   ├── ecs/
+│   │   ├── dom_ecs.h
+│   │   ├── dom_ecs.c
+│   │   ├── dom_ecs_components.h
+│   │   ├── dom_ecs_components.c
+│   │   ├── dom_ecs_systems.h
+│   │   ├── dom_ecs_systems.c
+│   │   ├── dom_ecs_archetypes.h
+│   │   └── dom_ecs_archetypes.c
+│   │
+│   ├── spatial/
+│   │   ├── dom_space_frames.h
+│   │   ├── dom_space_frames.c
+│   │   ├── dom_space_lattice.h
+│   │   ├── dom_space_lattice.c
+│   │   ├── dom_space_chunks.h
+│   │   ├── dom_space_chunks.c
+│   │   ├── dom_space_grid.h
+│   │   ├── dom_space_grid.c
+│   │   ├── dom_space_bvh.h
+│   │   ├── dom_space_bvh.c
+│   │   ├── dom_space_query.h
+│   │   └── dom_space_query.c
+│   │
+│   ├── physics/
+│   │   ├── dom_phys_core.h
+│   │   ├── dom_phys_core.c
+│   │   ├── dom_phys_colliders.h
+│   │   ├── dom_phys_colliders.c
+│   │   ├── dom_phys_contacts.h
+│   │   ├── dom_phys_contacts.c
+│   │   ├── dom_phys_raycast.h
+│   │   └── dom_phys_raycast.c
+│   │
+│   ├── render/
+│   │   ├── dom_render_api.h
+│   │   ├── dom_render_api.c
+│   │   ├── software/
+│   │   │   ├── dom_render_software.h
+│   │   │   └── dom_render_software.c
+│   │   ├── gl1/
+│   │   │   ├── dom_render_gl1.h
+│   │   │   └── dom_render_gl1.c
+│   │   ├── gl2/
+│   │   │   ├── dom_render_gl2.h
+│   │   │   └── dom_render_gl2.c
+│   │   ├── dx9/
+│   │   │   ├── dom_render_dx9.h
+│   │   │   └── dom_render_dx9.c
+│   │   └── dx11/
+│   │       ├── dom_render_dx11.h
+│   │       └── dom_render_dx11.c
+│   │
+│   ├── audio/
+│   │   ├── dom_audio_api.h
+│   │   ├── dom_audio_api.c
+│   │   ├── sdl_mixer/
+│   │   │   ├── dom_audio_sdl.h
+│   │   │   └── dom_audio_sdl.c
+│   │   └── null/
+│   │       ├── dom_audio_null.h
+│   │       └── dom_audio_null.c
+│   │
+│   ├── platform/
+│   │   ├── dom_platform_api.h
+│   │   ├── dom_platform_api.c
+│   │   ├── shared_sdl/
+│   │   │   ├── dom_platform_sdl.h
+│   │   │   └── dom_platform_sdl.c
+│   │   ├── win32/
+│   │   │   ├── dom_platform_win32.h
+│   │   │   └── dom_platform_win32.c
+│   │   ├── linux/
+│   │   │   ├── dom_platform_linux.h
+│   │   │   └── dom_platform_linux.c
+│   │   └── macos/
+│   │       ├── dom_platform_macos.h
+│   │       └── dom_platform_macos.c
+│   │
+│   ├── net/
+│   │   ├── dom_net_proto.h
+│   │   ├── dom_net_proto.c
+│   │   ├── dom_net_serialise.h
+│   │   ├── dom_net_serialise.c
+│   │   ├── dom_net_session.h
+│   │   └── dom_net_session.c
+│   │
+│   ├── ui/
+│   │   ├── dom_ui_core.h
+│   │   ├── dom_ui_core.c
+│   │   ├── dom_ui_widgets.h
+│   │   ├── dom_ui_widgets.c
+│   │   ├── dom_ui_layout.h
+│   │   └── dom_ui_layout.c
+│   │
+│   ├── io/
+│   │   ├── dom_io_filesys.h
+│   │   ├── dom_io_filesys.c
+│   │   ├── dom_io_save.h
+│   │   ├── dom_io_save.c
+│   │   ├── dom_io_load.h
+│   │   ├── dom_io_load.c
+│   │   ├── dom_io_replay.h
+│   │   ├── dom_io_replay.c
+│   │   ├── dom_io_packs.h
+│   │   └── dom_io_packs.c
+│   │
+│   ├── modding/
+│   │   ├── dom_mod_loader.h
+│   │   ├── dom_mod_loader.c
+│   │   ├── dom_mod_registry.h
+│   │   ├── dom_mod_registry.c
+│   │   ├── dom_mod_lua.h
+│   │   └── dom_mod_lua.c
+│   │
+│   └── api/
+│       ├── dom_api.h
+│       └── dom_api.c
+│
+├── game/
+│   ├── shared/
+│   │   ├── dm_worldgen.h
+│   │   ├── dm_worldgen.c
+│   │   ├── dm_archetypes.h
+│   │   ├── dm_archetypes.c
+│   │   ├── dm_blueprints.h
+│   │   ├── dm_blueprints.c
+│   │   ├── dm_transport.h
+│   │   ├── dm_transport.c
+│   │   ├── dm_utilities.h
+│   │   ├── dm_utilities.c
+│   │   ├── dm_research.h
+│   │   ├── dm_research.c
+│   │   ├── dm_companies.h
+│   │   ├── dm_companies.c
+│   │   ├── dm_workers.h
+│   │   └── dm_workers.c
+│   │
+│   ├── client/
+│   │   ├── dm_client_main.c
+│   │   ├── dm_client_views.h
+│   │   ├── dm_client_views.c
+│   │   ├── dm_client_hud.h
+│   │   ├── dm_client_hud.c
+│   │   ├── dm_client_input.h
+│   │   ├── dm_client_input.c
+│   │   ├── dm_client_menus.h
+│   │   ├── dm_client_menus.c
+│   │   ├── dm_client_debug.h
+│   │   └── dm_client_debug.c
+│   │
+│   ├── server/
+│   │   ├── dm_server_main.c
+│   │   ├── dm_server_config.h
+│   │   ├── dm_server_config.c
+│   │   └── dm_server_admin.c
+│   │
+│   └── launcher/
+│       ├── dm_launcher_main.c
+│       └── dm_launcher_config.c
+│
+├── data/
+│   ├── base/
+│   │   ├── manifest.json
+│   │   ├── prefabs.domdata
+│   │   ├── tech_tree.domdata
+│   │   ├── graphics_base.domdata
+│   │   └── audio_base.domdata
+│   │
+│   ├── dlc/
+│   │   ├── interstellar/
+│   │   │   ├── manifest.json
+│   │   │   └── interstellar_content.domdata
+│   │   ├── extras/
+│   │   │   ├── manifest.json
+│   │   │   └── extras_content.domdata
+│   │   └── wargames/
+│   │       ├── manifest.json
+│   │       └── wargames_content.domdata
+│   │
+│   ├── packs/
+│   │   ├── gfx_default/
+│   │   │   ├── manifest.json
+│   │   │   └── gfx_default.dompack
+│   │   └── sfx_default/
+│   │       ├── manifest.json
+│   │       └── sfx_default.dompack
+│   │
+│   └── templates/
+│       ├── example_solo_world.domsave
+│       └── example_server_world.domsave
+│
+├── mods/
+│   ├── local/
+│   │   └── example_mod/
+│   │       ├── mod.json
+│   │       ├── prefabs.domdata
+│   │       └── scripts/
+│   │           └── example.lua
+│   │
+│   ├── workshop/
+│   │   └── .gitkeep
+│   │
+│   └── disabled/
+│       └── .gitkeep
+│
+├── tools/
+│   ├── editor/
+│   │   ├── CMakeLists.txt
+│   │   ├── editor_main.c
+│   │   ├── editor_ui.h
+│   │   └── editor_ui.c
+│   │
+│   ├── devkit/
+│   │   ├── schemas/
+│   │   │   ├── prefab_schema.json
+│   │   │   ├── tech_tree_schema.json
+│   │   │   └── savefile_schema.json
+│   │   ├── codegen/
+│   │   │   ├── generate_bindings.py
+│   │   │   └── generate_docs.py
+│   │   └── examples/
+│   │       └── example_mod_skeleton/
+│   │           ├── mod.json
+│   │           ├── CMakeLists.txt
+│   │           └── README.md
+│   │
+│   ├── pipeline/
+│   │   ├── atlas_builder/
+│   │   │   ├── atlas_builder_main.py
+│   │   │   └── atlas_config.json
+│   │   ├── audio_packer/
+│   │   │   └── audio_packer_main.py
+│   │   └── mesh_converter/
+│   │       └── mesh_converter_main.py
+│   │
+│   └── debug/
+│       ├── graph_inspector/
+│       │   └── graph_inspector_main.py
+│       ├── field_viewer/
+│       │   └── field_viewer_main.py
+│       ├── ecs_dump/
+│       │   └── ecs_dump_main.c
+│       └── replay_viewer/
+│           └── replay_viewer_main.c
+│
+├── tests/
+│   ├── unit/
+│   │   ├── test_core.c
+│   │   ├── test_ecs.c
+│   │   ├── test_sim_tick.c
+│   │   ├── test_space.c
+│   │   └── test_io.c
+│   │
+│   ├── integration/
+│   │   ├── test_full_world.c
+│   │   ├── test_networks.c
+│   │   └── test_orbits.c
+│   │
+│   ├── replay/
+│   │   ├── replay_case_rail.domreplay
+│   │   └── replay_case_power.domreplay
+│   │
+│   └── perf/
+│       ├── perf_many_entities.c
+│       └── perf_large_networks.c
+│
+├── third_party/
+│   ├── src/
+│   │   ├── lua/
+│   │   │   ├── lua.c
+│   │   │   └── ...
+│   │   └── lz4/
+│   │       ├── lz4.c
+│   │       └── lz4hc.c
+│   │
+│   ├── include/
+│   │   ├── lua/
+│   │   │   └── lua.h
+│   │   └── lz4/
+│   │       └── lz4.h
+│   │
+│   └── licenses/
+│       ├── LUA-LICENSE.txt
+│       └── LZ4-LICENSE.txt
+│
+├── build/
+│   ├── cmake/
+│   │   ├── Toolchain-win32.cmake
+│   │   ├── Toolchain-linux.cmake
+│   │   ├── Toolchain-macos.cmake
+│   │   └── DominiumCommon.cmake
+│   │
+│   ├── scripts/
+│   │   ├── configure_release.sh
+│   │   ├── configure_debug.sh
+│   │   └── build_all.sh
+│   │
+│   └── output/
+│       └── .gitkeep
+│
+├── packaging/
+│   ├── windows/
+│   │   ├── dominium_installer.nsi
+│   │   └── win_layout.yaml
+│   │
+│   ├── linux/
+│   │   ├── deb/
+│   │   │   └── control
+│   │   ├── rpm/
+│   │   │   └── specfile.spec
+│   │   └── appimage/
+│   │       └── AppImageBuilder.yml
+│   │
+│   ├── macos/
+│   │   ├── bundle_info.plist
+│   │   └── dmg_layout.yaml
+│   │
+│   └── retro/
+│       ├── floppy_layout.txt
+│       ├── cd_layout.txt
+│       └── sfn_mapping.csv
+│
+├── scripts/
+│   ├── check_style.py
+│   ├── regen_docs_index.py
+│   ├── update_version.py
+│   └── ci_entrypoint.sh
+│
+└── ports/
+    ├── dos/
+    │   ├── README.md
+    │   └── dom_dos_port_notes.txt
+    │
+    ├── win9x/
+    │   ├── README.md
+    │   └── dom_win9x_port_notes.txt
+    │
+    ├── macos_classic/
+    │   ├── README.md
+    │   └── dom_macos_classic_port_notes.txt
+    │
+    └── wasm/
+        ├── README.md
+        └── dom_wasm_port_notes.txt

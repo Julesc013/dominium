@@ -1,0 +1,314 @@
+This message is the deterministic dev-spec for engine/render/.
+This directory is the lowest-level, platform-agnostic rendering layer.
+It defines one abstract rendering API used by the engine and game, and multiple backend implementations:
+• Software (fallback)
+• Vector2D (pure analytical/vector)
+• OpenGL1.1
+• OpenGL2.0
+• DirectX 9
+• DirectX 11
+• Optional: Vulkan, Metal (future)
+All rendering occurs outside the deterministic simulation; the sim only produces stable render commands.
+
+Directory Layout
+engine/
+└── render/
+    ├── dom_render_api.h
+    ├── dom_render_state.h
+    ├── dom_render_state.c
+    ├── dom_render_commands.h
+    ├── dom_render_commands.c
+    ├── dom_render_backend.h
+    ├── dom_render_backend_null.c
+    ├── gl1/
+    │    ├── dom_render_gl1.h
+    │    └── dom_render_gl1.c
+    ├── gl2/
+    │    ├── dom_render_gl2.h
+    │    └── dom_render_gl2.c
+    ├── dx9/
+    │    ├── dom_render_dx9.h
+    │    └── dom_render_dx9.c
+    ├── dx11/
+    │    ├── dom_render_dx11.h
+    │    └── dom_render_dx11.c
+    ├── vector2d/
+    │    ├── dom_render_vec2d.h
+    │    └── dom_render_vec2d.c
+    └── software/
+         ├── dom_render_soft.h
+         └── dom_render_soft.c
+Global rules for this directory:
+• C89/C98 only.
+• No simulation logic.
+• No game logic.
+• No allocation inside the hot loop; all buffer and atlas sizes fixed at init.
+• One abstract API, many interchangeable backends.
+• Deterministic render commands: the same input must produce identical command buffers across platforms.
+
+1. dom_render_api.h — Abstract public rendering API
+Purpose: The rest of the engine and game use only this header; never directly include backend headers.
+Includes:
+#include "dom_core_types.h"
+#include "dom_render_state.h"
+#include "dom_render_commands.h"
+Types:
+typedef enum {
+    DOM_RENDER_BACKEND_NULL = 0,
+    DOM_RENDER_BACKEND_GL1,
+    DOM_RENDER_BACKEND_GL2,
+    DOM_RENDER_BACKEND_DX9,
+    DOM_RENDER_BACKEND_DX11,
+    DOM_RENDER_BACKEND_VEC2D,
+    DOM_RENDER_BACKEND_SOFTWARE
+} DomRenderBackendKind;
+Renderer object:
+typedef struct DomRenderer {
+    DomRenderBackendKind backend;
+    void *backend_state; /* opaque pointer to backend's state struct */
+
+    /* Dimensions provided by platform layer */
+    dom_u32 width;
+    dom_u32 height;
+
+    /* Fixed command buffer for this frame */
+    DomRenderCommandBuffer cmd;
+} DomRenderer;
+Public API:
+Initialization:
+DomResult dom_render_create(DomRenderer *r,
+                            DomRenderBackendKind backend,
+                            dom_u32 width,
+                            dom_u32 height);
+
+void dom_render_destroy(DomRenderer *r);
+Resize:
+void dom_render_resize(DomRenderer *r, dom_u32 width, dom_u32 height);
+Frame lifecycle:
+void dom_render_begin(DomRenderer *r);    /* Clear command buffer */
+void dom_render_submit(DomRenderer *r);   /* Submit commands to backend */
+void dom_render_present(DomRenderer *r);  /* Flip/backbuffer command */
+Drawing primitives (enqueue commands):
+void dom_render_rect(DomRenderer *r, const DomRect *rc, DomColor c);
+void dom_render_line(DomRenderer *r, dom_i32 x0, dom_i32 y0,
+                                   dom_i32 x1, dom_i32 y1,
+                                   DomColor c);
+void dom_render_poly(DomRenderer *r, const DomVec2i *pts, dom_u32 count, DomColor c);
+void dom_render_sprite(DomRenderer *r, DomSpriteId id,
+                                      dom_i32 x, dom_i32 y);
+void dom_render_text(DomRenderer *r, DomFontId font,
+                                    const char *text,
+                                    dom_i32 x, dom_i32 y,
+                                    DomColor c);
+Prohibitions:
+• This API never speaks in floats; all coords integers (screen-space after projection).
+• This API is backend-independent; absolutely no GL/DX types allowed here.
+• No pointers to game data (sprites, fonts) except ID handles.
+
+2. dom_render_state.[hc] — Shared fixed render state structures
+Purpose: shared state definitions used by command generation and all backends.
+Header: dom_render_state.h
+Types:
+typedef struct {
+    dom_i32 x, y, w, h;
+} DomRect;
+
+typedef dom_u32 DomColor;      /* ARGB: 0xAARRGGBB */
+
+typedef dom_u32 DomSpriteId;
+typedef dom_u32 DomFontId;
+
+/* Runtime global state, independent from backend */
+typedef struct DomRenderState {
+    DomColor clear_color;
+    DomColor default_color;
+    DomSpriteId default_sprite;
+} DomRenderState;
+Public API:
+void dom_render_state_init(DomRenderState *s);
+Implementation rules:
+• clear_color is used by all backends to clear the frame.
+• Integer-only transforms; projection handled outside this layer.
+Prohibitions:
+• No dynamic loading of textures/fonts here.
+• No backend interaction here.
+
+3. dom_render_commands.[hc] — Deterministic command buffer
+Purpose: This is the only path from the simulation/game logic to the backend.
+Header: dom_render_commands.h
+Includes:
+#include "dom_core_types.h"
+#include "dom_render_state.h"
+Types:
+Command kinds:
+typedef enum {
+    DOM_CMD_NONE = 0,
+    DOM_CMD_RECT,
+    DOM_CMD_LINE,
+    DOM_CMD_POLY,
+    DOM_CMD_SPRITE,
+    DOM_CMD_TEXT
+} DomRenderCmdKind;
+Command payload:
+typedef struct {
+    dom_i32 x, y, w, h;
+    DomColor color;
+} DomCmdRect;
+
+typedef struct {
+    dom_i32 x0, y0, x1, y1;
+    DomColor color;
+} DomCmdLine;
+
+typedef struct {
+    dom_u32 count;
+    DomVec2i pts[16];  /* fixed */
+    DomColor color;
+} DomCmdPoly;
+
+typedef struct {
+    DomSpriteId id;
+    dom_i32 x, y;
+} DomCmdSprite;
+
+typedef struct {
+    DomFontId font;
+    DomColor color;
+    char text[256];   /* fixed */
+    dom_i32 x, y;
+} DomCmdText;
+Command entry:
+typedef struct {
+    DomRenderCmdKind kind;
+    union {
+        DomCmdRect rect;
+        DomCmdLine line;
+        DomCmdPoly poly;
+        DomCmdSprite sprite;
+        DomCmdText text;
+    } u;
+} DomRenderCmd;
+Command buffer:
+#define DOM_RENDER_CMD_MAX 8192
+
+typedef struct {
+    dom_u32 count;
+    DomRenderCmd cmds[DOM_RENDER_CMD_MAX];
+} DomRenderCommandBuffer;
+Public API:
+void dom_render_cmd_init(DomRenderCommandBuffer *cb);
+
+DomResult dom_render_cmd_push(DomRenderCommandBuffer *cb,
+                              const DomRenderCmd *cmd);
+Implementation rules:
+• Sequential, deterministic ordering.
+• Hard cap (DOM_RENDER_CMD_MAX).
+• Overflow returns a deterministic error and discards extra commands for that frame.
+Prohibitions:
+• No dynamic lists.
+• No pointer storage except trivial fixed-length arrays.
+
+4. dom_render_backend.h — Backend interface contract
+Purpose: define functions each backend must implement.
+Header: dom_render_backend.h
+Functions every backend must provide:
+typedef struct DomRenderBackendAPI {
+    DomResult (*init)(DomRenderer *r);
+    void      (*shutdown)(DomRenderer *r);
+    void      (*resize)(DomRenderer *r, dom_u32 w, dom_u32 h);
+
+    /* Process command buffer */
+    void      (*submit)(DomRenderer *r, const DomRenderCommandBuffer *cb);
+
+    /* Flip/draw-present call */
+    void      (*present)(DomRenderer *r);
+} DomRenderBackendAPI;
+Backend selection:
+const DomRenderBackendAPI *
+dom_render_backend_get(DomRenderBackendKind k);
+Rules:
+• Must draw exactly what command buffer describes — no deviation.
+• No “extra” transforms; camera/projection handled at a higher level.
+• Backends must convert integer screen-space to their native API coordinates deterministically.
+Prohibitions:
+• No global GL/DX state pollution outside the backend.
+
+5. Backends
+Each backend directory has one state struct and one implementation file.
+5.1 gl1/ — OpenGL 1.1 backend
+Header:
+typedef struct {
+    /* GL1 handles */
+    dom_u32 tex_ids[1024];
+    dom_u32 font_ids[64];
+} DomRenderGL1State;
+Responsibilities:
+• Uses immediate mode (glBegin/glEnd).
+• Only integer-to-float conversion allowed is deterministic exact cast.
+• No shaders.
+Initialization:
+• Create GL context (via platform layer).
+• Load textures using engine asset loaders (IDs only).
+Prohibitions:
+• No VAOs/VBOs.
+• No modern OpenGL features.
+
+5.2 gl2/ — OpenGL 2.0 backend
+State struct includes shader programs, VBOs, and atlas texture handles.
+Rules:
+• Single orthographic shader fixed in this backend.
+• All shader constants deterministic and integer-driven.
+• VBOs preallocated.
+Prohibitions:
+• No runtime shader compilation from external files.
+• No GL extension variation.
+
+5.3 dx9/ — DirectX 9 backend
+State:
+• Device pointer (opaque to engine).
+• Prebuilt vertex formats.
+• Texture atlas pool.
+Rules:
+• Pre-transformed vertices (XYZRHW) only.
+• No fixed-function lighting.
+
+5.4 dx11/ — DirectX 11 backend
+State:
+• Device + context
+• Mesh buffers
+• Constant buffers (orthographic projection derived from screen size)
+Rules:
+• No dynamic buffer resizing.
+• No external shader files at runtime; ship embedded bytecode.
+
+5.5 vector2d/ — Pure vector math backend
+Purpose: minimal backend for ultra-old systems or for dev builds where texturing unavailable.
+Rules:
+• Only draws lines and filled polys; sprite/text become wireframe boxes or outline glyph approximations.
+• Must match command buffer output shape.
+
+5.6 software/ — CPU rasterizer backend
+Purpose: fallback for DOS, Win9x, very old macOS, or safe mode.
+Rules:
+• One pixel buffer.
+• Deterministic Bresenham.
+• Deterministic scanline fill.
+• Blitting functions integer-only.
+
+6. Behavioural Guarantees
+6.1 Determinism
+• Render commands produced by sim/game are deterministic.
+• Render backend execution timing may vary, but output pixels for a given command buffer are guaranteed identical per backend.
+6.2 No simulation influence
+Renderers cannot ever feed information back into the sim.
+6.3 Hard failure rules
+• Any illegal command (unsupported type, overflow) is discarded with an error code but must never crash the engine.
+• Backends must treat unknown commands as NO-OP.
+
+7. Summary
+engine/render/ defines a stable, deterministic, backend-independent rendering pipeline:
+• dom_render_api.h — the only header engine/game code touches.
+• Command buffer — deterministic, integer, fixed-size operations.
+• Backends — plug-in GL1/GL2/DX9/DX11/Vector/Software implementations.
+• Platform-agnostic — platform layer supplies window/GL context/DX device.
+This guarantees cross-platform stability from DOS-class machines up to modern hardware.

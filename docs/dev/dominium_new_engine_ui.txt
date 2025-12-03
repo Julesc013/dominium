@@ -1,0 +1,402 @@
+This message is the dev-spec for engine/ui/.
+UI here is engine-level, game-agnostic: widgets, layout, skins, and input plumbing.
+No Dominium-specific logic. No simulation logic. No platform APIs directly (go through engine/platform and engine/render).
+The game layer (/game/client) builds actual menus/HUD on top of this.
+
+Directory Layout
+engine/
+└── ui/
+    ├── dom_ui_core.h
+    ├── dom_ui_core.c
+    ├── dom_ui_layout.h
+    ├── dom_ui_layout.c
+    ├── dom_ui_widgets.h
+    ├── dom_ui_widgets.c
+    ├── dom_ui_skin.h
+    ├── dom_ui_skin.c
+    ├── dom_ui_commands.h
+    ├── dom_ui_commands.c
+    ├── dom_ui_debug.h
+    └── dom_ui_debug.c
+Global rules:
+• C89 (C89-with-// comments) for implementation.
+• No platform headers. Use dom_platform.h only indirectly via game/client.
+• No simulation reads/writes. UI only talks to engine/game via commands/events.
+• No floats in layout core; use fixed-point or ints.
+• Determinism not required for UI visuals, but input → command sequence must be stable for a given input stream.
+
+1. dom_ui_core.[hc] — UI tree, IDs, lifecycle
+This is the core UI object model and update pipeline.
+1.1 Types
+#include "dom_core_types.h"
+
+typedef dom_u32 DomUIWidgetId;
+typedef dom_u32 DomUILayerId;
+typedef dom_u32 DomUIStyleId;
+
+typedef struct DomUIRect {
+    dom_i32 x, y;
+    dom_i32 w, h;
+} DomUIRect;
+
+typedef enum {
+    DOM_UI_EVENT_NONE = 0,
+    DOM_UI_EVENT_MOUSE_MOVE,
+    DOM_UI_EVENT_MOUSE_DOWN,
+    DOM_UI_EVENT_MOUSE_UP,
+    DOM_UI_EVENT_MOUSE_SCROLL,
+    DOM_UI_EVENT_KEY_DOWN,
+    DOM_UI_EVENT_KEY_UP,
+    DOM_UI_EVENT_TEXT_INPUT
+} DomUIEventKind;
+
+typedef struct DomUIEvent {
+    DomUIEventKind kind;
+    dom_i32 mouse_x, mouse_y;
+    dom_i32 scroll_delta;
+    dom_u32 key;        /* DomKey or char code */
+    dom_u32 utf32;      /* text input; 0 if none */
+    dom_u32 mods;       /* ctrl/alt/shift bitmask */
+} DomUIEvent;
+Widget types (game-agnostic):
+typedef enum {
+    DOM_UI_WIDGET_NONE = 0,
+    DOM_UI_WIDGET_ROOT,
+    DOM_UI_WIDGET_CONTAINER,
+    DOM_UI_WIDGET_LABEL,
+    DOM_UI_WIDGET_BUTTON,
+    DOM_UI_WIDGET_TOGGLE,
+    DOM_UI_WIDGET_SLIDER,
+    DOM_UI_WIDGET_PROGRESS,
+    DOM_UI_WIDGET_SCROLL,
+    DOM_UI_WIDGET_IMAGE,
+    DOM_UI_WIDGET_TEXTBOX,
+    DOM_UI_WIDGET_LIST,
+    DOM_UI_WIDGET_CUSTOM  /* for game/client-registered draw callbacks */
+} DomUIWidgetKind;
+Widget node:
+#define DOM_UI_MAX_CHILDREN 32
+
+typedef struct DomUIWidget {
+    DomUIWidgetId id;
+    DomUIWidgetKind kind;
+    DomUIRect rect;         /* final screen rect after layout */
+    DomUIRect content_rect; /* inner rect (after padding) */
+
+    DomUIWidgetId parent;
+    DomUIWidgetId children[DOM_UI_MAX_CHILDREN];
+    dom_u8 child_count;
+
+    DomUIStyleId style;
+    dom_u32 flags;          /* visible, enabled, clip, focusable */
+
+    dom_u32 state_flags;    /* hovered, pressed, focused, etc. */
+
+    dom_u32 user_tag;       /* game/client identifier */
+    void *user_ptr;         /* opaque pointer for game/client (NEVER serialized) */
+} DomUIWidget;
+UI root:
+#define DOM_UI_MAX_WIDGETS 4096
+
+typedef struct DomUIRoot {
+    DomUIWidget widgets[DOM_UI_MAX_WIDGETS];
+    dom_u32     widget_count;
+
+    DomUIWidgetId root_id;
+
+    DomUIWidgetId focused;
+    DomUIWidgetId hovered;
+
+    DomUILayerId layer_id;      /* for multi-layer UI (HUD, menus, overlay) */
+
+    dom_i32 screen_w, screen_h;
+} DomUIRoot;
+1.2 Public API
+void dom_ui_init_root(DomUIRoot *ui, dom_i32 screen_w, dom_i32 screen_h);
+
+DomUIWidgetId dom_ui_create_widget(DomUIRoot *ui,
+                                   DomUIWidgetKind kind,
+                                   DomUIWidgetId parent);
+
+void dom_ui_destroy_widget(DomUIRoot *ui, DomUIWidgetId id);
+
+DomUIWidget *dom_ui_get_widget(DomUIRoot *ui, DomUIWidgetId id);
+
+void dom_ui_set_rect(DomUIRoot *ui, DomUIWidgetId id, DomUIRect r);
+void dom_ui_set_style(DomUIRoot *ui, DomUIWidgetId id, DomUIStyleId style);
+void dom_ui_set_flags(DomUIRoot *ui, DomUIWidgetId id, dom_u32 flags, dom_u32 mask);
+
+void dom_ui_set_user_tag(DomUIRoot *ui, DomUIWidgetId id, dom_u32 tag);
+void dom_ui_set_user_ptr(DomUIRoot *ui, DomUIWidgetId id, void *ptr);
+Input + update:
+/* Push raw input events (from game/client) into UI */
+void dom_ui_push_event(DomUIRoot *ui, const DomUIEvent *ev);
+
+/* Per-frame: process events, update focus/hover, propagate to widgets */
+void dom_ui_update(DomUIRoot *ui);
+Rules:
+• Widget IDs are stable indices; 0 reserved as “invalid/none”.
+• Parent/child relations must form a tree rooted at root_id.
+• dom_ui_update handles only focus/hover, not layout or drawing.
+Prohibitions:
+• No rendering calls here.
+• No game logic; only UI state transitions.
+
+2. dom_ui_layout.[hc] — Layout engine
+Responsible for computing rect and content_rect for every widget.
+Layout is purely integer-based.
+2.1 Types
+typedef enum {
+    DOM_UI_LAYOUT_ABSOLUTE = 0,
+    DOM_UI_LAYOUT_VERTICAL,
+    DOM_UI_LAYOUT_HORIZONTAL,
+    DOM_UI_LAYOUT_GRID
+} DomUILayoutMode;
+
+typedef struct DomUILayout {
+    DomUILayoutMode mode;
+    dom_i32 padding_left, padding_top, padding_right, padding_bottom;
+    dom_i32 spacing;        /* gap between children */
+    dom_i32 grid_cols;      /* for GRID */
+} DomUILayout;
+We don’t store layout on the widget directly here; game/client uses user_ptr or separate mapping, or we add a simple layout component:
+typedef struct DomUILayoutEntry {
+    DomUIWidgetId id;
+    DomUILayout  layout;
+} DomUILayoutEntry;
+
+#define DOM_UI_MAX_LAYOUTS DOM_UI_MAX_WIDGETS
+
+typedef struct DomUILayoutState {
+    DomUILayoutEntry entries[DOM_UI_MAX_LAYOUTS];
+    dom_u32 count;
+} DomUILayoutState;
+2.2 Public API
+void dom_ui_layout_init(DomUILayoutState *ls);
+
+DomResult dom_ui_layout_set(DomUILayoutState *ls,
+                            DomUIWidgetId id,
+                            DomUILayout layout);
+
+/* Compute layout for entire tree */
+void dom_ui_layout_apply(DomUIRoot *ui,
+                         DomUILayoutState *ls);
+Rules:
+• dom_ui_layout_apply must be called once per frame after UI root update and before drawing.
+• Layout algorithm must be deterministic given widget tree and layout state.
+Prohibitions:
+• No floating point metrics; all ints in pixels.
+• No direct calls to render or platform.
+
+3. dom_ui_widgets.[hc] — Logic for basic widget types
+Encapsulates generic behavior: hit-testing, click handling, value changes.
+3.1 Types
+Per-widget data structs (these are not stored in DomUIWidget, but referenced via user_ptr or separate arrays):
+typedef struct {
+    const char *text; /* immutable storage owned by game/client */
+} DomUILabelData;
+
+typedef struct {
+    const char *text;
+    dom_bool8 pressed;
+} DomUIButtonData;
+
+typedef struct {
+    dom_bool8 value;
+} DomUIToggleData;
+
+typedef struct {
+    dom_i32 min_value;
+    dom_i32 max_value;
+    dom_i32 value;
+    dom_i32 step;
+} DomUISliderData;
+
+/* etc. */
+For engine-level library, we keep a generic per-kind handler:
+typedef struct DomUIWidgetHandlers {
+    void (*on_event)(DomUIRoot *ui, DomUIWidget *w, const DomUIEvent *ev);
+    void (*on_update)(DomUIRoot *ui, DomUIWidget *w);  /* per frame */
+} DomUIWidgetHandlers;
+Global table:
+extern DomUIWidgetHandlers dom_ui_widget_handlers[DOM_UI_WIDGET_CUSTOM + 1];
+3.2 Public API
+void dom_ui_widgets_init(void);
+
+/* Called from dom_ui_update per widget */
+void dom_ui_widget_handle_event(DomUIRoot *ui,
+                                DomUIWidget *w,
+                                const DomUIEvent *ev);
+
+void dom_ui_widget_update(DomUIRoot *ui,
+                          DomUIWidget *w);
+Rules:
+• Default handlers for LABEL/IMAGE are no-op.
+• BUTTON toggles pressed state on MOUSE_DOWN+UP and emits UI command (see commands).
+• SLIDER tracks drags and updates integer value.
+• No game-specific actions, only emitting standardized UI commands to dom_ui_commands.
+
+4. dom_ui_skin.[hc] — Abstract visual style descriptors
+Skin = way to draw widgets with no game-specific assets hardcoded.
+4.1 Types
+typedef struct DomUIColor {
+    dom_u8 r, g, b, a;
+} DomUIColor;
+
+typedef struct DomUIFontId {
+    dom_u16 index;
+} DomUIFontId;
+
+typedef struct DomUIBorder {
+    dom_i32 thickness;
+    DomUIColor color;
+} DomUIBorder;
+
+typedef struct DomUIStyle {
+    DomUIColor bg_color;
+    DomUIColor fg_color;
+    DomUIBorder border;
+    DomUIFontId font;
+    dom_i32 padding_left, padding_top, padding_right, padding_bottom;
+} DomUIStyle;
+Style table:
+#define DOM_UI_MAX_STYLES 256
+
+typedef struct DomUISkin {
+    DomUIStyle styles[DOM_UI_MAX_STYLES];
+    dom_u32    style_count;
+} DomUISkin;
+4.2 Public API
+void dom_ui_skin_init(DomUISkin *skin);
+
+/* returns style id or -1 on fail */
+DomUIStyleId dom_ui_skin_add(DomUISkin *skin, const DomUIStyle *style);
+
+const DomUIStyle *dom_ui_skin_get(const DomUISkin *skin, DomUIStyleId id);
+Rendering integration (for game/client):
+/* Convert widget + style to draw commands; doesn't talk to renderer directly */
+void dom_ui_skin_build_drawlist(DomUIRoot *ui,
+                                const DomUISkin *skin,
+                                /* opaque drawlist struct owned by game/client */
+                                void *drawlist_ctx,
+                                void (*emit_rect)(void *ctx, DomUIRect r, DomUIColor c),
+                                void (*emit_text)(void *ctx, DomUIRect r, DomUIFontId font, const char *text));
+Rules:
+• No direct GL/DX calls here.
+• Deterministic: same tree + skin → same drawlist.
+
+5. dom_ui_commands.[hc] — UI → game command buffer
+UI should not call gameplay directly.
+It produces UI commands, which /game/client consumes and maps to actions.
+5.1 Types
+typedef enum {
+    DOM_UI_CMD_NONE = 0,
+    DOM_UI_CMD_CLICK,      /* button or clickable region */
+    DOM_UI_CMD_TOGGLE,     /* toggle changed */
+    DOM_UI_CMD_SLIDER,     /* slider value changed */
+    DOM_UI_CMD_TEXT_ENTER, /* text confirmed */
+    DOM_UI_CMD_FOCUS_GAIN,
+    DOM_UI_CMD_FOCUS_LOST
+} DomUICmdKind;
+
+typedef struct DomUICmdClick {
+    DomUIWidgetId id;
+    dom_u32 user_tag;  /* from widget */
+} DomUICmdClick;
+
+typedef struct DomUICmdToggle {
+    DomUIWidgetId id;
+    dom_u32 user_tag;
+    dom_bool8 value;
+} DomUICmdToggle;
+
+typedef struct DomUICmdSlider {
+    DomUIWidgetId id;
+    dom_u32 user_tag;
+    dom_i32 value;
+} DomUICmdSlider;
+
+typedef struct DomUICmdText {
+    DomUIWidgetId id;
+    dom_u32 user_tag;
+    const char *text; /* pointer into external buffer; lifetime owned by game/client */
+} DomUICmdText;
+
+typedef struct DomUICmdFocus {
+    DomUIWidgetId id;
+    dom_u32 user_tag;
+} DomUICmdFocus;
+
+typedef struct DomUICmd {
+    DomUICmdKind kind;
+    union {
+        DomUICmdClick  click;
+        DomUICmdToggle toggle;
+        DomUICmdSlider slider;
+        DomUICmdText   text;
+        DomUICmdFocus  focus;
+    } u;
+} DomUICmd;
+Command buffer:
+#define DOM_UI_CMD_MAX 1024
+
+typedef struct DomUICommandBuffer {
+    dom_u32 count;
+    DomUICmd cmds[DOM_UI_CMD_MAX];
+} DomUICommandBuffer;
+5.2 Public API
+void dom_ui_cmd_init(DomUICommandBuffer *b);
+DomResult dom_ui_cmd_push(DomUICommandBuffer *b, const DomUICmd *cmd);
+Integration with core:
+• dom_ui_core and dom_ui_widgets must have access to a global or passed-in DomUICommandBuffer * and push commands whenever widget interaction triggers.
+Rules:
+• Commands must be queued in deterministic order (entity ID, widget ID, input index).
+• DomUIRoot does not interpret these; only /game/client does.
+
+6. dom_ui_debug.[hc] — Debug overlay and instrumentation
+Optional but useful and self-contained.
+6.1 Types
+Debug flags:
+typedef struct DomUIDebugConfig {
+    dom_bool8 show_bounds;
+    dom_bool8 show_ids;
+    dom_bool8 show_focus;
+    dom_bool8 show_layout;
+} DomUIDebugConfig;
+6.2 Public API
+void dom_ui_debug_init(DomUIDebugConfig *cfg);
+
+void dom_ui_debug_draw(DomUIRoot *ui,
+                       const DomUISkin *skin,
+                       const DomUIDebugConfig *cfg,
+                       void *drawlist_ctx,
+                       void (*emit_rect)(void *ctx, DomUIRect r, DomUIColor c),
+                       void (*emit_text)(void *ctx, DomUIRect r, DomUIFontId font, const char *text));
+Rules:
+• Debug draw uses same emit_* callbacks as normal skin.
+• No ties to game logic.
+
+7. Integration Summary
+• /engine/platform → raw input events (keys, mouse, window size) go to /game/client.
+• /game/client converts platform events into DomUIEvent and calls dom_ui_push_event.
+• Per frame, /game/client does:
+• dom_ui_update(&ui_root);
+• dom_ui_layout_apply(&ui_root, &layout_state);
+• 
+• dom_ui_cmd_init(&ui_cmd_buffer);
+• /* dom_ui_widgets + core push into ui_cmd_buffer during update */
+• 
+• /* Now game/client reads ui_cmd_buffer and applies actual game actions. */
+• 
+• /* For rendering: */
+• build_drawlist_from_skin(&ui_root, &skin, ...);
+• submit drawlist to engine/render.
+• No simulation code down in UI tree.
+• UI does not know about Dominium-specific entities or transports; it only knows generic widgets and user tags.
+
+8. Prohibitions
+• No dependency on /game or /data.
+• No GL/DX/SDL/OpenAL includes.
+• No long-lived allocations beyond static arrays and POD structs.
+• No “immediate mode GUI” macros that mix layout, input, and draw; keep retained model.
+

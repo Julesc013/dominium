@@ -1,0 +1,254 @@
+This message defines the dev-spec for /build/ — the complete structure, constraints, and responsibilities for the Dominium build system.
+/build is not a place for source code, game logic, assets, or documentation.
+It is strictly:
+• Build scripts
+• CMake modules
+• Toolchain configs
+• Build output staging
+• CI integration helpers
+Nothing here is authoritative for game behaviour — only /engine + /game + /data + /docs/spec are.
+
+0. Directory layout
+Canonical:
+/build/
+├─ README.md
+├─ cmake/
+│  ├─ toolchains/
+│  │  ├─ linux_x86_64.cmake
+│  │  ├─ windows_msvc.cmake
+│  │  ├─ macos_clang.cmake
+│  │  ├─ dos_watcom.cmake
+│  │  └─ win9x_mingw32.cmake
+│  ├─ modules/
+│  │  ├─ DominiumPlatform.cmake
+│  │  ├─ DominiumDeterminism.cmake
+│  │  ├─ DominiumThirdParty.cmake
+│  │  ├─ DominiumTesting.cmake
+│  │  └─ LegacySupport.cmake
+│  └─ presets/
+│     ├─ debug.preset.json
+│     ├─ release.preset.json
+│     ├─ retro_lowmem.preset.json
+│     └─ headless.preset.json
+├─ scripts/
+│  ├─ build_all.sh
+│  ├─ build_all.bat
+│  ├─ package_release.py
+│  ├─ generate_version_header.py
+│  ├─ lint_sources.py
+│  └─ ci_hooks/
+│     ├─ check_patches.py
+│     ├─ verify_hashes.py
+│     └─ validate_specs.py
+└─ output/               # ignored by version control
+   ├─ linux/
+   ├─ win/
+   ├─ mac/
+   ├─ retro/
+   └─ logs/
+Everything under /build/output/ is ephemeral and gitignored.
+
+1. /build/README.md
+Document must state:
+• /build is not part of the engine; it is scaffolding around it.
+• All deterministic behaviour happens in runtime, not here.
+• Build scripts must not modify canonical source-of-truth directories.
+• CI relies on /build for reproducible builds across OSes.
+Also:
+• Lists supported targets and compilers.
+• Notes cross-compilation constraints (DOS, Win9x, macOS Classic).
+• Defines required build steps for developers and CI.
+
+2. /build/cmake/ — main build system backbone
+CMake is the canonical configuration layer.
+All platform and determinism rules flow through here.
+
+2.1 /build/cmake/toolchains/
+Purpose: cross-platform compiler configurations.
+Each toolchain file must:
+• Set compiler + linker executable paths
+• Configure architecture (x86, x86_64, PowerPC, ARM)
+• Define platform macros (DOM_PLATFORM_WIN32, DOM_PLATFORM_LINUX, etc.)
+• Enforce C89/C++98 constraint for /engine
+• Enforce no exceptions in engine unless explicitly allowed
+• Control floating-point mode:
+o -ffloat-store for deterministic retro builds
+o Fixed-point overrides
+• Disable all undefined-behaviour optimisations for deterministic modules
+Example responsibilities inside:
+set(CMAKE_SYSTEM_NAME Windows)
+set(CMAKE_C_COMPILER x86_64-w64-mingw32-gcc)
+set(CMAKE_C_STANDARD 89)
+add_definitions(-DDOM_DETERMINISTIC)
+Forbidden in toolchain files:
+• Enabling link-time optimisation for deterministic builds unless proven stable.
+• Auto-fetching dependencies (use /external only).
+• Hardcoding user paths.
+
+2.2 /build/cmake/modules/
+These define reusable CMake logic.
+Modules include:
+DominiumPlatform.cmake
+• Selects platform abstraction layer
+• Verifies /engine/platform/* bindings exist
+• Prevents missing platform API symbols at link-time
+DominiumDeterminism.cmake
+• Enforces:
+o C89/C++98 compliance tests
+o Fixed-point math compilation flags
+o Deterministic RNG default
+o Disabling SIMD unless deterministic
+• Validates prohibited compiler flags (-ffast-math, -march=native)
+DominiumThirdParty.cmake
+• Declares all vendor libs via deterministic import
+• Validates patch hashes
+• Disallows system-installed libs
+• Ensures no external fetches
+• Controls whether each library is compiled static or included as headers-only
+DominiumTesting.cmake
+• Adds test executables per /tests/unit and /tests/integration
+• Registers replay tests with expected hashes
+• Provides macros:
+o dom_add_unit_test(name files...)
+o dom_add_integration_test(name files...)
+o dom_add_replay_test(scenario baseline_hash)
+LegacySupport.cmake
+• Extra constraints for:
+o Win9x toolchains
+o DOS toolchains (OpenWatcom)
+o macOS Classic (CodeWarrior or MPW)
+• Ensures use of SFN (8.3) filenames when generating packages for /packaging/retro.
+
+2.3 /build/cmake/presets/
+JSON presets for typical configurations:
+debug.preset.json
+• Debug symbols
+• Assertions enabled
+• Runtime diagnostics On
+release.preset.json
+• Full optimisation
+• Determinism-proven flags only
+• Stripped binaries
+retro_lowmem.preset.json
+• 16–64 MB RAM simulated constraints
+• No dynamic allocations
+• 8.3 filename enforcement
+• No modern rendering backends
+headless.preset.json
+• Used by CI
+• No rendering or audio backends
+• Determinism-oriented compiler flags only
+
+3. /build/scripts/
+Utility scripts.
+All must be side-effect limited: no modifying /engine, /game, /data/base without strict CI approval.
+
+3.1 build_all.sh / build_all.bat
+• Performs multi-target builds (Linux, Win, Mac, Retro).
+• Ensures toolchain versions are locked.
+• Validates that /external/pin hashes match downloaded libs.
+Prohibitions:
+• No auto-updating toolchains.
+• No silent fallback compilers.
+
+3.2 package_release.py
+Generates packaging outputs into /packaging layouts.
+Must:
+• Respect platform differences
+• Embed correct manifest version
+• Exclude debug symbols from release builds
+• Include modding API docs when configured
+Must not:
+• Modify /engine or /game code
+• Pull dependencies from the internet
+
+3.3 generate_version_header.py
+Produces /engine/core/dom_version.h.
+Outputs deterministic metadata:
+• Engine version
+• Git commit hash
+• Build timestamp (must be optional to preserve determinism)
+• Build configuration (debug/release/headless)
+Deterministic mode must omit timestamps, include only semantic version + commit ID.
+
+3.4 lint_sources.py
+Performs static checks:
+• No forbidden includes (<windows.h> in engine code)
+• No floating-point operations in deterministic modules
+• No dynamic memory in tight loops
+• No recursion in engine code
+• No banned keywords (auto, decltype, std::thread, etc.)
+CI must reject if lint fails.
+
+3.5 /build/scripts/ci_hooks/
+check_patches.py
+• Validates that /external/src/*/patches/*.patch match upstream hashes.
+• Ensures no stray modifications.
+verify_hashes.py
+• Validates /external/pin/versions.json against actual upstream sources.
+validate_specs.py
+• Ensures /docs/spec is consistent:
+o No broken references
+o No stale schema IDs
+o No contradictions between SPEC-core.md and schemas
+All CI hooks must exit nonzero on failure.
+
+4. /build/output/ — ephemeral artifacts
+Ignored in VCS. Structure:
+/build/output/
+├─ linux/
+│  └─ <binaries and logs>
+├─ win/
+│  └─ <binaries and logs>
+├─ mac/
+├─ retro/
+│  ├─ dos/
+│  ├─ win9x/
+│  └─ mac_classic/
+└─ logs/
+   ├─ build.log
+   └─ test_results.xml
+Rules:
+• Nothing here is source-of-truth.
+• All files may be deleted at any time.
+• No handwritten files allowed here.
+
+5. Deterministic build requirements (critical)
+Dominium must be bit-for-bit repeatable across machines for deterministic builds.
+Requirements:
+1. Compiler version pinning
+All compilers must be version-defined in /docs/spec/BULDING.md.
+2. No nondeterministic flags
+Disallow:
+o -ffast-math
+o -march=native
+o -flto for deterministic builds
+o Any optimization known to reorder FP ops unpredictably
+3. Fixed order of file inclusion
+CMake must enumerate sources deterministically.
+4. Deterministic archives
+Static libs must be created with deterministic timestamps and file order.
+5. Platform-stable macros
+No macros allowed that embed build time or OS hostname into binary unless in debug-only sections.
+6. Separation of debug/release IDs
+Debug builds need not be bitwise-deterministic; release deterministic builds must.
+7. Cross-platform reproduction
+For deterministic replays, Linux vs Windows vs macOS builds must produce identical simulation behaviour even if not identical binaries.
+
+6. Prohibitions for /build
+Strictly forbidden:
+• Fetching libraries during configuration or build
+• Generating source files outside of controlled generators
+• Putting actual source code inside /build
+• Allowing /build scripts to modify /engine or /game
+• Shipping files from /build/output
+
+7. Summary
+/build contains:
+• CMake architecture
+• Toolchains and presets
+• Determinism-enforcing modules
+• Build + package scripts
+• CI validation tools
+• Ephemeral outputs
+It guarantees reproducible builds, validated dependencies, and a strict deterministic execution model.

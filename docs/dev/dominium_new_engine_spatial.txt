@@ -1,0 +1,473 @@
+This message is the dev spec for engine/spatial/ only.
+engine/
+└── spatial/
+    ├── dom_spatial_types.h
+    ├── dom_spatial_grid.h
+    ├── dom_spatial_grid.c
+    ├── dom_spatial_chunk.h
+    ├── dom_spatial_chunk.c
+    ├── dom_spatial_voxel.h
+    ├── dom_spatial_voxel.c
+    ├── dom_spatial_region.h
+    ├── dom_spatial_region.c
+    ├── dom_spatial_index.h
+    ├── dom_spatial_index.c
+    ├── dom_spatial_query.h
+    └── dom_spatial_query.c
+Global rules for this directory:
+• Language: C89 only.
+• Includes allowed:
+o dom_core_types.h, dom_core_bits.h, dom_core_fp.h, dom_core_log.h
+o dom_sim_world.h (for surface IDs)
+o No platform headers, no rendering headers, no physics headers.
+• No floats.
+• No dynamic allocation in tick-path functions.
+• No simulation rules here (no time, no jobs, no power/fluid/economy logic).
+• This layer provides: coordinate types, grid hierarchy, chunk/subchunk structures, terrain/voxel storage, and generic spatial indices/queries.
+
+1. dom_spatial_types.h — Coordinate hierarchy and constants
+Purpose: single authority for spatial units and coordinate types. All other modules use these typedefs and constants.
+Responsibilities:
+• Define integer types for:
+o tile coordinates (1 m units)
+o sub-grid coordinates (subtile, submini, submicro, subnano)
+• Define macro constants for the hierarchy you specified.
+• Define world-space extents and safe ranges.
+• No function implementations here.
+Required includes:
+#include "dom_core_types.h"
+Types and constants:
+/* Base integer coordinate type for tiles. */
+typedef dom_i64 DomTileCoord;      /* 1 tile = 1 metre */
+
+/* Subdivisions (powers of two): */
+#define DOM_SUBNANO_PER_M     65536  /* 1/65536 m  */
+#define DOM_SUBMICRO_PER_M     4096  /* 1/4096 m   */
+#define DOM_SUBMINI_PER_M       256  /* 1/256 m    */
+#define DOM_SUBTILE_PER_M        16  /* 1/16 m     */
+
+/* Higher-level grid extents: */
+#define DOM_TILE_PER_SUBCHUNK    16    /* 16 m      */
+#define DOM_TILE_PER_CHUNK      256    /* 256 m     */
+#define DOM_TILE_PER_SUBREGION 4096    /* 4096 m    */
+#define DOM_TILE_PER_REGION    65536   /* 65536 m   */
+#define DOM_TILE_PER_SUBCONT   1048576 /* 1,048,576 */
+#define DOM_TILE_PER_CONT      16777216/* 16,777,216 */
+#define DOM_TILE_PER_SUPERCONT 268435456/* 268,435,456 */
+#define DOM_TILE_PER_SURFACE   4294967296ULL /* 4,294,967,296 */
+
+/* 3D tile coordinate vector. */
+typedef struct DomTile3 {
+    DomTileCoord x;
+    DomTileCoord y;
+    DomTileCoord z;
+} DomTile3;
+Optional sub-unit coordinate types:
+typedef dom_i64 DomSubnanoCoord;
+typedef dom_i64 DomSubmicroCoord;
+typedef dom_i64 DomSubminiCoord;
+typedef dom_i64 DomSubtileCoord;
+This file must not contain functions or static data.
+Prohibitions:
+• No references to chunks or surfaces (that’s in other headers).
+• No world IDs or simulation types.
+
+2. dom_spatial_grid.[hc] — Integer grid conversions and helpers
+Purpose: pure math helpers mapping between coordinate spaces (tile, subgrid, chunk indices, etc.) and enforcing the hierarchy.
+Header: dom_spatial_grid.h
+Responsibilities:
+• Provide inline-safe conversion functions: tile ↔ chunk/subchunk indices, tile ↔ subgrid units.
+• Provide clamping and modulo helpers for tile coordinates.
+• Provide surface-local vs “global” (surface-relative) conversions in cooperation with dom_sim_world.
+Required includes:
+#include "dom_spatial_types.h"
+#include "dom_sim_world.h"
+Key types:
+typedef dom_i32 DomChunkCoord;     /* index in chunk grid */
+typedef dom_i32 DomSubchunkCoord;  /* index in subchunk grid */
+
+typedef struct DomChunk3 {
+    DomChunkCoord cx;
+    DomChunkCoord cy;
+    DomChunkCoord cz; /* optional; usually 0 */
+} DomChunk3;
+
+typedef struct DomSubchunk3 {
+    DomSubchunkCoord sx;
+    DomSubchunkCoord sy;
+    DomSubchunkCoord sz;
+} DomSubchunk3;
+Public API (examples, non-exhaustive but you must keep semantics fixed):
+/* Convert tile coordinate to chunk + tile-in-chunk. */
+void dom_spatial_tile_to_chunk(DomTileCoord tx, DomTileCoord ty,
+                               DomChunkCoord *out_cx, DomChunkCoord *out_cy,
+                               dom_i32       *out_local_x, dom_i32 *out_local_y);
+/* Convert chunk+local to tile coordinate. */
+void dom_spatial_chunk_to_tile(DomChunkCoord cx, DomChunkCoord cy,
+                               dom_i32 local_x, dom_i32 local_y,
+                               DomTileCoord *out_tx, DomTileCoord *out_ty);
+
+/* Subchunk variants at 16×16 tiles. */
+void dom_spatial_tile_to_subchunk(DomTileCoord tx, DomTileCoord ty,
+                                  DomSubchunkCoord *out_sx, DomSubchunkCoord *out_sy,
+                                  dom_i32 *out_local_x, dom_i32 *out_local_y);
+
+void dom_spatial_subchunk_to_tile(DomSubchunkCoord sx, DomSubchunkCoord sy,
+                                  dom_i32 local_x, dom_i32 local_y,
+                                  DomTileCoord *out_tx, DomTileCoord *out_ty);
+
+/* Subgrid conversions (tile <-> subtile, submini, submicro, subnano). */
+DomSubtileCoord  dom_spatial_tile_to_subtile(DomTileCoord t);
+DomTileCoord     dom_spatial_subtile_to_tile(DomSubtileCoord s);
+
+DomSubminiCoord  dom_spatial_tile_to_submini(DomTileCoord t);
+DomTileCoord     dom_spatial_submini_to_tile(DomSubminiCoord s);
+
+/* Surface-relative coordinates. */
+DomResult dom_spatial_world_to_surface_tiles(DomSurfaceId surface,
+                                             DomTileCoord wx, DomTileCoord wy,
+                                             DomTileCoord *out_sx, DomTileCoord *out_sy);
+
+DomResult dom_spatial_surface_to_world_tiles(DomSurfaceId surface,
+                                             DomTileCoord sx, DomTileCoord sy,
+                                             DomTileCoord *out_wx, DomTileCoord *out_wy);
+Implementation: dom_spatial_grid.c
+• All operations must be pure integer arithmetic.
+• Must never overflow valid range for defined extents (check and clamp deterministically).
+• No dynamic memory.
+Prohibitions:
+• No storage of global state.
+• No knowledge of ECS or chunks contents.
+
+3. dom_spatial_chunk.[hc] — Chunk/subchunk registry and metadata
+Purpose: manage logical chunks/subchunks as containers for terrain, microgrids, and entities. No heavy data here, just registry and metadata.
+Header: dom_spatial_chunk.h
+Responsibilities:
+• Define IDs and metadata for chunks and subchunks.
+• Provide registration and lookup of chunk structures per surface.
+• Provide iteration over existing chunks/subchunks.
+Required includes:
+#include "dom_spatial_types.h"
+#include "dom_spatial_grid.h"
+#include "dom_sim_world.h"
+Types:
+typedef dom_u32 DomChunkId;
+typedef dom_u32 DomSubchunkId;
+
+typedef struct DomChunkMeta {
+    DomChunkId   id;
+    DomSurfaceId surface;
+    DomChunkCoord cx;
+    DomChunkCoord cy;
+    dom_u32      flags;       /* has_terrain, has_structures, dirty, etc. */
+    dom_u32      subchunk_count;
+} DomChunkMeta;
+
+typedef struct DomSubchunkMeta {
+    DomSubchunkId id;
+    DomChunkId    parent_chunk;
+    DomSubchunkCoord sx;
+    DomSubchunkCoord sy;
+    dom_i32      z_layer;     /* vertical layer index */
+    dom_u32      flags;       /* underground, water, etc. */
+} DomSubchunkMeta;
+Public API:
+Initialisation/reset:
+DomResult dom_spatial_chunk_init(void);
+void      dom_spatial_chunk_reset(void);
+Chunk registration:
+DomResult dom_spatial_chunk_ensure(DomSurfaceId surface,
+                                   DomChunkCoord cx, DomChunkCoord cy,
+                                   DomChunkId *out_chunk);
+
+const DomChunkMeta *dom_spatial_chunk_get(DomChunkId id);
+
+/* Iterate all chunks on a surface in deterministic order. */
+typedef void (*DomChunkIterFn)(const DomChunkMeta *meta, void *user);
+void dom_spatial_chunk_for_each(DomSurfaceId surface,
+                                DomChunkIterFn fn, void *user);
+Subchunk support:
+DomResult dom_spatial_subchunk_ensure(DomChunkId chunk,
+                                      DomSubchunkCoord sx, DomSubchunkCoord sy,
+                                      dom_i32 z_layer,
+                                      DomSubchunkId *out_subchunk);
+
+const DomSubchunkMeta *dom_spatial_subchunk_get(DomSubchunkId id);
+
+typedef void (*DomSubchunkIterFn)(const DomSubchunkMeta *meta, void *user);
+void dom_spatial_subchunk_for_each_in_chunk(DomChunkId chunk,
+                                            DomSubchunkIterFn fn, void *user);
+Lookup helpers:
+DomResult dom_spatial_chunk_find_by_tile(DomSurfaceId surface,
+                                         DomTileCoord tx, DomTileCoord ty,
+                                         DomChunkId *out_chunk,
+                                         DomSubchunkId *out_subchunk_optional);
+Implementation: dom_spatial_chunk.c
+• Uses fixed-size or growable arrays allocated at startup/load (not per tick).
+• Chunk IDs and subchunk IDs increment monotonically; no randomization.
+• Maintains deterministic order (sorted by surface, cx, cy, layer).
+Prohibitions:
+• No terrain/voxel data stored here (that’s dom_spatial_voxel).
+• No entity lists here (ECS or other modules can keep chunk-local lists separately).
+• No network or physics data.
+
+4. dom_spatial_voxel.[hc] — Terrain and voxel/microgrid storage
+Purpose: store and manipulate terrain voxels, cut/fill masks, underground vs overground, and microgrid “logical terrain” inside subchunks.
+Header: dom_spatial_voxel.h
+Responsibilities:
+• Define voxel/tile material IDs and per-tile flags.
+• Provide APIs to query/write terrain types for tiles within a subchunk.
+• Provide RLE/sparse compressed representations for storage.
+• Provide support for “logical microgrids” that overlay the base terrain.
+Required includes:
+#include "dom_spatial_types.h"
+#include "dom_spatial_chunk.h"
+Types:
+typedef dom_u16 DomMaterialId;
+
+typedef struct DomVoxelTile {
+    DomMaterialId material;
+    dom_u16       flags;   /* solid, liquid, passable, cut, fill, etc. */
+} DomVoxelTile;
+
+typedef struct DomSubchunkVoxelInfo {
+    DomSubchunkId subchunk;
+    dom_u32       width;   /* usually 16 */
+    dom_u32       height;  /* usually 16 */
+    dom_u32       layers;  /* vertical slice count in this subchunk */
+    /* opaque pointer to compressed storage, internal to .c file */
+} DomSubchunkVoxelInfo;
+Public API:
+Initialise/reset:
+DomResult dom_spatial_voxel_init(void);
+void      dom_spatial_voxel_reset(void);
+Attach voxel storage to a subchunk:
+DomResult dom_spatial_voxel_alloc_for_subchunk(DomSubchunkId subchunk);
+void      dom_spatial_voxel_free_for_subchunk(DomSubchunkId subchunk);
+
+DomResult dom_spatial_voxel_get_info(DomSubchunkId subchunk,
+                                     DomSubchunkVoxelInfo *out_info);
+Tile-level access (must be efficient and deterministic):
+/* z_layer is relative layer index within subchunk microgrid. */
+DomResult dom_spatial_voxel_get_tile(DomSubchunkId subchunk,
+                                     dom_i32 local_x, dom_i32 local_y, dom_i32 z_layer,
+                                     DomVoxelTile *out_tile);
+
+DomResult dom_spatial_voxel_set_tile(DomSubchunkId subchunk,
+                                     dom_i32 local_x, dom_i32 local_y, dom_i32 z_layer,
+                                     const DomVoxelTile *tile);
+Terrain height query per tile (fast path):
+/* Return topmost solid or top-of-ground height within subchunk for a local x,y. */
+DomResult dom_spatial_voxel_get_height(DomSubchunkId subchunk,
+                                       dom_i32 local_x, dom_i32 local_y,
+                                       dom_i32 *out_z_layer);
+Cut/fill overlays (logical modifications without altering “base” terrain):
+DomResult dom_spatial_voxel_apply_cut(DomSubchunkId subchunk,
+                                      dom_i32 local_x, dom_i32 local_y,
+                                      dom_i32 from_layer, dom_i32 to_layer);
+
+DomResult dom_spatial_voxel_apply_fill(DomSubchunkId subchunk,
+                                       dom_i32 local_x, dom_i32 local_y,
+                                       dom_i32 from_layer, dom_i32 to_layer,
+                                       DomMaterialId material);
+Implementation: dom_spatial_voxel.c
+• Internally uses RLE or small-fixed-block compression; compression details must be deterministic and stable across versions or mediated via format versioning.
+• Ensure tile updates update compressed representation deterministically.
+• No dynamic memory allocation in the in-tick API; allocate at load/map generation.
+Prohibitions:
+• No ECS or building logic.
+• No pathfinding.
+• No physics impulses.
+
+5. dom_spatial_region.[hc] — Higher-level region/subregion containers
+Purpose: manage higher-order groupings (subregions, regions, continents, etc.) for map organisation, LOD, region-based simulation grouping.
+Header: dom_spatial_region.h
+Responsibilities:
+• Define IDs and metadata for subregions/regions per surface.
+• Map chunk coordinates to subregion/region IDs.
+• Provide iteration over regions.
+Required includes:
+#include "dom_spatial_types.h"
+#include "dom_sim_world.h"
+Types:
+typedef dom_u32 DomSubregionId;
+typedef dom_u32 DomRegionId;
+
+typedef struct DomSubregionMeta {
+    DomSubregionId id;
+    DomSurfaceId   surface;
+    dom_i32        sx;     /* subregion grid index */
+    dom_i32        sy;
+    dom_u32        flags;  /* climate, ownership, etc. */
+} DomSubregionMeta;
+
+typedef struct DomRegionMeta {
+    DomRegionId  id;
+    DomSurfaceId surface;
+    dom_i32      rx;
+    dom_i32      ry;
+    dom_u32      flags;
+} DomRegionMeta;
+Public API:
+DomResult dom_spatial_region_init(void);
+void      dom_spatial_region_reset(void);
+
+/* Map tile to subregion/region. */
+DomResult dom_spatial_region_of_tile(DomSurfaceId surface,
+                                     DomTileCoord tx, DomTileCoord ty,
+                                     DomSubregionId *out_subregion,
+                                     DomRegionId    *out_region);
+
+/* Lookup meta. */
+const DomSubregionMeta *dom_spatial_get_subregion(DomSubregionId id);
+const DomRegionMeta    *dom_spatial_get_region(DomRegionId id);
+
+/* Iteration. */
+typedef void (*DomRegionIterFn)(const DomRegionMeta *meta, void *user);
+void dom_spatial_region_for_each(DomSurfaceId surface,
+                                 DomRegionIterFn fn, void *user);
+Implementation: dom_spatial_region.c
+• Coordinates quantised using the constants in dom_spatial_types.h.
+• Uses simple integer division to compute indices.
+• Maintains arrays of metas with deterministic IDs and ordering.
+Prohibitions:
+• No climate simulation or economy here (those call into this).
+• No ownership logic; just a place to store flags as simple bitfields.
+
+6. dom_spatial_index.[hc] — Wide grid + BVH indexing
+Purpose: shared acceleration structures for “what’s near this?” queries, broad-phase collision partners, and high-level spatial indexing, without implementing physics.
+Header: dom_spatial_index.h
+Responsibilities:
+• Implement wide uniform grid index (e.g. 4×4×4 m cells).
+• Provide an abstract BVH / spatial tree for arbitrary AABBs.
+• Provide registration and update of indexed objects, keyed by entity or ID.
+• Provide queries: cell iteration, AABB-overlap scanning, etc.
+Required includes:
+#include "dom_spatial_types.h"
+#include "dom_tile_aabb.h" /* optional: we can define simple AABB here instead */
+(If you don’t have dom_tile_aabb.h, define AABB here.)
+Types:
+typedef dom_u32 DomSpatialObjectId;
+
+typedef struct DomAABB {
+    DomTileCoord min_x, min_y, min_z;
+    DomTileCoord max_x, max_y, max_z;
+} DomAABB;
+
+typedef struct DomSpatialObject {
+    DomSpatialObjectId id;
+    dom_u64            owner_entity;  /* 0 if none */
+    DomAABB            bounds;
+    dom_u32            flags;         /* type bits, collision class, etc. */
+} DomSpatialObject;
+Public API:
+Init/reset:
+DomResult dom_spatial_index_init(void);
+void      dom_spatial_index_reset(void);
+Object registration (grid + BVH):
+DomSpatialObjectId dom_spatial_index_register(const DomSpatialObject *obj);
+void                dom_spatial_index_unregister(DomSpatialObjectId id);
+
+/* Update object bounds (e.g. building growth). */
+DomResult dom_spatial_index_update(DomSpatialObjectId id,
+                                   const DomAABB *new_bounds,
+                                   dom_u32 new_flags);
+Rebuild BVH (only in post-process phase):
+void dom_spatial_index_rebuild_bvh(void);
+Query API:
+/* Cell-based approximate query. */
+typedef void (*DomSpatialObjectFn)(DomSpatialObjectId id,
+                                   const DomSpatialObject *obj,
+                                   void *user);
+
+void dom_spatial_index_query_aabb(const DomAABB *region,
+                                  dom_u32 mask_flags,
+                                  DomSpatialObjectFn fn,
+                                  void *user);
+
+/* Point query. */
+void dom_spatial_index_query_point(DomTileCoord x, DomTileCoord y, DomTileCoord z,
+                                   dom_u32 mask_flags,
+                                   DomSpatialObjectFn fn,
+                                   void *user);
+Implementation: dom_spatial_index.c
+• Maintains:
+o wide grid index mapping grid cell to small fixed list of object IDs.
+o BVH built from those objects for expensive queries (raycast, broad-phase).
+• Rebuild is deterministic: sort objects by ID, build BVH in fixed algorithm order.
+Prohibitions:
+• No physics collision resolution here.
+• No lane logic; this is global. Physics module may partition per-lane using this.
+
+7. dom_spatial_query.[hc] — High-level terrain and topology queries
+Purpose: provide reusable, read-only query functions combining grid, chunk, voxel, and index modules for game and physics layers.
+Header: dom_spatial_query.h
+Responsibilities:
+• Expose read-only operations needed by:
+o pathfinding
+o construction placement
+o building and track alignment
+o cutting/filling checks
+o long-platform alignment
+o tunnels/bridges interaction with terrain
+Required includes:
+#include "dom_spatial_types.h"
+#include "dom_spatial_chunk.h"
+#include "dom_spatial_voxel.h"
+#include "dom_spatial_index.h"
+Public API (examples):
+Ground sampling:
+/* Get ground height at a world tile (surface-local). */
+DomResult dom_spatial_query_ground_height(DomSurfaceId surface,
+                                          DomTileCoord tx, DomTileCoord ty,
+                                          dom_i32 *out_z_layer);
+
+/* Test if tile is solid at (x,y,z). */
+dom_bool8 dom_spatial_query_is_solid(DomSurfaceId surface,
+                                     DomTileCoord tx, DomTileCoord ty,
+                                     dom_i32 z_layer);
+Line/raycast over terrain:
+typedef struct DomRayHit {
+    DomTileCoord x, y;
+    dom_i32      z_layer;
+    DomVoxelTile voxel;
+} DomRayHit;
+
+dom_bool8 dom_spatial_query_ray_terrain(DomSurfaceId surface,
+                                        DomTileCoord x0, DomTileCoord y0, dom_i32 z0,
+                                        DomTileCoord x1, DomTileCoord y1, dom_i32 z1,
+                                        DomRayHit *out_hit);
+Placement feasibility:
+/* Check if a rectangular footprint at ground level can be placed. */
+dom_bool8 dom_spatial_query_can_place_rect(DomSurfaceId surface,
+                                           DomTileCoord x_min, DomTileCoord y_min,
+                                           DomTileCoord x_max, DomTileCoord y_max,
+                                           dom_i32      base_z,
+                                           dom_u32      flags /* e.g. allow_cut, require_flat */);
+
+/* Sample average slope of area. */
+DomResult dom_spatial_query_area_slope(DomSurfaceId surface,
+                                       DomTileCoord x_min, DomTileCoord y_min,
+                                       DomTileCoord x_max, DomTileCoord y_max,
+                                       dom_i32 *out_dx, dom_i32 *out_dy);
+Neighbourhood scan:
+typedef void (*DomSpatialTileFn)(DomSurfaceId surface,
+                                 DomTileCoord tx, DomTileCoord ty,
+                                 dom_i32 z_layer,
+                                 const DomVoxelTile *tile,
+                                 void *user);
+
+void dom_spatial_query_for_each_tile_in_rect(DomSurfaceId surface,
+                                             DomTileCoord x_min, DomTileCoord y_min,
+                                             DomTileCoord x_max, DomTileCoord y_max,
+                                             DomSpatialTileFn fn, void *user);
+Implementation: dom_spatial_query.c
+• Strictly read-only operations into voxel/chunk/index.
+• No state mutated here (except optional perf caches that are not sim-state and are recomputable).
+• Uses integer DDA for raycasts; must be deterministic.
+Prohibitions:
+• No pathfinding; only basic geometry and occupancy tests.
+• No job creation or events.
+• No multi-threading primitives here.
+
+That covers engine/spatial/.

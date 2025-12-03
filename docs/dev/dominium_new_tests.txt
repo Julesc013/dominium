@@ -1,0 +1,234 @@
+This message defines the dev-spec for /tests/ — the entire deterministic verification and validation framework for Dominium.
+/tests is authoritative for correctness, stability, determinism, and regression control.
+Nothing in /tests is shipped with the normal runtime, but CI executes this directory aggressively.
+
+0. Directory layout
+Canonical structure:
+/tests/
+├─ README.md
+├─ unit/
+│  └─ <module>_tests.c
+├─ integration/
+│  ├─ world_load/
+│  ├─ network_lockstep/
+│  ├─ economy/
+│  ├─ networks_power/
+│  └─ ...
+├─ replay/
+│  ├─ scenarios/
+│  ├─ baselines/
+│  ├─ fuzz/
+│  └─ tools/
+└─ perf/
+   ├─ microbench/
+   ├─ macrobench/
+   └─ soak/
+Each folder enforces distinct semantics.
+
+1. /tests/README.md
+Clarifies:
+• Tests MUST NOT use OS randomness unless explicitly using deterministic seeds.
+• Tests MUST NOT touch external filesystem except approved fixtures.
+• Tests MUST NOT depend on system clock or local environment.
+• Tests MUST NOT depend on GPU or audio hardware — headless engine only.
+States that:
+• Standard runtime uses the same deterministic simulation binaries as tests.
+• Tests must run identically on all supported platforms.
+Also describes how to run:
+cmake --build . --target run_tests
+And how to update baselines when intentional breaking changes occur.
+
+2. /tests/unit/ — granular C89/C++98 module tests
+Unit tests validate engine core modules in isolation.
+Typical hierarchy:
+/tests/unit/
+├─ core_mem_tests.c
+├─ core_rng_tests.c
+├─ core_fp_tests.c
+├─ sim_network_tests.c
+├─ sim_pathfinding_tests.c
+├─ sim_tick_tests.c
+├─ serialization_tests.c
+└─ ecs_component_tests.c
+2.1 Requirements
+1. Language restrictions
+If the tested module is C89, the test must also be pure C89.
+No platform headers except through /engine/platform mocks.
+2. Determinism
+Tests must operate on deterministic RNG seeds. Example:
+3. dom_rng_seed(&rng, 12345u);
+4. Memory discipline
+Unit tests must check:
+o Bounds correctness
+o Allocation/ownership behaviour
+o No implicit mallocs unless expected
+5. Pure logic testing
+Unit tests cannot:
+o Load textures
+o Use rendering API
+o Use blockers (threads, waits)
+6. Mock engine components
+Some systems (network, serialization, tick) depend on stubs provided in:
+7. /tests/unit/mocks/
+8. Assert behaviour
+The test harness provides:
+9. TEST_ASSERT(expr)
+10. TEST_ASSERT_EQ(a,b)
+11. TEST_ASSERT_NEQ(a,b)
+12. TEST_ASSERT_INT_EQ(a,b)
+13. TEST_ASSERT_MEM_EQ(ptr1,ptr2,len)
+
+3. /tests/integration/ — whole-engine functional tests
+Integration tests validate that engine subsystems work together.
+Structure:
+/tests/integration/
+├─ sim_tick/
+│  ├─ simple_tick_run.c
+│  └─ multi_actor_tick.c
+├─ world_load/
+│  ├─ load_minimal_world.c
+│  ├─ load_maximal_world.c
+│  └─ load_with_mods.c
+├─ networks_power/
+│  ├─ ac_dc_convert_test.c
+│  ├─ load_balance_test.c
+│  └─ blackout_recover_test.c
+├─ networks_data/
+│  └─ routing_large_topology_test.c
+├─ economy/
+│  └─ price_equilibrium_test.c
+└─ transport/
+   ├─ rail_signalling_test.c
+   ├─ road_pathfinder_test.c
+   └─ air_traffic_layers_test.c
+3.1 Requirements
+1. Full headless engine
+Integration tests launch the deterministic engine backend without rendering/audio.
+2. Well-controlled fixtures
+Input data (worlds, prefabs, techs, recipes) are placed under:
+3. /tests/fixtures/<name>
+Fixtures must not reference /mods unless the test explicitly loads mods.
+4. Precise step execution
+Example:
+sim_init(&engine, &world);
+for (int t = 0; t < 10000; ++t) {
+    sim_tick(&engine);
+}
+5. Hash validation
+Integration tests verify stable deterministic outputs via world-state hashing:
+uint64_t h = world_hash(&world);
+TEST_ASSERT_EQ(h, 0xCF42A1F3B29ADEFFULL);
+If the expected hash changes legitimately, the developer must update the baseline hash and document the reason.
+6. No floating-point nondeterminism
+Integration tests must use integer/fixed-point pathways.
+If float math is used in non-critical renderer-only code, integration tests ignore it.
+
+4. /tests/replay/ — deterministic simulation replay validation
+This is the most critical directory for long-term stability.
+Subdirs:
+/tests/replay/
+├─ scenarios/
+│  ├─ small_factory/
+│  ├─ huge_transport_network/
+│  ├─ interstellar_logistics/
+│  └─ warfare/
+├─ baselines/
+│  └─ <scenario_name>.hash         # 128-bit deterministic hash
+├─ fuzz/
+│  ├─ random_inputs/
+│  └─ malformed_commands/
+└─ tools/
+   ├─ replay_runner.c
+   ├─ replay_diff.c
+   └─ replay_hash.c
+4.1 Replay requirements
+1. Replay format is canonical
+Replays contain tick-by-tick command streams, not deltas.
+2. Deterministic tick pipeline
+Engine must execute replays identically across:
+o All operating systems
+o All CPUs
+o All render backends (since headless runs bypass rendering)
+3. Baseline enforcement
+Running:
+run_replay --scenario small_factory
+Must produce exactly the hash stored in:
+/tests/replay/baselines/small_factory.hash
+4. Replay diffing
+Tools can compare state by tick:
+replay_diff file1.replay file2.replay
+Output includes entity divergence history.
+5. Fuzz testing
+Commands generated under seeded RNGs stress unusual edge cases:
+o Queueing thousands of build commands
+o Simultaneous removals/additions
+o Network overloads
+o Mass pathfinder invalidation
+The engine must never crash or desync; state must remain consistent.
+
+5. /tests/perf/ — performance, scalability, and soak tests
+Performance tests measure execution time of stable APIs.
+Subdirs:
+/tests/perf/
+├─ microbench/
+│  ├─ pathfinder_bench.c
+│  ├─ ecs_iteration_bench.c
+│  └─ rng_bench.c
+├─ macrobench/
+│  ├─ million_entities_bench.c
+│  ├─ global_network_bench.c
+│  └─ multi_surface_bench.c
+└─ soak/
+   ├─ 24h_sim_soak.c
+   └─ memory_pressure.c
+5.1 Requirements
+1. Deterministic seed
+Perf tests must initialize RNG and world with fixed seeds.
+2. Time measurement constraints
+Perf tests measure relative, not absolute performance.
+They compare:
+o Ticks-per-second
+o Nanoseconds per pathfinding invocation
+o Memory footprint changes
+3. Soak tests
+Execute tens of millions of ticks.
+Should detect:
+o Memory leaks
+o Slow drifts
+o Integer overflows
+o Network topology degenerations
+4. No floating-point reliance
+Perf tests do not assert on exact FP values.
+
+6. Cross-cutting constraints for all /tests
+6.1 No nondeterminism leakage
+No test may depend on:
+• time(NULL)
+• rand()
+• System clock
+• Number of CPU cores
+• GPU behavior
+• Thread scheduling
+• Unordered hash maps (must use stable hashing)
+6.2 No external network access
+Tests may not:
+• Reach out to HTTP APIs
+• Attempt to open sockets
+• Depend on OS locale or codepage
+6.3 CI safety
+• All tests must run in under fixed timeouts.
+• All tests must produce machine-readable outputs.
+• All replay baselines must be updated explicitly with commit messages explaining differences.
+6.4 Retro-compatibility
+Where required:
+• Some tests validate compatibility with retro build modes (DOS, Win9x, macOS Classic).
+• These tests must simulate constraints but not necessarily run under the retro OS.
+
+7. Summary
+/tests provides:
+• Unit tests for engine modules (pure deterministic logic).
+• Integration tests for world/engine multi-system behaviour.
+• Replay tests ensuring deterministic stability across versions and platforms.
+• Perf tests ensuring that regressions are caught early.
+This directory is the backbone of correctness, determinism, regression stability, and long-term maintainability.
+

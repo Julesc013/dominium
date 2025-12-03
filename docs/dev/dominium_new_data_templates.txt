@@ -1,0 +1,445 @@
+This message is the dev-spec for /data/templates/.
+/data/templates provides shipped example content:
+• Example universes and maps.
+• Starter savegames and demo worlds.
+• Scenario definitions and challenge modes.
+• Blueprint libraries and build templates.
+It is not authoritative for engine behaviour. It is consumed by the engine and /tools to create or load worlds in a known configuration.
+
+0. Directory layout
+Canonical structure:
+/data/templates/
+├─ README.md
+├─ templates_manifest.json
+├─ worlds/
+│  ├─ starter_worlds.json
+│  ├─ demo_worlds.json
+│  └─ *.dom               # optional pre-baked save files (if shipped)
+├─ scenarios/
+│  ├─ scenarios_manifest.json
+│  ├─ campaign/
+│  │  ├─ campaign_01.json
+│  │  └─ ...
+│  └─ challenges/
+│     ├─ challenge_rail_mega_hub.json
+│     └─ ...
+├─ blueprints/
+│  ├─ blueprints_manifest.json
+│  ├─ factory/
+│  ├─ logistics/
+│  └─ utilities/
+└─ presets/
+   ├─ worldgen_presets.json
+   ├─ difficulty_presets.json
+   └─ ui_presets.json
+Subdirs can be extended, but these are the baseline.
+
+1. /data/templates/README.md
+Human-facing documentation:
+• Explains what templates are.
+• Explains difference between:
+o Full savefiles (*.dom under /worlds).
+o Scenario descriptors (/scenarios JSON).
+o Blueprint libraries (/blueprints).
+o Preset configs (/presets).
+• Explains determinism constraints:
+o Templates must be fully definable in terms of engine spec.
+o Any “randomness” must be seeded and reproducible.
+No technical authority; spec lives elsewhere.
+
+2. templates_manifest.json — global template index
+Defines the set of officially shipped templates and how they appear in UI.
+Example:
+{
+  "world_sets": [
+    {
+      "id": "starter_worlds",
+      "file": "worlds/starter_worlds.json",
+      "default": true
+    },
+    {
+      "id": "demo_worlds",
+      "file": "worlds/demo_worlds.json",
+      "default": false
+    }
+  ],
+  "scenario_sets": [
+    {
+      "id": "campaign",
+      "file": "scenarios/scenarios_manifest.json"
+    }
+  ],
+  "blueprint_sets": [
+    {
+      "id": "core_blueprints",
+      "file": "blueprints/blueprints_manifest.json"
+    }
+  ],
+  "preset_sets": [
+    {
+      "id": "worldgen_presets",
+      "file": "presets/worldgen_presets.json"
+    },
+    {
+      "id": "difficulty_presets",
+      "file": "presets/difficulty_presets.json"
+    }
+  ]
+}
+Engine obligations:
+• Use this file as the only entry point for template discovery.
+• No arbitrary directory scanning in shipping builds.
+• All referenced files must exist; invalid references are hard errors in dev mode.
+Prohibitions:
+• No runtime-generated paths.
+• No environment-dependent templates.
+
+3. /worlds/ — predefined worlds and starter saves
+This directory provides:
+• World descriptors that define initial world/universe configurations.
+• Optional pre-baked savefiles for demo purposes.
+3.1 starter_worlds.json
+Defines worlds exposable in “New Game → Starter Worlds”.
+Example:
+{
+  "worlds": [
+    {
+      "id": "starter_flat_valley",
+      "name_key": "starter.flat_valley.name",
+      "desc_key": "starter.flat_valley.desc",
+      "worldgen_preset": "worldgen_flat_easy",
+      "seed": 123456789,
+      "starting_property_template": "property_basic_industry",
+      "difficulty_preset": "difficulty_normal",
+      "dlc_required": [],
+      "universe_layout": {
+        "universe_id": "local_universe",
+        "galaxy": "milky_way",
+        "system": "sol",
+        "planet": "earth",
+        "surface": "earth_main_surface"
+      }
+    },
+    {
+      "id": "starter_mountainous",
+      "name_key": "starter.mountainous.name",
+      "desc_key": "starter.mountainous.desc",
+      "worldgen_preset": "worldgen_mountain_hard",
+      "seed": 987654321,
+      "starting_property_template": "property_rail_mining",
+      "difficulty_preset": "difficulty_hard",
+      "dlc_required": [],
+      "universe_layout": {
+        "universe_id": "local_universe",
+        "galaxy": "milky_way",
+        "system": "sol",
+        "planet": "earth",
+        "surface": "earth_main_surface"
+      }
+    }
+  ]
+}
+Engine usage:
+• When a player selects starter_flat_valley, engine:
+o Loads worldgen_preset from /data/templates/presets/worldgen_presets.json.
+o Uses seed in deterministic worldgen.
+o Spawns initial property from starting_property_template (see blueprints).
+o Applies difficulty multipliers from /presets/difficulty_presets.json.
+All of this is deterministic.
+3.2 demo_worlds.json
+Defines worlds used for:
+• Tutorials.
+• Marketing/demos.
+• Benchmark replays.
+These may reference pre-baked savefiles:
+{
+  "worlds": [
+    {
+      "id": "demo_large_factory",
+      "name_key": "demo.large_factory.name",
+      "desc_key": "demo.large_factory.desc",
+      "savefile": "worlds/demo_large_factory.dom",
+      "dlc_required": [],
+      "read_only": true
+    }
+  ]
+}
+Rules:
+• savefile must be a .dom created by the engine’s official save process.
+• read_only: true means:
+o UI treats this as a demo; overwriting is discouraged or forbidden by default.
+
+4. /scenarios/ — campaign and challenge descriptors
+Scenario descriptors layer constraints and goals on top of the base sim.
+4.1 scenarios_manifest.json
+Index into scenarios:
+{
+  "campaign": [
+    "campaign/campaign_01.json",
+    "campaign/campaign_02.json"
+  ],
+  "challenges": [
+    "challenges/challenge_rail_mega_hub.json",
+    "challenges/challenge_power_grid_balancing.json"
+  ]
+}
+Engine:
+• Uses this to populate scenario menus.
+• Loads scenario descriptors on demand.
+4.2 Scenario descriptor schema
+Example campaign scenario:
+{
+  "id": "campaign_01_bootstrap",
+  "name_key": "campaign.01.name",
+  "desc_key": "campaign.01.desc",
+  "world_template": "starter_flat_valley",
+  "starting_tick": 0,
+  "starting_resources": {
+    "money": 200000,
+    "items": {
+      "iron_plate": 5000,
+      "copper_plate": 3000
+    }
+  },
+  "constraints": {
+    "research_disabled": false,
+    "combat_disabled": true,
+    "time_limit_ticks": 0,
+    "building_blacklist": [
+      "orbital_station_core_t1"
+    ]
+  },
+  "victory_conditions": [
+    {
+      "type": "produce_item",
+      "item_id": "steel_plate",
+      "amount": 100000,
+      "within_ticks": 0
+    }
+  ],
+  "failure_conditions": [
+    {
+      "type": "bankrupt",
+      "threshold": 0
+    }
+  ],
+  "dlc_required": []
+}
+Scenario engine behaviour:
+• Uses world_template from /worlds.
+• Applies scenario-specific starting state and constraints at tick 0.
+• Uses only deterministic conditions (no random objectives).
+Challenge example:
+{
+  "id": "challenge_rail_mega_hub",
+  "name_key": "challenge.rail_mega_hub.name",
+  "desc_key": "challenge.rail_mega_hub.desc",
+  "world_template": "starter_flat_valley",
+  "constraints": {
+    "fixed_seed": true,
+    "max_trains": 50,
+    "max_pollution": 500000,
+    "allowed_buildings": [
+      "rail_station_t1",
+      "rail_signal_basic",
+      "train_small_diesel"
+    ]
+  },
+  "victory_conditions": [
+    {
+      "type": "throughput",
+      "metric": "items_per_second",
+      "item_id": "iron_ore",
+      "threshold": 1000,
+      "time_window_ticks": 36000
+    }
+  ],
+  "failure_conditions": [
+    {
+      "type": "gridlock",
+      "metric": "stalled_trains",
+      "threshold": 10,
+      "duration_ticks": 1200
+    }
+  ],
+  "dlc_required": []
+}
+Constraints and conditions are declarative.
+No imperative scripting here; all logic in /engine/sim and /game/server.
+
+5. /blueprints/ — built-in blueprint library
+Blueprints are deterministic construction templates for in-game structures.
+Layout:
+/data/templates/blueprints/
+├─ blueprints_manifest.json
+├─ factory/
+│  ├─ basic_smelter_line.json
+│  └─ ...
+├─ logistics/
+│  ├─ main_bus_4_lane.json
+│  └─ ...
+└─ utilities/
+   ├─ substation_cluster.json
+   └─ ...
+5.1 blueprints_manifest.json
+Index for blueprint libraries:
+{
+  "categories": [
+    {
+      "id": "factory",
+      "name_key": "blueprints.category.factory",
+      "files": [
+        "factory/basic_smelter_line.json",
+        "factory/advanced_smelter_block.json"
+      ]
+    },
+    {
+      "id": "logistics",
+      "name_key": "blueprints.category.logistics",
+      "files": [
+        "logistics/main_bus_4_lane.json"
+      ]
+    }
+  ]
+}
+5.2 Blueprint descriptor schema
+Blueprints essentially pre-pack a set of entities, prefabs, and network connections in local coordinates.
+Example:
+{
+  "id": "basic_smelter_line",
+  "name_key": "blueprint.basic_smelter_line.name",
+  "desc_key": "blueprint.basic_smelter_line.desc",
+  "size_tiles": [32, 8],
+  "anchor": [0, 0],
+  "dlc_required": [],
+  "entities": [
+    {
+      "prefab_id": "smelter_basic",
+      "local_pos": [4, 2, 0],
+      "rotation": 0
+    },
+    {
+      "prefab_id": "smelter_basic",
+      "local_pos": [8, 2, 0],
+      "rotation": 0
+    }
+  ],
+  "networks": {
+    "power": [
+      { "type": "pole_small", "local_pos": [2, 1, 0] },
+      { "type": "pole_small", "local_pos": [10, 1, 0] }
+    ],
+    "belts": [
+      { "type": "belt_basic", "path": [[0, 4, 0], [31, 4, 0]] }
+    ]
+  },
+  "metadata": {
+    "intended_throughput": {
+      "item_id": "iron_plate",
+      "items_per_second": 30
+    }
+  }
+}
+Engine:
+• Applies blueprint by converting local_pos to world grid coordinates at placement time.
+• Uses prefab_id defined under /data/base or /data/dlc.
+• No logic here; purely structural.
+
+6. /presets/ — worldgen, difficulty, UI presets
+6.1 worldgen_presets.json
+Defines named world generation presets:
+{
+  "presets": [
+    {
+      "id": "worldgen_flat_easy",
+      "name_key": "preset.worldgen.flat_easy.name",
+      "desc_key": "preset.worldgen.flat_easy.desc",
+      "world_size": {
+        "surface": "earth_main_surface",
+        "width_chunks": 32,
+        "height_chunks": 32
+      },
+      "terrain_params": {
+        "height_noise_scale": 0.5,
+        "mountain_density": 0.1,
+        "water_level_m": 0,
+        "river_density": 0.2
+      },
+      "resource_params": {
+        "ore_richness": 1.5,
+        "ore_density": 1.2,
+        "oil_density": 1.0
+      },
+      "climate_params": {
+        "temperature_mean_c": 20,
+        "rainfall_factor": 1.0
+      }
+    }
+  ]
+}
+All knobs must map to deterministic worldgen functions in /engine/sim.
+6.2 difficulty_presets.json
+Defines global difficulty multipliers:
+{
+  "presets": [
+    {
+      "id": "difficulty_normal",
+      "name_key": "preset.difficulty.normal.name",
+      "desc_key": "preset.difficulty.normal.desc",
+      "modifiers": {
+        "build_cost_multiplier": 1.0,
+        "research_speed_multiplier": 1.0,
+        "maintenance_multiplier": 1.0,
+        "disaster_frequency": 0.0
+      }
+    },
+    {
+      "id": "difficulty_hard",
+      "name_key": "preset.difficulty.hard.name",
+      "desc_key": "preset.difficulty.hard.desc",
+      "modifiers": {
+        "build_cost_multiplier": 1.5,
+        "research_speed_multiplier": 0.75,
+        "maintenance_multiplier": 1.5,
+        "disaster_frequency": 0.2
+      }
+    }
+  ]
+}
+Values must be fixed-point and deterministic.
+No random difficulty adjustments.
+6.3 ui_presets.json (optional)
+Defines UI layout presets:
+{
+  "presets": [
+    {
+      "id": "ui_minimal",
+      "name_key": "preset.ui.minimal.name",
+      "panels": {
+        "main_toolbar": { "visible": true, "position": "top" },
+        "minimap": { "visible": false },
+        "event_log": { "visible": true, "position": "bottom" }
+      }
+    }
+  ]
+}
+Only client-side; no influence on simulation.
+
+7. Determinism and versioning rules for /data/templates
+1. No floats in persistent templates
+Values should be representable as integers or fixed-point when loaded into sim.
+2. Seeds are explicit
+Any “random” worldgen must use explicit seeds from templates, not OS RNG.
+3. Templates are versioned indirectly
+Actual binary formats are defined by engine spec; templates reference:
+o engine_min_version
+o engine_max_version
+if needed (you can add version fields later).
+4. Savefile templates remain engine-encoded
+.dom files must stay strictly in engine save format; templates must not define their own.
+
+8. Prohibitions across /data/templates
+• No engine C/C++ files.
+• No scripting. Scenarios, presets, and templates are declarative JSON only.
+• No runtime-dependent paths (like C:\Users\... or $HOME).
+• No referencing mods or DLC that are not declared in dlc_required.

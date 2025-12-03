@@ -1,0 +1,411 @@
+
+This message is the dev-spec for engine/pathfinding/.
+This layer is the deterministic routing kernel for:
+• workers/robots walking on tiles
+• vehicles on roads/rails/canals
+• ships across water grids
+• aircraft along discrete waypoints / air corridors
+• elevators, ramps, stairs, tunnels, bridges
+• multi-floor and underground movement
+No floats.
+No randomness.
+No direct world mutation.
+Directory:
+engine/
+└── pathfinding/
+    ├── dom_path_types.h
+    ├── dom_path_grid.h
+    ├── dom_path_grid.c
+    ├── dom_path_navmesh.h
+    ├── dom_path_navmesh.c
+    ├── dom_path_cost.h
+    ├── dom_path_cost.c
+    ├── dom_path_astar.h
+    ├── dom_path_astar.c
+    ├── dom_path_traffic.h
+    ├── dom_path_traffic.c
+    ├── dom_path_route.h
+    ├── dom_path_route.c
+    ├── dom_path_cache.h
+    └── dom_path_cache.c
+Global rules for this directory:
+• C89 only.
+• No floats; use dom_q16_16/dom_q32_32 where needed.
+• Must not allocate memory in simulation tick hot-path functions.
+• Must not know about job system, economy, research, UI.
+• Reads from spatial/* and physics/* but only via their public APIs.
+• Exposes pure path results + route abstractions; actual movement is handled by simulation systems.
+
+1. dom_path_types.h — Basic types and enums
+Purpose: global type definitions and constants for all pathfinding modules.
+Includes:
+#include "dom_core_types.h"
+#include "dom_spatial_types.h"
+#include "dom_sim_world.h"
+Types:
+typedef dom_u32 DomPathId;        /* ID for cached routes */
+typedef dom_u32 DomNavLayerId;    /* nav layer (surface, floor, mode) */
+typedef dom_u32 DomPathMask;      /* bitfield: allowed modes / layers */
+
+typedef dom_u16 DomPathCost;      /* local edge cost, small integer */
+typedef dom_u32 DomPathCostAccum; /* accumulated cost (A*) */
+
+typedef dom_u16 DomPathHeuristic; /* heuristic estimate (scaled) */
+typedef dom_u32 DomPathHeuristicAccum;
+
+/* Tile node (grid) */
+typedef struct DomPathNode {
+    DomSurfaceId surface;
+    DomTileCoord x;
+    DomTileCoord y;
+    dom_i16      z_layer;   /* vertical index in voxel/microgrid */
+    DomNavLayerId nav_layer;/* walking / road / rail / air corridor layer */
+} DomPathNode;
+Movement mode flags:
+enum {
+    DOM_PATH_MODE_WALK   = 1 << 0,
+    DOM_PATH_MODE_ROAD   = 1 << 1,
+    DOM_PATH_MODE_RAIL   = 1 << 2,
+    DOM_PATH_MODE_WATER  = 1 << 3,
+    DOM_PATH_MODE_AIR    = 1 << 4,
+    DOM_PATH_MODE_TUNNEL = 1 << 5,
+    DOM_PATH_MODE_ELEV   = 1 << 6
+    /* extendable */
+};
+Result code:
+typedef enum {
+    DOM_PATH_RESULT_OK = 0,
+    DOM_PATH_RESULT_NO_PATH,
+    DOM_PATH_RESULT_TIMEOUT,
+    DOM_PATH_RESULT_INVALID,
+    DOM_PATH_RESULT_INTERNAL_ERROR
+} DomPathResult;
+Prohibitions:
+• No data structures (no arrays, no queues).
+• No function definitions.
+
+2. dom_path_grid.[hc] — Grid adjacency + walkability
+Purpose: define how tiles connect for each nav mode; grid-level graph queries.
+Header: dom_path_grid.h
+Includes:
+#include "dom_path_types.h"
+#include "dom_spatial_query.h"
+#include "dom_physics_query.h"
+Responsibilities:
+• Define neighbour patterns (4/8-direction, vertical neighbours, ramps).
+• Expose functions to test walkability / drivable / rail-able between nodes.
+• Expose functions to generate neighbours for A*.
+Public API:
+Walkability:
+dom_bool8 dom_path_grid_is_walkable(const DomPathNode *node,
+                                    DomPathMask modes);
+
+dom_bool8 dom_path_grid_is_passable_edge(const DomPathNode *from,
+                                         const DomPathNode *to,
+                                         DomPathMask modes);
+Neighbour enumeration:
+typedef struct DomPathNeighbour {
+    DomPathNode node;
+    DomPathCost edge_cost;
+} DomPathNeighbour;
+
+#define DOM_PATH_MAX_NEIGHBOURS 16
+
+dom_u32 dom_path_grid_get_neighbours(const DomPathNode *from,
+                                     DomPathMask modes,
+                                     DomPathNeighbour *out_neighbours,
+                                     dom_u32 max_neighbours);
+Responsibilities in implementation:
+• Use spatial_query for height/solid checks.
+• Use physics_query for clearance and slope constraints.
+• Encode:
+o adjacency on same z-layer
+o ramps/stairs (±1 layer) when slopes are acceptable
+o tunnel/bridge transitions with appropriate nav_layer changes
+• All decisions must be deterministic and purely function of world state.
+Prohibitions:
+• No search algorithm here.
+• No global mutable state except static config tables (e.g. neighbour offsets).
+
+3. dom_path_navmesh.[hc] — Logical nav-layers and special graphs
+Purpose: support non-trivial movement graphs beyond simple grid adjacency:
+• conduit networks (elevators, conveyors, pipelines routing workers)
+• staircases, ladders, teleport pads, airlocks
+• layer switches (surface ↔ building interior ↔ underground microgrid)
+Header: dom_path_navmesh.h
+Includes:
+#include "dom_path_types.h"
+#include "dom_spatial_types.h"
+#include "dom_spatial_chunk.h"
+Types:
+typedef dom_u32 DomNavNodeId;
+
+typedef struct DomNavNode {
+    DomNavNodeId id;
+    DomSurfaceId surface;
+    DomTileCoord x, y;
+    dom_i16      z_layer;
+    DomNavLayerId nav_layer;
+    DomPathMask  allowed_modes;
+} DomNavNode;
+
+typedef struct DomNavEdge {
+    DomNavNodeId from;
+    DomNavNodeId to;
+    DomPathCost  cost;
+    DomPathMask  modes;      /* which modes can use this link */
+    dom_u32      flags;      /* one-way, elevator, portal, etc. */
+} DomNavEdge;
+Public API:
+Init/reset:
+DomResult dom_path_navmesh_init(void);
+void      dom_path_navmesh_reset(void);
+Registration (called by building/track/road systems at post-process):
+DomNavNodeId dom_path_navmesh_register_node(const DomNavNode *node);
+DomResult    dom_path_navmesh_register_edge(const DomNavEdge *edge);
+Lookup / queries:
+DomResult dom_path_navmesh_find_nodes_near(DomSurfaceId surface,
+                                           DomTileCoord x, DomTileCoord y,
+                                           dom_i16 z_layer,
+                                           DomPathMask modes,
+                                           DomNavNodeId *out_ids,
+                                           dom_u32 max_ids,
+                                           dom_u32 *out_count);
+
+DomResult dom_path_navmesh_get_node(DomNavNodeId id,
+                                    DomNavNode *out_node);
+
+DomResult dom_path_navmesh_get_edges_from(DomNavNodeId from,
+                                          DomNavEdge *out_edges,
+                                          dom_u32 max_edges,
+                                          dom_u32 *out_count);
+Implementation rules:
+• Nodes/edges stored in dense arrays; IDs are indices.
+• Edges grouped by from node, sorted by to ID for determinism.
+• Navmesh is global and updated in post-process only; A* uses it read-only.
+Prohibitions:
+• No A* here.
+• No references to particular ECS archetypes; buildings register nodes via a higher-level system.
+
+4. dom_path_cost.[hc] — Cost models and heuristics
+Purpose: centralised path cost/heuristic functions, independent of specific path algorithm.
+Header: dom_path_cost.h
+Includes:
+#include "dom_path_types.h"
+#include "dom_spatial_types.h"
+Responsibilities:
+• Define per-mode base movement cost (walk, road, rail, etc.).
+• Define slope penalties, terrain penalties, congestion penalties (input via external scalars).
+• Implement the heuristic function used by A*.
+Public API:
+/* Base cost of moving one grid step given mode mask. */
+DomPathCost dom_path_cost_step(const DomPathNode *from,
+                               const DomPathNode *to,
+                               DomPathMask modes);
+
+/* Heuristic: lower-bound estimate from node → goal. */
+DomPathHeuristic dom_path_cost_heuristic(const DomPathNode *from,
+                                         const DomPathNode *to,
+                                         DomPathMask modes);
+Configuration:
+void dom_path_cost_set_mode_base_cost(DomPathMask mode,
+                                      DomPathCost cost);
+
+void dom_path_cost_set_slope_penalty(dom_i32 permille, DomPathCost extra_cost);
+Implementation rules:
+• Use Manhattan distance (|dx|+|dy|+|dz|) or Chebyshev (max of |dx|,|dy|) with mode-dependent scaling.
+• Heuristic must never overestimate true minimal cost (admissible) to keep A* optimal.
+• All config uses integer/fixed-point; no floats.
+Prohibitions:
+• No direct access to congestion or dynamic traffic; traffic module passes its penalty inputs in.
+
+5. dom_path_astar.[hc] — Deterministic A* and variants
+Purpose: the actual search algorithm engine, parameterised by:
+• neighbour provider (grid-only, navmesh-only, hybrid)
+• cost + heuristic callbacks
+• limits on expansions
+Header: dom_path_astar.h
+Includes:
+#include "dom_path_types.h"
+#include "dom_path_grid.h"
+#include "dom_path_navmesh.h"
+#include "dom_path_cost.h"
+Types:
+typedef struct DomPathSearchLimits {
+    dom_u32 max_nodes_expanded;
+    dom_u32 max_open_size;
+} DomPathSearchLimits;
+
+typedef struct DomPathSearchParams {
+    DomPathNode start;
+    DomPathNode goal;
+    DomPathMask modes;
+    DomPathSearchLimits limits;
+} DomPathSearchParams;
+Path output:
+#define DOM_PATH_MAX_STEPS 1024  /* hard cap per query; tuned later */
+
+typedef struct DomPathStep {
+    DomTileCoord x, y;
+    dom_i16      z_layer;
+    DomNavLayerId nav_layer;
+} DomPathStep;
+
+typedef struct DomPathResultData {
+    DomPathResult result;
+    DomPathStep   steps[DOM_PATH_MAX_STEPS];
+    dom_u16       step_count;
+    DomPathCostAccum total_cost;
+} DomPathResultData;
+Public API:
+Single-shot path:
+DomPathResult dom_path_astar_find_path(const DomPathSearchParams *params,
+                                       DomPathResultData *out_path);
+Incremental search (for async worker):
+typedef struct DomPathSearchHandle DomPathSearchHandle;
+
+DomPathSearchHandle *dom_path_astar_begin(const DomPathSearchParams *params);
+DomPathResult        dom_path_astar_step(DomPathSearchHandle *handle,
+                                         dom_u32 max_iterations,
+                                         DomPathResultData *out_path);
+void                 dom_path_astar_cancel(DomPathSearchHandle *handle);
+Implementation rules:
+• Priority queue implemented via fixed-size binary heap over array; tie-breaking must use:
+o lowest f = g + h
+o if equal, lowest g
+o if still equal, lexicographically smallest node (surface,x,y,z,nav_layer).
+• Open/closed sets must be bounded by limits; when hit, return DOM_PATH_RESULT_TIMEOUT deterministically.
+• Allocations for DomPathSearchHandle come from preallocated pools, not malloc inside tick (used by worker lanes/job thread, not direct sim tick).
+Prohibitions:
+• No dynamic resizing of the open list at runtime beyond configured max.
+• No non-deterministic containers (no hash tables for core algorithm; if used, must be deterministic probing with fixed capacity).
+
+6. dom_path_traffic.[hc] — Traffic load and congestion model
+Purpose: feed extra costs into path cost model based on current or recent traffic; used to route around jams deterministically.
+Header: dom_path_traffic.h
+Includes:
+#include "dom_path_types.h"
+#include "dom_spatial_types.h"
+Types:
+typedef struct DomTrafficSample {
+    DomSurfaceId surface;
+    DomTileCoord x, y;
+    DomNavLayerId nav_layer;
+    dom_u16 load;   /* e.g. vehicles per time window */
+} DomTrafficSample;
+Public API:
+Init/reset:
+DomResult dom_path_traffic_init(void);
+void      dom_path_traffic_reset(void);
+Sampling:
+/* Called by movement systems to report usage. */
+void dom_path_traffic_add_sample(const DomTrafficSample *sample);
+Query congestion penalty:
+DomPathCost dom_path_traffic_penalty(const DomPathNode *node,
+                                     DomPathMask modes);
+Tick update:
+/* Run at multi-rate (e.g. every N ticks). */
+void dom_path_traffic_tick(void);
+Implementation rules:
+• Use fixed-size grid buckets (e.g. 4×4 tiles aggregated) stored in arrays keyed by surface + chunk or similar.
+• Decay load counts over time deterministically (e.g. subtract constant per dom_path_traffic_tick).
+• No per-vehicle state here; purely aggregated.
+Prohibitions:
+• No access to ECS or jobs.
+• No real-time or wallclock time; only tick-based.
+
+7. dom_path_route.[hc] — Route abstraction and reuse
+Purpose: turn static path solutions into reusable “routes” with IDs that AI/vehicles/workers can follow.
+Header: dom_path_route.h
+Includes:
+#include "dom_path_types.h"
+#include "dom_path_astar.h"
+Types:
+typedef struct DomRoute {
+    DomPathId      id;
+    DomSurfaceId   surface;
+    DomPathMask    modes;
+    DomPathStep    steps[DOM_PATH_MAX_STEPS];
+    dom_u16        step_count;
+    DomPathCostAccum total_cost;
+    dom_u32        ref_count; /* usage count; for cleanup */
+} DomRoute;
+Public API:
+Creating and retrieving routes:
+DomResult dom_path_route_init(void);
+void      dom_path_route_reset(void);
+
+DomPathId dom_path_route_create_from_result(const DomPathResultData *path);
+const DomRoute *dom_path_route_get(DomPathId id);
+void            dom_path_route_add_ref(DomPathId id);
+void            dom_path_route_release(DomPathId id);
+Helpers for following routes:
+/* Get the next step index given current approximate position. */
+dom_u16 dom_path_route_find_step_index(const DomRoute *route,
+                                       DomTileCoord x,
+                                       DomTileCoord y,
+                                       dom_i16 z_layer);
+
+/* Clamp index to valid range, returns final tile. */
+DomPathStep dom_path_route_step_at(const DomRoute *route, dom_u16 idx);
+Implementation rules:
+• Routes stored in dense array or slab; IDs monotonic.
+• No path recomputation inside this module.
+• Ref counting used for automatic eviction; eviction policy deterministic (e.g. lowest ID with ref_count==0 and oldest last_used tick).
+Prohibitions:
+• No reading from spatial/physics here; route data is self-contained once created.
+• No multi-threading primitives; concurrency is handled by higher layers.
+
+8. dom_path_cache.[hc] — Path and heuristic cache
+Purpose: avoid recomputing similar paths; keep a small bounded cache keyed by (origin-region, dest-region, mode).
+Header: dom_path_cache.h
+Includes:
+#include "dom_path_types.h"
+#include "dom_path_route.h"
+#include "dom_spatial_region.h"
+Key type:
+typedef struct DomPathCacheKey {
+    DomSurfaceId  surface;
+    DomRegionId   region_src;
+    DomRegionId   region_dst;
+    DomPathMask   modes;
+} DomPathCacheKey;
+Entry:
+typedef struct DomPathCacheEntry {
+    DomPathCacheKey key;
+    DomPathId       route_id;  /* 0 if empty */
+    dom_u32         last_used_tick;
+} DomPathCacheEntry;
+Public API:
+Init/reset:
+DomResult dom_path_cache_init(void);
+void      dom_path_cache_reset(void);
+Lookup:
+DomPathId dom_path_cache_lookup(const DomPathCacheKey *key);
+Insert/update:
+void dom_path_cache_store(const DomPathCacheKey *key,
+                          DomPathId route_id,
+                          dom_u32 current_tick);
+Maintenance:
+void dom_path_cache_tick(dom_u32 current_tick);
+Implementation rules:
+• Fixed-size table (e.g. 256 entries) with deterministic replacement policy:
+o choose entry with lowest last_used_tick among those with route_id != 0
+o or first empty slot in ascending index order.
+• Key comparison is lexicographic; no hash maps unless you implement deterministic open-addressing with bounded size and fixed probe order.
+Prohibitions:
+• No eviction based on randomness.
+• No dynamic growth.
+
+Summary:
+engine/pathfinding/ provides:
+• Grid + navmesh adjacency (grid, navmesh)
+• Deterministic cost + heuristic (cost)
+• Core A* search (astar) with incremental option
+• Traffic-aware routing (traffic)
+• Reusable routes (route)
+• Region-level cache (cache)
+All purely integer-based, deterministic, and driven by higher-level systems that:
+• update navmesh from roads/rails/buildings
+• query for paths for workers/vehicles
+• execute movement via physics and sim layers.

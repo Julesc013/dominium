@@ -1,0 +1,510 @@
+This message is the deterministic dev-spec for engine/net/.
+This layer defines all simulation-visible networking: lockstep protocol, message packing, channels, and replay hooks. It does not decide sockets, OS I/O, or encryption; those live in the platform layer.
+
+Directory Layout
+engine/
+└── net/
+    ├── dom_net_types.h
+    ├── dom_net_config.h
+    ├── dom_net_lockstep.h
+    ├── dom_net_lockstep.c
+    ├── dom_net_proto.h
+    ├── dom_net_proto.c
+    ├── dom_net_channel.h
+    ├── dom_net_channel.c
+    ├── dom_net_serialize.h
+    ├── dom_net_serialize.c
+    ├── dom_net_replay.h
+    ├── dom_net_replay.c
+    ├── dom_net_client.h
+    ├── dom_net_client.c
+    ├── dom_net_server.h
+    └── dom_net_server.c
+Global rules for this directory:
+• C89 only.
+• No floats.
+• No direct OS calls (send, recv, select, etc.). All I/O goes through engine/platform.
+• Deterministic, tick-based lockstep only. No “approximate” sync.
+• No direct access to ECS internals. All simulation state passes through serialization layer APIs.
+• No randomness in protocol behaviour; no adaptive timeouts that change semantics.
+• All wire formats explicitly versioned and endian-independent.
+
+1. dom_net_types.h — Core network types and IDs
+Purpose: shared base types for all networking modules.
+Includes:
+#include "dom_core_types.h"
+#include "dom_sim_time.h"     /* tick numbers, UPS */
+Types:
+typedef dom_u32 DomNetPeerId;     /* index in peer table */
+typedef dom_u32 DomNetChannelId;  /* logical channel ID (reliable, input, debug, etc.) */
+typedef dom_u32 DomNetMsgType;    /* message type enum */
+typedef dom_u64 DomNetSessionId;  /* unique session identifier */
+typedef dom_u64 DomNetWorldId;    /* world/universe ID for cross-server */
+
+typedef dom_u32 DomNetTick;       /* simulation tick index */
+typedef dom_u32 DomNetSeq;        /* sequence number per channel */
+Session and role:
+typedef enum {
+    DOM_NET_ROLE_NONE = 0,
+    DOM_NET_ROLE_SERVER,
+    DOM_NET_ROLE_CLIENT
+} DomNetRole;
+
+typedef enum {
+    DOM_NET_CONN_STATE_DISCONNECTED = 0,
+    DOM_NET_CONN_STATE_HANDSHAKE,
+    DOM_NET_CONN_STATE_SYNCING,
+    DOM_NET_CONN_STATE_RUNNING,
+    DOM_NET_CONN_STATE_ERROR
+} DomNetConnState;
+Result codes:
+typedef enum {
+    DOM_NET_OK = 0,
+    DOM_NET_ERR_GENERIC,
+    DOM_NET_ERR_VERSION_MISMATCH,
+    DOM_NET_ERR_PROTOCOL,
+    DOM_NET_ERR_TIMEOUT,
+    DOM_NET_ERR_BUFFER_OVERFLOW,
+    DOM_NET_ERR_NOT_READY
+} DomNetResult;
+Prohibitions:
+• No structs with internal pointers to OS socket state.
+• No platform includes.
+
+2. dom_net_config.h — Static configuration constants
+Purpose: tuneable constants for packet size, buffer counts, timeouts, but all deterministic and compile-time or config-file driven.
+Contains defines only, no functions:
+#define DOM_NET_MAX_PEERS             64
+#define DOM_NET_MAX_CHANNELS          8
+#define DOM_NET_MAX_MSG_SIZE          1400    /* bytes payload */
+#define DOM_NET_MAX_PACKET_SIZE       1500    /* bytes including headers */
+#define DOM_NET_MAX_PENDING_PACKETS   256
+#define DOM_NET_RESEND_WINDOW         64      /* seq numbers */
+#define DOM_NET_INPUT_BUFFER_TICKS    8       /* how many future ticks to queue */
+#define DOM_NET_REPLAY_BUFFER_TICKS   1024
+#define DOM_NET_HEARTBEAT_INTERVAL    30      /* ticks */
+#define DOM_NET_TIMEOUT_TICKS         600     /* ticks until disconnect */
+Prohibitions:
+• No dynamic reconfiguration at runtime that changes semantics mid-session.
+• No platform-dependent values here.
+
+3. dom_net_proto.[hc] — Wire protocol structure
+Purpose: define the actual on-wire packet format, headers, message types, and assembly/disassembly helpers.
+Header: dom_net_proto.h
+Includes:
+#include "dom_net_types.h"
+#include "dom_net_config.h"
+Packet header:
+#define DOM_NET_MAGIC 0x444F4D4E  /* 'DOMN' */
+
+typedef struct DomNetPacketHeader {
+    dom_u32 magic;          /* DOM_NET_MAGIC */
+    dom_u16 version_major;  /* protocol version */
+    dom_u16 version_minor;
+    DomNetSessionId session_id;
+    DomNetWorldId   world_id;
+    DomNetRole      role;         /* sender role */
+    DomNetTick      tick;         /* sender current tick */
+    dom_u8          flags;        /* compression, ack-only, etc. */
+    dom_u8          reserved[7];
+} DomNetPacketHeader;
+Per-message header inside packet:
+typedef struct DomNetMsgHeader {
+    DomNetChannelId channel_id;
+    DomNetMsgType   type;
+    DomNetSeq       seq;
+    dom_u16         payload_size; /* bytes */
+    dom_u16         flags;        /* reliability, etc. */
+} DomNetMsgHeader;
+Public API:
+Packing:
+DomNetResult dom_net_proto_begin_packet(DomNetPacketHeader *hdr,
+                                        DomNetRole role,
+                                        DomNetSessionId session_id,
+                                        DomNetWorldId world_id,
+                                        DomNetTick tick);
+
+DomNetResult dom_net_proto_append_message(dom_u8 *buf,
+                                          dom_u32 buf_size,
+                                          dom_u32 *inout_offset,
+                                          const DomNetMsgHeader *mhdr,
+                                          const void *payload);
+Unpacking:
+DomNetResult dom_net_proto_read_header(const dom_u8 *buf,
+                                       dom_u32 buf_size,
+                                       DomNetPacketHeader *out_hdr);
+
+DomNetResult dom_net_proto_next_message(const dom_u8 *buf,
+                                        dom_u32 buf_size,
+                                        dom_u32 *inout_offset,
+                                        DomNetMsgHeader *out_mhdr,
+                                        void *out_payload,
+                                        dom_u32 max_payload);
+Implementation rules:
+• Strict bounds checking; never read/write beyond buffer.
+• All multibyte fields little-endian on wire.
+• Version mismatch must yield DOM_NET_ERR_VERSION_MISMATCH and force disconnect.
+Prohibitions:
+• No compression algorithms here; just flags. Compression is a separate module if ever added.
+• No encryption; handled outside this layer.
+
+4. dom_net_channel.[hc] — Logical channels and reliability
+Purpose: manage per-channel sequencing, acking, and message buffering on top of UDP-like unreliable transport.
+Header: dom_net_channel.h
+Includes:
+#include "dom_net_types.h"
+#include "dom_net_proto.h"
+Channel kind:
+typedef enum {
+    DOM_NET_CH_RELIABLE_ORDERED = 0,
+    DOM_NET_CH_UNRELIABLE,
+    DOM_NET_CH_INPUT_LOCKSTEP   /* special for input commands */
+} DomNetChannelKind;
+Channel state:
+typedef struct DomNetChannel {
+    DomNetChannelId   id;
+    DomNetChannelKind kind;
+    DomNetSeq         next_send_seq;
+    DomNetSeq         next_expect_seq;
+    DomNetSeq         last_acked_seq;
+
+    /* Fixed-size outgoing window for reliable messages */
+    dom_u8   send_window[DOM_NET_RESEND_WINDOW][DOM_NET_MAX_MSG_SIZE];
+    dom_u16  send_window_size[DOM_NET_RESEND_WINDOW];
+    DomNetSeq send_window_seq[DOM_NET_RESEND_WINDOW];
+
+    /* Fixed-size receive buffer for ordered delivery */
+    dom_u8   recv_window[DOM_NET_RESEND_WINDOW][DOM_NET_MAX_MSG_SIZE];
+    dom_u16  recv_window_size[DOM_NET_RESEND_WINDOW];
+    DomNetSeq recv_window_seq[DOM_NET_RESEND_WINDOW];
+
+    dom_u32  last_activity_tick;
+} DomNetChannel;
+Public API:
+Init:
+void dom_net_channel_init(DomNetChannel *ch,
+                          DomNetChannelId id,
+                          DomNetChannelKind kind);
+Outgoing:
+DomNetResult dom_net_channel_enqueue(DomNetChannel *ch,
+                                     DomNetMsgType type,
+                                     const void *payload,
+                                     dom_u16 payload_size,
+                                     DomNetSeq *out_seq);
+
+/* Called when building a packet; returns messages to send. */
+DomNetResult dom_net_channel_collect_send(DomNetChannel *ch,
+                                          DomNetTick current_tick,
+                                          dom_u8 *packet_buf,
+                                          dom_u32 packet_size,
+                                          dom_u32 *inout_offset);
+Incoming:
+DomNetResult dom_net_channel_receive(DomNetChannel *ch,
+                                     const DomNetMsgHeader *mhdr,
+                                     const void *payload);
+
+/* Poll for next delivered message in order. */
+DomNetResult dom_net_channel_dequeue(DomNetChannel *ch,
+                                     DomNetMsgHeader *out_mhdr,
+                                     void *out_payload,
+                                     dom_u16 max_payload);
+Implementation rules:
+• For RELIABLE_ORDERED, missing seqs buffer out-of-order until gap filled; on overflow, oldest entries drop with deterministic policy.
+• For UNRELIABLE, no buffering: accept or drop based on space.
+• For INPUT_LOCKSTEP, enforce exactly one input per player per tick; missing inputs cause pause/wait in lockstep controller (see lockstep module).
+Prohibitions:
+• No dynamic allocation in enqueue/receive.
+• No per-platform behaviour differences.
+
+5. dom_net_lockstep.[hc] — Deterministic lockstep controller
+Purpose: enforce the tick-synchronous model described in the determinism spec: all peers must have all inputs for tick N before simulating tick N.
+Header: dom_net_lockstep.h
+Includes:
+#include "dom_net_types.h"
+#include "dom_net_channel.h"
+#include "dom_sim_time.h"
+#include "dom_sim_input.h"    /* canonical input command format */
+Types:
+typedef struct DomNetLockstepPeer {
+    DomNetPeerId id;
+    DomNetConnState state;
+    DomNetTick last_confirmed_tick;
+    DomNetTick last_recv_tick;
+    DomNetTick last_send_tick;
+    dom_bool8  has_input_for_tick[DOM_NET_INPUT_BUFFER_TICKS];
+} DomNetLockstepPeer;
+Controller:
+typedef struct DomNetLockstep {
+    DomNetRole role;
+    DomNetSessionId session_id;
+    DomNetWorldId   world_id;
+    DomNetTick      current_tick;
+    dom_u32         peer_count;
+    DomNetLockstepPeer peers[DOM_NET_MAX_PEERS];
+
+    /* Channel dedicated to lockstep inputs */
+    DomNetChannel   input_channel;
+} DomNetLockstep;
+Public API:
+Init/reset:
+DomResult dom_net_lockstep_init(DomNetLockstep *ls,
+                                DomNetRole role,
+                                DomNetSessionId session_id,
+                                DomNetWorldId world_id);
+
+void      dom_net_lockstep_reset(DomNetLockstep *ls);
+Tick control:
+/* Called once per simulation tick BEFORE sim step. */
+DomNetResult dom_net_lockstep_before_tick(DomNetLockstep *ls,
+                                          DomNetTick tick,
+                                          const DomSimInputFrame *local_input);
+
+/* Returns whether it is safe to advance to tick N (all inputs present). */
+dom_bool8 dom_net_lockstep_can_advance(const DomNetLockstep *ls,
+                                       DomNetTick tick);
+Input retrieval:
+/* Collects authoritative input frame for given tick and peer. */
+DomResult dom_net_lockstep_get_input(const DomNetLockstep *ls,
+                                     DomNetTick tick,
+                                     DomNetPeerId peer_id,
+                                     DomSimInputFrame *out_input);
+Packet integration:
+/* Called for each received packet's messages on input channel. */
+DomResult dom_net_lockstep_on_input_message(DomNetLockstep *ls,
+                                            DomNetPeerId peer_id,
+                                            const DomNetMsgHeader *mhdr,
+                                            const void *payload);
+Implementation rules:
+• Lockstep runs entirely in tick-space; no real-time concept.
+• If any peer lacks input for tick N, can_advance must return false and the sim must stall.
+• Inputs older than current_tick - DOM_NET_INPUT_BUFFER_TICKS can be discarded once confirmed.
+• Host is authoritative for tick progression; clients must follow host’s current_tick announcements.
+Prohibitions:
+• No prediction or rollback here. Prediction is an optional layer elsewhere, not in deterministic kernel.
+• No auto-skip of slow peers; network policy decides disconnection.
+
+6. dom_net_serialize.[hc] — Deterministic state and message serialization
+Purpose: pack/unpack simulation-visible constructs into network messages or logs.
+Header: dom_net_serialize.h
+Includes:
+#include "dom_net_types.h"
+#include "dom_sim_snapshot.h"   /* snapshot descriptor(s) */
+#include "dom_sim_input.h"
+Public API:
+Input serialization:
+dom_u16 dom_net_serialize_input(const DomSimInputFrame *frame,
+                                dom_u8 *buf,
+                                dom_u16 buf_size);
+
+DomResult dom_net_deserialize_input(DomSimInputFrame *frame,
+                                    const dom_u8 *buf,
+                                    dom_u16 size);
+Snapshot serialization (for join/sync):
+dom_u16 dom_net_serialize_snapshot_header(const DomSimSnapshotHeader *hdr,
+                                          dom_u8 *buf,
+                                          dom_u16 buf_size);
+
+dom_u16 dom_net_serialize_snapshot_chunk(const DomSimSnapshotChunk *chunk,
+                                         dom_u8 *buf,
+                                         dom_u16 buf_size);
+
+DomResult dom_net_deserialize_snapshot_header(DomSimSnapshotHeader *hdr,
+                                              const dom_u8 *buf,
+                                              dom_u16 size);
+
+DomResult dom_net_deserialize_snapshot_chunk(DomSimSnapshotChunk *chunk,
+                                             const dom_u8 *buf,
+                                             dom_u16 size);
+Implementation rules:
+• Never serialize pointers. Only IDs, indices, fixed-size structs.
+• Use fixed endian (little) and fixed field ordering.
+• No schema discovery at runtime: formats are compile-time defined and versioned.
+Prohibitions:
+• No compression inside these functions.
+• No direct file I/O (replay uses the same functions but writes via separate layer).
+
+7. dom_net_replay.[hc] — Replay capture and playback over network layer
+Purpose: capture all simulation-relevant inputs and network ticks for deterministic replay, and feed them back to the engine.
+Header: dom_net_replay.h
+Includes:
+#include "dom_net_types.h"
+#include "dom_sim_input.h"
+#include "dom_sim_time.h"
+Types:
+typedef enum {
+    DOM_NET_REPLAY_MODE_OFF = 0,
+    DOM_NET_REPLAY_MODE_RECORD,
+    DOM_NET_REPLAY_MODE_PLAYBACK
+} DomNetReplayMode;
+
+typedef struct DomNetReplay {
+    DomNetReplayMode mode;
+    DomNetTick       start_tick;
+    DomNetTick       current_tick;
+    /* Internal fixed-size buffers or streaming handle; opaque to callers */
+} DomNetReplay;
+Public API:
+Init:
+DomResult dom_net_replay_init(DomNetReplay *rp);
+void      dom_net_replay_reset(DomNetReplay *rp);
+Mode control:
+DomResult dom_net_replay_begin_record(DomNetReplay *rp,
+                                      DomNetTick start_tick);
+
+DomResult dom_net_replay_begin_playback(DomNetReplay *rp,
+                                        DomNetTick start_tick);
+
+void      dom_net_replay_stop(DomNetReplay *rp);
+Recording:
+DomResult dom_net_replay_record_input(DomNetReplay *rp,
+                                      DomNetTick tick,
+                                      DomNetPeerId peer_id,
+                                      const DomSimInputFrame *frame);
+Playback:
+DomResult dom_net_replay_get_input(DomNetReplay *rp,
+                                   DomNetTick tick,
+                                   DomNetPeerId peer_id,
+                                   DomSimInputFrame *out_frame);
+Implementation rules:
+• Uses deterministic binary format identical across systems (same serialization helpers as network).
+• No compression that depends on platform-specific libraries; if added, must be deterministic and stable.
+• Cannot change behaviour based on real time; only tick.
+Prohibitions:
+• No partial replay editing here.
+• No random sampling or trimming; full record only, or pre-defined trimming logic strictly defined.
+
+8. dom_net_client.[hc] — Client-side network state machine
+Purpose: wraps proto + channels + lockstep into a client logic unit. Does not do sockets; only consumes/produces packets as raw byte arrays.
+Header: dom_net_client.h
+Includes:
+#include "dom_net_types.h"
+#include "dom_net_lockstep.h"
+#include "dom_net_channel.h"
+#include "dom_net_proto.h"
+#include "dom_net_serialize.h"
+Types:
+typedef struct DomNetClient {
+    DomNetConnState  state;
+    DomNetSessionId  session_id;
+    DomNetWorldId    world_id;
+    DomNetPeerId     server_peer_id;
+
+    DomNetTick       local_tick;
+    DomNetTick       server_tick_hint;
+
+    DomNetLockstep   lockstep;
+
+    DomNetChannel    channels[DOM_NET_MAX_CHANNELS];
+
+    dom_u32          last_recv_tick;
+    dom_u32          last_send_tick;
+} DomNetClient;
+Public API:
+Init/reset:
+DomResult dom_net_client_init(DomNetClient *c);
+void      dom_net_client_reset(DomNetClient *c);
+Connect/session management (logic-level):
+DomResult dom_net_client_start(DomNetClient *c,
+                               DomNetWorldId world_id);
+
+void      dom_net_client_disconnect(DomNetClient *c);
+Tick update:
+/* Called once per engine tick. Produces a packet if one should be sent. */
+DomNetResult dom_net_client_tick(DomNetClient *c,
+                                 const DomSimInputFrame *local_input,
+                                 dom_u8 *out_packet,
+                                 dom_u32 out_packet_size,
+                                 dom_u32 *out_packet_len,
+                                 DomNetTick *out_tick_to_simulate);
+Packet receive:
+DomNetResult dom_net_client_on_packet(DomNetClient *c,
+                                      const dom_u8 *packet,
+                                      dom_u32 packet_len);
+Simulation integration:
+• dom_net_client_tick sets *out_tick_to_simulate only when lockstep_can_advance.
+• Caller must not advance sim tick unless a valid tick index is provided.
+Prohibitions:
+• No direct calls to OS or sockets.
+• No UI-specific logic.
+
+9. dom_net_server.[hc] — Server-side network state machine
+Purpose: authoritative host managing multiple clients, driving lockstep tick progression, and providing snapshot/sync.
+Header: dom_net_server.h
+Includes:
+#include "dom_net_types.h"
+#include "dom_net_lockstep.h"
+#include "dom_net_channel.h"
+#include "dom_net_proto.h"
+#include "dom_net_serialize.h"
+#include "dom_sim_snapshot.h"
+Types:
+typedef struct DomNetServerPeer {
+    DomNetPeerId id;
+    DomNetConnState state;
+    DomNetTick last_recv_tick;
+    DomNetTick last_send_tick;
+    DomNetTick last_confirmed_tick;
+    DomNetChannel channels[DOM_NET_MAX_CHANNELS];
+} DomNetServerPeer;
+
+typedef struct DomNetServer {
+    DomNetSessionId session_id;
+    DomNetWorldId   world_id;
+    DomNetTick      current_tick;
+    DomNetConnState state;
+
+    dom_u32         peer_count;
+    DomNetServerPeer peers[DOM_NET_MAX_PEERS];
+
+    DomNetLockstep  lockstep;
+} DomNetServer;
+Public API:
+Init/reset:
+DomResult dom_net_server_init(DomNetServer *s,
+                              DomNetWorldId world_id);
+
+void      dom_net_server_reset(DomNetServer *s);
+Peer management (logic-level; platform layer decides when to call):
+DomNetPeerId dom_net_server_add_peer(DomNetServer *s);
+void         dom_net_server_remove_peer(DomNetServer *s,
+                                        DomNetPeerId id);
+Per-tick:
+/* Called once per server tick. Fills array of packets to send. */
+DomNetResult dom_net_server_tick(DomNetServer *s,
+                                 dom_u8 out_packets[][DOM_NET_MAX_PACKET_SIZE],
+                                 dom_u32 out_packet_sizes[],
+                                 DomNetPeerId out_packet_peers[],
+                                 dom_u32 max_packets,
+                                 dom_u32 *out_packet_count,
+                                 DomNetTick *out_tick_to_simulate);
+Packet receive:
+DomNetResult dom_net_server_on_packet(DomNetServer *s,
+                                      DomNetPeerId peer_id,
+                                      const dom_u8 *packet,
+                                      dom_u32 packet_len);
+Snapshot/sync helpers:
+DomResult dom_net_server_build_snapshot(const DomNetServer *s,
+                                        DomNetPeerId peer_id,
+                                        DomSimSnapshotHeader *out_hdr);
+
+DomResult dom_net_server_on_snapshot_ack(DomNetServer *s,
+                                         DomNetPeerId peer_id,
+                                         const DomSimSnapshotHeader *hdr);
+Implementation rules:
+• server_tick is the authoritative tick; clients follow it.
+• Server only advances tick when all connected peers in RUNNING state have input for tick N (lockstep).
+• On timeouts, server marks peer as disconnected and can continue with remaining peers.
+Prohibitions:
+• No server-side prediction of clients.
+• No dynamic tick speed changes based on real time.
+
+Summary:
+engine/net/ defines a deterministic, lockstep-only, protocol-stable networking core:
+• types/config: common IDs and constants.
+• proto: packet and message packing/unpacking.
+• channel: reliable/unreliable channels with bounded windows.
+• lockstep: tick gating and input distribution.
+• serialize: deterministic input/snapshot packing.
+• replay: record/playback of inputs.
+• client and server: high-level state machines that glue all of the above.
+All socket/OS concerns are deferred to the platform layer, which sees only raw packet buffers and peer IDs.
