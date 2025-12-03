@@ -1,0 +1,255 @@
+This message is the dev-spec for /data (top-level game data subtree), not the engine or game code.
+/data holds all first-party content that is loaded as “data packs” on top of the deterministic engine:
+• Base game definitions
+• Official DLCs
+• First-party graphics/sound/music packs
+• Example templates and demo universes
+No C/C++ code lives here. Only data, schemas, and manifests.
+
+0. Structure recap
+/data
+├─ README.md
+├─ data_manifest.json
+├─ schema/
+│  ├─ data_schema.json
+│  ├─ prefab_schema.json
+│  ├─ tech_schema.json
+│  ├─ network_schema.json
+│  └─ locale_schema.json
+├─ base/
+├─ dlc/
+├─ packs/
+└─ templates/
+Later messages will drill into /data/base, /data/dlc, /data/packs, /data/templates.
+This message defines what /data as a whole does and what its files must guarantee.
+
+1. /data/README.md
+Short human-facing description of data layout and rules.
+Mandatory sections:
+• Data philosophy (deterministic, schema-driven, no code)
+• Directory overview (base, dlc, packs, templates)
+• Versioning and compat guarantees
+• Modding notes (how mods mirror /data structure under /mods)
+No technical authority here; specs live in /docs/spec.
+
+2. /data/data_manifest.json — Global data index
+Single source of truth for what data packs exist, their IDs, load order, and compatibility.
+Format (top-level)
+{
+  "format_version": 1,
+  "engine_min_version": "3.0.0",
+  "engine_max_version": "3.x",
+  "packs": [
+    {
+      "id": "base",
+      "type": "base",
+      "path": "base",
+      "version": "1.0.0",
+      "priority": 0,
+      "dependencies": [],
+      "description": "Dominium base game content"
+    },
+    {
+      "id": "dlc_interstellar",
+      "type": "dlc",
+      "path": "dlc/interstellar",
+      "version": "1.0.0",
+      "priority": 10,
+      "dependencies": ["base"]
+    },
+    {
+      "id": "pack_default_graphics",
+      "type": "gfx_pack",
+      "path": "packs/gfx_default",
+      "version": "1.0.0",
+      "priority": 100,
+      "dependencies": ["base"]
+    }
+  ]
+}
+Semantics
+• format_version – version of this manifest structure.
+• packs – ordered list telling the engine what to load:
+o id – global string ID (stable).
+o type – "base" | "dlc" | "gfx_pack" | "sfx_pack" | "music_pack" | "template_pack" | "other".
+o path – relative to /data.
+o priority – load-overwrite order; higher overrides lower for same resource IDs.
+o dependencies – other pack IDs required.
+Engine rules:
+• base must exist and load first.
+• DLCs must list base or others they extend.
+• Packs may override resources but never change binary format.
+• Engine must reject inconsistent dependency graphs deterministically.
+Prohibitions:
+• No script or code embedded.
+• No runtime config here; purely data-pack references.
+
+3. /data/schema/ — JSON schemas for all data types
+This directory defines authoritative machine-readable schemas for every structured data file type used under /data (and mirrored under /mods).
+Files:
+/data/schema/
+├─ data_schema.json           # root schema that references the others
+├─ prefab_schema.json         # buildings, machines, rolling stock, items
+├─ tech_schema.json           # research tree, prerequisites, costs
+├─ network_schema.json        # power/fluids/data/rail/road definitions
+├─ worldgen_schema.json       # planet templates, terrain generators
+├─ economy_schema.json        # commodities, markets, pricing models
+├─ locale_schema.json         # localisation entries
+└─ ui_schema.json             # optional UI layout data
+3.1 data_schema.json
+• Master schema that references each data category.
+• For validation tools and CI.
+• Defines $id base and $ref targets for sub-schemas.
+Usage:
+• /tools/devkit runs a validator over all JSON in /data and /mods against these schemas.
+3.2 prefab_schema.json
+Defines structure of prefab JSONs for entities:
+• prefab_id (string; mapped to uint64 at load)
+• category (building, vehicle, item, worker, terrain_feature, orbital_structure, ship, station_module, etc.)
+• components – typed dict of component payloads (matching ECS component IDs)
+• footprint – tile/grid footprint (2D or 3D)
+• ports – utility connection points (power/fluid/data/rail/road/pipe)
+• construction – stages, costs, jobs, prerequisites
+• flags – destructible, explosive, atmospheric, orbital-only, surface-only, etc.
+Rules:
+• All numeric values use integers or rational encoding (no bare floats).
+• Component payloads must match component IDs and their static formats defined in /docs/spec.
+3.3 tech_schema.json
+Defines structure for technology and research:
+• tech_id, name, description
+• tier, category
+• prerequisites (array of tech_ids)
+• unlocks (prefab_ids, components, recipes)
+• cost (science packs or resource tokens)
+• time (ticks or research points)
+Determinism:
+• Tech unlock order computed from this graph must be deterministic given same inputs.
+3.4 network_schema.json
+For base definitions of:
+• Rail gauges and rail types
+• Road classes
+• Power line voltages/insulation classes
+• Fluids/pipes diameters
+• Data cable types, fibre, wireless bands
+Structure:
+• Each network element has:
+o id (string)
+o category (rail, road, power, fluid, data)
+o parameters (integers only: capacity, speed_limit, loss_per_km, etc)
+o constraints (where it can be placed, what it connects to)
+These definitions feed the sim network modules.
+3.5 worldgen_schema.json
+For procedural world and planet templates:
+• planet_id, seed, radius, gravity, atmosphere, biomes, ore_distributions, sea_level, etc.
+• surface_tiling parameters linking to your subtile/chunk/region system.
+Important: worldgen is deterministic integer math, seeds are integers, no floats.
+3.6 economy_schema.json
+For commodities and economic configuration:
+• Commodity IDs, units, density
+• Base prices and elasticity
+• Market groups and supply/demand curves (lookup tables)
+Prices computed in sim from these discrete tables, not from JSON floats.
+3.7 locale_schema.json
+Defines the structure for localisation packs:
+• language_code (e.g. en-AU)
+• entries map: key -> translated string
+• Meta: plural rules, fonts fallback, text direction.
+Prohibitions: no embedded control codes outside your safely-defined markup.
+
+4. /data/base/ — Base game content root
+Only overview here; its own message will define file-by-file spec.
+High-level layout:
+/data/base/
+├─ manifest.json
+├─ prefabs/
+├─ tech/
+├─ networks/
+├─ worldgen/
+├─ economy/
+├─ locale/
+└─ scripts/      # if you allow deterministic Lua helpers; optional
+Contract:
+• manifest.json must conform to data/schema/data_schema.json pack fragment.
+• All structured files must pass schema validation.
+• No code other than pure data or pure deterministic scripts if allowed.
+
+5. /data/dlc/ — Official DLC roots
+Each DLC is a pack extending /data/base.
+Example layout:
+/data/dlc/
+├─ interstellar/
+│  ├─ manifest.json
+│  ├─ prefabs/
+│  ├─ tech/
+│  ├─ worldgen/
+│  └─ locale/
+└─ wargames/
+   ├─ manifest.json
+   └─ ...
+Each DLC directory:
+• Must contain a manifest.json referencing its pack ID (e.g. dlc_interstellar) and dependencies.
+• Must not redefine fundamental formats, only extend/override objects.
+Engine must:
+• Load base first, then DLCs by priority.
+• Detect conflicting IDs and handle via override rules (no ambiguity).
+
+6. /data/packs/ — Graphics/SFX/Music packs
+These are cosmetic packs that do not change simulation.
+Example:
+/data/packs/
+├─ gfx_default/
+│  ├─ manifest.json
+│  ├─ sprites/
+│  ├─ tilesets/
+│  └─ ui/
+├─ sfx_default/
+│  ├─ manifest.json
+│  └─ sounds/
+└─ music_default/
+   ├─ manifest.json
+   └─ music/
+6.1 GFX pack constraints
+• All images must be in deterministic, cross-platform formats (PNG, indexed BMP for retro).
+• All animation/tile meta is stored in JSON, governed by ui_schema or a separate gfx_schema.
+No engine logic here.
+6.2 SFX/Music pack constraints
+• Sound assets as WAV/OGG/FLAC.
+• Music playlists defined in JSON.
+• No random playlist semantics; playlists are deterministic sequences with optional weighted selection but configured via integers (engine chooses deterministically from a seed).
+
+7. /data/templates/ — Example universes and demo saves
+Example layout:
+/data/templates/
+├─ manifest.json
+├─ tutorial_property/
+│  ├─ meta.json
+│  ├─ save.dom
+│  └─ readme.md
+└─ mega_factory/
+   ├─ meta.json
+   ├─ save.dom
+   └─ readme.md
+• manifest.json lists built-in templates.
+• meta.json describes each template: name, description, recommended difficulty, version, required DLCs.
+Engine behaviour:
+• Templates are read-only masters; using one creates a copy in user save space.
+• The .dom save files must conform to the deterministic serialization spec from your V3 docs.
+Prohibitions:
+• Templates must not depend on mods.
+• No executable scripts except deterministic world scripts embedded via engine’s safe scripting channels.
+
+8. Determinism and versioning guarantees for /data
+The data layer must obey:
+1. Schema-validated, versioned formats.
+2. No floating-point numbers in any file; use integers or fixed-point encoded as ints.
+3. Stable IDs: once a prefab/tech/resource ID is published, it must not be repurposed.
+4. Backward compatibility:
+o For each broke-change schema bump, provide migration rules or drop old saves intentionally.
+5. Load order defined strictly by data_manifest.json → no file system ordering.
+
+9. Prohibitions across /data
+• No C/C++/binary code.
+• No compiled scripts or bytecode.
+• No platform-specific paths or line endings assumptions.
+• No random numbers baked as behaviour; use seeds and engine-level PRNG.
+• No reliance on directory listing order; everything must be explicitly listed in manifests.

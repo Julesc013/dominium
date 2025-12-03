@@ -1,0 +1,363 @@
+Below is the full dev-spec for /package/ — the directory responsible for creating installers, distributable archives, physical media images, retro formats, and launcher metadata for every supported platform.
+/package never contains engine/game logic.
+It contains instructions and layouts used by build scripts to assemble redistributables.
+This directory must not influence runtime determinism.
+It is purely a distribution layer.
+
+0. Directory Layout (Canonical)
+/package/
+├─ README.md
+├─ common/
+│  ├─ layout/
+│  │  ├─ directory_layout.json
+│  │  ├─ metadata_schema.json
+│  │  └─ manifest_schema.json
+│  ├─ assets/
+│  │  ├─ icons/
+│  │  ├─ splash/
+│  │  └─ branding/
+│  └─ scripts/
+│     ├─ validate_distribution.py
+│     ├─ verify_relocatable_paths.py
+│     └─ inject_manifest.py
+├─ windows/
+│  ├─ nsis/
+│  │  ├─ dominium_installer.nsi
+│  │  ├─ include/
+│  │  └─ resources/
+│  ├─ inno/
+│  │  ├─ dominium.iss
+│  │  └─ resources/
+│  ├─ manifest/
+│  │  ├─ app_manifest.xml
+│  │  └─ file_associations.xml
+│  └─ scripts/
+│     ├─ bundle_msvc_redistributables.py
+│     ├─ generate_shortcuts.py
+│     └─ sign_binaries.ps1
+├─ linux/
+│  ├─ deb/
+│  │  ├─ control
+│  │  ├─ postinst
+│  │  ├─ prerm
+│  │  └─ triggers
+│  ├─ rpm/
+│  │  ├─ dominium.spec
+│  ├─ flatpak/
+│  │  ├─ manifest.json
+│  │  └─ sandbox-permissions.txt
+│  ├─ appimage/
+│  │  ├─ AppRun
+│  │  ├─ dominium.desktop
+│  │  └─ dominium.png
+│  └─ scripts/
+│     ├─ build_deb.py
+│     ├─ build_rpm.py
+│     ├─ build_flatpak.py
+│     └─ build_appimage.py
+├─ macos/
+│  ├─ bundle/
+│  │  ├─ Dominium.app/
+│  │  │  ├─ Contents/
+│  │  │  │  ├─ Info.plist
+│  │  │  │  ├─ MacOS/dominium
+│  │  │  │  ├─ Resources/
+│  │  │  │  └─ Frameworks/
+│  │  └─ resources/
+│  ├─ dmg/
+│  │  ├─ layout.json
+│  │  └─ background.png
+│  └─ scripts/
+│     ├─ sign_app.sh
+│     ├─ notarize_app.sh
+│     └─ create_dmg.sh
+├─ retro/
+│  ├─ dos/
+│  │  ├─ floppy_1440k_layout/
+│  │  ├─ cdrom_iso9660/
+│  │  └─ dos_installer.bat
+│  ├─ win3x/
+│  │  ├─ setup.inf
+│  │  ├─ cab_files/
+│  │  └─ win16_installer.rtf
+│  ├─ win9x/
+│  │  ├─ setup.iss
+│  │  └─ uninstall.inf
+│  └─ mac_classic/
+│     ├─ disk_image.smi
+│     ├─ Finder_metadata/
+│     └─ CFBundleInfo
+└─ scripts/
+   ├─ full_release_pipeline.py
+   ├─ checksum_release.py
+   ├─ verify_retro_format.py
+   └─ generate_release_notes.py
+
+1. /package/README.md
+Must explain:
+• What /package is for: installers, images, archives.
+• It must never contain:
+o Engine code
+o Game logic
+o Mods
+o Runtime determinism decisions
+• Release pipeline is:
+/build → /package/scripts/full_release_pipeline.py → platform packages.
+• Retro packaging is fully isolated and must obey 8.3 filenames and memory constraints.
+
+2. /package/common/
+Shared schemas, branding, validation tools.
+2.1 /common/layout/
+directory_layout.json
+Defines canonical install directory structure for all platforms:
+{
+  "bin": ["dominium", "dominium_server", "domedit"],
+  "data": ["base/", "dlc/", "packs/"],
+  "docs": ["manual/", "licences/"],
+  "mods": [],
+  "saves": [],
+  "config": []
+}
+Rules:
+• Installer must place binaries & data exactly as this schema dictates.
+• Paths must be relocatable on Linux and macOS.
+• Windows requires registry + Start Menu shortcuts but must not hardcode data paths.
+metadata_schema.json
+Defines structure of the final metadata file bundled with each release:
+{
+  "app_id": "dominium",
+  "engine_version": "3.0.0",
+  "git_commit": "abc123",
+  "build_config": "release",
+  "date": "YYYY-MM-DD",
+  "supported_platforms": ["linux", "win", "mac"],
+  "content_hash": "sha256:..."
+}
+manifest_schema.json
+Defines the optional manifest attached to the install:
+• File list
+• Hashes
+• Optional signatures
+• DLC + mods included
+Used for validating integrity post-installation.
+
+2.2 /common/assets/
+Branding assets for installers:
+• Icons
+• Splash screens
+• Default wallpapers
+• Launch screen backgrounds
+Rules:
+• Must follow branding guidelines in /docs/design.
+• Never used by runtime game.
+• Must support multiple resolutions.
+
+2.3 /common/scripts/
+Tools shared by all platform packagers:
+validate_distribution.py
+Runs checks:
+• Directory layout compliance
+• Manifest correctness
+• Hash consistency
+• No dev-only files included (debug symbols, tests, source)
+verify_relocatable_paths.py
+Ensures:
+• No absolute paths in packaged files
+• No hardcoded C:\Program Files or /usr/share paths
+• No baked-in developer usernames or home paths
+inject_manifest.py
+Packs runtime metadata into the release directory.
+
+3. /package/windows/
+Contains installer definitions and Windows-specific distribution tooling.
+3.1 /windows/nsis/
+• .nsi installer script templates
+• Icon resources
+• Branding
+• Shortcut definitions
+Installer capabilities:
+• Optional components (client, server, editor, tools)
+• Registry entries for uninstall
+• Correct setting of %APPDATA%/Dominium config path
+• Hash verification post-install
+Prohibitions:
+• No installation of MSVC redistributables unless explicitly declared in your licensing.
+3.2 /windows/inno/
+Alternative installer engine (.iss).
+Same prohibitions as NSIS.
+3.3 /windows/manifest/
+Defines Windows application manifests:
+• DPI awareness
+• OS compatibility settings
+• File association definitions
+• UAC execution levels
+Must not:
+• Use deprecated manifests
+• Hardcode 32/64-bit decisions into shared files
+3.4 /windows/scripts/
+• Bundling redistributables
+• Code signing
+• Shortcut creation
+Cannot modify game content.
+
+4. /package/linux/
+Supports Debian, RPM, Flatpak, and AppImage.
+4.1 /linux/deb/
+Contains:
+• control file
+• postinst, prerm, triggers scripts
+• Service files if server is packaged as a systemd service (optional)
+Rules:
+• Must respect FHS:
+o /usr/bin/dominium
+o /usr/share/dominium/data
+o /usr/share/doc/dominium
+o /var/lib/dominium for server autosaves
+Prohibitions:
+• Must not write into user home during install.
+4.2 /linux/rpm/
+dominium.spec determines:
+• Provided/Required packages
+• Install locations
+• Scripts (post-install, pre-remove)
+Testing must ensure:
+• rpm build is reproducible
+• No file conflicts
+4.3 /linux/flatpak/
+manifest.json defines:
+• Sandbox permissions
+• Runtime version
+• File structure
+• Gnome/KDE integration if needed
+Rules:
+• No elevated permissions without justification (e.g. network).
+• Allow user mod directory under $HOME.
+4.4 /linux/appimage/
+Includes:
+• AppRun script
+• .desktop file
+• Icons
+Rule:
+• Entire runtime must be self-contained.
+
+5. /package/macos/
+5.1 /macos/bundle/
+Defines .app bundle layout:
+Dominium.app/
+├─ Contents/
+│  ├─ Info.plist
+│  ├─ MacOS/dominium
+│  ├─ Resources/
+│  └─ Frameworks/
+Rules:
+• Must follow Apple bundle structure strictly.
+• Icons, plist metadata must match brand spec.
+• Bundle IDs must be stable across versions.
+5.2 /macos/dmg/
+Defines DMG appearance:
+• Background
+• Icon positions
+• Volume name
+layout.json determines internal representation.
+5.3 /macos/scripts/
+sign_app.sh
+Code-signs .app with developer certificate.
+notarize_app.sh
+Uploads for notarization.
+create_dmg.sh
+Builds DMG image reproducibly.
+
+6. /package/retro/ — DOS, Win3.x, Win9x, Mac Classic
+Critical for your requirement of full retro compatibility.
+6.1 /retro/dos/
+Contains:
+• Floppy image layouts (1.44MB, 720KB).
+• ISO-9660 tables for CD-ROM builds.
+• dos_installer.bat with SFN names only.
+• Optional compression tools (PKZIP-compatible).
+Rules:
+• 8.3 filenames only.
+• MAX DIR DEPTH: 8 levels.
+• No long filenames or mixed case.
+• CONTENT MUST FIT MEMORY CONSTRAINTS:
+o 16 MB typical DOS extenders
+o No dynamic linking
+6.2 /retro/win3x/
+• .INF setup scripts
+• .CAB file lists
+• Win16-compatible Installer RTF
+Rules:
+• No long filenames.
+• Must rely on Win16 loader conventions.
+• Must support installation to arbitrary paths.
+6.3 /retro/win9x/
+• Inno or custom setup.iss
+• 32-bit installer
+• Optional DirectX 7 redistributable
+Rules:
+• Long filenames allowed, but avoid Unicode.
+• Installer must check for missing VC++ 6.0 runtimes.
+• Must not overwrite system DLLs.
+6.4 /retro/macos_classic/
+• .smi self-mounting disk image
+• Finder alias metadata
+• System 7/8/9 layout constraints
+Prohibitions:
+• No Carbon-only APIs referenced in metadata.
+• All files must include resource forks correctly.
+
+7. /package/scripts/ — cross-platform release pipelines
+7.1 full_release_pipeline.py
+Coordinates:
+1. Build across all platforms.
+2. Collect outputs.
+3. Construct package folders.
+4. Insert manifests.
+5. Generate installer images.
+6. Produce checksums.
+7. Prepare upload artifacts.
+Must be deterministic with fixed inputs.
+7.2 checksum_release.py
+Computes SHA-256 or BLAKE3 checksums:
+• For binaries
+• For package directories
+• For manifests
+Stores results in release metadata.
+7.3 verify_retro_format.py
+Ensures:
+• All DOS/Win3.x Win9x bundles obey constraints.
+• No filename exceeds 8.3.
+• No file >2GB in ISO.
+• All resource forks intact (Mac Classic).
+7.4 generate_release_notes.py
+Produces human-readable release notes using:
+• Changelog fragments
+• Build metadata
+• DLC/mod lists
+Never modifies the game logic.
+
+8. Global Prohibitions
+Hard prohibitions:
+• No engine/game code in /package.
+• No mods or DLC content.
+• No unlicensed branding assets.
+• No installer actions that write into protected system paths without justification.
+• No absolute paths within packaged files.
+• No platform-specific hacks that alter runtime determinism (e.g. injecting command-line flags).
+Determinism rules:
+Packaging must not influence simulation determinism.
+Two builds of identical version + commit must produce the same simulation behaviour regardless of installer differences.
+Security rules:
+• No embedded scripts that execute downloaded files.
+• No network access required for installation except macOS notarization.
+• No elevation without user permission.
+
+9. Summary
+/package is the authoritative directory for producing official distributables:
+• Windows installers (NSIS/Inno)
+• Linux DEB/RPM/Flatpak/AppImage
+• macOS .app bundles and DMGs
+• Retro images (DOS, Win3.x, Win9x, Mac Classic)
+• Branding, manifests, metadata schemas
+• Release packaging scripts
+It must adhere to strict reproducibility, stability, retro constraints, and cross-platform correctness.

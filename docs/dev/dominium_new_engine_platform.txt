@@ -1,0 +1,287 @@
+This message is the deterministic dev-spec for engine/platform/.
+This is the only directory allowed to depend on OS APIs (Win32, POSIX, macOS, X11, Cocoa, ALSA, PulseAudio, CoreAudio, etc.).
+Everything here exists behind stable cross-platform interfaces.
+No simulation, rendering, audio, or game logic is allowed in these files.
+
+Directory Layout
+engine/
+└── platform/
+    ├── dom_platform.h
+    ├── dom_platform.c
+    ├── win32/
+    │    ├── dom_platform_win32.h
+    │    └── dom_platform_win32.c
+    ├── linux/
+    │    ├── dom_platform_linux.h
+    │    └── dom_platform_linux.c
+    ├── macos/
+    │    ├── dom_platform_macos.h
+    │    └── dom_platform_macos.c
+    ├── dos/
+    │    ├── dom_platform_dos.h
+    │    └── dom_platform_dos.c
+    ├── win9x/
+    │    ├── dom_platform_win9x.h
+    │    └── dom_platform_win9x.c
+    ├── macos_classic/
+    │    ├── dom_platform_macos_classic.h
+    │    └── dom_platform_macos_classic.c
+    └── wasm/
+         ├── dom_platform_wasm.h
+         └── dom_platform_wasm.c
+Global rules:
+• C89/C98 only for core, but platform subdirs may include OS headers.
+• No determinism inside this layer matters; determinism is guaranteed above.
+• No complex logic: thin wrappers only.
+• All I/O must go through this.
+• No direct dependency from sim/ecs/render/audio/game to OS headers.
+• No allocations above this layer may escape into simulation state.
+
+1. dom_platform.h — Master abstract platform API
+This is the only platform header visible to the entire engine.
+Includes:
+#include "dom_core_types.h"
+Defines a large abstract interface broken into functional sub-APIs:
+• Filesystem
+• Time
+• Windowing
+• Input
+• Threading
+• Networking (socket transport only)
+• Dynamic library loading (optional)
+• Logging sink redirection
+All OS-specific implementations must populate a DomPlatformAPI struct with function pointers.
+
+1.1 Core platform types
+typedef struct DomPlatformWindow DomPlatformWindow;
+typedef struct DomPlatformFileHandle DomPlatformFileHandle;
+typedef struct DomPlatformSocket DomPlatformSocket;
+typedef struct DomPlatformThread DomPlatformThread;
+typedef struct DomPlatformMutex DomPlatformMutex;
+typedef struct DomPlatformCond DomPlatformCond;
+Abstract enums:
+typedef enum {
+    DOM_KEY_NONE = 0,
+    DOM_KEY_A, DOM_KEY_B, /* ... */
+    DOM_KEY_LSHIFT, DOM_KEY_CTRL,
+    DOM_MOUSE_LEFT, DOM_MOUSE_RIGHT,
+    /* … full scancode map */
+} DomKey;
+
+typedef enum {
+    DOM_FS_SEEK_SET = 0,
+    DOM_FS_SEEK_CUR,
+    DOM_FS_SEEK_END
+} DomSeek;
+
+typedef enum {
+    DOM_SOCKET_UDP = 0,
+    DOM_SOCKET_TCP
+} DomSocketKind;
+
+2. Filesystem API
+Exposed through:
+struct DomPlatformFilesystem {
+    DomPlatformFileHandle *(*open)(const char *path, const char *mode);
+    dom_u32 (*read)(DomPlatformFileHandle *, void *buf, dom_u32 bytes);
+    dom_u32 (*write)(DomPlatformFileHandle *, const void *buf, dom_u32 bytes);
+    dom_bool8 (*seek)(DomPlatformFileHandle *, dom_i64 offset, dom_i32 whence);
+    dom_i64 (*tell)(DomPlatformFileHandle *);
+    dom_bool8 (*flush)(DomPlatformFileHandle *);
+    void (*close)(DomPlatformFileHandle *);
+
+    dom_bool8 (*exists)(const char *path);
+    dom_bool8 (*mkdir)(const char *path);
+    dom_bool8 (*remove)(const char *path);
+    dom_bool8 (*rename)(const char *oldp, const char *newp);
+
+    dom_bool8 (*list_directory)(const char *path,
+                                void (*cb)(const char *name, dom_bool8 is_dir, void *ctx),
+                                void *ctx);
+};
+Rules:
+• All file reads and writes are non-buffered beyond OS defaults.
+• No memory-mapped files; must not depend on virtual memory.
+• UTF-8 filenames externally; platform layer converts internally.
+Prohibitions:
+• No non-deterministic caching.
+• No global working-directory changes except explicitly requested.
+
+3. Time API
+Strict separation between:
+• Simulation time (deterministic, provided by engine/sim)
+• Platform wallclock time (non-deterministic, used for IO/events)
+struct DomPlatformTime {
+    dom_u64 (*now_msec)(void);
+    void    (*sleep_msec)(dom_u32);
+};
+Rules:
+• never mix simulation tick time with wallclock here.
+• Allowed to be nondeterministic; engine ignores it for sim.
+
+4. Windowing + Context Creation API
+Responsible only for:
+• Creating a window
+• Managing GL/DX contexts
+• Handling resize events
+• Passing keyboard/mouse input events
+Header:
+struct DomPlatformWindowAPI {
+    DomPlatformWindow *(*create)(const char *title,
+                                 dom_u32 w, dom_u32 h,
+                                 dom_bool8 fullscreen);
+    void (*destroy)(DomPlatformWindow *);
+    void (*poll_events)(DomPlatformWindow *);
+    dom_bool8 (*should_close)(DomPlatformWindow *);
+
+    void (*swap_buffers)(DomPlatformWindow *);
+
+    /* Backend creation */
+    void *(*create_gl_context)(DomPlatformWindow *);
+    void (*destroy_gl_context)(DomPlatformWindow *, void *);
+    void *(*create_dx9_device)(DomPlatformWindow *);
+    void *(*create_dx11_device)(DomPlatformWindow *);
+};
+Event callbacks (engine registers them):
+typedef void (*DomPlatformInputCallback)(DomKey key, dom_bool8 down);
+typedef void (*DomPlatformMouseMoveCallback)(dom_i32 x, dom_i32 y);
+typedef void (*DomPlatformMouseClickCallback)(DomKey btn, dom_bool8 down);
+
+void dom_platform_set_key_callback(DomPlatformInputCallback);
+void dom_platform_set_mouse_move_callback(DomPlatformMouseMoveCallback);
+void dom_platform_set_mouse_click_callback(DomPlatformMouseClickCallback);
+Rules:
+• Must map platform scancodes → canonical DomKey.
+• Must deliver event order exactly as OS produces them.
+Prohibitions:
+• No filtering/throttling here.
+• No text-input IME handling beyond raw key events.
+
+5. Input Device API
+struct DomPlatformInput {
+    dom_bool8 (*key_down)(DomKey key);
+    dom_bool8 (*mouse_down)(DomKey button);
+    void (*mouse_pos)(dom_i32 *x, dom_i32 *y);
+};
+Rules:
+• Cached state must update only during poll_events.
+
+6. Networking (Transport Layer Only)
+All higher networking logic is in engine/net/.
+Platform provides only:
+struct DomPlatformNet {
+    DomPlatformSocket *(*socket_create)(DomSocketKind kind);
+    void (*socket_destroy)(DomPlatformSocket *);
+    dom_bool8 (*socket_bind)(DomPlatformSocket *, dom_u16 port);
+    dom_bool8 (*socket_connect)(DomPlatformSocket *, const char *ip, dom_u16 port);
+
+    dom_i32 (*socket_send)(DomPlatformSocket *, const void *buf, dom_i32 len);
+    dom_i32 (*socket_recv)(DomPlatformSocket *, void *buf, dom_i32 max_len);
+    dom_bool8 (*socket_set_nonblocking)(DomPlatformSocket *, dom_bool8 nonblock);
+};
+Rules:
+• UDP sockets recommended for lockstep.
+• Must return 0 or -1 for no data; no exceptions or OS errors propagate upward except numeric codes.
+Prohibitions:
+• No DNS resolves here.
+• No TCP-specific handshake logic (other than OS connect).
+
+7. Threading & Synchronization API
+Used only by engine subsystems that need background IO, loaders, or async compression.
+struct DomPlatformThreading {
+    DomPlatformThread *(*thread_create)(void (*fn)(void *ctx), void *ctx);
+    void (*thread_join)(DomPlatformThread *);
+
+    DomPlatformMutex *(*mutex_create)(void);
+    void (*mutex_destroy)(DomPlatformMutex *);
+    void (*mutex_lock)(DomPlatformMutex *);
+    void (*mutex_unlock)(DomPlatformMutex *);
+
+    DomPlatformCond *(*cond_create)(void);
+    void (*cond_destroy)(DomPlatformCond *);
+    void (*cond_wait)(DomPlatformCond *, DomPlatformMutex *);
+    void (*cond_signal)(DomPlatformCond *);
+    void (*cond_broadcast)(DomPlatformCond *);
+};
+Rules:
+• Cannot be used in deterministic simulation.
+• Must not use platform thread pools; engine decides.
+
+8. Dynamic Library Loading (optional)
+struct DomPlatformDynlib {
+    void *(*open)(const char *path);
+    void (*close)(void *handle);
+    void *(*sym)(void *handle, const char *name);
+};
+Rules:
+• Only used by modding subsystem on platforms that allow it.
+• Disabled entirely on DOS/Win3.x/etc.
+
+9. Platform Logging Sink
+struct DomPlatformLog {
+    void (*write)(const char *msg);
+};
+Rules:
+• Minimal filtering.
+• Used by core log implementation.
+
+10. dom_platform.c — API wiring
+Responsible for exposing:
+extern DomPlatformAPI dom_platform;
+Where:
+typedef struct DomPlatformAPI {
+    struct DomPlatformFilesystem fs;
+    struct DomPlatformTime time;
+    struct DomPlatformWindowAPI win;
+    struct DomPlatformInput input;
+    struct DomPlatformNet net;
+    struct DomPlatformThreading thread;
+    struct DomPlatformDynlib dyn;
+    struct DomPlatformLog log;
+} DomPlatformAPI;
+Each OS backend calls:
+void dom_platform_install_backend(const DomPlatformAPI *impl);
+
+11. Per-platform directories (win32/, linux/, etc.)
+Each contains:
+• A private header: dom_platform_<os>.h
+• An implementation file: dom_platform_<os>.c
+Each must:
+• Include OS headers (windows.h, <X11/Xlib.h>, <unistd.h>, Carbon/Cocoa).
+• Populate a static DomPlatformAPI struct with OS-specific functions.
+• Provide:
+void dom_platform_<os>_install(void);
+Which calls:
+dom_platform_install_backend(&backend_api);
+Backends override entire sub-APIs as required.
+
+12. Behavioural Constraints
+12.1 Determinism boundary
+The platform layer is explicitly nondeterministic.
+Simulation code must never use platform time, RNG, or input directly.
+12.2 Thread model
+Threads may not touch ECS or deterministic subsystems.
+Only safe actions:
+• File IO
+• Socket IO
+• Asset loading
+• Logging
+• Shader/texture/audio loading
+12.3 Memory model
+No platform allocator may return memory used by sim directly; all sim memory is allocated by deterministic allocators in engine/core.
+12.4 Window + GL/DX context
+Platform layer owns the window and graphics context; rendering backend only receives the context pointer.
+
+13. Summary
+engine/platform is the single abstraction wall between Dominium and the host OS. It defines stable, minimal interfaces for:
+• Filesystem
+• Timing
+• Windowing
+• Input
+• GL/DX context setup
+• Sockets
+• Threads
+• Dynamic libs
+• Logging
+Every OS implementation supplies a complete backend via function pointers.
+The engine’s deterministic simulation never touches any nondeterministic API directly.

@@ -1,0 +1,346 @@
+This message is the dev-spec for /mods/.
+/mods is the only place third-party and local gameplay/content modifications live.
+Engine, base game, DLC, and first-party packs must never live here.
+
+0. Top-level layout
+Canonical structure:
+/mods/
+├─ README.md
+├─ mods_manifest.json        # global index of installed mods (optional but recommended)
+├─ local/                    # user-installed mods (manual or via in-game UI)
+│  └─ <mod_id>/
+│     ├─ mod.json
+│     ├─ data/
+│     ├─ scripts/
+│     ├─ gfx/
+│     ├─ audio/
+│     ├─ docs/
+│     └─ tests/
+├─ workshop/                 # content from external distribution (e.g. Steam Workshop)
+│  └─ <mod_id>/
+│     ├─ mod.json
+│     └─ ...
+└─ disabled/                 # physically present, but never auto-loaded
+   └─ <mod_id>/
+      ├─ mod.json
+      └─ ...
+Engine loads mods only from /mods/local and /mods/workshop by default, and never from /disabled.
+
+1. /mods/README.md
+Human doc:
+• Explains mod folder layout.
+• Explains that mod.json is the canonical manifest.
+• States determinism and safety constraints:
+o Mods cannot break deterministic kernel.
+o Mods cannot use wallclock, OS RNG, networking directly.
+o Mods cannot ship native binaries that are auto-executed.
+Not authoritative; actual rules live in engine spec and in this contract.
+
+2. mods_manifest.json — optional global installed-mod index
+This is a convenience index for launcher/UI; engine must treat it as advisory, not authoritative.
+Example:
+{
+  "mods": [
+    {
+      "id": "my_railpack",
+      "path": "local/my_railpack",
+      "source": "local",
+      "enabled": true,
+      "order": 100
+    },
+    {
+      "id": "huge_industry_overhaul",
+      "path": "workshop/1234567890",
+      "source": "workshop",
+      "enabled": false,
+      "order": 200
+    }
+  ]
+}
+Rules:
+• id must match mod.json.id inside the mod dir.
+• path is relative to /mods/.
+• enabled is a convenience flag for UI; final active set is decided at world load (world’s mod list wins).
+• order is a soft ordering hint; engine still resolves hard dependencies and conflicts by rules in mod.json.
+Engine must not rely solely on this file; if missing/invalid, engine falls back to scanning /mods/local and /mods/workshop for mod.json.
+
+3. Single mod directory layout
+Canonical, for <mod_root> = /mods/local/<mod_id> or /mods/workshop/<mod_id>:
+<mod_root>/
+├─ mod.json             # REQUIRED
+├─ data/                # game data additions/overrides (entities, recipes, tech, etc.)
+│  ├─ entities/
+│  ├─ recipes/
+│  ├─ tech/
+│  └─ ...
+├─ scripts/             # OPTIONAL, sandboxed logic (Lua or similar)
+│  ├─ init.lua
+│  ├─ control.lua
+│  └─ modules/*.lua
+├─ gfx/                 # OPTIONAL, mod-specific graphics (sprites, tiles, icons)
+│  ├─ tiles/
+│  ├─ sprites/
+│  └─ ui/
+├─ audio/               # OPTIONAL, mod-specific sfx/music
+│  ├─ sfx/
+│  └─ music/
+├─ locale/              # OPTIONAL, localization files
+│  ├─ en/
+│  ├─ de/
+│  └─ ...
+├─ docs/                # OPTIONAL, readme, license, design notes
+└─ tests/               # OPTIONAL, mod-level tests, replay scripts, etc.
+Prohibitions:
+• No /engine, /game, /build, /packaging, /third_party inside a mod.
+• No .dll, .so, .dylib, .exe etc. shipped as something the engine auto-loads.
+
+4. mod.json — canonical mod manifest
+This is mandatory and the single source of truth for:
+• Identity
+• Versioning
+• Dependencies
+• Capabilities
+• Determinism mode
+Example:
+{
+  "id": "my_railpack",
+  "name": "My Rail Pack",
+  "description": "Adds new rail types, trains, and signals for Dominium.",
+  "version": "0.3.1",
+  "engine_version_min": "3.0.0",
+  "engine_version_max": "3.x",
+  "author": "Railfan",
+  "license": "MIT",
+  "tags": [
+    "gameplay",
+    "transport",
+    "rails"
+  ],
+  "dependencies": [
+    {
+      "id": "base",
+      "version_min": "3.0.0"
+    }
+  ],
+  "optional_dependencies": [
+    {
+      "id": "official_interstellar",
+      "version_min": "1.0.0"
+    }
+  ],
+  "conflicts": [
+    {
+      "id": "other_rail_pack"
+    }
+  ],
+  "load_order": {
+    "after": ["base"],
+    "before": []
+  },
+  "determinism": {
+    "affects_simulation": true,
+    "network_safe": true,
+    "pure_ui_mod": false
+  },
+  "capabilities": {
+    "data": true,
+    "scripts": true,
+    "gfx": true,
+    "audio": false
+  }
+}
+Requirements:
+• id must be unique across all mods + base/dlc IDs.
+• version must follow a defined scheme (semantic or your spec, but consistent).
+• dependencies must include "base" for nearly all gameplay mods.
+• determinism.affects_simulation is explicit:
+o If false, mod must not introduce or modify simulation entities/rules.
+o If true, mod must obey deterministic kernel rules by construction.
+Engine-side:
+• Validates mod manifests before load.
+• Computes mod load order by:
+o Resolving dependencies.
+o Applying load_order.after/before.
+o Breaking ties deterministically by id.
+No dynamic or random ordering.
+
+5. /data/ within a mod — data extensions
+<mod_root>/data mirrors parts of /data/base and /data/dlc, but limited and sandboxed.
+Allowed categories (examples):
+data/
+├─ entities/         # new building, machine, vehicle, item definitions
+│  ├─ entities.json
+│  └─ *.json
+├─ recipes/
+│  ├─ recipes.json
+│  └─ *.json
+├─ tech/
+│  ├─ tech_tree.json
+│  └─ *.json
+├─ signals/
+├─ networks/
+└─ balance/
+The exact JSON schemas are governed by your core spec, but rules:
+1. Namespacing
+Every mod-defined resource ID must be namespaced with the mod ID or a unique prefix. For example:
+o my_railpack.rail_type.2ft_heavy
+o my_railpack.vehicle.train_light_shunter
+Engine enforces uniqueness of IDs across all loaded mods.
+2. No floats
+Data that eventually reaches simulation must be representable as integers or fixed-point. JSON can use decimal syntax if the loader converts deterministically to fixed-point, but avoid ambiguous floats.
+3. No imperative logic
+Mod /data is declarative: definitions, tuning, structures. Logic is in /engine/sim and optional /scripts via a constrained API.
+4. Overrides
+Mods may override existing definitions only if explicitly allowed by engine policy (e.g., per-field override, or “replace entire definition” flagged in data). Overrides must be declared, not accidental.
+Example override construct:
+{
+  "override": true,
+  "target_id": "base.rail_type.standard",
+  "fields": {
+    "max_speed_kph": 160
+  }
+}
+Engine must reject silent overrides lacking override: true.
+Prohibitions:
+• No references to raw file paths outside the mod root.
+• No runtime introspection of engine internals via data.
+
+6. /scripts/ within a mod — controlled scripting
+<mod_root>/scripts is for scripting (Lua or similar) under a strict API.
+Canonical files:
+scripts/
+├─ init.lua      # optional: setup, registration of prototypes, etc.
+├─ control.lua   # optional: runtime callbacks
+└─ modules/*.lua # helper modules
+Engine’s scripting environment:
+• Sandboxed VM (no direct OS, file, network, or wallclock access).
+• Deterministic APIs only.
+• No global RNG — engine exposes deterministic PRNG seeded from world + tick when allowed, or not at all for “strict deterministic” servers.
+Typical allowed call patterns:
+• on_world_init(world_context)
+• on_tick(tick_context)
+• on_event(event_context) for filtered events (construction, research completed, etc.)
+• Data registration during load: register_entity(proto_table) etc., if you choose to expose this.
+Hard constraints:
+1. No simulation kernel violation
+Scripts must not bypass the core determinism rules:
+o No direct thread creation.
+o No network I/O.
+o No access to system time.
+o No floating-point operations that influence sim (you can sandbox this by not exposing FP at all).
+2. No uncontrolled side effects
+All world modifications must go through engine-provided APIs that internally use deterministic command buffers/events.
+3. Tick-bound execution
+All script execution is scheduled in simulation phases:
+o Data registration at load time (before world start).
+o Event handlers at deterministic locations in the tick pipeline.
+If you expose pathfinding, building placement, etc., script APIs must themselves be deterministic.
+
+7. /gfx/ within a mod — mod-specific graphics
+Same philosophy as /data/packs, but scoped to the mod and to mod-defined resource IDs.
+Example:
+gfx/
+├─ tiles/
+│  ├─ tiles.json
+│  └─ ...
+├─ sprites/
+│  ├─ sprites.json
+├─ ui/
+│  ├─ icons.json
+└─ vector/
+   └─ vector_sets.json
+Rules:
+• Graphics definitions reference logical resource IDs (usually the same ones defined in mod /data).
+• Packs and mods can both supply graphics for the same logical ID; your override resolution rules must be deterministic and clearly defined:
+o Example policy: mod gfx > activated pack gfx > base gfx.
+• Mod graphics must not introduce simulation parameters; only appearance.
+
+8. /audio/ within a mod — mod-specific audio
+Like graphics, but for SFX/music:
+audio/
+├─ sfx/
+│  ├─ sfx.json
+└─ music/
+   ├─ music.json
+Rules:
+• SFX IDs are mod-scoped (my_railpack.sfx.train_brake).
+• Engine maps simulation events to SFX IDs; mods only supply extra sounds for those IDs.
+• Music tracks and playlists can be offered but must not control game logic or pacing.
+
+9. /locale/ within a mod — localization files
+Localization structure might follow your engine’s global locale spec:
+locale/
+├─ en/
+│  └─ strings.json
+├─ de/
+│  └─ strings.json
+└─ ...
+strings.json:
+{
+  "entities.my_railpack.rail_type.2ft_heavy.name": "2 ft Heavy Rail",
+  "entities.my_railpack.rail_type.2ft_heavy.desc": "Heavy-duty narrow gauge rail for industrial routes."
+}
+Engine:
+• Merges localization tables from all active mods, with deterministic priority (base < DLC < mods by order).
+• No impact on simulation.
+
+10. /docs/ and /tests/ within a mod
+• /docs/ is arbitrary human documentation, design notes, changelogs.
+• /tests/ can contain:
+o Scripted test harnesses.
+o Example replay setups referencing this mod.
+o Data validation files.
+Engine doesn’t load anything from these automatically; they are for tooling and developers.
+
+11. Determinism, safety, and prohibitions for /mods
+11.1 Determinism levels
+You will eventually need at least three classes:
+1. Pure UI mods
+o determinism.affects_simulation = false
+o Only touches UI, graphics, overlays, audio.
+o Safe in all multiplayer and replay contexts.
+2. Simulation-safe deterministic mods
+o affects_simulation = true, network_safe = true
+o All logic goes through deterministic APIs.
+o Allowed in multiplayer and deterministic replays.
+3. Unsafe/sandbox mods (optional, maybe dev only)
+o network_safe = false
+o Might violate determinism or use non-deterministic features.
+o Never allowed in authoritative multiplayer or deterministic replays.
+The manifest flags must reflect this, and engine must enforce restrictions.
+11.2 Hard prohibitions
+• No native code auto-loading: .dll/.so/.dylib/.exe ignored or blocked.
+• No direct file I/O beyond mod-local, and even that should be heavily constrained or forbidden.
+• No direct OS calls, environment variables, or process management.
+• No network sockets from scripts.
+• No access to wallclock or monotonic clock for simulation decisions.
+• No altering core engine/determinism constants at runtime from mods.
+11.3 Loading order and conflict resolution
+Engine guaranteed behaviour:
+• Collect candidate mods from /mods/local, /mods/workshop, plus world-requested mod list.
+• Resolve dependencies:
+o If missing required dependency → world fails to load or mod disabled deterministically.
+• Apply conflicts rules:
+o If two conflicting mods enabled, either:
+• Hard error, or
+• Deterministic priority decision (e.g. user-specified or mod load order).
+• Final load order is:
+o Base
+o DLC
+o Mods, ordered by:
+• dependency constraints,
+• load_order.after/before,
+• tie-break by ID.
+No hidden or random influences.
+
+12. World save and mods
+World savefiles must include:
+• Full list of active mods.
+• Version of each mod (plus hash if you want strictness).
+• Load order.
+On loading:
+• Engine verifies the exact mod set (IDs, versions, counts).
+• If mismatch:
+o Strict deterministic mode: refuse to load.
+o Relaxed mode: allow with warning and mark world as “non-deterministic”.
+Mods must not attempt to “force-load” themselves into worlds where they weren’t present.

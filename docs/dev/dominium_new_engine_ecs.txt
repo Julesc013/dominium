@@ -1,0 +1,292 @@
+This message is the full deterministic dev-spec for engine/ecs/.
+This is one of the most critical directories in the entire engine.
+It defines how all entities, components, and systems exist and interact inside the deterministic simulation kernel.
+It must never change unpredictably, and all higher-level systems depend on it.
+
+Directory Layout
+engine/
+└── ecs/
+    ├── dom_ecs_types.h
+    ├── dom_ecs_entity.h
+    ├── dom_ecs_entity.c
+    ├── dom_ecs_component.h
+    ├── dom_ecs_component.c
+    ├── dom_ecs_query.h
+    ├── dom_ecs_query.c
+    ├── dom_ecs_system.h
+    ├── dom_ecs_system.c
+    ├── dom_ecs_storage.h
+    ├── dom_ecs_storage.c
+    ├── dom_ecs_archetype.h
+    ├── dom_ecs_archetype.c
+    ├── dom_ecs_iter.h
+    └── dom_ecs_iter.c
+
+0. GLOBAL RULES FOR engine/ecs
+• C89 only.
+• No floats anywhere.
+• No dynamic memory per tick; only at load/startup.
+• 100% deterministic.
+• No platform includes.
+• No rendering, audio, or UI.
+• No job/event posting from internal ECS functions; systems handle messaging.
+• All memory layouts must be stable and version-controlled.
+• No pointer invalidation; only handles/IDs are exposed externally.
+This ECS is a hybrid:
+• Dense component arrays
+• Archetype-based grouping
+• Lane-affinity for simulation concurrency
+
+1. dom_ecs_types.h — Fundamental ECS types
+Purpose: authoritative definitions for entity IDs, component IDs, system IDs, masks, and limits.
+Includes:
+#include "dom_core_types.h"
+Types:
+typedef dom_u64 DomEntity;     /* 32-bit index + 32-bit generation */
+typedef dom_u16 DomComponentId;
+typedef dom_u16 DomSystemId;
+typedef dom_u64 DomArchetypeId;
+typedef dom_u64 DomSignature;   /* bitmask of components present */
+Generation encoding:
+#define DOM_ENTITY_INDEX(e) ((dom_u32)((e) & 0xFFFFFFFFULL))
+#define DOM_ENTITY_GEN(e)   ((dom_u32)((e) >> 32))
+#define DOM_ENTITY_MAKE(idx, gen) \
+    ((((dom_u64)(gen)) << 32) | ((dom_u64)(idx)))
+Component limits:
+#define DOM_ECS_MAX_COMPONENTS 256
+#define DOM_ECS_SIGNATURE_BITS 256
+Prohibitions:
+• No structs with pointers to component memory here.
+
+2. dom_ecs_entity.[hc] — Entity allocation & lifecycle
+Purpose: deterministic creation, destruction, and validation of entity handles.
+Header includes
+#include "dom_ecs_types.h"
+Public API
+Init/reset:
+DomResult dom_ecs_entity_init(void);
+void      dom_ecs_entity_reset(void);
+Create/destroy:
+DomEntity dom_ecs_entity_create(void);         /* Always returns valid handle */
+void      dom_ecs_entity_destroy(DomEntity e); /* Marks for delete at merge-phase */
+dom_bool8 dom_ecs_entity_is_alive(DomEntity e);
+Generation management:
+dom_u32 dom_ecs_entity_generation(DomEntity e);
+dom_u32 dom_ecs_entity_index(DomEntity e);
+Deferred deletion:
+• Bodies destroyed this tick persist until the merge-phase.
+• Component removal happens before deletion.
+Implementation rules:
+• Dense index table entity_gen[] storing current generation.
+• Free list for unused indices.
+• No gaps after deletions; destruction queues reused indices with generation++.
+Prohibitions:
+• No immediate hard deletion inside tick-phase.
+• No per-entity dynamic memory.
+
+3. dom_ecs_component.[hc] — Component registration and metadata
+Purpose: global registry of component types.
+Header responsibilities
+Component descriptor:
+typedef struct DomComponentInfo {
+    DomComponentId id;
+    const char    *name;
+    dom_u32        size;
+    dom_u32        align;
+    dom_u32        flags;  /* POD, zero-init, replicated, networked */
+} DomComponentInfo;
+Public API:
+DomComponentId dom_ecs_component_register(const DomComponentInfo *ci);
+
+const DomComponentInfo *dom_ecs_component_info(DomComponentId id);
+
+dom_u32 dom_ecs_component_count(void);
+Persistent table with capacity 256.
+Implementation rules:
+• Component IDs monotonic 1..N.
+• All components must be POD (no pointers, no ownership).
+• Size & alignment fixed per engine version; changes require migration logic in serialization.
+Prohibitions:
+• No per-component constructors/destructors.
+• No component-specific logic here.
+
+4. dom_ecs_storage.[hc] — Component memory storage (dense arrays)
+Purpose: maintain flat arrays for each component type, but keyed by archetypes.
+Includes:
+#include "dom_ecs_types.h"
+#include "dom_ecs_component.h"
+#include "dom_ecs_archetype.h"
+Responsibilities:
+• Provide low-level component array storage.
+• Support add/remove/move operations used by archetypes.
+Public API (internal-ish):
+void *dom_ecs_storage_alloc(DomComponentId cid, dom_u32 capacity);
+void  dom_ecs_storage_free(DomComponentId cid, void *ptr);
+
+void *dom_ecs_storage_get_array(DomComponentId cid);
+
+dom_u32 dom_ecs_storage_capacity(DomComponentId cid);
+
+/* Called when entities move between archetypes. */
+void dom_ecs_storage_move_component(DomComponentId cid,
+                                    void *dst, dom_u32 dst_index,
+                                    void *src, dom_u32 src_index);
+Implementation:
+• At startup, allocate all component arrays up to max entities (configurable).
+• Memory contiguous; index corresponds to entity slot within archetype grouping.
+• Zero-initialised by rule unless declared otherwise.
+Prohibitions:
+• No malloc per entity.
+• No per-tick realloc.
+
+5. dom_ecs_archetype.[hc] — Archetype signatures and entity distribution
+Purpose: central grouping mechanism: entities with identical component sets go into the same archetype.
+Header: dom_ecs_archetype.h
+Types:
+typedef struct DomArchetype {
+    DomArchetypeId id;
+    DomSignature   sig;        /* bitmask of components */
+    dom_u32        count;      /* number of entities */
+    dom_u32        capacity;
+    dom_u32        *entity_indices; /* mapping to global entity table */
+} DomArchetype;
+Public API:
+Init/reset:
+DomResult dom_ecs_archetype_init(void);
+void      dom_ecs_archetype_reset(void);
+Lookup/create:
+DomArchetypeId dom_ecs_archetype_ensure(DomSignature sig);
+const DomArchetype *dom_ecs_archetype_get(DomArchetypeId id);
+Add/remove entity:
+DomResult dom_ecs_archetype_add_entity(DomArchetypeId id, DomEntity e);
+DomResult dom_ecs_archetype_remove_entity(DomArchetypeId id, DomEntity e);
+Signature manipulation:
+DomSignature dom_ecs_signature_add(DomSignature sig, DomComponentId cid);
+DomSignature dom_ecs_signature_remove(DomSignature sig, DomComponentId cid);
+dom_bool8    dom_ecs_signature_has(DomSignature sig, DomComponentId cid);
+Implementation rules:
+• Archetypes kept in sorted array by signature value.
+• Entity moves between archetypes on component add/remove.
+• Move operation invokes storage_move_component for each component in signature.
+Prohibitions:
+• No sparse storage.
+• No dynamic chaining of archetypes mid-tick (all moves deferred to merge-phase unless explicitly allowed).
+
+6. dom_ecs_entity + dom_ecs_component + dom_ecs_archetype integration
+Critical tick-phase requirement:
+All structural changes (add/remove components, create/destroy entities) are collected by command buffers via dom_sim_events.
+Then executed deterministically in MERGE phase:
+• Apply entity deletions.
+• Apply component removals.
+• Apply component additions.
+• Move entities to new archetypes.
+• Rebuild any archetype-local ordering if needed (stable lexicographic).
+This keeps simulation stable and prevents mid-system inconsistency.
+
+7. dom_ecs_query.[hc] — Read-only component access
+Purpose: allow systems to get pointers to component arrays in their archetype groups.
+Header includes
+#include "dom_ecs_archetype.h"
+Types:
+typedef struct DomEcsQueryIter {
+    const DomArchetype *arch;
+    dom_u32 index;
+    dom_u32 end;
+} DomEcsQueryIter;
+Public API:
+Archetype-level query:
+void dom_ecs_query_begin(DomSignature sig,
+                         DomEcsQueryIter *it);
+
+dom_bool8 dom_ecs_query_next(DomEcsQueryIter *it,
+                             DomEntity *out_e,
+                             void **out_component_ptrs /* array aligned to signature */);
+Alternate system-level access:
+void *dom_ecs_query_component(DomComponentId cid, DomEntity e);
+Implementation rules:
+• Query iteration is deterministic: archetypes in ascending ID order; entities inside archetype in stored order.
+• Component pointers are direct pointers into dense arrays.
+Prohibitions:
+• No mutation here.
+• No allocation; all pointers stable during a tick.
+
+8. dom_ecs_iter.[hc] — High-level iteration helpers
+Purpose: helper API used by simulation systems that need to iterate over a specific set of components quickly.
+Public API:
+Simple iteration:
+typedef void (*DomEcsIterCallback)(DomEntity e,
+                                   void **components,
+                                   void *ctx);
+
+void dom_ecs_iter_components(DomSignature sig,
+                             DomEcsIterCallback cb,
+                             void *ctx);
+Lane-aware iteration:
+void dom_ecs_iter_components_lane(DomSignature sig,
+                                  DomLaneId lane,
+                                  DomEcsIterCallback cb,
+                                  void *ctx);
+Implementation rules:
+• For lane filtering, simply check (entity_id % num_lanes) == lane.
+• No per-entity dynamic branching; use signature masks to restrict iteration early.
+
+9. dom_ecs_system.[hc] — System registration & execution metadata
+Purpose: register systems into phases and lanes so the simulation tick controller knows which to call.
+Header: dom_ecs_system.h
+Types:
+typedef void (*DomSystemFn)(DomLaneId lane);
+
+typedef struct DomSystemInfo {
+    DomSystemId id;
+    const char *name;
+    DomSystemFn fn;
+    dom_u8      phase;  /* simulation-phase index */
+    dom_u8      lane_policy; /* all lanes, single lane, etc. */
+} DomSystemInfo;
+Public API:
+DomSystemId dom_ecs_system_register(const DomSystemInfo *info);
+
+const DomSystemInfo *dom_ecs_system_info(DomSystemId id);
+
+void dom_ecs_system_run_phase(dom_u8 phase, DomLaneId lane);
+Implementation rules:
+• Systems sorted by ID in each phase.
+• Phase IDs correspond strictly to your tick pipeline:
+o INPUT
+o PRE_STATE
+o SIMULATION
+o NETWORKS
+o MERGE
+o POST
+o FINALIZE
+Prohibitions:
+• No simulation logic here.
+• No random order; stable ordering only.
+
+10. ECS LIFECYCLE (MANDATORY CONTRACT)
+Tick flow handling within ECS:
+1. Systems run (SIMULATION phase)
+o Read components
+o Emit events/commands
+o DO NOT modify archetypes/components directly
+2. MERGE phase:
+o Apply entity create/destroy
+o Apply component add/remove
+o Move entities between archetypes
+o Rebuild ordering
+3. POST phase:
+o Validate invariants
+o Reindex spatial objects if required
+o Clear transient buffers
+No system may mutate ECS state outside MERGE unless explicitly allowed.
+
+11. Summary
+engine/ecs/ provides a deterministic, archetype-based, POD-component, lane-aware entity system with:
+• strict lifecycle
+• fixed memory layouts
+• deferred structural updates
+• dense storage
+• deterministic iteration
+• system registration and scheduling
+It binds simulation systems to data and ensures stable, cross-platform correctness.
+

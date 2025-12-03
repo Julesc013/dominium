@@ -1,0 +1,571 @@
+This message is the dev-spec for game/client/.
+This layer is the front-end application shell for Dominium:
+• Talks “upwards” to platform (window, input, OS integration).
+• Talks “downwards” to engine (sim, render, audio, net, UI).
+• Owns cameras, views (2D/3D), menus, HUD, in-world placement previews.
+• Translates human input + UI commands → deterministic sim commands.
+• Handles local vs remote simulation modes (single-player vs multiplayer).
+No simulation rules live here. No rendering backends live here. No platform-specific OS calls live here directly (must route via /engine/platform or dedicated /ports adapters if needed).
+
+Directory Layout
+game/
+└── client/
+    ├── dom_client_app.h
+    ├── dom_client_app.c
+    ├── dom_client_state.h
+    ├── dom_client_state.c
+    ├── dom_client_input.h
+    ├── dom_client_input.c
+    ├── dom_client_view.h
+    ├── dom_client_view.c
+    ├── dom_client_ui_bridge.h
+    ├── dom_client_ui_bridge.c
+    ├── dom_client_sim_bridge.h
+    ├── dom_client_sim_bridge.c
+    ├── dom_client_render_pipe.h
+    ├── dom_client_render_pipe.c
+    ├── dom_client_audio_pipe.h
+    ├── dom_client_audio_pipe.c
+    ├── dom_client_console.h
+    ├── dom_client_console.c
+    ├── dom_client_config.h
+    └── dom_client_config.c
+You can split or merge some of these later, but this structure forces clean boundaries.
+Global rules:
+• C or C++98 (your call; spec assumes C89/C99 flavour).
+• No direct OpenGL/DirectX/SDL calls — go through /engine/render and /engine/platform.
+• No simulation state mutation except via deterministic sim commands (through dom_client_sim_bridge).
+• No UI widgets defined here; uses /engine/ui.
+• No actual OS entrypoint here; that lives in small platform-specific “launchers” that call dom_client_app_*.
+
+1. dom_client_app.[hc] — Top-level application shell
+This is the canonical entrypoint for “a Dominium client instance”.
+Header
+#include "dom_core_types.h"
+
+typedef enum {
+    DOM_CLIENT_MODE_SINGLEPLAYER = 0,
+    DOM_CLIENT_MODE_MULTIPLAYER_CLIENT,
+    DOM_CLIENT_MODE_MULTIPLAYER_HOST
+} DomClientMode;
+
+typedef struct DomClientAppConfig {
+    DomClientMode mode;
+    const char *initial_save_path;    /* optional */
+    const char *server_address;       /* for client mode */
+    dom_u16     server_port;
+    dom_i32     window_width;
+    dom_i32     window_height;
+    dom_bool8   fullscreen;
+} DomClientAppConfig;
+
+typedef struct DomClientApp DomClientApp;
+Opaque struct defined in .c holds:
+• DomClientState
+• Pointers/handles to:
+o DomSimWorld / sim driver
+o DomRenderDevice
+o DomAudioDevice
+o DomUIRoot, DomUILayoutState, DomUISkin
+o DomPlatformWindow / platform context handle
+• Current tick/frame counters.
+Public API:
+/* Called from OS-specific launcher main() */
+DomClientApp *dom_client_app_create(const DomClientAppConfig *cfg);
+
+void dom_client_app_destroy(DomClientApp *app);
+
+/* Main loop step: drive one iteration of client loop */
+void dom_client_app_tick(DomClientApp *app);
+Rules:
+• dom_client_app_tick is the only per-frame driver for client logic.
+• It must call, in fixed order:
+1. Poll platform → DomClientInputFrame
+2. Update DomClientState (mode, menus, etc)
+3. Build and dispatch UI events
+4. Map UI events + input → sim commands (via sim_bridge)
+5. Step sim (or fetch remote state) deterministically
+6. Build render/audio command streams
+7. Submit to engine/render + engine/audio
+8. Swap buffers
+Prohibitions:
+• No OS-specific code (no SDL_PollEvent, GetMessage, etc).
+• No file IO beyond config-handling; sim loads via engine layer.
+
+2. dom_client_state.[hc] — Client-side session state
+This stores visual and interaction state that is not part of the sim:
+• Current camera(s).
+• Active view mode (2D ortho, 2D iso, 3D).
+• Zoom levels.
+• Which UI screens are active (main menu, world view, editor).
+• Current build/placement “ghost” selection.
+• Currently selected entities.
+• Local user profile preferences (FOV, keybind profile ID, UI scale).
+Header
+#include "dom_core_types.h"
+#include "dom_ui_core.h" /* for widget ids if needed */
+
+typedef enum {
+    DOM_VIEW_MODE_2D_ORTHO = 0,
+    DOM_VIEW_MODE_2D_ISO,
+    DOM_VIEW_MODE_3D
+} DomClientViewMode;
+
+typedef enum {
+    DOM_CLIENT_SCREEN_NONE = 0,
+    DOM_CLIENT_SCREEN_MAIN_MENU,
+    DOM_CLIENT_SCREEN_LOAD_SAVE,
+    DOM_CLIENT_SCREEN_SETTINGS,
+    DOM_CLIENT_SCREEN_IN_GAME,
+    DOM_CLIENT_SCREEN_EDITOR
+} DomClientScreen;
+
+typedef struct DomClientCamera {
+    dom_i64 world_x, world_y, world_z;   /* tile/voxel origin centre */
+    dom_i32 zoom_level;                  /* integer zoom index, not ratio */
+    dom_i32 yaw_deg;                     /* for 3D */
+    dom_i32 pitch_deg;                   /* for 3D */
+} DomClientCamera;
+
+typedef struct DomClientSelection {
+    dom_u32 count;
+    dom_u64 entity_ids[256]; /* or handles */
+} DomClientSelection;
+
+typedef struct DomClientBuildGhost {
+    dom_bool8 active;
+    dom_u64   prefab_id;
+    dom_i64   world_x, world_y, world_z;
+    dom_i32   rotation;
+} DomClientBuildGhost;
+
+typedef struct DomClientState {
+    DomClientViewMode view_mode;
+    DomClientScreen   screen;
+
+    DomClientCamera   camera;
+    DomClientSelection selection;
+    DomClientBuildGhost build_ghost;
+
+    dom_bool8 pause_requested;
+    dom_bool8 step_requested;
+
+    dom_i32 ui_scale;     /* integer zoom for UI */
+    dom_i32 keybind_profile_id;
+} DomClientState;
+Public API:
+void dom_client_state_init(DomClientState *st);
+
+void dom_client_state_set_screen(DomClientState *st, DomClientScreen s);
+void dom_client_state_set_view_mode(DomClientState *st, DomClientViewMode m);
+
+/* Camera helpers */
+void dom_client_camera_pan(DomClientState *st, dom_i32 dx, dom_i32 dy);
+void dom_client_camera_zoom(DomClientState *st, dom_i32 delta_zoom);
+void dom_client_camera_orbit(DomClientState *st, dom_i32 dyaw, dom_i32 dpitch);
+Rules:
+• Purely client-side; not serialized as part of deterministic sim saves.
+• Data should be easily resettable when changing user/profile.
+Prohibitions:
+• No sim mutating calls in here.
+• No coupling to renderer-specific units.
+
+3. dom_client_input.[hc] — Input mapping and frame capture
+This module bridges platform events → high-level, game-agnostic input.
+Header
+#include "dom_core_types.h"
+
+typedef enum {
+    DOM_CLIENT_ACTION_NONE = 0,
+    DOM_CLIENT_ACTION_SELECT_PRIMARY,
+    DOM_CLIENT_ACTION_SELECT_SECONDARY,
+    DOM_CLIENT_ACTION_BUILD_CONFIRM,
+    DOM_CLIENT_ACTION_BUILD_CANCEL,
+    DOM_CLIENT_ACTION_PAN_CAMERA,
+    DOM_CLIENT_ACTION_ROTATE_CAMERA,
+    DOM_CLIENT_ACTION_ZOOM_CAMERA,
+    DOM_CLIENT_ACTION_TOGGLE_PAUSE,
+    DOM_CLIENT_ACTION_QUICK_SAVE,
+    DOM_CLIENT_ACTION_QUICK_LOAD,
+    DOM_CLIENT_ACTION_TOGGLE_UI_MODE,
+    /* ... extendable ... */
+} DomClientAction;
+
+typedef struct DomClientInputFrame {
+    dom_i32 mouse_x, mouse_y;
+    dom_i32 mouse_dx, mouse_dy;
+    dom_i32 wheel_delta;
+
+    dom_bool8 mouse_left_down;
+    dom_bool8 mouse_right_down;
+    dom_bool8 mouse_middle_down;
+
+    dom_bool8 key_states[256];  /* DomKey -> bool */
+    dom_bool8 key_pressed[256]; /* this frame edge */
+
+    /* Action mapping results */
+    dom_bool8 action_pressed[64]; /* DomClientAction size */
+    dom_bool8 action_held[64];
+} DomClientInputFrame;
+Public API:
+void dom_client_input_clear(DomClientInputFrame *f);
+
+/* Called by platform/launcher to fill low-level fields (mouse/keys) */
+void dom_client_input_from_platform(DomClientInputFrame *dst,
+                                    const DomPlatformInputFrame *src);
+
+/* Map key/mouse state to high-level actions based on current keybind config */
+void dom_client_input_map_actions(DomClientInputFrame *frame,
+                                  const DomClientState *state,
+                                  const DomClientConfig *cfg);
+Rules:
+• Mapping from physical keys/mouse to DomClientAction is deterministic and table-driven (config).
+• No UI decisions here; just “action X pressed/held this frame”.
+Prohibitions:
+• No direct sim calls; this is pure data transform.
+• No knowledge of UI widget IDs or layouts.
+
+4. dom_client_view.[hc] — World-to-screen and view logic
+This module converts from world coordinates to view coordinates for each mode:
+• 2D orthographic (Factorio-ish).
+• 2D isometric (ISO-like).
+• 3D perspective (optional).
+Header
+#include "dom_core_types.h"
+#include "dom_client_state.h"
+
+typedef struct DomClientViewProj2D {
+    dom_i32 screen_w, screen_h;
+    dom_i64 world_x0, world_y0; /* world coord at screen origin */
+    dom_i32 pixels_per_tile;
+} DomClientViewProj2D;
+
+typedef struct DomClientViewProj3D {
+    /* simple integer-based camera/frustum description; ultimately produces view-projection matrices
+       for render backends, but the math is encoded in ints/fixed-point */
+    dom_i32 screen_w, screen_h;
+    dom_i32 fov_deg;
+    dom_i32 near_mm;
+    dom_i32 far_mm;
+} DomClientViewProj3D;
+
+typedef struct DomClientViewProj {
+    DomClientViewMode mode;
+    union {
+        DomClientViewProj2D v2d;
+        DomClientViewProj3D v3d;
+    } u;
+} DomClientViewProj;
+Public API:
+void dom_client_view_build(const DomClientState *st,
+                           dom_i32 screen_w,
+                           dom_i32 screen_h,
+                           DomClientViewProj *out);
+
+/* World (tile) -> screen pixel */
+void dom_client_view_world_to_screen(const DomClientViewProj *vp,
+                                     dom_i64 wx, dom_i64 wy, dom_i64 wz,
+                                     dom_i32 *sx, dom_i32 *sy);
+
+/* Screen pixel -> world (tile) ray for picking/build cursor */
+void dom_client_view_screen_to_world_ray(const DomClientViewProj *vp,
+                                         dom_i32 sx, dom_i32 sy,
+                                         dom_i64 *wx, dom_i64 *wy, dom_i64 *wz);
+Rules:
+• Must use integer/fixed-point only.
+• Deterministic mapping for same camera/settings.
+Prohibitions:
+• No rendering calls here.
+• No sim state reads; camera + world origin only.
+
+5. dom_client_ui_bridge.[hc] — Connecting /engine/ui with client logic
+This module:
+• Creates the initial widget tree (menus, HUD, overlays).
+• Binds widget user_tag values so /game/client can interpret UI commands.
+• Routes UI commands to client actions, which then become sim commands or client-state mutations.
+Header
+#include "dom_core_types.h"
+#include "dom_ui_core.h"
+#include "dom_ui_layout.h"
+#include "dom_ui_skin.h"
+#include "dom_ui_commands.h"
+#include "dom_client_state.h"
+#include "dom_client_input.h"
+
+typedef struct DomClientUI {
+    DomUIRoot          root;
+    DomUILayoutState   layout;
+    DomUISkin          skin;
+    DomUICommandBuffer cmd;
+} DomClientUI;
+Public API:
+void dom_client_ui_init(DomClientUI *ui,
+                        dom_i32 screen_w,
+                        dom_i32 screen_h);
+
+/* Rebuild full UI tree when screen changes (e.g. resolution change) */
+void dom_client_ui_rebuild(DomClientUI *ui,
+                           const DomClientState *st);
+
+/* Called once per frame: push input → update root → generate commands */
+void dom_client_ui_frame(DomClientUI *ui,
+                         const DomClientState *st,
+                         const DomClientInputFrame *input);
+
+/* Process UI commands into client state changes and sim commands */
+void dom_client_ui_process_commands(DomClientUI *ui,
+                                    DomClientState *st,
+                                    DomClientSimBridge *sim_bridge);
+Notes:
+• DomClientSimBridge is forward-declared; actual header included in .c.
+• dom_client_ui_init builds root menu, HUD placeholders, etc.
+• dom_client_ui_process_commands is the only place where UI-driven sim commands are created.
+Prohibitions:
+• No direct calls into sim; must go via DomClientSimBridge.
+• No engine-level UI widget implementations; use /engine/ui/widgets.
+
+6. dom_client_sim_bridge.[hc] — Client ↔ simulation interface
+This module is critical for determinism: it maps client actions → canonical sim commands and handles result ingestion (for local sim) or net traffic (for remote sim).
+Header
+#include "dom_core_types.h"
+#include "dom_client_state.h"
+#include "dom_client_input.h"
+
+typedef struct DomSimWorld DomSimWorld;   /* from engine/sim */
+typedef struct DomNetClient DomNetClient; /* from engine/net */
+
+typedef enum {
+    DOM_SIM_RUN_LOCAL = 0,
+    DOM_SIM_RUN_REMOTE_HOST,
+    DOM_SIM_RUN_REMOTE_CLIENT
+} DomSimRunMode;
+
+typedef struct DomClientSimBridge {
+    DomSimRunMode mode;
+
+    DomSimWorld *local_world;   /* NULL if remote-only */
+    DomNetClient *net_client;   /* NULL if local-only */
+
+    /* tick counters for client-side */
+    dom_u64 sim_tick;
+} DomClientSimBridge;
+Public API:
+void dom_client_sim_bridge_init_local(DomClientSimBridge *b,
+                                      DomSimWorld *world);
+
+void dom_client_sim_bridge_init_remote_host(DomClientSimBridge *b,
+                                            DomSimWorld *world,
+                                            DomNetClient *net);
+
+void dom_client_sim_bridge_init_remote_client(DomClientSimBridge *b,
+                                              DomNetClient *net);
+
+/* Map high-level client actions into sim input stream */
+void dom_client_sim_bridge_apply_input(DomClientSimBridge *b,
+                                       const DomClientState *st,
+                                       const DomClientInputFrame *input);
+
+/* Step simulation or pull next state from network */
+void dom_client_sim_bridge_step(DomClientSimBridge *b);
+Rules:
+• apply_input must be fully deterministic: for identical st + input, same sequence of sim commands.
+• step calls into engine/sim lockstep functions or updates local proxies from net snapshot.
+• Prediction (if ever added) must still be consistent and rewindable.
+Prohibitions:
+• No UI-specific knowledge here (no widget IDs).
+• No rendering/audio logic here.
+
+7. dom_client_render_pipe.[hc] — View → render commands
+This module takes:
+• DomClientState
+• DomSimWorld read-only snapshot or queries
+• DomClientViewProj
+• DomClientUI drawlist
+and builds render command buffers for engine/render.
+Header
+#include "dom_core_types.h"
+#include "dom_client_state.h"
+#include "dom_client_view.h"
+
+typedef struct DomRenderDevice DomRenderDevice; /* from engine/render */
+
+typedef struct DomClientRenderPipe {
+    DomRenderDevice *device;
+    DomClientViewProj view_proj;
+} DomClientRenderPipe;
+Public API:
+void dom_client_render_pipe_init(DomClientRenderPipe *rp,
+                                 DomRenderDevice *dev);
+
+/* Called per frame after sim step + UI update */
+void dom_client_render_pipe_build(DomClientRenderPipe *rp,
+                                  const DomClientState *st,
+                                  const DomClientUI *ui,
+                                  const DomSimWorld *world);
+
+/* Actually submits to engine/render */
+void dom_client_render_pipe_submit(DomClientRenderPipe *rp);
+Inside build, you:
+• Query visible chunks/entities from sim (read-only).
+• Project world positions via view_proj.
+• Emit render commands (tiles, sprites, meshes, overlays).
+• Append UI draw commands last (HUD over world).
+Rules:
+• Strict order: world background → terrain → structures → units → overlays → UI.
+• All ordering deterministic given the same world state and camera.
+Prohibitions:
+• No sim mutation.
+• No OS/window logic.
+• No direct GL/DX function calls; only engine/render API.
+
+8. dom_client_audio_pipe.[hc] — Events → audio commands
+Similar pattern to render pipe but for audio.
+Header
+#include "dom_core_types.h"
+
+typedef struct DomAudioDevice DomAudioDevice;
+typedef struct DomSimWorld DomSimWorld;
+
+typedef struct DomClientAudioPipe {
+    DomAudioDevice *device;
+} DomClientAudioPipe;
+Public API:
+void dom_client_audio_pipe_init(DomClientAudioPipe *ap,
+                                DomAudioDevice *dev);
+
+void dom_client_audio_pipe_build(DomClientAudioPipe *ap,
+                                 const DomClientState *st,
+                                 const DomSimWorld *world);
+
+/* Submit to engine/audio */
+void dom_client_audio_pipe_submit(DomClientAudioPipe *ap);
+Implementation:
+• Read only sim snapshot: which machines running, alarms, ambient zones.
+• Map each to audio events (loop start/stop, one-shot events).
+• Maintain small client-side transient audio state (which loops currently playing) to avoid re-starting constantly.
+Rules:
+• Build is deterministic given world state; actual playback latency irrelevant.
+Prohibitions:
+• No decoding/streaming here; only events.
+
+9. dom_client_console.[hc] — In-game debug/command console
+Lightweight developer console and possibly player cheat console.
+Header
+#include "dom_core_types.h"
+
+typedef struct DomClientConsoleLine {
+    const char *text; /* references external buffer pool managed elsewhere */
+} DomClientConsoleLine;
+
+#define DOM_CLIENT_CONSOLE_MAX_LINES 128
+
+typedef struct DomClientConsole {
+    dom_bool8 visible;
+    DomClientConsoleLine lines[DOM_CLIENT_CONSOLE_MAX_LINES];
+    dom_u32 head;
+} DomClientConsole;
+Public API:
+void dom_client_console_init(DomClientConsole *c);
+
+void dom_client_console_toggle(DomClientConsole *c);
+
+/* Append text line (for logs, warnings, etc.) */
+void dom_client_console_log(DomClientConsole *c, const char *text);
+
+/* Process input line (runs commands via sim_bridge or client state) */
+void dom_client_console_execute(DomClientConsole *c,
+                                const char *cmdline,
+                                DomClientSimBridge *bridge,
+                                DomClientState *st);
+Rules:
+• Command set must be deterministic (e.g. “set_speed 2.0” modifies sim constant via defined API).
+• Console text may not modify sim except via well-defined commands.
+Prohibitions:
+• No direct engine-internals access; all commands must go through stable APIs.
+
+10. dom_client_config.[hc] — Client configuration and keybinds
+Stores user preferences, key mappings, UI scale etc.
+May be loaded/saved from a config file, but file IO sits in /game/launcher or /scripts; this module is purely in-memory representation + parsing/serializing helpers.
+Header
+#include "dom_core_types.h"
+#include "dom_client_input.h"
+
+typedef struct DomClientKeybind {
+    dom_u32 key;           /* physical key code */
+    DomClientAction action;
+    dom_u32 mods;          /* modifier mask */
+} DomClientKeybind;
+
+#define DOM_CLIENT_MAX_KEYBINDS 128
+
+typedef struct DomClientConfig {
+    DomClientKeybind keybinds[DOM_CLIENT_MAX_KEYBINDS];
+    dom_u32 keybind_count;
+
+    dom_i32 ui_scale;
+    dom_i32 master_volume;   /* 0–255 */
+    dom_i32 music_volume;
+    dom_i32 sfx_volume;
+
+    dom_bool8 invert_pan;
+} DomClientConfig;
+Public API:
+void dom_client_config_init_default(DomClientConfig *cfg);
+
+DomClientAction dom_client_config_lookup_action(const DomClientConfig *cfg,
+                                               dom_u32 key, dom_u32 mods);
+
+/* Optional: serialize/deserialize to a generic key=value representation */
+void dom_client_config_serialize(const DomClientConfig *cfg,
+                                 void *writer_ctx,
+                                 void (*write_line)(void *ctx, const char *line));
+
+void dom_client_config_apply_kv(DomClientConfig *cfg,
+                                const char *key,
+                                const char *value);
+Rules:
+• No file IO in this module, just generic read/write hooks.
+• Default config must be deterministic and consistent.
+
+11. Integration Summary
+Per frame, the call stack from launcher should look like:
+void dom_client_app_tick(DomClientApp *app) {
+    // 1. Platform → client input
+    DomPlatformInputFrame pframe;
+    dom_platform_poll_input(&pframe);
+
+    DomClientInputFrame cframe;
+    dom_client_input_clear(&cframe);
+    dom_client_input_from_platform(&cframe, &pframe);
+    dom_client_input_map_actions(&cframe, &app->state, &app->config);
+
+    // 2. UI frame
+    dom_client_ui_frame(&app->ui, &app->state, &cframe);
+
+    // 3. Process UI → sim commands
+    dom_client_ui_process_commands(&app->ui, &app->state, &app->sim_bridge);
+
+    // 4. Input-driven sim commands (camera, selection, build, etc.)
+    dom_client_sim_bridge_apply_input(&app->sim_bridge, &app->state, &cframe);
+
+    // 5. Step sim (local or net)
+    dom_client_sim_bridge_step(&app->sim_bridge);
+
+    // 6. Build view projection
+    dom_client_view_build(&app->state,
+                          app->window_w, app->window_h,
+                          &app->render_pipe.view_proj);
+
+    // 7. Build & submit render commands
+    dom_client_render_pipe_build(&app->render_pipe,
+                                 &app->state, &app->ui,
+                                 app->sim_bridge.local_world_or_proxy);
+    dom_client_render_pipe_submit(&app->render_pipe);
+
+    // 8. Build & submit audio commands
+    dom_client_audio_pipe_build(&app->audio_pipe, &app->state,
+                                app->sim_bridge.local_world_or_proxy);
+    dom_client_audio_pipe_submit(&app->audio_pipe);
+}
+Every mutation of the simulation happens via dom_client_sim_bridge using the deterministic engine APIs.
+The client layer remains a pure orchestrator, UI host, and view/camera manager.

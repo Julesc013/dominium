@@ -1,0 +1,325 @@
+# Dominium V3 — Codegen Addendum (Renderer/Platform/Engine Split)
+
+This addendum **modifies and extends** previous V3 specs and directory contracts.  
+Any contradictions: this file WINS.
+
+It exists to stop code generators from baking in wrong assumptions about rendering, platforms, or OS APIs.
+
+---
+
+## 1. Purpose and Scope
+
+1. This addendum defines:
+   - The **layering contract** between engine, platform, and renderer.
+   - The **public C APIs** that must be implemented for:
+     - Platform backends (`dom_platform_*`)
+     - Renderer backends (`dom_render_*`)
+   - The **initial MVP target set**:
+     - Windows NT 2000 SP4 → Windows 11+
+     - Win32 platform
+     - Direct3D 9 renderer
+     - 2D + 3D **vector-only** drawing
+
+2. Simulation, determinism kernels, ECS, serialization, job system, etc., in existing V3 volumes remain authoritative and unchanged.
+
+---
+
+## 2. Hard Layering Rules (Overrides Earlier Implicit Assumptions)
+
+Previous specs sometimes blurred platform vs renderer responsibilities.  
+From now on, the following rules are hard:
+
+1. **Engine/Sim layer (deterministic core)**
+   - Pure C89.
+   - No OS headers.
+   - No graphics or audio APIs.
+   - No DirectX/OpenGL/Vulkan/SDL/Win32/etc.
+   - Only knows about **abstract draw commands**, **input state**, and **time** through engine-level APIs.
+
+2. **Platform backends (`/engine/platform/...`)**
+   - Responsible for:
+     - Window/surface creation.
+     - Input collection.
+     - Time and sleep primitives.
+     - Filesystem/paths, environment, arguments.
+   - The only place that may include:
+     - `<windows.h>`, X11, Cocoa, Android NDK, etc.
+     - SDL headers (if that variant uses SDL).
+   - Must expose a **stable C API** (`dom_platform_*`).
+
+3. **Renderer backends (`/engine/render/...`)**
+   - Responsible for:
+     - Creating and managing GPU (or software) render contexts.
+     - Drawing the frame from **draw commands** produced by the engine.
+   - The only place that may include:
+     - Direct3D 9/11/12 headers.
+     - OpenGL, WGL/GLX, Vulkan headers.
+   - Must expose a **stable C API** (`dom_render_*`).
+   - Renderer is **purely observational**: it cannot modify simulation state, call randomness, or influence determinism.
+
+4. No other layer may call any graphics or OS APIs directly.  
+   - No DirectX in `/engine/sim`.
+   - No Win32 includes in `/engine/core` or `/game`.
+   - No SDL in `/engine/sim`.
+
+---
+
+## 3. Platform API Contract
+
+New canonical header: `engine/platform/dom_platform.h`
+
+This MUST be implemented by each platform backend and is the only interface the engine/game relies on.
+
+### 3.1 Types
+
+```c
+typedef struct DomPlatformConfig {
+    const char *app_name;
+    int         window_width;
+    int         window_height;
+    int         fullscreen;  /* 0 = windowed, 1 = fullscreen */
+} DomPlatformConfig;
+
+/* Abstract handle to a window/surface and associated "native" objects. */
+typedef struct DomPlatformWindowHandle {
+    void *native;  /* e.g. HWND*, SDL_Window*, NSWindow*, etc. */
+    void *extra;   /* e.g. HDC*, X11 Display*, NSView*, etc. (may be NULL) */
+} DomPlatformWindowHandle;
+
+typedef struct DomInputState {
+    /* Keys: simple linear index for now (virtual key codes or custom map). */
+    unsigned char key_down[256];
+
+    int mouse_x;      /* window-relative */
+    int mouse_y;
+    int mouse_dx;     /* delta since last frame */
+    int mouse_dy;
+    unsigned char mouse_buttons; /* bitfield: LMB=1, RMB=2, MMB=4, etc. */
+} DomInputState;
+3.2 Functions
+/* Initialise platform backend, create main window, etc. */
+int  dom_platform_init(const DomPlatformConfig *cfg);
+
+/* Destroy window, free platform resources. */
+void dom_platform_shutdown(void);
+
+/* Pump OS events, update input, return 0 if quit requested. */
+int  dom_platform_pump_events(DomInputState *out_input);
+
+/* Retrieve native window handle(s) for renderer creation. */
+void dom_platform_get_window(DomPlatformWindowHandle *out_handle);
+
+/* Monotonic time in seconds (double is allowed here, platform layer only). */
+double dom_platform_get_time_seconds(void);
+
+/* Sleep for at least the specified milliseconds. */
+void   dom_platform_sleep_milliseconds(unsigned ms);
+
+/* Logging and fatal reporting from engine. Implementation may log to console, file, etc. */
+void dom_platform_log(const char *msg);
+void dom_platform_fatal(const char *msg);
+3.3 Implementation Targets (MVP First)
+For MVP, only one platform backend must exist:
+• engine/platform/win32/dom_platform_win32.c
+o Uses native Win32 API (no SDL) for:
+• Window, message loop, input, timing.
+Future backends:
+• engine/platform/win32_sdl2 (Win + SDL2)
+• engine/platform/win9x (Win98 SE)
+• engine/platform/posix_sdl2 (Linux)
+• engine/platform/macos_cocoa or _sdl2 (macOS X)
+• etc.
+All must obey the same header and never change its signature.
+
+4. Renderer API Contract
+New canonical header: engine/render/dom_render_api.h
+This is the only interface the engine/game uses to draw.
+4.1 Backend IDs and Caps
+typedef enum DomRenderBackendId {
+    DOM_RENDER_BACKEND_SOFTWARE = 0,
+    DOM_RENDER_BACKEND_DX9,
+    DOM_RENDER_BACKEND_DX11,
+    DOM_RENDER_BACKEND_GL1,
+    DOM_RENDER_BACKEND_GL2,
+    DOM_RENDER_BACKEND_VK1,
+    DOM_RENDER_BACKEND_DX12,
+    DOM_RENDER_BACKEND_COUNT
+} DomRenderBackendId;
+
+typedef struct DomRenderCaps {
+    int supports_2d;
+    int supports_3d;
+    int supports_msaa;
+    int supports_offscreen;
+    int max_texture_size;
+    /* More later as needed. */
+} DomRenderCaps;
+4.2 Config and Context
+typedef struct DomRenderConfig {
+    DomRenderBackendId backend;
+    int                width;
+    int                height;
+    int                vsync;      /* 0/1 */
+    int                fullscreen; /* 0/1 */
+} DomRenderConfig;
+
+typedef struct DomRenderContext DomRenderContext; /* opaque */
+4.3 Draw Commands (Vector-first)
+MVP uses vector graphics only; textures/meshes can be stubbed.
+typedef enum {
+    DOM_DRAW_LINE,
+    DOM_DRAW_RECT,
+    DOM_DRAW_FILLED_RECT,
+    DOM_DRAW_POLY,
+    DOM_DRAW_TEXT_2D,
+    DOM_DRAW_WIREFRAME_3D  /* simple 3D lines/wireframe */
+} DomDrawType;
+
+typedef struct {
+    float x, y;
+} DomVec2f;
+
+typedef struct {
+    float x, y, z;
+} DomVec3f;
+
+typedef struct DomDrawCmd {
+    DomDrawType type;
+    unsigned    layer;      /* sort key for z-order */
+    unsigned    color_rgba; /* 0xAARRGGBB */
+
+    union {
+        struct { DomVec2f a, b; } line;
+        struct { DomVec2f p0, p1; } rect;  /* p0=min, p1=max */
+        struct { DomVec2f *verts; unsigned count; } poly2d;
+        struct { DomVec3f *verts; unsigned count; } wire3d;
+        struct { DomVec2f pos; unsigned text_id; } text2d;
+    } u;
+} DomDrawCmd;
+Coordinate choice (MVP rule):
+• All DomDrawCmd coordinates are world-space meters.
+• The engine/game provides a camera transform; renderer applies:
+o For 2D: orthographic projection.
+o For 3D: simple perspective using a provided camera matrix (to be specified in engine/game API, not here).
+Renderer backends must not interpret world state; they just turn DomDrawCmd + camera into pixels.
+4.4 Renderer Entry Points
+DomRenderContext *
+dom_render_create(const DomRenderConfig          *cfg,
+                  const DomPlatformWindowHandle  *win,
+                  DomRenderCaps                  *out_caps);
+
+void dom_render_destroy(DomRenderContext *ctx);
+
+void dom_render_resize(DomRenderContext *ctx, int width, int height);
+
+/* Engine provides a sorted array of commands per frame. */
+void dom_render_frame(DomRenderContext      *ctx,
+                      const DomDrawCmd      *cmds,
+                      unsigned                cmd_count);
+Backends must be implemented as standalone modules:
+• engine/render/dx9/dom_render_dx9.c
+• Later: engine/render/dx11/dom_render_dx11.c, engine/render/gl1/dom_render_gl1.c, etc.
+No backend may change the API or add engine-visible entry points.
+
+5. Backend Registry and Selection
+To support mix-and-match platform/renderer combos cleanly, there will be a backend registry.
+New internal header: engine/render/dom_render_registry.h
+typedef struct DomRenderBackendVTable {
+    DomRenderBackendId id;
+    const char        *name;
+
+    int (*is_supported)(void); /* checks OS/driver/API availability */
+
+    DomRenderContext *(*create)(const DomRenderConfig *,
+                                const DomPlatformWindowHandle *,
+                                DomRenderCaps *);
+    void (*destroy)(DomRenderContext *);
+    void (*resize)(DomRenderContext *, int, int);
+    void (*frame)(DomRenderContext *, const DomDrawCmd *, unsigned);
+} DomRenderBackendVTable;
+
+const DomRenderBackendVTable *dom_render_get_backends(unsigned *out_count);
+Each backend module defines a static DomRenderBackendVTable and registers it in a compile-time table.
+Engine/game uses this registry to:
+• Look up the requested backend by ID.
+• Fall back if unsupported (e.g., DX9 unavailable → GL1 → software).
+Codex must not improvise other selection logic. It must follow this pattern.
+
+6. MVP Target Matrix (Codegen Constraints)
+For the first implementation pass:
+1. Build target:
+o OS: Windows NT 2000 SP4 → Windows 11+
+o Platform: dom_platform_win32 (Win32 native)
+o Renderer: dom_render_dx9 (Direct3D 9.0c)
+2. Other backends exist only as stubs or are not implemented yet:
+o DO NOT attempt DX11, GL1/GL2, Vulkan, DX12, SDL platforms in the first pass.
+o These will be added later with the same APIs.
+3. Renderer capability flags:
+o supports_2d = 1
+o supports_3d = 1 (wireframe)
+o supports_offscreen = 0 (MVP can ignore offscreen)
+o supports_msaa = 0 (optional; default off)
+4. Texture and complex mesh support:
+o Optional and low priority in MVP.
+o Focus first on vector lines/rects/polys and simple 3D wireframes.
+
+7. Determinism and Rendering (Explicit Rules)
+These rules override any vague or ambiguous earlier text:
+1. Renderer may not modify simulation state.
+o No calls from renderer back into /engine/sim.
+o No writes to ECS components, jobs, networks, etc.
+2. Renderer may not affect simulation timing.
+o Simulation tick step is driven by engine using dom_platform_get_time_seconds and the UPS configuration.
+o If rendering is too slow, simulation slows down (UPS drop) per determinism spec; renderer never “skips” sim ticks on its own.
+3. Renderer may not use random numbers to affect visible state.
+o If some visual-only noise is added in future, it must be seeded deterministically from sim state, not from wall-clock.
+4. Renderer may not read OS clock directly for simulation decisions.
+o Platform may read it only to implement dom_platform_get_time_seconds.
+o Engine uses that to drive its tick scheduler.
+5. Draw command generation is deterministic.
+o Engine/game must generate DomDrawCmd[] based solely on deterministic sim state.
+o For a given tick and camera, the command list must be identical across runs.
+
+8. Input and Camera (Minimal Contract for Codegen)
+Input and camera are not fully specified in previous docs. For MVP, Codex must assume:
+1. A thin engine-level API receives DomInputState each frame, e.g.:
+2. /* Called once per frame by main loop after dom_platform_pump_events. */
+3. void dom_engine_handle_input(const DomInputState *state);
+4. Camera control is implemented in a game or engine view module, not in platform or renderer.
+Example (not fixed, but indicative):
+void dom_view_set_camera_2d(const DomVec2f *center, float zoom);
+void dom_view_set_camera_3d(const DomVec3f *pos,
+                            float yaw, float pitch, float fov);
+5. Renderer backends receive already-transformed DomDrawCmd or a camera transform; they do not compute gameplay camera logic.
+
+9. Directory and File Placement Constraints (Renderer/Platform)
+Add to the existing directory contract:
+1. All platform implementations must live under:
+o /engine/platform/<backend_name>/*.c
+o Do not put Win32 code under /game or /engine/sim.
+2. All renderer implementations must live under:
+o /engine/render/<backend_name>/*.c
+o Do not put DirectX/OpenGL/Vulkan calls under /engine/sim or /game.
+3. The only headers allowed to be included from renderer code are:
+o Engine public render headers (dom_render_api.h and internal registry headers).
+o Platform window handle types as needed.
+o OS/graphics headers.
+4. The only headers allowed to be included from platform code are:
+o Platform API headers (dom_platform.h).
+o OS headers.
+o No simulation or render headers.
+
+10. Summary for Codegen
+When generating code for Dominium:
+1. Do NOT call graphics APIs from simulation or game logic.
+2. Do NOT call OS APIs outside /engine/platform (and /ports in future).
+3. Do implement:
+o dom_platform_* per this addendum.
+o dom_render_* per this addendum.
+4. MVP focus:
+o Win32 platform backend (dom_platform_win32).
+o DX9 renderer backend (dom_render_dx9).
+o Vector-only 2D/3D drawing.
+o Everything else is secondary.
+This addendum is binding and overrides any earlier ambiguity in the V3 volumes about platform, rendering, or OS integration.
+

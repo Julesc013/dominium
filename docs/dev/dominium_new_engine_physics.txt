@@ -1,0 +1,309 @@
+This message is the dev-spec for engine/physics/.
+This subsystem is not a real physics engine.
+It is a deterministic integer kinematics and constraint resolver used for:
+• vehicle movement along splines
+• track/road/path alignment
+• grid–vector interfacing
+• broad-phase + narrow-phase occupancy checks
+• clearance envelopes
+• collision class tests
+• slope/grade constraints
+• bridge/tunnel passability
+• structure–terrain overlap resolution
+No continuous forces.
+No floats.
+No nondeterminism.
+Directory:
+engine/
+└── physics/
+    ├── dom_physics_types.h
+    ├── dom_physics_aabb.h
+    ├── dom_physics_aabb.c
+    ├── dom_physics_motion.h
+    ├── dom_physics_motion.c
+    ├── dom_physics_shape.h
+    ├── dom_physics_shape.c
+    ├── dom_physics_collision.h
+    ├── dom_physics_collision.c
+    ├── dom_physics_query.h
+    ├── dom_physics_query.c
+    ├── dom_physics_vehicle.h
+    ├── dom_physics_vehicle.c
+    ├── dom_physics_spline.h
+    └── dom_physics_spline.c
+
+0. GLOBAL RULES FOR engine/physics
+• C89 only
+• No floats anywhere
+• Only integer and fixed-point (dom_q16_16, dom_q32_32)
+• No dynamic allocation in tick-phase functions
+• Must not depend on rendering or platform
+• May depend on:
+o core/*
+o spatial/*
+o sim/world
+o sim/lanes
+• Physics never mutates simulation state directly.
+• Physics never emits jobs or events.
+• Physics returns proposals; systems decide how to apply them.
+
+1. dom_physics_types.h
+Purpose: the type authority for all physics objects.
+Includes allowed:
+#include "dom_core_types.h"
+#include "dom_core_fp.h"
+#include "dom_spatial_types.h"
+Defines:
+typedef dom_u32 DomPhysicsObjId;
+
+typedef dom_u32 DomCollisionClass;  /* bits controlling allowed interactions */
+typedef dom_u32 DomPhysicsFlags;    /* generic flags */
+
+typedef struct DomPhysicsMass {
+    dom_q32_32 inv_mass;     /* fixed point, 0 = immovable */
+} DomPhysicsMass;
+Define kinematic state:
+typedef struct DomPhysicsKinematic {
+    DomTileCoord x, y, z;   /* integer world tile coords */
+    dom_q32_32 vx, vy, vz;  /* fixed-point velocity */
+    dom_q32_32 ax, ay, az;  /* fixed acceleration (scripted) */
+} DomPhysicsKinematic;
+Defines movement result for a tick:
+typedef struct DomPhysicsMove {
+    DomTileCoord nx, ny, nz; /* proposed new tile coords */
+    dom_bool8    collided;
+    DomPhysicsObjId hit_obj;
+} DomPhysicsMove;
+Prohibitions:
+• No orientation or quaternions (handled by vehicles & splines, not core physics).
+• No rotational inertia.
+
+2. dom_physics_aabb.[hc] — Axis-Aligned Bounding Boxes
+Purpose: smallest possible AABB utility layer, deterministic.
+Header responsibilities
+• Define AABB type
+• Provide expand/contract/union
+• Provide containment & overlap tests
+• All integer ops only
+Types:
+typedef struct DomAABB {
+    DomTileCoord min_x, min_y, min_z;
+    DomTileCoord max_x, max_y, max_z;
+} DomAABB;
+Public API:
+/* Construct box from min/max (caller guarantees min <= max). */
+DomAABB dom_physics_aabb_make(DomTileCoord min_x, DomTileCoord min_y, DomTileCoord min_z,
+                              DomTileCoord max_x, DomTileCoord max_y, DomTileCoord max_z);
+
+/* Expand box by integer deltas. */
+DomAABB dom_physics_aabb_expand(const DomAABB *a, DomTileCoord dx,
+                                DomTileCoord dy, DomTileCoord dz);
+
+/* A ∪ B */
+DomAABB dom_physics_aabb_union(const DomAABB *a, const DomAABB *b);
+
+/* Overlap test (inclusive). */
+dom_bool8 dom_physics_aabb_overlaps(const DomAABB *a, const DomAABB *b);
+
+/* Containment test. */
+dom_bool8 dom_physics_aabb_contains(const DomAABB *outer, const DomAABB *inner);
+Implementation rules:
+• No multiplications that could overflow; clamp deterministically.
+• Overlap logic must be strictly integer-safe.
+
+3. dom_physics_shape.[hc] — Collision shapes
+Purpose: shapes used by vehicles/buildings for clearance envelopes.
+Header responsibilities
+Defines supported shapes:
+typedef enum {
+    DOM_SHAPE_AABB = 1,
+    DOM_SHAPE_CYL  = 2,
+    DOM_SHAPE_CAPSULE = 3
+} DomShapeType;
+
+typedef struct DomShapeAABB {
+    DomAABB box;
+} DomShapeAABB;
+
+typedef struct DomShapeCylinder {
+    dom_i32 radius;  /* in subtile units */
+    dom_i32 height;
+} DomShapeCylinder;
+
+typedef struct DomShapeCapsule {
+    dom_i32 radius;
+    dom_i32 height;
+} DomShapeCapsule;
+Unified shape container:
+typedef struct DomPhysicsShape {
+    DomShapeType type;
+    union {
+        DomShapeAABB aabb;
+        DomShapeCylinder cyl;
+        DomShapeCapsule capsule;
+    } v;
+    DomCollisionClass collision_class;
+} DomPhysicsShape;
+Public API:
+dom_bool8 dom_physics_shape_test(const DomPhysicsShape *a,
+                                 DomTileCoord ax, DomTileCoord ay, DomTileCoord az,
+                                 const DomPhysicsShape *b,
+                                 DomTileCoord bx, DomTileCoord by, DomTileCoord bz);
+Implementation rules:
+• For cylinder/capsule, use Manhattan or Chebyshev distance (no sqrt, no float).
+• Capsule test approximated with fixed-point squared radius.
+
+4. dom_physics_motion.[hc] — Kinematic integrator
+Purpose: deterministic integer movement update.
+Header responsibilities
+void dom_physics_motion_integrate(const DomPhysicsKinematic *kin,
+                                  DomPhysicsKinematic *out_next);
+Steps:
+1. vx += ax
+2. vy += ay
+3. vz += az
+4. x += floor(vx)
+5. y += floor(vy)
+6. z += floor(vz)
+All fixed-point.
+Velocity & accel clamped via core fp rules.
+Collision is done separately, not inside integrator.
+
+5. dom_physics_collision.[hc] — Grid + object collision test
+Purpose: determine if proposed movement hits terrain or other objects.
+Header responsibilities
+Terrain test:
+dom_bool8 dom_physics_collision_test_terrain(const DomAABB *box,
+                                             DomSurfaceId surface);
+Object test:
+dom_bool8 dom_physics_collision_test_objects(const DomAABB *box,
+                                             DomCollisionClass mask,
+                                             DomPhysicsObjId *out_hit_obj);
+Full movement test:
+DomPhysicsMove dom_physics_collision_resolve(const DomPhysicsKinematic *curr,
+                                             const DomPhysicsKinematic *next,
+                                             const DomPhysicsShape *shape,
+                                             DomSurfaceId surface);
+Behaviour:
+• Build swept AABB from curr→next integer delta.
+• Sample terrain via spatial_query.
+• Query object BVH via spatial_index.
+• If collision:
+o find minimal separating axis using integer DDA
+o slide or stop depending on shape flags
+o always deterministic
+Prohibitions:
+• No impulses or bouncing.
+• No partial tick subdividing.
+
+6. dom_physics_query.[hc] — Higher-level queries
+Purpose: used by construction, AI, placement, roads/rails, tunnels/bridges.
+API examples
+Clearance envelope:
+dom_bool8 dom_physics_query_clearance(const DomAABB *box,
+                                      DomSurfaceId surface,
+                                      DomCollisionClass mask);
+Slope test:
+dom_bool8 dom_physics_query_slope_ok(DomSurfaceId surface,
+                                     DomTileCoord x0, DomTileCoord y0,
+                                     DomTileCoord x1, DomTileCoord y1,
+                                     dom_i32 max_grade_permille);
+Tunnel/bridge feasibility:
+dom_bool8 dom_physics_query_can_tunnel(DomSurfaceId surface,
+                                       DomTileCoord x0, DomTileCoord y0,
+                                       DomTileCoord x1, DomTileCoord y1,
+                                       dom_i32 z_layer,
+                                       dom_u32 flags);
+Clear span for platforms:
+dom_bool8 dom_physics_query_span_clear(DomSurfaceId surface,
+                                       const DomAABB *span_region,
+                                       dom_i32 min_height,
+                                       dom_i32 max_height);
+Prohibitions:
+• No tile mutation.
+• No voxel editing.
+
+7. dom_physics_vehicle.[hc] — Vehicle kinematic envelope
+Purpose: 100% deterministic movement for rolling stock, cars, aircraft (ground roll), etc.
+Header responsibilities
+Vehicle state type:
+typedef struct DomVehicleState {
+    DomTileCoord x, y, z;
+    DomTileCoord dir_x, dir_y;  /* unit step direction */
+    dom_q32_32 speed;           /* m/tick fixed point */
+    DomPhysicsShape shape;
+    DomSurfaceId surface;
+} DomVehicleState;
+Public API:
+/* Given a guide path (spline arc), compute next point. */
+DomResult dom_physics_vehicle_follow_spline(const DomVehicleState *vs,
+                                            DomSurfaceId surface,
+                                            dom_u32 path_id,
+                                            DomVehicleState *out_next);
+
+/* Perform collision-aware update. */
+DomResult dom_physics_vehicle_step(const DomVehicleState *vs,
+                                   DomVehicleState *out_next);
+Implementation rules:
+• Spline sample uses fixed-point parameter t.
+• No drift; vehicles snap to spline tangent.
+• For trains: dir_x/dir_y must align with track tangent each tick.
+
+8. dom_physics_spline.[hc] — Deterministic spline sampler
+Purpose: unify all vector transport ways (roads, rails, canals, pipelines, power lines).
+Header responsibilities
+Spline type:
+typedef dom_u32 DomSplineId;
+typedef dom_u16 DomSplinePointId;
+
+typedef struct DomSplinePoint {
+    DomTileCoord x, y, z;
+    dom_q32_32   dx, dy, dz; /* control tangent */
+} DomSplinePoint;
+
+typedef struct DomSpline {
+    DomSplineId id;
+    DomSurfaceId surface;
+    dom_u32 point_count;
+    DomSplinePoint *points;  /* allocated at build/load time */
+} DomSpline;
+Public API:
+Creation & lookup:
+DomResult dom_physics_spline_register(const DomSpline *spline);
+const DomSpline *dom_physics_spline_get(DomSplineId id);
+Evaluation:
+/* Evaluate spline at integer/FP param t in [0..1]. */
+void dom_physics_spline_eval(const DomSpline *sp,
+                             dom_q16_16 t,
+                             DomTileCoord *out_x,
+                             DomTileCoord *out_y,
+                             DomTileCoord *out_z);
+
+/* Get tangent vector at param t. */
+void dom_physics_spline_tangent(const DomSpline *sp,
+                                dom_q16_16 t,
+                                dom_q32_32 *dx,
+                                dom_q32_32 *dy,
+                                dom_q32_32 *dz);
+Length estimation:
+dom_q32_32 dom_physics_spline_estimate_length(const DomSpline *sp);
+Implementation rules:
+• Use cubic Hermite (integer coefficients).
+• Precompute segment coefficients at load time.
+• No floats, no adaptive sampling.
+Prohibitions:
+• No dynamic editing during tick.
+
+Summary
+This directory provides every deterministic geometric/kinematic primitive the engine needs:
+• Shapes
+• AABBs
+• Collision
+• Kinematics
+• Spline-following
+• Vehicle envelopes
+It integrates cleanly with:
+• engine/spatial/* (read-only terrain/voxel/index data)
+• engine/sim/* (for lane IDs and world/surface IDs)
+• engine/ecs (but only via entity IDs, not direct access)
+

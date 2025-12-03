@@ -1,0 +1,322 @@
+This message is the deterministic dev-spec for engine/audio/.
+The audio layer is fully abstracted and backend-agnostic.
+The simulation does not produce waveforms — it emits audio events (start sound, stop sound, set volume).
+The render/audio subsystem transforms those events into backend-specific buffered audio output.
+This directory defines:
+• The abstract audio API seen by the engine/game
+• Deterministic audio command buffers (similar to render)
+• Backend drivers (SDL_mixer, OpenAL, DirectSound, XAudio2, software mixer)
+• A fixed-rate mixer contract
+• A platform-agnostic soundbank loader format
+• A deterministic, fixed-point envelope and panner
+No floats are used in command construction or in any deterministic subsystem.
+Backends may use floats internally (OpenAL/XAudio) but the API boundary always consumes integer or fixed-point values.
+
+Directory Layout
+engine/
+└── audio/
+    ├── dom_audio_api.h
+    ├── dom_audio_state.h
+    ├── dom_audio_state.c
+    ├── dom_audio_commands.h
+    ├── dom_audio_commands.c
+    ├── dom_audio_mixer.h
+    ├── dom_audio_mixer.c
+    ├── dom_audio_backend.h
+    ├── dom_audio_backend_null.c
+    ├── sdl/
+    │    ├── dom_audio_sdl.h
+    │    └── dom_audio_sdl.c
+    ├── openal/
+    │    ├── dom_audio_openal.h
+    │    └── dom_audio_openal.c
+    ├── xaudio2/
+    │    ├── dom_audio_xa2.h
+    │    └── dom_audio_xa2.c
+    ├── directsound/
+    │    ├── dom_audio_ds.h
+    │    └── dom_audio_ds.c
+    └── software/
+         ├── dom_audio_soft.h
+         └── dom_audio_soft.c
+Global rules:
+• C89/C98 only
+• No audio simulation inside deterministic tick
+• All audio events must be deterministic
+• Audio playback latency is nondeterministic and irrelevant to sim
+• All backends consume the same command buffer format
+• No runtime allocation in play-loops
+
+1. dom_audio_api.h — Abstract audio API
+This is the only audio header the rest of the engine includes.
+Includes:
+#include "dom_core_types.h"
+#include "dom_audio_state.h"
+#include "dom_audio_commands.h"
+Types:
+typedef enum {
+    DOM_AUDIO_BACKEND_NULL = 0,
+    DOM_AUDIO_BACKEND_SDL,
+    DOM_AUDIO_BACKEND_OPENAL,
+    DOM_AUDIO_BACKEND_DS,    /* DirectSound */
+    DOM_AUDIO_BACKEND_XA2,   /* XAudio2 */
+    DOM_AUDIO_BACKEND_SOFT   /* software mixer */
+} DomAudioBackendKind;
+Main object:
+typedef struct DomAudioDevice {
+    DomAudioBackendKind backend;
+    void *backend_state;
+
+    DomAudioCommandBuffer cmd;
+
+    dom_u32 sample_rate;   /* backend may adjust (fallback) */
+    dom_u8  channels;      /* 1 = mono, 2 = stereo only */
+} DomAudioDevice;
+Public API:
+Initialization:
+DomResult dom_audio_create(DomAudioDevice *d,
+                           DomAudioBackendKind backend,
+                           dom_u32 preferred_sample_rate,
+                           dom_u8 channels);
+
+void dom_audio_destroy(DomAudioDevice *d);
+Per-frame:
+void dom_audio_begin(DomAudioDevice *d);     /* Clear command buffer */
+void dom_audio_submit(DomAudioDevice *d);    /* Submit commands to backend */
+Commands dispatched by engine/game:
+void dom_audio_play(DomAudioDevice *d,
+                    DomAudioSoundId sid,
+                    dom_i32 volume,  /* 0–255 */
+                    dom_i32 pan,     /* -128 left .. 127 right */
+                    dom_i32 pitch);  /* fixed-point 24.8 pitch multiplier */
+
+void dom_audio_stop(DomAudioDevice *d,
+                    DomAudioSoundId sid);
+
+void dom_audio_set_volume(DomAudioDevice *d,
+                          DomAudioSoundId sid,
+                          dom_i32 volume);
+
+void dom_audio_set_listener(DomAudioDevice *d,
+                            dom_i32 x, dom_i32 y, dom_i32 z,
+                            dom_i32 vx, dom_i32 vy, dom_i32 vz);
+Prohibitions:
+• No floats across API boundary.
+• No spatialisation beyond integer parameters (backends may convert).
+• No streaming decode here — only event dispatch.
+
+2. dom_audio_state.[hc] — Active sound state tracking
+Purpose: deterministic tracking of which sounds are “currently active” from the simulation’s perspective.
+This determines which commands appear in the audio buffer each frame.
+Header includes:
+#include "dom_core_types.h"
+Types:
+typedef dom_u32 DomAudioSoundId;
+
+typedef struct DomAudioSoundInstance {
+    DomAudioSoundId id;
+    dom_i32 volume; /* 0–255 */
+    dom_i32 pan;    /* -128 .. 127 */
+    dom_i32 pitch;  /* fixed-point 24.8 */
+    dom_bool8 playing;
+} DomAudioSoundInstance;
+Global state:
+#define DOM_AUDIO_MAX_ACTIVE 1024
+
+typedef struct DomAudioState {
+    dom_u32 count;
+    DomAudioSoundInstance slots[DOM_AUDIO_MAX_ACTIVE];
+} DomAudioState;
+Public API:
+void dom_audio_state_init(DomAudioState *s);
+
+DomAudioSoundInstance *
+dom_audio_state_get(DomAudioState *s, DomAudioSoundId sid);
+
+DomResult dom_audio_state_start(DomAudioState *s, DomAudioSoundId sid,
+                                dom_i32 vol, dom_i32 pan, dom_i32 pitch);
+
+DomResult dom_audio_state_stop(DomAudioState *s, DomAudioSoundId sid);
+
+DomResult dom_audio_state_set_volume(DomAudioState *s, DomAudioSoundId sid, dom_i32 vol);
+DomResult dom_audio_state_set_pan   (DomAudioState *s, DomAudioSoundId sid, dom_i32 pan);
+DomResult dom_audio_state_set_pitch (DomAudioState *s, DomAudioSoundId sid, dom_i32 pitch);
+Rules:
+• Completely deterministic.
+• No real audio playback; purely tracks sim state.
+• No per-frame allocation.
+Prohibitions:
+• No sound loading here.
+• No backend calls here.
+
+3. dom_audio_commands.[hc] — Deterministic audio command buffer
+Patterns exactly like render commands.
+Header: dom_audio_commands.h
+Types:
+typedef enum {
+    DOM_AUDIO_CMD_NONE = 0,
+    DOM_AUDIO_CMD_PLAY,
+    DOM_AUDIO_CMD_STOP,
+    DOM_AUDIO_CMD_SET_VOLUME,
+    DOM_AUDIO_CMD_SET_PAN,
+    DOM_AUDIO_CMD_SET_PITCH,
+    DOM_AUDIO_CMD_SET_LISTENER
+} DomAudioCmdKind;
+Command payloads:
+typedef struct {
+    DomAudioSoundId sid;
+    dom_i32 volume;
+    dom_i32 pan;
+    dom_i32 pitch;
+} DomAudioCmdPlay;
+
+typedef struct {
+    DomAudioSoundId sid;
+} DomAudioCmdStop;
+
+typedef struct {
+    DomAudioSoundId sid;
+    dom_i32 value;
+} DomAudioCmdSetVolume;
+
+typedef struct {
+    DomAudioSoundId sid;
+    dom_i32 value;
+} DomAudioCmdSetPan;
+
+typedef struct {
+    DomAudioSoundId sid;
+    dom_i32 value;
+} DomAudioCmdSetPitch;
+
+typedef struct {
+    dom_i32 x, y, z;
+    dom_i32 vx, vy, vz;
+} DomAudioCmdSetListener;
+Command entry:
+typedef struct {
+    DomAudioCmdKind kind;
+    union {
+        DomAudioCmdPlay play;
+        DomAudioCmdStop stop;
+        DomAudioCmdSetVolume vol;
+        DomAudioCmdSetPan pan;
+        DomAudioCmdSetPitch pitch;
+        DomAudioCmdSetListener listener;
+    } u;
+} DomAudioCmd;
+Command buffer:
+#define DOM_AUDIO_CMD_MAX 4096
+
+typedef struct DomAudioCommandBuffer {
+    dom_u32 count;
+    DomAudioCmd cmds[DOM_AUDIO_CMD_MAX];
+} DomAudioCommandBuffer;
+Public API:
+void dom_audio_cmd_init(DomAudioCommandBuffer *);
+DomResult dom_audio_cmd_push(DomAudioCommandBuffer *, const DomAudioCmd *);
+Rules:
+• FIFO, deterministic order.
+• Hard cap enforces stable memory/perf.
+
+4. dom_audio_mixer.[hc] — Optional deterministic software mixer
+Even though real playback is nondeterministic, the game may occasionally require:
+• Deterministic audio preview
+• Offline rendering for tools
+• Very old platforms (DOS, Win9x)
+Header contents
+Includes:
+#include "dom_audio_state.h"
+#include "dom_audio_commands.h"
+Mixer configuration:
+typedef struct {
+    dom_u32 sample_rate;  /* required */
+    dom_u8  channels;     /* 1 or 2 */
+} DomAudioMixerConfig;
+Mixer state:
+typedef struct {
+    DomAudioMixerConfig cfg;
+    dom_i16 *mix_buffer;     /* fixed-size per tick */
+    dom_u32 mix_buffer_size; /* samples */
+} DomAudioMixer;
+Public API:
+DomResult dom_audio_mixer_init(DomAudioMixer *m, DomAudioMixerConfig cfg);
+void      dom_audio_mixer_shutdown(DomAudioMixer *m);
+
+/* Render deterministic mix for current frame */
+void dom_audio_mixer_mix(DomAudioMixer *m,
+                         const DomAudioState *s,
+                         const DomAudioCommandBuffer *cmd,
+                         dom_i16 *outbuf,
+                         dom_u32 outbuf_samples);
+Rules:
+• Must be bit-identical across platforms.
+• No floating point anywhere.
+• Uses integer resampling, integer envelopes, integer panning.
+
+5. dom_audio_backend.h — Backend interface
+Backends must implement:
+typedef struct DomAudioBackendAPI {
+    DomResult (*init)(DomAudioDevice *dev);
+    void      (*shutdown)(DomAudioDevice *dev);
+    void      (*submit)(DomAudioDevice *dev,
+                        const DomAudioCommandBuffer *cmd);
+} DomAudioBackendAPI;
+Backend lookup:
+const DomAudioBackendAPI *dom_audio_backend_get(DomAudioBackendKind k);
+Rules:
+• Backends interpret commands and trigger OS/native audio playback.
+• Backends may use floats, but must treat integer parameters exactly.
+
+6. Backends
+6.1 sdl/ — SDL_mixer backend
+• Uses SDL2 audio subsystem.
+• Converts integer pan/vol/pitch into SDL representation.
+• Preloads WAV/OGG into SDL chunks (static).
+Rules:
+• No streaming decode inside sim tick; decode only on load.
+• Latency acceptable and nondeterministic.
+
+6.2 openal/
+• Creates OpenAL device+context.
+• Each sound ID has matching AL buffer.
+• pitch fixed-point converted to AL float.
+• Listener and sources updated per command.
+
+6.3 xaudio2/
+Windows-only.
+Uses IXAudio2SourceVoice objects for each active sound.
+Rules:
+• Fixed-size circular buffer per sound.
+• Strict check for buffer underruns (reportable errors but don’t break determinism).
+
+6.4 directsound/
+Legacy path for Win9x/XP.
+Simple buffer playback using IDirectSoundBuffer.
+Rules:
+• Fade envelopes implemented manually.
+
+6.5 software/
+• Pure deterministic integer mixer.
+• Used for DOS, Win3.x, emscripten, and offline rendering.
+
+7. Behavioural Guarantees
+7.1 Deterministic commands
+The command buffer is fully deterministic.
+Backends can be nondeterministic but cannot influence sim.
+7.2 Backend choice nondeterministic
+The backend does not affect the simulation or the resulting command buffer.
+The player can choose any backend.
+7.3 Audio asset loading
+Loading occurs in tools or in engine startup; the runtime audio system never decodes files.
+7.4 No multi-threaded mixing inside backend
+Threading handled by platform, backends may run audio callback thread, but must not modify sim-visible state.
+
+8. Summary
+engine/audio/ defines:
+• Deterministic audio state
+• Deterministic audio commands
+• Backend-agnostic audio device API
+• Software mixer for deterministic offline playback
+• Real backends for SDL/OpenAL/DX/XA2
+The simulation emits pure events; the audio subsystem plays them nondeterministically but predictably in type and order.

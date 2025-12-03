@@ -1,0 +1,308 @@
+This message is the dev spec for engine/core/ and its files only. Next directories can follow in later messages.
+engine/
+└── core/
+    ├── dom_core_types.h
+    ├── dom_core_types.c
+    ├── dom_core_log.h
+    ├── dom_core_log.c
+    ├── dom_core_mem.h
+    ├── dom_core_mem.c
+    ├── dom_core_fp.h
+    ├── dom_core_fp.c
+    ├── dom_core_rng.h
+    ├── dom_core_rng.c
+    ├── dom_core_bits.h
+    └── dom_core_bits.c
+0. Global rules for engine/core
+Scope: foundation for the entire engine. Every other engine module is allowed to depend on core. core depends on nothing except the C89 runtime and standard headers.
+Language: C89 only. No C99, no C++ in this directory.
+Determinism: all functions must be deterministic for given inputs. No wall clock, no OS randomness, no global hidden state except explicitly documented RNG state.
+Allowed headers:
+<stddef.h>, <stdint.h> (or local typedefs if you want to avoid C99), <limits.h>, <stdarg.h>, <string.h>, <stdlib.h>, <stdio.h> (for debug logging only behind compile-time flags).
+Prohibited:
+• Any platform-specific headers (<windows.h>, <unistd.h>, <pthread.h>, etc.).
+• Floating point math in any function that may be used by simulation code.
+• Dynamic allocation in hot loops unless explicitly documented and justified (and never from sim tick paths).
+• Global mutable state except in controlled modules like log and rng, with explicit init/reset functions.
+Namespace: all public symbols start with dom_ or DOM_. No bare log, min, max, etc.
+Error handling: no exit() from these modules. Return error codes or assert in debug builds, clamp in release builds.
+
+1. dom_core_types.[hc]
+Purpose: single source of truth for fixed-size integer types, basic enums, and core engine typedefs. All other modules include this first.
+Header: dom_core_types.h
+Responsibilities:
+• Define basic scalar types (dom_u8, dom_i32, etc.).
+• Define core common enums (e.g. DomResult, DomBool).
+• Define compile-time configuration macros (endianness flags, alignment assumptions).
+• Provide DOM_STATIC_ASSERT macro for compile-time size checks.
+Key contents:
+• Include guards: #ifndef DOM_CORE_TYPES_H etc.
+• Includes: minimal: <stddef.h>, <limits.h>. If you use <stdint.h>, wrap with fallback typedefs for old compilers.
+Typedefs (examples, not exhaustive):
+typedef unsigned char      dom_u8;
+typedef signed   char      dom_i8;
+typedef unsigned short     dom_u16;
+typedef signed   short     dom_i16;
+typedef unsigned int       dom_u32;
+typedef signed   int       dom_i32;
+typedef unsigned long long dom_u64;
+typedef signed   long long dom_i64;
+
+typedef dom_u8  dom_bool8;   /* 0 or 1 */
+typedef dom_u32 dom_bool32;  /* kept for alignment */
+Result / error code enum:
+typedef enum DomResult {
+    DOM_OK = 0,
+    DOM_ERR_UNKNOWN = 1,
+    DOM_ERR_INVALID_ARG = 2,
+    DOM_ERR_OUT_OF_MEMORY = 3,
+    DOM_ERR_OVERFLOW = 4,
+    DOM_ERR_UNDERFLOW = 5,
+    DOM_ERR_BOUNDS = 6,
+    DOM_ERR_NOT_FOUND = 7,
+    DOM_ERR_NOT_IMPLEMENTED = 8,
+    DOM_ERR_IO = 9
+    /* extend carefully, keep stable */
+} DomResult;
+Static assert macro:
+#define DOM_STATIC_ASSERT(cond, msg) typedef char dom_static_assert_##msg[(cond) ? 1 : -1]
+Platform assumptions (explicit):
+• DOM_LITTLE_ENDIAN macro (1 or 0).
+• DOM_PTR_SIZE (4 or 8).
+Public API: this header exposes types only. No functions.
+Implementation file dom_core_types.c:
+Should be minimal; primarily used for:
+• A function that returns build-time configuration, e.g.:
+const char *dom_core_build_info(void);
+DomResult dom_core_init(void);  /* if needed */
+Prohibitions:
+• No other modules’ includes except dom_core_types.h.
+• No global mutable state other than optional build-info strings.
+
+2. dom_core_log.[hc]
+Purpose: central logging and assertion abstraction. Must be deterministic in message content and ordering. Actual IO routing can be platform-specific via callbacks.
+Header: dom_core_log.h
+Responsibilities:
+• Define log levels.
+• Provide logging API used across engine.
+• Provide assertion macro that integrates with log.
+Typical enums:
+typedef enum DomLogLevel {
+    DOM_LOG_DEBUG = 0,
+    DOM_LOG_INFO  = 1,
+    DOM_LOG_WARN  = 2,
+    DOM_LOG_ERROR = 3,
+    DOM_LOG_FATAL = 4
+} DomLogLevel;
+Public API:
+typedef void (*DomLogSinkFn)(DomLogLevel level,
+                             const char *file,
+                             int line,
+                             const char *msg,
+                             void *user_data);
+
+/* Initialize logging with a sink (can be null for default stderr in dev builds). */
+void dom_log_init(DomLogSinkFn sink, void *user_data);
+
+/* Optional: reset / shutdown if needed. */
+void dom_log_shutdown(void);
+
+/* Core logging function; do not call directly, use macros. */
+void dom_log_message(DomLogLevel level,
+                     const char *file,
+                     int line,
+                     const char *fmt,
+                     ...);
+
+/* Macros for convenience; compiled out in release if you want. */
+#define DOM_LOG_DEBUG(fmt, ...) dom_log_message(DOM_LOG_DEBUG, __FILE__, __LINE__, fmt, __VA_ARGS__)
+#define DOM_LOG_INFO(fmt, ...)  dom_log_message(DOM_LOG_INFO,  __FILE__, __LINE__, fmt, __VA_ARGS__)
+#define DOM_LOG_WARN(fmt, ...)  dom_log_message(DOM_LOG_WARN,  __FILE__, __LINE__, fmt, __VA_ARGS__)
+#define DOM_LOG_ERROR(fmt, ...) dom_log_message(DOM_LOG_ERROR, __FILE__, __LINE__, fmt, __VA_ARGS__)
+Assertions:
+#ifdef DOM_DEBUG
+  #define DOM_ASSERT(cond) \
+    do { if (!(cond)) dom_log_assert_fail(#cond, __FILE__, __LINE__); } while (0)
+#else
+  #define DOM_ASSERT(cond) ((void)0)
+#endif
+
+void dom_log_assert_fail(const char *expr, const char *file, int line);
+Determinism constraints:
+• dom_log_message must not affect simulation state.
+• Logging content does not change simulation outcome.
+• In replay/lockstep modes you may disable logging or route to deterministic buffers.
+Implementation file dom_core_log.c:
+Responsibilities:
+• Maintain global sink pointer + user data.
+• Provide default sink that writes to stderr in dev builds, or no-op in release.
+• Implement dom_log_message using vsnprintf into a fixed-size local buffer, then call sink.
+Prohibitions:
+• No dynamic allocation per log call.
+• No platform headers; platform-specific sink is installed by engine/platform.
+• No re-entrancy issues: simple single-thread assumption here; multithread safety handled at higher level if needed.
+
+3. dom_core_mem.[hc]
+Purpose: deterministic memory abstraction for engine code. Thin wrappers around malloc/free + optional arenas, with predictable failure semantics. Simulation code should not call raw malloc directly.
+Header: dom_core_mem.h
+Responsibilities:
+• Provide basic alloc/free wrappers.
+• Provide arena allocator (linear region) for deterministic bulk allocations.
+• Provide zeroing helpers.
+Core types:
+typedef struct DomArena {
+    unsigned char *base;
+    dom_u64        capacity;
+    dom_u64        used;
+} DomArena;
+Public API:
+/* Low-level heap wrappers (engine-level, not sim-tick). */
+void *dom_alloc(dom_u64 size);
+void  dom_free(void *ptr);
+void *dom_realloc(void *ptr, dom_u64 new_size);
+
+/* Deterministic zero-init helpers. */
+void *dom_alloc_zero(dom_u64 size);
+
+/* Arena management – for startup/load/editor, not per-tick. */
+DomResult dom_arena_init(DomArena *arena, void *buffer, dom_u64 size);
+void     *dom_arena_alloc(DomArena *arena, dom_u64 size);
+void     *dom_arena_alloc_zero(DomArena *arena, dom_u64 size);
+void      dom_arena_reset(DomArena *arena);
+
+/* Alignment helpers. */
+dom_u64 dom_align_up(dom_u64 value, dom_u64 align);
+dom_u64 dom_align_down(dom_u64 value, dom_u64 align);
+Constraints:
+• dom_alloc may return NULL; caller must handle.
+• Simulation tick paths should generally not call dom_alloc or dom_realloc.
+• For hard determinism, use arenas or preallocated buffers. That policy is enforced at higher layers; this module only provides primitives.
+Implementation file dom_core_mem.c:
+Responsibilities:
+• Implement wrappers on top of malloc/free/realloc.
+• Implement trivial linear arena; no free in the middle, only reset.
+Prohibitions:
+• No global implicit arena.
+• No “auto-growing” global allocators that hide OOM.
+• No logging here except via dom_core_log (and only for non-sim code paths).
+
+4. dom_core_fp.[hc] (fixed-point maths)
+Purpose: canonical fixed-point arithmetic for deterministic simulation. No floats, no reliance on architecture-specific behaviour.
+Header: dom_core_fp.h
+Responsibilities:
+• Define fixed-point types (q16.16, q32.32).
+• Provide core operations: add, sub, mul, div, min, max, clamp, conversion to/from integers.
+• Provide safe, wraparound semantics for overflow as per determinism spec.
+Types:
+typedef dom_i32 dom_q16_16;
+typedef dom_i64 dom_q32_32;
+Core operations (examples):
+/* Addition and subtraction: simple integer add/sub (wraparound). */
+static inline dom_q16_16 dom_q16_add(dom_q16_16 a, dom_q16_16 b);
+static inline dom_q16_16 dom_q16_sub(dom_q16_16 a, dom_q16_16 b);
+
+/* Multiplication/division with shift. */
+dom_q16_16 dom_q16_mul(dom_q16_16 a, dom_q16_16 b);
+dom_q16_16 dom_q16_div(dom_q16_16 a, dom_q16_16 b); /* b!=0; handle zero deterministically */
+
+/* Conversion. */
+dom_q16_16 dom_q16_from_int(dom_i32 v);
+dom_i32    dom_q16_to_int_floor(dom_q16_16 v);
+dom_i32    dom_q16_to_int_round(dom_q16_16 v);
+
+/* Clamp. */
+dom_q16_16 dom_q16_clamp(dom_q16_16 v, dom_q16_16 lo, dom_q16_16 hi);
+
+/* Same for q32_32. */
+dom_q32_32 dom_q32_mul(dom_q32_32 a, dom_q32_32 b);
+dom_q32_32 dom_q32_div(dom_q32_32 a, dom_q32_32 b);
+dom_q32_32 dom_q32_from_int(dom_i64 v);
+dom_i64    dom_q32_to_int_floor(dom_q32_32 v);
+Determinism and error handling:
+• Multiplication uses 64-bit or 128-bit intermediates as needed, then shifts; documented exactly.
+• Division by zero handled deterministically: return 0 and optionally set a flag (or report via higher-level error).
+• No transcendental functions (sin, cos, etc.). Those belong in a separate, explicitly approximated module if ever needed, not in core_fp.
+Implementation dom_core_fp.c:
+• Implement the non-inline functions.
+• Use explicit casts to avoid UB on signed overflow; use unsigned intermediates where necessary, consistent with earlier determinism spec.
+Prohibitions:
+• No double or float anywhere.
+• No platform-specific intrinsics that change behaviour across targets.
+
+5. dom_core_rng.[hc]
+Purpose: deterministic pseudo-random number generator for simulation and tools, with explicit seeding and reproducibility. All RNG state is explicit or globally controlled.
+Header: dom_core_rng.h
+Responsibilities:
+• Define a RNG state struct.
+• Provide init/seed functions.
+• Provide basic uniform RNG functions.
+• Provide stable helper functions (e.g. range, shuffle) that must never change algorithm once released.
+Types:
+typedef struct DomRngState {
+    dom_u64 s0;
+    dom_u64 s1;
+} DomRngState;
+Public API:
+/* Seed state with 64-bit value, deterministic. */
+void dom_rng_seed(DomRngState *st, dom_u64 seed);
+
+/* Next 64-bit random integer. */
+dom_u64 dom_rng_next_u64(DomRngState *st);
+
+/* Convenience: 32-bit. */
+dom_u32 dom_rng_next_u32(DomRngState *st);
+
+/* Uniform [0, n) with rejection to avoid bias. n>0 required. */
+dom_u32 dom_rng_range_u32(DomRngState *st, dom_u32 n);
+
+/* Global default RNG (for tools, non-sim). */
+void    dom_rng_global_seed(dom_u64 seed);
+dom_u32 dom_rng_global_u32(void);
+Algorithm:
+• Choose something simple and stable (e.g. xoroshiro128** or splitmix64). Once chosen, it is frozen. Changing algorithm is a format-breaking change and must be versioned.
+Determinism:
+• Given same initial DomRngState, sequence is identical across platforms.
+• No time() or OS entropy inside core_rng; seeding comes from higher-level code.
+Implementation dom_core_rng.c:
+• Implement chosen algorithm with fixed bitwise operations.
+• Ensure no UB via shifts; mask appropriately.
+Prohibitions:
+• No floating-point variants in this module.
+• No calls to system RNG or OS APIs.
+
+6. dom_core_bits.[hc]
+Purpose: bit operations and small integer utilities that must be cross-platform and deterministic: bit scans, popcount, power-of-two rounding, etc.
+Header: dom_core_bits.h
+Responsibilities:
+• Provide bit manipulation primitives without relying on compiler builtins.
+• Provide integer min/max/clamp macros or functions, if you want them centralised.
+Public API:
+/* Bit operations: */
+
+/* Returns index of highest set bit in x, or -1 if x==0. */
+int dom_bit_scan_reverse_u32(dom_u32 x);
+int dom_bit_scan_reverse_u64(dom_u64 x);
+
+/* Returns index of lowest set bit in x, or -1 if x==0. */
+int dom_bit_scan_forward_u32(dom_u32 x);
+int dom_bit_scan_forward_u64(dom_u64 x);
+
+/* Count number of set bits (popcount). */
+dom_u32 dom_popcount_u32(dom_u32 x);
+dom_u32 dom_popcount_u64(dom_u64 x);
+
+/* Return next power of two >= x; returns 1 for x<=1, 0 on overflow. */
+dom_u32 dom_next_power_of_two_u32(dom_u32 x);
+dom_u64 dom_next_power_of_two_u64(dom_u64 x);
+
+/* Generic min/max/clamp (prefer as static inline). */
+#define DOM_MIN(a,b) (( (a) < (b) ) ? (a) : (b))
+#define DOM_MAX(a,b) (( (a) > (b) ) ? (a) : (b))
+#define DOM_CLAMP(v,lo,hi) (DOM_MAX((lo), DOM_MIN((v),(hi))))
+Implementation dom_core_bits.c:
+• Implement bit scans and popcounts via portable loops or word-level tricks; do not rely on __builtin_clz unless you gate by #ifdef and provide a pure-C fallback.
+Prohibitions:
+• No inline assembly.
+• No reliance on UB shifting by word size, etc.
+
+You now have a deterministic, minimal, and coherent contract for engine/core/. All higher layers (sim, ecs, spatial, etc.) should treat this as their only allowed “stdlib”.

@@ -1,0 +1,296 @@
+Below is the full dev-spec for /ports/ — the directory containing alternative, experimental, legacy, or non-primary platform targets.
+Unlike /engine/platform, which holds production-grade cross-platform layers, /ports contains specialised glue code, build configurations, and shims for:
+• DOS
+• Win3.x
+• Win9x
+• macOS Classic
+• WASM
+• Consoles
+• Any constrained or retro platform
+Nothing here is authoritative for the core engine.
+Nothing here may alter runtime determinism.
+Every port is optional and must degrade gracefully when not built.
+
+0. Directory Layout (Canonical)
+/ports/
+├─ README.md
+├─ dos/
+│  ├─ src/
+│  │  ├─ dom_port_dos.c
+│  │  ├─ dom_port_dos.asm
+│  │  └─ dos_video_shim.c
+│  ├─ include/
+│  │  └─ dos_platform.h
+│  ├─ config/
+│  │  ├─ memory_model.mk
+│  │  ├─ watcom_wmake.mk
+│  │  └─ linker.lnk
+│  ├─ tools/
+│  │  ├─ pack_assets_8x8.py
+│  │  └─ exe_stub_builder.py
+│  └─ docs/
+│     └─ DOS_PORT_NOTES.md
+├─ win3x/
+│  ├─ src/
+│  ├─ include/
+│  ├─ config/
+│  └─ docs/
+├─ win9x/
+│  ├─ src/
+│  ├─ include/
+│  ├─ config/
+│  └─ docs/
+├─ mac_classic/
+│  ├─ src/
+│  ├─ include/
+│  ├─ config/
+│  └─ docs/
+├─ wasm/
+│  ├─ src/
+│  ├─ include/
+│  ├─ config/
+│  └─ docs/
+└─ console_*/               # e.g. console_ps2, console_psp, console_switch
+   ├─ src/
+   ├─ include/
+   ├─ config/
+   └─ docs/
+Each port directory includes:
+• src/ — platform-specific implementation files
+• include/ — platform API surface used by /engine/platform
+• config/ — toolchain + linker rules
+• tools/ — auxiliary converters or preprocessors
+• docs/ — port-specific constraints and instructions
+
+1. /ports/README.md
+Must explain:
+• /ports houses non-primary platforms.
+• Ports exist outside the determinism guarantee of the authoritative engine.
+• Ports may have missing features due to hardware limitations.
+• Ports may not change engine design; they adapt the engine to their constraints.
+It must clearly state:
+• Primary platforms: Windows, Linux, macOS (modern).
+• Secondary ports: DOS, Win3.x, Win9x, macOS Classic, WASM.
+• Experimental: consoles, handhelds.
+
+2. Global Porting Rules
+Every /ports/<target> directory must obey:
+2.1 No modification of /engine logic
+Ports may wrap, but never rewrite, the engine.
+2.2 No nondeterminism injected
+Ports must:
+• Maintain deterministic simulation loop
+• Avoid floating-point inconsistency
+• Avoid high-precision timers
+• Avoid dynamic allocation unless port allows it
+2.3 Layering rules
+A port may only interact with:
+• /engine/platform interfaces
+• /engine/render/* backends
+• /engine/audio/* backends
+• /external (as allowed)
+Ports must not:
+• Include game logic
+• Include mod loader logic
+• Encode rules about data formats
+2.4 Build isolation
+Port builds must:
+• Use separate toolchains
+• Use separate output directories
+• Not contaminate main CMake build
+2.5 Filename constraints
+Retro ports must respect:
+• 8.3 filenames (DOS, Win3.x)
+• No deep directory nesting
+• No Unicode
+• No long paths
+2.6 Memory constraints
+Retro ports enforce their own memory budgets documented inside /ports/<target>/docs.
+
+3. /ports/dos/ — MS-DOS 16/32-bit target (OpenWatcom)
+This is the most constrained and the most important retro port.
+3.1 /dos/src/
+dom_port_dos.c
+Implements:
+• BIOS/VESA video interface
+• Keyboard polling
+• Timer interrupt override
+• DOS file API shims
+• Memory model bootstrap
+Must obey:
+• 16:16 pointer restrictions
+• DPMI protocol for 32-bit extender
+• No dynamic heap expansions once simulation starts
+dom_port_dos.asm
+Implements:
+• Real-mode BIOS calls
+• Protected-mode transitions
+• VESA bank switching
+dos_video_shim.c
+Implements a minimal fixed-resolution blitter:
+• 320×200, 320×240, optionally 640×480
+• 8-bit paletted or 16-bit packed pixels
+Cannot use:
+• Full modern GPU rendering
+• High-resolution textures
+• Floating-point transforms
+
+3.2 /dos/include/dos_platform.h
+Provides:
+• DOS-specific typedefs
+• Platform capability flags
+• Memory model macros
+• Interrupt callback definitions
+Must ensure:
+• Clean separation from /engine/platform APIs
+• Zero use of C99 types (must remain C89 / Watcom-compatible)
+
+3.3 /dos/config/
+memory_model.mk
+Defines:
+• SMALL, MEDIUM, LARGE, HUGE memory models
+• DPMI extender options
+• Segment allocation strategy
+watcom_wmake.mk
+Defines compilation rules for OpenWatcom:
+• Compiler flags
+• Linker script definitions
+• Map file generation
+linker.lnk
+Watcom linker script for EXE generation.
+
+3.4 /dos/tools/
+pack_assets_8x8.py
+Converts modern sprites → 8×8 or 16×16 tiles used by retro blitter.
+exe_stub_builder.py
+Builds DOS stub for dual-mode executable wrappers.
+
+3.5 /dos/docs/DOS_PORT_NOTES.md
+Documents:
+• Max memory usage
+• Video modes supported
+• File IO limitations
+• Input sampling latency
+• Things explicitly not supported (full audio stack, high-res, mods)
+
+4. /ports/win3x/ — Win16 target
+Constraints:
+• 16-bit segmented memory
+• Limited stack (typically <64 KB)
+• GDI-based rendering (monochrome, 8-bit, 16-bit palette)
+• Cooperative multitasking
+src/ implements:
+• Win16 window + GDI loop
+• Minimal DirectDraw-style blitting (where possible)
+• File IO wrappers
+include/ contains:
+• Win16-compatible API shims
+• MIcro-Windows support glue
+config/ contains:
+• MASM + VC++ 1.x project files
+• 8.3 filename policies
+
+5. /ports/win9x/ — Windows 95/98/ME
+This port is more featureful:
+• 32-bit
+• DirectX 7 rendering path allowed
+• WinMM sound subsystem
+• Long filenames allowed
+Limitations:
+• No Unicode (must use ANSI Win32 APIs)
+• No NT kernel features
+• Must support 64–128 MB RAM profiles
+src/ implements:
+• Window creation
+• DirectDraw 7 + DirectSound shims
+• Minimal CPU feature detection
+
+6. /ports/mac_classic/ — System 7/8/9
+Constraints:
+• Carbon API is allowed only if OS 8.6/9+ chosen
+• No POSIX layer
+• Cooperative threading
+• No modern OpenGL versions; use QuickDraw or RAVE
+src/ implements:
+• Event loop
+• QuickDraw blitting
+• Resource fork loader (critical)
+config/ holds:
+• CodeWarrior project files
+• MPW build scripts
+
+7. /ports/wasm/ — WebAssembly target
+This is an experiment, not primary platform.
+Constraints:
+• No filesystem except browser virtual FS
+• No OS threads
+• No native sockets
+• Limited memory (128–1024MB)
+• Floating point allowed but must not affect determinism
+src/ contains:
+• JS glue (Emscripten)
+• WebGL1/2 renderer backend
+• Browser input integration
+include/ supplies:
+• WASM-specific dom_platform_wasm.h
+• Async ABI wrappers
+config/ includes:
+• Emscripten minimal config
+• LTO rules for small bundle size
+Rules:
+• Deterministic simulation must run in a synchronized main loop controlled by the engine — never by requestAnimationFrame.
+• Rendering may be async, but sim must not depend on render timing.
+
+8. /ports/console_*/ — console-specific ports
+Examples: console_ps2, console_psp, console_switch.
+Constraints (generalised):
+• Proprietary SDKs must not be stored in repository.
+• Headers must be abstracted behind shims.
+• Ports must not violate platform NDAs.
+• Binaries may only be built locally with legal access to SDKs.
+src/ implements:
+• Controller input
+• GPU-specific rendering
+• Memory-card/flash save handling
+config/ contains:
+• Makefiles
+• Linker scripts
+• Platform ABI rules
+docs/ records:
+• Hardware memory budgets
+• Render pipeline limits
+• CPU instruction constraints
+
+9. Global Prohibitions for /ports
+Absolute rules:
+• /ports must never redefine engine modules.
+• /ports must not introduce platform-specific simulation logic.
+• /ports must not include third-party libraries that bypass /external.
+• /ports cannot hardcode gameplay rules or modify global constants.
+• No port may require changes to /engine/sim, only to /engine/platform.
+• No absolute paths or OS-dependent behaviour may leak into main build.
+
+10. Determinism Expectations
+• Simulation must remain bit-stable across ports.
+• Only presentational differences (rendering, UI, audio) may vary.
+• Ports must use identical fixed-point math modules as primary engine.
+• Ports must respect deterministic RNG seeds.
+• Ports must ensure identical tick-to-tick sequencing.
+Retro ports may reduce render fidelity but never simulation fidelity.
+
+11. Summary
+/ports provides platform-specific adapters for systems that fall outside the mainline platforms:
+• DOS
+• Win3.x
+• Win9x
+• macOS Classic
+• WASM
+• Game consoles
+Its responsibilities:
+• Implement minimal runtime glue
+• Honour strict determinism
+• Never modify engine architecture
+• Survive extreme hardware limitations
+• Begin and end at the platform boundary
+It is allowed to be incomplete, experimental, or reduced-feature.
+But it is never allowed to compromise the engine.

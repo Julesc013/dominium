@@ -1,0 +1,295 @@
+This message is the dev-spec for game/launcher/.
+This directory contains the only OS-facing executable entrypoints for Dominium.
+A launcher’s job is extremely small:
+• Create a window and renderer/audio backend via /engine/platform
+• Initialise a DomClientApp or DomServerApp
+• Feed the main loop
+• Provide hardware detection and configuration selection
+• Handle command-line arguments and file pickers
+• Provide version information and logging bootstrap
+The launcher must not contain simulation logic, rendering logic, UI logic, or game rules.
+It is a thin wrapper between the OS and the game/client or game/server app layers.
+
+Directory Layout
+game/
+└── launcher/
+    ├── dom_launcher_main.h
+    ├── dom_launcher_main.c
+    ├── dom_launcher_platform.h
+    ├── dom_launcher_platform.c
+    ├── dom_launcher_config.h
+    ├── dom_launcher_config.c
+    ├── dom_launcher_args.h
+    ├── dom_launcher_args.c
+    ├── dom_launcher_detect.h
+    ├── dom_launcher_detect.c
+    ├── dom_launcher_select.h
+    ├── dom_launcher_select.c
+    ├── dom_launcher_server.h
+    └── dom_launcher_server.c
+Some platforms may provide alternative entrypoints under /ports, but all mainstream builds go through this directory.
+
+1. dom_launcher_main.[hc] — Cross-platform launcher entry
+This file defines the canonical launcher entry API that platform-specific mains will call.
+Header
+#include "dom_core_types.h"
+
+typedef enum {
+    DOM_LAUNCH_MODE_CLIENT = 0,
+    DOM_LAUNCH_MODE_SERVER
+} DomLaunchMode;
+
+typedef struct DomLaunchContext {
+    DomLaunchMode mode;
+    void *platform_window;  /* opaque handle */
+    dom_i32 window_w;
+    dom_i32 window_h;
+    dom_bool8 fullscreen;
+
+    /* pointers to engine devices */
+    DomRenderDevice *render_dev;
+    DomAudioDevice  *audio_dev;
+} DomLaunchContext;
+Public API
+/* Called by platform-specific main() */
+int dom_launcher_run(int argc, char **argv);
+
+/* Internals: not called outside this directory */
+DomResult dom_launcher_init(DomLaunchContext *ctx,
+                            int argc, char **argv);
+
+void dom_launcher_loop_client(DomLaunchContext *ctx);
+void dom_launcher_loop_server(DomLaunchContext *ctx);
+Responsibilities:
+• Parse CLI → mode selection
+• Select platform device backends
+• Initialise config
+• Create ClientApp or ServerApp
+• Enter main loop
+Prohibitions:
+• No simulation stepping here (belongs to client/server apps)
+• No rendering calls except buffer swaps + device init/destroy
+
+2. dom_launcher_platform.[hc] — Window, input, device creation
+This module abstracts platform details but uses /engine/platform internally.
+It is NOT platform-specific — it picks which backend to use per platform, but does not implement the backends.
+Header
+#include "dom_core_types.h"
+
+typedef struct {
+    void *window;
+    dom_i32 width;
+    dom_i32 height;
+    dom_bool8 fullscreen;
+} DomLauncherWindow;
+
+typedef struct {
+    DomLauncherWindow window;
+    DomRenderDevice *render_dev;
+    DomAudioDevice *audio_dev;
+} DomLauncherPlatform;
+Public API
+DomResult dom_launcher_platform_init(DomLauncherPlatform *p,
+                                     dom_i32 width,
+                                     dom_i32 height,
+                                     dom_bool8 fullscreen);
+
+void dom_launcher_platform_shutdown(DomLauncherPlatform *p);
+
+void dom_launcher_platform_poll_input(DomPlatformInputFrame *dst);
+Rules:
+• Must choose backend based on OS + availability:
+o Win32 → DX9 or DX11
+o Linux → GL1 or GL2
+o macOS → GL2 (or Metal via engine-port)
+o Retro ports → custom renderer selection
+• Must not include any OS headers directly; leave that to /engine/platform/<os>.
+Prohibitions:
+• No UI code, no simulation code.
+• No persistent config loading here.
+
+3. dom_launcher_config.[hc] — Load/save boot configuration
+Stores launcher-level settings (resolution, fullscreen, last-used renderer, audio backend, profile).
+This is distinct from client config (keybinds, UI scale), which lives in /game/client.
+Header
+#include "dom_core_types.h"
+
+typedef struct DomLauncherConfig {
+    dom_i32 window_w;
+    dom_i32 window_h;
+    dom_bool8 fullscreen;
+    char renderer[32];
+    char audio_backend[32];
+} DomLauncherConfig;
+Public API
+void dom_launcher_config_init_default(DomLauncherConfig *cfg);
+
+DomResult dom_launcher_config_load(DomLauncherConfig *cfg,
+                                   const char *path);
+
+DomResult dom_launcher_config_save(const DomLauncherConfig *cfg,
+                                   const char *path);
+Rules:
+• Launcher config file format must be simple key=value pairs.
+• Paths must be determined by /engine/platform (user data dirs).
+Prohibitions:
+• No simulation or renderer interaction.
+• No UI.
+
+4. dom_launcher_args.[hc] — CLI args
+Handles parsing of meaningful command line arguments:
+• --server
+• --load <file>
+• --connect <addr:port>
+• --fullscreen
+• --renderer <backend>
+• --audio <backend>
+• --safe-mode
+Header
+typedef struct DomLauncherArgs {
+    dom_bool8 server_mode;
+    const char *load_path;
+    const char *connect_addr;
+    dom_u16 connect_port;
+    dom_bool8 fullscreen_override;
+    const char *renderer_name;
+    const char *audio_name;
+    dom_bool8 safe_mode;
+} DomLauncherArgs;
+Public API
+void dom_launcher_args_parse(DomLauncherArgs *out,
+                             int argc, char **argv);
+Rules:
+• Parsing must be deterministic.
+• Args override config values.
+Prohibitions:
+• No side effects except filling struct.
+
+5. dom_launcher_detect.[hc] — Hardware detection
+Determines:
+• GPU family
+• Supported renderer backends
+• Supported audio backends
+• CPU instruction features (SSE2, AVX, NEON, etc)
+• Memory availability
+• OS version
+Header
+typedef struct DomLauncherDetect {
+    dom_bool8 have_dx9;
+    dom_bool8 have_dx11;
+    dom_bool8 have_gl1;
+    dom_bool8 have_gl2;
+    dom_bool8 have_software;
+
+    dom_bool8 have_openal;
+    dom_bool8 have_sdl_mixer;
+
+    dom_u32 system_mem_mb;
+    dom_u32 cpu_features;
+} DomLauncherDetect;
+Public API
+void dom_launcher_detect_run(DomLauncherDetect *d);
+Rules:
+• Must rely on /engine/platform queries (no direct OS calls).
+• Use feature flags not GPU strings.
+Prohibitions:
+• No device creation here. Only detection.
+
+6. dom_launcher_select.[hc] — Choose renderer/audio backends
+Combines:
+• Config file
+• Command-line arguments
+• Hardware detection
+And selects:
+• Renderer backend (GL1, GL2, DX9, DX11, Software)
+• Audio backend (OpenAL, SDL_Mixer, Silent)
+Header
+#include "dom_launcher_detect.h"
+#include "dom_launcher_config.h"
+#include "dom_launcher_args.h"
+
+typedef struct DomLauncherSelection {
+    const char *renderer;
+    const char *audio;
+} DomLauncherSelection;
+Public API
+void dom_launcher_select_backends(DomLauncherSelection *sel,
+                                  const DomLauncherDetect *det,
+                                  const DomLauncherConfig *cfg,
+                                  const DomLauncherArgs *args);
+Rules:
+• Must fallback gracefully and deterministically.
+• If --safe-mode, always force the simplest backend (software + no audio).
+Prohibitions:
+• No device creation; only select names/identifiers.
+
+7. dom_launcher_server.[hc] — Dedicated server entry
+Launcher for server mode (no window, no render device).
+Header
+#include "dom_core_types.h"
+#include "dom_server_app.h"
+
+typedef struct DomLauncherServer {
+    DomServerApp *app;
+    dom_bool8 running;
+} DomLauncherServer;
+Public API
+void dom_launcher_server_init(DomLauncherServer *srv,
+                              const DomLauncherArgs *args);
+
+void dom_launcher_server_loop(DomLauncherServer *srv);
+
+void dom_launcher_server_shutdown(DomLauncherServer *srv);
+Responsibilities:
+• Construct DomServerAppConfig.
+• Handle signals (shutdown, reload) via /engine/platform.
+• Provide minimal console logs (timestamped, deterministic, append-only format).
+Rules:
+• Server loop must not sleep arbitrarily—use tick-rate timer from /engine/platform.
+• Must handle autosave intervals.
+Prohibitions:
+• No rendering or UI.
+
+8. Launcher Runtime Flow (Client)
+Pseudo-flow showing how dom_launcher_run() works:
+int dom_launcher_run(int argc, char **argv) {
+    DomLauncherArgs args;
+    dom_launcher_args_parse(&args, argc, argv);
+
+    DomLauncherConfig cfg;
+    dom_launcher_config_init_default(&cfg);
+    dom_launcher_config_load(&cfg, "user/config/launcher.cfg");
+
+    DomLauncherDetect det;
+    dom_launcher_detect_run(&det);
+
+    DomLauncherSelection sel;
+    dom_launcher_select_backends(&sel, &det, &cfg, &args);
+
+    DomLaunchContext ctx;
+    dom_launcher_platform_init(&ctx.platform, cfg.window_w, cfg.window_h, cfg.fullscreen);
+
+    dom_launcher_init(&ctx, argc, argv);
+
+    if (args.server_mode) {
+        dom_launcher_loop_server(&ctx);
+    } else {
+        dom_launcher_loop_client(&ctx);
+    }
+
+    dom_launcher_platform_shutdown(&ctx.platform);
+    return 0;
+}
+This design forces:
+• Deterministic selection of runtime components
+• Clean separation from client/server logic
+• No dependency on simulation in launcher
+
+9. Prohibitions Across game/launcher
+• No simulation logic
+• No UI construction or widget handling
+• No rendering calls except abstract device init/shutdown and buffer swap
+• No per-frame heavy logic
+• No third-party library includes except through /engine/platform
+• No mod loading — handled at /game and /engine level
+

@@ -1,0 +1,332 @@
+This message is the dev-spec for /data/dlc/.
+/data/dlc holds first-party DLC packs that extend /data/base without changing engine code or core formats.
+Each DLC is:
+• Its own self-contained pack directory.
+• Declared in /data/data_manifest.json.
+• Versioned, schema-validated, and strictly deterministic.
+• Loaded after base and possibly after other DLCs, using explicit dependencies + priorities.
+
+0. Directory layout
+Canonical structure:
+/data/dlc/
+├─ README.md
+├─ interstellar/
+│  ├─ manifest.json
+│  ├─ prefabs/
+│  ├─ tech/
+│  ├─ networks/
+│  ├─ worldgen/
+│  ├─ economy/
+│  ├─ locale/
+│  └─ scripts/         # optional
+├─ extras/
+│  ├─ manifest.json
+│  ├─ prefabs/
+│  ├─ tech/
+│  ├─ locale/
+│  └─ ...
+└─ wargames/
+   ├─ manifest.json
+   ├─ prefabs/
+   ├─ tech/
+   ├─ worldgen/
+   ├─ economy/
+   ├─ locale/
+   └─ scripts/
+Names (interstellar, extras, wargames) are examples; actual DLCs can differ.
+Each DLC dir must be self-consistent and individually loadable on top of /data/base.
+
+1. /data/dlc/README.md
+Human-facing description of:
+• DLC philosophy.
+• Expected structure of each DLC directory.
+• How load order and dependency resolution work (link back to /docs/spec).
+• Rules about what DLCs may and may not change.
+No technical authority; just orientation.
+
+2. DLC root directory spec (e.g. /data/dlc/interstellar/)
+Every DLC directory follows the same structure contract.
+2.1 Required top-level files and dirs
+Minimal:
+/data/dlc/<dlc_name>/
+├─ manifest.json       # required
+├─ prefabs/            # required if DLC adds content
+├─ tech/               # required if DLC adds techs
+├─ locale/             # required
+└─ (optional others)
+If a DLC doesn’t add a category, it can omit that subdir, but manifest.json must not list it in content_index.
+
+3. manifest.json — DLC pack descriptor
+Each DLC’s manifest.json describes:
+• DLC identity
+• Version and compatibility
+• Dependencies
+• Content files (absolute list; engine must not scan directory)
+Example:
+{
+  "id": "dlc_interstellar",
+  "type": "dlc",
+  "version": "1.0.0",
+  "engine_min_version": "3.0.0",
+  "engine_max_version": "3.x",
+  "description": "Interstellar expansion: orbital and deep-space content.",
+  "dependencies": ["base"],
+  "load_priority": 10,
+  "tags": ["official", "interstellar"],
+  "content_index": {
+    "prefabs": [
+      "prefabs/prefabs_orbital_structures.json",
+      "prefabs/prefabs_interstellar_ships.json",
+      "prefabs/prefabs_space_infrastructure.json",
+      "prefabs/prefabs_items_interstellar.json"
+    ],
+    "tech": [
+      "tech/tech_tree_interstellar.json",
+      "tech/tech_categories_interstellar.json"
+    ],
+    "networks": [
+      "networks/power_interstellar.json",
+      "networks/data_interstellar.json"
+    ],
+    "worldgen": [
+      "worldgen/planets_interstellar.json",
+      "worldgen/systems_interstellar.json",
+      "worldgen/galaxies_interstellar.json",
+      "worldgen/resources_interstellar.json"
+    ],
+    "economy": [
+      "economy/commodities_interstellar.json",
+      "economy/markets_interstellar.json",
+      "economy/recipes_interstellar.json"
+    ],
+    "locale": [
+      "locale/en-AU_interstellar.json",
+      "locale/en-US_interstellar.json"
+    ],
+    "scripts": [
+      "scripts/interstellar_helpers.lua"
+    ]
+  }
+}
+Engine rules:
+• id must match data_manifest.json entry.
+• type must be "dlc".
+• dependencies must be a list of pack IDs (e.g. "base", "dlc_other").
+• load_priority must be an integer; engine resolves collisions deterministically using (priority, id).
+Prohibitions:
+• No cyclic dependencies across DLC packs.
+• No missing files in content_index.
+• No implicit directory scans; everything must be declared in content_index.
+
+4. /prefabs/ in DLC — extending the entity set
+Each DLC’s /prefabs directory mirrors /data/base/prefabs semantics:
+/data/dlc/interstellar/prefabs/
+├─ prefabs_orbital_structures.json
+├─ prefabs_interstellar_ships.json
+├─ prefabs_space_infrastructure.json
+└─ prefabs_items_interstellar.json
+All prefab JSONs use the same schema (/data/schema/prefab_schema.json).
+4.1 DLC-prefab requirements
+• Prefab IDs must be globally unique across base + all DLCs present.
+o Use namespacing: "orbital_station_core_interstellar", "ship_freighter_03", "item_helium3_canister".
+• DLCs may override existing base prefabs only if explicitly allowed in spec:
+o Recommended practice: no behavioural overrides, only additional variants.
+• Prefabs may reference:
+o New techs defined in this DLC’s tech directory.
+o Existing base techs and networks.
+o New network types defined in this DLC’s networks.
+4.2 Example: orbital structure prefab in DLC
+{
+  "prefabs": [
+    {
+      "id": "orbital_station_core_t1",
+      "category": "orbital_structure",
+      "tags": ["orbital_only", "habitat"],
+      "components": {
+        "transform": {
+          "size": [4, 4, 2],
+          "anchor": "center"
+        },
+        "structure": {
+          "hp": 10000,
+          "fire_resistance": 50,
+          "explosion_resistance": 40
+        },
+        "orbital_env": {
+          "requires_life_support": 1,
+          "max_crew": 20
+        },
+        "docking_ports": {
+          "ports": [
+            { "type": "ship_medium", "position": [2, 0, 1] },
+            { "type": "tug_small", "position": [-2, 0, 1] }
+          ]
+        },
+        "buildable": {
+          "allowed_surface": ["orbital_shell_low_earth"],
+          "required_tech": "tech_orbital_foundations",
+          "construction_jobs": 50,
+          "construction_time_ticks": 36000
+        },
+        "power_interface": {
+          "mode": "consumer",
+          "max_kw": 2000
+        }
+      }
+    }
+  ]
+}
+No DLC code here; only data.
+
+5. /tech/ in DLC — extending the research tree
+DLC tech files augment the base tech graph.
+Typical layout:
+/data/dlc/interstellar/tech/
+├─ tech_tree_interstellar.json
+└─ tech_categories_interstellar.json
+5.1 tech_tree_interstellar.json
+• Adds new technologies with IDs that are distinct from base ones.
+• May depend on base techs (prerequisites).
+• May unlock both base and DLC prefabs/recipes.
+Rules:
+• The combined tech graph (base + all DLCs) must remain a DAG.
+• Costs, times, and dependencies encoded as integers.
+• No DLC is allowed to “remove” a base tech; at most it can:
+o Add new techs whose unlocks supersede base content.
+o Add new upgrade paths.
+Example:
+{
+  "technologies": [
+    {
+      "id": "tech_orbital_foundations",
+      "name_key": "tech.orbital_foundations.name",
+      "desc_key": "tech.orbital_foundations.desc",
+      "tier": 4,
+      "category": "orbital",
+      "prerequisites": ["tech_rocketry_advanced"],
+      "cost": {
+        "science_pack_adv": 500,
+        "science_pack_orbital": 200
+      },
+      "time_per_unit_ticks": 7200,
+      "unlocks_prefabs": [
+        "orbital_station_core_t1",
+        "orbital_dock_tug_small"
+      ],
+      "unlocks_recipes": [
+        "recipe_station_frame_t1"
+      ]
+    }
+  ]
+}
+5.2 tech_categories_interstellar.json
+Adds categories only:
+• orbital, deep_space, exotic_energy, etc.
+No category removal from base.
+
+6. /networks/ in DLC — new network classes or extensions
+Some DLCs need specialised networks:
+• High-power space grids.
+• Inter-orbital data links.
+• Exotic fluids (cryogenic propellants).
+• Ship docking “lanes”.
+Example:
+/data/dlc/interstellar/networks/
+├─ power_interstellar.json
+├─ data_interstellar.json
+└─ fluids_interstellar.json
+Each file must follow the same schemas as /data/base/networks/*.json.
+6.1 Overlays vs new definitions
+There are two patterns:
+1. Additive (recommended):
+o Add new IDs: power_orbital_bus_120kV, data_laser_link_orbit_ground.
+o No changes to base network element semantics.
+2. Override (if spec explicitly supports):
+o Provide a record with same id as a base network, and a well-defined override rule in engine:
+• e.g. DLC may increase max allowed cable length for deep-space behaviour.
+o Must be deterministic: engine must choose which record wins based on load order/priority.
+Prohibitions:
+• DLCs must not silently change core safety limits if that breaks base maps.
+• If behaviour changes, marking in versioned patch notes and spec is required.
+
+7. /worldgen/ in DLC — new planets/systems/galaxies/biomes/resources
+DLCs like “interstellar” define additional:
+• Planet templates (e.g. Mars, Titan-like, super-Earths).
+• Systems (binary stars, special orbital configurations).
+• Galaxies (other than Milky Way).
+• Biome sets and unique resources.
+Example layout:
+/data/dlc/interstellar/worldgen/
+├─ planets_interstellar.json
+├─ systems_interstellar.json
+├─ galaxies_interstellar.json
+├─ biomes_interstellar.json
+└─ resources_interstellar.json
+These files follow the same schemas as base worldgen, but:
+• Must not alter base IDs.
+• Can reference new surface IDs, new biome IDs, new resource IDs.
+• Can be gated behind DLC-specific settings in world creation UI.
+
+8. /economy/ in DLC — economic extensions
+DLCs may add:
+• New commodities (e.g. helium-3, exotic alloys, data tokens).
+• New markets (orbital trade, interstellar shipping).
+• New recipes (ship building, station expansion).
+Example:
+/data/dlc/interstellar/economy/
+├─ commodities_interstellar.json
+├─ markets_interstellar.json
+└─ recipes_interstellar.json
+Rules:
+• Commodity IDs must be unique; do not redefine base IDs.
+• Recipe IDs must be unique.
+• Markets may bridge base and DLC commodities if allowed by design.
+
+9. /locale/ in DLC — DLC-specific strings
+Each DLC provides its own locale files:
+/data/dlc/interstellar/locale/
+├─ en-AU_interstellar.json
+└─ en-US_interstellar.json
+Structure:
+• Same schema as base locale.
+• Only DLC-specific keys.
+• Must not redefine base keys.
+• May define descriptions for:
+o New prefabs
+o New techs
+o New network types
+o New planets/systems/galaxies
+o New commodities/markets/recipes
+The engine merges locale maps in deterministic order (base then DLC).
+
+10. /scripts/ in DLC — optional deterministic scripts
+If deterministic scripting is enabled, DLCs may have:
+/data/dlc/interstellar/scripts/
+└─ interstellar_helpers.lua
+Allowed uses:
+• Procedural worldgen tweaks specific to DLC.
+• UI helper functions to lay out new tech branches.
+• Presentation logic for DLC-only UI panels.
+Prohibitions:
+• No direct access to OS, time, random.
+• No modification of core sim invariants.
+• Must use the same restricted API as /data/base/scripts.
+If scripting is disabled for your engine, this directory is absent or unused.
+
+11. DLC interaction and determinism rules
+1. Load order is explicit
+Determined by data_manifest.json → packs[*].priority → id tiebreaker.
+2. No hidden overrides
+Any override of base resources must be predictable and described in docs; otherwise, DLCs should use new IDs only.
+3. Combined content graph is deterministic
+Prefabs, techs, networks, worldgen, economy; all integer-based, no random semantics.
+4. Schema alignment
+DLC data must pass the same schemas as base data. No DLC-specific JSON shape.
+5. Savefile integrity
+Savefiles record active DLC IDs and versions. Loading requires matching DLC sets; DLC removal or addition after save is only allowed under explicit migration paths.
+
+12. Prohibitions across /data/dlc
+• No engine C/C++ or binaries.
+• No arbitrary scripting outside /scripts.
+• No altered schemas living inside DLC; all schemas stay under /data/schema.
+• No environment-conditional data (“if Windows, else Linux”); DLC content must be universal.

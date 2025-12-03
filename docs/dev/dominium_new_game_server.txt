@@ -1,0 +1,339 @@
+This message is the dev-spec for game/server/.
+This directory contains the authoritative simulation host for multiplayer and automated worlds.
+The server:
+• Runs deterministic simulation using /engine/sim.
+• Provides networking (lockstep or state-delta) via /engine/net.
+• Maintains the authoritative timeline, replays, and snapshotting.
+• Performs save/load of universe state.
+• Contains no rendering, audio, UI, or client-side logic.
+• Contains no OS-specific code—only via /engine/platform.
+All game logic here is Dominium-specific, but constrained to proper engine interfaces.
+
+Directory Layout
+game/
+└── server/
+    ├── dom_server_app.h
+    ├── dom_server_app.c
+    ├── dom_server_state.h
+    ├── dom_server_state.c
+    ├── dom_server_tick.h
+    ├── dom_server_tick.c
+    ├── dom_server_net_bridge.h
+    ├── dom_server_net_bridge.c
+    ├── dom_server_worldio.h
+    ├── dom_server_worldio.c
+    ├── dom_server_admin.h
+    └── dom_server_admin.c
+
+1. dom_server_app.[hc] — Dedicated server top-level application
+This mirrors game/client/dom_client_app as the high-level driver, but without UI or rendering.
+Header
+#include "dom_core_types.h"
+
+typedef struct DomSimWorld DomSimWorld;
+typedef struct DomNetServer DomNetServer;
+
+typedef struct DomServerAppConfig {
+    const char *load_path;    /* optional save file */
+    const char *bind_address;
+    dom_u16     port;
+    dom_u32     max_clients;
+    dom_bool8   enable_replays;
+    dom_bool8   auto_save;
+    dom_u32     autosave_interval_ticks;
+} DomServerAppConfig;
+
+typedef struct DomServerApp DomServerApp;
+Public API
+DomServerApp *dom_server_app_create(const DomServerAppConfig *cfg);
+
+void dom_server_app_destroy(DomServerApp *app);
+
+/* Drive one tick of the server (called from launcher main loop) */
+void dom_server_app_tick(DomServerApp *app);
+Internals of the opaque struct:
+• Pointer to DomSimWorld
+• Pointer to DomNetServer
+• DomServerState
+• DomServerNetBridge
+• DomServerTickContext
+• DomServerWorldIO
+• Tick counters, timers for autosave, replay log writer.
+Rules:
+• The server must not stall the tick rate; if clients lag, they get state snapshots or prediction cues, but the server clock is authoritative.
+• All user actions come as deterministic packets → converted to sim commands in a tick-indexed input stream.
+Prohibitions:
+• No rendering or audio.
+• No platform calls beyond time, sockets, threads via /engine/platform.
+
+2. dom_server_state.[hc] — Server metadata and administration state
+This stores non-simulation but server-relevant state such as:
+• Connected clients and authentication state.
+• Permissions and admin flags.
+• Ban lists, mutes.
+• Universe metadata (seed, version, mod list).
+Header
+#include "dom_core_types.h"
+#include "dom_net_proto.h"
+
+#define DOM_SERVER_MAX_CLIENTS 128
+
+typedef struct DomServerClientEntry {
+    dom_bool8 connected;
+    dom_u64   client_id;        /* stable id for this session */
+    dom_u32   protocol_version;
+    dom_u32   last_ack_tick;
+    dom_bool8 is_admin;
+    dom_bool8 is_spectator;
+} DomServerClientEntry;
+
+typedef struct DomServerState {
+    DomServerClientEntry clients[DOM_SERVER_MAX_CLIENTS];
+    dom_u32 client_count;
+
+    dom_u64 universe_seed;
+    dom_u32 engine_version;
+    dom_u32 game_version;
+
+    dom_bool8 read_only_mode; /* prevent sim changes */
+} DomServerState;
+Public API
+void dom_server_state_init(DomServerState *s, dom_u64 universe_seed);
+
+DomServerClientEntry *dom_server_state_add_client(DomServerState *s,
+                                                  dom_u64 client_id,
+                                                  dom_u32 proto);
+
+void dom_server_state_remove_client(DomServerState *s,
+                                    dom_u64 client_id);
+
+DomServerClientEntry *dom_server_state_get(DomServerState *s,
+                                           dom_u64 client_id);
+Rules:
+• Universe seed here is just metadata; actual terrain generation is sim-side.
+• Client entries must be fully deterministic (sorted or stable indexing by arrival).
+Prohibitions:
+• No simulation ticking here.
+• No networking inside these functions.
+
+3. dom_server_tick.[hc] — Simulation tick coordinator
+This module encapsulates all per-tick deterministic behaviour:
+• Aggregate player inputs for tick T
+• Feed inputs into /engine/sim
+• Advance simulation
+• Produce world delta or snapshot for clients
+• Update replay logs
+• Trigger autosave intervals
+Header
+#include "dom_core_types.h"
+
+typedef struct DomSimWorld DomSimWorld;
+typedef struct DomServerState DomServerState;
+typedef struct DomServerNetBridge DomServerNetBridge;
+typedef struct DomServerWorldIO DomServerWorldIO;
+
+typedef struct DomServerTickContext {
+    dom_u64 tick;
+    dom_bool8 is_autosave_tick;
+    dom_bool8 replay_recording_enabled;
+} DomServerTickContext;
+Public API
+void dom_server_tick_init(DomServerTickContext *ctx);
+
+void dom_server_tick_step(DomServerTickContext *ctx,
+                          DomSimWorld *world,
+                          DomServerState *state,
+                          DomServerNetBridge *net,
+                          DomServerWorldIO *io);
+Inside step:
+1. Gather input packets from bridge → input buffer indexed by tick.
+2. Validate input deterministically (bounds check, permissions).
+3. Feed canonical input frame to engine/sim.
+4. Call dom_sim_tick(world).
+5. Determine which deltas to send out.
+6. Notify worldio if autosave or replay events needed.
+Rules:
+• Server tick increment must never skip or rewind except in rollback protocols (if supported).
+• Processing order must be deterministic: sort client actions by client index, then by arrival order if needed.
+Prohibitions:
+• No network writes here. Only call functions on net_bridge.
+• No disk writes here except replay append via worldio.
+
+4. dom_server_net_bridge.[hc] — Interface between server and /engine/net
+This module adapts between raw network packets and structured sim inputs / snapshots.
+Header
+#include "dom_core_types.h"
+#include "dom_net_proto.h"
+#include "dom_server_state.h"
+
+typedef struct DomNetServer DomNetServer;
+typedef struct DomSimInputFrame DomSimInputFrame;
+
+typedef struct DomServerNetBridge {
+    DomNetServer *net;
+    DomServerState *state;
+
+    /* input buffer per tick */
+    DomSimInputFrame *pending_inputs;  /* [tick % window] */
+    dom_u32 input_window;              /* tick ring size */
+
+    /* snapshot compression options */
+    dom_bool8 send_full_snapshots;
+} DomServerNetBridge;
+Public API
+void dom_server_net_bridge_init(DomServerNetBridge *b,
+                                DomNetServer *net,
+                                DomServerState *state,
+                                dom_u32 input_window);
+
+void dom_server_net_bridge_poll(DomServerNetBridge *b,
+                                DomServerTickContext *ctx);
+
+/* Extract deterministic input frame for tick T */
+void dom_server_net_bridge_build_input(DomServerNetBridge *b,
+                                       dom_u64 tick,
+                                       DomSimInputFrame *out);
+
+/* Send delta/snapshot to all clients */
+void dom_server_net_bridge_broadcast_state(DomServerNetBridge *b,
+                                           const DomSimWorld *world,
+                                           dom_u64 tick);
+
+/* Send targeted responses (admin messages etc.) */
+void dom_server_net_bridge_send_to(DomServerNetBridge *b,
+                                   dom_u64 client_id,
+                                   const DomNetPacket *pkt);
+Rules:
+• All inbound events must be validated with protocol version check.
+• For each tick, missing client inputs must default to “no action”.
+Prohibitions:
+• No sim mutation.
+• No world save/load here.
+
+5. dom_server_worldio.[hc] — Save/load & replay
+This module handles:
+• Saving the deterministic world state.
+• Loading an existing state.
+• Writing replay logs (input stream logs).
+• Optional delta compression of world snapshots.
+Header
+#include "dom_core_types.h"
+
+typedef struct DomSimWorld DomSimWorld;
+
+typedef struct DomServerWorldIO {
+    const char *save_path;     /* may be NULL */
+    const char *replay_path;   /* may be NULL */
+
+    dom_bool8 enable_replays;
+
+    /* internal buffers */
+    void *tmp_buf;
+    dom_u32 tmp_buf_size;
+} DomServerWorldIO;
+Public API
+void dom_server_worldio_init(DomServerWorldIO *io,
+                             const char *save_path,
+                             const char *replay_path,
+                             dom_bool8 enable_replays);
+
+/* Load world into sim state */
+DomResult dom_server_worldio_load(DomServerWorldIO *io,
+                                  DomSimWorld *world);
+
+/* Save world snapshot (full state) */
+DomResult dom_server_worldio_save(DomServerWorldIO *io,
+                                  const DomSimWorld *world);
+
+/* Append inputs for replay logs */
+DomResult dom_server_worldio_append_replay(DomServerWorldIO *io,
+                                           dom_u64 tick,
+                                           const DomSimInputFrame *frame);
+Rules:
+• File format must be versioned and platform-agnostic.
+• Replays must be append-only and purely deterministic log of sim input frames.
+• No partial writes; use temp-file → atomic rename.
+Prohibitions:
+• No rendering or network code.
+• No sim stepping.
+
+6. dom_server_admin.[hc] — Admin commands and permissions
+Dedicated server needs admin tools to:
+• Kick/ban clients.
+• Modify server flags.
+• Change game speed or simulation parameters.
+• Trigger save/load, announce messages.
+Header
+#include "dom_core_types.h"
+#include "dom_server_state.h"
+#include "dom_server_net_bridge.h"
+#include "dom_server_worldio.h"
+
+typedef struct DomServerAdminContext {
+    DomServerState *state;
+    DomServerNetBridge *net;
+    DomServerWorldIO *io;
+} DomServerAdminContext;
+Public API
+/* Execute admin commands (from console or authorised network messages) */
+DomResult dom_server_admin_execute(DomServerAdminContext *ctx,
+                                   dom_u64 requesting_client_id,
+                                   const char *cmdline);
+
+/* Predefined commands:
+   - kick <id>
+   - ban <id>
+   - unban <id>
+   - save
+   - load
+   - set-speed <n>
+   - announce <text>
+   - list-clients
+*/
+Rules:
+• Deterministic: admin commands must resolve to deterministic state transitions.
+• Permissions must match “is_admin” flag in DomServerClientEntry.
+Prohibitions:
+• No direct disk or network writes; call worldio or net_bridge.
+
+Integration Summary (Server Runtime Loop)
+A dedicated server main loop (in /game/launcher) calls:
+void dom_server_app_tick(DomServerApp *app) {
+    // 1. Poll network for inbound packets
+    dom_server_net_bridge_poll(app->net_bridge, app->tick_ctx);
+
+    // 2. Build input frame for tick T
+    DomSimInputFrame frame;
+    dom_server_net_bridge_build_input(app->net_bridge,
+                                      app->tick_ctx->tick,
+                                      &frame);
+
+    // 3. Step simulation
+    dom_sim_tick(app->world, &frame);
+
+    // 4. Broadcast state snapshot/delta
+    dom_server_net_bridge_broadcast_state(app->net_bridge,
+                                          app->world,
+                                          app->tick_ctx->tick);
+
+    // 5. Autosave / replay
+    if (app->tick_ctx->is_autosave_tick) {
+        dom_server_worldio_save(app->worldio, app->world);
+    }
+    if (app->worldio->enable_replays) {
+        dom_server_worldio_append_replay(app->worldio,
+                                         app->tick_ctx->tick,
+                                         &frame);
+    }
+
+    // 6. Advance tick
+    app->tick_ctx->tick++;
+}
+Everything the server does must be repeatable = deterministic given the same input and config.
+
+Prohibitions Across game/server
+• No rendering, UI, audio.
+• No floating-point affecting simulation; all integer math.
+• No OS-specific logic; always use /engine/platform for I/O, timers, sockets.
+• No simulation logic duplicated; always use /engine/sim.
+• No mod loading here; mods are loaded by engine/data layer before world creation.

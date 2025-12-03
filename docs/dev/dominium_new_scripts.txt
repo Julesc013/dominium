@@ -1,0 +1,257 @@
+Below is the dev-spec for /scripts/, the repository’s meta-automation layer.
+This directory is not part of the deterministic runtime, the build system, or the packaging pipeline; it is the home of:
+• Repo maintenance tools
+• Workspace automation
+• Analysis and linting utilities
+• CI helpers
+• Documentation generators
+• Source-tree inspectors
+Nothing in /scripts ever ships with any game runtime.
+Nothing here may modify simulation behaviour.
+
+0. Directory layout (canonical)
+/scripts/
+├─ README.md
+├─ maintenance/
+│  ├─ clean_repo.py
+│  ├─ prune_artifacts.py
+│  ├─ verify_symlinks.py
+│  └─ validate_headers.py
+├─ analysis/
+│  ├─ scan_includes.py
+│  ├─ dependency_graph.py
+│  ├─ measure_loc.py
+│  ├─ detect_cycles.py
+│  └─ api_compat_check.py
+├─ docs/
+│  ├─ build_docs.py
+│  ├─ check_md_links.py
+│  ├─ extract_public_api.py
+│  └─ generate_html_docs.py
+├─ ci/
+│  ├─ premerge_checks.py
+│  ├─ verify_license_headers.py
+│  ├─ detect_untracked_files.py
+│  ├─ check_directory_contracts.py
+│  └─ ensure_determinism_constraints.py
+├─ format/
+│  ├─ clang_format_all.sh
+│  ├─ normalize_whitespace.py
+│  ├─ license_header_inject.py
+│  └─ remove_trailing_space.sh
+├─ mod_tools/
+│  ├─ mod_scaffold.py
+│  ├─ mod_lint.py
+│  ├─ validate_mod_json.py
+│  └─ convert_legacy_mod.py
+└─ helpers/
+   ├─ grep_todo.sh
+   ├─ find_large_files.py
+   ├─ file_hash_tree.py
+   └─ search_string_ci.py
+All subdirectories are purely optional tooling; they do not influence runtime logic, determinism, or user gameplay.
+
+1. /scripts/README.md
+Must explain:
+• This directory contains repository-level automation scripts only.
+• Nothing inside /scripts is required to run the game or editor.
+• Scripts must not write to /engine, /game, /data/base automatically unless invoked explicitly by a maintainer.
+• Scripts may use any modern language (Python 3 recommended).
+• Scripts must never be executed by the engine or modding environment.
+Also clarifies:
+• Scripts are allowed FLOPs, nondeterminism, timestamps, network access (for dev workflows only).
+• Scripts must not silently modify tracked files unless the user explicitly intends to run a maintenance or reformat.
+
+2. /scripts/maintenance/ — repository housekeeping
+clean_repo.py
+Removes:
+• Orphaned temp files
+• Editor swap files
+• Local build folders outside /build/output
+• Redundant caches
+Must not touch:
+• /engine
+• /game
+• /data/base
+• /mods
+prune_artifacts.py
+Finds:
+• Large, accidental binary commits
+• Misplaced assets
+• Non-source files outside approved directories
+verify_symlinks.py
+Ensures symlinks:
+• Point only inside repo
+• Are valid on all platforms supporting symlinks
+• Are not accidentally used in deterministic runtime
+validate_headers.py
+Checks:
+• Include guards
+• License headers
+• No forbidden headers in deterministic modules (<random>, <chrono>, <thread>)
+
+3. /scripts/analysis/ — repo-wide static analysis
+scan_includes.py
+Builds a tree of include relationships:
+• Detects platform leakage (windows.h in wrong places)
+• Highlights layering violations – e.g., /engine including /game
+dependency_graph.py
+Produces a .dot graph of:
+• Engine module dependencies
+• Game module dependencies
+• Cross-layer coupling
+Used to enforce clean architecture.
+measure_loc.py
+Counts lines of code by module:
+• C89/C++98 compliance stats
+• Tests vs engine proportions
+detect_cycles.py
+Detects circular dependencies:
+• Between C modules
+• Between script modules
+• Between data definitions (e.g., tech tree references)
+Must fail CI if cycles violate architectural rules.
+api_compat_check.py
+Ensures:
+• Public engine APIs have not broken without explicit version bump
+• Lua/mod API changes are correctly noted in /docs/spec
+
+4. /scripts/docs/ — documentation generation
+build_docs.py
+Converts:
+• Markdown → HTML, PDF (via Pandoc or internal tooling)
+• Code comments → API reference
+Must never rewrite /docs/spec itself.
+check_md_links.py
+Ensures:
+• No dead links within /docs/
+• No external URLs pointing to non-canonical sources
+extract_public_api.py
+Parses header files under /engine:
+• Generates lists of symbols exposed to scripts, mods, or game layer
+• Detects undocumented exported APIs
+generate_html_docs.py
+Builds standalone documentation site:
+• Deterministic output for CI diffs
+• Uses a pinned version of documentation theme
+
+5. /scripts/ci/ — CI-enforced policy scripts
+These scripts must run automatically on merge request pipelines.
+premerge_checks.py
+Runs:
+• Code style
+• Directory contract checks
+• Basic lint
+• Dependency scans
+Fails if any violations occur.
+verify_license_headers.py
+Confirms:
+• Every code file has correct license header
+• Third-party license notices are accurate
+• No missing/invalid SPDX tags
+detect_untracked_files.py
+Ensures the repo contains:
+• No stray build outputs
+• No generated files outside permitted directories
+check_directory_contracts.py
+Checks adherence to the directory rules defined in:
+• /docs/spec/DIRECTORY_CONTRACT.md
+• The canonical directory rules you provided earlier
+Flags violations:
+• Engine code in /game
+• Data in /engine
+• Mods inside /data
+ensure_determinism_constraints.py
+Validates:
+• No use of floats in deterministic engine modules
+• No nondeterministic libc functions
+• No usage of timers or threads
+• No unordered containers unless stable wrappers
+If any determinism violation is detected → pipeline fails.
+
+6. /scripts/format/ — code formatting and normalization
+clang_format_all.sh
+Runs clang-format using pinned .clang-format file.
+Engine C89/C++98 must use conservative formatting rules (avoid rewriting signatures).
+normalize_whitespace.py
+Enforces:
+• No tab/space inconsistency
+• No Unicode whitespace in code files
+• No trailing spaces
+• Normalized end-of-line conventions (LF everywhere except retro ports)
+license_header_inject.py
+Batch tool to inject or update license headers across source tree.
+remove_trailing_space.sh
+Simple sh utility to ensure trailing whitespace is removed before commit.
+
+7. /scripts/mod_tools/ — modder support tools
+mod_scaffold.py
+Generates a new mod folder with:
+• Standard structure
+• Example mod.json
+• Example /data and /scripts dirs
+• Namespacing templates
+mod_lint.py
+Validates:
+• Illegal overrides
+• Invalid field values
+• Broken references
+• Missing localized strings
+Fails if schema violations occur.
+validate_mod_json.py
+Checks for manifest correctness:
+• id rules
+• dependency correctness
+• determinism flags
+• versioning
+convert_legacy_mod.py
+Upgrades old mod formats to new schema (if you introduce versioned mod APIs).
+Prohibitions:
+• Must not auto-fix breaking changes silently.
+• Must never modify the canonical game data.
+
+8. /scripts/helpers/
+Small, optional convenience utilities:
+grep_todo.sh
+Finds TODO/HACK/FIXME lines for audits.
+find_large_files.py
+Identifies files exceeding project size thresholds.
+file_hash_tree.py
+Prints tree of SHA-256 of all files — used for offline integrity checks.
+search_string_ci.py
+CI-safe grep that fails if matches are found (useful for enforcing bans).
+These tools must never be used by the game runtime.
+
+9. Cross-cutting rules & prohibitions
+9.1 Hard prohibitions
+• No files in /scripts may:
+o Influence deterministic simulation
+o Modify core assets silently
+o Introduce new build steps that fetch remote dependencies
+o Insert code into /engine automatically
+o Embed private keys or credentials
+9.2 Repository hygiene constraints
+• All scripts must be self-contained.
+• Python scripts must be Python 3 only.
+• Scripts must be platform-portable unless explicitly OS-specific.
+• Scripts must include clear usage instructions.
+9.3 Interaction with CI
+• CI may call scripts in this directory.
+• Scripts must return nonzero exit codes on failure.
+• Scripts must support quiet mode (--ci) to suppress noise.
+
+10. Summary
+/scripts is the meta-automation toolbox that keeps the repository clean, consistent, and maintainable.
+It enforces:
+• Directory contracts
+• Determinism rules
+• Licensing compliance
+• Documentation upkeep
+• Modding hygiene
+• Dependency correctness
+• CI integration
+It is entirely separate from:
+• The build system (/build)
+• The packaging system (/package)
+• The runtime (/engine / /game)
+Its only mission is quality control and developer efficiency.

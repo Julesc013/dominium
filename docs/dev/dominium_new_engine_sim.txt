@@ -1,0 +1,579 @@
+This message is the dev spec for engine/sim/ only.
+engine/
+└── sim/
+    ├── dom_sim_tick.h
+    ├── dom_sim_tick.c
+    ├── dom_sim_lanes.h
+    ├── dom_sim_lanes.c
+    ├── dom_sim_events.h
+    ├── dom_sim_events.c
+    ├── dom_sim_jobs.h
+    ├── dom_sim_jobs.c
+    ├── dom_sim_world.h
+    ├── dom_sim_world.c
+    ├── dom_sim_network_power.h
+    ├── dom_sim_network_power.c
+    ├── dom_sim_network_fluid.h
+    ├── dom_sim_network_fluid.c
+    ├── dom_sim_network_data.h
+    ├── dom_sim_network_data.c
+    ├── dom_sim_network_thermal.h
+    ├── dom_sim_network_thermal.c
+    ├── dom_sim_orbit.h
+    ├── dom_sim_orbit.c
+    ├── dom_sim_economy.h
+    └── dom_sim_economy.c
+0. Global rules for engine/sim
+Scope: deterministic simulation kernel and networks. Everything in this directory obeys the determinism spec you already have (tick pipeline, lanes, merge, integer-only).
+Language: C89 only.
+Includes:
+Every .c here may include:
+• dom_core_types.h
+• dom_core_bits.h
+• dom_core_fp.h
+• dom_core_rng.h (for controlled, seeded sim RNG only)
+• dom_ecs.h (entity/component access)
+• local sim headers.
+Never include platform headers or rendering or UI.
+Never include <time.h>, <math.h>, <float.h>.
+No malloc in per-tick hot paths.
+Numeric rules:
+• No float or double.
+• Only integer and fixed-point as defined in core_fp.
+• All operations must be deterministic and platform-independent.
+Temporal rules:
+• Only dom_sim_tick controls progression of ticks.
+• No internal subsystem implements its own notion of “time” beyond integer tick counters and multi-rate schedules.
+Lane rules:
+• All lane concepts go through dom_sim_lanes.
+• Subsystems that need lane awareness only use lane IDs provided there.
+Event/Job rules:
+• All messaging and jobs go through dom_sim_events / dom_sim_jobs.
+• No ad-hoc global queues in other modules.
+
+1. dom_sim_tick.[hc] — Tick pipeline and scheduler
+Purpose: single authority for the 7-phase tick pipeline and multi-rate scheduling. All simulation advancement goes through here.
+Header: dom_sim_tick.h
+Responsibilities:
+• Define tick ID type and canonical UPS values.
+• Expose API to initialise, advance, and query simulation time.
+• Expose configuration for multi-rate system scheduling.
+• Expose hooks that call into subsystems in the correct phase order.
+Types:
+typedef dom_u64 DomTickId;
+
+typedef struct DomSimConfig {
+    dom_u32 target_ups;      /* canonical UPS */
+    dom_u32 num_lanes;       /* virtual lanes */
+    dom_u32 reserved[6];     /* for future */
+} DomSimConfig;
+
+typedef struct DomSimTime {
+    DomTickId tick;
+    dom_u32   ups;           /* effective UPS */
+} DomSimTime;
+Public API:
+/* Initialise simulation tick controller. Must be called once before any sim use. */
+DomResult dom_sim_tick_init(const DomSimConfig *cfg);
+
+/* Hard reset simulation tick state (development / load only). */
+void      dom_sim_tick_reset(DomTickId start_tick);
+
+/* Advance simulation by exactly one tick. This is the high-level pipeline entry point. */
+DomResult dom_sim_tick_step(void);
+
+/* Query current tick/time. */
+DomTickId dom_sim_tick_current(void);
+DomSimTime dom_sim_tick_get_time(void);
+
+/* Configure effective UPS (for degradation under load). */
+DomResult dom_sim_tick_set_effective_ups(dom_u32 ups);
+dom_u32   dom_sim_tick_get_effective_ups(void);
+Internal (but visible) phase hooks, called by dom_sim_tick_step in strict sequence:
+void dom_sim_phase_input(void);
+void dom_sim_phase_pre_state(void);
+void dom_sim_phase_simulation(void);     /* lane execution dispatch */
+void dom_sim_phase_networks(void);       /* power/fluid/data/thermal/orbit */
+void dom_sim_phase_merge(void);
+void dom_sim_phase_post_process(void);
+void dom_sim_phase_finalize(void);
+Constraints:
+• dom_sim_tick_step is the only function allowed to call the phase functions in production code.
+• Phase functions are void and must not fail; they handle internal clamp/failover and write error events if needed.
+• Multi-rate scheduling is enforced inside the phase functions, not ad-hoc elsewhere.
+Implementation dom_sim_tick.c:
+• Stores static DomSimConfig and current DomSimTime.
+• Implements dom_sim_tick_step as:
+1. Increment tick.
+2. Invoke phases in order.
+3. No early exits except for catastrophic error (return non-OK).
+• Performs staggering decisions (e.g. network/thermal/economy at lower frequencies) via tick mod operations and constants that live in a config table (no magic numbers scattered in other modules).
+Prohibitions:
+• No lane-internal logic here (that is dom_sim_lanes).
+• No ECS entity iteration here (phases call subsystems that do that).
+• No direct network maths here.
+
+2. dom_sim_lanes.[hc] — Virtual lane management
+Purpose: deterministic mapping from entities to lanes, and per-lane execution control.
+Header: dom_sim_lanes.h
+Responsibilities:
+• Define lane ID type.
+• Provide mapping from entity IDs to lanes.
+• Provide per-lane iteration helpers for systems.
+• Provide per-lane buffers for merges (if needed by callers).
+Types:
+typedef dom_u32 DomLaneId;
+
+typedef struct DomLaneConfig {
+    dom_u32 num_lanes;   /* 1..N */
+} DomLaneConfig;
+Public API:
+DomResult dom_sim_lanes_init(const DomLaneConfig *cfg);
+
+/* Map entity id to lane; stable for lifetime. */
+DomLaneId dom_sim_lane_for_entity(dom_u64 entity_id);
+
+/* Get global lane count. */
+dom_u32   dom_sim_lane_count(void);
+
+/* Run a lane callback for each lane in deterministic order (0..N-1). */
+typedef void (*DomLaneCallback)(DomLaneId lane_id, void *user_data);
+void dom_sim_lanes_for_each(DomLaneCallback cb, void *user_data);
+Optional lane-local scheduling support:
+/* Per-lane system scheduling convenience, used inside sim systems. */
+typedef void (*DomLaneSystemFn)(DomLaneId lane_id, void *ctx);
+
+void dom_sim_lanes_run_system(DomLaneSystemFn fn, void *ctx);
+Implementation dom_sim_lanes.c:
+• Holds static num_lanes.
+• Implements dom_sim_lane_for_entity(eid) = eid % num_lanes.
+• No threading primitives here; actual thread use is in a higher-level executor if you add one. This module just defines IDs and order.
+Prohibitions:
+• No dynamic assignment/migration of lanes.
+• No dependence on physical CPU threads.
+• No knowledge of systems or components.
+
+3. dom_sim_events.[hc] — Event buses and message queues
+Purpose: implement the local/lane/cross-lane/global event queues and command buffers per your determinism spec.
+Header: dom_sim_events.h
+Responsibilities:
+• Define message/event header struct.
+• Implement the 4 event buses plus command buffers.
+• Provide API for subsystems to emit and consume messages.
+• Guarantee ordering and latency constraints.
+Types (condensed):
+typedef dom_u16 DomMsgType;
+typedef dom_u16 DomMsgFlags;
+
+typedef struct DomSimMessageHeader {
+    DomMsgType  type;
+    DomMsgFlags flags;
+    dom_u32     system_id;
+    dom_u64     sender;       /* entity handle or 0 */
+    dom_u64     receiver;     /* entity handle or 0 (broadcast) */
+    DomTickId   tick_created;
+} DomSimMessageHeader;
+
+#define DOM_SIM_MESSAGE_PAYLOAD_BYTES 112
+
+typedef struct DomSimMessage {
+    DomSimMessageHeader header;
+    dom_u8              payload[DOM_SIM_MESSAGE_PAYLOAD_BYTES];
+} DomSimMessage;
+Bus types (opaque to users):
+typedef struct DomSimLocalBus   DomSimLocalBus;
+typedef struct DomSimLaneBus    DomSimLaneBus;
+typedef struct DomSimCrossBus   DomSimCrossBus;
+typedef struct DomSimGlobalBus  DomSimGlobalBus;
+Public API overview:
+Initialisation/reset:
+DomResult dom_sim_events_init(void);
+void      dom_sim_events_reset(void);
+Emit/consume functions (examples, not exhaustive):
+/* Local to a specific entity. */
+DomResult dom_sim_events_local_emit(dom_u64 entity, const DomSimMessage *msg);
+DomResult dom_sim_events_local_consume(dom_u64 entity,
+                                       DomSimMessage *out_msg);
+
+/* Lane-level bus. */
+DomResult dom_sim_events_lane_emit(DomLaneId lane, const DomSimMessage *msg);
+DomResult dom_sim_events_lane_consume(DomLaneId lane,
+                                      DomSimMessage *out_msg);
+
+/* Cross-lane bus: visible next tick. */
+DomResult dom_sim_events_cross_emit(DomLaneId target_lane,
+                                    const DomSimMessage *msg);
+
+/* Global bus: broadcast to systems/entities next tick. */
+DomResult dom_sim_events_global_emit(const DomSimMessage *msg);
+Tick-phase integration entry points, called from dom_sim_tick:
+/* Called in Pre-State phase: deliver last tick's global + cross-lane into local/lane queues. */
+void dom_sim_events_phase_pre_state(void);
+
+/* Called in Merge phase: move cross-lane FIFO into per-lane next-tick buffers. */
+void dom_sim_events_phase_merge(void);
+
+/* Called in Finalize phase: swap buffers, clear flags. */
+void dom_sim_events_phase_finalize(void);
+Command buffers (structural ops) are defined here too:
+typedef dom_u16 DomCommandType;
+
+typedef struct DomSimCommand {
+    DomCommandType type;
+    dom_u64        entity;
+    dom_u32        param_a;
+    dom_u32        param_b;
+    dom_u64        data[2];
+} DomSimCommand;
+
+DomResult dom_sim_command_emit(DomLaneId lane, const DomSimCommand *cmd);
+/* Called from Merge/Post-Process: */
+void      dom_sim_command_drain_for_lane(DomLaneId lane);
+Constraints:
+• All buffers are fixed-size ring buffers with compile-time capacities.
+• On overflow, follow deterministic oldest-drop policy and set global overflow flags (no silent loss).
+Implementation dom_sim_events.c:
+• Implements ring buffers and queues grouped by lane/global.
+• Implements deterministic ordering: FIFO by insertion, plus tie-breakers if you sort.
+• Only dom_sim_tick should drive phase methods.
+Prohibitions:
+• No simulation logic here (no machines, no jobs).
+• No ECS access beyond entity handles.
+• No dynamic memory allocation in tick-path functions.
+
+4. dom_sim_jobs.[hc] — Job system core
+Purpose: implement deterministic job queues and worker assignment as per job spec (construction, hauling, maintenance, etc.).
+Header: dom_sim_jobs.h
+Responsibilities:
+• Define DomSimJob struct.
+• Implement local/lane/global job queues.
+• Implement deterministic worker assignment and task dispatch.
+Types:
+typedef dom_u32 DomJobType;
+
+typedef struct DomSimJob {
+    DomJobType job_type;
+    dom_u32    priority;        /* lower = higher priority */
+    dom_u64    requester;       /* entity */
+    dom_u64    assignee;        /* worker entity or 0 */
+    dom_u64    target;          /* entity or encoded tile */
+    DomTickId  tick_created;
+    dom_u32    est_ticks;
+    dom_u32    payload[8];      /* job-type specific */
+} DomSimJob;
+Public API:
+Initialisation:
+DomResult dom_sim_jobs_init(void);
+void      dom_sim_jobs_reset(void);
+Queue operations:
+/* Entity-level job emission. */
+DomResult dom_sim_jobs_emit_local(dom_u64 entity, const DomSimJob *job);
+
+/* Lane-level job promotion and dispatch. */
+void      dom_sim_jobs_phase_simulation(void); /* called from sim phase */
+void      dom_sim_jobs_phase_post(void);       /* cleanup, completion */
+Worker assignment:
+/* Called by worker systems to request next job for a worker entity. */
+DomResult dom_sim_jobs_assign_to_worker(dom_u64 worker_entity,
+                                        DomSimJob *out_job);
+
+/* Called when job completes or fails. */
+void      dom_sim_jobs_complete(const DomSimJob *job, dom_bool8 success);
+Constraints:
+• All prioritisation based on priority, job_type, requester, tick_created, and worker_id for tie-breaks. Algorithm must be frozen and documented.
+• No pathfinding here; only assignment. Path cost estimates can come from other modules via integer inputs.
+Implementation dom_sim_jobs.c:
+• Uses arrays + stable sort or insertion order to maintain deterministic ordering.
+• Integrates with events: emits completion/failure events where appropriate.
+Prohibitions:
+• No direct manipulation of worker components beyond job ID assignment; worker behaviour is in their system.
+• No floats for distance or cost.
+
+5. dom_sim_world.[hc] — World/universe hierarchy and registry
+Purpose: define and manage the logical structure: universe → galaxy → system → planet → surface → region/chunk.
+Header: dom_sim_world.h
+Responsibilities:
+• Define IDs for universe, galaxy, system, planet, surface.
+• Define a small registry for these entities and their metadata.
+• Provide lookup from IDs to coordinate frames and surface roots.
+Types (example):
+typedef dom_u32 DomUniverseId;
+typedef dom_u32 DomGalaxyId;
+typedef dom_u32 DomSystemId;
+typedef dom_u32 DomPlanetId;
+typedef dom_u32 DomSurfaceId;
+
+typedef struct DomSurfaceMeta {
+    DomSurfaceId id;
+    DomPlanetId  planet;
+    /* grid origin / radius etc. */
+    dom_i64      origin_x;
+    dom_i64      origin_y;
+    dom_i64      radius_m;   /* half-extent of used area */
+    dom_u32      flags;
+} DomSurfaceMeta;
+Public API:
+DomResult dom_sim_world_init(void);
+void      dom_sim_world_reset(void);
+
+/* Default world selectors (Earth/Sol/MilkyWay). */
+DomUniverseId dom_sim_world_default_universe(void);
+DomGalaxyId   dom_sim_world_default_galaxy(void);
+DomSystemId   dom_sim_world_default_system(void);
+DomPlanetId   dom_sim_world_default_planet(void);
+DomSurfaceId  dom_sim_world_default_surface(void);
+
+/* Creation of additional surfaces/planets/systems for advanced use. */
+DomResult dom_sim_world_create_surface(DomPlanetId planet,
+                                       const DomSurfaceMeta *meta,
+                                       DomSurfaceMeta       *out_meta);
+
+/* Lookup metadata. */
+const DomSurfaceMeta *dom_sim_world_get_surface(DomSurfaceId id);
+Integration with spatial:
+/* Map world coordinates to surface-local grid root/context. */
+DomResult dom_sim_world_surface_of_coord(dom_i64 x, dom_i64 y, DomSurfaceId *out_surface);
+Implementation dom_sim_world.c:
+• Stores small fixed-size arrays of metas.
+• Provides deterministic IDs and stable ordering.
+• No heavy data; actual spatial/chunk data is in engine/spatial.
+Prohibitions:
+• No chunk iteration.
+• No ECS stuff.
+• No time or orbits.
+
+6. Network modules
+These are parallel patterns: power, fluid, data, thermal. They all follow the same overall structure.
+6.1 dom_sim_network_power.[hc]
+Purpose: deterministic LV/HV power network solver.
+Header responsibilities:
+• Define power node and edge types (opaque handles).
+• Provide API to rebuild connectivity when topology changes.
+• Provide per-tick update entrypoints for power flows.
+• Expose per-entity interface functions (attach/detach nodes, set generator/load params, query results).
+Key types (opaque IDs):
+typedef dom_u32 DomPowerNodeId;
+typedef dom_u32 DomPowerNetId;
+
+typedef struct DomPowerNodeParams {
+    dom_q32_32 max_gen;   /* W or kW in fixed-point */
+    dom_q32_32 max_load;
+    dom_q32_32 priority;  /* load shedding priority */
+    dom_u32    flags;
+} DomPowerNodeParams;
+
+typedef struct DomPowerNodeState {
+    dom_q32_32 actual_gen;
+    dom_q32_32 actual_load;
+    dom_q32_32 voltage;   /* optional */
+} DomPowerNodeState;
+Public API (sketch):
+DomResult dom_sim_power_init(void);
+void      dom_sim_power_reset(void);
+
+/* Called when an entity gains/loses power component. */
+DomPowerNodeId dom_sim_power_register_node(dom_u64 entity, const DomPowerNodeParams *params);
+void           dom_sim_power_unregister_node(DomPowerNodeId node);
+
+/* Connectivity: add/remove power lines between nodes. */
+DomResult dom_sim_power_connect(DomPowerNodeId a, DomPowerNodeId b, dom_q32_32 capacity);
+DomResult dom_sim_power_disconnect(DomPowerNodeId a, DomPowerNodeId b);
+
+/* Per-tick update from Networks phase. */
+void      dom_sim_power_phase_networks(void);
+
+/* Query state after networks phase. */
+const DomPowerNodeState *dom_sim_power_get_state(DomPowerNodeId node);
+Implementation:
+• Graph partition into components; each component solves total_gen vs total_load with deterministic ratio application.
+• No real-world electrical transients; just discrete tick balances.
+Prohibitions:
+• No floats.
+• No iterative numeric solvers with unstable convergence.
+
+6.2 dom_sim_network_fluid.[hc]
+Purpose: fluid network (pipes, tanks).
+Header responsibilities:
+• Define fluid node and edge IDs.
+• Define fluid parameters (capacity, pressure, volume).
+• Network solve API.
+Types:
+typedef dom_u32 DomFluidNodeId;
+
+typedef struct DomFluidNodeParams {
+    dom_q32_32 max_volume;
+    dom_q32_32 max_flow;
+    dom_u32    fluid_type;   /* water, oil, steam... */
+} DomFluidNodeParams;
+
+typedef struct DomFluidNodeState {
+    dom_q32_32 volume;
+    dom_q32_32 pressure;
+} DomFluidNodeState;
+Public API:
+DomResult dom_sim_fluid_init(void);
+void      dom_sim_fluid_reset(void);
+
+DomFluidNodeId dom_sim_fluid_register_node(dom_u64 entity,
+                                           const DomFluidNodeParams *params);
+void           dom_sim_fluid_unregister_node(DomFluidNodeId node);
+
+DomResult dom_sim_fluid_connect(DomFluidNodeId a, DomFluidNodeId b, dom_q32_32 capacity);
+DomResult dom_sim_fluid_disconnect(DomFluidNodeId a, DomFluidNodeId b);
+
+/* Network update (every N ticks). */
+void      dom_sim_fluid_phase_networks(void);
+
+const DomFluidNodeState *dom_sim_fluid_get_state(DomFluidNodeId node);
+Implementation:
+• Simple linear conductance: flow = clamp(G*(P_i - P_j), -cap, +cap).
+• Node volumes updated by sum of flows.
+• Pressure as deterministic function of volume.
+Prohibitions:
+• No partial updates between ticks.
+• No continuous integration.
+
+6.3 dom_sim_network_data.[hc]
+Purpose: discrete data packets and logical “signals” (for control circuits).
+Header responsibilities:
+• Implement packet routing (one hop/tick).
+• Implement “signal” sums (1-tick latency).
+Types:
+typedef dom_u32 DomDataNodeId;
+
+typedef struct DomDataPacket {
+    dom_u64 src;
+    dom_u64 dst;
+    dom_u32 payload[4];
+    DomTickId tick_created;
+} DomDataPacket;
+Public API:
+DomResult dom_sim_data_init(void);
+void      dom_sim_data_reset(void);
+
+DomDataNodeId dom_sim_data_register_node(dom_u64 entity);
+void          dom_sim_data_unregister_node(DomDataNodeId node);
+
+DomResult dom_sim_data_connect(DomDataNodeId a, DomDataNodeId b);
+DomResult dom_sim_data_disconnect(DomDataNodeId a, DomDataNodeId b);
+
+/* Emit and receive packets. */
+DomResult dom_sim_data_send(DomDataNodeId from, const DomDataPacket *pkt);
+DomResult dom_sim_data_recv(DomDataNodeId node, DomDataPacket *out_pkt);
+
+/* Per-tick network phase. */
+void      dom_sim_data_phase_networks(void);
+Signals:
+• Separate API for simple integer signal channels (Factorio-style) with 1-tick latency.
+Prohibitions:
+• No best-effort unreliable semantics; either delivered deterministically or dropped due to deterministic overflow.
+
+6.4 dom_sim_network_thermal.[hc]
+Purpose: simplified heat and environmental diffusion.
+Header responsibilities:
+• Define thermal cell and node representations.
+• Provide periodic lattice update.
+Types:
+typedef dom_u32 DomThermalNodeId;
+
+typedef struct DomThermalNodeState {
+    dom_q16_16 temp;
+} DomThermalNodeState;
+Public API:
+DomResult dom_sim_thermal_init(void);
+void      dom_sim_thermal_reset(void);
+
+DomThermalNodeId dom_sim_thermal_register_node(dom_u64 entity);
+void             dom_sim_thermal_unregister_node(DomThermalNodeId node);
+
+/* Periodic update (every M ticks) called from networks phase. */
+void             dom_sim_thermal_phase_networks(void);
+
+const DomThermalNodeState *dom_sim_thermal_get_state(DomThermalNodeId node);
+Implementation:
+• Deterministic stencil diffusion on grid or graph.
+• No floats.
+
+7. dom_sim_orbit.[hc] — Orbital / space “on rails” mechanics
+Purpose: deterministic “on rails” orbital mechanics for ships, stations, and bodies, using discrete states and pre-computed paths, not real physics integration.
+Header: dom_sim_orbit.h
+Responsibilities:
+• Define IDs for orbital bodies (stars, planets, moons, stations).
+• Define simplified orbital elements (integer/fixed point).
+• Provide transform from orbital position to spatial frame.
+• Provide tick update for orbital states.
+Types:
+typedef dom_u32 DomOrbitBodyId;
+
+typedef struct DomOrbitElements {
+    dom_q32_32 semi_major_axis;
+    dom_q32_32 eccentricity;
+    dom_q32_32 inclination;
+    dom_q32_32 arg_periapsis;
+    dom_q32_32 long_ascending;
+    dom_q32_32 mean_anomaly_at_epoch;
+    DomTickId  epoch_tick;
+} DomOrbitElements;
+
+typedef struct DomOrbitBody {
+    DomOrbitBodyId id;
+    DomOrbitBodyId parent;     /* 0 = root (star) */
+    DomOrbitElements elems;
+} DomOrbitBody;
+Public API:
+DomResult dom_sim_orbit_init(void);
+void      dom_sim_orbit_reset(void);
+
+DomOrbitBodyId dom_sim_orbit_register_body(const DomOrbitBody *body);
+const DomOrbitBody *dom_sim_orbit_get_body(DomOrbitBodyId id);
+
+/* Per-tick update: recompute positions in parent frame. */
+void      dom_sim_orbit_phase_networks(void);
+
+/* Query position at current tick in integer space coordinates. */
+void      dom_sim_orbit_get_position(DomOrbitBodyId id,
+                                     dom_i64 *out_x,
+                                     dom_i64 *out_y,
+                                     dom_i64 *out_z);
+Implementation:
+• “Orbital mechanics on rails”: use pre-computed or approximated curves updated deterministically per tick (no live Kepler solver with floats).
+Prohibitions:
+• No double/float trig here.
+• No N-body interactions.
+
+8. dom_sim_economy.[hc] — Macro economy + markets
+Purpose: deterministic property/company/world economic model and markets.
+Header: dom_sim_economy.h
+Responsibilities:
+• Define basic economic aggregates.
+• Provide tick-driven updates at low frequency.
+• Provide price indices accessible by game systems.
+Types:
+typedef struct DomEconomyGlobal {
+    dom_u64  tick_last_update;
+    dom_q32_32 price_index[64];   /* commodity buckets */
+    dom_q32_32 demand_index[64];
+    dom_q32_32 supply_index[64];
+} DomEconomyGlobal;
+Public API:
+DomResult dom_sim_economy_init(void);
+void      dom_sim_economy_reset(void);
+
+/* Called from networks or post-process phase every K ticks. */
+void      dom_sim_economy_phase_update(void);
+
+/* Queries. */
+const DomEconomyGlobal *dom_sim_economy_get_global(void);
+
+/* Hooks for game systems to report production/consumption. */
+void dom_sim_economy_report_production(dom_u32 commodity_id, dom_q32_32 amount);
+void dom_sim_economy_report_consumption(dom_u32 commodity_id, dom_q32_32 amount);
+Implementation:
+• Integer/fixed-point trend updates.
+• No stochastic noise.
+• All updates are based on deterministic formulas.
+Prohibitions:
+• No random shocks.
+• No floating-point regressions.
+
+That’s the contract for engine/sim/. Next directory will build on this (engine/ecs/).

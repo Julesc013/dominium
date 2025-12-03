@@ -1,0 +1,476 @@
+This message is the dev-spec for /data/base/.
+/data/base is the canonical base content pack.
+If this pack is missing or invalid, the game cannot run.
+It defines all simulation-facing content for the vanilla game:
+• Base prefabs (buildings, machines, vehicles, items, orbital structures)
+• Tech tree and research data
+• Network classes (rail, road, power, fluids, data, etc.)
+• Worldgen templates (Earth, Sol, Milky Way default property)
+• Economy (commodities, markets, prices)
+• Localisation (English baseline; others optional)
+• Optional deterministic helper scripts
+No engine logic here, but every file is considered authoritative game content.
+
+Directory Layout
+/data/base/
+├─ manifest.json
+├─ prefabs/
+│  ├─ prefabs_buildings.json
+│  ├─ prefabs_machines.json
+│  ├─ prefabs_vehicles_surface.json
+│  ├─ prefabs_vehicles_orbital.json
+│  ├─ prefabs_items.json
+│  ├─ prefabs_infrastructure.json
+│  ├─ prefabs_rails.json
+│  ├─ prefabs_roads.json
+│  ├─ prefabs_utilities.json
+│  └─ tags.json
+├─ tech/
+│  ├─ tech_tree.json
+│  ├─ tech_categories.json
+│  └─ tech_science_packs.json
+├─ networks/
+│  ├─ rails.json
+│  ├─ roads.json
+│  ├─ power.json
+│  ├─ fluids.json
+│  ├─ data.json
+│  └─ logistics.json
+├─ worldgen/
+│  ├─ planets.json
+│  ├─ systems.json
+│  ├─ galaxies.json
+│  ├─ biomes.json
+│  └─ resources.json
+├─ economy/
+│  ├─ commodities.json
+│  ├─ markets.json
+│  └─ recipes.json
+├─ locale/
+│  ├─ en-AU.json
+│  └─ en-US.json
+└─ scripts/        # optional deterministic helpers
+   └─ base_helpers.lua  (or similar, if scripting is allowed)
+Each .json file must conform to a schema under /data/schema.
+All numeric fields must be integers or integer-encoded fixed-point values.
+
+1. manifest.json — Base pack declaration
+This file declares the base pack to the engine.
+Structure
+{
+  "id": "base",
+  "type": "base",
+  "version": "1.0.0",
+  "engine_min_version": "3.0.0",
+  "engine_max_version": "3.x",
+  "description": "Dominium base content pack",
+  "dependencies": [],
+  "provides": [
+    "prefabs",
+    "tech_tree",
+    "networks",
+    "worldgen",
+    "economy",
+    "locale"
+  ],
+  "content_index": {
+    "prefabs": [
+      "prefabs/prefabs_buildings.json",
+      "prefabs/prefabs_machines.json",
+      "prefabs/prefabs_vehicles_surface.json",
+      "prefabs/prefabs_vehicles_orbital.json",
+      "prefabs/prefabs_items.json",
+      "prefabs/prefabs_infrastructure.json",
+      "prefabs/prefabs_rails.json",
+      "prefabs/prefabs_roads.json",
+      "prefabs/prefabs_utilities.json",
+      "prefabs/tags.json"
+    ],
+    "tech": [
+      "tech/tech_tree.json",
+      "tech/tech_categories.json",
+      "tech/tech_science_packs.json"
+    ],
+    "networks": [
+      "networks/rails.json",
+      "networks/roads.json",
+      "networks/power.json",
+      "networks/fluids.json",
+      "networks/data.json",
+      "networks/logistics.json"
+    ],
+    "worldgen": [
+      "worldgen/planets.json",
+      "worldgen/systems.json",
+      "worldgen/galaxies.json",
+      "worldgen/biomes.json",
+      "worldgen/resources.json"
+    ],
+    "economy": [
+      "economy/commodities.json",
+      "economy/markets.json",
+      "economy/recipes.json"
+    ],
+    "locale": [
+      "locale/en-AU.json",
+      "locale/en-US.json"
+    ]
+  }
+}
+Engine behaviour:
+• Treats /data/base/manifest.json as special.
+• Validates version and schemas on load.
+• Uses content_index as the only source of which files to load; does not rely on directory listing.
+Prohibitions:
+• No executable scripts in this file.
+• No environment-specific overrides.
+
+2. /data/base/prefabs/ — Simulation entities and components
+This subdirectory defines all entity templates for the base game.
+Each prefab ID maps to a deterministic internal uint64 resource ID.
+2.1 prefabs_buildings.json
+Static or mostly-static structures on surfaces and in orbital environments that are not vehicles:
+• Foundations, floors, walls, roofs
+• Houses, factories, depots, stations
+• Storage warehouses, tanks
+• Control rooms, admin buildings
+• Orbital station modules (if not in separate orbital file)
+Structure per prefab:
+{
+  "prefabs": [
+    {
+      "id": "building_foundation_basic",
+      "category": "building",
+      "tags": ["foundation", "surface_only"],
+      "components": {
+        "transform": {
+          "size": [1, 1, 1],
+          "anchor": "bottom_center"
+        },
+        "structure": {
+          "hp": 1000,
+          "fire_resistance": 10,
+          "explosion_resistance": 5
+        },
+        "grid_occupancy": {
+          "footprint": [[0, 0]],
+          "height": 1
+        },
+        "buildable": {
+          "allowed_surface": ["surface_default"],
+          "required_tech": "tech_construction_1",
+          "construction_jobs": 1,
+          "construction_time_ticks": 60
+        },
+        "power_interface": { "mode": "none" }
+      }
+    }
+  ]
+}
+All components must match ECS component definitions in /docs/spec.
+2.2 prefabs_machines.json
+Active machines:
+• Power plants, generators, transformers
+• Refineries, assemblers, smelters
+• Pumps, compressors, reactors
+• Radars, telecom nodes, servers
+Fields to expose:
+• I/O ports for power/fluid/data/logistics
+• Processing recipes references (recipe_ids)
+• Operational states, capacity, throughput
+• Safety flags and emergency behaviours
+All machine behaviours are implemented in /engine/sim, not data; data only configures parameters.
+2.3 prefabs_vehicles_surface.json
+Vehicles operating on surfaces:
+• Rail vehicles (locomotives, wagons, trams)
+• Road vehicles (trucks, buses, cars)
+• Construction equipment
+• Ships and boats (for waterways) if they operate on surface grids
+Key fields:
+• Vehicle category (rail, road, water_surface)
+• Required network type (rail_type_id, road_type_id, etc.)
+• Length and coupling points (important for trains)
+• Allowed grades and curves
+• Max speed, acceleration, braking
+2.4 prefabs_vehicles_orbital.json
+Orbital vehicles and structures:
+• Rockets, stages, landers, shuttles
+• Orbital tugs, cargo ferries
+• Station docking modules if they are treated as vehicles
+• Drop pods for surface–orbit logistics
+Fields:
+• Environment constraints (surface_only, orbital_only, both)
+• Docking interface definitions (types, alignment)
+• Δv-equivalent discrete parameters (engine thrust, fuel mass in integer units)
+• Launch/landing constraints (runway pad type, launch tower required, etc.)
+2.5 prefabs_items.json
+Inventory items:
+• Raw ores, intermediate materials
+• Components (wires, rails, sleepers, beams)
+• Fuel types, science packs, tools
+• Data tokens or licences in the economy
+Fields:
+• Stack size
+• Mass and volume in integer units
+• Value reference to commodity ID
+• Category for UI filtering
+2.6 prefabs_infrastructure.json
+Non-machine but functional infrastructure:
+• Foundations, roads/railway infrastructure pieces
+• Pipes, cables, ducts, conduits
+• Platforms, stairs, ramps, ladders
+• Platforms and ramps for rail/road/water/air integration
+2.7 prefabs_rails.json
+Rail-specific prefab pieces:
+• Track segments (straight, curved, switches, crossings)
+• Platforms, buffers, signals, points motors
+• Bridge and tunnel entries
+Each track piece references:
+• gauge_class from networks/rails.json
+• weight_class or rail type
+• Allowed speeds
+• Intended usage (mainline, yard, miniature, heavy-haul, maglev, etc.)
+2.8 prefabs_roads.json
+Road pieces:
+• Lanes, intersections, ramps, toll booths
+• Bridges and tunnels for road networks
+• Special surfaces (runways, taxiways, parking)
+Each road piece references road classes from networks/roads.json.
+2.9 prefabs_utilities.json
+Utility components:
+• Power poles, substations
+• Transformers, rectifiers
+• Fluid pumps, valves, meters
+• Data cabinets, routers, access points
+• Lighting, signalling equipment
+2.10 tags.json
+Global tag registry:
+{
+  "tags": [
+    {"id": "surface_only", "description": "Cannot exist in orbital space"},
+    {"id": "orbital_only", "description": "Cannot exist on surfaces"},
+    {"id": "rail_vehicle", "description": "Uses rail network"},
+    {"id": "road_vehicle", "description": "Uses road network"},
+    {"id": "miniature_gauge", "description": "Applies to miniature rail items"},
+    ...
+  ]
+}
+Tags are used across prefabs, tech, UI, and mods for filtering and behaviour gating.
+Prohibitions in /prefabs:
+• No script code.
+• No floats.
+• No references to undefined components, networks, or tech IDs.
+• No circular dependencies in construction requirements.
+
+3. /data/base/tech/ — Research tree
+3.1 tech_tree.json
+Defines all base-game technologies and their relationships.
+Structure example:
+{
+  "technologies": [
+    {
+      "id": "tech_construction_1",
+      "name_key": "tech.construction_1.name",
+      "desc_key": "tech.construction_1.desc",
+      "tier": 1,
+      "category": "infrastructure",
+      "prerequisites": [],
+      "cost": {
+        "science_pack_basic": 50
+      },
+      "time_per_unit_ticks": 600,
+      "unlocks_prefabs": [
+        "building_foundation_basic",
+        "machine_basic_assembler"
+      ],
+      "unlocks_recipes": [
+        "recipe_foundation_basic"
+      ]
+    }
+  ]
+}
+Rules:
+• Graph must form a DAG (no cycles).
+• Unlocks must reference existing IDs.
+• Costs expressed in integer units of science packs.
+3.2 tech_categories.json
+Defines tech categories for UI grouping and gating:
+{
+  "categories": [
+    { "id": "infrastructure", "name_key": "tech.category.infrastructure" },
+    { "id": "transport", "name_key": "tech.category.transport" },
+    { "id": "orbital", "name_key": "tech.category.orbital" },
+    { "id": "data", "name_key": "tech.category.data" }
+  ]
+}
+3.3 tech_science_packs.json
+Defines science pack item IDs and their properties:
+• Which prefab item they map to
+• Relative difficulty and cost
+• Required infrastructure to produce them
+
+4. /data/base/networks/ — Network classes
+4.1 rails.json
+Defines rail gauge classes, rail types and usage:
+{
+  "gauges": [
+    { "id": "gauge_miniature", "width_mm": 184, "display_name_key": "rail.gauge.miniature" },
+    { "id": "gauge_minimum", "width_mm": 381, "display_name_key": "rail.gauge.minimum" },
+    { "id": "gauge_narrow", "width_mm": 610, "display_name_key": "rail.gauge.narrow" },
+    { "id": "gauge_metre", "width_mm": 1000, "display_name_key": "rail.gauge.metre" },
+    { "id": "gauge_standard", "width_mm": 1435, "display_name_key": "rail.gauge.standard" },
+    { "id": "gauge_broad", "width_mm": 1600, "display_name_key": "rail.gauge.broad" },
+    { "id": "gauge_maximum", "width_mm": 2134, "display_name_key": "rail.gauge.maximum" },
+    { "id": "gauge_massive", "width_mm": 3000, "display_name_key": "rail.gauge.massive" }
+  ],
+  "rail_types": [
+    {
+      "id": "rail_light_miniature",
+      "gauge_id": "gauge_miniature",
+      "weight_class": "light",
+      "max_speed_kph": 30,
+      "max_axle_load_tonnes": 4
+    }
+  ]
+}
+These definitions are consumed by the sim’s rail network module and by prefabs_rails.json and vehicles.
+4.2 roads.json
+Defines road classes:
+• lane_width_cm
+• max_speed_kph
+• target_vehicle_types
+• surface_type (dirt, gravel, sealed, reinforced, runway, taxiway)
+4.3 power.json
+Defines power network classes:
+• Voltage levels, phases (DC, AC1P, AC3P)
+• Line types (overhead, underground, busbar)
+• Capacity per segment, losses per distance
+• Insulation and clearance rules used by sim
+4.4 fluids.json
+Defines fluid pipe classes:
+• Diameters, materials
+• Pressure limits
+• Flow capacity per section
+4.5 data.json
+Defines data network cables and wireless types:
+• Cable categories (Cat5–8, coax, fibre)
+• Max segment length, bandwidth, latency
+• Wireless bands (UHF, SHF, microwaves, optical)
+4.6 logistics.json
+Defines:
+• Conveyor types
+• Belt speeds
+• Inserter/loader classes
+Things like buffer capacities and layout rules come from sim; these files only define static parameters.
+
+5. /data/base/worldgen/ — World and universe templates
+5.1 planets.json
+Includes the default Earth planet and configuration for others.
+{
+  "planets": [
+    {
+      "id": "planet_earth",
+      "name_key": "planet.earth.name",
+      "radius_m": 6371000,
+      "gravity_mm_s2": 9810,
+      "atmosphere": {
+        "pressure_pa": 101325,
+        "composition": {
+          "n2": 780000,
+          "o2": 210000,
+          "ar": 9000,
+          "co2": 400
+        }
+      },
+      "biome_map": "biome_earth",
+      "default_surface": "surface_earth_default"
+    }
+  ]
+}
+5.2 systems.json
+Solar system templates:
+• system_sol with planet_earth, planet_mars, etc.
+• Orbital distances and environment meta.
+5.3 galaxies.json
+Galactic structures:
+• galaxy_milky_way as the default
+• Possibly meta for star distribution and rare systems
+5.4 biomes.json
+Biome definitions per planet:
+• Terrain types
+• Ground composition and depth
+• Vegetation and hazard distribution
+• Climate patterns (temperature ranges, rainfall indices)
+5.5 resources.json
+Defines ore and resource distributions:
+• resource_id
+• Depth and richness by biome
+• Cluster size, frequency
+• Access difficulty
+All worldgen uses integer-based RNG seeded by universe_seed and IDs from these files.
+
+6. /data/base/economy/ — Economic layer
+6.1 commodities.json
+Defines all commodities that appear in markets:
+• IDs, names
+• Physical mapping (item/fluids IDs)
+• Base prices (integer)
+• Categories (raw, intermediate, finished, service)
+6.2 markets.json
+Defines market groups:
+• Local property markets
+• Regional, planetary, interstellar markets (future DLC)
+Fields:
+• Which commodities trade in which market
+• Fee structures
+• Taxes, tariffs (if applicable)
+• Limits and caps
+6.3 recipes.json
+Production recipes:
+• Inputs (items/fluids/power/time)
+• Outputs (items/fluids, byproducts)
+• Required machine/tech
+Each recipe references:
+• Prefab IDs of machines able to perform it
+• Tech IDs that unlock it
+
+7. /data/base/locale/ — Localisation
+Baseline localisations for English variants.
+7.1 en-AU.json
+Preferred base locale:
+{
+  "language_code": "en-AU",
+  "entries": {
+    "ui.menu.start": "Start",
+    "tech.construction_1.name": "Basic Construction",
+    "tech.construction_1.desc": "Allows simple foundations and basic factories.",
+    "planet.earth.name": "Earth",
+    "rail.gauge.standard": "Standard gauge (1435 mm)"
+  }
+}
+7.2 en-US.json
+Fallback or alternate locale for US English. Keys must be identical to en-AU.json where present.
+Rules:
+• Localisation keys must be stable and unique.
+• No formatting logic; just plain strings or minimal markup (e.g. {value} placeholders).
+• No arbitrary scripting inside strings.
+
+8. /data/base/scripts/ — Optional deterministic Lua helpers
+Only present if you allow scripting; if not, this dir is absent or empty.
+Purpose:
+• Provide safe helper functions for UI and worldgen only.
+• No direct authority over simulation rules; only parameter expansions or UI customisations.
+Example: base_helpers.lua
+• Functions to compute tech tree layout for UI.
+• Functions to classify prefabs into UI categories.
+Constraints:
+• Script API must be deterministic, no access to OS, wallclock, or random sources beyond engine’s deterministic RNG.
+• Must not load other arbitrary Lua from outside /data.
+
+9. Global constraints and prohibitions for /data/base
+• All JSON must validate against /data/schema before shipping.
+• No floats: encode rational numbers as numerators/denominators or scaled integers.
+• No references to undefined IDs (prefab, tech, network, planet, item, etc.).
+• No resource ID reuse: once published, an ID should not change semantics in breaking ways.
+• No arbitrary relative paths: all references must be via IDs or manifest-listed paths.
+• No code, except optional deterministic scripts in /scripts.
