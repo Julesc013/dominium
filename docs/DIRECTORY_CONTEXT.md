@@ -1,8 +1,10 @@
-# Dominium — DIRECTORY CONTEXT AND CONTRACT
+# Dominium — DIRECTORY CONTEXT AND CONTRACT (V4)
 
 This document defines the **purpose, allowed contents, requirements, and prohibitions** for every major directory in the Dominium repository — current and planned.
 
 This file is a contract for humans and code-generators. If code or data violates these rules, it is wrong.
+
+All rules below are binding for Codex and all generators.
 
 ---
 
@@ -52,14 +54,15 @@ Formal specifications that drive implementation. This is the authority for behav
 - `LANGUAGE_POLICY.md`
 - `STYLE.md`
 - `BUILDING.md`
-- `SPEC-core.md`
+- `SPEC_CORE.md`
 - `DATA_FORMATS.md`
+- `DIRECTORY_CONTEXT.md`
 - `MILESTONES.md`
-- Future versioned specs (`SPEC-v3.0.*.md`).
+- Future versioned specs (`SPEC-v*.md`).
 
 **Requirements**
 - Must be stable, referenced by CI and tools.
-- Changes require review; code must not contradict these docs.
+- Code must not contradict these docs.
 
 **Prohibitions**
 - No ad-hoc notes.
@@ -71,13 +74,13 @@ Formal specifications that drive implementation. This is the authority for behav
 High-level design, volumes, and explanatory documents.
 
 **Contents**
-- `DominiumDesignBook-v3.0.md`
+- `DominiumDesignBook-*.md`
 - Volumes (if split): `Volume1-Vision.md`, etc.
-- Any extra conceptual analysis.
+- Conceptual analysis, design narratives.
 
 **Requirements**
 - Must reflect current design decisions.
-- Forward-looking plans must be clearly labelled as such.
+- Forward-looking plans must be clearly labelled.
 
 #### 1.3 `/docs/legal`
 
@@ -101,17 +104,35 @@ Old or superseded documents retained for reference.
 **Requirements**
 - Files must be clearly marked as obsolete or historical.
 
+#### 1.5 `/docs/context` (optional)
+
+**Purpose**  
+Context packs for LLMs, Codex addenda, internal design notes.
+
+**Prohibitions**
+- No authoritative specs. Anything authoritative must be promoted to `/docs/spec`.
+
+#### 1.6 `/docs/dev` (optional)
+
+**Purpose**  
+Developer-oriented notes and internal design writeups tied to dirs/modules.
+
+**Requirements**
+- May describe expectations for per-dir behaviour (`dominium_new_*.txt`).
+- Not authoritative over `/docs/spec`; conflicts must be resolved in favour of `/docs/spec`.
+
 ---
 
 ## 2. `/engine` — Core Engine Code (Deterministic)
 
 ### Purpose
-All *engine* code that is independent of a specific game campaign or content. This is where C89/C++98 core lives.
+All *engine* code independent of specific game campaigns or content. This is where C89/C++98 core lives.
 
 ### Prohibitions
-- No game-specific content logic (e.g. “Dominium: Wargames” specific scenario scripts).
-- No platform-specific OS calls; those live in platform layers only.
-- No large assets.
+- No Dominium-specific content rules (scenario scripts, campaign logic).
+- No platform-specific OS calls outside `/engine/platform`.
+- No large assets or Lua scripts.
+- No direct rendering of game-specific UIs (only generic widgets and draw commands).
 
 ### Subdirectories
 
@@ -121,17 +142,18 @@ All *engine* code that is independent of a specific game campaign or content. Th
 Fundamental, platform-agnostic utilities and primitives.
 
 **Contents**
-- `dom_core_types.[ch]`
-- `dom_core_log.[ch]`
-- `dom_core_rng.[ch]`
-- `dom_core_mem.[ch]`
-- `dom_core_fp.[ch]`
-- Any other basic utilities used everywhere.
+- `dom_core_types.[ch]` — canonical types (ints, fixed-point, IDs).
+- `dom_core_log.[ch]` — logging abstraction (no OS headers).
+- `dom_core_rng.[ch]` — deterministic RNG.
+- `dom_core_mem.[ch]` — allocators, arenas, pools.
+- `dom_core_fp.[ch]` — fixed-point helpers, deterministic math.
+- Other basic utilities used everywhere.
 
 **Requirements**
 - C89 only.
 - No dynamic allocation in tight loops where avoidable.
 - No platform headers.
+- No floats exposed in public interfaces to sim/net.
 
 #### 2.2 `/engine/sim`
 
@@ -139,61 +161,152 @@ Fundamental, platform-agnostic utilities and primitives.
 Deterministic simulation code.
 
 **Contents**
-- `dom_sim_tick.[ch]`
-- `dom_sim_world.[ch]`
-- `dom_sim_workers.[ch]`
-- `dom_sim_network_*.[ch]` (power, data, fluids)
-- `dom_sim_economy.[ch]`
-- `dom_sim_climate.[ch]`
+- `dom_sim_tick.[ch]` — tick loop, canonical UPS model.
+- `dom_sim_world.[ch]` — world-step orchestration.
+- `dom_sim_workers.[ch]` — worker update rules.
+- `dom_sim_network_*.[ch]` — power/data/fluids sim logic.
+- `dom_sim_economy.[ch]` — economic tick logic.
+- `dom_sim_climate.[ch]` — climate and weather ticks.
+- `dom_sim_save.[ch]` / `dom_sim_load.[ch]` — state serialization per `DATA_FORMATS.md`.
+- `dom_sim_blueprint.[ch]` — blueprint state machine and construction progression.
 
 **Requirements**
 - C89 only.
-- Deterministic. No wall clock, no OS randomness.
-- Strict compliance with `SPEC-core.md` and Design Book volumes.
+- Deterministic. No wall clock, no OS randomness, no threads.
+- Strict compliance with `SPEC_CORE.md`, `DATA_FORMATS.md`, `BUILDING.md`.
+- No direct rendering, no platform I/O.
 
 **Prohibitions**
-- No rendering calls.
 - No direct input handling.
-- No platform I/O.
+- No OS headers.
+- No floats used for authoritative state.
 
-#### 2.3 `/engine/render`
+#### 2.3 `/engine/spatial`
 
 **Purpose**  
-Abstract rendering backends, independent of specific OS windowing.
+Spatial partitioning and world hierarchy (surfaces, regions, chunks, microgrids).
 
 **Contents**
-- `dom_render_api.[ch]` (abstract interfaces)
+- `dom_spatial_grid.[ch]` — chunk/subchunk/tile mapping.
+- `dom_spatial_query.[ch]` — spatial queries (range, overlap).
+- `dom_spatial_surface.[ch]` — surface-level partitioning and paging.
+
+**Requirements**
+- Deterministic integer/fixed-point coordinates.
+- No rendering logic.
+- No platform calls.
+
+#### 2.4 `/engine/path`
+
+**Purpose**  
+Pathfinding primitives.
+
+**Contents**
+- `dom_path_grid.[ch]` — grid/graph abstraction.
+- `dom_path_nav.[ch]` — A* and other deterministic path algorithms.
+- `dom_path_network.[ch]` — multi-layer networks (road, rail, air, sea).
+
+**Requirements**
+- Deterministic results for same inputs.
+- No threads, no OS calls.
+- Interface used by sim and workers only.
+
+#### 2.5 `/engine/physics`
+
+**Purpose**  
+Simple deterministic physics primitives (movement, collisions, constraints where needed).
+
+**Contents**
+- `dom_phys_body.[ch]` — kinematic bodies.
+- `dom_phys_step.[ch]` — integration per tick.
+- `dom_phys_collision.[ch]` — discrete collision checks.
+
+**Requirements**
+- Deterministic fixed-step integration.
+- No high-fidelity physics; all approximations must be stable and reproducible.
+
+#### 2.6 `/engine/ecs`
+
+**Purpose**  
+Entity-component system implementation.
+
+**Contents**
+- `dom_ecs_world.[ch]` — ECS world, entity lifecycle.
+- `dom_ecs_component.[ch]` — component registration, storage, iteration.
+- `dom_ecs_serialise.[ch]` — ECS state to/from `DATA_FORMATS.md`.
+
+**Requirements**
+- Stable entity IDs across save/load.
+- Deterministic iteration order (sorted or explicitly ordered).
+- No floats in serialized component formats.
+
+#### 2.7 `/engine/net`
+
+**Purpose**  
+Deterministic network protocol implementation.
+
+**Contents**
+- `dom_net_proto.[ch]` — lockstep and client-server protocols.
+- `dom_net_serialisation.[ch]` — packet encoding/decoding.
+- `dom_net_replay.[ch]` — input/replay stream handling for deterministic tests.
+
+**Requirements**
+- All on-the-wire formats follow `DATA_FORMATS.md`.
+- All variable-length packets must have explicit version tags.
+- Deterministic ordering and delivery semantics.
+
+#### 2.8 `/engine/render`
+
+**Purpose**  
+Abstract rendering backends, independent of OS windowing.
+
+**Contents**
+- `dom_render_api.[ch]` — abstract renderer interface (takes draw-command streams).
 - Backend implementations:
   - `/engine/render/dx9`
   - `/engine/render/gl1`
   - `/engine/render/gl2`
   - `/engine/render/vector2d`
   - `/engine/render/software` (future)
-
-Each backend dir contains only the code for that backend.
+- Backend-specific entrypoints and state, isolated per directory.
 
 **Requirements**
-- The public API must be stable and backend-agnostic.
-- No game-specific assumptions (no hard-coded UI layouts).
+- Public API is backend-agnostic; only draw commands and resource handles.
+- No simulation logic.
+- No window creation or OS calls (platform layer only).
 
 **Prohibitions**
-- No simulation logic.
-- No OS window creation here; that is platform layer.
+- No game-specific assumptions (no hard-coded HUD layouts, modes).
+- No direct access to ECS or simulation state.
 
-#### 2.4 `/engine/audio`
+#### 2.9 `/engine/audio`
 
 **Purpose**  
 Abstract audio backend.
 
 **Contents**
-- `dom_audio_api.[ch]`
+- `dom_audio_api.[ch]` — renderer-neutral audio interface.
 - Implementations (SDL_mixer, OpenAL, etc.) under subdirs.
 
 **Requirements**
-- Deterministic sample scheduling from sim’s POV, even if actual playback jitter exists.
-- No decoding logic in simulation thread.
+- Deterministic sample scheduling from simulation perspective.
+- Decoding and playback jitter must not affect sim determinism.
 
-#### 2.5 `/engine/platform`
+#### 2.10 `/engine/ui`
+
+**Purpose**  
+Core UI widgets and layout logic that are game-agnostic.
+
+**Contents**
+- `dom_ui_core.[ch]` — basic widgets and layout.
+- `dom_ui_skin.[ch]` — styling abstraction.
+- `dom_ui_draw.[ch]` — UI to draw-command translation.
+
+**Requirements**
+- No direct sim logic. Emits commands/events into game layer.
+- No platform calls; uses render and input abstractions only.
+
+#### 2.11 `/engine/platform`
 
 **Purpose**  
 OS-specific platform implementations behind a stable interface.
@@ -205,36 +318,18 @@ OS-specific platform implementations behind a stable interface.
 - Future: `/engine/platform/dos`, `/engine/platform/win9x`, `/engine/platform/macos_classic`, `/engine/platform/webasm`.
 
 **Contents**
-- Filesystem wrappers, time sources, window creation, input, threads (if used).
+- Filesystem wrappers, time sources.
+- Window creation, input.
+- Threads (if used for non-sim tasks).
+- OS-level timers.
 
 **Requirements**
-- The only place allowed to include `<windows.h>`, `<unistd.h>`, etc.
-- Must present unified `dom_platform_*` APIs to the rest of the engine.
+- Only place allowed to include `<windows.h>`, `<unistd.h>`, etc.
+- Present unified `dom_platform_*` APIs to the rest of the engine.
 
 **Prohibitions**
-- No simulation logic or game rules here.
+- No simulation logic or game rules.
 - No direct use from mods or Lua; only engine internal.
-
-#### 2.6 `/engine/net`
-
-**Purpose**  
-Deterministic network protocol implementation.
-
-**Contents**
-- `dom_net_proto.[ch]` (lockstep / client-server protocols)
-- `dom_net_serialisation.[ch]`
-
-**Requirements**
-- Simulation-visible network must be deterministic and versioned.
-- All variable-length packets must have explicit version tags.
-
-#### 2.7 `/engine/ui`
-
-**Purpose**  
-Core UI widgets and layout logic that are game-agnostic.
-
-**Requirements**
-- No direct sim logic. Only drives commands/events.
 
 ---
 
@@ -250,18 +345,30 @@ Dominium-specific gameplay code that *uses* the engine.
 **Purpose**  
 Client application logic (menus, HUD, views) that binds engine to user experience.
 
+**Contents**
+- High-level views (top-down, first-person, overlays).
+- Input mapping to game commands.
+- Dominium-specific UI layouts on top of `engine/ui`.
+
 **Requirements**
 - May be in C or C++98.
-- May use higher-level helpers.
+- Uses only public engine APIs.
+- No direct OS calls.
 
 #### 3.2 `/game/server`
 
 **Purpose**  
 Dedicated server logic for multiplayer/universes.
 
+**Contents**
+- Headless server entrypoint.
+- Universe/surface/session management.
+- Authority over game rules for multiplayer.
+
 **Requirements**
-- Headless, uses engine/sim/net only.
-- No rendering.
+- Uses engine/sim/net only.
+- No rendering backends.
+- No dependency on `engine/render` or `engine/ui`.
 
 #### 3.3 `/game/launcher`
 
@@ -271,6 +378,7 @@ Launcher executable that selects platform+renderer+mode, detects hardware, launc
 **Requirements**
 - Handles mod/DLC selection.
 - Handles demo/restricted modes.
+- May be platform-specific, but should use platform and engine APIs where possible.
 
 ---
 
@@ -282,6 +390,7 @@ First-party data for the base game and official DLCs.
 ### Prohibitions
 - No third-party mod content.
 - No temp data.
+- No engine source code.
 
 ### Subdirectories
 
@@ -291,13 +400,15 @@ First-party data for the base game and official DLCs.
 Built-in base content (Dominium without DLC).
 
 **Contents**
-- Entities, machines, buildings
-- Base graphics and sounds
-- Tech tree core
+- Entities, machines, buildings (JSON/Lua/packed).
+- Base graphics, sounds, music references.
+- Tech tree core definitions.
+- Lua scripts for base rules and config.
 
 **Requirements**
 - Loaded as “base mod” in-game.
 - Must always exist.
+- Must obey `DATA_FORMATS.md` and not introduce new binary conventions.
 
 #### 4.2 `/data/dlc`
 
@@ -311,8 +422,9 @@ Official DLC content (Interstellar, Extras, Wargames).
 - Future DLC subdirs.
 
 **Requirements**
-- Each DLC pack must be self-describing and versioned.
+- Each DLC pack self-describing and versioned.
 - No engine code; only data and scripts.
+- Can be loaded/unloaded as modules on top of base.
 
 #### 4.3 `/data/packs`
 
@@ -320,13 +432,17 @@ Official DLC content (Interstellar, Extras, Wargames).
 First-party graphics, sound, and music packs, loaded like OpenTTD newgrfs/new music.
 
 **Requirements**
-- Each pack must be independent and overrideable.
-- Must not embed executable code.
+- Each pack independent and overrideable.
+- No executable code.
+- Only references, resources, and metadata.
 
 #### 4.4 `/data/templates`
 
 **Purpose**  
 Sample universes, example saves, marketing/demo saves.
+
+**Requirements**
+- Must be generated via normal gameplay or tooling, not hand-edited binary.
 
 ---
 
@@ -342,12 +458,14 @@ User/modder extensions. Not official content.
 - `/mods/disabled` — Mods installed but not active.
 
 **Requirements**
-- Each mod lives in its own directory with a manifest.
+- Each mod lives in its own directory with a manifest (`manifest.json`).
+- Only `*.dmod` or other approved formats from `DATA_FORMATS.md`.
 - No engine binaries allowed here.
 
 **Prohibitions**
 - No writing engine source code here.
-- No unreviewed scripts auto-loaded from outside `/mods`.
+- No arbitrary scripts auto-loaded from outside `/mods`.
+- No direct OS-specific binaries shipped as part of mods.
 
 ---
 
@@ -361,15 +479,15 @@ All non-runtime tools.
 #### 6.1 `/tools/editor`
 
 **Purpose**  
-World editor, map editor, blueprint editor.
+World editor, map editor, blueprint editor, asset layout editors.
 
 #### 6.2 `/tools/devkit`
 
 **Purpose**  
-Modding SDK, schema generators, script stubs.
+Modding SDK, schema generators, script stubs, codegen for Lua bindings.
 
 **Requirements**
-- Clearly versioned to modding API.
+- Clearly versioned against modding API and engine version.
 
 #### 6.3 `/tools/pipeline`
 
@@ -378,14 +496,19 @@ Asset import/export and conversion (images, soundbanks, mesh builders).
 
 **Prohibitions**
 - No game runtime logic.
-- No modifications to `/engine` except via build scripts.
+- No modifications to `/engine` except via build scripts in `/build`.
+
+#### 6.4 `/tools/replay` (optional)
+
+**Purpose**  
+Replay analyzers, determinism checkers, diff tools.
 
 ---
 
 ## 7. `/tests` — Tests Only
 
 ### Purpose
-Unit tests, integration tests, replays, perf tests.
+Unit tests, integration tests, replays, performance tests.
 
 ### Subdirectories
 
@@ -396,7 +519,7 @@ Per-module unit tests.
 
 **Requirements**
 - C89 if testing C89 modules.
-- No OS interaction beyond what the engine exposes.
+- No OS interaction beyond engine/platform abstractions.
 
 #### 7.2 `/tests/integration`
 
@@ -406,7 +529,7 @@ Whole-system tests: run the engine in headless mode and validate state.
 #### 7.3 `/tests/replay`
 
 **Purpose**  
-Deterministic replay tests. Long-running scenarios.
+Deterministic replay tests. Long-running scenarios using `.dreplay` or `.drepd`.
 
 #### 7.4 `/tests/perf`
 
@@ -431,7 +554,7 @@ Vendored dependencies and third-party libraries.
 
 **Requirements**
 - Clearly separated; no modification without note.
-- No mixingDominium source with third-party in same directory.
+- No mixing Dominium source with third-party in same directory.
 
 ---
 
@@ -447,7 +570,7 @@ Build scripts, CMake configs, and local build outputs (if not ignored).
 - `/build/output` — local build outputs (ignored by VCS).
 
 **Requirements**
-- Only build-related, no source of truth stored here.
+- Only build-related content; no authoritative specs or game data.
 
 ---
 
@@ -479,12 +602,12 @@ DMG layouts, app bundles, notarisation scripts.
 Floppy/CD/DVD/ZIP layouts for DOS, Win3.x, Win9x, etc.
 
 **Requirements**
-- 8.3 SFN constraints must be respected for retro images.
-- Filenames for retro must be mapped from canonical modern paths via a mapping table.
+- 8.3 SFN constraints respected for retro images.
+- Filenames for retro mapped from canonical modern paths via a mapping table.
 
 **Prohibitions**
-- No engine source here.
-- No game logic changes here.
+- No engine source.
+- No game logic changes.
 
 ---
 
@@ -494,12 +617,14 @@ Floppy/CD/DVD/ZIP layouts for DOS, Win3.x, Win9x, etc.
 Meta-level helper scripts for repo maintenance, analysis, or CI that are not strictly part of the build.
 
 **Examples**
-- Log analyzers
-- Code generators
-- Repo maintenance tools (e.g. license scanners)
+- Log analyzers.
+- Code generators.
+- Repo maintenance tools (e.g. license scanners).
+- Determinism regression drivers that call binaries.
 
 **Prohibitions**
-- No runtime engine dependencies from production binaries.
+- No runtime engine dependencies embedded into production binaries.
+- No game logic here; only orchestration.
 
 ---
 
@@ -518,21 +643,25 @@ Experimental or dedicated target-specific glue code that does not belong under t
 - `/ports/console_*`
 
 **Requirements**
-- Each port must document its constraints (file systems, SFN, memory).
-- Ports should try to reuse `/engine/platform` abstractions wherever possible.
+- Each port documents its constraints (file systems, SFN, memory, input/output limits).
+- Ports should reuse `/engine/platform` abstractions wherever possible.
 
 **Prohibitions**
-- No design-by-copy duplication of engine code. Port-specific hacks must be wrapped or isolated.
+- No design-by-copy duplication of engine code.
+- Port-specific hacks must be wrapped or isolated.
 
 ---
 
 ## 13. GENERAL RULES ACROSS ALL DIRECTORIES
 
-1. No directory may contain both **engine C code** and **user mod content**.  
+1. No directory may contain both **engine C/C++ code** and **user mod content**.  
 2. No directory may redefine a module that already exists elsewhere; one authority per module.  
-3. All determinism-sensitive code must live in `/engine/core` or `/engine/sim`.  
+3. All determinism-sensitive code must live in `/engine/core`, `/engine/sim`, `/engine/spatial`, `/engine/path`, `/engine/physics`, or `/engine/ecs`.  
 4. All platform-specific code must live under `/engine/platform` or `/ports`.  
 5. All game-specific content lives under `/game` and `/data`, not `/engine`.  
-6. All third-party materials must live under `/third_party` with licences.
+6. All third-party materials must live under `/third_party` with licences.  
+7. No binary format or network protocol may be invented outside the rules in `DATA_FORMATS.md`.  
+8. No floating point state may be serialized to disk or used for authoritative simulation.  
+9. Any new top-level directory must be added to this file before use.
 
-This directory contract is binding. Any future directory additions must be slotted into this structure or documented here before being used.
+This directory contract is binding. Any future directory additions or changes must be slotted into this structure and documented here before being used.
