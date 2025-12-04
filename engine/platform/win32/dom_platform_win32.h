@@ -12,6 +12,7 @@ extern "C" {
 
 #include "dom_core_types.h"
 #include "dom_core_err.h"
+#include <wchar.h>
 
 typedef struct DomPlatformWin32Window DomPlatformWin32Window;
 
@@ -48,6 +49,9 @@ void dom_platform_win32_poll_input(DomPlatformWin32Window *win,
 /* Wallclock milliseconds for pacing (non-deterministic, allowed for timing only) */
 dom_u64 dom_platform_win32_now_msec(void);
 void    dom_platform_win32_sleep_msec(dom_u32 ms);
+
+/* UTF-8 helpers */
+int dom_platform_win32_utf8_to_wide(const char *utf8, wchar_t *out_wide, int out_wide_chars);
 
 #ifdef __cplusplus
 }

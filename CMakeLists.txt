@@ -72,19 +72,32 @@ option(DOM_ENABLE_NET        "Enable networking subsystem" ON)
 # 3. WARNING POLICY (COMPATIBLE WITH MSVC 2010 / GCC 4.x)
 # ---------------------------------------------------------------------
 if(MSVC)
-    add_compile_options(
+    set(_dom_warning_flags
         /W4
         /WX-
         /D_CRT_SECURE_NO_WARNINGS
+        /permissive-
+        $<$<COMPILE_LANGUAGE:CXX>:/GR->
+        $<$<COMPILE_LANGUAGE:CXX>:/D_HAS_EXCEPTIONS=0>
     )
 else()
-    add_compile_options(
+    set(_dom_warning_flags
         -Wall
         -Wextra
         -Wpedantic
         -Wno-unused-parameter
+        $<$<COMPILE_LANGUAGE:C>:-Wdeclaration-after-statement>
+        $<$<COMPILE_LANGUAGE:C>:-Wvla>
+        $<$<COMPILE_LANGUAGE:C>:-Wlong-long>
+        $<$<AND:$<COMPILE_LANGUAGE:C>,$<C_COMPILER_ID:Clang>>:-Wc99-extensions>
+        $<$<COMPILE_LANGUAGE:CXX>:-Wlong-long>
+        $<$<AND:$<COMPILE_LANGUAGE:CXX>,$<CXX_COMPILER_ID:Clang>>:-Wc++98-compat-pedantic>
+        $<$<COMPILE_LANGUAGE:CXX>:-fno-exceptions>
+        $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>
     )
 endif()
+
+add_compile_options(${_dom_warning_flags})
 
 # ---------------------------------------------------------------------
 # 4. TARGET-SCOPED DEFINES
@@ -111,7 +124,28 @@ else()
 endif()
 
 # ---------------------------------------------------------------------
-# 5. SUBDIRECTORIES (NO GLOBBING, EXPLICIT SOURCES)
+# 5. BUILD METADATA (GLOBAL BUILD NUMBER)
+# ---------------------------------------------------------------------
+set(DOM_GENERATED_DIR "${CMAKE_BINARY_DIR}/generated")
+set(DOM_BUILD_HEADER "${DOM_GENERATED_DIR}/dom_build_version.h")
+set(DOM_BUILD_NUMBER_FILE "${DOM_GENERATED_DIR}/build_number.txt")
+set(DOM_BUILD_STATE_FILE "${CMAKE_SOURCE_DIR}/.dominium_build_number")
+
+add_custom_target(dom_build_metadata ALL
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${DOM_GENERATED_DIR}"
+    COMMAND ${CMAKE_COMMAND}
+        -DSTATE_FILE=${DOM_BUILD_STATE_FILE}
+        -DHEADER_FILE=${DOM_BUILD_HEADER}
+        -DNUMBER_FILE=${DOM_BUILD_NUMBER_FILE}
+        -DPROJECT_SEMVER=${PROJECT_VERSION}
+        -P ${CMAKE_SOURCE_DIR}/scripts/update_build_number.cmake
+    BYPRODUCTS "${DOM_BUILD_HEADER}" "${DOM_BUILD_NUMBER_FILE}"
+    COMMENT "Updating global Dominium build number"
+    VERBATIM
+)
+
+# ---------------------------------------------------------------------
+# 6. SUBDIRECTORIES (NO GLOBBING, EXPLICIT SOURCES)
 # ---------------------------------------------------------------------
 add_subdirectory(engine/core)
 add_subdirectory(engine/sim)
@@ -121,7 +155,7 @@ add_subdirectory(engine/platform/win32)
 add_subdirectory(engine/ui)
 
 # ---------------------------------------------------------------------
-# 6. ENGINE AGGREGATE LIB
+# 7. ENGINE AGGREGATE LIB
 # ---------------------------------------------------------------------
 add_library(dom_engine STATIC engine/dom_engine_stub.c)
 target_link_libraries(dom_engine
@@ -136,7 +170,7 @@ target_link_libraries(dom_engine
 target_include_directories(dom_engine PUBLIC ${CMAKE_SOURCE_DIR}/engine)
 
 # ---------------------------------------------------------------------
-# 7. GAME TARGETS (MVP: CLIENT, SERVER, LAUNCHER)
+# 8. GAME TARGETS (MVP: CLIENT, SERVER, LAUNCHER)
 # ---------------------------------------------------------------------
 add_subdirectory(game/client)
 add_subdirectory(game/server)
@@ -144,13 +178,37 @@ add_subdirectory(game/launcher)
 add_subdirectory(packaging)
 
 # ---------------------------------------------------------------------
-# 8. TOOLS AND TESTS
+# 9. TOOLS AND TESTS
 # ---------------------------------------------------------------------
 add_subdirectory(tools)
 add_subdirectory(tests)
 
 # ---------------------------------------------------------------------
-# 9. STATUS
+# 10. BUILD NUMBER DEPENDENCIES
+# ---------------------------------------------------------------------
+function(dom_require_build_number target_name)
+    if(TARGET ${target_name})
+        add_dependencies(${target_name} dom_build_metadata)
+    endif()
+endfunction()
+
+dom_require_build_number(dom_core)
+dom_require_build_number(dom_sim)
+dom_require_build_number(dom_render)
+dom_require_build_number(dom_audio)
+dom_require_build_number(dom_platform_win32)
+dom_require_build_number(dom_ui)
+dom_require_build_number(dom_engine)
+dom_require_build_number(dom_client)
+dom_require_build_number(dom_server)
+dom_require_build_number(dom_tests)
+dom_require_build_number(dom_tools_editor)
+dom_require_build_number(dom_launcher-win32-software)
+dom_require_build_number(dom_launcher-posix-sdl2-software)
+dom_require_build_number(dom_launcher-macosx-software)
+
+# ---------------------------------------------------------------------
+# 11. STATUS
 # ---------------------------------------------------------------------
 message(STATUS "Dominium build summary")
 message(STATUS "  DOM_PLATFORM            = ${DOM_PLATFORM}")

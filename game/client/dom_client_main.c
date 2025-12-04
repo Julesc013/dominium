@@ -5,6 +5,7 @@
 
 #include "core/dom_core_err.h"
 #include "core/dom_core_types.h"
+#include "core/dom_core_version.h"
 #include "platform/win32/dom_platform_win32.h"
 #include "render/dom_render_api.h"
 #include "render/dom_render_debug.h"
@@ -156,6 +157,10 @@ int dom_client_run(void)
 
     sim_cfg.target_ups = 60;
     sim_cfg.num_lanes = 1;
+
+    printf("Dominium %s (build %u)\n",
+           dom_version_full(),
+           (unsigned)dom_version_build_number());
 
     err = dom_platform_win32_create_window("Dominium Client MVP", 1280, 720, 0, &win);
     if (err != DOM_OK) {

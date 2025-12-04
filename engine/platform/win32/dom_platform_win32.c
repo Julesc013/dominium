@@ -14,9 +14,24 @@ struct DomPlatformWin32Window {
     dom_u32 height;
 };
 
-static const char *g_dom_win32_class = "DominiumWin32Class";
+static const wchar_t *g_dom_win32_class = L"DominiumWin32Class";
 static dom_i32 g_last_mouse_x = 0;
 static dom_i32 g_last_mouse_y = 0;
+
+int dom_platform_win32_utf8_to_wide(const char *utf8, wchar_t *out_wide, int out_wide_chars)
+{
+    int count;
+    if (!utf8 || !out_wide || out_wide_chars <= 0) {
+        return 0;
+    }
+    count = MultiByteToWideChar(CP_UTF8, 0, utf8, -1, out_wide, out_wide_chars);
+    if (count == 0 && GetLastError() == ERROR_INSUFFICIENT_BUFFER) {
+        /* Truncate and null-terminate */
+        out_wide[out_wide_chars - 1] = L'\0';
+        return out_wide_chars - 1;
+    }
+    return count;
+}
 
 static LRESULT CALLBACK dom_win32_wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
@@ -51,10 +66,10 @@ static LRESULT CALLBACK dom_win32_wndproc(HWND hwnd, UINT msg, WPARAM wparam, LP
 
 static dom_bool8 dom_win32_register_class(HINSTANCE inst)
 {
-    WNDCLASSA wc;
+    WNDCLASSW wc;
     ATOM atom;
 
-    if (GetClassInfoA(inst, g_dom_win32_class, &wc)) {
+    if (GetClassInfoW(inst, g_dom_win32_class, &wc)) {
         return 1;
     }
 
@@ -66,7 +81,7 @@ static dom_bool8 dom_win32_register_class(HINSTANCE inst)
     wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
     wc.lpszClassName = g_dom_win32_class;
 
-    atom = RegisterClassA(&wc);
+    atom = RegisterClassW(&wc);
     return atom != 0;
 }
 
@@ -81,6 +96,7 @@ dom_err_t dom_platform_win32_create_window(const char *title,
     DWORD style;
     RECT rect;
     HWND hwnd;
+    wchar_t wtitle[256];
 
     (void)fullscreen; /* fullscreen handled later; MVP windowed only */
 
@@ -108,9 +124,11 @@ dom_err_t dom_platform_win32_create_window(const char *title,
     rect.bottom = (LONG)height;
     AdjustWindowRect(&rect, style, FALSE);
 
-    hwnd = CreateWindowA(
+    dom_platform_win32_utf8_to_wide(title ? title : "Dominium", wtitle, (int)(sizeof(wtitle) / sizeof(wchar_t)));
+
+    hwnd = CreateWindowW(
         g_dom_win32_class,
-        title ? title : "Dominium",
+        wtitle,
         style,
         CW_USEDEFAULT, CW_USEDEFAULT,
         rect.right - rect.left,

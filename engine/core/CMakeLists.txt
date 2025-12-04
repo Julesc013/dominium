@@ -9,9 +9,11 @@ add_library(dom_core STATIC
     dom_core_fp.c
     dom_core_rng.c
     dom_core_bits.c
+    dom_core_version.c
 )
 
 target_include_directories(dom_core
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
+        ${DOM_GENERATED_DIR}
 )

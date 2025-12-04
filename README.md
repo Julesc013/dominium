@@ -155,6 +155,8 @@ cd build
 cmake ..
 cmake --build .
 
+Every build invocation increments the global repository build number (stored in `.dominium_build_number`) and writes `build/generated/dom_build_version.h`; multi-target builds share the same number.
+
 ### 4.2 Retro platforms
 Each `/ports/<target>/config/` contains its own build instructions.
 

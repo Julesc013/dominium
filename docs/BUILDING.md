@@ -56,6 +56,11 @@ This file is the **binding build contract** for all code under `/engine`, `/game
 - Applies only to `/ports/*`.
 - Enforces: 8.3 filenames, no dynamic linking, reduced feature surface, deterministic fixed-point math, and stubs for unsupported modules.
 
+### 1.4 Build metadata and numbering
+- A single global build number lives in `.dominium_build_number` at the repository root. It increments once per `cmake --build` invocation and is shared when multiple targets are built together.
+- `scripts/update_build_number.cmake` writes `${binary_dir}/generated/dom_build_version.h` and `${binary_dir}/generated/build_number.txt`; every target depends on this step so metadata is refreshed for each build.
+- Runtime code can read `DOM_BUILD_NUMBER`, `DOM_VERSION_SEMVER`, and `DOM_VERSION_BUILD_STR` from the generated header or via `dom_core_version.*`.
+
 ---
 
 ## 2. COMPILERS, LANGUAGE LEVELS, AND TOOLCHAINS
