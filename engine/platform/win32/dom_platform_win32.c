@@ -232,7 +232,7 @@ dom_u64 dom_platform_win32_now_msec(void)
         }
     }
     QueryPerformanceCounter(&now);
-    return (dom_u64)((now.QuadPart * 1000ULL) / (dom_u64)freq.QuadPart);
+    return (dom_u64)((now.QuadPart * (dom_u64)1000) / (dom_u64)freq.QuadPart);
 }
 
 void dom_platform_win32_sleep_msec(dom_u32 ms)
