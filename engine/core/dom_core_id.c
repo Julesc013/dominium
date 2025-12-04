@@ -1,6 +1,6 @@
 #include "dom_core_id.h"
 
-#define DOM_ENTITY_INDEX_MASK 0xFFFFFFFFULL
+#define DOM_ENTITY_INDEX_MASK ((dom_u64)0xFFFFFFFFu)
 #define DOM_ENTITY_GEN_SHIFT  32
 
 dom_entity_id dom_entity_make(dom_u32 index, dom_u32 generation)

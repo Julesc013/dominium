@@ -18,6 +18,11 @@ if (WIN32)
         PRIVATE
             dom_engine
     )
+    add_custom_command(TARGET dom_launcher-win32-software POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+            $<TARGET_FILE:dom_launcher-win32-software>
+            $<TARGET_FILE_DIR:dom_launcher-win32-software>/dom_launcher.exe
+    )
 endif()
 
 # Posix (Linux/BSD) launcher using SDL2
@@ -34,6 +39,11 @@ if (UNIX AND NOT APPLE)
         PRIVATE
             dom_engine
     )
+    add_custom_command(TARGET dom_launcher-posix-sdl2-software POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+            $<TARGET_FILE:dom_launcher-posix-sdl2-software>
+            $<TARGET_FILE_DIR:dom_launcher-posix-sdl2-software>/dom_launcher
+    )
 endif()
 
 # macOS launcher
@@ -49,5 +59,10 @@ if (APPLE)
     target_link_libraries(dom_launcher-macosx-software
         PRIVATE
             dom_engine
+    )
+    add_custom_command(TARGET dom_launcher-macosx-software POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+            $<TARGET_FILE:dom_launcher-macosx-software>
+            $<TARGET_FILE_DIR:dom_launcher-macosx-software>/dom_launcher
     )
 endif()

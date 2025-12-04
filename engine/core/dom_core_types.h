@@ -8,8 +8,21 @@ typedef unsigned short     dom_u16;
 typedef signed   short     dom_i16;
 typedef unsigned int       dom_u32;
 typedef signed   int       dom_i32;
+/* 64-bit integers: prefer compiler-specific types to stay C89-compatible. */
+#if defined(_MSC_VER)
+typedef unsigned __int64 dom_u64;
+typedef signed   __int64 dom_i64;
+#else
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wlong-long"
+#endif
 typedef unsigned long long dom_u64;
 typedef signed   long long dom_i64;
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
+#endif
 
 typedef dom_u8 dom_bool8; /* 0/1 */
 
