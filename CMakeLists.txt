@@ -141,6 +141,7 @@ target_include_directories(dom_engine PUBLIC ${CMAKE_SOURCE_DIR}/engine)
 add_subdirectory(game/client)
 add_subdirectory(game/server)
 add_subdirectory(game/launcher)
+add_subdirectory(packaging)
 
 # ---------------------------------------------------------------------
 # 8. TOOLS AND TESTS
