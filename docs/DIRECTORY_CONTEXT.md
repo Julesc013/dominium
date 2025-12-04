@@ -59,10 +59,10 @@ Platform-agnostic deterministic engine. Separation from OS, rendering, and audio
 - `/engine/physics` — integer kinematics, AABB/shape tests, collision queries, spline/vehicle helpers; no high-fidelity physics.
 - `/engine/ecs` — entity handles/generations, component registry, dense storage, archetypes, queries, system registration and fixed ordering.
 - `/engine/net` — deterministic lockstep protocol, packet/channels, serialize/replay, client/server state machines; no sockets.
-- `/engine/render` — render command buffer and backends (dx9, dx11, gl1, gl2, software, vector); only graphics headers here; no sim mutation.
+- `/engine/render` — render command buffer and backends (dx9, dx11, gl1, gl2, software, vector); only graphics headers here; no sim mutation. Canonical backends: software, dx9, dx11, dx12, gl1, gl2, vk1.
 - `/engine/audio` — audio command buffer and backends (null, SDL_mixer, OpenAL, DirectSound/XAudio2, software); no sim mutation.
 - `/engine/ui` — retained UI tree, layout, widgets, skins, UI command buffer; no game rules or sim logic.
-- `/engine/platform` — OS boundary: window/input/timing/filesystem/net transport/threads/dynlib/log sinks; only place for OS headers.
+- `/engine/platform` — OS boundary: window/input/timing/filesystem/net transport/threads/dynlib/log sinks; only place for OS headers. Canonical backends: win32, macosx, posix_headless, posix_x11, posix_wayland, sdl1, sdl2.
 - `/engine/io` — save/load/replay/pack IO that implements `DATA_FORMATS.md`; deterministic serialization only.
 - `/engine/modding` — mod loader/registry/bindings; sandboxed and deterministic.
 - `/engine/api` — public API surface used by `/game` and tools; no OS headers.

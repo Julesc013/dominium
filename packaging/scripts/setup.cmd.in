@@ -1,0 +1,22 @@
+@echo off
+setlocal
+set "ROOT=%~dp0"
+
+set "EXEC=@DOM_SETUP_BINARY@"
+
+set "MODE=%~1"
+if "%MODE%"=="" set "MODE=install"
+
+if /I "%MODE%"=="install" (
+) else if /I "%MODE%"=="repair" (
+) else if /I "%MODE%"=="uninstall" (
+) else (
+  echo Usage: setup [install^|repair^|uninstall] [extra args...]
+  endlocal & exit /b 1
+)
+
+shift
+
+set "DOM_SETUP_MODE=%MODE%"
+"%ROOT%%EXEC%" --mode=%MODE% %*
+endlocal

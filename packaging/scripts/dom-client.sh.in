@@ -1,0 +1,32 @@
+#!/bin/sh
+SELF="$0"
+while [ -L "$SELF" ]; do SELF="$(readlink "$SELF")"; done
+ROOT="$(cd "$(dirname "$SELF")" && pwd)"
+
+: "${DOM_PLATFORM:=SDL2}"
+: "${DOM_RENDER_BACKEND:=GL2}"
+: "${DOM_HEADLESS:=0}"
+
+RENDER_ARG=""
+for arg in "$@"; do
+  case "$arg" in
+    --renderer=*)
+      RENDER_ARG="${arg#--renderer=}"
+      ;;
+  esac
+done
+
+if [ -n "$RENDER_ARG" ]; then
+  DOM_RENDER_BACKEND="$RENDER_ARG"
+fi
+
+export DOM_PLATFORM DOM_RENDER_BACKEND DOM_HEADLESS
+
+case "$DOM_RENDER_BACKEND" in
+  GL2|gl2)             EXEC="dom_client-posix-sdl2-gl2" ;;
+  VK1|vk1)             EXEC="dom_client-posix-sdl2-vk1" ;;
+  SOFTWARE|software)   EXEC="dom_client-posix-sdl2-software" ;;
+  *)                   EXEC="dom_client-posix-sdl2-gl2" ;;
+esac
+
+exec "$ROOT/$EXEC" "$@"

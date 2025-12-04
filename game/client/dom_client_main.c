@@ -138,6 +138,8 @@ int dom_client_run(void)
     DomSimConfig sim_cfg;
     DomPlatformInputFrame input;
     DomClientState client;
+    dom_render_config render_cfg;
+    dom_render_caps render_caps;
     dom_err_t err;
     dom_u64 last_time;
     dom_u64 now;
@@ -149,6 +151,8 @@ int dom_client_run(void)
     memset(&renderer, 0, sizeof(renderer));
     memset(&sim_cfg, 0, sizeof(sim_cfg));
     memset(&input, 0, sizeof(input));
+    memset(&render_cfg, 0, sizeof(render_cfg));
+    memset(&render_caps, 0, sizeof(render_caps));
 
     sim_cfg.target_ups = 60;
     sim_cfg.num_lanes = 1;
@@ -159,18 +163,25 @@ int dom_client_run(void)
         return 1;
     }
 
+    render_cfg.mode = DOM_RENDER_MODE_FULL;
+    render_cfg.backend = DOM_RENDER_BACKEND_DX9;
+    render_cfg.width = 1280;
+    render_cfg.height = 720;
+    render_cfg.fullscreen = 0;
+    render_cfg.platform_window = dom_platform_win32_native_handle(win);
+
     err = dom_render_create(&renderer,
                             DOM_RENDER_BACKEND_DX9,
-                            1280,
-                            720,
-                            dom_platform_win32_native_handle(win));
+                            &render_cfg,
+                            &render_caps);
     if (err != DOM_OK) {
         /* Fallback to null renderer for headless validation */
+        render_cfg.backend = DOM_RENDER_BACKEND_SOFTWARE;
+        render_cfg.mode = DOM_RENDER_MODE_VECTOR_ONLY;
         err = dom_render_create(&renderer,
-                                DOM_RENDER_BACKEND_NULL,
-                                1280,
-                                720,
-                                dom_platform_win32_native_handle(win));
+                                DOM_RENDER_BACKEND_SOFTWARE,
+                                &render_cfg,
+                                &render_caps);
         if (err != DOM_OK) {
             printf("Renderer init failed (%d)\n", (int)err);
             dom_platform_win32_destroy_window(win);
@@ -210,7 +221,7 @@ int dom_client_run(void)
 
         dom_render_begin(&renderer, 0xFF101010);
         dom_client_draw_scene(&renderer, &client);
-        dom_render_submit(&renderer);
+        dom_render_submit(&renderer, 0, 0);
         dom_render_present(&renderer);
         dom_platform_win32_sleep_msec(1);
     }

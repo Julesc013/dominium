@@ -1,0 +1,42 @@
+@echo off
+setlocal
+set "ROOT=%~dp0"
+
+if "%DOM_PLATFORM%"=="" set "DOM_PLATFORM=WIN32"
+if "%DOM_RENDER_BACKEND%"=="" set "DOM_RENDER_BACKEND=DX11"
+if "%DOM_HEADLESS%"=="" set "DOM_HEADLESS=0"
+
+set "RENDER_ARG="
+
+:parse
+if "%~1"=="" goto done_parse
+echo %~1 | findstr /B /C:"--renderer=" >nul
+if not errorlevel 1 (
+  set "RENDER_ARG=%~1"
+)
+shift
+goto parse
+:done_parse
+
+if defined RENDER_ARG (
+  set "DOM_RENDER_BACKEND=%RENDER_ARG:~11%"
+)
+
+set "EXEC="
+
+if /I "%DOM_RENDER_BACKEND%"=="DX11" (
+  set "EXEC=dom_client-win32-dx11.exe"
+) else if /I "%DOM_RENDER_BACKEND%"=="DX9" (
+  set "EXEC=dom_client-win32-dx9.exe"
+) else if /I "%DOM_RENDER_BACKEND%"=="SOFTWARE" (
+  set "EXEC=dom_client-win32-software.exe"
+) else (
+  set "EXEC=dom_client-win32-dx11.exe"
+)
+
+set "DOM_PLATFORM=%DOM_PLATFORM%"
+set "DOM_RENDER_BACKEND=%DOM_RENDER_BACKEND%"
+set "DOM_HEADLESS=%DOM_HEADLESS%"
+
+"%ROOT%%EXEC%" %*
+endlocal

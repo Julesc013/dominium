@@ -1,0 +1,16 @@
+#!/bin/sh
+# Dominium main entry: runs the launcher for this OS
+
+SELF="$0"
+while [ -L "$SELF" ]; do SELF="$(readlink "$SELF")"; done
+ROOT="$(cd "$(dirname "$SELF")" && pwd)"
+
+: "${DOM_PLATFORM:=@DOM_LAUNCHER_PLATFORM@}"
+: "${DOM_RENDER_BACKEND:=SOFTWARE}"
+: "${DOM_HEADLESS:=0}"
+
+export DOM_PLATFORM DOM_RENDER_BACKEND DOM_HEADLESS
+
+EXEC="@DOM_LAUNCHER_BINARY@"
+
+exec "$ROOT/$EXEC" "$@"
