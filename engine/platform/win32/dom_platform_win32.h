@@ -15,6 +15,15 @@ extern "C" {
 
 typedef struct DomPlatformWin32Window DomPlatformWin32Window;
 
+typedef struct DomPlatformInputFrame {
+    dom_bool8 key_down[256];
+    dom_i32 mouse_x;
+    dom_i32 mouse_y;
+    dom_i32 mouse_dx;
+    dom_i32 mouse_dy;
+    dom_i32 wheel_delta;
+} DomPlatformInputFrame;
+
 dom_err_t dom_platform_win32_create_window(const char *title,
                                            dom_u32 width,
                                            dom_u32 height,
@@ -31,6 +40,14 @@ void dom_platform_win32_get_size(const DomPlatformWin32Window *win,
 
 /* Opaque native handle passed to render backends (HWND) */
 void *dom_platform_win32_native_handle(DomPlatformWin32Window *win);
+
+/* Input polling (keyboard/mouse) */
+void dom_platform_win32_poll_input(DomPlatformWin32Window *win,
+                                   DomPlatformInputFrame *out_frame);
+
+/* Wallclock milliseconds for pacing (non-deterministic, allowed for timing only) */
+dom_u64 dom_platform_win32_now_msec(void);
+void    dom_platform_win32_sleep_msec(dom_u32 ms);
 
 #ifdef __cplusplus
 }

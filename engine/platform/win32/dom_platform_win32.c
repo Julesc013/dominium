@@ -15,6 +15,8 @@ struct DomPlatformWin32Window {
 };
 
 static const char *g_dom_win32_class = "DominiumWin32Class";
+static dom_i32 g_last_mouse_x = 0;
+static dom_i32 g_last_mouse_y = 0;
 
 static LRESULT CALLBACK dom_win32_wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
@@ -183,4 +185,57 @@ void *dom_platform_win32_native_handle(DomPlatformWin32Window *win)
         return 0;
     }
     return (void *)win->hwnd;
+}
+
+static void dom_platform_win32_poll_keys(dom_bool8 key_down[256])
+{
+    int i;
+    if (!key_down) return;
+    for (i = 0; i < 256; ++i) {
+        SHORT state = GetAsyncKeyState(i);
+        key_down[i] = (state & 0x8000) ? 1 : 0;
+    }
+}
+
+void dom_platform_win32_poll_input(DomPlatformWin32Window *win,
+                                   DomPlatformInputFrame *out_frame)
+{
+    POINT pt;
+    if (!win || !out_frame) {
+        return;
+    }
+
+    memset(out_frame, 0, sizeof(*out_frame));
+    dom_platform_win32_poll_keys(out_frame->key_down);
+
+    GetCursorPos(&pt);
+    ScreenToClient(win->hwnd, &pt);
+    out_frame->mouse_x = (dom_i32)pt.x;
+    out_frame->mouse_y = (dom_i32)pt.y;
+    out_frame->mouse_dx = out_frame->mouse_x - g_last_mouse_x;
+    out_frame->mouse_dy = out_frame->mouse_y - g_last_mouse_y;
+    g_last_mouse_x = out_frame->mouse_x;
+    g_last_mouse_y = out_frame->mouse_y;
+
+    /* Mouse wheel state is event-based; for MVP we ignore WM_MOUSEWHEEL accumulation. */
+    out_frame->wheel_delta = 0;
+}
+
+dom_u64 dom_platform_win32_now_msec(void)
+{
+    static LARGE_INTEGER freq = {0};
+    LARGE_INTEGER now;
+    if (freq.QuadPart == 0) {
+        QueryPerformanceFrequency(&freq);
+        if (freq.QuadPart == 0) {
+            return 0;
+        }
+    }
+    QueryPerformanceCounter(&now);
+    return (dom_u64)((now.QuadPart * 1000ULL) / (dom_u64)freq.QuadPart);
+}
+
+void dom_platform_win32_sleep_msec(dom_u32 ms)
+{
+    Sleep(ms);
 }
