@@ -30,6 +30,7 @@
 /lib/
 /tmp/
 /temp/
+/.dominium_build_number
 
 # CMake builddirs
 CMakeFiles/

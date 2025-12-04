@@ -174,16 +174,25 @@ static void dom_sw_draw_line(DomRenderSoftwareState *st,
 
 static void dom_sw_draw_rect(DomRenderSoftwareState *st, const DomCmdRect *rc)
 {
-    dom_i32 x0 = rc->rect.x;
-    dom_i32 y0 = rc->rect.y;
-    dom_i32 x1 = rc->rect.x + rc->rect.w;
-    dom_i32 y1 = rc->rect.y + rc->rect.h;
-    DomColor c = rc->color;
-
-    dom_sw_draw_line(st, x0, y0, x1, y0, c);
-    dom_sw_draw_line(st, x1, y0, x1, y1, c);
-    dom_sw_draw_line(st, x1, y1, x0, y1, c);
-    dom_sw_draw_line(st, x0, y1, x0, y0, c);
+    dom_i32 x0, y0, x1, y1;
+    dom_i32 x, y;
+    if (!st || !st->pixels) {
+        return;
+    }
+    x0 = rc->rect.x;
+    y0 = rc->rect.y;
+    x1 = rc->rect.x + rc->rect.w;
+    y1 = rc->rect.y + rc->rect.h;
+    if (x0 < 0) x0 = 0;
+    if (y0 < 0) y0 = 0;
+    if (x1 > (dom_i32)st->width)  x1 = (dom_i32)st->width;
+    if (y1 > (dom_i32)st->height) y1 = (dom_i32)st->height;
+    for (y = y0; y < y1; ++y) {
+        dom_u32 *row = st->pixels + (dom_u32)y * st->pitch_pixels;
+        for (x = x0; x < x1; ++x) {
+            row[x] = rc->color;
+        }
+    }
 }
 
 static void dom_sw_draw_poly(DomRenderSoftwareState *st, const DomCmdPoly *poly)
