@@ -1,19 +1,26 @@
 #include "dom_render_api.h"
 #include "dom_render_dx9.h"
 #include "dom_render_null.h"
+#include "software/dom_render_software.h"
 
 #include <string.h>
+#include <stdlib.h>
 
-static const DomRenderBackendAPI *dom_render_get_backend(DomRenderBackendKind kind)
+static const DomRenderBackendAPI *dom_render_get_backend(dom_render_backend kind)
 {
     switch (kind) {
     case DOM_RENDER_BACKEND_DX9:
         return dom_render_backend_dx9();
-    case DOM_RENDER_BACKEND_VECTOR2D:
-        return dom_render_backend_vector2d();
-    case DOM_RENDER_BACKEND_NULL:
-    default:
+    case DOM_RENDER_BACKEND_GL1:
+    case DOM_RENDER_BACKEND_GL2:
+    case DOM_RENDER_BACKEND_VK1:
+    case DOM_RENDER_BACKEND_DX11:
+    case DOM_RENDER_BACKEND_DX12:
+        /* Not implemented yet; fall through to software/null placeholder. */
         return dom_render_backend_null();
+    case DOM_RENDER_BACKEND_SOFTWARE:
+    default:
+        return dom_render_backend_software();
     }
 }
 
@@ -29,23 +36,12 @@ void dom_render_state_init(DomRenderState *s)
 
 void dom_render_cmd_init(DomRenderCommandBuffer *cb)
 {
-    if (!cb) {
-        return;
-    }
-    cb->count = 0;
+    dom_draw_cmd_buffer_init(cb);
 }
 
 dom_err_t dom_render_cmd_push(DomRenderCommandBuffer *cb, const DomRenderCmd *cmd)
 {
-    if (!cb || !cmd) {
-        return DOM_ERR_INVALID_ARG;
-    }
-    if (cb->count >= DOM_RENDER_CMD_MAX) {
-        return DOM_ERR_OVERFLOW;
-    }
-    cb->cmds[cb->count] = *cmd;
-    cb->count += 1;
-    return DOM_OK;
+    return dom_draw_cmd_buffer_push(cb, cmd);
 }
 
 static dom_err_t dom_render_push_line(DomRenderer *r, const DomRenderCmd *cmd)
@@ -54,20 +50,29 @@ static dom_err_t dom_render_push_line(DomRenderer *r, const DomRenderCmd *cmd)
 }
 
 dom_err_t dom_render_create(DomRenderer *r,
-                            DomRenderBackendKind backend,
-                            dom_u32 width,
-                            dom_u32 height,
-                            void *platform_window)
+                            dom_render_backend backend,
+                            const dom_render_config *cfg,
+                            dom_render_caps *out_caps)
 {
+    dom_render_config local_cfg;
+    dom_render_caps *caps_ptr;
+    dom_err_t err;
     if (!r) {
         return DOM_ERR_INVALID_ARG;
     }
 
+    if (!cfg) {
+        return DOM_ERR_INVALID_ARG;
+    }
+
     memset(r, 0, sizeof(*r));
+    local_cfg = *cfg;
     r->backend = backend;
-    r->width = width;
-    r->height = height;
-    r->platform_window = platform_window;
+    r->config = local_cfg;
+    r->mode = local_cfg.mode;
+    r->width = local_cfg.width;
+    r->height = local_cfg.height;
+    r->platform_window = local_cfg.platform_window;
     dom_render_state_init(&r->state);
     dom_render_cmd_init(&r->cmd);
 
@@ -76,7 +81,17 @@ dom_err_t dom_render_create(DomRenderer *r,
         return DOM_ERR_NOT_IMPLEMENTED;
     }
 
-    return r->api->init(r);
+    memset(&r->caps, 0, sizeof(r->caps));
+    if (out_caps) {
+        memset(out_caps, 0, sizeof(*out_caps));
+    }
+
+    caps_ptr = out_caps ? out_caps : &r->caps;
+    err = r->api->init(r, &local_cfg, caps_ptr);
+    if (err == DOM_OK && out_caps) {
+        r->caps = *out_caps;
+    }
+    return err;
 }
 
 void dom_render_destroy(DomRenderer *r)
@@ -95,6 +110,8 @@ void dom_render_resize(DomRenderer *r, dom_u32 width, dom_u32 height)
     }
     r->width = width;
     r->height = height;
+    r->config.width = width;
+    r->config.height = height;
     if (r->api && r->api->resize) {
         r->api->resize(r, width, height);
     }
@@ -115,7 +132,7 @@ dom_err_t dom_render_rect(DomRenderer *r, const DomRect *rc, DomColor c)
     if (!r || !rc) {
         return DOM_ERR_INVALID_ARG;
     }
-    cmd.kind = DOM_CMD_RECT;
+    cmd.type = DOM_CMD_RECT;
     cmd.u.rect.rect = *rc;
     cmd.u.rect.color = c;
     return dom_render_cmd_push(&r->cmd, &cmd);
@@ -130,7 +147,7 @@ dom_err_t dom_render_line(DomRenderer *r,
     if (!r) {
         return DOM_ERR_INVALID_ARG;
     }
-    cmd.kind = DOM_CMD_LINE;
+    cmd.type = DOM_CMD_LINE;
     cmd.u.line.x0 = x0;
     cmd.u.line.y0 = y0;
     cmd.u.line.x1 = x1;
@@ -152,7 +169,7 @@ dom_err_t dom_render_poly(DomRenderer *r,
     if (count == 0 || count > DOM_CMD_POLY_MAX) {
         return DOM_ERR_BOUNDS;
     }
-    cmd.kind = DOM_CMD_POLY;
+    cmd.type = DOM_CMD_POLY;
     cmd.u.poly.count = count;
     cmd.u.poly.color = c;
     for (i = 0; i < count; ++i) {
@@ -161,12 +178,69 @@ dom_err_t dom_render_poly(DomRenderer *r,
     return dom_render_cmd_push(&r->cmd, &cmd);
 }
 
-dom_err_t dom_render_submit(DomRenderer *r)
+dom_err_t dom_render_sprite(DomRenderer *r,
+                            DomSpriteId id,
+                            dom_i32 x,
+                            dom_i32 y)
 {
+    DomRenderCmd cmd;
+    if (!r) {
+        return DOM_ERR_INVALID_ARG;
+    }
+    cmd.type = DOM_CMD_SPRITE;
+    cmd.u.sprite.id = id;
+    cmd.u.sprite.x = x;
+    cmd.u.sprite.y = y;
+    return dom_render_cmd_push(&r->cmd, &cmd);
+}
+
+dom_err_t dom_render_text(DomRenderer *r,
+                          DomFontId font,
+                          DomColor color,
+                          const char *text,
+                          dom_i32 x,
+                          dom_i32 y)
+{
+    DomRenderCmd cmd;
+    size_t len;
+    if (!r || !text) {
+        return DOM_ERR_INVALID_ARG;
+    }
+    cmd.type = DOM_CMD_TEXT;
+    cmd.u.text.font = font;
+    cmd.u.text.color = color;
+    cmd.u.text.x = x;
+    cmd.u.text.y = y;
+    cmd.u.text.text[0] = '\0';
+    len = strlen(text);
+    if (len >= DOM_CMD_TEXT_MAX) {
+        len = DOM_CMD_TEXT_MAX - 1u;
+    }
+    memcpy(cmd.u.text.text, text, len);
+    cmd.u.text.text[len] = '\0';
+    return dom_render_cmd_push(&r->cmd, &cmd);
+}
+
+dom_err_t dom_render_submit(DomRenderer *r,
+                            const DomDrawCommand *cmds,
+                            dom_u32 count)
+{
+    const DomDrawCommand *submit_cmds;
+    dom_u32 submit_count;
+
     if (!r || !r->api || !r->api->submit) {
         return DOM_ERR_INVALID_ARG;
     }
-    r->api->submit(r, &r->cmd);
+
+    if (!cmds) {
+        submit_cmds = r->cmd.cmds;
+        submit_count = r->cmd.count;
+    } else {
+        submit_cmds = cmds;
+        submit_count = count;
+    }
+
+    r->api->submit(r, submit_cmds, submit_count);
     return DOM_OK;
 }
 
@@ -176,4 +250,46 @@ void dom_render_present(DomRenderer *r)
         return;
     }
     r->api->present(r);
+}
+
+int dom_renderer_create(const dom_render_config *cfg,
+                        dom_renderer           **out_renderer,
+                        dom_render_caps        *out_caps)
+{
+    DomRenderer *r;
+    dom_err_t err;
+    if (!cfg || !out_renderer) {
+        return (int)DOM_ERR_INVALID_ARG;
+    }
+    r = (DomRenderer *)malloc(sizeof(DomRenderer));
+    if (!r) {
+        return (int)DOM_ERR_OUT_OF_MEMORY;
+    }
+    memset(r, 0, sizeof(DomRenderer));
+    err = dom_render_create(r, cfg->backend, cfg, out_caps);
+    if (err != DOM_OK) {
+        free(r);
+        return (int)err;
+    }
+    *out_renderer = r;
+    return (int)DOM_OK;
+}
+
+void dom_renderer_destroy(dom_renderer *r)
+{
+    if (!r) {
+        return;
+    }
+    dom_render_destroy(r);
+    free(r);
+}
+
+void dom_renderer_submit(dom_renderer *r,
+                         const DomDrawCommand *cmds,
+                         unsigned count)
+{
+    if (!r) {
+        return;
+    }
+    dom_render_submit(r, cmds, count);
 }

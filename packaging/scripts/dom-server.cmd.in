@@ -1,0 +1,16 @@
+@echo off
+setlocal
+set "ROOT=%~dp0"
+
+if "%DOM_PLATFORM%"=="" set "DOM_PLATFORM=WIN32"
+if "%DOM_RENDER_BACKEND%"=="" set "DOM_RENDER_BACKEND=SOFTWARE"
+if "%DOM_HEADLESS%"=="" set "DOM_HEADLESS=1"
+
+set "DOM_PLATFORM=%DOM_PLATFORM%"
+set "DOM_RENDER_BACKEND=%DOM_RENDER_BACKEND%"
+set "DOM_HEADLESS=%DOM_HEADLESS%"
+
+set "EXEC=dom_server-win32-headless.exe"
+
+"%ROOT%%EXEC%" %*
+endlocal

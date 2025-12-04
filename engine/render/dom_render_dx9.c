@@ -25,15 +25,22 @@ typedef struct DomDX9Vertex {
 
 #define DOM_DX9_FVF (D3DFVF_XYZRHW | D3DFVF_DIFFUSE)
 
-static dom_err_t dom_render_dx9_init(DomRenderer *r)
+static dom_err_t dom_render_dx9_init(DomRenderer *r,
+                                     const dom_render_config *cfg,
+                                     dom_render_caps *out_caps)
 {
     DomRenderDX9State *st;
     HRESULT hr;
     HWND hwnd;
 
-    if (!r) {
+    if (!r || !cfg || !out_caps) {
         return DOM_ERR_INVALID_ARG;
     }
+
+    out_caps->supports_textures = 1;
+    out_caps->supports_blending = 1;
+    out_caps->supports_linear_filter = 1;
+    out_caps->supports_aniso = 0;
 
     st = (DomRenderDX9State *)malloc(sizeof(DomRenderDX9State));
     if (!st) {
@@ -41,7 +48,12 @@ static dom_err_t dom_render_dx9_init(DomRenderer *r)
     }
     memset(st, 0, sizeof(*st));
 
-    hwnd = (HWND)r->platform_window;
+    r->config = *cfg;
+    r->mode = cfg->mode;
+    r->width = cfg->width;
+    r->height = cfg->height;
+
+    hwnd = (HWND)cfg->platform_window;
     st->d3d = Direct3DCreate9(D3D_SDK_VERSION);
     if (!st->d3d) {
         free(st);
@@ -163,12 +175,30 @@ static void dom_dx9_draw_poly(IDirect3DDevice9 *dev, const DomCmdPoly *poly)
     }
 }
 
-static void dom_render_dx9_submit(DomRenderer *r, const DomRenderCommandBuffer *cb)
+static void dom_dx9_draw_placeholder_sprite(IDirect3DDevice9 *dev,
+                                            dom_i32 x,
+                                            dom_i32 y,
+                                            D3DCOLOR color)
+{
+    float x0 = (float)x;
+    float y0 = (float)y;
+    float x1 = x0 + 8.0f;
+    float y1 = y0 + 8.0f;
+    dom_dx9_draw_line(dev, x0, y0, x1, y1, color);
+    dom_dx9_draw_line(dev, x0, y1, x1, y0, color);
+}
+
+static void dom_render_dx9_submit(DomRenderer *r,
+                                  const DomDrawCommand *cmds,
+                                  dom_u32 count)
 {
     DomRenderDX9State *st;
     dom_u32 i;
 
-    if (!r || !cb || !r->backend_state) {
+    if (!r || !r->backend_state) {
+        return;
+    }
+    if (!cmds && count > 0) {
         return;
     }
 
@@ -185,9 +215,9 @@ static void dom_render_dx9_submit(DomRenderer *r, const DomRenderCommandBuffer *
 
     IDirect3DDevice9_SetFVF(st->device, DOM_DX9_FVF);
 
-    for (i = 0; i < cb->count; ++i) {
-        const DomRenderCmd *cmd = &cb->cmds[i];
-        switch (cmd->kind) {
+    for (i = 0; i < count; ++i) {
+        const DomDrawCommand *cmd = &cmds[i];
+        switch (cmd->type) {
         case DOM_CMD_LINE:
             dom_dx9_draw_line(st->device,
                               (float)cmd->u.line.x0, (float)cmd->u.line.y0,
@@ -199,6 +229,22 @@ static void dom_render_dx9_submit(DomRenderer *r, const DomRenderCommandBuffer *
             break;
         case DOM_CMD_POLY:
             dom_dx9_draw_poly(st->device, &cmd->u.poly);
+            break;
+        case DOM_CMD_SPRITE:
+        case DOM_CMD_TILEMAP:
+            /* Vector-only path draws placeholders instead of sampling textures. */
+            if (r->mode == DOM_RENDER_MODE_VECTOR_ONLY || !r->caps.supports_textures) {
+                dom_dx9_draw_placeholder_sprite(st->device,
+                                                cmd->u.sprite.x,
+                                                cmd->u.sprite.y,
+                                                (D3DCOLOR)r->state.default_color);
+                break;
+            }
+            /* Textured path not implemented yet: render placeholder deterministically. */
+            dom_dx9_draw_placeholder_sprite(st->device,
+                                            cmd->u.sprite.x,
+                                            cmd->u.sprite.y,
+                                            (D3DCOLOR)r->state.default_color);
             break;
         default:
             /* Unsupported command types are ignored in the MVP */

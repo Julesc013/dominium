@@ -37,8 +37,8 @@ This file is the **binding build contract** for all code under `/engine`, `/game
 - **Retro targets** (DOS, Win3.x, Win9x, macOS Classic) may use dedicated makefiles under `/ports/*/config`, but must not add new directory structure.
 
 #### Required CMake cache variables
-- `DOM_PLATFORM` = `win32` | `win32_sdl2` | `posix_sdl2` | `macos_cocoa` | `retro`
-- `DOM_RENDER_BACKEND` = `dx9` | `dx11` | `gl1` | `gl2` | `vk1` | `dx12` | `software`
+- `DOM_PLATFORM` = `win32` | `macosx` | `posix_headless` | `posix_x11` | `posix_wayland` | `sdl1` | `sdl2`
+- `DOM_RENDER_BACKEND` = `software` | `dx9` | `dx11` | `dx12` | `gl1` | `gl2` | `vk1`
 - `DOM_AUDIO_BACKEND` = `null` | `sdl` | `openal`
 - `DOM_BUILD_MODE` = `Debug` | `Release` | `DeterministicRelease`
 - `DOM_HEADLESS` = `ON` | `OFF`
@@ -119,10 +119,18 @@ Toolchain files under `/build/cmake/toolchains/` must set the above and pin all 
 
 Backend selection is runtime-driven through the backend registry (see `/engine/render/dom_render_backend.h` and addendum), never by ad-hoc compile-time ifdefs.
 
+### 4.5 Canonical binaries (names)
+- Launchers (software renderer, vector UI): `dom_launcher-win32-software.exe`, `dom_launcher-posix-sdl2-software`, `dom_launcher-macosx-software`.
+- Windows clients: `dom_client-win32-dx11.exe`, `dom_client-win32-dx9.exe`, `dom_client-win32-software.exe`; servers: `dom_server-win32-headless.exe`.
+- Linux/Posix clients: `dom_client-posix-sdl2-gl2`, `dom_client-posix-sdl2-vk1`, `dom_client-posix-sdl2-software`; servers: `dom_server-posix-headless`.
+- macOS clients: `dom_client-macosx-gl2`, `dom_client-macosx-software`; servers: `dom_server-macosx-headless` (or `dom_server-posix-headless`).
+- Headless flag (`DOM_HEADLESS`) disables window/context creation; render mode (`DOM_RENDER_MODE_VECTOR_ONLY` vs `FULL`) is a runtime flag per view/renderer.
+
 ---
 
 ## 5. RENDERER AND AUDIO BACKEND POLICY
-- All renderer backends implement `dom_render_backend.h`; all commands flow through `DomRenderCommandBuffer`.
+- All renderer backends expose `DomRenderBackendAPI` (`dom_render_api.h`), consume `DomDrawCommandBuffer`, and report capabilities via `dom_render_caps`.
+- Backends must honour `dom_render_config.mode`: `VECTOR_ONLY` draws vector/text primitives and replaces sprites/tiles with deterministic placeholders; `FULL` enables textured paths when `supports_textures=1`.
 - All platform backends expose only `dom_platform.h`; renderer creation uses platform-provided handles.
 - Audio backends implement `dom_audio_backend.h` and consume deterministic audio command buffers; no audio logic in `/engine/sim`.
 - Renderer/audio code **never** mutates simulation state or tick timing.

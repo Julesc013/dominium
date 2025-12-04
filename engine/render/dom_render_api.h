@@ -1,38 +1,61 @@
 #ifndef DOM_RENDER_API_H
 #define DOM_RENDER_API_H
 
-/*
- * Dominium rendering API (MVP)
- * - Backend-agnostic, integer-only command buffer.
- * - No simulation or game logic here.
- * - C89/C++98 friendly.
- */
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 #include "dom_core_types.h"
 #include "dom_core_err.h"
+#include "core/dom_draw_common.h"
+
+/*
+ * Dominium rendering API
+ * - Backend-agnostic command buffer.
+ * - Supports vector-only or full (textured) modes per config.
+ */
 
 /* ------------------------------------------------------------
- * Basic types
+ * Render capabilities and configuration
  * ------------------------------------------------------------ */
-typedef struct DomVec2i {
-    dom_i32 x;
-    dom_i32 y;
-} DomVec2i;
+typedef enum dom_render_backend_e {
+    DOM_RENDER_BACKEND_SOFTWARE = 0,  /* universal fallback */
+    DOM_RENDER_BACKEND_DX9,
+    DOM_RENDER_BACKEND_DX11,
+    DOM_RENDER_BACKEND_DX12,
+    DOM_RENDER_BACKEND_GL1,
+    DOM_RENDER_BACKEND_GL2,
+    DOM_RENDER_BACKEND_VK1
+} dom_render_backend;
 
-typedef struct DomRect {
-    dom_i32 x;
-    dom_i32 y;
-    dom_i32 w;
-    dom_i32 h;
-} DomRect;
+typedef enum dom_render_mode_e {
+    DOM_RENDER_MODE_VECTOR_ONLY = 0,  /* CAD / outline */
+    DOM_RENDER_MODE_FULL              /* full textured graphics */
+} dom_render_mode;
 
-typedef dom_u32 DomColor;      /* 0xAARRGGBB */
-typedef dom_u32 DomSpriteId;
-typedef dom_u32 DomFontId;
+typedef struct dom_render_caps_s {
+    int supports_textures;
+    int supports_blending;
+    int supports_linear_filter;
+    int supports_aniso;
+} dom_render_caps;
+
+typedef void (*dom_present_fn)(void *user,
+                               const dom_u32 *pixels,
+                               int width,
+                               int height,
+                               int pitch_bytes);
+
+typedef struct dom_render_config_s {
+    dom_render_backend backend; /* compile-time choice, but tracked for completeness */
+    dom_render_mode    mode;    /* runtime choice: vector/full */
+    dom_i32 width;
+    dom_i32 height;
+    dom_i32 fullscreen;
+    void *platform_window;  /* native window handle (opaque to renderer) */
+    dom_present_fn present; /* software backend present callback (optional) */
+    void *present_user;     /* user data for present callback */
+} dom_render_config;
 
 typedef struct DomRenderState {
     DomColor clear_color;
@@ -45,64 +68,6 @@ void dom_render_state_init(DomRenderState *s);
 /* ------------------------------------------------------------
  * Command buffer
  * ------------------------------------------------------------ */
-typedef enum DomRenderCmdKind {
-    DOM_CMD_NONE = 0,
-    DOM_CMD_RECT,
-    DOM_CMD_LINE,
-    DOM_CMD_POLY,
-    DOM_CMD_SPRITE,
-    DOM_CMD_TEXT
-} DomRenderCmdKind;
-
-typedef struct DomCmdRect {
-    DomRect rect;
-    DomColor color;
-} DomCmdRect;
-
-typedef struct DomCmdLine {
-    dom_i32 x0, y0, x1, y1;
-    DomColor color;
-} DomCmdLine;
-
-#define DOM_CMD_POLY_MAX 16
-typedef struct DomCmdPoly {
-    dom_u32 count;
-    DomVec2i pts[DOM_CMD_POLY_MAX];
-    DomColor color;
-} DomCmdPoly;
-
-typedef struct DomCmdSprite {
-    DomSpriteId id;
-    dom_i32 x;
-    dom_i32 y;
-} DomCmdSprite;
-
-#define DOM_CMD_TEXT_MAX 256
-typedef struct DomCmdText {
-    DomFontId font;
-    DomColor color;
-    char text[DOM_CMD_TEXT_MAX];
-    dom_i32 x;
-    dom_i32 y;
-} DomCmdText;
-
-typedef struct DomRenderCmd {
-    DomRenderCmdKind kind;
-    union {
-        DomCmdRect   rect;
-        DomCmdLine   line;
-        DomCmdPoly   poly;
-        DomCmdSprite sprite;
-        DomCmdText   text;
-    } u;
-} DomRenderCmd;
-
-#define DOM_RENDER_CMD_MAX 8192
-typedef struct DomRenderCommandBuffer {
-    dom_u32 count;
-    DomRenderCmd cmds[DOM_RENDER_CMD_MAX];
-} DomRenderCommandBuffer;
-
 void dom_render_cmd_init(DomRenderCommandBuffer *cb);
 dom_err_t dom_render_cmd_push(DomRenderCommandBuffer *cb,
                               const DomRenderCmd *cmd);
@@ -110,16 +75,13 @@ dom_err_t dom_render_cmd_push(DomRenderCommandBuffer *cb,
 /* ------------------------------------------------------------
  * Backend selection
  * ------------------------------------------------------------ */
-typedef enum DomRenderBackendKind {
-    DOM_RENDER_BACKEND_NULL = 0,
-    DOM_RENDER_BACKEND_DX9,
-    DOM_RENDER_BACKEND_VECTOR2D /* stub, future GL1/GL2 mapper */
-} DomRenderBackendKind;
-
 struct DomRenderBackendAPI;
 
 typedef struct DomRenderer {
-    DomRenderBackendKind backend;
+    dom_render_backend backend;
+    dom_render_mode mode;
+    dom_render_config config;
+    dom_render_caps caps;
     void *backend_state;       /* owned by backend */
     void *platform_window;     /* native window handle (opaque to renderer) */
     dom_u32 width;
@@ -128,15 +90,15 @@ typedef struct DomRenderer {
     DomRenderState state;
     const struct DomRenderBackendAPI *api;
 } DomRenderer;
+typedef DomRenderer dom_renderer;
 
 /* ------------------------------------------------------------
  * Public API
  * ------------------------------------------------------------ */
 dom_err_t dom_render_create(DomRenderer *r,
-                            DomRenderBackendKind backend,
-                            dom_u32 width,
-                            dom_u32 height,
-                            void *platform_window);
+                            dom_render_backend backend,
+                            const dom_render_config *cfg,
+                            dom_render_caps *out_caps);
 
 void dom_render_destroy(DomRenderer *r);
 
@@ -153,24 +115,50 @@ dom_err_t dom_render_poly(DomRenderer *r,
                           const DomVec2i *pts,
                           dom_u32 count,
                           DomColor c);
+dom_err_t dom_render_sprite(DomRenderer *r,
+                            DomSpriteId id,
+                            dom_i32 x,
+                            dom_i32 y);
+dom_err_t dom_render_text(DomRenderer *r,
+                          DomFontId font,
+                          DomColor color,
+                          const char *text,
+                          dom_i32 x,
+                          dom_i32 y);
 
-dom_err_t dom_render_submit(DomRenderer *r);
+dom_err_t dom_render_submit(DomRenderer *r,
+                            const DomDrawCommand *cmds,
+                            dom_u32 count);
 void dom_render_present(DomRenderer *r);
+
+/* New canonical renderer API wrapper (malloc-owning) */
+int dom_renderer_create(const dom_render_config *cfg,
+                        dom_renderer           **out_renderer,
+                        dom_render_caps        *out_caps);
+void dom_renderer_destroy(dom_renderer *r);
+void dom_renderer_submit(dom_renderer *r,
+                         const DomDrawCommand *cmds,
+                         unsigned count);
 
 /* ------------------------------------------------------------
  * Backend API (implemented by individual backends)
  * ------------------------------------------------------------ */
 typedef struct DomRenderBackendAPI {
-    dom_err_t (*init)(DomRenderer *r);
+    dom_err_t (*init)(DomRenderer *r,
+                      const dom_render_config *cfg,
+                      dom_render_caps *out_caps);
     void      (*shutdown)(DomRenderer *r);
     void      (*resize)(DomRenderer *r, dom_u32 w, dom_u32 h);
-    void      (*submit)(DomRenderer *r, const DomRenderCommandBuffer *cb);
+    void      (*submit)(DomRenderer *r,
+                        const DomDrawCommand *cmds,
+                        dom_u32 count);
     void      (*present)(DomRenderer *r);
 } DomRenderBackendAPI;
 
 const DomRenderBackendAPI *dom_render_backend_dx9(void);
 const DomRenderBackendAPI *dom_render_backend_null(void);
 const DomRenderBackendAPI *dom_render_backend_vector2d(void);
+const DomRenderBackendAPI *dom_render_backend_software(void);
 
 #ifdef __cplusplus
 }

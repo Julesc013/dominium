@@ -1,0 +1,71 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 15,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "base-msys2",
+      "displayName": "MSYS2 UCRT64 (Ninja)",
+      "description": "Use MSYS2 UCRT64 toolchain with Ninja and Win32/DX9 backend",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_C_COMPILER": "C:/msys64/ucrt64/bin/cc.exe",
+        "CMAKE_CXX_COMPILER": "C:/msys64/ucrt64/bin/c++.exe",
+        "DOM_PLATFORM": "win32",
+        "DOM_BACKEND_SDL2": "OFF",
+        "DOM_BACKEND_DX9": "ON",
+        "DOM_BACKEND_GL1": "OFF",
+        "DOM_BACKEND_GL2": "OFF",
+        "DOM_BACKEND_VECTOR2D": "ON",
+        "DOM_ENABLE_AUDIO": "ON",
+        "DOM_ENABLE_NET": "ON"
+      },
+      "environment": {
+        "PATH": "C:/msys64/ucrt64/bin;C:/Windows/System32;$penv{PATH}"
+      },
+      "cmakeExecutable": "C:/msys64/ucrt64/bin/cmake.exe"
+    },
+    {
+      "name": "debug",
+      "displayName": "Debug (MSYS2 UCRT64)",
+      "inherits": "base-msys2",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "DOM_BUILD_MODE": "Debug"
+      }
+    },
+    {
+      "name": "deterministic",
+      "displayName": "DeterministicRelease (MSYS2 UCRT64)",
+      "inherits": "base-msys2",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "DeterministicRelease",
+        "DOM_BUILD_MODE": "DeterministicRelease"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "debug",
+      "configurePreset": "debug"
+    },
+    {
+      "name": "deterministic",
+      "configurePreset": "deterministic"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "debug",
+      "configurePreset": "debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    }
+  ]
+}

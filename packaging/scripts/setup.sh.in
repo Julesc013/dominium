@@ -1,0 +1,27 @@
+#!/bin/sh
+# Dominium setup entry: install / repair / uninstall
+
+SELF="$0"
+while [ -L "$SELF" ]; do SELF="$(readlink "$SELF")"; done
+ROOT="$(cd "$(dirname "$SELF")" && pwd)"
+
+EXEC="@DOM_SETUP_BINARY@"
+
+MODE="$1"
+if [ -z "$MODE" ]; then
+    MODE="install"
+else
+    shift
+fi
+
+case "$MODE" in
+    install|repair|uninstall) ;;
+    *)
+        echo "Usage: setup [install|repair|uninstall] [extra args...]" >&2
+        exit 1
+        ;;
+esac
+
+export DOM_SETUP_MODE="$MODE"
+
+exec "$ROOT/$EXEC" "--mode=$MODE" "$@"
