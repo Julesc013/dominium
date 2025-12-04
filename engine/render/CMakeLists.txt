@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.15)
 
 add_library(dom_render STATIC
     dom_render_api.c
+    dom_render_dx9.c
+    dom_render_null.c
+    dom_render_debug.c
 )
 
 target_include_directories(dom_render
@@ -13,4 +16,5 @@ target_include_directories(dom_render
 target_link_libraries(dom_render
     PUBLIC
         dom_core
+        d3d9
 )
