@@ -6,12 +6,16 @@
 #include <direct.h>
 #endif
 
-#include "launcher_discovery.h"
-#include "launcher_context.h"
+#include "dom_launcher/launcher_discovery.h"
+#include "dom_launcher/launcher_context.h"
+#include "dom_launcher/launcher_state.h"
 #include "dom_shared/manifest_install.h"
 #include "dom_shared/os_paths.h"
 #include "dom_shared/uuid.h"
 #include "dom_shared/logging.h"
+
+using namespace dom_shared;
+using namespace dom_launcher;
 
 static bool create_fake_install(const std::string &root, const std::string &install_id)
 {
@@ -27,10 +31,7 @@ static bool create_fake_install(const std::string &root, const std::string &inst
     info.platform = os_get_platform_id();
     info.version = "0.0.test";
     info.root_path = root;
-    bool ok = false;
-    std::string err;
-    write_install_manifest(info, ok, err);
-    return ok;
+    return write_install_manifest(info);
 }
 
 int main(void)
@@ -38,7 +39,11 @@ int main(void)
     std::string tmp_root = os_path_join(os_get_default_portable_install_root(), "tests_tmp_launcher_discovery");
     create_fake_install(tmp_root, "launcher-test");
 
-    std::vector<InstallInfo> installs = discover_installs(get_launcher_context());
+    state_initialize();
+    LauncherState& state = get_state();
+    state.db.manual_install_paths.push_back(tmp_root);
+
+    std::vector<InstallInfo> installs = discover_installs(state);
     bool found = false;
     for (size_t i = 0; i < installs.size(); ++i) {
         if (installs[i].install_id == "launcher-test") {

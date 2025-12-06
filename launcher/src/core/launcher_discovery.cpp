@@ -1,58 +1,79 @@
-#include "launcher_discovery.h"
-#include "launcher_logging.h"
-#include "launcher_db.h"
+#include "dom_launcher/launcher_discovery.h"
 #include "dom_shared/os_paths.h"
 #include "dom_shared/manifest_install.h"
 
 #include <set>
-#include <sstream>
 
-static bool load_manifest(const std::string &root, InstallInfo &out)
+namespace dom_launcher {
+
+static void try_add_install(const dom_shared::InstallInfo& info,
+                            std::vector<dom_shared::InstallInfo>& out,
+                            std::set<std::string>& seen_ids,
+                            std::set<std::string>& seen_roots)
 {
-    bool ok = false;
-    std::string err;
-    out = parse_install_manifest(root, ok, err);
-    return ok;
+    if (info.install_id.empty() && info.root_path.empty()) return;
+    if (!info.install_id.empty() && seen_ids.find(info.install_id) != seen_ids.end()) return;
+    if (!info.root_path.empty() && seen_roots.find(info.root_path) != seen_roots.end()) return;
+
+    out.push_back(info);
+    if (!info.install_id.empty()) seen_ids.insert(info.install_id);
+    if (!info.root_path.empty()) seen_roots.insert(info.root_path);
 }
 
-InstallInfo *find_install_by_id(std::vector<InstallInfo> &installs, const std::string &id)
+std::vector<dom_shared::InstallInfo> discover_installs(const LauncherState& state)
 {
-    for (size_t i = 0; i < installs.size(); ++i) {
-        if (installs[i].install_id == id) return &installs[i];
-    }
-    return 0;
-}
-
-InstallInfo *find_install_by_root(std::vector<InstallInfo> &installs, const std::string &root)
-{
-    for (size_t i = 0; i < installs.size(); ++i) {
-        if (installs[i].root_path == root) return &installs[i];
-    }
-    return 0;
-}
-
-std::vector<InstallInfo> discover_installs(const LauncherContext &ctx)
-{
-    std::vector<InstallInfo> out;
+    std::vector<dom_shared::InstallInfo> installs;
     std::set<std::string> seen_ids;
-    if (!ctx.self_install.install_id.empty()) {
-        out.push_back(ctx.self_install);
-        seen_ids.insert(ctx.self_install.install_id);
+    std::set<std::string> seen_roots;
+
+    if (!state.ctx.self_install.install_id.empty()) {
+        try_add_install(state.ctx.self_install, installs, seen_ids, seen_roots);
     }
-    std::vector<std::string> roots = os_get_default_install_roots();
-    std::vector<std::string> manual = db_get_manual_paths();
-    roots.insert(roots.end(), manual.begin(), manual.end());
+
+    if (!state.db.settings.enable_global_install_discovery && state.ctx.portable_mode) {
+        return installs;
+    }
+
+    std::vector<std::string> roots = dom_shared::os_get_default_install_roots();
+    for (size_t i = 0; i < state.db.manual_install_paths.size(); ++i) {
+        roots.push_back(state.db.manual_install_paths[i]);
+    }
+
     for (size_t i = 0; i < roots.size(); ++i) {
-        InstallInfo ii;
-        if (load_manifest(roots[i], ii)) {
-            if (seen_ids.find(ii.install_id) == seen_ids.end()) {
-                out.push_back(ii);
-                seen_ids.insert(ii.install_id);
-            }
+        const std::string& root = roots[i];
+        if (!dom_shared::manifest_install_exists(root)) continue;
+        dom_shared::InstallInfo info;
+        if (dom_shared::parse_install_manifest(root, info)) {
+            try_add_install(info, installs, seen_ids, seen_roots);
         }
     }
-    std::stringstream ss;
-    ss << "discovered installs: " << out.size();
-    launcher_log_info(ss.str());
-    return out;
+    return installs;
 }
+
+void merge_discovered_installs(LauncherState& state,
+                               const std::vector<dom_shared::InstallInfo>& discovered)
+{
+    state.installs = discovered;
+
+    for (size_t i = 0; i < discovered.size(); ++i) {
+        const dom_shared::InstallInfo& info = discovered[i];
+        bool updated = false;
+        for (size_t j = 0; j < state.db.installs.size(); ++j) {
+            if (!info.install_id.empty() && state.db.installs[j].install_id == info.install_id) {
+                state.db.installs[j] = info;
+                updated = true;
+                break;
+            }
+            if (!info.root_path.empty() && state.db.installs[j].root_path == info.root_path) {
+                state.db.installs[j] = info;
+                updated = true;
+                break;
+            }
+        }
+        if (!updated) {
+            state.db.installs.push_back(info);
+        }
+    }
+}
+
+} // namespace dom_launcher

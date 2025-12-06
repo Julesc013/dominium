@@ -7,13 +7,13 @@
 
 #include <cstdio>
 
+using namespace dom_shared;
+
 int run_repair(const SetupConfig &cfg)
 {
-    bool ok = false;
-    std::string err;
-    InstallInfo info = parse_install_manifest(cfg.install_root, ok, err);
-    if (!ok) {
-        log_error("repair failed: " + err);
+    dom_shared::InstallInfo info;
+    if (!parse_install_manifest(cfg.install_root, info)) {
+        log_error("repair failed: could not parse manifest");
         return 1;
     }
     /* Stub validation: ensure manifest exists and recreate shortcuts/registration */
@@ -24,6 +24,6 @@ int run_repair(const SetupConfig &cfg)
         create_shortcuts_for_install(info);
     }
     setup_plugins_post_repair(info);
-    log_info("repair completed for " + cfg.install_root);
+    log_info("repair completed for %s", cfg.install_root.c_str());
     return 0;
 }

@@ -3,9 +3,9 @@
 
 #include "dom_shared/manifest_install.h"
 
-void register_install_with_system(const InstallInfo &info);
-void unregister_install_from_system(const InstallInfo &info);
-void create_shortcuts_for_install(const InstallInfo &info);
-void remove_shortcuts_for_install(const InstallInfo &info);
+void register_install_with_system(const dom_shared::InstallInfo &info);
+void unregister_install_from_system(const dom_shared::InstallInfo &info);
+void create_shortcuts_for_install(const dom_shared::InstallInfo &info);
+void remove_shortcuts_for_install(const dom_shared::InstallInfo &info);
 
 #endif /* DOM_SETUP_REGISTRATION_H */

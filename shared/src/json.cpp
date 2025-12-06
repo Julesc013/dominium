@@ -3,16 +3,139 @@
 #include <cctype>
 #include <sstream>
 
-static void skip_ws(const std::string &s, size_t &i)
+namespace dom_shared {
+
+JsonValue::JsonValue() : type_(Null), bool_value_(false), num_value_(0.0), str_value_(), object_value_(), array_value_()
+{
+}
+
+JsonValue::JsonValue(Type t) : type_(t), bool_value_(false), num_value_(0.0), str_value_(), object_value_(), array_value_()
+{
+}
+
+JsonValue JsonValue::object()
+{
+    return JsonValue(Object);
+}
+
+JsonValue JsonValue::array()
+{
+    return JsonValue(Array);
+}
+
+JsonValue::Type JsonValue::type() const
+{
+    return type_;
+}
+
+bool JsonValue::has(const std::string& key) const
+{
+    if (type_ != Object) return false;
+    return object_value_.find(key) != object_value_.end();
+}
+
+const JsonValue& JsonValue::operator[](const std::string& key) const
+{
+    static JsonValue null_value;
+    if (type_ != Object) return null_value;
+    std::map<std::string, JsonValue>::const_iterator it = object_value_.find(key);
+    if (it == object_value_.end()) return null_value;
+    return it->second;
+}
+
+JsonValue& JsonValue::operator[](const std::string& key)
+{
+    if (type_ != Object) {
+        type_ = Object;
+        object_value_.clear();
+    }
+    return object_value_[key];
+}
+
+const std::map<std::string, JsonValue>& JsonValue::object_items() const
+{
+    static std::map<std::string, JsonValue> empty;
+    if (type_ != Object) return empty;
+    return object_value_;
+}
+
+void JsonValue::push_back(const JsonValue& v)
+{
+    if (type_ != Array) {
+        type_ = Array;
+        array_value_.clear();
+    }
+    array_value_.push_back(v);
+}
+
+const JsonValue& JsonValue::at(size_t idx) const
+{
+    static JsonValue null_value;
+    if (type_ != Array) return null_value;
+    if (idx >= array_value_.size()) return null_value;
+    return array_value_[idx];
+}
+
+size_t JsonValue::size() const
+{
+    if (type_ == Array) return array_value_.size();
+    if (type_ == Object) return object_value_.size();
+    return 0;
+}
+
+const std::vector<JsonValue>& JsonValue::array_items() const
+{
+    static std::vector<JsonValue> empty;
+    if (type_ != Array) return empty;
+    return array_value_;
+}
+
+void JsonValue::set_string(const std::string& s)
+{
+    type_ = String;
+    str_value_ = s;
+}
+
+std::string JsonValue::as_string(const std::string& def) const
+{
+    if (type_ == String) return str_value_;
+    return def;
+}
+
+void JsonValue::set_number(double n)
+{
+    type_ = Number;
+    num_value_ = n;
+}
+
+double JsonValue::as_number(double def) const
+{
+    if (type_ == Number) return num_value_;
+    return def;
+}
+
+void JsonValue::set_bool(bool b)
+{
+    type_ = Bool;
+    bool_value_ = b;
+}
+
+bool JsonValue::as_bool(bool def) const
+{
+    if (type_ == Bool) return bool_value_;
+    return def;
+}
+
+static void skip_ws(const std::string& s, size_t& i)
 {
     while (i < s.size() && (s[i] == ' ' || s[i] == '\t' || s[i] == '\r' || s[i] == '\n')) {
         ++i;
     }
 }
 
-static bool parse_value(const std::string &s, size_t &i, JsonValue &out);
+static bool parse_value(const std::string& s, size_t& i, JsonValue& out);
 
-static bool parse_string(const std::string &s, size_t &i, std::string &out)
+static bool parse_string(const std::string& s, size_t& i, std::string& out)
 {
     if (s[i] != '"') return false;
     ++i;
@@ -22,6 +145,9 @@ static bool parse_string(const std::string &s, size_t &i, std::string &out)
             char esc = s[i++];
             if (esc == 'n') out.push_back('\n');
             else if (esc == 't') out.push_back('\t');
+            else if (esc == 'r') out.push_back('\r');
+            else if (esc == '"') out.push_back('"');
+            else if (esc == '\\') out.push_back('\\');
             else out.push_back(esc);
         } else if (c == '"') {
             return true;
@@ -32,7 +158,7 @@ static bool parse_string(const std::string &s, size_t &i, std::string &out)
     return false;
 }
 
-static bool parse_number(const std::string &s, size_t &i, double &out)
+static bool parse_number(const std::string& s, size_t& i, double& out)
 {
     size_t start = i;
     if (s[i] == '-') ++i;
@@ -47,18 +173,19 @@ static bool parse_number(const std::string &s, size_t &i, double &out)
     return true;
 }
 
-static bool parse_array(const std::string &s, size_t &i, JsonValue &out)
+static bool parse_array(const std::string& s, size_t& i, JsonValue& out)
 {
     if (s[i] != '[') return false;
     ++i;
     skip_ws(s, i);
-    out = JsonValue::make_array();
+    out = JsonValue::array();
     if (i < s.size() && s[i] == ']') { ++i; return true; }
     while (i < s.size()) {
         JsonValue elem;
         if (!parse_value(s, i, elem)) return false;
-        out.array_values.push_back(elem);
+        out.push_back(elem);
         skip_ws(s, i);
+        if (i >= s.size()) break;
         if (s[i] == ',') { ++i; skip_ws(s, i); continue; }
         if (s[i] == ']') { ++i; break; }
         return false;
@@ -66,24 +193,25 @@ static bool parse_array(const std::string &s, size_t &i, JsonValue &out)
     return true;
 }
 
-static bool parse_object(const std::string &s, size_t &i, JsonValue &out)
+static bool parse_object(const std::string& s, size_t& i, JsonValue& out)
 {
     if (s[i] != '{') return false;
     ++i;
     skip_ws(s, i);
-    out = JsonValue::make_object();
+    out = JsonValue::object();
     if (i < s.size() && s[i] == '}') { ++i; return true; }
     while (i < s.size()) {
         std::string key;
         if (!parse_string(s, i, key)) return false;
         skip_ws(s, i);
-        if (s[i] != ':') return false;
+        if (i >= s.size() || s[i] != ':') return false;
         ++i;
         skip_ws(s, i);
         JsonValue val;
         if (!parse_value(s, i, val)) return false;
-        out.object_values[key] = val;
+        out[key] = val;
         skip_ws(s, i);
+        if (i >= s.size()) break;
         if (s[i] == ',') { ++i; skip_ws(s, i); continue; }
         if (s[i] == '}') { ++i; break; }
         return false;
@@ -91,7 +219,7 @@ static bool parse_object(const std::string &s, size_t &i, JsonValue &out)
     return true;
 }
 
-static bool parse_value(const std::string &s, size_t &i, JsonValue &out)
+static bool parse_value(const std::string& s, size_t& i, JsonValue& out)
 {
     skip_ws(s, i);
     if (i >= s.size()) return false;
@@ -99,7 +227,8 @@ static bool parse_value(const std::string &s, size_t &i, JsonValue &out)
     if (c == '"') {
         std::string val;
         if (!parse_string(s, i, val)) return false;
-        out = JsonValue::make_string(val);
+        out = JsonValue(JsonValue::String);
+        out.set_string(val);
         return true;
     }
     if (c == '{') {
@@ -111,28 +240,31 @@ static bool parse_value(const std::string &s, size_t &i, JsonValue &out)
     if (std::isdigit((unsigned char)c) || c == '-') {
         double num = 0.0;
         if (!parse_number(s, i, num)) return false;
-        out = JsonValue::make_number(num);
+        out = JsonValue(JsonValue::Number);
+        out.set_number(num);
         return true;
     }
     if (s.compare(i, 4, "true") == 0) {
         i += 4;
-        out = JsonValue::make_bool(true);
+        out = JsonValue(JsonValue::Bool);
+        out.set_bool(true);
         return true;
     }
     if (s.compare(i, 5, "false") == 0) {
         i += 5;
-        out = JsonValue::make_bool(false);
+        out = JsonValue(JsonValue::Bool);
+        out.set_bool(false);
         return true;
     }
     if (s.compare(i, 4, "null") == 0) {
         i += 4;
-        out = JsonValue::make_null();
+        out = JsonValue(JsonValue::Null);
         return true;
     }
     return false;
 }
 
-bool json_parse(const std::string &text, JsonValue &out)
+bool json_parse(const std::string& text, JsonValue& out)
 {
     size_t i = 0;
     bool ok = parse_value(text, i, out);
@@ -146,66 +278,64 @@ static std::string indent_str(int indent)
     return std::string(indent, ' ');
 }
 
-static void stringify(const JsonValue &v, std::string &out, int indent)
+void JsonValue::stringify_internal(std::string& out, int indent, int indent_step, bool pretty) const
 {
-    switch (v.kind) {
-    case JsonValue::JSON_NULL: out += "null"; break;
-    case JsonValue::JSON_BOOL: out += (v.bool_value ? "true" : "false"); break;
-    case JsonValue::JSON_NUMBER: {
+    switch (type_) {
+    case Null: out += "null"; break;
+    case Bool: out += (bool_value_ ? "true" : "false"); break;
+    case Number: {
         std::stringstream ss;
-        ss << v.number_value;
+        ss << num_value_;
         out += ss.str();
     } break;
-    case JsonValue::JSON_STRING:
+    case String:
         out += "\"";
-        for (size_t i = 0; i < v.string_value.size(); ++i) {
-            char c = v.string_value[i];
-            if (c == '"' || c == '\\') out += "\\";
-            out += c;
+        {
+            for (size_t i = 0; i < str_value_.size(); ++i) {
+                char c = str_value_[i];
+                if (c == '"' || c == '\\') out += "\\";
+                out += c;
+            }
         }
         out += "\"";
         break;
-    case JsonValue::JSON_OBJECT: {
+    case Object: {
         out += "{";
-        if (!v.object_values.empty()) out += "\n";
+        if (pretty && !object_value_.empty()) out += "\n";
         size_t count = 0;
-        for (std::map<std::string, JsonValue>::const_iterator it = v.object_values.begin(); it != v.object_values.end(); ++it, ++count) {
-            out += indent_str(indent + 2);
+        for (std::map<std::string, JsonValue>::const_iterator it = object_value_.begin(); it != object_value_.end(); ++it, ++count) {
+            if (pretty) out += indent_str(indent + indent_step);
             out += "\"";
             out += it->first;
-            out += "\": ";
-            stringify(it->second, out, indent + 2);
-            if (count + 1 < v.object_values.size()) out += ",";
-            out += "\n";
+            out += "\":";
+            if (pretty) out += " ";
+            it->second.stringify_internal(out, indent + indent_step, indent_step, pretty);
+            if (count + 1 < object_value_.size()) out += ",";
+            if (pretty) out += "\n";
         }
-        if (!v.object_values.empty()) out += indent_str(indent);
+        if (pretty && !object_value_.empty()) out += indent_str(indent);
         out += "}";
     } break;
-    case JsonValue::JSON_ARRAY: {
+    case Array: {
         out += "[";
-        if (!v.array_values.empty()) out += "\n";
-        for (size_t i = 0; i < v.array_values.size(); ++i) {
-            out += indent_str(indent + 2);
-            stringify(v.array_values[i], out, indent + 2);
-            if (i + 1 < v.array_values.size()) out += ",";
-            out += "\n";
+        if (pretty && !array_value_.empty()) out += "\n";
+        for (size_t i = 0; i < array_value_.size(); ++i) {
+            if (pretty) out += indent_str(indent + indent_step);
+            array_value_[i].stringify_internal(out, indent + indent_step, indent_step, pretty);
+            if (i + 1 < array_value_.size()) out += ",";
+            if (pretty) out += "\n";
         }
-        if (!v.array_values.empty()) out += indent_str(indent);
+        if (pretty && !array_value_.empty()) out += indent_str(indent);
         out += "]";
     } break;
     }
 }
 
-std::string json_stringify(const JsonValue &v, int indent)
+std::string json_stringify(const JsonValue& v, bool pretty)
 {
     std::string out;
-    stringify(v, out, indent);
+    v.stringify_internal(out, 0, pretty ? 2 : 0, pretty);
     return out;
 }
 
-JsonValue JsonValue::make_null() { JsonValue v; v.kind = JSON_NULL; return v; }
-JsonValue JsonValue::make_bool(bool b) { JsonValue v; v.kind = JSON_BOOL; v.bool_value = b; return v; }
-JsonValue JsonValue::make_number(double n) { JsonValue v; v.kind = JSON_NUMBER; v.number_value = n; return v; }
-JsonValue JsonValue::make_string(const std::string &s) { JsonValue v; v.kind = JSON_STRING; v.string_value = s; return v; }
-JsonValue JsonValue::make_object() { JsonValue v; v.kind = JSON_OBJECT; return v; }
-JsonValue JsonValue::make_array() { JsonValue v; v.kind = JSON_ARRAY; return v; }
+} // namespace dom_shared

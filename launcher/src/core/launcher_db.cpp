@@ -1,279 +1,414 @@
-#include "launcher_db.h"
-#include "launcher_logging.h"
+#include "dom_launcher/launcher_db.h"
+#include "dom_shared/json.h"
 #include "dom_shared/os_paths.h"
+#include "dom_shared/uuid.h"
 
 #include <cstdio>
 
-static LauncherDb g_db;
-static std::string g_db_path;
-static bool g_loaded = false;
+namespace dom_launcher {
 
-static void ensure_db_path(const LauncherContext &ctx)
+LauncherSettings::LauncherSettings()
 {
-    g_db_path = os_path_join(ctx.user_data_root, "db.json");
+    enable_global_install_discovery = true;
+    auto_update_news = true;
+    news_refresh_interval_min = 60;
+    auto_update_changes = true;
+    changes_refresh_interval_min = 60;
+    enable_playtime_stats = true;
+    enable_online_telemetry = false;
 }
 
-static void reset_defaults()
+static dom_shared::JsonValue install_to_json(const dom_shared::InstallInfo& i)
 {
-    g_db.schema_version = 1;
-    g_db.installs.clear();
-    g_db.profiles.clear();
-    g_db.mod_sets.clear();
-    g_db.servers.clear();
-    g_db.manual_install_paths.clear();
-    g_db.plugin_data = JsonValue::make_object();
-}
-
-static JsonValue install_to_json(const InstallInfo &i)
-{
-    JsonValue obj = JsonValue::make_object();
-    obj.object_values["install_id"] = JsonValue::make_string(i.install_id);
-    obj.object_values["install_type"] = JsonValue::make_string(i.install_type);
-    obj.object_values["platform"] = JsonValue::make_string(i.platform);
-    obj.object_values["version"] = JsonValue::make_string(i.version);
-    obj.object_values["root_path"] = JsonValue::make_string(i.root_path);
-    obj.object_values["created_at"] = JsonValue::make_string(i.created_at);
-    obj.object_values["created_by"] = JsonValue::make_string(i.created_by);
+    dom_shared::JsonValue obj = dom_shared::JsonValue::object();
+    obj["install_id"].set_string(i.install_id);
+    obj["install_type"].set_string(i.install_type);
+    obj["platform"].set_string(i.platform);
+    obj["version"].set_string(i.version);
+    obj["root_path"].set_string(i.root_path);
+    obj["created_at"].set_string(i.created_at);
+    obj["created_by"].set_string(i.created_by);
     return obj;
 }
 
-static bool json_to_install(const JsonValue &v, InstallInfo &out)
+static bool json_to_install(const dom_shared::JsonValue& v, dom_shared::InstallInfo& out)
 {
-    if (v.kind != JsonValue::JSON_OBJECT) return false;
-    out.install_id = v.object_values.find("install_id") != v.object_values.end() ? v.object_values.find("install_id")->second.string_value : "";
-    out.install_type = v.object_values.find("install_type") != v.object_values.end() ? v.object_values.find("install_type")->second.string_value : "";
-    out.platform = v.object_values.find("platform") != v.object_values.end() ? v.object_values.find("platform")->second.string_value : "";
-    out.version = v.object_values.find("version") != v.object_values.end() ? v.object_values.find("version")->second.string_value : "";
-    out.root_path = v.object_values.find("root_path") != v.object_values.end() ? v.object_values.find("root_path")->second.string_value : "";
-    out.created_at = v.object_values.find("created_at") != v.object_values.end() ? v.object_values.find("created_at")->second.string_value : "";
-    out.created_by = v.object_values.find("created_by") != v.object_values.end() ? v.object_values.find("created_by")->second.string_value : "";
-    return !out.install_id.empty();
+    if (v.type() != dom_shared::JsonValue::Object) return false;
+    dom_shared::InstallInfo i;
+    i.install_id = v.has("install_id") ? v["install_id"].as_string("") : "";
+    i.install_type = v.has("install_type") ? v["install_type"].as_string("") : "";
+    i.platform = v.has("platform") ? v["platform"].as_string("") : "";
+    i.version = v.has("version") ? v["version"].as_string("") : "";
+    i.root_path = v.has("root_path") ? v["root_path"].as_string("") : "";
+    i.created_at = v.has("created_at") ? v["created_at"].as_string("") : "";
+    i.created_by = v.has("created_by") ? v["created_by"].as_string("") : "";
+    if (i.install_id.empty()) return false;
+    out = i;
+    return true;
 }
 
-static JsonValue profile_to_json(const LauncherProfile &p)
+static dom_shared::JsonValue profile_to_json(const Profile& p)
 {
-    JsonValue obj = JsonValue::make_object();
-    obj.object_values["profile_id"] = JsonValue::make_string(p.profile_id);
-    obj.object_values["name"] = JsonValue::make_string(p.name);
-    obj.object_values["default_install_id"] = JsonValue::make_string(p.default_install_id);
-    obj.object_values["default_modset_id"] = JsonValue::make_string(p.default_modset_id);
-    obj.object_values["preferred_display_mode"] = JsonValue::make_string(p.preferred_display_mode);
+    dom_shared::JsonValue obj = dom_shared::JsonValue::object();
+    obj["profile_id"].set_string(p.profile_id);
+    obj["name"].set_string(p.name);
+    obj["default_install_id"].set_string(p.default_install_id);
+    obj["default_modset_id"].set_string(p.default_modset_id);
+    obj["preferred_display_mode"].set_string(p.preferred_display_mode);
     return obj;
 }
 
-static JsonValue modset_to_json(const LauncherModSet &m)
+static bool json_to_profile(const dom_shared::JsonValue& v, Profile& out)
 {
-    JsonValue obj = JsonValue::make_object();
-    obj.object_values["modset_id"] = JsonValue::make_string(m.modset_id);
-    obj.object_values["name"] = JsonValue::make_string(m.name);
-    JsonValue arr = JsonValue::make_array();
+    if (v.type() != dom_shared::JsonValue::Object) return false;
+    Profile p;
+    p.profile_id = v.has("profile_id") ? v["profile_id"].as_string("") : "";
+    p.name = v.has("name") ? v["name"].as_string("") : "";
+    p.default_install_id = v.has("default_install_id") ? v["default_install_id"].as_string("") : "";
+    p.default_modset_id = v.has("default_modset_id") ? v["default_modset_id"].as_string("") : "";
+    p.preferred_display_mode = v.has("preferred_display_mode") ? v["preferred_display_mode"].as_string("") : "";
+    out = p;
+    return true;
+}
+
+static dom_shared::JsonValue modset_to_json(const ModSet& m)
+{
+    dom_shared::JsonValue obj = dom_shared::JsonValue::object();
+    obj["modset_id"].set_string(m.modset_id);
+    obj["name"].set_string(m.name);
+    obj["base_install_id"].set_string(m.base_install_id);
+    dom_shared::JsonValue packs = dom_shared::JsonValue::array();
     for (size_t i = 0; i < m.packs.size(); ++i) {
-        JsonValue p = JsonValue::make_object();
-        p.object_values["id"] = JsonValue::make_string(m.packs[i].id);
-        p.object_values["version"] = JsonValue::make_string(m.packs[i].version);
-        arr.array_values.push_back(p);
+        dom_shared::JsonValue p = dom_shared::JsonValue::object();
+        p["id"].set_string(m.packs[i].id);
+        p["version"].set_string(m.packs[i].version);
+        p["enabled"].set_bool(m.packs[i].enabled);
+        packs.push_back(p);
     }
-    obj.object_values["packs"] = arr;
+    obj["packs"] = packs;
     return obj;
 }
 
-static JsonValue server_to_json(const LauncherServer &s)
+static bool json_to_modset(const dom_shared::JsonValue& v, ModSet& out)
 {
-    JsonValue obj = JsonValue::make_object();
-    obj.object_values["server_id"] = JsonValue::make_string(s.server_id);
-    obj.object_values["address"] = JsonValue::make_string(s.address);
-    obj.object_values["name"] = JsonValue::make_string(s.name);
-    obj.object_values["last_seen"] = JsonValue::make_string(s.last_seen);
-    JsonValue tags = JsonValue::make_array();
-    for (size_t i = 0; i < s.tags.size(); ++i) tags.array_values.push_back(JsonValue::make_string(s.tags[i]));
-    obj.object_values["tags"] = tags;
-    obj.object_values["favorite"] = JsonValue::make_bool(s.favorite);
+    if (v.type() != dom_shared::JsonValue::Object) return false;
+    ModSet m;
+    m.modset_id = v.has("modset_id") ? v["modset_id"].as_string("") : "";
+    m.name = v.has("name") ? v["name"].as_string("") : "";
+    m.base_install_id = v.has("base_install_id") ? v["base_install_id"].as_string("") : "";
+    if (v.has("packs") && v["packs"].type() == dom_shared::JsonValue::Array) {
+        const std::vector<dom_shared::JsonValue>& packs = v["packs"].array_items();
+        for (size_t i = 0; i < packs.size(); ++i) {
+            const dom_shared::JsonValue& pv = packs[i];
+            if (pv.type() != dom_shared::JsonValue::Object) continue;
+            ModSetPack pack;
+            pack.id = pv.has("id") ? pv["id"].as_string("") : "";
+            pack.version = pv.has("version") ? pv["version"].as_string("") : "";
+            pack.enabled = pv.has("enabled") ? pv["enabled"].as_bool(true) : true;
+            m.packs.push_back(pack);
+        }
+    }
+    out = m;
+    return true;
+}
+
+static dom_shared::JsonValue server_to_json(const ServerEntry& s)
+{
+    dom_shared::JsonValue obj = dom_shared::JsonValue::object();
+    obj["server_id"].set_string(s.server_id);
+    obj["address"].set_string(s.address);
+    obj["name"].set_string(s.name);
+    obj["last_seen"].set_string(s.last_seen);
+    obj["favorite"].set_bool(s.favorite);
+    dom_shared::JsonValue tags = dom_shared::JsonValue::array();
+    for (size_t i = 0; i < s.tags.size(); ++i) {
+        dom_shared::JsonValue t;
+        t.set_string(s.tags[i]);
+        tags.push_back(t);
+    }
+    obj["tags"] = tags;
     return obj;
 }
 
-void db_load(const LauncherContext &ctx)
+static bool json_to_server(const dom_shared::JsonValue& v, ServerEntry& out)
 {
-    ensure_db_path(ctx);
-    reset_defaults();
-    FILE *f = fopen(g_db_path.c_str(), "rb");
+    if (v.type() != dom_shared::JsonValue::Object) return false;
+    ServerEntry s;
+    s.server_id = v.has("server_id") ? v["server_id"].as_string("") : "";
+    s.address = v.has("address") ? v["address"].as_string("") : "";
+    s.name = v.has("name") ? v["name"].as_string("") : "";
+    s.last_seen = v.has("last_seen") ? v["last_seen"].as_string("") : "";
+    s.favorite = v.has("favorite") ? v["favorite"].as_bool(false) : false;
+    if (v.has("tags") && v["tags"].type() == dom_shared::JsonValue::Array) {
+        const std::vector<dom_shared::JsonValue>& tags = v["tags"].array_items();
+        for (size_t i = 0; i < tags.size(); ++i) {
+            s.tags.push_back(tags[i].as_string(""));
+        }
+    }
+    out = s;
+    return true;
+}
+
+static dom_shared::JsonValue friend_to_json(const FriendEntry& f)
+{
+    dom_shared::JsonValue obj = dom_shared::JsonValue::object();
+    obj["friend_id"].set_string(f.friend_id);
+    obj["display_name"].set_string(f.display_name);
+    obj["online"].set_bool(f.online);
+    obj["last_presence"].set_string(f.last_presence);
+    return obj;
+}
+
+static bool json_to_friend(const dom_shared::JsonValue& v, FriendEntry& out)
+{
+    if (v.type() != dom_shared::JsonValue::Object) return false;
+    FriendEntry f;
+    f.friend_id = v.has("friend_id") ? v["friend_id"].as_string("") : "";
+    f.display_name = v.has("display_name") ? v["display_name"].as_string("") : "";
+    f.online = v.has("online") ? v["online"].as_bool(false) : false;
+    f.last_presence = v.has("last_presence") ? v["last_presence"].as_string("") : "";
+    out = f;
+    return true;
+}
+
+static dom_shared::JsonValue stat_to_json(const StatEntry& s)
+{
+    dom_shared::JsonValue obj = dom_shared::JsonValue::object();
+    obj["profile_id"].set_string(s.profile_id);
+    obj["install_id"].set_string(s.install_id);
+    obj["universe_id"].set_string(s.universe_id);
+    obj["total_playtime_sec"].set_number((double)s.total_playtime_sec);
+    return obj;
+}
+
+static bool json_to_stat(const dom_shared::JsonValue& v, StatEntry& out)
+{
+    if (v.type() != dom_shared::JsonValue::Object) return false;
+    StatEntry s;
+    s.profile_id = v.has("profile_id") ? v["profile_id"].as_string("") : "";
+    s.install_id = v.has("install_id") ? v["install_id"].as_string("") : "";
+    s.universe_id = v.has("universe_id") ? v["universe_id"].as_string("") : "";
+    s.total_playtime_sec = v.has("total_playtime_sec") ? (long)v["total_playtime_sec"].as_number(0.0) : 0;
+    out = s;
+    return true;
+}
+
+static dom_shared::JsonValue settings_to_json(const LauncherSettings& s)
+{
+    dom_shared::JsonValue obj = dom_shared::JsonValue::object();
+    obj["enable_global_install_discovery"].set_bool(s.enable_global_install_discovery);
+    obj["auto_update_news"].set_bool(s.auto_update_news);
+    obj["news_refresh_interval_min"].set_number((double)s.news_refresh_interval_min);
+    obj["auto_update_changes"].set_bool(s.auto_update_changes);
+    obj["changes_refresh_interval_min"].set_number((double)s.changes_refresh_interval_min);
+    obj["enable_playtime_stats"].set_bool(s.enable_playtime_stats);
+    obj["enable_online_telemetry"].set_bool(s.enable_online_telemetry);
+    return obj;
+}
+
+static void json_to_settings(const dom_shared::JsonValue& v, LauncherSettings& out)
+{
+    if (v.type() != dom_shared::JsonValue::Object) return;
+    if (v.has("enable_global_install_discovery")) out.enable_global_install_discovery = v["enable_global_install_discovery"].as_bool(out.enable_global_install_discovery);
+    if (v.has("auto_update_news")) out.auto_update_news = v["auto_update_news"].as_bool(out.auto_update_news);
+    if (v.has("news_refresh_interval_min")) out.news_refresh_interval_min = (int)v["news_refresh_interval_min"].as_number((double)out.news_refresh_interval_min);
+    if (v.has("auto_update_changes")) out.auto_update_changes = v["auto_update_changes"].as_bool(out.auto_update_changes);
+    if (v.has("changes_refresh_interval_min")) out.changes_refresh_interval_min = (int)v["changes_refresh_interval_min"].as_number((double)out.changes_refresh_interval_min);
+    if (v.has("enable_playtime_stats")) out.enable_playtime_stats = v["enable_playtime_stats"].as_bool(out.enable_playtime_stats);
+    if (v.has("enable_online_telemetry")) out.enable_online_telemetry = v["enable_online_telemetry"].as_bool(out.enable_online_telemetry);
+}
+
+static dom_shared::JsonValue plugin_data_to_json(const std::map<std::string, std::map<std::string, std::string> >& pd)
+{
+    dom_shared::JsonValue obj = dom_shared::JsonValue::object();
+    for (std::map<std::string, std::map<std::string, std::string> >::const_iterator it = pd.begin(); it != pd.end(); ++it) {
+        dom_shared::JsonValue plug = dom_shared::JsonValue::object();
+        const std::map<std::string, std::string>& entries = it->second;
+        for (std::map<std::string, std::string>::const_iterator kv = entries.begin(); kv != entries.end(); ++kv) {
+            plug[kv->first].set_string(kv->second);
+        }
+        obj[it->first] = plug;
+    }
+    return obj;
+}
+
+static void json_to_plugin_data(const dom_shared::JsonValue& v, std::map<std::string, std::map<std::string, std::string> >& out)
+{
+    if (v.type() != dom_shared::JsonValue::Object) return;
+    const std::map<std::string, dom_shared::JsonValue>& plugins = v.object_items();
+    for (std::map<std::string, dom_shared::JsonValue>::const_iterator it = plugins.begin(); it != plugins.end(); ++it) {
+        std::map<std::string, std::string> kv_map;
+        if (it->second.type() == dom_shared::JsonValue::Object) {
+            const std::map<std::string, dom_shared::JsonValue>& kvs = it->second.object_items();
+            for (std::map<std::string, dom_shared::JsonValue>::const_iterator kv = kvs.begin(); kv != kvs.end(); ++kv) {
+                kv_map[kv->first] = kv->second.as_string("");
+            }
+        }
+        out[it->first] = kv_map;
+    }
+}
+
+static std::string db_path(const std::string& root)
+{
+    return dom_shared::os_path_join(root, "db.json");
+}
+
+static LauncherDB default_db()
+{
+    LauncherDB db;
+    db.schema_version = 1;
+    db.settings = LauncherSettings();
+    Profile p;
+    p.profile_id = dom_shared::generate_uuid();
+    p.name = "Default";
+    p.default_install_id = "";
+    p.default_modset_id = "";
+    p.preferred_display_mode = "gui";
+    db.profiles.push_back(p);
+    return db;
+}
+
+LauncherDB db_load(const std::string& user_data_root)
+{
+    LauncherDB db = default_db();
+    std::string path = db_path(user_data_root);
+    FILE* f = std::fopen(path.c_str(), "rb");
     if (!f) {
-        g_loaded = true;
-        return;
+        return db;
     }
+
     std::string content;
     char buf[512];
     size_t n;
     while ((n = std::fread(buf, 1, sizeof(buf), f)) > 0) content.append(buf, n);
     std::fclose(f);
-    JsonValue root;
-    if (!json_parse(content, root) || root.kind != JsonValue::JSON_OBJECT) {
-        g_loaded = true;
+
+    dom_shared::JsonValue root;
+    if (!dom_shared::json_parse(content, root) || root.type() != dom_shared::JsonValue::Object) {
+        return db;
+    }
+
+    db.installs.clear();
+    db.profiles.clear();
+    db.mod_sets.clear();
+    db.servers.clear();
+    db.friends.clear();
+    db.stats.clear();
+    db.manual_install_paths.clear();
+    db.plugin_data.clear();
+    db.settings = LauncherSettings();
+
+    db.schema_version = root.has("schema_version") ? (int)root["schema_version"].as_number(1) : 1;
+    if (root.has("installs") && root["installs"].type() == dom_shared::JsonValue::Array) {
+        const std::vector<dom_shared::JsonValue>& arr = root["installs"].array_items();
+        for (size_t i = 0; i < arr.size(); ++i) {
+            dom_shared::InstallInfo info;
+            if (json_to_install(arr[i], info)) db.installs.push_back(info);
+        }
+    }
+    if (root.has("profiles") && root["profiles"].type() == dom_shared::JsonValue::Array) {
+        const std::vector<dom_shared::JsonValue>& arr = root["profiles"].array_items();
+        for (size_t i = 0; i < arr.size(); ++i) {
+            Profile p;
+            if (json_to_profile(arr[i], p)) db.profiles.push_back(p);
+        }
+    }
+    if (root.has("mod_sets") && root["mod_sets"].type() == dom_shared::JsonValue::Array) {
+        const std::vector<dom_shared::JsonValue>& arr = root["mod_sets"].array_items();
+        for (size_t i = 0; i < arr.size(); ++i) {
+            ModSet m;
+            if (json_to_modset(arr[i], m)) db.mod_sets.push_back(m);
+        }
+    }
+    if (root.has("servers") && root["servers"].type() == dom_shared::JsonValue::Array) {
+        const std::vector<dom_shared::JsonValue>& arr = root["servers"].array_items();
+        for (size_t i = 0; i < arr.size(); ++i) {
+            ServerEntry s;
+            if (json_to_server(arr[i], s)) db.servers.push_back(s);
+        }
+    }
+    if (root.has("friends") && root["friends"].type() == dom_shared::JsonValue::Array) {
+        const std::vector<dom_shared::JsonValue>& arr = root["friends"].array_items();
+        for (size_t i = 0; i < arr.size(); ++i) {
+            FriendEntry fentry;
+            if (json_to_friend(arr[i], fentry)) db.friends.push_back(fentry);
+        }
+    }
+    if (root.has("stats") && root["stats"].type() == dom_shared::JsonValue::Array) {
+        const std::vector<dom_shared::JsonValue>& arr = root["stats"].array_items();
+        for (size_t i = 0; i < arr.size(); ++i) {
+            StatEntry st;
+            if (json_to_stat(arr[i], st)) db.stats.push_back(st);
+        }
+    }
+    if (root.has("manual_install_paths") && root["manual_install_paths"].type() == dom_shared::JsonValue::Array) {
+        const std::vector<dom_shared::JsonValue>& arr = root["manual_install_paths"].array_items();
+        for (size_t i = 0; i < arr.size(); ++i) {
+            db.manual_install_paths.push_back(arr[i].as_string(""));
+        }
+    }
+    if (root.has("settings")) {
+        json_to_settings(root["settings"], db.settings);
+    }
+    if (root.has("plugin_data")) {
+        json_to_plugin_data(root["plugin_data"], db.plugin_data);
+    }
+
+    if (db.profiles.empty()) {
+        db.profiles.push_back(default_db().profiles[0]);
+    }
+    return db;
+}
+
+void db_save(const std::string& user_data_root, const LauncherDB& db)
+{
+    dom_shared::JsonValue root = dom_shared::JsonValue::object();
+    root["schema_version"].set_number((double)db.schema_version);
+
+    dom_shared::JsonValue installs = dom_shared::JsonValue::array();
+    for (size_t i = 0; i < db.installs.size(); ++i) installs.push_back(install_to_json(db.installs[i]));
+    root["installs"] = installs;
+
+    dom_shared::JsonValue profiles = dom_shared::JsonValue::array();
+    for (size_t i = 0; i < db.profiles.size(); ++i) profiles.push_back(profile_to_json(db.profiles[i]));
+    root["profiles"] = profiles;
+
+    dom_shared::JsonValue modsets = dom_shared::JsonValue::array();
+    for (size_t i = 0; i < db.mod_sets.size(); ++i) modsets.push_back(modset_to_json(db.mod_sets[i]));
+    root["mod_sets"] = modsets;
+
+    dom_shared::JsonValue servers = dom_shared::JsonValue::array();
+    for (size_t i = 0; i < db.servers.size(); ++i) servers.push_back(server_to_json(db.servers[i]));
+    root["servers"] = servers;
+
+    dom_shared::JsonValue friends_arr = dom_shared::JsonValue::array();
+    for (size_t i = 0; i < db.friends.size(); ++i) friends_arr.push_back(friend_to_json(db.friends[i]));
+    root["friends"] = friends_arr;
+
+    dom_shared::JsonValue stats = dom_shared::JsonValue::array();
+    for (size_t i = 0; i < db.stats.size(); ++i) stats.push_back(stat_to_json(db.stats[i]));
+    root["stats"] = stats;
+
+    dom_shared::JsonValue manual = dom_shared::JsonValue::array();
+    for (size_t i = 0; i < db.manual_install_paths.size(); ++i) {
+        dom_shared::JsonValue v;
+        v.set_string(db.manual_install_paths[i]);
+        manual.push_back(v);
+    }
+    root["manual_install_paths"] = manual;
+
+    root["settings"] = settings_to_json(db.settings);
+    root["plugin_data"] = plugin_data_to_json(db.plugin_data);
+
+    std::string text = dom_shared::json_stringify(root, true);
+    std::string path = db_path(user_data_root);
+    dom_shared::os_ensure_directory_exists(user_data_root);
+    FILE* f = std::fopen(path.c_str(), "wb");
+    if (!f) {
         return;
     }
-    JsonValue installs = root.object_values["installs"];
-    if (installs.kind == JsonValue::JSON_ARRAY) {
-        for (size_t i = 0; i < installs.array_values.size(); ++i) {
-            InstallInfo ii;
-            if (json_to_install(installs.array_values[i], ii)) g_db.installs.push_back(ii);
-        }
-    }
-    JsonValue profiles = root.object_values["profiles"];
-    if (profiles.kind == JsonValue::JSON_ARRAY) {
-        for (size_t i = 0; i < profiles.array_values.size(); ++i) {
-            const JsonValue &p = profiles.array_values[i];
-            if (p.kind != JsonValue::JSON_OBJECT) continue;
-            LauncherProfile prof;
-            std::map<std::string, JsonValue>::const_iterator it;
-            it = p.object_values.find("profile_id"); if (it != p.object_values.end()) prof.profile_id = it->second.string_value;
-            it = p.object_values.find("name"); if (it != p.object_values.end()) prof.name = it->second.string_value;
-            it = p.object_values.find("default_install_id"); if (it != p.object_values.end()) prof.default_install_id = it->second.string_value;
-            it = p.object_values.find("default_modset_id"); if (it != p.object_values.end()) prof.default_modset_id = it->second.string_value;
-            it = p.object_values.find("preferred_display_mode"); if (it != p.object_values.end()) prof.preferred_display_mode = it->second.string_value;
-            g_db.profiles.push_back(prof);
-        }
-    }
-    JsonValue modsets = root.object_values["mod_sets"];
-    if (modsets.kind == JsonValue::JSON_ARRAY) {
-        for (size_t i = 0; i < modsets.array_values.size(); ++i) {
-            const JsonValue &m = modsets.array_values[i];
-            if (m.kind != JsonValue::JSON_OBJECT) continue;
-            LauncherModSet ms;
-            std::map<std::string, JsonValue>::const_iterator it;
-            it = m.object_values.find("modset_id"); if (it != m.object_values.end()) ms.modset_id = it->second.string_value;
-            it = m.object_values.find("name"); if (it != m.object_values.end()) ms.name = it->second.string_value;
-            std::map<std::string, JsonValue>::const_iterator pack_it = m.object_values.find("packs");
-            if (pack_it != m.object_values.end()) {
-                const JsonValue &packs = pack_it->second;
-                if (packs.kind == JsonValue::JSON_ARRAY) {
-                    for (size_t j = 0; j < packs.array_values.size(); ++j) {
-                        LauncherModPackRef ref;
-                        const JsonValue &pv = packs.array_values[j];
-                        if (pv.kind != JsonValue::JSON_OBJECT) continue;
-                        std::map<std::string, JsonValue>::const_iterator pit;
-                        pit = pv.object_values.find("id"); if (pit != pv.object_values.end()) ref.id = pit->second.string_value;
-                        pit = pv.object_values.find("version"); if (pit != pv.object_values.end()) ref.version = pit->second.string_value;
-                        ms.packs.push_back(ref);
-                    }
-                }
-            }
-            g_db.mod_sets.push_back(ms);
-        }
-    }
-    JsonValue servers = root.object_values["servers"];
-    if (servers.kind == JsonValue::JSON_ARRAY) {
-        for (size_t i = 0; i < servers.array_values.size(); ++i) {
-            const JsonValue &sv = servers.array_values[i];
-            if (sv.kind != JsonValue::JSON_OBJECT) continue;
-            LauncherServer s;
-            std::map<std::string, JsonValue>::const_iterator it;
-            it = sv.object_values.find("server_id"); if (it != sv.object_values.end()) s.server_id = it->second.string_value;
-            it = sv.object_values.find("address"); if (it != sv.object_values.end()) s.address = it->second.string_value;
-            it = sv.object_values.find("name"); if (it != sv.object_values.end()) s.name = it->second.string_value;
-            it = sv.object_values.find("last_seen"); if (it != sv.object_values.end()) s.last_seen = it->second.string_value;
-            it = sv.object_values.find("favorite"); if (it != sv.object_values.end()) s.favorite = it->second.bool_value;
-            it = sv.object_values.find("tags");
-            if (it != sv.object_values.end() && it->second.kind == JsonValue::JSON_ARRAY) {
-                const JsonValue &tags = it->second;
-                for (size_t j = 0; j < tags.array_values.size(); ++j) {
-                    s.tags.push_back(tags.array_values[j].string_value);
-                }
-            }
-            g_db.servers.push_back(s);
-        }
-    }
-    JsonValue manual = root.object_values["manual_install_paths"];
-    if (manual.kind == JsonValue::JSON_ARRAY) {
-        for (size_t i = 0; i < manual.array_values.size(); ++i) {
-            g_db.manual_install_paths.push_back(manual.array_values[i].string_value);
-        }
-    }
-    if (root.object_values.find("plugin_data") != root.object_values.end()) {
-        g_db.plugin_data = root.object_values.find("plugin_data")->second;
-    }
-    g_loaded = true;
+    std::fwrite(text.c_str(), 1, text.size(), f);
+    std::fclose(f);
 }
 
-void db_save(const LauncherContext &ctx)
-{
-    if (!g_loaded) return;
-    ensure_db_path(ctx);
-    JsonValue root = JsonValue::make_object();
-    root.object_values["schema_version"] = JsonValue::make_number(g_db.schema_version);
-    JsonValue installs = JsonValue::make_array();
-    for (size_t i = 0; i < g_db.installs.size(); ++i) {
-        installs.array_values.push_back(install_to_json(g_db.installs[i]));
-    }
-    root.object_values["installs"] = installs;
-
-    JsonValue profiles = JsonValue::make_array();
-    for (size_t i = 0; i < g_db.profiles.size(); ++i) profiles.array_values.push_back(profile_to_json(g_db.profiles[i]));
-    root.object_values["profiles"] = profiles;
-
-    JsonValue modsets = JsonValue::make_array();
-    for (size_t i = 0; i < g_db.mod_sets.size(); ++i) modsets.array_values.push_back(modset_to_json(g_db.mod_sets[i]));
-    root.object_values["mod_sets"] = modsets;
-
-    JsonValue servers = JsonValue::make_array();
-    for (size_t i = 0; i < g_db.servers.size(); ++i) servers.array_values.push_back(server_to_json(g_db.servers[i]));
-    root.object_values["servers"] = servers;
-
-    JsonValue manual = JsonValue::make_array();
-    for (size_t i = 0; i < g_db.manual_install_paths.size(); ++i) manual.array_values.push_back(JsonValue::make_string(g_db.manual_install_paths[i]));
-    root.object_values["manual_install_paths"] = manual;
-
-    root.object_values["plugin_data"] = g_db.plugin_data.kind == JsonValue::JSON_NULL ? JsonValue::make_object() : g_db.plugin_data;
-
-    std::string text = json_stringify(root, 0);
-    FILE *f = fopen(g_db_path.c_str(), "wb");
-    if (!f) return;
-    fwrite(text.c_str(), 1, text.size(), f);
-    fclose(f);
-}
-
-std::vector<InstallInfo> db_get_installs() { return g_db.installs; }
-
-void db_add_or_update_install(const InstallInfo &info)
-{
-    for (size_t i = 0; i < g_db.installs.size(); ++i) {
-        if (g_db.installs[i].install_id == info.install_id || g_db.installs[i].root_path == info.root_path) {
-            g_db.installs[i] = info;
-            return;
-        }
-    }
-    g_db.installs.push_back(info);
-}
-
-std::vector<LauncherProfile> db_get_profiles() { return g_db.profiles; }
-
-void db_add_profile(const LauncherProfile &p)
-{
-    g_db.profiles.push_back(p);
-}
-
-std::vector<std::string> db_get_manual_paths() { return g_db.manual_install_paths; }
-
-void db_add_manual_path(const std::string &p)
-{
-    g_db.manual_install_paths.push_back(p);
-}
-
-bool db_set_plugin_kv(const std::string &plugin_id, const std::string &key, const std::string &value)
-{
-    if (g_db.plugin_data.kind != JsonValue::JSON_OBJECT) g_db.plugin_data = JsonValue::make_object();
-    JsonValue &pd = g_db.plugin_data;
-    if (pd.object_values.find(plugin_id) == pd.object_values.end()) {
-        pd.object_values[plugin_id] = JsonValue::make_object();
-    }
-    pd.object_values[plugin_id].object_values[key] = JsonValue::make_string(value);
-    return true;
-}
-
-std::string db_get_plugin_kv(const std::string &plugin_id, const std::string &key, const std::string &default_val)
-{
-    if (g_db.plugin_data.kind != JsonValue::JSON_OBJECT) return default_val;
-    std::map<std::string, JsonValue>::iterator it = g_db.plugin_data.object_values.find(plugin_id);
-    if (it == g_db.plugin_data.object_values.end()) return default_val;
-    std::map<std::string, JsonValue>::iterator jt = it->second.object_values.find(key);
-    if (jt == it->second.object_values.end()) return default_val;
-    return jt->second.string_value;
-}
+} // namespace dom_launcher

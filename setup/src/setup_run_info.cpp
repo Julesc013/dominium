@@ -6,13 +6,15 @@
 #include <cstdio>
 #include <vector>
 
+using namespace dom_shared;
+
 static void discover_in_root(const std::string &root, std::vector<InstallInfo> &out)
 {
-    if (manifest_exists(root)) {
-        bool ok = false;
-        std::string err;
-        InstallInfo info = parse_install_manifest(root, ok, err);
-        if (ok) out.push_back(info);
+    if (manifest_install_exists(root)) {
+        InstallInfo info;
+        if (parse_install_manifest(root, info)) {
+            out.push_back(info);
+        }
     }
 }
 
@@ -38,11 +40,9 @@ int run_list(const SetupConfig &cfg)
 
 int run_info(const SetupConfig &cfg)
 {
-    bool ok = false;
-    std::string err;
-    InstallInfo info = parse_install_manifest(cfg.install_root, ok, err);
-    if (!ok) {
-        log_error("info failed: " + err);
+    InstallInfo info;
+    if (!parse_install_manifest(cfg.install_root, info)) {
+        log_error("info failed: could not parse manifest");
         return 1;
     }
     std::printf("{\"install_id\":\"%s\",\"install_type\":\"%s\",\"platform\":\"%s\",\"version\":\"%s\",\"root_path\":\"%s\"}\n",

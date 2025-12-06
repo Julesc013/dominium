@@ -18,6 +18,8 @@
 #define FILENO fileno
 #endif
 
+using namespace dom_shared;
+
 static bool arg_value(const char *arg, const char *key, std::string &out)
 {
     size_t n = std::strlen(key);
@@ -99,13 +101,13 @@ void load_setup_config_file(SetupConfig &cfg)
     while ((n = std::fread(buf, 1, sizeof(buf), f)) > 0) content.append(buf, n);
     std::fclose(f);
     JsonValue root;
-    if (!json_parse(content, root) || root.kind != JsonValue::JSON_OBJECT) {
+    if (!json_parse(content, root) || root.type() != JsonValue::Object) {
         log_warn("invalid config file");
         return;
     }
-    if (root.object_values.find("mode") != root.object_values.end()) cfg.mode = root.object_values["mode"].string_value;
-    if (root.object_values.find("install_root") != root.object_values.end()) cfg.install_root = root.object_values["install_root"].string_value;
-    if (root.object_values.find("version") != root.object_values.end()) cfg.version = root.object_values["version"].string_value;
+    if (root.has("mode")) cfg.mode = root["mode"].as_string(cfg.mode);
+    if (root.has("install_root")) cfg.install_root = root["install_root"].as_string(cfg.install_root);
+    if (root.has("version")) cfg.version = root["version"].as_string(cfg.version);
 }
 
 void apply_cli_overrides(SetupConfig &cfg, int argc, char **argv)

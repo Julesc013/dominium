@@ -81,21 +81,21 @@ void setup_plugins_apply_profiles(SetupConfig &cfg)
     }
 }
 
-void setup_plugins_post_install(const InstallInfo &info)
+void setup_plugins_post_install(const dom_shared::InstallInfo &info)
 {
     for (size_t i = 0; i < g_plugins.post_install.size(); ++i) {
         if (g_plugins.post_install[i].run) g_plugins.post_install[i].run(&info);
     }
 }
 
-void setup_plugins_post_repair(const InstallInfo &info)
+void setup_plugins_post_repair(const dom_shared::InstallInfo &info)
 {
     for (size_t i = 0; i < g_plugins.post_repair.size(); ++i) {
         if (g_plugins.post_repair[i].run) g_plugins.post_repair[i].run(&info);
     }
 }
 
-void setup_plugins_post_uninstall(const InstallInfo &info)
+void setup_plugins_post_uninstall(const dom_shared::InstallInfo &info)
 {
     for (size_t i = 0; i < g_plugins.post_uninstall.size(); ++i) {
         if (g_plugins.post_uninstall[i].run) g_plugins.post_uninstall[i].run(&info);

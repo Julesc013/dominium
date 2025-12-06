@@ -11,8 +11,8 @@
 void setup_plugins_load();
 void setup_plugins_unload();
 void setup_plugins_apply_profiles(SetupConfig &cfg);
-void setup_plugins_post_install(const InstallInfo &info);
-void setup_plugins_post_repair(const InstallInfo &info);
-void setup_plugins_post_uninstall(const InstallInfo &info);
+void setup_plugins_post_install(const dom_shared::InstallInfo &info);
+void setup_plugins_post_repair(const dom_shared::InstallInfo &info);
+void setup_plugins_post_uninstall(const dom_shared::InstallInfo &info);
 
 #endif /* DOM_SETUP_PLUGINS_H */

@@ -4,6 +4,8 @@
 #include <cstdlib>
 #include <cstring>
 
+using namespace dom_shared;
+
 int main(int argc, char **argv)
 {
     SetupConfig cfg;

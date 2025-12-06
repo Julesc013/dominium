@@ -6,6 +6,7 @@ add_library(dom_shared STATIC
     src/logging.cpp
     src/uuid.cpp
     src/manifest_install.cpp
+    src/process.cpp
 )
 
 target_include_directories(dom_shared

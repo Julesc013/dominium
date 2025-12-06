@@ -4,6 +4,8 @@
 #include "dom_setup_config.h"
 #include "dom_shared/os_paths.h"
 
+using namespace dom_shared;
+
 int main(void)
 {
     SetupConfig cfg;

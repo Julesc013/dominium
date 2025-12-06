@@ -5,24 +5,57 @@
 #include <map>
 #include <vector>
 
-struct JsonValue {
-    enum Kind { JSON_NULL, JSON_BOOL, JSON_NUMBER, JSON_STRING, JSON_OBJECT, JSON_ARRAY } kind;
-    bool bool_value;
-    double number_value;
-    std::string string_value;
-    std::map<std::string, JsonValue> object_values;
-    std::vector<JsonValue> array_values;
+namespace dom_shared {
 
-    JsonValue() : kind(JSON_NULL), bool_value(false), number_value(0.0) {}
-    static JsonValue make_null();
-    static JsonValue make_bool(bool v);
-    static JsonValue make_number(double v);
-    static JsonValue make_string(const std::string &v);
-    static JsonValue make_object();
-    static JsonValue make_array();
+class JsonValue {
+public:
+    enum Type { Null, Bool, Number, String, Object, Array };
+
+    JsonValue();
+    explicit JsonValue(Type t);
+
+    static JsonValue object();
+    static JsonValue array();
+
+    Type type() const;
+
+    // Object access
+    bool has(const std::string& key) const;
+    const JsonValue& operator[](const std::string& key) const;
+    JsonValue&       operator[](const std::string& key);
+    const std::map<std::string, JsonValue>& object_items() const;
+
+    // Array access
+    void             push_back(const JsonValue& v);
+    const JsonValue& at(size_t idx) const;
+    size_t           size() const;
+    const std::vector<JsonValue>& array_items() const;
+
+    // Primitive setters/getters
+    void        set_string(const std::string& s);
+    std::string as_string(const std::string& def = "") const;
+
+    void        set_number(double n);
+    double      as_number(double def = 0.0) const;
+
+    void        set_bool(bool b);
+    bool        as_bool(bool def = false) const;
+
+    // Internal stringify helper (exposed for writer utility)
+    void stringify_internal(std::string& out, int indent, int indent_step, bool pretty) const;
+
+private:
+    Type type_;
+    bool bool_value_;
+    double num_value_;
+    std::string str_value_;
+    std::map<std::string, JsonValue> object_value_;
+    std::vector<JsonValue> array_value_;
 };
 
-bool json_parse(const std::string &text, JsonValue &out);
-std::string json_stringify(const JsonValue &v, int indent = 0);
+bool json_parse(const std::string& text, JsonValue& out);
+std::string json_stringify(const JsonValue& v, bool pretty = false);
 
-#endif /* DOM_SHARED_JSON_H */
+} // namespace dom_shared
+
+#endif

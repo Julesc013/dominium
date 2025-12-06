@@ -49,7 +49,7 @@ No new top-level directories may be introduced without updating this file first.
 - No platform headers outside engine platform wrappers; no determinism violations.
 
 ### `/launcher`
-- Core launcher code (C++98): install discovery, manifest reading, profiles, mod sets, server/browser/social/tool hooks, instance supervision, and UI frontends (CLI/TUI/GUI stubs).
+- Core launcher code (C++98): install discovery, manifest reading, profiles, mod sets, server/browser/social/tool hooks, instance supervision, and UI frontends (CLI/TUI/GUI stubs). Core state/DB/discovery scaffolding lives under `launcher/src/core`.
 - Uses runtime CLIs and manifests only; does not link against `/engine`.
 - Plugin-ready API for tabs/commands; stores launcher DB under user/portable data roots.
 
@@ -59,7 +59,7 @@ No new top-level directories may be introduced without updating this file first.
 - Plugin-ready architecture for install profiles and hooks (stubs allowed until plugins exist).
 
 ### `/shared`
-- Common infrastructure for non-engine code: path helpers, JSON reader/writer, logging, UUIDs, manifest helpers.
+- Common infrastructure for non-engine code: path helpers, JSON reader/writer, logging, UUIDs, process helpers, manifest helpers.
 - Linkable from launcher/setup/tools; no engine dependencies.
 
 ### `/tools`

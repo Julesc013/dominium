@@ -3,6 +3,8 @@
 
 #include <string>
 
+using namespace dom_shared;
+
 std::string setup_user_data_root_for_install(const std::string &install_type, const std::string &install_root)
 {
     if (install_type == "portable") {

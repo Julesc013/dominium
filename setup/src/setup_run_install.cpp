@@ -14,6 +14,8 @@
 #include <direct.h>
 #endif
 
+using namespace dom_shared;
+
 static bool ensure_dir(const std::string &path)
 {
     if (path.empty()) return false;
@@ -48,7 +50,7 @@ int run_install(const SetupConfig &cfg)
 
     make_layout(mutable_cfg.install_root);
 
-    InstallInfo info;
+    dom_shared::InstallInfo info;
     info.install_id = generate_uuid();
     info.install_type = mutable_cfg.mode;
     info.platform = os_get_platform_id();
@@ -56,11 +58,8 @@ int run_install(const SetupConfig &cfg)
     info.root_path = mutable_cfg.install_root;
     info.created_by = "setup";
 
-    bool ok = false;
-    std::string err;
-    write_install_manifest(info, ok, err);
-    if (!ok) {
-        log_error("failed to write manifest: " + err);
+    if (!write_install_manifest(info)) {
+        log_error("failed to write manifest");
         return 1;
     }
 
@@ -74,6 +73,6 @@ int run_install(const SetupConfig &cfg)
     setup_plugins_post_install(info);
     setup_plugins_unload();
 
-    log_info("install completed at " + mutable_cfg.install_root);
+    log_info("install completed at %s", mutable_cfg.install_root.c_str());
     return 0;
 }
