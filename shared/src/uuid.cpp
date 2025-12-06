@@ -3,6 +3,7 @@
 #include <sstream>
 #include <cstdlib>
 #include <ctime>
+#include <cstdio>
 
 static unsigned int next_rand()
 {

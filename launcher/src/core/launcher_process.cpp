@@ -37,7 +37,7 @@ Instance start_instance(const LauncherContext &ctx,
     inst.stop_time_utc = 0.0;
     inst.log_path = os_path_join(os_path_join(ctx.user_data_root, "runtime_logs"), inst.instance_id + ".log");
 
-    FILE *f = std::fopen(inst.log_path.c_str(), "wb");
+    FILE *f = fopen(inst.log_path.c_str(), "wb");
     if (f) {
         std::fprintf(f, "Started instance %s role=%s display=%d universe=%s\n",
                      inst.instance_id.c_str(), role.c_str(), (int)display, universe_path.c_str());

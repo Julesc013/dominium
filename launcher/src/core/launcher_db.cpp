@@ -95,7 +95,7 @@ void db_load(const LauncherContext &ctx)
 {
     ensure_db_path(ctx);
     reset_defaults();
-    FILE *f = std::fopen(g_db_path.c_str(), "rb");
+    FILE *f = fopen(g_db_path.c_str(), "rb");
     if (!f) {
         g_loaded = true;
         return;
@@ -123,11 +123,12 @@ void db_load(const LauncherContext &ctx)
             const JsonValue &p = profiles.array_values[i];
             if (p.kind != JsonValue::JSON_OBJECT) continue;
             LauncherProfile prof;
-            prof.profile_id = p.object_values["profile_id"].string_value;
-            prof.name = p.object_values["name"].string_value;
-            prof.default_install_id = p.object_values["default_install_id"].string_value;
-            prof.default_modset_id = p.object_values["default_modset_id"].string_value;
-            prof.preferred_display_mode = p.object_values["preferred_display_mode"].string_value;
+            std::map<std::string, JsonValue>::const_iterator it;
+            it = p.object_values.find("profile_id"); if (it != p.object_values.end()) prof.profile_id = it->second.string_value;
+            it = p.object_values.find("name"); if (it != p.object_values.end()) prof.name = it->second.string_value;
+            it = p.object_values.find("default_install_id"); if (it != p.object_values.end()) prof.default_install_id = it->second.string_value;
+            it = p.object_values.find("default_modset_id"); if (it != p.object_values.end()) prof.default_modset_id = it->second.string_value;
+            it = p.object_values.find("preferred_display_mode"); if (it != p.object_values.end()) prof.preferred_display_mode = it->second.string_value;
             g_db.profiles.push_back(prof);
         }
     }
@@ -137,17 +138,22 @@ void db_load(const LauncherContext &ctx)
             const JsonValue &m = modsets.array_values[i];
             if (m.kind != JsonValue::JSON_OBJECT) continue;
             LauncherModSet ms;
-            ms.modset_id = m.object_values["modset_id"].string_value;
-            ms.name = m.object_values["name"].string_value;
-            const JsonValue &packs = m.object_values["packs"];
-            if (packs.kind == JsonValue::JSON_ARRAY) {
-                for (size_t j = 0; j < packs.array_values.size(); ++j) {
-                    LauncherModPackRef ref;
-                    const JsonValue &pv = packs.array_values[j];
-                    if (pv.kind != JsonValue::JSON_OBJECT) continue;
-                    ref.id = pv.object_values.find("id") != pv.object_values.end() ? pv.object_values.find("id")->second.string_value : "";
-                    ref.version = pv.object_values.find("version") != pv.object_values.end() ? pv.object_values.find("version")->second.string_value : "";
-                    ms.packs.push_back(ref);
+            std::map<std::string, JsonValue>::const_iterator it;
+            it = m.object_values.find("modset_id"); if (it != m.object_values.end()) ms.modset_id = it->second.string_value;
+            it = m.object_values.find("name"); if (it != m.object_values.end()) ms.name = it->second.string_value;
+            std::map<std::string, JsonValue>::const_iterator pack_it = m.object_values.find("packs");
+            if (pack_it != m.object_values.end()) {
+                const JsonValue &packs = pack_it->second;
+                if (packs.kind == JsonValue::JSON_ARRAY) {
+                    for (size_t j = 0; j < packs.array_values.size(); ++j) {
+                        LauncherModPackRef ref;
+                        const JsonValue &pv = packs.array_values[j];
+                        if (pv.kind != JsonValue::JSON_OBJECT) continue;
+                        std::map<std::string, JsonValue>::const_iterator pit;
+                        pit = pv.object_values.find("id"); if (pit != pv.object_values.end()) ref.id = pit->second.string_value;
+                        pit = pv.object_values.find("version"); if (pit != pv.object_values.end()) ref.version = pit->second.string_value;
+                        ms.packs.push_back(ref);
+                    }
                 }
             }
             g_db.mod_sets.push_back(ms);
@@ -159,13 +165,15 @@ void db_load(const LauncherContext &ctx)
             const JsonValue &sv = servers.array_values[i];
             if (sv.kind != JsonValue::JSON_OBJECT) continue;
             LauncherServer s;
-            s.server_id = sv.object_values["server_id"].string_value;
-            s.address = sv.object_values["address"].string_value;
-            s.name = sv.object_values["name"].string_value;
-            s.last_seen = sv.object_values["last_seen"].string_value;
-            s.favorite = sv.object_values.find("favorite") != sv.object_values.end() ? sv.object_values.find("favorite")->second.bool_value : false;
-            const JsonValue &tags = sv.object_values["tags"];
-            if (tags.kind == JsonValue::JSON_ARRAY) {
+            std::map<std::string, JsonValue>::const_iterator it;
+            it = sv.object_values.find("server_id"); if (it != sv.object_values.end()) s.server_id = it->second.string_value;
+            it = sv.object_values.find("address"); if (it != sv.object_values.end()) s.address = it->second.string_value;
+            it = sv.object_values.find("name"); if (it != sv.object_values.end()) s.name = it->second.string_value;
+            it = sv.object_values.find("last_seen"); if (it != sv.object_values.end()) s.last_seen = it->second.string_value;
+            it = sv.object_values.find("favorite"); if (it != sv.object_values.end()) s.favorite = it->second.bool_value;
+            it = sv.object_values.find("tags");
+            if (it != sv.object_values.end() && it->second.kind == JsonValue::JSON_ARRAY) {
+                const JsonValue &tags = it->second;
                 for (size_t j = 0; j < tags.array_values.size(); ++j) {
                     s.tags.push_back(tags.array_values[j].string_value);
                 }
@@ -216,10 +224,10 @@ void db_save(const LauncherContext &ctx)
     root.object_values["plugin_data"] = g_db.plugin_data.kind == JsonValue::JSON_NULL ? JsonValue::make_object() : g_db.plugin_data;
 
     std::string text = json_stringify(root, 0);
-    FILE *f = std::fopen(g_db_path.c_str(), "wb");
+    FILE *f = fopen(g_db_path.c_str(), "wb");
     if (!f) return;
-    std::fwrite(text.c_str(), 1, text.size(), f);
-    std::fclose(f);
+    fwrite(text.c_str(), 1, text.size(), f);
+    fclose(f);
 }
 
 std::vector<InstallInfo> db_get_installs() { return g_db.installs; }

@@ -42,3 +42,8 @@ target_include_directories(dom_setup
         ${CMAKE_CURRENT_SOURCE_DIR}/include
         ${CMAKE_SOURCE_DIR}/shared/include
 )
+
+if(MINGW)
+    target_link_options(dom_setup PRIVATE -static -static-libstdc++ -static-libgcc -Wl,-Bstatic -lwinpthread -Wl,-Bdynamic)
+    dom_copy_mingw_runtime(dom_setup)
+endif()

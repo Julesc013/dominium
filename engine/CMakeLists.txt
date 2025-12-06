@@ -17,7 +17,11 @@ set(_dom_engine_sources
     save_region.c
     save_universe.c
     engine_api.c
+    core/dom_core_version.c
 )
 
 add_library(dom_engine STATIC ${_dom_engine_sources})
-target_include_directories(dom_engine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(dom_engine PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/core
+)
