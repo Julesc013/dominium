@@ -49,9 +49,9 @@ No new top-level directories may be introduced without updating this file first.
 - No platform headers outside engine platform wrappers; no determinism violations.
 
 ### `/launcher`
-- Core launcher code (C++98): install discovery, manifest reading, profiles, mod sets, server browser hooks, instance supervision, and UI frontends (CLI/TUI/GUI stubs).
+- Core launcher code (C++98): install discovery, manifest reading, profiles, mod sets, server/browser/social/tool hooks, instance supervision, and UI frontends (CLI/TUI/GUI stubs).
 - Uses runtime CLIs and manifests only; does not link against `/engine`.
-- Stores launcher DB under user/portable data roots.
+- Plugin-ready API for tabs/commands; stores launcher DB under user/portable data roots.
 
 ### `/setup`
 - `dom_setup` tool, install manifest handling, OS path helpers, and CLI for install/repair/uninstall/list/info.
