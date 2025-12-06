@@ -48,11 +48,22 @@ endif()
 add_compile_options(${_dom_warning_flags})
 
 # --------------------------------------------------------------------
+# Build toggles
+# --------------------------------------------------------------------
+option(DOM_BUILD_LAUNCHER "Build dom_launcher multi-mode launcher" ON)
+option(DOM_BUILD_SETUP "Build dom_setup install/repair tool" ON)
+
+# --------------------------------------------------------------------
 # Subdirectories
 # --------------------------------------------------------------------
 add_subdirectory(engine)
 add_subdirectory(runtime)
-add_subdirectory(launcher)
+if(DOM_BUILD_SETUP)
+    add_subdirectory(setup)
+endif()
+if(DOM_BUILD_LAUNCHER)
+    add_subdirectory(launcher)
+endif()
 add_subdirectory(tools)
 add_subdirectory(tests)
 
