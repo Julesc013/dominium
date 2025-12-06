@@ -152,3 +152,12 @@ std::string os_get_per_user_game_data_root()
     return os_path_join(base, "dominium");
 #endif
 }
+
+std::vector<std::string> os_get_default_install_roots()
+{
+    std::vector<std::string> roots;
+    roots.push_back(os_get_default_per_user_install_root());
+    roots.push_back(os_get_default_system_install_root());
+    roots.push_back(os_get_default_portable_install_root());
+    return roots;
+}

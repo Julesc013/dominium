@@ -1,52 +1,51 @@
 cmake_minimum_required(VERSION 3.15)
 
-set(DOM_LAUNCHER_SOURCES
-    src/main.cpp
-    src/launcher_core.cpp
-    src/launcher_db.cpp
-    src/launcher_discovery.cpp
-    src/launcher_logging.cpp
-    src/launcher_process.cpp
-    src/ui/cli_main.cpp
-    src/ui/gui_main.cpp
-    src/ui/tui_main.cpp
+set(LAUNCHER_CORE_SOURCES
+    src/core/launcher_context.cpp
+    src/core/launcher_db.cpp
+    src/core/launcher_discovery.cpp
+    src/core/launcher_logging.cpp
+    src/core/launcher_process.cpp
+    src/core/launcher_plugins.cpp
 )
 
-add_library(dom_launcher_lib STATIC
-    src/launcher_core.cpp
-    src/launcher_db.cpp
-    src/launcher_discovery.cpp
-    src/launcher_logging.cpp
-    src/launcher_process.cpp
+set(LAUNCHER_UI_SOURCES
+    src/ui/launcher_ui_cli.cpp
+    src/ui/launcher_ui_tui.cpp
+    src/ui/launcher_ui_gui.cpp
 )
 
-target_include_directories(dom_launcher_lib
-    PUBLIC
+add_library(dom_launcher_core STATIC
+    ${LAUNCHER_CORE_SOURCES}
+)
+
+target_include_directories(dom_launcher_core
+    PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
-        ${CMAKE_SOURCE_DIR}/setup/include
         ${CMAKE_SOURCE_DIR}/shared/include
 )
 
-target_link_libraries(dom_launcher_lib
-    PUBLIC dom_shared
+target_link_libraries(dom_launcher_core
+    PRIVATE
+        dom_shared
 )
+target_compile_features(dom_launcher_core PRIVATE cxx_std_98)
 
 add_executable(dom_launcher
     src/main.cpp
-    src/ui/cli_main.cpp
-    src/ui/gui_main.cpp
-    src/ui/tui_main.cpp
+    ${LAUNCHER_UI_SOURCES}
 )
 
 target_include_directories(dom_launcher
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
-        ${CMAKE_SOURCE_DIR}/setup/include
         ${CMAKE_SOURCE_DIR}/shared/include
 )
 
 target_link_libraries(dom_launcher
     PRIVATE
-        dom_launcher_lib
+        dom_launcher_core
         dom_shared
 )
+
+target_compile_features(dom_launcher PRIVATE cxx_std_98)
