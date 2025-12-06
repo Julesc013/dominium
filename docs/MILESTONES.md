@@ -1,50 +1,15 @@
+# Dominium — Milestones (Engine v0)
 
-# Dominium — MILESTONES & ROADMAP
+## v0 — Deterministic core bootstrap
+- Build `dom_engine` as a C89 static library with fixed-point-only math and explicit RNG.
+- Surface/world layout implemented (2²⁴ m torus, 4096 m vertical), chunk hashing, deterministic `SimPos` ↔ chunk mapping.
+- Simple heightfield geometry sampling and scalar field stubs.
+- ECS present with deterministic ordering; per-surface tick order fixed (input → ecs → networks → fluids → climate → thermal → edits).
+- Save/load for `universe.meta`, `surface.meta`, region/chunk TLV containers; caches are regenerable.
+- Headless runtime (`dom_cli`) can create/load a universe, tick N times, and save.
 
----
-
-## M0 — Pre-production
-- Finalise Design Book v3.0
-- Freeze SPEC-core
-- Establish directory tree
-
-## M1 — Engine Foundations
-- File I/O, logging, RNG
-- Tick loop
-- Chunk/world paging
-
-## M2 — Networks
-- Power simulation
-- Data simulation
-- Fluids networks
-
-## M3 — Logistics
-- TEU containers
-- Vehicles
-- Routes & corridors
-
-## M4 — Economy + Research
-- Local/global markets
-- Currency model
-- Research & tech tree
-
-## M5 — Climate + Weather
-- Planet climate
-- Weather generation
-- Hydrology
-
-## M6 — UI/UX
-- 2D vector mode
-- 2D texture mode
-- 3D mode
-
-## M7 — Tools & Modding
-- World editor
-- Asset pipeline
-- Lua scripting
-
-## M8 — Release Engineering
-- Packaging
-- Launcher
-- Platform outputs
-
+## Next steps (post-v0)
+- Flesh out field sampling (atmo/hydro/thermal) and procedural registries.
+- Add edit operations and region chunk persistence beyond stubs.
+- Expand runtime frontends (renderer/UI) while preserving fixed-point boundaries.
+- Extend tools for inspection/validation/migration using shared IO modules.
