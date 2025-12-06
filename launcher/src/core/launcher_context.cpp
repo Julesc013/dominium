@@ -5,6 +5,7 @@
 #include "dom_shared/uuid.h"
 
 #include <sys/stat.h>
+#include <cstdio>
 #ifdef _WIN32
 #include <direct.h>
 #endif
@@ -14,8 +15,8 @@ static bool g_ctx_inited = false;
 
 static bool file_exists(const std::string &path)
 {
-    FILE *f = std::fopen(path.c_str(), "rb");
-    if (f) { std::fclose(f); return true; }
+    FILE *f = fopen(path.c_str(), "rb");
+    if (f) { fclose(f); return true; }
     return false;
 }
 

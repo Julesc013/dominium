@@ -24,3 +24,8 @@ target_link_libraries(dom_main
 )
 
 target_compile_features(dom_main PRIVATE cxx_std_98)
+
+if(MINGW)
+    target_link_options(dom_main PRIVATE -static -static-libstdc++ -static-libgcc -Wl,-Bstatic -lwinpthread -Wl,-Bdynamic)
+    dom_copy_mingw_runtime(dom_main)
+endif()

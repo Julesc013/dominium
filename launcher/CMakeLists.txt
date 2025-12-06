@@ -48,4 +48,9 @@ target_link_libraries(dom_launcher
         dom_shared
 )
 
+if(MINGW)
+    target_link_options(dom_launcher PRIVATE -static -static-libstdc++ -static-libgcc -Wl,-Bstatic -lwinpthread -Wl,-Bdynamic)
+    dom_copy_mingw_runtime(dom_launcher)
+endif()
+
 target_compile_features(dom_launcher PRIVATE cxx_std_98)

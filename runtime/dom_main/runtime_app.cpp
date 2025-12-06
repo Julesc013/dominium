@@ -13,6 +13,7 @@
 
 extern "C" {
 #include "engine_api.h"
+#include "core/dom_core_types.h"
 #include "core/dom_core_version.h"
 }
 

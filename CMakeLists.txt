@@ -54,6 +54,40 @@ option(DOM_BUILD_LAUNCHER "Build dom_launcher multi-mode launcher" ON)
 option(DOM_BUILD_SETUP "Build dom_setup install/repair tool" ON)
 
 # --------------------------------------------------------------------
+# MinGW static runtime (avoid libstdc++/libgcc DLL dependency)
+# --------------------------------------------------------------------
+if(MINGW)
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static -static-libstdc++ -static-libgcc -Wl,-Bstatic -lwinpthread -Wl,-Bdynamic")
+    # Helper to copy MinGW runtime DLLs next to executables (fallback if static link is ineffective)
+    get_filename_component(_CXX_DIR "${CMAKE_CXX_COMPILER}" DIRECTORY)
+    set(_STDCPP_DLL "${_CXX_DIR}/libstdc++-6.dll")
+    set(_GCC_DLL_SEH "${_CXX_DIR}/libgcc_s_seh-1.dll")
+    set(_GCC_DLL_DW2 "${_CXX_DIR}/libgcc_s_dw2-1.dll")
+    set(_WINPTHREAD_DLL "${_CXX_DIR}/libwinpthread-1.dll")
+    function(dom_copy_mingw_runtime target_name)
+        if(EXISTS "${_STDCPP_DLL}")
+            add_custom_command(TARGET ${target_name} POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different "${_STDCPP_DLL}" $<TARGET_FILE_DIR:${target_name}>
+                COMMENT "Copying libstdc++ runtime for ${target_name}")
+        endif()
+        if(EXISTS "${_GCC_DLL_SEH}")
+            add_custom_command(TARGET ${target_name} POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different "${_GCC_DLL_SEH}" $<TARGET_FILE_DIR:${target_name}>
+                COMMENT "Copying libgcc (seh) runtime for ${target_name}")
+        elseif(EXISTS "${_GCC_DLL_DW2}")
+            add_custom_command(TARGET ${target_name} POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different "${_GCC_DLL_DW2}" $<TARGET_FILE_DIR:${target_name}>
+                COMMENT "Copying libgcc (dw2) runtime for ${target_name}")
+        endif()
+        if(EXISTS "${_WINPTHREAD_DLL}")
+            add_custom_command(TARGET ${target_name} POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different "${_WINPTHREAD_DLL}" $<TARGET_FILE_DIR:${target_name}>
+                COMMENT "Copying winpthread runtime for ${target_name}")
+        endif()
+    endfunction()
+endif()
+
+# --------------------------------------------------------------------
 # Subdirectories
 # --------------------------------------------------------------------
 add_subdirectory(shared)
