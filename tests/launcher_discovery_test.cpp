@@ -1,30 +1,40 @@
 #include <cstdio>
 #include <string>
 #include <vector>
+#include <sys/stat.h>
+#ifdef _WIN32
+#include <direct.h>
+#endif
 
 #include "launcher_discovery.h"
-#include "dom_setup_install_manifest.h"
-#include "dom_setup_paths.h"
-#include "dom_setup_fs.h"
+#include "dom_shared/manifest_install.h"
+#include "dom_shared/os_paths.h"
+#include "dom_shared/uuid.h"
+#include "dom_shared/logging.h"
 
 static bool create_fake_install(const std::string &root, const std::string &install_id)
 {
-    dom_fs_make_dirs(root);
-    DomInstallManifest manifest;
-    manifest.schema_version = 1;
-    manifest.install_id = install_id;
-    manifest.install_type = "portable";
-    manifest.platform = dom_manifest_platform_tag();
-    manifest.version = "0.0.test";
-    manifest.created_at = "2025-12-06T00:00:00Z";
-    manifest.created_by = "test";
+    /* best-effort directory creation */
+#ifdef _WIN32
+    _mkdir(root.c_str());
+#else
+    mkdir(root.c_str(), 0755);
+#endif
+    InstallInfo info;
+    info.install_id = install_id;
+    info.install_type = "portable";
+    info.platform = os_get_platform_id();
+    info.version = "0.0.test";
+    info.root_path = root;
+    bool ok = false;
     std::string err;
-    return dom_manifest_write(dom_setup_path_join(root, "dominium_install.json"), manifest, err);
+    write_install_manifest(info, ok, err);
+    return ok;
 }
 
 int main(void)
 {
-    std::string tmp_root = dom_setup_path_join(dom_setup_get_cwd(), "tests_tmp_launcher_discovery");
+    std::string tmp_root = os_path_join(os_get_default_portable_install_root(), "tests_tmp_launcher_discovery");
     create_fake_install(tmp_root, "launcher-test");
 
     std::vector<LauncherInstall> installs;

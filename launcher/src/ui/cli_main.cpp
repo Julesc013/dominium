@@ -1,7 +1,6 @@
 #include "launcher_core.h"
 #include "launcher_logging.h"
-#include "dom_setup_cli.h"
-#include "dom_setup_paths.h"
+#include "dom_shared/os_paths.h"
 
 #include <cstdio>
 #include <cstring>
@@ -30,13 +29,6 @@ static void print_cli_usage()
     std::printf("  dom_launcher instances start --install-id=<id> [--exe=<path>] [--role=client|server|tool] [--display=gui|tui|cli|none]\n");
     std::printf("  dom_launcher instances stop --id=<instance-id>\n");
     std::printf("See docs/API/LAUNCHER_CLI.md for details.\n");
-}
-
-static bool call_dom_setup_repair(const std::string &root)
-{
-    std::string cmd = "dom_setup repair --install-root=" + root;
-    int rc = std::system(cmd.c_str());
-    return rc == 0;
 }
 
 int launcher_run_cli(int argc, char **argv)
@@ -90,21 +82,6 @@ int launcher_run_cli(int argc, char **argv)
                         inst->platform.c_str(),
                         inst->version.c_str());
             return 0;
-        } else if (action == std::string("repair")) {
-            std::string root;
-            for (int i = 3; i < argc; ++i) {
-                parse_arg(argv[i], "--install-root", root);
-            }
-            if (root.empty()) {
-                std::printf("repair requires --install-root\n");
-                return 1;
-            }
-            if (!call_dom_setup_repair(root)) {
-                std::printf("repair failed for %s\n", root.c_str());
-                return 1;
-            }
-            launcher_refresh_installs(ctx);
-            return 0;
         }
     } else if (group == std::string("instances")) {
         if (argc < 3) {
@@ -133,7 +110,7 @@ int launcher_run_cli(int argc, char **argv)
                 return 1;
             }
             if (exe.empty()) {
-                exe = dom_setup_path_join(inst->install_root, "bin/dom_cli");
+                exe = os_path_join(inst->install_root, "bin/dom_cli");
             }
             std::vector<std::string> args;
             LauncherInstance launched;

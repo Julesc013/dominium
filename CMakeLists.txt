@@ -56,6 +56,7 @@ option(DOM_BUILD_SETUP "Build dom_setup install/repair tool" ON)
 # --------------------------------------------------------------------
 # Subdirectories
 # --------------------------------------------------------------------
+add_subdirectory(shared)
 add_subdirectory(engine)
 add_subdirectory(runtime)
 if(DOM_BUILD_SETUP)

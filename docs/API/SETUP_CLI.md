@@ -1,25 +1,24 @@
 # dom_setup CLI
 
-`dom_setup` owns install creation, repair, uninstall, and discovery. It writes `dominium_install.json` into every install root and optionally records installs in a per-user index file.
+`dom_setup` owns install creation, repair, uninstall, and discovery. It writes `dominium_install.json` into every install root. The tool is plugin-ready (install profiles/hooks) and keeps setup logic outside the engine.
 
 ## Commands
-- `install --mode=portable|per-user|system --target=<path> [--version=X.Y.Z]`  
-  Creates an install at the target path (or OS default when omitted for per-user/system). Writes `dominium_install.json` (schema_version `1`) and prepares minimal layout (`bin/`, `data/`, `mods/`, `launcher/`).
-- `repair --install-root=<path>`  
-  Validates manifest presence and recreates minimal layout/placeholder files.
-- `uninstall --install-root=<path> [--remove-user-data]`  
-  Removes install root; optionally removes user-data root for the install type.
+- `install --mode=portable|per-user|system --install-root=PATH --version=X.Y.Z [--no-shortcuts] [--no-register-system] [--config=FILE] [--non-interactive]`  
+  Creates an install (defaults: per-user mode, per-user install root). Writes `dominium_install.json` and builds minimal layout (`bin/`, `data/`, `mods/`, `launcher/`). Portable installs are self-contained and skip registration/shortcuts.
+- `repair --install-root=PATH`  
+  Validates manifest presence and restores registration/shortcuts; future work can add file verification.
+- `uninstall --install-root=PATH [--remove-user-data]`  
+  Removes install root; optionally removes user-data tied to this install (conservative).
 - `list`  
-  Scans default roots and the current working directory for manifests and prints a summary.
-- `info --install-root=<path>`  
-  Prints manifest fields for a specific install.
+  Scans default roots (per-user/system/portable) for manifests and prints a summary.
+- `info --install-root=PATH`  
+  Prints manifest fields for a specific install (JSON one-liner).
 
 ## Paths and modes
-- Portable: install and user data stay under the target directory.
-- Per-user: defaults to `%LOCALAPPDATA%/Dominium/Programs` (Windows), `$XDG_DATA_HOME/dominium` (Linux), `~/Applications/Dominium` (macOS).
-- System: defaults to `%ProgramFiles%/Dominium`, `/opt/dominium`, `/Applications/Dominium.app`.
+- Portable: install and user data stay under the target directory; no system registration or shortcuts.
+- Per-user defaults: `%LOCALAPPDATA%/Dominium/Programs` (Windows), `$XDG_DATA_HOME/dominium` (Linux), `~/Applications/Dominium` (macOS).
+- System defaults: `%ProgramFiles%/Dominium`, `/opt/dominium`, `/Applications/Dominium.app`.
 - User data roots: `%LOCALAPPDATA%/Dominium`, `$XDG_DATA_HOME/dominium`, `~/Library/Application Support/Dominium` (portable uses install root).
-- Install index (best effort): user config root `install_index.json`.
 
 ## Exit codes
 - `0` success.
