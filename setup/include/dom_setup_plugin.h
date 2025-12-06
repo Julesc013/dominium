@@ -3,8 +3,9 @@
 
 #include <stdint.h>
 
+#include "dom_shared/manifest_install.h"
+
 struct SetupConfig;
-struct InstallInfo;
 
 typedef struct DomInstallProfileDescriptor {
     const char* id;
@@ -15,7 +16,7 @@ typedef struct DomInstallProfileDescriptor {
 typedef struct DomSetupHookDescriptor {
     const char* id;
     const char* description;
-    void (*run)(const InstallInfo* info);
+    void (*run)(const dom_shared::InstallInfo* info);
 } DomSetupHookDescriptor;
 
 typedef struct DomSetupPluginAPI {

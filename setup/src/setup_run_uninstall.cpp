@@ -17,6 +17,8 @@
 #include <unistd.h>
 #endif
 
+using namespace dom_shared;
+
 static bool remove_tree(const std::string &path)
 {
 #ifdef _WIN32
@@ -30,11 +32,9 @@ static bool remove_tree(const std::string &path)
 
 int run_uninstall(const SetupConfig &cfg)
 {
-    bool ok = false;
-    std::string err;
-    InstallInfo info = parse_install_manifest(cfg.install_root, ok, err);
-    if (!ok) {
-        log_error("uninstall failed: " + err);
+    dom_shared::InstallInfo info;
+    if (!parse_install_manifest(cfg.install_root, info)) {
+        log_error("uninstall failed: could not parse manifest");
         return 1;
     }
 
@@ -48,6 +48,6 @@ int run_uninstall(const SetupConfig &cfg)
     }
 
     setup_plugins_post_uninstall(info);
-    log_info("uninstall completed for " + cfg.install_root);
+    log_info("uninstall completed for %s", cfg.install_root.c_str());
     return 0;
 }

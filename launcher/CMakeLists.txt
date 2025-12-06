@@ -3,16 +3,8 @@ cmake_minimum_required(VERSION 3.15)
 set(LAUNCHER_CORE_SOURCES
     src/core/launcher_context.cpp
     src/core/launcher_db.cpp
+    src/core/launcher_state.cpp
     src/core/launcher_discovery.cpp
-    src/core/launcher_logging.cpp
-    src/core/launcher_process.cpp
-    src/core/launcher_plugins.cpp
-)
-
-set(LAUNCHER_UI_SOURCES
-    src/ui/launcher_ui_cli.cpp
-    src/ui/launcher_ui_tui.cpp
-    src/ui/launcher_ui_gui.cpp
 )
 
 add_library(dom_launcher_core STATIC
@@ -20,7 +12,7 @@ add_library(dom_launcher_core STATIC
 )
 
 target_include_directories(dom_launcher_core
-    PRIVATE
+    PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/include
         ${CMAKE_SOURCE_DIR}/shared/include
 )
@@ -33,7 +25,9 @@ target_compile_features(dom_launcher_core PRIVATE cxx_std_98)
 
 add_executable(dom_launcher
     src/main.cpp
-    ${LAUNCHER_UI_SOURCES}
+    src/ui/launcher_ui_cli.cpp
+    src/ui/launcher_ui_gui.cpp
+    src/ui/launcher_ui_tui.cpp
 )
 
 target_include_directories(dom_launcher

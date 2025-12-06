@@ -3,6 +3,10 @@
 
 #include <string>
 
-std::string generate_uuid();
+namespace dom_shared {
 
-#endif /* DOM_SHARED_UUID_H */
+std::string generate_uuid(); // returns a RFC4122-like string "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+
+} // namespace dom_shared
+
+#endif
