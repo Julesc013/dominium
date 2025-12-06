@@ -2,8 +2,8 @@
 
 #include "launcher_logging.h"
 #include "launcher_discovery.h"
-#include "dom_setup_install_manifest.h"
-#include "dom_setup_paths.h"
+#include "dom_shared/manifest_install.h"
+#include "dom_shared/os_paths.h"
 
 #include <cstdlib>
 #include <sstream>
@@ -50,13 +50,18 @@ bool launcher_init_context(LauncherContext &ctx, const std::string &preferred_in
 {
     std::string install_type = "per-user";
     if (!preferred_install_root.empty()) {
-        DomInstallManifest manifest;
+        bool ok = false;
         std::string err;
-        if (dom_manifest_read(dom_setup_path_join(preferred_install_root, "dominium_install.json"), manifest, err)) {
+        InstallInfo manifest = parse_install_manifest(preferred_install_root, ok, err);
+        if (ok) {
             install_type = manifest.install_type;
         }
     }
-    ctx.launcher_db_path = dom_setup_launcher_db_path(install_type, preferred_install_root);
+    if (install_type == "portable") {
+        ctx.launcher_db_path = os_path_join(os_path_join(preferred_install_root, "launcher"), "db.json");
+    } else {
+        ctx.launcher_db_path = os_path_join(os_get_per_user_launcher_data_root(), "db.json");
+    }
     launcher_db_load(ctx.launcher_db_path, ctx.db);
     ctx.db.path = ctx.launcher_db_path;
     return launcher_refresh_installs(ctx);

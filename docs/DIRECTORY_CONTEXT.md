@@ -11,6 +11,7 @@ This file is the binding map for the repository. All launcher/setup work in this
 - `/game` — Dominium-specific logic and runtimes (C/C++98) built on the engine C ABI (client/server shells, game glue, thin launch entrypoints).
 - `/launcher` — C++98 multi-mode launcher (CLI/TUI/GUI), install discovery, process supervision, profiles/mods/tools wiring; never links the engine.
 - `/setup` — `dom_setup` C++98 tool for install/repair/uninstall/list/info and install manifests.
+- `/shared` — cross-cutting utilities (paths, JSON, logging, UUID, manifest helpers) used by launcher/setup/tools.
 - `/tools` — standalone utilities (C/C++/scripts) that reuse engine IO or runtime CLIs; offline editors, validators, SDK helpers.
 - `/data` — first-party data packs (base/DLC/packs/templates/schema).
 - `/mods` — third-party/local mods (manifests + data/scripts/assets/tests).
@@ -55,6 +56,11 @@ No new top-level directories may be introduced without updating this file first.
 ### `/setup`
 - `dom_setup` tool, install manifest handling, OS path helpers, and CLI for install/repair/uninstall/list/info.
 - Writes `dominium_install.json` into every install root; registers installs conservatively (registry/index files where allowed).
+- Plugin-ready architecture for install profiles and hooks (stubs allowed until plugins exist).
+
+### `/shared`
+- Common infrastructure for non-engine code: path helpers, JSON reader/writer, logging, UUIDs, manifest helpers.
+- Linkable from launcher/setup/tools; no engine dependencies.
 
 ### `/tools`
 - Offline utilities, editors, validators, SDK/pipeline helpers.

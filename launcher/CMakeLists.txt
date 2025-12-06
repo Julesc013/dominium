@@ -24,13 +24,12 @@ target_include_directories(dom_launcher_lib
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/include
         ${CMAKE_SOURCE_DIR}/setup/include
+        ${CMAKE_SOURCE_DIR}/shared/include
 )
 
-if(TARGET dom_setup_lib)
-    target_link_libraries(dom_launcher_lib
-        PUBLIC dom_setup_lib
-    )
-endif()
+target_link_libraries(dom_launcher_lib
+    PUBLIC dom_shared
+)
 
 add_executable(dom_launcher
     src/main.cpp
@@ -43,9 +42,11 @@ target_include_directories(dom_launcher
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
         ${CMAKE_SOURCE_DIR}/setup/include
+        ${CMAKE_SOURCE_DIR}/shared/include
 )
 
 target_link_libraries(dom_launcher
     PRIVATE
         dom_launcher_lib
+        dom_shared
 )

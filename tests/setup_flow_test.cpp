@@ -1,32 +1,42 @@
 #include <cstdio>
 #include <string>
 
-#include "dom_setup_cli.h"
-#include "dom_setup_paths.h"
-#include "dom_setup_fs.h"
+#include "dom_setup_config.h"
+#include "dom_shared/os_paths.h"
 
 int main(void)
 {
-    std::string root = dom_setup_path_join(dom_setup_get_cwd(), "tests_tmp_setup_install");
-    DomSetupInstallArgs args;
-    args.mode = "portable";
-    args.target = root;
-    args.version = "0.0.test";
+    SetupConfig cfg;
+    cfg.command = "install";
+    cfg.mode = "portable";
+    cfg.install_root = os_path_join(os_get_default_portable_install_root(), "tests_tmp_setup_install");
+    cfg.version = "0.0.test";
+    cfg.create_shortcuts = false;
+    cfg.register_system = false;
+    cfg.portable_self_contained = true;
+    cfg.interactive = false;
+    cfg.config_file = "";
+    cfg.remove_user_data_on_uninstall = true;
 
-    if (dom_setup_cmd_install(args) != 0) {
+    if (run_install(cfg) != 0) {
         std::printf("install command failed\n");
         return 1;
     }
-    if (dom_setup_cmd_info(root) != 0) {
+    cfg.command = "info";
+    if (run_info(cfg) != 0) {
         std::printf("info command failed\n");
         return 1;
     }
-    if (dom_setup_cmd_repair(root) != 0) {
+    cfg.command = "repair";
+    if (run_repair(cfg) != 0) {
         std::printf("repair command failed\n");
         return 1;
     }
-    // Clean up to avoid leaving temp directories around.
-    dom_fs_remove_tree(root);
+    cfg.command = "uninstall";
+    if (run_uninstall(cfg) != 0) {
+        std::printf("uninstall command failed\n");
+        return 1;
+    }
     std::printf("setup flow test passed\n");
     return 0;
 }

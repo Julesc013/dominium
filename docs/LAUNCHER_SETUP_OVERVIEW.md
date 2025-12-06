@@ -14,6 +14,7 @@ Every install root contains `dominium_install.json` (see `docs/FORMATS/FORMAT_IN
 - Responsibilities: create/verify/uninstall installs, write/read manifests, and register installs (registry/index file where allowed).
 - OS helpers map defaults for per-user/system installs and user-data roots.
 - Runs in C++98, cross-platform; prefers not to elevate. Portable installs avoid any system writes.
+- Plugin-ready: install profiles and post-install/repair/uninstall hooks can be loaded (stubs provided until plugins exist).
 
 ## dom_launcher (multi-mode launcher)
 - Roles: discover installs from manifests + registry/index, manage profiles/mod sets, spawn supervised instances (client/server/tools), and aggregate runtime logs.
