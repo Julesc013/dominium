@@ -12,12 +12,14 @@ extern "C" {
 
 #include "dom_core_types.h"
 #include "dom_core_err.h"
+#include "../dom_keys.h"
 #include <wchar.h>
 
 typedef struct DomPlatformWin32Window DomPlatformWin32Window;
 
 typedef struct DomPlatformInputFrame {
-    dom_bool8 key_down[256];
+    dom_bool8 key_down[DOM_KEYCODE_MAX];
+    dom_bool8 mouse_down[3]; /* 0: left, 1: right, 2: middle */
     dom_i32 mouse_x;
     dom_i32 mouse_y;
     dom_i32 mouse_dx;
@@ -52,6 +54,7 @@ void    dom_platform_win32_sleep_msec(dom_u32 ms);
 
 /* UTF-8 helpers */
 int dom_platform_win32_utf8_to_wide(const char *utf8, wchar_t *out_wide, int out_wide_chars);
+void dom_platform_win32_set_title(DomPlatformWin32Window *win, const char *title_utf8);
 
 #ifdef __cplusplus
 }

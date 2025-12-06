@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.15)
 
 add_executable(dom_client
     dom_client_main.c
+    input/dom_input_mapping.c
 )
 
 target_include_directories(dom_client

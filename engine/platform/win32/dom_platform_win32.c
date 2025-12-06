@@ -17,6 +17,7 @@ struct DomPlatformWin32Window {
 static const wchar_t *g_dom_win32_class = L"DominiumWin32Class";
 static dom_i32 g_last_mouse_x = 0;
 static dom_i32 g_last_mouse_y = 0;
+static dom_i32 g_wheel_delta_accum = 0;
 
 int dom_platform_win32_utf8_to_wide(const char *utf8, wchar_t *out_wide, int out_wide_chars)
 {
@@ -56,6 +57,9 @@ static LRESULT CALLBACK dom_win32_wndproc(HWND hwnd, UINT msg, WPARAM wparam, LP
             win->width = LOWORD(lparam);
             win->height = HIWORD(lparam);
         }
+        return 0;
+    case WM_MOUSEWHEEL:
+        g_wheel_delta_accum += (dom_i32)((short)HIWORD(wparam));
         return 0;
     default:
         break;
@@ -205,14 +209,22 @@ void *dom_platform_win32_native_handle(DomPlatformWin32Window *win)
     return (void *)win->hwnd;
 }
 
-static void dom_platform_win32_poll_keys(dom_bool8 key_down[256])
+static void dom_platform_win32_poll_keys(dom_bool8 key_down[DOM_KEYCODE_MAX])
 {
     int i;
     if (!key_down) return;
-    for (i = 0; i < 256; ++i) {
+    for (i = 0; i < DOM_KEYCODE_MAX; ++i) {
         SHORT state = GetAsyncKeyState(i);
         key_down[i] = (state & 0x8000) ? 1 : 0;
     }
+}
+
+static void dom_platform_win32_poll_mouse_buttons(dom_bool8 mouse_down[3])
+{
+    if (!mouse_down) return;
+    mouse_down[0] = (GetAsyncKeyState(VK_LBUTTON) & 0x8000) ? 1 : 0;
+    mouse_down[1] = (GetAsyncKeyState(VK_RBUTTON) & 0x8000) ? 1 : 0;
+    mouse_down[2] = (GetAsyncKeyState(VK_MBUTTON) & 0x8000) ? 1 : 0;
 }
 
 void dom_platform_win32_poll_input(DomPlatformWin32Window *win,
@@ -225,6 +237,7 @@ void dom_platform_win32_poll_input(DomPlatformWin32Window *win,
 
     memset(out_frame, 0, sizeof(*out_frame));
     dom_platform_win32_poll_keys(out_frame->key_down);
+    dom_platform_win32_poll_mouse_buttons(out_frame->mouse_down);
 
     GetCursorPos(&pt);
     ScreenToClient(win->hwnd, &pt);
@@ -235,8 +248,8 @@ void dom_platform_win32_poll_input(DomPlatformWin32Window *win,
     g_last_mouse_x = out_frame->mouse_x;
     g_last_mouse_y = out_frame->mouse_y;
 
-    /* Mouse wheel state is event-based; for MVP we ignore WM_MOUSEWHEEL accumulation. */
-    out_frame->wheel_delta = 0;
+    out_frame->wheel_delta = g_wheel_delta_accum;
+    g_wheel_delta_accum = 0;
 }
 
 dom_u64 dom_platform_win32_now_msec(void)
@@ -256,4 +269,14 @@ dom_u64 dom_platform_win32_now_msec(void)
 void dom_platform_win32_sleep_msec(dom_u32 ms)
 {
     Sleep(ms);
+}
+
+void dom_platform_win32_set_title(DomPlatformWin32Window *win, const char *title_utf8)
+{
+    wchar_t wide[256];
+    if (!win || !title_utf8) {
+        return;
+    }
+    dom_platform_win32_utf8_to_wide(title_utf8, wide, (int)(sizeof(wide) / sizeof(wchar_t)));
+    SetWindowTextW(win->hwnd, wide);
 }

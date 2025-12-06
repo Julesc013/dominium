@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "contexts": {
+    "global": [
+      { "action": "ACTION_HELP_OVERLAY",        "keys": ["F1"] },
+      { "action": "ACTION_SCREENSHOT_CAPTURE",  "keys": ["F2"] },
+      { "action": "ACTION_DEBUG_OVERLAY_CYCLE", "keys": ["F3"] },
+      { "action": "ACTION_VIEW_DIMENSION_TOGGLE", "keys": ["F4"] },
+      { "action": "ACTION_VIEW_RENDER_MODE_CYCLE", "keys": ["SHIFT+F4"] },
+      { "action": "ACTION_QUICK_SAVE",          "keys": ["F5"] },
+      { "action": "ACTION_QUICK_LOAD",          "keys": ["F6"] },
+      { "action": "ACTION_REPLAY_PANEL",        "keys": ["F7"] },
+      { "action": "ACTION_TOOLS_PANEL",         "keys": ["F8"] },
+      { "action": "ACTION_WORLD_MAP",           "keys": ["F9"] },
+      { "action": "ACTION_SETTINGS_MENU",       "keys": ["F10"] },
+      { "action": "ACTION_FULLSCREEN_TOGGLE",   "keys": ["F11"] },
+      { "action": "ACTION_DEV_CONSOLE",         "keys": ["F12"] },
+      { "action": "ACTION_PROFILER_OVERLAY",    "keys": ["CTRL+P"] },
+      { "action": "ACTION_HIGHLIGHT_INTERACTIVES", "keys": ["ALT"] }
+    ],
+    "gameplay": [
+      { "action": "ACTION_MOVE_FORWARD",        "keys": ["W"] },
+      { "action": "ACTION_MOVE_BACKWARD",       "keys": ["S"] },
+      { "action": "ACTION_MOVE_LEFT",           "keys": ["A"] },
+      { "action": "ACTION_MOVE_RIGHT",          "keys": ["D"] },
+
+      { "action": "ACTION_CAMERA_ROTATE_CCW",   "keys": ["Q"] },
+      { "action": "ACTION_CAMERA_ROTATE_CW",    "keys": ["E"] },
+      { "action": "ACTION_CAMERA_ALT_UP",       "keys": ["R"] },
+      { "action": "ACTION_CAMERA_ALT_DOWN",     "keys": ["F"] },
+
+      { "action": "ACTION_PRIMARY_SELECT",      "mouse": ["MOUSE_LEFT"] },
+      { "action": "ACTION_SECONDARY_SELECT",    "mouse": ["MOUSE_RIGHT"] },
+
+      { "action": "ACTION_QUICKBAR_SLOT_1",     "keys": ["1"] },
+      { "action": "ACTION_QUICKBAR_SLOT_2",     "keys": ["2"] },
+      { "action": "ACTION_QUICKBAR_SLOT_3",     "keys": ["3"] },
+      { "action": "ACTION_QUICKBAR_SLOT_4",     "keys": ["4"] },
+      { "action": "ACTION_QUICKBAR_SLOT_5",     "keys": ["5"] },
+      { "action": "ACTION_QUICKBAR_SLOT_6",     "keys": ["6"] },
+      { "action": "ACTION_QUICKBAR_SLOT_7",     "keys": ["7"] },
+      { "action": "ACTION_QUICKBAR_SLOT_8",     "keys": ["8"] },
+      { "action": "ACTION_QUICKBAR_SLOT_9",     "keys": ["9"] },
+
+      { "action": "ACTION_LAYER_CYCLE",         "keys": ["TAB"] }
+    ],
+    "ui": [
+      { "action": "ACTION_UI_BACK",             "keys": ["ESCAPE"] }
+    ],
+    "launcher": [
+      { "action": "ACTION_HELP_OVERLAY",        "keys": ["F1"] },
+      { "action": "ACTION_DEBUG_OVERLAY_CYCLE", "keys": ["F3"] },
+      { "action": "ACTION_FULLSCREEN_TOGGLE",   "keys": ["F11"] },
+      { "action": "ACTION_SETTINGS_MENU",       "keys": ["F10"] },
+      { "action": "ACTION_UI_BACK",             "keys": ["ESCAPE"] }
+    ]
+  }
+}
