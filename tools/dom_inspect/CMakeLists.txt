@@ -6,7 +6,13 @@ add_executable(dom_inspect
 
 target_include_directories(dom_inspect
     PRIVATE
-        ${CMAKE_SOURCE_DIR}/engine
+        ${CMAKE_SOURCE_DIR}/source/core
+        ${CMAKE_SOURCE_DIR}/source/core/base
+        ${CMAKE_SOURCE_DIR}/source/core/base/dom_core
+        ${CMAKE_SOURCE_DIR}/source/core/math
+        ${CMAKE_SOURCE_DIR}/source/core/sim
+        ${CMAKE_SOURCE_DIR}/include
+        ${CMAKE_SOURCE_DIR}/include/dom_priv
 )
 
 target_link_libraries(dom_inspect

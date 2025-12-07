@@ -52,6 +52,7 @@ add_compile_options(${_dom_warning_flags})
 # --------------------------------------------------------------------
 option(DOM_BUILD_LAUNCHER "Build dom_launcher multi-mode launcher" ON)
 option(DOM_BUILD_SETUP "Build dom_setup install/repair tool" ON)
+option(DOM_BUILD_GAME "Build dominium game/client/server shells" ON)
 
 # --------------------------------------------------------------------
 # MinGW static runtime (avoid libstdc++/libgcc DLL dependency)
@@ -90,16 +91,10 @@ endif()
 # --------------------------------------------------------------------
 # Subdirectories
 # --------------------------------------------------------------------
-add_subdirectory(shared)
-add_subdirectory(engine)
-add_subdirectory(runtime)
-if(DOM_BUILD_SETUP)
-    add_subdirectory(setup)
-endif()
-if(DOM_BUILD_LAUNCHER)
-    add_subdirectory(launcher)
-endif()
+# Main code lives under /source after the refactor.
+add_subdirectory(source)
 add_subdirectory(tools)
 add_subdirectory(tests)
+add_subdirectory(packaging)
 
-message(STATUS "Dominium core build configured")
+message(STATUS "Dominium refactor build configured")
