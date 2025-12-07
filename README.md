@@ -1,25 +1,28 @@
 # DOMINIUM  
 ## A Deterministic, Multi-Scale, Multi-Platform Simulation Engine and Game
 
-Dominium is a **fully deterministic**, **integer-math**, **platform-agnostic**, **modular** engine and game built to run identically across:
+Dominium is a **fully deterministic**, **integer-math**, **platform-agnostic**, **modular** engine and game designed to run identically across:
 
-- Modern systems (Windows, Linux, macOS)
-- Legacy systems (Win9x, Win3.x, DOS, macOS Classic)
+- Modern systems (Windows NT family, Linux, macOS X)
+- Legacy systems (Win9x, Win3.x, Win16, DOS, macOS 7–9, OS/2 strata via shims)
 - Future systems (WASM/Web, consoles, embedded)
-- Headless servers (dedicated simulation clusters)
+- Headless/server nodes (single or clustered)
 
-Dominium is not “a game with an engine.”  
-Dominium *is an engine*, with one official game built on top of it.  
-Everything is deterministic, from physics to pathfinding to networks, across all supported targets.
+Dominium is not “a game running on an engine.”  
+Dominium *is* the engine. The official game is one compatible implementation atop it.  
+Determinism permeates physics, AI, networks, world updates, rendering order, mod execution, and replay.
 
-This repository contains the full source tree for:
-- The **Dominium Engine** (core deterministic C89/C++98 code)
-- The **Dominium Game** (content-agnostic gameplay logic layer)
-- The **Data Packs** (first-party assets)
-- The **Tools & Editors**
-- The **Ports** (retro and alternative platforms)
-- The **Specification documents** (binding behaviour contract)
-- The **Modding API** (deterministic, forward-compatible)
+This repository includes:
+
+- **Dominium Engine** — deterministic C89/C++98 core  
+- **Dominium Game** — content-agnostic gameplay layer  
+- **Data Packs** — first-party assets and base definitions  
+- **Tools & Editors** — world tools, asset pipelines, modding interfaces  
+- **Ports** — DOS, Win3.x, Win9x, macOS Classic, WASM, etc.  
+- **Specifications** — binding behaviour contracts  
+- **Modding API** — deterministic, forward-compatible, sandboxed  
+
+All behaviour derives from written specifications. No code exists without a contract.
 
 ---
 
@@ -27,60 +30,55 @@ This repository contains the full source tree for:
 
 Dominium aims to:
 
-1. Provide a **universally reproducible simulation** where any two machines, of any architecture or era, produce identical results tick-for-tick.
-2. Support **extreme temporal and spatial scales**, from 16th-meter microgrids up to multi-gigameter planetary surfaces and multi-system galaxies.
-3. Run across decades of hardware, including ultra-constrained retro platforms.
-4. Be **maximally modifiable**, without compromising determinism.
-5. Support **2D and 3D vector and raster rendering**, interchangeable on the fly.
-6. Support **surface and orbital simulation**, including:
-   - Orbital ships and stations  
-   - Docking/undocking  
-   - Re-entry and ascent profiles (rails-based or approximate dynamics)  
-   - Cargo tugs, drop pods, and construction of orbital infrastructure  
-7. Provide a **unified construction system** using:
-   - Block-based structural components  
-   - Edge/face walls, floors, slabs, ramps  
-   - Arbitrary vector splines (tunnels, rails, roads, bridges)  
-   - Cut/fill terrain interaction  
-   - Arbitrary grade or cliff formation  
-8. Maintain a **clean separation** between:
-   - Physical domains (surfaces)
-   - Logical domains (space, orbital tracks)
-9. Support a fully deterministic **multiplayer / multi-server universe** capable of coordinating many planets.
+1. Produce **universally reproducible simulation**: any two machines, of any era or ISA, must yield identical results per tick.  
+2. Handle **extreme spatial scales**, from 16th-meter structural grids to multi-gigameter surfaces and orbital networks.  
+3. Execute on **decades of hardware**, from 286-class machines upward, with optional fidelity reduction but identical simulation.  
+4. Be **maximally modifiable** without weakening determinism.  
+5. Support **interchangeable 2D/3D vector and raster renderers** at runtime.  
+6. Model **surface + orbital domains** with deterministic rails-based spaceflight, docking graphs, transfer windows, and orbital infrastructure.  
+7. Provide a **unified construction system** with block components, structural slabs, vector splines (rails, roads, tunnels), cut/fill operations, and multi-layer buildings.  
+8. Maintain strict separation between **physical surfaces** and **logical orbital/space graphs**.  
+9. Allow deterministic **clustered multiplayer**, synchronizing planets and orbital bodies.  
+10. Provide engineering clarity such that the project remains viable for decades.
 
-Dominium is built to last for decades and outlive the hardware it first shipped on.
+Dominium is engineered to outlive its original hardware.
 
 ---
 
 # 2. CORE PHILOSOPHY
 
-The entire engine is designed around the following non-negotiable principles:
+## 2.1 Determinism
+No floating point exists in any simulation codepath.  
+Integer/fixed-point formats only (runtime Q16.16; save Q4.12; segment addressing for world scale).  
+Deterministic ordering of:  
+- Input  
+- Pre-state  
+- Simulation lanes  
+- Network phase  
+- Merge  
+- Postprocess  
+- Finalization  
 
-### 2.1 Determinism
-Every simulation result is bit-identical for:
-- Same inputs  
-- Same tick schedule  
-- Same modset  
-- Same engine version  
+Replay files must verify identical state hashes across platforms.
 
-No floating point appears in simulation code.  
-All math uses integers or fixed-point formats.
+## 2.2 Tick Phasing and Ordering
 
-### 2.2 Strict Phasing and Ordering
-The engine is structured into immutable tick phases:
+Immutable phases:  
 1. Input  
 2. Pre-state  
-3. Simulation (multi-lane)  
+3. Simulation lanes  
 4. Networks  
 5. Merge  
 6. Post-process  
 7. Finalize  
 
-No system may run outside its assigned slot.
+Systems cannot break phase ordering.
 
-### 2.3 Spatial Hierarchy
-Worlds are structured into multi-scale grids:
+## 2.3 Spatial Hierarchy
 
+World represented as sparse microgrids across scales:
+
+```yaml
 Subnano = 1/65536 m
 Submicro = 1/4096 m
 Submini = 1/256 m
@@ -92,272 +90,299 @@ Subregion = 4096 m
 Region = 65536 m
 Subcontinent = 1,048,576 m
 Continent = 16,777,216 m
-Supercont. = 268,435,456 m
+Supercontinent = 268,435,456 m
 Surface = 4,294,967,296 m
+```
 
-One surface per planet.
+Surfaces are **collections of sparse grids**, not monolithic arrays.  
+Supports underground structures, multi-level constructs, and intersecting vector systems.
 
-Surfaces are **not continuous arrays**, but **collections of sparse microgrids**, enabling:
-- Underground structures  
-- Cut/fill  
-- Multi-level buildings  
-- Vector networks intersecting grids  
+## 2.4 Universal Modularity
 
-### 2.4 Universal Modularity
-Everything is plug-and-play:
-- Renderers (OpenGL, DX9, DX11, SDL vector)
-- Audio backends  
-- Platform backends  
-- Data packs  
-- Mods  
-- Tools  
+All subsystems are hot-swappable:
 
-No engine modification required to add new content or systems.
+- Rendering: software, vector, GL1/2, DX9/11/12, Vulkan, VGA/EGA/CGA/MDA, VESA, QuickDraw/Carbon, Metal  
+- Audio: modular abstraction  
+- Platform backends: SDL1/SDL2, Win32, Win16, macOS Classic, POSIX, X11, Wayland  
+- Tools and data packs  
+- Mods with deterministic scripting (Lua subset or Dominium Script)
 
-### 2.5 Platform Breadth
-The engine compiles and runs on:
-- C89 compilers  
-- No libc extensions  
-- No platform-specific hacks in sim code  
+## 2.5 Platform Breadth
 
-Ports adapt to the engine, never the other way around.
+Engine compiles under:
+
+- Strict C89  
+- Strict C++98 with no STL beyond allowed subset  
+- No libc extensions in core  
+- All platform-specific behaviour contained in `/engine/platform`
+
+Ports adapt to core contracts, never the reverse.
 
 ---
 
 # 3. REPOSITORY OVERVIEW
 
-The repository is organised into top-level directories:
+Top-level structure:
 
-/docs – design and specification documents
-/engine – deterministic engine core (C/C++98)
-/game – game layer using engine
-/data – base assets, DLCs, packs
-/mods – third-party mod ecosystem
-/tools – editors, devkits, pipelines
-/tests – unit, integration, replay, perf tests
-/external – vendored dependencies
-/build – build scripts and outputs
-/package – installers and retro media layouts
-/scripts – automation and maintenance
+```yaml
+/docs – specifications, formats, policies, style, building
+/engine – deterministic engine core (C89/C++98)
+/game – high-level gameplay logic
+/data – base assets, DLC, data packs
+/mods – third-party deterministic mods
+/tools – editors, converters, pipelines
+/tests – unit, replay, integration, perf tests
+/external – vendored dependencies (Lua, platform libs, etc.)
+/build – build trees, generated headers, CI outputs
+/package – installer scripts, retro media images
+/scripts – automation, maintenance, CI utilities
 /ports – DOS, Win3.x, Win9x, macOS Classic, WASM, consoles
+```
 
-Each directory is formally defined in the **Directory Contract** (`/docs/spec/DIRECTORY_CONTRACT.md`).
+Formal definitions live in:  
+`/docs/spec/DIRECTORY_CONTRACT.md`.
 
 ---
 
 # 4. BUILDING
 
-### 4.1 Modern platforms
-Use CMake:
+## 4.1 Modern Platforms
 
+CMake workflow:
+
+```shell
 mkdir build
 cd build
 cmake ..
 cmake --build .
+```
 
-Every build invocation increments the global repository build number (stored in `.dominium_build_number`) and writes `build/generated/dom_build_version.h`; multi-target builds share the same number.
+Build step increments global build number in `.dominium_build_number`.  
+Generated header: `build/generated/dom_build_version.h`.
 
-### 4.2 Retro platforms
-Each `/ports/<target>/config/` contains its own build instructions.
+## 4.2 Retro Platforms
 
-Examples:
-- DOS: OpenWatcom + wmake  
-- Win3.x: MASM + VC++ 1.52  
-- Win9x: MSVC6 + DX7 SDK  
-- macOS Classic: CodeWarrior + MPW  
-- WASM: Emscripten  
+Per-port instructions under `/ports/<target>/config/`.
 
-These builds produce reduced-fidelity executables but identical simulation behaviour.
+Examples:  
+- **DOS**: OpenWatcom + wmake  
+- **Win3.x**: MASM + MSVC 1.52  
+- **Win9x**: MSVC6 + DX7 SDK or SDL1 backend  
+- **macOS Classic (7–9)**: CodeWarrior + MPW  
+- **WASM**: Emscripten  
+
+Simulation behaviour remains identical across all targets.
 
 ---
 
 # 5. RUNNING
 
-### 5.1 Headless server
+## 5.1 Headless Server
+
+```shell
 ./dominium_server --world myworld
+```
 
-### 5.2 Client
+## 5.2 Client
+
+```yaml
 ./dominium_client
+```
 
-Clients and servers communicate via deterministic lockstep protocols.
+Clients and servers operate in deterministic lockstep; divergences are rejected with replay/resync.
+
+Launcher is optional and never required to run the game.
 
 ---
 
 # 6. MODDING
 
-Modding is deterministic and fully sandboxed.
+A mod contains:
 
-Each mod directory contains:
-- `mod.json` (manifest)
+- `mod.json`  
 - Prefabs  
 - Data packs  
-- Scripts (optional, deterministic subset of Lua)  
+- Scripts (deterministic subset of Lua)  
+- Assets  
 
-Mod loading order:
+Loading order:  
 1. Base  
 2. DLC  
-3. Mods sorted by UUID  
+3. Mods by UUID (stable ordering)
 
-Mods may add:
-- Entities  
-- Blocks  
-- Jobs  
-- Networks  
-- Graphical assets  
-- UI  
-
-Mods may not:
-- Modify engine behaviour  
-- Introduce nondeterministic code  
-- Patch binaries  
+Mods may *add* systems but never alter engine rules.  
+Mods cannot introduce nondeterminism, patch binaries, or violate directory contracts.
 
 ---
 
-# 7. DATA FORMAT BASICS
+# 7. DATA FORMATS
 
-All simulation data uses:
-- Integer math  
-- Fixed-size structs  
-- Little-endian  
-- No padding  
-- No floats  
-- No pointers  
+All engine data uses:
+
+- Integer math only  
+- Packed structs, no padding  
+- Little-endian canonical representation  
+- Explicit versioning  
+- No pointers in serialized data  
+- CRC and replay hash metadata
 
 Save files contain:
-- Entities  
+
 - Components  
+- Entities  
 - Networks  
 - Jobs  
-- Messages  
 - Prefab references  
-- Chunk microgrids  
-- World snapshot  
-- Optional replay log  
-
-Everything is CRC-verified and version-tracked.
+- Messages  
+- Chunk/subchunk microgrids  
+- Full world snapshot  
+- Optional replay delta log
 
 ---
 
-# 8. SURFACE AND SPACE ARCHITECTURE
+# 8. SURFACE + SPACE ARCHITECTURE
 
-Dominium supports **two complementary domains**:
+Two primary domains exist.
 
-### 8.1 Physical domains  
-- Planetary surfaces  
-- Underground layers  
+## 8.1 Physical Domains
+
+- Planet surfaces  
+- Underground volumes  
 - Oceans  
-- Terrain grids  
+- Sparse terrain grids  
 - Structural microgrids  
 - Buildings  
-- Vector networks (rails, roads, conveyors, pipes, tunnels)
+- Vector networks (rails, roads, conveyors, pipes, tunnels)  
+- Cut/fill terrain layers  
 
-### 8.2 Logical domains  
-- Orbits  
+## 8.2 Logical Domains (Orbital/Space)
+
+- Discrete orbital tracks  
 - Transfer windows  
 - Docking graphs  
-- Lagrange points  
 - Asteroid belts  
-- Gas clouds  
-- Electromagnetic hazard areas  
-- Orbital stations and ships  
+- Stations and ships  
+- Lagrange nodes  
+- Deterministic transitions (rails-based orbital mechanics)  
 
-Space simulation is **on rails**, deterministic, integer-based:
-- Discrete orbital tracks  
-- Deterministic transitions  
-- Docking ports as graph nodes  
-- Cargo routing between orbital/logical nodes  
+Space simulation is integer-based and deterministic. No floating dynamics.
 
 ---
 
-# 9. CONTRIBUTING
+# 9. PLATFORM + RENDERER MATRIX
 
-Contributions must follow:
+Dominium supports simultaneous platform and renderer abstraction.
 
-- Determinism rules  
-- Specification compliance  
-- C89/C++98 core style  
-- Strict linting (`clang-format`, `cpplint`)  
-- No floating-point in simulation  
-- No platform APIs outside `/engine/platform`  
-- No game logic in `/engine`  
+**Platforms**:  
+SDL1, SDL2, Win32, Win16, Win32s, Win9x, NT3–11, macOS 7–9 (Classic/Carbon), macOS X, POSIX, X11, Wayland, DOS, CP/M-80/86, Linux/BSD, Android.
 
-All new features require:
-- Spec update  
-- Tests (unit + replay)  
-- Documentation  
+**Renderers**:  
+Software, Vector, GL1, GL2, DX9, DX11, DX12, Vulkan1, VGA/EGA/CGA/MDA/Hercules, VESA, QuickDraw, Carbon, Metal, WinG.
+
+Any platform can run any renderer or headless mode.
 
 ---
 
-# 10. LICENSE
+# 10. INSTALLER + LAUNCHER
 
-The project is released under a tiered licensing system:
+Three installation modes:
 
-- Engine core: permissive open source licence (to be finalised)  
+1. Portable  
+2. Per-user  
+3. All-users  
+
+Setup provides **install**, **repair**, and **uninstall**.  
+Installer respects directory contract; repair audits only manifest files.  
+Launcher can control multiple instances, manage mods, accounts, tools, wiki/forum access, messaging, tracking, and network browsing.
+
+Scripts:
+
+```yaml
+setup → installer/repair/uninstaller
+dominium → launcher
+```
+
+Game runs with or without launcher.
+
+---
+
+# 11. CONTRIBUTING
+
+Requirements:
+
+- Determinism preserved  
+- C89/C++98 compliance  
+- Specification updates for any change  
+- Tests for all new features (unit + replay + integration)  
+- Documentation updates  
+- No floats in simulation  
+- No platform API in `/engine`  
+- No game logic in `/engine`
+
+---
+
+# 12. LICENSE
+
+Tiered system:
+
+- Engine: permissive open source (TBD)  
 - Game assets: proprietary or CC-BY-NC depending on pack  
-- Tools: open source  
-- Mods: copyright remains with authors  
+- Tools: open  
+- Mods: author-owned
 
-See `/docs/legal/LICENCE.md`.
+`/docs/legal/LICENCE.md` defines terms.
 
 ---
 
-# 11. STATUS
-
-Dominium is under active development.
+# 13. STATUS
 
 Completed:
-
-- Deterministic kernel spec  
-- ECS core foundation  
-- Messaging architecture  
-- Job system  
+- Deterministic kernel specification  
+- ECS foundation  
+- Messaging and job systems  
 - Serialization v3  
-- World chunk/subchunk format  
-- Prefab system  
+- Chunk/subchunk world format  
+- Prefabs  
 - Mod loader  
-- Platform abstraction design  
-- Rendering abstraction design  
+- Platform and renderer abstraction frameworks  
 
-In development:
-
-- 2D/3D renderer integration  
-- Full cut/fill terrain system  
+In Development:
+- Full renderer integration  
+- Cut/fill terrain  
 - Orbital logistics  
 - Worker/robot AI  
-- Multiplayer server clusters  
+- Server clusters  
 - Editor suite  
+- Retro platform parity  
+- Unified launcher ecosystem  
 
 ---
 
-# 12. CONTACT & COMMUNITY
+# 14. COMMUNITY
 
-- Discord: *TBD*  
-- Developer Blog: *TBD*  
-- Documentation Portal: `/docs/design/`  
-- Issue Tracker: GitHub Issues  
-- Roadmap: `/docs/spec/MILESTONES.md`  
+Documentation: `/docs/design/`  
+Roadmap: `/docs/spec/MILESTONES.md`  
+Issues: GitHub  
 
----
-
-# 13. ACKNOWLEDGEMENTS
-
-Dominium stands on:
-- The philosophy of deterministic simulation (Factorio, Dwarf Fortress inspirations)
-- The engineering traditions of old-school C and embedded systems
-- The desire to create a game that will run long after modern hardware becomes obsolete.
+Discord and dev-blog pending.
 
 ---
 
-# 14. FINAL NOTE
+# 15. ACKNOWLEDGEMENTS
 
-Dominium is not a toy project.  
-It is an attempt at a **universal simulation engine** that:
+Dominium draws influence from deterministic simulation traditions, retro engineering practices, and long-term archival design philosophies.
 
-- Spans eras of hardware  
-- Maintains perfect determinism  
-- Supports planetary and orbital scales  
-- Is fully extensible and moddable  
-- Can run archived forever  
+---
 
-This README is a living document.  
-All architectural detail lives in `/docs/spec`.
+# 16. FINAL NOTE
+
+Dominium is an attempt at a **universal deterministic simulation engine**:
+
+- Cross-era hardware  
+- Perfect reproducibility  
+- Planetary + orbital scale  
+- Unlimited mod extensibility  
+- Long-term archival survivability  
+
+This README evolves as specifications advance.  
+Definitive rules reside in `/docs/spec`.
