@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "engine_api.h"
+#include "dominium/dom_core.h"
 
 int main(void)
 {

@@ -1,35 +1,26 @@
 cmake_minimum_required(VERSION 3.15)
 
-add_executable(dom_tests
-    tests_runner.c
-)
-
-target_include_directories(dom_tests
-    PRIVATE
-        ${CMAKE_SOURCE_DIR}/engine
-)
-
-target_link_libraries(dom_tests
-    PRIVATE
-        dom_engine
-)
-
-add_executable(dom_manifest_tests
-    manifest_io_test.cpp
-)
-target_link_libraries(dom_manifest_tests PRIVATE dom_shared)
-target_include_directories(dom_manifest_tests PRIVATE ${CMAKE_SOURCE_DIR}/shared/include)
-
-if(TARGET dom_launcher_core)
-    add_executable(dom_launcher_tests
-        launcher_discovery_test.cpp
-    )
-    target_link_libraries(dom_launcher_tests PRIVATE dom_launcher_core dom_shared)
-    target_include_directories(dom_launcher_tests PRIVATE ${CMAKE_SOURCE_DIR}/launcher/include ${CMAKE_SOURCE_DIR}/shared/include)
+option(DOM_BUILD_TESTS "Build Dominium tests" ON)
+if(NOT DOM_BUILD_TESTS)
+    return()
 endif()
 
-add_executable(dom_setup_flow_test
-    setup_flow_test.cpp
+enable_testing()
+
+add_executable(dom_test_dynarray unit/test_dynarray.c)
+target_include_directories(dom_test_dynarray PRIVATE
+    ${CMAKE_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/source/core
+    ${CMAKE_SOURCE_DIR}/source/core/base
 )
-target_link_libraries(dom_setup_flow_test PRIVATE dom_setup_core dom_shared)
-target_include_directories(dom_setup_flow_test PRIVATE ${CMAKE_SOURCE_DIR}/setup/include ${CMAKE_SOURCE_DIR}/shared/include)
+target_link_libraries(dom_test_dynarray PRIVATE dom_core)
+add_test(NAME dom_test_dynarray COMMAND dom_test_dynarray)
+
+add_executable(dom_test_platform integration/test_platform_probe.c)
+target_include_directories(dom_test_platform PRIVATE
+    ${CMAKE_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/source/core
+    ${CMAKE_SOURCE_DIR}/source/core/base
+)
+target_link_libraries(dom_test_platform PRIVATE dom_core dom_platform dom_app_mode)
+add_test(NAME dom_test_platform COMMAND dom_test_platform)

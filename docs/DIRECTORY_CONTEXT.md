@@ -1,26 +1,22 @@
 # Dominium — Directory Context and Contract (Launcher/Setup Refresh)
 
-This file is the binding map for the repository. All launcher/setup work in this change-set must follow it. Anything that conflicts with these rules is considered a bug even if it compiles.
+This file is the binding map for the repository. All work in this change-set must follow it. Anything that conflicts with these rules is considered a bug even if it compiles.
 
 ---
 
 ## Top-level layout
 - `/docs` — specs, architecture notes, API docs, formats, context packs.
-- `/engine` — deterministic C89 core; fixed-point only; no platform/renderer/audio headers outside `engine/platform|render|audio`.
-- `/runtime` — C++98 frontends and shells that wrap the engine via the C ABI (dom_cli/dom_sdl/etc.).
-- `/game` — Dominium-specific logic and runtimes (C/C++98) built on the engine C ABI (client/server shells, game glue, thin launch entrypoints).
-- `/launcher` — C++98 multi-mode launcher (CLI/TUI/GUI), install discovery, process supervision, profiles/mods/tools wiring; never links the engine.
-- `/setup` — `dom_setup` C++98 tool for install/repair/uninstall/list/info and install manifests.
-- `/shared` — cross-cutting utilities (paths, JSON, logging, UUID, manifest helpers) used by launcher/setup/tools.
-- `/tools` — standalone utilities (C/C++/scripts) that reuse engine IO or runtime CLIs; offline editors, validators, SDK helpers.
-- `/data` — first-party data packs (base/DLC/packs/templates/schema).
-- `/mods` — third-party/local mods (manifests + data/scripts/assets/tests).
-- `/tests` — deterministic/unit/integration/perf tests; may include small launch/setup stubs.
+- `/include` — installable headers. `include/dominium/*` is public (dom_core.h, dom_plat.h, dom_rend.h, dom_launcher_api.h, dom_game_mod_api.h, dom_package_manifest.h, dom_version.h). `include/dom_priv/*` is internal-only (shared utilities, build version, launcher/setup private headers).
+- `/source` — main code tree (core/platform/renderer/game/launcher/setup/tools) plus `_legacy` quarantine. **Note:** modding/data/script/native/sandbox/package loaders are now under `source/core` instead of a separate `/modding` subtree.
+- `/tools` — built tool entrypoints (dom_inspect, dom_validate_content, future dom_assetc/dom_pack/etc.).
+- `/data` — first-party data packs (base/DLC/packs/templates/schema). The same loader code is shared with `/mods`.
+- `/mods` — third-party/local mods (manifests + data/scripts/assets/tests) consumed by the unified loader.
 - `/external` and `/third_party` — vendored deps with pins/licenses only.
-- `/build` — CMake glue, toolchains, presets, helper scripts.
+- `/tests` — deterministic/unit/integration/perf tests; small launch/setup stubs allowed.
 - `/packaging` — installer/image definitions and branding assets.
 - `/scripts` — repo automation/maintenance; no runtime logic.
-- `/ports` — experimental/retro targets; build isolation required.
+- `/cmake` — toolchains/modules (currently stubs).
+- `/build` — build/preset outputs (never committed).
 
 No new top-level directories may be introduced without updating this file first.
 
@@ -33,59 +29,47 @@ No new top-level directories may be introduced without updating this file first.
 - Context packs and non-binding notes live in `docs/context` and `docs/dev`.
 - No binaries or generated assets.
 
-### `/engine`
-- Deterministic C89 core; fixed-point only.
-- Platform/render/audio headers only under their dedicated subdirs.
-- No Dominium-specific content, mods, or OS calls in core/sim.
+### `/include`
+- `dominium/*` exposes public ABI/manifest headers only; keep it minimal and C89/C++98 friendly.
+- `dom_priv/*` holds internal headers shared across products (dom_shared, dom_launcher, dom_setup, dom_build_version, dom_keys).
+- Public headers may temporarily forward to internal headers while APIs are stabilised; mark TODOs where this happens.
 
-### `/runtime`
-- C++98 frontends wrapping the engine via the C ABI (CLI/headless, SDL/GUI shells, server stubs).
-- Must remain functional without the launcher; honour `--display`, `--version`, and `--capabilities` flags.
-- May use floats internally for rendering/UI but never feed floating-point values back into deterministic engine state.
+### `/source/core`
+- Deterministic C89 engine code plus shared libs and the merged modding/packaging stack.
+- Subdirs: `base` (dom_core low-level + RNG/types), `math` (fixed-point), `serialize` (save formats), `sim` (ECS/world/registries + dom_sim experiments), `audio` (stub), `ui` (stub), `base/shared` (C++98 dom_shared utilities for launcher/setup/tools), and modding/data loaders under `data`, `package`, `script`, `native`, `sandbox`, `vfs`.
+- No platform/renderer headers in core; no floats in deterministic paths; keep save formats stable. The same loaders serve `/data` and `/mods`.
 
-### `/game`
-- Dominium gameplay/frontends built on engine C ABI.
-- Client/server shells live here (C/C++98), plus minimal launch entrypoints.
-- No platform headers outside engine platform wrappers; no determinism violations.
+### `/source/platform`
+- Platform backends (`win32`, `sdl1`, `sdl2`, `x11`, `wayland`, `cocoa`, `shared/posix_headless`). Currently scaffolded; dom_plat.h is the contract. Wire OS headers only inside this layer.
 
-### `/launcher`
-- Core launcher code (C++98): install discovery, manifest reading, profiles, mod sets, server/browser/social/tool hooks, instance supervision, and UI frontends (CLI/TUI/GUI stubs). Core state/DB/discovery scaffolding lives under `launcher/src/core`.
-- Uses runtime CLIs and manifests only; does not link against `/engine`.
-- Plugin-ready API for tabs/commands; stores launcher DB under user/portable data roots.
+### `/source/renderer`
+- Renderer API/backends behind dom_rend.h. `core` + `soft` (software/null) build now; hardware backends (dx9/dx11/gl/vk) staged with TODOs and must route through platform abstractions.
 
-### `/setup`
-- `dom_setup` tool, install manifest handling, OS path helpers, and CLI for install/repair/uninstall/list/info.
-- Writes `dominium_install.json` into every install root; registers installs conservatively (registry/index files where allowed).
-- Plugin-ready architecture for install profiles and hooks (stubs allowed until plugins exist).
+### `/source/launcher`
+- C++98 launcher logic under `core/`; frontends under `cli/`, `tui/`, `gui/`. Uses dom_shared + dom_launcher headers only; never links to dom_engine. Plugin ABI exposed via dom_launcher_api.h.
 
-### `/shared`
-- Common infrastructure for non-engine code: path helpers, JSON reader/writer, logging, UUIDs, process helpers, manifest helpers.
-- Linkable from launcher/setup/tools; no engine dependencies.
+### `/source/setup`
+- `core/` install/repair/uninstall/info logic; `cli/` entrypoint. Uses dom_shared + dom_setup headers; OS-specific hooks live under `os/`. `sdk/` holds setup-facing extension surface if present.
+
+### `/source/game`
+- Game shells built on dom_engine/dom_core via C ABI. `cli/` (dom_cli + server), `gui/` (dom_main dispatcher), `core/` (client glue + input), `sdk/` (game mod-facing surface), plus `states/`, `ui/`, `tui/` as they come online. Deterministic state stays float-free; renderer/platform access must be through dom_rend/dom_plat once wired.
+
+### `/source/tools`
+- Internal tool libraries (assetc/packer/diagnostics/test harness) that feed the top-level `/tools` entrypoints. Keep deterministic where they touch save/content formats.
+
+### `/source/_legacy`
+- Quarantine for obsolete/dead code that must not block refactors. Every file here needs a `// LEGACY: candidate for removal/refactor` banner and no new dependencies.
 
 ### `/tools`
-- Offline utilities, editors, validators, SDK/pipeline helpers.
-- Must reuse engine IO or runtime CLIs instead of reimplementing formats.
-
-### `/data`
-- First-party packs with explicit manifests; no code, no third-party mods.
-
-### `/mods`
-- Third-party/local mods with `mod.json` and optional data/scripts/assets/tests; sandbox/determinism rules apply.
-
-### `/tests`
-- Tests only (unit/integration/replay/perf); no OS randomness or network without explicit fixtures.
-- May build small launch/setup stubs to validate manifests and discovery.
-
-### `/build`
-- CMake modules/toolchains/presets and helper scripts; no authoritative specs or network fetches.
+- Built tool entrypoints only; they reuse libs from `src/*` instead of re-implementing formats.
 
 ### `/packaging`
-- Installer/image definitions and branding; no build outputs or runtime code.
+- Installer/image definitions and wrapping scripts. Binaries referenced here must match targets from `/src/products/*`.
 
 ### `/scripts`
 - Automation/maintenance; must be explicit about any tracked-file changes.
 
-### `/ports`
-- Alternative/retro targets; must not change deterministic core.
+### `/tests`
+- Tests only (unit/integration/replay/perf); no OS randomness or network without explicit fixtures. Keep deterministic seeds and avoid floats in core checks.
 
-General rule: engine determinism and layering are enforced across all directories. Any new launcher/setup/runtime work must route through manifests and CLIs rather than reading simulation internals directly.
+General rule: engine determinism and layering are enforced across all directories. Products must route through manifests and public APIs instead of reaching into simulation internals directly. Keep platform/renderer separations strict and float-free in core save paths.

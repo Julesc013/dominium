@@ -1,15 +1,17 @@
 cmake_minimum_required(VERSION 3.15)
 
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
 # Configure POSIX scripts
 if (UNIX)
     if (APPLE)
         set(DOM_LAUNCHER_PLATFORM "MACOSX")
-        set(DOM_LAUNCHER_BINARY   "dom_launcher-macosx-software")
-        set(DOM_SETUP_BINARY      "dom_setup-macosx")
+        set(DOM_LAUNCHER_BINARY   "dom_launcher")
+        set(DOM_SETUP_BINARY      "dom_setup")
     else()
-        set(DOM_LAUNCHER_PLATFORM "SDL2")
-        set(DOM_LAUNCHER_BINARY   "dom_launcher-posix-sdl2-software")
-        set(DOM_SETUP_BINARY      "dom_setup-posix")
+        set(DOM_LAUNCHER_PLATFORM "POSIX")
+        set(DOM_LAUNCHER_BINARY   "dom_launcher")
+        set(DOM_SETUP_BINARY      "dom_setup")
     endif()
 
     configure_file(
@@ -44,8 +46,8 @@ endif()
 
 # Configure Windows scripts
 if (WIN32)
-    set(DOM_LAUNCHER_BINARY "dom_launcher-win32-software.exe")
-    set(DOM_SETUP_BINARY    "dom_setup-win32.exe")
+    set(DOM_LAUNCHER_BINARY "dom_launcher.exe")
+    set(DOM_SETUP_BINARY    "dom_setup.exe")
 
     configure_file(
         ${CMAKE_SOURCE_DIR}/packaging/scripts/dominium.cmd.in
