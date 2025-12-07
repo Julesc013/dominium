@@ -46,7 +46,6 @@ Dominium aims to:
    - Fixed technical scale (see Section 2.3) from 1/65,536 m ("Plank") up to 16,777,216 m ("Surface").  
    - Planet surfaces are 2^24 m toroidal squares with +/-2048 m vertical range.
 3. **Execute on decades of hardware (286-class upward)**  
-   The full Domino engine targets 286-class-and-newer systems. Limited tooling and experimental frontends may exist for earlier 8-bit platforms (for example, CP/M-80), but they do not host the complete world simulation.  
    - Core simulation stays within strict C89, fixed-point integer math.  
    - Older targets may reduce *fidelity* of rendering and UX, but never alter simulation results.
 4. **Be maximally modifiable without weakening determinism**  
@@ -81,13 +80,12 @@ Dominium is engineered to outlive its original hardware.
 
 Hard constraints for the **engine core** (`/engine`):
 
-- **No floating point is allowed in any code that mutates canonical simulation state or engine-controlled serialized formats.**
-  - No `float` or `double` in `/engine` or in any engine-controlled on-disk formats.
+- **No floating point in any simulation or IO code path.**
+  - No `float` or `double` in `/engine` or serialized formats.
   - All continuous quantities are fixed-point integers:  
     - Runtime: **Q16.16** (`fix32`) for general simulation.  
     - Save-local positional: **Q4.12** (`fix16`) for coordinates inside 16 m chunks.  
     - Accumulators and reductions use 64-bit ints where needed.
-- Tools, renderers, and non-authoritative analysis may use floating point freely, as long as float-derived values never flow back into engine state or engine-controlled file formats.
 - **World addressing:**  
   - Surfaces: 2^24 m x 2^24 m toroidal square.  
   - Vertical range: single Page of 4096 m (Z in [-2048, +2048)).  
@@ -100,8 +98,7 @@ Hard constraints for the **engine core** (`/engine`):
 - **RNG discipline:**  
   - Procedural content uses stateless coordinate hashing (function of seeds + coordinates).  
   - Time-evolving solvers (weather, hydrology, AI) use named RNG streams (`RNGId` to `RNGState`).  
-  - RNG states are fully serialized in metadata and are independent of chunk load order.  
-  - RNG streams are only advanced during deterministic tick phases; debug, UI, and rendering layers must not advance engine RNG streams.
+  - RNG states are fully serialized in metadata and are independent of chunk load order.
 - **Replay and hashing:**  
   - Replay streams record input events and timing.  
   - Engine can recompute state hashes per tick for validation.  
@@ -145,10 +142,6 @@ The global simulation tick has **immutable phases** in the engine:
 
 No system may reorder or bypass phases. Parallelism is allowed only within phases, and only for tasks that do not mutate shared state (for example, meshing, IO) or that commit in a fixed, serialized order.
 
-Any operation that schedules work for a future tick (timers, delayed spawns, transport completions) must do so via the Pre-State phase's queueing mechanism; no system may directly mutate future-tick state.
-
-Parallel execution within a phase may only operate on disjoint subsets of state and must commit results in a globally deterministic order (for example, by sort-by-ID before commit).
-
 ### 2.3 Spatial Hierarchy (Technical Scale)
 
 The engine uses a **single, unified, metric scale hierarchy** for space and time references, tuned for the simulation needs. All units are metres and conceptually cubic (3D), even if stored sparsely.
@@ -166,12 +159,11 @@ The engine uses a **single, unified, metric scale hierarchy** for space and time
 - **2^4 m - Chunk**  
   16 m; core cubic chunk unit for streaming and meshing.  
   - Chunks are 16x16x16 m.  
-  - Terrain caches: 32^3 samples (0.5 m spacing). Terrain caches are derived, non-canonical acceleration structures; they are never the primary definition of terrain on disk.
+  - Terrain caches: 32^3 samples (0.5 m spacing).
 - **2^8 m - Region**  
   256 m; groups 16x16 chunks in X/Y. Basic hydrology and environment cell size.
 - **2^12 m - Page**  
-  4096 m; vertical domain per surface. For Dominium, Z in [-Page/2, +Page/2).  
-  Each Surface owns exactly one vertical Page in Dominium 1.x. Additional shells, deep volumes, or orbital shells are represented as separate Surfaces or logical spaces, not by extending Z beyond this range.
+  4096 m; vertical domain per surface. For Dominium, Z in [-Page/2, +Page/2).
 - **2^16 m - Segment**  
   65,536 m; horizontal segments. Each of the 256x256 segments maps directly to Q16.16 integer part.
 - **2^20 m - Sector**  
@@ -189,16 +181,22 @@ Surfaces are **sparse collections** of chunks and fields:
 
 All subsystems are **hot-swappable** at the configuration/content level, behind stable contracts:
 
-- **Rendering backends** (see Section 9 for the full matrix)  
+- **Rendering backends**  
   - Software rasterizers  
   - Vector renderers  
-  - OpenGL 1.x/2.x, DirectX 9/11/12, Vulkan 1.x  
-  - VGA/EGA/CGA/MDA/Hercules, VESA modes  
-  - QuickDraw, Carbon/Quartz, Metal, WinG (where appropriate)  
+  - GL1/2, DX9/11/12, Vulkan  
+  - VGA/EGA/CGA/MDA/Hercules, VESA  
+  - QuickDraw/Carbon, Metal  
   - Headless (no rendering)
 - **Audio backends**  
   - Configurable abstraction per platform.
-- **Platform backends** (see Section 9 for the full platform/render matrix)
+- **Platform backends**  
+  - SDL1/SDL2  
+  - Win32/Win16/Win32s  
+  - macOS Classic/Carbon/macOS X  
+  - POSIX/X11/Wayland  
+  - DOS, CP/M-80/86  
+  - Android/Linux/BSD
 - **Tools and data packs**  
   - Share common IO and registry libraries from `/engine`.
 - **Scripting**  
@@ -228,8 +226,6 @@ All platforms must adhere to the same engine ABI and file formats.
 ---
 
 ## 3. Repository Overview
-
-This section is a high-level overview only. The authoritative and machine-checkable directory layout and semantics are defined in `/docs/spec/DIRECTORY_CONTRACT.md`. In any conflict, the spec file is the source of truth.
 
 Top-level structure (conceptual):
 
@@ -281,8 +277,6 @@ On every successful build:
   - Build number  
   - Git commit hash (if available)  
   - Timestamp (for diagnostics; not used in simulation)
-
-Build numbers and timestamps are diagnostic only and never appear in engine-controlled formats or influence simulation behaviour. Different builds of the same commit must still produce bit-identical simulation results for the same inputs and content.
 
 ### 4.2 Retro Platforms
 
@@ -385,7 +379,7 @@ Mods may not:
 - Patch binaries or change the engine's fixed-point formats.
 - Introduce nondeterministic behaviour (no real RNG, no system time).
 - Violate directory contracts or bypass engine IO.
-- Binary plugins (when allowed) must use the documented C plugin ABI and are versioned separately. Binary plugins are bound by the same determinism constraints as the core: no direct use of system time, system RNG, threads that mutate engine state outside tick phases, or floating point in any path that affects simulation state.
+- Binary plugins (when allowed) must use the documented C plugin ABI and are versioned separately.
 
 ---
 
@@ -398,15 +392,13 @@ All engine-controlled formats obey:
 - All physical quantities stored as scaled integers
 - Explicit layout  
   - Packed C structs with explicit field sizes  
-  - Alignment/padding rules documented; no implicit compiler padding relied upon  
-  - No reliance on platform-specific struct packing pragmas is allowed in the canonical format definitions; disk layouts are specified in terms of explicit field sizes, and implementations must conform to those layouts.
+  - Alignment/padding rules documented; no implicit compiler padding relied upon
 - Little-endian canonical representation  
   - All multi-byte fields are little-endian on disk  
   - Platforms must convert as needed
 - Explicit versioning  
   - File headers contain magic plus version  
-  - Chunk sections are TLV (type-length-version) so new sections can be added without breaking older readers  
-  - Existing on-disk versions are immutable contracts. Any behavioural or layout change requires a new on-disk version and a documented migration path; silently changing the meaning of an existing version is forbidden.
+  - Chunk sections are TLV (type-length-version) so new sections can be added without breaking older readers
 - No pointers in serialized data  
   - All references are via IDs or relative indices  
   - No raw memory addresses appear in files
@@ -419,7 +411,7 @@ All engine-controlled formats obey:
 A save "universe" directory contains:
 
 - `universe.meta` -> UniverseMeta (version, universe_seed, etc.)
-- `content.lock` -> lists exact content packs and mod versions (id/version/hash); used to reconstruct registries deterministically. On loading a universe, the engine verifies that the active content set exactly matches `content.lock`; mismatches are treated as fatal until reconciled.
+- `content.lock` -> lists exact content packs and mod versions (id/version/hash); used to reconstruct registries deterministically.
 
 Per-surface directories:
 
@@ -504,11 +496,9 @@ Deterministic transfers:
 
 ## 9. Platform + Renderer Matrix
 
-This section is the normative matrix for platform and renderer targets. Other references to platforms or renderers in this README are descriptive; in any conflict, this matrix defines the supported set.
-
 Dominium supports a matrix of platform backends and renderers.
 
-Platforms: SDL1, SDL2, Win32, Win16, Win32s, Win9x, NT3-11, macOS 7-9 (Classic/Carbon), macOS X+, POSIX, X11, Wayland, DOS, CP/M-80/86 (tooling/limited frontends), Linux/BSD, Android.
+Platforms: SDL1, SDL2, Win32, Win16, Win32s, Win9x, NT3-11, macOS 7-9 (Classic/Carbon), macOS X+, POSIX, X11, Wayland, DOS, CP/M-80/86, Linux/BSD, Android.
 
 Renderers: software rasterizers, vector renderers, OpenGL 1.x/2.x, DirectX 9/11/12, Vulkan 1.x, VGA/EGA/CGA/MDA/Hercules, VESA modes, QuickDraw, Carbon/Quartz, Metal, WinG (where appropriate).
 
@@ -525,8 +515,6 @@ Three installation modes:
 - **All-users** - system-wide installation for multi-user environments; shared content; per-user saves and mods.
 
 Setup/installer provides install, repair, uninstall. Repair audits manifest vs actual files; restores missing or corrupted core assets and binaries but does not overwrite user saves or mods.
-
-In "per-user" and "all-users" modes, universes, saves, and per-user configs are stored outside the installation tree in user-specific locations (for example, under profile directories). In "portable" mode, all data lives under a single directory tree alongside the binaries.
 
 Launcher manages:
 

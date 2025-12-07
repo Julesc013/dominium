@@ -43,13 +43,6 @@ void            dm_sys_set_paths(dm_sys_context* ctx, struct dm_sys_paths paths)
 void            dm_sys_log(enum dm_sys_log_level lvl, const char* category, const char* msg);
 uint64_t        dm_sys_monotonic_usec(void);
 
-/* Compatibility bridge for legacy dom_* call sites. */
-typedef enum dm_sys_log_level dom_log_level;
-static void dom_log(enum dm_sys_log_level lvl, const char* category, const char* msg)
-{
-    dm_sys_log(lvl, category, msg);
-}
-
 #ifdef __cplusplus
 }
 #endif

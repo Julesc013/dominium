@@ -3,14 +3,6 @@
 #include "dom_render_null.h"
 #include "soft/core/dom_render_software.h"
 
-#ifndef DOM_RENDER_HAVE_DX9
-/* Stub out DirectX backend when the platform layer has not been wired. */
-static const DomRenderBackendAPI *dom_render_backend_dx9(void)
-{
-    return dom_render_backend_null();
-}
-#endif
-
 #include <string.h>
 #include <stdlib.h>
 
