@@ -6,6 +6,7 @@ target_include_directories(dominium_setup
     PRIVATE
         ${DOMINIUM_INCLUDE_DIR}
         ${DOMINIUM_INCLUDE_DIR}/dominium/_internal
+        ${DOMINIUM_INCLUDE_DIR}/dominium/_internal/dom_priv
 )
 
 target_link_libraries(dominium_setup

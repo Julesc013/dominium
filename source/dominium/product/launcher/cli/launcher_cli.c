@@ -1,3 +1,4 @@
+/* TODO: legacy CLI entrypoint; not yet wired into dominium_launcher target. */
 #include "dominium/dom_app_mode.h"
 #include "dominium/dom_plat_sys.h"
 #include "dominium/dom_plat_term.h"
