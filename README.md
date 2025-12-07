@@ -8,7 +8,7 @@ Dominium on Domino is a **fully deterministic**, **integer-math**, **platform-ag
 
 - Modern systems (Windows NT family, Linux, macOS X)
 - Legacy systems (Win9x, Win3.x, Win16, DOS, macOS 7-9, OS/2 strata via shims)
-- Future systems (WASM/Web, consoles, embedded)
+- Future systems (WASM/Web and consoles via frontends built on the same engine ABI)
 - Headless/server nodes (single or clustered)
 
 **Domino** is the deterministic simulation engine core.  
@@ -32,20 +32,6 @@ This repository includes:
 - **Ports** - platform metadata, capability descriptors, and build configurations for DOS, Win3.x, Win9x, macOS Classic, WASM, etc.; all build from the same unified source tree
 - **Specifications** - binding behaviour contracts (determinism, formats, APIs)
 - **Modding API & SDK** - deterministic, forward-compatible, sandboxed extension layer
-
-Dominium is a game running on the Domino engine.  
-The official game is one compatible implementation atop it.  
-Determinism permeates physics, AI, networks, world updates, rendering order, mod execution, and replay.
-
-This repository includes:
-
-- **Domino Engine** — deterministic C89/C++98 core  
-- **Dominium Game** — content-agnostic gameplay layer  
-- **Data Packs** — first-party assets and base definitions  
-- **Tools & Editors** — world tools, asset pipelines, modding interfaces  
-- **Ports** — DOS, Win3.x, Win9x, macOS Classic, WASM, etc.  
-- **Specifications** — binding behaviour contracts  
-- **Modding API** — deterministic, forward-compatible, sandboxed  
 
 All behaviour derives from written specifications. No code exists without a contract.
 
@@ -326,7 +312,7 @@ Typical headless binary (example naming):
 - `--surface`: surface id/index to simulate.
 - `--ticks`: number of ticks to run (0 = run indefinitely).
 
-Network layer manages deterministic lockstep/rollback.
+The canonical network model is deterministic lockstep. Rollback and prediction (when used by runtimes) must always converge to the same state as pure lockstep for the same inputs and content.
 
 ### 5.2 Client
 
@@ -549,7 +535,7 @@ The game runtime can always be executed directly; the launcher is never mandator
 
 Contributions must satisfy:
 
-- **Determinism preserved** - no floats in `/engine`; no nondeterministic APIs (system time, threads, I/O) in core or scripted interfaces.
+- **Determinism preserved** - changes must not violate the determinism rules defined in Section 2.1 (no floats in engine-facing simulation paths, and no nondeterministic APIs such as system time, threads, or uncontrolled I/O in core or scripted interfaces).
 - **C89/C++98 compliance** - `/engine` uses C89 only; `/runtime`, `/launcher`, `/tools` use C++98; limited STL as documented.
 - **Specification-first changes** - behavioural or format changes require spec updates in `/docs/spec/` before or alongside code; directory contracts and data formats must be updated.
 - **Tests** - new features require unit tests where reasonable, replay determinism tests (hashes/states over fixed sequences), integration tests for new systems or formats.
