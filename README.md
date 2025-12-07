@@ -3,20 +3,14 @@
 
 ## A Deterministic, Multi-Scale, Multi-Platform Simulation Game and Engine
 
-Dominium on Domino is a fully deterministic, integer-math, platform-agnostic, modular engine and game designed to run **bit-identically** across:
-=======
-# DOMINIUM & DOMINO  
-## A Deterministic, Multi-Scale, Multi-Platform Simulation Game and Engine
-
 Dominium on Domino is a **fully deterministic**, **integer-math**, **platform-agnostic**, **modular** engine and game designed to run identically across:
->>>>>>> d4e03c4a9334974ad4a2a0cb4887638243533427
+
 
 - Modern systems (Windows NT family, Linux, macOS X)
 - Legacy systems (Win9x, Win3.x, Win16, DOS, macOS 7-9, OS/2 strata via shims)
 - Future systems (WASM/Web, consoles, embedded)
 - Headless/server nodes (single or clustered)
 
-<<<<<<< HEAD
 **Domino** is the deterministic simulation engine core.  
 **Dominium** is the official game and tooling layer running on top of Domino.
 
