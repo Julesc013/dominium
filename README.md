@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # DOMINIUM & DOMINO
 
 ## A Deterministic, Multi-Scale, Multi-Platform Simulation Game and Engine
@@ -32,7 +32,7 @@ This repository includes:
 - **Ports** - DOS, Win3.x, Win9x, macOS Classic, WASM, etc.
 - **Specifications** - binding behaviour contracts (determinism, formats, APIs)
 - **Modding API & SDK** - deterministic, forward-compatible, sandboxed extension layer
-=======
+
 Dominium is a game running on the Domino engine.  
 The official game is one compatible implementation atop it.  
 Determinism permeates physics, AI, networks, world updates, rendering order, mod execution, and replay.
@@ -46,7 +46,6 @@ This repository includes:
 - **Ports** — DOS, Win3.x, Win9x, macOS Classic, WASM, etc.  
 - **Specifications** — binding behaviour contracts  
 - **Modding API** — deterministic, forward-compatible, sandboxed  
->>>>>>> d4e03c4a9334974ad4a2a0cb4887638243533427
 
 All behaviour derives from written specifications. No code exists without a contract.
 
