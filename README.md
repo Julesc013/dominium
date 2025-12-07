@@ -1,14 +1,22 @@
+<<<<<<< HEAD
 # DOMINIUM & DOMINO
 
 ## A Deterministic, Multi-Scale, Multi-Platform Simulation Game and Engine
 
 Dominium on Domino is a fully deterministic, integer-math, platform-agnostic, modular engine and game designed to run **bit-identically** across:
+=======
+# DOMINIUM & DOMINO  
+## A Deterministic, Multi-Scale, Multi-Platform Simulation Game and Engine
+
+Dominium on Domino is a **fully deterministic**, **integer-math**, **platform-agnostic**, **modular** engine and game designed to run identically across:
+>>>>>>> d4e03c4a9334974ad4a2a0cb4887638243533427
 
 - Modern systems (Windows NT family, Linux, macOS X)
 - Legacy systems (Win9x, Win3.x, Win16, DOS, macOS 7-9, OS/2 strata via shims)
 - Future systems (WASM/Web, consoles, embedded)
 - Headless/server nodes (single or clustered)
 
+<<<<<<< HEAD
 **Domino** is the deterministic simulation engine core.  
 **Dominium** is the official game and tooling layer running on top of Domino.
 
@@ -30,6 +38,21 @@ This repository includes:
 - **Ports** - DOS, Win3.x, Win9x, macOS Classic, WASM, etc.
 - **Specifications** - binding behaviour contracts (determinism, formats, APIs)
 - **Modding API & SDK** - deterministic, forward-compatible, sandboxed extension layer
+=======
+Dominium is a game running on the Domino engine.  
+The official game is one compatible implementation atop it.  
+Determinism permeates physics, AI, networks, world updates, rendering order, mod execution, and replay.
+
+This repository includes:
+
+- **Domino Engine** — deterministic C89/C++98 core  
+- **Dominium Game** — content-agnostic gameplay layer  
+- **Data Packs** — first-party assets and base definitions  
+- **Tools & Editors** — world tools, asset pipelines, modding interfaces  
+- **Ports** — DOS, Win3.x, Win9x, macOS Classic, WASM, etc.  
+- **Specifications** — binding behaviour contracts  
+- **Modding API** — deterministic, forward-compatible, sandboxed  
+>>>>>>> d4e03c4a9334974ad4a2a0cb4887638243533427
 
 All behaviour derives from written specifications. No code exists without a contract.
 
