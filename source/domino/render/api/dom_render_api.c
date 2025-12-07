@@ -1,7 +1,7 @@
 #include "dom_render_api.h"
 #include "dom_render_dx9.h"
 #include "dom_render_null.h"
-#include "soft/dom_render_software.h"
+#include "soft/core/dom_render_software.h"
 
 #ifndef DOM_RENDER_HAVE_DX9
 /* Stub out DirectX backend when the platform layer has not been wired. */
