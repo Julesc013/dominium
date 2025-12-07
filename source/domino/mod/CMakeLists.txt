@@ -1,5 +1,9 @@
 set(DOMINO_MOD_SOURCES
     host/mod_stub.c
+    domino_semver.c
+    package_registry.c
+    manifest_io.c
+    instance.c
 )
 
 add_library(domino_mod STATIC ${DOMINO_MOD_SOURCES})

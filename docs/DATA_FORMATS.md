@@ -77,3 +77,31 @@ Unknown `type` values are skipped using `length`. An empty section is legal and 
 - RNG state is only persisted in `SurfaceMeta`. Chunk caches are regenerable and not authoritative.
 
 This file and `engine/save_*.h` define the authoritative on-disk shapes for v0. Future changes must bump versions and keep skip-friendly framing.
+
+## 7. Package + product manifests
+
+### Product manifest (`product.toml`)
+- Location: alongside binaries in `program/<product_id>/<version>/product.toml`, shipped per installed version.
+- Format: simple key/value TOML-like text:
+  - `id = "<product id>"` (required)
+  - `version = "<semver>"` (required; parsed via `domino_semver_parse`)
+  - `[compat]` optional table:
+    - `content_api` – integer content ABI of the product itself.
+    - `launcher_content_api` – minimum content ABI expected by the launcher.
+    - `launcher_ext_api` – extension API version for launcher plug-ins.
+- Unspecified compat fields default to `0`; loaders ignore unknown keys for forward compatibility.
+
+### Package manifest (`*.toml` for mods/packs)
+- Location: under `data/` (first-party) or `user/` (community) and consumed by `domino_mod` when building registries.
+- Top-level keys:
+  - `id = "<package id>"`, `version = "<semver>"` (required).
+  - `kind = "mod" | "pack"` (required).
+  - `target = "game" | "launcher" | "both"` (optional; defaults to `game` today).
+- `[compat]` optional table:
+  - `launcher_id` and `launcher_range` to describe compatibility with specific launcher ids/versions.
+  - `launcher_content_api` and `launcher_ext_api` integers for launcher-facing ABI gates.
+- `[launcher]` optional table for launcher-targeted packages:
+  - `enabled_by_default = true|false` (defaults to `true`).
+  - `[[launcher.view]]` entries may declare view/tab surfaces:
+    - `id`, `label`, `kind` (`list/detail/dashboard/settings/custom`), `priority`, `script_entry`.
+- Launcher-side parsing of `[launcher]` is intentionally shallow in this pass; unknown keys are ignored and the view definitions are staged for future scripting/runtime registration.

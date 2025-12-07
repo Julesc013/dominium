@@ -1,18 +1,25 @@
-add_executable(dominium_launcher
-    core/launcher_stub.c
+add_executable(dominium_launcher_cli
+    core/dominium_launcher_core.c
+    core/dominium_launcher_view_registry.c
+    core/dominium_launcher_ext_api.c
+    model/dominium_launcher_model.c
+    services/instances/dominium_launcher_instances.c
+    cli/dominium_launcher_cli.c
+    cli/dominium_launcher_cli_main.c
 )
 
-target_include_directories(dominium_launcher
+target_include_directories(dominium_launcher_cli
     PRIVATE
         ${DOMINIUM_INCLUDE_DIR}
-        ${DOMINIUM_INCLUDE_DIR}/dominium/_internal
-        ${DOMINIUM_INCLUDE_DIR}/dominium/_internal/dom_priv
+        ${CMAKE_CURRENT_SOURCE_DIR}/core
+        ${CMAKE_CURRENT_SOURCE_DIR}/model
+        ${CMAKE_CURRENT_SOURCE_DIR}/services
+        ${CMAKE_CURRENT_SOURCE_DIR}/services/instances
 )
 
-target_link_libraries(dominium_launcher
+target_link_libraries(dominium_launcher_cli
     PRIVATE
         domino_sys
-        domino_sim
         domino_mod
-        dominium_rules
+        dominium_product_common
 )

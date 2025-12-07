@@ -1,3 +1,4 @@
+/* TODO: legacy render stub; replaced by domino_gfx + soft backend */
 #include "dominium/dom_rend.h"
 
 #include <stdlib.h>

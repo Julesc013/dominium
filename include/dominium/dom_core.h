@@ -13,17 +13,16 @@ typedef int64_t  dom_i64;
 typedef uint64_t dom_u64;
 typedef uint8_t  dom_bool8;
 
-/* Legacy aliasing to the new dm_sys_* surface. */
 enum dom_log_level {
-    DOM_LOG_DEBUG = DM_SYS_LOG_DEBUG,
-    DOM_LOG_INFO  = DM_SYS_LOG_INFO,
-    DOM_LOG_WARN  = DM_SYS_LOG_WARN,
-    DOM_LOG_ERROR = DM_SYS_LOG_ERROR
+    DOM_LOG_DEBUG = DOMINO_LOG_DEBUG,
+    DOM_LOG_INFO  = DOMINO_LOG_INFO,
+    DOM_LOG_WARN  = DOMINO_LOG_WARN,
+    DOM_LOG_ERROR = DOMINO_LOG_ERROR
 };
 
 static inline void dom_log(enum dom_log_level lvl, const char* category, const char* msg)
 {
-    dm_sys_log((enum dm_sys_log_level)lvl, category, msg);
+    domino_sys_log(NULL, (domino_log_level)lvl, category, msg);
 }
 
 #endif /* DOMINIUM_DOM_CORE_H */
