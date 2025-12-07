@@ -1,20 +1,20 @@
-# DOMINIUM  
-## A Deterministic, Multi-Scale, Multi-Platform Simulation Engine and Game
+# DOMINIUM & DOMINO  
+## A Deterministic, Multi-Scale, Multi-Platform Simulation Game and Engine
 
-Dominium is a **fully deterministic**, **integer-math**, **platform-agnostic**, **modular** engine and game designed to run identically across:
+Dominium on Domino is a **fully deterministic**, **integer-math**, **platform-agnostic**, **modular** engine and game designed to run identically across:
 
 - Modern systems (Windows NT family, Linux, macOS X)
 - Legacy systems (Win9x, Win3.x, Win16, DOS, macOS 7–9, OS/2 strata via shims)
 - Future systems (WASM/Web, consoles, embedded)
 - Headless/server nodes (single or clustered)
 
-Dominium is not “a game running on an engine.”  
-Dominium *is* the engine. The official game is one compatible implementation atop it.  
+Dominium is a game running on the Domino engine.  
+The official game is one compatible implementation atop it.  
 Determinism permeates physics, AI, networks, world updates, rendering order, mod execution, and replay.
 
 This repository includes:
 
-- **Dominium Engine** — deterministic C89/C++98 core  
+- **Domino Engine** — deterministic C89/C++98 core  
 - **Dominium Game** — content-agnostic gameplay layer  
 - **Data Packs** — first-party assets and base definitions  
 - **Tools & Editors** — world tools, asset pipelines, modding interfaces  
