@@ -2,7 +2,6 @@ set(DOMINO_SYS_SOURCES
     core/sys_stub.c
     core/audio/dom_audio_api.c
     core/base/core_rng.c
-    core/base/dom_log.c
     core/base/dom_core/dom_core_bits.c
     core/base/dom_core/dom_core_err.c
     core/base/dom_core/dom_core_fp.c
