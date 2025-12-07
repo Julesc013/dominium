@@ -29,7 +29,7 @@ This repository includes:
 - **Dominium Game Runtime(s)** - content-agnostic gameplay logic on top of Domino
 - **Content Packs** - first-party data packs (materials, recipes, worldgen, assets)
 - **Tools & Editors** - world tools, asset pipelines, debug/inspection tools
-- **Ports** - DOS, Win3.x, Win9x, macOS Classic, WASM, etc.
+- **Ports** - platform metadata, capability descriptors, and build configurations for DOS, Win3.x, Win9x, macOS Classic, WASM, etc.; all build from the same unified source tree
 - **Specifications** - binding behaviour contracts (determinism, formats, APIs)
 - **Modding API & SDK** - deterministic, forward-compatible, sandboxed extension layer
 
@@ -223,6 +223,8 @@ All subsystems are **hot-swappable** at the configuration/content level, behind 
 
 Backends adapt to core contracts, never the reverse.
 
+All backends must operate inside the same codebase and adhere to the same directory contracts. Missing features degrade gracefully through the capability system without altering engine behaviour, and ports cannot introduce platform-specific behaviour that modifies canonical simulation semantics or reimplements engine/runtime systems.
+
 ### 2.5 Platform Breadth
 
 Engine core compiles under:
@@ -237,9 +239,11 @@ Higher layers:
   - `/runtime/` (frontends)  
   - `/launcher/`  
   - `/tools/`  
-  - Platform shims in `/ports/`
+  - Platform shims configured via `/ports/` metadata (minimal glue only; no engine/runtime code lives there)
 
 All platforms must adhere to the same engine ABI and file formats.
+
+All platforms build from the same unified source hierarchy. Platform-specific behaviour is expressed only through thin shims, compile-time flags, and capability tables; ports must never fork or override engine or runtime systems.
 
 ---
 
@@ -260,7 +264,7 @@ Top-level structure (conceptual):
 - `/build` - build trees, generated headers, CI artefacts
 - `/package` - installer scripts, retro media images and packaging
 - `/scripts` - automation, CI helpers, migration tools
-- `/ports` - per-platform configuration and shims (DOS, Win3.x, Win9x, macOS Classic, WASM, consoles)
+- `/ports` - optional platform metadata, capability descriptors, and build configurations. No code or behaviour lives here; all platforms share the same source hierarchy.
 
 Within `/docs/spec/` the authoritative directory contract lives in:
 
@@ -302,30 +306,9 @@ Build numbers and timestamps are diagnostic only and never appear in engine-cont
 
 ### 4.2 Retro Platforms
 
-Retro build flows live under `/ports/<target>/`:
+Retro and constrained platforms compile the same engine and runtime code via capability-restricted builds. All platform variance is expressed through capability tables and minimal shims for windowing, IO, and input. No platform has a separate directory tree or alternate engine implementation.
 
-Each target includes:
-
-- Toolchain config
-- Build scripts
-- Notes about supported feature subsets
-
-Examples:
-
-- DOS: OpenWatcom plus wmake or similar; 16-bit/32-bit builds as appropriate.
-- Win3.x: MASM plus MSVC 1.52; targeting Win16 APIs and limited memory.
-- Win9x: MSVC6 plus DX7 SDK or SDL1 backend.
-- macOS Classic (7-9): CodeWarrior plus MPW projects.
-- WASM/Web: Emscripten; runtime frontends in C++98 compiled to WASM; engine compiled as C library.
-
-Retro builds:
-
-- Must use the same engine core sources, file formats, and content.
-- May alter:  
-  - Renderer choice  
-  - UI complexity  
-  - Build flags (size vs speed), but not simulation logic.
-- Simulation behaviour remains bit-identical across all targets.
+The `/ports/` directory contains only platform metadata, build configurations, and capability descriptors. It must not contain engine or runtime source code.
 
 ---
 
@@ -520,7 +503,7 @@ Deterministic transfers:
 
 ## 9. Platform + Renderer Matrix
 
-This section is the normative matrix for platform and renderer targets. Other references to platforms or renderers in this README are descriptive; in any conflict, this matrix defines the supported set.
+This section is the normative matrix for platform and renderer targets. Other references to platforms or renderers in this README are descriptive; in any conflict, this matrix defines the supported set. All platforms and renderers use a single unified codebase; any platform lacking features degrades gracefully through the capability system, and no port maintains separate divergent source trees.
 
 Dominium supports a matrix of platform backends and renderers.
 
@@ -571,6 +554,7 @@ Contributions must satisfy:
 - **Specification-first changes** - behavioural or format changes require spec updates in `/docs/spec/` before or alongside code; directory contracts and data formats must be updated.
 - **Tests** - new features require unit tests where reasonable, replay determinism tests (hashes/states over fixed sequences), integration tests for new systems or formats.
 - **Documentation** - README and relevant docs updated for new public features; internal developer notes updated for non-public changes.
+- No platform may introduce or maintain divergent code paths outside the allowed platform-shim and capability system. All ports must operate within the single unified directory structure and must not fork or override upstream components.
 - **Strict prohibitions:**  
   - No floats in simulation or core IO.  
   - No platform API calls from `/engine`.  
