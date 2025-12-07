@@ -1,13 +1,8 @@
-#ifndef DOMINIUM_DOM_GAME_MOD_API_H
-#define DOMINIUM_DOM_GAME_MOD_API_H
+#ifndef DOMINIUM_GAME_API_H
+#define DOMINIUM_GAME_API_H
 
-/* TODO: define stable C API for game-side native/script mods. */
-#include <stddef.h>
-#include <stdint.h>
+#include "domino/mod.h"
 
-typedef struct DomGameModAPI {
-    uint32_t abi_version;
-    /* function pointers to be filled once modding layer is implemented */
-} DomGameModAPI;
+int dominium_game_run(const domino_instance_desc* inst);
 
-#endif /* DOMINIUM_DOM_GAME_MOD_API_H */
+#endif /* DOMINIUM_GAME_API_H */

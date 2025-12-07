@@ -4,9 +4,15 @@
 
 int main(int argc, char** argv)
 {
-    dm_sys_context* sys = dm_sys_init();
+    domino_sys_context* sys = NULL;
+    domino_sys_desc sdesc;
     (void)argc; (void)argv;
-    dm_sys_log(DM_SYS_LOG_INFO, "launcher", "Dominium launcher stub");
-    dm_sys_shutdown(sys);
+
+    sdesc.profile_hint = DOMINO_SYS_PROFILE_AUTO;
+    if (domino_sys_init(&sdesc, &sys) != 0 || !sys) {
+        return 1;
+    }
+    domino_sys_log(sys, DOMINO_LOG_INFO, "launcher", "Dominium launcher stub");
+    domino_sys_shutdown(sys);
     return 0;
 }

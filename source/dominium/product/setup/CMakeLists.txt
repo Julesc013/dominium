@@ -1,18 +1,20 @@
-add_executable(dominium_setup
-    core/setup_stub.c
+add_executable(dominium_setup_cli
+    core/dominium_setup_core.c
+    model/dominium_setup_model.c
+    cli/dominium_setup_cli.c
+    cli/dominium_setup_cli_main.c
 )
 
-target_include_directories(dominium_setup
+target_include_directories(dominium_setup_cli
     PRIVATE
         ${DOMINIUM_INCLUDE_DIR}
-        ${DOMINIUM_INCLUDE_DIR}/dominium/_internal
-        ${DOMINIUM_INCLUDE_DIR}/dominium/_internal/dom_priv
+        ${CMAKE_CURRENT_SOURCE_DIR}/core
+        ${CMAKE_CURRENT_SOURCE_DIR}/model
 )
 
-target_link_libraries(dominium_setup
+target_link_libraries(dominium_setup_cli
     PRIVATE
         domino_sys
-        domino_sim
         domino_mod
-        dominium_rules
+        dominium_product_common
 )

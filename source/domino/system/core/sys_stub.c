@@ -1,3 +1,4 @@
+/* TODO: legacy stub preserved for reference; new platform API lives in domino_sys_core.c */
 #include "domino/sys.h"
 
 #include <stdio.h>

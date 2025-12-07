@@ -1,3 +1,4 @@
+/* TODO: legacy renderer stub; superseded by domino_gfx_core/soft backend */
 #include "domino/gfx.h"
 #include <stdlib.h>
 
