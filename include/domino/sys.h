@@ -6,6 +6,15 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifndef __cplusplus
+# if !defined(__bool_true_false_are_defined)
+typedef unsigned char bool;
+#  define true 1
+#  define false 0
+#  define __bool_true_false_are_defined 1
+# endif
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -191,119 +200,124 @@ int  domino_term_read_line(domino_term_context* term,
  * New Domino system ABI (dsys_*)
  *------------------------------------------------------------*/
 typedef struct dsys_context    dsys_context;
-typedef struct dsys_file       dsys_file;
-typedef struct dsys_dir_iter   dsys_dir_iter;
-typedef struct dsys_process    dsys_process;
+typedef struct dsys_window_t   dsys_window;
+typedef struct dsys_process_t  dsys_process;
+typedef struct dsys_dir_iter_t dsys_dir_iter;
 
-typedef enum dsys_profile {
-    DSYS_PROFILE_AUTO = 0,
-    DSYS_PROFILE_MINIMAL,
-    DSYS_PROFILE_STANDARD,
-    DSYS_PROFILE_FULL
-} dsys_profile;
+typedef enum dsys_result {
+    DSYS_OK = 0,
+    DSYS_ERR,
+    DSYS_ERR_NOT_FOUND,
+    DSYS_ERR_IO,
+    DSYS_ERR_UNSUPPORTED
+} dsys_result;
 
-typedef enum dsys_os_kind {
-    DSYS_OS_UNKNOWN = 0,
-    DSYS_OS_WINDOWS,
-    DSYS_OS_MAC,
-    DSYS_OS_UNIX,
-    DSYS_OS_ANDROID,
-    DSYS_OS_DOS,
-    DSYS_OS_CPM
-} dsys_os_kind;
+typedef struct dsys_caps {
+    const char* name;
+    uint32_t    ui_modes;
+    bool        has_windows;
+    bool        has_mouse;
+    bool        has_gamepad;
+    bool        has_high_res_timer;
+} dsys_caps;
 
-typedef enum dsys_cpu_kind {
-    DSYS_CPU_UNKNOWN = 0,
-    DSYS_CPU_X86_16,
-    DSYS_CPU_X86_32,
-    DSYS_CPU_X86_64,
-    DSYS_CPU_ARM_32,
-    DSYS_CPU_ARM_64,
-    DSYS_CPU_PPC,
-    DSYS_CPU_M68K,
-    DSYS_CPU_OTHER
-} dsys_cpu_kind;
+dsys_result dsys_init(void);
+void        dsys_shutdown(void);
+dsys_caps   dsys_get_caps(void);
 
-typedef enum dsys_log_level {
-    DSYS_LOG_DEBUG = 0,
-    DSYS_LOG_INFO  = 1,
-    DSYS_LOG_WARN  = 2,
-    DSYS_LOG_ERROR = 3
-} dsys_log_level;
+/* Time */
+uint64_t dsys_time_now_us(void);
+void     dsys_sleep_ms(uint32_t ms);
 
-typedef void (*dsys_log_fn)(void* user,
-                            dsys_log_level level,
-                            const char* category,
-                            const char* message);
+/* Window */
+typedef enum dsys_window_mode {
+    DWIN_MODE_WINDOWED = 0,
+    DWIN_MODE_FULLSCREEN,
+    DWIN_MODE_BORDERLESS
+} dsys_window_mode;
 
-#define DSYS_PLATFORM_FLAG_HAS_THREADS 0x00000001u
-#define DSYS_PLATFORM_FLAG_HAS_FORK    0x00000002u
-#define DSYS_PLATFORM_FLAG_HAS_UNICODE 0x00000004u
-#define DSYS_PLATFORM_FLAG_IS_LEGACY   0x00000008u
+typedef struct dsys_window_desc {
+    int32_t          x;
+    int32_t          y;
+    int32_t          width;
+    int32_t          height;
+    dsys_window_mode mode;
+} dsys_window_desc;
 
-typedef struct dsys_platform_info {
-    uint32_t      struct_size;
-    uint32_t      struct_version;
-    dsys_os_kind  os;
-    dsys_cpu_kind cpu;
-    uint32_t      pointer_size;
-    uint32_t      page_size;
-    uint32_t      flags;
-} dsys_platform_info;
+dsys_window* dsys_window_create(const dsys_window_desc* desc);
+void         dsys_window_destroy(dsys_window* win);
+void         dsys_window_set_mode(dsys_window* win, dsys_window_mode mode);
+void         dsys_window_set_size(dsys_window* win, int32_t w, int32_t h);
+void         dsys_window_get_size(dsys_window* win, int32_t* w, int32_t* h);
+void*        dsys_window_get_native_handle(dsys_window* win);
 
-typedef struct dsys_paths {
-    uint32_t struct_size;
-    uint32_t struct_version;
-    char install_root[260];
-    char program_root[260];
-    char data_root[260];
-    char user_root[260];
-    char state_root[260];
-    char temp_root[260];
-} dsys_paths;
+/* Input events */
+typedef enum dsys_event_type {
+    DSYS_EVENT_QUIT = 0,
+    DSYS_EVENT_WINDOW_RESIZED,
+    DSYS_EVENT_KEY_DOWN,
+    DSYS_EVENT_KEY_UP,
+    DSYS_EVENT_TEXT_INPUT,
+    DSYS_EVENT_MOUSE_MOVE,
+    DSYS_EVENT_MOUSE_BUTTON,
+    DSYS_EVENT_MOUSE_WHEEL,
+    DSYS_EVENT_GAMEPAD_BUTTON,
+    DSYS_EVENT_GAMEPAD_AXIS
+} dsys_event_type;
 
-typedef struct dsys_desc {
-    uint32_t    struct_size;
-    uint32_t    struct_version;
-    dsys_profile profile;
-    dsys_log_fn log_fn;
-    void*       log_user;
-} dsys_desc;
+typedef struct dsys_event {
+    dsys_event_type type;
+    union {
+        struct { int32_t width; int32_t height; } window;
+        struct { int32_t key; bool repeat; } key;
+        struct { char text[8]; } text;
+        struct { int32_t x; int32_t y; int32_t dx; int32_t dy; } mouse_move;
+        struct { int32_t button; bool pressed; int32_t clicks; } mouse_button;
+        struct { int32_t delta_x; int32_t delta_y; } mouse_wheel;
+        struct { int32_t button; bool pressed; int32_t gamepad; } gamepad_button;
+        struct { int32_t axis; int32_t gamepad; float value; } gamepad_axis;
+    } payload;
+} dsys_event;
 
-int  dsys_create(const dsys_desc* desc, dsys_context** out_sys);
-void dsys_destroy(dsys_context* sys);
+bool dsys_poll_event(dsys_event* out);
 
-int dsys_get_platform_info(dsys_context* sys, dsys_platform_info* out_info);
-int dsys_get_paths(dsys_context* sys, dsys_paths* out_paths);
-int dsys_set_log_hook(dsys_context* sys, dsys_log_fn log_fn, void* user_data);
+/* Filesystem */
+typedef enum dsys_path_kind {
+    DSYS_PATH_APP_ROOT = 0,
+    DSYS_PATH_USER_DATA,
+    DSYS_PATH_USER_CONFIG,
+    DSYS_PATH_USER_CACHE,
+    DSYS_PATH_TEMP
+} dsys_path_kind;
 
-uint64_t dsys_time_ticks(dsys_context* sys);
-double   dsys_time_seconds(dsys_context* sys);
-void     dsys_sleep_millis(dsys_context* sys, uint32_t millis);
+bool   dsys_get_path(dsys_path_kind kind, char* buf, size_t buf_size);
 
-int dsys_file_exists(dsys_context* sys, const char* path);
-int dsys_mkdirs(dsys_context* sys, const char* path);
+void*  dsys_file_open(const char* path, const char* mode);
+size_t dsys_file_read(void* fh, void* buf, size_t size);
+size_t dsys_file_write(void* fh, const void* buf, size_t size);
+int    dsys_file_seek(void* fh, long offset, int origin);
+long   dsys_file_tell(void* fh);
+int    dsys_file_close(void* fh);
 
-dsys_file* dsys_file_open(dsys_context* sys, const char* path, const char* mode);
-size_t     dsys_file_read(dsys_file* file, void* buffer, size_t bytes);
-size_t     dsys_file_write(dsys_file* file, const void* buffer, size_t bytes);
-void       dsys_file_close(dsys_file* file);
+typedef struct dsys_dir_entry {
+    char name[260];
+    bool is_dir;
+} dsys_dir_entry;
 
-dsys_dir_iter* dsys_dir_open(dsys_context* sys, const char* path);
-int            dsys_dir_next(dsys_dir_iter* it, char* name_out, size_t cap, int* is_dir_out);
+dsys_dir_iter* dsys_dir_open(const char* path);
+bool           dsys_dir_next(dsys_dir_iter* it, dsys_dir_entry* out);
 void           dsys_dir_close(dsys_dir_iter* it);
 
+/* Processes */
 typedef struct dsys_process_desc {
-    uint32_t    struct_size;
-    uint32_t    struct_version;
-    const char* path;
+    const char*        exe;
     const char* const* argv;
-    const char* working_dir;
+    uint32_t           flags;
 } dsys_process_desc;
 
-int  dsys_process_spawn(dsys_context* sys, const dsys_process_desc* desc, dsys_process** out_proc);
-int  dsys_process_wait(dsys_process* proc, int* exit_code_out);
-void dsys_process_destroy(dsys_process* proc);
+dsys_process* dsys_process_spawn(const dsys_process_desc* desc);
+int           dsys_process_wait(dsys_process* p);
+void          dsys_process_destroy(dsys_process* p);
 
 #ifdef __cplusplus
 }

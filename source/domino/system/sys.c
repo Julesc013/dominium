@@ -1,220 +1,271 @@
 #include "domino/sys.h"
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
-struct dsys_context {
-    dsys_desc          desc;
-    dsys_platform_info platform;
-    dsys_paths         paths;
-    dsys_log_fn        log_fn;
-    void*              log_user;
+#if defined(_WIN32)
+#include <windows.h>
+#elif defined(_POSIX_VERSION)
+#include <time.h>
+#endif
+
+struct dsys_window_t {
+    int32_t          x;
+    int32_t          y;
+    int32_t          width;
+    int32_t          height;
+    dsys_window_mode mode;
 };
 
-struct dsys_file {
+struct dsys_process_t {
     int placeholder;
 };
 
-struct dsys_dir_iter {
+struct dsys_dir_iter_t {
     int placeholder;
 };
 
-struct dsys_process {
-    int placeholder;
+static const dsys_caps g_dsys_caps = {
+    "stub",
+    0u,
+    false,
+    false,
+    false,
+    false
 };
 
-int dsys_create(const dsys_desc* desc, dsys_context** out_sys)
+dsys_result dsys_init(void)
 {
-    dsys_context* ctx;
-    dsys_desc local_desc;
+    return DSYS_OK;
+}
 
-    if (!out_sys) {
-        return -1;
-    }
-    *out_sys = NULL;
+void dsys_shutdown(void)
+{
+}
 
-    ctx = (dsys_context*)malloc(sizeof(dsys_context));
-    if (!ctx) {
-        return -1;
+dsys_caps dsys_get_caps(void)
+{
+    return g_dsys_caps;
+}
+
+uint64_t dsys_time_now_us(void)
+{
+    uint64_t ticks;
+    ticks = (uint64_t)clock();
+    if (CLOCKS_PER_SEC != 0) {
+        ticks = (ticks * 1000000u) / (uint64_t)CLOCKS_PER_SEC;
     }
-    memset(ctx, 0, sizeof(*ctx));
+    return ticks;
+}
+
+void dsys_sleep_ms(uint32_t ms)
+{
+#if defined(_WIN32)
+    Sleep(ms);
+#elif defined(_POSIX_VERSION)
+    {
+        struct timespec ts;
+        ts.tv_sec = (time_t)(ms / 1000u);
+        ts.tv_nsec = (long)((ms % 1000u) * 1000000u);
+        nanosleep(&ts, (struct timespec*)0);
+    }
+#else
+    {
+        clock_t start;
+        clock_t target;
+        start = clock();
+        target = start + (clock_t)((ms * CLOCKS_PER_SEC) / 1000u);
+        while (clock() < target) {
+            /* busy wait */
+        }
+    }
+#endif
+}
+
+dsys_window* dsys_window_create(const dsys_window_desc* desc)
+{
+    dsys_window* win;
+    dsys_window_desc local_desc;
 
     if (desc) {
         local_desc = *desc;
     } else {
-        memset(&local_desc, 0, sizeof(local_desc));
-        local_desc.profile = DSYS_PROFILE_STANDARD;
+        local_desc.x = 0;
+        local_desc.y = 0;
+        local_desc.width = 0;
+        local_desc.height = 0;
+        local_desc.mode = DWIN_MODE_WINDOWED;
     }
-    ctx->desc = local_desc;
-    ctx->log_fn = local_desc.log_fn;
-    ctx->log_user = local_desc.log_user;
 
-    ctx->platform.struct_size = sizeof(dsys_platform_info);
-    ctx->platform.struct_version = 1u;
-    ctx->platform.pointer_size = (uint32_t)sizeof(void*);
-    ctx->platform.page_size = 4096u;
-    ctx->platform.flags = 0u;
-
-    ctx->paths.struct_size = sizeof(dsys_paths);
-    ctx->paths.struct_version = 1u;
-    ctx->paths.install_root[0] = '\0';
-    ctx->paths.program_root[0] = '\0';
-    ctx->paths.data_root[0] = '\0';
-    ctx->paths.user_root[0] = '\0';
-    ctx->paths.state_root[0] = '\0';
-    ctx->paths.temp_root[0] = '\0';
-
-    *out_sys = ctx;
-    return 0;
+    win = (dsys_window*)malloc(sizeof(dsys_window));
+    if (!win) {
+        return NULL;
+    }
+    win->x = local_desc.x;
+    win->y = local_desc.y;
+    win->width = local_desc.width;
+    win->height = local_desc.height;
+    win->mode = local_desc.mode;
+    return win;
 }
 
-void dsys_destroy(dsys_context* sys)
+void dsys_window_destroy(dsys_window* win)
 {
-    if (!sys) {
+    if (!win) {
         return;
     }
-    free(sys);
+    free(win);
 }
 
-int dsys_get_platform_info(dsys_context* sys, dsys_platform_info* out_info)
+void dsys_window_set_mode(dsys_window* win, dsys_window_mode mode)
 {
-    if (!sys || !out_info) {
-        return -1;
+    if (!win) {
+        return;
     }
-    *out_info = sys->platform;
-    return 0;
+    win->mode = mode;
 }
 
-int dsys_get_paths(dsys_context* sys, dsys_paths* out_paths)
+void dsys_window_set_size(dsys_window* win, int32_t w, int32_t h)
 {
-    if (!sys || !out_paths) {
-        return -1;
+    if (!win) {
+        return;
     }
-    *out_paths = sys->paths;
-    return 0;
+    win->width = w;
+    win->height = h;
 }
 
-int dsys_set_log_hook(dsys_context* sys, dsys_log_fn log_fn, void* user_data)
+void dsys_window_get_size(dsys_window* win, int32_t* w, int32_t* h)
 {
-    if (!sys) {
-        return -1;
+    if (!win) {
+        return;
     }
-    sys->log_fn = log_fn;
-    sys->log_user = user_data;
-    return 0;
+    if (w) {
+        *w = win->width;
+    }
+    if (h) {
+        *h = win->height;
+    }
 }
 
-uint64_t dsys_time_ticks(dsys_context* sys)
+void* dsys_window_get_native_handle(dsys_window* win)
 {
-    (void)sys;
-    return 0u;
-}
-
-double dsys_time_seconds(dsys_context* sys)
-{
-    (void)sys;
-    return 0.0;
-}
-
-void dsys_sleep_millis(dsys_context* sys, uint32_t millis)
-{
-    (void)sys;
-    (void)millis;
-}
-
-int dsys_file_exists(dsys_context* sys, const char* path)
-{
-    (void)sys;
-    (void)path;
-    return 0;
-}
-
-int dsys_mkdirs(dsys_context* sys, const char* path)
-{
-    (void)sys;
-    (void)path;
-    return 0;
-}
-
-dsys_file* dsys_file_open(dsys_context* sys, const char* path, const char* mode)
-{
-    (void)sys;
-    (void)path;
-    (void)mode;
+    (void)win;
     return NULL;
 }
 
-size_t dsys_file_read(dsys_file* file, void* buffer, size_t bytes)
+bool dsys_poll_event(dsys_event* out)
 {
-    (void)file;
-    (void)buffer;
-    (void)bytes;
-    return 0u;
-}
-
-size_t dsys_file_write(dsys_file* file, const void* buffer, size_t bytes)
-{
-    (void)file;
-    (void)buffer;
-    (void)bytes;
-    return 0u;
-}
-
-void dsys_file_close(dsys_file* file)
-{
-    if (!file) {
-        return;
+    if (out) {
+        memset(out, 0, sizeof(*out));
     }
-    free(file);
+    return false;
 }
 
-dsys_dir_iter* dsys_dir_open(dsys_context* sys, const char* path)
+bool dsys_get_path(dsys_path_kind kind, char* buf, size_t buf_size)
 {
-    (void)sys;
+    (void)kind;
+    if (!buf || buf_size == 0u) {
+        return false;
+    }
+    if (buf_size < 2u) {
+        buf[0] = '\0';
+        return false;
+    }
+    buf[0] = '.';
+    buf[1] = '\0';
+    return true;
+}
+
+void* dsys_file_open(const char* path, const char* mode)
+{
+    return (void*)fopen(path, mode);
+}
+
+size_t dsys_file_read(void* fh, void* buf, size_t size)
+{
+    FILE* fp;
+    if (!fh || !buf || size == 0u) {
+        return 0u;
+    }
+    fp = (FILE*)fh;
+    return fread(buf, 1u, size, fp);
+}
+
+size_t dsys_file_write(void* fh, const void* buf, size_t size)
+{
+    FILE* fp;
+    if (!fh || !buf || size == 0u) {
+        return 0u;
+    }
+    fp = (FILE*)fh;
+    return fwrite(buf, 1u, size, fp);
+}
+
+int dsys_file_seek(void* fh, long offset, int origin)
+{
+    FILE* fp;
+    if (!fh) {
+        return -1;
+    }
+    fp = (FILE*)fh;
+    return fseek(fp, offset, origin);
+}
+
+long dsys_file_tell(void* fh)
+{
+    FILE* fp;
+    if (!fh) {
+        return -1L;
+    }
+    fp = (FILE*)fh;
+    return ftell(fp);
+}
+
+int dsys_file_close(void* fh)
+{
+    FILE* fp;
+    if (!fh) {
+        return -1;
+    }
+    fp = (FILE*)fh;
+    return fclose(fp);
+}
+
+dsys_dir_iter* dsys_dir_open(const char* path)
+{
     (void)path;
     return NULL;
 }
 
-int dsys_dir_next(dsys_dir_iter* it, char* name_out, size_t cap, int* is_dir_out)
+bool dsys_dir_next(dsys_dir_iter* it, dsys_dir_entry* out)
 {
     (void)it;
-    (void)name_out;
-    (void)cap;
-    (void)is_dir_out;
-    return 0;
+    if (out) {
+        memset(out, 0, sizeof(*out));
+    }
+    return false;
 }
 
 void dsys_dir_close(dsys_dir_iter* it)
 {
-    if (!it) {
-        return;
-    }
-    free(it);
+    (void)it;
 }
 
-int dsys_process_spawn(dsys_context* sys, const dsys_process_desc* desc, dsys_process** out_proc)
+dsys_process* dsys_process_spawn(const dsys_process_desc* desc)
 {
-    (void)sys;
     (void)desc;
-    if (out_proc) {
-        *out_proc = NULL;
-    }
+    return NULL;
+}
+
+int dsys_process_wait(dsys_process* p)
+{
+    (void)p;
     return -1;
 }
 
-int dsys_process_wait(dsys_process* proc, int* exit_code_out)
+void dsys_process_destroy(dsys_process* p)
 {
-    (void)proc;
-    if (exit_code_out) {
-        *exit_code_out = -1;
-    }
-    return -1;
-}
-
-void dsys_process_destroy(dsys_process* proc)
-{
-    if (!proc) {
-        return;
-    }
-    free(proc);
+    (void)p;
 }

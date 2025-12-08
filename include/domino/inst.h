@@ -1,6 +1,7 @@
 #ifndef DOMINO_INST_H_INCLUDED
 #define DOMINO_INST_H_INCLUDED
 
+#include <stddef.h>
 #include <stdint.h>
 #include "domino/core.h"
 #include "domino/pkg.h"
@@ -9,23 +10,26 @@
 extern "C" {
 #endif
 
-typedef struct dom_inst dom_inst;
+typedef uint32_t dom_instance_id;
 
-typedef struct dom_inst_desc {
-    uint32_t          struct_size;
-    uint32_t          struct_version;
-    const char*       id;
-    const char*       label;
-    dom_pkg_registry* registry;
-    const char*       root_path;
-} dom_inst_desc;
+#define DOM_MAX_INSTANCE_PACKAGES 8
 
-dom_status dom_inst_create(const dom_inst_desc* desc, dom_inst** out_inst);
-void       dom_inst_destroy(dom_inst* inst);
-dom_status dom_inst_load(dom_inst* inst, const char* path);
-dom_status dom_inst_save(dom_inst* inst, const char* path);
-dom_status dom_inst_resolve(dom_inst* inst);
-dom_pkg_registry* dom_inst_get_registry(dom_inst* inst);
+typedef struct dom_instance_info {
+    uint32_t        struct_size;
+    uint32_t        struct_version;
+    dom_instance_id id;
+    char            name[64];
+    char            path[260];
+    uint32_t        flags;
+    uint32_t        pkg_count;
+    dom_package_id  pkgs[DOM_MAX_INSTANCE_PACKAGES];
+} dom_instance_info;
+
+uint32_t        dom_inst_list(dom_core* core, dom_instance_info* out, uint32_t max_out);
+bool            dom_inst_get(dom_core* core, dom_instance_id id, dom_instance_info* out);
+dom_instance_id dom_inst_create(dom_core* core, const dom_instance_info* desc);
+bool            dom_inst_update(dom_core* core, const dom_instance_info* desc);
+bool            dom_inst_delete(dom_core* core, dom_instance_id id);
 
 #ifdef __cplusplus
 }

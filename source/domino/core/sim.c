@@ -1,65 +1,60 @@
-#include "domino/sim.h"
-
-#include <stdlib.h>
 #include <string.h>
+#include "core_internal.h"
 
-struct dom_sim {
-    dom_sim_desc desc;
-    uint64_t     time_millis;
-};
-
-int dom_sim_create(const dom_sim_desc* desc, dom_sim** out_sim)
+static dom_instance_record* dom_sim_find(dom_core* core, dom_instance_id id)
 {
-    dom_sim* sim;
-    dom_sim_desc local_desc;
+    uint32_t i;
 
-    if (!out_sim) {
-        return -1;
-    }
-    *out_sim = NULL;
-
-    sim = (dom_sim*)malloc(sizeof(dom_sim));
-    if (!sim) {
-        return -1;
-    }
-    memset(sim, 0, sizeof(*sim));
-
-    if (desc) {
-        local_desc = *desc;
-    } else {
-        memset(&local_desc, 0, sizeof(local_desc));
+    if (!core) {
+        return NULL;
     }
 
-    local_desc.struct_size = sizeof(dom_sim_desc);
-    sim->desc = local_desc;
-    sim->time_millis = 0u;
+    for (i = 0; i < core->instance_count; ++i) {
+        if (core->instances[i].info.id == id) {
+            return &core->instances[i];
+        }
+    }
 
-    *out_sim = sim;
-    return 0;
+    return NULL;
 }
 
-void dom_sim_destroy(dom_sim* sim)
+bool dom_sim_tick(dom_core* core, dom_instance_id inst, uint32_t ticks)
 {
-    if (!sim) {
-        return;
+    dom_instance_record* rec;
+    double dt;
+
+    rec = dom_sim_find(core, inst);
+    if (!rec) {
+        return false;
     }
-    free(sim);
+
+    dt = ((double)ticks) / 60.0;
+    rec->sim.ticks += ticks;
+    rec->sim.dt_s = dt;
+    rec->sim.sim_time_s += dt;
+
+    if (core) {
+        core->tick_counter += ticks;
+    }
+
+    return true;
 }
 
-int dom_sim_tick(dom_sim* sim, uint32_t dt_millis)
+bool dom_sim_get_state(dom_core* core, dom_instance_id inst, dom_sim_state* out)
 {
-    if (!sim) {
-        return -1;
-    }
-    sim->time_millis += dt_millis;
-    return 0;
-}
+    dom_instance_record* rec;
 
-int dom_sim_get_time(dom_sim* sim, uint64_t* out_time_millis)
-{
-    if (!sim || !out_time_millis) {
-        return -1;
+    if (!out) {
+        return false;
     }
-    *out_time_millis = sim->time_millis;
-    return 0;
+
+    rec = dom_sim_find(core, inst);
+    if (!rec) {
+        return false;
+    }
+
+    rec->sim.struct_size = sizeof(dom_sim_state);
+    rec->sim.struct_version = 1;
+    *out = rec->sim;
+    return true;
 }

@@ -8,14 +8,11 @@
 extern "C" {
 #endif
 
-typedef struct dom_view_registry dom_view_registry;
-
 typedef enum dom_view_kind {
-    DOM_VIEW_KIND_NONE = 0,
-    DOM_VIEW_KIND_CANVAS = 1,
-    DOM_VIEW_KIND_TABLE = 2,
-    DOM_VIEW_KIND_TREE  = 3,
-    DOM_VIEW_KIND_CUSTOM = 4
+    DOM_VIEW_KIND_TABLE = 0,
+    DOM_VIEW_KIND_TREE,
+    DOM_VIEW_KIND_FORM,
+    DOM_VIEW_KIND_CANVAS
 } dom_view_kind;
 
 typedef struct dom_view_desc {
@@ -24,18 +21,10 @@ typedef struct dom_view_desc {
     const char*   id;
     const char*   title;
     dom_view_kind kind;
-    void*         user_data;
+    const char*   model_id;
 } dom_view_desc;
 
-typedef struct dom_view_registry_desc {
-    uint32_t struct_size;
-    uint32_t struct_version;
-} dom_view_registry_desc;
-
-dom_status dom_view_registry_create(const dom_view_registry_desc* desc, dom_view_registry** out_registry);
-void       dom_view_registry_destroy(dom_view_registry* registry);
-dom_status dom_view_register(dom_view_registry* registry, const dom_view_desc* desc);
-dom_status dom_view_unregister(dom_view_registry* registry, const char* id);
+uint32_t dom_ui_list_views(dom_core* core, dom_view_desc* out, uint32_t max_out);
 
 #ifdef __cplusplus
 }

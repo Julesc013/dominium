@@ -1,66 +1,38 @@
-# Renderer API (domino_gfx)
+# Renderer API (dgfx)
 
 Public header: `include/domino/gfx.h`  
-Core code: `source/domino/render/api/domino_gfx_core.c`  
-Software backend: `source/domino/render/soft/**`
+Null backend: `source/domino/render/gfx.c`
 
-## ABI (dgfx_*) snapshot
-- Versioned `dgfx_device_desc` selects backend (`DEFAULT/SOFTWARE/NULL/EXTERNAL`), size, format, and present mode; `dgfx_create_device`/`dgfx_destroy_device` own an opaque device on top of a `dsys_context`.
-- Frame control remains minimal: `dgfx_begin_frame`/`dgfx_end_frame` plus `dgfx_resize` for swapchain size changes.
-- `dgfx_get_canvas` hands back a `dom_canvas` handle representing the render target; the immediate IR stays canvas-centric for now.
-- Backend selection is deferred to the descriptor; everything is stubbed to succeed without real GPU/platform work.
+## dgfx IR snapshot
+- Opaque `dgfx_context` created via `dgfx_init(const dgfx_desc*)`; desc selects backend (`NULL/SOFT8/GL2/DX9/VK1`), optional `dsys_window*`, width/height, and vsync flag.
+- `dgfx_caps` reports a backend name plus feature bits; the NULL backend reports all capabilities as false and `max_texture_size = 0`.
+- Frame flow is a no-op stub: `dgfx_begin_frame`/`dgfx_execute`/`dgfx_end_frame` exist for future backends and simply return.
+- `dgfx_resize` only updates stored dimensions inside the context; no swapchain work is performed.
 
-## Surface
-- Opaque `domino_gfx_device`, optional `domino_gfx_texture`, `domino_gfx_font`.
-- `domino_gfx_desc`: backend (AUTO/SOFT/GL*/DX*/VK/METAL), profile hint (TINY/FIXED/PROGRAMMABLE), width/height, fullscreen, vsync, framebuffer pixel format.
-- Lifecycle: `domino_gfx_create_device(domino_sys_context*, const domino_gfx_desc*, domino_gfx_device**)`, `domino_gfx_destroy_device`.
-- Frame: `domino_gfx_begin_frame`, `domino_gfx_end_frame`.
-- Clear/2D: `domino_gfx_clear`, `domino_gfx_draw_filled_rect`.
-- Textures: `domino_gfx_texture_create/destroy/update` (stubbed in soft backend).
-- Blit/Text: `domino_gfx_draw_texture`, `domino_gfx_font_draw_text` (stubbed in soft backend).
+## Command buffer
+- Caller owns a linear buffer: `dgfx_cmd_buffer { data, size, capacity }`.
+- `dgfx_cmd_emit` appends `{dgfx_cmd header + payload bytes}` when space permits; returns `false` if capacity would be exceeded.
+- `dgfx_cmd_buffer_reset` rewinds `size` to zero without touching the underlying storage.
 
-## Backend selection
-- `AUTO` currently resolves to `SOFT` for all platforms.
-- GPU backends (GL/DX/VK/Metal) are TODO; API accepts them for future selection.
+## Legacy compatibility
+- The legacy `domino_gfx_*` surface API remains declared for the existing software renderer and tests; it is unchanged but considered legacy alongside the new dgfx IR.
 
-## Software backend
-- Core: CPU framebuffer (A8R8G8B8) with clear + solid rect fill.
-- Present targets:
-  - Win32 GDI (`source/domino/render/soft/targets/win32/soft_target_win32.c`) uses `StretchDIBits` into a simple window.
-  - Null target (`source/domino/render/soft/targets/null/soft_target_null.c`) for headless testing.
-- Future targets (SDL/X11/VESA/etc.) stubbed as TODO; the interface is defined in `soft_internal.h`.
-
-## Usage
-Create a `domino_sys_context`, configure `domino_gfx_desc` (width/height/format), create device, then:
-1. `domino_gfx_begin_frame`
-2. `domino_gfx_clear` / `domino_gfx_draw_filled_rect` (and future draw calls)
-3. `domino_gfx_end_frame`
-
-The software backend always works; GPU backends will be added behind the same interface.
-
-## Product usage
-- Game (and visual tools) own the renderer; setup/launcher stay terminal/native-UI only. Launcher core does not depend on `domino_gfx`. Launcher CLI/TUI use `domino_term`, while a future GUI shell will hang off `domino_ui`/a thin UI layer separate from the game renderer.
-
-## Minimal game startup example
+## Minimal stub usage
 ```c
-domino_sys_context* sys = NULL;
-domino_sys_desc sdesc;
-domino_gfx_device* gfx = NULL;
-domino_gfx_desc gdesc;
+uint8_t scratch[256];
+dgfx_desc desc = { DGFX_BACKEND_NULL, NULL, 800, 600, 1 };
+dgfx_context* ctx = dgfx_init(&desc);
 
-sdesc.profile_hint = DOMINO_SYS_PROFILE_FULL;
-domino_sys_init(&sdesc, &sys);
+dgfx_cmd_buffer buf;
+buf.data = scratch;
+buf.size = 0;
+buf.capacity = sizeof(scratch);
+dgfx_cmd_emit(&buf, DGFX_CMD_CLEAR, NULL, 0);
 
-gdesc.backend = DOMINO_GFX_BACKEND_AUTO;
-gdesc.profile_hint = DOMINO_GFX_PROFILE_FIXED;
-gdesc.width = 640; gdesc.height = 360;
-gdesc.fullscreen = 0; gdesc.vsync = 0;
-gdesc.framebuffer_fmt = DOMINO_PIXFMT_A8R8G8B8;
-
-domino_gfx_create_device(sys, &gdesc, &gfx);
-domino_gfx_begin_frame(gfx);
-domino_gfx_clear(gfx, 0.0f, 0.0f, 0.2f, 1.0f);
-domino_gfx_end_frame(gfx);
-domino_gfx_destroy_device(gfx);
-domino_sys_shutdown(sys);
+dgfx_begin_frame(ctx);
+dgfx_execute(ctx, &buf);
+dgfx_end_frame(ctx);
+dgfx_shutdown(ctx);
 ```
+
+No pixels are produced yet; this stub only wires the ABI so future backends can drop in.

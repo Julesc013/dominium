@@ -8,27 +8,19 @@
 extern "C" {
 #endif
 
-typedef struct dom_tree_model dom_tree_model;
+typedef uint32_t dom_tree_node_id;
 
-typedef struct dom_tree_node_desc {
-    uint32_t    struct_size;
-    uint32_t    struct_version;
-    const char* id;
-    const char* label;
-    uint32_t    depth;
-    uint32_t    child_count;
-} dom_tree_node_desc;
+typedef struct dom_tree_node {
+    uint32_t         struct_size;
+    uint32_t         struct_version;
+    dom_tree_node_id parent;
+    char             label[128];
+    uint32_t         child_count;
+} dom_tree_node;
 
-typedef struct dom_tree_model_desc {
-    uint32_t struct_size;
-    uint32_t struct_version;
-    uint32_t root_count;
-} dom_tree_model_desc;
-
-dom_status dom_tree_model_create(const dom_tree_model_desc* desc, dom_tree_model** out_model);
-void       dom_tree_model_destroy(dom_tree_model* model);
-dom_status dom_tree_model_get_root(dom_tree_model* model, uint32_t index, dom_tree_node_desc* out_node);
-dom_status dom_tree_model_get_child(dom_tree_model* model, const char* parent_id, uint32_t index, dom_tree_node_desc* out_node);
+bool dom_tree_get_root(dom_core* core, const char* tree_id, dom_tree_node_id* root_out);
+bool dom_tree_get_node(dom_core* core, const char* tree_id, dom_tree_node_id id, dom_tree_node* out);
+bool dom_tree_get_child(dom_core* core, const char* tree_id, dom_tree_node_id parent, uint32_t index, dom_tree_node_id* child_out);
 
 #ifdef __cplusplus
 }

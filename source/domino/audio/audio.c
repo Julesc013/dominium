@@ -3,64 +3,128 @@
 #include <stdlib.h>
 #include <string.h>
 
-struct daudio_device {
-    daudio_device_desc desc;
+struct daudio_context {
+    daudio_desc desc;
 };
 
-dom_status daudio_create_device(const daudio_device_desc* desc, daudio_device** out_device)
+struct daudio_buffer {
+    float*   samples;
+    uint32_t frame_count;
+    uint32_t channel_count;
+};
+
+daudio_context* daudio_init(const daudio_desc* desc)
 {
-    daudio_device* dev;
-    daudio_device_desc local_desc;
+    daudio_context* ctx;
+    daudio_desc local_desc;
 
-    if (!out_device) {
-        return DOM_STATUS_INVALID_ARGUMENT;
+    ctx = (daudio_context*)malloc(sizeof(daudio_context));
+    if (!ctx) {
+        return NULL;
     }
-    *out_device = NULL;
 
-    dev = (daudio_device*)malloc(sizeof(daudio_device));
-    if (!dev) {
-        return DOM_STATUS_ERROR;
-    }
-    memset(dev, 0, sizeof(*dev));
-
+    memset(&local_desc, 0, sizeof(local_desc));
     if (desc) {
         local_desc = *desc;
     } else {
-        memset(&local_desc, 0, sizeof(local_desc));
         local_desc.sample_rate = 48000u;
-        local_desc.channel_count = 2u;
+        local_desc.channels = 2u;
         local_desc.buffer_frames = 0u;
     }
 
-    dev->desc = local_desc;
-    dev->desc.struct_size = sizeof(daudio_device_desc);
-    dev->desc.struct_version = local_desc.struct_version;
-
-    *out_device = dev;
-    return DOM_STATUS_OK;
+    ctx->desc = local_desc;
+    return ctx;
 }
 
-void daudio_destroy_device(daudio_device* device)
+void daudio_shutdown(daudio_context* ctx)
 {
-    if (!device) {
+    if (!ctx) {
         return;
     }
-    free(device);
+    free(ctx);
 }
 
-dom_status daudio_submit_buffer(daudio_device* device, const daudio_buffer* buffer)
+daudio_caps daudio_get_caps(daudio_context* ctx)
 {
-    (void)device;
-    (void)buffer;
-    return DOM_STATUS_OK;
+    daudio_caps caps;
+    (void)ctx;
+    caps.name = "null";
+    caps.max_channels = 0u;
+    caps.supports_streams = false;
+    caps.supports_3d = false;
+    return caps;
 }
 
-dom_status daudio_get_latency_ms(daudio_device* device, uint32_t* out_latency_ms)
+daudio_buffer* daudio_buffer_create(daudio_context* ctx,
+                                    const float* interleaved_samples,
+                                    uint32_t frame_count,
+                                    uint32_t channel_count)
 {
-    (void)device;
-    if (!out_latency_ms) {
-        return DOM_STATUS_INVALID_ARGUMENT;
+    daudio_buffer* buf;
+    size_t bytes;
+
+    (void)ctx;
+    buf = (daudio_buffer*)malloc(sizeof(daudio_buffer));
+    if (!buf) {
+        return NULL;
     }
-    *out_latency_ms = 0u;
-    return DOM_STATUS_OK;
+    buf->samples = NULL;
+    buf->frame_count = frame_count;
+    buf->channel_count = channel_count;
+
+    bytes = (size_t)frame_count * (size_t)channel_count * sizeof(float);
+    if (interleaved_samples && bytes > 0u) {
+        buf->samples = (float*)malloc(bytes);
+        if (buf->samples) {
+            memcpy(buf->samples, interleaved_samples, bytes);
+        }
+    }
+
+    return buf;
+}
+
+void daudio_buffer_destroy(daudio_context* ctx, daudio_buffer* buffer)
+{
+    (void)ctx;
+    if (!buffer) {
+        return;
+    }
+    if (buffer->samples) {
+        free(buffer->samples);
+    }
+    free(buffer);
+}
+
+daudio_voice_id daudio_play(daudio_context* ctx, const daudio_buffer* buffer, int loop)
+{
+    (void)ctx;
+    (void)buffer;
+    (void)loop;
+    return 0u;
+}
+
+void daudio_stop(daudio_context* ctx, daudio_voice_id voice)
+{
+    (void)ctx;
+    (void)voice;
+}
+
+void daudio_set_gain(daudio_context* ctx, daudio_voice_id voice, float gain)
+{
+    (void)ctx;
+    (void)voice;
+    (void)gain;
+}
+
+void daudio_set_pan(daudio_context* ctx, daudio_voice_id voice, float pan)
+{
+    (void)ctx;
+    (void)voice;
+    (void)pan;
+}
+
+daudio_voice_id daudio_play_stream(daudio_context* ctx)
+{
+    (void)ctx;
+    return 0u;
 }

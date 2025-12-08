@@ -2,35 +2,35 @@
 #define DOMINO_INPUT_H_INCLUDED
 
 #include <stdint.h>
-#include "domino/core.h"
 #include "domino/sys.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct dom_input dom_input;
+#define DOM_INPUT_MAX_KEYS              256
+#define DOM_INPUT_MAX_MOUSE_BUTTONS     8
+#define DOM_INPUT_MAX_GAMEPADS          4
+#define DOM_INPUT_MAX_GAMEPAD_BUTTONS   16
+#define DOM_INPUT_MAX_GAMEPAD_AXES      8
 
-typedef struct dom_input_binding {
-    uint32_t      struct_size;
-    uint32_t      struct_version;
-    uint32_t      action_id;
-    uint32_t      key_code;
-    float         scale;
-} dom_input_binding;
+typedef struct dom_input_state {
+    bool    keys[DOM_INPUT_MAX_KEYS];
+    bool    mouse_buttons[DOM_INPUT_MAX_MOUSE_BUTTONS];
+    int32_t mouse_x;
+    int32_t mouse_y;
+    int32_t mouse_dx;
+    int32_t mouse_dy;
+    int32_t mouse_wheel_x;
+    int32_t mouse_wheel_y;
+    bool    gamepad_buttons[DOM_INPUT_MAX_GAMEPADS][DOM_INPUT_MAX_GAMEPAD_BUTTONS];
+    float   gamepad_axes[DOM_INPUT_MAX_GAMEPADS][DOM_INPUT_MAX_GAMEPAD_AXES];
+} dom_input_state;
 
-typedef struct dom_input_sample {
-    uint32_t struct_size;
-    uint32_t struct_version;
-    uint32_t action_id;
-    int      active;
-    float    value;
-} dom_input_sample;
-
-dom_status dom_input_create(dsys_context* sys, dom_input** out_input);
-void       dom_input_destroy(dom_input* input);
-dom_status dom_input_bind(dom_input* input, const dom_input_binding* binding);
-dom_status dom_input_poll(dom_input* input, dom_input_sample* samples, uint32_t sample_capacity, uint32_t* out_sample_count);
+void dom_input_reset(dom_input_state* st);
+void dom_input_consume_event(dom_input_state* st, const dsys_event* ev);
+float dom_input_axis(const char* name);
+bool  dom_input_action(const char* name);
 
 #ifdef __cplusplus
 }

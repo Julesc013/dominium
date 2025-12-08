@@ -2,7 +2,9 @@
 #define DOMINO_CORE_H_INCLUDED
 
 #include <stddef.h>
+#include <stddef.h>
 #include <stdint.h>
+#include "domino/sys.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -16,41 +18,46 @@ typedef enum dom_status {
     DOM_STATUS_NOT_FOUND = -4
 } dom_status;
 
-typedef struct dsys_context    dsys_context;
-typedef struct dgfx_device     dgfx_device;
-typedef struct daudio_device   daudio_device;
-typedef struct dom_event_bus   dom_event_bus;
-typedef struct dom_canvas      dom_canvas;
-typedef struct dom_sim         dom_sim;
-typedef struct dom_pkg_registry dom_pkg_registry;
-
-typedef struct dom_core dom_core;
+typedef struct dom_core_t dom_core;
 
 typedef struct dom_core_desc {
-    uint32_t        struct_size;
-    uint32_t        struct_version;
-    dsys_context*   sys;
-    dgfx_device*    gfx;
-    daudio_device*  audio;
-    dom_event_bus*  event_bus;
-    dom_pkg_registry* pkg_registry;
-    const char*     product_id;
-    uint32_t        flags;
+    uint32_t api_version;
 } dom_core_desc;
 
-dom_status dom_core_create(const dom_core_desc* desc, dom_core** out_core);
-void       dom_core_destroy(dom_core* core);
+typedef uint32_t dom_cmd_id;
+typedef uint32_t dom_query_id;
 
-dom_status dom_core_update(dom_core* core, uint32_t dt_millis);
-dom_status dom_core_dispatch(dom_core* core, const char* command, const void* payload);
-dom_status dom_core_query(dom_core* core, const char* query, void* response_buffer, size_t response_buffer_size);
+typedef struct dom_cmd {
+    dom_cmd_id  id;
+    const void* data;
+    size_t      size;
+} dom_cmd;
 
-dsys_context*    dom_core_system(dom_core* core);
-dgfx_device*     dom_core_gfx(dom_core* core);
-daudio_device*   dom_core_audio(dom_core* core);
-dom_event_bus*   dom_core_events(dom_core* core);
-dom_sim*         dom_core_sim(dom_core* core);
-dom_canvas*      dom_core_canvas(dom_core* core);
+typedef struct dom_query {
+    dom_query_id id;
+    const void*  in;
+    size_t       in_size;
+    void*        out;
+    size_t       out_size;
+} dom_query;
+
+#define DOM_CMD_NOP 0u
+
+#define DOM_QUERY_CORE_INFO 0u
+
+typedef struct dom_core_info {
+    uint32_t struct_size;
+    uint32_t struct_version;
+    uint32_t api_version;
+    uint32_t package_count;
+    uint32_t instance_count;
+    uint64_t ticks;
+} dom_core_info;
+
+dom_core* dom_core_create(const dom_core_desc* desc);
+void      dom_core_destroy(dom_core* core);
+bool      dom_core_execute(dom_core* core, const dom_cmd* cmd);
+bool      dom_core_query(dom_core* core, dom_query* q);
 
 #ifdef __cplusplus
 }

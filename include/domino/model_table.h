@@ -1,6 +1,7 @@
 #ifndef DOMINO_MODEL_TABLE_H_INCLUDED
 #define DOMINO_MODEL_TABLE_H_INCLUDED
 
+#include <stddef.h>
 #include <stdint.h>
 #include "domino/core.h"
 
@@ -8,41 +9,17 @@
 extern "C" {
 #endif
 
-typedef struct dom_table_model dom_table_model;
-
-typedef struct dom_table_column_desc {
-    uint32_t   struct_size;
-    uint32_t   struct_version;
+typedef struct dom_table_meta {
+    uint32_t    struct_size;
+    uint32_t    struct_version;
     const char* id;
-    const char* label;
-    uint32_t   width;
-} dom_table_column_desc;
+    uint32_t    row_count;
+    uint32_t    col_count;
+    const char** col_ids;
+} dom_table_meta;
 
-typedef struct dom_table_schema {
-    uint32_t                    struct_size;
-    uint32_t                    struct_version;
-    const dom_table_column_desc* columns;
-    uint32_t                    column_count;
-} dom_table_schema;
-
-typedef struct dom_table_model_desc {
-    uint32_t        struct_size;
-    uint32_t        struct_version;
-    dom_table_schema schema;
-    uint32_t        row_count;
-} dom_table_model_desc;
-
-typedef struct dom_table_cell {
-    uint32_t   struct_size;
-    uint32_t   struct_version;
-    const char* text;
-} dom_table_cell;
-
-dom_status dom_table_model_create(const dom_table_model_desc* desc, dom_table_model** out_model);
-void       dom_table_model_destroy(dom_table_model* model);
-dom_status dom_table_model_get_schema(dom_table_model* model, dom_table_schema* out_schema);
-dom_status dom_table_model_get_cell(dom_table_model* model, uint32_t row, uint32_t column, dom_table_cell* out_cell);
-dom_status dom_table_model_set_row_count(dom_table_model* model, uint32_t row_count);
+bool dom_table_get_meta(dom_core* core, const char* table_id, dom_table_meta* meta);
+bool dom_table_get_cell(dom_core* core, const char* table_id, uint32_t row, uint32_t col, char* buf, size_t buf_size);
 
 #ifdef __cplusplus
 }

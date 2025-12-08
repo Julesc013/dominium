@@ -1,68 +1,61 @@
-#include "domino/event.h"
+#include "core_internal.h"
 
-#include <stdlib.h>
-#include <string.h>
-
-struct dom_event_bus {
-    dom_event_bus_desc desc;
-};
-
-dom_status dom_event_bus_create(const dom_event_bus_desc* desc, dom_event_bus** out_bus)
+static void dom_event_publish_internal(dom_core* core, const dom_event* evt)
 {
-    dom_event_bus* bus;
-    dom_event_bus_desc local_desc;
+    uint32_t i;
 
-    if (!out_bus) {
-        return DOM_STATUS_INVALID_ARGUMENT;
-    }
-    *out_bus = NULL;
-
-    bus = (dom_event_bus*)malloc(sizeof(dom_event_bus));
-    if (!bus) {
-        return DOM_STATUS_ERROR;
-    }
-    memset(bus, 0, sizeof(*bus));
-
-    if (desc) {
-        local_desc = *desc;
-    } else {
-        memset(&local_desc, 0, sizeof(local_desc));
-    }
-    local_desc.struct_size = sizeof(dom_event_bus_desc);
-    bus->desc = local_desc;
-
-    *out_bus = bus;
-    return DOM_STATUS_OK;
-}
-
-void dom_event_bus_destroy(dom_event_bus* bus)
-{
-    if (!bus) {
+    if (!core || !evt) {
         return;
     }
-    free(bus);
+
+    for (i = 0; i < core->sub_count; ++i) {
+        if (core->subs[i].kind == evt->kind && core->subs[i].handler) {
+            core->subs[i].handler(core, evt, core->subs[i].user);
+        }
+    }
 }
 
-dom_status dom_event_subscribe(dom_event_bus* bus, uint32_t category, dom_event_handler_fn handler, void* user_data)
+bool dom_event_subscribe(dom_core* core, dom_event_kind kind, dom_event_handler fn, void* user)
 {
-    (void)bus;
-    (void)category;
-    (void)handler;
-    (void)user_data;
-    return DOM_STATUS_OK;
+    if (!core || !fn) {
+        return false;
+    }
+
+    /* Silence unused warning until we start publishing events. */
+    if (0) {
+        dom_event_publish_internal(core, NULL);
+    }
+
+    if (core->sub_count >= DOM_MAX_EVENT_SUBS) {
+        return false;
+    }
+
+    core->subs[core->sub_count].kind = kind;
+    core->subs[core->sub_count].handler = fn;
+    core->subs[core->sub_count].user = user;
+    core->sub_count += 1;
+    return true;
 }
 
-dom_status dom_event_unsubscribe(dom_event_bus* bus, dom_event_handler_fn handler, void* user_data)
+bool dom_event_unsubscribe(dom_core* core, dom_event_kind kind, dom_event_handler fn, void* user)
 {
-    (void)bus;
-    (void)handler;
-    (void)user_data;
-    return DOM_STATUS_OK;
-}
+    uint32_t i;
 
-dom_status dom_event_publish(dom_event_bus* bus, const dom_event_desc* event)
-{
-    (void)bus;
-    (void)event;
-    return DOM_STATUS_OK;
+    if (!core || !fn) {
+        return false;
+    }
+
+    for (i = 0; i < core->sub_count; ++i) {
+        if (core->subs[i].handler == fn &&
+            core->subs[i].kind == kind &&
+            core->subs[i].user == user) {
+            for (; i + 1 < core->sub_count; ++i) {
+                core->subs[i] = core->subs[i + 1];
+            }
+            core->sub_count -= 1;
+            return true;
+        }
+    }
+
+    return false;
 }

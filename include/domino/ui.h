@@ -4,33 +4,77 @@
 /* Domino Native UI skeleton - minimal, C89-friendly */
 
 #include "domino/sys.h"
+#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /*------------------------------------------------------------
- * New Domino UI ABI (dom_ui_*)
+ * Unified Domino UI (dom_ui_*) - in-memory stub tree
  *------------------------------------------------------------*/
-typedef struct dsys_context     dsys_context;
-typedef struct dom_view_registry dom_view_registry;
-typedef struct dom_ui_context   dom_ui_context;
-typedef struct dom_ui_window    dom_ui_window;
+typedef enum dom_ui_mode {
+    DOM_UI_MODE_NONE = 0,
+    DOM_UI_MODE_CLI,
+    DOM_UI_MODE_TUI,
+    DOM_UI_MODE_GUI
+} dom_ui_mode;
+
+typedef enum dom_ui_backend {
+    DOM_UI_BACKEND_CLI    = 1 << 0,
+    DOM_UI_BACKEND_TUI    = 1 << 1,
+    DOM_UI_BACKEND_NATIVE = 1 << 2,
+    DOM_UI_BACKEND_GFX    = 1 << 3
+} dom_ui_backend;
+
+typedef enum dom_ui_widget_kind {
+    DOM_UI_WIDGET_ROOT = 0,
+    DOM_UI_WIDGET_PANEL,
+    DOM_UI_WIDGET_LABEL,
+    DOM_UI_WIDGET_BUTTON,
+    DOM_UI_WIDGET_LIST,
+    DOM_UI_WIDGET_TREE,
+    DOM_UI_WIDGET_TABS,
+    DOM_UI_WIDGET_SPLIT,
+    DOM_UI_WIDGET_CANVAS
+} dom_ui_widget_kind;
+
+typedef enum dom_ui_event_type {
+    DOM_UI_EVENT_NONE = 0,
+    DOM_UI_EVENT_CLICK,
+    DOM_UI_EVENT_CHANGE,
+    DOM_UI_EVENT_ACTIVATE,
+    DOM_UI_EVENT_CLOSE
+} dom_ui_event_type;
+
+typedef struct dom_ui_app    dom_ui_app;
+typedef struct dom_ui_window dom_ui_window;
+typedef struct dom_ui_widget dom_ui_widget;
 
 typedef struct dom_ui_desc {
-    uint32_t           struct_size;
-    uint32_t           struct_version;
-    dsys_context*      sys;
-    dom_view_registry* views;
-    const char*        app_id;
-    const char*        app_name;
+    dom_ui_mode    mode;
+    uint32_t       backend_mask;
+    dsys_context*  sys;
+    const char*    app_id;
+    const char*    app_name;
 } dom_ui_desc;
 
-int  dom_ui_create(const dom_ui_desc* desc, dom_ui_context** out_ctx);
-void dom_ui_destroy(dom_ui_context* ctx);
-int  dom_ui_run(dom_ui_context* ctx);
-int  dom_ui_open_window(dom_ui_context* ctx, dom_ui_window** out_window);
-int  dom_ui_close_window(dom_ui_window* win);
+typedef void (*dom_ui_event_cb)(dom_ui_widget* widget,
+                                dom_ui_event_type type,
+                                void* user);
+
+dom_ui_app*    dom_ui_app_create(const dom_ui_desc* desc);
+void           dom_ui_app_destroy(dom_ui_app* app);
+dom_ui_window* dom_ui_window_create(dom_ui_app* app, const char* title, int32_t w, int32_t h);
+void           dom_ui_window_destroy(dom_ui_window* win);
+dom_ui_widget* dom_ui_widget_create(dom_ui_window* win, dom_ui_widget_kind kind, dom_ui_widget* parent);
+void           dom_ui_widget_set_bounds(dom_ui_widget* w, int32_t x, int32_t y, int32_t width, int32_t height);
+void           dom_ui_label_set_text(dom_ui_widget* w, const char* utf8);
+void           dom_ui_button_set_text(dom_ui_widget* w, const char* utf8);
+void           dom_ui_widget_set_callback(dom_ui_widget* w, dom_ui_event_cb cb, void* user);
+bool           dom_ui_app_pump(dom_ui_app* app);
+void*          dom_ui_canvas_get_native_handle(dom_ui_widget* canvas);
+void           dom_ui_canvas_get_client_rect(dom_ui_widget* canvas, int32_t* x, int32_t* y, int32_t* w, int32_t* h);
 
 /*------------------------------------------------------------
  * Legacy Domino Native UI skeleton - minimal, C89-friendly

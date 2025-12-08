@@ -1,73 +1,35 @@
-# Dominium — Core Deterministic Contract (Engine v0)
+# Domino In-Memory Core (stub)
 
-This document is the binding description for the deterministic core that now lives in `/engine/`. It aligns code, runtime stubs, and tools with the fixed-point, C89-only model required for replayable simulation.
+This document describes the temporary, compile-ready Domino core ABI. Everything here is implemented with simple in-memory structures and will be expanded with real persistence and simulation later on.
 
-## dom_core / dom_sim / dom_canvas split
-- `dom_core` is the orchestrator: it owns the `dsys_context`, optional `dgfx_device`/`daudio_device`, and the shared event bus; command/query calls hang off this handle.
-- `dom_sim` wraps the deterministic tick loop and exposes `dom_sim_tick`/`dom_sim_get_time`; it is created from a versioned `dom_sim_desc` and fed into runtimes by `dom_core`.
-- `dom_canvas` exposes the render target handed out by the renderer (`dgfx_get_canvas`); sim/core treat it as an opaque drawing surface with versioned metadata.
+## Core handle
+- `dom_core` is created from `dom_core_desc { api_version }`.
+- Commands: only `DOM_CMD_NOP` is accepted for now.
+- Queries: `DOM_QUERY_CORE_INFO` returns `dom_core_info` (api_version, package/instance counts, tick counter).
+- The core owns in-memory registries for packages, instances, views, and event subscriptions. No external resources are touched.
 
-## 1. Language and determinism
-- Core engine (`/engine/*.c`) is **C89** only. No C99, no `//` comments, no VLAs.
-- Authoritative simulation state and save data use **integers and fixed-point only**. No floats/doubles anywhere inside `/engine/` or any save format.
-- Runtime/frontends (`/runtime`, `/launcher`, `/tools`) use **C++98** max and must not feed floating-point values back into engine state.
-- Iteration order is deterministic; ECS and chunk tables are stable and sorted/hashed deterministically. RNG state is explicit and saved.
-- Fixed tick step (`fix32 dt`) is required; multi-rate scheduling is stubbed but order is fixed for future systems.
+## Packages and instances
+- Packages use `dom_package_info` with basic metadata and dependency slots. `dom_pkg_install` just registers a new entry with an auto-incremented id and the provided source path string.
+- Instances use `dom_instance_info`; creation assigns an id and keeps a list of package ids. Everything lives in memory only; `list/get/update/delete` mutate the registry directly.
 
-## 2. Numeric model
-- Base types in `engine/core_types.h`: `u8/u16/u32/u64`, signed variants, and `b32` (`TRUE`/`FALSE` macros).
-- Fixed-point:
-  - `fix32` = **Q16.16** (`FIX32_ONE`, `FIX32_HALF`, helpers for mul/div).
-  - `fix16` = **Q4.12** for chunk-local save positions.
-- Angles use discrete integers: yaw/pitch/roll as `u16` (0..65535 → 0..360°).
-- All IDs are 64-bit: `EntityId`, `VolumeId`, `FluidSpaceId`, `ThermalSpaceId`, `NetNodeId`, `NetEdgeId`, `RNGId`, `RecipeId`.
+## Simulation
+- Per-instance `dom_sim_state` lives alongside instances. `dom_sim_tick` adds ticks and advances time using a fixed 1/60s step. `dom_sim_get_state` reports the current state.
 
-## 3. Coordinates and world shape
-- Surfaces are toroidal: **2²⁴ m × 2²⁴ m** in X/Y. Z range is fixed to **[-2048 m, +2048 m)**.
-- Segment grid: 256×256 segments. Each segment spans **65,536 m** per axis.
-- Chunking: chunks are **16×16×16 m**. There are 4096 chunks per segment axis and 256 chunks vertically.
-- Runtime coordinate (`SimPos`, in `engine/world_addr.h`):
-  - `sx/sy`: `u8` segment indices.
-  - `x/y/z`: `fix32` local position inside the segment (wrapped modulo 65,536 m; z clamped to [-2048,+2048)).
-- Chunk key (`ChunkKey3D`) holds global chunk indices; `SaveLocalPos` uses `fix16` for 0..16 m offsets inside a chunk.
-- Mapping helpers (`engine/world_addr.c`) convert `SimPos` ↔ chunk key + local offsets and normalise/wrap coordinates deterministically.
+## Canvas
+- `dom_canvas_build` writes a single `DGFX_CMD_CLEAR` into the supplied buffer when asked for `world_surface` or `preview` canvases. Other canvas ids return an empty buffer. No rendering backends are invoked.
 
-## 4. RNG rules
-- Deterministic xoroshiro128+ variant (`engine/core_rng.*`) with explicit seed/state.
-- Registry map from `RNGId` → `RNGState` is fixed-size and never implicit.
-- Procedural sampling uses stateless coordinate hashing; time-varying systems use saved `RNGState` only. No dependence on load order or wallclock.
+## Models and views
+- Table model: `instances_table` exposes three columns (`id`, `name`, `path`) and currently reports zero rows. `dom_table_get_cell` returns false because there is no data yet.
+- Tree model: stub root node (id=1) with no children.
+- Views: `dom_ui_list_views` returns a default view targeting `instances_table`. Kind/form/canvas slots exist for future expansion.
 
-## 5. World model and services
-- Surfaces own:
-  - Chunk hash table (fixed size) of `ChunkRuntime` caches (terrain samples, entity/volume refs, dirty flags).
-  - Registry pointers (materials, volumes, recipes).
-  - RNG states for weather/hydro/misc.
-  - ECS storage (sorted by `EntityId`).
-- Geometry sampling (`geom_sample`) is pure and reconstructable from seeds/recipes + edits/volumes; caches are optional accelerators.
-- Fields sampling (`field_sample_scalar/vector`) exposes deterministic scalar/vector fields (elevation stubbed, temperature stubbed).
-- `WorldServices` (in `engine/sim_world.h`) is the read-only gateway for runtime/game code: raycast/overlap stubs, geometry sampling, medium/field sampling.
+## Event bus
+- `dom_event_subscribe`/`dom_event_unsubscribe` manage an in-memory subscriber list keyed by `dom_event_kind`. `DOM_EVT_NONE` is the only defined kind. An internal publisher exists but no code emits events yet.
 
-## 6. Simulation order (stubbed but fixed)
-Per-surface tick (`sim_tick_surface`):
-1. Input/commands (stubbed).
-2. ECS movement/kinematics (normalises positions).
-3. Networks (electrical/hydraulic) — stub.
-4. Fluid spaces — stub.
-5. Climate/atmo/hydro — stub.
-6. Thermal — stub.
-7. Apply edit ops, mark chunk dirty — stub.
-Order is fixed now to keep determinism as systems fill in later.
+## Plugins
+- `dom_mod_vtable` and `launcher_ext_vtable` are defined for future plugins, but `dom_mod_load_all` / `launcher_ext_load_all` are stubs that simply succeed without loading anything.
 
-## 7. Save/IO contract (summary)
-- `UniverseMeta` (`universe.meta`) stores version + universe seed.
-- `SurfaceMeta` (`surface_XXX.meta`) stores version, surface id, seed, recipe id, and all core RNG states.
-- Region files (`regions/surface_XXX_region.bin`) contain chunk blobs as TLV sections (`ChunkSectionHeader`), with reserved types 1–6 for engine and 1000+ for mods. Unknown sections are skipped.
-- Chunk caches are non-authoritative; canonical state is seeds + edits + deterministic rules.
-
-## 8. Layering
-- `/engine/`: deterministic core, C89, fixed-point only.
-- `/runtime/`: game-facing binaries, C++98, may use floats internally for rendering/UI but never feed them into engine state.
-- `/launcher/`: C++98 stub that orchestrates runtimes; reads metadata only.
-- `/tools/`: offline inspectors/validators; reuse engine IO and do not reinvent formats.
-
-These rules are binding for all current code and any future expansion. Conflicts elsewhere must be resolved in favour of this file.
+## Notes
+- Language: C89 only.
+- No filesystem IO, network activity, or platform-specific headers are involved in these stubs.
+- These APIs are placeholders to let the launcher and future tools compile and link; expect them to change as real engine logic is added.

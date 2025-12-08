@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include "domino/core.h"
+#include "domino/inst.h"
 #include "domino/version.h"
 #include "domino/sys.h"
 
@@ -11,41 +12,20 @@
 extern "C" {
 #endif
 
-typedef struct dom_core         dom_core;
-typedef struct dom_event_bus    dom_event_bus;
-typedef struct dom_pkg_registry dom_pkg_registry;
-
-/*------------------------------------------------------------
- * New Domino mod/plugin ABI (dom_mod_*)
- *------------------------------------------------------------*/
-typedef struct dom_mod_api {
-    uint32_t          struct_size;
-    uint32_t          struct_version;
-    dom_core*         core;
-    dom_event_bus*    events;
-    dom_pkg_registry* packages;
-} dom_mod_api;
-
 typedef struct dom_mod_vtable {
-    uint32_t   struct_size;
-    uint32_t   struct_version;
-    dom_status (*on_load)(const dom_mod_api* api, void** out_state);
-    void       (*on_unload)(void* state);
-    dom_status (*on_tick)(void* state, uint32_t dt_millis);
+    uint32_t api_version;
+    void (*on_load)(dom_core* core);
+    void (*on_unload)(void);
+    void (*on_tick)(dom_core* core, double dt);
 } dom_mod_vtable;
 
-typedef dom_mod_vtable* (*dom_mod_entry_fn)(const dom_mod_api* api);
+typedef bool (*dom_mod_get_vtable_fn)(dom_mod_vtable* out);
 
-#define DOM_MOD_ENTRYPOINT "dom_mod_main"
-
-typedef struct dom_mod_handle dom_mod_handle;
-
-dom_status dom_mod_load(const char* path, dom_mod_handle** out_handle);
-dom_status dom_mod_get_vtable(dom_mod_handle* handle, const dom_mod_api* api, dom_mod_vtable** out_vtable);
-void       dom_mod_unload(dom_mod_handle* handle);
+bool dom_mod_load_all(dom_core* core, dom_instance_id inst);
+void dom_mod_unload_all(dom_core* core, dom_instance_id inst);
 
 /*------------------------------------------------------------
- * Legacy registry/instance API
+ * Legacy registry/instance API (kept for compatibility)
  *------------------------------------------------------------*/
 typedef enum {
     DOMINO_PACKAGE_KIND_UNKNOWN = 0,
@@ -58,10 +38,10 @@ typedef struct domino_package_id {
 } domino_package_id;
 
 typedef struct domino_package_desc {
-    char              id[64];
-    domino_semver     version;
+    char               id[64];
+    domino_semver      version;
     domino_package_kind kind;
-    char              path[260];
+    char               path[260];
 } domino_package_desc;
 
 typedef struct domino_package_registry domino_package_registry;
@@ -112,7 +92,7 @@ int domino_instance_resolve(domino_package_registry* reg,
                             const domino_instance_desc* inst,
                             domino_resolve_error* out_err);
 
-/* Legacy mod host stubs (kept for compatibility) */
+/* Legacy mod host stubs */
 typedef struct dm_mod_context dm_mod_context;
 
 struct dm_mod_context {
