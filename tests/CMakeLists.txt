@@ -106,3 +106,11 @@ if(DOMINO_USE_X11_BACKEND)
     endif()
     add_test(NAME dsys_x11 COMMAND dsys_x11_tests)
 endif()
+
+if(DOMINO_USE_POSIX_BACKEND)
+    add_executable(dsys_posix_tests
+        domino_sys/test_dsys_posix.c
+    )
+    target_link_libraries(dsys_posix_tests PRIVATE domino_engine)
+    add_test(NAME dsys_posix COMMAND dsys_posix_tests)
+endif()

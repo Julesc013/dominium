@@ -35,3 +35,19 @@ This pass wires up a portable, deterministic stub backend. It exposes the full d
 - Paths: app root from `/proc/self/exe` (fallback `getcwd`), user data/config/cache from XDG base dirs (`$XDG_*` or `$HOME/.local/share|.config|.cache` + `/dominium`), temp from `$TMPDIR` or `/tmp`.
 - Limitations: fullscreen/borderless is best-effort via EWMH `_NET_WM_STATE_FULLSCREEN`; text input is minimal; requires a running display connection.
 - Build: enable with `-DDOMINO_USE_X11_BACKEND=ON` to compile `DSYS_BACKEND_X11`, add `source/domino/system/plat/x11/x11_sys.c`, and link against X11.
+
+## POSIX Headless Backend
+- API: POSIX (monotonic clocks, nanosleep, stdio file IO, dirent, fork/execvp), no native GUI.
+- Target systems: Unix/Linux/BSD servers and headless nodes (CI, batch, simulation).
+- UI modes: CLI/TUI only (`ui_modes = 0`); `has_windows = false`; no mouse/gamepad.
+- Features: monotonic microsecond timer with `clock_gettime` (fallback `gettimeofday`), `nanosleep` for delays, XDG-based user data/config/cache paths (home fallback), `/proc/self/exe`→dir for app root (fallback `getcwd`), temp from `$TMPDIR` or `/tmp`, stdio-backed files, POSIX directory iteration, and `fork/execvp` + `waitpid` processes.
+- Events/Windows: `dsys_window_create` returns `NULL`; window setters/getters are no-ops; `dsys_poll_event` always returns `false`.
+- Build: enable with `-DDOMINO_USE_POSIX_BACKEND=ON` (alias `-DDSYS_BACKEND_POSIX=ON`) to compile `DSYS_BACKEND_POSIX` and include `source/domino/system/plat/posix/posix_sys.c`.
+
+## Cocoa Backend (macOS)
+- API: AppKit / Cocoa with Objective-C bridge; macOS 10.9+ (Intel + Apple Silicon).
+- UI modes: GUI (`ui_modes = 1`); windows and mouse supported, high-res timer via `clock_gettime`/`mach_absolute_time`.
+- Features: initializes `NSApplication` once, creates `NSWindow` objects and forwards AppKit events (resize, key up/down + text input, mouse move/button/wheel, close→quit), stdio-backed file IO, POSIX dirent iteration, and POSIX `fork/execvp` processes.
+- Paths: app root from `_NSGetExecutablePath` + `realpath`; user data/config under `~/Library/Application Support/dominium/{data,config}`; cache under `~/Library/Caches/dominium`; temp from `_CS_DARWIN_USER_TEMP_DIR`, `$TMPDIR`, or `/tmp`.
+- Build: enable with `-DDOMINO_USE_COCOA_BACKEND=ON` (alias `-DDSYS_BACKEND_COCOA=ON`) to compile `DSYS_BACKEND_COCOA`, add `source/domino/system/plat/cocoa/cocoa_sys.c` and `.m`, and link against AppKit.
+- Limitations: fullscreen toggling is best-effort; text input buffer truncates to 7 UTF-8 bytes.
