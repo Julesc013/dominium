@@ -12,6 +12,10 @@
 
 #if defined(DSYS_BACKEND_X11)
 #include "plat/x11/x11_sys.h"
+#elif defined(DSYS_BACKEND_COCOA)
+#include "plat/cocoa/cocoa_sys.h"
+#elif defined(DSYS_BACKEND_POSIX)
+#include "plat/posix/posix_sys.h"
 #else
 
 #if defined(_WIN32)

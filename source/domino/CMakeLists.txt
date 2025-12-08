@@ -39,9 +39,25 @@ target_compile_features(domino_core PRIVATE c_std_90)
 
 option(DOMINO_USE_SDL2_BACKEND "Use SDL2 dsys backend" OFF)
 option(DOMINO_USE_X11_BACKEND "Use X11 dsys backend" OFF)
+option(DOMINO_USE_POSIX_BACKEND "Use POSIX headless dsys backend" OFF)
+option(DSYS_BACKEND_POSIX "Alias for enabling the POSIX dsys backend" OFF)
+option(DOMINO_USE_COCOA_BACKEND "Use macOS Cocoa dsys backend" OFF)
+option(DSYS_BACKEND_COCOA "Alias for enabling the macOS Cocoa dsys backend" OFF)
 
-if(DOMINO_USE_SDL2_BACKEND AND DOMINO_USE_X11_BACKEND)
-    message(FATAL_ERROR "Select only one dsys backend (SDL2 or X11)")
+if(DSYS_BACKEND_POSIX)
+    set(DOMINO_USE_POSIX_BACKEND ON CACHE BOOL "Use POSIX headless dsys backend" FORCE)
+endif()
+if(DSYS_BACKEND_COCOA)
+    set(DOMINO_USE_COCOA_BACKEND ON CACHE BOOL "Use macOS Cocoa dsys backend" FORCE)
+endif()
+
+if((DOMINO_USE_SDL2_BACKEND AND DOMINO_USE_X11_BACKEND) OR
+   (DOMINO_USE_SDL2_BACKEND AND DOMINO_USE_POSIX_BACKEND) OR
+   (DOMINO_USE_SDL2_BACKEND AND DOMINO_USE_COCOA_BACKEND) OR
+   (DOMINO_USE_X11_BACKEND AND DOMINO_USE_POSIX_BACKEND) OR
+   (DOMINO_USE_X11_BACKEND AND DOMINO_USE_COCOA_BACKEND) OR
+   (DOMINO_USE_POSIX_BACKEND AND DOMINO_USE_COCOA_BACKEND))
+    message(FATAL_ERROR "Select only one dsys backend (SDL2, X11, POSIX, or Cocoa)")
 endif()
 
 # Domino engine stack
@@ -80,6 +96,16 @@ elseif(DOMINO_USE_X11_BACKEND)
         system/plat/x11/x11_sys.c
     )
     find_package(X11 REQUIRED)
+elseif(DOMINO_USE_POSIX_BACKEND)
+    list(APPEND DOMINO_ENGINE_SOURCES
+        system/plat/posix/posix_sys.c
+    )
+elseif(DOMINO_USE_COCOA_BACKEND)
+    list(APPEND DOMINO_ENGINE_SOURCES
+        system/plat/cocoa/cocoa_sys.c
+        system/plat/cocoa/cocoa_win.m
+    )
+    find_library(APPKIT_FRAMEWORK AppKit REQUIRED)
 endif()
 
 add_library(domino_engine STATIC ${DOMINO_ENGINE_SOURCES})
@@ -107,6 +133,15 @@ elseif(DOMINO_USE_X11_BACKEND)
         target_include_directories(domino_engine PRIVATE ${X11_INCLUDE_DIR})
         target_link_libraries(domino_engine PRIVATE ${X11_LIBRARIES})
     endif()
+elseif(DOMINO_USE_POSIX_BACKEND)
+    target_compile_definitions(domino_engine PRIVATE DSYS_BACKEND_POSIX)
+elseif(DOMINO_USE_COCOA_BACKEND)
+    target_compile_definitions(domino_engine PRIVATE DSYS_BACKEND_COCOA)
+    target_link_libraries(domino_engine PRIVATE ${APPKIT_FRAMEWORK})
+    set_source_files_properties(system/plat/cocoa/cocoa_win.m PROPERTIES
+        LANGUAGE OBJC
+        COMPILE_FLAGS "-fobjc-arc"
+    )
 else()
     target_compile_definitions(domino_engine PRIVATE DSYS_BACKEND_NULL)
 endif()
