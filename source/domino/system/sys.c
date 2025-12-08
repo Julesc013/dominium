@@ -455,7 +455,12 @@ static const dsys_backend_vtable g_null_vtable = {
 dsys_result dsys_init(void)
 {
     dsys_result result;
-#if defined(DSYS_BACKEND_POSIX)
+#if defined(DSYS_BACKEND_DOS32)
+    {
+        extern const dsys_backend_vtable* dsys_dos32_get_vtable(void);
+        g_dsys = dsys_dos32_get_vtable();
+    }
+#elif defined(DSYS_BACKEND_POSIX)
     {
         extern const dsys_backend_vtable* dsys_posix_get_vtable(void);
         g_dsys = dsys_posix_get_vtable();
