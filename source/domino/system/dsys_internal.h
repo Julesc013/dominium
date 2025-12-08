@@ -10,6 +10,10 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#if defined(DSYS_BACKEND_X11)
+#include "plat/x11/x11_sys.h"
+#else
+
 #if defined(_WIN32)
 #include <io.h>
 #include <direct.h>
@@ -43,5 +47,7 @@ struct dsys_dir_iter_t {
 struct dsys_process_t {
     void* handle;
 };
+
+#endif /* DSYS_BACKEND_X11 */
 
 #endif /* DOMINO_DSYS_INTERNAL_H */

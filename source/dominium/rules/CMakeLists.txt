@@ -19,8 +19,3 @@ target_include_directories(dominium_rules
     PUBLIC
         ${DOMINIUM_INCLUDE_DIR}
 )
-target_link_libraries(dominium_rules
-    PUBLIC
-        domino_engine
-        domino_mod
-)
