@@ -13,12 +13,15 @@ extern "C" {
 typedef struct dom_canvas dom_canvas;
 
 typedef struct dom_gfx_buffer {
-    uint8_t* data;
+    uint8_t *data;
     size_t   size;
     size_t   capacity;
 } dom_gfx_buffer;
 
-bool dom_canvas_build(dom_core* core, dom_instance_id inst, const char* canvas_id, dom_gfx_buffer* out);
+bool dom_canvas_build(dom_core *core,
+                      dom_instance_id inst,
+                      const char *canvas_id,
+                      dom_gfx_buffer *out);
 
 #ifdef __cplusplus
 }

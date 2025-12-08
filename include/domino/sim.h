@@ -2,12 +2,15 @@
 #define DOMINO_SIM_H_INCLUDED
 
 #include <stdint.h>
-#include "domino/core.h"
+#include "domino/sys.h"
 #include "domino/inst.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+struct dom_core_t;
+typedef struct dom_core_t dom_core;
 
 typedef struct dom_sim dom_sim;
 
@@ -17,10 +20,17 @@ typedef struct dom_sim_state {
     uint64_t ticks;
     double   sim_time_s;
     double   dt_s;
+    double   ups;          /* target updates per second */
+    bool     paused;
 } dom_sim_state;
 
-bool dom_sim_tick(dom_core* core, dom_instance_id inst, uint32_t ticks);
-bool dom_sim_get_state(dom_core* core, dom_instance_id inst, dom_sim_state* out);
+bool dom_sim_tick(dom_core* core,
+                  dom_instance_id inst,
+                  uint32_t ticks);
+
+bool dom_sim_get_state(dom_core* core,
+                       dom_instance_id inst,
+                       dom_sim_state* out);
 
 /*------------------------------------------------------------
  * Legacy deterministic sim stubs (kept for compatibility)

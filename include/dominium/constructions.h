@@ -6,6 +6,7 @@
 
 #include "domino/core.h"
 #include "domino/dworld.h"
+#include "domino/canvas.h"
 #include "dominium/world.h"
 #include "dominium/content_prefabs.h"
 
@@ -43,6 +44,12 @@ dom_status dom_construction_get_state(dom_construction_id id,
                                       size_t out_state_size);
 dom_status dom_construction_tick(dom_construction_id id, uint32_t dt_millis);
 dom_status dom_constructions_step(uint32_t dt_millis);
+void       dom_constructions_sim_step(dom_core* core, dom_instance_id inst, double dt_s);
+uint64_t   dom_constructions_debug_step_count(dom_instance_id inst);
+bool       dom_construction_build_canvas(dom_core* core,
+                                         dom_instance_id inst,
+                                         const char* canvas_id,
+                                         dom_gfx_buffer* out);
 
 #ifdef __cplusplus
 }
