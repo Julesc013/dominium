@@ -21,7 +21,7 @@ typedef struct dom_view_desc {
     const char*   id;
     const char*   title;
     dom_view_kind kind;
-    const char*   model_id;
+    const char*   model_id; /* table_id, tree_id, or canvas_id */
 } dom_view_desc;
 
 uint32_t dom_ui_list_views(dom_core* core, dom_view_desc* out, uint32_t max_out);

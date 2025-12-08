@@ -12,10 +12,10 @@ extern "C" {
 typedef struct dom_table_meta {
     uint32_t    struct_size;
     uint32_t    struct_version;
-    const char* id;
+    const char* id;        /* e.g. "instances_table" */
     uint32_t    row_count;
     uint32_t    col_count;
-    const char** col_ids;
+    const char** col_ids;  /* e.g. { "id", "name", "path", ... } */
 } dom_table_meta;
 
 bool dom_table_get_meta(dom_core* core, const char* table_id, dom_table_meta* meta);
