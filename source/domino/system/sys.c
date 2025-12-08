@@ -1,4 +1,6 @@
+#define DOMINO_SYS_INTERNAL 1
 #include "domino/sys.h"
+#include "dsys_internal.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -7,40 +9,10 @@
 
 #if defined(_WIN32)
 #include <windows.h>
-#include <direct.h>
-#include <io.h>
-#elif defined(_POSIX_VERSION)
-#include <dirent.h>
-#include <sys/stat.h>
-#include <unistd.h>
 #endif
 
-struct dsys_window_t {
-    int32_t          x;
-    int32_t          y;
-    int32_t          width;
-    int32_t          height;
-    dsys_window_mode mode;
-};
-
-struct dsys_process_t {
-    int placeholder;
-};
-
-struct dsys_dir_iter_t {
-#if defined(_WIN32)
-    intptr_t          handle;
-    struct _finddata_t data;
-    int               first_pending;
-    char              pattern[260];
-#else
-    DIR*  dir;
-    char  base[260];
-#endif
-};
-
-static const dsys_caps g_dsys_caps = {
-    "stub",
+static const dsys_caps g_null_caps = {
+    "null",
     0u,
     false,
     false,
@@ -48,21 +20,32 @@ static const dsys_caps g_dsys_caps = {
     false
 };
 
-dsys_result dsys_init(void)
+static const dsys_backend_vtable g_null_vtable;
+static const dsys_backend_vtable* g_dsys = NULL;
+
+static const dsys_backend_vtable* dsys_active_backend(void)
+{
+    if (!g_dsys) {
+        g_dsys = &g_null_vtable;
+    }
+    return g_dsys;
+}
+
+static dsys_result null_init(void)
 {
     return DSYS_OK;
 }
 
-void dsys_shutdown(void)
+static void null_shutdown(void)
 {
 }
 
-dsys_caps dsys_get_caps(void)
+static dsys_caps null_get_caps(void)
 {
-    return g_dsys_caps;
+    return g_null_caps;
 }
 
-uint64_t dsys_time_now_us(void)
+static uint64_t null_time_now_us(void)
 {
     uint64_t ticks;
     ticks = (uint64_t)clock();
@@ -72,7 +55,7 @@ uint64_t dsys_time_now_us(void)
     return ticks;
 }
 
-void dsys_sleep_ms(uint32_t ms)
+static void null_sleep_ms(uint32_t ms)
 {
 #if defined(_WIN32)
     Sleep(ms);
@@ -96,7 +79,7 @@ void dsys_sleep_ms(uint32_t ms)
 #endif
 }
 
-dsys_window* dsys_window_create(const dsys_window_desc* desc)
+static dsys_window* null_window_create(const dsys_window_desc* desc)
 {
     dsys_window* win;
     dsys_window_desc local_desc;
@@ -115,15 +98,16 @@ dsys_window* dsys_window_create(const dsys_window_desc* desc)
     if (!win) {
         return NULL;
     }
-    win->x = local_desc.x;
-    win->y = local_desc.y;
+    win->native_handle = NULL;
     win->width = local_desc.width;
     win->height = local_desc.height;
     win->mode = local_desc.mode;
+    win->window_id = 0u;
+    win->next = NULL;
     return win;
 }
 
-void dsys_window_destroy(dsys_window* win)
+static void null_window_destroy(dsys_window* win)
 {
     if (!win) {
         return;
@@ -131,7 +115,7 @@ void dsys_window_destroy(dsys_window* win)
     free(win);
 }
 
-void dsys_window_set_mode(dsys_window* win, dsys_window_mode mode)
+static void null_window_set_mode(dsys_window* win, dsys_window_mode mode)
 {
     if (!win) {
         return;
@@ -139,7 +123,7 @@ void dsys_window_set_mode(dsys_window* win, dsys_window_mode mode)
     win->mode = mode;
 }
 
-void dsys_window_set_size(dsys_window* win, int32_t w, int32_t h)
+static void null_window_set_size(dsys_window* win, int32_t w, int32_t h)
 {
     if (!win) {
         return;
@@ -148,7 +132,7 @@ void dsys_window_set_size(dsys_window* win, int32_t w, int32_t h)
     win->height = h;
 }
 
-void dsys_window_get_size(dsys_window* win, int32_t* w, int32_t* h)
+static void null_window_get_size(dsys_window* win, int32_t* w, int32_t* h)
 {
     if (!win) {
         return;
@@ -161,13 +145,13 @@ void dsys_window_get_size(dsys_window* win, int32_t* w, int32_t* h)
     }
 }
 
-void* dsys_window_get_native_handle(dsys_window* win)
+static void* null_window_get_native_handle(dsys_window* win)
 {
     (void)win;
     return NULL;
 }
 
-bool dsys_poll_event(dsys_event* out)
+static bool null_poll_event(dsys_event* out)
 {
     if (out) {
         memset(out, 0, sizeof(*out));
@@ -175,7 +159,7 @@ bool dsys_poll_event(dsys_event* out)
     return false;
 }
 
-bool dsys_get_path(dsys_path_kind kind, char* buf, size_t buf_size)
+static bool null_get_path(dsys_path_kind kind, char* buf, size_t buf_size)
 {
     const char* env_name;
     const char* src;
@@ -188,11 +172,11 @@ bool dsys_get_path(dsys_path_kind kind, char* buf, size_t buf_size)
 
     env_name = NULL;
     switch (kind) {
-    case DSYS_PATH_APP_ROOT:   env_name = "DSYS_PATH_APP_ROOT"; break;
-    case DSYS_PATH_USER_DATA:  env_name = "DSYS_PATH_USER_DATA"; break;
+    case DSYS_PATH_APP_ROOT:    env_name = "DSYS_PATH_APP_ROOT"; break;
+    case DSYS_PATH_USER_DATA:   env_name = "DSYS_PATH_USER_DATA"; break;
     case DSYS_PATH_USER_CONFIG: env_name = "DSYS_PATH_USER_CONFIG"; break;
-    case DSYS_PATH_USER_CACHE: env_name = "DSYS_PATH_USER_CACHE"; break;
-    case DSYS_PATH_TEMP:       env_name = "DSYS_PATH_TEMP"; break;
+    case DSYS_PATH_USER_CACHE:  env_name = "DSYS_PATH_USER_CACHE"; break;
+    case DSYS_PATH_TEMP:        env_name = "DSYS_PATH_TEMP"; break;
     default: break;
     }
 
@@ -229,12 +213,12 @@ bool dsys_get_path(dsys_path_kind kind, char* buf, size_t buf_size)
     return true;
 }
 
-void* dsys_file_open(const char* path, const char* mode)
+static void* null_file_open(const char* path, const char* mode)
 {
     return (void*)fopen(path, mode);
 }
 
-size_t dsys_file_read(void* fh, void* buf, size_t size)
+static size_t null_file_read(void* fh, void* buf, size_t size)
 {
     FILE* fp;
     if (!fh || !buf || size == 0u) {
@@ -244,7 +228,7 @@ size_t dsys_file_read(void* fh, void* buf, size_t size)
     return fread(buf, 1u, size, fp);
 }
 
-size_t dsys_file_write(void* fh, const void* buf, size_t size)
+static size_t null_file_write(void* fh, const void* buf, size_t size)
 {
     FILE* fp;
     if (!fh || !buf || size == 0u) {
@@ -254,7 +238,7 @@ size_t dsys_file_write(void* fh, const void* buf, size_t size)
     return fwrite(buf, 1u, size, fp);
 }
 
-int dsys_file_seek(void* fh, long offset, int origin)
+static int null_file_seek(void* fh, long offset, int origin)
 {
     FILE* fp;
     if (!fh) {
@@ -264,7 +248,7 @@ int dsys_file_seek(void* fh, long offset, int origin)
     return fseek(fp, offset, origin);
 }
 
-long dsys_file_tell(void* fh)
+static long null_file_tell(void* fh)
 {
     FILE* fp;
     if (!fh) {
@@ -274,7 +258,7 @@ long dsys_file_tell(void* fh)
     return ftell(fp);
 }
 
-int dsys_file_close(void* fh)
+static int null_file_close(void* fh)
 {
     FILE* fp;
     if (!fh) {
@@ -284,7 +268,7 @@ int dsys_file_close(void* fh)
     return fclose(fp);
 }
 
-dsys_dir_iter* dsys_dir_open(const char* path)
+static dsys_dir_iter* null_dir_open(const char* path)
 {
     dsys_dir_iter* it;
 
@@ -346,7 +330,7 @@ dsys_dir_iter* dsys_dir_open(const char* path)
 #endif
 }
 
-bool dsys_dir_next(dsys_dir_iter* it, dsys_dir_entry* out)
+static bool null_dir_next(dsys_dir_iter* it, dsys_dir_entry* out)
 {
     if (!it || !out) {
         return false;
@@ -407,7 +391,7 @@ bool dsys_dir_next(dsys_dir_iter* it, dsys_dir_entry* out)
 #endif
 }
 
-void dsys_dir_close(dsys_dir_iter* it)
+static void null_dir_close(dsys_dir_iter* it)
 {
     if (!it) {
         return;
@@ -425,19 +409,306 @@ void dsys_dir_close(dsys_dir_iter* it)
     free(it);
 }
 
-dsys_process* dsys_process_spawn(const dsys_process_desc* desc)
+static dsys_process* null_process_spawn(const dsys_process_desc* desc)
 {
     (void)desc;
     return NULL;
 }
 
-int dsys_process_wait(dsys_process* p)
+static int null_process_wait(dsys_process* p)
 {
     (void)p;
     return -1;
 }
 
-void dsys_process_destroy(dsys_process* p)
+static void null_process_destroy(dsys_process* p)
 {
     (void)p;
+}
+
+static const dsys_backend_vtable g_null_vtable = {
+    null_init,
+    null_shutdown,
+    null_get_caps,
+    null_time_now_us,
+    null_sleep_ms,
+    null_window_create,
+    null_window_destroy,
+    null_window_set_mode,
+    null_window_set_size,
+    null_window_get_size,
+    null_window_get_native_handle,
+    null_poll_event,
+    null_get_path,
+    null_file_open,
+    null_file_read,
+    null_file_write,
+    null_file_seek,
+    null_file_tell,
+    null_file_close,
+    null_dir_open,
+    null_dir_next,
+    null_dir_close,
+    null_process_spawn,
+    null_process_wait,
+    null_process_destroy
+};
+
+dsys_result dsys_init(void)
+{
+    dsys_result result;
+#if defined(DSYS_BACKEND_SDL2)
+    {
+        extern const dsys_backend_vtable* dsys_sdl2_get_vtable(void);
+        g_dsys = dsys_sdl2_get_vtable();
+    }
+#elif defined(DSYS_BACKEND_WIN32)
+    g_dsys = &g_null_vtable;
+#elif defined(DSYS_BACKEND_NULL)
+    g_dsys = &g_null_vtable;
+#else
+    g_dsys = &g_null_vtable;
+#endif
+
+    if (!g_dsys || !g_dsys->init) {
+        g_dsys = &g_null_vtable;
+    }
+    result = g_dsys->init();
+    if (result != DSYS_OK && g_dsys != &g_null_vtable) {
+        g_dsys = &g_null_vtable;
+    }
+    return result;
+}
+
+void dsys_shutdown(void)
+{
+    const dsys_backend_vtable* backend;
+    backend = dsys_active_backend();
+    if (backend->shutdown) {
+        backend->shutdown();
+    }
+    g_dsys = NULL;
+}
+
+dsys_caps dsys_get_caps(void)
+{
+    const dsys_backend_vtable* backend;
+    backend = dsys_active_backend();
+    if (backend->get_caps) {
+        return backend->get_caps();
+    }
+    return g_null_caps;
+}
+
+uint64_t dsys_time_now_us(void)
+{
+    const dsys_backend_vtable* backend;
+    backend = dsys_active_backend();
+    return backend->time_now_us ? backend->time_now_us() : 0u;
+}
+
+void dsys_sleep_ms(uint32_t ms)
+{
+    const dsys_backend_vtable* backend;
+    backend = dsys_active_backend();
+    if (backend->sleep_ms) {
+        backend->sleep_ms(ms);
+    }
+}
+
+dsys_window* dsys_window_create(const dsys_window_desc* desc)
+{
+    const dsys_backend_vtable* backend;
+    backend = dsys_active_backend();
+    if (backend->window_create) {
+        return backend->window_create(desc);
+    }
+    return NULL;
+}
+
+void dsys_window_destroy(dsys_window* win)
+{
+    const dsys_backend_vtable* backend;
+    backend = dsys_active_backend();
+    if (backend->window_destroy) {
+        backend->window_destroy(win);
+    }
+}
+
+void dsys_window_set_mode(dsys_window* win, dsys_window_mode mode)
+{
+    const dsys_backend_vtable* backend;
+    backend = dsys_active_backend();
+    if (backend->window_set_mode) {
+        backend->window_set_mode(win, mode);
+    }
+}
+
+void dsys_window_set_size(dsys_window* win, int32_t w, int32_t h)
+{
+    const dsys_backend_vtable* backend;
+    backend = dsys_active_backend();
+    if (backend->window_set_size) {
+        backend->window_set_size(win, w, h);
+    }
+}
+
+void dsys_window_get_size(dsys_window* win, int32_t* w, int32_t* h)
+{
+    const dsys_backend_vtable* backend;
+    backend = dsys_active_backend();
+    if (backend->window_get_size) {
+        backend->window_get_size(win, w, h);
+    }
+}
+
+void* dsys_window_get_native_handle(dsys_window* win)
+{
+    const dsys_backend_vtable* backend;
+    backend = dsys_active_backend();
+    if (backend->window_get_native_handle) {
+        return backend->window_get_native_handle(win);
+    }
+    return NULL;
+}
+
+bool dsys_poll_event(dsys_event* out)
+{
+    const dsys_backend_vtable* backend;
+    backend = dsys_active_backend();
+    if (backend->poll_event) {
+        return backend->poll_event(out);
+    }
+    if (out) {
+        memset(out, 0, sizeof(*out));
+    }
+    return false;
+}
+
+bool dsys_get_path(dsys_path_kind kind, char* buf, size_t buf_size)
+{
+    const dsys_backend_vtable* backend;
+    backend = dsys_active_backend();
+    if (backend->get_path) {
+        return backend->get_path(kind, buf, buf_size);
+    }
+    return false;
+}
+
+void* dsys_file_open(const char* path, const char* mode)
+{
+    const dsys_backend_vtable* backend;
+    backend = dsys_active_backend();
+    if (backend->file_open) {
+        return backend->file_open(path, mode);
+    }
+    return NULL;
+}
+
+size_t dsys_file_read(void* fh, void* buf, size_t size)
+{
+    const dsys_backend_vtable* backend;
+    backend = dsys_active_backend();
+    if (backend->file_read) {
+        return backend->file_read(fh, buf, size);
+    }
+    return 0u;
+}
+
+size_t dsys_file_write(void* fh, const void* buf, size_t size)
+{
+    const dsys_backend_vtable* backend;
+    backend = dsys_active_backend();
+    if (backend->file_write) {
+        return backend->file_write(fh, buf, size);
+    }
+    return 0u;
+}
+
+int dsys_file_seek(void* fh, long offset, int origin)
+{
+    const dsys_backend_vtable* backend;
+    backend = dsys_active_backend();
+    if (backend->file_seek) {
+        return backend->file_seek(fh, offset, origin);
+    }
+    return -1;
+}
+
+long dsys_file_tell(void* fh)
+{
+    const dsys_backend_vtable* backend;
+    backend = dsys_active_backend();
+    if (backend->file_tell) {
+        return backend->file_tell(fh);
+    }
+    return -1L;
+}
+
+int dsys_file_close(void* fh)
+{
+    const dsys_backend_vtable* backend;
+    backend = dsys_active_backend();
+    if (backend->file_close) {
+        return backend->file_close(fh);
+    }
+    return -1;
+}
+
+dsys_dir_iter* dsys_dir_open(const char* path)
+{
+    const dsys_backend_vtable* backend;
+    backend = dsys_active_backend();
+    if (backend->dir_open) {
+        return backend->dir_open(path);
+    }
+    return NULL;
+}
+
+bool dsys_dir_next(dsys_dir_iter* it, dsys_dir_entry* out)
+{
+    const dsys_backend_vtable* backend;
+    backend = dsys_active_backend();
+    if (backend->dir_next) {
+        return backend->dir_next(it, out);
+    }
+    return false;
+}
+
+void dsys_dir_close(dsys_dir_iter* it)
+{
+    const dsys_backend_vtable* backend;
+    backend = dsys_active_backend();
+    if (backend->dir_close) {
+        backend->dir_close(it);
+    }
+}
+
+dsys_process* dsys_process_spawn(const dsys_process_desc* desc)
+{
+    const dsys_backend_vtable* backend;
+    backend = dsys_active_backend();
+    if (backend->process_spawn) {
+        return backend->process_spawn(desc);
+    }
+    return NULL;
+}
+
+int dsys_process_wait(dsys_process* p)
+{
+    const dsys_backend_vtable* backend;
+    backend = dsys_active_backend();
+    if (backend->process_wait) {
+        return backend->process_wait(p);
+    }
+    return -1;
+}
+
+void dsys_process_destroy(dsys_process* p)
+{
+    const dsys_backend_vtable* backend;
+    backend = dsys_active_backend();
+    if (backend->process_destroy) {
+        backend->process_destroy(p);
+    }
 }
