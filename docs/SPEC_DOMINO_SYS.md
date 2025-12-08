@@ -52,6 +52,16 @@ This pass wires up a portable, deterministic stub backend. It exposes the full d
 - Events/Windows: `dsys_window_create` returns `NULL`; window setters/getters are no-ops; `dsys_poll_event` always returns `false`.
 - Build: enable with `-DDOMINO_USE_POSIX_BACKEND=ON` (alias `-DDSYS_BACKEND_POSIX=ON`) to compile `DSYS_BACKEND_POSIX` and include `source/domino/system/plat/posix/posix_sys.c`.
 
+## DOS32 Backend (Fullscreen GUI/GFX)
+- Target: MS-DOS 5/6.x with a 32-bit extender (DOS4GW, CWSDPMI/DJGPP runtime, etc.), real hardware or emulators.
+- UI modes: GUI (`ui_modes = 1`); `has_windows = true` for a single logical fullscreen window; mouse optional, no gamepad; timers are coarse (`clock()` based).
+- Windowing: tracks width/height/mode only; native handle is the `dsys_window*`; no OS window manager or mode switching here (renderer chooses VGA/VESA/CGA/etc.).
+- Events: keyboard via `kbhit/getch` (ESC also yields a quit event); optional mouse can be added via INT 33h later; events buffered in a small ring.
+- Filesystem/Paths: stdio-backed file IO, `dirent` directory iteration; paths resolve relative to `getcwd` with `DATA/`, `CONFIG/`, `CACHE/`, and `TEMP/` under the current directory; DOS 8.3 filenames apply.
+- Processes: unsupported (`spawn` returns `NULL`, `wait` returns `-1`).
+- Build: enable with `-DDOMINO_USE_DOS32_BACKEND=ON` (alias `-DDSYS_BACKEND_DOS32=ON`) to compile `source/domino/system/plat/dos32/dos32_sys.c`.
+- Renderer note: DOS32 dsys only reports the logical framebuffer size; dgfx backends pick the actual video mode and framebuffer.
+
 ## Cocoa Backend (macOS)
 - API: AppKit / Cocoa with Objective-C bridge; macOS 10.9+ (Intel + Apple Silicon).
 - UI modes: GUI (`ui_modes = 1`); windows and mouse supported, high-res timer via `clock_gettime`/`mach_absolute_time`.
