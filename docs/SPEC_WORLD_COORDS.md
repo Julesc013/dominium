@@ -1,0 +1,30 @@
+# World Coordinates and Bands
+
+- Horizontal world is a torus: `2^24` tiles per axis (~16.7M m circumference). Tile size = 1 m.
+- Vertical tile range is fixed: `z ∈ [-2048 .. +2047]` (4096 tiles, 256 chunks).
+- Chunking: `DOM_CHUNK_SIZE = 16` (16×16×16 tiles); `DOM_Z_CHUNKS = 256`.
+
+## Vertical bands
+- Deep underworld: z < -1024 (`DOM_Z_DEEP_MIN .. DOM_Z_BUILD_MIN`) — no normal construction, special rules later.
+- Buildable band: `[-1024 .. +1536]` (`DOM_Z_BUILD_MIN .. DOM_Z_BUILD_MAX`) — full terrain + construction.
+- High airspace: `+1537 .. +2047` (`DOM_Z_BUILD_MAX+1 .. DOM_Z_TOP_MAX`) — no construction; aircraft/balloons only.
+- Above-grid: high-atmo / lat-lon-alt handled as `ENV_HIGH_ATMO`.
+- Orbit: `ENV_ORBIT` via orbit engine when transitioning out of grid.
+
+## Coordinate structs
+- `WPosTile { x, y, z }`: tile indices; x/y wrap on the torus, z clamps to bounds.
+- `WPosExact { tile, dx, dy, dz }`: sub-tile offsets in Q16.16 relative to `tile`.
+- `ChunkPos { cx, cy, cz }`: chunk indices (16 tiles per axis, cz = 0..255).
+- `LocalPos { lx, ly, lz }`: local coordinates inside a chunk (0..15 each).
+- Helpers convert tile ↔ chunk/local and wrap x/y using `dworld_wrap_tile_coord`.
+- Environment helpers: `dworld_env_from_z`, `dworld_should_switch_to_high_atmo`, `dworld_should_switch_to_orbit` gate between grid/air/orbit layers (logic stubbed for now).
+
+## Environments and mobility
+- `EnvironmentKind`: `ENV_SURFACE_GRID`, `ENV_AIR_LOCAL`, `ENV_HIGH_ATMO`, `ENV_WATER_SURFACE`, `ENV_WATER_SUBMERGED`, `ENV_ORBIT`, `ENV_VACUUM_LOCAL`.
+- `AggregateMobilityKind`: `AGG_STATIC`, `AGG_SURFACE`, `AGG_WATER`, `AGG_AIR`, `AGG_SPACE`.
+- `dworld_env_from_z` classifies z into bands (surface grid, local air, high atmosphere stubbed for now); `dworld_z_is_buildable` gates construction to the buildable band.
+
+## Wrapping rules
+- x/y tile indices wrap modulo `DOM_WORLD_TILES` to stay on the torus; negative indices are normalised deterministically.
+- z is clamped to `[DOM_Z_MIN .. DOM_Z_MAX]`.
+- Coordinate conversions stay integer-only; no floating point is permitted in Domino coordinate math.

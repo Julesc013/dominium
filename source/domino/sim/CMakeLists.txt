@@ -18,5 +18,5 @@ target_include_directories(domino_sim
         ${CMAKE_CURRENT_SOURCE_DIR}/../system/core/base/dom_core
         ${CMAKE_CURRENT_SOURCE_DIR}/../system/core/math
 )
-target_link_libraries(domino_sim PUBLIC domino_sys domino_gfx)
+target_link_libraries(domino_sim PUBLIC domino_core domino_sys domino_gfx)
 target_compile_features(domino_sim PRIVATE c_std_90)

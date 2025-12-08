@@ -11,4 +11,4 @@ target_include_directories(domino_mod
     PUBLIC
         ${DOMINIUM_INCLUDE_DIR}
 )
-target_link_libraries(domino_mod PUBLIC domino_sys domino_sim)
+target_link_libraries(domino_mod PUBLIC domino_core domino_sys domino_sim)
