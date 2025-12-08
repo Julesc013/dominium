@@ -4,6 +4,8 @@
 #include "core_types.h"
 #include "core_fixed.h"
 
+/* Legacy coordinate helpers; new systems should prefer domino/dworld.h. */
+
 #define SEGMENT_LENGTH_METERS   65536
 #define SEGMENT_LENGTH_SHIFT    16
 #define CHUNK_SIZE_METERS       16
