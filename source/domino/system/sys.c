@@ -465,6 +465,11 @@ dsys_result dsys_init(void)
         extern const dsys_backend_vtable* dsys_dos32_get_vtable(void);
         g_dsys = dsys_dos32_get_vtable();
     }
+#elif defined(DSYS_BACKEND_WIN16)
+    {
+        extern const dsys_backend_vtable* dsys_win16_get_vtable(void);
+        g_dsys = dsys_win16_get_vtable();
+    }
 #elif defined(DSYS_BACKEND_POSIX)
     {
         extern const dsys_backend_vtable* dsys_posix_get_vtable(void);

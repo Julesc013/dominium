@@ -14,7 +14,7 @@ dominium/
 │   │   └── mod/              – package/mod/script hosts (placeholders).
 │   └── dominium/             – Dominium-specific logic.
 │       ├── rules/            – rules/gameplay data stubs.
-│       └── product/          – shipping products.
+│       └── products/         – shipping products.
 │           ├── launcher/     – launcher runtime, services, and shell frontends.
 │           │   ├── core/     – launcher runtime, context, registry, view registry, process control.
 │           │   ├── model/    – view models for launcher (instances, mods, packs, etc.).
