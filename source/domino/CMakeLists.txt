@@ -41,11 +41,13 @@ option(DOMINO_USE_SDL2_BACKEND "Use SDL2 dsys backend" OFF)
 option(DOMINO_USE_SDL1_BACKEND "Use SDL1 dsys backend" OFF)
 option(DOMINO_USE_X11_BACKEND "Use X11 dsys backend" OFF)
 option(DOMINO_USE_POSIX_BACKEND "Use POSIX headless dsys backend" OFF)
+option(DOMINO_USE_DOS16_BACKEND "Use DOS16 dsys backend" OFF)
 option(DOMINO_USE_DOS32_BACKEND "Use DOS32 dsys backend" OFF)
 option(DSYS_BACKEND_POSIX "Alias for enabling the POSIX dsys backend" OFF)
 option(DSYS_BACKEND_SDL1 "Alias for enabling the SDL1 dsys backend" OFF)
 option(DOMINO_USE_COCOA_BACKEND "Use macOS Cocoa dsys backend" OFF)
 option(DSYS_BACKEND_COCOA "Alias for enabling the macOS Cocoa dsys backend" OFF)
+option(DSYS_BACKEND_DOS16 "Alias for enabling the DOS16 dsys backend" OFF)
 option(DSYS_BACKEND_DOS32 "Alias for enabling the DOS32 dsys backend" OFF)
 
 if(DSYS_BACKEND_POSIX)
@@ -57,26 +59,21 @@ endif()
 if(DSYS_BACKEND_COCOA)
     set(DOMINO_USE_COCOA_BACKEND ON CACHE BOOL "Use macOS Cocoa dsys backend" FORCE)
 endif()
+if(DSYS_BACKEND_DOS16)
+    set(DOMINO_USE_DOS16_BACKEND ON CACHE BOOL "Use DOS16 dsys backend" FORCE)
+endif()
 if(DSYS_BACKEND_DOS32)
     set(DOMINO_USE_DOS32_BACKEND ON CACHE BOOL "Use DOS32 dsys backend" FORCE)
 endif()
 
-if((DOMINO_USE_SDL1_BACKEND AND DOMINO_USE_SDL2_BACKEND) OR
-   (DOMINO_USE_SDL1_BACKEND AND DOMINO_USE_X11_BACKEND) OR
-   (DOMINO_USE_SDL1_BACKEND AND DOMINO_USE_POSIX_BACKEND) OR
-   (DOMINO_USE_SDL1_BACKEND AND DOMINO_USE_COCOA_BACKEND) OR
-   (DOMINO_USE_SDL1_BACKEND AND DOMINO_USE_DOS32_BACKEND) OR
-   (DOMINO_USE_SDL2_BACKEND AND DOMINO_USE_X11_BACKEND) OR
-   (DOMINO_USE_SDL2_BACKEND AND DOMINO_USE_POSIX_BACKEND) OR
-   (DOMINO_USE_SDL2_BACKEND AND DOMINO_USE_COCOA_BACKEND) OR
-   (DOMINO_USE_SDL2_BACKEND AND DOMINO_USE_DOS32_BACKEND) OR
-   (DOMINO_USE_X11_BACKEND AND DOMINO_USE_POSIX_BACKEND) OR
-   (DOMINO_USE_X11_BACKEND AND DOMINO_USE_COCOA_BACKEND) OR
-   (DOMINO_USE_X11_BACKEND AND DOMINO_USE_DOS32_BACKEND) OR
-   (DOMINO_USE_POSIX_BACKEND AND DOMINO_USE_COCOA_BACKEND) OR
-   (DOMINO_USE_POSIX_BACKEND AND DOMINO_USE_DOS32_BACKEND) OR
-   (DOMINO_USE_COCOA_BACKEND AND DOMINO_USE_DOS32_BACKEND))
-    message(FATAL_ERROR "Select only one dsys backend (SDL1, SDL2, X11, POSIX, Cocoa, or DOS32)")
+set(_dsys_backend_count 0)
+foreach(_backend DOMINO_USE_SDL1_BACKEND DOMINO_USE_SDL2_BACKEND DOMINO_USE_X11_BACKEND DOMINO_USE_POSIX_BACKEND DOMINO_USE_COCOA_BACKEND DOMINO_USE_DOS32_BACKEND DOMINO_USE_DOS16_BACKEND)
+    if(${${_backend}})
+        math(EXPR _dsys_backend_count "${_dsys_backend_count}+1")
+    endif()
+endforeach()
+if(_dsys_backend_count GREATER 1)
+    message(FATAL_ERROR "Select only one dsys backend (SDL1, SDL2, X11, POSIX, Cocoa, DOS32, or DOS16)")
 endif()
 
 # Domino engine stack
@@ -110,6 +107,10 @@ if(DOMINO_USE_SDL1_BACKEND)
         system/plat/sdl1/sdl1_sys.c
     )
     find_package(SDL REQUIRED)
+elseif(DOMINO_USE_DOS16_BACKEND)
+    list(APPEND DOMINO_ENGINE_SOURCES
+        system/plat/dos16/dos16_sys.c
+    )
 elseif(DOMINO_USE_DOS32_BACKEND)
     list(APPEND DOMINO_ENGINE_SOURCES
         system/plat/dos32/dos32_sys.c
@@ -153,6 +154,8 @@ if(DOMINO_USE_SDL1_BACKEND)
     if(SDLMAIN_LIBRARY)
         target_link_libraries(domino_engine PRIVATE ${SDLMAIN_LIBRARY})
     endif()
+elseif(DOMINO_USE_DOS16_BACKEND)
+    target_compile_definitions(domino_engine PRIVATE DSYS_BACKEND_DOS16)
 elseif(DOMINO_USE_DOS32_BACKEND)
     target_compile_definitions(domino_engine PRIVATE DSYS_BACKEND_DOS32)
 elseif(DOMINO_USE_SDL2_BACKEND)

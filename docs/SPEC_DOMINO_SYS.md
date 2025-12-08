@@ -62,6 +62,17 @@ This pass wires up a portable, deterministic stub backend. It exposes the full d
 - Build: enable with `-DDOMINO_USE_DOS32_BACKEND=ON` (alias `-DDSYS_BACKEND_DOS32=ON`) to compile `source/domino/system/plat/dos32/dos32_sys.c`.
 - Renderer note: DOS32 dsys only reports the logical framebuffer size; dgfx backends pick the actual video mode and framebuffer.
 
+## DOS16 Backend (Fullscreen GUI/GFX)
+- Target: MS-DOS 3.x-6.x, 16-bit real mode builds (tiny/medium/large memory models) on classic compilers.
+- UI modes: GUI (`ui_modes = 1`); `has_windows = true` for one logical fullscreen surface; no mouse/gamepad; coarse timer only.
+- Windowing: tracks logical width/height/mode; always fullscreen; native handle is the `dsys_window*` (no OS window object), renderer chooses VGA/EGA/CGA/VESA mode changes.
+- Events: keyboard via `kbhit/getch`; ESC also yields a quit event; key-up is synthesized immediately after key-down; no OS window close events and mouse is not implemented.
+- Time/Delay: uses `clock()` ticks converted to microseconds; `sleep_ms` busy-waits on the coarse clock.
+- Filesystem/Paths: stdio file IO; `dirent` directory iteration; paths are relative to `getcwd` with `DATA/`, `CONFIG/`, `CACHE/`, and `TEMP/` folders (8.3 filenames expected).
+- Processes: unsupported (`spawn` returns `NULL`, `wait` returns `-1`).
+- Build: enable with `-DDOMINO_USE_DOS16_BACKEND=ON` (alias `-DDSYS_BACKEND_DOS16=ON`) to compile `source/domino/system/plat/dos16/dos16_sys.c`.
+- Renderer note: dsys reports only logical framebuffer size; dgfx DOS VGA/CGA/EGA/VESA backends own mode switching and framebuffer pointers.
+
 ## Cocoa Backend (macOS)
 - API: AppKit / Cocoa with Objective-C bridge; macOS 10.9+ (Intel + Apple Silicon).
 - UI modes: GUI (`ui_modes = 1`); windows and mouse supported, high-res timer via `clock_gettime`/`mach_absolute_time`.
