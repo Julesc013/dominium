@@ -27,7 +27,7 @@ add_test(NAME domino_gfx_soft COMMAND domino_gfx_tests)
 add_executable(domino_core_smoke
     domino_core/test_dom_core_smoke.c
 )
-target_link_libraries(domino_core_smoke PRIVATE dominium_rules)
+target_link_libraries(domino_core_smoke PRIVATE domino_engine dominium_rules)
 add_test(NAME domino_core_smoke COMMAND domino_core_smoke)
 
 add_executable(domino_sim_tests test_stub.c)
@@ -45,11 +45,11 @@ add_test(NAME dominium_integration_stub COMMAND dominium_integration_tests)
 add_executable(domino_sim_dominium_tests
     domino_sim/test_domino_dominium_sim.c
 )
-target_link_libraries(domino_sim_dominium_tests PRIVATE dominium_rules)
+target_link_libraries(domino_sim_dominium_tests PRIVATE domino_engine dominium_rules)
 add_test(NAME domino_sim_dominium COMMAND domino_sim_dominium_tests)
 
 add_executable(domino_canvas_tests
     domino_gfx/test_domino_canvas_build.c
 )
-target_link_libraries(domino_canvas_tests PRIVATE dominium_rules)
+target_link_libraries(domino_canvas_tests PRIVATE domino_engine dominium_rules)
 add_test(NAME domino_canvas_build COMMAND domino_canvas_tests)

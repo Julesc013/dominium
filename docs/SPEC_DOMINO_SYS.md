@@ -18,3 +18,11 @@ This pass wires up a portable, deterministic stub backend. It exposes the full d
 ## Notes
 - Header stays platform-agnostic; sys.c only uses small `#if defined(_WIN32)` / `_POSIX_VERSION` guards.
 - Behaviour is deterministic and side-effect free so other layers can safely call into it until real backends land.
+
+## SDL2 Backend
+- API: SDL2 (video, events, timer).
+- Target systems: any platform with SDL2 available (Windows, macOS, Linux, BSD).
+- UI modes: GUI (`ui_modes = 1`); windows and mouse supported, processes are stubbed.
+- Features: creates real SDL windows, forwards SDL events to `dsys_event`, high-resolution timers via `SDL_GetPerformanceCounter`, filesystem and directory iteration via stdio/OS calls.
+- Limitations: process spawning is unimplemented (returns `NULL`/`-1`), path resolution relies on `SDL_GetBasePath` and `SDL_GetPrefPath`, and native handles are `SDL_Window*`.
+- Build: enable with `-DDOMINO_USE_SDL2_BACKEND=ON` to compile `DSYS_BACKEND_SDL2` and link against SDL2.
