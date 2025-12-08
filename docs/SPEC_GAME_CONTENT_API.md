@@ -1,6 +1,6 @@
 # Game Content API
 
-- Header: `include/dominium/game_content_api.h`; implementation in `source/dominium/product/common/game_content_api.c`.
+- Header: `include/dominium/game_content_api.h`; implementation in `source/dominium/products/common/game_content_api.c`.
 - Purpose: thin Dominium-facing wrappers over Domino registries so game code/mods can register content without touching internal registries directly.
 - Functions:
   - `dom_game_register_machine_type(const MachineType*)`

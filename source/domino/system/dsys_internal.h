@@ -20,6 +20,8 @@
 #include "plat/dos16/dos16_sys.h"
 #elif defined(DSYS_BACKEND_DOS32)
 #include "plat/dos32/dos32_sys.h"
+#elif defined(DSYS_BACKEND_WIN16)
+#include "plat/win16/win16_sys.h"
 #elif defined(DSYS_BACKEND_SDL1)
 #include "plat/sdl1/sdl1_sys.h"
 #else
