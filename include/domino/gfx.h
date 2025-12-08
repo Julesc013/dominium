@@ -1,5 +1,5 @@
-#ifndef DOMINO_GFX_H
-#define DOMINO_GFX_H
+#ifndef DOMINO_GFX_H_INCLUDED
+#define DOMINO_GFX_H_INCLUDED
 
 /* Domino Render API - C89 friendly */
 
@@ -11,6 +11,49 @@
 extern "C" {
 #endif
 
+/*------------------------------------------------------------
+ * New Domino rendering ABI (dgfx_*)
+ *------------------------------------------------------------*/
+typedef struct dsys_context dsys_context;
+typedef struct dom_canvas   dom_canvas;
+typedef struct dgfx_device  dgfx_device;
+
+typedef enum dgfx_backend {
+    DGFX_BACKEND_DEFAULT = 0,
+    DGFX_BACKEND_SOFTWARE,
+    DGFX_BACKEND_NULL,
+    DGFX_BACKEND_EXTERNAL
+} dgfx_backend;
+
+typedef enum dgfx_present_mode {
+    DGFX_PRESENT_VSYNC = 0,
+    DGFX_PRESENT_IMMEDIATE = 1
+} dgfx_present_mode;
+
+typedef struct dgfx_device_desc {
+    uint32_t      struct_size;
+    uint32_t      struct_version;
+    dsys_context* sys;
+    dgfx_backend  backend;
+    uint32_t      width;
+    uint32_t      height;
+    uint32_t      framebuffer_format;
+    int           fullscreen;
+    int           vsync;
+    dgfx_present_mode present_mode;
+} dgfx_device_desc;
+
+int           dgfx_create_device(const dgfx_device_desc* desc, dgfx_device** out_device);
+void          dgfx_destroy_device(dgfx_device* device);
+dgfx_backend  dgfx_get_backend(dgfx_device* device);
+int           dgfx_resize(dgfx_device* device, uint32_t width, uint32_t height);
+int           dgfx_begin_frame(dgfx_device* device);
+int           dgfx_end_frame(dgfx_device* device);
+int           dgfx_get_canvas(dgfx_device* device, dom_canvas** out_canvas);
+
+/*------------------------------------------------------------
+ * Legacy Domino Render API (domino_gfx_*)
+ *------------------------------------------------------------*/
 /*------------------------------------------------------------
  * Core types
  *------------------------------------------------------------*/
@@ -127,4 +170,4 @@ int domino_gfx_font_draw_text(domino_gfx_device* dev,
 }
 #endif
 
-#endif /* DOMINO_GFX_H */
+#endif /* DOMINO_GFX_H_INCLUDED */

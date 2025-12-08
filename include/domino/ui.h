@@ -1,5 +1,5 @@
-#ifndef DOMINO_UI_H
-#define DOMINO_UI_H
+#ifndef DOMINO_UI_H_INCLUDED
+#define DOMINO_UI_H_INCLUDED
 
 /* Domino Native UI skeleton - minimal, C89-friendly */
 
@@ -9,6 +9,32 @@
 extern "C" {
 #endif
 
+/*------------------------------------------------------------
+ * New Domino UI ABI (dom_ui_*)
+ *------------------------------------------------------------*/
+typedef struct dsys_context     dsys_context;
+typedef struct dom_view_registry dom_view_registry;
+typedef struct dom_ui_context   dom_ui_context;
+typedef struct dom_ui_window    dom_ui_window;
+
+typedef struct dom_ui_desc {
+    uint32_t           struct_size;
+    uint32_t           struct_version;
+    dsys_context*      sys;
+    dom_view_registry* views;
+    const char*        app_id;
+    const char*        app_name;
+} dom_ui_desc;
+
+int  dom_ui_create(const dom_ui_desc* desc, dom_ui_context** out_ctx);
+void dom_ui_destroy(dom_ui_context* ctx);
+int  dom_ui_run(dom_ui_context* ctx);
+int  dom_ui_open_window(dom_ui_context* ctx, dom_ui_window** out_window);
+int  dom_ui_close_window(dom_ui_window* win);
+
+/*------------------------------------------------------------
+ * Legacy Domino Native UI skeleton - minimal, C89-friendly
+ *------------------------------------------------------------*/
 typedef struct domino_ui_app    domino_ui_app;
 typedef struct domino_ui_window domino_ui_window;
 typedef struct domino_ui_widget domino_ui_widget;
@@ -51,4 +77,4 @@ domino_ui_widget* domino_ui_widget_create(domino_ui_window* parent,
 }
 #endif
 
-#endif /* DOMINO_UI_H */
+#endif /* DOMINO_UI_H_INCLUDED */

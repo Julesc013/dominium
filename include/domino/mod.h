@@ -1,8 +1,9 @@
-#ifndef DOMINO_MOD_H
-#define DOMINO_MOD_H
+#ifndef DOMINO_MOD_H_INCLUDED
+#define DOMINO_MOD_H_INCLUDED
 
 #include <stdint.h>
 #include <stddef.h>
+#include "domino/core.h"
 #include "domino/version.h"
 #include "domino/sys.h"
 
@@ -10,6 +11,42 @@
 extern "C" {
 #endif
 
+typedef struct dom_core         dom_core;
+typedef struct dom_event_bus    dom_event_bus;
+typedef struct dom_pkg_registry dom_pkg_registry;
+
+/*------------------------------------------------------------
+ * New Domino mod/plugin ABI (dom_mod_*)
+ *------------------------------------------------------------*/
+typedef struct dom_mod_api {
+    uint32_t          struct_size;
+    uint32_t          struct_version;
+    dom_core*         core;
+    dom_event_bus*    events;
+    dom_pkg_registry* packages;
+} dom_mod_api;
+
+typedef struct dom_mod_vtable {
+    uint32_t   struct_size;
+    uint32_t   struct_version;
+    dom_status (*on_load)(const dom_mod_api* api, void** out_state);
+    void       (*on_unload)(void* state);
+    dom_status (*on_tick)(void* state, uint32_t dt_millis);
+} dom_mod_vtable;
+
+typedef dom_mod_vtable* (*dom_mod_entry_fn)(const dom_mod_api* api);
+
+#define DOM_MOD_ENTRYPOINT "dom_mod_main"
+
+typedef struct dom_mod_handle dom_mod_handle;
+
+dom_status dom_mod_load(const char* path, dom_mod_handle** out_handle);
+dom_status dom_mod_get_vtable(dom_mod_handle* handle, const dom_mod_api* api, dom_mod_vtable** out_vtable);
+void       dom_mod_unload(dom_mod_handle* handle);
+
+/*------------------------------------------------------------
+ * Legacy registry/instance API
+ *------------------------------------------------------------*/
 typedef enum {
     DOMINO_PACKAGE_KIND_UNKNOWN = 0,
     DOMINO_PACKAGE_KIND_MOD,
@@ -89,4 +126,4 @@ void            dm_mod_destroy(dm_mod_context* ctx);
 }
 #endif
 
-#endif /* DOMINO_MOD_H */
+#endif /* DOMINO_MOD_H_INCLUDED */

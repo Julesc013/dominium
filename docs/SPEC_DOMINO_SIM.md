@@ -2,6 +2,11 @@
 
 This document is the binding description for the deterministic core that now lives in `/engine/`. It aligns code, runtime stubs, and tools with the fixed-point, C89-only model required for replayable simulation.
 
+## dom_core / dom_sim / dom_canvas split
+- `dom_core` is the orchestrator: it owns the `dsys_context`, optional `dgfx_device`/`daudio_device`, and the shared event bus; command/query calls hang off this handle.
+- `dom_sim` wraps the deterministic tick loop and exposes `dom_sim_tick`/`dom_sim_get_time`; it is created from a versioned `dom_sim_desc` and fed into runtimes by `dom_core`.
+- `dom_canvas` exposes the render target handed out by the renderer (`dgfx_get_canvas`); sim/core treat it as an opaque drawing surface with versioned metadata.
+
 ## 1. Language and determinism
 - Core engine (`/engine/*.c`) is **C89** only. No C99, no `//` comments, no VLAs.
 - Authoritative simulation state and save data use **integers and fixed-point only**. No floats/doubles anywhere inside `/engine/` or any save format.

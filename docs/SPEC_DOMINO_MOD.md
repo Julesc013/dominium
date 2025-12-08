@@ -2,6 +2,11 @@
 
 `include/domino/mod.h` provides the shared registry/instance surface used across products.
 
+## Plugin ABI (dom_mod_*/launcher_ext_*)
+- Engine plugins export `dom_mod_vtable` (versioned struct) from `dom_mod_main`; `dom_mod_api` injects `dom_core`, event bus, and package registry pointers. Loader helpers (`dom_mod_load/dom_mod_get_vtable/dom_mod_unload`) are stubbed for now.
+- Launcher extensions mirror the shape with `dom_launcher_ext_api` + `dom_launcher_ext_vtable` and entrypoint `dom_launcher_ext_main`; they attach to view/event registries owned by the launcher.
+- All ABI structs start with `struct_size`/`struct_version` for compatibility; implementations remain no-ops until the runtime hooks are filled in.
+
 ## Shared content model
 - `domino_package_registry` scans `data_root` and `user_root` for mods/packs using `domino_sys_dir_*`; manifests supply `id`, `version`, and `kind`.
 - `domino_instance_desc` holds a product id/version plus enabled mods/packs.
