@@ -1,16 +1,16 @@
 #include "core_internal.h"
 
-static void dom_event_publish_internal(dom_core* core, const dom_event* evt)
+void dom_event__publish(dom_core* core, const dom_event* ev)
 {
     uint32_t i;
 
-    if (!core || !evt) {
+    if (!core || !ev) {
         return;
     }
 
-    for (i = 0; i < core->sub_count; ++i) {
-        if (core->subs[i].kind == evt->kind && core->subs[i].handler) {
-            core->subs[i].handler(core, evt, core->subs[i].user);
+    for (i = 0; i < core->event_sub_count; ++i) {
+        if (core->event_subs[i].kind == ev->kind && core->event_subs[i].fn) {
+            core->event_subs[i].fn(core, ev, core->event_subs[i].user);
         }
     }
 }
@@ -21,19 +21,14 @@ bool dom_event_subscribe(dom_core* core, dom_event_kind kind, dom_event_handler 
         return false;
     }
 
-    /* Silence unused warning until we start publishing events. */
-    if (0) {
-        dom_event_publish_internal(core, NULL);
-    }
-
-    if (core->sub_count >= DOM_MAX_EVENT_SUBS) {
+    if (core->event_sub_count >= DOM_MAX_EVENT_HANDLERS) {
         return false;
     }
 
-    core->subs[core->sub_count].kind = kind;
-    core->subs[core->sub_count].handler = fn;
-    core->subs[core->sub_count].user = user;
-    core->sub_count += 1;
+    core->event_subs[core->event_sub_count].kind = kind;
+    core->event_subs[core->event_sub_count].fn = fn;
+    core->event_subs[core->event_sub_count].user = user;
+    core->event_sub_count += 1;
     return true;
 }
 
@@ -45,14 +40,14 @@ bool dom_event_unsubscribe(dom_core* core, dom_event_kind kind, dom_event_handle
         return false;
     }
 
-    for (i = 0; i < core->sub_count; ++i) {
-        if (core->subs[i].handler == fn &&
-            core->subs[i].kind == kind &&
-            core->subs[i].user == user) {
-            for (; i + 1 < core->sub_count; ++i) {
-                core->subs[i] = core->subs[i + 1];
+    for (i = 0; i < core->event_sub_count; ++i) {
+        if (core->event_subs[i].fn == fn &&
+            core->event_subs[i].kind == kind &&
+            core->event_subs[i].user == user) {
+            for (; i + 1 < core->event_sub_count; ++i) {
+                core->event_subs[i] = core->event_subs[i + 1];
             }
-            core->sub_count -= 1;
+            core->event_sub_count -= 1;
             return true;
         }
     }

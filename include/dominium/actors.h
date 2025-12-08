@@ -51,6 +51,8 @@ dom_status dom_actor_get_state(dom_actor_id id,
                                size_t out_state_size);
 dom_status dom_actor_tick(dom_actor_id id, uint32_t dt_millis);
 dom_status dom_actors_step(uint32_t dt_millis);
+void       dom_actors_sim_step(dom_core* core, dom_instance_id inst, double dt_s);
+uint64_t   dom_actors_debug_step_count(dom_instance_id inst);
 
 #ifdef __cplusplus
 }

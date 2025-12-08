@@ -14,6 +14,16 @@ Null backend: `source/domino/render/gfx.c`
 - `dgfx_cmd_emit` appends `{dgfx_cmd header + payload bytes}` when space permits; returns `false` if capacity would be exceeded.
 - `dgfx_cmd_buffer_reset` rewinds `size` to zero without touching the underlying storage.
 
+### Command header
+- `dgfx_cmd { dgfx_opcode op; uint16_t payload_size; }` is written verbatim (little-endian). The struct may be padded by the compiler, but payload starts immediately after `sizeof(dgfx_cmd)` as emitted by the producer.
+- `payload_size` describes **only** the payload bytes following the header.
+
+### Payload layouts (current set)
+- `DGFX_CMD_CLEAR` payload: `{uint8_t r, g, b, a}` for a flat clear colour.
+- `DGFX_CMD_DRAW_LINES` payload:  
+  - `dom_gfx_lines_header { uint16_t vertex_count; uint16_t reserved; }`  
+  - followed by `vertex_count` packed vertices: `dom_gfx_line_vertex { float x; float y; float z; uint32_t color; }` (stride 16 bytes). Colours are opaque ARGB/Little-endian integers; z is currently unused but reserved for isometric elevation.
+
 ## Legacy compatibility
 - The legacy `domino_gfx_*` surface API remains declared for the existing software renderer and tests; it is unchanged but considered legacy alongside the new dgfx IR.
 
@@ -36,3 +46,12 @@ dgfx_shutdown(ctx);
 ```
 
 No pixels are produced yet; this stub only wires the ABI so future backends can drop in.
+
+## Canvas builders (Dominium)
+`dom_canvas_build(core, inst, canvas_id, dom_gfx_buffer*)` dispatches to Dominium helpers to populate dgfx commands:
+- `world_surface` — clears then draws a 10x10 top-down grid (chunk preview).
+- `world_orbit` — clears then draws concentric orbit rings and a player marker.
+- `construction_exterior` — clears then draws a bounding box outline for a construction.
+- `construction_interior` — clears then draws a simple multi-room floor grid.
+
+Unknown `canvas_id` values currently yield an empty buffer and succeed.

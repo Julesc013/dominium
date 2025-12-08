@@ -7,6 +7,7 @@
 #include "domino/core.h"
 #include "domino/sim.h"
 #include "domino/dworld.h"
+#include "domino/canvas.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -67,6 +68,17 @@ dom_status dom_world_acquire_frame(dom_world* world,
                                    dom_surface_frame_view* out_frame);
 dom_status dom_world_release_frame(dom_world* world,
                                    dom_surface_frame_id frame);
+
+void dom_world_sim_step(dom_core* core, dom_instance_id inst, double dt_s);
+uint64_t dom_world_debug_step_count(dom_instance_id inst);
+
+bool dom_world_build_surface_canvas(dom_core* core,
+                                    dom_instance_id inst,
+                                    dom_gfx_buffer* out);
+
+bool dom_world_build_orbit_canvas(dom_core* core,
+                                  dom_instance_id inst,
+                                  dom_gfx_buffer* out);
 
 #ifdef __cplusplus
 }

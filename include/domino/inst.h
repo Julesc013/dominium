@@ -3,12 +3,15 @@
 
 #include <stddef.h>
 #include <stdint.h>
-#include "domino/core.h"
+#include "domino/sys.h"
 #include "domino/pkg.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+struct dom_core_t;
+typedef struct dom_core_t dom_core;
 
 typedef uint32_t dom_instance_id;
 
@@ -20,6 +23,10 @@ typedef struct dom_instance_info {
     dom_instance_id id;
     char            name[64];
     char            path[260];
+    char            descriptor_path[260];
+    char            saves_path[260];
+    char            config_path[260];
+    char            logs_path[260];
     uint32_t        flags;
     uint32_t        pkg_count;
     dom_package_id  pkgs[DOM_MAX_INSTANCE_PACKAGES];

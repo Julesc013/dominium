@@ -49,6 +49,7 @@ set(DOMINO_ENGINE_SOURCES
     audio/audio.c
     ui/ui.c
     input/input.c
+    core/fs_util.c
     core/core.c
     core/pkg.c
     core/inst.c

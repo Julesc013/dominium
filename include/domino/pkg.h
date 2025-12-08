@@ -3,12 +3,14 @@
 
 #include <stddef.h>
 #include <stdint.h>
-#include "domino/core.h"
 #include "domino/sys.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+struct dom_core_t;
+typedef struct dom_core_t dom_core;
 
 typedef uint32_t dom_package_id;
 
@@ -16,7 +18,9 @@ typedef enum dom_package_kind {
     DOM_PKG_KIND_UNKNOWN = 0,
     DOM_PKG_KIND_MOD,
     DOM_PKG_KIND_CONTENT,
-    DOM_PKG_KIND_PRODUCT
+    DOM_PKG_KIND_PRODUCT,
+    DOM_PKG_KIND_TOOL,
+    DOM_PKG_KIND_PACK
 } dom_package_kind;
 
 #define DOM_MAX_PACKAGE_DEPS 8
@@ -30,6 +34,8 @@ typedef struct dom_package_info {
     char             version[32];
     char             author[64];
     char             install_path[260];
+    char             manifest_path[260];
+    char             content_root[260];
     uint32_t         dep_count;
     dom_package_id   deps[DOM_MAX_PACKAGE_DEPS];
     char             game_version_min[32];
