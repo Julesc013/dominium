@@ -43,12 +43,14 @@ option(DOMINO_USE_X11_BACKEND "Use X11 dsys backend" OFF)
 option(DOMINO_USE_POSIX_BACKEND "Use POSIX headless dsys backend" OFF)
 option(DOMINO_USE_DOS16_BACKEND "Use DOS16 dsys backend" OFF)
 option(DOMINO_USE_DOS32_BACKEND "Use DOS32 dsys backend" OFF)
+option(DOMINO_USE_WIN16_BACKEND "Use Win16 dsys backend" OFF)
 option(DSYS_BACKEND_POSIX "Alias for enabling the POSIX dsys backend" OFF)
 option(DSYS_BACKEND_SDL1 "Alias for enabling the SDL1 dsys backend" OFF)
 option(DOMINO_USE_COCOA_BACKEND "Use macOS Cocoa dsys backend" OFF)
 option(DSYS_BACKEND_COCOA "Alias for enabling the macOS Cocoa dsys backend" OFF)
 option(DSYS_BACKEND_DOS16 "Alias for enabling the DOS16 dsys backend" OFF)
 option(DSYS_BACKEND_DOS32 "Alias for enabling the DOS32 dsys backend" OFF)
+option(DSYS_BACKEND_WIN16 "Alias for enabling the Win16 dsys backend" OFF)
 
 if(DSYS_BACKEND_POSIX)
     set(DOMINO_USE_POSIX_BACKEND ON CACHE BOOL "Use POSIX headless dsys backend" FORCE)
@@ -65,15 +67,18 @@ endif()
 if(DSYS_BACKEND_DOS32)
     set(DOMINO_USE_DOS32_BACKEND ON CACHE BOOL "Use DOS32 dsys backend" FORCE)
 endif()
+if(DSYS_BACKEND_WIN16)
+    set(DOMINO_USE_WIN16_BACKEND ON CACHE BOOL "Use Win16 dsys backend" FORCE)
+endif()
 
 set(_dsys_backend_count 0)
-foreach(_backend DOMINO_USE_SDL1_BACKEND DOMINO_USE_SDL2_BACKEND DOMINO_USE_X11_BACKEND DOMINO_USE_POSIX_BACKEND DOMINO_USE_COCOA_BACKEND DOMINO_USE_DOS32_BACKEND DOMINO_USE_DOS16_BACKEND)
+foreach(_backend DOMINO_USE_SDL1_BACKEND DOMINO_USE_SDL2_BACKEND DOMINO_USE_X11_BACKEND DOMINO_USE_POSIX_BACKEND DOMINO_USE_COCOA_BACKEND DOMINO_USE_DOS32_BACKEND DOMINO_USE_DOS16_BACKEND DOMINO_USE_WIN16_BACKEND)
     if(${${_backend}})
         math(EXPR _dsys_backend_count "${_dsys_backend_count}+1")
     endif()
 endforeach()
 if(_dsys_backend_count GREATER 1)
-    message(FATAL_ERROR "Select only one dsys backend (SDL1, SDL2, X11, POSIX, Cocoa, DOS32, or DOS16)")
+    message(FATAL_ERROR "Select only one dsys backend (SDL1, SDL2, X11, POSIX, Cocoa, DOS32, DOS16, or Win16)")
 endif()
 
 # Domino engine stack
@@ -114,6 +119,10 @@ elseif(DOMINO_USE_DOS16_BACKEND)
 elseif(DOMINO_USE_DOS32_BACKEND)
     list(APPEND DOMINO_ENGINE_SOURCES
         system/plat/dos32/dos32_sys.c
+    )
+elseif(DOMINO_USE_WIN16_BACKEND)
+    list(APPEND DOMINO_ENGINE_SOURCES
+        system/plat/win16/win16_sys.c
     )
 elseif(DOMINO_USE_SDL2_BACKEND)
     list(APPEND DOMINO_ENGINE_SOURCES
@@ -186,6 +195,8 @@ elseif(DOMINO_USE_COCOA_BACKEND)
         LANGUAGE OBJC
         COMPILE_FLAGS "-fobjc-arc"
     )
+elseif(DOMINO_USE_WIN16_BACKEND)
+    target_compile_definitions(domino_engine PRIVATE DSYS_BACKEND_WIN16)
 else()
     target_compile_definitions(domino_engine PRIVATE DSYS_BACKEND_NULL)
 endif()

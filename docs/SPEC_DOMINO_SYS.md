@@ -73,6 +73,16 @@ This pass wires up a portable, deterministic stub backend. It exposes the full d
 - Build: enable with `-DDOMINO_USE_DOS16_BACKEND=ON` (alias `-DDSYS_BACKEND_DOS16=ON`) to compile `source/domino/system/plat/dos16/dos16_sys.c`.
 - Renderer note: dsys reports only logical framebuffer size; dgfx DOS VGA/CGA/EGA/VESA backends own mode switching and framebuffer pointers.
 
+## Win16 Backend (GUI/GFX)
+- Target: Windows 3.x (real/standard/386 enhanced), Win16 API (user.dll/gdi.dll), ANSI strings only.
+- UI modes: GUI (`ui_modes = 1`); `has_windows = true`, mouse supported, no gamepad, coarse timer only.
+- Windowing: registers a `DominoWin16` class and creates one top-level ANSI window (`HWND` stored in `dsys_window`); simulates fullscreen via popup + screen-sized `MoveWindow`; one window only.
+- Events: translates `WM_CLOSE`→quit, `WM_KEYDOWN/UP`, `WM_MOUSEMOVE`, `WM_LBUTTONDOWN/UP`, `WM_RBUTTONDOWN/UP`, and `WM_SIZE` to `dsys_event`; small ring buffer drained after `PeekMessage`/`DispatchMessage`.
+- Time/Delay: `GetTickCount()` converted to microseconds (wrap ~49 days); `sleep_ms` spins on the coarse tick (best-effort yield).
+- Paths/FS: ANSI paths; app root from `GetModuleFileName` (fallback `.`); user data/config/cache under `./DOMINIUM/{DATA,CONFIG,CACHE}`; temp from `GetTempPath`/`TEMP`/`.`; stdio file IO; directory iteration via `FindFirst`/`FindNext` data.
+- Processes: unsupported (`spawn` returns `NULL`, `wait` returns `-1`).
+- Limitations: no Unicode, cooperative multitasking, no true exclusive fullscreen.
+
 ## Cocoa Backend (macOS)
 - API: AppKit / Cocoa with Objective-C bridge; macOS 10.9+ (Intel + Apple Silicon).
 - UI modes: GUI (`ui_modes = 1`); windows and mouse supported, high-res timer via `clock_gettime`/`mach_absolute_time`.
