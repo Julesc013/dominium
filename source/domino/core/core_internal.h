@@ -18,7 +18,8 @@
 #define DOM_MAX_INSTANCES 16
 #define DOM_MAX_EVENT_HANDLERS 64
 #define DOM_MAX_VIEWS 16
-#define DOM_MAX_TABLE_MODELS 8
+#define DOM_MAX_TABLES 16
+#define DOM_MAX_TABLE_COLS 16
 #define DOM_MAX_TREE_MODELS 8
 #define DOM_MAX_SIM_STATES DOM_MAX_INSTANCES
 
@@ -48,6 +49,12 @@ typedef struct dom_sim_instance_state {
     bool            paused;
 } dom_sim_instance_state;
 
+typedef struct dom_table_def {
+    const char* id;
+    uint32_t    col_count;
+    const char* col_ids[DOM_MAX_TABLE_COLS];
+} dom_table_def;
+
 struct dom_core_t {
     uint32_t api_version;
     uint64_t tick_counter;
@@ -60,8 +67,8 @@ struct dom_core_t {
     uint32_t            instance_count;
     dom_instance_id     next_instance_id;
 
-    const char* table_models[DOM_MAX_TABLE_MODELS];
-    uint32_t    table_model_count;
+    dom_table_def tables[DOM_MAX_TABLES];
+    uint32_t      table_count;
     const char* tree_models[DOM_MAX_TREE_MODELS];
     uint32_t    tree_model_count;
 
@@ -78,6 +85,11 @@ struct dom_core_t {
 void dom_event__publish(dom_core* core, const dom_event* ev);
 void dom_core__scan_packages(dom_core* core);
 void dom_core__scan_instances(dom_core* core);
+
+void dom_table__register(dom_core* core,
+                         const char* id,
+                         const char** col_ids,
+                         uint32_t col_count);
 
 /* shared helpers */
 void dom_copy_string(char* dst, size_t cap, const char* src);

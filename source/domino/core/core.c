@@ -2,6 +2,68 @@
 #include <string.h>
 #include "core_internal.h"
 
+static const char* g_packages_table_cols[] = { "id", "name", "version", "kind", "path" };
+static const char* g_instances_table_cols[] = { "id", "name", "path", "flags", "pkg_count", "last_played" };
+static const char* g_mods_table_cols[] = { "id", "name", "version", "kind", "path" };
+
+static void dom_core_register_tables(dom_core* core)
+{
+    if (!core) {
+        return;
+    }
+
+    core->table_count = 0u;
+    dom_table__register(core,
+                        "packages_table",
+                        g_packages_table_cols,
+                        (uint32_t)(sizeof(g_packages_table_cols) / sizeof(g_packages_table_cols[0])));
+    dom_table__register(core,
+                        "instances_table",
+                        g_instances_table_cols,
+                        (uint32_t)(sizeof(g_instances_table_cols) / sizeof(g_instances_table_cols[0])));
+    dom_table__register(core,
+                        "mods_table",
+                        g_mods_table_cols,
+                        (uint32_t)(sizeof(g_mods_table_cols) / sizeof(g_mods_table_cols[0])));
+}
+
+static void dom_core_add_view(dom_core* core,
+                              const char* id,
+                              const char* title,
+                              dom_view_kind kind,
+                              const char* model_id)
+{
+    dom_view_desc* desc;
+
+    if (!core || core->view_count >= DOM_MAX_VIEWS) {
+        return;
+    }
+
+    desc = &core->views[core->view_count];
+    desc->struct_size = sizeof(dom_view_desc);
+    desc->struct_version = 1;
+    desc->id = id;
+    desc->title = title;
+    desc->kind = kind;
+    desc->model_id = model_id;
+    core->view_count += 1u;
+}
+
+static void dom_core_register_views(dom_core* core)
+{
+    if (!core) {
+        return;
+    }
+
+    core->view_count = 0u;
+    dom_core_add_view(core, "view_instances", "Instances", DOM_VIEW_KIND_TABLE, "instances_table");
+    dom_core_add_view(core, "view_packages", "Packages", DOM_VIEW_KIND_TABLE, "packages_table");
+    dom_core_add_view(core, "view_mods", "Mods", DOM_VIEW_KIND_TABLE, "mods_table");
+    dom_core_add_view(core, "view_packages_tree", "Packages Tree", DOM_VIEW_KIND_TREE, "packages_tree");
+    dom_core_add_view(core, "view_world_surface", "World Surface", DOM_VIEW_KIND_CANVAS, "world_surface");
+    dom_core_add_view(core, "view_world_orbit", "Orbit Map", DOM_VIEW_KIND_CANVAS, "world_orbit");
+}
+
 dom_core* dom_core_create(const dom_core_desc* desc)
 {
     dom_core* core;
@@ -18,19 +80,11 @@ dom_core* dom_core_create(const dom_core_desc* desc)
 
     core->next_package_id = 1;
     core->next_instance_id = 1;
-    core->table_models[0] = "instances_table";
-    core->table_model_count = 1;
-    core->tree_models[0] = "empty_tree";
+    core->tree_models[0] = "packages_tree";
     core->tree_model_count = 1;
 
-    /* default view for the instances table */
-    core->views[0].struct_size = sizeof(dom_view_desc);
-    core->views[0].struct_version = 1;
-    core->views[0].id = "instances_view";
-    core->views[0].title = "Instances";
-    core->views[0].kind = DOM_VIEW_KIND_TABLE;
-    core->views[0].model_id = "instances_table";
-    core->view_count = 1;
+    dom_core_register_tables(core);
+    dom_core_register_views(core);
 
     dom_core__scan_packages(core);
     dom_core__scan_instances(core);

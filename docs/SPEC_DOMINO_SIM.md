@@ -64,12 +64,26 @@ sync as commands execute.
   and environment/economy).
 - Core counts: `dom_query_core_info_out` reports current package/instance counts and api_version from `dom_core_desc`.
 
-## UI stubs
+## UI models
+- Tables (read-only): `dom_table_get_meta` exposes row/column counts and ids;
+  `dom_table_get_cell` materializes a single string cell. Registered tables:
+  - `packages_table`: columns `id,name,version,kind,path`; rows mirror the
+    package registry.
+  - `instances_table`: columns `id,name,path,flags,pkg_count,last_played` (last
+    played is a placeholder for now).
+  - `mods_table`: same shape as `packages_table` but filtered to
+    `DOM_PKG_KIND_MOD`/`DOM_PKG_KIND_CONTENT`.
+- Trees (read-only): `dom_tree_get_root/get_node/get_child` synthesize
+  `packages_tree` with root "Packages", children per package kind, and package
+  leaves labeled with package names. Node ids are synthetic and derived from
+  kind/package ids.
+- Views: `dom_view_desc { id, title, kind, model_id }` enumerates available UI
+  surfaces via `dom_ui_list_views`. Default views: instances/packages/mods
+  tables, packages_tree, and the `world_surface` / `world_orbit` canvases.
 - Canvas: `dom_canvas_build(core, inst, canvas_id, dom_gfx_buffer*)` delegates to
   Dominium builders per instance: `world_surface` (10x10 grid), `world_orbit`
   (orbit rings + marker), `construction_exterior` (outline), and
   `construction_interior` (room grid). Unknown ids return an empty buffer.
-- Models/views: a default table model (`instances_table`) and view exist but report no rows yet.
 
 ## Notes
 - Language: C89 only.
