@@ -470,6 +470,11 @@ dsys_result dsys_init(void)
         extern const dsys_backend_vtable* dsys_x11_get_vtable(void);
         g_dsys = dsys_x11_get_vtable();
     }
+#elif defined(DSYS_BACKEND_SDL1)
+    {
+        extern const dsys_backend_vtable* dsys_sdl1_get_vtable(void);
+        g_dsys = dsys_sdl1_get_vtable();
+    }
 #elif defined(DSYS_BACKEND_SDL2)
     {
         extern const dsys_backend_vtable* dsys_sdl2_get_vtable(void);

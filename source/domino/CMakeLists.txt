@@ -38,26 +38,35 @@ target_include_directories(domino_core
 target_compile_features(domino_core PRIVATE c_std_90)
 
 option(DOMINO_USE_SDL2_BACKEND "Use SDL2 dsys backend" OFF)
+option(DOMINO_USE_SDL1_BACKEND "Use SDL1 dsys backend" OFF)
 option(DOMINO_USE_X11_BACKEND "Use X11 dsys backend" OFF)
 option(DOMINO_USE_POSIX_BACKEND "Use POSIX headless dsys backend" OFF)
 option(DSYS_BACKEND_POSIX "Alias for enabling the POSIX dsys backend" OFF)
+option(DSYS_BACKEND_SDL1 "Alias for enabling the SDL1 dsys backend" OFF)
 option(DOMINO_USE_COCOA_BACKEND "Use macOS Cocoa dsys backend" OFF)
 option(DSYS_BACKEND_COCOA "Alias for enabling the macOS Cocoa dsys backend" OFF)
 
 if(DSYS_BACKEND_POSIX)
     set(DOMINO_USE_POSIX_BACKEND ON CACHE BOOL "Use POSIX headless dsys backend" FORCE)
 endif()
+if(DSYS_BACKEND_SDL1)
+    set(DOMINO_USE_SDL1_BACKEND ON CACHE BOOL "Use SDL1 dsys backend" FORCE)
+endif()
 if(DSYS_BACKEND_COCOA)
     set(DOMINO_USE_COCOA_BACKEND ON CACHE BOOL "Use macOS Cocoa dsys backend" FORCE)
 endif()
 
-if((DOMINO_USE_SDL2_BACKEND AND DOMINO_USE_X11_BACKEND) OR
+if((DOMINO_USE_SDL1_BACKEND AND DOMINO_USE_SDL2_BACKEND) OR
+   (DOMINO_USE_SDL1_BACKEND AND DOMINO_USE_X11_BACKEND) OR
+   (DOMINO_USE_SDL1_BACKEND AND DOMINO_USE_POSIX_BACKEND) OR
+   (DOMINO_USE_SDL1_BACKEND AND DOMINO_USE_COCOA_BACKEND) OR
+   (DOMINO_USE_SDL2_BACKEND AND DOMINO_USE_X11_BACKEND) OR
    (DOMINO_USE_SDL2_BACKEND AND DOMINO_USE_POSIX_BACKEND) OR
    (DOMINO_USE_SDL2_BACKEND AND DOMINO_USE_COCOA_BACKEND) OR
    (DOMINO_USE_X11_BACKEND AND DOMINO_USE_POSIX_BACKEND) OR
    (DOMINO_USE_X11_BACKEND AND DOMINO_USE_COCOA_BACKEND) OR
    (DOMINO_USE_POSIX_BACKEND AND DOMINO_USE_COCOA_BACKEND))
-    message(FATAL_ERROR "Select only one dsys backend (SDL2, X11, POSIX, or Cocoa)")
+    message(FATAL_ERROR "Select only one dsys backend (SDL1, SDL2, X11, POSIX, or Cocoa)")
 endif()
 
 # Domino engine stack
@@ -86,7 +95,12 @@ set(DOMINO_ENGINE_SOURCES
     core/launcher_ext_loader.c
 )
 
-if(DOMINO_USE_SDL2_BACKEND)
+if(DOMINO_USE_SDL1_BACKEND)
+    list(APPEND DOMINO_ENGINE_SOURCES
+        system/plat/sdl1/sdl1_sys.c
+    )
+    find_package(SDL REQUIRED)
+elseif(DOMINO_USE_SDL2_BACKEND)
     list(APPEND DOMINO_ENGINE_SOURCES
         system/plat/sdl2/sdl2_sys.c
     )
@@ -114,7 +128,18 @@ target_include_directories(domino_engine
         ${DOMINIUM_INCLUDE_DIR}
 )
 target_compile_features(domino_engine PRIVATE c_std_90)
-if(DOMINO_USE_SDL2_BACKEND)
+if(DOMINO_USE_SDL1_BACKEND)
+    target_compile_definitions(domino_engine PRIVATE DSYS_BACKEND_SDL1)
+    if(TARGET SDL::SDL)
+        target_link_libraries(domino_engine PRIVATE SDL::SDL)
+    else()
+        target_include_directories(domino_engine PRIVATE ${SDL_INCLUDE_DIR} ${SDL_INCLUDE_DIRS})
+        target_link_libraries(domino_engine PRIVATE ${SDL_LIBRARY})
+    endif()
+    if(SDLMAIN_LIBRARY)
+        target_link_libraries(domino_engine PRIVATE ${SDLMAIN_LIBRARY})
+    endif()
+elseif(DOMINO_USE_SDL2_BACKEND)
     target_compile_definitions(domino_engine PRIVATE DSYS_BACKEND_SDL2)
     if(TARGET SDL2::SDL2)
         target_link_libraries(domino_engine PRIVATE SDL2::SDL2)

@@ -1,5 +1,5 @@
-#ifndef DOMINO_DSYS_INTERNAL_H
-#define DOMINO_DSYS_INTERNAL_H
+#ifndef DOMINO_SDL1_SYS_H
+#define DOMINO_SDL1_SYS_H
 
 #ifndef DOMINO_SYS_INTERNAL
 #define DOMINO_SYS_INTERNAL 1
@@ -7,36 +7,32 @@
 
 #include "domino/sys.h"
 
-#include <stddef.h>
-#include <stdint.h>
-
-#if defined(DSYS_BACKEND_X11)
-#include "plat/x11/x11_sys.h"
-#elif defined(DSYS_BACKEND_COCOA)
-#include "plat/cocoa/cocoa_sys.h"
-#elif defined(DSYS_BACKEND_POSIX)
-#include "plat/posix/posix_sys.h"
-#elif defined(DSYS_BACKEND_SDL1)
-#include "plat/sdl1/sdl1_sys.h"
-#else
+#include <SDL.h>
 
 #if defined(_WIN32)
 #include <io.h>
 #include <direct.h>
-#elif defined(_POSIX_VERSION)
+#else
 #include <dirent.h>
+#include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #endif
 
 struct dsys_window_t {
-    void*            native_handle;
     int32_t          width;
     int32_t          height;
     dsys_window_mode mode;
-    uint32_t         window_id;
-    struct dsys_window_t* next;
+    SDL_Surface*     surface;
 };
+
+typedef struct sdl1_global_t {
+    SDL_Surface* screen;
+    int32_t      width;
+    int32_t      height;
+    int          fullscreen;
+    int          initialized;
+} sdl1_global_t;
 
 struct dsys_dir_iter_t {
 #if defined(_WIN32)
@@ -51,9 +47,9 @@ struct dsys_dir_iter_t {
 };
 
 struct dsys_process_t {
-    void* handle;
+    int dummy;
 };
 
-#endif /* DSYS_BACKEND_X11 */
+const dsys_backend_vtable* dsys_sdl1_get_vtable(void);
 
-#endif /* DOMINO_DSYS_INTERNAL_H */
+#endif /* DOMINO_SDL1_SYS_H */

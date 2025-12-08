@@ -19,6 +19,14 @@ This pass wires up a portable, deterministic stub backend. It exposes the full d
 - Header stays platform-agnostic; sys.c only uses small `#if defined(_WIN32)` / `_POSIX_VERSION` guards.
 - Behaviour is deterministic and side-effect free so other layers can safely call into it until real backends land.
 
+## SDL1 Backend
+- API: SDL 1.2 (video, events, timer).
+- Target systems: SDL1-era Windows 9x/XP, older Linux/macOS builds.
+- UI modes: GUI (`ui_modes = 1`); windows and mouse supported, processes are stubbed.
+- Features: single-window SDL_SetVideoMode surface (native handle is `SDL_Surface*`), fullscreen/borderless via SDL flags, SDL_PollEvent translation (quit, resize, key, mouse move/button/wheel), timers from SDL_GetTicks/SDL_Delay, stdio-backed file IO and `_findfirst`/`dirent` directory iteration.
+- Limitations: single window, coarse millisecond timer, minimal text input, process spawning unimplemented.
+- Build: enable with `-DDOMINO_USE_SDL1_BACKEND=ON` (alias `-DDSYS_BACKEND_SDL1=ON`) to compile `DSYS_BACKEND_SDL1` and link against SDL 1.2.
+
 ## SDL2 Backend
 - API: SDL2 (video, events, timer).
 - Target systems: any platform with SDL2 available (Windows, macOS, Linux, BSD).
