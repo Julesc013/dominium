@@ -3,87 +3,290 @@
 #include <stdlib.h>
 #include <string.h>
 
-struct dom_ui_context {
-    dom_ui_desc desc;
-    int         running;
+struct dom_ui_widget {
+    dom_ui_widget_kind kind;
+    int32_t            x;
+    int32_t            y;
+    int32_t            width;
+    int32_t            height;
+    char*              text;
+    dom_ui_event_cb    callback;
+    void*              callback_user;
+    struct dom_ui_widget* parent;
+    struct dom_ui_widget* first_child;
+    struct dom_ui_widget* next_sibling;
 };
 
 struct dom_ui_window {
-    int placeholder;
+    char*            title;
+    int32_t          width;
+    int32_t          height;
+    dom_ui_widget*   root;
+    struct dom_ui_window* next;
+    struct dom_ui_app*    owner;
 };
 
-int dom_ui_create(const dom_ui_desc* desc, dom_ui_context** out_ctx)
+struct dom_ui_app {
+    dom_ui_desc     desc;
+    dom_ui_window*  windows;
+    bool            quit;
+};
+
+static char* dom_ui_dup_string(const char* src)
 {
-    dom_ui_context* ctx;
+    size_t len;
+    char* out;
+
+    if (!src) {
+        return NULL;
+    }
+    len = strlen(src);
+    out = (char*)malloc(len + 1u);
+    if (!out) {
+        return NULL;
+    }
+    memcpy(out, src, len + 1u);
+    return out;
+}
+
+static void dom_ui_free_widget(dom_ui_widget* w)
+{
+    dom_ui_widget* child;
+    dom_ui_widget* next;
+
+    if (!w) {
+        return;
+    }
+    child = w->first_child;
+    while (child) {
+        next = child->next_sibling;
+        dom_ui_free_widget(child);
+        child = next;
+    }
+    if (w->text) {
+        free(w->text);
+    }
+    free(w);
+}
+
+static void dom_ui_detach_window(dom_ui_app* app, dom_ui_window* win)
+{
+    dom_ui_window* prev;
+    dom_ui_window* cur;
+
+    if (!app || !win) {
+        return;
+    }
+    prev = NULL;
+    cur = app->windows;
+    while (cur) {
+        if (cur == win) {
+            if (prev) {
+                prev->next = cur->next;
+            } else {
+                app->windows = cur->next;
+            }
+            return;
+        }
+        prev = cur;
+        cur = cur->next;
+    }
+}
+
+dom_ui_app* dom_ui_app_create(const dom_ui_desc* desc)
+{
+    dom_ui_app* app;
     dom_ui_desc local_desc;
 
-    if (!out_ctx) {
-        return -1;
+    app = (dom_ui_app*)malloc(sizeof(dom_ui_app));
+    if (!app) {
+        return NULL;
     }
-    *out_ctx = NULL;
+    memset(app, 0, sizeof(*app));
 
-    ctx = (dom_ui_context*)malloc(sizeof(dom_ui_context));
-    if (!ctx) {
-        return -1;
-    }
-    memset(ctx, 0, sizeof(*ctx));
-
+    memset(&local_desc, 0, sizeof(local_desc));
     if (desc) {
         local_desc = *desc;
     } else {
-        memset(&local_desc, 0, sizeof(local_desc));
+        local_desc.backend_mask = DOM_UI_BACKEND_CLI | DOM_UI_BACKEND_TUI | DOM_UI_BACKEND_NATIVE | DOM_UI_BACKEND_GFX;
+        local_desc.mode = DOM_UI_MODE_NONE;
     }
 
-    ctx->desc = local_desc;
-    ctx->desc.struct_size = sizeof(dom_ui_desc);
-    ctx->desc.struct_version = local_desc.struct_version;
-    ctx->running = 0;
-
-    *out_ctx = ctx;
-    return 0;
+    app->desc = local_desc;
+    app->windows = NULL;
+    app->quit = false;
+    return app;
 }
 
-void dom_ui_destroy(dom_ui_context* ctx)
+void dom_ui_app_destroy(dom_ui_app* app)
 {
-    if (!ctx) {
+    dom_ui_window* cur;
+    dom_ui_window* next;
+
+    if (!app) {
         return;
     }
-    free(ctx);
-}
-
-int dom_ui_run(dom_ui_context* ctx)
-{
-    if (!ctx) {
-        return -1;
+    cur = app->windows;
+    while (cur) {
+        next = cur->next;
+        if (cur->root) {
+            dom_ui_free_widget(cur->root);
+        }
+        if (cur->title) {
+            free(cur->title);
+        }
+        free(cur);
+        cur = next;
     }
-    ctx->running = 1;
-    return 0;
+    free(app);
 }
 
-int dom_ui_open_window(dom_ui_context* ctx, dom_ui_window** out_window)
+dom_ui_window* dom_ui_window_create(dom_ui_app* app, const char* title, int32_t w, int32_t h)
 {
     dom_ui_window* win;
 
-    (void)ctx;
-    if (!out_window) {
-        return -1;
-    }
-    *out_window = NULL;
-
     win = (dom_ui_window*)malloc(sizeof(dom_ui_window));
     if (!win) {
-        return -1;
+        return NULL;
     }
     memset(win, 0, sizeof(*win));
-    *out_window = win;
-    return 0;
+
+    win->title = dom_ui_dup_string(title);
+    win->width = w;
+    win->height = h;
+    win->owner = app;
+
+    win->root = (dom_ui_widget*)malloc(sizeof(dom_ui_widget));
+    if (win->root) {
+        memset(win->root, 0, sizeof(*win->root));
+        win->root->kind = DOM_UI_WIDGET_ROOT;
+    }
+
+    if (app) {
+        win->next = app->windows;
+        app->windows = win;
+    }
+
+    return win;
 }
 
-int dom_ui_close_window(dom_ui_window* win)
+void dom_ui_window_destroy(dom_ui_window* win)
 {
     if (!win) {
-        return -1;
+        return;
+    }
+    if (win->owner) {
+        dom_ui_detach_window(win->owner, win);
+    }
+    if (win->root) {
+        dom_ui_free_widget(win->root);
+    }
+    if (win->title) {
+        free(win->title);
     }
     free(win);
-    return 0;
+}
+
+dom_ui_widget* dom_ui_widget_create(dom_ui_window* win, dom_ui_widget_kind kind, dom_ui_widget* parent)
+{
+    dom_ui_widget* w;
+    dom_ui_widget* attach_to;
+
+    if (!win) {
+        return NULL;
+    }
+
+    w = (dom_ui_widget*)malloc(sizeof(dom_ui_widget));
+    if (!w) {
+        return NULL;
+    }
+    memset(w, 0, sizeof(*w));
+    w->kind = kind;
+
+    attach_to = parent;
+    if (!attach_to) {
+        attach_to = win->root;
+    }
+    w->parent = attach_to;
+    if (attach_to) {
+        w->next_sibling = attach_to->first_child;
+        attach_to->first_child = w;
+    }
+    return w;
+}
+
+void dom_ui_widget_set_bounds(dom_ui_widget* w, int32_t x, int32_t y, int32_t width, int32_t height)
+{
+    if (!w) {
+        return;
+    }
+    w->x = x;
+    w->y = y;
+    w->width = width;
+    w->height = height;
+}
+
+static void dom_ui_set_text(dom_ui_widget* w, const char* utf8)
+{
+    if (!w) {
+        return;
+    }
+    if (w->text) {
+        free(w->text);
+        w->text = NULL;
+    }
+    if (utf8) {
+        w->text = dom_ui_dup_string(utf8);
+    }
+}
+
+void dom_ui_label_set_text(dom_ui_widget* w, const char* utf8)
+{
+    dom_ui_set_text(w, utf8);
+}
+
+void dom_ui_button_set_text(dom_ui_widget* w, const char* utf8)
+{
+    dom_ui_set_text(w, utf8);
+}
+
+void dom_ui_widget_set_callback(dom_ui_widget* w, dom_ui_event_cb cb, void* user)
+{
+    if (!w) {
+        return;
+    }
+    w->callback = cb;
+    w->callback_user = user;
+}
+
+bool dom_ui_app_pump(dom_ui_app* app)
+{
+    if (!app) {
+        return false;
+    }
+    if (app->quit) {
+        return false;
+    }
+    return true;
+}
+
+void* dom_ui_canvas_get_native_handle(dom_ui_widget* canvas)
+{
+    (void)canvas;
+    return NULL;
+}
+
+void dom_ui_canvas_get_client_rect(dom_ui_widget* canvas, int32_t* x, int32_t* y, int32_t* w, int32_t* h)
+{
+    if (x) *x = 0;
+    if (y) *y = 0;
+    if (w) *w = 0;
+    if (h) *h = 0;
+    if (!canvas) {
+        return;
+    }
+    if (x) *x = canvas->x;
+    if (y) *y = canvas->y;
+    if (w) *w = canvas->width;
+    if (h) *h = canvas->height;
 }

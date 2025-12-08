@@ -1,77 +1,82 @@
-#include "domino/model_tree.h"
-
-#include <stdlib.h>
 #include <string.h>
+#include "core_internal.h"
 
-struct dom_tree_model {
-    dom_tree_model_desc desc;
-};
-
-dom_status dom_tree_model_create(const dom_tree_model_desc* desc, dom_tree_model** out_model)
+static void dom_copy_string(char* dst, size_t cap, const char* src)
 {
-    dom_tree_model* model;
-    dom_tree_model_desc local_desc;
+    size_t len;
 
-    if (!out_model) {
-        return DOM_STATUS_INVALID_ARGUMENT;
-    }
-    *out_model = NULL;
-
-    model = (dom_tree_model*)malloc(sizeof(dom_tree_model));
-    if (!model) {
-        return DOM_STATUS_ERROR;
-    }
-    memset(model, 0, sizeof(*model));
-
-    if (desc) {
-        local_desc = *desc;
-    } else {
-        memset(&local_desc, 0, sizeof(local_desc));
-    }
-    local_desc.struct_size = sizeof(dom_tree_model_desc);
-    model->desc = local_desc;
-
-    *out_model = model;
-    return DOM_STATUS_OK;
-}
-
-void dom_tree_model_destroy(dom_tree_model* model)
-{
-    if (!model) {
+    if (!dst || cap == 0) {
         return;
     }
-    free(model);
+
+    if (!src) {
+        dst[0] = '\0';
+        return;
+    }
+
+    len = strlen(src);
+    if (len >= cap) {
+        len = cap - 1;
+    }
+    memcpy(dst, src, len);
+    dst[len] = '\0';
 }
 
-dom_status dom_tree_model_get_root(dom_tree_model* model, uint32_t index, dom_tree_node_desc* out_node)
+bool dom_tree_get_root(dom_core* core, const char* tree_id, dom_tree_node_id* root_out)
 {
-    (void)index;
-    if (!model || !out_node) {
-        return DOM_STATUS_INVALID_ARGUMENT;
+    (void)core;
+
+    if (!tree_id || !root_out) {
+        return false;
     }
-    memset(out_node, 0, sizeof(*out_node));
-    out_node->struct_size = sizeof(dom_tree_node_desc);
-    out_node->struct_version = 1u;
-    out_node->depth = 0u;
-    out_node->child_count = 0u;
-    out_node->id = "";
-    out_node->label = "";
-    return DOM_STATUS_OK;
+
+    if (strcmp(tree_id, "empty_tree") != 0) {
+        return false;
+    }
+
+    *root_out = 1;
+    return true;
 }
 
-dom_status dom_tree_model_get_child(dom_tree_model* model, const char* parent_id, uint32_t index, dom_tree_node_desc* out_node)
+bool dom_tree_get_node(dom_core* core, const char* tree_id, dom_tree_node_id id, dom_tree_node* out)
 {
-    (void)parent_id;
-    (void)index;
-    if (!model || !out_node) {
-        return DOM_STATUS_INVALID_ARGUMENT;
+    (void)core;
+
+    if (!tree_id || !out) {
+        return false;
     }
-    memset(out_node, 0, sizeof(*out_node));
-    out_node->struct_size = sizeof(dom_tree_node_desc);
-    out_node->struct_version = 1u;
-    out_node->depth = 1u;
-    out_node->child_count = 0u;
-    out_node->id = "";
-    out_node->label = "";
-    return DOM_STATUS_OK;
+
+    if (strcmp(tree_id, "empty_tree") != 0) {
+        return false;
+    }
+
+    if (id != 1) {
+        return false;
+    }
+
+    memset(out, 0, sizeof(*out));
+    out->struct_size = sizeof(dom_tree_node);
+    out->struct_version = 1;
+    out->parent = 0;
+    dom_copy_string(out->label, sizeof(out->label), "root");
+    out->child_count = 0;
+    return true;
+}
+
+bool dom_tree_get_child(dom_core* core, const char* tree_id, dom_tree_node_id parent, uint32_t index, dom_tree_node_id* child_out)
+{
+    (void)core;
+    (void)parent;
+    (void)index;
+    (void)child_out;
+
+    if (!tree_id) {
+        return false;
+    }
+
+    if (strcmp(tree_id, "empty_tree") != 0) {
+        return false;
+    }
+
+    return false;
 }

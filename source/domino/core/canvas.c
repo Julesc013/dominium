@@ -1,75 +1,54 @@
-#include "domino/canvas.h"
-
-#include <stdlib.h>
+#include <stddef.h>
 #include <string.h>
+#include "core_internal.h"
+#include "domino/gfx.h"
 
-struct dom_canvas {
-    dom_canvas_desc desc;
-    void*           pixels;
-};
-
-dom_status dom_canvas_create(const dom_canvas_desc* desc, dom_canvas** out_canvas)
+static int dom_canvas_is_known(const char* canvas_id)
 {
-    dom_canvas* canvas;
-    dom_canvas_desc local_desc;
-
-    if (!out_canvas) {
-        return DOM_STATUS_INVALID_ARGUMENT;
+    if (!canvas_id) {
+        return 0;
     }
-    *out_canvas = NULL;
-
-    canvas = (dom_canvas*)malloc(sizeof(dom_canvas));
-    if (!canvas) {
-        return DOM_STATUS_ERROR;
+    if (strcmp(canvas_id, "world_surface") == 0) {
+        return 1;
     }
-    memset(canvas, 0, sizeof(*canvas));
-
-    if (desc) {
-        local_desc = *desc;
-    } else {
-        memset(&local_desc, 0, sizeof(local_desc));
-        local_desc.format = DOM_CANVAS_FORMAT_RGBA8;
+    if (strcmp(canvas_id, "preview") == 0) {
+        return 1;
     }
-    local_desc.struct_size = sizeof(dom_canvas_desc);
-    canvas->desc = local_desc;
-    canvas->pixels = NULL;
-
-    *out_canvas = canvas;
-    return DOM_STATUS_OK;
+    return 0;
 }
 
-void dom_canvas_destroy(dom_canvas* canvas)
+bool dom_canvas_build(dom_core* core, dom_instance_id inst, const char* canvas_id, dom_gfx_buffer* out)
 {
-    if (!canvas) {
-        return;
-    }
-    if (canvas->pixels) {
-        free(canvas->pixels);
-    }
-    free(canvas);
-}
+    dgfx_cmd cmd;
+    uint8_t payload[4];
+    size_t needed;
 
-dom_status dom_canvas_lock(dom_canvas* canvas, dom_canvas_surface* out_surface)
-{
-    if (!canvas || !out_surface) {
-        return DOM_STATUS_INVALID_ARGUMENT;
+    (void)inst;
+
+    if (!core || !out) {
+        return false;
     }
-    memset(out_surface, 0, sizeof(*out_surface));
-    out_surface->struct_size = sizeof(dom_canvas_surface);
-    out_surface->struct_version = 1u;
-    out_surface->pixels = canvas->pixels;
-    out_surface->pitch_bytes = 0u;
-    out_surface->desc = canvas->desc;
-    return DOM_STATUS_OK;
-}
 
-void dom_canvas_unlock(dom_canvas* canvas)
-{
-    (void)canvas;
-}
+    out->size = 0;
 
-dom_status dom_canvas_present(dom_canvas* canvas)
-{
-    (void)canvas;
-    return DOM_STATUS_OK;
+    if (!dom_canvas_is_known(canvas_id)) {
+        return true;
+    }
+
+    cmd.op = DGFX_CMD_CLEAR;
+    cmd.payload_size = (uint16_t)sizeof(payload);
+    payload[0] = 0;
+    payload[1] = 0;
+    payload[2] = 0;
+    payload[3] = 0;
+
+    needed = sizeof(cmd) + sizeof(payload);
+    if (!out->data || out->capacity < needed) {
+        return true;
+    }
+
+    memcpy(out->data, &cmd, sizeof(cmd));
+    memcpy(out->data + sizeof(cmd), payload, sizeof(payload));
+    out->size = needed;
+    return true;
 }

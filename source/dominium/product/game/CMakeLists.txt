@@ -12,8 +12,8 @@ target_include_directories(dominium_game_cli
 
 target_link_libraries(dominium_game_cli
     PRIVATE
-        domino_sys
+        domino_engine
         domino_mod
-        domino_gfx
+        dominium_rules
         dominium_product_common
 )

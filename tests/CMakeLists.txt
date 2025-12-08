@@ -12,11 +12,23 @@ add_executable(domino_sys_dynarray_tests
 target_link_libraries(domino_sys_dynarray_tests PRIVATE domino_sys)
 add_test(NAME domino_sys_dynarray COMMAND domino_sys_dynarray_tests)
 
+add_executable(dsys_stub_tests
+    domino_sys/test_dsys_stub.c
+)
+target_link_libraries(dsys_stub_tests PRIVATE domino_engine)
+add_test(NAME dsys_stub COMMAND dsys_stub_tests)
+
 add_executable(domino_gfx_tests
     domino_gfx/test_gfx_soft.c
 )
 target_link_libraries(domino_gfx_tests PRIVATE domino_gfx domino_sys)
 add_test(NAME domino_gfx_soft COMMAND domino_gfx_tests)
+
+add_executable(domino_core_smoke
+    domino_core/test_dom_core_smoke.c
+)
+target_link_libraries(domino_core_smoke PRIVATE domino_engine)
+add_test(NAME domino_core_smoke COMMAND domino_core_smoke)
 
 add_executable(domino_sim_tests test_stub.c)
 target_link_libraries(domino_sim_tests PRIVATE domino_sim)

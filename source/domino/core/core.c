@@ -1,38 +1,38 @@
-#include "domino/core.h"
-
 #include <stdlib.h>
 #include <string.h>
+#include "core_internal.h"
 
-struct dom_core {
-    dom_core_desc desc;
-};
-
-dom_status dom_core_create(const dom_core_desc* desc, dom_core** out_core)
+dom_core* dom_core_create(const dom_core_desc* desc)
 {
     dom_core* core;
-    dom_core_desc local_desc;
-
-    if (!out_core) {
-        return DOM_STATUS_INVALID_ARGUMENT;
-    }
-    *out_core = NULL;
 
     core = (dom_core*)malloc(sizeof(dom_core));
     if (!core) {
-        return DOM_STATUS_ERROR;
+        return NULL;
     }
     memset(core, 0, sizeof(*core));
 
     if (desc) {
-        local_desc = *desc;
-    } else {
-        memset(&local_desc, 0, sizeof(local_desc));
+        core->api_version = desc->api_version;
     }
 
-    local_desc.struct_size = sizeof(dom_core_desc);
-    core->desc = local_desc;
-    *out_core = core;
-    return DOM_STATUS_OK;
+    core->next_package_id = 1;
+    core->next_instance_id = 1;
+    core->table_models[0] = "instances_table";
+    core->table_model_count = 1;
+    core->tree_models[0] = "empty_tree";
+    core->tree_model_count = 1;
+
+    /* default view for the instances table */
+    core->views[0].struct_size = sizeof(dom_view_desc);
+    core->views[0].struct_version = 1;
+    core->views[0].id = "instances_view";
+    core->views[0].title = "Instances";
+    core->views[0].kind = DOM_VIEW_KIND_TABLE;
+    core->views[0].model_id = "instances_table";
+    core->view_count = 1;
+
+    return core;
 }
 
 void dom_core_destroy(dom_core* core)
@@ -43,70 +43,46 @@ void dom_core_destroy(dom_core* core)
     free(core);
 }
 
-dom_status dom_core_update(dom_core* core, uint32_t dt_millis)
+bool dom_core_execute(dom_core* core, const dom_cmd* cmd)
 {
-    (void)core;
-    (void)dt_millis;
-    return DOM_STATUS_OK;
-}
-
-dom_status dom_core_dispatch(dom_core* core, const char* command, const void* payload)
-{
-    (void)core;
-    (void)command;
-    (void)payload;
-    return DOM_STATUS_UNSUPPORTED;
-}
-
-dom_status dom_core_query(dom_core* core, const char* query, void* response_buffer, size_t response_buffer_size)
-{
-    (void)core;
-    (void)query;
-    (void)response_buffer;
-    (void)response_buffer_size;
-    return DOM_STATUS_UNSUPPORTED;
-}
-
-dsys_context* dom_core_system(dom_core* core)
-{
-    if (!core) {
-        return NULL;
+    if (!core || !cmd) {
+        return false;
     }
-    return core->desc.sys;
-}
 
-dgfx_device* dom_core_gfx(dom_core* core)
-{
-    if (!core) {
-        return NULL;
+    switch (cmd->id) {
+    case DOM_CMD_NOP:
+        return true;
+    default:
+        break;
     }
-    return core->desc.gfx;
+
+    return false;
 }
 
-daudio_device* dom_core_audio(dom_core* core)
+bool dom_core_query(dom_core* core, dom_query* q)
 {
-    if (!core) {
-        return NULL;
+    dom_core_info info;
+
+    if (!core || !q) {
+        return false;
     }
-    return core->desc.audio;
-}
 
-dom_event_bus* dom_core_events(dom_core* core)
-{
-    if (!core) {
-        return NULL;
+    switch (q->id) {
+    case DOM_QUERY_CORE_INFO:
+        if (!q->out || q->out_size < sizeof(dom_core_info)) {
+            return false;
+        }
+        info.struct_size = sizeof(dom_core_info);
+        info.struct_version = 1;
+        info.api_version = core->api_version;
+        info.package_count = core->package_count;
+        info.instance_count = core->instance_count;
+        info.ticks = core->tick_counter;
+        memcpy(q->out, &info, sizeof(info));
+        return true;
+    default:
+        break;
     }
-    return core->desc.event_bus;
-}
 
-dom_sim* dom_core_sim(dom_core* core)
-{
-    (void)core;
-    return NULL;
-}
-
-dom_canvas* dom_core_canvas(dom_core* core)
-{
-    (void)core;
-    return NULL;
+    return false;
 }

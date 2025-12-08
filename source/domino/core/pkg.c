@@ -1,71 +1,124 @@
-#include "domino/pkg.h"
-
 #include <stdlib.h>
 #include <string.h>
+#include "core_internal.h"
 
-struct dom_pkg_registry {
-    dom_pkg_registry_desc desc;
-};
-
-dom_status dom_pkg_registry_create(const dom_pkg_registry_desc* desc, dom_pkg_registry** out_registry)
+static void dom_copy_string(char* dst, size_t cap, const char* src)
 {
-    dom_pkg_registry* reg;
-    dom_pkg_registry_desc local_desc;
+    size_t len;
 
-    if (!out_registry) {
-        return DOM_STATUS_INVALID_ARGUMENT;
-    }
-    *out_registry = NULL;
-
-    reg = (dom_pkg_registry*)malloc(sizeof(dom_pkg_registry));
-    if (!reg) {
-        return DOM_STATUS_ERROR;
-    }
-    memset(reg, 0, sizeof(*reg));
-
-    if (desc) {
-        local_desc = *desc;
-    } else {
-        memset(&local_desc, 0, sizeof(local_desc));
-    }
-
-    local_desc.struct_size = sizeof(dom_pkg_registry_desc);
-    reg->desc = local_desc;
-
-    *out_registry = reg;
-    return DOM_STATUS_OK;
-}
-
-void dom_pkg_registry_destroy(dom_pkg_registry* registry)
-{
-    if (!registry) {
+    if (!dst || cap == 0) {
         return;
     }
-    free(registry);
-}
 
-dom_status dom_pkg_registry_refresh(dom_pkg_registry* registry)
-{
-    (void)registry;
-    return DOM_STATUS_OK;
-}
-
-dom_status dom_pkg_registry_find(dom_pkg_registry* registry, const char* id, dom_pkg_info* out_info)
-{
-    (void)registry;
-    (void)id;
-    if (out_info) {
-        memset(out_info, 0, sizeof(*out_info));
-        out_info->struct_size = sizeof(dom_pkg_info);
-        out_info->struct_version = 1u;
+    if (!src) {
+        dst[0] = '\0';
+        return;
     }
-    return DOM_STATUS_NOT_FOUND;
+
+    len = strlen(src);
+    if (len >= cap) {
+        len = cap - 1;
+    }
+    memcpy(dst, src, len);
+    dst[len] = '\0';
 }
 
-dom_status dom_pkg_registry_enumerate(dom_pkg_registry* registry, dom_pkg_enumerate_fn fn, void* user_data)
+uint32_t dom_pkg_list(dom_core* core, dom_package_info* out, uint32_t max_out)
 {
-    (void)registry;
-    (void)fn;
-    (void)user_data;
-    return DOM_STATUS_OK;
+    uint32_t i;
+    uint32_t count;
+
+    if (!core || !out || max_out == 0) {
+        return 0;
+    }
+
+    count = core->package_count;
+    if (count > max_out) {
+        count = max_out;
+    }
+
+    for (i = 0; i < count; ++i) {
+        out[i] = core->packages[i];
+    }
+
+    return count;
+}
+
+bool dom_pkg_get(dom_core* core, dom_package_id id, dom_package_info* out)
+{
+    uint32_t i;
+
+    if (!core || !out) {
+        return false;
+    }
+
+    for (i = 0; i < core->package_count; ++i) {
+        if (core->packages[i].id == id) {
+            *out = core->packages[i];
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool dom_pkg_install(dom_core* core, const char* source_path, dom_package_id* out_id)
+{
+    dom_package_info* pkg;
+    char name_buf[64];
+
+    if (!core) {
+        return false;
+    }
+
+    if (core->package_count >= DOM_MAX_PACKAGES) {
+        return false;
+    }
+
+    pkg = &core->packages[core->package_count];
+    memset(pkg, 0, sizeof(*pkg));
+    pkg->struct_size = sizeof(dom_package_info);
+    pkg->struct_version = 1;
+    pkg->id = core->next_package_id++;
+    pkg->kind = DOM_PKG_KIND_UNKNOWN;
+    dom_copy_string(pkg->install_path, sizeof(pkg->install_path), source_path);
+    dom_copy_string(pkg->version, sizeof(pkg->version), "0.0.0");
+    dom_copy_string(pkg->author, sizeof(pkg->author), "unknown");
+    pkg->dep_count = 0;
+    pkg->game_version_min[0] = '\0';
+    pkg->game_version_max[0] = '\0';
+
+    dom_copy_string(name_buf, sizeof(name_buf), source_path);
+    if (name_buf[0] == '\0') {
+        dom_copy_string(name_buf, sizeof(name_buf), "package");
+    }
+    dom_copy_string(pkg->name, sizeof(pkg->name), name_buf);
+
+    if (out_id) {
+        *out_id = pkg->id;
+    }
+
+    core->package_count += 1;
+    return true;
+}
+
+bool dom_pkg_uninstall(dom_core* core, dom_package_id id)
+{
+    uint32_t i;
+
+    if (!core) {
+        return false;
+    }
+
+    for (i = 0; i < core->package_count; ++i) {
+        if (core->packages[i].id == id) {
+            for (; i + 1 < core->package_count; ++i) {
+                core->packages[i] = core->packages[i + 1];
+            }
+            core->package_count -= 1;
+            return true;
+        }
+    }
+
+    return false;
 }

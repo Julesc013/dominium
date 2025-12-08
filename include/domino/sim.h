@@ -3,38 +3,33 @@
 
 #include <stdint.h>
 #include "domino/core.h"
+#include "domino/inst.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct dm_sim_context dm_sim_context;
-
-/*------------------------------------------------------------
- * New Domino simulation control (dom_sim_*)
- *------------------------------------------------------------*/
 typedef struct dom_sim dom_sim;
-typedef struct dom_core dom_core;
 
-typedef struct dom_sim_desc {
+typedef struct dom_sim_state {
     uint32_t struct_size;
     uint32_t struct_version;
-    dom_core* core;
-    uint64_t seed;
-    uint32_t tick_millis;
-} dom_sim_desc;
+    uint64_t ticks;
+    double   sim_time_s;
+    double   dt_s;
+} dom_sim_state;
 
-int  dom_sim_create(const dom_sim_desc* desc, dom_sim** out_sim);
-void dom_sim_destroy(dom_sim* sim);
-int  dom_sim_tick(dom_sim* sim, uint32_t dt_millis);
-int  dom_sim_get_time(dom_sim* sim, uint64_t* out_time_millis);
+bool dom_sim_tick(dom_core* core, dom_instance_id inst, uint32_t ticks);
+bool dom_sim_get_state(dom_core* core, dom_instance_id inst, dom_sim_state* out);
 
 /*------------------------------------------------------------
- * Legacy deterministic sim stubs
+ * Legacy deterministic sim stubs (kept for compatibility)
  *------------------------------------------------------------*/
 struct dm_sim_config {
     uint64_t seed;
 };
+
+typedef struct dm_sim_context dm_sim_context;
 
 dm_sim_context* dm_sim_create(const struct dm_sim_config* cfg);
 void            dm_sim_destroy(dm_sim_context* sim);

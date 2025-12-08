@@ -2,36 +2,45 @@
 #define DOMINO_AUDIO_H_INCLUDED
 
 #include <stdint.h>
-#include "domino/core.h"
+#include <stddef.h>
 #include "domino/sys.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct daudio_device daudio_device;
+typedef struct daudio_context daudio_context;
+typedef struct daudio_buffer    daudio_buffer;
+typedef uint32_t daudio_voice_id;
 
-typedef struct daudio_device_desc {
-    uint32_t      struct_size;
-    uint32_t      struct_version;
-    dsys_context* sys;
-    uint32_t      sample_rate;
-    uint32_t      channel_count;
-    uint32_t      buffer_frames;
-} daudio_device_desc;
+typedef struct daudio_caps {
+    const char* name;
+    uint32_t    max_channels;
+    bool        supports_streams;
+    bool        supports_3d;
+} daudio_caps;
 
-typedef struct daudio_buffer {
-    uint32_t struct_size;
-    uint32_t struct_version;
-    float*   interleaved_samples;
-    uint32_t frame_count;
-    uint32_t channel_count;
-} daudio_buffer;
+typedef struct daudio_desc {
+    uint32_t sample_rate;
+    uint32_t channels;
+    uint32_t buffer_frames;
+} daudio_desc;
 
-dom_status daudio_create_device(const daudio_device_desc* desc, daudio_device** out_device);
-void       daudio_destroy_device(daudio_device* device);
-dom_status daudio_submit_buffer(daudio_device* device, const daudio_buffer* buffer);
-dom_status daudio_get_latency_ms(daudio_device* device, uint32_t* out_latency_ms);
+daudio_context* daudio_init(const daudio_desc* desc);
+void            daudio_shutdown(daudio_context* ctx);
+daudio_caps     daudio_get_caps(daudio_context* ctx);
+
+daudio_buffer*  daudio_buffer_create(daudio_context* ctx,
+                                     const float* interleaved_samples,
+                                     uint32_t frame_count,
+                                     uint32_t channel_count);
+void            daudio_buffer_destroy(daudio_context* ctx, daudio_buffer* buffer);
+
+daudio_voice_id daudio_play(daudio_context* ctx, const daudio_buffer* buffer, int loop);
+void            daudio_stop(daudio_context* ctx, daudio_voice_id voice);
+void            daudio_set_gain(daudio_context* ctx, daudio_voice_id voice, float gain);
+void            daudio_set_pan(daudio_context* ctx, daudio_voice_id voice, float pan);
+daudio_voice_id daudio_play_stream(daudio_context* ctx);
 
 #ifdef __cplusplus
 }
