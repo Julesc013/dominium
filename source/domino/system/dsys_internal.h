@@ -16,6 +16,8 @@
 #include "plat/cocoa/cocoa_sys.h"
 #elif defined(DSYS_BACKEND_POSIX)
 #include "plat/posix/posix_sys.h"
+#elif defined(DSYS_BACKEND_DOS16)
+#include "plat/dos16/dos16_sys.h"
 #elif defined(DSYS_BACKEND_DOS32)
 #include "plat/dos32/dos32_sys.h"
 #elif defined(DSYS_BACKEND_SDL1)
