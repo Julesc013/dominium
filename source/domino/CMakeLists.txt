@@ -37,13 +37,18 @@ target_include_directories(domino_core
 )
 target_compile_features(domino_core PRIVATE c_std_90)
 
+option(DOMINO_USE_SDL2_BACKEND "Use SDL2 dsys backend" OFF)
+option(DOMINO_USE_X11_BACKEND "Use X11 dsys backend" OFF)
+
+if(DOMINO_USE_SDL2_BACKEND AND DOMINO_USE_X11_BACKEND)
+    message(FATAL_ERROR "Select only one dsys backend (SDL2 or X11)")
+endif()
+
 # Domino engine stack
 add_subdirectory(system)
 add_subdirectory(render)
 add_subdirectory(sim)
 add_subdirectory(mod)
-
-option(DOMINO_USE_SDL2_BACKEND "Use SDL2 dsys backend" OFF)
 
 set(DOMINO_ENGINE_SOURCES
     system/sys.c
@@ -70,6 +75,11 @@ if(DOMINO_USE_SDL2_BACKEND)
         system/plat/sdl2/sdl2_sys.c
     )
     find_package(SDL2 REQUIRED)
+elseif(DOMINO_USE_X11_BACKEND)
+    list(APPEND DOMINO_ENGINE_SOURCES
+        system/plat/x11/x11_sys.c
+    )
+    find_package(X11 REQUIRED)
 endif()
 
 add_library(domino_engine STATIC ${DOMINO_ENGINE_SOURCES})
@@ -88,6 +98,14 @@ if(DOMINO_USE_SDL2_BACKEND)
     else()
         target_include_directories(domino_engine PRIVATE ${SDL2_INCLUDE_DIRS})
         target_link_libraries(domino_engine PRIVATE ${SDL2_LIBRARIES})
+    endif()
+elseif(DOMINO_USE_X11_BACKEND)
+    target_compile_definitions(domino_engine PRIVATE DSYS_BACKEND_X11)
+    if(TARGET X11::X11)
+        target_link_libraries(domino_engine PRIVATE X11::X11)
+    else()
+        target_include_directories(domino_engine PRIVATE ${X11_INCLUDE_DIR})
+        target_link_libraries(domino_engine PRIVATE ${X11_LIBRARIES})
     endif()
 else()
     target_compile_definitions(domino_engine PRIVATE DSYS_BACKEND_NULL)

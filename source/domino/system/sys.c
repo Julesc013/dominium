@@ -98,12 +98,10 @@ static dsys_window* null_window_create(const dsys_window_desc* desc)
     if (!win) {
         return NULL;
     }
-    win->native_handle = NULL;
+    memset(win, 0, sizeof(*win));
     win->width = local_desc.width;
     win->height = local_desc.height;
     win->mode = local_desc.mode;
-    win->window_id = 0u;
-    win->next = NULL;
     return win;
 }
 
@@ -457,7 +455,12 @@ static const dsys_backend_vtable g_null_vtable = {
 dsys_result dsys_init(void)
 {
     dsys_result result;
-#if defined(DSYS_BACKEND_SDL2)
+#if defined(DSYS_BACKEND_X11)
+    {
+        extern const dsys_backend_vtable* dsys_x11_get_vtable(void);
+        g_dsys = dsys_x11_get_vtable();
+    }
+#elif defined(DSYS_BACKEND_SDL2)
     {
         extern const dsys_backend_vtable* dsys_sdl2_get_vtable(void);
         g_dsys = dsys_sdl2_get_vtable();
