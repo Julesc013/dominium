@@ -1,5 +1,5 @@
-#ifndef DOMINO_SYS_H
-#define DOMINO_SYS_H
+#ifndef DOMINO_SYS_H_INCLUDED
+#define DOMINO_SYS_H_INCLUDED
 
 /* Domino System / Platform API - C89 friendly */
 
@@ -187,8 +187,126 @@ int  domino_term_read_line(domino_term_context* term,
                            char* buf,
                            size_t cap);
 
+/*------------------------------------------------------------
+ * New Domino system ABI (dsys_*)
+ *------------------------------------------------------------*/
+typedef struct dsys_context    dsys_context;
+typedef struct dsys_file       dsys_file;
+typedef struct dsys_dir_iter   dsys_dir_iter;
+typedef struct dsys_process    dsys_process;
+
+typedef enum dsys_profile {
+    DSYS_PROFILE_AUTO = 0,
+    DSYS_PROFILE_MINIMAL,
+    DSYS_PROFILE_STANDARD,
+    DSYS_PROFILE_FULL
+} dsys_profile;
+
+typedef enum dsys_os_kind {
+    DSYS_OS_UNKNOWN = 0,
+    DSYS_OS_WINDOWS,
+    DSYS_OS_MAC,
+    DSYS_OS_UNIX,
+    DSYS_OS_ANDROID,
+    DSYS_OS_DOS,
+    DSYS_OS_CPM
+} dsys_os_kind;
+
+typedef enum dsys_cpu_kind {
+    DSYS_CPU_UNKNOWN = 0,
+    DSYS_CPU_X86_16,
+    DSYS_CPU_X86_32,
+    DSYS_CPU_X86_64,
+    DSYS_CPU_ARM_32,
+    DSYS_CPU_ARM_64,
+    DSYS_CPU_PPC,
+    DSYS_CPU_M68K,
+    DSYS_CPU_OTHER
+} dsys_cpu_kind;
+
+typedef enum dsys_log_level {
+    DSYS_LOG_DEBUG = 0,
+    DSYS_LOG_INFO  = 1,
+    DSYS_LOG_WARN  = 2,
+    DSYS_LOG_ERROR = 3
+} dsys_log_level;
+
+typedef void (*dsys_log_fn)(void* user,
+                            dsys_log_level level,
+                            const char* category,
+                            const char* message);
+
+#define DSYS_PLATFORM_FLAG_HAS_THREADS 0x00000001u
+#define DSYS_PLATFORM_FLAG_HAS_FORK    0x00000002u
+#define DSYS_PLATFORM_FLAG_HAS_UNICODE 0x00000004u
+#define DSYS_PLATFORM_FLAG_IS_LEGACY   0x00000008u
+
+typedef struct dsys_platform_info {
+    uint32_t      struct_size;
+    uint32_t      struct_version;
+    dsys_os_kind  os;
+    dsys_cpu_kind cpu;
+    uint32_t      pointer_size;
+    uint32_t      page_size;
+    uint32_t      flags;
+} dsys_platform_info;
+
+typedef struct dsys_paths {
+    uint32_t struct_size;
+    uint32_t struct_version;
+    char install_root[260];
+    char program_root[260];
+    char data_root[260];
+    char user_root[260];
+    char state_root[260];
+    char temp_root[260];
+} dsys_paths;
+
+typedef struct dsys_desc {
+    uint32_t    struct_size;
+    uint32_t    struct_version;
+    dsys_profile profile;
+    dsys_log_fn log_fn;
+    void*       log_user;
+} dsys_desc;
+
+int  dsys_create(const dsys_desc* desc, dsys_context** out_sys);
+void dsys_destroy(dsys_context* sys);
+
+int dsys_get_platform_info(dsys_context* sys, dsys_platform_info* out_info);
+int dsys_get_paths(dsys_context* sys, dsys_paths* out_paths);
+int dsys_set_log_hook(dsys_context* sys, dsys_log_fn log_fn, void* user_data);
+
+uint64_t dsys_time_ticks(dsys_context* sys);
+double   dsys_time_seconds(dsys_context* sys);
+void     dsys_sleep_millis(dsys_context* sys, uint32_t millis);
+
+int dsys_file_exists(dsys_context* sys, const char* path);
+int dsys_mkdirs(dsys_context* sys, const char* path);
+
+dsys_file* dsys_file_open(dsys_context* sys, const char* path, const char* mode);
+size_t     dsys_file_read(dsys_file* file, void* buffer, size_t bytes);
+size_t     dsys_file_write(dsys_file* file, const void* buffer, size_t bytes);
+void       dsys_file_close(dsys_file* file);
+
+dsys_dir_iter* dsys_dir_open(dsys_context* sys, const char* path);
+int            dsys_dir_next(dsys_dir_iter* it, char* name_out, size_t cap, int* is_dir_out);
+void           dsys_dir_close(dsys_dir_iter* it);
+
+typedef struct dsys_process_desc {
+    uint32_t    struct_size;
+    uint32_t    struct_version;
+    const char* path;
+    const char* const* argv;
+    const char* working_dir;
+} dsys_process_desc;
+
+int  dsys_process_spawn(dsys_context* sys, const dsys_process_desc* desc, dsys_process** out_proc);
+int  dsys_process_wait(dsys_process* proc, int* exit_code_out);
+void dsys_process_destroy(dsys_process* proc);
+
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* DOMINO_SYS_H */
+#endif /* DOMINO_SYS_H_INCLUDED */

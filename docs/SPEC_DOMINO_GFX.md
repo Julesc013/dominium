@@ -4,6 +4,12 @@ Public header: `include/domino/gfx.h`
 Core code: `source/domino/render/api/domino_gfx_core.c`  
 Software backend: `source/domino/render/soft/**`
 
+## ABI (dgfx_*) snapshot
+- Versioned `dgfx_device_desc` selects backend (`DEFAULT/SOFTWARE/NULL/EXTERNAL`), size, format, and present mode; `dgfx_create_device`/`dgfx_destroy_device` own an opaque device on top of a `dsys_context`.
+- Frame control remains minimal: `dgfx_begin_frame`/`dgfx_end_frame` plus `dgfx_resize` for swapchain size changes.
+- `dgfx_get_canvas` hands back a `dom_canvas` handle representing the render target; the immediate IR stays canvas-centric for now.
+- Backend selection is deferred to the descriptor; everything is stubbed to succeed without real GPU/platform work.
+
 ## Surface
 - Opaque `domino_gfx_device`, optional `domino_gfx_texture`, `domino_gfx_font`.
 - `domino_gfx_desc`: backend (AUTO/SOFT/GL*/DX*/VK/METAL), profile hint (TINY/FIXED/PROGRAMMABLE), width/height, fullscreen, vsync, framebuffer pixel format.

@@ -4,6 +4,13 @@ Public header: `include/domino/sys.h`
 Core code: `source/domino/system/core`  
 Backends: `source/domino/system/plat/*`
 
+## ABI (dsys_*) snapshot
+- Opaque `dsys_context` via `dsys_create(const dsys_desc*, dsys_context**)` / `dsys_destroy`; `dsys_desc` is versioned and carries a profile hint plus optional log hook.
+- Platform + paths: `dsys_get_platform_info` returns `dsys_platform_info` (`os`, `cpu`, `pointer_size`, `page_size`, `flags`), `dsys_get_paths` returns `dsys_paths` (`install/program/data/user/state/temp` roots).
+- Facilities: `dsys_time_ticks/time_seconds/sleep_millis`, `dsys_file_*`, `dsys_dir_*`, and `dsys_process_*` mirror the legacy API but keep opaque handles and versioned structs; all are stubbed today.
+- Logging: `dsys_set_log_hook` installs a callback for higher layers; if unset the stub does nothing.
+- Legacy `domino_sys_*` surface stays for existing runtime code; `dsys_*` is the public, C89-safe ABI exported to external consumers.
+
 ## Surface
 - `domino_sys_context` opaque handle; create with `domino_sys_init(const domino_sys_desc*, domino_sys_context**)`, destroy with `domino_sys_shutdown`.
 - Platform info: `domino_sys_platform_info` (`os`, `cpu`, `profile`, `is_legacy`, `has_threads`, `has_fork`, `has_unicode`) via `domino_sys_get_platform_info`.
