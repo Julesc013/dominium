@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>CFBundleName</key>
+  <string>Dominium</string>
+  <key>CFBundleDisplayName</key>
+  <string>Dominium</string>
+  <key>CFBundleIdentifier</key>
+  <string>@DOMINIUM_BUNDLE_IDENTIFIER@</string>
+  <key>CFBundleVersion</key>
+  <string>@DOMINIUM_VERSION@</string>
+  <key>CFBundleShortVersionString</key>
+  <string>@DOMINIUM_VERSION@</string>
+  <key>CFBundleExecutable</key>
+  <string>@DOMINIUM_BUNDLE_EXECUTABLE@</string>
+  <key>LSMinimumSystemVersion</key>
+  <string>@DOMINIUM_MACOS_MINIMUM_VERSION@</string>
+  <key>LSApplicationCategoryType</key>
+  <string>public.app-category.games</string>
+  <key>NSHighResolutionCapable</key>
+  <true/>
+</dict>
+</plist>
