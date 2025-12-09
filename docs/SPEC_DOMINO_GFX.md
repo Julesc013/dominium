@@ -47,6 +47,13 @@ dgfx_shutdown(ctx);
 
 No pixels are produced yet; this stub only wires the ABI so future backends can drop in.
 
+## DX9 Renderer Backend (Direct3D 9)
+- Backend: `DGFX_BACKEND_DX9`, HAL Direct3D 9 device with windowed swap chain.
+- Targets: Windows XP through Windows 10+ (32-bit process).
+- Features: 2D via TL quads and line lists; 3D triangle lists stubbed for future DrawIndexedPrimitiveUP usage; vector overlays via lines; text is currently a no-op.
+- Integration: requires the Win32 dsys backend; pass the Win32 `HWND` exposed by `dsys_window_get_native_handle` inside `dgfx_desc.window`; `dgfx_desc.vsync` toggles Present interval.
+- Limitations: fixed-function style states only (no shaders yet); minimal device-loss handling (Reset on resize only); text rendering is not implemented in v1.
+
 ## Canvas builders (Dominium)
 `dom_canvas_build(core, inst, canvas_id, dom_gfx_buffer*)` dispatches to Dominium helpers to populate dgfx commands:
 - `world_surface` — clears then draws a 10x10 top-down grid (chunk preview).
