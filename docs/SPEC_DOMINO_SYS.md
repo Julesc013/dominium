@@ -73,6 +73,18 @@ This pass wires up a portable, deterministic stub backend. It exposes the full d
 - Build: enable with `-DDOMINO_USE_DOS16_BACKEND=ON` (alias `-DDSYS_BACKEND_DOS16=ON`) to compile `source/domino/system/plat/dos16/dos16_sys.c`.
 - Renderer note: dsys reports only logical framebuffer size; dgfx DOS VGA/CGA/EGA/VESA backends own mode switching and framebuffer pointers.
 
+## CP/M-80 Backend (Logical Fullscreen GUI/GFX)
+- Target: CP/M-80 (8080/Z80) BDOS environments (CP/M, CP/M-Plus, compatibles).
+- UI modes: GUI (`ui_modes = 1`); `has_windows = true` for a single logical fullscreen surface; no mouse/gamepad; coarse/synthetic timer (no high-res).
+- Windowing: tracks logical width/height/mode only; always fullscreen; native handle is the `dsys_window*` (CP/M has no window manager); renderer maps this to terminal/video hardware and owns any framebuffer.
+- Events: keyboard-only via BDOS function 6 with `E=0xFF` (non-blocking); ESC (0x1B) or CTRL+C (0x03) produce quit events; other keys emit key-down; no mouse.
+- Time/Delay: uses `clock()` if present, otherwise a synthetic monotonic counter (adds ~1 ms per call); `sleep_ms` busy-waits on that counter.
+- Filesystem/Paths: 8.3 uppercase filenames with drive/user semantics; logical paths map to the current drive (`A:` defaults) plus prefixes like `A:DOMDATA`, `A:DOMCFG`, `A:CACHE`, and `A:TEMP`; stdio-backed file IO only.
+- Directory iteration: stubbed (iterator allocates but yields no entries); BDOS search-first/search-next can be layered in later.
+- Processes: unsupported (`spawn` returns `NULL`, `wait` returns `-1`).
+- Build: enable with `-DDSYS_BACKEND_CPM80=ON` to compile `source/domino/system/plat/cpm80/cpm80_sys.c`; build with a CP/M-80 toolchain (z88dk, Hi-Tech C, Aztec C, etc.).
+- Renderer note: the reported width/height are purely logical; dgfx backends decide how to draw (character grid, software framebuffer, custom hardware).
+
 ## Win16 Backend (GUI/GFX)
 - Target: Windows 3.x (real/standard/386 enhanced), Win16 API (user.dll/gdi.dll), ANSI strings only.
 - UI modes: GUI (`ui_modes = 1`); `has_windows = true`, mouse supported, no gamepad, coarse timer only.
