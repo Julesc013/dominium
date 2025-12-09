@@ -28,6 +28,12 @@ if(DOMINO_USE_CARBON_BACKEND OR DSYS_BACKEND_CARBON)
         plat/carbon/carbon_sys.c
     )
 endif()
+if(DOMINO_USE_COCOA_BACKEND OR DSYS_BACKEND_COCOA)
+    list(APPEND DOMINO_SYS_SOURCES
+        plat/cocoa/cocoa_sys.c
+        plat/cocoa/cocoa_sys_objc.m
+    )
+endif()
 
 add_library(domino_sys STATIC ${DOMINO_SYS_SOURCES})
 target_include_directories(domino_sys
@@ -53,4 +59,23 @@ if(DOMINO_USE_CARBON_BACKEND OR DSYS_BACKEND_CARBON)
     if(CARBON_FRAMEWORK)
         target_link_libraries(domino_sys PRIVATE ${CARBON_FRAMEWORK})
     endif()
+endif()
+if(DOMINO_USE_COCOA_BACKEND OR DSYS_BACKEND_COCOA)
+    target_compile_definitions(domino_sys PRIVATE DSYS_BACKEND_COCOA)
+    find_library(COCOA_FRAMEWORK Cocoa)
+    find_library(APPKIT_FRAMEWORK AppKit)
+    find_library(FOUNDATION_FRAMEWORK Foundation)
+    if(COCOA_FRAMEWORK)
+        target_link_libraries(domino_sys PRIVATE ${COCOA_FRAMEWORK})
+    endif()
+    if(APPKIT_FRAMEWORK)
+        target_link_libraries(domino_sys PRIVATE ${APPKIT_FRAMEWORK})
+    endif()
+    if(FOUNDATION_FRAMEWORK)
+        target_link_libraries(domino_sys PRIVATE ${FOUNDATION_FRAMEWORK})
+    endif()
+    set_source_files_properties(plat/cocoa/cocoa_sys_objc.m PROPERTIES
+        LANGUAGE OBJC
+        COMPILE_FLAGS "-fobjc-arc"
+    )
 endif()

@@ -1,28 +1,15 @@
 #include "cocoa_sys.h"
 
-#include <errno.h>
-#include <dirent.h>
-#include <mach-o/dyld.h>
 #include <mach/mach_time.h>
-#include <pwd.h>
-#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/types.h>
 #include <sys/stat.h>
-#include <sys/time.h>
-#include <sys/wait.h>
-#include <time.h>
 #include <unistd.h>
 
-#ifndef PATH_MAX
-#define PATH_MAX 4096
+#ifndef NULL
+#define NULL ((void*)0)
 #endif
-
-static dsys_caps    g_cocoa_caps = { "cocoa", 1u, true, true, false, true };
-static uint64_t     g_timebase_numer = 0u;
-static uint64_t     g_timebase_denom = 0u;
 
 static dsys_result cocoa_init(void);
 static void        cocoa_shutdown(void);
@@ -84,191 +71,31 @@ static const dsys_backend_vtable g_cocoa_vtable = {
     cocoa_process_destroy
 };
 
-static bool cocoa_copy_path(const char* src, char* buf, size_t buf_size)
-{
-    size_t len;
+static dsys_caps g_cocoa_caps = { "cocoa", 1u, true, true, false, true };
 
-    if (!src || !buf || buf_size == 0u) {
-        return false;
-    }
-
-    len = strlen(src);
-    if (len >= buf_size) {
-        len = buf_size - 1u;
-    }
-    memcpy(buf, src, len);
-    buf[len] = '\0';
-    return true;
-}
-
-static void cocoa_join_path(char* dst, size_t cap, const char* base, const char* leaf)
-{
-    size_t i;
-    size_t j;
-
-    if (!dst || cap == 0u) {
-        return;
-    }
-
-    dst[0] = '\0';
-    i = 0u;
-    if (base) {
-        while (base[i] != '\0' && i + 1u < cap) {
-            dst[i] = base[i];
-            ++i;
-        }
-        if (i > 0u && dst[i - 1u] != '/' && i + 1u < cap) {
-            dst[i] = '/';
-            ++i;
-        }
-    }
-
-    j = 0u;
-    if (leaf) {
-        while (leaf[j] != '\0' && i + 1u < cap) {
-            dst[i] = leaf[j];
-            ++i;
-            ++j;
-        }
-    }
-    dst[i] = '\0';
-}
-
-static bool cocoa_dirname(const char* path, char* out, size_t cap)
-{
-    size_t len;
-
-    if (!path || !out || cap == 0u) {
-        return false;
-    }
-
-    len = strlen(path);
-    while (len > 0u && (path[len - 1u] == '/' || path[len - 1u] == '\\')) {
-        len -= 1u;
-    }
-    while (len > 0u) {
-        char c;
-        c = path[len - 1u];
-        if (c == '/' || c == '\\') {
-            break;
-        }
-        len -= 1u;
-    }
-    if (len == 0u) {
-        if (cap > 1u) {
-            out[0] = '.';
-            out[1] = '\0';
-            return true;
-        }
-        return false;
-    }
-    if (len >= cap) {
-        len = cap - 1u;
-    }
-    memcpy(out, path, len);
-    out[len] = '\0';
-    return true;
-}
-
-static bool cocoa_get_home(char* buf, size_t buf_size)
-{
-    const char* home_env;
-
-    home_env = getenv("HOME");
-    if (home_env && home_env[0] != '\0') {
-        return cocoa_copy_path(home_env, buf, buf_size);
-    }
-
-#if defined(_POSIX_VERSION)
-    {
-        struct passwd* pw;
-        pw = getpwuid(getuid());
-        if (pw && pw->pw_dir) {
-            return cocoa_copy_path(pw->pw_dir, buf, buf_size);
-        }
-    }
-#endif
-
-    return false;
-}
-
-static bool cocoa_resolve_exe_dir(char* buf, size_t buf_size)
-{
-    uint32_t size;
-    char     stack_buf[PATH_MAX];
-    char*    tmp;
-    char*    resolved;
-    bool     ok;
-
-    if (!buf || buf_size == 0u) {
-        return false;
-    }
-
-    size = (uint32_t)sizeof(stack_buf);
-    tmp = stack_buf;
-    if (_NSGetExecutablePath(tmp, &size) != 0) {
-        tmp = (char*)malloc((size_t)size);
-        if (!tmp) {
-            return false;
-        }
-        if (_NSGetExecutablePath(tmp, &size) != 0) {
-            free(tmp);
-            return false;
-        }
-    }
-
-    resolved = realpath(tmp, (char*)0);
-    if (tmp != stack_buf) {
-        free(tmp);
-    }
-    if (!resolved) {
-        return false;
-    }
-
-    ok = cocoa_dirname(resolved, buf, buf_size);
-    free(resolved);
-    return ok;
-}
-
-static bool cocoa_pick_library_dir(char* buf, size_t buf_size, const char* subpath)
-{
-    char home[260];
-    char joined[260];
-
-    if (!buf || buf_size == 0u || !subpath) {
-        return false;
-    }
-
-    if (!cocoa_get_home(home, sizeof(home))) {
-        return false;
-    }
-
-    cocoa_join_path(joined, sizeof(joined), home, subpath);
-    return cocoa_copy_path(joined, buf, buf_size);
-}
+cocoa_global_t g_cocoa = { 0 };
 
 static dsys_result cocoa_init(void)
 {
-    mach_timebase_info_data_t info;
-
-    if (cocoa_app_init() != DSYS_OK) {
-        return DSYS_ERR;
-    }
-
-    if (mach_timebase_info(&info) == KERN_SUCCESS && info.denom != 0u) {
-        g_timebase_numer = (uint64_t)info.numer;
-        g_timebase_denom = (uint64_t)info.denom;
-        g_cocoa_caps.has_high_res_timer = true;
-    } else {
-        g_cocoa_caps.has_high_res_timer = false;
-    }
-
+    g_cocoa.initialized = 1;
+    g_cocoa.main_window = NULL;
+    g_cocoa.head = 0;
+    g_cocoa.tail = 0;
+    memset(g_cocoa.queue, 0, sizeof(g_cocoa.queue));
+    cocoa_objc_init_app();
     return DSYS_OK;
 }
 
 static void cocoa_shutdown(void)
 {
-    cocoa_app_shutdown();
+    if (g_cocoa.main_window) {
+        cocoa_window_destroy(g_cocoa.main_window);
+        g_cocoa.main_window = NULL;
+    }
+    cocoa_objc_shutdown();
+    g_cocoa.initialized = 0;
+    g_cocoa.head = 0;
+    g_cocoa.tail = 0;
 }
 
 static dsys_caps cocoa_get_caps(void)
@@ -278,139 +105,170 @@ static dsys_caps cocoa_get_caps(void)
 
 static uint64_t cocoa_time_now_us(void)
 {
-#if defined(CLOCK_MONOTONIC)
-    {
-        struct timespec ts;
-        if (clock_gettime(CLOCK_MONOTONIC, &ts) == 0) {
-            return ((uint64_t)ts.tv_sec * 1000000u) + ((uint64_t)ts.tv_nsec / 1000u);
+    static mach_timebase_info_data_t tb = { 0, 0 };
+    uint64_t t;
+    uint64_t ns;
+
+    if (tb.denom == 0) {
+        mach_timebase_info(&tb);
+        if (tb.denom == 0) {
+            tb.numer = 1;
+            tb.denom = 1;
         }
     }
-#endif
-    {
-        uint64_t ticks;
-        uint64_t nanos;
 
-        ticks = mach_absolute_time();
-        if (g_timebase_denom == 0u) {
-            mach_timebase_info_data_t info;
-            if (mach_timebase_info(&info) == KERN_SUCCESS && info.denom != 0u) {
-                g_timebase_numer = (uint64_t)info.numer;
-                g_timebase_denom = (uint64_t)info.denom;
-            } else {
-                g_timebase_numer = 1u;
-                g_timebase_denom = 1u;
-            }
-        }
-
-        nanos = (ticks * g_timebase_numer) / g_timebase_denom;
-        return nanos / 1000u;
-    }
+    t = mach_absolute_time();
+    ns = t * tb.numer / tb.denom;
+    return ns / 1000ULL;
 }
 
 static void cocoa_sleep_ms(uint32_t ms)
 {
-    struct timespec ts;
-    ts.tv_sec = (time_t)(ms / 1000u);
-    ts.tv_nsec = (long)((ms % 1000u) * 1000000u);
-    while (nanosleep(&ts, &ts) == -1 && errno == EINTR) {
-        /* retry interrupted sleep */
+    uint64_t target;
+    target = cocoa_time_now_us() + ((uint64_t)ms * 1000ULL);
+    while (cocoa_time_now_us() < target) {
+        /* busy wait */
     }
 }
 
 static dsys_window* cocoa_window_create(const dsys_window_desc* desc)
 {
-    return cocoa_win_create(desc);
+    dsys_window_desc local;
+    dsys_window*     win;
+    void*            ns_window;
+
+    if (desc) {
+        local = *desc;
+    } else {
+        local.x = 0;
+        local.y = 0;
+        local.width = 800;
+        local.height = 600;
+        local.mode = DWIN_MODE_WINDOWED;
+    }
+
+    win = (dsys_window*)malloc(sizeof(dsys_window));
+    if (!win) {
+        return NULL;
+    }
+    memset(win, 0, sizeof(*win));
+    win->width = (local.width > 0) ? local.width : 800;
+    win->height = (local.height > 0) ? local.height : 600;
+    win->mode = local.mode;
+    g_cocoa.main_window = win;
+
+    ns_window = cocoa_objc_create_window(win->width, win->height, "Domino");
+    if (!ns_window) {
+        free(win);
+        g_cocoa.main_window = NULL;
+        return NULL;
+    }
+
+    win->ns_window = ns_window;
+    if (win->mode == DWIN_MODE_FULLSCREEN) {
+        cocoa_objc_toggle_fullscreen(win->ns_window);
+    }
+    cocoa_window_get_size(win, &win->width, &win->height);
+    return win;
 }
 
 static void cocoa_window_destroy(dsys_window* win)
 {
-    cocoa_win_destroy(win);
+    if (!win) {
+        return;
+    }
+    if (win->ns_window) {
+        cocoa_objc_destroy_window(win->ns_window);
+    }
+    if (g_cocoa.main_window == win) {
+        g_cocoa.main_window = NULL;
+    }
+    free(win);
 }
 
 static void cocoa_window_set_mode(dsys_window* win, dsys_window_mode mode)
 {
-    cocoa_win_set_mode(win, mode);
+    dsys_window_mode prev;
+    if (!win) {
+        return;
+    }
+    prev = win->mode;
+    win->mode = mode;
+    if (!win->ns_window) {
+        return;
+    }
+    if ((mode == DWIN_MODE_FULLSCREEN && prev != DWIN_MODE_FULLSCREEN) ||
+        (mode != DWIN_MODE_FULLSCREEN && prev == DWIN_MODE_FULLSCREEN)) {
+        cocoa_objc_toggle_fullscreen(win->ns_window);
+    }
+    cocoa_window_get_size(win, &win->width, &win->height);
 }
 
 static void cocoa_window_set_size(dsys_window* win, int32_t w, int32_t h)
 {
-    cocoa_win_set_size(win, w, h);
+    if (!win) {
+        return;
+    }
+    if (win->ns_window) {
+        cocoa_objc_resize_window(win->ns_window, w, h);
+        cocoa_objc_get_window_size(win->ns_window, &w, &h);
+    }
+    win->width = w;
+    win->height = h;
 }
 
 static void cocoa_window_get_size(dsys_window* win, int32_t* w, int32_t* h)
 {
-    cocoa_win_get_size(win, w, h);
+    if (!win) {
+        return;
+    }
+    if (win->ns_window) {
+        cocoa_objc_get_window_size(win->ns_window, &win->width, &win->height);
+    }
+    if (w) {
+        *w = win->width;
+    }
+    if (h) {
+        *h = win->height;
+    }
 }
 
 static void* cocoa_window_get_native_handle(dsys_window* win)
 {
-    return cocoa_win_get_native_handle(win);
+    if (!win) {
+        return NULL;
+    }
+    return win->ns_window;
 }
 
 static bool cocoa_poll_event(dsys_event* ev)
 {
-    return cocoa_win_poll_event(ev);
+    if (ev) {
+        memset(ev, 0, sizeof(*ev));
+    }
+
+    cocoa_objc_pump_events();
+
+    if (g_cocoa.head != g_cocoa.tail) {
+        if (ev) {
+            *ev = g_cocoa.queue[g_cocoa.head];
+        }
+        g_cocoa.head = (g_cocoa.head + 1) % COCOA_EVENT_QUEUE_SIZE;
+        return true;
+    }
+    return false;
 }
 
 static bool cocoa_get_path(dsys_path_kind kind, char* buf, size_t buf_size)
 {
-    bool ok;
-
-    if (!buf || buf_size == 0u) {
-        return false;
-    }
-
-    buf[0] = '\0';
-    ok = false;
-
     switch (kind) {
-    case DSYS_PATH_APP_ROOT:
-        ok = cocoa_resolve_exe_dir(buf, buf_size);
-        break;
-
-    case DSYS_PATH_USER_DATA:
-        ok = cocoa_pick_library_dir(buf, buf_size, "Library/Application Support/dominium/data");
-        break;
-
-    case DSYS_PATH_USER_CONFIG:
-        ok = cocoa_pick_library_dir(buf, buf_size, "Library/Application Support/dominium/config");
-        break;
-
-    case DSYS_PATH_USER_CACHE:
-        ok = cocoa_pick_library_dir(buf, buf_size, "Library/Caches/dominium");
-        break;
-
-    case DSYS_PATH_TEMP:
-        {
-            char tmp[PATH_MAX];
-#ifdef _CS_DARWIN_USER_TEMP_DIR
-            size_t len;
-            len = (size_t)confstr(_CS_DARWIN_USER_TEMP_DIR, tmp, sizeof(tmp));
-            if (len > 0u && len < sizeof(tmp)) {
-                ok = cocoa_copy_path(tmp, buf, buf_size);
-                break;
-            }
-#endif
-            if (!ok) {
-                const char* env_tmp;
-                env_tmp = getenv("TMPDIR");
-                if (env_tmp && env_tmp[0] != '\0') {
-                    ok = cocoa_copy_path(env_tmp, buf, buf_size);
-                } else {
-                    ok = cocoa_copy_path("/tmp", buf, buf_size);
-                }
-            }
-        }
-        break;
-
-    default:
-        break;
+    case DSYS_PATH_APP_ROOT:    return cocoa_objc_get_path_exec(buf, buf_size);
+    case DSYS_PATH_USER_DATA:   return cocoa_objc_get_path_data(buf, buf_size);
+    case DSYS_PATH_USER_CONFIG: return cocoa_objc_get_path_config(buf, buf_size);
+    case DSYS_PATH_USER_CACHE:  return cocoa_objc_get_path_cache(buf, buf_size);
+    case DSYS_PATH_TEMP:        return cocoa_objc_get_path_temp(buf, buf_size);
+    default:                    return false;
     }
-
-    if (!ok && buf_size > 0u) {
-        buf[0] = '\0';
-    }
-    return ok;
 }
 
 static void* cocoa_file_open(const char* path, const char* mode)
@@ -470,13 +328,8 @@ static int cocoa_file_close(void* fh)
 
 static dsys_dir_iter* cocoa_dir_open(const char* path)
 {
+    DIR* dir;
     dsys_dir_iter* it;
-    DIR*           dir;
-    size_t         len;
-
-    if (!path) {
-        return NULL;
-    }
 
     dir = opendir(path);
     if (!dir) {
@@ -488,20 +341,14 @@ static dsys_dir_iter* cocoa_dir_open(const char* path)
         closedir(dir);
         return NULL;
     }
-
     it->dir = dir;
-    len = strlen(path);
-    if (len >= sizeof(it->base)) {
-        len = sizeof(it->base) - 1u;
-    }
-    memcpy(it->base, path, len);
-    it->base[len] = '\0';
     return it;
 }
 
 static bool cocoa_dir_next(dsys_dir_iter* it, dsys_dir_entry* out)
 {
     struct dirent* ent;
+    bool is_dir;
 
     if (!it || !out) {
         return false;
@@ -517,53 +364,30 @@ static bool cocoa_dir_next(dsys_dir_iter* it, dsys_dir_entry* out)
         }
         strncpy(out->name, ent->d_name, sizeof(out->name) - 1u);
         out->name[sizeof(out->name) - 1u] = '\0';
-        out->is_dir = false;
 
-#if defined(DT_DIR)
+        is_dir = false;
+#ifdef DT_DIR
         if (ent->d_type == DT_DIR) {
-            out->is_dir = true;
+            is_dir = true;
+#ifdef DT_UNKNOWN
         } else if (ent->d_type == DT_UNKNOWN) {
             struct stat st;
-            char        full[260];
-            size_t      base_len;
-            size_t      name_len;
-            base_len = strlen(it->base);
-            name_len = strlen(out->name);
-            if (base_len + name_len + 2u < sizeof(full)) {
-                memcpy(full, it->base, base_len);
-                if (base_len > 0u && full[base_len - 1u] != '/') {
-                    full[base_len] = '/';
-                    base_len += 1u;
-                }
-                memcpy(full + base_len, out->name, name_len);
-                full[base_len + name_len] = '\0';
-                if (stat(full, &st) == 0 && S_ISDIR(st.st_mode)) {
-                    out->is_dir = true;
-                }
+            if (fstatat(dirfd(it->dir), ent->d_name, &st, 0) == 0 && S_ISDIR(st.st_mode)) {
+                is_dir = true;
             }
+        } else {
+            /* keep false */
+#endif
         }
 #else
         {
             struct stat st;
-            char        full[260];
-            size_t      base_len;
-            size_t      name_len;
-            base_len = strlen(it->base);
-            name_len = strlen(out->name);
-            if (base_len + name_len + 2u < sizeof(full)) {
-                memcpy(full, it->base, base_len);
-                if (base_len > 0u && full[base_len - 1u] != '/') {
-                    full[base_len] = '/';
-                    base_len += 1u;
-                }
-                memcpy(full + base_len, out->name, name_len);
-                full[base_len + name_len] = '\0';
-                if (stat(full, &st) == 0 && S_ISDIR(st.st_mode)) {
-                    out->is_dir = true;
-                }
+            if (fstatat(dirfd(it->dir), ent->d_name, &st, 0) == 0 && S_ISDIR(st.st_mode)) {
+                is_dir = true;
             }
         }
 #endif
+        out->is_dir = is_dir;
         return true;
     }
 }
@@ -581,62 +405,33 @@ static void cocoa_dir_close(dsys_dir_iter* it)
 
 static dsys_process* cocoa_process_spawn(const dsys_process_desc* desc)
 {
-    pid_t        pid;
-    dsys_process* proc;
-
-    if (!desc || !desc->exe) {
-        return NULL;
-    }
-
-    pid = fork();
-    if (pid < 0) {
-        return NULL;
-    } else if (pid == 0) {
-        if (desc->argv) {
-            execvp(desc->exe, (char* const*)desc->argv);
-        } else {
-            char* const argv_local[2];
-            argv_local[0] = (char*)desc->exe;
-            argv_local[1] = NULL;
-            execvp(desc->exe, argv_local);
-        }
-        _exit(127);
-    }
-
-    proc = (dsys_process*)malloc(sizeof(dsys_process));
-    if (!proc) {
-        waitpid(pid, (int*)0, 0);
-        return NULL;
-    }
-    proc->pid = pid;
-    return proc;
+    (void)desc;
+    return NULL;
 }
 
 static int cocoa_process_wait(dsys_process* p)
 {
-    int   status;
-    pid_t res;
-
-    if (!p) {
-        return -1;
-    }
-
-    res = waitpid(p->pid, &status, 0);
-    if (res < 0) {
-        return -1;
-    }
-    if (WIFEXITED(status)) {
-        return WEXITSTATUS(status);
-    }
+    (void)p;
     return -1;
 }
 
 static void cocoa_process_destroy(dsys_process* p)
 {
-    if (!p) {
+    (void)p;
+}
+
+void cocoa_push_event(const dsys_event* ev)
+{
+    int next;
+    if (!ev) {
         return;
     }
-    free(p);
+    next = (g_cocoa.tail + 1) % COCOA_EVENT_QUEUE_SIZE;
+    if (next == g_cocoa.head) {
+        return;
+    }
+    g_cocoa.queue[g_cocoa.tail] = *ev;
+    g_cocoa.tail = next;
 }
 
 const dsys_backend_vtable* dsys_cocoa_get_vtable(void)
