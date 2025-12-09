@@ -1,6 +1,7 @@
 #include "posix_sys.h"
 
 #include <errno.h>
+#include <fcntl.h>
 #include <limits.h>
 #include <pwd.h>
 #include <stdio.h>
@@ -262,14 +263,14 @@ static uint64_t posix_time_now_us(void)
     {
         struct timespec ts;
         if (clock_gettime(CLOCK_MONOTONIC, &ts) == 0) {
-            return ((uint64_t)ts.tv_sec * 1000000u) + ((uint64_t)ts.tv_nsec / 1000u);
+            return ((uint64_t)ts.tv_sec * 1000000ULL) + ((uint64_t)ts.tv_nsec / 1000ULL);
         }
     }
 #endif
     {
         struct timeval tv;
         gettimeofday(&tv, (struct timezone*)0);
-        return ((uint64_t)tv.tv_sec * 1000000u) + (uint64_t)tv.tv_usec;
+        return ((uint64_t)tv.tv_sec * 1000000ULL) + (uint64_t)tv.tv_usec;
     }
 }
 
@@ -326,9 +327,7 @@ static void* posix_window_get_native_handle(dsys_window* win)
 
 static bool posix_poll_event(dsys_event* ev)
 {
-    if (ev) {
-        memset(ev, 0, sizeof(*ev));
-    }
+    (void)ev;
     return false;
 }
 
@@ -461,30 +460,21 @@ static int posix_file_close(void* fh)
 static dsys_dir_iter* posix_dir_open(const char* path)
 {
     dsys_dir_iter* it;
-    DIR*           dir;
-    size_t         len;
 
     if (!path) {
         return NULL;
     }
 
-    dir = opendir(path);
-    if (!dir) {
+    it = (dsys_dir_iter*)malloc(sizeof(dsys_dir_iter));
+    if (!it) {
         return NULL;
     }
 
-    it = (dsys_dir_iter*)malloc(sizeof(dsys_dir_iter));
-    if (!it) {
-        closedir(dir);
+    it->dir = opendir(path);
+    if (!it->dir) {
+        free(it);
         return NULL;
     }
-    it->dir = dir;
-    len = strlen(path);
-    if (len >= sizeof(it->base)) {
-        len = sizeof(it->base) - 1u;
-    }
-    memcpy(it->base, path, len);
-    it->base[len] = '\0';
     return it;
 }
 
@@ -501,7 +491,9 @@ static bool posix_dir_next(dsys_dir_iter* it, dsys_dir_entry* out)
         if (!ent) {
             return false;
         }
-        if (strcmp(ent->d_name, ".") == 0 || strcmp(ent->d_name, "..") == 0) {
+        if (ent->d_name[0] == '.' &&
+            (ent->d_name[1] == '\0' ||
+             (ent->d_name[1] == '.' && ent->d_name[2] == '\0'))) {
             continue;
         }
         strncpy(out->name, ent->d_name, sizeof(out->name) - 1u);
@@ -510,45 +502,17 @@ static bool posix_dir_next(dsys_dir_iter* it, dsys_dir_entry* out)
 #if defined(DT_DIR)
         if (ent->d_type == DT_DIR) {
             out->is_dir = true;
-        } else if (ent->d_type == DT_UNKNOWN) {
-            struct stat st;
-            char        full[260];
-            size_t      base_len;
-            size_t      name_len;
-            base_len = strlen(it->base);
-            name_len = strlen(out->name);
-            if (base_len + name_len + 2u < sizeof(full)) {
-                memcpy(full, it->base, base_len);
-                if (base_len > 0u && full[base_len - 1u] != '/') {
-                    full[base_len] = '/';
-                    base_len += 1u;
-                }
-                memcpy(full + base_len, out->name, name_len);
-                full[base_len + name_len] = '\0';
-                if (stat(full, &st) == 0 && S_ISDIR(st.st_mode)) {
-                    out->is_dir = true;
-                }
-            }
         }
-#else
-        {
+#endif
+#if defined(AT_FDCWD)
+        if (!out->is_dir) {
+            int         dir_fd;
             struct stat st;
-            char        full[260];
-            size_t      base_len;
-            size_t      name_len;
-            base_len = strlen(it->base);
-            name_len = strlen(out->name);
-            if (base_len + name_len + 2u < sizeof(full)) {
-                memcpy(full, it->base, base_len);
-                if (base_len > 0u && full[base_len - 1u] != '/') {
-                    full[base_len] = '/';
-                    base_len += 1u;
-                }
-                memcpy(full + base_len, out->name, name_len);
-                full[base_len + name_len] = '\0';
-                if (stat(full, &st) == 0 && S_ISDIR(st.st_mode)) {
-                    out->is_dir = true;
-                }
+            dir_fd = dirfd(it->dir);
+            if (dir_fd != -1 &&
+                fstatat(dir_fd, out->name, &st, 0) == 0 &&
+                S_ISDIR(st.st_mode)) {
+                out->is_dir = true;
             }
         }
 #endif
@@ -602,21 +566,17 @@ static dsys_process* posix_process_spawn(const dsys_process_desc* desc)
 
 static int posix_process_wait(dsys_process* p)
 {
-    int   status;
-    pid_t res;
+    int status;
 
     if (!p) {
         return -1;
     }
 
-    res = waitpid(p->pid, &status, 0);
-    if (res < 0) {
+    status = 0;
+    if (waitpid(p->pid, &status, 0) < 0) {
         return -1;
     }
-    if (WIFEXITED(status)) {
-        return WEXITSTATUS(status);
-    }
-    return -1;
+    return status;
 }
 
 static void posix_process_destroy(dsys_process* p)

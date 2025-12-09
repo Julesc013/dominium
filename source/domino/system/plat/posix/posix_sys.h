@@ -8,17 +8,14 @@
 #include "domino/sys.h"
 
 #include <dirent.h>
-#include <sys/types.h>
+#include <unistd.h>
 
 struct dsys_window_t {
-    int32_t          width;
-    int32_t          height;
-    dsys_window_mode mode;
+    int dummy; /* no windows */
 };
 
 struct dsys_dir_iter_t {
-    DIR*  dir;
-    char  base[260];
+    DIR* dir;
 };
 
 struct dsys_process_t {
