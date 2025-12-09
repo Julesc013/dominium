@@ -4,14 +4,16 @@ if(NOT WIN32)
     return()
 endif()
 
-option(DOMINIUM_BUILD_MSI "Build Windows MSI installer" OFF)
-option(DOMINIUM_BUILD_BUNDLE "Build Windows bootstrapper" OFF)
+option(DOMINIUM_BUILD_MSI "Build Windows MSI installer" ON)
+option(DOMINIUM_BUILD_BUNDLE "Build Windows bootstrapper" ON)
 
 set(DOMINIUM_VERSION "1.0.0" CACHE STRING "Dominium product version for installers")
 set(DOMINIUM_DIST_DIR "${CMAKE_BINARY_DIR}/dist" CACHE PATH "Staging directory with dominium-setup-cli.exe and payload")
 set(DOMINIUM_INSTALLER_DIR "${CMAKE_BINARY_DIR}/dist/installers/windows" CACHE PATH "Output directory for Windows installers")
 set(DOMINIUM_MANUFACTURER "Dominium" CACHE STRING "Manufacturer string for installers")
 set(DOMINIUM_LICENSE_FILE "${CMAKE_CURRENT_SOURCE_DIR}/license.rtf" CACHE FILEPATH "License RTF for MSI/Burn UI")
+set(DOMINIUM_BUNDLE_ICON "" CACHE FILEPATH "Optional .ico for the Burn bootstrapper")
+set(DOMINIUM_BUNDLE_LOGO "" CACHE FILEPATH "Optional logo (BMP/PNG) for the Burn bootstrapper UI")
 
 set(DOMINIUM_MSI_NAME "Dominium-${DOMINIUM_VERSION}.msi" CACHE STRING "MSI file name")
 set(DOMINIUM_BUNDLE_NAME "Dominium-${DOMINIUM_VERSION}-Setup.exe" CACHE STRING "Bootstrapper EXE name")
@@ -71,6 +73,8 @@ if(DOMINIUM_BUILD_BUNDLE)
                 -dProductVersion="${DOMINIUM_VERSION}"
                 -dManufacturer="${DOMINIUM_MANUFACTURER}"
                 -dLicenseFile="${DOMINIUM_LICENSE_FILE}"
+                -dBundleIcon="${DOMINIUM_BUNDLE_ICON}"
+                -dBundleLogo="${DOMINIUM_BUNDLE_LOGO}"
                 -dMsiPath="${DOMINIUM_INSTALLER_DIR}/${DOMINIUM_MSI_NAME}"
                 -out "${_bundle_wixobj}"
                 "${CMAKE_CURRENT_SOURCE_DIR}/bootstrapper.wxs"

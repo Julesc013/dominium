@@ -6,13 +6,28 @@
     Version="$(var.ProductVersion)"
     Manufacturer="$(var.Manufacturer)"
     UpgradeCode="5DD3A6BD-4F3B-4E0C-B5D1-0B2C879C98E3"
-    Compressed="yes">
+    Compressed="yes"
+    PerMachine="yes"
+    DisableModify="no"
+    <?if $(var.BundleIcon) != ""?>
+    IconSourceFile="$(var.BundleIcon)"
+    <?endif?>
+    >
 
     <BootstrapperApplicationRef Id="WixStandardBootstrapperApplication.RtfLicense">
       <bal:WixStandardBootstrapperApplication
         LicenseFile="$(var.LicenseFile)"
-        SuppressOptionsUI="no" />
+        <?if $(var.BundleLogo) != ""?>
+        LogoFile="$(var.BundleLogo)"
+        <?endif?>
+        SuppressOptionsUI="no"
+        SuppressRepair="no"
+        SuppressRemove="no"
+        ShowVersion="yes"
+        LogPathVariable="WixBundleLog" />
     </BootstrapperApplicationRef>
+
+    <Variable Name="MsiLogName" Value="Dominium-%Y%m%d-%H%M%S.log" bal:Overridable="yes" />
 
     <Chain>
       <MsiPackage
@@ -21,7 +36,8 @@
         Visible="no"
         DisplayInternalUI="no"
         Compressed="yes"
-        Vital="yes" />
+        Vital="yes"
+        LogPathVariable="MsiLogName" />
     </Chain>
   </Bundle>
 </Wix>
