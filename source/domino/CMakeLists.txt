@@ -159,9 +159,11 @@ elseif(DOMINO_USE_CARBON_BACKEND)
 elseif(DOMINO_USE_COCOA_BACKEND)
     list(APPEND DOMINO_ENGINE_SOURCES
         system/plat/cocoa/cocoa_sys.c
-        system/plat/cocoa/cocoa_win.m
+        system/plat/cocoa/cocoa_sys_objc.m
     )
+    find_library(COCOA_FRAMEWORK Cocoa REQUIRED)
     find_library(APPKIT_FRAMEWORK AppKit REQUIRED)
+    find_library(FOUNDATION_FRAMEWORK Foundation REQUIRED)
 endif()
 
 add_library(domino_engine STATIC ${DOMINO_ENGINE_SOURCES})
@@ -214,8 +216,8 @@ elseif(DOMINO_USE_CARBON_BACKEND)
     target_link_libraries(domino_engine PRIVATE ${CARBON_FRAMEWORK})
 elseif(DOMINO_USE_COCOA_BACKEND)
     target_compile_definitions(domino_engine PRIVATE DSYS_BACKEND_COCOA)
-    target_link_libraries(domino_engine PRIVATE ${APPKIT_FRAMEWORK})
-    set_source_files_properties(system/plat/cocoa/cocoa_win.m PROPERTIES
+    target_link_libraries(domino_engine PRIVATE ${APPKIT_FRAMEWORK} ${COCOA_FRAMEWORK} ${FOUNDATION_FRAMEWORK})
+    set_source_files_properties(system/plat/cocoa/cocoa_sys_objc.m PROPERTIES
         LANGUAGE OBJC
         COMPILE_FLAGS "-fobjc-arc"
     )

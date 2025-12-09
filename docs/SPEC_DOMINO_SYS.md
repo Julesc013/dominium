@@ -106,13 +106,13 @@ This pass wires up a portable, deterministic stub backend. It exposes the full d
 - Processes: unsupported (`spawn` returns `NULL`, `wait` returns `-1`).
 - Limitations: no Unicode, cooperative multitasking, no true exclusive fullscreen.
 
-## Cocoa Backend (macOS)
-- API: AppKit / Cocoa with Objective-C bridge; macOS 10.9+ (Intel + Apple Silicon).
-- UI modes: GUI (`ui_modes = 1`); windows and mouse supported, high-res timer via `clock_gettime`/`mach_absolute_time`.
-- Features: initializes `NSApplication` once, creates `NSWindow` objects and forwards AppKit events (resize, key up/down + text input, mouse move/button/wheel, close→quit), stdio-backed file IO, POSIX dirent iteration, and POSIX `fork/execvp` processes.
-- Paths: app root from `_NSGetExecutablePath` + `realpath`; user data/config under `~/Library/Application Support/dominium/{data,config}`; cache under `~/Library/Caches/dominium`; temp from `_CS_DARWIN_USER_TEMP_DIR`, `$TMPDIR`, or `/tmp`.
-- Build: enable with `-DDOMINO_USE_COCOA_BACKEND=ON` (alias `-DDSYS_BACKEND_COCOA=ON`) to compile `DSYS_BACKEND_COCOA`, add `source/domino/system/plat/cocoa/cocoa_sys.c` and `.m`, and link against AppKit.
-- Limitations: fullscreen toggling is best-effort; text input buffer truncates to 7 UTF-8 bytes.
+## Cocoa Backend (macOS Modern GUI)
+- API: AppKit / Cocoa bridge on macOS 10.9+ (Intel + Apple Silicon); runs NSApplication/NSWindow on the main thread only.
+- UI modes: GUI (`ui_modes = 1`); real `NSWindow*` native handles for the renderer, windows/mouse supported, high-res timer via `mach_absolute_time`.
+- Events: key up/down, mouse move/button/wheel, resize, and close→quit translated by an Objective-C delegate into a 128-slot ring buffer; `dsys_poll_event` pumps `[NSApp nextEventMatchingMask:untilDate:inMode:dequeue:]` non-blocking for deterministic delivery.
+- Paths: UTF-8 paths; executable root from `NSBundle` executable path, user data/config under `~/Library/Application Support/dominium/{data,config}`, cache under `~/Library/Caches/dominium`, temp from `NSTemporaryDirectory`.
+- Filesystem: stdio-backed file IO, POSIX dirent iteration; processes stubbed (`spawn` returns `NULL`, `wait` returns `-1`).
+- Build: enable with `-DDOMINO_USE_COCOA_BACKEND=ON` (alias `-DDSYS_BACKEND_COCOA=ON`) to compile `source/domino/system/plat/cocoa/cocoa_sys.c/.h` plus `cocoa_sys_objc.m` and link against Cocoa/AppKit/Foundation.
 
 ## Carbon Backend (macOS Carbon GUI)
 - API: Carbon Event/Window Manager + CoreServices; classic 32-bit Carbon (`WindowRef` native handle).
