@@ -96,8 +96,9 @@ static int dom_gfx_emit_cmd(dom_gfx_buffer* out, dgfx_opcode op, const void* pay
     }
 
     cmd = (dgfx_cmd*)(out->data + out->size);
-    cmd->op = op;
+    cmd->opcode = op;
     cmd->payload_size = (uint16_t)payload_size;
+    cmd->size = (uint32_t)(sizeof(dgfx_cmd) + payload_size);
 
     dst = ((uint8_t*)cmd) + sizeof(dgfx_cmd);
     if (payload && payload_size > 0u) {
@@ -140,8 +141,9 @@ static int dom_gfx_emit_lines(dom_gfx_buffer* out, const dom_gfx_line_vertex* ve
     }
 
     cmd = (dgfx_cmd*)(out->data + out->size);
-    cmd->op = DGFX_CMD_DRAW_LINES;
+    cmd->opcode = DGFX_CMD_DRAW_LINES;
     cmd->payload_size = (uint16_t)payload_size;
+    cmd->size = (uint32_t)(sizeof(dgfx_cmd) + payload_size);
 
     dst = out->data + out->size + sizeof(dgfx_cmd);
     memcpy(dst, &header, sizeof(header));

@@ -103,7 +103,7 @@ static int dump_cmds(const char* name, const dom_gfx_buffer* buf)
         cmd = (const dgfx_cmd*)(buf->data + offset);
         step = sizeof(dgfx_cmd) + (size_t)cmd->payload_size;
         printf("  op=%u payload=%u\n",
-               (unsigned int)cmd->op,
+               (unsigned int)cmd->opcode,
                (unsigned int)cmd->payload_size);
 
         if (step == 0u) {

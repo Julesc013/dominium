@@ -1,4 +1,6 @@
 set(DOMINO_GFX_SOURCES
+    gfx.c
+    canvas.c
     api/domino_gfx_core.c
     api/domino_gfx_internal.h
     soft/soft_gfx.c

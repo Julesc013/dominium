@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product
+    Id="*"
+    Name="Dominium"
+    Language="1033"
+    Version="$(var.ProductVersion)"
+    Manufacturer="$(var.Manufacturer)"
+    UpgradeCode="6BA5C836-8F7E-4C48-BC07-7AD1C0C83E74">
+
+    <Package
+      InstallerVersion="500"
+      Compressed="yes"
+      InstallScope="perMachine"
+      Description="Dominium installer" />
+
+    <MajorUpgrade
+      DowngradeErrorMessage="A newer version of Dominium is already installed." />
+
+    <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
+
+    <!-- Allow per-user installs; default to per-machine -->
+    <Property Id="ALLUSERS" Secure="yes" Value="1" />
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
+    <Property Id="Manufacturer" Value="Dominium" />
+    <Property Id="LicenseFile" Value="$(var.LicenseFile)" />
+    <SetProperty Id="INSTALLDIR" Value="[LocalAppDataFolder]Programs\Dominium"
+                 After="CostFinalize">NOT Privileged OR ALLUSERS=2 OR MSIINSTALLPERUSER=1</SetProperty>
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="DominiumProgramMenu" Name="Dominium" />
+      </Directory>
+      <Directory Id="DesktopFolder" />
+      <Directory Id="INSTALLDIR" Name="Dominium">
+        <Directory Id="DominiumDataDir" Name="data" />
+      </Directory>
+    </Directory>
+
+    <ComponentGroup Id="DominiumComponents">
+      <Component Id="cmpSetupCli" Guid="7FCB36A1-C4AA-4B0E-A63C-2BCE03B1D0B4">
+        <File Id="fileSetupCli"
+              Source="$(var.DistDir)\dominium-setup-cli.exe"
+              KeyPath="yes" />
+      </Component>
+
+      <Component Id="cmpDataReadme" Guid="EA337651-8C5D-4BA5-A2F3-0E7C2F6A2F55">
+        <File Id="fileDataReadme"
+              Source="$(var.DistDir)\data\readme.txt"
+              KeyPath="yes" />
+      </Component>
+
+      <Component Id="cmpShortcuts" Guid="2E73FC94-9EB7-4B36-B7D4-4C1D6287A8A8">
+        <Shortcut Id="ShortcutStartMenu"
+                  Directory="DominiumProgramMenu"
+                  Name="Dominium Setup"
+                  Target="[INSTALLDIR]dominium-setup-cli.exe"
+                  Arguments="--help"
+                  WorkingDirectory="INSTALLDIR" />
+        <Shortcut Id="ShortcutDesktop"
+                  Directory="DesktopFolder"
+                  Name="Dominium Setup"
+                  Target="[INSTALLDIR]dominium-setup-cli.exe"
+                  Arguments="--help"
+                  WorkingDirectory="INSTALLDIR" />
+        <RemoveFolder Id="RemoveDominiumProgramMenu"
+                      Directory="DominiumProgramMenu"
+                      On="uninstall" />
+        <RegistryValue Root="HKCU"
+                       Key="Software\Dominium"
+                       Name="installed"
+                       Type="integer"
+                       Value="1"
+                       KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
+
+    <Feature Id="MainApplication" Title="Dominium" Level="1" Absent="disallow">
+      <ComponentGroupRef Id="DominiumComponents" />
+    </Feature>
+
+    <UIRef Id="WixUI_InstallDir" />
+    <WixVariable Id="WixUILicenseRtf" Value="$(var.LicenseFile)" />
+  </Product>
+</Wix>
