@@ -78,3 +78,7 @@ if (WIN32)
         DESTINATION bin
     )
 endif()
+
+if (WIN32)
+    add_subdirectory(windows)
+endif()

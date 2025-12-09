@@ -15,6 +15,9 @@ unless a caller explicitly provides an override path.
 - `<instance_name>` is used as the directory name when no explicit path is
   provided.
 - Descriptor and subdirectories are created when an instance is created.
+- Portable installs created by the setup engine override the base path to
+  `<install_root>/instances/<instance_name>` to keep the install self-contained;
+  the same subdirectory layout is used inside that root.
 
 ## Descriptor format (`instance.ini`)
 Plain text `key=value` lines:

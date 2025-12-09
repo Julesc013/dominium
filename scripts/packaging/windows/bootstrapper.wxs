@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+     xmlns:bal="http://schemas.microsoft.com/wix/BalExtension">
+  <Bundle
+    Name="Dominium"
+    Version="$(var.ProductVersion)"
+    Manufacturer="$(var.Manufacturer)"
+    UpgradeCode="5DD3A6BD-4F3B-4E0C-B5D1-0B2C879C98E3"
+    Compressed="yes">
+
+    <BootstrapperApplicationRef Id="WixStandardBootstrapperApplication.RtfLicense">
+      <bal:WixStandardBootstrapperApplication
+        LicenseFile="$(var.LicenseFile)"
+        SuppressOptionsUI="no" />
+    </BootstrapperApplicationRef>
+
+    <Chain>
+      <MsiPackage
+        Id="DominiumMsi"
+        SourceFile="$(var.MsiPath)"
+        Visible="no"
+        DisplayInternalUI="no"
+        Compressed="yes"
+        Vital="yes" />
+    </Chain>
+  </Bundle>
+</Wix>

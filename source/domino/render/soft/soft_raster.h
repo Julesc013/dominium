@@ -1,43 +1,68 @@
 #ifndef DOMINIUM_SOFT_RASTER_H
 #define DOMINIUM_SOFT_RASTER_H
 
-#include "soft_gfx.h"
+#include <stdint.h>
+#include "domino/sys.h"
+#include "soft_config.h"
 
-typedef struct soft_vertex_t {
-    float x, y, z, w;
-    float u, v;
-    uint32_t color;
-} soft_vertex;
+typedef struct soft_framebuffer_t {
+    uint8_t *color;
+    uint8_t *depth;
+    uint8_t *stencil;
 
+    int width;
+    int height;
+    int stride_bytes;
+    int depth_stride;
+    int stencil_stride;
+
+    dgfx_soft_format_t format;
+    int depth_bits;
+    int stencil_bits;
+} soft_framebuffer;
+
+/* Basic framebuffer management */
 bool soft_fb_create(soft_framebuffer* fb,
                     int width, int height,
-                    dgfx_soft_format fmt,
+                    dgfx_soft_format_t fmt,
                     uint8_t depth_bits,
                     uint8_t stencil_bits);
 
 void soft_fb_destroy(soft_framebuffer* fb);
 
-void soft_raster_clear_color(const soft_framebuffer* fb,
+/* Clears */
+void soft_raster_clear_color(soft_framebuffer *fb,
                              uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
-void soft_raster_clear_depth(const soft_framebuffer* fb, float depth);
-void soft_raster_clear_stencil(const soft_framebuffer* fb, uint8_t s);
+void soft_raster_clear_depth(soft_framebuffer *fb, float depth);
+void soft_raster_clear_stencil(soft_framebuffer *fb, uint8_t value);
 
 /* 2D primitives */
-void soft_raster_draw_line_2d(const soft_framebuffer* fb,
-                              int x0, int y0, int x1, int y1,
-                              uint32_t rgba);
-
-void soft_raster_fill_rect_2d(const soft_framebuffer* fb,
+void soft_raster_fill_rect_2d(soft_framebuffer *fb,
                               int x, int y, int w, int h,
                               uint32_t rgba);
 
-/* 3D triangles: assumes transformed vertices already in screen-space or NDC */
-void soft_raster_draw_triangle(const soft_framebuffer* fb,
-                               const soft_vertex* v0,
-                               const soft_vertex* v1,
-                               const soft_vertex* v2,
-                               int enable_depth,
-                               int enable_texture);
+void soft_raster_draw_line_2d(soft_framebuffer *fb,
+                              int x0, int y0, int x1, int y1,
+                              uint32_t rgba);
+
+/* 3D triangle rasterization */
+typedef struct soft_vertex_t {
+    float x, y, z, w;
+    float u, v;
+    uint32_t rgba;
+} soft_vertex;
+
+void soft_raster_draw_triangle(soft_framebuffer *fb,
+                               const soft_vertex *v0,
+                               const soft_vertex *v1,
+                               const soft_vertex *v2,
+                               int enable_depth_test);
+
+/* Text stub */
+void soft_raster_draw_text_stub(soft_framebuffer *fb,
+                                int x, int y,
+                                uint32_t rgba,
+                                const char *text);
 
 #endif /* DOMINIUM_SOFT_RASTER_H */

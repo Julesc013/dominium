@@ -8,6 +8,10 @@ in-memory registry mirrors what exists on disk and is rebuilt on every
 - Official/installed content lives under `dsys_get_path(DSYS_PATH_APP_ROOT)`.
 - User-installed mods live under `dsys_get_path(DSYS_PATH_USER_DATA)`.
 - All paths are relative to those roots and use forward slashes in descriptors.
+- The setup engine resolves `DSYS_PATH_APP_ROOT` from the install scope
+  (portable → install root; per-user/system → program root under the user/system
+  tree) and seeds the install root by copying the build output under
+  `<app_root>/dist/` into place. A fuller manifest will replace this stub.
 
 ## Layouts
 ### Official content

@@ -361,7 +361,7 @@ static void ega_execute(const dgfx_cmd_buffer* cmd_buf)
         }
         payload = ptr + header_size;
 
-        switch (cmd->op) {
+        switch (cmd->opcode) {
         case DGFX_CMD_CLEAR:
             ega_cmd_clear(payload, payload_size);
             break;

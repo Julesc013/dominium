@@ -2,361 +2,125 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include "domino/canvas.h"
+#include "domino/sys.h"
 
-struct dgfx_context {
-    dgfx_desc                    desc;
-    const dgfx_backend_vtable*   vtable;
-};
+static const dgfx_backend_vtable *g_dgfx = NULL;
+static dgfx_caps g_caps;
+static dcvs *g_frame_canvas = NULL;
 
-static const dgfx_backend_vtable* g_dgfx = NULL;
+/* Forward decl for soft backend vtable */
+extern const dgfx_backend_vtable *dgfx_soft_get_vtable(void);
 
-static bool dgfx_null_init(const dgfx_desc* desc);
-static void dgfx_null_shutdown(void);
-static dgfx_caps dgfx_null_get_caps(void);
-static void dgfx_null_resize(int width, int height);
-static void dgfx_null_begin_frame(void);
-static void dgfx_null_execute(const dgfx_cmd_buffer* buf);
-static void dgfx_null_end_frame(void);
-
-static const dgfx_backend_vtable g_dgfx_null_vtable = {
-    dgfx_null_init,
-    dgfx_null_shutdown,
-    dgfx_null_get_caps,
-    dgfx_null_resize,
-    dgfx_null_begin_frame,
-    dgfx_null_execute,
-    dgfx_null_end_frame
-};
-
-static bool dgfx_null_init(const dgfx_desc* desc)
+static const dgfx_backend_vtable *dgfx_choose_backend(dgfx_backend_t backend)
 {
-    (void)desc;
+    switch (backend) {
+    case DGFX_BACKEND_SOFT:
+    case DGFX_BACKEND_SOFT8:
+        return dgfx_soft_get_vtable();
+    default:
+        /* Temporary fallback to software until HW backends are rebuilt. */
+        return dgfx_soft_get_vtable();
+    }
+}
+
+bool dgfx_init(const dgfx_desc *desc)
+{
+    dgfx_desc local;
+    const dgfx_backend_vtable *vt;
+
+    memset(&local, 0, sizeof(local));
+    if (desc) {
+        local = *desc;
+    }
+    if (local.width == 0) local.width = 800;
+    if (local.height == 0) local.height = 600;
+    if (local.native_window == NULL && local.window) {
+        local.native_window = dsys_window_get_native_handle(local.window);
+    }
+
+    vt = dgfx_choose_backend(local.backend);
+    if (!vt || !vt->init || !vt->init(&local)) {
+        return false;
+    }
+
+    g_dgfx = vt;
+    if (g_dgfx->get_caps) {
+        g_caps = g_dgfx->get_caps();
+    } else {
+        memset(&g_caps, 0, sizeof(g_caps));
+    }
+
+    g_frame_canvas = dcvs_create(64u * 1024u);
+    if (!g_frame_canvas) {
+        if (g_dgfx && g_dgfx->shutdown) {
+            g_dgfx->shutdown();
+        }
+        g_dgfx = NULL;
+        return false;
+    }
+
     return true;
 }
 
-static void dgfx_null_shutdown(void)
+void dgfx_shutdown(void)
 {
-}
-
-static dgfx_caps dgfx_null_get_caps(void)
-{
-    dgfx_caps caps;
-    caps.name = "null";
-    caps.supports_2d = false;
-    caps.supports_3d = false;
-    caps.supports_text = false;
-    caps.supports_rt = false;
-    caps.supports_alpha = false;
-    caps.max_texture_size = 0;
-    return caps;
-}
-
-static void dgfx_null_resize(int width, int height)
-{
-    (void)width;
-    (void)height;
-}
-
-static void dgfx_null_begin_frame(void)
-{
-}
-
-static void dgfx_null_execute(const dgfx_cmd_buffer* buf)
-{
-    (void)buf;
-}
-
-static void dgfx_null_end_frame(void)
-{
-}
-
-dgfx_context* dgfx_init(const dgfx_desc* desc)
-{
-    dgfx_context* ctx;
-    dgfx_desc local_desc;
-    const dgfx_desc* init_desc;
-
-    ctx = (dgfx_context*)malloc(sizeof(dgfx_context));
-    if (!ctx) {
-        return NULL;
-    }
-
-    memset(&local_desc, 0, sizeof(local_desc));
-    if (desc) {
-        local_desc = *desc;
-    }
-    ctx->desc = local_desc;
-    ctx->vtable = &g_dgfx_null_vtable;
-    g_dgfx = &g_dgfx_null_vtable;
-    init_desc = &ctx->desc;
-
-    switch (ctx->desc.backend) {
-    case DGFX_BACKEND_SOFT:
-    case DGFX_BACKEND_SOFT8:
-        {
-            extern const dgfx_backend_vtable* dgfx_soft_get_vtable(void);
-            g_dgfx = dgfx_soft_get_vtable();
-        }
-        break;
-    case DGFX_BACKEND_GL2:
-        {
-            extern const dgfx_backend_vtable* dgfx_gl2_get_vtable(void);
-            g_dgfx = dgfx_gl2_get_vtable();
-        }
-        break;
-    case DGFX_BACKEND_DX9:
-#if defined(_WIN32)
-        {
-            extern const dgfx_backend_vtable* dgfx_dx9_get_vtable(void);
-            g_dgfx = dgfx_dx9_get_vtable();
-        }
-#else
-        g_dgfx = &g_dgfx_null_vtable;
-#endif
-        break;
-    case DGFX_BACKEND_VK1:
-#if defined(DGFX_HAS_VK1)
-        {
-            extern const dgfx_backend_vtable* dgfx_vk1_get_vtable(void);
-            g_dgfx = dgfx_vk1_get_vtable();
-        }
-#else
-        g_dgfx = &g_dgfx_null_vtable;
-#endif
-        break;
-    case DGFX_BACKEND_DX11:
-#if defined(_WIN32)
-        {
-            extern const dgfx_backend_vtable* dgfx_dx11_get_vtable(void);
-            g_dgfx = dgfx_dx11_get_vtable();
-        }
-#else
-        g_dgfx = &g_dgfx_null_vtable;
-#endif
-        break;
-    case DGFX_BACKEND_METAL:
-#if defined(__APPLE__)
-        {
-            extern const dgfx_backend_vtable* dgfx_metal_get_vtable(void);
-            g_dgfx = dgfx_metal_get_vtable();
-        }
-#else
-        g_dgfx = &g_dgfx_null_vtable;
-#endif
-        break;
-    case DGFX_BACKEND_QUARTZ:
-#if defined(__APPLE__)
-        {
-            extern const dgfx_backend_vtable* dgfx_quartz_get_vtable(void);
-            g_dgfx = dgfx_quartz_get_vtable();
-        }
-#else
-        g_dgfx = &g_dgfx_null_vtable;
-#endif
-        break;
-    case DGFX_BACKEND_GDI:
-#if defined(_WIN32)
-        {
-            extern const dgfx_backend_vtable* dgfx_gdi_get_vtable(void);
-            g_dgfx = dgfx_gdi_get_vtable();
-        }
-#else
-        g_dgfx = &g_dgfx_null_vtable;
-#endif
-        break;
-    case DGFX_BACKEND_QUICKDRAW:
-#if defined(DOMINIUM_GFX_QUICKDRAW)
-        {
-            extern const dgfx_backend_vtable* dgfx_quickdraw_get_vtable(void);
-            g_dgfx = dgfx_quickdraw_get_vtable();
-        }
-#else
-        g_dgfx = &g_dgfx_null_vtable;
-#endif
-        break;
-    case DGFX_BACKEND_CGA:
-#if defined(DOMINIUM_GFX_CGA)
-        {
-            extern const dgfx_backend_vtable* dgfx_cga_get_vtable(void);
-            g_dgfx = dgfx_cga_get_vtable();
-        }
-#else
-        g_dgfx = &g_dgfx_null_vtable;
-#endif
-        break;
-    case DGFX_BACKEND_VGA:
-#if defined(DOMINIUM_GFX_VGA)
-        {
-            extern const dgfx_backend_vtable* dgfx_vga_get_vtable(void);
-            g_dgfx = dgfx_vga_get_vtable();
-        }
-#else
-        g_dgfx = &g_dgfx_null_vtable;
-#endif
-        break;
-    case DGFX_BACKEND_XGA:
-#if defined(DOMINIUM_GFX_XGA)
-        {
-            extern const dgfx_backend_vtable* dgfx_xga_get_vtable(void);
-            g_dgfx = dgfx_xga_get_vtable();
-        }
-#else
-        g_dgfx = &g_dgfx_null_vtable;
-#endif
-        break;
-    case DGFX_BACKEND_VESA:
-        {
-            extern const dgfx_backend_vtable* dgfx_vesa_get_vtable(void);
-            g_dgfx = dgfx_vesa_get_vtable();
-        }
-        break;
-    case DGFX_BACKEND_HERC:
-#if defined(DOMINIUM_GFX_HERC)
-        {
-            extern const dgfx_backend_vtable* dgfx_herc_get_vtable(void);
-            g_dgfx = dgfx_herc_get_vtable();
-        }
-#else
-        g_dgfx = &g_dgfx_null_vtable;
-#endif
-        break;
-    case DGFX_BACKEND_MDA:
-#if defined(DOMINIUM_GFX_MDA)
-        {
-            extern const dgfx_backend_vtable* dgfx_mda_get_vtable(void);
-            g_dgfx = dgfx_mda_get_vtable();
-        }
-#else
-        g_dgfx = &g_dgfx_null_vtable;
-#endif
-        break;
-    case DGFX_BACKEND_EGA:
-#if defined(DGFX_BACKEND_EGA)
-        {
-            extern const dgfx_backend_vtable* dgfx_ega_get_vtable(void);
-            g_dgfx = dgfx_ega_get_vtable();
-        }
-#else
-        g_dgfx = &g_dgfx_null_vtable;
-#endif
-        break;
-    default:
-        g_dgfx = &g_dgfx_null_vtable;
-        break;
-    }
-
-    ctx->vtable = g_dgfx;
-
-    if (!ctx->vtable || !ctx->vtable->init(init_desc)) {
-        ctx->vtable = &g_dgfx_null_vtable;
-        g_dgfx = &g_dgfx_null_vtable;
-        if (!g_dgfx->init(init_desc)) {
-            free(ctx);
-            return NULL;
-        }
-    }
-
-    return ctx;
-}
-
-void dgfx_shutdown(dgfx_context* ctx)
-{
-    if (!ctx) {
-        return;
+    if (g_frame_canvas) {
+        dcvs_destroy(g_frame_canvas);
+        g_frame_canvas = NULL;
     }
     if (g_dgfx && g_dgfx->shutdown) {
         g_dgfx->shutdown();
     }
     g_dgfx = NULL;
-    ctx->vtable = NULL;
-    free(ctx);
+    memset(&g_caps, 0, sizeof(g_caps));
 }
 
-dgfx_caps dgfx_get_caps(dgfx_context* ctx)
+dgfx_caps dgfx_get_caps(void)
 {
-    (void)ctx;
-    if (g_dgfx && g_dgfx->get_caps) {
-        return g_dgfx->get_caps();
-    }
-    return dgfx_null_get_caps();
+    return g_caps;
 }
 
-void dgfx_resize(dgfx_context* ctx, int32_t width, int32_t height)
+void dgfx_resize(int width, int height)
 {
-    if (!ctx) {
-        return;
-    }
-    ctx->desc.width = width;
-    ctx->desc.height = height;
     if (g_dgfx && g_dgfx->resize) {
         g_dgfx->resize(width, height);
     }
 }
 
-void dgfx_cmd_buffer_reset(dgfx_cmd_buffer* buf)
+void dgfx_begin_frame(void)
 {
-    if (!buf) {
-        return;
+    if (g_frame_canvas) {
+        dcvs_reset(g_frame_canvas);
     }
-    buf->size = 0;
-}
-
-bool dgfx_cmd_emit(dgfx_cmd_buffer* buf,
-                   dgfx_opcode op,
-                   const void* payload,
-                   uint16_t payload_size)
-{
-    uint32_t required;
-    dgfx_cmd* cmd;
-    uint8_t* dst;
-
-    if (!buf || !buf->data) {
-        return false;
-    }
-    if (buf->size > buf->capacity) {
-        return false;
-    }
-
-    required = (uint32_t)buf->size + sizeof(dgfx_cmd) + (uint32_t)payload_size;
-    if (required > buf->capacity) {
-        return false;
-    }
-
-    cmd = (dgfx_cmd*)(buf->data + buf->size);
-    cmd->op = op;
-    cmd->payload_size = payload_size;
-
-    dst = (uint8_t*)cmd + sizeof(dgfx_cmd);
-    if (payload && payload_size > 0) {
-        memcpy(dst, payload, payload_size);
-    } else if (payload_size > 0) {
-        memset(dst, 0, payload_size);
-    }
-
-    buf->size = (uint16_t)required;
-    return true;
-}
-
-void dgfx_begin_frame(dgfx_context* ctx)
-{
-    (void)ctx;
     if (g_dgfx && g_dgfx->begin_frame) {
         g_dgfx->begin_frame();
     }
 }
 
-void dgfx_execute(dgfx_context* ctx, const dgfx_cmd_buffer* buf)
+void dgfx_execute(const dgfx_cmd_buffer *cmd)
 {
-    (void)ctx;
     if (g_dgfx && g_dgfx->execute) {
-        g_dgfx->execute(buf);
+        g_dgfx->execute(cmd);
     }
 }
 
-void dgfx_end_frame(dgfx_context* ctx)
+void dgfx_end_frame(void)
 {
-    (void)ctx;
     if (g_dgfx && g_dgfx->end_frame) {
         g_dgfx->end_frame();
     }
+}
+
+dgfx_cmd_buffer *dgfx_get_frame_cmd_buffer(void)
+{
+    if (!g_frame_canvas) {
+        return NULL;
+    }
+    return (dgfx_cmd_buffer *)dcvs_get_cmd_buffer(g_frame_canvas);
+}
+
+struct dcvs_t *dgfx_get_frame_canvas(void)
+{
+    return g_frame_canvas;
 }
