@@ -490,6 +490,11 @@ dsys_result dsys_init(void)
         extern const dsys_backend_vtable* dsys_cocoa_get_vtable(void);
         g_dsys = dsys_cocoa_get_vtable();
     }
+#elif defined(DSYS_BACKEND_CARBON)
+    {
+        extern const dsys_backend_vtable* dsys_carbon_get_vtable(void);
+        g_dsys = dsys_carbon_get_vtable();
+    }
 #elif defined(DSYS_BACKEND_X11)
     {
         extern const dsys_backend_vtable* dsys_x11_get_vtable(void);

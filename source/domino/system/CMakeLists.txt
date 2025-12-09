@@ -23,6 +23,11 @@ if(WIN32)
         plat/windows/win32/sys_win32.c
     )
 endif()
+if(DOMINO_USE_CARBON_BACKEND OR DSYS_BACKEND_CARBON)
+    list(APPEND DOMINO_SYS_SOURCES
+        plat/carbon/carbon_sys.c
+    )
+endif()
 
 add_library(domino_sys STATIC ${DOMINO_SYS_SOURCES})
 target_include_directories(domino_sys
@@ -41,4 +46,11 @@ if(DSYS_BACKEND_CPM86)
 endif()
 if(WIN32)
     target_link_libraries(domino_sys PRIVATE kernel32)
+endif()
+if(DOMINO_USE_CARBON_BACKEND OR DSYS_BACKEND_CARBON)
+    target_compile_definitions(domino_sys PRIVATE DSYS_BACKEND_CARBON)
+    find_library(CARBON_FRAMEWORK Carbon)
+    if(CARBON_FRAMEWORK)
+        target_link_libraries(domino_sys PRIVATE ${CARBON_FRAMEWORK})
+    endif()
 endif()
