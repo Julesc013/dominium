@@ -40,3 +40,16 @@ if(WIN32)
             ole32
     )
 endif()
+
+if(APPLE)
+    add_executable(dominium_setup_macos_gui
+        os/macos/setup_macos_gui.m
+    )
+    target_link_libraries(dominium_setup_macos_gui
+        PRIVATE
+            "-framework Cocoa"
+    )
+    set_source_files_properties(os/macos/setup_macos_gui.m PROPERTIES
+        COMPILE_FLAGS "-fobjc-arc"
+    )
+endif()

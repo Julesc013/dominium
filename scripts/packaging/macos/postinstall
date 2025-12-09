@@ -1,0 +1,29 @@
+#!/bin/bash
+set -euo pipefail
+
+APP_ROOT="/Applications/Dominium.app/Contents"
+CLI_BIN="$APP_ROOT/MacOS/dominium-setup-cli"
+DEFAULT_USER="${SUDO_USER:-$USER}"
+
+run_cli() {
+  local scope="$1"
+  local target="$2"
+  if [[ -x "$CLI_BIN" ]]; then
+    "$CLI_BIN" --scope="$scope" --action=install --dir="$target" || true
+  fi
+}
+
+# System-level install (keeps files inside the app bundle resources by default).
+run_cli "system" "$APP_ROOT/Resources"
+
+# Per-user data in the invoking user's home Library tree.
+if [[ -n "$DEFAULT_USER" ]]; then
+  USER_HOME="$(eval echo "~$DEFAULT_USER")"
+  if [[ -d "$USER_HOME" ]]; then
+    mkdir -p "$USER_HOME/Library/Application Support/Dominium"
+    run_cli "user" "$USER_HOME/Library/Application Support/Dominium"
+    chown -R "$DEFAULT_USER" "$USER_HOME/Library/Application Support/Dominium" || true
+  fi
+fi
+
+exit 0
