@@ -460,6 +460,11 @@ dsys_result dsys_init(void)
         extern const dsys_backend_vtable* dsys_cpm80_get_vtable(void);
         g_dsys = dsys_cpm80_get_vtable();
     }
+#elif defined(DSYS_BACKEND_CPM86)
+    {
+        extern const dsys_backend_vtable* dsys_cpm86_get_vtable(void);
+        g_dsys = dsys_cpm86_get_vtable();
+    }
 #elif defined(DSYS_BACKEND_DOS16)
     {
         extern const dsys_backend_vtable* dsys_dos16_get_vtable(void);

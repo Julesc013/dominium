@@ -12,6 +12,11 @@ if(DSYS_BACKEND_CPM80)
         plat/cpm80/cpm80_sys.c
     )
 endif()
+if(DSYS_BACKEND_CPM86)
+    list(APPEND DOMINO_SYS_SOURCES
+        plat/cpm86/cpm86_sys.c
+    )
+endif()
 
 if(WIN32)
     list(APPEND DOMINO_SYS_SOURCES
@@ -30,6 +35,9 @@ target_include_directories(domino_sys
 target_compile_features(domino_sys PRIVATE c_std_90)
 if(DSYS_BACKEND_CPM80)
     target_compile_definitions(domino_sys PRIVATE DSYS_BACKEND_CPM80)
+endif()
+if(DSYS_BACKEND_CPM86)
+    target_compile_definitions(domino_sys PRIVATE DSYS_BACKEND_CPM86)
 endif()
 if(WIN32)
     target_link_libraries(domino_sys PRIVATE kernel32)
