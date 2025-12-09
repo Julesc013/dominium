@@ -22,7 +22,8 @@ typedef enum dgfx_backend {
     DGFX_BACKEND_GL2,
     DGFX_BACKEND_DX9,
     DGFX_BACKEND_VK1,
-    DGFX_BACKEND_DX7
+    DGFX_BACKEND_DX7,
+    DGFX_BACKEND_DX11
 } dgfx_backend;
 
 typedef struct dgfx_caps {
