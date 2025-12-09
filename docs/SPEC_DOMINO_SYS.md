@@ -63,44 +63,45 @@ This pass wires up a portable, deterministic stub backend. It exposes the full d
 
 ## DOS32 Backend (Fullscreen GUI/GFX)
 - Target: MS-DOS 5/6.x with a 32-bit extender (DOS4GW, CWSDPMI/DJGPP runtime, etc.), real hardware or emulators.
-- UI modes: GUI (`ui_modes = 1`); `has_windows = true` for a single logical fullscreen window; mouse optional, no gamepad; timers are coarse (`clock()` based).
-- Windowing: tracks width/height/mode only; native handle is the `dsys_window*`; no OS window manager or mode switching here (renderer chooses VGA/VESA/CGA/etc.).
-- Events: keyboard via `kbhit/getch` (ESC also yields a quit event); optional mouse can be added via INT 33h later; events buffered in a small ring.
-- Filesystem/Paths: stdio-backed file IO, `dirent` directory iteration; paths resolve relative to `getcwd` with `DATA/`, `CONFIG/`, `CACHE/`, and `TEMP/` under the current directory; DOS 8.3 filenames apply.
+- UI modes: GUI (`ui_modes = 1`); `has_windows = true` for a single logical fullscreen window; mouse supported when INT 33h driver is present; no gamepad; timers are coarse (`clock()`/`uclock()` based).
+- Windowing: attempts to enter VESA 0x101 (640x480x8) with linear framebuffer mapping via `__dpmi_physical_address_mapping`; falls back to VGA mode 13h. `dsys_window` stores framebuffer pointer, pitch, width, height, and bpp; `window_get_native_handle` returns the framebuffer pointer for software renderers.
+- Events: keyboard via `kbhit/getch` with synthesized key-up and ESC→quit; mouse move/button via INT 33h; 32-slot ring buffer drained by `dsys_poll_event`.
+- Filesystem/Paths: stdio-backed file IO, `dirent` directory iteration; all `dsys_get_path` kinds map to `"."` (DOS 8.3 filenames expected).
 - Processes: unsupported (`spawn` returns `NULL`, `wait` returns `-1`).
 - Build: enable with `-DDOMINO_USE_DOS32_BACKEND=ON` (alias `-DDSYS_BACKEND_DOS32=ON`) to compile `source/domino/system/plat/dos32/dos32_sys.c`.
-- Renderer note: DOS32 dsys only reports the logical framebuffer size; dgfx backends pick the actual video mode and framebuffer.
+- Renderer note: use the returned framebuffer pointer/pitch to write pixels directly to the mapped LFB (or the fallback heap buffer when running hosted).
 
 ## DOS16 Backend (Fullscreen GUI/GFX)
 - Target: MS-DOS 3.x-6.x, 16-bit real mode builds (tiny/medium/large memory models) on classic compilers.
-- UI modes: GUI (`ui_modes = 1`); `has_windows = true` for one logical fullscreen surface; no mouse/gamepad; coarse timer only.
-- Windowing: tracks logical width/height/mode; always fullscreen; native handle is the `dsys_window*` (no OS window object), renderer chooses VGA/EGA/CGA/VESA mode changes.
-- Events: keyboard via `kbhit/getch`; ESC also yields a quit event; key-up is synthesized immediately after key-down; no OS window close events and mouse is not implemented.
+- UI modes: GUI (`ui_modes = 1`); `has_windows = true` for one logical fullscreen surface; mouse supported if an INT 33h driver is present; no gamepad; coarse timer only.
+- Windowing: switches to VGA mode 13h (320x200x8); `dsys_window` exposes a `dos16_fb_handle` (segment:offset, width/height/pitch/bpp, VESA flag). Native handle returns this framebuffer descriptor.
+- Events: keyboard via `kbhit/getch`; ESC also yields a quit event; key-up is synthesized immediately after key-down; mouse move/button via INT 33h when available; no OS window close events.
 - Time/Delay: uses `clock()` ticks converted to microseconds; `sleep_ms` busy-waits on the coarse clock.
-- Filesystem/Paths: stdio file IO; `dirent` directory iteration; paths are relative to `getcwd` with `DATA/`, `CONFIG/`, `CACHE/`, and `TEMP/` folders (8.3 filenames expected).
+- Filesystem/Paths: stdio file IO; `dirent` directory iteration; paths map to `"."` for all kinds.
 - Processes: unsupported (`spawn` returns `NULL`, `wait` returns `-1`).
 - Build: enable with `-DDOMINO_USE_DOS16_BACKEND=ON` (alias `-DDSYS_BACKEND_DOS16=ON`) to compile `source/domino/system/plat/dos16/dos16_sys.c`.
-- Renderer note: dsys reports only logical framebuffer size; dgfx DOS VGA/CGA/EGA/VESA backends own mode switching and framebuffer pointers.
+- Renderer note: renderers use the returned framebuffer descriptor to write directly to 0xA000:0000 (mode 13h) or future VESA banked modes.
 
 ## CP/M-80 Backend (Logical Fullscreen GUI/GFX)
 - Target: CP/M-80 (8080/Z80) BDOS environments (CP/M, CP/M-Plus, compatibles).
-- UI modes: GUI (`ui_modes = 1`); `has_windows = true` for a single logical fullscreen surface; no mouse/gamepad; coarse/synthetic timer (no high-res).
-- Windowing: tracks logical width/height/mode only; always fullscreen; native handle is the `dsys_window*` (CP/M has no window manager); renderer maps this to terminal/video hardware and owns any framebuffer.
-- Events: keyboard-only via BDOS function 6 with `E=0xFF` (non-blocking); ESC (0x1B) or CTRL+C (0x03) produce quit events; other keys emit key-down; no mouse.
-- Time/Delay: uses `clock()` if present, otherwise a synthetic monotonic counter (adds ~1 ms per call); `sleep_ms` busy-waits on that counter.
-- Filesystem/Paths: 8.3 uppercase filenames with drive/user semantics; logical paths map to the current drive (`A:` defaults) plus prefixes like `A:DOMDATA`, `A:DOMCFG`, `A:CACHE`, and `A:TEMP`; stdio-backed file IO only.
-- Directory iteration: stubbed (iterator allocates but yields no entries); BDOS search-first/search-next can be layered in later.
+- UI modes: GUI (`ui_modes = 1`); `has_windows = true` for a single logical fullscreen surface; no mouse/gamepad; synthetic monotonic timer (no high-res).
+- Windowing: allocates an in-RAM 320x200x8 framebuffer; native handle returns a `cpm80_fb*` (pixels pointer, width/height/pitch/bpp); always fullscreen.
+- Events: keyboard-only via BDOS function 6 with `E=0xFF` (non-blocking); ESC (0x1B) produces quit events; other keys emit key-down; no mouse.
+- Time/Delay: purely logical counter (`time_us`) advanced by `sleep_ms`.
+- Filesystem/Paths: stdio-backed file IO; paths map to `""`/current drive for all `dsys_path_kind` values.
+- Directory iteration: stubbed (iterator returns no entries); BDOS search-first/search-next can be layered in later.
 - Processes: unsupported (`spawn` returns `NULL`, `wait` returns `-1`).
 - Build: enable with `-DDSYS_BACKEND_CPM80=ON` to compile `source/domino/system/plat/cpm80/cpm80_sys.c`; build with a CP/M-80 toolchain (z88dk, Hi-Tech C, Aztec C, etc.).
 - Renderer note: the reported width/height are purely logical; dgfx backends decide how to draw (character grid, software framebuffer, custom hardware).
 
 ## CP/M-86 Backend (Logical Fullscreen GUI/GFX)
 - Target: CP/M-86 1.x/2.x BDOS environments on 8086/80186/80286 hardware (classic Digital Research or compatible BIOS/BDOS).
-- UI modes: GUI (`ui_modes = 1`); `has_windows = true` for a single logical fullscreen surface; no mouse/gamepad; coarse/synthetic timer (no high-res).
-- Windowing: tracks logical width/height/mode only; always fullscreen; native handle is the `dsys_window*`; renderer supplies any real framebuffer/mode switching.
-- Events: keyboard-only via BDOS function 6 with `E=0xFF` (non-blocking poll) or BIOS-compatible INT 16h; ESC (0x1B) or CTRL+C (0x03) yield quit events, other keys emit key-down.
-- Time/Delay: uses `clock()` when available, otherwise a synthetic monotonic counter (+~1 ms per call); `sleep_ms` busy-waits on that counter.
-- Filesystem/Paths: CP/M drive/user semantics with 8.3 uppercase names; logical paths map to `A:` roots such as `A:DOMDATA`, `A:DOMCFG`, `A:CACHE`, and `A:TEMP`; stdio-backed file IO; directory iteration is stubbed (flat filesystem, `is_dir = false`).
+- UI modes: GUI (`ui_modes = 1`); `has_windows = true` for a single logical fullscreen surface; no mouse/gamepad; synthetic monotonic timer (no high-res).
+- Windowing: allocates an in-RAM 320x200x8 framebuffer; native handle is `cpm86_fb*` with pixels pointer and layout; always fullscreen.
+- Events: keyboard-only via `kbhit/getch` when available; ESC (0x1B) yields quit, other keys emit key-down.
+- Time/Delay: purely logical counter advanced by `sleep_ms`.
+- Filesystem/Paths: CP/M drive/user semantics with 8.3 uppercase names; all `dsys_get_path` kinds map to the current drive (`""`).
+- Directory iteration: stubbed (no entries); processes unsupported.
 - Processes: unsupported (`spawn` returns `NULL`, `wait` returns `-1`).
 - Build: enable with `-DDSYS_BACKEND_CPM86=ON` to compile `source/domino/system/plat/cpm86/cpm86_sys.c`; build with a CP/M-86 toolchain (Digital Research C, OpenWatcom-16 CP/M mode, etc.).
 - Renderer note: identical logical semantics to CP/M-80/DOS backends—graphics are renderer-owned; dsys only reports the logical fullscreen size for deterministic behaviour.
@@ -123,14 +124,14 @@ This pass wires up a portable, deterministic stub backend. It exposes the full d
 - Filesystem: stdio-backed file IO, POSIX dirent iteration; processes stubbed (`spawn` returns `NULL`, `wait` returns `-1`).
 - Build: enable with `-DDOMINO_USE_COCOA_BACKEND=ON` (alias `-DDSYS_BACKEND_COCOA=ON`) to compile `source/domino/system/plat/cocoa/cocoa_sys.c/.h` plus `cocoa_sys_objc.m` and link against Cocoa/AppKit/Foundation.
 
-## Carbon Backend (macOS Carbon GUI)
-- API: Carbon Event/Window Manager + CoreServices; classic 32-bit Carbon (`WindowRef` native handle).
-- Target systems: Mac OS X 10.0–10.6/10.7 where Carbon remains available (PPC/Intel).
+## Carbon Backend (Classic/Carbon GUI)
+- API: Carbon Event/Window Manager + CoreServices; 32-bit Carbon (`WindowRef` native handle) for CarbonLib and early macOS.
+- Target systems: Mac OS 8.6–9.2 with CarbonLib and Mac OS X 10.0–10.4+ (PPC/Intel) running Carbon apps.
 - UI modes: GUI (`ui_modes = 1`); `has_windows = true`, mouse supported, high-res timer via `UpTime`/`AbsoluteToNanoseconds`.
-- Windowing: creates Carbon document windows (`CreateNewWindow`); close→quit event; bounds-change→`DSYS_EVENT_WINDOW_RESIZED`; fullscreen/borderless sizes the window to the main display; native handle is the `WindowRef`.
-- Events: Carbon event handlers translate mouse move/button/wheel, raw key down/up/repeat, and window close/resize into `dsys_event` via a small ring buffer; `dsys_poll_event` pumps `ReceiveNextEvent`/`SendEventToEventTarget` non-blocking before draining the queue.
-- Time/Delay: monotonic microseconds from `UpTime` → `AbsoluteToNanoseconds`; `sleep_ms` busy-waits while optionally pumping Carbon events.
+- Windowing: creates Carbon document windows (`CreateNewWindow`); close→quit event; bounds-change→`DSYS_EVENT_WINDOW_RESIZED`; fullscreen/borderless approximated by sizing to the main display; native handle is the `WindowRef`.
+- Events: `ReceiveNextEvent` pumps non-blocking; keyboard (raw down/up/repeat), mouse move/button/wheel, window close/resize, and HICommand/App quit translate directly into a 64-slot ring drained by `dsys_poll_event`.
+- Time/Delay: monotonic microseconds from `UpTime` → `AbsoluteToNanoseconds`; `sleep_ms` uses `Delay` ticks (~60 Hz) while optionally pumping events.
 - Paths: app root from `CFBundleCopyBundleURL` (POSIX UTF-8 path, fallback `getcwd`); user data/config/cache from `FSFindFolder` Application Support/Preferences/CachedData + `/dominium`; temp from the user temporary folder or `/tmp`.
-- Filesystem: stdio-backed file IO; dirent/stat directory iteration with UTF-8 POSIX paths.
+- Filesystem: stdio-backed file IO; dirent iteration with best-effort `is_dir` flag.
 - Processes: unsupported (`spawn` returns `NULL`, `wait` returns `-1`).
 - Build: enable with `-DDOMINO_USE_CARBON_BACKEND=ON` (alias `-DDSYS_BACKEND_CARBON=ON`) to compile `source/domino/system/plat/carbon/carbon_sys.c/.h` and link against the Carbon framework (32-bit Carbon targets).

@@ -7,9 +7,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <sys/time.h>
 #include <sys/wait.h>
 #include <time.h>
 #include <unistd.h>
+#include <wayland-client.h>
 #include <wayland-client-protocol.h>
 #include <xdg-shell-client-protocol.h>
 
@@ -17,7 +19,7 @@
 #define PATH_MAX 4096
 #endif
 
-static dsys_caps g_wayland_caps = { "wayland", 1u, true, true, false, true };
+static dsys_caps g_wayland_caps = { "wayland", 1u, true, true, false, false };
 wayland_global_t g_wayland = { 0 };
 
 static dsys_result wayland_init(void);
@@ -343,9 +345,10 @@ static void wayland_handle_pointer_enter(void* data,
     (void)data;
     (void)pointer;
     (void)serial;
-    (void)surface;
-    (void)sx;
-    (void)sy;
+    if (g_wayland.main_window && g_wayland.main_window->surface == surface) {
+        g_wayland.main_window->last_x = wl_fixed_to_int(sx);
+        g_wayland.main_window->last_y = wl_fixed_to_int(sy);
+    }
 }
 
 static void wayland_handle_pointer_leave(void* data,
@@ -368,12 +371,14 @@ static void wayland_handle_pointer_motion(void* data,
     dsys_event ev;
     int32_t    x;
     int32_t    y;
+    dsys_window* win;
     (void)data;
     (void)pointer;
     (void)time;
 
     x = wl_fixed_to_int(sx);
     y = wl_fixed_to_int(sy);
+    win = g_wayland.main_window;
 
     memset(&ev, 0, sizeof(ev));
     ev.type = DSYS_EVENT_MOUSE_MOVE;
@@ -381,6 +386,12 @@ static void wayland_handle_pointer_motion(void* data,
     ev.payload.mouse_move.y = y;
     ev.payload.mouse_move.dx = 0;
     ev.payload.mouse_move.dy = 0;
+    if (win) {
+        ev.payload.mouse_move.dx = x - win->last_x;
+        ev.payload.mouse_move.dy = y - win->last_y;
+        win->last_x = x;
+        win->last_y = y;
+    }
     wayland_push_event(&ev);
 }
 
@@ -657,13 +668,13 @@ static void wayland_registry_global(void* data,
             wl_seat_add_listener(g_wayland.seat, &g_seat_listener, NULL);
         }
     } else if (strcmp(interface, "xdg_wm_base") == 0) {
-        g_wayland.wm_base = wl_registry_bind(registry, name, &xdg_wm_base_interface, 1u);
+        g_wayland.xdg_wm_base = (struct xdg_wm_base*)wl_registry_bind(registry, name, &xdg_wm_base_interface, 1u);
         g_wayland.use_xdg_shell = 1;
-        if (g_wayland.wm_base) {
-            xdg_wm_base_add_listener((struct xdg_wm_base*)g_wayland.wm_base, &g_wm_base_listener, NULL);
+        if (g_wayland.xdg_wm_base) {
+            xdg_wm_base_add_listener(g_wayland.xdg_wm_base, &g_wm_base_listener, NULL);
         }
-    } else if (strcmp(interface, "wl_shell") == 0 && g_wayland.wm_base == NULL) {
-        g_wayland.wm_base = wl_registry_bind(registry, name, &wl_shell_interface, 1u);
+    } else if (strcmp(interface, "wl_shell") == 0 && g_wayland.xdg_wm_base == NULL) {
+        g_wayland.wl_shell = (struct wl_shell*)wl_registry_bind(registry, name, &wl_shell_interface, 1u);
         g_wayland.use_xdg_shell = 0;
     }
 }
@@ -682,9 +693,8 @@ static const struct wl_registry_listener g_registry_listener = {
 
 static dsys_result wayland_init(void)
 {
-    struct timespec ts;
-
     memset(&g_wayland, 0, sizeof(g_wayland));
+    g_wayland_caps.has_high_res_timer = false;
 
     g_wayland.display = wl_display_connect(NULL);
     if (!g_wayland.display) {
@@ -701,16 +711,19 @@ static dsys_result wayland_init(void)
     wl_display_roundtrip(g_wayland.display);
     wl_display_roundtrip(g_wayland.display);
 
-    if (!g_wayland.compositor || !g_wayland.wm_base) {
+    if (!g_wayland.compositor || (!g_wayland.xdg_wm_base && !g_wayland.wl_shell)) {
         wayland_shutdown();
         return DSYS_ERR;
     }
 
-    if (clock_gettime(CLOCK_MONOTONIC, &ts) == 0) {
-        g_wayland_caps.has_high_res_timer = true;
-    } else {
-        g_wayland_caps.has_high_res_timer = false;
+#if defined(CLOCK_MONOTONIC)
+    {
+        struct timespec ts;
+        if (clock_gettime(CLOCK_MONOTONIC, &ts) == 0) {
+            g_wayland_caps.has_high_res_timer = true;
+        }
     }
+#endif
 
     g_wayland.initialized = 1;
     return DSYS_OK;
@@ -736,15 +749,14 @@ static void wayland_shutdown(void)
     }
 
     if (g_wayland.use_xdg_shell) {
-        if (g_wayland.wm_base) {
-            xdg_wm_base_destroy((struct xdg_wm_base*)g_wayland.wm_base);
+        if (g_wayland.xdg_wm_base) {
+            xdg_wm_base_destroy(g_wayland.xdg_wm_base);
         }
-    } else {
-        if (g_wayland.wm_base) {
-            wl_shell_destroy((struct wl_shell*)g_wayland.wm_base);
-        }
+    } else if (g_wayland.wl_shell) {
+        wl_shell_destroy(g_wayland.wl_shell);
     }
-    g_wayland.wm_base = NULL;
+    g_wayland.xdg_wm_base = NULL;
+    g_wayland.wl_shell = NULL;
 
     if (g_wayland.compositor) {
         wl_compositor_destroy(g_wayland.compositor);
@@ -771,12 +783,20 @@ static dsys_caps wayland_get_caps(void)
 
 static uint64_t wayland_time_now_us(void)
 {
-    struct timespec ts;
-
-    if (clock_gettime(CLOCK_MONOTONIC, &ts) == 0) {
-        return ((uint64_t)ts.tv_sec * 1000000u) + ((uint64_t)ts.tv_nsec / 1000u);
+#if defined(CLOCK_MONOTONIC)
+    {
+        struct timespec ts;
+        if (clock_gettime(CLOCK_MONOTONIC, &ts) == 0) {
+            return ((uint64_t)ts.tv_sec * 1000000u) + ((uint64_t)ts.tv_nsec / 1000u);
+        }
     }
-
+#endif
+    {
+        struct timeval tv;
+        if (gettimeofday(&tv, (struct timezone*)0) == 0) {
+            return ((uint64_t)tv.tv_sec * 1000000u) + (uint64_t)tv.tv_usec;
+        }
+    }
     return 0u;
 }
 
@@ -796,8 +816,12 @@ static dsys_window* wayland_window_create(const dsys_window_desc* desc)
     dsys_window*       win;
     struct wl_surface* surface;
 
-    if (!g_wayland.display || !g_wayland.compositor || !g_wayland.wm_base) {
+    if (!g_wayland.display || !g_wayland.compositor || (!g_wayland.xdg_wm_base && !g_wayland.wl_shell)) {
         return NULL;
+    }
+
+    if (g_wayland.main_window) {
+        return g_wayland.main_window;
     }
 
     if (desc) {
@@ -824,12 +848,14 @@ static dsys_window* wayland_window_create(const dsys_window_desc* desc)
     win->surface = surface;
     win->width = local_desc.width > 0 ? local_desc.width : 800;
     win->height = local_desc.height > 0 ? local_desc.height : 600;
+    win->last_x = 0;
+    win->last_y = 0;
     win->mode = local_desc.mode;
 
     if (g_wayland.use_xdg_shell) {
         struct xdg_surface*  xsurf;
         struct xdg_toplevel* top;
-        xsurf = xdg_wm_base_get_xdg_surface((struct xdg_wm_base*)g_wayland.wm_base, surface);
+        xsurf = xdg_wm_base_get_xdg_surface(g_wayland.xdg_wm_base, surface);
         if (!xsurf) {
             wl_surface_destroy(surface);
             free(win);
@@ -845,11 +871,11 @@ static dsys_window* wayland_window_create(const dsys_window_desc* desc)
         }
         xdg_toplevel_add_listener(top, &g_xdg_toplevel_listener, win);
         xdg_toplevel_set_title(top, "Domino");
-        win->toplevel = top;
-        win->shell_surface = xsurf;
+        win->xdg_toplevel = top;
+        win->xdg_surface = xsurf;
     } else {
         struct wl_shell_surface* shell_surface;
-        shell_surface = wl_shell_get_shell_surface((struct wl_shell*)g_wayland.wm_base, surface);
+        shell_surface = wl_shell_get_shell_surface(g_wayland.wl_shell, surface);
         if (!shell_surface) {
             wl_surface_destroy(surface);
             free(win);
@@ -857,8 +883,9 @@ static dsys_window* wayland_window_create(const dsys_window_desc* desc)
         }
         wl_shell_surface_add_listener(shell_surface, &g_shell_surface_listener, win);
         wl_shell_surface_set_toplevel(shell_surface);
-        win->toplevel = shell_surface;
         win->shell_surface = shell_surface;
+        win->xdg_surface = NULL;
+        win->xdg_toplevel = NULL;
     }
 
     wl_surface_commit(surface);
@@ -875,15 +902,15 @@ static void wayland_window_destroy(dsys_window* win)
     }
 
     if (g_wayland.use_xdg_shell) {
-        if (win->toplevel) {
-            xdg_toplevel_destroy((struct xdg_toplevel*)win->toplevel);
+        if (win->xdg_toplevel) {
+            xdg_toplevel_destroy(win->xdg_toplevel);
         }
-        if (win->shell_surface) {
-            xdg_surface_destroy((struct xdg_surface*)win->shell_surface);
+        if (win->xdg_surface) {
+            xdg_surface_destroy(win->xdg_surface);
         }
     } else {
-        if (win->toplevel) {
-            wl_shell_surface_destroy((struct wl_shell_surface*)win->toplevel);
+        if (win->shell_surface) {
+            wl_shell_surface_destroy(win->shell_surface);
         }
     }
 
@@ -904,11 +931,11 @@ static void wayland_window_set_mode(dsys_window* win, dsys_window_mode mode)
         return;
     }
 
-    if (g_wayland.use_xdg_shell && win->toplevel) {
+    if (g_wayland.use_xdg_shell && win->xdg_toplevel) {
         if (mode == DWIN_MODE_FULLSCREEN || mode == DWIN_MODE_BORDERLESS) {
-            xdg_toplevel_set_fullscreen((struct xdg_toplevel*)win->toplevel, NULL);
+            xdg_toplevel_set_fullscreen(win->xdg_toplevel, NULL);
         } else {
-            xdg_toplevel_unset_fullscreen((struct xdg_toplevel*)win->toplevel);
+            xdg_toplevel_unset_fullscreen(win->xdg_toplevel);
         }
     }
     win->mode = mode;

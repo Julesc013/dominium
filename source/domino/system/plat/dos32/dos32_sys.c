@@ -4,16 +4,394 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <conio.h>
-#if defined(_WIN32)
-#include <direct.h>
-#else
-#include <unistd.h>
+#include <dirent.h>
+
+#if defined(__DJGPP__)
+#include <dpmi.h>
+#include <go32.h>
+#include <sys/movedata.h>
+#include <sys/nearptr.h>
+#include <sys/segments.h>
+#include <sys/time.h>
+#include <pc.h>
 #endif
-#include <sys/stat.h>
 
-#define DOS32_EVENT_QUEUE_CAP 16
+#if defined(_WIN32) || defined(__DJGPP__)
+#include <conio.h>
+#endif
 
+#define DOS32_EVENT_QUEUE_CAP 32
+#define DOS32_FALLBACK_W 640
+#define DOS32_FALLBACK_H 480
+#define DOS32_FALLBACK_BPP 8
+
+dos32_global_t g_dos32;
+
+/*----------------------------------------------------------------------
+ * Helpers
+ *----------------------------------------------------------------------*/
+#if defined(__DJGPP__)
+#pragma pack(push, 1)
+typedef struct vbe_info_block_t {
+    char     signature[4];
+    uint16_t version;
+    uint32_t oem_string_ptr;
+    uint32_t capabilities;
+    uint32_t video_mode_ptr;
+    uint16_t total_memory;
+    uint16_t oem_software_rev;
+    uint32_t oem_vendor_name_ptr;
+    uint32_t oem_product_name_ptr;
+    uint32_t oem_product_rev_ptr;
+    uint8_t  reserved[222];
+    uint8_t  oem_data[256];
+} vbe_info_block_t;
+
+typedef struct vbe_mode_info_t {
+    uint16_t attributes;
+    uint8_t  winA;
+    uint8_t  winB;
+    uint16_t granularity;
+    uint16_t winsize;
+    uint16_t segmentA;
+    uint16_t segmentB;
+    uint32_t winFuncPtr;
+    uint16_t pitch;
+    uint16_t xres;
+    uint16_t yres;
+    uint8_t  wChar;
+    uint8_t  yChar;
+    uint8_t  planes;
+    uint8_t  bpp;
+    uint8_t  banks;
+    uint8_t  memoryModel;
+    uint8_t  bankSize;
+    uint8_t  imagePages;
+    uint8_t  reserved0;
+
+    uint8_t  redMaskSize;
+    uint8_t  redMaskPos;
+    uint8_t  greenMaskSize;
+    uint8_t  greenMaskPos;
+    uint8_t  blueMaskSize;
+    uint8_t  blueMaskPos;
+    uint8_t  rsvMaskSize;
+    uint8_t  rsvMaskPos;
+    uint8_t  directColorModeInfo;
+
+    uint32_t physbase;
+    uint32_t offscreen;
+    uint16_t offscreen_size;
+
+    uint16_t linBytesPerScanLine;
+    uint8_t  bankedNumImages;
+    uint8_t  linNumImages;
+    uint8_t  linRedMaskSize;
+    uint8_t  linRedMaskPos;
+    uint8_t  linGreenMaskSize;
+    uint8_t  linGreenMaskPos;
+    uint8_t  linBlueMaskSize;
+    uint8_t  linBlueMaskPos;
+    uint8_t  linRsvMaskSize;
+    uint8_t  linRsvMaskPos;
+    uint32_t maxPixelClock;
+    uint8_t  reserved1[190];
+} vbe_mode_info_t;
+#pragma pack(pop)
+#endif /* __DJGPP__ */
+
+static const dsys_caps g_dos32_caps = { "dos32", 1u, true, true, false, false };
+
+static void dos32_reset_state(void)
+{
+    memset(&g_dos32, 0, sizeof(g_dos32));
+}
+
+static void dos32_push_event(const dsys_event* ev)
+{
+    int next;
+
+    if (!ev) {
+        return;
+    }
+    next = (g_dos32.ev_tail + 1) % DOS32_EVENT_QUEUE_CAP;
+    if (next == g_dos32.ev_head) {
+        return;
+    }
+    g_dos32.event_queue[g_dos32.ev_tail] = *ev;
+    g_dos32.ev_tail = next;
+}
+
+static bool dos32_pop_event(dsys_event* ev)
+{
+    if (g_dos32.ev_head == g_dos32.ev_tail) {
+        return false;
+    }
+    if (ev) {
+        *ev = g_dos32.event_queue[g_dos32.ev_head];
+    }
+    g_dos32.ev_head = (g_dos32.ev_head + 1) % DOS32_EVENT_QUEUE_CAP;
+    return true;
+}
+
+static uint32_t dos32_calc_pitch(uint32_t width, uint32_t bpp)
+{
+    uint32_t pitch;
+    pitch = width * (bpp / 8u);
+    return pitch;
+}
+
+static void dos32_set_defaults(void)
+{
+    g_dos32.fb_width = DOS32_FALLBACK_W;
+    g_dos32.fb_height = DOS32_FALLBACK_H;
+    g_dos32.fb_bpp = DOS32_FALLBACK_BPP;
+    g_dos32.pitch = dos32_calc_pitch((uint32_t)g_dos32.fb_width, (uint32_t)g_dos32.fb_bpp);
+    g_dos32.lfb_size = g_dos32.pitch * (uint32_t)g_dos32.fb_height;
+}
+
+#if defined(__DJGPP__)
+static int dos32_set_text_mode(void)
+{
+    __dpmi_regs regs;
+    memset(&regs, 0, sizeof(regs));
+    regs.h.ah = 0x00;
+    regs.h.al = 0x03;
+    return __dpmi_int(0x10, &regs);
+}
+
+static int dos32_try_set_vesa_mode(uint16_t mode, vbe_mode_info_t* out_info)
+{
+    __dpmi_regs regs;
+    unsigned int   rm_seg;
+    int           sel;
+    int           ok;
+
+    if (!out_info) {
+        return 0;
+    }
+
+    rm_seg = 0;
+    sel = __dpmi_allocate_dos_memory((sizeof(vbe_mode_info_t) + 15) / 16, (int*)&rm_seg);
+    if (sel < 0) {
+        return 0;
+    }
+
+    memset(&regs, 0, sizeof(regs));
+    regs.x.ax = 0x4F01;
+    regs.x.cx = mode;
+    regs.x.es = rm_seg;
+    regs.x.di = 0;
+    ok = (__dpmi_int(0x10, &regs) == 0 && regs.h.ah == 0x00);
+    if (ok) {
+        dosmemget(rm_seg << 4, sizeof(vbe_mode_info_t), out_info);
+    }
+
+    __dpmi_free_dos_memory(sel);
+    if (!ok) {
+        return 0;
+    }
+
+    memset(&regs, 0, sizeof(regs));
+    regs.x.ax = 0x4F02;
+    regs.x.bx = mode | 0x4000; /* request linear framebuffer */
+    if (__dpmi_int(0x10, &regs) != 0 || regs.h.ah != 0x00) {
+        return 0;
+    }
+    return 1;
+}
+
+static int dos32_map_lfb(uint32_t phys, uint32_t size, void** out)
+{
+    __dpmi_meminfo mi;
+
+    if (!out) {
+        return 0;
+    }
+
+    mi.address = phys;
+    mi.size = size;
+    if (__dpmi_physical_address_mapping(&mi) != 0) {
+        return 0;
+    }
+    *out = (void*)mi.address;
+    return 1;
+}
+#endif /* __DJGPP__ */
+
+static void dos32_setup_video(void)
+{
+#if defined(__DJGPP__)
+    vbe_mode_info_t info;
+    if (dos32_try_set_vesa_mode(0x101u, &info)) {
+        g_dos32.fb_width = (int32_t)info.xres;
+        g_dos32.fb_height = (int32_t)info.yres;
+        g_dos32.fb_bpp = (int32_t)info.bpp;
+        g_dos32.pitch = info.linBytesPerScanLine ? (uint32_t)info.linBytesPerScanLine
+                                                 : dos32_calc_pitch((uint32_t)info.xres, (uint32_t)info.bpp);
+        g_dos32.lfb_size = g_dos32.pitch * (uint32_t)g_dos32.fb_height;
+        g_dos32.vesa_mode = 0x101u;
+        if (!dos32_map_lfb(info.physbase, g_dos32.lfb_size, &g_dos32.lfb)) {
+            dos32_set_defaults();
+        }
+    } else {
+        /* fallback: mode 13h */
+        __dpmi_regs regs;
+        memset(&regs, 0, sizeof(regs));
+        regs.h.ah = 0x00;
+        regs.h.al = 0x13;
+        __dpmi_int(0x10, &regs);
+        g_dos32.fb_width = 320;
+        g_dos32.fb_height = 200;
+        g_dos32.fb_bpp = 8;
+        g_dos32.pitch = dos32_calc_pitch(320u, 8u);
+        g_dos32.lfb_size = g_dos32.pitch * (uint32_t)g_dos32.fb_height;
+        if (!dos32_map_lfb(0xA0000UL, g_dos32.lfb_size, &g_dos32.lfb)) {
+            dos32_set_defaults();
+        }
+    }
+#else
+    /* hosted fallback: allocate a dummy linear framebuffer */
+    dos32_set_defaults();
+    g_dos32.lfb = malloc(g_dos32.lfb_size);
+    if (g_dos32.lfb) {
+        memset(g_dos32.lfb, 0, g_dos32.lfb_size);
+    }
+#endif
+}
+
+static void dos32_teardown_video(void)
+{
+#if defined(__DJGPP__)
+    dos32_set_text_mode();
+#else
+    if (g_dos32.lfb) {
+        free(g_dos32.lfb);
+    }
+#endif
+    g_dos32.lfb = NULL;
+}
+
+static int dos32_kbhit_nonblock(void)
+{
+#if defined(__DJGPP__) || defined(_WIN32)
+    return kbhit();
+#else
+    return 0;
+#endif
+}
+
+static int dos32_getch_nonblock(void)
+{
+#if defined(__DJGPP__) || defined(_WIN32)
+    return getch();
+#else
+    return -1;
+#endif
+}
+
+static void dos32_poll_keyboard(void)
+{
+    while (1) {
+        int ch;
+        dsys_event ev;
+
+        if (!dos32_kbhit_nonblock()) {
+            break;
+        }
+        ch = dos32_getch_nonblock();
+        if (ch < 0) {
+            break;
+        }
+        memset(&ev, 0, sizeof(ev));
+        ev.type = DSYS_EVENT_KEY_DOWN;
+        ev.payload.key.key = (int32_t)ch;
+        ev.payload.key.repeat = false;
+        dos32_push_event(&ev);
+
+        memset(&ev, 0, sizeof(ev));
+        if (ch == 27) {
+            ev.type = DSYS_EVENT_QUIT;
+        } else {
+            ev.type = DSYS_EVENT_KEY_UP;
+            ev.payload.key.key = (int32_t)ch;
+            ev.payload.key.repeat = false;
+        }
+        dos32_push_event(&ev);
+    }
+}
+
+static void dos32_poll_mouse(void)
+{
+#if defined(__DJGPP__)
+    __dpmi_regs regs;
+    int         buttons;
+    int         x;
+    int         y;
+    int         changed_buttons;
+
+    memset(&regs, 0, sizeof(regs));
+    regs.x.ax = 0x0003;
+    if (__dpmi_int(0x33, &regs) != 0) {
+        return;
+    }
+    buttons = (int)regs.x.bx;
+    x = (int)regs.x.cx;
+    y = (int)regs.x.dx;
+
+    if (x != g_dos32.mouse_x || y != g_dos32.mouse_y) {
+        dsys_event ev;
+        memset(&ev, 0, sizeof(ev));
+        ev.type = DSYS_EVENT_MOUSE_MOVE;
+        ev.payload.mouse_move.x = x;
+        ev.payload.mouse_move.y = y;
+        ev.payload.mouse_move.dx = x - g_dos32.mouse_x;
+        ev.payload.mouse_move.dy = y - g_dos32.mouse_y;
+        dos32_push_event(&ev);
+        g_dos32.mouse_x = x;
+        g_dos32.mouse_y = y;
+    }
+
+    changed_buttons = buttons ^ g_dos32.mouse_buttons;
+    if (changed_buttons != 0) {
+        int i;
+        for (i = 0; i < 3; ++i) {
+            int mask;
+            mask = 1 << i;
+            if (changed_buttons & mask) {
+                dsys_event ev;
+                memset(&ev, 0, sizeof(ev));
+                ev.type = DSYS_EVENT_MOUSE_BUTTON;
+                ev.payload.mouse_button.button = i + 1;
+                ev.payload.mouse_button.pressed = (buttons & mask) ? true : false;
+                ev.payload.mouse_button.clicks = 1;
+                dos32_push_event(&ev);
+            }
+        }
+        g_dos32.mouse_buttons = buttons;
+    }
+#else
+    /* mouse unsupported on hosted fallback */
+#endif
+}
+
+static uint64_t dos32_time_now_us_internal(void)
+{
+#if defined(__DJGPP__)
+    return (uclock() * 1000000ULL) / (uint64_t)UCLOCKS_PER_SEC;
+#else
+    clock_t c;
+    if (CLOCKS_PER_SEC == 0) {
+        return 0u;
+    }
+    c = clock();
+    return ((uint64_t)c * 1000000ULL) / (uint64_t)CLOCKS_PER_SEC;
+#endif
+}
+
+/*----------------------------------------------------------------------
+ * Backend vtable
+ *----------------------------------------------------------------------*/
 static dsys_result dos32_init(void);
 static void        dos32_shutdown(void);
 static dsys_caps   dos32_get_caps(void);
@@ -45,173 +423,6 @@ static void           dos32_dir_close(dsys_dir_iter* it);
 static dsys_process* dos32_process_spawn(const dsys_process_desc* desc);
 static int           dos32_process_wait(dsys_process* p);
 static void          dos32_process_destroy(dsys_process* p);
-
-typedef struct dos32_event_queue_t {
-    dsys_event buffer[DOS32_EVENT_QUEUE_CAP];
-    int        head;
-    int        tail;
-    int        count;
-} dos32_event_queue_t;
-
-static const dsys_caps g_dos32_caps = { "dos32", 1u, true, false, false, false };
-static dos32_global_t  g_dos32;
-static dsys_window*    g_dos32_window = NULL;
-static dos32_event_queue_t g_dos32_events;
-
-static void dos32_reset_state(void)
-{
-    memset(&g_dos32, 0, sizeof(g_dos32));
-    memset(&g_dos32_events, 0, sizeof(g_dos32_events));
-    g_dos32_window = NULL;
-}
-
-static void dos32_queue_event(const dsys_event* ev)
-{
-    if (!ev) {
-        return;
-    }
-    if (g_dos32_events.count >= DOS32_EVENT_QUEUE_CAP) {
-        return;
-    }
-    g_dos32_events.buffer[g_dos32_events.tail] = *ev;
-    g_dos32_events.tail = (g_dos32_events.tail + 1) % DOS32_EVENT_QUEUE_CAP;
-    g_dos32_events.count += 1;
-}
-
-static bool dos32_pop_event(dsys_event* ev)
-{
-    if (g_dos32_events.count == 0) {
-        return false;
-    }
-    if (ev) {
-        *ev = g_dos32_events.buffer[g_dos32_events.head];
-    }
-    g_dos32_events.head = (g_dos32_events.head + 1) % DOS32_EVENT_QUEUE_CAP;
-    g_dos32_events.count -= 1;
-    return true;
-}
-
-static bool dos32_copy_string(const char* src, char* buf, size_t buf_size)
-{
-    size_t len;
-
-    if (!src || !buf || buf_size == 0u) {
-        return false;
-    }
-    len = strlen(src);
-    if (len >= buf_size) {
-        len = buf_size - 1u;
-    }
-    memcpy(buf, src, len);
-    buf[len] = '\0';
-    return true;
-}
-
-static bool dos32_get_cwd(char* buf, size_t buf_size)
-{
-    char cwd[260];
-
-    if (!buf || buf_size == 0u) {
-        return false;
-    }
-
-#if defined(_WIN32)
-    if (_getcwd(cwd, sizeof(cwd)) != NULL) {
-        return dos32_copy_string(cwd, buf, buf_size);
-    }
-#else
-    if (getcwd(cwd, sizeof(cwd)) != NULL) {
-        return dos32_copy_string(cwd, buf, buf_size);
-    }
-#endif
-    buf[0] = '\0';
-    return false;
-}
-
-static void dos32_join_path(char* dst, size_t cap, const char* base, const char* leaf)
-{
-    size_t i;
-    size_t j;
-
-    if (!dst || cap == 0u) {
-        return;
-    }
-
-    dst[0] = '\0';
-    i = 0u;
-    if (base) {
-        while (base[i] != '\0' && i + 1u < cap) {
-            dst[i] = base[i];
-            ++i;
-        }
-        if (i > 0u && dst[i - 1u] != '\\' && dst[i - 1u] != '/' && i + 1u < cap) {
-            dst[i] = '\\';
-            ++i;
-        }
-    }
-
-    j = 0u;
-    if (leaf) {
-        while (leaf[j] != '\0' && i + 1u < cap) {
-            dst[i] = leaf[j];
-            ++i;
-            ++j;
-        }
-    }
-
-    dst[i] = '\0';
-}
-
-static int dos32_read_key(void)
-{
-    int ch;
-
-    if (!kbhit()) {
-        return -1;
-    }
-
-    ch = getch();
-    if (ch == 0 || ch == 0xE0) {
-        int ext;
-        ext = getch();
-        ch = ((ch & 0xFF) << 8) | (ext & 0xFF);
-    }
-    return ch;
-}
-
-static void dos32_push_key_event(int keycode)
-{
-    dsys_event ev;
-
-    memset(&ev, 0, sizeof(ev));
-    ev.type = DSYS_EVENT_KEY_DOWN;
-    ev.payload.key.key = keycode;
-    ev.payload.key.repeat = false;
-    dos32_queue_event(&ev);
-
-    memset(&ev, 0, sizeof(ev));
-    if (keycode == 27) {
-        ev.type = DSYS_EVENT_QUIT;
-    } else {
-        ev.type = DSYS_EVENT_KEY_UP;
-        ev.payload.key.key = keycode;
-        ev.payload.key.repeat = false;
-    }
-    dos32_queue_event(&ev);
-}
-
-static void dos32_pump_input(void)
-{
-    int keycode;
-
-    while (g_dos32_events.count < DOS32_EVENT_QUEUE_CAP) {
-        keycode = dos32_read_key();
-        if (keycode < 0) {
-            break;
-        }
-        dos32_push_key_event(keycode);
-    }
-}
 
 static const dsys_backend_vtable g_dos32_vtable = {
     dos32_init,
@@ -248,7 +459,10 @@ static dsys_result dos32_init(void)
     }
 
     dos32_reset_state();
-    g_dos32.fullscreen = 1;
+    dos32_set_defaults();
+    dos32_setup_video();
+    g_dos32.ev_head = 0;
+    g_dos32.ev_tail = 0;
     g_dos32.initialized = 1;
     return DSYS_OK;
 }
@@ -258,10 +472,12 @@ static void dos32_shutdown(void)
     if (!g_dos32.initialized) {
         return;
     }
-    if (g_dos32_window) {
-        free(g_dos32_window);
-        g_dos32_window = NULL;
+    if (g_dos32.main_window) {
+        free(g_dos32.main_window);
+        g_dos32.main_window = NULL;
     }
+    dos32_teardown_video();
+    g_dos32.main_window = NULL;
     dos32_reset_state();
 }
 
@@ -272,53 +488,27 @@ static dsys_caps dos32_get_caps(void)
 
 static uint64_t dos32_time_now_us(void)
 {
-    clock_t c;
-
-    c = clock();
-    if (c < 0) {
-        return 0u;
-    }
-    if (CLOCKS_PER_SEC == 0) {
-        return 0u;
-    }
-    return ((uint64_t)c * 1000000u) / (uint64_t)CLOCKS_PER_SEC;
+    return dos32_time_now_us_internal();
 }
 
 static void dos32_sleep_ms(uint32_t ms)
 {
-    clock_t start;
-    clock_t target;
+    uint64_t start;
+    uint64_t target;
 
-    if (ms == 0u || CLOCKS_PER_SEC == 0) {
-        return;
-    }
-
-    start = clock();
-    if (start == (clock_t)-1) {
-        return;
-    }
-    target = start + (clock_t)((ms * CLOCKS_PER_SEC) / 1000u);
-    while (clock() < target) {
+    start = dos32_time_now_us_internal();
+    target = start + ((uint64_t)ms * 1000ULL);
+    while (dos32_time_now_us_internal() < target) {
+        /* busy wait to remain single-threaded/deterministic */
     }
 }
 
 static dsys_window* dos32_window_create(const dsys_window_desc* desc)
 {
-    dsys_window_desc local_desc;
-    dsys_window*     win;
+    dsys_window* win;
 
-    if (g_dos32_window) {
-        return NULL;
-    }
-
-    if (desc) {
-        local_desc = *desc;
-    } else {
-        local_desc.x = 0;
-        local_desc.y = 0;
-        local_desc.width = 0;
-        local_desc.height = 0;
-        local_desc.mode = DWIN_MODE_FULLSCREEN;
+    if (g_dos32.main_window) {
+        return g_dos32.main_window;
     }
 
     win = (dsys_window*)malloc(sizeof(dsys_window));
@@ -327,15 +517,17 @@ static dsys_window* dos32_window_create(const dsys_window_desc* desc)
     }
     memset(win, 0, sizeof(*win));
 
-    win->width = local_desc.width;
-    win->height = local_desc.height;
+    win->framebuffer = g_dos32.lfb;
+    win->width = g_dos32.fb_width;
+    win->height = g_dos32.fb_height;
+    win->pitch = (int32_t)g_dos32.pitch;
+    win->bpp = g_dos32.fb_bpp;
     win->mode = DWIN_MODE_FULLSCREEN;
-    win->fb_ptr = NULL;
+    if (desc && desc->mode == DWIN_MODE_WINDOWED) {
+        win->mode = desc->mode;
+    }
 
-    g_dos32.width = local_desc.width;
-    g_dos32.height = local_desc.height;
-    g_dos32.fullscreen = 1;
-    g_dos32_window = win;
+    g_dos32.main_window = win;
     return win;
 }
 
@@ -344,8 +536,8 @@ static void dos32_window_destroy(dsys_window* win)
     if (!win) {
         return;
     }
-    if (win == g_dos32_window) {
-        g_dos32_window = NULL;
+    if (win == g_dos32.main_window) {
+        g_dos32.main_window = NULL;
     }
     free(win);
 }
@@ -356,18 +548,13 @@ static void dos32_window_set_mode(dsys_window* win, dsys_window_mode mode)
         return;
     }
     win->mode = mode;
-    g_dos32.fullscreen = 1;
 }
 
 static void dos32_window_set_size(dsys_window* win, int32_t w, int32_t h)
 {
-    if (!win) {
-        return;
-    }
-    win->width = w;
-    win->height = h;
-    g_dos32.width = w;
-    g_dos32.height = h;
+    (void)win;
+    (void)w;
+    (void)h;
 }
 
 static void dos32_window_get_size(dsys_window* win, int32_t* w, int32_t* h)
@@ -385,7 +572,10 @@ static void dos32_window_get_size(dsys_window* win, int32_t* w, int32_t* h)
 
 static void* dos32_window_get_native_handle(dsys_window* win)
 {
-    return (void*)win;
+    if (!win) {
+        return NULL;
+    }
+    return (void*)win->framebuffer;
 }
 
 static bool dos32_poll_event(dsys_event* ev)
@@ -394,67 +584,36 @@ static bool dos32_poll_event(dsys_event* ev)
         memset(ev, 0, sizeof(*ev));
     }
 
+    dos32_poll_keyboard();
+    dos32_poll_mouse();
+
     if (dos32_pop_event(ev)) {
         return true;
     }
-
-    dos32_pump_input();
-    return dos32_pop_event(ev);
+    return false;
 }
 
 static bool dos32_get_path(dsys_path_kind kind, char* buf, size_t buf_size)
 {
-    char base[260];
-    char joined[260];
+    const char* p;
 
     if (!buf || buf_size == 0u) {
         return false;
     }
 
-    base[0] = '\0';
-    joined[0] = '\0';
-
+    p = ".";
     switch (kind) {
-    case DSYS_PATH_APP_ROOT:
-        if (dos32_get_cwd(buf, buf_size)) {
-            return true;
-        }
-        break;
-
-    case DSYS_PATH_USER_DATA:
-        if (dos32_get_cwd(base, sizeof(base))) {
-            dos32_join_path(joined, sizeof(joined), base, "DATA");
-            return dos32_copy_string(joined, buf, buf_size);
-        }
-        break;
-
-    case DSYS_PATH_USER_CONFIG:
-        if (dos32_get_cwd(base, sizeof(base))) {
-            dos32_join_path(joined, sizeof(joined), base, "CONFIG");
-            return dos32_copy_string(joined, buf, buf_size);
-        }
-        break;
-
-    case DSYS_PATH_USER_CACHE:
-        if (dos32_get_cwd(base, sizeof(base))) {
-            dos32_join_path(joined, sizeof(joined), base, "CACHE");
-            return dos32_copy_string(joined, buf, buf_size);
-        }
-        break;
-
-    case DSYS_PATH_TEMP:
-        if (dos32_get_cwd(base, sizeof(base))) {
-            dos32_join_path(joined, sizeof(joined), base, "TEMP");
-            return dos32_copy_string(joined, buf, buf_size);
-        }
-        break;
-
-    default:
-        break;
+    case DSYS_PATH_APP_ROOT:    p = "."; break;
+    case DSYS_PATH_USER_DATA:   p = "."; break;
+    case DSYS_PATH_USER_CONFIG: p = "."; break;
+    case DSYS_PATH_USER_CACHE:  p = "."; break;
+    case DSYS_PATH_TEMP:        p = "."; break;
+    default: break;
     }
 
-    buf[0] = '\0';
-    return false;
+    strncpy(buf, p, buf_size);
+    buf[buf_size - 1u] = '\0';
+    return true;
 }
 
 static void* dos32_file_open(const char* path, const char* mode)
@@ -515,73 +674,45 @@ static int dos32_file_close(void* fh)
 static dsys_dir_iter* dos32_dir_open(const char* path)
 {
     dsys_dir_iter* it;
-    DIR*           dir;
-    size_t         len;
 
     if (!path) {
         return NULL;
     }
 
-    dir = opendir(path);
-    if (!dir) {
-        return NULL;
-    }
-
     it = (dsys_dir_iter*)malloc(sizeof(dsys_dir_iter));
     if (!it) {
-        closedir(dir);
         return NULL;
     }
-
-    it->dir = dir;
-    len = strlen(path);
-    if (len >= sizeof(it->base)) {
-        len = sizeof(it->base) - 1u;
+    memset(it, 0, sizeof(*it));
+    it->dir = opendir(path);
+    if (!it->dir) {
+        free(it);
+        return NULL;
     }
-    memcpy(it->base, path, len);
-    it->base[len] = '\0';
     return it;
 }
 
 static bool dos32_dir_next(dsys_dir_iter* it, dsys_dir_entry* out)
 {
     struct dirent* ent;
-    struct stat    st;
-    char           full_path[260];
-    size_t         base_len;
-    size_t         name_len;
 
-    if (!it || !out) {
+    if (!it || !out || !it->dir) {
         return false;
     }
 
-    while (1) {
+    for (;;) {
         ent = readdir(it->dir);
         if (!ent) {
             return false;
         }
-        if (strcmp(ent->d_name, ".") == 0 || strcmp(ent->d_name, "..") == 0) {
+        if (ent->d_name[0] == '.' &&
+            (ent->d_name[1] == '\0' ||
+             (ent->d_name[1] == '.' && ent->d_name[2] == '\0'))) {
             continue;
         }
-
         strncpy(out->name, ent->d_name, sizeof(out->name) - 1u);
         out->name[sizeof(out->name) - 1u] = '\0';
-
         out->is_dir = false;
-        base_len = strlen(it->base);
-        name_len = strlen(out->name);
-        if (base_len + name_len + 2u < sizeof(full_path)) {
-            memcpy(full_path, it->base, base_len);
-            if (base_len > 0u && full_path[base_len - 1u] != '\\' && full_path[base_len - 1u] != '/') {
-                full_path[base_len] = '/';
-                base_len += 1u;
-            }
-            memcpy(full_path + base_len, out->name, name_len);
-            full_path[base_len + name_len] = '\0';
-            if (stat(full_path, &st) == 0 && S_ISDIR(st.st_mode)) {
-                out->is_dir = true;
-            }
-        }
         return true;
     }
 }

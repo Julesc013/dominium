@@ -9,28 +9,50 @@
 
 #include <dirent.h>
 
+/* DOS32 fullscreen window representation */
 struct dsys_window_t {
+    void*            framebuffer; /* linear framebuffer pointer */
     int32_t          width;
     int32_t          height;
-    dsys_window_mode mode;
-    void*            fb_ptr;
+    int32_t          pitch;       /* bytes per scanline */
+    int32_t          bpp;         /* bits per pixel */
+    dsys_window_mode mode;        /* fullscreen only */
 };
 
-typedef struct dos32_global_t {
-    int     initialized;
-    int32_t width;
-    int32_t height;
-    int     fullscreen;
-} dos32_global_t;
-
-struct dsys_dir_iter_t {
-    DIR*  dir;
-    char  base[260];
-};
-
+/* processes are unsupported on DOS */
 struct dsys_process_t {
     int dummy;
 };
+
+/* directory iterator backed by DIR* (DJGPP provides dirent) */
+struct dsys_dir_iter_t {
+    DIR* dir;
+};
+
+typedef struct dos32_global_t {
+    int           initialized;
+    struct dsys_window_t* main_window;
+
+    /* VESA / framebuffer information */
+    uint16_t      vesa_mode;
+    void*         lfb;
+    uint32_t      lfb_size;
+    uint32_t      pitch;
+    int32_t       fb_width;
+    int32_t       fb_height;
+    int32_t       fb_bpp;
+
+    /* input state */
+    int32_t mouse_x;
+    int32_t mouse_y;
+    int     mouse_buttons;
+
+    dsys_event event_queue[32];
+    int        ev_head;
+    int        ev_tail;
+} dos32_global_t;
+
+extern dos32_global_t g_dos32;
 
 const dsys_backend_vtable* dsys_dos32_get_vtable(void);
 

@@ -10,34 +10,33 @@
 #include <Carbon/Carbon.h>
 #include <dirent.h>
 
+#define CARBON_EVENT_QUEUE_SIZE 64
+
 struct dsys_window_t {
-    WindowRef        window_ref;
+    WindowRef        window;
     int32_t          width;
     int32_t          height;
-    int32_t          last_x;
-    int32_t          last_y;
     dsys_window_mode mode;
 };
 
 struct dsys_dir_iter_t {
-    DIR*  dir;
-    char  base[260];
+    DIR* dir;
 };
 
 struct dsys_process_t {
-    int dummy;
+    FSRef dummy_ref;
 };
 
 typedef struct carbon_global_t {
-    int            initialized;
-    WindowRef      main_window;
-    EventHandlerUPP app_event_upp;
-    EventHandlerUPP win_event_upp;
-    EventHandlerRef app_event_ref;
-    EventHandlerRef win_event_ref;
-    dsys_event     event_queue[64];
-    int            event_head;
-    int            event_tail;
+    int           initialized;
+    dsys_window*  main_window;
+    dsys_event    queue[CARBON_EVENT_QUEUE_SIZE];
+    int           q_head;
+    int           q_tail;
+    uint64_t      time_base_us;
+    int32_t       last_mouse_x;
+    int32_t       last_mouse_y;
+    int           mouse_pos_valid;
 } carbon_global_t;
 
 extern carbon_global_t g_carbon;

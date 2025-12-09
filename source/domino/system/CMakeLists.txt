@@ -17,6 +17,21 @@ if(DSYS_BACKEND_CPM86)
         plat/cpm86/cpm86_sys.c
     )
 endif()
+if(DSYS_BACKEND_DOS16)
+    list(APPEND DOMINO_SYS_SOURCES
+        plat/dos16/dos16_sys.c
+    )
+endif()
+if(DSYS_BACKEND_DOS32)
+    list(APPEND DOMINO_SYS_SOURCES
+        plat/dos32/dos32_sys.c
+    )
+endif()
+if(DSYS_BACKEND_WIN16)
+    list(APPEND DOMINO_SYS_SOURCES
+        plat/win16/win16_sys.c
+    )
+endif()
 
 if(WIN32)
     list(APPEND DOMINO_SYS_SOURCES
@@ -49,6 +64,15 @@ if(DSYS_BACKEND_CPM80)
 endif()
 if(DSYS_BACKEND_CPM86)
     target_compile_definitions(domino_sys PRIVATE DSYS_BACKEND_CPM86)
+endif()
+if(DSYS_BACKEND_DOS16)
+    target_compile_definitions(domino_sys PRIVATE DSYS_BACKEND_DOS16)
+endif()
+if(DSYS_BACKEND_DOS32)
+    target_compile_definitions(domino_sys PRIVATE DSYS_BACKEND_DOS32)
+endif()
+if(DSYS_BACKEND_WIN16)
+    target_compile_definitions(domino_sys PRIVATE DSYS_BACKEND_WIN16)
 endif()
 if(WIN32)
     target_link_libraries(domino_sys PRIVATE kernel32)

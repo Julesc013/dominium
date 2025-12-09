@@ -660,6 +660,10 @@ static LRESULT CALLBACK Win16WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM 
     memset(&ev, 0, sizeof(ev));
 
     switch (msg) {
+    case WM_DESTROY:
+        ev.type = DSYS_EVENT_QUIT;
+        win16_push_event(&ev);
+        break;
     case WM_CLOSE:
         ev.type = DSYS_EVENT_QUIT;
         win16_push_event(&ev);
