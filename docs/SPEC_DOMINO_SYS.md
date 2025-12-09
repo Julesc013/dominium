@@ -44,6 +44,15 @@ This pass wires up a portable, deterministic stub backend. It exposes the full d
 - Limitations: fullscreen/borderless is best-effort via EWMH `_NET_WM_STATE_FULLSCREEN`; text input is minimal; requires a running display connection.
 - Build: enable with `-DDOMINO_USE_X11_BACKEND=ON` to compile `DSYS_BACKEND_X11`, add `source/domino/system/plat/x11/x11_sys.c`, and link against X11.
 
+## Wayland Backend
+- Target: Linux/BSD systems running a Wayland compositor (GNOME/KDE/sway/etc.), single display/seat/window model for v1.
+- UI modes: GUI (`ui_modes = 1`); real `wl_surface` + `xdg_toplevel` (preferred) or `wl_shell_surface`, mouse/keyboard supported, high-res timer via `clock_gettime`.
+- Events: wl_seat keyboard/pointer listeners feed a 64-slot ring; key down/up, mouse move/button/wheel, resize from configure, close → quit via `xdg_toplevel` close; `dsys_poll_event` pumps `wl_display_dispatch_pending` then drains the queue.
+- Windowing: creates one toplevel surface, fullscreen toggled with `xdg_toplevel_set_fullscreen`; native handle returns the `wl_surface*`.
+- Paths/FS: POSIX stdio + dirent; paths from `/proc/self/exe` (fallback `getcwd`), XDG data/config/cache with `/dominium` suffix, temp from `$TMPDIR` or `/tmp`.
+- Processes: POSIX `fork/execvp` + `waitpid`.
+- Build: enable with `-DDOMINO_USE_WAYLAND_BACKEND=ON` (alias `-DDSYS_BACKEND_WAYLAND=ON`), compile `source/domino/system/plat/wayland/wayland_sys.c`, link against `wayland-client` (and system xdg-shell headers).
+
 ## POSIX Headless Backend
 - API: POSIX (monotonic clocks, nanosleep, stdio file IO, dirent, fork/execvp), no native GUI.
 - Target systems: Unix/Linux/BSD servers and headless nodes (CI, batch, simulation).
