@@ -21,7 +21,8 @@ typedef enum dgfx_backend {
     DGFX_BACKEND_SOFT8,
     DGFX_BACKEND_GL2,
     DGFX_BACKEND_DX9,
-    DGFX_BACKEND_VK1
+    DGFX_BACKEND_VK1,
+    DGFX_BACKEND_DX7
 } dgfx_backend;
 
 typedef struct dgfx_caps {
@@ -64,6 +65,21 @@ typedef struct dgfx_cmd_buffer {
     uint16_t size;
     uint16_t capacity;
 } dgfx_cmd_buffer;
+
+typedef struct dgfx_backend_vtable {
+    /* lifecycle */
+    bool       (*init)(const dgfx_desc* desc);
+    void       (*shutdown)(void);
+    dgfx_caps  (*get_caps)(void);
+
+    /* resize / framebuffer */
+    void       (*resize)(int width, int height);
+
+    /* frame */
+    void       (*begin_frame)(void);
+    void       (*execute)(const dgfx_cmd_buffer* buf);
+    void       (*end_frame)(void);
+} dgfx_backend_vtable;
 
 dgfx_context* dgfx_init(const dgfx_desc* desc);
 void          dgfx_shutdown(dgfx_context* ctx);
