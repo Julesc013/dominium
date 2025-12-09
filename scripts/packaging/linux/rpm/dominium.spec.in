@@ -1,0 +1,37 @@
+Name:           dominium
+Version:        @VERSION@
+Release:        @RELEASE@%{?dist}
+Summary:        Dominium launcher and setup
+
+License:        MIT
+URL:            https://example.com/dominium
+BuildArch:      x86_64
+Requires:       @REQUIRES@
+
+%description
+Dominium binaries and setup helper. Installation and repair are performed by
+dominium-setup-cli for consistent layout across platforms.
+
+%prep
+%setup -T -c -a 0
+
+%build
+# Binaries are prebuilt; nothing to compile here.
+
+%install
+rm -rf %{buildroot}
+mkdir -p %{buildroot}/opt/dominium
+cp -a %{_sourcedir}/dominium/. %{buildroot}/opt/dominium/
+
+%post
+if [ -x /opt/dominium/dominium-setup-cli ]; then
+    /opt/dominium/dominium-setup-cli --scope=system --action=install --dir=/opt/dominium || true
+fi
+
+%preun
+if [ $1 -eq 0 ] && [ -x /opt/dominium/dominium-setup-cli ]; then
+    /opt/dominium/dominium-setup-cli --scope=system --action=uninstall --dir=/opt/dominium || true
+fi
+
+%files
+/opt/dominium
