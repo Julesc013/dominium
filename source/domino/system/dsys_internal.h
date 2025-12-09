@@ -24,6 +24,8 @@
 #include "plat/win16/win16_sys.h"
 #elif defined(DSYS_BACKEND_SDL1)
 #include "plat/sdl1/sdl1_sys.h"
+#elif defined(DSYS_BACKEND_CPM86)
+#include "plat/cpm86/cpm86_sys.h"
 #elif defined(DSYS_BACKEND_CPM80)
 #include "plat/cpm80/cpm80_sys.h"
 #else

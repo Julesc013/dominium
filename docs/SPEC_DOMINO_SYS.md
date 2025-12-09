@@ -85,6 +85,17 @@ This pass wires up a portable, deterministic stub backend. It exposes the full d
 - Build: enable with `-DDSYS_BACKEND_CPM80=ON` to compile `source/domino/system/plat/cpm80/cpm80_sys.c`; build with a CP/M-80 toolchain (z88dk, Hi-Tech C, Aztec C, etc.).
 - Renderer note: the reported width/height are purely logical; dgfx backends decide how to draw (character grid, software framebuffer, custom hardware).
 
+## CP/M-86 Backend (Logical Fullscreen GUI/GFX)
+- Target: CP/M-86 1.x/2.x BDOS environments on 8086/80186/80286 hardware (classic Digital Research or compatible BIOS/BDOS).
+- UI modes: GUI (`ui_modes = 1`); `has_windows = true` for a single logical fullscreen surface; no mouse/gamepad; coarse/synthetic timer (no high-res).
+- Windowing: tracks logical width/height/mode only; always fullscreen; native handle is the `dsys_window*`; renderer supplies any real framebuffer/mode switching.
+- Events: keyboard-only via BDOS function 6 with `E=0xFF` (non-blocking poll) or BIOS-compatible INT 16h; ESC (0x1B) or CTRL+C (0x03) yield quit events, other keys emit key-down.
+- Time/Delay: uses `clock()` when available, otherwise a synthetic monotonic counter (+~1 ms per call); `sleep_ms` busy-waits on that counter.
+- Filesystem/Paths: CP/M drive/user semantics with 8.3 uppercase names; logical paths map to `A:` roots such as `A:DOMDATA`, `A:DOMCFG`, `A:CACHE`, and `A:TEMP`; stdio-backed file IO; directory iteration is stubbed (flat filesystem, `is_dir = false`).
+- Processes: unsupported (`spawn` returns `NULL`, `wait` returns `-1`).
+- Build: enable with `-DDSYS_BACKEND_CPM86=ON` to compile `source/domino/system/plat/cpm86/cpm86_sys.c`; build with a CP/M-86 toolchain (Digital Research C, OpenWatcom-16 CP/M mode, etc.).
+- Renderer note: identical logical semantics to CP/M-80/DOS backends—graphics are renderer-owned; dsys only reports the logical fullscreen size for deterministic behaviour.
+
 ## Win16 Backend (GUI/GFX)
 - Target: Windows 3.x (real/standard/386 enhanced), Win16 API (user.dll/gdi.dll), ANSI strings only.
 - UI modes: GUI (`ui_modes = 1`); `has_windows = true`, mouse supported, no gamepad, coarse timer only.
