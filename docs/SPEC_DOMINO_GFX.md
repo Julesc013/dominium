@@ -4,7 +4,7 @@ Public header: `include/domino/gfx.h`
 Null backend: `source/domino/render/gfx.c`
 
 ## dgfx IR snapshot
-- Opaque `dgfx_context` created via `dgfx_init(const dgfx_desc*)`; desc selects backend (`NULL/SOFT8/GL2/DX9/VK1`), optional `dsys_window*`, width/height, and vsync flag.
+- Opaque `dgfx_context` created via `dgfx_init(const dgfx_desc*)`; desc selects backend (`NULL/SOFT8/GL2/DX9/VK1/DX7/DX11/METAL/QUARTZ/QUICKDRAW/GDI`), optional `dsys_window*`, width/height, and vsync flag.
 - `dgfx_caps` reports a backend name plus feature bits; the NULL backend reports all capabilities as false and `max_texture_size = 0`.
 - Frame flow is a no-op stub: `dgfx_begin_frame`/`dgfx_execute`/`dgfx_end_frame` exist for future backends and simply return.
 - `dgfx_resize` only updates stored dimensions inside the context; no swapchain work is performed.
@@ -60,6 +60,48 @@ No pixels are produced yet; this stub only wires the ABI so future backends can 
 - Features: hardware-accelerated 2D/3D paths; sprites/meshes/lines routed through simple D3D11 pipelines; text is stubbed for now; alpha blending and depth states are created.
 - Integration: requires the Win32 dsys backend; pass the Win32 `HWND` from `dsys_window_get_native_handle` via `dgfx_desc.window`; swap chain sizes derive from `dgfx_desc.width/height`; `dgfx_desc.vsync` feeds the Present sync interval.
 - Limitations: shaders/input layouts are placeholder; text rendering unimplemented; MSAA/fullscreen toggles are not exposed yet.
+
+## GL2 Renderer Backend (OpenGL 2.x) — gl2
+- Backend: `DGFX_BACKEND_GL2`, OpenGL 2.0–2.1 programmable pipeline with GLSL shaders.
+- Targets: Win32 (wgl), Linux/X11 (glX), macOS (NSOpenGL/CGL) where GL2 contexts are available.
+- Features: 2D sprites, 3D meshes, and vector lines using simple shader programs; alpha blending and depth testing are enabled by default.
+- Integration: use the dsys window backend and pass the native handle via `dgfx_desc.window` (e.g., Win32 `HWND`); viewport size comes from `dgfx_desc.width/height`.
+- Limitations: text rendering is stubbed; GLX/Cocoa context creation is placeholder; no MSAA/sRGB configuration in this revision.
+
+## Metal Renderer Backend (Metal)
+- Backend: `DGFX_BACKEND_METAL`, Metal device/command queue rendering into a `CAMetalLayer` swapchain.
+- Targets: macOS 10.11+ on Intel or Apple Silicon.
+- Features: hardware-accelerated 2D/3D and line rendering with alpha blend and depth-state defaults; text is stubbed for now.
+- Integration: requires the Cocoa dsys backend; pass the `NSWindow*` from `dsys_window_get_native_handle` via `dgfx_desc.window`; the backend creates/configures a `CAMetalLayer` on the window’s content view and sizes it from `dgfx_desc.width/height`; `dgfx_desc.vsync` is honored at present time.
+- Limitations: texture binding and text are placeholders; pipelines are minimal and MSAA/advanced features are not exposed yet.
+
+## GDI Renderer Backend (gdi) — Windows 3.x → 11
+- Backend: `DGFX_BACKEND_GDI`, Win16/Win32 GDI API (HDC, HBITMAP, BitBlt/StretchBlt, MoveToEx/LineTo/Rectangle).
+- Targets: Windows 3.x, Windows 95/98/ME, Windows NT/2000/XP, Windows 7–11 (32/64-bit process).
+- Features: 2D via a 32-bit ARGB DIB section as an offscreen framebuffer, BitBlt to the window DC; vector primitives via GDI pens/lines; basic filled-rect sprites via solid brushes.
+- Integration: requires the Win32/Win16 dsys backend; pass the `HWND` returned by `dsys_window_get_native_handle` through `dgfx_desc.window`; framebuffer dimensions come from `dgfx_desc.width/height`; vsync is OS-managed.
+- Limitations: `supports_3d` = false, mesh/text/texture commands are no-ops in v1; alpha/blending beyond what BitBlt offers is not implemented; performance is bounded by GDI BitBlt throughput and OS compositor.
+
+## QuickDraw Renderer Backend (quickdraw) — Mac OS 7/8/9
+- Backend: `DGFX_BACKEND_QUICKDRAW`, Classic Mac OS QuickDraw API using a window port plus an offscreen GWorld for double buffering.
+- Targets: Mac OS 7, 8, 9; early Carbon/Classic environments where QuickDraw is present.
+- Features: 2D and vector primitives via MoveTo/LineTo and PaintRect; raster blits via CopyBits from the offscreen GWorld; meshes and text are stubbed; alpha support follows QuickDraw capabilities.
+- Integration: requires the Classic/Carbon dsys backend; pass the native Mac window handle returned by `dsys_window_get_native_handle` through `dgfx_desc.window`; the backend allocates an offscreen GWorld sized to `dgfx_desc.width/height` and blits to the window each frame.
+- Limitations: no hardware 3D pipeline; textures and text are not implemented in v1; resizing recreates the offscreen buffer; blending is limited to what QuickDraw offers.
+
+## Quartz 2D Renderer Backend (quartz) — macOS 10.4+
+- Backend: `DGFX_BACKEND_QUARTZ`, Quartz/CoreGraphics 2D backend that renders into an RGBA CGBitmapContext and blits to the window’s CGContext each frame.
+- Targets: macOS 10.4+ (Intel/ARM) with the Cocoa dsys backend supplying an NSWindow/NSView native handle.
+- Features: supports_2d=true, supports_3d=false, supports_alpha=true; lines and filled sprites mapped to CGContext drawing with simple camera offsets; text and textures are stubbed in v1.
+- Integration: pass the Cocoa `dsys_window*` in `dgfx_desc.window`; the native handle is used to fetch a `CGContextRef` for presentation while the backend renders into a premultiplied 8:8:8:8 bitmap sized to `dgfx_desc.width/height`.
+- Limitations: no native 3D path; viewport/pipeline handling is minimal; presentation depends on a Cocoa helper returning a valid window context; text/texture drawing is not implemented yet.
+
+## Vulkan 1.0 Renderer Backend (vk1)
+- Backend: `DGFX_BACKEND_VK1`, Vulkan 1.0 device with a single graphics/present queue.
+- Targets: Windows, Linux, macOS (via MoltenVK) where Vulkan 1.0 and a compatible surface extension are available.
+- Features: 2D sprites/quads, 3D mesh path, and vector/line primitives routed through dedicated pipelines; text is currently a no-op; alpha/raster fully supported once pipelines are provided.
+- Integration: requires a valid `dsys_window*`; the backend maps `dsys_window_get_native_handle` to a `VkSurfaceKHR` using platform-specific creation (Win32/X11/Metal hooks to be wired). Set `dgfx_desc.backend = DGFX_BACKEND_VK1`, width/height from the descriptor, and vsync mapped to present mode.
+- Limitations: platform surface creation is stubbed in the initial drop; descriptor management, streaming buffers, and text are deferred; swapchain recreation on resize is basic.
 
 ## Canvas builders (Dominium)
 `dom_canvas_build(core, inst, canvas_id, dom_gfx_buffer*)` dispatches to Dominium helpers to populate dgfx commands:

@@ -23,7 +23,11 @@ typedef enum dgfx_backend {
     DGFX_BACKEND_DX9,
     DGFX_BACKEND_VK1,
     DGFX_BACKEND_DX7,
-    DGFX_BACKEND_DX11
+    DGFX_BACKEND_DX11,
+    DGFX_BACKEND_METAL,
+    DGFX_BACKEND_QUARTZ,
+    DGFX_BACKEND_QUICKDRAW,
+    DGFX_BACKEND_GDI
 } dgfx_backend;
 
 typedef struct dgfx_caps {
