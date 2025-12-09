@@ -9,6 +9,7 @@ set(DOMINO_GFX_SOURCES
 if(WIN32)
     list(APPEND DOMINO_GFX_SOURCES
         soft/targets/win32/soft_target_win32.c
+        dx9/dx9_gfx.c
     )
 endif()
 
@@ -22,9 +23,10 @@ target_include_directories(domino_gfx
         ${CMAKE_CURRENT_SOURCE_DIR}/soft/core
         ${CMAKE_CURRENT_SOURCE_DIR}/soft/targets/null
         ${CMAKE_CURRENT_SOURCE_DIR}/soft/targets/win32
+        ${CMAKE_CURRENT_SOURCE_DIR}/dx9
 )
 target_link_libraries(domino_gfx PUBLIC domino_sys)
 target_compile_features(domino_gfx PRIVATE c_std_90)
 if(WIN32)
-    target_link_libraries(domino_gfx PRIVATE gdi32 user32)
+    target_link_libraries(domino_gfx PRIVATE gdi32 user32 d3d9 dxguid)
 endif()
