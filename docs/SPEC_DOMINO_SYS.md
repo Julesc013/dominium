@@ -53,12 +53,12 @@ This pass wires up a portable, deterministic stub backend. It exposes the full d
 - Processes: POSIX `fork/execvp` + `waitpid`.
 - Build: enable with `-DDOMINO_USE_WAYLAND_BACKEND=ON` (alias `-DDSYS_BACKEND_WAYLAND=ON`), compile `source/domino/system/plat/wayland/wayland_sys.c`, link against `wayland-client` (and system xdg-shell headers).
 
-## POSIX Headless Backend
-- API: POSIX (monotonic clocks, nanosleep, stdio file IO, dirent, fork/execvp), no native GUI.
-- Target systems: Unix/Linux/BSD servers and headless nodes (CI, batch, simulation).
-- UI modes: CLI/TUI only (`ui_modes = 0`); `has_windows = false`; no mouse/gamepad.
-- Features: monotonic microsecond timer with `clock_gettime` (fallback `gettimeofday`), `nanosleep` for delays, XDG-based user data/config/cache paths (home fallback), `/proc/self/exe`→dir for app root (fallback `getcwd`), temp from `$TMPDIR` or `/tmp`, stdio-backed files, POSIX directory iteration, and `fork/execvp` + `waitpid` processes.
-- Events/Windows: `dsys_window_create` returns `NULL`; window setters/getters are no-ops; `dsys_poll_event` always returns `false`.
+## POSIX Backend (Headless UNIX)
+- API: POSIX (monotonic clocks, nanosleep, stdio file IO, dirent, fork/execvp); no native GUI or event loop.
+- Target systems: Linux/BSD/Solaris/AIX/HP-UX/macOS headless servers, CI, containers, and other Unix-like builds without GUI.
+- UI modes: CLI/TUI only (`ui_modes = 0`); `has_windows = false`; mouse/gamepad unsupported.
+- Features: monotonic microsecond timer via `clock_gettime` (fallback `gettimeofday`), `nanosleep`, XDG data/config/cache roots under `dominium`, app root from `/proc/self/exe` dir (fallback `getcwd`), temp from `$TMPDIR` or `/tmp`, stdio-backed file IO, dirent iteration, and `fork/execvp` + `waitpid` processes.
+- Events/Windows: window APIs are no-ops/return `NULL`; `dsys_poll_event` always returns `false` (no stdin polling by default).
 - Build: enable with `-DDOMINO_USE_POSIX_BACKEND=ON` (alias `-DDSYS_BACKEND_POSIX=ON`) to compile `DSYS_BACKEND_POSIX` and include `source/domino/system/plat/posix/posix_sys.c`.
 
 ## DOS32 Backend (Fullscreen GUI/GFX)
