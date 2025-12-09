@@ -2,6 +2,7 @@
 #include <shlobj.h>
 #include <commctrl.h>
 #include <stdio.h>
+#include <string.h>
 
 #define IDC_SCOPE_PORTABLE   1001
 #define IDC_SCOPE_USER       1002
@@ -14,8 +15,17 @@
 #define IDC_BUTTON_VERIFY    1009
 #define IDC_PROGRESS         1010
 #define IDC_STATUS           1011
+#define IDC_BUTTON_BACK      1200
+#define IDC_BUTTON_NEXT      1201
+#define IDC_BUTTON_CANCEL    1202
+#define IDC_LABEL_INTRO      1300
+#define IDC_LABEL_DETAILS    1301
+#define IDC_LABEL_SCOPE      1302
+#define IDC_LABEL_PATH       1303
+#define IDC_LABEL_ACTIONS    1304
 
 #define WM_APP_SETUP_DONE (WM_APP + 1)
+#define COUNTOF(x) (sizeof(x) / sizeof((x)[0]))
 
 typedef struct setup_thread_args_t {
     HWND  hwnd;
@@ -25,7 +35,34 @@ typedef struct setup_thread_args_t {
 static HWND g_edit_path = NULL;
 static HWND g_progress = NULL;
 static HWND g_status = NULL;
+static HWND g_button_back = NULL;
+static HWND g_button_next = NULL;
+static HWND g_button_cancel = NULL;
 static char g_cli_path[MAX_PATH];
+static int g_current_page = 0;
+static int g_action_running = 0;
+
+static const int kOptionsControls[] = {
+    IDC_LABEL_INTRO,
+    IDC_LABEL_DETAILS,
+    IDC_LABEL_SCOPE,
+    IDC_SCOPE_PORTABLE,
+    IDC_SCOPE_USER,
+    IDC_SCOPE_SYSTEM,
+    IDC_LABEL_PATH,
+    IDC_EDIT_PATH,
+    IDC_BUTTON_BROWSE
+};
+
+static const int kActionControls[] = {
+    IDC_LABEL_ACTIONS,
+    IDC_BUTTON_INSTALL,
+    IDC_BUTTON_REPAIR,
+    IDC_BUTTON_UNINSTALL,
+    IDC_BUTTON_VERIFY,
+    IDC_PROGRESS,
+    IDC_STATUS
+};
 
 static void center_window(HWND hwnd)
 {
@@ -48,6 +85,20 @@ static void set_status_text(const char* text)
 {
     if (g_status && text) {
         SetWindowTextA(g_status, text);
+    }
+}
+
+static void update_nav_buttons(void)
+{
+    if (g_button_back) {
+        EnableWindow(g_button_back, !g_action_running && g_current_page > 0);
+    }
+    if (g_button_next) {
+        SetWindowTextA(g_button_next, g_current_page == 0 ? "Next >" : "Finish");
+        EnableWindow(g_button_next, !g_action_running);
+    }
+    if (g_button_cancel) {
+        EnableWindow(g_button_cancel, !g_action_running);
     }
 }
 
@@ -124,6 +175,7 @@ static void stop_progress(void)
 {
     if (g_progress) {
         SendMessage(g_progress, PBM_SETMARQUEE, FALSE, 0);
+        ShowWindow(g_progress, SW_HIDE);
     }
 }
 
@@ -145,6 +197,26 @@ static void browse_for_folder(HWND owner)
     if (pidl) {
         CoTaskMemFree(pidl);
     }
+}
+
+static void show_page(HWND hwnd, int page)
+{
+    size_t i;
+
+    g_current_page = page;
+    for (i = 0; i < COUNTOF(kOptionsControls); ++i) {
+        ShowWindow(GetDlgItem(hwnd, kOptionsControls[i]), page == 0 ? SW_SHOW : SW_HIDE);
+    }
+    for (i = 0; i < COUNTOF(kActionControls); ++i) {
+        ShowWindow(GetDlgItem(hwnd, kActionControls[i]), page == 1 ? SW_SHOW : SW_HIDE);
+    }
+
+    if (page == 0) {
+        SetFocus(GetDlgItem(hwnd, IDC_SCOPE_USER));
+    } else {
+        SetFocus(GetDlgItem(hwnd, IDC_BUTTON_INSTALL));
+    }
+    update_nav_buttons();
 }
 
 static void build_scope_string(HWND hwnd, char* buf, size_t cap)
@@ -238,12 +310,16 @@ static void start_setup_action(HWND hwnd, const char* action)
     enable_action_buttons(hwnd, FALSE);
     start_progress();
     set_status_text("Running dominium-setup-cli...");
+    g_action_running = 1;
+    update_nav_buttons();
 
     if (!CreateThread(NULL, 0, setup_thread_proc, args, 0, NULL)) {
         stop_progress();
         enable_action_buttons(hwnd, TRUE);
         set_status_text("Failed to start setup process");
         HeapFree(GetProcessHeap(), 0, args);
+        g_action_running = 0;
+        update_nav_buttons();
     }
 }
 
@@ -256,13 +332,24 @@ static LRESULT CALLBACK main_wnd_proc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
             RECT rc_client;
             int left;
             int top;
+            int nav_y;
+            int content_width;
 
             GetClientRect(hwnd, &rc_client);
             left = 16;
             top = 16;
+            content_width = rc_client.right - rc_client.left - 32;
 
-            CreateWindowExA(0, "STATIC", "Scope:", WS_CHILD | WS_VISIBLE,
-                            left, top, 60, 20, hwnd, NULL, NULL, NULL);
+            CreateWindowExA(0, "STATIC", "Welcome to Dominium Setup", WS_CHILD | WS_VISIBLE | SS_LEFT,
+                            left, top, content_width, 20, hwnd, (HMENU)IDC_LABEL_INTRO, NULL, NULL);
+            top += 20;
+            CreateWindowExA(0, "STATIC", "Choose install scope and destination, then pick an action.",
+                            WS_CHILD | WS_VISIBLE | SS_LEFT,
+                            left, top, content_width, 18, hwnd, (HMENU)IDC_LABEL_DETAILS, NULL, NULL);
+
+            top += 28;
+            CreateWindowExA(0, "STATIC", "Scope:", WS_CHILD | WS_VISIBLE | SS_LEFT,
+                            left, top + 2, 60, 18, hwnd, (HMENU)IDC_LABEL_SCOPE, NULL, NULL);
             CreateWindowExA(0, "BUTTON", "Portable", WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON,
                             left + 70, top, 90, 20, hwnd, (HMENU)IDC_SCOPE_PORTABLE, NULL, NULL);
             CreateWindowExA(0, "BUTTON", "Per-user", WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON,
@@ -272,40 +359,57 @@ static LRESULT CALLBACK main_wnd_proc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
             CheckDlgButton(hwnd, IDC_SCOPE_USER, BST_CHECKED);
 
             top += 30;
-            CreateWindowExA(0, "STATIC", "Install directory:", WS_CHILD | WS_VISIBLE,
-                            left, top + 2, 100, 20, hwnd, NULL, NULL, NULL);
+            CreateWindowExA(0, "STATIC", "Install directory:", WS_CHILD | WS_VISIBLE | SS_LEFT,
+                            left, top + 2, 100, 20, hwnd, (HMENU)IDC_LABEL_PATH, NULL, NULL);
             g_edit_path = CreateWindowExA(WS_EX_CLIENTEDGE, "EDIT", "",
                                           WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL,
-                                          left + 110, top, rc_client.right - rc_client.left - 200, 22,
+                                          left + 110, top, content_width - 90, 22,
                                           hwnd, (HMENU)IDC_EDIT_PATH, NULL, NULL);
             CreateWindowExA(0, "BUTTON", "Browse...", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
                             rc_client.right - rc_client.left - 80, top - 1, 70, 24,
                             hwnd, (HMENU)IDC_BUTTON_BROWSE, NULL, NULL);
 
-            top += 40;
+            top += 50;
+            CreateWindowExA(0, "STATIC", "Choose maintenance action:", WS_CHILD | WS_VISIBLE | SS_LEFT,
+                            left, top, content_width, 18, hwnd, (HMENU)IDC_LABEL_ACTIONS, NULL, NULL);
+
+            top += 26;
             CreateWindowExA(0, "BUTTON", "Install", WS_CHILD | WS_VISIBLE | BS_DEFPUSHBUTTON,
-                            left, top, 80, 26, hwnd, (HMENU)IDC_BUTTON_INSTALL, NULL, NULL);
+                            left, top, 100, 26, hwnd, (HMENU)IDC_BUTTON_INSTALL, NULL, NULL);
             CreateWindowExA(0, "BUTTON", "Repair", WS_CHILD | WS_VISIBLE,
-                            left + 90, top, 80, 26, hwnd, (HMENU)IDC_BUTTON_REPAIR, NULL, NULL);
+                            left + 110, top, 100, 26, hwnd, (HMENU)IDC_BUTTON_REPAIR, NULL, NULL);
             CreateWindowExA(0, "BUTTON", "Uninstall", WS_CHILD | WS_VISIBLE,
-                            left + 180, top, 80, 26, hwnd, (HMENU)IDC_BUTTON_UNINSTALL, NULL, NULL);
+                            left + 220, top, 100, 26, hwnd, (HMENU)IDC_BUTTON_UNINSTALL, NULL, NULL);
             CreateWindowExA(0, "BUTTON", "Verify", WS_CHILD | WS_VISIBLE,
-                            left + 270, top, 80, 26, hwnd, (HMENU)IDC_BUTTON_VERIFY, NULL, NULL);
+                            left + 330, top, 100, 26, hwnd, (HMENU)IDC_BUTTON_VERIFY, NULL, NULL);
 
             top += 40;
             g_progress = CreateWindowExA(0, PROGRESS_CLASSA, "",
                                          WS_CHILD | WS_VISIBLE | PBS_MARQUEE,
-                                         left, top, rc_client.right - rc_client.left - 32, 18,
+                                         left, top, content_width, 18,
                                          hwnd, (HMENU)IDC_PROGRESS, NULL, NULL);
             stop_progress();
 
             top += 26;
             g_status = CreateWindowExA(0, "STATIC", "Ready", WS_CHILD | WS_VISIBLE,
-                                       left, top, rc_client.right - rc_client.left - 32, 20,
+                                       left, top, content_width, 20,
                                        hwnd, (HMENU)IDC_STATUS, NULL, NULL);
+
+            nav_y = rc_client.bottom - rc_client.top - 40;
+            g_button_back = CreateWindowExA(0, "BUTTON", "< Back", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+                                            left, nav_y, 90, 26, hwnd, (HMENU)IDC_BUTTON_BACK, NULL, NULL);
+            g_button_next = CreateWindowExA(0, "BUTTON", "Next >", WS_CHILD | WS_VISIBLE | BS_DEFPUSHBUTTON,
+                                            rc_client.right - rc_client.left - 190, nav_y, 90, 26,
+                                            hwnd, (HMENU)IDC_BUTTON_NEXT, NULL, NULL);
+            g_button_cancel = CreateWindowExA(0, "BUTTON", "Cancel", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+                                              rc_client.right - rc_client.left - 95, nav_y, 80, 26,
+                                              hwnd, (HMENU)IDC_BUTTON_CANCEL, NULL, NULL);
 
             get_default_target_dir(default_path, sizeof(default_path));
             SetWindowTextA(g_edit_path, default_path);
+            show_page(hwnd, 0);
+            stop_progress();
+            set_status_text("Ready");
         }
         break;
     case WM_COMMAND:
@@ -325,6 +429,23 @@ static LRESULT CALLBACK main_wnd_proc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
         case IDC_BUTTON_VERIFY:
             start_setup_action(hwnd, "verify");
             break;
+        case IDC_BUTTON_NEXT:
+            if (g_current_page == 0) {
+                show_page(hwnd, 1);
+            } else if (!g_action_running) {
+                PostMessage(hwnd, WM_CLOSE, 0, 0);
+            }
+            break;
+        case IDC_BUTTON_BACK:
+            if (g_current_page > 0 && !g_action_running) {
+                show_page(hwnd, g_current_page - 1);
+            }
+            break;
+        case IDC_BUTTON_CANCEL:
+            if (!g_action_running) {
+                PostMessage(hwnd, WM_CLOSE, 0, 0);
+            }
+            break;
         default:
             break;
         }
@@ -332,6 +453,8 @@ static LRESULT CALLBACK main_wnd_proc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
     case WM_APP_SETUP_DONE:
         stop_progress();
         enable_action_buttons(hwnd, TRUE);
+        g_action_running = 0;
+        update_nav_buttons();
         if ((DWORD)wParam == 0) {
             set_status_text("Finished successfully.");
             MessageBoxA(hwnd, "Operation completed successfully.", "Dominium Setup", MB_ICONINFORMATION | MB_OK);
@@ -384,7 +507,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
                           "Dominium Setup",
                           WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX,
                           CW_USEDEFAULT, CW_USEDEFAULT,
-                          520, 240,
+                          620, 360,
                           NULL, NULL,
                           hInstance,
                           NULL);

@@ -19,11 +19,18 @@
 
     <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
 
-    <!-- Allow per-user installs; default to per-machine -->
-    <Property Id="ALLUSERS" Secure="yes" Value="1" />
+    <Property Id="ARPCONTACT" Value="$(var.Manufacturer)" />
+    <Property Id="ARPINSTALLLOCATION" Value="[INSTALLDIR]" />
+    <Property Id="ARPNOMODIFY" Value="yes" />
+    <Property Id="ARPNOREPAIR" Value="no" />
     <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
-    <Property Id="Manufacturer" Value="Dominium" />
+    <Property Id="ALLUSERS" Secure="yes" Value="1" />
+    <Property Id="MSIINSTALLPERUSER" Secure="yes" />
     <Property Id="LicenseFile" Value="$(var.LicenseFile)" />
+    <SetProperty Id="ALLUSERS" Value="2"
+                 After="LaunchConditions">NOT Privileged AND NOT ALLUSERS</SetProperty>
+    <SetProperty Id="MSIINSTALLPERUSER" Value="1"
+                 After="CostFinalize">NOT Privileged OR ALLUSERS=2</SetProperty>
     <SetProperty Id="INSTALLDIR" Value="[LocalAppDataFolder]Programs\Dominium"
                  After="CostFinalize">NOT Privileged OR ALLUSERS=2 OR MSIINSTALLPERUSER=1</SetProperty>
 
@@ -32,43 +39,104 @@
         <Directory Id="DominiumProgramMenu" Name="Dominium" />
       </Directory>
       <Directory Id="DesktopFolder" />
-      <Directory Id="INSTALLDIR" Name="Dominium">
-        <Directory Id="DominiumDataDir" Name="data" />
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLDIR" Name="Dominium">
+          <Directory Id="DataDir" Name="data">
+            <Directory Id="PacksDir" Name="packs" />
+            <Directory Id="ModsDir" Name="mods" />
+          </Directory>
+        </Directory>
       </Directory>
     </Directory>
 
     <ComponentGroup Id="DominiumComponents">
-      <Component Id="cmpSetupCli" Guid="7FCB36A1-C4AA-4B0E-A63C-2BCE03B1D0B4">
+      <Component Id="cmpSetupCli" Guid="7FCB36A1-C4AA-4B0E-A63C-2BCE03B1D0B4" Directory="INSTALLDIR">
         <File Id="fileSetupCli"
               Source="$(var.DistDir)\dominium-setup-cli.exe"
               KeyPath="yes" />
       </Component>
 
-      <Component Id="cmpDataReadme" Guid="EA337651-8C5D-4BA5-A2F3-0E7C2F6A2F55">
+      <Component Id="cmpWin32Wrapper" Guid="B8B0114C-C72E-4DED-9D40-1F534B937B41" Directory="INSTALLDIR">
+        <File Id="fileWin32Wrapper"
+              Source="$(var.DistDir)\dominium_setup_win32_gui.exe"
+              KeyPath="yes" />
+      </Component>
+
+      <Component Id="cmpLauncher" Guid="2EAC0848-3BCA-4A26-8F1C-2CF80A370EDA" Directory="INSTALLDIR">
+        <File Id="fileLauncher"
+              Source="$(var.DistDir)\dominium_launcher_cli.exe"
+              KeyPath="yes" />
+      </Component>
+
+      <Component Id="cmpGame" Guid="8BD633DE-BBB8-4D1A-8EB1-6D7A1E775A19" Directory="INSTALLDIR">
+        <File Id="fileGame"
+              Source="$(var.DistDir)\dominium_game_cli.exe"
+              KeyPath="yes" />
+      </Component>
+
+      <Component Id="cmpDataFolders" Guid="A8DE1836-29B6-4016-9C8B-E0C4300DA379" Directory="DataDir">
+        <CreateFolder />
+        <RemoveFolder Id="RemoveDataDir" Directory="DataDir" On="uninstall" />
+        <RegistryValue Root="HKCU"
+                       Key="Software\Dominium\Installer"
+                       Name="DataPath"
+                       Type="string"
+                       Value="[DataDir]"
+                       KeyPath="yes" />
+      </Component>
+
+      <Component Id="cmpDataReadme" Guid="EA337651-8C5D-4BA5-A2F3-0E7C2F6A2F55" Directory="DataDir">
         <File Id="fileDataReadme"
               Source="$(var.DistDir)\data\readme.txt"
               KeyPath="yes" />
       </Component>
 
-      <Component Id="cmpShortcuts" Guid="2E73FC94-9EB7-4B36-B7D4-4C1D6287A8A8">
+      <Component Id="cmpDataPacks" Guid="0A0B0D9A-6C28-4E21-9E6F-8B598F1FC4E6" Directory="PacksDir">
+        <CreateFolder />
+        <RemoveFolder Id="RemovePacksDir" Directory="PacksDir" On="uninstall" />
+        <RegistryValue Root="HKCU"
+                       Key="Software\Dominium\Installer"
+                       Name="Packs"
+                       Type="integer"
+                       Value="1"
+                       KeyPath="yes" />
+      </Component>
+
+      <Component Id="cmpDataMods" Guid="91140AF4-0908-4DCB-8F80-57DF8210C4A1" Directory="ModsDir">
+        <CreateFolder />
+        <RemoveFolder Id="RemoveModsDir" Directory="ModsDir" On="uninstall" />
+        <RegistryValue Root="HKCU"
+                       Key="Software\Dominium\Installer"
+                       Name="Mods"
+                       Type="integer"
+                       Value="1"
+                       KeyPath="yes" />
+      </Component>
+
+      <Component Id="cmpShortcuts" Guid="2E73FC94-9EB7-4B36-B7D4-4C1D6287A8A8" Directory="INSTALLDIR">
         <Shortcut Id="ShortcutStartMenu"
                   Directory="DominiumProgramMenu"
-                  Name="Dominium Setup"
-                  Target="[INSTALLDIR]dominium-setup-cli.exe"
-                  Arguments="--help"
+                  Name="Dominium"
+                  Target="[INSTALLDIR]dominium_launcher_cli.exe"
+                  Arguments=""
+                  WorkingDirectory="INSTALLDIR" />
+        <Shortcut Id="ShortcutSafeMode"
+                  Directory="DominiumProgramMenu"
+                  Name="Dominium (Safe mode)"
+                  Target="[INSTALLDIR]dominium_launcher_cli.exe"
+                  Arguments="--safe-mode"
                   WorkingDirectory="INSTALLDIR" />
         <Shortcut Id="ShortcutDesktop"
                   Directory="DesktopFolder"
-                  Name="Dominium Setup"
-                  Target="[INSTALLDIR]dominium-setup-cli.exe"
-                  Arguments="--help"
+                  Name="Dominium"
+                  Target="[INSTALLDIR]dominium_launcher_cli.exe"
                   WorkingDirectory="INSTALLDIR" />
         <RemoveFolder Id="RemoveDominiumProgramMenu"
                       Directory="DominiumProgramMenu"
                       On="uninstall" />
         <RegistryValue Root="HKCU"
-                       Key="Software\Dominium"
-                       Name="installed"
+                       Key="Software\Dominium\Installer"
+                       Name="Shortcuts"
                        Type="integer"
                        Value="1"
                        KeyPath="yes" />
