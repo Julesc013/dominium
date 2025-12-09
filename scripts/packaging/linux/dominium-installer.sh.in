@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+VERSION="@DOMINIUM_VERSION@"
+DEFAULT_SCOPE="${DOMINIUM_RUN_SCOPE:-user}"
+DEFAULT_TARGET="${DOMINIUM_RUN_TARGET:-$HOME/.local/share/dominium}"
+
+usage() {
+  cat <<'EOF'
+Dominium self-extracting installer
+
+Options:
+  --scope=user|system|portable   Target scope (default: user)
+  --target=DIR                   Install directory (default: ~/.local/share/dominium or /opt/dominium for system)
+  --action=install|repair|uninstall|verify  Action to run (default: install)
+  -h, --help                     Show this help
+EOF
+}
+
+SCOPE="$DEFAULT_SCOPE"
+ACTION="install"
+TARGET=""
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --scope=*) SCOPE="${1#*=}";;
+    --target=*) TARGET="${1#*=}";;
+    --action=*) ACTION="${1#*=}";;
+    -h|--help) usage; exit 0;;
+    *) echo "Unknown option: $1" >&2; usage; exit 1;;
+  esac
+  shift
+done
+
+if [[ -z "$TARGET" ]]; then
+  if [[ "$SCOPE" == "system" ]]; then
+    TARGET="/opt/dominium"
+  elif [[ "$SCOPE" == "portable" ]]; then
+    TARGET="$(pwd)/dominium-portable"
+  else
+    TARGET="$DEFAULT_TARGET"
+  fi
+fi
+
+echo "Dominium installer (version ${VERSION})"
+echo "Scope: $SCOPE"
+echo "Target: $TARGET"
+echo "Action: $ACTION"
+
+PAYLOAD_LINE=$(awk '/^__DOMINIUM_ARCHIVE_BELOW__/ {print NR + 1; exit 0;}' "$0")
+if [[ -z "$PAYLOAD_LINE" ]]; then
+  echo "Payload marker not found." >&2
+  exit 1
+fi
+
+WORK_DIR="$(mktemp -d "${TMPDIR:-/tmp}/dominium-inst-XXXXXX")"
+cleanup() { rm -rf "$WORK_DIR"; }
+trap cleanup EXIT
+
+tail -n +"$PAYLOAD_LINE" "$0" | tar -C "$WORK_DIR" -xz
+
+CLI="$WORK_DIR/dominium-setup-cli"
+if [[ ! -x "$CLI" ]]; then
+  echo "dominium-setup-cli missing in payload." >&2
+  exit 1
+fi
+
+mkdir -p "$TARGET"
+"$CLI" --scope="$SCOPE" --action="$ACTION" --dir="$TARGET"
+
+exit 0
+__DOMINIUM_ARCHIVE_BELOW__

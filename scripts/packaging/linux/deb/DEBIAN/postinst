@@ -1,0 +1,11 @@
+#!/bin/sh
+set -e
+
+INSTALL_DIR="/opt/dominium"
+CLI_BIN="$INSTALL_DIR/dominium-setup-cli"
+
+if [ -x "$CLI_BIN" ]; then
+    "$CLI_BIN" --scope=system --action=install --dir="$INSTALL_DIR" || true
+fi
+
+exit 0
