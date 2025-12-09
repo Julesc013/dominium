@@ -7,6 +7,12 @@ set(DOMINO_SYS_SOURCES
     plat/unix/posix/sys_posix.c
 )
 
+if(DSYS_BACKEND_CPM80)
+    list(APPEND DOMINO_SYS_SOURCES
+        plat/cpm80/cpm80_sys.c
+    )
+endif()
+
 if(WIN32)
     list(APPEND DOMINO_SYS_SOURCES
         plat/windows/win32/sys_win32.c
@@ -22,6 +28,9 @@ target_include_directories(domino_sys
         ${CMAKE_CURRENT_SOURCE_DIR}/plat
 )
 target_compile_features(domino_sys PRIVATE c_std_90)
+if(DSYS_BACKEND_CPM80)
+    target_compile_definitions(domino_sys PRIVATE DSYS_BACKEND_CPM80)
+endif()
 if(WIN32)
     target_link_libraries(domino_sys PRIVATE kernel32)
 endif()
