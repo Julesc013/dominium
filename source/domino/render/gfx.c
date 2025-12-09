@@ -91,6 +91,12 @@ dgfx_context* dgfx_init(const dgfx_desc* desc)
     init_desc = &ctx->desc;
 
     switch (ctx->desc.backend) {
+    case DGFX_BACKEND_GL2:
+        {
+            extern const dgfx_backend_vtable* dgfx_gl2_get_vtable(void);
+            g_dgfx = dgfx_gl2_get_vtable();
+        }
+        break;
     case DGFX_BACKEND_DX9:
 #if defined(_WIN32)
         {
@@ -101,11 +107,61 @@ dgfx_context* dgfx_init(const dgfx_desc* desc)
         g_dgfx = &g_dgfx_null_vtable;
 #endif
         break;
+    case DGFX_BACKEND_VK1:
+#if defined(DGFX_HAS_VK1)
+        {
+            extern const dgfx_backend_vtable* dgfx_vk1_get_vtable(void);
+            g_dgfx = dgfx_vk1_get_vtable();
+        }
+#else
+        g_dgfx = &g_dgfx_null_vtable;
+#endif
+        break;
     case DGFX_BACKEND_DX11:
 #if defined(_WIN32)
         {
             extern const dgfx_backend_vtable* dgfx_dx11_get_vtable(void);
             g_dgfx = dgfx_dx11_get_vtable();
+        }
+#else
+        g_dgfx = &g_dgfx_null_vtable;
+#endif
+        break;
+    case DGFX_BACKEND_METAL:
+#if defined(__APPLE__)
+        {
+            extern const dgfx_backend_vtable* dgfx_metal_get_vtable(void);
+            g_dgfx = dgfx_metal_get_vtable();
+        }
+#else
+        g_dgfx = &g_dgfx_null_vtable;
+#endif
+        break;
+    case DGFX_BACKEND_QUARTZ:
+#if defined(__APPLE__)
+        {
+            extern const dgfx_backend_vtable* dgfx_quartz_get_vtable(void);
+            g_dgfx = dgfx_quartz_get_vtable();
+        }
+#else
+        g_dgfx = &g_dgfx_null_vtable;
+#endif
+        break;
+    case DGFX_BACKEND_GDI:
+#if defined(_WIN32)
+        {
+            extern const dgfx_backend_vtable* dgfx_gdi_get_vtable(void);
+            g_dgfx = dgfx_gdi_get_vtable();
+        }
+#else
+        g_dgfx = &g_dgfx_null_vtable;
+#endif
+        break;
+    case DGFX_BACKEND_QUICKDRAW:
+#if defined(DOMINIUM_GFX_QUICKDRAW)
+        {
+            extern const dgfx_backend_vtable* dgfx_quickdraw_get_vtable(void);
+            g_dgfx = dgfx_quickdraw_get_vtable();
         }
 #else
         g_dgfx = &g_dgfx_null_vtable;
