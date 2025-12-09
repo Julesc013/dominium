@@ -101,6 +101,16 @@ dgfx_context* dgfx_init(const dgfx_desc* desc)
         g_dgfx = &g_dgfx_null_vtable;
 #endif
         break;
+    case DGFX_BACKEND_DX11:
+#if defined(_WIN32)
+        {
+            extern const dgfx_backend_vtable* dgfx_dx11_get_vtable(void);
+            g_dgfx = dgfx_dx11_get_vtable();
+        }
+#else
+        g_dgfx = &g_dgfx_null_vtable;
+#endif
+        break;
     default:
         g_dgfx = &g_dgfx_null_vtable;
         break;

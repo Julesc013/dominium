@@ -54,6 +54,13 @@ No pixels are produced yet; this stub only wires the ABI so future backends can 
 - Integration: requires the Win32 dsys backend; pass the Win32 `HWND` exposed by `dsys_window_get_native_handle` inside `dgfx_desc.window`; `dgfx_desc.vsync` toggles Present interval.
 - Limitations: fixed-function style states only (no shaders yet); minimal device-loss handling (Reset on resize only); text rendering is not implemented in v1.
 
+## DX11 Renderer Backend (Direct3D 11)
+- Backend: `DGFX_BACKEND_DX11`, Direct3D 11 device, immediate context, and DXGI swap chain.
+- Targets: Windows 7 and later (32-bit or 64-bit process).
+- Features: hardware-accelerated 2D/3D paths; sprites/meshes/lines routed through simple D3D11 pipelines; text is stubbed for now; alpha blending and depth states are created.
+- Integration: requires the Win32 dsys backend; pass the Win32 `HWND` from `dsys_window_get_native_handle` via `dgfx_desc.window`; swap chain sizes derive from `dgfx_desc.width/height`; `dgfx_desc.vsync` feeds the Present sync interval.
+- Limitations: shaders/input layouts are placeholder; text rendering unimplemented; MSAA/fullscreen toggles are not exposed yet.
+
 ## Canvas builders (Dominium)
 `dom_canvas_build(core, inst, canvas_id, dom_gfx_buffer*)` dispatches to Dominium helpers to populate dgfx commands:
 - `world_surface` — clears then draws a 10x10 top-down grid (chunk preview).
