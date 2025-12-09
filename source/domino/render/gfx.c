@@ -91,6 +91,13 @@ dgfx_context* dgfx_init(const dgfx_desc* desc)
     init_desc = &ctx->desc;
 
     switch (ctx->desc.backend) {
+    case DGFX_BACKEND_SOFT:
+    case DGFX_BACKEND_SOFT8:
+        {
+            extern const dgfx_backend_vtable* dgfx_soft_get_vtable(void);
+            g_dgfx = dgfx_soft_get_vtable();
+        }
+        break;
     case DGFX_BACKEND_GL2:
         {
             extern const dgfx_backend_vtable* dgfx_gl2_get_vtable(void);
@@ -162,6 +169,72 @@ dgfx_context* dgfx_init(const dgfx_desc* desc)
         {
             extern const dgfx_backend_vtable* dgfx_quickdraw_get_vtable(void);
             g_dgfx = dgfx_quickdraw_get_vtable();
+        }
+#else
+        g_dgfx = &g_dgfx_null_vtable;
+#endif
+        break;
+    case DGFX_BACKEND_CGA:
+#if defined(DOMINIUM_GFX_CGA)
+        {
+            extern const dgfx_backend_vtable* dgfx_cga_get_vtable(void);
+            g_dgfx = dgfx_cga_get_vtable();
+        }
+#else
+        g_dgfx = &g_dgfx_null_vtable;
+#endif
+        break;
+    case DGFX_BACKEND_VGA:
+#if defined(DOMINIUM_GFX_VGA)
+        {
+            extern const dgfx_backend_vtable* dgfx_vga_get_vtable(void);
+            g_dgfx = dgfx_vga_get_vtable();
+        }
+#else
+        g_dgfx = &g_dgfx_null_vtable;
+#endif
+        break;
+    case DGFX_BACKEND_XGA:
+#if defined(DOMINIUM_GFX_XGA)
+        {
+            extern const dgfx_backend_vtable* dgfx_xga_get_vtable(void);
+            g_dgfx = dgfx_xga_get_vtable();
+        }
+#else
+        g_dgfx = &g_dgfx_null_vtable;
+#endif
+        break;
+    case DGFX_BACKEND_VESA:
+        {
+            extern const dgfx_backend_vtable* dgfx_vesa_get_vtable(void);
+            g_dgfx = dgfx_vesa_get_vtable();
+        }
+        break;
+    case DGFX_BACKEND_HERC:
+#if defined(DOMINIUM_GFX_HERC)
+        {
+            extern const dgfx_backend_vtable* dgfx_herc_get_vtable(void);
+            g_dgfx = dgfx_herc_get_vtable();
+        }
+#else
+        g_dgfx = &g_dgfx_null_vtable;
+#endif
+        break;
+    case DGFX_BACKEND_MDA:
+#if defined(DOMINIUM_GFX_MDA)
+        {
+            extern const dgfx_backend_vtable* dgfx_mda_get_vtable(void);
+            g_dgfx = dgfx_mda_get_vtable();
+        }
+#else
+        g_dgfx = &g_dgfx_null_vtable;
+#endif
+        break;
+    case DGFX_BACKEND_EGA:
+#if defined(DGFX_BACKEND_EGA)
+        {
+            extern const dgfx_backend_vtable* dgfx_ega_get_vtable(void);
+            g_dgfx = dgfx_ega_get_vtable();
         }
 #else
         g_dgfx = &g_dgfx_null_vtable;
