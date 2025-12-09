@@ -113,3 +113,15 @@ This pass wires up a portable, deterministic stub backend. It exposes the full d
 - Paths: app root from `_NSGetExecutablePath` + `realpath`; user data/config under `~/Library/Application Support/dominium/{data,config}`; cache under `~/Library/Caches/dominium`; temp from `_CS_DARWIN_USER_TEMP_DIR`, `$TMPDIR`, or `/tmp`.
 - Build: enable with `-DDOMINO_USE_COCOA_BACKEND=ON` (alias `-DDSYS_BACKEND_COCOA=ON`) to compile `DSYS_BACKEND_COCOA`, add `source/domino/system/plat/cocoa/cocoa_sys.c` and `.m`, and link against AppKit.
 - Limitations: fullscreen toggling is best-effort; text input buffer truncates to 7 UTF-8 bytes.
+
+## Carbon Backend (macOS Carbon GUI)
+- API: Carbon Event/Window Manager + CoreServices; classic 32-bit Carbon (`WindowRef` native handle).
+- Target systems: Mac OS X 10.0–10.6/10.7 where Carbon remains available (PPC/Intel).
+- UI modes: GUI (`ui_modes = 1`); `has_windows = true`, mouse supported, high-res timer via `UpTime`/`AbsoluteToNanoseconds`.
+- Windowing: creates Carbon document windows (`CreateNewWindow`); close→quit event; bounds-change→`DSYS_EVENT_WINDOW_RESIZED`; fullscreen/borderless sizes the window to the main display; native handle is the `WindowRef`.
+- Events: Carbon event handlers translate mouse move/button/wheel, raw key down/up/repeat, and window close/resize into `dsys_event` via a small ring buffer; `dsys_poll_event` pumps `ReceiveNextEvent`/`SendEventToEventTarget` non-blocking before draining the queue.
+- Time/Delay: monotonic microseconds from `UpTime` → `AbsoluteToNanoseconds`; `sleep_ms` busy-waits while optionally pumping Carbon events.
+- Paths: app root from `CFBundleCopyBundleURL` (POSIX UTF-8 path, fallback `getcwd`); user data/config/cache from `FSFindFolder` Application Support/Preferences/CachedData + `/dominium`; temp from the user temporary folder or `/tmp`.
+- Filesystem: stdio-backed file IO; dirent/stat directory iteration with UTF-8 POSIX paths.
+- Processes: unsupported (`spawn` returns `NULL`, `wait` returns `-1`).
+- Build: enable with `-DDOMINO_USE_CARBON_BACKEND=ON` (alias `-DDSYS_BACKEND_CARBON=ON`) to compile `source/domino/system/plat/carbon/carbon_sys.c/.h` and link against the Carbon framework (32-bit Carbon targets).
