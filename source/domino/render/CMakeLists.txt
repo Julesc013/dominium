@@ -121,10 +121,11 @@ target_include_directories(domino_gfx
 target_link_libraries(domino_gfx PUBLIC domino_sys)
 target_compile_features(domino_gfx PRIVATE c_std_90)
 if(WIN32)
+    target_compile_definitions(domino_gfx PRIVATE DOMINIUM_GFX_DX9 DOMINIUM_GFX_DX11 DOMINIUM_GFX_GDI)
     target_link_libraries(domino_gfx PRIVATE gdi32 user32 d3d9 d3d11 dxgi dxguid opengl32)
 endif()
 if(APPLE)
-    target_compile_definitions(domino_gfx PRIVATE DOMINIUM_GFX_QUICKDRAW DOMINIUM_GFX_QUARTZ)
+    target_compile_definitions(domino_gfx PRIVATE DOMINIUM_GFX_QUICKDRAW DOMINIUM_GFX_QUARTZ DOMINIUM_GFX_METAL)
     target_link_libraries(domino_gfx PRIVATE
         "-framework Carbon"
         "-framework CoreGraphics"

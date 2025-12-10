@@ -105,7 +105,6 @@ add_subdirectory(launcher)
 
 set(DOMINO_ENGINE_SOURCES
     system/sys.c
-    render/gfx.c
     audio/audio.c
     ui/ui.c
     input/input.c
@@ -180,6 +179,10 @@ add_library(domino_engine STATIC ${DOMINO_ENGINE_SOURCES})
 target_include_directories(domino_engine
     PUBLIC
         ${DOMINIUM_INCLUDE_DIR}
+)
+target_link_libraries(domino_engine
+    PUBLIC
+        domino_gfx
 )
 target_compile_features(domino_engine PRIVATE c_std_90)
 if(DOMINO_USE_SDL1_BACKEND)
