@@ -61,6 +61,16 @@ typedef ptrdiff_t GLsizeiptr;
 #ifndef GLintptr
 typedef ptrdiff_t GLintptr;
 #endif
+#ifndef APIENTRY
+#if defined(_WIN32)
+#define APIENTRY __stdcall
+#else
+#define APIENTRY
+#endif
+#endif
+#ifndef APIENTRYP
+#define APIENTRYP APIENTRY *
+#endif
 
 typedef void (APIENTRYP PFNGLGENBUFFERSPROC)(GLsizei, GLuint*);
 typedef void (APIENTRYP PFNGLBINDBUFFERPROC)(GLenum, GLuint);

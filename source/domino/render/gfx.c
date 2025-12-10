@@ -16,7 +16,6 @@ static const dgfx_backend_vtable *dgfx_choose_backend(dgfx_backend_t backend)
 {
     switch (backend) {
     case DGFX_BACKEND_SOFT:
-    case DGFX_BACKEND_SOFT8:
         return dgfx_soft_get_vtable();
     default:
         /* Temporary fallback to software until HW backends are rebuilt. */
