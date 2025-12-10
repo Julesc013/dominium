@@ -7,6 +7,9 @@ add_library(domino_core STATIC
     core/rng.c
     cli/cli.c
     tui/tui.c
+    gui/gui.c
+    gui/style.c
+    render/gui_prim.c
     system/dsys_stub.c
     system/dsys_term.c
     $<$<BOOL:${WIN32}>:system/dsys_proc_winnt.c>
