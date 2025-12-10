@@ -71,6 +71,9 @@ void            dom_launch_handle_action(dom_launch_ctx *ctx,
                                          dom_launch_action action,
                                          uint32_t param_u32,
                                          const char *param_str);
+void            dom_launch_handle_custom_action(dom_launch_ctx *ctx,
+                                               const char *action_id,
+                                               const char *payload);
 
 /* helper: enumerate views that the launcher wants to expose in the UI */
 uint32_t        dom_launch_list_views(dom_launch_ctx *ctx,

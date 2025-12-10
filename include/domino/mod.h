@@ -7,6 +7,7 @@
 #include "domino/inst.h"
 #include "domino/version.h"
 #include "domino/sys.h"
+#include "domino/canvas.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -23,6 +24,27 @@ typedef bool (*dom_mod_get_vtable_fn)(dom_mod_vtable* out);
 
 bool dom_mod_load_all(dom_core* core, dom_instance_id inst);
 void dom_mod_unload_all(dom_core* core, dom_instance_id inst);
+
+/*------------------------------------------------------------
+ * Launcher extensions (opt-in from mods/packs)
+ *------------------------------------------------------------*/
+typedef struct dom_launcher_ext_v1 {
+    uint32_t struct_size;
+    uint32_t struct_version;
+
+    void (*on_launcher_start)(dom_core* core);
+    void (*on_register_views)(dom_core* core);
+    int  (*on_action)(dom_core* core, const char* action_id, const char* payload);
+    bool (*on_build_canvas)(dom_core* core,
+                            dom_instance_id inst,
+                            const char* canvas_id,
+                            dom_gfx_buffer* out);
+} dom_launcher_ext_v1;
+
+typedef const dom_launcher_ext_v1* (*dom_mod_get_launcher_ext_fn)(void);
+uint32_t dom_launcher_ext_count(dom_core* core);
+const dom_launcher_ext_v1* dom_launcher_ext_get(dom_core* core, uint32_t index);
+bool dom_launcher_ext_register(dom_core* core, const dom_launcher_ext_v1* ext);
 
 /*------------------------------------------------------------
  * Legacy registry/instance API (kept for compatibility)

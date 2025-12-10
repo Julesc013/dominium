@@ -84,3 +84,23 @@ if(DOMINIUM_ENABLE_LAUNCHER_TUI)
         message(STATUS "Curses not found; dominium-launcher-tui will not be built")
     endif()
 endif()
+
+option(DOMINIUM_ENABLE_LAUNCHER_GUI "Build GUI launcher (dgfx)" OFF)
+if(DOMINIUM_ENABLE_LAUNCHER_GUI)
+    add_executable(dominium-launcher-gui
+        gui/launch_gui.c
+    )
+    target_include_directories(dominium-launcher-gui
+        PRIVATE
+            ${DOMINIUM_INCLUDE_DIR}
+    )
+    target_link_libraries(dominium-launcher-gui
+        PRIVATE
+            dominium_launcher_core
+            domino_engine
+            domino_core
+            dominium_rules
+            domino_sys
+            domino_gfx
+    )
+endif()

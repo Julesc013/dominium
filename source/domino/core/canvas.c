@@ -24,6 +24,18 @@ bool dom_canvas_build(dom_core* core, dom_instance_id inst, const char* canvas_i
         return dom_construction_build_canvas(core, inst, canvas_id, out);
     }
 
+    {
+        uint32_t i;
+        for (i = 0u; i < core->launcher_ext_count; ++i) {
+            const dom_launcher_ext_v1* ext = &core->launcher_exts[i];
+            if (ext->on_build_canvas) {
+                if (ext->on_build_canvas(core, inst, canvas_id, out)) {
+                    return true;
+                }
+            }
+        }
+    }
+
     /* Unknown canvas: succeed with empty buffer */
     return true;
 }
