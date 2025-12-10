@@ -6,6 +6,7 @@
 #include "domino/mod.h"
 #include "domino/gfx.h"
 #include "domino/pkg/repo.h"
+#include "domino/tui/tui.h"
 #include "dominium/product_info.h"
 #include "dominium/version.h"
 
@@ -325,6 +326,119 @@ static int modcheck_cmd_verify_product(int argc, const char** argv, void* user) 
     return modcheck_verify_product(&opts);
 }
 
+typedef struct modcheck_tui_state {
+    d_tui_widget* status;
+    int*          running;
+} modcheck_tui_state;
+
+static void modcheck_tui_set(modcheck_tui_state* st, const char* text) {
+    if (!st || !st->status) return;
+    d_tui_widget_set_text(st->status, text);
+}
+
+static void modcheck_tui_verify_mod(d_tui_widget* self, void* user) {
+    (void)self;
+    modcheck_tui_set((modcheck_tui_state*)user, "verify-mod (stub)");
+}
+
+static void modcheck_tui_verify_pack(d_tui_widget* self, void* user) {
+    (void)self;
+    modcheck_tui_set((modcheck_tui_state*)user, "verify-pack (stub)");
+}
+
+static void modcheck_tui_verify_product_action(d_tui_widget* self, void* user) {
+    (void)self;
+    modcheck_tui_set((modcheck_tui_state*)user, "verify-product (stub)");
+}
+
+static void modcheck_tui_exit(d_tui_widget* self, void* user) {
+    modcheck_tui_state* st = (modcheck_tui_state*)user;
+    (void)self;
+    if (st && st->running) {
+        *(st->running) = 0;
+    }
+}
+
+static int modcheck_run_tui(void) {
+    d_tui_context* tui;
+    d_tui_widget* root;
+    d_tui_widget* header;
+    d_tui_widget* actions;
+    d_tui_widget* status;
+    modcheck_tui_state st;
+    int running = 1;
+
+    if (!dsys_terminal_init()) {
+        printf("Modcheck: terminal init failed.\n");
+        return 1;
+    }
+
+    tui = d_tui_create();
+    if (!tui) {
+        dsys_terminal_shutdown();
+        return 1;
+    }
+
+    root = d_tui_panel(tui, D_TUI_LAYOUT_VERTICAL);
+    header = d_tui_label(tui, "Dominium Tools (modcheck) TUI");
+    actions = d_tui_panel(tui, D_TUI_LAYOUT_VERTICAL);
+    status = d_tui_label(tui, "Ready");
+
+    d_tui_widget_add(root, header);
+    d_tui_widget_add(root, actions);
+    d_tui_widget_add(root, status);
+
+    st.status = status;
+    st.running = &running;
+
+    d_tui_widget_add(actions, d_tui_button(tui, "verify-mod", modcheck_tui_verify_mod, &st));
+    d_tui_widget_add(actions, d_tui_button(tui, "verify-pack", modcheck_tui_verify_pack, &st));
+    d_tui_widget_add(actions, d_tui_button(tui, "verify-product", modcheck_tui_verify_product_action, &st));
+    d_tui_widget_add(actions, d_tui_button(tui, "Exit", modcheck_tui_exit, &st));
+
+    d_tui_set_root(tui, root);
+
+    while (running) {
+        int key;
+        d_tui_render(tui);
+        key = dsys_terminal_poll_key();
+        if (key == 'q' || key == 'Q' || key == 27) {
+            break;
+        }
+        if (key != 0) {
+            d_tui_handle_key(tui, key);
+        }
+    }
+
+    d_tui_destroy(tui);
+    dsys_terminal_shutdown();
+    return 0;
+}
+
+static int modcheck_cmd_tui(int argc, const char** argv, void* user) {
+    d_cli_args args;
+    int rc;
+    int i;
+    (void)user;
+
+    rc = d_cli_tokenize(argc, argv, &args);
+    if (rc != D_CLI_OK) return rc;
+    for (i = 0; i < args.token_count; ++i) {
+        const d_cli_token* t = &args.tokens[i];
+        if (t->is_positional) {
+            d_cli_args_dispose(&args);
+            printf("Modcheck: unexpected positional '%s'\n", t->value ? t->value : "(null)");
+            return D_CLI_BAD_USAGE;
+        }
+        if (d_cli_match_key(t, "instance")) continue;
+        d_cli_args_dispose(&args);
+        printf("Modcheck: unknown option '%.*s'\n", t->key_len, t->key ? t->key : "");
+        return D_CLI_BAD_USAGE;
+    }
+    d_cli_args_dispose(&args);
+    return modcheck_run_tui();
+}
+
 int main(int argc, char** argv) {
     d_cli cli;
     int rc;
@@ -337,6 +451,8 @@ int main(int argc, char** argv) {
     rc = d_cli_register(&cli, "verify-pack", "Verify compatibility of packs", modcheck_cmd_verify_pack, NULL);
     if (rc != D_CLI_OK) return rc;
     rc = d_cli_register(&cli, "verify-product", "Verify product manifests", modcheck_cmd_verify_product, NULL);
+    if (rc != D_CLI_OK) return rc;
+    rc = d_cli_register(&cli, "tui", "Launch modcheck text UI", modcheck_cmd_tui, NULL);
     if (rc != D_CLI_OK) return rc;
 
     rc = d_cli_dispatch(&cli, argc, (const char**)argv);

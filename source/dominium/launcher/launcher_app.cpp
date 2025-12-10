@@ -1,6 +1,7 @@
 #include "domino/cli/cli.h"
 #include "domino/pkg/repo.h"
 #include "domino/system/dsys.h"
+#include "domino/tui/tui.h"
 #include "dominium/launcher/launcher_app.hpp"
 #include "dominium/version.h"
 #include <cstdio>
@@ -229,6 +230,40 @@ static int launcher_cmd_manifest_info(int argc, const char** argv, void* userdat
     return rc;
 }
 
+static int launcher_cmd_tui(int argc, const char** argv, void* userdata) {
+    LauncherCliContext* ctx = (LauncherCliContext*)userdata;
+    d_cli_args args;
+    int rc;
+    int i;
+
+    if (!ctx || !ctx->app) {
+        return D_CLI_ERR_STATE;
+    }
+
+    rc = d_cli_tokenize(argc, argv, &args);
+    if (rc != D_CLI_OK) {
+        return rc;
+    }
+    for (i = 0; i < args.token_count; ++i) {
+        const d_cli_token* t = &args.tokens[i];
+        if (t->is_positional) {
+            d_cli_args_dispose(&args);
+            std::printf("Launcher: unexpected positional argument '%s'\n",
+                        t->value ? t->value : "(null)");
+            return D_CLI_BAD_USAGE;
+        }
+        if (d_cli_match_key(t, "instance")) {
+            continue;
+        }
+        d_cli_args_dispose(&args);
+        std::printf("Launcher: unknown option '%.*s'\n",
+                    t->key_len, t->key ? t->key : "");
+        return D_CLI_BAD_USAGE;
+    }
+    d_cli_args_dispose(&args);
+    return ctx->app->run_tui();
+}
+
 LauncherApp::LauncherApp() {
 }
 
@@ -257,6 +292,9 @@ int LauncherApp::run(int argc, char** argv) {
     if (rc != D_CLI_OK) return rc;
     rc = d_cli_register(&cli, "manifest-info",
                         "Print manifest root and product metadata", launcher_cmd_manifest_info, &ctx);
+    if (rc != D_CLI_OK) return rc;
+    rc = d_cli_register(&cli, "tui",
+                        "Launch launcher text UI", launcher_cmd_tui, &ctx);
     if (rc != D_CLI_OK) return rc;
 
     rc = d_cli_dispatch(&cli, argc, (const char**)argv);
@@ -404,5 +442,100 @@ int LauncherApp::run_manifest_info() {
     std::printf("  product_id    = %s\n", info.product_id);
     std::printf("  product_ver   = %s\n", info.product_version);
     std::printf("  core_version  = %s\n", info.core_version);
+    return 0;
+}
+
+struct LauncherTuiState {
+    d_tui_widget* status;
+    int*          running_flag;
+};
+
+static void launcher_tui_set_status(LauncherTuiState* st, const char* text) {
+    if (!st || !st->status) return;
+    d_tui_widget_set_text(st->status, text);
+}
+
+static void launcher_tui_on_list(d_tui_widget* self, void* user) {
+    (void)self;
+    launcher_tui_set_status((LauncherTuiState*)user, "List products (stub)");
+}
+
+static void launcher_tui_on_run_headless(d_tui_widget* self, void* user) {
+    (void)self;
+    launcher_tui_set_status((LauncherTuiState*)user, "Run headless (stub)");
+}
+
+static void launcher_tui_on_run_gui(d_tui_widget* self, void* user) {
+    (void)self;
+    launcher_tui_set_status((LauncherTuiState*)user, "Run GUI (stub)");
+}
+
+static void launcher_tui_on_run_tui(d_tui_widget* self, void* user) {
+    (void)self;
+    launcher_tui_set_status((LauncherTuiState*)user, "Run TUI (stub)");
+}
+
+static void launcher_tui_on_exit(d_tui_widget* self, void* user) {
+    LauncherTuiState* st = (LauncherTuiState*)user;
+    (void)self;
+    if (st && st->running_flag) {
+        *(st->running_flag) = 0;
+    }
+}
+
+int LauncherApp::run_tui() {
+    d_tui_context* tui;
+    d_tui_widget* root;
+    d_tui_widget* header;
+    d_tui_widget* actions;
+    d_tui_widget* status;
+    LauncherTuiState st;
+    int running = 1;
+
+    if (!dsys_terminal_init()) {
+        std::printf("Launcher: terminal init failed.\n");
+        return 1;
+    }
+
+    tui = d_tui_create();
+    if (!tui) {
+        dsys_terminal_shutdown();
+        return 1;
+    }
+
+    root = d_tui_panel(tui, D_TUI_LAYOUT_VERTICAL);
+    header = d_tui_label(tui, "Dominium Launcher TUI");
+    actions = d_tui_panel(tui, D_TUI_LAYOUT_VERTICAL);
+    status = d_tui_label(tui, "Ready");
+
+    d_tui_widget_add(root, header);
+    d_tui_widget_add(root, actions);
+    d_tui_widget_add(root, status);
+
+    st.status = status;
+    st.running_flag = &running;
+
+    d_tui_widget_add(actions, d_tui_button(tui, "List products", launcher_tui_on_list, &st));
+    d_tui_widget_add(actions, d_tui_button(tui, "Run headless", launcher_tui_on_run_headless, &st));
+    d_tui_widget_add(actions, d_tui_button(tui, "Run GUI", launcher_tui_on_run_gui, &st));
+    d_tui_widget_add(actions, d_tui_button(tui, "Run TUI", launcher_tui_on_run_tui, &st));
+    d_tui_widget_add(actions, d_tui_button(tui, "Exit", launcher_tui_on_exit, &st));
+
+    d_tui_set_root(tui, root);
+
+    while (running) {
+        int key;
+        d_tui_render(tui);
+        key = dsys_terminal_poll_key();
+        if (key == 'q' || key == 'Q' || key == 27) {
+            break;
+        }
+        if (key != 0) {
+            d_tui_handle_key(tui, key);
+        }
+    }
+
+    d_tui_destroy(tui);
+    dsys_terminal_shutdown();
     return 0;
 }

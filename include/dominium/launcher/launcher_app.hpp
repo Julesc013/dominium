@@ -15,6 +15,7 @@ private:
     int run_run_game(u32 seed, u32 ticks, const char* instance_id);
     int run_run_tool(const char* tool_id);
     int run_manifest_info();
+    int run_tui();
 };
 
 #endif /* DOMINIUM_LAUNCHER_APP_HPP */

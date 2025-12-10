@@ -38,6 +38,16 @@ dsys_proc_result dsys_proc_spawn(const char* path,
 dsys_proc_result dsys_proc_wait(dsys_process_handle* handle,
                                 int* out_exit_code);
 
+/*------------------------------------------------------------
+ * Terminal (text UI) abstraction
+ *------------------------------------------------------------*/
+int  dsys_terminal_init(void);
+void dsys_terminal_shutdown(void);
+void dsys_terminal_clear(void);
+void dsys_terminal_draw_text(int row, int col, const char* text);
+void dsys_terminal_get_size(int* rows, int* cols);
+int  dsys_terminal_poll_key(void); /* returns keycode or 0 if none */
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif

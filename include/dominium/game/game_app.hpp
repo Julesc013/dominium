@@ -13,6 +13,7 @@ public:
 private:
     int run_headless(u32 seed, u32 ticks, u32 width, u32 height);
     int load_world_checksum(const char* path, u32* checksum_out);
+    int run_tui_mode(void);
 };
 
 #endif /* DOMINIUM_GAME_APP_HPP */
