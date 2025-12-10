@@ -40,3 +40,21 @@ target_link_libraries(dominium_launcher_cli
         domino_mod
         dominium_product_common
 )
+
+add_executable(dominium-launcher-cli
+    cli/launch_cli.c
+)
+
+target_include_directories(dominium-launcher-cli
+    PRIVATE
+        ${DOMINIUM_INCLUDE_DIR}
+)
+
+target_link_libraries(dominium-launcher-cli
+    PRIVATE
+        dominium_launcher_core
+        domino_engine
+        domino_core
+        dominium_rules
+        domino_sys
+)
