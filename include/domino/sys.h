@@ -69,6 +69,9 @@ typedef struct domino_sys_desc {
     /* future: logging callbacks, allocators, etc. */
 } domino_sys_desc;
 
+/* Backend selection (string-based, runtime hint) */
+int dom_sys_select_backend(const char* name); /* "win32", "sdl2", "x11", "wayland", "posix_headless", "dos16", ... */
+
 /*------------------------------------------------------------
  * Init / shutdown
  *------------------------------------------------------------*/

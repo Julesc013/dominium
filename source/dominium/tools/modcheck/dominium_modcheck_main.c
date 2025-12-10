@@ -3,6 +3,7 @@
 
 #include "domino/sys.h"
 #include "domino/mod.h"
+#include "domino/gfx.h"
 #include "dominium/product_info.h"
 #include "dominium/version.h"
 
@@ -58,11 +59,34 @@ int main(int argc, char** argv)
     modcheck_ctx ctx;
     char root_override[260];
     int i;
+    char platform_value[32];
+    char renderer_value[32];
 
+    platform_value[0] = '\0';
+    renderer_value[0] = '\0';
     for (i = 1; i < argc; ++i) {
         if (strcmp(argv[i], "--introspect-json") == 0) {
             dominium_print_product_info_json(dom_get_product_info_tools(), stdout);
             return 0;
+        } else if (strncmp(argv[i], "--platform=", 11) == 0) {
+            strncpy(platform_value, argv[i] + 11, sizeof(platform_value) - 1);
+            platform_value[sizeof(platform_value) - 1] = '\0';
+        } else if (strncmp(argv[i], "--renderer=", 11) == 0) {
+            strncpy(renderer_value, argv[i] + 11, sizeof(renderer_value) - 1);
+            renderer_value[sizeof(renderer_value) - 1] = '\0';
+        }
+    }
+
+    if (platform_value[0]) {
+        if (dom_sys_select_backend(platform_value) != 0) {
+            fprintf(stderr, "Unsupported platform backend '%s'\n", platform_value);
+            return 1;
+        }
+    }
+    if (renderer_value[0]) {
+        if (dom_gfx_select_backend(renderer_value) != 0) {
+            fprintf(stderr, "Unsupported renderer backend '%s'\n", renderer_value);
+            return 1;
         }
     }
 

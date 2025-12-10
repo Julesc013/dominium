@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <ctype.h>
 
 #if defined(_WIN32)
 #include <windows.h>
@@ -22,6 +23,69 @@ static const dsys_caps g_null_caps = {
 
 static const dsys_backend_vtable g_null_vtable;
 static const dsys_backend_vtable* g_dsys = NULL;
+static const char* g_requested_backend = NULL;
+
+static int dsys_str_ieq(const char* a, const char* b)
+{
+    if (!a || !b) return 0;
+    while (*a && *b) {
+        if (tolower((unsigned char)*a) != tolower((unsigned char)*b)) {
+            return 0;
+        }
+        ++a; ++b;
+    }
+    return *a == '\0' && *b == '\0';
+}
+
+static const char* dsys_compiled_backend_name(void)
+{
+#if defined(DSYS_BACKEND_CPM80)
+    return "cpm80";
+#elif defined(DSYS_BACKEND_CPM86)
+    return "cpm86";
+#elif defined(DSYS_BACKEND_DOS16)
+    return "dos16";
+#elif defined(DSYS_BACKEND_DOS32)
+    return "dos32";
+#elif defined(DSYS_BACKEND_WIN16)
+    return "win16";
+#elif defined(DSYS_BACKEND_POSIX)
+    return "posix_headless";
+#elif defined(DSYS_BACKEND_COCOA)
+    return "cocoa";
+#elif defined(DSYS_BACKEND_CARBON)
+    return "carbon";
+#elif defined(DSYS_BACKEND_WAYLAND)
+    return "wayland";
+#elif defined(DSYS_BACKEND_X11)
+    return "x11";
+#elif defined(DSYS_BACKEND_SDL1)
+    return "sdl1";
+#elif defined(DSYS_BACKEND_SDL2)
+    return "sdl2";
+#elif defined(DSYS_BACKEND_WIN32)
+    return "win32";
+#elif defined(DSYS_BACKEND_NULL)
+    return "null";
+#else
+    return "null";
+#endif
+}
+
+int dom_sys_select_backend(const char* name)
+{
+    const char* compiled;
+    if (!name || !name[0]) {
+        return -1;
+    }
+    compiled = dsys_compiled_backend_name();
+    if (dsys_str_ieq(name, compiled)) {
+        g_requested_backend = compiled;
+        return 0;
+    }
+    /* Reject unsupported backend names; only one backend is compiled in this pass. */
+    return -1;
+}
 
 static const dsys_backend_vtable* dsys_active_backend(void)
 {

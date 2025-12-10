@@ -20,14 +20,14 @@ cmake -G "Ninja" -DDOMINIUM_ENABLE_PACKAGING=ON \
       -DDOMINIUM_BUILD_DEB=ON \
       -DDOMINIUM_BUILD_RPM=ON \
       -DDOMINIUM_BUILD_RUN=ON \
-      -DDOMINIUM_VERSION=1.0.0 \
+      -DDOMINIUM_GAME_VERSION=0.1.0 \
       -DDOMINIUM_DIST_DIR="$PWD/build/dist" \
       -B build/linux
 ```
 
 Key cache variables:
 - `DOMINIUM_BUILD_DEB` / `DOMINIUM_BUILD_RPM` / `DOMINIUM_BUILD_RUN` — enable respective targets (default ON when on Linux).
-- `DOMINIUM_VERSION` — package version string.
+- `DOMINIUM_GAME_VERSION` — package version string.
 - `DOMINIUM_DIST_DIR` — staging root with binaries/data.
 - `DOMINIUM_INSTALLER_DIR` — output root (defaults to `<build>/dist/installers/linux`).
 - `DOMINIUM_DEB_DEPENDS`, `DOMINIUM_DEB_MAINTAINER` — control fields for .deb.

@@ -3,6 +3,7 @@
 
 #include "domino/sys.h"
 #include "domino/core.h"
+#include "domino/gfx.h"
 #include "dominium/version.h"
 #include "dominium/setup_api.h"
 #include "dominium/product_info.h"
@@ -11,6 +12,7 @@ static void dom_setup_cli_print_usage(void)
 {
     printf("Usage: dominium-setup-cli --scope=portable|user|system "
            "--action=install|repair|uninstall|verify [--dir=<path>] [--quiet]\n");
+    printf("       [--platform=<backend>] [--renderer=<backend>] [--introspect-json]\n");
 }
 
 static int dom_setup_cli_parse_scope(const char* value, dom_setup_scope* out)
@@ -100,6 +102,8 @@ int main(int argc, char** argv)
     dom_setup_status status;
     int i;
     int show_usage;
+    char platform_value[32];
+    char renderer_value[32];
 
     memset(&desc, 0, sizeof(desc));
     desc.struct_size = sizeof(desc);
@@ -120,6 +124,8 @@ int main(int argc, char** argv)
     cmd.existing_install_dir = NULL;
 
     show_usage = 0;
+    platform_value[0] = '\0';
+    renderer_value[0] = '\0';
     for (i = 1; i < argc; ++i) {
         const char* arg = argv[i];
         if (strcmp(arg, "--introspect-json") == 0) {
@@ -139,6 +145,12 @@ int main(int argc, char** argv)
             cmd.existing_install_dir = arg + 6;
         } else if (strcmp(arg, "--quiet") == 0) {
             desc.quiet = 1;
+        } else if (strncmp(arg, "--platform=", 11) == 0) {
+            strncpy(platform_value, arg + 11, sizeof(platform_value) - 1);
+            platform_value[sizeof(platform_value) - 1] = '\0';
+        } else if (strncmp(arg, "--renderer=", 11) == 0) {
+            strncpy(renderer_value, arg + 11, sizeof(renderer_value) - 1);
+            renderer_value[sizeof(renderer_value) - 1] = '\0';
         } else {
             show_usage = 1;
         }
@@ -147,6 +159,19 @@ int main(int argc, char** argv)
     if (show_usage) {
         dom_setup_cli_print_usage();
         return 1;
+    }
+
+    if (platform_value[0]) {
+        if (dom_sys_select_backend(platform_value) != 0) {
+            fprintf(stderr, "Unsupported platform backend '%s'\n", platform_value);
+            return 1;
+        }
+    }
+    if (renderer_value[0]) {
+        if (dom_gfx_select_backend(renderer_value) != 0) {
+            fprintf(stderr, "Unsupported renderer backend '%s'\n", renderer_value);
+            return 1;
+        }
     }
 
     core_desc.api_version = 1u;

@@ -19,14 +19,14 @@ Enable packaging during configure:
 ```bash
 cmake -G "Ninja" -DDOMINIUM_ENABLE_PACKAGING=ON \
       -DDOMINIUM_BUILD_MACOS_PKG=ON \
-      -DDOMINIUM_VERSION=1.0.0 \
+      -DDOMINIUM_GAME_VERSION=0.1.0 \
       -DDOMINIUM_DIST_DIR="$PWD/build/dist" \
       -B build/macos
 ```
 
 Key cache variables:
 - `DOMINIUM_BUILD_MACOS_PKG` — build `dominium_macos_pkg` / `dominium_macos_dmg` (default ON).
-- `DOMINIUM_VERSION` — installer/app version string (default `1.0.0`).
+- `DOMINIUM_GAME_VERSION` — installer/app version string (default `0.1.0`).
 - `DOMINIUM_DIST_DIR` — staging root containing built binaries/data.
 - `DOMINIUM_INSTALLER_DIR` — outputs go to `<build>/dist/installers/macos` by default.
 - `DOMINIUM_BUNDLE_IDENTIFIER` — CFBundleIdentifier (default `com.yourorg.dominium`).
@@ -69,5 +69,5 @@ Outputs (`dist/installers/macos/` by default):
 - Packaging targets only run on macOS (guarded by `APPLE` in CMake).
 - Ensure `DOMINIUM_DIST_DIR` holds macOS binaries named as expected; otherwise
   the staging copy step will fail.
-- The macOS GUI shim lives in `source/dominium/products/setup/os/macos` and
+- The macOS GUI shim lives in `source/dominium/setup/os/macos` and
   shells out to `dominium-setup-cli` for all real work.
