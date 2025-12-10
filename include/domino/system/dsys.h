@@ -2,16 +2,11 @@
 #ifndef DOMINO_SYSTEM_DSYS_H
 #define DOMINO_SYSTEM_DSYS_H
 
-#include "domino/core/types.h"
+#include "domino/sys.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-typedef enum dsys_result {
-    DSYS_OK = 0,
-    DSYS_ERROR_GENERIC = -1
-} dsys_result;
 
 typedef enum dsys_proc_result {
     DSYS_PROC_OK = 0,
@@ -26,9 +21,6 @@ typedef struct dsys_process_handle {
 typedef void (*dsys_log_fn)(const char* message);
 
 void dsys_set_log_callback(dsys_log_fn fn);
-
-dsys_result dsys_init(void);
-void        dsys_shutdown(void);
 
 dsys_proc_result dsys_proc_spawn(const char* path,
                                  const char* const* argv,

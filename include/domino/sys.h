@@ -253,6 +253,8 @@ void         dsys_window_set_mode(dsys_window* win, dsys_window_mode mode);
 void         dsys_window_set_size(dsys_window* win, int32_t w, int32_t h);
 void         dsys_window_get_size(dsys_window* win, int32_t* w, int32_t* h);
 void*        dsys_window_get_native_handle(dsys_window* win);
+int          dsys_window_should_close(dsys_window* win);
+void         dsys_window_present(dsys_window* win);
 
 /* Input events */
 typedef enum dsys_event_type {
@@ -321,6 +323,52 @@ typedef struct dsys_process_desc {
 dsys_process* dsys_process_spawn(const dsys_process_desc* desc);
 int           dsys_process_wait(dsys_process* p);
 void          dsys_process_destroy(dsys_process* p);
+
+/*------------------------------------------------------------
+ * Raw input feed (platform native; deterministic ordering only)
+ *------------------------------------------------------------*/
+typedef enum dsys_input_event_type {
+    DSYS_INPUT_EVENT_NONE = 0,
+    DSYS_INPUT_EVENT_KEY_DOWN,
+    DSYS_INPUT_EVENT_KEY_UP,
+    DSYS_INPUT_EVENT_TEXT,
+    DSYS_INPUT_EVENT_MOUSE_MOVE,
+    DSYS_INPUT_EVENT_MOUSE_BUTTON,
+    DSYS_INPUT_EVENT_MOUSE_WHEEL,
+    DSYS_INPUT_EVENT_CONTROLLER_BUTTON,
+    DSYS_INPUT_EVENT_CONTROLLER_AXIS,
+    DSYS_INPUT_EVENT_TOUCH
+} dsys_input_event_type;
+
+typedef struct dsys_input_event {
+    dsys_input_event_type type;
+    union {
+        struct { int32_t keycode; int32_t repeat; int32_t translated; } key;
+        struct { char text[16]; } text;
+        struct { int32_t x; int32_t y; int32_t dx; int32_t dy; } mouse_move;
+        struct { int32_t button; int32_t pressed; int32_t x; int32_t y; int32_t clicks; } mouse_button;
+        struct { int32_t delta_x; int32_t delta_y; } mouse_wheel;
+        struct { int32_t gamepad; int32_t control; int32_t value; int32_t is_axis; } controller;
+        struct { int32_t id; int32_t x; int32_t y; int32_t state; } touch;
+    } payload;
+} dsys_input_event;
+
+int dsys_input_poll_raw(dsys_input_event* ev);
+
+/*------------------------------------------------------------
+ * IME (Input Method Editor)
+ *------------------------------------------------------------*/
+typedef struct dsys_ime_event {
+    char composition[128];
+    char committed[128];
+    int  has_composition;
+    int  has_commit;
+} dsys_ime_event;
+
+void dsys_ime_start(void);
+void dsys_ime_stop(void);
+void dsys_ime_set_cursor(int32_t x, int32_t y);
+int  dsys_ime_poll(dsys_ime_event* ev);
 
 #ifdef DOMINO_SYS_INTERNAL
 typedef struct dsys_backend_vtable_t {

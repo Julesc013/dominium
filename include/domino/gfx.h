@@ -5,7 +5,18 @@
 
 #include <stddef.h>
 #include <stdint.h>
-#include "domino/sys.h"
+
+#ifndef __cplusplus
+# if !defined(__bool_true_false_are_defined)
+typedef _Bool bool;
+#  define true 1
+#  define false 0
+#  define __bool_true_false_are_defined 1
+# endif
+#endif
+
+typedef struct dsys_window_t dsys_window;
+typedef struct domino_sys_context domino_sys_context;
 
 #ifdef __cplusplus
 extern "C" {

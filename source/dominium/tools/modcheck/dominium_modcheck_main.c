@@ -7,6 +7,8 @@
 #include "domino/gfx.h"
 #include "domino/canvas.h"
 #include "domino/gui/gui.h"
+#include "domino/render/backend_detect.h"
+#include "domino/render/pipeline.h"
 #include "domino/pkg/repo.h"
 #include "domino/tui/tui.h"
 #include "dominium/product_info.h"
@@ -442,58 +444,70 @@ static int modcheck_cmd_tui(int argc, const char** argv, void* user) {
 }
 
 static int modcheck_run_gui(void) {
-    dgui_context* gui;
-    dgui_widget* root;
-    dgui_widget* header;
-    dgui_widget* actions;
-    dgui_widget* status;
-    struct dcvs_t* canvas;
-    dgfx_desc gdesc;
+    d_gfx_backend_info infos[D_GFX_BACKEND_MAX];
+    d_gfx_backend_type backend;
+    d_gfx_pipeline* pipeline = NULL;
+    d_gui_window* win = NULL;
+    const float dt = 1.0f / 60.0f;
+    int frames = 0;
 
+    memset(infos, 0, sizeof(infos));
     if (dsys_init() != DSYS_OK) {
         printf("Modcheck: dsys_init failed.\n");
         return 1;
     }
-    gdesc.backend = DGFX_BACKEND_SOFT;
-    gdesc.width = 640;
-    gdesc.height = 360;
-    gdesc.fullscreen = 0;
-    gdesc.vsync = 0;
-    gdesc.native_window = NULL;
-    gdesc.window = NULL;
-    if (!dgfx_init(&gdesc)) {
-        printf("Modcheck: dgfx_init failed.\n");
+    d_gfx_detect_backends(infos, D_GFX_BACKEND_MAX);
+    backend = d_gfx_select_backend();
+    pipeline = d_gfx_pipeline_create(backend);
+    if (!pipeline && backend != D_GFX_BACKEND_SOFT) {
+        pipeline = d_gfx_pipeline_create(D_GFX_BACKEND_SOFT);
+    }
+    if (!pipeline) {
+        printf("Modcheck: GUI not supported on this platform.\n");
         dsys_shutdown();
         return 1;
     }
+    d_gui_set_shared_pipeline(pipeline);
 
-    gui = dgui_create();
-    if (!gui) {
-        dgfx_shutdown();
-        dsys_shutdown();
-        return 1;
+    {
+        d_gui_window_desc wdesc;
+        dgui_context* gui;
+        dgui_widget* root;
+        dgui_widget* header;
+        dgui_widget* actions;
+        dgui_widget* status;
+        wdesc.title = "Dominium Tools (modcheck)";
+        wdesc.x = 160;
+        wdesc.y = 160;
+        wdesc.width = 640;
+        wdesc.height = 360;
+        wdesc.resizable = 1;
+        win = d_gui_window_create(&wdesc);
+        if (win) {
+            gui = d_gui_window_get_gui(win);
+            root = dgui_panel(gui, DGUI_LAYOUT_VERTICAL);
+            header = dgui_label(gui, "Dominium Tools (modcheck) GUI");
+            actions = dgui_panel(gui, DGUI_LAYOUT_VERTICAL);
+            status = dgui_label(gui, "Ready");
+            dgui_widget_add(root, header);
+            dgui_widget_add(root, actions);
+            dgui_widget_add(root, status);
+            dgui_widget_add(actions, dgui_button(gui, "verify-mod", NULL, NULL));
+            dgui_widget_add(actions, dgui_button(gui, "verify-pack", NULL, NULL));
+            dgui_widget_add(actions, dgui_button(gui, "verify-product", NULL, NULL));
+            dgui_widget_add(actions, dgui_button(gui, "Exit", NULL, NULL));
+            d_gui_window_set_root(win, root);
+        }
     }
-    root = dgui_panel(gui, DGUI_LAYOUT_VERTICAL);
-    header = dgui_label(gui, "Dominium Tools (modcheck) GUI");
-    actions = dgui_panel(gui, DGUI_LAYOUT_VERTICAL);
-    status = dgui_label(gui, "Ready");
-    dgui_widget_add(root, header);
-    dgui_widget_add(root, actions);
-    dgui_widget_add(root, status);
-    dgui_widget_add(actions, dgui_button(gui, "verify-mod", NULL, NULL));
-    dgui_widget_add(actions, dgui_button(gui, "verify-pack", NULL, NULL));
-    dgui_widget_add(actions, dgui_button(gui, "verify-product", NULL, NULL));
-    dgui_widget_add(actions, dgui_button(gui, "Exit", NULL, NULL));
-    dgui_set_root(gui, root);
 
-    canvas = dgfx_get_frame_canvas();
-    dgfx_begin_frame();
-    dgui_render(gui, canvas);
-    dgfx_execute(dcvs_get_cmd_buffer(canvas));
-    dgfx_end_frame();
+    while (d_gui_any_window_alive() && frames < 3) {
+        d_gui_tick_all_windows(dt);
+        ++frames;
+    }
 
-    dgui_destroy(gui);
-    dgfx_shutdown();
+    if (win) d_gui_window_destroy(win);
+    d_gui_set_shared_pipeline(NULL);
+    d_gfx_pipeline_destroy(pipeline);
     dsys_shutdown();
     return 0;
 }

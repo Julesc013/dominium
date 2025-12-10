@@ -689,6 +689,18 @@ void* dsys_window_get_native_handle(dsys_window* win)
     return NULL;
 }
 
+int dsys_window_should_close(dsys_window* win)
+{
+    /* No backend-driven close signal in this ABI yet; treat null as closed. */
+    return win ? 0 : 1;
+}
+
+void dsys_window_present(dsys_window* win)
+{
+    (void)win;
+    /* Rendering is handled by higher layers; nothing to do here. */
+}
+
 bool dsys_poll_event(dsys_event* out)
 {
     const dsys_backend_vtable* backend;

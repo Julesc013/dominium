@@ -4,6 +4,7 @@
 #include <string.h>
 #include "domino/canvas.h"
 #include "domino/sys.h"
+#include "domino/sys.h"
 
 static const dgfx_backend_vtable *g_dgfx = NULL;
 static dgfx_caps g_caps;
