@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "domino/sys.h"
+#include "domino/gfx.h"
 #include "domino/mod.h"
 #include "dominium/game_api.h"
 #include "dominium/product_info.h"
@@ -19,6 +21,14 @@ static int dom_parse_arg(const char* arg, const char* prefix, char* out, size_t 
     return 1;
 }
 
+static void dom_print_usage(void)
+{
+    printf("Usage: dominium_game_cli [--instance=<id>] [--mode=gui|tui|headless]\n");
+    printf("                         [--server=off|listen|dedicated] [--demo]\n");
+    printf("                         [--platform=<backend>] [--renderer=<backend>]\n");
+    printf("                         [--introspect-json]\n");
+}
+
 int main(int argc, char** argv)
 {
     domino_instance_desc inst;
@@ -27,6 +37,8 @@ int main(int argc, char** argv)
     int has_path = 0;
     char mode_value[32];
     char server_value[32];
+    char platform_value[32];
+    char renderer_value[32];
     DmnGameLaunchOptions launch_opts;
 
     memset(&inst, 0, sizeof(inst));
@@ -37,10 +49,16 @@ int main(int argc, char** argv)
     dmn_game_default_options(&launch_opts);
     mode_value[0] = '\0';
     server_value[0] = '\0';
+    platform_value[0] = '\0';
+    renderer_value[0] = '\0';
 
     for (i = 1; i < argc; ++i) {
         if (strcmp(argv[i], "--introspect-json") == 0) {
             dominium_print_product_info_json(dom_get_product_info_game(), stdout);
+            return 0;
+        }
+        if (strcmp(argv[i], "--help") == 0 || strcmp(argv[i], "-h") == 0) {
+            dom_print_usage();
             return 0;
         }
         if (dom_parse_arg(argv[i], "--instance=", instance_path, sizeof(instance_path))) {
@@ -57,12 +75,29 @@ int main(int argc, char** argv)
             }
         } else if (strcmp(argv[i], "--demo") == 0) {
             launch_opts.demo_mode = 1;
+        } else if (dom_parse_arg(argv[i], "--platform=", platform_value, sizeof(platform_value))) {
+            /* parsed later */
+        } else if (dom_parse_arg(argv[i], "--renderer=", renderer_value, sizeof(renderer_value))) {
+            /* parsed later */
         }
     }
 
     if (has_path) {
         if (domino_instance_load(instance_path, &inst) != 0) {
             printf("Failed to load instance: %s\n", instance_path);
+            return 1;
+        }
+    }
+
+    if (platform_value[0]) {
+        if (dom_sys_select_backend(platform_value) != 0) {
+            fprintf(stderr, "Unsupported platform backend '%s'\n", platform_value);
+            return 1;
+        }
+    }
+    if (renderer_value[0]) {
+        if (dom_gfx_select_backend(renderer_value) != 0) {
+            fprintf(stderr, "Unsupported renderer backend '%s'\n", renderer_value);
             return 1;
         }
     }

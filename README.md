@@ -240,17 +240,15 @@ This section is a high-level overview only. The authoritative and machine-checka
 Top-level structure (conceptual):
 
 - `/docs` - specifications, formats, policies, style, building
-- `/engine` - deterministic engine core (C89, fixed-point, no floats)
-- `/runtime` - high-level game runtimes (C++98 frontends; e.g., CLI, SDL, editor)
-- `/content` - official content packs (materials, recipes, worldgen, assets)
-- `/mods` - third-party deterministic mods and content packs
-- `/tools` - editors, converters, inspection tools, pipelines
+- `/include` - public headers (`domino/` engine, `dominium/` products)
+- `/source/domino` - deterministic engine core (C89, fixed-point, no floats) plus gfx/system/mod glue
+- `/source/dominium` - product suite (common/, game/, launcher/, setup/, tools/)
+- `/data` - content tree (mods/packs/authoring/test)
+- `/tools` - top-level tool entrypoints (legacy stubs)
 - `/tests` - unit tests, replay determinism tests, integration and performance tests
 - `/external` - vendored dependencies (Lua subset, platform libs, zlib, etc.)
-- `/build` - build trees, generated headers, CI artefacts
-- `/package` - installer scripts, retro media images and packaging
 - `/scripts` - automation, CI helpers, migration tools
-- `/ports` - optional platform metadata, capability descriptors, and build configurations. No code or behaviour lives here; all platforms share the same source hierarchy.
+- `/cmake` - presets/toolchains/modules for the above
 
 Within `/docs/spec/` the authoritative directory contract lives in:
 

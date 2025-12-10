@@ -27,7 +27,7 @@ Enable packaging targets when configuring:
 cmake -G "Ninja" -DDOMINIUM_ENABLE_PACKAGING=ON ^
       -DDOMINIUM_BUILD_MSI=ON ^
       -DDOMINIUM_BUILD_BUNDLE=ON ^
-      -DDOMINIUM_VERSION=1.0.0 ^
+      -DDOMINIUM_GAME_VERSION=0.1.0 ^
       -DDOMINIUM_DIST_DIR="C:/path/to/dist" ^
       -B build/debug
 ```
@@ -36,7 +36,7 @@ Key variables (all cached):
 - `DOMINIUM_ENABLE_PACKAGING` — include packaging targets (default OFF).
 - `DOMINIUM_BUILD_MSI` — build `dominium_msi` target (default ON).
 - `DOMINIUM_BUILD_BUNDLE` — build `dominium_bundle` target (default ON).
-- `DOMINIUM_VERSION` — installer version string (defaults to `1.0.0`).
+- `DOMINIUM_GAME_VERSION` — installer version string (defaults to `0.1.0`).
 - `DOMINIUM_DIST_DIR` — staging root with binaries/data (defaults to
   `<build>/dist`).
 - `DOMINIUM_INSTALLER_DIR` — outputs go to `<build>/dist/installers/windows`

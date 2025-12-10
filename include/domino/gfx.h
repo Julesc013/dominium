@@ -246,6 +246,9 @@ typedef struct domino_gfx_desc {
     domino_pixfmt framebuffer_fmt;
 } domino_gfx_desc;
 
+/* Runtime backend selection (string-based) */
+int dom_gfx_select_backend(const char* name); /* "soft", "dx9", "dx11", "gl1", "gl2", "vk1", "metal", ... */
+
 typedef struct domino_gfx_rect {
     float x, y, w, h;
 } domino_gfx_rect;

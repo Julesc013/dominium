@@ -13,29 +13,32 @@ dominium/
 │   │   ├── sim/              – ECS/world/replay scaffolding and serialization helpers.
 │   │   └── mod/              – package/mod/script hosts (placeholders).
 │   └── dominium/             – Dominium-specific logic.
-│       ├── rules/            – rules/gameplay data stubs.
-│       └── products/         – shipping products.
-│           ├── launcher/     – launcher runtime, services, and shell frontends.
-│           │   ├── core/     – launcher runtime, context, registry, view registry, process control.
-│           │   ├── model/    – view models for launcher (instances, mods, packs, etc.).
-│           │   ├── services/ – launcher services (instances/mods/packs/servers/accounts/tools).
-│           │   │   └── instances/ – instances service (instance management and views).
-│           │   ├── ipc/      – IPC stubs for future supervision.
-│           │   ├── cli/      – CLI front-end for launcher.
-│           │   ├── tui/      – TUI front-end (future).
-│           │   └── gui/      – GUI front-end (future).
-│           ├── setup/        – installer/repair/uninstall core + os hooks with cli/tui/gui.
-│           │   ├── core/     – setup execution plans (install/repair/uninstall).
-│           │   ├── model/    – discovery of installed products/manifests.
-│           │   ├── cli/      – command-line installer/repair entrypoints.
-│           │   └── gui/      – GUI installer stub.
-│           └── game/         – game shells (core/client/app mode, states/ui, cli/tui/gui).
-│               ├── core/     – game entrypoints and version helpers.
-│               ├── states/   – gameplay state machine stubs.
-│               ├── ui/       – shared UI glue.
-│               ├── cli/      – command-line runner.
-│               ├── tui/      – text UI shell (stub).
-│               └── gui/      – rendered UI/graphics frontends.
+│       ├── common/           – shared product code (versioning, manifests, paths/repo helpers).
+│       ├── game/             – game product (single binary with modes).
+│       │   ├── core/         – game entrypoints and runtime wiring.
+│       │   ├── cli/          – CLI entrypoint.
+│       │   ├── gui/          – GUI frontend plumbing.
+│       │   ├── tui/          – TUI frontend stubs.
+│       │   ├── states/       – gameplay state machine stubs.
+│       │   ├── ui/           – shared UI glue.
+│       │   ├── rules/        – rules/gameplay data stubs.
+│       │   └── _legacy/      – old shells kept for reference.
+│       ├── launcher/         – launcher runtime, services, and shell frontends.
+│       │   ├── core/         – launcher runtime, context, registry, view registry, process control.
+│       │   ├── model/        – view models for launcher (instances, mods, packs, etc.).
+│       │   ├── services/     – launcher services (instances/mods/packs/servers/accounts/tools).
+│       │   │   └── instances/ – instances service (instance management and views).
+│       │   ├── ipc/          – IPC stubs for future supervision.
+│       │   ├── cli/          – CLI front-end for launcher.
+│       │   ├── tui/          – TUI front-end (future).
+│       │   └── gui/          – GUI front-end (future).
+│       ├── setup/            – installer/repair/uninstall core + os hooks with cli/tui/gui.
+│       │   ├── core/         – setup execution plans (install/repair/uninstall).
+│       │   ├── model/        – discovery of installed products/manifests.
+│       │   ├── cli/          – command-line installer/repair entrypoints.
+│       │   ├── gui/          – GUI installer stub.
+│       │   └── os/           – OS-specific setup hooks (macosx/posix/win32).
+│       └── tools/            – Dominium tools (modcheck plus future editors).
 ├── data/                     – content tree.
 │   ├── authoring/            – raw source assets (graphics/sounds/music/misc).
 │   ├── packs/                – packaged assets (`graphics/`, `sounds/`, `music/` with base/space/war variants).
