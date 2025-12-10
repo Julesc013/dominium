@@ -134,7 +134,7 @@ static int soft_depth_test_and_write(soft_framebuffer *fb, int x, int y, float d
 
 bool soft_fb_create(soft_framebuffer* fb,
                     int width, int height,
-                    dgfx_soft_format_t fmt,
+                    dgfx_soft_format   fmt,
                     uint8_t depth_bits,
                     uint8_t stencil_bits)
 {

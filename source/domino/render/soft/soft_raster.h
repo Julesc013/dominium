@@ -16,7 +16,7 @@ typedef struct soft_framebuffer_t {
     int depth_stride;
     int stencil_stride;
 
-    dgfx_soft_format_t format;
+    dgfx_soft_format   format;
     int depth_bits;
     int stencil_bits;
 } soft_framebuffer;
@@ -24,7 +24,7 @@ typedef struct soft_framebuffer_t {
 /* Basic framebuffer management */
 bool soft_fb_create(soft_framebuffer* fb,
                     int width, int height,
-                    dgfx_soft_format_t fmt,
+                    dgfx_soft_format   fmt,
                     uint8_t depth_bits,
                     uint8_t stencil_bits);
 
