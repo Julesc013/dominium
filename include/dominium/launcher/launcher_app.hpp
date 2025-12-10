@@ -16,6 +16,7 @@ private:
     int run_run_tool(const char* tool_id);
     int run_manifest_info();
     int run_tui();
+    int run_gui();
 };
 
 #endif /* DOMINIUM_LAUNCHER_APP_HPP */

@@ -5,6 +5,8 @@
 #include "domino/sys.h"
 #include "domino/mod.h"
 #include "domino/gfx.h"
+#include "domino/canvas.h"
+#include "domino/gui/gui.h"
 #include "domino/pkg/repo.h"
 #include "domino/tui/tui.h"
 #include "dominium/product_info.h"
@@ -439,6 +441,86 @@ static int modcheck_cmd_tui(int argc, const char** argv, void* user) {
     return modcheck_run_tui();
 }
 
+static int modcheck_run_gui(void) {
+    dgui_context* gui;
+    dgui_widget* root;
+    dgui_widget* header;
+    dgui_widget* actions;
+    dgui_widget* status;
+    struct dcvs_t* canvas;
+    dgfx_desc gdesc;
+
+    if (dsys_init() != DSYS_OK) {
+        printf("Modcheck: dsys_init failed.\n");
+        return 1;
+    }
+    gdesc.backend = DGFX_BACKEND_SOFT;
+    gdesc.width = 640;
+    gdesc.height = 360;
+    gdesc.fullscreen = 0;
+    gdesc.vsync = 0;
+    gdesc.native_window = NULL;
+    gdesc.window = NULL;
+    if (!dgfx_init(&gdesc)) {
+        printf("Modcheck: dgfx_init failed.\n");
+        dsys_shutdown();
+        return 1;
+    }
+
+    gui = dgui_create();
+    if (!gui) {
+        dgfx_shutdown();
+        dsys_shutdown();
+        return 1;
+    }
+    root = dgui_panel(gui, DGUI_LAYOUT_VERTICAL);
+    header = dgui_label(gui, "Dominium Tools (modcheck) GUI");
+    actions = dgui_panel(gui, DGUI_LAYOUT_VERTICAL);
+    status = dgui_label(gui, "Ready");
+    dgui_widget_add(root, header);
+    dgui_widget_add(root, actions);
+    dgui_widget_add(root, status);
+    dgui_widget_add(actions, dgui_button(gui, "verify-mod", NULL, NULL));
+    dgui_widget_add(actions, dgui_button(gui, "verify-pack", NULL, NULL));
+    dgui_widget_add(actions, dgui_button(gui, "verify-product", NULL, NULL));
+    dgui_widget_add(actions, dgui_button(gui, "Exit", NULL, NULL));
+    dgui_set_root(gui, root);
+
+    canvas = dgfx_get_frame_canvas();
+    dgfx_begin_frame();
+    dgui_render(gui, canvas);
+    dgfx_execute(dcvs_get_cmd_buffer(canvas));
+    dgfx_end_frame();
+
+    dgui_destroy(gui);
+    dgfx_shutdown();
+    dsys_shutdown();
+    return 0;
+}
+
+static int modcheck_cmd_gui(int argc, const char** argv, void* user) {
+    d_cli_args args;
+    int rc;
+    int i;
+    (void)user;
+    rc = d_cli_tokenize(argc, argv, &args);
+    if (rc != D_CLI_OK) return rc;
+    for (i = 0; i < args.token_count; ++i) {
+        const d_cli_token* t = &args.tokens[i];
+        if (t->is_positional) {
+            d_cli_args_dispose(&args);
+            printf("Modcheck: unexpected positional '%s'\n", t->value ? t->value : "(null)");
+            return D_CLI_BAD_USAGE;
+        }
+        if (d_cli_match_key(t, "instance")) continue;
+        d_cli_args_dispose(&args);
+        printf("Modcheck: unknown option '%.*s'\n", t->key_len, t->key ? t->key : "");
+        return D_CLI_BAD_USAGE;
+    }
+    d_cli_args_dispose(&args);
+    return modcheck_run_gui();
+}
+
 int main(int argc, char** argv) {
     d_cli cli;
     int rc;
@@ -453,6 +535,8 @@ int main(int argc, char** argv) {
     rc = d_cli_register(&cli, "verify-product", "Verify product manifests", modcheck_cmd_verify_product, NULL);
     if (rc != D_CLI_OK) return rc;
     rc = d_cli_register(&cli, "tui", "Launch modcheck text UI", modcheck_cmd_tui, NULL);
+    if (rc != D_CLI_OK) return rc;
+    rc = d_cli_register(&cli, "gui", "Launch modcheck GUI", modcheck_cmd_gui, NULL);
     if (rc != D_CLI_OK) return rc;
 
     rc = d_cli_dispatch(&cli, argc, (const char**)argv);

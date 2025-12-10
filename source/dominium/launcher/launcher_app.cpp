@@ -264,6 +264,32 @@ static int launcher_cmd_tui(int argc, const char** argv, void* userdata) {
     return ctx->app->run_tui();
 }
 
+static int launcher_cmd_gui(int argc, const char** argv, void* userdata) {
+    LauncherCliContext* ctx = (LauncherCliContext*)userdata;
+    d_cli_args args;
+    int rc;
+    int i;
+    if (!ctx || !ctx->app) {
+        return D_CLI_ERR_STATE;
+    }
+    rc = d_cli_tokenize(argc, argv, &args);
+    if (rc != D_CLI_OK) return rc;
+    for (i = 0; i < args.token_count; ++i) {
+        const d_cli_token* t = &args.tokens[i];
+        if (t->is_positional) {
+            d_cli_args_dispose(&args);
+            std::printf("Launcher: unexpected positional '%s'\n", t->value ? t->value : "(null)");
+            return D_CLI_BAD_USAGE;
+        }
+        if (d_cli_match_key(t, "instance")) continue;
+        d_cli_args_dispose(&args);
+        std::printf("Launcher: unknown option '%.*s'\n", t->key_len, t->key ? t->key : "");
+        return D_CLI_BAD_USAGE;
+    }
+    d_cli_args_dispose(&args);
+    return ctx->app->run_gui();
+}
+
 LauncherApp::LauncherApp() {
 }
 
@@ -295,6 +321,9 @@ int LauncherApp::run(int argc, char** argv) {
     if (rc != D_CLI_OK) return rc;
     rc = d_cli_register(&cli, "tui",
                         "Launch launcher text UI", launcher_cmd_tui, &ctx);
+    if (rc != D_CLI_OK) return rc;
+    rc = d_cli_register(&cli, "gui",
+                        "Launch launcher GUI", launcher_cmd_gui, &ctx);
     if (rc != D_CLI_OK) return rc;
 
     rc = d_cli_dispatch(&cli, argc, (const char**)argv);
@@ -537,5 +566,64 @@ int LauncherApp::run_tui() {
 
     d_tui_destroy(tui);
     dsys_terminal_shutdown();
+    return 0;
+}
+
+int LauncherApp::run_gui() {
+    dgui_context* gui;
+    dgui_widget* root;
+    dgui_widget* header;
+    dgui_widget* actions;
+    dgui_widget* status;
+    struct dcvs_t* canvas;
+    dgfx_desc gdesc;
+
+    if (dsys_init() != DSYS_OK) {
+        std::printf("Launcher: dsys_init failed.\n");
+        return 1;
+    }
+
+    gdesc.backend = DGFX_BACKEND_SOFT;
+    gdesc.width = 640;
+    gdesc.height = 360;
+    gdesc.fullscreen = 0;
+    gdesc.vsync = 0;
+    gdesc.native_window = NULL;
+    gdesc.window = NULL;
+    if (!dgfx_init(&gdesc)) {
+        std::printf("Launcher: dgfx_init failed.\n");
+        dsys_shutdown();
+        return 1;
+    }
+
+    gui = dgui_create();
+    if (!gui) {
+        dgfx_shutdown();
+        dsys_shutdown();
+        return 1;
+    }
+
+    root = dgui_panel(gui, DGUI_LAYOUT_VERTICAL);
+    header = dgui_label(gui, "Dominium Launcher GUI");
+    actions = dgui_panel(gui, DGUI_LAYOUT_VERTICAL);
+    status = dgui_label(gui, "Ready");
+    dgui_widget_add(root, header);
+    dgui_widget_add(root, actions);
+    dgui_widget_add(root, status);
+    dgui_widget_add(actions, dgui_button(gui, "Run Game (GUI)", NULL, NULL));
+    dgui_widget_add(actions, dgui_button(gui, "Run Game (TUI)", NULL, NULL));
+    dgui_widget_add(actions, dgui_button(gui, "Run Game (Headless)", NULL, NULL));
+    dgui_widget_add(actions, dgui_button(gui, "Exit", NULL, NULL));
+    dgui_set_root(gui, root);
+
+    canvas = dgfx_get_frame_canvas();
+    dgfx_begin_frame();
+    dgui_render(gui, canvas);
+    dgfx_execute(dcvs_get_cmd_buffer(canvas));
+    dgfx_end_frame();
+
+    dgui_destroy(gui);
+    dgfx_shutdown();
+    dsys_shutdown();
     return 0;
 }

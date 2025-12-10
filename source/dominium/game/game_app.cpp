@@ -1,8 +1,11 @@
 #include "dominium/game/game_app.hpp"
 #include "domino/cli/cli.h"
+#include "domino/gui/gui.h"
 #include "domino/sim/sim.h"
 #include "domino/system/dsys.h"
 #include "domino/tui/tui.h"
+#include "domino/canvas.h"
+#include "domino/gfx.h"
 #include "dominium/version.h"
 #include <cstdio>
 #include <cstdlib>
@@ -141,11 +144,30 @@ static int game_cmd_run_tui(int argc, const char** argv, void* userdata) {
 }
 
 static int game_cmd_run_gui(int argc, const char** argv, void* userdata) {
-    (void)argc;
-    (void)argv;
-    (void)userdata;
-    std::printf("Game: GUI mode is not implemented.\n");
-    return D_CLI_BAD_USAGE;
+    GameCliContext* ctx = (GameCliContext*)userdata;
+    d_cli_args args;
+    int rc;
+    int i;
+
+    if (!ctx || !ctx->app) {
+        return D_CLI_ERR_STATE;
+    }
+    rc = d_cli_tokenize(argc, argv, &args);
+    if (rc != D_CLI_OK) return rc;
+    for (i = 0; i < args.token_count; ++i) {
+        const d_cli_token* t = &args.tokens[i];
+        if (t->is_positional) {
+            d_cli_args_dispose(&args);
+            std::printf("Game: unexpected positional '%s'\n", t->value ? t->value : "(null)");
+            return D_CLI_BAD_USAGE;
+        }
+        if (d_cli_match_key(t, "instance")) continue;
+        d_cli_args_dispose(&args);
+        std::printf("Game: unknown option '%.*s'\n", t->key_len, t->key ? t->key : "");
+        return D_CLI_BAD_USAGE;
+    }
+    d_cli_args_dispose(&args);
+    return ctx->app->run_gui_mode();
 }
 
 static int game_cmd_world_checksum(int argc, const char** argv, void* userdata) {
@@ -477,5 +499,67 @@ int GameApp::run_tui_mode(void) {
 
     d_tui_destroy(tui);
     dsys_terminal_shutdown();
+    return 0;
+}
+
+int GameApp::run_gui_mode(void) {
+    dgui_context* gui;
+    dgui_widget* root;
+    dgui_widget* header;
+    dgui_widget* actions;
+    dgui_widget* status;
+    struct dcvs_t* canvas;
+    dgfx_desc gdesc;
+    int frame;
+
+    if (dsys_init() != DSYS_OK) {
+        std::printf("Game: dsys_init failed.\n");
+        return 1;
+    }
+
+    gdesc.backend = DGFX_BACKEND_SOFT;
+    gdesc.width = 640;
+    gdesc.height = 360;
+    gdesc.fullscreen = 0;
+    gdesc.vsync = 0;
+    gdesc.native_window = NULL;
+    gdesc.window = NULL;
+    if (!dgfx_init(&gdesc)) {
+        std::printf("Game: dgfx_init failed.\n");
+        dsys_shutdown();
+        return 1;
+    }
+
+    gui = dgui_create();
+    if (!gui) {
+        dgfx_shutdown();
+        dsys_shutdown();
+        return 1;
+    }
+
+    root = dgui_panel(gui, DGUI_LAYOUT_VERTICAL);
+    header = dgui_label(gui, "Dominium Game GUI");
+    actions = dgui_panel(gui, DGUI_LAYOUT_VERTICAL);
+    status = dgui_label(gui, "Ready");
+    dgui_widget_add(root, header);
+    dgui_widget_add(root, actions);
+    dgui_widget_add(root, status);
+    dgui_widget_add(actions, dgui_button(gui, "Run", NULL, NULL));
+    dgui_widget_add(actions, dgui_button(gui, "Step", NULL, NULL));
+    dgui_widget_add(actions, dgui_button(gui, "Checksum", NULL, NULL));
+    dgui_widget_add(actions, dgui_button(gui, "Exit", NULL, NULL));
+    dgui_set_root(gui, root);
+
+    for (frame = 0; frame < 1; ++frame) {
+        canvas = dgfx_get_frame_canvas();
+        dgfx_begin_frame();
+        dgui_render(gui, canvas);
+        dgfx_execute(dcvs_get_cmd_buffer(canvas));
+        dgfx_end_frame();
+    }
+
+    dgui_destroy(gui);
+    dgfx_shutdown();
+    dsys_shutdown();
     return 0;
 }
