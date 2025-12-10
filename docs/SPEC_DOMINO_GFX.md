@@ -1,28 +1,33 @@
-# Renderer API (dgfx)
+# Domino Renderer IR (dgfx)
 
-Public header: `include/domino/gfx.h`  
-Null backend: `source/domino/render/gfx.c`
+Public headers: `include/domino/gfx.h`, `include/domino/canvas.h`  
+Front-end: `source/domino/render/gfx.c`, `source/domino/render/canvas.c`  
+Reference backend: `source/domino/render/soft/soft_*`
 
-## dgfx IR snapshot
- - Opaque `dgfx_context` created via `dgfx_init(const dgfx_desc*)`; desc selects backend (`NULL/SOFT/SOFT8/GL2/DX9/VK1/DX7/DX11/METAL/QUARTZ/QUICKDRAW/CGA/MDA/EGA/VGA/XGA/GDI/VESA/HERC`), optional `dsys_window*`, width/height, and vsync flag.
-- `dgfx_caps` reports a backend name plus feature bits; the NULL backend reports all capabilities as false and `max_texture_size = 0`.
-- Frame flow is a no-op stub: `dgfx_begin_frame`/`dgfx_execute`/`dgfx_end_frame` exist for future backends and simply return.
-- `dgfx_resize` only updates stored dimensions inside the context; no swapchain work is performed.
+## IR semantics
+- Opaque context created via `dgfx_init(const dgfx_desc*)`; `dgfx_desc.backend` selects backend (`SOFT/DX7/DX9/DX11/VK1/GL1/GL2/QUICKDRAW/QUARTZ/METAL/GDI/VESA/VGA/CGA/EGA/XGA/HERC/MDA/X11/COCOA/SDL1/SDL2/WAYLAND/NULL`), optional native window, width/height, fullscreen hint, vsync flag.
+- Frame flow: `dgfx_begin_frame` -> user records commands -> `dgfx_execute(cmd_buf)` -> `dgfx_end_frame`.
+- Multi-view: `SET_VIEWPORT` and `SET_CAMERA` update backend-local state; later draws use the last set viewport+camera. Multiple viewports/cameras per frame are legal and order-dependent.
+- Deterministic: no timing/random dependencies; all payloads are POD.
 
-## Command buffer
-- Caller owns a linear buffer: `dgfx_cmd_buffer { data, size, capacity }`.
-- `dgfx_cmd_emit` appends `{dgfx_cmd header + payload bytes}` when space permits; returns `false` if capacity would be exceeded.
-- `dgfx_cmd_buffer_reset` rewinds `size` to zero without touching the underlying storage.
+### Command buffer
+- Linear buffer owned by caller: `dgfx_cmd_buffer { data, size, capacity }`.
+- Header: `dgfx_cmd_header { uint16_t opcode; uint16_t payload_size; uint32_t size; }` where `size = sizeof(header)+payload_size`.
+- Opcodes (v1): `NOP, CLEAR, SET_VIEWPORT, SET_CAMERA, SET_PIPELINE, SET_TEXTURE, DRAW_SPRITES, DRAW_LINES, DRAW_MESHES, DRAW_TEXT`.
+- Payload structs: `dgfx_viewport_t`, `dgfx_camera_t`, `dgfx_sprite_t`, `dgfx_line_segment_t`, `dgfx_mesh_draw_t`, `dgfx_text_draw_t` (see gfx.h).
 
-### Command header
-- `dgfx_cmd { dgfx_opcode op; uint16_t payload_size; }` is written verbatim (little-endian). The struct may be padded by the compiler, but payload starts immediately after `sizeof(dgfx_cmd)` as emitted by the producer.
-- `payload_size` describes **only** the payload bytes following the header.
+## Backend behaviour (v1)
+- Soft backend is the reference implementation: executes all opcodes (2D, 3D, vector, raster, stub text) and supports multiple viewports/cameras per frame.
+- All other backends currently route IR execution through the soft pipeline to guarantee correctness; presentation differs per platform (GPU/OS/retro blits are TODO). This preserves semantics while hardware paths are upgraded.
+- Backends report capabilities truthfully via `dgfx_caps`; max_viewports is at least 1 (soft supports many).
 
-### Payload layouts (current set)
-- `DGFX_CMD_CLEAR` payload: `{uint8_t r, g, b, a}` for a flat clear colour.
-- `DGFX_CMD_DRAW_LINES` payload:  
-  - `dom_gfx_lines_header { uint16_t vertex_count; uint16_t reserved; }`  
-  - followed by `vertex_count` packed vertices: `dom_gfx_line_vertex { float x; float y; float z; uint32_t color; }` (stride 16 bytes). Colours are opaque ARGB/Little-endian integers; z is currently unused but reserved for isometric elevation.
+### Multi-view guarantees
+- Command order is preserved. A typical multi-view frame:
+  - CLEAR
+  - SET_VIEWPORT(main), SET_CAMERA(main), DRAW_MESHES
+  - SET_VIEWPORT(minimap), SET_CAMERA(minimap), DRAW_MESHES
+  - SET_VIEWPORT(ui), DRAW_SPRITES/DRAW_TEXT
+- All backends are expected to follow this ordering; those routed to soft inherit this behaviour automatically.
 
 ## Legacy compatibility
 - The legacy `domino_gfx_*` surface API remains declared for the existing software renderer and tests; it is unchanged but considered legacy alongside the new dgfx IR.

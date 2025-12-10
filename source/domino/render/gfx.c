@@ -17,6 +17,98 @@ static const dgfx_backend_vtable *dgfx_choose_backend(dgfx_backend_t backend)
     switch (backend) {
     case DGFX_BACKEND_SOFT:
         return dgfx_soft_get_vtable();
+    case DGFX_BACKEND_DX7: {
+        extern const dgfx_backend_vtable *dgfx_dx7_get_vtable(void);
+        return dgfx_dx7_get_vtable();
+    }
+    case DGFX_BACKEND_DX9: {
+        extern const dgfx_backend_vtable *dgfx_dx9_get_vtable(void);
+        return dgfx_dx9_get_vtable();
+    }
+    case DGFX_BACKEND_DX11: {
+        extern const dgfx_backend_vtable *dgfx_dx11_get_vtable(void);
+        return dgfx_dx11_get_vtable();
+    }
+    case DGFX_BACKEND_VK1: {
+        extern const dgfx_backend_vtable *dgfx_vk1_get_vtable(void);
+        return dgfx_vk1_get_vtable();
+    }
+    case DGFX_BACKEND_GL1: {
+        extern const dgfx_backend_vtable *dgfx_gl1_get_vtable(void);
+        return dgfx_gl1_get_vtable();
+    }
+    case DGFX_BACKEND_GL2: {
+        extern const dgfx_backend_vtable *dgfx_gl2_get_vtable(void);
+        return dgfx_gl2_get_vtable();
+    }
+    case DGFX_BACKEND_QUICKDRAW: {
+        extern const dgfx_backend_vtable *dgfx_quickdraw_get_vtable(void);
+        return dgfx_quickdraw_get_vtable();
+    }
+    case DGFX_BACKEND_QUARTZ: {
+        extern const dgfx_backend_vtable *dgfx_quartz_get_vtable(void);
+        return dgfx_quartz_get_vtable();
+    }
+    case DGFX_BACKEND_METAL: {
+        extern const dgfx_backend_vtable *dgfx_metal_get_vtable(void);
+        return dgfx_metal_get_vtable();
+    }
+    case DGFX_BACKEND_GDI: {
+        extern const dgfx_backend_vtable *dgfx_gdi_get_vtable(void);
+        return dgfx_gdi_get_vtable();
+    }
+    case DGFX_BACKEND_VESA: {
+        extern const dgfx_backend_vtable *dgfx_vesa_get_vtable(void);
+        return dgfx_vesa_get_vtable();
+    }
+    case DGFX_BACKEND_VGA: {
+        extern const dgfx_backend_vtable *dgfx_vga_get_vtable(void);
+        return dgfx_vga_get_vtable();
+    }
+    case DGFX_BACKEND_CGA: {
+        extern const dgfx_backend_vtable *dgfx_cga_get_vtable(void);
+        return dgfx_cga_get_vtable();
+    }
+    case DGFX_BACKEND_EGA: {
+        extern const dgfx_backend_vtable *dgfx_ega_get_vtable(void);
+        return dgfx_ega_get_vtable();
+    }
+    case DGFX_BACKEND_XGA: {
+        extern const dgfx_backend_vtable *dgfx_xga_get_vtable(void);
+        return dgfx_xga_get_vtable();
+    }
+    case DGFX_BACKEND_HERC: {
+        extern const dgfx_backend_vtable *dgfx_herc_get_vtable(void);
+        return dgfx_herc_get_vtable();
+    }
+    case DGFX_BACKEND_MDA: {
+        extern const dgfx_backend_vtable *dgfx_mda_get_vtable(void);
+        return dgfx_mda_get_vtable();
+    }
+    case DGFX_BACKEND_X11: {
+        extern const dgfx_backend_vtable *dgfx_x11_get_vtable(void);
+        return dgfx_x11_get_vtable();
+    }
+    case DGFX_BACKEND_COCOA: {
+        extern const dgfx_backend_vtable *dgfx_cocoa_get_vtable(void);
+        return dgfx_cocoa_get_vtable();
+    }
+    case DGFX_BACKEND_SDL1: {
+        extern const dgfx_backend_vtable *dgfx_sdl1_get_vtable(void);
+        return dgfx_sdl1_get_vtable();
+    }
+    case DGFX_BACKEND_SDL2: {
+        extern const dgfx_backend_vtable *dgfx_sdl2_get_vtable(void);
+        return dgfx_sdl2_get_vtable();
+    }
+    case DGFX_BACKEND_WAYLAND: {
+        extern const dgfx_backend_vtable *dgfx_wayland_get_vtable(void);
+        return dgfx_wayland_get_vtable();
+    }
+    case DGFX_BACKEND_NULL: {
+        extern const dgfx_backend_vtable *dgfx_null_get_vtable(void);
+        return dgfx_null_get_vtable();
+    }
     default:
         /* Temporary fallback to software until HW backends are rebuilt. */
         return dgfx_soft_get_vtable();
