@@ -1,5 +1,6 @@
 add_library(dominium_launcher_core STATIC
     core/launch_core.c
+    core/product_info.c
 )
 
 target_include_directories(dominium_launcher_core
@@ -11,6 +12,7 @@ target_link_libraries(dominium_launcher_core
     PUBLIC
         domino_engine
         domino_sys
+        dominium_common
 )
 
 add_executable(dominium_launcher_cli
@@ -38,7 +40,7 @@ target_link_libraries(dominium_launcher_cli
         domino_engine
         domino_sys
         domino_mod
-        dominium_product_common
+        dominium_common
 )
 
 add_executable(dominium-launcher-cli

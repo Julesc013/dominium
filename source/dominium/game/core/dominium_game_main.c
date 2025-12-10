@@ -3,6 +3,8 @@
 #include "domino/gfx.h"
 #include "dominium/game_api.h"
 #include "dominium/version.h"
+#include "g_modes.h"
+#include "g_runtime.h"
 
 #include <string.h>
 
@@ -18,7 +20,16 @@ int dominium_game_run(const domino_instance_desc* inst)
     domino_gfx_desc gdesc;
     domino_instance_desc local_inst;
     int i;
+    const DmnGameLaunchOptions* opts;
+    DmnGameMode selected_mode;
 
+    opts = dmn_game_get_launch_options();
+    selected_mode = (opts ? opts->mode : DMN_GAME_MODE_GUI);
+    if (opts && opts->server_mode == DMN_GAME_SERVER_DEDICATED) {
+        selected_mode = DMN_GAME_MODE_HEADLESS;
+    }
+
+    memset(&sdesc, 0, sizeof(sdesc));
     sdesc.profile_hint = DOMINO_SYS_PROFILE_FULL;
     if (domino_sys_init(&sdesc, &sys) != 0) {
         return 1;
@@ -62,6 +73,25 @@ int dominium_game_run(const domino_instance_desc* inst)
     gdesc.fullscreen      = 0;
     gdesc.vsync           = 0;
     gdesc.framebuffer_fmt = DOMINO_PIXFMT_A8R8G8B8;
+
+    domino_sys_log(sys, DOMINO_LOG_INFO, "game",
+                   selected_mode == DMN_GAME_MODE_GUI ? "Starting game (GUI mode)" :
+                   (selected_mode == DMN_GAME_MODE_TUI ? "Starting game (TUI mode)" :
+                                                         "Starting game (headless mode)"));
+    if (opts && opts->demo_mode) {
+        domino_sys_log(sys, DOMINO_LOG_INFO, "game", "Demo mode enabled");
+    }
+    if (opts && opts->server_mode != DMN_GAME_SERVER_OFF) {
+        const char* server_str = dmn_game_server_mode_to_string(opts->server_mode);
+        domino_sys_log(sys, DOMINO_LOG_INFO, "game", server_str ? server_str : "server");
+    }
+
+    if (selected_mode != DMN_GAME_MODE_GUI) {
+        /* Stub paths for TUI/headless for now; server/client wiring to follow. */
+        domino_package_registry_destroy(reg);
+        domino_sys_shutdown(sys);
+        return 0;
+    }
 
     if (domino_gfx_create_device(sys, &gdesc, &gfx) != 0) {
         domino_package_registry_destroy(reg);

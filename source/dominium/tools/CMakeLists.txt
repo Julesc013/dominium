@@ -10,6 +10,7 @@ add_subdirectory(save_edit)
 add_subdirectory(game_edit)
 add_subdirectory(launcher_edit)
 add_subdirectory(editor_gui)
+add_subdirectory(modcheck)
 
 target_link_libraries(dominium-tools
     PRIVATE

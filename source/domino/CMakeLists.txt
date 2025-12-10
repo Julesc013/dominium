@@ -97,6 +97,7 @@ if(_dsys_backend_count GREATER 1)
 endif()
 
 # Domino engine stack
+add_subdirectory(compat)
 add_subdirectory(system)
 add_subdirectory(render)
 add_subdirectory(sim)
@@ -183,6 +184,7 @@ target_include_directories(domino_engine
 target_link_libraries(domino_engine
     PUBLIC
         domino_gfx
+        domino_compat
 )
 target_compile_features(domino_engine PRIVATE c_std_90)
 if(DOMINO_USE_SDL1_BACKEND)

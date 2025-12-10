@@ -11,5 +11,6 @@ target_link_libraries(dominium_modcheck
     PRIVATE
         domino_sys
         domino_mod
-        dominium_product_common
+        dominium_common
+        dominium_tools_core
 )
