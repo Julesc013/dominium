@@ -2,6 +2,7 @@
 #include "domino/cli/cli.h"
 #include "domino/sim/sim.h"
 #include "domino/system/dsys.h"
+#include "domino/tui/tui.h"
 #include "dominium/version.h"
 #include <cstdio>
 #include <cstdlib>
@@ -105,11 +106,38 @@ static int game_cmd_run_headless(int argc, const char** argv, void* userdata) {
 }
 
 static int game_cmd_run_tui(int argc, const char** argv, void* userdata) {
-    (void)argc;
-    (void)argv;
-    (void)userdata;
-    std::printf("Game: TUI mode is not implemented.\n");
-    return D_CLI_BAD_USAGE;
+    GameCliContext* ctx = (GameCliContext*)userdata;
+    d_cli_args args;
+    int rc;
+    int i;
+
+    if (!ctx || !ctx->app) {
+        return D_CLI_ERR_STATE;
+    }
+
+    rc = d_cli_tokenize(argc, argv, &args);
+    if (rc != D_CLI_OK) {
+        return rc;
+    }
+    for (i = 0; i < args.token_count; ++i) {
+        const d_cli_token* t = &args.tokens[i];
+        if (t->is_positional) {
+            d_cli_args_dispose(&args);
+            std::printf("Game: unexpected positional argument '%s'\n",
+                        t->value ? t->value : "(null)");
+            return D_CLI_BAD_USAGE;
+        }
+        if (d_cli_match_key(t, "instance")) {
+            continue;
+        }
+        d_cli_args_dispose(&args);
+        std::printf("Game: unknown option '%.*s'\n",
+                    t->key_len, t->key ? t->key : "");
+        return D_CLI_BAD_USAGE;
+    }
+
+    d_cli_args_dispose(&args);
+    return ctx->app->run_tui_mode();
 }
 
 static int game_cmd_run_gui(int argc, const char** argv, void* userdata) {
@@ -233,6 +261,39 @@ static int game_cmd_world_load(int argc, const char** argv, void* userdata) {
     return rc;
 }
 
+struct GameTuiState {
+    d_tui_widget* status;
+    int*          running_flag;
+};
+
+static void game_tui_set_status(GameTuiState* state, const char* text) {
+    if (!state || !state->status) return;
+    d_tui_widget_set_text(state->status, text);
+}
+
+static void game_tui_on_run_headless(d_tui_widget* self, void* user) {
+    (void)self;
+    game_tui_set_status((GameTuiState*)user, "Run headless (stub)");
+}
+
+static void game_tui_on_step(d_tui_widget* self, void* user) {
+    (void)self;
+    game_tui_set_status((GameTuiState*)user, "Step world (stub)");
+}
+
+static void game_tui_on_checksum(d_tui_widget* self, void* user) {
+    (void)self;
+    game_tui_set_status((GameTuiState*)user, "Checksum (stub)");
+}
+
+static void game_tui_on_exit(d_tui_widget* self, void* user) {
+    GameTuiState* st = (GameTuiState*)user;
+    (void)self;
+    if (st && st->running_flag) {
+        *(st->running_flag) = 0;
+    }
+}
+
 GameApp::GameApp() {
 }
 
@@ -243,6 +304,16 @@ int GameApp::run(int argc, char** argv) {
     d_cli cli;
     GameCliContext ctx;
     int rc;
+    int i;
+
+    for (i = 1; i < argc; ++i) {
+        if (std::strcmp(argv[i], "--mode=tui") == 0) {
+            return run_tui_mode();
+        }
+        if (std::strcmp(argv[i], "--mode=headless") == 0) {
+            return run_headless(12345u, 100u, 64u, 64u);
+        }
+    }
 
     ctx.app = this;
     d_cli_init(&cli, (argc > 0) ? argv[0] : "dominium_game",
@@ -350,5 +421,61 @@ int GameApp::load_world_checksum(const char* path, u32* checksum_out) {
         *checksum_out = checksum;
     }
     d_world_destroy(world);
+    return 0;
+}
+
+int GameApp::run_tui_mode(void) {
+    d_tui_context* tui;
+    d_tui_widget* root;
+    d_tui_widget* header;
+    d_tui_widget* status;
+    d_tui_widget* actions;
+    int running = 1;
+    GameTuiState state;
+
+    if (!dsys_terminal_init()) {
+        std::printf("Game: terminal init failed.\n");
+        return 1;
+    }
+
+    tui = d_tui_create();
+    if (!tui) {
+        dsys_terminal_shutdown();
+        return 1;
+    }
+
+    root = d_tui_panel(tui, D_TUI_LAYOUT_VERTICAL);
+    header = d_tui_label(tui, "Dominium Game TUI");
+    actions = d_tui_panel(tui, D_TUI_LAYOUT_VERTICAL);
+    status = d_tui_label(tui, "Ready");
+
+    d_tui_widget_add(root, header);
+    d_tui_widget_add(root, actions);
+    d_tui_widget_add(root, status);
+
+    state.status = status;
+    state.running_flag = &running;
+
+    d_tui_widget_add(actions, d_tui_button(tui, "Run headless", game_tui_on_run_headless, &state));
+    d_tui_widget_add(actions, d_tui_button(tui, "Step world", game_tui_on_step, &state));
+    d_tui_widget_add(actions, d_tui_button(tui, "Checksum", game_tui_on_checksum, &state));
+    d_tui_widget_add(actions, d_tui_button(tui, "Exit", game_tui_on_exit, &state));
+
+    d_tui_set_root(tui, root);
+
+    while (running) {
+        int key;
+        d_tui_render(tui);
+        key = dsys_terminal_poll_key();
+        if (key == 'q' || key == 'Q' || key == 27) {
+            break;
+        }
+        if (key != 0) {
+            d_tui_handle_key(tui, key);
+        }
+    }
+
+    d_tui_destroy(tui);
+    dsys_terminal_shutdown();
     return 0;
 }
