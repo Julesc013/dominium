@@ -3,10 +3,17 @@
 
 #include "domino/version.h"
 
+#define DOMINIUM_CORE_VERSION     "0.1.0"
+#define DOMINIUM_GAME_VERSION     "0.1.0"
+#define DOMINIUM_LAUNCHER_VERSION "0.1.0"
+#define DOMINIUM_SETUP_VERSION    "0.1.0"
+#define DOMINIUM_TOOLS_VERSION    "0.1.0"
+#define DOMINIUM_SUITE_VERSION    DOMINIUM_GAME_VERSION
+
 #define DOMINIUM_VERSION_MAJOR 0
 #define DOMINIUM_VERSION_MINOR 1
 #define DOMINIUM_VERSION_PATCH 0
-#define DOMINIUM_VERSION_SEMVER "0.1.0"
+#define DOMINIUM_VERSION_SEMVER DOMINIUM_SUITE_VERSION
 
 /* Legacy compatibility macros */
 #ifndef DOM_VERSION_SEMVER
@@ -25,6 +32,13 @@ extern "C" {
 
 void dominium_game_get_version(domino_semver* out);
 void dominium_launcher_get_version(domino_semver* out);
+
+const char* dominium_get_core_version_string(void);
+const char* dominium_get_game_version_string(void);
+const char* dominium_get_launcher_version_string(void);
+const char* dominium_get_setup_version_string(void);
+const char* dominium_get_tools_version_string(void);
+const char* dominium_get_suite_version_string(void);
 
 int dominium_game_get_content_api(void);
 int dominium_launcher_get_content_api(void);

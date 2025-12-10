@@ -5,6 +5,7 @@
 #include "domino/core.h"
 #include "dominium/version.h"
 #include "dominium/setup_api.h"
+#include "dominium/product_info.h"
 
 static void dom_setup_cli_print_usage(void)
 {
@@ -121,6 +122,10 @@ int main(int argc, char** argv)
     show_usage = 0;
     for (i = 1; i < argc; ++i) {
         const char* arg = argv[i];
+        if (strcmp(arg, "--introspect-json") == 0) {
+            dominium_print_product_info_json(dom_get_product_info_setup(), stdout);
+            return 0;
+        }
         if (strncmp(arg, "--scope=", 8) == 0) {
             if (!dom_setup_cli_parse_scope(arg + 8, &desc.scope)) {
                 show_usage = 1;

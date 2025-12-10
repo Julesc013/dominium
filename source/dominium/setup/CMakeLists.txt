@@ -1,5 +1,6 @@
 add_library(dominium_setup_core STATIC
     core/setup_core.c
+    core/product_info.c
 )
 
 target_include_directories(dominium_setup_core
@@ -10,6 +11,7 @@ target_include_directories(dominium_setup_core
 target_link_libraries(dominium_setup_core
     PUBLIC
         domino_engine
+        dominium_common
 )
 
 add_executable(dominium-setup-cli

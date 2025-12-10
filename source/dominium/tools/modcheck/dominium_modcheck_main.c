@@ -3,6 +3,7 @@
 
 #include "domino/sys.h"
 #include "domino/mod.h"
+#include "dominium/product_info.h"
 #include "dominium/version.h"
 
 typedef struct modcheck_ctx {
@@ -57,6 +58,13 @@ int main(int argc, char** argv)
     modcheck_ctx ctx;
     char root_override[260];
     int i;
+
+    for (i = 1; i < argc; ++i) {
+        if (strcmp(argv[i], "--introspect-json") == 0) {
+            dominium_print_product_info_json(dom_get_product_info_tools(), stdout);
+            return 0;
+        }
+    }
 
     root_override[0] = '\0';
     for (i = 1; i < argc; ++i) {

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "dominium/tool_api.h"
+#include "dominium/product_info.h"
 
 static void print_usage(void)
 {
@@ -21,6 +22,14 @@ int main(int argc, char **argv)
 {
     dom_tool_env env;
     int rc;
+    int i;
+
+    for (i = 1; i < argc; ++i) {
+        if (strcmp(argv[i], "--introspect-json") == 0) {
+            dominium_print_product_info_json(dom_get_product_info_tools(), stdout);
+            return 0;
+        }
+    }
 
     if (argc < 2) {
         print_usage();
