@@ -58,3 +58,29 @@ target_link_libraries(dominium-launcher-cli
         dominium_rules
         domino_sys
 )
+
+option(DOMINIUM_ENABLE_LAUNCHER_TUI "Build TUI launcher (curses)" OFF)
+if(DOMINIUM_ENABLE_LAUNCHER_TUI)
+    find_package(Curses)
+    if(CURSES_FOUND)
+        add_executable(dominium-launcher-tui
+            tui/launch_tui.c
+        )
+        target_include_directories(dominium-launcher-tui
+            PRIVATE
+                ${DOMINIUM_INCLUDE_DIR}
+                ${CURSES_INCLUDE_DIRS}
+        )
+        target_link_libraries(dominium-launcher-tui
+            PRIVATE
+                dominium_launcher_core
+                domino_engine
+                domino_core
+                dominium_rules
+                domino_sys
+                ${CURSES_LIBRARIES}
+        )
+    else()
+        message(STATUS "Curses not found; dominium-launcher-tui will not be built")
+    endif()
+endif()
