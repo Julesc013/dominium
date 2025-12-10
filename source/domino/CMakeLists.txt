@@ -101,6 +101,7 @@ add_subdirectory(system)
 add_subdirectory(render)
 add_subdirectory(sim)
 add_subdirectory(mod)
+add_subdirectory(launcher)
 
 set(DOMINO_ENGINE_SOURCES
     system/sys.c

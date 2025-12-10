@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 #include "dominium/game_edit_api.h"
 #include "domino/sys.h"
 

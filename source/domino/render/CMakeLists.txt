@@ -3,6 +3,7 @@ set(DOMINO_GFX_SOURCES
     canvas.c
     api/domino_gfx_core.c
     api/domino_gfx_internal.h
+    backend_soft_proxies.c
     soft/soft_gfx.c
     soft/soft_raster.c
     soft/soft_blit.c

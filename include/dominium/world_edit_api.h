@@ -8,7 +8,10 @@
 extern "C" {
 #endif
 
-typedef struct dom_chunk_data dom_chunk_data; /* forward until full world chunk format is exposed */
+/* Temporary placeholder until real chunk format is wired */
+typedef struct dom_chunk_data {
+    uint8_t bytes[1];
+} dom_chunk_data;
 typedef struct dom_world_edit_ctx_t dom_world_edit_ctx;
 
 typedef struct {

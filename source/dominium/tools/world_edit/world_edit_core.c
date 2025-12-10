@@ -4,11 +4,6 @@
 #include "dominium/world_edit_api.h"
 #include "domino/sys.h"
 
-/* Temporary placeholder until real chunk format is wired */
-struct dom_chunk_data {
-    uint8_t bytes[1];
-};
-
 typedef struct dom_world_edit_ctx_t {
     char world_path[260];
     int dirty;
