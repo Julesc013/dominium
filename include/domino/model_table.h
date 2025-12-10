@@ -15,7 +15,7 @@ typedef struct dom_table_meta {
     const char* id;        /* e.g. "instances_table" */
     uint32_t    row_count;
     uint32_t    col_count;
-    const char** col_ids;  /* e.g. { "id", "name", "path", ... } */
+    const char* const* col_ids;  /* e.g. { "id", "name", "path", ... } */
 } dom_table_meta;
 
 bool dom_table_get_meta(dom_core* core, const char* table_id, dom_table_meta* meta);

@@ -1,108 +1,20 @@
-add_library(dominium_launcher_core STATIC
-    core/launch_core.c
-    core/product_info.c
+cmake_minimum_required(VERSION 3.16)
+
+add_executable(dominium_launcher
+    main_launcher.cpp
+    launcher_app.cpp
 )
 
-target_include_directories(dominium_launcher_core
-    PUBLIC
-        ${DOMINIUM_INCLUDE_DIR}
+target_include_directories(dominium_launcher PUBLIC
+    ${DOMINIUM_INCLUDE_DIR}
 )
 
-target_link_libraries(dominium_launcher_core
-    PUBLIC
-        domino_engine
-        domino_sys
-        dominium_common
+target_link_libraries(dominium_launcher
+    domino_core
 )
 
-add_executable(dominium_launcher_cli
-    core/dominium_launcher_core.c
-    core/dominium_launcher_view_registry.c
-    core/dominium_launcher_ext_api.c
-    model/dominium_launcher_model.c
-    services/instances/dominium_launcher_instances.c
-    cli/dominium_launcher_cli.c
-    cli/dominium_launcher_cli_main.c
+set_target_properties(dominium_launcher PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
 )
-
-target_include_directories(dominium_launcher_cli
-    PRIVATE
-        ${DOMINIUM_INCLUDE_DIR}
-        ${CMAKE_CURRENT_SOURCE_DIR}/core
-        ${CMAKE_CURRENT_SOURCE_DIR}/model
-        ${CMAKE_CURRENT_SOURCE_DIR}/services
-        ${CMAKE_CURRENT_SOURCE_DIR}/services/instances
-)
-
-target_link_libraries(dominium_launcher_cli
-    PRIVATE
-        dominium_launcher_core
-        domino_engine
-        domino_sys
-        domino_mod
-        dominium_common
-)
-
-add_executable(dominium-launcher-cli
-    cli/launch_cli.c
-)
-
-target_include_directories(dominium-launcher-cli
-    PRIVATE
-        ${DOMINIUM_INCLUDE_DIR}
-)
-
-target_link_libraries(dominium-launcher-cli
-    PRIVATE
-        dominium_launcher_core
-        domino_engine
-        domino_core
-        dominium_rules
-        domino_sys
-)
-
-option(DOMINIUM_ENABLE_LAUNCHER_TUI "Build TUI launcher (curses)" OFF)
-if(DOMINIUM_ENABLE_LAUNCHER_TUI)
-    find_package(Curses)
-    if(CURSES_FOUND)
-        add_executable(dominium-launcher-tui
-            tui/launch_tui.c
-        )
-        target_include_directories(dominium-launcher-tui
-            PRIVATE
-                ${DOMINIUM_INCLUDE_DIR}
-                ${CURSES_INCLUDE_DIRS}
-        )
-        target_link_libraries(dominium-launcher-tui
-            PRIVATE
-                dominium_launcher_core
-                domino_engine
-                domino_core
-                dominium_rules
-                domino_sys
-                ${CURSES_LIBRARIES}
-        )
-    else()
-        message(STATUS "Curses not found; dominium-launcher-tui will not be built")
-    endif()
-endif()
-
-option(DOMINIUM_ENABLE_LAUNCHER_GUI "Build GUI launcher (dgfx)" OFF)
-if(DOMINIUM_ENABLE_LAUNCHER_GUI)
-    add_executable(dominium-launcher-gui
-        gui/launch_gui.c
-    )
-    target_include_directories(dominium-launcher-gui
-        PRIVATE
-            ${DOMINIUM_INCLUDE_DIR}
-    )
-    target_link_libraries(dominium-launcher-gui
-        PRIVATE
-            dominium_launcher_core
-            domino_engine
-            domino_core
-            dominium_rules
-            domino_sys
-            domino_gfx
-    )
-endif()

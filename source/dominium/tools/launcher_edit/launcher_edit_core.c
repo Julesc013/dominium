@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
+#include <stdio.h>
 #include "dominium/launcher_edit_api.h"
 #include "domino/sys.h"
 
