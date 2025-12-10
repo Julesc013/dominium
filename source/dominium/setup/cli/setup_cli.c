@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "domino/cli/cli.h"
 #include "domino/sys.h"
 #include "domino/core.h"
 #include "domino/gfx.h"
@@ -8,15 +9,7 @@
 #include "dominium/setup_api.h"
 #include "dominium/product_info.h"
 
-static void dom_setup_cli_print_usage(void)
-{
-    printf("Usage: dominium-setup-cli --scope=portable|user|system "
-           "--action=install|repair|uninstall|verify [--dir=<path>] [--quiet]\n");
-    printf("       [--platform=<backend>] [--renderer=<backend>] [--introspect-json]\n");
-}
-
-static int dom_setup_cli_parse_scope(const char* value, dom_setup_scope* out)
-{
+static int dom_setup_cli_parse_scope(const char* value, dom_setup_scope* out) {
     if (!value || !out) {
         return 0;
     }
@@ -35,32 +28,7 @@ static int dom_setup_cli_parse_scope(const char* value, dom_setup_scope* out)
     return 0;
 }
 
-static int dom_setup_cli_parse_action(const char* value, dom_setup_action* out)
-{
-    if (!value || !out) {
-        return 0;
-    }
-    if (strcmp(value, "install") == 0) {
-        *out = DOM_SETUP_ACTION_INSTALL;
-        return 1;
-    }
-    if (strcmp(value, "repair") == 0) {
-        *out = DOM_SETUP_ACTION_REPAIR;
-        return 1;
-    }
-    if (strcmp(value, "uninstall") == 0) {
-        *out = DOM_SETUP_ACTION_UNINSTALL;
-        return 1;
-    }
-    if (strcmp(value, "verify") == 0) {
-        *out = DOM_SETUP_ACTION_VERIFY;
-        return 1;
-    }
-    return 0;
-}
-
-static const char* dom_setup_cli_status_str(dom_setup_status st)
-{
+static const char* dom_setup_cli_status_str(dom_setup_status st) {
     switch (st) {
     case DOM_SETUP_STATUS_OK: return "ok";
     case DOM_SETUP_STATUS_ERROR: return "error";
@@ -72,8 +40,7 @@ static const char* dom_setup_cli_status_str(dom_setup_status st)
     return "unknown";
 }
 
-static void dom_setup_cli_progress(const dom_setup_progress* prog, void* user)
-{
+static void dom_setup_cli_progress(const dom_setup_progress* prog, void* user) {
     int quiet;
     const char* step;
 
@@ -92,91 +59,161 @@ static void dom_setup_cli_progress(const dom_setup_progress* prog, void* user)
     fflush(stdout);
 }
 
-int main(int argc, char** argv)
-{
+static void dom_setup_defaults(dom_setup_desc* desc,
+                               dom_setup_command* cmd,
+                               dom_setup_action action) {
+    memset(desc, 0, sizeof(*desc));
+    desc->struct_size = sizeof(*desc);
+    desc->struct_version = 1u;
+    desc->product_id = "dominium";
+    desc->product_version = DOMINIUM_VERSION_SEMVER;
+    desc->build_id = NULL;
+    desc->scope = DOM_SETUP_SCOPE_PER_USER;
+    desc->target_dir = NULL;
+    desc->quiet = 0;
+    desc->no_launcher = 0;
+    desc->no_desktop_shortcuts = 0;
+
+    memset(cmd, 0, sizeof(*cmd));
+    cmd->struct_size = sizeof(*cmd);
+    cmd->struct_version = 1u;
+    cmd->action = action;
+    cmd->existing_install_dir = NULL;
+}
+
+static int dom_setup_parse_options(const d_cli_args* args,
+                                   dom_setup_desc* desc,
+                                   dom_setup_command* cmd,
+                                   char* platform_value,
+                                   size_t platform_cap,
+                                   char* renderer_value,
+                                   size_t renderer_cap,
+                                   int* introspect_json) {
+    int i;
+    if (!args || !desc || !cmd || !platform_value || !renderer_value || !introspect_json) {
+        return D_CLI_ERR_STATE;
+    }
+    *introspect_json = 0;
+    for (i = 0; i < args->token_count; ++i) {
+        const d_cli_token* t = &args->tokens[i];
+        if (t->is_positional) {
+            printf("Unexpected positional argument '%s'\n", t->value ? t->value : "(null)");
+            return D_CLI_BAD_USAGE;
+        }
+        if (d_cli_match_key(t, "scope")) {
+            if (!t->has_value || !t->value || !dom_setup_cli_parse_scope(t->value, &desc->scope)) {
+                printf("Invalid scope value\n");
+                return D_CLI_BAD_USAGE;
+            }
+            continue;
+        }
+        if (d_cli_match_key(t, "dir")) {
+            if (!t->has_value || !t->value) {
+                printf("Missing value for --dir\n");
+                return D_CLI_BAD_USAGE;
+            }
+            desc->target_dir = t->value;
+            cmd->existing_install_dir = t->value;
+            continue;
+        }
+        if (d_cli_match_key(t, "quiet")) {
+            desc->quiet = 1;
+            continue;
+        }
+        if (d_cli_match_key(t, "platform")) {
+            if (!t->has_value || !t->value) {
+                printf("Missing value for --platform\n");
+                return D_CLI_BAD_USAGE;
+            }
+            strncpy(platform_value, t->value, platform_cap - 1u);
+            platform_value[platform_cap - 1u] = '\0';
+            continue;
+        }
+        if (d_cli_match_key(t, "renderer")) {
+            if (!t->has_value || !t->value) {
+                printf("Missing value for --renderer\n");
+                return D_CLI_BAD_USAGE;
+            }
+            strncpy(renderer_value, t->value, renderer_cap - 1u);
+            renderer_value[renderer_cap - 1u] = '\0';
+            continue;
+        }
+        if (d_cli_match_key(t, "introspect-json")) {
+            *introspect_json = 1;
+            continue;
+        }
+        if (d_cli_match_key(t, "instance")) {
+            continue; /* ignore global instance flag */
+        }
+        printf("Unknown option '%.*s'\n", t->key_len, t->key ? t->key : "");
+        return D_CLI_BAD_USAGE;
+    }
+    return D_CLI_OK;
+}
+
+static int dom_setup_apply_backends(const char* platform_value,
+                                    const char* renderer_value) {
+    if (platform_value && platform_value[0]) {
+        if (dom_sys_select_backend(platform_value) != 0) {
+            fprintf(stderr, "Unsupported platform backend '%s'\n", platform_value);
+            return 1;
+        }
+    }
+    if (renderer_value && renderer_value[0]) {
+        if (dom_gfx_select_backend(renderer_value) != 0) {
+            fprintf(stderr, "Unsupported renderer backend '%s'\n", renderer_value);
+            return 1;
+        }
+    }
+    return 0;
+}
+
+static int dom_setup_run(dom_setup_action action, int argc, const char** argv) {
     dom_setup_desc desc;
     dom_setup_command cmd;
     dom_core_desc core_desc;
     dom_core* core;
     void* setup_ctx;
     dom_setup_status status;
-    int i;
-    int show_usage;
+    d_cli_args args;
     char platform_value[32];
     char renderer_value[32];
+    int introspect;
+    int rc;
 
-    memset(&desc, 0, sizeof(desc));
-    desc.struct_size = sizeof(desc);
-    desc.struct_version = 1u;
-    desc.product_id = "dominium";
-    desc.product_version = DOMINIUM_VERSION_SEMVER;
-    desc.build_id = NULL;
-    desc.scope = DOM_SETUP_SCOPE_PER_USER;
-    desc.target_dir = NULL;
-    desc.quiet = 0;
-    desc.no_launcher = 0;
-    desc.no_desktop_shortcuts = 0;
-
-    memset(&cmd, 0, sizeof(cmd));
-    cmd.struct_size = sizeof(cmd);
-    cmd.struct_version = 1u;
-    cmd.action = DOM_SETUP_ACTION_INSTALL;
-    cmd.existing_install_dir = NULL;
-
-    show_usage = 0;
+    dom_setup_defaults(&desc, &cmd, action);
     platform_value[0] = '\0';
     renderer_value[0] = '\0';
-    for (i = 1; i < argc; ++i) {
-        const char* arg = argv[i];
-        if (strcmp(arg, "--introspect-json") == 0) {
-            dominium_print_product_info_json(dom_get_product_info_setup(), stdout);
-            return 0;
-        }
-        if (strncmp(arg, "--scope=", 8) == 0) {
-            if (!dom_setup_cli_parse_scope(arg + 8, &desc.scope)) {
-                show_usage = 1;
-            }
-        } else if (strncmp(arg, "--action=", 9) == 0) {
-            if (!dom_setup_cli_parse_action(arg + 9, &cmd.action)) {
-                show_usage = 1;
-            }
-        } else if (strncmp(arg, "--dir=", 6) == 0) {
-            desc.target_dir = arg + 6;
-            cmd.existing_install_dir = arg + 6;
-        } else if (strcmp(arg, "--quiet") == 0) {
-            desc.quiet = 1;
-        } else if (strncmp(arg, "--platform=", 11) == 0) {
-            strncpy(platform_value, arg + 11, sizeof(platform_value) - 1);
-            platform_value[sizeof(platform_value) - 1] = '\0';
-        } else if (strncmp(arg, "--renderer=", 11) == 0) {
-            strncpy(renderer_value, arg + 11, sizeof(renderer_value) - 1);
-            renderer_value[sizeof(renderer_value) - 1] = '\0';
-        } else {
-            show_usage = 1;
-        }
+
+    rc = d_cli_tokenize(argc, argv, &args);
+    if (rc != D_CLI_OK) {
+        return rc;
     }
 
-    if (show_usage) {
-        dom_setup_cli_print_usage();
+    rc = dom_setup_parse_options(&args, &desc, &cmd,
+                                 platform_value, sizeof(platform_value),
+                                 renderer_value, sizeof(renderer_value),
+                                 &introspect);
+    if (rc != D_CLI_OK) {
+        d_cli_args_dispose(&args);
+        return rc;
+    }
+
+    if (introspect) {
+        dominium_print_product_info_json(dom_get_product_info_setup(), stdout);
+        d_cli_args_dispose(&args);
+        return 0;
+    }
+
+    if (dom_setup_apply_backends(platform_value, renderer_value) != 0) {
+        d_cli_args_dispose(&args);
         return 1;
-    }
-
-    if (platform_value[0]) {
-        if (dom_sys_select_backend(platform_value) != 0) {
-            fprintf(stderr, "Unsupported platform backend '%s'\n", platform_value);
-            return 1;
-        }
-    }
-    if (renderer_value[0]) {
-        if (dom_gfx_select_backend(renderer_value) != 0) {
-            fprintf(stderr, "Unsupported renderer backend '%s'\n", renderer_value);
-            return 1;
-        }
     }
 
     core_desc.api_version = 1u;
     if (dsys_init() != DSYS_OK) {
         printf("Failed to initialize dsys\n");
+        d_cli_args_dispose(&args);
         return 1;
     }
 
@@ -184,6 +221,7 @@ int main(int argc, char** argv)
     if (!core) {
         printf("Failed to create core\n");
         dsys_shutdown();
+        d_cli_args_dispose(&args);
         return 1;
     }
 
@@ -192,6 +230,7 @@ int main(int argc, char** argv)
         printf("dom_setup_create failed: %s\n", dom_setup_cli_status_str(status));
         dom_core_destroy(core);
         dsys_shutdown();
+        d_cli_args_dispose(&args);
         return 1;
     }
 
@@ -206,6 +245,7 @@ int main(int argc, char** argv)
     dom_setup_destroy(setup_ctx);
     dom_core_destroy(core);
     dsys_shutdown();
+    d_cli_args_dispose(&args);
 
     if (status != DOM_SETUP_STATUS_OK) {
         printf("dom_setup_execute failed: %s\n", dom_setup_cli_status_str(status));
@@ -216,4 +256,89 @@ int main(int argc, char** argv)
         printf("Action '%d' completed successfully.\n", (int)cmd.action);
     }
     return 0;
+}
+
+static int dom_setup_stub(int argc, const char** argv, const char* name) {
+    dom_setup_desc desc;
+    dom_setup_command cmd;
+    d_cli_args args;
+    char platform_value[32];
+    char renderer_value[32];
+    int introspect;
+    int rc;
+
+    dom_setup_defaults(&desc, &cmd, DOM_SETUP_ACTION_VERIFY);
+    platform_value[0] = '\0';
+    renderer_value[0] = '\0';
+
+    rc = d_cli_tokenize(argc, argv, &args);
+    if (rc != D_CLI_OK) {
+        return rc;
+    }
+
+    rc = dom_setup_parse_options(&args, &desc, &cmd,
+                                 platform_value, sizeof(platform_value),
+                                 renderer_value, sizeof(renderer_value),
+                                 &introspect);
+    if (rc != D_CLI_OK) {
+        d_cli_args_dispose(&args);
+        return rc;
+    }
+    d_cli_args_dispose(&args);
+
+    if (introspect) {
+        dominium_print_product_info_json(dom_get_product_info_setup(), stdout);
+        return 0;
+    }
+
+    printf("Setup: command '%s' is not implemented.\n", name ? name : "(unknown)");
+    return D_CLI_BAD_USAGE;
+}
+
+static int dom_setup_cmd_install(int argc, const char** argv, void* user) {
+    (void)user;
+    return dom_setup_run(DOM_SETUP_ACTION_INSTALL, argc, argv);
+}
+
+static int dom_setup_cmd_repair(int argc, const char** argv, void* user) {
+    (void)user;
+    return dom_setup_run(DOM_SETUP_ACTION_REPAIR, argc, argv);
+}
+
+static int dom_setup_cmd_uninstall(int argc, const char** argv, void* user) {
+    (void)user;
+    return dom_setup_run(DOM_SETUP_ACTION_UNINSTALL, argc, argv);
+}
+
+static int dom_setup_cmd_import(int argc, const char** argv, void* user) {
+    (void)user;
+    return dom_setup_stub(argc, argv, "import");
+}
+
+static int dom_setup_cmd_gc(int argc, const char** argv, void* user) {
+    (void)user;
+    return dom_setup_stub(argc, argv, "gc");
+}
+
+int main(int argc, char** argv) {
+    d_cli cli;
+    int rc;
+
+    d_cli_init(&cli, (argc > 0) ? argv[0] : "dominium-setup-cli",
+               DOMINIUM_SETUP_VERSION);
+
+    rc = d_cli_register(&cli, "install", "Install Dominium", dom_setup_cmd_install, NULL);
+    if (rc != D_CLI_OK) return rc;
+    rc = d_cli_register(&cli, "repair", "Repair an existing installation", dom_setup_cmd_repair, NULL);
+    if (rc != D_CLI_OK) return rc;
+    rc = d_cli_register(&cli, "uninstall", "Uninstall Dominium", dom_setup_cmd_uninstall, NULL);
+    if (rc != D_CLI_OK) return rc;
+    rc = d_cli_register(&cli, "import", "Import an existing installation (stub)", dom_setup_cmd_import, NULL);
+    if (rc != D_CLI_OK) return rc;
+    rc = d_cli_register(&cli, "gc", "Garbage-collect installer caches (stub)", dom_setup_cmd_gc, NULL);
+    if (rc != D_CLI_OK) return rc;
+
+    rc = d_cli_dispatch(&cli, argc, (const char**)argv);
+    d_cli_shutdown(&cli);
+    return rc;
 }

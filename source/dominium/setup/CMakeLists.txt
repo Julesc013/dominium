@@ -25,6 +25,7 @@ target_include_directories(dominium-setup-cli
 
 target_link_libraries(dominium-setup-cli
     PRIVATE
+        domino_core
         domino_engine
         dominium_rules
         dominium_setup_core

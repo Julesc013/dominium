@@ -5,6 +5,7 @@ add_library(domino_core STATIC
     core/fixed.c
     core/fixed_debug.c
     core/rng.c
+    cli/cli.c
     system/dsys_stub.c
     $<$<BOOL:${WIN32}>:system/dsys_proc_winnt.c>
     $<$<NOT:$<BOOL:${WIN32}>>:system/dsys_proc_stub.c>
