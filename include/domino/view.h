@@ -25,6 +25,7 @@ typedef struct dom_view_desc {
 } dom_view_desc;
 
 uint32_t dom_ui_list_views(dom_core* core, dom_view_desc* out, uint32_t max_out);
+bool     dom_view_register(dom_core* core, const dom_view_desc* desc);
 
 #ifdef __cplusplus
 }

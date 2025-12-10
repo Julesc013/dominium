@@ -6,6 +6,7 @@
 #include "domino/inst.h"
 #include "domino/pkg.h"
 #include "domino/sys.h"
+#include "domino/mod.h"
 
 struct dom_launch_ctx_t {
     dom_core        *core;
@@ -122,6 +123,8 @@ static dom_instance_id dom_launch_create_instance(dom_launch_ctx* ctx, const cha
 dom_launch_ctx* dom_launch_create(const dom_launch_desc* desc)
 {
     dom_launch_ctx* ctx;
+    uint32_t i;
+    uint32_t ext_count;
 
     if (!desc || desc->struct_size < sizeof(dom_launch_desc) || !desc->core) {
         return NULL;
@@ -136,6 +139,23 @@ dom_launch_ctx* dom_launch_create(const dom_launch_desc* desc)
     ctx->core = desc->core;
     ctx->desc = *desc;
     ctx->state = DOM_LAUNCH_STATE_MAIN;
+
+    ext_count = dom_launcher_ext_count(ctx->core);
+    for (i = 0u; i < ext_count; ++i) {
+        const dom_launcher_ext_v1* ext = dom_launcher_ext_get(ctx->core, i);
+        if (ext) {
+            if (ext->on_launcher_start) {
+                ext->on_launcher_start(ctx->core);
+            }
+        }
+    }
+    for (i = 0u; i < ext_count; ++i) {
+        const dom_launcher_ext_v1* ext = dom_launcher_ext_get(ctx->core, i);
+        if (ext && ext->on_register_views) {
+            ext->on_register_views(ctx->core);
+        }
+    }
+
     ctx->current_view_id = dom_launch_select_view(ctx, "view_instances");
     if (!ctx->current_view_id) {
         ctx->current_view_id = "view_instances";
@@ -257,6 +277,25 @@ void dom_launch_handle_action(dom_launch_ctx* ctx,
     case DOM_LAUNCH_ACTION_NONE:
     default:
         break;
+    }
+}
+
+void dom_launch_handle_custom_action(dom_launch_ctx* ctx,
+                                     const char* action_id,
+                                     const char* payload)
+{
+    uint32_t i;
+
+    if (!ctx || !action_id) {
+        return;
+    }
+
+    for (i = 0u; i < dom_launcher_ext_count(ctx->core); ++i) {
+        const dom_launcher_ext_v1* ext = dom_launcher_ext_get(ctx->core, i);
+        if (ext && ext->on_action) {
+            int handled = ext->on_action(ctx->core, action_id, payload);
+            (void)handled;
+        }
     }
 }
 

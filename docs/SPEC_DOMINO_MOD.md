@@ -2,9 +2,9 @@
 
 `include/domino/mod.h` provides the shared registry/instance surface used across products.
 
-## Plugin ABI (dom_mod_*/launcher_ext_*)
+## Plugin ABI (dom_mod_* and launcher_ext)
 - Engine plugins export `dom_mod_vtable` (versioned struct) from `dom_mod_main`; `dom_mod_api` injects `dom_core`, event bus, and package registry pointers. Loader helpers (`dom_mod_load/dom_mod_get_vtable/dom_mod_unload`) are stubbed for now.
-- Launcher extensions mirror the shape with `dom_launcher_ext_api` + `dom_launcher_ext_vtable` and entrypoint `dom_launcher_ext_main`; they attach to view/event registries owned by the launcher.
+- Launcher extensions export `dom_launcher_ext_v1` via a symbol like `dom_get_launcher_ext_v1()`; hooks include `on_launcher_start`, `on_register_views`, `on_action(action_id,payload)`, and optional `on_build_canvas(inst, canvas_id, dom_gfx_buffer*)` for custom canvases. Helpers `dom_launcher_ext_register/count/get` live in `domino/mod.h`.
 - All ABI structs start with `struct_size`/`struct_version` for compatibility; implementations remain no-ops until the runtime hooks are filled in.
 
 ## Shared content model

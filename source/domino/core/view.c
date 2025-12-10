@@ -23,3 +23,19 @@ uint32_t dom_ui_list_views(dom_core* core, dom_view_desc* out, uint32_t max_out)
 
     return count;
 }
+
+bool dom_view_register(dom_core* core, const dom_view_desc* desc)
+{
+    dom_view_desc* dst;
+
+    if (!core || !desc || !desc->id || !desc->model_id) {
+        return false;
+    }
+    if (core->view_count >= DOM_MAX_VIEWS) {
+        return false;
+    }
+    dst = &core->views[core->view_count];
+    *dst = *desc;
+    core->view_count += 1u;
+    return true;
+}

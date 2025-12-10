@@ -13,6 +13,7 @@
 #include "domino/sim.h"
 #include "domino/canvas.h"
 #include "domino/sys.h"
+#include "domino/mod.h"
 
 #define DOM_MAX_PACKAGES 32
 #define DOM_MAX_INSTANCES 16
@@ -22,6 +23,7 @@
 #define DOM_MAX_TABLE_COLS 16
 #define DOM_MAX_TREE_MODELS 8
 #define DOM_MAX_SIM_STATES DOM_MAX_INSTANCES
+#define DOM_MAX_LAUNCHER_EXT 8
 
 typedef struct dom_event_sub_entry {
     dom_event_kind    kind;
@@ -80,6 +82,9 @@ struct dom_core_t {
 
     dom_sim_instance_state sim_states[DOM_MAX_SIM_STATES];
     uint32_t               sim_state_count;
+
+    dom_launcher_ext_v1 launcher_exts[DOM_MAX_LAUNCHER_EXT];
+    uint32_t            launcher_ext_count;
 };
 
 void dom_event__publish(dom_core* core, const dom_event* ev);
