@@ -1,8 +1,10 @@
 #ifndef DOMINO_GUI_GUI_H_INCLUDED
 #define DOMINO_GUI_GUI_H_INCLUDED
 
+#include "domino/core/types.h"
 #include "domino/render/gui_prim.h"
 #include "domino/gui/style.h"
+#include "domino/render/pipeline.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -24,6 +26,18 @@ typedef enum dgui_layout {
 
 typedef struct dgui_widget dgui_widget;
 typedef struct dgui_context dgui_context;
+typedef struct dgui_widget d_gui_widget;
+typedef struct dgui_context d_gui_context;
+typedef struct d_gui_window d_gui_window;
+
+typedef struct d_gui_window_desc {
+    const char* title;
+    i32 x;
+    i32 y;
+    i32 width;
+    i32 height;
+    int resizable;
+} d_gui_window_desc;
 
 typedef void (*dgui_activate_fn)(dgui_widget* self, void* user);
 
@@ -42,6 +56,24 @@ int           dgui_widget_add(dgui_widget* parent, dgui_widget* child);
 
 void          dgui_render(dgui_context* ctx, struct dcvs_t* canvas);
 void          dgui_handle_key(dgui_context* ctx, int keycode);
+
+/*------------------------------------------------------------
+ * Multi-window GUI host
+ *------------------------------------------------------------*/
+d_gui_window* d_gui_window_create(const d_gui_window_desc* desc);
+void          d_gui_window_destroy(d_gui_window* win);
+int           d_gui_window_should_close(d_gui_window* win);
+void          d_gui_window_frame(d_gui_window* win, float delta_time);
+void          d_gui_window_set_root(d_gui_window* win, d_gui_widget* root);
+d_gui_context* d_gui_window_get_gui(d_gui_window* win);
+
+d_gui_window* d_gui_window_get_first(void);
+d_gui_window* d_gui_window_get_next(d_gui_window* current);
+void          d_gui_tick_all_windows(float delta_time);
+int           d_gui_any_window_alive(void);
+
+/* Optional: provide a shared pipeline for newly created windows. */
+void          d_gui_set_shared_pipeline(struct d_gfx_pipeline* pipe);
 
 #ifdef __cplusplus
 } /* extern "C" */

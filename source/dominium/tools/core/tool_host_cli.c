@@ -2,8 +2,27 @@
 #include <string.h>
 #include "domino/sys.h"
 #include "domino/gfx.h"
+#include "domino/input/input.h"
+#include "domino/input/ime.h"
+#include "domino/state/state.h"
 #include "dominium/tool_api.h"
 #include "dominium/product_info.h"
+
+typedef enum tool_state {
+    TOOL_STATE_MENU = 0,
+    TOOL_STATE_VERIFY_MOD,
+    TOOL_STATE_VERIFY_PACK,
+    TOOL_STATE_MAX
+} tool_state;
+
+typedef struct tool_state_ctx {
+    const char*   tool_id;
+    dom_tool_env* env;
+    int           argc;
+    char**        argv;
+    int           running;
+    int           result;
+} tool_state_ctx;
 
 static void print_usage(void)
 {
@@ -18,6 +37,24 @@ static void print_usage(void)
         const char *desc = tools[i].description ? tools[i].description : "";
         printf("  %-12s %s\n", id, desc);
     }
+}
+
+static void tool_state_stop(void* userdata)
+{
+    tool_state_ctx* ctx = (tool_state_ctx*)userdata;
+    if (ctx) {
+        ctx->running = 0;
+    }
+}
+
+static void tool_state_enter_run(void* userdata)
+{
+    tool_state_ctx* ctx = (tool_state_ctx*)userdata;
+    if (!ctx || !ctx->tool_id) {
+        return;
+    }
+    ctx->result = dom_tool_run(ctx->tool_id, ctx->env, ctx->argc, (const char**)ctx->argv);
+    ctx->running = 0;
 }
 
 int main(int argc, char **argv)
@@ -63,8 +100,14 @@ int main(int argc, char **argv)
         }
     }
 
+    d_input_init();
+    d_ime_init();
+    d_ime_enable();
+
     if (tool_index == -1) {
         print_usage();
+        d_ime_shutdown();
+        d_input_shutdown();
         return 1;
     }
 
@@ -76,10 +119,53 @@ int main(int argc, char **argv)
     env.io_user = NULL;
     env.core = NULL; /* could be set to a dom_core instance when available */
 
-    rc = dom_tool_run(argv[tool_index], &env, argc - tool_index, argv + tool_index);
+    {
+        d_state states[TOOL_STATE_MAX];
+        d_state_machine sm;
+        tool_state_ctx tctx;
+        tool_state start = TOOL_STATE_MENU;
+        u32 s;
+
+        for (s = 0u; s < TOOL_STATE_MAX; ++s) {
+            states[s].on_enter = NULL;
+            states[s].on_update = tool_state_stop;
+            states[s].on_exit = NULL;
+        }
+        states[TOOL_STATE_MENU].on_enter = tool_state_enter_run;
+        states[TOOL_STATE_VERIFY_MOD].on_enter = tool_state_enter_run;
+        states[TOOL_STATE_VERIFY_PACK].on_enter = tool_state_enter_run;
+
+        tctx.tool_id = argv[tool_index];
+        tctx.env = &env;
+        tctx.argc = argc - tool_index;
+        tctx.argv = argv + tool_index;
+        tctx.running = 1;
+        tctx.result = 0;
+
+        if (strcmp(tctx.tool_id, "verify_mod") == 0) {
+            start = TOOL_STATE_VERIFY_MOD;
+        } else if (strcmp(tctx.tool_id, "verify_pack") == 0) {
+            start = TOOL_STATE_VERIFY_PACK;
+        } else {
+            start = TOOL_STATE_MENU;
+        }
+
+        d_state_machine_init(&sm, states, TOOL_STATE_MAX, &tctx);
+        d_state_machine_set(&sm, start);
+        while (tctx.running) {
+            d_input_begin_frame();
+            d_state_machine_update(&sm);
+            d_input_end_frame();
+        }
+        rc = tctx.result;
+    }
+
     if (rc == -1) {
         fprintf(stderr, "Unknown tool '%s'\n", argv[tool_index]);
         print_usage();
     }
+
+    d_ime_shutdown();
+    d_input_shutdown();
     return rc;
 }

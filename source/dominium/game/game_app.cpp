@@ -4,8 +4,11 @@
 #include "domino/sim/sim.h"
 #include "domino/system/dsys.h"
 #include "domino/tui/tui.h"
-#include "domino/canvas.h"
-#include "domino/gfx.h"
+#include "domino/render/backend_detect.h"
+#include "domino/render/pipeline.h"
+#include "domino/input/input.h"
+#include "domino/input/ime.h"
+#include "domino/state/state.h"
 #include "dominium/version.h"
 #include <cstdio>
 #include <cstdlib>
@@ -14,6 +17,32 @@
 struct GameCliContext {
     GameApp* app;
 };
+
+enum GameState {
+    GAME_STATE_MENU = 0,
+    GAME_STATE_RUNNING_HEADLESS,
+    GAME_STATE_RUNNING_TUI,
+    GAME_STATE_RUNNING_GUI,
+    GAME_STATE_MAX
+};
+
+struct GameStateContext {
+    GameApp* app;
+    u32      seed;
+    u32      ticks;
+    u32      width;
+    u32      height;
+    int      running;
+    int      result;
+};
+
+static int  game_run_headless_impl(GameApp* app, u32 seed, u32 ticks, u32 width, u32 height);
+static int  game_run_tui_impl(GameApp* app);
+static int  game_run_gui_impl(GameApp* app);
+static void game_state_stop(void* userdata);
+static void game_state_enter_headless(void* userdata);
+static void game_state_enter_tui(void* userdata);
+static void game_state_enter_gui(void* userdata);
 
 static int game_parse_u32(const char* text, u32* out_val) {
     char* endp;
@@ -316,66 +345,14 @@ static void game_tui_on_exit(d_tui_widget* self, void* user) {
     }
 }
 
-GameApp::GameApp() {
+static void game_state_stop(void* userdata) {
+    GameStateContext* ctx = (GameStateContext*)userdata;
+    if (ctx) {
+        ctx->running = 0;
+    }
 }
 
-GameApp::~GameApp() {
-}
-
-int GameApp::run(int argc, char** argv) {
-    d_cli cli;
-    GameCliContext ctx;
-    int rc;
-    int i;
-
-    for (i = 1; i < argc; ++i) {
-        if (std::strcmp(argv[i], "--mode=tui") == 0) {
-            return run_tui_mode();
-        }
-        if (std::strcmp(argv[i], "--mode=headless") == 0) {
-            return run_headless(12345u, 100u, 64u, 64u);
-        }
-    }
-
-    ctx.app = this;
-    d_cli_init(&cli, (argc > 0) ? argv[0] : "dominium_game",
-               DOMINIUM_GAME_VERSION);
-
-    rc = d_cli_register(&cli, "run-headless",
-                        "Run deterministic headless simulation",
-                        game_cmd_run_headless, &ctx);
-    if (rc != D_CLI_OK) {
-        return rc;
-    }
-    rc = d_cli_register(&cli, "run-tui", "Launch text UI (stub)",
-                        game_cmd_run_tui, &ctx);
-    if (rc != D_CLI_OK) {
-        return rc;
-    }
-    rc = d_cli_register(&cli, "run-gui", "Launch graphical UI (stub)",
-                        game_cmd_run_gui, &ctx);
-    if (rc != D_CLI_OK) {
-        return rc;
-    }
-    rc = d_cli_register(&cli, "world-checksum",
-                        "Load a world file and print its checksum",
-                        game_cmd_world_checksum, &ctx);
-    if (rc != D_CLI_OK) {
-        return rc;
-    }
-    rc = d_cli_register(&cli, "world-load",
-                        "Load a world file to verify format integrity",
-                        game_cmd_world_load, &ctx);
-    if (rc != D_CLI_OK) {
-        return rc;
-    }
-
-    rc = d_cli_dispatch(&cli, argc, (const char**)argv);
-    d_cli_shutdown(&cli);
-    return rc;
-}
-
-int GameApp::run_headless(u32 seed, u32 ticks, u32 width, u32 height) {
+static int game_run_headless_impl(GameApp* app, u32 seed, u32 ticks, u32 width, u32 height) {
     d_world_config cfg;
     d_world* world;
     u32 t;
@@ -398,7 +375,9 @@ int GameApp::run_headless(u32 seed, u32 ticks, u32 width, u32 height) {
     }
 
     for (t = 0; t < ticks; ++t) {
+        d_input_begin_frame();
         d_world_tick(world);
+        d_input_end_frame();
     }
 
     checksum = d_world_checksum(world);
@@ -424,29 +403,7 @@ int GameApp::run_headless(u32 seed, u32 ticks, u32 width, u32 height) {
     return 0;
 }
 
-int GameApp::load_world_checksum(const char* path, u32* checksum_out) {
-    d_world* world;
-    u32 checksum;
-
-    if (!path) {
-        return 1;
-    }
-
-    world = d_world_load_tlv(path);
-    if (!world) {
-        std::printf("Game: failed to load world '%s'\n", path);
-        return 1;
-    }
-
-    checksum = d_world_checksum(world);
-    if (checksum_out) {
-        *checksum_out = checksum;
-    }
-    d_world_destroy(world);
-    return 0;
-}
-
-int GameApp::run_tui_mode(void) {
+static int game_run_tui_impl(GameApp* app) {
     d_tui_context* tui;
     d_tui_widget* root;
     d_tui_widget* header;
@@ -454,6 +411,8 @@ int GameApp::run_tui_mode(void) {
     d_tui_widget* actions;
     int running = 1;
     GameTuiState state;
+
+    (void)app;
 
     if (!dsys_terminal_init()) {
         std::printf("Game: terminal init failed.\n");
@@ -486,15 +445,23 @@ int GameApp::run_tui_mode(void) {
     d_tui_set_root(tui, root);
 
     while (running) {
-        int key;
+        d_input_event ev;
+        d_input_begin_frame();
+        while (d_input_poll(&ev)) {
+            if (ev.type == D_INPUT_KEYDOWN) {
+                int key = ev.param1;
+                if (key == 'q' || key == 'Q' || key == 27) {
+                    running = 0;
+                    break;
+                }
+                d_tui_handle_key(tui, key);
+            } else if (ev.type == D_INPUT_CHAR) {
+                int key = ev.param1;
+                d_tui_handle_key(tui, key);
+            }
+        }
         d_tui_render(tui);
-        key = dsys_terminal_poll_key();
-        if (key == 'q' || key == 'Q' || key == 27) {
-            break;
-        }
-        if (key != 0) {
-            d_tui_handle_key(tui, key);
-        }
+        d_input_end_frame();
     }
 
     d_tui_destroy(tui);
@@ -502,64 +469,312 @@ int GameApp::run_tui_mode(void) {
     return 0;
 }
 
-int GameApp::run_gui_mode(void) {
+static int game_run_gui_impl(GameApp* app) {
+    d_gfx_backend_info infos[D_GFX_BACKEND_MAX];
+    d_gfx_backend_type backend;
+    d_gfx_pipeline* pipeline = NULL;
+    d_gui_window* main_win = NULL;
+    d_gui_window* log_win = NULL;
     dgui_context* gui;
-    dgui_widget* root;
-    dgui_widget* header;
-    dgui_widget* actions;
-    dgui_widget* status;
-    struct dcvs_t* canvas;
-    dgfx_desc gdesc;
-    int frame;
+    const float dt = 1.0f / 60.0f;
+    int frames = 0;
+    int rc = 1;
+
+    (void)app;
+    std::memset(infos, 0, sizeof(infos));
 
     if (dsys_init() != DSYS_OK) {
         std::printf("Game: dsys_init failed.\n");
         return 1;
     }
 
-    gdesc.backend = DGFX_BACKEND_SOFT;
-    gdesc.width = 640;
-    gdesc.height = 360;
-    gdesc.fullscreen = 0;
-    gdesc.vsync = 0;
-    gdesc.native_window = NULL;
-    gdesc.window = NULL;
-    if (!dgfx_init(&gdesc)) {
-        std::printf("Game: dgfx_init failed.\n");
+    d_gfx_detect_backends(infos, D_GFX_BACKEND_MAX);
+    backend = d_gfx_select_backend();
+    pipeline = d_gfx_pipeline_create(backend);
+    if (!pipeline && backend != D_GFX_BACKEND_SOFT) {
+        pipeline = d_gfx_pipeline_create(D_GFX_BACKEND_SOFT);
+    }
+    if (!pipeline) {
+        std::printf("Game: GUI not supported on this platform.\n");
         dsys_shutdown();
         return 1;
     }
+    d_gui_set_shared_pipeline(pipeline);
 
-    gui = dgui_create();
-    if (!gui) {
-        dgfx_shutdown();
-        dsys_shutdown();
-        return 1;
+    {
+        d_gui_window_desc wdesc;
+        wdesc.title = "Dominium Game";
+        wdesc.x = 120;
+        wdesc.y = 120;
+        wdesc.width = 800;
+        wdesc.height = 480;
+        wdesc.resizable = 1;
+        main_win = d_gui_window_create(&wdesc);
+    }
+    if (main_win) {
+        dgui_widget* root;
+        dgui_widget* header;
+        dgui_widget* actions;
+        dgui_widget* status;
+        gui = d_gui_window_get_gui(main_win);
+        root = dgui_panel(gui, DGUI_LAYOUT_VERTICAL);
+        header = dgui_label(gui, "Dominium Game GUI");
+        actions = dgui_panel(gui, DGUI_LAYOUT_VERTICAL);
+        status = dgui_label(gui, "Simulation ready");
+        dgui_widget_add(root, header);
+        dgui_widget_add(root, actions);
+        dgui_widget_add(root, status);
+        dgui_widget_add(actions, dgui_button(gui, "Run", NULL, NULL));
+        dgui_widget_add(actions, dgui_button(gui, "Step", NULL, NULL));
+        dgui_widget_add(actions, dgui_button(gui, "Checksum", NULL, NULL));
+        dgui_widget_add(actions, dgui_button(gui, "Exit", NULL, NULL));
+        d_gui_window_set_root(main_win, root);
     }
 
-    root = dgui_panel(gui, DGUI_LAYOUT_VERTICAL);
-    header = dgui_label(gui, "Dominium Game GUI");
-    actions = dgui_panel(gui, DGUI_LAYOUT_VERTICAL);
-    status = dgui_label(gui, "Ready");
-    dgui_widget_add(root, header);
-    dgui_widget_add(root, actions);
-    dgui_widget_add(root, status);
-    dgui_widget_add(actions, dgui_button(gui, "Run", NULL, NULL));
-    dgui_widget_add(actions, dgui_button(gui, "Step", NULL, NULL));
-    dgui_widget_add(actions, dgui_button(gui, "Checksum", NULL, NULL));
-    dgui_widget_add(actions, dgui_button(gui, "Exit", NULL, NULL));
-    dgui_set_root(gui, root);
-
-    for (frame = 0; frame < 1; ++frame) {
-        canvas = dgfx_get_frame_canvas();
-        dgfx_begin_frame();
-        dgui_render(gui, canvas);
-        dgfx_execute(dcvs_get_cmd_buffer(canvas));
-        dgfx_end_frame();
+    {
+        d_gui_window_desc ldesc;
+        ldesc.title = "Log / Inspector";
+        ldesc.x = 940;
+        ldesc.y = 140;
+        ldesc.width = 360;
+        ldesc.height = 260;
+        ldesc.resizable = 0;
+        log_win = d_gui_window_create(&ldesc);
+    }
+    if (log_win) {
+        dgui_context* lctx = d_gui_window_get_gui(log_win);
+        dgui_widget* root = dgui_panel(lctx, DGUI_LAYOUT_VERTICAL);
+        dgui_widget* header = dgui_label(lctx, "Backends");
+        dgui_widget* list = dgui_panel(lctx, DGUI_LAYOUT_VERTICAL);
+        u32 i;
+        dgui_widget_add(root, header);
+        dgui_widget_add(root, list);
+        for (i = 0; i < D_GFX_BACKEND_MAX; ++i) {
+            if (infos[i].name[0] == '\0') continue;
+            dgui_widget_add(list, dgui_label(lctx, infos[i].name));
+        }
+        d_gui_window_set_root(log_win, root);
     }
 
-    dgui_destroy(gui);
-    dgfx_shutdown();
+    while (d_gui_any_window_alive() && frames < 3) {
+        d_gui_tick_all_windows(dt);
+        ++frames;
+    }
+
+    if (log_win) d_gui_window_destroy(log_win);
+    if (main_win) d_gui_window_destroy(main_win);
+    d_gui_set_shared_pipeline(NULL);
+    d_gfx_pipeline_destroy(pipeline);
     dsys_shutdown();
+    rc = 0;
+    return rc;
+}
+
+static void game_state_enter_headless(void* userdata) {
+    GameStateContext* ctx = (GameStateContext*)userdata;
+    if (!ctx || !ctx->app) {
+        return;
+    }
+    ctx->result = game_run_headless_impl(ctx->app, ctx->seed, ctx->ticks, ctx->width, ctx->height);
+    ctx->running = 0;
+}
+
+static void game_state_enter_tui(void* userdata) {
+    GameStateContext* ctx = (GameStateContext*)userdata;
+    if (!ctx || !ctx->app) {
+        return;
+    }
+    ctx->result = game_run_tui_impl(ctx->app);
+    ctx->running = 0;
+}
+
+static void game_state_enter_gui(void* userdata) {
+    GameStateContext* ctx = (GameStateContext*)userdata;
+    if (!ctx || !ctx->app) {
+        return;
+    }
+    ctx->result = game_run_gui_impl(ctx->app);
+    ctx->running = 0;
+}
+
+GameApp::GameApp() {
+}
+
+GameApp::~GameApp() {
+}
+
+int GameApp::run(int argc, char** argv) {
+    d_cli cli;
+    GameCliContext ctx;
+    int rc = 0;
+    int i;
+    int cli_initialized = 0;
+    int input_initialized = 0;
+
+    d_input_init();
+    d_ime_init();
+    d_ime_enable();
+    input_initialized = 1;
+
+    for (i = 1; i < argc; ++i) {
+        if (std::strcmp(argv[i], "--mode=tui") == 0) {
+            rc = run_tui_mode();
+            goto cleanup;
+        }
+        if (std::strcmp(argv[i], "--mode=headless") == 0) {
+            rc = run_headless(12345u, 100u, 64u, 64u);
+            goto cleanup;
+        }
+    }
+
+    ctx.app = this;
+    d_cli_init(&cli, (argc > 0) ? argv[0] : "dominium_game",
+               DOMINIUM_GAME_VERSION);
+    cli_initialized = 1;
+
+    rc = d_cli_register(&cli, "run-headless",
+                        "Run deterministic headless simulation",
+                        game_cmd_run_headless, &ctx);
+    if (rc != D_CLI_OK) goto cleanup;
+    rc = d_cli_register(&cli, "run-tui", "Launch text UI (stub)",
+                        game_cmd_run_tui, &ctx);
+    if (rc != D_CLI_OK) goto cleanup;
+    rc = d_cli_register(&cli, "run-gui", "Launch graphical UI (stub)",
+                        game_cmd_run_gui, &ctx);
+    if (rc != D_CLI_OK) goto cleanup;
+    rc = d_cli_register(&cli, "world-checksum",
+                        "Load a world file and print its checksum",
+                        game_cmd_world_checksum, &ctx);
+    if (rc != D_CLI_OK) goto cleanup;
+    rc = d_cli_register(&cli, "world-load",
+                        "Load a world file to verify format integrity",
+                        game_cmd_world_load, &ctx);
+    if (rc != D_CLI_OK) goto cleanup;
+
+    rc = d_cli_dispatch(&cli, argc, (const char**)argv);
+
+cleanup:
+    if (cli_initialized) {
+        d_cli_shutdown(&cli);
+    }
+    if (input_initialized) {
+        d_ime_shutdown();
+        d_input_shutdown();
+    }
+    return rc;
+}
+
+int GameApp::run_headless(u32 seed, u32 ticks, u32 width, u32 height) {
+    d_state states[GAME_STATE_MAX];
+    d_state_machine sm;
+    GameStateContext ctx;
+    u32 i;
+
+    ctx.app = this;
+    ctx.seed = seed;
+    ctx.ticks = ticks;
+    ctx.width = width;
+    ctx.height = height;
+    ctx.running = 1;
+    ctx.result = 0;
+
+    for (i = 0u; i < GAME_STATE_MAX; ++i) {
+        states[i].on_enter = NULL;
+        states[i].on_update = NULL;
+        states[i].on_exit = NULL;
+    }
+    states[GAME_STATE_MENU].on_update = game_state_stop;
+    states[GAME_STATE_RUNNING_HEADLESS].on_enter = game_state_enter_headless;
+    states[GAME_STATE_RUNNING_HEADLESS].on_update = game_state_stop;
+
+    d_state_machine_init(&sm, states, GAME_STATE_MAX, &ctx);
+    d_state_machine_set(&sm, GAME_STATE_RUNNING_HEADLESS);
+    while (ctx.running) {
+        d_state_machine_update(&sm);
+    }
+    return ctx.result;
+}
+
+int GameApp::load_world_checksum(const char* path, u32* checksum_out) {
+    d_world* world;
+    u32 checksum;
+
+    if (!path) {
+        return 1;
+    }
+
+    world = d_world_load_tlv(path);
+    if (!world) {
+        std::printf("Game: failed to load world '%s'\n", path);
+        return 1;
+    }
+
+    checksum = d_world_checksum(world);
+    if (checksum_out) {
+        *checksum_out = checksum;
+    }
+    d_world_destroy(world);
     return 0;
+}
+
+int GameApp::run_tui_mode(void) {
+    d_state states[GAME_STATE_MAX];
+    d_state_machine sm;
+    GameStateContext ctx;
+    u32 i;
+
+    ctx.app = this;
+    ctx.seed = 0u;
+    ctx.ticks = 0u;
+    ctx.width = 0u;
+    ctx.height = 0u;
+    ctx.running = 1;
+    ctx.result = 0;
+
+    for (i = 0u; i < GAME_STATE_MAX; ++i) {
+        states[i].on_enter = NULL;
+        states[i].on_update = NULL;
+        states[i].on_exit = NULL;
+    }
+    states[GAME_STATE_MENU].on_update = game_state_stop;
+    states[GAME_STATE_RUNNING_TUI].on_enter = game_state_enter_tui;
+    states[GAME_STATE_RUNNING_TUI].on_update = game_state_stop;
+
+    d_state_machine_init(&sm, states, GAME_STATE_MAX, &ctx);
+    d_state_machine_set(&sm, GAME_STATE_RUNNING_TUI);
+    while (ctx.running) {
+        d_state_machine_update(&sm);
+    }
+    return ctx.result;
+}
+
+int GameApp::run_gui_mode(void) {
+    d_state states[GAME_STATE_MAX];
+    d_state_machine sm;
+    GameStateContext ctx;
+    u32 i;
+
+    ctx.app = this;
+    ctx.seed = 0u;
+    ctx.ticks = 0u;
+    ctx.width = 0u;
+    ctx.height = 0u;
+    ctx.running = 1;
+    ctx.result = 0;
+
+    for (i = 0u; i < GAME_STATE_MAX; ++i) {
+        states[i].on_enter = NULL;
+        states[i].on_update = NULL;
+        states[i].on_exit = NULL;
+    }
+    states[GAME_STATE_MENU].on_update = game_state_stop;
+    states[GAME_STATE_RUNNING_GUI].on_enter = game_state_enter_gui;
+    states[GAME_STATE_RUNNING_GUI].on_update = game_state_stop;
+
+    d_state_machine_init(&sm, states, GAME_STATE_MAX, &ctx);
+    d_state_machine_set(&sm, GAME_STATE_RUNNING_GUI);
+    while (ctx.running) {
+        d_state_machine_update(&sm);
+    }
+    return ctx.result;
 }

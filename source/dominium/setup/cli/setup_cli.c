@@ -2,15 +2,40 @@
 #include <string.h>
 
 #include "domino/cli/cli.h"
-#include "domino/sys.h"
 #include "domino/core.h"
 #include "domino/gfx.h"
 #include "domino/canvas.h"
 #include "domino/gui/gui.h"
 #include "domino/tui/tui.h"
+#include "domino/input/input.h"
+#include "domino/input/ime.h"
+#include "domino/system/dsys.h"
+#include "domino/render/backend_detect.h"
+#include "domino/render/pipeline.h"
+#include "domino/state/state.h"
 #include "dominium/version.h"
 #include "dominium/setup_api.h"
 #include "dominium/product_info.h"
+
+typedef enum setup_state {
+    SETUP_STATE_MENU = 0,
+    SETUP_STATE_INSTALL,
+    SETUP_STATE_REPAIR,
+    SETUP_STATE_UNINSTALL,
+    SETUP_STATE_IMPORT,
+    SETUP_STATE_GC,
+    SETUP_STATE_MAX
+} setup_state;
+
+typedef struct setup_state_ctx {
+    dom_setup_action  action;
+    dom_setup_desc*   desc;
+    dom_setup_command* cmd;
+    dom_core*         core;
+    void*             setup_ctx;
+    dom_setup_status  status;
+    int               running;
+} setup_state_ctx;
 
 static int dom_setup_cli_parse_scope(const char* value, dom_setup_scope* out) {
     if (!value || !out) {
@@ -82,6 +107,50 @@ static void dom_setup_defaults(dom_setup_desc* desc,
     cmd->struct_version = 1u;
     cmd->action = action;
     cmd->existing_install_dir = NULL;
+}
+
+static void dom_setup_state_stop(void* userdata) {
+    setup_state_ctx* ctx = (setup_state_ctx*)userdata;
+    if (ctx) {
+        ctx->running = 0;
+    }
+}
+
+static void dom_setup_state_enter_install(void* userdata) {
+    setup_state_ctx* ctx = (setup_state_ctx*)userdata;
+    if (!ctx) return;
+    ctx->status = dom_setup_execute(ctx->setup_ctx, ctx->cmd,
+                                    ctx->desc && ctx->desc->quiet ? NULL : dom_setup_cli_progress,
+                                    ctx->desc ? &ctx->desc->quiet : NULL);
+    ctx->running = 0;
+}
+
+static void dom_setup_state_enter_repair(void* userdata) {
+    dom_setup_state_enter_install(userdata);
+}
+
+static void dom_setup_state_enter_uninstall(void* userdata) {
+    setup_state_ctx* ctx = (setup_state_ctx*)userdata;
+    if (!ctx) return;
+    ctx->cmd->action = DOM_SETUP_ACTION_UNINSTALL;
+    ctx->status = dom_setup_execute(ctx->setup_ctx, ctx->cmd,
+                                    ctx->desc && ctx->desc->quiet ? NULL : dom_setup_cli_progress,
+                                    ctx->desc ? &ctx->desc->quiet : NULL);
+    ctx->running = 0;
+}
+
+static void dom_setup_state_enter_import(void* userdata) {
+    setup_state_ctx* ctx = (setup_state_ctx*)userdata;
+    if (!ctx) return;
+    ctx->status = DOM_SETUP_STATUS_INVALID_ARGUMENT;
+    ctx->running = 0;
+}
+
+static void dom_setup_state_enter_gc(void* userdata) {
+    setup_state_ctx* ctx = (setup_state_ctx*)userdata;
+    if (!ctx) return;
+    ctx->status = DOM_SETUP_STATUS_INVALID_ARGUMENT;
+    ctx->running = 0;
 }
 
 static int dom_setup_parse_options(const d_cli_args* args,
@@ -241,9 +310,48 @@ static int dom_setup_run(dom_setup_action action, int argc, const char** argv) {
         cmd.existing_install_dir = desc.target_dir;
     }
 
-    status = dom_setup_execute(setup_ctx, &cmd,
-                               desc.quiet ? NULL : dom_setup_cli_progress,
-                               &desc.quiet);
+    {
+        d_state states[SETUP_STATE_MAX];
+        d_state_machine sm;
+        setup_state_ctx sctx;
+        u32 i;
+
+        for (i = 0u; i < SETUP_STATE_MAX; ++i) {
+            states[i].on_enter = NULL;
+            states[i].on_update = dom_setup_state_stop;
+            states[i].on_exit = NULL;
+        }
+        states[SETUP_STATE_INSTALL].on_enter = dom_setup_state_enter_install;
+        states[SETUP_STATE_REPAIR].on_enter = dom_setup_state_enter_repair;
+        states[SETUP_STATE_UNINSTALL].on_enter = dom_setup_state_enter_uninstall;
+        states[SETUP_STATE_IMPORT].on_enter = dom_setup_state_enter_import;
+        states[SETUP_STATE_GC].on_enter = dom_setup_state_enter_gc;
+
+        sctx.action = action;
+        sctx.desc = &desc;
+        sctx.cmd = &cmd;
+        sctx.core = core;
+        sctx.setup_ctx = setup_ctx;
+        sctx.status = DOM_SETUP_STATUS_OK;
+        sctx.running = 1;
+
+        d_state_machine_init(&sm, states, SETUP_STATE_MAX, &sctx);
+        switch (action) {
+        case DOM_SETUP_ACTION_INSTALL:   d_state_machine_set(&sm, SETUP_STATE_INSTALL); break;
+        case DOM_SETUP_ACTION_REPAIR:    d_state_machine_set(&sm, SETUP_STATE_REPAIR); break;
+        case DOM_SETUP_ACTION_UNINSTALL: d_state_machine_set(&sm, SETUP_STATE_UNINSTALL); break;
+        case DOM_SETUP_ACTION_IMPORT:    d_state_machine_set(&sm, SETUP_STATE_IMPORT); break;
+        case DOM_SETUP_ACTION_GC:        d_state_machine_set(&sm, SETUP_STATE_GC); break;
+        default:                         d_state_machine_set(&sm, SETUP_STATE_MENU); break;
+        }
+
+        while (sctx.running) {
+            d_input_begin_frame();
+            d_state_machine_update(&sm);
+            d_input_end_frame();
+        }
+        status = sctx.status;
+    }
 
     dom_setup_destroy(setup_ctx);
     dom_core_destroy(core);
@@ -367,61 +475,108 @@ static void dom_setup_tui_exit(d_tui_widget* self, void* user) {
 }
 
 static int dom_setup_run_tui(void) {
-    d_tui_context* tui;
-    d_tui_widget* root;
-    d_tui_widget* header;
-    d_tui_widget* actions;
-    d_tui_widget* status;
-    dom_setup_tui_state st;
-    int running = 1;
+    d_state states[SETUP_STATE_MAX];
+    d_state_machine sm;
+    setup_state_ctx sctx;
+    u32 i;
+    int result = 0;
+
+    for (i = 0u; i < SETUP_STATE_MAX; ++i) {
+        states[i].on_enter = NULL;
+        states[i].on_update = dom_setup_state_stop;
+        states[i].on_exit = NULL;
+    }
+
+    states[SETUP_STATE_MENU].on_enter = dom_setup_state_stop;
+    states[SETUP_STATE_MENU].on_update = dom_setup_state_stop;
+    states[SETUP_STATE_INSTALL].on_enter = dom_setup_state_stop;
+    states[SETUP_STATE_REPAIR].on_enter = dom_setup_state_stop;
+    states[SETUP_STATE_UNINSTALL].on_enter = dom_setup_state_stop;
+    states[SETUP_STATE_IMPORT].on_enter = dom_setup_state_stop;
+    states[SETUP_STATE_GC].on_enter = dom_setup_state_stop;
+
+    sctx.action = DOM_SETUP_ACTION_INSTALL;
+    sctx.desc = NULL;
+    sctx.cmd = NULL;
+    sctx.core = NULL;
+    sctx.setup_ctx = NULL;
+    sctx.status = DOM_SETUP_STATUS_OK;
+    sctx.running = 1;
+
+    d_state_machine_init(&sm, states, SETUP_STATE_MAX, &sctx);
+    d_state_machine_set(&sm, SETUP_STATE_MENU);
 
     if (!dsys_terminal_init()) {
         printf("Setup: terminal init failed.\n");
         return 1;
     }
 
-    tui = d_tui_create();
-    if (!tui) {
-        dsys_terminal_shutdown();
-        return 1;
+    {
+        d_tui_context* tui;
+        d_tui_widget* root;
+        d_tui_widget* header;
+        d_tui_widget* actions;
+        d_tui_widget* status;
+        dom_setup_tui_state st;
+        int running = 1;
+
+        tui = d_tui_create();
+        if (!tui) {
+            dsys_terminal_shutdown();
+            return 1;
+        }
+
+        root = d_tui_panel(tui, D_TUI_LAYOUT_VERTICAL);
+        header = d_tui_label(tui, "Dominium Setup TUI");
+        actions = d_tui_panel(tui, D_TUI_LAYOUT_VERTICAL);
+        status = d_tui_label(tui, "Ready");
+
+        d_tui_widget_add(root, header);
+        d_tui_widget_add(root, actions);
+        d_tui_widget_add(root, status);
+
+        st.status = status;
+        st.running = &running;
+
+        d_tui_widget_add(actions, d_tui_button(tui, "Install", dom_setup_tui_install, &st));
+        d_tui_widget_add(actions, d_tui_button(tui, "Repair", dom_setup_tui_repair, &st));
+        d_tui_widget_add(actions, d_tui_button(tui, "Uninstall", dom_setup_tui_uninstall, &st));
+        d_tui_widget_add(actions, d_tui_button(tui, "Import", dom_setup_tui_import, &st));
+        d_tui_widget_add(actions, d_tui_button(tui, "GC", dom_setup_tui_gc, &st));
+        d_tui_widget_add(actions, d_tui_button(tui, "Exit", dom_setup_tui_exit, &st));
+
+        d_tui_set_root(tui, root);
+
+        while (running) {
+            d_input_event ev;
+            d_input_begin_frame();
+            while (d_input_poll(&ev)) {
+                if (ev.type == D_INPUT_KEYDOWN) {
+                    int key = ev.param1;
+                    if (key == 'q' || key == 'Q' || key == 27) {
+                        running = 0;
+                        break;
+                    }
+                    d_tui_handle_key(tui, key);
+                } else if (ev.type == D_INPUT_CHAR) {
+                    d_tui_handle_key(tui, ev.param1);
+                }
+            }
+            d_tui_render(tui);
+            d_input_end_frame();
+        }
+
+        d_tui_destroy(tui);
     }
 
-    root = d_tui_panel(tui, D_TUI_LAYOUT_VERTICAL);
-    header = d_tui_label(tui, "Dominium Setup TUI");
-    actions = d_tui_panel(tui, D_TUI_LAYOUT_VERTICAL);
-    status = d_tui_label(tui, "Ready");
-
-    d_tui_widget_add(root, header);
-    d_tui_widget_add(root, actions);
-    d_tui_widget_add(root, status);
-
-    st.status = status;
-    st.running = &running;
-
-    d_tui_widget_add(actions, d_tui_button(tui, "Install", dom_setup_tui_install, &st));
-    d_tui_widget_add(actions, d_tui_button(tui, "Repair", dom_setup_tui_repair, &st));
-    d_tui_widget_add(actions, d_tui_button(tui, "Uninstall", dom_setup_tui_uninstall, &st));
-    d_tui_widget_add(actions, d_tui_button(tui, "Import", dom_setup_tui_import, &st));
-    d_tui_widget_add(actions, d_tui_button(tui, "GC", dom_setup_tui_gc, &st));
-    d_tui_widget_add(actions, d_tui_button(tui, "Exit", dom_setup_tui_exit, &st));
-
-    d_tui_set_root(tui, root);
-
-    while (running) {
-        int key;
-        d_tui_render(tui);
-        key = dsys_terminal_poll_key();
-        if (key == 'q' || key == 'Q' || key == 27) {
-            break;
-        }
-        if (key != 0) {
-            d_tui_handle_key(tui, key);
-        }
-    }
-
-    d_tui_destroy(tui);
     dsys_terminal_shutdown();
-    return 0;
+    while (sctx.running) {
+        d_input_begin_frame();
+        d_state_machine_update(&sm);
+        d_input_end_frame();
+    }
+    result = (sctx.status == DOM_SETUP_STATUS_OK) ? 0 : 1;
+    return result;
 }
 
 static int dom_setup_cmd_tui(int argc, const char** argv, void* user) {
@@ -449,63 +604,108 @@ static int dom_setup_cmd_tui(int argc, const char** argv, void* user) {
 }
 
 static int dom_setup_run_gui(void) {
-    dgui_context* gui;
-    dgui_widget* root;
-    dgui_widget* header;
-    dgui_widget* actions;
-    dgui_widget* status;
-    struct dcvs_t* canvas;
-    dgfx_desc gdesc;
+    d_state states[SETUP_STATE_MAX];
+    d_state_machine sm;
+    setup_state_ctx sctx;
+    u32 i;
+    int result = 0;
+
+    for (i = 0u; i < SETUP_STATE_MAX; ++i) {
+        states[i].on_enter = NULL;
+        states[i].on_update = dom_setup_state_stop;
+        states[i].on_exit = NULL;
+    }
+    states[SETUP_STATE_MENU].on_enter = dom_setup_state_stop;
+
+    sctx.action = DOM_SETUP_ACTION_INSTALL;
+    sctx.desc = NULL;
+    sctx.cmd = NULL;
+    sctx.core = NULL;
+    sctx.setup_ctx = NULL;
+    sctx.status = DOM_SETUP_STATUS_OK;
+    sctx.running = 1;
+
+    d_state_machine_init(&sm, states, SETUP_STATE_MAX, &sctx);
+    d_state_machine_set(&sm, SETUP_STATE_MENU);
 
     if (dsys_init() != DSYS_OK) {
         printf("Setup: dsys_init failed.\n");
         return 1;
     }
-    gdesc.backend = DGFX_BACKEND_SOFT;
-    gdesc.width = 640;
-    gdesc.height = 360;
-    gdesc.fullscreen = 0;
-    gdesc.vsync = 0;
-    gdesc.native_window = NULL;
-    gdesc.window = NULL;
-    if (!dgfx_init(&gdesc)) {
-        printf("Setup: dgfx_init failed.\n");
-        dsys_shutdown();
-        return 1;
+    {
+        d_gfx_backend_info infos[D_GFX_BACKEND_MAX];
+        d_gfx_backend_type backend;
+        d_gfx_pipeline* pipeline = NULL;
+        d_gui_window* win = NULL;
+        const float dt = 1.0f / 60.0f;
+        int frames = 0;
+
+        memset(infos, 0, sizeof(infos));
+        d_gfx_detect_backends(infos, D_GFX_BACKEND_MAX);
+        backend = d_gfx_select_backend();
+        pipeline = d_gfx_pipeline_create(backend);
+        if (!pipeline && backend != D_GFX_BACKEND_SOFT) {
+            pipeline = d_gfx_pipeline_create(D_GFX_BACKEND_SOFT);
+        }
+        if (!pipeline) {
+            printf("Setup: GUI not supported on this platform.\n");
+            dsys_shutdown();
+            return 1;
+        }
+        d_gui_set_shared_pipeline(pipeline);
+
+        {
+            d_gui_window_desc wdesc;
+            dgui_context* gui;
+            dgui_widget* root;
+            dgui_widget* header;
+            dgui_widget* actions;
+            dgui_widget* status;
+            wdesc.title = "Dominium Setup";
+            wdesc.x = 140;
+            wdesc.y = 140;
+            wdesc.width = 640;
+            wdesc.height = 360;
+            wdesc.resizable = 1;
+            win = d_gui_window_create(&wdesc);
+            if (win) {
+                gui = d_gui_window_get_gui(win);
+                root = dgui_panel(gui, DGUI_LAYOUT_VERTICAL);
+                header = dgui_label(gui, "Dominium Setup GUI");
+                actions = dgui_panel(gui, DGUI_LAYOUT_VERTICAL);
+                status = dgui_label(gui, "Ready");
+                dgui_widget_add(root, header);
+                dgui_widget_add(root, actions);
+                dgui_widget_add(root, status);
+                dgui_widget_add(actions, dgui_button(gui, "Install", NULL, NULL));
+                dgui_widget_add(actions, dgui_button(gui, "Repair", NULL, NULL));
+                dgui_widget_add(actions, dgui_button(gui, "Uninstall", NULL, NULL));
+                dgui_widget_add(actions, dgui_button(gui, "Import", NULL, NULL));
+                dgui_widget_add(actions, dgui_button(gui, "GC", NULL, NULL));
+                dgui_widget_add(actions, dgui_button(gui, "Exit", NULL, NULL));
+                d_gui_window_set_root(win, root);
+            }
+        }
+
+        while (d_gui_any_window_alive() && frames < 3) {
+            d_gui_tick_all_windows(dt);
+            ++frames;
+        }
+
+        if (win) {
+            d_gui_window_destroy(win);
+        }
+        d_gui_set_shared_pipeline(NULL);
+        d_gfx_pipeline_destroy(pipeline);
     }
-
-    gui = dgui_create();
-    if (!gui) {
-        dgfx_shutdown();
-        dsys_shutdown();
-        return 1;
-    }
-
-    root = dgui_panel(gui, DGUI_LAYOUT_VERTICAL);
-    header = dgui_label(gui, "Dominium Setup GUI");
-    actions = dgui_panel(gui, DGUI_LAYOUT_VERTICAL);
-    status = dgui_label(gui, "Ready");
-    dgui_widget_add(root, header);
-    dgui_widget_add(root, actions);
-    dgui_widget_add(root, status);
-    dgui_widget_add(actions, dgui_button(gui, "Install", NULL, NULL));
-    dgui_widget_add(actions, dgui_button(gui, "Repair", NULL, NULL));
-    dgui_widget_add(actions, dgui_button(gui, "Uninstall", NULL, NULL));
-    dgui_widget_add(actions, dgui_button(gui, "Import", NULL, NULL));
-    dgui_widget_add(actions, dgui_button(gui, "GC", NULL, NULL));
-    dgui_widget_add(actions, dgui_button(gui, "Exit", NULL, NULL));
-    dgui_set_root(gui, root);
-
-    canvas = dgfx_get_frame_canvas();
-    dgfx_begin_frame();
-    dgui_render(gui, canvas);
-    dgfx_execute(dcvs_get_cmd_buffer(canvas));
-    dgfx_end_frame();
-
-    dgui_destroy(gui);
-    dgfx_shutdown();
     dsys_shutdown();
-    return 0;
+    while (sctx.running) {
+        d_input_begin_frame();
+        d_state_machine_update(&sm);
+        d_input_end_frame();
+    }
+    result = (sctx.status == DOM_SETUP_STATUS_OK) ? 0 : 1;
+    return result;
 }
 
 static int dom_setup_cmd_gui(int argc, const char** argv, void* user) {
@@ -535,6 +735,10 @@ int main(int argc, char** argv) {
     d_cli cli;
     int rc;
 
+    d_input_init();
+    d_ime_init();
+    d_ime_enable();
+
     d_cli_init(&cli, (argc > 0) ? argv[0] : "dominium-setup-cli",
                DOMINIUM_SETUP_VERSION);
 
@@ -555,5 +759,7 @@ int main(int argc, char** argv) {
 
     rc = d_cli_dispatch(&cli, argc, (const char**)argv);
     d_cli_shutdown(&cli);
+    d_ime_shutdown();
+    d_input_shutdown();
     return rc;
 }

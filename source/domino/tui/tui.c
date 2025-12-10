@@ -9,9 +9,9 @@
 #define D_TUI_MAX_WIDGETS  128
 
 typedef struct d_tui_widget_list {
-    const char** items;
-    int          count;
-    int          selected;
+    const char* const* items;
+    int                count;
+    int                selected;
 } d_tui_widget_list;
 
 struct d_tui_widget {

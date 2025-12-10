@@ -1,0 +1,64 @@
+    win->next = g_gui_windows;
+            *cur = win->next;
+    win->desc = local;
+    win->pipeline = d_gui_resolve_pipeline(&owns_pipeline);
+    win->owns_pipeline = owns_pipeline;
+    if (!win->pipeline) {
+    win->target = d_gfx_target_create(win->pipeline, local.width, local.height);
+    if (!win->target) {
+        if (win->owns_pipeline) d_gfx_pipeline_destroy(win->pipeline);
+    win->pass = d_gfx_pass_create(win->pipeline, win->target);
+    if (!win->pass) {
+        d_gfx_target_destroy(win->pipeline, win->target);
+        if (win->owns_pipeline) d_gfx_pipeline_destroy(win->pipeline);
+    win->canvas = dcvs_create(64u * 1024u);
+    win->gui = dgui_create();
+    if (!win->canvas || !win->gui) {
+        if (win->canvas) dcvs_destroy(win->canvas);
+        if (win->gui) dgui_destroy(win->gui);
+        d_gfx_pass_destroy(win->pipeline, win->pass);
+        d_gfx_target_destroy(win->pipeline, win->target);
+        if (win->owns_pipeline) d_gfx_pipeline_destroy(win->pipeline);
+    win->window = dsys_window_create(&sdesc);
+    if (!win->window) {
+        dcvs_destroy(win->canvas);
+        dgui_destroy(win->gui);
+        d_gfx_pass_destroy(win->pipeline, win->pass);
+        d_gfx_target_destroy(win->pipeline, win->target);
+        if (win->owns_pipeline) d_gfx_pipeline_destroy(win->pipeline);
+    dsys_window_destroy(win->window);
+    if (win->canvas) dcvs_destroy(win->canvas);
+    if (win->gui) dgui_destroy(win->gui);
+    if (win->pass) d_gfx_pass_destroy(win->pipeline, win->pass);
+    if (win->target) d_gfx_target_destroy(win->pipeline, win->target);
+    if (win->owns_pipeline && win->pipeline) {
+        d_gfx_pipeline_destroy(win->pipeline);
+    return dsys_window_should_close(win->window);
+    win->root = root;
+    if (win->gui) {
+        win->gui->root = root;
+        dgui_set_root(win->gui, root);
+    return win->gui;
+    int32_t w = win ? (int32_t)win->desc.width : 0;
+    int32_t h = win ? (int32_t)win->desc.height : 0;
+    if (!win || !win->pass || !win->canvas || !win->gui) {
+    dsys_window_get_size(win->window, &w, &h);
+    if (w <= 0) w = (int32_t)win->desc.width;
+    if (h <= 0) h = (int32_t)win->desc.height;
+    if (win->gui) {
+        win->gui->surface_w = (int)w;
+        win->gui->surface_h = (int)h;
+            dgui_handle_key(win->gui, iev.param1);
+    dcvs_reset(win->canvas);
+    dcvs_set_viewport(win->canvas, &vp);
+    clear_rgba = d_gui_pack_color(win->gui->style ? &win->gui->style->bg : NULL);
+    dcvs_clear(win->canvas, clear_rgba);
+    if (win->root) {
+        dgui_render(win->gui, win->canvas);
+    buf = dcvs_get_cmd_buffer(win->canvas);
+    d_gfx_pass_begin(win->pass);
+        d_gfx_pass_submit_ir(win->pass, cmds, cmd_count);
+    d_gfx_pass_end(win->pass);
+    dsys_window_present(win->window);
+        win = win->next;
+        win = win->next;

@@ -2,6 +2,12 @@
 #include "domino/pkg/repo.h"
 #include "domino/system/dsys.h"
 #include "domino/tui/tui.h"
+#include "domino/input/input.h"
+#include "domino/input/ime.h"
+#include "domino/gui/gui.h"
+#include "domino/render/backend_detect.h"
+#include "domino/render/pipeline.h"
+#include "domino/state/state.h"
 #include "dominium/launcher/launcher_app.hpp"
 #include "dominium/version.h"
 #include <cstdio>
@@ -12,6 +18,27 @@ struct LauncherCliContext {
     LauncherApp* app;
     d_cli*       cli;
 };
+
+enum LauncherState {
+    LAUNCHER_STATE_SELECT_PRODUCT = 0,
+    LAUNCHER_STATE_PRODUCT_ACTION,
+    LAUNCHER_STATE_EXIT,
+    LAUNCHER_STATE_MAX
+};
+
+struct LauncherStateContext {
+    LauncherApp* app;
+    int          running;
+    int          result;
+    int        (*action_fn)(LauncherApp*);
+};
+
+static int  launcher_run_tui_impl(LauncherApp* app);
+static int  launcher_run_gui_impl(LauncherApp* app);
+static void launcher_state_stop(void* userdata);
+static void launcher_state_enter_select(void* userdata);
+static void launcher_state_enter_action(void* userdata);
+static void launcher_state_enter_exit(void* userdata);
 
 static void launcher_copy_string(const char* src, char* dst, size_t cap) {
     size_t len;
@@ -299,35 +326,51 @@ LauncherApp::~LauncherApp() {
 int LauncherApp::run(int argc, char** argv) {
     d_cli cli;
     LauncherCliContext ctx;
-    int rc;
+    int rc = 0;
+    int cli_initialized = 0;
+    int input_initialized = 0;
+
+    d_input_init();
+    d_ime_init();
+    d_ime_enable();
+    input_initialized = 1;
 
     ctx.app = this;
     ctx.cli = &cli;
 
     d_cli_init(&cli, (argc > 0) ? argv[0] : "dominium_launcher",
                DOMINIUM_LAUNCHER_VERSION);
+    cli_initialized = 1;
 
     rc = d_cli_register(&cli, "list-products",
                         "List known Dominium products", launcher_cmd_list_products, &ctx);
-    if (rc != D_CLI_OK) return rc;
+    if (rc != D_CLI_OK) goto cleanup;
     rc = d_cli_register(&cli, "run-game",
                         "Launch the game in headless mode", launcher_cmd_run_game, &ctx);
-    if (rc != D_CLI_OK) return rc;
+    if (rc != D_CLI_OK) goto cleanup;
     rc = d_cli_register(&cli, "run-tool",
                         "Launch a Dominium tool by id", launcher_cmd_run_tool, &ctx);
-    if (rc != D_CLI_OK) return rc;
+    if (rc != D_CLI_OK) goto cleanup;
     rc = d_cli_register(&cli, "manifest-info",
                         "Print manifest root and product metadata", launcher_cmd_manifest_info, &ctx);
-    if (rc != D_CLI_OK) return rc;
+    if (rc != D_CLI_OK) goto cleanup;
     rc = d_cli_register(&cli, "tui",
                         "Launch launcher text UI", launcher_cmd_tui, &ctx);
-    if (rc != D_CLI_OK) return rc;
+    if (rc != D_CLI_OK) goto cleanup;
     rc = d_cli_register(&cli, "gui",
                         "Launch launcher GUI", launcher_cmd_gui, &ctx);
-    if (rc != D_CLI_OK) return rc;
+    if (rc != D_CLI_OK) goto cleanup;
 
     rc = d_cli_dispatch(&cli, argc, (const char**)argv);
-    d_cli_shutdown(&cli);
+
+cleanup:
+    if (cli_initialized) {
+        d_cli_shutdown(&cli);
+    }
+    if (input_initialized) {
+        d_ime_shutdown();
+        d_input_shutdown();
+    }
     return rc;
 }
 
@@ -512,7 +555,33 @@ static void launcher_tui_on_exit(d_tui_widget* self, void* user) {
     }
 }
 
-int LauncherApp::run_tui() {
+static void launcher_state_stop(void* userdata) {
+    LauncherStateContext* ctx = (LauncherStateContext*)userdata;
+    if (ctx) {
+        ctx->running = 0;
+    }
+}
+
+static void launcher_state_enter_select(void* userdata) {
+    launcher_state_stop(userdata);
+}
+
+static void launcher_state_enter_action(void* userdata) {
+    LauncherStateContext* ctx = (LauncherStateContext*)userdata;
+    if (!ctx || !ctx->app) {
+        return;
+    }
+    if (ctx->action_fn) {
+        ctx->result = ctx->action_fn(ctx->app);
+    }
+    ctx->running = 0;
+}
+
+static void launcher_state_enter_exit(void* userdata) {
+    launcher_state_stop(userdata);
+}
+
+static int launcher_run_tui_impl(LauncherApp* app) {
     d_tui_context* tui;
     d_tui_widget* root;
     d_tui_widget* header;
@@ -520,6 +589,8 @@ int LauncherApp::run_tui() {
     d_tui_widget* status;
     LauncherTuiState st;
     int running = 1;
+
+    (void)app;
 
     if (!dsys_terminal_init()) {
         std::printf("Launcher: terminal init failed.\n");
@@ -553,15 +624,22 @@ int LauncherApp::run_tui() {
     d_tui_set_root(tui, root);
 
     while (running) {
-        int key;
+        d_input_event ev;
+        d_input_begin_frame();
+        while (d_input_poll(&ev)) {
+            if (ev.type == D_INPUT_KEYDOWN) {
+                int key = ev.param1;
+                if (key == 'q' || key == 'Q' || key == 27) {
+                    running = 0;
+                    break;
+                }
+                d_tui_handle_key(tui, key);
+            } else if (ev.type == D_INPUT_CHAR) {
+                d_tui_handle_key(tui, ev.param1);
+            }
+        }
         d_tui_render(tui);
-        key = dsys_terminal_poll_key();
-        if (key == 'q' || key == 'Q' || key == 27) {
-            break;
-        }
-        if (key != 0) {
-            d_tui_handle_key(tui, key);
-        }
+        d_input_end_frame();
     }
 
     d_tui_destroy(tui);
@@ -569,61 +647,172 @@ int LauncherApp::run_tui() {
     return 0;
 }
 
-int LauncherApp::run_gui() {
+static int launcher_run_gui_impl(LauncherApp* app) {
+    d_gfx_backend_info infos[D_GFX_BACKEND_MAX];
+    d_gfx_backend_type backend;
+    d_gfx_pipeline* pipeline = NULL;
+    d_gui_window* main_win = NULL;
+    d_gui_window* inspector = NULL;
     dgui_context* gui;
     dgui_widget* root;
     dgui_widget* header;
     dgui_widget* actions;
     dgui_widget* status;
-    struct dcvs_t* canvas;
-    dgfx_desc gdesc;
+    const float dt = 1.0f / 60.0f;
+    int frames = 0;
+    int rc = 1;
+
+    (void)app;
+
+    std::memset(infos, 0, sizeof(infos));
 
     if (dsys_init() != DSYS_OK) {
         std::printf("Launcher: dsys_init failed.\n");
         return 1;
     }
 
-    gdesc.backend = DGFX_BACKEND_SOFT;
-    gdesc.width = 640;
-    gdesc.height = 360;
-    gdesc.fullscreen = 0;
-    gdesc.vsync = 0;
-    gdesc.native_window = NULL;
-    gdesc.window = NULL;
-    if (!dgfx_init(&gdesc)) {
-        std::printf("Launcher: dgfx_init failed.\n");
+    d_gfx_detect_backends(infos, D_GFX_BACKEND_MAX);
+    backend = d_gfx_select_backend();
+    pipeline = d_gfx_pipeline_create(backend);
+    if (!pipeline && backend != D_GFX_BACKEND_SOFT) {
+        pipeline = d_gfx_pipeline_create(D_GFX_BACKEND_SOFT);
+    }
+    if (!pipeline) {
+        std::printf("Launcher: GUI not supported on this platform.\n");
         dsys_shutdown();
         return 1;
     }
+    d_gui_set_shared_pipeline(pipeline);
 
-    gui = dgui_create();
-    if (!gui) {
-        dgfx_shutdown();
-        dsys_shutdown();
-        return 1;
+    {
+        d_gui_window_desc wdesc;
+        wdesc.title = "Dominium Launcher";
+        wdesc.x = 100;
+        wdesc.y = 100;
+        wdesc.width = 640;
+        wdesc.height = 360;
+        wdesc.resizable = 1;
+        main_win = d_gui_window_create(&wdesc);
     }
 
-    root = dgui_panel(gui, DGUI_LAYOUT_VERTICAL);
-    header = dgui_label(gui, "Dominium Launcher GUI");
-    actions = dgui_panel(gui, DGUI_LAYOUT_VERTICAL);
-    status = dgui_label(gui, "Ready");
-    dgui_widget_add(root, header);
-    dgui_widget_add(root, actions);
-    dgui_widget_add(root, status);
-    dgui_widget_add(actions, dgui_button(gui, "Run Game (GUI)", NULL, NULL));
-    dgui_widget_add(actions, dgui_button(gui, "Run Game (TUI)", NULL, NULL));
-    dgui_widget_add(actions, dgui_button(gui, "Run Game (Headless)", NULL, NULL));
-    dgui_widget_add(actions, dgui_button(gui, "Exit", NULL, NULL));
-    dgui_set_root(gui, root);
+    if (main_win) {
+        gui = d_gui_window_get_gui(main_win);
+        root = dgui_panel(gui, DGUI_LAYOUT_VERTICAL);
+        header = dgui_label(gui, "Dominium Launcher GUI");
+        actions = dgui_panel(gui, DGUI_LAYOUT_VERTICAL);
+        status = dgui_label(gui, "Backend ready");
+        dgui_widget_add(root, header);
+        dgui_widget_add(root, actions);
+        dgui_widget_add(root, status);
+        dgui_widget_add(actions, dgui_button(gui, "Run Game (GUI)", NULL, NULL));
+        dgui_widget_add(actions, dgui_button(gui, "Run Game (TUI)", NULL, NULL));
+        dgui_widget_add(actions, dgui_button(gui, "Run Game (Headless)", NULL, NULL));
+        dgui_widget_add(actions, dgui_button(gui, "Exit", NULL, NULL));
+        d_gui_window_set_root(main_win, root);
+    }
 
-    canvas = dgfx_get_frame_canvas();
-    dgfx_begin_frame();
-    dgui_render(gui, canvas);
-    dgfx_execute(dcvs_get_cmd_buffer(canvas));
-    dgfx_end_frame();
+    {
+        d_gui_window_desc idesc;
+        idesc.title = "Inspector";
+        idesc.x = 760;
+        idesc.y = 120;
+        idesc.width = 420;
+        idesc.height = 240;
+        idesc.resizable = 0;
+        inspector = d_gui_window_create(&idesc);
+    }
 
-    dgui_destroy(gui);
-    dgfx_shutdown();
+    if (inspector) {
+        dgui_context* igui = d_gui_window_get_gui(inspector);
+        dgui_widget* iroot = dgui_panel(igui, DGUI_LAYOUT_VERTICAL);
+        dgui_widget* ilabel = dgui_label(igui, "Detected backends:");
+        dgui_widget* ilist = dgui_panel(igui, DGUI_LAYOUT_VERTICAL);
+        u32 i;
+        dgui_widget_add(iroot, ilabel);
+        dgui_widget_add(iroot, ilist);
+        for (i = 0; i < D_GFX_BACKEND_MAX; ++i) {
+            if (infos[i].name[0] == '\0') continue;
+            dgui_widget_add(ilist, dgui_label(igui, infos[i].name));
+        }
+        d_gui_window_set_root(inspector, iroot);
+    }
+
+    while (d_gui_any_window_alive() && frames < 3) {
+        d_gui_tick_all_windows(dt);
+        ++frames;
+    }
+
+    if (inspector) {
+        d_gui_window_destroy(inspector);
+    }
+    if (main_win) {
+        d_gui_window_destroy(main_win);
+    }
+    d_gui_set_shared_pipeline(NULL);
+    d_gfx_pipeline_destroy(pipeline);
     dsys_shutdown();
-    return 0;
+    rc = 0;
+    return rc;
+}
+
+int LauncherApp::run_tui() {
+    d_state states[LAUNCHER_STATE_MAX];
+    d_state_machine sm;
+    LauncherStateContext ctx;
+    u32 i;
+
+    ctx.app = this;
+    ctx.running = 1;
+    ctx.result = 0;
+    ctx.action_fn = launcher_run_tui_impl;
+
+    for (i = 0u; i < LAUNCHER_STATE_MAX; ++i) {
+        states[i].on_enter = NULL;
+        states[i].on_update = NULL;
+        states[i].on_exit = NULL;
+    }
+
+    states[LAUNCHER_STATE_SELECT_PRODUCT].on_enter = launcher_state_enter_select;
+    states[LAUNCHER_STATE_SELECT_PRODUCT].on_update = launcher_state_stop;
+    states[LAUNCHER_STATE_PRODUCT_ACTION].on_enter = launcher_state_enter_action;
+    states[LAUNCHER_STATE_PRODUCT_ACTION].on_update = launcher_state_stop;
+    states[LAUNCHER_STATE_EXIT].on_enter = launcher_state_enter_exit;
+
+    d_state_machine_init(&sm, states, LAUNCHER_STATE_MAX, &ctx);
+    d_state_machine_set(&sm, LAUNCHER_STATE_PRODUCT_ACTION);
+    while (ctx.running) {
+        d_state_machine_update(&sm);
+    }
+    return ctx.result;
+}
+
+int LauncherApp::run_gui() {
+    d_state states[LAUNCHER_STATE_MAX];
+    d_state_machine sm;
+    LauncherStateContext ctx;
+    u32 i;
+
+    ctx.app = this;
+    ctx.running = 1;
+    ctx.result = 0;
+    ctx.action_fn = launcher_run_gui_impl;
+
+    for (i = 0u; i < LAUNCHER_STATE_MAX; ++i) {
+        states[i].on_enter = NULL;
+        states[i].on_update = NULL;
+        states[i].on_exit = NULL;
+    }
+
+    states[LAUNCHER_STATE_SELECT_PRODUCT].on_enter = launcher_state_enter_select;
+    states[LAUNCHER_STATE_SELECT_PRODUCT].on_update = launcher_state_stop;
+    states[LAUNCHER_STATE_PRODUCT_ACTION].on_enter = launcher_state_enter_action;
+    states[LAUNCHER_STATE_PRODUCT_ACTION].on_update = launcher_state_stop;
+    states[LAUNCHER_STATE_EXIT].on_enter = launcher_state_enter_exit;
+
+    d_state_machine_init(&sm, states, LAUNCHER_STATE_MAX, &ctx);
+    d_state_machine_set(&sm, LAUNCHER_STATE_PRODUCT_ACTION);
+    while (ctx.running) {
+        d_state_machine_update(&sm);
+    }
+    return ctx.result;
 }
