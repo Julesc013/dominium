@@ -1,9 +1,233 @@
+#include "domino/cli/cli.h"
 #include "domino/pkg/repo.h"
 #include "domino/system/dsys.h"
 #include "dominium/launcher/launcher_app.hpp"
+#include "dominium/version.h"
 #include <cstdio>
 #include <cstring>
 #include <cstdlib>
+
+struct LauncherCliContext {
+    LauncherApp* app;
+    d_cli*       cli;
+};
+
+static void launcher_copy_string(const char* src, char* dst, size_t cap) {
+    size_t len;
+    if (!dst || cap == 0) {
+        return;
+    }
+    if (!src) {
+        dst[0] = '\0';
+        return;
+    }
+    len = std::strlen(src);
+    if (len >= cap) {
+        len = cap - 1u;
+    }
+    std::memcpy(dst, src, len);
+    dst[len] = '\0';
+}
+
+static int launcher_parse_u32(const char* text, u32* out_val) {
+    char* endp;
+    unsigned long v;
+    if (!text || !out_val) {
+        return 0;
+    }
+    v = std::strtoul(text, &endp, 10);
+    if (text == endp) {
+        return 0;
+    }
+    *out_val = (u32)v;
+    return 1;
+}
+
+static int launcher_cmd_list_products(int argc, const char** argv, void* userdata) {
+    LauncherCliContext* ctx = (LauncherCliContext*)userdata;
+    d_cli_args args;
+    int rc;
+    int i;
+
+    if (!ctx || !ctx->app) {
+        return D_CLI_ERR_STATE;
+    }
+
+    rc = d_cli_tokenize(argc, argv, &args);
+    if (rc != D_CLI_OK) {
+        return rc;
+    }
+
+    for (i = 0; i < args.token_count; ++i) {
+        const d_cli_token* t = &args.tokens[i];
+        if (t->is_positional) {
+            d_cli_args_dispose(&args);
+            std::printf("Launcher: unexpected positional argument '%s'\n",
+                        t->value ? t->value : "(null)");
+            return D_CLI_BAD_USAGE;
+        }
+        if (d_cli_match_key(t, "instance")) {
+            continue;
+        }
+        d_cli_args_dispose(&args);
+        std::printf("Launcher: unknown option '%.*s'\n",
+                    t->key_len, t->key ? t->key : "");
+        return D_CLI_BAD_USAGE;
+    }
+
+    rc = ctx->app->run_list_products();
+    d_cli_args_dispose(&args);
+    return rc;
+}
+
+static int launcher_cmd_run_game(int argc, const char** argv, void* userdata) {
+    LauncherCliContext* ctx = (LauncherCliContext*)userdata;
+    d_cli_args args;
+    const d_cli_token* tok;
+    char instance_buf[D_CLI_INSTANCE_ID_MAX];
+    const char* instance_id = NULL;
+    u32 seed = 12345u;
+    u32 ticks = 100u;
+    int rc;
+    int i;
+
+    if (!ctx || !ctx->app) {
+        return D_CLI_ERR_STATE;
+    }
+    instance_buf[0] = '\0';
+    if (ctx->cli) {
+        const d_cli_instance* inst = d_cli_get_instance(ctx->cli);
+        if (inst && inst->present) {
+            launcher_copy_string(inst->id, instance_buf, sizeof(instance_buf));
+            instance_id = instance_buf;
+        }
+    }
+
+    rc = d_cli_tokenize(argc, argv, &args);
+    if (rc != D_CLI_OK) {
+        return rc;
+    }
+
+    tok = d_cli_find_option(&args, "seed");
+    if (tok && tok->has_value && tok->value) {
+        if (!launcher_parse_u32(tok->value, &seed)) {
+            d_cli_args_dispose(&args);
+            std::printf("Launcher: invalid seed value\n");
+            return D_CLI_BAD_USAGE;
+        }
+    }
+    tok = d_cli_find_option(&args, "ticks");
+    if (tok && tok->has_value && tok->value) {
+        if (!launcher_parse_u32(tok->value, &ticks)) {
+            d_cli_args_dispose(&args);
+            std::printf("Launcher: invalid ticks value\n");
+            return D_CLI_BAD_USAGE;
+        }
+    }
+    tok = d_cli_find_option(&args, "instance");
+    if (tok && tok->has_value && tok->value) {
+        launcher_copy_string(tok->value, instance_buf, sizeof(instance_buf));
+        instance_id = instance_buf;
+    }
+
+    for (i = 0; i < args.token_count; ++i) {
+        const d_cli_token* t = &args.tokens[i];
+        if (t->is_positional) {
+            d_cli_args_dispose(&args);
+            std::printf("Launcher: unexpected positional argument '%s'\n",
+                        t->value ? t->value : "(null)");
+            return D_CLI_BAD_USAGE;
+        }
+        if (d_cli_match_key(t, "seed") ||
+            d_cli_match_key(t, "ticks") ||
+            d_cli_match_key(t, "instance")) {
+            continue;
+        }
+        d_cli_args_dispose(&args);
+        std::printf("Launcher: unknown option '%.*s'\n",
+                    t->key_len, t->key ? t->key : "");
+        return D_CLI_BAD_USAGE;
+    }
+
+    rc = ctx->app->run_run_game(seed, ticks, instance_id);
+    d_cli_args_dispose(&args);
+    return rc;
+}
+
+static int launcher_cmd_run_tool(int argc, const char** argv, void* userdata) {
+    LauncherCliContext* ctx = (LauncherCliContext*)userdata;
+    d_cli_args args;
+    const d_cli_token* pos0;
+    int rc;
+    int i;
+
+    if (!ctx || !ctx->app) {
+        return D_CLI_ERR_STATE;
+    }
+
+    rc = d_cli_tokenize(argc, argv, &args);
+    if (rc != D_CLI_OK) {
+        return rc;
+    }
+
+    for (i = 0; i < args.token_count; ++i) {
+        const d_cli_token* t = &args.tokens[i];
+        if (!t->is_positional && !d_cli_match_key(t, "instance")) {
+            d_cli_args_dispose(&args);
+            std::printf("Launcher: unknown option '%.*s'\n",
+                        t->key_len, t->key ? t->key : "");
+            return D_CLI_BAD_USAGE;
+        }
+    }
+
+    pos0 = d_cli_get_positional(&args, 0);
+    if (!pos0 || !pos0->value) {
+        d_cli_args_dispose(&args);
+        std::printf("Launcher: run-tool requires a tool id\n");
+        return D_CLI_BAD_USAGE;
+    }
+
+    rc = ctx->app->run_run_tool(pos0->value);
+    d_cli_args_dispose(&args);
+    return rc;
+}
+
+static int launcher_cmd_manifest_info(int argc, const char** argv, void* userdata) {
+    LauncherCliContext* ctx = (LauncherCliContext*)userdata;
+    d_cli_args args;
+    int rc;
+    int i;
+
+    if (!ctx || !ctx->app) {
+        return D_CLI_ERR_STATE;
+    }
+
+    rc = d_cli_tokenize(argc, argv, &args);
+    if (rc != D_CLI_OK) {
+        return rc;
+    }
+
+    for (i = 0; i < args.token_count; ++i) {
+        const d_cli_token* t = &args.tokens[i];
+        if (t->is_positional) {
+            d_cli_args_dispose(&args);
+            std::printf("Launcher: unexpected positional argument '%s'\n",
+                        t->value ? t->value : "(null)");
+            return D_CLI_BAD_USAGE;
+        }
+        if (d_cli_match_key(t, "instance")) {
+            continue;
+        }
+        d_cli_args_dispose(&args);
+        std::printf("Launcher: unknown option '%.*s'\n",
+                    t->key_len, t->key ? t->key : "");
+        return D_CLI_BAD_USAGE;
+    }
+
+    rc = ctx->app->run_manifest_info();
+    d_cli_args_dispose(&args);
+    return rc;
+}
 
 LauncherApp::LauncherApp() {
 }
@@ -12,21 +236,32 @@ LauncherApp::~LauncherApp() {
 }
 
 int LauncherApp::run(int argc, char** argv) {
-    if (argc <= 1) {
-        std::printf("Launcher usage:\n");
-        std::printf("  dominium_launcher list\n");
-        std::printf("  dominium_launcher run-game [--seed N] [--ticks N]\n");
-        return 0;
-    }
+    d_cli cli;
+    LauncherCliContext ctx;
+    int rc;
 
-    if (std::strcmp(argv[1], "list") == 0) {
-        return run_list_products();
-    } else if (std::strcmp(argv[1], "run-game") == 0) {
-        return run_run_game(argc - 1, argv + 1);
-    } else {
-        std::printf("Launcher: unknown command '%s'\n", argv[1]);
-        return 1;
-    }
+    ctx.app = this;
+    ctx.cli = &cli;
+
+    d_cli_init(&cli, (argc > 0) ? argv[0] : "dominium_launcher",
+               DOMINIUM_LAUNCHER_VERSION);
+
+    rc = d_cli_register(&cli, "list-products",
+                        "List known Dominium products", launcher_cmd_list_products, &ctx);
+    if (rc != D_CLI_OK) return rc;
+    rc = d_cli_register(&cli, "run-game",
+                        "Launch the game in headless mode", launcher_cmd_run_game, &ctx);
+    if (rc != D_CLI_OK) return rc;
+    rc = d_cli_register(&cli, "run-tool",
+                        "Launch a Dominium tool by id", launcher_cmd_run_tool, &ctx);
+    if (rc != D_CLI_OK) return rc;
+    rc = d_cli_register(&cli, "manifest-info",
+                        "Print manifest root and product metadata", launcher_cmd_manifest_info, &ctx);
+    if (rc != D_CLI_OK) return rc;
+
+    rc = d_cli_dispatch(&cli, argc, (const char**)argv);
+    d_cli_shutdown(&cli);
+    return rc;
 }
 
 int LauncherApp::run_list_products() {
@@ -56,39 +291,32 @@ int LauncherApp::run_list_products() {
     return 0;
 }
 
-int LauncherApp::run_run_game(int argc, char** argv) {
-    unsigned long seed = 12345;
-    unsigned long ticks = 100;
-    int i;
-
-    for (i = 1; i < argc; ++i) {
-        if (std::strcmp(argv[i], "--seed") == 0 && (i + 1) < argc) {
-            seed = std::strtoul(argv[++i], 0, 10);
-        } else if (std::strcmp(argv[i], "--ticks") == 0 && (i + 1) < argc) {
-            ticks = std::strtoul(argv[++i], 0, 10);
-        } else {
-            std::printf("Launcher: unknown or incomplete argument '%s'\n", argv[i]);
-            return 1;
-        }
-    }
-
+int LauncherApp::run_run_game(u32 seed, u32 ticks, const char* instance_id) {
     dom_product_info info;
+    char root[512];
+    const char* platform_dir = "posix-x86_64";
+    char exec_dir[768];
+    char exec_full_path[1024];
+    char seed_buf[32];
+    char ticks_buf[32];
+    char instance_buf[80];
+    const char* game_argv[7];
+    dsys_process_handle handle;
+    dsys_proc_result pr;
+    int exit_code;
+    int argi = 0;
+
     std::memset(&info, 0, sizeof(info));
     if (!dom_repo_load_primary_game(&info)) {
         std::printf("Launcher: failed to load primary game product manifest.\n");
         return 1;
     }
 
-    char root[512];
     if (!dom_repo_get_root(root, sizeof(root))) {
         std::printf("Launcher: dom_repo_get_root failed.\n");
         return 1;
     }
 
-    /* Keep this in sync with repo path assumptions. */
-    const char* platform_dir = "posix-x86_64";
-
-    char exec_dir[768];
     std::snprintf(exec_dir, sizeof(exec_dir),
                   "%s/repo/products/%s/%s/core-%s/%s",
                   root,
@@ -97,30 +325,32 @@ int LauncherApp::run_run_game(int argc, char** argv) {
                   info.core_version,
                   platform_dir);
 
-    char exec_full_path[1024];
     std::snprintf(exec_full_path, sizeof(exec_full_path),
                   "%s/%s",
                   exec_dir,
                   info.exec_rel_path);
 
     std::printf("Launcher: spawning game:\n");
-    std::printf("  path  = %s\n", exec_full_path);
-    std::printf("  seed  = %lu\n", seed);
-    std::printf("  ticks = %lu\n", ticks);
+    std::printf("  path     = %s\n", exec_full_path);
+    std::printf("  seed     = %lu\n", (unsigned long)seed);
+    std::printf("  ticks    = %lu\n", (unsigned long)ticks);
+    if (instance_id && instance_id[0]) {
+        std::printf("  instance = %s\n", instance_id);
+    }
 
-    char seed_buf[32];
-    char ticks_buf[32];
-    std::snprintf(seed_buf, sizeof(seed_buf), "--seed=%lu", seed);
-    std::snprintf(ticks_buf, sizeof(ticks_buf), "--ticks=%lu", ticks);
+    std::snprintf(seed_buf, sizeof(seed_buf), "--seed=%lu", (unsigned long)seed);
+    std::snprintf(ticks_buf, sizeof(ticks_buf), "--ticks=%lu", (unsigned long)ticks);
 
-    const char* game_argv[6];
-    game_argv[0] = exec_full_path;
-    game_argv[1] = "--mode=headless";
-    game_argv[2] = seed_buf;
-    game_argv[3] = ticks_buf;
-    game_argv[4] = 0;
+    game_argv[argi++] = exec_full_path;
+    game_argv[argi++] = "--mode=headless";
+    game_argv[argi++] = seed_buf;
+    game_argv[argi++] = ticks_buf;
+    if (instance_id && instance_id[0]) {
+        std::snprintf(instance_buf, sizeof(instance_buf), "--instance=%s", instance_id);
+        game_argv[argi++] = instance_buf;
+    }
+    game_argv[argi] = 0;
 
-    dsys_process_handle handle;
     handle.impl = 0;
 
     if (dsys_init() != DSYS_OK) {
@@ -128,14 +358,14 @@ int LauncherApp::run_run_game(int argc, char** argv) {
         return 1;
     }
 
-    dsys_proc_result pr = dsys_proc_spawn(exec_full_path, game_argv, 1, &handle);
+    pr = dsys_proc_spawn(exec_full_path, game_argv, 1, &handle);
     if (pr != DSYS_PROC_OK) {
         std::printf("Launcher: dsys_proc_spawn failed (%d)\n", (int)pr);
         dsys_shutdown();
         return 1;
     }
 
-    int exit_code = -1;
+    exit_code = -1;
     pr = dsys_proc_wait(&handle, &exit_code);
     if (pr != DSYS_PROC_OK) {
         std::printf("Launcher: dsys_proc_wait failed (%d)\n", (int)pr);
@@ -149,9 +379,30 @@ int LauncherApp::run_run_game(int argc, char** argv) {
     return exit_code;
 }
 
-/* Usage notes:
-   1) List products: dominium_launcher list
-   2) Run headless game: dominium_launcher run-game --seed 12345 --ticks 100
-      - Requires DOMINIUM_HOME and product.json present.
-      - Game runs deterministic sim, prints checksum, writes world.tlv.
-*/
+int LauncherApp::run_run_tool(const char* tool_id) {
+    std::printf("Launcher: run-tool '%s' is not implemented in this build.\n",
+                tool_id ? tool_id : "(null)");
+    return D_CLI_BAD_USAGE;
+}
+
+int LauncherApp::run_manifest_info() {
+    dom_product_info info;
+    char root[512];
+
+    std::memset(&info, 0, sizeof(info));
+    if (!dom_repo_get_root(root, sizeof(root))) {
+        std::printf("Launcher: dom_repo_get_root failed.\n");
+        return 1;
+    }
+    if (!dom_repo_load_primary_game(&info)) {
+        std::printf("Launcher: failed to load primary game product manifest.\n");
+        return 1;
+    }
+
+    std::printf("Launcher manifest info:\n");
+    std::printf("  root          = %s\n", root);
+    std::printf("  product_id    = %s\n", info.product_id);
+    std::printf("  product_ver   = %s\n", info.product_version);
+    std::printf("  core_version  = %s\n", info.core_version);
+    return 0;
+}

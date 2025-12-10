@@ -1,6 +1,8 @@
 #ifndef DOMINIUM_LAUNCHER_APP_HPP
 #define DOMINIUM_LAUNCHER_APP_HPP
 
+#include "domino/core/types.h"
+
 class LauncherApp {
 public:
     LauncherApp();
@@ -10,7 +12,9 @@ public:
 
 private:
     int run_list_products();
-    int run_run_game(int argc, char** argv);
+    int run_run_game(u32 seed, u32 ticks, const char* instance_id);
+    int run_run_tool(const char* tool_id);
+    int run_manifest_info();
 };
 
 #endif /* DOMINIUM_LAUNCHER_APP_HPP */

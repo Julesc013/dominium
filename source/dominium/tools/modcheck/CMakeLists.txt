@@ -9,6 +9,7 @@ target_include_directories(dominium_modcheck
 
 target_link_libraries(dominium_modcheck
     PRIVATE
+        domino_core
         domino_sys
         domino_mod
         dominium_common

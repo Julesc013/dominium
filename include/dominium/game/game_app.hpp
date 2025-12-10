@@ -1,6 +1,8 @@
 #ifndef DOMINIUM_GAME_APP_HPP
 #define DOMINIUM_GAME_APP_HPP
 
+#include "domino/core/types.h"
+
 class GameApp {
 public:
     GameApp();
@@ -9,7 +11,8 @@ public:
     int run(int argc, char** argv);
 
 private:
-    int run_headless(int argc, char** argv);
+    int run_headless(u32 seed, u32 ticks, u32 width, u32 height);
+    int load_world_checksum(const char* path, u32* checksum_out);
 };
 
 #endif /* DOMINIUM_GAME_APP_HPP */
