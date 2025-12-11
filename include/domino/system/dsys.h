@@ -30,6 +30,10 @@ dsys_proc_result dsys_proc_spawn(const char* path,
 dsys_proc_result dsys_proc_wait(dsys_process_handle* handle,
                                 int* out_exit_code);
 
+/* Returns non-zero if process appears to be running under a terminal/console.
+   Used only to distinguish CLI-style shell invocation from double-click/desktop launch. */
+int dsys_running_in_terminal(void);
+
 /*------------------------------------------------------------
  * Terminal (text UI) abstraction
  *------------------------------------------------------------*/

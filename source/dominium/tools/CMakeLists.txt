@@ -24,3 +24,14 @@ target_link_libraries(dominium-tools
         dominium_tool_launcher_edit
         domino_sys
 )
+
+target_sources(dominium-tools PRIVATE
+    entry.cpp
+    main_tools.cpp
+)
+
+set_target_properties(dominium-tools PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
