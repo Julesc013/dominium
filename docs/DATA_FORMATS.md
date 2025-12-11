@@ -116,3 +116,16 @@ This file and `engine/save_*.h` define the authoritative on-disk shapes for v0. 
 - Per-subsystem payloads are wrapped in TLVs tagged with `TAG_SUBSYS_*` (world/res/env/build/trans/struct/veh/job/net/replay; mods reserve 0x2000+).
 - Save/load orchestrator iterates registered subsystems and calls their hooks, appending `(tag,len,payload)` triples into a single container blob.
 - Unknown tags are ignored by readers; missing tags mean the subsystem contributed no data for that chunk/instance.
+
+## 10. Content pack/mod TLVs
+- Pack manifest TLV schema: `D_TLV_SCHEMA_PACK_MANIFEST` (0x0100), version 1.
+  - Fields: `pack_id`, `pack_version`, `title`, `author`, `flags`, `deps[]`, and `content_tlv` holding all proto sections.
+- Mod manifest TLV schema: `D_TLV_SCHEMA_MOD_MANIFEST` (0x0101), version 1.
+  - Fields: `mod_id`, `mod_version`, `title`, `author`, `flags`, `deps[]`, `base_pack_tlv` (embedded pack content) and `extra_tlv` for mod-only metadata (scripts/model registrations/etc.).
+- Dependency ranges use inclusive `min_version`/`max_version` with `0` meaning “unbounded”.
+
+## 11. Proto TLV sections
+- Each proto type has its own TLV schema (all version 1 for now):
+  - Materials (0x0200), items (0x0201), containers (0x0202), processes (0x0203), deposits (0x0204), structures (0x0205), modules (0x0206), vehicles (0x0207), spline profiles (0x0208), job templates (0x0209), building protos (0x020A), blueprints (0x020B).
+- Packs/mods typically wrap proto lists in a higher-level content TLV with section tags per type; unknown sections are skipped for forward compatibility.
+- Field-level tag maps for each proto will be specified in later revisions; validators currently only gate basic framing and versioning.

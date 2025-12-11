@@ -9,6 +9,8 @@ add_library(domino_core STATIC
     core/d_model.c
     core/d_registry.c
     core/d_tlv_schema.c
+    content/d_blueprint.c
+    content/d_content.c
     app/startup.c
     cli/cli.c
     tui/tui.c
