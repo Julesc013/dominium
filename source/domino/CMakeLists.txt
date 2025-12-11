@@ -5,6 +5,10 @@ add_library(domino_core STATIC
     core/fixed.c
     core/fixed_debug.c
     core/rng.c
+    core/d_subsystem.c
+    core/d_model.c
+    core/d_registry.c
+    core/d_tlv_schema.c
     app/startup.c
     cli/cli.c
     tui/tui.c
@@ -26,6 +30,7 @@ add_library(domino_core STATIC
     $<$<NOT:$<BOOL:${WIN32}>>:system/dsys_window_stub.c>
     $<$<NOT:$<BOOL:${WIN32}>>:system/dsys_proc_stub.c>
     pkg/repo.c
+    world/d_serialize.c
     sim/sim.c
 )
 
@@ -39,6 +44,7 @@ endif()
 
 target_include_directories(domino_core PUBLIC
     ${DOMINIUM_INCLUDE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 set_target_properties(domino_core PROPERTIES

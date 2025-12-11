@@ -105,3 +105,14 @@ This file and `engine/save_*.h` define the authoritative on-disk shapes for v0. 
   - `[[launcher.view]]` entries may declare view/tab surfaces:
     - `id`, `label`, `kind` (`list/detail/dashboard/settings/custom`), `priority`, `script_entry`.
 - Launcher-side parsing of `[launcher]` is intentionally shallow in this pass; unknown keys are ignored and the view definitions are staged for future scripting/runtime registration.
+
+## 8. TLV schema registry
+- Schemas are keyed by `d_tlv_schema_id` + `version`.
+- Descriptor: `d_tlv_schema_desc { schema_id, version, validate_fn }`.
+- Validation: `d_tlv_schema_validate(id, version, in, out_upgraded)` calls the registered `validate_fn` (optionally producing an upgraded blob).
+- Intent: central place to gate pack/mod/blueprint/save TLVs and stage migrations in future passes.
+
+## 9. Subsystem TLV containers
+- Per-subsystem payloads are wrapped in TLVs tagged with `TAG_SUBSYS_*` (world/res/env/build/trans/struct/veh/job/net/replay; mods reserve 0x2000+).
+- Save/load orchestrator iterates registered subsystems and calls their hooks, appending `(tag,len,payload)` triples into a single container blob.
+- Unknown tags are ignored by readers; missing tags mean the subsystem contributed no data for that chunk/instance.
