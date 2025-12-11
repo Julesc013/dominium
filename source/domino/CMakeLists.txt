@@ -5,10 +5,12 @@ add_library(domino_core STATIC
     core/fixed.c
     core/fixed_debug.c
     core/rng.c
+    app/startup.c
     cli/cli.c
     tui/tui.c
     gui/gui.c
     gui/style.c
+    render/canvas.c
     render/pipeline.c
     render/backend_detect.c
     render/gui_prim.c
@@ -26,6 +28,14 @@ add_library(domino_core STATIC
     pkg/repo.c
     sim/sim.c
 )
+
+if(WIN32)
+    target_sources(domino_core PRIVATE system/dsys_terminal_detect_winnt.c)
+elseif(UNIX)
+    target_sources(domino_core PRIVATE system/dsys_terminal_detect_posix.c)
+else()
+    target_sources(domino_core PRIVATE system/dsys_terminal_detect_stub.c)
+endif()
 
 target_include_directories(domino_core PUBLIC
     ${DOMINIUM_INCLUDE_DIR}

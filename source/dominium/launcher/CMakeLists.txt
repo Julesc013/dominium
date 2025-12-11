@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.16)
 add_executable(dominium_launcher
     main_launcher.cpp
     launcher_app.cpp
+    entry.cpp
 )
 
 target_include_directories(dominium_launcher PUBLIC
@@ -18,3 +19,5 @@ set_target_properties(dominium_launcher PROPERTIES
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
+
+dominium_bundle_runtime(dominium_launcher)

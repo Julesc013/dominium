@@ -30,7 +30,7 @@ int dsys_input_poll_raw(dsys_input_event* ev) {
         if (ev) {
             memset(ev, 0, sizeof(*ev));
             ev->type = DSYS_INPUT_EVENT_KEY_DOWN;
-            ev->payload.key.keycode = (i32)key;
+            ev->payload.key.keycode = (int32_t)key;
             ev->payload.key.repeat = 0;
             ev->payload.key.translated = (key >= 32 && key <= 126) ? key : 0;
         }

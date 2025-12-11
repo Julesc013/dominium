@@ -33,3 +33,5 @@ target_link_libraries(dominium-tools
 )
 
 target_compile_features(dominium-tools PRIVATE c_std_90)
+
+dominium_bundle_runtime(dominium-tools)

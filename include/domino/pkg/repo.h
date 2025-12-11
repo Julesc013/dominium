@@ -3,6 +3,10 @@
 
 #include "domino/core/types.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef enum dom_product_role {
     DOM_PRODUCT_ROLE_UNKNOWN = 0,
     DOM_PRODUCT_ROLE_GAME,
@@ -72,5 +76,9 @@ d_bool dom_repo_get_root(char* buffer, u32 max_len);
 
 /* Milestone 0: load a single primary game product manifest from a fixed path. */
 d_bool dom_repo_load_primary_game(dom_product_info* out_info);
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* DOMINO_PKG_REPO_H */

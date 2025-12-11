@@ -8,5 +8,5 @@ int main(int argc, char** argv) {
     p.has_terminal = dsys_running_in_terminal();
     p.mode = d_app_parse_mode(argc, argv);
 
-    return d_app_run_launcher(&p);
+    return d_app_run_tools(&p);
 }

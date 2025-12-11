@@ -57,7 +57,7 @@ static void tool_state_enter_run(void* userdata)
     ctx->running = 0;
 }
 
-int main(int argc, char **argv)
+int dom_tools_entry_cli(int argc, char **argv)
 {
     dom_tool_env env;
     int rc;

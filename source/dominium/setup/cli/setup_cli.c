@@ -10,6 +10,7 @@
 #include "domino/input/input.h"
 #include "domino/input/ime.h"
 #include "domino/system/dsys.h"
+#include "domino/app/startup.h"
 #include "domino/render/backend_detect.h"
 #include "domino/render/pipeline.h"
 #include "domino/state/state.h"
@@ -474,7 +475,7 @@ static void dom_setup_tui_exit(d_tui_widget* self, void* user) {
     }
 }
 
-static int dom_setup_run_tui(void) {
+int dom_setup_run_tui_impl(void) {
     d_state states[SETUP_STATE_MAX];
     d_state_machine sm;
     setup_state_ctx sctx;
@@ -508,7 +509,7 @@ static int dom_setup_run_tui(void) {
 
     if (!dsys_terminal_init()) {
         printf("Setup: terminal init failed.\n");
-        return 1;
+        return D_APP_ERR_TUI_UNSUPPORTED;
     }
 
     {
@@ -523,7 +524,7 @@ static int dom_setup_run_tui(void) {
         tui = d_tui_create();
         if (!tui) {
             dsys_terminal_shutdown();
-            return 1;
+            return D_APP_ERR_TUI_UNSUPPORTED;
         }
 
         root = d_tui_panel(tui, D_TUI_LAYOUT_VERTICAL);
@@ -600,10 +601,10 @@ static int dom_setup_cmd_tui(int argc, const char** argv, void* user) {
         return D_CLI_BAD_USAGE;
     }
     d_cli_args_dispose(&args);
-    return dom_setup_run_tui();
+    return dom_setup_run_tui_impl();
 }
 
-static int dom_setup_run_gui(void) {
+int dom_setup_run_gui_impl(void) {
     d_state states[SETUP_STATE_MAX];
     d_state_machine sm;
     setup_state_ctx sctx;
@@ -630,7 +631,7 @@ static int dom_setup_run_gui(void) {
 
     if (dsys_init() != DSYS_OK) {
         printf("Setup: dsys_init failed.\n");
-        return 1;
+        return D_APP_ERR_GUI_UNSUPPORTED;
     }
     {
         d_gfx_backend_info infos[D_GFX_BACKEND_MAX];
@@ -650,7 +651,7 @@ static int dom_setup_run_gui(void) {
         if (!pipeline) {
             printf("Setup: GUI not supported on this platform.\n");
             dsys_shutdown();
-            return 1;
+            return D_APP_ERR_GUI_UNSUPPORTED;
         }
         d_gui_set_shared_pipeline(pipeline);
 
@@ -728,10 +729,10 @@ static int dom_setup_cmd_gui(int argc, const char** argv, void* user) {
         return D_CLI_BAD_USAGE;
     }
     d_cli_args_dispose(&args);
-    return dom_setup_run_gui();
+    return dom_setup_run_gui_impl();
 }
 
-int main(int argc, char** argv) {
+int dom_setup_entry_cli(int argc, char** argv) {
     d_cli cli;
     int rc;
 

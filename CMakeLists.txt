@@ -11,6 +11,23 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(DOMINIUM_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+include(DominiumBundleRuntime)
+
+option(DOMINIUM_STATIC_GNU_RUNTIME "Link libgcc/libstdc++ statically on MinGW/MSYS" ON)
+if(DOMINIUM_STATIC_GNU_RUNTIME AND (MINGW OR MSYS))
+    add_link_options(-static-libgcc -static-libstdc++)
+endif()
+
+set(DOMINIUM_RUNTIME_SEARCH_DIRS "")
+if(WIN32 AND (MINGW OR MSYS))
+    get_filename_component(_dom_toolchain_bindir "${CMAKE_C_COMPILER}" DIRECTORY)
+    list(APPEND DOMINIUM_RUNTIME_SEARCH_DIRS "${_dom_toolchain_bindir}")
+    if(CMAKE_PREFIX_PATH)
+        list(APPEND DOMINIUM_RUNTIME_SEARCH_DIRS ${CMAKE_PREFIX_PATH})
+    endif()
+endif()
+
 option(DOMINIUM_ENABLE_PACKAGING "Enable packaging helper targets" OFF)
 
 add_subdirectory(source/domino)

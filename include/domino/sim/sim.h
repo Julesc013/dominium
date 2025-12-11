@@ -5,6 +5,10 @@
 #include "domino/core/fixed.h"
 #include "domino/core/rng.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct d_world d_world;
 
 typedef struct d_world_config {
@@ -19,5 +23,9 @@ void     d_world_tick(d_world* world);
 u32      d_world_checksum(const d_world* world);
 d_bool   d_world_save_tlv(const d_world* world, const char* path);
 d_world* d_world_load_tlv(const char* path);
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* DOMINO_SIM_SIM_H */

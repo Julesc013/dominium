@@ -9,6 +9,7 @@
 #include "domino/input/input.h"
 #include "domino/input/ime.h"
 #include "domino/state/state.h"
+#include "domino/app/startup.h"
 #include "dominium/version.h"
 #include <cstdio>
 #include <cstdlib>
@@ -416,13 +417,13 @@ static int game_run_tui_impl(GameApp* app) {
 
     if (!dsys_terminal_init()) {
         std::printf("Game: terminal init failed.\n");
-        return 1;
+        return D_APP_ERR_TUI_UNSUPPORTED;
     }
 
     tui = d_tui_create();
     if (!tui) {
         dsys_terminal_shutdown();
-        return 1;
+        return D_APP_ERR_TUI_UNSUPPORTED;
     }
 
     root = d_tui_panel(tui, D_TUI_LAYOUT_VERTICAL);
@@ -485,7 +486,7 @@ static int game_run_gui_impl(GameApp* app) {
 
     if (dsys_init() != DSYS_OK) {
         std::printf("Game: dsys_init failed.\n");
-        return 1;
+        return D_APP_ERR_GUI_UNSUPPORTED;
     }
 
     d_gfx_detect_backends(infos, D_GFX_BACKEND_MAX);
@@ -497,7 +498,7 @@ static int game_run_gui_impl(GameApp* app) {
     if (!pipeline) {
         std::printf("Game: GUI not supported on this platform.\n");
         dsys_shutdown();
-        return 1;
+        return D_APP_ERR_GUI_UNSUPPORTED;
     }
     d_gui_set_shared_pipeline(pipeline);
 

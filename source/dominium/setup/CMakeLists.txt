@@ -15,6 +15,8 @@ target_link_libraries(dominium_setup_core
 )
 
 add_executable(dominium-setup-cli
+    main_setup.cpp
+    entry.cpp
     cli/setup_cli.c
 )
 
@@ -30,6 +32,14 @@ target_link_libraries(dominium-setup-cli
         dominium_rules
         dominium_setup_core
 )
+
+set_target_properties(dominium-setup-cli PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+dominium_bundle_runtime(dominium-setup-cli)
 
 if(WIN32)
     add_executable(dominium_setup_win32_gui

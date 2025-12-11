@@ -9,8 +9,6 @@ public:
     ~LauncherApp();
 
     int run(int argc, char** argv);
-
-private:
     int run_list_products();
     int run_run_game(u32 seed, u32 ticks, const char* instance_id);
     int run_run_tool(const char* tool_id);
