@@ -14,11 +14,13 @@ typedef i16 q4_12;   /* 4 integer bits, 12 fractional */
 typedef i32 q16_16;  /* 16 integer bits, 16 fractional */
 typedef i32 q24_8;   /* 24 integer bits, 8 fractional */
 typedef i64 q48_16;  /* 48 integer bits, 16 fractional */
+typedef i64 q32_32;  /* 32 integer bits, 32 fractional */
 
 #define Q4_12_FRAC_BITS   12
 #define Q16_16_FRAC_BITS  16
 #define Q24_8_FRAC_BITS   8
 #define Q48_16_FRAC_BITS  16
+#define Q32_32_FRAC_BITS  32
 
 /* Integer conversions (truncate toward zero on to_int). */
 q4_12  d_q4_12_from_int(i32 value);

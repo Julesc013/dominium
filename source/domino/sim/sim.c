@@ -20,18 +20,6 @@
 #define WORLD_VERSION        2
 #define WORLD_VERSION_LEGACY 1
 
-struct d_world {
-    d_world_config cfg;
-    d_rng_state    rng;
-    u32            tick_count;
-
-    u32            width;
-    u32            height;
-
-    u16*           tile_type;
-    q24_8*         tile_height;
-};
-
 static int g_world_subsystem_registered = 0;
 static unsigned char *g_world_save_blob = (unsigned char *)0;
 static int d_world_save_instance_subsys(struct d_world *w, struct d_tlv_blob *out);
@@ -66,8 +54,9 @@ static void d_world_init_tiles(struct d_world* w) {
     }
 }
 
-d_world* d_world_create(const d_world_config* cfg) {
-    struct d_world* w;
+d_world* d_world_create_from_config(const d_world_config* cfg) {
+    d_world_meta meta;
+    d_world* w;
     u32 count;
 
     if (!cfg) return (d_world*)0;
@@ -75,14 +64,24 @@ d_world* d_world_create(const d_world_config* cfg) {
     if (cfg->width > 1024 || cfg->height > 1024) return (d_world*)0;
     if (cfg->width > (0xFFFFFFFFu / cfg->height)) return (d_world*)0; /* overflow guard */
 
-    w = (struct d_world*)malloc(sizeof(struct d_world));
-    if (!w) return (d_world*)0;
-    memset(w, 0, sizeof(*w));
+    meta.seed = cfg->seed;
+    meta.world_size_m = cfg->width;
+    meta.vertical_min = d_q16_16_from_int(-2000);
+    meta.vertical_max = d_q16_16_from_int(2000);
+    meta.core_version = 1u;
+    meta.suite_version = 1u;
+    meta.compat_profile_id = 0u;
+    meta.extra.ptr = (unsigned char *)0;
+    meta.extra.len = 0u;
 
-    w->cfg = *cfg;
+    w = d_world_create(&meta);
+    if (!w) {
+        return (d_world *)0;
+    }
+
     w->width = cfg->width;
     w->height = cfg->height;
-    w->tick_count = 0;
+    w->tick_count = 0u;
     d_rng_seed(&w->rng, cfg->seed);
 
     count = w->width * w->height;
@@ -95,20 +94,6 @@ d_world* d_world_create(const d_world_config* cfg) {
 
     d_world_init_tiles(w);
     return (d_world*)w;
-}
-
-void d_world_destroy(d_world* world) {
-    struct d_world* w = (struct d_world*)world;
-    if (!w) return;
-    if (w->tile_type) {
-        free(w->tile_type);
-        w->tile_type = 0;
-    }
-    if (w->tile_height) {
-        free(w->tile_height);
-        w->tile_height = 0;
-    }
-    free(w);
 }
 
 void d_world_tick(d_world* world) {
@@ -139,7 +124,7 @@ u32 d_world_checksum(const d_world* world) {
 
     count = w->width * w->height;
 
-    hash ^= w->cfg.seed; hash *= 16777619u;
+    hash ^= (u32)(w->meta.seed & 0xFFFFFFFFu); hash *= 16777619u;
     hash ^= w->width;    hash *= 16777619u;
     hash ^= w->height;   hash *= 16777619u;
     hash ^= w->tick_count; hash *= 16777619u;
@@ -250,13 +235,16 @@ static int d_world_save_instance_subsys(struct d_world *w, struct d_tlv_blob *ou
     }
     dst = buf;
 
-    type = (u16)TLV_WORLD_CONFIG;
-    memcpy(dst, &type, sizeof(u16));
-    dst += 2u;
-    memcpy(dst, &config_len, sizeof(u32));
-    dst += 4u;
-    memcpy(dst, &w->cfg.seed, sizeof(u32));
-    dst += 4u;
+    {
+        u32 seed32 = (u32)(w->meta.seed & 0xFFFFFFFFu);
+        type = (u16)TLV_WORLD_CONFIG;
+        memcpy(dst, &type, sizeof(u16));
+        dst += 2u;
+        memcpy(dst, &config_len, sizeof(u32));
+        dst += 4u;
+        memcpy(dst, &seed32, sizeof(u32));
+        dst += 4u;
+    }
     memcpy(dst, &w->width, sizeof(u32));
     dst += 4u;
     memcpy(dst, &w->height, sizeof(u32));
@@ -324,7 +312,8 @@ static int d_world_load_instance_subsys(struct d_world *w, const struct d_tlv_bl
             if (cfg_width != w->width || cfg_height != w->height) {
                 return -1;
             }
-            w->cfg.seed = cfg_seed;
+            w->meta.seed = cfg_seed;
+            d_rng_seed(&w->rng, w->meta.seed);
             cfg_read = 1;
         } else if (tlv_type == TLV_WORLD_TILES) {
             u32 count;
@@ -457,7 +446,7 @@ static d_world* d_world_load_v1(FILE *f) {
             if (!cfg_read) { if (w) d_world_destroy((d_world*)w); return (d_world*)0; }
             count = cfg.width * cfg.height;
             if (tlv_len != count * (2 + 4)) { if (w) d_world_destroy((d_world*)w); return (d_world*)0; }
-            w = (struct d_world*)d_world_create(&cfg);
+            w = (struct d_world*)d_world_create_from_config(&cfg);
             if (!w) { return (d_world*)0; }
             w->tick_count = loaded_tick_count;
             for (i = 0; i < count; ++i) {
@@ -535,7 +524,7 @@ static d_world* d_world_load_v2(FILE *f) {
         return (d_world*)0;
     }
 
-    w = (struct d_world*)d_world_create(&cfg);
+    w = (struct d_world*)d_world_create_from_config(&cfg);
     if (!w) {
         free(buffer);
         return (d_world*)0;

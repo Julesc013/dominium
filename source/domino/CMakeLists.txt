@@ -7,6 +7,7 @@ add_library(domino_core STATIC
     core/rng.c
     core/d_subsystem.c
     core/d_model.c
+    core/d_subsystems_init.c
     core/d_registry.c
     core/d_tlv_schema.c
     content/d_blueprint.c
@@ -33,6 +34,15 @@ add_library(domino_core STATIC
     $<$<NOT:$<BOOL:${WIN32}>>:system/dsys_proc_stub.c>
     pkg/repo.c
     world/d_serialize.c
+    world/d_world.c
+    world/d_worldgen.c
+    res/d_res.c
+    env/d_env.c
+    build/d_build.c
+    trans/d_trans.c
+    struct/d_struct.c
+    vehicle/d_vehicle.c
+    job/d_job.c
     sim/sim.c
 )
 
