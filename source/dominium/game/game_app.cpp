@@ -368,7 +368,7 @@ static int game_run_headless_impl(GameApp* app, u32 seed, u32 ticks, u32 width, 
         return 1;
     }
 
-    world = d_world_create(&cfg);
+    world = d_world_create_from_config(&cfg);
     if (!world) {
         std::printf("Game: d_world_create failed.\n");
         dsys_shutdown();

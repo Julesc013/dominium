@@ -4,12 +4,11 @@
 #include "domino/core/types.h"
 #include "domino/core/fixed.h"
 #include "domino/core/rng.h"
+#include "world/d_world.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-typedef struct d_world d_world;
 
 typedef struct d_world_config {
     u32 seed;
@@ -17,8 +16,7 @@ typedef struct d_world_config {
     u32 height;
 } d_world_config;
 
-d_world* d_world_create(const d_world_config* cfg);
-void     d_world_destroy(d_world* world);
+d_world* d_world_create_from_config(const d_world_config* cfg);
 void     d_world_tick(d_world* world);
 u32      d_world_checksum(const d_world* world);
 d_bool   d_world_save_tlv(const d_world* world, const char* path);
