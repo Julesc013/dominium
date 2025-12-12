@@ -1,64 +1,57 @@
 #include "domino/app/startup.h"
-#include "dominium/app/product_entry.hpp"
-#include "dominium/game/game_app.hpp"
+#include "dom_game_app.h"
 
-#include <cstdlib>
-#include <cstring>
+#include <cstdio>
 
-static void game_parse_headless_args(const d_app_params* p,
-                                     u32* seed,
-                                     u32* ticks,
-                                     u32* width,
-                                     u32* height) {
-    int i;
-    if (!p || !p->argv) {
-        return;
+namespace {
+
+static int run_game_with_config(dom::GameConfig &cfg) {
+    dom::DomGameApp app;
+    if (!app.init_from_cli(cfg)) {
+        return 1;
     }
-    for (i = 1; i < p->argc; ++i) {
-        const char* arg = p->argv[i];
-        if (!arg) continue;
-        if (std::strncmp(arg, "--seed=", 7) == 0) {
-            *seed = (u32)std::strtoul(arg + 7, NULL, 10);
-        } else if (std::strncmp(arg, "--ticks=", 8) == 0) {
-            *ticks = (u32)std::strtoul(arg + 8, NULL, 10);
-        } else if (std::strncmp(arg, "--width=", 8) == 0) {
-            *width = (u32)std::strtoul(arg + 8, NULL, 10);
-        } else if (std::strncmp(arg, "--height=", 9) == 0) {
-            *height = (u32)std::strtoul(arg + 9, NULL, 10);
+    app.run();
+    app.shutdown();
+    return 0;
+}
+
+static int run_game_with_mode(const d_app_params *p, dom::GameMode mode) {
+    dom::GameConfig cfg;
+    dom::init_default_game_config(cfg);
+    if (p) {
+        if (!dom::parse_game_cli_args(p->argc, p->argv, cfg)) {
+            return 1;
         }
     }
+    cfg.mode = mode;
+    return run_game_with_config(cfg);
 }
+
+} // namespace
 
 extern "C" {
 
 int dom_game_run_cli(const d_app_params* p) {
-    GameApp app;
-    if (!p) {
-        return 1;
+    dom::GameConfig cfg;
+    dom::init_default_game_config(cfg);
+    if (p) {
+        if (!dom::parse_game_cli_args(p->argc, p->argv, cfg)) {
+            return 1;
+        }
     }
-    return app.run(p->argc, p->argv);
+    return run_game_with_config(cfg);
 }
 
 int dom_game_run_tui(const d_app_params* p) {
-    GameApp app;
-    (void)p;
-    return app.run_tui_mode();
+    return run_game_with_mode(p, dom::GAME_MODE_TUI);
 }
 
 int dom_game_run_gui(const d_app_params* p) {
-    GameApp app;
-    (void)p;
-    return app.run_gui_mode();
+    return run_game_with_mode(p, dom::GAME_MODE_GUI);
 }
 
 int dom_game_run_headless(const d_app_params* p) {
-    u32 seed = 12345u;
-    u32 ticks = 100u;
-    u32 width = 64u;
-    u32 height = 64u;
-    GameApp app;
-    game_parse_headless_args(p, &seed, &ticks, &width, &height);
-    return app.run_headless(seed, ticks, width, height);
+    return run_game_with_mode(p, dom::GAME_MODE_HEADLESS);
 }
 
 int dom_launcher_run_cli(const d_app_params* p) {

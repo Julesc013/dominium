@@ -1,16 +1,22 @@
 cmake_minimum_required(VERSION 3.16)
 
 add_executable(dominium_game
-    main_game.cpp
-    game_app.cpp
+    dom_game_cli.cpp
+    dom_game_app.cpp
+    dom_game_states.cpp
+    dom_game_ui.cpp
+    dom_game_save.cpp
     entry.cpp
 )
 
 target_include_directories(dominium_game PUBLIC
     ${DOMINIUM_INCLUDE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/../common
 )
 
 target_link_libraries(dominium_game
+    dominium_common
     domino_core
 )
 

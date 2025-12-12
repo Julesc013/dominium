@@ -1,0 +1,223 @@
+#include "dom_game_save.h"
+
+#include <vector>
+#include <cstdlib>
+#include <cstring>
+
+extern "C" {
+#include "domino/sys.h"
+}
+
+namespace dom {
+
+namespace {
+
+enum {
+    TAG_INSTANCE = 1u,
+    TAG_CHUNK    = 2u
+};
+
+static bool write_block(void *fh, const unsigned char *data, size_t len) {
+    if (!fh) {
+        return false;
+    }
+    if (len == 0u) {
+        return true;
+    }
+    return dsys_file_write(fh, data, len) == len;
+}
+
+static bool read_file(const std::string &path, std::vector<unsigned char> &out) {
+    void *fh;
+    long size;
+    size_t read_len;
+
+    fh = dsys_file_open(path.c_str(), "rb");
+    if (!fh) {
+        return false;
+    }
+    if (dsys_file_seek(fh, 0L, SEEK_END) != 0) {
+        dsys_file_close(fh);
+        return false;
+    }
+    size = dsys_file_tell(fh);
+    if (size <= 0L) {
+        dsys_file_close(fh);
+        return false;
+    }
+    if (dsys_file_seek(fh, 0L, SEEK_SET) != 0) {
+        dsys_file_close(fh);
+        return false;
+    }
+
+    out.resize(static_cast<size_t>(size));
+    read_len = dsys_file_read(fh, &out[0], static_cast<size_t>(size));
+    dsys_file_close(fh);
+    if (read_len != static_cast<size_t>(size)) {
+        out.clear();
+        return false;
+    }
+    return true;
+}
+
+static void free_blob(d_tlv_blob &blob) {
+    if (blob.ptr) {
+        free(blob.ptr);
+        blob.ptr = (unsigned char *)0;
+        blob.len = 0u;
+    }
+}
+
+} // namespace
+
+bool game_save_world(
+    d_world             *world,
+    const std::string   &path
+) {
+    d_tlv_blob inst_blob;
+    void *fh;
+    u32 i;
+
+    if (!world || path.empty()) {
+        return false;
+    }
+
+    inst_blob.ptr = (unsigned char *)0;
+    inst_blob.len = 0u;
+
+    if (d_serialize_save_instance_all(world, &inst_blob) != 0) {
+        return false;
+    }
+
+    fh = dsys_file_open(path.c_str(), "wb");
+    if (!fh) {
+        free_blob(inst_blob);
+        return false;
+    }
+
+    if (!write_block(fh, reinterpret_cast<const unsigned char *>(&TAG_INSTANCE), sizeof(u32)) ||
+        !write_block(fh, reinterpret_cast<const unsigned char *>(&inst_blob.len), sizeof(u32)) ||
+        !write_block(fh, inst_blob.ptr, inst_blob.len)) {
+        dsys_file_close(fh);
+        free_blob(inst_blob);
+        return false;
+    }
+
+    for (i = 0u; i < world->chunk_count; ++i) {
+        d_chunk *chunk = &world->chunks[i];
+        d_tlv_blob chunk_blob;
+        std::vector<unsigned char> payload;
+        u32 chunk_tag = TAG_CHUNK;
+        u32 payload_len;
+        i32 cx = chunk->cx;
+        i32 cy = chunk->cy;
+        u32 chunk_id = chunk->chunk_id;
+        u32 flags = (u32)chunk->flags;
+
+        chunk_blob.ptr = (unsigned char *)0;
+        chunk_blob.len = 0u;
+        if (d_serialize_save_chunk_all(world, chunk, &chunk_blob) != 0) {
+            dsys_file_close(fh);
+            free_blob(inst_blob);
+            return false;
+        }
+
+        payload_len = (u32)(sizeof(cx) + sizeof(cy) + sizeof(chunk_id) + sizeof(flags) + chunk_blob.len);
+        payload.resize(payload_len);
+        std::memcpy(&payload[0], &cx, sizeof(cx));
+        std::memcpy(&payload[sizeof(cx)], &cy, sizeof(cy));
+        std::memcpy(&payload[sizeof(cx) + sizeof(cy)], &chunk_id, sizeof(chunk_id));
+        std::memcpy(&payload[sizeof(cx) + sizeof(cy) + sizeof(chunk_id)], &flags, sizeof(flags));
+        if (chunk_blob.len > 0u) {
+            std::memcpy(&payload[sizeof(cx) + sizeof(cy) + sizeof(chunk_id) + sizeof(flags)],
+                        chunk_blob.ptr, chunk_blob.len);
+        }
+
+        if (!write_block(fh, reinterpret_cast<unsigned char *>(&chunk_tag), sizeof(u32)) ||
+            !write_block(fh, reinterpret_cast<unsigned char *>(&payload_len), sizeof(u32)) ||
+            !write_block(fh, &payload[0], payload.size())) {
+            dsys_file_close(fh);
+            free_blob(chunk_blob);
+            free_blob(inst_blob);
+            return false;
+        }
+
+        free_blob(chunk_blob);
+    }
+
+    dsys_file_close(fh);
+    free_blob(inst_blob);
+    return true;
+}
+
+bool game_load_world(
+    d_world             *world,
+    const std::string   &path
+) {
+    std::vector<unsigned char> data;
+    u32 offset;
+
+    if (!world || path.empty()) {
+        return false;
+    }
+    if (!read_file(path, data)) {
+        return false;
+    }
+
+    offset = 0u;
+    while (offset + 8u <= data.size()) {
+        u32 tag;
+        u32 len;
+
+        std::memcpy(&tag, &data[offset], sizeof(u32));
+        std::memcpy(&len, &data[offset + 4u], sizeof(u32));
+        offset += 8u;
+        if (len > data.size() - offset) {
+            return false;
+        }
+
+        if (tag == TAG_INSTANCE) {
+            d_tlv_blob blob;
+            blob.ptr = &data[offset];
+            blob.len = len;
+            if (d_serialize_load_instance_all(world, &blob) != 0) {
+                return false;
+            }
+        } else if (tag == TAG_CHUNK) {
+            d_tlv_blob chunk_blob;
+            d_chunk *chunk;
+            const size_t meta_size = sizeof(i32) + sizeof(i32) + sizeof(u32) + sizeof(u32);
+            i32 cx = 0;
+            i32 cy = 0;
+            u32 chunk_id = 0u;
+            u32 flags = 0u;
+
+            if (len < meta_size) {
+                return false;
+            }
+            std::memcpy(&cx, &data[offset], sizeof(i32));
+            std::memcpy(&cy, &data[offset + sizeof(i32)], sizeof(i32));
+            std::memcpy(&chunk_id, &data[offset + sizeof(i32) * 2], sizeof(u32));
+            std::memcpy(&flags, &data[offset + sizeof(i32) * 2 + sizeof(u32)], sizeof(u32));
+
+            chunk = d_world_get_or_create_chunk(world, cx, cy);
+            if (!chunk) {
+                return false;
+            }
+            chunk->chunk_id = chunk_id;
+            chunk->flags = (u16)flags;
+
+            chunk_blob.ptr = &data[offset + meta_size];
+            chunk_blob.len = len - (u32)meta_size;
+            if (d_serialize_load_chunk_all(world, chunk, &chunk_blob) != 0) {
+                return false;
+            }
+        }
+
+        offset += len;
+    }
+
+    return offset == data.size();
+}
+
+} // namespace dom
