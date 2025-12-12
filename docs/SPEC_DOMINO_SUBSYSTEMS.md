@@ -27,3 +27,7 @@ Domino subsystem descriptors let the engine enumerate and orchestrate major doma
 - Central registry keeps lifecycle hooks discoverable and deterministic.
 - New domains (e.g. chemistry, biology, EM fields) register once and ride the same init/tick/save pipeline.
 - Mod/third-party subsystems can claim ids in the reserved range without patching core serialization.
+
+## Dominium product integration
+- Dominium Launcher/Setup/Tools treat subsystem ids and versions as compatibility gates: the common layer only boots worlds/packs whose serialized subsystem ids are registered.
+- Compat evaluation in the launcher relies on these version tags staying stable; upgrades that bump subsystem versions must also bump suite/core versions so older products downgrade to read-only.

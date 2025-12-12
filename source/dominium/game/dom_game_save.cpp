@@ -95,12 +95,16 @@ bool game_save_world(
         return false;
     }
 
-    if (!write_block(fh, reinterpret_cast<const unsigned char *>(&TAG_INSTANCE), sizeof(u32)) ||
-        !write_block(fh, reinterpret_cast<const unsigned char *>(&inst_blob.len), sizeof(u32)) ||
-        !write_block(fh, inst_blob.ptr, inst_blob.len)) {
-        dsys_file_close(fh);
-        free_blob(inst_blob);
-        return false;
+    {
+        u32 tag_instance = TAG_INSTANCE;
+        u32 inst_len = inst_blob.len;
+        if (!write_block(fh, reinterpret_cast<const unsigned char *>(&tag_instance), sizeof(u32)) ||
+            !write_block(fh, reinterpret_cast<const unsigned char *>(&inst_len), sizeof(u32)) ||
+            !write_block(fh, inst_blob.ptr, inst_blob.len)) {
+            dsys_file_close(fh);
+            free_blob(inst_blob);
+            return false;
+        }
     }
 
     for (i = 0u; i < world->chunk_count; ++i) {

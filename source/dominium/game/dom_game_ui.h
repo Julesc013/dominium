@@ -1,7 +1,7 @@
 #ifndef DOM_GAME_UI_H
 #define DOM_GAME_UI_H
 
-#include "d_ui.h"
+#include "ui/d_ui.h"
 #include "dom_game_app.h"
 
 namespace dom {

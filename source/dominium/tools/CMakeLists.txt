@@ -1,37 +1,28 @@
 cmake_minimum_required(VERSION 3.16)
 
-add_subdirectory(core)
-add_subdirectory(assetc)
-add_subdirectory(pack)
-add_subdirectory(replay)
-add_subdirectory(test)
-add_subdirectory(world_edit)
-add_subdirectory(save_edit)
-add_subdirectory(game_edit)
-add_subdirectory(launcher_edit)
-add_subdirectory(editor_gui)
-add_subdirectory(modcheck)
+add_executable(dominium-modcheck
+    modcheck/dom_modcheck_main.cpp
+    modcheck/dom_modcheck.cpp
+)
 
-target_link_libraries(dominium-tools
+target_include_directories(dominium-modcheck PUBLIC
+    ${DOMINIUM_INCLUDE_DIR}
+    ${CMAKE_SOURCE_DIR}/source/domino
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+target_link_libraries(dominium-modcheck
     PRIVATE
-        dominium_tool_assetc
-        dominium_tool_pack
-        dominium_tool_replay
-        dominium_tool_test
-        dominium_tool_world_edit
-        dominium_tool_save_edit
-        dominium_tool_game_edit
-        dominium_tool_launcher_edit
-        domino_sys
+        dominium_common
+        domino_core
 )
 
-target_sources(dominium-tools PRIVATE
-    entry.cpp
-    main_tools.cpp
-)
-
-set_target_properties(dominium-tools PROPERTIES
+set_target_properties(dominium-modcheck PROPERTIES
+    OUTPUT_NAME "dominium-modcheck"
     CXX_STANDARD 98
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
+
+dominium_bundle_runtime(dominium-modcheck)

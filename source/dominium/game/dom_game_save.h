@@ -4,8 +4,8 @@
 #include <string>
 
 extern "C" {
-#include "d_world.h"
-#include "d_serialize.h"
+#include "world/d_world.h"
+#include "world/d_serialize.h"
 }
 
 namespace dom {

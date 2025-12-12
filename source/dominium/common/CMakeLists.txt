@@ -24,6 +24,5 @@ target_include_directories(dominium_common
 
 target_link_libraries(dominium_common
     PUBLIC
-        domino_mod
-        domino_gfx
+        domino_core
 )

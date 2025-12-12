@@ -16,3 +16,8 @@
   - LABEL/BUTTON draw text via `DGFX_CMD_DRAW_TEXT`.
   - Colors are simple defaults; all rendering is through dgfx IR only.
 - **Integration:** DUI renders into the same `d_view_frame` used by DVIEW; higher layers choose when to call `dui_layout`/`dui_render` after preparing the view’s command buffer.
+
+## Launcher UI
+- Implemented in `dom_launcher_ui` on top of DUI: panels for instances, products, mode selection, and a Launch button.
+- State (selected instance/product/mode) is held inside `DomLauncherApp`; callbacks only set indices or call `launch_product`.
+- Runs against the same DVIEW/dgfx path as the game UI, keeping determinism and backend independence. GUI/TUI are both served via this path for now.

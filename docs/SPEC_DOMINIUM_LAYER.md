@@ -48,3 +48,12 @@
   - `prod.suite_version > inst.suite_version` → limited (forward-compat TBD).
   - Matching suite/core with required features → OK.
 - Future prompts will extend this with explicit compat profiles and feature checks.
+
+## Launcher/Setup/Tools
+- **Launcher:** discovers products under `repo/products/`, instances under `instances/`, evaluates compatibility, and spawns the requested product (game/setup/tools) using `dsys_proc_spawn`. GUI/TUI shells stay inside DVIEW/DUI.
+- **Setup:** CLI-first utility that installs/repairs/uninstalls/imports products, packs, and mods purely through `dom_paths`/`dsys` wrappers—no direct OS calls.
+- **Tools:** utilities (e.g., `modcheck`) consume TLVs through the same schema registry as the engine; future editors will register via manifests so the launcher can list them.
+
+## Compatibility model notes
+- Launcher uses `dom_compat` to guard instance/product pairing: newer suite/core builds can run older instances in limited/read-only mode; older builds refuse newer core instances.
+- Packs/mods/blueprints always flow through Domino registries—no product may bypass `d_content_load_*`—ensuring deterministic ordering and schema validation before world bootstrap.
