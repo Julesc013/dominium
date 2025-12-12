@@ -43,6 +43,11 @@ add_library(domino_core STATIC
     struct/d_struct.c
     vehicle/d_vehicle.c
     job/d_job.c
+    net/d_net.c
+    replay/d_replay.c
+    view/d_view.c
+    ui/d_ui.c
+    sim/d_sim.c
     sim/sim.c
 )
 
