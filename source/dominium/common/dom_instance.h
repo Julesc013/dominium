@@ -1,0 +1,45 @@
+#ifndef DOM_INSTANCE_H
+#define DOM_INSTANCE_H
+
+#include <string>
+#include <vector>
+#include "dom_paths.h"
+
+namespace dom {
+
+struct PackRef {
+    std::string id;
+    unsigned    version;
+};
+
+struct ModRef {
+    std::string id;
+    unsigned    version;
+};
+
+struct InstanceInfo {
+    std::string id;
+
+    unsigned world_seed;
+    unsigned world_size_m;
+
+    int vertical_min_m;
+    int vertical_max_m;
+
+    unsigned suite_version;
+    unsigned core_version;
+
+    std::vector<PackRef> packs;
+    std::vector<ModRef>  mods;
+
+    std::string last_product;          /* "game", "launcher", etc. */
+    std::string last_product_version;  /* e.g. "0.1.0" */
+
+    /* Serialization helpers */
+    bool load(const Paths &paths);
+    bool save(const Paths &paths) const;
+};
+
+} // namespace dom
+
+#endif

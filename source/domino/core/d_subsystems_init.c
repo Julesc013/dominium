@@ -5,6 +5,8 @@
 #include "struct/d_struct.h"
 #include "vehicle/d_vehicle.h"
 #include "job/d_job.h"
+#include "net/d_net.h"
+#include "replay/d_replay.h"
 
 static int g_subsystems_initialized = 0;
 
@@ -19,5 +21,7 @@ void d_subsystems_init(void) {
     d_struct_init();
     d_vehicle_init();
     d_job_init();
+    d_net_register_subsystem();
+    d_replay_register_subsystem();
     g_subsystems_initialized = 1;
 }
