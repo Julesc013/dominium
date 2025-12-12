@@ -5,3 +5,4 @@ Jobs/AI subsystem (stub)
 - Jobs are created/destroyed with `d_job_create` / `d_job_destroy`; registry is per-world using a fixed table.
 - Chunk-level persistence is empty for now; instance-level persistence under `TAG_SUBSYS_DJOB` stores count + job records (ids, template, flags, entities, target coords, params blob).
 - Model registration is not defined yet; hooks remain stubs for future planners.
+- Launcher/setup do not synthesize jobs; they only ensure the job template schemas in packs/mods align with the running core/suite version during compatibility checks.

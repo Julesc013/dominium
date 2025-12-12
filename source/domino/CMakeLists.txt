@@ -19,6 +19,7 @@ add_library(domino_core STATIC
     gui/style.c
     render/canvas.c
     render/pipeline.c
+    render/dgfx_stub.c
     render/backend_detect.c
     render/gui_prim.c
     render/soft/soft_config.c
@@ -26,7 +27,7 @@ add_library(domino_core STATIC
     input/input.c
     input/ime.c
     state/state.c
-    system/dsys_stub.c
+    system/sys.c
     system/dsys_term.c
     $<$<BOOL:${WIN32}>:system/dsys_proc_winnt.c>
     $<$<BOOL:${WIN32}>:system/dsys_window_winnt.c>

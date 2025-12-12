@@ -6,11 +6,12 @@
 #include "dom_instance.h"
 #include "dom_session.h"
 #include "dom_compat.h"
+#include "dom_game_states.h"
 
 extern "C" {
-#include "d_view.h"
-#include "d_ui.h"
-#include "d_sim.h"
+#include "view/d_view.h"
+#include "ui/d_ui.h"
+#include "sim/d_sim.h"
 }
 
 namespace dom {
@@ -41,9 +42,6 @@ struct GameConfig {
 
     unsigned    tick_rate_hz;   /* e.g. 60; 0 = default */
 };
-
-enum GameStateId;
-class GameState;
 
 class DomGameApp {
 public:

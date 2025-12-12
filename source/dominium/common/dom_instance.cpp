@@ -137,6 +137,17 @@ static void parse_pack_ref(std::vector<PackRef> &out,
     out.push_back(ref);
 }
 
+static void parse_mod_ref(std::vector<ModRef> &out,
+                          const unsigned char *ptr, unsigned len) {
+    ModRef ref;
+    if (!ptr || len < sizeof(unsigned)) {
+        return;
+    }
+    std::memcpy(&ref.version, ptr, sizeof(unsigned));
+    ref.id = string_from_payload(ptr + sizeof(unsigned), len - static_cast<unsigned>(sizeof(unsigned)));
+    out.push_back(ref);
+}
+
 static std::string instance_file_path(const Paths &paths, const std::string &id) {
     std::string inst_dir = join(paths.instances, id);
     return join(inst_dir, "instance.tlv");
@@ -216,7 +227,7 @@ bool InstanceInfo::load(const Paths &paths) {
             parse_pack_ref(packs, payload, len);
             break;
         case TAG_MOD_ENTRY:
-            parse_pack_ref(mods, payload, len);
+            parse_mod_ref(mods, payload, len);
             break;
         case TAG_LAST_PRODUCT:
             last_product = string_from_payload(payload, len);

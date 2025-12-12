@@ -41,3 +41,4 @@ Each proto has a TLV schema id (version 1 unless otherwise noted):
 ## Notes and Non-goals
 - All structures are deterministic and C89-only. No platform headers or OS drawing APIs are used here.
 - Behavior lives in model families (`D_MODEL_FAMILY_*`) and subsystem logic in later layers. This pass only defines schemas, data containers, registries, and minimal TLV loaders/validators.
+- Launcher/setup never touch schema internals: they hand validated TLV blobs from `dom_packset` straight into `d_content_load_pack` / `d_content_load_mod`. Forward/backward compatibility is enforced by TLV schema ids and dependency ranges, keeping Dominium products decoupled from content format evolution.

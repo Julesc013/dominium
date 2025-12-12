@@ -1,23 +1,31 @@
 cmake_minimum_required(VERSION 3.16)
 
-add_executable(dominium_launcher
-    main_launcher.cpp
-    launcher_app.cpp
-    entry.cpp
+add_executable(dominium-launcher
+    dom_launcher_cli.cpp
+    dom_launcher_app.cpp
+    dom_launcher_ui.cpp
+    dom_launcher_catalog.cpp
+    dom_launcher_actions.cpp
 )
 
-target_include_directories(dominium_launcher PUBLIC
+target_include_directories(dominium-launcher PUBLIC
     ${DOMINIUM_INCLUDE_DIR}
+    ${CMAKE_SOURCE_DIR}/source/domino
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
 )
 
-target_link_libraries(dominium_launcher
-    domino_core
+target_link_libraries(dominium-launcher
+    PRIVATE
+        dominium_common
+        domino_core
 )
 
-set_target_properties(dominium_launcher PROPERTIES
+set_target_properties(dominium-launcher PROPERTIES
+    OUTPUT_NAME "dominium-launcher"
     CXX_STANDARD 98
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
 
-dominium_bundle_runtime(dominium_launcher)
+dominium_bundle_runtime(dominium-launcher)

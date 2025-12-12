@@ -6,3 +6,4 @@ Environment subsystem (stub)
 - Each chunk keeps arrays of zones/portals; `denv_init_chunk` seeds a single outdoor zone.
 - `denv_tick` iterates chunk entries and calls model ticks.
 - Chunk serialization under `TAG_SUBSYS_DENV` encodes zone_count + portal_count, followed by zone structs (with extra blobs) and portal structs. Instance-level data is empty.
+- Environment protos travel inside pack/mod TLVs; Dominium compat checks ensure products only open instances whose env schema version matches the running core/suite version.
