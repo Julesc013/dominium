@@ -47,3 +47,5 @@ set(CPACK_DEBIAN_PACKAGE_SECTION "games")
 set(CPACK_RPM_PACKAGE_LICENSE "MIT")
 set(CPACK_RPM_PACKAGE_URL "https://example.com/dominium")
 include(CPack)
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
