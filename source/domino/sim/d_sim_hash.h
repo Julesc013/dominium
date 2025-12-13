@@ -2,7 +2,8 @@
 #ifndef D_SIM_HASH_H
 #define D_SIM_HASH_H
 
-#include "d_world.h"
+
+#include "world/d_world.h"
 #include "domino/core/types.h"
 
 #ifdef __cplusplus
