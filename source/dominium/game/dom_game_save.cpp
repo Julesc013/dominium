@@ -6,6 +6,7 @@
 
 extern "C" {
 #include "domino/sys.h"
+#include "sim/d_sim_hash.h"
 }
 
 namespace dom {
@@ -66,6 +67,33 @@ static void free_blob(d_tlv_blob &blob) {
         blob.ptr = (unsigned char *)0;
         blob.len = 0u;
     }
+}
+
+static bool verify_save_hash(d_world *world, const std::string &path) {
+    d_world *tmp;
+    d_world_hash h0;
+    d_world_hash h1;
+    if (!world) {
+        return false;
+    }
+    tmp = d_world_create(&world->meta);
+    if (!tmp) {
+        return false;
+    }
+    if (!game_load_world(tmp, path)) {
+        d_world_destroy(tmp);
+        return false;
+    }
+    h0 = d_sim_hash_world(world);
+    h1 = d_sim_hash_world(tmp);
+    d_world_destroy(tmp);
+    if (h0 != h1) {
+        std::printf("Save verify: hash mismatch (0x%016llx vs 0x%016llx)\n",
+                    (unsigned long long)h0,
+                    (unsigned long long)h1);
+        return false;
+    }
+    return true;
 }
 
 } // namespace
@@ -151,6 +179,9 @@ bool game_save_world(
 
     dsys_file_close(fh);
     free_blob(inst_blob);
+    if (!verify_save_hash(world, path)) {
+        return false;
+    }
     return true;
 }
 

@@ -78,33 +78,11 @@ Unknown `type` values are skipped using `length`. An empty section is legal and 
 
 This file and `engine/save_*.h` define the authoritative on-disk shapes for v0. Future changes must bump versions and keep skip-friendly framing.
 
-## 7. Package + product manifests
-
-### Product manifest (`product.toml`)
-- Location: alongside binaries in `program/<product_id>/<version>/product.toml`, shipped per installed version.
-- Format: simple key/value TOML-like text:
-  - `id = "<product id>"` (required)
-  - `version = "<semver>"` (required; parsed via `domino_semver_parse`)
-  - `[compat]` optional table:
-    - `content_api` – integer content ABI of the product itself.
-    - `launcher_content_api` – minimum content ABI expected by the launcher.
-    - `launcher_ext_api` – extension API version for launcher plug-ins.
-- Unspecified compat fields default to `0`; loaders ignore unknown keys for forward compatibility.
-
-### Package manifest (`*.toml` for mods/packs)
-- Location: under `data/` (first-party) or `user/` (community) and consumed by `domino_mod` when building registries.
-- Top-level keys:
-  - `id = "<package id>"`, `version = "<semver>"` (required).
-  - `kind = "mod" | "pack"` (required).
-  - `target = "game" | "launcher" | "both"` (optional; defaults to `game` today).
-- `[compat]` optional table:
-  - `launcher_id` and `launcher_range` to describe compatibility with specific launcher ids/versions.
-  - `launcher_content_api` and `launcher_ext_api` integers for launcher-facing ABI gates.
-- `[launcher]` optional table for launcher-targeted packages:
-  - `enabled_by_default = true|false` (defaults to `true`).
-  - `[[launcher.view]]` entries may declare view/tab surfaces:
-    - `id`, `label`, `kind` (`list/detail/dashboard/settings/custom`), `priority`, `script_entry`.
-- Launcher-side parsing of `[launcher]` is intentionally shallow in this pass; unknown keys are ignored and the view definitions are staged for future scripting/runtime registration.
+## 7. Packs and mods on disk
+- Root is `DOMINIUM_HOME/repo`.
+- Packs: `repo/packs/<pack_id>/<version>/pack.tlv` (single TLV per version). Version directories are 8-digit, zero-padded integers (e.g. `00000001`). The built-in base pack lives at `repo/packs/base/00000001/pack.tlv`.
+- Mods: `repo/mods/<mod_id>/<version>/mod.tlv` with the same zero-padded version directory rule. Future optional override assets live alongside the TLV.
+- Engine does not assume any specific content inside those TLVs beyond schema ids and fields; base is only special by identity and load order.
 
 ## 8. TLV schema registry
 - Schemas are keyed by `d_tlv_schema_id` + `version`.
@@ -117,15 +95,27 @@ This file and `engine/save_*.h` define the authoritative on-disk shapes for v0. 
 - Save/load orchestrator iterates registered subsystems and calls their hooks, appending `(tag,len,payload)` triples into a single container blob.
 - Unknown tags are ignored by readers; missing tags mean the subsystem contributed no data for that chunk/instance.
 
-## 10. Content pack/mod TLVs
-- Pack manifest TLV schema: `D_TLV_SCHEMA_PACK_MANIFEST` (0x0100), version 1.
-  - Fields: `pack_id`, `pack_version`, `title`, `author`, `flags`, `deps[]`, and `content_tlv` holding all proto sections.
-- Mod manifest TLV schema: `D_TLV_SCHEMA_MOD_MANIFEST` (0x0101), version 1.
-  - Fields: `mod_id`, `mod_version`, `title`, `author`, `flags`, `deps[]`, `base_pack_tlv` (embedded pack content) and `extra_tlv` for mod-only metadata (scripts/model registrations/etc.).
-- Dependency ranges use inclusive `min_version`/`max_version` with `0` meaning “unbounded”.
+## 10. Pack and mod TLVs
+- Pack TLV schema: `D_TLV_SCHEMA_PACK_V1` (0x0201), version 1.
+  - Fields: `id` (u32), `version` (u32), `name` (string), `description` (string), `content` (TLV blob containing prototypes).
+- Mod TLV schema: `D_TLV_SCHEMA_MOD_V1` (0x0202), version 1.
+  - Fields: `id` (u32), `version` (u32), `name` (string), `description` (string), `deps` (TLV for dependencies), `content` (TLV blob with mod-defined prototypes).
+- Unknown fields are ignored so packs/mods can extend their own metadata without breaking the engine.
 
-## 11. Proto TLV sections
-- Each proto type has its own TLV schema (all version 1 for now):
-  - Materials (0x0200), items (0x0201), containers (0x0202), processes (0x0203), deposits (0x0204), structures (0x0205), modules (0x0206), vehicles (0x0207), spline profiles (0x0208), job templates (0x0209), building protos (0x020A), blueprints (0x020B).
-- Packs/mods typically wrap proto lists in a higher-level content TLV with section tags per type; unknown sections are skipped for forward compatibility.
-- Field-level tag maps for each proto will be specified in later revisions; validators currently only gate basic framing and versioning.
+## 11. Prototype TLV schemas
+- All prototype records are stored as TLVs with schema ids:
+  - Materials `D_TLV_SCHEMA_MATERIAL_V1` (0x0101), items `0x0102`, containers `0x0103`, processes `0x0104`, deposits `0x0105`, structures `0x0106`, vehicles `0x0107`, spline profiles `0x0108`, job templates `0x0109`, building protos `0x010A`, blueprints `0x010B`.
+- Common fields:
+  - `id` (u32) and `name` (string) are required for all protos.
+  - `tags` (u32 bitmask) is optional but shared across types.
+- Type-specific fields:
+  - Material: `density`, `hardness`, `melting_point` as Q16.16 (stored as signed 32-bit).
+  - Item: `material_id`, `unit_mass`, `unit_volume`.
+  - Container: `max_volume`, `max_mass`, `slot_count`.
+  - Process: `params` blob for I/O definitions.
+  - Deposit: `material_id`, `model_id` (u16), `model_params`.
+  - Structure: `layout`, `io`, `processes` blobs.
+  - Vehicle/Spline/Job: `params` blob only.
+  - Building: `shell` blob and `params`.
+  - Blueprint: opaque `payload` blob.
+- Loaders validate TLV framing via the schema registry, then map fields directly into runtime prototype structs without injecting game-specific behavior.

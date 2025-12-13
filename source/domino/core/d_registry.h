@@ -31,6 +31,9 @@ void d_registry_init(
 /* Add an entry; returns assigned ID or 0 on failure. */
 u32 d_registry_add(d_registry *reg, void *ptr);
 
+/* Add an entry with an explicit id; returns assigned id or 0 on failure. */
+u32 d_registry_add_with_id(d_registry *reg, u32 id, void *ptr);
+
 /* Get pointer by ID, or NULL if not found. */
 void *d_registry_get(const d_registry *reg, u32 id);
 

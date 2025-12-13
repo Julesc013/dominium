@@ -3,7 +3,7 @@
 #define D_UI_H
 
 #include "domino/core/types.h"
-#include "domino/core/d_tlv.h"
+#include "domino/core/fixed.h"
 #include "view/d_view.h"
 #include "domino/gfx.h"
 
@@ -31,23 +31,20 @@ typedef struct dui_rect {
 
 typedef struct dui_widget {
     dui_widget_id  id;
-    dui_widget_kind kind;
+    dui_widget_kind  kind;
 
     struct dui_widget *parent;
     struct dui_widget *first_child;
     struct dui_widget *next_sibling;
 
-    dui_rect        layout_rect;    /* desired rect before layout */
-    dui_rect        final_rect;     /* computed by layout pass */
+    dui_rect        layout_rect;
+    dui_rect        final_rect;
 
-    u32             flags;          /* VISIBLE, DISABLED, FOCUSABLE, etc. */
+    u32             flags;
 
-    const char     *text;           /* label text for LABEL/BUTTON, etc. */
-    d_tlv_blob      style;          /* per-widget style info */
+    const char     *text;
+    void           *user_data;
 
-    void           *user_data;      /* opaque for application */
-
-    /* For now, input handlers can be simple function pointers. */
     void (*on_click)(struct dui_widget *self);
 } dui_widget;
 

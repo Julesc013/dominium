@@ -10,6 +10,8 @@
 extern "C" {
 #endif
 
+#define DRES_MODEL_STRATA_SOLID 1u
+
 typedef struct dres_model_vtable {
     u16 model_id;  /* used within D_MODEL_FAMILY_RES */
 
@@ -46,6 +48,9 @@ typedef struct dres_model_vtable {
 
 /* Register a resource model; thin wrapper around d_model_register. */
 int dres_register_model(const dres_model_vtable *vt);
+
+/* Built-in registration helpers */
+void dres_register_strata_solid_model(void);
 
 #ifdef __cplusplus
 }

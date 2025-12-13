@@ -11,23 +11,20 @@ add_library(domino_core STATIC
     core/d_registry.c
     core/d_tlv_schema.c
     content/d_blueprint.c
+    content/d_content_schema.c
     content/d_content.c
+    content/d_content_validate.c
     app/startup.c
     cli/cli.c
     tui/tui.c
-    gui/gui.c
-    gui/style.c
-    render/canvas.c
-    render/pipeline.c
-    render/dgfx_stub.c
-    render/backend_detect.c
-    render/gui_prim.c
-    render/soft/soft_config.c
-    render/soft/soft_raster.c
+    render/d_gfx.c
+    render/soft/d_gfx_soft.c
     input/input.c
     input/ime.c
     state/state.c
     system/sys.c
+    system/d_system.c
+    system/d_system_input.c
     system/dsys_term.c
     $<$<BOOL:${WIN32}>:system/dsys_proc_winnt.c>
     $<$<BOOL:${WIN32}>:system/dsys_window_winnt.c>
@@ -38,17 +35,29 @@ add_library(domino_core STATIC
     world/d_world.c
     world/d_worldgen.c
     res/d_res.c
+    res/d_res_validate.c
+    res/d_res_model_strata.c
     env/d_env.c
+    env/d_env_validate.c
     build/d_build.c
+    build/d_build_validate.c
     trans/d_trans.c
+    trans/d_trans_validate.c
     struct/d_struct.c
+    struct/d_struct_instance.c
+    struct/d_struct_processes.c
+    struct/d_struct_blueprint.c
+    struct/d_struct_validate.c
     vehicle/d_vehicle.c
+    vehicle/d_vehicle_validate.c
     job/d_job.c
+    job/d_job_validate.c
     net/d_net.c
     replay/d_replay.c
     view/d_view.c
     ui/d_ui.c
     sim/d_sim.c
+    sim/d_sim_hash.c
     sim/sim.c
 )
 

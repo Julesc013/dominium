@@ -48,6 +48,7 @@ int d_trans_destroy_spline(
 
 /* Subsystem registration hook */
 void d_trans_init(void);
+int d_trans_validate(const d_world *w);
 
 #ifdef __cplusplus
 }

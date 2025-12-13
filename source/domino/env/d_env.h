@@ -40,6 +40,7 @@ void denv_tick(d_world *w, u32 ticks);
 
 /* Subsystem registration hook */
 void d_env_init(void);
+int d_env_validate(const d_world *w);
 
 #ifdef __cplusplus
 }

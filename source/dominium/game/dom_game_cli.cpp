@@ -9,13 +9,17 @@ namespace dom {
 
 void init_default_game_config(GameConfig &cfg) {
     cfg.dominium_home.clear();
-    cfg.instance_id = "default";
+    cfg.instance_id = "demo";
     cfg.mode = GAME_MODE_GUI;
     cfg.server_mode = SERVER_OFF;
     cfg.demo_mode = false;
     cfg.platform_backend.clear();
     cfg.gfx_backend.clear();
     cfg.tick_rate_hz = 60u;
+    cfg.dev_mode = false;
+    cfg.deterministic_test = false;
+    cfg.replay_record_path.clear();
+    cfg.replay_play_path.clear();
 }
 
 static int str_ieq(const char *a, const char *b) {
@@ -113,6 +117,23 @@ bool parse_game_cli_args(int argc, char **argv, GameConfig &cfg) {
         }
         if (str_ieq(arg, "--demo")) {
             cfg.demo_mode = true;
+            continue;
+        }
+        if (str_ieq(arg, "--devmode")) {
+            cfg.dev_mode = true;
+            cfg.deterministic_test = true;
+            continue;
+        }
+        if (str_ieq(arg, "--deterministic-test")) {
+            cfg.deterministic_test = true;
+            continue;
+        }
+        if (std::strncmp(arg, "--record-replay=", 16) == 0) {
+            cfg.replay_record_path = std::string(arg + 16);
+            continue;
+        }
+        if (std::strncmp(arg, "--play-replay=", 14) == 0) {
+            cfg.replay_play_path = std::string(arg + 14);
             continue;
         }
     }
