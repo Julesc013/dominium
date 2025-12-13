@@ -88,9 +88,10 @@ static bool verify_save_hash(d_world *world, const std::string &path) {
     h1 = d_sim_hash_world(tmp);
     d_world_destroy(tmp);
     if (h0 != h1) {
-        std::printf("Save verify: hash mismatch (0x%016llx vs 0x%016llx)\n",
-                    (unsigned long long)h0,
-                    (unsigned long long)h1);
+        ::printf("Save verify: hash mismatch (0x%016llx vs 0x%016llx)\n",
+         (unsigned long long)h0,
+         (unsigned long long)h1);
+
         return false;
     }
     return true;
