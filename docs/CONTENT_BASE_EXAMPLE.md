@@ -15,7 +15,11 @@ Location on disk (relative to `DOMINIUM_HOME`): `repo/packs/base/00000001/pack.t
 
 ## Container
 - schema: `D_TLV_SCHEMA_CONTAINER_V1` (0x0103)
-- `id=1`, `name="Debug Container"`, `tags=D_TAG_CONTAINER_BULK`, `max_volume=100.0`, `max_mass=100.0`, `slot_count=0`
+- `id=1`, `name="Debug Container"`, `tags=D_TAG_CONTAINER_BULK`, `max_volume=100.0`, `max_mass=100.0`, `slot_count=0`, `packing_mode=1`, `params` = empty TLV blob
+
+## Spline Profile
+- schema: `D_TLV_SCHEMA_SPLINE_V1` (0x0108)
+- `id=1`, `name="Debug Item Spline"`, `type=1`, `flags=0`, `base_speed=1.0`, `max_grade=0.2`, `capacity=1.0`, `tags=0`, `params` = empty TLV blob
 
 ## Process (optional smoke test)
 - schema: `D_TLV_SCHEMA_PROCESS_V1` (0x0104)

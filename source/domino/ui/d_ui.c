@@ -204,7 +204,6 @@ static void dui_emit_text(d_gfx_cmd_buffer *buf, const dui_rect *rect, const cha
 
 static int dui_render_widget(const dui_widget *w, d_view_frame *frame)
 {
-    d_gfx_color bg_root = { 0xffu, 0x20u, 0x20u, 0x20u };
     d_gfx_color bg_panel = { 0xffu, 0x2au, 0x2au, 0x2au };
     d_gfx_color bg_button = { 0xffu, 0x3au, 0x6eu, 0xa5u };
     d_gfx_color fg_text = { 0xffu, 0xffu, 0xffu, 0xffu };
@@ -218,7 +217,6 @@ static int dui_render_widget(const dui_widget *w, d_view_frame *frame)
 
     switch (w->kind) {
     case DUI_WIDGET_ROOT:
-        dui_emit_rect(frame->cmd_buffer, &w->final_rect, bg_root);
         break;
     case DUI_WIDGET_PANEL:
         dui_emit_rect(frame->cmd_buffer, &w->final_rect, bg_panel);

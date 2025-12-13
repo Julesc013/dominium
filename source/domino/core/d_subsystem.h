@@ -25,6 +25,8 @@ enum {
     D_SUBSYS_JOB    = 8,  /* jobs/AI */
     D_SUBSYS_NET    = 9,  /* networking */
     D_SUBSYS_REPLAY = 10, /* replay */
+    D_SUBSYS_HYDRO  = 11, /* hydrology */
+    D_SUBSYS_LITHO  = 12, /* lithosphere */
     /* Reserve 1000+ for mods/third-party subsystems in the future. */
 };
 

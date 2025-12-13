@@ -30,6 +30,7 @@ SCHEMA_CONTAINER = 0x0103
 SCHEMA_PROCESS = 0x0104
 SCHEMA_DEPOSIT = 0x0105
 SCHEMA_STRUCTURE = 0x0106
+SCHEMA_SPLINE = 0x0108
 SCHEMA_BLUEPRINT = 0x010B
 SCHEMA_MOD = 0x0202
 
@@ -53,6 +54,8 @@ F_CONT_TAGS = 0x03
 F_CONT_MAX_VOL = 0x04
 F_CONT_MAX_MASS = 0x05
 F_CONT_SLOTS = 0x06
+F_CONT_PACKING_MODE = 0x07
+F_CONT_PARAMS = 0x08
 
 F_PROC_ID = 0x01
 F_PROC_NAME = 0x02
@@ -72,6 +75,16 @@ F_STRUCT_TAGS = 0x03
 F_STRUCT_LAYOUT = 0x04
 F_STRUCT_IO = 0x05
 F_STRUCT_PROCESSES = 0x06
+
+F_SPLINE_ID = 0x01
+F_SPLINE_NAME = 0x02
+F_SPLINE_TAGS = 0x03
+F_SPLINE_PARAMS = 0x04
+F_SPLINE_TYPE = 0x05
+F_SPLINE_FLAGS = 0x06
+F_SPLINE_BASE_SPEED = 0x07
+F_SPLINE_MAX_GRADE = 0x08
+F_SPLINE_CAPACITY = 0x09
 
 F_BLUEPRINT_ID = 0x01
 F_BLUEPRINT_NAME = 0x02
@@ -115,9 +128,12 @@ TAG_ITEM_RAW = 1 << 10
 TAG_CONTAINER_BULK = 1 << 12
 TAG_PROCESS_EXTRACTION = 1 << 18
 TAG_STRUCTURE_MACHINE = 1 << 22
+TAG_STRUCTURE_TRANSPORT = 1 << 21
 TAG_DEPOSIT_STRATA_SOLID = 1 << 26
 
 DRES_MODEL_STRATA_SOLID = 1
+
+SPLINE_TYPE_ITEM = 1
 
 
 def build_content_blob():
@@ -155,9 +171,40 @@ def build_content_blob():
             field_q16(F_CONT_MAX_VOL, 9999.0),
             field_q16(F_CONT_MAX_MASS, 9999.0),
             field_u32(F_CONT_SLOTS, 0),
+            field_u32(F_CONT_PACKING_MODE, 1),
+            tlv(F_CONT_PARAMS, b""),
         ]
     )
     entries.append(tlv(SCHEMA_CONTAINER, cont_payload))
+
+    debug_crate_payload = b"".join(
+        [
+            field_u32(F_CONT_ID, 50002),
+            field_str(F_CONT_NAME, "Debug Crate"),
+            field_u32(F_CONT_TAGS, TAG_CONTAINER_BULK),
+            field_q16(F_CONT_MAX_VOL, 64.0),
+            field_q16(F_CONT_MAX_MASS, 64.0),
+            field_u32(F_CONT_SLOTS, 0),
+            field_u32(F_CONT_PACKING_MODE, 1),
+            tlv(F_CONT_PARAMS, b""),
+        ]
+    )
+    entries.append(tlv(SCHEMA_CONTAINER, debug_crate_payload))
+
+    spline_payload = b"".join(
+        [
+            field_u32(F_SPLINE_ID, 70001),
+            field_str(F_SPLINE_NAME, "Debug Item Conveyor"),
+            field_u32(F_SPLINE_TYPE, SPLINE_TYPE_ITEM),
+            field_u32(F_SPLINE_FLAGS, 0),
+            field_q16(F_SPLINE_BASE_SPEED, 2.0),
+            field_q16(F_SPLINE_MAX_GRADE, 0.2),
+            field_q16(F_SPLINE_CAPACITY, 4.0),
+            field_u32(F_SPLINE_TAGS, 0),
+            tlv(F_SPLINE_PARAMS, b""),
+        ]
+    )
+    entries.append(tlv(SCHEMA_SPLINE, spline_payload))
 
     proc_params = b"".join(
         [
@@ -215,7 +262,7 @@ def build_content_blob():
     )
     port_out = b"".join(
         [
-            field_u32(PORT_KIND, 2),
+            field_u32(PORT_KIND, 10),
             field_i32(PORT_X, 1),
             field_i32(PORT_Y, 0),
             field_i32(PORT_DIR_Z, 0),
@@ -234,6 +281,34 @@ def build_content_blob():
         ]
     )
     entries.append(tlv(SCHEMA_STRUCTURE, structure_payload))
+
+    bin_layout = b"".join(
+        [
+            field_u32(LAYOUT_W, 1),
+            field_u32(LAYOUT_H, 1),
+            field_q16(LAYOUT_ANCHOR, 0.0),
+        ]
+    )
+    bin_port_in = b"".join(
+        [
+            field_u32(PORT_KIND, 11),
+            field_i32(PORT_X, 0),
+            field_i32(PORT_Y, 0),
+            field_i32(PORT_DIR_Z, 0),
+        ]
+    )
+    bin_io = tlv(PORT_BLOCK, bin_port_in)
+    bin_struct_payload = b"".join(
+        [
+            field_u32(F_STRUCT_ID, 40002),
+            field_str(F_STRUCT_NAME, "Debug Bin"),
+            field_u32(F_STRUCT_TAGS, TAG_STRUCTURE_TRANSPORT),
+            tlv(F_STRUCT_LAYOUT, bin_layout),
+            tlv(F_STRUCT_IO, bin_io),
+            tlv(F_STRUCT_PROCESSES, b""),
+        ]
+    )
+    entries.append(tlv(SCHEMA_STRUCTURE, bin_struct_payload))
 
     bp_payload = tlv(BLUEPRINT_STRUCT, struct.pack("<I", 40001))
     blueprint_payload = b"".join(

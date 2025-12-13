@@ -3,8 +3,8 @@
 #define D_ENV_FIELD_H
 
 #include "domino/core/types.h"
-#include "domino/world/d_world.h"
 #include "domino/core/d_tlv.h"
+#include "world/d_world.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -30,6 +30,16 @@ typedef struct d_env_sample_s {
 } d_env_sample;
 
 u16 d_env_sample_at(
+    const d_world *w,
+    q32_32         x,
+    q32_32         y,
+    q32_32         z,
+    d_env_sample  *out_samples,
+    u16            max_samples
+);
+
+/* Sample without applying interior volume overrides. */
+u16 d_env_sample_exterior_at(
     const d_world *w,
     q32_32         x,
     q32_32         y,

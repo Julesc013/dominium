@@ -95,6 +95,8 @@ static u32 d_tag_for_subsystem(d_subsystem_id id) {
         case D_SUBSYS_JOB:    return TAG_SUBSYS_DJOB;
         case D_SUBSYS_NET:    return TAG_SUBSYS_DNET;
         case D_SUBSYS_REPLAY: return TAG_SUBSYS_DREPLAY;
+        case D_SUBSYS_HYDRO:  return TAG_SUBSYS_DHYDRO;
+        case D_SUBSYS_LITHO:  return TAG_SUBSYS_DLITHO;
         default:              return 0u;
     }
 }
@@ -111,6 +113,8 @@ static d_subsystem_id d_subsystem_for_tag(u32 tag) {
         case TAG_SUBSYS_DJOB:    return D_SUBSYS_JOB;
         case TAG_SUBSYS_DNET:    return D_SUBSYS_NET;
         case TAG_SUBSYS_DREPLAY: return D_SUBSYS_REPLAY;
+        case TAG_SUBSYS_DHYDRO:  return D_SUBSYS_HYDRO;
+        case TAG_SUBSYS_DLITHO:  return D_SUBSYS_LITHO;
         default:                 return (d_subsystem_id)0;
     }
 }

@@ -117,7 +117,8 @@ d_world_hash d_sim_hash_world(const d_world *w) {
             }
             qsort(chunk_list, chunk_count, sizeof(d_chunk *), d_sim_hash_chunk_cmp);
             for (i = 0u; i < chunk_count; ++i) {
-                h = d_sim_hash_chunk_payload((d_world *)w, chunk_list[i]);
+                u64 ch = d_sim_hash_chunk_payload((d_world *)w, chunk_list[i]);
+                h = d_sim_hash_u64(h, ch);
             }
             free(chunk_list);
         }

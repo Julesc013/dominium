@@ -75,7 +75,7 @@ static bool run_validators(d_world *w) {
     }
     if (d_res_validate(w) != 0) return false;
     if (d_env_validate(w) != 0) return false;
-    if (d_build_validate(w) != 0) return false;
+    if (d_build_validate_world(w) != 0) return false;
     if (d_trans_validate(w) != 0) return false;
     if (d_struct_validate(w) != 0) return false;
     if (d_vehicle_validate(w) != 0) return false;
@@ -255,6 +255,8 @@ void DomSession::shutdown() {
 
     d_sim_shutdown(&m_sim);
     if (m_world) {
+        d_trans_shutdown(m_world);
+        d_build_shutdown(m_world);
         d_world_destroy(m_world);
         m_world = (d_world *)0;
     }

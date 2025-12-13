@@ -46,6 +46,22 @@ static int validate_materials(void) {
             fprintf(stderr, "content validate: invalid material #%u\n", (unsigned)i);
             return -1;
         }
+        if (m->permeability < 0 || m->permeability > d_q16_16_from_int(1)) {
+            fprintf(stderr, "content validate: material %u permeability out of range\n", (unsigned)m->id);
+            return -1;
+        }
+        if (m->porosity < 0 || m->porosity > d_q16_16_from_int(1)) {
+            fprintf(stderr, "content validate: material %u porosity out of range\n", (unsigned)m->id);
+            return -1;
+        }
+        if (m->thermal_conductivity < 0) {
+            fprintf(stderr, "content validate: material %u thermal_conductivity negative\n", (unsigned)m->id);
+            return -1;
+        }
+        if (m->erosion_resistance < 0) {
+            fprintf(stderr, "content validate: material %u erosion_resistance negative\n", (unsigned)m->id);
+            return -1;
+        }
     }
     return 0;
 }
@@ -112,6 +128,40 @@ static int validate_processes(void) {
     return 0;
 }
 
+static int validate_containers(void) {
+    u32 count = d_content_container_count();
+    u32 i;
+    for (i = 0u; i < count; ++i) {
+        const d_proto_container *c = d_content_get_container_by_index(i);
+        if (!c || c->id == 0u || !validate_name(c->name)) {
+            fprintf(stderr, "content validate: invalid container #%u\n", (unsigned)i);
+            return -1;
+        }
+        if (c->max_volume < 0 || c->max_mass < 0) {
+            fprintf(stderr, "content validate: container %u has negative limits\n", (unsigned)c->id);
+            return -1;
+        }
+    }
+    return 0;
+}
+
+static int validate_spline_profiles(void) {
+    u32 count = d_content_spline_profile_count();
+    u32 i;
+    for (i = 0u; i < count; ++i) {
+        const d_proto_spline_profile *sp = d_content_get_spline_profile_by_index(i);
+        if (!sp || sp->id == 0u || !validate_name(sp->name)) {
+            fprintf(stderr, "content validate: invalid spline profile #%u\n", (unsigned)i);
+            return -1;
+        }
+        if (sp->base_speed < 0 || sp->max_grade < 0 || sp->capacity < 0) {
+            fprintf(stderr, "content validate: spline profile %u has negative fields\n", (unsigned)sp->id);
+            return -1;
+        }
+    }
+    return 0;
+}
+
 static int validate_blueprints(void) {
     u32 count = d_content_blueprint_count();
     u32 i;
@@ -128,9 +178,11 @@ static int validate_blueprints(void) {
 int d_content_validate_all(void) {
     if (validate_materials() != 0) return -1;
     if (validate_items() != 0) return -1;
+    if (validate_containers() != 0) return -1;
     if (validate_processes() != 0) return -1;
     if (validate_deposits() != 0) return -1;
     if (validate_structures() != 0) return -1;
+    if (validate_spline_profiles() != 0) return -1;
     if (validate_blueprints() != 0) return -1;
     return 0;
 }

@@ -1,5 +1,7 @@
 #include "res/d_res.h"
 #include "env/d_env.h"
+#include "world/d_litho.h"
+#include "hydro/d_hydro.h"
 #include "build/d_build.h"
 #include "trans/d_trans.h"
 #include "struct/d_struct.h"
@@ -16,8 +18,10 @@ void d_subsystems_init(void) {
     }
     d_res_init();
     d_env_init();
-    d_build_init();
-    d_trans_init();
+    d_litho_init();
+    d_hydro_init();
+    d_build_register_subsystem();
+    d_trans_register_subsystem();
     d_struct_init();
     d_vehicle_init();
     d_job_init();

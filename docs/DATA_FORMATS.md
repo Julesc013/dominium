@@ -109,13 +109,23 @@ This file and `engine/save_*.h` define the authoritative on-disk shapes for v0. 
   - `id` (u32) and `name` (string) are required for all protos.
   - `tags` (u32 bitmask) is optional but shared across types.
 - Type-specific fields:
-  - Material: `density`, `hardness`, `melting_point` as Q16.16 (stored as signed 32-bit).
+  - Material: `density`, `hardness`, `melting_point`, `permeability`, `porosity`, `thermal_conductivity`, `erosion_resistance` as Q16.16 (stored as signed 32-bit).
   - Item: `material_id`, `unit_mass`, `unit_volume`.
-  - Container: `max_volume`, `max_mass`, `slot_count`.
+  - Container: `max_volume`, `max_mass`, `slot_count`, `packing_mode`, `params`.
   - Process: `params` blob for I/O definitions.
   - Deposit: `material_id`, `model_id` (u16), `model_params`.
   - Structure: `layout`, `io`, `processes` blobs.
-  - Vehicle/Spline/Job: `params` blob only.
+  - Vehicle: `params` blob.
+  - Spline profile: `type`, `flags`, `base_speed`, `max_grade`, `capacity`, `tags`, `params`.
+  - Job template: `params` blob.
   - Building: `shell` blob and `params`.
   - Blueprint: opaque `payload` blob.
 - Loaders validate TLV framing via the schema registry, then map fields directly into runtime prototype structs without injecting game-specific behavior.
+
+### 11.1 Nested parameter TLVs (selected)
+- `structure.layout` and `vehicle.params` may include an environmental volume graph:
+  - `D_TLV_ENV_VOLUME` records with local AABB fields `MIN_*`/`MAX_*` (Q16.16, local coordinates).
+  - `D_TLV_ENV_EDGE` records connecting local volumes (`A`,`B`), where `B=0` means exterior coupling; includes `GAS_K` and `HEAT_K` conductances (Q16.16).
+  - Optional `D_TLV_ENV_HYDRO_FLAGS` (u32 bitmask) for generic hydrology interactions.
+- `job_template.params` may include environment constraints:
+  - `D_TLV_JOB_ENV_RANGE` records with `FIELD_ID` (u16) and `MIN`/`MAX` (Q16.16), evaluated against `d_env_sample_at` at the job target position.

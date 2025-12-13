@@ -2,7 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "content/d_content_extra.h"
+#include "core/d_tlv_kv.h"
 #include "core/d_subsystem.h"
+#include "env/d_env_field.h"
 #include "world/d_world.h"
 #include "job/d_job.h"
 
@@ -17,6 +20,98 @@ typedef struct d_job_entry {
 static d_job_entry g_job_entries[DJOB_MAX_INSTANCES];
 static d_job_instance_id g_job_next_id = 1u;
 static int g_job_registered = 0;
+
+typedef struct djob_env_req_s {
+    u16   field_id;
+    q16_16 min_v;
+    q16_16 max_v;
+} djob_env_req;
+
+static q32_32 djob_q32_from_q16(q16_16 v) {
+    return ((q32_32)v) << (Q32_32_FRAC_BITS - Q16_16_FRAC_BITS);
+}
+
+static int djob_parse_env_req(const d_tlv_blob *in, djob_env_req *out) {
+    u32 offset;
+    u32 tag;
+    d_tlv_blob payload;
+    int rc;
+    if (!out) {
+        return -1;
+    }
+    memset(out, 0, sizeof(*out));
+    out->min_v = (q16_16)0x80000000;
+    out->max_v = (q16_16)0x7FFFFFFF;
+    if (!in || !in->ptr || in->len == 0u) {
+        return 0;
+    }
+    offset = 0u;
+    while ((rc = d_tlv_kv_next(in, &offset, &tag, &payload)) == 0) {
+        switch (tag) {
+        case D_TLV_JOB_ENV_FIELD_ID:
+            (void)d_tlv_kv_read_u16(&payload, &out->field_id);
+            break;
+        case D_TLV_JOB_ENV_MIN:
+            (void)d_tlv_kv_read_q16_16(&payload, &out->min_v);
+            break;
+        case D_TLV_JOB_ENV_MAX:
+            (void)d_tlv_kv_read_q16_16(&payload, &out->max_v);
+            break;
+        default:
+            break;
+        }
+    }
+    if (out->max_v < out->min_v) {
+        q16_16 tmp = out->min_v; out->min_v = out->max_v; out->max_v = tmp;
+    }
+    return 0;
+}
+
+static u32 djob_collect_env_reqs(const d_tlv_blob *params, djob_env_req *out_reqs, u32 max_reqs) {
+    u32 offset;
+    u32 tag;
+    d_tlv_blob payload;
+    int rc;
+    u32 count;
+
+    if (!out_reqs || max_reqs == 0u) {
+        return 0u;
+    }
+    if (!params || !params->ptr || params->len == 0u) {
+        return 0u;
+    }
+
+    offset = 0u;
+    count = 0u;
+    while ((rc = d_tlv_kv_next(params, &offset, &tag, &payload)) == 0) {
+        if (tag == D_TLV_JOB_ENV_RANGE) {
+            djob_env_req req;
+            (void)djob_parse_env_req(&payload, &req);
+            if (req.field_id != 0u && count < max_reqs) {
+                out_reqs[count] = req;
+                count += 1u;
+            }
+        }
+    }
+    return count;
+}
+
+static int djob_env_req_pass(const d_env_sample *samples, u16 sample_count, const djob_env_req *req) {
+    u16 i;
+    if (!samples || !req) {
+        return 0;
+    }
+    for (i = 0u; i < sample_count; ++i) {
+        if (samples[i].field_id == req->field_id) {
+            q16_16 v = samples[i].values[0];
+            if (v < req->min_v || v > req->max_v) {
+                return 0;
+            }
+            return 1;
+        }
+    }
+    return 0;
+}
 
 static d_job_entry *d_job_find_entry(d_world *w, d_job_instance_id id) {
     u32 i;
@@ -85,7 +180,42 @@ static void d_job_tick(d_world *w, u32 ticks) {
     (void)ticks;
     for (i = 0u; i < DJOB_MAX_INSTANCES; ++i) {
         if (g_job_entries[i].in_use && g_job_entries[i].world == w) {
-            /* Planner stub: no-op for now. */
+            const d_proto_job_template *tmpl = d_content_get_job_template(g_job_entries[i].inst.template_id);
+            djob_env_req reqs[8];
+            u32 req_count;
+            d_env_sample samples[16];
+            u16 sample_count;
+            q32_32 x32;
+            q32_32 y32;
+            q32_32 z32;
+            u32 r;
+            int ok;
+
+            g_job_entries[i].inst.flags &= ~D_JOB_FLAG_ENV_UNSUITABLE;
+            if (!tmpl) {
+                continue;
+            }
+
+            req_count = djob_collect_env_reqs(&tmpl->params, reqs, 8u);
+            if (req_count == 0u) {
+                continue;
+            }
+
+            x32 = djob_q32_from_q16(g_job_entries[i].inst.target_x);
+            y32 = djob_q32_from_q16(g_job_entries[i].inst.target_y);
+            z32 = djob_q32_from_q16(g_job_entries[i].inst.target_z);
+            sample_count = d_env_sample_at(w, x32, y32, z32, samples, 16u);
+
+            ok = 1;
+            for (r = 0u; r < req_count; ++r) {
+                if (!djob_env_req_pass(samples, sample_count, &reqs[r])) {
+                    ok = 0;
+                    break;
+                }
+            }
+            if (!ok) {
+                g_job_entries[i].inst.flags |= D_JOB_FLAG_ENV_UNSUITABLE;
+            }
         }
     }
 }

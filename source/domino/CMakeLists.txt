@@ -10,6 +10,7 @@ add_library(domino_core STATIC
     core/d_subsystems_init.c
     core/d_registry.c
     core/d_tlv_schema.c
+    core/d_container_state.c
     content/d_blueprint.c
     content/d_content_schema.c
     content/d_content.c
@@ -34,11 +35,17 @@ add_library(domino_core STATIC
     world/d_serialize.c
     world/d_world.c
     world/d_worldgen.c
+    world/d_world_terrain.c
+    world/d_litho.c
+    world/d_litho_validate.c
     res/d_res.c
     res/d_res_validate.c
     res/d_res_model_strata.c
     env/d_env.c
+    env/d_env_volume.c
     env/d_env_validate.c
+    hydro/d_hydro.c
+    hydro/d_hydro_validate.c
     build/d_build.c
     build/d_build_validate.c
     trans/d_trans.c

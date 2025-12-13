@@ -29,6 +29,9 @@ typedef struct d_job_instance {
     d_tlv_blob         params;    /* additional parameters; template-specific */
 } d_job_instance;
 
+/* Generic flag bits (engine-level only). */
+#define D_JOB_FLAG_ENV_UNSUITABLE (1u << 16) /* environment constraints not met */
+
 /* Create a new job instance using a template. */
 d_job_instance_id d_job_create(
     d_world           *w,
