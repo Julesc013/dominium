@@ -8,6 +8,7 @@ extern "C" {
 #include "domino/sys.h"
 #include "domino/core/types.h"
 #include "content/d_content.h"
+#include "content/d_content_schema.h"
 #include "core/d_tlv_schema.h"
 }
 
@@ -64,7 +65,7 @@ bool modcheck_run(const std::string &path) {
     blob.len = (u32)data.size();
 
     d_content_register_schemas();
-    vrc = d_tlv_schema_validate(D_TLV_SCHEMA_MOD_MANIFEST, 1u, &blob, (d_tlv_blob *)0);
+    vrc = d_tlv_schema_validate(D_TLV_SCHEMA_MOD_V1, 1u, &blob, (d_tlv_blob *)0);
     if (vrc != 0) {
         std::printf("modcheck: schema validation failed (%d)\n", vrc);
         return false;

@@ -5,6 +5,7 @@
 #include "domino/core/types.h"
 #include "domino/core/d_tlv.h"
 #include "net/d_net.h"
+#include "sim/d_sim_hash.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -27,6 +28,8 @@ typedef enum dreplay_mode_e {
 
 typedef struct d_replay_context {
     dreplay_mode mode;
+    u32          determinism_mode; /* 0=off,1=record,2=playback,3=assert-only */
+    d_world_hash last_hash;
 
     /* For RECORD: dynamic array of frames; for PLAYBACK: read-only pointer. */
     dreplay_frame *frames;

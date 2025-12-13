@@ -10,6 +10,7 @@
 
 extern "C" {
 #include "domino/system/dsys.h"
+#include "domino/system/d_system.h"
 #include "domino/gfx.h"
 #include "domino/core/fixed.h"
 }
@@ -93,8 +94,8 @@ void DomLauncherApp::shutdown() {
         dui_shutdown_context(&m_ui);
         std::memset(&m_ui, 0, sizeof(m_ui));
     }
-    dgfx_shutdown();
-    dsys_shutdown();
+    d_gfx_shutdown();
+    d_system_shutdown();
     m_running = false;
 }
 
@@ -253,25 +254,13 @@ ProductEntry* DomLauncherApp::find_product_entry(const std::string &product) {
 }
 
 bool DomLauncherApp::init_gui(const LauncherConfig &cfg) {
-    dsys_result sys_rc;
-    dgfx_desc gdesc;
     d_view_desc vdesc;
-
     (void)cfg;
 
-    sys_rc = dsys_init();
-    if (sys_rc != DSYS_OK) {
+    if (!d_system_init("win32")) {
         return false;
     }
-
-    std::memset(&gdesc, 0, sizeof(gdesc));
-    gdesc.backend = (m_mode == LAUNCHER_MODE_TUI) ? DGFX_BACKEND_NULL : DGFX_BACKEND_SOFT;
-    gdesc.width = 800;
-    gdesc.height = 480;
-    gdesc.fullscreen = 0;
-    gdesc.vsync = 0;
-
-    if (!dgfx_init(&gdesc)) {
+    if (!d_gfx_init("soft")) {
         return false;
     }
 
@@ -279,8 +268,8 @@ bool DomLauncherApp::init_gui(const LauncherConfig &cfg) {
     vdesc.id = 1u;
     vdesc.vp_x = d_q16_16_from_int(0);
     vdesc.vp_y = d_q16_16_from_int(0);
-    vdesc.vp_w = d_q16_16_from_int(gdesc.width ? gdesc.width : 800);
-    vdesc.vp_h = d_q16_16_from_int(gdesc.height ? gdesc.height : 480);
+    vdesc.vp_w = d_q16_16_from_int(1);
+    vdesc.vp_h = d_q16_16_from_int(1);
     vdesc.camera.fov = d_q16_16_from_int(60);
 
     m_view = d_view_create(&vdesc);
@@ -294,38 +283,42 @@ bool DomLauncherApp::init_gui(const LauncherConfig &cfg) {
 
 void DomLauncherApp::gui_loop() {
     while (m_running) {
-        dsys_event ev;
-        while (dsys_poll_event(&ev)) {
-            if (ev.type == DSYS_EVENT_QUIT) {
-                m_running = false;
-            }
-        }
-
-        dgfx_cmd_buffer *buf = dgfx_get_frame_cmd_buffer();
+        d_gfx_cmd_buffer *buf;
         d_view_frame frame;
         dui_rect rect;
+        i32 width = 800;
+        i32 height = 480;
 
+        if (d_system_pump_events() != 0) {
+            m_running = false;
+            break;
+        }
+
+        buf = d_gfx_cmd_buffer_begin();
         frame.cmd_buffer = buf;
         frame.view = d_view_get(m_view);
+        d_gfx_get_surface_size(&width, &height);
+
         if (frame.view) {
             (void)d_view_render((d_world *)0, frame.view, &frame);
             rect.x = frame.view->vp_x;
             rect.y = frame.view->vp_y;
-            rect.w = frame.view->vp_w;
-            rect.h = frame.view->vp_h;
+            rect.w = d_q16_16_from_int(width);
+            rect.h = d_q16_16_from_int(height);
         } else {
             rect.x = d_q16_16_from_int(0);
             rect.y = d_q16_16_from_int(0);
-            rect.w = d_q16_16_from_int(800);
-            rect.h = d_q16_16_from_int(480);
+            rect.w = d_q16_16_from_int(width);
+            rect.h = d_q16_16_from_int(height);
         }
 
         dui_layout(&m_ui, &rect);
         dui_render(&m_ui, &frame);
 
-        dgfx_begin_frame();
-        dgfx_execute(buf);
-        dgfx_end_frame();
+        d_gfx_cmd_buffer_end(buf);
+        d_gfx_submit(buf);
+        d_gfx_present();
+        d_system_sleep_ms(16);
     }
 }
 

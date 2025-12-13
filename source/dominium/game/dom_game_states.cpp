@@ -5,6 +5,10 @@
 #include "dom_game_app.h"
 #include "dom_game_ui.h"
 
+extern "C" {
+#include "domino/core/fixed.h"
+}
+
 namespace dom {
 
 namespace {
@@ -20,21 +24,13 @@ public:
 
 class MainMenuState : public GameState {
 public:
-    MainMenuState() : m_transitioned(false) {}
-
     void on_enter(DomGameApp &app) {
         dom_game_ui_build_main_menu(app.ui_context());
-        m_transitioned = false;
     }
     void on_exit(DomGameApp &app) { (void)app; }
     void tick(DomGameApp &app) {
-        if (!m_transitioned) {
-            app.request_state_change(GAME_STATE_LOADING);
-            m_transitioned = true;
-        }
+        (void)app;
     }
-private:
-    bool m_transitioned;
 };
 
 class LoadingState : public GameState {
@@ -42,7 +38,6 @@ public:
     LoadingState() : m_transitioned(false) {}
 
     void on_enter(DomGameApp &app) {
-        (void)app;
         m_transitioned = false;
     }
     void on_exit(DomGameApp &app) { (void)app; }
@@ -58,11 +53,16 @@ private:
 
 class RunningState : public GameState {
 public:
+    RunningState() {}
+
     void on_enter(DomGameApp &app) {
-        dom_game_ui_build_in_game_hud(app.ui_context());
+        dom_game_ui_build_in_game(app.ui_context());
     }
     void on_exit(DomGameApp &app) { (void)app; }
-    void tick(DomGameApp &app) { (void)app; }
+    void tick(DomGameApp &app) {
+        (void)app;
+    }
+private:
 };
 
 class PausedState : public GameState {

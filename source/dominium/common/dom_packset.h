@@ -19,6 +19,10 @@ struct PackSet {
     /* Ordered list of mod TLVs to load */
     std::vector<d_tlv_blob> mod_blobs;
 
+    /* True if the implicit base pack was loaded into pack_blobs[0]. */
+    bool base_loaded;
+    unsigned base_version;
+
     bool load_for_instance(const Paths &paths, const InstanceInfo &inst);
 
 private:

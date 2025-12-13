@@ -44,6 +44,7 @@ int d_vehicle_destroy(
 
 /* Subsystem registration hook */
 void d_vehicle_init(void);
+int d_vehicle_validate(const d_world *w);
 
 #ifdef __cplusplus
 }

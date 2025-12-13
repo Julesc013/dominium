@@ -3,66 +3,49 @@
 #include "d_view.h"
 
 #define D_VIEW_MAX 32u
+#define D_VIEW_DEFAULT_WIDTH 800
+#define D_VIEW_DEFAULT_HEIGHT 600
 
 static d_view_desc g_views[D_VIEW_MAX];
 static u32 g_view_count = 0u;
 static d_view_id g_view_next_id = 1u;
 
-static void d_view_make_identity(float *m) {
-    int i;
-    if (!m) {
+static i32 d_view_q16_mul_int(q16_16 v, i32 m)
+{
+    i64 tmp;
+    tmp = (i64)v * (i64)m;
+    return (i32)(tmp >> 16);
+}
+
+static void d_view_map_viewport(const d_view_desc *view, d_gfx_viewport *out)
+{
+    i32 width = 0;
+    i32 height = 0;
+    if (!view || !out) {
         return;
     }
-    for (i = 0; i < 16; ++i) {
-        m[i] = (i % 5 == 0) ? 1.0f : 0.0f;
-    }
+    d_gfx_get_surface_size(&width, &height);
+    if (width <= 0) width = D_VIEW_DEFAULT_WIDTH;
+    if (height <= 0) height = D_VIEW_DEFAULT_HEIGHT;
+
+    out->x = d_view_q16_mul_int(view->vp_x, width);
+    out->y = d_view_q16_mul_int(view->vp_y, height);
+    out->w = d_view_q16_mul_int(view->vp_w, width);
+    out->h = d_view_q16_mul_int(view->vp_h, height);
+    if (out->w <= 0) out->w = width;
+    if (out->h <= 0) out->h = height;
 }
 
-static int d_view_emit_clear(dgfx_cmd_buffer *buf) {
-    u32 rgba = 0u;
-    if (!buf) {
-        return -1;
-    }
-    return dgfx_cmd_emit(buf, (uint16_t)DGFX_CMD_CLEAR, &rgba, (uint16_t)sizeof(u32)) ? 0 : -1;
-}
-
-static int d_view_emit_viewport(dgfx_cmd_buffer *buf, const d_view_desc *view) {
-    dgfx_viewport_t vp;
-    if (!buf || !view) {
-        return -1;
-    }
-    vp.x = d_q16_16_to_int(view->vp_x);
-    vp.y = d_q16_16_to_int(view->vp_y);
-    vp.w = d_q16_16_to_int(view->vp_w);
-    vp.h = d_q16_16_to_int(view->vp_h);
-    return dgfx_cmd_emit(buf, (uint16_t)DGFX_CMD_SET_VIEWPORT, &vp, (uint16_t)sizeof(dgfx_viewport_t)) ? 0 : -1;
-}
-
-static int d_view_emit_camera(dgfx_cmd_buffer *buf) {
-    dgfx_camera_t cam;
-    if (!buf) {
-        return -1;
-    }
-    d_view_make_identity(cam.view);
-    d_view_make_identity(cam.proj);
-    d_view_make_identity(cam.world);
-    return dgfx_cmd_emit(buf, (uint16_t)DGFX_CMD_SET_CAMERA, &cam, (uint16_t)sizeof(dgfx_camera_t)) ? 0 : -1;
-}
-
-static void dview_render_world(d_world *w, d_view_desc *view, d_view_frame *frame) {
+static void dview_render_world(d_world *w, d_view_desc *view, d_view_frame *frame)
+{
     (void)w;
     (void)view;
     (void)frame;
     /* TODO: hook world rendering once world draw is available. */
 }
 
-static void dview_render_ui(d_view_desc *view, d_view_frame *frame) {
-    (void)view;
-    (void)frame;
-    /* TODO: hook UI overlay rendering once DUI integrates. */
-}
-
-d_view_id d_view_create(const d_view_desc *desc) {
+d_view_id d_view_create(const d_view_desc *desc)
+{
     d_view_id id;
     if (!desc) {
         return (d_view_id)0;
@@ -78,7 +61,8 @@ d_view_id d_view_create(const d_view_desc *desc) {
     return id;
 }
 
-int d_view_destroy(d_view_id id) {
+int d_view_destroy(d_view_id id)
+{
     u32 i;
     for (i = 0u; i < g_view_count; ++i) {
         if (g_views[i].id == id) {
@@ -92,7 +76,8 @@ int d_view_destroy(d_view_id id) {
     return -1;
 }
 
-d_view_desc *d_view_get(d_view_id id) {
+d_view_desc *d_view_get(d_view_id id)
+{
     u32 i;
     for (i = 0u; i < g_view_count; ++i) {
         if (g_views[i].id == id) {
@@ -107,24 +92,39 @@ int d_view_render(
     d_view_desc  *view,
     d_view_frame *frame
 ) {
+    d_gfx_viewport vp;
+    d_gfx_color clear_color;
+
     if (!view || !frame || !frame->cmd_buffer) {
         return -1;
     }
 
     frame->view = view;
-    dgfx_cmd_buffer_reset(frame->cmd_buffer);
+    frame->cmd_buffer->count = 0u;
 
-    if (d_view_emit_clear(frame->cmd_buffer) != 0) {
-        return -1;
-    }
-    if (d_view_emit_viewport(frame->cmd_buffer, view) != 0) {
-        return -1;
-    }
-    if (d_view_emit_camera(frame->cmd_buffer) != 0) {
-        return -1;
+    clear_color.a = 0xffu;
+    clear_color.r = 0x12u;
+    clear_color.g = 0x12u;
+    clear_color.b = 0x20u;
+    d_gfx_cmd_clear(frame->cmd_buffer, clear_color);
+
+    d_view_map_viewport(view, &vp);
+    d_gfx_cmd_set_viewport(frame->cmd_buffer, &vp);
+    {
+        d_gfx_camera cam;
+        cam.pos_x = view->camera.pos_x;
+        cam.pos_y = view->camera.pos_y;
+        cam.pos_z = view->camera.pos_z;
+        cam.dir_x = view->camera.dir_x;
+        cam.dir_y = view->camera.dir_y;
+        cam.dir_z = view->camera.dir_z;
+        cam.up_x = view->camera.up_x;
+        cam.up_y = view->camera.up_y;
+        cam.up_z = view->camera.up_z;
+        cam.fov = view->camera.fov;
+        d_gfx_cmd_set_camera(frame->cmd_buffer, &cam);
     }
 
     dview_render_world(w, view, frame);
-    dview_render_ui(view, frame);
     return 0;
 }

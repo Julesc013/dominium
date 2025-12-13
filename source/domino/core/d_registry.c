@@ -44,6 +44,38 @@ u32 d_registry_add(d_registry *reg, void *ptr) {
     return entry->id;
 }
 
+u32 d_registry_add_with_id(d_registry *reg, u32 id, void *ptr) {
+    u32 i;
+    d_registry_entry *entry;
+    if (!reg || !reg->entries) {
+        fprintf(stderr, "d_registry_add_with_id: registry not initialized\n");
+        return 0u;
+    }
+    if (reg->count >= reg->capacity) {
+        fprintf(stderr, "d_registry_add_with_id: registry full\n");
+        return 0u;
+    }
+    if (id == 0u || id == 0xFFFFFFFFu) {
+        fprintf(stderr, "d_registry_add_with_id: invalid id\n");
+        return 0u;
+    }
+    for (i = 0u; i < reg->count; ++i) {
+        if (reg->entries[i].id == id) {
+            fprintf(stderr, "d_registry_add_with_id: duplicate id %u\n", (unsigned int)id);
+            return 0u;
+        }
+    }
+
+    entry = &reg->entries[reg->count];
+    entry->id = id;
+    entry->ptr = ptr;
+    reg->count += 1u;
+    if (id >= reg->next_id) {
+        reg->next_id = id + 1u;
+    }
+    return entry->id;
+}
+
 void *d_registry_get(const d_registry *reg, u32 id) {
     u32 i;
     if (!reg || !reg->entries) {

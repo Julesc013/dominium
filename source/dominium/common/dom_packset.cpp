@@ -60,7 +60,7 @@ static bool load_blob_from(const std::string &path,
 
 static std::string version_string(unsigned v) {
     char buf[32];
-    std::sprintf(buf, "%u", v);
+    std::sprintf(buf, "%08u", v);
     return std::string(buf);
 }
 
@@ -73,6 +73,30 @@ bool PackSet::load_for_instance(const Paths &paths, const InstanceInfo &inst) {
     mod_blobs.clear();
     m_pack_storage.clear();
     m_mod_storage.clear();
+    base_loaded = false;
+    base_version = 0u;
+
+    /* Auto-load base pack first if present. */
+    {
+        const unsigned kBasePackVersion = 1u;
+        d_tlv_blob blob;
+        std::vector<unsigned char> storage;
+        std::string version = version_string(kBasePackVersion);
+        std::string pack_dir = join(paths.packs, "base");
+        std::string ver_dir = join(pack_dir, version);
+        std::string tlv_path = join(ver_dir, "pack.tlv");
+        std::string bin_path = join(ver_dir, "pack.bin");
+
+        if (load_blob_from(tlv_path, storage, blob) || load_blob_from(bin_path, storage, blob)) {
+            m_pack_storage.push_back(std::vector<unsigned char>());
+            m_pack_storage.back().swap(storage);
+            blob.ptr = m_pack_storage.back().empty() ? (unsigned char *)0 : &m_pack_storage.back()[0];
+            blob.len = static_cast<unsigned int>(m_pack_storage.back().size());
+            pack_blobs.push_back(blob);
+            base_loaded = true;
+            base_version = kBasePackVersion;
+        }
+    }
 
     for (i = 0u; i < inst.packs.size(); ++i) {
         const PackRef &pref = inst.packs[i];

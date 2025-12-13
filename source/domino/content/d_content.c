@@ -2,11 +2,10 @@
 #include <string.h>
 
 #include "content/d_content.h"
-#include "content/d_content_tags.h"
+#include "content/d_content_schema.h"
 
 #include "core/d_registry.h"
 #include "core/d_tlv_schema.h"
-#include "content/d_blueprint.h"
 
 /* Registry capacities */
 #define D_CONTENT_MAX_MATERIALS       4096u
@@ -15,11 +14,13 @@
 #define D_CONTENT_MAX_PROCESSES       4096u
 #define D_CONTENT_MAX_DEPOSITS        4096u
 #define D_CONTENT_MAX_STRUCTURES      2048u
-#define D_CONTENT_MAX_MODULES         4096u
 #define D_CONTENT_MAX_VEHICLES        2048u
 #define D_CONTENT_MAX_SPLINE_PROFILES 2048u
 #define D_CONTENT_MAX_JOB_TEMPLATES   4096u
 #define D_CONTENT_MAX_BUILDINGS       2048u
+#define D_CONTENT_MAX_BLUEPRINTS      4096u
+
+static const char *D_CONTENT_EMPTY_STRING = "";
 
 /* Registries and storage */
 static d_registry g_material_registry;
@@ -46,10 +47,6 @@ static d_registry g_structure_registry;
 static d_registry_entry g_structure_entries[D_CONTENT_MAX_STRUCTURES];
 static d_proto_structure g_structure_storage[D_CONTENT_MAX_STRUCTURES];
 
-static d_registry g_module_registry;
-static d_registry_entry g_module_entries[D_CONTENT_MAX_MODULES];
-static d_proto_module g_module_storage[D_CONTENT_MAX_MODULES];
-
 static d_registry g_vehicle_registry;
 static d_registry_entry g_vehicle_entries[D_CONTENT_MAX_VEHICLES];
 static d_proto_vehicle g_vehicle_storage[D_CONTENT_MAX_VEHICLES];
@@ -66,29 +63,62 @@ static d_registry g_building_registry;
 static d_registry_entry g_building_entries[D_CONTENT_MAX_BUILDINGS];
 static d_proto_building g_building_storage[D_CONTENT_MAX_BUILDINGS];
 
+static d_registry g_blueprint_registry;
+static d_registry_entry g_blueprint_entries[D_CONTENT_MAX_BLUEPRINTS];
+static d_proto_blueprint g_blueprint_storage[D_CONTENT_MAX_BLUEPRINTS];
+
 /* Forward declarations */
-static d_content_result d_content_load_content_blob(const d_tlv_blob *blob);
-static d_content_result d_content_load_materials_from_tlv(const d_tlv_blob *blob);
-static d_content_result d_content_load_items_from_tlv(const d_tlv_blob *blob);
-static d_content_result d_content_load_containers_from_tlv(const d_tlv_blob *blob);
-static d_content_result d_content_load_processes_from_tlv(const d_tlv_blob *blob);
-static d_content_result d_content_load_deposits_from_tlv(const d_tlv_blob *blob);
-static d_content_result d_content_load_structures_from_tlv(const d_tlv_blob *blob);
-static d_content_result d_content_load_modules_from_tlv(const d_tlv_blob *blob);
-static d_content_result d_content_load_vehicles_from_tlv(const d_tlv_blob *blob);
-static d_content_result d_content_load_spline_profiles_from_tlv(const d_tlv_blob *blob);
-static d_content_result d_content_load_job_templates_from_tlv(const d_tlv_blob *blob);
-static d_content_result d_content_load_buildings_from_tlv(const d_tlv_blob *blob);
-static d_content_result d_content_load_blueprints_from_tlv(const d_tlv_blob *blob);
+static int d_content_load_content_blob(const d_tlv_blob *blob);
+static int d_content_register_material(const d_proto_material *src);
+static int d_content_register_item(const d_proto_item *src);
+static int d_content_register_container(const d_proto_container *src);
+static int d_content_register_process(const d_proto_process *src);
+static int d_content_register_deposit(const d_proto_deposit *src);
+static int d_content_register_structure(const d_proto_structure *src);
+static int d_content_register_vehicle(const d_proto_vehicle *src);
+static int d_content_register_spline(const d_proto_spline_profile *src);
+static int d_content_register_job_template(const d_proto_job_template *src);
+static int d_content_register_building(const d_proto_building *src);
+static int d_content_register_blueprint(const d_proto_blueprint *src);
+static int d_content_read_tlv(const d_tlv_blob *blob, u32 *offset, u32 *tag, d_tlv_blob *payload);
 
-static int d_content_validate_basic(
-    d_tlv_schema_id         schema_id,
-    u16                     version,
-    const struct d_tlv_blob *in,
-    struct d_tlv_blob       *out_upgraded
-);
+static void d_content_clear_storage(void)
+{
+    memset(g_material_entries, 0, sizeof(g_material_entries));
+    memset(g_material_storage, 0, sizeof(g_material_storage));
 
-void d_content_init(void)
+    memset(g_item_entries, 0, sizeof(g_item_entries));
+    memset(g_item_storage, 0, sizeof(g_item_storage));
+
+    memset(g_container_entries, 0, sizeof(g_container_entries));
+    memset(g_container_storage, 0, sizeof(g_container_storage));
+
+    memset(g_process_entries, 0, sizeof(g_process_entries));
+    memset(g_process_storage, 0, sizeof(g_process_storage));
+
+    memset(g_deposit_entries, 0, sizeof(g_deposit_entries));
+    memset(g_deposit_storage, 0, sizeof(g_deposit_storage));
+
+    memset(g_structure_entries, 0, sizeof(g_structure_entries));
+    memset(g_structure_storage, 0, sizeof(g_structure_storage));
+
+    memset(g_vehicle_entries, 0, sizeof(g_vehicle_entries));
+    memset(g_vehicle_storage, 0, sizeof(g_vehicle_storage));
+
+    memset(g_spline_profile_entries, 0, sizeof(g_spline_profile_entries));
+    memset(g_spline_profile_storage, 0, sizeof(g_spline_profile_storage));
+
+    memset(g_job_template_entries, 0, sizeof(g_job_template_entries));
+    memset(g_job_template_storage, 0, sizeof(g_job_template_storage));
+
+    memset(g_building_entries, 0, sizeof(g_building_entries));
+    memset(g_building_storage, 0, sizeof(g_building_storage));
+
+    memset(g_blueprint_entries, 0, sizeof(g_blueprint_entries));
+    memset(g_blueprint_storage, 0, sizeof(g_blueprint_storage));
+}
+
+static void d_content_init_registries(void)
 {
     d_registry_init(&g_material_registry,  g_material_entries,  D_CONTENT_MAX_MATERIALS,  1u);
     d_registry_init(&g_item_registry,      g_item_entries,      D_CONTENT_MAX_ITEMS,      1u);
@@ -96,839 +126,435 @@ void d_content_init(void)
     d_registry_init(&g_process_registry,   g_process_entries,   D_CONTENT_MAX_PROCESSES,  1u);
     d_registry_init(&g_deposit_registry,   g_deposit_entries,   D_CONTENT_MAX_DEPOSITS,   1u);
     d_registry_init(&g_structure_registry, g_structure_entries, D_CONTENT_MAX_STRUCTURES, 1u);
-    d_registry_init(&g_module_registry,    g_module_entries,    D_CONTENT_MAX_MODULES,    1u);
     d_registry_init(&g_vehicle_registry,   g_vehicle_entries,   D_CONTENT_MAX_VEHICLES,   1u);
     d_registry_init(&g_spline_profile_registry, g_spline_profile_entries, D_CONTENT_MAX_SPLINE_PROFILES, 1u);
     d_registry_init(&g_job_template_registry,   g_job_template_entries,   D_CONTENT_MAX_JOB_TEMPLATES,   1u);
     d_registry_init(&g_building_registry,  g_building_entries,  D_CONTENT_MAX_BUILDINGS,  1u);
+    d_registry_init(&g_blueprint_registry, g_blueprint_entries, D_CONTENT_MAX_BLUEPRINTS, 1u);
+}
 
-    d_blueprint_register_builtin_kinds();
+void d_content_init(void)
+{
+    d_content_clear_storage();
+    d_content_init_registries();
 }
 
 void d_content_shutdown(void)
 {
-    memset(g_material_storage, 0, sizeof(g_material_storage));
-    memset(g_item_storage, 0, sizeof(g_item_storage));
-    memset(g_container_storage, 0, sizeof(g_container_storage));
-    memset(g_process_storage, 0, sizeof(g_process_storage));
-    memset(g_deposit_storage, 0, sizeof(g_deposit_storage));
-    memset(g_structure_storage, 0, sizeof(g_structure_storage));
-    memset(g_module_storage, 0, sizeof(g_module_storage));
-    memset(g_vehicle_storage, 0, sizeof(g_vehicle_storage));
-    memset(g_spline_profile_storage, 0, sizeof(g_spline_profile_storage));
-    memset(g_job_template_storage, 0, sizeof(g_job_template_storage));
-    memset(g_building_storage, 0, sizeof(g_building_storage));
-
-    d_content_init();
+    d_content_clear_storage();
+    d_content_init_registries();
 }
 
-static int d_content_register_schema(d_tlv_schema_id schema_id, u16 version)
+void d_content_reset(void)
 {
-    d_tlv_schema_desc desc;
-    desc.schema_id = schema_id;
-    desc.version = version;
-    desc.validate_fn = d_content_validate_basic;
-    return d_tlv_schema_register(&desc);
+    d_content_shutdown();
 }
 
 void d_content_register_schemas(void)
 {
-    /* Manifest schemas */
-    (void)d_content_register_schema(D_TLV_SCHEMA_PACK_MANIFEST, 1u);
-    (void)d_content_register_schema(D_TLV_SCHEMA_MOD_MANIFEST,  1u);
-
-    /* Proto schemas */
-    (void)d_content_register_schema(D_TLV_SCHEMA_MATERIAL,       1u);
-    (void)d_content_register_schema(D_TLV_SCHEMA_ITEM,           1u);
-    (void)d_content_register_schema(D_TLV_SCHEMA_CONTAINER,      1u);
-    (void)d_content_register_schema(D_TLV_SCHEMA_PROCESS,        1u);
-    (void)d_content_register_schema(D_TLV_SCHEMA_DEPOSIT,        1u);
-    (void)d_content_register_schema(D_TLV_SCHEMA_STRUCTURE,      1u);
-    (void)d_content_register_schema(D_TLV_SCHEMA_MODULE,         1u);
-    (void)d_content_register_schema(D_TLV_SCHEMA_VEHICLE,        1u);
-    (void)d_content_register_schema(D_TLV_SCHEMA_SPLINE_PROFILE, 1u);
-    (void)d_content_register_schema(D_TLV_SCHEMA_JOB_TEMPLATE,   1u);
-    (void)d_content_register_schema(D_TLV_SCHEMA_BUILDING_PROTO, 1u);
-    (void)d_content_register_schema(D_TLV_SCHEMA_BLUEPRINT,      1u);
+    (void)d_content_schema_register_all();
 }
 
-static int d_content_validate_basic(
-    d_tlv_schema_id         schema_id,
-    u16                     version,
-    const struct d_tlv_blob *in,
-    struct d_tlv_blob       *out_upgraded
-)
+static const char *d_content_safe_name(const char *name)
 {
-    (void)schema_id;
-    (void)version;
-    (void)out_upgraded;
-    if (!in) {
+    if (!name) {
+        return D_CONTENT_EMPTY_STRING;
+    }
+    return name;
+}
+
+static int d_content_register_material(const d_proto_material *src)
+{
+    u32 slot;
+    if (!src) {
         return -1;
     }
-    if (in->len == 0u || in->ptr == (unsigned char *)0) {
+    slot = g_material_registry.count;
+    if (slot >= D_CONTENT_MAX_MATERIALS) {
         return -1;
     }
-    if (in->len < 8u) {
-        /* Ensure at least one TLV header exists. */
+    g_material_storage[slot] = *src;
+    g_material_storage[slot].name = d_content_safe_name(src->name);
+    if (d_registry_add_with_id(&g_material_registry, src->id, &g_material_storage[slot]) == 0u) {
+        memset(&g_material_storage[slot], 0, sizeof(g_material_storage[slot]));
         return -1;
     }
-    /* TODO: Implement strict field validation and upgrade paths per schema. */
     return 0;
 }
 
-static d_content_result d_content_load_manifest_blob(
-    const d_tlv_blob *blob,
-    d_tlv_schema_id   schema_id
-)
+static int d_content_register_item(const d_proto_item *src)
 {
-    int rc;
-    d_tlv_blob upgraded;
-    upgraded.ptr = (unsigned char *)0;
-    upgraded.len = 0u;
-
-    rc = d_tlv_schema_validate(schema_id, 1u, blob, &upgraded);
-    if (rc != 0) {
-        return D_CONTENT_ERR_SCHEMA;
+    u32 slot;
+    if (!src) {
+        return -1;
     }
-    /* TODO: handle upgraded blob lifetime if future upgrade logic is added. */
-    return D_CONTENT_OK;
+    slot = g_item_registry.count;
+    if (slot >= D_CONTENT_MAX_ITEMS) {
+        return -1;
+    }
+    g_item_storage[slot] = *src;
+    g_item_storage[slot].name = d_content_safe_name(src->name);
+    if (d_registry_add_with_id(&g_item_registry, src->id, &g_item_storage[slot]) == 0u) {
+        memset(&g_item_storage[slot], 0, sizeof(g_item_storage[slot]));
+        return -1;
+    }
+    return 0;
 }
 
-d_content_result d_content_load_pack(
-    const d_proto_pack_manifest *man
-)
+static int d_content_register_container(const d_proto_container *src)
 {
-    d_content_result rc;
-    if (!man) {
-        return D_CONTENT_ERR_SCHEMA;
+    u32 slot;
+    if (!src) {
+        return -1;
     }
-
-    rc = d_content_load_manifest_blob(&man->content_tlv, D_TLV_SCHEMA_PACK_MANIFEST);
-    if (rc != D_CONTENT_OK) {
-        return rc;
+    slot = g_container_registry.count;
+    if (slot >= D_CONTENT_MAX_CONTAINERS) {
+        return -1;
     }
-
-    rc = d_content_load_content_blob(&man->content_tlv);
-    if (rc != D_CONTENT_OK) {
-        return rc;
+    g_container_storage[slot] = *src;
+    g_container_storage[slot].name = d_content_safe_name(src->name);
+    if (d_registry_add_with_id(&g_container_registry, src->id, &g_container_storage[slot]) == 0u) {
+        memset(&g_container_storage[slot], 0, sizeof(g_container_storage[slot]));
+        return -1;
     }
-
-    return D_CONTENT_OK;
+    return 0;
 }
 
-d_content_result d_content_load_mod(
-    const d_proto_mod_manifest *man
-)
+static int d_content_register_process(const d_proto_process *src)
 {
-    d_content_result rc;
-    if (!man) {
-        return D_CONTENT_ERR_SCHEMA;
+    u32 slot;
+    if (!src) {
+        return -1;
     }
-
-    rc = d_content_load_manifest_blob(&man->extra_tlv, D_TLV_SCHEMA_MOD_MANIFEST);
-    if (rc != D_CONTENT_OK) {
-        return rc;
+    slot = g_process_registry.count;
+    if (slot >= D_CONTENT_MAX_PROCESSES) {
+        return -1;
     }
-
-    /* Validate embedded pack blob using pack schema. */
-    rc = d_content_load_manifest_blob(&man->base_pack_tlv, D_TLV_SCHEMA_PACK_MANIFEST);
-    if (rc != D_CONTENT_OK) {
-        return rc;
+    g_process_storage[slot] = *src;
+    g_process_storage[slot].name = d_content_safe_name(src->name);
+    if (d_registry_add_with_id(&g_process_registry, src->id, &g_process_storage[slot]) == 0u) {
+        memset(&g_process_storage[slot], 0, sizeof(g_process_storage[slot]));
+        return -1;
     }
-
-    rc = d_content_load_content_blob(&man->base_pack_tlv);
-    if (rc != D_CONTENT_OK) {
-        return rc;
-    }
-
-    /* TODO: apply extra_tlv metadata (scripts, model registrations, etc.). */
-    return D_CONTENT_OK;
+    return 0;
 }
 
-static d_content_result d_content_load_content_blob(const d_tlv_blob *blob)
+static int d_content_register_deposit(const d_proto_deposit *src)
 {
-    u32 offset;
+    u32 slot;
+    if (!src) {
+        return -1;
+    }
+    slot = g_deposit_registry.count;
+    if (slot >= D_CONTENT_MAX_DEPOSITS) {
+        return -1;
+    }
+    g_deposit_storage[slot] = *src;
+    g_deposit_storage[slot].name = d_content_safe_name(src->name);
+    if (d_registry_add_with_id(&g_deposit_registry, src->id, &g_deposit_storage[slot]) == 0u) {
+        memset(&g_deposit_storage[slot], 0, sizeof(g_deposit_storage[slot]));
+        return -1;
+    }
+    return 0;
+}
+
+static int d_content_register_structure(const d_proto_structure *src)
+{
+    u32 slot;
+    if (!src) {
+        return -1;
+    }
+    slot = g_structure_registry.count;
+    if (slot >= D_CONTENT_MAX_STRUCTURES) {
+        return -1;
+    }
+    g_structure_storage[slot] = *src;
+    g_structure_storage[slot].name = d_content_safe_name(src->name);
+    if (d_registry_add_with_id(&g_structure_registry, src->id, &g_structure_storage[slot]) == 0u) {
+        memset(&g_structure_storage[slot], 0, sizeof(g_structure_storage[slot]));
+        return -1;
+    }
+    return 0;
+}
+
+static int d_content_register_vehicle(const d_proto_vehicle *src)
+{
+    u32 slot;
+    if (!src) {
+        return -1;
+    }
+    slot = g_vehicle_registry.count;
+    if (slot >= D_CONTENT_MAX_VEHICLES) {
+        return -1;
+    }
+    g_vehicle_storage[slot] = *src;
+    g_vehicle_storage[slot].name = d_content_safe_name(src->name);
+    if (d_registry_add_with_id(&g_vehicle_registry, src->id, &g_vehicle_storage[slot]) == 0u) {
+        memset(&g_vehicle_storage[slot], 0, sizeof(g_vehicle_storage[slot]));
+        return -1;
+    }
+    return 0;
+}
+
+static int d_content_register_spline(const d_proto_spline_profile *src)
+{
+    u32 slot;
+    if (!src) {
+        return -1;
+    }
+    slot = g_spline_profile_registry.count;
+    if (slot >= D_CONTENT_MAX_SPLINE_PROFILES) {
+        return -1;
+    }
+    g_spline_profile_storage[slot] = *src;
+    g_spline_profile_storage[slot].name = d_content_safe_name(src->name);
+    if (d_registry_add_with_id(&g_spline_profile_registry, src->id, &g_spline_profile_storage[slot]) == 0u) {
+        memset(&g_spline_profile_storage[slot], 0, sizeof(g_spline_profile_storage[slot]));
+        return -1;
+    }
+    return 0;
+}
+
+static int d_content_register_job_template(const d_proto_job_template *src)
+{
+    u32 slot;
+    if (!src) {
+        return -1;
+    }
+    slot = g_job_template_registry.count;
+    if (slot >= D_CONTENT_MAX_JOB_TEMPLATES) {
+        return -1;
+    }
+    g_job_template_storage[slot] = *src;
+    g_job_template_storage[slot].name = d_content_safe_name(src->name);
+    if (d_registry_add_with_id(&g_job_template_registry, src->id, &g_job_template_storage[slot]) == 0u) {
+        memset(&g_job_template_storage[slot], 0, sizeof(g_job_template_storage[slot]));
+        return -1;
+    }
+    return 0;
+}
+
+static int d_content_register_building(const d_proto_building *src)
+{
+    u32 slot;
+    if (!src) {
+        return -1;
+    }
+    slot = g_building_registry.count;
+    if (slot >= D_CONTENT_MAX_BUILDINGS) {
+        return -1;
+    }
+    g_building_storage[slot] = *src;
+    g_building_storage[slot].name = d_content_safe_name(src->name);
+    if (d_registry_add_with_id(&g_building_registry, src->id, &g_building_storage[slot]) == 0u) {
+        memset(&g_building_storage[slot], 0, sizeof(g_building_storage[slot]));
+        return -1;
+    }
+    return 0;
+}
+
+static int d_content_register_blueprint(const d_proto_blueprint *src)
+{
+    u32 slot;
+    if (!src) {
+        return -1;
+    }
+    slot = g_blueprint_registry.count;
+    if (slot >= D_CONTENT_MAX_BLUEPRINTS) {
+        return -1;
+    }
+    g_blueprint_storage[slot] = *src;
+    g_blueprint_storage[slot].name = d_content_safe_name(src->name);
+    if (d_registry_add_with_id(&g_blueprint_registry, src->id, &g_blueprint_storage[slot]) == 0u) {
+        memset(&g_blueprint_storage[slot], 0, sizeof(g_blueprint_storage[slot]));
+        return -1;
+    }
+    return 0;
+}
+
+static int d_content_read_tlv(const d_tlv_blob *blob,
+                              u32 *offset,
+                              u32 *tag,
+                              d_tlv_blob *payload)
+{
+    u32 remaining;
+    u32 len;
+    if (!blob || !offset || !tag || !payload) {
+        return -1;
+    }
+    if (*offset >= blob->len) {
+        return 1; /* end-of-blob */
+    }
+    remaining = blob->len - *offset;
+    if (remaining < 8u) {
+        return -1;
+    }
+    memcpy(tag, blob->ptr + *offset, sizeof(u32));
+    memcpy(&len, blob->ptr + *offset + 4u, sizeof(u32));
+    *offset += 8u;
+    if (len > blob->len - *offset) {
+        return -1;
+    }
+    payload->ptr = blob->ptr + *offset;
+    payload->len = len;
+    *offset += len;
+    return 0;
+}
+
+static int d_content_load_content_blob(const d_tlv_blob *blob)
+{
+    u32 offset = 0u;
+    u32 schema_id;
+    d_tlv_blob payload;
+
     if (!blob) {
-        return D_CONTENT_ERR_SCHEMA;
+        return -1;
     }
     if (!blob->ptr || blob->len == 0u) {
-        return D_CONTENT_OK;
+        return 0;
     }
 
-    offset = 0u;
-    while (offset < blob->len) {
-        u32 remaining = blob->len - offset;
-        u32 tag;
-        u32 len;
-        d_tlv_blob payload;
-        d_content_result rc = D_CONTENT_OK;
-
-        if (remaining < 8u) {
-            return D_CONTENT_ERR_SCHEMA;
+    while (1) {
+        int rc = d_content_read_tlv(blob, &offset, &schema_id, &payload);
+        if (rc == 1) {
+            break;
+        }
+        if (rc != 0) {
+            return -1;
         }
 
-        memcpy(&tag, blob->ptr + offset, sizeof(u32));
-        memcpy(&len, blob->ptr + offset + 4u, sizeof(u32));
-        offset += 8u;
-
-        if (len > blob->len - offset) {
-            return D_CONTENT_ERR_SCHEMA;
+        switch (schema_id) {
+        case D_TLV_SCHEMA_MATERIAL_V1: {
+            d_proto_material mat;
+            if (d_tlv_schema_validate((d_tlv_schema_id)schema_id, 1u, &payload, (d_tlv_blob *)0) != 0) return -1;
+            if (d_content_schema_parse_material_v1(&payload, &mat) != 0) return -1;
+            if (d_content_register_material(&mat) != 0) return -1;
+            break;
         }
-        payload.ptr = blob->ptr + offset;
-        payload.len = len;
-        offset += len;
-
-        switch (tag) {
-            case D_CONTENT_TAG_MATERIALS:
-                rc = d_content_load_materials_from_tlv(&payload);
-                break;
-            case D_CONTENT_TAG_ITEMS:
-                rc = d_content_load_items_from_tlv(&payload);
-                break;
-            case D_CONTENT_TAG_CONTAINERS:
-                rc = d_content_load_containers_from_tlv(&payload);
-                break;
-            case D_CONTENT_TAG_PROCESSES:
-                rc = d_content_load_processes_from_tlv(&payload);
-                break;
-            case D_CONTENT_TAG_DEPOSITS:
-                rc = d_content_load_deposits_from_tlv(&payload);
-                break;
-            case D_CONTENT_TAG_STRUCTURES:
-                rc = d_content_load_structures_from_tlv(&payload);
-                break;
-            case D_CONTENT_TAG_MODULES:
-                rc = d_content_load_modules_from_tlv(&payload);
-                break;
-            case D_CONTENT_TAG_VEHICLES:
-                rc = d_content_load_vehicles_from_tlv(&payload);
-                break;
-            case D_CONTENT_TAG_SPLINE_PROFILES:
-                rc = d_content_load_spline_profiles_from_tlv(&payload);
-                break;
-            case D_CONTENT_TAG_JOB_TEMPLATES:
-                rc = d_content_load_job_templates_from_tlv(&payload);
-                break;
-            case D_CONTENT_TAG_BUILDINGS:
-                rc = d_content_load_buildings_from_tlv(&payload);
-                break;
-            case D_CONTENT_TAG_BLUEPRINTS:
-                rc = d_content_load_blueprints_from_tlv(&payload);
-                break;
-            default:
-                /* Unknown section; ignore for forward compatibility. */
-                break;
+        case D_TLV_SCHEMA_ITEM_V1: {
+            d_proto_item it;
+            if (d_tlv_schema_validate((d_tlv_schema_id)schema_id, 1u, &payload, (d_tlv_blob *)0) != 0) return -1;
+            if (d_content_schema_parse_item_v1(&payload, &it) != 0) return -1;
+            if (d_content_register_item(&it) != 0) return -1;
+            break;
         }
-
-        if (rc != D_CONTENT_OK) {
-            return rc;
+        case D_TLV_SCHEMA_CONTAINER_V1: {
+            d_proto_container ct;
+            if (d_tlv_schema_validate((d_tlv_schema_id)schema_id, 1u, &payload, (d_tlv_blob *)0) != 0) return -1;
+            if (d_content_schema_parse_container_v1(&payload, &ct) != 0) return -1;
+            if (d_content_register_container(&ct) != 0) return -1;
+            break;
+        }
+        case D_TLV_SCHEMA_PROCESS_V1: {
+            d_proto_process proc;
+            if (d_tlv_schema_validate((d_tlv_schema_id)schema_id, 1u, &payload, (d_tlv_blob *)0) != 0) return -1;
+            if (d_content_schema_parse_process_v1(&payload, &proc) != 0) return -1;
+            if (d_content_register_process(&proc) != 0) return -1;
+            break;
+        }
+        case D_TLV_SCHEMA_DEPOSIT_V1: {
+            d_proto_deposit dep;
+            if (d_tlv_schema_validate((d_tlv_schema_id)schema_id, 1u, &payload, (d_tlv_blob *)0) != 0) return -1;
+            if (d_content_schema_parse_deposit_v1(&payload, &dep) != 0) return -1;
+            if (d_content_register_deposit(&dep) != 0) return -1;
+            break;
+        }
+        case D_TLV_SCHEMA_STRUCTURE_V1: {
+            d_proto_structure st;
+            if (d_tlv_schema_validate((d_tlv_schema_id)schema_id, 1u, &payload, (d_tlv_blob *)0) != 0) return -1;
+            if (d_content_schema_parse_structure_v1(&payload, &st) != 0) return -1;
+            if (d_content_register_structure(&st) != 0) return -1;
+            break;
+        }
+        case D_TLV_SCHEMA_VEHICLE_V1: {
+            d_proto_vehicle veh;
+            if (d_tlv_schema_validate((d_tlv_schema_id)schema_id, 1u, &payload, (d_tlv_blob *)0) != 0) return -1;
+            if (d_content_schema_parse_vehicle_v1(&payload, &veh) != 0) return -1;
+            if (d_content_register_vehicle(&veh) != 0) return -1;
+            break;
+        }
+        case D_TLV_SCHEMA_SPLINE_V1: {
+            d_proto_spline_profile sp;
+            if (d_tlv_schema_validate((d_tlv_schema_id)schema_id, 1u, &payload, (d_tlv_blob *)0) != 0) return -1;
+            if (d_content_schema_parse_spline_v1(&payload, &sp) != 0) return -1;
+            if (d_content_register_spline(&sp) != 0) return -1;
+            break;
+        }
+        case D_TLV_SCHEMA_JOB_TEMPLATE_V1: {
+            d_proto_job_template jt;
+            if (d_tlv_schema_validate((d_tlv_schema_id)schema_id, 1u, &payload, (d_tlv_blob *)0) != 0) return -1;
+            if (d_content_schema_parse_job_template_v1(&payload, &jt) != 0) return -1;
+            if (d_content_register_job_template(&jt) != 0) return -1;
+            break;
+        }
+        case D_TLV_SCHEMA_BUILDING_V1: {
+            d_proto_building bld;
+            if (d_tlv_schema_validate((d_tlv_schema_id)schema_id, 1u, &payload, (d_tlv_blob *)0) != 0) return -1;
+            if (d_content_schema_parse_building_v1(&payload, &bld) != 0) return -1;
+            if (d_content_register_building(&bld) != 0) return -1;
+            break;
+        }
+        case D_TLV_SCHEMA_BLUEPRINT_V1: {
+            d_proto_blueprint bp;
+            if (d_tlv_schema_validate((d_tlv_schema_id)schema_id, 1u, &payload, (d_tlv_blob *)0) != 0) return -1;
+            if (d_content_schema_parse_blueprint_v1(&payload, &bp) != 0) return -1;
+            if (d_content_register_blueprint(&bp) != 0) return -1;
+            break;
+        }
+        default:
+            /* Unknown schema id; skip for forward compatibility. */
+            break;
         }
     }
-
-    return D_CONTENT_OK;
+    return 0;
 }
 
-static d_content_result d_content_load_materials_from_tlv(const d_tlv_blob *blob)
+int d_content_load_pack(const d_proto_pack_manifest *m)
 {
-    u32 offset;
-    if (!blob || blob->ptr == (unsigned char *)0) {
-        return D_CONTENT_OK;
+    d_proto_pack_manifest parsed;
+    d_tlv_blob content_blob;
+
+    if (!m) {
+        return -1;
     }
-    offset = 0u;
-    while (offset < blob->len) {
-        u32 remaining = blob->len - offset;
-        u32 tag;
-        u32 len;
-        d_tlv_blob payload;
-        int vrc;
-        d_proto_material *mat;
-        u32 id;
 
-        if (remaining < 8u) {
-            return D_CONTENT_ERR_SCHEMA;
+    content_blob = m->content_tlv;
+    if (m->content_tlv.ptr && m->content_tlv.len >= 8u) {
+        if (d_content_schema_parse_pack_v1(&m->content_tlv, &parsed) == 0) {
+            if (parsed.content_tlv.ptr || parsed.content_tlv.len != 0u) {
+                content_blob = parsed.content_tlv;
+            }
         }
-        memcpy(&tag, blob->ptr + offset, sizeof(u32));
-        memcpy(&len, blob->ptr + offset + 4u, sizeof(u32));
-        offset += 8u;
-        if (len > blob->len - offset) {
-            return D_CONTENT_ERR_SCHEMA;
-        }
-        payload.ptr = blob->ptr + offset;
-        payload.len = len;
-        offset += len;
-
-        (void)tag; /* tag reserved for future use */
-        vrc = d_tlv_schema_validate(D_TLV_SCHEMA_MATERIAL, 1u, &payload, (d_tlv_blob *)0);
-        if (vrc != 0) {
-            return D_CONTENT_ERR_SCHEMA;
-        }
-
-        if (g_material_registry.count >= D_CONTENT_MAX_MATERIALS) {
-            return D_CONTENT_ERR_REG;
-        }
-        mat = &g_material_storage[g_material_registry.count];
-        memset(mat, 0, sizeof(*mat));
-        mat->extra = payload;
-        /* TODO: parse fields from payload TLV once schema is defined. */
-        id = d_registry_add(&g_material_registry, mat);
-        if (id == 0u) {
-            return D_CONTENT_ERR_REG;
-        }
-        mat->id = id;
     }
-    return D_CONTENT_OK;
+
+    if (d_content_load_content_blob(&content_blob) != 0) {
+        return -1;
+    }
+    return 0;
 }
 
-static d_content_result d_content_load_items_from_tlv(const d_tlv_blob *blob)
+int d_content_load_mod(const d_proto_mod_manifest *m)
 {
-    u32 offset;
-    if (!blob || blob->ptr == (unsigned char *)0) {
-        return D_CONTENT_OK;
+    d_proto_mod_manifest parsed;
+    d_tlv_blob content_blob;
+
+    if (!m) {
+        return -1;
     }
-    offset = 0u;
-    while (offset < blob->len) {
-        u32 remaining = blob->len - offset;
-        u32 tag;
-        u32 len;
-        d_tlv_blob payload;
-        int vrc;
-        d_proto_item *it;
-        u32 id;
 
-        if (remaining < 8u) {
-            return D_CONTENT_ERR_SCHEMA;
-        }
-        memcpy(&tag, blob->ptr + offset, sizeof(u32));
-        memcpy(&len, blob->ptr + offset + 4u, sizeof(u32));
-        offset += 8u;
-        if (len > blob->len - offset) {
-            return D_CONTENT_ERR_SCHEMA;
-        }
-        payload.ptr = blob->ptr + offset;
-        payload.len = len;
-        offset += len;
-
-        (void)tag;
-        vrc = d_tlv_schema_validate(D_TLV_SCHEMA_ITEM, 1u, &payload, (d_tlv_blob *)0);
-        if (vrc != 0) {
-            return D_CONTENT_ERR_SCHEMA;
-        }
-
-        if (g_item_registry.count >= D_CONTENT_MAX_ITEMS) {
-            return D_CONTENT_ERR_REG;
-        }
-        it = &g_item_storage[g_item_registry.count];
-        memset(it, 0, sizeof(*it));
-        it->extra = payload;
-        /* TODO: parse item fields from payload TLV. */
-        id = d_registry_add(&g_item_registry, it);
-        if (id == 0u) {
-            return D_CONTENT_ERR_REG;
-        }
-        it->id = id;
-    }
-    return D_CONTENT_OK;
-}
-
-static d_content_result d_content_load_containers_from_tlv(const d_tlv_blob *blob)
-{
-    u32 offset;
-    if (!blob || blob->ptr == (unsigned char *)0) {
-        return D_CONTENT_OK;
-    }
-    offset = 0u;
-    while (offset < blob->len) {
-        u32 remaining = blob->len - offset;
-        u32 tag;
-        u32 len;
-        d_tlv_blob payload;
-        int vrc;
-        d_proto_container *ct;
-        u32 id;
-
-        if (remaining < 8u) {
-            return D_CONTENT_ERR_SCHEMA;
-        }
-        memcpy(&tag, blob->ptr + offset, sizeof(u32));
-        memcpy(&len, blob->ptr + offset + 4u, sizeof(u32));
-        offset += 8u;
-        if (len > blob->len - offset) {
-            return D_CONTENT_ERR_SCHEMA;
-        }
-        payload.ptr = blob->ptr + offset;
-        payload.len = len;
-        offset += len;
-
-        (void)tag;
-        vrc = d_tlv_schema_validate(D_TLV_SCHEMA_CONTAINER, 1u, &payload, (d_tlv_blob *)0);
-        if (vrc != 0) {
-            return D_CONTENT_ERR_SCHEMA;
-        }
-
-        if (g_container_registry.count >= D_CONTENT_MAX_CONTAINERS) {
-            return D_CONTENT_ERR_REG;
-        }
-        ct = &g_container_storage[g_container_registry.count];
-        memset(ct, 0, sizeof(*ct));
-        ct->extra = payload;
-        /* TODO: parse container fields from payload TLV. */
-        id = d_registry_add(&g_container_registry, ct);
-        if (id == 0u) {
-            return D_CONTENT_ERR_REG;
-        }
-        ct->id = id;
-    }
-    return D_CONTENT_OK;
-}
-
-static d_content_result d_content_load_processes_from_tlv(const d_tlv_blob *blob)
-{
-    u32 offset;
-    if (!blob || blob->ptr == (unsigned char *)0) {
-        return D_CONTENT_OK;
-    }
-    offset = 0u;
-    while (offset < blob->len) {
-        u32 remaining = blob->len - offset;
-        u32 tag;
-        u32 len;
-        d_tlv_blob payload;
-        int vrc;
-        d_proto_process *proc;
-        u32 id;
-
-        if (remaining < 8u) {
-            return D_CONTENT_ERR_SCHEMA;
-        }
-        memcpy(&tag, blob->ptr + offset, sizeof(u32));
-        memcpy(&len, blob->ptr + offset + 4u, sizeof(u32));
-        offset += 8u;
-        if (len > blob->len - offset) {
-            return D_CONTENT_ERR_SCHEMA;
-        }
-        payload.ptr = blob->ptr + offset;
-        payload.len = len;
-        offset += len;
-
-        (void)tag;
-        vrc = d_tlv_schema_validate(D_TLV_SCHEMA_PROCESS, 1u, &payload, (d_tlv_blob *)0);
-        if (vrc != 0) {
-            return D_CONTENT_ERR_SCHEMA;
-        }
-
-        if (g_process_registry.count >= D_CONTENT_MAX_PROCESSES) {
-            return D_CONTENT_ERR_REG;
-        }
-        proc = &g_process_storage[g_process_registry.count];
-        memset(proc, 0, sizeof(*proc));
-        proc->extra = payload;
-        /* TODO: parse process inputs/outputs from payload TLV. */
-        id = d_registry_add(&g_process_registry, proc);
-        if (id == 0u) {
-            return D_CONTENT_ERR_REG;
-        }
-        proc->id = id;
-    }
-    return D_CONTENT_OK;
-}
-
-static d_content_result d_content_load_deposits_from_tlv(const d_tlv_blob *blob)
-{
-    u32 offset;
-    if (!blob || blob->ptr == (unsigned char *)0) {
-        return D_CONTENT_OK;
-    }
-    offset = 0u;
-    while (offset < blob->len) {
-        u32 remaining = blob->len - offset;
-        u32 tag;
-        u32 len;
-        d_tlv_blob payload;
-        int vrc;
-        d_proto_deposit *dep;
-        u32 id;
-
-        if (remaining < 8u) {
-            return D_CONTENT_ERR_SCHEMA;
-        }
-        memcpy(&tag, blob->ptr + offset, sizeof(u32));
-        memcpy(&len, blob->ptr + offset + 4u, sizeof(u32));
-        offset += 8u;
-        if (len > blob->len - offset) {
-            return D_CONTENT_ERR_SCHEMA;
-        }
-        payload.ptr = blob->ptr + offset;
-        payload.len = len;
-        offset += len;
-
-        (void)tag;
-        vrc = d_tlv_schema_validate(D_TLV_SCHEMA_DEPOSIT, 1u, &payload, (d_tlv_blob *)0);
-        if (vrc != 0) {
-            return D_CONTENT_ERR_SCHEMA;
-        }
-
-        if (g_deposit_registry.count >= D_CONTENT_MAX_DEPOSITS) {
-            return D_CONTENT_ERR_REG;
-        }
-        dep = &g_deposit_storage[g_deposit_registry.count];
-        memset(dep, 0, sizeof(*dep));
-        dep->params = payload;
-        /* TODO: parse deposit fields; payload currently captured in params. */
-        id = d_registry_add(&g_deposit_registry, dep);
-        if (id == 0u) {
-            return D_CONTENT_ERR_REG;
-        }
-        dep->id = id;
-    }
-    return D_CONTENT_OK;
-}
-
-static d_content_result d_content_load_structures_from_tlv(const d_tlv_blob *blob)
-{
-    u32 offset;
-    if (!blob || blob->ptr == (unsigned char *)0) {
-        return D_CONTENT_OK;
-    }
-    offset = 0u;
-    while (offset < blob->len) {
-        u32 remaining = blob->len - offset;
-        u32 tag;
-        u32 len;
-        d_tlv_blob payload;
-        int vrc;
-        d_proto_structure *st;
-        u32 id;
-
-        if (remaining < 8u) {
-            return D_CONTENT_ERR_SCHEMA;
-        }
-        memcpy(&tag, blob->ptr + offset, sizeof(u32));
-        memcpy(&len, blob->ptr + offset + 4u, sizeof(u32));
-        offset += 8u;
-        if (len > blob->len - offset) {
-            return D_CONTENT_ERR_SCHEMA;
-        }
-        payload.ptr = blob->ptr + offset;
-        payload.len = len;
-        offset += len;
-
-        (void)tag;
-        vrc = d_tlv_schema_validate(D_TLV_SCHEMA_STRUCTURE, 1u, &payload, (d_tlv_blob *)0);
-        if (vrc != 0) {
-            return D_CONTENT_ERR_SCHEMA;
-        }
-
-        if (g_structure_registry.count >= D_CONTENT_MAX_STRUCTURES) {
-            return D_CONTENT_ERR_REG;
-        }
-        st = &g_structure_storage[g_structure_registry.count];
-        memset(st, 0, sizeof(*st));
-        st->extra = payload;
-        /* TODO: parse structure ports and process lists from payload TLV. */
-        id = d_registry_add(&g_structure_registry, st);
-        if (id == 0u) {
-            return D_CONTENT_ERR_REG;
-        }
-        st->id = id;
-    }
-    return D_CONTENT_OK;
-}
-
-static d_content_result d_content_load_modules_from_tlv(const d_tlv_blob *blob)
-{
-    u32 offset;
-    if (!blob || blob->ptr == (unsigned char *)0) {
-        return D_CONTENT_OK;
-    }
-    offset = 0u;
-    while (offset < blob->len) {
-        u32 remaining = blob->len - offset;
-        u32 tag;
-        u32 len;
-        d_tlv_blob payload;
-        int vrc;
-        d_proto_module *mod;
-        u32 id;
-
-        if (remaining < 8u) {
-            return D_CONTENT_ERR_SCHEMA;
-        }
-        memcpy(&tag, blob->ptr + offset, sizeof(u32));
-        memcpy(&len, blob->ptr + offset + 4u, sizeof(u32));
-        offset += 8u;
-        if (len > blob->len - offset) {
-            return D_CONTENT_ERR_SCHEMA;
-        }
-        payload.ptr = blob->ptr + offset;
-        payload.len = len;
-        offset += len;
-
-        (void)tag;
-        vrc = d_tlv_schema_validate(D_TLV_SCHEMA_MODULE, 1u, &payload, (d_tlv_blob *)0);
-        if (vrc != 0) {
-            return D_CONTENT_ERR_SCHEMA;
-        }
-
-        if (g_module_registry.count >= D_CONTENT_MAX_MODULES) {
-            return D_CONTENT_ERR_REG;
-        }
-        mod = &g_module_storage[g_module_registry.count];
-        memset(mod, 0, sizeof(*mod));
-        mod->params = payload;
-        /* TODO: parse module fields from payload TLV. */
-        id = d_registry_add(&g_module_registry, mod);
-        if (id == 0u) {
-            return D_CONTENT_ERR_REG;
-        }
-        mod->id = id;
-    }
-    return D_CONTENT_OK;
-}
-
-static d_content_result d_content_load_vehicles_from_tlv(const d_tlv_blob *blob)
-{
-    u32 offset;
-    if (!blob || blob->ptr == (unsigned char *)0) {
-        return D_CONTENT_OK;
-    }
-    offset = 0u;
-    while (offset < blob->len) {
-        u32 remaining = blob->len - offset;
-        u32 tag;
-        u32 len;
-        d_tlv_blob payload;
-        int vrc;
-        d_proto_vehicle *veh;
-        u32 id;
-
-        if (remaining < 8u) {
-            return D_CONTENT_ERR_SCHEMA;
-        }
-        memcpy(&tag, blob->ptr + offset, sizeof(u32));
-        memcpy(&len, blob->ptr + offset + 4u, sizeof(u32));
-        offset += 8u;
-        if (len > blob->len - offset) {
-            return D_CONTENT_ERR_SCHEMA;
-        }
-        payload.ptr = blob->ptr + offset;
-        payload.len = len;
-        offset += len;
-
-        (void)tag;
-        vrc = d_tlv_schema_validate(D_TLV_SCHEMA_VEHICLE, 1u, &payload, (d_tlv_blob *)0);
-        if (vrc != 0) {
-            return D_CONTENT_ERR_SCHEMA;
-        }
-
-        if (g_vehicle_registry.count >= D_CONTENT_MAX_VEHICLES) {
-            return D_CONTENT_ERR_REG;
-        }
-        veh = &g_vehicle_storage[g_vehicle_registry.count];
-        memset(veh, 0, sizeof(*veh));
-        veh->extra = payload;
-        /* TODO: parse vehicle modules/layouts from payload TLV. */
-        id = d_registry_add(&g_vehicle_registry, veh);
-        if (id == 0u) {
-            return D_CONTENT_ERR_REG;
-        }
-        veh->id = id;
-    }
-    return D_CONTENT_OK;
-}
-
-static d_content_result d_content_load_spline_profiles_from_tlv(const d_tlv_blob *blob)
-{
-    u32 offset;
-    if (!blob || blob->ptr == (unsigned char *)0) {
-        return D_CONTENT_OK;
-    }
-    offset = 0u;
-    while (offset < blob->len) {
-        u32 remaining = blob->len - offset;
-        u32 tag;
-        u32 len;
-        d_tlv_blob payload;
-        int vrc;
-        d_proto_spline_profile *sp;
-        u32 id;
-
-        if (remaining < 8u) {
-            return D_CONTENT_ERR_SCHEMA;
-        }
-        memcpy(&tag, blob->ptr + offset, sizeof(u32));
-        memcpy(&len, blob->ptr + offset + 4u, sizeof(u32));
-        offset += 8u;
-        if (len > blob->len - offset) {
-            return D_CONTENT_ERR_SCHEMA;
-        }
-        payload.ptr = blob->ptr + offset;
-        payload.len = len;
-        offset += len;
-
-        (void)tag;
-        vrc = d_tlv_schema_validate(D_TLV_SCHEMA_SPLINE_PROFILE, 1u, &payload, (d_tlv_blob *)0);
-        if (vrc != 0) {
-            return D_CONTENT_ERR_SCHEMA;
-        }
-
-        if (g_spline_profile_registry.count >= D_CONTENT_MAX_SPLINE_PROFILES) {
-            return D_CONTENT_ERR_REG;
-        }
-        sp = &g_spline_profile_storage[g_spline_profile_registry.count];
-        memset(sp, 0, sizeof(*sp));
-        sp->extra = payload;
-        /* TODO: parse spline profile fields from payload TLV. */
-        id = d_registry_add(&g_spline_profile_registry, sp);
-        if (id == 0u) {
-            return D_CONTENT_ERR_REG;
-        }
-        sp->id = id;
-    }
-    return D_CONTENT_OK;
-}
-
-static d_content_result d_content_load_job_templates_from_tlv(const d_tlv_blob *blob)
-{
-    u32 offset;
-    if (!blob || blob->ptr == (unsigned char *)0) {
-        return D_CONTENT_OK;
-    }
-    offset = 0u;
-    while (offset < blob->len) {
-        u32 remaining = blob->len - offset;
-        u32 tag;
-        u32 len;
-        d_tlv_blob payload;
-        int vrc;
-        d_proto_job_template *jt;
-        u32 id;
-
-        if (remaining < 8u) {
-            return D_CONTENT_ERR_SCHEMA;
-        }
-        memcpy(&tag, blob->ptr + offset, sizeof(u32));
-        memcpy(&len, blob->ptr + offset + 4u, sizeof(u32));
-        offset += 8u;
-        if (len > blob->len - offset) {
-            return D_CONTENT_ERR_SCHEMA;
-        }
-        payload.ptr = blob->ptr + offset;
-        payload.len = len;
-        offset += len;
-
-        (void)tag;
-        vrc = d_tlv_schema_validate(D_TLV_SCHEMA_JOB_TEMPLATE, 1u, &payload, (d_tlv_blob *)0);
-        if (vrc != 0) {
-            return D_CONTENT_ERR_SCHEMA;
-        }
-
-        if (g_job_template_registry.count >= D_CONTENT_MAX_JOB_TEMPLATES) {
-            return D_CONTENT_ERR_REG;
-        }
-        jt = &g_job_template_storage[g_job_template_registry.count];
-        memset(jt, 0, sizeof(*jt));
-        jt->params = payload;
-        /* TODO: parse job template fields from payload TLV. */
-        id = d_registry_add(&g_job_template_registry, jt);
-        if (id == 0u) {
-            return D_CONTENT_ERR_REG;
-        }
-        jt->id = id;
-    }
-    return D_CONTENT_OK;
-}
-
-static d_content_result d_content_load_buildings_from_tlv(const d_tlv_blob *blob)
-{
-    u32 offset;
-    if (!blob || blob->ptr == (unsigned char *)0) {
-        return D_CONTENT_OK;
-    }
-    offset = 0u;
-    while (offset < blob->len) {
-        u32 remaining = blob->len - offset;
-        u32 tag;
-        u32 len;
-        d_tlv_blob payload;
-        int vrc;
-        d_proto_building *bld;
-        u32 id;
-
-        if (remaining < 8u) {
-            return D_CONTENT_ERR_SCHEMA;
-        }
-        memcpy(&tag, blob->ptr + offset, sizeof(u32));
-        memcpy(&len, blob->ptr + offset + 4u, sizeof(u32));
-        offset += 8u;
-        if (len > blob->len - offset) {
-            return D_CONTENT_ERR_SCHEMA;
-        }
-        payload.ptr = blob->ptr + offset;
-        payload.len = len;
-        offset += len;
-
-        (void)tag;
-        vrc = d_tlv_schema_validate(D_TLV_SCHEMA_BUILDING_PROTO, 1u, &payload, (d_tlv_blob *)0);
-        if (vrc != 0) {
-            return D_CONTENT_ERR_SCHEMA;
-        }
-
-        if (g_building_registry.count >= D_CONTENT_MAX_BUILDINGS) {
-            return D_CONTENT_ERR_REG;
-        }
-        bld = &g_building_storage[g_building_registry.count];
-        memset(bld, 0, sizeof(*bld));
-        bld->extra = payload;
-        /* TODO: parse building proto fields from payload TLV. */
-        id = d_registry_add(&g_building_registry, bld);
-        if (id == 0u) {
-            return D_CONTENT_ERR_REG;
-        }
-        bld->id = id;
-    }
-    return D_CONTENT_OK;
-}
-
-static d_content_result d_content_load_blueprints_from_tlv(const d_tlv_blob *blob)
-{
-    u32 offset;
-    if (!blob || blob->ptr == (unsigned char *)0) {
-        return D_CONTENT_OK;
-    }
-    offset = 0u;
-    while (offset < blob->len) {
-        u32 remaining = blob->len - offset;
-        u32 tag;
-        u32 len;
-        d_tlv_blob payload;
-        int vrc;
-        (void)tag;
-
-        if (remaining < 8u) {
-            return D_CONTENT_ERR_SCHEMA;
-        }
-        memcpy(&tag, blob->ptr + offset, sizeof(u32));
-        memcpy(&len, blob->ptr + offset + 4u, sizeof(u32));
-        offset += 8u;
-        if (len > blob->len - offset) {
-            return D_CONTENT_ERR_SCHEMA;
-        }
-        payload.ptr = blob->ptr + offset;
-        payload.len = len;
-        offset += len;
-
-        vrc = d_tlv_schema_validate(D_TLV_SCHEMA_BLUEPRINT, 1u, &payload, (d_tlv_blob *)0);
-        if (vrc != 0) {
-            return D_CONTENT_ERR_SCHEMA;
-        }
-
-        /* TODO: parse blueprint header, dispatch to kind validate/compile. */
-        vrc = 0;
-        if (vrc != 0) {
-            return D_CONTENT_ERR_SCHEMA;
+    content_blob = m->content_tlv;
+    if (m->content_tlv.ptr && m->content_tlv.len >= 8u) {
+        if (d_content_schema_parse_mod_v1(&m->content_tlv, &parsed) == 0) {
+            if (parsed.content_tlv.ptr || parsed.content_tlv.len != 0u) {
+                content_blob = parsed.content_tlv;
+            }
         }
     }
-    return D_CONTENT_OK;
+
+    if (d_content_load_content_blob(&content_blob) != 0) {
+        return -1;
+    }
+    return 0;
 }
 
 /* Registry getters */
@@ -952,19 +578,27 @@ const d_proto_process *d_content_get_process(d_process_id id)
     return (const d_proto_process *)d_registry_get(&g_process_registry, id);
 }
 
-const d_proto_deposit *d_content_get_deposit(d_deposit_id id)
+const d_proto_deposit *d_content_get_deposit(d_deposit_proto_id id)
 {
     return (const d_proto_deposit *)d_registry_get(&g_deposit_registry, id);
 }
 
-const d_proto_structure *d_content_get_structure(d_structure_id id)
+u32 d_content_deposit_count(void)
 {
-    return (const d_proto_structure *)d_registry_get(&g_structure_registry, id);
+    return g_deposit_registry.count;
 }
 
-const d_proto_module *d_content_get_module(d_module_proto_id id)
+const d_proto_deposit *d_content_get_deposit_by_index(u32 index)
 {
-    return (const d_proto_module *)d_registry_get(&g_module_registry, id);
+    if (index >= g_deposit_registry.count) {
+        return (const d_proto_deposit *)0;
+    }
+    return (const d_proto_deposit *)g_deposit_registry.entries[index].ptr;
+}
+
+const d_proto_structure *d_content_get_structure(d_structure_proto_id id)
+{
+    return (const d_proto_structure *)d_registry_get(&g_structure_registry, id);
 }
 
 const d_proto_vehicle *d_content_get_vehicle(d_vehicle_proto_id id)
@@ -985,4 +619,111 @@ const d_proto_job_template *d_content_get_job_template(d_job_template_id id)
 const d_proto_building *d_content_get_building(d_building_proto_id id)
 {
     return (const d_proto_building *)d_registry_get(&g_building_registry, id);
+}
+
+const d_proto_blueprint *d_content_get_blueprint(d_blueprint_id id)
+{
+    return (const d_proto_blueprint *)d_registry_get(&g_blueprint_registry, id);
+}
+
+const d_proto_blueprint *d_content_get_blueprint_by_name(const char *name)
+{
+    u32 i;
+    if (!name || !name[0]) {
+        return (const d_proto_blueprint *)0;
+    }
+    for (i = 0u; i < g_blueprint_registry.count; ++i) {
+        const d_proto_blueprint *bp = (const d_proto_blueprint *)g_blueprint_registry.entries[i].ptr;
+        if (bp && bp->name && strcmp(bp->name, name) == 0) {
+            return bp;
+        }
+    }
+    return (const d_proto_blueprint *)0;
+}
+
+u32 d_content_material_count(void) { return g_material_registry.count; }
+const d_proto_material *d_content_get_material_by_index(u32 index) {
+    if (index >= g_material_registry.count) return (const d_proto_material *)0;
+    return (const d_proto_material *)g_material_registry.entries[index].ptr;
+}
+
+u32 d_content_item_count(void) { return g_item_registry.count; }
+const d_proto_item *d_content_get_item_by_index(u32 index) {
+    if (index >= g_item_registry.count) return (const d_proto_item *)0;
+    return (const d_proto_item *)g_item_registry.entries[index].ptr;
+}
+
+u32 d_content_container_count(void) { return g_container_registry.count; }
+const d_proto_container *d_content_get_container_by_index(u32 index) {
+    if (index >= g_container_registry.count) return (const d_proto_container *)0;
+    return (const d_proto_container *)g_container_registry.entries[index].ptr;
+}
+
+u32 d_content_process_count(void) { return g_process_registry.count; }
+const d_proto_process *d_content_get_process_by_index(u32 index) {
+    if (index >= g_process_registry.count) return (const d_proto_process *)0;
+    return (const d_proto_process *)g_process_registry.entries[index].ptr;
+}
+
+u32 d_content_structure_count(void) { return g_structure_registry.count; }
+const d_proto_structure *d_content_get_structure_by_index(u32 index) {
+    if (index >= g_structure_registry.count) return (const d_proto_structure *)0;
+    return (const d_proto_structure *)g_structure_registry.entries[index].ptr;
+}
+
+u32 d_content_vehicle_count(void) { return g_vehicle_registry.count; }
+const d_proto_vehicle *d_content_get_vehicle_by_index(u32 index) {
+    if (index >= g_vehicle_registry.count) return (const d_proto_vehicle *)0;
+    return (const d_proto_vehicle *)g_vehicle_registry.entries[index].ptr;
+}
+
+u32 d_content_spline_profile_count(void) { return g_spline_profile_registry.count; }
+const d_proto_spline_profile *d_content_get_spline_profile_by_index(u32 index) {
+    if (index >= g_spline_profile_registry.count) return (const d_proto_spline_profile *)0;
+    return (const d_proto_spline_profile *)g_spline_profile_registry.entries[index].ptr;
+}
+
+u32 d_content_job_template_count(void) { return g_job_template_registry.count; }
+const d_proto_job_template *d_content_get_job_template_by_index(u32 index) {
+    if (index >= g_job_template_registry.count) return (const d_proto_job_template *)0;
+    return (const d_proto_job_template *)g_job_template_registry.entries[index].ptr;
+}
+
+u32 d_content_building_count(void) { return g_building_registry.count; }
+const d_proto_building *d_content_get_building_by_index(u32 index) {
+    if (index >= g_building_registry.count) return (const d_proto_building *)0;
+    return (const d_proto_building *)g_building_registry.entries[index].ptr;
+}
+
+u32 d_content_blueprint_count(void) { return g_blueprint_registry.count; }
+const d_proto_blueprint *d_content_get_blueprint_by_index(u32 index) {
+    if (index >= g_blueprint_registry.count) return (const d_proto_blueprint *)0;
+    return (const d_proto_blueprint *)g_blueprint_registry.entries[index].ptr;
+}
+
+void d_content_debug_dump(void)
+{
+    u32 i;
+    printf("Content registries:\n");
+    printf("  materials: %u\n", (unsigned int)g_material_registry.count);
+    for (i = 0u; i < g_material_registry.count; ++i) {
+        const d_proto_material *m = (const d_proto_material *)g_material_registry.entries[i].ptr;
+        printf("    [%u] %s\n", (unsigned int)g_material_registry.entries[i].id,
+               m && m->name ? m->name : "(null)");
+    }
+    printf("  items: %u\n", (unsigned int)g_item_registry.count);
+    for (i = 0u; i < g_item_registry.count; ++i) {
+        const d_proto_item *it = (const d_proto_item *)g_item_registry.entries[i].ptr;
+        printf("    [%u] %s\n", (unsigned int)g_item_registry.entries[i].id,
+               it && it->name ? it->name : "(null)");
+    }
+    printf("  containers: %u\n", (unsigned int)g_container_registry.count);
+    printf("  processes: %u\n", (unsigned int)g_process_registry.count);
+    printf("  deposits: %u\n", (unsigned int)g_deposit_registry.count);
+    printf("  structures: %u\n", (unsigned int)g_structure_registry.count);
+    printf("  vehicles: %u\n", (unsigned int)g_vehicle_registry.count);
+    printf("  splines: %u\n", (unsigned int)g_spline_profile_registry.count);
+    printf("  job templates: %u\n", (unsigned int)g_job_template_registry.count);
+    printf("  buildings: %u\n", (unsigned int)g_building_registry.count);
+    printf("  blueprints: %u\n", (unsigned int)g_blueprint_registry.count);
 }

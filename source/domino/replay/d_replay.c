@@ -196,6 +196,8 @@ int d_replay_init_record(d_replay_context *ctx, u32 initial_capacity) {
     d_replay_shutdown(ctx);
 
     ctx->mode = DREPLAY_MODE_RECORD;
+    ctx->determinism_mode = 1u;
+    ctx->last_hash = 0u;
     ctx->frames = (dreplay_frame *)0;
     ctx->frame_count = 0u;
     ctx->frame_capacity = 0u;
@@ -217,6 +219,8 @@ int d_replay_init_playback(d_replay_context *ctx, dreplay_frame *frames, u32 fra
     d_replay_shutdown(ctx);
 
     ctx->mode = DREPLAY_MODE_PLAYBACK;
+    ctx->determinism_mode = 2u;
+    ctx->last_hash = 0u;
     ctx->frames = frames;
     ctx->frame_count = frame_count;
     ctx->frame_capacity = 0u; /* mark as external / non-owned */
@@ -239,6 +243,8 @@ void d_replay_shutdown(d_replay_context *ctx) {
     ctx->frame_capacity = 0u;
     ctx->cursor = 0u;
     ctx->mode = DREPLAY_MODE_OFF;
+    ctx->determinism_mode = 0u;
+    ctx->last_hash = 0u;
 }
 
 int d_replay_record_frame(
@@ -512,6 +518,8 @@ int d_replay_deserialize(
     }
 
     out_ctx->mode = DREPLAY_MODE_PLAYBACK;
+    out_ctx->determinism_mode = 2u;
+    out_ctx->last_hash = 0u;
     out_ctx->frames = frames;
     out_ctx->frame_count = frame_count;
     out_ctx->frame_capacity = frame_cap;

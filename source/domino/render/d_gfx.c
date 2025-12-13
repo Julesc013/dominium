@@ -1,0 +1,301 @@
+#include <stdlib.h>
+#include <string.h>
+
+#include "domino/gfx.h"
+#include "soft/d_gfx_soft.h"
+
+/* Backbuffer defaults */
+static i32 g_backbuffer_w = 800;
+static i32 g_backbuffer_h = 600;
+
+static const d_gfx_backend_soft *g_backend = 0;
+static d_gfx_cmd_buffer g_frame_cmd_buffer;
+
+static int d_gfx_reserve(d_gfx_cmd_buffer *buf, u32 needed)
+{
+    d_gfx_cmd *new_cmds;
+    u32 new_cap;
+
+    if (!buf) {
+        return 0;
+    }
+    if (buf->capacity >= needed) {
+        return 1;
+    }
+
+    new_cap = buf->capacity ? buf->capacity : 1024u;
+    while (new_cap < needed) {
+        new_cap *= 2u;
+    }
+
+    new_cmds = (d_gfx_cmd *)realloc(buf->cmds, new_cap * sizeof(d_gfx_cmd));
+    if (!new_cmds) {
+        return 0;
+    }
+    buf->cmds = new_cmds;
+    buf->capacity = new_cap;
+    return 1;
+}
+
+static void d_gfx_append(d_gfx_cmd_buffer *buf, const d_gfx_cmd *cmd)
+{
+    if (!buf || !cmd) {
+        return;
+    }
+    if (!d_gfx_reserve(buf, buf->count + 1u)) {
+        return;
+    }
+    buf->cmds[buf->count++] = *cmd;
+}
+
+int d_gfx_init(const char *backend_name)
+{
+    const d_gfx_backend_soft *soft;
+    (void)backend_name;
+
+    d_gfx_soft_set_framebuffer_size(g_backbuffer_w, g_backbuffer_h);
+    soft = d_gfx_soft_register_backend();
+    if (!soft || !soft->init) {
+        return 0;
+    }
+    if (soft->init() != 0) {
+        return 0;
+    }
+    g_backend = soft;
+    return 1;
+}
+
+void d_gfx_shutdown(void)
+{
+    if (g_backend && g_backend->shutdown) {
+        g_backend->shutdown();
+    }
+    g_backend = 0;
+    if (g_frame_cmd_buffer.cmds) {
+        free(g_frame_cmd_buffer.cmds);
+        g_frame_cmd_buffer.cmds = (d_gfx_cmd *)0;
+    }
+    g_frame_cmd_buffer.count = 0u;
+    g_frame_cmd_buffer.capacity = 0u;
+}
+
+d_gfx_cmd_buffer *d_gfx_cmd_buffer_begin(void)
+{
+    if (!g_frame_cmd_buffer.cmds) {
+        if (!d_gfx_reserve(&g_frame_cmd_buffer, 1024u)) {
+            return (d_gfx_cmd_buffer *)0;
+        }
+    }
+    g_frame_cmd_buffer.count = 0u;
+    return &g_frame_cmd_buffer;
+}
+
+void d_gfx_cmd_buffer_end(d_gfx_cmd_buffer *buf)
+{
+    (void)buf;
+}
+
+void d_gfx_cmd_clear(d_gfx_cmd_buffer *buf, d_gfx_color color)
+{
+    d_gfx_cmd cmd;
+    cmd.opcode = D_GFX_OP_CLEAR;
+    cmd.u.clear.color = color;
+    d_gfx_append(buf, &cmd);
+}
+
+void d_gfx_cmd_set_viewport(d_gfx_cmd_buffer *buf, const d_gfx_viewport *vp)
+{
+    d_gfx_cmd cmd;
+    if (!vp) {
+        return;
+    }
+    cmd.opcode = D_GFX_OP_SET_VIEWPORT;
+    cmd.u.viewport.vp = *vp;
+    d_gfx_append(buf, &cmd);
+}
+
+void d_gfx_cmd_set_camera(d_gfx_cmd_buffer *buf, const d_gfx_camera *cam)
+{
+    d_gfx_cmd cmd;
+    if (!cam) {
+        return;
+    }
+    cmd.opcode = D_GFX_OP_SET_CAMERA;
+    cmd.u.camera.cam = *cam;
+    d_gfx_append(buf, &cmd);
+}
+
+void d_gfx_cmd_draw_rect(d_gfx_cmd_buffer *buf, const d_gfx_draw_rect_cmd *rect)
+{
+    d_gfx_cmd cmd;
+    if (!rect) {
+        return;
+    }
+    cmd.opcode = D_GFX_OP_DRAW_RECT;
+    cmd.u.rect = *rect;
+    d_gfx_append(buf, &cmd);
+}
+
+void d_gfx_cmd_draw_text(d_gfx_cmd_buffer *buf, const d_gfx_draw_text_cmd *text)
+{
+    d_gfx_cmd cmd;
+    if (!text) {
+        return;
+    }
+    cmd.opcode = D_GFX_OP_DRAW_TEXT;
+    cmd.u.text = *text;
+    d_gfx_append(buf, &cmd);
+}
+
+void d_gfx_submit(d_gfx_cmd_buffer *buf)
+{
+    if (g_backend && g_backend->submit_cmd_buffer) {
+        g_backend->submit_cmd_buffer(buf);
+    }
+}
+
+void d_gfx_present(void)
+{
+    if (g_backend && g_backend->present) {
+        g_backend->present();
+    }
+}
+
+void d_gfx_get_surface_size(i32 *out_w, i32 *out_h)
+{
+    if (out_w) {
+        *out_w = g_backbuffer_w;
+    }
+    if (out_h) {
+        *out_h = g_backbuffer_h;
+    }
+}
+
+/* ------------------------------------------------------------
+ * Legacy wrappers
+ * ------------------------------------------------------------ */
+
+static d_gfx_color d_gfx_color_from_rgba(u32 rgba)
+{
+    d_gfx_color c;
+    c.a = (u8)((rgba >> 24) & 0xffu);
+    c.r = (u8)((rgba >> 16) & 0xffu);
+    c.g = (u8)((rgba >> 8) & 0xffu);
+    c.b = (u8)(rgba & 0xffu);
+    return c;
+}
+
+int dgfx_init(const dgfx_desc *desc)
+{
+    if (desc) {
+        if (desc->width > 0) g_backbuffer_w = desc->width;
+        if (desc->height > 0) g_backbuffer_h = desc->height;
+        if (desc->backend == DGFX_BACKEND_NULL) {
+            return 1;
+        }
+    }
+    return d_gfx_init("soft");
+}
+
+void dgfx_shutdown(void)
+{
+    d_gfx_shutdown();
+}
+
+void dgfx_begin_frame(void)
+{
+    (void)d_gfx_cmd_buffer_begin();
+}
+
+void dgfx_execute(const dgfx_cmd_buffer *cmd)
+{
+    d_gfx_submit((d_gfx_cmd_buffer *)cmd);
+}
+
+void dgfx_end_frame(void)
+{
+    d_gfx_present();
+}
+
+dgfx_cmd_buffer *dgfx_get_frame_cmd_buffer(void)
+{
+    return d_gfx_cmd_buffer_begin();
+}
+
+void dgfx_cmd_buffer_reset(dgfx_cmd_buffer *buf)
+{
+    if (buf) {
+        buf->count = 0u;
+    }
+}
+
+int dgfx_cmd_emit(dgfx_cmd_buffer *buf,
+                  u16 opcode,
+                  const void *payload,
+                  u16 payload_size)
+{
+    u32 count;
+    u32 i;
+
+    if (!buf) {
+        return 0;
+    }
+
+    switch (opcode) {
+    case DGFX_CMD_CLEAR:
+        if (payload && payload_size >= sizeof(u32)) {
+            d_gfx_cmd_clear(buf, d_gfx_color_from_rgba(*(const u32 *)payload));
+            return 1;
+        }
+        return 0;
+    case DGFX_CMD_SET_VIEWPORT:
+        if (payload && payload_size >= sizeof(dgfx_viewport_t)) {
+            d_gfx_viewport vp;
+            const dgfx_viewport_t *p = (const dgfx_viewport_t *)payload;
+            vp.x = p->x;
+            vp.y = p->y;
+            vp.w = p->w;
+            vp.h = p->h;
+            d_gfx_cmd_set_viewport(buf, &vp);
+            return 1;
+        }
+        return 0;
+    case DGFX_CMD_SET_CAMERA:
+        if (payload && payload_size >= sizeof(dgfx_camera_t)) {
+            const dgfx_camera_t *cam = (const dgfx_camera_t *)payload;
+            d_gfx_cmd_set_camera(buf, cam);
+            return 1;
+        }
+        return 0;
+    case DGFX_CMD_DRAW_SPRITES:
+        if (!payload || payload_size < sizeof(dgfx_sprite_t)) {
+            return 0;
+        }
+        count = payload_size / (u16)sizeof(dgfx_sprite_t);
+        for (i = 0u; i < count; ++i) {
+            const dgfx_sprite_t *spr = ((const dgfx_sprite_t *)payload) + i;
+            d_gfx_draw_rect_cmd cmd;
+            cmd.x = spr->x;
+            cmd.y = spr->y;
+            cmd.w = spr->w;
+            cmd.h = spr->h;
+            cmd.color = d_gfx_color_from_rgba(spr->color_rgba);
+            d_gfx_cmd_draw_rect(buf, &cmd);
+        }
+        return 1;
+    case DGFX_CMD_DRAW_TEXT:
+        if (payload && payload_size >= sizeof(dgfx_text_draw_t)) {
+            const dgfx_text_draw_t *td = (const dgfx_text_draw_t *)payload;
+            d_gfx_draw_text_cmd cmd;
+            cmd.x = td->x;
+            cmd.y = td->y;
+            cmd.text = td->utf8_text;
+            cmd.color = d_gfx_color_from_rgba(td->color_rgba);
+            d_gfx_cmd_draw_text(buf, &cmd);
+            return 1;
+        }
+        return 0;
+    default:
+        return 0;
+    }
+}

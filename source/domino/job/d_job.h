@@ -43,6 +43,7 @@ int d_job_destroy(
 
 /* Subsystem registration hook */
 void d_job_init(void);
+int d_job_validate(const d_world *w);
 
 #ifdef __cplusplus
 }

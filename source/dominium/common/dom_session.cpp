@@ -1,6 +1,17 @@
 #include "dom_session.h"
 
 #include <cstring>
+#include <map>
+
+extern "C" {
+#include "res/d_res.h"
+#include "env/d_env.h"
+#include "build/d_build.h"
+#include "trans/d_trans.h"
+#include "struct/d_struct.h"
+#include "vehicle/d_vehicle.h"
+#include "job/d_job.h"
+}
 
 namespace dom {
 
@@ -42,6 +53,36 @@ static dgfx_backend_t choose_gfx_backend(const SessionConfig &cfg) {
     return DGFX_BACKEND_SOFT;
 }
 
+struct IdAllocator {
+    std::map<std::string, unsigned> *map;
+    unsigned *next;
+
+    unsigned get(const std::string &key) {
+        std::map<std::string, unsigned>::iterator it = map->find(key);
+        if (it != map->end()) {
+            return it->second;
+        }
+        unsigned id = *next;
+        *next += 1u;
+        (*map)[key] = id;
+        return id;
+    }
+};
+
+static bool run_validators(d_world *w) {
+    if (!w) {
+        return false;
+    }
+    if (d_res_validate(w) != 0) return false;
+    if (d_env_validate(w) != 0) return false;
+    if (d_build_validate(w) != 0) return false;
+    if (d_trans_validate(w) != 0) return false;
+    if (d_struct_validate(w) != 0) return false;
+    if (d_vehicle_validate(w) != 0) return false;
+    if (d_job_validate(w) != 0) return false;
+    return true;
+}
+
 } // namespace
 
 DomSession::DomSession()
@@ -81,7 +122,17 @@ bool DomSession::init(const Paths &paths,
         return false;
     }
 
+    if (d_content_validate_all() != 0) {
+        shutdown();
+        return false;
+    }
+
     if (!create_world(m_inst)) {
+        shutdown();
+        return false;
+    }
+
+    if (!run_validators(m_world)) {
         shutdown();
         return false;
     }
@@ -100,62 +151,62 @@ bool DomSession::init(const Paths &paths,
 }
 
 bool DomSession::init_engine(const SessionConfig &cfg) {
-    dsys_result sys_rc;
-    dgfx_desc gfx_desc;
-
-    m_engine_initialized = false;
-
-    if (!cfg.platform_backend.empty()) {
-        (void)dom_sys_select_backend(cfg.platform_backend.c_str());
-    }
-
-    sys_rc = dsys_init();
-    if (sys_rc != DSYS_OK) {
-        return false;
-    }
     m_engine_initialized = true;
 
     d_content_register_schemas();
     d_content_init();
-
-    if (!cfg.headless) {
-        std::memset(&gfx_desc, 0, sizeof(gfx_desc));
-        gfx_desc.backend = choose_gfx_backend(cfg);
-        gfx_desc.native_window = (void *)0;
-        gfx_desc.window = (dsys_window *)0;
-        gfx_desc.width = 0;
-        gfx_desc.height = 0;
-        gfx_desc.fullscreen = 0;
-        gfx_desc.vsync = 0;
-
-        if (!dgfx_init(&gfx_desc)) {
-            return false;
-        }
-    }
 
     return true;
 }
 
 bool DomSession::load_content(const PackSet &pset) {
     size_t i;
+    unsigned expected_packs = static_cast<unsigned>(m_inst.packs.size()) + (pset.base_loaded ? 1u : 0u);
 
-    if (pset.pack_blobs.size() != m_inst.packs.size()) {
+    if (pset.pack_blobs.size() != expected_packs) {
         return false;
     }
     if (pset.mod_blobs.size() != m_inst.mods.size()) {
         return false;
     }
 
-    for (i = 0u; i < pset.pack_blobs.size(); ++i) {
+    std::map<std::string, unsigned> pack_id_map;
+    std::map<std::string, unsigned> mod_id_map;
+    unsigned next_pack_id = 1u;
+    unsigned next_mod_id = 1u;
+    IdAllocator pack_ids;
+    IdAllocator mod_ids;
+    pack_ids.map = &pack_id_map;
+    pack_ids.next = &next_pack_id;
+    mod_ids.map = &mod_id_map;
+    mod_ids.next = &next_mod_id;
+
+    size_t blob_index = 0u;
+    if (pset.base_loaded) {
         d_proto_pack_manifest man;
         std::memset(&man, 0, sizeof(man));
-        man.pack_id = m_inst.packs[i].id.c_str();
-        man.pack_version = m_inst.packs[i].version;
-        man.content_tlv = pset.pack_blobs[i];
-        man.flags = 0u;
-        man.dep_count = 0u;
+        man.id = pack_ids.get(std::string("base"));
+        man.version = pset.base_version;
+        man.name = "base";
+        man.description = (const char *)0;
+        man.content_tlv = pset.pack_blobs[0];
 
-        if (d_content_load_pack(&man) != D_CONTENT_OK) {
+        if (d_content_load_pack(&man) != 0) {
+            return false;
+        }
+        blob_index = 1u;
+    }
+
+    for (i = 0u; blob_index < pset.pack_blobs.size(); ++i, ++blob_index) {
+        d_proto_pack_manifest man;
+        std::memset(&man, 0, sizeof(man));
+        man.id = pack_ids.get(m_inst.packs[i].id);
+        man.version = m_inst.packs[i].version;
+        man.name = m_inst.packs[i].id.c_str();
+        man.description = (const char *)0;
+        man.content_tlv = pset.pack_blobs[blob_index];
+
+        if (d_content_load_pack(&man) != 0) {
             return false;
         }
     }
@@ -163,15 +214,15 @@ bool DomSession::load_content(const PackSet &pset) {
     for (i = 0u; i < pset.mod_blobs.size(); ++i) {
         d_proto_mod_manifest man;
         std::memset(&man, 0, sizeof(man));
-        man.mod_id = m_inst.mods[i].id.c_str();
-        man.mod_version = m_inst.mods[i].version;
-        man.base_pack_tlv = pset.mod_blobs[i];
-        man.extra_tlv.ptr = (unsigned char *)0;
-        man.extra_tlv.len = 0u;
-        man.flags = 0u;
-        man.dep_count = 0u;
+        man.id = mod_ids.get(m_inst.mods[i].id);
+        man.version = m_inst.mods[i].version;
+        man.name = m_inst.mods[i].id.c_str();
+        man.description = (const char *)0;
+        man.deps_tlv.ptr = (unsigned char *)0;
+        man.deps_tlv.len = 0u;
+        man.content_tlv = pset.mod_blobs[i];
 
-        if (d_content_load_mod(&man) != D_CONTENT_OK) {
+        if (d_content_load_mod(&man) != 0) {
             return false;
         }
     }
@@ -210,8 +261,6 @@ void DomSession::shutdown() {
 
     d_replay_shutdown(&m_replay);
     d_content_shutdown();
-    dgfx_shutdown();
-    dsys_shutdown();
 
     m_initialized = false;
     m_engine_initialized = false;

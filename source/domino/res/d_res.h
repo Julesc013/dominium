@@ -6,6 +6,7 @@
 #include "domino/core/d_tlv.h"
 #include "domino/core/fixed.h"
 #include "world/d_world.h"
+#include "content/d_content.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -22,6 +23,11 @@ typedef struct dres_channel_desc {
 
 typedef struct dres_channel_cell {
     dres_channel_desc desc;
+    d_content_tag     tags;
+    d_deposit_proto_id proto_id;
+    d_material_id     material_id;
+    d_tlv_blob        model_params;
+    u8                initialized;
     q16_16            values[DRES_VALUE_MAX];
     q16_16            deltas[DRES_VALUE_MAX]; /* base+delta for sample; -inf or sentinel for none */
 } dres_channel_cell;
@@ -32,6 +38,12 @@ typedef struct dres_sample {
     u16                model_family;
     u16                model_id;
     u16                _pad;
+    const d_chunk     *chunk;
+    q32_32             pos_x;
+    q32_32             pos_y;
+    q32_32             pos_z;
+    d_deposit_proto_id proto_id;
+    d_content_tag      tags;
     q16_16             value[DRES_VALUE_MAX];
     /* Optionally: link to deposit proto or extra TLV if needed later. */
 } dres_sample;
@@ -63,6 +75,7 @@ int dres_init_chunk(
 
 /* Initialization hook for subsystem registration. */
 void d_res_init(void);
+int d_res_validate(const d_world *w);
 
 #ifdef __cplusplus
 }

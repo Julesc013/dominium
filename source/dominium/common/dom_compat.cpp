@@ -7,7 +7,7 @@ CompatResult evaluate_compat(
     const InstanceInfo &inst
 ) {
     if (prod.core_version < inst.core_version) {
-        return COMPAT_INCOMPATIBLE;
+        return COMPAT_SCHEMA_MISMATCH;
     }
     if (prod.suite_version < inst.suite_version) {
         return COMPAT_READONLY;

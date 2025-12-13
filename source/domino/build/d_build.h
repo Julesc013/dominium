@@ -42,6 +42,7 @@ int d_build_destroy(
 
 /* Subsystem registration hook */
 void d_build_init(void);
+int d_build_validate(const d_world *w);
 
 #ifdef __cplusplus
 }

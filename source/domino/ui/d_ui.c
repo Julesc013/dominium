@@ -2,11 +2,11 @@
 #include <string.h>
 
 #include "d_ui.h"
-#include "domino/core/fixed.h"
 
 static dui_widget_id g_next_widget_id = 1u;
 
-static void dui_reset_widget(dui_widget *w, dui_widget_kind kind) {
+static void dui_reset_widget(dui_widget *w, dui_widget_kind kind)
+{
     if (!w) {
         return;
     }
@@ -14,11 +14,10 @@ static void dui_reset_widget(dui_widget *w, dui_widget_kind kind) {
     w->id = g_next_widget_id++;
     w->kind = kind;
     w->flags = DUI_WIDGET_VISIBLE;
-    w->style.ptr = (unsigned char *)0;
-    w->style.len = 0u;
 }
 
-static void dui_free_tree(dui_widget *w) {
+static void dui_free_tree(dui_widget *w)
+{
     dui_widget *child;
     if (!w) {
         return;
@@ -32,7 +31,8 @@ static void dui_free_tree(dui_widget *w) {
     free(w);
 }
 
-void dui_init_context(dui_context *ctx) {
+void dui_init_context(dui_context *ctx)
+{
     if (!ctx) {
         return;
     }
@@ -45,7 +45,8 @@ void dui_init_context(dui_context *ctx) {
     ctx->root->text = (const char *)0;
 }
 
-void dui_shutdown_context(dui_context *ctx) {
+void dui_shutdown_context(dui_context *ctx)
+{
     if (!ctx) {
         return;
     }
@@ -55,7 +56,8 @@ void dui_shutdown_context(dui_context *ctx) {
     }
 }
 
-dui_widget *dui_widget_create(dui_context *ctx, dui_widget_kind kind) {
+dui_widget *dui_widget_create(dui_context *ctx, dui_widget_kind kind)
+{
     dui_widget *w;
     if (!ctx) {
         return (dui_widget *)0;
@@ -68,7 +70,8 @@ dui_widget *dui_widget_create(dui_context *ctx, dui_widget_kind kind) {
     return w;
 }
 
-static void dui_detach_from_parent(dui_widget *w) {
+static void dui_detach_from_parent(dui_widget *w)
+{
     dui_widget *parent;
     if (!w) {
         return;
@@ -93,7 +96,8 @@ static void dui_detach_from_parent(dui_widget *w) {
     w->next_sibling = (dui_widget *)0;
 }
 
-void dui_widget_destroy(dui_context *ctx, dui_widget *w) {
+void dui_widget_destroy(dui_context *ctx, dui_widget *w)
+{
     if (!ctx || !w) {
         return;
     }
@@ -104,7 +108,8 @@ void dui_widget_destroy(dui_context *ctx, dui_widget *w) {
     dui_free_tree(w);
 }
 
-void dui_widget_add_child(dui_widget *parent, dui_widget *child) {
+void dui_widget_add_child(dui_widget *parent, dui_widget *child)
+{
     if (!parent || !child) {
         return;
     }
@@ -116,109 +121,93 @@ void dui_widget_add_child(dui_widget *parent, dui_widget *child) {
     parent->first_child = child;
 }
 
-void dui_widget_remove_from_parent(dui_widget *w) {
+void dui_widget_remove_from_parent(dui_widget *w)
+{
     if (!w || !w->parent) {
         return;
     }
     dui_detach_from_parent(w);
 }
 
-static q16_16 dui_div_q16(q16_16 num, u32 denom) {
-    if (denom == 0u) {
-        return 0;
-    }
-    return d_q16_16_div(num, d_q16_16_from_int((i32)denom));
-}
-
-static void dui_layout_node(dui_widget *node, const dui_rect *available) {
+static void dui_layout_children(dui_widget *parent, const dui_rect *root_rect)
+{
     dui_widget *child;
-    if (!node || !available) {
+    q16_16 cursor_y;
+    q16_16 margin;
+    q16_16 spacing;
+    q16_16 default_h;
+
+    if (!parent || !root_rect) {
         return;
     }
 
-    if (node->kind == DUI_WIDGET_ROOT || node->kind == DUI_WIDGET_PANEL) {
-        u32 visible_children = 0u;
-        q16_16 cursor_y;
-        q16_16 default_h;
+    parent->final_rect = *root_rect;
+    margin = d_q16_16_from_int(8);
+    spacing = d_q16_16_from_int(4);
+    cursor_y = root_rect->y + margin;
+    child = parent->first_child;
+    default_h = d_q16_16_from_int(24);
 
-        node->final_rect = *available;
-        child = node->first_child;
-        while (child) {
-            if (child->flags & DUI_WIDGET_VISIBLE) {
-                visible_children += 1u;
+    while (child) {
+        if (child->flags & DUI_WIDGET_VISIBLE) {
+            dui_rect rect;
+            rect.x = root_rect->x + margin + child->layout_rect.x;
+            rect.y = cursor_y + child->layout_rect.y;
+            rect.w = root_rect->w - margin - margin;
+            rect.h = child->layout_rect.h ? child->layout_rect.h : default_h;
+            child->final_rect = rect;
+            cursor_y = rect.y + rect.h + spacing;
+            if (child->first_child) {
+                dui_layout_children(child, &rect);
             }
-            child = child->next_sibling;
         }
-
-        default_h = dui_div_q16(node->final_rect.h, visible_children ? visible_children : 1u);
-        cursor_y = node->final_rect.y;
-        child = node->first_child;
-        while (child) {
-            if (child->flags & DUI_WIDGET_VISIBLE) {
-                dui_rect rect;
-                rect.x = node->final_rect.x + child->layout_rect.x;
-                rect.y = cursor_y + child->layout_rect.y;
-                rect.w = child->layout_rect.w ? child->layout_rect.w : node->final_rect.w;
-                rect.h = child->layout_rect.h ? child->layout_rect.h : default_h;
-                child->final_rect = rect;
-                cursor_y = rect.y + rect.h;
-                dui_layout_node(child, &rect);
-            }
-            child = child->next_sibling;
-        }
-    } else {
-        dui_rect rect;
-        rect.x = available->x + node->layout_rect.x;
-        rect.y = available->y + node->layout_rect.y;
-        rect.w = node->layout_rect.w ? node->layout_rect.w : available->w;
-        rect.h = node->layout_rect.h ? node->layout_rect.h : available->h;
-        node->final_rect = rect;
+        child = child->next_sibling;
     }
 }
 
-void dui_layout(dui_context *ctx, const dui_rect *root_rect) {
-    if (!ctx || !ctx->root) {
+void dui_layout(dui_context *ctx, const dui_rect *root_rect)
+{
+    if (!ctx || !ctx->root || !root_rect) {
         return;
     }
-    if (root_rect) {
-        ctx->root->layout_rect = *root_rect;
-        ctx->root->final_rect = *root_rect;
-    }
-    dui_layout_node(ctx->root, &ctx->root->final_rect);
+    ctx->root->layout_rect = *root_rect;
+    ctx->root->final_rect = *root_rect;
+    dui_layout_children(ctx->root, root_rect);
 }
 
-static int dui_render_rect(dgfx_cmd_buffer *buf, const dui_rect *rect, u32 color) {
-    dgfx_sprite_t spr;
+static void dui_emit_rect(d_gfx_cmd_buffer *buf, const dui_rect *rect, d_gfx_color color)
+{
+    d_gfx_draw_rect_cmd r;
     if (!buf || !rect) {
-        return -1;
+        return;
     }
-    spr.x = d_q16_16_to_int(rect->x);
-    spr.y = d_q16_16_to_int(rect->y);
-    spr.w = d_q16_16_to_int(rect->w);
-    spr.h = d_q16_16_to_int(rect->h);
-    spr.color_rgba = color;
-    return dgfx_cmd_emit(buf, (uint16_t)DGFX_CMD_DRAW_SPRITES, &spr, (uint16_t)sizeof(dgfx_sprite_t)) ? 0 : -1;
+    r.x = d_q16_16_to_int(rect->x);
+    r.y = d_q16_16_to_int(rect->y);
+    r.w = d_q16_16_to_int(rect->w);
+    r.h = d_q16_16_to_int(rect->h);
+    r.color = color;
+    d_gfx_cmd_draw_rect(buf, &r);
 }
 
-static int dui_render_text(dgfx_cmd_buffer *buf, const dui_rect *rect, const char *text, u32 color) {
-    dgfx_text_draw_t td;
-    const char *safe_text = text ? text : "";
+static void dui_emit_text(d_gfx_cmd_buffer *buf, const dui_rect *rect, const char *text, d_gfx_color color)
+{
+    d_gfx_draw_text_cmd t;
     if (!buf || !rect) {
-        return -1;
+        return;
     }
-    td.x = d_q16_16_to_int(rect->x);
-    td.y = d_q16_16_to_int(rect->y);
-    td.color_rgba = color;
-    td.utf8_text = safe_text;
-    return dgfx_cmd_emit(buf, (uint16_t)DGFX_CMD_DRAW_TEXT, &td, (uint16_t)sizeof(dgfx_text_draw_t)) ? 0 : -1;
+    t.x = d_q16_16_to_int(rect->x);
+    t.y = d_q16_16_to_int(rect->y);
+    t.text = text ? text : "";
+    t.color = color;
+    d_gfx_cmd_draw_text(buf, &t);
 }
 
-static int dui_render_widget(const dui_widget *w, d_view_frame *frame) {
-    const u32 bg_root = 0x202020FFu;
-    const u32 bg_panel = 0x2A2A2AFFu;
-    const u32 bg_button = 0x3A6EA5FFu;
-    const u32 fg_text = 0xFFFFFFFFu;
-    int rc;
+static int dui_render_widget(const dui_widget *w, d_view_frame *frame)
+{
+    d_gfx_color bg_root = { 0xffu, 0x20u, 0x20u, 0x20u };
+    d_gfx_color bg_panel = { 0xffu, 0x2au, 0x2au, 0x2au };
+    d_gfx_color bg_button = { 0xffu, 0x3au, 0x6eu, 0xa5u };
+    d_gfx_color fg_text = { 0xffu, 0xffu, 0xffu, 0xffu };
 
     if (!w || !frame || !frame->cmd_buffer) {
         return -1;
@@ -228,35 +217,30 @@ static int dui_render_widget(const dui_widget *w, d_view_frame *frame) {
     }
 
     switch (w->kind) {
-        case DUI_WIDGET_ROOT:
-            rc = dui_render_rect(frame->cmd_buffer, &w->final_rect, bg_root);
-            if (rc != 0) return rc;
-            break;
-        case DUI_WIDGET_PANEL:
-            rc = dui_render_rect(frame->cmd_buffer, &w->final_rect, bg_panel);
-            if (rc != 0) return rc;
-            break;
-        case DUI_WIDGET_BUTTON:
-            rc = dui_render_rect(frame->cmd_buffer, &w->final_rect, bg_button);
-            if (rc != 0) return rc;
-            rc = dui_render_text(frame->cmd_buffer, &w->final_rect, w->text, fg_text);
-            if (rc != 0) return rc;
-            break;
-        case DUI_WIDGET_LABEL:
-            rc = dui_render_text(frame->cmd_buffer, &w->final_rect, w->text, fg_text);
-            if (rc != 0) return rc;
-            break;
-        case DUI_WIDGET_LIST:
-            rc = dui_render_rect(frame->cmd_buffer, &w->final_rect, bg_panel);
-            if (rc != 0) return rc;
-            break;
-        default:
-            break;
+    case DUI_WIDGET_ROOT:
+        dui_emit_rect(frame->cmd_buffer, &w->final_rect, bg_root);
+        break;
+    case DUI_WIDGET_PANEL:
+        dui_emit_rect(frame->cmd_buffer, &w->final_rect, bg_panel);
+        break;
+    case DUI_WIDGET_BUTTON:
+        dui_emit_rect(frame->cmd_buffer, &w->final_rect, bg_button);
+        dui_emit_text(frame->cmd_buffer, &w->final_rect, w->text, fg_text);
+        break;
+    case DUI_WIDGET_LABEL:
+        dui_emit_text(frame->cmd_buffer, &w->final_rect, w->text, fg_text);
+        break;
+    case DUI_WIDGET_LIST:
+        dui_emit_rect(frame->cmd_buffer, &w->final_rect, bg_panel);
+        break;
+    default:
+        break;
     }
     return 0;
 }
 
-void dui_render(dui_context *ctx, d_view_frame *frame) {
+void dui_render(dui_context *ctx, d_view_frame *frame)
+{
     dui_widget *stack[64];
     int top = -1;
     if (!ctx || !ctx->root || !frame) {
