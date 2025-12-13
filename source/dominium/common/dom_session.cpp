@@ -11,6 +11,7 @@ extern "C" {
 #include "struct/d_struct.h"
 #include "vehicle/d_vehicle.h"
 #include "job/d_job.h"
+#include "ai/d_agent.h"
 }
 
 namespace dom {
@@ -80,6 +81,7 @@ static bool run_validators(d_world *w) {
     if (d_struct_validate(w) != 0) return false;
     if (d_vehicle_validate(w) != 0) return false;
     if (d_job_validate(w) != 0) return false;
+    if (d_agent_validate(w) != 0) return false;
     return true;
 }
 

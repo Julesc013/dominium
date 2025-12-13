@@ -66,6 +66,10 @@ public:
     void update_demo_hud();
     void set_last_struct_id(d_struct_instance_id id) { m_last_struct_id = id; }
 
+    void build_tool_select_extractor();
+    void build_tool_select_refiner();
+    void build_tool_select_assembler();
+    void build_tool_select_bin();
     void build_tool_select_source();
     void build_tool_select_sink();
     void build_tool_select_spline();
@@ -111,6 +115,7 @@ private:
     void process_input_events();
     void update_camera();
     void update_debug_panel();
+    void ensure_demo_agents();
 
     void change_state(GameStateId next);
 

@@ -25,6 +25,7 @@ extern "C" {
 #include "trans/d_trans_spline.h"
 #include "res/d_res.h"
 #include "content/d_content.h"
+#include "ai/d_agent.h"
 }
 
 namespace dom {
@@ -648,7 +649,11 @@ bool DomGameApp::init_session(const GameConfig &cfg) {
     scfg.audio_backend = std::string();
     scfg.headless = (cfg.mode == GAME_MODE_HEADLESS);
     scfg.tui = (cfg.mode == GAME_MODE_TUI);
-    return m_session.init(m_paths, m_instance, scfg);
+    if (!m_session.init(m_paths, m_instance, scfg)) {
+        return false;
+    }
+    ensure_demo_agents();
+    return true;
 }
 
 bool DomGameApp::init_views_and_ui(const GameConfig &cfg) {
@@ -683,6 +688,35 @@ bool DomGameApp::init_views_and_ui(const GameConfig &cfg) {
     dom_game_ui_build_root(m_ui_ctx, m_mode);
     m_camera.reset();
     return true;
+}
+
+void DomGameApp::ensure_demo_agents() {
+    d_world *w = m_session.world();
+    u32 i;
+    if (!w) {
+        return;
+    }
+    if (dom_find_structure_by_name("Demo Extractor") == 0u) {
+        return;
+    }
+    if (d_agent_count(w) != 0u) {
+        return;
+    }
+
+    for (i = 0u; i < 4u; ++i) {
+        d_agent_state a;
+        std::memset(&a, 0, sizeof(a));
+        a.owner_eid = 0u;
+        a.caps.tags = (d_content_tag)(D_TAG_CAP_WALK | D_TAG_CAP_OPERATE_PROCESS);
+        a.caps.max_speed = d_q16_16_from_int(1);
+        a.caps.max_carry_mass = d_q16_16_from_int(100);
+        a.current_job = 0u;
+        a.pos_x = ((q32_32)(i64)(i)) << Q32_32_FRAC_BITS;
+        a.pos_y = 0;
+        a.pos_z = 0;
+        a.flags = D_AGENT_FLAG_IDLE;
+        (void)d_agent_register(w, &a);
+    }
 }
 
 void DomGameApp::main_loop() {
@@ -863,7 +897,7 @@ void DomGameApp::spawn_demo_blueprint() {
     if (!w) {
         return;
     }
-    bp = d_content_get_blueprint_by_name("Test Extractor Kit");
+    bp = d_content_get_blueprint_by_name("Demo Extractor Kit");
     if (!bp) {
         return;
     }
@@ -969,30 +1003,58 @@ void DomGameApp::update_demo_hud() {
     }
 }
 
-void DomGameApp::build_tool_select_source() {
-    d_structure_proto_id id = dom_find_structure_by_name("Test Extractor");
+void DomGameApp::build_tool_select_extractor() {
+    d_structure_proto_id id = dom_find_structure_by_name("Demo Extractor");
     if (id == 0u) {
-        dom_game_ui_set_status(m_ui_ctx, "Tool: missing structure: Test Extractor");
+        dom_game_ui_set_status(m_ui_ctx, "Tool: missing structure: Demo Extractor");
         return;
     }
     m_build_tool.set_place_structure(id);
     dom_game_ui_set_status(m_ui_ctx, m_build_tool.status_text());
+}
+
+void DomGameApp::build_tool_select_refiner() {
+    d_structure_proto_id id = dom_find_structure_by_name("Demo Refiner");
+    if (id == 0u) {
+        dom_game_ui_set_status(m_ui_ctx, "Tool: missing structure: Demo Refiner");
+        return;
+    }
+    m_build_tool.set_place_structure(id);
+    dom_game_ui_set_status(m_ui_ctx, m_build_tool.status_text());
+}
+
+void DomGameApp::build_tool_select_assembler() {
+    d_structure_proto_id id = dom_find_structure_by_name("Demo Assembler");
+    if (id == 0u) {
+        dom_game_ui_set_status(m_ui_ctx, "Tool: missing structure: Demo Assembler");
+        return;
+    }
+    m_build_tool.set_place_structure(id);
+    dom_game_ui_set_status(m_ui_ctx, m_build_tool.status_text());
+}
+
+void DomGameApp::build_tool_select_bin() {
+    d_structure_proto_id id = dom_find_structure_by_name("Demo Bin");
+    if (id == 0u) {
+        dom_game_ui_set_status(m_ui_ctx, "Tool: missing structure: Demo Bin");
+        return;
+    }
+    m_build_tool.set_place_structure(id);
+    dom_game_ui_set_status(m_ui_ctx, m_build_tool.status_text());
+}
+
+void DomGameApp::build_tool_select_source() {
+    build_tool_select_extractor();
 }
 
 void DomGameApp::build_tool_select_sink() {
-    d_structure_proto_id id = dom_find_structure_by_name("Debug Bin");
-    if (id == 0u) {
-        dom_game_ui_set_status(m_ui_ctx, "Tool: missing structure: Debug Bin");
-        return;
-    }
-    m_build_tool.set_place_structure(id);
-    dom_game_ui_set_status(m_ui_ctx, m_build_tool.status_text());
+    build_tool_select_bin();
 }
 
 void DomGameApp::build_tool_select_spline() {
-    d_spline_profile_id id = dom_find_spline_profile_by_name("Debug Item Conveyor");
+    d_spline_profile_id id = dom_find_spline_profile_by_name("Demo Item Conveyor");
     if (id == 0u) {
-        dom_game_ui_set_status(m_ui_ctx, "Tool: missing spline profile: Debug Item Conveyor");
+        dom_game_ui_set_status(m_ui_ctx, "Tool: missing spline profile: Demo Item Conveyor");
         return;
     }
     m_build_tool.set_draw_spline(id);

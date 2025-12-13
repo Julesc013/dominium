@@ -4,6 +4,7 @@
 #include "core/d_subsystem.h"
 #include "content/d_content.h"
 #include "content/d_content_extra.h"
+#include "core/d_container_state.h"
 #include "struct/d_struct.h"
 #include "trans/d_trans.h"
 
@@ -889,8 +890,12 @@ void d_trans_mover_tick(d_world *w, u32 ticks) {
                      spline->endpoint_b_port_kind == (u16)D_STRUCT_PORT_ITEM_IN ||
                      spline->endpoint_b_port_kind == (u16)D_STRUCT_PORT_SPLINE_ITEM_IN)) {
                     d_struct_instance *dst = d_struct_get_mutable(w, (d_struct_instance_id)spline->endpoint_b_eid);
-                    if (dst && d_struct_inventory_add(&dst->inventory, m->payload_id, m->payload_count) == 0) {
-                        consumed = 1;
+                    if (dst) {
+                        d_container_state *c = (dst->inv_in.proto_id != 0u) ? &dst->inv_in : &dst->inv_out;
+                        u32 packed = 0u;
+                        if (c->proto_id != 0u && d_container_pack_items(c, (d_item_id)m->payload_id, m->payload_count, &packed) == 0 && packed == m->payload_count) {
+                            consumed = 1;
+                        }
                     }
                 }
             } else {
@@ -905,8 +910,12 @@ void d_trans_mover_tick(d_world *w, u32 ticks) {
                      spline->endpoint_a_port_kind == (u16)D_STRUCT_PORT_ITEM_IN ||
                      spline->endpoint_a_port_kind == (u16)D_STRUCT_PORT_SPLINE_ITEM_IN)) {
                     d_struct_instance *dst = d_struct_get_mutable(w, (d_struct_instance_id)spline->endpoint_a_eid);
-                    if (dst && d_struct_inventory_add(&dst->inventory, m->payload_id, m->payload_count) == 0) {
-                        consumed = 1;
+                    if (dst) {
+                        d_container_state *c = (dst->inv_in.proto_id != 0u) ? &dst->inv_in : &dst->inv_out;
+                        u32 packed = 0u;
+                        if (c->proto_id != 0u && d_container_pack_items(c, (d_item_id)m->payload_id, m->payload_count, &packed) == 0 && packed == m->payload_count) {
+                            consumed = 1;
+                        }
                     }
                 }
             } else {
@@ -974,28 +983,48 @@ void d_trans_tick(d_world *w, u32 ticks) {
             }
 
             src = d_struct_get_mutable(w, (d_struct_instance_id)sp->endpoint_a_eid);
-            if (!src || src->inventory.item_id == 0u || src->inventory.count == 0u) {
+            if (!src || src->inv_out.proto_id == 0u || !src->inv_out.slots) {
                 continue;
             }
 
             {
                 d_mover m;
                 d_mover_id mid;
+                d_item_id out_item = 0u;
+                u32 unpacked = 0u;
+                u32 sidx;
+                u32 scount;
                 memset(&m, 0, sizeof(m));
                 m.kind = D_MOVER_KIND_ITEM;
                 m.spline_id = sp->id;
                 m.param = 0;
                 m.speed_param = 0;
                 m.size_param = spawn_gap;
-                m.payload_id = src->inventory.item_id;
+
+                /* Deterministic: choose lowest item_id present in output container. */
+                out_item = 0u;
+                scount = (src->inv_out.slot_count > 0u) ? (u32)src->inv_out.slot_count : 1u;
+                for (sidx = 0u; sidx < scount; ++sidx) {
+                    if (src->inv_out.slots[sidx].item_id != 0u && src->inv_out.slots[sidx].count > 0u) {
+                        if (out_item == 0u || src->inv_out.slots[sidx].item_id < out_item) {
+                            out_item = src->inv_out.slots[sidx].item_id;
+                        }
+                    }
+                }
+                if (out_item == 0u) {
+                    continue;
+                }
+                if (d_container_unpack_items(&src->inv_out, out_item, 1u, &unpacked) != 0 || unpacked != 1u) {
+                    continue;
+                }
+                m.payload_id = (u32)out_item;
                 m.payload_count = 1u;
 
                 mid = d_trans_mover_create(w, &m);
-                if (mid != 0u) {
-                    src->inventory.count -= 1u;
-                    if (src->inventory.count == 0u) {
-                        src->inventory.item_id = 0u;
-                    }
+                if (mid == 0u) {
+                    /* Failed to spawn mover: return item to inventory. */
+                    u32 packed = 0u;
+                    (void)d_container_pack_items(&src->inv_out, out_item, 1u, &packed);
                 }
             }
         }

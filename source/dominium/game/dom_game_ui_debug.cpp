@@ -1,6 +1,7 @@
 #include "dom_game_ui_debug.h"
 
 #include <cstdio>
+#include <cstdarg>
 #include <cstring>
 
 extern "C" {
@@ -9,8 +10,11 @@ extern "C" {
 #include "env/d_env_volume.h"
 #include "hydro/d_hydro.h"
 #include "res/d_res.h"
+#include "ai/d_agent.h"
+#include "job/d_job.h"
 #include "struct/d_struct.h"
 #include "content/d_content.h"
+#include "sim/d_sim_process.h"
 #include "world/d_litho.h"
 }
 
@@ -34,6 +38,10 @@ static dui_widget *g_env_label = (dui_widget *)0;
 static dui_widget *g_hydro_label = (dui_widget *)0;
 static dui_widget *g_volume_label = (dui_widget *)0;
 static dui_widget *g_litho_label = (dui_widget *)0;
+static dui_widget *g_machine_label = (dui_widget *)0;
+static dui_widget *g_jobs_label = (dui_widget *)0;
+static dui_widget *g_agents_label = (dui_widget *)0;
+static dui_widget *g_throughput_label = (dui_widget *)0;
 
 static char g_buf_hash[128];
 static char g_buf_chunk[128];
@@ -47,6 +55,10 @@ static char g_buf_env[256];
 static char g_buf_hydro[192];
 static char g_buf_volume[256];
 static char g_buf_litho[256];
+static char g_buf_machines[512];
+static char g_buf_jobs[512];
+static char g_buf_agents[512];
+static char g_buf_throughput[512];
 static char g_buf_overlay_hydro[64];
 static char g_buf_overlay_temp[64];
 static char g_buf_overlay_pressure[64];
@@ -71,6 +83,10 @@ void dom_game_ui_debug_reset(void) {
     g_hydro_label = (dui_widget *)0;
     g_volume_label = (dui_widget *)0;
     g_litho_label = (dui_widget *)0;
+    g_machine_label = (dui_widget *)0;
+    g_jobs_label = (dui_widget *)0;
+    g_agents_label = (dui_widget *)0;
+    g_throughput_label = (dui_widget *)0;
 }
 
 static void on_toggle_debug(dui_widget *self) {
@@ -127,7 +143,7 @@ static void ensure_widgets(dui_context &ctx, DomGameApp &app) {
             return;
         }
         g_panel->layout_rect.y = d_q16_16_from_int(64);
-        g_panel->layout_rect.h = d_q16_16_from_int(420);
+        g_panel->layout_rect.h = d_q16_16_from_int(620);
         dui_widget_add_child(ctx.root, g_panel);
 
         g_hash_label = dui_widget_create(&ctx, DUI_WIDGET_LABEL);
@@ -142,6 +158,10 @@ static void ensure_widgets(dui_context &ctx, DomGameApp &app) {
         g_hydro_label = dui_widget_create(&ctx, DUI_WIDGET_LABEL);
         g_volume_label = dui_widget_create(&ctx, DUI_WIDGET_LABEL);
         g_litho_label = dui_widget_create(&ctx, DUI_WIDGET_LABEL);
+        g_machine_label = dui_widget_create(&ctx, DUI_WIDGET_LABEL);
+        g_jobs_label = dui_widget_create(&ctx, DUI_WIDGET_LABEL);
+        g_agents_label = dui_widget_create(&ctx, DUI_WIDGET_LABEL);
+        g_throughput_label = dui_widget_create(&ctx, DUI_WIDGET_LABEL);
 
         g_overlay_hydro_button = dui_widget_create(&ctx, DUI_WIDGET_BUTTON);
         g_overlay_temp_button = dui_widget_create(&ctx, DUI_WIDGET_BUTTON);
@@ -160,6 +180,10 @@ static void ensure_widgets(dui_context &ctx, DomGameApp &app) {
         if (g_hydro_label) dui_widget_add_child(g_panel, g_hydro_label);
         if (g_volume_label) dui_widget_add_child(g_panel, g_volume_label);
         if (g_litho_label) dui_widget_add_child(g_panel, g_litho_label);
+        if (g_machine_label) dui_widget_add_child(g_panel, g_machine_label);
+        if (g_jobs_label) dui_widget_add_child(g_panel, g_jobs_label);
+        if (g_agents_label) dui_widget_add_child(g_panel, g_agents_label);
+        if (g_throughput_label) dui_widget_add_child(g_panel, g_throughput_label);
 
         if (g_overlay_hydro_button) {
             g_overlay_hydro_button->on_click = on_toggle_overlay_hydro;
@@ -375,6 +399,176 @@ static const char *determinism_text(u32 mode) {
     }
 }
 
+static const char *job_state_text(d_job_state st) {
+    switch (st) {
+    case D_JOB_STATE_PENDING: return "PENDING";
+    case D_JOB_STATE_ASSIGNED: return "ASSIGNED";
+    case D_JOB_STATE_RUNNING: return "RUNNING";
+    case D_JOB_STATE_COMPLETED: return "COMPLETED";
+    case D_JOB_STATE_CANCELLED: return "CANCELLED";
+    default: return "?";
+    }
+}
+
+static void buf_appendf(char *buf, size_t cap, size_t *pos, const char *fmt, ...) {
+    va_list ap;
+    int wrote;
+    size_t avail;
+    if (!buf || cap == 0u || !pos || !fmt) {
+        return;
+    }
+    if (*pos >= cap) {
+        return;
+    }
+    avail = cap - *pos;
+    va_start(ap, fmt);
+    wrote = std::vsnprintf(buf + *pos, avail, fmt, ap);
+    va_end(ap);
+    if (wrote <= 0) {
+        return;
+    }
+    if ((size_t)wrote >= avail) {
+        *pos = cap - 1u;
+        buf[cap - 1u] = '\0';
+        return;
+    }
+    *pos += (size_t)wrote;
+}
+
+static void update_factory_inspectors(d_world *w) {
+    u32 i;
+    size_t pos;
+
+    /* Machines */
+    {
+        u32 count = 0u;
+        u32 shown = 0u;
+        u32 scount;
+
+        g_buf_machines[0] = '\0';
+        scount = d_struct_count(w);
+        for (i = 0u; i < scount; ++i) {
+            const d_struct_instance *inst = d_struct_get_by_index(w, i);
+            const d_proto_structure *sp = inst ? d_content_get_structure(inst->proto_id) : (const d_proto_structure *)0;
+            if (!inst || !sp) continue;
+            if ((sp->tags & D_TAG_STRUCTURE_MACHINE) == 0u) continue;
+            count += 1u;
+        }
+
+        pos = 0u;
+        buf_appendf(g_buf_machines, sizeof(g_buf_machines), &pos, "Machines: %u", (unsigned)count);
+        for (i = 0u; i < scount && shown < 4u; ++i) {
+            const d_struct_instance *inst = d_struct_get_by_index(w, i);
+            const d_proto_structure *sp = inst ? d_content_get_structure(inst->proto_id) : (const d_proto_structure *)0;
+            const d_proto_process *pp;
+            int pct = 0;
+            if (!inst || !sp) continue;
+            if ((sp->tags & D_TAG_STRUCTURE_MACHINE) == 0u) continue;
+
+            pp = (inst->machine.active_process_id != 0u) ? d_content_get_process(inst->machine.active_process_id) : (const d_proto_process *)0;
+            if (pp && pp->base_duration > 0) {
+                double p = d_q16_16_to_double(inst->machine.progress) / d_q16_16_to_double(pp->base_duration);
+                if (p < 0.0) p = 0.0;
+                if (p > 1.0) p = 1.0;
+                pct = (int)(p * 100.0 + 0.5);
+            }
+
+            buf_appendf(g_buf_machines, sizeof(g_buf_machines), &pos,
+                        " | #%u %s @(%d,%d) %s %d%%",
+                        (unsigned)inst->id,
+                        sp->name ? sp->name : "(struct)",
+                        d_q16_16_to_int(inst->pos_x),
+                        d_q16_16_to_int(inst->pos_y),
+                        (pp && pp->name) ? pp->name : "(proc)",
+                        pct);
+            shown += 1u;
+        }
+        if (g_machine_label) {
+            g_machine_label->text = g_buf_machines;
+        }
+    }
+
+    /* Jobs */
+    {
+        u32 count = d_job_count(w);
+        u32 shown = 0u;
+        g_buf_jobs[0] = '\0';
+        pos = 0u;
+        buf_appendf(g_buf_jobs, sizeof(g_buf_jobs), &pos, "Jobs: %u", (unsigned)count);
+        for (i = 0u; i < count && shown < 6u; ++i) {
+            d_job_record jr;
+            const d_proto_job_template *jt;
+            if (d_job_get_by_index(w, i, &jr) != 0) continue;
+            jt = d_content_get_job_template(jr.template_id);
+            buf_appendf(g_buf_jobs, sizeof(g_buf_jobs), &pos,
+                        " | #%u %s %s a=%u t=%u",
+                        (unsigned)jr.id,
+                        (jt && jt->name) ? jt->name : "(job)",
+                        job_state_text(jr.state),
+                        (unsigned)jr.assigned_agent,
+                        (unsigned)jr.target_struct_eid);
+            shown += 1u;
+        }
+        if (g_jobs_label) {
+            g_jobs_label->text = g_buf_jobs;
+        }
+    }
+
+    /* Agents */
+    {
+        u32 count = d_agent_count(w);
+        u32 shown = 0u;
+        g_buf_agents[0] = '\0';
+        pos = 0u;
+        buf_appendf(g_buf_agents, sizeof(g_buf_agents), &pos, "Agents: %u", (unsigned)count);
+        for (i = 0u; i < count && shown < 6u; ++i) {
+            d_agent_state a;
+            i32 ax;
+            i32 ay;
+            if (d_agent_get_by_index(w, i, &a) != 0) continue;
+            ax = (i32)(a.pos_x >> Q32_32_FRAC_BITS);
+            ay = (i32)(a.pos_y >> Q32_32_FRAC_BITS);
+            buf_appendf(g_buf_agents, sizeof(g_buf_agents), &pos,
+                        " | #%u caps=0x%08x job=%u @(%d,%d)",
+                        (unsigned)a.id,
+                        (unsigned)a.caps.tags,
+                        (unsigned)a.current_job,
+                        (int)ax, (int)ay);
+            shown += 1u;
+        }
+        if (g_agents_label) {
+            g_agents_label->text = g_buf_agents;
+        }
+    }
+
+    /* Throughput */
+    {
+        u32 count = d_sim_process_stats_count(w);
+        u32 shown = 0u;
+        g_buf_throughput[0] = '\0';
+        pos = 0u;
+        buf_appendf(g_buf_throughput, sizeof(g_buf_throughput), &pos, "Throughput: %u", (unsigned)count);
+        for (i = 0u; i < count && shown < 6u; ++i) {
+            d_sim_process_stats s;
+            const d_proto_process *pp;
+            u32 per_min = 0u;
+            if (d_sim_process_stats_get_by_index(w, i, &s) != 0) continue;
+            if (s.ticks_observed > 0u) {
+                per_min = (u32)(((u64)s.output_units * 3600ull) / (u64)s.ticks_observed);
+            }
+            pp = d_content_get_process(s.process_id);
+            buf_appendf(g_buf_throughput, sizeof(g_buf_throughput), &pos,
+                        " | %s %u/min",
+                        (pp && pp->name) ? pp->name : "(proc)",
+                        (unsigned)per_min);
+            shown += 1u;
+        }
+        if (g_throughput_label) {
+            g_throughput_label->text = g_buf_throughput;
+        }
+    }
+}
+
 void dom_game_ui_debug_update(dui_context &ctx, DomGameApp &app, d_world_hash hash) {
     d_world *w = app.session().world();
     const InstanceInfo &inst = app.session().instance();
@@ -442,6 +636,7 @@ void dom_game_ui_debug_update(dui_context &ctx, DomGameApp &app, d_world_hash ha
     if (g_det_label) g_det_label->text = g_buf_det;
 
     update_pack_info(inst);
+    update_factory_inspectors(w);
 }
 
 } // namespace dom

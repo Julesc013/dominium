@@ -12,6 +12,7 @@
 #define D_CONTENT_MAX_ITEMS           8192u
 #define D_CONTENT_MAX_CONTAINERS      2048u
 #define D_CONTENT_MAX_PROCESSES       4096u
+#define D_CONTENT_MAX_PROCESS_IO_TERMS 65536u
 #define D_CONTENT_MAX_DEPOSITS        4096u
 #define D_CONTENT_MAX_STRUCTURES      2048u
 #define D_CONTENT_MAX_VEHICLES        2048u
@@ -38,6 +39,8 @@ static d_proto_container g_container_storage[D_CONTENT_MAX_CONTAINERS];
 static d_registry g_process_registry;
 static d_registry_entry g_process_entries[D_CONTENT_MAX_PROCESSES];
 static d_proto_process g_process_storage[D_CONTENT_MAX_PROCESSES];
+static d_process_io_term g_process_io_terms[D_CONTENT_MAX_PROCESS_IO_TERMS];
+static u32 g_process_io_term_count = 0u;
 
 static d_registry g_deposit_registry;
 static d_registry_entry g_deposit_entries[D_CONTENT_MAX_DEPOSITS];
@@ -95,6 +98,8 @@ static void d_content_clear_storage(void)
 
     memset(g_process_entries, 0, sizeof(g_process_entries));
     memset(g_process_storage, 0, sizeof(g_process_storage));
+    memset(g_process_io_terms, 0, sizeof(g_process_io_terms));
+    g_process_io_term_count = 0u;
 
     memset(g_deposit_entries, 0, sizeof(g_deposit_entries));
     memset(g_deposit_storage, 0, sizeof(g_deposit_storage));
@@ -232,6 +237,20 @@ static int d_content_register_process(const d_proto_process *src)
     }
     g_process_storage[slot] = *src;
     g_process_storage[slot].name = d_content_safe_name(src->name);
+    if (src->io_count > 0u && src->io_terms) {
+        u32 needed = (u32)src->io_count;
+        u32 base = g_process_io_term_count;
+        if (base > D_CONTENT_MAX_PROCESS_IO_TERMS || needed > (D_CONTENT_MAX_PROCESS_IO_TERMS - base)) {
+            memset(&g_process_storage[slot], 0, sizeof(g_process_storage[slot]));
+            return -1;
+        }
+        memcpy(&g_process_io_terms[base], src->io_terms, sizeof(d_process_io_term) * needed);
+        g_process_storage[slot].io_terms = &g_process_io_terms[base];
+        g_process_io_term_count = base + needed;
+    } else {
+        g_process_storage[slot].io_count = 0u;
+        g_process_storage[slot].io_terms = (d_process_io_term *)0;
+    }
     if (d_registry_add_with_id(&g_process_registry, src->id, &g_process_storage[slot]) == 0u) {
         memset(&g_process_storage[slot], 0, sizeof(g_process_storage[slot]));
         return -1;

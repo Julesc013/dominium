@@ -50,6 +50,13 @@ typedef u32 d_content_tag;
 #define D_TAG_VEHICLE_AIR        (1u << 25)
 #define D_TAG_DEPOSIT_STRATA_SOLID (1u << 26)
 
+/* Generic agent capability tags (domain-neutral). */
+#define D_TAG_CAP_WALK              (1u << 27)
+#define D_TAG_CAP_DRIVE             (1u << 28)
+#define D_TAG_CAP_OPERATE_PROCESS   (1u << 29)
+#define D_TAG_CAP_HAUL              (1u << 30)
+#define D_TAG_CAP_BUILD             (1u << 31)
+
 typedef struct d_proto_material_s {
     d_material_id id;
     const char   *name;
@@ -91,13 +98,40 @@ typedef struct d_proto_container_s {
     d_tlv_blob params;   /* packaging rules: allowed tags, stacking rules, etc. */
 } d_proto_container;
 
+typedef struct d_process_io_term_s {
+    u16       kind;      /* D_PROCESS_IO_* */
+    d_item_id item_id;   /* item/fluid/material id keyed by kind */
+    q16_16    rate;      /* units per tick (engine-level convention) */
+    u16       flags;     /* CATALYST, BYPRODUCT, OPTIONAL, etc. */
+} d_process_io_term;
+
+/* Generic process IO kinds (domain-neutral). */
+enum {
+    D_PROCESS_IO_INPUT_ITEM      = 1,
+    D_PROCESS_IO_OUTPUT_ITEM     = 2,
+    D_PROCESS_IO_INPUT_FLUID     = 3,
+    D_PROCESS_IO_OUTPUT_FLUID    = 4,
+    D_PROCESS_IO_INPUT_MATERIAL  = 5,
+    D_PROCESS_IO_OUTPUT_MATERIAL = 6
+};
+
+/* Generic process IO term flags (optional hints; interpretation is system-specific). */
+enum {
+    D_PROCESS_IO_FLAG_CATALYST = 1u << 0,
+    D_PROCESS_IO_FLAG_BYPRODUCT = 1u << 1,
+    D_PROCESS_IO_FLAG_OPTIONAL = 1u << 2
+};
+
 typedef struct d_proto_process_s {
     d_process_id  id;
     const char   *name;
     d_content_tag tags;
 
-    /* TLV blob for generic I/O, rates, etc. Actual slots defined in data schema. */
-    d_tlv_blob    params;
+    q16_16            base_duration;  /* nominal time per cycle */
+    u16              io_count;
+    d_process_io_term *io_terms;      /* runtime array from TLV */
+
+    d_tlv_blob        params;         /* model-specific: env/heat/etc. */
 } d_proto_process;
 
 typedef struct d_proto_deposit_s {
@@ -144,8 +178,15 @@ typedef struct d_proto_spline_profile_s {
 typedef struct d_proto_job_template_s {
     d_job_template_id id;
     const char       *name;
-    d_content_tag     tags;
-    d_tlv_blob        params;
+    u16               purpose;
+    d_content_tag      tags;
+
+    d_process_id        process_id;         /* optional; for OPERATE_PROCESS */
+    d_structure_proto_id structure_id;      /* optional; for BUILD/OPERATE structure jobs */
+    d_spline_profile_id  spline_profile_id; /* optional; for logistics jobs */
+
+    d_tlv_blob          requirements;       /* capabilities, environment, tools */
+    d_tlv_blob          rewards;            /* payment, reputation, etc. */
 } d_proto_job_template;
 
 typedef struct d_proto_building_s {

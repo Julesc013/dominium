@@ -52,6 +52,14 @@
 #define D_FIELD_PROCESS_NAME        0x02u
 #define D_FIELD_PROCESS_TAGS        0x03u
 #define D_FIELD_PROCESS_PARAMS      0x04u
+#define D_FIELD_PROCESS_BASE_DURATION 0x05u
+#define D_FIELD_PROCESS_IO_TERM     0x06u /* repeated; payload is TLV fields */
+
+/* Nested fields inside D_FIELD_PROCESS_IO_TERM payload. */
+#define D_FIELD_PROCESS_IO_KIND     0x01u /* u16 */
+#define D_FIELD_PROCESS_IO_ITEM_ID  0x02u /* u32 */
+#define D_FIELD_PROCESS_IO_RATE     0x03u /* q16_16 */
+#define D_FIELD_PROCESS_IO_FLAGS    0x04u /* u16 */
 
 #define D_FIELD_DEPOSIT_ID          0x01u
 #define D_FIELD_DEPOSIT_NAME        0x02u
@@ -84,8 +92,13 @@
 
 #define D_FIELD_JOB_ID              0x01u
 #define D_FIELD_JOB_NAME            0x02u
-#define D_FIELD_JOB_TAGS            0x03u
-#define D_FIELD_JOB_PARAMS          0x04u
+#define D_FIELD_JOB_PURPOSE         0x03u
+#define D_FIELD_JOB_TAGS            0x04u
+#define D_FIELD_JOB_PROCESS_ID      0x05u
+#define D_FIELD_JOB_STRUCTURE_ID    0x06u
+#define D_FIELD_JOB_SPLINE_PROFILE_ID 0x07u
+#define D_FIELD_JOB_REQUIREMENTS    0x08u
+#define D_FIELD_JOB_REWARDS         0x09u
 
 #define D_FIELD_BUILDING_ID         0x01u
 #define D_FIELD_BUILDING_NAME       0x02u

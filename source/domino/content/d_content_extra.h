@@ -21,6 +21,8 @@
 #define D_TLV_STRUCT_LAYOUT_FOOTPRINT_W   0x01u
 #define D_TLV_STRUCT_LAYOUT_FOOTPRINT_H   0x02u
 #define D_TLV_STRUCT_LAYOUT_ANCHOR_Z      0x03u
+#define D_TLV_STRUCT_LAYOUT_INV_IN_CONTAINER  0x04u /* u32 container_proto_id */
+#define D_TLV_STRUCT_LAYOUT_INV_OUT_CONTAINER 0x05u /* u32 container_proto_id */
 
 /* Structure IO/ports */
 #define D_TLV_STRUCT_IO_PORT              0x10u
@@ -74,6 +76,15 @@ enum {
 #define D_TLV_JOB_ENV_FIELD_ID            0x01u  /* u16 */
 #define D_TLV_JOB_ENV_MIN                 0x02u  /* q16_16 */
 #define D_TLV_JOB_ENV_MAX                 0x03u  /* q16_16 */
+
+/* Job template generic requirements/rewards (inside job_template.requirements/rewards). */
+#define D_TLV_JOB_REQ_AGENT_TAGS          0x11u  /* u32 bitmask of required d_content_tag */
+#define D_TLV_JOB_REQ_DURATION            0x12u  /* q16_16 nominal duration (optional) */
+
+#define D_TLV_JOB_REWARD_PAYMENT          0x20u  /* record payload is TLV fields */
+#define D_TLV_JOB_PAY_FROM_ACCOUNT        0x01u  /* u32 */
+#define D_TLV_JOB_PAY_TO_ACCOUNT          0x02u  /* u32 */
+#define D_TLV_JOB_PAY_AMOUNT              0x03u  /* q32_32 */
 
 /* Blueprint payload */
 #define D_TLV_BLUEPRINT_STRUCTURE_PROTO   0x01u
