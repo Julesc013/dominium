@@ -1,8 +1,30 @@
-# Hydrology
+# Hydrology (HYDRO)
 
-- Fields: `water_depth` is the canonical per-tile depth field (Q16.16, metres proxy) registered via `dfield`. Hydrology does not own hidden 3D arrays; it tracks tiles through the shared registry and lightweight caches.
-- River graph: `HydroRiverLink { body, from, to, gradient }` captures static down-slope paths; registration is via `dhydro_register_river_link` (no full solver yet).
-- Flow model: `dhydro_step(body, ChunkPos region, ticks)` walks the surface layer of the chunk, applies accumulated rain, routes outflow toward lower neighbours (4-neighbour, gradient-based) and subtracts evaporation (`dhydro_register_evaporation_bias` sets the per-body rate).
-- Inputs: rainfall comes from weather through `dhydro_add_rainfall(body, tile, depth)`. Terrain height comes from tile `z` for now; plug in real terrain fields later to refine gradients.
-- Outputs/queries: `dhydro_get_water_depth` returns stored depth for a tile; `dhydro_get_flow` reports the last computed outflow vector (wind-style `u/v` in Q16.16).
-- Determinism: all math is fixed-point (Q16.16). Updates are local to regions so world-scale floods stay deterministic and bounded even with stub storage.
+Hydrology is a deterministic, fixed-point subsystem that simulates coarse surface fluid columns per chunk and optionally exchanges volume with generic RES reservoirs.
+
+## 1. Core API
+- Public API: `source/domino/hydro/d_hydro.h`
+- Tick: `d_hydro_tick(d_world *w, u32 ticks)`
+- Sample: `d_hydro_sample_at(d_world *w, q32_32 x, q32_32 y, q32_32 z, d_hydro_cell *out)`
+
+## 2. Data Model
+- Each loaded chunk stores a fixed 2D grid (`16x16`) of `d_hydro_cell`:
+  - `depth` (Q16.16) – coarse column depth
+  - `surface_height` (Q16.16) – surface elevation relative to datum (currently `= depth`)
+  - `velocity_x/velocity_y` (Q16.16) – coarse lateral flux indicators for debugging/visualisation
+  - `flags` (Q16.16 bitfield) – reserved for model-defined states
+
+## 3. Built-in Model
+- `D_HYDRO_MODEL_SURFACE_WATER` (1)
+  - Applies a symmetric, stable explicit diffusion step across cell edges (including across chunk boundaries).
+  - Update is order-independent: per-tick snapshots are used and deltas are applied after edge evaluation.
+
+## 4. RES Coupling (Generic Reservoir Exchange)
+- Hydrology samples RES channels with `dres_sample_at` and applies deltas with `dres_apply_delta`.
+- Deposits tagged with `D_TAG_MATERIAL_FLUID` are treated as generic fluid reservoirs for exchange.
+- Exchange is conservative: the amount removed from/added to surface cells matches the delta applied to the RES channel.
+
+## 5. Persistence
+- HYDRO stores per-chunk grid state under the hydrology subsystem save tag.
+- Hydrology state should be included in determinism hashing to ensure replay bit-identical results.
+

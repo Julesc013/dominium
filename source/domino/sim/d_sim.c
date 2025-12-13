@@ -63,6 +63,7 @@ int d_sim_step(d_sim_context *ctx, u32 ticks) {
     for (t = 0u; t < ticks; ++t) {
         u32 subsystem_count;
         ctx->tick_index += 1u;
+        ctx->world->tick_count += 1u;
 
         /* 1) Global subsystem ticks (in registration order). */
         subsystem_count = d_subsystem_count();

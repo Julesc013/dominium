@@ -1,6 +1,15 @@
-# Jobs / Tasks
+# Jobs / Tasks (JOB)
 
-- Job model: `Job { id, kind, state, target_tile, required_item, required_count, work_time_s, assigned_actor, deps[4], dep_count }`. Kinds include build/deconstruct/transport/operate/repair/research/custom. States: pending/assigned/in-progress/complete/cancelled/failed.
-- Registry: `djob_create` (sequential IDs, bounded array), `djob_get`, `djob_cancel`, `djob_mark_complete`.
-- Tick: `djob_tick` walks all jobs each tick. Pending jobs stay pending until assignment (deps checked for completion). In-progress jobs accumulate elapsed time via `g_domino_dt_s`; once elapsed ≥ `work_time_s`, they move to COMPLETE. No scheduling/pathfinding yet—this is scaffolding for higher-level systems.
-- Deterministic, fixed-point only; no dynamic allocation during tick.
+Jobs are engine-level task instances parameterized by content templates. The engine only enforces generic feasibility constraints (including environment ranges) and does not embed product/gameplay semantics.
+
+## 1. Instances
+- `d_job_instance` stores id, template id, flags, subject/target ids, target position, and an opaque TLV `params` blob.
+- Instance persistence is currently instance-level (world) under `TAG_SUBSYS_DJOB`.
+
+## 2. Environment Constraints (Generic)
+- `job_template.params` may contain `D_TLV_JOB_ENV_RANGE` records:
+  - `FIELD_ID` (u16): an ENV field id (e.g. `D_ENV_FIELD_TEMPERATURE`)
+  - `MIN`/`MAX` (Q16.16): acceptable range (optional; omitted means unbounded)
+- During tick, JOB evaluates requirements against `d_env_sample_at` at the job target position.
+  - If any requirement fails (or the field is missing), the job sets `D_JOB_FLAG_ENV_UNSUITABLE`.
+

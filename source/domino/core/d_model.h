@@ -21,6 +21,7 @@ enum {
     D_MODEL_FAMILY_JOB    = 6,
     D_MODEL_FAMILY_NET    = 7,
     D_MODEL_FAMILY_REPLAY = 8,
+    D_MODEL_FAMILY_HYDRO  = 9,
     /* Reserve 1000+ for mods/third-party model families. */
 };
 

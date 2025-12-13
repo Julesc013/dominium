@@ -1,8 +1,18 @@
-Vehicle subsystem (stub)
-------------------------
-- `d_vehicle_instance` captures id, vehicle proto id, position/velocity, rotation, chunk_id, flags, entity_id, and TLV state.
-- Model vtable `dveh_model_vtable` (`tick_vehicle`) registers under family `D_MODEL_FAMILY_VEH`; a dummy model id 1 is provided.
-- Instances are created/destroyed with `d_vehicle_create` / `d_vehicle_destroy`; registry is a fixed table keyed by world.
-- Chunk save/load under `TAG_SUBSYS_DVEH` writes count + instance records (ids, protos, transforms, velocity, flags, entity, state blob). Instance-level data is empty.
-- Tick walks vehicles for a world and dispatches to the registered model tick.
-- Vehicle protos ship inside pack/mod TLVs chosen by the launcher; compatibility checks ensure vehicle schema versions track suite/core revisions so older products degrade safely to read-only.
+# Vehicles (VEH)
+
+The vehicle subsystem stores vehicle instances and dispatches to registered vehicle models for motion/state updates. Vehicles can optionally contribute interior ENV volumes (cabins) using data-driven TLVs.
+
+## 1. Instances
+- `d_vehicle_instance` captures id, proto id, position/velocity, rotation, chunk id, flags, optional entity link, and an opaque TLV `state` blob.
+- Chunk save/load under `TAG_SUBSYS_DVEH` writes count + instance records. Instance-level data is currently empty.
+
+## 2. Models
+- Vehicle models register under `D_MODEL_FAMILY_VEH` (`dveh_model_vtable`).
+- Tick walks vehicles and dispatches `tick_vehicle` when present.
+
+## 3. ENV Volume Integration
+- Vehicle prototypes (`d_proto_vehicle.params`) may include an environmental volume graph:
+  - `D_TLV_ENV_VOLUME`: local AABB in Q16.16 (min/max for x/y/z)
+  - `D_TLV_ENV_EDGE`: connects local volumes (`A`,`B`), where `B=0` couples to exterior; includes `GAS_K` and `HEAT_K`
+- Created volumes are added to the ENV volume graph with `owner_vehicle_eid = vehicle_instance_id` and removed on destroy.
+

@@ -59,6 +59,12 @@ typedef struct d_proto_material_s {
     q16_16 density;
     q16_16 hardness;
     q16_16 melting_point;
+
+    /* Optional terrain/environment parameters (unit interpretation is model-specific). */
+    q16_16 permeability;         /* 0..1 */
+    q16_16 porosity;             /* 0..1 */
+    q16_16 thermal_conductivity; /* >=0 */
+    q16_16 erosion_resistance;   /* >=0 */
 } d_proto_material;
 
 typedef struct d_proto_item_s {
@@ -79,6 +85,10 @@ typedef struct d_proto_container_s {
     q16_16 max_volume;
     q16_16 max_mass;
     u16    slot_count;   /* 0 = bulk-only; >0 = slot-based */
+
+    /* Generic packing behavior; interpretation is data-driven. */
+    u16    packing_mode;
+    d_tlv_blob params;   /* packaging rules: allowed tags, stacking rules, etc. */
 } d_proto_container;
 
 typedef struct d_proto_process_s {
@@ -122,6 +132,11 @@ typedef struct d_proto_vehicle_s {
 typedef struct d_proto_spline_profile_s {
     d_spline_profile_id id;
     const char         *name;
+    u16                 type;        /* D_SPLINE_TYPE_* */
+    u16                 flags;
+    q16_16              base_speed;
+    q16_16              max_grade;
+    q16_16              capacity;
     d_content_tag       tags;
     d_tlv_blob          params;
 } d_proto_spline_profile;

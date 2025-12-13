@@ -185,6 +185,11 @@ static d_gfx_color d_gfx_color_from_rgba(u32 rgba)
     return c;
 }
 
+static int d_gfx_abs_i32(int v)
+{
+    return (v < 0) ? -v : v;
+}
+
 int dgfx_init(const dgfx_desc *desc)
 {
     if (desc) {
@@ -295,6 +300,62 @@ int dgfx_cmd_emit(dgfx_cmd_buffer *buf,
             return 1;
         }
         return 0;
+    case DGFX_CMD_DRAW_LINES:
+        if (!payload || payload_size < sizeof(dgfx_line_segment_t)) {
+            return 0;
+        }
+        count = payload_size / (u16)sizeof(dgfx_line_segment_t);
+        for (i = 0u; i < count; ++i) {
+            const dgfx_line_segment_t *ln = ((const dgfx_line_segment_t *)payload) + i;
+            int x0 = ln->x0;
+            int y0 = ln->y0;
+            int x1 = ln->x1;
+            int y1 = ln->y1;
+            int thickness = ln->thickness;
+            int dx;
+            int sx;
+            int dy;
+            int sy;
+            int err;
+            d_gfx_color col = d_gfx_color_from_rgba(ln->color_rgba);
+
+            if (thickness < 1) {
+                thickness = 1;
+            }
+
+            dx = d_gfx_abs_i32(x1 - x0);
+            sx = (x0 < x1) ? 1 : -1;
+            dy = -d_gfx_abs_i32(y1 - y0);
+            sy = (y0 < y1) ? 1 : -1;
+            err = dx + dy;
+
+            while (1) {
+                d_gfx_draw_rect_cmd r;
+                int half = thickness / 2;
+                r.x = x0 - half;
+                r.y = y0 - half;
+                r.w = thickness;
+                r.h = thickness;
+                r.color = col;
+                d_gfx_cmd_draw_rect(buf, &r);
+
+                if (x0 == x1 && y0 == y1) {
+                    break;
+                }
+                {
+                    int e2 = 2 * err;
+                    if (e2 >= dy) {
+                        err += dy;
+                        x0 += sx;
+                    }
+                    if (e2 <= dx) {
+                        err += dx;
+                        y0 += sy;
+                    }
+                }
+            }
+        }
+        return 1;
     default:
         return 0;
     }

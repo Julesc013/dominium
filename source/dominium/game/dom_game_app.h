@@ -8,6 +8,7 @@
 #include "dom_compat.h"
 #include "dom_game_states.h"
 #include "dom_game_camera.h"
+#include "dom_game_tools_build.h"
 
 extern "C" {
 #include "view/d_view.h"
@@ -63,6 +64,12 @@ public:
     void request_exit();
     void spawn_demo_blueprint();
     void update_demo_hud();
+    void set_last_struct_id(d_struct_instance_id id) { m_last_struct_id = id; }
+
+    void build_tool_select_source();
+    void build_tool_select_sink();
+    void build_tool_select_spline();
+    void build_tool_cancel();
 
     DomSession&       session()       { return m_session; }
     const DomSession& session() const { return m_session; }
@@ -75,6 +82,21 @@ public:
     void set_debug_panel_visible(bool v) { m_show_debug_panel = v; }
     void toggle_debug_panel() { m_show_debug_panel = !m_show_debug_panel; }
     u32 determinism_mode() const { return m_detmode; }
+
+    bool debug_probe_is_set() const { return m_debug_probe_set; }
+    void clear_debug_probe();
+    void set_debug_probe(q32_32 x, q32_32 y, q32_32 z);
+    void debug_probe_world_coords(q32_32 *out_x, q32_32 *out_y, q32_32 *out_z) const;
+
+    bool overlay_hydrology() const { return m_show_overlay_hydro; }
+    bool overlay_temperature() const { return m_show_overlay_temp; }
+    bool overlay_pressure() const { return m_show_overlay_pressure; }
+    bool overlay_volumes() const { return m_show_overlay_volumes; }
+
+    void toggle_overlay_hydrology();
+    void toggle_overlay_temperature();
+    void toggle_overlay_pressure();
+    void toggle_overlay_volumes();
 
 private:
     bool init_paths(const GameConfig &cfg);
@@ -123,10 +145,21 @@ private:
     std::string  m_replay_record_path;
     std::string  m_replay_play_path;
     bool         m_show_debug_panel;
+    bool         m_debug_probe_set;
+    q32_32       m_debug_probe_x;
+    q32_32       m_debug_probe_y;
+    q32_32       m_debug_probe_z;
+
+    bool         m_show_overlay_hydro;
+    bool         m_show_overlay_temp;
+    bool         m_show_overlay_pressure;
+    bool         m_show_overlay_volumes;
 
     char         m_hud_instance_text[128];
     char         m_hud_remaining_text[128];
     char         m_hud_inventory_text[128];
+
+    DomGameBuildTool m_build_tool;
 };
 
 bool parse_game_cli_args(int argc, char **argv, GameConfig &cfg);

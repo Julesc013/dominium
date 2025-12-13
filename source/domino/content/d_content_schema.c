@@ -162,6 +162,18 @@ int d_content_schema_parse_material_v1(const d_tlv_blob *blob, struct d_proto_ma
         case D_FIELD_MATERIAL_MELTING:
             if (d_content_schema_read_q16_16(&payload, &tmp.melting_point) != 0) return -1;
             break;
+        case D_FIELD_MATERIAL_PERMEABILITY:
+            if (d_content_schema_read_q16_16(&payload, &tmp.permeability) != 0) return -1;
+            break;
+        case D_FIELD_MATERIAL_POROSITY:
+            if (d_content_schema_read_q16_16(&payload, &tmp.porosity) != 0) return -1;
+            break;
+        case D_FIELD_MATERIAL_THERMAL:
+            if (d_content_schema_read_q16_16(&payload, &tmp.thermal_conductivity) != 0) return -1;
+            break;
+        case D_FIELD_MATERIAL_EROSION:
+            if (d_content_schema_read_q16_16(&payload, &tmp.erosion_resistance) != 0) return -1;
+            break;
         default:
             /* ignore unknown field */
             break;
@@ -274,6 +286,12 @@ int d_content_schema_parse_container_v1(const d_tlv_blob *blob, struct d_proto_c
             break;
         case D_FIELD_CONTAINER_SLOTS:
             if (d_content_schema_read_u16(&payload, &tmp.slot_count) != 0) return -1;
+            break;
+        case D_FIELD_CONTAINER_PACKING_MODE:
+            if (d_content_schema_read_u16(&payload, &tmp.packing_mode) != 0) return -1;
+            break;
+        case D_FIELD_CONTAINER_PARAMS:
+            tmp.params = d_content_schema_copy_blob(&payload);
             break;
         default:
             break;
@@ -536,6 +554,21 @@ int d_content_schema_parse_spline_v1(const d_tlv_blob *blob, struct d_proto_spli
             break;
         case D_FIELD_SPLINE_PARAMS:
             tmp.params = d_content_schema_copy_blob(&payload);
+            break;
+        case D_FIELD_SPLINE_TYPE:
+            if (d_content_schema_read_u16(&payload, &tmp.type) != 0) return -1;
+            break;
+        case D_FIELD_SPLINE_FLAGS:
+            if (d_content_schema_read_u16(&payload, &tmp.flags) != 0) return -1;
+            break;
+        case D_FIELD_SPLINE_BASE_SPEED:
+            if (d_content_schema_read_q16_16(&payload, &tmp.base_speed) != 0) return -1;
+            break;
+        case D_FIELD_SPLINE_MAX_GRADE:
+            if (d_content_schema_read_q16_16(&payload, &tmp.max_grade) != 0) return -1;
+            break;
+        case D_FIELD_SPLINE_CAPACITY:
+            if (d_content_schema_read_q16_16(&payload, &tmp.capacity) != 0) return -1;
             break;
         default:
             break;

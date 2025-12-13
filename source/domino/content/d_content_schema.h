@@ -27,6 +27,10 @@
 #define D_FIELD_MATERIAL_DENSITY    0x04u
 #define D_FIELD_MATERIAL_HARDNESS   0x05u
 #define D_FIELD_MATERIAL_MELTING    0x06u
+#define D_FIELD_MATERIAL_PERMEABILITY 0x07u
+#define D_FIELD_MATERIAL_POROSITY     0x08u
+#define D_FIELD_MATERIAL_THERMAL      0x09u
+#define D_FIELD_MATERIAL_EROSION      0x0Au
 
 #define D_FIELD_ITEM_ID             0x01u
 #define D_FIELD_ITEM_NAME           0x02u
@@ -41,6 +45,8 @@
 #define D_FIELD_CONTAINER_MAX_VOLUME 0x04u
 #define D_FIELD_CONTAINER_MAX_MASS  0x05u
 #define D_FIELD_CONTAINER_SLOTS     0x06u
+#define D_FIELD_CONTAINER_PACKING_MODE 0x07u
+#define D_FIELD_CONTAINER_PARAMS    0x08u
 
 #define D_FIELD_PROCESS_ID          0x01u
 #define D_FIELD_PROCESS_NAME        0x02u
@@ -70,6 +76,11 @@
 #define D_FIELD_SPLINE_NAME         0x02u
 #define D_FIELD_SPLINE_TAGS         0x03u
 #define D_FIELD_SPLINE_PARAMS       0x04u
+#define D_FIELD_SPLINE_TYPE         0x05u
+#define D_FIELD_SPLINE_FLAGS        0x06u
+#define D_FIELD_SPLINE_BASE_SPEED   0x07u
+#define D_FIELD_SPLINE_MAX_GRADE    0x08u
+#define D_FIELD_SPLINE_CAPACITY     0x09u
 
 #define D_FIELD_JOB_ID              0x01u
 #define D_FIELD_JOB_NAME            0x02u

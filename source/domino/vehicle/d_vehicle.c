@@ -2,14 +2,34 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "content/d_content.h"
+#include "content/d_content_extra.h"
+#include "core/d_tlv_kv.h"
 #include "core/d_model.h"
 #include "core/d_subsystem.h"
+#include "env/d_env_field.h"
+#include "env/d_env_volume.h"
 #include "world/d_world.h"
 #include "vehicle/d_vehicle.h"
 #include "vehicle/d_vehicle_model.h"
 
 #define DVEH_MAX_MODELS     8u
 #define DVEH_MAX_INSTANCES 128u
+#define DVEH_MAX_ENV_VOLUMES 16u
+#define DVEH_MAX_ENV_EDGES   32u
+#define DVEH_ENV_DEFAULT_CONDUCTANCE ((q16_16)(1 << 12)) /* 1/16 in Q16.16 */
+
+typedef struct dveh_env_vol_def_s {
+    q16_16 min_x, min_y, min_z;
+    q16_16 max_x, max_y, max_z;
+} dveh_env_vol_def;
+
+typedef struct dveh_env_edge_def_s {
+    u16   a;
+    u16   b; /* 0 = exterior */
+    q16_16 gas_k;
+    q16_16 heat_k;
+} dveh_env_edge_def;
 
 typedef struct d_vehicle_entry {
     d_world            *world;
@@ -24,6 +44,243 @@ static u32 g_veh_model_count = 0u;
 static d_vehicle_entry g_vehicle_entries[DVEH_MAX_INSTANCES];
 static d_vehicle_instance_id g_vehicle_next_id = 1u;
 static int g_vehicle_registered = 0;
+
+static q32_32 dveh_q32_from_q16(q16_16 v) {
+    return ((q32_32)v) << (Q32_32_FRAC_BITS - Q16_16_FRAC_BITS);
+}
+
+static q16_16 dveh_sample_field0(const d_env_sample *samples, u16 count, d_env_field_id field_id) {
+    u16 i;
+    if (!samples || count == 0u) {
+        return 0;
+    }
+    for (i = 0u; i < count; ++i) {
+        if (samples[i].field_id == field_id) {
+            return samples[i].values[0];
+        }
+    }
+    return 0;
+}
+
+static int dveh_parse_env_volume_def(const d_tlv_blob *in, dveh_env_vol_def *out) {
+    u32 offset;
+    u32 tag;
+    d_tlv_blob payload;
+    int rc;
+    if (!out) {
+        return -1;
+    }
+    memset(out, 0, sizeof(*out));
+    if (!in || !in->ptr || in->len == 0u) {
+        return 0;
+    }
+    offset = 0u;
+    while ((rc = d_tlv_kv_next(in, &offset, &tag, &payload)) == 0) {
+        switch (tag) {
+        case D_TLV_ENV_VOLUME_MIN_X:
+            (void)d_tlv_kv_read_q16_16(&payload, &out->min_x);
+            break;
+        case D_TLV_ENV_VOLUME_MIN_Y:
+            (void)d_tlv_kv_read_q16_16(&payload, &out->min_y);
+            break;
+        case D_TLV_ENV_VOLUME_MIN_Z:
+            (void)d_tlv_kv_read_q16_16(&payload, &out->min_z);
+            break;
+        case D_TLV_ENV_VOLUME_MAX_X:
+            (void)d_tlv_kv_read_q16_16(&payload, &out->max_x);
+            break;
+        case D_TLV_ENV_VOLUME_MAX_Y:
+            (void)d_tlv_kv_read_q16_16(&payload, &out->max_y);
+            break;
+        case D_TLV_ENV_VOLUME_MAX_Z:
+            (void)d_tlv_kv_read_q16_16(&payload, &out->max_z);
+            break;
+        default:
+            break;
+        }
+    }
+    if (out->max_x < out->min_x) {
+        q16_16 tmp = out->min_x; out->min_x = out->max_x; out->max_x = tmp;
+    }
+    if (out->max_y < out->min_y) {
+        q16_16 tmp = out->min_y; out->min_y = out->max_y; out->max_y = tmp;
+    }
+    if (out->max_z < out->min_z) {
+        q16_16 tmp = out->min_z; out->min_z = out->max_z; out->max_z = tmp;
+    }
+    return 0;
+}
+
+static int dveh_parse_env_edge_def(const d_tlv_blob *in, dveh_env_edge_def *out) {
+    u32 offset;
+    u32 tag;
+    d_tlv_blob payload;
+    int rc;
+    if (!out) {
+        return -1;
+    }
+    memset(out, 0, sizeof(*out));
+    out->gas_k = DVEH_ENV_DEFAULT_CONDUCTANCE;
+    out->heat_k = DVEH_ENV_DEFAULT_CONDUCTANCE;
+    if (!in || !in->ptr || in->len == 0u) {
+        return 0;
+    }
+    offset = 0u;
+    while ((rc = d_tlv_kv_next(in, &offset, &tag, &payload)) == 0) {
+        switch (tag) {
+        case D_TLV_ENV_EDGE_A:
+            (void)d_tlv_kv_read_u16(&payload, &out->a);
+            break;
+        case D_TLV_ENV_EDGE_B:
+            (void)d_tlv_kv_read_u16(&payload, &out->b);
+            break;
+        case D_TLV_ENV_EDGE_GAS_K:
+            (void)d_tlv_kv_read_q16_16(&payload, &out->gas_k);
+            break;
+        case D_TLV_ENV_EDGE_HEAT_K:
+            (void)d_tlv_kv_read_q16_16(&payload, &out->heat_k);
+            break;
+        default:
+            break;
+        }
+    }
+    return 0;
+}
+
+static void dveh_collect_env_defs(
+    const d_tlv_blob     *params,
+    dveh_env_vol_def     *vols,
+    u32                  *in_out_vol_count,
+    dveh_env_edge_def    *edges,
+    u32                  *in_out_edge_count
+) {
+    u32 offset;
+    u32 tag;
+    d_tlv_blob payload;
+    int rc;
+    u32 vol_count;
+    u32 edge_count;
+
+    if (in_out_vol_count) *in_out_vol_count = 0u;
+    if (in_out_edge_count) *in_out_edge_count = 0u;
+    if (!params || !params->ptr || params->len == 0u) {
+        return;
+    }
+    if (!vols || !edges || !in_out_vol_count || !in_out_edge_count) {
+        return;
+    }
+
+    offset = 0u;
+    vol_count = 0u;
+    edge_count = 0u;
+    while ((rc = d_tlv_kv_next(params, &offset, &tag, &payload)) == 0) {
+        if (tag == D_TLV_ENV_VOLUME) {
+            if (vol_count < DVEH_MAX_ENV_VOLUMES) {
+                (void)dveh_parse_env_volume_def(&payload, &vols[vol_count]);
+                vol_count += 1u;
+            }
+        } else if (tag == D_TLV_ENV_EDGE) {
+            if (edge_count < DVEH_MAX_ENV_EDGES) {
+                (void)dveh_parse_env_edge_def(&payload, &edges[edge_count]);
+                edge_count += 1u;
+            }
+        }
+    }
+
+    *in_out_vol_count = vol_count;
+    *in_out_edge_count = edge_count;
+}
+
+static void dveh_build_env_for_instance(d_world *w, const d_vehicle_instance *inst) {
+    const d_proto_vehicle *proto;
+    dveh_env_vol_def vols[DVEH_MAX_ENV_VOLUMES];
+    dveh_env_edge_def edges[DVEH_MAX_ENV_EDGES];
+    u32 vol_count;
+    u32 edge_count;
+    d_env_volume_id vol_ids[DVEH_MAX_ENV_VOLUMES + 1u];
+    q32_32 base_x;
+    q32_32 base_y;
+    q32_32 base_z;
+    u32 i;
+
+    if (!w || !inst || inst->proto_id == 0u) {
+        return;
+    }
+    proto = d_content_get_vehicle(inst->proto_id);
+    if (!proto) {
+        return;
+    }
+
+    vol_count = 0u;
+    edge_count = 0u;
+    dveh_collect_env_defs(&proto->params, vols, &vol_count, edges, &edge_count);
+    if (vol_count == 0u) {
+        return;
+    }
+
+    (void)d_env_volume_remove_owned_by(w, 0u, (u32)inst->id);
+    memset(vol_ids, 0, sizeof(vol_ids));
+
+    base_x = dveh_q32_from_q16(inst->pos_x);
+    base_y = dveh_q32_from_q16(inst->pos_y);
+    base_z = dveh_q32_from_q16(inst->pos_z);
+
+    for (i = 0u; i < vol_count; ++i) {
+        d_env_volume v;
+        d_env_sample samples[16];
+        u16 sample_count;
+        q32_32 cx;
+        q32_32 cy;
+        q32_32 cz;
+
+        memset(&v, 0, sizeof(v));
+        v.min_x = base_x + dveh_q32_from_q16(vols[i].min_x);
+        v.min_y = base_y + dveh_q32_from_q16(vols[i].min_y);
+        v.min_z = base_z + dveh_q32_from_q16(vols[i].min_z);
+        v.max_x = base_x + dveh_q32_from_q16(vols[i].max_x);
+        v.max_y = base_y + dveh_q32_from_q16(vols[i].max_y);
+        v.max_z = base_z + dveh_q32_from_q16(vols[i].max_z);
+        v.owner_struct_eid = 0u;
+        v.owner_vehicle_eid = (u32)inst->id;
+
+        cx = (q32_32)((v.min_x + v.max_x) >> 1);
+        cy = (q32_32)((v.min_y + v.max_y) >> 1);
+        cz = (q32_32)((v.min_z + v.max_z) >> 1);
+
+        sample_count = d_env_sample_exterior_at(w, cx, cy, cz, samples, 16u);
+        v.pressure = dveh_sample_field0(samples, sample_count, D_ENV_FIELD_PRESSURE);
+        v.temperature = dveh_sample_field0(samples, sample_count, D_ENV_FIELD_TEMPERATURE);
+        v.gas0_fraction = dveh_sample_field0(samples, sample_count, D_ENV_FIELD_GAS0_FRACTION);
+        v.gas1_fraction = dveh_sample_field0(samples, sample_count, D_ENV_FIELD_GAS1_FRACTION);
+        v.humidity = dveh_sample_field0(samples, sample_count, D_ENV_FIELD_HUMIDITY);
+        v.pollutant = 0;
+
+        vol_ids[i + 1u] = d_env_volume_create(w, &v);
+    }
+
+    for (i = 0u; i < edge_count; ++i) {
+        d_env_volume_edge e;
+        u16 a = edges[i].a;
+        u16 b = edges[i].b;
+        if (a == 0u || a > vol_count) {
+            continue;
+        }
+        if (b > vol_count) {
+            continue;
+        }
+        if (vol_ids[a] == 0u) {
+            continue;
+        }
+        if (b != 0u && vol_ids[b] == 0u) {
+            continue;
+        }
+        e.a = vol_ids[a];
+        e.b = (b == 0u) ? 0u : vol_ids[b];
+        e.gas_conductance = edges[i].gas_k;
+        e.heat_conductance = edges[i].heat_k;
+        (void)d_env_volume_add_edge(w, &e);
+    }
+}
 
 int dveh_register_model(const dveh_model_vtable *vt) {
     d_model_desc desc;
@@ -118,6 +375,8 @@ d_vehicle_instance_id d_vehicle_create(
     slot->inst.state.len = 0u;
     slot->model_id = 1u;
     slot->in_use = 1;
+
+    dveh_build_env_for_instance(w, &slot->inst);
     return slot->inst.id;
 }
 
@@ -129,6 +388,7 @@ int d_vehicle_destroy(
     if (!entry) {
         return -1;
     }
+    (void)d_env_volume_remove_owned_by(w, 0u, (u32)id);
     if (entry->inst.state.ptr) {
         free(entry->inst.state.ptr);
     }
