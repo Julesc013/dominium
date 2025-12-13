@@ -74,7 +74,6 @@ int d_struct_spawn_blueprint(
         inst.rot_yaw = d_q16_16_from_int(0);
         inst.rot_pitch = d_q16_16_from_int(0);
         inst.rot_roll = d_q16_16_from_int(0);
-        d_struct_inventory_clear(&inst.inventory);
         return (int)d_struct_spawn(w, &inst);
     }
 }

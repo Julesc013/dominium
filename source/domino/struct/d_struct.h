@@ -45,7 +45,6 @@ int d_struct_get_inventory_summary(
 
 /* Subsystem registration hook */
 void d_struct_init(void);
-void d_struct_processes_register_system(void);
 int d_struct_validate(const d_world *w);
 
 #ifdef __cplusplus

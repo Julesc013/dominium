@@ -313,11 +313,18 @@ int d_content_schema_parse_process_v1(const d_tlv_blob *blob, struct d_proto_pro
     d_proto_process tmp;
     int have_id = 0;
     int have_name = 0;
+    u32 io_count = 0u;
+
+#define D_CONTENT_SCHEMA_MAX_PROCESS_IO_TERMS 64u
+    static d_process_io_term io_scratch[D_CONTENT_SCHEMA_MAX_PROCESS_IO_TERMS];
 
     if (!blob || !out) {
         return -1;
     }
     memset(&tmp, 0, sizeof(tmp));
+    tmp.base_duration = d_q16_16_from_int(1);
+    tmp.io_count = 0u;
+    tmp.io_terms = (d_process_io_term *)0;
 
     while (1) {
         int rc = d_content_schema_next(blob, &offset, &tag, &payload);
@@ -343,6 +350,44 @@ int d_content_schema_parse_process_v1(const d_tlv_blob *blob, struct d_proto_pro
         case D_FIELD_PROCESS_PARAMS:
             tmp.params = d_content_schema_copy_blob(&payload);
             break;
+        case D_FIELD_PROCESS_BASE_DURATION:
+            if (d_content_schema_read_q16_16(&payload, &tmp.base_duration) != 0) return -1;
+            break;
+        case D_FIELD_PROCESS_IO_TERM: {
+            d_process_io_term term;
+            u32 inner_off = 0u;
+            u32 inner_tag;
+            d_tlv_blob inner_payload;
+            int inner_rc;
+
+            memset(&term, 0, sizeof(term));
+            while ((inner_rc = d_content_schema_next(&payload, &inner_off, &inner_tag, &inner_payload)) == 0) {
+                switch (inner_tag) {
+                case D_FIELD_PROCESS_IO_KIND:
+                    if (d_content_schema_read_u16(&inner_payload, &term.kind) != 0) return -1;
+                    break;
+                case D_FIELD_PROCESS_IO_ITEM_ID:
+                    if (d_content_schema_read_u32(&inner_payload, &term.item_id) != 0) return -1;
+                    break;
+                case D_FIELD_PROCESS_IO_RATE:
+                    if (d_content_schema_read_q16_16(&inner_payload, &term.rate) != 0) return -1;
+                    break;
+                case D_FIELD_PROCESS_IO_FLAGS:
+                    if (d_content_schema_read_u16(&inner_payload, &term.flags) != 0) return -1;
+                    break;
+                default:
+                    break;
+                }
+            }
+
+            if (io_count < D_CONTENT_SCHEMA_MAX_PROCESS_IO_TERMS) {
+                io_scratch[io_count] = term;
+                io_count += 1u;
+            } else {
+                return -1;
+            }
+            break;
+        }
         default:
             break;
         }
@@ -351,6 +396,8 @@ int d_content_schema_parse_process_v1(const d_tlv_blob *blob, struct d_proto_pro
     if (!have_id || !have_name) {
         return -1;
     }
+    tmp.io_count = (u16)io_count;
+    tmp.io_terms = (io_count > 0u) ? io_scratch : (d_process_io_term *)0;
     *out = tmp;
     return 0;
 }
@@ -590,6 +637,7 @@ int d_content_schema_parse_job_template_v1(const d_tlv_blob *blob, struct d_prot
     d_proto_job_template tmp;
     int have_id = 0;
     int have_name = 0;
+    int have_purpose = 0;
 
     if (!blob || !out) {
         return -1;
@@ -614,18 +662,34 @@ int d_content_schema_parse_job_template_v1(const d_tlv_blob *blob, struct d_prot
             tmp.name = d_content_schema_read_string(&payload, &have_name);
             if (!have_name) return -1;
             break;
+        case D_FIELD_JOB_PURPOSE:
+            if (d_content_schema_read_u16(&payload, &tmp.purpose) != 0) return -1;
+            have_purpose = 1;
+            break;
         case D_FIELD_JOB_TAGS:
             if (d_content_schema_read_u32(&payload, &tmp.tags) != 0) return -1;
             break;
-        case D_FIELD_JOB_PARAMS:
-            tmp.params = d_content_schema_copy_blob(&payload);
+        case D_FIELD_JOB_PROCESS_ID:
+            if (d_content_schema_read_u32(&payload, &tmp.process_id) != 0) return -1;
+            break;
+        case D_FIELD_JOB_STRUCTURE_ID:
+            if (d_content_schema_read_u32(&payload, &tmp.structure_id) != 0) return -1;
+            break;
+        case D_FIELD_JOB_SPLINE_PROFILE_ID:
+            if (d_content_schema_read_u32(&payload, &tmp.spline_profile_id) != 0) return -1;
+            break;
+        case D_FIELD_JOB_REQUIREMENTS:
+            tmp.requirements = d_content_schema_copy_blob(&payload);
+            break;
+        case D_FIELD_JOB_REWARDS:
+            tmp.rewards = d_content_schema_copy_blob(&payload);
             break;
         default:
             break;
         }
     }
 
-    if (!have_id || !have_name) {
+    if (!have_id || !have_name || !have_purpose) {
         return -1;
     }
     *out = tmp;

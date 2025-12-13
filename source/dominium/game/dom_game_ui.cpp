@@ -13,6 +13,8 @@ namespace {
 static dui_widget *g_status_label = (dui_widget *)0;
 static dui_widget *g_start_button = (dui_widget *)0;
 static dui_widget *g_place_button = (dui_widget *)0;
+static dui_widget *g_place_refiner_button = (dui_widget *)0;
+static dui_widget *g_place_assembler_button = (dui_widget *)0;
 static dui_widget *g_place_sink_button = (dui_widget *)0;
 static dui_widget *g_place_spline_button = (dui_widget *)0;
 static dui_widget *g_cancel_tool_button = (dui_widget *)0;
@@ -25,6 +27,8 @@ static void clear_children(dui_context &ctx) {
     g_status_label = (dui_widget *)0;
     g_start_button = (dui_widget *)0;
     g_place_button = (dui_widget *)0;
+    g_place_refiner_button = (dui_widget *)0;
+    g_place_assembler_button = (dui_widget *)0;
     g_place_sink_button = (dui_widget *)0;
     g_place_spline_button = (dui_widget *)0;
     g_cancel_tool_button = (dui_widget *)0;
@@ -76,14 +80,28 @@ static void on_click_start(dui_widget *self) {
 static void on_click_place(dui_widget *self) {
     DomGameApp *app = self ? (DomGameApp *)self->user_data : (DomGameApp *)0;
     if (app) {
-        app->build_tool_select_source();
+        app->build_tool_select_extractor();
+    }
+}
+
+static void on_click_place_refiner(dui_widget *self) {
+    DomGameApp *app = self ? (DomGameApp *)self->user_data : (DomGameApp *)0;
+    if (app) {
+        app->build_tool_select_refiner();
+    }
+}
+
+static void on_click_place_assembler(dui_widget *self) {
+    DomGameApp *app = self ? (DomGameApp *)self->user_data : (DomGameApp *)0;
+    if (app) {
+        app->build_tool_select_assembler();
     }
 }
 
 static void on_click_place_sink(dui_widget *self) {
     DomGameApp *app = self ? (DomGameApp *)self->user_data : (DomGameApp *)0;
     if (app) {
-        app->build_tool_select_sink();
+        app->build_tool_select_bin();
     }
 }
 
@@ -188,7 +206,7 @@ void dom_game_ui_build_in_game(dui_context &ctx) {
     if (!bar) {
         return;
     }
-    bar->layout_rect.h = d_q16_16_from_int(180);
+    bar->layout_rect.h = d_q16_16_from_int(260);
 
     label_top = add_child(ctx, bar, DUI_WIDGET_LABEL);
     set_text(label_top, "Demo HUD");
@@ -207,21 +225,35 @@ void dom_game_ui_build_in_game(dui_context &ctx) {
 
     g_place_button = add_child(ctx, bar, DUI_WIDGET_BUTTON);
     if (g_place_button) {
-        set_text(g_place_button, "Tool: Place Source Structure");
+        set_text(g_place_button, "Tool: Place Demo Extractor");
         g_place_button->on_click = on_click_place;
         g_place_button->user_data = (void *)g_ui_app;
     }
 
+    g_place_refiner_button = add_child(ctx, bar, DUI_WIDGET_BUTTON);
+    if (g_place_refiner_button) {
+        set_text(g_place_refiner_button, "Tool: Place Demo Refiner");
+        g_place_refiner_button->on_click = on_click_place_refiner;
+        g_place_refiner_button->user_data = (void *)g_ui_app;
+    }
+
+    g_place_assembler_button = add_child(ctx, bar, DUI_WIDGET_BUTTON);
+    if (g_place_assembler_button) {
+        set_text(g_place_assembler_button, "Tool: Place Demo Assembler");
+        g_place_assembler_button->on_click = on_click_place_assembler;
+        g_place_assembler_button->user_data = (void *)g_ui_app;
+    }
+
     g_place_sink_button = add_child(ctx, bar, DUI_WIDGET_BUTTON);
     if (g_place_sink_button) {
-        set_text(g_place_sink_button, "Tool: Place Sink Structure");
+        set_text(g_place_sink_button, "Tool: Place Demo Bin");
         g_place_sink_button->on_click = on_click_place_sink;
         g_place_sink_button->user_data = (void *)g_ui_app;
     }
 
     g_place_spline_button = add_child(ctx, bar, DUI_WIDGET_BUTTON);
     if (g_place_spline_button) {
-        set_text(g_place_spline_button, "Tool: Draw Debug Item Spline");
+        set_text(g_place_spline_button, "Tool: Draw Demo Item Conveyor");
         g_place_spline_button->on_click = on_click_place_spline;
         g_place_spline_button->user_data = (void *)g_ui_app;
     }

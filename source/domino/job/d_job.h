@@ -1,48 +1,63 @@
-/* Job/AI subsystem types (C89). */
+/* Job subsystem public interface (C89). */
 #ifndef D_JOB_H
 #define D_JOB_H
 
 #include "domino/core/types.h"
 #include "domino/core/fixed.h"
-#include "domino/core/d_tlv.h"
 #include "world/d_world.h"
-#include "job/d_job_proto.h"
+#include "content/d_content.h"
+#include "trans/d_trans_spline.h"
+#include "job/d_job_types.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef u32 d_job_instance_id;
+typedef enum d_job_state_e {
+    D_JOB_STATE_PENDING = 0,
+    D_JOB_STATE_ASSIGNED,
+    D_JOB_STATE_RUNNING,
+    D_JOB_STATE_COMPLETED,
+    D_JOB_STATE_CANCELLED
+} d_job_state;
 
-typedef struct d_job_instance {
-    d_job_instance_id  id;
-    d_job_template_id  template_id;
+enum {
+    D_JOB_PURPOSE_OPERATE_PROCESS = 1u,
+    D_JOB_PURPOSE_HAUL_ITEMS      = 2u,
+    D_JOB_PURPOSE_BUILD_STRUCTURE = 3u
+};
 
-    u32                flags;     /* PENDING, ASSIGNED, RUNNING, COMPLETED, FAILED */
+typedef struct d_job_record_s {
+    d_job_id          id;
+    d_job_template_id template_id;
+    d_job_state       state;
 
-    /* Subject(s) of the job: structure, vehicle, resource, etc. */
-    u32                subject_entity_id;
-    u32                target_entity_id;
+    d_agent_id        assigned_agent;
 
-    q16_16             target_x, target_y, target_z;
+    /* Target references: structure, spline, position. */
+    u32               target_struct_eid;
+    d_spline_id       target_spline_id;
+    q32_32            target_x;
+    q32_32            target_y;
+    q32_32            target_z;
 
-    d_tlv_blob         params;    /* additional parameters; template-specific */
-} d_job_instance;
+    /* Progress tracking: generic. */
+    q16_16            progress;
+} d_job_record;
 
-/* Generic flag bits (engine-level only). */
-#define D_JOB_FLAG_ENV_UNSUITABLE (1u << 16) /* environment constraints not met */
+int d_job_system_init(d_world *w);
+void d_job_system_shutdown(d_world *w);
 
-/* Create a new job instance using a template. */
-d_job_instance_id d_job_create(
-    d_world           *w,
-    d_job_template_id  template_id,
-    q16_16            x, q16_16 y, q16_16 z
-);
+d_job_id d_job_create(d_world *w, const d_job_record *init);
+int      d_job_cancel(d_world *w, d_job_id id);
 
-int d_job_destroy(
-    d_world          *w,
-    d_job_instance_id id
-);
+int d_job_get(const d_world *w, d_job_id id, d_job_record *out);
+int d_job_update(d_world *w, const d_job_record *jr);
+
+u32 d_job_count(const d_world *w);
+int d_job_get_by_index(const d_world *w, u32 index, d_job_record *out);
+
+void d_job_tick(d_world *w, u32 ticks);
 
 /* Subsystem registration hook */
 void d_job_init(void);

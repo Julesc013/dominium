@@ -5,6 +5,7 @@
 #include "domino/core/types.h"
 #include "domino/core/fixed.h"
 #include "domino/core/d_tlv.h"
+#include "core/d_container_state.h"
 #include "content/d_content.h"
 #include "world/d_world.h"
 
@@ -14,10 +15,17 @@ extern "C" {
 
 typedef u32 d_struct_instance_id;
 
-typedef struct d_struct_inventory_s {
-    u32 item_id;
-    u32 count;
-} d_struct_inventory;
+typedef struct d_machine_runtime_s {
+    d_process_id active_process_id;
+    q16_16       progress;    /* 0..process.base_duration */
+    u16          state_flags; /* MACHINE_IDLE, MACHINE_ACTIVE, MACHINE_BLOCKED, etc. */
+} d_machine_runtime;
+
+enum {
+    D_MACHINE_FLAG_IDLE    = 1u << 0,
+    D_MACHINE_FLAG_ACTIVE  = 1u << 1,
+    D_MACHINE_FLAG_BLOCKED = 1u << 2
+};
 
 typedef struct d_struct_instance {
     d_struct_instance_id id;
@@ -31,13 +39,13 @@ typedef struct d_struct_instance {
 
     u32    entity_id;
 
-    d_struct_inventory inventory;
+    d_container_state inv_in;
+    d_container_state inv_out;
+
+    d_machine_runtime machine;
 
     d_tlv_blob state;   /* machine state, process progress, etc. */
 } d_struct_instance;
-
-void d_struct_inventory_clear(d_struct_inventory *inv);
-int  d_struct_inventory_add(d_struct_inventory *inv, u32 item_id, u32 count);
 
 #ifdef __cplusplus
 }

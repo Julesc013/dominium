@@ -1,309 +1,391 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "content/d_content_extra.h"
-#include "core/d_tlv_kv.h"
-#include "core/d_subsystem.h"
-#include "env/d_env_field.h"
-#include "world/d_world.h"
 #include "job/d_job.h"
 
-#define DJOB_MAX_INSTANCES 256u
+#include "ai/d_agent.h"
+#include "core/d_account.h"
+#include "core/d_subsystem.h"
+#include "core/d_tlv_kv.h"
+#include "content/d_content_extra.h"
+#include "job/d_job_planner.h"
 
-typedef struct d_job_entry {
-    d_world        *world;
-    d_job_instance  inst;
-    int             in_use;
-} d_job_entry;
+#define DJOB_MAX_RECORDS 1024u
 
-static d_job_entry g_job_entries[DJOB_MAX_INSTANCES];
-static d_job_instance_id g_job_next_id = 1u;
+typedef struct djob_entry_s {
+    d_world      *world;
+    d_job_record  rec;
+    u8            reward_applied;
+    int           in_use;
+} djob_entry;
+
+static djob_entry g_jobs[DJOB_MAX_RECORDS];
+static d_job_id g_next_job_id = 1u;
 static int g_job_registered = 0;
 
-typedef struct djob_env_req_s {
-    u16   field_id;
-    q16_16 min_v;
-    q16_16 max_v;
-} djob_env_req;
-
-static q32_32 djob_q32_from_q16(q16_16 v) {
-    return ((q32_32)v) << (Q32_32_FRAC_BITS - Q16_16_FRAC_BITS);
-}
-
-static int djob_parse_env_req(const d_tlv_blob *in, djob_env_req *out) {
-    u32 offset;
-    u32 tag;
-    d_tlv_blob payload;
-    int rc;
-    if (!out) {
-        return -1;
+static djob_entry *djob_find_entry(d_world *w, d_job_id id) {
+    u32 i;
+    if (!w || id == 0u) {
+        return (djob_entry *)0;
     }
-    memset(out, 0, sizeof(*out));
-    out->min_v = (q16_16)0x80000000;
-    out->max_v = (q16_16)0x7FFFFFFF;
-    if (!in || !in->ptr || in->len == 0u) {
-        return 0;
-    }
-    offset = 0u;
-    while ((rc = d_tlv_kv_next(in, &offset, &tag, &payload)) == 0) {
-        switch (tag) {
-        case D_TLV_JOB_ENV_FIELD_ID:
-            (void)d_tlv_kv_read_u16(&payload, &out->field_id);
-            break;
-        case D_TLV_JOB_ENV_MIN:
-            (void)d_tlv_kv_read_q16_16(&payload, &out->min_v);
-            break;
-        case D_TLV_JOB_ENV_MAX:
-            (void)d_tlv_kv_read_q16_16(&payload, &out->max_v);
-            break;
-        default:
-            break;
+    for (i = 0u; i < DJOB_MAX_RECORDS; ++i) {
+        if (g_jobs[i].in_use && g_jobs[i].world == w && g_jobs[i].rec.id == id) {
+            return &g_jobs[i];
         }
     }
-    if (out->max_v < out->min_v) {
-        q16_16 tmp = out->min_v; out->min_v = out->max_v; out->max_v = tmp;
+    return (djob_entry *)0;
+}
+
+static djob_entry *djob_alloc_entry(void) {
+    u32 i;
+    for (i = 0u; i < DJOB_MAX_RECORDS; ++i) {
+        if (!g_jobs[i].in_use) {
+            return &g_jobs[i];
+        }
+    }
+    return (djob_entry *)0;
+}
+
+static void djob_sort_ids(d_job_id *ids, u32 count) {
+    u32 i;
+    for (i = 1u; i < count; ++i) {
+        d_job_id key = ids[i];
+        u32 j = i;
+        while (j > 0u && ids[j - 1u] > key) {
+            ids[j] = ids[j - 1u];
+            --j;
+        }
+        ids[j] = key;
+    }
+}
+
+int d_job_system_init(d_world *w) {
+    u32 i;
+    if (!w) {
+        return -1;
+    }
+    for (i = 0u; i < DJOB_MAX_RECORDS; ++i) {
+        if (g_jobs[i].in_use && g_jobs[i].world == w) {
+            memset(&g_jobs[i], 0, sizeof(g_jobs[i]));
+        }
     }
     return 0;
 }
 
-static u32 djob_collect_env_reqs(const d_tlv_blob *params, djob_env_req *out_reqs, u32 max_reqs) {
-    u32 offset;
-    u32 tag;
-    d_tlv_blob payload;
-    int rc;
-    u32 count;
+void d_job_system_shutdown(d_world *w) {
+    (void)d_job_system_init(w);
+}
 
-    if (!out_reqs || max_reqs == 0u) {
+d_job_id d_job_create(d_world *w, const d_job_record *init) {
+    djob_entry *slot;
+    d_job_record jr;
+    d_job_id id;
+
+    if (!w || !init || init->template_id == 0u) {
         return 0u;
     }
-    if (!params || !params->ptr || params->len == 0u) {
+    slot = djob_alloc_entry();
+    if (!slot) {
         return 0u;
     }
 
-    offset = 0u;
-    count = 0u;
-    while ((rc = d_tlv_kv_next(params, &offset, &tag, &payload)) == 0) {
-        if (tag == D_TLV_JOB_ENV_RANGE) {
-            djob_env_req req;
-            (void)djob_parse_env_req(&payload, &req);
-            if (req.field_id != 0u && count < max_reqs) {
-                out_reqs[count] = req;
-                count += 1u;
-            }
+    jr = *init;
+    id = jr.id;
+    if (id == 0u) {
+        id = g_next_job_id++;
+    }
+    jr.id = id;
+    if (jr.state != D_JOB_STATE_PENDING &&
+        jr.state != D_JOB_STATE_ASSIGNED &&
+        jr.state != D_JOB_STATE_RUNNING &&
+        jr.state != D_JOB_STATE_COMPLETED &&
+        jr.state != D_JOB_STATE_CANCELLED) {
+        jr.state = D_JOB_STATE_PENDING;
+    }
+
+    memset(slot, 0, sizeof(*slot));
+    slot->world = w;
+    slot->rec = jr;
+    slot->reward_applied = 0u;
+    slot->in_use = 1;
+
+    if (id >= g_next_job_id) {
+        g_next_job_id = id + 1u;
+    }
+    return id;
+}
+
+int d_job_cancel(d_world *w, d_job_id id) {
+    djob_entry *e;
+    if (!w || id == 0u) {
+        return -1;
+    }
+    e = djob_find_entry(w, id);
+    if (!e) {
+        return -1;
+    }
+    e->rec.state = D_JOB_STATE_CANCELLED;
+    return 0;
+}
+
+int d_job_get(const d_world *w, d_job_id id, d_job_record *out) {
+    u32 i;
+    if (!w || id == 0u || !out) {
+        return -1;
+    }
+    for (i = 0u; i < DJOB_MAX_RECORDS; ++i) {
+        if (g_jobs[i].in_use && g_jobs[i].world == (d_world *)w && g_jobs[i].rec.id == id) {
+            *out = g_jobs[i].rec;
+            return 0;
+        }
+    }
+    return -1;
+}
+
+int d_job_update(d_world *w, const d_job_record *jr) {
+    djob_entry *e;
+    if (!w || !jr || jr->id == 0u) {
+        return -1;
+    }
+    e = djob_find_entry(w, jr->id);
+    if (!e) {
+        return -1;
+    }
+    e->rec = *jr;
+    return 0;
+}
+
+u32 d_job_count(const d_world *w) {
+    u32 i;
+    u32 count = 0u;
+    if (!w) {
+        return 0u;
+    }
+    for (i = 0u; i < DJOB_MAX_RECORDS; ++i) {
+        if (g_jobs[i].in_use && g_jobs[i].world == (d_world *)w) {
+            count += 1u;
         }
     }
     return count;
 }
 
-static int djob_env_req_pass(const d_env_sample *samples, u16 sample_count, const djob_env_req *req) {
-    u16 i;
-    if (!samples || !req) {
-        return 0;
-    }
-    for (i = 0u; i < sample_count; ++i) {
-        if (samples[i].field_id == req->field_id) {
-            q16_16 v = samples[i].values[0];
-            if (v < req->min_v || v > req->max_v) {
-                return 0;
-            }
-            return 1;
-        }
-    }
-    return 0;
-}
-
-static d_job_entry *d_job_find_entry(d_world *w, d_job_instance_id id) {
+int d_job_get_by_index(const d_world *w, u32 index, d_job_record *out) {
+    d_job_id ids[DJOB_MAX_RECORDS];
     u32 i;
-    for (i = 0u; i < DJOB_MAX_INSTANCES; ++i) {
-        if (g_job_entries[i].in_use &&
-            g_job_entries[i].world == w &&
-            g_job_entries[i].inst.id == id) {
-            return &g_job_entries[i];
-        }
-    }
-    return (d_job_entry *)0;
-}
+    u32 count = 0u;
 
-d_job_instance_id d_job_create(
-    d_world           *w,
-    d_job_template_id  template_id,
-    q16_16            x, q16_16 y, q16_16 z
-) {
-    u32 i;
-    d_job_entry *slot = (d_job_entry *)0;
-    if (!w || template_id == 0u) {
-        return 0u;
-    }
-    for (i = 0u; i < DJOB_MAX_INSTANCES; ++i) {
-        if (!g_job_entries[i].in_use) {
-            slot = &g_job_entries[i];
-            break;
-        }
-    }
-    if (!slot) {
-        return 0u;
-    }
-    memset(slot, 0, sizeof(*slot));
-    slot->world = w;
-    slot->inst.id = g_job_next_id++;
-    slot->inst.template_id = template_id;
-    slot->inst.flags = 0u;
-    slot->inst.subject_entity_id = 0u;
-    slot->inst.target_entity_id = 0u;
-    slot->inst.target_x = x;
-    slot->inst.target_y = y;
-    slot->inst.target_z = z;
-    slot->inst.params.ptr = (unsigned char *)0;
-    slot->inst.params.len = 0u;
-    slot->in_use = 1;
-    return slot->inst.id;
-}
-
-int d_job_destroy(
-    d_world          *w,
-    d_job_instance_id id
-) {
-    d_job_entry *entry = d_job_find_entry(w, id);
-    if (!entry) {
+    if (!w || !out) {
         return -1;
     }
-    if (entry->inst.params.ptr) {
-        free(entry->inst.params.ptr);
+
+    for (i = 0u; i < DJOB_MAX_RECORDS; ++i) {
+        if (g_jobs[i].in_use && g_jobs[i].world == (d_world *)w) {
+            ids[count++] = g_jobs[i].rec.id;
+        }
     }
-    memset(entry, 0, sizeof(*entry));
-    return 0;
+    if (index >= count) {
+        return -1;
+    }
+    djob_sort_ids(ids, count);
+    return d_job_get(w, ids[index], out);
 }
 
-static void d_job_tick(d_world *w, u32 ticks) {
+static void djob_tick_apply_rewards(d_world *w) {
     u32 i;
-    (void)ticks;
-    for (i = 0u; i < DJOB_MAX_INSTANCES; ++i) {
-        if (g_job_entries[i].in_use && g_job_entries[i].world == w) {
-            const d_proto_job_template *tmpl = d_content_get_job_template(g_job_entries[i].inst.template_id);
-            djob_env_req reqs[8];
-            u32 req_count;
-            d_env_sample samples[16];
-            u16 sample_count;
-            q32_32 x32;
-            q32_32 y32;
-            q32_32 z32;
-            u32 r;
-            int ok;
 
-            g_job_entries[i].inst.flags &= ~D_JOB_FLAG_ENV_UNSUITABLE;
-            if (!tmpl) {
-                continue;
-            }
+    for (i = 0u; i < DJOB_MAX_RECORDS; ++i) {
+        const d_proto_job_template *tmpl;
+        u32 offset;
+        u32 tag;
+        d_tlv_blob payload;
+        int rc;
 
-            req_count = djob_collect_env_reqs(&tmpl->params, reqs, 8u);
-            if (req_count == 0u) {
-                continue;
-            }
+        if (!g_jobs[i].in_use || g_jobs[i].world != w) {
+            continue;
+        }
+        if (g_jobs[i].reward_applied) {
+            continue;
+        }
+        if (g_jobs[i].rec.state != D_JOB_STATE_COMPLETED) {
+            continue;
+        }
 
-            x32 = djob_q32_from_q16(g_job_entries[i].inst.target_x);
-            y32 = djob_q32_from_q16(g_job_entries[i].inst.target_y);
-            z32 = djob_q32_from_q16(g_job_entries[i].inst.target_z);
-            sample_count = d_env_sample_at(w, x32, y32, z32, samples, 16u);
+        tmpl = d_content_get_job_template(g_jobs[i].rec.template_id);
+        if (tmpl && tmpl->rewards.ptr && tmpl->rewards.len > 0u) {
+            offset = 0u;
+            while ((rc = d_tlv_kv_next(&tmpl->rewards, &offset, &tag, &payload)) == 0) {
+                if (tag == D_TLV_JOB_REWARD_PAYMENT) {
+                    u32 p_off = 0u;
+                    u32 p_tag;
+                    d_tlv_blob p_payload;
+                    d_account_id from = 0u;
+                    d_account_id to = 0u;
+                    q32_32 amount = 0;
+                    int prc;
 
-            ok = 1;
-            for (r = 0u; r < req_count; ++r) {
-                if (!djob_env_req_pass(samples, sample_count, &reqs[r])) {
-                    ok = 0;
-                    break;
+                    while ((prc = d_tlv_kv_next(&payload, &p_off, &p_tag, &p_payload)) == 0) {
+                        if (p_tag == D_TLV_JOB_PAY_FROM_ACCOUNT) {
+                            u32 tmp = 0u;
+                            if (d_tlv_kv_read_u32(&p_payload, &tmp) == 0) {
+                                from = (d_account_id)tmp;
+                            }
+                        } else if (p_tag == D_TLV_JOB_PAY_TO_ACCOUNT) {
+                            u32 tmp = 0u;
+                            if (d_tlv_kv_read_u32(&p_payload, &tmp) == 0) {
+                                to = (d_account_id)tmp;
+                            }
+                        } else if (p_tag == D_TLV_JOB_PAY_AMOUNT) {
+                            if (p_payload.ptr && p_payload.len == 8u) {
+                                memcpy(&amount, p_payload.ptr, sizeof(q32_32));
+                            }
+                        }
+                    }
+
+                    if (from != 0u && to != 0u && amount > 0) {
+                        (void)d_account_transfer(from, to, amount);
+                    }
                 }
             }
-            if (!ok) {
-                g_job_entries[i].inst.flags |= D_JOB_FLAG_ENV_UNSUITABLE;
-            }
         }
+
+        /* Rewards are optional and treated as best-effort. */
+        g_jobs[i].reward_applied = 1u;
     }
 }
 
-static int d_job_save_chunk(
-    d_world    *w,
-    d_chunk    *chunk,
-    d_tlv_blob *out
-) {
-    (void)w;
-    (void)chunk;
-    if (!out) {
-        return -1;
+void d_job_tick(d_world *w, u32 ticks) {
+    if (!w || ticks == 0u) {
+        return;
     }
-    out->ptr = (unsigned char *)0;
-    out->len = 0u;
-    return 0;
-}
-
-static int d_job_load_chunk(
-    d_world          *w,
-    d_chunk          *chunk,
-    const d_tlv_blob *in
-) {
-    (void)w;
-    (void)chunk;
-    (void)in;
-    return 0;
+    d_job_planner_tick(w, ticks);
+    d_agent_tick(w, ticks);
+    djob_tick_apply_rewards(w);
 }
 
 static int d_job_save_instance(d_world *w, d_tlv_blob *out) {
-    u32 count = 0u;
-    u32 total = 4u;
+    u32 version;
+    u32 job_count;
+    u32 agent_count;
     u32 i;
+    u32 total;
     unsigned char *buf;
     unsigned char *dst;
 
     if (!out) {
         return -1;
     }
-    for (i = 0u; i < DJOB_MAX_INSTANCES; ++i) {
-        if (g_job_entries[i].in_use && g_job_entries[i].world == w) {
-            count += 1u;
-            total += sizeof(d_job_instance_id) + sizeof(d_job_template_id);
-            total += sizeof(u32) * 3u; /* flags + subject + target entity */
-            total += sizeof(q16_16) * 3u; /* target coords */
-            total += sizeof(u32); /* params len */
-            total += g_job_entries[i].inst.params.len;
-        }
-    }
-    if (count == 0u) {
-        out->ptr = (unsigned char *)0;
-        out->len = 0u;
+    out->ptr = (unsigned char *)0;
+    out->len = 0u;
+    if (!w) {
         return 0;
     }
+
+    job_count = d_job_count(w);
+    agent_count = d_agent_count(w);
+    if (job_count == 0u && agent_count == 0u) {
+        return 0;
+    }
+
+    version = 2u;
+    total = 0u;
+    total += 4u; /* version */
+    total += 4u; /* job_count */
+    total += job_count * (
+        sizeof(d_job_id) +
+        sizeof(d_job_template_id) +
+        sizeof(u16) + sizeof(u16) + /* state + pad */
+        sizeof(d_agent_id) +
+        sizeof(u32) +
+        sizeof(d_spline_id) +
+        sizeof(q32_32) * 3u +
+        sizeof(q16_16)
+    );
+    total += 4u; /* agent_count */
+    total += agent_count * (
+        sizeof(d_agent_id) +
+        sizeof(u32) + /* owner_eid */
+        sizeof(u32) + /* caps.tags */
+        sizeof(q16_16) * 2u +
+        sizeof(d_job_id) +
+        sizeof(q32_32) * 3u +
+        sizeof(u16) + sizeof(u16) /* flags + pad */
+    );
+
     buf = (unsigned char *)malloc(total);
     if (!buf) {
         return -1;
     }
     dst = buf;
-    memcpy(dst, &count, sizeof(u32));
-    dst += 4u;
 
-    for (i = 0u; i < DJOB_MAX_INSTANCES; ++i) {
-        if (g_job_entries[i].in_use && g_job_entries[i].world == w) {
-            u32 params_len = g_job_entries[i].inst.params.len;
-            memcpy(dst, &g_job_entries[i].inst.id, sizeof(d_job_instance_id));
-            dst += sizeof(d_job_instance_id);
-            memcpy(dst, &g_job_entries[i].inst.template_id, sizeof(d_job_template_id));
-            dst += sizeof(d_job_template_id);
-            memcpy(dst, &g_job_entries[i].inst.flags, sizeof(u32));
-            dst += sizeof(u32);
-            memcpy(dst, &g_job_entries[i].inst.subject_entity_id, sizeof(u32));
-            dst += sizeof(u32);
-            memcpy(dst, &g_job_entries[i].inst.target_entity_id, sizeof(u32));
-            dst += sizeof(u32);
-            memcpy(dst, &g_job_entries[i].inst.target_x, sizeof(q16_16));
-            dst += sizeof(q16_16);
-            memcpy(dst, &g_job_entries[i].inst.target_y, sizeof(q16_16));
-            dst += sizeof(q16_16);
-            memcpy(dst, &g_job_entries[i].inst.target_z, sizeof(q16_16));
-            dst += sizeof(q16_16);
-            memcpy(dst, &params_len, sizeof(u32));
-            dst += sizeof(u32);
-            if (params_len > 0u && g_job_entries[i].inst.params.ptr) {
-                memcpy(dst, g_job_entries[i].inst.params.ptr, params_len);
-                dst += params_len;
+    memcpy(dst, &version, 4u); dst += 4u;
+    memcpy(dst, &job_count, 4u); dst += 4u;
+
+    {
+        u32 written = 0u;
+        for (i = 0u; i < job_count; ++i) {
+            d_job_record jr;
+            u16 state16;
+            u16 pad16 = 0u;
+            if (d_job_get_by_index(w, i, &jr) != 0) {
+                continue;
             }
+            memcpy(dst, &jr.id, sizeof(d_job_id)); dst += sizeof(d_job_id);
+            memcpy(dst, &jr.template_id, sizeof(d_job_template_id)); dst += sizeof(d_job_template_id);
+            state16 = (u16)jr.state;
+            memcpy(dst, &state16, sizeof(u16)); dst += sizeof(u16);
+            memcpy(dst, &pad16, sizeof(u16)); dst += sizeof(u16);
+            memcpy(dst, &jr.assigned_agent, sizeof(d_agent_id)); dst += sizeof(d_agent_id);
+            memcpy(dst, &jr.target_struct_eid, sizeof(u32)); dst += sizeof(u32);
+            memcpy(dst, &jr.target_spline_id, sizeof(d_spline_id)); dst += sizeof(d_spline_id);
+            memcpy(dst, &jr.target_x, sizeof(q32_32)); dst += sizeof(q32_32);
+            memcpy(dst, &jr.target_y, sizeof(q32_32)); dst += sizeof(q32_32);
+            memcpy(dst, &jr.target_z, sizeof(q32_32)); dst += sizeof(q32_32);
+            memcpy(dst, &jr.progress, sizeof(q16_16)); dst += sizeof(q16_16);
+            written += 1u;
+        }
+        /* If iteration skipped entries (shouldn't), fix up count for determinism. */
+        if (written != job_count) {
+            unsigned char *count_ptr = buf + 4u;
+            memcpy(count_ptr, &written, 4u);
+            job_count = written;
+        }
+    }
+
+    memcpy(dst, &agent_count, 4u); dst += 4u;
+    {
+        u32 written = 0u;
+        for (i = 0u; i < agent_count; ++i) {
+            d_agent_state a;
+            u16 pad16 = 0u;
+            if (d_agent_get_by_index(w, i, &a) != 0) {
+                continue;
+            }
+            memcpy(dst, &a.id, sizeof(d_agent_id)); dst += sizeof(d_agent_id);
+            memcpy(dst, &a.owner_eid, sizeof(u32)); dst += sizeof(u32);
+            memcpy(dst, &a.caps.tags, sizeof(u32)); dst += sizeof(u32);
+            memcpy(dst, &a.caps.max_speed, sizeof(q16_16)); dst += sizeof(q16_16);
+            memcpy(dst, &a.caps.max_carry_mass, sizeof(q16_16)); dst += sizeof(q16_16);
+            memcpy(dst, &a.current_job, sizeof(d_job_id)); dst += sizeof(d_job_id);
+            memcpy(dst, &a.pos_x, sizeof(q32_32)); dst += sizeof(q32_32);
+            memcpy(dst, &a.pos_y, sizeof(q32_32)); dst += sizeof(q32_32);
+            memcpy(dst, &a.pos_z, sizeof(q32_32)); dst += sizeof(q32_32);
+            memcpy(dst, &a.flags, sizeof(u16)); dst += sizeof(u16);
+            memcpy(dst, &pad16, sizeof(u16)); dst += sizeof(u16);
+            written += 1u;
+        }
+        if (written != agent_count) {
+            unsigned char *count_ptr = buf + 4u + 4u + job_count * (
+                sizeof(d_job_id) +
+                sizeof(d_job_template_id) +
+                sizeof(u16) + sizeof(u16) +
+                sizeof(d_agent_id) +
+                sizeof(u32) +
+                sizeof(d_spline_id) +
+                sizeof(q32_32) * 3u +
+                sizeof(q16_16)
+            );
+            memcpy(count_ptr, &written, 4u);
+            agent_count = written;
         }
     }
 
@@ -315,107 +397,137 @@ static int d_job_save_instance(d_world *w, d_tlv_blob *out) {
 static int d_job_load_instance(d_world *w, const d_tlv_blob *in) {
     const unsigned char *ptr;
     u32 remaining;
-    u32 count;
+    u32 version;
+    u32 job_count;
+    u32 agent_count;
     u32 i;
 
     if (!w || !in) {
         return -1;
     }
-    if (in->len == 0u) {
+    if (!in->ptr || in->len == 0u) {
         return 0;
-    }
-    if (!in->ptr || in->len < 4u) {
-        return -1;
     }
 
     ptr = in->ptr;
     remaining = in->len;
-    memcpy(&count, ptr, sizeof(u32));
-    ptr += 4u;
-    remaining -= 4u;
+    if (remaining < 4u) {
+        return -1;
+    }
+    memcpy(&version, ptr, 4u); ptr += 4u; remaining -= 4u;
+    if (version != 2u) {
+        return -1;
+    }
+    if (remaining < 4u) {
+        return -1;
+    }
+    memcpy(&job_count, ptr, 4u); ptr += 4u; remaining -= 4u;
 
-    for (i = 0u; i < count; ++i) {
-        d_job_instance inst;
-        d_job_entry *entry = (d_job_entry *)0;
-        u32 params_len;
-        u32 slot;
-
-        if (remaining < sizeof(d_job_instance_id) + sizeof(d_job_template_id) + sizeof(u32) * 4u + sizeof(q16_16) * 3u) {
+    for (i = 0u; i < job_count; ++i) {
+        d_job_record jr;
+        u16 state16;
+        u16 pad16;
+        if (remaining < sizeof(d_job_id) + sizeof(d_job_template_id) +
+                        sizeof(u16) * 2u +
+                        sizeof(d_agent_id) +
+                        sizeof(u32) + sizeof(d_spline_id) +
+                        sizeof(q32_32) * 3u +
+                        sizeof(q16_16)) {
             return -1;
         }
-
-        memcpy(&inst.id, ptr, sizeof(d_job_instance_id));
-        ptr += sizeof(d_job_instance_id);
-        memcpy(&inst.template_id, ptr, sizeof(d_job_template_id));
-        ptr += sizeof(d_job_template_id);
-        memcpy(&inst.flags, ptr, sizeof(u32));
-        ptr += sizeof(u32);
-        memcpy(&inst.subject_entity_id, ptr, sizeof(u32));
-        ptr += sizeof(u32);
-        memcpy(&inst.target_entity_id, ptr, sizeof(u32));
-        ptr += sizeof(u32);
-        memcpy(&inst.target_x, ptr, sizeof(q16_16));
-        ptr += sizeof(q16_16);
-        memcpy(&inst.target_y, ptr, sizeof(q16_16));
-        ptr += sizeof(q16_16);
-        memcpy(&inst.target_z, ptr, sizeof(q16_16));
-        ptr += sizeof(q16_16);
-        memcpy(&params_len, ptr, sizeof(u32));
-        ptr += sizeof(u32);
-        remaining -= sizeof(d_job_instance_id) + sizeof(d_job_template_id) + sizeof(u32) * 4u + sizeof(q16_16) * 3u;
-
-        inst.params.len = params_len;
-        inst.params.ptr = (unsigned char *)0;
-        if (params_len > 0u) {
-            if (remaining < params_len) {
-                return -1;
-            }
-            inst.params.ptr = (unsigned char *)malloc(params_len);
-            if (!inst.params.ptr) {
-                return -1;
-            }
-            memcpy(inst.params.ptr, ptr, params_len);
-            ptr += params_len;
-            remaining -= params_len;
-        }
-
-        for (slot = 0u; slot < DJOB_MAX_INSTANCES; ++slot) {
-            if (!g_job_entries[slot].in_use) {
-                entry = &g_job_entries[slot];
-                break;
-            }
-        }
-        if (!entry) {
-            if (inst.params.ptr) {
-                free(inst.params.ptr);
-            }
+        memset(&jr, 0, sizeof(jr));
+        memcpy(&jr.id, ptr, sizeof(d_job_id)); ptr += sizeof(d_job_id);
+        memcpy(&jr.template_id, ptr, sizeof(d_job_template_id)); ptr += sizeof(d_job_template_id);
+        memcpy(&state16, ptr, sizeof(u16)); ptr += sizeof(u16);
+        memcpy(&pad16, ptr, sizeof(u16)); ptr += sizeof(u16);
+        (void)pad16;
+        jr.state = (d_job_state)state16;
+        memcpy(&jr.assigned_agent, ptr, sizeof(d_agent_id)); ptr += sizeof(d_agent_id);
+        memcpy(&jr.target_struct_eid, ptr, sizeof(u32)); ptr += sizeof(u32);
+        memcpy(&jr.target_spline_id, ptr, sizeof(d_spline_id)); ptr += sizeof(d_spline_id);
+        memcpy(&jr.target_x, ptr, sizeof(q32_32)); ptr += sizeof(q32_32);
+        memcpy(&jr.target_y, ptr, sizeof(q32_32)); ptr += sizeof(q32_32);
+        memcpy(&jr.target_z, ptr, sizeof(q32_32)); ptr += sizeof(q32_32);
+        memcpy(&jr.progress, ptr, sizeof(q16_16)); ptr += sizeof(q16_16);
+        remaining -= (u32)(sizeof(d_job_id) + sizeof(d_job_template_id) +
+                           sizeof(u16) * 2u +
+                           sizeof(d_agent_id) +
+                           sizeof(u32) + sizeof(d_spline_id) +
+                           sizeof(q32_32) * 3u +
+                           sizeof(q16_16));
+        if (d_job_create(w, &jr) == 0u) {
             return -1;
-        }
-        memset(entry, 0, sizeof(*entry));
-        entry->world = w;
-        entry->inst = inst;
-        entry->in_use = 1;
-        if (inst.id >= g_job_next_id) {
-            g_job_next_id = inst.id + 1u;
         }
     }
+
+    if (remaining < 4u) {
+        return -1;
+    }
+    memcpy(&agent_count, ptr, 4u); ptr += 4u; remaining -= 4u;
+
+    for (i = 0u; i < agent_count; ++i) {
+        d_agent_state a;
+        u16 pad16;
+        if (remaining < sizeof(d_agent_id) +
+                        sizeof(u32) * 2u +
+                        sizeof(q16_16) * 2u +
+                        sizeof(d_job_id) +
+                        sizeof(q32_32) * 3u +
+                        sizeof(u16) * 2u) {
+            return -1;
+        }
+        memset(&a, 0, sizeof(a));
+        memcpy(&a.id, ptr, sizeof(d_agent_id)); ptr += sizeof(d_agent_id);
+        memcpy(&a.owner_eid, ptr, sizeof(u32)); ptr += sizeof(u32);
+        memcpy(&a.caps.tags, ptr, sizeof(u32)); ptr += sizeof(u32);
+        memcpy(&a.caps.max_speed, ptr, sizeof(q16_16)); ptr += sizeof(q16_16);
+        memcpy(&a.caps.max_carry_mass, ptr, sizeof(q16_16)); ptr += sizeof(q16_16);
+        memcpy(&a.current_job, ptr, sizeof(d_job_id)); ptr += sizeof(d_job_id);
+        memcpy(&a.pos_x, ptr, sizeof(q32_32)); ptr += sizeof(q32_32);
+        memcpy(&a.pos_y, ptr, sizeof(q32_32)); ptr += sizeof(q32_32);
+        memcpy(&a.pos_z, ptr, sizeof(q32_32)); ptr += sizeof(q32_32);
+        memcpy(&a.flags, ptr, sizeof(u16)); ptr += sizeof(u16);
+        memcpy(&pad16, ptr, sizeof(u16)); ptr += sizeof(u16);
+        (void)pad16;
+        remaining -= (u32)(sizeof(d_agent_id) +
+                           sizeof(u32) * 2u +
+                           sizeof(q16_16) * 2u +
+                           sizeof(d_job_id) +
+                           sizeof(q32_32) * 3u +
+                           sizeof(u16) * 2u);
+        if (d_agent_register(w, &a) == 0u) {
+            return -1;
+        }
+    }
+
+    return 0;
+}
+
+static int d_job_save_chunk(d_world *w, d_chunk *chunk, d_tlv_blob *out) {
+    (void)w;
+    (void)chunk;
+    if (!out) {
+        return -1;
+    }
+    out->ptr = (unsigned char *)0;
+    out->len = 0u;
+    return 0;
+}
+
+static int d_job_load_chunk(d_world *w, d_chunk *chunk, const d_tlv_blob *in) {
+    (void)w;
+    (void)chunk;
+    (void)in;
     return 0;
 }
 
 static void d_job_init_instance_subsys(d_world *w) {
-    u32 i;
-    for (i = 0u; i < DJOB_MAX_INSTANCES; ++i) {
-        if (g_job_entries[i].in_use && g_job_entries[i].world == w) {
-            if (g_job_entries[i].inst.params.ptr) {
-                free(g_job_entries[i].inst.params.ptr);
-            }
-            memset(&g_job_entries[i], 0, sizeof(g_job_entries[i]));
-        }
-    }
+    (void)d_job_system_init(w);
+    (void)d_agent_system_init(w);
 }
 
 static void d_job_register_models(void) {
-    /* No job-specific model family yet. */
+    /* No standalone models yet. */
 }
 
 static void d_job_load_protos(const d_tlv_blob *blob) {
@@ -425,7 +537,7 @@ static void d_job_load_protos(const d_tlv_blob *blob) {
 static const d_subsystem_desc g_job_subsystem = {
     D_SUBSYS_JOB,
     "job",
-    1u,
+    2u,
     d_job_register_models,
     d_job_load_protos,
     d_job_init_instance_subsys,

@@ -11,10 +11,12 @@ add_library(domino_core STATIC
     core/d_registry.c
     core/d_tlv_schema.c
     core/d_container_state.c
+    core/d_account.c
     content/d_blueprint.c
     content/d_content_schema.c
     content/d_content.c
     content/d_content_validate.c
+    ai/d_agent.c
     app/startup.c
     cli/cli.c
     tui/tui.c
@@ -52,18 +54,19 @@ add_library(domino_core STATIC
     trans/d_trans_validate.c
     struct/d_struct.c
     struct/d_struct_instance.c
-    struct/d_struct_processes.c
     struct/d_struct_blueprint.c
     struct/d_struct_validate.c
     vehicle/d_vehicle.c
     vehicle/d_vehicle_validate.c
     job/d_job.c
+    job/d_job_planner.c
     job/d_job_validate.c
     net/d_net.c
     replay/d_replay.c
     view/d_view.c
     ui/d_ui.c
     sim/d_sim.c
+    sim/d_sim_process.c
     sim/d_sim_hash.c
     sim/sim.c
 )
