@@ -96,6 +96,12 @@ add_executable(domino_trans_compile_tests
 target_link_libraries(domino_trans_compile_tests PRIVATE domino_core)
 add_test(NAME domino_trans_compile COMMAND domino_trans_compile_tests)
 
+add_executable(domino_struct_compile_tests
+    domino_struct/test_dg_struct_compile_determinism.c
+)
+target_link_libraries(domino_struct_compile_tests PRIVATE domino_core)
+add_test(NAME domino_struct_compile COMMAND domino_struct_compile_tests)
+
 add_executable(domino_canvas_tests
     domino_gfx/test_domino_canvas_build.c
 )

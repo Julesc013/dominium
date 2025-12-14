@@ -137,6 +137,32 @@ TRANS corridor state and compilation MUST obey these additional constraints:
 - **Frames:** forward from alignment tangent; up from a stable reference plus
   roll profile; normalization uses bounded integer math (no epsilons)
 
+## STRUCT buildings/infrastructure (instances / footprints / volumes)
+STRUCT authoring state and compilation MUST obey these additional constraints:
+- **Source of truth:** authored structure instances with stable `struct_id` and
+  placement expressed as `(dg_anchor, local dg_pose)` plus referenced parametric
+  templates (footprints, volumes, enclosures, surfaces, sockets, carrier intents).
+- **No grids:** footprints/volumes are authored in a local structure frame and
+  placed via anchor+pose; no axis alignment or world grid assumptions are allowed.
+- **Derived caches (rebuildable):**
+  - occupancy + void regions + chunk-aligned spatial indices
+  - enclosure graphs (room nodes + aperture edges) + room indices
+  - surface graphs (facades/interiors) + sockets + surface indices
+  - support/load topology graphs + support indices (no physics solving yet)
+  - carrier artifacts (bridge/tunnel/cut/fill) + carrier indices
+- **Budgeted compilation:** each stage is scheduled as deterministic work items
+  ordered by canonical keys; processing consumes explicit budget units and MUST
+  stop when the next item cannot fit (no skipping). Remaining work carries over
+  deterministically and the final compiled caches MUST match a full rebuild.
+- **No baked geometry:** meshes/polygon soups/render geometry MUST NOT be stored
+  as authoritative state; compiled artifacts are derived caches only.
+
+### Carrier intents (STRUCT)
+- Carrier intents are parametric requests (bridge/viaduct/tunnel/cut/fill), not
+  baked geometry.
+- STRUCT compilation emits parametric carrier artifacts; TRANS/ENV may consume
+  them later, but STRUCT MUST NOT call TRANS directly in determinism paths.
+
 ## Deterministic LOD / representation framework
 The engine-wide LOD framework (see `docs/SPEC_LOD.md`) is part of deterministic
 simulation state evolution and MUST obey these additional constraints.

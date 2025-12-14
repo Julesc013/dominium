@@ -82,6 +82,20 @@ add_library(domino_core STATIC
     struct/d_struct_instance.c
     struct/d_struct_blueprint.c
     struct/d_struct_validate.c
+    struct/model/dg_struct_instance.c
+    struct/model/dg_struct_footprint.c
+    struct/model/dg_struct_volume.c
+    struct/model/dg_struct_enclosure.c
+    struct/model/dg_struct_surface.c
+    struct/model/dg_struct_socket.c
+    struct/model/dg_struct_carrier_intent.c
+    struct/compile/dg_struct_dirty.c
+    struct/compile/dg_struct_occupancy.c
+    struct/compile/dg_struct_enclosure_graph.c
+    struct/compile/dg_struct_surface_graph.c
+    struct/compile/dg_struct_support_graph.c
+    struct/compile/dg_struct_carrier_compile.c
+    struct/compile/dg_struct_compile.c
     vehicle/d_vehicle.c
     vehicle/d_vehicle_validate.c
     job/d_job.c
@@ -191,7 +205,22 @@ target_sources(domino_core PRIVATE
     trans/compile/dg_trans_slotmap.h
     trans/compile/dg_trans_dirty.h
     struct/model/d_struct_model.h
+    struct/model/dg_struct_ids.h
+    struct/model/dg_struct_instance.h
+    struct/model/dg_struct_footprint.h
+    struct/model/dg_struct_volume.h
+    struct/model/dg_struct_enclosure.h
+    struct/model/dg_struct_surface.h
+    struct/model/dg_struct_socket.h
+    struct/model/dg_struct_carrier_intent.h
     struct/compile/d_struct_compile.h
+    struct/compile/dg_struct_compile.h
+    struct/compile/dg_struct_occupancy.h
+    struct/compile/dg_struct_enclosure_graph.h
+    struct/compile/dg_struct_surface_graph.h
+    struct/compile/dg_struct_support_graph.h
+    struct/compile/dg_struct_carrier_compile.h
+    struct/compile/dg_struct_dirty.h
     struct/phys/d_struct_phys.h
     decor/d_decor.h
     decor/model/d_decor_model.h
