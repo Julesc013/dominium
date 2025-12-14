@@ -47,6 +47,11 @@ Stable IDs MUST be:
 - comparable (total order)
 - serializable
 
+For typed packet IO:
+- `type_id` and `schema_id` are content-defined `u64` (hash of canonical string)
+- pack-scoped identifiers that need compact runtime IDs MUST use explicit remap
+  tables (TLV idmaps); deterministic paths MUST NOT mint new IDs on the fly
+
 ### Canonical comparison / sorting
 When a stable sort is required, ordering MUST be defined by stable keys:
 - primary: family/type id (domain/packet/etc.)
@@ -56,15 +61,29 @@ When a stable sort is required, ordering MUST be defined by stable keys:
 Collections that are naturally unordered (hash maps, sets) MUST be reified into
 arrays and sorted using canonical comparators before deterministic iteration.
 
+### Canonical registry ordering
+Deterministic registries (packet types, field types, event/message types, etc.)
+MUST iterate in a canonical, stable order:
+- primary: ascending `type_id` (`u64`)
+- tie-break: ascending `schema_id` (`u64`), then ascending schema versions
+
 ### Canonical TLV ordering
-All deterministic TLV containers (used for hashing, replay, or lockstep) MUST be
-serialized in canonical order:
-- outer TLV records sorted by `(type, version)` ascending
-- within a record, repeated child records sorted by their stable key (never by
-  memory layout)
+All deterministic TLV containers (used for hashing, replay, or lockstep) MUST:
+- use explicit little-endian numeric encoding in TLV headers
+- be canonicalized before hashing or comparison
+
+Canonicalization rules implemented by `res/dg_tlv_canon.*`:
+- TLV records are sorted by `(tag, payload_bytes)` ascending
+  - `tag` is `u32_le`
+  - repeated tags are tie-broken by lexicographic payload bytes, then length
 - writers MUST emit explicit lengths and MUST NOT include padding bytes
 
 Unknown TLVs MUST be safely skippable using lengths (forward-compat framing).
+
+### Explicit endianness rule
+Determinism paths MUST NOT parse numeric fields via host-endian `memcpy` into
+integers. All deterministic IO numeric decoding/encoding MUST use explicit
+little-endian routines.
 
 ## Fixed-point requirements
 Determinism paths MUST use fixed-point math only:

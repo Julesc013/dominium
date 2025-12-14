@@ -50,6 +50,9 @@ add_library(domino_core STATIC
     world/d_litho_validate.c
     res/d_res.c
     res/d_res_validate.c
+    res/dg_tlv_schema.c
+    res/dg_tlv_validate.c
+    res/dg_tlv_canon.c
     res/d_res_model_strata.c
     env/d_env.c
     env/d_env_volume.c
@@ -82,6 +85,10 @@ add_library(domino_core STATIC
     sim/d_sim.c
     sim/d_sim_process.c
     sim/d_sim_hash.c
+    sim/pkt/dg_pkt_common.c
+    sim/pkt/pkt_hash.c
+    sim/pkt/registry/dg_type_registry.c
+    sim/pkt/idmap/dg_idmap.c
     sim/sim.c
 )
 
@@ -90,6 +97,17 @@ target_sources(domino_core PRIVATE
     core/det_invariants.h
     sim/sched/d_sim_sched.h
     sim/pkt/d_sim_pkt.h
+    sim/pkt/dg_pkt_common.h
+    sim/pkt/dg_pkt_event.h
+    sim/pkt/dg_pkt_message.h
+    sim/pkt/dg_pkt_field.h
+    sim/pkt/dg_pkt_observation.h
+    sim/pkt/dg_pkt_intent.h
+    sim/pkt/dg_pkt_delta.h
+    sim/pkt/dg_pkt_probe.h
+    sim/pkt/pkt_hash.h
+    sim/pkt/registry/dg_type_registry.h
+    sim/pkt/idmap/dg_idmap.h
     sim/bus/d_sim_bus.h
     sim/lod/d_sim_lod.h
     sim/act/d_sim_act.h
@@ -106,6 +124,9 @@ target_sources(domino_core PRIVATE
     decor/d_decor.h
     decor/model/d_decor_model.h
     decor/compile/d_decor_compile.h
+    res/dg_tlv_schema.h
+    res/dg_tlv_validate.h
+    res/dg_tlv_canon.h
 )
 
 if(WIN32)

@@ -1,4 +1,4 @@
-# SPEC_PACKETS — TLV-Versioned Packet Families
+# SPEC_PACKETS — Typed Packet ABI + TLV Payloads
 
 This spec defines the deterministic packet families used by SIM, replay, and
 lockstep. It does not define platform transports; it defines stable content.
@@ -22,19 +22,54 @@ Packet family names are semantic; actual encodings are TLV-versioned.
 - **Observation**: sampled outputs for observers/agents (derived).
 - **Probe**: debug/query packet; MUST be read-only (no state mutation).
 
-## TLV versioning rules
-All packets are encoded as TLV records:
-- `type` (u32): identifies family and schema
-- `version` (u16): schema version for the type
-- `length` (u32): payload byte length
+## ABI: packet framing
+All deterministic packets are framed as:
+- `dg_pkt_hdr` (fixed fields; no pointers)
+- `payload` bytes (external buffer) of length `hdr.payload_len`
+
+### `dg_pkt_hdr` fields
+The authoritative in-memory header is defined in `source/domino/sim/pkt/dg_pkt_common.h`.
+
+Fields:
+- `type_id` (`u64`): packet type identifier (taxonomy)
+- `schema_id` (`u64`): payload schema identifier
+- `schema_ver` (`u16`): payload schema version
+- `flags` (`u16`)
+- `tick` (`u64`): authoritative simulation tick
+- `src_entity` (`u64`): optional; `0` means none
+- `dst_entity` (`u64`): optional; `0` means none/broadcast
+- `domain_id` (`u64`): stable domain id (0 allowed)
+- `chunk_id` (`u64`): stable chunk id (0 allowed)
+- `seq` (`u32`): strictly for stable ordering within tick/phase
+- `payload_len` (`u32`): TLV payload byte length
+
+### Canonical wire encoding (endianness)
+Deterministic IO MUST NOT serialize/hash raw C structs.
+
+When serializing or hashing the header:
+- Each numeric field is encoded explicitly as little-endian.
+- Field order is exactly the list above.
+- Total header wire bytes: 68 (`DG_PKT_HDR_WIRE_BYTES`).
+
+## TLV payload format
+All packet payloads are TLV containers (tag-length-value):
+- `tag` (`u32_le`)
+- `len` (`u32_le`)
+- `payload` (`len` bytes)
 
 Rules:
-- Types are globally reserved by family ranges; introducing new types requires a
-  registry update.
-- Changing payload shape requires incrementing `version`.
+- Introducing new packet types requires a deterministic registry update.
+- Changing payload shape requires incrementing `schema_ver`.
 - Unknown types MUST be skippable by length.
 - Unknown versions MUST either be rejected explicitly or upgraded explicitly;
   silent reinterpretation is forbidden.
+
+## Schema validation policy
+Implemented plumbing:
+- Payloads can be validated as well-formed TLV containers.
+- Optional schema conformance validation uses `dg_tlv_schema_desc` field lists.
+- No implicit upgrades are performed by default; upgrades (if any) must be
+  explicit and versioned.
 
 ## Stable ID requirements
 Packets that reference world objects MUST use stable numeric IDs:
@@ -59,6 +94,21 @@ For packet batches/streams:
   directly to engine state.
 - Platform-dependent fields (paths, timestamps, locale-dependent strings).
 
+## Type IDs and schema IDs
+Implemented policy:
+- `type_id` and `schema_id` are **content-defined** 64-bit IDs.
+- The canonical construction is `FNV-1a 64` of a canonical ASCII string.
+  - The string MUST be stable and namespace-qualified (e.g. `pkt:event/foo`,
+    `schema:obs/bar@v1`).
+- `0` is reserved for "none/unspecified" where allowed.
+
+## Pack ID remap tables
+Packs may be referenced by stable IDs in deterministic data. When a compact or
+machine-local runtime ID is required, a remap table MUST be provided:
+- A deterministic TLV idmap maps `external_pack_id -> runtime_pack_id`.
+- Simulation determinism paths MUST NOT allocate new IDs; missing mappings are
+  an error.
+
 ## Source of truth vs derived cache
 **Source of truth:**
 - intent streams (player/tool/agent commands)
@@ -75,4 +125,3 @@ For packet batches/streams:
 - `docs/SPEC_SIM_SCHEDULER.md`
 - `docs/SPEC_FIELDS_EVENTS.md`
 - `docs/SPEC_VM.md`
-
