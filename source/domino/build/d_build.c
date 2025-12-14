@@ -4,6 +4,7 @@
 #include "core/d_subsystem.h"
 #include "core/d_tlv_kv.h"
 #include "content/d_content_extra.h"
+#include "policy/d_policy.h"
 #include "world/d_world_terrain.h"
 #include "struct/d_struct.h"
 #include "trans/d_trans.h"
@@ -597,6 +598,20 @@ int d_build_validate(
             dbuild_set_err(err_buf, err_buf_size, "unknown structure_id");
             return -1;
         }
+        {
+            d_policy_context ctx;
+            d_policy_effect_result eff;
+            memset(&ctx, 0, sizeof(ctx));
+            ctx.org_id = req->owner_org;
+            ctx.subject_kind = D_POLICY_SUBJECT_STRUCTURE;
+            ctx.subject_id = (u32)req->structure_id;
+            ctx.subject_tags = sp->tags;
+            (void)d_policy_evaluate(&ctx, &eff);
+            if (eff.allowed == 0u) {
+                dbuild_set_err(err_buf, err_buf_size, "blocked by policy");
+                return -1;
+            }
+        }
 
         dbuild_parse_footprint(sp, &fw, &fh);
         if (dbuild_compute_foundation_down(w, req->pos_x, req->pos_y, req->rot_yaw, fw, fh, &anchor_z, down) != 0) {
@@ -624,6 +639,20 @@ int d_build_validate(
         if (!pp) {
             dbuild_set_err(err_buf, err_buf_size, "unknown spline_profile_id");
             return -1;
+        }
+        {
+            d_policy_context ctx;
+            d_policy_effect_result eff;
+            memset(&ctx, 0, sizeof(ctx));
+            ctx.org_id = req->owner_org;
+            ctx.subject_kind = D_POLICY_SUBJECT_SPLINE_PROFILE;
+            ctx.subject_id = (u32)req->spline_profile_id;
+            ctx.subject_tags = pp->tags;
+            (void)d_policy_evaluate(&ctx, &eff);
+            if (eff.allowed == 0u) {
+                dbuild_set_err(err_buf, err_buf_size, "blocked by policy");
+                return -1;
+            }
         }
         dbuild_prepare_spline_nodes(w, req, nodes, &node_count);
         if (node_count < 2u) {
@@ -748,6 +777,12 @@ int d_build_commit(
         if (sid == 0u) {
             return -1;
         }
+        {
+            d_struct_instance *inst = d_struct_get_mutable(w, sid);
+            if (inst) {
+                inst->owner_org = req->owner_org;
+            }
+        }
         (void)dbuild_set_foundation_down(w, (u32)sid, down);
 
         if (out_struct_eid) {
@@ -768,7 +803,7 @@ int d_build_commit(
         if (!pp) {
             return -1;
         }
-        sid = d_trans_spline_create(w, nodes, node_count, req->spline_profile_id, 0u);
+        sid = d_trans_spline_create(w, nodes, node_count, req->spline_profile_id, 0u, req->owner_org);
         if (sid == 0u) {
             return -1;
         }

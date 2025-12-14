@@ -86,6 +86,28 @@ enum {
 #define D_TLV_JOB_PAY_TO_ACCOUNT          0x02u  /* u32 */
 #define D_TLV_JOB_PAY_AMOUNT              0x03u  /* q32_32 */
 
+/* Research cost blob tags (inside d_proto_research.cost). */
+#define D_TLV_RESEARCH_COST_REQUIRED      0x40u  /* q32_32 required points */
+
+/* Research point source params (inside d_proto_research_point_source.params). */
+#define D_TLV_RP_SOURCE_TARGET_RESEARCH_ID       0x01u /* repeated u32 d_research_id */
+#define D_TLV_RP_SOURCE_TARGET_RESEARCH_TAGS_ALL 0x02u /* u32 d_content_tag mask */
+#define D_TLV_RP_SOURCE_TARGET_RESEARCH_TAGS_ANY 0x03u /* u32 d_content_tag mask */
+
+/* Policy scope/effect/conditions TLV tags (inside d_proto_policy_rule blobs). */
+#define D_TLV_POLICY_SCOPE_SUBJECT_KIND          0x10u /* u32 */
+#define D_TLV_POLICY_SCOPE_SUBJECT_ID            0x11u /* repeated u32 */
+#define D_TLV_POLICY_SCOPE_SUBJECT_TAGS_ALL      0x12u /* u32 */
+#define D_TLV_POLICY_SCOPE_SUBJECT_TAGS_ANY      0x13u /* u32 */
+#define D_TLV_POLICY_SCOPE_ORG_ID                0x14u /* repeated u32 d_org_id */
+
+#define D_TLV_POLICY_COND_RESEARCH_COMPLETED     0x20u /* repeated u32 d_research_id */
+#define D_TLV_POLICY_COND_RESEARCH_NOT_COMPLETED 0x21u /* repeated u32 d_research_id */
+
+#define D_TLV_POLICY_EFFECT_ALLOWED              0x30u /* u32 (0/1) */
+#define D_TLV_POLICY_EFFECT_MULTIPLIER           0x31u /* q16_16 */
+#define D_TLV_POLICY_EFFECT_CAP                  0x32u /* q16_16 */
+
 /* Blueprint payload */
 #define D_TLV_BLUEPRINT_STRUCTURE_PROTO   0x01u
 

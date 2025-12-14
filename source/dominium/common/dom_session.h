@@ -42,6 +42,8 @@ public:
 
     d_world*        world() { return m_world; }
     d_sim_context*  sim()   { return &m_sim; }
+    d_replay_context* replay() { return &m_replay; }
+    const d_replay_context* replay() const { return &m_replay; }
 
     bool is_initialized() const { return m_initialized; }
 

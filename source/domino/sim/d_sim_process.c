@@ -5,8 +5,11 @@
 #include "core/d_container_state.h"
 #include "core/d_tlv_kv.h"
 #include "content/d_content_extra.h"
+#include "econ/d_econ_metrics.h"
 #include "job/d_job.h"
 #include "job/d_job_planner.h"
+#include "policy/d_policy.h"
+#include "research/d_research_state.h"
 #include "struct/d_struct.h"
 
 #define DSIM_PROCESS_MAX_WORLDS 8u
@@ -240,6 +243,7 @@ static void dproc_tick_machine(
 ) {
     const d_proto_process *proc;
     d_process_id pid;
+    q16_16 policy_mult;
     q16_16 dt;
     u32 term_i;
     u16 active = 0u;
@@ -258,6 +262,29 @@ static void dproc_tick_machine(
         return;
     }
 
+    proc = d_content_get_process(pid);
+    if (!proc || proc->base_duration <= 0) {
+        inst->machine.state_flags = D_MACHINE_FLAG_IDLE;
+        return;
+    }
+
+    policy_mult = d_q16_16_from_int(1);
+    {
+        d_policy_context ctx;
+        d_policy_effect_result eff;
+        memset(&ctx, 0, sizeof(ctx));
+        ctx.org_id = inst->owner_org;
+        ctx.subject_kind = D_POLICY_SUBJECT_PROCESS;
+        ctx.subject_id = (u32)pid;
+        ctx.subject_tags = proc->tags;
+        (void)d_policy_evaluate(&ctx, &eff);
+        if (eff.allowed == 0u || eff.multiplier == 0) {
+            inst->machine.state_flags = (u16)(D_MACHINE_FLAG_BLOCKED | D_MACHINE_FLAG_POLICY_BLOCKED);
+            return;
+        }
+        policy_mult = eff.multiplier;
+    }
+
     /* Ensure operator jobs exist for agent-required machines. */
     dproc_ensure_operator_job(w, inst, proto, pid);
 
@@ -266,12 +293,6 @@ static void dproc_tick_machine(
             inst->machine.state_flags = D_MACHINE_FLAG_IDLE;
             return;
         }
-    }
-
-    proc = d_content_get_process(pid);
-    if (!proc || proc->base_duration <= 0) {
-        inst->machine.state_flags = D_MACHINE_FLAG_IDLE;
-        return;
     }
 
     /* If we're not mid-cycle, require all inputs to be present before starting. */
@@ -294,6 +315,11 @@ static void dproc_tick_machine(
     }
 
     dt = (q16_16)((i32)ticks << Q16_16_FRAC_BITS);
+    dt = d_q16_16_mul(dt, policy_mult);
+    if (dt <= 0) {
+        inst->machine.state_flags = (u16)(D_MACHINE_FLAG_BLOCKED | D_MACHINE_FLAG_POLICY_BLOCKED);
+        return;
+    }
     inst->machine.progress = d_q16_16_add(inst->machine.progress, dt);
     inst->machine.state_flags = D_MACHINE_FLAG_ACTIVE;
 
@@ -333,6 +359,10 @@ static void dproc_tick_machine(
                 inst->machine.progress = proc->base_duration;
                 return;
             }
+            if (unpacked > 0u) {
+                q32_32 q = (q32_32)(((i64)unpacked) << Q32_32_FRAC_BITS);
+                d_econ_register_production(inst->owner_org, t->item_id, -q);
+            }
         }
 
         for (term_i = 0u; term_i < (u32)proc->io_count; ++term_i) {
@@ -350,6 +380,8 @@ static void dproc_tick_machine(
                 (void)d_container_pack_items(&inst->inv_out, t->item_id, outn, &packed);
             }
             if (packed > 0u) {
+                q32_32 q = (q32_32)(((i64)packed) << Q32_32_FRAC_BITS);
+                d_econ_register_production(inst->owner_org, t->item_id, q);
                 d_sim_process_stats *s = dproc_stats_for_process(pst, pid);
                 if (s) {
                     s->output_units += packed;
@@ -364,6 +396,8 @@ static void dproc_tick_machine(
                 s->cycles_completed += 1u;
             }
         }
+
+        d_research_apply_process_completion(inst->owner_org, pid);
 
         inst->machine.progress = d_q16_16_sub(inst->machine.progress, proc->base_duration);
         if (inst->machine.progress < 0) {

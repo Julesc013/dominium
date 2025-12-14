@@ -9,6 +9,8 @@
 #include "core/d_tlv_kv.h"
 #include "content/d_content_extra.h"
 #include "job/d_job_planner.h"
+#include "research/d_research_state.h"
+#include "struct/d_struct.h"
 
 #define DJOB_MAX_RECORDS 1024u
 
@@ -248,6 +250,29 @@ static void djob_tick_apply_rewards(d_world *w) {
             }
         }
 
+        {
+            d_org_id org_id = 0u;
+            if (g_jobs[i].rec.target_struct_eid != 0u) {
+                const d_struct_instance *st = d_struct_get(w, (d_struct_instance_id)g_jobs[i].rec.target_struct_eid);
+                if (st) {
+                    org_id = st->owner_org;
+                }
+            }
+            if (org_id == 0u && g_jobs[i].rec.target_spline_id != 0u) {
+                d_spline_instance sp;
+                if (d_trans_spline_get(w, g_jobs[i].rec.target_spline_id, &sp) == 0) {
+                    org_id = sp.owner_org;
+                }
+            }
+            if (org_id == 0u && g_jobs[i].rec.assigned_agent != 0u) {
+                d_agent_state a;
+                if (d_agent_get(w, g_jobs[i].rec.assigned_agent, &a) == 0) {
+                    org_id = a.owner_org;
+                }
+            }
+            d_research_apply_job_completion(org_id, g_jobs[i].rec.template_id);
+        }
+
         /* Rewards are optional and treated as best-effort. */
         g_jobs[i].reward_applied = 1u;
     }
@@ -286,7 +311,7 @@ static int d_job_save_instance(d_world *w, d_tlv_blob *out) {
         return 0;
     }
 
-    version = 2u;
+    version = 3u;
     total = 0u;
     total += 4u; /* version */
     total += 4u; /* job_count */
@@ -304,6 +329,7 @@ static int d_job_save_instance(d_world *w, d_tlv_blob *out) {
     total += agent_count * (
         sizeof(d_agent_id) +
         sizeof(u32) + /* owner_eid */
+        sizeof(d_org_id) + /* owner_org */
         sizeof(u32) + /* caps.tags */
         sizeof(q16_16) * 2u +
         sizeof(d_job_id) +
@@ -362,6 +388,7 @@ static int d_job_save_instance(d_world *w, d_tlv_blob *out) {
             }
             memcpy(dst, &a.id, sizeof(d_agent_id)); dst += sizeof(d_agent_id);
             memcpy(dst, &a.owner_eid, sizeof(u32)); dst += sizeof(u32);
+            memcpy(dst, &a.owner_org, sizeof(d_org_id)); dst += sizeof(d_org_id);
             memcpy(dst, &a.caps.tags, sizeof(u32)); dst += sizeof(u32);
             memcpy(dst, &a.caps.max_speed, sizeof(q16_16)); dst += sizeof(q16_16);
             memcpy(dst, &a.caps.max_carry_mass, sizeof(q16_16)); dst += sizeof(q16_16);
@@ -415,7 +442,7 @@ static int d_job_load_instance(d_world *w, const d_tlv_blob *in) {
         return -1;
     }
     memcpy(&version, ptr, 4u); ptr += 4u; remaining -= 4u;
-    if (version != 2u) {
+    if (version != 2u && version != 3u) {
         return -1;
     }
     if (remaining < 4u) {
@@ -468,17 +495,28 @@ static int d_job_load_instance(d_world *w, const d_tlv_blob *in) {
     for (i = 0u; i < agent_count; ++i) {
         d_agent_state a;
         u16 pad16;
-        if (remaining < sizeof(d_agent_id) +
-                        sizeof(u32) * 2u +
-                        sizeof(q16_16) * 2u +
-                        sizeof(d_job_id) +
-                        sizeof(q32_32) * 3u +
-                        sizeof(u16) * 2u) {
+        u32 need = 0u;
+        need += (u32)sizeof(d_agent_id);
+        need += (u32)sizeof(u32);      /* owner_eid */
+        need += (u32)sizeof(u32);      /* caps.tags */
+        need += (u32)sizeof(q16_16) * 2u;
+        need += (u32)sizeof(d_job_id);
+        need += (u32)sizeof(q32_32) * 3u;
+        need += (u32)sizeof(u16) * 2u; /* flags + pad */
+        if (version >= 3u) {
+            need += (u32)sizeof(d_org_id);
+        }
+        if (remaining < need) {
             return -1;
         }
         memset(&a, 0, sizeof(a));
         memcpy(&a.id, ptr, sizeof(d_agent_id)); ptr += sizeof(d_agent_id);
         memcpy(&a.owner_eid, ptr, sizeof(u32)); ptr += sizeof(u32);
+        if (version >= 3u) {
+            memcpy(&a.owner_org, ptr, sizeof(d_org_id)); ptr += sizeof(d_org_id);
+        } else {
+            a.owner_org = 0u;
+        }
         memcpy(&a.caps.tags, ptr, sizeof(u32)); ptr += sizeof(u32);
         memcpy(&a.caps.max_speed, ptr, sizeof(q16_16)); ptr += sizeof(q16_16);
         memcpy(&a.caps.max_carry_mass, ptr, sizeof(q16_16)); ptr += sizeof(q16_16);
@@ -489,12 +527,7 @@ static int d_job_load_instance(d_world *w, const d_tlv_blob *in) {
         memcpy(&a.flags, ptr, sizeof(u16)); ptr += sizeof(u16);
         memcpy(&pad16, ptr, sizeof(u16)); ptr += sizeof(u16);
         (void)pad16;
-        remaining -= (u32)(sizeof(d_agent_id) +
-                           sizeof(u32) * 2u +
-                           sizeof(q16_16) * 2u +
-                           sizeof(d_job_id) +
-                           sizeof(q32_32) * 3u +
-                           sizeof(u16) * 2u);
+        remaining -= need;
         if (d_agent_register(w, &a) == 0u) {
             return -1;
         }

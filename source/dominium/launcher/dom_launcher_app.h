@@ -53,9 +53,25 @@ public:
     int selected_instance_index() const { return m_selected_instance; }
     const std::string& selected_mode() const { return m_selected_mode; }
 
+    const std::string& connect_host() const { return m_connect_host; }
+    unsigned net_port() const { return m_net_port; }
+    bool editing_connect_host() const { return m_edit_connect_host; }
+    const std::string& status_text() const { return m_status; }
+
     void set_selected_product(int idx);
     void set_selected_instance(int idx);
     void set_selected_mode(const std::string &mode);
+
+    void select_prev_instance();
+    void select_next_instance();
+    void cycle_selected_mode();
+
+    void toggle_connect_host_edit();
+    void adjust_net_port(int delta);
+
+    bool launch_game_listen();
+    bool launch_game_dedicated();
+    bool launch_game_connect();
 
     bool launch_product(const std::string &product,
                         const std::string &instance_id,
@@ -71,8 +87,15 @@ private:
 
     bool init_gui(const LauncherConfig &cfg);
     void gui_loop();
+    void process_input_events();
+    void handle_key_event(int down, int key);
 
     ProductEntry* find_product_entry(const std::string &product);
+    const InstanceInfo* selected_instance() const;
+
+    bool spawn_product_args(const std::string &product,
+                            const std::vector<std::string> &args,
+                            bool wait_for_exit);
 
 private:
     Paths            m_paths;
@@ -89,6 +112,12 @@ private:
     int              m_selected_product;
     int              m_selected_instance;
     std::string      m_selected_mode;
+
+    std::string      m_connect_host;
+    unsigned         m_net_port;
+    bool             m_edit_connect_host;
+    std::string      m_connect_host_backup;
+    std::string      m_status;
 };
 
 } // namespace dom

@@ -11,6 +11,7 @@
 extern "C" {
 #include "domino/system/dsys.h"
 #include "domino/system/d_system.h"
+#include "system/d_system_input.h"
 #include "domino/gfx.h"
 #include "domino/core/fixed.h"
 }
@@ -23,7 +24,12 @@ DomLauncherApp::DomLauncherApp()
       m_running(false),
       m_selected_product(-1),
       m_selected_instance(-1),
-      m_selected_mode("gui") {
+      m_selected_mode("gui"),
+      m_connect_host("127.0.0.1"),
+      m_net_port(7777u),
+      m_edit_connect_host(false),
+      m_connect_host_backup(""),
+      m_status("") {
     std::memset(&m_ui, 0, sizeof(m_ui));
 }
 
@@ -119,6 +125,185 @@ void DomLauncherApp::set_selected_mode(const std::string &mode) {
     }
 }
 
+void DomLauncherApp::select_prev_instance() {
+    if (m_instances.empty()) {
+        m_selected_instance = -1;
+        return;
+    }
+    if (m_selected_instance < 0) {
+        m_selected_instance = (int)m_instances.size() - 1;
+        return;
+    }
+    m_selected_instance -= 1;
+    if (m_selected_instance < 0) {
+        m_selected_instance = (int)m_instances.size() - 1;
+    }
+}
+
+void DomLauncherApp::select_next_instance() {
+    if (m_instances.empty()) {
+        m_selected_instance = -1;
+        return;
+    }
+    if (m_selected_instance < 0) {
+        m_selected_instance = 0;
+        return;
+    }
+    m_selected_instance += 1;
+    if (m_selected_instance >= (int)m_instances.size()) {
+        m_selected_instance = 0;
+    }
+}
+
+void DomLauncherApp::cycle_selected_mode() {
+    if (m_selected_mode == "gui") {
+        m_selected_mode = "tui";
+    } else if (m_selected_mode == "tui") {
+        m_selected_mode = "headless";
+    } else {
+        m_selected_mode = "gui";
+    }
+}
+
+void DomLauncherApp::toggle_connect_host_edit() {
+    if (!m_edit_connect_host) {
+        m_connect_host_backup = m_connect_host;
+        m_edit_connect_host = true;
+        m_status = "Editing connect host (digits, '.', Backspace, Enter/Esc)";
+    } else {
+        m_edit_connect_host = false;
+        m_status = "Connect host updated.";
+    }
+}
+
+void DomLauncherApp::adjust_net_port(int delta) {
+    int v = (int)m_net_port;
+    v += delta;
+    if (v < 1) v = 1;
+    if (v > 65535) v = 65535;
+    m_net_port = (unsigned)v;
+}
+
+const InstanceInfo* DomLauncherApp::selected_instance() const {
+    if (m_selected_instance < 0 || m_selected_instance >= (int)m_instances.size()) {
+        return (const InstanceInfo *)0;
+    }
+    return &m_instances[(size_t)m_selected_instance];
+}
+
+static std::string dom_u32_arg(const char *prefix, unsigned v) {
+    char buf[64];
+    std::snprintf(buf, sizeof(buf), "%s%u", prefix ? prefix : "", (unsigned)v);
+    return std::string(buf);
+}
+
+bool DomLauncherApp::spawn_product_args(const std::string &product,
+                                       const std::vector<std::string> &args,
+                                       bool wait_for_exit) {
+    ProductEntry *entry = find_product_entry(product);
+    dsys_proc_result pr;
+    dsys_process_handle handle;
+    int exit_code = 0;
+    std::vector<std::string> full;
+    std::vector<const char *> argv;
+    size_t i;
+
+    if (!entry) {
+        m_status = "Launch failed: product not found.";
+        return false;
+    }
+
+    full.reserve(1u + args.size());
+    full.push_back(entry->path);
+    for (i = 0u; i < args.size(); ++i) {
+        full.push_back(args[i]);
+    }
+
+    argv.resize(full.size() + 1u);
+    for (i = 0u; i < full.size(); ++i) {
+        argv[i] = full[i].c_str();
+    }
+    argv[full.size()] = 0;
+
+    std::printf("Launcher: spawning %s (%s)\n",
+                entry->path.c_str(), product.c_str());
+
+    if (!wait_for_exit) {
+        pr = dsys_proc_spawn(entry->path.c_str(), &argv[0], 1, (dsys_process_handle *)0);
+        if (pr != DSYS_PROC_OK) {
+            m_status = "Spawn failed.";
+            return false;
+        }
+        m_status = "Spawned.";
+        return true;
+    }
+
+    pr = dsys_proc_spawn(entry->path.c_str(), &argv[0], 1, &handle);
+    if (pr != DSYS_PROC_OK) {
+        m_status = "Spawn failed.";
+        return false;
+    }
+
+    pr = dsys_proc_wait(&handle, &exit_code);
+    if (pr != DSYS_PROC_OK) {
+        m_status = "Wait failed.";
+        return false;
+    }
+
+    {
+        char buf[64];
+        std::snprintf(buf, sizeof(buf), "Process exited (%d).", exit_code);
+        m_status = buf;
+    }
+    return exit_code == 0;
+}
+
+bool DomLauncherApp::launch_game_listen() {
+    const InstanceInfo *inst = selected_instance();
+    std::vector<std::string> args;
+    if (!inst) {
+        m_status = "Launch failed: no instance selected.";
+        return false;
+    }
+    args.push_back(std::string("--mode=") + m_selected_mode);
+    args.push_back(std::string("--instance=") + inst->id);
+    args.push_back("--listen");
+    args.push_back(dom_u32_arg("--port=", m_net_port));
+    return spawn_product_args("game", args, false);
+}
+
+bool DomLauncherApp::launch_game_dedicated() {
+    const InstanceInfo *inst = selected_instance();
+    std::vector<std::string> args;
+    if (!inst) {
+        m_status = "Launch failed: no instance selected.";
+        return false;
+    }
+    args.push_back("--mode=headless");
+    args.push_back(std::string("--instance=") + inst->id);
+    args.push_back("--server");
+    args.push_back(dom_u32_arg("--port=", m_net_port));
+    return spawn_product_args("game", args, false);
+}
+
+bool DomLauncherApp::launch_game_connect() {
+    const InstanceInfo *inst = selected_instance();
+    std::vector<std::string> args;
+    if (!inst) {
+        m_status = "Launch failed: no instance selected.";
+        return false;
+    }
+    if (m_connect_host.empty()) {
+        m_status = "Launch failed: connect host is empty.";
+        return false;
+    }
+    args.push_back(std::string("--mode=") + m_selected_mode);
+    args.push_back(std::string("--instance=") + inst->id);
+    args.push_back(std::string("--connect=") + m_connect_host);
+    args.push_back(dom_u32_arg("--port=", m_net_port));
+    return spawn_product_args("game", args, false);
+}
+
 bool DomLauncherApp::scan_repo() {
     if (!dir_exists(m_paths.root)) {
         std::printf("Launcher: DOMINIUM_HOME '%s' does not exist.\n", m_paths.root.c_str());
@@ -182,6 +367,24 @@ bool DomLauncherApp::scan_products() {
     }
 
     dsys_dir_close(prod_it);
+
+    /* Dev fallback: use in-tree build outputs when product catalog is absent. */
+    if (!find_product_entry("game")) {
+        std::string dbg = join(m_paths.root, "build/source/dominium/game/Debug/dominium_game.exe");
+        std::string rel = join(m_paths.root, "build/source/dominium/game/Release/dominium_game.exe");
+        ProductEntry p;
+        if (file_exists(dbg)) {
+            p.product = "game";
+            p.version = "dev-debug";
+            p.path = dbg;
+            m_products.push_back(p);
+        } else if (file_exists(rel)) {
+            p.product = "game";
+            p.version = "dev-release";
+            p.path = rel;
+            m_products.push_back(p);
+        }
+    }
     return true;
 }
 
@@ -276,6 +479,7 @@ bool DomLauncherApp::init_gui(const LauncherConfig &cfg) {
 
     dui_init_context(&m_ui);
     dom_launcher_ui_build_root(m_ui, *this);
+    dom_launcher_ui_update(m_ui, *this);
 
     m_running = true;
     return true;
@@ -293,6 +497,11 @@ void DomLauncherApp::gui_loop() {
             m_running = false;
             break;
         }
+        process_input_events();
+        if (!m_running) {
+            break;
+        }
+        dom_launcher_ui_update(m_ui, *this);
 
         buf = d_gfx_cmd_buffer_begin();
         frame.cmd_buffer = buf;
@@ -322,48 +531,83 @@ void DomLauncherApp::gui_loop() {
     }
 }
 
+void DomLauncherApp::process_input_events() {
+    d_sys_event ev;
+    while (d_system_poll_event(&ev) > 0) {
+        if (ev.type == D_SYS_EVENT_QUIT) {
+            m_running = false;
+            return;
+        }
+        if (ev.type == D_SYS_EVENT_MOUSE_BUTTON_DOWN) {
+            (void)dom_launcher_ui_try_click(m_ui, ev.u.mouse.x, ev.u.mouse.y);
+        }
+        if (ev.type == D_SYS_EVENT_KEY_DOWN) {
+            handle_key_event(1, (int)ev.u.key.key);
+        } else if (ev.type == D_SYS_EVENT_KEY_UP) {
+            handle_key_event(0, (int)ev.u.key.key);
+        }
+    }
+}
+
+void DomLauncherApp::handle_key_event(int down, int key) {
+    char c = '\0';
+    if (!down) {
+        return;
+    }
+    if (!m_edit_connect_host) {
+        return;
+    }
+
+    if (key == (int)D_SYS_KEY_ENTER) {
+        m_edit_connect_host = false;
+        m_status = "Connect host updated.";
+        return;
+    }
+    if (key == (int)D_SYS_KEY_ESCAPE) {
+        m_connect_host = m_connect_host_backup;
+        m_edit_connect_host = false;
+        m_status = "Edit cancelled.";
+        return;
+    }
+    if (key == (int)D_SYS_KEY_BACKSPACE) {
+        if (!m_connect_host.empty()) {
+            m_connect_host.resize(m_connect_host.size() - 1u);
+        }
+        return;
+    }
+
+    switch ((d_sys_key)key) {
+    case D_SYS_KEY_0: c = '0'; break;
+    case D_SYS_KEY_1: c = '1'; break;
+    case D_SYS_KEY_2: c = '2'; break;
+    case D_SYS_KEY_3: c = '3'; break;
+    case D_SYS_KEY_4: c = '4'; break;
+    case D_SYS_KEY_5: c = '5'; break;
+    case D_SYS_KEY_6: c = '6'; break;
+    case D_SYS_KEY_7: c = '7'; break;
+    case D_SYS_KEY_8: c = '8'; break;
+    case D_SYS_KEY_9: c = '9'; break;
+    case D_SYS_KEY_PERIOD: c = '.'; break;
+    default:
+        break;
+    }
+
+    if (c != '\0') {
+        if (m_connect_host.size() < 63u) {
+            m_connect_host.push_back(c);
+        }
+    }
+}
+
 bool DomLauncherApp::launch_product(const std::string &product,
                                     const std::string &instance_id,
                                     const std::string &mode) {
-    ProductEntry *entry = find_product_entry(product);
-    dsys_process_handle handle;
-    const char *argv[4];
-    std::string mode_arg = std::string("--mode=") + (mode.empty() ? "gui" : mode);
-    std::string inst_arg;
-    dsys_proc_result pr;
-    int exit_code = 0;
-    int argi = 0;
-
-    if (!entry) {
-        std::printf("Launcher: unknown product '%s'.\n", product.c_str());
-        return false;
-    }
-
-    argv[argi++] = entry->path.c_str();
-    argv[argi++] = mode_arg.c_str();
+    std::vector<std::string> args;
+    args.push_back(std::string("--mode=") + (mode.empty() ? "gui" : mode));
     if (!instance_id.empty()) {
-        inst_arg = std::string("--instance=") + instance_id;
-        argv[argi++] = inst_arg.c_str();
+        args.push_back(std::string("--instance=") + instance_id);
     }
-    argv[argi] = 0;
-
-    std::printf("Launcher: spawning %s (%s)\n",
-                entry->path.c_str(), product.c_str());
-
-    pr = dsys_proc_spawn(entry->path.c_str(), argv, 1, &handle);
-    if (pr != DSYS_PROC_OK) {
-        std::printf("Launcher: spawn failed for %s\n", entry->path.c_str());
-        return false;
-    }
-
-    pr = dsys_proc_wait(&handle, &exit_code);
-    if (pr != DSYS_PROC_OK) {
-        std::printf("Launcher: wait failed for %s\n", entry->path.c_str());
-        return false;
-    }
-
-    std::printf("Launcher: process exited with code %d\n", exit_code);
-    return exit_code == 0;
+    return spawn_product_args(product, args, true);
 }
 
 } // namespace dom

@@ -5,6 +5,7 @@
 #include "domino/core/types.h"
 #include "domino/core/fixed.h"
 #include "domino/core/d_tlv.h"
+#include "core/d_org.h"
 #include "world/d_world.h"
 #include "content/d_content.h"
 
@@ -29,6 +30,7 @@ typedef struct d_spline_node_s {
 typedef struct d_spline_instance_s {
     d_spline_id         id;
     d_spline_profile_id profile_id;
+    d_org_id            owner_org;
     d_spline_flags      flags;
 
     /* Node indices into spline node pool. Minimal: start + end; midpoints optional. */
@@ -76,7 +78,8 @@ d_spline_id d_trans_spline_create(
     const d_spline_node     *nodes,
     u16                      node_count,
     d_spline_profile_id      profile_id,
-    d_spline_flags           flags
+    d_spline_flags           flags,
+    d_org_id                 owner_org
 );
 int d_trans_spline_destroy(d_world *w, d_spline_id id);
 

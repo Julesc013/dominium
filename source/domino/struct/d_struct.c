@@ -402,6 +402,7 @@ d_struct_instance_id d_struct_spawn(
     memset(slot, 0, sizeof(*slot));
     memset(&copy, 0, sizeof(copy));
     copy.proto_id = inst_template->proto_id;
+    copy.owner_org = inst_template->owner_org;
     copy.pos_x = inst_template->pos_x;
     copy.pos_y = inst_template->pos_y;
     copy.pos_z = inst_template->pos_z;
@@ -550,7 +551,7 @@ static int d_struct_save_chunk(
     d_chunk    *chunk,
     d_tlv_blob *out
 ) {
-    u32 version = 2u;
+    u32 version = 3u;
     u32 count = 0u;
     u32 total = 0u;
     u32 i;
@@ -577,7 +578,7 @@ static int d_struct_save_chunk(
             }
 
             count += 1u;
-            total += sizeof(d_struct_instance_id) + sizeof(d_structure_proto_id);
+            total += sizeof(d_struct_instance_id) + sizeof(d_structure_proto_id) + sizeof(d_org_id);
             total += sizeof(q16_16) * 6u; /* pos + rot */
             total += sizeof(u32) * 2u;    /* flags + entity_id */
             total += sizeof(u32) + sizeof(q16_16) + sizeof(u16) + sizeof(u16); /* machine runtime */
@@ -616,6 +617,7 @@ static int d_struct_save_chunk(
 
             memcpy(dst, &inst->id, sizeof(d_struct_instance_id)); dst += sizeof(d_struct_instance_id);
             memcpy(dst, &inst->proto_id, sizeof(d_structure_proto_id)); dst += sizeof(d_structure_proto_id);
+            memcpy(dst, &inst->owner_org, sizeof(d_org_id)); dst += sizeof(d_org_id);
 
             memcpy(dst, &inst->pos_x, sizeof(q16_16)); dst += sizeof(q16_16);
             memcpy(dst, &inst->pos_y, sizeof(q16_16)); dst += sizeof(q16_16);
@@ -707,7 +709,7 @@ static int d_struct_load_chunk(
     } while (0)
 
     DSTRUCT_READ(&version, sizeof(u32));
-    if (version != 2u) {
+    if (version != 2u && version != 3u) {
         return -1;
     }
     DSTRUCT_READ(&count, sizeof(u32));
@@ -731,6 +733,11 @@ static int d_struct_load_chunk(
 
         DSTRUCT_READ(&inst.id, sizeof(d_struct_instance_id));
         DSTRUCT_READ(&inst.proto_id, sizeof(d_structure_proto_id));
+        if (version >= 3u) {
+            DSTRUCT_READ(&inst.owner_org, sizeof(d_org_id));
+        } else {
+            inst.owner_org = 0u;
+        }
 
         DSTRUCT_READ(&inst.pos_x, sizeof(q16_16));
         DSTRUCT_READ(&inst.pos_y, sizeof(q16_16));

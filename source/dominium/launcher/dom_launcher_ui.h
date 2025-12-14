@@ -7,6 +7,8 @@
 namespace dom {
 
 void dom_launcher_ui_build_root(dui_context &ctx, DomLauncherApp &app);
+void dom_launcher_ui_update(dui_context &ctx, DomLauncherApp &app);
+int  dom_launcher_ui_try_click(dui_context &ctx, int x, int y);
 
 } // namespace dom
 

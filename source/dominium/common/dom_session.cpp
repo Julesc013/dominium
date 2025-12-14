@@ -12,6 +12,10 @@ extern "C" {
 #include "vehicle/d_vehicle.h"
 #include "job/d_job.h"
 #include "ai/d_agent.h"
+#include "core/d_org.h"
+#include "econ/d_econ_metrics.h"
+#include "policy/d_policy.h"
+#include "research/d_research_state.h"
 }
 
 namespace dom {
@@ -74,6 +78,10 @@ static bool run_validators(d_world *w) {
     if (!w) {
         return false;
     }
+    if (d_org_validate(w) != 0) return false;
+    if (d_research_validate(w) != 0) return false;
+    if (d_policy_validate(w) != 0) return false;
+    if (d_econ_validate(w) != 0) return false;
     if (d_res_validate(w) != 0) return false;
     if (d_env_validate(w) != 0) return false;
     if (d_build_validate_world(w) != 0) return false;

@@ -14,7 +14,11 @@ enum {
     TAG_SUBSYS_DNET    = 0x1008,
     TAG_SUBSYS_DREPLAY = 0x1009,
     TAG_SUBSYS_DHYDRO  = 0x100A,
-    TAG_SUBSYS_DLITHO  = 0x100B
+    TAG_SUBSYS_DLITHO  = 0x100B,
+    TAG_SUBSYS_DORG    = 0x100C,
+    TAG_SUBSYS_DRESEARCH = 0x100D,
+    TAG_SUBSYS_DECON   = 0x100E,
+    TAG_SUBSYS_DPOLICY = 0x100F
     /* Reserve 0x2000+ for mod/third-party subsystems */
 };
 

@@ -3,11 +3,13 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <vector>
 
 #include "dom_game_states.h"
 #include "dom_game_ui.h"
 #include "dom_game_ui_debug.h"
 #include "dom_game_save.h"
+#include "dom_game_replay.h"
 #include "dom_game_tools_build.h"
 #include "dominium/version.h"
 
@@ -26,6 +28,91 @@ extern "C" {
 #include "res/d_res.h"
 #include "content/d_content.h"
 #include "ai/d_agent.h"
+#include "net/d_net_apply.h"
+#include "net/d_net_proto.h"
+#include "net/d_net_transport.h"
+}
+
+struct DomNetReplayRecorder {
+    d_replay_context *replay;
+};
+
+extern "C" void dom_net_replay_tick_observer(
+    void            *user,
+    struct d_world  *w,
+    u32              tick,
+    const d_net_cmd *cmds,
+    u32              cmd_count
+) {
+    DomNetReplayRecorder *rec = (DomNetReplayRecorder *)user;
+    std::vector<d_net_input_frame> inputs;
+    std::vector<unsigned char *> bufs;
+    u32 i;
+    (void)w;
+
+    if (!rec || !rec->replay || rec->replay->mode != DREPLAY_MODE_RECORD) {
+        return;
+    }
+    if (!cmds || cmd_count == 0u) {
+        return;
+    }
+
+    inputs.resize(static_cast<size_t>(cmd_count));
+    bufs.resize(static_cast<size_t>(cmd_count), (unsigned char *)0);
+
+    for (i = 0u; i < cmd_count; ++i) {
+        unsigned cap = 2048u;
+        unsigned char *buf = (unsigned char *)0;
+        u32 out_size = 0u;
+        int rc = -1;
+        unsigned attempt;
+
+        for (attempt = 0u; attempt < 6u; ++attempt) {
+            buf = (unsigned char *)std::malloc(static_cast<size_t>(cap));
+            if (!buf) {
+                break;
+            }
+            rc = d_net_encode_cmd(&cmds[i], buf, (u32)cap, &out_size);
+            if (rc == 0) {
+                break;
+            }
+            std::free(buf);
+            buf = (unsigned char *)0;
+            if (rc != -2) {
+                break;
+            }
+            cap *= 2u;
+        }
+
+        if (rc != 0 || !buf || out_size == 0u) {
+            for (i = 0u; i < (u32)bufs.size(); ++i) {
+                if (bufs[i]) {
+                    std::free(bufs[i]);
+                    bufs[i] = (unsigned char *)0;
+                }
+            }
+            return;
+        }
+
+        bufs[i] = buf;
+        std::memset(&inputs[i], 0, sizeof(inputs[i]));
+        inputs[i].tick_index = cmds[i].tick;
+        inputs[i].player_id = (u32)cmds[i].source_peer;
+        inputs[i].payload_size = out_size;
+        inputs[i].payload = (u8 *)buf;
+    }
+
+    (void)d_replay_record_frame(rec->replay,
+                                tick,
+                                &inputs[0],
+                                cmd_count);
+
+    for (i = 0u; i < (u32)bufs.size(); ++i) {
+        if (bufs[i]) {
+            std::free(bufs[i]);
+            bufs[i] = (unsigned char *)0;
+        }
+    }
 }
 
 namespace dom {
@@ -453,6 +540,8 @@ DomGameApp::DomGameApp()
     : m_mode(GAME_MODE_GUI),
       m_server_mode(SERVER_OFF),
       m_demo_mode(false),
+      m_connect_addr(),
+      m_net_port(0u),
       m_compat_read_only(false),
       m_compat_limited(false),
       m_tick_rate_hz(DEFAULT_TICK_RATE),
@@ -463,9 +552,12 @@ DomGameApp::DomGameApp()
       m_mouse_x(0),
       m_mouse_y(0),
       m_last_struct_id(0),
+      m_player_org_id(0u),
       m_dev_mode(false),
       m_detmode(0u),
       m_last_hash(0u),
+      m_replay_last_tick(0u),
+      m_net_replay_user(0),
       m_show_debug_panel(false),
       m_debug_probe_set(false),
       m_debug_probe_x(0),
@@ -491,6 +583,8 @@ bool DomGameApp::init_from_cli(const GameConfig &cfg) {
     m_mode = cfg.mode;
     m_server_mode = cfg.server_mode;
     m_demo_mode = cfg.demo_mode;
+    m_connect_addr = cfg.connect_addr;
+    m_net_port = cfg.net_port;
     m_tick_rate_hz = cfg.tick_rate_hz ? cfg.tick_rate_hz : DEFAULT_TICK_RATE;
     m_compat_read_only = false;
     m_compat_limited = false;
@@ -548,7 +642,11 @@ bool DomGameApp::init_from_cli(const GameConfig &cfg) {
         return false;
     }
 
-    m_state_id = GAME_STATE_BOOT;
+    {
+        const bool auto_start = (cfg.server_mode != SERVER_OFF) || !cfg.connect_addr.empty() ||
+                                (cfg.mode == GAME_MODE_HEADLESS);
+        m_state_id = auto_start ? GAME_STATE_LOADING : GAME_STATE_BOOT;
+    }
     m_state = create_state(m_state_id);
     if (!m_state) {
         return false;
@@ -579,6 +677,23 @@ void DomGameApp::shutdown() {
     }
 
     dui_shutdown_context(&m_ui_ctx);
+
+    /* Flush replay recording before shutting down the session (which frees replay state). */
+    if (!m_replay_record_path.empty() && m_session.replay() &&
+        m_session.replay()->mode == DREPLAY_MODE_RECORD) {
+        if (!game_save_replay(m_session.replay(), m_replay_record_path)) {
+            std::printf("DomGameApp: failed to write replay '%s'\n", m_replay_record_path.c_str());
+        }
+    }
+
+    d_net_set_tick_cmds_observer((d_net_tick_cmds_observer_fn)0, (void *)0);
+    if (m_net_replay_user) {
+        delete (struct DomNetReplayRecorder *)m_net_replay_user;
+        m_net_replay_user = 0;
+    }
+    m_replay_last_tick = 0u;
+
+    m_net.shutdown();
     m_session.shutdown();
     d_gfx_shutdown();
     d_system_shutdown();
@@ -628,7 +743,13 @@ bool DomGameApp::evaluate_compatibility(const GameConfig &cfg) {
     CompatResult res;
 
     prod.product = "game";
-    prod.role_detail = (cfg.server_mode == SERVER_DEDICATED) ? "server" : "client";
+    if (!cfg.connect_addr.empty()) {
+        prod.role_detail = "client";
+    } else if (cfg.server_mode != SERVER_OFF) {
+        prod.role_detail = "server";
+    } else {
+        prod.role_detail = "client";
+    }
     prod.product_version = suite_version_u32();
     prod.core_version = suite_version_u32();
     prod.suite_version = suite_version_u32();
@@ -652,6 +773,73 @@ bool DomGameApp::init_session(const GameConfig &cfg) {
     if (!m_session.init(m_paths, m_instance, scfg)) {
         return false;
     }
+
+    /* Reset any previous net replay hook. */
+    d_net_set_tick_cmds_observer((d_net_tick_cmds_observer_fn)0, (void *)0);
+    if (m_net_replay_user) {
+        delete (struct DomNetReplayRecorder *)m_net_replay_user;
+        m_net_replay_user = 0;
+    }
+    m_replay_last_tick = 0u;
+
+    /* Choose/create a default org for ownership + research (demo/product-side). */
+    m_player_org_id = 0u;
+    {
+        u32 org_count = d_org_count();
+        if (org_count == 0u) {
+            m_player_org_id = d_org_create((q32_32)0);
+        } else {
+            d_org o;
+            if (d_org_get_by_index(0u, &o) == 0) {
+                m_player_org_id = o.id;
+            }
+        }
+    }
+
+    /* Replay integration: record or playback command stream. */
+    if (!m_replay_play_path.empty()) {
+        if (!game_load_replay(m_replay_play_path, m_session.replay())) {
+            std::printf("DomGameApp: failed to load replay '%s'\n", m_replay_play_path.c_str());
+            return false;
+        }
+        m_replay_last_tick = game_replay_last_tick(m_session.replay());
+        (void)d_net_cmd_queue_init();
+    } else if (!m_replay_record_path.empty()) {
+        if (d_replay_init_record(m_session.replay(), 1024u) != 0) {
+            std::printf("DomGameApp: failed to init replay record\n");
+            return false;
+        }
+        {
+            struct DomNetReplayRecorder *rec = new DomNetReplayRecorder();
+            rec->replay = m_session.replay();
+            m_net_replay_user = rec;
+            d_net_set_tick_cmds_observer(dom_net_replay_tick_observer, rec);
+        }
+    }
+
+    /* Network roles: client, host/listen, or single. */
+    if (m_session.replay() && m_session.replay()->mode == DREPLAY_MODE_PLAYBACK) {
+        if (!m_net.init_single(m_tick_rate_hz)) {
+            return false;
+        }
+    } else if (!cfg.connect_addr.empty()) {
+        if (!m_net.init_client(m_tick_rate_hz, cfg.connect_addr)) {
+            return false;
+        }
+    } else if (cfg.server_mode == SERVER_LISTEN) {
+        if (!m_net.init_listen(m_tick_rate_hz, cfg.net_port)) {
+            return false;
+        }
+    } else if (cfg.server_mode == SERVER_DEDICATED) {
+        if (!m_net.init_dedicated(m_tick_rate_hz, cfg.net_port)) {
+            return false;
+        }
+    } else {
+        if (!m_net.init_single(m_tick_rate_hz)) {
+            return false;
+        }
+    }
+
     ensure_demo_agents();
     return true;
 }
@@ -707,6 +895,7 @@ void DomGameApp::ensure_demo_agents() {
         d_agent_state a;
         std::memset(&a, 0, sizeof(a));
         a.owner_eid = 0u;
+        a.owner_org = m_player_org_id;
         a.caps.tags = (d_content_tag)(D_TAG_CAP_WALK | D_TAG_CAP_OPERATE_PROCESS);
         a.caps.max_speed = d_q16_16_from_int(1);
         a.caps.max_carry_mass = d_q16_16_from_int(100);
@@ -744,11 +933,42 @@ void DomGameApp::tick_fixed() {
     process_input_events();
     update_camera();
 
+    if (m_session.is_initialized()) {
+        m_net.pump(m_session.world(), m_session.sim(), m_instance);
+    }
+
     if (m_state) {
         m_state->tick(*this);
     }
 
     if (m_session.is_initialized() && m_state_id == GAME_STATE_RUNNING) {
+        if (m_session.replay() && m_session.replay()->mode == DREPLAY_MODE_PLAYBACK) {
+            const u32 next_tick = m_session.sim()->tick_index + 1u;
+            std::vector<d_net_input_frame> inputs;
+            u32 count = 64u;
+            int grc;
+
+            inputs.resize(static_cast<size_t>(count));
+            grc = d_replay_get_frame(m_session.replay(), next_tick, &inputs[0], &count);
+            if (grc == -3 && count > 0u) {
+                inputs.resize(static_cast<size_t>(count));
+                grc = d_replay_get_frame(m_session.replay(), next_tick, &inputs[0], &count);
+            }
+
+            if (grc == 0) {
+                u32 i;
+                for (i = 0u; i < count; ++i) {
+                    (void)d_net_receive_packet(0u,
+                                               (d_peer_id)inputs[i].player_id,
+                                               inputs[i].payload,
+                                               (u32)inputs[i].payload_size);
+                }
+            } else if (grc == -2 && m_replay_last_tick > 0u && next_tick > m_replay_last_tick) {
+                request_exit();
+                return;
+            }
+        }
+
         d_sim_step(m_session.sim(), 1u);
     }
     update_demo_hud();
@@ -907,6 +1127,12 @@ void DomGameApp::spawn_demo_blueprint() {
         int id = d_struct_spawn_blueprint(w, bp, pos_x, pos_y, d_q16_16_from_int(0));
         if (id > 0) {
             m_last_struct_id = (d_struct_instance_id)id;
+            {
+                d_struct_instance *inst = d_struct_get_mutable(w, (d_struct_instance_id)id);
+                if (inst) {
+                    inst->owner_org = m_player_org_id;
+                }
+            }
         }
     }
 }

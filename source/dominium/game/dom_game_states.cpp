@@ -42,7 +42,7 @@ public:
     }
     void on_exit(DomGameApp &app) { (void)app; }
     void tick(DomGameApp &app) {
-        if (!m_transitioned) {
+        if (!m_transitioned && app.net().ready()) {
             app.request_state_change(GAME_STATE_RUNNING);
             m_transitioned = true;
         }

@@ -401,8 +401,9 @@ static int d_vehicle_save_chunk(
     d_chunk    *chunk,
     d_tlv_blob *out
 ) {
+    u32 version = 2u;
     u32 count = 0u;
-    u32 total = 4u;
+    u32 total = 8u;
     u32 i;
     unsigned char *buf;
     unsigned char *dst;
@@ -417,6 +418,7 @@ static int d_vehicle_save_chunk(
             g_vehicle_entries[i].inst.chunk_id == chunk->chunk_id) {
             count += 1u;
             total += sizeof(d_vehicle_instance_id) + sizeof(d_vehicle_proto_id);
+            total += sizeof(d_org_id);
             total += sizeof(q16_16) * 9u; /* pos, vel, rot */
             total += sizeof(u32) * 2u;    /* flags, entity_id */
             total += sizeof(u32);         /* state len */
@@ -435,8 +437,8 @@ static int d_vehicle_save_chunk(
     }
     dst = buf;
 
-    memcpy(dst, &count, sizeof(u32));
-    dst += 4u;
+    memcpy(dst, &version, sizeof(u32)); dst += 4u;
+    memcpy(dst, &count, sizeof(u32)); dst += 4u;
 
     for (i = 0u; i < DVEH_MAX_INSTANCES; ++i) {
         if (g_vehicle_entries[i].in_use &&
@@ -447,6 +449,8 @@ static int d_vehicle_save_chunk(
             dst += sizeof(d_vehicle_instance_id);
             memcpy(dst, &g_vehicle_entries[i].inst.proto_id, sizeof(d_vehicle_proto_id));
             dst += sizeof(d_vehicle_proto_id);
+            memcpy(dst, &g_vehicle_entries[i].inst.owner_org, sizeof(d_org_id));
+            dst += sizeof(d_org_id);
             memcpy(dst, &g_vehicle_entries[i].inst.pos_x, sizeof(q16_16));
             dst += sizeof(q16_16);
             memcpy(dst, &g_vehicle_entries[i].inst.pos_y, sizeof(q16_16));
@@ -492,6 +496,7 @@ static int d_vehicle_load_chunk(
     u32 remaining;
     u32 count;
     u32 i;
+    int has_version = 0;
 
     if (!w || !chunk || !in) {
         return -1;
@@ -503,53 +508,148 @@ static int d_vehicle_load_chunk(
         return -1;
     }
 
+    /* Detect versioned format (v2) by scanning without modifying state. */
+    count = 0u;
+    if (in->len >= 8u) {
+        const unsigned char *scan = in->ptr;
+        u32 rem = in->len;
+        u32 version = 0u;
+        u32 c = 0u;
+        u32 si;
+
+        memcpy(&version, scan, 4u); scan += 4u; rem -= 4u;
+        memcpy(&c, scan, 4u); scan += 4u; rem -= 4u;
+
+        if (version == 2u && c <= DVEH_MAX_INSTANCES) {
+            for (si = 0u; si < c; ++si) {
+                u32 state_len = 0u;
+                u32 fixed = (u32)(sizeof(d_vehicle_instance_id) +
+                                  sizeof(d_vehicle_proto_id) +
+                                  sizeof(d_org_id) +
+                                  sizeof(q16_16) * 9u +
+                                  sizeof(u32) * 3u);
+                if (rem < fixed) {
+                    break;
+                }
+                scan += sizeof(d_vehicle_instance_id);
+                scan += sizeof(d_vehicle_proto_id);
+                scan += sizeof(d_org_id);
+                scan += sizeof(q16_16) * 9u;
+                scan += sizeof(u32) * 2u; /* flags, entity_id */
+                memcpy(&state_len, scan, sizeof(u32));
+                scan += sizeof(u32);
+                rem -= fixed;
+                if (state_len > 0u) {
+                    if (rem < state_len) {
+                        break;
+                    }
+                    scan += state_len;
+                    rem -= state_len;
+                }
+            }
+            if (si == c && rem == 0u) {
+                has_version = 1;
+                count = c;
+            }
+        }
+    }
+
+    /* Legacy unversioned format: [count][records...] */
+    if (!has_version) {
+        const unsigned char *scan = in->ptr;
+        u32 rem = in->len;
+        u32 c = 0u;
+        u32 si;
+
+        memcpy(&c, scan, 4u); scan += 4u; rem -= 4u;
+        if (c > DVEH_MAX_INSTANCES) {
+            return -1;
+        }
+        for (si = 0u; si < c; ++si) {
+            u32 state_len = 0u;
+            u32 fixed = (u32)(sizeof(d_vehicle_instance_id) +
+                              sizeof(d_vehicle_proto_id) +
+                              sizeof(q16_16) * 9u +
+                              sizeof(u32) * 3u);
+            if (rem < fixed) {
+                return -1;
+            }
+            scan += sizeof(d_vehicle_instance_id);
+            scan += sizeof(d_vehicle_proto_id);
+            scan += sizeof(q16_16) * 9u;
+            scan += sizeof(u32) * 2u; /* flags, entity_id */
+            memcpy(&state_len, scan, sizeof(u32));
+            scan += sizeof(u32);
+            rem -= fixed;
+            if (state_len > 0u) {
+                if (rem < state_len) {
+                    return -1;
+                }
+                scan += state_len;
+                rem -= state_len;
+            }
+        }
+        if (rem != 0u) {
+            return -1;
+        }
+        count = c;
+    }
+
     ptr = in->ptr;
     remaining = in->len;
-    memcpy(&count, ptr, sizeof(u32));
-    ptr += 4u;
-    remaining -= 4u;
+    if (has_version) {
+        ptr += 8u;
+        remaining -= 8u;
+    } else {
+        ptr += 4u;
+        remaining -= 4u;
+    }
 
     for (i = 0u; i < count; ++i) {
         d_vehicle_instance inst;
-        u32 state_len;
+        u32 state_len = 0u;
         d_vehicle_entry *entry = (d_vehicle_entry *)0;
         u32 slot;
+        u32 fixed;
 
-        if (remaining < sizeof(d_vehicle_instance_id) + sizeof(d_vehicle_proto_id) +
-                        sizeof(q16_16) * 9u + sizeof(u32) * 3u) {
+        if (has_version) {
+            fixed = (u32)(sizeof(d_vehicle_instance_id) +
+                          sizeof(d_vehicle_proto_id) +
+                          sizeof(d_org_id) +
+                          sizeof(q16_16) * 9u +
+                          sizeof(u32) * 3u);
+        } else {
+            fixed = (u32)(sizeof(d_vehicle_instance_id) +
+                          sizeof(d_vehicle_proto_id) +
+                          sizeof(q16_16) * 9u +
+                          sizeof(u32) * 3u);
+        }
+        if (remaining < fixed) {
             return -1;
         }
 
-        memcpy(&inst.id, ptr, sizeof(d_vehicle_instance_id));
-        ptr += sizeof(d_vehicle_instance_id);
-        memcpy(&inst.proto_id, ptr, sizeof(d_vehicle_proto_id));
-        ptr += sizeof(d_vehicle_proto_id);
-        memcpy(&inst.pos_x, ptr, sizeof(q16_16));
-        ptr += sizeof(q16_16);
-        memcpy(&inst.pos_y, ptr, sizeof(q16_16));
-        ptr += sizeof(q16_16);
-        memcpy(&inst.pos_z, ptr, sizeof(q16_16));
-        ptr += sizeof(q16_16);
-        memcpy(&inst.vel_x, ptr, sizeof(q16_16));
-        ptr += sizeof(q16_16);
-        memcpy(&inst.vel_y, ptr, sizeof(q16_16));
-        ptr += sizeof(q16_16);
-        memcpy(&inst.vel_z, ptr, sizeof(q16_16));
-        ptr += sizeof(q16_16);
-        memcpy(&inst.rot_yaw, ptr, sizeof(q16_16));
-        ptr += sizeof(q16_16);
-        memcpy(&inst.rot_pitch, ptr, sizeof(q16_16));
-        ptr += sizeof(q16_16);
-        memcpy(&inst.rot_roll, ptr, sizeof(q16_16));
-        ptr += sizeof(q16_16);
-        memcpy(&inst.flags, ptr, sizeof(u32));
-        ptr += sizeof(u32);
-        memcpy(&inst.entity_id, ptr, sizeof(u32));
-        ptr += sizeof(u32);
-        memcpy(&state_len, ptr, sizeof(u32));
-        ptr += sizeof(u32);
-        remaining -= sizeof(d_vehicle_instance_id) + sizeof(d_vehicle_proto_id) +
-                     sizeof(q16_16) * 9u + sizeof(u32) * 3u;
+        memset(&inst, 0, sizeof(inst));
+        memcpy(&inst.id, ptr, sizeof(d_vehicle_instance_id)); ptr += sizeof(d_vehicle_instance_id);
+        memcpy(&inst.proto_id, ptr, sizeof(d_vehicle_proto_id)); ptr += sizeof(d_vehicle_proto_id);
+        if (has_version) {
+            memcpy(&inst.owner_org, ptr, sizeof(d_org_id)); ptr += sizeof(d_org_id);
+        } else {
+            inst.owner_org = 0u;
+        }
+
+        memcpy(&inst.pos_x, ptr, sizeof(q16_16)); ptr += sizeof(q16_16);
+        memcpy(&inst.pos_y, ptr, sizeof(q16_16)); ptr += sizeof(q16_16);
+        memcpy(&inst.pos_z, ptr, sizeof(q16_16)); ptr += sizeof(q16_16);
+        memcpy(&inst.vel_x, ptr, sizeof(q16_16)); ptr += sizeof(q16_16);
+        memcpy(&inst.vel_y, ptr, sizeof(q16_16)); ptr += sizeof(q16_16);
+        memcpy(&inst.vel_z, ptr, sizeof(q16_16)); ptr += sizeof(q16_16);
+        memcpy(&inst.rot_yaw, ptr, sizeof(q16_16)); ptr += sizeof(q16_16);
+        memcpy(&inst.rot_pitch, ptr, sizeof(q16_16)); ptr += sizeof(q16_16);
+        memcpy(&inst.rot_roll, ptr, sizeof(q16_16)); ptr += sizeof(q16_16);
+        memcpy(&inst.flags, ptr, sizeof(u32)); ptr += sizeof(u32);
+        memcpy(&inst.entity_id, ptr, sizeof(u32)); ptr += sizeof(u32);
+        memcpy(&state_len, ptr, sizeof(u32)); ptr += sizeof(u32);
+        remaining -= fixed;
 
         inst.chunk_id = chunk->chunk_id;
         inst.state.len = state_len;
@@ -589,7 +689,8 @@ static int d_vehicle_load_chunk(
             g_vehicle_next_id = inst.id + 1u;
         }
     }
-    return 0;
+
+    return remaining == 0u ? 0 : -1;
 }
 
 static int d_vehicle_save_instance(d_world *w, d_tlv_blob *out) {

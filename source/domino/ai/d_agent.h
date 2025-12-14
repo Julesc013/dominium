@@ -6,6 +6,7 @@
 #include "domino/core/fixed.h"
 #include "world/d_world.h"
 #include "content/d_content.h"
+#include "core/d_org.h"
 #include "job/d_job_types.h"
 
 #ifdef __cplusplus
@@ -21,6 +22,7 @@ typedef struct d_agent_caps_s {
 typedef struct d_agent_state_s {
     d_agent_id   id;
     u32          owner_eid;        /* entity in world: struct/vehicle/actor */
+    d_org_id     owner_org;        /* organization/company owning this agent */
     d_agent_caps caps;
 
     d_job_id     current_job;
@@ -59,4 +61,3 @@ int d_agent_validate(const d_world *w);
 #endif
 
 #endif /* D_AGENT_H */
-

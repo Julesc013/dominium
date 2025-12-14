@@ -6,6 +6,7 @@
 #include "domino/core/fixed.h"
 #include "domino/core/d_tlv.h"
 #include "core/d_container_state.h"
+#include "core/d_org.h"
 #include "content/d_content.h"
 #include "world/d_world.h"
 
@@ -24,12 +25,14 @@ typedef struct d_machine_runtime_s {
 enum {
     D_MACHINE_FLAG_IDLE    = 1u << 0,
     D_MACHINE_FLAG_ACTIVE  = 1u << 1,
-    D_MACHINE_FLAG_BLOCKED = 1u << 2
+    D_MACHINE_FLAG_BLOCKED = 1u << 2,
+    D_MACHINE_FLAG_POLICY_BLOCKED = 1u << 3
 };
 
 typedef struct d_struct_instance {
     d_struct_instance_id id;
     d_structure_proto_id proto_id;
+    d_org_id             owner_org;
 
     q16_16 pos_x, pos_y, pos_z;
     q16_16 rot_yaw, rot_pitch, rot_roll;

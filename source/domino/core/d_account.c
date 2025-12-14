@@ -70,6 +70,31 @@ d_account_id d_account_create(q32_32 initial_balance) {
     return id;
 }
 
+int d_account_create_with_id(d_account_id id, q32_32 initial_balance) {
+    d_account_entry *e;
+    if (id == 0u) {
+        return -1;
+    }
+    if (!g_accounts_initialized) {
+        (void)d_account_system_init();
+    }
+    if (d_account_find(id)) {
+        return -1;
+    }
+    e = d_account_alloc();
+    if (!e) {
+        return -1;
+    }
+    memset(e, 0, sizeof(*e));
+    e->acc.id = id;
+    e->acc.balance = initial_balance;
+    e->in_use = 1;
+    if (id >= g_next_account_id) {
+        g_next_account_id = id + 1u;
+    }
+    return 0;
+}
+
 int d_account_get(d_account_id id, d_account *out) {
     d_account_entry *e;
     if (!out) {
@@ -121,4 +146,3 @@ int d_account_transfer(
     b->acc.balance += amount;
     return 0;
 }
-

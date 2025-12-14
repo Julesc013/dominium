@@ -20,6 +20,8 @@ int d_account_system_init(void);
 void d_account_system_shutdown(void);
 
 d_account_id d_account_create(q32_32 initial_balance);
+/* Create an account with a specific id (used for deterministic load/restore). */
+int          d_account_create_with_id(d_account_id id, q32_32 initial_balance);
 int          d_account_get(d_account_id id, d_account *out);
 int          d_account_update(const d_account *acc);
 
@@ -35,4 +37,3 @@ int d_account_transfer(
 #endif
 
 #endif /* D_ACCOUNT_H */
-

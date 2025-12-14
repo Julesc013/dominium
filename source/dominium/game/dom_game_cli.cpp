@@ -10,6 +10,8 @@ namespace dom {
 void init_default_game_config(GameConfig &cfg) {
     cfg.dominium_home.clear();
     cfg.instance_id = "demo";
+    cfg.connect_addr.clear();
+    cfg.net_port = 7777u;
     cfg.mode = GAME_MODE_GUI;
     cfg.server_mode = SERVER_OFF;
     cfg.demo_mode = false;
@@ -79,6 +81,17 @@ bool parse_game_cli_args(int argc, char **argv, GameConfig &cfg) {
             }
             continue;
         }
+        if (str_ieq(arg, "--server")) {
+            cfg.server_mode = SERVER_DEDICATED;
+            if (cfg.mode == GAME_MODE_GUI) {
+                cfg.mode = GAME_MODE_HEADLESS;
+            }
+            continue;
+        }
+        if (str_ieq(arg, "--listen")) {
+            cfg.server_mode = SERVER_LISTEN;
+            continue;
+        }
         if (std::strncmp(arg, "--server=", 9) == 0) {
             const char *val = arg + 9;
             if (str_ieq(val, "off")) cfg.server_mode = SERVER_OFF;
@@ -88,6 +101,19 @@ bool parse_game_cli_args(int argc, char **argv, GameConfig &cfg) {
                 std::printf("Unknown server mode '%s'\n", val);
                 return false;
             }
+            continue;
+        }
+        if (std::strncmp(arg, "--connect=", 10) == 0) {
+            cfg.connect_addr = std::string(arg + 10);
+            continue;
+        }
+        if (std::strncmp(arg, "--port=", 7) == 0) {
+            unsigned rate = 0u;
+            if (!parse_tick_rate(arg + 7, rate) || rate == 0u || rate > 65535u) {
+                std::printf("Invalid port '%s'\n", arg + 7);
+                return false;
+            }
+            cfg.net_port = rate;
             continue;
         }
         if (std::strncmp(arg, "--instance=", 11) == 0) {
