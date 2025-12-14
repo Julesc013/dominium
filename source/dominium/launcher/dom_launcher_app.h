@@ -73,6 +73,18 @@ public:
     bool launch_game_dedicated();
     bool launch_game_connect();
 
+    bool showing_tools() const { return m_show_tools; }
+    void toggle_tools_view();
+
+    bool launch_tool(const std::string &tool_id,
+                     const std::string &load_path,
+                     bool demo);
+
+    const std::vector<std::string>& repo_mod_manifests() const { return m_repo_mod_manifests; }
+    const std::vector<std::string>& repo_pack_manifests() const { return m_repo_pack_manifests; }
+
+    std::string home_join(const std::string &rel) const;
+
     bool launch_product(const std::string &product,
                         const std::string &instance_id,
                         const std::string &mode);
@@ -82,6 +94,7 @@ private:
     bool scan_instances();
     bool scan_tools();
     bool scan_repo();
+    bool scan_repo_content();
 
     bool perform_cli_action(const LauncherConfig &cfg);
 
@@ -118,6 +131,10 @@ private:
     bool             m_edit_connect_host;
     std::string      m_connect_host_backup;
     std::string      m_status;
+
+    bool             m_show_tools;
+    std::vector<std::string> m_repo_mod_manifests;
+    std::vector<std::string> m_repo_pack_manifests;
 };
 
 } // namespace dom

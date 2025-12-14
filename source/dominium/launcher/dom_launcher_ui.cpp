@@ -2,6 +2,8 @@
 
 #include <cstdio>
 #include <cstring>
+#include <string>
+#include <vector>
 
 namespace dom {
 
@@ -11,6 +13,7 @@ static dui_widget *g_panel = (dui_widget *)0;
 static dui_widget *g_title = (dui_widget *)0;
 static dui_widget *g_summary = (dui_widget *)0;
 static dui_widget *g_instance = (dui_widget *)0;
+static dui_widget *g_toggle_view = (dui_widget *)0;
 static dui_widget *g_mode_button = (dui_widget *)0;
 static dui_widget *g_connect = (dui_widget *)0;
 static dui_widget *g_connect_edit_button = (dui_widget *)0;
@@ -32,11 +35,50 @@ static char g_buf_connect_edit[64];
 static char g_buf_port[64];
 static char g_buf_status[256];
 
+static char g_buf_repo_mods[128];
+static char g_buf_repo_packs[128];
+
+struct LaunchCtx {
+    DomLauncherApp *app;
+    std::string tool_id;
+    std::string load_path;
+    std::string label;
+    int use_demo;
+
+    LaunchCtx()
+        : app((DomLauncherApp *)0),
+          tool_id(),
+          load_path(),
+          label(),
+          use_demo(0) {}
+};
+
+static std::vector<LaunchCtx *> g_launch_ctxs;
+static std::vector<dui_widget *> g_tool_buttons;
+static std::vector<dui_widget *> g_mod_buttons;
+static std::vector<dui_widget *> g_pack_buttons;
+static dui_widget *g_repo_mods_label = (dui_widget *)0;
+static dui_widget *g_repo_packs_label = (dui_widget *)0;
+
+static void free_launch_contexts(void) {
+    size_t i;
+    for (i = 0u; i < g_launch_ctxs.size(); ++i) {
+        delete g_launch_ctxs[i];
+    }
+    g_launch_ctxs.clear();
+    g_tool_buttons.clear();
+    g_mod_buttons.clear();
+    g_pack_buttons.clear();
+}
+
 static void clear_children(dui_context &ctx) {
+    free_launch_contexts();
+
     g_panel = (dui_widget *)0;
     g_title = (dui_widget *)0;
     g_summary = (dui_widget *)0;
     g_instance = (dui_widget *)0;
+    g_toggle_view = (dui_widget *)0;
     g_mode_button = (dui_widget *)0;
     g_connect = (dui_widget *)0;
     g_connect_edit_button = (dui_widget *)0;
@@ -49,6 +91,8 @@ static void clear_children(dui_context &ctx) {
     g_dedicated = (dui_widget *)0;
     g_connect_button = (dui_widget *)0;
     g_status = (dui_widget *)0;
+    g_repo_mods_label = (dui_widget *)0;
+    g_repo_packs_label = (dui_widget *)0;
 
     if (!ctx.root) {
         return;
@@ -66,6 +110,59 @@ static dui_widget *add_child(dui_context &ctx, dui_widget *parent, dui_widget_ki
         return (dui_widget *)0;
     }
     dui_widget_add_child(parent, w);
+    return w;
+}
+
+static void on_launch_tool(dui_widget *self);
+
+static void set_visible(dui_widget *w, int visible) {
+    if (!w) {
+        return;
+    }
+    if (visible) {
+        w->flags |= DUI_WIDGET_VISIBLE;
+    } else {
+        w->flags &= ~DUI_WIDGET_VISIBLE;
+    }
+}
+
+static std::string repo_tail(const std::string &path, const char *marker) {
+    if (!marker) {
+        return path;
+    }
+    const std::string m(marker);
+    const size_t pos = path.find(m);
+    if (pos == std::string::npos) {
+        return path;
+    }
+    return path.substr(pos + m.size());
+}
+
+static dui_widget *add_launch_button(dui_context &ctx,
+                                     dui_widget *parent,
+                                     DomLauncherApp &app,
+                                     const char *label,
+                                     const char *tool_id,
+                                     const std::string &load_path,
+                                     int use_demo,
+                                     std::vector<dui_widget *> &out_buttons) {
+    dui_widget *w = add_child(ctx, parent, DUI_WIDGET_BUTTON);
+    if (!w) {
+        return (dui_widget *)0;
+    }
+
+    LaunchCtx *lc = new LaunchCtx();
+    lc->app = &app;
+    lc->tool_id = tool_id ? tool_id : "";
+    lc->load_path = load_path;
+    lc->label = label ? label : "";
+    lc->use_demo = use_demo;
+    g_launch_ctxs.push_back(lc);
+
+    w->text = lc->label.c_str();
+    w->on_click = on_launch_tool;
+    w->user_data = (void *)lc;
+    out_buttons.push_back(w);
     return w;
 }
 
@@ -90,6 +187,13 @@ static void on_next_instance(dui_widget *self) {
     DomLauncherApp *app = self ? (DomLauncherApp *)self->user_data : (DomLauncherApp *)0;
     if (app) {
         app->select_next_instance();
+    }
+}
+
+static void on_toggle_view(dui_widget *self) {
+    DomLauncherApp *app = self ? (DomLauncherApp *)self->user_data : (DomLauncherApp *)0;
+    if (app) {
+        app->toggle_tools_view();
     }
 }
 
@@ -142,6 +246,13 @@ static void on_connect(dui_widget *self) {
     }
 }
 
+static void on_launch_tool(dui_widget *self) {
+    LaunchCtx *ctx = self ? (LaunchCtx *)self->user_data : (LaunchCtx *)0;
+    if (ctx && ctx->app) {
+        (void)ctx->app->launch_tool(ctx->tool_id, ctx->load_path, ctx->use_demo != 0);
+    }
+}
+
 static int traverse_try_click(dui_widget *root, int x, int y) {
     dui_widget *stack[64];
     int top = -1;
@@ -189,10 +300,12 @@ void dom_launcher_ui_build_root(dui_context &ctx, DomLauncherApp &app) {
     if (!g_panel) {
         return;
     }
-    g_panel->layout_rect.h = d_q16_16_from_int(440);
+    g_panel->layout_rect.h = d_q16_16_from_int(560);
 
     g_title = add_child(ctx, g_panel, DUI_WIDGET_LABEL);
     if (g_title) g_title->text = "Dominium Launcher";
+
+    g_toggle_view = add_child(ctx, g_panel, DUI_WIDGET_BUTTON);
 
     g_summary = add_child(ctx, g_panel, DUI_WIDGET_LABEL);
     g_status = add_child(ctx, g_panel, DUI_WIDGET_LABEL);
@@ -223,6 +336,11 @@ void dom_launcher_ui_build_root(dui_context &ctx, DomLauncherApp &app) {
         g_next_instance->text = "Next Instance";
         g_next_instance->on_click = on_next_instance;
         g_next_instance->user_data = (void *)&app;
+    }
+    if (g_toggle_view) {
+        g_toggle_view->text = "Tools";
+        g_toggle_view->on_click = on_toggle_view;
+        g_toggle_view->user_data = (void *)&app;
     }
     if (g_mode_button) {
         g_mode_button->on_click = on_cycle_mode;
@@ -257,17 +375,71 @@ void dom_launcher_ui_build_root(dui_context &ctx, DomLauncherApp &app) {
         g_connect_button->on_click = on_connect;
         g_connect_button->user_data = (void *)&app;
     }
+
+    /* Tools (shown only in Tools view). */
+    (void)add_launch_button(ctx, g_panel, app, "World Editor", "world_editor", std::string(), 1, g_tool_buttons);
+    (void)add_launch_button(ctx, g_panel, app, "Blueprint Editor", "blueprint_editor", std::string(), 1, g_tool_buttons);
+    (void)add_launch_button(ctx, g_panel, app, "Tech Tree Editor", "tech_editor", std::string(), 1, g_tool_buttons);
+    (void)add_launch_button(ctx, g_panel, app, "Policy Editor", "policy_editor", std::string(), 1, g_tool_buttons);
+    (void)add_launch_button(ctx, g_panel, app, "Process Editor", "process_editor", std::string(), 1, g_tool_buttons);
+    (void)add_launch_button(ctx, g_panel, app, "Transport Editor", "transport_editor", std::string(), 1, g_tool_buttons);
+    (void)add_launch_button(ctx, g_panel, app, "Structure Editor", "struct_editor", std::string(), 1, g_tool_buttons);
+    (void)add_launch_button(ctx, g_panel, app, "Item Editor", "item_editor", std::string(), 1, g_tool_buttons);
+    (void)add_launch_button(ctx, g_panel, app, "Pack Editor", "pack_editor", std::string(), 1, g_tool_buttons);
+    (void)add_launch_button(ctx, g_panel, app, "Mod Builder", "mod_builder", std::string(), 1, g_tool_buttons);
+    (void)add_launch_button(ctx, g_panel, app, "Save Inspector", "save_inspector",
+                            app.home_join("data/tools_demo/world_demo.dwrl"), 0, g_tool_buttons);
+    (void)add_launch_button(ctx, g_panel, app, "Replay Viewer", "replay_viewer", std::string(), 0, g_tool_buttons);
+    (void)add_launch_button(ctx, g_panel, app, "Net Inspector", "net_inspector", std::string(), 0, g_tool_buttons);
+
+    g_repo_mods_label = add_child(ctx, g_panel, DUI_WIDGET_LABEL);
+    if (g_repo_mods_label) {
+        g_repo_mods_label->text = g_buf_repo_mods;
+    }
+    {
+        size_t i;
+        const std::vector<std::string> &mods = app.repo_mod_manifests();
+        for (i = 0u; i < mods.size() && i < 6u; ++i) {
+            const std::string label = std::string("Mod: ") + repo_tail(mods[i], "repo/mods/");
+            (void)add_launch_button(ctx, g_panel, app, label.c_str(), "mod_builder", mods[i], 0, g_mod_buttons);
+        }
+    }
+
+    g_repo_packs_label = add_child(ctx, g_panel, DUI_WIDGET_LABEL);
+    if (g_repo_packs_label) {
+        g_repo_packs_label->text = g_buf_repo_packs;
+    }
+    {
+        size_t i;
+        const std::vector<std::string> &packs = app.repo_pack_manifests();
+        for (i = 0u; i < packs.size() && i < 6u; ++i) {
+            const std::string label = std::string("Pack: ") + repo_tail(packs[i], "repo/packs/");
+            (void)add_launch_button(ctx, g_panel, app, label.c_str(), "pack_editor", packs[i], 0, g_pack_buttons);
+        }
+    }
 }
 
 void dom_launcher_ui_update(dui_context &ctx, DomLauncherApp &app) {
     const int inst_idx = app.selected_instance_index();
     const unsigned inst_count = (unsigned)app.instances().size();
+    const int tools_view = app.showing_tools() ? 1 : 0;
 
     (void)ctx;
-    std::snprintf(g_buf_summary, sizeof(g_buf_summary), "Products: %u  Instances: %u",
+    std::snprintf(g_buf_summary, sizeof(g_buf_summary), "Products: %u  Instances: %u  Mods: %u  Packs: %u",
                   (unsigned)app.products().size(),
-                  (unsigned)app.instances().size());
+                  (unsigned)app.instances().size(),
+                  (unsigned)app.repo_mod_manifests().size(),
+                  (unsigned)app.repo_pack_manifests().size());
     if (g_summary) g_summary->text = g_buf_summary;
+
+    if (g_toggle_view) {
+        g_toggle_view->text = tools_view ? "Back to Game" : "Tools";
+    }
+
+    std::snprintf(g_buf_repo_mods, sizeof(g_buf_repo_mods),
+                  "Repo Mods: %u", (unsigned)app.repo_mod_manifests().size());
+    std::snprintf(g_buf_repo_packs, sizeof(g_buf_repo_packs),
+                  "Repo Packs: %u", (unsigned)app.repo_pack_manifests().size());
 
     if (inst_idx >= 0 && inst_idx < (int)app.instances().size()) {
         const InstanceInfo &inst = app.instances()[(size_t)inst_idx];
@@ -301,6 +473,38 @@ void dom_launcher_ui_update(dui_context &ctx, DomLauncherApp &app) {
     std::snprintf(g_buf_status, sizeof(g_buf_status),
                   "Status: %s", app.status_text().empty() ? "(none)" : app.status_text().c_str());
     if (g_status) g_status->text = g_buf_status;
+
+    /* Page visibility. */
+    set_visible(g_instance, !tools_view);
+    set_visible(g_prev_instance, !tools_view);
+    set_visible(g_next_instance, !tools_view);
+    set_visible(g_mode_button, !tools_view);
+    set_visible(g_connect, !tools_view);
+    set_visible(g_connect_edit_button, !tools_view);
+    set_visible(g_port, !tools_view);
+    set_visible(g_port_dec, !tools_view);
+    set_visible(g_port_inc, !tools_view);
+    set_visible(g_listen, !tools_view);
+    set_visible(g_dedicated, !tools_view);
+    set_visible(g_connect_button, !tools_view);
+
+    set_visible(g_repo_mods_label, tools_view);
+    set_visible(g_repo_packs_label, tools_view);
+    if (g_repo_mods_label) g_repo_mods_label->text = g_buf_repo_mods;
+    if (g_repo_packs_label) g_repo_packs_label->text = g_buf_repo_packs;
+
+    {
+        size_t i;
+        for (i = 0u; i < g_tool_buttons.size(); ++i) {
+            set_visible(g_tool_buttons[i], tools_view);
+        }
+        for (i = 0u; i < g_mod_buttons.size(); ++i) {
+            set_visible(g_mod_buttons[i], tools_view);
+        }
+        for (i = 0u; i < g_pack_buttons.size(); ++i) {
+            set_visible(g_pack_buttons[i], tools_view);
+        }
+    }
 }
 
 int dom_launcher_ui_try_click(dui_context &ctx, int x, int y) {
