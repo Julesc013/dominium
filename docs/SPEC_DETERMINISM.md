@@ -38,6 +38,17 @@ The compile-time enforcement hooks live in `source/domino/core/det_invariants.h`
 Deterministic behavior MUST NOT depend on pointer addresses or insertion-order
 side effects of unordered containers.
 
+### Stimulus substrate (fields/events/messages)
+Determinism paths MUST NOT perform direct cross-subsystem calls to exchange
+stimuli or authoritative state. Instead:
+- **Events**, **messages**, and **field updates/samples** are the only allowed
+  cross-module stimulus channels in SIM.
+- Producers buffer events/messages/field-updates; delivery/application happens
+  only at deterministic scheduler phase boundaries (see
+  `docs/SPEC_FIELDS_EVENTS.md` and `docs/SPEC_SIM_SCHEDULER.md`).
+- Delivery/application/sampling work is bounded via deterministic budgets and
+  carryover queues; no time-based scheduling is allowed.
+
 ### Stable IDs
 All deterministic objects that can appear in packets, deltas, hashes, or
 serialized artifacts MUST have stable numeric IDs.

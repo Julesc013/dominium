@@ -100,6 +100,10 @@ add_library(domino_core STATIC
     sim/sched/dg_hash.c
     sim/sched/dg_replay.c
     sim/sched/dg_sched.c
+    sim/bus/dg_event_bus.c
+    sim/bus/dg_message_bus.c
+    sim/bus/dg_field_layer.c
+    sim/bus/dg_field.c
     sim/sim.c
 )
 
@@ -128,6 +132,10 @@ target_sources(domino_core PRIVATE
     sim/pkt/registry/dg_type_registry.h
     sim/pkt/idmap/dg_idmap.h
     sim/bus/d_sim_bus.h
+    sim/bus/dg_event_bus.h
+    sim/bus/dg_message_bus.h
+    sim/bus/dg_field_layer.h
+    sim/bus/dg_field.h
     sim/lod/d_sim_lod.h
     sim/act/d_sim_act.h
     sim/act/dg_delta_registry.h
