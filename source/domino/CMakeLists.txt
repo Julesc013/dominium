@@ -85,6 +85,29 @@ add_library(domino_core STATIC
     sim/sim.c
 )
 
+# Header-only scaffolding for the deterministic refactor (no compiled logic yet).
+target_sources(domino_core PRIVATE
+    core/det_invariants.h
+    sim/sched/d_sim_sched.h
+    sim/pkt/d_sim_pkt.h
+    sim/bus/d_sim_bus.h
+    sim/lod/d_sim_lod.h
+    sim/act/d_sim_act.h
+    sim/sense/d_sim_sense.h
+    sim/know/d_sim_know.h
+    sim/vis/d_sim_vis.h
+    sim/prop/d_sim_prop.h
+    world/domain/d_world_domain.h
+    world/frame/d_world_frame.h
+    trans/compile/d_trans_compile.h
+    struct/model/d_struct_model.h
+    struct/compile/d_struct_compile.h
+    struct/phys/d_struct_phys.h
+    decor/d_decor.h
+    decor/model/d_decor_model.h
+    decor/compile/d_decor_compile.h
+)
+
 if(WIN32)
     target_sources(domino_core PRIVATE system/dsys_terminal_detect_winnt.c)
 elseif(UNIX)
