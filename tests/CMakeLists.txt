@@ -90,6 +90,12 @@ add_executable(domino_pose_anchor_tests
 target_link_libraries(domino_pose_anchor_tests PRIVATE domino_core)
 add_test(NAME domino_pose_anchor COMMAND domino_pose_anchor_tests)
 
+add_executable(domino_trans_compile_tests
+    domino_trans/test_dg_trans_compile_determinism.c
+)
+target_link_libraries(domino_trans_compile_tests PRIVATE domino_core)
+add_test(NAME domino_trans_compile COMMAND domino_trans_compile_tests)
+
 add_executable(domino_canvas_tests
     domino_gfx/test_domino_canvas_build.c
 )

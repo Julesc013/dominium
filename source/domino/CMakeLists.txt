@@ -69,6 +69,15 @@ add_library(domino_core STATIC
     build/d_build_validate.c
     trans/d_trans.c
     trans/d_trans_validate.c
+    trans/model/dg_trans_alignment.c
+    trans/model/dg_trans_section.c
+    trans/model/dg_trans_attachment.c
+    trans/model/dg_trans_junction.c
+    trans/compile/dg_trans_compile.c
+    trans/compile/dg_trans_microseg.c
+    trans/compile/dg_trans_frame.c
+    trans/compile/dg_trans_slotmap.c
+    trans/compile/dg_trans_dirty.c
     struct/d_struct.c
     struct/d_struct_instance.c
     struct/d_struct_blueprint.c
@@ -171,6 +180,16 @@ target_sources(domino_core PRIVATE
     world/frame/d_world_frame.h
     world/frame/dg_anchor.h
     trans/compile/d_trans_compile.h
+    trans/model/dg_trans_ids.h
+    trans/model/dg_trans_alignment.h
+    trans/model/dg_trans_section.h
+    trans/model/dg_trans_attachment.h
+    trans/model/dg_trans_junction.h
+    trans/compile/dg_trans_compile.h
+    trans/compile/dg_trans_microseg.h
+    trans/compile/dg_trans_frame.h
+    trans/compile/dg_trans_slotmap.h
+    trans/compile/dg_trans_dirty.h
     struct/model/d_struct_model.h
     struct/compile/d_struct_compile.h
     struct/phys/d_struct_phys.h

@@ -10,6 +10,7 @@
 extern "C" {
 #include "build/d_build.h"
 #include "content/d_content.h"
+#include "core/dg_quant.h"
 #include "net/d_net_schema.h"
 #include "trans/d_trans_spline.h"
 }
@@ -119,6 +120,10 @@ static void dom_tlv_write_u32(std::vector<unsigned char> &out, u32 tag, u32 v) {
 }
 
 static void dom_tlv_write_i64(std::vector<unsigned char> &out, u32 tag, i64 v) {
+    dom_tlv_write_raw(out, tag, &v, 8u);
+}
+
+static void dom_tlv_write_u64(std::vector<unsigned char> &out, u32 tag, u64 v) {
     dom_tlv_write_raw(out, tag, &v, 8u);
 }
 
@@ -252,18 +257,27 @@ int DomGameBuildTool::commit_place_structure(DomGameApp &app, q32_32 wx, q32_32 
     }
 
     payload.reserve(64u);
-    dom_tlv_write_u32(payload, D_NET_TLV_BUILD_KIND, (u32)D_BUILD_KIND_STRUCTURE);
-    dom_tlv_write_u32(payload, D_NET_TLV_BUILD_STRUCTURE_PROTO_ID, (u32)m_structure_id);
-    dom_tlv_write_i64(payload, D_NET_TLV_BUILD_POS_X, (i64)wx);
-    dom_tlv_write_i64(payload, D_NET_TLV_BUILD_POS_Y, (i64)wy);
-    dom_tlv_write_i64(payload, D_NET_TLV_BUILD_POS_Z, (i64)0);
-    dom_tlv_write_q16_16(payload, D_NET_TLV_BUILD_ROT_YAW, m_yaw);
-    dom_tlv_write_u32(payload, D_NET_TLV_BUILD_OWNER_ORG_ID, (u32)app.player_org_id());
-    dom_tlv_write_u32(payload, D_NET_TLV_BUILD_FLAGS, (u32)D_BUILD_FLAG_SNAP_TERRAIN);
+    dom_tlv_write_u32(payload, D_NET_TLV_BUILD2_KIND, (u32)D_BUILD_KIND_STRUCTURE);
+    dom_tlv_write_u32(payload, D_NET_TLV_BUILD2_STRUCTURE_PROTO_ID, (u32)m_structure_id);
+    dom_tlv_write_u32(payload, D_NET_TLV_BUILD2_OWNER_ORG_ID, (u32)app.player_org_id());
+    dom_tlv_write_u32(payload, D_NET_TLV_BUILD2_FLAGS, 0u);
+
+    /* Anchor+pose contract: use a terrain anchor in world frame (frame id 0). */
+    dom_tlv_write_u32(payload, D_NET_TLV_BUILD2_ANCHOR_KIND, (u32)DG_ANCHOR_TERRAIN);
+    dom_tlv_write_u64(payload, D_NET_TLV_BUILD2_HOST_FRAME, (u64)DG_FRAME_ID_WORLD);
+    {
+        dg_q u = (dg_q)((i64)wx >> (Q32_32_FRAC_BITS - 16));
+        dg_q v = (dg_q)((i64)wy >> (Q32_32_FRAC_BITS - 16));
+        u = dg_quant_param(u, DG_QUANT_PARAM_DEFAULT_Q);
+        v = dg_quant_param(v, DG_QUANT_PARAM_DEFAULT_Q);
+        dom_tlv_write_i64(payload, D_NET_TLV_BUILD2_TERRAIN_U, (i64)u);
+        dom_tlv_write_i64(payload, D_NET_TLV_BUILD2_TERRAIN_V, (i64)v);
+        dom_tlv_write_i64(payload, D_NET_TLV_BUILD2_TERRAIN_H, (i64)0);
+    }
 
     tick = dom_next_cmd_tick(app, w);
     std::memset(&cmd, 0, sizeof(cmd));
-    cmd.schema_id = (u32)D_NET_SCHEMA_CMD_BUILD_V1;
+    cmd.schema_id = (u32)D_NET_SCHEMA_CMD_BUILD_V2;
     cmd.schema_ver = 1u;
     cmd.tick = tick;
     cmd.payload.ptr = payload.empty() ? (unsigned char *)0 : &payload[0];
@@ -289,84 +303,11 @@ int DomGameBuildTool::commit_place_structure(DomGameApp &app, q32_32 wx, q32_32 
 }
 
 int DomGameBuildTool::commit_draw_spline(DomGameApp &app) {
-    d_world *w = app.session().world();
-    d_net_cmd cmd;
-    std::vector<unsigned char> payload;
-    std::vector<unsigned char> nodes;
-    u32 tick;
-
-    if (!w || m_spline_profile_id == 0u) {
-        set_status("Build: no world or spline profile selected");
-        return 0;
-    }
-    if (m_spline_node_count < 2u) {
-        set_status("Build: need at least 2 nodes");
-        return 0;
-    }
-    if (!app.net().ready()) {
-        set_status("Build: session not ready");
-        return 0;
-    }
-
-    nodes.resize(2u + (size_t)m_spline_node_count * 24u);
-    {
-        u16 count = m_spline_node_count;
-        std::memcpy(&nodes[0], &count, 2u);
-    }
-    {
-        u16 i;
-        for (i = 0u; i < m_spline_node_count; ++i) {
-            const size_t base = 2u + (size_t)i * 24u;
-            const i64 nx = (i64)m_spline_nodes[i].x;
-            const i64 ny = (i64)m_spline_nodes[i].y;
-            const i64 nz = (i64)m_spline_nodes[i].z;
-            std::memcpy(&nodes[base + 0u], &nx, 8u);
-            std::memcpy(&nodes[base + 8u], &ny, 8u);
-            std::memcpy(&nodes[base + 16u], &nz, 8u);
-        }
-    }
-
-    payload.reserve(128u);
-    dom_tlv_write_u32(payload, D_NET_TLV_BUILD_KIND, (u32)D_BUILD_KIND_SPLINE);
-    dom_tlv_write_u32(payload, D_NET_TLV_BUILD_SPLINE_PROFILE_ID, (u32)m_spline_profile_id);
-    dom_tlv_write_i64(payload, D_NET_TLV_BUILD_POS_X, (i64)m_spline_nodes[0].x);
-    dom_tlv_write_i64(payload, D_NET_TLV_BUILD_POS_Y, (i64)m_spline_nodes[0].y);
-    dom_tlv_write_i64(payload, D_NET_TLV_BUILD_POS_Z, (i64)m_spline_nodes[0].z);
-    dom_tlv_write_i64(payload, D_NET_TLV_BUILD_POS2_X, (i64)m_spline_nodes[m_spline_node_count - 1u].x);
-    dom_tlv_write_i64(payload, D_NET_TLV_BUILD_POS2_Y, (i64)m_spline_nodes[m_spline_node_count - 1u].y);
-    dom_tlv_write_i64(payload, D_NET_TLV_BUILD_POS2_Z, (i64)m_spline_nodes[m_spline_node_count - 1u].z);
-    dom_tlv_write_u32(payload, D_NET_TLV_BUILD_OWNER_ORG_ID, (u32)app.player_org_id());
-    dom_tlv_write_u32(payload, D_NET_TLV_BUILD_FLAGS, (u32)(D_BUILD_FLAG_SNAP_TERRAIN | D_BUILD_FLAG_REQUIRE_PORTS));
-    dom_tlv_write_raw(payload, D_NET_TLV_BUILD_SPLINE_NODES, nodes.empty() ? (const void *)0 : &nodes[0], (u32)nodes.size());
-
-    tick = dom_next_cmd_tick(app, w);
-    std::memset(&cmd, 0, sizeof(cmd));
-    cmd.schema_id = (u32)D_NET_SCHEMA_CMD_BUILD_V1;
-    cmd.schema_ver = 1u;
-    cmd.tick = tick;
-    cmd.payload.ptr = payload.empty() ? (unsigned char *)0 : &payload[0];
-    cmd.payload.len = (u32)payload.size();
-
-    if (!app.net().submit_cmd(&cmd)) {
-        set_status("Build: send failed");
-        return 0;
-    }
-
-    {
-        const d_proto_spline_profile *pp = d_content_get_spline_profile(m_spline_profile_id);
-        if (pp && pp->name) {
-            std::snprintf(m_status, sizeof(m_status),
-                          "Build: queued spline %s (tick=%u)",
-                          pp->name, (unsigned)tick);
-        } else {
-            std::snprintf(m_status, sizeof(m_status),
-                          "Build: queued spline #%u (tick=%u)",
-                          (unsigned)m_spline_profile_id, (unsigned)tick);
-        }
-    }
-
+    (void)app;
+    /* Corridor/spline placement is not implemented in this prompt. */
+    set_status("Build: spline placement not available (anchor contract)");
     clear_spline();
-    return 1;
+    return 0;
 }
 
 int DomGameBuildTool::handle_event(DomGameApp &app, const d_sys_event &ev) {

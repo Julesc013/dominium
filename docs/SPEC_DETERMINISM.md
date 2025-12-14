@@ -109,6 +109,34 @@ Forbidden:
 Tooling may use floating point only outside determinism paths and MUST NOT feed
 float-derived values into deterministic state without explicit quantization.
 
+## Anchors, poses, and “no grids”
+Deterministic simulation MUST treat parametric anchors as authoritative truth:
+- placement/edit intents MUST be expressed as `(dg_anchor, local dg_pose offset)`
+- both anchor parameters and pose components MUST be quantized before commit
+- anchor evaluation is query-time only (no cached world-space poses required)
+
+Global grids are UI-only:
+- the engine MUST NOT assume a global placement grid in logic
+- any grids/tiles/occupancy maps may exist only as derived caches that are
+  regenerable and non-authoritative
+
+World-space baked geometry is never authoritative:
+- meshes, collision geometry, and other world-space artifacts are derived caches
+  generated from anchors + parameters (and deterministic compilation where used)
+
+## TRANS corridors (alignments / slots)
+TRANS corridor state and compilation MUST obey these additional constraints:
+- **Source of truth:** authored alignments, cross-sections (slots), attachments,
+  and junction topology (quantized fixed-point; canonically ordered by stable IDs)
+- **Overlap/co-location:** represented only via cross-section slot occupancy
+  (multiple occupants in the same corridor slots), not via stacked splines
+- **Derived caches:** microsegments, deterministic local frames, slot occupancy
+  maps, and chunk-aligned spatial indices (fully rebuildable)
+- **Budgeted compilation:** uses canonical work ordering and deterministic
+  carryover; the final compiled output MUST be identical independent of deferral
+- **Frames:** forward from alignment tangent; up from a stable reference plus
+  roll profile; normalization uses bounded integer math (no epsilons)
+
 ## Deterministic LOD / representation framework
 The engine-wide LOD framework (see `docs/SPEC_LOD.md`) is part of deterministic
 simulation state evolution and MUST obey these additional constraints.
@@ -187,6 +215,7 @@ Determinism paths MUST explicitly forbid:
 - LOD representations R1–R3 (see `docs/SPEC_LOD.md`)
 - knowledge/visibility/comms state (see `docs/SPEC_KNOWLEDGE_VIS_COMMS.md`)
 - compiled/expanded graph adjacency caches (see `docs/SPEC_GRAPH_TOOLKIT.md`)
+- TRANS microsegments/frames/slotmaps/spatial indices
 - any render/UI geometry or visualization state
 
 ## Related specs
