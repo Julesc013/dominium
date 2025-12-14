@@ -101,3 +101,43 @@ set_target_properties(domino_lod_framework_test PROPERTIES
 )
 
 add_test(NAME domino_lod_framework_test COMMAND domino_lod_framework_test)
+
+add_executable(domino_pose_anchor_quant_test
+    pose_anchor_quant_test.c
+)
+
+target_include_directories(domino_pose_anchor_quant_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+)
+
+target_link_libraries(domino_pose_anchor_quant_test
+    domino_core
+)
+
+set_target_properties(domino_pose_anchor_quant_test PROPERTIES
+    C_STANDARD 90
+    C_STANDARD_REQUIRED ON
+    C_EXTENSIONS OFF
+)
+
+add_test(NAME domino_pose_anchor_quant_test COMMAND domino_pose_anchor_quant_test)
+
+add_executable(domino_trans_compile_determinism_test
+    ../../tests/domino_trans/test_dg_trans_compile_determinism.c
+)
+
+target_include_directories(domino_trans_compile_determinism_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+)
+
+target_link_libraries(domino_trans_compile_determinism_test
+    domino_core
+)
+
+set_target_properties(domino_trans_compile_determinism_test PROPERTIES
+    C_STANDARD 90
+    C_STANDARD_REQUIRED ON
+    C_EXTENSIONS OFF
+)
+
+add_test(NAME domino_trans_compile_determinism_test COMMAND domino_trans_compile_determinism_test)

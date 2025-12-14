@@ -71,6 +71,16 @@ Implemented plumbing:
 - No implicit upgrades are performed by default; upgrades (if any) must be
   explicit and versioned.
 
+## Placement/edit intent contract
+All placement/edit intents (BUILD / TRANS / STRUCT / DECOR) MUST be expressed as:
+- `dg_anchor`: a parametric reference to authoring primitives (stable IDs)
+- `dg_pose` offset: a local pose relative to the anchor
+
+Rules:
+- All fixed-point values MUST be quantized before becoming authoritative state.
+- Raw world-space meshes/vertex lists are forbidden in intents.
+- Anchors are authoritative; world-space geometry is derived cache only.
+
 ## Stable ID requirements
 Packets that reference world objects MUST use stable numeric IDs:
 - domain ids, entity ids, frame ids, graph node ids, etc.

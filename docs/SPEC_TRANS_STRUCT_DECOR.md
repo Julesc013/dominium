@@ -17,6 +17,8 @@ Applies to:
 - Own transform/topology representations used to connect structures and anchors.
 - Provide deterministic, canonical representations suitable for SIM consumption.
 - Provide deterministic compilation from authored inputs (see `compile/`).
+- Represent corridor overlap/co-location only via cross-section slots and
+  attachments (no stacked independent splines).
 
 **Non-responsibilities**
 - No rendering integration.
@@ -44,11 +46,12 @@ Applies to:
 - No platform rendering dependencies.
 
 ## Authoring vs compiled artifacts
-- Authoring artifacts are for tools only; they MUST NOT be required in
-  determinism paths.
-- Compiled artifacts are the only acceptable deterministic inputs to SIM.
-- Compilation MUST be deterministic, TLV-versioned, and canonically ordered
-  (`docs/SPEC_PACKETS.md`, `docs/SPEC_DETERMINISM.md`).
+- Authoring models (parametric, fixed-point, quantized at commit) are the
+  canonical source of truth for BUILD/TRANS/STRUCT/DECOR.
+- Compiled artifacts are deterministic derived caches used for performance and
+  SIM queries; they MUST be rebuildable under budget and MUST NOT be
+  authoritative truth.
+- Compilation MUST be deterministic and canonically ordered (`docs/SPEC_DETERMINISM.md`).
 
 ## Explicit prohibitions
 TRANS/STRUCT/DECOR MUST forbid:
@@ -60,10 +63,11 @@ TRANS/STRUCT/DECOR MUST forbid:
 
 ## Source of truth vs derived cache
 **Source of truth:**
-- compiled artifacts (TLV-versioned)
+- TRANS authoring: alignments, cross-sections (slots), attachments, junctions
 - anchors/poses referenced by stable IDs
 
 **Derived cache:**
+- TRANS compiled: microsegments, frames, slotmaps, chunk-aligned spatial indices
 - render geometry
 - visualization geometry
 - any occupancy grids or spatial accelerators (regenerable)
@@ -74,4 +78,3 @@ TRANS/STRUCT/DECOR MUST forbid:
 - `docs/SPEC_GRAPH_TOOLKIT.md`
 - `docs/SPEC_POSE_AND_ANCHORS.md`
 - `docs/SPEC_DOMAINS_FRAMES_PROP.md`
-

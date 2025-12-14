@@ -9,6 +9,7 @@ extern "C" {
 #include "domino/gfx.h"
 #include "system/d_system_input.h"
 #include "build/d_build.h"
+#include "trans/d_trans_spline.h"
 }
 
 namespace dom {
@@ -71,4 +72,3 @@ private:
 } // namespace dom
 
 #endif /* DOM_GAME_TOOLS_BUILD_H */
-
