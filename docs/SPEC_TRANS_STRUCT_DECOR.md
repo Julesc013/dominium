@@ -52,10 +52,34 @@ Applies to:
 **Responsibilities**
 - Own decoration rulepacks and deterministic compilation to runtime artifacts.
 - Provide derived decoration outputs only; decor is non-authoritative.
+- Provide a unified, host-agnostic authoring model for surface detail:
+  signage, markings, decals, and small surface props (placement only).
+- Consume only compiled host catalogs/indices (no direct access to TRANS/STRUCT authoring).
+- Default to render-only derived outputs and only promote to simulation entities via explicit hooks.
 
 **Non-responsibilities**
 - Decor MUST NOT become gameplay truth.
 - No platform rendering dependencies.
+
+### DECOR authoring vs compiled artifacts
+**Authoring (source of truth)**
+- Rulepacks: deterministic baseline generation rules keyed by stable `rulepack_id`.
+- Overrides: authoritative edit records (PIN/SUPPRESS/REPLACE/MOVE/TAG) keyed by stable `override_id`.
+- Anchors + local pose offsets: authoritative placement references to host parameter spaces.
+
+**Derived caches**
+- Chunk-aligned instance lists with cached evaluated poses (renderer-agnostic).
+- Chunk-aligned tile batches suitable for later dgfx consumption.
+
+### Host-agnostic binding (no baked geometry)
+DECOR binds to hosts via stable authoring IDs, not compiled triangles/meshes:
+- terrain patches (chunk-aligned)
+- TRANS corridor slot surfaces / rails
+- STRUCT exterior surfaces
+- STRUCT room/interior surfaces
+- sockets/attachment points
+
+Anchors evaluate through the world frame graph; DECOR never stores baked world-space geometry as authoritative state.
 
 ## Authoring vs compiled artifacts
 - Authoring models (parametric, fixed-point, quantized at commit) are the
