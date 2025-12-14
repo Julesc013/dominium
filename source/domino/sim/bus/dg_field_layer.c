@@ -173,11 +173,13 @@ static q16_16 dg_field_layer_clamp_q16_16(q16_16 v, q16_16 lo, q16_16 hi) {
 }
 
 static q16_16 dg_field_layer_saturate_q16_16_i64(i64 v) {
-    if (v > (i64)0x7FFFFFFF) {
-        return (q16_16)0x7FFFFFFF;
+    const i64 i32_max = (i64)2147483647L;
+    const i64 i32_min = (i64)(-2147483647L - 1L);
+    if (v > i32_max) {
+        return (q16_16)i32_max;
     }
-    if (v < (i64)0x80000000) {
-        return (q16_16)0x80000000;
+    if (v < i32_min) {
+        return (q16_16)i32_min;
     }
     return (q16_16)v;
 }
@@ -350,4 +352,3 @@ int dg_field_layer_sample_trilinear(
 
     return 0;
 }
-

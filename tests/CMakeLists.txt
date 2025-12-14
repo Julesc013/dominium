@@ -78,11 +78,11 @@ target_link_libraries(domino_sim_dominium_tests PRIVATE
 )
 add_test(NAME domino_sim_dominium COMMAND domino_sim_dominium_tests)
 
-add_executable(domino_stimulus_determinism_tests
-    domino_sim/test_dg_stimulus_determinism.c
+add_executable(domino_lod_framework_tests
+    domino_sim/test_dg_lod_framework.c
 )
-target_link_libraries(domino_stimulus_determinism_tests PRIVATE domino_core)
-add_test(NAME domino_stimulus_determinism COMMAND domino_stimulus_determinism_tests)
+target_link_libraries(domino_lod_framework_tests PRIVATE domino_core)
+add_test(NAME domino_lod_framework COMMAND domino_lod_framework_tests)
 
 add_executable(domino_canvas_tests
     domino_gfx/test_domino_canvas_build.c

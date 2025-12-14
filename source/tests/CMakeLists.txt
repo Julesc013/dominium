@@ -61,3 +61,23 @@ set_target_properties(domino_sched_determinism_test PROPERTIES
 )
 
 add_test(NAME domino_sched_determinism_test COMMAND domino_sched_determinism_test)
+
+add_executable(domino_stimulus_determinism_test
+    stimulus_determinism_test.c
+)
+
+target_include_directories(domino_stimulus_determinism_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+)
+
+target_link_libraries(domino_stimulus_determinism_test
+    domino_core
+)
+
+set_target_properties(domino_stimulus_determinism_test PROPERTIES
+    C_STANDARD 90
+    C_STANDARD_REQUIRED ON
+    C_EXTENSIONS OFF
+)
+
+add_test(NAME domino_stimulus_determinism_test COMMAND domino_stimulus_determinism_test)

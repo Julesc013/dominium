@@ -109,6 +109,42 @@ Forbidden:
 Tooling may use floating point only outside determinism paths and MUST NOT feed
 float-derived values into deterministic state without explicit quantization.
 
+## Deterministic LOD / representation framework
+The engine-wide LOD framework (see `docs/SPEC_LOD.md`) is part of deterministic
+simulation state evolution and MUST obey these additional constraints.
+
+### Interest volumes are lockstep-only
+Interest volumes:
+- are derived ONLY from lockstep simulation state (player entities, ownership,
+  hazards, activity, and registered critical-infra anchors)
+- MUST NOT use UI state (camera, viewport, selection) or OS time
+- MUST be quantized fixed-point regions (no floats) and stable across platforms
+
+### Stable ordering for promotion/demotion
+When choosing representation transitions, ordering MUST be deterministic and
+MUST NOT depend on hash iteration or pointer identity.
+
+Canonical ordering (authoritative):
+- desired rep priority: `R0` first, then `R1`, then `R2`, then `R3`
+- descending interest score (fixed-point integer compare)
+- stable tiebreak key: `(domain_id, chunk_id, entity_id, sub_id)` ascending
+
+### Budgeted transitions + deterministic carryover
+Promotion/demotion is budgeted work:
+- each transition has an explicit deterministic work-unit cost
+- work is processed in stable order until the budget is exhausted
+- if the next transition cannot fit, processing MUST stop (no skipping)
+- remaining transitions MUST carry over to later ticks without reordering
+
+### Accumulator semantics (no “result changes due to LOD”)
+LOD may change cadence and fidelity, but MUST NOT change authoritative outcomes.
+Systems MUST use accumulators for deferred integration:
+- deltas are accumulated deterministically when work is decimated/deferred
+- application consumes from accumulators without loss (total applied equals
+  total added), independent of deferral pattern
+- stride/decimation scheduling MUST be deterministic:
+  `(tick + hash(stable_id)) % stride == 0` with a bit-stable hash
+
 ## Replay + hashing guarantees
 ### What replay records
 Replay streams MUST record:

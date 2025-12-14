@@ -1,66 +1,92 @@
 # SPEC_LOD — Representation Ladder (R0/R1/R2/R3)
 
-This spec defines the deterministic representation ladder and the rules for
-promotion/demotion under per-tick budgets.
+This spec defines the engine-wide deterministic LOD framework: the
+representation ladder, deterministic interest volumes, budgeted promotion/
+demotion, and accumulator-safe deferral.
 
 ## Scope
 Applies to:
-- representation levels R0–R3
-- deterministic selection and tie-breaking
-- promotion/demotion and rebuild accumulators
+- representation levels R0–R3 (`dg_rep_state`)
+- representable interface/vtable (`dg_representable`)
+- deterministic interest volumes (`dg_interest`)
+- deterministic promotion/demotion planning (`dg_promo`)
+- accumulator semantics for deferred integration (`dg_accum`, `dg_stride`)
 
-## Representation ladder
-The ladder is structural, not gameplay-specific. The meaning of "detail" is
-defined per subsystem, but the invariants are shared.
+Does not define gameplay logic, rendering, UI-driven interest, or platform code.
 
-- **R0 (Authoritative)**: minimal authoritative state required for determinism.
-- **R1 (Coarse derived)**: coarse derived representation for broad queries.
-- **R2 (Local derived)**: localized derived representation for focused work.
-- **R3 (Full derived)**: highest-fidelity derived representation.
+## Representation ladder (authoritative names)
+The canonical ladder lives in `source/domino/sim/lod/dg_rep.h`:
 
-Only R0 is permitted to be a source of truth. R1–R3 MUST be regenerable.
+- **R0_FULL**: full/highest-fidelity representation (baseline cadence).
+- **R1_LITE**: reduced work/fidelity; must preserve invariants via accumulators.
+- **R2_AGG**: aggregated/decimated representation (coarse derived/cached form).
+- **R3_DORMANT**: dormant/minimal bookkeeping; reversible.
 
-## Promotion/demotion rules
-- Promotion/demotion is driven by explicit deterministic inputs:
-  - focus sets (stable ids)
-  - explicit tick-stamped requests
-  - deterministic budgets
-- Selection MUST be deterministic:
-  - sort candidates by stable key
-  - apply a deterministic scoring rule (integer/fixed-point only)
-  - tie-break by stable ID ordering
+Subsystem semantics differ, but transitions MUST be explicit and reversible.
 
-Demotion MUST also be deterministic and MUST NOT depend on wall-clock time.
+## Representable interface (vtable)
+Every representable instance implements:
+- `get_rep_state()`
+- `set_rep_state(new_state)` (authoritative transition; phase boundary only)
+- `step_rep(phase, budget)` (do only what current rep permits)
+- `serialize_rep_state()` (for replay hashing + save/load)
+- `rep_invariants_check()` (debug-only, deterministic)
 
-## Accumulator semantics
-Promotion/demotion and rebuild work MUST be expressed as work items:
-- each item has a stable key and a required work-unit cost
-- the scheduler processes items in canonical order within the per-tick budget
-- remaining items carry over without reordering (see `docs/SPEC_SIM_SCHEDULER.md`)
+Transitions MUST NOT occur mid-phase. Promotion/demotion runs at scheduler phase
+boundaries (see `docs/SPEC_SIM_SCHEDULER.md`).
 
-Accumulators MUST:
-- be deterministic counters or queued work, not time-based timers
-- be part of derived cache state (regenerable) unless explicitly needed for
-  determinism and hashed (prefer not)
+## Deterministic interest volumes
+Interest volumes are deterministic regions derived only from lockstep state.
+They are NOT camera frusta and MUST NOT depend on UI state.
+
+Volume families:
+- `IV_PLAYER` (player-controlled entities)
+- `IV_OWNERSHIP` (owned assets / claimed zones)
+- `IV_HAZARD` (fires, floods, alarms, failures)
+- `IV_ACTIVITY` (active jobs/tasks, interactions)
+- `IV_CRITICAL_INFRA` (registered importance anchors)
+
+All positions and extents:
+- are fixed-point (no floats)
+- are quantized/snapped to deterministic quanta
+- are collected in deterministic order
+
+## Promotion/demotion planner (deterministic under budget)
+Promotion/demotion is executed in **PH_TOPOLOGY** as a deterministic substep:
+- `dg_promo_plan_and_enqueue()`
+- `dg_promo_apply_transitions_under_budget()`
+
+Algorithm (authoritative):
+1. Gather candidate objects from chunk-aligned indices (no unordered scans).
+2. Compute deterministic interest score for each candidate (fixed-point only).
+3. Determine desired rep state from score thresholds (engine defaults for now).
+4. Sort candidates by:
+   - desired rep state priority (R0 first, then R1, then R2, then R3)
+   - descending interest score
+   - stable tiebreak key: `(domain_id, chunk_id, entity_id, sub_id)`
+5. Apply transitions in that order under deterministic budgets:
+   - each transition consumes deterministic work units
+   - if the next transition cannot fit in remaining budget, STOP (no skipping)
+   - remaining transitions carry over to later ticks without reordering
+
+## Accumulator semantics (critical)
+LOD may change cadence/fidelity, but MUST NOT change authoritative outcomes.
+All conserved quantities and deferred integration MUST use accumulators:
+- `dg_accum_add()` records owed deltas deterministically
+- `dg_accum_apply()` applies owed deltas under budget without loss
+
+Cadence decimation uses:
+- `dg_stride_should_run(tick, stable_id, stride)` using
+  `(tick + hash(stable_id)) % stride == 0` with a deterministic hash
 
 ## Forbidden behaviors
-- Using wall-clock time to drive LOD decisions.
-- Floating-point heuristics.
-- Unordered iteration or randomized sampling in selection.
-- Treating global grids or baked geometry as authoritative LOD inputs.
-
-## Source of truth vs derived cache
-**Source of truth:**
-- R0 authoritative state and the delta stream that mutates it
-
-**Derived cache:**
-- R1–R3 representations
-- rebuild queues and dirty flags (regenerable)
+- Float/double arithmetic in deterministic paths.
+- UI-driven interest or wall-clock time inputs.
+- Unordered iteration (hash-table iteration order, pointer ordering).
+- LOD affecting results via hidden heuristics; all effects must be explicit and
+  accumulator-safe.
 
 ## Related specs
 - `docs/SPEC_DETERMINISM.md`
 - `docs/SPEC_SIM_SCHEDULER.md`
 - `docs/SPEC_DOMAINS_FRAMES_PROP.md`
-- `docs/SPEC_GRAPH_TOOLKIT.md`
-- `docs/SPEC_KNOWLEDGE_VIS_COMMS.md`
-
