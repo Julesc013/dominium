@@ -29,7 +29,10 @@ DomLauncherApp::DomLauncherApp()
       m_net_port(7777u),
       m_edit_connect_host(false),
       m_connect_host_backup(""),
-      m_status("") {
+      m_status(""),
+      m_show_tools(false),
+      m_repo_mod_manifests(),
+      m_repo_pack_manifests() {
     std::memset(&m_ui, 0, sizeof(m_ui));
 }
 
@@ -63,6 +66,7 @@ bool DomLauncherApp::init_from_cli(const LauncherConfig &cfg) {
     (void)scan_products();
     (void)scan_instances();
     (void)scan_tools();
+    (void)scan_repo_content();
 
     if (m_selected_product < 0 && !m_products.empty()) {
         m_selected_product = 0;
@@ -304,6 +308,43 @@ bool DomLauncherApp::launch_game_connect() {
     return spawn_product_args("game", args, false);
 }
 
+void DomLauncherApp::toggle_tools_view() {
+    m_show_tools = !m_show_tools;
+    if (m_edit_connect_host) {
+        m_connect_host = m_connect_host_backup;
+        m_edit_connect_host = false;
+    }
+    m_status = m_show_tools ? "Tools view." : "Game view.";
+}
+
+std::string DomLauncherApp::home_join(const std::string &rel) const {
+    return join(m_paths.root, rel);
+}
+
+bool DomLauncherApp::launch_tool(const std::string &tool_id,
+                                 const std::string &load_path,
+                                 bool demo) {
+    std::vector<std::string> args;
+
+    if (tool_id.empty()) {
+        m_status = "Launch failed: empty tool id.";
+        return false;
+    }
+
+    args.push_back(std::string("--tool=") + tool_id);
+    args.push_back(std::string("--home=") + m_paths.root);
+    args.push_back("--sys=win32");
+    args.push_back("--gfx=soft");
+    if (demo) {
+        args.push_back("--demo");
+    }
+    if (!load_path.empty()) {
+        args.push_back(std::string("--load=") + load_path);
+    }
+
+    return spawn_product_args(tool_id, args, false);
+}
+
 bool DomLauncherApp::scan_repo() {
     if (!dir_exists(m_paths.root)) {
         std::printf("Launcher: DOMINIUM_HOME '%s' does not exist.\n", m_paths.root.c_str());
@@ -316,6 +357,14 @@ bool DomLauncherApp::scan_repo() {
     if (!dir_exists(m_paths.instances)) {
         std::printf("Launcher: '%s' missing, no instances available.\n",
                     m_paths.instances.c_str());
+    }
+    if (!dir_exists(m_paths.mods)) {
+        std::printf("Launcher: '%s' missing, no mods available.\n",
+                    m_paths.mods.c_str());
+    }
+    if (!dir_exists(m_paths.packs)) {
+        std::printf("Launcher: '%s' missing, no packs available.\n",
+                    m_paths.packs.c_str());
     }
     return true;
 }
@@ -417,14 +466,113 @@ bool DomLauncherApp::scan_instances() {
 }
 
 bool DomLauncherApp::scan_tools() {
-    /* Manual registration for now. */
-    ProductEntry tool;
-    tool.product = "tool";
-    tool.version = "current";
-    tool.path = join(m_paths.root, "tools/modcheck");
-    if (file_exists(tool.path)) {
-        m_products.push_back(tool);
+    struct ToolExe {
+        const char *id;
+        const char *exe;
+    };
+    static const ToolExe k_tools[] = {
+        { "world_editor",     "dominium-world-editor.exe" },
+        { "blueprint_editor", "dominium-blueprint-editor.exe" },
+        { "tech_editor",      "dominium-tech-editor.exe" },
+        { "policy_editor",    "dominium-policy-editor.exe" },
+        { "process_editor",   "dominium-process-editor.exe" },
+        { "transport_editor", "dominium-transport-editor.exe" },
+        { "struct_editor",    "dominium-struct-editor.exe" },
+        { "item_editor",      "dominium-item-editor.exe" },
+        { "pack_editor",      "dominium-pack-editor.exe" },
+        { "mod_builder",      "dominium-mod-builder.exe" },
+        { "save_inspector",   "dominium-save-inspector.exe" },
+        { "replay_viewer",    "dominium-replay-viewer.exe" },
+        { "net_inspector",    "dominium-net-inspector.exe" },
+    };
+    static const size_t k_tool_count = sizeof(k_tools) / sizeof(k_tools[0]);
+
+    const std::string dbg_dir = join(m_paths.root, "build/source/dominium/tools/Debug");
+    const std::string rel_dir = join(m_paths.root, "build/source/dominium/tools/Release");
+    size_t i;
+
+    for (i = 0u; i < k_tool_count; ++i) {
+        ProductEntry tool;
+        const std::string dbg = join(dbg_dir, k_tools[i].exe);
+        const std::string rel = join(rel_dir, k_tools[i].exe);
+
+        tool.product = k_tools[i].id;
+        tool.version = "dev";
+        tool.path.clear();
+
+        if (file_exists(dbg)) {
+            tool.version = "dev-debug";
+            tool.path = dbg;
+            m_products.push_back(tool);
+        } else if (file_exists(rel)) {
+            tool.version = "dev-release";
+            tool.path = rel;
+            m_products.push_back(tool);
+        }
     }
+    return true;
+}
+
+bool DomLauncherApp::scan_repo_content() {
+    dsys_dir_iter *it;
+    dsys_dir_entry entry;
+
+    m_repo_mod_manifests.clear();
+    it = dsys_dir_open(m_paths.mods.c_str());
+    if (it) {
+        while (dsys_dir_next(it, &entry)) {
+            if (!entry.is_dir) {
+                continue;
+            }
+            const std::string mod_id = entry.name;
+            const std::string mod_root = join(m_paths.mods, mod_id);
+            dsys_dir_iter *ver_it = dsys_dir_open(mod_root.c_str());
+            dsys_dir_entry ver_entry;
+            while (ver_it && dsys_dir_next(ver_it, &ver_entry)) {
+                if (!ver_entry.is_dir) {
+                    continue;
+                }
+                const std::string ver = ver_entry.name;
+                const std::string man = join(join(mod_root, ver), "mod.tlv");
+                if (file_exists(man)) {
+                    m_repo_mod_manifests.push_back(man);
+                }
+            }
+            if (ver_it) {
+                dsys_dir_close(ver_it);
+            }
+        }
+        dsys_dir_close(it);
+    }
+
+    m_repo_pack_manifests.clear();
+    it = dsys_dir_open(m_paths.packs.c_str());
+    if (it) {
+        while (dsys_dir_next(it, &entry)) {
+            if (!entry.is_dir) {
+                continue;
+            }
+            const std::string pack_id = entry.name;
+            const std::string pack_root = join(m_paths.packs, pack_id);
+            dsys_dir_iter *ver_it = dsys_dir_open(pack_root.c_str());
+            dsys_dir_entry ver_entry;
+            while (ver_it && dsys_dir_next(ver_it, &ver_entry)) {
+                if (!ver_entry.is_dir) {
+                    continue;
+                }
+                const std::string ver = ver_entry.name;
+                const std::string man = join(join(pack_root, ver), "pack.tlv");
+                if (file_exists(man)) {
+                    m_repo_pack_manifests.push_back(man);
+                }
+            }
+            if (ver_it) {
+                dsys_dir_close(ver_it);
+            }
+        }
+        dsys_dir_close(it);
+    }
+
     return true;
 }
 
