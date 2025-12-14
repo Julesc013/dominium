@@ -27,14 +27,26 @@ Applies to:
 
 ## STRUCT (Structures)
 **Responsibilities**
-- Own structure semantic models (authoring-time) and compiled structure artifacts.
-- Support deterministic slot-based packing (e.g., corridor packing) as a discrete
-  compile step (no tolerance fitting).
-- Expose structure state to SIM only through stable IDs and deltas.
+- Own structure/infrastructure authoring models (canonical source of truth) and
+  compiled STRUCT artifacts (derived caches).
+- Authoring supports arbitrary orientation and placement (no grids):
+  - `dg_struct_instance`: `(dg_anchor, local dg_pose)` placement + stable `struct_id`
+  - `dg_struct_footprint`: parametric polygons in local frame (holes allowed)
+  - `dg_struct_volume`: parametric solid/void templates (limited boolean ops)
+  - `dg_struct_enclosure`: interior definitions + apertures (room graph)
+  - `dg_struct_surface` + `dg_struct_socket`: surface selections + attachment points
+  - `dg_struct_carrier_intent`: bridge/tunnel/viaduct/cut/fill intents (parametric)
+- Compile derived caches deterministically under a bounded budget:
+  - occupancy/void regions + chunk-aligned spatial indices
+  - enclosure (room) graphs + aperture edges
+  - surface graphs (facades + interior surfaces) + sockets
+  - support/load topology graphs (no physics solving yet)
+  - carrier artifacts usable by TRANS/ENV later (no direct calls in this layer)
 
 **Non-responsibilities**
 - No baked world-space geometry as authoritative truth.
 - No solver-based fitting.
+- No rendering, UI, or gameplay semantics.
 
 ## DECOR (Decoration)
 **Responsibilities**
@@ -71,6 +83,27 @@ TRANS/STRUCT/DECOR MUST forbid:
 - render geometry
 - visualization geometry
 - any occupancy grids or spatial accelerators (regenerable)
+
+**STRUCT authoring (source of truth):**
+- structure instances with stable IDs and anchor+pose placement
+- footprints, volumes, enclosures, surface templates, sockets, carrier intents
+- per-instance param overrides (TLV)
+
+**STRUCT derived caches:**
+- occupancy/void regions + chunk-aligned indices
+- enclosure graphs (rooms + apertures) + room indices
+- surface graphs + sockets + surface indices
+- support/load graphs + support indices
+- carrier artifacts + carrier indices
+
+## Integration points (no semantics)
+### TRANS integration
+- STRUCT carriers compile into parametric artifacts that TRANS may consume later.
+- STRUCT MUST NOT call TRANS directly during compilation; only emit artifacts.
+
+### DECOR integration
+- DECOR consumes only compiled surface graphs and sockets.
+- DECOR MUST NOT read STRUCT authoring directly.
 
 ## Related specs
 - `docs/SPEC_DETERMINISM.md`
