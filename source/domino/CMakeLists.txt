@@ -4,6 +4,8 @@ add_library(domino_core STATIC
     core/types.c
     core/dg_order_key.c
     core/dg_det_hash.c
+    core/dg_pose.c
+    core/dg_quant.c
     core/fixed.c
     core/fixed_debug.c
     core/rng.c
@@ -50,6 +52,8 @@ add_library(domino_core STATIC
     world/d_world_terrain.c
     world/d_litho.c
     world/d_litho_validate.c
+    world/frame/d_world_frame.c
+    world/frame/dg_anchor.c
     res/d_res.c
     res/d_res_validate.c
     res/dg_tlv_schema.c
@@ -120,6 +124,8 @@ target_sources(domino_core PRIVATE
     core/det_invariants.h
     core/dg_order_key.h
     core/dg_det_hash.h
+    core/dg_pose.h
+    core/dg_quant.h
     sim/sched/d_sim_sched.h
     sim/sched/dg_phase.h
     sim/sched/dg_budget.h
@@ -163,6 +169,7 @@ target_sources(domino_core PRIVATE
     sim/prop/d_sim_prop.h
     world/domain/d_world_domain.h
     world/frame/d_world_frame.h
+    world/frame/dg_anchor.h
     trans/compile/d_trans_compile.h
     struct/model/d_struct_model.h
     struct/compile/d_struct_compile.h
