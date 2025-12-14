@@ -27,6 +27,10 @@ enum {
     D_SUBSYS_REPLAY = 10, /* replay */
     D_SUBSYS_HYDRO  = 11, /* hydrology */
     D_SUBSYS_LITHO  = 12, /* lithosphere */
+    D_SUBSYS_ORG    = 13, /* organizations/ownership */
+    D_SUBSYS_RESEARCH = 14, /* research/tech progress */
+    D_SUBSYS_ECON   = 15, /* macro-economy metrics */
+    D_SUBSYS_POLICY = 16, /* policy/constraints */
     /* Reserve 1000+ for mods/third-party subsystems in the future. */
 };
 

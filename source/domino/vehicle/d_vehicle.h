@@ -5,6 +5,7 @@
 #include "domino/core/types.h"
 #include "domino/core/fixed.h"
 #include "domino/core/d_tlv.h"
+#include "core/d_org.h"
 #include "world/d_world.h"
 #include "vehicle/d_vehicle_proto.h"
 
@@ -17,6 +18,7 @@ typedef u32 d_vehicle_instance_id;
 typedef struct d_vehicle_instance {
     d_vehicle_instance_id id;
     d_vehicle_proto_id    proto_id;
+    d_org_id              owner_org;
 
     q16_16 pos_x, pos_y, pos_z;
     q16_16 vel_x, vel_y, vel_z;

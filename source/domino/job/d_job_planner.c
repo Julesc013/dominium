@@ -6,6 +6,8 @@
 #include "core/d_tlv_kv.h"
 #include "content/d_content_extra.h"
 #include "job/d_job.h"
+#include "policy/d_policy.h"
+#include "struct/d_struct.h"
 
 #define DJOB_PLANNER_MAX_JOBS   1024u
 #define DJOB_PLANNER_MAX_AGENTS 256u
@@ -122,6 +124,8 @@ int d_job_request(
 ) {
     d_job_record jr;
     d_job_id id;
+    d_org_id org_id = 0u;
+    const d_proto_job_template *tmpl = (const d_proto_job_template *)0;
 
     if (out_job_id) {
         *out_job_id = 0u;
@@ -129,6 +133,35 @@ int d_job_request(
     if (!w || tmpl_id == 0u) {
         return -1;
     }
+
+    /* Policy gate job creation based on org + template context. */
+    tmpl = d_content_get_job_template(tmpl_id);
+    if (target_struct_eid != 0u) {
+        const d_struct_instance *st = d_struct_get(w, (d_struct_instance_id)target_struct_eid);
+        if (st) {
+            org_id = st->owner_org;
+        }
+    }
+    if (org_id == 0u && target_spline_id != 0u) {
+        d_spline_instance sp;
+        if (d_trans_spline_get(w, target_spline_id, &sp) == 0) {
+            org_id = sp.owner_org;
+        }
+    }
+    {
+        d_policy_context ctx;
+        d_policy_effect_result eff;
+        memset(&ctx, 0, sizeof(ctx));
+        ctx.org_id = org_id;
+        ctx.subject_kind = D_POLICY_SUBJECT_JOB_TEMPLATE;
+        ctx.subject_id = (u32)tmpl_id;
+        ctx.subject_tags = tmpl ? tmpl->tags : 0u;
+        (void)d_policy_evaluate(&ctx, &eff);
+        if (eff.allowed == 0u) {
+            return -1;
+        }
+    }
+
     memset(&jr, 0, sizeof(jr));
     jr.id = 0u;
     jr.template_id = tmpl_id;
@@ -221,4 +254,3 @@ void d_job_planner_tick(d_world *w, u32 ticks) {
         }
     }
 }
-

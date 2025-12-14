@@ -6,6 +6,7 @@
 #include "domino/core/fixed.h"
 #include "world/d_world.h"
 #include "content/d_content.h"
+#include "core/d_org.h"
 #include "trans/d_trans_spline.h"
 
 #ifdef __cplusplus
@@ -27,6 +28,7 @@ enum {
 typedef struct d_build_request_s {
     u32                  request_id;
     u32                  owner_eid;            /* player or system entity controlling build */
+    d_org_id             owner_org;            /* organization/company owning placed assets */
     d_structure_proto_id structure_id;         /* for structures */
     d_spline_profile_id  spline_profile_id;    /* for splines */
 

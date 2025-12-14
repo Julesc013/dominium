@@ -9,6 +9,8 @@ add_executable(dominium_game
     dom_game_ui.cpp
     dom_game_ui_debug.cpp
     dom_game_save.cpp
+    dom_game_replay.cpp
+    dom_game_net.cpp
     entry.cpp
 )
 
@@ -22,6 +24,10 @@ target_link_libraries(dominium_game
     dominium_common
     domino_core
 )
+
+if(WIN32)
+    target_link_libraries(dominium_game ws2_32)
+endif()
 
 set_target_properties(dominium_game PROPERTIES
     CXX_STANDARD 98

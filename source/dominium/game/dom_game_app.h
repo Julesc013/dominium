@@ -9,12 +9,14 @@
 #include "dom_game_states.h"
 #include "dom_game_camera.h"
 #include "dom_game_tools_build.h"
+#include "dom_game_net.h"
 
 extern "C" {
 #include "view/d_view.h"
 #include "ui/d_ui.h"
 #include "sim/d_sim.h"
 #include "sim/d_sim_hash.h"
+#include "core/d_org.h"
 #include "struct/d_struct.h"
 }
 
@@ -35,6 +37,8 @@ enum ServerMode {
 struct GameConfig {
     std::string dominium_home;
     std::string instance_id;
+    std::string connect_addr;    /* client: addr[:port] */
+    unsigned    net_port;        /* host/listen port */
 
     GameMode    mode;
     ServerMode  server_mode;
@@ -78,6 +82,8 @@ public:
     DomSession&       session()       { return m_session; }
     const DomSession& session() const { return m_session; }
     const GameCamera& camera() const { return m_camera; }
+    DomGameNet&       net()           { return m_net; }
+    const DomGameNet& net()     const { return m_net; }
 
     dui_context& ui_context() { return m_ui_ctx; }
 
@@ -96,6 +102,8 @@ public:
     bool overlay_temperature() const { return m_show_overlay_temp; }
     bool overlay_pressure() const { return m_show_overlay_pressure; }
     bool overlay_volumes() const { return m_show_overlay_volumes; }
+
+    d_org_id player_org_id() const { return m_player_org_id; }
 
     void toggle_overlay_hydrology();
     void toggle_overlay_temperature();
@@ -123,10 +131,13 @@ private:
     Paths        m_paths;
     InstanceInfo m_instance;
     DomSession   m_session;
+    DomGameNet   m_net;
 
     GameMode     m_mode;
     ServerMode   m_server_mode;
     bool         m_demo_mode;
+    std::string  m_connect_addr;
+    unsigned     m_net_port;
 
     bool         m_compat_read_only;
     bool         m_compat_limited;
@@ -144,11 +155,14 @@ private:
     int          m_mouse_x;
     int          m_mouse_y;
     d_struct_instance_id m_last_struct_id;
+    d_org_id      m_player_org_id;
     bool         m_dev_mode;
     u32          m_detmode;
     d_world_hash m_last_hash;
     std::string  m_replay_record_path;
     std::string  m_replay_play_path;
+    u32          m_replay_last_tick;
+    void        *m_net_replay_user;
     bool         m_show_debug_panel;
     bool         m_debug_probe_set;
     q32_32       m_debug_probe_x;

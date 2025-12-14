@@ -320,6 +320,7 @@ static d_spline_id dtrans_spline_create_with_id(
     u16                      node_count,
     d_spline_profile_id      profile_id,
     d_spline_flags           flags,
+    d_org_id                 owner_org,
     d_spline_id              forced_id
 ) {
     dtrans_world_state *st;
@@ -361,6 +362,7 @@ static d_spline_id dtrans_spline_create_with_id(
     memset(&inst, 0, sizeof(inst));
     inst.id = forced_id ? forced_id : st->next_spline_id++;
     inst.profile_id = profile_id;
+    inst.owner_org = owner_org;
     inst.flags = flags;
     inst.node_start_index = (u16)start_index;
     inst.node_count = node_count;
@@ -379,9 +381,10 @@ d_spline_id d_trans_spline_create(
     const d_spline_node     *nodes,
     u16                      node_count,
     d_spline_profile_id      profile_id,
-    d_spline_flags           flags
+    d_spline_flags           flags,
+    d_org_id                 owner_org
 ) {
-    return dtrans_spline_create_with_id(w, nodes, node_count, profile_id, flags, 0u);
+    return dtrans_spline_create_with_id(w, nodes, node_count, profile_id, flags, owner_org, 0u);
 }
 
 int d_trans_spline_destroy(d_world *w, d_spline_id id) {
@@ -1055,7 +1058,7 @@ static int dtrans_save_instance(d_world *w, d_tlv_blob *out) {
         return 0;
     }
 
-    version = 2u;
+    version = 3u;
     total = 0u;
     total += 4u; /* version */
     total += 4u; /* spline_count */
@@ -1064,6 +1067,7 @@ static int dtrans_save_instance(d_world *w, d_tlv_blob *out) {
         u16 ncount = s->node_count;
         total += sizeof(d_spline_id);
         total += sizeof(d_spline_profile_id);
+        total += sizeof(d_org_id);
         total += sizeof(d_spline_flags);
         total += sizeof(u16); /* node_count */
         total += sizeof(u32); /* endpoint_a_eid */
@@ -1097,6 +1101,7 @@ static int dtrans_save_instance(d_world *w, d_tlv_blob *out) {
         u16 n;
         memcpy(dst, &s->id, sizeof(d_spline_id)); dst += sizeof(d_spline_id);
         memcpy(dst, &s->profile_id, sizeof(d_spline_profile_id)); dst += sizeof(d_spline_profile_id);
+        memcpy(dst, &s->owner_org, sizeof(d_org_id)); dst += sizeof(d_org_id);
         memcpy(dst, &s->flags, sizeof(d_spline_flags)); dst += sizeof(d_spline_flags);
         memcpy(dst, &ncount, sizeof(u16)); dst += sizeof(u16);
         memcpy(dst, &s->endpoint_a_eid, sizeof(u32)); dst += sizeof(u32);
@@ -1167,7 +1172,7 @@ static int dtrans_load_instance(d_world *w, const d_tlv_blob *in) {
     ptr = in->ptr;
     remaining = in->len;
     memcpy(&version, ptr, sizeof(u32)); ptr += 4u; remaining -= 4u;
-    if (version != 1u && version != 2u) {
+    if (version != 1u && version != 2u && version != 3u) {
         return -1;
     }
     memcpy(&spline_count, ptr, sizeof(u32)); ptr += 4u; remaining -= 4u;
@@ -1175,6 +1180,7 @@ static int dtrans_load_instance(d_world *w, const d_tlv_blob *in) {
     for (i = 0u; i < spline_count; ++i) {
         d_spline_id sid;
         d_spline_profile_id pid;
+        d_org_id owner_org;
         d_spline_flags flags;
         u16 node_count;
         u32 endpoint_a_eid;
@@ -1188,11 +1194,20 @@ static int dtrans_load_instance(d_world *w, const d_tlv_blob *in) {
         u32 n;
         u32 need;
 
-        if (remaining < sizeof(d_spline_id) + sizeof(d_spline_profile_id) + sizeof(d_spline_flags) + sizeof(u16) + sizeof(q16_16)) {
+        need = (u32)(sizeof(d_spline_id) + sizeof(d_spline_profile_id) + sizeof(d_spline_flags) + sizeof(u16) + sizeof(q16_16));
+        if (version >= 3u) {
+            need += (u32)sizeof(d_org_id);
+        }
+        if (remaining < need) {
             return -1;
         }
         memcpy(&sid, ptr, sizeof(d_spline_id)); ptr += sizeof(d_spline_id);
         memcpy(&pid, ptr, sizeof(d_spline_profile_id)); ptr += sizeof(d_spline_profile_id);
+        owner_org = 0u;
+        if (version >= 3u) {
+            memcpy(&owner_org, ptr, sizeof(d_org_id)); ptr += sizeof(d_org_id);
+            remaining -= (u32)sizeof(d_org_id);
+        }
         memcpy(&flags, ptr, sizeof(d_spline_flags)); ptr += sizeof(d_spline_flags);
         memcpy(&node_count, ptr, sizeof(u16)); ptr += sizeof(u16);
         endpoint_a_eid = 0u;
@@ -1239,7 +1254,7 @@ static int dtrans_load_instance(d_world *w, const d_tlv_blob *in) {
         }
         remaining -= need;
 
-        if (dtrans_spline_create_with_id(w, nodes, node_count, pid, flags, sid) == 0u) {
+        if (dtrans_spline_create_with_id(w, nodes, node_count, pid, flags, owner_org, sid) == 0u) {
             free(nodes);
             return -1;
         }

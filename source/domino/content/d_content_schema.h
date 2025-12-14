@@ -17,6 +17,9 @@
 #define D_TLV_SCHEMA_JOB_TEMPLATE_V1    0x0109u
 #define D_TLV_SCHEMA_BUILDING_V1        0x010Au
 #define D_TLV_SCHEMA_BLUEPRINT_V1       0x010Bu
+#define D_TLV_SCHEMA_RESEARCH_V1        0x010Cu
+#define D_TLV_SCHEMA_RESEARCH_POINT_SOURCE_V1 0x010Du
+#define D_TLV_SCHEMA_POLICY_RULE_V1     0x010Eu
 #define D_TLV_SCHEMA_PACK_V1            0x0201u
 #define D_TLV_SCHEMA_MOD_V1             0x0202u
 
@@ -38,6 +41,8 @@
 #define D_FIELD_ITEM_TAGS           0x04u
 #define D_FIELD_ITEM_UNIT_MASS      0x05u
 #define D_FIELD_ITEM_UNIT_VOLUME    0x06u
+#define D_FIELD_ITEM_BASE_VALUE     0x07u
+#define D_FIELD_ITEM_CATEGORY       0x08u
 
 #define D_FIELD_CONTAINER_ID        0x01u
 #define D_FIELD_CONTAINER_NAME      0x02u
@@ -54,12 +59,17 @@
 #define D_FIELD_PROCESS_PARAMS      0x04u
 #define D_FIELD_PROCESS_BASE_DURATION 0x05u
 #define D_FIELD_PROCESS_IO_TERM     0x06u /* repeated; payload is TLV fields */
+#define D_FIELD_PROCESS_RESEARCH_YIELD 0x07u /* repeated; payload is TLV fields */
 
 /* Nested fields inside D_FIELD_PROCESS_IO_TERM payload. */
 #define D_FIELD_PROCESS_IO_KIND     0x01u /* u16 */
 #define D_FIELD_PROCESS_IO_ITEM_ID  0x02u /* u32 */
 #define D_FIELD_PROCESS_IO_RATE     0x03u /* q16_16 */
 #define D_FIELD_PROCESS_IO_FLAGS    0x04u /* u16 */
+
+/* Nested fields inside D_FIELD_PROCESS_RESEARCH_YIELD payload. */
+#define D_FIELD_RY_KIND             0x01u /* u16 */
+#define D_FIELD_RY_AMOUNT           0x02u /* q32_32 */
 
 #define D_FIELD_DEPOSIT_ID          0x01u
 #define D_FIELD_DEPOSIT_NAME        0x02u
@@ -99,6 +109,31 @@
 #define D_FIELD_JOB_SPLINE_PROFILE_ID 0x07u
 #define D_FIELD_JOB_REQUIREMENTS    0x08u
 #define D_FIELD_JOB_REWARDS         0x09u
+#define D_FIELD_JOB_RESEARCH_YIELD  0x0Au /* repeated; payload is TLV fields */
+
+/* Research node schema */
+#define D_FIELD_RESEARCH_ID         0x01u
+#define D_FIELD_RESEARCH_NAME       0x02u
+#define D_FIELD_RESEARCH_TAGS       0x03u
+#define D_FIELD_RESEARCH_PREREQ_ID  0x04u /* repeated u32 */
+#define D_FIELD_RESEARCH_UNLOCKS    0x05u
+#define D_FIELD_RESEARCH_COST       0x06u
+#define D_FIELD_RESEARCH_PARAMS     0x07u
+
+/* Research point source schema */
+#define D_FIELD_RP_SOURCE_ID        0x01u
+#define D_FIELD_RP_SOURCE_NAME      0x02u
+#define D_FIELD_RP_SOURCE_KIND      0x03u /* u16 */
+#define D_FIELD_RP_SOURCE_TAGS      0x04u
+#define D_FIELD_RP_SOURCE_PARAMS    0x05u
+
+/* Policy rule schema */
+#define D_FIELD_POLICY_ID           0x01u
+#define D_FIELD_POLICY_NAME         0x02u
+#define D_FIELD_POLICY_TAGS         0x03u
+#define D_FIELD_POLICY_SCOPE        0x04u
+#define D_FIELD_POLICY_EFFECT       0x05u
+#define D_FIELD_POLICY_CONDITIONS   0x06u
 
 #define D_FIELD_BUILDING_ID         0x01u
 #define D_FIELD_BUILDING_NAME       0x02u
@@ -135,6 +170,9 @@ struct d_proto_spline_profile_s;
 struct d_proto_job_template_s;
 struct d_proto_building_s;
 struct d_proto_blueprint_s;
+struct d_proto_research_s;
+struct d_proto_research_point_source_s;
+struct d_proto_policy_rule_s;
 struct d_proto_pack_manifest_s;
 struct d_proto_mod_manifest_s;
 
@@ -153,6 +191,9 @@ int d_content_schema_parse_spline_v1(const d_tlv_blob *blob, struct d_proto_spli
 int d_content_schema_parse_job_template_v1(const d_tlv_blob *blob, struct d_proto_job_template_s *out);
 int d_content_schema_parse_building_v1(const d_tlv_blob *blob, struct d_proto_building_s *out);
 int d_content_schema_parse_blueprint_v1(const d_tlv_blob *blob, struct d_proto_blueprint_s *out);
+int d_content_schema_parse_research_v1(const d_tlv_blob *blob, struct d_proto_research_s *out);
+int d_content_schema_parse_research_point_source_v1(const d_tlv_blob *blob, struct d_proto_research_point_source_s *out);
+int d_content_schema_parse_policy_rule_v1(const d_tlv_blob *blob, struct d_proto_policy_rule_s *out);
 int d_content_schema_parse_pack_v1(const d_tlv_blob *blob, struct d_proto_pack_manifest_s *out);
 int d_content_schema_parse_mod_v1(const d_tlv_blob *blob, struct d_proto_mod_manifest_s *out);
 

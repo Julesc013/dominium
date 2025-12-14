@@ -9,7 +9,15 @@ extern "C" {
 #include "env/d_env_field.h"
 #include "env/d_env_volume.h"
 #include "hydro/d_hydro.h"
+#include "net/d_net_schema.h"
 #include "res/d_res.h"
+#include "core/d_account.h"
+#include "core/d_org.h"
+#include "core/d_tlv_kv.h"
+#include "content/d_content_extra.h"
+#include "econ/d_econ_metrics.h"
+#include "policy/d_policy.h"
+#include "research/d_research_state.h"
 #include "ai/d_agent.h"
 #include "job/d_job.h"
 #include "struct/d_struct.h"
@@ -33,6 +41,7 @@ static dui_widget *g_struct_label = (dui_widget *)0;
 static dui_widget *g_pack_label = (dui_widget *)0;
 static dui_widget *g_content_label = (dui_widget *)0;
 static dui_widget *g_det_label = (dui_widget *)0;
+static dui_widget *g_net_label = (dui_widget *)0;
 static dui_widget *g_probe_label = (dui_widget *)0;
 static dui_widget *g_env_label = (dui_widget *)0;
 static dui_widget *g_hydro_label = (dui_widget *)0;
@@ -42,6 +51,10 @@ static dui_widget *g_machine_label = (dui_widget *)0;
 static dui_widget *g_jobs_label = (dui_widget *)0;
 static dui_widget *g_agents_label = (dui_widget *)0;
 static dui_widget *g_throughput_label = (dui_widget *)0;
+static dui_widget *g_org_label = (dui_widget *)0;
+static dui_widget *g_econ_label = (dui_widget *)0;
+static dui_widget *g_research_label = (dui_widget *)0;
+static dui_widget *g_research_next_button = (dui_widget *)0;
 
 static char g_buf_hash[128];
 static char g_buf_chunk[128];
@@ -50,6 +63,7 @@ static char g_buf_struct[128];
 static char g_buf_pack[192];
 static char g_buf_content[192];
 static char g_buf_det[96];
+static char g_buf_net[768];
 static char g_buf_probe[160];
 static char g_buf_env[256];
 static char g_buf_hydro[192];
@@ -59,6 +73,9 @@ static char g_buf_machines[512];
 static char g_buf_jobs[512];
 static char g_buf_agents[512];
 static char g_buf_throughput[512];
+static char g_buf_org[512];
+static char g_buf_econ[512];
+static char g_buf_research[768];
 static char g_buf_overlay_hydro[64];
 static char g_buf_overlay_temp[64];
 static char g_buf_overlay_pressure[64];
@@ -78,6 +95,7 @@ void dom_game_ui_debug_reset(void) {
     g_pack_label = (dui_widget *)0;
     g_content_label = (dui_widget *)0;
     g_det_label = (dui_widget *)0;
+    g_net_label = (dui_widget *)0;
     g_probe_label = (dui_widget *)0;
     g_env_label = (dui_widget *)0;
     g_hydro_label = (dui_widget *)0;
@@ -87,6 +105,10 @@ void dom_game_ui_debug_reset(void) {
     g_jobs_label = (dui_widget *)0;
     g_agents_label = (dui_widget *)0;
     g_throughput_label = (dui_widget *)0;
+    g_org_label = (dui_widget *)0;
+    g_econ_label = (dui_widget *)0;
+    g_research_label = (dui_widget *)0;
+    g_research_next_button = (dui_widget *)0;
 }
 
 static void on_toggle_debug(dui_widget *self) {
@@ -124,6 +146,102 @@ static void on_toggle_overlay_volumes(dui_widget *self) {
     }
 }
 
+static void on_research_set_next(dui_widget *self) {
+    DomGameApp *app = self ? (DomGameApp *)self->user_data : (DomGameApp *)0;
+    d_org_id org_id;
+    d_research_org_state st;
+    d_research_id active = 0u;
+    d_research_id best_above = 0u;
+    d_research_id best_any = 0u;
+    u32 i;
+    d_research_id target = 0u;
+
+    if (!app) {
+        return;
+    }
+    org_id = app->player_org_id();
+    if (org_id == 0u) {
+        return;
+    }
+    if (d_research_get_org_state(org_id, &st) != 0 || st.research_count == 0u || !st.researches) {
+        return;
+    }
+
+    for (i = 0u; i < (u32)st.research_count; ++i) {
+        if (st.researches[i].state == (u8)D_RESEARCH_STATE_ACTIVE) {
+            active = st.researches[i].id;
+            break;
+        }
+    }
+
+    for (i = 0u; i < (u32)st.research_count; ++i) {
+        const d_research_progress *p = &st.researches[i];
+        if (p->state != (u8)D_RESEARCH_STATE_PENDING) {
+            continue;
+        }
+        if (best_any == 0u || p->id < best_any) {
+            best_any = p->id;
+        }
+        if (active != 0u && p->id > active) {
+            if (best_above == 0u || p->id < best_above) {
+                best_above = p->id;
+            }
+        }
+    }
+
+    if (best_above != 0u) {
+        target = best_above;
+    } else if (best_any != 0u) {
+        target = best_any;
+    } else {
+        return;
+    }
+
+    /* Route through deterministic net command stream. */
+    {
+        d_world *w = app->session().world();
+        d_net_cmd cmd;
+        unsigned char payload[32];
+        u32 off = 0u;
+        u32 tick;
+
+        if (!w || !app->net().ready()) {
+            return;
+        }
+
+        tick = w->tick_count + (app->net().input_delay_ticks() ? app->net().input_delay_ticks() : 1u);
+        if (tick == 0u) {
+            tick = 1u;
+        }
+
+        {
+            u32 tag = (u32)D_NET_TLV_RESEARCH_ORG_ID;
+            u32 len = 4u;
+            u32 v = (u32)org_id;
+            std::memcpy(payload + off, &tag, 4u); off += 4u;
+            std::memcpy(payload + off, &len, 4u); off += 4u;
+            std::memcpy(payload + off, &v, 4u);   off += 4u;
+        }
+        {
+            u32 tag = (u32)D_NET_TLV_RESEARCH_ACTIVE_ID;
+            u32 len = 4u;
+            u32 v = (u32)target;
+            std::memcpy(payload + off, &tag, 4u); off += 4u;
+            std::memcpy(payload + off, &len, 4u); off += 4u;
+            std::memcpy(payload + off, &v, 4u);   off += 4u;
+        }
+
+        std::memset(&cmd, 0, sizeof(cmd));
+        cmd.schema_id = (u32)D_NET_SCHEMA_CMD_RESEARCH_V1;
+        cmd.schema_ver = 1u;
+        cmd.tick = tick;
+        cmd.payload.ptr = payload;
+        cmd.payload.len = off;
+
+        (void)app->net().submit_cmd(&cmd);
+    }
+}
+
 static void ensure_widgets(dui_context &ctx, DomGameApp &app) {
     if (!ctx.root) {
         return;
@@ -153,6 +271,7 @@ static void ensure_widgets(dui_context &ctx, DomGameApp &app) {
         g_pack_label = dui_widget_create(&ctx, DUI_WIDGET_LABEL);
         g_content_label = dui_widget_create(&ctx, DUI_WIDGET_LABEL);
         g_det_label = dui_widget_create(&ctx, DUI_WIDGET_LABEL);
+        g_net_label = dui_widget_create(&ctx, DUI_WIDGET_LABEL);
         g_probe_label = dui_widget_create(&ctx, DUI_WIDGET_LABEL);
         g_env_label = dui_widget_create(&ctx, DUI_WIDGET_LABEL);
         g_hydro_label = dui_widget_create(&ctx, DUI_WIDGET_LABEL);
@@ -162,11 +281,15 @@ static void ensure_widgets(dui_context &ctx, DomGameApp &app) {
         g_jobs_label = dui_widget_create(&ctx, DUI_WIDGET_LABEL);
         g_agents_label = dui_widget_create(&ctx, DUI_WIDGET_LABEL);
         g_throughput_label = dui_widget_create(&ctx, DUI_WIDGET_LABEL);
+        g_org_label = dui_widget_create(&ctx, DUI_WIDGET_LABEL);
+        g_econ_label = dui_widget_create(&ctx, DUI_WIDGET_LABEL);
+        g_research_label = dui_widget_create(&ctx, DUI_WIDGET_LABEL);
 
         g_overlay_hydro_button = dui_widget_create(&ctx, DUI_WIDGET_BUTTON);
         g_overlay_temp_button = dui_widget_create(&ctx, DUI_WIDGET_BUTTON);
         g_overlay_pressure_button = dui_widget_create(&ctx, DUI_WIDGET_BUTTON);
         g_overlay_volumes_button = dui_widget_create(&ctx, DUI_WIDGET_BUTTON);
+        g_research_next_button = dui_widget_create(&ctx, DUI_WIDGET_BUTTON);
 
         if (g_hash_label) dui_widget_add_child(g_panel, g_hash_label);
         if (g_chunk_label) dui_widget_add_child(g_panel, g_chunk_label);
@@ -175,6 +298,7 @@ static void ensure_widgets(dui_context &ctx, DomGameApp &app) {
         if (g_pack_label) dui_widget_add_child(g_panel, g_pack_label);
         if (g_content_label) dui_widget_add_child(g_panel, g_content_label);
         if (g_det_label) dui_widget_add_child(g_panel, g_det_label);
+        if (g_net_label) dui_widget_add_child(g_panel, g_net_label);
         if (g_probe_label) dui_widget_add_child(g_panel, g_probe_label);
         if (g_env_label) dui_widget_add_child(g_panel, g_env_label);
         if (g_hydro_label) dui_widget_add_child(g_panel, g_hydro_label);
@@ -184,6 +308,9 @@ static void ensure_widgets(dui_context &ctx, DomGameApp &app) {
         if (g_jobs_label) dui_widget_add_child(g_panel, g_jobs_label);
         if (g_agents_label) dui_widget_add_child(g_panel, g_agents_label);
         if (g_throughput_label) dui_widget_add_child(g_panel, g_throughput_label);
+        if (g_org_label) dui_widget_add_child(g_panel, g_org_label);
+        if (g_econ_label) dui_widget_add_child(g_panel, g_econ_label);
+        if (g_research_label) dui_widget_add_child(g_panel, g_research_label);
 
         if (g_overlay_hydro_button) {
             g_overlay_hydro_button->on_click = on_toggle_overlay_hydro;
@@ -204,6 +331,12 @@ static void ensure_widgets(dui_context &ctx, DomGameApp &app) {
             g_overlay_volumes_button->on_click = on_toggle_overlay_volumes;
             g_overlay_volumes_button->user_data = (void *)&app;
             dui_widget_add_child(g_panel, g_overlay_volumes_button);
+        }
+        if (g_research_next_button) {
+            g_research_next_button->text = "Set Active Research: Next";
+            g_research_next_button->on_click = on_research_set_next;
+            g_research_next_button->user_data = (void *)&app;
+            dui_widget_add_child(g_panel, g_research_next_button);
         }
     }
 }
@@ -399,6 +532,16 @@ static const char *determinism_text(u32 mode) {
     }
 }
 
+static const char *net_role_text(d_net_role role) {
+    switch (role) {
+    case D_NET_ROLE_SINGLE: return "SINGLE";
+    case D_NET_ROLE_HOST:   return "HOST";
+    case D_NET_ROLE_CLIENT: return "CLIENT";
+    default: break;
+    }
+    return "?";
+}
+
 static const char *job_state_text(d_job_state st) {
     switch (st) {
     case D_JOB_STATE_PENDING: return "PENDING";
@@ -408,6 +551,35 @@ static const char *job_state_text(d_job_state st) {
     case D_JOB_STATE_CANCELLED: return "CANCELLED";
     default: return "?";
     }
+}
+
+static const char *research_state_text(u8 st) {
+    switch (st) {
+    case D_RESEARCH_STATE_PENDING: return "PENDING";
+    case D_RESEARCH_STATE_ACTIVE: return "ACTIVE";
+    case D_RESEARCH_STATE_COMPLETED: return "COMPLETED";
+    case D_RESEARCH_STATE_LOCKED: return "LOCKED";
+    default: return "?";
+    }
+}
+
+static q32_32 research_required_points_q32(const d_proto_research *r) {
+    u32 off;
+    u32 tag;
+    d_tlv_blob payload;
+    int rc;
+    q32_32 req = 0;
+
+    if (!r || !r->cost.ptr || r->cost.len == 0u) {
+        return 0;
+    }
+    off = 0u;
+    while ((rc = d_tlv_kv_next(&r->cost, &off, &tag, &payload)) == 0) {
+        if (tag == D_TLV_RESEARCH_COST_REQUIRED && payload.ptr && payload.len == 8u) {
+            memcpy(&req, payload.ptr, sizeof(q32_32));
+        }
+    }
+    return req;
 }
 
 static void buf_appendf(char *buf, size_t cap, size_t *pos, const char *fmt, ...) {
@@ -433,6 +605,123 @@ static void buf_appendf(char *buf, size_t cap, size_t *pos, const char *fmt, ...
         return;
     }
     *pos += (size_t)wrote;
+}
+
+static void update_org_research_econ(DomGameApp &app, d_world *w) {
+    size_t pos;
+    u32 org_count;
+    d_org_id player_org;
+    q32_32 balance = 0;
+    u32 policy_count;
+
+    (void)w;
+
+    org_count = d_org_count();
+    player_org = app.player_org_id();
+    policy_count = d_content_policy_rule_count();
+
+    if (player_org != 0u) {
+        d_org o;
+        if (d_org_get(player_org, &o) == 0 && o.account_id != 0u) {
+            d_account a;
+            if (d_account_get(o.account_id, &a) == 0) {
+                balance = a.balance;
+            }
+        }
+    }
+
+    /* Orgs */
+    g_buf_org[0] = '\0';
+    pos = 0u;
+    buf_appendf(g_buf_org, sizeof(g_buf_org), &pos,
+                "Orgs: %u | player_org=%u | policy_rules=%u | balance=%lld",
+                (unsigned)org_count,
+                (unsigned)player_org,
+                (unsigned)policy_count,
+                (long long)(balance >> Q32_32_FRAC_BITS));
+    if (g_org_label) {
+        g_org_label->text = g_buf_org;
+    }
+
+    /* Econ */
+    g_buf_econ[0] = '\0';
+    pos = 0u;
+    {
+        u32 econ_count = d_econ_org_metrics_count();
+        buf_appendf(g_buf_econ, sizeof(g_buf_econ), &pos, "Econ: %u", (unsigned)econ_count);
+        if (player_org != 0u) {
+            d_econ_org_metrics m;
+            if (d_econ_get_org_metrics(player_org, &m) == 0) {
+                buf_appendf(g_buf_econ, sizeof(g_buf_econ), &pos,
+                            " | out=%lld in=%lld net=%lld idx=%lld",
+                            (long long)(m.total_output >> Q32_32_FRAC_BITS),
+                            (long long)(m.total_input >> Q32_32_FRAC_BITS),
+                            (long long)(m.net_throughput >> Q32_32_FRAC_BITS),
+                            (long long)(m.price_index >> Q32_32_FRAC_BITS));
+            }
+        }
+    }
+    if (g_econ_label) {
+        g_econ_label->text = g_buf_econ;
+    }
+
+    /* Research */
+    g_buf_research[0] = '\0';
+    pos = 0u;
+    buf_appendf(g_buf_research, sizeof(g_buf_research), &pos,
+                "Research: %u | org=%u",
+                (unsigned)d_content_research_count(),
+                (unsigned)player_org);
+
+    if (player_org != 0u) {
+        d_research_org_state st;
+        if (d_research_get_org_state(player_org, &st) == 0 && st.researches) {
+            d_research_id active = 0u;
+            u32 shown = 0u;
+            u32 i;
+
+            for (i = 0u; i < (u32)st.research_count; ++i) {
+                if (st.researches[i].state == (u8)D_RESEARCH_STATE_ACTIVE) {
+                    active = st.researches[i].id;
+                    break;
+                }
+            }
+            if (active != 0u) {
+                const d_proto_research *rp = d_content_get_research(active);
+                buf_appendf(g_buf_research, sizeof(g_buf_research), &pos,
+                            " | active=%s",
+                            (rp && rp->name) ? rp->name : "(node)");
+            } else {
+                buf_appendf(g_buf_research, sizeof(g_buf_research), &pos, " | active=(none)");
+            }
+
+            for (i = 0u; i < (u32)st.research_count && shown < 4u; ++i) {
+                const d_research_progress *p = &st.researches[i];
+                const d_proto_research *rp = d_content_get_research(p->id);
+                q32_32 req = rp ? research_required_points_q32(rp) : 0;
+                long long prog_i = (long long)(p->progress >> Q32_32_FRAC_BITS);
+                long long req_i = (long long)(req >> Q32_32_FRAC_BITS);
+                int pct = 0;
+                if (req_i > 0) {
+                    pct = (int)((prog_i * 100ll) / req_i);
+                    if (pct < 0) pct = 0;
+                    if (pct > 100) pct = 100;
+                }
+                buf_appendf(g_buf_research, sizeof(g_buf_research), &pos,
+                            " | %s %s %lld/%lld (%d%%)",
+                            (rp && rp->name) ? rp->name : "(node)",
+                            research_state_text(p->state),
+                            prog_i,
+                            req_i,
+                            pct);
+                shown += 1u;
+            }
+        }
+    }
+
+    if (g_research_label) {
+        g_research_label->text = g_buf_research;
+    }
 }
 
 static void update_factory_inspectors(d_world *w) {
@@ -635,7 +924,40 @@ void dom_game_ui_debug_update(dui_context &ctx, DomGameApp &app, d_world_hash ha
                   "Determinism: %s", determinism_text(app.determinism_mode()));
     if (g_det_label) g_det_label->text = g_buf_det;
 
+    {
+        const DomGameNet &net = app.net();
+        const d_net_session &s = net.session();
+        size_t pos = 0u;
+        u16 shown = 0u;
+        u16 i;
+
+        g_buf_net[0] = '\0';
+        buf_appendf(g_buf_net, sizeof(g_buf_net), &pos,
+                    "Session: %s ready=%s sid=%u peer=%u tick=%u rate=%u delay=%u peers=%u",
+                    net_role_text(s.role),
+                    net.ready() ? "YES" : "NO",
+                    (unsigned)s.id,
+                    (unsigned)net.local_peer(),
+                    (unsigned)s.tick,
+                    (unsigned)s.tick_rate,
+                    (unsigned)s.input_delay_ticks,
+                    (unsigned)s.peer_count);
+        if (s.peer_count > 0u && s.peers) {
+            for (i = 0u; i < s.peer_count && shown < 8u; ++i) {
+                const d_net_peer *p = &s.peers[i];
+                buf_appendf(g_buf_net, sizeof(g_buf_net), &pos,
+                            " | %u f=0x%08x ack=%u",
+                            (unsigned)p->id,
+                            (unsigned)p->flags,
+                            (unsigned)p->last_ack_tick);
+                shown += 1u;
+            }
+        }
+        if (g_net_label) g_net_label->text = g_buf_net;
+    }
+
     update_pack_info(inst);
+    update_org_research_econ(app, w);
     update_factory_inspectors(w);
 }
 

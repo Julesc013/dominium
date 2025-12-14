@@ -26,6 +26,10 @@ def field_q16(tag, value):
     raw = int(round(value * 65536))
     return tlv(tag, struct.pack("<i", raw))
 
+def field_q32(tag, value):
+    raw = int(round(value * (1 << 32)))
+    return tlv(tag, struct.pack("<q", raw))
+
 
 SCHEMA_MATERIAL = 0x0101
 SCHEMA_ITEM = 0x0102
@@ -36,6 +40,9 @@ SCHEMA_STRUCTURE = 0x0106
 SCHEMA_SPLINE = 0x0108
 SCHEMA_JOB_TEMPLATE = 0x0109
 SCHEMA_BLUEPRINT = 0x010B
+SCHEMA_RESEARCH = 0x010C
+SCHEMA_RESEARCH_POINT_SOURCE = 0x010D
+SCHEMA_POLICY_RULE = 0x010E
 SCHEMA_MOD = 0x0202
 
 F_MAT_ID = 0x01
@@ -51,6 +58,8 @@ F_ITEM_MATERIAL = 0x03
 F_ITEM_TAGS = 0x04
 F_ITEM_UNIT_MASS = 0x05
 F_ITEM_UNIT_VOL = 0x06
+F_ITEM_BASE_VALUE = 0x07
+F_ITEM_CATEGORY = 0x08
 
 F_CONT_ID = 0x01
 F_CONT_NAME = 0x02
@@ -67,11 +76,15 @@ F_PROC_TAGS = 0x03
 F_PROC_PARAMS = 0x04
 F_PROC_BASE_DURATION = 0x05
 F_PROC_IO_TERM = 0x06
+F_PROC_RESEARCH_YIELD = 0x07
 
 F_PROC_IO_KIND = 0x01
 F_PROC_IO_ITEM_ID = 0x02
 F_PROC_IO_RATE = 0x03
 F_PROC_IO_FLAGS = 0x04
+
+F_RY_KIND = 0x01
+F_RY_AMOUNT = 0x02
 
 F_DEP_ID = 0x01
 F_DEP_NAME = 0x02
@@ -106,6 +119,28 @@ F_JOB_STRUCTURE_ID = 0x06
 F_JOB_SPLINE_PROFILE_ID = 0x07
 F_JOB_REQUIREMENTS = 0x08
 F_JOB_REWARDS = 0x09
+F_JOB_RESEARCH_YIELD = 0x0A
+
+F_RESEARCH_ID = 0x01
+F_RESEARCH_NAME = 0x02
+F_RESEARCH_TAGS = 0x03
+F_RESEARCH_PREREQ_ID = 0x04
+F_RESEARCH_UNLOCKS = 0x05
+F_RESEARCH_COST = 0x06
+F_RESEARCH_PARAMS = 0x07
+
+F_RP_SOURCE_ID = 0x01
+F_RP_SOURCE_NAME = 0x02
+F_RP_SOURCE_KIND = 0x03
+F_RP_SOURCE_TAGS = 0x04
+F_RP_SOURCE_PARAMS = 0x05
+
+F_POLICY_ID = 0x01
+F_POLICY_NAME = 0x02
+F_POLICY_TAGS = 0x03
+F_POLICY_SCOPE = 0x04
+F_POLICY_EFFECT = 0x05
+F_POLICY_CONDITIONS = 0x06
 
 F_BLUEPRINT_ID = 0x01
 F_BLUEPRINT_NAME = 0x02
@@ -152,6 +187,12 @@ TAG_DEPOSIT_STRATA_SOLID = 1 << 26
 
 TAG_CAP_OPERATE_PROCESS = 1 << 29
 
+TAG_RESEARCH_LOGISTICS = 1 << 7
+TAG_RESEARCH_PROCESSING = 1 << 11
+TAG_RESEARCH_AUTOMATION = 1 << 14
+
+RP_KIND_GENERAL = 1
+
 DRES_MODEL_STRATA_SOLID = 1
 
 SPLINE_TYPE_ITEM = 1
@@ -162,6 +203,30 @@ PROC_IO_OUTPUT_ITEM = 2
 JOB_PURPOSE_OPERATE_PROCESS = 1
 
 JOB_REQ_AGENT_TAGS = 0x11
+
+RESEARCH_COST_REQUIRED = 0x40
+
+RP_TARGET_RESEARCH_ID = 0x01
+RP_TARGET_RESEARCH_TAGS_ALL = 0x02
+RP_TARGET_RESEARCH_TAGS_ANY = 0x03
+
+POLICY_SCOPE_SUBJECT_KIND = 0x10
+POLICY_SCOPE_SUBJECT_ID = 0x11
+POLICY_SCOPE_SUBJECT_TAGS_ALL = 0x12
+POLICY_SCOPE_SUBJECT_TAGS_ANY = 0x13
+POLICY_SCOPE_ORG_ID = 0x14
+
+POLICY_COND_RESEARCH_COMPLETED = 0x20
+POLICY_COND_RESEARCH_NOT_COMPLETED = 0x21
+
+POLICY_EFFECT_ALLOWED = 0x30
+POLICY_EFFECT_MULTIPLIER = 0x31
+POLICY_EFFECT_CAP = 0x32
+
+POLICY_SUBJECT_PROCESS = 1
+POLICY_SUBJECT_JOB_TEMPLATE = 2
+POLICY_SUBJECT_STRUCTURE = 3
+POLICY_SUBJECT_SPLINE_PROFILE = 4
 
 
 def build_content_blob():
@@ -187,6 +252,8 @@ def build_content_blob():
             field_u32(F_ITEM_TAGS, TAG_ITEM_RAW | TAG_ITEM_STACKABLE),
             field_q16(F_ITEM_UNIT_MASS, 1.0),
             field_q16(F_ITEM_UNIT_VOL, 1.0),
+            field_q16(F_ITEM_BASE_VALUE, 1.0),
+            field_u16(F_ITEM_CATEGORY, 1),
         ]
     )
     entries.append(tlv(SCHEMA_ITEM, raw_item))
@@ -199,6 +266,8 @@ def build_content_blob():
             field_u32(F_ITEM_TAGS, TAG_ITEM_STACKABLE),
             field_q16(F_ITEM_UNIT_MASS, 1.0),
             field_q16(F_ITEM_UNIT_VOL, 1.0),
+            field_q16(F_ITEM_BASE_VALUE, 2.0),
+            field_u16(F_ITEM_CATEGORY, 2),
         ]
     )
     entries.append(tlv(SCHEMA_ITEM, mid_item))
@@ -211,6 +280,8 @@ def build_content_blob():
             field_u32(F_ITEM_TAGS, TAG_ITEM_STACKABLE),
             field_q16(F_ITEM_UNIT_MASS, 1.0),
             field_q16(F_ITEM_UNIT_VOL, 1.0),
+            field_q16(F_ITEM_BASE_VALUE, 4.0),
+            field_u16(F_ITEM_CATEGORY, 3),
         ]
     )
     entries.append(tlv(SCHEMA_ITEM, fin_item))
@@ -269,6 +340,24 @@ def build_content_blob():
         )
         return tlv(F_PROC_IO_TERM, inner)
 
+    def proc_research_yield(kind, points):
+        inner = b"".join(
+            [
+                field_u16(F_RY_KIND, kind),
+                field_q32(F_RY_AMOUNT, points),
+            ]
+        )
+        return tlv(F_PROC_RESEARCH_YIELD, inner)
+
+    def job_research_yield(kind, points):
+        inner = b"".join(
+            [
+                field_u16(F_RY_KIND, kind),
+                field_q32(F_RY_AMOUNT, points),
+            ]
+        )
+        return tlv(F_JOB_RESEARCH_YIELD, inner)
+
     base_duration = 64.0
     rate_1_per_cycle = 1.0 / 64.0
 
@@ -279,6 +368,7 @@ def build_content_blob():
             field_u32(F_PROC_TAGS, TAG_PROCESS_TRANSFORM),
             tlv(F_PROC_PARAMS, b""),
             field_q16(F_PROC_BASE_DURATION, base_duration),
+            proc_research_yield(RP_KIND_GENERAL, 2.0),
             proc_io_term(PROC_IO_OUTPUT_ITEM, 10001, rate_1_per_cycle, 0),
         ]
     )
@@ -291,6 +381,7 @@ def build_content_blob():
             field_u32(F_PROC_TAGS, TAG_PROCESS_TRANSFORM),
             tlv(F_PROC_PARAMS, b""),
             field_q16(F_PROC_BASE_DURATION, base_duration),
+            proc_research_yield(RP_KIND_GENERAL, 4.0),
             proc_io_term(PROC_IO_INPUT_ITEM, 10001, rate_1_per_cycle, 0),
             proc_io_term(PROC_IO_OUTPUT_ITEM, 10002, rate_1_per_cycle, 0),
         ]
@@ -304,11 +395,118 @@ def build_content_blob():
             field_u32(F_PROC_TAGS, TAG_PROCESS_TRANSFORM),
             tlv(F_PROC_PARAMS, b""),
             field_q16(F_PROC_BASE_DURATION, base_duration),
+            proc_research_yield(RP_KIND_GENERAL, 6.0),
             proc_io_term(PROC_IO_INPUT_ITEM, 10002, rate_1_per_cycle, 0),
             proc_io_term(PROC_IO_OUTPUT_ITEM, 10003, rate_1_per_cycle, 0),
         ]
     )
     entries.append(tlv(SCHEMA_PROCESS, proc_assemble))
+
+    r_all_tags = TAG_RESEARCH_LOGISTICS | TAG_RESEARCH_PROCESSING | TAG_RESEARCH_AUTOMATION
+
+    r_logistics_cost = b"".join([field_q32(RESEARCH_COST_REQUIRED, 10.0)])
+    r_processing_cost = b"".join([field_q32(RESEARCH_COST_REQUIRED, 20.0)])
+    r_automation_cost = b"".join([field_q32(RESEARCH_COST_REQUIRED, 30.0)])
+
+    r_logistics = b"".join(
+        [
+            field_u32(F_RESEARCH_ID, 90001),
+            field_str(F_RESEARCH_NAME, "Demo Logistics I"),
+            field_u32(F_RESEARCH_TAGS, TAG_RESEARCH_LOGISTICS),
+            tlv(F_RESEARCH_UNLOCKS, b""),
+            tlv(F_RESEARCH_COST, r_logistics_cost),
+            tlv(F_RESEARCH_PARAMS, b""),
+        ]
+    )
+    entries.append(tlv(SCHEMA_RESEARCH, r_logistics))
+
+    r_processing = b"".join(
+        [
+            field_u32(F_RESEARCH_ID, 90002),
+            field_str(F_RESEARCH_NAME, "Demo Processing I"),
+            field_u32(F_RESEARCH_TAGS, TAG_RESEARCH_PROCESSING),
+            field_u32(F_RESEARCH_PREREQ_ID, 90001),
+            tlv(F_RESEARCH_UNLOCKS, b""),
+            tlv(F_RESEARCH_COST, r_processing_cost),
+            tlv(F_RESEARCH_PARAMS, b""),
+        ]
+    )
+    entries.append(tlv(SCHEMA_RESEARCH, r_processing))
+
+    r_automation = b"".join(
+        [
+            field_u32(F_RESEARCH_ID, 90003),
+            field_str(F_RESEARCH_NAME, "Demo Automation I"),
+            field_u32(F_RESEARCH_TAGS, TAG_RESEARCH_AUTOMATION),
+            field_u32(F_RESEARCH_PREREQ_ID, 90002),
+            tlv(F_RESEARCH_UNLOCKS, b""),
+            tlv(F_RESEARCH_COST, r_automation_cost),
+            tlv(F_RESEARCH_PARAMS, b""),
+        ]
+    )
+    entries.append(tlv(SCHEMA_RESEARCH, r_automation))
+
+    rp_params = b"".join([field_u32(RP_TARGET_RESEARCH_TAGS_ANY, r_all_tags)])
+    rp_source = b"".join(
+        [
+            field_u32(F_RP_SOURCE_ID, 91001),
+            field_str(F_RP_SOURCE_NAME, "Demo Research Points"),
+            field_u16(F_RP_SOURCE_KIND, RP_KIND_GENERAL),
+            field_u32(F_RP_SOURCE_TAGS, 0),
+            tlv(F_RP_SOURCE_PARAMS, rp_params),
+        ]
+    )
+    entries.append(tlv(SCHEMA_RESEARCH_POINT_SOURCE, rp_source))
+
+    policy_gate_spline = b"".join(
+        [
+            field_u32(F_POLICY_ID, 92001),
+            field_str(F_POLICY_NAME, "Demo Gate Spline Placement"),
+            field_u32(F_POLICY_TAGS, 0),
+            tlv(F_POLICY_SCOPE, b"".join(
+                [
+                    field_u32(POLICY_SCOPE_SUBJECT_KIND, POLICY_SUBJECT_SPLINE_PROFILE),
+                    field_u32(POLICY_SCOPE_SUBJECT_ID, 70001),
+                ]
+            )),
+            tlv(F_POLICY_EFFECT, b"".join(
+                [
+                    field_u32(POLICY_EFFECT_ALLOWED, 0),
+                ]
+            )),
+            tlv(F_POLICY_CONDITIONS, b"".join(
+                [
+                    field_u32(POLICY_COND_RESEARCH_NOT_COMPLETED, 90001),
+                ]
+            )),
+        ]
+    )
+    entries.append(tlv(SCHEMA_POLICY_RULE, policy_gate_spline))
+
+    policy_process_boost = b"".join(
+        [
+            field_u32(F_POLICY_ID, 92002),
+            field_str(F_POLICY_NAME, "Demo Process Multiplier"),
+            field_u32(F_POLICY_TAGS, 0),
+            tlv(F_POLICY_SCOPE, b"".join(
+                [
+                    field_u32(POLICY_SCOPE_SUBJECT_KIND, POLICY_SUBJECT_PROCESS),
+                    field_u32(POLICY_SCOPE_SUBJECT_ID, 30002),
+                ]
+            )),
+            tlv(F_POLICY_EFFECT, b"".join(
+                [
+                    field_q16(POLICY_EFFECT_MULTIPLIER, 1.5),
+                ]
+            )),
+            tlv(F_POLICY_CONDITIONS, b"".join(
+                [
+                    field_u32(POLICY_COND_RESEARCH_COMPLETED, 90002),
+                ]
+            )),
+        ]
+    )
+    entries.append(tlv(SCHEMA_POLICY_RULE, policy_process_boost))
 
     model_params = b"".join(
         [
@@ -480,6 +678,7 @@ def build_content_blob():
             field_u32(F_JOB_STRUCTURE_ID, 40001),
             field_u32(F_JOB_SPLINE_PROFILE_ID, 0),
             tlv(F_JOB_REQUIREMENTS, op_req),
+            job_research_yield(RP_KIND_GENERAL, 1.0),
             tlv(F_JOB_REWARDS, b""),
         ]
     )
@@ -495,6 +694,7 @@ def build_content_blob():
             field_u32(F_JOB_STRUCTURE_ID, 40002),
             field_u32(F_JOB_SPLINE_PROFILE_ID, 0),
             tlv(F_JOB_REQUIREMENTS, op_req),
+            job_research_yield(RP_KIND_GENERAL, 1.0),
             tlv(F_JOB_REWARDS, b""),
         ]
     )
@@ -510,6 +710,7 @@ def build_content_blob():
             field_u32(F_JOB_STRUCTURE_ID, 40003),
             field_u32(F_JOB_SPLINE_PROFILE_ID, 0),
             tlv(F_JOB_REQUIREMENTS, op_req),
+            job_research_yield(RP_KIND_GENERAL, 1.0),
             tlv(F_JOB_REWARDS, b""),
         ]
     )

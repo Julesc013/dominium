@@ -24,6 +24,9 @@ typedef u32 d_building_proto_id;
 typedef u32 d_blueprint_id;
 typedef u32 d_pack_id;
 typedef u32 d_mod_id;
+typedef u32 d_research_id;
+typedef u16 d_research_point_kind;
+typedef u32 d_policy_id;
 
 /* Generic tag flags (bitmasks) shared across prototype types. */
 typedef u32 d_content_tag;
@@ -82,6 +85,10 @@ typedef struct d_proto_item_s {
 
     q16_16 unit_mass;    /* mass per item */
     q16_16 unit_volume;  /* volume per item */
+
+    /* Generic economy parameters (optional; interpretation is system-specific). */
+    q16_16 base_value;   /* e.g. unit value proxy */
+    u16    category;     /* generic category id */
 } d_proto_item;
 
 typedef struct d_proto_container_s {
@@ -104,6 +111,11 @@ typedef struct d_process_io_term_s {
     q16_16    rate;      /* units per tick (engine-level convention) */
     u16       flags;     /* CATALYST, BYPRODUCT, OPTIONAL, etc. */
 } d_process_io_term;
+
+typedef struct d_research_point_yield_s {
+    d_research_point_kind kind;
+    q32_32                amount; /* points per completion/cycle */
+} d_research_point_yield;
 
 /* Generic process IO kinds (domain-neutral). */
 enum {
@@ -130,6 +142,9 @@ typedef struct d_proto_process_s {
     q16_16            base_duration;  /* nominal time per cycle */
     u16              io_count;
     d_process_io_term *io_terms;      /* runtime array from TLV */
+
+    u16                  research_yield_count;
+    d_research_point_yield *research_yields; /* points per cycle */
 
     d_tlv_blob        params;         /* model-specific: env/heat/etc. */
 } d_proto_process;
@@ -187,6 +202,9 @@ typedef struct d_proto_job_template_s {
 
     d_tlv_blob          requirements;       /* capabilities, environment, tools */
     d_tlv_blob          rewards;            /* payment, reputation, etc. */
+
+    u16                  research_yield_count;
+    d_research_point_yield *research_yields; /* points per completion */
 } d_proto_job_template;
 
 typedef struct d_proto_building_s {
@@ -203,6 +221,47 @@ typedef struct d_proto_blueprint_s {
     d_content_tag   tags;
     d_tlv_blob      contents;   /* describes one or more structures/vehicles/etc. */
 } d_proto_blueprint;
+
+typedef struct d_proto_research_s {
+    d_research_id   id;
+    const char     *name;
+    d_content_tag   tags;
+
+    /* Dependencies: other research nodes (ids). */
+    u16             prereq_count;
+    d_research_id  *prereq_ids;
+
+    /* Unlocks expressed generically as TLV (content interprets/apply them). */
+    d_tlv_blob      unlocks;
+
+    /* Research cost and rate model. */
+    d_tlv_blob      cost;    /* e.g. required points */
+    d_tlv_blob      params;  /* model-specific: diminishing returns, scaling, etc. */
+} d_proto_research;
+
+typedef struct d_proto_research_point_source_s {
+    u32                 id;
+    const char         *name;
+    d_research_point_kind kind;
+    d_content_tag       tags;
+
+    d_tlv_blob          params;  /* mapping rules from point kind to research targets */
+} d_proto_research_point_source;
+
+typedef struct d_proto_policy_rule_s {
+    d_policy_id   id;
+    const char   *name;
+    d_content_tag tags;
+
+    /* Applies to: orgs, processes, structures, jobs, env fields, etc. */
+    d_tlv_blob    scope;      /* selection: by tags, ids, etc. */
+
+    /* Effect: generic multipliers, caps, unlocks, forbids. */
+    d_tlv_blob    effect;
+
+    /* Conditions: research, time, environment. */
+    d_tlv_blob    conditions;
+} d_proto_policy_rule;
 
 typedef struct d_proto_pack_manifest_s {
     d_pack_id   id;
@@ -262,6 +321,9 @@ const d_proto_job_template *d_content_get_job_template(d_job_template_id id);
 const d_proto_building    *d_content_get_building(d_building_proto_id id);
 const d_proto_blueprint   *d_content_get_blueprint(d_blueprint_id id);
 const d_proto_blueprint   *d_content_get_blueprint_by_name(const char *name);
+const d_proto_research    *d_content_get_research(d_research_id id);
+const d_proto_research_point_source *d_content_get_research_point_source(u32 id);
+const d_proto_policy_rule *d_content_get_policy_rule(d_policy_id id);
 
 u32 d_content_material_count(void);
 const d_proto_material *d_content_get_material_by_index(u32 index);
@@ -285,6 +347,12 @@ u32 d_content_building_count(void);
 const d_proto_building *d_content_get_building_by_index(u32 index);
 u32 d_content_blueprint_count(void);
 const d_proto_blueprint *d_content_get_blueprint_by_index(u32 index);
+u32 d_content_research_count(void);
+const d_proto_research *d_content_get_research_by_index(u32 index);
+u32 d_content_research_point_source_count(void);
+const d_proto_research_point_source *d_content_get_research_point_source_by_index(u32 index);
+u32 d_content_policy_rule_count(void);
+const d_proto_policy_rule *d_content_get_policy_rule_by_index(u32 index);
 
 /* Debug helper to print counts and names. */
 void d_content_debug_dump(void);

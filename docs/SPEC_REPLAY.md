@@ -11,3 +11,9 @@
   - Payload layout: `tick_index (u32)`, `input_count (u32)`, then for each input `{tick_index, player_id, payload_size, payload bytes}`.
   - `d_replay_deserialize` parses the blob, allocates owned frames/payloads, and prepares a PLAYBACK context.
 - **Subsystem:** `d_replay_register_subsystem` registers `D_SUBSYS_REPLAY` with no-op tick and empty instance serialization; replay data is expected to be stored by higher-level game flows around `d_sim_step`.
+
+## Relationship to Net Commands
+
+- **Recording net sessions:** Dominium can record the *applied* deterministic command stream by capturing encoded `D_NET_MSG_CMD` packets per tick (see `d_net_set_tick_cmds_observer` in `source/domino/net/d_net_apply.c` and usage in `source/dominium/game/dom_game_app.cpp`).
+- **Replay payloads:** For net capture, each `d_net_input_frame.payload` is a full framed packet (the same bytes that would be sent over the transport), which allows playback to use the same decode/enqueue path.
+- **Playback injection:** During playback, Dominium re-injects recorded packets by calling `d_net_receive_packet(...)` before `d_sim_step`, ensuring deterministic equivalence between offline replay and online command reception.

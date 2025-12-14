@@ -2,6 +2,8 @@
 #include <string.h>
 
 #include "d_net.h"
+#include "d_net_cmd.h"
+#include "d_net_schema.h"
 #include "core/d_subsystem.h"
 #include "world/d_world.h"
 
@@ -43,6 +45,10 @@ void d_net_register_subsystem(void) {
     if (g_net_registered) {
         return;
     }
+
+    /* Schema registry is global; safe to call repeatedly. */
+    d_net_register_schemas();
+    (void)d_net_cmd_queue_init();
 
     existing = d_subsystem_get_by_id(D_SUBSYS_NET);
     if (existing) {
@@ -89,6 +95,7 @@ void d_net_shutdown(d_net_context *ctx) {
     ctx->profile_id = 0u;
     ctx->local_player_id = 0u;
     ctx->peer_count = 0u;
+    d_net_cmd_queue_shutdown();
 }
 
 int d_net_step_lockstep(

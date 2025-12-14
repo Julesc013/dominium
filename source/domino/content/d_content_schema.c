@@ -84,6 +84,20 @@ static int d_content_schema_read_q16_16(const d_tlv_blob *payload, q16_16 *out)
     return 0;
 }
 
+static int d_content_schema_read_q32_32(const d_tlv_blob *payload, q32_32 *out)
+{
+    q32_32 tmp;
+    if (!payload || !out) {
+        return -1;
+    }
+    if (payload->len != 8u || payload->ptr == (unsigned char *)0) {
+        return -1;
+    }
+    memcpy(&tmp, payload->ptr, sizeof(q32_32));
+    *out = tmp;
+    return 0;
+}
+
 static const char *d_content_schema_read_string(const d_tlv_blob *payload, int *ok)
 {
     if (ok) {
@@ -231,6 +245,12 @@ int d_content_schema_parse_item_v1(const d_tlv_blob *blob, struct d_proto_item_s
         case D_FIELD_ITEM_UNIT_VOLUME:
             if (d_content_schema_read_q16_16(&payload, &tmp.unit_volume) != 0) return -1;
             break;
+        case D_FIELD_ITEM_BASE_VALUE:
+            if (d_content_schema_read_q16_16(&payload, &tmp.base_value) != 0) return -1;
+            break;
+        case D_FIELD_ITEM_CATEGORY:
+            if (d_content_schema_read_u16(&payload, &tmp.category) != 0) return -1;
+            break;
         default:
             break;
         }
@@ -314,9 +334,12 @@ int d_content_schema_parse_process_v1(const d_tlv_blob *blob, struct d_proto_pro
     int have_id = 0;
     int have_name = 0;
     u32 io_count = 0u;
+    u32 ry_count = 0u;
 
 #define D_CONTENT_SCHEMA_MAX_PROCESS_IO_TERMS 64u
     static d_process_io_term io_scratch[D_CONTENT_SCHEMA_MAX_PROCESS_IO_TERMS];
+#define D_CONTENT_SCHEMA_MAX_PROCESS_RESEARCH_YIELDS 16u
+    static d_research_point_yield ry_scratch[D_CONTENT_SCHEMA_MAX_PROCESS_RESEARCH_YIELDS];
 
     if (!blob || !out) {
         return -1;
@@ -325,6 +348,8 @@ int d_content_schema_parse_process_v1(const d_tlv_blob *blob, struct d_proto_pro
     tmp.base_duration = d_q16_16_from_int(1);
     tmp.io_count = 0u;
     tmp.io_terms = (d_process_io_term *)0;
+    tmp.research_yield_count = 0u;
+    tmp.research_yields = (d_research_point_yield *)0;
 
     while (1) {
         int rc = d_content_schema_next(blob, &offset, &tag, &payload);
@@ -388,6 +413,35 @@ int d_content_schema_parse_process_v1(const d_tlv_blob *blob, struct d_proto_pro
             }
             break;
         }
+        case D_FIELD_PROCESS_RESEARCH_YIELD: {
+            d_research_point_yield y;
+            u32 inner_off = 0u;
+            u32 inner_tag;
+            d_tlv_blob inner_payload;
+            int inner_rc;
+
+            memset(&y, 0, sizeof(y));
+            while ((inner_rc = d_content_schema_next(&payload, &inner_off, &inner_tag, &inner_payload)) == 0) {
+                switch (inner_tag) {
+                case D_FIELD_RY_KIND:
+                    if (d_content_schema_read_u16(&inner_payload, &y.kind) != 0) return -1;
+                    break;
+                case D_FIELD_RY_AMOUNT:
+                    if (d_content_schema_read_q32_32(&inner_payload, &y.amount) != 0) return -1;
+                    break;
+                default:
+                    break;
+                }
+            }
+
+            if (ry_count < D_CONTENT_SCHEMA_MAX_PROCESS_RESEARCH_YIELDS) {
+                ry_scratch[ry_count] = y;
+                ry_count += 1u;
+            } else {
+                return -1;
+            }
+            break;
+        }
         default:
             break;
         }
@@ -398,6 +452,8 @@ int d_content_schema_parse_process_v1(const d_tlv_blob *blob, struct d_proto_pro
     }
     tmp.io_count = (u16)io_count;
     tmp.io_terms = (io_count > 0u) ? io_scratch : (d_process_io_term *)0;
+    tmp.research_yield_count = (u16)ry_count;
+    tmp.research_yields = (ry_count > 0u) ? ry_scratch : (d_research_point_yield *)0;
     *out = tmp;
     return 0;
 }
@@ -638,11 +694,17 @@ int d_content_schema_parse_job_template_v1(const d_tlv_blob *blob, struct d_prot
     int have_id = 0;
     int have_name = 0;
     int have_purpose = 0;
+    u32 ry_count = 0u;
+
+#define D_CONTENT_SCHEMA_MAX_JOB_RESEARCH_YIELDS 16u
+    static d_research_point_yield ry_scratch[D_CONTENT_SCHEMA_MAX_JOB_RESEARCH_YIELDS];
 
     if (!blob || !out) {
         return -1;
     }
     memset(&tmp, 0, sizeof(tmp));
+    tmp.research_yield_count = 0u;
+    tmp.research_yields = (d_research_point_yield *)0;
 
     while (1) {
         int rc = d_content_schema_next(blob, &offset, &tag, &payload);
@@ -684,6 +746,35 @@ int d_content_schema_parse_job_template_v1(const d_tlv_blob *blob, struct d_prot
         case D_FIELD_JOB_REWARDS:
             tmp.rewards = d_content_schema_copy_blob(&payload);
             break;
+        case D_FIELD_JOB_RESEARCH_YIELD: {
+            d_research_point_yield y;
+            u32 inner_off = 0u;
+            u32 inner_tag;
+            d_tlv_blob inner_payload;
+            int inner_rc;
+
+            memset(&y, 0, sizeof(y));
+            while ((inner_rc = d_content_schema_next(&payload, &inner_off, &inner_tag, &inner_payload)) == 0) {
+                switch (inner_tag) {
+                case D_FIELD_RY_KIND:
+                    if (d_content_schema_read_u16(&inner_payload, &y.kind) != 0) return -1;
+                    break;
+                case D_FIELD_RY_AMOUNT:
+                    if (d_content_schema_read_q32_32(&inner_payload, &y.amount) != 0) return -1;
+                    break;
+                default:
+                    break;
+                }
+            }
+
+            if (ry_count < D_CONTENT_SCHEMA_MAX_JOB_RESEARCH_YIELDS) {
+                ry_scratch[ry_count] = y;
+                ry_count += 1u;
+            } else {
+                return -1;
+            }
+            break;
+        }
         default:
             break;
         }
@@ -692,6 +783,8 @@ int d_content_schema_parse_job_template_v1(const d_tlv_blob *blob, struct d_prot
     if (!have_id || !have_name || !have_purpose) {
         return -1;
     }
+    tmp.research_yield_count = (u16)ry_count;
+    tmp.research_yields = (ry_count > 0u) ? ry_scratch : (d_research_point_yield *)0;
     *out = tmp;
     return 0;
 }
@@ -786,6 +879,193 @@ int d_content_schema_parse_blueprint_v1(const d_tlv_blob *blob, struct d_proto_b
             break;
         case D_FIELD_BLUEPRINT_PAYLOAD:
             tmp.contents = d_content_schema_copy_blob(&payload);
+            break;
+        default:
+            break;
+        }
+    }
+
+    if (!have_id || !have_name) {
+        return -1;
+    }
+    *out = tmp;
+    return 0;
+}
+
+int d_content_schema_parse_research_v1(const d_tlv_blob *blob, struct d_proto_research_s *out)
+{
+    u32 offset = 0u;
+    u32 tag;
+    d_tlv_blob payload;
+    d_proto_research tmp;
+    int have_id = 0;
+    int have_name = 0;
+    u32 prereq_count = 0u;
+
+#define D_CONTENT_SCHEMA_MAX_RESEARCH_PREREQS 64u
+    static d_research_id prereq_scratch[D_CONTENT_SCHEMA_MAX_RESEARCH_PREREQS];
+
+    if (!blob || !out) {
+        return -1;
+    }
+    memset(&tmp, 0, sizeof(tmp));
+    tmp.prereq_count = 0u;
+    tmp.prereq_ids = (d_research_id *)0;
+
+    while (1) {
+        int rc = d_content_schema_next(blob, &offset, &tag, &payload);
+        if (rc == 1) {
+            break;
+        }
+        if (rc != 0) {
+            return -1;
+        }
+
+        switch (tag) {
+        case D_FIELD_RESEARCH_ID:
+            if (d_content_schema_read_u32(&payload, &tmp.id) != 0) return -1;
+            have_id = 1;
+            break;
+        case D_FIELD_RESEARCH_NAME:
+            tmp.name = d_content_schema_read_string(&payload, &have_name);
+            if (!have_name) return -1;
+            break;
+        case D_FIELD_RESEARCH_TAGS:
+            if (d_content_schema_read_u32(&payload, &tmp.tags) != 0) return -1;
+            break;
+        case D_FIELD_RESEARCH_PREREQ_ID: {
+            u32 pid = 0u;
+            if (d_content_schema_read_u32(&payload, &pid) != 0) return -1;
+            if (prereq_count < D_CONTENT_SCHEMA_MAX_RESEARCH_PREREQS) {
+                prereq_scratch[prereq_count++] = (d_research_id)pid;
+            } else {
+                return -1;
+            }
+            break;
+        }
+        case D_FIELD_RESEARCH_UNLOCKS:
+            tmp.unlocks = d_content_schema_copy_blob(&payload);
+            break;
+        case D_FIELD_RESEARCH_COST:
+            tmp.cost = d_content_schema_copy_blob(&payload);
+            break;
+        case D_FIELD_RESEARCH_PARAMS:
+            tmp.params = d_content_schema_copy_blob(&payload);
+            break;
+        default:
+            break;
+        }
+    }
+
+    if (!have_id || !have_name) {
+        return -1;
+    }
+    tmp.prereq_count = (u16)prereq_count;
+    tmp.prereq_ids = (prereq_count > 0u) ? prereq_scratch : (d_research_id *)0;
+    *out = tmp;
+    return 0;
+}
+
+int d_content_schema_parse_research_point_source_v1(
+    const d_tlv_blob *blob,
+    struct d_proto_research_point_source_s *out
+) {
+    u32 offset = 0u;
+    u32 tag;
+    d_tlv_blob payload;
+    d_proto_research_point_source tmp;
+    int have_id = 0;
+    int have_name = 0;
+
+    if (!blob || !out) {
+        return -1;
+    }
+    memset(&tmp, 0, sizeof(tmp));
+
+    while (1) {
+        int rc = d_content_schema_next(blob, &offset, &tag, &payload);
+        if (rc == 1) {
+            break;
+        }
+        if (rc != 0) {
+            return -1;
+        }
+
+        switch (tag) {
+        case D_FIELD_RP_SOURCE_ID:
+            if (d_content_schema_read_u32(&payload, &tmp.id) != 0) return -1;
+            have_id = 1;
+            break;
+        case D_FIELD_RP_SOURCE_NAME:
+            tmp.name = d_content_schema_read_string(&payload, &have_name);
+            if (!have_name) return -1;
+            break;
+        case D_FIELD_RP_SOURCE_KIND:
+            if (d_content_schema_read_u16(&payload, &tmp.kind) != 0) return -1;
+            break;
+        case D_FIELD_RP_SOURCE_TAGS:
+            if (d_content_schema_read_u32(&payload, &tmp.tags) != 0) return -1;
+            break;
+        case D_FIELD_RP_SOURCE_PARAMS:
+            tmp.params = d_content_schema_copy_blob(&payload);
+            break;
+        default:
+            break;
+        }
+    }
+
+    if (!have_id || !have_name) {
+        return -1;
+    }
+    *out = tmp;
+    return 0;
+}
+
+int d_content_schema_parse_policy_rule_v1(
+    const d_tlv_blob *blob,
+    struct d_proto_policy_rule_s *out
+) {
+    u32 offset = 0u;
+    u32 tag;
+    d_tlv_blob payload;
+    d_proto_policy_rule tmp;
+    int have_id = 0;
+    int have_name = 0;
+
+    if (!blob || !out) {
+        return -1;
+    }
+    memset(&tmp, 0, sizeof(tmp));
+
+    while (1) {
+        int rc = d_content_schema_next(blob, &offset, &tag, &payload);
+        if (rc == 1) {
+            break;
+        }
+        if (rc != 0) {
+            return -1;
+        }
+
+        switch (tag) {
+        case D_FIELD_POLICY_ID:
+            if (d_content_schema_read_u32(&payload, &tmp.id) != 0) return -1;
+            have_id = 1;
+            break;
+        case D_FIELD_POLICY_NAME:
+            tmp.name = d_content_schema_read_string(&payload, &have_name);
+            if (!have_name) return -1;
+            break;
+        case D_FIELD_POLICY_TAGS:
+            if (d_content_schema_read_u32(&payload, &tmp.tags) != 0) return -1;
+            break;
+        case D_FIELD_POLICY_SCOPE:
+            tmp.scope = d_content_schema_copy_blob(&payload);
+            break;
+        case D_FIELD_POLICY_EFFECT:
+            tmp.effect = d_content_schema_copy_blob(&payload);
+            break;
+        case D_FIELD_POLICY_CONDITIONS:
+            tmp.conditions = d_content_schema_copy_blob(&payload);
             break;
         default:
             break;
@@ -1052,6 +1332,45 @@ static int d_content_schema_validate_blueprint(d_tlv_schema_id schema_id,
     return d_content_schema_parse_blueprint_v1(in, &tmp);
 }
 
+static int d_content_schema_validate_research(d_tlv_schema_id schema_id,
+                                              u16 version,
+                                              const struct d_tlv_blob *in,
+                                              struct d_tlv_blob *out_upgraded)
+{
+    d_proto_research tmp;
+    (void)out_upgraded;
+    if (schema_id != D_TLV_SCHEMA_RESEARCH_V1 || version != 1u) {
+        return -1;
+    }
+    return d_content_schema_parse_research_v1(in, &tmp);
+}
+
+static int d_content_schema_validate_research_point_source(d_tlv_schema_id schema_id,
+                                                           u16 version,
+                                                           const struct d_tlv_blob *in,
+                                                           struct d_tlv_blob *out_upgraded)
+{
+    d_proto_research_point_source tmp;
+    (void)out_upgraded;
+    if (schema_id != D_TLV_SCHEMA_RESEARCH_POINT_SOURCE_V1 || version != 1u) {
+        return -1;
+    }
+    return d_content_schema_parse_research_point_source_v1(in, &tmp);
+}
+
+static int d_content_schema_validate_policy_rule(d_tlv_schema_id schema_id,
+                                                 u16 version,
+                                                 const struct d_tlv_blob *in,
+                                                 struct d_tlv_blob *out_upgraded)
+{
+    d_proto_policy_rule tmp;
+    (void)out_upgraded;
+    if (schema_id != D_TLV_SCHEMA_POLICY_RULE_V1 || version != 1u) {
+        return -1;
+    }
+    return d_content_schema_parse_policy_rule_v1(in, &tmp);
+}
+
 static int d_content_schema_validate_pack(d_tlv_schema_id schema_id,
                                           u16 version,
                                           const struct d_tlv_blob *in,
@@ -1102,6 +1421,9 @@ int d_content_schema_register_all(void)
     rc |= d_content_schema_register_one(D_TLV_SCHEMA_JOB_TEMPLATE_V1, d_content_schema_validate_job);
     rc |= d_content_schema_register_one(D_TLV_SCHEMA_BUILDING_V1,  d_content_schema_validate_building);
     rc |= d_content_schema_register_one(D_TLV_SCHEMA_BLUEPRINT_V1, d_content_schema_validate_blueprint);
+    rc |= d_content_schema_register_one(D_TLV_SCHEMA_RESEARCH_V1,  d_content_schema_validate_research);
+    rc |= d_content_schema_register_one(D_TLV_SCHEMA_RESEARCH_POINT_SOURCE_V1, d_content_schema_validate_research_point_source);
+    rc |= d_content_schema_register_one(D_TLV_SCHEMA_POLICY_RULE_V1, d_content_schema_validate_policy_rule);
     rc |= d_content_schema_register_one(D_TLV_SCHEMA_PACK_V1,      d_content_schema_validate_pack);
     rc |= d_content_schema_register_one(D_TLV_SCHEMA_MOD_V1,       d_content_schema_validate_mod);
     return rc;

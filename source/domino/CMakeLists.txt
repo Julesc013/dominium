@@ -12,10 +12,18 @@ add_library(domino_core STATIC
     core/d_tlv_schema.c
     core/d_container_state.c
     core/d_account.c
+    core/d_org.c
+    core/d_org_validate.c
     content/d_blueprint.c
     content/d_content_schema.c
     content/d_content.c
     content/d_content_validate.c
+    policy/d_policy.c
+    policy/d_policy_validate.c
+    research/d_research_state.c
+    research/d_research_validate.c
+    econ/d_econ_metrics.c
+    econ/d_econ_validate.c
     ai/d_agent.c
     app/startup.c
     cli/cli.c
@@ -62,6 +70,12 @@ add_library(domino_core STATIC
     job/d_job_planner.c
     job/d_job_validate.c
     net/d_net.c
+    net/d_net_apply.c
+    net/d_net_cmd.c
+    net/d_net_proto.c
+    net/d_net_schema.c
+    net/d_net_session.c
+    net/d_net_transport.c
     replay/d_replay.c
     view/d_view.c
     ui/d_ui.c

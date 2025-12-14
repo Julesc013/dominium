@@ -2,6 +2,7 @@
 
 #include "d_sim.h"
 #include "core/d_subsystem.h"
+#include "net/d_net_apply.h"
 
 #define DSIM_MAX_SYSTEMS 64u
 
@@ -64,6 +65,9 @@ int d_sim_step(d_sim_context *ctx, u32 ticks) {
         u32 subsystem_count;
         ctx->tick_index += 1u;
         ctx->world->tick_count += 1u;
+
+        /* 0) Deterministic network command application for this tick. */
+        (void)d_net_apply_for_tick(ctx->world, ctx->tick_index);
 
         /* 1) Global subsystem ticks (in registration order). */
         subsystem_count = d_subsystem_count();
