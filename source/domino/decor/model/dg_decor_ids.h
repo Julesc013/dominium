@@ -1,0 +1,42 @@
+/* DECOR stable identifiers (C89).
+ *
+ * Decor uses stable numeric IDs for deterministic generation, overrides, and
+ * promotion links back to simulation entities.
+ */
+#ifndef DG_DECOR_IDS_H
+#define DG_DECOR_IDS_H
+
+#include "domino/core/types.h"
+
+#include "core/det_invariants.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/* Stable decor item identifier (0 means invalid). */
+typedef u64 dg_decor_id;
+
+/* Content-defined decor type identifier (0 means invalid). */
+typedef u64 dg_decor_type_id;
+
+/* Content-defined rulepack identifier (0 means invalid). */
+typedef u64 dg_decor_rulepack_id;
+
+/* Stable override record identifier (0 means invalid). */
+typedef u64 dg_decor_override_id;
+
+/* Optional metadata tag identifier (0 means none). */
+typedef u64 dg_decor_tag_id;
+
+static int dg_decor_id_cmp(dg_decor_id a, dg_decor_id b) { return D_DET_CMP_U64(a, b); }
+static int dg_decor_type_id_cmp(dg_decor_type_id a, dg_decor_type_id b) { return D_DET_CMP_U64(a, b); }
+static int dg_decor_rulepack_id_cmp(dg_decor_rulepack_id a, dg_decor_rulepack_id b) { return D_DET_CMP_U64(a, b); }
+static int dg_decor_override_id_cmp(dg_decor_override_id a, dg_decor_override_id b) { return D_DET_CMP_U64(a, b); }
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
+
+#endif /* DG_DECOR_IDS_H */
+

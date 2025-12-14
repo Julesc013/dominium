@@ -163,6 +163,26 @@ STRUCT authoring state and compilation MUST obey these additional constraints:
 - STRUCT compilation emits parametric carrier artifacts; TRANS/ENV may consume
   them later, but STRUCT MUST NOT call TRANS directly in determinism paths.
 
+## DECOR decorations (rulepacks / overrides)
+DECOR authoring state and compilation MUST obey these additional constraints:
+- **Authoring is truth:** rulepacks + overrides + anchors are authoritative; compiled decor tiles/instances are derived caches only.
+- **Host-agnostic binding:** decor binds to hosts via stable authoring IDs (terrain patches, TRANS slot surfaces, STRUCT surfaces, room surfaces, sockets), never via baked geometry.
+
+### Canonical baseline generation
+- Hosts are enumerated in canonical order by stable IDs (no insertion-order dependence).
+- Rulepacks are applied in ascending `rulepack_id` order.
+- Deterministic PRNG (if used) is seeded from `(global_seed, host_id, rulepack_id)` and MUST NOT depend on enumeration order.
+- Generated decor item IDs MUST be stable (derived from stable inputs) so output is order-independent.
+
+### Override ordering + precedence
+- Overrides are applied in ascending `override_id` order.
+- **PIN precedence:** pinned items are always present in final output and MUST NOT be removed by SUPPRESS.
+- REPLACE/MOVE apply to the targeted `decor_id` after pinning is resolved; results MUST NOT depend on override insertion order.
+
+### Derived outputs (canonical)
+- Decor instances are chunk-aligned neutral records (no renderer calls) and sorted deterministically.
+- Decor tiles are chunk-aligned batches derived from instances and MUST be rebuildable under budget with deterministic carryover.
+
 ## Deterministic LOD / representation framework
 The engine-wide LOD framework (see `docs/SPEC_LOD.md`) is part of deterministic
 simulation state evolution and MUST obey these additional constraints.

@@ -96,6 +96,15 @@ add_library(domino_core STATIC
     struct/compile/dg_struct_support_graph.c
     struct/compile/dg_struct_carrier_compile.c
     struct/compile/dg_struct_compile.c
+    decor/model/dg_decor_host.c
+    decor/model/dg_decor_item.c
+    decor/model/dg_decor_rulepack.c
+    decor/model/dg_decor_override.c
+    decor/compile/dg_decor_dirty.c
+    decor/compile/dg_decor_instances.c
+    decor/compile/dg_decor_tiles.c
+    decor/compile/dg_decor_promote.c
+    decor/compile/dg_decor_compile.c
     vehicle/d_vehicle.c
     vehicle/d_vehicle_validate.c
     job/d_job.c
@@ -225,6 +234,16 @@ target_sources(domino_core PRIVATE
     decor/d_decor.h
     decor/model/d_decor_model.h
     decor/compile/d_decor_compile.h
+    decor/model/dg_decor_ids.h
+    decor/model/dg_decor_host.h
+    decor/model/dg_decor_item.h
+    decor/model/dg_decor_rulepack.h
+    decor/model/dg_decor_override.h
+    decor/compile/dg_decor_dirty.h
+    decor/compile/dg_decor_instances.h
+    decor/compile/dg_decor_tiles.h
+    decor/compile/dg_decor_promote.h
+    decor/compile/dg_decor_compile.h
     res/dg_tlv_schema.h
     res/dg_tlv_validate.h
     res/dg_tlv_canon.h
