@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 
 add_library(domino_core STATIC
     core/types.c
+    core/dg_order_key.c
     core/fixed.c
     core/fixed_debug.c
     core/rng.c
@@ -85,17 +86,35 @@ add_library(domino_core STATIC
     sim/d_sim.c
     sim/d_sim_process.c
     sim/d_sim_hash.c
+    sim/act/dg_delta_registry.c
+    sim/act/dg_delta_buffer.c
+    sim/act/dg_delta_commit.c
     sim/pkt/dg_pkt_common.c
     sim/pkt/pkt_hash.c
     sim/pkt/registry/dg_type_registry.c
     sim/pkt/idmap/dg_idmap.c
+    sim/sched/dg_phase.c
+    sim/sched/dg_budget.c
+    sim/sched/dg_work_item.c
+    sim/sched/dg_work_queue.c
+    sim/sched/dg_hash.c
+    sim/sched/dg_replay.c
+    sim/sched/dg_sched.c
     sim/sim.c
 )
 
 # Header-only scaffolding for the deterministic refactor (no compiled logic yet).
 target_sources(domino_core PRIVATE
     core/det_invariants.h
+    core/dg_order_key.h
     sim/sched/d_sim_sched.h
+    sim/sched/dg_phase.h
+    sim/sched/dg_budget.h
+    sim/sched/dg_work_item.h
+    sim/sched/dg_work_queue.h
+    sim/sched/dg_hash.h
+    sim/sched/dg_replay.h
+    sim/sched/dg_sched.h
     sim/pkt/d_sim_pkt.h
     sim/pkt/dg_pkt_common.h
     sim/pkt/dg_pkt_event.h
@@ -111,6 +130,9 @@ target_sources(domino_core PRIVATE
     sim/bus/d_sim_bus.h
     sim/lod/d_sim_lod.h
     sim/act/d_sim_act.h
+    sim/act/dg_delta_registry.h
+    sim/act/dg_delta_buffer.h
+    sim/act/dg_delta_commit.h
     sim/sense/d_sim_sense.h
     sim/know/d_sim_know.h
     sim/vis/d_sim_vis.h

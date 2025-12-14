@@ -20,47 +20,71 @@ Does not define gameplay logic; it defines a deterministic execution framework.
 - All work is bounded per tick via deterministic budgets (work units, not time).
 
 ## Global tick phases (authoritative)
-Phase names are conceptual; implementations may rename internals but MUST
-preserve ordering and commit semantics.
+This is the fixed global phase list. Implementations MUST preserve ordering and
+commit semantics.
 
-1. **TICK_BEGIN**
-   - Establish tick `N` context.
-   - Snapshot deterministic counters needed for reproducibility.
+1. **PH_INPUT**
+   - Apply deterministic input/command packets for tick `N`.
+   - No ad-hoc authoritative mutation outside delta commit.
 
-2. **INGEST**
-   - Ingest canonical intent packets for tick `N`.
-   - No mutation of authoritative state.
+2. **PH_TOPOLOGY**
+   - Budgeted incremental compilation and dirty rebuild triggers.
+   - No heavy solvers in this phase (scaffold only in early refactor).
 
-3. **VALIDATE**
-   - Validate intents against the current authoritative state.
-   - Produce actions and candidate deltas (immutable).
+3. **PH_SENSE**
+   - Deterministic sensing/sampling.
+   - Produces observation packets (immutable).
 
-4. **APPLY (DELTA COMMIT)**
-   - Apply deltas to authoritative state in canonical order.
-   - This is the primary authoritative commit point for tick `N`.
+4. **PH_MIND**
+   - Deterministic controller evaluation.
+   - Produces intent packets (immutable).
 
-5. **DERIVE**
-   - Update derived caches (LOD, graphs, knowledge/visibility).
-   - Derived updates MUST be deterministic and bounded by budgets.
+5. **PH_ACTION**
+   - Deterministic action dispatch.
+   - Produces delta packets (buffered; NOT applied yet).
 
-6. **EMIT**
-   - Emit events/messages/observations derived from the committed state.
-   - Outputs MUST be canonicalized and versioned (see `docs/SPEC_PACKETS.md`).
+6. **PH_SOLVE**
+   - Placeholder for physics/constraint solvers.
+   - No domain logic in the scheduler spine; solvers compile deltas only.
 
-7. **HASH**
-   - Compute world hash over authoritative state after delta commit.
-   - Record/assert hash as configured (see `docs/SPEC_DETERMINISM.md`).
+7. **PH_COMMIT**
+   - Apply buffered deltas to authoritative state in canonical order.
+   - This is the only authorized mutation point for tick `N`.
 
-8. **TICK_END**
-   - Finalize tick accounting (budgets, carryover queues, counters).
+8. **PH_HASH**
+   - Compute per-phase hashes and replay trace hooks.
+   - Deltas committed MUST be hashed in canonical commit order.
+
+Any change to this list requires updating both this spec and `dg_phase` in
+`source/domino/sim/sched/dg_phase.h`.
+
+## Canonical ordering key (dg_order_key)
+Scheduler-owned queues and the delta commit pipeline use a single canonical
+stable total ordering key:
+
+Fields (all fixed-size integers):
+- `phase` (u16): phase id (matches `dg_phase` values)
+- `domain_id` (u64)
+- `chunk_id` (u64)
+- `entity_id` (u64)
+- `component_id` (u64): optional sub-identifier; `0` allowed
+- `type_id` (u64): packet type or delta type id
+- `seq` (u32): monotonic per producer; last-resort tie-break
+
+Canonical comparison is lexicographic ascending by the field order above.
+No pointer-order, hash-table iteration order, or platform-dependent ordering is
+permitted in SIM scheduling.
 
 ## Delta commit rules
 - Deltas are the only authorized mechanism for mutating engine state
   (`docs/SPEC_ACTIONS.md`).
-- The APPLY phase MUST apply deltas in a canonical total order.
-- Deltas MUST carry an explicit stable sort key. Tie-breaking is by stable IDs.
-- Partial application of a single delta within a tick is forbidden. If a delta
-  cannot be applied within budget, it MUST be deferred whole.
+- The PH_COMMIT phase MUST apply deltas in a canonical total order.
+- Deltas MUST carry an explicit stable sort key (`dg_order_key` or an equivalent
+  delta-specific key derived from packet headers + monotonic `seq`).
+- Commit MUST be a single source of truth: subsystems compile deltas, but only
+  commit applies them.
+- Partial application of a single delta within a tick is forbidden. If commit
+  becomes budgeted in later prompts, deferral MUST be whole-delta (no partials).
 
 ## Budget + carryover semantics
 Budgets are measured in deterministic "work units" (not wall-clock time).
@@ -69,6 +93,8 @@ Per phase:
 - Each phase has a fixed budget `B_phase` for tick `N`.
 - Work is expressed as discrete work items with stable keys.
 - Items are processed in canonical key order until the budget is exhausted.
+- If the next item cannot fit in the remaining budget, the scheduler MUST stop
+  (no skipping) and carry over the remaining suffix unchanged.
 - Unprocessed items are carried over to tick `N+1` without reordering.
 
 Fairness must be deterministic:
@@ -96,4 +122,3 @@ Fairness must be deterministic:
 - `docs/SPEC_FIELDS_EVENTS.md`
 - `docs/SPEC_LOD.md`
 - `docs/SPEC_DOMAINS_FRAMES_PROP.md`
-

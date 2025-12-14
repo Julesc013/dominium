@@ -25,6 +25,19 @@ Applies to:
    - The only mechanism that mutates authoritative simulation state.
    - Applied at defined commit points in the scheduler (`docs/SPEC_SIM_SCHEDULER.md`).
 
+## Delta handler registry (authoritative dispatch)
+Delta application is performed via a deterministic handler registry:
+- Registry key: `delta_type_id` (u64, carried in `dg_pkt_hdr.type_id`)
+- Handler vtable: `apply(world, delta_packet)` (deterministic, no IO),
+  optional `estimate_cost(delta_packet)` for budgeting
+- Iteration order: ascending `delta_type_id` (no hash-map iteration)
+- Unknown delta types MUST NOT mutate state; they are rejected at commit.
+
+Commit (`PH_COMMIT`) is the sole mutation point:
+- Subsystems may only *produce* deltas during earlier phases.
+- Only the commit pipeline is allowed to call `apply()`.
+  Any direct mutation outside commit is a determinism violation.
+
 ## Validation vs application
 - Validation MUST NOT mutate state.
 - Application MUST NOT perform validation-dependent branching that can diverge
@@ -54,4 +67,3 @@ Applies to:
 - `docs/SPEC_PACKETS.md`
 - `docs/SPEC_SIM_SCHEDULER.md`
 - `docs/SPEC_VM.md`
-
