@@ -29,6 +29,9 @@ commit semantics.
 
 2. **PH_TOPOLOGY**
    - Budgeted incremental compilation and dirty rebuild triggers.
+   - Deterministic LOD promotion/demotion planning and application:
+     - `dg_promo_plan_and_enqueue()`
+     - `dg_promo_apply_transitions_under_budget()`
    - No heavy solvers in this phase (scaffold only in early refactor).
 
 3. **PH_SENSE**

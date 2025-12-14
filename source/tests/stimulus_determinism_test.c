@@ -1,4 +1,5 @@
 #include <string.h>
+#include <stdio.h>
 
 #include "sim/bus/dg_event_bus.h"
 #include "sim/bus/dg_message_bus.h"
@@ -200,7 +201,15 @@ static int test_message_determinism(void) {
     return 0;
 }
 
-static void build_field_set_cell_tlv(unsigned char *out, u32 out_cap, u32 *out_len, u16 x, u16 y, u16 z, q16_16 v) {
+static void build_field_set_cell_tlv(
+    unsigned char *out,
+    u32            out_cap,
+    u32           *out_len,
+    u16            x,
+    u16            y,
+    u16            z,
+    q16_16         v
+) {
     unsigned char payload[6 + 4];
     u32 tlv_len;
 
@@ -288,6 +297,7 @@ static int run_field_scenario(int variant, q16_16 *out_sample) {
 
 static int test_field_determinism(void) {
     q16_16 a, b;
+    q16_16 expected;
     int rc;
     rc = run_field_scenario(0, &a);
     TEST_ASSERT(rc == 0);
@@ -295,7 +305,11 @@ static int test_field_determinism(void) {
     TEST_ASSERT(rc == 0);
     TEST_ASSERT(a == b);
     /* Sorted by seq: u2(seq=1) applies first, then u1(seq=2) => final 100. */
-    TEST_ASSERT(a == (q16_16)(100 << Q16_16_FRAC_BITS));
+    expected = (q16_16)(100 << Q16_16_FRAC_BITS);
+    if (a != expected) {
+        printf("field_determinism: expected=%ld got=%ld\n", (long)expected, (long)a);
+        return __LINE__;
+    }
     return 0;
 }
 
@@ -311,4 +325,3 @@ int main(void) {
 
     return 0;
 }
-

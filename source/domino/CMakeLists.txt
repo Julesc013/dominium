@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.16)
 add_library(domino_core STATIC
     core/types.c
     core/dg_order_key.c
+    core/dg_det_hash.c
     core/fixed.c
     core/fixed_debug.c
     core/rng.c
@@ -104,6 +105,13 @@ add_library(domino_core STATIC
     sim/bus/dg_message_bus.c
     sim/bus/dg_field_layer.c
     sim/bus/dg_field.c
+    sim/lod/dg_rep.c
+    sim/lod/dg_representable.c
+    sim/lod/dg_stride.c
+    sim/lod/dg_accum.c
+    sim/lod/dg_lod_index.c
+    sim/lod/dg_interest.c
+    sim/lod/dg_promo.c
     sim/sim.c
 )
 
@@ -111,6 +119,7 @@ add_library(domino_core STATIC
 target_sources(domino_core PRIVATE
     core/det_invariants.h
     core/dg_order_key.h
+    core/dg_det_hash.h
     sim/sched/d_sim_sched.h
     sim/sched/dg_phase.h
     sim/sched/dg_budget.h
@@ -137,6 +146,13 @@ target_sources(domino_core PRIVATE
     sim/bus/dg_field_layer.h
     sim/bus/dg_field.h
     sim/lod/d_sim_lod.h
+    sim/lod/dg_rep.h
+    sim/lod/dg_representable.h
+    sim/lod/dg_stride.h
+    sim/lod/dg_accum.h
+    sim/lod/dg_lod_index.h
+    sim/lod/dg_interest.h
+    sim/lod/dg_promo.h
     sim/act/d_sim_act.h
     sim/act/dg_delta_registry.h
     sim/act/dg_delta_buffer.h
