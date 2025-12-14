@@ -10,7 +10,6 @@
 #include "world/d_world.h"
 #include "build/d_build.h"
 #include "research/d_research_state.h"
-#include "trans/d_trans_spline.h"
 #include "domino/core/fixed.h"
 
 enum {
@@ -27,6 +26,17 @@ void d_net_set_tick_cmds_observer(d_net_tick_cmds_observer_fn fn, void *user) {
 }
 
 static int d_net_tlv_read_i64(const d_tlv_blob *payload, i64 *out) {
+    if (!payload || !out || !payload->ptr) {
+        return -1;
+    }
+    if (payload->len != 8u) {
+        return -1;
+    }
+    memcpy(out, payload->ptr, 8u);
+    return 0;
+}
+
+static int d_net_tlv_read_u64(const d_tlv_blob *payload, u64 *out) {
     if (!payload || !out || !payload->ptr) {
         return -1;
     }
@@ -84,85 +94,121 @@ static int d_net_apply_build(d_world *w, const d_net_cmd *cmd) {
     u32 spline_profile_id = 0u;
     u32 owner_org_id = 0u;
     u32 flags = 0u;
-    q32_32 x = 0;
-    q32_32 y = 0;
-    q32_32 z = 0;
-    q32_32 x2 = 0;
-    q32_32 y2 = 0;
-    q32_32 z2 = 0;
-    q16_16 yaw = 0;
 
-    d_spline_node spline_nodes[D_NET_APPLY_MAX_SPLINE_NODES];
-    u16 spline_node_count = 0u;
+    u32 anchor_kind = 0u;
+    u64 host_frame = 0u;
+
+    /* Anchor params. */
+    u64 id0 = 0u;
+    u64 id1 = 0u;
+    dg_q q0 = 0;
+    dg_q q1 = 0;
+    dg_q q2 = 0;
+    dg_q q3 = 0;
 
     if (!w || !cmd) {
         return -1;
     }
 
     memset(&req, 0, sizeof(req));
-    memset(spline_nodes, 0, sizeof(spline_nodes));
+    req.offset = dg_pose_identity();
 
     while ((rc = d_tlv_kv_next(&cmd->payload, &off, &tag, &payload)) == 0) {
-        if (tag == D_NET_TLV_BUILD_KIND) {
+        if (tag == D_NET_TLV_BUILD2_KIND) {
             (void)d_tlv_kv_read_u32(&payload, &kind);
-        } else if (tag == D_NET_TLV_BUILD_STRUCTURE_PROTO_ID) {
+        } else if (tag == D_NET_TLV_BUILD2_STRUCTURE_PROTO_ID) {
             (void)d_tlv_kv_read_u32(&payload, &struct_id);
-        } else if (tag == D_NET_TLV_BUILD_SPLINE_PROFILE_ID) {
+        } else if (tag == D_NET_TLV_BUILD2_SPLINE_PROFILE_ID) {
             (void)d_tlv_kv_read_u32(&payload, &spline_profile_id);
-        } else if (tag == D_NET_TLV_BUILD_OWNER_ORG_ID) {
+        } else if (tag == D_NET_TLV_BUILD2_OWNER_ORG_ID) {
             (void)d_tlv_kv_read_u32(&payload, &owner_org_id);
-        } else if (tag == D_NET_TLV_BUILD_FLAGS) {
+        } else if (tag == D_NET_TLV_BUILD2_FLAGS) {
             (void)d_tlv_kv_read_u32(&payload, &flags);
-        } else if (tag == D_NET_TLV_BUILD_POS_X) {
+        } else if (tag == D_NET_TLV_BUILD2_ANCHOR_KIND) {
+            (void)d_tlv_kv_read_u32(&payload, &anchor_kind);
+        } else if (tag == D_NET_TLV_BUILD2_HOST_FRAME) {
+            (void)d_net_tlv_read_u64(&payload, &host_frame);
+        } else if (tag == D_NET_TLV_BUILD2_TERRAIN_U) {
             i64 tmp = 0;
-            if (d_net_tlv_read_i64(&payload, &tmp) == 0) x = (q32_32)tmp;
-        } else if (tag == D_NET_TLV_BUILD_POS_Y) {
+            if (d_net_tlv_read_i64(&payload, &tmp) == 0) q0 = (dg_q)tmp;
+        } else if (tag == D_NET_TLV_BUILD2_TERRAIN_V) {
             i64 tmp = 0;
-            if (d_net_tlv_read_i64(&payload, &tmp) == 0) y = (q32_32)tmp;
-        } else if (tag == D_NET_TLV_BUILD_POS_Z) {
+            if (d_net_tlv_read_i64(&payload, &tmp) == 0) q1 = (dg_q)tmp;
+        } else if (tag == D_NET_TLV_BUILD2_TERRAIN_H) {
             i64 tmp = 0;
-            if (d_net_tlv_read_i64(&payload, &tmp) == 0) z = (q32_32)tmp;
-        } else if (tag == D_NET_TLV_BUILD_POS2_X) {
+            if (d_net_tlv_read_i64(&payload, &tmp) == 0) q2 = (dg_q)tmp;
+        } else if (tag == D_NET_TLV_BUILD2_CORR_ALIGN_ID) {
+            (void)d_net_tlv_read_u64(&payload, &id0);
+        } else if (tag == D_NET_TLV_BUILD2_CORR_S) {
             i64 tmp = 0;
-            if (d_net_tlv_read_i64(&payload, &tmp) == 0) x2 = (q32_32)tmp;
-        } else if (tag == D_NET_TLV_BUILD_POS2_Y) {
+            if (d_net_tlv_read_i64(&payload, &tmp) == 0) q0 = (dg_q)tmp;
+        } else if (tag == D_NET_TLV_BUILD2_CORR_T) {
             i64 tmp = 0;
-            if (d_net_tlv_read_i64(&payload, &tmp) == 0) y2 = (q32_32)tmp;
-        } else if (tag == D_NET_TLV_BUILD_POS2_Z) {
+            if (d_net_tlv_read_i64(&payload, &tmp) == 0) q1 = (dg_q)tmp;
+        } else if (tag == D_NET_TLV_BUILD2_CORR_H) {
             i64 tmp = 0;
-            if (d_net_tlv_read_i64(&payload, &tmp) == 0) z2 = (q32_32)tmp;
-        } else if (tag == D_NET_TLV_BUILD_ROT_YAW) {
-            (void)d_tlv_kv_read_q16_16(&payload, &yaw);
-        } else if (tag == D_NET_TLV_BUILD_SPLINE_NODES) {
-            const unsigned char *p = payload.ptr;
-            u32 remaining = payload.len;
-            u16 count = 0u;
-            u16 i;
-            if (!p || remaining < 2u) {
-                continue;
-            }
-            memcpy(&count, p, 2u);
-            p += 2u;
-            remaining -= 2u;
-            if (count > D_NET_APPLY_MAX_SPLINE_NODES) {
-                count = (u16)D_NET_APPLY_MAX_SPLINE_NODES;
-            }
-            for (i = 0u; i < count; ++i) {
-                i64 nx = 0;
-                i64 ny = 0;
-                i64 nz = 0;
-                if (remaining < 24u) {
-                    break;
-                }
-                memcpy(&nx, p, 8u); p += 8u;
-                memcpy(&ny, p, 8u); p += 8u;
-                memcpy(&nz, p, 8u); p += 8u;
-                remaining -= 24u;
-                spline_nodes[i].x = (q32_32)nx;
-                spline_nodes[i].y = (q32_32)ny;
-                spline_nodes[i].z = (q32_32)nz;
-                spline_node_count = (u16)(i + 1u);
-            }
+            if (d_net_tlv_read_i64(&payload, &tmp) == 0) q2 = (dg_q)tmp;
+        } else if (tag == D_NET_TLV_BUILD2_CORR_ROLL) {
+            i64 tmp = 0;
+            if (d_net_tlv_read_i64(&payload, &tmp) == 0) q3 = (dg_q)tmp;
+        } else if (tag == D_NET_TLV_BUILD2_STRUCT_ID) {
+            (void)d_net_tlv_read_u64(&payload, &id0);
+        } else if (tag == D_NET_TLV_BUILD2_STRUCT_SURFACE_ID) {
+            (void)d_net_tlv_read_u64(&payload, &id1);
+        } else if (tag == D_NET_TLV_BUILD2_STRUCT_U) {
+            i64 tmp = 0;
+            if (d_net_tlv_read_i64(&payload, &tmp) == 0) q0 = (dg_q)tmp;
+        } else if (tag == D_NET_TLV_BUILD2_STRUCT_V) {
+            i64 tmp = 0;
+            if (d_net_tlv_read_i64(&payload, &tmp) == 0) q1 = (dg_q)tmp;
+        } else if (tag == D_NET_TLV_BUILD2_STRUCT_OFFSET) {
+            i64 tmp = 0;
+            if (d_net_tlv_read_i64(&payload, &tmp) == 0) q2 = (dg_q)tmp;
+        } else if (tag == D_NET_TLV_BUILD2_ROOM_ID) {
+            (void)d_net_tlv_read_u64(&payload, &id0);
+        } else if (tag == D_NET_TLV_BUILD2_ROOM_SURFACE_ID) {
+            (void)d_net_tlv_read_u64(&payload, &id1);
+        } else if (tag == D_NET_TLV_BUILD2_ROOM_U) {
+            i64 tmp = 0;
+            if (d_net_tlv_read_i64(&payload, &tmp) == 0) q0 = (dg_q)tmp;
+        } else if (tag == D_NET_TLV_BUILD2_ROOM_V) {
+            i64 tmp = 0;
+            if (d_net_tlv_read_i64(&payload, &tmp) == 0) q1 = (dg_q)tmp;
+        } else if (tag == D_NET_TLV_BUILD2_ROOM_OFFSET) {
+            i64 tmp = 0;
+            if (d_net_tlv_read_i64(&payload, &tmp) == 0) q2 = (dg_q)tmp;
+        } else if (tag == D_NET_TLV_BUILD2_SOCKET_ID) {
+            (void)d_net_tlv_read_u64(&payload, &id0);
+        } else if (tag == D_NET_TLV_BUILD2_SOCKET_PARAM) {
+            i64 tmp = 0;
+            if (d_net_tlv_read_i64(&payload, &tmp) == 0) q0 = (dg_q)tmp;
+        } else if (tag == D_NET_TLV_BUILD2_OFF_POS_X) {
+            i64 tmp = 0;
+            if (d_net_tlv_read_i64(&payload, &tmp) == 0) req.offset.pos.x = (dg_q)tmp;
+        } else if (tag == D_NET_TLV_BUILD2_OFF_POS_Y) {
+            i64 tmp = 0;
+            if (d_net_tlv_read_i64(&payload, &tmp) == 0) req.offset.pos.y = (dg_q)tmp;
+        } else if (tag == D_NET_TLV_BUILD2_OFF_POS_Z) {
+            i64 tmp = 0;
+            if (d_net_tlv_read_i64(&payload, &tmp) == 0) req.offset.pos.z = (dg_q)tmp;
+        } else if (tag == D_NET_TLV_BUILD2_OFF_ROT_X) {
+            i64 tmp = 0;
+            if (d_net_tlv_read_i64(&payload, &tmp) == 0) req.offset.rot.x = (dg_q)tmp;
+        } else if (tag == D_NET_TLV_BUILD2_OFF_ROT_Y) {
+            i64 tmp = 0;
+            if (d_net_tlv_read_i64(&payload, &tmp) == 0) req.offset.rot.y = (dg_q)tmp;
+        } else if (tag == D_NET_TLV_BUILD2_OFF_ROT_Z) {
+            i64 tmp = 0;
+            if (d_net_tlv_read_i64(&payload, &tmp) == 0) req.offset.rot.z = (dg_q)tmp;
+        } else if (tag == D_NET_TLV_BUILD2_OFF_ROT_W) {
+            i64 tmp = 0;
+            if (d_net_tlv_read_i64(&payload, &tmp) == 0) req.offset.rot.w = (dg_q)tmp;
+        } else if (tag == D_NET_TLV_BUILD2_OFF_INCLINE) {
+            i64 tmp = 0;
+            if (d_net_tlv_read_i64(&payload, &tmp) == 0) req.offset.incline = (dg_q)tmp;
+        } else if (tag == D_NET_TLV_BUILD2_OFF_ROLL) {
+            i64 tmp = 0;
+            if (d_net_tlv_read_i64(&payload, &tmp) == 0) req.offset.roll = (dg_q)tmp;
         }
     }
 
@@ -173,32 +219,46 @@ static int d_net_apply_build(d_world *w, const d_net_cmd *cmd) {
     req.flags = (u16)flags;
     req.structure_id = (d_structure_proto_id)struct_id;
     req.spline_profile_id = (d_spline_profile_id)spline_profile_id;
-    req.pos_x = x;
-    req.pos_y = y;
-    req.pos_z = z;
-    req.pos2_x = x2;
-    req.pos2_y = y2;
-    req.pos2_z = z2;
-    req.rot_yaw = yaw;
 
-    if (req.kind == D_BUILD_KIND_SPLINE) {
-        req.spline_nodes = spline_nodes;
-        req.spline_node_count = spline_node_count;
+    req.anchor.kind = (dg_anchor_kind)anchor_kind;
+    req.anchor.host_frame = (dg_frame_id)host_frame;
+
+    /* Fill kind-dependent anchor payload from parsed fields. */
+    if (req.anchor.kind == DG_ANCHOR_TERRAIN) {
+        req.anchor.u.terrain.u = q0;
+        req.anchor.u.terrain.v = q1;
+        req.anchor.u.terrain.h = q2;
+    } else if (req.anchor.kind == DG_ANCHOR_CORRIDOR_TRANS) {
+        req.anchor.u.corridor.alignment_id = id0;
+        req.anchor.u.corridor.s = q0;
+        req.anchor.u.corridor.t = q1;
+        req.anchor.u.corridor.h = q2;
+        req.anchor.u.corridor.roll = q3;
+    } else if (req.anchor.kind == DG_ANCHOR_STRUCT_SURFACE) {
+        req.anchor.u.struct_surface.structure_id = id0;
+        req.anchor.u.struct_surface.surface_id = id1;
+        req.anchor.u.struct_surface.u = q0;
+        req.anchor.u.struct_surface.v = q1;
+        req.anchor.u.struct_surface.offset = q2;
+    } else if (req.anchor.kind == DG_ANCHOR_ROOM_SURFACE) {
+        req.anchor.u.room_surface.room_id = id0;
+        req.anchor.u.room_surface.surface_id = id1;
+        req.anchor.u.room_surface.u = q0;
+        req.anchor.u.room_surface.v = q1;
+        req.anchor.u.room_surface.offset = q2;
+    } else if (req.anchor.kind == DG_ANCHOR_SOCKET) {
+        req.anchor.u.socket.socket_id = id0;
+        req.anchor.u.socket.param = q0;
     }
 
     {
         char err[128];
-        d_spline_id out_spline = 0u;
-        u32 out_struct_eid = 0u;
         memset(err, 0, sizeof(err));
         if (d_build_validate(w, &req, err, (u32)sizeof(err)) != 0) {
             fprintf(stderr, "d_net_apply_build: validate failed: %s\n", err);
             return -2;
         }
-        if (d_build_commit(w, &req, &out_spline, &out_struct_eid) != 0) {
-            fprintf(stderr, "d_net_apply_build: commit failed\n");
-            return -3;
-        }
+        /* No BUILD commit in this prompt. Intents are validated but not applied. */
     }
 
     return 0;
@@ -235,9 +295,7 @@ static int d_net_apply_cmd(d_world *w, const d_net_cmd *cmd) {
     if (!w || !cmd) {
         return -1;
     }
-    if (cmd->schema_id == (u32)D_NET_SCHEMA_CMD_BUILD_V1) {
-        return d_net_apply_build(w, cmd);
-    }
+    if (cmd->schema_id == (u32)D_NET_SCHEMA_CMD_BUILD_V2) return d_net_apply_build(w, cmd);
     if (cmd->schema_id == (u32)D_NET_SCHEMA_CMD_RESEARCH_V1) {
         return d_net_apply_research(w, cmd);
     }
