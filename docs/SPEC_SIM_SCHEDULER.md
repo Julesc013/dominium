@@ -134,3 +134,8 @@ Fairness must be deterministic:
 - `docs/SPEC_FIELDS_EVENTS.md`
 - `docs/SPEC_LOD.md`
 - `docs/SPEC_DOMAINS_FRAMES_PROP.md`
+
+## Engine core eligibility
+
+> Any system that cannot be hashed, replayed, budgeted, and ordered canonically
+> is not eligible to exist in the engine core.

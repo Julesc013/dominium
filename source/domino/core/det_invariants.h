@@ -109,5 +109,29 @@ D_STATIC_ASSERT(d_det_i64_is_8, (sizeof(i64) == 8));
 #define D_DET_ORDER_CHUNK_COORDS(ax, ay, az, bx, by, bz) \
     D_DET_CMP3_I32((ax), (ay), (az), (bx), (by), (bz))
 
-#endif /* D_DET_INVARIANTS_H */
+/* --- Runtime determinism sentinels (debug-only) ---
+ *
+ * These macros are lightweight guardrails intended for critical deterministic
+ * paths. They compile to assertions in debug builds and to no-ops in release
+ * builds.
+ */
+#ifndef NDEBUG
+#include <assert.h>
 
+/* Guard for canonical iteration order checks (caller supplies condition). */
+#define DG_DET_GUARD_ITER_ORDER(cond) assert((cond))
+
+/* Guard for sorted/canonical container invariants (caller supplies condition). */
+#define DG_DET_GUARD_SORTED(cond) assert((cond))
+
+/* Marker guard for "no floats in determinism paths"; enforced primarily via
+ * regression scans (see docs/DETERMINISM_REGRESSION_RULES.md).
+ */
+#define DG_DET_GUARD_NO_FLOATS() assert(1)
+#else
+#define DG_DET_GUARD_ITER_ORDER(cond) ((void)0)
+#define DG_DET_GUARD_SORTED(cond)     ((void)0)
+#define DG_DET_GUARD_NO_FLOATS()      ((void)0)
+#endif
+
+#endif /* D_DET_INVARIANTS_H */

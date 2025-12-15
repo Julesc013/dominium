@@ -2,6 +2,7 @@
 #include <string.h>
 
 #include "sim/d_sim_hash.h"
+#include "res/dg_tlv_canon.h"
 #include "world/d_serialize.h"
 
 #define FNV1A64_OFFSET 14695981039346656037ULL
@@ -20,12 +21,16 @@ static u64 d_sim_hash_bytes(u64 h, const void *data, u32 len) {
     return h;
 }
 
-static u64 d_sim_hash_u32(u64 h, u32 v) {
-    return d_sim_hash_bytes(h, &v, (u32)sizeof(u32));
+static u64 d_sim_hash_u32_le(u64 h, u32 v) {
+    unsigned char buf[4];
+    dg_le_write_u32(buf, v);
+    return d_sim_hash_bytes(h, buf, 4u);
 }
 
-static u64 d_sim_hash_u64(u64 h, u64 v) {
-    return d_sim_hash_bytes(h, &v, (u32)sizeof(u64));
+static u64 d_sim_hash_u64_le(u64 h, u64 v) {
+    unsigned char buf[8];
+    dg_le_write_u64(buf, v);
+    return d_sim_hash_bytes(h, buf, 8u);
 }
 
 static int d_sim_hash_chunk_cmp(const void *a, const void *b) {
@@ -46,10 +51,10 @@ d_world_hash d_sim_hash_chunk(const d_chunk *chunk) {
     if (!chunk) {
         return 0u;
     }
-    h = d_sim_hash_u32(h, (u32)chunk->chunk_id);
-    h = d_sim_hash_u32(h, (u32)chunk->cx);
-    h = d_sim_hash_u32(h, (u32)chunk->cy);
-    h = d_sim_hash_u32(h, (u32)chunk->flags);
+    h = d_sim_hash_u32_le(h, (u32)chunk->chunk_id);
+    h = d_sim_hash_u32_le(h, (u32)chunk->cx);
+    h = d_sim_hash_u32_le(h, (u32)chunk->cy);
+    h = d_sim_hash_u32_le(h, (u32)chunk->flags);
     return h;
 }
 
@@ -66,7 +71,7 @@ static u64 d_sim_hash_chunk_payload(d_world *w, d_chunk *chunk) {
         return h;
     }
     if (d_serialize_save_chunk_all(w, chunk, &blob) == 0) {
-        h = d_sim_hash_u32(h, blob.len);
+        h = d_sim_hash_u32_le(h, blob.len);
         h = d_sim_hash_bytes(h, blob.ptr, blob.len);
     }
     if (blob.ptr) {
@@ -87,20 +92,20 @@ d_world_hash d_sim_hash_world(const d_world *w) {
     }
 
     /* World metadata */
-    h = d_sim_hash_u64(h, w->meta.seed);
-    h = d_sim_hash_u32(h, w->meta.world_size_m);
-    h = d_sim_hash_u32(h, (u32)w->meta.vertical_min);
-    h = d_sim_hash_u32(h, (u32)w->meta.vertical_max);
-    h = d_sim_hash_u32(h, w->meta.core_version);
-    h = d_sim_hash_u32(h, w->meta.suite_version);
-    h = d_sim_hash_u32(h, w->meta.compat_profile_id);
-    h = d_sim_hash_u32(h, w->tick_count);
+    h = d_sim_hash_u64_le(h, w->meta.seed);
+    h = d_sim_hash_u32_le(h, w->meta.world_size_m);
+    h = d_sim_hash_u32_le(h, (u32)w->meta.vertical_min);
+    h = d_sim_hash_u32_le(h, (u32)w->meta.vertical_max);
+    h = d_sim_hash_u32_le(h, w->meta.core_version);
+    h = d_sim_hash_u32_le(h, w->meta.suite_version);
+    h = d_sim_hash_u32_le(h, w->meta.compat_profile_id);
+    h = d_sim_hash_u32_le(h, w->tick_count);
 
     /* Instance-level serialized payload */
     inst_blob.ptr = (unsigned char *)0;
     inst_blob.len = 0u;
     if (d_serialize_save_instance_all((d_world *)w, &inst_blob) == 0) {
-        h = d_sim_hash_u32(h, inst_blob.len);
+        h = d_sim_hash_u32_le(h, inst_blob.len);
         h = d_sim_hash_bytes(h, inst_blob.ptr, inst_blob.len);
     }
     if (inst_blob.ptr) {
@@ -118,7 +123,7 @@ d_world_hash d_sim_hash_world(const d_world *w) {
             qsort(chunk_list, chunk_count, sizeof(d_chunk *), d_sim_hash_chunk_cmp);
             for (i = 0u; i < chunk_count; ++i) {
                 u64 ch = d_sim_hash_chunk_payload((d_world *)w, chunk_list[i]);
-                h = d_sim_hash_u64(h, ch);
+                h = d_sim_hash_u64_le(h, ch);
             }
             free(chunk_list);
         }

@@ -3,6 +3,54 @@
 
 #include "core/graph/dg_graph_iter.h"
 
+#include "core/det_invariants.h"
+
+static d_bool dg_graph_is_canonical(const dg_graph *g) {
+    u32 i;
+    if (!g) {
+        return D_TRUE;
+    }
+    if (g->node_count > 1u && g->nodes) {
+        for (i = 1u; i < g->node_count; ++i) {
+            if (g->nodes[i - 1u].id >= g->nodes[i].id) {
+                return D_FALSE;
+            }
+        }
+    }
+    if (g->edge_count > 1u && g->edges) {
+        for (i = 1u; i < g->edge_count; ++i) {
+            if (g->edges[i - 1u].id >= g->edges[i].id) {
+                return D_FALSE;
+            }
+        }
+    }
+    if (g->nodes) {
+        for (i = 0u; i < g->node_count; ++i) {
+            const dg_graph_node *n = &g->nodes[i];
+            u32 j;
+            if (n->adj_count == 0u) {
+                continue;
+            }
+            if (!n->neighbor_ids || !n->edge_ids) {
+                return D_FALSE;
+            }
+            for (j = 1u; j < n->adj_count; ++j) {
+                dg_node_id pn = n->neighbor_ids[j - 1u];
+                dg_node_id cn = n->neighbor_ids[j];
+                dg_edge_id pe = n->edge_ids[j - 1u];
+                dg_edge_id ce = n->edge_ids[j];
+                if (pn > cn) {
+                    return D_FALSE;
+                }
+                if (pn == cn && pe > ce) {
+                    return D_FALSE;
+                }
+            }
+        }
+    }
+    return D_TRUE;
+}
+
 dg_graph_neighbors_iter dg_graph_neighbors(const dg_graph *g, dg_node_id node_id) {
     dg_graph_neighbors_iter it;
     const dg_graph_node *n;
@@ -70,6 +118,9 @@ int dg_graph_bfs(const dg_graph *g, dg_node_id start_id, dg_graph_visit_fn fn, v
     if (!g) {
         return -1;
     }
+#ifndef NDEBUG
+    DG_DET_GUARD_SORTED(dg_graph_is_canonical(g) == D_TRUE);
+#endif
     ncount = dg_graph_node_count(g);
     if (ncount == 0u) {
         return 1;
@@ -132,6 +183,9 @@ int dg_graph_dfs(const dg_graph *g, dg_node_id start_id, dg_graph_visit_fn fn, v
     if (!g) {
         return -1;
     }
+#ifndef NDEBUG
+    DG_DET_GUARD_SORTED(dg_graph_is_canonical(g) == D_TRUE);
+#endif
     ncount = dg_graph_node_count(g);
     if (ncount == 0u) {
         return 1;
@@ -201,6 +255,9 @@ int dg_graph_topo_walk(const dg_graph *g, dg_graph_visit_fn fn, void *user_ctx) 
     if (!g) {
         return -1;
     }
+#ifndef NDEBUG
+    DG_DET_GUARD_SORTED(dg_graph_is_canonical(g) == D_TRUE);
+#endif
     ncount = dg_graph_node_count(g);
     if (ncount == 0u) {
         return 0;
@@ -328,6 +385,9 @@ int dg_graph_shortest_path_unweighted(
     if (!g || !out_len) {
         return -1;
     }
+#ifndef NDEBUG
+    DG_DET_GUARD_SORTED(dg_graph_is_canonical(g) == D_TRUE);
+#endif
     *out_len = 0u;
 
     ncount = dg_graph_node_count(g);
@@ -434,4 +494,3 @@ int dg_graph_shortest_path_unweighted(
     free(visited);
     return 0;
 }
-

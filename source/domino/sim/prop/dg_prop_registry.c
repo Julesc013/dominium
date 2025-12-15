@@ -3,6 +3,7 @@
 
 #include "sim/prop/dg_prop_registry.h"
 
+#include "core/det_invariants.h"
 #include "core/dg_det_hash.h"
 #include "sim/sched/dg_sched.h"
 
@@ -165,6 +166,16 @@ u32 dg_prop_registry_probe_refused(const dg_prop_registry *reg) {
 void dg_prop_registry_step(dg_prop_registry *reg, dg_tick tick, dg_budget *budget) {
     u32 i;
     if (!reg) return;
+#ifndef NDEBUG
+    for (i = 1u; i < reg->count; ++i) {
+        const dg_prop_registry_entry *a = &reg->entries[i - 1u];
+        const dg_prop_registry_entry *b = &reg->entries[i];
+        DG_DET_GUARD_ITER_ORDER(
+            (a->domain_id < b->domain_id) ||
+            (a->domain_id == b->domain_id && a->prop_id < b->prop_id)
+        );
+    }
+#endif
     for (i = 0u; i < reg->count; ++i) {
         dg_prop_registry_entry *e = &reg->entries[i];
         if (!e->prop) continue;
@@ -183,6 +194,17 @@ u64 dg_prop_registry_hash_state(const dg_prop_registry *reg) {
     if (!reg || !reg->entries) {
         return h;
     }
+
+#ifndef NDEBUG
+    for (i = 1u; i < reg->count; ++i) {
+        const dg_prop_registry_entry *a = &reg->entries[i - 1u];
+        const dg_prop_registry_entry *b = &reg->entries[i];
+        DG_DET_GUARD_ITER_ORDER(
+            (a->domain_id < b->domain_id) ||
+            (a->domain_id == b->domain_id && a->prop_id < b->prop_id)
+        );
+    }
+#endif
 
     h = dg_prop_registry_hash_step(h, (u64)reg->count);
     for (i = 0u; i < reg->count; ++i) {
@@ -208,4 +230,3 @@ void dg_prop_registry_solve_phase_handler(struct dg_sched *sched, void *user_ctx
     }
     dg_prop_registry_step(reg, sched->tick, &sched->budget);
 }
-

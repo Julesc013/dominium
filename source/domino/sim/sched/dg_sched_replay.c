@@ -1,15 +1,15 @@
 #include <string.h>
 
-#include "sim/sched/dg_replay.h"
+#include "sim/sched/dg_sched_replay.h"
 
-void dg_replay_init(dg_replay_ctx *rc) {
+void dg_sched_replay_init(dg_sched_replay_ctx *rc) {
     if (!rc) {
         return;
     }
     memset(rc, 0, sizeof(*rc));
 }
 
-void dg_replay_begin_tick(dg_replay_ctx *rc, dg_tick tick) {
+void dg_sched_replay_begin_tick(dg_sched_replay_ctx *rc, dg_tick tick) {
     u32 i;
     if (!rc) {
         return;
@@ -22,7 +22,7 @@ void dg_replay_begin_tick(dg_replay_ctx *rc, dg_tick tick) {
     rc->deltas_committed = 0u;
 }
 
-void dg_replay_phase_begin(dg_replay_ctx *rc, dg_phase phase) {
+void dg_sched_replay_phase_begin(dg_sched_replay_ctx *rc, dg_phase phase) {
     if (!rc) {
         return;
     }
@@ -32,7 +32,7 @@ void dg_replay_phase_begin(dg_replay_ctx *rc, dg_phase phase) {
     rc->phase_begin_count[(u32)phase] += 1u;
 }
 
-void dg_replay_phase_end(dg_replay_ctx *rc, dg_phase phase) {
+void dg_sched_replay_phase_end(dg_sched_replay_ctx *rc, dg_phase phase) {
     if (!rc) {
         return;
     }
@@ -42,7 +42,7 @@ void dg_replay_phase_end(dg_replay_ctx *rc, dg_phase phase) {
     rc->phase_end_count[(u32)phase] += 1u;
 }
 
-void dg_replay_record_committed_delta(dg_replay_ctx *rc, const dg_order_key *key, const dg_pkt_delta *delta) {
+void dg_sched_replay_record_committed_delta(dg_sched_replay_ctx *rc, const dg_order_key *key, const dg_pkt_delta *delta) {
     (void)key;
     (void)delta;
     if (!rc) {
@@ -50,4 +50,3 @@ void dg_replay_record_committed_delta(dg_replay_ctx *rc, const dg_order_key *key
     }
     rc->deltas_committed += 1u;
 }
-

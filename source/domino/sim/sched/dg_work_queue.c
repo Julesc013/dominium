@@ -3,6 +3,21 @@
 
 #include "sim/sched/dg_work_queue.h"
 
+#include "core/det_invariants.h"
+
+static d_bool dg_work_queue_is_sorted(const dg_work_queue *q) {
+    u32 i;
+    if (!q || !q->items || q->count < 2u) {
+        return D_TRUE;
+    }
+    for (i = 1u; i < q->count; ++i) {
+        if (dg_order_key_cmp(&q->items[i - 1u].key, &q->items[i].key) > 0) {
+            return D_FALSE;
+        }
+    }
+    return D_TRUE;
+}
+
 void dg_work_queue_init(dg_work_queue *q) {
     if (!q) {
         return;
@@ -124,6 +139,9 @@ int dg_work_queue_push(dg_work_queue *q, const dg_work_item *it) {
     }
     q->items[idx] = *it;
     q->count += 1u;
+#ifndef NDEBUG
+    DG_DET_GUARD_SORTED(dg_work_queue_is_sorted(q) == D_TRUE);
+#endif
     return 0;
 }
 
@@ -145,6 +163,9 @@ d_bool dg_work_queue_pop_next(dg_work_queue *q, dg_work_item *out) {
     if (!q || !q->items || q->count == 0u) {
         return D_FALSE;
     }
+#ifndef NDEBUG
+    DG_DET_GUARD_SORTED(dg_work_queue_is_sorted(q) == D_TRUE);
+#endif
     if (out) {
         *out = q->items[0];
     }
@@ -160,6 +181,10 @@ int dg_work_queue_merge(dg_work_queue *dst, dg_work_queue *src) {
     if (!dst || !src) {
         return -1;
     }
+#ifndef NDEBUG
+    DG_DET_GUARD_SORTED(dg_work_queue_is_sorted(dst) == D_TRUE);
+    DG_DET_GUARD_SORTED(dg_work_queue_is_sorted(src) == D_TRUE);
+#endif
     /* Deterministic: consume src in its canonical order. */
     while (src->count != 0u) {
         const dg_work_item *next = dg_work_queue_peek_next(src);
@@ -176,5 +201,9 @@ int dg_work_queue_merge(dg_work_queue *dst, dg_work_queue *src) {
         }
         (void)dg_work_queue_pop_next(src, (dg_work_item *)0);
     }
+#ifndef NDEBUG
+    DG_DET_GUARD_SORTED(dg_work_queue_is_sorted(dst) == D_TRUE);
+    DG_DET_GUARD_SORTED(dg_work_queue_is_sorted(src) == D_TRUE);
+#endif
     return 0;
 }

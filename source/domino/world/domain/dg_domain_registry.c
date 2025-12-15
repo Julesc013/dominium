@@ -3,6 +3,7 @@
 
 #include "world/domain/dg_domain_registry.h"
 
+#include "core/det_invariants.h"
 #include "core/dg_det_hash.h"
 #include "sim/sched/dg_sched.h"
 
@@ -169,6 +170,12 @@ void dg_domain_registry_step_phase(dg_domain_registry *reg, dg_phase phase, dg_b
         return;
     }
 
+#ifndef NDEBUG
+    for (i = 1u; i < reg->count; ++i) {
+        DG_DET_GUARD_ITER_ORDER(reg->entries[i - 1u].domain_id < reg->entries[i].domain_id);
+    }
+#endif
+
     for (i = 0u; i < reg->count; ++i) {
         dg_domain_registry_entry *e = &reg->entries[i];
         if (!e->domain) {
@@ -189,6 +196,12 @@ u64 dg_domain_registry_hash_state(const dg_domain_registry *reg) {
     if (!reg || !reg->entries) {
         return h;
     }
+
+#ifndef NDEBUG
+    for (i = 1u; i < reg->count; ++i) {
+        DG_DET_GUARD_ITER_ORDER(reg->entries[i - 1u].domain_id < reg->entries[i].domain_id);
+    }
+#endif
 
     h = dg_domain_registry_hash_step(h, (u64)reg->count);
     for (i = 0u; i < reg->count; ++i) {
@@ -212,4 +225,3 @@ void dg_domain_registry_phase_handler(struct dg_sched *sched, void *user_ctx) {
     }
     dg_domain_registry_step_phase(reg, sched->current_phase, &sched->budget);
 }
-

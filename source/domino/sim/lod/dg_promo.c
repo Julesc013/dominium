@@ -4,6 +4,8 @@
 #include "sim/lod/dg_promo.h"
 #include "sim/sched/dg_sched.h"
 
+#include "core/det_invariants.h"
+
 static dg_rep_state dg_promo_desired_state(q16_16 score, const dg_promo_thresholds *t) {
     if (!t) {
         return DG_REP_R3_DORMANT;
@@ -313,6 +315,12 @@ int dg_promo_plan_and_enqueue(dg_promo_ctx *pc, dg_tick tick) {
     }
 
     dg_promo_insertion_sort(pc->transition_scratch, tr_count);
+
+#ifndef NDEBUG
+    for (i = 1u; i < tr_count; ++i) {
+        DG_DET_GUARD_SORTED(dg_promo_transition_cmp(&pc->transition_scratch[i - 1u], &pc->transition_scratch[i]) <= 0);
+    }
+#endif
 
     /* Enqueue into the carryover queue in the same deterministic order. */
     if (tr_count > pc->queue.capacity) {

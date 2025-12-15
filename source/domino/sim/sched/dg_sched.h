@@ -9,8 +9,8 @@
 #include "sim/sched/dg_phase.h"
 #include "sim/sched/dg_budget.h"
 #include "sim/sched/dg_work_queue.h"
-#include "sim/sched/dg_hash.h"
-#include "sim/sched/dg_replay.h"
+#include "sim/sched/dg_sched_hash.h"
+#include "sim/sched/dg_sched_replay.h"
 
 #include "sim/act/dg_delta_registry.h"
 #include "sim/act/dg_delta_buffer.h"
@@ -59,8 +59,8 @@ typedef struct dg_sched {
     dg_delta_registry delta_registry;
     dg_delta_buffer   delta_buffer;
 
-    dg_hash_ctx   hash;
-    dg_replay_ctx replay;
+    dg_sched_hash_ctx   hash;
+    dg_sched_replay_ctx replay;
 } dg_sched;
 
 void dg_sched_init(dg_sched *s);
@@ -114,4 +114,3 @@ int dg_sched_tick(dg_sched *s, void *world, dg_tick tick);
 #endif
 
 #endif /* DG_SCHED_H */
-

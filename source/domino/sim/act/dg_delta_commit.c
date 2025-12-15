@@ -2,6 +2,7 @@
 
 #include "sim/act/dg_delta_commit.h"
 
+#include "core/det_invariants.h"
 #include "res/dg_tlv_canon.h"
 
 static int dg_delta_record_cmp_qsort(const void *a, const void *b) {
@@ -15,6 +16,20 @@ static int dg_delta_record_cmp_qsort(const void *a, const void *b) {
     }
     if (ra->insert_index < rb->insert_index) return -1;
     if (ra->insert_index > rb->insert_index) return 1;
+    return 0;
+}
+
+static int dg_delta_record_cmp_total(const dg_delta_record *a, const dg_delta_record *b) {
+    int c;
+    if (a == b) return 0;
+    if (!a) return -1;
+    if (!b) return 1;
+    c = dg_order_key_cmp(&a->key, &b->key);
+    if (c) {
+        return c;
+    }
+    if (a->insert_index < b->insert_index) return -1;
+    if (a->insert_index > b->insert_index) return 1;
     return 0;
 }
 
@@ -80,6 +95,14 @@ int dg_delta_commit_apply(
         qsort(buffer->records, (size_t)buffer->count, sizeof(dg_delta_record), dg_delta_record_cmp_qsort);
     }
 
+#ifndef NDEBUG
+    if (buffer->count > 1u && buffer->records) {
+        for (i = 1u; i < buffer->count; ++i) {
+            DG_DET_GUARD_SORTED(dg_delta_record_cmp_total(&buffer->records[i - 1u], &buffer->records[i]) <= 0);
+        }
+    }
+#endif
+
     for (i = 0u; i < buffer->count; ++i) {
         dg_pkt_delta pkt;
         const dg_delta_record *r = &buffer->records[i];
@@ -104,4 +127,3 @@ int dg_delta_commit_apply(
     }
     return 0;
 }
-
