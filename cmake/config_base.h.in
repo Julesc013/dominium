@@ -9,6 +9,30 @@
 
 #define DOMINO_CFG_PLATFORM_WIN32      @DOMINO_CFG_PLATFORM_WIN32@
 #define DOMINO_CFG_PLATFORM_UNIX       @DOMINO_CFG_PLATFORM_UNIX@
+#define DOMINO_CFG_PLATFORM_APPLE      @DOMINO_CFG_PLATFORM_APPLE@
+
+/* Host OS (coarse) */
+#define DOM_HOST_WIN32                 @DOM_CFG_HOST_WIN32@
+#define DOM_HOST_UNIX                  @DOM_CFG_HOST_UNIX@
+#define DOM_HOST_APPLE                 @DOM_CFG_HOST_APPLE@
+
+/* Selected platform (DOM_PLATFORM -> DOM_PLATFORM_ID) */
+#define DOM_PLATFORM_ID                @DOM_CFG_PLATFORM_ID@
+#define DOM_PLATFORM_ID_WIN32          1
+#define DOM_PLATFORM_ID_NULL           100
+#define DOM_PLATFORM_ID_POSIX_HEADLESS 200
+#define DOM_PLATFORM_ID_COCOA          300
+
+/* Enabled backends (build-time availability, 0/1) */
+#define DOM_BACKEND_SOFT               @DOM_CFG_BACKEND_SOFT@
+#define DOM_BACKEND_NULL               @DOM_CFG_BACKEND_NULL@
+#define DOM_BACKEND_DX9                @DOM_CFG_BACKEND_DX9@
+#define DOM_BACKEND_GL1                @DOM_CFG_BACKEND_GL1@
+#define DOM_BACKEND_GL2                @DOM_CFG_BACKEND_GL2@
+#define DOM_BACKEND_SDL2               @DOM_CFG_BACKEND_SDL2@
+#define DOM_BACKEND_VECTOR2D           @DOM_CFG_BACKEND_VECTOR2D@
+
+/* Build metadata */
+#define DOM_BUILD_ID                   "@DOM_BUILD_ID@"
 
 #endif /* DOMINO_CONFIG_BASE_H */
-
