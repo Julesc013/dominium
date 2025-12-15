@@ -1,5 +1,7 @@
 #include "domino/caps.h"
 
+#include "domino/profile.h"
+
 #include <string.h>
 #include <ctype.h>
 
@@ -204,6 +206,7 @@ dom_caps_result dom_caps_select(const struct dom_profile* profile,
 {
     u32 i;
     u32 out_count;
+    u32 lockstep_strict;
     (void)profile;
 
     if (!out) {
@@ -218,20 +221,39 @@ dom_caps_result dom_caps_select(const struct dom_profile* profile,
         return out->result;
     }
 
+    lockstep_strict = 0u;
+    if (profile) {
+        if (profile->abi_version == (u32)DOM_PROFILE_ABI_VERSION &&
+            profile->struct_size == (u32)sizeof(dom_profile)) {
+            lockstep_strict = profile->lockstep_strict ? 1u : 0u;
+        }
+    }
+
     out_count = 0u;
     i = 0u;
     while (i < g_backend_count) {
         dom_subsystem_id sid;
         const dom_backend_desc* chosen;
         const dom_backend_desc* b;
+        u32 sub_flags;
+        u32 saw_hw_ok;
 
         sid = g_backends[i].subsystem_id;
+        sub_flags = g_backends[i].subsystem_flags;
+        saw_hw_ok = 0u;
 
         /* Select the first eligible backend in the sorted group. */
         chosen = (const dom_backend_desc*)0;
         while (i < g_backend_count && g_backends[i].subsystem_id == sid) {
             b = &g_backends[i];
             if (caps_backend_hw_ok(b, hw)) {
+                saw_hw_ok = 1u;
+                if (lockstep_strict && ((sub_flags & DOM_CAPS_SUBSYS_LOCKSTEP_RELEVANT) != 0u)) {
+                    if (b->determinism != DOM_DET_D0_BIT_EXACT) {
+                        i += 1u;
+                        continue;
+                    }
+                }
                 chosen = b;
                 break;
             }
@@ -245,7 +267,11 @@ dom_caps_result dom_caps_select(const struct dom_profile* profile,
 
         if (!chosen) {
             out->result = DOM_CAPS_ERR_NO_ELIGIBLE;
-            out->fail_reason = DOM_SEL_FAIL_NO_ELIGIBLE_BACKEND;
+            if (lockstep_strict && ((sub_flags & DOM_CAPS_SUBSYS_LOCKSTEP_RELEVANT) != 0u) && saw_hw_ok) {
+                out->fail_reason = DOM_SEL_FAIL_LOCKSTEP_REQUIRES_D0;
+            } else {
+                out->fail_reason = DOM_SEL_FAIL_NO_ELIGIBLE_BACKEND;
+            }
             out->fail_subsystem_id = sid;
             return out->result;
         }
@@ -428,4 +454,3 @@ dom_caps_result dom_caps_get_audit_log(const dom_selection* sel,
     *io_len = len;
     return DOM_CAPS_OK;
 }
-
