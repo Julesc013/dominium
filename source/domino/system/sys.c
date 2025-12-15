@@ -145,6 +145,8 @@ static const char* dsys_compiled_backend_name(void)
     return "sdl1";
 #elif defined(DSYS_BACKEND_SDL2)
     return "sdl2";
+#elif defined(DSYS_BACKEND_WIN32_HEADLESS)
+    return "win32_headless";
 #elif defined(DSYS_BACKEND_WIN32)
     return "win32";
 #elif defined(DSYS_BACKEND_NULL)
@@ -677,6 +679,11 @@ dsys_result dsys_init(void)
     {
         extern const dsys_backend_vtable* dsys_sdl2_get_vtable(void);
         g_dsys = dsys_sdl2_get_vtable();
+    }
+#elif defined(DSYS_BACKEND_WIN32_HEADLESS)
+    {
+        extern const dsys_backend_vtable* dsys_win32_headless_get_vtable(void);
+        g_dsys = dsys_win32_headless_get_vtable();
     }
 #elif defined(DSYS_BACKEND_WIN32)
     {

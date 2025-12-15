@@ -12,10 +12,12 @@
 #include <string.h>
 
 static dsys_caps g_win32_caps = { "win32", 1u, true, true, false, true };
+static dsys_caps g_win32_headless_caps = { "win32_headless", 0u, false, false, false, true };
 
 static dsys_result win32_init(void);
 static void        win32_shutdown(void);
 static dsys_caps   win32_get_caps(void);
+static dsys_caps   win32_headless_get_caps(void);
 
 static uint64_t win32_time_now_us(void);
 static void     win32_sleep_ms(uint32_t ms);
@@ -28,6 +30,14 @@ static void         win32_window_get_size(dsys_window* win, int32_t* w, int32_t*
 static void*        win32_window_get_native_handle(dsys_window* win);
 
 static bool win32_poll_event(dsys_event* ev);
+static bool win32_headless_poll_event(dsys_event* ev);
+
+static dsys_window* win32_headless_window_create(const dsys_window_desc* desc);
+static void         win32_headless_window_destroy(dsys_window* win);
+static void         win32_headless_window_set_mode(dsys_window* win, dsys_window_mode mode);
+static void         win32_headless_window_set_size(dsys_window* win, int32_t w, int32_t h);
+static void         win32_headless_window_get_size(dsys_window* win, int32_t* w, int32_t* h);
+static void*        win32_headless_window_get_native_handle(dsys_window* win);
 
 static bool   win32_get_path(dsys_path_kind kind, char* buf, size_t buf_size);
 static void*  win32_file_open(const char* path, const char* mode);
@@ -73,8 +83,46 @@ static const dsys_backend_vtable g_win32_vtable = {
     win32_process_destroy
 };
 
+static const dsys_backend_vtable g_win32_headless_vtable = {
+    win32_init,
+    win32_shutdown,
+    win32_headless_get_caps,
+    win32_time_now_us,
+    win32_sleep_ms,
+    win32_headless_window_create,
+    win32_headless_window_destroy,
+    win32_headless_window_set_mode,
+    win32_headless_window_set_size,
+    win32_headless_window_get_size,
+    win32_headless_window_get_native_handle,
+    win32_headless_poll_event,
+    win32_get_path,
+    win32_file_open,
+    win32_file_read,
+    win32_file_write,
+    win32_file_seek,
+    win32_file_tell,
+    win32_file_close,
+    win32_dir_open,
+    win32_dir_next,
+    win32_dir_close,
+    win32_process_spawn,
+    win32_process_wait,
+    win32_process_destroy
+};
+
 static uint64_t g_qpc_freq = 0u;
 static uint64_t g_qpc_last_us = 0u;
+
+#if defined(_WIN32)
+enum {
+    WIN32_DSYS_EVENT_CAP = 128
+};
+
+static dsys_event g_win32_events[WIN32_DSYS_EVENT_CAP];
+static unsigned   g_win32_ev_r = 0u;
+static unsigned   g_win32_ev_w = 0u;
+#endif
 
 static int win32_copy_path(const char* src, char* buf, size_t buf_size)
 {
@@ -199,12 +247,16 @@ static dsys_result win32_init(void)
     if (QueryPerformanceFrequency(&freq) && freq.QuadPart > 0) {
         g_qpc_freq = (uint64_t)freq.QuadPart;
         g_win32_caps.has_high_res_timer = true;
+        g_win32_headless_caps.has_high_res_timer = true;
     } else {
         g_qpc_freq = 0u;
         g_win32_caps.has_high_res_timer = false;
+        g_win32_headless_caps.has_high_res_timer = false;
     }
 #endif
     g_qpc_last_us = 0u;
+    g_win32_ev_r = 0u;
+    g_win32_ev_w = 0u;
     return DSYS_OK;
 }
 
@@ -215,6 +267,11 @@ static void win32_shutdown(void)
 static dsys_caps win32_get_caps(void)
 {
     return g_win32_caps;
+}
+
+static dsys_caps win32_headless_get_caps(void)
+{
+    return g_win32_headless_caps;
 }
 
 static uint64_t win32_qpc_us(void)
@@ -284,14 +341,6 @@ static const wchar_t* win32_class_name(void)
 {
     return L"DominoDsysWin32";
 }
-
-enum {
-    WIN32_DSYS_EVENT_CAP = 128
-};
-
-static dsys_event g_win32_events[WIN32_DSYS_EVENT_CAP];
-static unsigned   g_win32_ev_r = 0u;
-static unsigned   g_win32_ev_w = 0u;
 
 static unsigned win32_ev_next(unsigned idx)
 {
@@ -779,6 +828,51 @@ static void* win32_window_get_native_handle(dsys_window* win)
 #endif
 }
 
+static dsys_window* win32_headless_window_create(const dsys_window_desc* desc)
+{
+    (void)desc;
+    return NULL;
+}
+
+static void win32_headless_window_destroy(dsys_window* win)
+{
+    (void)win;
+}
+
+static void win32_headless_window_set_mode(dsys_window* win, dsys_window_mode mode)
+{
+    (void)win;
+    (void)mode;
+}
+
+static void win32_headless_window_set_size(dsys_window* win, int32_t w, int32_t h)
+{
+    (void)win;
+    (void)w;
+    (void)h;
+}
+
+static void win32_headless_window_get_size(dsys_window* win, int32_t* w, int32_t* h)
+{
+    (void)win;
+    if (w) *w = 0;
+    if (h) *h = 0;
+}
+
+static void* win32_headless_window_get_native_handle(dsys_window* win)
+{
+    (void)win;
+    return NULL;
+}
+
+static bool win32_headless_poll_event(dsys_event* ev)
+{
+    if (ev) {
+        memset(ev, 0, sizeof(*ev));
+    }
+    return false;
+}
+
 static bool win32_poll_event(dsys_event* ev)
 {
 #if defined(_WIN32)
@@ -1213,4 +1307,9 @@ static void win32_process_destroy(dsys_process* p)
 const dsys_backend_vtable* dsys_win32_get_vtable(void)
 {
     return &g_win32_vtable;
+}
+
+const dsys_backend_vtable* dsys_win32_headless_get_vtable(void)
+{
+    return &g_win32_headless_vtable;
 }
