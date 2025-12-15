@@ -275,11 +275,256 @@ typedef struct win32_window_impl {
     HWND hwnd;
     RECT windowed_rect;
     int  has_windowed_rect;
+    int  should_close;
+    int  last_x;
+    int  last_y;
 } win32_window_impl;
 
 static const wchar_t* win32_class_name(void)
 {
     return L"DominoDsysWin32";
+}
+
+enum {
+    WIN32_DSYS_EVENT_CAP = 128
+};
+
+static dsys_event g_win32_events[WIN32_DSYS_EVENT_CAP];
+static unsigned   g_win32_ev_r = 0u;
+static unsigned   g_win32_ev_w = 0u;
+
+static unsigned win32_ev_next(unsigned idx)
+{
+    return (idx + 1u) % (unsigned)WIN32_DSYS_EVENT_CAP;
+}
+
+static int win32_ev_empty(void)
+{
+    return g_win32_ev_r == g_win32_ev_w;
+}
+
+static void win32_ev_push(const dsys_event* ev)
+{
+    unsigned next;
+    if (!ev) {
+        return;
+    }
+    next = win32_ev_next(g_win32_ev_w);
+    if (next == g_win32_ev_r) {
+        /* Drop newest when full; deterministic under overflow. */
+        return;
+    }
+    g_win32_events[g_win32_ev_w] = *ev;
+    g_win32_ev_w = next;
+}
+
+static int win32_ev_pop(dsys_event* out)
+{
+    if (win32_ev_empty()) {
+        return 0;
+    }
+    if (out) {
+        *out = g_win32_events[g_win32_ev_r];
+    }
+    g_win32_ev_r = win32_ev_next(g_win32_ev_r);
+    return 1;
+}
+
+static void win32_push_quit(void)
+{
+    dsys_event ev;
+    memset(&ev, 0, sizeof(ev));
+    ev.type = DSYS_EVENT_QUIT;
+    win32_ev_push(&ev);
+}
+
+static void win32_push_resized(int32_t w, int32_t h)
+{
+    dsys_event ev;
+    memset(&ev, 0, sizeof(ev));
+    ev.type = DSYS_EVENT_WINDOW_RESIZED;
+    ev.payload.window.width = w;
+    ev.payload.window.height = h;
+    win32_ev_push(&ev);
+}
+
+static void win32_push_key(int down, WPARAM vk, LPARAM lp)
+{
+    dsys_event ev;
+    memset(&ev, 0, sizeof(ev));
+    ev.type = down ? DSYS_EVENT_KEY_DOWN : DSYS_EVENT_KEY_UP;
+    ev.payload.key.key = (int32_t)vk;
+    ev.payload.key.repeat = down ? (((lp >> 30) & 1) ? true : false) : false;
+    win32_ev_push(&ev);
+}
+
+static void win32_push_mouse_move(dsys_window* win, int x, int y)
+{
+    win32_window_impl* impl;
+    dsys_event ev;
+
+    if (!win) {
+        return;
+    }
+    impl = (win32_window_impl*)win->native_handle;
+    if (!impl) {
+        return;
+    }
+
+    memset(&ev, 0, sizeof(ev));
+    ev.type = DSYS_EVENT_MOUSE_MOVE;
+    ev.payload.mouse_move.x = (int32_t)x;
+    ev.payload.mouse_move.y = (int32_t)y;
+    ev.payload.mouse_move.dx = (int32_t)(x - impl->last_x);
+    ev.payload.mouse_move.dy = (int32_t)(y - impl->last_y);
+    impl->last_x = x;
+    impl->last_y = y;
+    win32_ev_push(&ev);
+}
+
+static void win32_push_mouse_button(int button, int pressed, int clicks)
+{
+    dsys_event ev;
+    memset(&ev, 0, sizeof(ev));
+    ev.type = DSYS_EVENT_MOUSE_BUTTON;
+    ev.payload.mouse_button.button = (int32_t)button;
+    ev.payload.mouse_button.pressed = pressed ? true : false;
+    ev.payload.mouse_button.clicks = (int32_t)clicks;
+    win32_ev_push(&ev);
+}
+
+static void win32_push_mouse_wheel(int dx, int dy)
+{
+    dsys_event ev;
+    memset(&ev, 0, sizeof(ev));
+    ev.type = DSYS_EVENT_MOUSE_WHEEL;
+    ev.payload.mouse_wheel.delta_x = (int32_t)dx;
+    ev.payload.mouse_wheel.delta_y = (int32_t)dy;
+    win32_ev_push(&ev);
+}
+
+static void win32_push_text_utf16(WPARAM wp)
+{
+    unsigned u;
+    dsys_event ev;
+    char out[8];
+
+    u = (unsigned)(wp & 0xFFFFu);
+    if (u >= 0xD800u && u <= 0xDFFFu) {
+        return;
+    }
+
+    memset(out, 0, sizeof(out));
+    if (u < 0x80u) {
+        out[0] = (char)u;
+    } else if (u < 0x800u) {
+        out[0] = (char)(0xC0u | (u >> 6));
+        out[1] = (char)(0x80u | (u & 0x3Fu));
+    } else {
+        out[0] = (char)(0xE0u | (u >> 12));
+        out[1] = (char)(0x80u | ((u >> 6) & 0x3Fu));
+        out[2] = (char)(0x80u | (u & 0x3Fu));
+    }
+
+    memset(&ev, 0, sizeof(ev));
+    ev.type = DSYS_EVENT_TEXT_INPUT;
+    memcpy(ev.payload.text.text, out, sizeof(ev.payload.text.text));
+    win32_ev_push(&ev);
+}
+
+static LRESULT CALLBACK win32_wndproc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
+{
+    dsys_window* win;
+    win32_window_impl* impl;
+
+    win = (dsys_window*)GetWindowLongPtrW(hwnd, GWLP_USERDATA);
+    impl = win ? (win32_window_impl*)win->native_handle : NULL;
+
+    switch (msg) {
+    case WM_CLOSE:
+        if (impl) {
+            impl->should_close = 1;
+        }
+        win32_push_quit();
+        DestroyWindow(hwnd);
+        return 0;
+
+    case WM_DESTROY:
+        if (impl) {
+            impl->should_close = 1;
+        }
+        return 0;
+
+    case WM_SIZE:
+        if (win) {
+            win->width = (int32_t)(lp & 0xFFFF);
+            win->height = (int32_t)((lp >> 16) & 0xFFFF);
+            win32_push_resized(win->width, win->height);
+        }
+        return 0;
+
+    case WM_KEYDOWN:
+    case WM_SYSKEYDOWN:
+        win32_push_key(1, wp, lp);
+        return 0;
+
+    case WM_KEYUP:
+    case WM_SYSKEYUP:
+        win32_push_key(0, wp, lp);
+        return 0;
+
+    case WM_CHAR:
+        win32_push_text_utf16(wp);
+        return 0;
+
+    case WM_MOUSEMOVE:
+        if (win) {
+            int x;
+            int y;
+            x = (int)(short)(lp & 0xFFFF);
+            y = (int)(short)((lp >> 16) & 0xFFFF);
+            win32_push_mouse_move(win, x, y);
+        }
+        return 0;
+
+    case WM_LBUTTONDOWN:
+    case WM_LBUTTONUP:
+        win32_push_mouse_button(1, (msg == WM_LBUTTONDOWN), 1);
+        return 0;
+    case WM_MBUTTONDOWN:
+    case WM_MBUTTONUP:
+        win32_push_mouse_button(2, (msg == WM_MBUTTONDOWN), 1);
+        return 0;
+    case WM_RBUTTONDOWN:
+    case WM_RBUTTONUP:
+        win32_push_mouse_button(3, (msg == WM_RBUTTONDOWN), 1);
+        return 0;
+
+    case WM_MOUSEWHEEL:
+        {
+            int delta;
+            delta = (int)(short)((wp >> 16) & 0xFFFF);
+            if (delta != 0) {
+                win32_push_mouse_wheel(0, delta / 120);
+            }
+        }
+        return 0;
+
+    case WM_MOUSEHWHEEL:
+        {
+            int delta;
+            delta = (int)(short)((wp >> 16) & 0xFFFF);
+            if (delta != 0) {
+                win32_push_mouse_wheel(delta / 120, 0);
+            }
+        }
+        return 0;
+
+    default:
+        break;
+    }
+
+    return DefWindowProcW(hwnd, msg, wp, lp);
 }
 
 static ATOM win32_register_class(void)
@@ -291,7 +536,7 @@ static ATOM win32_register_class(void)
         return s_atom;
     }
     memset(&wc, 0, sizeof(wc));
-    wc.lpfnWndProc = DefWindowProcW;
+    wc.lpfnWndProc = win32_wndproc;
     wc.hInstance = GetModuleHandleW(NULL);
     wc.lpszClassName = win32_class_name();
     wc.hCursor = LoadCursorW(NULL, MAKEINTRESOURCEW(32512));
@@ -354,6 +599,9 @@ static dsys_window* win32_window_create(const dsys_window_desc* desc)
     }
     impl->hwnd = hwnd;
     impl->has_windowed_rect = 0;
+    impl->should_close = 0;
+    impl->last_x = 0;
+    impl->last_y = 0;
 
     win = (dsys_window*)malloc(sizeof(dsys_window));
     if (!win) {
@@ -533,10 +781,39 @@ static void* win32_window_get_native_handle(dsys_window* win)
 
 static bool win32_poll_event(dsys_event* ev)
 {
+#if defined(_WIN32)
+    MSG msg;
+    unsigned pumped;
+
+    if (win32_ev_pop(ev)) {
+        return true;
+    }
+
+    pumped = 0u;
+    while (PeekMessageW(&msg, NULL, 0, 0, PM_REMOVE)) {
+        if (msg.message == WM_QUIT) {
+            win32_push_quit();
+            break;
+        }
+        TranslateMessage(&msg);
+        DispatchMessageW(&msg);
+        pumped += 1u;
+        if (!win32_ev_empty() || pumped >= 64u) {
+            break;
+        }
+    }
+
+    if (win32_ev_pop(ev)) {
+        return true;
+    }
     if (ev) {
         memset(ev, 0, sizeof(*ev));
     }
     return false;
+#else
+    (void)ev;
+    return false;
+#endif
 }
 
 static bool win32_get_path(dsys_path_kind kind, char* buf, size_t buf_size)
