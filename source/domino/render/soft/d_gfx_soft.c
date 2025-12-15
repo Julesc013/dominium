@@ -22,23 +22,6 @@ static u32 d_gfx_soft_pack_color(const d_gfx_color *c)
     return v;
 }
 
-static void d_gfx_soft_debug_background(void)
-{
-    u32 y;
-    if (!g_soft_fb || g_soft_width <= 0 || g_soft_height <= 0) {
-        return;
-    }
-    for (y = 0u; y < (u32)g_soft_height; ++y) {
-        u32 x;
-        u32 row_base = y * (u32)g_soft_width;
-        u32 green = (u32)((y * 255u) / (u32)g_soft_height) & 0xffu;
-        for (x = 0u; x < (u32)g_soft_width; ++x) {
-            u32 red = (u32)((x * 255u) / (u32)g_soft_width) & 0xffu;
-            g_soft_fb[row_base + x] = 0xff000000u | (red << 16) | (green << 8);
-        }
-    }
-}
-
 static void d_gfx_soft_fill_rect(const d_gfx_draw_rect_cmd *rect)
 {
     i32 x0;
@@ -126,11 +109,8 @@ static void d_gfx_soft_submit(const d_gfx_cmd_buffer *buf)
     u32 i;
 
     if (!buf || !buf->cmds || buf->count == 0u || !g_soft_fb) {
-        d_gfx_soft_debug_background();
         return;
     }
-
-    d_gfx_soft_debug_background();
 
     for (i = 0u; i < buf->count; ++i) {
         const d_gfx_cmd *cmd = buf->cmds + i;
@@ -195,4 +175,18 @@ void d_gfx_soft_set_framebuffer_size(i32 w, i32 h)
     g_soft_vp.y = 0;
     g_soft_vp.w = g_soft_width;
     g_soft_vp.h = g_soft_height;
+}
+
+const u32* d_gfx_soft_get_framebuffer(i32* out_w, i32* out_h, i32* out_pitch_bytes)
+{
+    if (out_w) {
+        *out_w = g_soft_width;
+    }
+    if (out_h) {
+        *out_h = g_soft_height;
+    }
+    if (out_pitch_bytes) {
+        *out_pitch_bytes = g_soft_width * 4;
+    }
+    return g_soft_fb;
 }
