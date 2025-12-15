@@ -92,6 +92,16 @@ When a stable sort is required, ordering MUST be defined by stable keys:
 Collections that are naturally unordered (hash maps, sets) MUST be reified into
 arrays and sorted using canonical comparators before deterministic iteration.
 
+### Canonical graph toolkit ordering
+Deterministic graph infrastructure (connectivity, adjacency, stitching, rebuild)
+MUST obey `docs/SPEC_GRAPH_TOOLKIT.md`:
+- per-node adjacency arrays sorted by `(neighbor_node_id, edge_id)` ascending
+- per-partition node lists sorted by `node_id` ascending
+- boundary stitching driven by stable endpoint keys and canonical edge creation order
+- dirty set iteration in canonical ascending ID order (no insertion-order dependence)
+- rebuild work scheduled in **PH_TOPOLOGY** with stable `dg_order_key` keys and
+  deterministic budget + carryover semantics (no skipping)
+
 ### Canonical registry ordering
 Deterministic registries (packet types, field types, event/message types, etc.)
 MUST iterate in a canonical, stable order:
