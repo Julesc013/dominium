@@ -162,6 +162,16 @@ add_library(domino_core STATIC
     sim/sense/dg_observation_buffer.c
     sim/sense/dg_sensor.c
     sim/sense/dg_sensor_registry.c
+    core/graph/dg_graph.c
+    core/graph/dg_graph_adj.c
+    core/graph/dg_graph_iter.c
+    core/graph/dg_graph_sort.c
+    core/graph/dg_graph_registry.c
+    core/graph/part/dg_graph_part.c
+    core/graph/part/dg_graph_boundary.c
+    sim/dg_dirtyset.c
+    sim/dg_rebuild_work.c
+    sim/dg_rebuild.c
     sim/sim.c
 )
 
@@ -172,6 +182,15 @@ target_sources(domino_core PRIVATE
     core/dg_det_hash.h
     core/dg_pose.h
     core/dg_quant.h
+    core/graph/dg_graph.h
+    core/graph/dg_graph_node.h
+    core/graph/dg_graph_edge.h
+    core/graph/dg_graph_adj.h
+    core/graph/dg_graph_iter.h
+    core/graph/dg_graph_sort.h
+    core/graph/dg_graph_registry.h
+    core/graph/part/dg_graph_part.h
+    core/graph/part/dg_graph_boundary.h
     agent/dg_agent_ids.h
     agent/dg_agent_comp.h
     agent/dg_agent.h
@@ -189,6 +208,9 @@ target_sources(domino_core PRIVATE
     sim/sched/dg_hash.h
     sim/sched/dg_replay.h
     sim/sched/dg_sched.h
+    sim/dg_dirtyset.h
+    sim/dg_rebuild_work.h
+    sim/dg_rebuild.h
     sim/pkt/d_sim_pkt.h
     sim/pkt/dg_pkt_common.h
     sim/pkt/dg_pkt_event.h

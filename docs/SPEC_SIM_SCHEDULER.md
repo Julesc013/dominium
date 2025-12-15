@@ -29,6 +29,10 @@ commit semantics.
 
 2. **PH_TOPOLOGY**
    - Budgeted incremental compilation and dirty rebuild triggers.
+   - Canonical graph rebuild scheduling (see `docs/SPEC_GRAPH_TOOLKIT.md`):
+     - dirty sets are converted into `dg_work_item` records keyed by `dg_order_key`
+     - chunk-aligned graph partitions SHOULD use `dg_order_key.chunk_id` so per-chunk
+       budgets can bound rebuild work deterministically
    - Deterministic LOD promotion/demotion planning and application:
      - `dg_promo_plan_and_enqueue()`
      - `dg_promo_apply_transitions_under_budget()`
@@ -99,6 +103,11 @@ Per phase:
 - If the next item cannot fit in the remaining budget, the scheduler MUST stop
   (no skipping) and carry over the remaining suffix unchanged.
 - Unprocessed items are carried over to tick `N+1` without reordering.
+
+Per-scope provisioning:
+- If per-domain or per-chunk scoping is used (`domain_id != 0` and/or `chunk_id != 0`),
+  the scheduler MUST provision bounded tables for those scopes at init time
+  (no dynamic resizing during deterministic ticks).
 
 Fairness must be deterministic:
 - If rotation/round-robin is needed, rotation MUST be based on stable keys, not
