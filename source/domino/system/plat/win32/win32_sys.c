@@ -755,19 +755,182 @@ static void win32_dir_close(dsys_dir_iter* it)
 
 static dsys_process* win32_process_spawn(const dsys_process_desc* desc)
 {
+#if defined(_WIN32)
+    STARTUPINFOA si;
+    PROCESS_INFORMATION pi;
+    const char* const* argv;
+    const char* argv_local[2];
+    size_t total;
+    size_t i;
+    char* cmdline;
+    BOOL ok;
+    dsys_process* proc;
+
+    if (!desc || !desc->exe) {
+        return NULL;
+    }
+
+    argv = desc->argv;
+    if (!argv || !argv[0]) {
+        argv_local[0] = desc->exe;
+        argv_local[1] = NULL;
+        argv = argv_local;
+    }
+
+    total = 0u;
+    for (i = 0u; argv[i]; ++i) {
+        size_t n;
+        n = strlen(argv[i]);
+        total += (n * 2u) + 3u; /* worst-case quoting/escaping + space */
+    }
+
+    cmdline = (char*)malloc(total + 1u);
+    if (!cmdline) {
+        return NULL;
+    }
+    cmdline[0] = '\0';
+
+    for (i = 0u; argv[i]; ++i) {
+        const char* a;
+        int needs_quotes;
+        size_t len;
+        size_t out_len;
+        size_t bs_run;
+        if (i > 0u) {
+            strcat(cmdline, " ");
+        }
+
+        a = argv[i];
+        needs_quotes = 0;
+        for (len = 0u; a[len]; ++len) {
+            char c;
+            c = a[len];
+            if (c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '"') {
+                needs_quotes = 1;
+                break;
+            }
+        }
+
+        out_len = strlen(cmdline);
+        if (!needs_quotes) {
+            strcat(cmdline, a);
+            continue;
+        }
+
+        cmdline[out_len++] = '"';
+        cmdline[out_len] = '\0';
+
+        bs_run = 0u;
+        while (*a) {
+            if (*a == '\\') {
+                bs_run += 1u;
+                ++a;
+                continue;
+            }
+            if (*a == '"') {
+                size_t k;
+                for (k = 0u; k < bs_run * 2u + 1u; ++k) {
+                    cmdline[out_len++] = '\\';
+                }
+                cmdline[out_len++] = '"';
+                cmdline[out_len] = '\0';
+                bs_run = 0u;
+                ++a;
+                continue;
+            }
+            while (bs_run) {
+                cmdline[out_len++] = '\\';
+                bs_run -= 1u;
+            }
+            cmdline[out_len++] = *a;
+            cmdline[out_len] = '\0';
+            ++a;
+        }
+        while (bs_run) {
+            cmdline[out_len++] = '\\';
+            bs_run -= 1u;
+        }
+        cmdline[out_len++] = '"';
+        cmdline[out_len] = '\0';
+    }
+
+    memset(&si, 0, sizeof(si));
+    si.cb = sizeof(si);
+    memset(&pi, 0, sizeof(pi));
+
+    ok = CreateProcessA(NULL,
+                        cmdline,
+                        NULL,
+                        NULL,
+                        FALSE,
+                        0,
+                        NULL,
+                        NULL,
+                        &si,
+                        &pi);
+    free(cmdline);
+
+    if (!ok) {
+        return NULL;
+    }
+
+    CloseHandle(pi.hThread);
+
+    proc = (dsys_process*)malloc(sizeof(dsys_process));
+    if (!proc) {
+        TerminateProcess(pi.hProcess, 1u);
+        CloseHandle(pi.hProcess);
+        return NULL;
+    }
+    proc->handle = (void*)pi.hProcess;
+    return proc;
+#else
     (void)desc;
     return NULL;
+#endif
 }
 
 static int win32_process_wait(dsys_process* p)
 {
+#if defined(_WIN32)
+    HANDLE h;
+    DWORD code;
+    DWORD wait_res;
+
+    if (!p || !p->handle) {
+        return -1;
+    }
+
+    h = (HANDLE)p->handle;
+    wait_res = WaitForSingleObject(h, INFINITE);
+    if (wait_res != WAIT_OBJECT_0) {
+        return -1;
+    }
+    code = 0u;
+    if (!GetExitCodeProcess(h, &code)) {
+        return -1;
+    }
+    CloseHandle(h);
+    p->handle = NULL;
+    return (int)code;
+#else
     (void)p;
     return -1;
+#endif
 }
 
 static void win32_process_destroy(dsys_process* p)
 {
-    (void)p;
+    if (!p) {
+        return;
+    }
+#if defined(_WIN32)
+    if (p->handle) {
+        CloseHandle((HANDLE)p->handle);
+        p->handle = NULL;
+    }
+#endif
+    free(p);
 }
 
 const dsys_backend_vtable* dsys_win32_get_vtable(void)
