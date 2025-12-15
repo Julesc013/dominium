@@ -1,9 +1,6 @@
 #ifndef DOMINO_DNET_H
 #define DOMINO_DNET_H
 
-#include <stdint.h>
-#include <stdbool.h>
-
 #include "dnumeric.h"
 
 #ifdef __cplusplus

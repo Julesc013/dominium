@@ -2,7 +2,7 @@
 #define DOMINO_INST_H_INCLUDED
 
 #include <stddef.h>
-#include <stdint.h>
+#include "domino/baseline.h"
 #include "domino/sys.h"
 #include "domino/pkg.h"
 

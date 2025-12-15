@@ -6,7 +6,7 @@
  */
 
 #include <stddef.h>
-#include <stdint.h>
+#include "domino/baseline.h"
 
 #ifdef __cplusplus
 extern "C" {

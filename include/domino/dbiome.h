@@ -1,9 +1,6 @@
 #ifndef DOMINO_DBIOME_H
 #define DOMINO_DBIOME_H
 
-#include <stdbool.h>
-#include <stdint.h>
-
 #include "dnumeric.h"
 #include "dorbit.h"
 #include "dworld.h"

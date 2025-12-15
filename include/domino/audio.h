@@ -1,8 +1,8 @@
 #ifndef DOMINO_AUDIO_H_INCLUDED
 #define DOMINO_AUDIO_H_INCLUDED
 
-#include <stdint.h>
 #include <stddef.h>
+#include "domino/baseline.h"
 #include "domino/sys.h"
 
 #ifdef __cplusplus

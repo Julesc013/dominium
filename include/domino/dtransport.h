@@ -1,9 +1,6 @@
 #ifndef DOMINO_DTRANSPORT_H
 #define DOMINO_DTRANSPORT_H
 
-#include <stdbool.h>
-#include <stdint.h>
-
 #include "dworld.h"
 #include "dvehicle.h"
 

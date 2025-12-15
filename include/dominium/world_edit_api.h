@@ -1,7 +1,7 @@
 #ifndef DOMINIUM_WORLD_EDIT_API_H_INCLUDED
 #define DOMINIUM_WORLD_EDIT_API_H_INCLUDED
 
-#include <stdint.h>
+#include "domino/baseline.h"
 #include "domino/dworld.h"
 
 #ifdef __cplusplus

@@ -2,7 +2,7 @@
 #define DOMINO_MODEL_TABLE_H_INCLUDED
 
 #include <stddef.h>
-#include <stdint.h>
+#include "domino/baseline.h"
 #include "domino/core.h"
 
 #ifdef __cplusplus

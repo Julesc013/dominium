@@ -1,7 +1,7 @@
 #ifndef DOMINO_INPUT_H_INCLUDED
 #define DOMINO_INPUT_H_INCLUDED
 
-#include <stdint.h>
+#include "domino/baseline.h"
 #include "domino/sys.h"
 
 #ifdef __cplusplus

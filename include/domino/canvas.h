@@ -2,7 +2,7 @@
 #define DOMINO_CANVAS_H_INCLUDED
 
 #include <stddef.h>
-#include <stdint.h>
+#include "domino/baseline.h"
 #include "domino/gfx.h"
 #include "domino/core.h"
 #include "domino/inst.h"

@@ -1,8 +1,6 @@
 #ifndef DOMINO_DHYDRO_H
 #define DOMINO_DHYDRO_H
 
-#include <stdbool.h>
-
 #include "dnumeric.h"
 #include "dworld.h"
 #include "dfield.h"

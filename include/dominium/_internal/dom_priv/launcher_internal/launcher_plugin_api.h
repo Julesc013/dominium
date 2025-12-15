@@ -1,8 +1,8 @@
 #ifndef DOM_LAUNCHER_PLUGIN_API_H
 #define DOM_LAUNCHER_PLUGIN_API_H
 
-#include <stdint.h>
-#include <stdbool.h>
+#include <stddef.h>
+#include "domino/baseline.h"
 
 struct LauncherContext;
 struct InstallInfo;

@@ -1,7 +1,7 @@
 #ifndef DOMINIUM_LAUNCHER_EDIT_API_H_INCLUDED
 #define DOMINIUM_LAUNCHER_EDIT_API_H_INCLUDED
 
-#include <stdint.h>
+#include "domino/baseline.h"
 #include "dominium/launch_api.h"
 
 #ifdef __cplusplus

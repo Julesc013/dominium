@@ -2,7 +2,7 @@
 #define DOMINIUM_CONSTRUCTIONS_H
 
 #include <stddef.h>
-#include <stdint.h>
+#include "domino/baseline.h"
 
 #include "domino/core.h"
 #include "domino/dworld.h"

@@ -3,7 +3,7 @@
 
 /* Native UI abstraction (NATIVE_UI mode). Most fields are placeholders. */
 
-#include <stdint.h>
+#include "domino/baseline.h"
 
 #ifdef __cplusplus
 extern "C" {

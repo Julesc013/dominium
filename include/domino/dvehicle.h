@@ -1,9 +1,6 @@
 #ifndef DOMINO_DVEHICLE_H
 #define DOMINO_DVEHICLE_H
 
-#include <stdbool.h>
-#include <stdint.h>
-
 #include "dnumeric.h"
 #include "dworld.h"
 #include "dorbit.h"

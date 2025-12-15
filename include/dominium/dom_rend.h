@@ -3,7 +3,7 @@
 
 /* Renderer abstraction used by the game. Launcher/tools must not include this. */
 
-#include <stdint.h>
+#include "domino/baseline.h"
 
 #ifdef __cplusplus
 extern "C" {

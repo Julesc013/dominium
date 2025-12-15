@@ -1,7 +1,7 @@
 #ifndef DOMINO_MODEL_TREE_H_INCLUDED
 #define DOMINO_MODEL_TREE_H_INCLUDED
 
-#include <stdint.h>
+#include "domino/baseline.h"
 #include "domino/core.h"
 
 #ifdef __cplusplus
