@@ -45,6 +45,7 @@ add_library(domino_core STATIC
     render/soft/d_gfx_soft.c
     input/input.c
     input/ime.c
+    caps/d_caps.c
     state/state.c
     system/sys.c
     system/d_system.c
