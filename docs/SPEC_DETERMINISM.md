@@ -83,6 +83,16 @@ For typed packet IO:
 - pack-scoped identifiers that need compact runtime IDs MUST use explicit remap
   tables (TLV idmaps); deterministic paths MUST NOT mint new IDs on the fly
 
+### Domains, frames, propagators
+Domains, frames, and propagators are semantics-free deterministic primitives:
+- **Domains** are containers for authoritative state; they MUST be stepped and
+  hashed in canonical `domain_id` order and obey scheduler phases + budgets.
+- **Frames** are generic coordinate transforms; evaluation MUST be fixed-point,
+  bounded, and non-recursive, and MUST NOT consult platform state.
+- **Propagators** are generic time evolution; they MUST run only in allowed
+  scheduler phases and MUST use accumulators for lossless deferral under LOD
+  decimation and budget carryover.
+
 ### Canonical comparison / sorting
 When a stable sort is required, ordering MUST be defined by stable keys:
 - primary: family/type id (domain/packet/etc.)

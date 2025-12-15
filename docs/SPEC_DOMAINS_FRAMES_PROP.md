@@ -3,6 +3,17 @@
 This spec defines structural partitioning (domains), coordinate frames (frame
 graph), and propagators used to update representations deterministically.
 
+## Semantics-free primitives
+Domains, frames, and propagators are **generic core primitives**. They MUST NOT
+encode subsystem meaning (e.g. not "space", not "surface", not "combat").
+Subsystems and DLCs attach meaning *around* these primitives by registering
+domain types, frame graphs, and propagators.
+
+All three are subject to:
+- deterministic scheduler phases and bounded budgets (no clocks)
+- the representation ladder (R0–R3) and deterministic promotion/demotion
+- replay and per-tick hashing contracts (canonical ordering, stable IDs)
+
 ## Scope
 Applies to:
 - world domains and their stable identifiers
@@ -18,6 +29,7 @@ Invariants:
 - domain iteration order MUST be canonical (stable ID ordering)
 - cross-domain effects MUST be expressed explicitly (packets/deltas), not by
   hidden cross-calls
+- domains are containers only; they do not imply gameplay semantics
 
 ## Frame graph
 Frames define coordinate contexts for poses and transforms.
@@ -26,6 +38,7 @@ Invariants:
 - frame IDs MUST be stable and totally ordered
 - transforms MUST be fixed-point and quantized (see `docs/SPEC_POSE_AND_ANCHORS.md`)
 - frame graph updates MUST be deterministic and bounded
+- evaluation MUST traverse parent chains in a fixed, non-recursive order
 
 ## Propagators
 Propagators are deterministic mechanisms that:
@@ -36,6 +49,7 @@ Propagators are deterministic mechanisms that:
 Propagators MUST:
 - be incremental (dirty marking) rather than unbounded scans
 - have canonical processing order (stable keys)
+- use accumulators for lossless deferral when work is decimated or deferred
 
 ## Representation ladders
 Domains and propagators interact with the LOD ladder:
@@ -65,4 +79,3 @@ See `docs/SPEC_LOD.md`.
 - `docs/SPEC_LOD.md`
 - `docs/SPEC_GRAPH_TOOLKIT.md`
 - `docs/SPEC_POSE_AND_ANCHORS.md`
-

@@ -17,19 +17,14 @@
 #include "sim/pkt/dg_pkt_common.h"
 
 #include "core/dg_pose.h"
+#include "world/frame/dg_frame.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/* Stable frame identifier used by packets and authoritative state. */
-typedef u64 dg_frame_id;
-
-/* Reserved world/root frame id. */
-#define DG_FRAME_ID_WORLD ((dg_frame_id)0u)
-
-/* Fixed bound for parent traversal (no unbounded recursion). */
-#define D_WORLD_FRAME_MAX_DEPTH 16u
+/* Back-compat aliases (kept for existing callers). */
+#define D_WORLD_FRAME_MAX_DEPTH DG_FRAME_MAX_DEPTH
 
 typedef struct d_world_frame_node {
     dg_frame_id id;

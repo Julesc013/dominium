@@ -61,7 +61,14 @@ add_library(domino_core STATIC
     world/d_litho.c
     world/d_litho_validate.c
     world/frame/d_world_frame.c
+    world/frame/dg_frame.c
+    world/frame/dg_frame_graph.c
+    world/frame/dg_frame_eval.c
     world/frame/dg_anchor.c
+    world/domain/dg_domain.c
+    world/domain/dg_domain_registry.c
+    world/domain/dg_domain_query.c
+    world/domain/dg_domain_lod.c
     res/d_res.c
     res/d_res_validate.c
     res/dg_tlv_schema.c
@@ -162,6 +169,10 @@ add_library(domino_core STATIC
     sim/sense/dg_observation_buffer.c
     sim/sense/dg_sensor.c
     sim/sense/dg_sensor_registry.c
+    sim/prop/dg_prop.c
+    sim/prop/dg_prop_registry.c
+    sim/prop/dg_prop_lod.c
+    sim/prop/dg_prop_cache.c
     core/graph/dg_graph.c
     core/graph/dg_graph_adj.c
     core/graph/dg_graph_iter.c
@@ -250,8 +261,19 @@ target_sources(domino_core PRIVATE
     sim/know/d_sim_know.h
     sim/vis/d_sim_vis.h
     sim/prop/d_sim_prop.h
+    sim/prop/dg_prop.h
+    sim/prop/dg_prop_registry.h
+    sim/prop/dg_prop_lod.h
+    sim/prop/dg_prop_cache.h
     world/domain/d_world_domain.h
+    world/domain/dg_domain.h
+    world/domain/dg_domain_registry.h
+    world/domain/dg_domain_query.h
+    world/domain/dg_domain_lod.h
     world/frame/d_world_frame.h
+    world/frame/dg_frame.h
+    world/frame/dg_frame_graph.h
+    world/frame/dg_frame_eval.h
     world/frame/dg_anchor.h
     trans/compile/d_trans_compile.h
     trans/model/dg_trans_ids.h
