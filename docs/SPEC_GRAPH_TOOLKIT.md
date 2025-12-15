@@ -84,11 +84,11 @@ Rules:
 
 ## Source of truth vs derived cache
 **Source of truth:**
-- the underlying authoritative state and/or compiled artifacts that define graph
-  connectivity
+- the underlying authoritative state that defines graph connectivity (authoring
+  models + committed deltas + stable IDs)
 
 **Derived cache:**
-- adjacency caches and acceleration indices (must be regenerable)
+- compiled adjacency caches and acceleration indices (must be regenerable)
 - stitch caches (must be regenerable)
 
 ## Related specs

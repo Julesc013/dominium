@@ -46,7 +46,7 @@ details.
 - `VIEW_WORLD`: retargets `current_view_id` to `param_str` or
   `view_world_surface` and keeps the state in `main`.
 - `ENABLE_MOD`/`DISABLE_MOD`: records `current_package` (enable/disable wiring
-  is deferred to future prompts).
+  is deferred to a later revision).
 - Custom actions: front-ends can forward string actions via
   `dom_launch_handle_custom_action(ctx, action_id, payload)`; extensions receive
   these through `on_action`.

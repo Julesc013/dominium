@@ -4,6 +4,10 @@ The Domino core remains deterministic but now mirrors the filesystem. Package
 and instance registries are rebuilt on startup by scanning disk and are kept in
 sync as commands execute.
 
+This spec describes the `dom_core` command/query façade and its registries. It
+does not define the refactor SIM scheduler (`docs/SPEC_SIM_SCHEDULER.md`) or the
+packet/delta commit contract (`docs/SPEC_ACTIONS.md`).
+
 ## Boot sequence
 - `dom_core_create` zeroes state, seeds ids, then:
   1. Scans package roots (official app data + user mods) for directories
@@ -58,6 +62,10 @@ sync as commands execute.
   incrementing ticks/time, and finally publishes a single `DOM_EVT_SIM_TICKED`
   for the batch. `dom_sim_get_state` copies the stored state or returns a
   zeroed/defaulted struct when the instance has no sim state yet.
+- Determinism note: `ticks` is authoritative; `sim_time_s` and `dt_s` are
+  non-authoritative telemetry and MUST NOT be used as inputs to deterministic
+  simulation decisions. Deterministic simulation uses integer ticks and fixed-
+  point quantities (see `docs/SPEC_DETERMINISM.md` and `docs/SPEC_NUMERIC.md`).
 - Dominium handoff: `dom_game_sim_step` is the single hook into the Dominium
   rules surface; it runs a fixed subsystem pipeline (`dom_world_sim_step`,
   `dom_constructions_sim_step`, `dom_actors_sim_step`, then stubbed networks
@@ -84,7 +92,12 @@ sync as commands execute.
   Dominium builders per instance: `world_surface` (10x10 grid), `world_orbit`
   (orbit rings + marker), `construction_exterior` (outline), and
   `construction_interior` (room grid). Unknown ids return an empty buffer.
+  These grids are visualization-only and MUST NOT be interpreted as authoritative
+  placement constraints.
 
 ## Notes
-- Language: C89 only.
-- Everything remains in-memory and deterministic; persistence and real gameplay will be layered on later.
+- Language levels are defined in `docs/LANGUAGE_POLICY.md` and enforced by the
+  CMake build (C90 + C++98).
+- `dom_core` is deterministic in its registry ordering and command semantics,
+  but platform IO (filesystem scanning) is outside the deterministic simulation
+  hash/replay contract.

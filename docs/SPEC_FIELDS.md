@@ -26,10 +26,16 @@
 - Runtime values are Q16.16 unless otherwise noted.
 - Storage mappings:
   - Q16.16 ↔ Q4.12 via 4-bit shifts with explicit clamping.
-  - Q16.16 ↔ U8 via integer clamp to [0,255]; TODO refine per-field ranges and scaling.
+  - Q16.16 ↔ U8 via integer clamp to [0,255] (naïve 1:1 integer mapping; no per-field scaling in this pass).
 - Codec helpers are integer-only; no floats.
 
 ## Usage rules
 - Register any new continuous field via `dfield_register` before storing or sampling it.
 - Systems sampling fields must not maintain private arrays; all chunk storage must refer to registered `FieldId` and use the shared codecs.
-- TODO hooks remain for per-field scaling once climate/weather/hydrology modules arrive.
+- Per-field scaling is not implemented in this pass; if a field cannot be represented safely by the shared codecs, it must use an explicit fixed-point storage kind or define an explicit schema-level transform (never implicit).
+
+## Relationship to SIM fields/events/messages
+`dfield` defines a low-level registry for world/environment fields. The
+deterministic cross-module field update/sampling contract (phase boundaries,
+budgets, and packetized field updates) is specified by
+`docs/SPEC_FIELDS_EVENTS.md`.

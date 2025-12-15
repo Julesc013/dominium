@@ -181,7 +181,7 @@ Every contribution must:
 - Maintain determinism across all platforms  
 - Use only integer or fixed-point math in simulation  
 - Validate all external inputs  
-- Follow platform boundaries (`/engine/platform` only for OS calls)  
+- Follow platform boundaries (`source/domino/system/**` only for OS calls)  
 - Use stable file formats with versioned schemas  
 - Not introduce new dependencies without review  
 

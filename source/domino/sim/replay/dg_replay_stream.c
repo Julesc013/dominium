@@ -23,6 +23,109 @@ static int dg_replay_cmp_remap_qsort(const void *a, const void *b) {
     return 0;
 }
 
+static int dg_replay_cmp_u64(u64 a, u64 b) {
+    if (a < b) return -1;
+    if (a > b) return 1;
+    return 0;
+}
+
+static int dg_replay_cmp_u32(u32 a, u32 b) {
+    if (a < b) return -1;
+    if (a > b) return 1;
+    return 0;
+}
+
+static int dg_replay_cmp_u16(u16 a, u16 b) {
+    if (a < b) return -1;
+    if (a > b) return 1;
+    return 0;
+}
+
+static const unsigned char *dg_replay_stream_pkt_payload_ptr(const dg_replay_stream *rs, const dg_replay_pkt *p) {
+    if (!rs || !p) return (const unsigned char *)0;
+    if (p->payload_len == 0u) return (const unsigned char *)0;
+    if (!rs->arena || rs->arena_capacity == 0u) return (const unsigned char *)0;
+    if (p->payload_off > rs->arena_capacity) return (const unsigned char *)0;
+    if (p->payload_len > (rs->arena_capacity - p->payload_off)) return (const unsigned char *)0;
+    return rs->arena + p->payload_off;
+}
+
+/* Canonical ordering for input packets:
+ * (tick,domain_id,chunk_id,src_entity,dst_entity,type_id,schema_id,schema_ver,flags,seq,payload_len,payload_bytes)
+ * The payload bytes are TLV-canonicalized at record time.
+ */
+static int dg_replay_stream_pkt_cmp(const dg_replay_stream *rs, const dg_replay_pkt *a, const dg_replay_pkt *b) {
+    int c;
+    const unsigned char *pa;
+    const unsigned char *pb;
+
+    if (a == b) return 0;
+    if (!a) return -1;
+    if (!b) return 1;
+
+    c = dg_replay_cmp_u64((u64)a->tick, (u64)b->tick);
+    if (c) return c;
+
+    c = dg_replay_cmp_u64((u64)a->hdr.domain_id, (u64)b->hdr.domain_id);
+    if (c) return c;
+    c = dg_replay_cmp_u64((u64)a->hdr.chunk_id, (u64)b->hdr.chunk_id);
+    if (c) return c;
+    c = dg_replay_cmp_u64((u64)a->hdr.src_entity, (u64)b->hdr.src_entity);
+    if (c) return c;
+    c = dg_replay_cmp_u64((u64)a->hdr.dst_entity, (u64)b->hdr.dst_entity);
+    if (c) return c;
+
+    c = dg_replay_cmp_u64((u64)a->hdr.type_id, (u64)b->hdr.type_id);
+    if (c) return c;
+    c = dg_replay_cmp_u64((u64)a->hdr.schema_id, (u64)b->hdr.schema_id);
+    if (c) return c;
+    c = dg_replay_cmp_u16(a->hdr.schema_ver, b->hdr.schema_ver);
+    if (c) return c;
+    c = dg_replay_cmp_u16(a->hdr.flags, b->hdr.flags);
+    if (c) return c;
+    c = dg_replay_cmp_u32(a->hdr.seq, b->hdr.seq);
+    if (c) return c;
+    c = dg_replay_cmp_u32(a->payload_len, b->payload_len);
+    if (c) return c;
+
+    /* Stable tie-break: compare canonical payload bytes (lexicographic). */
+    if (a->payload_len == 0u) {
+        return 0;
+    }
+    pa = dg_replay_stream_pkt_payload_ptr(rs, a);
+    pb = dg_replay_stream_pkt_payload_ptr(rs, b);
+    if (!pa && !pb) {
+        return 0;
+    }
+    if (!pa) return -1;
+    if (!pb) return 1;
+    c = memcmp(pa, pb, (size_t)a->payload_len);
+    if (c < 0) return -1;
+    if (c > 0) return 1;
+
+    /* Final tie-break: packet hash (should be equal if payload equal). */
+    c = dg_replay_cmp_u64((u64)a->pkt_hash, (u64)b->pkt_hash);
+    return c;
+}
+
+static u32 dg_replay_stream_pkt_upper_bound(const dg_replay_stream *rs, const dg_replay_pkt *key, u32 count) {
+    u32 lo = 0u;
+    u32 hi = count;
+    u32 mid;
+    int c;
+
+    while (lo < hi) {
+        mid = lo + ((hi - lo) / 2u);
+        c = dg_replay_stream_pkt_cmp(rs, &rs->input_pkts[mid], key);
+        if (c <= 0) {
+            lo = mid + 1u;
+        } else {
+            hi = mid;
+        }
+    }
+    return lo;
+}
+
 void dg_replay_stream_init(dg_replay_stream *rs) {
     if (!rs) {
         return;
@@ -305,28 +408,33 @@ int dg_replay_stream_record_input_pkt(
     const unsigned char   *payload,
     u32                    payload_len
 ) {
-    dg_replay_pkt *p;
+    dg_replay_pkt p;
     u32 off;
     u32 canon_len;
     unsigned char *dst;
     int rc;
+    u32 old_arena_used;
+    u32 idx;
+    dg_pkt_hash ph;
 
     if (!rs || !hdr) return -1;
     if (!payload && payload_len != 0u) return -2;
     if (hdr->payload_len != payload_len) return -3;
+    if (hdr->tick != tick) return -4;
     if (!rs->input_pkts || rs->input_capacity == 0u) {
-        rs->probe_input_refused += 1u;
-        return -4;
-    }
-    if (rs->input_count >= rs->input_capacity) {
         rs->probe_input_refused += 1u;
         return -5;
     }
+    if (rs->input_count >= rs->input_capacity) {
+        rs->probe_input_refused += 1u;
+        return -6;
+    }
 
     canon_len = payload_len;
+    old_arena_used = rs->arena_used;
     rc = dg_replay_arena_alloc(rs, payload_len, &off);
     if (rc != 0) {
-        return -6;
+        return -7;
     }
 
     dst = rs->arena ? (rs->arena + off) : (unsigned char *)0;
@@ -334,16 +442,33 @@ int dg_replay_stream_record_input_pkt(
         /* Canonicalize TLV payload bytes; commands are TLV by contract. */
         rc = dg_tlv_canon(payload, payload_len, dst, payload_len, &canon_len);
         if (rc != 0 || canon_len != payload_len) {
-            return -7;
+            rs->arena_used = old_arena_used;
+            return -8;
         }
     }
 
-    p = &rs->input_pkts[rs->input_count++];
-    memset(p, 0, sizeof(*p));
-    p->tick = tick;
-    p->hdr = *hdr;
-    p->payload_off = off;
-    p->payload_len = payload_len;
+    ph = 0u;
+    rc = dg_pkt_hash_compute_canon(&ph, hdr, (const unsigned char *)dst, payload_len);
+    if (rc != 0) {
+        rs->arena_used = old_arena_used;
+        return -9;
+    }
+
+    memset(&p, 0, sizeof(p));
+    p.tick = tick;
+    p.hdr = *hdr;
+    p.payload_off = off;
+    p.payload_len = payload_len;
+    p.pkt_hash = ph;
+
+    /* Canonical insertion (stable, independent of record order). */
+    idx = dg_replay_stream_pkt_upper_bound(rs, &p, rs->input_count);
+    if (idx < rs->input_count) {
+        memmove(&rs->input_pkts[idx + 1u], &rs->input_pkts[idx],
+                sizeof(dg_replay_pkt) * (size_t)(rs->input_count - idx));
+    }
+    rs->input_pkts[idx] = p;
+    rs->input_count += 1u;
     return 0;
 }
 
@@ -408,4 +533,3 @@ u32 dg_replay_stream_probe_input_refused(const dg_replay_stream *rs) {
 u32 dg_replay_stream_probe_arena_refused(const dg_replay_stream *rs) {
     return rs ? rs->probe_arena_refused : 0u;
 }
-

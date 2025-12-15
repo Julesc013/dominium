@@ -1,32 +1,59 @@
-# Build / Construction Subsystem
+# SPEC_BUILD — BUILD (Placement / Construction Requests)
 
-## Overview
-- `build/d_build.h` defines a generic placement API used by products/tools.
-- The subsystem is responsible for:
-  - validating build requests against terrain + basic collision rules
-  - committing placement by creating engine objects (structures, splines)
-  - persisting placement metadata that is not owned by the target subsystem (e.g. foundation offsets)
+BUILD is the placement/edit request subsystem in the strict stack:
 
-## Requests
-- `d_build_request` supports:
-  - `kind`: structure or spline
-  - off-grid positions in `q32_32`
-  - discrete yaw in Q16.16 turns (UI can quantize to 90° steps)
-  - optional explicit spline node list (polyline)
-  - `D_BUILD_FLAG_SNAP_TERRAIN` to sample and snap Z
+`BUILD / TRANS / STRUCT / DECOR / SIM / RES / ENV / JOB / AGENT`
 
-## Validation / Commit
-- `d_build_validate` checks:
-  - referenced prototype ids exist
-  - structure overlap (simple AABB test vs existing structures)
-  - spline segment grade does not exceed `profile.max_grade`
-  - optional port requirement (`D_BUILD_FLAG_REQUIRE_PORTS`) for endpoint attachment
-- `d_build_commit` performs:
-  - structure placement via `d_struct_create`
-  - spline placement via `d_trans_spline_create`
-  - optional endpoint attachment via `d_trans_spline_set_endpoints`
+BUILD is responsible for validating placement/edit requests at the boundary
+between UI/tools and deterministic world state. It does not own rendering or
+gameplay semantics.
 
-## Foundations
-- When placing a structure, the builder samples terrain height at the footprint corners and sets the structure anchor to the average height.
-- Per-corner foundation “down” offsets (`anchor_z - corner_z`) are stored and can be queried via `d_build_get_foundation_down`.
+## Scope
+Applies to:
+- placement request framing (`d_build_request`)
+- quantization requirements for authoritative placement inputs
+- subsystem registration/serialization scaffolding
 
+## Authoritative placement contract
+All placement/edit requests MUST be expressed as:
+- `dg_anchor`: a parametric reference to authoring primitives (stable IDs)
+- `dg_pose` offset: a local pose relative to the anchor
+
+These fields MUST already be quantized before validation/commit. UI snapping is
+non-authoritative and MUST NOT live in BUILD logic.
+
+See `source/domino/build/d_build.h` and `docs/SPEC_POSE_AND_ANCHORS.md`.
+
+## Current implementation status (refactor pass)
+Implemented:
+- `d_build_validate` enforces:
+  - request kind is supported (`D_BUILD_KIND_STRUCTURE` / `D_BUILD_KIND_SPLINE`)
+  - anchor is present and of a supported kind
+  - anchor and pose are quantized to the default quanta
+
+Not implemented:
+- semantic placement validation (collision/overlap/terrain fitting/etc.)
+- authoritative commit/apply behavior (`d_build_commit` returns an error in this pass)
+- foundation metadata (`d_build_get_foundation_down` is a stub in this pass)
+
+The BUILD subsystem registers ABI/schema version `3` to reflect the anchor+pose
+placement contract.
+
+## Forbidden behaviors
+- Treating UI snapping/grids as authoritative placement truth.
+- Storing or ingesting baked world-space mesh geometry as authoritative state.
+- Floating point or tolerance-based solvers in deterministic placement paths.
+- Direct platform/OS calls from BUILD deterministic logic.
+
+## Source of truth vs derived cache
+**Source of truth (authoritative):**
+- quantized authoring-time placement requests expressed as `(dg_anchor, dg_pose)`
+
+**Derived cache:**
+- any preview geometry, snapped poses, and placement visualization state
+
+## Related specs
+- `docs/SPEC_POSE_AND_ANCHORS.md`
+- `docs/SPEC_PACKETS.md`
+- `docs/SPEC_TRANS_STRUCT_DECOR.md`
+- `docs/SPEC_DETERMINISM.md`

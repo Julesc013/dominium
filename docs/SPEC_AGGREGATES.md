@@ -5,8 +5,11 @@
 
 ## Element
 - `Element { ElementId id, MaterialId material_id, ChunkPos chunk, LocalPos local, rot, agg, flags }`.
-- Flags: `ELEM_FLAG_SOLID`, `ELEM_FLAG_HULL`, `ELEM_FLAG_VENT`, `ELEM_FLAG_DOOR`, `ELEM_FLAG_MACHINE`, `ELEM_FLAG_WINDOW` (extend later).
-- Elements sit on the world grid (chunk + local coordinates) and reference materials/archetypes in later prompts.
+- Flags: `ELEM_FLAG_SOLID`, `ELEM_FLAG_HULL`, `ELEM_FLAG_VENT`, `ELEM_FLAG_DOOR`, `ELEM_FLAG_MACHINE`, `ELEM_FLAG_WINDOW` (unused bits are reserved).
+- Elements are addressed in a deterministic lattice coordinate system (chunk + local).
+  This does not imply global grid-locked placement for other subsystems; aggregate
+  placement (when applicable) is expressed via anchors/poses per
+  `docs/SPEC_POSE_AND_ANCHORS.md`.
 
 ## Aggregate
 - `Aggregate { AggregateId id, mobility, env, element_count, element_ids, mass, volume, drag_coeff, lift_coeff, buoyancy_factor }`.
@@ -16,11 +19,11 @@
 
 ## Registry stubs
 - `dagg_create/dagg_destroy` allocate/free aggregates from a fixed pool (deterministic, C89).
-- `dagg_attach_element`/`dagg_detach_element` mutate membership and set the `agg` field on Elements; current mass/volume stubs derive from element count (TODO material-based).
-- `dagg_recompute_mass_volume` is called on membership changes and will later pull real densities/geometry.
-- Registries are simple arrays for now; TODO: migrate to proper ECS/graphs, add room/zone graphs, structural graphs, HP/damage, and network hooks (power/fluid/gas).
+- `dagg_attach_element`/`dagg_detach_element` mutate membership and set the `agg` field on Elements; current mass/volume are deterministic stubs derived from element count (no material-based computation in this pass).
+- `dagg_recompute_mass_volume` is called on membership changes and recomputes the same deterministic stub values.
+- Storage is bounded arrays; no per-tick dynamic allocation.
 
 ## Intent
 - Every building/vehicle/ship/station/base is an Aggregate of Elements, tied to an environment band and mobility kind.
-- Later systems (orbits, climate, HVAC, AI, markets) will consume these APIs instead of inventing parallel structures.
+- Other subsystems should consume these APIs (stable IDs and canonical membership) instead of inventing parallel structures.
 - Deterministic simulation code stays integer-only; no floating-point in aggregate/element logic.

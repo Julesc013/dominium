@@ -15,6 +15,7 @@
 #include "domino/core/types.h"
 
 #include "sim/pkt/dg_pkt_common.h"
+#include "sim/pkt/pkt_hash.h"
 #include "sim/hash/dg_hash.h"
 #include "sim/hash/dg_hash_registry.h"
 
@@ -39,6 +40,7 @@ typedef struct dg_replay_pkt {
     dg_pkt_hdr hdr;
     u32       payload_off; /* into arena */
     u32       payload_len;
+    dg_pkt_hash pkt_hash; /* hdr + canonical TLV payload */
 } dg_replay_pkt;
 
 typedef struct dg_replay_stream {
@@ -64,7 +66,7 @@ typedef struct dg_replay_stream {
     u32                 id_remap_count;
     u32                 id_remap_capacity;
 
-    /* Input packets (canonical TLV payload in arena). */
+    /* Input packets (canonical TLV payload in arena), stored in canonical order. */
     dg_replay_pkt  *input_pkts; /* owned */
     u32             input_count;
     u32             input_capacity;
@@ -109,7 +111,10 @@ int dg_replay_stream_set_id_remaps(dg_replay_stream *rs, const dg_replay_id_rema
 /* Record a per-tick hash snapshot (must match configured domains). */
 int dg_replay_stream_record_hash_snapshot(dg_replay_stream *rs, dg_tick tick, const dg_hash_snapshot *snap);
 
-/* Record an input packet (payload will be TLV-canonicalized into the arena). */
+/* Record an input packet (payload will be TLV-canonicalized into the arena).
+ * The packet is inserted into the stream in canonical order, independent of
+ * record call order.
+ */
 int dg_replay_stream_record_input_pkt(
     dg_replay_stream      *rs,
     dg_tick                tick,
@@ -138,4 +143,3 @@ u32 dg_replay_stream_probe_arena_refused(const dg_replay_stream *rs);
 #endif
 
 #endif /* DG_REPLAY_STREAM_H */
-

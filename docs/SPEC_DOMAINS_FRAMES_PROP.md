@@ -59,7 +59,9 @@ Domains and propagators interact with the LOD ladder:
 See `docs/SPEC_LOD.md`.
 
 ## Forbidden behaviors
-- Treating global grids as authoritative state or logic dependencies.
+- Treating a global grid as authoritative placement truth or a required
+  representation for all objects (UI snapping/grids are non-authoritative;
+  explicit lattices are permitted only when the owning subsystem specifies them).
 - World-space baked geometry as authoritative truth.
 - Unordered iteration in propagators (hash tables, pointer identity).
 - Platform-dependent behavior (time/threads/locale).

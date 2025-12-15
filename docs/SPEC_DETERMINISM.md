@@ -14,6 +14,23 @@ This spec applies to all code and data that can affect:
 It is not a UI/tooling spec; tooling may *observe* determinism but must not be
 the source of nondeterminism in deterministic paths.
 
+## Terminology (canonical)
+- **Authoritative state / source of truth:** the state that affects simulation
+  outcomes and must participate in deterministic ordering, replay, and world
+  hashing. This includes committed deltas and any quantized authoring models
+  that drive simulation.
+- **Derived cache:** any data that is fully regenerable from authoritative
+  inputs. Derived caches MUST NOT become gameplay truth and MUST NOT be required
+  to reproduce outcomes.
+- **Compiled artifact:** a derived cache produced deterministically from
+  authoritative inputs (e.g. compiled graph adjacency, TRANS microsegments,
+  STRUCT occupancy indices, DECOR tiles).
+- **World hash:** the per-tick hash of authoritative state computed after the
+  tick's delta commit point. It is used for replay verification and lockstep.
+- **Determinism build hash:** a build-time identifier derived from determinism-
+  relevant code/config/schema/content versions. It is used for compatibility and
+  diagnostics, and MUST NOT be treated as (or substituted for) the world hash.
+
 ## Determinism guarantee (authoritative)
 Given:
 - the same initial authoritative state (including version ids and RNG state)
@@ -284,7 +301,9 @@ it MUST be explicitly versioned and MUST NOT affect simulation outcomes.
 
 ## Explicit prohibitions (non-exhaustive)
 Determinism paths MUST explicitly forbid:
-- global grids as logic dependencies (grids may exist only as derived caches)
+- treating a global grid as authoritative placement truth or a required
+  representation for all objects (UI snapping/grids are non-authoritative;
+  explicit lattices are permitted only when the owning subsystem specifies them)
 - world-space baked geometry as authoritative state
 - tolerance/epsilon-based solvers and comparisons
 - unordered iteration in determinism paths (unordered containers, hash tables)

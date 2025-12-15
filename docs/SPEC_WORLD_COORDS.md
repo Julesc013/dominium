@@ -4,6 +4,16 @@
 - Vertical tile range is fixed: `z ∈ [-2048 .. +2047]` (4096 tiles, 256 chunks).
 - Chunking: `DOM_CHUNK_SIZE = 16` (16×16×16 tiles); `DOM_Z_CHUNKS = 256`.
 
+## Relationship to anchor-based placement (authoritative)
+The tile/chunk lattice is an addressing and partitioning scheme used by grid-like
+domains (terrain/fields/hydrology/climate) and for deterministic chunk mapping.
+It is **not** an engine-wide placement constraint.
+
+Arbitrary placement for BUILD/TRANS/STRUCT/DECOR is expressed via anchors and
+fixed-point poses (`dg_anchor` + `dg_pose`) per `docs/SPEC_POSE_AND_ANCHORS.md`.
+Any mapping from anchor/pose world positions to tiles/chunks is a deterministic
+derived operation (quantization and chunk indexing), not an authoring truth.
+
 ## Vertical bands
 - Deep underworld: z < -1024 (`DOM_Z_DEEP_MIN .. DOM_Z_BUILD_MIN`) — no normal construction, special rules later.
 - Buildable band: `[-1024 .. +1536]` (`DOM_Z_BUILD_MIN .. DOM_Z_BUILD_MAX`) — full terrain + construction.
