@@ -80,3 +80,11 @@ Useful deterministic tests include:
 - `domino_pkt_determinism_test`
 - `domino_sched_determinism_test`
 - `domino_pose_anchor_quant_test`
+
+## Inspecting backend selection
+`dominium_game` and `dominium-launcher` can print the compiled backend set and
+the deterministic selection result:
+```
+dominium_game.exe --profile=baseline --print-caps
+dominium_game.exe --profile=compat --lockstep-strict=1 --print-selection
+```

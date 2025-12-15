@@ -200,6 +200,37 @@ static int caps_backend_hw_ok(const dom_backend_desc* b, const dom_hw_caps* hw)
     return ((hw_mask & b->required_hw_flags) == b->required_hw_flags) ? 1 : 0;
 }
 
+static u32 caps_perf_score(dom_profile_kind profile_kind, dom_caps_perf_class backend_class)
+{
+    /* Higher score is preferred. */
+    switch (profile_kind) {
+    case DOM_PROFILE_COMPAT:
+        switch (backend_class) {
+        case DOM_CAPS_PERF_COMPAT: return 3u;
+        case DOM_CAPS_PERF_BASELINE: return 2u;
+        default: break;
+        }
+        return 1u;
+    case DOM_PROFILE_PERF:
+        switch (backend_class) {
+        case DOM_CAPS_PERF_PERF: return 3u;
+        case DOM_CAPS_PERF_BASELINE: return 2u;
+        default: break;
+        }
+        return 1u;
+    case DOM_PROFILE_BASELINE:
+    default:
+        break;
+    }
+
+    switch (backend_class) {
+    case DOM_CAPS_PERF_BASELINE: return 3u;
+    case DOM_CAPS_PERF_COMPAT: return 2u;
+    default: break;
+    }
+    return 1u;
+}
+
 dom_caps_result dom_caps_select(const struct dom_profile* profile,
                                 const dom_hw_caps* hw,
                                 dom_selection* out)
@@ -208,6 +239,7 @@ dom_caps_result dom_caps_select(const struct dom_profile* profile,
     u32 lockstep_strict;
     u32 profile_ok;
     u32 out_count;
+    dom_profile_kind profile_kind;
 
     if (!out) {
         return DOM_CAPS_ERR_NULL;
@@ -223,11 +255,13 @@ dom_caps_result dom_caps_select(const struct dom_profile* profile,
 
     profile_ok = 0u;
     lockstep_strict = 0u;
+    profile_kind = DOM_PROFILE_BASELINE;
     if (profile) {
         if (profile->abi_version == (u32)DOM_PROFILE_ABI_VERSION &&
             profile->struct_size == (u32)sizeof(dom_profile)) {
             profile_ok = 1u;
             lockstep_strict = profile->lockstep_strict ? 1u : 0u;
+            profile_kind = profile->kind;
         }
     }
 
@@ -314,8 +348,16 @@ dom_caps_result dom_caps_select(const struct dom_profile* profile,
             }
             chosen_by_override = 1u;
         } else {
+            u32 best_score;
+            u32 best_prio;
+
+            best_score = 0u;
+            best_prio = 0u;
+
             for (j = i; j < group_end; ++j) {
                 const dom_backend_desc* b = &g_backends[j];
+                u32 score;
+
                 if (!caps_backend_hw_ok(b, hw)) {
                     continue;
                 }
@@ -325,8 +367,17 @@ dom_caps_result dom_caps_select(const struct dom_profile* profile,
                         continue;
                     }
                 }
-                chosen = b;
-                break;
+
+                score = caps_perf_score(profile_kind, b->perf_class);
+                if (!chosen ||
+                    score > best_score ||
+                    (score == best_score && b->backend_priority > best_prio) ||
+                    (score == best_score && b->backend_priority == best_prio &&
+                     caps_str_icmp(b->backend_name, chosen->backend_name) < 0)) {
+                    chosen = b;
+                    best_score = score;
+                    best_prio = b->backend_priority;
+                }
             }
         }
 
