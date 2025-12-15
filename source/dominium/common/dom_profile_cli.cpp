@@ -4,6 +4,7 @@
 
 extern "C" {
 #include "domino/caps.h"
+#include "domino/build_info.h"
 }
 
 namespace dom {
@@ -288,6 +289,14 @@ int print_selection(const dom_profile &profile, FILE *out, FILE *err) {
 
     if (!out) out = stdout;
     if (!err) err = stderr;
+
+    {
+        const dom_build_info_v1* bi;
+        bi = dom_build_info_v1_get();
+        std::fprintf(out, "build: id=%s git=%s\n",
+                     (bi && bi->build_id) ? bi->build_id : "unknown",
+                     (bi && bi->git_hash) ? bi->git_hash : "unknown");
+    }
 
     (void)dom_caps_register_builtin_backends();
     (void)dom_caps_finalize_registry();

@@ -137,6 +137,59 @@ if(DOM_BACKEND_VECTOR2D)
     set(DOM_CFG_BACKEND_VECTOR2D 1)
 endif()
 
+# Build metadata (best-effort; no network).
+set(DOM_BUILD_NUMBER "0")
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/.dominium_build_number")
+    file(READ "${CMAKE_CURRENT_SOURCE_DIR}/.dominium_build_number" _dom_build_number_raw)
+    string(STRIP "${_dom_build_number_raw}" _dom_build_number_stripped)
+    if(NOT _dom_build_number_stripped STREQUAL "")
+        set(DOM_BUILD_NUMBER "${_dom_build_number_stripped}")
+    endif()
+endif()
+
+set(DOM_GIT_HASH "unknown")
+set(DOM_GIT_HASH_SHORT "unknown")
+find_program(DOM_GIT_EXECUTABLE NAMES git git.exe
+    PATHS
+        "C:/Program Files/Git/cmd"
+        "C:/Program Files/Git/bin"
+        "C:/msys64/usr/bin"
+        "C:/msys64/ucrt64/bin"
+)
+if(DOM_GIT_EXECUTABLE)
+    execute_process(
+        COMMAND "${DOM_GIT_EXECUTABLE}" rev-parse HEAD
+        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+        RESULT_VARIABLE _dom_git_res
+        OUTPUT_VARIABLE _dom_git_out
+        ERROR_QUIET
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    if(_dom_git_res EQUAL 0 AND NOT _dom_git_out STREQUAL "")
+        set(DOM_GIT_HASH "${_dom_git_out}")
+        string(LENGTH "${DOM_GIT_HASH}" _dom_git_len)
+        if(_dom_git_len GREATER_EQUAL 12)
+            string(SUBSTRING "${DOM_GIT_HASH}" 0 12 DOM_GIT_HASH_SHORT)
+        else()
+            set(DOM_GIT_HASH_SHORT "${DOM_GIT_HASH}")
+        endif()
+    endif()
+endif()
+
+if(NOT DEFINED DOM_BUILD_ID OR DOM_BUILD_ID STREQUAL "" OR DOM_BUILD_ID STREQUAL "unknown")
+    set(_dom_build_id "unknown")
+    if(NOT DOM_GIT_HASH_SHORT STREQUAL "unknown")
+        if(NOT DOM_BUILD_NUMBER STREQUAL "0")
+            set(_dom_build_id "b${DOM_BUILD_NUMBER}-${DOM_GIT_HASH_SHORT}")
+        else()
+            set(_dom_build_id "git-${DOM_GIT_HASH_SHORT}")
+        endif()
+    elseif(NOT DOM_BUILD_NUMBER STREQUAL "0")
+        set(_dom_build_id "b${DOM_BUILD_NUMBER}")
+    endif()
+    set(DOM_BUILD_ID "${_dom_build_id}" CACHE STRING "Build identifier embedded into binaries" FORCE)
+endif()
+
 file(MAKE_DIRECTORY "${DOMINIUM_GENERATED_INCLUDE_DIR}/domino")
 configure_file(
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake/config_base.h.in"
