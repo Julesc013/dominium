@@ -14,6 +14,11 @@ int  d_system_pump_events(void);
 void d_system_sleep_ms(u32 ms);
 int  d_system_process_spawn(const char *path, const char *args);
 
+/* Returns a native window handle for the current platform (e.g. HWND on Win32),
+ * or NULL when no window exists (e.g. headless).
+ */
+void* d_system_get_native_window_handle(void);
+
 int d_system_present_framebuffer(
     const void *pixels,
     i32         width,

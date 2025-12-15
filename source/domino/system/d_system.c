@@ -206,6 +206,15 @@ int d_system_init(const char *backend_name)
     return 1;
 }
 
+void* d_system_get_native_window_handle(void)
+{
+#if defined(_WIN32)
+    return (void*)g_hwnd;
+#else
+    return (void*)0;
+#endif
+}
+
 void d_system_shutdown(void)
 {
     if (!g_system_initialized) {
