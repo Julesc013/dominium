@@ -19,7 +19,7 @@
 #define PATH_MAX 4096
 #endif
 
-static dsys_caps g_wayland_caps = { "wayland", 1u, true, true, false, false };
+static dsys_caps g_wayland_caps = { "wayland", 1u, true, true, false, true };
 wayland_global_t g_wayland = { 0 };
 
 static dsys_result wayland_init(void);
