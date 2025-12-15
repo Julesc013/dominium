@@ -381,6 +381,11 @@ if(DOM_BACKEND_NULL)
     target_sources(domino_core PRIVATE render/null/d_gfx_null.c)
 endif()
 
+if(WIN32 AND DOM_BACKEND_DX9)
+    target_sources(domino_core PRIVATE render/dx9/d_gfx_dx9.c)
+    target_link_libraries(domino_core PRIVATE d3d9)
+endif()
+
 set_target_properties(domino_core PROPERTIES
     C_STANDARD 90
     C_STANDARD_REQUIRED ON
