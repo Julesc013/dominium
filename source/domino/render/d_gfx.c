@@ -3,7 +3,9 @@
 
 #include "domino/gfx.h"
 #include "domino/caps.h"
+#include "domino/config_base.h"
 #include "soft/d_gfx_soft.h"
+#include "null/d_gfx_null.h"
 
 /* Backbuffer defaults */
 static i32 g_backbuffer_w = 800;
@@ -53,21 +55,28 @@ dom_caps_result dom_dgfx_register_caps_backends(void)
     desc.required_hw_flags = 0u;
     desc.subsystem_flags = 0u;
     desc.backend_flags = DOM_CAPS_BACKEND_PRESENTATION_ONLY;
-    desc.determinism = DOM_DET_D2_BEST_EFFORT;
     desc.perf_class = DOM_CAPS_PERF_BASELINE;
     desc.get_api = dgfx_caps_get_ir_api_ptr;
     desc.probe = (dom_caps_probe_fn)0;
 
+#if DOM_BACKEND_SOFT
     desc.backend_name = "soft";
     desc.backend_priority = 100u;
+    desc.determinism = DOM_DET_D2_BEST_EFFORT;
     r = dom_caps_register_backend(&desc);
     if (r != DOM_CAPS_OK) {
         return r;
     }
+#endif
 
+#if DOM_BACKEND_NULL
     desc.backend_name = "null";
     desc.backend_priority = 10u;
+    desc.determinism = DOM_DET_D0_BIT_EXACT;
     return dom_caps_register_backend(&desc);
+#else
+    return DOM_CAPS_OK;
+#endif
 }
 
 static dom_abi_result dgfx_ir_query_interface(dom_iid iid, void** out_iface)
@@ -141,18 +150,50 @@ static void d_gfx_append(d_gfx_cmd_buffer *buf, const d_gfx_cmd *cmd)
 
 int d_gfx_init(const char *backend_name)
 {
-    const d_gfx_backend_soft *soft;
-    (void)backend_name;
+    const d_gfx_backend_soft *chosen;
+    chosen = (const d_gfx_backend_soft*)0;
 
+#if DOM_BACKEND_SOFT
     d_gfx_soft_set_framebuffer_size(g_backbuffer_w, g_backbuffer_h);
-    soft = d_gfx_soft_register_backend();
-    if (!soft || !soft->init) {
+#endif
+
+#if !DOM_BACKEND_NULL
+    if (backend_name && backend_name[0] && strcmp(backend_name, "null") == 0) {
         return 0;
     }
-    if (soft->init() != 0) {
+#endif
+
+#if !DOM_BACKEND_SOFT
+    if (backend_name && backend_name[0] && strcmp(backend_name, "soft") == 0) {
         return 0;
     }
-    g_backend = soft;
+#endif
+
+#if DOM_BACKEND_NULL
+    if (backend_name && backend_name[0] && strcmp(backend_name, "null") == 0) {
+        chosen = d_gfx_null_register_backend();
+    }
+#endif
+
+#if DOM_BACKEND_SOFT
+    if (!chosen) {
+        chosen = d_gfx_soft_register_backend();
+    }
+#endif
+
+#if DOM_BACKEND_NULL
+    if (!chosen) {
+        chosen = d_gfx_null_register_backend();
+    }
+#endif
+
+    if (!chosen || !chosen->init) {
+        return 0;
+    }
+    if (chosen->init() != 0) {
+        return 0;
+    }
+    g_backend = chosen;
     return 1;
 }
 

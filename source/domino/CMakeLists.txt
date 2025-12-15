@@ -369,6 +369,10 @@ else()
     message(FATAL_ERROR "Unsupported DOM_PLATFORM: '${DOM_PLATFORM}'")
 endif()
 
+if(DOM_BACKEND_NULL)
+    target_sources(domino_core PRIVATE render/null/d_gfx_null.c)
+endif()
+
 set_target_properties(domino_core PROPERTIES
     C_STANDARD 90
     C_STANDARD_REQUIRED ON
