@@ -69,6 +69,48 @@ static dgfx_backend_t dgfx_backend_from_name(const char* backend_name) {
     return DGFX_BACKEND_SOFT;
 }
 
+static bool copy_cstr_bounded(char* dst, size_t cap, const char* src) {
+    size_t n;
+    if (!dst || cap == 0u) {
+        return false;
+    }
+    if (!src) {
+        dst[0] = '\0';
+        return true;
+    }
+    n = std::strlen(src);
+    if (n >= cap) {
+        return false;
+    }
+    std::memcpy(dst, src, n);
+    dst[n] = '\0';
+    return true;
+}
+
+static void force_profile_gfx_backend(dom_profile& profile, const char* backend_name) {
+    u32 i;
+
+    (void)copy_cstr_bounded(profile.preferred_gfx_backend,
+                            sizeof(profile.preferred_gfx_backend),
+                            backend_name);
+
+    for (i = 0u; i < profile.override_count; ++i) {
+        dom_profile_override* ov = &profile.overrides[i];
+        if (std::strcmp(ov->subsystem_key, "gfx") == 0) {
+            (void)copy_cstr_bounded(ov->backend_name, sizeof(ov->backend_name), backend_name);
+            return;
+        }
+    }
+
+    if (profile.override_count < (u32)(sizeof(profile.overrides) / sizeof(profile.overrides[0]))) {
+        dom_profile_override* ov = &profile.overrides[profile.override_count];
+        std::memset(ov, 0, sizeof(*ov));
+        (void)copy_cstr_bounded(ov->subsystem_key, sizeof(ov->subsystem_key), "gfx");
+        (void)copy_cstr_bounded(ov->backend_name, sizeof(ov->backend_name), backend_name);
+        profile.override_count += 1u;
+    }
+}
+
 static int run_launcher_smoke_gui(const dom::ProfileCli& profile_cli) {
     const u32 max_frames = 120u;
     const u64 max_us = 2000000ull;
@@ -77,6 +119,14 @@ static int run_launcher_smoke_gui(const dom::ProfileCli& profile_cli) {
     dom_selection sel;
     dom_caps_result sel_rc;
     const char* gfx_backend_name;
+    dom_profile smoke_profile;
+    const dom_profile* effective_profile = &profile_cli.profile;
+
+    smoke_profile = profile_cli.profile;
+    if (profile_cli.profile.lockstep_strict != 0u) {
+        force_profile_gfx_backend(smoke_profile, "soft");
+        effective_profile = &smoke_profile;
+    }
 
     (void)dom_caps_register_builtin_backends();
     (void)dom_caps_finalize_registry();
@@ -90,11 +140,11 @@ static int run_launcher_smoke_gui(const dom::ProfileCli& profile_cli) {
     sel.abi_version = DOM_CAPS_ABI_VERSION;
     sel.struct_size = (u32)sizeof(dom_selection);
 
-    sel_rc = dom_caps_select(&profile_cli.profile, &hw, &sel);
+    sel_rc = dom_caps_select(effective_profile, &hw, &sel);
 
     /* Required smoke output (selection audit implied). */
     dom::print_caps(stdout);
-    (void)dom::print_selection(profile_cli.profile, stdout, stderr);
+    (void)dom::print_selection(*effective_profile, stdout, stderr);
     std::fprintf(stdout, "schema: sim_id=0x%016llx\n", (unsigned long long)dom_sim_schema_id());
 
     if (sel_rc != DOM_CAPS_OK) {
