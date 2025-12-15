@@ -47,6 +47,61 @@
         "CMAKE_BUILD_TYPE": "DeterministicRelease",
         "DOM_BUILD_MODE": "DeterministicRelease"
       }
+    },
+    {
+      "name": "baseline-debug",
+      "displayName": "Baseline Debug (C89/C++98)",
+      "description": "Canonical baseline toolchain/settings; no optional accel layers.",
+      "inherits": "base-msys2",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_C_STANDARD": "90",
+        "CMAKE_C_STANDARD_REQUIRED": "ON",
+        "CMAKE_C_EXTENSIONS": "OFF",
+        "CMAKE_CXX_STANDARD": "98",
+        "CMAKE_CXX_STANDARD_REQUIRED": "ON",
+        "CMAKE_CXX_EXTENSIONS": "OFF",
+        "DOM_ENABLE_MODERN": "OFF",
+        "DOM_PLATFORM": "win32",
+        "DOM_BACKEND_SOFT": "ON",
+        "DOM_BACKEND_NULL": "OFF",
+        "DOM_BACKEND_SDL2": "OFF",
+        "DOM_BACKEND_DX9": "OFF",
+        "DOM_BACKEND_GL1": "OFF",
+        "DOM_BACKEND_GL2": "OFF",
+        "DOM_BACKEND_VECTOR2D": "OFF",
+        "FETCHCONTENT_FULLY_DISCONNECTED": "ON",
+        "FETCHCONTENT_UPDATES_DISCONNECTED": "ON"
+      }
+    },
+    {
+      "name": "baseline-release",
+      "displayName": "Baseline Release (C89/C++98)",
+      "description": "Canonical baseline release toolchain/settings; no optional accel layers.",
+      "inherits": "baseline-debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "modern-debug",
+      "displayName": "Modern Debug (C89/C++98 + optional accel)",
+      "description": "Enables optional acceleration layers while retaining baseline correctness paths.",
+      "inherits": "baseline-debug",
+      "cacheVariables": {
+        "DOM_ENABLE_MODERN": "ON",
+        "DOM_BACKEND_DX9": "ON"
+      }
+    },
+    {
+      "name": "modern-release",
+      "displayName": "Modern Release (C89/C++98 + optional accel)",
+      "description": "Enables optional acceleration layers while retaining baseline correctness paths.",
+      "inherits": "baseline-release",
+      "cacheVariables": {
+        "DOM_ENABLE_MODERN": "ON",
+        "DOM_BACKEND_DX9": "ON"
+      }
     }
   ],
   "buildPresets": [
@@ -57,12 +112,42 @@
     {
       "name": "deterministic",
       "configurePreset": "deterministic"
+    },
+    {
+      "name": "baseline-debug",
+      "configurePreset": "baseline-debug"
+    },
+    {
+      "name": "baseline-release",
+      "configurePreset": "baseline-release"
+    },
+    {
+      "name": "modern-debug",
+      "configurePreset": "modern-debug"
+    },
+    {
+      "name": "modern-release",
+      "configurePreset": "modern-release"
     }
   ],
   "testPresets": [
     {
       "name": "debug",
       "configurePreset": "debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "baseline-debug",
+      "configurePreset": "baseline-debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "modern-debug",
+      "configurePreset": "modern-debug",
       "output": {
         "outputOnFailure": true
       }
