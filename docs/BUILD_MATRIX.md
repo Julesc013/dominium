@@ -38,8 +38,31 @@ This document enumerates the canonical build configurations used for local devel
 - Smoke: `build/p5_dx9/dgfx_demo.exe --gfx=dx9 --frames=120 --print-selection`
 - Notes: Presentation backend (D2); `--lockstep-strict=1` should refuse it during selection.
 
+### Tier-2 Coverage (Prompt 6) — compile-gated native-host backends
+
+Tier-2 backends are **compile-gated**: they are only built when explicitly enabled *and* the host OS + system dependencies are present. Selecting an incompatible backend fails at configure time with a clear message.
+
+The build system performs **no downloads** (`DOM_DISALLOW_DOWNLOADS=ON` / `DOM_DISALLOW_DOWNLOADS` defaults to ON).
+
+**Tier-2 platforms (DOM_PLATFORM)**
+- `posix_x11`: UNIX host + X11 development headers/libs.
+- `posix_wayland`: UNIX host + `wayland-client` headers/libs + protocol headers (`wayland-client-protocol.h`, `xdg-shell-client-protocol.h`).
+- `cocoa`: Apple host (macOS) + Cocoa/AppKit/Foundation frameworks (enables Objective-C only when selected).
+
+**Tier-2 renderers (DOM_BACKEND_*)**
+- `DOM_BACKEND_DX11`: Windows-only; requires Windows SDK libs (`d3d11`, `dxgi`, `d3dcompiler_47` or `d3dcompiler`).
+- `DOM_BACKEND_GL2`: Windows-only (WGL path); requires OpenGL headers + `opengl32`.
+- `DOM_BACKEND_VK1`: any host with Vulkan SDK/loader discoverable via `find_package(Vulkan)` (no downloads).
+- `DOM_BACKEND_METAL`: Apple-only; links Metal/MetalKit/QuartzCore (enables Objective-C++ only when selected).
+
+**Example tier-2 Windows configs**
+- `p6 win32 + dx11`:
+  - Configure: `cmake -S . -B build/p6_dx11 -G Ninja -DCMAKE_BUILD_TYPE=Debug -DDOM_PLATFORM=win32 -DDOM_BACKEND_DX11=ON`
+  - Build: `cmake --build build/p6_dx11`
+- `p6 win32 + gl2`:
+  - Configure: `cmake -S . -B build/p6_gl2 -G Ninja -DCMAKE_BUILD_TYPE=Debug -DDOM_PLATFORM=win32 -DDOM_BACKEND_GL2=ON`
+  - Build: `cmake --build build/p6_gl2`
+
 ### Placeholders (to fill later)
 
-- baseline win32 + dx11
-- baseline win32 + gl2
 - modern win32 + dx9/dx11/gl2
