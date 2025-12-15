@@ -174,6 +174,7 @@ static int dgfx_backend_from_name(const char* name, dgfx_backend_t* out)
 
 static int caps_init_and_select(const dom_profile* profile, dom_selection* out_sel, char* out_audit, u32 audit_cap)
 {
+    dom_hw_caps hw;
     u32 len;
 
     if (!profile || !out_sel || !out_audit || audit_cap == 0u) {
@@ -192,7 +193,12 @@ static int caps_init_and_select(const dom_profile* profile, dom_selection* out_s
     memset(out_sel, 0, sizeof(*out_sel));
     out_sel->abi_version = DOM_CAPS_ABI_VERSION;
     out_sel->struct_size = (u32)sizeof(*out_sel);
-    (void)dom_caps_select(profile, (const dom_hw_caps*)0, out_sel);
+
+    memset(&hw, 0, sizeof(hw));
+    if (dom_hw_caps_probe_host(&hw) != 0) {
+        memset(&hw, 0, sizeof(hw));
+    }
+    (void)dom_caps_select(profile, &hw, out_sel);
 
     out_audit[0] = '\0';
     len = audit_cap;
