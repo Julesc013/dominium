@@ -1,7 +1,7 @@
 #ifndef DOM_SETUP_PLUGIN_H
 #define DOM_SETUP_PLUGIN_H
 
-#include <stdint.h>
+#include "domino/baseline.h"
 
 #include "dom_shared/manifest_install.h"
 

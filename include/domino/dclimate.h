@@ -1,8 +1,6 @@
 #ifndef DOMINO_DCLIMATE_H
 #define DOMINO_DCLIMATE_H
 
-#include <stdbool.h>
-
 #include "dnumeric.h"
 #include "dorbit.h"
 #include "dworld.h"

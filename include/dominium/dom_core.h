@@ -4,7 +4,7 @@
 /* Small public-facing core surface. Keep C89 friendly. */
 
 #include <stddef.h>
-#include <stdint.h>
+#include "domino/baseline.h"
 #include "domino/sys.h"
 
 typedef int32_t  dom_i32;
@@ -20,7 +20,7 @@ enum dom_log_level {
     DOM_LOG_ERROR = DOMINO_LOG_ERROR
 };
 
-static inline void dom_log(enum dom_log_level lvl, const char* category, const char* msg)
+static void dom_log(enum dom_log_level lvl, const char* category, const char* msg)
 {
     domino_sys_log(NULL, (domino_log_level)lvl, category, msg);
 }

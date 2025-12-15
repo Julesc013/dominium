@@ -4,16 +4,7 @@
 /* Domino System / Platform API - C89 friendly */
 
 #include <stddef.h>
-#include <stdint.h>
-
-#ifndef __cplusplus
-# if !defined(__bool_true_false_are_defined)
-typedef _Bool bool;
-#  define true 1
-#  define false 0
-#  define __bool_true_false_are_defined 1
-# endif
-#endif
+#include "domino/baseline.h"
 
 #ifdef __cplusplus
 extern "C" {

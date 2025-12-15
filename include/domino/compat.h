@@ -2,7 +2,7 @@
 #define DOMINO_COMPAT_H
 
 #include "domino/platform.h"
-#include <stdint.h>
+#include "domino/baseline.h"
 
 #ifdef __cplusplus
 extern "C" {

@@ -1,8 +1,7 @@
 #ifndef DOMINO_DNUMERIC_H
 #define DOMINO_DNUMERIC_H
 
-#include <stdint.h>
-#include <stdbool.h>
+#include "domino/baseline.h"
 
 #ifdef __cplusplus
 extern "C" {

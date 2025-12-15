@@ -1,8 +1,8 @@
 #ifndef DOMINO_MOD_H_INCLUDED
 #define DOMINO_MOD_H_INCLUDED
 
-#include <stdint.h>
 #include <stddef.h>
+#include "domino/baseline.h"
 #include "domino/core.h"
 #include "domino/inst.h"
 #include "domino/version.h"

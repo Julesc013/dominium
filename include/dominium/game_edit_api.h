@@ -1,7 +1,7 @@
 #ifndef DOMINIUM_GAME_EDIT_API_H_INCLUDED
 #define DOMINIUM_GAME_EDIT_API_H_INCLUDED
 
-#include <stdint.h>
+#include "domino/baseline.h"
 
 #ifdef __cplusplus
 extern "C" {

@@ -11,10 +11,48 @@ set(CMAKE_CXX_STANDARD 98)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-set(DOMINIUM_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
-
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(DominiumBundleRuntime)
+
+set(DOMINIUM_SOURCE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
+set(DOMINIUM_GENERATED_INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/generated/include")
+set(DOMINIUM_INCLUDE_DIR "${DOMINIUM_GENERATED_INCLUDE_DIR};${DOMINIUM_SOURCE_INCLUDE_DIR}")
+
+# Generated baseline-safe config header (macros + integer literals only).
+set(DOMINO_CFG_BUILD_DEBUG 0)
+set(DOMINO_CFG_BUILD_RELEASE 0)
+set(DOMINO_CFG_BUILD_RELWITHDEBINFO 0)
+set(DOMINO_CFG_BUILD_MINSIZEREL 0)
+
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(DOMINO_CFG_BUILD_DEBUG 1)
+elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
+    set(DOMINO_CFG_BUILD_RELEASE 1)
+elseif(CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+    set(DOMINO_CFG_BUILD_RELWITHDEBINFO 1)
+elseif(CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
+    set(DOMINO_CFG_BUILD_MINSIZEREL 1)
+endif()
+
+set(DOMINO_CFG_PLATFORM_WIN32 0)
+set(DOMINO_CFG_PLATFORM_UNIX 0)
+if(WIN32)
+    set(DOMINO_CFG_PLATFORM_WIN32 1)
+endif()
+if(UNIX)
+    set(DOMINO_CFG_PLATFORM_UNIX 1)
+endif()
+
+file(MAKE_DIRECTORY "${DOMINIUM_GENERATED_INCLUDE_DIR}/domino")
+configure_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/config_base.h.in"
+    "${DOMINIUM_GENERATED_INCLUDE_DIR}/domino/config_base.h"
+    @ONLY
+)
+
+# Configure-time header hygiene check for baseline-visible public headers.
+include(BaselineHeaderCheck)
+dominium_baseline_header_check("${DOMINIUM_SOURCE_INCLUDE_DIR}")
 
 option(DOMINIUM_STATIC_GNU_RUNTIME "Link libgcc/libstdc++ statically on MinGW/MSYS" ON)
 if(DOMINIUM_STATIC_GNU_RUNTIME AND (MINGW OR MSYS))

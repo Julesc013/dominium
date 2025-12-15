@@ -1,7 +1,7 @@
 #ifndef DOMINO_LAUNCHER_EXT_H_INCLUDED
 #define DOMINO_LAUNCHER_EXT_H_INCLUDED
 
-#include <stdint.h>
+#include "domino/baseline.h"
 #include "domino/core.h"
 
 #ifdef __cplusplus

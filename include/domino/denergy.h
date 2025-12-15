@@ -1,9 +1,6 @@
 #ifndef DOMINO_DENERGY_H
 #define DOMINO_DENERGY_H
 
-#include <stdint.h>
-#include <stdbool.h>
-
 #include "dnumeric.h"
 #include "daggregate.h"
 

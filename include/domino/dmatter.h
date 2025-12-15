@@ -1,9 +1,6 @@
 #ifndef DOMINO_DMATTER_H
 #define DOMINO_DMATTER_H
 
-#include <stdint.h>
-#include <stdbool.h>
-
 #include "dnumeric.h"
 #include "daggregate.h"
 

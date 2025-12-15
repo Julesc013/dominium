@@ -1,8 +1,8 @@
 #ifndef DOMINIUM_TOOL_API_H_INCLUDED
 #define DOMINIUM_TOOL_API_H_INCLUDED
 
-#include <stdint.h>
 #include <stddef.h>
+#include "domino/baseline.h"
 
 #ifdef __cplusplus
 extern "C" {

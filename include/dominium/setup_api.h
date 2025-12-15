@@ -1,8 +1,8 @@
 #ifndef DOMINIUM_SETUP_API_H_INCLUDED
 #define DOMINIUM_SETUP_API_H_INCLUDED
 
-#include <stdint.h>
 #include <stddef.h>
+#include "domino/baseline.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -39,7 +39,7 @@ typedef struct {
     const char       *product_version;  /* "1.0.0" */
     const char       *build_id;         /* optional hash/branch */
     dom_setup_scope   scope;
-    const char       *target_dir;       /* optional: override directory */
+    const char       *target_dir;       /* optional: custom directory */
     int               quiet;            /* non-zero => minimal output */
     int               no_launcher;      /* optional flags */
     int               no_desktop_shortcuts;

@@ -1,8 +1,6 @@
 #ifndef DOMINO_DWORLD_H
 #define DOMINO_DWORLD_H
 
-#include <stdbool.h>
-
 #include "dnumeric.h"
 
 #ifdef __cplusplus

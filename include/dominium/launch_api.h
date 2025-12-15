@@ -1,8 +1,8 @@
 #ifndef DOMINIUM_LAUNCH_API_H_INCLUDED
 #define DOMINIUM_LAUNCH_API_H_INCLUDED
 
-#include <stdint.h>
 #include <stddef.h>
+#include "domino/baseline.h"
 #include "domino/core.h"
 #include "domino/view.h"
 #include "domino/ui.h"

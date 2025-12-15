@@ -2,7 +2,7 @@
 #define DOMINO_PKG_H_INCLUDED
 
 #include <stddef.h>
-#include <stdint.h>
+#include "domino/baseline.h"
 #include "domino/sys.h"
 
 #ifdef __cplusplus

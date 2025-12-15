@@ -1,7 +1,7 @@
 #ifndef DOMINO_UI_WIDGET_H_INCLUDED
 #define DOMINO_UI_WIDGET_H_INCLUDED
 
-#include <stdint.h>
+#include "domino/baseline.h"
 #include "domino/ui_events.h"
 #include "domino/canvas.h"
 

@@ -2,7 +2,7 @@
 #define DOMINIUM_CONTENT_PREFABS_H
 
 #include <stddef.h>
-#include <stdint.h>
+#include "domino/baseline.h"
 
 #include "domino/core.h"
 #include "dominium/content_parts.h"

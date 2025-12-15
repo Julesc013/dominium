@@ -11,24 +11,20 @@
 #ifndef DOMINO_CORE_TYPES_H
 #define DOMINO_CORE_TYPES_H
 
+#include "domino/baseline.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef unsigned char  u8;
-typedef signed   char  i8;
-typedef unsigned short u16;
-typedef signed   short i16;
-typedef unsigned long  u32;
-typedef signed   long  i32;
-
-#if defined(_MSC_VER)
-typedef unsigned __int64 u64;
-typedef __int64          i64;
-#else
-typedef unsigned long long u64;
-typedef long long          i64;
-#endif
+typedef uint8_t  u8;
+typedef int8_t   i8;
+typedef uint16_t u16;
+typedef int16_t  i16;
+typedef uint32_t u32;
+typedef int32_t  i32;
+typedef uint64_t u64;
+typedef int64_t  i64;
 
 typedef int d_bool;
 #define D_TRUE  1
