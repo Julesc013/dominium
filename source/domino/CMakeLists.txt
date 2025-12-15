@@ -4,6 +4,7 @@ add_library(domino_core STATIC
     core/types.c
     core/dom_build_info.c
     io/container/dtlv.c
+    io/schema_registry.c
     core/dg_order_key.c
     core/dg_det_hash.c
     core/dg_pose.c
