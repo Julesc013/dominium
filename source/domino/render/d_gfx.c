@@ -8,6 +8,10 @@
 #include "soft/d_gfx_soft.h"
 #include "null/d_gfx_null.h"
 #include "dx9/d_gfx_dx9.h"
+#include "dx11/d_gfx_dx11.h"
+#include "gl2/d_gfx_gl2.h"
+#include "vk1/d_gfx_vk1.h"
+#include "metal/d_gfx_metal.h"
 
 /* Backbuffer defaults */
 static i32 g_backbuffer_w = 800;
@@ -196,6 +200,30 @@ int d_gfx_init(const char *backend_name)
     }
 #endif
 
+#if DOM_BACKEND_DX11
+    if (have_request && strcmp(backend_name, "dx11") == 0) {
+        chosen = d_gfx_dx11_register_backend();
+    }
+#endif
+
+#if DOM_BACKEND_GL2
+    if (have_request && strcmp(backend_name, "gl2") == 0) {
+        chosen = d_gfx_gl2_register_backend();
+    }
+#endif
+
+#if DOM_BACKEND_VK1
+    if (have_request && strcmp(backend_name, "vk1") == 0) {
+        chosen = d_gfx_vk1_register_backend();
+    }
+#endif
+
+#if DOM_BACKEND_METAL
+    if (have_request && strcmp(backend_name, "metal") == 0) {
+        chosen = d_gfx_metal_register_backend();
+    }
+#endif
+
 #if DOM_BACKEND_SOFT
     if (!have_request && !chosen) {
         chosen = d_gfx_soft_register_backend();
@@ -373,6 +401,10 @@ int dgfx_init(const dgfx_desc *desc)
     if (desc) {
         if (desc->backend == DGFX_BACKEND_SOFT) backend_name = "soft";
         else if (desc->backend == DGFX_BACKEND_DX9) backend_name = "dx9";
+        else if (desc->backend == DGFX_BACKEND_DX11) backend_name = "dx11";
+        else if (desc->backend == DGFX_BACKEND_GL2) backend_name = "gl2";
+        else if (desc->backend == DGFX_BACKEND_VK1) backend_name = "vk1";
+        else if (desc->backend == DGFX_BACKEND_METAL) backend_name = "metal";
         else if (desc->backend == DGFX_BACKEND_NULL) backend_name = "null";
         else if (desc->backend != 0) {
             return 0;
