@@ -1,59 +1,59 @@
-# Dominium — Directory Context
+# Dominium — Directory Context (Authoritative)
 
-Canonical layout (Domino = engine, Dominium = product family).
+This document is the authoritative directory/layout contract for this
+repository. If another document disagrees on paths or module placement, this
+file is the source of truth.
+
+## Repository layout
 
 ```
 dominium/
-├── docs/                     – specs, architecture notes, build docs.
-├── include/                  – public headers (`domino/`, `dominium/`, `_internal/` for dom_shared and build metadata).
-├── source/                   – all code.
-│   ├── domino/               – reusable engine stack.
-│   │   ├── system/           – domino_sys platform layer (core dispatch, terminal/UI stubs, platform backends).
-│   │   ├── render/           – domino_gfx API plus software backend/targets and staged DX/GL/VK hooks.
-│   │   ├── sim/              – ECS/world/replay scaffolding and serialization helpers.
-│   │   └── mod/              – package/mod/script hosts (placeholders).
-│   └── dominium/             – Dominium-specific logic.
-│       ├── common/           – shared product code (versioning, manifests, paths/repo helpers).
-│       ├── game/             – game product (single binary with modes).
-│       │   ├── core/         – game entrypoints and runtime wiring.
-│       │   ├── cli/          – CLI entrypoint.
-│       │   ├── gui/          – GUI frontend plumbing.
-│       │   ├── tui/          – TUI frontend stubs.
-│       │   ├── states/       – gameplay state machine stubs.
-│       │   ├── ui/           – shared UI glue.
-│       │   ├── rules/        – rules/gameplay data stubs.
-│       │   └── _legacy/      – old shells kept for reference.
-│       ├── launcher/         – launcher runtime, services, and shell frontends.
-│       │   ├── core/         – launcher runtime, context, registry, view registry, process control.
-│       │   ├── model/        – view models for launcher (instances, mods, packs, etc.).
-│       │   ├── services/     – launcher services (instances/mods/packs/servers/accounts/tools).
-│       │   │   └── instances/ – instances service (instance management and views).
-│       │   ├── ipc/          – IPC stubs for future supervision.
-│       │   ├── cli/          – CLI front-end for launcher.
-│       │   ├── tui/          – TUI front-end (future).
-│       │   └── gui/          – GUI front-end (future).
-│       ├── setup/            – installer/repair/uninstall core + os hooks with cli/tui/gui.
-│       │   ├── core/         – setup execution plans (install/repair/uninstall).
-│       │   ├── model/        – discovery of installed products/manifests.
-│       │   ├── cli/          – command-line installer/repair entrypoints.
-│       │   ├── gui/          – GUI installer stub.
-│       │   └── os/           – OS-specific setup hooks (macosx/posix/win32).
-│       └── tools/            – Dominium tools (modcheck plus future editors).
-├── data/                     – content tree.
-│   ├── authoring/            – raw source assets (graphics/sounds/music/misc).
-│   ├── packs/                – packaged assets (`graphics/`, `sounds/`, `music/` with base/space/war variants).
-│   ├── mods/                 – first-party/example mods (base/space/war/examples).
-│   └── test/                 – deterministic fixture data.
-├── tools/                    – top-level tool entrypoints (stubbed).
-├── tests/                    – unit/integration harnesses.
-├── scripts/                  – automation and build/CI helpers.
-├── cmake/                    – CMake presets/toolchains/modules.
-├── external/                 – vendored dependencies.
-└── .github/                  – workflow/CI configuration.
+├── docs/                     – specifications and policy docs (authoritative)
+├── include/                  – public headers
+│   ├── domino/               – Domino engine public API (and `domino/_internal/`)
+│   └── dominium/             – Dominium product-facing headers
+├── source/                   – all source code
+│   ├── domino/               – Domino engine implementation
+│   ├── dominium/             – Dominium products (common, game, launcher, setup, tools)
+│   └── tests/                – buildable unit-style tests (C/C++)
+├── tests/                    – integration-style tests and fixtures
+├── data/                     – in-tree content source (authoring/packs/mods/versions/test)
+├── repo/                     – runtime repository layout used by `DOMINIUM_HOME` tooling
+├── scripts/                  – build helpers and packaging automation
+├── cmake/                    – CMake modules used by the root build
+├── external/                 – vendored third-party sources
+├── build/                    – out-of-source build directory (ephemeral)
+└── .github/                  – workflow/CI configuration
 ```
 
-## Notable engine subdirectories
-- `source/domino/system/core` – platform-agnostic domino_sys core, terminal, and native UI stubs.
-- `source/domino/system/plat/*` – per-platform sys backends (win32/posix/null in this pass).
-- `source/domino/render/api` – public-facing domino_gfx core, backend selection.
-- `source/domino/render/soft` – software renderer core plus present targets (`null`, `win32` now; others TODO).
+## Domino engine subdirectories (module boundaries)
+
+`source/domino/` contains both deterministic core subsystems and non-authoritative
+runtime/front-end subsystems:
+
+- Deterministic core subsystems (must obey `docs/SPEC_DETERMINISM.md`):
+  `core/`, `sim/`, `world/`, `trans/`, `struct/`, `decor/`, `agent/`, plus the
+  deterministic parts of `env/`, `res/`, `build/`, `job/`, `net/`, `replay/`,
+  `vehicle/` and other stateful domains. Legacy AI/agent scaffolding also exists
+  under `ai/` (see `docs/SPEC_AGENT.md`).
+- Platform/system layer: `system/` (dsys) – may call OS APIs; MUST NOT be used as
+  an input to deterministic simulation decisions.
+- Rendering: `render/` and `gfx`/canvas APIs – derived outputs only; never
+  authoritative.
+- UI/view: `ui/` and `view/` – derived presentation and event routing; never
+  authoritative.
+
+Domino public headers live under `include/domino/`. Dominium product code MUST
+NOT include private headers from `source/domino/**`; use `include/domino/**`
+only.
+
+## DOMINIUM_HOME (runtime/tooling root)
+
+Dominium tools and products treat `DOMINIUM_HOME` as a root for a runtime repo
+layout (see `source/dominium/common/dom_paths.*`):
+
+- `repo/products/` – product manifests (and/or build outputs staged for launch)
+- `repo/packs/` – pack blobs (`pack.tlv`/`pack.bin`) by id and version
+- `repo/mods/` – mod blobs (`mod.tlv`/`mod.bin`) by id and version
+- `instances/` – per-instance roots (metadata, saves, logs)
+- `temp/` – scratch space for setup/tools

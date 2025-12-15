@@ -24,13 +24,20 @@
 - `InstanceInfo` models persistent instance metadata: ids, world seed/size/range, active packs/mods, suite/core versions, and last-used product markers.
 - Load/save uses a simple TLV container for deterministic, forward-compatible storage; unknown tags are ignored on load.
 - Serialization is intentionally conservative: only stable fields are written, leaving room for forward schema growth.
+- Pack/mod reference lists are canonical: sorted by `(id, version)` and deduped.
+  Producers MUST preserve this ordering when writing instance files so pack/mod
+  load order is deterministic.
 
 ## dom_packset
 - Resolves pack/mod TLV payloads for an instance in deterministic order:
   - Packs: `repo/packs/<id>/<version>/pack.tlv` (fallback `pack.bin`).
   - Mods:  `repo/mods/<id>/<version>/mod.tlv` (fallback `mod.bin`).
 - Loads TLV blobs into memory and exposes them for the content loader.
-- Leaves dependency/conflict resolution as a TODO for later prompts.
+- Dependency/conflict resolution is not implemented in this pass. Contract:
+  - Pack/mod lists provided by `dom_instance` MUST already be canonicalized
+    (sorted by stable key, deduped) before `dom_packset` loads them.
+  - Missing packs/mods are hard errors (no implicit fallback search beyond
+    `*.tlv` → `*.bin` in the same version directory).
 
 ## dom_session
 - Owns the runtime bridge to Domino:
@@ -45,9 +52,11 @@
 - Rules (initial):
   - `prod.core_version < inst.core_version` → incompatible.
   - `prod.suite_version < inst.suite_version` → read-only.
-  - `prod.suite_version > inst.suite_version` → limited (forward-compat TBD).
+  - `prod.suite_version > inst.suite_version` → limited (forward-compat behavior
+    must be explicit; no silent upgrades).
   - Matching suite/core with required features → OK.
-- Future prompts will extend this with explicit compat profiles and feature checks.
+- Any compat extension must be explicit, versioned, and deterministic; silent
+  reinterpretation of instance data is forbidden.
 
 ## Launcher/Setup/Tools
 - **Launcher:** discovers products under `repo/products/`, instances under `instances/`, evaluates compatibility, and spawns the requested product (game/setup/tools) using `dsys_proc_spawn`. GUI/TUI shells stay inside DVIEW/DUI.

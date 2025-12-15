@@ -5,7 +5,7 @@
 - Registry lives in `source/domino/dspace_graph.c` with helpers:
   - `dspace_route_register`, `dspace_route_get`, `dspace_route_find`.
   - `dspace_route_neighbors(site, out_ids, max_out)` to enumerate adjacent routes.
-  - `dspace_route_pathfind_stub(start, goal)` currently returns direct edge if present (TODO: Dijkstra/A*).
+  - `dspace_route_pathfind_stub(start, goal)` returns a direct edge if present; multi-hop pathfinding is not implemented in this pass.
 
 ## Space sites
 - Defined in `dbody.h` / `dbody.c`:
@@ -15,5 +15,5 @@
 
 ## Usage
 - Higher-level travel planners build on this graph for transfers, logistics, and missions.
-- Hazards encode radiation/trajectory risk; flags are reserved for wormholes/FTL/etc.
-- Pathfinding is intentionally stubbed; deterministic algorithms will be slotted in later using this API.
+- Hazards encode radiation/trajectory risk; flags are reserved for explicit future expansion in versioned specs.
+- Pathfinding beyond direct-edge lookup is not implemented in this pass; any future algorithm must be deterministic and obey canonical ordering rules (`docs/SPEC_GRAPH_TOOLKIT.md`).

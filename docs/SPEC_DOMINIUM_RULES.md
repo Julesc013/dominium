@@ -28,7 +28,11 @@ The Dominium rules layer exposes a small C89-friendly API that sits **behind** `
 - **Environment & Economy** — `environment.h` samples local atmospheric/hydrology/radiation state and ticks environment solvers; `economy.h` seeds markets, exposes deterministic price quotes, and records trade submissions.
 
 ## Simulation Pipeline
-- Domino calls `dom_game_sim_step(dom_core*, const dom_game_sim_step_args*)` once per instance per tick; `dt_s` is derived from a fixed UPS (currently 60Hz -> 1/60s).
+- Domino calls `dom_game_sim_step(dom_core*, const dom_game_sim_step_args*)` once per instance per tick.
+- Determinism note: authoritative simulation time is the integer tick index. Any
+  seconds-based `dt_s` values passed through product/runtime APIs are
+  non-authoritative and MUST NOT be used for authoritative decisions unless
+  explicitly quantized into fixed-point per `docs/SPEC_NUMERIC.md`.
 - `dom_game_sim_step` runs a deterministic sequence: world streaming (`dom_world_sim_step`), constructions/physics (`dom_constructions_sim_step`), actors/AI (`dom_actors_sim_step`), then stubbed network/economy/environment hooks.
 - Subsystems currently only maintain per-instance step counters to prove plumbing; gameplay solvers will replace these stubs later.
 

@@ -93,7 +93,9 @@ Anchors evaluate through the world frame graph; DECOR never stores baked world-s
 TRANS/STRUCT/DECOR MUST forbid:
 - tolerance/epsilon solvers
 - world-space baked geometry as authoritative state
-- global grids as logic dependencies (grids may be derived caches only)
+- treating a global grid as authoritative placement truth or a required
+  representation for all objects (UI snapping/grids are non-authoritative;
+  explicit lattices are permitted only when the owning subsystem specifies them)
 - unordered iteration in determinism paths
 - platform-dependent behavior
 

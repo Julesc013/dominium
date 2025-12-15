@@ -46,7 +46,7 @@ regular content.
 
 ## Notes
 - Extensions stay deterministic and local; no dynamic OS API calls from the
-  launcher. Future prompts can add manifest flags to mark mods as launcher
-  extensions.
+  launcher. A later revision can add manifest flags to mark mods as launcher
+  extensions explicitly.
 - An example stub lives under `data/mods/examples/launcher_example/` with a
   simple canvas/view registration.

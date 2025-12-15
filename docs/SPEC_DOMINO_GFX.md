@@ -18,7 +18,7 @@ Reference backend: `source/domino/render/soft/soft_*`
 
 ## Backend behaviour (v1)
 - Soft backend is the reference implementation: executes all opcodes (2D, 3D, vector, raster, stub text) and supports multiple viewports/cameras per frame.
-- All other backends currently route IR execution through the soft pipeline to guarantee correctness; presentation differs per platform (GPU/OS/retro blits are TODO). This preserves semantics while hardware paths are upgraded.
+- All other backends currently route IR execution through the soft pipeline to guarantee correctness; presentation differs per platform because hardware-present paths are still stubbed in this pass. This preserves semantics while hardware paths are upgraded.
 - Backends report capabilities truthfully via `dgfx_caps`; max_viewports is at least 1 (soft supports many).
 
 ### Multi-view guarantees

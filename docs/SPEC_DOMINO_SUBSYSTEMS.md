@@ -1,33 +1,68 @@
-# Domino Subsystems
+# SPEC_DOMINO_SUBSYSTEMS — Subsystem Registry + Serialization
 
-Domino subsystem descriptors let the engine enumerate and orchestrate major domains (world, res, env, build, transport, etc.) without wiring bespoke code for each one.
+This spec defines the deterministic subsystem registry used by the legacy DSIM
+loop and by world save/load orchestration. It exists to keep lifecycle hooks
+discoverable and deterministic.
 
-## d_subsystem_desc
-- `subsystem_id` (`u16`): stable id; engine-reserved range starts at 1, mods use 1000+ later.
+## Scope
+Applies to:
+- `d_subsystem_desc` registry API (`source/domino/core/d_subsystem.h`)
+- deterministic iteration order of registered subsystems
+- save/load TLV container framing for per-subsystem payloads
+- subsystem tag mapping (`source/domino/core/d_serialize_tags.h`)
+
+Does not define the refactor SIM scheduler phases and delta-commit semantics
+(`docs/SPEC_SIM_SCHEDULER.md`).
+
+## Descriptor (`d_subsystem_desc`)
+File: `source/domino/core/d_subsystem.h`
+
+Fields:
+- `subsystem_id` (`u16`): stable id; engine-reserved range starts at 1; mods use
+  1000+.
 - `name`: short label (`"world"`, `"env"`, …).
-- `version` (`u32`): subsystem ABI/schema guard.
+- `version` (`u32`): subsystem schema/ABI guard.
 - `register_models()`: optional global init hook to populate model registries.
 - `load_protos(blob)`: optional content/proto ingest hook (TLV-packaged).
-- `init_instance(world)`: optional per-world initialization after creation/load.
-- `tick(world, ticks)`: optional fixed-timestep hook after core ECS tick.
-- `save_chunk/load_chunk(world, chunk, blob)`: optional chunk-level serializers.
-- `save_instance/load_instance(world, blob)`: optional world/global serializers.
+- `init_instance(world)`: optional per-world initialization after create/load.
+- `tick(world, ticks)`: deterministic fixed-step hook.
+- `save_chunk/load_chunk`: chunk-level serializers.
+- `save_instance/load_instance`: instance/global serializers.
 
-## Registry usage
-- Call `d_subsystem_register(&desc)` during startup; duplicate ids are rejected.
-- Lookups: `d_subsystem_count()`, `d_subsystem_get_by_index()`, `d_subsystem_get_by_id()`.
-- Implementation uses a fixed-size table (static, deterministic; no heap churn).
+## Registry ordering (authoritative)
+- Registration happens at startup; duplicate ids are rejected.
+- The registry is a fixed-size table (`source/domino/core/d_subsystem.c`).
+- Iteration order is the registry index order:
+  - DSIM subsystem ticks run in this order (`docs/SPEC_SIM.md`).
+  - Save/load orchestration iterates in this order.
 
-## Save/load orchestration
-- The serializer iterates registered subsystems and wraps each payload in a TLV tagged with `TAG_SUBSYS_*`.
-- Subsystem callbacks are optional; absent hooks are skipped cleanly.
-- Chunk and instance/global data share the same framing so new subsystems can plug in without changing the orchestrator.
+Subsystem callbacks MUST NOT depend on:
+- pointer identity
+- hash-table iteration order
+- filesystem enumeration order
+- OS time or platform scheduling
 
-## Rationale
-- Central registry keeps lifecycle hooks discoverable and deterministic.
-- New domains (e.g. chemistry, biology, EM fields) register once and ride the same init/tick/save pipeline.
-- Mod/third-party subsystems can claim ids in the reserved range without patching core serialization.
+## Save/load container framing (TLV)
+Implementation: `source/domino/world/d_serialize.h`, `source/domino/world/d_serialize.c`
 
-## Dominium product integration
-- Dominium Launcher/Setup/Tools treat subsystem ids and versions as compatibility gates: the common layer only boots worlds/packs whose serialized subsystem ids are registered.
-- Compat evaluation in the launcher relies on these version tags staying stable; upgrades that bump subsystem versions must also bump suite/core versions so older products downgrade to read-only.
+Rules:
+- Each subsystem payload is wrapped as a TLV record:
+  - `tag` (`u32`): `TAG_SUBSYS_*` tag for the subsystem
+  - `len` (`u32`): payload length in bytes
+  - `payload` bytes: subsystem-defined blob
+- Tag values live in `source/domino/core/d_serialize_tags.h`.
+- Unknown `TAG_SUBSYS_*` tags are skipped deterministically during load.
+
+Deterministic IO rule:
+- Subsystem payloads MUST define explicit endianness/field widths and MUST NOT
+  serialize raw C structs as blobs; see `docs/SPEC_DETERMINISM.md`.
+
+## Forbidden behaviors
+- Save callbacks mutating authoritative world state.
+- Load callbacks using OS time, filesystem enumeration, or any nondeterministic
+  source as input to authoritative state.
+
+## Related specs
+- `docs/SPEC_DETERMINISM.md`
+- `docs/SPEC_SIM.md`
+- `docs/SPEC_VALIDATION.md`

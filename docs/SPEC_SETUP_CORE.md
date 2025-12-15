@@ -40,8 +40,8 @@ and the setup CLI call into this layer instead of duplicating logic.
 
 ## Distribution seed
 - The current manifest is a stub: it copies `dist/bin/dominium-placeholder.txt`
-  and `dist/data/readme.txt` into the install root. Later prompts replace this
-  with an auto-generated package manifest.
+  and `dist/data/readme.txt` into the install root. A later revision replaces
+  this with an auto-generated package manifest.
 
 ## CLI wrapper
 - Target: `dominium-setup-cli`

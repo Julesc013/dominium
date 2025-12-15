@@ -3,7 +3,10 @@
 Public header: `include/domino/sys.h`  
 Stub implementation: `source/domino/system/sys.c`
 
-This pass wires up a portable, deterministic stub backend. It exposes the full dsys_* surface so the engine can build and run without real OS hooks. Platform backends (win32, sdl2, x11, dos, etc.) will later live in platform-specific directories and replace this stub.
+This pass wires up a portable stub backend. It exposes the full dsys_* surface
+so the engine can build and run without real OS hooks. Platform backends
+(win32, sdl2, x11, dos, etc.) live in platform-specific directories and replace
+the stub via build-time selection.
 
 ## API surface
 - Lifecycle: `dsys_init` → `DSYS_OK`, `dsys_shutdown` no-op, `dsys_get_caps` returns `{ name = "stub", ui_modes = 0, has_windows/mouse/gamepad/high_res_timer = false }`.
@@ -17,7 +20,9 @@ This pass wires up a portable, deterministic stub backend. It exposes the full d
 
 ## Notes
 - Header stays platform-agnostic; sys.c only uses small `#if defined(_WIN32)` / `_POSIX_VERSION` guards.
-- Behaviour is deterministic and side-effect free so other layers can safely call into it until real backends land.
+- dsys provides platform IO/time/windowing services and is outside the
+  deterministic simulation contract. Deterministic simulation code MUST NOT use
+  dsys time or platform state as an input to authoritative decisions.
 
 ## SDL1 Backend
 - API: SDL 1.2 (video, events, timer).

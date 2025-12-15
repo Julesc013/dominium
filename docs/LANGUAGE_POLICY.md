@@ -1,95 +1,43 @@
-# Dominium — LANGUAGE POLICY
+# Dominium — Language Policy (Authoritative)
 
-This document defines universal rules for all Dominium source code. These are mandatory.
+This document defines mandatory language/toolchain constraints. Determinism
+behavioral requirements are specified in `docs/SPEC_DETERMINISM.md` and guarded
+by `docs/DETERMINISM_REGRESSION_RULES.md`.
 
----
+## 1. C90 rules (deterministic engine core)
+Applies to code that participates in deterministic simulation outcomes, replay,
+or world hashing (the deterministic core).
 
-## 1. C89 RULES (CORE ENGINE)
+Build contract:
+- Must compile as C90 (`CMAKE_C_STANDARD 90`, extensions off).
+- Do not use C99/C11 language features (VLAs, designated initializers, mixed
+  declarations/statements, `//` comments, etc.).
 
-The simulation core, deterministic systems, and all portable foundation modules MUST compile cleanly as C89 under:
+Type policy:
+- Prefer project-defined fixed-width and fixed-point types:
+  - `include/domino/core/types.h` (`u32`, `i32`, `d_bool`, etc.)
+  - `include/domino/core/fixed.h` / `include/domino/dnumeric.h` (fixed-point Q types)
+- If `<stdint.h>`/`<stdbool.h>` appear in non-deterministic glue or public façade
+  headers, deterministic serialization/hashing MUST still encode fields
+  explicitly and MUST NOT hash raw struct bytes.
 
-- MSVC 6.0+
-- mingw32
-- gcc for Linux
-- clang for macOS 10.6+
+Forbidden in deterministic core (non-exhaustive):
+- floating-point math (`float`/`double`) in deterministic paths
+- OS/platform time sources (`time()`, `clock()`, wall clock)
+- platform headers and platform-dependent APIs
+- dynamic allocation in deterministic tick loops (unless explicitly specified)
 
-### C89 Restrictions
+## 2. C++98 rules (product/non-core modules)
+Applies to non-deterministic runtime/product layers (e.g. `source/dominium/**`)
+and optional tooling where determinism is not part of the simulation contract.
 
-- No `stdbool.h`, `stdint.h`, or C99 headers.
-- No mixed declarations and statements.
-- No C99-style `//` comments.
-- No variable-length arrays.
-- No designated initialisers.
-- No implicit function declarations.
-- No non-portable extensions (e.g., GNU VLA, MSVC declspecs).
-
-### Allowed Standard Library
-- `<stdio.h>`
-- `<string.h>`
-- `<stdlib.h>`
-- `<stddef.h>`
-- `<limits.h>`
-- `<float.h>`
-
-No other headers may be included unless platform-layer wrappers provide compatibility shims.
-
----
-
-## 2. C++98 RULES (NON-CORE MODULES)
-
-For optional modules that do not participate in deterministic simulation:
-
+Rules:
 - Must compile as C++98.
-- No exceptions.
-- No RTTI.
-- No STL containers exposed across API boundaries.
-- Internally, STL containers are allowed but discouraged.
-- No templates beyond basic utility templates.
+- No exceptions, no RTTI.
+- Do not expose STL types across C ABI boundaries.
 
----
-
-## 3. DETERMINISM REQUIREMENTS
-
-The entire simulation must be reproducible across:
-
-- Windows 2000+
-- macOS 10.6+
-- Linux (various distros)
-- future retroports (DOS, Win95, Win3.x, Classic MacOS)
-
-### Determinism Rules
-
-- No `rand()` or OS RNG sources.
-- No time‐dependent behaviour.
-- No floating-point non-determinism (strict FP mode).
-- All randomness must come from a seeded software RNG (xoroshiro, LCG, etc.).
-- All update ordering must be fixed and documented.
-- Multithreading must follow fixed work scheduling (no racing, no nondeterministic queues).
-
----
-
-## 4. PLATFORM ABSTRACTION
-
-No platform-specific code is allowed in core modules.
-
-Each OS/graphics backend must be behind a platform interface.
-
----
-
-## 5. MEMORY RULES
-
-- No allocator churn in the simulation loop.
-- All memory must be allocated during load or expansion phases.
-- No global mutable state unless defined in the spec.
-- No hidden singletons.
-
----
-
-## 6. DATA INTEGRITY
-
-All serialised forms must be:
-
-- endian-neutral
-- alignment-neutral
-- forward/backward compatible
-
+## 3. Boundary rule (hard)
+Deterministic simulation code MUST NOT depend on platform/system/render/UI code
+as an input to simulation decisions. Platform and rendering layers may exist to
+host the runtime loop and display derived state, but they must not mutate or
+influence authoritative simulation state outside of the intent/delta contracts.

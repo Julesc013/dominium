@@ -1,12 +1,51 @@
-# DSIM – deterministic simulation orchestrator
+# SPEC_SIM — Simulation Orchestrators (DSIM vs SIM Scheduler)
 
-DSIM is the engine-level tick loop that advances ECS-style systems in a fixed order.
+This repository currently contains two simulation orchestration layers:
 
-- **Context:** `d_sim_context` stores the current world pointer, global tick counter, and fixed tick duration (`q16_16`).
-- **Systems:** `dsim_system_vtable` identifies each system (`system_id`, `name`) and optional `init`, `tick`, and `shutdown` callbacks. Systems are invoked in registration order for determinism.
-- **Registration:** `d_sim_register_system` adds a vtable to the global list; duplicates or capacity overflow fail.
-- **Init/Shutdown:** `d_sim_init` seeds the context (resets tick index, sets world/dt, calls each system `init`). `d_sim_shutdown` calls `shutdown` callbacks and clears the context.
-- **Ticking:** `d_sim_step(ctx, ticks)` advances `ctx->tick_index` once per tick and runs:
-  1. All registered `d_subsystem_desc.tick` callbacks (registration order).
-  2. All DSIM systems’ `tick` callbacks (registration order).
-- **Integration path:** Higher layers gather inputs → run net/replay to produce authoritative input frames → call `d_sim_step` to advance the deterministic world.
+- **DSIM (`d_sim_*`)**: a legacy deterministic tick loop used to advance a world
+  and call subsystem ticks in a fixed order.
+- **SIM scheduler (`dg_sched_*`)**: the refactor scheduler specified by
+  `docs/SPEC_SIM_SCHEDULER.md` (phase-ordered, delta-commit based).
+
+This spec describes DSIM’s contract and its relationship to the refactor
+scheduler.
+
+## DSIM (legacy deterministic tick loop)
+Implementation: `source/domino/sim/d_sim.c`
+
+Authoritative contract:
+- Simulation advances in integer ticks (`tick_index`); tick count is authoritative.
+- `d_sim_step(ctx, ticks)` increments tick counters deterministically and runs:
+  1. deterministic net command application for the tick (`d_net_apply_for_tick`)
+  2. subsystem ticks via the subsystem registry (`d_subsystem_desc.tick`)
+  3. DSIM-local system callbacks registered via `d_sim_register_system`
+- Ordering is deterministic:
+  - subsystem iteration order is `d_subsystem_get_by_index(i)` (stable registry order)
+  - DSIM system callbacks run in DSIM registration order
+- DSIM code and all tick callbacks must obey `docs/SPEC_DETERMINISM.md`.
+
+DSIM is a compatibility orchestrator. It does not define the phase-based
+stimulus/action/delta/commit semantics; those are specified by the SIM scheduler
+spec below.
+
+## SIM scheduler (refactor)
+Authoritative phase ordering, delta commit rules, and canonical ordering keys
+are specified in `docs/SPEC_SIM_SCHEDULER.md` and implemented under
+`source/domino/sim/sched/**`.
+
+Refactor rule:
+- Any subsystem/module that participates in the refactor scheduler MUST obey
+  the phase boundaries and delta-commit mutation rules from
+  `docs/SPEC_SIM_SCHEDULER.md` and `docs/SPEC_ACTIONS.md`.
+
+## Forbidden behaviors (both)
+- Using wall-clock time, OS input, or thread timing as a simulation input.
+- Unordered iteration (hash-table iteration order, pointer identity) in any
+  deterministic tick path.
+- Treating derived caches (including compiled artifacts and render geometry) as
+  authoritative state.
+
+## Related specs
+- `docs/SPEC_SIM_SCHEDULER.md`
+- `docs/SPEC_ACTIONS.md`
+- `docs/SPEC_DETERMINISM.md`

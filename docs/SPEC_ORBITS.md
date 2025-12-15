@@ -6,7 +6,7 @@
   - `a`: semi-major axis, Q48.16 metres.
   - `e`: eccentricity Q16.16 (0..1).
   - `i`, `Omega`, `omega`, `M0`: angles in `Turn` (1.0 turn = 2π).
-  - `t0`: epoch in simulation **seconds**.
+  - `t0`: epoch in simulation **seconds** (integer seconds in simulation time, not wall-clock).
   - Drifts per second: `dOmega_dt`, `domega_dt`, `da_dt`, `de_dt`, `di_dt`.
 - No floating point; Kepler solving uses fixed-point integers with bounded iterations.
 - Mean anomaly uses a coarse mean-motion estimate from `mu` (gravitational parameter) and drifted `a`; elements are adjusted linearly by drifts before solving.
@@ -17,7 +17,8 @@
 3. Solve Kepler for eccentric anomaly `E` via integer Newton iterations.
 4. Derive true anomaly `v` and radius `r` in orbital plane.
 5. Rotate by `Omega`, `i`, `omega` to inertial `SpacePos` (Q48.16 metres).
-- Trig uses polynomial integer approximations; TODO refine with tables/CORDIC later.
+- Trig uses bounded integer approximations (no floats) and MUST remain deterministic
+  across platforms. Any change in approximation semantics is a determinism contract change.
 
 ## Bodies
 - `Body` (see `include/domino/dbody.h`):
@@ -37,7 +38,7 @@
 - `dspace_env.h` defines `BeltField` and `MagneticField` placeholders; registry and query stubs:
   - `dspace_env_radiation_intensity(pos)` (stub constant).
   - `dspace_env_belt_density(pos)` (checks radial shell membership).
-- TODO: derive radiation from star luminosity + belts/magnetic fields; add inclination handling for belts/rings.
+- Radiation/fields are stubbed in this pass: queries are deterministic but not physically derived.
 
 ## Determinism
 - All math is integer/fixed-point; no floats or doubles in orbit code.

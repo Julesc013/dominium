@@ -18,7 +18,10 @@
 - Enter state machine at `BOOT`, then `MAIN_MENU → LOADING → RUNNING`.
 
 ## Main Loop
-- Fixed-timestep tick via `d_sim_step(sim, 1)`; hook points for input/net/replay are stubbed with TODOs.
+- Fixed-timestep tick via `d_sim_step(sim, 1)`.
+- Net/replay integration must produce a deterministic command stream per tick;
+  the sim must never read platform input directly (see `docs/SPEC_ACTIONS.md` and
+  `docs/SPEC_DETERMINISM.md`).
 - Rendering (GUI/TUI): gather the shared `dgfx_cmd_buffer`, call `d_view_render`, layout/render DUI, then `dgfx_execute` + `dgfx_end_frame`.
 - Headless mode skips rendering but still advances simulation.
 

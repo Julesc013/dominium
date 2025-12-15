@@ -91,7 +91,7 @@ permitted in SIM scheduling.
 - Commit MUST be a single source of truth: subsystems compile deltas, but only
   commit applies them.
 - Partial application of a single delta within a tick is forbidden. If commit
-  becomes budgeted in later prompts, deferral MUST be whole-delta (no partials).
+  becomes budgeted in a later revision, deferral MUST be whole-delta (no partials).
 
 ## Budget + carryover semantics
 Budgets are measured in deterministic "work units" (not wall-clock time).
