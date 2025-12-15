@@ -325,6 +325,7 @@ Determinism paths MUST explicitly forbid:
 
 ## Related specs
 - `docs/SPEC_SIM_SCHEDULER.md`
+- `docs/SPEC_DETERMINISM_GRADES.md`
 - `docs/SPEC_PACKETS.md`
 - `docs/SPEC_FIELDS_EVENTS.md`
 - `docs/SPEC_ACTIONS.md`
