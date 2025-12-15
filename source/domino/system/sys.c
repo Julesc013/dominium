@@ -668,7 +668,10 @@ dsys_result dsys_init(void)
         g_dsys = dsys_sdl2_get_vtable();
     }
 #elif defined(DSYS_BACKEND_WIN32)
-    g_dsys = &g_null_vtable;
+    {
+        extern const dsys_backend_vtable* dsys_win32_get_vtable(void);
+        g_dsys = dsys_win32_get_vtable();
+    }
 #elif defined(DSYS_BACKEND_NULL)
     g_dsys = &g_null_vtable;
 #else
