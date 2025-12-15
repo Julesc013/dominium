@@ -544,3 +544,26 @@ set_target_properties(domino_sys_smoke PROPERTIES
     C_EXTENSIONS OFF
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
 )
+
+add_executable(dgfx_demo
+    ../../tests/domino_gfx/dgfx_demo.c
+)
+
+target_include_directories(dgfx_demo PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+)
+
+target_link_libraries(dgfx_demo
+    PRIVATE domino_core
+)
+
+if(WIN32 AND DOM_BACKEND_DX9)
+    target_link_libraries(dgfx_demo PRIVATE d3d9)
+endif()
+
+set_target_properties(dgfx_demo PROPERTIES
+    C_STANDARD 90
+    C_STANDARD_REQUIRED ON
+    C_EXTENSIONS OFF
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
+)
