@@ -25,6 +25,75 @@ static const dsys_backend_vtable g_null_vtable;
 static const dsys_backend_vtable* g_dsys = NULL;
 static const char* g_requested_backend = NULL;
 
+static dsys_log_fn g_dsys_log_cb = 0;
+
+void dsys_set_log_callback(dsys_log_fn fn)
+{
+    g_dsys_log_cb = fn;
+}
+
+static dom_abi_result dsys_core_query_interface(dom_iid iid, void** out_iface);
+
+static const dsys_time_api_v1 g_dsys_time_api_v1 = {
+    DOM_ABI_HEADER_INIT(1u, dsys_time_api_v1),
+    dsys_time_now_us,
+    dsys_sleep_ms
+};
+
+static const dsys_fs_api_v1 g_dsys_fs_api_v1 = {
+    DOM_ABI_HEADER_INIT(1u, dsys_fs_api_v1),
+    dsys_get_path,
+
+    dsys_file_open,
+    dsys_file_read,
+    dsys_file_write,
+    dsys_file_seek,
+    dsys_file_tell,
+    dsys_file_close,
+
+    dsys_dir_open,
+    dsys_dir_next,
+    dsys_dir_close
+};
+
+static const dsys_process_api_v1 g_dsys_process_api_v1 = {
+    DOM_ABI_HEADER_INIT(1u, dsys_process_api_v1),
+    dsys_process_spawn,
+    dsys_process_wait,
+    dsys_process_destroy
+};
+
+static const dsys_window_api_v1 g_dsys_window_api_v1 = {
+    DOM_ABI_HEADER_INIT(1u, dsys_window_api_v1),
+    dsys_window_create,
+    dsys_window_destroy,
+    dsys_window_set_mode,
+    dsys_window_set_size,
+    dsys_window_get_size,
+    dsys_window_get_native_handle,
+    dsys_window_should_close,
+    dsys_window_present
+};
+
+static const dsys_input_api_v1 g_dsys_input_api_v1 = {
+    DOM_ABI_HEADER_INIT(1u, dsys_input_api_v1),
+    dsys_poll_event,
+    dsys_input_poll_raw,
+    dsys_ime_start,
+    dsys_ime_stop,
+    dsys_ime_set_cursor,
+    dsys_ime_poll
+};
+
+static const dsys_core_api_v1 g_dsys_core_api_v1 = {
+    DOM_ABI_HEADER_INIT(1u, dsys_core_api_v1),
+    dsys_core_query_interface,
+    dsys_init,
+    dsys_shutdown,
+    dsys_get_caps,
+    dsys_set_log_callback
+};
+
 static int dsys_str_ieq(const char* a, const char* b)
 {
     if (!a || !b) return 0;
@@ -714,6 +783,37 @@ bool dsys_poll_event(dsys_event* out)
     return false;
 }
 
+int dsys_input_poll_raw(dsys_input_event* ev)
+{
+    if (ev) {
+        memset(ev, 0, sizeof(*ev));
+        ev->type = DSYS_INPUT_EVENT_NONE;
+    }
+    return 0;
+}
+
+void dsys_ime_start(void)
+{
+}
+
+void dsys_ime_stop(void)
+{
+}
+
+void dsys_ime_set_cursor(int32_t x, int32_t y)
+{
+    (void)x;
+    (void)y;
+}
+
+int dsys_ime_poll(dsys_ime_event* ev)
+{
+    if (ev) {
+        memset(ev, 0, sizeof(*ev));
+    }
+    return 0;
+}
+
 bool dsys_get_path(dsys_path_kind kind, char* buf, size_t buf_size)
 {
     const dsys_backend_vtable* backend;
@@ -840,4 +940,46 @@ void dsys_process_destroy(dsys_process* p)
     if (backend->process_destroy) {
         backend->process_destroy(p);
     }
+}
+
+static dom_abi_result dsys_core_query_interface(dom_iid iid, void** out_iface)
+{
+    if (!out_iface) {
+        return DSYS_ERR;
+    }
+    *out_iface = NULL;
+
+    switch (iid) {
+    case DSYS_IID_FS_API_V1:
+        *out_iface = (void*)&g_dsys_fs_api_v1;
+        return DSYS_OK;
+    case DSYS_IID_TIME_API_V1:
+        *out_iface = (void*)&g_dsys_time_api_v1;
+        return DSYS_OK;
+    case DSYS_IID_PROCESS_API_V1:
+        *out_iface = (void*)&g_dsys_process_api_v1;
+        return DSYS_OK;
+    case DSYS_IID_WINDOW_API_V1:
+        *out_iface = (void*)&g_dsys_window_api_v1;
+        return DSYS_OK;
+    case DSYS_IID_INPUT_API_V1:
+        *out_iface = (void*)&g_dsys_input_api_v1;
+        return DSYS_OK;
+    default:
+        break;
+    }
+
+    return DSYS_ERR_UNSUPPORTED;
+}
+
+dsys_result dsys_get_core_api(u32 requested_abi, dsys_core_api_v1* out)
+{
+    if (!out) {
+        return DSYS_ERR;
+    }
+    if (requested_abi != g_dsys_core_api_v1.abi_version) {
+        return DSYS_ERR_UNSUPPORTED;
+    }
+    *out = g_dsys_core_api_v1;
+    return DSYS_OK;
 }

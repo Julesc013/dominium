@@ -18,8 +18,6 @@ typedef struct dsys_process_handle {
     void* impl;
 } dsys_process_handle;
 
-typedef void (*dsys_log_fn)(const char* message);
-
 void dsys_set_log_callback(dsys_log_fn fn);
 
 dsys_proc_result dsys_proc_spawn(const char* path,

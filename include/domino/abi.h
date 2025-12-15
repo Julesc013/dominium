@@ -22,7 +22,7 @@ typedef int dom_abi_result;
 
 /* Convenience initializer for the ABI header prefix. */
 #define DOM_ABI_HEADER_INIT(version_u32, struct_type) \
-    { (u32)(version_u32), (u32)sizeof(struct_type) }
+    (u32)(version_u32), (u32)sizeof(struct_type)
 
 /* C89/C++98 static assert (no _Static_assert). */
 #define DOM_ABI__CONCAT2(a, b) a##b
@@ -44,4 +44,3 @@ typedef dom_abi_result (*dom_query_interface_fn)(dom_iid iid, void** out_iface);
 #endif
 
 #endif /* DOMINO_ABI_H */
-
