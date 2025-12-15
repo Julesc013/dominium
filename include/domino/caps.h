@@ -26,6 +26,10 @@ extern "C" {
 
 typedef u32 dom_subsystem_id;
 
+/* Built-in subsystem IDs (stable numeric identifiers). */
+#define DOM_SUBSYS_DSYS ((dom_subsystem_id)0x44535953u) /* 'DSYS' */
+#define DOM_SUBSYS_DGFX ((dom_subsystem_id)0x44474658u) /* 'DGFX' */
+
 typedef enum dom_caps_perf_class_e {
     DOM_CAPS_PERF_BASELINE = 0,
     DOM_CAPS_PERF_COMPAT   = 1,
@@ -126,6 +130,7 @@ struct dom_profile;
 
 /* Registry lifecycle */
 dom_caps_result dom_caps_register_backend(const dom_backend_desc* desc);
+dom_caps_result dom_caps_register_builtin_backends(void);
 dom_caps_result dom_caps_finalize_registry(void);
 
 /* Inspection */
@@ -147,4 +152,3 @@ dom_caps_result dom_caps_get_audit_log(const dom_selection* sel,
 #endif
 
 #endif /* DOMINO_CAPS_H_INCLUDED */
-

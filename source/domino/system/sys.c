@@ -1,5 +1,6 @@
 #define DOMINO_SYS_INTERNAL 1
 #include "domino/sys.h"
+#include "domino/caps.h"
 #include "dsys_internal.h"
 
 #include <stdio.h>
@@ -139,6 +140,41 @@ static const char* dsys_compiled_backend_name(void)
 #else
     return "null";
 #endif
+}
+
+static const void* dsys_caps_get_core_api_ptr(u32 requested_abi)
+{
+    if (requested_abi != g_dsys_core_api_v1.abi_version) {
+        return (const void*)0;
+    }
+    return (const void*)&g_dsys_core_api_v1;
+}
+
+dom_caps_result dom_dsys_register_caps_backends(void)
+{
+    dom_backend_desc desc;
+
+    memset(&desc, 0, sizeof(desc));
+    desc.abi_version = DOM_CAPS_ABI_VERSION;
+    desc.struct_size = (u32)sizeof(dom_backend_desc);
+
+    desc.subsystem_id = DOM_SUBSYS_DSYS;
+    desc.subsystem_name = "sys";
+
+    desc.backend_name = dsys_compiled_backend_name();
+    desc.backend_priority = 100u;
+
+    desc.required_hw_flags = 0u;
+    desc.subsystem_flags = 0u;
+    desc.backend_flags = 0u;
+
+    desc.determinism = DOM_DET_D2_BEST_EFFORT;
+    desc.perf_class = DOM_CAPS_PERF_BASELINE;
+
+    desc.get_api = dsys_caps_get_core_api_ptr;
+    desc.probe = (dom_caps_probe_fn)0;
+
+    return dom_caps_register_backend(&desc);
 }
 
 int dom_sys_select_backend(const char* name)

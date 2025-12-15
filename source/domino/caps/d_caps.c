@@ -205,9 +205,9 @@ dom_caps_result dom_caps_select(const struct dom_profile* profile,
                                 dom_selection* out)
 {
     u32 i;
-    u32 out_count;
     u32 lockstep_strict;
-    (void)profile;
+    u32 profile_ok;
+    u32 out_count;
 
     if (!out) {
         return DOM_CAPS_ERR_NULL;
@@ -221,10 +221,12 @@ dom_caps_result dom_caps_select(const struct dom_profile* profile,
         return out->result;
     }
 
+    profile_ok = 0u;
     lockstep_strict = 0u;
     if (profile) {
         if (profile->abi_version == (u32)DOM_PROFILE_ABI_VERSION &&
             profile->struct_size == (u32)sizeof(dom_profile)) {
+            profile_ok = 1u;
             lockstep_strict = profile->lockstep_strict ? 1u : 0u;
         }
     }
@@ -234,36 +236,101 @@ dom_caps_result dom_caps_select(const struct dom_profile* profile,
     while (i < g_backend_count) {
         dom_subsystem_id sid;
         const dom_backend_desc* chosen;
-        const dom_backend_desc* b;
         u32 sub_flags;
+        const char* subsystem_name;
+        const char* override_backend;
+        u32 group_end;
+        u32 j;
         u32 saw_hw_ok;
+        u32 chosen_by_override;
 
         sid = g_backends[i].subsystem_id;
         sub_flags = g_backends[i].subsystem_flags;
+        subsystem_name = g_backends[i].subsystem_name;
+        override_backend = (const char*)0;
         saw_hw_ok = 0u;
+        chosen_by_override = 0u;
 
-        /* Select the first eligible backend in the sorted group. */
+        group_end = i;
+        while (group_end < g_backend_count && g_backends[group_end].subsystem_id == sid) {
+            group_end += 1u;
+        }
+
+        if (profile_ok && profile) {
+            /* Preferred gfx backend shortcut. */
+            if (sid == DOM_SUBSYS_DGFX && profile->preferred_gfx_backend[0]) {
+                override_backend = profile->preferred_gfx_backend;
+            }
+
+            /* Generic override list (exact match on subsystem_name) */
+            if (!override_backend && subsystem_name && subsystem_name[0]) {
+                for (j = 0u; j < profile->override_count; ++j) {
+                    const dom_profile_override* o = &profile->overrides[j];
+                    if (caps_str_icmp(o->subsystem_key, subsystem_name) == 0) {
+                        override_backend = o->backend_name;
+                    }
+                }
+            }
+
+            /* DSYS facet aliases: any "sys.*" preference maps to DSYS in this pass. */
+            if (!override_backend && sid == DOM_SUBSYS_DSYS) {
+                for (j = 0u; j < profile->override_count; ++j) {
+                    const dom_profile_override* o = &profile->overrides[j];
+                    if (strncmp(o->subsystem_key, "sys.", 4) == 0) {
+                        override_backend = o->backend_name;
+                    }
+                }
+            }
+        }
+
         chosen = (const dom_backend_desc*)0;
-        while (i < g_backend_count && g_backends[i].subsystem_id == sid) {
-            b = &g_backends[i];
-            if (caps_backend_hw_ok(b, hw)) {
+        if (override_backend && override_backend[0]) {
+            for (j = i; j < group_end; ++j) {
+                const dom_backend_desc* b = &g_backends[j];
+                if (caps_str_icmp(b->backend_name, override_backend) == 0) {
+                    chosen = b;
+                    break;
+                }
+            }
+            if (!chosen) {
+                out->result = DOM_CAPS_ERR_NO_ELIGIBLE;
+                out->fail_reason = DOM_SEL_FAIL_OVERRIDE_NOT_FOUND;
+                out->fail_subsystem_id = sid;
+                return out->result;
+            }
+            if (!caps_backend_hw_ok(chosen, hw)) {
+                out->result = DOM_CAPS_ERR_NO_ELIGIBLE;
+                out->fail_reason = DOM_SEL_FAIL_NO_ELIGIBLE_BACKEND;
+                out->fail_subsystem_id = sid;
+                return out->result;
+            }
+            if (lockstep_strict && ((sub_flags & DOM_CAPS_SUBSYS_LOCKSTEP_RELEVANT) != 0u)) {
+                if (chosen->determinism != DOM_DET_D0_BIT_EXACT) {
+                    out->result = DOM_CAPS_ERR_NO_ELIGIBLE;
+                    out->fail_reason = DOM_SEL_FAIL_LOCKSTEP_REQUIRES_D0;
+                    out->fail_subsystem_id = sid;
+                    return out->result;
+                }
+            }
+            chosen_by_override = 1u;
+        } else {
+            for (j = i; j < group_end; ++j) {
+                const dom_backend_desc* b = &g_backends[j];
+                if (!caps_backend_hw_ok(b, hw)) {
+                    continue;
+                }
                 saw_hw_ok = 1u;
                 if (lockstep_strict && ((sub_flags & DOM_CAPS_SUBSYS_LOCKSTEP_RELEVANT) != 0u)) {
                     if (b->determinism != DOM_DET_D0_BIT_EXACT) {
-                        i += 1u;
                         continue;
                     }
                 }
                 chosen = b;
                 break;
             }
-            i += 1u;
         }
 
-        /* Skip remaining entries in this subsystem group. */
-        while (i < g_backend_count && g_backends[i].subsystem_id == sid) {
-            i += 1u;
-        }
+        i = group_end;
 
         if (!chosen) {
             out->result = DOM_CAPS_ERR_NO_ELIGIBLE;
@@ -287,7 +354,7 @@ dom_caps_result dom_caps_select(const struct dom_profile* profile,
         out->entries[out_count].determinism = chosen->determinism;
         out->entries[out_count].perf_class = chosen->perf_class;
         out->entries[out_count].backend_priority = chosen->backend_priority;
-        out->entries[out_count].chosen_by_override = 0u;
+        out->entries[out_count].chosen_by_override = chosen_by_override;
         out_count += 1u;
     }
 
@@ -448,6 +515,8 @@ dom_caps_result dom_caps_get_audit_log(const dom_selection* sel,
         caps_append_str(buf, cap, &len, caps_perf_class_name(e->perf_class));
         caps_append_str(buf, cap, &len, " prio=");
         caps_append_u32(buf, cap, &len, e->backend_priority);
+        caps_append_str(buf, cap, &len, " reason=");
+        caps_append_str(buf, cap, &len, e->chosen_by_override ? "override" : "priority");
         caps_append_char(buf, cap, &len, '\n');
     }
 
