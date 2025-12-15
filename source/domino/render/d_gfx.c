@@ -53,7 +53,7 @@ dom_caps_result dom_dgfx_register_caps_backends(void)
     desc.subsystem_id = DOM_SUBSYS_DGFX;
     desc.subsystem_name = "gfx";
     desc.required_hw_flags = 0u;
-    desc.subsystem_flags = 0u;
+    desc.subsystem_flags = DOM_CAPS_SUBSYS_LOCKSTEP_RELEVANT;
     desc.backend_flags = DOM_CAPS_BACKEND_PRESENTATION_ONLY;
     desc.perf_class = DOM_CAPS_PERF_BASELINE;
     desc.get_api = dgfx_caps_get_ir_api_ptr;
@@ -62,11 +62,23 @@ dom_caps_result dom_dgfx_register_caps_backends(void)
 #if DOM_BACKEND_SOFT
     desc.backend_name = "soft";
     desc.backend_priority = 100u;
-    desc.determinism = DOM_DET_D2_BEST_EFFORT;
+    desc.determinism = DOM_DET_D0_BIT_EXACT;
     r = dom_caps_register_backend(&desc);
     if (r != DOM_CAPS_OK) {
         return r;
     }
+#endif
+
+#if DOM_BACKEND_DX9
+    desc.backend_name = "dx9";
+    desc.backend_priority = 100u;
+    desc.determinism = DOM_DET_D2_BEST_EFFORT;
+    desc.perf_class = DOM_CAPS_PERF_PERF;
+    r = dom_caps_register_backend(&desc);
+    if (r != DOM_CAPS_OK) {
+        return r;
+    }
+    desc.perf_class = DOM_CAPS_PERF_BASELINE; /* restore default for later entries */
 #endif
 
 #if DOM_BACKEND_NULL
@@ -151,41 +163,47 @@ static void d_gfx_append(d_gfx_cmd_buffer *buf, const d_gfx_cmd *cmd)
 int d_gfx_init(const char *backend_name)
 {
     const d_gfx_backend_soft *chosen;
+    const int have_request = (backend_name && backend_name[0]) ? 1 : 0;
     chosen = (const d_gfx_backend_soft*)0;
 
 #if DOM_BACKEND_SOFT
     d_gfx_soft_set_framebuffer_size(g_backbuffer_w, g_backbuffer_h);
 #endif
 
-#if !DOM_BACKEND_NULL
-    if (backend_name && backend_name[0] && strcmp(backend_name, "null") == 0) {
-        return 0;
-    }
-#endif
-
-#if !DOM_BACKEND_SOFT
-    if (backend_name && backend_name[0] && strcmp(backend_name, "soft") == 0) {
-        return 0;
-    }
-#endif
-
 #if DOM_BACKEND_NULL
-    if (backend_name && backend_name[0] && strcmp(backend_name, "null") == 0) {
+    if (have_request && strcmp(backend_name, "null") == 0) {
         chosen = d_gfx_null_register_backend();
     }
 #endif
 
 #if DOM_BACKEND_SOFT
-    if (!chosen) {
+    if ((have_request && strcmp(backend_name, "soft") == 0) && !chosen) {
+        chosen = d_gfx_soft_register_backend();
+    }
+#endif
+
+#if DOM_BACKEND_DX9
+    if (have_request && strcmp(backend_name, "dx9") == 0) {
+        /* Wired in Prompt 5; implementation lands in the DX9 backend pass. */
+        return 0;
+    }
+#endif
+
+#if DOM_BACKEND_SOFT
+    if (!have_request && !chosen) {
         chosen = d_gfx_soft_register_backend();
     }
 #endif
 
 #if DOM_BACKEND_NULL
-    if (!chosen) {
+    if (!have_request && !chosen) {
         chosen = d_gfx_null_register_backend();
     }
 #endif
+
+    if (have_request && !chosen) {
+        return 0;
+    }
 
     if (!chosen || !chosen->init) {
         return 0;
@@ -325,6 +343,7 @@ static int d_gfx_abs_i32(int v)
 int dgfx_init(const dgfx_desc *desc)
 {
     dgfx_ir_api_v1 api;
+    const char* backend_name;
     if (desc) {
         if (desc->width > 0) g_backbuffer_w = desc->width;
         if (desc->height > 0) g_backbuffer_h = desc->height;
@@ -335,7 +354,16 @@ int dgfx_init(const dgfx_desc *desc)
     if (dgfx_get_ir_api(1u, &api) != DGFX_OK) {
         return 0;
     }
-    return api.init("soft");
+    backend_name = "soft";
+    if (desc) {
+        if (desc->backend == DGFX_BACKEND_SOFT) backend_name = "soft";
+        else if (desc->backend == DGFX_BACKEND_DX9) backend_name = "dx9";
+        else if (desc->backend == DGFX_BACKEND_NULL) backend_name = "null";
+        else if (desc->backend != 0) {
+            return 0;
+        }
+    }
+    return api.init(backend_name);
 }
 
 void dgfx_shutdown(void)
