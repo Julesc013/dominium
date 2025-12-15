@@ -4,17 +4,25 @@
 #include "domino/gfx.h"
 #include "domino/caps.h"
 #include "domino/config_base.h"
+#include "d_gfx_internal.h"
 #include "soft/d_gfx_soft.h"
 #include "null/d_gfx_null.h"
+#include "dx9/d_gfx_dx9.h"
 
 /* Backbuffer defaults */
 static i32 g_backbuffer_w = 800;
 static i32 g_backbuffer_h = 600;
+static void* g_native_window = 0;
 
 static const d_gfx_backend_soft *g_backend = 0;
 static d_gfx_cmd_buffer g_frame_cmd_buffer;
 
 static dom_abi_result dgfx_ir_query_interface(dom_iid iid, void** out_iface);
+
+void* d_gfx_get_native_window(void)
+{
+    return g_native_window;
+}
 
 static const dgfx_ir_api_v1 g_dgfx_ir_api_v1 = {
     DOM_ABI_HEADER_INIT(1u, dgfx_ir_api_v1),
@@ -184,14 +192,19 @@ int d_gfx_init(const char *backend_name)
 
 #if DOM_BACKEND_DX9
     if (have_request && strcmp(backend_name, "dx9") == 0) {
-        /* Wired in Prompt 5; implementation lands in the DX9 backend pass. */
-        return 0;
+        chosen = d_gfx_dx9_register_backend();
     }
 #endif
 
 #if DOM_BACKEND_SOFT
     if (!have_request && !chosen) {
         chosen = d_gfx_soft_register_backend();
+    }
+#endif
+
+#if DOM_BACKEND_DX9
+    if (!have_request && !chosen) {
+        chosen = d_gfx_dx9_register_backend();
     }
 #endif
 
@@ -344,9 +357,11 @@ int dgfx_init(const dgfx_desc *desc)
 {
     dgfx_ir_api_v1 api;
     const char* backend_name;
+    g_native_window = 0;
     if (desc) {
         if (desc->width > 0) g_backbuffer_w = desc->width;
         if (desc->height > 0) g_backbuffer_h = desc->height;
+        g_native_window = desc->native_window;
         if (desc->backend == DGFX_BACKEND_NULL) {
             return 1;
         }
@@ -372,6 +387,7 @@ void dgfx_shutdown(void)
     if (dgfx_get_ir_api(1u, &api) == DGFX_OK) {
         api.shutdown();
     }
+    g_native_window = 0;
 }
 
 void dgfx_begin_frame(void)
