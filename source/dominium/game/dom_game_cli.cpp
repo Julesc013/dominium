@@ -4,6 +4,7 @@
 #include <cstring>
 
 #include "dom_game_app.h"
+#include "dom_profile_cli.h"
 
 namespace dom {
 
@@ -171,6 +172,22 @@ bool parse_game_cli_args(int argc, char **argv, GameConfig &cfg) {
 int main(int argc, char **argv) {
     dom::GameConfig cfg;
     dom::DomGameApp app;
+    dom::ProfileCli profile_cli;
+    std::string profile_err;
+
+    dom::init_default_profile_cli(profile_cli);
+    if (!dom::parse_profile_cli_args(argc, argv, profile_cli, profile_err)) {
+        std::printf("Error: %s\n", profile_err.c_str());
+        return 2;
+    }
+    if (profile_cli.print_caps) {
+        dom::print_caps(stdout);
+        return 0;
+    }
+    if (profile_cli.print_selection) {
+        dom::print_caps(stdout);
+        return dom::print_selection(profile_cli.profile, stdout, stderr);
+    }
 
     dom::init_default_game_config(cfg);
     if (!dom::parse_game_cli_args(argc, argv, cfg)) {

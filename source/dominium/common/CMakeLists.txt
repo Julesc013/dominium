@@ -13,6 +13,7 @@ add_library(dominium_common STATIC
     dom_packset.cpp
     dom_session.cpp
     dom_compat.cpp
+    dom_profile_cli.cpp
 )
 
 target_include_directories(dominium_common
