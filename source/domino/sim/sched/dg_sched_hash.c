@@ -1,6 +1,6 @@
 #include <string.h>
 
-#include "sim/sched/dg_hash.h"
+#include "sim/sched/dg_sched_hash.h"
 
 static u64 dg_hash64_update_bytes(u64 h, const unsigned char *data, u32 len) {
     u32 i;
@@ -35,7 +35,7 @@ static u64 dg_hash64_update_u64_le(u64 h, u64 v) {
     return dg_hash64_update_bytes(h, buf, 8u);
 }
 
-void dg_hash_init(dg_hash_ctx *hc) {
+void dg_sched_hash_init(dg_sched_hash_ctx *hc) {
     if (!hc) {
         return;
     }
@@ -43,7 +43,7 @@ void dg_hash_init(dg_hash_ctx *hc) {
     hc->deltas_hash = 14695981039346656037ULL;
 }
 
-void dg_hash_begin_tick(dg_hash_ctx *hc, dg_tick tick) {
+void dg_sched_hash_begin_tick(dg_sched_hash_ctx *hc, dg_tick tick) {
     u32 i;
     if (!hc) {
         return;
@@ -57,7 +57,7 @@ void dg_hash_begin_tick(dg_hash_ctx *hc, dg_tick tick) {
     hc->deltas_hash = 14695981039346656037ULL;
 }
 
-void dg_hash_phase_begin(dg_hash_ctx *hc, dg_phase phase) {
+void dg_sched_hash_phase_begin(dg_sched_hash_ctx *hc, dg_phase phase) {
     if (!hc) {
         return;
     }
@@ -67,7 +67,7 @@ void dg_hash_phase_begin(dg_hash_ctx *hc, dg_phase phase) {
     hc->phase_begin_count[(u32)phase] += 1u;
 }
 
-void dg_hash_phase_end(dg_hash_ctx *hc, dg_phase phase) {
+void dg_sched_hash_phase_end(dg_sched_hash_ctx *hc, dg_phase phase) {
     if (!hc) {
         return;
     }
@@ -77,7 +77,7 @@ void dg_hash_phase_end(dg_hash_ctx *hc, dg_phase phase) {
     hc->phase_end_count[(u32)phase] += 1u;
 }
 
-void dg_hash_record_committed_delta(dg_hash_ctx *hc, const dg_order_key *key, const dg_pkt_delta *delta) {
+void dg_sched_hash_record_committed_delta(dg_sched_hash_ctx *hc, const dg_order_key *key, const dg_pkt_delta *delta) {
     dg_pkt_hash ph;
     u64 h;
     if (!hc || !key || !delta) {
@@ -94,4 +94,3 @@ void dg_hash_record_committed_delta(dg_hash_ctx *hc, const dg_order_key *key, co
     hc->deltas_hash = (dg_pkt_hash)h;
     hc->deltas_committed += 1u;
 }
-

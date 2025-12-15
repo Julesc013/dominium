@@ -64,8 +64,8 @@ void dg_sched_init(dg_sched *s) {
     s->work_user = (void *)0;
     dg_delta_registry_init(&s->delta_registry);
     dg_delta_buffer_init(&s->delta_buffer);
-    dg_hash_init(&s->hash);
-    dg_replay_init(&s->replay);
+    dg_sched_hash_init(&s->hash);
+    dg_sched_replay_init(&s->replay);
 }
 
 void dg_sched_free(dg_sched *s) {
@@ -306,8 +306,8 @@ int dg_sched_tick(dg_sched *s, void *world, dg_tick tick) {
     }
 
     s->tick = tick;
-    dg_hash_begin_tick(&s->hash, tick);
-    dg_replay_begin_tick(&s->replay, tick);
+    dg_sched_hash_begin_tick(&s->hash, tick);
+    dg_sched_replay_begin_tick(&s->replay, tick);
     dg_delta_buffer_begin_tick(&s->delta_buffer, tick);
 
     for (phase = (dg_phase)0; phase < DG_PH_COUNT; phase = (dg_phase)(phase + 1)) {
@@ -316,8 +316,8 @@ int dg_sched_tick(dg_sched *s, void *world, dg_tick tick) {
         dg_budget_set_limits(&s->budget, s->phase_budget_limit[(u32)phase], s->domain_default_limit, s->chunk_default_limit);
         dg_budget_begin_tick(&s->budget, tick);
 
-        dg_hash_phase_begin(&s->hash, phase);
-        dg_replay_phase_begin(&s->replay, phase);
+        dg_sched_hash_phase_begin(&s->hash, phase);
+        dg_sched_replay_phase_begin(&s->replay, phase);
 
         dg_sched_run_phase_handlers(s, phase);
         (void)dg_sched_process_phase_work(s, phase, (dg_sched_work_fn)0, (void *)0);
@@ -339,13 +339,13 @@ int dg_sched_tick(dg_sched *s, void *world, dg_tick tick) {
                 pkt.hdr = r->hdr;
                 pkt.payload = r->payload;
                 pkt.payload_len = r->payload_len;
-                dg_hash_record_committed_delta(&s->hash, &r->key, &pkt);
-                dg_replay_record_committed_delta(&s->replay, &r->key, &pkt);
+                dg_sched_hash_record_committed_delta(&s->hash, &r->key, &pkt);
+                dg_sched_replay_record_committed_delta(&s->replay, &r->key, &pkt);
             }
         }
 
-        dg_hash_phase_end(&s->hash, phase);
-        dg_replay_phase_end(&s->replay, phase);
+        dg_sched_hash_phase_end(&s->hash, phase);
+        dg_sched_replay_phase_end(&s->replay, phase);
     }
 
     return 0;

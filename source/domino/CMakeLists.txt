@@ -18,6 +18,7 @@ add_library(domino_core STATIC
     core/d_account.c
     core/d_org.c
     core/d_org_validate.c
+    dknowledge.c
     content/d_blueprint.c
     content/d_content_schema.c
     content/d_content.c
@@ -152,8 +153,14 @@ add_library(domino_core STATIC
     sim/sched/dg_budget.c
     sim/sched/dg_work_item.c
     sim/sched/dg_work_queue.c
-    sim/sched/dg_hash.c
-    sim/sched/dg_replay.c
+    sim/sched/dg_sched_hash.c
+    sim/sched/dg_sched_replay.c
+    sim/hash/dg_hash.c
+    sim/hash/dg_hash_stream.c
+    sim/hash/dg_hash_registry.c
+    sim/replay/dg_replay.c
+    sim/replay/dg_replay_stream.c
+    sim/replay/dg_replay_validate.c
     sim/sched/dg_sched.c
     sim/bus/dg_event_bus.c
     sim/bus/dg_message_bus.c
@@ -216,9 +223,15 @@ target_sources(domino_core PRIVATE
     sim/sched/dg_budget.h
     sim/sched/dg_work_item.h
     sim/sched/dg_work_queue.h
-    sim/sched/dg_hash.h
-    sim/sched/dg_replay.h
+    sim/sched/dg_sched_hash.h
+    sim/sched/dg_sched_replay.h
     sim/sched/dg_sched.h
+    sim/hash/dg_hash.h
+    sim/hash/dg_hash_stream.h
+    sim/hash/dg_hash_registry.h
+    sim/replay/dg_replay.h
+    sim/replay/dg_replay_stream.h
+    sim/replay/dg_replay_validate.h
     sim/dg_dirtyset.h
     sim/dg_rebuild_work.h
     sim/dg_rebuild.h

@@ -316,3 +316,8 @@ Determinism paths MUST explicitly forbid:
 - `docs/SPEC_TRANS_STRUCT_DECOR.md`
 - `docs/SPEC_DOMAINS_FRAMES_PROP.md`
 - `docs/SPEC_KNOWLEDGE_VIS_COMMS.md`
+
+## Engine core eligibility
+
+> Any system that cannot be hashed, replayed, budgeted, and ordered canonically
+> is not eligible to exist in the engine core.
