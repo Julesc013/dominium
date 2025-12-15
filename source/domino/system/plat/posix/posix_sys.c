@@ -17,7 +17,7 @@
 #define PATH_MAX 4096
 #endif
 
-static dsys_caps g_posix_caps = { "posix", 0u, false, false, false, false };
+static dsys_caps g_posix_caps = { "posix_headless", 0u, false, false, false, true };
 
 static dsys_result posix_init(void);
 static void        posix_shutdown(void);
