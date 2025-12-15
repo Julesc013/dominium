@@ -86,17 +86,67 @@ dom_caps_result dom_dgfx_register_caps_backends(void)
     desc.backend_priority = 100u;
     desc.determinism = DOM_DET_D2_BEST_EFFORT;
     desc.perf_class = DOM_CAPS_PERF_PERF;
+    desc.required_hw_flags = DOM_HW_OS_WIN32;
     r = dom_caps_register_backend(&desc);
     if (r != DOM_CAPS_OK) {
         return r;
     }
-    desc.perf_class = DOM_CAPS_PERF_BASELINE; /* restore default for later entries */
+#endif
+
+#if DOM_BACKEND_DX11
+    desc.backend_name = "dx11";
+    desc.backend_priority = 100u;
+    desc.determinism = DOM_DET_D2_BEST_EFFORT;
+    desc.perf_class = DOM_CAPS_PERF_PERF;
+    desc.required_hw_flags = DOM_HW_OS_WIN32;
+    r = dom_caps_register_backend(&desc);
+    if (r != DOM_CAPS_OK) {
+        return r;
+    }
+#endif
+
+#if DOM_BACKEND_GL2
+    desc.backend_name = "gl2";
+    desc.backend_priority = 90u;
+    desc.determinism = DOM_DET_D2_BEST_EFFORT;
+    desc.perf_class = DOM_CAPS_PERF_COMPAT;
+    desc.required_hw_flags = DOM_HW_OS_WIN32;
+    r = dom_caps_register_backend(&desc);
+    if (r != DOM_CAPS_OK) {
+        return r;
+    }
+#endif
+
+#if DOM_BACKEND_VK1
+    desc.backend_name = "vk1";
+    desc.backend_priority = 100u;
+    desc.determinism = DOM_DET_D2_BEST_EFFORT;
+    desc.perf_class = DOM_CAPS_PERF_PERF;
+    desc.required_hw_flags = 0u;
+    r = dom_caps_register_backend(&desc);
+    if (r != DOM_CAPS_OK) {
+        return r;
+    }
+#endif
+
+#if DOM_BACKEND_METAL
+    desc.backend_name = "metal";
+    desc.backend_priority = 100u;
+    desc.determinism = DOM_DET_D2_BEST_EFFORT;
+    desc.perf_class = DOM_CAPS_PERF_PERF;
+    desc.required_hw_flags = DOM_HW_OS_APPLE;
+    r = dom_caps_register_backend(&desc);
+    if (r != DOM_CAPS_OK) {
+        return r;
+    }
 #endif
 
 #if DOM_BACKEND_NULL
     desc.backend_name = "null";
     desc.backend_priority = 10u;
     desc.determinism = DOM_DET_D0_BIT_EXACT;
+    desc.perf_class = DOM_CAPS_PERF_BASELINE;
+    desc.required_hw_flags = 0u;
     return dom_caps_register_backend(&desc);
 #else
     return DOM_CAPS_OK;

@@ -85,6 +85,7 @@ static int print_selection_audit(void)
 {
     dom_profile profile;
     dom_selection sel;
+    dom_hw_caps hw;
     char audit[DOM_CAPS_AUDIT_LOG_MAX_BYTES];
     u32 len;
 
@@ -107,7 +108,11 @@ static int print_selection_audit(void)
     memset(&sel, 0, sizeof(sel));
     sel.abi_version = DOM_CAPS_ABI_VERSION;
     sel.struct_size = (u32)sizeof(sel);
-    if (dom_caps_select(&profile, (const dom_hw_caps*)0, &sel) != DOM_CAPS_OK) {
+    memset(&hw, 0, sizeof(hw));
+    if (dom_hw_caps_probe_host(&hw) != 0) {
+        memset(&hw, 0, sizeof(hw));
+    }
+    if (dom_caps_select(&profile, &hw, &sel) != DOM_CAPS_OK) {
         printf("caps: select failed\n");
     }
 
@@ -405,4 +410,3 @@ int main(int argc, char** argv)
 
     return rc ? 1 : 0;
 }
-

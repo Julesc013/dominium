@@ -49,6 +49,23 @@ typedef struct dom_hw_caps_s {
     u32 gpu_flags;
 } dom_hw_caps;
 
+/* Host capability flags (bitset values for (os_flags|cpu_flags|gpu_flags)). */
+
+/* OS flags (bits 0..7). */
+#define DOM_HW_OS_WIN32  (1u << 0u)
+#define DOM_HW_OS_UNIX   (1u << 1u)
+#define DOM_HW_OS_APPLE  (1u << 2u)
+
+/* CPU flags (bits 8..15). */
+#define DOM_HW_CPU_X86_16 (1u << 8u)
+#define DOM_HW_CPU_X86_32 (1u << 9u)
+#define DOM_HW_CPU_X86_64 (1u << 10u)
+#define DOM_HW_CPU_ARM_32 (1u << 11u)
+#define DOM_HW_CPU_ARM_64 (1u << 12u)
+
+/* Basic host probe (no allocations, no syscalls required). */
+dom_abi_result dom_hw_caps_probe_host(dom_hw_caps* io_hw_caps);
+
 typedef dom_abi_result (*dom_caps_probe_fn)(dom_hw_caps* io_hw_caps);
 
 /*
