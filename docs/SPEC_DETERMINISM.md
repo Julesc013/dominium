@@ -49,6 +49,26 @@ stimuli or authoritative state. Instead:
 - Delivery/application/sampling work is bounded via deterministic budgets and
   carryover queues; no time-based scheduling is allowed.
 
+### Agent/controller substrate (sensors → observations → minds → intents)
+Determinism paths MAY include non-semantic actor behavior as an IO pipeline:
+- **Agents are composition-only**: agents are data records with component
+  attachments; there is no inheritance-based behavior polymorphism.
+- **Sensors** read authoritative state via deterministic queries only and emit
+  `dg_pkt_observation` into per-agent bounded buffers.
+- **Minds/controllers** consume observation buffers + agent components and emit
+  `dg_pkt_intent` only; they MUST NOT mutate authoritative state directly.
+- **Group controllers** operate on stable member lists and aggregated
+  observations and emit group intents; member agents may incorporate these
+  intents during their own mind step.
+
+Deterministic enforcement:
+- **Stride decimation** MUST use `dg_stride_should_run()` keyed by stable IDs
+  (e.g. `(agent_id, sensor_id)` / `(agent_id, mind_id)`).
+- **Budgets** MUST consume integer work units and defer overflow work into
+  deterministic queues (`dg_budget`, `dg_work_queue`).
+- **PRNG** (if used by minds/VMs) MUST be a deterministic stream keyed by
+  `(agent_id, stream_id)` and MUST NOT depend on enumeration order.
+
 ### Stable IDs
 All deterministic objects that can appear in packets, deltas, hashes, or
 serialized artifacts MUST have stable numeric IDs.

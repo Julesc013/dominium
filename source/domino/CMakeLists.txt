@@ -29,6 +29,14 @@ add_library(domino_core STATIC
     econ/d_econ_metrics.c
     econ/d_econ_validate.c
     ai/d_agent.c
+    agent/dg_agent.c
+    agent/dg_agent_comp.c
+    agent/mind/dg_mind.c
+    agent/mind/dg_mind_registry.c
+    agent/act/dg_intent_buffer.c
+    agent/act/dg_intent_dispatch.c
+    agent/group/dg_group.c
+    agent/group/dg_group_ctrl.c
     app/startup.c
     cli/cli.c
     tui/tui.c
@@ -126,6 +134,9 @@ add_library(domino_core STATIC
     sim/act/dg_delta_registry.c
     sim/act/dg_delta_buffer.c
     sim/act/dg_delta_commit.c
+    sim/act/dg_capability.c
+    sim/act/dg_action.c
+    sim/act/dg_action_registry.c
     sim/pkt/dg_pkt_common.c
     sim/pkt/pkt_hash.c
     sim/pkt/registry/dg_type_registry.c
@@ -148,6 +159,9 @@ add_library(domino_core STATIC
     sim/lod/dg_lod_index.c
     sim/lod/dg_interest.c
     sim/lod/dg_promo.c
+    sim/sense/dg_observation_buffer.c
+    sim/sense/dg_sensor.c
+    sim/sense/dg_sensor_registry.c
     sim/sim.c
 )
 
@@ -158,6 +172,15 @@ target_sources(domino_core PRIVATE
     core/dg_det_hash.h
     core/dg_pose.h
     core/dg_quant.h
+    agent/dg_agent_ids.h
+    agent/dg_agent_comp.h
+    agent/dg_agent.h
+    agent/mind/dg_mind.h
+    agent/mind/dg_mind_registry.h
+    agent/act/dg_intent_buffer.h
+    agent/act/dg_intent_dispatch.h
+    agent/group/dg_group.h
+    agent/group/dg_group_ctrl.h
     sim/sched/d_sim_sched.h
     sim/sched/dg_phase.h
     sim/sched/dg_budget.h
@@ -195,7 +218,13 @@ target_sources(domino_core PRIVATE
     sim/act/dg_delta_registry.h
     sim/act/dg_delta_buffer.h
     sim/act/dg_delta_commit.h
+    sim/act/dg_capability.h
+    sim/act/dg_action.h
+    sim/act/dg_action_registry.h
     sim/sense/d_sim_sense.h
+    sim/sense/dg_observation_buffer.h
+    sim/sense/dg_sensor.h
+    sim/sense/dg_sensor_registry.h
     sim/know/d_sim_know.h
     sim/vis/d_sim_vis.h
     sim/prop/d_sim_prop.h

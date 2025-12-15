@@ -8,7 +8,19 @@ Applies to:
 - validation and action compilation
 - delta application as the only legal state mutation
 
+This spec also covers the semantic-free agent/controller substrate:
+- sensors sample deterministic world views into **observations**
+- minds/controllers consume observations and emit **intents**
+- the action pipeline converts intents into **deltas** for commit
+
 ## Pipeline (authoritative)
+0. **Sensors → Observations → Minds/Controllers**
+   - Sensors read authoritative state via deterministic queries only and buffer
+     `dg_pkt_observation` per agent.
+   - Minds/controllers may read observation buffers + agent components and emit
+     `dg_pkt_intent` packets only.
+   - No direct mutation is permitted from sensors/minds/controllers.
+
 1. **Intent**
    - External deterministic command input for tick `N`.
    - Immutable and TLV-versioned (`docs/SPEC_PACKETS.md`).
@@ -47,6 +59,10 @@ Commit (`PH_COMMIT`) is the sole mutation point:
 - Intents are processed in canonical order.
 - Deltas are applied in canonical order; tie-breaking by stable IDs.
 - No pointer-order or hash-order behavior is permitted.
+
+Additional canonical orderings for the agent substrate:
+- Observations: `(type_id, src_entity, seq)` with deterministic tie-breaks.
+- Intents: `(tick, agent_id, intent_type_id, seq)` where `agent_id = src_entity`.
 
 ## Forbidden behaviors
 - Direct mutation of engine state outside deltas (including UI-driven writes).
