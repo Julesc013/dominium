@@ -25,6 +25,7 @@ static const dsys_caps g_null_caps = {
 static const dsys_backend_vtable g_null_vtable;
 static const dsys_backend_vtable* g_dsys = NULL;
 static const char* g_requested_backend = NULL;
+static uint64_t g_null_time_us = 0u;
 
 static dsys_log_fn g_dsys_log_cb = 0;
 
@@ -169,6 +170,9 @@ dom_caps_result dom_dsys_register_caps_backends(void)
     desc.backend_flags = 0u;
 
     desc.determinism = DOM_DET_D2_BEST_EFFORT;
+    if (dsys_str_ieq(desc.backend_name, "null")) {
+        desc.determinism = DOM_DET_D0_BIT_EXACT;
+    }
     desc.perf_class = DOM_CAPS_PERF_BASELINE;
 
     desc.get_api = dsys_caps_get_core_api_ptr;
@@ -202,6 +206,7 @@ static const dsys_backend_vtable* dsys_active_backend(void)
 
 static dsys_result null_init(void)
 {
+    g_null_time_us = 0u;
     return DSYS_OK;
 }
 
@@ -216,36 +221,14 @@ static dsys_caps null_get_caps(void)
 
 static uint64_t null_time_now_us(void)
 {
-    uint64_t ticks;
-    ticks = (uint64_t)clock();
-    if (CLOCKS_PER_SEC != 0) {
-        ticks = (ticks * 1000000u) / (uint64_t)CLOCKS_PER_SEC;
-    }
-    return ticks;
+    /* Deterministic synthetic time for CI/headless validation. */
+    g_null_time_us += (uint64_t)1000u;
+    return g_null_time_us;
 }
 
 static void null_sleep_ms(uint32_t ms)
 {
-#if defined(_WIN32)
-    Sleep(ms);
-#elif defined(_POSIX_VERSION)
-    {
-        struct timespec ts;
-        ts.tv_sec = (time_t)(ms / 1000u);
-        ts.tv_nsec = (long)((ms % 1000u) * 1000000u);
-        nanosleep(&ts, (struct timespec*)0);
-    }
-#else
-    {
-        clock_t start;
-        clock_t target;
-        start = clock();
-        target = start + (clock_t)((ms * CLOCKS_PER_SEC) / 1000u);
-        while (clock() < target) {
-            /* busy wait */
-        }
-    }
-#endif
+    g_null_time_us += (uint64_t)ms * (uint64_t)1000u;
 }
 
 static dsys_window* null_window_create(const dsys_window_desc* desc)

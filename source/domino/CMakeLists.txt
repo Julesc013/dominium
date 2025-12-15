@@ -350,6 +350,25 @@ target_include_directories(domino_core PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
+# Platform backend selection (compile exactly one DSYS_BACKEND_*).
+string(TOLOWER "${DOM_PLATFORM}" _dom_platform_lc)
+if(_dom_platform_lc STREQUAL "null")
+    target_compile_definitions(domino_core PRIVATE DSYS_BACKEND_NULL)
+elseif(_dom_platform_lc STREQUAL "win32")
+    if(NOT WIN32)
+        message(FATAL_ERROR "DOM_PLATFORM=win32 is only supported on WIN32 hosts")
+    endif()
+    target_compile_definitions(domino_core PRIVATE DSYS_BACKEND_WIN32)
+elseif(_dom_platform_lc STREQUAL "posix_headless")
+    if(WIN32)
+        message(FATAL_ERROR "DOM_PLATFORM=posix_headless is not supported on WIN32 hosts")
+    endif()
+    target_sources(domino_core PRIVATE system/plat/posix/posix_sys.c)
+    target_compile_definitions(domino_core PRIVATE DSYS_BACKEND_POSIX)
+else()
+    message(FATAL_ERROR "Unsupported DOM_PLATFORM: '${DOM_PLATFORM}'")
+endif()
+
 set_target_properties(domino_core PROPERTIES
     C_STANDARD 90
     C_STANDARD_REQUIRED ON
