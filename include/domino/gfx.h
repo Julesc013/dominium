@@ -5,6 +5,7 @@
 #define DOMINO_GFX_H_INCLUDED
 #endif
 
+#include "domino/abi.h"
 #include "domino/core/types.h"
 #include "domino/core/fixed.h"
 
@@ -112,6 +113,54 @@ void d_gfx_present(void);
 
 /* Optional helper: query current backbuffer size (soft backend only). */
 void d_gfx_get_surface_size(i32 *out_w, i32 *out_h);
+
+/*------------------------------------------------------------
+ * Versioned DGFX facade vtables (v1)
+ *------------------------------------------------------------*/
+
+typedef enum dgfx_result_e {
+    DGFX_OK = 0,
+    DGFX_ERR,
+    DGFX_ERR_UNSUPPORTED
+} dgfx_result;
+
+/* Interface IDs (u32 constants) */
+#define DGFX_IID_IR_API_V1     ((dom_iid)0x44474601u)
+#define DGFX_IID_NATIVE_API_V1 ((dom_iid)0x44474602u)
+
+/* Reserved extension slots (placeholders) */
+#define DGFX_IID_EXT_RESERVED0 ((dom_iid)0x44474680u)
+#define DGFX_IID_EXT_RESERVED1 ((dom_iid)0x44474681u)
+
+typedef struct dgfx_ir_api_v1 {
+    DOM_ABI_HEADER;
+    dom_query_interface_fn query_interface;
+
+    int  (*init)(const char* backend_name);
+    void (*shutdown)(void);
+
+    d_gfx_cmd_buffer* (*cmd_buffer_begin)(void);
+    void              (*cmd_buffer_end)(d_gfx_cmd_buffer* buf);
+
+    void (*cmd_clear)(d_gfx_cmd_buffer* buf, d_gfx_color color);
+    void (*cmd_set_viewport)(d_gfx_cmd_buffer* buf, const d_gfx_viewport* vp);
+    void (*cmd_set_camera)(d_gfx_cmd_buffer* buf, const d_gfx_camera* cam);
+    void (*cmd_draw_rect)(d_gfx_cmd_buffer* buf, const d_gfx_draw_rect_cmd* rect);
+    void (*cmd_draw_text)(d_gfx_cmd_buffer* buf, const d_gfx_draw_text_cmd* text);
+
+    void (*submit)(d_gfx_cmd_buffer* buf);
+    void (*present)(void);
+
+    void (*get_surface_size)(i32* out_w, i32* out_h);
+} dgfx_ir_api_v1;
+
+typedef struct dgfx_native_api_v1 {
+    DOM_ABI_HEADER;
+    void* reserved0;
+    void* reserved1;
+} dgfx_native_api_v1;
+
+dgfx_result dgfx_get_ir_api(u32 requested_abi, dgfx_ir_api_v1* out);
 
 /* ------------------------------------------------------------
  * Legacy dgfx compatibility (thin wrappers over the minimal API)

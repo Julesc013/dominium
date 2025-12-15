@@ -11,6 +11,57 @@ static i32 g_backbuffer_h = 600;
 static const d_gfx_backend_soft *g_backend = 0;
 static d_gfx_cmd_buffer g_frame_cmd_buffer;
 
+static dom_abi_result dgfx_ir_query_interface(dom_iid iid, void** out_iface);
+
+static const dgfx_ir_api_v1 g_dgfx_ir_api_v1 = {
+    DOM_ABI_HEADER_INIT(1u, dgfx_ir_api_v1),
+    dgfx_ir_query_interface,
+    d_gfx_init,
+    d_gfx_shutdown,
+    d_gfx_cmd_buffer_begin,
+    d_gfx_cmd_buffer_end,
+    d_gfx_cmd_clear,
+    d_gfx_cmd_set_viewport,
+    d_gfx_cmd_set_camera,
+    d_gfx_cmd_draw_rect,
+    d_gfx_cmd_draw_text,
+    d_gfx_submit,
+    d_gfx_present,
+    d_gfx_get_surface_size
+};
+
+static dom_abi_result dgfx_ir_query_interface(dom_iid iid, void** out_iface)
+{
+    if (!out_iface) {
+        return DGFX_ERR;
+    }
+    *out_iface = NULL;
+
+    switch (iid) {
+    case DGFX_IID_IR_API_V1:
+        *out_iface = (void*)&g_dgfx_ir_api_v1;
+        return DGFX_OK;
+    case DGFX_IID_NATIVE_API_V1:
+        return DGFX_ERR_UNSUPPORTED;
+    default:
+        break;
+    }
+
+    return DGFX_ERR_UNSUPPORTED;
+}
+
+dgfx_result dgfx_get_ir_api(u32 requested_abi, dgfx_ir_api_v1* out)
+{
+    if (!out) {
+        return DGFX_ERR;
+    }
+    if (requested_abi != g_dgfx_ir_api_v1.abi_version) {
+        return DGFX_ERR_UNSUPPORTED;
+    }
+    *out = g_dgfx_ir_api_v1;
+    return DGFX_OK;
+}
+
 static int d_gfx_reserve(d_gfx_cmd_buffer *buf, u32 needed)
 {
     d_gfx_cmd *new_cmds;
@@ -192,6 +243,7 @@ static int d_gfx_abs_i32(int v)
 
 int dgfx_init(const dgfx_desc *desc)
 {
+    dgfx_ir_api_v1 api;
     if (desc) {
         if (desc->width > 0) g_backbuffer_w = desc->width;
         if (desc->height > 0) g_backbuffer_h = desc->height;
@@ -199,32 +251,51 @@ int dgfx_init(const dgfx_desc *desc)
             return 1;
         }
     }
-    return d_gfx_init("soft");
+    if (dgfx_get_ir_api(1u, &api) != DGFX_OK) {
+        return 0;
+    }
+    return api.init("soft");
 }
 
 void dgfx_shutdown(void)
 {
-    d_gfx_shutdown();
+    dgfx_ir_api_v1 api;
+    if (dgfx_get_ir_api(1u, &api) == DGFX_OK) {
+        api.shutdown();
+    }
 }
 
 void dgfx_begin_frame(void)
 {
-    (void)d_gfx_cmd_buffer_begin();
+    dgfx_ir_api_v1 api;
+    if (dgfx_get_ir_api(1u, &api) == DGFX_OK) {
+        (void)api.cmd_buffer_begin();
+    }
 }
 
 void dgfx_execute(const dgfx_cmd_buffer *cmd)
 {
-    d_gfx_submit((d_gfx_cmd_buffer *)cmd);
+    dgfx_ir_api_v1 api;
+    if (dgfx_get_ir_api(1u, &api) == DGFX_OK) {
+        api.submit((d_gfx_cmd_buffer *)cmd);
+    }
 }
 
 void dgfx_end_frame(void)
 {
-    d_gfx_present();
+    dgfx_ir_api_v1 api;
+    if (dgfx_get_ir_api(1u, &api) == DGFX_OK) {
+        api.present();
+    }
 }
 
 dgfx_cmd_buffer *dgfx_get_frame_cmd_buffer(void)
 {
-    return d_gfx_cmd_buffer_begin();
+    dgfx_ir_api_v1 api;
+    if (dgfx_get_ir_api(1u, &api) != DGFX_OK) {
+        return (dgfx_cmd_buffer *)0;
+    }
+    return (dgfx_cmd_buffer *)api.cmd_buffer_begin();
 }
 
 void dgfx_cmd_buffer_reset(dgfx_cmd_buffer *buf)
@@ -239,17 +310,21 @@ int dgfx_cmd_emit(dgfx_cmd_buffer *buf,
                   const void *payload,
                   u16 payload_size)
 {
+    dgfx_ir_api_v1 api;
     u32 count;
     u32 i;
 
     if (!buf) {
         return 0;
     }
+    if (dgfx_get_ir_api(1u, &api) != DGFX_OK) {
+        return 0;
+    }
 
     switch (opcode) {
     case DGFX_CMD_CLEAR:
         if (payload && payload_size >= sizeof(u32)) {
-            d_gfx_cmd_clear(buf, d_gfx_color_from_rgba(*(const u32 *)payload));
+            api.cmd_clear(buf, d_gfx_color_from_rgba(*(const u32 *)payload));
             return 1;
         }
         return 0;
@@ -261,14 +336,14 @@ int dgfx_cmd_emit(dgfx_cmd_buffer *buf,
             vp.y = p->y;
             vp.w = p->w;
             vp.h = p->h;
-            d_gfx_cmd_set_viewport(buf, &vp);
+            api.cmd_set_viewport(buf, &vp);
             return 1;
         }
         return 0;
     case DGFX_CMD_SET_CAMERA:
         if (payload && payload_size >= sizeof(dgfx_camera_t)) {
             const dgfx_camera_t *cam = (const dgfx_camera_t *)payload;
-            d_gfx_cmd_set_camera(buf, cam);
+            api.cmd_set_camera(buf, cam);
             return 1;
         }
         return 0;
@@ -285,7 +360,7 @@ int dgfx_cmd_emit(dgfx_cmd_buffer *buf,
             cmd.w = spr->w;
             cmd.h = spr->h;
             cmd.color = d_gfx_color_from_rgba(spr->color_rgba);
-            d_gfx_cmd_draw_rect(buf, &cmd);
+            api.cmd_draw_rect(buf, &cmd);
         }
         return 1;
     case DGFX_CMD_DRAW_TEXT:
@@ -296,7 +371,7 @@ int dgfx_cmd_emit(dgfx_cmd_buffer *buf,
             cmd.y = td->y;
             cmd.text = td->utf8_text;
             cmd.color = d_gfx_color_from_rgba(td->color_rgba);
-            d_gfx_cmd_draw_text(buf, &cmd);
+            api.cmd_draw_text(buf, &cmd);
             return 1;
         }
         return 0;
@@ -337,7 +412,7 @@ int dgfx_cmd_emit(dgfx_cmd_buffer *buf,
                 r.w = thickness;
                 r.h = thickness;
                 r.color = col;
-                d_gfx_cmd_draw_rect(buf, &r);
+                api.cmd_draw_rect(buf, &r);
 
                 if (x0 == x1 && y0 == y1) {
                     break;
