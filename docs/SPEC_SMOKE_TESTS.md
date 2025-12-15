@@ -95,3 +95,9 @@ Smoke GUI for the game must:
 - `docs/SPEC_CAPABILITY_REGISTRY.md`
 - `docs/BUILD_MATRIX.md`
 - `docs/SPEC_LAUNCHER_GUI.md`
+
+## DONE gate
+
+The canonical end-to-end gate for these smoke modes on Windows is:
+
+- `scripts\build_codex_verify.bat`
