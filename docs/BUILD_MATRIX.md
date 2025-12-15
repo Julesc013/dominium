@@ -23,9 +23,23 @@ This document enumerates the canonical build configurations used for local devel
 - Build: `cmake --build build/codex_verify/baseline_null_null --target dominium-launcher`
 - Notes: CI/headless baseline; use `dominium-launcher.exe --print-selection --gfx=null` to validate D0 selection.
 
+### Tier-1 Rendering (Prompt 5)
+
+**p5 win32 + soft (D0 reference)**
+- Configure: `cmake -S . -B build/p5_soft -G Ninja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=C:/msys64/ucrt64/bin/cc.exe -DCMAKE_CXX_COMPILER=C:/msys64/ucrt64/bin/c++.exe -DDOM_DISALLOW_DOWNLOADS=ON -DDOM_PLATFORM=win32 -DDOM_BACKEND_SOFT=ON -DDOM_BACKEND_DX9=OFF`
+- Build: `cmake --build build/p5_soft`
+- Verify: `build/p5_soft/dgfx_soft_hash_test.exe`
+- Smoke: `build/p5_soft/dgfx_demo.exe --gfx=soft --frames=120 --print-selection`
+- Notes: Canonical D0 pixel-hash baseline for DGFX minimal IR.
+
+**p5 win32 + dx9 (present)**
+- Configure: `cmake -S . -B build/p5_dx9 -G Ninja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=C:/msys64/ucrt64/bin/cc.exe -DCMAKE_CXX_COMPILER=C:/msys64/ucrt64/bin/c++.exe -DDOM_DISALLOW_DOWNLOADS=ON -DDOM_PLATFORM=win32 -DDOM_BACKEND_SOFT=OFF -DDOM_BACKEND_DX9=ON`
+- Build: `cmake --build build/p5_dx9`
+- Smoke: `build/p5_dx9/dgfx_demo.exe --gfx=dx9 --frames=120 --print-selection`
+- Notes: Presentation backend (D2); `--lockstep-strict=1` should refuse it during selection.
+
 ### Placeholders (to fill later)
 
-- baseline win32 + dx9
 - baseline win32 + dx11
 - baseline win32 + gl2
 - modern win32 + dx9/dx11/gl2
