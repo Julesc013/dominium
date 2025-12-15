@@ -30,8 +30,11 @@
 #define DOM_BACKEND_SOFT               @DOM_CFG_BACKEND_SOFT@
 #define DOM_BACKEND_NULL               @DOM_CFG_BACKEND_NULL@
 #define DOM_BACKEND_DX9                @DOM_CFG_BACKEND_DX9@
+#define DOM_BACKEND_DX11               @DOM_CFG_BACKEND_DX11@
 #define DOM_BACKEND_GL1                @DOM_CFG_BACKEND_GL1@
 #define DOM_BACKEND_GL2                @DOM_CFG_BACKEND_GL2@
+#define DOM_BACKEND_VK1                @DOM_CFG_BACKEND_VK1@
+#define DOM_BACKEND_METAL              @DOM_CFG_BACKEND_METAL@
 #define DOM_BACKEND_SDL2               @DOM_CFG_BACKEND_SDL2@
 #define DOM_BACKEND_VECTOR2D           @DOM_CFG_BACKEND_VECTOR2D@
 

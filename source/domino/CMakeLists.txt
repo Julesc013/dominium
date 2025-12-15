@@ -432,6 +432,64 @@ if(WIN32 AND DOM_BACKEND_DX9)
     target_link_libraries(domino_core PRIVATE d3d9)
 endif()
 
+if(DOM_BACKEND_DX11)
+    if(NOT WIN32)
+        message(FATAL_ERROR "DOM_BACKEND_DX11 requires a WIN32 host with Windows SDK libraries (d3d11/dxgi/d3dcompiler)")
+    endif()
+    find_library(DOM_DX11_D3D11_LIB NAMES d3d11)
+    find_library(DOM_DX11_DXGI_LIB NAMES dxgi)
+    find_library(DOM_DX11_D3DCOMPILER_LIB NAMES d3dcompiler_47 d3dcompiler)
+    if(NOT DOM_DX11_D3D11_LIB OR NOT DOM_DX11_DXGI_LIB OR NOT DOM_DX11_D3DCOMPILER_LIB)
+        message(FATAL_ERROR "DOM_BACKEND_DX11=ON requires Windows SDK libraries: d3d11, dxgi, d3dcompiler_47 (or d3dcompiler)")
+    endif()
+    target_sources(domino_core PRIVATE render/dx11/d_gfx_dx11.c)
+    target_link_libraries(domino_core PRIVATE
+        ${DOM_DX11_D3D11_LIB}
+        ${DOM_DX11_DXGI_LIB}
+        ${DOM_DX11_D3DCOMPILER_LIB}
+    )
+endif()
+
+if(DOM_BACKEND_GL2)
+    if(NOT WIN32)
+        message(FATAL_ERROR "DOM_BACKEND_GL2 is currently Windows-only (WGL path)")
+    endif()
+    find_library(DOM_GL2_OPENGL32_LIB NAMES opengl32)
+    if(NOT DOM_GL2_OPENGL32_LIB)
+        message(FATAL_ERROR "DOM_BACKEND_GL2=ON requires OpenGL headers and opengl32.lib")
+    endif()
+    target_sources(domino_core PRIVATE render/gl2/d_gfx_gl2.c)
+    target_link_libraries(domino_core PRIVATE ${DOM_GL2_OPENGL32_LIB})
+endif()
+
+if(DOM_BACKEND_VK1)
+    find_package(Vulkan QUIET)
+    if(NOT Vulkan_FOUND)
+        message(FATAL_ERROR "DOM_BACKEND_VK1=ON requires Vulkan headers and loader library (find_package(Vulkan))")
+    endif()
+    target_sources(domino_core PRIVATE render/vk1/d_gfx_vk1.c)
+    if(TARGET Vulkan::Vulkan)
+        target_link_libraries(domino_core PRIVATE Vulkan::Vulkan)
+    else()
+        target_include_directories(domino_core PRIVATE ${Vulkan_INCLUDE_DIRS})
+        target_link_libraries(domino_core PRIVATE ${Vulkan_LIBRARIES})
+    endif()
+endif()
+
+if(DOM_BACKEND_METAL)
+    if(NOT APPLE)
+        message(FATAL_ERROR "DOM_BACKEND_METAL=ON requires an Apple host (macOS)")
+    endif()
+    enable_language(OBJCXX)
+    target_sources(domino_core PRIVATE render/metal/d_gfx_metal.mm)
+    target_link_libraries(domino_core PRIVATE
+        "-framework Metal"
+        "-framework MetalKit"
+        "-framework QuartzCore"
+        "-framework Foundation"
+    )
+endif()
+
 set_target_properties(domino_core PROPERTIES
     C_STANDARD 90
     C_STANDARD_REQUIRED ON
