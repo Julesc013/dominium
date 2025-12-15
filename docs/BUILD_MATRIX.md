@@ -8,6 +8,7 @@ The product is considered **complete** for Prompt 8 when the Windows baseline
 verification script passes:
 
 - `scripts\build_codex_verify.bat`
+- Smoke contract: `docs/SPEC_SMOKE_TESTS.md`
 
 ## Matrix Entries
 
