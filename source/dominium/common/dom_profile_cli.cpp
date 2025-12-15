@@ -254,6 +254,7 @@ void print_caps(FILE *out) {
         out = stdout;
     }
 
+    (void)dom_caps_register_builtin_backends();
     (void)dom_caps_finalize_registry();
 
     count = dom_caps_backend_count();
@@ -288,6 +289,7 @@ int print_selection(const dom_profile &profile, FILE *out, FILE *err) {
     if (!out) out = stdout;
     if (!err) err = stderr;
 
+    (void)dom_caps_register_builtin_backends();
     (void)dom_caps_finalize_registry();
 
     std::memset(&sel, 0, sizeof(sel));
@@ -311,4 +313,3 @@ int print_selection(const dom_profile &profile, FILE *out, FILE *err) {
 }
 
 } // namespace dom
-

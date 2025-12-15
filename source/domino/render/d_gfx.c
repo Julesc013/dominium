@@ -2,6 +2,7 @@
 #include <string.h>
 
 #include "domino/gfx.h"
+#include "domino/caps.h"
 #include "soft/d_gfx_soft.h"
 
 /* Backbuffer defaults */
@@ -29,6 +30,45 @@ static const dgfx_ir_api_v1 g_dgfx_ir_api_v1 = {
     d_gfx_present,
     d_gfx_get_surface_size
 };
+
+static const void* dgfx_caps_get_ir_api_ptr(u32 requested_abi)
+{
+    if (requested_abi != g_dgfx_ir_api_v1.abi_version) {
+        return (const void*)0;
+    }
+    return (const void*)&g_dgfx_ir_api_v1;
+}
+
+dom_caps_result dom_dgfx_register_caps_backends(void)
+{
+    dom_backend_desc desc;
+    dom_caps_result r;
+
+    memset(&desc, 0, sizeof(desc));
+    desc.abi_version = DOM_CAPS_ABI_VERSION;
+    desc.struct_size = (u32)sizeof(dom_backend_desc);
+
+    desc.subsystem_id = DOM_SUBSYS_DGFX;
+    desc.subsystem_name = "gfx";
+    desc.required_hw_flags = 0u;
+    desc.subsystem_flags = 0u;
+    desc.backend_flags = DOM_CAPS_BACKEND_PRESENTATION_ONLY;
+    desc.determinism = DOM_DET_D2_BEST_EFFORT;
+    desc.perf_class = DOM_CAPS_PERF_BASELINE;
+    desc.get_api = dgfx_caps_get_ir_api_ptr;
+    desc.probe = (dom_caps_probe_fn)0;
+
+    desc.backend_name = "soft";
+    desc.backend_priority = 100u;
+    r = dom_caps_register_backend(&desc);
+    if (r != DOM_CAPS_OK) {
+        return r;
+    }
+
+    desc.backend_name = "null";
+    desc.backend_priority = 10u;
+    return dom_caps_register_backend(&desc);
+}
 
 static dom_abi_result dgfx_ir_query_interface(dom_iid iid, void** out_iface)
 {
