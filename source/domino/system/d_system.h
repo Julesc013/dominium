@@ -21,6 +21,11 @@ void d_system_sleep_ms(u32 ms);
 /* Process spawn API used by launcher. Stub OK for now. */
 int d_system_process_spawn(const char *path, const char *args);
 
+/* Returns a native window handle for the current platform (e.g. HWND on Win32),
+ * or NULL when no window exists (e.g. headless).
+ */
+void* d_system_get_native_window_handle(void);
+
 /* Soft framebuffer hook:
  * Called by soft backend to hand over framebuffer for presentation.
  */
