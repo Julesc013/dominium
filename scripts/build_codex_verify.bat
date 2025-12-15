@@ -8,7 +8,7 @@ rem - No downloads (DOM_DISALLOW_DOWNLOADS=ON).
 set "ROOT=%~dp0.."
 pushd "%ROOT%" >nul
 
-set "PATH=C:\msys64\ucrt64\bin;%PATH%"
+set "PATH=C:\msys64\ucrt64\bin;C:\msys64\usr\bin;%PATH%"
 
 set "CC=C:/msys64/ucrt64/bin/cc.exe"
 set "CXX=C:/msys64/ucrt64/bin/c++.exe"
@@ -28,6 +28,16 @@ call :run_entry "baseline win32_headless + soft" ^
 call :run_entry "baseline null + null" ^
   "cmake -S . -B build/codex_verify/baseline_null_null -G Ninja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=%CC% -DCMAKE_CXX_COMPILER=%CXX% -DDOM_DISALLOW_DOWNLOADS=ON -DDOM_PLATFORM=null -DDOM_BACKEND_NULL=ON -DDOM_BACKEND_SOFT=OFF" ^
   "cmake --build build/codex_verify/baseline_null_null --target dominium-launcher"
+
+call :run_entry "p5 win32 + soft (D0 ref)" ^
+  "cmake -S . -B build/p5_soft -G Ninja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=%CC% -DCMAKE_CXX_COMPILER=%CXX% -DDOM_DISALLOW_DOWNLOADS=ON -DDOM_PLATFORM=win32 -DDOM_BACKEND_SOFT=ON -DDOM_BACKEND_DX9=OFF" ^
+  "cmake --build build/p5_soft" ^
+  "build\\p5_soft\\dgfx_soft_hash_test.exe && build\\p5_soft\\dgfx_demo.exe --gfx=soft --frames=120 --print-selection"
+
+call :run_entry "p5 win32 + dx9 (present)" ^
+  "cmake -S . -B build/p5_dx9 -G Ninja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=%CC% -DCMAKE_CXX_COMPILER=%CXX% -DDOM_DISALLOW_DOWNLOADS=ON -DDOM_PLATFORM=win32 -DDOM_BACKEND_SOFT=OFF -DDOM_BACKEND_DX9=ON" ^
+  "cmake --build build/p5_dx9" ^
+  "build\\p5_dx9\\dgfx_demo.exe --gfx=dx9 --frames=120 --print-selection"
 
 echo.
 if "%FAIL%"=="0" (
@@ -50,23 +60,23 @@ echo.
 echo === %NAME% ===
 call %CFG%
 if errorlevel 1 (
-  echo FAIL: configure - %NAME%
+  echo FAIL: configure - !NAME!
   set "FAIL=1"
   goto :eof
 )
 call %BLD%
 if errorlevel 1 (
-  echo FAIL: build - %NAME%
+  echo FAIL: build - !NAME!
   set "FAIL=1"
   goto :eof
 )
 if not "%RUN%"=="" (
   call %RUN%
   if errorlevel 1 (
-    echo FAIL: run - %NAME%
+    echo FAIL: run - !NAME!
     set "FAIL=1"
     goto :eof
   )
 )
-echo PASS: %NAME%
+echo PASS: !NAME!
 goto :eof
