@@ -4,7 +4,7 @@
 /* Domino System / Platform API - C89 friendly */
 
 #include <stddef.h>
-#include "domino/baseline.h"
+#include "domino/abi.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -206,6 +206,8 @@ typedef enum dsys_result {
     DSYS_ERR_UNSUPPORTED
 } dsys_result;
 
+typedef void (*dsys_log_fn)(const char* message);
+
 typedef struct dsys_caps {
     const char* name;
     uint32_t    ui_modes;
@@ -218,6 +220,8 @@ typedef struct dsys_caps {
 dsys_result dsys_init(void);
 void        dsys_shutdown(void);
 dsys_caps   dsys_get_caps(void);
+
+void        dsys_set_log_callback(dsys_log_fn fn);
 
 /* Time */
 uint64_t dsys_time_now_us(void);
@@ -360,6 +364,128 @@ void dsys_ime_start(void);
 void dsys_ime_stop(void);
 void dsys_ime_set_cursor(int32_t x, int32_t y);
 int  dsys_ime_poll(dsys_ime_event* ev);
+
+/*------------------------------------------------------------
+ * Versioned DSYS facade vtables (v1)
+ *------------------------------------------------------------*/
+
+/* Interface IDs (u32 constants) */
+#define DSYS_IID_CORE_API_V1     ((dom_iid)0x44535901u)
+#define DSYS_IID_FS_API_V1       ((dom_iid)0x44535902u)
+#define DSYS_IID_TIME_API_V1     ((dom_iid)0x44535903u)
+#define DSYS_IID_PROCESS_API_V1  ((dom_iid)0x44535904u)
+#define DSYS_IID_DYNLIB_API_V1   ((dom_iid)0x44535905u)
+#define DSYS_IID_WINDOW_API_V1   ((dom_iid)0x44535906u)
+#define DSYS_IID_INPUT_API_V1    ((dom_iid)0x44535907u)
+#define DSYS_IID_THREAD_API_V1   ((dom_iid)0x44535908u)
+#define DSYS_IID_ATOMIC_API_V1   ((dom_iid)0x44535909u)
+#define DSYS_IID_NET_API_V1      ((dom_iid)0x4453590Au)
+#define DSYS_IID_AUDIOIO_API_V1  ((dom_iid)0x4453590Bu)
+#define DSYS_IID_CLIPTEXT_API_V1 ((dom_iid)0x4453590Cu)
+
+typedef struct dsys_core_api_v1 {
+    DOM_ABI_HEADER;
+    dom_query_interface_fn query_interface;
+
+    /* lifecycle */
+    dsys_result (*init)(void);
+    void        (*shutdown)(void);
+    dsys_caps   (*get_caps)(void);
+
+    /* logging (optional; may be NULL) */
+    void (*set_log_callback)(dsys_log_fn fn);
+} dsys_core_api_v1;
+
+typedef struct dsys_time_api_v1 {
+    DOM_ABI_HEADER;
+    uint64_t (*time_now_us)(void);
+    void     (*sleep_ms)(uint32_t ms);
+} dsys_time_api_v1;
+
+typedef struct dsys_fs_api_v1 {
+    DOM_ABI_HEADER;
+    bool   (*get_path)(dsys_path_kind kind, char* buf, size_t buf_size);
+
+    void*  (*file_open)(const char* path, const char* mode);
+    size_t (*file_read)(void* fh, void* buf, size_t size);
+    size_t (*file_write)(void* fh, const void* buf, size_t size);
+    int    (*file_seek)(void* fh, long offset, int origin);
+    long   (*file_tell)(void* fh);
+    int    (*file_close)(void* fh);
+
+    dsys_dir_iter* (*dir_open)(const char* path);
+    bool           (*dir_next)(dsys_dir_iter* it, dsys_dir_entry* out);
+    void           (*dir_close)(dsys_dir_iter* it);
+} dsys_fs_api_v1;
+
+typedef struct dsys_process_api_v1 {
+    DOM_ABI_HEADER;
+    dsys_process* (*spawn)(const dsys_process_desc* desc);
+    int           (*wait)(dsys_process* p);
+    void          (*destroy)(dsys_process* p);
+} dsys_process_api_v1;
+
+typedef struct dsys_dynlib_api_v1 {
+    DOM_ABI_HEADER;
+    void* (*open)(const char* path);
+    void  (*close)(void* lib);
+    void* (*sym)(void* lib, const char* name);
+} dsys_dynlib_api_v1;
+
+typedef struct dsys_window_api_v1 {
+    DOM_ABI_HEADER;
+    dsys_window* (*create)(const dsys_window_desc* desc);
+    void         (*destroy)(dsys_window* win);
+    void         (*set_mode)(dsys_window* win, dsys_window_mode mode);
+    void         (*set_size)(dsys_window* win, int32_t w, int32_t h);
+    void         (*get_size)(dsys_window* win, int32_t* w, int32_t* h);
+    void*        (*get_native_handle)(dsys_window* win);
+    int          (*should_close)(dsys_window* win);
+    void         (*present)(dsys_window* win);
+} dsys_window_api_v1;
+
+typedef struct dsys_input_api_v1 {
+    DOM_ABI_HEADER;
+    bool (*poll_event)(dsys_event* out);
+    int  (*poll_raw)(dsys_input_event* ev);
+
+    void (*ime_start)(void);
+    void (*ime_stop)(void);
+    void (*ime_set_cursor)(int32_t x, int32_t y);
+    int  (*ime_poll)(dsys_ime_event* ev);
+} dsys_input_api_v1;
+
+typedef struct dsys_thread_api_v1 {
+    DOM_ABI_HEADER;
+    void* reserved0;
+    void* reserved1;
+} dsys_thread_api_v1;
+
+typedef struct dsys_atomic_api_v1 {
+    DOM_ABI_HEADER;
+    void* reserved0;
+    void* reserved1;
+} dsys_atomic_api_v1;
+
+typedef struct dsys_net_api_v1 {
+    DOM_ABI_HEADER;
+    void* reserved0;
+    void* reserved1;
+} dsys_net_api_v1;
+
+typedef struct dsys_audioio_api_v1 {
+    DOM_ABI_HEADER;
+    void* reserved0;
+    void* reserved1;
+} dsys_audioio_api_v1;
+
+typedef struct dsys_cliptext_api_v1 {
+    DOM_ABI_HEADER;
+    void* reserved0;
+    void* reserved1;
+} dsys_cliptext_api_v1;
+
+dsys_result dsys_get_core_api(u32 requested_abi, dsys_core_api_v1* out);
 
 #ifdef DOMINO_SYS_INTERNAL
 typedef struct dsys_backend_vtable_t {
