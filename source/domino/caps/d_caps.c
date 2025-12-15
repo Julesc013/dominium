@@ -9,6 +9,42 @@ static dom_backend_desc g_backends[DOM_CAPS_MAX_BACKENDS];
 static u32 g_backend_count = 0u;
 static u32 g_registry_finalized = 0u;
 
+dom_abi_result dom_hw_caps_probe_host(dom_hw_caps* io_hw_caps)
+{
+    dom_hw_caps hw;
+
+    if (!io_hw_caps) {
+        return (dom_abi_result)-1;
+    }
+
+    memset(&hw, 0, sizeof(hw));
+    hw.abi_version = 1u;
+    hw.struct_size = (u32)sizeof(dom_hw_caps);
+
+#if defined(_WIN32)
+    hw.os_flags |= DOM_HW_OS_WIN32;
+#endif
+#if defined(__unix__) || defined(__unix) || defined(__APPLE__)
+    hw.os_flags |= DOM_HW_OS_UNIX;
+#endif
+#if defined(__APPLE__)
+    hw.os_flags |= DOM_HW_OS_APPLE;
+#endif
+
+#if defined(_M_X64) || defined(__x86_64__)
+    hw.cpu_flags |= DOM_HW_CPU_X86_64;
+#elif defined(_M_IX86) || defined(__i386__)
+    hw.cpu_flags |= DOM_HW_CPU_X86_32;
+#elif defined(__aarch64__)
+    hw.cpu_flags |= DOM_HW_CPU_ARM_64;
+#elif defined(__arm__) || defined(_M_ARM)
+    hw.cpu_flags |= DOM_HW_CPU_ARM_32;
+#endif
+
+    *io_hw_caps = hw;
+    return 0;
+}
+
 static int caps_is_ascii_space(char c)
 {
     return (c == ' ') || (c == '\t') || (c == '\r') || (c == '\n');

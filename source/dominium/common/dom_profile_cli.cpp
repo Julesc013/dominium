@@ -283,6 +283,7 @@ void print_caps(FILE *out) {
 
 int print_selection(const dom_profile &profile, FILE *out, FILE *err) {
     dom_selection sel;
+    dom_hw_caps hw;
     char logbuf[DOM_CAPS_AUDIT_LOG_MAX_BYTES];
     u32 len;
     dom_caps_result r;
@@ -305,7 +306,12 @@ int print_selection(const dom_profile &profile, FILE *out, FILE *err) {
     sel.abi_version = DOM_CAPS_ABI_VERSION;
     sel.struct_size = static_cast<u32>(sizeof(dom_selection));
 
-    r = dom_caps_select(&profile, NULL, &sel);
+    std::memset(&hw, 0, sizeof(hw));
+    if (dom_hw_caps_probe_host(&hw) != 0) {
+        std::memset(&hw, 0, sizeof(hw));
+    }
+
+    r = dom_caps_select(&profile, &hw, &sel);
     if (r != DOM_CAPS_OK) {
         std::fprintf(err, "caps: selection failed (result=%d fail_reason=%u fail_subsystem_id=%u)\n",
                      (int)sel.result,

@@ -179,6 +179,13 @@ dom_caps_result dom_dsys_register_caps_backends(void)
     desc.backend_priority = 100u;
 
     desc.required_hw_flags = 0u;
+#if defined(DSYS_BACKEND_WIN32) || defined(DSYS_BACKEND_WIN32_HEADLESS) || defined(DSYS_BACKEND_WIN16)
+    desc.required_hw_flags |= DOM_HW_OS_WIN32;
+#elif defined(DSYS_BACKEND_COCOA) || defined(DSYS_BACKEND_CARBON)
+    desc.required_hw_flags |= DOM_HW_OS_APPLE;
+#elif defined(DSYS_BACKEND_POSIX) || defined(DSYS_BACKEND_X11) || defined(DSYS_BACKEND_WAYLAND)
+    desc.required_hw_flags |= DOM_HW_OS_UNIX;
+#endif
     desc.subsystem_flags = 0u;
     desc.backend_flags = 0u;
 
