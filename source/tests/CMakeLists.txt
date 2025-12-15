@@ -505,3 +505,18 @@ set_target_properties(domino_det_knowledge_test PROPERTIES
 )
 
 add_test(NAME domino_det_knowledge_test COMMAND domino_det_knowledge_test)
+
+add_executable(domino_sys_smoke
+    domino_sys_smoke.c
+)
+
+target_link_libraries(domino_sys_smoke
+    domino_core
+)
+
+set_target_properties(domino_sys_smoke PROPERTIES
+    C_STANDARD 90
+    C_STANDARD_REQUIRED ON
+    C_EXTENSIONS OFF
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
+)

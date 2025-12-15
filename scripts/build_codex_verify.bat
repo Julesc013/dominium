@@ -17,11 +17,13 @@ set "FAIL=0"
 
 call :run_entry "baseline win32 + soft" ^
   "cmake --preset baseline-debug" ^
-  "cmake --build --preset baseline-debug"
+  "cmake --build --preset baseline-debug" ^
+  "build\\baseline-debug\\domino_sys_smoke.exe --smoke --print-selection"
 
 call :run_entry "baseline win32_headless + soft" ^
-  "cmake -S . -B build/codex_verify/baseline_win32_headless_soft -G Ninja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=%CC% -DCMAKE_CXX_COMPILER=%CXX% -DDOM_DISALLOW_DOWNLOADS=ON -DDOM_PLATFORM=null -DDOM_BACKEND_SOFT=ON -DDOM_BACKEND_NULL=OFF" ^
-  "cmake --build build/codex_verify/baseline_win32_headless_soft --target dominium-launcher"
+  "cmake -S . -B build/codex_verify/baseline_win32_headless_soft -G Ninja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=%CC% -DCMAKE_CXX_COMPILER=%CXX% -DDOM_DISALLOW_DOWNLOADS=ON -DDOM_PLATFORM=win32_headless -DDOM_BACKEND_SOFT=ON -DDOM_BACKEND_NULL=OFF" ^
+  "cmake --build build/codex_verify/baseline_win32_headless_soft --target dominium-launcher domino_sys_smoke" ^
+  "build\\codex_verify\\baseline_win32_headless_soft\\domino_sys_smoke.exe --smoke --print-selection"
 
 call :run_entry "baseline null + null" ^
   "cmake -S . -B build/codex_verify/baseline_null_null -G Ninja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=%CC% -DCMAKE_CXX_COMPILER=%CXX% -DDOM_DISALLOW_DOWNLOADS=ON -DDOM_PLATFORM=null -DDOM_BACKEND_NULL=ON -DDOM_BACKEND_SOFT=OFF" ^
@@ -42,6 +44,7 @@ exit /b 1
 set "NAME=%~1"
 set "CFG=%~2"
 set "BLD=%~3"
+set "RUN=%~4"
 
 echo.
 echo === %NAME% ===
@@ -56,6 +59,14 @@ if errorlevel 1 (
   echo FAIL: build - %NAME%
   set "FAIL=1"
   goto :eof
+)
+if not "%RUN%"=="" (
+  call %RUN%
+  if errorlevel 1 (
+    echo FAIL: run - %NAME%
+    set "FAIL=1"
+    goto :eof
+  )
 )
 echo PASS: %NAME%
 goto :eof
