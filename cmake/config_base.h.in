@@ -22,6 +22,8 @@
 #define DOM_PLATFORM_ID_WIN32_HEADLESS 2
 #define DOM_PLATFORM_ID_NULL           100
 #define DOM_PLATFORM_ID_POSIX_HEADLESS 200
+#define DOM_PLATFORM_ID_POSIX_X11      201
+#define DOM_PLATFORM_ID_POSIX_WAYLAND  202
 #define DOM_PLATFORM_ID_COCOA          300
 
 /* Enabled backends (build-time availability, 0/1) */
