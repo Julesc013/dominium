@@ -65,6 +65,17 @@ static const dsys_process_api_v1 g_dsys_process_api_v1 = {
     dsys_process_destroy
 };
 
+static void* dsys_dynlib_open(const char* path);
+static void  dsys_dynlib_close(void* lib);
+static void* dsys_dynlib_sym(void* lib, const char* name);
+
+static const dsys_dynlib_api_v1 g_dsys_dynlib_api_v1 = {
+    DOM_ABI_HEADER_INIT(1u, dsys_dynlib_api_v1),
+    dsys_dynlib_open,
+    dsys_dynlib_close,
+    dsys_dynlib_sym
+};
+
 static const dsys_window_api_v1 g_dsys_window_api_v1 = {
     DOM_ABI_HEADER_INIT(1u, dsys_window_api_v1),
     dsys_window_create,
@@ -836,6 +847,44 @@ int dsys_ime_poll(dsys_ime_event* ev)
     return 0;
 }
 
+static void* dsys_dynlib_open(const char* path)
+{
+#if defined(_WIN32)
+    if (!path || !path[0]) {
+        return NULL;
+    }
+    return (void*)LoadLibraryA(path);
+#else
+    (void)path;
+    return NULL;
+#endif
+}
+
+static void dsys_dynlib_close(void* lib)
+{
+#if defined(_WIN32)
+    if (lib) {
+        FreeLibrary((HMODULE)lib);
+    }
+#else
+    (void)lib;
+#endif
+}
+
+static void* dsys_dynlib_sym(void* lib, const char* name)
+{
+#if defined(_WIN32)
+    if (!lib || !name || !name[0]) {
+        return NULL;
+    }
+    return (void*)GetProcAddress((HMODULE)lib, name);
+#else
+    (void)lib;
+    (void)name;
+    return NULL;
+#endif
+}
+
 bool dsys_get_path(dsys_path_kind kind, char* buf, size_t buf_size)
 {
     const dsys_backend_vtable* backend;
@@ -980,6 +1029,9 @@ static dom_abi_result dsys_core_query_interface(dom_iid iid, void** out_iface)
         return DSYS_OK;
     case DSYS_IID_PROCESS_API_V1:
         *out_iface = (void*)&g_dsys_process_api_v1;
+        return DSYS_OK;
+    case DSYS_IID_DYNLIB_API_V1:
+        *out_iface = (void*)&g_dsys_dynlib_api_v1;
         return DSYS_OK;
     case DSYS_IID_WINDOW_API_V1:
         *out_iface = (void*)&g_dsys_window_api_v1;
