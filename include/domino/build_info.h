@@ -34,9 +34,11 @@ const dom_build_info_v1* dom_build_info_v1_get(void);
 const char* dom_build_id(void);
 const char* dom_git_hash(void);
 
+/* Deterministic simulation schema identifier (public serialization ABI). */
+u64 dom_sim_schema_id(void);
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
 
 #endif /* DOMINO_BUILD_INFO_H_INCLUDED */
-
