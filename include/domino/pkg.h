@@ -23,10 +23,13 @@ extern "C" {
 #endif
 
 struct dom_core_t;
+/* dom_core: Public type used by `pkg`. */
 typedef struct dom_core_t dom_core;
 
+/* dom_package_id: Public type used by `pkg`. */
 typedef uint32_t dom_package_id;
 
+/* dom_package_kind: Public type used by `pkg`. */
 typedef enum dom_package_kind {
     DOM_PKG_KIND_UNKNOWN = 0,
     DOM_PKG_KIND_MOD,
@@ -38,6 +41,7 @@ typedef enum dom_package_kind {
 
 #define DOM_MAX_PACKAGE_DEPS 8
 
+/* dom_package_info: Public type used by `pkg`. */
 typedef struct dom_package_info {
     uint32_t         struct_size;
     uint32_t         struct_version;
@@ -55,9 +59,25 @@ typedef struct dom_package_info {
     char             game_version_max[32];
 } dom_package_info;
 
+/* Purpose: List pkg.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 uint32_t dom_pkg_list(dom_core* core, dom_package_info* out, uint32_t max_out);
+/* Purpose: Get pkg.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool     dom_pkg_get(dom_core* core, dom_package_id id, dom_package_info* out);
+/* Purpose: Install pkg.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool     dom_pkg_install(dom_core* core, const char* source_path, dom_package_id* out_id);
+/* Purpose: Uninstall pkg.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool     dom_pkg_uninstall(dom_core* core, dom_package_id id);
 
 #ifdef __cplusplus

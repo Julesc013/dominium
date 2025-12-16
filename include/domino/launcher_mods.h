@@ -21,6 +21,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* launcher_mod_meta: Public type used by `launcher_mods`. */
 typedef struct launcher_mod_meta {
     char id[64];
     char name[96];
@@ -29,10 +30,30 @@ typedef struct launcher_mod_meta {
     int  enabled;
 } launcher_mod_meta;
 
+/* Purpose: Scan launcher mods.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int launcher_mods_scan(const char* path);
+/* Purpose: Get mods.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int launcher_mods_get(int index, launcher_mod_meta* out);
+/* Purpose: Count launcher mods.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int launcher_mods_count(void);
+/* Purpose: Set enabled.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int launcher_mods_set_enabled(const char* id, int enabled);
+/* Purpose: Resolve order.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int launcher_mods_resolve_order(void);
 
 #ifdef __cplusplus

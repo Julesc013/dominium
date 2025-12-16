@@ -18,6 +18,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 
 namespace dom_shared {
 
+/* Constants for `logging`. */
 enum LogLevel {
     LOG_TRACE,
     LOG_DEBUG,
@@ -26,13 +27,31 @@ enum LogLevel {
     LOG_ERROR
 };
 
+/* Purpose: Level log set min.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void log_set_min_level(LogLevel level);
 void log_set_output_file(const std::string& path); // optional; stdout by default
 
+/* Purpose: Trace log.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void log_trace(const char* fmt, ...);
+/* Purpose: Debug log.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void log_debug(const char* fmt, ...);
+/* Purpose: Info log.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void log_info(const char* fmt, ...);
+/* Purpose: Warn log.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void log_warn(const char* fmt, ...);
+/* Purpose: Error log.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void log_error(const char* fmt, ...);
 
 } // namespace dom_shared

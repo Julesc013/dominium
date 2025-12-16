@@ -20,12 +20,14 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* d_state: Public type used by `state`. */
 typedef struct d_state {
     void (*on_enter)(void* userdata);
     void (*on_update)(void* userdata);
     void (*on_exit)(void* userdata);
 } d_state;
 
+/* d_state_machine: Public type used by `state`. */
 typedef struct d_state_machine {
     u32      current;
     d_state* states;
@@ -33,11 +35,20 @@ typedef struct d_state_machine {
     void*    userdata;
 } d_state_machine;
 
+/* Purpose: Init state machine.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void d_state_machine_init(d_state_machine* sm,
                           d_state* states,
                           u32 count,
                           void* userdata);
+/* Purpose: Machine update.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void d_state_machine_update(d_state_machine* sm);
+/* Purpose: Set state machine.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void d_state_machine_set(d_state_machine* sm, u32 index);
 
 #ifdef __cplusplus

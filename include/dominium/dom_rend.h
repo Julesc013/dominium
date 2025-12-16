@@ -24,6 +24,7 @@ extern "C" {
 
 #define DOM_REND_API_VERSION 1u
 
+/* dom_rend_device: Public type used by `dom_rend`. */
 typedef struct dom_rend_device dom_rend_device;
 
 struct dom_rend_desc {
@@ -36,12 +37,32 @@ struct dom_rend_vtable {
     uint32_t api_version;
 
     dom_rend_device* (*create_device)(const struct dom_rend_desc*);
+/* Purpose: API entry point for `dom_rend`.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
     void             (*destroy_device)(dom_rend_device*);
 
+/* Purpose: API entry point for `dom_rend`.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
     void (*begin_frame)(dom_rend_device*);
+/* Purpose: API entry point for `dom_rend`.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
     void (*end_frame)(dom_rend_device*);
 
+/* Purpose: API entry point for `dom_rend`.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
     void (*clear)(dom_rend_device*, uint32_t rgba);
+/* Purpose: API entry point for `dom_rend`.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
     void (*draw_rect)(dom_rend_device*, int x, int y, int w, int h, uint32_t rgba);
 };
 

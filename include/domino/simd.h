@@ -26,6 +26,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* dsimd_result: Public type used by `simd`. */
 typedef enum dsimd_result_e {
     DSIMD_OK = 0,
     DSIMD_ERR,
@@ -39,6 +40,7 @@ typedef enum dsimd_result_e {
 #define DSIMD_IID_EXT_RESERVED0 ((dom_iid)0x44534D80u)
 #define DSIMD_IID_EXT_RESERVED1 ((dom_iid)0x44534D81u)
 
+/* dsimd_api_v1: Public type used by `simd`. */
 typedef struct dsimd_api_v1 {
     DOM_ABI_HEADER;
     dom_query_interface_fn query_interface;
@@ -49,6 +51,10 @@ typedef struct dsimd_api_v1 {
     void  (*mat4_mul_f32)(float* out16, const float* a16, const float* b16);
 } dsimd_api_v1;
 
+/* Purpose: Api dsimd get.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 dsimd_result dsimd_get_api(u32 requested_abi, dsimd_api_v1* out);
 
 #ifdef __cplusplus

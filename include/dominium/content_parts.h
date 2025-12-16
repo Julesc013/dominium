@@ -24,8 +24,10 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* dom_part_id: Public type used by `content_parts`. */
 typedef uint32_t dom_part_id;
 
+/* dom_part_kind: Public type used by `content_parts`. */
 typedef enum dom_part_kind {
     DOM_PART_KIND_UNKNOWN = 0,
     DOM_PART_KIND_BLOCK,
@@ -34,6 +36,7 @@ typedef enum dom_part_kind {
     DOM_PART_KIND_DECORATION
 } dom_part_kind;
 
+/* dom_part_desc: Public type used by `content_parts`. */
 typedef struct dom_part_desc {
     uint32_t       struct_size;
     uint32_t       struct_version;
@@ -48,11 +51,30 @@ typedef int (*dom_part_visit_fn)(dom_part_id id,
                                  const dom_part_desc* desc,
                                  void* user);
 
+/* Purpose: Register parts.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 dom_status           dom_parts_register(const dom_part_desc* desc,
                                         dom_part_id* out_id);
+/* Purpose: Get parts.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 const dom_part_desc* dom_parts_get(dom_part_id id);
+/* Purpose: Count dom parts.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 uint32_t             dom_parts_count(void);
+/* Purpose: Visit dom parts.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 dom_status           dom_parts_visit(dom_part_visit_fn fn, void* user);
+/* Purpose: Reset dom parts.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void                 dom_parts_reset(void);
 
 #ifdef __cplusplus

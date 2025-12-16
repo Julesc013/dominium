@@ -23,8 +23,10 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* TechId: Identifier type for Tech objects in `dresearch`. */
 typedef uint32_t TechId;
 
+/* Tech: Public type used by `dresearch`. */
 typedef struct {
     TechId      id;
     const char *name;
@@ -44,19 +46,41 @@ typedef struct {
 
 } Tech;
 
+/* TechProgress: Public type used by `dresearch`. */
 typedef struct {
     TechId   tech_id;
     Q16_16   progress_0_1;
     bool     completed;
 } TechProgress;
 
+/* Purpose: Register tech.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Id value (0 is commonly used as the invalid/failure sentinel for `*Id` typedefs).
+ */
 TechId        dresearch_register_tech(const Tech *def);
+/* Purpose: Get tech.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 const Tech   *dresearch_get_tech(TechId id);
 
+/* Purpose: Init progress.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void          dresearch_init_progress(U32 max_techs);
+/* Purpose: Get progress.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 TechProgress *dresearch_get_progress(TechId id);
 
+/* Purpose: Tick dresearch.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void          dresearch_tick(SimTick t);
+/* Purpose: Apply work.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void          dresearch_apply_work(TechId tech, U32 science_units);
 
 #ifdef __cplusplus

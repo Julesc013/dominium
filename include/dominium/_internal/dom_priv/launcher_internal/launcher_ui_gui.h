@@ -14,6 +14,10 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #ifndef DOM_LAUNCHER_UI_GUI_H
 #define DOM_LAUNCHER_UI_GUI_H
 
+/* Purpose: Gui launcher run.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int launcher_run_gui(int argc, char **argv);
 
 #endif /* DOM_LAUNCHER_UI_GUI_H */

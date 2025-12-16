@@ -21,6 +21,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* launcher_profile: Public type used by `launcher_profile`. */
 typedef struct launcher_profile {
     char id[64];
     char name[96];
@@ -28,11 +29,35 @@ typedef struct launcher_profile {
     char modset[128];
 } launcher_profile;
 
+/* Purpose: Load all.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int   launcher_profile_load_all(void);
+/* Purpose: Get profile.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 const launcher_profile* launcher_profile_get(int index);
+/* Purpose: Count launcher profile.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int   launcher_profile_count(void);
+/* Purpose: Save profile.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int   launcher_profile_save(const launcher_profile* p);
+/* Purpose: Set active.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int   launcher_profile_set_active(int index);
+/* Purpose: Get active.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int   launcher_profile_get_active(void);
 
 #ifdef __cplusplus

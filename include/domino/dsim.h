@@ -20,6 +20,9 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* Purpose: Tick dsim.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void dsim_tick(SimTick t);
 
 #ifdef __cplusplus

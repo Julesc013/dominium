@@ -21,15 +21,24 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* launcher_ext_vtable: Public type used by `launcher_ext`. */
 typedef struct launcher_ext_vtable {
     uint32_t api_version;
     void (*register_views)(dom_core* core);
     void (*register_actions)(dom_core* core);
 } launcher_ext_vtable;
 
+/* out: Public type used by `launcher_ext`. */
 typedef bool (*launcher_ext_get_vtable_fn)(launcher_ext_vtable* out);
 
+/* Purpose: Load all.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool launcher_ext_load_all(dom_core* core);
+/* Purpose: Unload all.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void launcher_ext_unload_all(dom_core* core);
 
 #ifdef __cplusplus

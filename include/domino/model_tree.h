@@ -21,8 +21,10 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* dom_tree_node_id: Public type used by `model_tree`. */
 typedef uint32_t dom_tree_node_id;
 
+/* dom_tree_node: Public type used by `model_tree`. */
 typedef struct dom_tree_node {
     uint32_t         struct_size;
     uint32_t         struct_version;
@@ -31,8 +33,20 @@ typedef struct dom_tree_node {
     uint32_t         child_count;
 } dom_tree_node;
 
+/* Purpose: Root dom tree get.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool dom_tree_get_root(dom_core* core, const char* tree_id, dom_tree_node_id* root_out);
+/* Purpose: Node dom tree get.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool dom_tree_get_node(dom_core* core, const char* tree_id, dom_tree_node_id id, dom_tree_node* out);
+/* Purpose: Child dom tree get.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool dom_tree_get_child(dom_core* core, const char* tree_id, dom_tree_node_id parent, uint32_t index, dom_tree_node_id* child_out);
 
 #ifdef __cplusplus

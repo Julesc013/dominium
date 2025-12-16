@@ -26,8 +26,11 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* dom_abi_version: Public type used by `abi`. */
 typedef u32 dom_abi_version;
+/* dom_iid: Public type used by `abi`. */
 typedef u32 dom_iid;
+/* dom_abi_result: Public type used by `abi`. */
 typedef int dom_abi_result;
 
 /* Every ABI-visible struct/vtable begins with these fields. */
@@ -35,6 +38,10 @@ typedef int dom_abi_result;
 
 /* Convenience initializer for the ABI header prefix. */
 #define DOM_ABI_HEADER_INIT(version_u32, struct_type) \
+/* Purpose: API entry point for `abi`.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
     (u32)(version_u32), (u32)sizeof(struct_type)
 
 /* C89/C++98 static assert (no _Static_assert). */

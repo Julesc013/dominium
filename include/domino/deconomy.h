@@ -22,20 +22,29 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* Market registry identifier. A value of 0 is treated as invalid by this API. */
 typedef uint32_t MarketId;
+/* Offer registry identifier. A value of 0 is treated as invalid by this API. */
 typedef uint32_t OfferId;
 
+/* Offer direction for a market listing. */
 typedef enum {
     OFFER_BUY = 0,
     OFFER_SELL,
 } OfferType;
 
+/* Market definition (POD). */
 typedef struct {
     MarketId    id;
     const char *name;
     BodyId      body;
 } Market;
 
+/* Market offer/listing (POD).
+ *
+ * Notes:
+ *   - `price_per_unit` is Q16.16 fixed-point.
+ */
 typedef struct {
     OfferId     id;
     MarketId    market;
@@ -46,13 +55,53 @@ typedef struct {
     Q16_16      price_per_unit;
 } Offer;
 
+/* Registers a market definition.
+ *
+ * Parameters:
+ *   - def: Input definition (must be non-NULL and `def->name` must be non-NULL).
+ *         `*def` is copied into internal storage; caller retains ownership.
+ *
+ * Returns:
+ *   - Non-zero MarketId on success; 0 on failure (invalid input or capacity limit).
+ */
 MarketId decon_market_register(const Market *def);
+
+/* Looks up a market by id.
+ *
+ * Returns:
+ *   - Pointer to internal storage on success; NULL if `id` is invalid.
+ */
 Market  *decon_market_get(MarketId id);
 
+/* Registers an offer/listing.
+ *
+ * Parameters:
+ *   - def: Input definition (must be non-NULL). `*def` is copied into internal storage.
+ *
+ * Returns:
+ *   - Non-zero OfferId on success; 0 on failure (invalid input or capacity limit).
+ */
 OfferId  decon_offer_register(const Offer *def);
+
+/* Looks up an offer by id.
+ *
+ * Returns:
+ *   - Pointer to internal storage on success; NULL if `id` is invalid.
+ */
 Offer   *decon_offer_get(OfferId id);
 
+/* Finds the best active SELL offer for an item.
+ *
+ * Returns:
+ *   - OfferId of the lowest-priced SELL offer with non-zero quantity; 0 if none exist.
+ */
 OfferId  decon_find_best_sell_offer(ItemTypeId item);
+
+/* Finds the best active BUY offer for an item.
+ *
+ * Returns:
+ *   - OfferId of the highest-priced BUY offer with non-zero quantity; 0 if none exist.
+ */
 OfferId  decon_find_best_buy_offer(ItemTypeId item);
 
 #ifdef __cplusplus

@@ -26,18 +26,38 @@ std::string os_get_platform_id();           // "win_nt" | "linux" | "mac"
 
 // Default install roots for different modes
 std::string os_get_default_per_user_install_root();
+/* Purpose: Root os get default system install.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 std::string os_get_default_system_install_root();
 std::string os_get_default_portable_install_root(); // usually current dir
 
 // Data roots for launcher and game
 std::string os_get_per_user_launcher_data_root();
+/* Purpose: Root os get per user game data.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 std::string os_get_per_user_game_data_root();
 
 // Default install root search locations for discovery
 std::vector<std::string> os_get_default_install_roots();
 
+/* Purpose: Exists os ensure directory.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool os_ensure_directory_exists(const std::string& path);
+/* Purpose: Exists os file.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool os_file_exists(const std::string& path);
+/* Purpose: Exists os directory.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool os_directory_exists(const std::string& path);
 
 // Join path segments with platform-appropriate separators

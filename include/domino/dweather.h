@@ -23,6 +23,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* WeatherGrid: Public type used by `dweather`. */
 typedef struct {
     BodyId   body;
     U32      width;
@@ -40,10 +41,18 @@ FieldId dweather_field_cloud(void);
 
 /* Grid lifecycle */
 bool         dweather_init_grid(BodyId body, U32 width, U32 height);
+/* Purpose: Get grid.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 WeatherGrid *dweather_get_grid(BodyId body);
 
 /* Simulation */
 bool dweather_seed_from_climate(BodyId body);
+/* Purpose: Step dweather.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool dweather_step(BodyId body, U32 ticks);
 
 /* Sampling and projection */

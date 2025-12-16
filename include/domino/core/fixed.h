@@ -37,15 +37,43 @@ typedef i64 q32_32;  /* 32 integer bits, 32 fractional */
 
 /* Integer conversions (truncate toward zero on to_int). */
 q4_12  d_q4_12_from_int(i32 value);
+/* Purpose: Int d q4 12 to.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 i32    d_q4_12_to_int(q4_12 value);
 
+/* Purpose: Int d q16 16 from.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 q16_16 d_q16_16_from_int(i32 value);
+/* Purpose: Int d q16 16 to.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 i32    d_q16_16_to_int(q16_16 value);
 
+/* Purpose: Int d q24 8 from.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 q24_8  d_q24_8_from_int(i32 value);
+/* Purpose: Int d q24 8 to.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 i32    d_q24_8_to_int(q24_8 value);
 
+/* Purpose: Int d q48 16 from.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 q48_16 d_q48_16_from_int(i64 value);
+/* Purpose: Int d q48 16 to.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 i64    d_q48_16_to_int(q48_16 value);
 
 /* Debug/tooling conversions (not for core simulation). */
@@ -63,33 +91,113 @@ q48_16 d_q48_16_from_double(double value);   /* NOTE: tools/tests only */
 
 /* Basic arithmetic with saturation. */
 q4_12  d_q4_12_add(q4_12 a, q4_12 b);
+/* Purpose: Sub d q4 12.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 q4_12  d_q4_12_sub(q4_12 a, q4_12 b);
+/* Purpose: Mul d q4 12.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 q4_12  d_q4_12_mul(q4_12 a, q4_12 b);
+/* Purpose: Div d q4 12.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 q4_12  d_q4_12_div(q4_12 a, q4_12 b);
 
+/* Purpose: Add q16 16.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 q16_16 d_q16_16_add(q16_16 a, q16_16 b);
+/* Purpose: Sub d q16 16.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 q16_16 d_q16_16_sub(q16_16 a, q16_16 b);
+/* Purpose: Mul d q16 16.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 q16_16 d_q16_16_mul(q16_16 a, q16_16 b);
+/* Purpose: Div d q16 16.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 q16_16 d_q16_16_div(q16_16 a, q16_16 b);
 
+/* Purpose: Add q24 8.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 q24_8  d_q24_8_add(q24_8 a, q24_8 b);
+/* Purpose: Sub d q24 8.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 q24_8  d_q24_8_sub(q24_8 a, q24_8 b);
+/* Purpose: Mul d q24 8.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 q24_8  d_q24_8_mul(q24_8 a, q24_8 b);
+/* Purpose: Div d q24 8.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 q24_8  d_q24_8_div(q24_8 a, q24_8 b);
 
+/* Purpose: Add q48 16.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 q48_16 d_q48_16_add(q48_16 a, q48_16 b);
+/* Purpose: Sub d q48 16.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 q48_16 d_q48_16_sub(q48_16 a, q48_16 b);
+/* Purpose: Mul d q48 16.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 q48_16 d_q48_16_mul(q48_16 a, q48_16 b);
+/* Purpose: Div d q48 16.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 q48_16 d_q48_16_div(q48_16 a, q48_16 b);
 
 /* Cross-format helpers. */
 q16_16 d_q16_16_from_q4_12(q4_12 v);
+/* Purpose: 16 d q4 12 from q16.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 q4_12  d_q4_12_from_q16_16(q16_16 v);
 
+/* Purpose: 16 d q24 8 from q16.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 q24_8  d_q24_8_from_q16_16(q16_16 v);
+/* Purpose: 8 d q16 16 from q24.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 q16_16 d_q16_16_from_q24_8(q24_8 v);
 
+/* Purpose: 16 d q48 16 from q16.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 q48_16 d_q48_16_from_q16_16(q16_16 v);
+/* Purpose: 16 d q16 16 from q48.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 q16_16 d_q16_16_from_q48_16(q48_16 v);
 
 #ifdef __cplusplus

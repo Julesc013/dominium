@@ -23,10 +23,13 @@ extern "C" {
 #endif
 
 struct dom_core_t;
+/* dom_core: Public type used by `sim`. */
 typedef struct dom_core_t dom_core;
 
+/* dom_sim: Public type used by `sim`. */
 typedef struct dom_sim dom_sim;
 
+/* dom_sim_state: Public type used by `sim`. */
 typedef struct dom_sim_state {
     uint32_t struct_size;
     uint32_t struct_version;
@@ -37,10 +40,18 @@ typedef struct dom_sim_state {
     bool     paused;
 } dom_sim_state;
 
+/* Purpose: Tick sim.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool dom_sim_tick(dom_core* core,
                   dom_instance_id inst,
                   uint32_t ticks);
 
+/* Purpose: Get state.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool dom_sim_get_state(dom_core* core,
                        dom_instance_id inst,
                        dom_sim_state* out);
@@ -52,10 +63,21 @@ struct dm_sim_config {
     uint64_t seed;
 };
 
+/* dm_sim_context: Public type used by `sim`. */
 typedef struct dm_sim_context dm_sim_context;
 
+/* Purpose: Create sim.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 dm_sim_context* dm_sim_create(const struct dm_sim_config* cfg);
+/* Purpose: Destroy sim.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void            dm_sim_destroy(dm_sim_context* sim);
+/* Purpose: Tick sim.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void            dm_sim_tick(dm_sim_context* sim, uint32_t dt_usec);
 
 #ifdef __cplusplus

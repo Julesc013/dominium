@@ -21,6 +21,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* Body: Public type used by `dbody`. */
 typedef struct {
     BodyId     id;
     const char *name;
@@ -34,6 +35,7 @@ typedef struct {
     OrbitComponent orbit;   /* orbit around central; central==self for root */
 } Body;
 
+/* SpaceSite: Public type used by `dbody`. */
 typedef struct {
     SpaceSiteId id;
     const char *name;
@@ -44,17 +46,41 @@ typedef struct {
 
 /* Body registry */
 BodyId        dbody_register(const Body *def);
+/* Purpose: Get dbody.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 const Body   *dbody_get(BodyId id);
+/* Purpose: Get mu.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 Q48_16        dbody_get_mu(BodyId id);
+/* Purpose: Get space pos.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool          dbody_get_space_pos(BodyId id, U64 t, SpacePos *out);
 
 /* Solar helpers (assume a single primary star for now) */
 void          dbody_sun_direction(BodyId body, U64 t, Q16_16 out_dir3[3]);
+/* Purpose: Solar flux at body.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 Q16_16        dbody_solar_flux_at_body(BodyId body);
 
 /* Space site registry */
 SpaceSiteId   dspace_site_register(const SpaceSite *def);
+/* Purpose: Get site.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 const SpaceSite *dspace_site_get(SpaceSiteId id);
+/* Purpose: Pos dspace site.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool          dspace_site_pos(SpaceSiteId id, U64 t, SpacePos *out);
 
 #ifdef __cplusplus

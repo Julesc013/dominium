@@ -36,22 +36,26 @@ extern "C" {
 #define DOM_PROFILE_MAX_OVERRIDES 16u
 #define DOM_PROFILE_MAX_FEATURES  16u
 
+/* dom_profile_kind: Public type used by `profile`. */
 typedef enum dom_profile_kind_e {
     DOM_PROFILE_COMPAT = 0,
     DOM_PROFILE_BASELINE = 1,
     DOM_PROFILE_PERF = 2
 } dom_profile_kind;
 
+/* dom_profile_override: Public type used by `profile`. */
 typedef struct dom_profile_override_s {
     char subsystem_key[DOM_PROFILE_SUBSYSTEM_KEY_MAX];
     char backend_name[DOM_PROFILE_BACKEND_NAME_MAX];
 } dom_profile_override;
 
+/* dom_profile_feature: Public type used by `profile`. */
 typedef struct dom_profile_feature_s {
     char name[DOM_PROFILE_SUBSYSTEM_KEY_MAX];
     u32  enabled;
 } dom_profile_feature;
 
+/* dom_profile: Public type used by `profile`. */
 typedef struct dom_profile {
     DOM_ABI_HEADER;
 

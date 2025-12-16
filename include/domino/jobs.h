@@ -26,6 +26,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* djobs_result: Public type used by `jobs`. */
 typedef enum djobs_result_e {
     DJOBS_OK = 0,
     DJOBS_ERR,
@@ -39,22 +40,27 @@ typedef enum djobs_result_e {
 #define DJOBS_IID_EXT_RESERVED0 ((dom_iid)0x444A4F80u)
 #define DJOBS_IID_EXT_RESERVED1 ((dom_iid)0x444A4F81u)
 
+/* djobs_context: Public type used by `jobs`. */
 typedef struct djobs_context_s djobs_context;
 
+/* user: Public type used by `jobs`. */
 typedef void (*djobs_job_fn)(void* user);
 
+/* djobs_desc_v1: Public type used by `jobs`. */
 typedef struct djobs_desc_v1 {
     DOM_ABI_HEADER;
     u32 requested_worker_count;
     u32 flags;
 } djobs_desc_v1;
 
+/* djobs_job_desc_v1: Public type used by `jobs`. */
 typedef struct djobs_job_desc_v1 {
     DOM_ABI_HEADER;
     djobs_job_fn fn;
     void* user;
 } djobs_job_desc_v1;
 
+/* djobs_api_v1: Public type used by `jobs`. */
 typedef struct djobs_api_v1 {
     DOM_ABI_HEADER;
     dom_query_interface_fn query_interface;
@@ -69,6 +75,10 @@ typedef struct djobs_api_v1 {
     void (*wait_idle)(djobs_context* ctx);
 } djobs_api_v1;
 
+/* Purpose: Api djobs get.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 djobs_result djobs_get_api(u32 requested_abi, djobs_api_v1* out);
 
 #ifdef __cplusplus

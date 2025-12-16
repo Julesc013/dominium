@@ -25,8 +25,10 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* dom_actor_id: Public type used by `actors`. */
 typedef uint32_t dom_actor_id;
 
+/* dom_actor_kind: Public type used by `actors`. */
 typedef enum dom_actor_kind {
     DOM_ACTOR_KIND_UNKNOWN = 0,
     DOM_ACTOR_KIND_PLAYER,
@@ -34,6 +36,7 @@ typedef enum dom_actor_kind {
     DOM_ACTOR_KIND_ROBOT
 } dom_actor_kind;
 
+/* dom_actor_spawn_desc: Public type used by `actors`. */
 typedef struct dom_actor_spawn_desc {
     uint32_t       struct_size;
     uint32_t       struct_version;
@@ -44,6 +47,7 @@ typedef struct dom_actor_spawn_desc {
     uint32_t       flags;
 } dom_actor_spawn_desc;
 
+/* dom_actor_state: Public type used by `actors`. */
 typedef struct dom_actor_state {
     uint32_t       struct_size;
     uint32_t       struct_version;
@@ -56,15 +60,42 @@ typedef struct dom_actor_state {
     uint32_t       flags;
 } dom_actor_state;
 
+/* Purpose: Spawn dom actor.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 dom_status dom_actor_spawn(const dom_actor_spawn_desc* desc,
                            dom_actor_id* out_id);
+/* Purpose: Despawn dom actor.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 dom_status dom_actor_despawn(dom_actor_id id);
+/* Purpose: State dom actor get.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 dom_status dom_actor_get_state(dom_actor_id id,
                                dom_actor_state* out_state,
                                size_t out_state_size);
+/* Purpose: Tick actor.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 dom_status dom_actor_tick(dom_actor_id id, uint32_t dt_millis);
+/* Purpose: Step actors.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 dom_status dom_actors_step(uint32_t dt_millis);
+/* Purpose: Sim step.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void       dom_actors_sim_step(dom_core* core, dom_instance_id inst, double dt_s);
+/* Purpose: Debug step count.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 uint64_t   dom_actors_debug_step_count(dom_instance_id inst);
 
 #ifdef __cplusplus

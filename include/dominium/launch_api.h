@@ -24,6 +24,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* dom_launch_state: Public type used by `launch_api`. */
 typedef enum {
     DOM_LAUNCH_STATE_STARTUP = 0,
     DOM_LAUNCH_STATE_MAIN,
@@ -33,6 +34,7 @@ typedef enum {
     DOM_LAUNCH_STATE_RUNNING_INSTANCE   /* launcher supervising a game process */
 } dom_launch_state;
 
+/* dom_launch_action: Public type used by `launch_api`. */
 typedef enum {
     DOM_LAUNCH_ACTION_NONE = 0,
     DOM_LAUNCH_ACTION_QUIT,
@@ -51,6 +53,7 @@ typedef enum {
 /* opaque context */
 typedef struct dom_launch_ctx_t dom_launch_ctx;
 
+/* dom_launch_desc: Public type used by `launch_api`. */
 typedef struct {
     uint32_t         struct_size;
     uint32_t         struct_version;
@@ -60,6 +63,7 @@ typedef struct {
     const char      *version;        /* "1.0.0" */
 } dom_launch_desc;
 
+/* dom_launch_snapshot: Public type used by `launch_api`. */
 typedef struct {
     uint32_t          struct_size;
     uint32_t          struct_version;
@@ -73,6 +77,9 @@ typedef struct {
 
 /* lifecycle */
 dom_launch_ctx *dom_launch_create(const dom_launch_desc *desc);
+/* Purpose: Destroy launch.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void            dom_launch_destroy(dom_launch_ctx *ctx);
 
 /* snapshot for UI front-ends */
@@ -84,6 +91,9 @@ void            dom_launch_handle_action(dom_launch_ctx *ctx,
                                          dom_launch_action action,
                                          uint32_t param_u32,
                                          const char *param_str);
+/* Purpose: Action dom launch handle custom.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void            dom_launch_handle_custom_action(dom_launch_ctx *ctx,
                                                const char *action_id,
                                                const char *payload);

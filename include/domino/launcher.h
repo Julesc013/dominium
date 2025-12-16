@@ -23,8 +23,19 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* Purpose: Init launcher.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int launcher_init(const launcher_config* cfg);
+/* Purpose: Run launcher.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int launcher_run(void);
+/* Purpose: Shutdown launcher.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void launcher_shutdown(void);
 
 #ifdef __cplusplus

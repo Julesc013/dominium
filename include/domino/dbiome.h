@@ -23,8 +23,10 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* BiomeId: Identifier type for Biome objects in `dbiome`. */
 typedef uint16_t BiomeId;
 
+/* BiomeType: Public type used by `dbiome`. */
 typedef struct {
     BiomeId     id;
     const char *name;
@@ -39,12 +41,32 @@ typedef struct {
     Q16_16      max_humidity;
 } BiomeType;
 
+/* Purpose: Field biome id.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Id value (0 is commonly used as the invalid/failure sentinel for `*Id` typedefs).
+ */
 FieldId dbiome_field_biome_id(void);
 
+/* Purpose: Register type.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool          dbiome_register_type(const BiomeType *type);
+/* Purpose: Get type.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 const BiomeType *dbiome_get_type(BiomeId id);
 
+/* Purpose: Get at tile.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Id value (0 is commonly used as the invalid/failure sentinel for `*Id` typedefs).
+ */
 BiomeId dbiome_get_at_tile(BodyId body, const WPosTile *tile);
+/* Purpose: Classify dbiome.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Id value (0 is commonly used as the invalid/failure sentinel for `*Id` typedefs).
+ */
 BiomeId dbiome_classify(BodyId body, TempK temp, Q16_16 precip, Q16_16 humidity, Q16_16 height_m);
 
 #ifdef __cplusplus

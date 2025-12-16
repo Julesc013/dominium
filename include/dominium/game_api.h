@@ -26,8 +26,10 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* dom_game_runtime: Public type used by `game_api`. */
 typedef struct dom_game_runtime dom_game_runtime;
 
+/* dom_game_runtime_desc: Public type used by `game_api`. */
 typedef struct dom_game_runtime_desc {
     uint32_t struct_size;
     uint32_t struct_version;
@@ -37,6 +39,7 @@ typedef struct dom_game_runtime_desc {
     void*     user_data;
 } dom_game_runtime_desc;
 
+/* dom_game_command: Public type used by `game_api`. */
 typedef struct dom_game_command {
     uint32_t    struct_size;
     uint32_t    struct_version;
@@ -45,6 +48,7 @@ typedef struct dom_game_command {
     size_t      payload_size;
 } dom_game_command;
 
+/* dom_game_query: Public type used by `game_api`. */
 typedef struct dom_game_query {
     uint32_t    struct_size;
     uint32_t    struct_version;
@@ -53,6 +57,7 @@ typedef struct dom_game_query {
     size_t      payload_size;
 } dom_game_query;
 
+/* dom_game_sim_step_args: Public type used by `game_api`. */
 typedef struct dom_game_sim_step_args {
     uint32_t        struct_size;
     uint32_t        struct_version;
@@ -60,12 +65,31 @@ typedef struct dom_game_sim_step_args {
     double          dt_s;
 } dom_game_sim_step_args;
 
+/* Purpose: Create game runtime.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 dom_status dom_game_runtime_create(const dom_game_runtime_desc* desc,
                                    dom_game_runtime** out_runtime);
+/* Purpose: Destroy game runtime.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void       dom_game_runtime_destroy(dom_game_runtime* runtime);
+/* Purpose: Tick game runtime.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 dom_status dom_game_runtime_tick(dom_game_runtime* runtime, uint32_t dt_millis);
+/* Purpose: Execute game runtime.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 dom_status dom_game_runtime_execute(dom_game_runtime* runtime,
                                     const dom_game_command* cmd);
+/* Purpose: Query game runtime.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 dom_status dom_game_runtime_query(dom_game_runtime* runtime,
                                   const dom_game_query* query,
                                   void* response_buffer,
@@ -73,6 +97,10 @@ dom_status dom_game_runtime_query(dom_game_runtime* runtime,
 
 /* Called by Domino sim for each instance tick */
 void dom_game_sim_step(dom_core* core, const dom_game_sim_step_args* args);
+/* Purpose: Steps dom game debug sim.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 uint64_t dom_game_debug_sim_steps(dom_instance_id inst);
 
 /* Convenience entry point used by current product layer */

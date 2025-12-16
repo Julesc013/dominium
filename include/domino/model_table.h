@@ -22,6 +22,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* dom_table_meta: Public type used by `model_table`. */
 typedef struct dom_table_meta {
     uint32_t    struct_size;
     uint32_t    struct_version;
@@ -31,7 +32,15 @@ typedef struct dom_table_meta {
     const char* const* col_ids;  /* e.g. { "id", "name", "path", ... } */
 } dom_table_meta;
 
+/* Purpose: Meta dom table get.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool dom_table_get_meta(dom_core* core, const char* table_id, dom_table_meta* meta);
+/* Purpose: Cell dom table get.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool dom_table_get_cell(dom_core* core, const char* table_id, uint32_t row, uint32_t col, char* buf, size_t buf_size);
 
 #ifdef __cplusplus

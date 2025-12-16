@@ -18,7 +18,15 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* Purpose: Home dmn get dominium.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 const char* dmn_get_dominium_home(void);
+/* Purpose: Root dmn get install.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 const char* dmn_get_install_root(void);
 
 #ifdef __cplusplus

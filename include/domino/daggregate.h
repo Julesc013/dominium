@@ -24,9 +24,11 @@ extern "C" {
 /* Forward type aliases */
 
 typedef uint64_t ElementId;
+/* AggregateId: Identifier type for Aggregate objects in `daggregate`. */
 typedef uint32_t AggregateId;
 #ifndef DOMINO_MATERIAL_ID_TYPEDEF
 #define DOMINO_MATERIAL_ID_TYPEDEF
+/* MaterialId: Identifier type for Material objects in `daggregate`. */
 typedef uint32_t MaterialId;
 #endif
 typedef uint32_t ArchetypeId;    /* item/building/vehicle archetype */
@@ -43,6 +45,7 @@ enum {
     /* free bits for more flags */
 };
 
+/* Element: Public type used by `daggregate`. */
 typedef struct {
     ElementId   id;
     MaterialId  material_id;  /* 0 for non-material-only (pure machine) */
@@ -82,9 +85,20 @@ typedef struct {
 /* API */
 
 AggregateId dagg_create(AggregateMobilityKind mobility, EnvironmentKind env);
+/* Purpose: Destroy dagg.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void        dagg_destroy(AggregateId id);
 
+/* Purpose: Element dagg attach.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool        dagg_attach_element(AggregateId agg, ElementId elem);
+/* Purpose: Element dagg detach.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool        dagg_detach_element(AggregateId agg, ElementId elem);
 
 /* Recompute mass/volume from materials + element list.
@@ -93,6 +107,10 @@ bool        dagg_detach_element(AggregateId agg, ElementId elem);
 */
 void        dagg_recompute_mass_volume(AggregateId agg);
 
+/* Purpose: Get dagg.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 Aggregate  *dagg_get(AggregateId id);
 
 #ifdef __cplusplus

@@ -54,10 +54,27 @@ extern "C" {
  *------------------------------------------------------------*/
 
 u16 dtlv_le_read_u16(const unsigned char* p);
+/* Purpose: U32 dtlv le read.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 u32 dtlv_le_read_u32(const unsigned char* p);
+/* Purpose: U64 dtlv le read.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 u64 dtlv_le_read_u64(const unsigned char* p);
+/* Purpose: U16 dtlv le write.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void dtlv_le_write_u16(unsigned char* p, u16 v);
+/* Purpose: U32 dtlv le write.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void dtlv_le_write_u32(unsigned char* p, u32 v);
+/* Purpose: U64 dtlv le write.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void dtlv_le_write_u64(unsigned char* p, u64 v);
 
 /*------------------------------------------------------------
@@ -73,6 +90,10 @@ int dtlv_tlv_next(
     u32*                 payload_len_out
 );
 
+/* Purpose: Write tlv.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int dtlv_tlv_write(
     unsigned char* dst,
     u32            dst_cap,
@@ -117,16 +138,42 @@ typedef struct dtlv_reader {
     dtlv_dir_entry* entries;
 } dtlv_reader;
 
+/* Purpose: Init reader.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void dtlv_reader_init(dtlv_reader* r);
+/* Purpose: Dispose dtlv reader.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void dtlv_reader_dispose(dtlv_reader* r);
 
+/* Purpose: File dtlv reader open.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int dtlv_reader_open_file(dtlv_reader* r, const char* path);
 int dtlv_reader_init_file(dtlv_reader* r, void* fh); /* does not take ownership */
+/* Purpose: Mem dtlv reader init.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int dtlv_reader_init_mem(dtlv_reader* r, const void* data, u64 size);
 
+/* Purpose: Count dtlv reader chunk.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 u32 dtlv_reader_chunk_count(const dtlv_reader* r);
+/* Purpose: At dtlv reader chunk.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 const dtlv_dir_entry* dtlv_reader_chunk_at(const dtlv_reader* r, u32 index);
 
+/* Purpose: First dtlv reader find.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 const dtlv_dir_entry* dtlv_reader_find_first(
     const dtlv_reader* r,
     u32                type_id,
@@ -183,16 +230,46 @@ typedef struct dtlv_writer {
     u32             entry_cap;
 } dtlv_writer;
 
+/* Purpose: Init writer.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void dtlv_writer_init(dtlv_writer* w);
+/* Purpose: Dispose dtlv writer.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void dtlv_writer_dispose(dtlv_writer* w);
 
+/* Purpose: File dtlv writer open.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int dtlv_writer_open_file(dtlv_writer* w, const char* path);
 int dtlv_writer_init_file(dtlv_writer* w, void* fh); /* does not take ownership */
+/* Purpose: Mem dtlv writer init.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int dtlv_writer_init_mem(dtlv_writer* w, void* buf, u32 cap);
 
+/* Purpose: Chunk dtlv writer begin.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int dtlv_writer_begin_chunk(dtlv_writer* w, u32 type_id, u16 version, u16 flags);
+/* Purpose: Write writer.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int dtlv_writer_write(dtlv_writer* w, const void* bytes, u32 len);
+/* Purpose: Tlv dtlv writer write.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int dtlv_writer_write_tlv(dtlv_writer* w, u32 tag, const void* payload, u32 payload_len);
+/* Purpose: Chunk dtlv writer end.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int dtlv_writer_end_chunk(dtlv_writer* w);
 
 /* Finalize directory + patch header. Returns 0 on success. */

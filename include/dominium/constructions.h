@@ -27,8 +27,10 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* dom_construction_id: Public type used by `constructions`. */
 typedef uint32_t dom_construction_id;
 
+/* dom_construction_spawn_desc: Public type used by `constructions`. */
 typedef struct dom_construction_spawn_desc {
     uint32_t       struct_size;
     uint32_t       struct_version;
@@ -39,6 +41,7 @@ typedef struct dom_construction_spawn_desc {
     uint32_t       flags;
 } dom_construction_spawn_desc;
 
+/* dom_construction_state: Public type used by `constructions`. */
 typedef struct dom_construction_state {
     uint32_t          struct_size;
     uint32_t          struct_version;
@@ -49,16 +52,47 @@ typedef struct dom_construction_state {
     uint32_t          flags;
 } dom_construction_state;
 
+/* Purpose: Spawn dom construction.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 dom_status dom_construction_spawn(const dom_construction_spawn_desc* desc,
                                   dom_construction_id* out_id);
+/* Purpose: Destroy construction.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 dom_status dom_construction_destroy(dom_construction_id id);
+/* Purpose: State dom construction get.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 dom_status dom_construction_get_state(dom_construction_id id,
                                       dom_construction_state* out_state,
                                       size_t out_state_size);
+/* Purpose: Tick construction.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 dom_status dom_construction_tick(dom_construction_id id, uint32_t dt_millis);
+/* Purpose: Step constructions.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 dom_status dom_constructions_step(uint32_t dt_millis);
+/* Purpose: Sim step.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void       dom_constructions_sim_step(dom_core* core, dom_instance_id inst, double dt_s);
+/* Purpose: Debug step count.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 uint64_t   dom_constructions_debug_step_count(dom_instance_id inst);
+/* Purpose: Canvas dom construction build.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool       dom_construction_build_canvas(dom_core* core,
                                          dom_instance_id inst,
                                          const char* canvas_id,

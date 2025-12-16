@@ -58,6 +58,10 @@ typedef struct d_app_capabilities {
      --mode=gui
      --mode=headless    (game)
    Returns D_APP_MODE_AUTO if not present. */
+/* Purpose: Mode d app parse.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 d_app_mode d_app_parse_mode(int argc, char** argv);
 
 /* Game-specific helper: detect if headless/server modes are forced. */
@@ -65,14 +69,38 @@ int d_app_game_force_headless(int argc, char** argv);
 
 /* Product capability queries (to be implemented per-product or stubbed). */
 d_app_capabilities d_app_caps_launcher(void);
+/* Purpose: Game d app caps.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 d_app_capabilities d_app_caps_game(void);
+/* Purpose: Setup d app caps.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 d_app_capabilities d_app_caps_setup(void);
+/* Purpose: Tools d app caps.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 d_app_capabilities d_app_caps_tools(void);
 
 /* Product dispatchers (implementation in startup.c calls C++ entrypoints). */
 int d_app_run_launcher(const d_app_params* p);
+/* Purpose: Game d app run.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int d_app_run_game(const d_app_params* p);
+/* Purpose: Setup d app run.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int d_app_run_setup(const d_app_params* p);
+/* Purpose: Tools d app run.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int d_app_run_tools(const d_app_params* p);
 
 #ifdef __cplusplus

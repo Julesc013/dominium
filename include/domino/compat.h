@@ -21,12 +21,14 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* DomVersionedCapability: Public type used by `compat`. */
 typedef struct DomVersionedCapability_ {
     uint32_t current;
     uint32_t min_compat;
     uint32_t max_compat;
 } DomVersionedCapability;
 
+/* DomCompatProfile: Public type used by `compat`. */
 typedef struct DomCompatProfile_ {
     DomVersionedCapability core;
     DomVersionedCapability save_format;
@@ -37,6 +39,7 @@ typedef struct DomCompatProfile_ {
     DomVersionedCapability tools_game_proto;
 } DomCompatProfile;
 
+/* DomComponentRole: Public type used by `compat`. */
 typedef enum {
     DOM_COMP_ROLE_RUNTIME,   /* game/server */
     DOM_COMP_ROLE_LAUNCHER,
@@ -45,6 +48,7 @@ typedef enum {
     DOM_COMP_ROLE_SERVICE
 } DomComponentRole;
 
+/* DomProductInfo: Public type used by `compat`. */
 typedef struct DomProductInfo_ {
     const char        *product;        /* "game", "launcher", "setup", "tools" */
     DomComponentRole   role;
@@ -60,6 +64,7 @@ typedef struct DomProductInfo_ {
     DomCompatProfile   compat;
 } DomProductInfo;
 
+/* DomCompatDecision: Public type used by `compat`. */
 typedef enum {
     DOM_COMPAT_OK_FULL,
     DOM_COMPAT_OK_LIMITED,
@@ -67,9 +72,25 @@ typedef enum {
     DOM_COMPAT_INCOMPATIBLE
 } DomCompatDecision;
 
+/* Purpose: Check core.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int dom_compat_check_core(const DomCompatProfile *a, const DomCompatProfile *b);
+/* Purpose: Check format.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int dom_compat_check_format(const DomCompatProfile *a, const DomCompatProfile *b, int kind);
+/* Purpose: Check net.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int dom_compat_check_net(const DomCompatProfile *a, const DomCompatProfile *b);
+/* Purpose: Compat dom decide.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 DomCompatDecision dom_decide_compat(const DomCompatProfile *a, const DomCompatProfile *b);
 
 #ifdef __cplusplus

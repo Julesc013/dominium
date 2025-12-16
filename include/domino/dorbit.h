@@ -21,14 +21,17 @@ extern "C" {
 #endif
 
 typedef uint32_t BodyId;     /* star, planet, moon, station central bodies */
+/* SpaceSiteId: Identifier type for Space Site objects in `dorbit`. */
 typedef uint32_t SpaceSiteId;
 
+/* SpacePos: Public type used by `dorbit`. */
 typedef struct {
     Q48_16 x; /* metres, inertial frame */
     Q48_16 y;
     Q48_16 z;
 } SpacePos;
 
+/* OrbitComponent: Public type used by `dorbit`. */
 typedef struct {
     BodyId   central;   /* central body */
     Q48_16   a;         /* semi-major axis [m], Q48.16 */
@@ -50,9 +53,23 @@ typedef struct {
 /* Kepler helpers (integer/fixed only) */
 
 Turn    dorbit_mean_anomaly(const OrbitComponent *orb, U64 t);
+/* Purpose: Solve kepler.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 Turn    dorbit_solve_kepler(Turn mean_anomaly, Q16_16 e);
+/* Purpose: True anomaly.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 Turn    dorbit_true_anomaly(Turn eccentric_anomaly, Q16_16 e);
+/* Purpose: Position in orbital plane.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void    dorbit_position_in_orbital_plane(Q48_16 a, Q16_16 e, Turn true_anom, SpacePos *out);
+/* Purpose: To space pos.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void    dorbit_to_space_pos(const OrbitComponent *orb, U64 t, SpacePos *out);
 
 #ifdef __cplusplus

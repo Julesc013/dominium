@@ -30,15 +30,24 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* u8: Public type used by `types`. */
 typedef uint8_t  u8;
+/* i8: Public type used by `types`. */
 typedef int8_t   i8;
+/* u16: Public type used by `types`. */
 typedef uint16_t u16;
+/* i16: Public type used by `types`. */
 typedef int16_t  i16;
+/* u32: Public type used by `types`. */
 typedef uint32_t u32;
+/* i32: Public type used by `types`. */
 typedef int32_t  i32;
+/* u64: Public type used by `types`. */
 typedef uint64_t u64;
+/* i64: Public type used by `types`. */
 typedef int64_t  i64;
 
+/* d_bool: Public type used by `types`. */
 typedef int d_bool;
 #define D_TRUE  1
 #define D_FALSE 0

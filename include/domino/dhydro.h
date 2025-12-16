@@ -23,6 +23,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* HydroRiverLink: Public type used by `dhydro`. */
 typedef struct {
     BodyId   body;
     WPosTile from;
@@ -30,6 +31,7 @@ typedef struct {
     Q16_16   gradient; /* slope magnitude along the link */
 } HydroRiverLink;
 
+/* HydroFlowSample: Public type used by `dhydro`. */
 typedef struct {
     BodyId   body;
     WPosTile tile;
@@ -37,17 +39,49 @@ typedef struct {
     Q16_16   outflow_v;
 } HydroFlowSample;
 
+/* Purpose: Field water depth.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Id value (0 is commonly used as the invalid/failure sentinel for `*Id` typedefs).
+ */
 FieldId dhydro_field_water_depth(void);
 
+/* Purpose: Init body.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool dhydro_init_body(BodyId body);
+/* Purpose: Register river link.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool dhydro_register_river_link(const HydroRiverLink *link);
 
+/* Purpose: Step dhydro.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool dhydro_step(BodyId body, ChunkPos region, U32 ticks);
 
+/* Purpose: Add rainfall.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool dhydro_add_rainfall(BodyId body, const WPosTile *tile, Q16_16 water_depth);
+/* Purpose: Register evaporation bias.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool dhydro_register_evaporation_bias(BodyId body, Q16_16 evap_per_tick);
 
+/* Purpose: Get water depth.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool dhydro_get_water_depth(BodyId body, const WPosTile *tile, Q16_16 *out_depth);
+/* Purpose: Get flow.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool dhydro_get_flow(BodyId body, const WPosTile *tile, Q16_16 *out_flow_u, Q16_16 *out_flow_v);
 
 #ifdef __cplusplus

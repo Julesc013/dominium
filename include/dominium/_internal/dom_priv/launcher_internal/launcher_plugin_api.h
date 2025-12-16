@@ -21,6 +21,7 @@ struct LauncherContext;
 struct InstallInfo;
 struct Instance;
 
+/* DomLauncherTabDescriptor: Public type used by `launcher_plugin_api`. */
 typedef struct DomLauncherTabDescriptor {
     const char* id;
     const char* title;
@@ -31,12 +32,14 @@ typedef struct DomLauncherTabDescriptor {
     void (*on_render_tui)(void* tui_ctx);
 } DomLauncherTabDescriptor;
 
+/* DomLauncherCommandDescriptor: Public type used by `launcher_plugin_api`. */
 typedef struct DomLauncherCommandDescriptor {
     const char* name;
     const char* help;
     int (*run)(int argc, const char** argv);
 } DomLauncherCommandDescriptor;
 
+/* DomLauncherPluginAPI: Public type used by `launcher_plugin_api`. */
 typedef struct DomLauncherPluginAPI {
     const LauncherContext* (*get_context)(void);
 
@@ -63,6 +66,7 @@ typedef struct DomLauncherPluginAPI {
     void (*register_command)(const DomLauncherCommandDescriptor*);
 } DomLauncherPluginAPI;
 
+/* DomLauncherPlugin: Public type used by `launcher_plugin_api`. */
 typedef struct DomLauncherPlugin {
     uint32_t abi_version;
     void (*on_load)(DomLauncherPluginAPI* api);
@@ -70,6 +74,10 @@ typedef struct DomLauncherPlugin {
 } DomLauncherPlugin;
 
 #ifdef _WIN32
+/* Purpose: Declspec .
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 __declspec(dllexport)
 #endif
 const DomLauncherPlugin* Dominium_GetLauncherPlugin(void);

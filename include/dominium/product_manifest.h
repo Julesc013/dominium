@@ -16,6 +16,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 
 #include "domino/version.h"
 
+/* dominium_product_desc: Public type used by `product_manifest`. */
 typedef struct dominium_product_desc {
     char          id[64];
     domino_semver version;

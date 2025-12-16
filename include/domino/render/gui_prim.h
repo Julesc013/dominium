@@ -22,14 +22,17 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* dgui_color: Public type used by `gui_prim`. */
 typedef struct dgui_color {
     uint8_t r, g, b, a;
 } dgui_color;
 
+/* dgui_rect: Public type used by `gui_prim`. */
 typedef struct dgui_rect {
     int x, y, w, h;
 } dgui_rect;
 
+/* dgui_text_prim: Public type used by `gui_prim`. */
 typedef struct dgui_text_prim {
     int     x;
     int     y;
@@ -37,6 +40,7 @@ typedef struct dgui_text_prim {
     const char* text;
 } dgui_text_prim;
 
+/* dgui_rect_prim: Public type used by `gui_prim`. */
 typedef struct dgui_rect_prim {
     dgui_rect  rect;
     dgui_color fill;
@@ -47,6 +51,9 @@ typedef struct dgui_rect_prim {
 
 /* Utility helpers emit into a canvas */
 void dgui_draw_rect(struct dcvs_t* c, const dgui_rect_prim* r);
+/* Purpose: Text dgui draw.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void dgui_draw_text(struct dcvs_t* c, const dgui_text_prim* t);
 
 #ifdef __cplusplus

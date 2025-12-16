@@ -21,6 +21,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* d_gfx_backend_info: Public type used by `backend_detect`. */
 typedef struct d_gfx_backend_info {
     d_gfx_backend_type backend;
     int                supported;
@@ -30,7 +31,15 @@ typedef struct d_gfx_backend_info {
 
 #define D_GFX_BACKEND_MAX 16
 
+/* Purpose: Backends d gfx detect.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 u32 d_gfx_detect_backends(d_gfx_backend_info* out_list, u32 max_count);
+/* Purpose: Backend d gfx select.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 d_gfx_backend_type d_gfx_select_backend(void);
 
 #ifdef __cplusplus

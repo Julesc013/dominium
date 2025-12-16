@@ -31,18 +31,46 @@ struct dom_term_vtable {
     uint32_t api_version;
 
     int  (*attach)(void);   /* bind to stdin/stdout/tty */
+/* Purpose: API entry point for `dom_plat_term`.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
     void (*detach)(void);
 
+/* Purpose: API entry point for `dom_plat_term`.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
     int  (*write)(const char* s, size_t n);
+/* Purpose: API entry point for `dom_plat_term`.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
     int  (*read_line)(char* buf, size_t cap);
 
+/* Purpose: API entry point for `dom_plat_term`.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
     int  (*enter_alt_screen)(void);
+/* Purpose: API entry point for `dom_plat_term`.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
     void (*leave_alt_screen)(void);
 
+/* Purpose: API entry point for `dom_plat_term`.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
     void (*set_cursor_pos)(int x, int y);
     void (*set_attr)(uint32_t attr_flags); /* attr flags TBD */
 };
 
+/* Purpose: Probe dom plat term.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 const struct dom_term_vtable* dom_plat_term_probe(const struct dom_sys_vtable* sys);
 
 #ifdef __cplusplus

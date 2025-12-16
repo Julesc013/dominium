@@ -18,21 +18,73 @@ extern "C" {
 
 struct d_app_params; /* forward from Domino C header */
 
+/* Purpose: Cli dom launcher run.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int dom_launcher_run_cli(const d_app_params* p);
+/* Purpose: Tui dom launcher run.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int dom_launcher_run_tui(const d_app_params* p);
+/* Purpose: Gui dom launcher run.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int dom_launcher_run_gui(const d_app_params* p);
 
+/* Purpose: Cli dom game run.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int dom_game_run_cli(const d_app_params* p);
+/* Purpose: Tui dom game run.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int dom_game_run_tui(const d_app_params* p);
+/* Purpose: Gui dom game run.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int dom_game_run_gui(const d_app_params* p);
+/* Purpose: Headless dom game run.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int dom_game_run_headless(const d_app_params* p);
 
+/* Purpose: Cli dom setup run.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int dom_setup_run_cli(const d_app_params* p);
+/* Purpose: Tui dom setup run.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int dom_setup_run_tui(const d_app_params* p);
+/* Purpose: Gui dom setup run.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int dom_setup_run_gui(const d_app_params* p);
 
+/* Purpose: Cli dom tools run.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int dom_tools_run_cli(const d_app_params* p);
+/* Purpose: Tui dom tools run.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int dom_tools_run_tui(const d_app_params* p);
+/* Purpose: Gui dom tools run.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int dom_tools_run_gui(const d_app_params* p);
 
 } /* extern \"C\" */

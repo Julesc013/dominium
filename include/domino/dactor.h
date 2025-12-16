@@ -24,9 +24,12 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* Species registry identifier. A value of 0 is treated as invalid by this API. */
 typedef uint32_t SpeciesId;
+/* Actor registry identifier. A value of 0 is treated as invalid by this API. */
 typedef uint32_t ActorId;
 
+/* Species definition used by the actor simulation (POD). */
 typedef struct {
     SpeciesId   id;
     const char *name;
@@ -51,6 +54,7 @@ typedef struct {
 
 } Species;
 
+/* Actor instance state updated by `dactor_tick_all()` (POD). */
 typedef struct {
     ActorId     id;
     SpeciesId   species;
@@ -76,16 +80,56 @@ typedef struct {
     uint32_t    knowledge_id;
 } Actor;
 
+/* Registers a species definition.
+ *
+ * Parameters:
+ *   - def: Input definition (must be non-NULL and `def->name` must be non-NULL).
+ *         `*def` is copied into internal storage; caller retains ownership.
+ *
+ * Returns:
+ *   - Non-zero SpeciesId on success; 0 on failure (invalid input or capacity limit).
+ */
 SpeciesId      dactor_species_register(const Species *def);
+
+/* Looks up a previously registered species definition.
+ *
+ * Returns:
+ *   - Pointer to internal, read-only storage on success; NULL if `id` is invalid.
+ *
+ * Lifetime:
+ *   - The returned pointer remains valid for the lifetime of the process.
+ */
 const Species *dactor_species_get(SpeciesId id);
 
+/* Creates a new actor instance.
+ *
+ * Returns:
+ *   - Non-zero ActorId on success; 0 on failure (no free slots).
+ */
 ActorId   dactor_create(SpeciesId species, EnvironmentKind env);
+
+/* Returns a mutable pointer to the actor state for `id`.
+ *
+ * Returns:
+ *   - Pointer to internal storage on success; NULL if `id` is invalid or destroyed.
+ */
 Actor    *dactor_get(ActorId id);
+
+/* Destroys an actor instance. Accepts invalid ids as a no-op. */
 void      dactor_destroy(ActorId id);
 
+/* Advances the actor simulation by one tick for all active actors.
+ *
+ * Side effects:
+ *   - Updates `Actor` health/stamina/body temperature and may interact with `dzone` atmosphere/heat.
+ */
 void      dactor_tick_all(SimTick t);
 
-/* Configure substance ids for life support (oxygen, carbon dioxide, water) */
+/* Configures substance ids for life support gases (oxygen, carbon dioxide, water).
+ *
+ * Parameters:
+ *   - o2/co2/h2o: Non-zero ids override the current mapping; passing 0 leaves the mapping unchanged.
+ */
 void      dactor_set_substance_ids(SubstanceId o2, SubstanceId co2, SubstanceId h2o);
 
 #ifdef __cplusplus

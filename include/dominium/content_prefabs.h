@@ -24,8 +24,10 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* dom_prefab_id: Public type used by `content_prefabs`. */
 typedef uint32_t dom_prefab_id;
 
+/* dom_prefab_desc: Public type used by `content_prefabs`. */
 typedef struct dom_prefab_desc {
     uint32_t        struct_size;
     uint32_t        struct_version;
@@ -40,11 +42,30 @@ typedef int (*dom_prefab_visit_fn)(dom_prefab_id id,
                                    const dom_prefab_desc* desc,
                                    void* user);
 
+/* Purpose: Register prefabs.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 dom_status            dom_prefabs_register(const dom_prefab_desc* desc,
                                            dom_prefab_id* out_id);
+/* Purpose: Get prefabs.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 const dom_prefab_desc* dom_prefabs_get(dom_prefab_id id);
+/* Purpose: Count dom prefabs.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 uint32_t              dom_prefabs_count(void);
+/* Purpose: Visit dom prefabs.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 dom_status            dom_prefabs_visit(dom_prefab_visit_fn fn, void* user);
+/* Purpose: Reset dom prefabs.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void                  dom_prefabs_reset(void);
 
 #ifdef __cplusplus

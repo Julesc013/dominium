@@ -28,6 +28,10 @@ struct InstallInfo {
     std::string created_by;     // "setup"|"portable-zip"|"package"|"unknown"
 };
 
+/* Purpose: Exists manifest install.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool manifest_install_exists(const std::string& root_path);
 
 // Attempts to parse INSTALL_ROOT/dominium_install.json

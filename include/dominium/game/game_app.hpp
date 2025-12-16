@@ -18,13 +18,41 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 
 class GameApp {
 public:
+/* Purpose: API entry point for `game_app`.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
     GameApp();
+/* Purpose: API entry point for `game_app`.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
     ~GameApp();
 
+/* Purpose: API entry point for `game_app`.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
     int run(int argc, char** argv);
+/* Purpose: Headless run.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
     int run_headless(u32 seed, u32 ticks, u32 width, u32 height);
+/* Purpose: Checksum load world.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
     int load_world_checksum(const char* path, u32* checksum_out);
+/* Purpose: Mode run tui.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
     int run_tui_mode(void);
+/* Purpose: Mode run gui.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
     int run_gui_mode(void);
 };
 

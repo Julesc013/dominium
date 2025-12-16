@@ -21,11 +21,13 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* ui_dir: Public type used by `ui_layout`. */
 typedef enum ui_dir {
     UI_DIR_ROW = 0,
     UI_DIR_COL
 } ui_dir;
 
+/* ui_box: Public type used by `ui_layout`. */
 typedef struct ui_box {
     int x;
     int y;
@@ -33,11 +35,13 @@ typedef struct ui_box {
     int h;
 } ui_box;
 
+/* ui_layout_ctx: Public type used by `ui_layout`. */
 typedef struct ui_layout_ctx {
     ui_box viewport;
     int    dpi;
 } ui_layout_ctx;
 
+/* ui_node: Public type used by `ui_layout`. */
 typedef struct ui_node {
     const char* id;
     ui_dir      dir;
@@ -53,6 +57,9 @@ typedef struct ui_node {
     struct ui_node* next_sibling;
 } ui_node;
 
+/* Purpose: Compute ui layout.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void ui_layout_compute(ui_layout_ctx* ctx, ui_node* root);
 
 #ifdef __cplusplus

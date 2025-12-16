@@ -23,16 +23,36 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* d_world_config: Public type used by `sim`. */
 typedef struct d_world_config {
     u32 seed;
     u32 width;
     u32 height;
 } d_world_config;
 
+/* Purpose: Config d world create from.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 d_world* d_world_create_from_config(const d_world_config* cfg);
+/* Purpose: Tick world.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void     d_world_tick(d_world* world);
+/* Purpose: Checksum d world.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 u32      d_world_checksum(const d_world* world);
+/* Purpose: Tlv d world save.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 d_bool   d_world_save_tlv(const d_world* world, const char* path);
+/* Purpose: Tlv d world load.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 d_world* d_world_load_tlv(const char* path);
 
 #ifdef __cplusplus

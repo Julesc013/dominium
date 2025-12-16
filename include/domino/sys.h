@@ -29,6 +29,7 @@ extern "C" {
 
 typedef struct domino_sys_context domino_sys_context;
 
+/* domino_sys_profile: Public type used by `sys`. */
 typedef enum {
     DOMINO_SYS_PROFILE_AUTO = 0,
     DOMINO_SYS_PROFILE_TINY,
@@ -36,6 +37,7 @@ typedef enum {
     DOMINO_SYS_PROFILE_FULL
 } domino_sys_profile;
 
+/* domino_os_kind: Public type used by `sys`. */
 typedef enum {
     DOMINO_OS_DOS,
     DOMINO_OS_WINDOWS,
@@ -46,6 +48,7 @@ typedef enum {
     DOMINO_OS_UNKNOWN
 } domino_os_kind;
 
+/* domino_cpu_kind: Public type used by `sys`. */
 typedef enum {
     DOMINO_CPU_X86_16,
     DOMINO_CPU_X86_32,
@@ -57,6 +60,7 @@ typedef enum {
     DOMINO_CPU_OTHER
 } domino_cpu_kind;
 
+/* domino_sys_platform_info: Public type used by `sys`. */
 typedef struct domino_sys_platform_info {
     domino_os_kind     os;
     domino_cpu_kind    cpu;
@@ -68,6 +72,7 @@ typedef struct domino_sys_platform_info {
     unsigned int has_unicode : 1;
 } domino_sys_platform_info;
 
+/* domino_sys_desc: Public type used by `sys`. */
 typedef struct domino_sys_desc {
     domino_sys_profile profile_hint;
     /* future: logging callbacks, allocators, etc. */
@@ -80,8 +85,14 @@ int dom_sys_select_backend(const char* name); /* "win32", "sdl2", "x11", "waylan
  * Init / shutdown
  *------------------------------------------------------------*/
 int  domino_sys_init(const domino_sys_desc* desc, domino_sys_context** out_ctx);
+/* Purpose: Shutdown sys.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void domino_sys_shutdown(domino_sys_context* ctx);
 
+/* Purpose: Get platform info.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void domino_sys_get_platform_info(domino_sys_context* ctx,
                                   domino_sys_platform_info* out_info);
 
@@ -97,6 +108,10 @@ typedef struct domino_sys_paths {
     char temp_root[260];    /* temp/cache */
 } domino_sys_paths;
 
+/* Purpose: Get paths.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int domino_sys_get_paths(domino_sys_context* ctx,
                          domino_sys_paths* out_paths);
 
@@ -105,20 +120,44 @@ int domino_sys_get_paths(domino_sys_context* ctx,
  *------------------------------------------------------------*/
 typedef struct domino_sys_file domino_sys_file;
 
+/* Purpose: Fopen sys.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 domino_sys_file* domino_sys_fopen(domino_sys_context* ctx,
                                   const char* path,
                                   const char* mode);
+/* Purpose: Fread sys.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 size_t domino_sys_fread(domino_sys_context* ctx,
                         void* buf, size_t size, size_t nmemb,
                         domino_sys_file* f);
+/* Purpose: Fwrite sys.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 size_t domino_sys_fwrite(domino_sys_context* ctx,
                          const void* buf, size_t size, size_t nmemb,
                          domino_sys_file* f);
+/* Purpose: Fclose sys.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int    domino_sys_fclose(domino_sys_context* ctx,
                          domino_sys_file* f);
 
+/* Purpose: File exists.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int domino_sys_file_exists(domino_sys_context* ctx,
                            const char* path);
+/* Purpose: Mkdirs sys.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int domino_sys_mkdirs(domino_sys_context* ctx,
                       const char* path);
 
@@ -127,12 +166,23 @@ int domino_sys_mkdirs(domino_sys_context* ctx,
  *------------------------------------------------------------*/
 typedef struct domino_sys_dir_iter domino_sys_dir_iter;
 
+/* Purpose: Open sys dir.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 domino_sys_dir_iter* domino_sys_dir_open(domino_sys_context* ctx,
                                          const char* path);
+/* Purpose: Dir next.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int domino_sys_dir_next(domino_sys_context* ctx,
                         domino_sys_dir_iter* it,
                         char* name_out, size_t cap,
                         int* is_dir_out);
+/* Purpose: Close sys dir.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void domino_sys_dir_close(domino_sys_context* ctx,
                           domino_sys_dir_iter* it);
 
@@ -140,7 +190,14 @@ void domino_sys_dir_close(domino_sys_context* ctx,
  * Time
  *------------------------------------------------------------*/
 double         domino_sys_time_seconds(domino_sys_context* ctx);  /* monotonic if possible */
+/* Purpose: Time millis.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 unsigned long  domino_sys_time_millis(domino_sys_context* ctx);
+/* Purpose: Sleep millis.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void           domino_sys_sleep_millis(domino_sys_context* ctx,
                                        unsigned long ms);
 
@@ -149,20 +206,32 @@ void           domino_sys_sleep_millis(domino_sys_context* ctx,
  *------------------------------------------------------------*/
 typedef struct domino_sys_process domino_sys_process;
 
+/* domino_sys_process_desc: Public type used by `sys`. */
 typedef struct domino_sys_process_desc {
     const char* path;         /* executable path */
     const char* const* argv;  /* null-terminated argv */
     const char* working_dir;  /* optional */
 } domino_sys_process_desc;
 
+/* Purpose: Process spawn.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int domino_sys_process_spawn(domino_sys_context* ctx,
                              const domino_sys_process_desc* desc,
                              domino_sys_process** out_proc);
 
+/* Purpose: Process wait.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int domino_sys_process_wait(domino_sys_context* ctx,
                             domino_sys_process* proc,
                             int* exit_code_out);
 
+/* Purpose: Destroy sys process.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void domino_sys_process_destroy(domino_sys_context* ctx,
                                 domino_sys_process* proc);
 
@@ -176,6 +245,9 @@ typedef enum {
     DOMINO_LOG_ERROR
 } domino_log_level;
 
+/* Purpose: Log sys.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void domino_sys_log(domino_sys_context* ctx,
                     domino_log_level level,
                     const char* subsystem,
@@ -186,19 +258,35 @@ void domino_sys_log(domino_sys_context* ctx,
  *------------------------------------------------------------*/
 typedef struct domino_term_context domino_term_context;
 
+/* domino_term_desc: Public type used by `sys`. */
 typedef struct domino_term_desc {
     int use_alternate_buffer; /* if available on platform */
 } domino_term_desc;
 
+/* Purpose: Init term.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int  domino_term_init(domino_sys_context* sys,
                       const domino_term_desc* desc,
                       domino_term_context** out_term);
+/* Purpose: Shutdown term.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void domino_term_shutdown(domino_term_context* term);
 
+/* Purpose: Write term.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int  domino_term_write(domino_term_context* term,
                        const char* bytes,
                        size_t len);
 
+/* Purpose: Line domino term read.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int  domino_term_read_line(domino_term_context* term,
                            char* buf,
                            size_t cap);
@@ -207,10 +295,14 @@ int  domino_term_read_line(domino_term_context* term,
  * New Domino system ABI (dsys_*)
  *------------------------------------------------------------*/
 typedef struct dsys_context    dsys_context;
+/* dsys_window: Public type used by `sys`. */
 typedef struct dsys_window_t   dsys_window;
+/* dsys_process: Public type used by `sys`. */
 typedef struct dsys_process_t  dsys_process;
+/* dsys_dir_iter: Public type used by `sys`. */
 typedef struct dsys_dir_iter_t dsys_dir_iter;
 
+/* dsys_result: Public type used by `sys`. */
 typedef enum dsys_result {
     DSYS_OK = 0,
     DSYS_ERR,
@@ -219,8 +311,10 @@ typedef enum dsys_result {
     DSYS_ERR_UNSUPPORTED
 } dsys_result;
 
+/* message: Public type used by `sys`. */
 typedef void (*dsys_log_fn)(const char* message);
 
+/* dsys_caps: Public type used by `sys`. */
 typedef struct dsys_caps {
     const char* name;
     uint32_t    ui_modes;
@@ -230,14 +324,31 @@ typedef struct dsys_caps {
     bool        has_high_res_timer;
 } dsys_caps;
 
+/* Purpose: Init dsys.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 dsys_result dsys_init(void);
+/* Purpose: Shutdown dsys.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void        dsys_shutdown(void);
+/* Purpose: Caps dsys get.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 dsys_caps   dsys_get_caps(void);
 
+/* Purpose: Callback dsys set log.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void        dsys_set_log_callback(dsys_log_fn fn);
 
 /* Time */
 uint64_t dsys_time_now_us(void);
+/* Purpose: Ms dsys sleep.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void     dsys_sleep_ms(uint32_t ms);
 
 /* Window */
@@ -247,6 +358,7 @@ typedef enum dsys_window_mode {
     DWIN_MODE_BORDERLESS
 } dsys_window_mode;
 
+/* dsys_window_desc: Public type used by `sys`. */
 typedef struct dsys_window_desc {
     int32_t          x;
     int32_t          y;
@@ -255,13 +367,39 @@ typedef struct dsys_window_desc {
     dsys_window_mode mode;
 } dsys_window_desc;
 
+/* Purpose: Create window.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 dsys_window* dsys_window_create(const dsys_window_desc* desc);
+/* Purpose: Destroy window.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void         dsys_window_destroy(dsys_window* win);
+/* Purpose: Mode dsys window set.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void         dsys_window_set_mode(dsys_window* win, dsys_window_mode mode);
+/* Purpose: Size dsys window set.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void         dsys_window_set_size(dsys_window* win, int32_t w, int32_t h);
+/* Purpose: Size dsys window get.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void         dsys_window_get_size(dsys_window* win, int32_t* w, int32_t* h);
+/* Purpose: Handle dsys window get native.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void*        dsys_window_get_native_handle(dsys_window* win);
+/* Purpose: Close window should.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int          dsys_window_should_close(dsys_window* win);
+/* Purpose: Present dsys window.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void         dsys_window_present(dsys_window* win);
 
 /* Input events */
@@ -278,6 +416,7 @@ typedef enum dsys_event_type {
     DSYS_EVENT_GAMEPAD_AXIS
 } dsys_event_type;
 
+/* window: Public type used by `sys`. */
 typedef struct dsys_event {
     dsys_event_type type;
     union {
@@ -292,6 +431,10 @@ typedef struct dsys_event {
     } payload;
 } dsys_event;
 
+/* Purpose: Event dsys poll.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool dsys_poll_event(dsys_event* out);
 
 /* Filesystem */
@@ -303,22 +446,61 @@ typedef enum dsys_path_kind {
     DSYS_PATH_TEMP
 } dsys_path_kind;
 
+/* Purpose: Path dsys get.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool   dsys_get_path(dsys_path_kind kind, char* buf, size_t buf_size);
 
+/* Purpose: Open file.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void*  dsys_file_open(const char* path, const char* mode);
+/* Purpose: Read file.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 size_t dsys_file_read(void* fh, void* buf, size_t size);
+/* Purpose: Write file.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 size_t dsys_file_write(void* fh, const void* buf, size_t size);
+/* Purpose: Seek dsys file.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int    dsys_file_seek(void* fh, long offset, int origin);
+/* Purpose: Tell dsys file.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 long   dsys_file_tell(void* fh);
+/* Purpose: Close file.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int    dsys_file_close(void* fh);
 
+/* dsys_dir_entry: Public type used by `sys`. */
 typedef struct dsys_dir_entry {
     char name[260];
     bool is_dir;
 } dsys_dir_entry;
 
+/* Purpose: Open dir.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 dsys_dir_iter* dsys_dir_open(const char* path);
+/* Purpose: Next dsys dir.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool           dsys_dir_next(dsys_dir_iter* it, dsys_dir_entry* out);
+/* Purpose: Close dir.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void           dsys_dir_close(dsys_dir_iter* it);
 
 /* Processes */
@@ -328,8 +510,19 @@ typedef struct dsys_process_desc {
     uint32_t           flags;
 } dsys_process_desc;
 
+/* Purpose: Spawn dsys process.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 dsys_process* dsys_process_spawn(const dsys_process_desc* desc);
+/* Purpose: Wait dsys process.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int           dsys_process_wait(dsys_process* p);
+/* Purpose: Destroy process.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void          dsys_process_destroy(dsys_process* p);
 
 /*------------------------------------------------------------
@@ -348,6 +541,7 @@ typedef enum dsys_input_event_type {
     DSYS_INPUT_EVENT_TOUCH
 } dsys_input_event_type;
 
+/* key: Public type used by `sys`. */
 typedef struct dsys_input_event {
     dsys_input_event_type type;
     union {
@@ -361,6 +555,10 @@ typedef struct dsys_input_event {
     } payload;
 } dsys_input_event;
 
+/* Purpose: Raw dsys input poll.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int dsys_input_poll_raw(dsys_input_event* ev);
 
 /*------------------------------------------------------------
@@ -373,9 +571,22 @@ typedef struct dsys_ime_event {
     int  has_commit;
 } dsys_ime_event;
 
+/* Purpose: Start dsys ime.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void dsys_ime_start(void);
+/* Purpose: Stop dsys ime.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void dsys_ime_stop(void);
+/* Purpose: Cursor dsys ime set.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void dsys_ime_set_cursor(int32_t x, int32_t y);
+/* Purpose: Poll dsys ime.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int  dsys_ime_poll(dsys_ime_event* ev);
 
 /*------------------------------------------------------------
@@ -396,6 +607,7 @@ int  dsys_ime_poll(dsys_ime_event* ev);
 #define DSYS_IID_AUDIOIO_API_V1  ((dom_iid)0x4453590Bu)
 #define DSYS_IID_CLIPTEXT_API_V1 ((dom_iid)0x4453590Cu)
 
+/* dsys_core_api_v1: Public type used by `sys`. */
 typedef struct dsys_core_api_v1 {
     DOM_ABI_HEADER;
     dom_query_interface_fn query_interface;
@@ -409,12 +621,14 @@ typedef struct dsys_core_api_v1 {
     void (*set_log_callback)(dsys_log_fn fn);
 } dsys_core_api_v1;
 
+/* dsys_time_api_v1: Public type used by `sys`. */
 typedef struct dsys_time_api_v1 {
     DOM_ABI_HEADER;
     uint64_t (*time_now_us)(void);
     void     (*sleep_ms)(uint32_t ms);
 } dsys_time_api_v1;
 
+/* dsys_fs_api_v1: Public type used by `sys`. */
 typedef struct dsys_fs_api_v1 {
     DOM_ABI_HEADER;
     bool   (*get_path)(dsys_path_kind kind, char* buf, size_t buf_size);
@@ -431,6 +645,7 @@ typedef struct dsys_fs_api_v1 {
     void           (*dir_close)(dsys_dir_iter* it);
 } dsys_fs_api_v1;
 
+/* dsys_process_api_v1: Public type used by `sys`. */
 typedef struct dsys_process_api_v1 {
     DOM_ABI_HEADER;
     dsys_process* (*spawn)(const dsys_process_desc* desc);
@@ -438,6 +653,7 @@ typedef struct dsys_process_api_v1 {
     void          (*destroy)(dsys_process* p);
 } dsys_process_api_v1;
 
+/* dsys_dynlib_api_v1: Public type used by `sys`. */
 typedef struct dsys_dynlib_api_v1 {
     DOM_ABI_HEADER;
     void* (*open)(const char* path);
@@ -445,6 +661,7 @@ typedef struct dsys_dynlib_api_v1 {
     void* (*sym)(void* lib, const char* name);
 } dsys_dynlib_api_v1;
 
+/* dsys_window_api_v1: Public type used by `sys`. */
 typedef struct dsys_window_api_v1 {
     DOM_ABI_HEADER;
     dsys_window* (*create)(const dsys_window_desc* desc);
@@ -457,6 +674,7 @@ typedef struct dsys_window_api_v1 {
     void         (*present)(dsys_window* win);
 } dsys_window_api_v1;
 
+/* dsys_input_api_v1: Public type used by `sys`. */
 typedef struct dsys_input_api_v1 {
     DOM_ABI_HEADER;
     bool (*poll_event)(dsys_event* out);
@@ -468,39 +686,49 @@ typedef struct dsys_input_api_v1 {
     int  (*ime_poll)(dsys_ime_event* ev);
 } dsys_input_api_v1;
 
+/* dsys_thread_api_v1: Public type used by `sys`. */
 typedef struct dsys_thread_api_v1 {
     DOM_ABI_HEADER;
     void* reserved0;
     void* reserved1;
 } dsys_thread_api_v1;
 
+/* dsys_atomic_api_v1: Public type used by `sys`. */
 typedef struct dsys_atomic_api_v1 {
     DOM_ABI_HEADER;
     void* reserved0;
     void* reserved1;
 } dsys_atomic_api_v1;
 
+/* dsys_net_api_v1: Public type used by `sys`. */
 typedef struct dsys_net_api_v1 {
     DOM_ABI_HEADER;
     void* reserved0;
     void* reserved1;
 } dsys_net_api_v1;
 
+/* dsys_audioio_api_v1: Public type used by `sys`. */
 typedef struct dsys_audioio_api_v1 {
     DOM_ABI_HEADER;
     void* reserved0;
     void* reserved1;
 } dsys_audioio_api_v1;
 
+/* dsys_cliptext_api_v1: Public type used by `sys`. */
 typedef struct dsys_cliptext_api_v1 {
     DOM_ABI_HEADER;
     void* reserved0;
     void* reserved1;
 } dsys_cliptext_api_v1;
 
+/* Purpose: Api dsys get core.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 dsys_result dsys_get_core_api(u32 requested_abi, dsys_core_api_v1* out);
 
 #ifdef DOMINO_SYS_INTERNAL
+/* dsys_backend_vtable: Public type used by `sys`. */
 typedef struct dsys_backend_vtable_t {
     /* lifecycle */
     dsys_result (*init)(void);

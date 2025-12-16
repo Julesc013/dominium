@@ -24,12 +24,35 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* Purpose: Type dom game register machine.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Id value (0 is commonly used as the invalid/failure sentinel for `*Id` typedefs).
+ */
 MachineTypeId dom_game_register_machine_type(const MachineType *def);
+/* Purpose: Recipe dom game register.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Id value (0 is commonly used as the invalid/failure sentinel for `*Id` typedefs).
+ */
 RecipeId      dom_game_register_recipe(const Recipe *def);
+/* Purpose: Tech dom game register.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Id value (0 is commonly used as the invalid/failure sentinel for `*Id` typedefs).
+ */
 TechId        dom_game_register_tech(const Tech *def);
 
+/* Purpose: Blueprint dom game create.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Id value (0 is commonly used as the invalid/failure sentinel for `*Id` typedefs).
+ */
 BlueprintId   dom_game_create_blueprint(const char *name, U32 elem_capacity);
+/* Purpose: Elem dom game blueprint add.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Id value (0 is commonly used as the invalid/failure sentinel for `*Id` typedefs).
+ */
 BlueprintElementId dom_game_blueprint_add_elem(BlueprintId id, const BlueprintElement *elem);
+/* Purpose: Jobs dom game blueprint generate.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void          dom_game_blueprint_generate_jobs(BlueprintId id);
 
 #ifdef __cplusplus

@@ -26,18 +26,24 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* dom_net_power: Public type used by `net_power`. */
 typedef struct dom_net_power dom_net_power;
 
+/* dom_power_network_id: Public type used by `net_power`. */
 typedef uint32_t dom_power_network_id;
+/* dom_power_node_id: Public type used by `net_power`. */
 typedef uint32_t dom_power_node_id;
+/* dom_power_link_id: Public type used by `net_power`. */
 typedef uint32_t dom_power_link_id;
 
+/* dom_net_power_desc: Public type used by `net_power`. */
 typedef struct dom_net_power_desc {
     uint32_t    struct_size;
     uint32_t    struct_version;
     dom_world*  world;
 } dom_net_power_desc;
 
+/* dom_power_node_desc: Public type used by `net_power`. */
 typedef struct dom_power_node_desc {
     uint32_t            struct_size;
     uint32_t            struct_version;
@@ -47,6 +53,7 @@ typedef struct dom_power_node_desc {
     uint32_t            flags;
 } dom_power_node_desc;
 
+/* dom_power_link_desc: Public type used by `net_power`. */
 typedef struct dom_power_link_desc {
     uint32_t         struct_size;
     uint32_t         struct_version;
@@ -56,15 +63,34 @@ typedef struct dom_power_link_desc {
     uint32_t         flags;
 } dom_power_link_desc;
 
+/* Purpose: Create net power.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 dom_status dom_net_power_create(const dom_net_power_desc* desc,
                                 dom_net_power** out_ctx);
+/* Purpose: Destroy net power.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void       dom_net_power_destroy(dom_net_power* ctx);
+/* Purpose: Register node.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 dom_status dom_net_power_register_node(dom_net_power* ctx,
                                        const dom_power_node_desc* desc,
                                        dom_power_node_id* out_id);
+/* Purpose: Connect net power.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 dom_status dom_net_power_connect(dom_net_power* ctx,
                                  const dom_power_link_desc* desc,
                                  dom_power_link_id* out_id);
+/* Purpose: Step net power.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 dom_status dom_net_power_step(dom_net_power* ctx, uint32_t dt_millis);
 
 #ifdef __cplusplus

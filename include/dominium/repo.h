@@ -17,6 +17,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "domino/compat.h"
 #include <stddef.h>
 
+/* DmnRepoItem: Public type used by `repo`. */
 typedef struct DmnRepoItem_ {
     char id[64];
     char version[32];
@@ -24,11 +25,16 @@ typedef struct DmnRepoItem_ {
     char path[260];
 } DmnRepoItem;
 
+/* DmnRepoItemList: Public type used by `repo`. */
 typedef struct DmnRepoItemList_ {
     DmnRepoItem* items;
     size_t       count;
 } DmnRepoItemList;
 
+/* Purpose: Find product build.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int dmn_repo_find_product_build(const char* product,
                                 const char* version,
                                 const char* core_version,
@@ -37,12 +43,31 @@ int dmn_repo_find_product_build(const char* product,
                                 char* out_path,
                                 size_t out_path_cap);
 
+/* Purpose: List mods.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int dmn_repo_list_mods(DmnRepoItemList* out);
+/* Purpose: Resolve mod.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int dmn_repo_resolve_mod(const char* id, const char* version, char* out_path, size_t out_path_cap);
 
+/* Purpose: List packs.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int dmn_repo_list_packs(DmnRepoItemList* out);
+/* Purpose: Resolve pack.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int dmn_repo_resolve_pack(const char* id, const char* version, char* out_path, size_t out_path_cap);
 
+/* Purpose: Free item list.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void dmn_repo_free_item_list(DmnRepoItemList* list);
 
 #endif /* DOMINIUM_REPO_H */

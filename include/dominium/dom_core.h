@@ -20,12 +20,18 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "domino/baseline.h"
 #include "domino/sys.h"
 
+/* dom_i32: Public type used by `dom_core`. */
 typedef int32_t  dom_i32;
+/* dom_u32: Public type used by `dom_core`. */
 typedef uint32_t dom_u32;
+/* dom_i64: Public type used by `dom_core`. */
 typedef int64_t  dom_i64;
+/* dom_u64: Public type used by `dom_core`. */
 typedef uint64_t dom_u64;
+/* dom_bool8: Public type used by `dom_core`. */
 typedef uint8_t  dom_bool8;
 
+/* Constants for `dom_core`. */
 enum dom_log_level {
     DOM_LOG_DEBUG = DOMINO_LOG_DEBUG,
     DOM_LOG_INFO  = DOMINO_LOG_INFO,
@@ -33,6 +39,9 @@ enum dom_log_level {
     DOM_LOG_ERROR = DOMINO_LOG_ERROR
 };
 
+/* Purpose: Log dom.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 static void dom_log(enum dom_log_level lvl, const char* category, const char* msg)
 {
     domino_sys_log(NULL, (domino_log_level)lvl, category, msg);

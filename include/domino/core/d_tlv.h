@@ -21,6 +21,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* d_tlv_blob: Public type used by `d_tlv`. */
 typedef struct d_tlv_blob {
     unsigned char *ptr;
     u32            len;

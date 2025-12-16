@@ -20,6 +20,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* d_ime_event: Public type used by `ime`. */
 typedef struct d_ime_event {
     char composition[128];
     char committed[128];
@@ -27,10 +28,26 @@ typedef struct d_ime_event {
     u8   has_commit;
 } d_ime_event;
 
+/* Purpose: Init ime.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void d_ime_init(void);
+/* Purpose: Shutdown ime.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void d_ime_shutdown(void);
+/* Purpose: Enable ime.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void d_ime_enable(void);
+/* Purpose: Disable ime.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void d_ime_disable(void);
+/* Purpose: Poll ime.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 u32  d_ime_poll(d_ime_event* out);
 
 #ifdef __cplusplus

@@ -20,6 +20,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* dgui_style: Public type used by `style`. */
 typedef struct dgui_style {
     dgui_color bg;
     dgui_color panel;
@@ -29,6 +30,10 @@ typedef struct dgui_style {
     int        spacing;
 } dgui_style;
 
+/* Purpose: Default style.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 const dgui_style* dgui_style_default(void);
 
 #ifdef __cplusplus

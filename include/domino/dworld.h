@@ -43,6 +43,7 @@ extern "C" {
 typedef int32_t TileCoord;   /* x,y tile index; wrap around DOM_WORLD_TILES torus */
 typedef int16_t TileHeight;  /* z tile index in [-2048 .. +2047] */
 
+/* Tile-space world position (x/y wrap on the horizontal torus). */
 typedef struct {
     TileCoord  x;
     TileCoord  y;
@@ -59,8 +60,10 @@ typedef struct {
 
 /* Chunk coordinates: 16x16x16 tiles */
 typedef int32_t ChunkCoord;
+/* ChunkHeight: Public type used by `dworld`. */
 typedef int16_t ChunkHeight;
 
+/* Chunk-space world position (cx/cy/cz). */
 typedef struct {
     ChunkCoord  cx;
     ChunkCoord  cy;
@@ -69,12 +72,14 @@ typedef struct {
 
 typedef uint8_t LocalCoord;   /* 0..15 in each axis */
 
+/* Local position within a chunk (lx/ly/lz). */
 typedef struct {
     LocalCoord lx;
     LocalCoord ly;
     LocalCoord lz;
 } LocalPos;
 
+/* High-level embedding for an actor/aggregate in the world model. */
 typedef enum {
     ENV_SURFACE_GRID,    /* inside voxel world grid (terrain, buildings) */
     ENV_AIR_LOCAL,       /* low-altitude airspace, still referencing grid */
@@ -85,6 +90,7 @@ typedef enum {
     ENV_VACUUM_LOCAL     /* local inertial bubble near station/ship in space */
 } EnvironmentKind;
 
+/* Aggregate mobility classification for environment constraints. */
 typedef enum {
     AGG_STATIC,    /* anchored to terrain, buildings, fixed installations */
     AGG_SURFACE,   /* moves on/near surface: cars, trucks, ground robots */
@@ -95,17 +101,35 @@ typedef enum {
 
 /* Coordinate helpers */
 
+/* Wraps a horizontal tile coordinate into the canonical [0, DOM_WORLD_TILES) range. */
 TileCoord dworld_wrap_tile_coord(TileCoord t);
 
+/* Converts a tile position into chunk + local coordinates.
+ *
+ * Parameters:
+ *   - tile: Input tile position (required).
+ *   - out_chunk/out_local: Optional outputs; may be NULL.
+ */
 void dworld_tile_to_chunk_local(const WPosTile *tile, ChunkPos *out_chunk, LocalPos *out_local);
+
+/* Converts chunk + local coordinates back into a tile position.
+ *
+ * Preconditions:
+ *   - chunk/local/out_tile must be non-NULL; otherwise the function is a no-op.
+ */
 void dworld_chunk_local_to_tile(const ChunkPos *chunk, const LocalPos *local, WPosTile *out_tile);
 
+/* Initializes an exact position from a tile position with zero sub-tile offsets. */
 void dworld_init_exact_from_tile(const WPosTile *tile, WPosExact *out_pos);
 
 /* Environment helpers */
+/* Maps a clamped z tile height to a coarse environment kind. */
 EnvironmentKind dworld_env_from_z(TileHeight z);
+/* Returns whether `z` falls within the buildable vertical band. */
 bool            dworld_z_is_buildable(TileHeight z);
+/* Returns whether an exact position should transition from grid/airspace to high atmosphere. */
 bool            dworld_should_switch_to_high_atmo(const WPosExact *pos);
+/* Returns whether an exact position should transition from high atmosphere to orbit. */
 bool            dworld_should_switch_to_orbit(const WPosExact *pos);
 
 #ifdef __cplusplus

@@ -29,17 +29,25 @@ typedef int64_t Q48_16;   /* signed, range approx ±1.4e14 with 1/65536 resoluti
 /* Unsigned/signed integer aliases */
 
 typedef uint8_t  U8;
+/* U16: Public type used by `dnumeric`. */
 typedef uint16_t U16;
+/* U32: Public type used by `dnumeric`. */
 typedef uint32_t U32;
+/* U64: Public type used by `dnumeric`. */
 typedef uint64_t U64;
+/* I8: Public type used by `dnumeric`. */
 typedef int8_t   I8;
+/* I16: Public type used by `dnumeric`. */
 typedef int16_t  I16;
+/* I32: Public type used by `dnumeric`. */
 typedef int32_t  I32;
+/* I64: Public type used by `dnumeric`. */
 typedef int64_t  I64;
 
 /* Spatial units */
 typedef Q16_16 PosUnit;      /* world tile units in Q16.16, 1.0 = 1 tile = 1 m */
 typedef Q16_16 VelUnit;      /* tile units per second */
+/* AccelUnit: Public type used by `dnumeric`. */
 typedef Q16_16 AccelUnit;
 
 /* Angle units: Turn = 1.0 == full circle (2π rad) */
@@ -70,13 +78,33 @@ typedef Q16_16 SecondsQ16;   /* seconds in Q16.16 for dt, durations */
 Q16_16 dnum_from_int32(I32 v);            /* v * 65536 */
 I32     dnum_to_int32(Q16_16 v);          /* floor(v / 65536) */
 
+/* Purpose: Q4 dnum q16 to.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 Q4_12  dnum_q16_to_q4(Q16_16 v);
+/* Purpose: Q16 dnum q4 to.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 Q16_16 dnum_q4_to_q16(Q4_12 v);
 
 /* Angle helpers */
 Turn dnum_turn_normalise_0_1(Turn t);
+/* Purpose: Half dnum turn normalise neg pos.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 Turn dnum_turn_normalise_neg_pos_half(Turn t);
+/* Purpose: Add turn.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 Turn dnum_turn_add(Turn a, Turn b);
+/* Purpose: Sub dnum turn.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 Turn dnum_turn_sub(Turn a, Turn b);
 
 /* Global fixed UPS (updates per second). This can later be made configurable per save. */

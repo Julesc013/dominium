@@ -26,6 +26,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* dio_result: Public type used by `io`. */
 typedef enum dio_result_e {
     DIO_OK = 0,
     DIO_ERR,
@@ -40,23 +41,27 @@ typedef enum dio_result_e {
 #define DIO_IID_EXT_RESERVED0 ((dom_iid)0x44494F80u)
 #define DIO_IID_EXT_RESERVED1 ((dom_iid)0x44494F81u)
 
+/* dio_seek_origin: Public type used by `io`. */
 typedef enum dio_seek_origin_e {
     DIO_SEEK_SET = 0,
     DIO_SEEK_CUR,
     DIO_SEEK_END
 } dio_seek_origin;
 
+/* dio_open_flags: Public type used by `io`. */
 typedef enum dio_open_flags_e {
     DIO_OPEN_READ  = 1u << 0,
     DIO_OPEN_WRITE = 1u << 1,
     DIO_OPEN_TRUNC = 1u << 2
 } dio_open_flags;
 
+/* dio_open_desc_v1: Public type used by `io`. */
 typedef struct dio_open_desc_v1 {
     DOM_ABI_HEADER;
     u32 flags;
 } dio_open_desc_v1;
 
+/* dio_stream_api_v1: Public type used by `io`. */
 typedef struct dio_stream_api_v1 {
     DOM_ABI_HEADER;
     dom_query_interface_fn query_interface;
@@ -72,6 +77,10 @@ typedef struct dio_stream_api_v1 {
     dio_result (*size)(void* stream, u64* out_size);
 } dio_stream_api_v1;
 
+/* Purpose: Api dio get stream.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 dio_result dio_get_stream_api(u32 requested_abi, dio_stream_api_v1* out);
 
 #ifdef __cplusplus

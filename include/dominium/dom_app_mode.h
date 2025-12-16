@@ -22,6 +22,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* Constants for `dom_app_mode`. */
 enum dom_ui_mode {
     DOM_UI_MODE_HEADLESS = 0,
     DOM_UI_MODE_TERMINAL,
@@ -29,6 +30,10 @@ enum dom_ui_mode {
     DOM_UI_MODE_RENDERED
 };
 
+/* Purpose: Mode dom choose ui.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 enum dom_ui_mode dom_choose_ui_mode(int argc, char** argv,
                                     const struct dom_sys_vtable* sys,
                                     const struct dom_term_vtable* term,

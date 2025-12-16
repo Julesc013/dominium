@@ -23,6 +23,10 @@ struct ProcessOptions {
     std::string working_directory;
     bool        inherit_environment;
 
+/* Purpose: API entry point for `process`.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
     ProcessOptions() : working_directory(), inherit_environment(true) {}
 };
 
@@ -30,9 +34,17 @@ struct ProcessHandle {
     int  pid;           // platform-specific ID
     void* internal;     // opaque pointer to internal state
 
+/* Purpose: API entry point for `process`.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
     ProcessHandle() : pid(-1), internal(0) {}
 };
 
+/* Purpose: Process spawn.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool spawn_process(const std::string& executable,
                    const std::vector<std::string>& args,
                    const ProcessOptions& options,
@@ -47,6 +59,10 @@ int  process_wait(const ProcessHandle& handle);
 // Simple helpers to read buffered stdout/stderr later if implemented
 // (You can stub them for now; they will be expanded later)
 std::string process_read_stdout(const ProcessHandle& handle);
+/* Purpose: Read stderr.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 std::string process_read_stderr(const ProcessHandle& handle);
 
 } // namespace dom_shared
