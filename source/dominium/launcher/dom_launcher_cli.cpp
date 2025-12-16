@@ -14,8 +14,11 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include <cstdio>
 #include <cstring>
 
+#include "core/include/launcher_core_api.h"
 #include "dom_launcher_app.h"
 #include "dom_profile_cli.h"
+
+#include "dominium/version.h"
 
 extern "C" {
 #include "domino/build_info.h"
@@ -27,6 +30,88 @@ extern "C" {
 }
 
 namespace {
+
+struct LauncherAuditGuard {
+    launcher_core* core;
+    int* exit_code;
+
+    LauncherAuditGuard(launcher_core* c, int* ec) : core(c), exit_code(ec) {}
+
+    ~LauncherAuditGuard() {
+        if (!core) {
+            return;
+        }
+        if (exit_code) {
+            (void)launcher_core_emit_audit(core, *exit_code);
+        } else {
+            (void)launcher_core_emit_audit(core, 0);
+        }
+        launcher_core_destroy(core);
+        core = 0;
+    }
+};
+
+static const char* profile_id_from_dom_profile(const dom_profile& p) {
+    const bool lockstep = (p.lockstep_strict != 0u);
+    switch (p.kind) {
+    case DOM_PROFILE_COMPAT:   return lockstep ? "compat.lockstep" : "compat";
+    case DOM_PROFILE_BASELINE: return lockstep ? "baseline.lockstep" : "baseline";
+    case DOM_PROFILE_PERF:     return lockstep ? "perf.lockstep" : "perf";
+    default:                   return lockstep ? "unknown.lockstep" : "unknown";
+    }
+}
+
+static void audit_record_caps_selection(launcher_core* core, const dom_profile* profile) {
+    dom_hw_caps hw;
+    dom_selection sel;
+    dom_caps_result sel_rc;
+    char audit_buf[DOM_CAPS_AUDIT_LOG_MAX_BYTES];
+    u32 audit_len;
+    u32 i;
+
+    if (!core || !profile) {
+        return;
+    }
+
+    (void)launcher_core_add_reason(core, "caps_select:begin");
+
+    (void)dom_caps_register_builtin_backends();
+    (void)dom_caps_finalize_registry();
+
+    std::memset(&hw, 0, sizeof(hw));
+    hw.abi_version = DOM_CAPS_ABI_VERSION;
+    hw.struct_size = (u32)sizeof(hw);
+    (void)dom_hw_caps_probe_host(&hw);
+
+    std::memset(&sel, 0, sizeof(sel));
+    sel.abi_version = DOM_CAPS_ABI_VERSION;
+    sel.struct_size = (u32)sizeof(sel);
+    sel_rc = dom_caps_select(profile, &hw, &sel);
+    if (sel_rc != DOM_CAPS_OK) {
+        (void)launcher_core_add_reason(core, "caps_select:failed");
+    } else {
+        (void)launcher_core_add_reason(core, "caps_select:ok");
+    }
+
+    for (i = 0u; i < sel.entry_count; ++i) {
+        const dom_selection_entry* e = &sel.entries[i];
+        (void)launcher_core_add_selected_backend(core,
+                                                 e->subsystem_id,
+                                                 e->subsystem_name ? e->subsystem_name : "",
+                                                 e->backend_name ? e->backend_name : "",
+                                                 (u32)e->determinism,
+                                                 (u32)e->perf_class,
+                                                 e->backend_priority,
+                                                 e->chosen_by_override);
+    }
+
+    std::memset(audit_buf, 0, sizeof(audit_buf));
+    audit_len = (u32)(sizeof(audit_buf) - 1u);
+    if (dom_caps_get_audit_log(&sel, audit_buf, &audit_len) == DOM_CAPS_OK) {
+        audit_buf[(audit_len < (u32)sizeof(audit_buf)) ? audit_len : ((u32)sizeof(audit_buf) - 1u)] = '\0';
+        (void)launcher_core_add_reason(core, audit_buf);
+    }
+}
 
 dom::LauncherMode parse_mode(const char *text, dom::LauncherMode def_mode) {
     if (!text) {
@@ -317,16 +402,57 @@ static int run_launcher_smoke_gui(const dom::ProfileCli& profile_cli) {
 } // namespace
 
 int main(int argc, char **argv) {
+    int exit_code = 0;
     dom::LauncherConfig cfg;
     dom::DomLauncherApp app;
     dom::ProfileCli profile_cli;
     std::string profile_err;
     int i;
 
+    launcher_core_desc_v1 lc_desc;
+    launcher_core* lc = 0;
+    std::memset(&lc_desc, 0, sizeof(lc_desc));
+    lc_desc.struct_size = (u32)sizeof(lc_desc);
+    lc_desc.struct_version = LAUNCHER_CORE_DESC_VERSION;
+    lc_desc.services = launcher_services_null_v1();
+    lc_desc.audit_output_path = 0; /* core generates a unique per-run name in CWD */
+    lc_desc.selected_profile_id = 0;
+    lc_desc.argv = (const char* const*)argv;
+    lc_desc.argv_count = (u32)((argc > 0) ? argc : 0);
+    lc = launcher_core_create(&lc_desc);
+    LauncherAuditGuard audit_guard(lc, &exit_code);
+
+    if (lc) {
+        (void)launcher_core_set_version_string(lc, DOMINIUM_LAUNCHER_VERSION);
+        {
+            const char* build_id = dom_build_id();
+            if (build_id) {
+                (void)launcher_core_set_build_id(lc, build_id);
+            }
+        }
+        {
+            const char* git_hash = dom_git_hash();
+            if (git_hash) {
+                (void)launcher_core_set_git_hash(lc, git_hash);
+            }
+        }
+    }
+
     dom::init_default_profile_cli(profile_cli);
     if (!dom::parse_profile_cli_args(argc, argv, profile_cli, profile_err)) {
         std::fprintf(stderr, "Error: %s\n", profile_err.c_str());
-        return 2;
+        if (lc) {
+            std::string why = std::string("profile_cli_parse_failed:") + profile_err;
+            (void)launcher_core_add_reason(lc, why.c_str());
+        }
+        exit_code = 2;
+        return exit_code;
+    }
+
+    if (lc) {
+        (void)launcher_core_select_profile_id(lc, profile_id_from_dom_profile(profile_cli.profile), "dom_profile_cli");
+        (void)launcher_core_add_reason(lc, (profile_cli.profile.lockstep_strict != 0u) ? "lockstep_strict=1" : "lockstep_strict=0");
+        audit_record_caps_selection(lc, &profile_cli.profile);
     }
 
     {
@@ -342,17 +468,29 @@ int main(int argc, char **argv) {
             }
         }
         if (smoke_gui) {
-            return run_launcher_smoke_gui(profile_cli);
+            if (lc) {
+                (void)launcher_core_add_reason(lc, "mode:smoke-gui");
+            }
+            exit_code = run_launcher_smoke_gui(profile_cli);
+            return exit_code;
         }
     }
 
     if (profile_cli.print_caps) {
+        if (lc) {
+            (void)launcher_core_add_reason(lc, "action:print_caps");
+        }
         dom::print_caps(stdout);
-        return 0;
+        exit_code = 0;
+        return exit_code;
     }
     if (profile_cli.print_selection) {
+        if (lc) {
+            (void)launcher_core_add_reason(lc, "action:print_selection");
+        }
         dom::print_caps(stdout);
-        return dom::print_selection(profile_cli.profile, stdout, stderr);
+        exit_code = dom::print_selection(profile_cli.profile, stdout, stderr);
+        return exit_code;
     }
 
     cfg.home.clear();
@@ -384,10 +522,15 @@ int main(int argc, char **argv) {
 
     if (!app.init_from_cli(cfg)) {
         std::printf("Launcher: failed to initialize.\n");
-        return 1;
+        if (lc) {
+            (void)launcher_core_add_reason(lc, "launcher_init_failed");
+        }
+        exit_code = 1;
+        return exit_code;
     }
 
     app.run();
     app.shutdown();
-    return 0;
+    exit_code = 0;
+    return exit_code;
 }

@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
+add_subdirectory(core)
+
 add_executable(dominium-launcher
     dom_launcher_cli.cpp
     dom_launcher_app.cpp
@@ -19,6 +21,7 @@ target_link_libraries(dominium-launcher
     PRIVATE
         dominium_common
         domino_core
+        dominium_launcher_core
 )
 
 set_target_properties(dominium-launcher PROPERTIES
