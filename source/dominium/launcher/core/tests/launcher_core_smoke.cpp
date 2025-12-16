@@ -60,25 +60,26 @@ static void test_instance_creation() {
 
 static void test_manifest_roundtrip_and_hash() {
     dom::launcher_core::LauncherInstanceManifest m = dom::launcher_core::launcher_instance_manifest_make_empty("inst0");
-    dom::launcher_core::LauncherPinnedContent pin;
+    dom::launcher_core::LauncherContentEntry ent;
     std::vector<unsigned char> bytes;
     dom::launcher_core::LauncherInstanceManifest m2;
     u64 h1, h2;
 
-    pin.artifact.kind = (u32)dom::launcher_core::LAUNCHER_ARTIFACT_MOD;
-    pin.artifact.id = "mod.example";
-    pin.artifact.build_id = "1.2.3";
-    pin.order_index = 2u;
-    pin.artifact.hash_bytes.push_back(0xAAu);
-    pin.artifact.hash_bytes.push_back(0xBBu);
-    m.pinned_content.push_back(pin);
+    ent.type = (u32)dom::launcher_core::LAUNCHER_CONTENT_MOD;
+    ent.id = "mod.example";
+    ent.version = "1.2.3";
+    ent.enabled = 1u;
+    ent.update_policy = (u32)dom::launcher_core::LAUNCHER_UPDATE_PROMPT;
+    ent.hash_bytes.push_back(0xAAu);
+    ent.hash_bytes.push_back(0xBBu);
+    m.content_entries.push_back(ent);
 
     assert(dom::launcher_core::launcher_instance_manifest_to_tlv_bytes(m, bytes));
     assert(!bytes.empty());
     assert(dom::launcher_core::launcher_instance_manifest_from_tlv_bytes(&bytes[0], bytes.size(), m2));
     assert(m2.instance_id == "inst0");
-    assert(m2.pinned_content.size() == 1u);
-    assert(m2.pinned_content[0].artifact.id == "mod.example");
+    assert(m2.content_entries.size() == 1u);
+    assert(m2.content_entries[0].id == "mod.example");
 
     h1 = dom::launcher_core::launcher_instance_manifest_hash64(m);
     h2 = dom::launcher_core::launcher_instance_manifest_hash64(m);
@@ -150,4 +151,3 @@ int main() {
     std::printf("launcher_core_smoke: OK\n");
     return 0;
 }
-
