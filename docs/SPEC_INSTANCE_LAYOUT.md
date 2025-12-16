@@ -55,6 +55,7 @@ Content graph (ordered list, order is significant):
   - `hash_bytes` (opaque; empty when not pinned to a payload)
   - `enabled` (0/1)
   - `update_policy` (`never|prompt|auto`)
+  - `explicit_order_override` (i32, optional; per-pack load-order override used by deterministic resolution)
 
 State markers:
 - `known_good` (0/1)

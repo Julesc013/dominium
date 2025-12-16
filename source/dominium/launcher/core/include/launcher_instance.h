@@ -47,6 +47,7 @@ enum { LAUNCHER_INSTANCE_MANIFEST_TLV_VERSION = 2u };
  * - `LAUNCHER_INSTANCE_ENTRY_TLV_TAG_HASH_BYTES` (bytes)
  * - `LAUNCHER_INSTANCE_ENTRY_TLV_TAG_ENABLED` (u32; 0/1)
  * - `LAUNCHER_INSTANCE_ENTRY_TLV_TAG_UPDATE_POLICY` (u32; `LauncherUpdatePolicy`)
+ * - `LAUNCHER_INSTANCE_ENTRY_TLV_TAG_EXPLICIT_ORDER_OVERRIDE` (i32, optional; per-pack load-order override)
  */
 enum LauncherInstanceManifestTlvTag {
     LAUNCHER_INSTANCE_TLV_TAG_INSTANCE_ID = 2u,
@@ -69,7 +70,9 @@ enum LauncherInstancePinnedEntryTlvTag {
     LAUNCHER_INSTANCE_ENTRY_TLV_TAG_VERSION = 3u,
     LAUNCHER_INSTANCE_ENTRY_TLV_TAG_HASH_BYTES = 4u,
     LAUNCHER_INSTANCE_ENTRY_TLV_TAG_ENABLED = 5u,
-    LAUNCHER_INSTANCE_ENTRY_TLV_TAG_UPDATE_POLICY = 6u
+    LAUNCHER_INSTANCE_ENTRY_TLV_TAG_UPDATE_POLICY = 6u,
+    /* optional per-entry override used by pack resolver (does not change schema version) */
+    LAUNCHER_INSTANCE_ENTRY_TLV_TAG_EXPLICIT_ORDER_OVERRIDE = 7u
 };
 
 enum LauncherContentType {
@@ -101,6 +104,8 @@ struct LauncherContentEntry {
     std::vector<unsigned char> hash_bytes;
     u32 enabled;
     u32 update_policy;
+    u32 has_explicit_order_override; /* 0/1 */
+    i32 explicit_order_override;     /* valid when has_explicit_order_override==1 */
 
     /* Unknown fields inside the entry container (round-trip preserved). */
     std::vector<LauncherTlvUnknownRecord> unknown_fields;

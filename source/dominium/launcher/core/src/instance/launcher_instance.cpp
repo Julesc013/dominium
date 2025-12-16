@@ -32,7 +32,8 @@ enum {
     TAG_ENTRY_VERSION = 3u,
     TAG_ENTRY_HASH_BYTES = 4u,
     TAG_ENTRY_ENABLED = 5u,
-    TAG_ENTRY_UPDATE_POLICY = 6u
+    TAG_ENTRY_UPDATE_POLICY = 6u,
+    TAG_ENTRY_EXPLICIT_ORDER_OVERRIDE = 7u
 };
 
 static void tlv_unknown_capture(std::vector<LauncherTlvUnknownRecord>& dst, const TlvRecord& rec) {
@@ -92,6 +93,8 @@ LauncherContentEntry::LauncherContentEntry()
       hash_bytes(),
       enabled(1u),
       update_policy((u32)LAUNCHER_UPDATE_PROMPT),
+      has_explicit_order_override(0u),
+      explicit_order_override(0),
       unknown_fields() {
 }
 
@@ -159,6 +162,9 @@ bool launcher_instance_manifest_to_tlv_bytes(const LauncherInstanceManifest& man
         entry.add_string(TAG_ENTRY_VERSION, manifest.content_entries[i].version);
         entry.add_u32(TAG_ENTRY_ENABLED, manifest.content_entries[i].enabled ? 1u : 0u);
         entry.add_u32(TAG_ENTRY_UPDATE_POLICY, manifest.content_entries[i].update_policy);
+        if (manifest.content_entries[i].has_explicit_order_override) {
+            entry.add_i32(TAG_ENTRY_EXPLICIT_ORDER_OVERRIDE, manifest.content_entries[i].explicit_order_override);
+        }
         if (!manifest.content_entries[i].hash_bytes.empty()) {
             entry.add_bytes(TAG_ENTRY_HASH_BYTES, &manifest.content_entries[i].hash_bytes[0],
                             (u32)manifest.content_entries[i].hash_bytes.size());
@@ -278,6 +284,12 @@ bool launcher_instance_manifest_from_tlv_bytes(const unsigned char* data,
                     u32 v;
                     if (tlv_read_u32_le(e.payload, e.len, v)) {
                         entry.update_policy = v;
+                    }
+                } else if (e.tag == TAG_ENTRY_EXPLICIT_ORDER_OVERRIDE) {
+                    i32 v;
+                    if (tlv_read_i32_le(e.payload, e.len, v)) {
+                        entry.has_explicit_order_override = 1u;
+                        entry.explicit_order_override = v;
                     }
                 } else {
                     tlv_unknown_capture(entry.unknown_fields, e);

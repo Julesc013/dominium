@@ -10,6 +10,9 @@ add_library(dominium_launcher_core STATIC
     src/instance/launcher_instance_tx.cpp
     src/instance/launcher_instance_artifact_ops.cpp
     src/instance/launcher_instance_ops.cpp
+    src/pack/launcher_pack_manifest.cpp
+    src/pack/launcher_pack_resolver.cpp
+    src/pack/launcher_pack_ops.cpp
     src/artifact/launcher_artifact.cpp
     src/artifact/launcher_sha256.cpp
     src/artifact/launcher_artifact_store.cpp
@@ -48,6 +51,12 @@ set_target_properties(dominium_launcher_core_smoke PROPERTIES
     CXX_EXTENSIONS OFF
 )
 
+if (MSVC)
+    target_compile_options(dominium_launcher_core_smoke PRIVATE $<$<CONFIG:Release>:/UNDEBUG>)
+else()
+    target_compile_options(dominium_launcher_core_smoke PRIVATE $<$<CONFIG:Release>:-UNDEBUG>)
+endif()
+
 add_test(NAME dominium_launcher_core_smoke COMMAND dominium_launcher_core_smoke)
 
 add_executable(dominium_launcher_instance_system_tests
@@ -68,6 +77,12 @@ set_target_properties(dominium_launcher_instance_system_tests PROPERTIES
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
+
+if (MSVC)
+    target_compile_options(dominium_launcher_instance_system_tests PRIVATE $<$<CONFIG:Release>:/UNDEBUG>)
+else()
+    target_compile_options(dominium_launcher_instance_system_tests PRIVATE $<$<CONFIG:Release>:-UNDEBUG>)
+endif()
 
 add_test(NAME dominium_launcher_instance_system_tests COMMAND dominium_launcher_instance_system_tests)
 
@@ -90,4 +105,37 @@ set_target_properties(dominium_launcher_artifact_store_tx_tests PROPERTIES
     CXX_EXTENSIONS OFF
 )
 
+if (MSVC)
+    target_compile_options(dominium_launcher_artifact_store_tx_tests PRIVATE $<$<CONFIG:Release>:/UNDEBUG>)
+else()
+    target_compile_options(dominium_launcher_artifact_store_tx_tests PRIVATE $<$<CONFIG:Release>:-UNDEBUG>)
+endif()
+
 add_test(NAME dominium_launcher_artifact_store_tx_tests COMMAND dominium_launcher_artifact_store_tx_tests)
+
+add_executable(dominium_launcher_pack_ecosystem_tests
+    tests/launcher_pack_ecosystem_tests.cpp
+)
+
+target_link_libraries(dominium_launcher_pack_ecosystem_tests PRIVATE
+    dominium_launcher_core
+)
+
+target_include_directories(dominium_launcher_pack_ecosystem_tests PRIVATE
+    ${DOMINIUM_INCLUDE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+set_target_properties(dominium_launcher_pack_ecosystem_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+if (MSVC)
+    target_compile_options(dominium_launcher_pack_ecosystem_tests PRIVATE $<$<CONFIG:Release>:/UNDEBUG>)
+else()
+    target_compile_options(dominium_launcher_pack_ecosystem_tests PRIVATE $<$<CONFIG:Release>:-UNDEBUG>)
+endif()
+
+add_test(NAME dominium_launcher_pack_ecosystem_tests COMMAND dominium_launcher_pack_ecosystem_tests)
