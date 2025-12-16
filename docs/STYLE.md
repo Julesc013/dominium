@@ -42,3 +42,11 @@ Do not introduce new prefixes without an explicit spec update.
 - Public headers must be self-contained and include only what they need.
 - Do not include private implementation headers from `source/**` across module
   boundaries; use `include/**` APIs.
+
+## Documentation blocks
+- Non-trivial C/C++ source and header files begin with a structured file header
+  comment (fields: `FILE`, `MODULE`, `LAYER / SUBSYSTEM`, `RESPONSIBILITY`, etc.).
+- Public header symbols are documented as **contracts**; shared conventions live
+  in `docs/CONTRACTS.md` to avoid duplication across headers.
+- Source files may comment internal invariants and rationale, but must not
+  restate public header contracts.
