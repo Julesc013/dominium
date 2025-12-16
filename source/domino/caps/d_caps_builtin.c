@@ -17,6 +17,7 @@ static u32 g_caps_builtins_registered = 0u;
 
 dom_caps_result dom_dsys_register_caps_backends(void);
 dom_caps_result dom_dgfx_register_caps_backends(void);
+dom_caps_result dom_dui_register_caps_backends(void);
 
 dom_caps_result dom_caps_register_builtin_backends(void)
 {
@@ -34,8 +35,11 @@ dom_caps_result dom_caps_register_builtin_backends(void)
     if (r != DOM_CAPS_OK) {
         return r;
     }
+    r = dom_dui_register_caps_backends();
+    if (r != DOM_CAPS_OK) {
+        return r;
+    }
 
     g_caps_builtins_registered = 1u;
     return DOM_CAPS_OK;
 }
-

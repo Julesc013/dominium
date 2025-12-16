@@ -95,6 +95,10 @@ static void audit_record_caps_selection(launcher_core* core, const dom_profile* 
 
     for (i = 0u; i < sel.entry_count; ++i) {
         const dom_selection_entry* e = &sel.entries[i];
+        if (e->subsystem_id == DOM_SUBSYS_DUI) {
+            /* UI backends may fall back at runtime; record the final selection after init. */
+            continue;
+        }
         (void)launcher_core_add_selected_backend(core,
                                                  e->subsystem_id,
                                                  e->subsystem_name ? e->subsystem_name : "",
@@ -206,6 +210,131 @@ static void force_profile_gfx_backend(dom_profile& profile, const char* backend_
         (void)copy_cstr_bounded(ov->subsystem_key, sizeof(ov->subsystem_key), "gfx");
         (void)copy_cstr_bounded(ov->backend_name, sizeof(ov->backend_name), backend_name);
         profile.override_count += 1u;
+    }
+}
+
+static const char* profile_override_backend(const dom_profile& profile, const char* subsystem_key) {
+    u32 i;
+    if (!subsystem_key || !subsystem_key[0]) {
+        return "";
+    }
+    for (i = 0u; i < profile.override_count; ++i) {
+        const dom_profile_override* ov = &profile.overrides[i];
+        if (std::strcmp(ov->subsystem_key, subsystem_key) == 0) {
+            return ov->backend_name;
+        }
+    }
+    return "";
+}
+
+static void remove_profile_override(dom_profile& profile, const char* subsystem_key) {
+    u32 i;
+    if (!subsystem_key || !subsystem_key[0]) {
+        return;
+    }
+    for (i = 0u; i < profile.override_count; ++i) {
+        dom_profile_override* ov = &profile.overrides[i];
+        if (std::strcmp(ov->subsystem_key, subsystem_key) == 0) {
+            u32 j;
+            for (j = i; (j + 1u) < profile.override_count; ++j) {
+                profile.overrides[j] = profile.overrides[j + 1u];
+            }
+            if (profile.override_count > 0u) {
+                std::memset(&profile.overrides[profile.override_count - 1u], 0, sizeof(profile.overrides[0]));
+                profile.override_count -= 1u;
+            }
+            return;
+        }
+    }
+}
+
+static void force_profile_ui_backend(dom_profile& profile, const char* backend_name) {
+    u32 i;
+
+    for (i = 0u; i < profile.override_count; ++i) {
+        dom_profile_override* ov = &profile.overrides[i];
+        if (std::strcmp(ov->subsystem_key, "ui") == 0) {
+            (void)copy_cstr_bounded(ov->backend_name, sizeof(ov->backend_name), backend_name);
+            return;
+        }
+    }
+
+    if (profile.override_count < (u32)(sizeof(profile.overrides) / sizeof(profile.overrides[0]))) {
+        dom_profile_override* ov = &profile.overrides[profile.override_count];
+        std::memset(ov, 0, sizeof(*ov));
+        (void)copy_cstr_bounded(ov->subsystem_key, sizeof(ov->subsystem_key), "ui");
+        (void)copy_cstr_bounded(ov->backend_name, sizeof(ov->backend_name), backend_name);
+        profile.override_count += 1u;
+    }
+}
+
+static bool find_backend_desc(dom_subsystem_id subsystem_id, const char* backend_name, dom_backend_desc& out_desc) {
+    u32 i;
+    u32 count;
+    dom_backend_desc desc;
+    if (!backend_name || !backend_name[0]) {
+        return false;
+    }
+    count = dom_caps_backend_count();
+    for (i = 0u; i < count; ++i) {
+        if (dom_caps_backend_get(i, &desc) != DOM_CAPS_OK) {
+            continue;
+        }
+        if (desc.subsystem_id != subsystem_id) {
+            continue;
+        }
+        if (!desc.backend_name) {
+            continue;
+        }
+        if (!str_ieq(desc.backend_name, backend_name)) {
+            continue;
+        }
+        out_desc = desc;
+        return true;
+    }
+    return false;
+}
+
+static void audit_record_ui_backend(launcher_core* core, const dom_profile* profile, const dom::DomLauncherApp& app) {
+    dom_backend_desc desc;
+    const std::string& backend = app.ui_backend_selected();
+    const std::string& fallback = app.ui_fallback_note();
+    const u64 caps = app.ui_caps_selected();
+    const u32 caps_lo = (u32)(caps & 0xffffffffu);
+    const u32 caps_hi = (u32)((caps >> 32u) & 0xffffffffu);
+    char buf[128];
+    u32 chosen_by_override = 0u;
+
+    if (!core) {
+        return;
+    }
+    if (backend.empty()) {
+        return;
+    }
+
+    (void)launcher_core_add_reason(core, (std::string("ui_backend=") + backend).c_str());
+    std::snprintf(buf, sizeof(buf), "ui_caps_hi=0x%08X ui_caps_lo=0x%08X", (unsigned)caps_hi, (unsigned)caps_lo);
+    (void)launcher_core_add_reason(core, buf);
+    if (!fallback.empty()) {
+        (void)launcher_core_add_reason(core, fallback.c_str());
+    }
+
+    if (profile && fallback.empty()) {
+        const char* ov = profile_override_backend(*profile, "ui");
+        if (ov && ov[0] && str_ieq(ov, backend.c_str())) {
+            chosen_by_override = 1u;
+        }
+    }
+
+    if (find_backend_desc(DOM_SUBSYS_DUI, backend.c_str(), desc)) {
+        (void)launcher_core_add_selected_backend(core,
+                                                 desc.subsystem_id,
+                                                 desc.subsystem_name ? desc.subsystem_name : "",
+                                                 desc.backend_name ? desc.backend_name : "",
+                                                 (u32)desc.determinism,
+                                                 (u32)desc.perf_class,
+                                                 desc.backend_priority,
+                                                 chosen_by_override);
     }
 }
 
@@ -449,6 +578,40 @@ int main(int argc, char **argv) {
         return exit_code;
     }
 
+    {
+        const char* ui_val = 0;
+        for (i = 1; i < argc; ++i) {
+            const char* arg = argv[i];
+            if (!arg) {
+                continue;
+            }
+            if (std::strncmp(arg, "--ui=", 5) == 0) {
+                ui_val = arg + 5;
+                break;
+            }
+        }
+        if (ui_val && ui_val[0]) {
+            if (str_ieq(ui_val, "native")) {
+                remove_profile_override(profile_cli.profile, "ui");
+            } else if (str_ieq(ui_val, "dgfx")) {
+                force_profile_ui_backend(profile_cli.profile, "dgfx");
+            } else if (str_ieq(ui_val, "null")) {
+                force_profile_ui_backend(profile_cli.profile, "null");
+            } else {
+                std::fprintf(stderr, "Error: unknown --ui value; expected native|dgfx|null.\n");
+                if (lc) {
+                    (void)launcher_core_add_reason(lc, "ui_flag_invalid");
+                }
+                exit_code = 2;
+                return exit_code;
+            }
+            if (lc) {
+                std::string why = std::string("ui_request=") + ui_val;
+                (void)launcher_core_add_reason(lc, why.c_str());
+            }
+        }
+    }
+
     if (lc) {
         (void)launcher_core_select_profile_id(lc, profile_id_from_dom_profile(profile_cli.profile), "dom_profile_cli");
         (void)launcher_core_add_reason(lc, (profile_cli.profile.lockstep_strict != 0u) ? "lockstep_strict=1" : "lockstep_strict=0");
@@ -520,13 +683,16 @@ int main(int argc, char **argv) {
         }
     }
 
-    if (!app.init_from_cli(cfg)) {
+    if (!app.init_from_cli(cfg, &profile_cli.profile)) {
         std::printf("Launcher: failed to initialize.\n");
         if (lc) {
             (void)launcher_core_add_reason(lc, "launcher_init_failed");
         }
         exit_code = 1;
         return exit_code;
+    }
+    if (lc) {
+        audit_record_ui_backend(lc, &profile_cli.profile, app);
     }
 
     app.run();

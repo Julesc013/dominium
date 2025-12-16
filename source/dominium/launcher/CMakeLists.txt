@@ -5,7 +5,6 @@ add_subdirectory(core)
 add_executable(dominium-launcher
     dom_launcher_cli.cpp
     dom_launcher_app.cpp
-    dom_launcher_ui.cpp
     dom_launcher_catalog.cpp
     dom_launcher_actions.cpp
 )
