@@ -18,7 +18,11 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
-/* DomOSFamily: Public type used by `platform`. */
+/* Purpose: Coarse OS-family classification for platform selection and reporting.
+ *
+ * Notes:
+ * - This enum is distinct from repository-manifest OS families (see `domino/pkg/repo.h`).
+ */
 typedef enum DomOSFamily_ {
     DOM_OSFAM_WIN_NT,
     DOM_OSFAM_WIN_9X,
@@ -32,7 +36,7 @@ typedef enum DomOSFamily_ {
     DOM_OSFAM_WEB
 } DomOSFamily;
 
-/* DomArch: Public type used by `platform`. */
+/* Purpose: Coarse CPU/VM architecture classification for platform selection and reporting. */
 typedef enum DomArch_ {
     DOM_ARCH_X86_16,
     DOM_ARCH_X86_32,
@@ -47,7 +51,11 @@ typedef enum DomArch_ {
     DOM_ARCH_WASM_64
 } DomArch;
 
-/* Legacy backend selector preserved for compatibility */
+/* Purpose: Legacy platform-backend selector preserved for compatibility.
+ *
+ * Notes:
+ * - Values correspond to historical backend directories and are not an exhaustive modern platform list.
+ */
 typedef enum dom_platform_e {
     DOM_PLATFORM_WIN32 = 0,      /* /src/platform/win32/ */
     DOM_PLATFORM_MACOSX,         /* /src/platform/cocoa/ */

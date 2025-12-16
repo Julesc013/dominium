@@ -21,17 +21,21 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
-/* Substance registry identifier. A value of 0 is treated as invalid by this API. */
+/* Purpose: Substance registry identifier. A value of 0 is treated as invalid by this API. */
 typedef uint16_t SubstanceId;
 #ifndef DOMINO_MATERIAL_ID_TYPEDEF
 #define DOMINO_MATERIAL_ID_TYPEDEF
-/* Material type registry identifier. A value of 0 is treated as invalid by this API. */
+/* Purpose: Material type registry identifier. A value of 0 is treated as invalid by this API. */
 typedef uint32_t MaterialId;
 #endif
-/* Item type registry identifier. A value of 0 is treated as invalid by this API. */
+/* Purpose: Item type registry identifier. A value of 0 is treated as invalid by this API. */
 typedef uint32_t ItemTypeId;
 
-/* Substance/material properties used by atmosphere and thermal systems (POD). */
+/* Purpose: Substance/material properties used by atmosphere and thermal systems (POD).
+ *
+ * Ownership:
+ * - `name` is a borrowed, NUL-terminated string; registries copy the record as implemented.
+ */
 typedef struct {
     SubstanceId id;
     const char *name;
@@ -43,9 +47,15 @@ typedef struct {
     U32         flags;   /* flammable, toxic, radioactive, etc. */
 } Substance;
 
+/* Purpose: Maximum number of distinct component substances tracked in a `Mixture`. */
 #define DMIX_MAX_COMPONENTS 8
 
-/* Multi-component mixture for gases/fluids (POD). */
+/* Purpose: Multi-component mixture for gases/fluids (POD).
+ *
+ * Invariants:
+ * - `count` is the number of valid entries in `substance[]`/`frac[]` (0..DMIX_MAX_COMPONENTS).
+ * - `frac[]` entries are approximate fractions in Q4.12 (0..1) and are intended to sum to ~1.
+ */
 typedef struct {
     U8          count;
     SubstanceId substance[DMIX_MAX_COMPONENTS];
@@ -54,7 +64,7 @@ typedef struct {
     VolM3       total_vol_m3;
 } Mixture;
 
-/* Material type definition for structural/items systems (POD). */
+/* Purpose: Material type definition for structural/items systems (POD). */
 typedef struct {
     MaterialId  id;
     const char *name;
@@ -66,7 +76,7 @@ typedef struct {
     U32         flags; /* structural, hull-grade, etc. */
 } MaterialType;
 
-/* Item type definition (stacking, volume/mass, material binding) (POD). */
+/* Purpose: Item type definition for inventory/stacking and material binding (POD). */
 typedef struct {
     ItemTypeId  id;
     const char *name;
@@ -80,12 +90,16 @@ typedef struct {
 /* Registry API */
 /* Registers a substance definition.
  *
+ * Purpose: Add a substance record to the registry.
+ *
  * Returns:
  *   - Non-zero SubstanceId on success; 0 on failure (invalid input or capacity limit).
  */
 SubstanceId  dmatter_register_substance(const Substance *def);
 
 /* Registers a material type definition.
+ *
+ * Purpose: Add a material type record to the registry.
  *
  * Returns:
  *   - Non-zero MaterialId on success; 0 on failure (invalid input or capacity limit).
@@ -94,12 +108,16 @@ MaterialId   dmatter_register_material(const MaterialType *def);
 
 /* Registers an item type definition.
  *
+ * Purpose: Add an item type record to the registry.
+ *
  * Returns:
  *   - Non-zero ItemTypeId on success; 0 on failure (invalid input or capacity limit).
  */
 ItemTypeId   dmatter_register_item_type(const ItemType *def);
 
 /* Looks up a substance definition by id (read-only).
+ *
+ * Purpose: Retrieve a previously registered substance record.
  *
  * Returns:
  *   - Pointer to internal storage on success; NULL if `id` is invalid.
@@ -108,12 +126,16 @@ const Substance    *dmatter_get_substance(SubstanceId id);
 
 /* Looks up a material type definition by id (read-only).
  *
+ * Purpose: Retrieve a previously registered material type record.
+ *
  * Returns:
  *   - Pointer to internal storage on success; NULL if `id` is invalid.
  */
 const MaterialType *dmatter_get_material(MaterialId id);
 
 /* Looks up an item type definition by id (read-only).
+ *
+ * Purpose: Retrieve a previously registered item type record.
  *
  * Returns:
  *   - Pointer to internal storage on success; NULL if `id` is invalid.
@@ -126,6 +148,8 @@ void    dmix_clear(Mixture *mix);
 
 /* Adds/removes mass of a component substance and re-normalises the mixture.
  *
+ * Purpose: Adjust component mass totals and update derived fraction/volume fields.
+ *
  * Parameters:
  *   - mass_delta_kg: Signed delta; negative values remove mass.
  *
@@ -136,12 +160,16 @@ bool    dmix_add_mass(Mixture *mix, SubstanceId s, MassKg mass_delta_kg);
 
 /* Recomputes mixture fractions/volume from the current mass totals.
  *
+ * Purpose: Re-normalize a mixture after direct edits to mass fields.
+ *
  * Returns:
  *   - true on success; false if `mix` is NULL.
  */
 bool    dmix_normalise(Mixture *mix);
 
 /* Transfers a fraction of `from` into `to`.
+ *
+ * Purpose: Move a fraction of mixture mass/volume into another mixture.
  *
  * Parameters:
  *   - fraction_0_1: Q16.16 in [0,1]; values outside range are clamped.

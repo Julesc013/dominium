@@ -2,13 +2,13 @@
 FILE: include/dominium/_internal/dom_priv/dom_keys.h
 MODULE: Dominium
 LAYER / SUBSYSTEM: Dominium API / _internal/dom_priv/dom_keys
-RESPONSIBILITY: Defines the public contract for `dom_keys` (types/constants/function signatures); does NOT provide implementation.
+RESPONSIBILITY: Defines internal contract for keycode normalization used by Dominium UI/input; not a stable public API; does NOT provide implementation.
 ALLOWED DEPENDENCIES: `include/dominium/**` plus C89/C++98 standard headers as needed.
 FORBIDDEN DEPENDENCIES: `source/**` private headers; keep contracts freestanding and layer-respecting.
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
 DETERMINISM: See `docs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
-VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
+VERSIONING / ABI / DATA FORMAT NOTES: Internal header; numeric values must remain stable within the launcher/UI subsystem.
 EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
 */
 #ifndef DOM_KEYS_H
@@ -25,7 +25,16 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
-/* dom_keycode: Public type used by `dom_keys`. */
+/* Purpose: Canonical keycode space for Dominium input mapping.
+ *
+ * Mapping:
+ * - Values align with Win32 virtual-key codes for the covered range to keep normalization simple.
+ * - Other platforms/backends must translate native key codes into this space before dispatching
+ *   input events to higher layers.
+ *
+ * Versioning:
+ * - Do not renumber existing values; treat them as part of the internal UI ABI.
+ */
 typedef enum dom_keycode_e {
     DOM_KEY_UNKNOWN = 0,
 

@@ -14,7 +14,11 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #ifndef DOM_PLATFORM_H
 #define DOM_PLATFORM_H
 
-/* Backward-compatible shim; platform enums now live in domino/platform.h. */
+/* Purpose: Backward-compatible include shim for legacy Dominium code.
+ *
+ * Notes:
+ * - Platform enums and selectors live in `domino/platform.h`; prefer including that header directly.
+ */
 #include "domino/platform.h"
 
 #endif /* DOM_PLATFORM_H */

@@ -22,25 +22,29 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
-/* Market registry identifier. A value of 0 is treated as invalid by this API. */
+/* Purpose: Market registry identifier. A value of 0 is treated as invalid by this API. */
 typedef uint32_t MarketId;
-/* Offer registry identifier. A value of 0 is treated as invalid by this API. */
+/* Purpose: Offer registry identifier. A value of 0 is treated as invalid by this API. */
 typedef uint32_t OfferId;
 
-/* Offer direction for a market listing. */
+/* Purpose: Offer direction for a market listing. */
 typedef enum {
     OFFER_BUY = 0,
     OFFER_SELL,
 } OfferType;
 
-/* Market definition (POD). */
+/* Purpose: Market definition record (POD).
+ *
+ * Ownership:
+ * - `name` is a borrowed, NUL-terminated string; registry copies the pointer/record as implemented.
+ */
 typedef struct {
     MarketId    id;
     const char *name;
     BodyId      body;
 } Market;
 
-/* Market offer/listing (POD).
+/* Purpose: Market offer/listing record (POD).
  *
  * Notes:
  *   - `price_per_unit` is Q16.16 fixed-point.
@@ -57,6 +61,8 @@ typedef struct {
 
 /* Registers a market definition.
  *
+ * Purpose: Add a market record to the economy registry.
+ *
  * Parameters:
  *   - def: Input definition (must be non-NULL and `def->name` must be non-NULL).
  *         `*def` is copied into internal storage; caller retains ownership.
@@ -68,12 +74,16 @@ MarketId decon_market_register(const Market *def);
 
 /* Looks up a market by id.
  *
+ * Purpose: Retrieve a previously registered market record.
+ *
  * Returns:
  *   - Pointer to internal storage on success; NULL if `id` is invalid.
  */
 Market  *decon_market_get(MarketId id);
 
 /* Registers an offer/listing.
+ *
+ * Purpose: Add an offer record to the economy registry.
  *
  * Parameters:
  *   - def: Input definition (must be non-NULL). `*def` is copied into internal storage.
@@ -85,6 +95,8 @@ OfferId  decon_offer_register(const Offer *def);
 
 /* Looks up an offer by id.
  *
+ * Purpose: Retrieve a previously registered offer record.
+ *
  * Returns:
  *   - Pointer to internal storage on success; NULL if `id` is invalid.
  */
@@ -92,12 +104,16 @@ Offer   *decon_offer_get(OfferId id);
 
 /* Finds the best active SELL offer for an item.
  *
+ * Purpose: Search offers for the lowest-priced SELL entry with non-zero quantity.
+ *
  * Returns:
  *   - OfferId of the lowest-priced SELL offer with non-zero quantity; 0 if none exist.
  */
 OfferId  decon_find_best_sell_offer(ItemTypeId item);
 
 /* Finds the best active BUY offer for an item.
+ *
+ * Purpose: Search offers for the highest-priced BUY entry with non-zero quantity.
  *
  * Returns:
  *   - OfferId of the highest-priced BUY offer with non-zero quantity; 0 if none exist.

@@ -11,7 +11,10 @@ DETERMINISM: See `docs/SPEC_DETERMINISM.md` for deterministic subsystems; otherw
 VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
 EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
 */
-/* Minimal TLV blob wrapper (public header). */
+/* Minimal TLV blob wrapper (public header).
+ *
+ * Canonical semantics live in `docs/SPEC_CORE.md#Types and ids`.
+ */
 #ifndef D_TLV_H
 #define D_TLV_H
 
@@ -21,7 +24,18 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
-/* d_tlv_blob: Public type used by `d_tlv`. */
+/* Purpose: Non-owning view of an opaque binary payload (commonly TLV-encoded).
+ *
+ * Members:
+ * - `ptr`: Pointer to the first byte of the payload. May be NULL when `len == 0`.
+ * - `len`: Payload size in bytes.
+ *
+ * Ownership:
+ * - `ptr` is borrowed; the owner controls allocation and lifetime.
+ *
+ * Determinism:
+ * - The bytes are treated as opaque by this type; determinism depends on the producer/consumer.
+ */
 typedef struct d_tlv_blob {
     unsigned char *ptr;
     u32            len;

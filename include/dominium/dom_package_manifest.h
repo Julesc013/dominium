@@ -14,6 +14,12 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #ifndef DOMINIUM_DOM_PACKAGE_MANIFEST_H
 #define DOMINIUM_DOM_PACKAGE_MANIFEST_H
 
+/* Purpose: Temporary facade for package/manifest structures used by Dominium tools/launcher.
+ *
+ * Notes:
+ * - This header currently re-exports internal C++98 types and is not a stable C ABI.
+ * - A future revision is expected to publish stable POD C structs for package/manifest I/O.
+ */
 /* TODO: publish stable C structs for package/manifest IO. */
 #ifdef __cplusplus
 #include "dominium/_internal/dom_priv/dom_shared/manifest_install.h"

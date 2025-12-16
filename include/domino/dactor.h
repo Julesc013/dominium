@@ -24,12 +24,16 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
-/* Species registry identifier. A value of 0 is treated as invalid by this API. */
+/* Purpose: Species registry identifier. A value of 0 is treated as invalid by this API. */
 typedef uint32_t SpeciesId;
-/* Actor registry identifier. A value of 0 is treated as invalid by this API. */
+/* Purpose: Actor registry identifier. A value of 0 is treated as invalid by this API. */
 typedef uint32_t ActorId;
 
-/* Species definition used by the actor simulation (POD). */
+/* Purpose: Species definition used by the actor simulation (POD).
+ *
+ * Ownership:
+ * - `name` is a borrowed, NUL-terminated string; the registry copies the record as implemented.
+ */
 typedef struct {
     SpeciesId   id;
     const char *name;
@@ -54,7 +58,7 @@ typedef struct {
 
 } Species;
 
-/* Actor instance state updated by `dactor_tick_all()` (POD). */
+/* Purpose: Actor instance state updated by `dactor_tick_all()` (POD). */
 typedef struct {
     ActorId     id;
     SpeciesId   species;
@@ -80,7 +84,7 @@ typedef struct {
     uint32_t    knowledge_id;
 } Actor;
 
-/* Registers a species definition.
+/* Purpose: Register a species definition.
  *
  * Parameters:
  *   - def: Input definition (must be non-NULL and `def->name` must be non-NULL).
@@ -91,7 +95,7 @@ typedef struct {
  */
 SpeciesId      dactor_species_register(const Species *def);
 
-/* Looks up a previously registered species definition.
+/* Purpose: Look up a previously registered species definition.
  *
  * Returns:
  *   - Pointer to internal, read-only storage on success; NULL if `id` is invalid.
@@ -101,31 +105,31 @@ SpeciesId      dactor_species_register(const Species *def);
  */
 const Species *dactor_species_get(SpeciesId id);
 
-/* Creates a new actor instance.
+/* Purpose: Create a new actor instance.
  *
  * Returns:
  *   - Non-zero ActorId on success; 0 on failure (no free slots).
  */
 ActorId   dactor_create(SpeciesId species, EnvironmentKind env);
 
-/* Returns a mutable pointer to the actor state for `id`.
+/* Purpose: Retrieve a mutable pointer to the actor state for `id`.
  *
  * Returns:
  *   - Pointer to internal storage on success; NULL if `id` is invalid or destroyed.
  */
 Actor    *dactor_get(ActorId id);
 
-/* Destroys an actor instance. Accepts invalid ids as a no-op. */
+/* Purpose: Destroy an actor instance. Accepts invalid ids as a no-op. */
 void      dactor_destroy(ActorId id);
 
-/* Advances the actor simulation by one tick for all active actors.
+/* Purpose: Advance the actor simulation by one tick for all active actors.
  *
  * Side effects:
  *   - Updates `Actor` health/stamina/body temperature and may interact with `dzone` atmosphere/heat.
  */
 void      dactor_tick_all(SimTick t);
 
-/* Configures substance ids for life support gases (oxygen, carbon dioxide, water).
+/* Purpose: Configure substance ids for life support gases (oxygen, carbon dioxide, water).
  *
  * Parameters:
  *   - o2/co2/h2o: Non-zero ids override the current mapping; passing 0 leaves the mapping unchanged.
