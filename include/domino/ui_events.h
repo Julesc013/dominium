@@ -21,6 +21,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* ui_event_type: Public type used by `ui_events`. */
 typedef enum ui_event_type {
     UI_EVT_NONE = 0,
     UI_EVT_MOUSE,
@@ -31,12 +32,14 @@ typedef enum ui_event_type {
     UI_EVT_TIMER
 } ui_event_type;
 
+/* ui_key: Public type used by `ui_events`. */
 typedef struct ui_key {
     int code;
     int mods;
     int pressed;
 } ui_key;
 
+/* ui_mouse: Public type used by `ui_events`. */
 typedef struct ui_mouse {
     int x;
     int y;
@@ -47,6 +50,7 @@ typedef struct ui_mouse {
     int wheel;
 } ui_mouse;
 
+/* data: Public type used by `ui_events`. */
 typedef struct ui_event {
     ui_event_type type;
     union {

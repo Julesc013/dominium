@@ -21,8 +21,10 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* RecipeId: Identifier type for Recipe objects in `drecipe`. */
 typedef uint32_t RecipeId;
 
+/* RecipeKind: Enumeration/classifier for Recipe in `drecipe`. */
 typedef enum {
     RECIPE_KIND_MACHINE = 0,
     RECIPE_KIND_RESEARCH,
@@ -37,16 +39,19 @@ typedef enum {
 #define DREC_MAX_GASES_IN   4
 #define DREC_MAX_GASES_OUT  4
 
+/* RecipeItemIO: Public type used by `drecipe`. */
 typedef struct {
     ItemTypeId item;
     U32        count;
 } RecipeItemIO;
 
+/* RecipeFluidIO: Public type used by `drecipe`. */
 typedef struct {
     SubstanceId substance;
     VolM3       volume_m3;
 } RecipeFluidIO;
 
+/* Recipe: Public type used by `drecipe`. */
 typedef struct {
     RecipeId    id;
     const char *name;
@@ -79,9 +84,18 @@ typedef struct {
     uint32_t    unlock_tech_id;
 } Recipe;
 
+/* Purpose: Register drecipe.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Id value (0 is commonly used as the invalid/failure sentinel for `*Id` typedefs).
+ */
 RecipeId      drecipe_register(const Recipe *def);
+/* Purpose: Get drecipe.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 const Recipe *drecipe_get(RecipeId id);
 
+/* RecipeStepResult: Public type used by `drecipe`. */
 typedef struct {
     bool    batch_started;
     bool    batch_completed;
@@ -89,6 +103,10 @@ typedef struct {
 
 struct Machine;
 
+/* Purpose: Step machine.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 RecipeStepResult drecipe_step_machine(struct Machine *mach,
                                       const Recipe *recipe,
                                       SimTick t);

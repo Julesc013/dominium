@@ -25,7 +25,15 @@ struct LauncherContext {
     std::string session_id;
 };
 
+/* Purpose: Context init launcher.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 LauncherContext init_launcher_context();
+/* Purpose: Context get launcher.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 const LauncherContext &get_launcher_context();
 
 #endif /* DOM_LAUNCHER_CONTEXT_H */

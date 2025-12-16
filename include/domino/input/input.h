@@ -21,6 +21,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* d_input_event_type: Public type used by `input`. */
 typedef enum d_input_event_type {
     D_INPUT_KEYDOWN = 0,
     D_INPUT_KEYUP,
@@ -34,6 +35,7 @@ typedef enum d_input_event_type {
     D_INPUT_CONTROLLER
 } d_input_event_type;
 
+/* d_input_event: Public type used by `input`. */
 typedef struct d_input_event {
     d_input_event_type type;
     i32 param1;
@@ -42,11 +44,27 @@ typedef struct d_input_event {
     i32 param4;
 } d_input_event;
 
+/* Purpose: Init input.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void d_input_init(void);
+/* Purpose: Shutdown input.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void d_input_shutdown(void);
+/* Purpose: Begin frame.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void d_input_begin_frame(void);
+/* Purpose: End frame.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void d_input_end_frame(void);
 
+/* Purpose: Poll input.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 u32  d_input_poll(d_input_event* out_event);
 
 /* Retrieve IME payload for events that report an identifier in param1. */

@@ -75,6 +75,10 @@ struct LauncherSettings {
     bool        enable_playtime_stats;
     bool        enable_online_telemetry;
 
+/* Purpose: API entry point for `launcher_db`.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
     LauncherSettings();
 };
 
@@ -97,6 +101,9 @@ struct LauncherDB {
 
 // Load/save DB from/to user_data_root/db.json
 LauncherDB db_load(const std::string& user_data_root);
+/* Purpose: Save db.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void       db_save(const std::string& user_data_root, const LauncherDB& db);
 
 } // namespace dom_launcher

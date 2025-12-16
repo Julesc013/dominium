@@ -24,14 +24,41 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* Purpose: Game product info.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 const DomProductInfo* dom_get_product_info_game(void);
+/* Purpose: Launcher product info.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 const DomProductInfo* dom_get_product_info_launcher(void);
+/* Purpose: Setup product info.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 const DomProductInfo* dom_get_product_info_setup(void);
+/* Purpose: Tools product info.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 const DomProductInfo* dom_get_product_info_tools(void);
 
+/* Purpose: Family dominium detect os.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 DomOSFamily dominium_detect_os_family(void);
+/* Purpose: Arch dominium detect.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 DomArch dominium_detect_arch(void);
 
+/* Purpose: Json product info.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void dominium_print_product_info_json(const DomProductInfo* info, FILE* out);
 
 #ifdef __cplusplus

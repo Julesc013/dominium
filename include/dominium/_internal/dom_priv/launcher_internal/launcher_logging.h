@@ -16,8 +16,17 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 
 #include <string>
 
+/* Purpose: Info launcher log.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void launcher_log_info(const std::string &msg);
+/* Purpose: Warn launcher log.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void launcher_log_warn(const std::string &msg);
+/* Purpose: Error launcher log.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void launcher_log_error(const std::string &msg);
 
 #endif /* DOM_LAUNCHER_LOGGING_H */

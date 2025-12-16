@@ -18,9 +18,21 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "launcher_process.h"
 #include "launcher_db.h"
 
+/* Purpose: Load plugins.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void launcher_plugins_load(const LauncherContext &ctx);
+/* Purpose: Unload launcher plugins.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void launcher_plugins_unload();
+/* Purpose: Register builtin.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void launcher_plugins_register_builtin();
+/* Purpose: List launcher plugins.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void launcher_plugins_list();
 
 #endif /* DOM_LAUNCHER_PLUGINS_H */

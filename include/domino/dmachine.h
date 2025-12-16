@@ -24,9 +24,12 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* MachineTypeId: Identifier type for Machine Type objects in `dmachine`. */
 typedef uint32_t MachineTypeId;
+/* MachineId: Identifier type for Machine objects in `dmachine`. */
 typedef uint32_t MachineId;
 
+/* MachineFamily: Public type used by `dmachine`. */
 typedef enum {
     MACH_FAMILY_GENERIC = 0,
     MACH_FAMILY_ASSEMBLER,
@@ -41,6 +44,7 @@ typedef enum {
     MACH_FAMILY_CUSTOM,
 } MachineFamily;
 
+/* MachinePortKind: Enumeration/classifier for Machine Port in `dmachine`. */
 typedef enum {
     MACH_PORT_ITEM_IN = 0,
     MACH_PORT_ITEM_OUT,
@@ -58,6 +62,7 @@ typedef enum {
     MACH_PORT_DATA_OUT,
 } MachinePortKind;
 
+/* MachinePortDesc: Public type used by `dmachine`. */
 typedef struct {
     uint8_t         port_index;
     MachinePortKind kind;
@@ -68,6 +73,7 @@ typedef struct {
 
 #define DMACH_MAX_PORTS 16
 
+/* MachineType: Public type used by `dmachine`. */
 typedef struct {
     MachineTypeId   id;
     const char     *name;
@@ -85,6 +91,7 @@ typedef struct {
     uint32_t        default_recipe_id;
 } MachineType;
 
+/* Machine: Public type used by `dmachine`. */
 typedef struct Machine {
     MachineId     id;
     MachineTypeId type_id;
@@ -106,17 +113,40 @@ typedef struct Machine {
 
 /* Type registry */
 MachineTypeId      dmachine_type_register(const MachineType *def);
+/* Purpose: Get type.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 const MachineType *dmachine_type_get(MachineTypeId id);
 
 /* Instances */
 MachineId   dmachine_create(MachineTypeId type, AggregateId agg, ElementId element);
+/* Purpose: Get dmachine.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 Machine    *dmachine_get(MachineId id);
+/* Purpose: Destroy dmachine.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void        dmachine_destroy(MachineId id);
 
+/* Purpose: Tick dmachine.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void        dmachine_tick(MachineId id, SimTick t);
+/* Purpose: Tick all.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void        dmachine_tick_all(SimTick t);
 
+/* Purpose: Set recipe.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void        dmachine_set_recipe(MachineId id, uint32_t recipe_id);
+/* Purpose: Set enabled.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void        dmachine_set_enabled(MachineId id, bool enabled);
 
 #ifdef __cplusplus

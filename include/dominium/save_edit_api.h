@@ -20,15 +20,24 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* dom_save_edit_ctx: Public type used by `save_edit_api`. */
 typedef struct dom_save_edit_ctx_t dom_save_edit_ctx;
 
+/* dom_save_edit_desc: Public type used by `save_edit_api`. */
 typedef struct {
     uint32_t struct_size;
     uint32_t struct_version;
     const char *save_path;
 } dom_save_edit_desc;
 
+/* Purpose: Open save edit.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 dom_save_edit_ctx *dom_save_edit_open(const dom_save_edit_desc *desc);
+/* Purpose: Close save edit.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void               dom_save_edit_close(dom_save_edit_ctx *ctx);
 
 /* simple generic key-value editing for now */
@@ -37,17 +46,29 @@ int dom_save_edit_list_keys(dom_save_edit_ctx *ctx,
                             char *buf,
                             uint32_t buf_size);
 
+/* Purpose: Value dom save edit get.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int dom_save_edit_get_value(dom_save_edit_ctx *ctx,
                             const char *section,
                             const char *key,
                             char *buf,
                             uint32_t buf_size);
 
+/* Purpose: Value dom save edit set.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int dom_save_edit_set_value(dom_save_edit_ctx *ctx,
                             const char *section,
                             const char *key,
                             const char *value);
 
+/* Purpose: Save save edit.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int dom_save_edit_save(dom_save_edit_ctx *ctx);
 
 #ifdef __cplusplus

@@ -23,8 +23,10 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* JobId: Identifier type for Job objects in `djob`. */
 typedef uint32_t JobId;
 
+/* JobKind: Enumeration/classifier for Job in `djob`. */
 typedef enum {
     JOB_BUILD = 0,
     JOB_DECONSTRUCT,
@@ -35,6 +37,7 @@ typedef enum {
     JOB_CUSTOM,
 } JobKind;
 
+/* JobState: Public type used by `djob`. */
 typedef enum {
     JOB_PENDING = 0,
     JOB_ASSIGNED,
@@ -44,6 +47,7 @@ typedef enum {
     JOB_FAILED,
 } JobState;
 
+/* Job: Public type used by `djob`. */
 typedef struct {
     JobId      id;
     JobKind    kind;
@@ -62,12 +66,29 @@ typedef struct {
     U8         dep_count;
 } Job;
 
+/* Purpose: Create djob.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Id value (0 is commonly used as the invalid/failure sentinel for `*Id` typedefs).
+ */
 JobId  djob_create(const Job *def);
+/* Purpose: Get djob.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 Job   *djob_get(JobId id);
 
+/* Purpose: Cancel djob.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void   djob_cancel(JobId id);
+/* Purpose: Mark complete.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void   djob_mark_complete(JobId id);
 
+/* Purpose: Tick djob.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void   djob_tick(SimTick t);
 
 #ifdef __cplusplus

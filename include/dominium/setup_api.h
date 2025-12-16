@@ -24,12 +24,14 @@ extern "C" {
 /* Forward declaration from domino/core.h */
 typedef struct dom_core_t dom_core;
 
+/* dom_setup_scope: Public type used by `setup_api`. */
 typedef enum {
     DOM_SETUP_SCOPE_PORTABLE = 0,
     DOM_SETUP_SCOPE_PER_USER,
     DOM_SETUP_SCOPE_ALL_USERS
 } dom_setup_scope;
 
+/* dom_setup_action: Public type used by `setup_api`. */
 typedef enum {
     DOM_SETUP_ACTION_INSTALL = 0,
     DOM_SETUP_ACTION_REPAIR,
@@ -37,6 +39,7 @@ typedef enum {
     DOM_SETUP_ACTION_VERIFY
 } dom_setup_action;
 
+/* dom_setup_status: Public type used by `setup_api`. */
 typedef enum {
     DOM_SETUP_STATUS_OK = 0,
     DOM_SETUP_STATUS_ERROR,
@@ -45,6 +48,7 @@ typedef enum {
     DOM_SETUP_STATUS_PERMISSION_DENIED
 } dom_setup_status;
 
+/* dom_setup_desc: Public type used by `setup_api`. */
 typedef struct {
     uint32_t          struct_size;
     uint32_t          struct_version;
@@ -58,6 +62,7 @@ typedef struct {
     int               no_desktop_shortcuts;
 } dom_setup_desc;
 
+/* dom_setup_command: Public type used by `setup_api`. */
 typedef struct {
     uint32_t struct_size;
     uint32_t struct_version;
@@ -66,6 +71,7 @@ typedef struct {
     const char *existing_install_dir;
 } dom_setup_command;
 
+/* dom_setup_progress: Public type used by `setup_api`. */
 typedef struct {
     uint32_t struct_size;
     uint32_t struct_version;
@@ -85,6 +91,9 @@ dom_setup_status dom_setup_create(dom_core              *core,
                                   const dom_setup_desc  *desc,
                                   void                 **out_ctx);
 
+/* Purpose: Destroy setup.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void             dom_setup_destroy(void *ctx);
 
 /* Execute a setup action */

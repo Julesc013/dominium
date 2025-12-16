@@ -43,18 +43,60 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* Purpose: Version dominium game get.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void dominium_game_get_version(domino_semver* out);
+/* Purpose: Version dominium launcher get.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void dominium_launcher_get_version(domino_semver* out);
 
+/* Purpose: String version.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 const char* dominium_get_core_version_string(void);
+/* Purpose: String version.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 const char* dominium_get_game_version_string(void);
+/* Purpose: String version.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 const char* dominium_get_launcher_version_string(void);
+/* Purpose: String version.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 const char* dominium_get_setup_version_string(void);
+/* Purpose: String version.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 const char* dominium_get_tools_version_string(void);
+/* Purpose: String version.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 const char* dominium_get_suite_version_string(void);
 
+/* Purpose: Api dominium game get content.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int dominium_game_get_content_api(void);
+/* Purpose: Api dominium launcher get content.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int dominium_launcher_get_content_api(void);
+/* Purpose: Api dominium launcher get ext.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int dominium_launcher_get_ext_api(void);
 
 #ifdef __cplusplus

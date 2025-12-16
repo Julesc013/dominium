@@ -18,6 +18,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* DomOSFamily: Public type used by `platform`. */
 typedef enum DomOSFamily_ {
     DOM_OSFAM_WIN_NT,
     DOM_OSFAM_WIN_9X,
@@ -31,6 +32,7 @@ typedef enum DomOSFamily_ {
     DOM_OSFAM_WEB
 } DomOSFamily;
 
+/* DomArch: Public type used by `platform`. */
 typedef enum DomArch_ {
     DOM_ARCH_X86_16,
     DOM_ARCH_X86_32,

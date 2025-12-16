@@ -25,6 +25,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* dom_keycode: Public type used by `dom_keys`. */
 typedef enum dom_keycode_e {
     DOM_KEY_UNKNOWN = 0,
 

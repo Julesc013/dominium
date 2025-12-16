@@ -19,6 +19,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include <string>
 #include <vector>
 
+/* Constants for `launcher_process`. */
 enum DomDisplayMode {
     DOM_DISPLAY_NONE = 0,
     DOM_DISPLAY_CLI  = 1,
@@ -51,6 +52,10 @@ struct RuntimeCapabilities {
     std::vector<int> content_pack_versions;
 };
 
+/* Purpose: Instance start.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 Instance start_instance(const LauncherContext &ctx,
                         const dom_shared::InstallInfo &install,
                         const std::string &role,
@@ -59,9 +64,25 @@ Instance start_instance(const LauncherContext &ctx,
                         const std::string &profile_id,
                         const std::string &mods_hash);
 
+/* Purpose: Instance stop.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool stop_instance(const std::string &instance_id);
+/* Purpose: Instance get.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 Instance *get_instance(const std::string &instance_id);
+/* Purpose: Instances list.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 std::vector<Instance> list_instances();
+/* Purpose: Capabilities query runtime.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 RuntimeCapabilities query_runtime_capabilities(const dom_shared::InstallInfo &install);
 
 #endif /* DOM_LAUNCHER_PROCESS_H */

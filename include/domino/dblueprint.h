@@ -25,9 +25,12 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* BlueprintId: Identifier type for Blueprint objects in `dblueprint`. */
 typedef uint32_t BlueprintId;
+/* BlueprintElementId: Identifier type for Blueprint Element objects in `dblueprint`. */
 typedef uint32_t BlueprintElementId;
 
+/* BlueprintOpKind: Enumeration/classifier for Blueprint Op in `dblueprint`. */
 typedef enum {
     BPOP_PLACE_ELEMENT = 0,
     BPOP_REMOVE_ELEMENT,
@@ -35,6 +38,7 @@ typedef enum {
     BPOP_PLACE_MACHINE,
 } BlueprintOpKind;
 
+/* BlueprintElement: Public type used by `dblueprint`. */
 typedef struct {
     BlueprintElementId id;
     BlueprintOpKind    kind;
@@ -47,6 +51,7 @@ typedef struct {
     U8                 dep_count;
 } BlueprintElement;
 
+/* Blueprint: Public type used by `dblueprint`. */
 typedef struct {
     BlueprintId       id;
     const char       *name;
@@ -56,12 +61,30 @@ typedef struct {
     BlueprintElement *elems;
 } Blueprint;
 
+/* Purpose: Create dblueprint.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Id value (0 is commonly used as the invalid/failure sentinel for `*Id` typedefs).
+ */
 BlueprintId        dblueprint_create(const char *name, U32 elem_capacity);
+/* Purpose: Get dblueprint.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 Blueprint          *dblueprint_get(BlueprintId id);
+/* Purpose: Destroy dblueprint.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void                dblueprint_destroy(BlueprintId id);
 
+/* Purpose: Add element.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Id value (0 is commonly used as the invalid/failure sentinel for `*Id` typedefs).
+ */
 BlueprintElementId  dblueprint_add_element(BlueprintId id, const BlueprintElement *elem);
 
+/* Purpose: Generate jobs.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void dblueprint_generate_jobs(BlueprintId id);
 
 #ifdef __cplusplus

@@ -21,13 +21,17 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* Substance registry identifier. A value of 0 is treated as invalid by this API. */
 typedef uint16_t SubstanceId;
 #ifndef DOMINO_MATERIAL_ID_TYPEDEF
 #define DOMINO_MATERIAL_ID_TYPEDEF
+/* Material type registry identifier. A value of 0 is treated as invalid by this API. */
 typedef uint32_t MaterialId;
 #endif
+/* Item type registry identifier. A value of 0 is treated as invalid by this API. */
 typedef uint32_t ItemTypeId;
 
+/* Substance/material properties used by atmosphere and thermal systems (POD). */
 typedef struct {
     SubstanceId id;
     const char *name;
@@ -41,6 +45,7 @@ typedef struct {
 
 #define DMIX_MAX_COMPONENTS 8
 
+/* Multi-component mixture for gases/fluids (POD). */
 typedef struct {
     U8          count;
     SubstanceId substance[DMIX_MAX_COMPONENTS];
@@ -49,6 +54,7 @@ typedef struct {
     VolM3       total_vol_m3;
 } Mixture;
 
+/* Material type definition for structural/items systems (POD). */
 typedef struct {
     MaterialId  id;
     const char *name;
@@ -60,6 +66,7 @@ typedef struct {
     U32         flags; /* structural, hull-grade, etc. */
 } MaterialType;
 
+/* Item type definition (stacking, volume/mass, material binding) (POD). */
 typedef struct {
     ItemTypeId  id;
     const char *name;
@@ -71,18 +78,77 @@ typedef struct {
 } ItemType;
 
 /* Registry API */
+/* Registers a substance definition.
+ *
+ * Returns:
+ *   - Non-zero SubstanceId on success; 0 on failure (invalid input or capacity limit).
+ */
 SubstanceId  dmatter_register_substance(const Substance *def);
+
+/* Registers a material type definition.
+ *
+ * Returns:
+ *   - Non-zero MaterialId on success; 0 on failure (invalid input or capacity limit).
+ */
 MaterialId   dmatter_register_material(const MaterialType *def);
+
+/* Registers an item type definition.
+ *
+ * Returns:
+ *   - Non-zero ItemTypeId on success; 0 on failure (invalid input or capacity limit).
+ */
 ItemTypeId   dmatter_register_item_type(const ItemType *def);
 
+/* Looks up a substance definition by id (read-only).
+ *
+ * Returns:
+ *   - Pointer to internal storage on success; NULL if `id` is invalid.
+ */
 const Substance    *dmatter_get_substance(SubstanceId id);
+
+/* Looks up a material type definition by id (read-only).
+ *
+ * Returns:
+ *   - Pointer to internal storage on success; NULL if `id` is invalid.
+ */
 const MaterialType *dmatter_get_material(MaterialId id);
+
+/* Looks up an item type definition by id (read-only).
+ *
+ * Returns:
+ *   - Pointer to internal storage on success; NULL if `id` is invalid.
+ */
 const ItemType     *dmatter_get_item_type(ItemTypeId id);
 
 /* Mixture helpers */
+/* Clears a mixture to the empty state. Accepts NULL. */
 void    dmix_clear(Mixture *mix);
+
+/* Adds/removes mass of a component substance and re-normalises the mixture.
+ *
+ * Parameters:
+ *   - mass_delta_kg: Signed delta; negative values remove mass.
+ *
+ * Returns:
+ *   - true on success; false on invalid input, component underflow, or capacity limit.
+ */
 bool    dmix_add_mass(Mixture *mix, SubstanceId s, MassKg mass_delta_kg);
+
+/* Recomputes mixture fractions/volume from the current mass totals.
+ *
+ * Returns:
+ *   - true on success; false if `mix` is NULL.
+ */
 bool    dmix_normalise(Mixture *mix);
+
+/* Transfers a fraction of `from` into `to`.
+ *
+ * Parameters:
+ *   - fraction_0_1: Q16.16 in [0,1]; values outside range are clamped.
+ *
+ * Returns:
+ *   - true on success; false on invalid input or destination capacity overflow.
+ */
 bool    dmix_transfer_fraction(Mixture *from, Mixture *to, Q16_16 fraction_0_1);
 
 #ifdef __cplusplus

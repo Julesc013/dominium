@@ -77,6 +77,7 @@ typedef struct d_cli_token {
     int         arg_index;  /* index in the argv array passed to tokenizer */
 } d_cli_token;
 
+/* d_cli_args: Public type used by `cli`. */
 typedef struct d_cli_args {
     int          argc;
     const char** argv;
@@ -86,24 +87,47 @@ typedef struct d_cli_args {
 
 /* Tokenize an argv array (does not copy strings; caller keeps argv alive). */
 int  d_cli_tokenize(int argc, const char** argv, d_cli_args* out_args);
+/* Purpose: Args dispose.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void d_cli_args_dispose(d_cli_args* args);
 
 /* Token helpers */
 const d_cli_token* d_cli_find_option(const d_cli_args* args, const char* key);
+/* Purpose: Get positional.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 const d_cli_token* d_cli_get_positional(const d_cli_args* args, int index);
+/* Purpose: Count positionals.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int  d_cli_count_positionals(const d_cli_args* args);
+/* Purpose: Match key.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int  d_cli_match_key(const d_cli_token* tok, const char* key);
 
 /*------------------------------------------------------------
  * Instance helper
  *------------------------------------------------------------*/
 #define D_CLI_INSTANCE_ID_MAX 64
+/* d_cli_instance: Public type used by `cli`. */
 typedef struct d_cli_instance {
     int  present;
     char id[D_CLI_INSTANCE_ID_MAX];
 } d_cli_instance;
 
+/* Purpose: Instance reset.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void d_cli_instance_reset(d_cli_instance* inst);
+/* Purpose: Extract instance.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int  d_cli_extract_instance(const d_cli_args* args, d_cli_instance* inst);
 
 /*------------------------------------------------------------
@@ -111,6 +135,7 @@ int  d_cli_extract_instance(const d_cli_args* args, d_cli_instance* inst);
  *------------------------------------------------------------*/
 typedef int (*d_cli_handler)(int argc, const char** argv, void* userdata);
 
+/* d_cli_command: Public type used by `cli`. */
 typedef struct d_cli_command {
     const char*   name;
     const char*   help;
@@ -118,6 +143,7 @@ typedef struct d_cli_command {
     void*         userdata;
 } d_cli_command;
 
+/* d_cli: Public type used by `cli`. */
 typedef struct d_cli {
     const char* program;   /* optional program name (argv[0]) */
     const char* version;   /* optional version string */
@@ -129,7 +155,13 @@ typedef struct d_cli {
     d_cli_instance instance;
 } d_cli;
 
+/* Purpose: Init cli.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void d_cli_init(d_cli* cli, const char* program, const char* version);
+/* Purpose: Shutdown cli.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void d_cli_shutdown(d_cli* cli);
 
 /* Registers a command. Returns 0 on success or D_CLI_ERR_* on failure. */
@@ -144,7 +176,15 @@ int  d_cli_dispatch(d_cli* cli, int argc, const char** argv);
 
 /* Accessors */
 const d_cli_instance* d_cli_get_instance(const d_cli* cli);
+/* Purpose: Get program.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 const char*           d_cli_get_program(const d_cli* cli);
+/* Purpose: Get version.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 const char*           d_cli_get_version(const d_cli* cli);
 
 #ifdef __cplusplus

@@ -29,6 +29,7 @@ extern "C" {
 
 #define DOM_BUILD_INFO_ABI_VERSION 1u
 
+/* dom_build_info_v1: Public type used by `build_info`. */
 typedef struct dom_build_info_v1 {
     DOM_ABI_HEADER;
 
@@ -42,9 +43,21 @@ typedef struct dom_build_info_v1 {
     u32 default_lockstep_strict;
 } dom_build_info_v1;
 
+/* Purpose: Get build info v1.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 const dom_build_info_v1* dom_build_info_v1_get(void);
 
+/* Purpose: Id dom build.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 const char* dom_build_id(void);
+/* Purpose: Hash dom git.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 const char* dom_git_hash(void);
 
 /* Deterministic simulation schema identifier (public serialization ABI). */

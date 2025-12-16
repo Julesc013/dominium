@@ -21,6 +21,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* UnitKind: Enumeration/classifier for Unit in `dfield`. */
 typedef enum {
     UNIT_NONE = 0,
     UNIT_HEIGHT_M,        /* terrain height */
@@ -36,6 +37,7 @@ typedef enum {
     /* extend as needed */
 } UnitKind;
 
+/* FieldStorageKind: Enumeration/classifier for Field Storage in `dfield`. */
 typedef enum {
     FIELD_STORAGE_BOOL = 0,
     FIELD_STORAGE_U8,
@@ -43,8 +45,10 @@ typedef enum {
     FIELD_STORAGE_Q16_16,
 } FieldStorageKind;
 
+/* FieldId: Identifier type for Field objects in `dfield`. */
 typedef uint16_t FieldId;
 
+/* FieldDesc: Public type used by `dfield`. */
 typedef struct {
     FieldId          id;
     const char      *name;
@@ -55,13 +59,33 @@ typedef struct {
 /* Registration and lookup */
 
 FieldId             dfield_register(const FieldDesc *def);
+/* Purpose: Get dfield.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 const FieldDesc    *dfield_get(FieldId id);
+/* Purpose: Find by name.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 const FieldDesc    *dfield_find_by_name(const char *name);
 
 /* Encoding/decoding between runtime Q16.16 and storage types */
 Q4_12   dfield_q16_to_q4(FieldId id, Q16_16 v);
+/* Purpose: Q4 to q16.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 Q16_16  dfield_q4_to_q16(FieldId id, Q4_12 raw);
+/* Purpose: Q16 to u8.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 U8      dfield_q16_to_u8(FieldId id, Q16_16 v);
+/* Purpose: U8 to q16.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 Q16_16  dfield_u8_to_q16(FieldId id, U8 raw);
 
 #ifdef __cplusplus

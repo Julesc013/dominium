@@ -21,6 +21,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* launcher_proc: Public type used by `launcher_process`. */
 typedef struct launcher_proc {
     int             pid;
     int             running;
@@ -30,9 +31,25 @@ typedef struct launcher_proc {
     dsys_process*   handle;
 } launcher_proc;
 
+/* Purpose: Spawn launcher process.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int launcher_process_spawn(launcher_proc* p, const char* exe, const char* args, const char* cwd);
+/* Purpose: Poll launcher process.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int launcher_process_poll(launcher_proc* p);
+/* Purpose: Kill launcher process.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int launcher_process_kill(launcher_proc* p);
+/* Purpose: Read stdout.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int launcher_process_read_stdout(launcher_proc* p, char* buf, int maxlen);
 
 #ifdef __cplusplus

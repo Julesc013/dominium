@@ -51,6 +51,10 @@ struct LauncherState {
     SettingsState*           settings_state;
 };
 
+/* Purpose: State get.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 LauncherState& get_state();
 
 // Initializes state from context and DB; should be called early in main.

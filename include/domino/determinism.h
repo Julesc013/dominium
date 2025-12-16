@@ -35,6 +35,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* dom_det_grade: Public type used by `determinism`. */
 typedef enum dom_det_grade {
     /* Bit-exact across supported platforms: hashes/replays must match exactly. */
     DOM_DET_D0_BIT_EXACT = 0,

@@ -26,10 +26,14 @@ extern "C" {
 
 struct dom_sys_vtable; /* fwd */
 
+/* dom_ui_app: Public type used by `dom_plat_ui`. */
 typedef struct dom_ui_app    dom_ui_app;
+/* dom_ui_window: Public type used by `dom_plat_ui`. */
 typedef struct dom_ui_window dom_ui_window;
+/* dom_ui_widget: Public type used by `dom_plat_ui`. */
 typedef struct dom_ui_widget dom_ui_widget;
 
+/* Constants for `dom_plat_ui`. */
 enum dom_ui_widget_type {
     DOM_UI_WIDGET_VBOX = 0,
     DOM_UI_WIDGET_HBOX,
@@ -62,18 +66,38 @@ struct dom_ui_vtable {
     uint32_t api_version;
 
     dom_ui_app*    (*app_create)(int argc, char** argv);
+/* Purpose: API entry point for `dom_plat_ui`.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
     int            (*app_run)(dom_ui_app*);
+/* Purpose: API entry point for `dom_plat_ui`.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
     void           (*app_quit)(dom_ui_app*);
 
     dom_ui_window* (*window_create)(dom_ui_app*, const struct dom_ui_window_desc*);
+/* Purpose: API entry point for `dom_plat_ui`.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
     void           (*window_show)(dom_ui_window*);
 
     dom_ui_widget* (*widget_create)(dom_ui_window*, enum dom_ui_widget_type,
                                     const struct dom_ui_widget_desc*);
 
+/* Purpose: API entry point for `dom_plat_ui`.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
     void           (*layout_apply)(dom_ui_window*, const struct dom_ui_layout*);
 };
 
+/* Purpose: Probe dom plat ui.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 const struct dom_ui_vtable* dom_plat_ui_probe(const struct dom_sys_vtable* sys);
 
 #ifdef __cplusplus

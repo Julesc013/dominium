@@ -37,12 +37,14 @@ extern "C" {
 #define DOM_CAPS_MAX_SELECTION       32u
 #define DOM_CAPS_AUDIT_LOG_MAX_BYTES 4096u
 
+/* dom_subsystem_id: Public type used by `caps`. */
 typedef u32 dom_subsystem_id;
 
 /* Built-in subsystem IDs (stable numeric identifiers). */
 #define DOM_SUBSYS_DSYS ((dom_subsystem_id)0x44535953u) /* 'DSYS' */
 #define DOM_SUBSYS_DGFX ((dom_subsystem_id)0x44474658u) /* 'DGFX' */
 
+/* dom_caps_perf_class: Public type used by `caps`. */
 typedef enum dom_caps_perf_class_e {
     DOM_CAPS_PERF_BASELINE = 0,
     DOM_CAPS_PERF_COMPAT   = 1,
@@ -55,6 +57,7 @@ typedef enum dom_caps_perf_class_e {
 /* Backend flags */
 #define DOM_CAPS_BACKEND_PRESENTATION_ONLY (1u << 0u)
 
+/* dom_hw_caps: Public type used by `caps`. */
 typedef struct dom_hw_caps_s {
     DOM_ABI_HEADER;
     u32 os_flags;
@@ -79,6 +82,7 @@ typedef struct dom_hw_caps_s {
 /* Basic host probe (no allocations, no syscalls required). */
 dom_abi_result dom_hw_caps_probe_host(dom_hw_caps* io_hw_caps);
 
+/* io_hw_caps: Public type used by `caps`. */
 typedef dom_abi_result (*dom_caps_probe_fn)(dom_hw_caps* io_hw_caps);
 
 /*
@@ -92,6 +96,7 @@ typedef dom_abi_result (*dom_caps_probe_fn)(dom_hw_caps* io_hw_caps);
  */
 typedef const void* (*dom_caps_get_api_fn)(u32 requested_abi);
 
+/* dom_backend_desc: Public type used by `caps`. */
 typedef struct dom_backend_desc_s {
     DOM_ABI_HEADER;
 
@@ -112,6 +117,7 @@ typedef struct dom_backend_desc_s {
     dom_caps_probe_fn   probe;   /* optional */
 } dom_backend_desc;
 
+/* dom_caps_result: Public type used by `caps`. */
 typedef enum dom_caps_result_e {
     DOM_CAPS_OK = 0,
 
@@ -125,6 +131,7 @@ typedef enum dom_caps_result_e {
     DOM_CAPS_ERR_NO_ELIGIBLE = -8
 } dom_caps_result;
 
+/* dom_sel_fail_reason: Public type used by `caps`. */
 typedef enum dom_sel_fail_reason_e {
     DOM_SEL_FAIL_NONE = 0,
     DOM_SEL_FAIL_REGISTRY_NOT_FINALIZED = 1,
@@ -133,6 +140,7 @@ typedef enum dom_sel_fail_reason_e {
     DOM_SEL_FAIL_OVERRIDE_NOT_FOUND = 4
 } dom_sel_fail_reason;
 
+/* dom_selection_entry: Public type used by `caps`. */
 typedef struct dom_selection_entry_s {
     dom_subsystem_id subsystem_id;
     const char*      subsystem_name; /* may be NULL */
@@ -144,6 +152,7 @@ typedef struct dom_selection_entry_s {
     u32 chosen_by_override;
 } dom_selection_entry;
 
+/* dom_selection: Public type used by `caps`. */
 typedef struct dom_selection_s {
     DOM_ABI_HEADER;
 
@@ -160,11 +169,23 @@ struct dom_profile;
 
 /* Registry lifecycle */
 dom_caps_result dom_caps_register_backend(const dom_backend_desc* desc);
+/* Purpose: Register builtin backends.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 dom_caps_result dom_caps_register_builtin_backends(void);
+/* Purpose: Finalize registry.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 dom_caps_result dom_caps_finalize_registry(void);
 
 /* Inspection */
 u32 dom_caps_backend_count(void);
+/* Purpose: Get caps backend.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 dom_caps_result dom_caps_backend_get(u32 index, dom_backend_desc* out_desc);
 
 /* Selection */

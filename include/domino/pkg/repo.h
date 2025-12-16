@@ -20,6 +20,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* dom_product_role: Public type used by `repo`. */
 typedef enum dom_product_role {
     DOM_PRODUCT_ROLE_UNKNOWN = 0,
     DOM_PRODUCT_ROLE_GAME,
@@ -28,6 +29,7 @@ typedef enum dom_product_role {
     DOM_PRODUCT_ROLE_TOOL
 } dom_product_role;
 
+/* dom_os_family: Public type used by `repo`. */
 typedef enum dom_os_family {
     DOM_OS_UNKNOWN = 0,
     DOM_OS_WINNT,
@@ -43,6 +45,7 @@ typedef enum dom_os_family {
     DOM_OS_CPM
 } dom_os_family;
 
+/* dom_arch: Public type used by `repo`. */
 typedef enum dom_arch {
     DOM_ARCH_UNKNOWN = 0,
     DOM_ARCH_X86_16,
@@ -58,6 +61,7 @@ typedef enum dom_arch {
     DOM_ARCH_WASM_64
 } dom_arch;
 
+/* dom_compat_profile: Public type used by `repo`. */
 typedef struct dom_compat_profile {
     u16 save_format_version;
     u16 pack_format_version;
@@ -71,6 +75,7 @@ typedef struct dom_compat_profile {
 #define DOM_VERSION_STR_MAX 32
 #define DOM_EXEC_PATH_MAX   256
 
+/* dom_product_info: Public type used by `repo`. */
 typedef struct dom_product_info {
     char             product_id[DOM_PRODUCT_ID_MAX];
     dom_product_role role;

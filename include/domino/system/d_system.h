@@ -21,10 +21,28 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* Purpose: Init system.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int d_system_init(const char *backend_name);
+/* Purpose: Shutdown system.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void d_system_shutdown(void);
+/* Purpose: Pump events.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int  d_system_pump_events(void);
+/* Purpose: Sleep ms.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void d_system_sleep_ms(u32 ms);
+/* Purpose: Process spawn.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int  d_system_process_spawn(const char *path, const char *args);
 
 /* Returns a native window handle for the current platform (e.g. HWND on Win32),
@@ -32,6 +50,10 @@ int  d_system_process_spawn(const char *path, const char *args);
  */
 void* d_system_get_native_window_handle(void);
 
+/* Purpose: Present framebuffer.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 int d_system_present_framebuffer(
     const void *pixels,
     i32         width,

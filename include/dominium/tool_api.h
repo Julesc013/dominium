@@ -21,11 +21,13 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* dom_tool_ctx: Public type used by `tool_api`. */
 typedef struct dom_tool_ctx_t dom_tool_ctx;
 
 /* All tools implement a common entry signature */
 typedef int (*dom_tool_main_fn)(dom_tool_ctx *ctx, int argc, char **argv);
 
+/* dom_tool_kind: Public type used by `tool_api`. */
 typedef enum {
     DOM_TOOL_KIND_GENERIC = 0,
     DOM_TOOL_KIND_BUILD,
@@ -33,6 +35,7 @@ typedef enum {
     DOM_TOOL_KIND_ANALYSIS
 } dom_tool_kind;
 
+/* dom_tool_desc: Public type used by `tool_api`. */
 typedef struct {
     uint32_t       struct_size;
     uint32_t       struct_version;
@@ -43,6 +46,7 @@ typedef struct {
     dom_tool_main_fn entry;
 } dom_tool_desc;
 
+/* dom_tool_env: Public type used by `tool_api`. */
 typedef struct {
     uint32_t struct_size;
     uint32_t struct_version;

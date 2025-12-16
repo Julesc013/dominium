@@ -30,17 +30,41 @@ extern "C" {
 struct dom_sys_vtable {
     uint32_t api_version;
 
+/* Purpose: API entry point for `dom_plat_sys`.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
     int      (*init)(void);
+/* Purpose: API entry point for `dom_plat_sys`.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
     void     (*shutdown)(void);
 
     /* filesystem roots */
     int      (*get_program_root)(char* buf, size_t cap);
+/* Purpose: API entry point for `dom_plat_sys`.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
     int      (*get_data_root)(char* buf, size_t cap);
+/* Purpose: API entry point for `dom_plat_sys`.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
     int      (*get_state_root)(char* buf, size_t cap);
 
     /* filesystem helpers */
     int      (*fs_mkdir_p)(const char* path);
+/* Purpose: API entry point for `dom_plat_sys`.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
     int      (*fs_exists)(const char* path);
+/* Purpose: API entry point for `dom_plat_sys`.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
     int      (*fs_remove)(const char* path);
 
     /* process / IPC */

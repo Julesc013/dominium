@@ -20,6 +20,10 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 
 namespace dom_launcher {
 
+/* Purpose: Installs discover.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 std::vector<dom_shared::InstallInfo> discover_installs(const LauncherState& state);
 
 // Helper to merge discovered installs into state.db.installs sensibly.

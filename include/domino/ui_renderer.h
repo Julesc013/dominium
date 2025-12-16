@@ -21,6 +21,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* ui_renderer: Public type used by `ui_renderer`. */
 typedef struct ui_renderer {
     int      width;
     int      height;
@@ -29,6 +30,7 @@ typedef struct ui_renderer {
     ui_style theme;
 } ui_renderer;
 
+/* ui_renderer_desc: Public type used by `ui_renderer`. */
 typedef struct ui_renderer_desc {
     int width;
     int height;
@@ -36,9 +38,22 @@ typedef struct ui_renderer_desc {
     int viewports;
 } ui_renderer_desc;
 
+/* Purpose: Create renderer.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 ui_renderer* ui_renderer_create(const ui_renderer_desc* desc);
+/* Purpose: Destroy renderer.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void         ui_renderer_destroy(ui_renderer* r);
+/* Purpose: Set theme.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void         ui_renderer_set_theme(ui_renderer* r, const ui_style* theme);
+/* Purpose: Draw ui renderer.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void         ui_renderer_draw(ui_renderer* r, ui_node* root);
 
 #ifdef __cplusplus

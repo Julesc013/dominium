@@ -27,6 +27,7 @@ extern "C" {
 #define DOM_INPUT_MAX_GAMEPAD_BUTTONS   16
 #define DOM_INPUT_MAX_GAMEPAD_AXES      8
 
+/* dom_input_state: Public type used by `input`. */
 typedef struct dom_input_state {
     bool    keys[DOM_INPUT_MAX_KEYS];
     bool    mouse_buttons[DOM_INPUT_MAX_MOUSE_BUTTONS];
@@ -40,9 +41,23 @@ typedef struct dom_input_state {
     float   gamepad_axes[DOM_INPUT_MAX_GAMEPADS][DOM_INPUT_MAX_GAMEPAD_AXES];
 } dom_input_state;
 
+/* Purpose: Reset input.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void dom_input_reset(dom_input_state* st);
+/* Purpose: Consume event.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void dom_input_consume_event(dom_input_state* st, const dsys_event* ev);
+/* Purpose: Axis input.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 float dom_input_axis(const char* name);
+/* Purpose: Action input.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool  dom_input_action(const char* name);
 
 #ifdef __cplusplus

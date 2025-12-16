@@ -21,6 +21,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* dom_view_kind: Public type used by `view`. */
 typedef enum dom_view_kind {
     DOM_VIEW_KIND_TABLE = 0,
     DOM_VIEW_KIND_TREE,
@@ -28,6 +29,7 @@ typedef enum dom_view_kind {
     DOM_VIEW_KIND_CANVAS
 } dom_view_kind;
 
+/* dom_view_desc: Public type used by `view`. */
 typedef struct dom_view_desc {
     uint32_t      struct_size;
     uint32_t      struct_version;
@@ -37,7 +39,15 @@ typedef struct dom_view_desc {
     const char*   model_id; /* table_id, tree_id, or canvas_id */
 } dom_view_desc;
 
+/* Purpose: Views dom ui list.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 uint32_t dom_ui_list_views(dom_core* core, dom_view_desc* out, uint32_t max_out);
+/* Purpose: Register view.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool     dom_view_register(dom_core* core, const dom_view_desc* desc);
 
 #ifdef __cplusplus

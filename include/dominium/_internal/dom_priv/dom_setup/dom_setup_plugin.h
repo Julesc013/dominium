@@ -20,18 +20,21 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 
 struct SetupConfig;
 
+/* DomInstallProfileDescriptor: Public type used by `dom_setup_plugin`. */
 typedef struct DomInstallProfileDescriptor {
     const char* id;
     const char* description;
     void (*apply_profile)(SetupConfig* cfg);
 } DomInstallProfileDescriptor;
 
+/* DomSetupHookDescriptor: Public type used by `dom_setup_plugin`. */
 typedef struct DomSetupHookDescriptor {
     const char* id;
     const char* description;
     void (*run)(const dom_shared::InstallInfo* info);
 } DomSetupHookDescriptor;
 
+/* DomSetupPluginAPI: Public type used by `dom_setup_plugin`. */
 typedef struct DomSetupPluginAPI {
     void (*log_info)(const char* fmt, ...);
     void (*log_warn)(const char* fmt, ...);
@@ -43,6 +46,7 @@ typedef struct DomSetupPluginAPI {
     void (*register_post_uninstall_hook)(const DomSetupHookDescriptor*);
 } DomSetupPluginAPI;
 
+/* DomSetupPlugin: Public type used by `dom_setup_plugin`. */
 typedef struct DomSetupPlugin {
     uint32_t abi_version;
     void (*on_load)(DomSetupPluginAPI* api);
@@ -50,6 +54,10 @@ typedef struct DomSetupPlugin {
 } DomSetupPlugin;
 
 #ifdef _WIN32
+/* Purpose: Declspec .
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 __declspec(dllexport)
 #endif
 const DomSetupPlugin* Dominium_GetSetupPlugin(void);

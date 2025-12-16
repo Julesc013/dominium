@@ -22,6 +22,10 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
  */
 
 #if defined(UINT8_MAX) && defined(UINT16_MAX) && defined(UINT32_MAX) && defined(UINT64_MAX) && \
+/* Purpose: API entry point for `baseline`.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
     defined(INT8_MAX) && defined(INT16_MAX) && defined(INT32_MAX) && defined(INT64_MAX)
 #define DOMINO_BASELINE_STDINT_PRESENT 1
 #endif
@@ -30,28 +34,49 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #if !defined(DOMINO_BASELINE_STDINT_PRESENT)
 # if defined(_MSC_VER)
 typedef signed __int8       int8_t;
+/* uint8_t: Public type used by `baseline`. */
 typedef unsigned __int8     uint8_t;
+/* int16_t: Public type used by `baseline`. */
 typedef signed __int16      int16_t;
+/* uint16_t: Public type used by `baseline`. */
 typedef unsigned __int16    uint16_t;
+/* int32_t: Public type used by `baseline`. */
 typedef signed __int32      int32_t;
+/* uint32_t: Public type used by `baseline`. */
 typedef unsigned __int32    uint32_t;
+/* int64_t: Public type used by `baseline`. */
 typedef signed __int64      int64_t;
+/* uint64_t: Public type used by `baseline`. */
 typedef unsigned __int64    uint64_t;
 # elif defined(__clang__) || defined(__GNUC__)
+/* int8_t: Public type used by `baseline`. */
 typedef __INT8_TYPE__       int8_t;
+/* uint8_t: Public type used by `baseline`. */
 typedef __UINT8_TYPE__      uint8_t;
+/* int16_t: Public type used by `baseline`. */
 typedef __INT16_TYPE__      int16_t;
+/* uint16_t: Public type used by `baseline`. */
 typedef __UINT16_TYPE__     uint16_t;
+/* int32_t: Public type used by `baseline`. */
 typedef __INT32_TYPE__      int32_t;
+/* uint32_t: Public type used by `baseline`. */
 typedef __UINT32_TYPE__     uint32_t;
+/* int64_t: Public type used by `baseline`. */
 typedef __INT64_TYPE__      int64_t;
+/* uint64_t: Public type used by `baseline`. */
 typedef __UINT64_TYPE__     uint64_t;
 # else
+/* int8_t: Public type used by `baseline`. */
 typedef signed char         int8_t;
+/* uint8_t: Public type used by `baseline`. */
 typedef unsigned char       uint8_t;
+/* int16_t: Public type used by `baseline`. */
 typedef signed short        int16_t;
+/* uint16_t: Public type used by `baseline`. */
 typedef unsigned short      uint16_t;
+/* int32_t: Public type used by `baseline`. */
 typedef signed long         int32_t;
+/* uint32_t: Public type used by `baseline`. */
 typedef unsigned long       uint32_t;
 #  error "domino/baseline.h: no known 64-bit integer type for this toolchain"
 # endif
@@ -60,6 +85,7 @@ typedef unsigned long       uint32_t;
 /* Boolean for C89 */
 #ifndef __cplusplus
 # if !defined(__bool_true_false_are_defined)
+/* bool: Public type used by `baseline`. */
 typedef unsigned char bool;
 #  define true  1
 #  define false 0

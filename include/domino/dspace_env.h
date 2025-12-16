@@ -22,6 +22,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* BeltField: Public type used by `dspace_env`. */
 typedef struct {
     BodyId   central;
     Q48_16   inner_radius_m;
@@ -31,6 +32,7 @@ typedef struct {
     Q16_16   density; /* arbitrary units */
 } BeltField;
 
+/* MagneticField: Public type used by `dspace_env`. */
 typedef struct {
     BodyId   central;
     /* TODO: dipole/torus parameters */
@@ -38,10 +40,17 @@ typedef struct {
 
 /* Registration */
 void      dspace_env_register_belt(const BeltField *belt);
+/* Purpose: Register magnetic.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void      dspace_env_register_magnetic(const MagneticField *mag);
 
 /* Queries */
 Q16_16    dspace_env_radiation_intensity(const SpacePos *pos);
+/* Purpose: Belt density.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 Q16_16    dspace_env_belt_density(const SpacePos *pos);
 
 #ifdef __cplusplus

@@ -24,12 +24,15 @@ extern "C" {
 #endif
 
 struct dom_core_t;
+/* dom_core: Public type used by `inst`. */
 typedef struct dom_core_t dom_core;
 
+/* dom_instance_id: Public type used by `inst`. */
 typedef uint32_t dom_instance_id;
 
 #define DOM_MAX_INSTANCE_PACKAGES 8
 
+/* dom_instance_info: Public type used by `inst`. */
 typedef struct dom_instance_info {
     uint32_t        struct_size;
     uint32_t        struct_version;
@@ -45,10 +48,30 @@ typedef struct dom_instance_info {
     dom_package_id  pkgs[DOM_MAX_INSTANCE_PACKAGES];
 } dom_instance_info;
 
+/* Purpose: List inst.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 uint32_t        dom_inst_list(dom_core* core, dom_instance_info* out, uint32_t max_out);
+/* Purpose: Get inst.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool            dom_inst_get(dom_core* core, dom_instance_id id, dom_instance_info* out);
+/* Purpose: Create inst.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 dom_instance_id dom_inst_create(dom_core* core, const dom_instance_info* desc);
+/* Purpose: Update inst.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool            dom_inst_update(dom_core* core, const dom_instance_info* desc);
+/* Purpose: Delete inst.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool            dom_inst_delete(dom_core* core, dom_instance_id id);
 
 #ifdef __cplusplus

@@ -21,6 +21,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* dom_event_kind: Public type used by `event`. */
 typedef enum {
     DOM_EVT_NONE = 0,
     DOM_EVT_PKG_INSTALLED,
@@ -31,6 +32,7 @@ typedef enum {
     DOM_EVT_SIM_TICKED
 } dom_event_kind;
 
+/* u: Public type used by `event`. */
 typedef struct {
     uint32_t       struct_size;
     uint32_t       struct_version;
@@ -41,9 +43,18 @@ typedef struct {
     } u;
 } dom_event;
 
+/* user: Public type used by `event`. */
 typedef void (*dom_event_handler)(dom_core* core, const dom_event* ev, void* user);
 
+/* Purpose: Subscribe event.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool dom_event_subscribe(dom_core* core, dom_event_kind kind, dom_event_handler fn, void* user);
+/* Purpose: Unsubscribe event.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool dom_event_unsubscribe(dom_core* core, dom_event_kind kind, dom_event_handler fn, void* user);
 
 #ifdef __cplusplus

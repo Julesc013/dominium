@@ -24,8 +24,10 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* dom_material_id: Public type used by `content_materials`. */
 typedef uint32_t dom_material_id;
 
+/* dom_material_desc: Public type used by `content_materials`. */
 typedef struct dom_material_desc {
     uint32_t    struct_size;
     uint32_t    struct_version;
@@ -38,12 +40,31 @@ typedef int (*dom_material_visit_fn)(dom_material_id id,
                                      const dom_material_desc* desc,
                                      void* user);
 
+/* Purpose: Register materials.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 dom_status              dom_materials_register(const dom_material_desc* desc,
                                                dom_material_id* out_id);
+/* Purpose: Get materials.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 const dom_material_desc* dom_materials_get(dom_material_id id);
+/* Purpose: Count dom materials.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 uint32_t                dom_materials_count(void);
+/* Purpose: Visit dom materials.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 dom_status              dom_materials_visit(dom_material_visit_fn fn,
                                             void* user);
+/* Purpose: Reset dom materials.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void                    dom_materials_reset(void);
 
 #ifdef __cplusplus

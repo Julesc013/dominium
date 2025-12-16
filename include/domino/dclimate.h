@@ -23,6 +23,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* ClimateGrid: Public type used by `dclimate`. */
 typedef struct {
     BodyId   body;
     U32      width;
@@ -34,15 +35,31 @@ typedef struct {
 
 /* Field handles (registered via dfield) */
 FieldId dclimate_field_mean_temp(void);
+/* Purpose: Field mean precip.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Id value (0 is commonly used as the invalid/failure sentinel for `*Id` typedefs).
+ */
 FieldId dclimate_field_mean_precip(void);
+/* Purpose: Field mean humidity.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Id value (0 is commonly used as the invalid/failure sentinel for `*Id` typedefs).
+ */
 FieldId dclimate_field_mean_humidity(void);
 
 /* Grid lifecycle */
 bool        dclimate_init_grid(BodyId body, U32 width, U32 height, Q16_16 albedo, Q16_16 greenhouse_factor);
+/* Purpose: Get grid.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 ClimateGrid *dclimate_get_grid(BodyId body);
 
 /* Sampling */
 bool dclimate_sample_at_tile(BodyId body, const WPosTile *tile, TempK *out_temp_K, Q16_16 *out_precip, Q16_16 *out_humidity);
+/* Purpose: Sample at lat lon.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool dclimate_sample_at_lat_lon(BodyId body, Turn lat, Turn lon, Q16_16 height_m, TempK *out_temp_K, Q16_16 *out_precip, Q16_16 *out_humidity);
 
 /* Direct cell set for offline/authoring overrides */

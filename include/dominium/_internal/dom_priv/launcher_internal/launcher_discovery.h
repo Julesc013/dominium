@@ -19,8 +19,20 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include <string>
 #include <vector>
 
+/* Purpose: Installs discover.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 std::vector<InstallInfo> discover_installs(const LauncherContext &ctx);
+/* Purpose: Id find install by.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 InstallInfo *find_install_by_id(std::vector<InstallInfo> &installs, const std::string &id);
+/* Purpose: Root find install by.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 InstallInfo *find_install_by_root(std::vector<InstallInfo> &installs, const std::string &root);
 
 #endif /* DOM_LAUNCHER_DISCOVERY_H */

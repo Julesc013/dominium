@@ -23,13 +23,29 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* d_rng_state: Public type used by `rng`. */
 typedef struct d_rng_state {
     u32 state;
 } d_rng_state;
 
+/* Purpose: Seed rng.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void d_rng_seed(d_rng_state* rng, u32 seed);
+/* Purpose: Next u32.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 u32  d_rng_next_u32(d_rng_state* rng);
+/* Purpose: Next i32.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 i32  d_rng_next_i32(d_rng_state* rng);
+/* Purpose: Peek u32.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 u32  d_rng_peek_u32(const d_rng_state* rng);
 
 #ifdef __cplusplus

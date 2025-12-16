@@ -31,6 +31,9 @@ typedef struct dcvs_t dcvs; /* opaque */
 
 /* Create/destroy a canvas with an internal command buffer */
 dcvs *dcvs_create(uint32_t initial_capacity);
+/* Purpose: Destroy dcvs.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void  dcvs_destroy(dcvs *c);
 
 /* Reset to empty; capacity unchanged. */
@@ -41,11 +44,35 @@ const dgfx_cmd_buffer *dcvs_get_cmd_buffer(const dcvs *c);
 
 /* Command emitters */
 bool dcvs_clear(dcvs *c, uint32_t rgba);
+/* Purpose: Viewport dcvs set.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool dcvs_set_viewport(dcvs *c, const dgfx_viewport_t *vp);
+/* Purpose: Camera dcvs set.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool dcvs_set_camera(dcvs *c, const dgfx_camera_t *cam);
+/* Purpose: Sprite dcvs draw.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool dcvs_draw_sprite(dcvs *c, const dgfx_sprite_t *spr);
+/* Purpose: Line dcvs draw.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool dcvs_draw_line(dcvs *c, const dgfx_line_segment_t *line);
+/* Purpose: Mesh dcvs draw.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool dcvs_draw_mesh(dcvs *c, const dgfx_mesh_draw_t *mesh);
+/* Purpose: Text dcvs draw.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool dcvs_draw_text(dcvs *c, const dgfx_text_draw_t *text);
 /* Future: set_pipeline, set_texture, batched sprites/meshes */
 
@@ -54,12 +81,17 @@ bool dcvs_draw_text(dcvs *c, const dgfx_text_draw_t *text);
  *------------------------------------------------------------*/
 typedef struct dom_canvas dom_canvas;
 
+/* dom_gfx_buffer: Public type used by `canvas`. */
 typedef struct dom_gfx_buffer {
     uint8_t *data;
     size_t   size;
     size_t   capacity;
 } dom_gfx_buffer;
 
+/* Purpose: Build canvas.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool dom_canvas_build(dom_core *core,
                       dom_instance_id inst,
                       const char *canvas_id,

@@ -21,26 +21,43 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* VoltageV: Public type used by `denergy`. */
 typedef Q16_16 VoltageV;
 
+/* Battery: Public type used by `denergy`. */
 typedef struct {
     EnergyJ capacity;
     EnergyJ stored;
     VoltageV nominal_voltage;
 } Battery;
 
+/* Capacitor: Public type used by `denergy`. */
 typedef struct {
     ChargeC capacity;
     ChargeC stored;
     VoltageV nominal_voltage;
 } Capacitor;
 
+/* Purpose: From charge.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 EnergyJ denergy_from_charge(ChargeC q, VoltageV voltage);
+/* Purpose: To charge.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 ChargeC denergy_to_charge(EnergyJ e, VoltageV voltage);
 
 /* Stub power interfaces */
 PowerW denergy_request_power(AggregateId agg, PowerW desired);
+/* Purpose: Report consumption.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void   denergy_report_consumption(AggregateId agg, PowerW consumed);
+/* Purpose: Report generation.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void   denergy_report_generation(AggregateId agg, PowerW produced);
 
 #ifdef __cplusplus

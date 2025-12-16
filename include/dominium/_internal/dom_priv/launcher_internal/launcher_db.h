@@ -58,19 +58,54 @@ struct LauncherDb {
     dom_shared::JsonValue plugin_data;
 };
 
+/* Purpose: Load db.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void db_load(const LauncherContext &ctx);
+/* Purpose: Save db.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void db_save(const LauncherContext &ctx);
 
+/* Purpose: Installs db get.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 std::vector<dom_shared::InstallInfo> db_get_installs();
+/* Purpose: Install db add or update.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void db_add_or_update_install(const dom_shared::InstallInfo &info);
 
+/* Purpose: Profiles db get.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 std::vector<LauncherProfile> db_get_profiles();
+/* Purpose: Profile db add.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void db_add_profile(const LauncherProfile &p);
 
+/* Purpose: Paths db get manual.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 std::vector<std::string> db_get_manual_paths();
+/* Purpose: Path db add manual.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void db_add_manual_path(const std::string &p);
 
+/* Purpose: Kv db set plugin.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` on failure.
+ */
 bool db_set_plugin_kv(const std::string &plugin_id, const std::string &key, const std::string &value);
+/* Purpose: Kv db get plugin.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
 std::string db_get_plugin_kv(const std::string &plugin_id, const std::string &key, const std::string &default_val);
 
 #endif /* DOM_LAUNCHER_DB_H */

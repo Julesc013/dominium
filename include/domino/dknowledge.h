@@ -21,25 +21,30 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* KnowledgeId: Identifier type for Knowledge objects in `dknowledge`. */
 typedef uint32_t KnowledgeId;
 
+/* KnowledgeType: Public type used by `dknowledge`. */
 typedef enum {
     KNOW_TILE_VISIBILITY = 0,
     KNOW_ENTITY_SEEN,
     KNOW_MARKET_INFO,
 } KnowledgeType;
 
+/* KnowledgeKey: Public type used by `dknowledge`. */
 typedef struct {
     KnowledgeType type;
     uint32_t      subject_id;    /* tile hash, entity id, market id, etc. */
 } KnowledgeKey;
 
+/* KnowledgeRecord: Public type used by `dknowledge`. */
 typedef struct {
     KnowledgeKey key;
     SimTick      last_seen_tick;
     Q16_16       confidence_0_1;
 } KnowledgeRecord;
 
+/* KnowledgeBase: Public type used by `dknowledge`. */
 typedef struct {
     KnowledgeId     id;
     KnowledgeRecord *records;
@@ -47,18 +52,39 @@ typedef struct {
     U32              record_capacity;
 } KnowledgeBase;
 
+/* Purpose: Create dknowledge.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Id value (0 is commonly used as the invalid/failure sentinel for `*Id` typedefs).
+ */
 KnowledgeId    dknowledge_create(U32 capacity);
+/* Purpose: Get dknowledge.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 KnowledgeBase *dknowledge_get(KnowledgeId id);
+/* Purpose: Destroy dknowledge.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void           dknowledge_destroy(KnowledgeId id);
 
+/* Purpose: Observe dknowledge.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void dknowledge_observe(KnowledgeId id,
                         const KnowledgeKey *key,
                         SimTick tick,
                         Q16_16 confidence);
 
+/* Purpose: Query dknowledge.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
 const KnowledgeRecord *dknowledge_query(const KnowledgeBase *kb,
                                         const KnowledgeKey *key);
 
+/* Purpose: Mark tile visible.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
 void dknowledge_mark_tile_visible(KnowledgeId id,
                                   TileCoord x,
                                   TileCoord y,
