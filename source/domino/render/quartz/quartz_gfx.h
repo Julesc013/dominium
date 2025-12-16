@@ -1,3 +1,16 @@
+/*
+FILE: source/domino/render/quartz/quartz_gfx.h
+MODULE: Domino
+LAYER / SUBSYSTEM: Domino impl / render/quartz/quartz_gfx
+RESPONSIBILITY: Implements `quartz_gfx`; owns translation-unit-local helpers/state; does NOT define the public contract (see `include/**`).
+ALLOWED DEPENDENCIES: `include/domino/**`, `source/domino/**`, and C89/C++98 standard headers as needed.
+FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**` (engine must not depend on product layer).
+THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
+ERROR MODEL: Return codes/NULL pointers; no exceptions.
+DETERMINISM: See `docs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
+VERSIONING / ABI / DATA FORMAT NOTES: N/A (implementation file).
+EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
+*/
 #ifndef DOMINIUM_QUARTZ_GFX_H
 #define DOMINIUM_QUARTZ_GFX_H
 

@@ -1,3 +1,16 @@
+/*
+FILE: external/xxhash/xxhash.c
+MODULE: External (third-party)
+LAYER / SUBSYSTEM: external/xxhash
+RESPONSIBILITY: Vendored third-party source for `xxhash.c`; keep changes minimal and non-functional.
+ALLOWED DEPENDENCIES: As shipped by upstream; project-local wrappers may include this.
+FORBIDDEN DEPENDENCIES: N/A.
+THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
+ERROR MODEL: Return codes/NULL pointers; no exceptions.
+DETERMINISM: See `docs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
+VERSIONING / ABI / DATA FORMAT NOTES: Upstream versioning applies; see `docs/DEPENDENCIES.md`.
+EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
+*/
 #include "xxhash.h"
 
 #include <string.h>
