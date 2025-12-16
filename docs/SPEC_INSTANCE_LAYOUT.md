@@ -11,6 +11,8 @@ All instance paths are rooted under a launcher-provided state root:
 ```
 <state_root>/instances/<instance_id>/
   manifest.tlv
+  payload_refs.tlv
+  known_good.tlv
   config/
   saves/
   mods/
@@ -28,6 +30,11 @@ Rules:
 - No global shared mutable directories are permitted.
 - Artifact payloads may be referenced read-only (by hash), but are never written
   in-place.
+- `payload_refs.tlv` is a derived index of resolved artifact payload references
+  (hash/type/size/algo) used for verification and launch planning; it can be
+  rebuilt deterministically from `manifest.tlv` and the artifact store.
+- `known_good.tlv` is a pointer to the last known-good snapshot under
+  `previous/` (used by rollback).
 
 ## 2. Manifest (`manifest.tlv`) — reproducible lockfile
 
@@ -123,3 +130,38 @@ Every instance operation emits an audit record with:
 - operation type
 - result (ok/fail) and reason code
 - manifest hashes (before/after where applicable)
+
+## 7. Transaction engine (install/update/remove/verify/repair/rollback)
+
+Launcher instance mutations use an explicit transaction state machine with
+staging-only writes:
+
+Phases:
+1. `prepare`: load live manifest, create `transaction.tlv` (transaction id).
+2. `stage`: write new `staging/manifest.tlv`.
+3. `verify`: verify referenced artifacts against the artifact store; write
+   `staging/payload_refs.tlv`.
+4. `commit`: atomic swap via rename; archive prior state under `previous/`.
+5. `rollback`: discard staging on failure; live instance remains untouched.
+
+Rules:
+- All writes happen under `staging/` until `commit`.
+- `commit` swaps `manifest.tlv` + `payload_refs.tlv` atomically at the file
+  level (rename), and archives the prior live files under a deterministic
+  directory name in `previous/`.
+- `verify` must complete before `commit`.
+- On any failure before `commit`, live state is untouched; staged state is
+  recoverable or safely discarded.
+
+Failure recovery:
+- If `staging/transaction.tlv` exists at startup, the launcher may safely
+  discard `staging/*` (no live state is modified).
+
+Known-good snapshots + rollback:
+- Successful `verify`/`repair` operations stage a snapshot directory under
+  `staging/known_good_snapshot/` and a pointer file `staging/known_good.tlv`.
+- At commit, the snapshot is moved under `previous/known_good_<hash>_<stamp>/`
+  and `known_good.tlv` is swapped into place.
+- `rollback_to_known_good` restores the snapshot manifest/payload references
+  via the same transaction engine and records the source transaction id + cause
+  in audit.
