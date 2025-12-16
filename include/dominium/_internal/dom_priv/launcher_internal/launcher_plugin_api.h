@@ -74,12 +74,13 @@ typedef struct DomLauncherPlugin {
 } DomLauncherPlugin;
 
 #ifdef _WIN32
-/* Purpose: Declspec .
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
- */
 __declspec(dllexport)
 #endif
+/* Dominium_GetLauncherPlugin
+ * Purpose: Exported launcher-plugin entry point that returns the plugin descriptor/vtable.
+ * Returns:
+ *   Pointer to a plugin-owned descriptor that must remain valid for the lifetime of the module.
+ */
 const DomLauncherPlugin* Dominium_GetLauncherPlugin(void);
 
 #endif /* DOM_LAUNCHER_PLUGIN_API_H */
