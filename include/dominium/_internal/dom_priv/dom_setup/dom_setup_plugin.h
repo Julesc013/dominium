@@ -54,12 +54,13 @@ typedef struct DomSetupPlugin {
 } DomSetupPlugin;
 
 #ifdef _WIN32
-/* Purpose: Declspec .
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
- */
 __declspec(dllexport)
 #endif
+/* Dominium_GetSetupPlugin
+ * Purpose: Exported setup-plugin entry point that returns the plugin descriptor/vtable.
+ * Returns:
+ *   Pointer to a plugin-owned descriptor that must remain valid for the lifetime of the module.
+ */
 const DomSetupPlugin* Dominium_GetSetupPlugin(void);
 
 #endif /* DOM_SETUP_PLUGIN_H */

@@ -7,7 +7,7 @@ ALLOWED DEPENDENCIES: `include/domino/**` plus C89/C++98 standard headers as nee
 FORBIDDEN DEPENDENCIES: `source/**` private headers; keep contracts freestanding and layer-respecting.
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
-DETERMINISM: See `docs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
+DETERMINISM: Determinism-supporting (schema ids and tag sets are hashed/validated); see `docs/SPEC_CONTAINER_TLV.md` and `docs/SPEC_DETERMINISM.md`.
 VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
 EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
 */
@@ -95,6 +95,17 @@ enum {
  * Registry API
  *------------------------------------------------------------*/
 
+/* dom_chunk_schema_desc
+ * Purpose: Descriptor for one chunk schema (type id + version) and its TLV tag set.
+ * Fields:
+ *   chunk_type_id: Stable chunk type id (`u32` ABI).
+ *   chunk_version: Stable chunk schema version (`u16` ABI).
+ *   domain_mask: Bitmask of `DOM_SCHEMA_DOMAIN_*` describing the usage domain(s).
+ *   tlv_tags/tlv_tag_count: Optional list of chunk-local TLV tag ids used for schema hashing.
+ * Notes:
+ * - For deterministic schema id hashing, tags are treated as a set (sorted before hashing).
+ * - Serialization ABI rules are specified in `docs/SPEC_CONTAINER_TLV.md`.
+ */
 typedef struct dom_chunk_schema_desc {
     u32        chunk_type_id;
     u16        chunk_version;
@@ -103,15 +114,36 @@ typedef struct dom_chunk_schema_desc {
     u32        tlv_tag_count;
 } dom_chunk_schema_desc;
 
-/* Returns a stable pointer to the compiled-in registry list. */
+/* dom_schema_registry
+ * Purpose: Return a stable pointer to the compiled-in schema registry list.
+ * Parameters:
+ *   out_count (out, optional): Receives number of entries when non-NULL.
+ * Returns:
+ *   Pointer to an internal static array of `dom_chunk_schema_desc`.
+ * Ownership:
+ *   Returned pointer is borrowed and valid for the lifetime of the process.
+ */
 const dom_chunk_schema_desc* dom_schema_registry(u32* out_count);
 
 /* Compute a deterministic schema id (FNV-1a 64-bit) over registry entries
  * matching domain_mask, independent of registry declaration order.
  */
+/* dom_schema_id_for_domain
+ * Purpose: Compute a deterministic schema id for a domain mask.
+ * Parameters:
+ *   domain_mask (in): Domain selector bitmask (`DOM_SCHEMA_DOMAIN_*`).
+ * Returns:
+ *   64-bit schema id, or 0 on allocation failure / no matching entries.
+ * Determinism:
+ *   Hash input uses explicit little-endian encodings and sorted tag sets.
+ */
 u64 dom_schema_id_for_domain(u32 domain_mask);
 
-/* Canonical simulation schema id used by net handshake compatibility checks. */
+/* dom_sim_schema_id
+ * Purpose: Convenience for `dom_schema_id_for_domain(DOM_SCHEMA_DOMAIN_SIM)`.
+ * Returns:
+ *   64-bit schema id, or 0 on allocation failure / empty registry.
+ */
 u64 dom_sim_schema_id(void);
 
 #ifdef __cplusplus
@@ -119,4 +151,3 @@ u64 dom_sim_schema_id(void);
 #endif
 
 #endif /* DOMINO_IO_SCHEMA_REGISTRY_H_INCLUDED */
-
