@@ -21,11 +21,8 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
  * - Fixed-width integer typedefs compatible with common toolchains.
  */
 
+/* Detect whether the build already provides fixed-width integer limits (stdint-like). */
 #if defined(UINT8_MAX) && defined(UINT16_MAX) && defined(UINT32_MAX) && defined(UINT64_MAX) && \
-/* Purpose: API entry point for `baseline`.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
- */
     defined(INT8_MAX) && defined(INT16_MAX) && defined(INT32_MAX) && defined(INT64_MAX)
 #define DOMINO_BASELINE_STDINT_PRESENT 1
 #endif
