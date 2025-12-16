@@ -1,6 +1,6 @@
 # Dominium TLV Container (DTLV) — Authoritative Serialization ABI
 
-This document defines the **authoritative**, versioned, skip-friendly, deterministic container format used for **all public on-disk serialization** (saves, replays, packs/manifests, launcher config) and for any serialized blobs that must be treated as ABI (e.g., handshake payloads).
+This document defines the **authoritative**, versioned, skip-friendly, deterministic container format used for **all public on-disk serialization** (saves, replays, packs/manifests, launcher config). It also defines the canonical TLV encoding rules used for ABI-treated blobs (e.g., net handshake payloads), whether carried inside a `DTLV` container or as standalone TLV streams.
 
 The design goals are:
 
@@ -159,4 +159,3 @@ All readers must fail safely (no out-of-bounds reads/writes, no infinite loops):
 - Reject containers with invalid header fields, impossible offsets/sizes, or unsupported versions.
 - Reject TLV payloads whose lengths exceed the remaining bytes.
 - For skip-unknown: skipping must never trust unvalidated lengths.
-
