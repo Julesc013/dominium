@@ -36,12 +36,15 @@ typedef int dom_abi_result;
 /* Every ABI-visible struct/vtable begins with these fields. */
 #define DOM_ABI_HEADER u32 abi_version; u32 struct_size
 
-/* Convenience initializer for the ABI header prefix. */
-#define DOM_ABI_HEADER_INIT(version_u32, struct_type) \
-/* Purpose: API entry point for `abi`.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+/* DOM_ABI_HEADER_INIT
+ * Purpose: Convenience initializer for the ABI header prefix (`abi_version`, `struct_size`).
+ * Parameters:
+ *   version_u32 (in): ABI version written to `abi_version`.
+ *   struct_type (in): Struct type used to compute `struct_size` via `sizeof`.
+ * Expands to:
+ *   (u32)(version_u32), (u32)sizeof(struct_type)
  */
+#define DOM_ABI_HEADER_INIT(version_u32, struct_type) \
     (u32)(version_u32), (u32)sizeof(struct_type)
 
 /* C89/C++98 static assert (no _Static_assert). */
