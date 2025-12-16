@@ -2,7 +2,7 @@
 FILE: source/dominium/game/dom_game_save.h
 MODULE: Dominium
 LAYER / SUBSYSTEM: Dominium impl / game/dom_game_save
-RESPONSIBILITY: Implements `dom_game_save`; owns translation-unit-local helpers/state; does NOT define the public contract (see `include/**`).
+RESPONSIBILITY: Defines internal contract for `dom_game_save`; shared within its subsystem; does NOT define a public API (see `include/**`).
 ALLOWED DEPENDENCIES: `include/dominium/**`, `source/dominium/**`, and C89/C++98 standard headers as needed.
 FORBIDDEN DEPENDENCIES: Dependency inversions that violate `docs/OVERVIEW_ARCHITECTURE.md` layering.
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
