@@ -2,13 +2,13 @@
 FILE: include/dominium/_internal/dom_priv/dom_launcher/launcher_ui_tui.h
 MODULE: Dominium
 LAYER / SUBSYSTEM: Dominium API / _internal/dom_priv/dom_launcher/launcher_ui_tui
-RESPONSIBILITY: Defines the public contract for `launcher_ui_tui` (types/constants/function signatures); does NOT provide implementation.
+RESPONSIBILITY: Defines internal contract for `launcher_ui_tui` entry points; not a stable public API; does NOT provide implementation.
 ALLOWED DEPENDENCIES: `include/dominium/**` plus C89/C++98 standard headers as needed.
 FORBIDDEN DEPENDENCIES: `source/**` private headers; keep contracts freestanding and layer-respecting.
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
 DETERMINISM: See `docs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
-VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
+VERSIONING / ABI / DATA FORMAT NOTES: Internal header; no ABI stability guarantees.
 EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
 */
 #ifndef DOM_LAUNCHER_UI_TUI_H
@@ -16,7 +16,15 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 
 namespace dom_launcher {
 
-// Text UI entry. Returns 0 on success.
+/* Purpose: Run the launcher text-UI (TUI) entry point.
+ *
+ * Parameters:
+ * - `argc`/`argv`: Host arguments; interpretation is implementation-defined.
+ *
+ * Returns:
+ * - 0 when the TUI was started and completed successfully.
+ * - Non-zero to signal the caller should fall back to another UI.
+ */
 int launcher_run_tui(int argc, char** argv);
 
 } // namespace dom_launcher

@@ -35,7 +35,12 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
-/* dom_det_grade: Public type used by `determinism`. */
+/* Purpose: Determinism grade classification for a runtime subsystem/backend.
+ *
+ * See also:
+ * - `docs/SPEC_DETERMINISM_GRADES.md` (grade definitions and enforcement rules)
+ * - `docs/SPEC_DETERMINISM.md` (project-wide determinism constraints)
+ */
 typedef enum dom_det_grade {
     /* Bit-exact across supported platforms: hashes/replays must match exactly. */
     DOM_DET_D0_BIT_EXACT = 0,
@@ -52,4 +57,3 @@ typedef enum dom_det_grade {
 #endif
 
 #endif /* DOMINO_DETERMINISM_H_INCLUDED */
-

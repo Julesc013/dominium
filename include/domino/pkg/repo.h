@@ -20,7 +20,11 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
-/* dom_product_role: Public type used by `repo`. */
+/* Purpose: Role of a product binary in the repository.
+ *
+ * Notes:
+ * - The current JSON parser maps string tokens to these values (e.g., `"game"` -> `DOM_PRODUCT_ROLE_GAME`).
+ */
 typedef enum dom_product_role {
     DOM_PRODUCT_ROLE_UNKNOWN = 0,
     DOM_PRODUCT_ROLE_GAME,
@@ -29,7 +33,11 @@ typedef enum dom_product_role {
     DOM_PRODUCT_ROLE_TOOL
 } dom_product_role;
 
-/* dom_os_family: Public type used by `repo`. */
+/* Purpose: OS family discriminator used by repository manifests and layout selection.
+ *
+ * Notes:
+ * - This is a manifest/packaging classification and is distinct from `DomOSFamily` in `domino/platform.h`.
+ */
 typedef enum dom_os_family {
     DOM_OS_UNKNOWN = 0,
     DOM_OS_WINNT,
@@ -45,7 +53,7 @@ typedef enum dom_os_family {
     DOM_OS_CPM
 } dom_os_family;
 
-/* dom_arch: Public type used by `repo`. */
+/* Purpose: CPU/VM architecture discriminator used by repository manifests and layout selection. */
 typedef enum dom_arch {
     DOM_ARCH_UNKNOWN = 0,
     DOM_ARCH_X86_16,
@@ -61,7 +69,11 @@ typedef enum dom_arch {
     DOM_ARCH_WASM_64
 } dom_arch;
 
-/* dom_compat_profile: Public type used by `repo`. */
+/* Purpose: Compatibility version tuple advertised by a product.
+ *
+ * Each field is a protocol/data-format version used for compatibility checks between products
+ * (launcher, game, tools) and stored artifacts (saves, packs, replays).
+ */
 typedef struct dom_compat_profile {
     u16 save_format_version;
     u16 pack_format_version;
@@ -75,7 +87,19 @@ typedef struct dom_compat_profile {
 #define DOM_VERSION_STR_MAX 32
 #define DOM_EXEC_PATH_MAX   256
 
-/* dom_product_info: Public type used by `repo`. */
+/* Purpose: Product descriptor loaded from a repository product manifest (POD).
+ *
+ * Fields:
+ * - `product_id`: Manifest `product_id` string.
+ * - `role`: Parsed `role` classification (see `dom_product_role`).
+ * - `product_version` / `core_version`: String versions as represented in the manifest.
+ * - `os_family` / `arch`: Parsed platform classification for the build.
+ * - `exec_rel_path`: Relative executable path as represented in the manifest.
+ * - `compat`: Compatibility version tuple.
+ *
+ * ABI/layout:
+ * - String members are fixed-size, NUL-terminated buffers.
+ */
 typedef struct dom_product_info {
     char             product_id[DOM_PRODUCT_ID_MAX];
     dom_product_role role;
@@ -87,12 +111,34 @@ typedef struct dom_product_info {
     dom_compat_profile compat;
 } dom_product_info;
 
-/* Resolves DOMINIUM_HOME root; writes a null-terminated path into buffer.
- * Returns D_TRUE on success, D_FALSE on failure.
+/* Purpose: Resolve the repository root directory for the current process.
+ *
+ * Parameters:
+ * - `buffer`: Output buffer receiving a NUL-terminated path (non-NULL).
+ * - `max_len`: Capacity of `buffer` in bytes (must be > 0).
+ *
+ * Returns:
+ * - `D_TRUE` on success.
+ * - `D_FALSE` if arguments are invalid or the resolved path does not fit.
+ *
+ * Notes:
+ * - Current behavior uses the `DOMINIUM_HOME` environment variable when set, otherwise `"."`.
  */
 d_bool dom_repo_get_root(char* buffer, u32 max_len);
 
-/* Milestone 0: load a single primary game product manifest from a fixed path. */
+/* Purpose: Load the primary game product descriptor from a fixed, milestone-0 repository path.
+ *
+ * Parameters:
+ * - `out_info`: Output product info (non-NULL).
+ *
+ * Returns:
+ * - `D_TRUE` on success.
+ * - `D_FALSE` on failure (missing files/keys or parse failure).
+ *
+ * Notes:
+ * - This is a placeholder implementation with hard-coded path components and a minimal JSON extractor.
+ * - The current path uses forward slashes and assumes a fixed platform directory.
+ */
 d_bool dom_repo_load_primary_game(dom_product_info* out_info);
 
 #ifdef __cplusplus

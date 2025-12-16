@@ -21,7 +21,12 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
-/* ui_event_type: Public type used by `ui_events`. */
+/* Purpose: Discriminant for `ui_event.data`.
+ *
+ * Notes:
+ * - `ui_event` is a minimal, UI-facing event shape commonly derived from `dsys_event`.
+ * - Not all backends populate every field (e.g., `mods` may be 0).
+ */
 typedef enum ui_event_type {
     UI_EVT_NONE = 0,
     UI_EVT_MOUSE,
@@ -32,14 +37,28 @@ typedef enum ui_event_type {
     UI_EVT_TIMER
 } ui_event_type;
 
-/* ui_key: Public type used by `ui_events`. */
+/* Purpose: Key event payload (POD).
+ *
+ * Fields:
+ * - `code`: Backend-provided key code (typically `dsys_event.payload.key.key`).
+ * - `mods`: Backend-defined modifier mask (may be 0 when not provided).
+ * - `pressed`: 1 for press/down, 0 for release/up.
+ */
 typedef struct ui_key {
     int code;
     int mods;
     int pressed;
 } ui_key;
 
-/* ui_mouse: Public type used by `ui_events`. */
+/* Purpose: Mouse event payload (POD).
+ *
+ * Fields:
+ * - `x`/`y`: Cursor position in the current window coordinate space (backend-defined units).
+ * - `dx`/`dy`: Relative motion since the previous mouse-move event (backend-defined units).
+ * - `button`: Backend-defined button index for button events.
+ * - `pressed`: 1 for press/down, 0 for release/up (for button events).
+ * - `wheel`: Scroll delta (backend-defined units; commonly vertical delta for wheel events).
+ */
 typedef struct ui_mouse {
     int x;
     int y;
@@ -50,7 +69,13 @@ typedef struct ui_mouse {
     int wheel;
 } ui_mouse;
 
-/* data: Public type used by `ui_events`. */
+/* Purpose: UI input event passed to widget/input layers (POD).
+ *
+ * Invariants:
+ * - `type` selects which member of `data` is valid.
+ * - `data.text` is NUL-terminated and bounded to 7 bytes of payload plus terminator, matching
+ *   the current `dsys_event.payload.text.text` shape.
+ */
 typedef struct ui_event {
     ui_event_type type;
     union {

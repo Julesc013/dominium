@@ -40,17 +40,25 @@ extern "C" {
 
 /* Kármán-line-ish logical alt for orbit transitions handled later */
 
-typedef int32_t TileCoord;   /* x,y tile index; wrap around DOM_WORLD_TILES torus */
-typedef int16_t TileHeight;  /* z tile index in [-2048 .. +2047] */
+/* Purpose: Horizontal tile coordinate (x/y) on the world torus.
+ *
+ * Notes:
+ * - Canonical range after wrapping is `[0, DOM_WORLD_TILES)`.
+ */
+typedef int32_t TileCoord;
+/* Purpose: Vertical tile coordinate (z) in the bounded world grid.
+ * Range: `DOM_Z_MIN .. DOM_Z_MAX`.
+ */
+typedef int16_t TileHeight;
 
-/* Tile-space world position (x/y wrap on the horizontal torus). */
+/* Purpose: Tile-space world position (x/y wrap on the horizontal torus). */
 typedef struct {
     TileCoord  x;
     TileCoord  y;
     TileHeight z;
 } WPosTile;
 
-/* Sub-tile exact position in Q16.16 offsets within tile coordinates */
+/* Purpose: Sub-tile exact position with Q16.16 offsets within tile coordinates (POD). */
 typedef struct {
     WPosTile tile;
     PosUnit  dx;
@@ -58,28 +66,31 @@ typedef struct {
     PosUnit  dz;
 } WPosExact;
 
-/* Chunk coordinates: 16x16x16 tiles */
+/* Purpose: Chunk coordinate (cx/cy) in chunk-space. */
 typedef int32_t ChunkCoord;
-/* ChunkHeight: Public type used by `dworld`. */
+/* Purpose: Chunk height coordinate (cz) in chunk-space.
+ * Range: 0..`DOM_Z_CHUNKS - 1` in current layouts.
+ */
 typedef int16_t ChunkHeight;
 
-/* Chunk-space world position (cx/cy/cz). */
+/* Purpose: Chunk-space world position (cx/cy/cz) (POD). */
 typedef struct {
     ChunkCoord  cx;
     ChunkCoord  cy;
     ChunkHeight cz;   /* 0..255 */
 } ChunkPos;
 
-typedef uint8_t LocalCoord;   /* 0..15 in each axis */
+/* Purpose: Local coordinate within a chunk axis. Range: 0..`DOM_CHUNK_SIZE - 1`. */
+typedef uint8_t LocalCoord;
 
-/* Local position within a chunk (lx/ly/lz). */
+/* Purpose: Local position within a chunk (lx/ly/lz) (POD). */
 typedef struct {
     LocalCoord lx;
     LocalCoord ly;
     LocalCoord lz;
 } LocalPos;
 
-/* High-level embedding for an actor/aggregate in the world model. */
+/* Purpose: High-level embedding for an actor/aggregate in the world model. */
 typedef enum {
     ENV_SURFACE_GRID,    /* inside voxel world grid (terrain, buildings) */
     ENV_AIR_LOCAL,       /* low-altitude airspace, still referencing grid */
@@ -90,7 +101,7 @@ typedef enum {
     ENV_VACUUM_LOCAL     /* local inertial bubble near station/ship in space */
 } EnvironmentKind;
 
-/* Aggregate mobility classification for environment constraints. */
+/* Purpose: Aggregate mobility classification for environment constraints. */
 typedef enum {
     AGG_STATIC,    /* anchored to terrain, buildings, fixed installations */
     AGG_SURFACE,   /* moves on/near surface: cars, trucks, ground robots */
@@ -106,6 +117,8 @@ TileCoord dworld_wrap_tile_coord(TileCoord t);
 
 /* Converts a tile position into chunk + local coordinates.
  *
+ * Purpose: Convert from tile-space to chunk-space + local-space addressing.
+ *
  * Parameters:
  *   - tile: Input tile position (required).
  *   - out_chunk/out_local: Optional outputs; may be NULL.
@@ -114,22 +127,24 @@ void dworld_tile_to_chunk_local(const WPosTile *tile, ChunkPos *out_chunk, Local
 
 /* Converts chunk + local coordinates back into a tile position.
  *
+ * Purpose: Convert from chunk-space + local-space addressing back to tile-space.
+ *
  * Preconditions:
  *   - chunk/local/out_tile must be non-NULL; otherwise the function is a no-op.
  */
 void dworld_chunk_local_to_tile(const ChunkPos *chunk, const LocalPos *local, WPosTile *out_tile);
 
-/* Initializes an exact position from a tile position with zero sub-tile offsets. */
+/* Purpose: Initialize an exact position from a tile position with zero sub-tile offsets. */
 void dworld_init_exact_from_tile(const WPosTile *tile, WPosExact *out_pos);
 
 /* Environment helpers */
-/* Maps a clamped z tile height to a coarse environment kind. */
+/* Purpose: Map a clamped z tile height to a coarse environment kind. */
 EnvironmentKind dworld_env_from_z(TileHeight z);
-/* Returns whether `z` falls within the buildable vertical band. */
+/* Purpose: Return whether `z` falls within the buildable vertical band. */
 bool            dworld_z_is_buildable(TileHeight z);
-/* Returns whether an exact position should transition from grid/airspace to high atmosphere. */
+/* Purpose: Return whether an exact position should transition from grid/airspace to high atmosphere. */
 bool            dworld_should_switch_to_high_atmo(const WPosExact *pos);
-/* Returns whether an exact position should transition from high atmosphere to orbit. */
+/* Purpose: Return whether an exact position should transition from high atmosphere to orbit. */
 bool            dworld_should_switch_to_orbit(const WPosExact *pos);
 
 #ifdef __cplusplus

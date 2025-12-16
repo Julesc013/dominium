@@ -16,19 +16,67 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 
 #include "domino/mod.h"
 
+/* Purpose: Opaque launcher context owned by the launcher host.
+ *
+ * Lifetime/ownership:
+ * - The host creates and owns the context; callers pass a borrowed pointer.
+ */
 struct dominium_launcher_context;
 
-/* Query instances */
+/* Purpose: Enumerate currently loaded launcher instances.
+ *
+ * Parameters:
+ * - `ctx`: Launcher context (non-NULL).
+ * - `out`: Optional output array of `domino_instance_desc` entries. May be NULL to query count only.
+ * - `max_count`: Capacity of `out` in elements.
+ * - `out_count`: Optional output receiving the total number of loaded instances.
+ *
+ * Returns:
+ * - 0 on success.
+ * - -1 if `ctx` is NULL.
+ *
+ * Notes:
+ * - When `out` is non-NULL and `max_count > 0`, up to `min(max_count, total)` items are copied.
+ * - `*out_count` (when provided) is set to the total instance count, not the number copied.
+ */
 int launcher_ext_list_instances(struct dominium_launcher_context* ctx,
                                 domino_instance_desc* out,
                                 unsigned int max_count,
                                 unsigned int* out_count);
 
-/* Launch an instance */
+/* Purpose: Resolve and run an instance by id via the launcher host.
+ *
+ * Parameters:
+ * - `ctx`: Launcher context (non-NULL).
+ * - `instance_id`: Instance identifier string (non-NULL).
+ *
+ * Returns:
+ * - Process exit code of the launched instance on success.
+ * - -1 on error (invalid arguments, resolution failure, spawn failure, or instance not found).
+ *
+ * Side effects:
+ * - May spawn a child process and block while waiting for it to exit.
+ * - May emit launcher logs via the host system layer.
+ */
 int launcher_ext_run_instance(struct dominium_launcher_context* ctx,
                               const char* instance_id);
 
-/* Query launcher-target packages */
+/* Purpose: Enumerate packages visible to the launcher host.
+ *
+ * Parameters:
+ * - `ctx`: Launcher context (non-NULL).
+ * - `out`: Output array of `domino_package_desc` entries (non-NULL).
+ * - `max_count`: Capacity of `out` in elements.
+ * - `out_count`: Optional output receiving the number of entries written.
+ *
+ * Returns:
+ * - 0 on success (including when no registry is loaded).
+ * - -1 if `ctx` or `out` is NULL.
+ *
+ * Notes:
+ * - Current implementation does not filter for launcher-target packages; it forwards all
+ *   visible package descriptors in registry iteration order.
+ */
 int launcher_ext_list_launcher_packages(struct dominium_launcher_context* ctx,
                                         domino_package_desc* out,
                                         unsigned int max_count,

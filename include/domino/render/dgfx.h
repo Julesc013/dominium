@@ -14,7 +14,11 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #ifndef DOMINO_RENDER_DGFX_H_INCLUDED
 #define DOMINO_RENDER_DGFX_H_INCLUDED
 
-/* Compatibility shim to keep the dgfx IR reachable from render/ paths. */
+/* Purpose: Compatibility shim to keep the dgfx public API reachable from `domino/render/` paths.
+ *
+ * Notes:
+ * - New code should include `domino/gfx.h` directly.
+ */
 #include "domino/gfx.h"
 
 #endif /* DOMINO_RENDER_DGFX_H_INCLUDED */
