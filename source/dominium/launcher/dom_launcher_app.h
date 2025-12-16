@@ -21,10 +21,11 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "dom_instance.h"
 #include "dom_compat.h"
 
+#include "dui/dui_api_v1.h"
+
 extern "C" {
 #include "domino/sys.h"
-#include "view/d_view.h"
-#include "ui/d_ui.h"
+#include "domino/profile.h"
 }
 
 namespace dom {
@@ -55,7 +56,7 @@ public:
     DomLauncherApp();
     ~DomLauncherApp();
 
-    bool init_from_cli(const LauncherConfig &cfg);
+    bool init_from_cli(const LauncherConfig &cfg, const dom_profile* profile);
     void run();
     void shutdown();
 
@@ -102,6 +103,10 @@ public:
                         const std::string &instance_id,
                         const std::string &mode);
 
+    const std::string& ui_backend_selected() const { return m_ui_backend_selected; }
+    u64                ui_caps_selected() const { return m_ui_caps_selected; }
+    const std::string& ui_fallback_note() const { return m_ui_fallback_note; }
+
 private:
     bool scan_products();
     bool scan_instances();
@@ -113,8 +118,10 @@ private:
 
     bool init_gui(const LauncherConfig &cfg);
     void gui_loop();
-    void process_input_events();
-    void handle_key_event(int down, int key);
+    void process_dui_events();
+    bool build_dui_schema(unsigned char* out_buf, u32 cap, u32* out_len) const;
+    bool build_dui_state(unsigned char* out_buf, u32 cap, u32* out_len) const;
+    const dui_api_v1* select_dui_api(std::string& out_backend_name, std::string& out_err);
 
     ProductEntry* find_product_entry(const std::string &product);
     const InstanceInfo* selected_instance() const;
@@ -130,8 +137,12 @@ private:
     std::vector<ProductEntry> m_products;
     std::vector<InstanceInfo> m_instances;
 
-    d_view_id        m_view;
-    dui_context      m_ui;
+    dom_profile       m_profile;
+    bool              m_profile_valid;
+
+    const dui_api_v1* m_dui_api;
+    dui_context*      m_dui_ctx;
+    dui_window*       m_dui_win;
 
     bool             m_running;
 
@@ -148,6 +159,14 @@ private:
     bool             m_show_tools;
     std::vector<std::string> m_repo_mod_manifests;
     std::vector<std::string> m_repo_pack_manifests;
+
+    u32              m_tool_sel_id;
+    u32              m_mod_sel_id;
+    u32              m_pack_sel_id;
+
+    std::string      m_ui_backend_selected;
+    u64              m_ui_caps_selected;
+    std::string      m_ui_fallback_note;
 };
 
 } // namespace dom

@@ -545,6 +545,31 @@ set_target_properties(domino_sys_smoke PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
 )
 
+add_executable(domino_dui_smoke
+    domino_dui_smoke.c
+)
+
+target_include_directories(domino_dui_smoke PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+)
+
+target_link_libraries(domino_dui_smoke
+    domino_core
+)
+
+set_target_properties(domino_dui_smoke PROPERTIES
+    C_STANDARD 90
+    C_STANDARD_REQUIRED ON
+    C_EXTENSIONS OFF
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
+)
+
+add_test(NAME domino_dui_smoke_null COMMAND domino_dui_smoke null)
+add_test(NAME domino_dui_smoke_dgfx COMMAND domino_dui_smoke dgfx)
+if(WIN32)
+    add_test(NAME domino_dui_smoke_native COMMAND domino_dui_smoke win32)
+endif()
+
 add_executable(dgfx_demo
     ../../tests/domino_gfx/dgfx_demo.c
 )

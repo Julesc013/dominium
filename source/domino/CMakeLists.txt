@@ -141,6 +141,14 @@ add_library(domino_core STATIC
     replay/d_replay.c
     view/d_view.c
     ui/d_ui.c
+    dui/dui_event_queue.c
+    dui/dui_schema_parse.c
+    dui/dui_caps.c
+    dui/dui_null.c
+    dui/dui_dgfx.c
+    $<$<BOOL:${WIN32}>:dui/dui_win32.c>
+    dui/dui_gtk.c
+    dui/dui_macos.c
     sim/d_sim.c
     sim/d_sim_process.c
     sim/d_sim_hash.c
@@ -499,5 +507,5 @@ set_target_properties(domino_core PROPERTIES
 )
 
 if(WIN32)
-    target_link_libraries(domino_core PRIVATE user32 gdi32)
+    target_link_libraries(domino_core PRIVATE user32 gdi32 comctl32)
 endif()
