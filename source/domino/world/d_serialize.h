@@ -2,7 +2,7 @@
 FILE: source/domino/world/d_serialize.h
 MODULE: Domino
 LAYER / SUBSYSTEM: Domino impl / world/d_serialize
-RESPONSIBILITY: Implements `d_serialize`; owns translation-unit-local helpers/state; does NOT define the public contract (see `include/**`).
+RESPONSIBILITY: Defines internal contract for `d_serialize`; shared within its subsystem; does NOT define a public API (see `include/**`).
 ALLOWED DEPENDENCIES: `include/domino/**`, `source/domino/**`, and C89/C++98 standard headers as needed.
 FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**` (engine must not depend on product layer).
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.

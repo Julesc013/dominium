@@ -2,7 +2,7 @@
 FILE: source/domino/sim/d_sim_hash.h
 MODULE: Domino
 LAYER / SUBSYSTEM: Domino impl / sim/d_sim_hash
-RESPONSIBILITY: Implements `d_sim_hash`; owns translation-unit-local helpers/state; does NOT define the public contract (see `include/**`).
+RESPONSIBILITY: Defines internal contract for `d_sim_hash`; shared within its subsystem; does NOT define a public API (see `include/**`).
 ALLOWED DEPENDENCIES: `include/domino/**`, `source/domino/**`, and C89/C++98 standard headers as needed.
 FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**` (engine must not depend on product layer).
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
