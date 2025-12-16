@@ -7,8 +7,6 @@ RESPONSIBILITY: Implements instance manifest (lockfile) TLV persistence + determ
 
 #include "launcher_instance.h"
 
-#include <algorithm>
-
 #include "launcher_tlv.h"
 
 namespace dom {
@@ -19,51 +17,112 @@ enum {
     TAG_INSTANCE_ID = 2u,
     TAG_PIN_ENGINE_BUILD_ID = 3u,
     TAG_PIN_GAME_BUILD_ID = 4u,
-    TAG_PINNED_CONTENT_ENTRY = 5u,
-    TAG_UPDATE_POLICY_FLAGS = 6u,
-    TAG_KNOWN_GOOD = 7u
+    TAG_KNOWN_GOOD = 7u,
+    TAG_CREATION_TIMESTAMP_US = 8u,
+    TAG_LAST_VERIFIED_TIMESTAMP_US = 9u,
+    TAG_PREVIOUS_MANIFEST_HASH64 = 10u,
+    TAG_CONTENT_ENTRY = 11u,
+    TAG_PROV_SOURCE_INSTANCE_ID = 12u,
+    TAG_PROV_SOURCE_MANIFEST_HASH64 = 13u
 };
 
 enum {
-    TAG_ENTRY_KIND = 1u,
+    TAG_ENTRY_TYPE = 1u,
     TAG_ENTRY_ID = 2u,
-    TAG_ENTRY_BUILD_ID = 3u,
+    TAG_ENTRY_VERSION = 3u,
     TAG_ENTRY_HASH_BYTES = 4u,
-    TAG_ENTRY_ORDER = 5u
+    TAG_ENTRY_ENABLED = 5u,
+    TAG_ENTRY_UPDATE_POLICY = 6u
 };
 
-static bool pinned_less(const LauncherPinnedContent& a, const LauncherPinnedContent& b) {
-    if (a.order_index != b.order_index) return a.order_index < b.order_index;
-    if (a.artifact.kind != b.artifact.kind) return a.artifact.kind < b.artifact.kind;
-    if (a.artifact.id != b.artifact.id) return a.artifact.id < b.artifact.id;
-    if (a.artifact.build_id != b.artifact.build_id) return a.artifact.build_id < b.artifact.build_id;
-    if (a.artifact.hash_bytes != b.artifact.hash_bytes) return a.artifact.hash_bytes < b.artifact.hash_bytes;
-    return false;
-}
+static void tlv_unknown_capture(std::vector<LauncherTlvUnknownRecord>& dst, const TlvRecord& rec) {
+    LauncherTlvUnknownRecord u;
+    u.tag = rec.tag;
+    u.payload.clear();
+    if (rec.len > 0u && rec.payload) {
+        u.payload.assign(rec.payload, rec.payload + (size_t)rec.len);
+    }
+    dst.push_back(u);
 }
 
-LauncherPinnedContent::LauncherPinnedContent()
-    : artifact(), order_index(0u) {
+static void tlv_unknown_emit(TlvWriter& w, const std::vector<LauncherTlvUnknownRecord>& src) {
+    size_t i;
+    for (i = 0u; i < src.size(); ++i) {
+        if (!src[i].payload.empty()) {
+            w.add_bytes(src[i].tag, &src[i].payload[0], (u32)src[i].payload.size());
+        } else {
+            w.add_bytes(src[i].tag, (const unsigned char*)0, 0u);
+        }
+    }
+}
+
+struct V1Pin {
+    u32 kind;
+    std::string id;
+    std::string build_id;
+    std::vector<unsigned char> hash_bytes;
+    u32 order_index;
+    V1Pin() : kind(0u), id(), build_id(), hash_bytes(), order_index(0u) {}
+};
+
+static void v1_sort_pins_by_order(std::vector<V1Pin>& pins) {
+    /* Stable insertion sort (C++98) to preserve v1 explicit ordering deterministically. */
+    size_t i;
+    for (i = 1u; i < pins.size(); ++i) {
+        V1Pin key = pins[i];
+        size_t j = i;
+        while (j > 0u && pins[j - 1u].order_index > key.order_index) {
+            pins[j] = pins[j - 1u];
+            --j;
+        }
+        pins[j] = key;
+    }
+}
+
+} /* namespace */
+
+LauncherTlvUnknownRecord::LauncherTlvUnknownRecord()
+    : tag(0u), payload() {
+}
+
+LauncherContentEntry::LauncherContentEntry()
+    : type((u32)LAUNCHER_CONTENT_UNKNOWN),
+      id(),
+      version(),
+      hash_bytes(),
+      enabled(1u),
+      update_policy((u32)LAUNCHER_UPDATE_PROMPT),
+      unknown_fields() {
 }
 
 LauncherInstanceManifest::LauncherInstanceManifest()
     : schema_version(LAUNCHER_INSTANCE_MANIFEST_TLV_VERSION),
       instance_id(),
+      creation_timestamp_us(0ull),
       pinned_engine_build_id(),
       pinned_game_build_id(),
-      pinned_content(),
-      update_policy_flags(0u),
-      known_good(0u) {
+      content_entries(),
+      known_good(0u),
+      last_verified_timestamp_us(0ull),
+      previous_manifest_hash64(0ull),
+      provenance_source_instance_id(),
+      provenance_source_manifest_hash64(0ull),
+      unknown_fields() {
 }
 
 LauncherInstanceManifest launcher_instance_manifest_make_empty(const std::string& instance_id) {
     LauncherInstanceManifest m;
     m.instance_id = instance_id;
+    m.creation_timestamp_us = 0ull;
     m.pinned_engine_build_id.clear();
     m.pinned_game_build_id.clear();
-    m.pinned_content.clear();
-    m.update_policy_flags = 0u;
+    m.content_entries.clear();
     m.known_good = 0u;
+    m.last_verified_timestamp_us = 0ull;
+    m.previous_manifest_hash64 = 0ull;
+    m.provenance_source_instance_id.clear();
+    m.provenance_source_manifest_hash64 = 0ull;
+    m.unknown_fields.clear();
     return m;
 }
 
@@ -74,33 +133,47 @@ LauncherInstanceManifest launcher_instance_manifest_make_null(void) {
 bool launcher_instance_manifest_to_tlv_bytes(const LauncherInstanceManifest& manifest,
                                              std::vector<unsigned char>& out_bytes) {
     TlvWriter w;
-    std::vector<LauncherPinnedContent> pins = manifest.pinned_content;
     size_t i;
-
-    /* Canonicalize ordering deterministically by explicit order_index. */
-    std::stable_sort(pins.begin(), pins.end(), pinned_less);
 
     w.add_u32(LAUNCHER_TLV_TAG_SCHEMA_VERSION, LAUNCHER_INSTANCE_MANIFEST_TLV_VERSION);
     w.add_string(TAG_INSTANCE_ID, manifest.instance_id);
+    w.add_u64(TAG_CREATION_TIMESTAMP_US, manifest.creation_timestamp_us);
     w.add_string(TAG_PIN_ENGINE_BUILD_ID, manifest.pinned_engine_build_id);
     w.add_string(TAG_PIN_GAME_BUILD_ID, manifest.pinned_game_build_id);
-    w.add_u32(TAG_UPDATE_POLICY_FLAGS, manifest.update_policy_flags);
     w.add_u32(TAG_KNOWN_GOOD, manifest.known_good);
+    w.add_u64(TAG_LAST_VERIFIED_TIMESTAMP_US, manifest.last_verified_timestamp_us);
+    if (manifest.previous_manifest_hash64 != 0ull) {
+        w.add_u64(TAG_PREVIOUS_MANIFEST_HASH64, manifest.previous_manifest_hash64);
+    }
+    if (!manifest.provenance_source_instance_id.empty()) {
+        w.add_string(TAG_PROV_SOURCE_INSTANCE_ID, manifest.provenance_source_instance_id);
+    }
+    if (manifest.provenance_source_manifest_hash64 != 0ull) {
+        w.add_u64(TAG_PROV_SOURCE_MANIFEST_HASH64, manifest.provenance_source_manifest_hash64);
+    }
 
-    for (i = 0u; i < pins.size(); ++i) {
+    for (i = 0u; i < manifest.content_entries.size(); ++i) {
         TlvWriter entry;
-        entry.add_u32(TAG_ENTRY_KIND, pins[i].artifact.kind);
-        entry.add_string(TAG_ENTRY_ID, pins[i].artifact.id);
-        entry.add_string(TAG_ENTRY_BUILD_ID, pins[i].artifact.build_id);
-        entry.add_u32(TAG_ENTRY_ORDER, pins[i].order_index);
-        if (!pins[i].artifact.hash_bytes.empty()) {
-            entry.add_bytes(TAG_ENTRY_HASH_BYTES, &pins[i].artifact.hash_bytes[0],
-                            (u32)pins[i].artifact.hash_bytes.size());
+        entry.add_u32(TAG_ENTRY_TYPE, manifest.content_entries[i].type);
+        entry.add_string(TAG_ENTRY_ID, manifest.content_entries[i].id);
+        entry.add_string(TAG_ENTRY_VERSION, manifest.content_entries[i].version);
+        entry.add_u32(TAG_ENTRY_ENABLED, manifest.content_entries[i].enabled ? 1u : 0u);
+        entry.add_u32(TAG_ENTRY_UPDATE_POLICY, manifest.content_entries[i].update_policy);
+        if (!manifest.content_entries[i].hash_bytes.empty()) {
+            entry.add_bytes(TAG_ENTRY_HASH_BYTES, &manifest.content_entries[i].hash_bytes[0],
+                            (u32)manifest.content_entries[i].hash_bytes.size());
         } else {
             entry.add_bytes(TAG_ENTRY_HASH_BYTES, (const unsigned char*)0, 0u);
         }
-        w.add_container(TAG_PINNED_CONTENT_ENTRY, entry.bytes());
+
+        /* Round-trip preserve unknown entry fields. */
+        tlv_unknown_emit(entry, manifest.content_entries[i].unknown_fields);
+
+        w.add_container(TAG_CONTENT_ENTRY, entry.bytes());
     }
+
+    /* Round-trip preserve unknown root fields. */
+    tlv_unknown_emit(w, manifest.unknown_fields);
 
     out_bytes = w.bytes();
     return true;
@@ -114,10 +187,9 @@ bool launcher_instance_manifest_from_tlv_bytes(const unsigned char* data,
     u32 version = 0u;
 
     out_manifest = LauncherInstanceManifest();
-    if (!tlv_read_schema_version_or_default(data, size, version, LAUNCHER_INSTANCE_MANIFEST_TLV_VERSION)) {
+    if (!tlv_read_schema_version_or_default(data, size, version, 1u)) {
         return false;
     }
-    out_manifest.schema_version = version;
     if (version != LAUNCHER_INSTANCE_MANIFEST_TLV_VERSION) {
         return launcher_instance_manifest_migrate_tlv(version,
                                                       LAUNCHER_INSTANCE_MANIFEST_TLV_VERSION,
@@ -125,6 +197,7 @@ bool launcher_instance_manifest_from_tlv_bytes(const unsigned char* data,
                                                       size,
                                                       out_manifest);
     }
+    out_manifest.schema_version = LAUNCHER_INSTANCE_MANIFEST_TLV_VERSION;
 
     while (r.next(rec)) {
         switch (rec.tag) {
@@ -133,19 +206,19 @@ bool launcher_instance_manifest_from_tlv_bytes(const unsigned char* data,
         case TAG_INSTANCE_ID:
             out_manifest.instance_id = tlv_read_string(rec.payload, rec.len);
             break;
+        case TAG_CREATION_TIMESTAMP_US: {
+            u64 v;
+            if (tlv_read_u64_le(rec.payload, rec.len, v)) {
+                out_manifest.creation_timestamp_us = v;
+            }
+            break;
+        }
         case TAG_PIN_ENGINE_BUILD_ID:
             out_manifest.pinned_engine_build_id = tlv_read_string(rec.payload, rec.len);
             break;
         case TAG_PIN_GAME_BUILD_ID:
             out_manifest.pinned_game_build_id = tlv_read_string(rec.payload, rec.len);
             break;
-        case TAG_UPDATE_POLICY_FLAGS: {
-            u32 v;
-            if (tlv_read_u32_le(rec.payload, rec.len, v)) {
-                out_manifest.update_policy_flags = v;
-            }
-            break;
-        }
         case TAG_KNOWN_GOOD: {
             u32 v;
             if (tlv_read_u32_le(rec.payload, rec.len, v)) {
@@ -153,44 +226,72 @@ bool launcher_instance_manifest_from_tlv_bytes(const unsigned char* data,
             }
             break;
         }
-        case TAG_PINNED_CONTENT_ENTRY: {
-            LauncherPinnedContent pin;
+        case TAG_LAST_VERIFIED_TIMESTAMP_US: {
+            u64 v;
+            if (tlv_read_u64_le(rec.payload, rec.len, v)) {
+                out_manifest.last_verified_timestamp_us = v;
+            }
+            break;
+        }
+        case TAG_PREVIOUS_MANIFEST_HASH64: {
+            u64 v;
+            if (tlv_read_u64_le(rec.payload, rec.len, v)) {
+                out_manifest.previous_manifest_hash64 = v;
+            }
+            break;
+        }
+        case TAG_PROV_SOURCE_INSTANCE_ID:
+            out_manifest.provenance_source_instance_id = tlv_read_string(rec.payload, rec.len);
+            break;
+        case TAG_PROV_SOURCE_MANIFEST_HASH64: {
+            u64 v;
+            if (tlv_read_u64_le(rec.payload, rec.len, v)) {
+                out_manifest.provenance_source_manifest_hash64 = v;
+            }
+            break;
+        }
+        case TAG_CONTENT_ENTRY: {
+            LauncherContentEntry entry;
             TlvReader er(rec.payload, (size_t)rec.len);
             TlvRecord e;
             while (er.next(e)) {
-                if (e.tag == TAG_ENTRY_KIND) {
+                if (e.tag == TAG_ENTRY_TYPE) {
                     u32 v;
                     if (tlv_read_u32_le(e.payload, e.len, v)) {
-                        pin.artifact.kind = v;
+                        entry.type = v;
                     }
                 } else if (e.tag == TAG_ENTRY_ID) {
-                    pin.artifact.id = tlv_read_string(e.payload, e.len);
-                } else if (e.tag == TAG_ENTRY_BUILD_ID) {
-                    pin.artifact.build_id = tlv_read_string(e.payload, e.len);
+                    entry.id = tlv_read_string(e.payload, e.len);
+                } else if (e.tag == TAG_ENTRY_VERSION) {
+                    entry.version = tlv_read_string(e.payload, e.len);
                 } else if (e.tag == TAG_ENTRY_HASH_BYTES) {
-                    pin.artifact.hash_bytes.clear();
+                    entry.hash_bytes.clear();
                     if (e.len > 0u && e.payload) {
-                        pin.artifact.hash_bytes.assign(e.payload, e.payload + (size_t)e.len);
+                        entry.hash_bytes.assign(e.payload, e.payload + (size_t)e.len);
                     }
-                } else if (e.tag == TAG_ENTRY_ORDER) {
+                } else if (e.tag == TAG_ENTRY_ENABLED) {
                     u32 v;
                     if (tlv_read_u32_le(e.payload, e.len, v)) {
-                        pin.order_index = v;
+                        entry.enabled = v ? 1u : 0u;
+                    }
+                } else if (e.tag == TAG_ENTRY_UPDATE_POLICY) {
+                    u32 v;
+                    if (tlv_read_u32_le(e.payload, e.len, v)) {
+                        entry.update_policy = v;
                     }
                 } else {
-                    /* skip unknown */
+                    tlv_unknown_capture(entry.unknown_fields, e);
                 }
             }
-            out_manifest.pinned_content.push_back(pin);
+            out_manifest.content_entries.push_back(entry);
             break;
         }
         default:
-            /* skip unknown */
+            tlv_unknown_capture(out_manifest.unknown_fields, rec);
             break;
         }
     }
 
-    /* Keep pinned_content as read order; canonical ordering is applied on write/hash. */
     return true;
 }
 
@@ -202,12 +303,110 @@ u64 launcher_instance_manifest_hash64(const LauncherInstanceManifest& manifest) 
     return tlv_fnv1a64(bytes.empty() ? (const unsigned char*)0 : &bytes[0], bytes.size());
 }
 
-bool launcher_instance_manifest_migrate_tlv(u32 /*from_version*/,
-                                            u32 /*to_version*/,
-                                            const unsigned char* /*data*/,
-                                            size_t /*size*/,
-                                            LauncherInstanceManifest& /*out_manifest*/) {
-    /* Defined but not implemented in foundation. */
+bool launcher_instance_manifest_migrate_tlv(u32 from_version,
+                                            u32 to_version,
+                                            const unsigned char* data,
+                                            size_t size,
+                                            LauncherInstanceManifest& out_manifest) {
+    if (!data || size == 0u) {
+        return false;
+    }
+    if (from_version == 1u && to_version == LAUNCHER_INSTANCE_MANIFEST_TLV_VERSION) {
+        TlvReader r(data, size);
+        TlvRecord rec;
+        LauncherInstanceManifest m;
+        std::vector<V1Pin> pins;
+
+        /* v1: optional update_policy_flags (ignored for now; future-defined). */
+        while (r.next(rec)) {
+            switch (rec.tag) {
+            case LAUNCHER_TLV_TAG_SCHEMA_VERSION:
+                break;
+            case TAG_INSTANCE_ID:
+                m.instance_id = tlv_read_string(rec.payload, rec.len);
+                break;
+            case TAG_PIN_ENGINE_BUILD_ID:
+                m.pinned_engine_build_id = tlv_read_string(rec.payload, rec.len);
+                break;
+            case TAG_PIN_GAME_BUILD_ID:
+                m.pinned_game_build_id = tlv_read_string(rec.payload, rec.len);
+                break;
+            case TAG_KNOWN_GOOD: {
+                u32 v;
+                if (tlv_read_u32_le(rec.payload, rec.len, v)) {
+                    m.known_good = v;
+                }
+                break;
+            }
+            case 5u: { /* v1 pinned-content entry */
+                V1Pin pin;
+                TlvReader er(rec.payload, (size_t)rec.len);
+                TlvRecord e;
+                while (er.next(e)) {
+                    if (e.tag == 1u) { /* v1 kind */
+                        u32 v;
+                        if (tlv_read_u32_le(e.payload, e.len, v)) {
+                            pin.kind = v;
+                        }
+                    } else if (e.tag == TAG_ENTRY_ID) {
+                        pin.id = tlv_read_string(e.payload, e.len);
+                    } else if (e.tag == 3u) { /* v1 build_id */
+                        pin.build_id = tlv_read_string(e.payload, e.len);
+                    } else if (e.tag == TAG_ENTRY_HASH_BYTES) {
+                        pin.hash_bytes.clear();
+                        if (e.len > 0u && e.payload) {
+                            pin.hash_bytes.assign(e.payload, e.payload + (size_t)e.len);
+                        }
+                    } else if (e.tag == 5u) { /* v1 order */
+                        u32 v;
+                        if (tlv_read_u32_le(e.payload, e.len, v)) {
+                            pin.order_index = v;
+                        }
+                    } else {
+                        /* drop v1 unknown */
+                    }
+                }
+                pins.push_back(pin);
+                break;
+            }
+            default:
+                /* drop v1 unknown */
+                break;
+            }
+        }
+
+        if (!pins.empty()) {
+            v1_sort_pins_by_order(pins);
+        }
+
+        m.schema_version = LAUNCHER_INSTANCE_MANIFEST_TLV_VERSION;
+        m.creation_timestamp_us = 0ull;
+        m.last_verified_timestamp_us = 0ull;
+        m.previous_manifest_hash64 = 0ull;
+        m.provenance_source_instance_id.clear();
+        m.provenance_source_manifest_hash64 = 0ull;
+
+        for (size_t i = 0u; i < pins.size(); ++i) {
+            LauncherContentEntry ce;
+            ce.id = pins[i].id;
+            ce.version = pins[i].build_id;
+            ce.hash_bytes = pins[i].hash_bytes;
+            ce.enabled = 1u;
+            ce.update_policy = (u32)LAUNCHER_UPDATE_PROMPT;
+            switch (pins[i].kind) {
+            case 1u: ce.type = (u32)LAUNCHER_CONTENT_ENGINE; break;
+            case 2u: ce.type = (u32)LAUNCHER_CONTENT_GAME; break;
+            case 3u: ce.type = (u32)LAUNCHER_CONTENT_PACK; break;
+            case 4u: ce.type = (u32)LAUNCHER_CONTENT_MOD; break;
+            default: ce.type = (u32)LAUNCHER_CONTENT_UNKNOWN; break;
+            }
+            m.content_entries.push_back(ce);
+        }
+
+        out_manifest = m;
+        return true;
+    }
+
     return false;
 }
 
