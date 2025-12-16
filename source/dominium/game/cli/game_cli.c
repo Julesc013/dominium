@@ -1,3 +1,16 @@
+/*
+FILE: source/dominium/game/cli/game_cli.c
+MODULE: Dominium
+LAYER / SUBSYSTEM: Dominium impl / game/cli/game_cli
+RESPONSIBILITY: Implements `game_cli`; owns translation-unit-local helpers/state; does NOT define the public contract (see `include/**`).
+ALLOWED DEPENDENCIES: `include/dominium/**`, `source/dominium/**`, and C89/C++98 standard headers as needed.
+FORBIDDEN DEPENDENCIES: Dependency inversions that violate `docs/OVERVIEW_ARCHITECTURE.md` layering.
+THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
+ERROR MODEL: Return codes/NULL pointers; no exceptions.
+DETERMINISM: See `docs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
+VERSIONING / ABI / DATA FORMAT NOTES: N/A (implementation file).
+EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
+*/
 /* TODO: legacy CLI entrypoint; not yet wired into dominium_game target. */
 #include "dominium/dom_app_mode.h"
 #include "dominium/dom_plat_sys.h"
