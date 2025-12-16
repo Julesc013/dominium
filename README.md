@@ -16,6 +16,7 @@ platform integration, and content workflows on top of Domino.
 
 ## Repository map
 `docs/DIRECTORY_CONTEXT.md` is the authoritative directory/layout contract.
+`docs/README.md` is the documentation index.
 
 Key roots:
 - `source/domino/` – engine implementation
@@ -44,7 +45,10 @@ Placement and structure:
 
 Policy/build:
 - `docs/DETERMINISM_REGRESSION_RULES.md`
+- `docs/ARCHITECTURE.md`
+- `docs/DEPENDENCIES.md`
 - `docs/LANGUAGE_POLICY.md`
+- `docs/CONTRACTS.md`
 - `docs/STYLE.md`
 - `docs/BUILDING.md`
 
