@@ -3,10 +3,14 @@ cmake_minimum_required(VERSION 3.16)
 add_library(dominium_launcher_core STATIC
     src/launcher_core.cpp
     src/tlv/launcher_tlv.cpp
+    src/launch/launcher_prelaunch.cpp
+    src/launch/launcher_launch_attempt.cpp
     src/profile/launcher_profile.cpp
     src/instance/launcher_instance.cpp
+    src/instance/launcher_instance_config.cpp
     src/instance/launcher_instance_payload_refs.cpp
     src/instance/launcher_instance_known_good.cpp
+    src/instance/launcher_instance_launch_history.cpp
     src/instance/launcher_instance_tx.cpp
     src/instance/launcher_instance_artifact_ops.cpp
     src/instance/launcher_instance_ops.cpp
@@ -139,3 +143,30 @@ else()
 endif()
 
 add_test(NAME dominium_launcher_pack_ecosystem_tests COMMAND dominium_launcher_pack_ecosystem_tests)
+
+add_executable(dominium_launcher_prelaunch_recovery_tests
+    tests/launcher_prelaunch_recovery_tests.cpp
+)
+
+target_link_libraries(dominium_launcher_prelaunch_recovery_tests PRIVATE
+    dominium_launcher_core
+)
+
+target_include_directories(dominium_launcher_prelaunch_recovery_tests PRIVATE
+    ${DOMINIUM_INCLUDE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+set_target_properties(dominium_launcher_prelaunch_recovery_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+if (MSVC)
+    target_compile_options(dominium_launcher_prelaunch_recovery_tests PRIVATE $<$<CONFIG:Release>:/UNDEBUG>)
+else()
+    target_compile_options(dominium_launcher_prelaunch_recovery_tests PRIVATE $<$<CONFIG:Release>:-UNDEBUG>)
+endif()
+
+add_test(NAME dominium_launcher_prelaunch_recovery_tests COMMAND dominium_launcher_prelaunch_recovery_tests)
