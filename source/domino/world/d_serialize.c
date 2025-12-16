@@ -7,8 +7,8 @@ ALLOWED DEPENDENCIES: `include/domino/**`, `source/domino/**`, and C89/C++98 sta
 FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**` (engine must not depend on product layer).
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
-DETERMINISM: See `docs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
-VERSIONING / ABI / DATA FORMAT NOTES: N/A (implementation file).
+DETERMINISM: Determinism-sensitive (serialized bytes may be replayed/hashed); see `docs/SPEC_DETERMINISM.md`.
+VERSIONING / ABI / DATA FORMAT NOTES: Legacy subsystem TLV stream; see `docs/DATA_FORMATS.md` (Subsystem TLV containers).
 EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
 */
 #include <stdio.h>
@@ -83,6 +83,10 @@ static int d_tlv_builder_append_entry(d_tlv_builder *b, u32 tag, const unsigned 
     if (rc != 0) {
         return rc;
     }
+    /* Legacy TLV header encoding: tag/len are serialized as native-endian u32 values.
+     * memcpy avoids unaligned stores/loads and type-punning UB; the resulting byte
+     * stream is therefore only portable across little-endian hosts.
+     */
     memcpy(b->data + b->length, &tag, sizeof(u32));
     b->length += 4u;
     memcpy(b->data + b->length, &payload_len, sizeof(u32));
@@ -229,6 +233,7 @@ static int d_serialize_load_all(struct d_world *w, struct d_chunk *chunk, const 
             return -1;
         }
 
+        /* Read native-endian u32 tag/len header as written by d_tlv_builder_append_entry(). */
         memcpy(&tag, in->ptr + offset, sizeof(u32));
         memcpy(&len, in->ptr + offset + 4u, sizeof(u32));
         offset += 8u;

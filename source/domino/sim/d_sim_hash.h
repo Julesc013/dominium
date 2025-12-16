@@ -7,8 +7,8 @@ ALLOWED DEPENDENCIES: `include/domino/**`, `source/domino/**`, and C89/C++98 sta
 FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**` (engine must not depend on product layer).
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
-DETERMINISM: See `docs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
-VERSIONING / ABI / DATA FORMAT NOTES: N/A (implementation file).
+DETERMINISM: Determinism-critical; hashes stable, canonical byte encodings (see `docs/SPEC_DETERMINISM.md`).
+VERSIONING / ABI / DATA FORMAT NOTES: Hash is sensitive to serialized byte encodings; see `docs/SPEC_DETERMINISM.md` and `docs/DATA_FORMATS.md`.
 EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
 */
 /* Deterministic world hashing helpers (C89). */

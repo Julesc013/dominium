@@ -7,8 +7,8 @@ ALLOWED DEPENDENCIES: `include/domino/**`, `source/domino/**`, and C89/C++98 sta
 FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**` (engine must not depend on product layer).
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
-DETERMINISM: See `docs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
-VERSIONING / ABI / DATA FORMAT NOTES: N/A (implementation file).
+DETERMINISM: Determinism-supporting (schema version gates for deterministic IO); see `docs/SPEC_DETERMINISM.md`.
+VERSIONING / ABI / DATA FORMAT NOTES: Schema id+version registry for TLV validation/migration; see `docs/DATA_FORMATS.md` (TLV schema registry).
 EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
 */
 #include <stdio.h>
@@ -20,6 +20,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 static d_tlv_schema_desc g_tlv_schemas[D_TLV_SCHEMA_MAX];
 static u32 g_tlv_schema_count = 0u;
 
+/* Process-global registry intended to be populated during init (not thread-safe). */
 static const d_tlv_schema_desc *d_tlv_schema_find(d_tlv_schema_id schema_id, u16 version) {
     u32 i;
     for (i = 0u; i < g_tlv_schema_count; ++i) {

@@ -1,6 +1,6 @@
 # Dominium — Data Formats (Engine v0)
 
-All formats are little-endian, deterministic, and fixed-point-only. Unknown sections are skipped, not rejected. No floats appear in any on-disk file.
+All supported runtime targets are little-endian. Deterministic artifacts are integer/fixed-point-only; unknown sections are skipped, not rejected. For ABI-stable containers and explicit parsing rules, see `docs/SPEC_CONTAINER_TLV.md`.
 
 ## 1. Fixed-point encoding
 - `fix32` (Q16.16) is stored as signed 32-bit.
@@ -94,6 +94,7 @@ This file and `engine/save_*.h` define the authoritative on-disk shapes for v0. 
 - Per-subsystem payloads are wrapped in TLVs tagged with `TAG_SUBSYS_*` (world/res/env/build/trans/struct/veh/job/net/replay; mods reserve 0x2000+).
 - Save/load orchestrator iterates registered subsystems and calls their hooks, appending `(tag,len,payload)` triples into a single container blob.
 - Unknown tags are ignored by readers; missing tags mean the subsystem contributed no data for that chunk/instance.
+- Current `d_serialize` framing stores `tag` and `len` as native-endian `u32` values via `memcpy` (little-endian on supported hosts); see `source/domino/world/d_serialize.c`.
 
 ## 10. Pack and mod TLVs
 - Pack TLV schema: `D_TLV_SCHEMA_PACK_V1` (0x0201), version 1.
@@ -129,3 +130,25 @@ This file and `engine/save_*.h` define the authoritative on-disk shapes for v0. 
   - Optional `D_TLV_ENV_HYDRO_FLAGS` (u32 bitmask) for generic hydrology interactions.
 - `job_template.params` may include environment constraints:
   - `D_TLV_JOB_ENV_RANGE` records with `FIELD_ID` (u16) and `MIN`/`MAX` (Q16.16), evaluated against `d_env_sample_at` at the job target position.
+
+## 12. Legacy game save blob (dom_game_save)
+`source/dominium/game/dom_game_save.cpp` writes a minimal world snapshot format for local saves.
+
+Framing (repeated records until EOF):
+```
+u32 tag;      /* native-endian (little-endian on supported hosts) */
+u32 len;      /* native-endian */
+u8  payload[len];
+```
+
+Known top-level tags:
+- `1` (`TAG_INSTANCE`): payload is the instance-level subsystem TLV blob returned by `d_serialize_save_instance_all`.
+- `2` (`TAG_CHUNK`): payload is:
+  - `i32 cx`, `i32 cy`
+  - `u32 chunk_id`
+  - `u32 flags` (serialized from `d_chunk::flags`, currently stored as `u16`)
+  - followed by the chunk-level subsystem TLV blob returned by `d_serialize_save_chunk_all`.
+
+Notes:
+- This format is currently unversioned; forward/backward compatibility is not guaranteed.
+- ABI-stable containers should use `DTLV` (`docs/SPEC_CONTAINER_TLV.md`).

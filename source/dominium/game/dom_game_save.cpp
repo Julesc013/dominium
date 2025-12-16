@@ -7,8 +7,8 @@ ALLOWED DEPENDENCIES: `include/dominium/**`, `source/dominium/**`, and C89/C++98
 FORBIDDEN DEPENDENCIES: Dependency inversions that violate `docs/OVERVIEW_ARCHITECTURE.md` layering.
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
-DETERMINISM: See `docs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
-VERSIONING / ABI / DATA FORMAT NOTES: N/A (implementation file).
+DETERMINISM: Determinism-sensitive (save verification compares `d_sim_hash_world`); see `docs/SPEC_DETERMINISM.md`.
+VERSIONING / ABI / DATA FORMAT NOTES: Legacy, unversioned save blob format; see `docs/DATA_FORMATS.md` (Legacy game save blob).
 EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
 */
 #include "dom_game_save.h"
@@ -60,6 +60,9 @@ static bool build_save_blob(d_world *world, std::vector<unsigned char> &out) {
     }
 
     {
+        /* Legacy save blob framing: (tag:u32_native, len:u32_native, payload[len]).
+         * This is not the DTLV container format; see docs/DATA_FORMATS.md.
+         */
         const u32 tag_instance = TAG_INSTANCE;
         const u32 inst_len = inst_blob.len;
         const size_t base = out.size();
@@ -90,6 +93,7 @@ static bool build_save_blob(d_world *world, std::vector<unsigned char> &out) {
 
         payload_len = (u32)(sizeof(cx) + sizeof(cy) + sizeof(chunk_id) + sizeof(flags) + chunk_blob.len);
         {
+            /* Chunk record payload: cx,cy,chunk_id,flags (native-endian) followed by subsystem TLV bytes. */
             const size_t base = out.size();
             out.resize(base + 8u + static_cast<size_t>(payload_len));
             std::memcpy(&out[base], &chunk_tag, sizeof(u32));
@@ -205,6 +209,7 @@ bool game_load_world_blob(
         u32 tag;
         u32 len;
 
+        /* Legacy save blob framing uses native-endian u32 tag/len headers (see docs/DATA_FORMATS.md). */
         std::memcpy(&tag, data + offset, sizeof(u32));
         std::memcpy(&len, data + offset + 4u, sizeof(u32));
         offset += 8u;
