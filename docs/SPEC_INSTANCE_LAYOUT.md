@@ -14,11 +14,13 @@ All instance paths are rooted under a launcher-provided state root:
   payload_refs.tlv
   known_good.tlv
   config/
+    config.tlv
   saves/
   mods/
   content/
   cache/
   logs/
+    launch_history.tlv
   staging/
   previous/
 ```
@@ -35,6 +37,10 @@ Rules:
   rebuilt deterministically from `manifest.tlv` and the artifact store.
 - `known_good.tlv` is a pointer to the last known-good snapshot under
   `previous/` (used by rollback).
+- `config/config.tlv` stores per-instance launcher overrides (separate from the manifest).
+- `logs/launch_history.tlv` stores the last N launch attempts for recovery suggestions.
+
+See `docs/SPEC_LAUNCHER_PRELAUNCH_CONFIG.md` for configuration layering, safe mode, and recovery behavior.
 
 ## 2. Manifest (`manifest.tlv`) — reproducible lockfile
 
