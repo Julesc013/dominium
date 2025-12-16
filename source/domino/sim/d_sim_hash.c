@@ -7,8 +7,8 @@ ALLOWED DEPENDENCIES: `include/domino/**`, `source/domino/**`, and C89/C++98 sta
 FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**` (engine must not depend on product layer).
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
-DETERMINISM: See `docs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
-VERSIONING / ABI / DATA FORMAT NOTES: N/A (implementation file).
+DETERMINISM: Determinism-critical; hashes stable, canonical byte encodings (see `docs/SPEC_DETERMINISM.md`).
+VERSIONING / ABI / DATA FORMAT NOTES: Hash is sensitive to serialized byte encodings; see `docs/SPEC_DETERMINISM.md` and `docs/DATA_FORMATS.md`.
 EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
 */
 #include <stdlib.h>
@@ -83,6 +83,7 @@ static u64 d_sim_hash_chunk_payload(d_world *w, d_chunk *chunk) {
     if (!w || !chunk) {
         return h;
     }
+    /* Subsystem payload bytes are hashed verbatim; serialization framing/endianness is part of the determinism contract. */
     if (d_serialize_save_chunk_all(w, chunk, &blob) == 0) {
         h = d_sim_hash_u32_le(h, blob.len);
         h = d_sim_hash_bytes(h, blob.ptr, blob.len);
@@ -117,6 +118,7 @@ d_world_hash d_sim_hash_world(const d_world *w) {
     /* Instance-level serialized payload */
     inst_blob.ptr = (unsigned char *)0;
     inst_blob.len = 0u;
+    /* Instance payload bytes are hashed verbatim; serialization framing/endianness is part of the determinism contract. */
     if (d_serialize_save_instance_all((d_world *)w, &inst_blob) == 0) {
         h = d_sim_hash_u32_le(h, inst_blob.len);
         h = d_sim_hash_bytes(h, inst_blob.ptr, inst_blob.len);

@@ -137,10 +137,12 @@ MUST iterate in a canonical, stable order:
 
 ### Canonical TLV ordering
 All deterministic TLV containers (used for hashing, replay, or lockstep) MUST:
-- use explicit little-endian numeric encoding in TLV headers
-- be canonicalized before hashing or comparison
+- use a defined byte encoding for TLV headers
+  - ABI-stable TLV uses explicit little-endian headers (`u32_le` tag/len), as implemented by `res/dg_tlv_canon.*` and `dtlv_*`
+  - legacy blob formats may store `tag`/`len` as native-endian `u32` via `memcpy` and therefore require little-endian hosts
+- ensure record ordering is deterministic (canonical sort or stable writer-defined order)
 
-Canonicalization rules implemented by `res/dg_tlv_canon.*`:
+Canonicalization rules implemented by `res/dg_tlv_canon.*` (when canonical sort is required):
 - TLV records are sorted by `(tag, payload_bytes)` ascending
   - `tag` is `u32_le`
   - repeated tags are tie-broken by lexicographic payload bytes, then length
@@ -149,9 +151,9 @@ Canonicalization rules implemented by `res/dg_tlv_canon.*`:
 Unknown TLVs MUST be safely skippable using lengths (forward-compat framing).
 
 ### Explicit endianness rule
-Determinism paths MUST NOT parse numeric fields via host-endian `memcpy` into
-integers. All deterministic IO numeric decoding/encoding MUST use explicit
-little-endian routines.
+Supported runtime targets are little-endian. Determinism paths must treat the byte encoding of numeric fields as little-endian for stable replay/hashing.
+
+Prefer explicit little-endian routines (`dg_le_*`, `dtlv_le_*`) for ABI-stable formats. Some legacy blob formats serialize numeric headers via host-endian `memcpy` and are therefore deterministic only on little-endian hosts.
 
 ## Fixed-point requirements
 Determinism paths MUST use fixed-point math only:

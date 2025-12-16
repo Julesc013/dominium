@@ -1,6 +1,6 @@
 # Dominium TLV Container (DTLV) — Authoritative Serialization ABI
 
-This document defines the **authoritative**, versioned, skip-friendly, deterministic container format used for **all public on-disk serialization** (saves, replays, packs/manifests, launcher config). It also defines the canonical TLV encoding rules used for ABI-treated blobs (e.g., net handshake payloads), whether carried inside a `DTLV` container or as standalone TLV streams.
+This document defines the **DTLV** container format and TLV encoding rules used by the `dtlv_*` reader/writer API (`include/domino/io/container.h`, `source/domino/io/container/dtlv.c`). DTLV is the target ABI for versioned, skip-friendly on-disk containers; several existing artifacts still use legacy/native-endian blob formats (see `docs/DATA_FORMATS.md` for current shapes).
 
 The design goals are:
 

@@ -7,12 +7,16 @@ ALLOWED DEPENDENCIES: `include/domino/**`, `source/domino/**`, and C89/C++98 sta
 FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**` (engine must not depend on product layer).
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
-DETERMINISM: See `docs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
+DETERMINISM: Determinism-critical fixed-point math; relies on `source/domino/core/det_invariants.h` (two's complement, arithmetic right shift).
 VERSIONING / ABI / DATA FORMAT NOTES: N/A (implementation file).
 EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
 */
 #include "domino/core/fixed.h"
 
+/* Fixed-point arithmetic is part of the deterministic core. This implementation:
+ * - uses saturating semantics for bounded Q formats
+ * - avoids non-portable 128-bit compiler extensions by emulating u128 multiply
+ */
 #define Q4_12_MAX  ((q4_12)0x7FFF)
 #define Q4_12_MIN  ((q4_12)0x8000)
 
@@ -68,6 +72,7 @@ static u64 d_abs_i64_u64(i64 v) {
 }
 
 static d_u128 d_mul_u64(u64 a, u64 b) {
+    /* Portable 64x64->128 multiply using 32-bit partial products (C89/C90 has no u128). */
     u32 a0 = (u32)(a & 0xFFFFFFFFUL);
     u32 a1 = (u32)(a >> 32);
     u32 b0 = (u32)(b & 0xFFFFFFFFUL);
@@ -130,6 +135,9 @@ static q48_16 d_compose_signed_from_u128(u64 hi, u64 lo, d_bool negative) {
 }
 
 static q48_16 d_shift_left_i64_saturate(i64 v, unsigned int shift) {
+    /* NOTE: Uses signed shifts; ISO C90 leaves some signed-shift behavior undefined/implementation-defined.
+     * The determinism baseline assumes two's complement toolchains (see source/domino/core/det_invariants.h).
+     */
     if (shift >= 63) {
         return (v >= 0) ? Q64_MAX : Q64_MIN;
     }
