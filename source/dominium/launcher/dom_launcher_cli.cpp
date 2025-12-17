@@ -17,6 +17,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "core/include/launcher_core_api.h"
 #include "dom_launcher_app.h"
 #include "dom_profile_cli.h"
+#include "launcher_control_plane.h"
 
 #include "dominium/version.h"
 
@@ -661,6 +662,23 @@ int main(int argc, char **argv) {
         dom::print_caps(stdout);
         exit_code = dom::print_selection(profile_cli.profile, stdout, stderr);
         return exit_code;
+    }
+
+    /* Command-style control plane (no UI required). */
+    {
+        dom::ControlPlaneRunResult cpr = dom::launcher_control_plane_try_run(argc,
+                                                                             argv,
+                                                                             lc,
+                                                                             &profile_cli.profile,
+                                                                             stdout,
+                                                                             stderr);
+        if (cpr.handled) {
+            if (lc) {
+                (void)launcher_core_add_reason(lc, "mode:control_plane");
+            }
+            exit_code = cpr.exit_code;
+            return exit_code;
+        }
     }
 
     cfg.home.clear();
