@@ -298,6 +298,7 @@ venv/
 !/ports/**/config/**
 !/ports/**/include/**
 !/external/licenses/**
+!/source/dominium/setup/core/include/dsu/dsu_config.h
 
 
 # ---------------------------------------------------------------------
