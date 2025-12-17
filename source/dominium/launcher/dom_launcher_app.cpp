@@ -614,6 +614,17 @@ static u32 window_mode_from_item_id(u32 item_id, u32 fallback_mode) {
     return fallback_mode;
 }
 
+static std::string window_mode_to_string(u32 mode) {
+    switch (mode) {
+    case (u32)launcher_core::LAUNCHER_WINDOW_MODE_WINDOWED: return "windowed";
+    case (u32)launcher_core::LAUNCHER_WINDOW_MODE_FULLSCREEN: return "fullscreen";
+    case (u32)launcher_core::LAUNCHER_WINDOW_MODE_BORDERLESS: return "borderless";
+    case (u32)launcher_core::LAUNCHER_WINDOW_MODE_AUTO:
+    default:
+        return "auto";
+    }
+}
+
 static bool is_pack_like(u32 content_type) {
     return content_type == (u32)launcher_core::LAUNCHER_CONTENT_PACK ||
            content_type == (u32)launcher_core::LAUNCHER_CONTENT_MOD ||
@@ -2073,6 +2084,67 @@ void DomLauncherApp::process_dui_events() {
                         m_ui->status_progress = 0u;
                     }
                 }
+            } else if (act == (u32)ACT_OPT_RESET) {
+                if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
+                    m_ui->status_text = std::string("Busy: ") + (m_ui->task.op.empty() ? std::string("operation") : m_ui->task.op);
+                } else {
+                    const InstanceInfo* inst = selected_instance();
+                    if (!inst) {
+                        m_ui->status_text = "Refused: no instance selected.";
+                    } else {
+                        m_ui->confirm_action_id = (u32)ACT_OPT_RESET;
+                        m_ui->confirm_instance_id = inst->id;
+                        m_ui->dialog_visible = 1u;
+                        m_ui->dialog_title = "Confirm reset";
+                        m_ui->dialog_text = "Reset graphics overrides for the selected instance?";
+                        m_ui->dialog_lines.clear();
+                        m_ui->dialog_lines.push_back(std::string("instance_id=") + inst->id);
+                        m_ui->dialog_lines.push_back("fields=gfx_backend,renderer_api,window_mode,window_width,window_height,window_dpi,window_monitor");
+                    }
+                }
+            } else if (act == (u32)ACT_OPT_DETAILS) {
+                const InstanceInfo* inst = selected_instance();
+                launcher_core::LauncherInstanceConfig eff = m_ui->cache_config;
+                std::vector<std::string> lines;
+                u32 width = 0u;
+                u32 height = 0u;
+                u32 dpi = 0u;
+                u32 monitor = 0u;
+                bool ok_w = parse_u32_decimal(m_ui->opt_width_text, width);
+                bool ok_h = parse_u32_decimal(m_ui->opt_height_text, height);
+                bool ok_d = parse_u32_decimal(m_ui->opt_dpi_text, dpi);
+                bool ok_m = parse_u32_decimal(m_ui->opt_monitor_text, monitor);
+                if (ok_w) eff.window_width = width;
+                if (ok_h) eff.window_height = height;
+                if (ok_d) eff.window_dpi = dpi;
+                if (ok_m) eff.window_monitor = monitor;
+
+                if (inst) {
+                    launcher_core::LauncherInstancePaths p = launcher_core::launcher_instance_paths_make(m_paths.root, inst->id);
+                    lines.push_back(std::string("config_path=") + path_join(p.instance_root, "config/config.tlv"));
+                }
+                lines.push_back(std::string("gfx_backend=") + (eff.gfx_backend.empty() ? std::string("auto") : eff.gfx_backend));
+                lines.push_back(std::string("renderer_api=") + (eff.renderer_api.empty() ? std::string("auto") : eff.renderer_api));
+                lines.push_back(std::string("window_mode=") + window_mode_to_string(eff.window_mode));
+                if (!m_ui->opt_width_text.empty() && !ok_w) lines.push_back(std::string("window_width_invalid='") + m_ui->opt_width_text + "'");
+                else lines.push_back(std::string("window_width=") + (eff.window_width ? u32_to_string(eff.window_width) : std::string("auto")));
+                if (!m_ui->opt_height_text.empty() && !ok_h) lines.push_back(std::string("window_height_invalid='") + m_ui->opt_height_text + "'");
+                else lines.push_back(std::string("window_height=") + (eff.window_height ? u32_to_string(eff.window_height) : std::string("auto")));
+                if (!m_ui->opt_dpi_text.empty() && !ok_d) lines.push_back(std::string("window_dpi_invalid='") + m_ui->opt_dpi_text + "'");
+                else lines.push_back(std::string("window_dpi=") + (eff.window_dpi ? u32_to_string(eff.window_dpi) : std::string("auto")));
+                if (!m_ui->opt_monitor_text.empty() && !ok_m) lines.push_back(std::string("window_monitor_invalid='") + m_ui->opt_monitor_text + "'");
+                else lines.push_back(std::string("window_monitor=") + (eff.window_monitor ? u32_to_string(eff.window_monitor) : std::string("auto")));
+                lines.push_back(std::string("allow_network=") + u32_to_string(eff.allow_network));
+                lines.push_back(std::string("audio_device_id=") + (eff.audio_device_id.empty() ? std::string("auto") : eff.audio_device_id));
+                lines.push_back(std::string("input_backend=") + (eff.input_backend.empty() ? std::string("auto") : eff.input_backend));
+                lines.push_back(std::string("debug_flags=0x") + u64_hex16((u64)eff.debug_flags));
+
+                m_ui->confirm_action_id = 0u;
+                m_ui->confirm_instance_id.clear();
+                m_ui->dialog_visible = 1u;
+                m_ui->dialog_title = "Effective config";
+                m_ui->dialog_text = "Effective launcher config overrides.";
+                m_ui->dialog_lines = lines;
             } else if (act == (u32)ACT_DIALOG_OK) {
                 const u32 pending = m_ui->confirm_action_id;
                 const std::string pending_inst = m_ui->confirm_instance_id;
@@ -2094,6 +2166,20 @@ void DomLauncherApp::process_dui_events() {
                         t.instance_id = pending_inst;
                         m_ui->task = t;
                         m_ui->status_text = std::string("Delete instance: ") + pending_inst;
+                        m_ui->status_progress = 0u;
+                    }
+                } else if (pending == (u32)ACT_OPT_RESET) {
+                    if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
+                        m_ui->status_text = std::string("Busy: ") + (m_ui->task.op.empty() ? std::string("operation") : m_ui->task.op);
+                    } else if (!pending_inst.empty()) {
+                        DomLauncherUiState::UiTask t;
+                        t.kind = (u32)DomLauncherUiState::TASK_OPTIONS_RESET;
+                        t.step = 0u;
+                        t.total_steps = 2u;
+                        t.op = "Reset Graphics Overrides";
+                        t.instance_id = pending_inst;
+                        m_ui->task = t;
+                        m_ui->status_text = "Reset graphics overrides started.";
                         m_ui->status_progress = 0u;
                     }
                 }
@@ -2940,6 +3026,62 @@ void DomLauncherApp::process_ui_task() {
         }
         if (t.step == 4u) {
             m_ui->packs_staged.clear();
+            ui_refresh_instance_cache(*m_ui, m_paths.root, t.instance_id);
+            m_ui->status_progress = 1000u;
+            t = DomLauncherUiState::UiTask();
+            return;
+        }
+    }
+
+    if (t.kind == (u32)DomLauncherUiState::TASK_OPTIONS_RESET) {
+        if (t.step == 0u) {
+            launcher_core::LauncherInstancePaths p = launcher_core::launcher_instance_paths_make(m_paths.root, t.instance_id);
+            launcher_core::LauncherInstanceConfig cfg = launcher_core::launcher_instance_config_make_default(t.instance_id);
+            std::vector<std::string> errs;
+            bool ok;
+
+            if (!launcher_core::launcher_instance_config_load(services, p, cfg)) {
+                errs.push_back(std::string("config_load_failed;path=") + path_join(p.instance_root, "config/config.tlv"));
+                m_ui->status_text = "Reset failed.";
+                m_ui->status_progress = 1000u;
+                m_ui->dialog_visible = 1u;
+                m_ui->dialog_title = "Reset failed";
+                m_ui->dialog_text = "Could not load instance config overrides.";
+                m_ui->dialog_lines = errs;
+                t = DomLauncherUiState::UiTask();
+                return;
+            }
+
+            cfg.gfx_backend.clear();
+            cfg.renderer_api.clear();
+            cfg.window_mode = (u32)launcher_core::LAUNCHER_WINDOW_MODE_AUTO;
+            cfg.window_width = 0u;
+            cfg.window_height = 0u;
+            cfg.window_dpi = 0u;
+            cfg.window_monitor = 0u;
+
+            m_ui->status_text = "Resetting graphics overrides...";
+            m_ui->status_progress = 100u;
+
+            ok = launcher_core::launcher_instance_config_store(services, p, cfg);
+            if (!ok) {
+                errs.push_back(std::string("config_store_failed;path=") + path_join(p.instance_root, "config/config.tlv"));
+                m_ui->status_text = "Reset failed.";
+                m_ui->status_progress = 1000u;
+                m_ui->dialog_visible = 1u;
+                m_ui->dialog_title = "Reset failed";
+                m_ui->dialog_text = "Could not store config overrides.";
+                m_ui->dialog_lines = errs;
+                t = DomLauncherUiState::UiTask();
+                return;
+            }
+
+            m_ui->status_text = "Graphics overrides reset.";
+            m_ui->status_progress = 600u;
+            t.step = 1u;
+            return;
+        }
+        if (t.step == 1u) {
             ui_refresh_instance_cache(*m_ui, m_paths.root, t.instance_id);
             m_ui->status_progress = 1000u;
             t = DomLauncherUiState::UiTask();
