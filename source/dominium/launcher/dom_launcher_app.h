@@ -98,6 +98,7 @@ private:
     bool init_gui(const LauncherConfig &cfg);
     void gui_loop();
     void process_dui_events();
+    void process_ui_task();
     bool load_dui_schema(std::vector<unsigned char>& out_schema, std::string& out_loaded_path, std::string& out_error) const;
     bool build_dui_state(std::vector<unsigned char>& out_state) const;
     const dui_api_v1* select_dui_api(std::string& out_backend_name, std::string& out_err);

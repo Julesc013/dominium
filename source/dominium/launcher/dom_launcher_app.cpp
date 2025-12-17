@@ -35,6 +35,7 @@ extern "C" {
 #include "core/include/launcher_instance_ops.h"
 #include "core/include/launcher_instance_config.h"
 #include "core/include/launcher_instance_launch_history.h"
+#include "core/include/launcher_instance_tx.h"
 #include "core/include/launcher_pack_resolver.h"
 #include "core/include/launcher_pack_ops.h"
 #include "core/include/launcher_instance_artifact_ops.h"
@@ -100,6 +101,62 @@ struct DomLauncherUiState {
     std::string status_text;
     u32 status_progress; /* 0..1000 */
 
+    enum UiTaskKind {
+        TASK_NONE = 0,
+        TASK_LAUNCH = 1,
+        TASK_VERIFY_REPAIR = 2,
+        TASK_INSTANCE_CREATE = 3,
+        TASK_INSTANCE_CLONE = 4,
+        TASK_INSTANCE_DELETE = 5,
+        TASK_INSTANCE_IMPORT = 6,
+        TASK_INSTANCE_EXPORT = 7,
+        TASK_INSTANCE_MARK_KG = 8,
+        TASK_PACKS_APPLY = 9,
+        TASK_OPTIONS_RESET = 10,
+        TASK_DIAG_BUNDLE = 11
+    };
+
+    struct UiTask {
+        u32 kind;
+        u32 step;
+        u32 total_steps;
+
+        std::string op;
+        std::string instance_id;
+        std::string aux_id;
+        std::string path;
+        u32 flag_u32;
+        u32 safe_mode;
+
+        LaunchRunResult launch_result;
+
+        launcher_core::LauncherInstanceTx tx;
+        launcher_core::LauncherInstanceManifest after_manifest;
+
+        std::string error;
+        std::vector<std::string> lines;
+
+        UiTask()
+            : kind(0u),
+              step(0u),
+              total_steps(0u),
+              op(),
+              instance_id(),
+              aux_id(),
+              path(),
+              flag_u32(0u),
+              safe_mode(0u),
+              launch_result(),
+              tx(),
+              after_manifest(),
+              error(),
+              lines() {}
+    };
+
+    UiTask task;
+    u32 confirm_action_id;
+    std::string confirm_instance_id;
+
     /* Selected instance cache (refreshed on selection + after ops). */
     std::string cache_instance_id;
     u32 cache_valid;
@@ -143,6 +200,9 @@ struct DomLauncherUiState {
           dialog_lines(),
           status_text("Ready."),
           status_progress(0u),
+          task(),
+          confirm_action_id(0u),
+          confirm_instance_id(),
           cache_instance_id(),
           cache_valid(0u),
           cache_error(),
@@ -1654,6 +1714,7 @@ void DomLauncherApp::gui_loop() {
         if (!m_running) {
             break;
         }
+        process_ui_task();
 
         if (build_dui_state(state)) {
             (void)m_dui_api->set_state_tlv(m_dui_win, state.empty() ? (const void*)0 : &state[0], (u32)state.size());
@@ -1861,6 +1922,12 @@ void DomLauncherApp::process_dui_events() {
         }
 
         std::memset(&ev, 0, sizeof(ev));
+    }
+}
+
+void DomLauncherApp::process_ui_task() {
+    if (!m_ui) {
+        return;
     }
 }
 
