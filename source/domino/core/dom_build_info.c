@@ -39,3 +39,7 @@ const char* dom_git_hash(void)
     return g_dom_build_info_v1.git_hash;
 }
 
+const char* dom_toolchain_id(void)
+{
+    return DOM_TOOLCHAIN_ID;
+}
