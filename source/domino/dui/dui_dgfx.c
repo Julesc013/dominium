@@ -149,7 +149,7 @@ const void* dom_dui_dgfx_get_api(u32 requested_abi)
     return (const void*)&g_dui_dgfx_api;
 }
 
-static int dgfx_node_visible(const dui_schema_node* n)
+static int dgfx_node_visible(const dui_window* win, const dui_schema_node* n)
 {
     if (!n) {
         return 0;
@@ -157,6 +157,14 @@ static int dgfx_node_visible(const dui_schema_node* n)
     if (n->required_caps != 0u) {
         if ((dgfx_caps() & n->required_caps) != n->required_caps) {
             return 0;
+        }
+    }
+    if (n->visible_bind_id != 0u && win && win->state) {
+        u32 v = 1u;
+        if (dui_state_get_u32(win->state, win->state_len, n->visible_bind_id, &v)) {
+            if (v == 0u) {
+                return 0;
+            }
         }
     }
     return 1;
@@ -178,13 +186,13 @@ static int dgfx_is_leaf_kind(u32 kind)
     return 0;
 }
 
-static void dgfx_collect_focusables(const dui_schema_node* n, u32* out_ids, u32 cap, u32* io_count)
+static void dgfx_collect_focusables(const dui_window* win, const dui_schema_node* n, u32* out_ids, u32 cap, u32* io_count)
 {
     const dui_schema_node* child;
     if (!n || !out_ids || !io_count) {
         return;
     }
-    if (!dgfx_node_visible(n)) {
+    if (!dgfx_node_visible(win, n)) {
         return;
     }
     if (dgfx_is_leaf_kind(n->kind) && (n->flags & DUI_NODE_FLAG_FOCUSABLE)) {
@@ -195,7 +203,7 @@ static void dgfx_collect_focusables(const dui_schema_node* n, u32* out_ids, u32 
     }
     child = n->first_child;
     while (child) {
-        dgfx_collect_focusables(child, out_ids, cap, io_count);
+        dgfx_collect_focusables(win, child, out_ids, cap, io_count);
         child = child->next_sibling;
     }
 }
@@ -210,7 +218,7 @@ static u32 dgfx_next_focus_id(dui_window* win, int dir)
     }
     count = 0u;
     memset(ids, 0, sizeof(ids));
-    dgfx_collect_focusables(win->root, ids, 64u, &count);
+    dgfx_collect_focusables(win, win->root, ids, 64u, &count);
     if (count == 0u) {
         return 0u;
     }
@@ -230,13 +238,13 @@ static u32 dgfx_next_focus_id(dui_window* win, int dir)
     return ids[0];
 }
 
-static int dgfx_hit_test_leaf(const dui_schema_node* n, i32 px, i32 py, u32* out_id)
+static int dgfx_hit_test_leaf(const dui_window* win, const dui_schema_node* n, i32 px, i32 py, u32* out_id)
 {
     const dui_schema_node* child;
     if (!n || !out_id) {
         return 0;
     }
-    if (!dgfx_node_visible(n)) {
+    if (!dgfx_node_visible(win, n)) {
         return 0;
     }
     if (dgfx_is_leaf_kind(n->kind)) {
@@ -247,7 +255,7 @@ static int dgfx_hit_test_leaf(const dui_schema_node* n, i32 px, i32 py, u32* out
     }
     child = n->first_child;
     while (child) {
-        if (dgfx_hit_test_leaf(child, px, py, out_id)) {
+        if (dgfx_hit_test_leaf(win, child, px, py, out_id)) {
             return 1;
         }
         child = child->next_sibling;
@@ -452,7 +460,7 @@ static void dgfx_handle_click(dui_context* ctx, dui_window* win, i32 x, i32 y)
         return;
     }
     hit_id = 0u;
-    if (!dgfx_hit_test_leaf(win->root, x, y, &hit_id)) {
+    if (!dgfx_hit_test_leaf(win, win->root, x, y, &hit_id)) {
         return;
     }
     hit = dui_schema_find_by_id(win->root, hit_id);
@@ -737,7 +745,7 @@ static void dgfx_render_leaf(const dui_window* win, const dui_schema_node* n, d_
     if (!win || !n || !buf) {
         return;
     }
-    if (!dgfx_node_visible(n)) {
+    if (!dgfx_node_visible(win, n)) {
         return;
     }
     if (!dgfx_is_leaf_kind(n->kind)) {

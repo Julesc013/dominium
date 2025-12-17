@@ -165,6 +165,8 @@ static dui_schema_node* dui_parse_node_payload(const unsigned char* tlv, u32 tlv
             node->flags = dui_read_u32_le(payload, payload_len, 0u);
         } else if (tag == DUI_TLV_REQUIRED_CAPS_U64) {
             node->required_caps = dui_read_u64_le(payload, payload_len, 0u);
+        } else if (tag == DUI_TLV_VISIBLE_BIND_U32) {
+            node->visible_bind_id = dui_read_u32_le(payload, payload_len, 0u);
         } else if (tag == DUI_TLV_VALIDATION_V1) {
             dui_parse_validation(node, payload, payload_len);
         } else if (tag == DUI_TLV_CHILDREN_V1) {
@@ -868,4 +870,3 @@ int dui_state_get_list_item_at(const void* state_tlv,
     }
     return 0;
 }
-

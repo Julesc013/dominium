@@ -245,7 +245,7 @@ static void win32_emit_value_text(dui_context* ctx, u32 widget_id, const char* t
     (void)dui_event_queue_push(&ctx->q, &ev);
 }
 
-static int win32_node_visible(const dui_schema_node* n)
+static int win32_node_visible(const dui_window* win, const dui_schema_node* n)
 {
     if (!n) {
         return 0;
@@ -253,6 +253,14 @@ static int win32_node_visible(const dui_schema_node* n)
     if (n->required_caps != 0u) {
         if ((win32_caps() & n->required_caps) != n->required_caps) {
             return 0;
+        }
+    }
+    if (n->visible_bind_id != 0u && win && win->state) {
+        u32 v = 1u;
+        if (dui_state_get_u32(win->state, win->state_len, n->visible_bind_id, &v)) {
+            if (v == 0u) {
+                return 0;
+            }
         }
     }
     return 1;
@@ -297,7 +305,7 @@ static void win32_create_controls_for_tree(dui_window* win, HWND parent_hwnd, du
     if (!win || !n) {
         return;
     }
-    if (!win32_node_visible(n)) {
+    if (!win32_node_visible(win, n)) {
         return;
     }
 
@@ -387,19 +395,29 @@ static void win32_apply_layout_to_tree(dui_schema_node* n)
     }
 }
 
-static void win32_update_control_values(dui_window* win, dui_schema_node* n)
+static void win32_update_control_values(dui_window* win, dui_schema_node* n, int parent_visible)
 {
     dui_schema_node* child;
     char text[256];
     u32 text_len;
+    int visible;
     if (!win || !n) {
         return;
     }
-    if (!win32_node_visible(n)) {
-        return;
-    }
+    visible = parent_visible && win32_node_visible(win, n);
     if (n->native && win32_is_leaf_kind(n->kind)) {
         HWND h = (HWND)n->native;
+        ShowWindow(h, visible ? SW_SHOW : SW_HIDE);
+        EnableWindow(h, visible ? TRUE : FALSE);
+        if (!visible) {
+            /* Still recurse to ensure hidden subtrees are hidden too. */
+            child = n->first_child;
+            while (child) {
+                win32_update_control_values(win, child, visible);
+                child = child->next_sibling;
+            }
+            return;
+        }
         if (n->kind == (u32)DUI_NODE_LABEL || n->kind == (u32)DUI_NODE_BUTTON) {
             text[0] = '\0';
             text_len = 0u;
@@ -465,7 +483,7 @@ static void win32_update_control_values(dui_window* win, dui_schema_node* n)
 
     child = n->first_child;
     while (child) {
-        win32_update_control_values(win, child);
+        win32_update_control_values(win, child, visible);
         child = child->next_sibling;
     }
 }
@@ -823,7 +841,7 @@ static dui_result win32_set_state_tlv(dui_window* win, const void* state_tlv, u3
 #if defined(_WIN32)
     if (win->root) {
         win->suppress_events = 1u;
-        win32_update_control_values(win, win->root);
+        win32_update_control_values(win, win->root, 1);
         win->suppress_events = 0u;
     }
 #endif

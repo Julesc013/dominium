@@ -28,6 +28,7 @@ typedef struct dui_schema_node {
     u32 bind_id;
     u32 flags;
     u64 required_caps;
+    u32 visible_bind_id; /* optional: STATE bind id that gates visibility (0 => always visible) */
 
     u32 v_min;
     u32 v_max;
