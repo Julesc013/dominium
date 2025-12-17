@@ -8,6 +8,7 @@ RESPONSIBILITY: Implements instance manifest (lockfile) TLV persistence + determ
 #include "launcher_instance.h"
 
 #include "launcher_tlv.h"
+#include "launcher_tlv_migrations.h"
 
 namespace dom {
 namespace launcher_core {
@@ -193,7 +194,13 @@ bool launcher_instance_manifest_from_tlv_bytes(const unsigned char* data,
     u32 version = 0u;
 
     out_manifest = LauncherInstanceManifest();
-    if (!tlv_read_schema_version_or_default(data, size, version, 1u)) {
+    if (!tlv_read_schema_version_or_default(data,
+                                            size,
+                                            version,
+                                            launcher_tlv_schema_min_version(LAUNCHER_TLV_SCHEMA_INSTANCE_MANIFEST))) {
+        return false;
+    }
+    if (!launcher_tlv_schema_accepts_version(LAUNCHER_TLV_SCHEMA_INSTANCE_MANIFEST, version)) {
         return false;
     }
     if (version != LAUNCHER_INSTANCE_MANIFEST_TLV_VERSION) {

@@ -12,6 +12,7 @@ RESPONSIBILITY: Implements instance root operations with isolated roots, staging
 #include <vector>
 
 #include "launcher_audit.h"
+#include "launcher_safety.h"
 #include "launcher_tlv.h"
 
 namespace dom {
@@ -411,6 +412,9 @@ bool launcher_instance_load_manifest(const launcher_services_api_v1* services,
     if (!services || !fs || instance_id.empty()) {
         return false;
     }
+    if (!launcher_is_safe_id_component(instance_id)) {
+        return false;
+    }
     if (!state_root_override.empty()) {
         state_root = state_root_override;
     } else if (!get_state_root(fs, state_root)) {
@@ -446,6 +450,10 @@ bool launcher_instance_create_instance(const launcher_services_api_v1* services,
     }
     if (m.instance_id.empty()) {
         audit_instance_op(audit, "create_instance", m.instance_id, "fail", "empty_instance_id", 0ull, 0ull, "");
+        return false;
+    }
+    if (!launcher_is_safe_id_component(m.instance_id)) {
+        audit_instance_op(audit, "create_instance", m.instance_id, "fail", "unsafe_instance_id", 0ull, 0ull, "");
         return false;
     }
 
@@ -523,6 +531,10 @@ bool launcher_instance_delete_instance(const launcher_services_api_v1* services,
     }
     if (instance_id.empty()) {
         audit_instance_op(audit, "delete_instance", instance_id, "fail", "empty_instance_id", 0ull, 0ull, "");
+        return false;
+    }
+    if (!launcher_is_safe_id_component(instance_id)) {
+        audit_instance_op(audit, "delete_instance", instance_id, "fail", "unsafe_instance_id", 0ull, 0ull, "");
         return false;
     }
 
@@ -782,6 +794,11 @@ bool launcher_instance_clone_instance(const launcher_services_api_v1* services,
                           std::string("source_instance_id=") + source_instance_id);
         return false;
     }
+    if (!launcher_is_safe_id_component(source_instance_id) || !launcher_is_safe_id_component(new_instance_id)) {
+        audit_instance_op(audit, "clone_instance", new_instance_id, "fail", "unsafe_instance_id", 0ull, 0ull,
+                          std::string("source_instance_id=") + source_instance_id);
+        return false;
+    }
     if (!state_root_override.empty()) {
         state_root = state_root_override;
     } else if (!get_state_root(fs, state_root)) {
@@ -811,6 +828,11 @@ bool launcher_instance_template_instance(const launcher_services_api_v1* service
     }
     if (source_instance_id.empty() || new_instance_id.empty()) {
         audit_instance_op(audit, "template_instance", new_instance_id, "fail", "empty_instance_id", 0ull, 0ull,
+                          std::string("source_instance_id=") + source_instance_id);
+        return false;
+    }
+    if (!launcher_is_safe_id_component(source_instance_id) || !launcher_is_safe_id_component(new_instance_id)) {
+        audit_instance_op(audit, "template_instance", new_instance_id, "fail", "unsafe_instance_id", 0ull, 0ull,
                           std::string("source_instance_id=") + source_instance_id);
         return false;
     }
@@ -907,6 +929,10 @@ bool launcher_instance_mark_known_good(const launcher_services_api_v1* services,
         audit_instance_op(audit, "mark_known_good", instance_id, "fail", "empty_instance_id", 0ull, 0ull, "");
         return false;
     }
+    if (!launcher_is_safe_id_component(instance_id)) {
+        audit_instance_op(audit, "mark_known_good", instance_id, "fail", "unsafe_instance_id", 0ull, 0ull, "");
+        return false;
+    }
     if (!state_root_override.empty()) {
         state_root = state_root_override;
     } else if (!get_state_root(fs, state_root)) {
@@ -931,6 +957,10 @@ bool launcher_instance_mark_broken(const launcher_services_api_v1* services,
     }
     if (instance_id.empty()) {
         audit_instance_op(audit, "mark_broken", instance_id, "fail", "empty_instance_id", 0ull, 0ull, "");
+        return false;
+    }
+    if (!launcher_is_safe_id_component(instance_id)) {
+        audit_instance_op(audit, "mark_broken", instance_id, "fail", "unsafe_instance_id", 0ull, 0ull, "");
         return false;
     }
     if (!state_root_override.empty()) {
@@ -964,6 +994,11 @@ bool launcher_instance_export_instance(const launcher_services_api_v1* services,
     }
     if (instance_id.empty() || export_root.empty()) {
         audit_instance_op(audit, "export_instance", instance_id, "fail", "bad_args", 0ull, 0ull,
+                          std::string("export_root=") + export_root);
+        return false;
+    }
+    if (!launcher_is_safe_id_component(instance_id)) {
+        audit_instance_op(audit, "export_instance", instance_id, "fail", "unsafe_instance_id", 0ull, 0ull,
                           std::string("export_root=") + export_root);
         return false;
     }
@@ -1124,6 +1159,11 @@ bool launcher_instance_import_instance(const launcher_services_api_v1* services,
         char hex[17];
         u64_to_hex16(time->now_us(), hex);
         chosen_id = std::string("inst_") + std::string(hex);
+    }
+    if (!launcher_is_safe_id_component(chosen_id)) {
+        audit_instance_op(audit, "import_instance", chosen_id, "fail", "unsafe_instance_id", 0ull, 0ull,
+                          std::string("import_root=") + import_root);
+        return false;
     }
 
     in_manifest_path = path_join(import_root, "manifest.tlv");

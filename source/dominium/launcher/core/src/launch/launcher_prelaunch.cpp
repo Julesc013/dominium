@@ -15,6 +15,7 @@ RESPONSIBILITY: Implements deterministic pre-launch config resolution, safe mode
 #include "launcher_instance_known_good.h"
 #include "launcher_instance_ops.h"
 #include "launcher_pack_resolver.h"
+#include "launcher_safety.h"
 #include "launcher_tlv.h"
 
 namespace dom {
@@ -546,6 +547,11 @@ bool launcher_prelaunch_build_plan(const launcher_services_api_v1* services,
     }
     if (instance_id.empty()) {
         if (out_error) *out_error = "empty_instance_id";
+        return false;
+    }
+    if (!launcher_is_safe_id_component(instance_id)) {
+        if (out_error) *out_error = "unsafe_instance_id";
+        audit_reason(audit, std::string("prelaunch;result=fail;code=unsafe_instance_id;instance_id=") + instance_id);
         return false;
     }
     if (state_root.empty()) {

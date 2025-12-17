@@ -10,6 +10,7 @@ RESPONSIBILITY: Implements launch attempt history TLV encode/decode + filesystem
 #include <cstdio>
 
 #include "launcher_tlv.h"
+#include "launcher_tlv_migrations.h"
 
 namespace dom {
 namespace launcher_core {
@@ -319,10 +320,16 @@ bool launcher_instance_launch_history_from_tlv_bytes(const unsigned char* data,
     if (!data || size == 0u) {
         return false;
     }
-    if (!tlv_read_schema_version_or_default(data, size, version, 1u)) {
+    if (!tlv_read_schema_version_or_default(data,
+                                            size,
+                                            version,
+                                            launcher_tlv_schema_min_version(LAUNCHER_TLV_SCHEMA_INSTANCE_LAUNCH_HISTORY))) {
         return false;
     }
-    h.schema_version = version;
+    if (!launcher_tlv_schema_accepts_version(LAUNCHER_TLV_SCHEMA_INSTANCE_LAUNCH_HISTORY, version)) {
+        return false;
+    }
+    h.schema_version = launcher_tlv_schema_current_version(LAUNCHER_TLV_SCHEMA_INSTANCE_LAUNCH_HISTORY);
 
     while (r.next(rec)) {
         if (rec.tag == LAUNCHER_TLV_TAG_SCHEMA_VERSION) {

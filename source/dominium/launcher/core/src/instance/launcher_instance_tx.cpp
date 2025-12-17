@@ -14,6 +14,8 @@ RESPONSIBILITY: Implements transactional instance mutation engine with staging-o
 #include "launcher_artifact_store.h"
 #include "launcher_audit.h"
 #include "launcher_tlv.h"
+#include "launcher_tlv_migrations.h"
+#include "launcher_safety.h"
 
 namespace dom {
 namespace launcher_core {
@@ -294,10 +296,16 @@ static bool tx_state_from_tlv_bytes(const unsigned char* data, size_t size, Laun
     if (!data || size == 0u) {
         return false;
     }
-    if (!tlv_read_schema_version_or_default(data, size, version, 1u)) {
+    if (!tlv_read_schema_version_or_default(data,
+                                            size,
+                                            version,
+                                            launcher_tlv_schema_min_version(LAUNCHER_TLV_SCHEMA_INSTANCE_TX))) {
         return false;
     }
-    tx.schema_version = version;
+    if (!launcher_tlv_schema_accepts_version(LAUNCHER_TLV_SCHEMA_INSTANCE_TX, version)) {
+        return false;
+    }
+    tx.schema_version = launcher_tlv_schema_current_version(LAUNCHER_TLV_SCHEMA_INSTANCE_TX);
     while (r.next(rec)) {
         if (rec.tag == LAUNCHER_TLV_TAG_SCHEMA_VERSION) {
             continue;
@@ -432,6 +440,11 @@ bool launcher_instance_tx_recover_staging(const launcher_services_api_v1* servic
         return false;
     }
     if (instance_id.empty()) {
+        audit_reason(audit, "instance_tx_recover;result=fail;code=empty_instance_id");
+        return false;
+    }
+    if (!launcher_is_safe_id_component(instance_id)) {
+        audit_reason(audit, std::string("instance_tx_recover;result=fail;code=unsafe_instance_id;instance_id=") + instance_id);
         return false;
     }
     if (!state_root_override.empty()) {
@@ -489,6 +502,10 @@ bool launcher_instance_tx_prepare(const launcher_services_api_v1* services,
         audit_reason(audit, "instance_tx;result=fail;code=empty_instance_id");
         return false;
     }
+    if (!launcher_is_safe_id_component(instance_id)) {
+        audit_reason(audit, std::string("instance_tx;result=fail;code=unsafe_instance_id;instance_id=") + instance_id);
+        return false;
+    }
     if (!state_root_override.empty()) {
         state_root = state_root_override;
     } else if (!get_state_root(fs, state_root)) {
@@ -544,6 +561,11 @@ bool launcher_instance_tx_stage(const launcher_services_api_v1* services,
         return false;
     }
     if (tx.instance_id.empty() || tx.state_root.empty()) {
+        audit_reason(audit, "instance_tx;result=fail;code=missing_ids;phase=stage");
+        return false;
+    }
+    if (!launcher_is_safe_id_component(tx.instance_id)) {
+        audit_reason(audit, std::string("instance_tx;result=fail;code=unsafe_instance_id;phase=stage;instance_id=") + tx.instance_id);
         return false;
     }
 
@@ -595,6 +617,14 @@ bool launcher_instance_tx_verify(const launcher_services_api_v1* services,
     }
     if (tx.phase != (u32)LAUNCHER_INSTANCE_TX_PHASE_STAGE) {
         audit_reason(audit, std::string("instance_tx;result=fail;code=bad_phase;phase=verify;instance_id=") + tx.instance_id);
+        return false;
+    }
+    if (tx.instance_id.empty() || tx.state_root.empty()) {
+        audit_reason(audit, "instance_tx;result=fail;code=missing_ids;phase=verify");
+        return false;
+    }
+    if (!launcher_is_safe_id_component(tx.instance_id)) {
+        audit_reason(audit, std::string("instance_tx;result=fail;code=unsafe_instance_id;phase=verify;instance_id=") + tx.instance_id);
         return false;
     }
 
@@ -653,6 +683,14 @@ bool launcher_instance_tx_commit(const launcher_services_api_v1* services,
     }
     if (tx.phase != (u32)LAUNCHER_INSTANCE_TX_PHASE_VERIFY) {
         audit_reason(audit, std::string("instance_tx;result=fail;code=bad_phase;phase=commit;instance_id=") + tx.instance_id);
+        return false;
+    }
+    if (tx.instance_id.empty() || tx.state_root.empty()) {
+        audit_reason(audit, "instance_tx;result=fail;code=missing_ids;phase=commit");
+        return false;
+    }
+    if (!launcher_is_safe_id_component(tx.instance_id)) {
+        audit_reason(audit, std::string("instance_tx;result=fail;code=unsafe_instance_id;phase=commit;instance_id=") + tx.instance_id);
         return false;
     }
 
@@ -788,9 +826,15 @@ bool launcher_instance_tx_rollback(const launcher_services_api_v1* services,
     LauncherInstancePaths paths;
 
     if (!services || !fs) {
+        audit_reason(audit, "instance_tx;result=fail;code=missing_services;phase=rollback");
         return false;
     }
     if (tx.instance_id.empty() || tx.state_root.empty()) {
+        audit_reason(audit, "instance_tx;result=fail;code=missing_ids;phase=rollback");
+        return false;
+    }
+    if (!launcher_is_safe_id_component(tx.instance_id)) {
+        audit_reason(audit, std::string("instance_tx;result=fail;code=unsafe_instance_id;phase=rollback;instance_id=") + tx.instance_id);
         return false;
     }
 

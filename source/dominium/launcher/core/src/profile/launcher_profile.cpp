@@ -8,6 +8,7 @@ RESPONSIBILITY: Implements launcher profile model + TLV persistence.
 #include "launcher_profile.h"
 
 #include "launcher_tlv.h"
+#include "launcher_tlv_migrations.h"
 
 namespace dom {
 namespace launcher_core {
@@ -71,13 +72,13 @@ bool launcher_profile_from_tlv_bytes(const unsigned char* data,
     u32 version = 0u;
 
     out_profile = LauncherProfile();
-    if (!tlv_read_schema_version_or_default(data, size, version, LAUNCHER_PROFILE_TLV_VERSION)) {
+    if (!tlv_read_schema_version_or_default(data, size, version, launcher_tlv_schema_min_version(LAUNCHER_TLV_SCHEMA_PROFILE))) {
         return false;
     }
-    out_profile.schema_version = version;
-    if (version != LAUNCHER_PROFILE_TLV_VERSION) {
-        return launcher_profile_migrate_tlv(version, LAUNCHER_PROFILE_TLV_VERSION, data, size, out_profile);
+    if (!launcher_tlv_schema_accepts_version(LAUNCHER_TLV_SCHEMA_PROFILE, version)) {
+        return false;
     }
+    out_profile.schema_version = launcher_tlv_schema_current_version(LAUNCHER_TLV_SCHEMA_PROFILE);
 
     while (r.next(rec)) {
         switch (rec.tag) {

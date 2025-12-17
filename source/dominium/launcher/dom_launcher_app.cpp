@@ -15,6 +15,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 
 #include <cstdio>
 #include <cstring>
+#include <cctype>
 
 #include "dom_paths.h"
 #include "dom_launcher_catalog.h"
@@ -25,6 +26,78 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "domino/system/dsys.h"
 
 namespace dom {
+
+namespace {
+
+static bool ends_with_ci(const char* s, const char* suffix) {
+    size_t ls, lx, i;
+    if (!s || !suffix) {
+        return false;
+    }
+    ls = std::strlen(s);
+    lx = std::strlen(suffix);
+    if (lx == 0u || ls < lx) {
+        return false;
+    }
+    s += (ls - lx);
+    for (i = 0u; i < lx; ++i) {
+        int a = (unsigned char)s[i];
+        int b = (unsigned char)suffix[i];
+        a = std::tolower(a);
+        b = std::tolower(b);
+        if (a != b) {
+            return false;
+        }
+    }
+    return true;
+}
+
+static bool is_product_entry_file(const char* filename) {
+    if (!filename || !filename[0]) {
+        return false;
+    }
+#if defined(_WIN32) || defined(_WIN64)
+    return ends_with_ci(filename, ".exe");
+#else
+    if (filename[0] == '.') {
+        return false;
+    }
+    if (ends_with_ci(filename, ".so") || std::strstr(filename, ".so.") != 0) {
+        return false;
+    }
+    if (ends_with_ci(filename, ".dylib")) {
+        return false;
+    }
+    if (ends_with_ci(filename, ".a")) {
+        return false;
+    }
+    if (ends_with_ci(filename, ".txt") || ends_with_ci(filename, ".md")) {
+        return false;
+    }
+    return true;
+#endif
+}
+
+static void sort_products_deterministic(std::vector<ProductEntry>& products) {
+    size_t i, j;
+    for (i = 1u; i < products.size(); ++i) {
+        ProductEntry key = products[i];
+        j = i;
+        while (j > 0u) {
+            const ProductEntry& prev = products[j - 1u];
+            bool move = false;
+            if (prev.product > key.product) move = true;
+            else if (prev.product == key.product && prev.version > key.version) move = true;
+            else if (prev.product == key.product && prev.version == key.version && prev.path > key.path) move = true;
+            if (!move) break;
+            products[j] = products[j - 1u];
+            --j;
+        }
+        products[j] = key;
+    }
+}
+
+} // namespace
 
 DomLauncherApp::DomLauncherApp()
     : m_mode(LAUNCHER_MODE_CLI),
@@ -430,6 +503,9 @@ bool DomLauncherApp::scan_products() {
                 if (bin_entry.is_dir) {
                     continue;
                 }
+                if (!is_product_entry_file(bin_entry.name)) {
+                    continue;
+                }
                 ProductEntry p;
                 p.product = product_id;
                 p.version = version;
@@ -463,6 +539,9 @@ bool DomLauncherApp::scan_products() {
             p.path = rel;
             m_products.push_back(p);
         }
+    }
+    if (!m_products.empty()) {
+        sort_products_deterministic(m_products);
     }
     return true;
 }

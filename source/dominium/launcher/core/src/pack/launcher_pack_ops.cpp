@@ -17,6 +17,7 @@ RESPONSIBILITY: Implements atomic, instance-scoped pack operations via the trans
 #include "launcher_instance_tx.h"
 #include "launcher_pack_manifest.h"
 #include "launcher_pack_resolver.h"
+#include "launcher_safety.h"
 
 namespace dom {
 namespace launcher_core {
@@ -997,6 +998,16 @@ bool launcher_pack_prelaunch_validate_instance(const launcher_services_api_v1* s
     }
     if (!fs) {
         if (out_error) *out_error = "missing_fs";
+        return false;
+    }
+    if (instance_id.empty()) {
+        if (out_error) *out_error = "empty_instance_id";
+        audit_reason(audit, "pack_prelaunch;result=fail;code=empty_instance_id");
+        return false;
+    }
+    if (!launcher_is_safe_id_component(instance_id)) {
+        if (out_error) *out_error = "unsafe_instance_id";
+        audit_reason(audit, std::string("pack_prelaunch;result=fail;code=unsafe_instance_id;instance_id=") + instance_id);
         return false;
     }
     if (state_root.empty()) {

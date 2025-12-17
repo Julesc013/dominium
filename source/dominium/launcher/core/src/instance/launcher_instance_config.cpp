@@ -10,6 +10,7 @@ RESPONSIBILITY: Implements instance config TLV encode/decode (skip-unknown; dete
 #include <cstdio>
 
 #include "launcher_tlv.h"
+#include "launcher_tlv_migrations.h"
 
 namespace dom {
 namespace launcher_core {
@@ -293,10 +294,16 @@ bool launcher_instance_config_from_tlv_bytes(const unsigned char* data,
     if (!data || size == 0u) {
         return false;
     }
-    if (!tlv_read_schema_version_or_default(data, size, version, 1u)) {
+    if (!tlv_read_schema_version_or_default(data,
+                                            size,
+                                            version,
+                                            launcher_tlv_schema_min_version(LAUNCHER_TLV_SCHEMA_INSTANCE_CONFIG))) {
         return false;
     }
-    cfg.schema_version = version;
+    if (!launcher_tlv_schema_accepts_version(LAUNCHER_TLV_SCHEMA_INSTANCE_CONFIG, version)) {
+        return false;
+    }
+    cfg.schema_version = launcher_tlv_schema_current_version(LAUNCHER_TLV_SCHEMA_INSTANCE_CONFIG);
 
     while (r.next(rec)) {
         if (rec.tag == LAUNCHER_TLV_TAG_SCHEMA_VERSION) {
