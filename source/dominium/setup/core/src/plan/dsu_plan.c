@@ -328,7 +328,10 @@ static int dsu__path_is_abs(const char *p) {
     if (!p) return 0;
     if ((p[0] == '/' && p[1] == '/') || (p[0] == '\\' && p[1] == '\\')) return 1;
     if (p[0] == '/' || p[0] == '\\') return 1;
-    if (dsu__is_alpha(p[0]) && p[1] == ':' && (p[2] == '/' || p[2] == '\\')) return 1;
+    if (((p[0] >= 'A' && p[0] <= 'Z') || (p[0] >= 'a' && p[0] <= 'z')) &&
+        p[1] == ':' &&
+        (p[2] == '/' || p[2] == '\\'))
+        return 1;
     return 0;
 }
 
@@ -1039,6 +1042,20 @@ dsu_u64 dsu_plan_id_hash64(const dsu_plan_t *plan) {
         return (dsu_u64)0u;
     }
     return plan->id_hash64;
+}
+
+dsu_resolve_operation_t dsu_plan_operation(const dsu_plan_t *plan) {
+    if (!plan) {
+        return DSU_RESOLVE_OPERATION_INSTALL;
+    }
+    return (dsu_resolve_operation_t)plan->operation;
+}
+
+dsu_manifest_install_scope_t dsu_plan_scope(const dsu_plan_t *plan) {
+    if (!plan) {
+        return DSU_MANIFEST_INSTALL_SCOPE_PORTABLE;
+    }
+    return (dsu_manifest_install_scope_t)plan->scope;
 }
 
 const char *dsu_plan_product_id(const dsu_plan_t *plan) {

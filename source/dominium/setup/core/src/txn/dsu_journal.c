@@ -161,6 +161,20 @@ dsu_status_t dsu_journal_writer_open(dsu_journal_writer_t *w,
     return DSU_STATUS_SUCCESS;
 }
 
+dsu_status_t dsu_journal_writer_open_append(dsu_journal_writer_t *w, const char *path) {
+    FILE *f;
+    if (!w || !path || path[0] == '\0') {
+        return DSU_STATUS_INVALID_ARGS;
+    }
+    memset(w, 0, sizeof(*w));
+    f = fopen(path, "ab");
+    if (!f) {
+        return DSU_STATUS_IO_ERROR;
+    }
+    w->f = f;
+    return DSU_STATUS_SUCCESS;
+}
+
 static dsu_status_t dsu__journal_append_noop_payload(dsu_journal_writer_t *w, const dsu_blob_t *payload) {
     if (!w || !w->f || !payload) {
         return DSU_STATUS_INVALID_ARGS;

@@ -77,6 +77,7 @@ dsu_status_t dsu_journal_writer_open(dsu_journal_writer_t *w,
                                     const char *path,
                                     dsu_u64 journal_id,
                                     dsu_u64 plan_digest);
+dsu_status_t dsu_journal_writer_open_append(dsu_journal_writer_t *w, const char *path);
 dsu_status_t dsu_journal_writer_write_meta(dsu_journal_writer_t *w,
                                           const char *install_root_abs,
                                           const char *txn_root_abs,
