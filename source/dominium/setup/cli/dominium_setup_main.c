@@ -98,9 +98,11 @@ static void dsu_cli_print_usage(FILE *out) {
     fprintf(out,
             "Usage:\n"
             "  %s version [--json]\n"
+            "  %s manifest-validate --in <file> [--deterministic] [--json]\n"
+            "  %s manifest-dump --in <file> --out <json> [--deterministic] [--json]\n"
             "  %s plan --manifest <path> --out <planfile> --log <logfile> [--deterministic] [--json]\n"
             "  %s dry-run --plan <planfile> --log <logfile> [--deterministic] [--json]\n",
-            DSU_CLI_NAME, DSU_CLI_NAME, DSU_CLI_NAME);
+            DSU_CLI_NAME, DSU_CLI_NAME, DSU_CLI_NAME, DSU_CLI_NAME, DSU_CLI_NAME);
 }
 
 static dsu_status_t dsu_cli_ctx_create(const dsu_cli_opts_t *opts, dsu_ctx_t **out_ctx) {
@@ -186,11 +188,24 @@ static int dsu_cli_cmd_plan(const char *manifest_path,
         fputs("\"plan_file\":", stdout); dsu_cli_json_put_escaped(stdout, out_plan_path); fputc(',', stdout);
         fputs("\"log_file\":", stdout); dsu_cli_json_put_escaped(stdout, out_log_path); fputc(',', stdout);
         fprintf(stdout, "\"plan_id_hash32\":%lu,", (unsigned long)dsu_plan_id_hash32(plan));
+        fputs("\"plan_id_hash64\":", stdout);
+        {
+            dsu_u64 id64 = dsu_plan_id_hash64(plan);
+            unsigned long hi = (unsigned long)((id64 >> 32) & 0xFFFFFFFFu);
+            unsigned long lo = (unsigned long)(id64 & 0xFFFFFFFFu);
+            fprintf(stdout, "\"0x%08lx%08lx\",", hi, lo);
+        }
         fprintf(stdout, "\"component_count\":%lu,", (unsigned long)dsu_plan_component_count(plan));
         fprintf(stdout, "\"step_count\":%lu", (unsigned long)dsu_plan_step_count(plan));
         fputs("}\n", stdout);
     } else {
         fprintf(stdout, "plan_id_hash32=%lu\n", (unsigned long)dsu_plan_id_hash32(plan));
+        {
+            dsu_u64 id64 = dsu_plan_id_hash64(plan);
+            unsigned long hi = (unsigned long)((id64 >> 32) & 0xFFFFFFFFu);
+            unsigned long lo = (unsigned long)(id64 & 0xFFFFFFFFu);
+            fprintf(stdout, "plan_id_hash64=0x%08lx%08lx\n", hi, lo);
+        }
         fprintf(stdout, "components=%lu\n", (unsigned long)dsu_plan_component_count(plan));
         fprintf(stdout, "steps=%lu\n", (unsigned long)dsu_plan_step_count(plan));
         fprintf(stdout, "plan_file=%s\n", out_plan_path);
@@ -255,10 +270,23 @@ static int dsu_cli_cmd_dry_run(const char *plan_path,
         fputs("\"plan_file\":", stdout); dsu_cli_json_put_escaped(stdout, plan_path); fputc(',', stdout);
         fputs("\"log_file\":", stdout); dsu_cli_json_put_escaped(stdout, out_log_path); fputc(',', stdout);
         fprintf(stdout, "\"plan_id_hash32\":%lu,", (unsigned long)dsu_plan_id_hash32(plan));
+        fputs("\"plan_id_hash64\":", stdout);
+        {
+            dsu_u64 id64 = dsu_plan_id_hash64(plan);
+            unsigned long hi = (unsigned long)((id64 >> 32) & 0xFFFFFFFFu);
+            unsigned long lo = (unsigned long)(id64 & 0xFFFFFFFFu);
+            fprintf(stdout, "\"0x%08lx%08lx\",", hi, lo);
+        }
         fprintf(stdout, "\"step_count\":%lu", (unsigned long)dsu_plan_step_count(plan));
         fputs("}\n", stdout);
     } else {
         fprintf(stdout, "plan_id_hash32=%lu\n", (unsigned long)dsu_plan_id_hash32(plan));
+        {
+            dsu_u64 id64 = dsu_plan_id_hash64(plan);
+            unsigned long hi = (unsigned long)((id64 >> 32) & 0xFFFFFFFFu);
+            unsigned long lo = (unsigned long)(id64 & 0xFFFFFFFFu);
+            fprintf(stdout, "plan_id_hash64=0x%08lx%08lx\n", hi, lo);
+        }
         fprintf(stdout, "steps=%lu\n", (unsigned long)dsu_plan_step_count(plan));
         fprintf(stdout, "log_file=%s\n", out_log_path);
     }
@@ -279,6 +307,100 @@ done:
             fprintf(stderr, "error: %s\n", dsu_cli_status_name(st));
         }
     }
+    return dsu_cli_exit_code(st);
+}
+
+static int dsu_cli_cmd_manifest_validate(const char *in_path, const dsu_cli_opts_t *opts) {
+    dsu_ctx_t *ctx = NULL;
+    dsu_manifest_t *manifest = NULL;
+    dsu_status_t st;
+
+    st = dsu_cli_ctx_create(opts, &ctx);
+    if (st != DSU_STATUS_SUCCESS) {
+        goto done;
+    }
+
+    st = dsu_ctx_reset_audit_log(ctx);
+    if (st != DSU_STATUS_SUCCESS) {
+        goto done;
+    }
+
+    st = dsu_manifest_load_file(ctx, in_path, &manifest);
+    if (st == DSU_STATUS_SUCCESS) {
+        st = dsu_manifest_validate(manifest);
+    }
+
+done:
+    if (opts && opts->json) {
+        fputc('{', stdout);
+        fputs("\"command\":", stdout); dsu_cli_json_put_escaped(stdout, "manifest-validate"); fputc(',', stdout);
+        fputs("\"status\":", stdout); dsu_cli_json_put_escaped(stdout, (st == DSU_STATUS_SUCCESS) ? "ok" : "error"); fputc(',', stdout);
+        if (st == DSU_STATUS_SUCCESS) {
+            fprintf(stdout, "\"content_digest32\":%lu,", (unsigned long)dsu_manifest_content_digest32(manifest));
+            fputs("\"content_digest64\":", stdout);
+            {
+                dsu_u64 d64 = dsu_manifest_content_digest64(manifest);
+                unsigned long hi = (unsigned long)((d64 >> 32) & 0xFFFFFFFFu);
+                unsigned long lo = (unsigned long)(d64 & 0xFFFFFFFFu);
+                fprintf(stdout, "\"0x%08lx%08lx\",", hi, lo);
+            }
+        }
+        fputs("\"error\":", stdout); dsu_cli_json_put_escaped(stdout, (st == DSU_STATUS_SUCCESS) ? "" : dsu_cli_status_name(st)); fputc(',', stdout);
+        fprintf(stdout, "\"exit_code\":%d", dsu_cli_exit_code(st));
+        fputs("}\n", stdout);
+    } else {
+        if (st == DSU_STATUS_SUCCESS) {
+            fputs("ok\n", stdout);
+        } else {
+            fprintf(stderr, "error: %s\n", dsu_cli_status_name(st));
+        }
+    }
+
+    if (manifest) dsu_manifest_destroy(ctx, manifest);
+    if (ctx) dsu_ctx_destroy(ctx);
+    return dsu_cli_exit_code(st);
+}
+
+static int dsu_cli_cmd_manifest_dump(const char *in_path, const char *out_path, const dsu_cli_opts_t *opts) {
+    dsu_ctx_t *ctx = NULL;
+    dsu_manifest_t *manifest = NULL;
+    dsu_status_t st;
+
+    st = dsu_cli_ctx_create(opts, &ctx);
+    if (st != DSU_STATUS_SUCCESS) {
+        goto done;
+    }
+
+    st = dsu_ctx_reset_audit_log(ctx);
+    if (st != DSU_STATUS_SUCCESS) {
+        goto done;
+    }
+
+    st = dsu_manifest_load_file(ctx, in_path, &manifest);
+    if (st != DSU_STATUS_SUCCESS) {
+        goto done;
+    }
+
+    st = dsu_manifest_write_json_file(ctx, manifest, out_path);
+
+done:
+    if (opts && opts->json) {
+        fputc('{', stdout);
+        fputs("\"command\":", stdout); dsu_cli_json_put_escaped(stdout, "manifest-dump"); fputc(',', stdout);
+        fputs("\"status\":", stdout); dsu_cli_json_put_escaped(stdout, (st == DSU_STATUS_SUCCESS) ? "ok" : "error"); fputc(',', stdout);
+        fputs("\"error\":", stdout); dsu_cli_json_put_escaped(stdout, (st == DSU_STATUS_SUCCESS) ? "" : dsu_cli_status_name(st)); fputc(',', stdout);
+        fprintf(stdout, "\"exit_code\":%d", dsu_cli_exit_code(st));
+        fputs("}\n", stdout);
+    } else {
+        if (st == DSU_STATUS_SUCCESS) {
+            fprintf(stdout, "wrote %s\n", out_path ? out_path : "");
+        } else {
+            fprintf(stderr, "error: %s\n", dsu_cli_status_name(st));
+        }
+    }
+
+    if (manifest) dsu_manifest_destroy(ctx, manifest);
+    if (ctx) dsu_ctx_destroy(ctx);
     return dsu_cli_exit_code(st);
 }
 
@@ -312,6 +434,74 @@ int main(int argc, char **argv) {
 
     if (dsu_cli_streq(cmd, "version")) {
         return dsu_cli_cmd_version(argc - 1, argv + 1, &opts);
+    }
+
+    if (dsu_cli_streq(cmd, "manifest-validate")) {
+        const char *in_path = NULL;
+        for (i = 2; i < argc; ++i) {
+            const char *arg = argv[i];
+            const char *v;
+            if (!arg) continue;
+            v = dsu_cli_kv_value_inline(arg, "--in");
+            if (v) {
+                in_path = v;
+                continue;
+            }
+            if (dsu_cli_streq(arg, "--in") && i + 1 < argc) {
+                in_path = argv[++i];
+            }
+        }
+        if (!in_path) {
+            if (opts.json) {
+                fputc('{', stdout);
+                fputs("\"command\":", stdout); dsu_cli_json_put_escaped(stdout, "manifest-validate"); fputc(',', stdout);
+                fputs("\"status\":", stdout); dsu_cli_json_put_escaped(stdout, "error"); fputc(',', stdout);
+                fputs("\"error\":", stdout); dsu_cli_json_put_escaped(stdout, "invalid_args");
+                fputs("}\n", stdout);
+            } else {
+                dsu_cli_print_usage(stderr);
+            }
+            return 2;
+        }
+        return dsu_cli_cmd_manifest_validate(in_path, &opts);
+    }
+
+    if (dsu_cli_streq(cmd, "manifest-dump")) {
+        const char *in_path = NULL;
+        const char *out_path = NULL;
+        for (i = 2; i < argc; ++i) {
+            const char *arg = argv[i];
+            const char *v;
+            if (!arg) continue;
+            v = dsu_cli_kv_value_inline(arg, "--in");
+            if (v) {
+                in_path = v;
+                continue;
+            }
+            v = dsu_cli_kv_value_inline(arg, "--out");
+            if (v) {
+                out_path = v;
+                continue;
+            }
+            if (dsu_cli_streq(arg, "--in") && i + 1 < argc) {
+                in_path = argv[++i];
+            } else if (dsu_cli_streq(arg, "--out") && i + 1 < argc) {
+                out_path = argv[++i];
+            }
+        }
+        if (!in_path || !out_path) {
+            if (opts.json) {
+                fputc('{', stdout);
+                fputs("\"command\":", stdout); dsu_cli_json_put_escaped(stdout, "manifest-dump"); fputc(',', stdout);
+                fputs("\"status\":", stdout); dsu_cli_json_put_escaped(stdout, "error"); fputc(',', stdout);
+                fputs("\"error\":", stdout); dsu_cli_json_put_escaped(stdout, "invalid_args");
+                fputs("}\n", stdout);
+            } else {
+                dsu_cli_print_usage(stderr);
+            }
+            return 2;
+        }
+        return dsu_cli_cmd_manifest_dump(in_path, out_path, &opts);
     }
 
     if (dsu_cli_streq(cmd, "plan")) {
