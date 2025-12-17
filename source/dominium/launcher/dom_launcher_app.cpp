@@ -715,6 +715,42 @@ static bool parse_u32_decimal(const std::string& s, u32& out_v) {
     return true;
 }
 
+static bool instance_id_exists(const std::vector<InstanceInfo>& instances, const std::string& id) {
+    size_t i;
+    for (i = 0u; i < instances.size(); ++i) {
+        if (instances[i].id == id) {
+            return true;
+        }
+    }
+    return false;
+}
+
+static std::string make_unique_instance_id(const std::vector<InstanceInfo>& instances,
+                                           const std::string& base,
+                                           const std::string& suffix) {
+    u32 n;
+    std::string b = base.empty() ? std::string("instance") : base;
+    std::string s = suffix.empty() ? std::string("new") : suffix;
+    if (b.size() > 48u) {
+        b.erase(48u);
+    }
+    if (s.size() > 16u) {
+        s.erase(16u);
+    }
+    for (n = 1u; n < 10000u; ++n) {
+        char buf[32];
+        std::snprintf(buf, sizeof(buf), "%u", (unsigned)n);
+        std::string cand = b + "_" + s + std::string(buf);
+        if (!launcher_core::launcher_is_safe_id_component(cand)) {
+            continue;
+        }
+        if (!instance_id_exists(instances, cand)) {
+            return cand;
+        }
+    }
+    return b + "_" + s + "x";
+}
+
 static bool resolve_tool_executable_path(const std::string& state_root,
                                         const std::string& argv0,
                                         const launcher_core::LauncherToolEntry& te,
@@ -1895,7 +1931,150 @@ void DomLauncherApp::process_dui_events() {
                         m_ui->status_progress = 0u;
                     }
                 }
-            } else if (act == (u32)ACT_DIALOG_OK || act == (u32)ACT_DIALOG_CANCEL) {
+            } else if (act == (u32)ACT_INST_CREATE) {
+                if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
+                    m_ui->status_text = std::string("Busy: ") + (m_ui->task.op.empty() ? std::string("operation") : m_ui->task.op);
+                } else {
+                    const InstanceInfo* inst = selected_instance();
+                    const std::string base = inst ? inst->id : std::string("instance");
+                    DomLauncherUiState::UiTask t;
+                    t.kind = (u32)DomLauncherUiState::TASK_INSTANCE_CREATE;
+                    t.step = 0u;
+                    t.total_steps = 2u;
+                    t.op = "Create Instance";
+                    t.instance_id = inst ? inst->id : std::string();
+                    t.aux_id = make_unique_instance_id(m_instances, base, "tmpl");
+                    t.flag_u32 = inst ? 1u : 0u; /* 1=template, 0=empty */
+                    m_ui->task = t;
+                    m_ui->status_text = std::string("Create instance: ") + t.aux_id;
+                    m_ui->status_progress = 0u;
+                }
+            } else if (act == (u32)ACT_INST_CLONE) {
+                if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
+                    m_ui->status_text = std::string("Busy: ") + (m_ui->task.op.empty() ? std::string("operation") : m_ui->task.op);
+                } else {
+                    const InstanceInfo* inst = selected_instance();
+                    if (!inst) {
+                        m_ui->status_text = "Refused: no instance selected.";
+                    } else {
+                        DomLauncherUiState::UiTask t;
+                        t.kind = (u32)DomLauncherUiState::TASK_INSTANCE_CLONE;
+                        t.step = 0u;
+                        t.total_steps = 2u;
+                        t.op = "Clone Instance";
+                        t.instance_id = inst->id;
+                        t.aux_id = make_unique_instance_id(m_instances, inst->id, "clone");
+                        m_ui->task = t;
+                        m_ui->status_text = std::string("Clone instance: ") + t.aux_id;
+                        m_ui->status_progress = 0u;
+                    }
+                }
+            } else if (act == (u32)ACT_INST_DELETE) {
+                if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
+                    m_ui->status_text = std::string("Busy: ") + (m_ui->task.op.empty() ? std::string("operation") : m_ui->task.op);
+                } else {
+                    const InstanceInfo* inst = selected_instance();
+                    if (!inst) {
+                        m_ui->status_text = "Refused: no instance selected.";
+                    } else {
+                        m_ui->confirm_action_id = (u32)ACT_INST_DELETE;
+                        m_ui->confirm_instance_id = inst->id;
+                        m_ui->dialog_visible = 1u;
+                        m_ui->dialog_title = "Confirm delete";
+                        m_ui->dialog_text = "Delete selected instance (soft delete)?";
+                        m_ui->dialog_lines.clear();
+                        m_ui->dialog_lines.push_back(std::string("instance_id=") + inst->id);
+                    }
+                }
+            } else if (act == (u32)ACT_INST_IMPORT) {
+                if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
+                    m_ui->status_text = std::string("Busy: ") + (m_ui->task.op.empty() ? std::string("operation") : m_ui->task.op);
+                } else if (m_ui->inst_import_path.empty()) {
+                    m_ui->status_text = "Refused: import path is empty.";
+                } else {
+                    DomLauncherUiState::UiTask t;
+                    t.kind = (u32)DomLauncherUiState::TASK_INSTANCE_IMPORT;
+                    t.step = 0u;
+                    t.total_steps = 2u;
+                    t.op = "Import Instance";
+                    t.path = m_ui->inst_import_path;
+                    t.instance_id = make_unique_instance_id(m_instances, "imported", "imp");
+                    t.flag_u32 = (u32)launcher_core::LAUNCHER_INSTANCE_IMPORT_FULL_BUNDLE;
+                    m_ui->task = t;
+                    m_ui->status_text = std::string("Import instance: ") + t.instance_id;
+                    m_ui->status_progress = 0u;
+                }
+            } else if (act == (u32)ACT_INST_EXPORT_DEF || act == (u32)ACT_INST_EXPORT_BUNDLE) {
+                if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
+                    m_ui->status_text = std::string("Busy: ") + (m_ui->task.op.empty() ? std::string("operation") : m_ui->task.op);
+                } else {
+                    const InstanceInfo* inst = selected_instance();
+                    if (!inst) {
+                        m_ui->status_text = "Refused: no instance selected.";
+                    } else if (m_ui->inst_export_path.empty()) {
+                        m_ui->status_text = "Refused: export path is empty.";
+                    } else {
+                        DomLauncherUiState::UiTask t;
+                        t.kind = (u32)DomLauncherUiState::TASK_INSTANCE_EXPORT;
+                        t.step = 0u;
+                        t.total_steps = 1u;
+                        t.op = (act == (u32)ACT_INST_EXPORT_DEF) ? "Export Definition" : "Export Bundle";
+                        t.instance_id = inst->id;
+                        t.path = m_ui->inst_export_path;
+                        t.flag_u32 = (act == (u32)ACT_INST_EXPORT_DEF)
+                                         ? (u32)launcher_core::LAUNCHER_INSTANCE_EXPORT_DEFINITION_ONLY
+                                         : (u32)launcher_core::LAUNCHER_INSTANCE_EXPORT_FULL_BUNDLE;
+                        m_ui->task = t;
+                        m_ui->status_text = std::string("Exporting to: ") + t.path;
+                        m_ui->status_progress = 0u;
+                    }
+                }
+            } else if (act == (u32)ACT_INST_MARK_KG) {
+                if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
+                    m_ui->status_text = std::string("Busy: ") + (m_ui->task.op.empty() ? std::string("operation") : m_ui->task.op);
+                } else {
+                    const InstanceInfo* inst = selected_instance();
+                    if (!inst) {
+                        m_ui->status_text = "Refused: no instance selected.";
+                    } else {
+                        DomLauncherUiState::UiTask t;
+                        t.kind = (u32)DomLauncherUiState::TASK_INSTANCE_MARK_KG;
+                        t.step = 0u;
+                        t.total_steps = 2u;
+                        t.op = "Mark Known Good";
+                        t.instance_id = inst->id;
+                        m_ui->task = t;
+                        m_ui->status_text = "Mark known-good started.";
+                        m_ui->status_progress = 0u;
+                    }
+                }
+            } else if (act == (u32)ACT_DIALOG_OK) {
+                const u32 pending = m_ui->confirm_action_id;
+                const std::string pending_inst = m_ui->confirm_instance_id;
+                m_ui->confirm_action_id = 0u;
+                m_ui->confirm_instance_id.clear();
+                m_ui->dialog_visible = 0u;
+                m_ui->dialog_title.clear();
+                m_ui->dialog_text.clear();
+                m_ui->dialog_lines.clear();
+                if (pending == (u32)ACT_INST_DELETE) {
+                    if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
+                        m_ui->status_text = std::string("Busy: ") + (m_ui->task.op.empty() ? std::string("operation") : m_ui->task.op);
+                    } else if (!pending_inst.empty()) {
+                        DomLauncherUiState::UiTask t;
+                        t.kind = (u32)DomLauncherUiState::TASK_INSTANCE_DELETE;
+                        t.step = 0u;
+                        t.total_steps = 2u;
+                        t.op = "Delete Instance";
+                        t.instance_id = pending_inst;
+                        m_ui->task = t;
+                        m_ui->status_text = std::string("Delete instance: ") + pending_inst;
+                        m_ui->status_progress = 0u;
+                    }
+                }
+            } else if (act == (u32)ACT_DIALOG_CANCEL) {
+                m_ui->confirm_action_id = 0u;
+                m_ui->confirm_instance_id.clear();
                 m_ui->dialog_visible = 0u;
                 m_ui->dialog_title.clear();
                 m_ui->dialog_text.clear();
@@ -2285,6 +2464,275 @@ void DomLauncherApp::process_ui_task() {
                 m_ui->dialog_text = "Operation failed.";
                 m_ui->dialog_lines = audit.reasons;
             }
+            m_ui->status_progress = 600u;
+            t.step = 1u;
+            return;
+        }
+        if (t.step == 1u) {
+            ui_refresh_instance_cache(*m_ui, m_paths.root, t.instance_id);
+            m_ui->status_progress = 1000u;
+            t = DomLauncherUiState::UiTask();
+            return;
+        }
+    }
+
+    if (t.kind == (u32)DomLauncherUiState::TASK_INSTANCE_CREATE) {
+        if (t.step == 0u) {
+            launcher_core::LauncherAuditLog audit;
+            launcher_core::LauncherInstanceManifest created;
+            bool ok = false;
+
+            m_ui->status_text = "Creating instance...";
+            m_ui->status_progress = 100u;
+
+            if (t.flag_u32 && !t.instance_id.empty()) {
+                ok = launcher_core::launcher_instance_template_instance(services,
+                                                                        t.instance_id,
+                                                                        t.aux_id,
+                                                                        m_paths.root,
+                                                                        created,
+                                                                        &audit);
+            } else {
+                launcher_core::LauncherInstanceManifest desired = launcher_core::launcher_instance_manifest_make_empty(t.aux_id);
+                ok = launcher_core::launcher_instance_create_instance(services,
+                                                                      desired,
+                                                                      m_paths.root,
+                                                                      created,
+                                                                      &audit);
+            }
+
+            if (!ok) {
+                m_ui->status_text = "Create instance failed.";
+                m_ui->status_progress = 1000u;
+                m_ui->dialog_visible = 1u;
+                m_ui->dialog_title = "Create instance failed";
+                m_ui->dialog_text = "Operation failed.";
+                m_ui->dialog_lines = audit.reasons;
+                t = DomLauncherUiState::UiTask();
+                return;
+            }
+
+            m_ui->status_text = std::string("Created instance: ") + t.aux_id;
+            m_ui->status_progress = 600u;
+            t.step = 1u;
+            return;
+        }
+        if (t.step == 1u) {
+            size_t i;
+            int idx = -1;
+            (void)scan_instances();
+            for (i = 0u; i < m_instances.size(); ++i) {
+                if (m_instances[i].id == t.aux_id) {
+                    idx = (int)i;
+                    break;
+                }
+            }
+            if (idx >= 0) {
+                set_selected_instance(idx);
+            }
+            m_ui->status_progress = 1000u;
+            t = DomLauncherUiState::UiTask();
+            return;
+        }
+    }
+
+    if (t.kind == (u32)DomLauncherUiState::TASK_INSTANCE_CLONE) {
+        if (t.step == 0u) {
+            launcher_core::LauncherAuditLog audit;
+            launcher_core::LauncherInstanceManifest created;
+            bool ok;
+
+            m_ui->status_text = "Cloning instance...";
+            m_ui->status_progress = 100u;
+
+            ok = launcher_core::launcher_instance_clone_instance(services,
+                                                                 t.instance_id,
+                                                                 t.aux_id,
+                                                                 m_paths.root,
+                                                                 created,
+                                                                 &audit);
+            if (!ok) {
+                m_ui->status_text = "Clone instance failed.";
+                m_ui->status_progress = 1000u;
+                m_ui->dialog_visible = 1u;
+                m_ui->dialog_title = "Clone instance failed";
+                m_ui->dialog_text = "Operation failed.";
+                m_ui->dialog_lines = audit.reasons;
+                t = DomLauncherUiState::UiTask();
+                return;
+            }
+
+            m_ui->status_text = std::string("Cloned instance: ") + t.aux_id;
+            m_ui->status_progress = 600u;
+            t.step = 1u;
+            return;
+        }
+        if (t.step == 1u) {
+            size_t i;
+            int idx = -1;
+            (void)scan_instances();
+            for (i = 0u; i < m_instances.size(); ++i) {
+                if (m_instances[i].id == t.aux_id) {
+                    idx = (int)i;
+                    break;
+                }
+            }
+            if (idx >= 0) {
+                set_selected_instance(idx);
+            }
+            m_ui->status_progress = 1000u;
+            t = DomLauncherUiState::UiTask();
+            return;
+        }
+    }
+
+    if (t.kind == (u32)DomLauncherUiState::TASK_INSTANCE_DELETE) {
+        if (t.step == 0u) {
+            launcher_core::LauncherAuditLog audit;
+            bool ok;
+
+            m_ui->status_text = "Deleting instance...";
+            m_ui->status_progress = 100u;
+
+            ok = launcher_core::launcher_instance_delete_instance(services, t.instance_id, m_paths.root, &audit);
+            if (!ok) {
+                m_ui->status_text = "Delete instance failed.";
+                m_ui->status_progress = 1000u;
+                m_ui->dialog_visible = 1u;
+                m_ui->dialog_title = "Delete instance failed";
+                m_ui->dialog_text = "Operation failed.";
+                m_ui->dialog_lines = audit.reasons;
+                t = DomLauncherUiState::UiTask();
+                return;
+            }
+            m_ui->status_text = std::string("Deleted instance: ") + t.instance_id;
+            m_ui->status_progress = 600u;
+            t.step = 1u;
+            return;
+        }
+        if (t.step == 1u) {
+            (void)scan_instances();
+            if (!m_instances.empty()) {
+                set_selected_instance(0);
+            } else {
+                m_selected_instance = -1;
+                ui_refresh_instance_cache(*m_ui, m_paths.root, std::string());
+            }
+            m_ui->status_progress = 1000u;
+            t = DomLauncherUiState::UiTask();
+            return;
+        }
+    }
+
+    if (t.kind == (u32)DomLauncherUiState::TASK_INSTANCE_IMPORT) {
+        if (t.step == 0u) {
+            launcher_core::LauncherAuditLog audit;
+            launcher_core::LauncherInstanceManifest created;
+            bool ok;
+
+            m_ui->status_text = "Importing instance...";
+            m_ui->status_progress = 100u;
+
+            ok = launcher_core::launcher_instance_import_instance(services,
+                                                                  t.path,
+                                                                  t.instance_id,
+                                                                  m_paths.root,
+                                                                  t.flag_u32,
+                                                                  1u,
+                                                                  created,
+                                                                  &audit);
+            if (!ok) {
+                m_ui->status_text = "Import failed.";
+                m_ui->status_progress = 1000u;
+                m_ui->dialog_visible = 1u;
+                m_ui->dialog_title = "Import failed";
+                m_ui->dialog_text = "Operation failed.";
+                m_ui->dialog_lines = audit.reasons;
+                t = DomLauncherUiState::UiTask();
+                return;
+            }
+
+            m_ui->status_text = std::string("Imported instance: ") + t.instance_id;
+            m_ui->status_progress = 600u;
+            t.step = 1u;
+            return;
+        }
+        if (t.step == 1u) {
+            size_t i;
+            int idx = -1;
+            (void)scan_instances();
+            for (i = 0u; i < m_instances.size(); ++i) {
+                if (m_instances[i].id == t.instance_id) {
+                    idx = (int)i;
+                    break;
+                }
+            }
+            if (idx >= 0) {
+                set_selected_instance(idx);
+            }
+            m_ui->status_progress = 1000u;
+            t = DomLauncherUiState::UiTask();
+            return;
+        }
+    }
+
+    if (t.kind == (u32)DomLauncherUiState::TASK_INSTANCE_EXPORT) {
+        launcher_core::LauncherAuditLog audit;
+        bool ok;
+
+        m_ui->status_text = "Exporting instance...";
+        m_ui->status_progress = 100u;
+
+        ok = launcher_core::launcher_instance_export_instance(services,
+                                                              t.instance_id,
+                                                              t.path,
+                                                              m_paths.root,
+                                                              t.flag_u32,
+                                                              &audit);
+        if (!ok) {
+            m_ui->status_text = "Export failed.";
+            m_ui->status_progress = 1000u;
+            m_ui->dialog_visible = 1u;
+            m_ui->dialog_title = "Export failed";
+            m_ui->dialog_text = "Operation failed.";
+            m_ui->dialog_lines = audit.reasons;
+            t = DomLauncherUiState::UiTask();
+            return;
+        }
+
+        m_ui->status_text = std::string("Exported to: ") + t.path;
+        m_ui->status_progress = 1000u;
+        m_ui->dialog_visible = 1u;
+        m_ui->dialog_title = "Export complete";
+        m_ui->dialog_text = "Instance export complete.";
+        m_ui->dialog_lines.clear();
+        m_ui->dialog_lines.push_back(std::string("out_root=") + t.path);
+        t = DomLauncherUiState::UiTask();
+        return;
+    }
+
+    if (t.kind == (u32)DomLauncherUiState::TASK_INSTANCE_MARK_KG) {
+        if (t.step == 0u) {
+            launcher_core::LauncherAuditLog audit;
+            launcher_core::LauncherInstanceManifest updated;
+            bool ok;
+
+            m_ui->status_text = "Marking known-good...";
+            m_ui->status_progress = 100u;
+
+            ok = launcher_core::launcher_instance_mark_known_good(services, t.instance_id, m_paths.root, updated, &audit);
+            if (!ok) {
+                m_ui->status_text = "Mark known-good failed.";
+                m_ui->status_progress = 1000u;
+                m_ui->dialog_visible = 1u;
+                m_ui->dialog_title = "Mark known-good failed";
+                m_ui->dialog_text = "Operation failed.";
+                m_ui->dialog_lines = audit.reasons;
+                t = DomLauncherUiState::UiTask();
+                return;
+            }
+
+            m_ui->status_text = "Mark known-good: ok.";
             m_ui->status_progress = 600u;
             t.step = 1u;
             return;
