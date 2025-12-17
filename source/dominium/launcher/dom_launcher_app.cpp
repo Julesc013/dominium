@@ -14,6 +14,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "dom_launcher_app.h"
 
 #include <algorithm>
+#include <map>
 #include <cstdio>
 #include <cstring>
 #include <cctype>
@@ -29,6 +30,16 @@ extern "C" {
 }
 
 #include "core/include/launcher_safety.h"
+#include "core/include/launcher_core_api.h"
+#include "core/include/launcher_instance.h"
+#include "core/include/launcher_instance_ops.h"
+#include "core/include/launcher_instance_config.h"
+#include "core/include/launcher_instance_launch_history.h"
+#include "core/include/launcher_pack_resolver.h"
+#include "core/include/launcher_pack_ops.h"
+#include "core/include/launcher_instance_artifact_ops.h"
+#include "core/include/launcher_tools_registry.h"
+#include "core/include/launcher_audit.h"
 
 namespace dom {
 
@@ -44,6 +55,42 @@ struct DomLauncherUiState {
     u32 tab;
     std::string instance_search;
     u32 play_target_item_id;
+    u32 play_offline; /* 0/1 */
+
+    /* Instances tab inputs */
+    std::string inst_import_path;
+    std::string inst_export_path;
+
+    /* Packs tab state */
+    u32 packs_selected_item_id;
+    std::string packs_selected_key;
+    struct StagedPackChange {
+        u32 has_enabled;
+        u32 enabled; /* 0/1 */
+        u32 has_update_policy;
+        u32 update_policy; /* LauncherUpdatePolicy */
+        StagedPackChange() : has_enabled(0u), enabled(0u), has_update_policy(0u), update_policy(0u) {}
+    };
+    std::map<std::string, StagedPackChange> packs_staged;
+
+    /* Options tab edit buffers (text fields) */
+    u32 opt_gfx_selected_item_id;
+    u32 opt_winmode_selected_item_id;
+    std::string opt_renderer_api_text;
+    std::string opt_width_text;
+    std::string opt_height_text;
+    std::string opt_dpi_text;
+    std::string opt_monitor_text;
+
+    /* Logs/Diagnostics tab inputs */
+    std::string logs_diag_out_path;
+    u32 logs_selected_run_item_id;
+    std::string logs_selected_run_id;
+    std::vector<std::string> logs_selected_audit_lines;
+
+    /* Local news lines (loaded once) */
+    u32 news_loaded;
+    std::vector<std::string> news_lines;
 
     u32 dialog_visible;
     std::string dialog_title;
@@ -53,16 +100,61 @@ struct DomLauncherUiState {
     std::string status_text;
     u32 status_progress; /* 0..1000 */
 
+    /* Selected instance cache (refreshed on selection + after ops). */
+    std::string cache_instance_id;
+    u32 cache_valid;
+    std::string cache_error;
+    launcher_core::LauncherInstanceManifest cache_manifest;
+    u64 cache_manifest_hash64;
+    launcher_core::LauncherInstanceConfig cache_config;
+    launcher_core::LauncherInstanceLaunchHistory cache_history;
+    std::vector<std::string> cache_run_ids;
+    std::string cache_resolved_packs_summary;
+    std::string cache_resolved_packs_error;
+    std::vector<launcher_core::LauncherToolEntry> cache_tools;
+    std::string cache_tools_error;
+
     DomLauncherUiState()
         : tab((u32)TAB_PLAY),
           instance_search(),
           play_target_item_id(0u),
+          play_offline(0u),
+          inst_import_path(),
+          inst_export_path(),
+          packs_selected_item_id(0u),
+          packs_selected_key(),
+          packs_staged(),
+          opt_gfx_selected_item_id(0u),
+          opt_winmode_selected_item_id(0u),
+          opt_renderer_api_text(),
+          opt_width_text(),
+          opt_height_text(),
+          opt_dpi_text(),
+          opt_monitor_text(),
+          logs_diag_out_path(),
+          logs_selected_run_item_id(0u),
+          logs_selected_run_id(),
+          logs_selected_audit_lines(),
+          news_loaded(0u),
+          news_lines(),
           dialog_visible(0u),
           dialog_title(),
           dialog_text(),
           dialog_lines(),
           status_text("Ready."),
-          status_progress(0u) {}
+          status_progress(0u),
+          cache_instance_id(),
+          cache_valid(0u),
+          cache_error(),
+          cache_manifest(),
+          cache_manifest_hash64(0ull),
+          cache_config(),
+          cache_history(),
+          cache_run_ids(),
+          cache_resolved_packs_summary(),
+          cache_resolved_packs_error(),
+          cache_tools(),
+          cache_tools_error() {}
 };
 
 namespace {
@@ -92,17 +184,28 @@ enum LauncherUiWidgetId {
     W_PLAY_MANIFEST = 1412,
     W_PLAY_TARGET_LIST = 1414,
     W_PLAY_OFFLINE = 1415,
+    W_PLAY_BTN = 1416,
+    W_SAFE_PLAY_BTN = 1417,
+    W_VERIFY_BTN = 1418,
     W_PLAY_LAST_RUN = 1419,
     W_NEWS_LIST = 1451,
 
+    W_INST_CREATE_BTN = 1501,
+    W_INST_CLONE_BTN = 1502,
+    W_INST_DELETE_BTN = 1503,
     W_INST_IMPORT_PATH = 1505,
+    W_INST_IMPORT_BTN = 1506,
     W_INST_EXPORT_PATH = 1508,
+    W_INST_EXPORT_DEF_BTN = 1509,
+    W_INST_EXPORT_BUNDLE_BTN = 1510,
+    W_INST_MARK_KG_BTN = 1511,
     W_INST_PATHS_LIST = 1512,
 
     W_PACKS_LABEL = 1600,
     W_PACKS_LIST = 1601,
     W_PACKS_ENABLED = 1602,
     W_PACKS_POLICY_LIST = 1604,
+    W_PACKS_APPLY_BTN = 1605,
     W_PACKS_RESOLVED = 1607,
     W_PACKS_ERROR = 1608,
 
@@ -115,11 +218,14 @@ enum LauncherUiWidgetId {
     W_OPT_MONITOR_FIELD = 1711,
     W_OPT_AUDIO_LABEL = 1712,
     W_OPT_INPUT_LABEL = 1713,
+    W_OPT_RESET_BTN = 1714,
+    W_OPT_DETAILS_BTN = 1715,
 
     W_LOGS_LAST_RUN = 1801,
     W_LOGS_RUNS_LIST = 1803,
     W_LOGS_AUDIT_LIST = 1804,
     W_LOGS_DIAG_OUT = 1806,
+    W_LOGS_DIAG_BTN = 1807,
     W_LOGS_LOCS_LIST = 1809,
 
     W_STATUS_TEXT = 1901,
@@ -129,7 +235,9 @@ enum LauncherUiWidgetId {
     W_DIALOG_COL = 2000,
     W_DIALOG_TITLE = 2001,
     W_DIALOG_TEXT = 2002,
-    W_DIALOG_LIST = 2003
+    W_DIALOG_LIST = 2003,
+    W_DIALOG_OK = 2005,
+    W_DIALOG_CANCEL = 2006
 };
 
 /* UI schema action IDs (scripts/gen_launcher_ui_schema_v1.py). */
@@ -139,6 +247,25 @@ enum LauncherUiActionId {
     ACT_TAB_PACKS = 102,
     ACT_TAB_OPTIONS = 103,
     ACT_TAB_LOGS = 104,
+
+    ACT_PLAY = 200,
+    ACT_SAFE_PLAY = 201,
+    ACT_VERIFY_REPAIR = 202,
+
+    ACT_INST_CREATE = 300,
+    ACT_INST_CLONE = 301,
+    ACT_INST_DELETE = 302,
+    ACT_INST_IMPORT = 303,
+    ACT_INST_EXPORT_DEF = 304,
+    ACT_INST_EXPORT_BUNDLE = 305,
+    ACT_INST_MARK_KG = 306,
+
+    ACT_PACKS_APPLY = 400,
+
+    ACT_OPT_RESET = 500,
+    ACT_OPT_DETAILS = 501,
+
+    ACT_LOGS_DIAG = 600,
 
     ACT_DIALOG_OK = 900,
     ACT_DIALOG_CANCEL = 901
@@ -356,6 +483,145 @@ static u32 stable_item_id(const std::string& s) {
     return (id == 0u) ? 1u : id;
 }
 
+static void sort_strings_deterministic(std::vector<std::string>& v) {
+    size_t i, j;
+    for (i = 1u; i < v.size(); ++i) {
+        std::string key = v[i];
+        j = i;
+        while (j > 0u) {
+            const std::string& prev = v[j - 1u];
+            if (!(prev > key)) {
+                break;
+            }
+            v[j] = v[j - 1u];
+            --j;
+        }
+        v[j] = key;
+    }
+}
+
+static const char* content_type_to_short(u32 type) {
+    switch (type) {
+    case (u32)launcher_core::LAUNCHER_CONTENT_PACK: return "pack";
+    case (u32)launcher_core::LAUNCHER_CONTENT_MOD: return "mod";
+    case (u32)launcher_core::LAUNCHER_CONTENT_RUNTIME: return "runtime";
+    case (u32)launcher_core::LAUNCHER_CONTENT_ENGINE: return "engine";
+    case (u32)launcher_core::LAUNCHER_CONTENT_GAME: return "game";
+    default: return "content";
+    }
+}
+
+static std::string update_policy_to_string(u32 policy) {
+    switch (policy) {
+    case (u32)launcher_core::LAUNCHER_UPDATE_NEVER: return "never";
+    case (u32)launcher_core::LAUNCHER_UPDATE_PROMPT: return "prompt";
+    case (u32)launcher_core::LAUNCHER_UPDATE_AUTO: return "auto";
+    default: return "unknown";
+    }
+}
+
+static u32 update_policy_item_id(u32 policy) {
+    return stable_item_id(update_policy_to_string(policy));
+}
+
+static u32 update_policy_from_item_id(u32 item_id, u32 fallback_policy) {
+    if (item_id == stable_item_id("never")) return (u32)launcher_core::LAUNCHER_UPDATE_NEVER;
+    if (item_id == stable_item_id("prompt")) return (u32)launcher_core::LAUNCHER_UPDATE_PROMPT;
+    if (item_id == stable_item_id("auto")) return (u32)launcher_core::LAUNCHER_UPDATE_AUTO;
+    return fallback_policy;
+}
+
+static u32 window_mode_item_id(u32 mode) {
+    switch (mode) {
+    case (u32)launcher_core::LAUNCHER_WINDOW_MODE_WINDOWED: return stable_item_id("windowed");
+    case (u32)launcher_core::LAUNCHER_WINDOW_MODE_FULLSCREEN: return stable_item_id("fullscreen");
+    case (u32)launcher_core::LAUNCHER_WINDOW_MODE_BORDERLESS: return stable_item_id("borderless");
+    case (u32)launcher_core::LAUNCHER_WINDOW_MODE_AUTO:
+    default:
+        return stable_item_id("auto");
+    }
+}
+
+static u32 window_mode_from_item_id(u32 item_id, u32 fallback_mode) {
+    if (item_id == stable_item_id("auto")) return (u32)launcher_core::LAUNCHER_WINDOW_MODE_AUTO;
+    if (item_id == stable_item_id("windowed")) return (u32)launcher_core::LAUNCHER_WINDOW_MODE_WINDOWED;
+    if (item_id == stable_item_id("fullscreen")) return (u32)launcher_core::LAUNCHER_WINDOW_MODE_FULLSCREEN;
+    if (item_id == stable_item_id("borderless")) return (u32)launcher_core::LAUNCHER_WINDOW_MODE_BORDERLESS;
+    return fallback_mode;
+}
+
+static bool is_pack_like(u32 content_type) {
+    return content_type == (u32)launcher_core::LAUNCHER_CONTENT_PACK ||
+           content_type == (u32)launcher_core::LAUNCHER_CONTENT_MOD ||
+           content_type == (u32)launcher_core::LAUNCHER_CONTENT_RUNTIME;
+}
+
+static std::string pack_key(u32 content_type, const std::string& id) {
+    return std::string(content_type_to_short(content_type)) + ":" + id;
+}
+
+static const launcher_core::LauncherContentEntry* find_entry_by_pack_key(const launcher_core::LauncherInstanceManifest& m,
+                                                                         const std::string& key) {
+    size_t i;
+    for (i = 0u; i < m.content_entries.size(); ++i) {
+        const launcher_core::LauncherContentEntry& e = m.content_entries[i];
+        if (!is_pack_like(e.type)) {
+            continue;
+        }
+        if (pack_key(e.type, e.id) == key) {
+            return &m.content_entries[i];
+        }
+    }
+    return (const launcher_core::LauncherContentEntry*)0;
+}
+
+static void collect_dgfx_backend_names(std::vector<std::string>& out_names) {
+    u32 i;
+    u32 count;
+    dom_backend_desc desc;
+
+    out_names.clear();
+
+    (void)dom_caps_register_builtin_backends();
+    (void)dom_caps_finalize_registry();
+
+    count = dom_caps_backend_count();
+    for (i = 0u; i < count; ++i) {
+        if (dom_caps_backend_get(i, &desc) != DOM_CAPS_OK) {
+            continue;
+        }
+        if (desc.subsystem_id != DOM_SUBSYS_DGFX) {
+            continue;
+        }
+        if (!desc.backend_name || !desc.backend_name[0]) {
+            continue;
+        }
+        out_names.push_back(std::string(desc.backend_name));
+    }
+    sort_strings_deterministic(out_names);
+    {
+        size_t out = 0u;
+        for (i = 0u; i < out_names.size(); ++i) {
+            if (out == 0u || out_names[i] != out_names[out - 1u]) {
+                out_names[out++] = out_names[i];
+            }
+        }
+        out_names.resize(out);
+    }
+}
+
+static std::string dgfx_backend_from_item_id(u32 item_id) {
+    std::vector<std::string> names;
+    size_t i;
+    collect_dgfx_backend_names(names);
+    for (i = 0u; i < names.size(); ++i) {
+        if (stable_item_id(std::string("dgfx:") + names[i]) == item_id) {
+            return names[i];
+        }
+    }
+    return std::string();
+}
+
 static void append_u32_le(std::vector<unsigned char>& out, u32 v) {
     out.push_back((unsigned char)((v >> 0u) & 0xffu));
     out.push_back((unsigned char)((v >> 8u) & 0xffu));
@@ -508,6 +774,200 @@ static const dui_api_v1* lookup_dui_api_by_backend_name(const char* want_name, s
     return 0;
 }
 
+static std::string u64_hex16(u64 v) {
+    static const char* hex = "0123456789abcdef";
+    char buf[17];
+    int i;
+    for (i = 0; i < 16; ++i) {
+        unsigned shift = (unsigned)((15 - i) * 4);
+        unsigned nib = (unsigned)((v >> shift) & (u64)0xFu);
+        buf[i] = hex[nib & 0xFu];
+    }
+    buf[16] = '\0';
+    return std::string(buf);
+}
+
+static std::string u32_to_string(u32 v) {
+    char buf[32];
+    std::snprintf(buf, sizeof(buf), "%u", (unsigned)v);
+    return std::string(buf);
+}
+
+static std::string i32_to_string(i32 v) {
+    char buf[32];
+    std::snprintf(buf, sizeof(buf), "%d", (int)v);
+    return std::string(buf);
+}
+
+static void split_lines_limit(const std::string& text, size_t max_lines, std::vector<std::string>& out_lines) {
+    size_t pos = 0u;
+    out_lines.clear();
+    while (pos < text.size() && out_lines.size() < max_lines) {
+        size_t eol = text.find('\n', pos);
+        if (eol == std::string::npos) {
+            eol = text.size();
+        }
+        std::string line = text.substr(pos, eol - pos);
+        if (!line.empty() && line[line.size() - 1u] == '\r') {
+            line.erase(line.size() - 1u);
+        }
+        out_lines.push_back(line);
+        pos = (eol < text.size()) ? (eol + 1u) : text.size();
+    }
+}
+
+static void ui_load_news_if_needed(DomLauncherUiState& ui, const std::string& argv0) {
+    std::vector<unsigned char> bytes;
+    std::string err;
+    std::string cur;
+    std::string text;
+    size_t i;
+
+    if (ui.news_loaded) {
+        return;
+    }
+    ui.news_loaded = 1u;
+    ui.news_lines.clear();
+
+    /* Try CWD first. */
+    if (file_exists_stdio("docs/launcher/news.txt") && read_file_all_bytes("docs/launcher/news.txt", bytes, err)) {
+        text.assign(bytes.empty() ? "" : (const char*)&bytes[0], bytes.size());
+        split_lines_limit(text, 200u, ui.news_lines);
+        return;
+    }
+
+    /* Walk upwards from argv0 directory. */
+    cur = dirname_of(argv0);
+    for (i = 0u; i < 10u; ++i) {
+        if (!cur.empty()) {
+            const std::string cand = path_join(cur, "docs/launcher/news.txt");
+            if (file_exists_stdio(cand) && read_file_all_bytes(cand, bytes, err)) {
+                text.assign(bytes.empty() ? "" : (const char*)&bytes[0], bytes.size());
+                split_lines_limit(text, 200u, ui.news_lines);
+                return;
+            }
+        }
+        cur = dirname_of(cur);
+        if (cur.empty()) {
+            break;
+        }
+    }
+
+    ui.news_lines.push_back("No local news file found (docs/launcher/news.txt).");
+}
+
+static void ui_load_selected_run_audit(DomLauncherUiState& ui,
+                                       const std::string& state_root,
+                                       const std::string& instance_id) {
+    std::vector<unsigned char> bytes;
+    std::string err;
+    launcher_core::LauncherAuditLog audit;
+
+    ui.logs_selected_audit_lines.clear();
+    if (state_root.empty() || instance_id.empty() || ui.logs_selected_run_id.empty()) {
+        return;
+    }
+
+    {
+        const std::string audit_path =
+            path_join(path_join(path_join(path_join(path_join(state_root, "instances"), instance_id), "logs/runs"), ui.logs_selected_run_id),
+                      "launcher_audit.tlv");
+        if (!read_file_all_bytes(audit_path, bytes, err) || bytes.empty()) {
+            ui.logs_selected_audit_lines.push_back(std::string("audit_read_failed;path=") + audit_path + ";err=" + err);
+            return;
+        }
+        if (!launcher_core::launcher_audit_from_tlv_bytes(bytes.empty() ? (const unsigned char*)0 : &bytes[0], bytes.size(), audit)) {
+            ui.logs_selected_audit_lines.push_back(std::string("audit_decode_failed;path=") + audit_path);
+            return;
+        }
+    }
+
+    {
+        size_t i;
+        ui.logs_selected_audit_lines.push_back(std::string("run_id=0x") + u64_hex16(audit.run_id));
+        ui.logs_selected_audit_lines.push_back(std::string("exit_result=") + i32_to_string(audit.exit_result));
+        for (i = 0u; i < audit.reasons.size(); ++i) {
+            ui.logs_selected_audit_lines.push_back(audit.reasons[i]);
+        }
+    }
+}
+
+static void ui_refresh_instance_cache(DomLauncherUiState& ui,
+                                      const std::string& state_root,
+                                      const std::string& instance_id) {
+    const launcher_services_api_v1* services = launcher_services_null_v1();
+    launcher_core::LauncherInstancePaths paths;
+    std::string run_err;
+    launcher_core::LauncherToolsRegistry reg;
+    std::string tools_loaded;
+    std::string tools_err;
+    std::vector<launcher_core::LauncherResolvedPack> resolved;
+    std::string resolve_err;
+
+    ui.cache_instance_id = instance_id;
+    ui.cache_valid = 0u;
+    ui.cache_error.clear();
+    ui.cache_manifest = launcher_core::launcher_instance_manifest_make_null();
+    ui.cache_manifest_hash64 = 0ull;
+    ui.cache_config = launcher_core::launcher_instance_config_make_default(instance_id);
+    ui.cache_history = launcher_core::launcher_instance_launch_history_make_default(instance_id, 64u);
+    ui.cache_run_ids.clear();
+    ui.cache_resolved_packs_summary.clear();
+    ui.cache_resolved_packs_error.clear();
+    ui.cache_tools.clear();
+    ui.cache_tools_error.clear();
+
+    ui.logs_selected_run_item_id = 0u;
+    ui.logs_selected_run_id.clear();
+    ui.logs_selected_audit_lines.clear();
+
+    if (instance_id.empty() || state_root.empty()) {
+        return;
+    }
+
+    if (!launcher_core::launcher_instance_load_manifest(services, instance_id, state_root, ui.cache_manifest)) {
+        ui.cache_error = "load_manifest_failed";
+        return;
+    }
+    ui.cache_manifest_hash64 = launcher_core::launcher_instance_manifest_hash64(ui.cache_manifest);
+
+    paths = launcher_core::launcher_instance_paths_make(state_root, instance_id);
+    if (!launcher_core::launcher_instance_config_load(services, paths, ui.cache_config)) {
+        ui.cache_error = "load_config_failed";
+    }
+    if (!launcher_core::launcher_instance_launch_history_load(services, paths, ui.cache_history)) {
+        if (ui.cache_error.empty()) ui.cache_error = "load_launch_history_failed";
+    }
+
+    (void)launcher_list_instance_runs(state_root, instance_id, ui.cache_run_ids, run_err);
+    if (!ui.cache_run_ids.empty()) {
+        ui.logs_selected_run_id = ui.cache_run_ids[ui.cache_run_ids.size() - 1u];
+        ui.logs_selected_run_item_id = stable_item_id(ui.logs_selected_run_id);
+        ui_load_selected_run_audit(ui, state_root, instance_id);
+    }
+
+    if (launcher_core::launcher_tools_registry_load(services, state_root, reg, &tools_loaded, &tools_err)) {
+        launcher_core::launcher_tools_registry_enumerate_for_instance(reg, ui.cache_manifest, ui.cache_tools);
+    } else {
+        ui.cache_tools_error = tools_err;
+    }
+
+    if (launcher_core::launcher_pack_resolve_enabled(services, ui.cache_manifest, state_root, resolved, &resolve_err)) {
+        ui.cache_resolved_packs_summary = launcher_core::launcher_pack_resolved_order_summary(resolved);
+    } else {
+        ui.cache_resolved_packs_error = resolve_err;
+    }
+
+    ui.play_offline = (ui.cache_config.allow_network == 0u) ? 1u : 0u;
+    ui.opt_renderer_api_text = ui.cache_config.renderer_api;
+    ui.opt_width_text = ui.cache_config.window_width ? u32_to_string(ui.cache_config.window_width) : std::string();
+    ui.opt_height_text = ui.cache_config.window_height ? u32_to_string(ui.cache_config.window_height) : std::string();
+    ui.opt_dpi_text = ui.cache_config.window_dpi ? u32_to_string(ui.cache_config.window_dpi) : std::string();
+    ui.opt_monitor_text = ui.cache_config.window_monitor ? u32_to_string(ui.cache_config.window_monitor) : std::string();
+
+    ui.cache_valid = 1u;
+}
+
 } // namespace
 
 DomLauncherApp::DomLauncherApp()
@@ -575,10 +1035,10 @@ bool DomLauncherApp::init_from_cli(const LauncherConfig &cfg, const dom_profile*
     (void)scan_instances();
 
     if (m_selected_product < 0 && !m_products.empty()) {
-        m_selected_product = 0;
+        set_selected_product(0);
     }
     if (m_selected_instance < 0 && !m_instances.empty()) {
-        m_selected_instance = 0;
+        set_selected_instance(0);
     }
 
     if (m_mode == LAUNCHER_MODE_CLI) {
@@ -626,6 +1086,22 @@ void DomLauncherApp::set_selected_instance(int idx) {
         return;
     }
     m_selected_instance = idx;
+    if (m_mode == LAUNCHER_MODE_CLI || !m_ui) {
+        return;
+    }
+    {
+        const std::string id = m_instances[(size_t)idx].id;
+        if (m_ui->cache_instance_id != id) {
+            m_ui->packs_staged.clear();
+            m_ui->packs_selected_item_id = 0u;
+            m_ui->packs_selected_key.clear();
+            ui_refresh_instance_cache(*m_ui, m_paths.root, id);
+            ui_load_news_if_needed(*m_ui, m_argv0);
+            if (m_ui->play_target_item_id == 0u) {
+                m_ui->play_target_item_id = stable_item_id(std::string("game"));
+            }
+        }
+    }
 }
 
 void DomLauncherApp::set_selected_mode(const std::string &mode) {
@@ -823,7 +1299,7 @@ bool DomLauncherApp::scan_instances() {
 
     dsys_dir_close(inst_it);
     if (m_selected_instance < 0 && !m_instances.empty()) {
-        m_selected_instance = 0;
+        set_selected_instance(0);
     }
     return true;
 }
@@ -1242,6 +1718,145 @@ void DomLauncherApp::process_dui_events() {
                 }
             } else if (wid == (u32)W_PLAY_TARGET_LIST && vt == (u32)DUI_VALUE_LIST) {
                 m_ui->play_target_item_id = ev.u.value.item_id;
+            } else if (wid == (u32)W_PLAY_OFFLINE && vt == (u32)DUI_VALUE_BOOL) {
+                m_ui->play_offline = ev.u.value.v_u32 ? 1u : 0u;
+                m_ui->cache_config.allow_network = m_ui->play_offline ? 0u : 1u;
+            } else if (wid == (u32)W_INST_IMPORT_PATH && vt == (u32)DUI_VALUE_TEXT) {
+                std::string next;
+                u32 i;
+                for (i = 0u; i < ev.u.value.text_len; ++i) {
+                    next.push_back(ev.u.value.text[i]);
+                }
+                m_ui->inst_import_path = next;
+            } else if (wid == (u32)W_INST_EXPORT_PATH && vt == (u32)DUI_VALUE_TEXT) {
+                std::string next;
+                u32 i;
+                for (i = 0u; i < ev.u.value.text_len; ++i) {
+                    next.push_back(ev.u.value.text[i]);
+                }
+                m_ui->inst_export_path = next;
+            } else if (wid == (u32)W_PACKS_LIST && vt == (u32)DUI_VALUE_LIST) {
+                const u32 item_id = ev.u.value.item_id;
+                const launcher_core::LauncherInstanceManifest& m = m_ui->cache_manifest;
+                size_t i;
+
+                m_ui->packs_selected_item_id = item_id;
+                m_ui->packs_selected_key.clear();
+                for (i = 0u; i < m.content_entries.size(); ++i) {
+                    const launcher_core::LauncherContentEntry& e = m.content_entries[i];
+                    if (!is_pack_like(e.type)) {
+                        continue;
+                    }
+                    const std::string key = pack_key(e.type, e.id);
+                    if (stable_item_id(key) == item_id) {
+                        m_ui->packs_selected_key = key;
+                        break;
+                    }
+                }
+            } else if (wid == (u32)W_PACKS_ENABLED && vt == (u32)DUI_VALUE_BOOL) {
+                const launcher_core::LauncherContentEntry* e =
+                    find_entry_by_pack_key(m_ui->cache_manifest, m_ui->packs_selected_key);
+                if (e && !m_ui->packs_selected_key.empty()) {
+                    const u32 cur_enabled = e->enabled ? 1u : 0u;
+                    const u32 next_enabled = ev.u.value.v_u32 ? 1u : 0u;
+                    DomLauncherUiState::StagedPackChange& sc = m_ui->packs_staged[m_ui->packs_selected_key];
+                    sc.has_enabled = 1u;
+                    sc.enabled = next_enabled;
+                    if (sc.has_enabled && sc.enabled == cur_enabled) {
+                        sc.has_enabled = 0u;
+                    }
+                    if (!sc.has_enabled && !sc.has_update_policy) {
+                        m_ui->packs_staged.erase(m_ui->packs_selected_key);
+                    }
+                }
+            } else if (wid == (u32)W_PACKS_POLICY_LIST && vt == (u32)DUI_VALUE_LIST) {
+                const launcher_core::LauncherContentEntry* e =
+                    find_entry_by_pack_key(m_ui->cache_manifest, m_ui->packs_selected_key);
+                if (e && !m_ui->packs_selected_key.empty()) {
+                    const u32 cur_policy = e->update_policy;
+                    const u32 next_policy = update_policy_from_item_id(ev.u.value.item_id, cur_policy);
+                    DomLauncherUiState::StagedPackChange& sc = m_ui->packs_staged[m_ui->packs_selected_key];
+                    sc.has_update_policy = 1u;
+                    sc.update_policy = next_policy;
+                    if (sc.has_update_policy && sc.update_policy == cur_policy) {
+                        sc.has_update_policy = 0u;
+                    }
+                    if (!sc.has_enabled && !sc.has_update_policy) {
+                        m_ui->packs_staged.erase(m_ui->packs_selected_key);
+                    }
+                }
+            } else if (wid == (u32)W_OPT_GFX_LIST && vt == (u32)DUI_VALUE_LIST) {
+                const u32 item_id = ev.u.value.item_id;
+                m_ui->opt_gfx_selected_item_id = item_id;
+                if (item_id == stable_item_id("auto")) {
+                    m_ui->cache_config.gfx_backend.clear();
+                } else {
+                    const std::string name = dgfx_backend_from_item_id(item_id);
+                    if (!name.empty()) {
+                        m_ui->cache_config.gfx_backend = name;
+                    }
+                }
+            } else if (wid == (u32)W_OPT_API_FIELD && vt == (u32)DUI_VALUE_TEXT) {
+                std::string next;
+                u32 i;
+                for (i = 0u; i < ev.u.value.text_len; ++i) {
+                    next.push_back(ev.u.value.text[i]);
+                }
+                m_ui->opt_renderer_api_text = next;
+                m_ui->cache_config.renderer_api = next;
+            } else if (wid == (u32)W_OPT_WINMODE_LIST && vt == (u32)DUI_VALUE_LIST) {
+                const u32 item_id = ev.u.value.item_id;
+                m_ui->opt_winmode_selected_item_id = item_id;
+                m_ui->cache_config.window_mode = window_mode_from_item_id(item_id, m_ui->cache_config.window_mode);
+            } else if (wid == (u32)W_OPT_WIDTH_FIELD && vt == (u32)DUI_VALUE_TEXT) {
+                std::string next;
+                u32 i;
+                for (i = 0u; i < ev.u.value.text_len; ++i) {
+                    next.push_back(ev.u.value.text[i]);
+                }
+                m_ui->opt_width_text = next;
+            } else if (wid == (u32)W_OPT_HEIGHT_FIELD && vt == (u32)DUI_VALUE_TEXT) {
+                std::string next;
+                u32 i;
+                for (i = 0u; i < ev.u.value.text_len; ++i) {
+                    next.push_back(ev.u.value.text[i]);
+                }
+                m_ui->opt_height_text = next;
+            } else if (wid == (u32)W_OPT_DPI_FIELD && vt == (u32)DUI_VALUE_TEXT) {
+                std::string next;
+                u32 i;
+                for (i = 0u; i < ev.u.value.text_len; ++i) {
+                    next.push_back(ev.u.value.text[i]);
+                }
+                m_ui->opt_dpi_text = next;
+            } else if (wid == (u32)W_OPT_MONITOR_FIELD && vt == (u32)DUI_VALUE_TEXT) {
+                std::string next;
+                u32 i;
+                for (i = 0u; i < ev.u.value.text_len; ++i) {
+                    next.push_back(ev.u.value.text[i]);
+                }
+                m_ui->opt_monitor_text = next;
+            } else if (wid == (u32)W_LOGS_DIAG_OUT && vt == (u32)DUI_VALUE_TEXT) {
+                std::string next;
+                u32 i;
+                for (i = 0u; i < ev.u.value.text_len; ++i) {
+                    next.push_back(ev.u.value.text[i]);
+                }
+                m_ui->logs_diag_out_path = next;
+            } else if (wid == (u32)W_LOGS_RUNS_LIST && vt == (u32)DUI_VALUE_LIST) {
+                const u32 item_id = ev.u.value.item_id;
+                size_t i;
+                m_ui->logs_selected_run_item_id = item_id;
+                m_ui->logs_selected_run_id.clear();
+                for (i = 0u; i < m_ui->cache_run_ids.size(); ++i) {
+                    if (stable_item_id(m_ui->cache_run_ids[i]) == item_id) {
+                        m_ui->logs_selected_run_id = m_ui->cache_run_ids[i];
+                        break;
+                    }
+                }
+                if (!m_ui->logs_selected_run_id.empty() && selected_instance()) {
+                    ui_load_selected_run_audit(*m_ui, m_paths.root, selected_instance()->id);
+                }
             }
         }
 
@@ -1313,83 +1928,280 @@ bool DomLauncherApp::build_dui_state(std::vector<unsigned char>& out_state) cons
         dui_state_add_text(inner, (u32)W_INST_HINT, buf);
     }
 
-    /* Play tab placeholders */
+    /* Play tab */
     {
         const InstanceInfo* inst = selected_instance();
-        dui_state_add_text(inner, (u32)W_PLAY_SELECTED, inst ? (std::string("Selected: ") + inst->id) : std::string("Selected: (none)"));
-        dui_state_add_text(inner, (u32)W_PLAY_PROFILE, std::string("Profile: ") + (m_profile_valid ? "dom_profile" : "default"));
-        dui_state_add_text(inner, (u32)W_PLAY_MANIFEST, std::string("Manifest: (not loaded)"));
-        dui_state_add_text(inner, (u32)W_PLAY_LAST_RUN, std::string("Last run: (not loaded)"));
-        dui_state_add_u32(inner, (u32)W_PLAY_OFFLINE, (u32)DUI_VALUE_BOOL, 0u);
+        std::string selected = inst ? (std::string("Selected: ") + inst->id) : std::string("Selected: (none)");
+        if (inst && m_ui->cache_valid && m_ui->cache_manifest.instance_id == inst->id) {
+            selected += std::string(" known_good=") + (m_ui->cache_manifest.known_good ? "1" : "0");
+        }
+        dui_state_add_text(inner, (u32)W_PLAY_SELECTED, selected);
+
+        {
+            std::string profile_line = std::string("Profile: ") + (m_profile_valid ? "dom_profile" : "default");
+            profile_line += std::string(" ui=") + m_ui_backend_selected;
+            profile_line += std::string(" dgfx=") + (m_ui->cache_config.gfx_backend.empty() ? std::string("auto") : m_ui->cache_config.gfx_backend);
+            profile_line += std::string(" api=") + (m_ui->cache_config.renderer_api.empty() ? std::string("auto") : m_ui->cache_config.renderer_api);
+            dui_state_add_text(inner, (u32)W_PLAY_PROFILE, profile_line);
+        }
+
+        if (inst && m_ui->cache_valid && m_ui->cache_manifest.instance_id == inst->id) {
+            std::string manifest_line = std::string("Manifest: hash=0x") + u64_hex16(m_ui->cache_manifest_hash64);
+            if (m_ui->cache_manifest.known_good) {
+                manifest_line += " [known_good]";
+            }
+            if (!m_ui->cache_manifest.pinned_engine_build_id.empty()) {
+                manifest_line += std::string(" engine=") + m_ui->cache_manifest.pinned_engine_build_id;
+            }
+            if (!m_ui->cache_manifest.pinned_game_build_id.empty()) {
+                manifest_line += std::string(" game=") + m_ui->cache_manifest.pinned_game_build_id;
+            }
+            if (!m_ui->cache_error.empty()) {
+                manifest_line += std::string(" cache_err=") + m_ui->cache_error;
+            }
+            dui_state_add_text(inner, (u32)W_PLAY_MANIFEST, manifest_line);
+        } else {
+            dui_state_add_text(inner, (u32)W_PLAY_MANIFEST, std::string("Manifest: (unavailable)"));
+        }
+
+        if (inst && m_ui->cache_valid && !m_ui->cache_history.attempts.empty()) {
+            const launcher_core::LauncherInstanceLaunchAttempt& a = m_ui->cache_history.attempts[m_ui->cache_history.attempts.size() - 1u];
+            std::string last_line = std::string("Last run: outcome=") + u32_to_string(a.outcome);
+            last_line += std::string(" safe_mode=") + (a.safe_mode ? "1" : "0");
+            last_line += std::string(" exit=") + i32_to_string(a.exit_code);
+            if (!a.detail.empty()) {
+                last_line += std::string(" detail=") + a.detail;
+            }
+            dui_state_add_text(inner, (u32)W_PLAY_LAST_RUN, last_line);
+        } else {
+            dui_state_add_text(inner, (u32)W_PLAY_LAST_RUN, std::string("Last run: (none)"));
+        }
+
+        dui_state_add_u32(inner, (u32)W_PLAY_OFFLINE, (u32)DUI_VALUE_BOOL, m_ui->play_offline ? 1u : 0u);
         {
             std::vector<ListItem> targets;
-            targets.push_back(ListItem(1u, "game"));
-            dui_state_add_list(inner, (u32)W_PLAY_TARGET_LIST, (m_ui->play_target_item_id ? m_ui->play_target_item_id : 1u), targets);
+            const u32 game_id = stable_item_id(std::string("game"));
+            u32 selected_target = m_ui->play_target_item_id ? m_ui->play_target_item_id : game_id;
+
+            targets.push_back(ListItem(game_id, "game"));
+            for (i = 0u; i < m_ui->cache_tools.size(); ++i) {
+                const launcher_core::LauncherToolEntry& te = m_ui->cache_tools[i];
+                const std::string key = std::string("tool:") + te.tool_id;
+                const u32 tid = stable_item_id(key);
+                std::string label = key;
+                if (!te.display_name.empty()) {
+                    label += std::string(" (") + te.display_name + ")";
+                }
+                targets.push_back(ListItem(tid, label));
+            }
+
+            {
+                size_t j;
+                bool found = false;
+                for (j = 0u; j < targets.size(); ++j) {
+                    if (targets[j].id == selected_target) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    selected_target = game_id;
+                }
+            }
+            dui_state_add_list(inner, (u32)W_PLAY_TARGET_LIST, selected_target, targets);
         }
         {
             std::vector<ListItem> news;
-            news.push_back(ListItem(1u, "Local news: add docs/launcher/news.txt"));
+            if (m_ui->news_lines.empty()) {
+                news.push_back(ListItem(1u, "No local news."));
+            } else {
+                for (i = 0u; i < m_ui->news_lines.size(); ++i) {
+                    news.push_back(ListItem((u32)(i + 1u), m_ui->news_lines[i]));
+                }
+            }
             dui_state_add_list(inner, (u32)W_NEWS_LIST, 0u, news);
         }
     }
 
-    /* Instances tab placeholders */
+    /* Instances tab */
     {
         std::vector<ListItem> paths;
         const InstanceInfo* inst = selected_instance();
         if (inst) {
-            paths.push_back(ListItem(1u, std::string("instance_root=") + path_join(path_join(m_paths.root, "instances"), inst->id)));
+            launcher_core::LauncherInstancePaths p = launcher_core::launcher_instance_paths_make(m_paths.root, inst->id);
+            paths.push_back(ListItem(1u, std::string("instance_id=") + inst->id));
+            paths.push_back(ListItem(2u, std::string("state_root=") + p.state_root));
+            paths.push_back(ListItem(3u, std::string("instance_root=") + p.instance_root));
+            paths.push_back(ListItem(4u, std::string("manifest=") + p.manifest_path));
+            paths.push_back(ListItem(5u, std::string("config=") + p.config_file_path));
+            paths.push_back(ListItem(6u, std::string("logs_root=") + p.logs_root));
+            paths.push_back(ListItem(7u, std::string("runs_root=") + path_join(p.logs_root, "runs")));
+            paths.push_back(ListItem(8u, std::string("cache_root=") + p.cache_root));
+            paths.push_back(ListItem(9u, std::string("content_root=") + p.content_root));
+            paths.push_back(ListItem(10u, std::string("mods_root=") + p.mods_root));
+            paths.push_back(ListItem(11u, std::string("saves_root=") + p.saves_root));
+            if (m_ui->cache_valid && m_ui->cache_manifest.instance_id == inst->id) {
+                paths.push_back(ListItem(12u, std::string("known_good=") + (m_ui->cache_manifest.known_good ? "1" : "0")));
+            }
         }
         dui_state_add_list(inner, (u32)W_INST_PATHS_LIST, 0u, paths);
-        dui_state_add_text(inner, (u32)W_INST_IMPORT_PATH, std::string());
-        dui_state_add_text(inner, (u32)W_INST_EXPORT_PATH, std::string());
+        dui_state_add_text(inner, (u32)W_INST_IMPORT_PATH, m_ui->inst_import_path);
+        dui_state_add_text(inner, (u32)W_INST_EXPORT_PATH, m_ui->inst_export_path);
     }
 
-    /* Packs tab placeholders */
-    dui_state_add_text(inner, (u32)W_PACKS_LABEL, std::string("Packs / Mods"));
-    dui_state_add_list(inner, (u32)W_PACKS_LIST, 0u, std::vector<ListItem>());
-    dui_state_add_u32(inner, (u32)W_PACKS_ENABLED, (u32)DUI_VALUE_BOOL, 0u);
+    /* Packs tab */
+    dui_state_add_text(inner,
+                       (u32)W_PACKS_LABEL,
+                       std::string("Packs / Mods (staged=") + u32_to_string((u32)m_ui->packs_staged.size()) + ")");
     {
-        std::vector<ListItem> policies;
-        policies.push_back(ListItem(1u, "never"));
-        policies.push_back(ListItem(2u, "prompt"));
-        policies.push_back(ListItem(3u, "auto"));
-        dui_state_add_list(inner, (u32)W_PACKS_POLICY_LIST, 2u, policies);
-    }
-    dui_state_add_text(inner, (u32)W_PACKS_RESOLVED, std::string());
-    dui_state_add_text(inner, (u32)W_PACKS_ERROR, std::string());
+        std::vector<ListItem> packs;
+        u32 packs_selected_id = 0u;
+        u32 selected_enabled = 0u;
+        u32 selected_policy = (u32)launcher_core::LAUNCHER_UPDATE_PROMPT;
 
-    /* Options tab placeholders */
-    dui_state_add_list(inner, (u32)W_OPT_GFX_LIST, 0u, std::vector<ListItem>());
-    dui_state_add_text(inner, (u32)W_OPT_API_FIELD, std::string());
+        if (selected_instance() && m_ui->cache_valid) {
+            const launcher_core::LauncherInstanceManifest& m = m_ui->cache_manifest;
+            for (i = 0u; i < m.content_entries.size(); ++i) {
+                const launcher_core::LauncherContentEntry& e = m.content_entries[i];
+                if (!is_pack_like(e.type)) {
+                    continue;
+                }
+                const std::string key = pack_key(e.type, e.id);
+                const u32 id = stable_item_id(key);
+                u32 eff_enabled = e.enabled ? 1u : 0u;
+                u32 eff_policy = e.update_policy;
+                bool staged = false;
+
+                std::map<std::string, DomLauncherUiState::StagedPackChange>::const_iterator it = m_ui->packs_staged.find(key);
+                if (it != m_ui->packs_staged.end()) {
+                    if (it->second.has_enabled) {
+                        eff_enabled = it->second.enabled ? 1u : 0u;
+                        staged = true;
+                    }
+                    if (it->second.has_update_policy) {
+                        eff_policy = it->second.update_policy;
+                        staged = true;
+                    }
+                }
+
+                std::string line;
+                if (staged) {
+                    line += "* ";
+                }
+                line += std::string(content_type_to_short(e.type)) + ":" + e.id + " v" + e.version;
+                line += std::string(" enabled=") + (eff_enabled ? "1" : "0");
+                line += std::string(" policy=") + update_policy_to_string(eff_policy);
+                packs.push_back(ListItem(id, line));
+
+                if ((!m_ui->packs_selected_key.empty() && key == m_ui->packs_selected_key) ||
+                    (m_ui->packs_selected_key.empty() && m_ui->packs_selected_item_id != 0u && id == m_ui->packs_selected_item_id)) {
+                    packs_selected_id = id;
+                    selected_enabled = eff_enabled;
+                    selected_policy = eff_policy;
+                }
+            }
+        }
+
+        dui_state_add_list(inner, (u32)W_PACKS_LIST, packs_selected_id, packs);
+        dui_state_add_u32(inner, (u32)W_PACKS_ENABLED, (u32)DUI_VALUE_BOOL, packs_selected_id ? (selected_enabled ? 1u : 0u) : 0u);
+
+        {
+            std::vector<ListItem> policies;
+            policies.push_back(ListItem(stable_item_id("never"), "never"));
+            policies.push_back(ListItem(stable_item_id("prompt"), "prompt"));
+            policies.push_back(ListItem(stable_item_id("auto"), "auto"));
+            dui_state_add_list(inner, (u32)W_PACKS_POLICY_LIST, update_policy_item_id(selected_policy), policies);
+        }
+    }
+
+    dui_state_add_text(inner, (u32)W_PACKS_RESOLVED, m_ui->cache_resolved_packs_summary);
+    dui_state_add_text(inner, (u32)W_PACKS_ERROR, m_ui->cache_resolved_packs_error);
+
+    /* Options tab */
+    {
+        std::vector<ListItem> gfx;
+        std::vector<std::string> names;
+        u32 selected = stable_item_id("auto");
+
+        gfx.push_back(ListItem(stable_item_id("auto"), "auto"));
+        collect_dgfx_backend_names(names);
+        for (i = 0u; i < names.size(); ++i) {
+            gfx.push_back(ListItem(stable_item_id(std::string("dgfx:") + names[i]), names[i]));
+        }
+        if (!m_ui->cache_config.gfx_backend.empty()) {
+            selected = stable_item_id(std::string("dgfx:") + m_ui->cache_config.gfx_backend);
+        }
+        dui_state_add_list(inner, (u32)W_OPT_GFX_LIST, selected, gfx);
+    }
+    dui_state_add_text(inner, (u32)W_OPT_API_FIELD, m_ui->opt_renderer_api_text);
     {
         std::vector<ListItem> wm;
-        wm.push_back(ListItem(1u, "auto"));
-        wm.push_back(ListItem(2u, "windowed"));
-        wm.push_back(ListItem(3u, "fullscreen"));
-        wm.push_back(ListItem(4u, "borderless"));
-        dui_state_add_list(inner, (u32)W_OPT_WINMODE_LIST, 1u, wm);
+        wm.push_back(ListItem(stable_item_id("auto"), "auto"));
+        wm.push_back(ListItem(stable_item_id("windowed"), "windowed"));
+        wm.push_back(ListItem(stable_item_id("fullscreen"), "fullscreen"));
+        wm.push_back(ListItem(stable_item_id("borderless"), "borderless"));
+        dui_state_add_list(inner, (u32)W_OPT_WINMODE_LIST, window_mode_item_id(m_ui->cache_config.window_mode), wm);
     }
-    dui_state_add_text(inner, (u32)W_OPT_WIDTH_FIELD, std::string());
-    dui_state_add_text(inner, (u32)W_OPT_HEIGHT_FIELD, std::string());
-    dui_state_add_text(inner, (u32)W_OPT_DPI_FIELD, std::string());
-    dui_state_add_text(inner, (u32)W_OPT_MONITOR_FIELD, std::string());
+    dui_state_add_text(inner, (u32)W_OPT_WIDTH_FIELD, m_ui->opt_width_text);
+    dui_state_add_text(inner, (u32)W_OPT_HEIGHT_FIELD, m_ui->opt_height_text);
+    dui_state_add_text(inner, (u32)W_OPT_DPI_FIELD, m_ui->opt_dpi_text);
+    dui_state_add_text(inner, (u32)W_OPT_MONITOR_FIELD, m_ui->opt_monitor_text);
     dui_state_add_text(inner, (u32)W_OPT_AUDIO_LABEL, std::string("Audio device: not supported"));
     dui_state_add_text(inner, (u32)W_OPT_INPUT_LABEL, std::string("Input backend: not supported"));
 
-    /* Logs tab placeholders */
-    dui_state_add_text(inner, (u32)W_LOGS_LAST_RUN, std::string("Last run: (not loaded)"));
-    dui_state_add_list(inner, (u32)W_LOGS_RUNS_LIST, 0u, std::vector<ListItem>());
-    dui_state_add_list(inner, (u32)W_LOGS_AUDIT_LIST, 0u, std::vector<ListItem>());
-    dui_state_add_text(inner, (u32)W_LOGS_DIAG_OUT, std::string());
-    dui_state_add_list(inner, (u32)W_LOGS_LOCS_LIST, 0u, std::vector<ListItem>());
+    /* Logs tab */
+    {
+        if (selected_instance() && m_ui->cache_valid && !m_ui->cache_run_ids.empty()) {
+            dui_state_add_text(inner,
+                               (u32)W_LOGS_LAST_RUN,
+                               std::string("Last run_id=") + m_ui->cache_run_ids[m_ui->cache_run_ids.size() - 1u]);
+        } else {
+            dui_state_add_text(inner, (u32)W_LOGS_LAST_RUN, std::string("Last run: (none)"));
+        }
+
+        {
+            std::vector<ListItem> runs;
+            for (i = 0u; i < m_ui->cache_run_ids.size(); ++i) {
+                runs.push_back(ListItem(stable_item_id(m_ui->cache_run_ids[i]), m_ui->cache_run_ids[i]));
+            }
+            dui_state_add_list(inner, (u32)W_LOGS_RUNS_LIST, m_ui->logs_selected_run_item_id, runs);
+        }
+
+        {
+            std::vector<ListItem> audit;
+            for (i = 0u; i < m_ui->logs_selected_audit_lines.size(); ++i) {
+                audit.push_back(ListItem((u32)(i + 1u), m_ui->logs_selected_audit_lines[i]));
+            }
+            dui_state_add_list(inner, (u32)W_LOGS_AUDIT_LIST, 0u, audit);
+        }
+
+        dui_state_add_text(inner, (u32)W_LOGS_DIAG_OUT, m_ui->logs_diag_out_path);
+
+        {
+            std::vector<ListItem> locs;
+            const InstanceInfo* inst = selected_instance();
+            if (inst) {
+                launcher_core::LauncherInstancePaths p = launcher_core::launcher_instance_paths_make(m_paths.root, inst->id);
+                locs.push_back(ListItem(1u, std::string("instance_root=") + p.instance_root));
+                locs.push_back(ListItem(2u, std::string("logs_root=") + p.logs_root));
+                locs.push_back(ListItem(3u, std::string("runs_root=") + path_join(p.logs_root, "runs")));
+                locs.push_back(ListItem(4u, std::string("cache_root=") + p.cache_root));
+                locs.push_back(ListItem(5u, std::string("content_root=") + p.content_root));
+            }
+            dui_state_add_list(inner, (u32)W_LOGS_LOCS_LIST, 0u, locs);
+        }
+    }
 
     /* Status bar */
     dui_state_add_text(inner, (u32)W_STATUS_TEXT, m_ui->status_text);
     dui_state_add_u32(inner, (u32)W_STATUS_PROGRESS, (u32)DUI_VALUE_U32, (m_ui->status_progress > 1000u) ? 1000u : m_ui->status_progress);
     {
         std::string summary = std::string("instance=") + (selected_instance() ? selected_instance()->id : std::string("(none)"));
+        summary += std::string(" profile=") + (m_profile_valid ? "dom_profile" : "default");
         summary += std::string(" ui=") + m_ui_backend_selected;
+        if (selected_instance() && m_ui->cache_valid) {
+            summary += std::string(" manifest=") + u64_hex16(m_ui->cache_manifest_hash64).substr(0u, 8u);
+        }
         dui_state_add_text(inner, (u32)W_STATUS_SELECTION, summary);
     }
 
