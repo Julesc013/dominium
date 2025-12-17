@@ -8,6 +8,7 @@ add_executable(dominium-launcher
     dom_launcher_catalog.cpp
     dom_launcher_actions.cpp
     launcher_control_plane.cpp
+    launcher_launch_plumbing.cpp
 )
 
 target_include_directories(dominium-launcher PUBLIC
