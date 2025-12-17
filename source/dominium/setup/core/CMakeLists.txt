@@ -12,12 +12,14 @@ add_library(dsu_core STATIC
     src/resolve/dsu_resolve.c
     src/state/dsu_state.c
     src/util/dsu_util_blob.c
+    src/util/dsu_util_digest.c
     src/util/dsu_util_filefmt.c
     src/util/dsu_util_hash.c
     src/util/dsu_util_le.c
     src/util/dsu_util_mem.c
     src/util/dsu_util_sort.c
     src/util/dsu_util_str.c
+    src/util/dsu_util_tlv.c
 )
 
 target_include_directories(dsu_core

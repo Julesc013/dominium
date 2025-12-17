@@ -10,6 +10,7 @@ PURPOSE: Internal-only utilities shared across Setup Core modules.
 
 #include "../../include/dsu/dsu_callbacks.h"
 #include "../../include/dsu/dsu_config.h"
+#include "../../include/dsu/dsu_digest.h"
 #include "../../include/dsu/dsu_types.h"
 
 #define DSU_ARRAY_COUNT(a) ((dsu_u32)(sizeof(a) / sizeof((a)[0])))
@@ -51,11 +52,23 @@ dsu_status_t dsu__blob_append(dsu_blob_t *b, const void *bytes, dsu_u32 len);
 dsu_status_t dsu__blob_put_u8(dsu_blob_t *b, dsu_u8 v);
 dsu_status_t dsu__blob_put_u16le(dsu_blob_t *b, dsu_u16 v);
 dsu_status_t dsu__blob_put_u32le(dsu_blob_t *b, dsu_u32 v);
+dsu_status_t dsu__blob_put_u64le(dsu_blob_t *b, dsu_u64 v);
 
 dsu_status_t dsu__read_u8(const dsu_u8 *buf, dsu_u32 len, dsu_u32 *io_off, dsu_u8 *out_v);
 dsu_status_t dsu__read_u16le(const dsu_u8 *buf, dsu_u32 len, dsu_u32 *io_off, dsu_u16 *out_v);
 dsu_status_t dsu__read_u32le(const dsu_u8 *buf, dsu_u32 len, dsu_u32 *io_off, dsu_u32 *out_v);
+dsu_status_t dsu__read_u64le(const dsu_u8 *buf, dsu_u32 len, dsu_u32 *io_off, dsu_u64 *out_v);
 dsu_status_t dsu__read_bytes(const dsu_u8 *buf, dsu_u32 len, dsu_u32 *io_off, void *out_bytes, dsu_u32 n);
+
+/* Implemented in util/dsu_util_tlv.c */
+#define DSU_TLV_HEADER_SIZE 6u
+dsu_status_t dsu__tlv_read_header(const dsu_u8 *buf,
+                                 dsu_u32 len,
+                                 dsu_u32 *io_off,
+                                 dsu_u16 *out_type,
+                                 dsu_u32 *out_payload_len);
+dsu_status_t dsu__tlv_skip_value(dsu_u32 len, dsu_u32 *io_off, dsu_u32 payload_len);
+dsu_status_t dsu__blob_put_tlv(dsu_blob_t *b, dsu_u16 type, const void *payload, dsu_u32 payload_len);
 
 /* Implemented in util/dsu_util_filefmt.c */
 #define DSU_ENDIAN_MARKER_LE 0xFFFEu
