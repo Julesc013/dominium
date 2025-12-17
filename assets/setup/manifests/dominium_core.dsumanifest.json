@@ -1,0 +1,19 @@
+{
+  "format_version":2,
+  "schema_version":1,
+  "product_id":"dominium",
+  "product_version":"0.1.0",
+  "build_channel":"dev",
+  "platform_targets":["win64-x64"],
+  "default_install_roots":[
+    {"scope":"portable","platform":"win64-x64","path":"C:/Dominium"},
+    {"scope":"user","platform":"win64-x64","path":"C:/Dominium/User"},
+    {"scope":"system","platform":"win64-x64","path":"C:/Dominium/System"}
+  ],
+  "components":[
+    {"component_id":"runtime","component_version":"","component_kind":"runtime","flags":0,"dependencies":[],"conflicts":[],"payloads":[{"kind":"archive","path":"payloads/runtime.zip","sha256":"0110000000000000000000000000000000000000000000000000000000000000","size":""}],"actions":[{"kind":"DECLARE_CAPABILITY","app_id":"","display_name":"","exec_relpath":"","arguments":"","icon_relpath":"","extension":"","protocol":"","marker_relpath":"","capability_id":"cap.runtime","capability_value":"present","publisher":""}]}
+  ],
+  "uninstall_policy":{"remove_owned_files":1,"preserve_user_data":1,"preserve_cache":1},
+  "content_digest32":2898630826,
+  "content_digest64":"0x30d221243935520a"
+}
