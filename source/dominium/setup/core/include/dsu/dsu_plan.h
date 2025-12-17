@@ -29,6 +29,7 @@ DSU_API dsu_status_t dsu_plan_build(dsu_ctx_t *ctx,
 DSU_API void dsu_plan_destroy(dsu_ctx_t *ctx, dsu_plan_t *plan);
 
 DSU_API dsu_u32 dsu_plan_id_hash32(const dsu_plan_t *plan);
+DSU_API dsu_u64 dsu_plan_id_hash64(const dsu_plan_t *plan);
 
 DSU_API const char *dsu_plan_product_id(const dsu_plan_t *plan);
 DSU_API const char *dsu_plan_version(const dsu_plan_t *plan);
@@ -49,4 +50,3 @@ DSU_API dsu_status_t dsu_plan_read_file(dsu_ctx_t *ctx, const char *path, dsu_pl
 #endif
 
 #endif /* DSU_PLAN_H_INCLUDED */
-
