@@ -17,11 +17,16 @@ extern "C" {
 #include "domino/sys.h"
 }
 
+#include "launcher_launch_plumbing.h"
+
 #include "core/include/launcher_pack_ops.h"
 #include "core/include/launcher_safety.h"
 
+#include "core/include/launcher_audit.h"
+#include "core/include/launcher_artifact_store.h"
 #include "core/include/launcher_instance.h"
 #include "core/include/launcher_instance_ops.h"
+#include "core/include/launcher_tools_registry.h"
 
 namespace dom {
 
@@ -98,6 +103,17 @@ static bool read_file_all(const std::string& path, std::vector<unsigned char>& o
         return false;
     }
     return true;
+}
+
+static bool write_file_all(const std::string& path, const std::vector<unsigned char>& bytes) {
+    FILE* f = std::fopen(path.c_str(), "wb");
+    size_t wrote = 0u;
+    if (!f) return false;
+    if (!bytes.empty()) {
+        wrote = std::fwrite(&bytes[0], 1u, bytes.size(), f);
+    }
+    std::fclose(f);
+    return wrote == bytes.size();
 }
 
 static void out_kv(FILE* out, const char* key, const std::string& val) {
@@ -205,6 +221,215 @@ static std::string u32_to_string(u32 v) {
     char buf[32];
     std::snprintf(buf, sizeof(buf), "%u", (unsigned)v);
     return std::string(buf);
+}
+
+static std::string i32_to_string(i32 v) {
+    char buf[32];
+    std::snprintf(buf, sizeof(buf), "%d", (int)v);
+    return std::string(buf);
+}
+
+static std::string u64_hex16(u64 v) {
+    static const char* hex = "0123456789abcdef";
+    char buf[17];
+    int i;
+    for (i = 0; i < 16; ++i) {
+        unsigned shift = (unsigned)((15 - i) * 4);
+        unsigned nib = (unsigned)((v >> shift) & (u64)0xFu);
+        buf[i] = hex[nib & 0xFu];
+    }
+    buf[16] = '\0';
+    return std::string(buf);
+}
+
+static bool ends_with_ci(const std::string& s, const char* suffix) {
+    size_t ls;
+    size_t lx;
+    size_t i;
+    if (!suffix) return false;
+    ls = s.size();
+    lx = std::strlen(suffix);
+    if (lx == 0u || ls < lx) return false;
+    for (i = 0u; i < lx; ++i) {
+        char a = s[ls - lx + i];
+        char b = suffix[i];
+        if (a >= 'A' && a <= 'Z') a = (char)(a - 'A' + 'a');
+        if (b >= 'A' && b <= 'Z') b = (char)(b - 'A' + 'a');
+        if (a != b) return false;
+    }
+    return true;
+}
+
+static std::string dirname_of(const std::string& path) {
+    size_t i;
+    for (i = path.size(); i > 0u; --i) {
+        char c = path[i - 1u];
+        if (c == '/' || c == '\\') {
+            return path.substr(0u, i - 1u);
+        }
+    }
+    return std::string();
+}
+
+static std::string basename_of(const std::string& path) {
+    size_t i;
+    for (i = path.size(); i > 0u; --i) {
+        char c = path[i - 1u];
+        if (c == '/' || c == '\\') {
+            return path.substr(i);
+        }
+    }
+    return path;
+}
+
+#if defined(_WIN32) || defined(_WIN64)
+static std::string add_exe_if_missing(const std::string& p) {
+    if (ends_with_ci(p, ".exe")) {
+        return p;
+    }
+    return p + ".exe";
+}
+#else
+static std::string add_exe_if_missing(const std::string& p) { return p; }
+#endif
+
+static bool resolve_tool_executable_path(const ::launcher_services_api_v1* services,
+                                        const std::string& state_root,
+                                        const std::string& argv0,
+                                        const std::string& tool_id,
+                                        std::string& out_path,
+                                        std::string& out_error) {
+    dom::launcher_core::LauncherToolsRegistry reg;
+    dom::launcher_core::LauncherToolEntry te;
+    std::string loaded;
+    std::string err;
+    std::string dir;
+
+    out_path.clear();
+    out_error.clear();
+
+    if (!dom::launcher_core::launcher_tools_registry_load(services, state_root, reg, &loaded, &err)) {
+        out_error = std::string("tools_registry_load_failed;") + err;
+        return false;
+    }
+    if (!dom::launcher_core::launcher_tools_registry_find(reg, tool_id, te)) {
+        out_error = std::string("tool_not_found;tool_id=") + tool_id;
+        return false;
+    }
+
+    if (!te.executable_artifact_hash_bytes.empty()) {
+        std::string artifact_dir;
+        std::string meta_path;
+        std::string payload_path;
+        if (dom::launcher_core::launcher_artifact_store_paths(state_root,
+                                                              te.executable_artifact_hash_bytes,
+                                                              artifact_dir,
+                                                              meta_path,
+                                                              payload_path) &&
+            file_exists(payload_path)) {
+            out_path = payload_path;
+            return true;
+        }
+    }
+
+    dir = dirname_of(argv0);
+    if (!dir.empty()) {
+        std::string cand0 = path_join(dir, tool_id);
+        std::string cand1 = add_exe_if_missing(cand0);
+        if (file_exists(cand0)) {
+            out_path = cand0;
+            return true;
+        }
+        if (file_exists(cand1)) {
+            out_path = cand1;
+            return true;
+        }
+    }
+
+    /* Fall back to PATH/current-directory resolution by the process layer. */
+    out_path = add_exe_if_missing(tool_id);
+    return true;
+}
+
+static bool resolve_game_executable_path(const std::string& argv0,
+                                        std::string& out_path) {
+    std::string dir = dirname_of(argv0);
+    std::string name0 = "dominium_game";
+    std::string name1 = add_exe_if_missing(name0);
+
+    out_path.clear();
+
+    if (!dir.empty()) {
+        std::string cand0 = path_join(dir, name0);
+        std::string cand1 = path_join(dir, name1);
+        if (file_exists(cand0)) {
+            out_path = cand0;
+            return true;
+        }
+        if (file_exists(cand1)) {
+            out_path = cand1;
+            return true;
+        }
+
+        {
+            const std::string tail = basename_of(dir);
+            if (tail == "Debug" || tail == "Release") {
+                const std::string config = tail;
+                const std::string dominium_dir = dirname_of(dirname_of(dir));
+                if (!dominium_dir.empty()) {
+                    std::string cand2 = path_join(path_join(path_join(dominium_dir, "game"), config), name1);
+                    if (file_exists(cand2)) {
+                        out_path = cand2;
+                        return true;
+                    }
+                }
+            }
+        }
+    }
+
+    if (file_exists(name1)) {
+        out_path = name1;
+        return true;
+    }
+
+    return false;
+}
+
+#if defined(_WIN32) || defined(_WIN64)
+extern "C" int _mkdir(const char* path);
+#else
+extern "C" int mkdir(const char* path, unsigned int mode);
+#endif
+
+static void mkdir_one_best_effort(const std::string& path) {
+    if (path.empty()) return;
+#if defined(_WIN32) || defined(_WIN64)
+    (void)_mkdir(path.c_str());
+#else
+    (void)mkdir(path.c_str(), 0777u);
+#endif
+}
+
+static void mkdir_p_best_effort(const std::string& path) {
+    std::string p = normalize_seps(path);
+    size_t i;
+    if (p.empty()) return;
+    for (i = 0u; i < p.size(); ++i) {
+        if (p[i] == '/') {
+            std::string part = p.substr(0u, i);
+            if (!part.empty()) mkdir_one_best_effort(part);
+        }
+    }
+    mkdir_one_best_effort(p);
+}
+
+static bool copy_file_best_effort(const std::string& src, const std::string& dst) {
+    std::vector<unsigned char> bytes;
+    if (!read_file_all(src, bytes)) {
+        return false;
+    }
+    mkdir_p_best_effort(dirname_of(dst));
+    return write_file_all(dst, bytes);
 }
 
 static std::string choose_new_instance_id(const std::string& state_root, const std::string& template_id) {
@@ -529,10 +754,279 @@ ControlPlaneRunResult launcher_control_plane_try_run(int argc,
         return r;
     }
 
-    /* launch/safe-mode/audit-last/diag-bundle are implemented in PART A plumbing step. */
+    if (std::strcmp(cmd, "launch") == 0 || std::strcmp(cmd, "safe-mode") == 0) {
+        std::string instance_id;
+        std::string target_text;
+        std::string target_err;
+        dom::LaunchTarget target;
+        std::string exe_path;
+        std::string exe_err;
+        std::vector<std::string> child_args;
+        dom::launcher_core::LauncherLaunchOverrides ov;
+        dom::LaunchRunResult lr;
+        u32 wait = 1u;
+        u32 keep_last = 8u;
+        int i;
+
+        for (i = cmd_i + 1; i < argc; ++i) {
+            const char* a = argv[i];
+            if (!a || !a[0]) continue;
+            if (a[0] == '-') continue;
+            instance_id = std::string(a);
+            break;
+        }
+        {
+            const char* tv = find_arg_value(argc, argv, "--target=");
+            if (tv && tv[0]) target_text = std::string(tv);
+        }
+
+        audit_reason_kv(audit_core, "instance_id", instance_id);
+        audit_reason_kv(audit_core, "launch_target", target_text);
+
+        if (instance_id.empty() || target_text.empty()) {
+            audit_reason_kv(audit_core, "outcome", "fail");
+            out_kv(out, "result", "fail");
+            out_kv(out, "error", "missing_args");
+            r.exit_code = 2;
+            return r;
+        }
+
+        if (!launcher_parse_launch_target(target_text, target, target_err)) {
+            audit_reason_kv(audit_core, "outcome", "fail");
+            out_kv(out, "result", "fail");
+            out_kv(out, "error", "bad_target");
+            out_kv(out, "detail", target_err);
+            r.exit_code = 2;
+            return r;
+        }
+
+        if (target.is_tool != 0u) {
+            const std::string argv0 = (argc > 0 && argv[0]) ? std::string(argv[0]) : std::string();
+            if (!resolve_tool_executable_path(services, state_root, argv0, target.tool_id, exe_path, exe_err)) {
+                audit_reason_kv(audit_core, "outcome", "fail");
+                out_kv(out, "result", "fail");
+                out_kv(out, "error", "tool_exec_resolve_failed");
+                out_kv(out, "detail", exe_err);
+                r.exit_code = 1;
+                return r;
+            }
+        } else {
+            const std::string argv0 = (argc > 0 && argv[0]) ? std::string(argv[0]) : std::string();
+            if (!resolve_game_executable_path(argv0, exe_path)) {
+                audit_reason_kv(audit_core, "outcome", "fail");
+                out_kv(out, "result", "fail");
+                out_kv(out, "error", "game_exec_not_found");
+                r.exit_code = 1;
+                return r;
+            }
+        }
+
+        child_args.push_back(std::string("--instance=") + instance_id);
+
+        ov = dom::launcher_core::LauncherLaunchOverrides();
+        if (std::strcmp(cmd, "safe-mode") == 0) {
+            ov.request_safe_mode = 1u;
+            ov.safe_mode_allow_network = 0u;
+        }
+
+        (void)launcher_execute_launch_attempt(state_root,
+                                              instance_id,
+                                              target,
+                                              profile,
+                                              exe_path,
+                                              child_args,
+                                              wait,
+                                              keep_last,
+                                              ov,
+                                              lr);
+
+        audit_reason_kv(audit_core, "handshake_path", lr.handshake_path);
+        audit_reason_kv(audit_core, "run_dir", lr.run_dir);
+        audit_reason_kv(audit_core, "outcome", lr.ok ? "ok" : (lr.refused ? "refusal" : "fail"));
+
+        out_kv(out, "result", lr.ok ? "ok" : "fail");
+        out_kv(out, "instance_id", instance_id);
+        out_kv(out, "launch_target", launcher_launch_target_to_string(target));
+        out_kv(out, "run_id", std::string("0x") + u64_hex16(lr.run_id));
+        out_kv(out, "run_dir", lr.run_dir);
+        out_kv(out, "handshake_path", lr.handshake_path);
+        out_kv(out, "audit_path", lr.audit_path);
+        out_kv(out, "refused", lr.refused ? "1" : "0");
+        if (lr.refused) {
+            out_kv(out, "refusal_code", u32_to_string(lr.refusal_code));
+            out_kv(out, "refusal_detail", lr.refusal_detail);
+        }
+        if (lr.spawned) {
+            out_kv(out, "spawned", "1");
+            out_kv(out, "waited", lr.waited ? "1" : "0");
+            if (lr.waited) {
+                out_kv(out, "child_exit_code", i32_to_string(lr.child_exit_code));
+            }
+        } else {
+            out_kv(out, "spawned", "0");
+        }
+
+        if (lr.waited) {
+            r.exit_code = (int)lr.child_exit_code;
+        } else {
+            r.exit_code = lr.ok ? 0 : 1;
+        }
+        return r;
+    }
+
+    if (std::strcmp(cmd, "audit-last") == 0) {
+        std::string instance_id;
+        std::vector<std::string> run_ids;
+        std::string list_err;
+        std::string last_run;
+        std::string run_dir;
+        std::string audit_path;
+        std::vector<unsigned char> bytes;
+        dom::launcher_core::LauncherAuditLog audit;
+        int i;
+
+        for (i = cmd_i + 1; i < argc; ++i) {
+            const char* a = argv[i];
+            if (!a || !a[0]) continue;
+            if (a[0] == '-') continue;
+            instance_id = std::string(a);
+            break;
+        }
+
+        audit_reason_kv(audit_core, "instance_id", instance_id);
+
+        if (instance_id.empty()) {
+            audit_reason_kv(audit_core, "outcome", "fail");
+            out_kv(out, "result", "fail");
+            out_kv(out, "error", "missing_instance_id");
+            r.exit_code = 2;
+            return r;
+        }
+
+        if (!launcher_list_instance_runs(state_root, instance_id, run_ids, list_err) || run_ids.empty()) {
+            audit_reason_kv(audit_core, "outcome", "fail");
+            out_kv(out, "result", "fail");
+            out_kv(out, "error", "no_runs");
+            out_kv(out, "detail", list_err);
+            r.exit_code = 1;
+            return r;
+        }
+
+        last_run = run_ids[run_ids.size() - 1u];
+        run_dir = path_join(path_join(path_join(path_join(state_root, "instances"), instance_id), "logs/runs"), last_run);
+        audit_path = path_join(run_dir, "launcher_audit.tlv");
+
+        if (!read_file_all(audit_path, bytes) || bytes.empty() ||
+            !dom::launcher_core::launcher_audit_from_tlv_bytes(&bytes[0], bytes.size(), audit)) {
+            audit_reason_kv(audit_core, "outcome", "fail");
+            out_kv(out, "result", "fail");
+            out_kv(out, "error", "read_audit_failed");
+            out_kv(out, "audit_path", audit_path);
+            r.exit_code = 1;
+            return r;
+        }
+
+        audit_reason_kv(audit_core, "outcome", "ok");
+        out_kv(out, "result", "ok");
+        out_kv(out, "instance_id", instance_id);
+        out_kv(out, "run_dir_id", last_run);
+        out_kv(out, "audit_path", audit_path);
+        out_kv(out, "audit.run_id", std::string("0x") + u64_hex16(audit.run_id));
+        out_kv(out, "audit.exit_result", i32_to_string(audit.exit_result));
+        out_kv_u32(out, "audit.reasons.count", (u32)audit.reasons.size());
+        {
+            size_t j;
+            for (j = 0u; j < audit.reasons.size(); ++j) {
+                out_kv(out, (std::string("audit.reasons[") + u32_to_string((u32)j) + "]").c_str(), audit.reasons[j]);
+            }
+        }
+        r.exit_code = 0;
+        return r;
+    }
+
+    if (std::strcmp(cmd, "diag-bundle") == 0) {
+        std::string instance_id;
+        std::string out_root;
+        std::vector<std::string> run_ids;
+        std::string list_err;
+        std::string last_run;
+        std::string src_run_dir;
+        std::string dst_run_dir;
+        int i;
+
+        for (i = cmd_i + 1; i < argc; ++i) {
+            const char* a = argv[i];
+            if (!a || !a[0]) continue;
+            if (a[0] == '-') continue;
+            instance_id = std::string(a);
+            break;
+        }
+        {
+            const char* ov = find_arg_value(argc, argv, "--out=");
+            if (ov && ov[0]) out_root = std::string(ov);
+        }
+
+        audit_reason_kv(audit_core, "instance_id", instance_id);
+        audit_reason_kv(audit_core, "diag_out", out_root);
+
+        if (instance_id.empty() || out_root.empty()) {
+            audit_reason_kv(audit_core, "outcome", "fail");
+            out_kv(out, "result", "fail");
+            out_kv(out, "error", "missing_args");
+            r.exit_code = 2;
+            return r;
+        }
+
+        mkdir_p_best_effort(out_root);
+
+        if (!dom::launcher_core::launcher_instance_export_instance(services,
+                                                                   instance_id,
+                                                                   out_root,
+                                                                   state_root,
+                                                                   (u32)dom::launcher_core::LAUNCHER_INSTANCE_EXPORT_FULL_BUNDLE,
+                                                                   (dom::launcher_core::LauncherAuditLog*)0)) {
+            audit_reason_kv(audit_core, "outcome", "fail");
+            out_kv(out, "result", "fail");
+            out_kv(out, "error", "export_failed");
+            r.exit_code = 1;
+            return r;
+        }
+
+        /* Copy last run audit+handshake when present. */
+        if (launcher_list_instance_runs(state_root, instance_id, run_ids, list_err) && !run_ids.empty()) {
+            last_run = run_ids[run_ids.size() - 1u];
+            src_run_dir = path_join(path_join(path_join(path_join(state_root, "instances"), instance_id), "logs/runs"), last_run);
+            dst_run_dir = path_join(path_join(out_root, "last_run"), last_run);
+            mkdir_p_best_effort(dst_run_dir);
+            (void)copy_file_best_effort(path_join(src_run_dir, "launcher_handshake.tlv"),
+                                        path_join(dst_run_dir, "launcher_handshake.tlv"));
+            (void)copy_file_best_effort(path_join(src_run_dir, "launcher_audit.tlv"),
+                                        path_join(dst_run_dir, "launcher_audit.tlv"));
+        }
+
+        /* Copy launch history when present. */
+        {
+            const std::string src = path_join(path_join(path_join(path_join(state_root, "instances"), instance_id), "logs"), "launch_history.tlv");
+            const std::string dst = path_join(out_root, "launch_history.tlv");
+            if (file_exists(src)) {
+                (void)copy_file_best_effort(src, dst);
+            }
+        }
+
+        audit_reason_kv(audit_core, "outcome", "ok");
+        out_kv(out, "result", "ok");
+        out_kv(out, "instance_id", instance_id);
+        out_kv(out, "out", out_root);
+        if (!last_run.empty()) {
+            out_kv(out, "last_run_id", last_run);
+        }
+        r.exit_code = 0;
+        return r;
+    }
+
     audit_reason_kv(audit_core, "outcome", "fail");
     out_kv(out, "result", "fail");
-    out_kv(out, "error", "not_implemented_in_control_plane");
+    out_kv(out, "error", "unhandled_command");
     r.exit_code = 3;
     return r;
 }

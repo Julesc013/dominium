@@ -25,6 +25,9 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "domino/io/container.h"
 #include "domino/system/dsys.h"
 
+#include "core/include/launcher_safety.h"
+#include "launcher_launch_plumbing.h"
+
 namespace dom {
 
 namespace {
@@ -308,61 +311,75 @@ bool DomLauncherApp::spawn_product_args(const std::string &product,
                                        const std::vector<std::string> &args,
                                        bool wait_for_exit) {
     ProductEntry *entry = find_product_entry(product);
-    dsys_proc_result pr;
-    dsys_process_handle handle;
-    int exit_code = 0;
-    std::vector<std::string> full;
-    std::vector<const char *> argv;
     size_t i;
+    std::string instance_id;
+    dom::LaunchTarget target;
+    dom::launcher_core::LauncherLaunchOverrides ov;
+    dom::LaunchRunResult lr;
 
     if (!entry) {
         m_status = "Launch failed: product not found.";
         return false;
     }
 
-    full.reserve(1u + args.size());
-    full.push_back(entry->path);
     for (i = 0u; i < args.size(); ++i) {
-        full.push_back(args[i]);
+        if (args[i].compare(0u, 11u, "--instance=") == 0) {
+            instance_id = args[i].substr(11u);
+            break;
+        }
     }
 
-    argv.resize(full.size() + 1u);
-    for (i = 0u; i < full.size(); ++i) {
-        argv[i] = full[i].c_str();
+    if (instance_id.empty()) {
+        m_status = "Launch failed: missing --instance.";
+        return false;
     }
-    argv[full.size()] = 0;
+    if (product == "game") {
+        target.is_tool = 0u;
+    } else {
+        if (!dom::launcher_core::launcher_is_safe_id_component(product)) {
+            m_status = "Launch failed: unsafe tool id.";
+            return false;
+        }
+        target.is_tool = 1u;
+        target.tool_id = product;
+    }
 
     std::printf("Launcher: spawning %s (%s)\n",
                 entry->path.c_str(), product.c_str());
 
-    if (!wait_for_exit) {
-        pr = dsys_proc_spawn(entry->path.c_str(), &argv[0], 1, (dsys_process_handle *)0);
-        if (pr != DSYS_PROC_OK) {
-            m_status = "Spawn failed.";
-            return false;
+    ov = dom::launcher_core::LauncherLaunchOverrides();
+
+    if (!dom::launcher_execute_launch_attempt(m_paths.root,
+                                              instance_id,
+                                              target,
+                                              m_profile_valid ? &m_profile : (const dom_profile*)0,
+                                              entry->path,
+                                              args,
+                                              wait_for_exit ? 1u : 0u,
+                                              8u,
+                                              ov,
+                                              lr)) {
+        if (lr.refused) {
+            m_status = std::string("Refused: ") + lr.refusal_detail;
+        } else if (!lr.error.empty()) {
+            m_status = std::string("Launch failed: ") + lr.error;
+        } else {
+            m_status = "Launch failed.";
         }
+        return false;
+    }
+
+    if (!wait_for_exit) {
         m_status = "Spawned.";
         return true;
     }
 
-    pr = dsys_proc_spawn(entry->path.c_str(), &argv[0], 1, &handle);
-    if (pr != DSYS_PROC_OK) {
-        m_status = "Spawn failed.";
-        return false;
-    }
-
-    pr = dsys_proc_wait(&handle, &exit_code);
-    if (pr != DSYS_PROC_OK) {
-        m_status = "Wait failed.";
-        return false;
-    }
-
     {
         char buf[64];
-        std::snprintf(buf, sizeof(buf), "Process exited (%d).", exit_code);
+        std::snprintf(buf, sizeof(buf), "Process exited (%d).", (int)lr.child_exit_code);
         m_status = buf;
     }
-    return exit_code == 0;
+    return lr.ok != 0u;
 }
 
 bool DomLauncherApp::launch_game_listen() {
@@ -427,17 +444,20 @@ std::string DomLauncherApp::home_join(const std::string &rel) const {
 bool DomLauncherApp::launch_tool(const std::string &tool_id,
                                  const std::string &load_path,
                                  bool demo) {
+    const InstanceInfo* inst = selected_instance();
     std::vector<std::string> args;
 
     if (tool_id.empty()) {
         m_status = "Launch failed: empty tool id.";
         return false;
     }
+    if (!inst) {
+        m_status = "Launch failed: no instance selected.";
+        return false;
+    }
 
     args.push_back(std::string("--tool=") + tool_id);
-    args.push_back(std::string("--home=") + m_paths.root);
-    args.push_back("--sys=win32");
-    args.push_back("--gfx=soft");
+    args.push_back(std::string("--instance=") + inst->id);
     if (demo) {
         args.push_back("--demo");
     }
