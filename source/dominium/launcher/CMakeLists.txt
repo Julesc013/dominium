@@ -96,3 +96,42 @@ endif()
 add_dependencies(dominium_launcher_control_plane_tests dominium-launcher tool_manifest_inspector)
 
 add_test(NAME dominium_launcher_control_plane_tests COMMAND dominium_launcher_control_plane_tests)
+
+add_executable(dominium_launcher_ui_smoke_tests
+    tests/launcher_ui_smoke_tests.cpp
+    dom_launcher_app.cpp
+    dom_launcher_catalog.cpp
+    dom_launcher_actions.cpp
+    launcher_launch_plumbing.cpp
+)
+
+target_include_directories(dominium_launcher_ui_smoke_tests PUBLIC
+    ${DOMINIUM_INCLUDE_DIR}
+    ${CMAKE_SOURCE_DIR}/source/domino
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+)
+
+target_link_libraries(dominium_launcher_ui_smoke_tests
+    PRIVATE
+        dominium_common
+        domino_core
+        dominium_launcher_core
+)
+
+set_target_properties(dominium_launcher_ui_smoke_tests PROPERTIES
+    OUTPUT_NAME "dominium_launcher_ui_smoke_tests"
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+if (MSVC)
+    target_compile_options(dominium_launcher_ui_smoke_tests PRIVATE $<$<CONFIG:Release>:/UNDEBUG>)
+else()
+    target_compile_options(dominium_launcher_ui_smoke_tests PRIVATE $<$<CONFIG:Release>:-UNDEBUG>)
+endif()
+
+add_dependencies(dominium_launcher_ui_smoke_tests dominium-launcher tool_manifest_inspector)
+
+add_test(NAME dominium_launcher_ui_smoke_tests COMMAND dominium_launcher_ui_smoke_tests)

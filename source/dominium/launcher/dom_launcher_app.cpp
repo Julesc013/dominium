@@ -1341,6 +1341,194 @@ void DomLauncherApp::run() {
     }
 }
 
+bool DomLauncherApp::run_ui_smoke(std::string& out_error) {
+    std::vector<unsigned char> state;
+    const char* backend;
+
+    out_error.clear();
+
+    if (m_mode == LAUNCHER_MODE_CLI) {
+        out_error = "refused:cli_mode";
+        return false;
+    }
+    if (!m_dui_api || !m_dui_ctx || !m_dui_win || !m_ui) {
+        out_error = "ui_not_initialized";
+        return false;
+    }
+
+    backend = (m_dui_api->backend_name && m_dui_api->backend_name()) ? m_dui_api->backend_name() : "";
+
+    /* Non-null backends: create window, render a single frame, exit. */
+    if (!str_ieq(backend, "null")) {
+        if (build_dui_state(state)) {
+            (void)m_dui_api->set_state_tlv(m_dui_win, state.empty() ? (const void*)0 : &state[0], (u32)state.size());
+        }
+        if (m_dui_api->render(m_dui_win) != DUI_OK) {
+            out_error = "render_failed";
+            return false;
+        }
+        shutdown();
+        return true;
+    }
+
+    /* Null backend: simulate key workflows via DUI test API. */
+    {
+        void* iface = 0;
+        const dui_test_api_v1* test = 0;
+        const InstanceInfo* inst = 0;
+        std::string tool_id;
+        std::vector<std::string> run_ids;
+        std::string list_err;
+        std::string run_dir;
+        std::string handshake_path;
+        std::string audit_path;
+        std::vector<unsigned char> audit_bytes;
+        std::string audit_read_err;
+        launcher_core::LauncherAuditLog audit;
+        u32 frame;
+
+        if (!m_dui_api->query_interface || m_dui_api->query_interface(DUI_IID_TEST_API_V1, &iface) != 0 || !iface) {
+            out_error = "dui_test_api_unavailable";
+            return false;
+        }
+        test = (const dui_test_api_v1*)iface;
+        if (!test->post_event) {
+            out_error = "dui_test_post_event_unavailable";
+            return false;
+        }
+
+        inst = selected_instance();
+        if (!inst) {
+            out_error = "no_instance_selected";
+            return false;
+        }
+
+        /* Prefer the expected tool id, but fall back to any available tool. */
+        {
+            size_t i;
+            for (i = 0u; i < m_ui->cache_tools.size(); ++i) {
+                if (m_ui->cache_tools[i].tool_id == "tool_manifest_inspector") {
+                    tool_id = m_ui->cache_tools[i].tool_id;
+                    break;
+                }
+            }
+            if (tool_id.empty() && !m_ui->cache_tools.empty()) {
+                tool_id = m_ui->cache_tools[0u].tool_id;
+            }
+        }
+        if (tool_id.empty()) {
+            out_error = "no_tools_available";
+            return false;
+        }
+
+        /* Select instance + verify/repair (no-op when instance has no artifacts). */
+        {
+            dui_event_v1 ev;
+            std::memset(&ev, 0, sizeof(ev));
+            ev.abi_version = DUI_API_ABI_VERSION;
+            ev.struct_size = (u32)sizeof(ev);
+            ev.type = (u32)DUI_EVENT_VALUE_CHANGED;
+            ev.u.value.widget_id = (u32)W_INST_LIST;
+            ev.u.value.value_type = (u32)DUI_VALUE_LIST;
+            ev.u.value.item_id = stable_item_id(inst->id);
+            (void)test->post_event(m_dui_ctx, &ev);
+
+            std::memset(&ev, 0, sizeof(ev));
+            ev.abi_version = DUI_API_ABI_VERSION;
+            ev.struct_size = (u32)sizeof(ev);
+            ev.type = (u32)DUI_EVENT_ACTION;
+            ev.u.action.widget_id = (u32)W_VERIFY_BTN;
+            ev.u.action.action_id = (u32)ACT_VERIFY_REPAIR;
+            (void)test->post_event(m_dui_ctx, &ev);
+        }
+
+        for (frame = 0u; frame < 120u; ++frame) {
+            (void)m_dui_api->pump(m_dui_ctx);
+            process_dui_events();
+            process_ui_task();
+            if (build_dui_state(state)) {
+                (void)m_dui_api->set_state_tlv(m_dui_win, state.empty() ? (const void*)0 : &state[0], (u32)state.size());
+            }
+            (void)m_dui_api->render(m_dui_win);
+            if (m_ui->task.kind == (u32)DomLauncherUiState::TASK_NONE) {
+                break;
+            }
+        }
+        if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
+            out_error = "timeout:verify";
+            return false;
+        }
+
+        /* Select tool target + launch. */
+        {
+            dui_event_v1 ev;
+            std::memset(&ev, 0, sizeof(ev));
+            ev.abi_version = DUI_API_ABI_VERSION;
+            ev.struct_size = (u32)sizeof(ev);
+            ev.type = (u32)DUI_EVENT_VALUE_CHANGED;
+            ev.u.value.widget_id = (u32)W_PLAY_TARGET_LIST;
+            ev.u.value.value_type = (u32)DUI_VALUE_LIST;
+            ev.u.value.item_id = stable_item_id(std::string("tool:") + tool_id);
+            (void)test->post_event(m_dui_ctx, &ev);
+
+            std::memset(&ev, 0, sizeof(ev));
+            ev.abi_version = DUI_API_ABI_VERSION;
+            ev.struct_size = (u32)sizeof(ev);
+            ev.type = (u32)DUI_EVENT_ACTION;
+            ev.u.action.widget_id = (u32)W_PLAY_BTN;
+            ev.u.action.action_id = (u32)ACT_PLAY;
+            (void)test->post_event(m_dui_ctx, &ev);
+        }
+
+        for (frame = 0u; frame < 240u; ++frame) {
+            (void)m_dui_api->pump(m_dui_ctx);
+            process_dui_events();
+            process_ui_task();
+            if (build_dui_state(state)) {
+                (void)m_dui_api->set_state_tlv(m_dui_win, state.empty() ? (const void*)0 : &state[0], (u32)state.size());
+            }
+            (void)m_dui_api->render(m_dui_win);
+            if (m_ui->task.kind == (u32)DomLauncherUiState::TASK_NONE) {
+                break;
+            }
+        }
+        if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
+            out_error = "timeout:launch";
+            return false;
+        }
+
+        if (!launcher_list_instance_runs(m_paths.root, inst->id, run_ids, list_err) || run_ids.empty()) {
+            out_error = "no_runs:" + list_err;
+            return false;
+        }
+
+        run_dir =
+            path_join(path_join(path_join(path_join(path_join(m_paths.root, "instances"), inst->id), "logs/runs"), run_ids[run_ids.size() - 1u]),
+                      "");
+        handshake_path = path_join(run_dir, "launcher_handshake.tlv");
+        audit_path = path_join(run_dir, "launcher_audit.tlv");
+
+        if (!file_exists_stdio(handshake_path)) {
+            out_error = std::string("handshake_missing;path=") + handshake_path;
+            return false;
+        }
+        if (!file_exists_stdio(audit_path)) {
+            out_error = std::string("audit_missing;path=") + audit_path;
+            return false;
+        }
+        if (!read_file_all_bytes(audit_path, audit_bytes, audit_read_err) || audit_bytes.empty() ||
+            !launcher_core::launcher_audit_from_tlv_bytes(audit_bytes.empty() ? (const unsigned char*)0 : &audit_bytes[0],
+                                                         audit_bytes.size(),
+                                                         audit)) {
+            out_error = std::string("audit_decode_failed;path=") + audit_path;
+            return false;
+        }
+
+        shutdown();
+        return true;
+    }
+}
+
 void DomLauncherApp::shutdown() {
     if (m_dui_api && m_dui_win) {
         m_dui_api->destroy_window(m_dui_win);
@@ -1866,6 +2054,9 @@ bool DomLauncherApp::init_gui(const LauncherConfig &cfg) {
             wdesc.width = 960;
             wdesc.height = 640;
             wdesc.flags = 0u;
+            if (str_ieq(cfg.product_mode.c_str(), "headless")) {
+                wdesc.flags |= DUI_WINDOW_FLAG_HEADLESS;
+            }
 
             rc = api->create_window(m_dui_ctx, &wdesc, &m_dui_win);
             if (rc != DUI_OK || !m_dui_win) {
