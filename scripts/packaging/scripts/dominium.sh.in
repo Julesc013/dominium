@@ -1,16 +1,9 @@
 #!/bin/sh
-# Dominium main entry: runs the launcher for this OS
+# Dominium portable entrypoint: runs the launcher with --home set to the bundle root.
 
 SELF="$0"
 while [ -L "$SELF" ]; do SELF="$(readlink "$SELF")"; done
-ROOT="$(cd "$(dirname "$SELF")" && pwd)"
+BIN="$(cd "$(dirname "$SELF")" && pwd)"
+DOM_HOME="$(cd "$BIN/.." && pwd)"
 
-: "${DOM_PLATFORM:=@DOM_LAUNCHER_PLATFORM@}"
-: "${DOM_RENDER_BACKEND:=SOFTWARE}"
-: "${DOM_HEADLESS:=0}"
-
-export DOM_PLATFORM DOM_RENDER_BACKEND DOM_HEADLESS
-
-EXEC="@DOM_LAUNCHER_BINARY@"
-
-exec "$ROOT/$EXEC" "$@"
+exec "$BIN/@DOM_LAUNCHER_BINARY@" --home="$DOM_HOME" "$@"
