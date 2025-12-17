@@ -180,6 +180,51 @@ static void remove_file_best_effort(const std::string& path) {
     (void)std::remove(path.c_str());
 }
 
+static int ascii_tolower(int c) {
+    if (c >= 'A' && c <= 'Z') {
+        return c - 'A' + 'a';
+    }
+    return c;
+}
+
+static bool str_ieq(const char* a, const char* b) {
+    if (!a || !b) {
+        return false;
+    }
+    while (*a && *b) {
+        int ca = ascii_tolower((unsigned char)*a);
+        int cb = ascii_tolower((unsigned char)*b);
+        if (ca != cb) {
+            return false;
+        }
+        ++a;
+        ++b;
+    }
+    return (*a == '\0' && *b == '\0');
+}
+
+static void profile_remove_override(dom_profile& p, const char* subsystem_key) {
+    u32 i;
+    u32 out = 0u;
+    if (!subsystem_key || !subsystem_key[0]) {
+        return;
+    }
+    for (i = 0u; i < p.override_count && i < (u32)DOM_PROFILE_MAX_OVERRIDES; ++i) {
+        dom_profile_override* ov = &p.overrides[i];
+        if (str_ieq(ov->subsystem_key, subsystem_key)) {
+            continue;
+        }
+        if (out != i) {
+            p.overrides[out] = p.overrides[i];
+        }
+        ++out;
+    }
+    p.override_count = out;
+    for (; out < (u32)DOM_PROFILE_MAX_OVERRIDES; ++out) {
+        std::memset(&p.overrides[out], 0, sizeof(p.overrides[out]));
+    }
+}
+
 static bool select_backends_for_handshake(const dom_profile* profile,
                                          std::vector<std::string>& out_platform,
                                          std::vector<std::string>& out_renderer,
@@ -188,7 +233,10 @@ static bool select_backends_for_handshake(const dom_profile* profile,
     dom_hw_caps hw;
     dom_selection sel;
     dom_caps_result rc;
+    dom_profile fallback_profile;
+    const dom_profile* used_profile = profile;
     u32 i;
+    bool requested_gfx_null = false;
 
     out_platform.clear();
     out_renderer.clear();
@@ -207,7 +255,41 @@ static bool select_backends_for_handshake(const dom_profile* profile,
     sel.abi_version = DOM_CAPS_ABI_VERSION;
     sel.struct_size = (u32)sizeof(sel);
 
-    rc = dom_caps_select(profile, &hw, &sel);
+    if (!used_profile) {
+        std::memset(&fallback_profile, 0, sizeof(fallback_profile));
+        fallback_profile.abi_version = DOM_PROFILE_ABI_VERSION;
+        fallback_profile.struct_size = (u32)sizeof(dom_profile);
+        fallback_profile.kind = DOM_PROFILE_BASELINE;
+        fallback_profile.lockstep_strict = 0u;
+        used_profile = &fallback_profile;
+    }
+
+    rc = dom_caps_select(used_profile, &hw, &sel);
+    if (rc != DOM_CAPS_OK && used_profile) {
+        /* If the user requested --gfx=null but the null backend is not present in this build,
+           retry without the gfx preference so headless tooling can still function. */
+        if (used_profile->lockstep_strict == 0u) {
+            if (used_profile->preferred_gfx_backend[0] && str_ieq(used_profile->preferred_gfx_backend, "null")) {
+                requested_gfx_null = true;
+            }
+            if (!requested_gfx_null) {
+                u32 j;
+                for (j = 0u; j < used_profile->override_count && j < (u32)DOM_PROFILE_MAX_OVERRIDES; ++j) {
+                    const dom_profile_override* ov = &used_profile->overrides[j];
+                    if (str_ieq(ov->subsystem_key, "gfx") && ov->backend_name[0] && str_ieq(ov->backend_name, "null")) {
+                        requested_gfx_null = true;
+                        break;
+                    }
+                }
+            }
+            if (requested_gfx_null) {
+                dom_profile relaxed = *used_profile;
+                relaxed.preferred_gfx_backend[0] = '\0';
+                profile_remove_override(relaxed, "gfx");
+                rc = dom_caps_select(&relaxed, &hw, &sel);
+            }
+        }
+    }
     if (rc != DOM_CAPS_OK) {
         out_error = "caps_select_failed";
         return false;
