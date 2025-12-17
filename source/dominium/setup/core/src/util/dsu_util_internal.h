@@ -36,6 +36,23 @@ void dsu__sort_str_ptrs(char **items, dsu_u32 count);
 dsu_u32 dsu_hash32_bytes(const void *bytes, dsu_u32 len);
 dsu_u32 dsu_hash32_str(const char *s);
 
+/* Implemented in util/dsu_util_sha256.c */
+dsu_status_t dsu__sha256_file(const char *path, dsu_u8 out_sha256[32]);
+
+/* Implemented in util/dsu_util_archive.c */
+typedef struct dsu__archive_entry_t {
+    char *path; /* canonical relative path (/) */
+    dsu_u64 size;
+    dsu_u64 data_offset;
+    dsu_u8 sha256[32];
+} dsu__archive_entry_t;
+
+dsu_status_t dsu__archive_list(const char *archive_path, dsu__archive_entry_t **out_entries, dsu_u32 *out_count);
+void dsu__archive_free_entries(dsu__archive_entry_t *entries, dsu_u32 count);
+dsu_status_t dsu__archive_extract_file(const char *archive_path,
+                                      const char *member_path,
+                                      const char *dst_path);
+
 /* Implemented in util/dsu_util_blob.c */
 typedef struct dsu_blob_t {
     dsu_u8 *data;
