@@ -10,6 +10,7 @@ add_library(dsu_core STATIC
     src/manifest/dsu_manifest.c
     src/plan/dsu_plan.c
     src/resolve/dsu_resolve.c
+    src/state/dsu_state.c
     src/util/dsu_util_blob.c
     src/util/dsu_util_filefmt.c
     src/util/dsu_util_hash.c
@@ -29,4 +30,3 @@ set_target_properties(dsu_core PROPERTIES
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )
-

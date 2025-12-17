@@ -23,3 +23,4 @@ set_target_properties(dominium-setup PROPERTIES
 )
 
 dominium_bundle_runtime(dominium-setup)
+add_subdirectory(tests)
