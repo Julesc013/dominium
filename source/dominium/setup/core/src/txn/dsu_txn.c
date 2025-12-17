@@ -258,18 +258,75 @@ static dsu_status_t dsu__fs_path_info_rel(dsu_fs_t *fs,
 
 static dsu_status_t dsu__canon_abs_path(const char *in, char *out_abs, dsu_u32 out_abs_cap) {
     dsu_status_t st;
+    char in_copy[1024];
+    const char *src;
+    dsu_u32 n;
     if (!in || !out_abs || out_abs_cap == 0u) {
         return DSU_STATUS_INVALID_ARGS;
     }
+    if (in[0] == '\0') {
+        return DSU_STATUS_INVALID_ARGS;
+    }
+    src = in;
+    if (in == out_abs) {
+        n = dsu__strlen(in);
+        if (n == 0xFFFFFFFFu || n + 1u > (dsu_u32)sizeof(in_copy)) {
+            return DSU_STATUS_INVALID_ARGS;
+        }
+        memcpy(in_copy, in, (size_t)n + 1u);
+        src = in_copy;
+    }
     out_abs[0] = '\0';
-    st = dsu_fs_path_canonicalize(in, out_abs, out_abs_cap);
+    if (dsu__is_abs_path_like(src)) {
+        st = dsu_fs_path_canonicalize(src, out_abs, out_abs_cap);
+        if (st != DSU_STATUS_SUCCESS) {
+            return st;
+        }
+        if (!dsu__is_abs_path_like(out_abs)) {
+            return DSU_STATUS_INVALID_ARGS;
+        }
+        return DSU_STATUS_SUCCESS;
+    }
+
+    {
+        char cwd[1024];
+        char joined[1024];
+        st = dsu_platform_get_cwd(cwd, (dsu_u32)sizeof(cwd));
+        if (st != DSU_STATUS_SUCCESS) {
+            return st;
+        }
+        st = dsu_fs_path_join(cwd, src, joined, (dsu_u32)sizeof(joined));
+        if (st != DSU_STATUS_SUCCESS) {
+            return st;
+        }
+        st = dsu_fs_path_canonicalize(joined, out_abs, out_abs_cap);
+        if (st != DSU_STATUS_SUCCESS) {
+            return st;
+        }
+        if (!dsu__is_abs_path_like(out_abs)) {
+            return DSU_STATUS_INVALID_ARGS;
+        }
+        return DSU_STATUS_SUCCESS;
+    }
+}
+
+static dsu_status_t dsu__mkdir_parent_abs(const char *abs_path) {
+    char dir[1024];
+    char base[256];
+    dsu_status_t st;
+    if (!abs_path || abs_path[0] == '\0') {
+        return DSU_STATUS_INVALID_ARGS;
+    }
+    dir[0] = '\0';
+    base[0] = '\0';
+    st = dsu_fs_path_split(abs_path, dir, (dsu_u32)sizeof(dir), base, (dsu_u32)sizeof(base));
     if (st != DSU_STATUS_SUCCESS) {
         return st;
     }
-    if (!dsu__is_abs_path_like(out_abs)) {
-        return DSU_STATUS_INVALID_ARGS;
+    if (dir[0] == '\0') {
+        return DSU_STATUS_SUCCESS;
     }
-    return DSU_STATUS_SUCCESS;
+    return dsu_platform_mkdir(dir);
 }
 
 static dsu_status_t dsu__dir_of_rel_path(const char *rel_path, char *out_dir, dsu_u32 out_dir_cap) {
@@ -400,7 +457,7 @@ static dsu_status_t dsu__str_list_add_unique(char ***io_items,
     dsu_u32 new_cap;
     char *dup;
 
-    if (!io_items || !io_count || !io_cap || !canon_abs || canon_abs[0] == '\0') {
+    if (!io_items || !io_count || !io_cap || !canon_abs) {
         return DSU_STATUS_INVALID_ARGS;
     }
     items = *io_items;
@@ -1675,6 +1732,10 @@ dsu_status_t dsu_txn_apply_plan(dsu_ctx_t *ctx,
         goto done;
     }
 
+    /* Ensure the txn root's parent exists (<install_root>.txn). */
+    st = dsu__mkdir_parent_abs(txn_root_abs);
+    if (st != DSU_STATUS_SUCCESS) goto done;
+
     if (local_opts.journal_path && local_opts.journal_path[0] != '\0') {
         st = dsu__canon_abs_path(local_opts.journal_path, journal_path_abs, (dsu_u32)sizeof(journal_path_abs));
         if (st != DSU_STATUS_SUCCESS) goto done;
@@ -2000,6 +2061,9 @@ dsu_status_t dsu_txn_uninstall_state(dsu_ctx_t *ctx,
     if (!dsu__same_volume_best_effort(install_root_abs, txn_root_abs)) {
         return DSU_STATUS_INVALID_ARGS;
     }
+
+    st = dsu__mkdir_parent_abs(txn_root_abs);
+    if (st != DSU_STATUS_SUCCESS) return st;
 
     if (local_opts.journal_path && local_opts.journal_path[0] != '\0') {
         st = dsu__canon_abs_path(local_opts.journal_path, journal_path_abs, (dsu_u32)sizeof(journal_path_abs));
