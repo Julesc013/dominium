@@ -37,6 +37,7 @@ enum LauncherMode {
 };
 
 struct LauncherConfig {
+    std::string argv0;
     std::string home;
     LauncherMode mode;
     std::string action;
@@ -50,6 +51,8 @@ struct ProductEntry {
     std::string version;
     std::string path;    /* full path to executable */
 };
+
+struct DomLauncherUiState; /* defined in dom_launcher_app.cpp */
 
 class DomLauncherApp {
 public:
@@ -67,11 +70,6 @@ public:
     int selected_instance_index() const { return m_selected_instance; }
     const std::string& selected_mode() const { return m_selected_mode; }
 
-    const std::string& connect_host() const { return m_connect_host; }
-    unsigned net_port() const { return m_net_port; }
-    bool editing_connect_host() const { return m_edit_connect_host; }
-    const std::string& status_text() const { return m_status; }
-
     void set_selected_product(int idx);
     void set_selected_instance(int idx);
     void set_selected_mode(const std::string &mode);
@@ -79,23 +77,6 @@ public:
     void select_prev_instance();
     void select_next_instance();
     void cycle_selected_mode();
-
-    void toggle_connect_host_edit();
-    void adjust_net_port(int delta);
-
-    bool launch_game_listen();
-    bool launch_game_dedicated();
-    bool launch_game_connect();
-
-    bool showing_tools() const { return m_show_tools; }
-    void toggle_tools_view();
-
-    bool launch_tool(const std::string &tool_id,
-                     const std::string &load_path,
-                     bool demo);
-
-    const std::vector<std::string>& repo_mod_manifests() const { return m_repo_mod_manifests; }
-    const std::vector<std::string>& repo_pack_manifests() const { return m_repo_pack_manifests; }
 
     std::string home_join(const std::string &rel) const;
 
@@ -110,17 +91,15 @@ public:
 private:
     bool scan_products();
     bool scan_instances();
-    bool scan_tools();
     bool scan_repo();
-    bool scan_repo_content();
 
     bool perform_cli_action(const LauncherConfig &cfg);
 
     bool init_gui(const LauncherConfig &cfg);
     void gui_loop();
     void process_dui_events();
-    bool build_dui_schema(unsigned char* out_buf, u32 cap, u32* out_len) const;
-    bool build_dui_state(unsigned char* out_buf, u32 cap, u32* out_len) const;
+    bool load_dui_schema(std::vector<unsigned char>& out_schema, std::string& out_loaded_path, std::string& out_error) const;
+    bool build_dui_state(std::vector<unsigned char>& out_state) const;
     const dui_api_v1* select_dui_api(std::string& out_backend_name, std::string& out_err);
 
     ProductEntry* find_product_entry(const std::string &product);
@@ -133,6 +112,7 @@ private:
 private:
     Paths            m_paths;
     LauncherMode     m_mode;
+    std::string      m_argv0;
 
     std::vector<ProductEntry> m_products;
     std::vector<InstanceInfo> m_instances;
@@ -150,23 +130,11 @@ private:
     int              m_selected_instance;
     std::string      m_selected_mode;
 
-    std::string      m_connect_host;
-    unsigned         m_net_port;
-    bool             m_edit_connect_host;
-    std::string      m_connect_host_backup;
-    std::string      m_status;
-
-    bool             m_show_tools;
-    std::vector<std::string> m_repo_mod_manifests;
-    std::vector<std::string> m_repo_pack_manifests;
-
-    u32              m_tool_sel_id;
-    u32              m_mod_sel_id;
-    u32              m_pack_sel_id;
-
     std::string      m_ui_backend_selected;
     u64              m_ui_caps_selected;
     std::string      m_ui_fallback_note;
+
+    DomLauncherUiState* m_ui; /* UI-only state (schema-driven DUI) */
 };
 
 } // namespace dom
