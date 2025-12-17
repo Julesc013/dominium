@@ -16,7 +16,7 @@ PURPOSE: Plan builder and deterministic dsuplan (de)serialization.
 #define DSU_PLAN_MAGIC_1 'S'
 #define DSU_PLAN_MAGIC_2 'U'
 #define DSU_PLAN_MAGIC_3 'P'
-#define DSU_PLAN_FORMAT_VERSION 1u
+#define DSU_PLAN_FORMAT_VERSION 2u
 
 typedef struct dsu_plan_step_t {
     dsu_plan_step_kind_t kind;
@@ -26,6 +26,8 @@ typedef struct dsu_plan_step_t {
 struct dsu_plan {
     dsu_u32 flags;
     dsu_u32 id_hash32;
+    dsu_u64 id_hash64;
+    dsu_u64 manifest_digest64;
     char *product_id;
     char *version;
     char *install_root;
@@ -57,51 +59,72 @@ static void dsu__plan_free(dsu_plan_t *p) {
     p->step_count = 0u;
 }
 
-static dsu_u32 dsu__hash32_update(dsu_u32 h, const void *bytes, dsu_u32 len) {
-    const dsu_u8 *p = (const dsu_u8 *)bytes;
-    dsu_u32 i;
-    if (!bytes && len != 0u) {
-        return h;
-    }
-    for (i = 0u; i < len; ++i) {
-        h ^= (dsu_u32)p[i];
-        h *= 16777619u;
-    }
-    return h;
+static void dsu__u64_to_le_bytes(dsu_u64 v, dsu_u8 out[8]) {
+    out[0] = (dsu_u8)(v & 0xFFu);
+    out[1] = (dsu_u8)((v >> 8) & 0xFFu);
+    out[2] = (dsu_u8)((v >> 16) & 0xFFu);
+    out[3] = (dsu_u8)((v >> 24) & 0xFFu);
+    out[4] = (dsu_u8)((v >> 32) & 0xFFu);
+    out[5] = (dsu_u8)((v >> 40) & 0xFFu);
+    out[6] = (dsu_u8)((v >> 48) & 0xFFu);
+    out[7] = (dsu_u8)((v >> 56) & 0xFFu);
 }
 
-static dsu_u32 dsu__plan_compute_id(const dsu_plan_t *p) {
-    dsu_u32 h;
+static void dsu__plan_compute_ids(dsu_plan_t *p) {
+    dsu_u32 h32;
+    dsu_u64 h64;
     dsu_u32 i;
     dsu_u8 sep;
+    dsu_u8 tmp8[8];
     if (!p) {
-        return 0u;
+        return;
     }
 
-    h = 2166136261u;
+    h32 = dsu_digest32_init();
+    h64 = dsu_digest64_init();
     sep = 0u;
 
-    h = dsu__hash32_update(h, p->product_id, dsu__strlen(p->product_id));
-    h = dsu__hash32_update(h, &sep, 1u);
-    h = dsu__hash32_update(h, p->version, dsu__strlen(p->version));
-    h = dsu__hash32_update(h, &sep, 1u);
-    h = dsu__hash32_update(h, p->install_root, dsu__strlen(p->install_root));
-    h = dsu__hash32_update(h, &sep, 1u);
+    dsu__u64_to_le_bytes(p->manifest_digest64, tmp8);
+    h32 = dsu_digest32_update(h32, tmp8, 8u);
+    h32 = dsu_digest32_update(h32, &sep, 1u);
+    h64 = dsu_digest64_update(h64, tmp8, 8u);
+    h64 = dsu_digest64_update(h64, &sep, 1u);
+
+    h32 = dsu_digest32_update(h32, p->product_id, dsu__strlen(p->product_id));
+    h32 = dsu_digest32_update(h32, &sep, 1u);
+    h32 = dsu_digest32_update(h32, p->version, dsu__strlen(p->version));
+    h32 = dsu_digest32_update(h32, &sep, 1u);
+    h32 = dsu_digest32_update(h32, p->install_root, dsu__strlen(p->install_root));
+    h32 = dsu_digest32_update(h32, &sep, 1u);
+
+    h64 = dsu_digest64_update(h64, p->product_id, dsu__strlen(p->product_id));
+    h64 = dsu_digest64_update(h64, &sep, 1u);
+    h64 = dsu_digest64_update(h64, p->version, dsu__strlen(p->version));
+    h64 = dsu_digest64_update(h64, &sep, 1u);
+    h64 = dsu_digest64_update(h64, p->install_root, dsu__strlen(p->install_root));
+    h64 = dsu_digest64_update(h64, &sep, 1u);
 
     for (i = 0u; i < p->component_count; ++i) {
         const char *c = p->components[i] ? p->components[i] : "";
-        h = dsu__hash32_update(h, c, dsu__strlen(c));
-        h = dsu__hash32_update(h, &sep, 1u);
+        h32 = dsu_digest32_update(h32, c, dsu__strlen(c));
+        h32 = dsu_digest32_update(h32, &sep, 1u);
+        h64 = dsu_digest64_update(h64, c, dsu__strlen(c));
+        h64 = dsu_digest64_update(h64, &sep, 1u);
     }
     for (i = 0u; i < p->step_count; ++i) {
         const dsu_plan_step_t *s = &p->steps[i];
         const char *a = s->arg ? s->arg : "";
         dsu_u8 kind_u8 = (dsu_u8)s->kind;
-        h = dsu__hash32_update(h, &kind_u8, 1u);
-        h = dsu__hash32_update(h, a, dsu__strlen(a));
-        h = dsu__hash32_update(h, &sep, 1u);
+        h32 = dsu_digest32_update(h32, &kind_u8, 1u);
+        h32 = dsu_digest32_update(h32, a, dsu__strlen(a));
+        h32 = dsu_digest32_update(h32, &sep, 1u);
+        h64 = dsu_digest64_update(h64, &kind_u8, 1u);
+        h64 = dsu_digest64_update(h64, a, dsu__strlen(a));
+        h64 = dsu_digest64_update(h64, &sep, 1u);
     }
-    return h;
+
+    p->id_hash32 = h32;
+    p->id_hash64 = h64;
 }
 
 dsu_status_t dsu_plan_build(dsu_ctx_t *ctx,
@@ -127,6 +150,7 @@ dsu_status_t dsu_plan_build(dsu_ctx_t *ctx,
     }
     memset(p, 0, sizeof(*p));
     p->flags = ctx->config.flags;
+    p->manifest_digest64 = dsu_manifest_content_digest64(manifest);
 
     p->product_id = dsu__strdup(dsu_manifest_product_id(manifest));
     p->version = dsu__strdup(dsu_manifest_version(manifest));
@@ -181,7 +205,7 @@ dsu_status_t dsu_plan_build(dsu_ctx_t *ctx,
     p->steps[2u + count].arg = NULL;
     p->step_count = step_count;
 
-    p->id_hash32 = dsu__plan_compute_id(p);
+    dsu__plan_compute_ids(p);
 
     (void)dsu_log_emit(ctx,
                       dsu_ctx_get_audit_log(ctx),
@@ -208,6 +232,13 @@ dsu_u32 dsu_plan_id_hash32(const dsu_plan_t *plan) {
         return 0u;
     }
     return plan->id_hash32;
+}
+
+dsu_u64 dsu_plan_id_hash64(const dsu_plan_t *plan) {
+    if (!plan) {
+        return (dsu_u64)0u;
+    }
+    return plan->id_hash64;
 }
 
 const char *dsu_plan_product_id(const dsu_plan_t *plan) {
@@ -282,6 +313,8 @@ dsu_status_t dsu_plan_write_file(dsu_ctx_t *ctx, const dsu_plan_t *plan, const c
 
     st = dsu__blob_put_u32le(&payload, plan->flags);
     if (st == DSU_STATUS_SUCCESS) st = dsu__blob_put_u32le(&payload, plan->id_hash32);
+    if (st == DSU_STATUS_SUCCESS) st = dsu__blob_put_u64le(&payload, plan->id_hash64);
+    if (st == DSU_STATUS_SUCCESS) st = dsu__blob_put_u64le(&payload, plan->manifest_digest64);
     if (st == DSU_STATUS_SUCCESS) st = dsu__blob_put_u32le(&payload, dsu__strlen(plan->product_id));
     if (st == DSU_STATUS_SUCCESS) st = dsu__blob_put_u32le(&payload, dsu__strlen(plan->version));
     if (st == DSU_STATUS_SUCCESS) st = dsu__blob_put_u32le(&payload, dsu__strlen(plan->install_root));
@@ -448,6 +481,8 @@ dsu_status_t dsu_plan_read_file(dsu_ctx_t *ctx, const char *path, dsu_plan_t **o
     off = 0u;
     st = dsu__read_u32le(payload, payload_len, &off, &p->flags);
     if (st == DSU_STATUS_SUCCESS) st = dsu__read_u32le(payload, payload_len, &off, &p->id_hash32);
+    if (st == DSU_STATUS_SUCCESS) st = dsu__read_u64le(payload, payload_len, &off, &p->id_hash64);
+    if (st == DSU_STATUS_SUCCESS) st = dsu__read_u64le(payload, payload_len, &off, &p->manifest_digest64);
     if (st == DSU_STATUS_SUCCESS) st = dsu__read_u32le(payload, payload_len, &off, &product_len);
     if (st == DSU_STATUS_SUCCESS) st = dsu__read_u32le(payload, payload_len, &off, &version_len);
     if (st == DSU_STATUS_SUCCESS) st = dsu__read_u32le(payload, payload_len, &off, &root_len);
