@@ -1,29 +1,25 @@
 cmake_minimum_required(VERSION 3.16)
 
+add_subdirectory(core)
+
 add_executable(dominium-setup
-    dom_setup_cli.cpp
-    dom_setup_app.cpp
-    dom_setup_ops.cpp
+    cli/dominium_setup_main.c
 )
 
 target_include_directories(dominium-setup PUBLIC
-    ${DOMINIUM_INCLUDE_DIR}
-    ${CMAKE_SOURCE_DIR}/source/domino
-    ${CMAKE_SOURCE_DIR}/source/dominium/common
-    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/include
 )
 
 target_link_libraries(dominium-setup
     PRIVATE
-        dominium_common
-        domino_core
+        dsu_core
 )
 
 set_target_properties(dominium-setup PROPERTIES
     OUTPUT_NAME "dominium-setup"
-    CXX_STANDARD 98
-    CXX_STANDARD_REQUIRED ON
-    CXX_EXTENSIONS OFF
+    C_STANDARD 90
+    C_STANDARD_REQUIRED ON
+    C_EXTENSIONS OFF
 )
 
 dominium_bundle_runtime(dominium-setup)
