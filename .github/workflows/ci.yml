@@ -101,6 +101,12 @@ jobs:
       - name: Test
         run: ctest --test-dir build/${{ matrix.name }} --output-on-failure ${{ matrix.ctest_args }}
 
+      - name: Launcher CLI smoke (ui/gfx matrix)
+        run: python scripts/ci/launcher_cli_smoke_matrix.py --build-dir build/${{ matrix.name }}
+
+      - name: Support bundle determinism (crash bundle generation)
+        run: python scripts/ci/test_support_bundle_determinism.py --out-dir build/${{ matrix.name }}/ci_artifacts/support_bundle
+
       - name: Upload test artifacts
         if: always()
         uses: actions/upload-artifact@v4
@@ -110,6 +116,7 @@ jobs:
             build/${{ matrix.name }}/Testing
             build/${{ matrix.name }}/*.log
             build/${{ matrix.name }}/*.txt
+            build/${{ matrix.name }}/ci_artifacts
 
   reproducible-build:
     runs-on: ubuntu-latest
@@ -126,26 +133,55 @@ jobs:
           path: build/repro_compare
 
   portable-packages:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            name: linux
+            cmake_args: >-
+              -DDOM_PLATFORM=posix_headless
+              -DDOM_BACKEND_SOFT=ON
+              -DDOM_BACKEND_NULL=OFF
+            target: dominium_portable_tgz
+          - os: windows-latest
+            name: windows
+            cmake_args: >-
+              -DDOM_PLATFORM=win32
+              -DDOM_BACKEND_SOFT=ON
+              -DDOM_BACKEND_NULL=OFF
+            target: dominium_portable_zip
+          - os: macos-latest
+            name: macos
+            cmake_args: >-
+              -DDOM_PLATFORM=posix_headless
+              -DDOM_BACKEND_SOFT=ON
+              -DDOM_BACKEND_NULL=OFF
+            target: dominium_portable_tgz
+
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - name: Configure (packaging)
         run: >
-          cmake -S . -B build/pack
+          cmake -S . -B build/pack-${{ matrix.name }}
           -G Ninja
           -DCMAKE_BUILD_TYPE=Release
           -DDOMINIUM_ENABLE_PACKAGING=ON
           -DDOM_DISALLOW_DOWNLOADS=ON
           -DFETCHCONTENT_FULLY_DISCONNECTED=ON
           -DFETCHCONTENT_UPDATES_DISCONNECTED=ON
-          -DDOM_PLATFORM=posix_headless
-          -DDOM_BACKEND_SOFT=ON
+          ${{ matrix.cmake_args }}
 
-      - name: Build portable tarball
-        run: cmake --build build/pack --target dominium_portable_tgz
+      - name: Build portable package
+        run: cmake --build build/pack-${{ matrix.name }} --target ${{ matrix.target }}
+
+      - name: Build macOS app bundle
+        if: runner.os == 'macOS'
+        run: cmake --build build/pack-${{ matrix.name }} --target dominium_macos_app
 
       - name: Upload portable packages
         uses: actions/upload-artifact@v4
         with:
-          name: portable-packages
-          path: build/pack/dist/packages
+          name: portable-packages-${{ matrix.name }}
+          path: build/pack-${{ matrix.name }}/dist
