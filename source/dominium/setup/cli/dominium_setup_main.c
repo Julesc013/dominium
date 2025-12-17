@@ -15,6 +15,8 @@ PURPOSE: Minimal setup control-plane CLI for Plan S-1 (plan + dry-run).
 #include "dsu/dsu_manifest.h"
 #include "dsu/dsu_plan.h"
 #include "dsu/dsu_resolve.h"
+#include "dsu/dsu_state.h"
+#include "dsu/dsu_txn.h"
 
 #define DSU_CLI_NAME "dominium-setup"
 #define DSU_CLI_VERSION "0.1.0"
@@ -22,6 +24,7 @@ PURPOSE: Minimal setup control-plane CLI for Plan S-1 (plan + dry-run).
 typedef struct dsu_cli_opts_t {
     int deterministic;
     int json;
+    int dry_run;
 } dsu_cli_opts_t;
 
 static const char *dsu_cli_status_name(dsu_status_t st) {
@@ -117,8 +120,13 @@ static void dsu_cli_print_usage(FILE *out) {
             "  %s manifest-dump --in <file> --out <json> [--deterministic] [--json]\n"
             "  %s resolve --manifest <file> [--installed-state <file>] [--install|--upgrade|--repair|--uninstall] [--components a,b,c] [--scope portable|user|system] [--platform <triple>] [--exclude a,b,c] [--allow-prerelease] --json\n"
             "  %s plan --manifest <path> --out <planfile> --log <logfile> [--deterministic] [--json]\n"
-            "  %s dry-run --plan <planfile> --log <logfile> [--deterministic] [--json]\n",
-            DSU_CLI_NAME, DSU_CLI_NAME, DSU_CLI_NAME, DSU_CLI_NAME, DSU_CLI_NAME, DSU_CLI_NAME);
+            "  %s dry-run --plan <planfile> --log <logfile> [--deterministic] [--json]\n"
+            "  %s install --plan <planfile> [--dry-run] [--deterministic] [--json]\n"
+            "  %s uninstall --state <statefile> [--dry-run] [--deterministic] [--json]\n"
+            "  %s verify --state <statefile> [--deterministic] [--json]\n"
+            "  %s rollback --journal <journalfile> [--dry-run] [--deterministic] [--json]\n",
+            DSU_CLI_NAME, DSU_CLI_NAME, DSU_CLI_NAME, DSU_CLI_NAME, DSU_CLI_NAME,
+            DSU_CLI_NAME, DSU_CLI_NAME, DSU_CLI_NAME, DSU_CLI_NAME, DSU_CLI_NAME);
 }
 
 static dsu_status_t dsu_cli_ctx_create(const dsu_cli_opts_t *opts, dsu_ctx_t **out_ctx) {
@@ -625,6 +633,220 @@ done:
     return dsu_cli_exit_code(st);
 }
 
+static int dsu_cli_cmd_install(const char *plan_path, const dsu_cli_opts_t *opts) {
+    dsu_ctx_t *ctx = NULL;
+    dsu_plan_t *plan = NULL;
+    dsu_txn_options_t txn_opts;
+    dsu_txn_result_t res;
+    dsu_status_t st;
+
+    dsu_txn_options_init(&txn_opts);
+    dsu_txn_result_init(&res);
+
+    st = dsu_cli_ctx_create(opts, &ctx);
+    if (st != DSU_STATUS_SUCCESS) goto done;
+    st = dsu_ctx_reset_audit_log(ctx);
+    if (st != DSU_STATUS_SUCCESS) goto done;
+
+    st = dsu_plan_read_file(ctx, plan_path, &plan);
+    if (st != DSU_STATUS_SUCCESS) goto done;
+
+    txn_opts.dry_run = (dsu_bool)((opts && opts->dry_run) ? 1 : 0);
+    st = dsu_txn_apply_plan(ctx, plan, &txn_opts, &res);
+
+done:
+    if (opts && opts->json) {
+        fputc('{', stdout);
+        fputs("\"command\":", stdout); dsu_cli_json_put_escaped(stdout, "install"); fputc(',', stdout);
+        fputs("\"status\":", stdout); dsu_cli_json_put_escaped(stdout, (st == DSU_STATUS_SUCCESS) ? "ok" : "error"); fputc(',', stdout);
+        fputs("\"error\":", stdout); dsu_cli_json_put_escaped(stdout, (st == DSU_STATUS_SUCCESS) ? "" : dsu_cli_status_name(st)); fputc(',', stdout);
+        fprintf(stdout, "\"exit_code\":%d,", dsu_cli_exit_code(st));        
+        fputs("\"deterministic\":", stdout); fputs((opts && opts->deterministic) ? "true" : "false", stdout); fputc(',', stdout);
+        fputs("\"dry_run\":", stdout); fputs((opts && opts->dry_run) ? "true" : "false", stdout);
+        if (st == DSU_STATUS_SUCCESS) {
+            fputc(',', stdout);
+            fputs("\"plan_file\":", stdout); dsu_cli_json_put_escaped(stdout, plan_path); fputc(',', stdout);
+            fputs("\"plan_id_hash64\":", stdout); dsu_cli_json_put_u64_hex(stdout, res.digest64); fputc(',', stdout);
+            fputs("\"journal_id\":", stdout); dsu_cli_json_put_u64_hex(stdout, res.journal_id); fputc(',', stdout);
+            fputs("\"install_root\":", stdout); dsu_cli_json_put_escaped(stdout, res.install_root); fputc(',', stdout);
+            fputs("\"txn_root\":", stdout); dsu_cli_json_put_escaped(stdout, res.txn_root); fputc(',', stdout);
+            fputs("\"journal_file\":", stdout); dsu_cli_json_put_escaped(stdout, res.journal_path); fputc(',', stdout);
+            fprintf(stdout, "\"journal_entry_count\":%lu,", (unsigned long)res.journal_entry_count);
+            fprintf(stdout, "\"commit_progress\":%lu,", (unsigned long)res.commit_progress);
+            fprintf(stdout, "\"staged_file_count\":%lu,", (unsigned long)res.staged_file_count);
+            fprintf(stdout, "\"verified_ok\":%lu,", (unsigned long)res.verified_ok);
+            fprintf(stdout, "\"verified_missing\":%lu,", (unsigned long)res.verified_missing);
+            fprintf(stdout, "\"verified_mismatch\":%lu", (unsigned long)res.verified_mismatch);
+        }
+        fputs("}\n", stdout);
+    } else {
+        if (st == DSU_STATUS_SUCCESS) {
+            fprintf(stdout, "journal_id=0x%08lx%08lx\n",
+                    (unsigned long)((res.journal_id >> 32) & 0xFFFFFFFFu),
+                    (unsigned long)(res.journal_id & 0xFFFFFFFFu));
+            fprintf(stdout, "journal_file=%s\n", res.journal_path);
+        } else {
+            fprintf(stderr, "error: %s\n", dsu_cli_status_name(st));
+        }
+    }
+
+    if (plan) dsu_plan_destroy(ctx, plan);
+    if (ctx) dsu_ctx_destroy(ctx);
+    return dsu_cli_exit_code(st);
+}
+
+static int dsu_cli_cmd_uninstall(const char *state_path, const dsu_cli_opts_t *opts) {
+    dsu_ctx_t *ctx = NULL;
+    dsu_state_t *state = NULL;
+    dsu_txn_options_t txn_opts;
+    dsu_txn_result_t res;
+    dsu_status_t st;
+
+    dsu_txn_options_init(&txn_opts);
+    dsu_txn_result_init(&res);
+
+    st = dsu_cli_ctx_create(opts, &ctx);
+    if (st != DSU_STATUS_SUCCESS) goto done;
+    st = dsu_ctx_reset_audit_log(ctx);
+    if (st != DSU_STATUS_SUCCESS) goto done;
+
+    st = dsu_state_load_file(ctx, state_path, &state);
+    if (st != DSU_STATUS_SUCCESS) goto done;
+
+    txn_opts.dry_run = (dsu_bool)((opts && opts->dry_run) ? 1 : 0);
+    st = dsu_txn_uninstall_state(ctx, state, state_path, &txn_opts, &res);
+
+done:
+    if (opts && opts->json) {
+        fputc('{', stdout);
+        fputs("\"command\":", stdout); dsu_cli_json_put_escaped(stdout, "uninstall"); fputc(',', stdout);
+        fputs("\"status\":", stdout); dsu_cli_json_put_escaped(stdout, (st == DSU_STATUS_SUCCESS) ? "ok" : "error"); fputc(',', stdout);
+        fputs("\"error\":", stdout); dsu_cli_json_put_escaped(stdout, (st == DSU_STATUS_SUCCESS) ? "" : dsu_cli_status_name(st)); fputc(',', stdout);
+        fprintf(stdout, "\"exit_code\":%d,", dsu_cli_exit_code(st));
+        fputs("\"deterministic\":", stdout); fputs((opts && opts->deterministic) ? "true" : "false", stdout); fputc(',', stdout);
+        fputs("\"dry_run\":", stdout); fputs((opts && opts->dry_run) ? "true" : "false", stdout);
+        if (st == DSU_STATUS_SUCCESS) {
+            fputc(',', stdout);
+            fputs("\"state_file\":", stdout); dsu_cli_json_put_escaped(stdout, state_path); fputc(',', stdout);
+            fputs("\"journal_id\":", stdout); dsu_cli_json_put_u64_hex(stdout, res.journal_id); fputc(',', stdout);
+            fputs("\"install_root\":", stdout); dsu_cli_json_put_escaped(stdout, res.install_root); fputc(',', stdout);
+            fputs("\"txn_root\":", stdout); dsu_cli_json_put_escaped(stdout, res.txn_root); fputc(',', stdout);
+            fputs("\"journal_file\":", stdout); dsu_cli_json_put_escaped(stdout, res.journal_path); fputc(',', stdout);
+            fprintf(stdout, "\"journal_entry_count\":%lu,", (unsigned long)res.journal_entry_count);
+            fprintf(stdout, "\"commit_progress\":%lu", (unsigned long)res.commit_progress);
+        }
+        fputs("}\n", stdout);
+    } else {
+        if (st == DSU_STATUS_SUCCESS) {
+            fprintf(stdout, "journal_file=%s\n", res.journal_path);
+        } else {
+            fprintf(stderr, "error: %s\n", dsu_cli_status_name(st));
+        }
+    }
+
+    if (state) dsu_state_destroy(ctx, state);
+    if (ctx) dsu_ctx_destroy(ctx);
+    return dsu_cli_exit_code(st);
+}
+
+static int dsu_cli_cmd_verify(const char *state_path, const dsu_cli_opts_t *opts) {
+    dsu_ctx_t *ctx = NULL;
+    dsu_state_t *state = NULL;
+    dsu_txn_options_t txn_opts;
+    dsu_txn_result_t res;
+    dsu_status_t st;
+
+    dsu_txn_options_init(&txn_opts);
+    dsu_txn_result_init(&res);
+
+    st = dsu_cli_ctx_create(opts, &ctx);
+    if (st != DSU_STATUS_SUCCESS) goto done;
+    st = dsu_ctx_reset_audit_log(ctx);
+    if (st != DSU_STATUS_SUCCESS) goto done;
+
+    st = dsu_state_load_file(ctx, state_path, &state);
+    if (st != DSU_STATUS_SUCCESS) goto done;
+
+    st = dsu_txn_verify_state(ctx, state, &txn_opts, &res);
+
+done:
+    if (opts && opts->json) {
+        fputc('{', stdout);
+        fputs("\"command\":", stdout); dsu_cli_json_put_escaped(stdout, "verify"); fputc(',', stdout);
+        fputs("\"status\":", stdout); dsu_cli_json_put_escaped(stdout, (st == DSU_STATUS_SUCCESS) ? "ok" : "error"); fputc(',', stdout);
+        fputs("\"error\":", stdout); dsu_cli_json_put_escaped(stdout, (st == DSU_STATUS_SUCCESS) ? "" : dsu_cli_status_name(st)); fputc(',', stdout);
+        fprintf(stdout, "\"exit_code\":%d,", dsu_cli_exit_code(st));
+        fputs("\"deterministic\":", stdout); fputs((opts && opts->deterministic) ? "true" : "false", stdout);
+        if (st == DSU_STATUS_SUCCESS || st == DSU_STATUS_INTEGRITY_ERROR) {
+            fputc(',', stdout);
+            fputs("\"state_file\":", stdout); dsu_cli_json_put_escaped(stdout, state_path); fputc(',', stdout);
+            fputs("\"install_root\":", stdout); dsu_cli_json_put_escaped(stdout, res.install_root); fputc(',', stdout);
+            fprintf(stdout, "\"verified_ok\":%lu,", (unsigned long)res.verified_ok);
+            fprintf(stdout, "\"verified_missing\":%lu,", (unsigned long)res.verified_missing);
+            fprintf(stdout, "\"verified_mismatch\":%lu", (unsigned long)res.verified_mismatch);
+        }
+        fputs("}\n", stdout);
+    } else {
+        if (st == DSU_STATUS_SUCCESS) {
+            fprintf(stdout, "ok\n");
+        } else {
+            fprintf(stderr, "error: %s\n", dsu_cli_status_name(st));
+        }
+    }
+
+    if (state) dsu_state_destroy(ctx, state);
+    if (ctx) dsu_ctx_destroy(ctx);
+    return dsu_cli_exit_code(st);
+}
+
+static int dsu_cli_cmd_rollback(const char *journal_path, const dsu_cli_opts_t *opts) {
+    dsu_ctx_t *ctx = NULL;
+    dsu_txn_options_t txn_opts;
+    dsu_txn_result_t res;
+    dsu_status_t st;
+
+    dsu_txn_options_init(&txn_opts);
+    dsu_txn_result_init(&res);
+
+    st = dsu_cli_ctx_create(opts, &ctx);
+    if (st != DSU_STATUS_SUCCESS) goto done;
+    st = dsu_ctx_reset_audit_log(ctx);
+    if (st != DSU_STATUS_SUCCESS) goto done;
+
+    txn_opts.dry_run = (dsu_bool)((opts && opts->dry_run) ? 1 : 0);
+    st = dsu_txn_rollback_journal(ctx, journal_path, &txn_opts, &res);
+
+done:
+    if (opts && opts->json) {
+        fputc('{', stdout);
+        fputs("\"command\":", stdout); dsu_cli_json_put_escaped(stdout, "rollback"); fputc(',', stdout);
+        fputs("\"status\":", stdout); dsu_cli_json_put_escaped(stdout, (st == DSU_STATUS_SUCCESS) ? "ok" : "error"); fputc(',', stdout);
+        fputs("\"error\":", stdout); dsu_cli_json_put_escaped(stdout, (st == DSU_STATUS_SUCCESS) ? "" : dsu_cli_status_name(st)); fputc(',', stdout);
+        fprintf(stdout, "\"exit_code\":%d,", dsu_cli_exit_code(st));
+        fputs("\"deterministic\":", stdout); fputs((opts && opts->deterministic) ? "true" : "false", stdout); fputc(',', stdout);
+        fputs("\"dry_run\":", stdout); fputs((opts && opts->dry_run) ? "true" : "false", stdout);
+        if (st == DSU_STATUS_SUCCESS) {
+            fputc(',', stdout);
+            fputs("\"journal_file\":", stdout); dsu_cli_json_put_escaped(stdout, journal_path); fputc(',', stdout);
+            fputs("\"journal_id\":", stdout); dsu_cli_json_put_u64_hex(stdout, res.journal_id); fputc(',', stdout);
+            fputs("\"install_root\":", stdout); dsu_cli_json_put_escaped(stdout, res.install_root); fputc(',', stdout);
+            fputs("\"txn_root\":", stdout); dsu_cli_json_put_escaped(stdout, res.txn_root); fputc(',', stdout);
+            fprintf(stdout, "\"journal_entry_count\":%lu,", (unsigned long)res.journal_entry_count);
+            fprintf(stdout, "\"commit_progress_before\":%lu", (unsigned long)res.commit_progress);
+        }
+        fputs("}\n", stdout);
+    } else {
+        if (st == DSU_STATUS_SUCCESS) {
+            fprintf(stdout, "ok\n");
+        } else {
+            fprintf(stderr, "error: %s\n", dsu_cli_status_name(st));
+        }
+    }
+
+    if (ctx) dsu_ctx_destroy(ctx);
+    return dsu_cli_exit_code(st);
+}
+
 static int dsu_cli_cmd_manifest_validate(const char *in_path, const dsu_cli_opts_t *opts) {
     dsu_ctx_t *ctx = NULL;
     dsu_manifest_t *manifest = NULL;
@@ -726,6 +948,7 @@ int main(int argc, char **argv) {
 
     opts.deterministic = 1;
     opts.json = 0;
+    opts.dry_run = 0;
 
     if (argc < 2) {
         dsu_cli_print_usage(stderr);
@@ -740,6 +963,8 @@ int main(int argc, char **argv) {
         if (!arg) continue;
         if (dsu_cli_streq(arg, "--json")) {
             opts.json = 1;
+        } else if (dsu_cli_streq(arg, "--dry-run")) {
+            opts.dry_run = 1;
         } else if (dsu_cli_streq(arg, "--deterministic")) {
             opts.deterministic = 1;
         } else if (dsu_cli_streq(arg, "--nondeterministic") || dsu_cli_streq(arg, "--non-deterministic")) {
@@ -1048,6 +1273,126 @@ int main(int argc, char **argv) {
             return 2;
         }
         return dsu_cli_cmd_dry_run(plan_path, out_log_path, &opts);
+    }
+
+    if (dsu_cli_streq(cmd, "install")) {
+        const char *plan_path = NULL;
+        for (i = 2; i < argc; ++i) {
+            const char *arg = argv[i];
+            const char *v;
+            if (!arg) continue;
+            v = dsu_cli_kv_value_inline(arg, "--plan");
+            if (v) {
+                plan_path = v;
+                continue;
+            }
+            if (dsu_cli_streq(arg, "--plan") && i + 1 < argc) {
+                plan_path = argv[++i];
+            }
+        }
+        if (!plan_path) {
+            if (opts.json) {
+                fputc('{', stdout);
+                fputs("\"command\":", stdout); dsu_cli_json_put_escaped(stdout, "install"); fputc(',', stdout);
+                fputs("\"status\":", stdout); dsu_cli_json_put_escaped(stdout, "error"); fputc(',', stdout);
+                fputs("\"error\":", stdout); dsu_cli_json_put_escaped(stdout, "invalid_args");
+                fputs("}\n", stdout);
+            } else {
+                dsu_cli_print_usage(stderr);
+            }
+            return 2;
+        }
+        return dsu_cli_cmd_install(plan_path, &opts);
+    }
+
+    if (dsu_cli_streq(cmd, "uninstall")) {
+        const char *state_path = NULL;
+        for (i = 2; i < argc; ++i) {
+            const char *arg = argv[i];
+            const char *v;
+            if (!arg) continue;
+            v = dsu_cli_kv_value_inline(arg, "--state");
+            if (v) {
+                state_path = v;
+                continue;
+            }
+            if (dsu_cli_streq(arg, "--state") && i + 1 < argc) {
+                state_path = argv[++i];
+            }
+        }
+        if (!state_path) {
+            if (opts.json) {
+                fputc('{', stdout);
+                fputs("\"command\":", stdout); dsu_cli_json_put_escaped(stdout, "uninstall"); fputc(',', stdout);
+                fputs("\"status\":", stdout); dsu_cli_json_put_escaped(stdout, "error"); fputc(',', stdout);
+                fputs("\"error\":", stdout); dsu_cli_json_put_escaped(stdout, "invalid_args");
+                fputs("}\n", stdout);
+            } else {
+                dsu_cli_print_usage(stderr);
+            }
+            return 2;
+        }
+        return dsu_cli_cmd_uninstall(state_path, &opts);
+    }
+
+    if (dsu_cli_streq(cmd, "verify")) {
+        const char *state_path = NULL;
+        for (i = 2; i < argc; ++i) {
+            const char *arg = argv[i];
+            const char *v;
+            if (!arg) continue;
+            v = dsu_cli_kv_value_inline(arg, "--state");
+            if (v) {
+                state_path = v;
+                continue;
+            }
+            if (dsu_cli_streq(arg, "--state") && i + 1 < argc) {
+                state_path = argv[++i];
+            }
+        }
+        if (!state_path) {
+            if (opts.json) {
+                fputc('{', stdout);
+                fputs("\"command\":", stdout); dsu_cli_json_put_escaped(stdout, "verify"); fputc(',', stdout);
+                fputs("\"status\":", stdout); dsu_cli_json_put_escaped(stdout, "error"); fputc(',', stdout);
+                fputs("\"error\":", stdout); dsu_cli_json_put_escaped(stdout, "invalid_args");
+                fputs("}\n", stdout);
+            } else {
+                dsu_cli_print_usage(stderr);
+            }
+            return 2;
+        }
+        return dsu_cli_cmd_verify(state_path, &opts);
+    }
+
+    if (dsu_cli_streq(cmd, "rollback")) {
+        const char *journal_path = NULL;
+        for (i = 2; i < argc; ++i) {
+            const char *arg = argv[i];
+            const char *v;
+            if (!arg) continue;
+            v = dsu_cli_kv_value_inline(arg, "--journal");
+            if (v) {
+                journal_path = v;
+                continue;
+            }
+            if (dsu_cli_streq(arg, "--journal") && i + 1 < argc) {
+                journal_path = argv[++i];
+            }
+        }
+        if (!journal_path) {
+            if (opts.json) {
+                fputc('{', stdout);
+                fputs("\"command\":", stdout); dsu_cli_json_put_escaped(stdout, "rollback"); fputc(',', stdout);
+                fputs("\"status\":", stdout); dsu_cli_json_put_escaped(stdout, "error"); fputc(',', stdout);
+                fputs("\"error\":", stdout); dsu_cli_json_put_escaped(stdout, "invalid_args");
+                fputs("}\n", stdout);
+            } else {
+                dsu_cli_print_usage(stderr);
+            }
+            return 2;
+        }
+        return dsu_cli_cmd_rollback(journal_path, &opts);
     }
 
     if (opts.json) {
