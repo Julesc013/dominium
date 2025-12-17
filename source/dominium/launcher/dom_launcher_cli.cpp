@@ -682,6 +682,7 @@ int main(int argc, char **argv) {
     }
 
     cfg.home.clear();
+    cfg.argv0 = (argc > 0 && argv && argv[0]) ? std::string(argv[0]) : std::string();
     cfg.mode = dom::LAUNCHER_MODE_GUI;
     cfg.action.clear();
     cfg.instance_id.clear();

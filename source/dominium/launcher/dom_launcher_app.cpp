@@ -13,24 +13,157 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 */
 #include "dom_launcher_app.h"
 
+#include <algorithm>
 #include <cstdio>
 #include <cstring>
 #include <cctype>
 
-#include "dom_paths.h"
-#include "dom_launcher_catalog.h"
 #include "dom_launcher_actions.h"
+#include "dom_launcher_catalog.h"
 
+#include "launcher_launch_plumbing.h"
+
+extern "C" {
 #include "domino/caps.h"
-#include "domino/io/container.h"
 #include "domino/system/dsys.h"
+}
 
 #include "core/include/launcher_safety.h"
-#include "launcher_launch_plumbing.h"
 
 namespace dom {
 
+struct DomLauncherUiState {
+    enum LauncherTab {
+        TAB_PLAY = 0,
+        TAB_INSTANCES = 1,
+        TAB_PACKS = 2,
+        TAB_OPTIONS = 3,
+        TAB_LOGS = 4
+    };
+
+    u32 tab;
+    std::string instance_search;
+    u32 play_target_item_id;
+
+    u32 dialog_visible;
+    std::string dialog_title;
+    std::string dialog_text;
+    std::vector<std::string> dialog_lines;
+
+    std::string status_text;
+    u32 status_progress; /* 0..1000 */
+
+    DomLauncherUiState()
+        : tab((u32)TAB_PLAY),
+          instance_search(),
+          play_target_item_id(0u),
+          dialog_visible(0u),
+          dialog_title(),
+          dialog_text(),
+          dialog_lines(),
+          status_text("Ready."),
+          status_progress(0u) {}
+};
+
 namespace {
+
+/* UI schema widget IDs (scripts/gen_launcher_ui_schema_v1.py). */
+enum LauncherUiWidgetId {
+    W_HEADER_INFO = 1112,
+
+    W_INST_SEARCH = 1201,
+    W_INST_LIST = 1202,
+    W_INST_HINT = 1203,
+
+    W_TAB_PLAY_BTN = 1301,
+    W_TAB_INST_BTN = 1302,
+    W_TAB_PACKS_BTN = 1303,
+    W_TAB_OPTIONS_BTN = 1304,
+    W_TAB_LOGS_BTN = 1305,
+
+    W_TAB_PLAY_PANEL = 1311,
+    W_TAB_INST_PANEL = 1312,
+    W_TAB_PACKS_PANEL = 1313,
+    W_TAB_OPTIONS_PANEL = 1314,
+    W_TAB_LOGS_PANEL = 1315,
+
+    W_PLAY_SELECTED = 1410,
+    W_PLAY_PROFILE = 1411,
+    W_PLAY_MANIFEST = 1412,
+    W_PLAY_TARGET_LIST = 1414,
+    W_PLAY_OFFLINE = 1415,
+    W_PLAY_LAST_RUN = 1419,
+    W_NEWS_LIST = 1451,
+
+    W_INST_IMPORT_PATH = 1505,
+    W_INST_EXPORT_PATH = 1508,
+    W_INST_PATHS_LIST = 1512,
+
+    W_PACKS_LABEL = 1600,
+    W_PACKS_LIST = 1601,
+    W_PACKS_ENABLED = 1602,
+    W_PACKS_POLICY_LIST = 1604,
+    W_PACKS_RESOLVED = 1607,
+    W_PACKS_ERROR = 1608,
+
+    W_OPT_GFX_LIST = 1702,
+    W_OPT_API_FIELD = 1704,
+    W_OPT_WINMODE_LIST = 1706,
+    W_OPT_WIDTH_FIELD = 1708,
+    W_OPT_HEIGHT_FIELD = 1709,
+    W_OPT_DPI_FIELD = 1710,
+    W_OPT_MONITOR_FIELD = 1711,
+    W_OPT_AUDIO_LABEL = 1712,
+    W_OPT_INPUT_LABEL = 1713,
+
+    W_LOGS_LAST_RUN = 1801,
+    W_LOGS_RUNS_LIST = 1803,
+    W_LOGS_AUDIT_LIST = 1804,
+    W_LOGS_DIAG_OUT = 1806,
+    W_LOGS_LOCS_LIST = 1809,
+
+    W_STATUS_TEXT = 1901,
+    W_STATUS_PROGRESS = 1902,
+    W_STATUS_SELECTION = 1903,
+
+    W_DIALOG_COL = 2000,
+    W_DIALOG_TITLE = 2001,
+    W_DIALOG_TEXT = 2002,
+    W_DIALOG_LIST = 2003
+};
+
+/* UI schema action IDs (scripts/gen_launcher_ui_schema_v1.py). */
+enum LauncherUiActionId {
+    ACT_TAB_PLAY = 100,
+    ACT_TAB_INST = 101,
+    ACT_TAB_PACKS = 102,
+    ACT_TAB_OPTIONS = 103,
+    ACT_TAB_LOGS = 104,
+
+    ACT_DIALOG_OK = 900,
+    ACT_DIALOG_CANCEL = 901
+};
+
+static int ascii_tolower(int c) {
+    if (c >= 'A' && c <= 'Z') {
+        return c - 'A' + 'a';
+    }
+    return c;
+}
+
+static bool str_ieq(const char* a, const char* b) {
+    if (!a || !b) {
+        return false;
+    }
+    while (*a && *b) {
+        if (ascii_tolower((unsigned char)*a) != ascii_tolower((unsigned char)*b)) {
+            return false;
+        }
+        ++a;
+        ++b;
+    }
+    return *a == '\0' && *b == '\0';
+}
 
 static bool ends_with_ci(const char* s, const char* suffix) {
     size_t ls, lx, i;
@@ -100,10 +233,289 @@ static void sort_products_deterministic(std::vector<ProductEntry>& products) {
     }
 }
 
+static bool str_contains_ci(const std::string& hay, const std::string& needle) {
+    size_t i;
+    size_t j;
+    if (needle.empty()) {
+        return true;
+    }
+    if (hay.size() < needle.size()) {
+        return false;
+    }
+    for (i = 0u; i + needle.size() <= hay.size(); ++i) {
+        bool ok = true;
+        for (j = 0u; j < needle.size(); ++j) {
+            const int a = ascii_tolower((unsigned char)hay[i + j]);
+            const int b = ascii_tolower((unsigned char)needle[j]);
+            if (a != b) {
+                ok = false;
+                break;
+            }
+        }
+        if (ok) {
+            return true;
+        }
+    }
+    return false;
+}
+
+static bool is_sep(char c) { return c == '/' || c == '\\'; }
+
+static std::string normalize_seps(const std::string& in) {
+    std::string out = in;
+    size_t i;
+    for (i = 0u; i < out.size(); ++i) {
+        if (out[i] == '\\') out[i] = '/';
+    }
+    return out;
+}
+
+static std::string dirname_of(const std::string& path) {
+    size_t i;
+    for (i = path.size(); i > 0u; --i) {
+        if (is_sep(path[i - 1u])) {
+            return path.substr(0u, i - 1u);
+        }
+    }
+    return std::string();
+}
+
+static std::string path_join(const std::string& a, const std::string& b) {
+    std::string aa = normalize_seps(a);
+    std::string bb = normalize_seps(b);
+    if (aa.empty()) return bb;
+    if (bb.empty()) return aa;
+    if (is_sep(aa[aa.size() - 1u])) return aa + bb;
+    return aa + "/" + bb;
+}
+
+static bool file_exists_stdio(const std::string& path) {
+    FILE* f = std::fopen(path.c_str(), "rb");
+    if (!f) return false;
+    std::fclose(f);
+    return true;
+}
+
+static bool read_file_all_bytes(const std::string& path,
+                                std::vector<unsigned char>& out_bytes,
+                                std::string& out_error) {
+    FILE* f;
+    long sz;
+    size_t got;
+    out_bytes.clear();
+    out_error.clear();
+
+    f = std::fopen(path.c_str(), "rb");
+    if (!f) {
+        out_error = "open_failed";
+        return false;
+    }
+    if (std::fseek(f, 0, SEEK_END) != 0) {
+        std::fclose(f);
+        out_error = "seek_end_failed";
+        return false;
+    }
+    sz = std::ftell(f);
+    if (sz < 0) {
+        std::fclose(f);
+        out_error = "tell_failed";
+        return false;
+    }
+    if (std::fseek(f, 0, SEEK_SET) != 0) {
+        std::fclose(f);
+        out_error = "seek_set_failed";
+        return false;
+    }
+    out_bytes.resize((size_t)sz);
+    got = 0u;
+    if (sz > 0) {
+        got = std::fread(&out_bytes[0], 1u, (size_t)sz, f);
+    }
+    std::fclose(f);
+    if (got != (size_t)sz) {
+        out_bytes.clear();
+        out_error = "read_failed";
+        return false;
+    }
+    return true;
+}
+
+static u32 fnv1a32_bytes(const void* data, size_t len) {
+    const unsigned char* p = (const unsigned char*)data;
+    u32 h = 2166136261u;
+    size_t i;
+    for (i = 0u; i < len; ++i) {
+        h ^= (u32)p[i];
+        h *= 16777619u;
+    }
+    return h;
+}
+
+static u32 stable_item_id(const std::string& s) {
+    u32 id = fnv1a32_bytes(s.data(), s.size());
+    return (id == 0u) ? 1u : id;
+}
+
+static void append_u32_le(std::vector<unsigned char>& out, u32 v) {
+    out.push_back((unsigned char)((v >> 0u) & 0xffu));
+    out.push_back((unsigned char)((v >> 8u) & 0xffu));
+    out.push_back((unsigned char)((v >> 16u) & 0xffu));
+    out.push_back((unsigned char)((v >> 24u) & 0xffu));
+}
+
+static void append_u64_le(std::vector<unsigned char>& out, u64 v) {
+    append_u32_le(out, (u32)(v & 0xffffffffu));
+    append_u32_le(out, (u32)((v >> 32u) & 0xffffffffu));
+}
+
+static void append_tlv_raw(std::vector<unsigned char>& out, u32 tag, const void* payload, size_t payload_len) {
+    append_u32_le(out, tag);
+    append_u32_le(out, (u32)payload_len);
+    if (payload_len != 0u) {
+        const unsigned char* p = (const unsigned char*)payload;
+        out.insert(out.end(), p, p + payload_len);
+    }
+}
+
+static void append_tlv_u32(std::vector<unsigned char>& out, u32 tag, u32 v) {
+    unsigned char le[4];
+    le[0] = (unsigned char)((v >> 0u) & 0xffu);
+    le[1] = (unsigned char)((v >> 8u) & 0xffu);
+    le[2] = (unsigned char)((v >> 16u) & 0xffu);
+    le[3] = (unsigned char)((v >> 24u) & 0xffu);
+    append_tlv_raw(out, tag, le, 4u);
+}
+
+static void append_tlv_u64(std::vector<unsigned char>& out, u32 tag, u64 v) {
+    std::vector<unsigned char> le;
+    le.reserve(8u);
+    append_u64_le(le, v);
+    append_tlv_raw(out, tag, le.empty() ? (const void*)0 : &le[0], le.size());
+}
+
+static void append_tlv_text(std::vector<unsigned char>& out, u32 tag, const std::string& s) {
+    append_tlv_raw(out, tag, s.empty() ? (const void*)0 : s.data(), s.size());
+}
+
+struct ListItem {
+    u32 id;
+    std::string text;
+    ListItem() : id(0u), text() {}
+    ListItem(u32 i, const std::string& t) : id(i), text(t) {}
+};
+
+static void dui_state_add_text(std::vector<unsigned char>& inner, u32 bind_id, const std::string& text) {
+    std::vector<unsigned char> value;
+    append_tlv_u32(value, DUI_TLV_BIND_U32, bind_id);
+    append_tlv_u32(value, DUI_TLV_VALUE_TYPE_U32, (u32)DUI_VALUE_TEXT);
+    append_tlv_text(value, DUI_TLV_VALUE_UTF8, text);
+    append_tlv_raw(inner, DUI_TLV_VALUE_V1, value.empty() ? (const void*)0 : &value[0], value.size());
+}
+
+static void dui_state_add_u32(std::vector<unsigned char>& inner, u32 bind_id, u32 value_type, u32 v) {
+    std::vector<unsigned char> value;
+    append_tlv_u32(value, DUI_TLV_BIND_U32, bind_id);
+    append_tlv_u32(value, DUI_TLV_VALUE_TYPE_U32, value_type);
+    append_tlv_u32(value, DUI_TLV_VALUE_U32, v);
+    append_tlv_raw(inner, DUI_TLV_VALUE_V1, value.empty() ? (const void*)0 : &value[0], value.size());
+}
+
+static void dui_state_add_list(std::vector<unsigned char>& inner,
+                               u32 bind_id,
+                               u32 selected_item_id,
+                               const std::vector<ListItem>& items) {
+    std::vector<unsigned char> list_payload;
+    size_t i;
+    append_tlv_u32(list_payload, DUI_TLV_LIST_SELECTED_U32, selected_item_id);
+    for (i = 0u; i < items.size(); ++i) {
+        std::vector<unsigned char> item_payload;
+        append_tlv_u32(item_payload, DUI_TLV_ITEM_ID_U32, items[i].id);
+        append_tlv_text(item_payload, DUI_TLV_ITEM_TEXT_UTF8, items[i].text);
+        append_tlv_raw(list_payload,
+                       DUI_TLV_LIST_ITEM_V1,
+                       item_payload.empty() ? (const void*)0 : &item_payload[0],
+                       item_payload.size());
+    }
+
+    std::vector<unsigned char> value;
+    append_tlv_u32(value, DUI_TLV_BIND_U32, bind_id);
+    append_tlv_u32(value, DUI_TLV_VALUE_TYPE_U32, (u32)DUI_VALUE_LIST);
+    append_tlv_raw(value,
+                   DUI_TLV_LIST_V1,
+                   list_payload.empty() ? (const void*)0 : &list_payload[0],
+                   list_payload.size());
+    append_tlv_raw(inner, DUI_TLV_VALUE_V1, value.empty() ? (const void*)0 : &value[0], value.size());
+}
+
+static std::string tab_button_text(const char* base, bool selected) {
+    if (!base) {
+        return selected ? std::string("[*]") : std::string("[ ]");
+    }
+    return selected ? (std::string("[") + base + "]") : std::string(base);
+}
+
+static const dui_api_v1* lookup_dui_api_by_backend_name(const char* want_name, std::string& out_err) {
+    u32 i;
+    u32 count;
+    dom_backend_desc desc;
+
+    if (!want_name || !want_name[0]) {
+        out_err = "ui backend name is empty";
+        return 0;
+    }
+
+    count = dom_caps_backend_count();
+    for (i = 0u; i < count; ++i) {
+        if (dom_caps_backend_get(i, &desc) != DOM_CAPS_OK) {
+            continue;
+        }
+        if (desc.subsystem_id != DOM_SUBSYS_DUI) {
+            continue;
+        }
+        if (!desc.backend_name || !desc.backend_name[0]) {
+            continue;
+        }
+        if (!str_ieq(desc.backend_name, want_name)) {
+            continue;
+        }
+        if (!desc.get_api) {
+            out_err = "ui backend missing get_api";
+            return 0;
+        }
+
+        {
+            const dui_api_v1* api = (const dui_api_v1*)desc.get_api(DUI_API_ABI_VERSION);
+            if (!api) {
+                out_err = std::string("ui get_api returned null for backend '") + want_name + "'";
+                return 0;
+            }
+            if (api->abi_version != DUI_API_ABI_VERSION || api->struct_size != (u32)sizeof(dui_api_v1)) {
+                out_err = std::string("ui api abi mismatch for backend '") + want_name + "'";
+                return 0;
+            }
+            if (!api->create_context || !api->destroy_context ||
+                !api->create_window || !api->destroy_window ||
+                !api->set_schema_tlv || !api->set_state_tlv ||
+                !api->pump || !api->poll_event || !api->request_quit || !api->render) {
+                out_err = std::string("ui api missing required functions for backend '") + want_name + "'";
+                return 0;
+            }
+            return api;
+        }
+    }
+
+    out_err = std::string("ui backend not found in registry: '") + want_name + "'";
+    return 0;
+}
+
 } // namespace
 
 DomLauncherApp::DomLauncherApp()
-    : m_mode(LAUNCHER_MODE_CLI),
+    : m_paths(),
+      m_mode(LAUNCHER_MODE_CLI),
+      m_argv0(""),
+      m_products(),
+      m_instances(),
       m_profile(),
       m_profile_valid(false),
       m_dui_api(0),
@@ -113,20 +525,10 @@ DomLauncherApp::DomLauncherApp()
       m_selected_product(-1),
       m_selected_instance(-1),
       m_selected_mode("gui"),
-      m_connect_host("127.0.0.1"),
-      m_net_port(7777u),
-      m_edit_connect_host(false),
-      m_connect_host_backup(""),
-      m_status(""),
-      m_show_tools(false),
-      m_repo_mod_manifests(),
-      m_repo_pack_manifests(),
-      m_tool_sel_id(0u),
-      m_mod_sel_id(0u),
-      m_pack_sel_id(0u),
       m_ui_backend_selected(""),
       m_ui_caps_selected(0u),
-      m_ui_fallback_note("") {
+      m_ui_fallback_note(""),
+      m_ui(new DomLauncherUiState()) {
     std::memset(&m_profile, 0, sizeof(m_profile));
     m_profile.abi_version = DOM_PROFILE_ABI_VERSION;
     m_profile.struct_size = (u32)sizeof(dom_profile);
@@ -134,10 +536,14 @@ DomLauncherApp::DomLauncherApp()
 
 DomLauncherApp::~DomLauncherApp() {
     shutdown();
+    delete m_ui;
+    m_ui = 0;
 }
 
 bool DomLauncherApp::init_from_cli(const LauncherConfig &cfg, const dom_profile* profile) {
     std::string home = cfg.home;
+
+    m_argv0 = cfg.argv0;
 
     m_profile_valid = false;
     std::memset(&m_profile, 0, sizeof(m_profile));
@@ -151,12 +557,7 @@ bool DomLauncherApp::init_from_cli(const LauncherConfig &cfg, const dom_profile*
     }
 
     if (home.empty()) {
-        char buf[260];
-        if (dsys_get_path(DSYS_PATH_USER_DATA, buf, sizeof(buf))) {
-            home = buf;
-        } else {
-            home = ".";
-        }
+        home = ".";
     }
 
     if (!resolve_paths(m_paths, home)) {
@@ -172,8 +573,6 @@ bool DomLauncherApp::init_from_cli(const LauncherConfig &cfg, const dom_profile*
     }
     (void)scan_products();
     (void)scan_instances();
-    (void)scan_tools();
-    (void)scan_repo_content();
 
     if (m_selected_product < 0 && !m_products.empty()) {
         m_selected_product = 0;
@@ -275,23 +674,18 @@ void DomLauncherApp::cycle_selected_mode() {
     }
 }
 
-void DomLauncherApp::toggle_connect_host_edit() {
-    if (!m_edit_connect_host) {
-        m_connect_host_backup = m_connect_host;
-        m_edit_connect_host = true;
-        m_status = "Editing connect host (digits, '.', Backspace, Enter/Esc)";
-    } else {
-        m_edit_connect_host = false;
-        m_status = "Connect host updated.";
-    }
+std::string DomLauncherApp::home_join(const std::string &rel) const {
+    return join(m_paths.root, rel);
 }
 
-void DomLauncherApp::adjust_net_port(int delta) {
-    int v = (int)m_net_port;
-    v += delta;
-    if (v < 1) v = 1;
-    if (v > 65535) v = 65535;
-    m_net_port = (unsigned)v;
+ProductEntry* DomLauncherApp::find_product_entry(const std::string &product) {
+    size_t i;
+    for (i = 0u; i < m_products.size(); ++i) {
+        if (m_products[i].product == product) {
+            return &m_products[i];
+        }
+    }
+    return (ProductEntry *)0;
 }
 
 const InstanceInfo* DomLauncherApp::selected_instance() const {
@@ -299,173 +693,6 @@ const InstanceInfo* DomLauncherApp::selected_instance() const {
         return (const InstanceInfo *)0;
     }
     return &m_instances[(size_t)m_selected_instance];
-}
-
-static std::string dom_u32_arg(const char *prefix, unsigned v) {
-    char buf[64];
-    std::snprintf(buf, sizeof(buf), "%s%u", prefix ? prefix : "", (unsigned)v);
-    return std::string(buf);
-}
-
-bool DomLauncherApp::spawn_product_args(const std::string &product,
-                                       const std::vector<std::string> &args,
-                                       bool wait_for_exit) {
-    ProductEntry *entry = find_product_entry(product);
-    size_t i;
-    std::string instance_id;
-    dom::LaunchTarget target;
-    dom::launcher_core::LauncherLaunchOverrides ov;
-    dom::LaunchRunResult lr;
-
-    if (!entry) {
-        m_status = "Launch failed: product not found.";
-        return false;
-    }
-
-    for (i = 0u; i < args.size(); ++i) {
-        if (args[i].compare(0u, 11u, "--instance=") == 0) {
-            instance_id = args[i].substr(11u);
-            break;
-        }
-    }
-
-    if (instance_id.empty()) {
-        m_status = "Launch failed: missing --instance.";
-        return false;
-    }
-    if (product == "game") {
-        target.is_tool = 0u;
-    } else {
-        if (!dom::launcher_core::launcher_is_safe_id_component(product)) {
-            m_status = "Launch failed: unsafe tool id.";
-            return false;
-        }
-        target.is_tool = 1u;
-        target.tool_id = product;
-    }
-
-    std::printf("Launcher: spawning %s (%s)\n",
-                entry->path.c_str(), product.c_str());
-
-    ov = dom::launcher_core::LauncherLaunchOverrides();
-
-    if (!dom::launcher_execute_launch_attempt(m_paths.root,
-                                              instance_id,
-                                              target,
-                                              m_profile_valid ? &m_profile : (const dom_profile*)0,
-                                              entry->path,
-                                              args,
-                                              wait_for_exit ? 1u : 0u,
-                                              8u,
-                                              ov,
-                                              lr)) {
-        if (lr.refused) {
-            m_status = std::string("Refused: ") + lr.refusal_detail;
-        } else if (!lr.error.empty()) {
-            m_status = std::string("Launch failed: ") + lr.error;
-        } else {
-            m_status = "Launch failed.";
-        }
-        return false;
-    }
-
-    if (!wait_for_exit) {
-        m_status = "Spawned.";
-        return true;
-    }
-
-    {
-        char buf[64];
-        std::snprintf(buf, sizeof(buf), "Process exited (%d).", (int)lr.child_exit_code);
-        m_status = buf;
-    }
-    return lr.ok != 0u;
-}
-
-bool DomLauncherApp::launch_game_listen() {
-    const InstanceInfo *inst = selected_instance();
-    std::vector<std::string> args;
-    if (!inst) {
-        m_status = "Launch failed: no instance selected.";
-        return false;
-    }
-    args.push_back(std::string("--mode=") + m_selected_mode);
-    args.push_back(std::string("--instance=") + inst->id);
-    args.push_back("--listen");
-    args.push_back(dom_u32_arg("--port=", m_net_port));
-    return spawn_product_args("game", args, false);
-}
-
-bool DomLauncherApp::launch_game_dedicated() {
-    const InstanceInfo *inst = selected_instance();
-    std::vector<std::string> args;
-    if (!inst) {
-        m_status = "Launch failed: no instance selected.";
-        return false;
-    }
-    args.push_back("--mode=headless");
-    args.push_back(std::string("--instance=") + inst->id);
-    args.push_back("--server");
-    args.push_back(dom_u32_arg("--port=", m_net_port));
-    return spawn_product_args("game", args, false);
-}
-
-bool DomLauncherApp::launch_game_connect() {
-    const InstanceInfo *inst = selected_instance();
-    std::vector<std::string> args;
-    if (!inst) {
-        m_status = "Launch failed: no instance selected.";
-        return false;
-    }
-    if (m_connect_host.empty()) {
-        m_status = "Launch failed: connect host is empty.";
-        return false;
-    }
-    args.push_back(std::string("--mode=") + m_selected_mode);
-    args.push_back(std::string("--instance=") + inst->id);
-    args.push_back(std::string("--connect=") + m_connect_host);
-    args.push_back(dom_u32_arg("--port=", m_net_port));
-    return spawn_product_args("game", args, false);
-}
-
-void DomLauncherApp::toggle_tools_view() {
-    m_show_tools = !m_show_tools;
-    if (m_edit_connect_host) {
-        m_connect_host = m_connect_host_backup;
-        m_edit_connect_host = false;
-    }
-    m_status = m_show_tools ? "Tools view." : "Game view.";
-}
-
-std::string DomLauncherApp::home_join(const std::string &rel) const {
-    return join(m_paths.root, rel);
-}
-
-bool DomLauncherApp::launch_tool(const std::string &tool_id,
-                                 const std::string &load_path,
-                                 bool demo) {
-    const InstanceInfo* inst = selected_instance();
-    std::vector<std::string> args;
-
-    if (tool_id.empty()) {
-        m_status = "Launch failed: empty tool id.";
-        return false;
-    }
-    if (!inst) {
-        m_status = "Launch failed: no instance selected.";
-        return false;
-    }
-
-    args.push_back(std::string("--tool=") + tool_id);
-    args.push_back(std::string("--instance=") + inst->id);
-    if (demo) {
-        args.push_back("--demo");
-    }
-    if (!load_path.empty()) {
-        args.push_back(std::string("--load=") + load_path);
-    }
-
-    return spawn_product_args(tool_id, args, false);
 }
 
 bool DomLauncherApp::scan_repo() {
@@ -582,126 +809,22 @@ bool DomLauncherApp::scan_instances() {
         }
         InstanceInfo inst;
         inst.id = entry.name;
-        if (inst.load(m_paths)) {
-            m_instances.push_back(inst);
+        if (!dom::launcher_core::launcher_is_safe_id_component(inst.id)) {
+            continue;
         }
+        {
+            const std::string manifest_path = join(join(m_paths.instances, inst.id), "manifest.tlv");
+            if (!file_exists(manifest_path)) {
+                continue;
+            }
+        }
+        m_instances.push_back(inst);
     }
 
     dsys_dir_close(inst_it);
     if (m_selected_instance < 0 && !m_instances.empty()) {
         m_selected_instance = 0;
     }
-    return true;
-}
-
-bool DomLauncherApp::scan_tools() {
-    struct ToolExe {
-        const char *id;
-        const char *exe;
-    };
-    static const ToolExe k_tools[] = {
-        { "world_editor",     "dominium-world-editor.exe" },
-        { "blueprint_editor", "dominium-blueprint-editor.exe" },
-        { "tech_editor",      "dominium-tech-editor.exe" },
-        { "policy_editor",    "dominium-policy-editor.exe" },
-        { "process_editor",   "dominium-process-editor.exe" },
-        { "transport_editor", "dominium-transport-editor.exe" },
-        { "struct_editor",    "dominium-struct-editor.exe" },
-        { "item_editor",      "dominium-item-editor.exe" },
-        { "pack_editor",      "dominium-pack-editor.exe" },
-        { "mod_builder",      "dominium-mod-builder.exe" },
-        { "save_inspector",   "dominium-save-inspector.exe" },
-        { "replay_viewer",    "dominium-replay-viewer.exe" },
-        { "net_inspector",    "dominium-net-inspector.exe" },
-    };
-    static const size_t k_tool_count = sizeof(k_tools) / sizeof(k_tools[0]);
-
-    const std::string dbg_dir = join(m_paths.root, "build/source/dominium/tools/Debug");
-    const std::string rel_dir = join(m_paths.root, "build/source/dominium/tools/Release");
-    size_t i;
-
-    for (i = 0u; i < k_tool_count; ++i) {
-        ProductEntry tool;
-        const std::string dbg = join(dbg_dir, k_tools[i].exe);
-        const std::string rel = join(rel_dir, k_tools[i].exe);
-
-        tool.product = k_tools[i].id;
-        tool.version = "dev";
-        tool.path.clear();
-
-        if (file_exists(dbg)) {
-            tool.version = "dev-debug";
-            tool.path = dbg;
-            m_products.push_back(tool);
-        } else if (file_exists(rel)) {
-            tool.version = "dev-release";
-            tool.path = rel;
-            m_products.push_back(tool);
-        }
-    }
-    return true;
-}
-
-bool DomLauncherApp::scan_repo_content() {
-    dsys_dir_iter *it;
-    dsys_dir_entry entry;
-
-    m_repo_mod_manifests.clear();
-    it = dsys_dir_open(m_paths.mods.c_str());
-    if (it) {
-        while (dsys_dir_next(it, &entry)) {
-            if (!entry.is_dir) {
-                continue;
-            }
-            const std::string mod_id = entry.name;
-            const std::string mod_root = join(m_paths.mods, mod_id);
-            dsys_dir_iter *ver_it = dsys_dir_open(mod_root.c_str());
-            dsys_dir_entry ver_entry;
-            while (ver_it && dsys_dir_next(ver_it, &ver_entry)) {
-                if (!ver_entry.is_dir) {
-                    continue;
-                }
-                const std::string ver = ver_entry.name;
-                const std::string man = join(join(mod_root, ver), "mod.tlv");
-                if (file_exists(man)) {
-                    m_repo_mod_manifests.push_back(man);
-                }
-            }
-            if (ver_it) {
-                dsys_dir_close(ver_it);
-            }
-        }
-        dsys_dir_close(it);
-    }
-
-    m_repo_pack_manifests.clear();
-    it = dsys_dir_open(m_paths.packs.c_str());
-    if (it) {
-        while (dsys_dir_next(it, &entry)) {
-            if (!entry.is_dir) {
-                continue;
-            }
-            const std::string pack_id = entry.name;
-            const std::string pack_root = join(m_paths.packs, pack_id);
-            dsys_dir_iter *ver_it = dsys_dir_open(pack_root.c_str());
-            dsys_dir_entry ver_entry;
-            while (ver_it && dsys_dir_next(ver_it, &ver_entry)) {
-                if (!ver_entry.is_dir) {
-                    continue;
-                }
-                const std::string ver = ver_entry.name;
-                const std::string man = join(join(pack_root, ver), "pack.tlv");
-                if (file_exists(man)) {
-                    m_repo_pack_manifests.push_back(man);
-                }
-            }
-            if (ver_it) {
-                dsys_dir_close(ver_it);
-            }
-        }
-        dsys_dir_close(it);
-    }
-
     return true;
 }
 
@@ -720,959 +843,6 @@ bool DomLauncherApp::perform_cli_action(const LauncherConfig &cfg) {
         return false;
     }
     /* No action: nothing to do in CLI mode. */
-    return true;
-}
-
-ProductEntry* DomLauncherApp::find_product_entry(const std::string &product) {
-    size_t i;
-    for (i = 0u; i < m_products.size(); ++i) {
-        if (m_products[i].product == product) {
-            return &m_products[i];
-        }
-    }
-    return (ProductEntry *)0;
-}
-
-namespace {
-
-enum LauncherDuiWidgetId {
-    DUI_W_ROOT = 100u,
-
-    DUI_W_TITLE = 110u,
-    DUI_W_SUMMARY = 111u,
-
-    DUI_W_TOGGLE_VIEW = 120u,
-    DUI_W_MODE = 121u,
-
-    DUI_W_INSTANCE = 130u,
-    DUI_W_PREV_INSTANCE = 131u,
-    DUI_W_NEXT_INSTANCE = 132u,
-
-    DUI_W_CONNECT_LABEL = 140u,
-    DUI_W_CONNECT_FIELD = 141u,
-    DUI_W_CONNECT_EDIT = 142u,
-
-    DUI_W_PORT = 150u,
-    DUI_W_PORT_DEC = 151u,
-    DUI_W_PORT_INC = 152u,
-
-    DUI_W_LAUNCH_LISTEN = 160u,
-    DUI_W_LAUNCH_DEDICATED = 161u,
-    DUI_W_LAUNCH_CONNECT = 162u,
-
-    DUI_W_STATUS = 170u,
-
-    DUI_W_TOOLS_LABEL = 180u,
-    DUI_W_TOOLS_LIST = 181u,
-    DUI_W_MODS_LABEL = 182u,
-    DUI_W_MODS_LIST = 183u,
-    DUI_W_PACKS_LABEL = 184u,
-    DUI_W_PACKS_LIST = 185u,
-
-    DUI_W_LAUNCH_TOOL_BTN = 186u,
-    DUI_W_LAUNCH_MOD_BTN = 187u,
-    DUI_W_LAUNCH_PACK_BTN = 188u,
-
-    DUI_W_MAIN_STACK = 190u,
-    DUI_W_MAIN_ROW = 191u,
-    DUI_W_GAME_COL = 192u,
-    DUI_W_TOOLS_COL = 193u,
-    DUI_W_INST_LABEL = 194u
-};
-
-enum LauncherDuiActionId {
-    DUI_ACT_NONE = 0u,
-    DUI_ACT_TOGGLE_VIEW = 1u,
-    DUI_ACT_CYCLE_MODE = 2u,
-    DUI_ACT_PREV_INSTANCE = 3u,
-    DUI_ACT_NEXT_INSTANCE = 4u,
-    DUI_ACT_TOGGLE_CONNECT_EDIT = 5u,
-    DUI_ACT_PORT_DEC = 6u,
-    DUI_ACT_PORT_INC = 7u,
-    DUI_ACT_LAUNCH_LISTEN = 8u,
-    DUI_ACT_LAUNCH_DEDICATED = 9u,
-    DUI_ACT_LAUNCH_CONNECT = 10u,
-    DUI_ACT_LAUNCH_TOOL = 20u,
-    DUI_ACT_LAUNCH_MOD = 21u,
-    DUI_ACT_LAUNCH_PACK = 22u
-};
-
-static int ascii_tolower(int c) {
-    if (c >= 'A' && c <= 'Z') {
-        return c - 'A' + 'a';
-    }
-    return c;
-}
-
-static bool str_ieq(const char* a, const char* b) {
-    if (!a || !b) {
-        return false;
-    }
-    while (*a && *b) {
-        if (ascii_tolower((unsigned char)*a) != ascii_tolower((unsigned char)*b)) {
-            return false;
-        }
-        ++a;
-        ++b;
-    }
-    return *a == '\0' && *b == '\0';
-}
-
-static u32 fnv1a32_bytes(const void* data, size_t len) {
-    const unsigned char* p = (const unsigned char*)data;
-    u32 h = 2166136261u;
-    size_t i;
-    for (i = 0u; i < len; ++i) {
-        h ^= (u32)p[i];
-        h *= 16777619u;
-    }
-    return h;
-}
-
-static u32 fnv1a32_str(const std::string& s) {
-    return fnv1a32_bytes(s.data(), s.size());
-}
-
-static std::string repo_tail(const std::string& path, const char* marker) {
-    if (!marker) {
-        return path;
-    }
-    const std::string m(marker);
-    const size_t pos = path.find(m);
-    if (pos == std::string::npos) {
-        return path;
-    }
-    return path.substr(pos + m.size());
-}
-
-static bool tlv_write_u32(unsigned char* dst, u32 cap, u32* io_off, u32 tag, u32 v) {
-    unsigned char le[4];
-    dtlv_le_write_u32(le, v);
-    return dtlv_tlv_write(dst, cap, io_off, tag, le, 4u) == 0;
-}
-
-static bool tlv_write_u64(unsigned char* dst, u32 cap, u32* io_off, u32 tag, u64 v) {
-    unsigned char le[8];
-    dtlv_le_write_u32(le + 0u, (u32)(v & 0xffffffffu));
-    dtlv_le_write_u32(le + 4u, (u32)((v >> 32u) & 0xffffffffu));
-    return dtlv_tlv_write(dst, cap, io_off, tag, le, 8u) == 0;
-}
-
-static bool tlv_write_text(unsigned char* dst, u32 cap, u32* io_off, u32 tag, const std::string& s) {
-    const u32 n = (u32)s.size();
-    return dtlv_tlv_write(dst, cap, io_off, tag, s.data(), n) == 0;
-}
-
-static bool tlv_write_cstr(unsigned char* dst, u32 cap, u32* io_off, u32 tag, const char* s) {
-    const u32 n = (u32)(s ? std::strlen(s) : 0u);
-    return dtlv_tlv_write(dst, cap, io_off, tag, s ? s : "", n) == 0;
-}
-
-static bool tlv_write_raw(unsigned char* dst, u32 cap, u32* io_off, u32 tag, const void* payload, u32 payload_len) {
-    return dtlv_tlv_write(dst, cap, io_off, tag, payload, payload_len) == 0;
-}
-
-static u32 stable_item_id(const std::string& s) {
-    u32 id = fnv1a32_str(s);
-    return (id == 0u) ? 1u : id;
-}
-
-struct LauncherToolDef {
-    const char* tool_id;
-    const char* label;
-    u32 demo;
-    const char* load_rel; /* optional; relative to DOMINIUM_HOME */
-};
-
-static const LauncherToolDef k_tool_defs[] = {
-    { "world_editor",     "World Editor",     1u, "" },
-    { "blueprint_editor", "Blueprint Editor", 1u, "" },
-    { "tech_editor",      "Tech Tree Editor", 1u, "" },
-    { "policy_editor",    "Policy Editor",    1u, "" },
-    { "process_editor",   "Process Editor",   1u, "" },
-    { "transport_editor", "Transport Editor", 1u, "" },
-    { "struct_editor",    "Structure Editor", 1u, "" },
-    { "item_editor",      "Item Editor",      1u, "" },
-    { "pack_editor",      "Pack Editor",      1u, "" },
-    { "mod_builder",      "Mod Builder",      1u, "" },
-    { "save_inspector",   "Save Inspector",   0u, "data/tools_demo/world_demo.dwrl" },
-    { "replay_viewer",    "Replay Viewer",    0u, "" },
-    { "net_inspector",    "Net Inspector",    0u, "" }
-};
-static const u32 k_tool_def_count = (u32)(sizeof(k_tool_defs) / sizeof(k_tool_defs[0]));
-
-static const dui_api_v1* lookup_dui_api_by_backend_name(const char* want_name, std::string& out_err) {
-    u32 i;
-    u32 count;
-    dom_backend_desc desc;
-
-    if (!want_name || !want_name[0]) {
-        out_err = "ui backend name is empty";
-        return 0;
-    }
-
-    count = dom_caps_backend_count();
-    for (i = 0u; i < count; ++i) {
-        if (dom_caps_backend_get(i, &desc) != DOM_CAPS_OK) {
-            continue;
-        }
-        if (desc.subsystem_id != DOM_SUBSYS_DUI) {
-            continue;
-        }
-        if (!desc.backend_name || !desc.backend_name[0]) {
-            continue;
-        }
-        if (!str_ieq(desc.backend_name, want_name)) {
-            continue;
-        }
-        if (!desc.get_api) {
-            out_err = "ui backend missing get_api";
-            return 0;
-        }
-
-        {
-            const dui_api_v1* api = (const dui_api_v1*)desc.get_api(DUI_API_ABI_VERSION);
-            if (!api) {
-                out_err = std::string("ui get_api returned null for backend '") + want_name + "'";
-                return 0;
-            }
-            if (api->abi_version != DUI_API_ABI_VERSION || api->struct_size != (u32)sizeof(dui_api_v1)) {
-                out_err = std::string("ui api abi mismatch for backend '") + want_name + "'";
-                return 0;
-            }
-            if (!api->create_context || !api->destroy_context ||
-                !api->create_window || !api->destroy_window ||
-                !api->set_schema_tlv || !api->set_state_tlv ||
-                !api->pump || !api->poll_event || !api->request_quit || !api->render) {
-                out_err = std::string("ui api missing required functions for backend '") + want_name + "'";
-                return 0;
-            }
-            return api;
-        }
-    }
-
-    out_err = std::string("ui backend not found in registry: '") + want_name + "'";
-    return 0;
-}
-
-} // namespace
-
-bool DomLauncherApp::init_gui(const LauncherConfig &cfg) {
-    std::string backend;
-    std::string err;
-
-    (void)cfg;
-
-    shutdown();
-
-    m_ui_backend_selected.clear();
-    m_ui_caps_selected = 0u;
-    m_ui_fallback_note.clear();
-
-    m_dui_api = select_dui_api(backend, err);
-    if (!m_dui_api) {
-        std::printf("Launcher: DUI selection failed: %s\n", err.empty() ? "unknown" : err.c_str());
-        return false;
-    }
-
-    {
-        const char* initial_name;
-        const char* candidates[3];
-        u32 cand_count = 0u;
-        u32 cand_i;
-
-        initial_name = (m_dui_api->backend_name && m_dui_api->backend_name()) ? m_dui_api->backend_name() : backend.c_str();
-
-        candidates[cand_count++] = initial_name;
-        if (!str_ieq(initial_name, "null") && !str_ieq(initial_name, "dgfx")) {
-            candidates[cand_count++] = "dgfx";
-        }
-        if (!str_ieq(initial_name, "null")) {
-            candidates[cand_count++] = "null";
-        }
-
-        for (cand_i = 0u; cand_i < cand_count; ++cand_i) {
-            const char* want = candidates[cand_i];
-            const dui_api_v1* api = m_dui_api;
-            std::string lookup_err;
-            dui_result rc;
-            dui_window_desc_v1 wdesc;
-
-            if (cand_i != 0u) {
-                api = lookup_dui_api_by_backend_name(want, lookup_err);
-                if (!api) {
-                    continue;
-                }
-            }
-
-            if (api->create_context(&m_dui_ctx) != DUI_OK || !m_dui_ctx) {
-                continue;
-            }
-
-            std::memset(&wdesc, 0, sizeof(wdesc));
-            wdesc.abi_version = DUI_API_ABI_VERSION;
-            wdesc.struct_size = (u32)sizeof(wdesc);
-            wdesc.title = "Dominium Launcher";
-            wdesc.width = 800;
-            wdesc.height = 600;
-            wdesc.flags = 0u;
-
-            rc = api->create_window(m_dui_ctx, &wdesc, &m_dui_win);
-            if (rc != DUI_OK || !m_dui_win) {
-                api->destroy_context(m_dui_ctx);
-                m_dui_ctx = 0;
-                m_dui_win = 0;
-                continue;
-            }
-
-            m_dui_api = api;
-            m_ui_backend_selected = (m_dui_api->backend_name && m_dui_api->backend_name()) ? m_dui_api->backend_name() : want;
-            m_ui_caps_selected = m_dui_api->get_caps ? m_dui_api->get_caps() : 0u;
-
-            if (cand_i != 0u) {
-                m_ui_fallback_note = std::string("ui_fallback=") + initial_name + "->" + m_ui_backend_selected;
-            }
-            break;
-        }
-    }
-
-    if (!m_dui_api || !m_dui_ctx || !m_dui_win) {
-        std::printf("Launcher: DUI init failed.\n");
-        shutdown();
-        return false;
-    }
-
-    if (m_tool_sel_id == 0u && k_tool_def_count > 0u) {
-        m_tool_sel_id = stable_item_id(std::string(k_tool_defs[0].tool_id));
-    }
-    if (m_mod_sel_id == 0u && !m_repo_mod_manifests.empty()) {
-        m_mod_sel_id = stable_item_id(m_repo_mod_manifests[0]);
-    }
-    if (m_pack_sel_id == 0u && !m_repo_pack_manifests.empty()) {
-        m_pack_sel_id = stable_item_id(m_repo_pack_manifests[0]);
-    }
-
-    {
-        unsigned char schema[8192];
-        u32 schema_len = 0u;
-        if (!build_dui_schema(schema, (u32)sizeof(schema), &schema_len)) {
-            std::printf("Launcher: failed to build DUI schema.\n");
-            shutdown();
-            return false;
-        }
-        if (m_dui_api->set_schema_tlv(m_dui_win, schema, schema_len) != DUI_OK) {
-            std::printf("Launcher: DUI set_schema_tlv failed.\n");
-            shutdown();
-            return false;
-        }
-    }
-
-    {
-        unsigned char state[16384];
-        u32 state_len = 0u;
-        if (!build_dui_state(state, (u32)sizeof(state), &state_len)) {
-            std::printf("Launcher: failed to build DUI state.\n");
-            shutdown();
-            return false;
-        }
-        (void)m_dui_api->set_state_tlv(m_dui_win, state, state_len);
-    }
-
-    (void)m_dui_api->render(m_dui_win);
-
-    if (m_ui_backend_selected == "null") {
-        (void)m_dui_api->request_quit(m_dui_ctx);
-    }
-
-    m_running = true;
-    return true;
-}
-
-void DomLauncherApp::gui_loop() {
-    while (m_running) {
-        unsigned char state[16384];
-        u32 state_len = 0u;
-
-        if (!m_dui_api || !m_dui_ctx) {
-            m_running = false;
-            break;
-        }
-
-        (void)m_dui_api->pump(m_dui_ctx);
-        process_dui_events();
-        if (!m_running) {
-            break;
-        }
-
-        if (build_dui_state(state, (u32)sizeof(state), &state_len)) {
-            (void)m_dui_api->set_state_tlv(m_dui_win, state, state_len);
-        }
-        (void)m_dui_api->render(m_dui_win);
-        dsys_sleep_ms(16);
-    }
-}
-
-void DomLauncherApp::process_dui_events() {
-    dui_event_v1 ev;
-    if (!m_dui_api || !m_dui_ctx) {
-        return;
-    }
-    std::memset(&ev, 0, sizeof(ev));
-    while (m_dui_api->poll_event(m_dui_ctx, &ev) > 0) {
-        if (ev.type == (u32)DUI_EVENT_QUIT) {
-            m_running = false;
-            return;
-        }
-        if (ev.type == (u32)DUI_EVENT_ACTION) {
-            const u32 act = ev.u.action.action_id;
-            const u32 item = ev.u.action.item_id;
-
-            if (act == (u32)DUI_ACT_CYCLE_MODE) {
-                cycle_selected_mode();
-            } else if (act == (u32)DUI_ACT_PREV_INSTANCE) {
-                select_prev_instance();
-            } else if (act == (u32)DUI_ACT_NEXT_INSTANCE) {
-                select_next_instance();
-            } else if (act == (u32)DUI_ACT_PORT_DEC) {
-                adjust_net_port(-1);
-            } else if (act == (u32)DUI_ACT_PORT_INC) {
-                adjust_net_port(+1);
-            } else if (act == (u32)DUI_ACT_LAUNCH_LISTEN) {
-                (void)launch_game_listen();
-            } else if (act == (u32)DUI_ACT_LAUNCH_DEDICATED) {
-                (void)launch_game_dedicated();
-            } else if (act == (u32)DUI_ACT_LAUNCH_CONNECT) {
-                (void)launch_game_connect();
-            } else if (act == (u32)DUI_ACT_LAUNCH_TOOL) {
-                const u32 sel_id = (item != 0u) ? item : m_tool_sel_id;
-                u32 i;
-                for (i = 0u; i < k_tool_def_count; ++i) {
-                    if (stable_item_id(std::string(k_tool_defs[i].tool_id)) == sel_id) {
-                        std::string load_path;
-                        if (k_tool_defs[i].load_rel && k_tool_defs[i].load_rel[0]) {
-                            load_path = home_join(k_tool_defs[i].load_rel);
-                        }
-                        (void)launch_tool(k_tool_defs[i].tool_id, load_path, k_tool_defs[i].demo != 0u);
-                        break;
-                    }
-                }
-            } else if (act == (u32)DUI_ACT_LAUNCH_MOD) {
-                const u32 sel_id = (item != 0u) ? item : m_mod_sel_id;
-                size_t i;
-                for (i = 0u; i < m_repo_mod_manifests.size(); ++i) {
-                    if (stable_item_id(m_repo_mod_manifests[i]) == sel_id) {
-                        (void)launch_tool("mod_builder", m_repo_mod_manifests[i], false);
-                        break;
-                    }
-                }
-            } else if (act == (u32)DUI_ACT_LAUNCH_PACK) {
-                const u32 sel_id = (item != 0u) ? item : m_pack_sel_id;
-                size_t i;
-                for (i = 0u; i < m_repo_pack_manifests.size(); ++i) {
-                    if (stable_item_id(m_repo_pack_manifests[i]) == sel_id) {
-                        (void)launch_tool("pack_editor", m_repo_pack_manifests[i], false);
-                        break;
-                    }
-                }
-            }
-        } else if (ev.type == (u32)DUI_EVENT_VALUE_CHANGED) {
-            const u32 wid = ev.u.value.widget_id;
-            const u32 vt = ev.u.value.value_type;
-
-            if (wid == (u32)DUI_W_CONNECT_FIELD && vt == (u32)DUI_VALUE_TEXT) {
-                std::string next;
-                u32 i;
-                for (i = 0u; i < ev.u.value.text_len; ++i) {
-                    const char c = ev.u.value.text[i];
-                    if ((c >= '0' && c <= '9') || c == '.') {
-                        if (next.size() < 63u) {
-                            next.push_back(c);
-                        }
-                    }
-                }
-                m_connect_host = next;
-                m_status = "Connect host updated.";
-            } else if (wid == (u32)DUI_W_TOGGLE_VIEW && vt == (u32)DUI_VALUE_BOOL) {
-                const u32 want = ev.u.value.v_u32 ? 1u : 0u;
-                if ((m_show_tools ? 1u : 0u) != want) {
-                    toggle_tools_view();
-                }
-            } else if (vt == (u32)DUI_VALUE_LIST) {
-                const u32 item_id = ev.u.value.item_id;
-                if (wid == (u32)DUI_W_INSTANCE) {
-                    int idx = -1;
-                    size_t i;
-                    for (i = 0u; i < m_instances.size(); ++i) {
-                        if (stable_item_id(m_instances[i].id) == item_id) {
-                            idx = (int)i;
-                            break;
-                        }
-                    }
-                    if (idx >= 0) {
-                        set_selected_instance(idx);
-                    }
-                } else if (wid == (u32)DUI_W_TOOLS_LIST) {
-                    m_tool_sel_id = item_id;
-                } else if (wid == (u32)DUI_W_MODS_LIST) {
-                    m_mod_sel_id = item_id;
-                } else if (wid == (u32)DUI_W_PACKS_LIST) {
-                    m_pack_sel_id = item_id;
-                }
-            }
-        }
-
-        std::memset(&ev, 0, sizeof(ev));
-    }
-}
-
-static bool schema_emit_node(unsigned char* dst,
-                             u32 cap,
-                             u32* io_off,
-                             u32 id,
-                             u32 kind,
-                             const char* text,
-                             u32 action_id,
-                             u32 bind_id,
-                             u32 flags,
-                             u64 required_caps,
-                             const unsigned char* children,
-                             u32 children_len)
-{
-    unsigned char payload[1024];
-    u32 poff = 0u;
-    if (!dst || !io_off) {
-        return false;
-    }
-    if (!tlv_write_u32(payload, (u32)sizeof(payload), &poff, DUI_TLV_ID_U32, id)) return false;
-    if (!tlv_write_u32(payload, (u32)sizeof(payload), &poff, DUI_TLV_KIND_U32, kind)) return false;
-    if (text && text[0]) {
-        if (!tlv_write_cstr(payload, (u32)sizeof(payload), &poff, DUI_TLV_TEXT_UTF8, text)) return false;
-    }
-    if (action_id != 0u) {
-        if (!tlv_write_u32(payload, (u32)sizeof(payload), &poff, DUI_TLV_ACTION_U32, action_id)) return false;
-    }
-    if (bind_id != 0u) {
-        if (!tlv_write_u32(payload, (u32)sizeof(payload), &poff, DUI_TLV_BIND_U32, bind_id)) return false;
-    }
-    if (flags != 0u) {
-        if (!tlv_write_u32(payload, (u32)sizeof(payload), &poff, DUI_TLV_FLAGS_U32, flags)) return false;
-    }
-    if (required_caps != 0u) {
-        if (!tlv_write_u64(payload, (u32)sizeof(payload), &poff, DUI_TLV_REQUIRED_CAPS_U64, required_caps)) return false;
-    }
-    if (children && children_len != 0u) {
-        if (!tlv_write_raw(payload, (u32)sizeof(payload), &poff, DUI_TLV_CHILDREN_V1, children, children_len)) return false;
-    }
-    return tlv_write_raw(dst, cap, io_off, DUI_TLV_NODE_V1, payload, poff);
-}
-
-bool DomLauncherApp::build_dui_schema(unsigned char* out_buf, u32 cap, u32* out_len) const {
-    unsigned char game_children[4096];
-    unsigned char tools_children[4096];
-    unsigned char row_children[4096];
-    unsigned char stack_children[4096];
-    unsigned char root_children[4096];
-    unsigned char form_payload[4096];
-    unsigned char schema_payload[4096];
-    u32 game_off = 0u;
-    u32 tools_off = 0u;
-    u32 row_off = 0u;
-    u32 stack_off = 0u;
-    u32 root_off = 0u;
-    u32 form_off = 0u;
-    u32 schema_off = 0u;
-    u32 out_off = 0u;
-
-    if (!out_buf || cap == 0u || !out_len) {
-        return false;
-    }
-    *out_len = 0u;
-
-    if (!schema_emit_node(game_children, (u32)sizeof(game_children), &game_off,
-                          (u32)DUI_W_INST_LABEL, (u32)DUI_NODE_LABEL,
-                          "Instances", 0u, 0u, 0u,
-                          (u64)DUI_CAP_LABEL, 0, 0u)) {
-        return false;
-    }
-    if (!schema_emit_node(game_children, (u32)sizeof(game_children), &game_off,
-                          (u32)DUI_W_INSTANCE, (u32)DUI_NODE_LIST,
-                          0, 0u, (u32)DUI_W_INSTANCE, (u32)(DUI_NODE_FLAG_FOCUSABLE | DUI_NODE_FLAG_FLEX),
-                          (u64)DUI_CAP_LIST, 0, 0u)) {
-        return false;
-    }
-    if (!schema_emit_node(game_children, (u32)sizeof(game_children), &game_off,
-                          (u32)DUI_W_PREV_INSTANCE, (u32)DUI_NODE_BUTTON,
-                          "Prev Instance", (u32)DUI_ACT_PREV_INSTANCE, 0u, (u32)DUI_NODE_FLAG_FOCUSABLE,
-                          (u64)DUI_CAP_BUTTON, 0, 0u)) {
-        return false;
-    }
-    if (!schema_emit_node(game_children, (u32)sizeof(game_children), &game_off,
-                          (u32)DUI_W_NEXT_INSTANCE, (u32)DUI_NODE_BUTTON,
-                          "Next Instance", (u32)DUI_ACT_NEXT_INSTANCE, 0u, (u32)DUI_NODE_FLAG_FOCUSABLE,
-                          (u64)DUI_CAP_BUTTON, 0, 0u)) {
-        return false;
-    }
-    if (!schema_emit_node(game_children, (u32)sizeof(game_children), &game_off,
-                          (u32)DUI_W_MODE, (u32)DUI_NODE_BUTTON,
-                          0, (u32)DUI_ACT_CYCLE_MODE, (u32)DUI_W_MODE, (u32)DUI_NODE_FLAG_FOCUSABLE,
-                          (u64)DUI_CAP_BUTTON, 0, 0u)) {
-        return false;
-    }
-    if (!schema_emit_node(game_children, (u32)sizeof(game_children), &game_off,
-                          (u32)DUI_W_CONNECT_LABEL, (u32)DUI_NODE_LABEL,
-                          "Connect host:", 0u, 0u, 0u,
-                          (u64)DUI_CAP_LABEL, 0, 0u)) {
-        return false;
-    }
-    if (!schema_emit_node(game_children, (u32)sizeof(game_children), &game_off,
-                          (u32)DUI_W_CONNECT_FIELD, (u32)DUI_NODE_TEXT_FIELD,
-                          0, 0u, (u32)DUI_W_CONNECT_FIELD, (u32)DUI_NODE_FLAG_FOCUSABLE,
-                          (u64)DUI_CAP_TEXT_FIELD, 0, 0u)) {
-        return false;
-    }
-    if (!schema_emit_node(game_children, (u32)sizeof(game_children), &game_off,
-                          (u32)DUI_W_PORT, (u32)DUI_NODE_LABEL,
-                          0, 0u, (u32)DUI_W_PORT, 0u,
-                          (u64)DUI_CAP_LABEL, 0, 0u)) {
-        return false;
-    }
-    if (!schema_emit_node(game_children, (u32)sizeof(game_children), &game_off,
-                          (u32)DUI_W_PORT_DEC, (u32)DUI_NODE_BUTTON,
-                          "Port -", (u32)DUI_ACT_PORT_DEC, 0u, (u32)DUI_NODE_FLAG_FOCUSABLE,
-                          (u64)DUI_CAP_BUTTON, 0, 0u)) {
-        return false;
-    }
-    if (!schema_emit_node(game_children, (u32)sizeof(game_children), &game_off,
-                          (u32)DUI_W_PORT_INC, (u32)DUI_NODE_BUTTON,
-                          "Port +", (u32)DUI_ACT_PORT_INC, 0u, (u32)DUI_NODE_FLAG_FOCUSABLE,
-                          (u64)DUI_CAP_BUTTON, 0, 0u)) {
-        return false;
-    }
-    if (!schema_emit_node(game_children, (u32)sizeof(game_children), &game_off,
-                          (u32)DUI_W_LAUNCH_LISTEN, (u32)DUI_NODE_BUTTON,
-                          "Start Local Host", (u32)DUI_ACT_LAUNCH_LISTEN, 0u, (u32)DUI_NODE_FLAG_FOCUSABLE,
-                          (u64)DUI_CAP_BUTTON, 0, 0u)) {
-        return false;
-    }
-    if (!schema_emit_node(game_children, (u32)sizeof(game_children), &game_off,
-                          (u32)DUI_W_LAUNCH_DEDICATED, (u32)DUI_NODE_BUTTON,
-                          "Start Dedicated Host", (u32)DUI_ACT_LAUNCH_DEDICATED, 0u, (u32)DUI_NODE_FLAG_FOCUSABLE,
-                          (u64)DUI_CAP_BUTTON, 0, 0u)) {
-        return false;
-    }
-    if (!schema_emit_node(game_children, (u32)sizeof(game_children), &game_off,
-                          (u32)DUI_W_LAUNCH_CONNECT, (u32)DUI_NODE_BUTTON,
-                          "Connect To Host", (u32)DUI_ACT_LAUNCH_CONNECT, 0u, (u32)DUI_NODE_FLAG_FOCUSABLE,
-                          (u64)DUI_CAP_BUTTON, 0, 0u)) {
-        return false;
-    }
-    if (!schema_emit_node(game_children, (u32)sizeof(game_children), &game_off,
-                          (u32)DUI_W_STATUS, (u32)DUI_NODE_LABEL,
-                          0, 0u, (u32)DUI_W_STATUS, 0u,
-                          (u64)DUI_CAP_LABEL, 0, 0u)) {
-        return false;
-    }
-
-    if (!schema_emit_node(tools_children, (u32)sizeof(tools_children), &tools_off,
-                          (u32)DUI_W_TOGGLE_VIEW, (u32)DUI_NODE_CHECKBOX,
-                          "Tools view", 0u, (u32)DUI_W_TOGGLE_VIEW, (u32)DUI_NODE_FLAG_FOCUSABLE,
-                          (u64)DUI_CAP_CHECKBOX, 0, 0u)) {
-        return false;
-    }
-    if (!schema_emit_node(tools_children, (u32)sizeof(tools_children), &tools_off,
-                          (u32)DUI_W_TOOLS_LABEL, (u32)DUI_NODE_LABEL,
-                          0, 0u, (u32)DUI_W_TOOLS_LABEL, 0u,
-                          (u64)DUI_CAP_LABEL, 0, 0u)) {
-        return false;
-    }
-    if (!schema_emit_node(tools_children, (u32)sizeof(tools_children), &tools_off,
-                          (u32)DUI_W_TOOLS_LIST, (u32)DUI_NODE_LIST,
-                          0, 0u, (u32)DUI_W_TOOLS_LIST, (u32)(DUI_NODE_FLAG_FOCUSABLE | DUI_NODE_FLAG_FLEX),
-                          (u64)DUI_CAP_LIST, 0, 0u)) {
-        return false;
-    }
-    if (!schema_emit_node(tools_children, (u32)sizeof(tools_children), &tools_off,
-                          (u32)DUI_W_LAUNCH_TOOL_BTN, (u32)DUI_NODE_BUTTON,
-                          "Launch Tool", (u32)DUI_ACT_LAUNCH_TOOL, 0u, (u32)DUI_NODE_FLAG_FOCUSABLE,
-                          (u64)DUI_CAP_BUTTON, 0, 0u)) {
-        return false;
-    }
-    if (!schema_emit_node(tools_children, (u32)sizeof(tools_children), &tools_off,
-                          (u32)DUI_W_MODS_LABEL, (u32)DUI_NODE_LABEL,
-                          0, 0u, (u32)DUI_W_MODS_LABEL, 0u,
-                          (u64)DUI_CAP_LABEL, 0, 0u)) {
-        return false;
-    }
-    if (!schema_emit_node(tools_children, (u32)sizeof(tools_children), &tools_off,
-                          (u32)DUI_W_MODS_LIST, (u32)DUI_NODE_LIST,
-                          0, 0u, (u32)DUI_W_MODS_LIST, (u32)DUI_NODE_FLAG_FOCUSABLE,
-                          (u64)DUI_CAP_LIST, 0, 0u)) {
-        return false;
-    }
-    if (!schema_emit_node(tools_children, (u32)sizeof(tools_children), &tools_off,
-                          (u32)DUI_W_LAUNCH_MOD_BTN, (u32)DUI_NODE_BUTTON,
-                          "Launch Mod Builder", (u32)DUI_ACT_LAUNCH_MOD, 0u, (u32)DUI_NODE_FLAG_FOCUSABLE,
-                          (u64)DUI_CAP_BUTTON, 0, 0u)) {
-        return false;
-    }
-    if (!schema_emit_node(tools_children, (u32)sizeof(tools_children), &tools_off,
-                          (u32)DUI_W_PACKS_LABEL, (u32)DUI_NODE_LABEL,
-                          0, 0u, (u32)DUI_W_PACKS_LABEL, 0u,
-                          (u64)DUI_CAP_LABEL, 0, 0u)) {
-        return false;
-    }
-    if (!schema_emit_node(tools_children, (u32)sizeof(tools_children), &tools_off,
-                          (u32)DUI_W_PACKS_LIST, (u32)DUI_NODE_LIST,
-                          0, 0u, (u32)DUI_W_PACKS_LIST, (u32)DUI_NODE_FLAG_FOCUSABLE,
-                          (u64)DUI_CAP_LIST, 0, 0u)) {
-        return false;
-    }
-    if (!schema_emit_node(tools_children, (u32)sizeof(tools_children), &tools_off,
-                          (u32)DUI_W_LAUNCH_PACK_BTN, (u32)DUI_NODE_BUTTON,
-                          "Launch Pack Editor", (u32)DUI_ACT_LAUNCH_PACK, 0u, (u32)DUI_NODE_FLAG_FOCUSABLE,
-                          (u64)DUI_CAP_BUTTON, 0, 0u)) {
-        return false;
-    }
-
-    if (!schema_emit_node(row_children, (u32)sizeof(row_children), &row_off,
-                          (u32)DUI_W_GAME_COL, (u32)DUI_NODE_COLUMN,
-                          0, 0u, 0u, 0u, (u64)DUI_CAP_LAYOUT_COLUMN,
-                          game_children, game_off)) {
-        return false;
-    }
-    if (!schema_emit_node(row_children, (u32)sizeof(row_children), &row_off,
-                          (u32)DUI_W_TOOLS_COL, (u32)DUI_NODE_COLUMN,
-                          0, 0u, 0u, 0u, (u64)DUI_CAP_LAYOUT_COLUMN,
-                          tools_children, tools_off)) {
-        return false;
-    }
-
-    if (!schema_emit_node(stack_children, (u32)sizeof(stack_children), &stack_off,
-                          (u32)DUI_W_MAIN_ROW, (u32)DUI_NODE_ROW,
-                          0, 0u, 0u, 0u, (u64)DUI_CAP_LAYOUT_ROW,
-                          row_children, row_off)) {
-        return false;
-    }
-
-    if (!schema_emit_node(root_children, (u32)sizeof(root_children), &root_off,
-                          (u32)DUI_W_TITLE, (u32)DUI_NODE_LABEL,
-                          "Dominium Launcher", 0u, 0u, 0u,
-                          (u64)DUI_CAP_LABEL, 0, 0u)) {
-        return false;
-    }
-    if (!schema_emit_node(root_children, (u32)sizeof(root_children), &root_off,
-                          (u32)DUI_W_SUMMARY, (u32)DUI_NODE_LABEL,
-                          0, 0u, (u32)DUI_W_SUMMARY, 0u,
-                          (u64)DUI_CAP_LABEL, 0, 0u)) {
-        return false;
-    }
-    if (!schema_emit_node(root_children, (u32)sizeof(root_children), &root_off,
-                          (u32)DUI_W_MAIN_STACK, (u32)DUI_NODE_STACK,
-                          0, 0u, 0u, 0u, (u64)DUI_CAP_LAYOUT_STACK,
-                          stack_children, stack_off)) {
-        return false;
-    }
-
-    if (!schema_emit_node(form_payload, (u32)sizeof(form_payload), &form_off,
-                          (u32)DUI_W_ROOT, (u32)DUI_NODE_COLUMN,
-                          0, 0u, 0u, 0u, (u64)DUI_CAP_LAYOUT_COLUMN,
-                          root_children, root_off)) {
-        return false;
-    }
-
-    if (!tlv_write_raw(schema_payload, (u32)sizeof(schema_payload), &schema_off, DUI_TLV_FORM_V1, form_payload, form_off)) {
-        return false;
-    }
-    if (!tlv_write_raw(out_buf, cap, &out_off, DUI_TLV_SCHEMA_V1, schema_payload, schema_off)) {
-        return false;
-    }
-
-    *out_len = out_off;
-    return true;
-}
-
-static bool state_emit_text(unsigned char* dst, u32 cap, u32* io_off, u32 bind_id, const std::string& s)
-{
-    unsigned char payload[512];
-    u32 poff = 0u;
-    if (!dst || !io_off) {
-        return false;
-    }
-    if (!tlv_write_u32(payload, (u32)sizeof(payload), &poff, DUI_TLV_BIND_U32, bind_id)) return false;
-    if (!tlv_write_u32(payload, (u32)sizeof(payload), &poff, DUI_TLV_VALUE_TYPE_U32, (u32)DUI_VALUE_TEXT)) return false;
-    if (!tlv_write_text(payload, (u32)sizeof(payload), &poff, DUI_TLV_VALUE_UTF8, s)) return false;
-    return tlv_write_raw(dst, cap, io_off, DUI_TLV_VALUE_V1, payload, poff);
-}
-
-static bool state_emit_u32(unsigned char* dst, u32 cap, u32* io_off, u32 bind_id, u32 v)
-{
-    unsigned char payload[256];
-    u32 poff = 0u;
-    if (!dst || !io_off) {
-        return false;
-    }
-    if (!tlv_write_u32(payload, (u32)sizeof(payload), &poff, DUI_TLV_BIND_U32, bind_id)) return false;
-    if (!tlv_write_u32(payload, (u32)sizeof(payload), &poff, DUI_TLV_VALUE_TYPE_U32, (u32)DUI_VALUE_U32)) return false;
-    if (!tlv_write_u32(payload, (u32)sizeof(payload), &poff, DUI_TLV_VALUE_U32, v)) return false;
-    return tlv_write_raw(dst, cap, io_off, DUI_TLV_VALUE_V1, payload, poff);
-}
-
-static bool state_emit_list_record(unsigned char* dst,
-                                   u32 cap,
-                                   u32* io_off,
-                                   u32 bind_id,
-                                   const unsigned char* list_payload,
-                                   u32 list_len)
-{
-    unsigned char value_payload[8192];
-    u32 voff = 0u;
-    if (!dst || !io_off || (!list_payload && list_len != 0u)) {
-        return false;
-    }
-    if (!tlv_write_u32(value_payload, (u32)sizeof(value_payload), &voff, DUI_TLV_BIND_U32, bind_id)) return false;
-    if (!tlv_write_u32(value_payload, (u32)sizeof(value_payload), &voff, DUI_TLV_VALUE_TYPE_U32, (u32)DUI_VALUE_LIST)) return false;
-    if (!tlv_write_raw(value_payload, (u32)sizeof(value_payload), &voff, DUI_TLV_LIST_V1, list_payload, list_len)) return false;
-    return tlv_write_raw(dst, cap, io_off, DUI_TLV_VALUE_V1, value_payload, voff);
-}
-
-bool DomLauncherApp::build_dui_state(unsigned char* out_buf, u32 cap, u32* out_len) const {
-    unsigned char inner[16384];
-    u32 inner_off = 0u;
-    u32 out_off = 0u;
-
-    if (!out_buf || cap == 0u || !out_len) {
-        return false;
-    }
-    *out_len = 0u;
-
-    {
-        char buf[256];
-        std::snprintf(buf, sizeof(buf), "Products: %u  Instances: %u  Mods: %u  Packs: %u",
-                      (unsigned)m_products.size(),
-                      (unsigned)m_instances.size(),
-                      (unsigned)m_repo_mod_manifests.size(),
-                      (unsigned)m_repo_pack_manifests.size());
-        if (!state_emit_text(inner, (u32)sizeof(inner), &inner_off, (u32)DUI_W_SUMMARY, std::string(buf))) return false;
-    }
-    if (!state_emit_text(inner, (u32)sizeof(inner), &inner_off, (u32)DUI_W_MODE, std::string("Mode: ") + m_selected_mode)) return false;
-    if (!state_emit_text(inner, (u32)sizeof(inner), &inner_off, (u32)DUI_W_CONNECT_FIELD, m_connect_host)) return false;
-    {
-        char buf[64];
-        std::snprintf(buf, sizeof(buf), "Port: %u", (unsigned)m_net_port);
-        if (!state_emit_text(inner, (u32)sizeof(inner), &inner_off, (u32)DUI_W_PORT, std::string(buf))) return false;
-    }
-    {
-        std::string s = std::string("Status: ") + (m_status.empty() ? "(none)" : m_status);
-        if (!state_emit_text(inner, (u32)sizeof(inner), &inner_off, (u32)DUI_W_STATUS, s)) return false;
-    }
-    if (!state_emit_u32(inner, (u32)sizeof(inner), &inner_off, (u32)DUI_W_TOGGLE_VIEW, m_show_tools ? 1u : 0u)) return false;
-    {
-        char buf[64];
-        std::snprintf(buf, sizeof(buf), "Tools: %u", (unsigned)(m_show_tools ? k_tool_def_count : 0u));
-        if (!state_emit_text(inner, (u32)sizeof(inner), &inner_off, (u32)DUI_W_TOOLS_LABEL, std::string(buf))) return false;
-    }
-    {
-        char buf[64];
-        std::snprintf(buf, sizeof(buf), "Repo Mods: %u", (unsigned)(m_show_tools ? m_repo_mod_manifests.size() : 0u));
-        if (!state_emit_text(inner, (u32)sizeof(inner), &inner_off, (u32)DUI_W_MODS_LABEL, std::string(buf))) return false;
-    }
-    {
-        char buf[64];
-        std::snprintf(buf, sizeof(buf), "Repo Packs: %u", (unsigned)(m_show_tools ? m_repo_pack_manifests.size() : 0u));
-        if (!state_emit_text(inner, (u32)sizeof(inner), &inner_off, (u32)DUI_W_PACKS_LABEL, std::string(buf))) return false;
-    }
-
-    /* Instances list */
-    {
-        unsigned char list_payload[8192];
-        u32 list_off = 0u;
-        u32 selected_id = 0u;
-        size_t i;
-
-        if (m_selected_instance >= 0 && m_selected_instance < (int)m_instances.size()) {
-            selected_id = stable_item_id(m_instances[(size_t)m_selected_instance].id);
-        }
-        if (!tlv_write_u32(list_payload, (u32)sizeof(list_payload), &list_off, DUI_TLV_LIST_SELECTED_U32, selected_id)) return false;
-        for (i = 0u; i < m_instances.size(); ++i) {
-            unsigned char item_payload[512];
-            u32 item_off = 0u;
-            const u32 item_id = stable_item_id(m_instances[i].id);
-            if (!tlv_write_u32(item_payload, (u32)sizeof(item_payload), &item_off, DUI_TLV_ITEM_ID_U32, item_id)) return false;
-            if (!tlv_write_text(item_payload, (u32)sizeof(item_payload), &item_off, DUI_TLV_ITEM_TEXT_UTF8, m_instances[i].id)) return false;
-            if (!tlv_write_raw(list_payload, (u32)sizeof(list_payload), &list_off, DUI_TLV_LIST_ITEM_V1, item_payload, item_off)) return false;
-        }
-        if (!state_emit_list_record(inner, (u32)sizeof(inner), &inner_off, (u32)DUI_W_INSTANCE, list_payload, list_off)) return false;
-    }
-
-    /* Tools list */
-    {
-        unsigned char list_payload[8192];
-        u32 list_off = 0u;
-        u32 selected_id = m_show_tools ? m_tool_sel_id : 0u;
-        u32 i;
-
-        if (!tlv_write_u32(list_payload, (u32)sizeof(list_payload), &list_off, DUI_TLV_LIST_SELECTED_U32, selected_id)) return false;
-        if (m_show_tools) {
-            for (i = 0u; i < k_tool_def_count; ++i) {
-                unsigned char item_payload[512];
-                u32 item_off = 0u;
-                const u32 item_id = stable_item_id(std::string(k_tool_defs[i].tool_id));
-                if (!tlv_write_u32(item_payload, (u32)sizeof(item_payload), &item_off, DUI_TLV_ITEM_ID_U32, item_id)) return false;
-                if (!tlv_write_cstr(item_payload, (u32)sizeof(item_payload), &item_off, DUI_TLV_ITEM_TEXT_UTF8, k_tool_defs[i].label)) return false;
-                if (!tlv_write_raw(list_payload, (u32)sizeof(list_payload), &list_off, DUI_TLV_LIST_ITEM_V1, item_payload, item_off)) return false;
-            }
-        }
-        if (!state_emit_list_record(inner, (u32)sizeof(inner), &inner_off, (u32)DUI_W_TOOLS_LIST, list_payload, list_off)) return false;
-    }
-
-    /* Mods list */
-    {
-        unsigned char list_payload[8192];
-        u32 list_off = 0u;
-        u32 selected_id = m_show_tools ? m_mod_sel_id : 0u;
-        size_t i;
-
-        if (!tlv_write_u32(list_payload, (u32)sizeof(list_payload), &list_off, DUI_TLV_LIST_SELECTED_U32, selected_id)) return false;
-        if (m_show_tools) {
-            for (i = 0u; i < m_repo_mod_manifests.size(); ++i) {
-                unsigned char item_payload[512];
-                u32 item_off = 0u;
-                const u32 item_id = stable_item_id(m_repo_mod_manifests[i]);
-                const std::string label = std::string("Mod: ") + repo_tail(m_repo_mod_manifests[i], "repo/mods/");
-                if (!tlv_write_u32(item_payload, (u32)sizeof(item_payload), &item_off, DUI_TLV_ITEM_ID_U32, item_id)) return false;
-                if (!tlv_write_text(item_payload, (u32)sizeof(item_payload), &item_off, DUI_TLV_ITEM_TEXT_UTF8, label)) return false;
-                if (!tlv_write_raw(list_payload, (u32)sizeof(list_payload), &list_off, DUI_TLV_LIST_ITEM_V1, item_payload, item_off)) return false;
-            }
-        }
-        if (!state_emit_list_record(inner, (u32)sizeof(inner), &inner_off, (u32)DUI_W_MODS_LIST, list_payload, list_off)) return false;
-    }
-
-    /* Packs list */
-    {
-        unsigned char list_payload[8192];
-        u32 list_off = 0u;
-        u32 selected_id = m_show_tools ? m_pack_sel_id : 0u;
-        size_t i;
-
-        if (!tlv_write_u32(list_payload, (u32)sizeof(list_payload), &list_off, DUI_TLV_LIST_SELECTED_U32, selected_id)) return false;
-        if (m_show_tools) {
-            for (i = 0u; i < m_repo_pack_manifests.size(); ++i) {
-                unsigned char item_payload[512];
-                u32 item_off = 0u;
-                const u32 item_id = stable_item_id(m_repo_pack_manifests[i]);
-                const std::string label = std::string("Pack: ") + repo_tail(m_repo_pack_manifests[i], "repo/packs/");
-                if (!tlv_write_u32(item_payload, (u32)sizeof(item_payload), &item_off, DUI_TLV_ITEM_ID_U32, item_id)) return false;
-                if (!tlv_write_text(item_payload, (u32)sizeof(item_payload), &item_off, DUI_TLV_ITEM_TEXT_UTF8, label)) return false;
-                if (!tlv_write_raw(list_payload, (u32)sizeof(list_payload), &list_off, DUI_TLV_LIST_ITEM_V1, item_payload, item_off)) return false;
-            }
-        }
-        if (!state_emit_list_record(inner, (u32)sizeof(inner), &inner_off, (u32)DUI_W_PACKS_LIST, list_payload, list_off)) return false;
-    }
-
-    if (!tlv_write_raw(out_buf, cap, &out_off, DUI_TLV_STATE_V1, inner, inner_off)) {
-        return false;
-    }
-    *out_len = out_off;
     return true;
 }
 
@@ -1720,6 +890,147 @@ const dui_api_v1* DomLauncherApp::select_dui_api(std::string& out_backend_name, 
     return lookup_dui_api_by_backend_name(chosen, out_err);
 }
 
+bool DomLauncherApp::load_dui_schema(std::vector<unsigned char>& out_schema,
+                                    std::string& out_loaded_path,
+                                    std::string& out_error) const {
+    std::string err;
+    std::vector<std::string> candidates;
+    std::string cur;
+    int i;
+
+    out_schema.clear();
+    out_loaded_path.clear();
+    out_error.clear();
+
+    candidates.push_back("source/dominium/launcher/ui_schema/launcher_ui_v1.tlv");
+    candidates.push_back("source\\dominium\\launcher\\ui_schema\\launcher_ui_v1.tlv");
+    candidates.push_back("ui_schema/launcher_ui_v1.tlv");
+    candidates.push_back("ui_schema\\launcher_ui_v1.tlv");
+    candidates.push_back("launcher_ui_v1.tlv");
+
+    for (i = 0; i < (int)candidates.size(); ++i) {
+        if (file_exists_stdio(candidates[(size_t)i])) {
+            if (!read_file_all_bytes(candidates[(size_t)i], out_schema, err)) {
+                out_error = std::string("schema_read_failed;path=") + candidates[(size_t)i] + ";err=" + err;
+                return false;
+            }
+            out_loaded_path = candidates[(size_t)i];
+            return true;
+        }
+    }
+
+    cur = dirname_of(m_argv0.empty() ? std::string() : m_argv0);
+    for (i = 0; i < 10; ++i) {
+        if (!cur.empty()) {
+            const std::string c0 = path_join(cur, "source/dominium/launcher/ui_schema/launcher_ui_v1.tlv");
+            const std::string c1 = path_join(cur, "ui_schema/launcher_ui_v1.tlv");
+            const std::string c2 = path_join(cur, "launcher_ui_v1.tlv");
+            if (file_exists_stdio(c0) && read_file_all_bytes(c0, out_schema, err)) {
+                out_loaded_path = c0;
+                return true;
+            }
+            if (file_exists_stdio(c1) && read_file_all_bytes(c1, out_schema, err)) {
+                out_loaded_path = c1;
+                return true;
+            }
+            if (file_exists_stdio(c2) && read_file_all_bytes(c2, out_schema, err)) {
+                out_loaded_path = c2;
+                return true;
+            }
+        }
+        cur = dirname_of(cur);
+        if (cur.empty()) {
+            break;
+        }
+    }
+
+    out_error = "schema_not_found";
+    return false;
+}
+
+static std::string dom_u32_arg(const char *prefix, unsigned v) {
+    char buf[64];
+    std::snprintf(buf, sizeof(buf), "%s%u", prefix ? prefix : "", (unsigned)v);
+    return std::string(buf);
+}
+
+bool DomLauncherApp::spawn_product_args(const std::string &product,
+                                       const std::vector<std::string> &args,
+                                       bool wait_for_exit) {
+    ProductEntry *entry = find_product_entry(product);
+    size_t i;
+    std::string instance_id;
+    dom::LaunchTarget target;
+    dom::launcher_core::LauncherLaunchOverrides ov;
+    dom::LaunchRunResult lr;
+
+    if (!entry) {
+        if (m_ui) m_ui->status_text = "Launch failed: product not found.";
+        return false;
+    }
+
+    for (i = 0u; i < args.size(); ++i) {
+        if (args[i].compare(0u, 11u, "--instance=") == 0) {
+            instance_id = args[i].substr(11u);
+            break;
+        }
+    }
+
+    if (instance_id.empty()) {
+        if (m_ui) m_ui->status_text = "Launch failed: missing --instance.";
+        return false;
+    }
+    if (product == "game") {
+        target.is_tool = 0u;
+    } else {
+        if (!dom::launcher_core::launcher_is_safe_id_component(product)) {
+            if (m_ui) m_ui->status_text = "Launch failed: unsafe tool id.";
+            return false;
+        }
+        target.is_tool = 1u;
+        target.tool_id = product;
+    }
+
+    std::printf("Launcher: spawning %s (%s)\n",
+                entry->path.c_str(), product.c_str());
+
+    ov = dom::launcher_core::LauncherLaunchOverrides();
+
+    if (!dom::launcher_execute_launch_attempt(m_paths.root,
+                                              instance_id,
+                                              target,
+                                              m_profile_valid ? &m_profile : (const dom_profile*)0,
+                                              entry->path,
+                                              args,
+                                              wait_for_exit ? 1u : 0u,
+                                              8u,
+                                              ov,
+                                              lr)) {
+        if (m_ui) {
+            if (lr.refused) {
+                m_ui->status_text = std::string("Refused: ") + lr.refusal_detail;
+            } else if (!lr.error.empty()) {
+                m_ui->status_text = std::string("Launch failed: ") + lr.error;
+            } else {
+                m_ui->status_text = "Launch failed.";
+            }
+        }
+        return false;
+    }
+
+    if (!wait_for_exit) {
+        if (m_ui) m_ui->status_text = "Spawned.";
+        return true;
+    }
+
+    {
+        char buf[64];
+        std::snprintf(buf, sizeof(buf), "Process exited (%d).", (int)lr.child_exit_code);
+        if (m_ui) m_ui->status_text = buf;
+    }
+    return lr.ok != 0u;
+}
+
 bool DomLauncherApp::launch_product(const std::string &product,
                                     const std::string &instance_id,
                                     const std::string &mode) {
@@ -1728,7 +1039,362 @@ bool DomLauncherApp::launch_product(const std::string &product,
     if (!instance_id.empty()) {
         args.push_back(std::string("--instance=") + instance_id);
     }
+    args.push_back(dom_u32_arg("--keep_last_runs=", 8u));
     return spawn_product_args(product, args, true);
+}
+
+bool DomLauncherApp::init_gui(const LauncherConfig &cfg) {
+    std::string backend;
+    std::string err;
+    std::vector<unsigned char> schema;
+    std::vector<unsigned char> state;
+    std::string schema_path;
+
+    (void)cfg;
+
+    shutdown();
+
+    m_ui_backend_selected.clear();
+    m_ui_caps_selected = 0u;
+    m_ui_fallback_note.clear();
+
+    if (m_ui) {
+        m_ui->status_text = "Initializing UI...";
+        m_ui->status_progress = 0u;
+    }
+
+    m_dui_api = select_dui_api(backend, err);
+    if (!m_dui_api) {
+        std::printf("Launcher: DUI selection failed: %s\n", err.empty() ? "unknown" : err.c_str());
+        return false;
+    }
+
+    {
+        const char* initial_name;
+        const char* candidates[3];
+        u32 cand_count = 0u;
+        u32 cand_i;
+
+        initial_name = (m_dui_api->backend_name && m_dui_api->backend_name()) ? m_dui_api->backend_name() : backend.c_str();
+
+        candidates[cand_count++] = initial_name;
+        if (!str_ieq(initial_name, "null") && !str_ieq(initial_name, "dgfx")) {
+            candidates[cand_count++] = "dgfx";
+        }
+        if (!str_ieq(initial_name, "null")) {
+            candidates[cand_count++] = "null";
+        }
+
+        for (cand_i = 0u; cand_i < cand_count; ++cand_i) {
+            const char* want = candidates[cand_i];
+            const dui_api_v1* api = m_dui_api;
+            std::string lookup_err;
+            dui_result rc;
+            dui_window_desc_v1 wdesc;
+
+            if (cand_i != 0u) {
+                api = lookup_dui_api_by_backend_name(want, lookup_err);
+                if (!api) {
+                    continue;
+                }
+            }
+
+            if (api->create_context(&m_dui_ctx) != DUI_OK || !m_dui_ctx) {
+                continue;
+            }
+
+            std::memset(&wdesc, 0, sizeof(wdesc));
+            wdesc.abi_version = DUI_API_ABI_VERSION;
+            wdesc.struct_size = (u32)sizeof(wdesc);
+            wdesc.title = "Dominium Dev Launcher";
+            wdesc.width = 960;
+            wdesc.height = 640;
+            wdesc.flags = 0u;
+
+            rc = api->create_window(m_dui_ctx, &wdesc, &m_dui_win);
+            if (rc != DUI_OK || !m_dui_win) {
+                api->destroy_context(m_dui_ctx);
+                m_dui_ctx = 0;
+                m_dui_win = 0;
+                continue;
+            }
+
+            m_dui_api = api;
+            m_ui_backend_selected = (m_dui_api->backend_name && m_dui_api->backend_name()) ? m_dui_api->backend_name() : want;
+            m_ui_caps_selected = m_dui_api->get_caps ? m_dui_api->get_caps() : 0u;
+
+            if (cand_i != 0u) {
+                m_ui_fallback_note = std::string("ui_fallback=") + initial_name + "->" + m_ui_backend_selected;
+            }
+            break;
+        }
+    }
+
+    if (!m_dui_api || !m_dui_ctx || !m_dui_win) {
+        std::printf("Launcher: DUI init failed.\n");
+        shutdown();
+        return false;
+    }
+
+    if (!load_dui_schema(schema, schema_path, err)) {
+        std::printf("Launcher: failed to load DUI schema: %s\n", err.empty() ? "unknown" : err.c_str());
+        shutdown();
+        return false;
+    }
+
+    if (m_dui_api->set_schema_tlv(m_dui_win, schema.empty() ? (const void*)0 : &schema[0], (u32)schema.size()) != DUI_OK) {
+        std::printf("Launcher: DUI set_schema_tlv failed.\n");
+        shutdown();
+        return false;
+    }
+
+    if (!build_dui_state(state)) {
+        std::printf("Launcher: failed to build DUI state.\n");
+        shutdown();
+        return false;
+    }
+    (void)m_dui_api->set_state_tlv(m_dui_win, state.empty() ? (const void*)0 : &state[0], (u32)state.size());
+    (void)m_dui_api->render(m_dui_win);
+
+    if (m_ui) {
+        m_ui->status_text = std::string("Ready. Schema=") + schema_path;
+        m_ui->status_progress = 0u;
+    }
+
+    m_running = true;
+    return true;
+}
+
+void DomLauncherApp::gui_loop() {
+    while (m_running) {
+        std::vector<unsigned char> state;
+        if (!m_dui_api || !m_dui_ctx) {
+            m_running = false;
+            break;
+        }
+
+        (void)m_dui_api->pump(m_dui_ctx);
+        process_dui_events();
+        if (!m_running) {
+            break;
+        }
+
+        if (build_dui_state(state)) {
+            (void)m_dui_api->set_state_tlv(m_dui_win, state.empty() ? (const void*)0 : &state[0], (u32)state.size());
+        }
+        (void)m_dui_api->render(m_dui_win);
+        dsys_sleep_ms(16);
+    }
+}
+
+void DomLauncherApp::process_dui_events() {
+    dui_event_v1 ev;
+    if (!m_dui_api || !m_dui_ctx || !m_ui) {
+        return;
+    }
+    std::memset(&ev, 0, sizeof(ev));
+    while (m_dui_api->poll_event(m_dui_ctx, &ev) > 0) {
+        if (ev.type == (u32)DUI_EVENT_QUIT) {
+            m_running = false;
+            return;
+        }
+        if (ev.type == (u32)DUI_EVENT_ACTION) {
+            const u32 act = ev.u.action.action_id;
+            if (act == (u32)ACT_TAB_PLAY) {
+                m_ui->tab = (u32)DomLauncherUiState::TAB_PLAY;
+            } else if (act == (u32)ACT_TAB_INST) {
+                m_ui->tab = (u32)DomLauncherUiState::TAB_INSTANCES;
+            } else if (act == (u32)ACT_TAB_PACKS) {
+                m_ui->tab = (u32)DomLauncherUiState::TAB_PACKS;
+            } else if (act == (u32)ACT_TAB_OPTIONS) {
+                m_ui->tab = (u32)DomLauncherUiState::TAB_OPTIONS;
+            } else if (act == (u32)ACT_TAB_LOGS) {
+                m_ui->tab = (u32)DomLauncherUiState::TAB_LOGS;
+            } else if (act == (u32)ACT_DIALOG_OK || act == (u32)ACT_DIALOG_CANCEL) {
+                m_ui->dialog_visible = 0u;
+                m_ui->dialog_title.clear();
+                m_ui->dialog_text.clear();
+                m_ui->dialog_lines.clear();
+            }
+        } else if (ev.type == (u32)DUI_EVENT_VALUE_CHANGED) {
+            const u32 wid = ev.u.value.widget_id;
+            const u32 vt = ev.u.value.value_type;
+
+            if (wid == (u32)W_INST_SEARCH && vt == (u32)DUI_VALUE_TEXT) {
+                std::string next;
+                u32 i;
+                for (i = 0u; i < ev.u.value.text_len; ++i) {
+                    next.push_back(ev.u.value.text[i]);
+                }
+                m_ui->instance_search = next;
+            } else if (wid == (u32)W_INST_LIST && vt == (u32)DUI_VALUE_LIST) {
+                const u32 item_id = ev.u.value.item_id;
+                int idx = -1;
+                size_t i;
+                for (i = 0u; i < m_instances.size(); ++i) {
+                    if (stable_item_id(m_instances[i].id) == item_id) {
+                        idx = (int)i;
+                        break;
+                    }
+                }
+                if (idx >= 0) {
+                    set_selected_instance(idx);
+                }
+            } else if (wid == (u32)W_PLAY_TARGET_LIST && vt == (u32)DUI_VALUE_LIST) {
+                m_ui->play_target_item_id = ev.u.value.item_id;
+            }
+        }
+
+        std::memset(&ev, 0, sizeof(ev));
+    }
+}
+
+bool DomLauncherApp::build_dui_state(std::vector<unsigned char>& out_state) const {
+    std::vector<unsigned char> inner;
+    std::vector<ListItem> inst_items;
+    u32 inst_selected_id = 0u;
+    size_t i;
+
+    if (!m_ui) {
+        return false;
+    }
+
+    out_state.clear();
+
+    /* Header */
+    dui_state_add_text(inner,
+                       (u32)W_HEADER_INFO,
+                       std::string("ui=") + m_ui_backend_selected +
+                           (m_ui_fallback_note.empty() ? std::string() : (std::string(" ") + m_ui_fallback_note)));
+
+    /* Tabs */
+    dui_state_add_text(inner, (u32)W_TAB_PLAY_BTN, tab_button_text("Play", m_ui->tab == (u32)DomLauncherUiState::TAB_PLAY));
+    dui_state_add_text(inner, (u32)W_TAB_INST_BTN, tab_button_text("Instances", m_ui->tab == (u32)DomLauncherUiState::TAB_INSTANCES));
+    dui_state_add_text(inner, (u32)W_TAB_PACKS_BTN, tab_button_text("Packs", m_ui->tab == (u32)DomLauncherUiState::TAB_PACKS));
+    dui_state_add_text(inner, (u32)W_TAB_OPTIONS_BTN, tab_button_text("Options", m_ui->tab == (u32)DomLauncherUiState::TAB_OPTIONS));
+    dui_state_add_text(inner, (u32)W_TAB_LOGS_BTN, tab_button_text("Logs", m_ui->tab == (u32)DomLauncherUiState::TAB_LOGS));
+
+    /* Tab visibility gates */
+    dui_state_add_u32(inner, (u32)W_TAB_PLAY_PANEL, (u32)DUI_VALUE_BOOL, (m_ui->tab == (u32)DomLauncherUiState::TAB_PLAY) ? 1u : 0u);
+    dui_state_add_u32(inner, (u32)W_TAB_INST_PANEL, (u32)DUI_VALUE_BOOL, (m_ui->tab == (u32)DomLauncherUiState::TAB_INSTANCES) ? 1u : 0u);
+    dui_state_add_u32(inner, (u32)W_TAB_PACKS_PANEL, (u32)DUI_VALUE_BOOL, (m_ui->tab == (u32)DomLauncherUiState::TAB_PACKS) ? 1u : 0u);
+    dui_state_add_u32(inner, (u32)W_TAB_OPTIONS_PANEL, (u32)DUI_VALUE_BOOL, (m_ui->tab == (u32)DomLauncherUiState::TAB_OPTIONS) ? 1u : 0u);
+    dui_state_add_u32(inner, (u32)W_TAB_LOGS_PANEL, (u32)DUI_VALUE_BOOL, (m_ui->tab == (u32)DomLauncherUiState::TAB_LOGS) ? 1u : 0u);
+
+    /* Dialog */
+    dui_state_add_u32(inner, (u32)W_DIALOG_COL, (u32)DUI_VALUE_BOOL, m_ui->dialog_visible ? 1u : 0u);
+    dui_state_add_text(inner, (u32)W_DIALOG_TITLE, m_ui->dialog_title);
+    dui_state_add_text(inner, (u32)W_DIALOG_TEXT, m_ui->dialog_text);
+    {
+        std::vector<ListItem> dlg;
+        for (i = 0u; i < m_ui->dialog_lines.size(); ++i) {
+            dlg.push_back(ListItem((u32)(i + 1u), m_ui->dialog_lines[i]));
+        }
+        dui_state_add_list(inner, (u32)W_DIALOG_LIST, 0u, dlg);
+    }
+
+    /* Instances list + search */
+    dui_state_add_text(inner, (u32)W_INST_SEARCH, m_ui->instance_search);
+    inst_items.clear();
+    inst_items.reserve(m_instances.size());
+    for (i = 0u; i < m_instances.size(); ++i) {
+        if (!m_ui->instance_search.empty() && !str_contains_ci(m_instances[i].id, m_ui->instance_search)) {
+            continue;
+        }
+        inst_items.push_back(ListItem(stable_item_id(m_instances[i].id), m_instances[i].id));
+    }
+    if (m_selected_instance >= 0 && m_selected_instance < (int)m_instances.size()) {
+        inst_selected_id = stable_item_id(m_instances[(size_t)m_selected_instance].id);
+    }
+    dui_state_add_list(inner, (u32)W_INST_LIST, inst_selected_id, inst_items);
+    {
+        char buf[128];
+        std::snprintf(buf, sizeof(buf), "Total instances: %u", (unsigned)m_instances.size());
+        dui_state_add_text(inner, (u32)W_INST_HINT, buf);
+    }
+
+    /* Play tab placeholders */
+    {
+        const InstanceInfo* inst = selected_instance();
+        dui_state_add_text(inner, (u32)W_PLAY_SELECTED, inst ? (std::string("Selected: ") + inst->id) : std::string("Selected: (none)"));
+        dui_state_add_text(inner, (u32)W_PLAY_PROFILE, std::string("Profile: ") + (m_profile_valid ? "dom_profile" : "default"));
+        dui_state_add_text(inner, (u32)W_PLAY_MANIFEST, std::string("Manifest: (not loaded)"));
+        dui_state_add_text(inner, (u32)W_PLAY_LAST_RUN, std::string("Last run: (not loaded)"));
+        dui_state_add_u32(inner, (u32)W_PLAY_OFFLINE, (u32)DUI_VALUE_BOOL, 0u);
+        {
+            std::vector<ListItem> targets;
+            targets.push_back(ListItem(1u, "game"));
+            dui_state_add_list(inner, (u32)W_PLAY_TARGET_LIST, (m_ui->play_target_item_id ? m_ui->play_target_item_id : 1u), targets);
+        }
+        {
+            std::vector<ListItem> news;
+            news.push_back(ListItem(1u, "Local news: add docs/launcher/news.txt"));
+            dui_state_add_list(inner, (u32)W_NEWS_LIST, 0u, news);
+        }
+    }
+
+    /* Instances tab placeholders */
+    {
+        std::vector<ListItem> paths;
+        const InstanceInfo* inst = selected_instance();
+        if (inst) {
+            paths.push_back(ListItem(1u, std::string("instance_root=") + path_join(path_join(m_paths.root, "instances"), inst->id)));
+        }
+        dui_state_add_list(inner, (u32)W_INST_PATHS_LIST, 0u, paths);
+        dui_state_add_text(inner, (u32)W_INST_IMPORT_PATH, std::string());
+        dui_state_add_text(inner, (u32)W_INST_EXPORT_PATH, std::string());
+    }
+
+    /* Packs tab placeholders */
+    dui_state_add_text(inner, (u32)W_PACKS_LABEL, std::string("Packs / Mods"));
+    dui_state_add_list(inner, (u32)W_PACKS_LIST, 0u, std::vector<ListItem>());
+    dui_state_add_u32(inner, (u32)W_PACKS_ENABLED, (u32)DUI_VALUE_BOOL, 0u);
+    {
+        std::vector<ListItem> policies;
+        policies.push_back(ListItem(1u, "never"));
+        policies.push_back(ListItem(2u, "prompt"));
+        policies.push_back(ListItem(3u, "auto"));
+        dui_state_add_list(inner, (u32)W_PACKS_POLICY_LIST, 2u, policies);
+    }
+    dui_state_add_text(inner, (u32)W_PACKS_RESOLVED, std::string());
+    dui_state_add_text(inner, (u32)W_PACKS_ERROR, std::string());
+
+    /* Options tab placeholders */
+    dui_state_add_list(inner, (u32)W_OPT_GFX_LIST, 0u, std::vector<ListItem>());
+    dui_state_add_text(inner, (u32)W_OPT_API_FIELD, std::string());
+    {
+        std::vector<ListItem> wm;
+        wm.push_back(ListItem(1u, "auto"));
+        wm.push_back(ListItem(2u, "windowed"));
+        wm.push_back(ListItem(3u, "fullscreen"));
+        wm.push_back(ListItem(4u, "borderless"));
+        dui_state_add_list(inner, (u32)W_OPT_WINMODE_LIST, 1u, wm);
+    }
+    dui_state_add_text(inner, (u32)W_OPT_WIDTH_FIELD, std::string());
+    dui_state_add_text(inner, (u32)W_OPT_HEIGHT_FIELD, std::string());
+    dui_state_add_text(inner, (u32)W_OPT_DPI_FIELD, std::string());
+    dui_state_add_text(inner, (u32)W_OPT_MONITOR_FIELD, std::string());
+    dui_state_add_text(inner, (u32)W_OPT_AUDIO_LABEL, std::string("Audio device: not supported"));
+    dui_state_add_text(inner, (u32)W_OPT_INPUT_LABEL, std::string("Input backend: not supported"));
+
+    /* Logs tab placeholders */
+    dui_state_add_text(inner, (u32)W_LOGS_LAST_RUN, std::string("Last run: (not loaded)"));
+    dui_state_add_list(inner, (u32)W_LOGS_RUNS_LIST, 0u, std::vector<ListItem>());
+    dui_state_add_list(inner, (u32)W_LOGS_AUDIT_LIST, 0u, std::vector<ListItem>());
+    dui_state_add_text(inner, (u32)W_LOGS_DIAG_OUT, std::string());
+    dui_state_add_list(inner, (u32)W_LOGS_LOCS_LIST, 0u, std::vector<ListItem>());
+
+    /* Status bar */
+    dui_state_add_text(inner, (u32)W_STATUS_TEXT, m_ui->status_text);
+    dui_state_add_u32(inner, (u32)W_STATUS_PROGRESS, (u32)DUI_VALUE_U32, (m_ui->status_progress > 1000u) ? 1000u : m_ui->status_progress);
+    {
+        std::string summary = std::string("instance=") + (selected_instance() ? selected_instance()->id : std::string("(none)"));
+        summary += std::string(" ui=") + m_ui_backend_selected;
+        dui_state_add_text(inner, (u32)W_STATUS_SELECTION, summary);
+    }
+
+    append_tlv_raw(out_state, DUI_TLV_STATE_V1, inner.empty() ? (const void*)0 : &inner[0], inner.size());
+    return true;
 }
 
 } // namespace dom
