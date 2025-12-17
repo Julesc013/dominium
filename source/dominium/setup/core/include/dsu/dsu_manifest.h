@@ -91,6 +91,22 @@ DSU_API const char *dsu_manifest_component_version(const dsu_manifest_t *manifes
 DSU_API dsu_manifest_component_kind_t dsu_manifest_component_kind(const dsu_manifest_t *manifest, dsu_u32 index);
 DSU_API dsu_u32 dsu_manifest_component_flags(const dsu_manifest_t *manifest, dsu_u32 index);
 
+/* Payloads (sorted deterministically by manifest canonicalization). */
+DSU_API dsu_u32 dsu_manifest_component_payload_count(const dsu_manifest_t *manifest, dsu_u32 component_index);
+DSU_API dsu_manifest_payload_kind_t dsu_manifest_component_payload_kind(const dsu_manifest_t *manifest,
+                                                                       dsu_u32 component_index,
+                                                                       dsu_u32 payload_index);
+DSU_API const char *dsu_manifest_component_payload_path(const dsu_manifest_t *manifest,
+                                                       dsu_u32 component_index,
+                                                       dsu_u32 payload_index);
+DSU_API const dsu_u8 *dsu_manifest_component_payload_sha256(const dsu_manifest_t *manifest,
+                                                          dsu_u32 component_index,
+                                                          dsu_u32 payload_index);
+DSU_API dsu_u64 dsu_manifest_component_payload_size(const dsu_manifest_t *manifest,
+                                                  dsu_u32 component_index,
+                                                  dsu_u32 payload_index,
+                                                  dsu_bool *out_present);
+
 /* Dependencies (sorted deterministically by manifest canonicalization). */
 DSU_API dsu_u32 dsu_manifest_component_dependency_count(const dsu_manifest_t *manifest, dsu_u32 component_index);
 DSU_API const char *dsu_manifest_component_dependency_id(const dsu_manifest_t *manifest,

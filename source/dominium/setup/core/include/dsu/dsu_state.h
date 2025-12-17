@@ -34,6 +34,12 @@ DSU_API dsu_u32 dsu_state_component_count(const dsu_state_t *state);
 DSU_API const char *dsu_state_component_id(const dsu_state_t *state, dsu_u32 index);
 DSU_API const char *dsu_state_component_version(const dsu_state_t *state, dsu_u32 index);
 
+/* Installed file list (Plan S-4). Paths are relative to install root (canonical '/'). */
+DSU_API dsu_u32 dsu_state_file_count(const dsu_state_t *state);
+DSU_API const char *dsu_state_file_path(const dsu_state_t *state, dsu_u32 index);
+DSU_API dsu_u64 dsu_state_file_size(const dsu_state_t *state, dsu_u32 index);
+DSU_API const dsu_u8 *dsu_state_file_sha256(const dsu_state_t *state, dsu_u32 index);
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif

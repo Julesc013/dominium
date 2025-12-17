@@ -188,7 +188,7 @@ static int dsu_cli_cmd_plan(const char *manifest_path,
             goto done;
         }
     }
-    st = dsu_plan_build(ctx, resolved, &plan);
+    st = dsu_plan_build(ctx, manifest, manifest_path, resolved, &plan);
     if (st != DSU_STATUS_SUCCESS) {
         goto done;
     }

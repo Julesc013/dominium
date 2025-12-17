@@ -3009,6 +3009,76 @@ dsu_u32 dsu_manifest_component_flags(const dsu_manifest_t *manifest, dsu_u32 ind
     return manifest->components[index].flags;
 }
 
+dsu_u32 dsu_manifest_component_payload_count(const dsu_manifest_t *manifest, dsu_u32 component_index) {
+    if (!manifest || component_index >= manifest->component_count) {
+        return 0u;
+    }
+    return manifest->components[component_index].payload_count;
+}
+
+dsu_manifest_payload_kind_t dsu_manifest_component_payload_kind(const dsu_manifest_t *manifest,
+                                                               dsu_u32 component_index,
+                                                               dsu_u32 payload_index) {
+    const dsu_manifest_component_t *c;
+    if (!manifest || component_index >= manifest->component_count) {
+        return DSU_MANIFEST_PAYLOAD_KIND_FILESET;
+    }
+    c = &manifest->components[component_index];
+    if (payload_index >= c->payload_count) {
+        return DSU_MANIFEST_PAYLOAD_KIND_FILESET;
+    }
+    return (dsu_manifest_payload_kind_t)c->payloads[payload_index].kind;
+}
+
+const char *dsu_manifest_component_payload_path(const dsu_manifest_t *manifest,
+                                               dsu_u32 component_index,
+                                               dsu_u32 payload_index) {
+    const dsu_manifest_component_t *c;
+    if (!manifest || component_index >= manifest->component_count) {
+        return NULL;
+    }
+    c = &manifest->components[component_index];
+    if (payload_index >= c->payload_count) {
+        return NULL;
+    }
+    return c->payloads[payload_index].path;
+}
+
+const dsu_u8 *dsu_manifest_component_payload_sha256(const dsu_manifest_t *manifest,
+                                                  dsu_u32 component_index,
+                                                  dsu_u32 payload_index) {
+    const dsu_manifest_component_t *c;
+    if (!manifest || component_index >= manifest->component_count) {
+        return NULL;
+    }
+    c = &manifest->components[component_index];
+    if (payload_index >= c->payload_count) {
+        return NULL;
+    }
+    return c->payloads[payload_index].sha256;
+}
+
+dsu_u64 dsu_manifest_component_payload_size(const dsu_manifest_t *manifest,
+                                          dsu_u32 component_index,
+                                          dsu_u32 payload_index,
+                                          dsu_bool *out_present) {
+    const dsu_manifest_component_t *c;
+    if (out_present) {
+        *out_present = DSU_FALSE;
+    }
+    if (!manifest || component_index >= manifest->component_count) {
+        return (dsu_u64)0u;
+    }
+    c = &manifest->components[component_index];
+    if (payload_index >= c->payload_count) {
+        return (dsu_u64)0u;
+    }
+    if (out_present) {
+        *out_present = c->payloads[payload_index].has_size ? DSU_TRUE : DSU_FALSE;
+    }
+    return c->payloads[payload_index].size;
+}
+
 dsu_u32 dsu_manifest_component_dependency_count(const dsu_manifest_t *manifest, dsu_u32 component_index) {
     if (!manifest || component_index >= manifest->component_count) {
         return 0u;
