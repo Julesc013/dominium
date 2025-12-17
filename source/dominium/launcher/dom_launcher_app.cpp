@@ -36,6 +36,7 @@ extern "C" {
 #include "core/include/launcher_instance_config.h"
 #include "core/include/launcher_instance_launch_history.h"
 #include "core/include/launcher_instance_tx.h"
+#include "core/include/launcher_artifact_store.h"
 #include "core/include/launcher_pack_resolver.h"
 #include "core/include/launcher_pack_ops.h"
 #include "core/include/launcher_instance_artifact_ops.h"
@@ -680,6 +681,93 @@ static std::string dgfx_backend_from_item_id(u32 item_id) {
         }
     }
     return std::string();
+}
+
+#if defined(_WIN32) || defined(_WIN64)
+static std::string add_exe_if_missing(const std::string& p) {
+    if (ends_with_ci(p.c_str(), ".exe")) {
+        return p;
+    }
+    return p + ".exe";
+}
+#else
+static std::string add_exe_if_missing(const std::string& p) { return p; }
+#endif
+
+static bool parse_u32_decimal(const std::string& s, u32& out_v) {
+    size_t i;
+    out_v = 0u;
+    if (s.empty()) {
+        return true;
+    }
+    for (i = 0u; i < s.size(); ++i) {
+        const char c = s[i];
+        u32 digit;
+        if (c < '0' || c > '9') {
+            return false;
+        }
+        digit = (u32)(c - '0');
+        if (out_v > (0xffffffffu - digit) / 10u) {
+            return false;
+        }
+        out_v = out_v * 10u + digit;
+    }
+    return true;
+}
+
+static bool resolve_tool_executable_path(const std::string& state_root,
+                                        const std::string& argv0,
+                                        const launcher_core::LauncherToolEntry& te,
+                                        std::string& out_path) {
+    std::string artifact_dir;
+    std::string meta_path;
+    std::string payload_path;
+
+    out_path.clear();
+
+    if (!te.executable_artifact_hash_bytes.empty() &&
+        launcher_core::launcher_artifact_store_paths(state_root,
+                                                     te.executable_artifact_hash_bytes,
+                                                     artifact_dir,
+                                                     meta_path,
+                                                     payload_path) &&
+        file_exists_stdio(payload_path)) {
+        out_path = payload_path;
+        return true;
+    }
+
+    {
+        const std::string dir = dirname_of(argv0);
+        if (!dir.empty()) {
+            const std::string cand0 = path_join(dir, te.tool_id);
+            const std::string cand1 = add_exe_if_missing(cand0);
+            if (file_exists_stdio(cand0)) {
+                out_path = cand0;
+                return true;
+            }
+            if (file_exists_stdio(cand1)) {
+                out_path = cand1;
+                return true;
+            }
+
+            if (te.tool_id.compare(0u, 5u, "tool_") != 0) {
+                const std::string pref = std::string("tool_") + te.tool_id;
+                const std::string cand2 = path_join(dir, pref);
+                const std::string cand3 = add_exe_if_missing(cand2);
+                if (file_exists_stdio(cand2)) {
+                    out_path = cand2;
+                    return true;
+                }
+                if (file_exists_stdio(cand3)) {
+                    out_path = cand3;
+                    return true;
+                }
+            }
+        }
+    }
+
+    out_path = add_exe_if_missing(te.tool_id);
+    return true;
 }
 
 static void append_u32_le(std::vector<unsigned char>& out, u32 v) {
@@ -1747,6 +1835,66 @@ void DomLauncherApp::process_dui_events() {
                 m_ui->tab = (u32)DomLauncherUiState::TAB_OPTIONS;
             } else if (act == (u32)ACT_TAB_LOGS) {
                 m_ui->tab = (u32)DomLauncherUiState::TAB_LOGS;
+            } else if (act == (u32)ACT_PLAY || act == (u32)ACT_SAFE_PLAY) {
+                if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
+                    m_ui->status_text = std::string("Busy: ") + (m_ui->task.op.empty() ? std::string("operation") : m_ui->task.op);
+                } else {
+                    const InstanceInfo* inst = selected_instance();
+                    if (!inst) {
+                        m_ui->status_text = "Refused: no instance selected.";
+                    } else {
+                        const u32 want = m_ui->play_target_item_id ? m_ui->play_target_item_id : stable_item_id(std::string("game"));
+                        DomLauncherUiState::UiTask t;
+                        t.kind = (u32)DomLauncherUiState::TASK_LAUNCH;
+                        t.step = 0u;
+                        t.total_steps = 2u;
+                        t.op = (act == (u32)ACT_SAFE_PLAY) ? "Safe Mode Play" : "Play";
+                        t.instance_id = inst->id;
+                        t.safe_mode = (act == (u32)ACT_SAFE_PLAY) ? 1u : 0u;
+                        if (want == stable_item_id(std::string("game"))) {
+                            t.flag_u32 = 0u;
+                        } else {
+                            size_t i;
+                            bool found = false;
+                            for (i = 0u; i < m_ui->cache_tools.size(); ++i) {
+                                const launcher_core::LauncherToolEntry& te = m_ui->cache_tools[i];
+                                if (stable_item_id(std::string("tool:") + te.tool_id) == want) {
+                                    t.flag_u32 = 1u;
+                                    t.aux_id = te.tool_id;
+                                    found = true;
+                                    break;
+                                }
+                            }
+                            if (!found) {
+                                m_ui->status_text = "Refused: target not available for this instance.";
+                                std::memset(&ev, 0, sizeof(ev));
+                                continue;
+                            }
+                        }
+                        m_ui->task = t;
+                        m_ui->status_text = t.op + " started.";
+                        m_ui->status_progress = 0u;
+                    }
+                }
+            } else if (act == (u32)ACT_VERIFY_REPAIR) {
+                if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
+                    m_ui->status_text = std::string("Busy: ") + (m_ui->task.op.empty() ? std::string("operation") : m_ui->task.op);
+                } else {
+                    const InstanceInfo* inst = selected_instance();
+                    if (!inst) {
+                        m_ui->status_text = "Refused: no instance selected.";
+                    } else {
+                        DomLauncherUiState::UiTask t;
+                        t.kind = (u32)DomLauncherUiState::TASK_VERIFY_REPAIR;
+                        t.step = 0u;
+                        t.total_steps = 2u;
+                        t.op = "Verify / Repair";
+                        t.instance_id = inst->id;
+                        m_ui->task = t;
+                        m_ui->status_text = "Verify / Repair started.";
+                        m_ui->status_progress = 0u;
+                    }
+                }
             } else if (act == (u32)ACT_DIALOG_OK || act == (u32)ACT_DIALOG_CANCEL) {
                 m_ui->dialog_visible = 0u;
                 m_ui->dialog_title.clear();
@@ -1929,6 +2077,229 @@ void DomLauncherApp::process_ui_task() {
     if (!m_ui) {
         return;
     }
+    DomLauncherUiState::UiTask& t = m_ui->task;
+    const launcher_services_api_v1* services = launcher_services_null_v1();
+
+    if (t.kind == (u32)DomLauncherUiState::TASK_NONE) {
+        return;
+    }
+
+    if (t.kind == (u32)DomLauncherUiState::TASK_LAUNCH) {
+        if (t.step == 0u) {
+            launcher_core::LauncherLaunchOverrides ov;
+            std::vector<std::string> child_args;
+            LaunchTarget target;
+            std::string exe_path;
+            LaunchRunResult lr;
+
+            u32 width = 0u;
+            u32 height = 0u;
+            u32 dpi = 0u;
+            u32 monitor = 0u;
+
+            std::vector<std::string> errs;
+
+            if (!parse_u32_decimal(m_ui->opt_width_text, width)) {
+                errs.push_back(std::string("window_width_invalid='") + m_ui->opt_width_text + "'");
+            }
+            if (!parse_u32_decimal(m_ui->opt_height_text, height)) {
+                errs.push_back(std::string("window_height_invalid='") + m_ui->opt_height_text + "'");
+            }
+            if (!parse_u32_decimal(m_ui->opt_dpi_text, dpi)) {
+                errs.push_back(std::string("window_dpi_invalid='") + m_ui->opt_dpi_text + "'");
+            }
+            if (!parse_u32_decimal(m_ui->opt_monitor_text, monitor)) {
+                errs.push_back(std::string("window_monitor_invalid='") + m_ui->opt_monitor_text + "'");
+            }
+            if (!errs.empty()) {
+                m_ui->status_text = "Refused: invalid option value.";
+                m_ui->status_progress = 1000u;
+                m_ui->dialog_visible = 1u;
+                m_ui->dialog_title = "Refused";
+                m_ui->dialog_text = "Invalid option value.";
+                m_ui->dialog_lines = errs;
+                t.kind = (u32)DomLauncherUiState::TASK_NONE;
+                return;
+            }
+
+            m_ui->status_text = t.op + " in progress...";
+            m_ui->status_progress = 100u;
+
+            target = LaunchTarget();
+            target.is_tool = t.flag_u32 ? 1u : 0u;
+            if (target.is_tool) {
+                target.tool_id = t.aux_id;
+            }
+
+            if (!target.is_tool) {
+                ProductEntry* entry = find_product_entry("game");
+                if (!entry) {
+                    m_ui->status_text = "Launch failed: game executable not found.";
+                    m_ui->status_progress = 1000u;
+                    t.kind = (u32)DomLauncherUiState::TASK_NONE;
+                    return;
+                }
+                exe_path = entry->path;
+            } else {
+                size_t i;
+                bool found = false;
+                for (i = 0u; i < m_ui->cache_tools.size(); ++i) {
+                    if (m_ui->cache_tools[i].tool_id == target.tool_id) {
+                        found = true;
+                        (void)resolve_tool_executable_path(m_paths.root, m_argv0, m_ui->cache_tools[i], exe_path);
+                        break;
+                    }
+                }
+                if (!found) {
+                    m_ui->status_text = "Launch failed: tool not in registry.";
+                    m_ui->status_progress = 1000u;
+                    t.kind = (u32)DomLauncherUiState::TASK_NONE;
+                    return;
+                }
+            }
+
+            ov = launcher_core::LauncherLaunchOverrides();
+            ov.request_safe_mode = t.safe_mode ? 1u : 0u;
+            ov.safe_mode_allow_network = m_ui->play_offline ? 0u : 1u;
+
+            ov.has_allow_network = 1u;
+            ov.allow_network = m_ui->play_offline ? 0u : 1u;
+
+            if (!m_ui->cache_config.gfx_backend.empty()) {
+                ov.has_gfx_backend = 1u;
+                ov.gfx_backend = m_ui->cache_config.gfx_backend;
+            }
+            if (!m_ui->cache_config.renderer_api.empty()) {
+                ov.has_renderer_api = 1u;
+                ov.renderer_api = m_ui->cache_config.renderer_api;
+            }
+            ov.has_window_mode = 1u;
+            ov.window_mode = m_ui->cache_config.window_mode;
+
+            if (width != 0u) {
+                ov.has_window_width = 1u;
+                ov.window_width = width;
+            }
+            if (height != 0u) {
+                ov.has_window_height = 1u;
+                ov.window_height = height;
+            }
+            if (dpi != 0u) {
+                ov.has_window_dpi = 1u;
+                ov.window_dpi = dpi;
+            }
+            if (monitor != 0u) {
+                ov.has_window_monitor = 1u;
+                ov.window_monitor = monitor;
+            }
+
+            child_args.push_back(std::string("--mode=") + (m_selected_mode.empty() ? std::string("gui") : m_selected_mode));
+            child_args.push_back(std::string("--instance=") + t.instance_id);
+            child_args.push_back(dom_u32_arg("--keep_last_runs=", 8u));
+
+            if (!launcher_execute_launch_attempt(m_paths.root,
+                                                 t.instance_id,
+                                                 target,
+                                                 m_profile_valid ? &m_profile : (const dom_profile*)0,
+                                                 exe_path,
+                                                 child_args,
+                                                 0u,
+                                                 8u,
+                                                 ov,
+                                                 lr)) {
+                t.launch_result = lr;
+                m_ui->status_progress = 600u;
+                if (lr.refused) {
+                    m_ui->status_text = std::string("Refused: ") + lr.refusal_detail;
+                } else if (!lr.error.empty()) {
+                    m_ui->status_text = std::string("Launch failed: ") + lr.error;
+                } else {
+                    m_ui->status_text = "Launch failed.";
+                }
+                m_ui->dialog_visible = 1u;
+                m_ui->dialog_title = "Launch details";
+                m_ui->dialog_text = m_ui->status_text;
+                m_ui->dialog_lines.clear();
+                if (!lr.run_dir.empty()) m_ui->dialog_lines.push_back(std::string("run_dir=") + lr.run_dir);
+                if (!lr.handshake_path.empty()) m_ui->dialog_lines.push_back(std::string("handshake_path=") + lr.handshake_path);
+                if (!lr.audit_path.empty()) m_ui->dialog_lines.push_back(std::string("audit_path=") + lr.audit_path);
+                if (lr.refused) {
+                    m_ui->dialog_lines.push_back(std::string("refusal_code=") + u32_to_string(lr.refusal_code));
+                    m_ui->dialog_lines.push_back(std::string("refusal_detail=") + lr.refusal_detail);
+                }
+            } else {
+                t.launch_result = lr;
+                m_ui->status_text = std::string("Spawned run_id=0x") + u64_hex16(lr.run_id);
+                m_ui->status_progress = 600u;
+            }
+
+            t.step = 1u;
+            return;
+        }
+
+        if (t.step == 1u) {
+            ui_refresh_instance_cache(*m_ui, m_paths.root, t.instance_id);
+            m_ui->status_progress = 1000u;
+            t = DomLauncherUiState::UiTask();
+            return;
+        }
+    }
+
+    if (t.kind == (u32)DomLauncherUiState::TASK_VERIFY_REPAIR) {
+        if (t.step == 0u) {
+            launcher_core::LauncherInstanceManifest updated;
+            launcher_core::LauncherAuditLog audit;
+            bool ok;
+            size_t i;
+            bool has_any = false;
+
+            m_ui->status_text = "Verify / Repair in progress...";
+            m_ui->status_progress = 100u;
+
+            for (i = 0u; i < m_ui->cache_manifest.content_entries.size(); ++i) {
+                const launcher_core::LauncherContentEntry& e = m_ui->cache_manifest.content_entries[i];
+                if (e.enabled && !e.hash_bytes.empty()) {
+                    has_any = true;
+                    break;
+                }
+            }
+            if (!has_any) {
+                m_ui->status_text = "Verify / Repair: no artifacts; skipped.";
+                m_ui->status_progress = 600u;
+                t.step = 1u;
+                return;
+            }
+
+            ok = launcher_core::launcher_instance_verify_or_repair(services,
+                                                                   t.instance_id,
+                                                                   m_paths.root,
+                                                                   1u,
+                                                                   updated,
+                                                                   &audit);
+            if (ok) {
+                m_ui->status_text = "Verify / Repair: ok.";
+            } else {
+                m_ui->status_text = "Verify / Repair failed.";
+                m_ui->dialog_visible = 1u;
+                m_ui->dialog_title = "Verify / Repair failed";
+                m_ui->dialog_text = "Operation failed.";
+                m_ui->dialog_lines = audit.reasons;
+            }
+            m_ui->status_progress = 600u;
+            t.step = 1u;
+            return;
+        }
+        if (t.step == 1u) {
+            ui_refresh_instance_cache(*m_ui, m_paths.root, t.instance_id);
+            m_ui->status_progress = 1000u;
+            t = DomLauncherUiState::UiTask();
+            return;
+        }
+    }
+
+    m_ui->status_text = "Operation refused: not implemented.";
+    m_ui->status_progress = 1000u;
+    t = DomLauncherUiState::UiTask();
 }
 
 bool DomLauncherApp::build_dui_state(std::vector<unsigned char>& out_state) const {
