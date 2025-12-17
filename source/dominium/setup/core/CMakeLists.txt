@@ -14,6 +14,7 @@ add_library(dsu_core STATIC
     src/resolve/dsu_resolve.c
     src/state/dsu_state.c
     src/txn/dsu_journal.c
+    src/txn/dsu_txn.c
     src/util/dsu_util_archive.c
     src/util/dsu_util_blob.c
     src/util/dsu_util_digest.c
