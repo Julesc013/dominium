@@ -86,6 +86,38 @@ DSU_API dsu_u64 dsu_manifest_content_digest64(const dsu_manifest_t *manifest);
 DSU_API dsu_u32 dsu_manifest_component_count(const dsu_manifest_t *manifest);
 DSU_API const char *dsu_manifest_component_id(const dsu_manifest_t *manifest, dsu_u32 index);
 
+/* Component metadata (Plan S-3 resolution). */
+DSU_API const char *dsu_manifest_component_version(const dsu_manifest_t *manifest, dsu_u32 index);
+DSU_API dsu_manifest_component_kind_t dsu_manifest_component_kind(const dsu_manifest_t *manifest, dsu_u32 index);
+DSU_API dsu_u32 dsu_manifest_component_flags(const dsu_manifest_t *manifest, dsu_u32 index);
+
+/* Dependencies (sorted deterministically by manifest canonicalization). */
+DSU_API dsu_u32 dsu_manifest_component_dependency_count(const dsu_manifest_t *manifest, dsu_u32 component_index);
+DSU_API const char *dsu_manifest_component_dependency_id(const dsu_manifest_t *manifest,
+                                                        dsu_u32 component_index,
+                                                        dsu_u32 dependency_index);
+DSU_API dsu_manifest_version_constraint_kind_t dsu_manifest_component_dependency_constraint_kind(const dsu_manifest_t *manifest,
+                                                                                               dsu_u32 component_index,
+                                                                                               dsu_u32 dependency_index);
+DSU_API const char *dsu_manifest_component_dependency_constraint_version(const dsu_manifest_t *manifest,
+                                                                       dsu_u32 component_index,
+                                                                       dsu_u32 dependency_index);
+
+/* Conflicts (sorted deterministically by manifest canonicalization). */
+DSU_API dsu_u32 dsu_manifest_component_conflict_count(const dsu_manifest_t *manifest, dsu_u32 component_index);
+DSU_API const char *dsu_manifest_component_conflict_id(const dsu_manifest_t *manifest,
+                                                      dsu_u32 component_index,
+                                                      dsu_u32 conflict_index);
+
+/* Platforms and install roots (sorted deterministically by manifest canonicalization). */
+DSU_API dsu_u32 dsu_manifest_platform_target_count(const dsu_manifest_t *manifest);
+DSU_API const char *dsu_manifest_platform_target(const dsu_manifest_t *manifest, dsu_u32 index);
+
+DSU_API dsu_u32 dsu_manifest_install_root_count(const dsu_manifest_t *manifest);
+DSU_API dsu_manifest_install_scope_t dsu_manifest_install_root_scope(const dsu_manifest_t *manifest, dsu_u32 index);
+DSU_API const char *dsu_manifest_install_root_platform(const dsu_manifest_t *manifest, dsu_u32 index);
+DSU_API const char *dsu_manifest_install_root_path(const dsu_manifest_t *manifest, dsu_u32 index);
+
 /* Canonical writer utilities (TLV is always canonical output). */
 DSU_API dsu_status_t dsu_manifest_write_file(dsu_ctx_t *ctx,
                                             const dsu_manifest_t *manifest,

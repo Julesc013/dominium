@@ -2982,3 +2982,143 @@ const char *dsu_manifest_component_id(const dsu_manifest_t *manifest, dsu_u32 in
     }
     return manifest->components[index].id;
 }
+
+const char *dsu_manifest_component_version(const dsu_manifest_t *manifest, dsu_u32 index) {
+    const dsu_manifest_component_t *c;
+    if (!manifest || index >= manifest->component_count) {
+        return "";
+    }
+    c = &manifest->components[index];
+    if (c->version && c->version[0] != '\0') {
+        return c->version;
+    }
+    return dsu_manifest_product_version(manifest);
+}
+
+dsu_manifest_component_kind_t dsu_manifest_component_kind(const dsu_manifest_t *manifest, dsu_u32 index) {
+    if (!manifest || index >= manifest->component_count) {
+        return DSU_MANIFEST_COMPONENT_KIND_OTHER;
+    }
+    return (dsu_manifest_component_kind_t)manifest->components[index].kind;
+}
+
+dsu_u32 dsu_manifest_component_flags(const dsu_manifest_t *manifest, dsu_u32 index) {
+    if (!manifest || index >= manifest->component_count) {
+        return 0u;
+    }
+    return manifest->components[index].flags;
+}
+
+dsu_u32 dsu_manifest_component_dependency_count(const dsu_manifest_t *manifest, dsu_u32 component_index) {
+    if (!manifest || component_index >= manifest->component_count) {
+        return 0u;
+    }
+    return manifest->components[component_index].dep_count;
+}
+
+const char *dsu_manifest_component_dependency_id(const dsu_manifest_t *manifest,
+                                                dsu_u32 component_index,
+                                                dsu_u32 dependency_index) {
+    const dsu_manifest_component_t *c;
+    if (!manifest || component_index >= manifest->component_count) {
+        return NULL;
+    }
+    c = &manifest->components[component_index];
+    if (dependency_index >= c->dep_count) {
+        return NULL;
+    }
+    return c->deps[dependency_index].id;
+}
+
+dsu_manifest_version_constraint_kind_t dsu_manifest_component_dependency_constraint_kind(const dsu_manifest_t *manifest,
+                                                                                       dsu_u32 component_index,
+                                                                                       dsu_u32 dependency_index) {
+    const dsu_manifest_component_t *c;
+    if (!manifest || component_index >= manifest->component_count) {
+        return DSU_MANIFEST_VERSION_CONSTRAINT_ANY;
+    }
+    c = &manifest->components[component_index];
+    if (dependency_index >= c->dep_count) {
+        return DSU_MANIFEST_VERSION_CONSTRAINT_ANY;
+    }
+    return (dsu_manifest_version_constraint_kind_t)c->deps[dependency_index].constraint_kind;
+}
+
+const char *dsu_manifest_component_dependency_constraint_version(const dsu_manifest_t *manifest,
+                                                               dsu_u32 component_index,
+                                                               dsu_u32 dependency_index) {
+    const dsu_manifest_component_t *c;
+    const char *v;
+    if (!manifest || component_index >= manifest->component_count) {
+        return "";
+    }
+    c = &manifest->components[component_index];
+    if (dependency_index >= c->dep_count) {
+        return "";
+    }
+    v = c->deps[dependency_index].constraint_version;
+    return (v ? v : "");
+}
+
+dsu_u32 dsu_manifest_component_conflict_count(const dsu_manifest_t *manifest, dsu_u32 component_index) {
+    if (!manifest || component_index >= manifest->component_count) {
+        return 0u;
+    }
+    return manifest->components[component_index].conflict_count;
+}
+
+const char *dsu_manifest_component_conflict_id(const dsu_manifest_t *manifest,
+                                              dsu_u32 component_index,
+                                              dsu_u32 conflict_index) {
+    const dsu_manifest_component_t *c;
+    if (!manifest || component_index >= manifest->component_count) {
+        return NULL;
+    }
+    c = &manifest->components[component_index];
+    if (conflict_index >= c->conflict_count) {
+        return NULL;
+    }
+    return c->conflicts[conflict_index];
+}
+
+dsu_u32 dsu_manifest_platform_target_count(const dsu_manifest_t *manifest) {
+    if (!manifest) {
+        return 0u;
+    }
+    return manifest->platform_target_count;
+}
+
+const char *dsu_manifest_platform_target(const dsu_manifest_t *manifest, dsu_u32 index) {
+    if (!manifest || index >= manifest->platform_target_count) {
+        return NULL;
+    }
+    return manifest->platform_targets[index];
+}
+
+dsu_u32 dsu_manifest_install_root_count(const dsu_manifest_t *manifest) {
+    if (!manifest) {
+        return 0u;
+    }
+    return manifest->install_root_count;
+}
+
+dsu_manifest_install_scope_t dsu_manifest_install_root_scope(const dsu_manifest_t *manifest, dsu_u32 index) {
+    if (!manifest || index >= manifest->install_root_count) {
+        return DSU_MANIFEST_INSTALL_SCOPE_PORTABLE;
+    }
+    return (dsu_manifest_install_scope_t)manifest->install_roots[index].scope;
+}
+
+const char *dsu_manifest_install_root_platform(const dsu_manifest_t *manifest, dsu_u32 index) {
+    if (!manifest || index >= manifest->install_root_count) {
+        return NULL;
+    }
+    return manifest->install_roots[index].platform;
+}
+
+const char *dsu_manifest_install_root_path(const dsu_manifest_t *manifest, dsu_u32 index) {
+    if (!manifest || index >= manifest->install_root_count) {
+        return NULL;
+    }
+    return manifest->install_roots[index].path;
+}

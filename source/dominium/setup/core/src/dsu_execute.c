@@ -27,6 +27,9 @@ static const char *dsu__step_kind_name(dsu_plan_step_kind_t kind) {
     switch (kind) {
         case DSU_PLAN_STEP_DECLARE_INSTALL_ROOT: return "DECLARE_INSTALL_ROOT";
         case DSU_PLAN_STEP_INSTALL_COMPONENT: return "INSTALL_COMPONENT";
+        case DSU_PLAN_STEP_UPGRADE_COMPONENT: return "UPGRADE_COMPONENT";
+        case DSU_PLAN_STEP_REPAIR_COMPONENT: return "REPAIR_COMPONENT";
+        case DSU_PLAN_STEP_UNINSTALL_COMPONENT: return "UNINSTALL_COMPONENT";
         case DSU_PLAN_STEP_WRITE_STATE: return "WRITE_STATE";
         case DSU_PLAN_STEP_WRITE_LOG: return "WRITE_LOG";
         default: return "UNKNOWN";

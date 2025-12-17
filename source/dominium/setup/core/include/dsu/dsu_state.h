@@ -1,12 +1,12 @@
 /*
 FILE: source/dominium/setup/core/include/dsu/dsu_state.h
 MODULE: Dominium Setup
-PURPOSE: Installed-state load/save stubs (Plan S-1 foundation).
+PURPOSE: Installed-state load/save (Plan S-3).
 */
 #ifndef DSU_STATE_H_INCLUDED
 #define DSU_STATE_H_INCLUDED
 
-#include "dsu_ctx.h"
+#include "dsu_manifest.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -24,9 +24,18 @@ DSU_API dsu_status_t dsu_state_write_file(dsu_ctx_t *ctx,
 
 DSU_API void dsu_state_destroy(dsu_ctx_t *ctx, dsu_state_t *state);
 
+DSU_API const char *dsu_state_product_id(const dsu_state_t *state);
+DSU_API const char *dsu_state_product_version(const dsu_state_t *state);
+DSU_API const char *dsu_state_platform(const dsu_state_t *state);
+DSU_API dsu_manifest_install_scope_t dsu_state_scope(const dsu_state_t *state);
+DSU_API const char *dsu_state_install_root(const dsu_state_t *state);
+
+DSU_API dsu_u32 dsu_state_component_count(const dsu_state_t *state);
+DSU_API const char *dsu_state_component_id(const dsu_state_t *state, dsu_u32 index);
+DSU_API const char *dsu_state_component_version(const dsu_state_t *state, dsu_u32 index);
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
 
 #endif /* DSU_STATE_H_INCLUDED */
-

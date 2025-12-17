@@ -18,12 +18,14 @@ typedef enum dsu_plan_step_kind_t {
     DSU_PLAN_STEP_DECLARE_INSTALL_ROOT = 0,
     DSU_PLAN_STEP_INSTALL_COMPONENT = 1,
     DSU_PLAN_STEP_WRITE_STATE = 2,
-    DSU_PLAN_STEP_WRITE_LOG = 3
+    DSU_PLAN_STEP_WRITE_LOG = 3,
+    DSU_PLAN_STEP_UPGRADE_COMPONENT = 4,
+    DSU_PLAN_STEP_REPAIR_COMPONENT = 5,
+    DSU_PLAN_STEP_UNINSTALL_COMPONENT = 6
 } dsu_plan_step_kind_t;
 
 DSU_API dsu_status_t dsu_plan_build(dsu_ctx_t *ctx,
-                                   const dsu_manifest_t *manifest,
-                                   const dsu_resolved_t *resolved,
+                                   const dsu_resolve_result_t *resolved,
                                    dsu_plan_t **out_plan);
 
 DSU_API void dsu_plan_destroy(dsu_ctx_t *ctx, dsu_plan_t *plan);
