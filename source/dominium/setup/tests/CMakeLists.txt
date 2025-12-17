@@ -59,3 +59,23 @@ set_target_properties(dsu_resolve_test PROPERTIES
 )
 
 add_test(NAME dsu_resolve_test COMMAND dsu_resolve_test)
+
+add_executable(dsu_txn_test
+    dsu_txn_test.c
+)
+
+target_include_directories(dsu_txn_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../core/include
+)
+
+target_link_libraries(dsu_txn_test
+    PRIVATE dsu_core
+)
+
+set_target_properties(dsu_txn_test PROPERTIES
+    C_STANDARD 90
+    C_STANDARD_REQUIRED ON
+    C_EXTENSIONS OFF
+)
+
+add_test(NAME dsu_txn_test COMMAND dsu_txn_test)
