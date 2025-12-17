@@ -33,3 +33,29 @@ set_target_properties(dominium-launcher PROPERTIES
 )
 
 dominium_bundle_runtime(dominium-launcher)
+
+add_executable(tool_manifest_inspector
+    tools/tool_manifest_inspector.cpp
+)
+
+target_include_directories(tool_manifest_inspector PUBLIC
+    ${DOMINIUM_INCLUDE_DIR}
+    ${CMAKE_SOURCE_DIR}/source/domino
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+)
+
+target_link_libraries(tool_manifest_inspector
+    PRIVATE
+        domino_core
+        dominium_launcher_core
+)
+
+set_target_properties(tool_manifest_inspector PROPERTIES
+    OUTPUT_NAME "tool_manifest_inspector"
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+dominium_bundle_runtime(tool_manifest_inspector)
