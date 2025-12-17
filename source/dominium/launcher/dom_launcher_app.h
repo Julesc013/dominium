@@ -61,6 +61,7 @@ public:
 
     bool init_from_cli(const LauncherConfig &cfg, const dom_profile* profile);
     void run();
+    bool run_ui_smoke(std::string& out_error);
     void shutdown();
 
     const std::vector<ProductEntry>& products() const { return m_products; }
