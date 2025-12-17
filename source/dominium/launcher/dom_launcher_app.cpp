@@ -531,6 +531,88 @@ static bool read_file_all_bytes(const std::string& path,
     return true;
 }
 
+#if defined(_WIN32) || defined(_WIN64)
+extern "C" int _mkdir(const char* path);
+#else
+extern "C" int mkdir(const char* path, unsigned int mode);
+#endif
+
+static void mkdir_one_best_effort(const std::string& path) {
+    if (path.empty()) {
+        return;
+    }
+#if defined(_WIN32) || defined(_WIN64)
+    (void)_mkdir(path.c_str());
+#else
+    (void)mkdir(path.c_str(), 0777u);
+#endif
+}
+
+static void mkdir_p_best_effort(const std::string& path) {
+    std::string p = normalize_seps(path);
+    size_t i;
+    if (p.empty()) {
+        return;
+    }
+    for (i = 0u; i < p.size(); ++i) {
+        if (p[i] == '/') {
+            std::string part = p.substr(0u, i);
+            if (!part.empty()) {
+                mkdir_one_best_effort(part);
+            }
+        }
+    }
+    mkdir_one_best_effort(p);
+}
+
+static bool write_file_all_bytes_stdio(const std::string& path,
+                                       const std::vector<unsigned char>& bytes,
+                                       std::string& out_error) {
+    FILE* f;
+    size_t wrote;
+    out_error.clear();
+
+    if (path.empty()) {
+        out_error = "bad_path";
+        return false;
+    }
+
+    mkdir_p_best_effort(dirname_of(path));
+
+    f = std::fopen(path.c_str(), "wb");
+    if (!f) {
+        out_error = "open_failed";
+        return false;
+    }
+    wrote = 0u;
+    if (!bytes.empty()) {
+        wrote = std::fwrite(&bytes[0], 1u, bytes.size(), f);
+    }
+    std::fclose(f);
+    if (wrote != bytes.size()) {
+        out_error = "write_failed";
+        return false;
+    }
+    return true;
+}
+
+static bool copy_file_best_effort_stdio(const std::string& src,
+                                        const std::string& dst,
+                                        std::string& out_error) {
+    std::vector<unsigned char> bytes;
+    std::string err;
+    out_error.clear();
+    if (!read_file_all_bytes(src, bytes, err)) {
+        out_error = std::string("read_failed:") + err;
+        return false;
+    }
+    if (!write_file_all_bytes_stdio(dst, bytes, err)) {
+        out_error = std::string("write_failed:") + err;
+        return false;
+    }
+    return true;
+}
+
 static u32 fnv1a32_bytes(const void* data, size_t len) {
     const unsigned char* p = (const unsigned char*)data;
     u32 h = 2166136261u;
@@ -2145,6 +2227,37 @@ void DomLauncherApp::process_dui_events() {
                 m_ui->dialog_title = "Effective config";
                 m_ui->dialog_text = "Effective launcher config overrides.";
                 m_ui->dialog_lines = lines;
+            } else if (act == (u32)ACT_LOGS_DIAG) {
+                if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
+                    m_ui->status_text = std::string("Busy: ") + (m_ui->task.op.empty() ? std::string("operation") : m_ui->task.op);
+                } else {
+                    const InstanceInfo* inst = selected_instance();
+                    std::string out_root = m_ui->logs_diag_out_path;
+                    if (!inst) {
+                        m_ui->status_text = "Refused: no instance selected.";
+                    } else {
+                        if (out_root.empty()) {
+                            launcher_core::LauncherInstancePaths p = launcher_core::launcher_instance_paths_make(m_paths.root, inst->id);
+                            std::string suffix = "latest";
+                            if (!m_ui->cache_run_ids.empty()) {
+                                suffix = m_ui->cache_run_ids[m_ui->cache_run_ids.size() - 1u];
+                            }
+                            out_root = path_join(p.logs_root, std::string("diagnostics_bundle_") + suffix);
+                            m_ui->logs_diag_out_path = out_root;
+                        }
+
+                        DomLauncherUiState::UiTask t;
+                        t.kind = (u32)DomLauncherUiState::TASK_DIAG_BUNDLE;
+                        t.step = 0u;
+                        t.total_steps = 3u;
+                        t.op = "Diagnostics Bundle";
+                        t.instance_id = inst->id;
+                        t.path = out_root;
+                        m_ui->task = t;
+                        m_ui->status_text = "Diagnostics bundle started.";
+                        m_ui->status_progress = 0u;
+                    }
+                }
             } else if (act == (u32)ACT_DIALOG_OK) {
                 const u32 pending = m_ui->confirm_action_id;
                 const std::string pending_inst = m_ui->confirm_instance_id;
@@ -3084,6 +3197,112 @@ void DomLauncherApp::process_ui_task() {
         if (t.step == 1u) {
             ui_refresh_instance_cache(*m_ui, m_paths.root, t.instance_id);
             m_ui->status_progress = 1000u;
+            t = DomLauncherUiState::UiTask();
+            return;
+        }
+    }
+
+    if (t.kind == (u32)DomLauncherUiState::TASK_DIAG_BUNDLE) {
+        if (t.step == 0u) {
+            launcher_core::LauncherAuditLog audit;
+            bool ok;
+
+            if (t.path.empty()) {
+                m_ui->status_text = "Refused: diagnostics output path is empty.";
+                m_ui->status_progress = 1000u;
+                t = DomLauncherUiState::UiTask();
+                return;
+            }
+
+            m_ui->status_text = "Diagnostics bundle: export instance...";
+            m_ui->status_progress = 100u;
+
+            ok = launcher_core::launcher_instance_export_instance(services,
+                                                                  t.instance_id,
+                                                                  t.path,
+                                                                  m_paths.root,
+                                                                  (u32)launcher_core::LAUNCHER_INSTANCE_EXPORT_FULL_BUNDLE,
+                                                                  &audit);
+            if (!ok) {
+                m_ui->status_text = "Diagnostics bundle failed: export.";
+                m_ui->status_progress = 1000u;
+                m_ui->dialog_visible = 1u;
+                m_ui->dialog_title = "Diagnostics bundle failed";
+                m_ui->dialog_text = "Instance export failed.";
+                m_ui->dialog_lines = audit.reasons;
+                t = DomLauncherUiState::UiTask();
+                return;
+            }
+
+            m_ui->status_text = "Diagnostics bundle: collect logs...";
+            m_ui->status_progress = 450u;
+            t.step = 1u;
+            return;
+        }
+        if (t.step == 1u) {
+            std::vector<std::string> run_ids;
+            std::string list_err;
+            std::string last_run;
+            std::vector<std::string> lines;
+
+            lines.push_back(std::string("out_root=") + t.path);
+
+            if (launcher_list_instance_runs(m_paths.root, t.instance_id, run_ids, list_err) && !run_ids.empty()) {
+                last_run = run_ids[run_ids.size() - 1u];
+                lines.push_back(std::string("last_run_id=") + last_run);
+                {
+                    const std::string src_run_dir =
+                        path_join(path_join(path_join(path_join(m_paths.root, "instances"), t.instance_id), "logs/runs"), last_run);
+                    const std::string dst_run_dir = path_join(path_join(t.path, "last_run"), last_run);
+                    std::string err;
+                    mkdir_p_best_effort(dst_run_dir);
+
+                    if (file_exists_stdio(path_join(src_run_dir, "launcher_handshake.tlv"))) {
+                        if (copy_file_best_effort_stdio(path_join(src_run_dir, "launcher_handshake.tlv"),
+                                                        path_join(dst_run_dir, "launcher_handshake.tlv"),
+                                                        err)) {
+                            lines.push_back("copied=last_run/launcher_handshake.tlv");
+                        } else {
+                            lines.push_back(std::string("copy_failed=last_run/launcher_handshake.tlv;err=") + err);
+                        }
+                    }
+                    if (file_exists_stdio(path_join(src_run_dir, "launcher_audit.tlv"))) {
+                        if (copy_file_best_effort_stdio(path_join(src_run_dir, "launcher_audit.tlv"),
+                                                        path_join(dst_run_dir, "launcher_audit.tlv"),
+                                                        err)) {
+                            lines.push_back("copied=last_run/launcher_audit.tlv");
+                        } else {
+                            lines.push_back(std::string("copy_failed=last_run/launcher_audit.tlv;err=") + err);
+                        }
+                    }
+                }
+            } else if (!list_err.empty()) {
+                lines.push_back(std::string("runs_list_failed;err=") + list_err);
+            } else {
+                lines.push_back("no_runs_found=1");
+            }
+
+            {
+                const std::string src_hist = path_join(path_join(path_join(path_join(m_paths.root, "instances"), t.instance_id), "logs"),
+                                                      "launch_history.tlv");
+                const std::string dst_hist = path_join(t.path, "launch_history.tlv");
+                std::string err;
+                if (file_exists_stdio(src_hist)) {
+                    if (copy_file_best_effort_stdio(src_hist, dst_hist, err)) {
+                        lines.push_back("copied=launch_history.tlv");
+                    } else {
+                        lines.push_back(std::string("copy_failed=launch_history.tlv;err=") + err);
+                    }
+                }
+            }
+
+            m_ui->status_text = "Diagnostics bundle complete.";
+            m_ui->status_progress = 1000u;
+            m_ui->dialog_visible = 1u;
+            m_ui->dialog_title = "Diagnostics bundle";
+            m_ui->dialog_text = "Bundle generated.";
+            m_ui->dialog_lines = lines;
+
             t = DomLauncherUiState::UiTask();
             return;
         }
