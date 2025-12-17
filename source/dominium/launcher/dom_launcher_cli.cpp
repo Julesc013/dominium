@@ -565,6 +565,13 @@ int main(int argc, char **argv) {
                 (void)launcher_core_set_git_hash(lc, git_hash);
             }
         }
+        {
+            const char* toolchain_id = dom_toolchain_id();
+            if (toolchain_id) {
+                std::string why = std::string("toolchain_id=") + toolchain_id;
+                (void)launcher_core_add_reason(lc, why.c_str());
+            }
+        }
     }
 
     dom::init_default_profile_cli(profile_cli);

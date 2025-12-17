@@ -13,6 +13,7 @@ RESPONSIBILITY: Implements failure tracking, recovery suggestion logic, and post
 #include "launcher_audit.h"
 #include "launcher_instance_artifact_ops.h"
 #include "launcher_instance_ops.h"
+#include "launcher_safety.h"
 
 namespace dom {
 namespace launcher_core {
@@ -349,6 +350,11 @@ bool launcher_launch_prepare_attempt(const launcher_services_api_v1* services,
         if (out_error) *out_error = "empty_instance_id";
         return false;
     }
+    if (!launcher_is_safe_id_component(instance_id)) {
+        if (out_error) *out_error = "unsafe_instance_id";
+        audit_reason(audit, std::string("launch_prepare;result=fail;code=unsafe_instance_id;instance_id=") + instance_id);
+        return false;
+    }
     if (state_root.empty()) {
         if (!get_state_root(fs, state_root)) {
             if (out_error) *out_error = "missing_state_root";
@@ -425,6 +431,11 @@ bool launcher_launch_finalize_attempt(const launcher_services_api_v1* services,
     }
     if (plan.instance_id.empty() || plan.state_root.empty()) {
         if (out_error) *out_error = "missing_plan_ids";
+        return false;
+    }
+    if (!launcher_is_safe_id_component(plan.instance_id)) {
+        if (out_error) *out_error = "unsafe_instance_id";
+        audit_reason(audit, std::string("launch_finalize;result=fail;code=unsafe_instance_id;instance_id=") + plan.instance_id);
         return false;
     }
 

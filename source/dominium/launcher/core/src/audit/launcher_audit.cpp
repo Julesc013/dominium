@@ -10,6 +10,7 @@ RESPONSIBILITY: Implements audit model + TLV persistence (selected-and-why, skip
 #include <sstream>
 
 #include "launcher_tlv.h"
+#include "launcher_tlv_migrations.h"
 
 namespace dom {
 namespace launcher_core {
@@ -111,13 +112,13 @@ bool launcher_audit_from_tlv_bytes(const unsigned char* data,
     u32 version = 0u;
 
     out_audit = LauncherAuditLog();
-    if (!tlv_read_schema_version_or_default(data, size, version, LAUNCHER_AUDIT_TLV_VERSION)) {
+    if (!tlv_read_schema_version_or_default(data, size, version, launcher_tlv_schema_min_version(LAUNCHER_TLV_SCHEMA_AUDIT_LOG))) {
         return false;
     }
-    out_audit.schema_version = version;
-    if (version != LAUNCHER_AUDIT_TLV_VERSION) {
-        return launcher_audit_migrate_tlv(version, LAUNCHER_AUDIT_TLV_VERSION, data, size, out_audit);
+    if (!launcher_tlv_schema_accepts_version(LAUNCHER_TLV_SCHEMA_AUDIT_LOG, version)) {
+        return false;
     }
+    out_audit.schema_version = launcher_tlv_schema_current_version(LAUNCHER_TLV_SCHEMA_AUDIT_LOG);
 
     while (r.next(rec)) {
         switch (rec.tag) {

@@ -310,6 +310,7 @@ int print_selection(const dom_profile &profile, FILE *out, FILE *err) {
         std::fprintf(out, "build: id=%s git=%s\n",
                      (bi && bi->build_id) ? bi->build_id : "unknown",
                      (bi && bi->git_hash) ? bi->git_hash : "unknown");
+        std::fprintf(out, "toolchain: %s\n", dom_toolchain_id() ? dom_toolchain_id() : "unknown");
     }
 
     (void)dom_caps_register_builtin_backends();

@@ -10,6 +10,7 @@ RESPONSIBILITY: Implements pack manifest TLV encode/decode + validation (determi
 #include <cstring>
 
 #include "launcher_tlv.h"
+#include "launcher_tlv_migrations.h"
 
 namespace dom {
 namespace launcher_core {
@@ -321,7 +322,13 @@ bool launcher_pack_manifest_from_tlv_bytes(const unsigned char* data,
     if (!data || size == 0u) {
         return false;
     }
-    if (!tlv_read_schema_version_or_default(data, size, version, 1u)) {
+    if (!tlv_read_schema_version_or_default(data,
+                                            size,
+                                            version,
+                                            launcher_tlv_schema_min_version(LAUNCHER_TLV_SCHEMA_PACK_MANIFEST))) {
+        return false;
+    }
+    if (!launcher_tlv_schema_accepts_version(LAUNCHER_TLV_SCHEMA_PACK_MANIFEST, version)) {
         return false;
     }
     if (version != LAUNCHER_PACK_MANIFEST_TLV_VERSION) {
