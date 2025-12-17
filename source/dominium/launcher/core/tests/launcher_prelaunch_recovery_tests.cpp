@@ -674,6 +674,181 @@ static void test_rollback_to_known_good_after_successful_launch() {
     cleanup_instance_best_effort(state_root, instance_id);
 }
 
+static void test_forced_failure_safe_mode_rollback_success_offline() {
+    const launcher_services_api_v1* services = launcher_services_null_v1();
+    std::string state_root = make_temp_root(services, "state_prelaunch_forced_failure");
+    const std::string instance_id = "inst_forced_failure";
+    dom::launcher_core::LauncherAuditLog a;
+    dom::launcher_core::LauncherInstanceManifest created;
+    dom::launcher_core::LauncherInstanceManifest desired = dom::launcher_core::launcher_instance_manifest_make_empty(instance_id);
+    dom::launcher_core::LauncherInstanceManifest updated;
+
+    std::vector<unsigned char> payload_mod1;
+    std::vector<unsigned char> payload_mod2;
+    std::vector<unsigned char> hash_mod1;
+    std::vector<unsigned char> hash_mod2;
+    std::string dir_mod1, meta_mod1, pay_mod1;
+    std::string dir_mod2, meta_mod2, pay_mod2;
+
+    assert(dom::launcher_core::launcher_instance_create_instance(services, desired, state_root, created, &a));
+
+    payload_mod1 = make_pack_manifest_payload("mod1", (u32)dom::launcher_core::LAUNCHER_PACK_TYPE_MOD, "1");
+    payload_mod2 = make_pack_manifest_payload("mod2", (u32)dom::launcher_core::LAUNCHER_PACK_TYPE_MOD, "1");
+
+    make_store_artifact(state_root, (u32)dom::launcher_core::LAUNCHER_CONTENT_MOD, payload_mod1, hash_mod1, dir_mod1, meta_mod1, pay_mod1);
+    make_store_artifact(state_root, (u32)dom::launcher_core::LAUNCHER_CONTENT_MOD, payload_mod2, hash_mod2, dir_mod2, meta_mod2, pay_mod2);
+
+    {
+        dom::launcher_core::LauncherContentEntry e;
+        e.type = (u32)dom::launcher_core::LAUNCHER_CONTENT_MOD;
+        e.id = "mod1";
+        e.version = "1";
+        e.hash_bytes = hash_mod1;
+        e.enabled = 1u;
+        e.update_policy = (u32)dom::launcher_core::LAUNCHER_UPDATE_AUTO;
+        assert(dom::launcher_core::launcher_instance_install_artifact_to_instance(services, instance_id, e, state_root, updated, &a));
+    }
+
+    /* First successful offline launch to establish known-good. */
+    {
+        dom::launcher_core::LauncherLaunchOverrides req;
+        dom::launcher_core::LauncherPrelaunchPlan plan;
+        dom::launcher_core::LauncherRecoverySuggestion rec;
+        dom::launcher_core::LauncherAuditLog la;
+        std::string err;
+        req.has_allow_network = 1u;
+        req.allow_network = 0u;
+        assert(dom::launcher_core::launcher_launch_prepare_attempt(services, (const dom::launcher_core::LauncherProfile*)0,
+                                                                   instance_id, state_root, req, plan, rec, &la, &err));
+        assert(plan.validation.ok == 1u);
+        assert(plan.resolved.safe_mode == 0u);
+        assert(dom::launcher_core::launcher_launch_finalize_attempt(services,
+                                                                    plan,
+                                                                    (u32)dom::launcher_core::LAUNCHER_LAUNCH_OUTCOME_SUCCESS,
+                                                                    0,
+                                                                    std::string(),
+                                                                    0u,
+                                                                    &la,
+                                                                    &err));
+        assert(file_exists(path_join(dom::launcher_core::launcher_instance_paths_make(state_root, instance_id).instance_root, "known_good.tlv")));
+    }
+
+    /* Diverge instance by installing another mod (represents "bad" update). */
+    {
+        dom::launcher_core::LauncherContentEntry e;
+        e.type = (u32)dom::launcher_core::LAUNCHER_CONTENT_MOD;
+        e.id = "mod2";
+        e.version = "1";
+        e.hash_bytes = hash_mod2;
+        e.enabled = 1u;
+        e.update_policy = (u32)dom::launcher_core::LAUNCHER_UPDATE_AUTO;
+        assert(dom::launcher_core::launcher_instance_install_artifact_to_instance(services, instance_id, e, state_root, updated, &a));
+    }
+
+    /* Forced failures: simulate repeated crashes to trigger auto safe-mode entry. */
+    {
+        unsigned i;
+        for (i = 0u; i < 3u; ++i) {
+            dom::launcher_core::LauncherLaunchOverrides req;
+            dom::launcher_core::LauncherPrelaunchPlan plan;
+            dom::launcher_core::LauncherRecoverySuggestion rec;
+            dom::launcher_core::LauncherAuditLog la;
+            std::string err;
+            req.has_allow_network = 1u;
+            req.allow_network = 0u;
+            assert(dom::launcher_core::launcher_launch_prepare_attempt(services, (const dom::launcher_core::LauncherProfile*)0,
+                                                                       instance_id, state_root, req, plan, rec, &la, &err));
+            assert(plan.validation.ok == 1u);
+            assert(plan.resolved.safe_mode == 0u);
+            assert(dom::launcher_core::launcher_launch_finalize_attempt(services,
+                                                                        plan,
+                                                                        (u32)dom::launcher_core::LAUNCHER_LAUNCH_OUTCOME_CRASH,
+                                                                        1,
+                                                                        std::string("forced_crash"),
+                                                                        0u,
+                                                                        &la,
+                                                                        &err));
+        }
+    }
+
+    /* Next attempt should auto-enter safe mode. */
+    {
+        dom::launcher_core::LauncherLaunchOverrides req;
+        dom::launcher_core::LauncherPrelaunchPlan plan;
+        dom::launcher_core::LauncherRecoverySuggestion rec;
+        dom::launcher_core::LauncherAuditLog la;
+        std::string err;
+        req.has_allow_network = 1u;
+        req.allow_network = 0u;
+        assert(dom::launcher_core::launcher_launch_prepare_attempt(services, (const dom::launcher_core::LauncherProfile*)0,
+                                                                   instance_id, state_root, req, plan, rec, &la, &err));
+        assert(plan.validation.ok == 1u);
+        assert(rec.auto_entered_safe_mode == 1u);
+        assert(plan.resolved.safe_mode == 1u);
+    }
+
+    /* Rollback to known-good and ensure a final successful launch. */
+    {
+        dom::launcher_core::LauncherInstanceManifest restored;
+        dom::launcher_core::LauncherAuditLog ra;
+        assert(dom::launcher_core::launcher_instance_rollback_to_known_good(services, instance_id, state_root,
+                                                                            "acceptance_test", 0ull, restored, &ra));
+        assert(restored.known_good == 1u);
+        assert(manifest_has_entry(restored, (u32)dom::launcher_core::LAUNCHER_CONTENT_MOD, "mod1", (u32*)0));
+        assert(!manifest_has_entry(restored, (u32)dom::launcher_core::LAUNCHER_CONTENT_MOD, "mod2", (u32*)0));
+    }
+
+    /* After rollback, history still reflects failures; first success will occur in auto safe mode. */
+    {
+        dom::launcher_core::LauncherLaunchOverrides req;
+        dom::launcher_core::LauncherPrelaunchPlan plan;
+        dom::launcher_core::LauncherRecoverySuggestion rec;
+        dom::launcher_core::LauncherAuditLog la;
+        std::string err;
+        req.has_allow_network = 1u;
+        req.allow_network = 0u;
+        assert(dom::launcher_core::launcher_launch_prepare_attempt(services, (const dom::launcher_core::LauncherProfile*)0,
+                                                                   instance_id, state_root, req, plan, rec, &la, &err));
+        assert(plan.validation.ok == 1u);
+        assert(plan.resolved.safe_mode == 1u);
+        assert(dom::launcher_core::launcher_launch_finalize_attempt(services,
+                                                                    plan,
+                                                                    (u32)dom::launcher_core::LAUNCHER_LAUNCH_OUTCOME_SUCCESS,
+                                                                    0,
+                                                                    std::string(),
+                                                                    0u,
+                                                                    &la,
+                                                                    &err));
+    }
+
+    /* Next attempt should exit auto safe mode after a success. */
+    {
+        dom::launcher_core::LauncherLaunchOverrides req;
+        dom::launcher_core::LauncherPrelaunchPlan plan;
+        dom::launcher_core::LauncherRecoverySuggestion rec;
+        dom::launcher_core::LauncherAuditLog la;
+        std::string err;
+        req.has_allow_network = 1u;
+        req.allow_network = 0u;
+        assert(dom::launcher_core::launcher_launch_prepare_attempt(services, (const dom::launcher_core::LauncherProfile*)0,
+                                                                   instance_id, state_root, req, plan, rec, &la, &err));
+        assert(plan.validation.ok == 1u);
+        assert(plan.resolved.safe_mode == 0u);
+        assert(dom::launcher_core::launcher_launch_finalize_attempt(services,
+                                                                    plan,
+                                                                    (u32)dom::launcher_core::LAUNCHER_LAUNCH_OUTCOME_SUCCESS,
+                                                                    0,
+                                                                    std::string(),
+                                                                    0u,
+                                                                    &la,
+                                                                    &err));
+    }
+
+    cleanup_artifact_best_effort(dir_mod1, meta_mod1, pay_mod1);
+    cleanup_artifact_best_effort(dir_mod2, meta_mod2, pay_mod2);
+    cleanup_instance_best_effort(state_root, instance_id);
+}
+
 } /* namespace */
 
 int main() {
@@ -682,6 +857,7 @@ int main() {
     test_safe_mode_known_good_selection_and_overlay();
     test_auto_recovery_suggestion_logic();
     test_rollback_to_known_good_after_successful_launch();
+    test_forced_failure_safe_mode_rollback_success_offline();
     std::printf("launcher_prelaunch_recovery_tests: OK\n");
     return 0;
 }
