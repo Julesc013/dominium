@@ -319,19 +319,24 @@ static void dui_layout_children_column(dui_schema_node* parent, i32 x, i32 y, i3
     u32 flex_count;
     i32 fixed_total;
     i32 avail;
+    i32 remaining;
     dui_schema_node* child;
+    dui_schema_node* last_layout;
     i32 cursor_y;
 
     child_count = 0u;
     flex_count = 0u;
     fixed_total = 0;
+    remaining = 0;
+    last_layout = (dui_schema_node*)0;
 
     child = parent ? parent->first_child : (dui_schema_node*)0;
     while (child) {
+        if (dui_is_layout_kind(child->kind)) {
+            last_layout = child;
+        }
         if (child->flags & DUI_NODE_FLAG_FLEX) {
             flex_count += 1u;
-        } else if (dui_is_layout_kind(child->kind)) {
-            fixed_total += 0;
         } else {
             fixed_total += dui_pref_h_for_kind(child->kind);
         }
@@ -343,23 +348,25 @@ static void dui_layout_children_column(dui_schema_node* parent, i32 x, i32 y, i3
     if (avail < 0) {
         avail = 0;
     }
+    remaining = avail - fixed_total;
+    if (remaining < 0) {
+        remaining = 0;
+    }
 
     cursor_y = y + margin;
     child = parent ? parent->first_child : (dui_schema_node*)0;
     while (child) {
         i32 ch = 0;
         if (child->flags & DUI_NODE_FLAG_FLEX) {
-            ch = (flex_count > 0u) ? (avail - fixed_total) / (i32)flex_count : 0;
+            ch = (flex_count > 0u) ? remaining / (i32)flex_count : 0;
             if (ch < dui_pref_h_for_kind(child->kind)) {
                 ch = dui_pref_h_for_kind(child->kind);
             }
-        } else if (dui_is_layout_kind(child->kind)) {
-            ch = (avail - fixed_total);
-            if (ch < 0) {
-                ch = 0;
-            }
         } else {
             ch = dui_pref_h_for_kind(child->kind);
+            if (flex_count == 0u && last_layout && child == last_layout && dui_is_layout_kind(child->kind)) {
+                ch += remaining;
+            }
         }
 
         child->x = x + margin;
