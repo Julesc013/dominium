@@ -5,7 +5,9 @@ add_library(dsu_core STATIC
     src/dsu_config.c
     src/dsu_ctx.c
     src/dsu_execute.c
+    src/fs/dsu_fs.c
     src/fs/dsu_fs_stdio.c
+    src/fs/dsu_platform_iface.c
     src/log/dsu_log.c
     src/manifest/dsu_manifest.c
     src/plan/dsu_plan.c
@@ -17,6 +19,7 @@ add_library(dsu_core STATIC
     src/util/dsu_util_hash.c
     src/util/dsu_util_le.c
     src/util/dsu_util_mem.c
+    src/util/dsu_util_sha256.c
     src/util/dsu_util_sort.c
     src/util/dsu_util_str.c
     src/util/dsu_util_tlv.c
