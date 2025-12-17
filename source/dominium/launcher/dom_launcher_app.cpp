@@ -131,6 +131,8 @@ struct DomLauncherUiState {
 
         LaunchRunResult launch_result;
 
+        std::map<std::string, StagedPackChange> packs_changes;
+
         launcher_core::LauncherInstanceTx tx;
         launcher_core::LauncherInstanceManifest after_manifest;
 
@@ -148,6 +150,7 @@ struct DomLauncherUiState {
               flag_u32(0u),
               safe_mode(0u),
               launch_result(),
+              packs_changes(),
               tx(),
               after_manifest(),
               error(),
@@ -2048,6 +2051,28 @@ void DomLauncherApp::process_dui_events() {
                         m_ui->status_progress = 0u;
                     }
                 }
+            } else if (act == (u32)ACT_PACKS_APPLY) {
+                if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
+                    m_ui->status_text = std::string("Busy: ") + (m_ui->task.op.empty() ? std::string("operation") : m_ui->task.op);
+                } else {
+                    const InstanceInfo* inst = selected_instance();
+                    if (!inst) {
+                        m_ui->status_text = "Refused: no instance selected.";
+                    } else if (m_ui->packs_staged.empty()) {
+                        m_ui->status_text = "Refused: no staged changes.";
+                    } else {
+                        DomLauncherUiState::UiTask t;
+                        t.kind = (u32)DomLauncherUiState::TASK_PACKS_APPLY;
+                        t.step = 0u;
+                        t.total_steps = 5u;
+                        t.op = "Apply Packs";
+                        t.instance_id = inst->id;
+                        t.packs_changes = m_ui->packs_staged;
+                        m_ui->task = t;
+                        m_ui->status_text = "Packs apply started.";
+                        m_ui->status_progress = 0u;
+                    }
+                }
             } else if (act == (u32)ACT_DIALOG_OK) {
                 const u32 pending = m_ui->confirm_action_id;
                 const std::string pending_inst = m_ui->confirm_instance_id;
@@ -2738,6 +2763,183 @@ void DomLauncherApp::process_ui_task() {
             return;
         }
         if (t.step == 1u) {
+            ui_refresh_instance_cache(*m_ui, m_paths.root, t.instance_id);
+            m_ui->status_progress = 1000u;
+            t = DomLauncherUiState::UiTask();
+            return;
+        }
+    }
+
+    if (t.kind == (u32)DomLauncherUiState::TASK_PACKS_APPLY) {
+        if (t.step == 0u) {
+            launcher_core::LauncherAuditLog audit;
+            std::vector<launcher_core::LauncherResolvedPack> resolved;
+            std::string resolve_err;
+            std::vector<std::string> errs;
+            bool ok;
+
+            m_ui->status_text = "Packs apply: prepare...";
+            m_ui->status_progress = 100u;
+
+            ok = launcher_core::launcher_instance_tx_prepare(services,
+                                                             t.instance_id,
+                                                             m_paths.root,
+                                                             (u32)launcher_core::LAUNCHER_INSTANCE_TX_OP_UPDATE,
+                                                             t.tx,
+                                                             &audit);
+            if (!ok) {
+                m_ui->status_text = "Packs apply failed: prepare.";
+                m_ui->status_progress = 1000u;
+                m_ui->dialog_visible = 1u;
+                m_ui->dialog_title = "Packs apply failed";
+                m_ui->dialog_text = "Prepare failed.";
+                m_ui->dialog_lines = audit.reasons;
+                t = DomLauncherUiState::UiTask();
+                return;
+            }
+
+            t.tx.after_manifest = t.tx.before_manifest;
+
+            {
+                std::map<std::string, DomLauncherUiState::StagedPackChange>::const_iterator it;
+                for (it = t.packs_changes.begin(); it != t.packs_changes.end(); ++it) {
+                    const std::string& key = it->first;
+                    const DomLauncherUiState::StagedPackChange& sc = it->second;
+                    size_t i;
+                    bool found = false;
+                    for (i = 0u; i < t.tx.after_manifest.content_entries.size(); ++i) {
+                        launcher_core::LauncherContentEntry& e = t.tx.after_manifest.content_entries[i];
+                        if (!is_pack_like(e.type)) {
+                            continue;
+                        }
+                        if (pack_key(e.type, e.id) != key) {
+                            continue;
+                        }
+                        found = true;
+                        if (sc.has_enabled) {
+                            e.enabled = sc.enabled ? 1u : 0u;
+                        }
+                        if (sc.has_update_policy) {
+                            e.update_policy = sc.update_policy;
+                        }
+                        break;
+                    }
+                    if (!found) {
+                        errs.push_back(std::string("staged_entry_missing;key=") + key);
+                    }
+                }
+            }
+
+            if (!errs.empty()) {
+                (void)launcher_core::launcher_instance_tx_rollback(services, t.tx, &audit);
+                m_ui->status_text = "Refused: staged pack entry missing.";
+                m_ui->status_progress = 1000u;
+                m_ui->dialog_visible = 1u;
+                m_ui->dialog_title = "Refused";
+                m_ui->dialog_text = "Staged entry does not exist in the instance.";
+                m_ui->dialog_lines = errs;
+                t = DomLauncherUiState::UiTask();
+                return;
+            }
+
+            if (!launcher_core::launcher_pack_resolve_enabled(services, t.tx.after_manifest, m_paths.root, resolved, &resolve_err)) {
+                (void)launcher_core::launcher_instance_tx_rollback(services, t.tx, &audit);
+                m_ui->status_text = "Refused: pack resolution failed.";
+                m_ui->status_progress = 1000u;
+                m_ui->dialog_visible = 1u;
+                m_ui->dialog_title = "Pack resolution failed";
+                m_ui->dialog_text = "Dependency/conflict rules refused the staged change.";
+                m_ui->dialog_lines.clear();
+                m_ui->dialog_lines.push_back(resolve_err);
+                t = DomLauncherUiState::UiTask();
+                return;
+            }
+
+            t.lines.clear();
+            t.lines.push_back(std::string("resolved=") + launcher_core::launcher_pack_resolved_order_summary(resolved));
+
+            m_ui->status_text = "Packs apply: stage...";
+            m_ui->status_progress = 250u;
+            t.step = 1u;
+            return;
+        }
+        if (t.step == 1u) {
+            launcher_core::LauncherAuditLog audit;
+            bool ok;
+
+            m_ui->status_text = "Packs apply: stage...";
+            m_ui->status_progress = 350u;
+
+            ok = launcher_core::launcher_instance_tx_stage(services, t.tx, &audit);
+            if (!ok) {
+                (void)launcher_core::launcher_instance_tx_rollback(services, t.tx, &audit);
+                m_ui->status_text = "Packs apply failed: stage.";
+                m_ui->status_progress = 1000u;
+                m_ui->dialog_visible = 1u;
+                m_ui->dialog_title = "Packs apply failed";
+                m_ui->dialog_text = "Stage failed.";
+                m_ui->dialog_lines = audit.reasons;
+                t = DomLauncherUiState::UiTask();
+                return;
+            }
+
+            m_ui->status_text = "Packs apply: verify...";
+            m_ui->status_progress = 500u;
+            t.step = 2u;
+            return;
+        }
+        if (t.step == 2u) {
+            launcher_core::LauncherAuditLog audit;
+            bool ok;
+
+            m_ui->status_text = "Packs apply: verify...";
+            m_ui->status_progress = 600u;
+
+            ok = launcher_core::launcher_instance_tx_verify(services, t.tx, &audit);
+            if (!ok) {
+                (void)launcher_core::launcher_instance_tx_rollback(services, t.tx, &audit);
+                m_ui->status_text = "Packs apply failed: verify.";
+                m_ui->status_progress = 1000u;
+                m_ui->dialog_visible = 1u;
+                m_ui->dialog_title = "Packs apply failed";
+                m_ui->dialog_text = "Verify failed.";
+                m_ui->dialog_lines = audit.reasons;
+                t = DomLauncherUiState::UiTask();
+                return;
+            }
+
+            m_ui->status_text = "Packs apply: commit...";
+            m_ui->status_progress = 750u;
+            t.step = 3u;
+            return;
+        }
+        if (t.step == 3u) {
+            launcher_core::LauncherAuditLog audit;
+            bool ok;
+
+            m_ui->status_text = "Packs apply: commit...";
+            m_ui->status_progress = 850u;
+
+            ok = launcher_core::launcher_instance_tx_commit(services, t.tx, &audit);
+            if (!ok) {
+                (void)launcher_core::launcher_instance_tx_rollback(services, t.tx, &audit);
+                m_ui->status_text = "Packs apply failed: commit.";
+                m_ui->status_progress = 1000u;
+                m_ui->dialog_visible = 1u;
+                m_ui->dialog_title = "Packs apply failed";
+                m_ui->dialog_text = "Commit failed.";
+                m_ui->dialog_lines = audit.reasons;
+                t = DomLauncherUiState::UiTask();
+                return;
+            }
+
+            m_ui->status_text = "Packs applied.";
+            m_ui->status_progress = 950u;
+            t.step = 4u;
+            return;
+        }
+        if (t.step == 4u) {
+            m_ui->packs_staged.clear();
             ui_refresh_instance_cache(*m_ui, m_paths.root, t.instance_id);
             m_ui->status_progress = 1000u;
             t = DomLauncherUiState::UiTask();
