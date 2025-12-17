@@ -4,6 +4,7 @@ MODULE: Dominium Setup
 PURPOSE: Minimal setup control-plane CLI for Plan S-1 (plan + dry-run).
 */
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "dsu/dsu_callbacks.h"
@@ -32,6 +33,13 @@ static const char *dsu_cli_status_name(dsu_status_t st) {
         case DSU_STATUS_UNSUPPORTED_VERSION: return "unsupported_version";
         case DSU_STATUS_INTEGRITY_ERROR: return "integrity_error";
         case DSU_STATUS_INTERNAL_ERROR: return "internal_error";
+        case DSU_STATUS_MISSING_COMPONENT: return "missing_component";
+        case DSU_STATUS_UNSATISFIED_DEPENDENCY: return "unsatisfied_dependency";
+        case DSU_STATUS_VERSION_CONFLICT: return "version_conflict";
+        case DSU_STATUS_EXPLICIT_CONFLICT: return "explicit_conflict";
+        case DSU_STATUS_PLATFORM_INCOMPATIBLE: return "platform_incompatible";
+        case DSU_STATUS_ILLEGAL_DOWNGRADE: return "illegal_downgrade";
+        case DSU_STATUS_INVALID_REQUEST: return "invalid_request";
         default: return "unknown";
     }
 }
@@ -45,6 +53,13 @@ static int dsu_cli_exit_code(dsu_status_t st) {
         case DSU_STATUS_UNSUPPORTED_VERSION: return 5;
         case DSU_STATUS_INTEGRITY_ERROR: return 6;
         case DSU_STATUS_INTERNAL_ERROR: return 7;
+        case DSU_STATUS_MISSING_COMPONENT: return 8;
+        case DSU_STATUS_UNSATISFIED_DEPENDENCY: return 9;
+        case DSU_STATUS_VERSION_CONFLICT: return 10;
+        case DSU_STATUS_EXPLICIT_CONFLICT: return 11;
+        case DSU_STATUS_PLATFORM_INCOMPATIBLE: return 12;
+        case DSU_STATUS_ILLEGAL_DOWNGRADE: return 13;
+        case DSU_STATUS_INVALID_REQUEST: return 2;
         default: return 1;
     }
 }
@@ -100,9 +115,10 @@ static void dsu_cli_print_usage(FILE *out) {
             "  %s version [--json]\n"
             "  %s manifest-validate --in <file> [--deterministic] [--json]\n"
             "  %s manifest-dump --in <file> --out <json> [--deterministic] [--json]\n"
+            "  %s resolve --manifest <file> [--installed-state <file>] [--install|--upgrade|--repair|--uninstall] [--components a,b,c] [--scope portable|user|system] [--platform <triple>] [--exclude a,b,c] [--allow-prerelease] --json\n"
             "  %s plan --manifest <path> --out <planfile> --log <logfile> [--deterministic] [--json]\n"
             "  %s dry-run --plan <planfile> --log <logfile> [--deterministic] [--json]\n",
-            DSU_CLI_NAME, DSU_CLI_NAME, DSU_CLI_NAME, DSU_CLI_NAME, DSU_CLI_NAME);
+            DSU_CLI_NAME, DSU_CLI_NAME, DSU_CLI_NAME, DSU_CLI_NAME, DSU_CLI_NAME, DSU_CLI_NAME);
 }
 
 static dsu_status_t dsu_cli_ctx_create(const dsu_cli_opts_t *opts, dsu_ctx_t **out_ctx) {
@@ -145,7 +161,7 @@ static int dsu_cli_cmd_plan(const char *manifest_path,
                             const dsu_cli_opts_t *opts) {
     dsu_ctx_t *ctx = NULL;
     dsu_manifest_t *manifest = NULL;
-    dsu_resolved_t *resolved = NULL;
+    dsu_resolve_result_t *resolved = NULL;
     dsu_plan_t *plan = NULL;
     dsu_status_t st;
 
@@ -163,11 +179,16 @@ static int dsu_cli_cmd_plan(const char *manifest_path,
     if (st != DSU_STATUS_SUCCESS) {
         goto done;
     }
-    st = dsu_resolve(ctx, manifest, &resolved);
-    if (st != DSU_STATUS_SUCCESS) {
-        goto done;
+    {
+        dsu_resolve_request_t req;
+        dsu_resolve_request_init(&req);
+        req.operation = DSU_RESOLVE_OPERATION_INSTALL;
+        st = dsu_resolve_components(ctx, manifest, NULL, &req, &resolved);
+        if (st != DSU_STATUS_SUCCESS) {
+            goto done;
+        }
     }
-    st = dsu_plan_build(ctx, manifest, resolved, &plan);
+    st = dsu_plan_build(ctx, resolved, &plan);
     if (st != DSU_STATUS_SUCCESS) {
         goto done;
     }
@@ -214,7 +235,7 @@ static int dsu_cli_cmd_plan(const char *manifest_path,
 
 done:
     if (plan) dsu_plan_destroy(ctx, plan);
-    if (resolved) dsu_resolved_destroy(ctx, resolved);
+    if (resolved) dsu_resolve_result_destroy(ctx, resolved);
     if (manifest) dsu_manifest_destroy(ctx, manifest);
     if (ctx) dsu_ctx_destroy(ctx);
 
@@ -230,6 +251,300 @@ done:
             fprintf(stderr, "error: %s\n", dsu_cli_status_name(st));
         }
     }
+    return dsu_cli_exit_code(st);
+}
+
+static void dsu_cli_json_put_u64_hex(FILE *out, dsu_u64 v) {
+    unsigned long hi = (unsigned long)((v >> 32) & 0xFFFFFFFFu);
+    unsigned long lo = (unsigned long)(v & 0xFFFFFFFFu);
+    fputc('"', out);
+    fprintf(out, "0x%08lx%08lx", hi, lo);
+    fputc('"', out);
+}
+
+static const char *dsu_cli_scope_name(dsu_manifest_install_scope_t scope) {
+    switch (scope) {
+        case DSU_MANIFEST_INSTALL_SCOPE_PORTABLE: return "portable";
+        case DSU_MANIFEST_INSTALL_SCOPE_USER: return "user";
+        case DSU_MANIFEST_INSTALL_SCOPE_SYSTEM: return "system";
+        default: return "unknown";
+    }
+}
+
+static int dsu_cli_parse_scope(const char *s, dsu_manifest_install_scope_t *out_scope) {
+    if (!out_scope) return 0;
+    *out_scope = DSU_MANIFEST_INSTALL_SCOPE_PORTABLE;
+    if (!s) return 0;
+    if (dsu_cli_streq(s, "portable")) {
+        *out_scope = DSU_MANIFEST_INSTALL_SCOPE_PORTABLE;
+        return 1;
+    }
+    if (dsu_cli_streq(s, "user")) {
+        *out_scope = DSU_MANIFEST_INSTALL_SCOPE_USER;
+        return 1;
+    }
+    if (dsu_cli_streq(s, "system")) {
+        *out_scope = DSU_MANIFEST_INSTALL_SCOPE_SYSTEM;
+        return 1;
+    }
+    return 0;
+}
+
+static const char *dsu_cli_operation_name(dsu_resolve_operation_t op) {
+    switch (op) {
+        case DSU_RESOLVE_OPERATION_INSTALL: return "install";
+        case DSU_RESOLVE_OPERATION_UPGRADE: return "upgrade";
+        case DSU_RESOLVE_OPERATION_REPAIR: return "repair";
+        case DSU_RESOLVE_OPERATION_UNINSTALL: return "uninstall";
+        default: return "unknown";
+    }
+}
+
+static const char *dsu_cli_source_name(dsu_resolve_source_t s) {
+    switch (s) {
+        case DSU_RESOLVE_SOURCE_DEFAULT: return "default";
+        case DSU_RESOLVE_SOURCE_USER: return "user";
+        case DSU_RESOLVE_SOURCE_DEPENDENCY: return "dependency";
+        case DSU_RESOLVE_SOURCE_INSTALLED: return "installed";
+        default: return "unknown";
+    }
+}
+
+static const char *dsu_cli_action_name(dsu_resolve_component_action_t a) {
+    switch (a) {
+        case DSU_RESOLVE_COMPONENT_ACTION_NONE: return "none";
+        case DSU_RESOLVE_COMPONENT_ACTION_INSTALL: return "install";
+        case DSU_RESOLVE_COMPONENT_ACTION_UPGRADE: return "upgrade";
+        case DSU_RESOLVE_COMPONENT_ACTION_REPAIR: return "repair";
+        case DSU_RESOLVE_COMPONENT_ACTION_UNINSTALL: return "uninstall";
+        default: return "unknown";
+    }
+}
+
+typedef struct dsu_cli_csv_list_t {
+    char *buf;
+    const char **items;
+    dsu_u32 count;
+} dsu_cli_csv_list_t;
+
+static void dsu_cli_csv_list_free(dsu_cli_csv_list_t *l) {
+    if (!l) return;
+    free(l->buf);
+    free(l->items);
+    l->buf = NULL;
+    l->items = NULL;
+    l->count = 0u;
+}
+
+static int dsu_cli_is_space(int c) {
+    return (c == ' ' || c == '\t' || c == '\r' || c == '\n');
+}
+
+static int dsu_cli_csv_list_parse(const char *s, dsu_cli_csv_list_t *out) {
+    unsigned long n;
+    unsigned long i;
+    unsigned long cap;
+    char *buf;
+    const char **items;
+    unsigned long count;
+    char *p;
+
+    if (!out) return 0;
+    out->buf = NULL;
+    out->items = NULL;
+    out->count = 0u;
+    if (!s || s[0] == '\0') return 1;
+
+    n = (unsigned long)strlen(s);
+    buf = (char *)malloc((size_t)n + 1u);
+    if (!buf) return 0;
+    memcpy(buf, s, (size_t)n + 1u);
+
+    count = 1ul;
+    for (i = 0ul; i < n; ++i) {
+        if (buf[i] == ',') {
+            ++count;
+        }
+    }
+
+    items = (const char **)malloc((size_t)count * sizeof(*items));
+    if (!items) {
+        free(buf);
+        return 0;
+    }
+    cap = count;
+    count = 0ul;
+
+    p = buf;
+    while (*p) {
+        char *start = p;
+        char *end;
+        while (*p && *p != ',') {
+            ++p;
+        }
+        if (*p == ',') {
+            *p++ = '\0';
+        }
+
+        while (*start && dsu_cli_is_space((unsigned char)*start)) {
+            ++start;
+        }
+        end = start + strlen(start);
+        while (end > start && dsu_cli_is_space((unsigned char)end[-1])) {
+            end[-1] = '\0';
+            --end;
+        }
+        if (start[0] == '\0') {
+            free(buf);
+            free(items);
+            return 0;
+        }
+        if (count < cap) {
+            items[count++] = start;
+        }
+    }
+
+    out->buf = buf;
+    out->items = items;
+    out->count = (dsu_u32)count;
+    return 1;
+}
+
+static int dsu_cli_cmd_resolve(const char *manifest_path,
+                               const char *installed_state_path,
+                               dsu_resolve_operation_t op,
+                               const dsu_cli_csv_list_t *components,
+                               const dsu_cli_csv_list_t *exclude,
+                               dsu_manifest_install_scope_t scope,
+                               const char *platform,
+                               int allow_prerelease,
+                               const dsu_cli_opts_t *opts) {
+    dsu_ctx_t *ctx = NULL;
+    dsu_manifest_t *manifest = NULL;
+    dsu_state_t *installed = NULL;
+    dsu_resolve_result_t *result = NULL;
+    dsu_resolve_request_t req;
+    dsu_status_t st;
+    dsu_u32 i;
+
+    (void)opts;
+
+    st = dsu_cli_ctx_create(opts, &ctx);
+    if (st != DSU_STATUS_SUCCESS) {
+        goto done;
+    }
+    st = dsu_ctx_reset_audit_log(ctx);
+    if (st != DSU_STATUS_SUCCESS) {
+        goto done;
+    }
+
+    st = dsu_manifest_load_file(ctx, manifest_path, &manifest);
+    if (st != DSU_STATUS_SUCCESS) {
+        goto done;
+    }
+    if (installed_state_path) {
+        st = dsu_state_load_file(ctx, installed_state_path, &installed);
+        if (st != DSU_STATUS_SUCCESS) {
+            goto done;
+        }
+    }
+
+    dsu_resolve_request_init(&req);
+    req.operation = op;
+    req.scope = scope;
+    req.allow_prerelease = allow_prerelease ? DSU_TRUE : DSU_FALSE;
+    req.target_platform = platform;
+    req.requested_components = (components && components->count) ? components->items : NULL;
+    req.requested_component_count = (components ? components->count : 0u);
+    req.excluded_components = (exclude && exclude->count) ? exclude->items : NULL;
+    req.excluded_component_count = (exclude ? exclude->count : 0u);
+    req.pins = NULL;
+    req.pin_count = 0u;
+
+    st = dsu_resolve_components(ctx, manifest, installed, &req, &result);
+
+done:
+    /* JSON output is required for this command. */
+    fputc('{', stdout);
+    fputs("\"command\":", stdout); dsu_cli_json_put_escaped(stdout, "resolve"); fputc(',', stdout);
+    fputs("\"status\":", stdout); dsu_cli_json_put_escaped(stdout, (st == DSU_STATUS_SUCCESS ? "ok" : "error")); fputc(',', stdout);
+    if (result) {
+        fputs("\"operation\":", stdout); dsu_cli_json_put_escaped(stdout, dsu_cli_operation_name(dsu_resolve_result_operation(result))); fputc(',', stdout);
+        fputs("\"scope\":", stdout); dsu_cli_json_put_escaped(stdout, dsu_cli_scope_name(dsu_resolve_result_scope(result))); fputc(',', stdout);
+        fputs("\"platform\":", stdout); dsu_cli_json_put_escaped(stdout, dsu_resolve_result_platform(result)); fputc(',', stdout);
+    } else {
+        fputs("\"operation\":", stdout); dsu_cli_json_put_escaped(stdout, dsu_cli_operation_name(op)); fputc(',', stdout);
+        fputs("\"scope\":", stdout); dsu_cli_json_put_escaped(stdout, dsu_cli_scope_name(scope)); fputc(',', stdout);
+        fputs("\"platform\":", stdout); dsu_cli_json_put_escaped(stdout, platform ? platform : ""); fputc(',', stdout);
+    }
+    fputs("\"allow_prerelease\":", stdout); fputs((allow_prerelease ? "true" : "false"), stdout); fputc(',', stdout);
+
+    if (result) {
+        fputs("\"product_id\":", stdout); dsu_cli_json_put_escaped(stdout, dsu_resolve_result_product_id(result)); fputc(',', stdout);
+        fputs("\"product_version\":", stdout); dsu_cli_json_put_escaped(stdout, dsu_resolve_result_product_version(result)); fputc(',', stdout);
+        fputs("\"install_root\":", stdout); dsu_cli_json_put_escaped(stdout, dsu_resolve_result_install_root(result)); fputc(',', stdout);
+        fputs("\"manifest_digest64\":", stdout); dsu_cli_json_put_u64_hex(stdout, dsu_resolve_result_manifest_digest64(result)); fputc(',', stdout);
+        fputs("\"resolved_digest64\":", stdout); dsu_cli_json_put_u64_hex(stdout, dsu_resolve_result_resolved_digest64(result)); fputc(',', stdout);
+    } else {
+        fputs("\"product_id\":", stdout); dsu_cli_json_put_escaped(stdout, ""); fputc(',', stdout);
+        fputs("\"product_version\":", stdout); dsu_cli_json_put_escaped(stdout, ""); fputc(',', stdout);
+        fputs("\"install_root\":", stdout); dsu_cli_json_put_escaped(stdout, ""); fputc(',', stdout);
+        fputs("\"manifest_digest64\":", stdout); dsu_cli_json_put_escaped(stdout, "0x0000000000000000"); fputc(',', stdout);
+        fputs("\"resolved_digest64\":", stdout); dsu_cli_json_put_escaped(stdout, "0x0000000000000000"); fputc(',', stdout);
+    }
+
+    if (st != DSU_STATUS_SUCCESS) {
+        fputs("\"error\":", stdout); dsu_cli_json_put_escaped(stdout, dsu_cli_status_name(st)); fputc(',', stdout);
+        fprintf(stdout, "\"exit_code\":%d,", dsu_cli_exit_code(st));
+    }
+
+    fputs("\"components\":[", stdout);
+    if (result) {
+        dsu_u32 n = dsu_resolve_result_component_count(result);
+        for (i = 0u; i < n; ++i) {
+            if (i) fputc(',', stdout);
+            fputc('{', stdout);
+            fputs("\"component_id\":", stdout); dsu_cli_json_put_escaped(stdout, dsu_resolve_result_component_id(result, i)); fputc(',', stdout);
+            fputs("\"version\":", stdout); dsu_cli_json_put_escaped(stdout, dsu_resolve_result_component_version(result, i)); fputc(',', stdout);
+            fputs("\"source\":", stdout); dsu_cli_json_put_escaped(stdout, dsu_cli_source_name(dsu_resolve_result_component_source(result, i))); fputc(',', stdout);
+            fputs("\"action\":", stdout); dsu_cli_json_put_escaped(stdout, dsu_cli_action_name(dsu_resolve_result_component_action(result, i)));
+            fputc('}', stdout);
+        }
+    }
+    fputs("],", stdout);
+
+    fputs("\"log\":[", stdout);
+    if (result) {
+        dsu_u32 nlog = dsu_resolve_result_log_count(result);
+        for (i = 0u; i < nlog; ++i) {
+            if (i) fputc(',', stdout);
+            fputc('{', stdout);
+            fputs("\"event\":", stdout);
+            {
+                dsu_resolve_log_code_t code = dsu_resolve_result_log_code(result, i);
+                const char *name = "unknown";
+                if (code == DSU_RESOLVE_LOG_SEED_USER) name = "seed_user";
+                else if (code == DSU_RESOLVE_LOG_SEED_DEFAULT) name = "seed_default";
+                else if (code == DSU_RESOLVE_LOG_ADD_DEPENDENCY) name = "add_dependency";
+                else if (code == DSU_RESOLVE_LOG_CONFLICT) name = "conflict";
+                else if (code == DSU_RESOLVE_LOG_PLATFORM_FILTER) name = "platform_filter";
+                else if (code == DSU_RESOLVE_LOG_RECONCILE_INSTALLED) name = "reconcile_installed";
+                dsu_cli_json_put_escaped(stdout, name);
+            }
+            fputc(',', stdout);
+            fputs("\"a\":", stdout); dsu_cli_json_put_escaped(stdout, dsu_resolve_result_log_a(result, i)); fputc(',', stdout);
+            fputs("\"b\":", stdout); dsu_cli_json_put_escaped(stdout, dsu_resolve_result_log_b(result, i));
+            fputc('}', stdout);
+        }
+    }
+    fputs("]", stdout);
+
+    fputs("}\n", stdout);
+
+    if (result) dsu_resolve_result_destroy(ctx, result);
+    if (installed) dsu_state_destroy(ctx, installed);
+    if (manifest) dsu_manifest_destroy(ctx, manifest);
+    if (ctx) dsu_ctx_destroy(ctx);
     return dsu_cli_exit_code(st);
 }
 
@@ -502,6 +817,145 @@ int main(int argc, char **argv) {
             return 2;
         }
         return dsu_cli_cmd_manifest_dump(in_path, out_path, &opts);
+    }
+
+    if (dsu_cli_streq(cmd, "resolve")) {
+        const char *manifest_path = NULL;
+        const char *installed_state_path = NULL;
+        const char *components_csv = NULL;
+        const char *exclude_csv = NULL;
+        const char *scope_str = NULL;
+        const char *platform_str = NULL;
+        int allow_prerelease = 0;
+        int op_set = 0;
+        dsu_resolve_operation_t op = DSU_RESOLVE_OPERATION_INSTALL;
+        dsu_manifest_install_scope_t scope = DSU_MANIFEST_INSTALL_SCOPE_PORTABLE;
+        dsu_cli_csv_list_t components;
+        dsu_cli_csv_list_t exclude;
+        int ok = 1;
+
+        memset(&components, 0, sizeof(components));
+        memset(&exclude, 0, sizeof(exclude));
+
+        for (i = 2; i < argc; ++i) {
+            const char *arg = argv[i];
+            const char *v;
+            if (!arg) continue;
+
+            v = dsu_cli_kv_value_inline(arg, "--manifest");
+            if (v) {
+                manifest_path = v;
+                continue;
+            }
+            v = dsu_cli_kv_value_inline(arg, "--installed-state");
+            if (v) {
+                installed_state_path = v;
+                continue;
+            }
+            v = dsu_cli_kv_value_inline(arg, "--components");
+            if (v) {
+                components_csv = v;
+                continue;
+            }
+            v = dsu_cli_kv_value_inline(arg, "--exclude");
+            if (v) {
+                exclude_csv = v;
+                continue;
+            }
+            v = dsu_cli_kv_value_inline(arg, "--scope");
+            if (v) {
+                scope_str = v;
+                continue;
+            }
+            v = dsu_cli_kv_value_inline(arg, "--platform");
+            if (v) {
+                platform_str = v;
+                continue;
+            }
+
+            if (dsu_cli_streq(arg, "--manifest") && i + 1 < argc) {
+                manifest_path = argv[++i];
+            } else if (dsu_cli_streq(arg, "--installed-state") && i + 1 < argc) {
+                installed_state_path = argv[++i];
+            } else if (dsu_cli_streq(arg, "--components") && i + 1 < argc) {
+                components_csv = argv[++i];
+            } else if (dsu_cli_streq(arg, "--exclude") && i + 1 < argc) {
+                exclude_csv = argv[++i];
+            } else if (dsu_cli_streq(arg, "--scope") && i + 1 < argc) {
+                scope_str = argv[++i];
+            } else if (dsu_cli_streq(arg, "--platform") && i + 1 < argc) {
+                platform_str = argv[++i];
+            } else if (dsu_cli_streq(arg, "--allow-prerelease")) {
+                allow_prerelease = 1;
+            } else if (dsu_cli_streq(arg, "--install")) {
+                if (op_set) ok = 0;
+                op_set = 1;
+                op = DSU_RESOLVE_OPERATION_INSTALL;
+            } else if (dsu_cli_streq(arg, "--upgrade")) {
+                if (op_set) ok = 0;
+                op_set = 1;
+                op = DSU_RESOLVE_OPERATION_UPGRADE;
+            } else if (dsu_cli_streq(arg, "--repair")) {
+                if (op_set) ok = 0;
+                op_set = 1;
+                op = DSU_RESOLVE_OPERATION_REPAIR;
+            } else if (dsu_cli_streq(arg, "--uninstall")) {
+                if (op_set) ok = 0;
+                op_set = 1;
+                op = DSU_RESOLVE_OPERATION_UNINSTALL;
+            }
+        }
+
+        if (!ok || !manifest_path) {
+            fputc('{', stdout);
+            fputs("\"command\":", stdout); dsu_cli_json_put_escaped(stdout, "resolve"); fputc(',', stdout);
+            fputs("\"status\":", stdout); dsu_cli_json_put_escaped(stdout, "error"); fputc(',', stdout);
+            fputs("\"error\":", stdout); dsu_cli_json_put_escaped(stdout, "invalid_args");
+            fputs("}\n", stdout);
+            return 2;
+        }
+        if (scope_str && !dsu_cli_parse_scope(scope_str, &scope)) {
+            fputc('{', stdout);
+            fputs("\"command\":", stdout); dsu_cli_json_put_escaped(stdout, "resolve"); fputc(',', stdout);
+            fputs("\"status\":", stdout); dsu_cli_json_put_escaped(stdout, "error"); fputc(',', stdout);
+            fputs("\"error\":", stdout); dsu_cli_json_put_escaped(stdout, "invalid_args");
+            fputs("}\n", stdout);
+            return 2;
+        }
+        if (components_csv && !dsu_cli_csv_list_parse(components_csv, &components)) {
+            dsu_cli_csv_list_free(&components);
+            fputc('{', stdout);
+            fputs("\"command\":", stdout); dsu_cli_json_put_escaped(stdout, "resolve"); fputc(',', stdout);
+            fputs("\"status\":", stdout); dsu_cli_json_put_escaped(stdout, "error"); fputc(',', stdout);
+            fputs("\"error\":", stdout); dsu_cli_json_put_escaped(stdout, "invalid_args");
+            fputs("}\n", stdout);
+            return 2;
+        }
+        if (exclude_csv && !dsu_cli_csv_list_parse(exclude_csv, &exclude)) {
+            dsu_cli_csv_list_free(&components);
+            dsu_cli_csv_list_free(&exclude);
+            fputc('{', stdout);
+            fputs("\"command\":", stdout); dsu_cli_json_put_escaped(stdout, "resolve"); fputc(',', stdout);
+            fputs("\"status\":", stdout); dsu_cli_json_put_escaped(stdout, "error"); fputc(',', stdout);
+            fputs("\"error\":", stdout); dsu_cli_json_put_escaped(stdout, "invalid_args");
+            fputs("}\n", stdout);
+            return 2;
+        }
+
+        {
+            int rc = dsu_cli_cmd_resolve(manifest_path,
+                                         installed_state_path,
+                                         op,
+                                         &components,
+                                         &exclude,
+                                         scope,
+                                         platform_str,
+                                         allow_prerelease,
+                                         &opts);
+            dsu_cli_csv_list_free(&components);
+            dsu_cli_csv_list_free(&exclude);
+            return rc;
+        }
     }
 
     if (dsu_cli_streq(cmd, "plan")) {
