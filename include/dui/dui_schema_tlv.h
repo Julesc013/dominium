@@ -42,6 +42,12 @@ extern "C" {
 #define DUI_TLV_BIND_U32         ((u32)0x42494E44u) /* 'BIND' */
 #define DUI_TLV_FLAGS_U32        ((u32)0x464C4743u) /* 'FLGC' */
 #define DUI_TLV_REQUIRED_CAPS_U64 ((u32)0x43415053u) /* 'CAPS' */
+/* Optional: state-driven visibility gate (payload = le u32 bind id).
+ * When present, the backend treats STATE value (bool/u32) at this bind id as:
+ * - 0 => hidden (node + subtree are not rendered and do not receive input)
+ * - non-zero => visible
+ */
+#define DUI_TLV_VISIBLE_BIND_U32 ((u32)0x56495342u) /* 'VISB' */
 
 /* Node flags stored in DUI_TLV_FLAGS_U32 (bitset). */
 #define DUI_NODE_FLAG_FOCUSABLE ((u32)1u << 0u)
