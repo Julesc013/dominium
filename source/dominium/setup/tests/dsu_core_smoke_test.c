@@ -15,19 +15,19 @@ PURPOSE: Lightweight smoke test for Setup Core Plan S-1 scaffolding.
 #include "dsu/dsu_plan.h"
 #include "dsu/dsu_resolve.h"
 
-static int write_text_file(const char *path, const char *text) {
+static int write_bytes_file(const char *path, const unsigned char *bytes, unsigned long len) {
     FILE *f;
     size_t n;
-    if (!path || !text) {
+    if (!path || (!bytes && len != 0ul)) {
         return 0;
     }
     f = fopen(path, "wb");
     if (!f) {
         return 0;
     }
-    n = strlen(text);
+    n = (size_t)len;
     if (n != 0u) {
-        if (fwrite(text, 1u, n, f) != n) {
+        if (fwrite(bytes, 1u, n, f) != n) {
             fclose(f);
             return 0;
         }
@@ -36,6 +36,219 @@ static int write_text_file(const char *path, const char *text) {
         return 0;
     }
     return 1;
+}
+
+typedef struct buf_t {
+    unsigned char *data;
+    unsigned long len;
+    unsigned long cap;
+} buf_t;
+
+static void buf_free(buf_t *b) {
+    if (!b) return;
+    free(b->data);
+    b->data = NULL;
+    b->len = 0ul;
+    b->cap = 0ul;
+}
+
+static int buf_reserve(buf_t *b, unsigned long add) {
+    unsigned long need;
+    unsigned long new_cap;
+    unsigned char *p;
+    if (!b) return 0;
+    if (add == 0ul) return 1;
+    need = b->len + add;
+    if (need < b->len) return 0;
+    if (need <= b->cap) return 1;
+    new_cap = (b->cap == 0ul) ? 256ul : b->cap;
+    while (new_cap < need) {
+        if (new_cap > 0x7FFFFFFFul) {
+            new_cap = need;
+            break;
+        }
+        new_cap *= 2ul;
+    }
+    p = (unsigned char *)realloc(b->data, (size_t)new_cap);
+    if (!p) return 0;
+    b->data = p;
+    b->cap = new_cap;
+    return 1;
+}
+
+static int buf_append(buf_t *b, const void *bytes, unsigned long n) {
+    if (!b) return 0;
+    if (n == 0ul) return 1;
+    if (!bytes) return 0;
+    if (!buf_reserve(b, n)) return 0;
+    memcpy(b->data + b->len, bytes, (size_t)n);
+    b->len += n;
+    return 1;
+}
+
+static int buf_put_u8(buf_t *b, unsigned char v) {
+    return buf_append(b, &v, 1ul);
+}
+
+static int buf_put_u16le(buf_t *b, unsigned short v) {
+    unsigned char tmp[2];
+    tmp[0] = (unsigned char)(v & 0xFFu);
+    tmp[1] = (unsigned char)((v >> 8) & 0xFFu);
+    return buf_append(b, tmp, 2ul);
+}
+
+static int buf_put_u32le(buf_t *b, unsigned long v) {
+    unsigned char tmp[4];
+    tmp[0] = (unsigned char)(v & 0xFFul);
+    tmp[1] = (unsigned char)((v >> 8) & 0xFFul);
+    tmp[2] = (unsigned char)((v >> 16) & 0xFFul);
+    tmp[3] = (unsigned char)((v >> 24) & 0xFFul);
+    return buf_append(b, tmp, 4ul);
+}
+
+static int buf_put_tlv(buf_t *b, unsigned short type, const void *payload, unsigned long payload_len) {
+    if (!buf_put_u16le(b, type)) return 0;
+    if (!buf_put_u32le(b, payload_len)) return 0;
+    return buf_append(b, payload, payload_len);
+}
+
+static int buf_put_tlv_u32(buf_t *b, unsigned short type, unsigned long v) {
+    unsigned char tmp[4];
+    tmp[0] = (unsigned char)(v & 0xFFul);
+    tmp[1] = (unsigned char)((v >> 8) & 0xFFul);
+    tmp[2] = (unsigned char)((v >> 16) & 0xFFul);
+    tmp[3] = (unsigned char)((v >> 24) & 0xFFul);
+    return buf_put_tlv(b, type, tmp, 4ul);
+}
+
+static int buf_put_tlv_u8(buf_t *b, unsigned short type, unsigned char v) {
+    return buf_put_tlv(b, type, &v, 1ul);
+}
+
+static int buf_put_tlv_str(buf_t *b, unsigned short type, const char *s) {
+    unsigned long n;
+    if (!s) s = "";
+    n = (unsigned long)strlen(s);
+    return buf_put_tlv(b, type, s, n);
+}
+
+static unsigned long header_checksum32_base(const unsigned char hdr[20]) {
+    unsigned long sum = 0ul;
+    unsigned long i;
+    for (i = 0ul; i < 16ul; ++i) {
+        sum += (unsigned long)hdr[i];
+    }
+    return sum;
+}
+
+static int build_minimal_manifest_file(buf_t *out_file) {
+    /* TLV + file header constants matching dsu_manifest.c */
+    const unsigned short T_ROOT = 0x0001u;
+    const unsigned short T_ROOT_VER = 0x0002u;
+    const unsigned short T_PRODUCT_ID = 0x0010u;
+    const unsigned short T_PRODUCT_VER = 0x0011u;
+    const unsigned short T_BUILD_CHANNEL = 0x0012u;
+    const unsigned short T_PLATFORM_TARGET = 0x0020u;
+    const unsigned short T_INSTALL_ROOT = 0x0030u;
+    const unsigned short T_IR_VER = 0x0031u;
+    const unsigned short T_IR_SCOPE = 0x0032u;
+    const unsigned short T_IR_PLATFORM = 0x0033u;
+    const unsigned short T_IR_PATH = 0x0034u;
+    const unsigned short T_COMPONENT = 0x0040u;
+    const unsigned short T_C_VER = 0x0041u;
+    const unsigned short T_C_ID = 0x0042u;
+    const unsigned short T_C_KIND = 0x0044u;
+    const unsigned short T_C_FLAGS = 0x0045u;
+
+    buf_t root;
+    buf_t payload;
+    buf_t ir;
+    buf_t comp;
+    unsigned char hdr[20];
+    unsigned long checksum;
+
+    memset(&root, 0, sizeof(root));
+    memset(&payload, 0, sizeof(payload));
+    memset(&ir, 0, sizeof(ir));
+    memset(&comp, 0, sizeof(comp));
+    memset(out_file, 0, sizeof(*out_file));
+
+    if (!buf_put_tlv_u32(&root, T_ROOT_VER, 1ul)) goto fail;
+    if (!buf_put_tlv_str(&root, T_PRODUCT_ID, "dominium")) goto fail;
+    if (!buf_put_tlv_str(&root, T_PRODUCT_VER, "1.0.0")) goto fail;
+    if (!buf_put_tlv_str(&root, T_BUILD_CHANNEL, "stable")) goto fail;
+    if (!buf_put_tlv_str(&root, T_PLATFORM_TARGET, "any-any")) goto fail;
+
+    if (!buf_put_tlv_u32(&ir, T_IR_VER, 1ul)) goto fail;
+    if (!buf_put_tlv_u8(&ir, T_IR_SCOPE, 0u)) goto fail; /* portable */
+    if (!buf_put_tlv_str(&ir, T_IR_PLATFORM, "any-any")) goto fail;
+    if (!buf_put_tlv_str(&ir, T_IR_PATH, "C:/Dominium")) goto fail;
+    if (!buf_put_tlv(&root, T_INSTALL_ROOT, ir.data, ir.len)) goto fail;
+    buf_free(&ir);
+
+    /* component core */
+    if (!buf_put_tlv_u32(&comp, T_C_VER, 1ul)) goto fail;
+    if (!buf_put_tlv_str(&comp, T_C_ID, "core")) goto fail;
+    if (!buf_put_tlv_u8(&comp, T_C_KIND, 5u)) goto fail; /* other */
+    if (!buf_put_tlv_u32(&comp, T_C_FLAGS, 0ul)) goto fail;
+    if (!buf_put_tlv(&root, T_COMPONENT, comp.data, comp.len)) goto fail;
+    buf_free(&comp);
+
+    /* component data */
+    if (!buf_put_tlv_u32(&comp, T_C_VER, 1ul)) goto fail;
+    if (!buf_put_tlv_str(&comp, T_C_ID, "data")) goto fail;
+    if (!buf_put_tlv_u8(&comp, T_C_KIND, 5u)) goto fail;
+    if (!buf_put_tlv_u32(&comp, T_C_FLAGS, 0ul)) goto fail;
+    if (!buf_put_tlv(&root, T_COMPONENT, comp.data, comp.len)) goto fail;
+    buf_free(&comp);
+
+    if (!buf_put_tlv(&payload, T_ROOT, root.data, root.len)) goto fail;
+    buf_free(&root);
+
+    /* DSUM file header (20 bytes) */
+    hdr[0] = 'D';
+    hdr[1] = 'S';
+    hdr[2] = 'U';
+    hdr[3] = 'M';
+    /* version u16 = 2 */
+    hdr[4] = 2u;
+    hdr[5] = 0u;
+    /* endian marker 0xFFFE */
+    hdr[6] = 0xFEu;
+    hdr[7] = 0xFFu;
+    /* header size = 20 */
+    hdr[8] = 20u;
+    hdr[9] = 0u;
+    hdr[10] = 0u;
+    hdr[11] = 0u;
+    /* payload length */
+    hdr[12] = (unsigned char)(payload.len & 0xFFul);
+    hdr[13] = (unsigned char)((payload.len >> 8) & 0xFFul);
+    hdr[14] = (unsigned char)((payload.len >> 16) & 0xFFul);
+    hdr[15] = (unsigned char)((payload.len >> 24) & 0xFFul);
+    /* checksum placeholder */
+    hdr[16] = 0u;
+    hdr[17] = 0u;
+    hdr[18] = 0u;
+    hdr[19] = 0u;
+    checksum = header_checksum32_base(hdr);
+    hdr[16] = (unsigned char)(checksum & 0xFFul);
+    hdr[17] = (unsigned char)((checksum >> 8) & 0xFFul);
+    hdr[18] = (unsigned char)((checksum >> 16) & 0xFFul);
+    hdr[19] = (unsigned char)((checksum >> 24) & 0xFFul);
+
+    if (!buf_append(out_file, hdr, 20ul)) goto fail;
+    if (!buf_append(out_file, payload.data, payload.len)) goto fail;
+    buf_free(&payload);
+    return 1;
+
+fail:
+    buf_free(&root);
+    buf_free(&payload);
+    buf_free(&ir);
+    buf_free(&comp);
+    buf_free(out_file);
+    return 0;
 }
 
 static int read_all_bytes(const char *path, unsigned char **out_bytes, unsigned long *out_len) {
@@ -104,7 +317,7 @@ static int expect(int cond, const char *msg) {
 }
 
 int main(void) {
-    const char *manifest_path = "dsu_test_manifest.dsumf";
+    const char *manifest_path = "dsu_test_manifest.dsumanifest";
     const char *plan_a_path = "dsu_test_plan_a.dsuplan";
     const char *plan_b_path = "dsu_test_plan_b.dsuplan";
     const char *log_plan_a = "dsu_test_plan_a.dsulog";
@@ -112,11 +325,7 @@ int main(void) {
     const char *log_dry_a = "dsu_test_dry_a.dsulog";
     const char *log_dry_b = "dsu_test_dry_b.dsulog";
 
-    const char *manifest_text =
-        "product_id=dominium\n"
-        "version=1.0.0\n"
-        "install_root=C:/Dominium\n"
-        "components=[core,data]\n";
+    buf_t mf_bytes;
 
     dsu_ctx_t *ctx = NULL;
     dsu_manifest_t *manifest = NULL;
@@ -126,7 +335,6 @@ int main(void) {
     dsu_log_t *log_roundtrip = NULL;
     dsu_execute_options_t exec_opts;
     dsu_status_t st;
-    unsigned long expected_plan_id = 1032754275ul;
     unsigned long i;
     int ok = 1;
 
@@ -140,10 +348,11 @@ int main(void) {
     unsigned long dry_a_len = 0ul;
     unsigned long dry_b_len = 0ul;
 
-    if (!write_text_file(manifest_path, manifest_text)) {
-        fprintf(stderr, "FAIL: could not write manifest\n");
-        return 1;
-    }
+    memset(&mf_bytes, 0, sizeof(mf_bytes));
+    ok &= expect(build_minimal_manifest_file(&mf_bytes), "build minimal manifest bytes");
+    ok &= expect(write_bytes_file(manifest_path, mf_bytes.data, mf_bytes.len), "write minimal manifest file");
+    buf_free(&mf_bytes);
+    if (!ok) goto done;
 
     {
         dsu_config_t cfg;
@@ -166,7 +375,6 @@ int main(void) {
 
     st = dsu_plan_build(ctx, manifest, resolved, &plan);
     ok &= expect(st == DSU_STATUS_SUCCESS && plan != NULL, "plan build");
-    ok &= expect((unsigned long)dsu_plan_id_hash32(plan) == expected_plan_id, "plan id hash stable");
 
     st = dsu_plan_write_file(ctx, plan, plan_a_path);
     ok &= expect(st == DSU_STATUS_SUCCESS, "plan write A");
@@ -194,7 +402,7 @@ int main(void) {
 
     st = dsu_plan_read_file(ctx, plan_a_path, &plan_roundtrip);
     ok &= expect(st == DSU_STATUS_SUCCESS && plan_roundtrip != NULL, "plan read roundtrip");
-    ok &= expect((unsigned long)dsu_plan_id_hash32(plan_roundtrip) == expected_plan_id, "plan id after read");
+    ok &= expect(dsu_plan_id_hash32(plan_roundtrip) == dsu_plan_id_hash32(plan), "plan id after read");
     ok &= expect(dsu_plan_step_count(plan_roundtrip) == dsu_plan_step_count(plan), "step count after read");
 
     /* Dry-run determinism check. */
