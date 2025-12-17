@@ -31,5 +31,7 @@ void dsu_platform_free_dir_entries(dsu_platform_dir_entry_t *entries, dsu_u32 co
 
 dsu_status_t dsu_platform_disk_free_bytes(const char *path, dsu_u64 *out_free_bytes);
 
-#endif /* DSU_PLATFORM_IFACE_H_INCLUDED */
+/* Current working directory as an absolute canonical DSU path. */
+dsu_status_t dsu_platform_get_cwd(char *out_path, dsu_u32 out_path_cap);
 
+#endif /* DSU_PLATFORM_IFACE_H_INCLUDED */

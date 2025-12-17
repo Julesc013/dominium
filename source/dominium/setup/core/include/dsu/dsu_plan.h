@@ -41,6 +41,9 @@ DSU_API void dsu_plan_destroy(dsu_ctx_t *ctx, dsu_plan_t *plan);
 DSU_API dsu_u32 dsu_plan_id_hash32(const dsu_plan_t *plan);
 DSU_API dsu_u64 dsu_plan_id_hash64(const dsu_plan_t *plan);
 
+DSU_API dsu_resolve_operation_t dsu_plan_operation(const dsu_plan_t *plan);
+DSU_API dsu_manifest_install_scope_t dsu_plan_scope(const dsu_plan_t *plan);
+
 DSU_API const char *dsu_plan_product_id(const dsu_plan_t *plan);
 DSU_API const char *dsu_plan_version(const dsu_plan_t *plan);
 DSU_API const char *dsu_plan_platform(const dsu_plan_t *plan);

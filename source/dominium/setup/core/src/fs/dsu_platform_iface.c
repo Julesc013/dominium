@@ -472,3 +472,43 @@ dsu_status_t dsu_platform_disk_free_bytes(const char *path, dsu_u64 *out_free_by
     }
 #endif
 }
+
+dsu_status_t dsu_platform_get_cwd(char *out_path, dsu_u32 out_path_cap) {
+    if (!out_path || out_path_cap == 0u) {
+        return DSU_STATUS_INVALID_ARGS;
+    }
+    out_path[0] = '\0';
+
+#if defined(_WIN32)
+    {
+        char buf[MAX_PATH];
+        DWORD n = GetCurrentDirectoryA((DWORD)sizeof(buf), buf);
+        dsu_u32 i;
+        if (n == 0u || n >= (DWORD)sizeof(buf)) {
+            return DSU_STATUS_IO_ERROR;
+        }
+        if ((dsu_u32)n + 1u > out_path_cap) {
+            return DSU_STATUS_INVALID_ARGS;
+        }
+        for (i = 0u; i < (dsu_u32)n; ++i) {
+            char c = buf[i];
+            if (c == '\\') c = '/';
+            if (i == 0u && ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')) && buf[1] == ':') {
+                if (c >= 'A' && c <= 'Z') {
+                    c = (char)(c - 'A' + 'a');
+                }
+            }
+            out_path[i] = c;
+        }
+        out_path[n] = '\0';
+        return DSU_STATUS_SUCCESS;
+    }
+#else
+    {
+        if (!getcwd(out_path, (size_t)out_path_cap)) {
+            return DSU_STATUS_IO_ERROR;
+        }
+        return DSU_STATUS_SUCCESS;
+    }
+#endif
+}
