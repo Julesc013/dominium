@@ -39,3 +39,23 @@ set_target_properties(dsu_manifest_test PROPERTIES
 )
 
 add_test(NAME dsu_manifest_test COMMAND dsu_manifest_test)
+
+add_executable(dsu_resolve_test
+    dsu_resolve_test.c
+)
+
+target_include_directories(dsu_resolve_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../core/include
+)
+
+target_link_libraries(dsu_resolve_test
+    PRIVATE dsu_core
+)
+
+set_target_properties(dsu_resolve_test PROPERTIES
+    C_STANDARD 90
+    C_STANDARD_REQUIRED ON
+    C_EXTENSIONS OFF
+)
+
+add_test(NAME dsu_resolve_test COMMAND dsu_resolve_test)
