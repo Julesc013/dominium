@@ -14,6 +14,8 @@ This document specifies the stable, automation-friendly CLI for the launcher-as-
 ## Global Flags
 
 - `--home=<path>`: state root (contains `instances/`, `exports/`, `tools_registry.tlv`, etc). Default: `.`.
+- `--mode=gui|tui|cli|headless`: selects the front-end when no control-plane command is present.
+- `--front=gui|tui|cli|headless`: alias for `--mode=...`.
 - `--ui=native|dgfx|null`: selects the UI backend (headless mode uses `null`).
 - `--gfx=<backend_id>`: selects the graphics backend id (headless mode uses `null`).
 
@@ -50,6 +52,40 @@ Output:
 
 Example:
 - `dominium-launcher --ui=null --gfx=null --home=state create-instance --template=tmpl0`
+
+### `clone-instance <source_instance_id> [--new=<instance_id>]`
+
+Clones an existing instance into a new instance root. If `--new` is not provided, the launcher chooses a deterministic id of the form:
+
+`<source_instance_id>_clone<N>`
+
+Args:
+- `<source_instance_id>` (required)
+- `--new=<instance_id>` (optional)
+
+Output:
+- `result=ok|fail`
+- `source_id=<source_instance_id>`
+- `instance_id=<new_instance_id>`
+- on failure: `error=<code>` and optional `detail=<text>`
+
+Example:
+- `dominium-launcher --ui=null --gfx=null --home=state clone-instance inst0 --new=inst0_working_copy`
+
+### `delete-instance <instance_id>`
+
+Soft-deletes an instance by swapping in a tombstone and moving the previous live root under the instance `previous/` directory.
+
+Args:
+- `<instance_id>` (required)
+
+Output:
+- `result=ok|fail`
+- `instance_id=<instance_id>`
+- on failure: `error=<code>` and optional `detail=<text>`
+
+Example:
+- `dominium-launcher --ui=null --gfx=null --home=state delete-instance inst0_working_copy`
 
 ### `verify-instance <instance_id>`
 
@@ -188,4 +224,3 @@ Example:
 - `docs/launcher/ARCHITECTURE.md`
 - `docs/launcher/ECOSYSTEM_INTEGRATION.md`
 - `docs/launcher/TESTING.md`
-
