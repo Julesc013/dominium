@@ -1,6 +1,6 @@
 # Dominium Launcher Architecture
 
-Doc Version: 1
+Doc Version: 2
 
 This document describes the launcher’s system architecture and the invariants that make it auditable, deterministic, offline-capable, and safe for simulation correctness.
 
@@ -12,6 +12,16 @@ This document describes the launcher’s system architecture and the invariants 
 - Deterministic behavior is required (no hidden OS-dependent ordering).
 - Every run and operation emits audit records.
 - Must function under `--ui=native`, `--ui=dgfx`, `--ui=null`, and `--gfx=null`.
+
+## Launcher as Control Plane
+
+The launcher is the **control plane** for the Dominium ecosystem:
+
+- It owns **instance state**, **artifact store**, **pack selection**, and **tool launching**.
+- It produces deterministic, machine-readable **run artifacts** (handshake, audit, selection summary, exit status).
+- It must never change simulation correctness: the engine is the **data plane** that consumes the launcher’s resolved inputs.
+
+Control-plane commands must be usable in automation and CI under `--ui=null --gfx=null`.
 
 ## Layers
 
@@ -59,7 +69,45 @@ Every run produces an audit record that includes:
 - Deterministic “reasons” explaining decisions and refusals
 - Build metadata (version string, build id, git hash, toolchain id)
 
+Selection invariants:
+- Selection visibility has a single source of truth: `selection_summary.tlv` (see `docs/launcher/ECOSYSTEM_INTEGRATION.md`).
+- Per-run audit may embed `selection_summary.tlv` bytes; when embedded, the bytes must match the file written in the run directory.
+- All refusals must be explicit and audited (no silent validation failures).
+
 See `docs/launcher/DIAGNOSTICS_AND_SUPPORT.md` and `docs/SPEC_LAUNCHER_CORE.md`.
+
+## Run Directories (Per Launch Attempt)
+
+For every launch attempt (game or tool), including refusals, the launcher creates:
+
+`<state_root>/instances/<instance_id>/logs/runs/<run_dir_id>/`
+
+Where:
+- `run_dir_id` is the 16-hex-digit `run_id` without the `0x` prefix.
+
+Stable file set (best-effort writes; missing files must be explicit):
+- `handshake.tlv` (launcher → engine/tool handshake)
+- `launch_config.tlv` (resolved launch configuration snapshot for the attempt)
+- `selection_summary.tlv` (unified selection summary snapshot)
+- `exit_status.tlv` (exit code, termination type, timestamps, capture support flags)
+- `audit_ref.tlv` (per-run audit record; references handshake/selection paths; may embed selection summary bytes)
+- `stdout.txt` / `stderr.txt` when capture is supported; otherwise the files may be absent and `exit_status.tlv` must indicate capture support explicitly.
+
+Retention policy (enforced best-effort after each attempt):
+- Keep the last `N` run directories per instance (default `N=8`).
+- `N` is configurable for control-plane launches via `--keep_last_runs=<N>`; `N=0` disables cleanup.
+- Never delete the most recent failed run automatically (failure heuristic: run audit missing/unreadable, or `audit.exit_result != 0`).
+
+## Diagnostics Bundle (Control Plane)
+
+The control plane can export a deterministic diagnostics bundle directory:
+- `diag-bundle <instance_id> --out=<dir>`
+
+Invariants:
+- The bundle contains a full instance export.
+- When a last run exists, the bundle copies last-run artifacts to `out/last_run/<run_dir_id>/`:
+  - `handshake.tlv`, `launch_config.tlv`, `selection_summary.tlv`, `exit_status.tlv`, `audit_ref.tlv`
+- The bundle writes `out/last_run_selection_summary.txt` (stable, line-oriented dump).
 
 ## Data Formats and Migrations
 
@@ -80,4 +128,6 @@ See:
 - `docs/launcher/DIAGNOSTICS_AND_SUPPORT.md`
 - `docs/launcher/SECURITY_AND_TRUST.md`
 - `docs/launcher/BUILD_AND_PACKAGING.md`
-
+- `docs/launcher/CLI.md`
+- `docs/launcher/ECOSYSTEM_INTEGRATION.md`
+- `docs/launcher/TESTING.md`

@@ -1,5 +1,7 @@
 # Dev UI (Schema‑Driven DUI Launcher)
 
+Doc Version: 2
+
 This repository includes a temporary, fast “classic launcher” control surface intended for daily development. It is implemented via DUI (schema + state + events) so the same UI runs on:
 
 - `--ui=native`
@@ -32,7 +34,7 @@ The launcher core remains UI‑agnostic: the UI never changes core semantics; it
 - **Play**
   - Select target: `game` or `tool:<tool_id>` (from `tools_registry.tlv`)
   - Actions: Play, Safe Mode Play, Verify/Repair
-  - Readouts: profile/backends, manifest hash (short), last run summary
+  - Readouts: profile/backends, manifest hash (short), selection summary line, last run summary
 - **Instances**
   - Actions: create (template/empty), clone, soft delete (confirm), import, export (definition/full), mark known‑good
 - **Packs**
@@ -44,7 +46,18 @@ The launcher core remains UI‑agnostic: the UI never changes core semantics; it
   - Details dialog shows the effective override view
 - **Logs / Diagnostics**
   - Shows recent runs and per‑run audit lines
-  - Diagnostics bundle exports a full instance bundle and adds last‑run handshake/audit + launch history when present
+  - Diagnostics bundle exports a full instance bundle and adds last‑run artifacts (handshake, launch_config, selection_summary, exit_status, audit_ref) when present
+
+## Unified Selection Summary
+
+The UI status bar displays a compact selection line derived from the per-run `selection_summary.tlv` artifact:
+
+- It is the same source of truth used by:
+  - CLI `launch` / `safe-mode` output (`selection_summary.line`)
+  - CLI `audit-last`
+  - `diag-bundle` summary export (`last_run_selection_summary.txt`)
+
+See `docs/launcher/ECOSYSTEM_INTEGRATION.md` for the schema and invariants.
 
 ## Running
 
@@ -80,4 +93,3 @@ Rules of thumb:
   - State build: add new bound values to the TLV state snapshot
   - Event handling: translate new actions/values into existing launcher core operations
 - Do not introduce filesystem or instance‑semantics logic into the UI layer; route through launcher core ops and surface audit/refusal reasons.
-
