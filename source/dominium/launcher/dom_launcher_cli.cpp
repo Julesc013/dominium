@@ -18,6 +18,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "dom_launcher_app.h"
 #include "dom_profile_cli.h"
 #include "launcher_control_plane.h"
+#include "launcher_tui.h"
 
 #include "dominium/version.h"
 
@@ -628,14 +629,23 @@ int main(int argc, char **argv) {
 
     {
         bool smoke_gui = false;
+        bool smoke_tui = false;
+        const char* home_val = 0;
         for (i = 1; i < argc; ++i) {
             const char* arg = argv[i];
             if (!arg) {
                 continue;
             }
+            if (std::strncmp(arg, "--home=", 7) == 0) {
+                home_val = arg + 7;
+            }
             if (std::strcmp(arg, "--smoke-gui") == 0) {
                 smoke_gui = true;
-                break;
+                continue;
+            }
+            if (std::strcmp(arg, "--smoke-tui") == 0) {
+                smoke_tui = true;
+                continue;
             }
         }
         if (smoke_gui) {
@@ -643,6 +653,15 @@ int main(int argc, char **argv) {
                 (void)launcher_core_add_reason(lc, "mode:smoke-gui");
             }
             exit_code = run_launcher_smoke_gui(profile_cli);
+            return exit_code;
+        }
+        if (smoke_tui) {
+            if (lc) {
+                (void)launcher_core_add_reason(lc, "mode:smoke-tui");
+            }
+            const std::string home = (home_val && home_val[0]) ? std::string(home_val) : std::string(".");
+            const std::string argv0 = (argc > 0 && argv && argv[0]) ? std::string(argv[0]) : std::string("dominium-launcher");
+            exit_code = dom::launcher_run_tui(argv0, home, lc, &profile_cli.profile, 1);
             return exit_code;
         }
     }
@@ -698,6 +717,8 @@ int main(int argc, char **argv) {
             cfg.home = arg + 7;
         } else if (std::strncmp(arg, "--mode=", 7) == 0) {
             cfg.mode = parse_mode(arg + 7, cfg.mode);
+        } else if (std::strncmp(arg, "--front=", 8) == 0) {
+            cfg.mode = parse_mode(arg + 8, cfg.mode);
         } else if (std::strncmp(arg, "--product-mode=", 16) == 0) {
             cfg.product_mode = arg + 16;
         } else if (std::strncmp(arg, "--action=", 9) == 0) {
@@ -707,6 +728,14 @@ int main(int argc, char **argv) {
         } else if (std::strncmp(arg, "--product=", 10) == 0) {
             cfg.product = arg + 10;
         }
+    }
+
+    if (cfg.mode == dom::LAUNCHER_MODE_TUI) {
+        if (lc) {
+            (void)launcher_core_add_reason(lc, "front=tui");
+        }
+        exit_code = dom::launcher_run_tui(cfg.argv0, cfg.home, lc, &profile_cli.profile, 0);
+        return exit_code;
     }
 
     if (!app.init_from_cli(cfg, &profile_cli.profile)) {
