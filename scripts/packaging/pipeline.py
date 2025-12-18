@@ -353,7 +353,10 @@ def _write_artifact_digests(artifact_dir, build_cache, version, epoch, reproduci
             "cxx_compiler": build_cache.get("CMAKE_CXX_COMPILER", ""),
         },
         "compression": {
-            "payload_zip": {"format": "zip", "method": "stored", "source_date_epoch": int(epoch)},
+            "portable_archives": [
+                {"format": "zip", "method": "stored", "root_name": "artifact_root", "source_date_epoch": int(epoch)},
+                {"format": "tar.gz", "gzip_mtime": int(epoch), "root_name": "artifact_root", "source_date_epoch": int(epoch)},
+            ],
         },
         "product_manifest": {
             "path": manifest_rel,
