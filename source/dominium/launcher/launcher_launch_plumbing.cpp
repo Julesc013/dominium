@@ -18,6 +18,7 @@ extern "C" {
 }
 
 #include "core/include/launcher_audit.h"
+#include "core/include/launcher_exit_status.h"
 #include "core/include/launcher_handshake.h"
 #include "core/include/launcher_launch_attempt.h"
 #include "core/include/launcher_pack_resolver.h"
@@ -419,6 +420,13 @@ static void audit_add_reason(dom::launcher_core::LauncherAuditLog& audit, const 
     audit.reasons.push_back(s);
 }
 
+static void write_exit_status_best_effort(const std::string& path,
+                                          const dom::launcher_core::LauncherExitStatus& st) {
+    std::vector<unsigned char> bytes;
+    (void)dom::launcher_core::launcher_exit_status_to_tlv_bytes(st, bytes);
+    (void)write_file_all(path, bytes);
+}
+
 static bool compute_run_paths(const std::string& state_root,
                               const std::string& instance_id,
                               u64 run_id,
@@ -433,8 +441,8 @@ static bool compute_run_paths(const std::string& state_root,
         std::string runs_root = path_join(paths.logs_root, "runs");
         std::string run_hex = u64_hex16(run_id);
         out_run_dir = path_join(runs_root, run_hex);
-        out_handshake_path = path_join(out_run_dir, "launcher_handshake.tlv");
-        out_audit_path = path_join(out_run_dir, "launcher_audit.tlv");
+        out_handshake_path = path_join(out_run_dir, "handshake.tlv");
+        out_audit_path = path_join(out_run_dir, "audit_ref.tlv");
         return true;
     }
 }
@@ -444,25 +452,90 @@ static void cleanup_old_runs_best_effort(const std::string& state_root,
                                         u32 keep_last_runs) {
     std::vector<std::string> run_ids;
     std::string err;
+    std::string pinned_failed;
+    size_t total;
+    size_t keep_n;
+    size_t i;
+
+    /* keep_last_runs==0 => caller opted out of cleanup. */
     if (keep_last_runs == 0u) {
         return;
     }
     if (!launcher_list_instance_runs(state_root, instance_id, run_ids, err)) {
         return;
     }
-    if (run_ids.size() <= (size_t)keep_last_runs) {
+    total = run_ids.size();
+    if (total == 0u) {
         return;
     }
+    keep_n = (size_t)keep_last_runs;
+    if (keep_n > total) {
+        keep_n = total;
+    }
+
+    /* Never delete the most recent failed run automatically.
+       Failure heuristic: audit exit_result != 0 (or audit missing/unreadable). */
     {
         dom::launcher_core::LauncherInstancePaths paths = dom::launcher_core::launcher_instance_paths_make(state_root, instance_id);
-        std::string runs_root = path_join(paths.logs_root, "runs");
-        while (run_ids.size() > (size_t)keep_last_runs) {
-            const std::string oldest = run_ids[0];
-            const std::string dir = path_join(runs_root, oldest);
+        const std::string runs_root = path_join(paths.logs_root, "runs");
+
+        for (i = total; i > 0u; --i) {
+            const std::string id = run_ids[i - 1u];
+            const std::string dir = path_join(runs_root, id);
+            std::vector<unsigned char> bytes;
+            dom::launcher_core::LauncherAuditLog audit;
+            const std::string p_new = path_join(dir, "audit_ref.tlv");
+            const std::string p_old = path_join(dir, "launcher_audit.tlv");
+
+            if ((!read_file_all(p_new, bytes) || bytes.empty()) && (!read_file_all(p_old, bytes) || bytes.empty())) {
+                pinned_failed = id;
+                break;
+            }
+            if (!dom::launcher_core::launcher_audit_from_tlv_bytes(bytes.empty() ? (const unsigned char*)0 : &bytes[0], bytes.size(), audit)) {
+                pinned_failed = id;
+                break;
+            }
+            if (audit.exit_result != 0) {
+                pinned_failed = id;
+                break;
+            }
+        }
+    }
+
+    /* Build keep-set: last N runs + pinned_failed (if any). */
+    {
+        dom::launcher_core::LauncherInstancePaths paths = dom::launcher_core::launcher_instance_paths_make(state_root, instance_id);
+        const std::string runs_root = path_join(paths.logs_root, "runs");
+        std::vector<std::string> keep_ids;
+
+        keep_ids.reserve(keep_n + 1u);
+        for (i = total - keep_n; i < total; ++i) {
+            keep_ids.push_back(run_ids[i]);
+        }
+        if (!pinned_failed.empty() && std::find(keep_ids.begin(), keep_ids.end(), pinned_failed) == keep_ids.end()) {
+            keep_ids.push_back(pinned_failed);
+        }
+
+        for (i = 0u; i < total; ++i) {
+            const std::string id = run_ids[i];
+            const std::string dir = path_join(runs_root, id);
+            if (std::find(keep_ids.begin(), keep_ids.end(), id) != keep_ids.end()) {
+                continue;
+            }
+
+            /* Remove known run artifacts (both legacy and current names), then rmdir. */
+            remove_file_best_effort(path_join(dir, "handshake.tlv"));
+            remove_file_best_effort(path_join(dir, "launch_config.tlv"));
+            remove_file_best_effort(path_join(dir, "selection_summary.tlv"));
+            remove_file_best_effort(path_join(dir, "exit_status.tlv"));
+            remove_file_best_effort(path_join(dir, "audit_ref.tlv"));
+            remove_file_best_effort(path_join(dir, "stdout.txt"));
+            remove_file_best_effort(path_join(dir, "stderr.txt"));
+
             remove_file_best_effort(path_join(dir, "launcher_handshake.tlv"));
             remove_file_best_effort(path_join(dir, "launcher_audit.tlv"));
+
             rmdir_best_effort(dir);
-            run_ids.erase(run_ids.begin());
         }
     }
 }
@@ -513,8 +586,10 @@ LaunchRunResult::LaunchRunResult()
       run_id(0ull),
       run_dir(),
       handshake_path(),
+      launch_config_path(),
       audit_path(),
       selection_summary_path(),
+      exit_status_path(),
       refused(0u),
       refusal_code(0u),
       refusal_detail(),
@@ -582,6 +657,7 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
     void* iface = 0;
     const ::launcher_time_api_v1* time = 0;
     u64 now_us = 0ull;
+    dom::launcher_core::LauncherExitStatus exit_status;
 
     dom::launcher_core::LauncherPrelaunchPlan plan;
     dom::launcher_core::LauncherRecoverySuggestion recovery;
@@ -625,6 +701,12 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
     }
 
     out_result.run_id = now_us;
+    exit_status = dom::launcher_core::LauncherExitStatus();
+    exit_status.run_id = out_result.run_id;
+    exit_status.timestamp_start_us = now_us;
+    exit_status.timestamp_end_us = now_us;
+    exit_status.stdout_capture_supported = 0u;
+    exit_status.stderr_capture_supported = 0u;
 
     if (state_root.empty() || instance_id.empty()) {
         out_result.error = "bad_args";
@@ -645,6 +727,8 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
     }
 
     mkdir_p_best_effort(out_result.run_dir);
+    out_result.launch_config_path = path_join(out_result.run_dir, "launch_config.tlv");
+    out_result.exit_status_path = path_join(out_result.run_dir, "exit_status.tlv");
 
     if (!dom::launcher_core::launcher_launch_prepare_attempt(services,
                                                             (const dom::launcher_core::LauncherProfile*)0,
@@ -658,6 +742,13 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
         out_result.refused = 1u;
         out_result.refusal_code = (u32)dom::launcher_core::LAUNCHER_HANDSHAKE_REFUSAL_MISSING_REQUIRED_FIELDS;
         out_result.refusal_detail = std::string("prelaunch_failed;") + prelaunch_err;
+    }
+
+    /* Persist resolved launch config for this attempt (best-effort). */
+    {
+        std::vector<unsigned char> cfg_bytes;
+        (void)dom::launcher_core::launcher_resolved_launch_config_to_tlv_bytes(plan.resolved, cfg_bytes);
+        (void)write_file_all(out_result.launch_config_path, cfg_bytes);
     }
 
     if (out_result.refused == 0u) {
@@ -765,6 +856,8 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
     audit_add_reason(run_audit, std::string("launch_target=") + launcher_launch_target_to_string(target));
     audit_add_reason(run_audit, std::string("executable_path=") + executable_path);
     audit_add_reason(run_audit, std::string("handshake_path=") + out_result.handshake_path);
+    audit_add_reason(run_audit, std::string("launch_config_path=") + out_result.launch_config_path);
+    audit_add_reason(run_audit, std::string("exit_status_path=") + out_result.exit_status_path);
 
     audit_add_reason(run_audit, std::string("safe_mode=") + std::string(plan.resolved.safe_mode ? "1" : "0"));
     audit_add_reason(run_audit, std::string("offline_mode=") + std::string(plan.resolved.allow_network ? "0" : "1"));
@@ -863,6 +956,13 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
         run_audit.exit_result = 2;
         (void)dom::launcher_core::launcher_audit_to_tlv_bytes(run_audit, run_audit_bytes);
         (void)write_file_all(out_result.audit_path, run_audit_bytes);
+        if (time && time->now_us) {
+            const u64 end_us = time->now_us();
+            exit_status.timestamp_end_us = (end_us < exit_status.timestamp_start_us) ? exit_status.timestamp_start_us : end_us;
+        }
+        exit_status.exit_code = 2;
+        exit_status.termination_type = (u32)dom::launcher_core::LAUNCHER_TERM_REFUSED;
+        write_exit_status_best_effort(out_result.exit_status_path, exit_status);
         cleanup_old_runs_best_effort(state_root, instance_id, keep_last_runs);
         out_result.ok = 0u;
         return false;
@@ -897,6 +997,13 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
         audit_add_reason(run_audit, "outcome=spawn_failed");
         (void)dom::launcher_core::launcher_audit_to_tlv_bytes(run_audit, run_audit_bytes);
         (void)write_file_all(out_result.audit_path, run_audit_bytes);
+        if (time && time->now_us) {
+            const u64 end_us = time->now_us();
+            exit_status.timestamp_end_us = (end_us < exit_status.timestamp_start_us) ? exit_status.timestamp_start_us : end_us;
+        }
+        exit_status.exit_code = 1;
+        exit_status.termination_type = (u32)dom::launcher_core::LAUNCHER_TERM_UNKNOWN;
+        write_exit_status_best_effort(out_result.exit_status_path, exit_status);
         cleanup_old_runs_best_effort(state_root, instance_id, keep_last_runs);
         out_result.error = "spawn_failed";
         return false;
@@ -913,6 +1020,13 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
             audit_add_reason(run_audit, "outcome=wait_failed");
             (void)dom::launcher_core::launcher_audit_to_tlv_bytes(run_audit, run_audit_bytes);
             (void)write_file_all(out_result.audit_path, run_audit_bytes);
+            if (time && time->now_us) {
+                const u64 end_us = time->now_us();
+                exit_status.timestamp_end_us = (end_us < exit_status.timestamp_start_us) ? exit_status.timestamp_start_us : end_us;
+            }
+            exit_status.exit_code = 1;
+            exit_status.termination_type = (u32)dom::launcher_core::LAUNCHER_TERM_UNKNOWN;
+            write_exit_status_best_effort(out_result.exit_status_path, exit_status);
             cleanup_old_runs_best_effort(state_root, instance_id, keep_last_runs);
             out_result.error = "wait_failed";
             return false;
@@ -929,6 +1043,19 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
 
     (void)dom::launcher_core::launcher_audit_to_tlv_bytes(run_audit, run_audit_bytes);
     (void)write_file_all(out_result.audit_path, run_audit_bytes);
+
+    if (time && time->now_us) {
+        const u64 end_us = time->now_us();
+        exit_status.timestamp_end_us = (end_us < exit_status.timestamp_start_us) ? exit_status.timestamp_start_us : end_us;
+    }
+    if (out_result.waited) {
+        exit_status.exit_code = out_result.child_exit_code;
+        exit_status.termination_type = (u32)dom::launcher_core::LAUNCHER_TERM_NORMAL;
+    } else {
+        exit_status.exit_code = 0;
+        exit_status.termination_type = (u32)dom::launcher_core::LAUNCHER_TERM_UNKNOWN;
+    }
+    write_exit_status_best_effort(out_result.exit_status_path, exit_status);
 
     cleanup_old_runs_best_effort(state_root, instance_id, keep_last_runs);
 
