@@ -54,9 +54,12 @@ artifact_root/*
 
 It does not download anything; it is an offline artifact bundle.
 
+Convenience wrapper (generated alongside the tarball):
+
+- `dist/linux/dominium-install.sh`
+
 ## Sources
 
 - Pipeline entry: `scripts/packaging/pipeline.py` (`linux` subcommand)
 - deb templates: `scripts/packaging/linux/deb/DEBIAN/*`
 - rpm template: `scripts/packaging/linux/rpm/dominium.spec.in`
-
