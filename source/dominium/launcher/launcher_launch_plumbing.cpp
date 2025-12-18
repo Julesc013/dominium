@@ -21,6 +21,7 @@ extern "C" {
 #include "core/include/launcher_handshake.h"
 #include "core/include/launcher_launch_attempt.h"
 #include "core/include/launcher_pack_resolver.h"
+#include "core/include/launcher_selection_summary.h"
 #include "core/include/launcher_safety.h"
 #include "core/include/launcher_sha256.h"
 #include "core/include/launcher_tools_registry.h"
@@ -225,11 +226,31 @@ static void profile_remove_override(dom_profile& p, const char* subsystem_key) {
     }
 }
 
+static const char* selection_entry_why(const dom_selection_entry* e) {
+    if (!e) {
+        return "";
+    }
+    return e->chosen_by_override ? "override" : "priority";
+}
+
+static const dom_selection_entry* selection_find_entry(const dom_selection& sel, dom_subsystem_id subsystem_id) {
+    u32 i;
+    for (i = 0u; i < sel.entry_count; ++i) {
+        const dom_selection_entry* e = &sel.entries[i];
+        if (e && e->subsystem_id == subsystem_id) {
+            return e;
+        }
+    }
+    return (const dom_selection_entry*)0;
+}
+
 static bool select_backends_for_handshake(const dom_profile* profile,
                                          std::vector<std::string>& out_platform,
                                          std::vector<std::string>& out_renderer,
                                          std::string& out_ui,
-                                         std::string& out_error) {
+                                         std::string& out_error,
+                                         dom_selection* out_sel,
+                                         std::string* out_note) {
     dom_hw_caps hw;
     dom_selection sel;
     dom_caps_result rc;
@@ -237,11 +258,20 @@ static bool select_backends_for_handshake(const dom_profile* profile,
     const dom_profile* used_profile = profile;
     u32 i;
     bool requested_gfx_null = false;
+    bool relaxed_gfx_null = false;
 
     out_platform.clear();
     out_renderer.clear();
     out_ui.clear();
     out_error.clear();
+    if (out_note) {
+        out_note->clear();
+    }
+    if (out_sel) {
+        std::memset(out_sel, 0, sizeof(*out_sel));
+        out_sel->abi_version = DOM_CAPS_ABI_VERSION;
+        out_sel->struct_size = (u32)sizeof(dom_selection);
+    }
 
     (void)dom_caps_register_builtin_backends();
     (void)dom_caps_finalize_registry();
@@ -287,11 +317,17 @@ static bool select_backends_for_handshake(const dom_profile* profile,
                 relaxed.preferred_gfx_backend[0] = '\0';
                 profile_remove_override(relaxed, "gfx");
                 rc = dom_caps_select(&relaxed, &hw, &sel);
+                if (rc == DOM_CAPS_OK) {
+                    relaxed_gfx_null = true;
+                }
             }
         }
     }
     if (rc != DOM_CAPS_OK) {
         out_error = "caps_select_failed";
+        if (out_sel) {
+            *out_sel = sel;
+        }
         return false;
     }
 
@@ -311,13 +347,25 @@ static bool select_backends_for_handshake(const dom_profile* profile,
 
     if (out_platform.empty()) {
         out_error = "platform_backend_missing";
+        if (out_sel) {
+            *out_sel = sel;
+        }
         return false;
     }
     if (out_ui.empty()) {
         out_error = "ui_backend_missing";
+        if (out_sel) {
+            *out_sel = sel;
+        }
         return false;
     }
 
+    if (out_note && relaxed_gfx_null) {
+        *out_note = "caps_fallback_gfx_null_unavailable=1";
+    }
+    if (out_sel) {
+        *out_sel = sel;
+    }
     return true;
 }
 
@@ -466,6 +514,7 @@ LaunchRunResult::LaunchRunResult()
       run_dir(),
       handshake_path(),
       audit_path(),
+      selection_summary_path(),
       refused(0u),
       refusal_code(0u),
       refusal_detail(),
@@ -542,12 +591,17 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
     std::vector<std::string> renderer_backends;
     std::string ui_backend;
     std::string caps_err;
+    dom_selection caps_sel;
+    std::string caps_note;
 
     dom::launcher_core::LauncherHandshake hs;
     std::vector<unsigned char> hs_bytes;
 
     dom::launcher_core::LauncherAuditLog run_audit;
     std::vector<unsigned char> run_audit_bytes;
+
+    dom::launcher_core::LauncherSelectionSummary sel_summary;
+    std::vector<unsigned char> sel_summary_bytes;
 
     std::vector<std::string> argv_full;
     std::vector<const char*> argv_ptrs;
@@ -556,6 +610,9 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
     int exit_code = 0;
 
     out_result = LaunchRunResult();
+    std::memset(&caps_sel, 0, sizeof(caps_sel));
+    caps_sel.abi_version = DOM_CAPS_ABI_VERSION;
+    caps_sel.struct_size = (u32)sizeof(dom_selection);
 
     if (services && services->query_interface && services->query_interface(LAUNCHER_IID_TIME_V1, &iface) == 0) {
         time = (const ::launcher_time_api_v1*)iface;
@@ -604,7 +661,7 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
     }
 
     if (out_result.refused == 0u) {
-        if (!select_backends_for_handshake(profile, platform_backends, renderer_backends, ui_backend, caps_err)) {
+        if (!select_backends_for_handshake(profile, platform_backends, renderer_backends, ui_backend, caps_err, &caps_sel, &caps_note)) {
             out_result.refused = 1u;
             out_result.refusal_code = (u32)dom::launcher_core::LAUNCHER_HANDSHAKE_REFUSAL_MISSING_REQUIRED_FIELDS;
             out_result.refusal_detail = std::string("caps_failed;") + caps_err;
@@ -711,6 +768,93 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
 
     audit_add_reason(run_audit, std::string("safe_mode=") + std::string(plan.resolved.safe_mode ? "1" : "0"));
     audit_add_reason(run_audit, std::string("offline_mode=") + std::string(plan.resolved.allow_network ? "0" : "1"));
+    if (!caps_note.empty()) {
+        audit_add_reason(run_audit, caps_note);
+    }
+
+    /* Selected backends (selected-and-why) */
+    {
+        u32 i;
+        for (i = 0u; i < caps_sel.entry_count; ++i) {
+            const dom_selection_entry* e = &caps_sel.entries[i];
+            if (!e || !e->backend_name || !e->backend_name[0]) {
+                continue;
+            }
+            dom::launcher_core::LauncherAuditBackend b;
+            b.subsystem_id = (u32)e->subsystem_id;
+            b.subsystem_name = (e->subsystem_name && e->subsystem_name[0]) ? std::string(e->subsystem_name) : std::string();
+            b.backend_name = std::string(e->backend_name);
+            b.determinism_grade = (u32)e->determinism;
+            b.perf_class = (u32)e->perf_class;
+            b.priority = e->backend_priority;
+            b.chosen_by_override = e->chosen_by_override ? 1u : 0u;
+            run_audit.selected_backends.push_back(b);
+        }
+    }
+
+    /* Selection summary snapshot (single source of truth for CLI/UI/diag/audit). */
+    {
+        const std::string selection_path = path_join(out_result.run_dir, "selection_summary.tlv");
+        out_result.selection_summary_path = selection_path;
+
+        sel_summary = dom::launcher_core::LauncherSelectionSummary();
+        sel_summary.run_id = out_result.run_id;
+        sel_summary.instance_id = instance_id;
+        sel_summary.launcher_profile_id = hs.launcher_profile_id;
+        sel_summary.determinism_profile_id = hs.determinism_profile_id;
+        sel_summary.offline_mode = (plan.resolved.allow_network != 0u) ? 0u : 1u;
+        sel_summary.safe_mode = plan.resolved.safe_mode ? 1u : 0u;
+        sel_summary.manifest_hash64 = run_audit.manifest_hash64;
+        sel_summary.manifest_hash_bytes = hs.instance_manifest_hash_bytes;
+
+        sel_summary.ui_backend.backend_id = hs.selected_ui_backend_id;
+        {
+            const dom_selection_entry* e = selection_find_entry(caps_sel, DOM_SUBSYS_DUI);
+            sel_summary.ui_backend.why = selection_entry_why(e);
+        }
+        {
+            size_t i;
+            for (i = 0u; i < platform_backends.size(); ++i) {
+                dom::launcher_core::LauncherSelectionBackendChoice c;
+                c.backend_id = platform_backends[i];
+                {
+                    const dom_selection_entry* e = selection_find_entry(caps_sel, DOM_SUBSYS_DSYS);
+                    c.why = selection_entry_why(e);
+                }
+                sel_summary.platform_backends.push_back(c);
+            }
+        }
+        {
+            size_t i;
+            for (i = 0u; i < renderer_backends.size(); ++i) {
+                dom::launcher_core::LauncherSelectionBackendChoice c;
+                c.backend_id = renderer_backends[i];
+                {
+                    const dom_selection_entry* e = selection_find_entry(caps_sel, DOM_SUBSYS_DGFX);
+                    c.why = selection_entry_why(e);
+                }
+                sel_summary.renderer_backends.push_back(c);
+            }
+        }
+
+        sel_summary.resolved_packs_count = (u32)hs.resolved_packs.size();
+        {
+            size_t i;
+            for (i = 0u; i < hs.resolved_packs.size(); ++i) {
+                if (i) {
+                    sel_summary.resolved_packs_summary += ",";
+                }
+                sel_summary.resolved_packs_summary += hs.resolved_packs[i].pack_id;
+            }
+        }
+
+        (void)dom::launcher_core::launcher_selection_summary_to_tlv_bytes(sel_summary, sel_summary_bytes);
+        (void)write_file_all(selection_path, sel_summary_bytes);
+
+        run_audit.has_selection_summary = 1u;
+        run_audit.selection_summary_tlv = sel_summary_bytes;
+        audit_add_reason(run_audit, std::string("selection_summary_path=") + selection_path);
+    }
 
     if (out_result.refused != 0u) {
         audit_add_reason(run_audit, std::string("outcome=refusal"));
