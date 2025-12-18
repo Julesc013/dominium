@@ -295,6 +295,9 @@ dui_schema_node* dui_schema_find_by_id(dui_schema_node* root, u32 id)
 static i32 dui_pref_h_for_kind(u32 kind)
 {
     switch ((dui_node_kind)kind) {
+    case DUI_NODE_ROW: return 40;
+    case DUI_NODE_COLUMN: return 40;
+    case DUI_NODE_STACK: return 40;
     case DUI_NODE_LABEL: return 20;
     case DUI_NODE_BUTTON: return 24;
     case DUI_NODE_CHECKBOX: return 24;
@@ -304,6 +307,25 @@ static i32 dui_pref_h_for_kind(u32 kind)
     default: break;
     }
     return 24;
+}
+
+static i32 dui_pref_w_for_kind(u32 kind)
+{
+    switch ((dui_node_kind)kind) {
+    case DUI_NODE_LABEL: return 160;
+    case DUI_NODE_BUTTON: return 140;
+    case DUI_NODE_CHECKBOX: return 180;
+    case DUI_NODE_TEXT_FIELD: return 200;
+    case DUI_NODE_PROGRESS: return 120;
+    case DUI_NODE_LIST: return 260;
+    case DUI_NODE_ROW:
+    case DUI_NODE_COLUMN:
+    case DUI_NODE_STACK:
+        return 320;
+    default:
+        break;
+    }
+    return 160;
 }
 
 static int dui_is_layout_kind(u32 kind)
@@ -388,18 +410,34 @@ static void dui_layout_children_row(dui_schema_node* parent, i32 x, i32 y, i32 w
     const i32 margin = 8;
     const i32 spacing = 6;
     u32 child_count;
+    u32 flex_count;
+    i32 fixed_total;
+    i32 flex_min_total;
+    i32 avail;
     dui_schema_node* child;
     i32 inner_x;
     i32 inner_y;
     i32 inner_w;
     i32 inner_h;
     i32 each_w;
-    u32 idx;
+    i32 cursor_x;
+    i32 extra;
+    i32 each_extra;
+    i32 rem_extra;
 
     child_count = 0u;
+    flex_count = 0u;
+    fixed_total = 0;
+    flex_min_total = 0;
     child = parent ? parent->first_child : (dui_schema_node*)0;
     while (child) {
         child_count += 1u;
+        if (child->flags & DUI_NODE_FLAG_FLEX) {
+            flex_count += 1u;
+            flex_min_total += dui_pref_w_for_kind(child->kind);
+        } else {
+            fixed_total += dui_pref_w_for_kind(child->kind);
+        }
         child = child->next_sibling;
     }
 
@@ -414,24 +452,88 @@ static void dui_layout_children_row(dui_schema_node* parent, i32 x, i32 y, i32 w
         return;
     }
 
-    each_w = (inner_w - (i32)(spacing * (i32)(child_count - 1u))) / (i32)child_count;
-    if (each_w < 0) {
-        each_w = 0;
+    avail = inner_w - (i32)(spacing * (i32)(child_count - 1u));
+    if (avail < 0) {
+        avail = 0;
     }
 
-    idx = 0u;
+    /* If no flex nodes, keep the classic "even split" behavior. */
+    if (flex_count == 0u) {
+        each_w = (child_count > 0u) ? (avail / (i32)child_count) : 0;
+        if (each_w < 0) {
+            each_w = 0;
+        }
+        cursor_x = inner_x;
+        child = parent->first_child;
+        while (child) {
+            child->x = cursor_x;
+            child->y = inner_y;
+            child->w = each_w;
+            child->h = inner_h;
+
+            if (dui_is_layout_kind(child->kind)) {
+                dui_schema_layout(child, child->x, child->y, child->w, child->h);
+            }
+
+            cursor_x += each_w + spacing;
+            child = child->next_sibling;
+        }
+        return;
+    }
+
+    /* If fixed+minimum flex widths don't fit, fall back to an even split. */
+    if ((fixed_total + flex_min_total) > avail) {
+        each_w = (child_count > 0u) ? (avail / (i32)child_count) : 0;
+        if (each_w < 0) {
+            each_w = 0;
+        }
+        cursor_x = inner_x;
+        child = parent->first_child;
+        while (child) {
+            child->x = cursor_x;
+            child->y = inner_y;
+            child->w = each_w;
+            child->h = inner_h;
+
+            if (dui_is_layout_kind(child->kind)) {
+                dui_schema_layout(child, child->x, child->y, child->w, child->h);
+            }
+
+            cursor_x += each_w + spacing;
+            child = child->next_sibling;
+        }
+        return;
+    }
+
+    extra = avail - fixed_total - flex_min_total;
+    if (extra < 0) {
+        extra = 0;
+    }
+    each_extra = (flex_count > 0u) ? (extra / (i32)flex_count) : 0;
+    rem_extra = extra - each_extra * (i32)flex_count;
+
+    cursor_x = inner_x;
     child = parent->first_child;
     while (child) {
-        child->x = inner_x + (i32)idx * (each_w + spacing);
+        i32 cw = dui_pref_w_for_kind(child->kind);
+        if (child->flags & DUI_NODE_FLAG_FLEX) {
+            cw += each_extra;
+            if (rem_extra > 0) {
+                cw += 1;
+                rem_extra -= 1;
+            }
+        }
+
+        child->x = cursor_x;
         child->y = inner_y;
-        child->w = each_w;
+        child->w = cw;
         child->h = inner_h;
 
         if (dui_is_layout_kind(child->kind)) {
             dui_schema_layout(child, child->x, child->y, child->w, child->h);
         }
 
-        idx += 1u;
+        cursor_x += cw + spacing;
         child = child->next_sibling;
     }
 }

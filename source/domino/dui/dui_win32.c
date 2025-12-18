@@ -368,6 +368,10 @@ static void win32_create_controls_for_tree(dui_window* win, HWND parent_hwnd, du
                 win->font = (HFONT)GetStockObject(DEFAULT_GUI_FONT);
             }
             SendMessageA(h, WM_SETFONT, (WPARAM)win->font, TRUE);
+            if (n->kind == (u32)DUI_NODE_PROGRESS) {
+                SendMessageA(h, PBM_SETRANGE, 0, MAKELPARAM(0, 1000));
+                SendMessageA(h, PBM_SETPOS, (WPARAM)0, 0);
+            }
             n->native = (void*)h;
         }
     }
@@ -379,27 +383,186 @@ static void win32_create_controls_for_tree(dui_window* win, HWND parent_hwnd, du
     }
 }
 
-static void win32_apply_layout_to_tree(dui_schema_node* n)
+static u32 win32_count_leaf_controls(const dui_schema_node* n)
+{
+    u32 count;
+    const dui_schema_node* child;
+    if (!n) {
+        return 0u;
+    }
+    count = 0u;
+    if (n->native && win32_is_leaf_kind(n->kind)) {
+        count += 1u;
+    }
+    child = n->first_child;
+    while (child) {
+        count += win32_count_leaf_controls(child);
+        child = child->next_sibling;
+    }
+    return count;
+}
+
+static void win32_apply_layout_to_tree_fallback(dui_schema_node* n)
 {
     dui_schema_node* child;
     if (!n) {
         return;
     }
     if (n->native && win32_is_leaf_kind(n->kind)) {
-        MoveWindow((HWND)n->native, n->x, n->y, n->w, n->h, TRUE);
+        MoveWindow((HWND)n->native, n->x, n->y, n->w, n->h, FALSE);
     }
     child = n->first_child;
     while (child) {
-        win32_apply_layout_to_tree(child);
+        win32_apply_layout_to_tree_fallback(child);
         child = child->next_sibling;
     }
 }
 
-static void win32_update_control_values(dui_window* win, dui_schema_node* n, int parent_visible)
+static HDWP win32_defer_layout_to_tree(HDWP hdwp, dui_schema_node* n)
+{
+    dui_schema_node* child;
+    if (!hdwp || !n) {
+        return hdwp;
+    }
+    if (n->native && win32_is_leaf_kind(n->kind)) {
+        hdwp = DeferWindowPos(hdwp,
+                              (HWND)n->native,
+                              (HWND)0,
+                              (int)n->x,
+                              (int)n->y,
+                              (int)n->w,
+                              (int)n->h,
+                              SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOCOPYBITS | SWP_NOREDRAW);
+    }
+    child = n->first_child;
+    while (child) {
+        hdwp = win32_defer_layout_to_tree(hdwp, child);
+        child = child->next_sibling;
+    }
+    return hdwp;
+}
+
+static void win32_apply_layout_to_tree(dui_window* win, dui_schema_node* root)
+{
+    u32 count;
+    HDWP hdwp;
+    if (!win || !root || !win->hwnd) {
+        return;
+    }
+    count = win32_count_leaf_controls(root);
+    if (count == 0u) {
+        return;
+    }
+    hdwp = BeginDeferWindowPos((int)count);
+    if (!hdwp) {
+        win32_apply_layout_to_tree_fallback(root);
+        return;
+    }
+    hdwp = win32_defer_layout_to_tree(hdwp, root);
+    if (hdwp) {
+        (void)EndDeferWindowPos(hdwp);
+    }
+}
+
+static void win32_build_node_text(const dui_schema_node* n,
+                                  const unsigned char* state,
+                                  u32 state_len,
+                                  char* out_text,
+                                  u32 out_cap)
+{
+    u32 text_len;
+    if (!out_text || out_cap == 0u) {
+        return;
+    }
+    out_text[0] = '\0';
+    text_len = 0u;
+    if (n && n->bind_id != 0u && state) {
+        (void)dui_state_get_text(state, state_len, n->bind_id, out_text, out_cap, &text_len);
+    }
+    if ((!out_text[0]) && n && n->text) {
+        u32 i = 0u;
+        while (i + 1u < out_cap && n->text[i]) {
+            out_text[i] = n->text[i];
+            i += 1u;
+        }
+        out_text[i] = '\0';
+    }
+}
+
+static int win32_list_items_equal(u32 bind_id,
+                                  const unsigned char* a_state,
+                                  u32 a_state_len,
+                                  const unsigned char* b_state,
+                                  u32 b_state_len)
+{
+    u32 a_count;
+    u32 b_count;
+    u32 i;
+    if (!bind_id || !a_state || !b_state) {
+        return 0;
+    }
+    a_count = 0u;
+    b_count = 0u;
+    (void)dui_state_get_list_item_count(a_state, a_state_len, bind_id, &a_count);
+    (void)dui_state_get_list_item_count(b_state, b_state_len, bind_id, &b_count);
+    if (a_count != b_count) {
+        return 0;
+    }
+    for (i = 0u; i < a_count; ++i) {
+        u32 a_id = 0u;
+        u32 b_id = 0u;
+        char a_text[256];
+        char b_text[256];
+        u32 a_len = 0u;
+        u32 b_len = 0u;
+        a_text[0] = '\0';
+        b_text[0] = '\0';
+        if (!dui_state_get_list_item_at(a_state, a_state_len, bind_id, i, &a_id, a_text, (u32)sizeof(a_text), &a_len)) {
+            return 0;
+        }
+        if (!dui_state_get_list_item_at(b_state, b_state_len, bind_id, i, &b_id, b_text, (u32)sizeof(b_text), &b_len)) {
+            return 0;
+        }
+        if (a_id != b_id || a_len != b_len) {
+            return 0;
+        }
+        if (a_len > 0u && memcmp(a_text, b_text, (size_t)a_len) != 0) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+static int win32_list_find_index_by_item_id(HWND h, u32 item_id)
+{
+    int count;
+    int i;
+    if (!h || item_id == 0u) {
+        return -1;
+    }
+    count = (int)SendMessageA(h, LB_GETCOUNT, 0, 0);
+    if (count <= 0) {
+        return -1;
+    }
+    for (i = 0; i < count; ++i) {
+        u32 id = (u32)SendMessageA(h, LB_GETITEMDATA, (WPARAM)i, 0);
+        if (id == item_id) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+static void win32_update_control_values(dui_window* win,
+                                       dui_schema_node* n,
+                                       int parent_visible,
+                                       const unsigned char* prev_state,
+                                       u32 prev_state_len)
 {
     dui_schema_node* child;
     char text[256];
     u32 text_len;
+    char prev_text[256];
     int visible;
     if (!win || !n) {
         return;
@@ -407,83 +570,130 @@ static void win32_update_control_values(dui_window* win, dui_schema_node* n, int
     visible = parent_visible && win32_node_visible(win, n);
     if (n->native && win32_is_leaf_kind(n->kind)) {
         HWND h = (HWND)n->native;
-        ShowWindow(h, visible ? SW_SHOW : SW_HIDE);
-        EnableWindow(h, visible ? TRUE : FALSE);
+        const int cur_vis = IsWindowVisible(h) ? 1 : 0;
+        const int cur_en = IsWindowEnabled(h) ? 1 : 0;
+        if (cur_vis != (visible ? 1 : 0)) {
+            ShowWindow(h, visible ? SW_SHOW : SW_HIDE);
+        }
+        if (cur_en != (visible ? 1 : 0)) {
+            EnableWindow(h, visible ? TRUE : FALSE);
+        }
         if (!visible) {
             /* Still recurse to ensure hidden subtrees are hidden too. */
             child = n->first_child;
             while (child) {
-                win32_update_control_values(win, child, visible);
+                win32_update_control_values(win, child, visible, prev_state, prev_state_len);
                 child = child->next_sibling;
             }
             return;
         }
         if (n->kind == (u32)DUI_NODE_LABEL || n->kind == (u32)DUI_NODE_BUTTON) {
-            text[0] = '\0';
-            text_len = 0u;
-            if (n->bind_id != 0u && win->state) {
-                (void)dui_state_get_text(win->state, win->state_len, n->bind_id, text, (u32)sizeof(text), &text_len);
+            if (n->bind_id != 0u) {
+                win32_build_node_text(n, win->state, win->state_len, text, (u32)sizeof(text));
+                win32_build_node_text(n, prev_state, prev_state_len, prev_text, (u32)sizeof(prev_text));
+                if (strcmp(text, prev_text) != 0) {
+                    SetWindowTextA(h, text);
+                }
             }
-            if (!text[0] && n->text) {
-                strncpy(text, n->text, sizeof(text) - 1u);
-                text[sizeof(text) - 1u] = '\0';
-            }
-            SetWindowTextA(h, text);
         } else if (n->kind == (u32)DUI_NODE_CHECKBOX) {
             u32 v = 0u;
             if (n->bind_id != 0u && win->state) {
                 (void)dui_state_get_u32(win->state, win->state_len, n->bind_id, &v);
             }
-            SendMessageA(h, BM_SETCHECK, (WPARAM)(v ? BST_CHECKED : BST_UNCHECKED), 0);
+            {
+                LRESULT st = SendMessageA(h, BM_GETCHECK, 0, 0);
+                const u32 cur = (st == BST_CHECKED) ? 1u : 0u;
+                if (cur != (v ? 1u : 0u)) {
+                    SendMessageA(h, BM_SETCHECK, (WPARAM)(v ? BST_CHECKED : BST_UNCHECKED), 0);
+                }
+            }
         } else if (n->kind == (u32)DUI_NODE_TEXT_FIELD) {
             text[0] = '\0';
             text_len = 0u;
             if (n->bind_id != 0u && win->state) {
                 (void)dui_state_get_text(win->state, win->state_len, n->bind_id, text, (u32)sizeof(text), &text_len);
             }
-            SetWindowTextA(h, text);
+            {
+                char cur_text[256];
+                cur_text[0] = '\0';
+                GetWindowTextA(h, cur_text, (int)sizeof(cur_text));
+                if (strcmp(cur_text, text) != 0) {
+                    SetWindowTextA(h, text);
+                }
+            }
         } else if (n->kind == (u32)DUI_NODE_PROGRESS) {
             u32 v = 0u;
+            u32 prev_v = 0u;
             if (n->bind_id != 0u && win->state) {
                 (void)dui_state_get_u32(win->state, win->state_len, n->bind_id, &v);
             }
             if (v > 1000u) v = 1000u;
-            SendMessageA(h, PBM_SETRANGE, 0, MAKELPARAM(0, 1000));
-            SendMessageA(h, PBM_SETPOS, (WPARAM)v, 0);
+            if (n->bind_id != 0u && prev_state) {
+                (void)dui_state_get_u32(prev_state, prev_state_len, n->bind_id, &prev_v);
+                if (prev_v > 1000u) prev_v = 1000u;
+            }
+            if (!prev_state || prev_v != v) {
+                SendMessageA(h, PBM_SETPOS, (WPARAM)v, 0);
+            }
         } else if (n->kind == (u32)DUI_NODE_LIST) {
             u32 count = 0u;
             u32 selected_id = 0u;
+            u32 prev_selected_id = 0u;
             u32 i;
-            win->suppress_events = 1u;
-            SendMessageA(h, LB_RESETCONTENT, 0, 0);
             if (n->bind_id != 0u && win->state) {
                 (void)dui_state_get_list_item_count(win->state, win->state_len, n->bind_id, &count);
                 (void)dui_state_get_list_selected_item_id(win->state, win->state_len, n->bind_id, &selected_id);
             }
-            for (i = 0u; i < count; ++i) {
-                u32 item_id = 0u;
-                char item_text[256];
-                u32 item_len = 0u;
-                int idx;
-                item_text[0] = '\0';
-                if (!dui_state_get_list_item_at(win->state, win->state_len, n->bind_id, i, &item_id, item_text, (u32)sizeof(item_text), &item_len)) {
-                    continue;
-                }
-                idx = (int)SendMessageA(h, LB_ADDSTRING, 0, (LPARAM)item_text);
-                if (idx >= 0) {
-                    SendMessageA(h, LB_SETITEMDATA, (WPARAM)idx, (LPARAM)item_id);
-                    if (item_id == selected_id) {
-                        SendMessageA(h, LB_SETCURSEL, (WPARAM)idx, 0);
+
+            if (n->bind_id != 0u && prev_state) {
+                (void)dui_state_get_list_selected_item_id(prev_state, prev_state_len, n->bind_id, &prev_selected_id);
+            }
+
+            if (!prev_state || !n->bind_id ||
+                !win32_list_items_equal(n->bind_id, prev_state, prev_state_len, win->state, win->state_len)) {
+                int top = (int)SendMessageA(h, LB_GETTOPINDEX, 0, 0);
+                int found_sel = -1;
+                SendMessageA(h, WM_SETREDRAW, (WPARAM)FALSE, 0);
+                SendMessageA(h, LB_RESETCONTENT, 0, 0);
+                for (i = 0u; i < count; ++i) {
+                    u32 item_id = 0u;
+                    char item_text[256];
+                    u32 item_len = 0u;
+                    int idx;
+                    item_text[0] = '\0';
+                    if (!dui_state_get_list_item_at(win->state, win->state_len, n->bind_id, i, &item_id, item_text, (u32)sizeof(item_text), &item_len)) {
+                        continue;
+                    }
+                    idx = (int)SendMessageA(h, LB_ADDSTRING, 0, (LPARAM)item_text);
+                    if (idx >= 0) {
+                        SendMessageA(h, LB_SETITEMDATA, (WPARAM)idx, (LPARAM)item_id);
+                        if (item_id == selected_id) {
+                            found_sel = idx;
+                        }
                     }
                 }
+                SendMessageA(h, LB_SETCURSEL, (WPARAM)found_sel, 0);
+                if (top >= 0 && (int)count > 0) {
+                    if (top >= (int)count) {
+                        top = (int)count - 1;
+                    }
+                    (void)SendMessageA(h, LB_SETTOPINDEX, (WPARAM)top, 0);
+                }
+                SendMessageA(h, WM_SETREDRAW, (WPARAM)TRUE, 0);
+                InvalidateRect(h, NULL, TRUE);
+            } else if (prev_selected_id != selected_id) {
+                int idx = -1;
+                if (selected_id != 0u) {
+                    idx = win32_list_find_index_by_item_id(h, selected_id);
+                }
+                SendMessageA(h, LB_SETCURSEL, (WPARAM)idx, 0);
             }
-            win->suppress_events = 0u;
         }
     }
 
     child = n->first_child;
     while (child) {
-        win32_update_control_values(win, child, visible);
+        win32_update_control_values(win, child, visible, prev_state, prev_state_len);
         child = child->next_sibling;
     }
 }
@@ -495,8 +705,11 @@ static void win32_relayout(dui_window* win)
         return;
     }
     GetClientRect(win->hwnd, &rc);
+    SendMessageA(win->hwnd, WM_SETREDRAW, (WPARAM)FALSE, 0);
     dui_schema_layout(win->root, 0, 0, (i32)(rc.right - rc.left), (i32)(rc.bottom - rc.top));
-    win32_apply_layout_to_tree(win->root);
+    win32_apply_layout_to_tree(win, win->root);
+    SendMessageA(win->hwnd, WM_SETREDRAW, (WPARAM)TRUE, 0);
+    RedrawWindow(win->hwnd, NULL, NULL, RDW_INVALIDATE | RDW_ALLCHILDREN);
 }
 
 static LRESULT CALLBACK dui_win32_wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
@@ -695,7 +908,7 @@ static dui_result win32_create_window(dui_context* ctx, const dui_window_desc_v1
     h = (desc) ? (int)desc->height : 600;
     if (w <= 0) w = 800;
     if (h <= 0) h = 600;
-    style = WS_OVERLAPPEDWINDOW;
+    style = WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_CLIPSIBLINGS;
     rect.left = 0;
     rect.top = 0;
     rect.right = w;
@@ -819,19 +1032,33 @@ static dui_result win32_set_schema_tlv(dui_window* win, const void* schema_tlv, 
 static dui_result win32_set_state_tlv(dui_window* win, const void* state_tlv, u32 state_len)
 {
     unsigned char* copy;
+    unsigned char* prev_state;
+    u32 prev_state_len;
     if (!win || (!state_tlv && state_len != 0u)) {
         return DUI_ERR_NULL;
     }
-    if (win->state) {
-        free(win->state);
-        win->state = (unsigned char*)0;
-        win->state_len = 0u;
+
+    if (win->state && state_tlv && state_len == win->state_len && state_len != 0u) {
+        if (memcmp(win->state, state_tlv, (size_t)state_len) == 0) {
+            return DUI_OK;
+        }
     }
+
+    prev_state = win->state;
+    prev_state_len = win->state_len;
+    win->state = (unsigned char*)0;
+    win->state_len = 0u;
+
     if (!state_tlv || state_len == 0u) {
+        if (prev_state) {
+            free(prev_state);
+        }
         return DUI_OK;
     }
     copy = (unsigned char*)malloc((size_t)state_len);
     if (!copy) {
+        win->state = prev_state;
+        win->state_len = prev_state_len;
         return DUI_ERR;
     }
     memcpy(copy, state_tlv, (size_t)state_len);
@@ -841,10 +1068,13 @@ static dui_result win32_set_state_tlv(dui_window* win, const void* state_tlv, u3
 #if defined(_WIN32)
     if (win->root) {
         win->suppress_events = 1u;
-        win32_update_control_values(win, win->root, 1);
+        win32_update_control_values(win, win->root, 1, prev_state, prev_state_len);
         win->suppress_events = 0u;
     }
 #endif
+    if (prev_state) {
+        free(prev_state);
+    }
     return DUI_OK;
 }
 
