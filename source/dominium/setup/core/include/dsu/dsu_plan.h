@@ -89,6 +89,17 @@ DSU_API const char *dsu_plan_file_component_id(const dsu_plan_t *plan, dsu_u32 i
 DSU_API dsu_status_t dsu_plan_write_file(dsu_ctx_t *ctx, const dsu_plan_t *plan, const char *path);
 DSU_API dsu_status_t dsu_plan_read_file(dsu_ctx_t *ctx, const char *path, dsu_plan_t **out_plan);
 
+/*
+Validate a plan object:
+- payload checksum (id_hash32/id_hash64)
+- supported operation/scope enums
+- internal coherence of component/file/step references
+*/
+DSU_API dsu_status_t dsu_plan_validate(const dsu_plan_t *plan);
+
+/* Convenience: validate an on-disk plan file. */
+DSU_API dsu_status_t dsu_plan_validate_file(dsu_ctx_t *ctx, const char *path);
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif

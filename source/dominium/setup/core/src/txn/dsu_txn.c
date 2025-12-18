@@ -418,6 +418,71 @@ static dsu_status_t dsu__mkdir_parent_abs(const char *abs_path) {
     return dsu_platform_mkdir(dir);
 }
 
+static dsu_status_t dsu__rm_tree_abs(const char *abs_path) {
+    dsu_u8 exists = 0u;
+    dsu_u8 is_dir = 0u;
+    dsu_u8 is_symlink = 0u;
+    dsu_status_t st;
+
+    if (!abs_path || abs_path[0] == '\0') {
+        return DSU_STATUS_INVALID_ARGS;
+    }
+
+    st = dsu_platform_path_info(abs_path, &exists, &is_dir, &is_symlink);
+    if (st != DSU_STATUS_SUCCESS) {
+        return st;
+    }
+    if (!exists) {
+        return DSU_STATUS_SUCCESS;
+    }
+
+    /* Do not traverse symlinks/reparse points. */
+    if (is_symlink) {
+        st = dsu_platform_remove_file(abs_path);
+        if (st == DSU_STATUS_SUCCESS) {
+            return DSU_STATUS_SUCCESS;
+        }
+        st = dsu_platform_rmdir(abs_path);
+        if (st == DSU_STATUS_SUCCESS) {
+            return DSU_STATUS_SUCCESS;
+        }
+        return DSU_STATUS_IO_ERROR;
+    }
+
+    if (!is_dir) {
+        return dsu_platform_remove_file(abs_path);
+    }
+
+    {
+        dsu_platform_dir_entry_t *entries = NULL;
+        dsu_u32 count = 0u;
+        dsu_u32 i;
+
+        st = dsu_platform_list_dir(abs_path, &entries, &count);
+        if (st != DSU_STATUS_SUCCESS) {
+            return st;
+        }
+        for (i = 0u; i < count; ++i) {
+            char child[1024];
+            st = dsu_fs_path_join(abs_path, entries[i].name ? entries[i].name : "", child, (dsu_u32)sizeof(child));
+            if (st != DSU_STATUS_SUCCESS) {
+                dsu_platform_free_dir_entries(entries, count);
+                return st;
+            }
+            st = dsu__rm_tree_abs(child);
+            if (st != DSU_STATUS_SUCCESS) {
+                dsu_platform_free_dir_entries(entries, count);
+                return st;
+            }
+        }
+        dsu_platform_free_dir_entries(entries, count);
+        entries = NULL;
+        count = 0u;
+    }
+
+    return dsu_platform_rmdir(abs_path);
+}
+
 static dsu_status_t dsu__dir_of_rel_path(const char *rel_path, char *out_dir, dsu_u32 out_dir_cap) {
     char base[256];
     if (!rel_path || !out_dir || out_dir_cap == 0u) {
@@ -589,6 +654,24 @@ static dsu_u32 dsu__str_list_index_of(char **items, dsu_u32 count, const char *c
     return 0xFFFFFFFFu;
 }
 
+static int dsu__sorted_str_ptrs_contains(char **items, dsu_u32 count, const char *needle) {
+    dsu_u32 lo = 0u;
+    dsu_u32 hi = count;
+    if (!needle) return 0;
+    while (lo < hi) {
+        dsu_u32 mid = lo + (hi - lo) / 2u;
+        const char *s = (items && items[mid]) ? items[mid] : "";
+        int c = dsu__strcmp_bytes(s, needle);
+        if (c == 0) return 1;
+        if (c < 0) {
+            lo = mid + 1u;
+        } else {
+            hi = mid;
+        }
+    }
+    return 0;
+}
+
 static dsu_status_t dsu__fs_create_for_plan(dsu_ctx_t *ctx,
                                            const dsu_plan_t *plan,
                                            const char *install_root_abs,
@@ -698,6 +781,13 @@ static dsu_status_t dsu__txn_stage_plan_files(dsu_fs_t *fs,
     if (st != DSU_STATUS_SUCCESS) return st;
     st = dsu_fs_mkdir_p(fs, (dsu_u32)DSU_JOURNAL_ROOT_TXN, DSU_TXN_JOURNAL_DIR);
     if (st != DSU_STATUS_SUCCESS) return st;
+
+    if (dsu_plan_operation(plan) == DSU_RESOLVE_OPERATION_UNINSTALL) {
+        if (out_staged_count) {
+            *out_staged_count = 0u;
+        }
+        return DSU_STATUS_SUCCESS;
+    }
 
     for (i = 0u; i < dsu_plan_file_count(plan); ++i) {
         dsu_manifest_payload_kind_t kind = dsu_plan_file_source_kind(plan, i);
@@ -871,6 +961,12 @@ static dsu_status_t dsu__txn_write_state_file(dsu_ctx_t *ctx,
 
     st = dsu__state_build_from_plan(ctx, plan, prev_state, journal_id, 0, 0u, &stobj);
     if (st != DSU_STATUS_SUCCESS) return st;
+    if (dsu_plan_operation(plan) == DSU_RESOLVE_OPERATION_UNINSTALL && dsu_state_component_count(stobj) == 0u) {
+        dsu_state_destroy(ctx, stobj);
+        stobj = NULL;
+        out_state_txn_rel[0] = '\0';
+        return DSU_STATUS_SUCCESS;
+    }
     st = dsu_state_write_file(ctx, stobj, abs);
     dsu_state_destroy(ctx, stobj);
     stobj = NULL;
@@ -1289,6 +1385,7 @@ static dsu_status_t dsu__txn_add_state_entries(dsu_fs_t *fs,
 
 static dsu_status_t dsu__txn_build_entries_for_plan(dsu_fs_t *fs,
                                                    const dsu_plan_t *plan,
+                                                   const dsu_state_t *prev_state,
                                                    const char *state_rel,
                                                    const char *state_txn_rel,
                                                    dsu__txn_entry_t **out_entries,
@@ -1304,6 +1401,245 @@ static dsu_status_t dsu__txn_build_entries_for_plan(dsu_fs_t *fs,
     if (out_entry_count) *out_entry_count = 0u;
     if (!fs || !plan || !state_rel || !state_txn_rel || !out_entries || !out_entry_count) {
         return DSU_STATUS_INVALID_ARGS;
+    }
+
+    if (dsu_plan_operation(plan) == DSU_RESOLVE_OPERATION_UNINSTALL) {
+        char **paths = NULL;
+        dsu_u32 path_count = 0u;
+        dsu_u32 path_cap = 0u;
+        char **kept_paths = NULL;
+        dsu_u32 kept_count = 0u;
+        dsu_u32 kept_cap = 0u;
+        dsu_u32 dir_cap = 0u;
+        dsu_u32 ci;
+        dsu_u32 fi;
+        dsu_u32 i;
+
+        if (!prev_state) {
+            return DSU_STATUS_INVALID_ARGS;
+        }
+
+        /* Collect owned file paths for components that will remain (to avoid deleting shared paths). */
+        for (ci = 0u; ci < dsu_state_component_count(prev_state); ++ci) {
+            const char *id = dsu_state_component_id(prev_state, ci);
+            dsu_u8 uninstall = 0u;
+            for (i = 0u; i < dsu_plan_component_count(plan); ++i) {
+                const char *pid = dsu_plan_component_id(plan, i);
+                if (pid && id && dsu__strcmp_bytes(pid, id) == 0) {
+                    uninstall = 1u;
+                    break;
+                }
+            }
+            if (uninstall) continue;
+            for (fi = 0u; fi < dsu_state_component_file_count(prev_state, ci); ++fi) {
+                dsu_state_file_ownership_t own = dsu_state_component_file_ownership(prev_state, ci, fi);
+                const char *p = dsu_state_component_file_path(prev_state, ci, fi);
+                dsu_u32 root_index = dsu_state_component_file_root_index(prev_state, ci, fi);
+                char *canon = NULL;
+                if (own != DSU_STATE_FILE_OWNERSHIP_OWNED) continue;
+                if (root_index != 0u) {
+                    st = DSU_STATUS_INVALID_ARGS;
+                    goto uninstall_done;
+                }
+                st = dsu__canon_rel_path_ex(p ? p : "", 0, &canon);
+                if (st != DSU_STATUS_SUCCESS) goto uninstall_done;
+                if (dsu__path_has_prefix_seg(canon, ".dsu") ||
+                    dsu__path_has_prefix_seg(canon, DSU_TXN_INTERNAL_DIR)) {
+                    dsu__free(canon);
+                    st = DSU_STATUS_INVALID_ARGS;
+                    goto uninstall_done;
+                }
+                st = dsu__str_list_add_unique(&kept_paths, &kept_count, &kept_cap, canon);
+                dsu__free(canon);
+                canon = NULL;
+                if (st != DSU_STATUS_SUCCESS) goto uninstall_done;
+            }
+        }
+        if (kept_count > 1u) {
+            dsu__sort_str_ptrs(kept_paths, kept_count);
+        }
+
+        /* Collect existing owned files to remove (deterministic by path). */
+        for (ci = 0u; ci < dsu_state_component_count(prev_state); ++ci) {
+            const char *id = dsu_state_component_id(prev_state, ci);
+            dsu_u8 uninstall = 0u;
+            for (i = 0u; i < dsu_plan_component_count(plan); ++i) {
+                const char *pid = dsu_plan_component_id(plan, i);
+                if (pid && id && dsu__strcmp_bytes(pid, id) == 0) {
+                    uninstall = 1u;
+                    break;
+                }
+            }
+            if (!uninstall) continue;
+
+            for (fi = 0u; fi < dsu_state_component_file_count(prev_state, ci); ++fi) {
+                dsu_state_file_ownership_t own = dsu_state_component_file_ownership(prev_state, ci, fi);
+                const char *p = dsu_state_component_file_path(prev_state, ci, fi);
+                dsu_u32 root_index = dsu_state_component_file_root_index(prev_state, ci, fi);
+                char *canon = NULL;
+                dsu_u8 exists;
+                dsu_u8 is_dir;
+                dsu_u8 is_symlink;
+
+                if (own != DSU_STATE_FILE_OWNERSHIP_OWNED) continue;
+                if (root_index != 0u) {
+                    st = DSU_STATUS_INVALID_ARGS;
+                    goto uninstall_done;
+                }
+                st = dsu__canon_rel_path_ex(p ? p : "", 0, &canon);
+                if (st != DSU_STATUS_SUCCESS) goto uninstall_done;
+                if (dsu__path_has_prefix_seg(canon, ".dsu") ||
+                    dsu__path_has_prefix_seg(canon, DSU_TXN_INTERNAL_DIR)) {
+                    dsu__free(canon);
+                    st = DSU_STATUS_INVALID_ARGS;
+                    goto uninstall_done;
+                }
+                if (kept_count && dsu__sorted_str_ptrs_contains(kept_paths, kept_count, canon)) {
+                    dsu__free(canon);
+                    canon = NULL;
+                    continue;
+                }
+                st = dsu__fs_path_info_rel(fs, (dsu_u32)DSU_JOURNAL_ROOT_INSTALL, canon, &exists, &is_dir, &is_symlink);
+                if (st != DSU_STATUS_SUCCESS) {
+                    dsu__free(canon);
+                    goto uninstall_done;
+                }
+                if (exists && (is_dir || is_symlink)) {
+                    dsu__free(canon);
+                    st = DSU_STATUS_IO_ERROR;
+                    goto uninstall_done;
+                }
+                if (exists) {
+                    st = dsu__str_list_add_unique(&paths, &path_count, &path_cap, canon);
+                    if (st != DSU_STATUS_SUCCESS) {
+                        dsu__free(canon);
+                        goto uninstall_done;
+                    }
+                }
+                dsu__free(canon);
+                canon = NULL;
+            }
+        }
+
+        if (state_txn_rel[0] == '\0') {
+            dsu_u8 exists;
+            dsu_u8 is_dir;
+            dsu_u8 is_symlink;
+            st = dsu__fs_path_info_rel(fs, (dsu_u32)DSU_JOURNAL_ROOT_INSTALL, state_rel, &exists, &is_dir, &is_symlink);
+            if (st != DSU_STATUS_SUCCESS) goto uninstall_done;
+            if (exists && (is_dir || is_symlink)) {
+                st = DSU_STATUS_IO_ERROR;
+                goto uninstall_done;
+            }
+            if (exists) {
+                st = dsu__str_list_add_unique(&paths, &path_count, &path_cap, state_rel);
+                if (st != DSU_STATUS_SUCCESS) goto uninstall_done;
+            }
+        }
+
+        if (path_count > 1u) {
+            dsu__sort_str_ptrs(paths, path_count);
+        }
+
+        for (i = 0u; i < path_count; ++i) {
+            dsu__txn_entry_t e;
+            memset(&e, 0, sizeof(e));
+            e.type = (dsu_u16)DSU_JOURNAL_ENTRY_MOVE_FILE;
+            e.source_root = (dsu_u8)DSU_JOURNAL_ROOT_INSTALL;
+            e.source_path = dsu__strdup(paths[i] ? paths[i] : "");
+            e.target_root = (dsu_u8)DSU_JOURNAL_ROOT_TXN;
+            e.target_path = dsu__strdup(paths[i] ? paths[i] : "");
+            e.rollback_root = (dsu_u8)DSU_JOURNAL_ROOT_INSTALL;
+            e.rollback_path = dsu__strdup(paths[i] ? paths[i] : "");
+            if (!e.source_path || !e.target_path || !e.rollback_path) {
+                dsu__free(e.source_path);
+                dsu__free(e.target_path);
+                dsu__free(e.rollback_path);
+                st = DSU_STATUS_IO_ERROR;
+                goto uninstall_done;
+            }
+            st = dsu__txn_entries_push_take(&entries, &entry_count, &entry_cap, &e);
+            if (st != DSU_STATUS_SUCCESS) {
+                dsu__free(e.source_path);
+                dsu__free(e.target_path);
+                dsu__free(e.rollback_path);
+                goto uninstall_done;
+            }
+        }
+
+        if (state_txn_rel[0] != '\0') {
+            st = dsu__txn_add_state_entries(fs, state_rel, state_txn_rel, &entries, &entry_count, &entry_cap);
+            if (st != DSU_STATUS_SUCCESS) goto uninstall_done;
+        }
+
+        /* Remove emptied parent directories after files are moved out. */
+        for (i = 0u; i < path_count; ++i) {
+            const char *p = paths[i];
+            dsu_u32 n;
+            dsu_u32 j;
+            if (!p) continue;
+            n = dsu__strlen(p);
+            if (n == 0xFFFFFFFFu) {
+                st = DSU_STATUS_INVALID_ARGS;
+                goto uninstall_done;
+            }
+            for (j = 0u; j < n; ++j) {
+                if (p[j] == '/') {
+                    char tmp[1024];
+                    if (j >= (dsu_u32)sizeof(tmp)) {
+                        st = DSU_STATUS_INVALID_ARGS;
+                        goto uninstall_done;
+                    }
+                    memcpy(tmp, p, (size_t)j);
+                    tmp[j] = '\0';
+                    st = dsu__str_list_add_unique(&dirs, &dir_count, &dir_cap, tmp);
+                    if (st != DSU_STATUS_SUCCESS) goto uninstall_done;
+                }
+            }
+        }
+        if (dir_count > 1u) {
+            dsu__sort_str_ptrs(dirs, dir_count);
+        }
+        for (i = 0u; i < dir_count; ++i) {
+            dsu__txn_entry_t e;
+            memset(&e, 0, sizeof(e));
+            e.type = (dsu_u16)DSU_JOURNAL_ENTRY_REMOVE_DIR;
+            e.target_root = (dsu_u8)DSU_JOURNAL_ROOT_INSTALL;
+            e.rollback_root = (dsu_u8)DSU_JOURNAL_ROOT_INSTALL;
+            e.target_path = dsu__strdup(dirs[i] ? dirs[i] : "");
+            e.source_path = dsu__strdup("");
+            e.rollback_path = dsu__strdup(dirs[i] ? dirs[i] : "");
+            if (!e.target_path || !e.source_path || !e.rollback_path) {
+                dsu__free(e.target_path);
+                dsu__free(e.source_path);
+                dsu__free(e.rollback_path);
+                st = DSU_STATUS_IO_ERROR;
+                goto uninstall_done;
+            }
+            st = dsu__txn_entries_push_take(&entries, &entry_count, &entry_cap, &e);
+            if (st != DSU_STATUS_SUCCESS) {
+                dsu__free(e.target_path);
+                dsu__free(e.source_path);
+                dsu__free(e.rollback_path);
+                goto uninstall_done;
+            }
+        }
+
+        if (entry_count > 1u) {
+            qsort(entries, (size_t)entry_count, sizeof(*entries), dsu__txn_entry_cmp);
+        }
+        *out_entries = entries;
+        *out_entry_count = entry_count;
+        st = DSU_STATUS_SUCCESS;
+
+uninstall_done:
+        if (dirs) dsu__str_list_free(dirs, dir_count);
+        if (paths) dsu__str_list_free(paths, path_count);
+        if (kept_paths) dsu__str_list_free(kept_paths, kept_count);
+        if (st != DSU_STATUS_SUCCESS) {
+            dsu__txn_entries_free(entries, entry_count);
+        }
+        return st;
     }
 
     st = dsu__txn_collect_install_dirs(plan, state_rel, &dirs, &dir_count);
@@ -1400,6 +1736,10 @@ static dsu_status_t dsu__txn_verify_staged_files(dsu_fs_t *fs,
     io_result->verified_ok = 0u;
     io_result->verified_missing = 0u;
     io_result->verified_mismatch = 0u;
+
+    if (dsu_plan_operation(plan) == DSU_RESOLVE_OPERATION_UNINSTALL) {
+        return DSU_STATUS_SUCCESS;
+    }
 
     for (i = 0u; i < dsu_plan_file_count(plan); ++i) {
         const char *target = dsu_plan_file_target_path(plan, i);
@@ -1792,8 +2132,9 @@ dsu_status_t dsu_txn_apply_plan(dsu_ctx_t *ctx,
         local_opts = *opts;
     }
 
-    if (dsu_plan_operation(plan) == DSU_RESOLVE_OPERATION_UNINSTALL) {
-        return DSU_STATUS_INVALID_REQUEST;
+    st = dsu_plan_validate(plan);
+    if (st != DSU_STATUS_SUCCESS) {
+        return st;
     }
 
     plan_digest = dsu_plan_id_hash64(plan);
@@ -1856,6 +2197,27 @@ dsu_status_t dsu_txn_apply_plan(dsu_ctx_t *ctx,
     st = dsu__txn_try_load_prev_state(ctx, fs, state_rel, &prev_state);
     if (st != DSU_STATUS_SUCCESS) goto done;
 
+    {
+        dsu_resolve_operation_t op = dsu_plan_operation(plan);
+        if (op == DSU_RESOLVE_OPERATION_INSTALL) {
+            if (prev_state) {
+                st = DSU_STATUS_INVALID_REQUEST;
+                goto done;
+            }
+        } else {
+            if (!prev_state) {
+                st = DSU_STATUS_INVALID_REQUEST;
+                goto done;
+            }
+            if (dsu__strcmp_bytes(dsu_state_product_id(prev_state), dsu_plan_product_id(plan)) != 0 ||
+                dsu_state_install_scope(prev_state) != dsu_plan_scope(plan) ||
+                dsu__strcmp_bytes(dsu_state_platform(prev_state), dsu_plan_platform(plan)) != 0) {
+                st = DSU_STATUS_INVALID_REQUEST;
+                goto done;
+            }
+        }
+    }
+
     st = dsu__txn_stage_plan_files(fs, extra_roots, extra_root_count, plan, state_rel, &staged_count);
     if (st != DSU_STATUS_SUCCESS) goto done;
     out_result->staged_file_count = staged_count;
@@ -1870,7 +2232,7 @@ dsu_status_t dsu_txn_apply_plan(dsu_ctx_t *ctx,
                       (dsu_u8)DSU_LOG_CATEGORY_IO,
                       "stage complete");
 
-    st = dsu__txn_build_entries_for_plan(fs, plan, state_rel, state_txn_rel, &entries, &entry_count);
+    st = dsu__txn_build_entries_for_plan(fs, plan, prev_state, state_rel, state_txn_rel, &entries, &entry_count);
     if (st != DSU_STATUS_SUCCESS) goto done;
     out_result->journal_entry_count = entry_count;
 
@@ -1922,6 +2284,21 @@ dsu_status_t dsu_txn_apply_plan(dsu_ctx_t *ctx,
                       "verify complete");
 
     if (local_opts.dry_run) {
+        /* Dry-run must not leave staging artifacts behind. */
+        (void)dsu__rm_tree_abs(txn_root_abs);
+        {
+            char txn_parent[1024];
+            char txn_base[256];
+            if (dsu_fs_path_split(txn_root_abs,
+                                  txn_parent,
+                                  (dsu_u32)sizeof(txn_parent),
+                                  txn_base,
+                                  (dsu_u32)sizeof(txn_base)) == DSU_STATUS_SUCCESS) {
+                if (txn_parent[0] != '\0') {
+                    (void)dsu_platform_rmdir(txn_parent);
+                }
+            }
+        }
         st = DSU_STATUS_SUCCESS;
         goto done;
     }
@@ -1937,13 +2314,15 @@ dsu_status_t dsu_txn_apply_plan(dsu_ctx_t *ctx,
     }
     out_result->commit_progress = entry_count;
 
-    st = dsu__txn_verify_installed_files(fs, plan, state_rel, out_result);
-    if (st != DSU_STATUS_SUCCESS) {
-        dsu_status_t rst = dsu__txn_rollback(ctx, fs, entries, entry_count, entry_count);
-        if (rst != DSU_STATUS_SUCCESS) {
-            st = rst;
+    if (dsu_plan_operation(plan) != DSU_RESOLVE_OPERATION_UNINSTALL) {
+        st = dsu__txn_verify_installed_files(fs, plan, state_rel, out_result);
+        if (st != DSU_STATUS_SUCCESS) {
+            dsu_status_t rst = dsu__txn_rollback(ctx, fs, entries, entry_count, entry_count);
+            if (rst != DSU_STATUS_SUCCESS) {
+                st = rst;
+            }
+            goto done;
         }
-        goto done;
     }
 
     /* On success, record a state digest event for forensics. */

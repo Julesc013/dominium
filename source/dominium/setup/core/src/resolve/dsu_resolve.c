@@ -1006,18 +1006,21 @@ dsu_status_t dsu_resolve_components(dsu_ctx_t *ctx,
         (void)dsu__log_push(r, (dsu_u8)DSU_RESOLVE_LOG_SEED_USER, requested[i], "");
     }
 
-    for (i = 0u; i < g.node_count; ++i) {
-        const dsu__graph_node_t *node = &g.nodes[i];
-        const char *id = node->id ? node->id : "";
-        if ((node->flags & DSU_MANIFEST_COMPONENT_FLAG_DEFAULT_SELECTED) == 0u) {
-            continue;
-        }
-        if (dsu__sorted_str_list_contains(excluded, excluded_count, id)) {
-            continue;
-        }
-        if (!selected[i]) {
-            dsu__select_with_source(i, (dsu_u8)DSU_RESOLVE_SOURCE_DEFAULT, selected, sources);
-            (void)dsu__log_push(r, (dsu_u8)DSU_RESOLVE_LOG_SEED_DEFAULT, id, "");
+    /* Default selection applies only when the user did not explicitly specify components. */
+    if (requested_count == 0u) {
+        for (i = 0u; i < g.node_count; ++i) {
+            const dsu__graph_node_t *node = &g.nodes[i];
+            const char *id = node->id ? node->id : "";
+            if ((node->flags & DSU_MANIFEST_COMPONENT_FLAG_DEFAULT_SELECTED) == 0u) {
+                continue;
+            }
+            if (dsu__sorted_str_list_contains(excluded, excluded_count, id)) {
+                continue;
+            }
+            if (!selected[i]) {
+                dsu__select_with_source(i, (dsu_u8)DSU_RESOLVE_SOURCE_DEFAULT, selected, sources);
+                (void)dsu__log_push(r, (dsu_u8)DSU_RESOLVE_LOG_SEED_DEFAULT, id, "");
+            }
         }
     }
 
