@@ -80,6 +80,33 @@ set_target_properties(dsu_txn_test PROPERTIES
 
 add_test(NAME dsu_txn_test COMMAND dsu_txn_test)
 
+add_executable(dsu_cli_test
+    dsu_cli_test.c
+)
+
+target_include_directories(dsu_cli_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../core/include
+)
+
+target_link_libraries(dsu_cli_test
+    PRIVATE dsu_core
+)
+
+add_dependencies(dsu_cli_test
+    dominium-setup
+)
+
+set_target_properties(dsu_cli_test PROPERTIES
+    C_STANDARD 90
+    C_STANDARD_REQUIRED ON
+    C_EXTENSIONS OFF
+)
+
+add_test(NAME dsu_cli_test COMMAND dsu_cli_test $<TARGET_FILE:dominium-setup> ${CMAKE_CURRENT_SOURCE_DIR})
+set_tests_properties(dsu_cli_test PROPERTIES
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+)
+
 if(WIN32)
     add_executable(dsu_adapter_smoke_test
         dsu_adapter_smoke_test.c
