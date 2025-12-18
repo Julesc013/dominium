@@ -10,6 +10,7 @@ PURPOSE: Plan builder and deterministic dsuplan (de)serialization.
 #include "../dsu_ctx_internal.h"
 #include "../fs/dsu_platform_iface.h"
 #include "../log/dsu_events.h"
+#include "../platform_iface/dsu_platform_iface_internal.h"
 #include "../util/dsu_util_internal.h"
 
 #include <stdlib.h>
@@ -32,12 +33,24 @@ PURPOSE: Plan builder and deterministic dsuplan (de)serialization.
 #define DSU_PLANX_TLV_ROOT_VERSION 0x9001u /* u32 */
 #define DSU_PLANX_TLV_BUILD_CHANNEL 0x9010u /* string */
 #define DSU_PLANX_TLV_COMPONENT_KINDS 0x9011u /* bytes[count] */
+#define DSU_PLANX_TLV_COMPONENT 0x9012u /* container */
+#define DSU_PLANX_TLV_COMPONENT_ID 0x9013u /* string */
+#define DSU_PLANX_TLV_COMPONENT_REGISTRATION 0x9014u /* string */
+#define DSU_PLANX_TLV_COMPONENT_MARKER 0x9015u /* string */
 
 typedef struct dsu_plan_component_t {
     char *id;
     char *version;
     dsu_u8 kind;
     dsu_u8 reserved8[3];
+
+    dsu_u32 registration_count;
+    dsu_u32 registration_cap;
+    char **registrations;
+
+    dsu_u32 marker_count;
+    dsu_u32 marker_cap;
+    char **markers;
 } dsu_plan_component_t;
 
 typedef struct dsu_plan_file_t {
@@ -80,6 +93,8 @@ struct dsu_plan {
     dsu_plan_step_t *steps;
 };
 
+static void dsu__str_list_free(char **items, dsu_u32 count);
+
 static void dsu__plan_file_free(dsu_plan_file_t *f) {
     if (!f) {
         return;
@@ -103,6 +118,14 @@ static void dsu__plan_free(dsu_plan_t *p) {
     for (i = 0u; i < p->component_count; ++i) {
         dsu__free(p->components[i].id);
         dsu__free(p->components[i].version);
+        dsu__str_list_free(p->components[i].registrations, p->components[i].registration_count);
+        dsu__str_list_free(p->components[i].markers, p->components[i].marker_count);
+        p->components[i].registrations = NULL;
+        p->components[i].markers = NULL;
+        p->components[i].registration_count = 0u;
+        p->components[i].registration_cap = 0u;
+        p->components[i].marker_count = 0u;
+        p->components[i].marker_cap = 0u;
     }
     dsu__free(p->components);
     for (i = 0u; i < p->dir_count; ++i) {
@@ -297,6 +320,42 @@ static void dsu__str_list_free(char **items, dsu_u32 count) {
         dsu__free(items[i]);
     }
     dsu__free(items);
+}
+
+static dsu_u32 dsu__plan_component_index_by_id(const dsu_plan_t *p, const char *id) {
+    dsu_u32 i;
+    if (!p || !id || id[0] == '\0') {
+        return 0xFFFFFFFFu;
+    }
+    for (i = 0u; i < p->component_count; ++i) {
+        const char *cid = p->components[i].id;
+        if (cid && dsu__strcmp_bytes(cid, id) == 0) {
+            return i;
+        }
+    }
+    return 0xFFFFFFFFu;
+}
+
+static dsu_status_t dsu__plan_component_push_registration(dsu_plan_component_t *c, const dsu_platform_intent_t *intent) {
+    char *enc = NULL;
+    dsu_status_t st;
+    if (!c || !intent) {
+        return DSU_STATUS_INVALID_ARGS;
+    }
+    st = dsu__platform_encode_intent_v1(intent, &enc);
+    if (st != DSU_STATUS_SUCCESS) {
+        return st;
+    }
+    if (!enc || enc[0] == '\0') {
+        dsu__free(enc);
+        return DSU_STATUS_IO_ERROR;
+    }
+    st = dsu__str_list_push(&c->registrations, &c->registration_count, &c->registration_cap, enc);
+    if (st != DSU_STATUS_SUCCESS) {
+        dsu__free(enc);
+        return st;
+    }
+    return DSU_STATUS_SUCCESS;
 }
 
 static dsu_status_t dsu__file_list_push_take(dsu_plan_file_t **items,
@@ -650,6 +709,7 @@ dsu_status_t dsu_plan_build(dsu_ctx_t *ctx,
         return DSU_STATUS_INVALID_ARGS;
     }
     *out_plan = NULL;
+    st = DSU_STATUS_SUCCESS;
 
     resolved_count = dsu_resolve_result_component_count(resolved);
     apply_count = 0u;
@@ -712,18 +772,109 @@ dsu_status_t dsu_plan_build(dsu_ctx_t *ctx,
         ++p->component_count;
     }
 
-    /* Fill component kinds from the manifest (best-effort; default OTHER). */
-    for (i = 0u; i < p->component_count; ++i) {
+    /* Fill component kinds and platform actions from the manifest (best-effort). */
+    for (i = 0u; i < p->component_count && st == DSU_STATUS_SUCCESS; ++i) {
         dsu_u32 mi;
         const char *cid = p->components[i].id;
         dsu_u32 mcount = dsu_manifest_component_count(manifest);
-        for (mi = 0u; mi < mcount; ++mi) {
+        for (mi = 0u; mi < mcount && st == DSU_STATUS_SUCCESS; ++mi) {
             const char *mid = dsu_manifest_component_id(manifest, mi);
             if (mid && cid && dsu__strcmp_bytes(mid, cid) == 0) {
+                dsu_u32 ai;
+                dsu_u32 acount;
                 p->components[i].kind = (dsu_u8)dsu_manifest_component_kind(manifest, mi);
+                acount = dsu_manifest_component_action_count(manifest, mi);
+                for (ai = 0u; ai < acount && st == DSU_STATUS_SUCCESS; ++ai) {
+                    dsu_manifest_action_kind_t ak = dsu_manifest_component_action_kind(manifest, mi, ai);
+                    if (ak == DSU_MANIFEST_ACTION_WRITE_FIRST_RUN_MARKER) {
+                        const char *marker = dsu_manifest_component_action_marker_relpath(manifest, mi, ai);
+                        char *dup = NULL;
+                        if (!marker || marker[0] == '\0') {
+                            st = DSU_STATUS_INVALID_REQUEST;
+                        } else {
+                            dup = dsu__strdup(marker);
+                            if (!dup) {
+                                st = DSU_STATUS_IO_ERROR;
+                            } else {
+                                st = dsu__str_list_push(&p->components[i].markers,
+                                                        &p->components[i].marker_count,
+                                                        &p->components[i].marker_cap,
+                                                        dup);
+                                if (st != DSU_STATUS_SUCCESS) {
+                                    dsu__free(dup);
+                                }
+                            }
+                        }
+                    } else if (ak == DSU_MANIFEST_ACTION_REGISTER_APP_ENTRY) {
+                        dsu_platform_intent_t it;
+                        dsu_platform_intent_init(&it);
+                        it.kind = (dsu_u8)DSU_PLATFORM_INTENT_REGISTER_APP_ENTRY;
+                        it.component_id = cid;
+                        it.app_id = dsu_manifest_component_action_app_id(manifest, mi, ai);
+                        it.display_name = dsu_manifest_component_action_display_name(manifest, mi, ai);
+                        it.exec_relpath = dsu_manifest_component_action_exec_relpath(manifest, mi, ai);
+                        it.arguments = dsu_manifest_component_action_arguments(manifest, mi, ai);
+                        it.icon_relpath = dsu_manifest_component_action_icon_relpath(manifest, mi, ai);
+                        it.publisher = dsu_manifest_component_action_publisher(manifest, mi, ai);
+                        st = dsu__plan_component_push_registration(&p->components[i], &it);
+                    } else if (ak == DSU_MANIFEST_ACTION_REGISTER_FILE_ASSOC) {
+                        dsu_platform_intent_t it;
+                        dsu_platform_intent_init(&it);
+                        it.kind = (dsu_u8)DSU_PLATFORM_INTENT_REGISTER_FILE_ASSOC;
+                        it.component_id = cid;
+                        it.app_id = dsu_manifest_component_action_app_id(manifest, mi, ai);
+                        it.display_name = dsu_manifest_component_action_display_name(manifest, mi, ai);
+                        it.exec_relpath = dsu_manifest_component_action_exec_relpath(manifest, mi, ai);
+                        it.arguments = dsu_manifest_component_action_arguments(manifest, mi, ai);
+                        it.icon_relpath = dsu_manifest_component_action_icon_relpath(manifest, mi, ai);
+                        it.extension = dsu_manifest_component_action_extension(manifest, mi, ai);
+                        it.publisher = dsu_manifest_component_action_publisher(manifest, mi, ai);
+                        st = dsu__plan_component_push_registration(&p->components[i], &it);
+                    } else if (ak == DSU_MANIFEST_ACTION_REGISTER_URL_HANDLER) {
+                        dsu_platform_intent_t it;
+                        dsu_platform_intent_init(&it);
+                        it.kind = (dsu_u8)DSU_PLATFORM_INTENT_REGISTER_URL_HANDLER;
+                        it.component_id = cid;
+                        it.app_id = dsu_manifest_component_action_app_id(manifest, mi, ai);
+                        it.display_name = dsu_manifest_component_action_display_name(manifest, mi, ai);
+                        it.exec_relpath = dsu_manifest_component_action_exec_relpath(manifest, mi, ai);
+                        it.arguments = dsu_manifest_component_action_arguments(manifest, mi, ai);
+                        it.icon_relpath = dsu_manifest_component_action_icon_relpath(manifest, mi, ai);
+                        it.protocol = dsu_manifest_component_action_protocol(manifest, mi, ai);
+                        it.publisher = dsu_manifest_component_action_publisher(manifest, mi, ai);
+                        st = dsu__plan_component_push_registration(&p->components[i], &it);
+                    } else if (ak == DSU_MANIFEST_ACTION_REGISTER_UNINSTALL_ENTRY) {
+                        dsu_platform_intent_t it;
+                        dsu_platform_intent_init(&it);
+                        it.kind = (dsu_u8)DSU_PLATFORM_INTENT_REGISTER_UNINSTALL_ENTRY;
+                        it.component_id = cid;
+                        it.app_id = dsu_manifest_component_action_app_id(manifest, mi, ai);
+                        it.display_name = dsu_manifest_component_action_display_name(manifest, mi, ai);
+                        it.exec_relpath = dsu_manifest_component_action_exec_relpath(manifest, mi, ai);
+                        it.arguments = dsu_manifest_component_action_arguments(manifest, mi, ai);
+                        it.icon_relpath = dsu_manifest_component_action_icon_relpath(manifest, mi, ai);
+                        it.publisher = dsu_manifest_component_action_publisher(manifest, mi, ai);
+                        st = dsu__plan_component_push_registration(&p->components[i], &it);
+                    } else if (ak == DSU_MANIFEST_ACTION_DECLARE_CAPABILITY) {
+                        dsu_platform_intent_t it;
+                        dsu_platform_intent_init(&it);
+                        it.kind = (dsu_u8)DSU_PLATFORM_INTENT_DECLARE_CAPABILITY;
+                        it.component_id = cid;
+                        it.app_id = dsu_manifest_component_action_app_id(manifest, mi, ai);
+                        it.capability_id = dsu_manifest_component_action_capability_id(manifest, mi, ai);
+                        it.capability_value = dsu_manifest_component_action_capability_value(manifest, mi, ai);
+                        st = dsu__plan_component_push_registration(&p->components[i], &it);
+                    } else {
+                        st = DSU_STATUS_INVALID_REQUEST;
+                    }
+                }
                 break;
             }
         }
+    }
+    if (st != DSU_STATUS_SUCCESS) {
+        dsu_plan_destroy(ctx, p);
+        return st;
     }
 
     p->steps = (dsu_plan_step_t *)dsu__malloc(step_count * (dsu_u32)sizeof(*p->steps));
@@ -1379,6 +1530,44 @@ static dsu_status_t dsu__plan_append_extras(dsu_blob_t *payload, const dsu_plan_
         st = dsu__blob_put_tlv(&root, (dsu_u16)DSU_PLANX_TLV_COMPONENT_KINDS, kinds.data, kinds.size);
     }
     dsu__blob_free(&kinds);
+
+    for (i = 0u; st == DSU_STATUS_SUCCESS && i < plan->component_count; ++i) {
+        const dsu_plan_component_t *c = &plan->components[i];
+        dsu_blob_t comp;
+        dsu_u32 ri;
+        dsu_u32 mi;
+        const char *cid;
+        if (c->registration_count == 0u && c->marker_count == 0u) {
+            continue;
+        }
+        cid = c->id ? c->id : "";
+        if (cid[0] == '\0') {
+            st = DSU_STATUS_INTEGRITY_ERROR;
+            break;
+        }
+        dsu__blob_init(&comp);
+        st = dsu__plan_blob_put_tlv_str(&comp, (dsu_u16)DSU_PLANX_TLV_COMPONENT_ID, cid);
+        for (ri = 0u; st == DSU_STATUS_SUCCESS && ri < c->registration_count; ++ri) {
+            const char *r = c->registrations[ri] ? c->registrations[ri] : "";
+            if (r[0] == '\0') {
+                st = DSU_STATUS_INTEGRITY_ERROR;
+                break;
+            }
+            st = dsu__plan_blob_put_tlv_str(&comp, (dsu_u16)DSU_PLANX_TLV_COMPONENT_REGISTRATION, r);
+        }
+        for (mi = 0u; st == DSU_STATUS_SUCCESS && mi < c->marker_count; ++mi) {
+            const char *m = c->markers[mi] ? c->markers[mi] : "";
+            if (m[0] == '\0') {
+                st = DSU_STATUS_INTEGRITY_ERROR;
+                break;
+            }
+            st = dsu__plan_blob_put_tlv_str(&comp, (dsu_u16)DSU_PLANX_TLV_COMPONENT_MARKER, m);
+        }
+        if (st == DSU_STATUS_SUCCESS) {
+            st = dsu__blob_put_tlv(&root, (dsu_u16)DSU_PLANX_TLV_COMPONENT, comp.data, comp.size);
+        }
+        dsu__blob_free(&comp);
+    }
 
     if (st == DSU_STATUS_SUCCESS) {
         st = dsu__blob_put_tlv(payload, (dsu_u16)DSU_PLANX_TLV_ROOT, root.data, root.size);
