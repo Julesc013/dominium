@@ -494,7 +494,7 @@ static void test_cli_smoke_and_determinism(const std::string& state_root,
                                           const std::string& argv0_launcher,
                                           const dom_profile& profile) {
     const launcher_services_api_v1* services = launcher_services_null_v1();
-    CmdRun a, b, bad, cr, vr, exd, exb, im;
+    CmdRun a, b, bad, cr, cl, del, vr, exd, exb, im;
     std::map<std::string, std::string> kv;
     const std::string templ_id = "tmpl0";
     const std::string export_root = path_join(path_join(state_root, "exports"), "tmpl0_copy1");
@@ -545,6 +545,41 @@ static void test_cli_smoke_and_determinism(const std::string& state_root,
         assert(file_exists(path_join(path_join(path_join(state_root, "instances"), "tmpl0_copy1"), "manifest.tlv")));
         assert(audit_has_reason(cr.audit, "operation=create-instance"));
         assert(audit_has_reason(cr.audit, "outcome=ok"));
+    }
+
+    /* clone-instance from an existing instance (new id chosen deterministically) */
+    {
+        std::vector<std::string> args;
+        args.push_back(std::string("--home=") + state_root);
+        args.push_back("clone-instance");
+        args.push_back("tmpl0_copy1");
+        cl = run_control_plane(argv0_launcher, profile, args, path_join(state_root, "audit_clone_ok.tlv"));
+        kv = parse_kv_lines(cl.out_text);
+        assert(cl.r.handled != 0);
+        assert(cl.r.exit_code == 0);
+        assert(kv["result"] == "ok");
+        assert(kv["source_id"] == "tmpl0_copy1");
+        assert(kv["instance_id"] == "tmpl0_copy1_clone1");
+        assert(file_exists(path_join(path_join(path_join(state_root, "instances"), "tmpl0_copy1_clone1"), "manifest.tlv")));
+        assert(audit_has_reason(cl.audit, "operation=clone-instance"));
+        assert(audit_has_reason(cl.audit, "outcome=ok"));
+    }
+
+    /* delete-instance (soft delete) */
+    {
+        std::vector<std::string> args;
+        args.push_back(std::string("--home=") + state_root);
+        args.push_back("delete-instance");
+        args.push_back("tmpl0_copy1_clone1");
+        del = run_control_plane(argv0_launcher, profile, args, path_join(state_root, "audit_delete_ok.tlv"));
+        kv = parse_kv_lines(del.out_text);
+        assert(del.r.handled != 0);
+        assert(del.r.exit_code == 0);
+        assert(kv["result"] == "ok");
+        assert(kv["instance_id"] == "tmpl0_copy1_clone1");
+        assert(!file_exists(path_join(path_join(path_join(state_root, "instances"), "tmpl0_copy1_clone1"), "manifest.tlv")));
+        assert(audit_has_reason(del.audit, "operation=delete-instance"));
+        assert(audit_has_reason(del.audit, "outcome=ok"));
     }
 
     /* verify-instance */

@@ -506,6 +506,18 @@ static std::string choose_new_instance_id(const std::string& state_root, const s
     return base + std::string("10000");
 }
 
+static std::string choose_clone_instance_id(const std::string& state_root, const std::string& source_id) {
+    const std::string base = source_id + std::string("_clone");
+    u32 i;
+    for (i = 1u; i < 10000u; ++i) {
+        std::string candidate = base + u32_to_string(i);
+        if (!instance_exists(state_root, candidate)) {
+            return candidate;
+        }
+    }
+    return base + std::string("10000");
+}
+
 static std::string choose_import_instance_id(const std::string& state_root, const std::string& imported_id) {
     if (dom::launcher_core::launcher_is_safe_id_component(imported_id) && !instance_exists(state_root, imported_id)) {
         return imported_id;
@@ -556,6 +568,8 @@ ControlPlaneRunResult launcher_control_plane_try_run(int argc,
 
     if (std::strcmp(cmd, "list-instances") != 0 &&
         std::strcmp(cmd, "create-instance") != 0 &&
+        std::strcmp(cmd, "clone-instance") != 0 &&
+        std::strcmp(cmd, "delete-instance") != 0 &&
         std::strcmp(cmd, "verify-instance") != 0 &&
         std::strcmp(cmd, "export-instance") != 0 &&
         std::strcmp(cmd, "import-instance") != 0 &&
@@ -629,6 +643,127 @@ ControlPlaneRunResult launcher_control_plane_try_run(int argc,
         out_kv(out, "result", "ok");
         out_kv(out, "template_id", template_id);
         out_kv(out, "instance_id", new_id);
+        r.exit_code = 0;
+        return r;
+    }
+
+    if (std::strcmp(cmd, "clone-instance") == 0) {
+        std::string source_id;
+        std::string new_id;
+        const char* new_opt = find_arg_value(argc, argv, "--new=");
+        dom::launcher_core::LauncherInstanceManifest created;
+        dom::launcher_core::LauncherAuditLog op_audit;
+        int i;
+
+        for (i = cmd_i + 1; i < argc; ++i) {
+            const char* a = argv[i];
+            if (!a || !a[0]) continue;
+            if (a[0] == '-') continue;
+            source_id = std::string(a);
+            break;
+        }
+        if (new_opt && new_opt[0]) {
+            new_id = std::string(new_opt);
+        }
+
+        audit_reason_kv(audit_core, "source_id", source_id);
+        audit_reason_kv(audit_core, "instance_id", new_id);
+
+        if (source_id.empty()) {
+            audit_reason_kv(audit_core, "outcome", "fail");
+            out_kv(out, "result", "fail");
+            out_kv(out, "error", "missing_source_id");
+            r.exit_code = 2;
+            return r;
+        }
+
+        if (new_id.empty()) {
+            new_id = choose_clone_instance_id(state_root, source_id);
+            audit_reason_kv(audit_core, "instance_id", new_id);
+        } else {
+            if (!dom::launcher_core::launcher_is_safe_id_component(new_id)) {
+                audit_reason_kv(audit_core, "outcome", "fail");
+                out_kv(out, "result", "fail");
+                out_kv(out, "error", "unsafe_new_instance_id");
+                r.exit_code = 2;
+                return r;
+            }
+            if (instance_exists(state_root, new_id)) {
+                audit_reason_kv(audit_core, "outcome", "fail");
+                out_kv(out, "result", "fail");
+                out_kv(out, "error", "new_instance_exists");
+                r.exit_code = 2;
+                return r;
+            }
+        }
+
+        if (!dom::launcher_core::launcher_instance_clone_instance(services,
+                                                                  source_id,
+                                                                  new_id,
+                                                                  state_root,
+                                                                  created,
+                                                                  &op_audit)) {
+            audit_reason_kv(audit_core, "outcome", "fail");
+            out_kv(out, "result", "fail");
+            out_kv(out, "error", "clone_failed");
+            out_kv(out, "source_id", source_id);
+            out_kv(out, "instance_id", new_id);
+            if (!op_audit.reasons.empty()) {
+                out_kv(out, "detail", op_audit.reasons[0]);
+            }
+            r.exit_code = 1;
+            return r;
+        }
+
+        audit_reason_kv(audit_core, "outcome", "ok");
+        out_kv(out, "result", "ok");
+        out_kv(out, "source_id", source_id);
+        out_kv(out, "instance_id", new_id);
+        r.exit_code = 0;
+        return r;
+    }
+
+    if (std::strcmp(cmd, "delete-instance") == 0) {
+        std::string instance_id;
+        dom::launcher_core::LauncherAuditLog op_audit;
+        int i;
+
+        for (i = cmd_i + 1; i < argc; ++i) {
+            const char* a = argv[i];
+            if (!a || !a[0]) continue;
+            if (a[0] == '-') continue;
+            instance_id = std::string(a);
+            break;
+        }
+
+        audit_reason_kv(audit_core, "instance_id", instance_id);
+
+        if (instance_id.empty()) {
+            audit_reason_kv(audit_core, "outcome", "fail");
+            out_kv(out, "result", "fail");
+            out_kv(out, "error", "missing_instance_id");
+            r.exit_code = 2;
+            return r;
+        }
+
+        if (!dom::launcher_core::launcher_instance_delete_instance(services,
+                                                                   instance_id,
+                                                                   state_root,
+                                                                   &op_audit)) {
+            audit_reason_kv(audit_core, "outcome", "fail");
+            out_kv(out, "result", "fail");
+            out_kv(out, "error", "delete_failed");
+            out_kv(out, "instance_id", instance_id);
+            if (!op_audit.reasons.empty()) {
+                out_kv(out, "detail", op_audit.reasons[0]);
+            }
+            r.exit_code = 1;
+            return r;
+        }
+
+        audit_reason_kv(audit_core, "outcome", "ok");
+        out_kv(out, "result", "ok");
+        out_kv(out, "instance_id", instance_id);
         r.exit_code = 0;
         return r;
     }
