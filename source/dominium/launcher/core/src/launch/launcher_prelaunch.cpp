@@ -682,6 +682,15 @@ bool launcher_prelaunch_build_plan(const launcher_services_api_v1* services,
         failures.push_back(f);
     }
 
+    /* Validation: offline enforcement stub (debug flag). */
+    if ((resolved.debug_flags & (u32)LAUNCHER_DEBUG_FLAG_STUB_NETWORK_REQUIRED) != 0u && resolved.allow_network == 0u) {
+        LauncherPrelaunchValidationFailure f;
+        f.code = "offline_refuses_network_required";
+        f.suggestion = "enable_network_or_clear_debug_flag";
+        f.detail = "debug_flag=stub_network_required";
+        failures.push_back(f);
+    }
+
     validation.ok = failures.empty() ? 1u : 0u;
     validation.failures = failures;
 

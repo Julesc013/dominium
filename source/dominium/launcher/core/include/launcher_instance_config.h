@@ -77,6 +77,16 @@ enum LauncherWindowMode {
     LAUNCHER_WINDOW_MODE_BORDERLESS = 3u
 };
 
+/* Debug flags carried in `LauncherInstanceConfig::debug_flags` and propagated to
+ * `LauncherResolvedLaunchConfig::debug_flags`.
+ *
+ * These are intended for deterministic, testable knobs (no OS-dependent behavior).
+ */
+enum LauncherDebugFlagBits {
+    /* Stub: treat the launch as "network required". When `allow_network=0`, prelaunch must refuse. */
+    LAUNCHER_DEBUG_FLAG_STUB_NETWORK_REQUIRED = 0x00000001u
+};
+
 struct LauncherDomainOverride {
     std::string domain_key;
     u32 enabled; /* 0/1 */
