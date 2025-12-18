@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  productbuild Distribution template (design-level) for Dominium Setup (Plan S-6).
+
+  This distribution is intentionally minimal and focuses on declarative installer metadata.
+  Packaging pipelines should fill in identifiers, versioning, signing, and payload roots.
+-->
+<installer-script minSpecVersion="1.000000">
+  <title>Dominium</title>
+  <options customize="never" require-scripts="false"/>
+  <domains enable_anywhere="false" enable_currentUserHome="false" enable_localSystem="true"/>
+
+  <choices-outline>
+    <line choice="default">
+      <line choice="com.dominium.pkg"/>
+    </line>
+  </choices-outline>
+
+  <choice id="default"/>
+  <choice id="com.dominium.pkg" visible="false">
+    <pkg-ref id="com.dominium.pkg"/>
+  </choice>
+
+  <!-- Payload package produced by pkgbuild -->
+  <pkg-ref id="com.dominium.pkg" version="1.0.0">Dominium.pkg</pkg-ref>
+</installer-script>
+
