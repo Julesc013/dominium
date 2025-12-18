@@ -46,12 +46,18 @@ DSU_API dsu_manifest_install_scope_t dsu_plan_scope(const dsu_plan_t *plan);
 
 DSU_API const char *dsu_plan_product_id(const dsu_plan_t *plan);
 DSU_API const char *dsu_plan_version(const dsu_plan_t *plan);
+DSU_API const char *dsu_plan_build_channel(const dsu_plan_t *plan);
 DSU_API const char *dsu_plan_platform(const dsu_plan_t *plan);
 DSU_API const char *dsu_plan_install_root(const dsu_plan_t *plan);
+
+/* Source IDs used to derive the plan ID. */
+DSU_API dsu_u64 dsu_plan_manifest_digest64(const dsu_plan_t *plan);
+DSU_API dsu_u64 dsu_plan_resolved_set_digest64(const dsu_plan_t *plan);
 
 DSU_API dsu_u32 dsu_plan_component_count(const dsu_plan_t *plan);
 DSU_API const char *dsu_plan_component_id(const dsu_plan_t *plan, dsu_u32 index);
 DSU_API const char *dsu_plan_component_version(const dsu_plan_t *plan, dsu_u32 index);
+DSU_API dsu_manifest_component_kind_t dsu_plan_component_kind(const dsu_plan_t *plan, dsu_u32 index);
 
 DSU_API dsu_u32 dsu_plan_step_count(const dsu_plan_t *plan);
 DSU_API dsu_plan_step_kind_t dsu_plan_step_kind(const dsu_plan_t *plan, dsu_u32 index);
@@ -68,6 +74,9 @@ DSU_API const char *dsu_plan_file_source_container_path(const dsu_plan_t *plan, 
 DSU_API const char *dsu_plan_file_source_member_path(const dsu_plan_t *plan, dsu_u32 index);
 DSU_API dsu_u64 dsu_plan_file_size(const dsu_plan_t *plan, dsu_u32 index);
 DSU_API const dsu_u8 *dsu_plan_file_sha256(const dsu_plan_t *plan, dsu_u32 index);
+DSU_API dsu_u32 dsu_plan_file_flags(const dsu_plan_t *plan, dsu_u32 index);
+DSU_API dsu_u32 dsu_plan_file_component_index(const dsu_plan_t *plan, dsu_u32 index);
+DSU_API const char *dsu_plan_file_component_id(const dsu_plan_t *plan, dsu_u32 index);
 
 DSU_API dsu_status_t dsu_plan_write_file(dsu_ctx_t *ctx, const dsu_plan_t *plan, const char *path);
 DSU_API dsu_status_t dsu_plan_read_file(dsu_ctx_t *ctx, const char *path, dsu_plan_t **out_plan);

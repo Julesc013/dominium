@@ -4,6 +4,7 @@ MODULE: Dominium Setup
 PURPOSE: Journaled transaction engine (Plan S-4).
 */
 #include "../../include/dsu/dsu_txn.h"
+#include "../../include/dsu/dsu_digest.h"
 #include "../../include/dsu/dsu_fs.h"
 #include "../../include/dsu/dsu_log.h"
 
@@ -24,7 +25,7 @@ PURPOSE: Journaled transaction engine (Plan S-4).
 #define DSU_TXN_JOURNAL_DIR DSU_TXN_INTERNAL_DIR "/journal"
 #define DSU_TXN_DEFAULT_JOURNAL_NAME "txn.dsujournal"
 #define DSU_TXN_NEW_STATE_NAME "new.dsustate"
-#define DSU_TXN_DEFAULT_STATE_REL ".dsu/state.dsustate"
+#define DSU_TXN_DEFAULT_STATE_REL ".dsu/installed_state.dsustate"
 
 static void dsu__safe_cpy(char *dst, dsu_u32 dst_cap, const char *src);
 static int dsu__is_alpha(char c);
@@ -144,11 +145,14 @@ static void dsu__txn_entries_free(dsu__txn_entry_t *entries, dsu_u32 count) {
 }
 
 static int dsu__txn_entry_group(dsu_u16 type) {
-    if (type == (dsu_u16)DSU_JOURNAL_ENTRY_CREATE_DIR || type == (dsu_u16)DSU_JOURNAL_ENTRY_REMOVE_DIR) {
-        return 0;
-    }
     if (type == (dsu_u16)DSU_JOURNAL_ENTRY_WRITE_STATE) {
         return 2;
+    }
+    if (type == (dsu_u16)DSU_JOURNAL_ENTRY_CREATE_DIR) {
+        return 0;
+    }
+    if (type == (dsu_u16)DSU_JOURNAL_ENTRY_REMOVE_DIR) {
+        return 3;
     }
     return 1;
 }
@@ -168,6 +172,17 @@ static int dsu__txn_entry_cmp(const void *a, const void *b) {
 
     pa = ea->target_path ? ea->target_path : "";
     pb = eb->target_path ? eb->target_path : "";
+
+    /* For REMOVE_DIR, ensure deeper paths are removed first. */
+    if (ea->type == (dsu_u16)DSU_JOURNAL_ENTRY_REMOVE_DIR &&
+        eb->type == (dsu_u16)DSU_JOURNAL_ENTRY_REMOVE_DIR) {
+        dsu_u32 la = dsu__strlen(pa);
+        dsu_u32 lb = dsu__strlen(pb);
+        if (la != 0xFFFFFFFFu && lb != 0xFFFFFFFFu && la != lb) {
+            return (la < lb) ? 1 : -1;
+        }
+    }
+
     c = dsu__strcmp_bytes(pa, pb);
     if (c != 0) return c;
 
@@ -254,6 +269,80 @@ static dsu_status_t dsu__fs_path_info_rel(dsu_fs_t *fs,
         return st;
     }
     return dsu_platform_path_info(abs, out_exists, out_is_dir, out_is_symlink);
+}
+
+static dsu_status_t dsu__digest64_file_abs(const char *abs_path, dsu_u64 *out_digest64) {
+    FILE *f;
+    unsigned char buf[32768];
+    size_t n;
+    dsu_u64 d;
+
+    if (out_digest64) *out_digest64 = 0u;
+    if (!abs_path || !out_digest64) {
+        return DSU_STATUS_INVALID_ARGS;
+    }
+
+    f = fopen(abs_path, "rb");
+    if (!f) {
+        return DSU_STATUS_IO_ERROR;
+    }
+
+    d = dsu_digest64_init();
+    while ((n = fread(buf, 1u, sizeof(buf), f)) != 0u) {
+        if (n > 0xFFFFFFFFu) {
+            fclose(f);
+            return DSU_STATUS_IO_ERROR;
+        }
+        d = dsu_digest64_update(d, buf, (dsu_u32)n);
+    }
+    if (ferror(f)) {
+        fclose(f);
+        return DSU_STATUS_IO_ERROR;
+    }
+    if (fclose(f) != 0) {
+        return DSU_STATUS_IO_ERROR;
+    }
+
+    *out_digest64 = d;
+    return DSU_STATUS_SUCCESS;
+}
+
+static dsu_status_t dsu__txn_try_load_prev_state(dsu_ctx_t *ctx,
+                                                dsu_fs_t *fs,
+                                                const char *state_rel,
+                                                dsu_state_t **out_prev_state) {
+    char abs[1024];
+    dsu_u8 exists;
+    dsu_u8 is_dir;
+    dsu_u8 is_symlink;
+    dsu_status_t st;
+
+    if (out_prev_state) *out_prev_state = NULL;
+    if (!ctx || !fs || !state_rel || !out_prev_state) {
+        return DSU_STATUS_INVALID_ARGS;
+    }
+
+    st = dsu__fs_path_info_rel(fs, (dsu_u32)DSU_JOURNAL_ROOT_INSTALL, state_rel, &exists, &is_dir, &is_symlink);
+    if (st != DSU_STATUS_SUCCESS) {
+        return st;
+    }
+    if (!exists) {
+        return DSU_STATUS_SUCCESS;
+    }
+    if (is_dir || is_symlink) {
+        return DSU_STATUS_IO_ERROR;
+    }
+
+    st = dsu_fs_resolve_under_root(fs,
+                                   (dsu_u32)DSU_JOURNAL_ROOT_INSTALL,
+                                   state_rel,
+                                   abs,
+                                   (dsu_u32)sizeof(abs));
+    if (st != DSU_STATUS_SUCCESS) {
+        return st;
+    }
+
+    return dsu_state_load(ctx, abs, out_prev_state);
 }
 
 static dsu_status_t dsu__canon_abs_path(const char *in, char *out_abs, dsu_u32 out_abs_cap) {
@@ -750,6 +839,8 @@ static dsu_status_t dsu__txn_stage_plan_files(dsu_fs_t *fs,
 static dsu_status_t dsu__txn_write_state_file(dsu_ctx_t *ctx,
                                              dsu_fs_t *fs,
                                              const dsu_plan_t *plan,
+                                             const dsu_state_t *prev_state,
+                                             dsu_u64 journal_id,
                                              char *out_state_txn_rel,
                                              dsu_u32 out_state_txn_rel_cap) {
     char rel[1024];
@@ -778,7 +869,7 @@ static dsu_status_t dsu__txn_write_state_file(dsu_ctx_t *ctx,
                                    (dsu_u32)sizeof(abs));
     if (st != DSU_STATUS_SUCCESS) return st;
 
-    st = dsu__state_build_from_plan(ctx, plan, &stobj);
+    st = dsu__state_build_from_plan(ctx, plan, prev_state, journal_id, 0, 0u, &stobj);
     if (st != DSU_STATUS_SUCCESS) return st;
     st = dsu_state_write_file(ctx, stobj, abs);
     dsu_state_destroy(ctx, stobj);
@@ -1676,6 +1767,7 @@ dsu_status_t dsu_txn_apply_plan(dsu_ctx_t *ctx,
     char journal_path_abs[1024];
     char state_rel[256];
     dsu_fs_t *fs = NULL;
+    dsu_state_t *prev_state = NULL;
     char **extra_roots = NULL;
     dsu_u32 extra_root_count = 0u;
     dsu_u32 staged_count = 0u;
@@ -1761,11 +1853,14 @@ dsu_status_t dsu_txn_apply_plan(dsu_ctx_t *ctx,
     st = dsu__fs_create_for_plan(ctx, plan, install_root_abs, txn_root_abs, &fs, &extra_roots, &extra_root_count);
     if (st != DSU_STATUS_SUCCESS) goto done;
 
+    st = dsu__txn_try_load_prev_state(ctx, fs, state_rel, &prev_state);
+    if (st != DSU_STATUS_SUCCESS) goto done;
+
     st = dsu__txn_stage_plan_files(fs, extra_roots, extra_root_count, plan, state_rel, &staged_count);
     if (st != DSU_STATUS_SUCCESS) goto done;
     out_result->staged_file_count = staged_count;
 
-    st = dsu__txn_write_state_file(ctx, fs, plan, state_txn_rel, (dsu_u32)sizeof(state_txn_rel));
+    st = dsu__txn_write_state_file(ctx, fs, plan, prev_state, journal_id, state_txn_rel, (dsu_u32)sizeof(state_txn_rel));
     if (st != DSU_STATUS_SUCCESS) goto done;
 
     (void)dsu_log_emit(ctx,
@@ -1851,7 +1946,36 @@ dsu_status_t dsu_txn_apply_plan(dsu_ctx_t *ctx,
         goto done;
     }
 
+    /* On success, record a state digest event for forensics. */
+    {
+        char state_abs[1024];
+        dsu_u64 state_digest64 = 0u;
+        dsu_status_t st2;
+        dsu_log_event_t ev;
+
+        st2 = dsu_fs_resolve_under_root(fs,
+                                        (dsu_u32)DSU_JOURNAL_ROOT_INSTALL,
+                                        state_rel,
+                                        state_abs,
+                                        (dsu_u32)sizeof(state_abs));
+        if (st2 == DSU_STATUS_SUCCESS) {
+            st2 = dsu__digest64_file_abs(state_abs, &state_digest64);
+        }
+
+        dsu_log_event_init(&ev);
+        ev.event_id = DSU_EVENT_TXN_STATE_WRITTEN;
+        ev.severity = (dsu_u8)((st2 == DSU_STATUS_SUCCESS) ? DSU_LOG_SEVERITY_INFO : DSU_LOG_SEVERITY_WARN);
+        ev.category = (dsu_u8)DSU_LOG_CATEGORY_IO;
+        ev.phase = (dsu_u8)DSU_LOG_PHASE_STATE;
+        ev.message = (st2 == DSU_STATUS_SUCCESS) ? "state written" : "state written (digest unavailable)";
+        ev.path = state_rel;
+        ev.status_code = (dsu_u32)st2;
+        ev.digest64_a = state_digest64;
+        (void)dsu_log_event(ctx, dsu_ctx_get_audit_log(ctx), &ev);
+    }
+
 done:
+    if (prev_state) dsu_state_destroy(ctx, prev_state);
     if (extra_roots) dsu__str_list_free(extra_roots, extra_root_count);
     if (entries) dsu__txn_entries_free(entries, entry_count);
     if (fs) dsu_fs_destroy(ctx, fs);
@@ -1883,8 +2007,12 @@ dsu_status_t dsu_txn_verify_state(dsu_ctx_t *ctx,
     dsu_status_t st;
     dsu_txn_options_t local_opts;
     char install_root_abs[1024];
+    const char **roots = NULL;
+    dsu_u32 root_count = 0u;
     dsu_fs_t *fs = NULL;
     dsu_u32 i;
+    dsu_u32 ci;
+    dsu_u32 fi;
 
     if (!out_result) return DSU_STATUS_INVALID_ARGS;
     dsu_txn_result_init(out_result);
@@ -1899,19 +2027,36 @@ dsu_status_t dsu_txn_verify_state(dsu_ctx_t *ctx,
     }
     (void)local_opts;
 
-    st = dsu__canon_abs_path(dsu_state_install_root(state), install_root_abs, (dsu_u32)sizeof(install_root_abs));
-    if (st != DSU_STATUS_SUCCESS) return st;
+    root_count = dsu_state_install_root_count(state);
+    if (root_count == 0u) {
+        st = DSU_STATUS_INVALID_ARGS;
+        goto done;
+    }
+
+    st = dsu__canon_abs_path(dsu_state_primary_install_root(state), install_root_abs, (dsu_u32)sizeof(install_root_abs));
+    if (st != DSU_STATUS_SUCCESS) goto done;
     dsu__safe_cpy(out_result->install_root, (dsu_u32)sizeof(out_result->install_root), install_root_abs);
 
+    roots = (const char **)dsu__malloc(root_count * (dsu_u32)sizeof(*roots));
+    if (!roots && root_count != 0u) {
+        st = DSU_STATUS_IO_ERROR;
+        goto done;
+    }
+    for (i = 0u; i < root_count; ++i) {
+        roots[i] = dsu_state_install_root_path(state, i);
+        if (!roots[i] || roots[i][0] == '\0') {
+            st = DSU_STATUS_INVALID_ARGS;
+            goto done;
+        }
+    }
+
     {
-        const char *roots[1];
         dsu_fs_options_t fopts;
-        roots[0] = install_root_abs;
         dsu_fs_options_init(&fopts);
         fopts.allowed_roots = roots;
-        fopts.allowed_root_count = 1u;
+        fopts.allowed_root_count = root_count;
         st = dsu_fs_create(ctx, &fopts, &fs);
-        if (st != DSU_STATUS_SUCCESS) return st;
+        if (st != DSU_STATUS_SUCCESS) goto done;
     }
 
     (void)dsu_log_emit(ctx,
@@ -1925,65 +2070,82 @@ dsu_status_t dsu_txn_verify_state(dsu_ctx_t *ctx,
     out_result->verified_missing = 0u;
     out_result->verified_mismatch = 0u;
 
-    for (i = 0u; i < dsu_state_file_count(state); ++i) {
-        const char *p = dsu_state_file_path(state, i);
-        const dsu_u8 *expect_sha = dsu_state_file_sha256(state, i);
-        char *canon = NULL;
-        dsu_u8 exists;
-        dsu_u8 is_dir;
-        dsu_u8 is_symlink;
-        dsu_u8 got[32];
+    for (ci = 0u; ci < dsu_state_component_count(state); ++ci) {
+        for (fi = 0u; fi < dsu_state_component_file_count(state, ci); ++fi) {
+            const char *p = dsu_state_component_file_path(state, ci, fi);
+            dsu_u32 root_index = dsu_state_component_file_root_index(state, ci, fi);
+            dsu_state_file_ownership_t own = dsu_state_component_file_ownership(state, ci, fi);
+            dsu_u64 expect_digest64 = dsu_state_component_file_digest64(state, ci, fi);
+            char *canon = NULL;
+            dsu_u8 exists;
+            dsu_u8 is_dir;
+            dsu_u8 is_symlink;
+            dsu_u8 got_sha[32];
+            dsu_u64 got_digest64;
 
-        st = dsu__canon_rel_path_ex(p ? p : "", 0, &canon);
-        if (st != DSU_STATUS_SUCCESS) break;
+            if (own != DSU_STATE_FILE_OWNERSHIP_OWNED) {
+                continue;
+            }
+            if (root_index >= root_count) {
+                st = DSU_STATUS_INVALID_ARGS;
+                goto done;
+            }
 
-        st = dsu__fs_path_info_rel(fs, 0u, canon, &exists, &is_dir, &is_symlink);
-        if (st != DSU_STATUS_SUCCESS) {
-            dsu__free(canon);
-            break;
-        }
-        if (!exists) {
-            out_result->verified_missing += 1u;
-            dsu__free(canon);
-            continue;
-        }
-        if (is_dir || is_symlink) {
-            dsu__free(canon);
-            st = DSU_STATUS_IO_ERROR;
-            break;
-        }
+            st = dsu__canon_rel_path_ex(p ? p : "", 0, &canon);
+            if (st != DSU_STATUS_SUCCESS) goto done;
 
-        st = dsu_fs_hash_file(fs, 0u, canon, got);
-        if (st != DSU_STATUS_SUCCESS) {
+            st = dsu__fs_path_info_rel(fs, root_index, canon, &exists, &is_dir, &is_symlink);
+            if (st != DSU_STATUS_SUCCESS) {
+                dsu__free(canon);
+                goto done;
+            }
+            if (!exists) {
+                out_result->verified_missing += 1u;
+                dsu__free(canon);
+                continue;
+            }
+            if (is_dir || is_symlink) {
+                dsu__free(canon);
+                st = DSU_STATUS_IO_ERROR;
+                goto done;
+            }
+
+            st = dsu_fs_hash_file(fs, root_index, canon, got_sha);
+            if (st != DSU_STATUS_SUCCESS) {
+                dsu__free(canon);
+                goto done;
+            }
+            got_digest64 = dsu_digest64_bytes(got_sha, 32u);
+            if (got_digest64 == expect_digest64) {
+                out_result->verified_ok += 1u;
+            } else {
+                out_result->verified_mismatch += 1u;
+            }
+
             dsu__free(canon);
-            break;
+            canon = NULL;
         }
-        if (expect_sha && memcmp(got, expect_sha, 32u) == 0) {
-            out_result->verified_ok += 1u;
-        } else {
-            out_result->verified_mismatch += 1u;
-        }
-        dsu__free(canon);
-        canon = NULL;
     }
 
+    if (st == DSU_STATUS_SUCCESS &&
+        (out_result->verified_missing != 0u || out_result->verified_mismatch != 0u)) {
+        st = DSU_STATUS_INTEGRITY_ERROR;
+        goto done;
+    }
+
+    if (st == DSU_STATUS_SUCCESS) {
+        (void)dsu_log_emit(ctx,
+                          dsu_ctx_get_audit_log(ctx),
+                          DSU_EVENT_TXN_VERIFY_COMPLETE,
+                          (dsu_u8)DSU_LOG_SEVERITY_INFO,
+                          (dsu_u8)DSU_LOG_CATEGORY_IO,
+                          "verify complete");
+    }
+
+done:
+    dsu__free((void *)roots);
     if (fs) dsu_fs_destroy(ctx, fs);
-    fs = NULL;
-
-    if (st != DSU_STATUS_SUCCESS) {
-        return st;
-    }
-    if (out_result->verified_missing != 0u || out_result->verified_mismatch != 0u) {
-        return DSU_STATUS_INTEGRITY_ERROR;
-    }
-
-    (void)dsu_log_emit(ctx,
-                      dsu_ctx_get_audit_log(ctx),
-                      DSU_EVENT_TXN_VERIFY_COMPLETE,
-                      (dsu_u8)DSU_LOG_SEVERITY_INFO,
-                      (dsu_u8)DSU_LOG_CATEGORY_IO,
-                      "verify complete");
-    return DSU_STATUS_SUCCESS;
+    return st;
 }
 
 dsu_status_t dsu_txn_uninstall_state(dsu_ctx_t *ctx,
@@ -2003,7 +2165,12 @@ dsu_status_t dsu_txn_uninstall_state(dsu_ctx_t *ctx,
     char **paths = NULL;
     dsu_u32 path_count = 0u;
     dsu_u32 path_cap = 0u;
+    char **dirs = NULL;
+    dsu_u32 dir_count = 0u;
+    dsu_u32 dir_cap = 0u;
     dsu_u32 i;
+    dsu_u32 ci;
+    dsu_u32 fi;
     dsu__txn_entry_t *entries = NULL;
     dsu_u32 entry_count = 0u;
     dsu_u32 entry_cap = 0u;
@@ -2086,40 +2253,58 @@ dsu_status_t dsu_txn_uninstall_state(dsu_ctx_t *ctx,
     st = dsu_fs_mkdir_p(fs, (dsu_u32)DSU_JOURNAL_ROOT_TXN, DSU_TXN_JOURNAL_DIR);
     if (st != DSU_STATUS_SUCCESS) goto done;
 
-    /* Collect existing installed files to remove (deterministic by path). */
-    for (i = 0u; i < dsu_state_file_count(state); ++i) {
-        const char *p = dsu_state_file_path(state, i);
-        char *canon = NULL;
-        dsu_u8 exists;
-        dsu_u8 is_dir;
-        dsu_u8 is_symlink;
+    /* Collect existing owned files to remove (deterministic by path). */
+    for (ci = 0u; ci < dsu_state_component_count(state); ++ci) {
+        for (fi = 0u; fi < dsu_state_component_file_count(state, ci); ++fi) {
+            const char *p = dsu_state_component_file_path(state, ci, fi);
+            dsu_u32 root_index = dsu_state_component_file_root_index(state, ci, fi);
+            dsu_state_file_ownership_t own = dsu_state_component_file_ownership(state, ci, fi);
+            char *canon = NULL;
+            dsu_u8 exists;
+            dsu_u8 is_dir;
+            dsu_u8 is_symlink;
 
-        st = dsu__canon_rel_path_ex(p ? p : "", 0, &canon);
-        if (st != DSU_STATUS_SUCCESS) goto done;
-        if (dsu__path_has_prefix_seg(canon, DSU_TXN_INTERNAL_DIR)) {
-            dsu__free(canon);
-            st = DSU_STATUS_INVALID_ARGS;
-            goto done;
-        }
-        st = dsu__fs_path_info_rel(fs, (dsu_u32)DSU_JOURNAL_ROOT_INSTALL, canon, &exists, &is_dir, &is_symlink);
-        if (st != DSU_STATUS_SUCCESS) {
-            dsu__free(canon);
-            goto done;
-        }
-        if (exists && (is_dir || is_symlink)) {
-            dsu__free(canon);
-            st = DSU_STATUS_IO_ERROR;
-            goto done;
-        }
-        if (exists) {
-            st = dsu__str_list_add_unique(&paths, &path_count, &path_cap, canon);
+            if (own != DSU_STATE_FILE_OWNERSHIP_OWNED) {
+                continue;
+            }
+            if (root_index != 0u) {
+                st = DSU_STATUS_INVALID_ARGS;
+                goto done;
+            }
+            if (!p || p[0] == '\0') {
+                st = DSU_STATUS_INVALID_ARGS;
+                goto done;
+            }
+
+            st = dsu__canon_rel_path_ex(p, 0, &canon);
+            if (st != DSU_STATUS_SUCCESS) goto done;
+            if (dsu__path_has_prefix_seg(canon, ".dsu") ||
+                dsu__path_has_prefix_seg(canon, DSU_TXN_INTERNAL_DIR)) {
+                dsu__free(canon);
+                st = DSU_STATUS_INVALID_ARGS;
+                goto done;
+            }
+
+            st = dsu__fs_path_info_rel(fs, (dsu_u32)DSU_JOURNAL_ROOT_INSTALL, canon, &exists, &is_dir, &is_symlink);
             if (st != DSU_STATUS_SUCCESS) {
                 dsu__free(canon);
                 goto done;
             }
+            if (exists && (is_dir || is_symlink)) {
+                dsu__free(canon);
+                st = DSU_STATUS_IO_ERROR;
+                goto done;
+            }
+            if (exists) {
+                st = dsu__str_list_add_unique(&paths, &path_count, &path_cap, canon);
+                if (st != DSU_STATUS_SUCCESS) {
+                    dsu__free(canon);
+                    goto done;
+                }
+            }
+            dsu__free(canon);
+            canon = NULL;
         }
-        dsu__free(canon);
-        canon = NULL;
     }
 
     if (state_rel_rm[0] != '\0') {
@@ -2167,6 +2352,65 @@ dsu_status_t dsu_txn_uninstall_state(dsu_ctx_t *ctx,
             goto done;
         }
     }
+
+    /* Remove emptied parent directories after files are moved out. */
+    for (i = 0u; i < path_count; ++i) {
+        const char *p = paths[i];
+        dsu_u32 n;
+        dsu_u32 j;
+        if (!p) continue;
+        n = dsu__strlen(p);
+        if (n == 0xFFFFFFFFu) {
+            st = DSU_STATUS_INVALID_ARGS;
+            goto done;
+        }
+        for (j = 0u; j < n; ++j) {
+            if (p[j] == '/') {
+                char tmp[1024];
+                if (j >= (dsu_u32)sizeof(tmp)) {
+                    st = DSU_STATUS_INVALID_ARGS;
+                    goto done;
+                }
+                memcpy(tmp, p, (size_t)j);
+                tmp[j] = '\0';
+                st = dsu__str_list_add_unique(&dirs, &dir_count, &dir_cap, tmp);
+                if (st != DSU_STATUS_SUCCESS) goto done;
+            }
+        }
+    }
+
+    if (dir_count > 1u) {
+        dsu__sort_str_ptrs(dirs, dir_count);
+    }
+
+    for (i = 0u; i < dir_count; ++i) {
+        dsu__txn_entry_t e;
+        memset(&e, 0, sizeof(e));
+        e.type = (dsu_u16)DSU_JOURNAL_ENTRY_REMOVE_DIR;
+        e.target_root = (dsu_u8)DSU_JOURNAL_ROOT_INSTALL;
+        e.rollback_root = (dsu_u8)DSU_JOURNAL_ROOT_INSTALL;
+        e.target_path = dsu__strdup(dirs[i] ? dirs[i] : "");
+        e.source_path = dsu__strdup("");
+        e.rollback_path = dsu__strdup(dirs[i] ? dirs[i] : "");
+        if (!e.target_path || !e.source_path || !e.rollback_path) {
+            dsu__free(e.target_path);
+            dsu__free(e.source_path);
+            dsu__free(e.rollback_path);
+            st = DSU_STATUS_IO_ERROR;
+            goto done;
+        }
+        st = dsu__txn_entries_push_take(&entries, &entry_count, &entry_cap, &e);
+        if (st != DSU_STATUS_SUCCESS) {
+            dsu__free(e.target_path);
+            dsu__free(e.source_path);
+            dsu__free(e.rollback_path);
+            goto done;
+        }
+    }
+
+    if (entry_count > 1u) {
+        qsort(entries, (size_t)entry_count, sizeof(*entries), dsu__txn_entry_cmp);
+    }
     out_result->journal_entry_count = entry_count;
 
     st = dsu__txn_write_journal_file(journal_path_abs,
@@ -2196,6 +2440,7 @@ dsu_status_t dsu_txn_uninstall_state(dsu_ctx_t *ctx,
     out_result->commit_progress = entry_count;
 
 done:
+    if (dirs) dsu__str_list_free(dirs, dir_count);
     if (paths) dsu__str_list_free(paths, path_count);
     if (entries) dsu__txn_entries_free(entries, entry_count);
     if (fs) dsu_fs_destroy(ctx, fs);

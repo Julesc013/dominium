@@ -8,6 +8,11 @@ PURPOSE: Plan S-4 transaction engine + filesystem safety tests.
 #include <stdlib.h>
 #include <string.h>
 
+#if defined(_WIN32)
+#  define WIN32_LEAN_AND_MEAN
+#  include <windows.h>
+#endif
+
 #include "dsu/dsu_callbacks.h"
 #include "dsu/dsu_config.h"
 #include "dsu/dsu_ctx.h"
@@ -15,6 +20,7 @@ PURPOSE: Plan S-4 transaction engine + filesystem safety tests.
 #include "dsu/dsu_log.h"
 #include "dsu/dsu_manifest.h"
 #include "dsu/dsu_plan.h"
+#include "dsu/dsu_report.h"
 #include "dsu/dsu_resolve.h"
 #include "dsu/dsu_state.h"
 #include "dsu/dsu_txn.h"
@@ -133,6 +139,45 @@ static int bytes_equal(const unsigned char *a, unsigned long a_len, const unsign
     if (!a || !b) return 0;
     return memcmp(a, b, (size_t)a_len) == 0;
 }
+
+static int bytes_replace_in_first_match(unsigned char *buf,
+                                        unsigned long buf_len,
+                                        const char *needle,
+                                        unsigned char from,
+                                        unsigned char to) {
+    unsigned long i;
+    unsigned long n;
+    unsigned long j;
+    if (!buf || !needle) return 0;
+    n = (unsigned long)strlen(needle);
+    if (n == 0ul || n > buf_len) return 0;
+    for (i = 0ul; i + n <= buf_len; ++i) {
+        if (memcmp(buf + i, needle, (size_t)n) == 0) {
+            for (j = 0ul; j < n; ++j) {
+                if (buf[i + j] == from) buf[i + j] = to;
+            }
+            return 1;
+        }
+    }
+    return 0;
+}
+
+#if defined(_WIN32)
+static int path_to_native_win32(const char *in, char *out, unsigned long out_cap) {
+    unsigned long n;
+    unsigned long i;
+    if (!in || !out || out_cap == 0ul) return 0;
+    n = (unsigned long)strlen(in);
+    if (n + 1ul > out_cap) return 0;
+    for (i = 0ul; i < n; ++i) {
+        char c = in[i];
+        if (c == '/') c = '\\';
+        out[i] = c;
+    }
+    out[n] = '\0';
+    return 1;
+}
+#endif
 
 static dsu_ctx_t *create_ctx_deterministic(void) {
     dsu_config_t cfg;
@@ -746,7 +791,7 @@ static int test_fresh_install(void) {
     ok &= expect(path_join(base, "install", install_root, (unsigned long)sizeof(install_root)), "join install root");
     ok &= expect(path_join(install_root, "bin/hello.txt", install_f1, (unsigned long)sizeof(install_f1)), "join install f1");
     ok &= expect(path_join(install_root, "data/config.json", install_f2, (unsigned long)sizeof(install_f2)), "join install f2");
-    ok &= expect(path_join(install_root, ".dsu/state.dsustate", state_path, (unsigned long)sizeof(state_path)), "join state path");
+    ok &= expect(path_join(install_root, ".dsu/installed_state.dsustate", state_path, (unsigned long)sizeof(state_path)), "join state path");
 
     ok &= expect(path_join(base, "m.dsumanifest", manifest_path, (unsigned long)sizeof(manifest_path)), "join manifest path");
     ok &= expect(write_manifest_fileset(manifest_path, install_root, "payload", "core"), "write manifest");
@@ -871,7 +916,7 @@ static int test_verify_only_mode(void) {
     ok &= expect(write_bytes_file(payload_file, (const unsigned char *)"hello\n", 6ul), "write payload file");
 
     ok &= expect(path_join(base, "install", install_root, (unsigned long)sizeof(install_root)), "join install root");
-    ok &= expect(path_join(install_root, ".dsu/state.dsustate", state_path, (unsigned long)sizeof(state_path)), "join state path");
+    ok &= expect(path_join(install_root, ".dsu/installed_state.dsustate", state_path, (unsigned long)sizeof(state_path)), "join state path");
     ok &= expect(path_join(base, "m.dsumanifest", manifest_path, (unsigned long)sizeof(manifest_path)), "join manifest path");
     ok &= expect(write_manifest_fileset(manifest_path, install_root, "payload", "core"), "write manifest");
     if (!ok) goto done;
@@ -935,14 +980,200 @@ done:
     return ok;
 }
 
-static int test_uninstall(void) {
-    const char *base = "dsu_test_txn_uninstall";
+static int test_state_roundtrip_and_atomic_save(void) {
+    const char *base = "dsu_test_state_roundtrip";
     char manifest_path[1024];
     char payload_root[1024];
     char payload_bin_dir[1024];
-    char payload_file[1024];
+    char payload_data_dir[1024];
+    char payload_f1[1024];
+    char payload_f2[1024];
     char install_root[1024];
-    char install_file[1024];
+    char install_f1[1024];
+    char install_f2[1024];
+    char state_path[1024];
+    char state_mut_path[1024];
+    char state_rt_path[1024];
+
+    unsigned char *orig_bytes = NULL;
+    unsigned long orig_len = 0ul;
+    unsigned char *rt_bytes = NULL;
+    unsigned long rt_len = 0ul;
+    unsigned char *mut_bytes = NULL;
+
+    dsu_ctx_t *ctx = NULL;
+    dsu_manifest_t *m = NULL;
+    dsu_resolve_result_t *r = NULL;
+    dsu_plan_t *p = NULL;
+    dsu_state_t *s = NULL;
+    dsu_state_t *s_mut = NULL;
+    dsu_txn_options_t opts;
+    dsu_txn_result_t res;
+    dsu_status_t st;
+    int ok = 1;
+
+    (void)rm_rf(base);
+    ok &= expect(mkdir_p_rel(base), "mkdir base");
+
+    ok &= expect(path_join(base, "payload", payload_root, (unsigned long)sizeof(payload_root)), "join payload root");
+    ok &= expect(path_join(payload_root, "bin", payload_bin_dir, (unsigned long)sizeof(payload_bin_dir)), "join payload/bin");
+    ok &= expect(path_join(payload_root, "data", payload_data_dir, (unsigned long)sizeof(payload_data_dir)), "join payload/data");
+    ok &= expect(mkdir_p_rel(payload_bin_dir), "mkdir payload/bin");
+    ok &= expect(mkdir_p_rel(payload_data_dir), "mkdir payload/data");
+
+    ok &= expect(path_join(payload_bin_dir, "hello.txt", payload_f1, (unsigned long)sizeof(payload_f1)), "join payload f1");
+    ok &= expect(path_join(payload_data_dir, "config.json", payload_f2, (unsigned long)sizeof(payload_f2)), "join payload f2");
+    ok &= expect(write_bytes_file(payload_f1, (const unsigned char *)"hello\n", 6ul), "write payload f1");
+    ok &= expect(write_bytes_file(payload_f2, (const unsigned char *)"{\"k\":1}\n", 8ul), "write payload f2");
+
+    ok &= expect(path_join(base, "install", install_root, (unsigned long)sizeof(install_root)), "join install root");
+    ok &= expect(path_join(install_root, "bin/hello.txt", install_f1, (unsigned long)sizeof(install_f1)), "join install f1");
+    ok &= expect(path_join(install_root, "data/config.json", install_f2, (unsigned long)sizeof(install_f2)), "join install f2");
+    ok &= expect(path_join(install_root, ".dsu/installed_state.dsustate", state_path, (unsigned long)sizeof(state_path)), "join state path");
+    ok &= expect(path_join(base, "state_mut.dsustate", state_mut_path, (unsigned long)sizeof(state_mut_path)), "join state mut path");
+    ok &= expect(path_join(base, "state_roundtrip.dsustate", state_rt_path, (unsigned long)sizeof(state_rt_path)), "join state rt path");
+
+    ok &= expect(path_join(base, "m.dsumanifest", manifest_path, (unsigned long)sizeof(manifest_path)), "join manifest path");
+    ok &= expect(write_manifest_fileset(manifest_path, install_root, "payload", "core"), "write manifest");
+    if (!ok) goto done;
+
+    ctx = create_ctx_deterministic();
+    ok &= expect(ctx != NULL, "ctx create");
+    if (!ok) goto done;
+
+    st = dsu_manifest_load_file(ctx, manifest_path, &m);
+    ok &= expect_st(st, DSU_STATUS_SUCCESS, "manifest load");
+    if (!ok) goto done;
+
+    {
+        const char *const requested[] = {"core"};
+        dsu_resolve_request_t req;
+        dsu_resolve_request_init(&req);
+        req.operation = DSU_RESOLVE_OPERATION_INSTALL;
+        req.scope = DSU_MANIFEST_INSTALL_SCOPE_PORTABLE;
+        req.requested_components = requested;
+        req.requested_component_count = 1u;
+        st = dsu_resolve_components(ctx, m, NULL, &req, &r);
+    }
+    ok &= expect_st(st, DSU_STATUS_SUCCESS, "resolve");
+    if (!ok) goto done;
+
+    st = dsu_plan_build(ctx, m, manifest_path, r, &p);
+    ok &= expect_st(st, DSU_STATUS_SUCCESS, "plan build");
+    if (!ok) goto done;
+
+    st = dsu_ctx_reset_audit_log(ctx);
+    ok &= expect_st(st, DSU_STATUS_SUCCESS, "reset audit log");
+    if (!ok) goto done;
+
+    dsu_txn_options_init(&opts);
+    dsu_txn_result_init(&res);
+    st = dsu_txn_apply_plan(ctx, p, &opts, &res);
+    if (st != DSU_STATUS_SUCCESS) {
+        dump_audit_log(ctx);
+    }
+    ok &= expect_st(st, DSU_STATUS_SUCCESS, "install txn");
+    if (!ok) goto done;
+
+    ok &= expect(file_exists(install_f1), "installed f1 exists");
+    ok &= expect(file_exists(install_f2), "installed f2 exists");
+    ok &= expect(file_exists(state_path), "state exists");
+    if (!ok) goto done;
+
+    ok &= expect(read_all_bytes(state_path, &orig_bytes, &orig_len), "read state bytes");
+    if (!ok) goto done;
+
+    mut_bytes = (unsigned char *)malloc((size_t)orig_len);
+    ok &= expect(mut_bytes != NULL || orig_len == 0ul, "alloc mutated state bytes");
+    if (!ok) goto done;
+    if (orig_len != 0ul) {
+        memcpy(mut_bytes, orig_bytes, (size_t)orig_len);
+    }
+    ok &= expect(bytes_replace_in_first_match(mut_bytes, orig_len, "bin/hello.txt", (unsigned char)'/', (unsigned char)'\\'),
+                 "mutate bin/hello.txt path separators");
+    ok &= expect(bytes_replace_in_first_match(mut_bytes, orig_len, "data/config.json", (unsigned char)'/', (unsigned char)'\\'),
+                 "mutate data/config.json path separators");
+    if (!ok) goto done;
+
+    ok &= expect(write_bytes_file(state_mut_path, mut_bytes, orig_len), "write mutated state");
+    if (!ok) goto done;
+
+    st = dsu_state_load_file(ctx, state_path, &s);
+    ok &= expect_st(st, DSU_STATUS_SUCCESS, "state load");
+    if (!ok) goto done;
+
+    st = dsu_state_load_file(ctx, state_mut_path, &s_mut);
+    ok &= expect_st(st, DSU_STATUS_SUCCESS, "state load (mutated)");
+    if (!ok) goto done;
+
+    st = dsu_state_save_atomic(ctx, s_mut, state_rt_path);
+    ok &= expect_st(st, DSU_STATUS_SUCCESS, "state save_atomic roundtrip");
+    if (!ok) goto done;
+
+    ok &= expect(read_all_bytes(state_rt_path, &rt_bytes, &rt_len), "read roundtrip state bytes");
+    ok &= expect(bytes_equal(orig_bytes, orig_len, rt_bytes, rt_len), "state bytes stable across canonicalization");
+    if (!ok) goto done;
+
+    {
+        char *rep_a = NULL;
+        char *rep_b = NULL;
+        st = dsu_report_list_installed(ctx, s, DSU_REPORT_FORMAT_JSON, &rep_a);
+        ok &= expect_st(st, DSU_STATUS_SUCCESS, "list-installed report A");
+        st = dsu_report_list_installed(ctx, s, DSU_REPORT_FORMAT_JSON, &rep_b);
+        ok &= expect_st(st, DSU_STATUS_SUCCESS, "list-installed report B");
+        ok &= expect(rep_a != NULL && rep_b != NULL && strcmp(rep_a, rep_b) == 0, "list-installed deterministic");
+        dsu_report_free(ctx, rep_a);
+        dsu_report_free(ctx, rep_b);
+    }
+
+#if defined(_WIN32)
+    {
+        char native[1024];
+        HANDLE h;
+        unsigned char *after_bytes = NULL;
+        unsigned long after_len = 0ul;
+        ok &= expect(path_to_native_win32(state_path, native, (unsigned long)sizeof(native)), "state path native");
+        if (!ok) goto done;
+        h = CreateFileA(native, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+        ok &= expect(h != INVALID_HANDLE_VALUE, "lock state file");
+        if (!ok) goto done;
+
+        st = dsu_state_save_atomic(ctx, s_mut, state_path);
+        ok &= expect(st != DSU_STATUS_SUCCESS, "state save_atomic fails while locked");
+        CloseHandle(h);
+
+        ok &= expect(read_all_bytes(state_path, &after_bytes, &after_len), "read state bytes after failed save");
+        ok &= expect(bytes_equal(orig_bytes, orig_len, after_bytes, after_len), "failed save_atomic does not corrupt state");
+        free(after_bytes);
+    }
+#endif
+
+done:
+    if (s_mut) dsu_state_destroy(ctx, s_mut);
+    if (s) dsu_state_destroy(ctx, s);
+    if (p) dsu_plan_destroy(ctx, p);
+    if (r) dsu_resolve_result_destroy(ctx, r);
+    if (m) dsu_manifest_destroy(ctx, m);
+    if (ctx) dsu_ctx_destroy(ctx);
+    free(orig_bytes);
+    free(rt_bytes);
+    free(mut_bytes);
+    (void)rm_rf(base);
+    return ok;
+}
+
+static int test_report_verify_detects_missing_and_modified(void) {
+    const char *base = "dsu_test_report_verify";
+    char manifest_path[1024];
+    char payload_root[1024];
+    char payload_bin_dir[1024];
+    char payload_data_dir[1024];
+    char payload_f1[1024];
+    char payload_f2[1024];
+    char install_root[1024];
+    char install_f1[1024];
+    char install_f2[1024];
+    char user_file[1024];
     char state_path[1024];
 
     dsu_ctx_t *ctx = NULL;
@@ -955,18 +1186,29 @@ static int test_uninstall(void) {
     dsu_status_t st;
     int ok = 1;
 
+    char *report = NULL;
+    dsu_report_verify_summary_t summary;
+
     (void)rm_rf(base);
     ok &= expect(mkdir_p_rel(base), "mkdir base");
 
     ok &= expect(path_join(base, "payload", payload_root, (unsigned long)sizeof(payload_root)), "join payload root");
     ok &= expect(path_join(payload_root, "bin", payload_bin_dir, (unsigned long)sizeof(payload_bin_dir)), "join payload/bin");
+    ok &= expect(path_join(payload_root, "data", payload_data_dir, (unsigned long)sizeof(payload_data_dir)), "join payload/data");
     ok &= expect(mkdir_p_rel(payload_bin_dir), "mkdir payload/bin");
-    ok &= expect(path_join(payload_bin_dir, "hello.txt", payload_file, (unsigned long)sizeof(payload_file)), "join payload file");
-    ok &= expect(write_bytes_file(payload_file, (const unsigned char *)"hello\n", 6ul), "write payload file");
+    ok &= expect(mkdir_p_rel(payload_data_dir), "mkdir payload/data");
+
+    ok &= expect(path_join(payload_bin_dir, "hello.txt", payload_f1, (unsigned long)sizeof(payload_f1)), "join payload f1");
+    ok &= expect(path_join(payload_data_dir, "config.json", payload_f2, (unsigned long)sizeof(payload_f2)), "join payload f2");
+    ok &= expect(write_bytes_file(payload_f1, (const unsigned char *)"hello\n", 6ul), "write payload f1");
+    ok &= expect(write_bytes_file(payload_f2, (const unsigned char *)"{\"k\":1}\n", 8ul), "write payload f2");
 
     ok &= expect(path_join(base, "install", install_root, (unsigned long)sizeof(install_root)), "join install root");
-    ok &= expect(path_join(install_root, "bin/hello.txt", install_file, (unsigned long)sizeof(install_file)), "join install file");
-    ok &= expect(path_join(install_root, ".dsu/state.dsustate", state_path, (unsigned long)sizeof(state_path)), "join state path");
+    ok &= expect(path_join(install_root, "bin/hello.txt", install_f1, (unsigned long)sizeof(install_f1)), "join install f1");
+    ok &= expect(path_join(install_root, "data/config.json", install_f2, (unsigned long)sizeof(install_f2)), "join install f2");
+    ok &= expect(path_join(install_root, "data/user.txt", user_file, (unsigned long)sizeof(user_file)), "join user file");
+    ok &= expect(path_join(install_root, ".dsu/installed_state.dsustate", state_path, (unsigned long)sizeof(state_path)), "join state path");
+
     ok &= expect(path_join(base, "m.dsumanifest", manifest_path, (unsigned long)sizeof(manifest_path)), "join manifest path");
     ok &= expect(write_manifest_fileset(manifest_path, install_root, "payload", "core"), "write manifest");
     if (!ok) goto done;
@@ -1013,6 +1255,127 @@ static int test_uninstall(void) {
     ok &= expect_st(st, DSU_STATUS_SUCCESS, "state load");
     if (!ok) goto done;
 
+    ok &= expect(write_bytes_file(install_f1, (const unsigned char *)"MOD\n", 4ul), "modify installed file1");
+    ok &= expect(remove(install_f2) == 0, "delete installed file2");
+    ok &= expect(write_bytes_file(user_file, (const unsigned char *)"USER\n", 5ul), "write extra user file");
+    if (!ok) goto done;
+
+    dsu_report_verify_summary_init(&summary);
+    st = dsu_report_verify(ctx, s, DSU_REPORT_FORMAT_JSON, &report, &summary);
+    ok &= expect_st(st, DSU_STATUS_SUCCESS, "report verify");
+    ok &= expect(report != NULL, "report verify output");
+    ok &= expect(summary.checked == 2u, "verify checked == 2");
+    ok &= expect(summary.missing == 1u, "verify missing == 1");
+    ok &= expect(summary.modified == 1u, "verify modified == 1");
+    ok &= expect(summary.extra >= 1u, "verify extra >= 1");
+    ok &= expect(summary.errors == 0u, "verify errors == 0");
+
+done:
+    dsu_report_free(ctx, report);
+    if (s) dsu_state_destroy(ctx, s);
+    if (p) dsu_plan_destroy(ctx, p);
+    if (r) dsu_resolve_result_destroy(ctx, r);
+    if (m) dsu_manifest_destroy(ctx, m);
+    if (ctx) dsu_ctx_destroy(ctx);
+    (void)rm_rf(base);
+    return ok;
+}
+
+static int test_uninstall(void) {
+    const char *base = "dsu_test_txn_uninstall";
+    char manifest_path[1024];
+    char payload_root[1024];
+    char payload_bin_dir[1024];
+    char payload_file[1024];
+    char install_root[1024];
+    char install_file[1024];
+    char user_file[1024];
+    char state_path[1024];
+
+    dsu_ctx_t *ctx = NULL;
+    dsu_manifest_t *m = NULL;
+    dsu_resolve_result_t *r = NULL;
+    dsu_plan_t *p = NULL;
+    dsu_state_t *s = NULL;
+    dsu_txn_options_t opts;
+    dsu_txn_result_t res;
+    dsu_status_t st;
+    int ok = 1;
+
+    char *preview_a = NULL;
+    char *preview_b = NULL;
+
+    (void)rm_rf(base);
+    ok &= expect(mkdir_p_rel(base), "mkdir base");
+
+    ok &= expect(path_join(base, "payload", payload_root, (unsigned long)sizeof(payload_root)), "join payload root");
+    ok &= expect(path_join(payload_root, "bin", payload_bin_dir, (unsigned long)sizeof(payload_bin_dir)), "join payload/bin");
+    ok &= expect(mkdir_p_rel(payload_bin_dir), "mkdir payload/bin");
+    ok &= expect(path_join(payload_bin_dir, "hello.txt", payload_file, (unsigned long)sizeof(payload_file)), "join payload file");
+    ok &= expect(write_bytes_file(payload_file, (const unsigned char *)"hello\n", 6ul), "write payload file");
+
+    ok &= expect(path_join(base, "install", install_root, (unsigned long)sizeof(install_root)), "join install root");
+    ok &= expect(path_join(install_root, "bin/hello.txt", install_file, (unsigned long)sizeof(install_file)), "join install file");
+    ok &= expect(path_join(install_root, "bin/user.txt", user_file, (unsigned long)sizeof(user_file)), "join user file");
+    ok &= expect(path_join(install_root, ".dsu/installed_state.dsustate", state_path, (unsigned long)sizeof(state_path)), "join state path");
+    ok &= expect(path_join(base, "m.dsumanifest", manifest_path, (unsigned long)sizeof(manifest_path)), "join manifest path");
+    ok &= expect(write_manifest_fileset(manifest_path, install_root, "payload", "core"), "write manifest");
+    if (!ok) goto done;
+
+    ctx = create_ctx_deterministic();
+    ok &= expect(ctx != NULL, "ctx create");
+    if (!ok) goto done;
+
+    st = dsu_manifest_load_file(ctx, manifest_path, &m);
+    ok &= expect_st(st, DSU_STATUS_SUCCESS, "manifest load");
+    if (!ok) goto done;
+
+    {
+        const char *const requested[] = {"core"};
+        dsu_resolve_request_t req;
+        dsu_resolve_request_init(&req);
+        req.operation = DSU_RESOLVE_OPERATION_INSTALL;
+        req.scope = DSU_MANIFEST_INSTALL_SCOPE_PORTABLE;
+        req.requested_components = requested;
+        req.requested_component_count = 1u;
+        st = dsu_resolve_components(ctx, m, NULL, &req, &r);
+    }
+    ok &= expect_st(st, DSU_STATUS_SUCCESS, "resolve");
+    if (!ok) goto done;
+
+    st = dsu_plan_build(ctx, m, manifest_path, r, &p);
+    ok &= expect_st(st, DSU_STATUS_SUCCESS, "plan build");
+    if (!ok) goto done;
+
+    st = dsu_ctx_reset_audit_log(ctx);
+    ok &= expect_st(st, DSU_STATUS_SUCCESS, "reset audit log");
+    if (!ok) goto done;
+
+    dsu_txn_options_init(&opts);
+    dsu_txn_result_init(&res);
+    st = dsu_txn_apply_plan(ctx, p, &opts, &res);
+    if (st != DSU_STATUS_SUCCESS) {
+        dump_audit_log(ctx);
+    }
+    ok &= expect_st(st, DSU_STATUS_SUCCESS, "install txn");
+    if (!ok) goto done;
+
+    ok &= expect(write_bytes_file(user_file, (const unsigned char *)"USER\n", 5ul), "write user file");
+    if (!ok) goto done;
+
+    st = dsu_state_load_file(ctx, state_path, &s);
+    ok &= expect_st(st, DSU_STATUS_SUCCESS, "state load");
+    if (!ok) goto done;
+
+    st = dsu_report_uninstall_preview(ctx, s, NULL, 0u, DSU_REPORT_FORMAT_JSON, &preview_a);
+    ok &= expect_st(st, DSU_STATUS_SUCCESS, "uninstall preview A");
+    st = dsu_report_uninstall_preview(ctx, s, NULL, 0u, DSU_REPORT_FORMAT_JSON, &preview_b);
+    ok &= expect_st(st, DSU_STATUS_SUCCESS, "uninstall preview B");
+    ok &= expect(preview_a != NULL && preview_b != NULL && strcmp(preview_a, preview_b) == 0, "uninstall preview deterministic");
+    ok &= expect(preview_a != NULL && strstr(preview_a, "bin/hello.txt") != NULL, "uninstall preview lists owned file");
+    ok &= expect(preview_a != NULL && strstr(preview_a, "bin/user.txt") == NULL, "uninstall preview excludes user file");
+    if (!ok) goto done;
+
     dsu_txn_result_init(&res);
     st = dsu_txn_uninstall_state(ctx, s, state_path, &opts, &res);
     ok &= expect_st(st, DSU_STATUS_SUCCESS, "uninstall txn");
@@ -1020,8 +1383,11 @@ static int test_uninstall(void) {
 
     ok &= expect(!file_exists(install_file), "installed file removed");
     ok &= expect(!file_exists(state_path), "state file removed");
+    ok &= expect(file_exists(user_file), "user file preserved");
 
 done:
+    dsu_report_free(ctx, preview_a);
+    dsu_report_free(ctx, preview_b);
     if (s) dsu_state_destroy(ctx, s);
     if (p) dsu_plan_destroy(ctx, p);
     if (r) dsu_resolve_result_destroy(ctx, r);
@@ -1071,7 +1437,7 @@ static int test_failed_install_rollback_pristine(void) {
     ok &= expect(path_join(install_bin_dir, "hello.txt", install_file, (unsigned long)sizeof(install_file)), "join install file");
     ok &= expect(write_bytes_file(install_file, (const unsigned char *)"OLD\n", 4ul), "write preexisting file");
 
-    ok &= expect(path_join(install_root, ".dsu/state.dsustate", state_path, (unsigned long)sizeof(state_path)), "join state path");
+    ok &= expect(path_join(install_root, ".dsu/installed_state.dsustate", state_path, (unsigned long)sizeof(state_path)), "join state path");
     ok &= expect(!file_exists(state_path), "state does not exist before txn");
 
     ok &= expect(path_join(base, "m.dsumanifest", manifest_path, (unsigned long)sizeof(manifest_path)), "join manifest path");
@@ -1133,6 +1499,8 @@ int main(void) {
     ok &= test_path_traversal_rejection();
     ok &= test_fresh_install();
     ok &= test_verify_only_mode();
+    ok &= test_state_roundtrip_and_atomic_save();
+    ok &= test_report_verify_detects_missing_and_modified();
     ok &= test_uninstall();
     ok &= test_failed_install_rollback_pristine();
     return ok ? 0 : 1;

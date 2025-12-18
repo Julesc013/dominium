@@ -27,5 +27,6 @@ PURPOSE: Shared event id constants for audit log emission.
 #define DSU_EVENT_TXN_ROLLBACK_START 0x1509u
 #define DSU_EVENT_TXN_ROLLBACK_ENTRY 0x150Au
 #define DSU_EVENT_TXN_ROLLBACK_COMPLETE 0x150Bu
+#define DSU_EVENT_TXN_STATE_WRITTEN 0x150Cu
 
 #endif /* DSU_EVENTS_H_INCLUDED */
