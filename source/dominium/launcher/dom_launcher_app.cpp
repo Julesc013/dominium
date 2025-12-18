@@ -42,6 +42,7 @@ extern "C" {
 #include "core/include/launcher_instance_artifact_ops.h"
 #include "core/include/launcher_tools_registry.h"
 #include "core/include/launcher_audit.h"
+#include "core/include/launcher_selection_summary.h"
 
 namespace dom {
 
@@ -89,6 +90,7 @@ struct DomLauncherUiState {
     u32 logs_selected_run_item_id;
     std::string logs_selected_run_id;
     std::vector<std::string> logs_selected_audit_lines;
+    std::string logs_selected_selection_summary_line;
 
     /* Local news lines (loaded once) */
     u32 news_loaded;
@@ -196,6 +198,7 @@ struct DomLauncherUiState {
           logs_selected_run_item_id(0u),
           logs_selected_run_id(),
           logs_selected_audit_lines(),
+          logs_selected_selection_summary_line(),
           news_loaded(0u),
           news_lines(),
           dialog_visible(0u),
@@ -1142,8 +1145,10 @@ static void ui_load_selected_run_audit(DomLauncherUiState& ui,
     std::vector<unsigned char> bytes;
     std::string err;
     launcher_core::LauncherAuditLog audit;
+    launcher_core::LauncherSelectionSummary ss;
 
     ui.logs_selected_audit_lines.clear();
+    ui.logs_selected_selection_summary_line.clear();
     if (state_root.empty() || instance_id.empty() || ui.logs_selected_run_id.empty()) {
         return;
     }
@@ -1159,6 +1164,20 @@ static void ui_load_selected_run_audit(DomLauncherUiState& ui,
         if (!launcher_core::launcher_audit_from_tlv_bytes(bytes.empty() ? (const unsigned char*)0 : &bytes[0], bytes.size(), audit)) {
             ui.logs_selected_audit_lines.push_back(std::string("audit_decode_failed;path=") + audit_path);
             return;
+        }
+    }
+
+    {
+        const std::string sel_path =
+            path_join(path_join(path_join(path_join(path_join(state_root, "instances"), instance_id), "logs/runs"), ui.logs_selected_run_id),
+                      "selection_summary.tlv");
+        bytes.clear();
+        err.clear();
+        if (read_file_all_bytes(sel_path, bytes, err) && !bytes.empty() &&
+            launcher_core::launcher_selection_summary_from_tlv_bytes(bytes.empty() ? (const unsigned char*)0 : &bytes[0], bytes.size(), ss)) {
+            ui.logs_selected_selection_summary_line = launcher_core::launcher_selection_summary_to_compact_line(ss);
+        } else {
+            ui.logs_selected_audit_lines.push_back(std::string("selection_summary_unavailable;path=") + sel_path + ";err=" + err);
         }
     }
 
@@ -1200,6 +1219,7 @@ static void ui_refresh_instance_cache(DomLauncherUiState& ui,
     ui.logs_selected_run_item_id = 0u;
     ui.logs_selected_run_id.clear();
     ui.logs_selected_audit_lines.clear();
+    ui.logs_selected_selection_summary_line.clear();
 
     if (instance_id.empty() || state_root.empty()) {
         return;
@@ -3466,6 +3486,36 @@ void DomLauncherApp::process_ui_task() {
                             lines.push_back(std::string("copy_failed=last_run/launcher_audit.tlv;err=") + err);
                         }
                     }
+                    if (file_exists_stdio(path_join(src_run_dir, "selection_summary.tlv"))) {
+                        if (copy_file_best_effort_stdio(path_join(src_run_dir, "selection_summary.tlv"),
+                                                        path_join(dst_run_dir, "selection_summary.tlv"),
+                                                        err)) {
+                            lines.push_back("copied=last_run/selection_summary.tlv");
+                        } else {
+                            lines.push_back(std::string("copy_failed=last_run/selection_summary.tlv;err=") + err);
+                        }
+                    }
+
+                    {
+                        launcher_core::LauncherSelectionSummary ss;
+                        std::vector<unsigned char> sb;
+                        std::string sel_err;
+
+                        if (read_file_all_bytes(path_join(src_run_dir, "selection_summary.tlv"), sb, sel_err) && !sb.empty() &&
+                            launcher_core::launcher_selection_summary_from_tlv_bytes(sb.empty() ? (const unsigned char*)0 : &sb[0], sb.size(), ss)) {
+                            const std::string txt = launcher_core::launcher_selection_summary_to_text(ss);
+                            const std::vector<unsigned char> txt_bytes(txt.begin(), txt.end());
+                            if (write_file_all_bytes_stdio(path_join(t.path, "last_run_selection_summary.txt"), txt_bytes, sel_err)) {
+                                lines.push_back("wrote=last_run_selection_summary.txt");
+                            } else {
+                                lines.push_back(std::string("write_failed=last_run_selection_summary.txt;err=") + sel_err);
+                            }
+                        } else {
+                            const std::string txt = std::string("selection_summary_error=") + (sel_err.empty() ? std::string("unavailable") : sel_err) + "\n";
+                            const std::vector<unsigned char> txt_bytes(txt.begin(), txt.end());
+                            (void)write_file_all_bytes_stdio(path_join(t.path, "last_run_selection_summary.txt"), txt_bytes, sel_err);
+                        }
+                    }
                 }
             } else if (!list_err.empty()) {
                 lines.push_back(std::string("runs_list_failed;err=") + list_err);
@@ -3837,10 +3887,14 @@ bool DomLauncherApp::build_dui_state(std::vector<unsigned char>& out_state) cons
     dui_state_add_u32(inner, (u32)W_STATUS_PROGRESS, (u32)DUI_VALUE_U32, (m_ui->status_progress > 1000u) ? 1000u : m_ui->status_progress);
     {
         std::string summary = std::string("instance=") + (selected_instance() ? selected_instance()->id : std::string("(none)"));
-        summary += std::string(" profile=") + (m_profile_valid ? "dom_profile" : "default");
-        summary += std::string(" ui=") + m_ui_backend_selected;
-        if (selected_instance() && m_ui->cache_valid) {
-            summary += std::string(" manifest=") + u64_hex16(m_ui->cache_manifest_hash64).substr(0u, 8u);
+        if (m_ui && !m_ui->logs_selected_selection_summary_line.empty()) {
+            summary += std::string(" ") + m_ui->logs_selected_selection_summary_line;
+        } else {
+            summary += std::string(" profile=") + (m_profile_valid ? "dom_profile" : "default");
+            summary += std::string(" ui=") + m_ui_backend_selected;
+            if (selected_instance() && m_ui->cache_valid) {
+                summary += std::string(" manifest=") + u64_hex16(m_ui->cache_manifest_hash64).substr(0u, 8u);
+            }
         }
         dui_state_add_text(inner, (u32)W_STATUS_SELECTION, summary);
     }
