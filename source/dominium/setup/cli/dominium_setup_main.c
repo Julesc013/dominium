@@ -19,6 +19,7 @@ PURPOSE: Minimal setup control-plane CLI for Plan S-1 (plan + dry-run).
 #include "dsu/dsu_execute.h"
 #include "dsu/dsu_log.h"
 #include "dsu/dsu_manifest.h"
+#include "dsu/dsu_platform_iface.h"
 #include "dsu/dsu_plan.h"
 #include "dsu/dsu_report.h"
 #include "dsu/dsu_resolve.h"
@@ -132,12 +133,14 @@ static void dsu_cli_print_usage(FILE *out) {
             "  %s list-installed --state <statefile> [--deterministic] [--json]\n"
             "  %s uninstall --state <statefile> [--dry-run] [--deterministic] [--json]\n"
             "  %s verify --state <statefile> [--deterministic] [--json]\n"
+            "  %s platform-register --state <statefile> [--deterministic] [--json]\n"
+            "  %s platform-unregister --state <statefile> [--deterministic] [--json]\n"
             "  %s uninstall-preview --state <statefile> [--components a,b] [--deterministic] [--json]\n"
             "  %s report --state <statefile> --out <dir> [--format json|txt] [--deterministic]\n"
             "  %s rollback --journal <journalfile> [--dry-run] [--deterministic] [--json]\n",
             DSU_CLI_NAME, DSU_CLI_NAME, DSU_CLI_NAME, DSU_CLI_NAME, DSU_CLI_NAME,
             DSU_CLI_NAME, DSU_CLI_NAME, DSU_CLI_NAME, DSU_CLI_NAME, DSU_CLI_NAME,
-            DSU_CLI_NAME, DSU_CLI_NAME, DSU_CLI_NAME);
+            DSU_CLI_NAME, DSU_CLI_NAME, DSU_CLI_NAME, DSU_CLI_NAME, DSU_CLI_NAME);
 }
 
 static dsu_status_t dsu_cli_ctx_create(const dsu_cli_opts_t *opts, dsu_ctx_t **out_ctx) {
@@ -849,6 +852,86 @@ done:
     if (state) dsu_state_destroy(ctx, state);
     if (ctx) dsu_ctx_destroy(ctx);
     return exit_code;
+}
+
+static int dsu_cli_cmd_platform_register(const char *state_path, const dsu_cli_opts_t *opts) {
+    dsu_ctx_t *ctx = NULL;
+    dsu_state_t *state = NULL;
+    dsu_status_t st;
+
+    st = dsu_cli_ctx_create(opts, &ctx);
+    if (st != DSU_STATUS_SUCCESS) goto done;
+    st = dsu_ctx_reset_audit_log(ctx);
+    if (st != DSU_STATUS_SUCCESS) goto done;
+
+    st = dsu_state_load(ctx, state_path, &state);
+    if (st != DSU_STATUS_SUCCESS) goto done;
+
+    st = dsu_platform_register_from_state(ctx, state);
+
+done:
+    if (opts && opts->json) {
+        fputc('{', stdout);
+        fputs("\"command\":", stdout); dsu_cli_json_put_escaped(stdout, "platform-register"); fputc(',', stdout);
+        fputs("\"state_file\":", stdout); dsu_cli_json_put_escaped(stdout, state_path ? state_path : ""); fputc(',', stdout);
+        if (st == DSU_STATUS_SUCCESS) {
+            fputs("\"status\":", stdout); dsu_cli_json_put_escaped(stdout, "ok");
+        } else {
+            fputs("\"status\":", stdout); dsu_cli_json_put_escaped(stdout, "error"); fputc(',', stdout);
+            fputs("\"error\":", stdout); dsu_cli_json_put_escaped(stdout, dsu_cli_status_name(st));
+        }
+        fputs("}\n", stdout);
+    } else {
+        if (st == DSU_STATUS_SUCCESS) {
+            fputs("ok\n", stdout);
+        } else {
+            fprintf(stderr, "error: %s\n", dsu_cli_status_name(st));
+        }
+    }
+
+    if (state) dsu_state_destroy(ctx, state);
+    if (ctx) dsu_ctx_destroy(ctx);
+    return dsu_cli_exit_code(st);
+}
+
+static int dsu_cli_cmd_platform_unregister(const char *state_path, const dsu_cli_opts_t *opts) {
+    dsu_ctx_t *ctx = NULL;
+    dsu_state_t *state = NULL;
+    dsu_status_t st;
+
+    st = dsu_cli_ctx_create(opts, &ctx);
+    if (st != DSU_STATUS_SUCCESS) goto done;
+    st = dsu_ctx_reset_audit_log(ctx);
+    if (st != DSU_STATUS_SUCCESS) goto done;
+
+    st = dsu_state_load(ctx, state_path, &state);
+    if (st != DSU_STATUS_SUCCESS) goto done;
+
+    st = dsu_platform_unregister_from_state(ctx, state);
+
+done:
+    if (opts && opts->json) {
+        fputc('{', stdout);
+        fputs("\"command\":", stdout); dsu_cli_json_put_escaped(stdout, "platform-unregister"); fputc(',', stdout);
+        fputs("\"state_file\":", stdout); dsu_cli_json_put_escaped(stdout, state_path ? state_path : ""); fputc(',', stdout);
+        if (st == DSU_STATUS_SUCCESS) {
+            fputs("\"status\":", stdout); dsu_cli_json_put_escaped(stdout, "ok");
+        } else {
+            fputs("\"status\":", stdout); dsu_cli_json_put_escaped(stdout, "error"); fputc(',', stdout);
+            fputs("\"error\":", stdout); dsu_cli_json_put_escaped(stdout, dsu_cli_status_name(st));
+        }
+        fputs("}\n", stdout);
+    } else {
+        if (st == DSU_STATUS_SUCCESS) {
+            fputs("ok\n", stdout);
+        } else {
+            fprintf(stderr, "error: %s\n", dsu_cli_status_name(st));
+        }
+    }
+
+    if (state) dsu_state_destroy(ctx, state);
+    if (ctx) dsu_ctx_destroy(ctx);
+    return dsu_cli_exit_code(st);
 }
 
 static int dsu_cli_cmd_uninstall_preview(const char *state_path, const char *components_csv, const dsu_cli_opts_t *opts) {
@@ -1708,6 +1791,58 @@ int main(int argc, char **argv) {
             return 2;
         }
         return dsu_cli_cmd_verify(state_path, &opts);
+    }
+
+    if (dsu_cli_streq(cmd, "platform-register")) {
+        const char *state_path = NULL;
+        for (i = 2; i < argc; ++i) {
+            const char *arg = argv[i];
+            const char *v;
+            if (!arg) continue;
+            v = dsu_cli_kv_value_inline(arg, "--state");
+            if (v) {
+                state_path = v;
+                continue;
+            }
+            if (dsu_cli_streq(arg, "--state") && i + 1 < argc) {
+                state_path = argv[++i];
+            }
+        }
+        if (!state_path) {
+            if (opts.json) {
+                fputs("{\"error\":\"invalid_args\"}\n", stdout);
+            } else {
+                dsu_cli_print_usage(stderr);
+            }
+            return 2;
+        }
+        return dsu_cli_cmd_platform_register(state_path, &opts);
+    }
+
+    if (dsu_cli_streq(cmd, "platform-unregister")) {
+        const char *state_path = NULL;
+        for (i = 2; i < argc; ++i) {
+            const char *arg = argv[i];
+            const char *v;
+            if (!arg) continue;
+            v = dsu_cli_kv_value_inline(arg, "--state");
+            if (v) {
+                state_path = v;
+                continue;
+            }
+            if (dsu_cli_streq(arg, "--state") && i + 1 < argc) {
+                state_path = argv[++i];
+            }
+        }
+        if (!state_path) {
+            if (opts.json) {
+                fputs("{\"error\":\"invalid_args\"}\n", stdout);
+            } else {
+                dsu_cli_print_usage(stderr);
+            }
+            return 2;
+        }
+        return dsu_cli_cmd_platform_unregister(state_path, &opts);
     }
 
     if (dsu_cli_streq(cmd, "uninstall-preview")) {

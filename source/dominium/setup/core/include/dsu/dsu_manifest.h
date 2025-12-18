@@ -107,6 +107,45 @@ DSU_API dsu_u64 dsu_manifest_component_payload_size(const dsu_manifest_t *manife
                                                   dsu_u32 payload_index,
                                                   dsu_bool *out_present);
 
+/* Actions (sorted deterministically by manifest canonicalization). */
+DSU_API dsu_u32 dsu_manifest_component_action_count(const dsu_manifest_t *manifest, dsu_u32 component_index);
+DSU_API dsu_manifest_action_kind_t dsu_manifest_component_action_kind(const dsu_manifest_t *manifest,
+                                                                     dsu_u32 component_index,
+                                                                     dsu_u32 action_index);
+DSU_API const char *dsu_manifest_component_action_app_id(const dsu_manifest_t *manifest,
+                                                        dsu_u32 component_index,
+                                                        dsu_u32 action_index);
+DSU_API const char *dsu_manifest_component_action_display_name(const dsu_manifest_t *manifest,
+                                                              dsu_u32 component_index,
+                                                              dsu_u32 action_index);
+DSU_API const char *dsu_manifest_component_action_exec_relpath(const dsu_manifest_t *manifest,
+                                                              dsu_u32 component_index,
+                                                              dsu_u32 action_index);
+DSU_API const char *dsu_manifest_component_action_arguments(const dsu_manifest_t *manifest,
+                                                           dsu_u32 component_index,
+                                                           dsu_u32 action_index);
+DSU_API const char *dsu_manifest_component_action_icon_relpath(const dsu_manifest_t *manifest,
+                                                              dsu_u32 component_index,
+                                                              dsu_u32 action_index);
+DSU_API const char *dsu_manifest_component_action_extension(const dsu_manifest_t *manifest,
+                                                           dsu_u32 component_index,
+                                                           dsu_u32 action_index);
+DSU_API const char *dsu_manifest_component_action_protocol(const dsu_manifest_t *manifest,
+                                                          dsu_u32 component_index,
+                                                          dsu_u32 action_index);
+DSU_API const char *dsu_manifest_component_action_marker_relpath(const dsu_manifest_t *manifest,
+                                                                dsu_u32 component_index,
+                                                                dsu_u32 action_index);
+DSU_API const char *dsu_manifest_component_action_capability_id(const dsu_manifest_t *manifest,
+                                                               dsu_u32 component_index,
+                                                               dsu_u32 action_index);
+DSU_API const char *dsu_manifest_component_action_capability_value(const dsu_manifest_t *manifest,
+                                                                  dsu_u32 component_index,
+                                                                  dsu_u32 action_index);
+DSU_API const char *dsu_manifest_component_action_publisher(const dsu_manifest_t *manifest,
+                                                           dsu_u32 component_index,
+                                                           dsu_u32 action_index);
+
 /* Dependencies (sorted deterministically by manifest canonicalization). */
 DSU_API dsu_u32 dsu_manifest_component_dependency_count(const dsu_manifest_t *manifest, dsu_u32 component_index);
 DSU_API const char *dsu_manifest_component_dependency_id(const dsu_manifest_t *manifest,

@@ -3079,6 +3079,125 @@ dsu_u64 dsu_manifest_component_payload_size(const dsu_manifest_t *manifest,
     return c->payloads[payload_index].size;
 }
 
+static const dsu_manifest_action_t *dsu__manifest_action_at(const dsu_manifest_t *manifest,
+                                                           dsu_u32 component_index,
+                                                           dsu_u32 action_index) {
+    const dsu_manifest_component_t *c;
+    if (!manifest || component_index >= manifest->component_count) {
+        return NULL;
+    }
+    c = &manifest->components[component_index];
+    if (action_index >= c->action_count) {
+        return NULL;
+    }
+    return &c->actions[action_index];
+}
+
+dsu_u32 dsu_manifest_component_action_count(const dsu_manifest_t *manifest, dsu_u32 component_index) {
+    if (!manifest || component_index >= manifest->component_count) {
+        return 0u;
+    }
+    return manifest->components[component_index].action_count;
+}
+
+dsu_manifest_action_kind_t dsu_manifest_component_action_kind(const dsu_manifest_t *manifest,
+                                                             dsu_u32 component_index,
+                                                             dsu_u32 action_index) {
+    const dsu_manifest_action_t *a = dsu__manifest_action_at(manifest, component_index, action_index);
+    if (!a) {
+        return DSU_MANIFEST_ACTION_REGISTER_APP_ENTRY;
+    }
+    return (dsu_manifest_action_kind_t)a->kind;
+}
+
+const char *dsu_manifest_component_action_app_id(const dsu_manifest_t *manifest,
+                                                dsu_u32 component_index,
+                                                dsu_u32 action_index) {
+    const dsu_manifest_action_t *a = dsu__manifest_action_at(manifest, component_index, action_index);
+    if (!a) return NULL;
+    return a->app_id ? a->app_id : "";
+}
+
+const char *dsu_manifest_component_action_display_name(const dsu_manifest_t *manifest,
+                                                      dsu_u32 component_index,
+                                                      dsu_u32 action_index) {
+    const dsu_manifest_action_t *a = dsu__manifest_action_at(manifest, component_index, action_index);
+    if (!a) return NULL;
+    return a->display_name ? a->display_name : "";
+}
+
+const char *dsu_manifest_component_action_exec_relpath(const dsu_manifest_t *manifest,
+                                                      dsu_u32 component_index,
+                                                      dsu_u32 action_index) {
+    const dsu_manifest_action_t *a = dsu__manifest_action_at(manifest, component_index, action_index);
+    if (!a) return NULL;
+    return a->exec_relpath ? a->exec_relpath : "";
+}
+
+const char *dsu_manifest_component_action_arguments(const dsu_manifest_t *manifest,
+                                                   dsu_u32 component_index,
+                                                   dsu_u32 action_index) {
+    const dsu_manifest_action_t *a = dsu__manifest_action_at(manifest, component_index, action_index);
+    if (!a) return NULL;
+    return a->arguments ? a->arguments : "";
+}
+
+const char *dsu_manifest_component_action_icon_relpath(const dsu_manifest_t *manifest,
+                                                      dsu_u32 component_index,
+                                                      dsu_u32 action_index) {
+    const dsu_manifest_action_t *a = dsu__manifest_action_at(manifest, component_index, action_index);
+    if (!a) return NULL;
+    return a->icon_relpath ? a->icon_relpath : "";
+}
+
+const char *dsu_manifest_component_action_extension(const dsu_manifest_t *manifest,
+                                                   dsu_u32 component_index,
+                                                   dsu_u32 action_index) {
+    const dsu_manifest_action_t *a = dsu__manifest_action_at(manifest, component_index, action_index);
+    if (!a) return NULL;
+    return a->extension ? a->extension : "";
+}
+
+const char *dsu_manifest_component_action_protocol(const dsu_manifest_t *manifest,
+                                                  dsu_u32 component_index,
+                                                  dsu_u32 action_index) {
+    const dsu_manifest_action_t *a = dsu__manifest_action_at(manifest, component_index, action_index);
+    if (!a) return NULL;
+    return a->protocol ? a->protocol : "";
+}
+
+const char *dsu_manifest_component_action_marker_relpath(const dsu_manifest_t *manifest,
+                                                        dsu_u32 component_index,
+                                                        dsu_u32 action_index) {
+    const dsu_manifest_action_t *a = dsu__manifest_action_at(manifest, component_index, action_index);
+    if (!a) return NULL;
+    return a->marker_relpath ? a->marker_relpath : "";
+}
+
+const char *dsu_manifest_component_action_capability_id(const dsu_manifest_t *manifest,
+                                                       dsu_u32 component_index,
+                                                       dsu_u32 action_index) {
+    const dsu_manifest_action_t *a = dsu__manifest_action_at(manifest, component_index, action_index);
+    if (!a) return NULL;
+    return a->capability_id ? a->capability_id : "";
+}
+
+const char *dsu_manifest_component_action_capability_value(const dsu_manifest_t *manifest,
+                                                          dsu_u32 component_index,
+                                                          dsu_u32 action_index) {
+    const dsu_manifest_action_t *a = dsu__manifest_action_at(manifest, component_index, action_index);
+    if (!a) return NULL;
+    return a->capability_value ? a->capability_value : "";
+}
+
+const char *dsu_manifest_component_action_publisher(const dsu_manifest_t *manifest,
+                                                   dsu_u32 component_index,
+                                                   dsu_u32 action_index) {
+    const dsu_manifest_action_t *a = dsu__manifest_action_at(manifest, component_index, action_index);
+    if (!a) return NULL;
+    return a->publisher ? a->publisher : "";
+}
+
 dsu_u32 dsu_manifest_component_dependency_count(const dsu_manifest_t *manifest, dsu_u32 component_index) {
     if (!manifest || component_index >= manifest->component_count) {
         return 0u;

@@ -1188,6 +1188,40 @@ dsu_manifest_component_kind_t dsu_plan_component_kind(const dsu_plan_t *plan, ds
     return (dsu_manifest_component_kind_t)plan->components[index].kind;
 }
 
+dsu_u32 dsu_plan_component_registration_count(const dsu_plan_t *plan, dsu_u32 component_index) {
+    if (!plan || component_index >= plan->component_count) {
+        return 0u;
+    }
+    return plan->components[component_index].registration_count;
+}
+
+const char *dsu_plan_component_registration(const dsu_plan_t *plan, dsu_u32 component_index, dsu_u32 reg_index) {
+    if (!plan || component_index >= plan->component_count) {
+        return NULL;
+    }
+    if (reg_index >= plan->components[component_index].registration_count) {
+        return NULL;
+    }
+    return plan->components[component_index].registrations[reg_index];
+}
+
+dsu_u32 dsu_plan_component_marker_count(const dsu_plan_t *plan, dsu_u32 component_index) {
+    if (!plan || component_index >= plan->component_count) {
+        return 0u;
+    }
+    return plan->components[component_index].marker_count;
+}
+
+const char *dsu_plan_component_marker(const dsu_plan_t *plan, dsu_u32 component_index, dsu_u32 marker_index) {
+    if (!plan || component_index >= plan->component_count) {
+        return NULL;
+    }
+    if (marker_index >= plan->components[component_index].marker_count) {
+        return NULL;
+    }
+    return plan->components[component_index].markers[marker_index];
+}
+
 dsu_u32 dsu_plan_step_count(const dsu_plan_t *plan) {
     if (!plan) {
         return 0u;
@@ -1844,6 +1878,98 @@ dsu_status_t dsu_plan_read_file(dsu_ctx_t *ctx, const char *path, dsu_plan_t **o
                             for (k = 0u; k < p->component_count; ++k) {
                                 p->components[k].kind = v2[k];
                             }
+                        }
+                    } else if (t2 == (dsu_u16)DSU_PLANX_TLV_COMPONENT) {
+                        dsu_u32 off3 = 0u;
+                        dsu_u32 ci = 0xFFFFFFFFu;
+                        while (off3 < n2 && st == DSU_STATUS_SUCCESS) {
+                            dsu_u16 t3;
+                            dsu_u32 n3;
+                            const dsu_u8 *v3;
+                            st = dsu__tlv_read_header(v2, n2, &off3, &t3, &n3);
+                            if (st != DSU_STATUS_SUCCESS) break;
+                            if (n2 - off3 < n3) {
+                                st = DSU_STATUS_INTEGRITY_ERROR;
+                                break;
+                            }
+                            v3 = v2 + off3;
+                            if (t3 == (dsu_u16)DSU_PLANX_TLV_COMPONENT_ID) {
+                                char *tmp_id = NULL;
+                                dsu_u32 z3 = 0u;
+                                dsu_status_t st3 = dsu__read_string_alloc(v3, n3, &z3, n3, &tmp_id);
+                                if (st3 != DSU_STATUS_SUCCESS) {
+                                    st = st3;
+                                    break;
+                                }
+                                if (!tmp_id || tmp_id[0] == '\0') {
+                                    dsu__free(tmp_id);
+                                    st = DSU_STATUS_INTEGRITY_ERROR;
+                                    break;
+                                }
+                                ci = dsu__plan_component_index_by_id(p, tmp_id);
+                                dsu__free(tmp_id);
+                                if (ci == 0xFFFFFFFFu) {
+                                    st = DSU_STATUS_INTEGRITY_ERROR;
+                                    break;
+                                }
+                            } else if (t3 == (dsu_u16)DSU_PLANX_TLV_COMPONENT_REGISTRATION) {
+                                char *tmp_reg = NULL;
+                                dsu_u32 z3 = 0u;
+                                dsu_status_t st3;
+                                if (ci == 0xFFFFFFFFu) {
+                                    st = DSU_STATUS_INTEGRITY_ERROR;
+                                    break;
+                                }
+                                st3 = dsu__read_string_alloc(v3, n3, &z3, n3, &tmp_reg);
+                                if (st3 != DSU_STATUS_SUCCESS) {
+                                    st = st3;
+                                    break;
+                                }
+                                if (!tmp_reg || tmp_reg[0] == '\0') {
+                                    dsu__free(tmp_reg);
+                                    st = DSU_STATUS_INTEGRITY_ERROR;
+                                    break;
+                                }
+                                st3 = dsu__str_list_push(&p->components[ci].registrations,
+                                                        &p->components[ci].registration_count,
+                                                        &p->components[ci].registration_cap,
+                                                        tmp_reg);
+                                if (st3 != DSU_STATUS_SUCCESS) {
+                                    dsu__free(tmp_reg);
+                                    st = st3;
+                                    break;
+                                }
+                            } else if (t3 == (dsu_u16)DSU_PLANX_TLV_COMPONENT_MARKER) {
+                                char *tmp_marker = NULL;
+                                dsu_u32 z3 = 0u;
+                                dsu_status_t st3;
+                                if (ci == 0xFFFFFFFFu) {
+                                    st = DSU_STATUS_INTEGRITY_ERROR;
+                                    break;
+                                }
+                                st3 = dsu__read_string_alloc(v3, n3, &z3, n3, &tmp_marker);
+                                if (st3 != DSU_STATUS_SUCCESS) {
+                                    st = st3;
+                                    break;
+                                }
+                                if (!tmp_marker || tmp_marker[0] == '\0') {
+                                    dsu__free(tmp_marker);
+                                    st = DSU_STATUS_INTEGRITY_ERROR;
+                                    break;
+                                }
+                                st3 = dsu__str_list_push(&p->components[ci].markers,
+                                                        &p->components[ci].marker_count,
+                                                        &p->components[ci].marker_cap,
+                                                        tmp_marker);
+                                if (st3 != DSU_STATUS_SUCCESS) {
+                                    dsu__free(tmp_marker);
+                                    st = st3;
+                                    break;
+                                }
+                            } else {
+                                /* skip */
+                            }
+                            off3 += n3;
                         }
                     } else {
                         /* skip */

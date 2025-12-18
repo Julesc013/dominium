@@ -59,6 +59,14 @@ DSU_API const char *dsu_plan_component_id(const dsu_plan_t *plan, dsu_u32 index)
 DSU_API const char *dsu_plan_component_version(const dsu_plan_t *plan, dsu_u32 index);
 DSU_API dsu_manifest_component_kind_t dsu_plan_component_kind(const dsu_plan_t *plan, dsu_u32 index);
 
+/* Platform registration intents (encoded ASCII strings; stored into installed-state). */
+DSU_API dsu_u32 dsu_plan_component_registration_count(const dsu_plan_t *plan, dsu_u32 component_index);
+DSU_API const char *dsu_plan_component_registration(const dsu_plan_t *plan, dsu_u32 component_index, dsu_u32 reg_index);
+
+/* Marker files (relative canonical paths). */
+DSU_API dsu_u32 dsu_plan_component_marker_count(const dsu_plan_t *plan, dsu_u32 component_index);
+DSU_API const char *dsu_plan_component_marker(const dsu_plan_t *plan, dsu_u32 component_index, dsu_u32 marker_index);
+
 DSU_API dsu_u32 dsu_plan_step_count(const dsu_plan_t *plan);
 DSU_API dsu_plan_step_kind_t dsu_plan_step_kind(const dsu_plan_t *plan, dsu_u32 index);
 DSU_API const char *dsu_plan_step_arg(const dsu_plan_t *plan, dsu_u32 index);

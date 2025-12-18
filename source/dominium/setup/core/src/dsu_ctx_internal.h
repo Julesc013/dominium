@@ -8,12 +8,16 @@ PURPOSE: Internal definition of dsu_ctx_t for core modules.
 
 #include "../include/dsu/dsu_ctx.h"
 
+#include "dsu/dsu_platform_iface.h"
+
 struct dsu_ctx {
     dsu_config_t config;
     dsu_callbacks_t callbacks;
     void *callbacks_user;
     dsu_log_t *audit_log;
+
+    dsu_platform_iface_t platform_iface;
+    void *platform_user;
 };
 
 #endif /* DSU_CTX_INTERNAL_H_INCLUDED */
-
