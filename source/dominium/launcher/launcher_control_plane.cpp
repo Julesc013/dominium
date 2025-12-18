@@ -890,8 +890,10 @@ ControlPlaneRunResult launcher_control_plane_try_run(int argc,
         out_kv(out, "run_id", std::string("0x") + u64_hex16(lr.run_id));
         out_kv(out, "run_dir", lr.run_dir);
         out_kv(out, "handshake_path", lr.handshake_path);
+        out_kv(out, "launch_config_path", lr.launch_config_path);
         out_kv(out, "audit_path", lr.audit_path);
         out_kv(out, "selection_summary_path", lr.selection_summary_path);
+        out_kv(out, "exit_status_path", lr.exit_status_path);
         out_kv(out, "refused", lr.refused ? "1" : "0");
         if (lr.refused) {
             out_kv(out, "refusal_code", u32_to_string(lr.refusal_code));
@@ -970,11 +972,20 @@ ControlPlaneRunResult launcher_control_plane_try_run(int argc,
 
         last_run = run_ids[run_ids.size() - 1u];
         run_dir = path_join(path_join(path_join(path_join(state_root, "instances"), instance_id), "logs/runs"), last_run);
-        audit_path = path_join(run_dir, "launcher_audit.tlv");
+        {
+            const std::string audit_path_new = path_join(run_dir, "audit_ref.tlv");
+            const std::string audit_path_old = path_join(run_dir, "launcher_audit.tlv");
+            audit_path = audit_path_new;
+            bytes.clear();
+            if (!read_file_all(audit_path_new, bytes) || bytes.empty()) {
+                bytes.clear();
+                audit_path = audit_path_old;
+                (void)read_file_all(audit_path_old, bytes);
+            }
+        }
         selection_path = path_join(run_dir, "selection_summary.tlv");
 
-        if (!read_file_all(audit_path, bytes) || bytes.empty() ||
-            !dom::launcher_core::launcher_audit_from_tlv_bytes(&bytes[0], bytes.size(), audit)) {
+        if (bytes.empty() || !dom::launcher_core::launcher_audit_from_tlv_bytes(&bytes[0], bytes.size(), audit)) {
             audit_reason_kv(audit_core, "outcome", "fail");
             out_kv(out, "result", "fail");
             out_kv(out, "error", "read_audit_failed");
@@ -1062,12 +1073,16 @@ ControlPlaneRunResult launcher_control_plane_try_run(int argc,
             src_run_dir = path_join(path_join(path_join(path_join(state_root, "instances"), instance_id), "logs/runs"), last_run);
             dst_run_dir = path_join(path_join(out_root, "last_run"), last_run);
             mkdir_p_best_effort(dst_run_dir);
-            (void)copy_file_best_effort(path_join(src_run_dir, "launcher_handshake.tlv"),
-                                        path_join(dst_run_dir, "launcher_handshake.tlv"));
-            (void)copy_file_best_effort(path_join(src_run_dir, "launcher_audit.tlv"),
-                                        path_join(dst_run_dir, "launcher_audit.tlv"));
+            (void)copy_file_best_effort(path_join(src_run_dir, "handshake.tlv"),
+                                        path_join(dst_run_dir, "handshake.tlv"));
+            (void)copy_file_best_effort(path_join(src_run_dir, "launch_config.tlv"),
+                                        path_join(dst_run_dir, "launch_config.tlv"));
+            (void)copy_file_best_effort(path_join(src_run_dir, "audit_ref.tlv"),
+                                        path_join(dst_run_dir, "audit_ref.tlv"));
             (void)copy_file_best_effort(path_join(src_run_dir, "selection_summary.tlv"),
                                         path_join(dst_run_dir, "selection_summary.tlv"));
+            (void)copy_file_best_effort(path_join(src_run_dir, "exit_status.tlv"),
+                                        path_join(dst_run_dir, "exit_status.tlv"));
 
             {
                 dom::launcher_core::LauncherSelectionSummary ss;

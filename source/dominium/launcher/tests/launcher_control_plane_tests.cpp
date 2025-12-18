@@ -21,8 +21,10 @@ extern "C" {
 }
 
 #include "core/include/launcher_audit.h"
+#include "core/include/launcher_exit_status.h"
 #include "core/include/launcher_handshake.h"
 #include "core/include/launcher_instance_ops.h"
+#include "core/include/launcher_selection_summary.h"
 #include "core/include/launcher_tools_registry.h"
 
 namespace {
@@ -503,11 +505,11 @@ static void test_tool_launch_handshake_and_audit(const std::string& state_root,
 
     create_instance_with_pins(services, state_root, instance_id, "engine.pinned", "game.pinned");
 
-    /* launch tool */
-    {
-        std::vector<std::string> args;
-        args.push_back(std::string("--home=") + state_root);
-        args.push_back("launch");
+	    /* launch tool */
+	    {
+	        std::vector<std::string> args;
+	        args.push_back(std::string("--home=") + state_root);
+	        args.push_back("launch");
         args.push_back(instance_id);
         args.push_back("--target=tool:tool_manifest_inspector");
         lr = run_control_plane(argv0_launcher, profile, args, path_join(state_root, "audit_launch_tool.tlv"));
@@ -519,32 +521,63 @@ static void test_tool_launch_handshake_and_audit(const std::string& state_root,
         assert(kv["waited"] == "1");
         assert(kv["child_exit_code"] == "0");
 
-        assert(!kv["handshake_path"].empty());
-        assert(!kv["audit_path"].empty());
-        assert(file_exists(kv["handshake_path"]));
-        assert(file_exists(kv["audit_path"]));
+	        assert(!kv["handshake_path"].empty());
+	        assert(!kv["launch_config_path"].empty());
+	        assert(!kv["audit_path"].empty());
+	        assert(file_exists(kv["handshake_path"]));
+	        assert(file_exists(kv["launch_config_path"]));
+	        assert(file_exists(kv["audit_path"]));
+	        assert(!kv["selection_summary_path"].empty());
+	        assert(!kv["exit_status_path"].empty());
+	        assert(file_exists(kv["selection_summary_path"]));
+	        assert(file_exists(kv["exit_status_path"]));
 
-        assert(read_file_all_bytes(kv["handshake_path"], bytes));
-        assert(dom::launcher_core::launcher_handshake_from_tlv_bytes(bytes.empty() ? (const unsigned char*)0 : &bytes[0], bytes.size(), hs));
-        assert(dom::launcher_core::launcher_instance_load_manifest(services, instance_id, state_root, m));
-        {
+	        assert(read_file_all_bytes(kv["handshake_path"], bytes));
+	        assert(dom::launcher_core::launcher_handshake_from_tlv_bytes(bytes.empty() ? (const unsigned char*)0 : &bytes[0], bytes.size(), hs));
+	        assert(dom::launcher_core::launcher_instance_load_manifest(services, instance_id, state_root, m));
+	        {
             std::string detail;
             u32 code = dom::launcher_core::launcher_handshake_validate(services, hs, m, state_root, &detail);
             assert(code == (u32)dom::launcher_core::LAUNCHER_HANDSHAKE_REFUSAL_OK);
         }
 
-        assert(read_file_all_bytes(kv["audit_path"], bytes));
-        assert(dom::launcher_core::launcher_audit_from_tlv_bytes(bytes.empty() ? (const unsigned char*)0 : &bytes[0], bytes.size(), run_audit));
-        assert(run_audit.run_id == hs.run_id);
-        assert(audit_has_reason(run_audit, std::string("instance_id=") + instance_id));
-        assert(audit_has_reason(run_audit, "launch_target=tool:tool_manifest_inspector"));
-        assert(audit_has_reason(run_audit, std::string("handshake_path=") + kv["handshake_path"]));
-        assert(audit_has_reason(run_audit, "outcome=exit"));
-        assert(audit_has_reason(run_audit, "child_exit_code=0"));
-    }
+	        assert(read_file_all_bytes(kv["audit_path"], bytes));
+	        assert(dom::launcher_core::launcher_audit_from_tlv_bytes(bytes.empty() ? (const unsigned char*)0 : &bytes[0], bytes.size(), run_audit));
+	        assert(run_audit.run_id == hs.run_id);
+	        assert(audit_has_reason(run_audit, std::string("instance_id=") + instance_id));
+	        assert(audit_has_reason(run_audit, "launch_target=tool:tool_manifest_inspector"));
+	        assert(audit_has_reason(run_audit, std::string("handshake_path=") + kv["handshake_path"]));
+	        assert(audit_has_reason(run_audit, std::string("launch_config_path=") + kv["launch_config_path"]));
+	        assert(audit_has_reason(run_audit, std::string("selection_summary_path=") + kv["selection_summary_path"]));
+	        assert(audit_has_reason(run_audit, std::string("exit_status_path=") + kv["exit_status_path"]));
+	        assert(audit_has_reason(run_audit, "outcome=exit"));
+	        assert(audit_has_reason(run_audit, "child_exit_code=0"));
+	        assert(audit_has_reason(run_audit, "safe_mode=0"));
+	        assert(audit_has_reason(run_audit, "offline_mode=0"));
+	    }
 
-    /* Refusal: unknown tool id should fail before spawning. */
-    {
+	    /* selection_summary.tlv + exit_status.tlv should be parseable */
+	    {
+	        dom::launcher_core::LauncherSelectionSummary ss;
+	        dom::launcher_core::LauncherExitStatus xs;
+
+	        assert(read_file_all_bytes(kv["selection_summary_path"], bytes));
+	        assert(dom::launcher_core::launcher_selection_summary_from_tlv_bytes(bytes.empty() ? (const unsigned char*)0 : &bytes[0], bytes.size(), ss));
+	        assert(ss.run_id == hs.run_id);
+	        assert(ss.instance_id == instance_id);
+	        assert(ss.safe_mode == 0u);
+
+	        bytes.clear();
+	        assert(read_file_all_bytes(kv["exit_status_path"], bytes));
+	        assert(dom::launcher_core::launcher_exit_status_from_tlv_bytes(bytes.empty() ? (const unsigned char*)0 : &bytes[0], bytes.size(), xs));
+	        assert(xs.run_id == hs.run_id);
+	        assert(xs.exit_code == 0);
+	        assert(xs.termination_type == (u32)dom::launcher_core::LAUNCHER_TERM_NORMAL);
+	        assert(xs.timestamp_end_us >= xs.timestamp_start_us);
+	    }
+
+	    /* Refusal: unknown tool id should fail before spawning. */
+	    {
         CmdRun bad_tool;
         std::vector<std::string> args;
         args.push_back(std::string("--home=") + state_root);
@@ -586,17 +619,17 @@ static void test_tool_launch_handshake_and_audit(const std::string& state_root,
         ar = run_control_plane(argv0_launcher, profile, args, path_join(state_root, "audit_last_ok.tlv"));
         kv = parse_kv_lines(ar.out_text);
         assert(ar.r.handled != 0);
-        assert(ar.r.exit_code == 0);
-        assert(kv["result"] == "ok");
-        assert(kv["instance_id"] == instance_id);
-        assert(kv["audit.run_id"].size() >= 3u); /* 0x... */
-        assert(kv["audit_path"] == path_join(path_join(path_join(path_join(state_root, "instances"), instance_id), "logs/runs"),
-                                             kv["run_dir_id"]) +
-                                  "/launcher_audit.tlv");
-        /* Reasons are printed; ensure tool launch target is preserved. */
-        {
-            bool saw = false;
-            size_t i;
+	        assert(ar.r.exit_code == 0);
+	        assert(kv["result"] == "ok");
+	        assert(kv["instance_id"] == instance_id);
+	        assert(kv["audit.run_id"].size() >= 3u); /* 0x... */
+	        assert(kv["audit_path"] == path_join(path_join(path_join(path_join(state_root, "instances"), instance_id), "logs/runs"),
+	                                             kv["run_dir_id"]) +
+	                                  "/audit_ref.tlv");
+	        /* Reasons are printed; ensure tool launch target is preserved. */
+	        {
+	            bool saw = false;
+	            size_t i;
             for (i = 0u; i < ar.audit.reasons.size(); ++i) {
                 if (ar.audit.reasons[i] == "operation=audit-last") {
                     saw = true;
@@ -616,15 +649,15 @@ static void test_tool_launch_handshake_and_audit(const std::string& state_root,
         sr = run_control_plane(argv0_launcher, profile, args, path_join(state_root, "audit_safe_mode_tool.tlv"));
         kv = parse_kv_lines(sr.out_text);
         assert(sr.r.handled != 0);
-        assert(sr.r.exit_code == 0);
-        assert(kv["result"] == "ok");
-        assert(kv["spawned"] == "1");
-        assert(kv["waited"] == "1");
-        assert(file_exists(kv["audit_path"]));
-        assert(read_file_all_bytes(kv["audit_path"], bytes));
-        assert(dom::launcher_core::launcher_audit_from_tlv_bytes(bytes.empty() ? (const unsigned char*)0 : &bytes[0], bytes.size(), run_audit));
-        assert(audit_has_reason(run_audit, "safe_mode=1"));
-    }
+	        assert(sr.r.exit_code == 0);
+	        assert(kv["result"] == "ok");
+	        assert(kv["spawned"] == "1");
+	        assert(kv["waited"] == "1");
+	        assert(file_exists(kv["audit_path"]));
+	        assert(read_file_all_bytes(kv["audit_path"], bytes));
+	        assert(dom::launcher_core::launcher_audit_from_tlv_bytes(bytes.empty() ? (const unsigned char*)0 : &bytes[0], bytes.size(), run_audit));
+	        assert(audit_has_reason(run_audit, "safe_mode=1"));
+	    }
 
     /* diag-bundle should export bundle + copy last run handshake/audit */
     {
@@ -645,15 +678,19 @@ static void test_tool_launch_handshake_and_audit(const std::string& state_root,
         assert(file_exists(path_join(path_join(diag_out_root, "config"), "config.tlv")));
 
         /* last_run copy */
-        {
-            const std::string last_run_root = path_join(diag_out_root, "last_run");
-            const std::string run_subdir = kv["last_run_id"];
-            assert(!run_subdir.empty());
-            assert(file_exists(path_join(path_join(last_run_root, run_subdir), "launcher_handshake.tlv")));
-            assert(file_exists(path_join(path_join(last_run_root, run_subdir), "launcher_audit.tlv")));
-        }
-    }
-}
+	        {
+	            const std::string last_run_root = path_join(diag_out_root, "last_run");
+	            const std::string run_subdir = kv["last_run_id"];
+	            assert(!run_subdir.empty());
+	            assert(file_exists(path_join(path_join(last_run_root, run_subdir), "handshake.tlv")));
+	            assert(file_exists(path_join(path_join(last_run_root, run_subdir), "launch_config.tlv")));
+	            assert(file_exists(path_join(path_join(last_run_root, run_subdir), "audit_ref.tlv")));
+	            assert(file_exists(path_join(path_join(last_run_root, run_subdir), "selection_summary.tlv")));
+	            assert(file_exists(path_join(path_join(last_run_root, run_subdir), "exit_status.tlv")));
+	        }
+	        assert(file_exists(path_join(diag_out_root, "last_run_selection_summary.txt")));
+	    }
+	}
 
 } /* namespace */
 

@@ -1154,10 +1154,19 @@ static void ui_load_selected_run_audit(DomLauncherUiState& ui,
     }
 
     {
-        const std::string audit_path =
-            path_join(path_join(path_join(path_join(path_join(state_root, "instances"), instance_id), "logs/runs"), ui.logs_selected_run_id),
-                      "launcher_audit.tlv");
-        if (!read_file_all_bytes(audit_path, bytes, err) || bytes.empty()) {
+        const std::string run_dir =
+            path_join(path_join(path_join(path_join(state_root, "instances"), instance_id), "logs/runs"), ui.logs_selected_run_id);
+        const std::string audit_new = path_join(run_dir, "audit_ref.tlv");
+        const std::string audit_old = path_join(run_dir, "launcher_audit.tlv");
+        std::string audit_path = audit_new;
+
+        if (!read_file_all_bytes(audit_new, bytes, err) || bytes.empty()) {
+            bytes.clear();
+            err.clear();
+            audit_path = audit_old;
+            (void)read_file_all_bytes(audit_old, bytes, err);
+        }
+        if (bytes.empty()) {
             ui.logs_selected_audit_lines.push_back(std::string("audit_read_failed;path=") + audit_path + ";err=" + err);
             return;
         }
@@ -1525,8 +1534,26 @@ bool DomLauncherApp::run_ui_smoke(std::string& out_error) {
         run_dir =
             path_join(path_join(path_join(path_join(path_join(m_paths.root, "instances"), inst->id), "logs/runs"), run_ids[run_ids.size() - 1u]),
                       "");
-        handshake_path = path_join(run_dir, "launcher_handshake.tlv");
-        audit_path = path_join(run_dir, "launcher_audit.tlv");
+        handshake_path = path_join(run_dir, "handshake.tlv");
+        audit_path = path_join(run_dir, "audit_ref.tlv");
+        {
+            const std::string selection_path = path_join(run_dir, "selection_summary.tlv");
+            const std::string launch_config_path = path_join(run_dir, "launch_config.tlv");
+            const std::string exit_status_path = path_join(run_dir, "exit_status.tlv");
+
+            if (!file_exists_stdio(selection_path)) {
+                out_error = std::string("selection_summary_missing;path=") + selection_path;
+                return false;
+            }
+            if (!file_exists_stdio(launch_config_path)) {
+                out_error = std::string("launch_config_missing;path=") + launch_config_path;
+                return false;
+            }
+            if (!file_exists_stdio(exit_status_path)) {
+                out_error = std::string("exit_status_missing;path=") + exit_status_path;
+                return false;
+            }
+        }
 
         if (!file_exists_stdio(handshake_path)) {
             out_error = std::string("handshake_missing;path=") + handshake_path;
@@ -3458,47 +3485,77 @@ void DomLauncherApp::process_ui_task() {
 
             lines.push_back(std::string("out_root=") + t.path);
 
-            if (launcher_list_instance_runs(m_paths.root, t.instance_id, run_ids, list_err) && !run_ids.empty()) {
-                last_run = run_ids[run_ids.size() - 1u];
-                lines.push_back(std::string("last_run_id=") + last_run);
-                {
-                    const std::string src_run_dir =
-                        path_join(path_join(path_join(path_join(m_paths.root, "instances"), t.instance_id), "logs/runs"), last_run);
-                    const std::string dst_run_dir = path_join(path_join(t.path, "last_run"), last_run);
-                    std::string err;
-                    mkdir_p_best_effort(dst_run_dir);
+	            if (launcher_list_instance_runs(m_paths.root, t.instance_id, run_ids, list_err) && !run_ids.empty()) {
+	                last_run = run_ids[run_ids.size() - 1u];
+	                lines.push_back(std::string("last_run_id=") + last_run);
+	                {
+	                    const std::string src_run_dir =
+	                        path_join(path_join(path_join(path_join(m_paths.root, "instances"), t.instance_id), "logs/runs"), last_run);
+	                    const std::string dst_run_dir = path_join(path_join(t.path, "last_run"), last_run);
+	                    std::string err;
+	                    mkdir_p_best_effort(dst_run_dir);
 
-                    if (file_exists_stdio(path_join(src_run_dir, "launcher_handshake.tlv"))) {
-                        if (copy_file_best_effort_stdio(path_join(src_run_dir, "launcher_handshake.tlv"),
-                                                        path_join(dst_run_dir, "launcher_handshake.tlv"),
-                                                        err)) {
-                            lines.push_back("copied=last_run/launcher_handshake.tlv");
+	                    {
+	                        const std::string src_new = path_join(src_run_dir, "handshake.tlv");
+	                        const std::string src_old = path_join(src_run_dir, "launcher_handshake.tlv");
+	                        std::string src = src_new;
+	                        if (!file_exists_stdio(src_new) && file_exists_stdio(src_old)) {
+	                            src = src_old;
+	                        }
+	                        if (file_exists_stdio(src)) {
+	                            if (copy_file_best_effort_stdio(src, path_join(dst_run_dir, "handshake.tlv"), err)) {
+	                                lines.push_back("copied=last_run/handshake.tlv");
+	                            } else {
+	                                lines.push_back(std::string("copy_failed=last_run/handshake.tlv;err=") + err);
+	                            }
+	                        }
+	                    }
+	                    {
+	                        const std::string src_new = path_join(src_run_dir, "audit_ref.tlv");
+	                        const std::string src_old = path_join(src_run_dir, "launcher_audit.tlv");
+	                        std::string src = src_new;
+	                        if (!file_exists_stdio(src_new) && file_exists_stdio(src_old)) {
+	                            src = src_old;
+	                        }
+	                        if (file_exists_stdio(src)) {
+	                            if (copy_file_best_effort_stdio(src, path_join(dst_run_dir, "audit_ref.tlv"), err)) {
+	                                lines.push_back("copied=last_run/audit_ref.tlv");
+	                            } else {
+	                                lines.push_back(std::string("copy_failed=last_run/audit_ref.tlv;err=") + err);
+	                            }
+	                        }
+	                    }
+	                    if (file_exists_stdio(path_join(src_run_dir, "launch_config.tlv"))) {
+	                        if (copy_file_best_effort_stdio(path_join(src_run_dir, "launch_config.tlv"),
+	                                                        path_join(dst_run_dir, "launch_config.tlv"),
+	                                                        err)) {
+	                            lines.push_back("copied=last_run/launch_config.tlv");
+	                        } else {
+	                            lines.push_back(std::string("copy_failed=last_run/launch_config.tlv;err=") + err);
+	                        }
+	                    }
+	                    if (file_exists_stdio(path_join(src_run_dir, "selection_summary.tlv"))) {
+	                        if (copy_file_best_effort_stdio(path_join(src_run_dir, "selection_summary.tlv"),
+	                                                        path_join(dst_run_dir, "selection_summary.tlv"),
+	                                                        err)) {
+	                            lines.push_back("copied=last_run/selection_summary.tlv");
                         } else {
-                            lines.push_back(std::string("copy_failed=last_run/launcher_handshake.tlv;err=") + err);
-                        }
-                    }
-                    if (file_exists_stdio(path_join(src_run_dir, "launcher_audit.tlv"))) {
-                        if (copy_file_best_effort_stdio(path_join(src_run_dir, "launcher_audit.tlv"),
-                                                        path_join(dst_run_dir, "launcher_audit.tlv"),
-                                                        err)) {
-                            lines.push_back("copied=last_run/launcher_audit.tlv");
-                        } else {
-                            lines.push_back(std::string("copy_failed=last_run/launcher_audit.tlv;err=") + err);
-                        }
-                    }
-                    if (file_exists_stdio(path_join(src_run_dir, "selection_summary.tlv"))) {
-                        if (copy_file_best_effort_stdio(path_join(src_run_dir, "selection_summary.tlv"),
-                                                        path_join(dst_run_dir, "selection_summary.tlv"),
-                                                        err)) {
-                            lines.push_back("copied=last_run/selection_summary.tlv");
-                        } else {
-                            lines.push_back(std::string("copy_failed=last_run/selection_summary.tlv;err=") + err);
-                        }
-                    }
+	                            lines.push_back(std::string("copy_failed=last_run/selection_summary.tlv;err=") + err);
+	                        }
+	                    }
+	                    if (file_exists_stdio(path_join(src_run_dir, "exit_status.tlv"))) {
+	                        if (copy_file_best_effort_stdio(path_join(src_run_dir, "exit_status.tlv"),
+	                                                        path_join(dst_run_dir, "exit_status.tlv"),
+	                                                        err)) {
+	                            lines.push_back("copied=last_run/exit_status.tlv");
+	                        } else {
+	                            lines.push_back(std::string("copy_failed=last_run/exit_status.tlv;err=") + err);
+	                        }
+	                    }
 
-                    {
-                        launcher_core::LauncherSelectionSummary ss;
-                        std::vector<unsigned char> sb;
+	                    {
+	                        launcher_core::LauncherSelectionSummary ss;
+	                        std::vector<unsigned char> sb;
                         std::string sel_err;
 
                         if (read_file_all_bytes(path_join(src_run_dir, "selection_summary.tlv"), sb, sel_err) && !sb.empty() &&
