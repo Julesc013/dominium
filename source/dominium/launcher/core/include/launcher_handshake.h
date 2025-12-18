@@ -134,7 +134,8 @@ enum LauncherHandshakeRefusalCode {
     LAUNCHER_HANDSHAKE_REFUSAL_MISSING_REQUIRED_FIELDS = 1u,
     LAUNCHER_HANDSHAKE_REFUSAL_MANIFEST_HASH_MISMATCH = 2u,
     LAUNCHER_HANDSHAKE_REFUSAL_MISSING_SIM_AFFECTING_PACK_DECLARATIONS = 3u,
-    LAUNCHER_HANDSHAKE_REFUSAL_PACK_HASH_MISMATCH = 4u
+    LAUNCHER_HANDSHAKE_REFUSAL_PACK_HASH_MISMATCH = 4u,
+    LAUNCHER_HANDSHAKE_REFUSAL_PRELAUNCH_VALIDATION_FAILED = 5u
 };
 
 /* Validates a parsed handshake against a manifest and the artifact store.
@@ -154,4 +155,3 @@ u32 launcher_handshake_validate(const launcher_services_api_v1* services,
 } /* namespace dom */
 
 #endif /* DOMINIUM_LAUNCHER_CORE_LAUNCHER_HANDSHAKE_H */
-
