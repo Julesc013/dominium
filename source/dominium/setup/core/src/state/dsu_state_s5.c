@@ -1540,6 +1540,252 @@ dsu_status_t dsu__state_build_from_plan(dsu_ctx_t *ctx,
     if (!ctx || !plan || !out_state) return DSU_STATUS_INVALID_ARGS;
     *out_state = NULL;
 
+    /* Uninstall builds the post-uninstall installed-state by removing the plan's component set. */
+    if (dsu_plan_operation(plan) == DSU_RESOLVE_OPERATION_UNINSTALL) {
+        dsu_u32 plan_ccount;
+        dsu_u32 prev_ccount;
+        dsu_u8 *remove = NULL;
+        dsu_u32 kept = 0u;
+        dsu_u32 j;
+
+        if (!prev_state) {
+            return DSU_STATUS_INVALID_REQUEST;
+        }
+        if (dsu__strcmp_bytes(dsu_state_product_id(prev_state), dsu_plan_product_id(plan)) != 0) {
+            return DSU_STATUS_INVALID_REQUEST;
+        }
+        if ((dsu_u8)dsu_state_install_scope(prev_state) != (dsu_u8)dsu_plan_scope(plan)) {
+            return DSU_STATUS_INVALID_REQUEST;
+        }
+        if (dsu__strcmp_bytes(dsu_state_platform(prev_state), dsu_plan_platform(plan)) != 0) {
+            return DSU_STATUS_PLATFORM_INCOMPATIBLE;
+        }
+
+        plan_ccount = dsu_plan_component_count(plan);
+        prev_ccount = dsu_state_component_count(prev_state);
+
+        remove = (dsu_u8 *)dsu__malloc(prev_ccount);
+        if (!remove && prev_ccount != 0u) {
+            return DSU_STATUS_IO_ERROR;
+        }
+        if (prev_ccount) {
+            memset(remove, 0, prev_ccount);
+        }
+
+        /* Mark removed components (merge-walk: both lists are canonical and sorted by ID). */
+        i = 0u;
+        j = 0u;
+        while (i < prev_ccount && j < plan_ccount) {
+            const char *prev_id = dsu_state_component_id(prev_state, i);
+            const char *plan_id = dsu_plan_component_id(plan, j);
+            int cmp = dsu__strcmp_bytes(prev_id ? prev_id : "", plan_id ? plan_id : "");
+            if (cmp == 0) {
+                remove[i] = 1u;
+                ++i;
+                ++j;
+            } else if (cmp < 0) {
+                ++i;
+            } else {
+                /* Plan references a component not present in the installed-state. */
+                dsu__free(remove);
+                return DSU_STATUS_INVALID_REQUEST;
+            }
+        }
+        if (j != plan_ccount) {
+            dsu__free(remove);
+            return DSU_STATUS_INVALID_REQUEST;
+        }
+
+        for (i = 0u; i < prev_ccount; ++i) {
+            if (!remove[i]) {
+                ++kept;
+            }
+        }
+
+        s = (dsu_state_t *)dsu__malloc((dsu_u32)sizeof(*s));
+        if (!s) {
+            dsu__free(remove);
+            return DSU_STATUS_IO_ERROR;
+        }
+        memset(s, 0, sizeof(*s));
+
+        s->root_version = DSU_STATE_ROOT_SCHEMA_VERSION;
+        s->product_id = dsu__strdup(dsu_state_product_id(prev_state));
+        s->product_version = dsu__strdup(dsu_state_product_version_installed(prev_state));
+        s->build_channel = dsu__strdup(dsu_state_build_channel(prev_state));
+        s->platform = dsu__strdup(dsu_state_platform(prev_state));
+        s->scope = (dsu_u8)dsu_state_install_scope(prev_state);
+
+        s->manifest_digest64 = dsu_plan_manifest_digest64(plan);
+        s->plan_digest64 = dsu_plan_id_hash64(plan);
+
+        s->last_successful_operation = (dsu_u8)DSU_STATE_OPERATION_UNINSTALL;
+        s->last_journal_id = last_journal_id;
+        s->has_last_audit_log_digest = (dsu_u8)(has_last_audit_log_digest64 ? 1u : 0u);
+        s->last_audit_log_digest64 = last_audit_log_digest64;
+
+        if (!s->product_id || !s->product_version || !s->build_channel || !s->platform) {
+            dsu_state_destroy(ctx, s);
+            dsu__free(remove);
+            return DSU_STATUS_IO_ERROR;
+        }
+
+        s->install_instance_id = dsu_state_install_instance_id(prev_state);
+        if (s->install_instance_id == 0u) {
+            s->install_instance_id = dsu__nonce64(ctx, s->plan_digest64);
+        }
+
+        /* Copy install roots. */
+        for (i = 0u; i < dsu_state_install_root_count(prev_state); ++i) {
+            dsu_state_install_root_t r;
+            memset(&r, 0, sizeof(r));
+            r.role = (dsu_u8)dsu_state_install_root_role(prev_state, i);
+            r.path = dsu__strdup(dsu_state_install_root_path(prev_state, i));
+            if (!r.path) {
+                dsu_state_destroy(ctx, s);
+                dsu__free(remove);
+                return DSU_STATUS_IO_ERROR;
+            }
+            st = dsu__install_root_push(s, &r);
+            if (st != DSU_STATUS_SUCCESS) {
+                dsu__state_install_root_free(&r);
+                dsu_state_destroy(ctx, s);
+                dsu__free(remove);
+                return st;
+            }
+            memset(&r, 0, sizeof(r));
+        }
+
+        /* Copy kept components, their files, and platform metadata. */
+        for (i = 0u; i < prev_ccount; ++i) {
+            dsu_state_component_t c;
+            dsu_u32 fi;
+            dsu_u32 ri;
+            dsu_u32 mi;
+
+            if (remove[i]) {
+                continue;
+            }
+
+            memset(&c, 0, sizeof(c));
+            c.id = dsu__strdup(dsu_state_component_id(prev_state, i));
+            c.version = dsu__strdup(dsu_state_component_version(prev_state, i));
+            c.kind = (dsu_u8)dsu_state_component_kind(prev_state, i);
+            c.install_time_policy = dsu_state_component_install_time_policy(prev_state, i);
+            if (!c.id || !c.version) {
+                dsu__state_component_free(&c);
+                dsu_state_destroy(ctx, s);
+                dsu__free(remove);
+                return DSU_STATUS_IO_ERROR;
+            }
+
+            for (ri = 0u; ri < dsu_state_component_registration_count(prev_state, i); ++ri) {
+                st = dsu__str_list_push(&c.registrations, &c.registration_count, &c.registration_cap,
+                                        dsu_state_component_registration(prev_state, i, ri));
+                if (st != DSU_STATUS_SUCCESS) {
+                    dsu__state_component_free(&c);
+                    dsu_state_destroy(ctx, s);
+                    dsu__free(remove);
+                    return st;
+                }
+            }
+            for (mi = 0u; mi < dsu_state_component_marker_count(prev_state, i); ++mi) {
+                st = dsu__str_list_push(&c.markers, &c.marker_count, &c.marker_cap,
+                                        dsu_state_component_marker(prev_state, i, mi));
+                if (st != DSU_STATUS_SUCCESS) {
+                    dsu__state_component_free(&c);
+                    dsu_state_destroy(ctx, s);
+                    dsu__free(remove);
+                    return st;
+                }
+            }
+
+            for (fi = 0u; fi < dsu_state_component_file_count(prev_state, i); ++fi) {
+                dsu_state_file_t f;
+                const dsu_state_file_t *srcf;
+                memset(&f, 0, sizeof(f));
+                if (i >= prev_state->component_count || fi >= prev_state->components[i].file_count) {
+                    dsu__state_component_free(&c);
+                    dsu_state_destroy(ctx, s);
+                    dsu__free(remove);
+                    return DSU_STATUS_INTEGRITY_ERROR;
+                }
+                srcf = &prev_state->components[i].files[fi];
+                f.root_index = srcf->root_index;
+                f.flags = srcf->flags;
+                f.size = srcf->size;
+                f.digest64 = srcf->digest64;
+                f.ownership = srcf->ownership;
+                memcpy(f.sha256, srcf->sha256, 32u);
+                f.path = dsu__strdup(srcf->path ? srcf->path : "");
+                if (!f.path) {
+                    dsu__state_component_free(&c);
+                    dsu_state_destroy(ctx, s);
+                    dsu__free(remove);
+                    return DSU_STATUS_IO_ERROR;
+                }
+                if (f.path[0] == '\0') {
+                    dsu__state_file_free(&f);
+                    dsu__state_component_free(&c);
+                    dsu_state_destroy(ctx, s);
+                    dsu__free(remove);
+                    return DSU_STATUS_INTEGRITY_ERROR;
+                }
+                st = dsu__component_file_push(&c, &f);
+                if (st != DSU_STATUS_SUCCESS) {
+                    dsu__state_file_free(&f);
+                    dsu__state_component_free(&c);
+                    dsu_state_destroy(ctx, s);
+                    dsu__free(remove);
+                    return st;
+                }
+                memset(&f, 0, sizeof(f));
+            }
+
+            st = dsu__component_push(s, &c);
+            if (st != DSU_STATUS_SUCCESS) {
+                dsu__state_component_free(&c);
+                dsu_state_destroy(ctx, s);
+                dsu__free(remove);
+                return st;
+            }
+            memset(&c, 0, sizeof(c));
+        }
+
+        dsu__free(remove);
+        remove = NULL;
+
+        st = dsu_state_validate(s);
+        if (st != DSU_STATUS_SUCCESS) {
+            dsu_state_destroy(ctx, s);
+            return st;
+        }
+
+        /* Recompute resolved set digest for the remaining installed components. */
+        {
+            dsu_u64 h = dsu_digest64_init();
+            dsu_u8 sep = 0u;
+            const char *plat = s->platform ? s->platform : "";
+            h = dsu_digest64_update(h, plat, dsu__strlen(plat));
+            h = dsu_digest64_update(h, &sep, 1u);
+            h = dsu_digest64_update(h, &s->scope, 1u);
+            h = dsu_digest64_update(h, &sep, 1u);
+            for (i = 0u; i < s->component_count; ++i) {
+                const char *cid = s->components[i].id ? s->components[i].id : "";
+                const char *cver = s->components[i].version ? s->components[i].version : "";
+                h = dsu_digest64_update(h, cid, dsu__strlen(cid));
+                h = dsu_digest64_update(h, &sep, 1u);
+                h = dsu_digest64_update(h, cver, dsu__strlen(cver));
+                h = dsu_digest64_update(h, &sep, 1u);
+            }
+            s->resolved_digest64 = h;
+        }
+
+        *out_state = s;
+        (void)kept;
+        return DSU_STATUS_SUCCESS;
+    }
+
     s = (dsu_state_t *)dsu__malloc((dsu_u32)sizeof(*s));
     if (!s) return DSU_STATUS_IO_ERROR;
     memset(s, 0, sizeof(*s));

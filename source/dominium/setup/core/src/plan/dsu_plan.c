@@ -161,15 +161,27 @@ static void dsu__u64_to_le_bytes(dsu_u64 v, dsu_u8 out[8]) {
     out[7] = (dsu_u8)((v >> 56) & 0xFFu);
 }
 
-static void dsu__plan_compute_ids(dsu_plan_t *p) {
+static void dsu__plan_compute_id_hashes(const dsu_plan_t *p, dsu_u32 *out_hash32, dsu_u64 *out_hash64) {
     dsu_u32 h32;
     dsu_u64 h64;
     dsu_u32 i;
     dsu_u8 sep;
     dsu_u8 tmp8[8];
-    if (!p) {
+    const char *product_id;
+    const char *version;
+    const char *platform;
+    const char *install_root;
+
+    if (out_hash32) *out_hash32 = 0u;
+    if (out_hash64) *out_hash64 = 0u;
+    if (!p || !out_hash32 || !out_hash64) {
         return;
     }
+
+    product_id = p->product_id ? p->product_id : "";
+    version = p->version ? p->version : "";
+    platform = p->platform ? p->platform : "";
+    install_root = p->install_root ? p->install_root : "";
 
     h32 = dsu_digest32_init();
     h64 = dsu_digest64_init();
@@ -197,22 +209,22 @@ static void dsu__plan_compute_ids(dsu_plan_t *p) {
     h64 = dsu_digest64_update(h64, &p->scope, 1u);
     h64 = dsu_digest64_update(h64, &sep, 1u);
 
-    h32 = dsu_digest32_update(h32, p->product_id, dsu__strlen(p->product_id));
+    h32 = dsu_digest32_update(h32, product_id, dsu__strlen(product_id));
     h32 = dsu_digest32_update(h32, &sep, 1u);
-    h32 = dsu_digest32_update(h32, p->version, dsu__strlen(p->version));
+    h32 = dsu_digest32_update(h32, version, dsu__strlen(version));
     h32 = dsu_digest32_update(h32, &sep, 1u);
-    h32 = dsu_digest32_update(h32, p->platform, dsu__strlen(p->platform));
+    h32 = dsu_digest32_update(h32, platform, dsu__strlen(platform));
     h32 = dsu_digest32_update(h32, &sep, 1u);
-    h32 = dsu_digest32_update(h32, p->install_root, dsu__strlen(p->install_root));
+    h32 = dsu_digest32_update(h32, install_root, dsu__strlen(install_root));
     h32 = dsu_digest32_update(h32, &sep, 1u);
 
-    h64 = dsu_digest64_update(h64, p->product_id, dsu__strlen(p->product_id));
+    h64 = dsu_digest64_update(h64, product_id, dsu__strlen(product_id));
     h64 = dsu_digest64_update(h64, &sep, 1u);
-    h64 = dsu_digest64_update(h64, p->version, dsu__strlen(p->version));
+    h64 = dsu_digest64_update(h64, version, dsu__strlen(version));
     h64 = dsu_digest64_update(h64, &sep, 1u);
-    h64 = dsu_digest64_update(h64, p->platform, dsu__strlen(p->platform));
+    h64 = dsu_digest64_update(h64, platform, dsu__strlen(platform));
     h64 = dsu_digest64_update(h64, &sep, 1u);
-    h64 = dsu_digest64_update(h64, p->install_root, dsu__strlen(p->install_root));
+    h64 = dsu_digest64_update(h64, install_root, dsu__strlen(install_root));
     h64 = dsu_digest64_update(h64, &sep, 1u);
 
     for (i = 0u; i < p->component_count; ++i) {
@@ -284,6 +296,15 @@ static void dsu__plan_compute_ids(dsu_plan_t *p) {
         h64 = dsu_digest64_update(h64, &sep, 1u);
     }
 
+    *out_hash32 = h32;
+    *out_hash64 = h64;
+}
+
+static void dsu__plan_compute_ids(dsu_plan_t *p) {
+    dsu_u32 h32;
+    dsu_u64 h64;
+    if (!p) return;
+    dsu__plan_compute_id_hashes(p, &h32, &h64);
     p->id_hash32 = h32;
     p->id_hash64 = h64;
 }
@@ -2184,4 +2205,174 @@ dsu_status_t dsu_plan_read_file(dsu_ctx_t *ctx, const char *path, dsu_plan_t **o
 
     *out_plan = p;
     return DSU_STATUS_SUCCESS;
+}
+
+dsu_status_t dsu_plan_validate(const dsu_plan_t *plan) {
+    dsu_u32 i;
+    dsu_u32 expect32;
+    dsu_u64 expect64;
+
+    if (!plan) {
+        return DSU_STATUS_INVALID_ARGS;
+    }
+
+    if (plan->manifest_digest64 == 0u || plan->resolved_digest64 == 0u) {
+        return DSU_STATUS_INTEGRITY_ERROR;
+    }
+    if (plan->operation > (dsu_u8)DSU_RESOLVE_OPERATION_UNINSTALL) {
+        return DSU_STATUS_INTEGRITY_ERROR;
+    }
+    if (plan->scope > (dsu_u8)DSU_MANIFEST_INSTALL_SCOPE_SYSTEM) {
+        return DSU_STATUS_INTEGRITY_ERROR;
+    }
+
+    if (!plan->product_id || plan->product_id[0] == '\0') return DSU_STATUS_INTEGRITY_ERROR;
+    if (!plan->version || plan->version[0] == '\0') return DSU_STATUS_INTEGRITY_ERROR;
+    if (!plan->platform || plan->platform[0] == '\0') return DSU_STATUS_INTEGRITY_ERROR;
+    if (!plan->install_root || plan->install_root[0] == '\0') return DSU_STATUS_INTEGRITY_ERROR;
+    if (!dsu__is_ascii_printable(plan->product_id)) return DSU_STATUS_INTEGRITY_ERROR;
+    if (!dsu__is_ascii_printable(plan->version)) return DSU_STATUS_INTEGRITY_ERROR;
+    if (!dsu__is_ascii_printable(plan->platform)) return DSU_STATUS_INTEGRITY_ERROR;
+    if (!dsu__is_ascii_printable(plan->install_root)) return DSU_STATUS_INTEGRITY_ERROR;
+    if (plan->build_channel && !dsu__is_ascii_printable(plan->build_channel)) return DSU_STATUS_INTEGRITY_ERROR;
+
+    for (i = 0u; i < plan->component_count; ++i) {
+        const char *id = plan->components[i].id;
+        const char *ver = plan->components[i].version;
+        if (!id || id[0] == '\0' || !ver || ver[0] == '\0') {
+            return DSU_STATUS_INTEGRITY_ERROR;
+        }
+        if (!dsu__is_ascii_id(id)) {
+            return DSU_STATUS_INTEGRITY_ERROR;
+        }
+        if (!dsu__is_ascii_printable(ver)) {
+            return DSU_STATUS_INTEGRITY_ERROR;
+        }
+        if (i != 0u) {
+            const char *prev_id = plan->components[i - 1u].id;
+            if (!prev_id || dsu__strcmp_bytes(prev_id, id) >= 0) {
+                return DSU_STATUS_INTEGRITY_ERROR;
+            }
+        }
+    }
+
+    for (i = 0u; i < plan->dir_count; ++i) {
+        const char *d = plan->dirs[i];
+        char *canon = NULL;
+        dsu_status_t st;
+        if (!d) {
+            return DSU_STATUS_INTEGRITY_ERROR;
+        }
+        st = dsu__canon_rel_path(d, &canon);
+        if (st != DSU_STATUS_SUCCESS) {
+            return st;
+        }
+        if (!canon || dsu__strcmp_bytes(d, canon) != 0) {
+            dsu__free(canon);
+            return DSU_STATUS_INTEGRITY_ERROR;
+        }
+        dsu__free(canon);
+        canon = NULL;
+
+        if (i != 0u) {
+            const char *prev_d = plan->dirs[i - 1u];
+            if (!prev_d || dsu__strcmp_bytes(prev_d, d) >= 0) {
+                return DSU_STATUS_INTEGRITY_ERROR;
+            }
+        }
+    }
+
+    for (i = 0u; i < plan->file_count; ++i) {
+        const dsu_plan_file_t *f = &plan->files[i];
+        const char *t = f->target_path;
+        char *canon = NULL;
+        dsu_status_t st;
+        dsu_u32 ci;
+
+        if (!t || t[0] == '\0') {
+            return DSU_STATUS_INTEGRITY_ERROR;
+        }
+        st = dsu__canon_rel_path(t, &canon);
+        if (st != DSU_STATUS_SUCCESS) {
+            return st;
+        }
+        if (!canon || dsu__strcmp_bytes(t, canon) != 0) {
+            dsu__free(canon);
+            return DSU_STATUS_INTEGRITY_ERROR;
+        }
+        dsu__free(canon);
+        canon = NULL;
+
+        if (i != 0u) {
+            const char *prev_t = plan->files[i - 1u].target_path;
+            if (!prev_t || dsu__strcmp_bytes(prev_t, t) >= 0) {
+                return DSU_STATUS_INTEGRITY_ERROR;
+            }
+        }
+
+        if (f->source_kind != (dsu_u8)DSU_MANIFEST_PAYLOAD_KIND_FILESET &&
+            f->source_kind != (dsu_u8)DSU_MANIFEST_PAYLOAD_KIND_ARCHIVE) {
+            return DSU_STATUS_INTEGRITY_ERROR;
+        }
+
+        ci = (dsu_u32)(f->flags & (dsu_u32)DSU_PLAN_FILE_FLAGS_COMPONENT_INDEX_MASK);
+        if (ci >= plan->component_count) {
+            return DSU_STATUS_INTEGRITY_ERROR;
+        }
+
+        if (!f->container_path || f->container_path[0] == '\0') {
+            return DSU_STATUS_INTEGRITY_ERROR;
+        }
+        if (!dsu__is_ascii_printable(f->container_path)) {
+            return DSU_STATUS_INTEGRITY_ERROR;
+        }
+        if (!f->member_path || f->member_path[0] == '\0') {
+            return DSU_STATUS_INTEGRITY_ERROR;
+        }
+        st = dsu__canon_rel_path(f->member_path, &canon);
+        if (st != DSU_STATUS_SUCCESS) {
+            return st;
+        }
+        if (!canon || dsu__strcmp_bytes(f->member_path, canon) != 0) {
+            dsu__free(canon);
+            return DSU_STATUS_INTEGRITY_ERROR;
+        }
+        dsu__free(canon);
+        canon = NULL;
+    }
+
+    for (i = 0u; i < plan->step_count; ++i) {
+        const dsu_plan_step_t *s = &plan->steps[i];
+        if ((dsu_u32)s->kind > (dsu_u32)DSU_PLAN_STEP_UNINSTALL_COMPONENT) {
+            return DSU_STATUS_INTEGRITY_ERROR;
+        }
+        if (s->arg && !dsu__is_ascii_printable(s->arg)) {
+            return DSU_STATUS_INTEGRITY_ERROR;
+        }
+    }
+
+    dsu__plan_compute_id_hashes(plan, &expect32, &expect64);
+    if (plan->id_hash32 != expect32 || plan->id_hash64 != expect64) {
+        return DSU_STATUS_INTEGRITY_ERROR;
+    }
+
+    return DSU_STATUS_SUCCESS;
+}
+
+dsu_status_t dsu_plan_validate_file(dsu_ctx_t *ctx, const char *path) {
+    dsu_plan_t *plan = NULL;
+    dsu_status_t st;
+
+    if (!ctx || !path) {
+        return DSU_STATUS_INVALID_ARGS;
+    }
+
+    st = dsu_plan_read_file(ctx, path, &plan);
+    if (st != DSU_STATUS_SUCCESS) {
+        return st;
+    }
+
+    st = dsu_plan_validate(plan);
+    dsu_plan_destroy(ctx, plan);
+    return st;
 }
