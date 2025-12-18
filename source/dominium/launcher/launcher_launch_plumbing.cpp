@@ -416,6 +416,39 @@ static bool manifest_has_enabled_entry_id(const dom::launcher_core::LauncherInst
     return false;
 }
 
+static bool is_pack_like_content_type(u32 t) {
+    return t == (u32)dom::launcher_core::LAUNCHER_CONTENT_PACK ||
+           t == (u32)dom::launcher_core::LAUNCHER_CONTENT_MOD ||
+           t == (u32)dom::launcher_core::LAUNCHER_CONTENT_RUNTIME;
+}
+
+static u32 manifest_enabled_for_type_and_id(const dom::launcher_core::LauncherInstanceManifest& manifest,
+                                            u32 content_type,
+                                            const std::string& id,
+                                            u32 default_enabled) {
+    size_t i;
+    for (i = 0u; i < manifest.content_entries.size(); ++i) {
+        const dom::launcher_core::LauncherContentEntry& e = manifest.content_entries[i];
+        if (e.type == content_type && e.id == id) {
+            return e.enabled ? 1u : 0u;
+        }
+    }
+    return default_enabled ? 1u : 0u;
+}
+
+static void stable_sort_handshake_packs_by_id(std::vector<dom::launcher_core::LauncherHandshakePackEntry>& v) {
+    size_t i;
+    for (i = 1u; i < v.size(); ++i) {
+        dom::launcher_core::LauncherHandshakePackEntry key = v[i];
+        size_t j = i;
+        while (j > 0u && key.pack_id < v[j - 1u].pack_id) {
+            v[j] = v[j - 1u];
+            --j;
+        }
+        v[j] = key;
+    }
+}
+
 static void audit_add_reason(dom::launcher_core::LauncherAuditLog& audit, const std::string& s) {
     audit.reasons.push_back(s);
 }
@@ -662,6 +695,7 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
     dom::launcher_core::LauncherPrelaunchPlan plan;
     dom::launcher_core::LauncherRecoverySuggestion recovery;
     std::string prelaunch_err;
+    bool have_plan = false;
 
     std::vector<std::string> platform_backends;
     std::vector<std::string> renderer_backends;
@@ -742,6 +776,8 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
         out_result.refused = 1u;
         out_result.refusal_code = (u32)dom::launcher_core::LAUNCHER_HANDSHAKE_REFUSAL_MISSING_REQUIRED_FIELDS;
         out_result.refusal_detail = std::string("prelaunch_failed;") + prelaunch_err;
+    } else {
+        have_plan = true;
     }
 
     /* Persist resolved launch config for this attempt (best-effort). */
@@ -751,8 +787,28 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
         (void)write_file_all(out_result.launch_config_path, cfg_bytes);
     }
 
-    if (out_result.refused == 0u) {
-        if (!select_backends_for_handshake(profile, platform_backends, renderer_backends, ui_backend, caps_err, &caps_sel, &caps_note)) {
+    if (have_plan && out_result.refused == 0u && plan.validation.ok == 0u) {
+        out_result.refused = 1u;
+        out_result.refusal_code = (u32)dom::launcher_core::LAUNCHER_HANDSHAKE_REFUSAL_PRELAUNCH_VALIDATION_FAILED;
+        if (!plan.validation.failures.empty()) {
+            out_result.refusal_detail = std::string("prelaunch_validation_failed;code=") + plan.validation.failures[0].code;
+            if (!plan.validation.failures[0].detail.empty()) {
+                out_result.refusal_detail += std::string(";detail=") + plan.validation.failures[0].detail;
+            }
+        } else {
+            out_result.refusal_detail = "prelaunch_validation_failed";
+        }
+    }
+
+    {
+        const bool caps_ok = select_backends_for_handshake(profile,
+                                                           platform_backends,
+                                                           renderer_backends,
+                                                           ui_backend,
+                                                           caps_err,
+                                                           &caps_sel,
+                                                           &caps_note);
+        if (!caps_ok && out_result.refused == 0u) {
             out_result.refused = 1u;
             out_result.refusal_code = (u32)dom::launcher_core::LAUNCHER_HANDSHAKE_REFUSAL_MISSING_REQUIRED_FIELDS;
             out_result.refusal_detail = std::string("caps_failed;") + caps_err;
@@ -798,7 +854,7 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
     hs.selected_ui_backend_id = ui_backend;
     hs.timestamp_monotonic_us = now_us;
     hs.has_timestamp_wall_us = 0u;
-    if (out_result.refused == 0u) {
+    if (have_plan) {
         hs.pinned_engine_build_id = plan.effective_manifest.pinned_engine_build_id;
         hs.pinned_game_build_id = plan.effective_manifest.pinned_game_build_id;
         hs.instance_manifest_hash_bytes = sha256_of_manifest(plan.effective_manifest);
@@ -825,6 +881,42 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
                 (void)pack_err;
             }
         }
+
+        /* Safe mode: include pack-like entries that were disabled by safe mode for diagnostics. */
+        if (plan.resolved.safe_mode) {
+            std::vector<dom::launcher_core::LauncherHandshakePackEntry> disabled;
+            size_t i;
+            for (i = 0u; i < plan.base_manifest.content_entries.size(); ++i) {
+                const dom::launcher_core::LauncherContentEntry& e = plan.base_manifest.content_entries[i];
+                const u32 eff_enabled = manifest_enabled_for_type_and_id(plan.effective_manifest, e.type, e.id, e.enabled);
+                if (e.enabled == 0u) {
+                    continue;
+                }
+                if (!is_pack_like_content_type(e.type)) {
+                    continue;
+                }
+                if (eff_enabled != 0u) {
+                    continue;
+                }
+
+                dom::launcher_core::LauncherHandshakePackEntry pe;
+                pe.pack_id = e.id;
+                pe.version = e.version;
+                pe.hash_bytes = e.hash_bytes;
+                pe.enabled = 0u;
+                pe.safe_mode_flags.push_back("safe_mode");
+                pe.safe_mode_flags.push_back("disabled_by_safe_mode");
+                pe.offline_mode_flag = (plan.resolved.allow_network != 0u) ? 0u : 1u;
+                disabled.push_back(pe);
+            }
+
+            if (!disabled.empty()) {
+                stable_sort_handshake_packs_by_id(disabled);
+                for (i = 0u; i < disabled.size(); ++i) {
+                    hs.resolved_packs.push_back(disabled[i]);
+                }
+            }
+        }
     }
 
     (void)dom::launcher_core::launcher_handshake_to_tlv_bytes(hs, hs_bytes);
@@ -849,7 +941,7 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
     run_audit.run_id = out_result.run_id;
     run_audit.timestamp_us = now_us;
     run_audit.selected_profile_id = launcher_profile_id_from_dom_profile(profile);
-    run_audit.manifest_hash64 = (out_result.refused == 0u) ? dom::launcher_core::launcher_instance_manifest_hash64(plan.effective_manifest) : 0ull;
+    run_audit.manifest_hash64 = have_plan ? dom::launcher_core::launcher_instance_manifest_hash64(plan.effective_manifest) : 0ull;
 
     audit_add_reason(run_audit, std::string("operation=launch"));
     audit_add_reason(run_audit, std::string("instance_id=") + instance_id);
@@ -930,14 +1022,18 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
             }
         }
 
-        sel_summary.resolved_packs_count = (u32)hs.resolved_packs.size();
+        sel_summary.resolved_packs_count = 0u;
         {
             size_t i;
             for (i = 0u; i < hs.resolved_packs.size(); ++i) {
-                if (i) {
+                if (hs.resolved_packs[i].enabled == 0u) {
+                    continue;
+                }
+                if (sel_summary.resolved_packs_count) {
                     sel_summary.resolved_packs_summary += ",";
                 }
                 sel_summary.resolved_packs_summary += hs.resolved_packs[i].pack_id;
+                sel_summary.resolved_packs_count += 1u;
             }
         }
 
