@@ -26,6 +26,7 @@ extern "C" {
 #include "core/include/launcher_artifact_store.h"
 #include "core/include/launcher_instance.h"
 #include "core/include/launcher_instance_ops.h"
+#include "core/include/launcher_selection_summary.h"
 #include "core/include/launcher_tools_registry.h"
 
 namespace dom {
@@ -430,6 +431,45 @@ static bool copy_file_best_effort(const std::string& src, const std::string& dst
     }
     mkdir_p_best_effort(dirname_of(dst));
     return write_file_all(dst, bytes);
+}
+
+static bool load_selection_summary_from_run_dir(const std::string& run_dir,
+                                                dom::launcher_core::LauncherSelectionSummary& out_s,
+                                                std::string& out_err) {
+    std::vector<unsigned char> bytes;
+    const std::string p = path_join(run_dir, "selection_summary.tlv");
+    out_s = dom::launcher_core::LauncherSelectionSummary();
+    out_err.clear();
+
+    if (!read_file_all(p, bytes) || bytes.empty()) {
+        out_err = "selection_summary_missing_or_empty";
+        return false;
+    }
+    if (!dom::launcher_core::launcher_selection_summary_from_tlv_bytes(&bytes[0], bytes.size(), out_s)) {
+        out_err = "selection_summary_decode_failed";
+        return false;
+    }
+    return true;
+}
+
+static bool load_selection_summary_from_audit_or_run_dir(const dom::launcher_core::LauncherAuditLog& audit,
+                                                         const std::string& run_dir,
+                                                         dom::launcher_core::LauncherSelectionSummary& out_s,
+                                                         std::string& out_err) {
+    out_s = dom::launcher_core::LauncherSelectionSummary();
+    out_err.clear();
+
+    if (audit.has_selection_summary != 0u && !audit.selection_summary_tlv.empty()) {
+        if (dom::launcher_core::launcher_selection_summary_from_tlv_bytes(&audit.selection_summary_tlv[0],
+                                                                          audit.selection_summary_tlv.size(),
+                                                                          out_s)) {
+            return true;
+        }
+        out_err = "selection_summary_decode_failed_in_audit";
+        return false;
+    }
+
+    return load_selection_summary_from_run_dir(run_dir, out_s, out_err);
 }
 
 static std::string choose_new_instance_id(const std::string& state_root, const std::string& template_id) {
@@ -851,6 +891,7 @@ ControlPlaneRunResult launcher_control_plane_try_run(int argc,
         out_kv(out, "run_dir", lr.run_dir);
         out_kv(out, "handshake_path", lr.handshake_path);
         out_kv(out, "audit_path", lr.audit_path);
+        out_kv(out, "selection_summary_path", lr.selection_summary_path);
         out_kv(out, "refused", lr.refused ? "1" : "0");
         if (lr.refused) {
             out_kv(out, "refusal_code", u32_to_string(lr.refusal_code));
@@ -864,6 +905,18 @@ ControlPlaneRunResult launcher_control_plane_try_run(int argc,
             }
         } else {
             out_kv(out, "spawned", "0");
+        }
+
+        /* Deterministic selection summary (single source of truth: selection_summary.tlv). */
+        if (!lr.run_dir.empty()) {
+            dom::launcher_core::LauncherSelectionSummary ss;
+            std::string ss_err;
+            if (load_selection_summary_from_run_dir(lr.run_dir, ss, ss_err)) {
+                out_kv(out, "selection_summary.line", dom::launcher_core::launcher_selection_summary_to_compact_line(ss));
+                std::fputs(dom::launcher_core::launcher_selection_summary_to_text(ss).c_str(), out);
+            } else {
+                out_kv(out, "selection_summary.error", ss_err);
+            }
         }
 
         if (lr.waited) {
@@ -881,8 +934,11 @@ ControlPlaneRunResult launcher_control_plane_try_run(int argc,
         std::string last_run;
         std::string run_dir;
         std::string audit_path;
+        std::string selection_path;
         std::vector<unsigned char> bytes;
         dom::launcher_core::LauncherAuditLog audit;
+        dom::launcher_core::LauncherSelectionSummary ss;
+        std::string ss_err;
         int i;
 
         for (i = cmd_i + 1; i < argc; ++i) {
@@ -915,6 +971,7 @@ ControlPlaneRunResult launcher_control_plane_try_run(int argc,
         last_run = run_ids[run_ids.size() - 1u];
         run_dir = path_join(path_join(path_join(path_join(state_root, "instances"), instance_id), "logs/runs"), last_run);
         audit_path = path_join(run_dir, "launcher_audit.tlv");
+        selection_path = path_join(run_dir, "selection_summary.tlv");
 
         if (!read_file_all(audit_path, bytes) || bytes.empty() ||
             !dom::launcher_core::launcher_audit_from_tlv_bytes(&bytes[0], bytes.size(), audit)) {
@@ -931,6 +988,7 @@ ControlPlaneRunResult launcher_control_plane_try_run(int argc,
         out_kv(out, "instance_id", instance_id);
         out_kv(out, "run_dir_id", last_run);
         out_kv(out, "audit_path", audit_path);
+        out_kv(out, "selection_summary_path", selection_path);
         out_kv(out, "audit.run_id", std::string("0x") + u64_hex16(audit.run_id));
         out_kv(out, "audit.exit_result", i32_to_string(audit.exit_result));
         out_kv_u32(out, "audit.reasons.count", (u32)audit.reasons.size());
@@ -939,6 +997,12 @@ ControlPlaneRunResult launcher_control_plane_try_run(int argc,
             for (j = 0u; j < audit.reasons.size(); ++j) {
                 out_kv(out, (std::string("audit.reasons[") + u32_to_string((u32)j) + "]").c_str(), audit.reasons[j]);
             }
+        }
+        if (load_selection_summary_from_audit_or_run_dir(audit, run_dir, ss, ss_err)) {
+            out_kv(out, "selection_summary.line", dom::launcher_core::launcher_selection_summary_to_compact_line(ss));
+            std::fputs(dom::launcher_core::launcher_selection_summary_to_text(ss).c_str(), out);
+        } else {
+            out_kv(out, "selection_summary.error", ss_err);
         }
         r.exit_code = 0;
         return r;
@@ -1002,6 +1066,22 @@ ControlPlaneRunResult launcher_control_plane_try_run(int argc,
                                         path_join(dst_run_dir, "launcher_handshake.tlv"));
             (void)copy_file_best_effort(path_join(src_run_dir, "launcher_audit.tlv"),
                                         path_join(dst_run_dir, "launcher_audit.tlv"));
+            (void)copy_file_best_effort(path_join(src_run_dir, "selection_summary.tlv"),
+                                        path_join(dst_run_dir, "selection_summary.tlv"));
+
+            {
+                dom::launcher_core::LauncherSelectionSummary ss;
+                std::string ss_err;
+                if (load_selection_summary_from_run_dir(src_run_dir, ss, ss_err)) {
+                    const std::string txt = dom::launcher_core::launcher_selection_summary_to_text(ss);
+                    std::vector<unsigned char> txt_bytes(txt.begin(), txt.end());
+                    (void)write_file_all(path_join(out_root, "last_run_selection_summary.txt"), txt_bytes);
+                } else {
+                    const std::string txt = std::string("selection_summary_error=") + ss_err + "\n";
+                    std::vector<unsigned char> txt_bytes(txt.begin(), txt.end());
+                    (void)write_file_all(path_join(out_root, "last_run_selection_summary.txt"), txt_bytes);
+                }
+            }
         }
 
         /* Copy launch history when present. */
