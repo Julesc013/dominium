@@ -1,11 +1,17 @@
 #!/bin/sh
 set -e
 
-INSTALL_DIR="/opt/dominium"
-CLI_BIN="$INSTALL_DIR/dominium-setup-cli"
+ARTIFACT_ROOT="/opt/dominium/artifact_root"
+CLI_BIN="$ARTIFACT_ROOT/setup/dominium-setup"
+MANIFEST_PATH="setup/manifests/product.dsumanifest"
+PLAN_PATH="/tmp/dominium_install.dsuplan"
 
 if [ -x "$CLI_BIN" ]; then
-    "$CLI_BIN" --scope=system --action=install --dir="$INSTALL_DIR" || true
+    (
+        cd "$ARTIFACT_ROOT"
+        "$CLI_BIN" --deterministic 1 plan --manifest "$MANIFEST_PATH" --op install --scope system --out "$PLAN_PATH" || true
+        "$CLI_BIN" --deterministic 1 apply --plan "$PLAN_PATH" || true
+    )
 fi
 
 exit 0
