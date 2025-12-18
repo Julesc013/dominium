@@ -11,8 +11,9 @@ add_library(dsu_core STATIC
     src/log/dsu_log.c
     src/manifest/dsu_manifest.c
     src/plan/dsu_plan.c
+    src/report/dsu_report.c
     src/resolve/dsu_resolve.c
-    src/state/dsu_state.c
+    src/state/dsu_state_s5.c
     src/txn/dsu_journal.c
     src/txn/dsu_txn.c
     src/util/dsu_util_archive.c

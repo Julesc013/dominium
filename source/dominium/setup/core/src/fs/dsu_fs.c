@@ -613,6 +613,8 @@ dsu_status_t dsu_fs_rmdir_empty(dsu_fs_t *fs, dsu_u32 root_index, const char *re
     dsu_u8 exists;
     dsu_u8 is_dir;
     dsu_u8 is_symlink;
+    dsu_platform_dir_entry_t *entries = NULL;
+    dsu_u32 entry_count = 0u;
 
     if (!fs || root_index >= fs->root_count || !rel_dir) {
         return DSU_STATUS_INVALID_ARGS;
@@ -628,6 +630,17 @@ dsu_status_t dsu_fs_rmdir_empty(dsu_fs_t *fs, dsu_u32 root_index, const char *re
     if (st == DSU_STATUS_SUCCESS && (!is_dir || is_symlink)) {
         return DSU_STATUS_IO_ERROR;
     }
+
+    /* Best-effort safety: only remove if currently empty. */
+    st = dsu_platform_list_dir(abs, &entries, &entry_count);
+    if (st != DSU_STATUS_SUCCESS) {
+        return st;
+    }
+    if (entry_count != 0u) {
+        dsu_platform_free_dir_entries(entries, entry_count);
+        return DSU_STATUS_SUCCESS;
+    }
+    dsu_platform_free_dir_entries(entries, entry_count);
     return dsu_platform_rmdir(abs);
 }
 
@@ -940,12 +953,25 @@ dsu_status_t dsu_fs_hash_file(dsu_fs_t *fs,
                               dsu_u8 out_sha256[32]) {
     char abs[1024];
     dsu_status_t st;
+    dsu_u8 exists;
+    dsu_u8 is_dir;
+    dsu_u8 is_symlink;
     if (!fs || root_index >= fs->root_count || !rel_path || !out_sha256) {
         return DSU_STATUS_INVALID_ARGS;
     }
     st = dsu_fs_resolve_under_root(fs, root_index, rel_path, abs, (dsu_u32)sizeof(abs));
     if (st != DSU_STATUS_SUCCESS) {
         return st;
+    }
+    st = dsu_platform_path_info(abs, &exists, &is_dir, &is_symlink);
+    if (st != DSU_STATUS_SUCCESS) {
+        return st;
+    }
+    if (!exists) {
+        return DSU_STATUS_IO_ERROR;
+    }
+    if (is_dir || is_symlink) {
+        return DSU_STATUS_INTEGRITY_ERROR;
     }
     return dsu__sha256_file(abs, out_sha256);
 }
@@ -963,4 +989,3 @@ dsu_status_t dsu_fs_query_permissions(dsu_fs_t *fs,
     *out_perm_flags = 0u;
     return DSU_STATUS_SUCCESS;
 }
-

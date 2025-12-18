@@ -10,9 +10,12 @@ PURPOSE: Plan S-3 resolver tests (selection, closure, conflicts, platform, state
 #include "dsu/dsu_callbacks.h"
 #include "dsu/dsu_config.h"
 #include "dsu/dsu_ctx.h"
+#include "dsu/dsu_fs.h"
 #include "dsu/dsu_manifest.h"
 #include "dsu/dsu_resolve.h"
 #include "dsu/dsu_state.h"
+
+#include "../core/src/fs/dsu_platform_iface.h"
 
 typedef struct buf_t {
     unsigned char *data;
@@ -418,6 +421,14 @@ typedef struct state_spec_t {
     dsu_u32 component_count;
 } state_spec_t;
 
+static int is_abs_path_like(const char *p) {
+    if (!p) return 0;
+    if (p[0] == '/' || p[0] == '\\') return 1;
+    if ((p[0] == '/' && p[1] == '/') || (p[0] == '\\' && p[1] == '\\')) return 1;
+    if (((p[0] >= 'A' && p[0] <= 'Z') || (p[0] >= 'a' && p[0] <= 'z')) && p[1] == ':' && (p[2] == '/' || p[2] == '\\')) return 1;
+    return 0;
+}
+
 static int build_state_component_container(buf_t *out_comp, const state_component_spec_t *c) {
     if (!out_comp || !c) return 0;
     memset(out_comp, 0, sizeof(*out_comp));
@@ -429,6 +440,9 @@ static int build_state_component_container(buf_t *out_comp, const state_componen
 
 static int build_state_file(buf_t *out_file, const state_spec_t *spec) {
     dsu_u32 i;
+    dsu_status_t st;
+    const char *install_root_in;
+    char install_root_abs[1024];
     buf_t root;
     buf_t payload;
     buf_t cb;
@@ -445,7 +459,19 @@ static int build_state_file(buf_t *out_file, const state_spec_t *spec) {
     if (!buf_put_tlv_str(&root, S_T_PRODUCT_VER, spec->product_version)) goto fail;
     if (!buf_put_tlv_str(&root, S_T_PLATFORM, spec->platform)) goto fail;
     if (!buf_put_tlv_u8(&root, S_T_SCOPE, (unsigned char)spec->scope)) goto fail;
-    if (!buf_put_tlv_str(&root, S_T_INSTALL_ROOT, spec->install_root)) goto fail;
+    install_root_in = spec->install_root ? spec->install_root : "";
+    if (install_root_in[0] == '\0') goto fail;
+    if (is_abs_path_like(install_root_in)) {
+        st = dsu_fs_path_canonicalize(install_root_in, install_root_abs, (dsu_u32)sizeof(install_root_abs));
+        if (st != DSU_STATUS_SUCCESS) goto fail;
+    } else {
+        char cwd[1024];
+        st = dsu_platform_get_cwd(cwd, (dsu_u32)sizeof(cwd));
+        if (st != DSU_STATUS_SUCCESS) goto fail;
+        st = dsu_fs_path_join(cwd, install_root_in, install_root_abs, (dsu_u32)sizeof(install_root_abs));
+        if (st != DSU_STATUS_SUCCESS) goto fail;
+    }
+    if (!buf_put_tlv_str(&root, S_T_INSTALL_ROOT, install_root_abs)) goto fail;
 
     for (i = 0u; i < spec->component_count; ++i) {
         if (!build_state_component_container(&cb, &spec->components[i])) goto fail;

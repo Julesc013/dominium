@@ -22,11 +22,22 @@ PURPOSE: Plan builder and deterministic dsuplan (de)serialization.
 #define DSU_PLAN_MAGIC_3 'P'
 #define DSU_PLAN_FORMAT_VERSION 5u
 
-#define DSU_PLAN_DEFAULT_STATE_REL ".dsu/state.dsustate"
+#define DSU_PLAN_DEFAULT_STATE_REL ".dsu/installed_state.dsustate"
+
+/* Lower 16 bits store the originating plan component index (0..65535). */
+#define DSU_PLAN_FILE_FLAGS_COMPONENT_INDEX_MASK 0x0000FFFFu
+
+/* Optional trailing TLV section for forward-compatible plan metadata. */
+#define DSU_PLANX_TLV_ROOT 0x9000u
+#define DSU_PLANX_TLV_ROOT_VERSION 0x9001u /* u32 */
+#define DSU_PLANX_TLV_BUILD_CHANNEL 0x9010u /* string */
+#define DSU_PLANX_TLV_COMPONENT_KINDS 0x9011u /* bytes[count] */
 
 typedef struct dsu_plan_component_t {
     char *id;
     char *version;
+    dsu_u8 kind;
+    dsu_u8 reserved8[3];
 } dsu_plan_component_t;
 
 typedef struct dsu_plan_file_t {
@@ -56,6 +67,7 @@ struct dsu_plan {
     dsu_u8 reserved8[2];
     char *product_id;
     char *version;
+    char *build_channel;
     char *platform;
     char *install_root;
     dsu_u32 component_count;
@@ -85,6 +97,7 @@ static void dsu__plan_free(dsu_plan_t *p) {
     }
     dsu__free(p->product_id);
     dsu__free(p->version);
+    dsu__free(p->build_channel);
     dsu__free(p->platform);
     dsu__free(p->install_root);
     for (i = 0u; i < p->component_count; ++i) {
@@ -478,7 +491,8 @@ static dsu_status_t dsu__fileset_enum_dir(const char *container_abs,
                                          const char *rel_prefix,
                                          dsu_plan_file_t **io_files,
                                          dsu_u32 *io_file_count,
-                                         dsu_u32 *io_file_cap) {
+                                         dsu_u32 *io_file_cap,
+                                         dsu_u32 file_flags_base) {
     dsu_platform_dir_entry_t *entries = NULL;
     dsu_u32 entry_count = 0u;
     dsu_u32 i;
@@ -554,7 +568,7 @@ static dsu_status_t dsu__fileset_enum_dir(const char *container_abs,
         }
 
         if (e->is_dir) {
-            st = dsu__fileset_enum_dir(container_abs, next_abs, next_rel_buf, io_files, io_file_count, io_file_cap);
+            st = dsu__fileset_enum_dir(container_abs, next_abs, next_rel_buf, io_files, io_file_count, io_file_cap, file_flags_base);
             if (st != DSU_STATUS_SUCCESS) {
                 dsu_platform_free_dir_entries(entries, entry_count);
                 return st;
@@ -605,7 +619,7 @@ static dsu_status_t dsu__fileset_enum_dir(const char *container_abs,
             fitem.target_path = tpath;
             fitem.container_path = cpath;
             fitem.member_path = mpath;
-            fitem.flags = 0u;
+            fitem.flags = file_flags_base;
 
             st = dsu__file_list_push_take(io_files, io_file_count, io_file_cap, &fitem);
             if (st != DSU_STATUS_SUCCESS) {
@@ -662,9 +676,10 @@ dsu_status_t dsu_plan_build(dsu_ctx_t *ctx,
 
     p->product_id = dsu__strdup(dsu_resolve_result_product_id(resolved));
     p->version = dsu__strdup(dsu_resolve_result_product_version(resolved));
+    p->build_channel = dsu__strdup(dsu_manifest_build_channel(manifest));
     p->platform = dsu__strdup(dsu_resolve_result_platform(resolved));
     p->install_root = dsu__strdup(dsu_resolve_result_install_root(resolved));
-    if (!p->product_id || !p->version || !p->platform || !p->install_root) {
+    if (!p->product_id || !p->version || !p->build_channel || !p->platform || !p->install_root) {
         dsu_plan_destroy(ctx, p);
         return DSU_STATUS_IO_ERROR;
     }
@@ -693,7 +708,22 @@ dsu_status_t dsu_plan_build(dsu_ctx_t *ctx,
             dsu_plan_destroy(ctx, p);
             return DSU_STATUS_IO_ERROR;
         }
+        p->components[p->component_count].kind = (dsu_u8)DSU_MANIFEST_COMPONENT_KIND_OTHER;
         ++p->component_count;
+    }
+
+    /* Fill component kinds from the manifest (best-effort; default OTHER). */
+    for (i = 0u; i < p->component_count; ++i) {
+        dsu_u32 mi;
+        const char *cid = p->components[i].id;
+        dsu_u32 mcount = dsu_manifest_component_count(manifest);
+        for (mi = 0u; mi < mcount; ++mi) {
+            const char *mid = dsu_manifest_component_id(manifest, mi);
+            if (mid && cid && dsu__strcmp_bytes(mid, cid) == 0) {
+                p->components[i].kind = (dsu_u8)dsu_manifest_component_kind(manifest, mi);
+                break;
+            }
+        }
     }
 
     p->steps = (dsu_plan_step_t *)dsu__malloc(step_count * (dsu_u32)sizeof(*p->steps));
@@ -770,6 +800,7 @@ dsu_status_t dsu_plan_build(dsu_ctx_t *ctx,
             const char *cid = dsu_resolve_result_component_id(resolved, i);
             dsu_u32 payload_count;
             dsu_u32 pi;
+            dsu_u32 file_flags_base = 0u;
 
             if (a != DSU_RESOLVE_COMPONENT_ACTION_INSTALL &&
                 a != DSU_RESOLVE_COMPONENT_ACTION_UPGRADE &&
@@ -782,6 +813,28 @@ dsu_status_t dsu_plan_build(dsu_ctx_t *ctx,
                 dsu__str_list_free(dirs, dir_count);
                 dsu_plan_destroy(ctx, p);
                 return DSU_STATUS_INVALID_ARGS;
+            }
+
+            /* Encode component index into file.flags for downstream state snapshotting. */
+            {
+                dsu_u32 ci;
+                dsu_u32 comp_index = 0xFFFFFFFFu;
+                for (ci = 0u; ci < p->component_count; ++ci) {
+                    const char *pid = p->components[ci].id;
+                    if (pid && dsu__strcmp_bytes(pid, cid) == 0) {
+                        comp_index = ci;
+                        break;
+                    }
+                }
+                if (comp_index == 0xFFFFFFFFu || comp_index > DSU_PLAN_FILE_FLAGS_COMPONENT_INDEX_MASK) {
+                    dsu__free(manifest_dir);
+                    dsu__file_list_free(files, file_count);
+                    dsu__str_list_free(dirs, dir_count);
+                    dsu_plan_destroy(ctx, p);
+                    return DSU_STATUS_INVALID_ARGS;
+                }
+                file_flags_base = comp_index & DSU_PLAN_FILE_FLAGS_COMPONENT_INDEX_MASK;
+                (void)ci;
             }
 
             /* Find component in manifest. */
@@ -861,7 +914,7 @@ dsu_status_t dsu_plan_build(dsu_ctx_t *ctx,
                 }
 
                 if (kind == DSU_MANIFEST_PAYLOAD_KIND_FILESET) {
-                    st = dsu__fileset_enum_dir(canon_abs, canon_abs, "", &files, &file_count, &file_cap);
+                    st = dsu__fileset_enum_dir(canon_abs, canon_abs, "", &files, &file_count, &file_cap, file_flags_base);
                     if (st != DSU_STATUS_SUCCESS) {
                         dsu__free(manifest_dir);
                         dsu__file_list_free(files, file_count);
@@ -890,7 +943,7 @@ dsu_status_t dsu_plan_build(dsu_ctx_t *ctx,
                         fitem.target_path = dsu__strdup(ae[ai].path);
                         fitem.container_path = dsu__strdup(canon_abs);
                         fitem.member_path = dsu__strdup(ae[ai].path);
-                        fitem.flags = 0u;
+                        fitem.flags = file_flags_base;
                         if (!fitem.target_path || !fitem.container_path || !fitem.member_path) {
                             dsu__plan_file_free(&fitem);
                             dsu__archive_free_entries(ae, ac);
@@ -1072,6 +1125,13 @@ const char *dsu_plan_version(const dsu_plan_t *plan) {
     return plan->version;
 }
 
+const char *dsu_plan_build_channel(const dsu_plan_t *plan) {
+    if (!plan || !plan->build_channel) {
+        return "";
+    }
+    return plan->build_channel;
+}
+
 const char *dsu_plan_platform(const dsu_plan_t *plan) {
     if (!plan || !plan->platform) {
         return "";
@@ -1084,6 +1144,20 @@ const char *dsu_plan_install_root(const dsu_plan_t *plan) {
         return "";
     }
     return plan->install_root;
+}
+
+dsu_u64 dsu_plan_manifest_digest64(const dsu_plan_t *plan) {
+    if (!plan) {
+        return (dsu_u64)0u;
+    }
+    return plan->manifest_digest64;
+}
+
+dsu_u64 dsu_plan_resolved_set_digest64(const dsu_plan_t *plan) {
+    if (!plan) {
+        return (dsu_u64)0u;
+    }
+    return plan->resolved_digest64;
 }
 
 dsu_u32 dsu_plan_component_count(const dsu_plan_t *plan) {
@@ -1105,6 +1179,13 @@ const char *dsu_plan_component_version(const dsu_plan_t *plan, dsu_u32 index) {
         return NULL;
     }
     return plan->components[index].version;
+}
+
+dsu_manifest_component_kind_t dsu_plan_component_kind(const dsu_plan_t *plan, dsu_u32 index) {
+    if (!plan || index >= plan->component_count) {
+        return DSU_MANIFEST_COMPONENT_KIND_OTHER;
+    }
+    return (dsu_manifest_component_kind_t)plan->components[index].kind;
 }
 
 dsu_u32 dsu_plan_step_count(const dsu_plan_t *plan) {
@@ -1189,6 +1270,87 @@ const dsu_u8 *dsu_plan_file_sha256(const dsu_plan_t *plan, dsu_u32 index) {
         return NULL;
     }
     return plan->files[index].sha256;
+}
+
+dsu_u32 dsu_plan_file_flags(const dsu_plan_t *plan, dsu_u32 index) {
+    if (!plan || index >= plan->file_count) {
+        return 0u;
+    }
+    return plan->files[index].flags;
+}
+
+dsu_u32 dsu_plan_file_component_index(const dsu_plan_t *plan, dsu_u32 index) {
+    dsu_u32 flags;
+    if (!plan || index >= plan->file_count) {
+        return 0u;
+    }
+    flags = plan->files[index].flags;
+    return (flags & DSU_PLAN_FILE_FLAGS_COMPONENT_INDEX_MASK);
+}
+
+const char *dsu_plan_file_component_id(const dsu_plan_t *plan, dsu_u32 index) {
+    dsu_u32 ci;
+    if (!plan || index >= plan->file_count) {
+        return NULL;
+    }
+    ci = dsu_plan_file_component_index(plan, index);
+    if (ci >= plan->component_count) {
+        return NULL;
+    }
+    return plan->components[ci].id;
+}
+
+static dsu_status_t dsu__plan_blob_put_tlv_u32(dsu_blob_t *b, dsu_u16 type, dsu_u32 v) {
+    dsu_u8 tmp[4];
+    tmp[0] = (dsu_u8)(v & 0xFFu);
+    tmp[1] = (dsu_u8)((v >> 8) & 0xFFu);
+    tmp[2] = (dsu_u8)((v >> 16) & 0xFFu);
+    tmp[3] = (dsu_u8)((v >> 24) & 0xFFu);
+    return dsu__blob_put_tlv(b, type, tmp, 4u);
+}
+
+static dsu_status_t dsu__plan_blob_put_tlv_str(dsu_blob_t *b, dsu_u16 type, const char *s) {
+    dsu_u32 n;
+    if (!s) s = "";
+    n = dsu__strlen(s);
+    if (n == 0xFFFFFFFFu) {
+        return DSU_STATUS_INVALID_ARGS;
+    }
+    return dsu__blob_put_tlv(b, type, s, n);
+}
+
+static dsu_status_t dsu__plan_append_extras(dsu_blob_t *payload, const dsu_plan_t *plan) {
+    dsu_blob_t root;
+    dsu_blob_t kinds;
+    dsu_status_t st;
+    dsu_u32 i;
+
+    if (!payload || !plan) {
+        return DSU_STATUS_INVALID_ARGS;
+    }
+
+    dsu__blob_init(&root);
+    dsu__blob_init(&kinds);
+
+    st = dsu__plan_blob_put_tlv_u32(&root, (dsu_u16)DSU_PLANX_TLV_ROOT_VERSION, 1u);
+    if (st == DSU_STATUS_SUCCESS) {
+        st = dsu__plan_blob_put_tlv_str(&root, (dsu_u16)DSU_PLANX_TLV_BUILD_CHANNEL, plan->build_channel ? plan->build_channel : "");
+    }
+
+    for (i = 0u; st == DSU_STATUS_SUCCESS && i < plan->component_count; ++i) {
+        dsu_u8 k = plan->components[i].kind;
+        st = dsu__blob_append(&kinds, &k, 1u);
+    }
+    if (st == DSU_STATUS_SUCCESS) {
+        st = dsu__blob_put_tlv(&root, (dsu_u16)DSU_PLANX_TLV_COMPONENT_KINDS, kinds.data, kinds.size);
+    }
+    dsu__blob_free(&kinds);
+
+    if (st == DSU_STATUS_SUCCESS) {
+        st = dsu__blob_put_tlv(payload, (dsu_u16)DSU_PLANX_TLV_ROOT, root.data, root.size);
+    }
+    dsu__blob_free(&root);
+    return st;
 }
 
 dsu_status_t dsu_plan_write_file(dsu_ctx_t *ctx, const dsu_plan_t *plan, const char *path) {
@@ -1322,6 +1484,10 @@ dsu_status_t dsu_plan_write_file(dsu_ctx_t *ctx, const dsu_plan_t *plan, const c
             st = dsu__blob_append(&payload, arg, arg_len);
             if (st != DSU_STATUS_SUCCESS) break;
         }
+    }
+
+    if (st == DSU_STATUS_SUCCESS) {
+        st = dsu__plan_append_extras(&payload, plan);
     }
 
     if (st != DSU_STATUS_SUCCESS) {
@@ -1479,6 +1645,13 @@ dsu_status_t dsu_plan_read_file(dsu_ctx_t *ctx, const char *path, dsu_plan_t **o
         return st;
     }
 
+    p->build_channel = dsu__strdup("");
+    if (!p->build_channel) {
+        dsu__free(file_bytes);
+        dsu_plan_destroy(ctx, p);
+        return DSU_STATUS_IO_ERROR;
+    }
+
     p->components = (dsu_plan_component_t *)dsu__malloc(p->component_count * (dsu_u32)sizeof(*p->components));
     if (!p->components && p->component_count != 0u) {
         dsu__free(file_bytes);
@@ -1499,6 +1672,7 @@ dsu_status_t dsu_plan_read_file(dsu_ctx_t *ctx, const char *path, dsu_plan_t **o
         if (st != DSU_STATUS_SUCCESS) break;
         st = dsu__read_string_alloc(payload, payload_len, &off, ver_len, &p->components[i].version);
         if (st != DSU_STATUS_SUCCESS) break;
+        p->components[i].kind = (dsu_u8)DSU_MANIFEST_COMPONENT_KIND_OTHER;
         if (!p->components[i].id || p->components[i].id[0] == '\0' ||
             !p->components[i].version || p->components[i].version[0] == '\0') {
             st = DSU_STATUS_INTEGRITY_ERROR;
@@ -1625,6 +1799,59 @@ dsu_status_t dsu_plan_read_file(dsu_ctx_t *ctx, const char *path, dsu_plan_t **o
         if (p->steps[i].arg && p->steps[i].arg[0] == '\0') {
             dsu__free(p->steps[i].arg);
             p->steps[i].arg = NULL;
+        }
+    }
+
+    /* Optional trailing TLV metadata (best-effort; unknown TLVs are skipped). */
+    if (st == DSU_STATUS_SUCCESS && off < payload_len) {
+        while (off < payload_len && st == DSU_STATUS_SUCCESS) {
+            dsu_u16 t;
+            dsu_u32 n;
+            const dsu_u8 *v;
+            st = dsu__tlv_read_header(payload, payload_len, &off, &t, &n);
+            if (st != DSU_STATUS_SUCCESS) break;
+            if (payload_len - off < n) {
+                st = DSU_STATUS_INTEGRITY_ERROR;
+                break;
+            }
+            v = payload + off;
+            if (t == (dsu_u16)DSU_PLANX_TLV_ROOT) {
+                dsu_u32 off2 = 0u;
+                while (off2 < n && st == DSU_STATUS_SUCCESS) {
+                    dsu_u16 t2;
+                    dsu_u32 n2;
+                    const dsu_u8 *v2;
+                    st = dsu__tlv_read_header(v, n, &off2, &t2, &n2);
+                    if (st != DSU_STATUS_SUCCESS) break;
+                    if (n - off2 < n2) {
+                        st = DSU_STATUS_INTEGRITY_ERROR;
+                        break;
+                    }
+                    v2 = v + off2;
+                    if (t2 == (dsu_u16)DSU_PLANX_TLV_BUILD_CHANNEL) {
+                        char *tmp = NULL;
+                        dsu_u32 z = 0u;
+                        dsu_status_t st2 = dsu__read_string_alloc(v2, n2, &z, n2, &tmp);
+                        if (st2 != DSU_STATUS_SUCCESS) {
+                            st = st2;
+                            break;
+                        }
+                        dsu__free(p->build_channel);
+                        p->build_channel = tmp;
+                    } else if (t2 == (dsu_u16)DSU_PLANX_TLV_COMPONENT_KINDS) {
+                        if (n2 == p->component_count) {
+                            dsu_u32 k;
+                            for (k = 0u; k < p->component_count; ++k) {
+                                p->components[k].kind = v2[k];
+                            }
+                        }
+                    } else {
+                        /* skip */
+                    }
+                    off2 += n2;
+                }
+            }
+            off += n;
         }
     }
     dsu__free(file_bytes);
