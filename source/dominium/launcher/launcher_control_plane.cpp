@@ -143,6 +143,28 @@ static void audit_reason_kv(::launcher_core* core, const char* key, const char* 
     (void)launcher_core_add_reason(core, (std::string(key) + "=" + (val ? val : "")).c_str());
 }
 
+static bool parse_u32_dec_strict(const char* s, u32& out_v) {
+    const unsigned char* p;
+    u64 v;
+    if (!s || !s[0]) {
+        return false;
+    }
+    v = 0ull;
+    p = (const unsigned char*)s;
+    while (*p) {
+        if (*p < (unsigned char)'0' || *p > (unsigned char)'9') {
+            return false;
+        }
+        v = (v * 10ull) + (u64)(*p - (unsigned char)'0');
+        if (v > 0xFFFFFFFFull) {
+            return false;
+        }
+        ++p;
+    }
+    out_v = (u32)v;
+    return true;
+}
+
 static int find_command_index(int argc, char** argv) {
     int i;
     for (i = 1; i < argc; ++i) {
@@ -819,9 +841,25 @@ ControlPlaneRunResult launcher_control_plane_try_run(int argc,
             const char* tv = find_arg_value(argc, argv, "--target=");
             if (tv && tv[0]) target_text = std::string(tv);
         }
+        {
+            const char* kv = find_arg_value(argc, argv, "--keep_last_runs=");
+            if (kv) {
+                u32 parsed = 0u;
+                if (!parse_u32_dec_strict(kv, parsed)) {
+                    audit_reason_kv(audit_core, "outcome", "fail");
+                    out_kv(out, "result", "fail");
+                    out_kv(out, "error", "bad_keep_last_runs");
+                    out_kv(out, "detail", kv ? kv : "");
+                    r.exit_code = 2;
+                    return r;
+                }
+                keep_last = parsed;
+            }
+        }
 
         audit_reason_kv(audit_core, "instance_id", instance_id);
         audit_reason_kv(audit_core, "launch_target", target_text);
+        audit_reason_kv(audit_core, "keep_last_runs", u32_to_string(keep_last));
 
         if (instance_id.empty() || target_text.empty()) {
             audit_reason_kv(audit_core, "outcome", "fail");
