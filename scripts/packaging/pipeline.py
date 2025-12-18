@@ -719,6 +719,17 @@ def package_linux(args):
     _make_deterministic_archive(repo_root, "tar.gz", artifact_dir, tar_path, "artifact_root", epoch)
     print("wrote", tar_path)
 
+    # Portable tarball wrapper (placed next to the tarball, not inside artifact_root/).
+    wrapper_src = os.path.join(repo_root, "scripts", "packaging", "linux", "dominium-install.sh")
+    wrapper_dst = os.path.join(out_dir, "dominium-install.sh")
+    if os.path.isfile(wrapper_src):
+        shutil.copy2(wrapper_src, wrapper_dst)
+        try:
+            os.chmod(wrapper_dst, 0o755)
+        except Exception:
+            pass
+        print("wrote", wrapper_dst)
+
     dpkg_deb = shutil.which("dpkg-deb")
     rpmbuild = shutil.which("rpmbuild")
 
