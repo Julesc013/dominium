@@ -1,0 +1,14 @@
+#!/bin/sh
+set -e
+
+# Template: Debian prerm hook (Plan S-6)
+# Rule: parameter passing only; no heuristics.
+
+DSU_BIN="${DSU_BIN:-/usr/bin/dominium-setup-linux}"
+STATE_PATH="${STATE_PATH:-/var/lib/dominium/.dsu/installed_state.dsustate}"
+
+if [ "$1" = "remove" ] || [ "$1" = "deconfigure" ]; then
+  "${DSU_BIN}" platform-unregister --state "${STATE_PATH}" --deterministic || exit $?
+fi
+
+exit 0

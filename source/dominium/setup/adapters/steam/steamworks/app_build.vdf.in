@@ -1,0 +1,15 @@
+"appbuild"
+{
+    "appid"            "@STEAM_APP_ID@"
+    "desc"             "Dominium build (Plan S-6 template)"
+    "buildoutput"      "../output/"
+    "contentroot"      "../content/"
+    "setlive"          ""
+    "preview"          "0"
+
+    "depots"
+    {
+        "@STEAM_DEPOT_ID@" "depot_build.vdf"
+    }
+}
+
