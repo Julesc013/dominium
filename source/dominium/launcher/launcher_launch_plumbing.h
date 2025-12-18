@@ -42,6 +42,7 @@ struct LaunchRunResult {
     std::string run_dir;
     std::string handshake_path;
     std::string audit_path;
+    std::string selection_summary_path;
 
     u32 refused; /* 0/1 */
     u32 refusal_code;
@@ -81,4 +82,3 @@ bool launcher_list_instance_runs(const std::string& state_root,
 } /* namespace dom */
 
 #endif /* DOMINIUM_LAUNCHER_LAUNCH_PLUMBING_H */
-
