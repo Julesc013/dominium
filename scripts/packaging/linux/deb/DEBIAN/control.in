@@ -7,4 +7,4 @@ Maintainer: @MAINTAINER@
 Depends: @DEPENDS@
 Description: Dominium launcher and setup
  Dominium binaries and setup helper. Actual installation/repair runs through
- dominium-setup-cli for consistent layout across platforms.
+ dominium-setup for consistent layout across platforms.

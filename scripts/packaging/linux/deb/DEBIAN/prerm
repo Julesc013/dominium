@@ -1,12 +1,19 @@
 #!/bin/sh
 set -e
 
-INSTALL_DIR="/opt/dominium"
-CLI_BIN="$INSTALL_DIR/dominium-setup-cli"
+ARTIFACT_ROOT="/opt/dominium/artifact_root"
+CLI_BIN="$ARTIFACT_ROOT/setup/dominium-setup"
+MANIFEST_PATH="setup/manifests/product.dsumanifest"
+PLAN_PATH="/tmp/dominium_uninstall.dsuplan"
+STATE_PATH="/opt/dominium/.dsu/installed_state.dsustate"
 
 if [ "$1" = "remove" ] || [ "$1" = "purge" ]; then
-    if [ -x "$CLI_BIN" ]; then
-        "$CLI_BIN" --scope=system --action=uninstall --dir="$INSTALL_DIR" || true
+    if [ -x "$CLI_BIN" ] && [ -f "$STATE_PATH" ]; then
+        (
+            cd "$ARTIFACT_ROOT"
+            "$CLI_BIN" --deterministic 1 plan --manifest "$MANIFEST_PATH" --state "$STATE_PATH" --op uninstall --scope system --out "$PLAN_PATH" || true
+            "$CLI_BIN" --deterministic 1 apply --plan "$PLAN_PATH" || true
+        )
     fi
 fi
 
