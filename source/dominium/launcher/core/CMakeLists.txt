@@ -9,6 +9,7 @@ add_library(dominium_launcher_core STATIC
     src/launch/launcher_prelaunch.cpp
     src/launch/launcher_launch_attempt.cpp
     src/launch/launcher_handshake.cpp
+    src/launch/launcher_exit_status.cpp
     src/tool/launcher_tools_registry.cpp
     src/profile/launcher_profile.cpp
     src/instance/launcher_instance.cpp
