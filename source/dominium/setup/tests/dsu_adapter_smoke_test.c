@@ -381,6 +381,13 @@ int main(void) {
     strcpy(cwd, self_dir);
 
     sprintf(install_root_native, "%s\\dsu_adapter_test_root", cwd);
+    {
+        char install_root_txn[MAX_PATH];
+        if (strlen(install_root_native) + 5u <= sizeof(install_root_txn)) {
+            sprintf(install_root_txn, "%s.txn", install_root_native);
+            (void)rm_tree(install_root_txn);
+        }
+    }
     (void)rm_tree(install_root_native);
     CreateDirectoryA(install_root_native, NULL);
 
@@ -472,7 +479,13 @@ done:
     DeleteFileA(manifest_path);
     DeleteFileA(plan_path);
     rm_tree(install_root_native);
+    {
+        char install_root_txn[MAX_PATH];
+        if (strlen(install_root_native) + 5u <= sizeof(install_root_txn)) {
+            sprintf(install_root_txn, "%s.txn", install_root_native);
+            rm_tree(install_root_txn);
+        }
+    }
 
     return ok ? 0 : 1;
 }
-
