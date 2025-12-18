@@ -6,6 +6,8 @@ PURPOSE: Setup Core context lifecycle implementation.
 #include "../include/dsu/dsu_ctx.h"
 #include "../include/dsu/dsu_log.h"
 
+#include "dsu/dsu_platform_iface.h"
+
 #include "dsu_ctx_internal.h"
 #include "util/dsu_util_internal.h"
 
@@ -73,6 +75,8 @@ dsu_status_t dsu_ctx_create(const dsu_config_t *config,
     ctx->callbacks = cbs_local;
     ctx->callbacks_user = callbacks_user;
     ctx->audit_log = NULL;
+    dsu_platform_iface_init(&ctx->platform_iface);
+    ctx->platform_user = NULL;
 
     st = dsu_log_create(ctx, &ctx->audit_log);
     if (st != DSU_STATUS_SUCCESS) {
@@ -111,4 +115,3 @@ dsu_status_t dsu_ctx_reset_audit_log(dsu_ctx_t *ctx) {
     }
     return dsu_log_reset(ctx, ctx->audit_log);
 }
-

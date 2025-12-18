@@ -1653,6 +1653,43 @@ dsu_status_t dsu__state_build_from_plan(dsu_ctx_t *ctx,
         memset(&f, 0, sizeof(f));
     }
 
+    /* Copy platform registrations and marker lists from plan extras (PLANX). */
+    for (i = 0u; i < ccount; ++i) {
+        dsu_u32 rcount = dsu_plan_component_registration_count(plan, i);
+        dsu_u32 mcount = dsu_plan_component_marker_count(plan, i);
+        dsu_u32 j;
+        for (j = 0u; j < rcount; ++j) {
+            const char *reg = dsu_plan_component_registration(plan, i, j);
+            if (!reg || reg[0] == '\0') {
+                dsu_state_destroy(ctx, s);
+                return DSU_STATUS_INTEGRITY_ERROR;
+            }
+            st = dsu__str_list_push(&s->components[i].registrations,
+                                    &s->components[i].registration_count,
+                                    &s->components[i].registration_cap,
+                                    reg);
+            if (st != DSU_STATUS_SUCCESS) {
+                dsu_state_destroy(ctx, s);
+                return st;
+            }
+        }
+        for (j = 0u; j < mcount; ++j) {
+            const char *marker = dsu_plan_component_marker(plan, i, j);
+            if (!marker || marker[0] == '\0') {
+                dsu_state_destroy(ctx, s);
+                return DSU_STATUS_INTEGRITY_ERROR;
+            }
+            st = dsu__str_list_push(&s->components[i].markers,
+                                    &s->components[i].marker_count,
+                                    &s->components[i].marker_cap,
+                                    marker);
+            if (st != DSU_STATUS_SUCCESS) {
+                dsu_state_destroy(ctx, s);
+                return st;
+            }
+        }
+    }
+
     st = dsu_state_validate(s);
     if (st != DSU_STATUS_SUCCESS) {
         dsu_state_destroy(ctx, s);

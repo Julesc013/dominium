@@ -8,6 +8,7 @@ add_library(dsu_core STATIC
     src/fs/dsu_fs.c
     src/fs/dsu_fs_stdio.c
     src/fs/dsu_platform_iface.c
+    src/platform_iface/dsu_platform_iface.c
     src/log/dsu_log.c
     src/manifest/dsu_manifest.c
     src/plan/dsu_plan.c
@@ -32,6 +33,7 @@ add_library(dsu_core STATIC
 target_include_directories(dsu_core
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/include
+        ${PROJECT_SOURCE_DIR}/include
 )
 
 set_target_properties(dsu_core PROPERTIES

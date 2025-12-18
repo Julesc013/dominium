@@ -8,6 +8,7 @@ add_executable(dominium-setup
 
 target_include_directories(dominium-setup PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/core/include
+    ${PROJECT_SOURCE_DIR}/include
 )
 
 target_link_libraries(dominium-setup
