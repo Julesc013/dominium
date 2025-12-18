@@ -27,7 +27,8 @@ enum {
     TAG_BUILD_ID = 10u,
     TAG_GIT_HASH = 11u,
     TAG_MANIFEST_HASH64 = 12u,
-    TAG_EXIT_RESULT = 13u
+    TAG_EXIT_RESULT = 13u,
+    TAG_SELECTION_SUMMARY = 14u
 };
 
 enum {
@@ -63,7 +64,9 @@ LauncherAuditLog::LauncherAuditLog()
       build_id(),
       git_hash(),
       manifest_hash64(0ull),
-      exit_result(0) {
+      exit_result(0),
+      has_selection_summary(0u),
+      selection_summary_tlv() {
 }
 
 bool launcher_audit_to_tlv_bytes(const LauncherAuditLog& audit,
@@ -80,6 +83,9 @@ bool launcher_audit_to_tlv_bytes(const LauncherAuditLog& audit,
     w.add_string(TAG_GIT_HASH, audit.git_hash);
     w.add_u64(TAG_MANIFEST_HASH64, audit.manifest_hash64);
     w.add_i32(TAG_EXIT_RESULT, audit.exit_result);
+    if (audit.has_selection_summary != 0u || !audit.selection_summary_tlv.empty()) {
+        w.add_container(TAG_SELECTION_SUMMARY, audit.selection_summary_tlv);
+    }
 
     for (i = 0u; i < audit.inputs.size(); ++i) {
         w.add_string(TAG_INPUT, audit.inputs[i]);
@@ -170,6 +176,10 @@ bool launcher_audit_from_tlv_bytes(const unsigned char* data,
             }
             break;
         }
+        case TAG_SELECTION_SUMMARY:
+            out_audit.has_selection_summary = 1u;
+            out_audit.selection_summary_tlv.assign(rec.payload, rec.payload + (size_t)rec.len);
+            break;
         case TAG_SELECTED_BACKEND: {
             LauncherAuditBackend b;
             TlvReader er(rec.payload, (size_t)rec.len);
@@ -248,6 +258,9 @@ std::string launcher_audit_to_text(const LauncherAuditLog& audit) {
     }
     if (audit.manifest_hash64 != 0ull) {
         oss << "manifest_hash64=" << audit.manifest_hash64 << "\n";
+    }
+    if (audit.has_selection_summary != 0u) {
+        oss << "selection_summary_bytes=" << audit.selection_summary_tlv.size() << "\n";
     }
     oss << "inputs=" << audit.inputs.size() << "\n";
     for (i = 0u; i < audit.inputs.size(); ++i) {

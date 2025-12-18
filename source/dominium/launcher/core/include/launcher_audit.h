@@ -40,6 +40,7 @@ enum { LAUNCHER_AUDIT_TLV_VERSION = 1u };
  * - `LAUNCHER_AUDIT_TLV_TAG_GIT_HASH` (string)
  * - `LAUNCHER_AUDIT_TLV_TAG_MANIFEST_HASH64` (u64)
  * - `LAUNCHER_AUDIT_TLV_TAG_EXIT_RESULT` (i32)
+ * - `LAUNCHER_AUDIT_TLV_TAG_SELECTION_SUMMARY` (container, optional): embedded `selection_summary.tlv` bytes (see `launcher_selection_summary.h`).
  *
  * Selected-backend entry payload (container TLV):
  * - `LAUNCHER_AUDIT_BACKEND_TLV_TAG_SUBSYS_ID` (u32)
@@ -61,7 +62,8 @@ enum LauncherAuditTlvTag {
     LAUNCHER_AUDIT_TLV_TAG_BUILD_ID = 10u,
     LAUNCHER_AUDIT_TLV_TAG_GIT_HASH = 11u,
     LAUNCHER_AUDIT_TLV_TAG_MANIFEST_HASH64 = 12u,
-    LAUNCHER_AUDIT_TLV_TAG_EXIT_RESULT = 13u
+    LAUNCHER_AUDIT_TLV_TAG_EXIT_RESULT = 13u,
+    LAUNCHER_AUDIT_TLV_TAG_SELECTION_SUMMARY = 14u
 };
 
 enum LauncherAuditBackendTlvTag {
@@ -106,6 +108,9 @@ struct LauncherAuditLog {
     u64 manifest_hash64;        /* optional (0 when absent) */
 
     i32 exit_result;
+
+    u32 has_selection_summary; /* 0/1 */
+    std::vector<unsigned char> selection_summary_tlv; /* optional; raw TLV bytes */
 
     LauncherAuditLog();
 };
