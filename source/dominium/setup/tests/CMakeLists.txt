@@ -133,3 +133,25 @@ if(WIN32)
 
     add_test(NAME dsu_adapter_smoke_test COMMAND dsu_adapter_smoke_test)
 endif()
+
+find_program(DOMINIUM_PYTHON NAMES python3 python)
+if(DOMINIUM_PYTHON)
+    set(_dom_repo_root "${CMAKE_CURRENT_SOURCE_DIR}/../../../../")
+    set(_dom_packaging_test "${_dom_repo_root}/scripts/packaging/tests/packaging_validation_test.py")
+    set(_dom_manifest_template "${_dom_repo_root}/assets/setup/manifests/product.template.json")
+
+    add_test(
+        NAME dsu_packaging_validation_test
+        COMMAND
+            ${DOMINIUM_PYTHON}
+            ${_dom_packaging_test}
+            --build-dir ${CMAKE_BINARY_DIR}
+            --version 0.1.0
+            --manifest-template ${_dom_manifest_template}
+    )
+
+    set_tests_properties(dsu_packaging_validation_test PROPERTIES
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+        ENVIRONMENT "SOURCE_DATE_EPOCH=946684800"
+    )
+endif()
