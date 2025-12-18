@@ -535,6 +535,127 @@ static dsu_status_t dsu__dirname_of_path(const char *path, char **out_dir) {
     return DSU_STATUS_SUCCESS;
 }
 
+static dsu_u8 dsu__ascii_lower_u8(dsu_u8 c) {
+    if (c >= (dsu_u8)'A' && c <= (dsu_u8)'Z') {
+        return (dsu_u8)(c - (dsu_u8)'A' + (dsu_u8)'a');
+    }
+    return c;
+}
+
+static int dsu__path_segment_ieq(const char *seg, dsu_u32 seg_len, const char *lit) {
+    dsu_u32 i;
+    dsu_u32 lit_len;
+    if (!seg || !lit) {
+        return 0;
+    }
+    lit_len = dsu__strlen(lit);
+    if (seg_len != lit_len) {
+        return 0;
+    }
+    for (i = 0u; i < seg_len; ++i) {
+        dsu_u8 a = dsu__ascii_lower_u8((dsu_u8)seg[i]);
+        dsu_u8 b = dsu__ascii_lower_u8((dsu_u8)lit[i]);
+        if (a != b) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+static int dsu__is_setup_manifests_dir(const char *dir) {
+    /* Match a terminal path segment sequence: .../setup/manifests (either slash). */
+    dsu_u32 len;
+    dsu_u32 end;
+    dsu_u32 seg_end;
+    dsu_u32 seg_start;
+    dsu_u32 prev_end;
+    dsu_u32 prev_start;
+
+    if (!dir) {
+        return 0;
+    }
+
+    len = dsu__strlen(dir);
+    end = len;
+    while (end > 0u && (dir[end - 1u] == '/' || dir[end - 1u] == '\\')) {
+        end--;
+    }
+    if (end == 0u) {
+        return 0;
+    }
+
+    /* Last segment */
+    seg_end = end;
+    seg_start = seg_end;
+    while (seg_start > 0u && dir[seg_start - 1u] != '/' && dir[seg_start - 1u] != '\\') {
+        seg_start--;
+    }
+    if (!dsu__path_segment_ieq(dir + seg_start, seg_end - seg_start, "manifests")) {
+        return 0;
+    }
+
+    /* Previous segment */
+    prev_end = seg_start;
+    while (prev_end > 0u && (dir[prev_end - 1u] == '/' || dir[prev_end - 1u] == '\\')) {
+        prev_end--;
+    }
+    if (prev_end == 0u) {
+        return 0;
+    }
+    prev_start = prev_end;
+    while (prev_start > 0u && dir[prev_start - 1u] != '/' && dir[prev_start - 1u] != '\\') {
+        prev_start--;
+    }
+    if (!dsu__path_segment_ieq(dir + prev_start, prev_end - prev_start, "setup")) {
+        return 0;
+    }
+
+    return 1;
+}
+
+static dsu_status_t dsu__payload_base_dir_from_manifest_path(const char *manifest_path, char **out_dir) {
+    dsu_status_t st;
+    char *manifest_dir = NULL;
+
+    if (!out_dir) {
+        return DSU_STATUS_INVALID_ARGS;
+    }
+    *out_dir = NULL;
+
+    st = dsu__dirname_of_path(manifest_path, &manifest_dir);
+    if (st != DSU_STATUS_SUCCESS) {
+        return st;
+    }
+
+    /*
+      Plan S-8 canonical artifact layout places the manifest under:
+
+        artifact_root/setup/manifests/product.dsumanifest
+
+      Payload paths in the manifest are defined relative to artifact_root/.
+      Resolve relative payload paths against artifact_root/ (not the manifest directory).
+    */
+    if (dsu__is_setup_manifests_dir(manifest_dir)) {
+        char *setup_dir = NULL;
+        char *artifact_root = NULL;
+        st = dsu__dirname_of_path(manifest_dir, &setup_dir);
+        if (st == DSU_STATUS_SUCCESS) {
+            st = dsu__dirname_of_path(setup_dir, &artifact_root);
+        }
+        dsu__free(setup_dir);
+        dsu__free(manifest_dir);
+        if (st != DSU_STATUS_SUCCESS) {
+            dsu__free(artifact_root);
+            return st;
+        }
+        *out_dir = artifact_root;
+        return DSU_STATUS_SUCCESS;
+    }
+
+    *out_dir = manifest_dir;
+    return DSU_STATUS_SUCCESS;
+}
+
 static dsu_status_t dsu__file_size_u64(const char *path, dsu_u64 *out_size) {
     FILE *f;
     long sz;
@@ -959,7 +1080,7 @@ dsu_status_t dsu_plan_build(dsu_ctx_t *ctx,
         dsu_u32 dir_cap = 0u;
         dsu_u32 mi;
 
-        st = dsu__dirname_of_path(manifest_path, &manifest_dir);
+        st = dsu__payload_base_dir_from_manifest_path(manifest_path, &manifest_dir);
         if (st != DSU_STATUS_SUCCESS) {
             dsu__file_list_free(files, file_count);
             dsu__str_list_free(dirs, dir_count);
