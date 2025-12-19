@@ -341,6 +341,88 @@ static int write_manifest_variant(const char *path,
     return ok;
 }
 
+static unsigned long rng_next_u32(unsigned long *state) {
+    unsigned long x;
+    if (!state) return 0ul;
+    x = *state;
+    x = (1103515245ul * x + 12345ul) & 0xFFFFFFFFul;
+    *state = x;
+    return x;
+}
+
+static int test_tlv_fuzz_lite(void) {
+    unsigned long seed = 0xC0FFEE01ul;
+    dsu_ctx_t *ctx = NULL;
+    int ok = 1;
+    dsu_status_t st;
+    unsigned long i;
+
+    {
+        dsu_config_t cfg;
+        dsu_callbacks_t cbs;
+        dsu_config_init(&cfg);
+        dsu_callbacks_init(&cbs);
+        cfg.flags |= DSU_CONFIG_FLAG_DETERMINISTIC;
+        st = dsu_ctx_create(&cfg, &cbs, NULL, &ctx);
+    }
+    ok &= expect(st == DSU_STATUS_SUCCESS && ctx != NULL, "ctx create (fuzz)");
+    if (!ok) return 0;
+
+    for (i = 0ul; i < 32ul; ++i) {
+        char path[64];
+        buf_t payload;
+        buf_t file;
+        unsigned long j;
+        unsigned long tlv_count = (rng_next_u32(&seed) % 8ul) + 1ul;
+
+        memset(&payload, 0, sizeof(payload));
+        memset(&file, 0, sizeof(file));
+
+        for (j = 0ul; j < tlv_count; ++j) {
+            unsigned short t = (unsigned short)(rng_next_u32(&seed) & 0xFFFFu);
+            unsigned long len = rng_next_u32(&seed) % 24ul;
+            unsigned char bytes[32];
+            unsigned long k;
+            if (len > sizeof(bytes)) len = sizeof(bytes);
+            for (k = 0ul; k < len; ++k) {
+                bytes[k] = (unsigned char)(rng_next_u32(&seed) & 0xFFu);
+            }
+            if (!buf_put_tlv(&payload, t, bytes, len)) {
+                ok = 0;
+                break;
+            }
+        }
+
+        if (!wrap_file(&file, (const unsigned char *)"DSUM", 2u, &payload)) {
+            ok = 0;
+        }
+        buf_free(&payload);
+        if (!ok) {
+            buf_free(&file);
+            break;
+        }
+
+        sprintf(path, "dsu_test_fuzz_%02lu.dsumanifest", i);
+        ok &= expect(write_bytes_file(path, file.data, file.len), "write fuzz manifest");
+        buf_free(&file);
+        if (!ok) break;
+
+        {
+            dsu_manifest_t *m = NULL;
+            st = dsu_manifest_load_file(ctx, path, &m);
+            ok &= expect(st != DSU_STATUS_IO_ERROR && st != DSU_STATUS_INTERNAL_ERROR, "fuzz load status");
+            if (st == DSU_STATUS_SUCCESS && m) {
+                dsu_manifest_destroy(ctx, m);
+            }
+        }
+        remove(path);
+        if (!ok) break;
+    }
+
+    if (ctx) dsu_ctx_destroy(ctx);
+    return ok;
+}
+
 int main(void) {
     const char *in_a = "dsu_test_in_a.dsumanifest";
     const char *in_b = "dsu_test_in_b.dsumanifest";
@@ -450,6 +532,8 @@ int main(void) {
         if (tmp) dsu_manifest_destroy(ctx, tmp);
     }
 
+    ok &= test_tlv_fuzz_lite();
+
 done:
     if (ma) dsu_manifest_destroy(ctx, ma);
     if (mb) dsu_manifest_destroy(ctx, mb);
@@ -474,4 +558,3 @@ done:
 
     return ok ? 0 : 1;
 }
-
