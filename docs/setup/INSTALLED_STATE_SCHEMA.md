@@ -145,7 +145,7 @@ In deterministic mode:
 
 - no timestamps are embedded in the state file
 - `INSTALL_TIME_POLICY` is `0`
-- `INSTALL_INSTANCE_ID` uses a seeded nonce for stable tests
+- `INSTALL_INSTANCE_ID` uses a seeded nonce for stable tests; set `DSU_TEST_SEED=<u64>` to override in CI
 
 ## Upgrade / Forward Compatibility Rules
 

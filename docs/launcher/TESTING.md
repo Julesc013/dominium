@@ -22,12 +22,18 @@ From a configured build directory:
   - `ctest --test-dir build/<config> --output-on-failure -R dominium_launcher_`
 - Run headless control-plane E2E tests only:
   - `ctest --test-dir build/<config> --output-on-failure -R dominium_launcher_control_plane_tests`
+- Run installed-state smoke test only:
+  - `ctest --test-dir build/<config> --output-on-failure -R dominium_launcher_state_smoke_tests`
 
 Key test groups:
 - `dominium_launcher_control_plane_tests`: headless control-plane E2E flows (instance lifecycle, tool launch, pack determinism, offline refusal, safe mode).
 - `dominium_launcher_tlv_migrations_tests`: TLV migration/round-trip behavior.
 - `dominium_launcher_handshake_tests`: handshake encode/decode + validation invariants.
 - `dominium_launcher_tools_registry_tests`: tools registry schema and determinism.
+- `dominium_launcher_state_smoke_tests`: builds a minimal DSU install and validates `--smoke-test` against installed-state.
+
+Manual smoke (installed-state only):
+- `dominium-launcher --smoke-test --state <install_root>/.dsu/installed_state.dsustate`
 
 ## 2) Where to Find Run Artifacts
 
@@ -88,4 +94,3 @@ When diagnosing a refusal, inspect:
 - `docs/launcher/CLI.md`
 - `docs/launcher/ARCHITECTURE.md`
 - `docs/launcher/ECOSYSTEM_INTEGRATION.md`
-
