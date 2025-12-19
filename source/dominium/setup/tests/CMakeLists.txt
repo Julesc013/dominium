@@ -154,7 +154,7 @@ set_target_properties(dsu_platform_iface_test PROPERTIES
     C_EXTENSIONS OFF
 )
 
-set(_dom_repo_root "${CMAKE_CURRENT_SOURCE_DIR}/../../../../")
+get_filename_component(_dom_repo_root "${CMAKE_CURRENT_SOURCE_DIR}/../../../../" ABSOLUTE)
 set(_dom_setup_cli $<TARGET_FILE:dominium-setup>)
 set(_dom_steam_cli $<TARGET_FILE:dominium-setup-steam>)
 if(TARGET dominium-setup-linux)
@@ -209,7 +209,7 @@ endif()
 
 find_program(DOMINIUM_PYTHON NAMES python3 python)
 if(DOMINIUM_PYTHON)
-    set(_dom_repo_root "${CMAKE_CURRENT_SOURCE_DIR}/../../../../")
+    get_filename_component(_dom_repo_root "${CMAKE_CURRENT_SOURCE_DIR}/../../../../" ABSOLUTE)
     set(_dom_packaging_test "${_dom_repo_root}/scripts/packaging/tests/packaging_validation_test.py")
     set(_dom_manifest_template "${_dom_repo_root}/assets/setup/manifests/product.template.json")
 

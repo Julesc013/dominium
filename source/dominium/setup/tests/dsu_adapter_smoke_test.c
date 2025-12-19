@@ -334,6 +334,15 @@ static int expect(int cond, const char *msg) {
     return 1;
 }
 
+static int is_config_dir(const char *name) {
+    if (!name || name[0] == '\0') return 0;
+    if (_stricmp(name, "Debug") == 0) return 1;
+    if (_stricmp(name, "Release") == 0) return 1;
+    if (_stricmp(name, "RelWithDebInfo") == 0) return 1;
+    if (_stricmp(name, "MinSizeRel") == 0) return 1;
+    return 0;
+}
+
 int main(void) {
     char self[MAX_PATH];
     char self_dir[MAX_PATH];
@@ -354,6 +363,7 @@ int main(void) {
     dsu_plan_t *plan = NULL;
     dsu_status_t st;
     int ok = 1;
+    int has_config = 0;
 
     /* Derive build/config paths from this test executable path. */
     memset(self, 0, sizeof(self));
@@ -365,18 +375,32 @@ int main(void) {
     ok &= expect(path_dirname_inplace(self_dir), "self_dir dirname");
 
     /* config dir name (e.g. Debug/Release) */
-    strcpy(config_dir, self_dir);
     {
-        char *p = strrchr(config_dir, '\\');
-        if (p) memmove(config_dir, p + 1, strlen(p + 1) + 1u);
+        const char *seg = strrchr(self_dir, '\\');
+        seg = seg ? (seg + 1) : self_dir;
+        if (is_config_dir(seg)) {
+            strncpy(config_dir, seg, sizeof(config_dir));
+            config_dir[sizeof(config_dir) - 1u] = '\0';
+            has_config = 1;
+        } else {
+            config_dir[0] = '\0';
+            has_config = 0;
+        }
     }
 
     strcpy(setup_dir, self_dir);
-    ok &= expect(path_dirname_inplace(setup_dir), "setup_dir up1");
+    if (has_config) {
+        ok &= expect(path_dirname_inplace(setup_dir), "setup_dir up1");
+    }
     ok &= expect(path_dirname_inplace(setup_dir), "setup_dir up2");
 
-    sprintf(win_exe, "%s\\adapters\\windows\\%s\\dominium-setup-win.exe", setup_dir, config_dir);
-    sprintf(steam_exe, "%s\\adapters\\steam\\%s\\dominium-setup-steam.exe", setup_dir, config_dir);
+    if (has_config) {
+        sprintf(win_exe, "%s\\adapters\\windows\\%s\\dominium-setup-win.exe", setup_dir, config_dir);
+        sprintf(steam_exe, "%s\\adapters\\steam\\%s\\dominium-setup-steam.exe", setup_dir, config_dir);
+    } else {
+        sprintf(win_exe, "%s\\adapters\\windows\\dominium-setup-win.exe", setup_dir);
+        sprintf(steam_exe, "%s\\adapters\\steam\\dominium-setup-steam.exe", setup_dir);
+    }
 
     strcpy(cwd, self_dir);
 

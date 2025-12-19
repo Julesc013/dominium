@@ -115,6 +115,38 @@ static unsigned long header_checksum32_base(const unsigned char hdr[20]) {
     return sum;
 }
 
+static int wrap_file(buf_t *out_file, const unsigned char magic[4], unsigned short version, const buf_t *payload) {
+    unsigned char hdr[20];
+    unsigned long checksum;
+    if (!out_file || !magic || !payload) return 0;
+    memset(out_file, 0, sizeof(*out_file));
+    memset(hdr, 0, sizeof(hdr));
+    hdr[0] = magic[0];
+    hdr[1] = magic[1];
+    hdr[2] = magic[2];
+    hdr[3] = magic[3];
+    hdr[4] = (unsigned char)(version & 0xFFu);
+    hdr[5] = (unsigned char)((version >> 8) & 0xFFu);
+    hdr[6] = 0xFEu;
+    hdr[7] = 0xFFu;
+    hdr[8] = 20u;
+    hdr[9] = 0u;
+    hdr[10] = 0u;
+    hdr[11] = 0u;
+    hdr[12] = (unsigned char)(payload->len & 0xFFul);
+    hdr[13] = (unsigned char)((payload->len >> 8) & 0xFFul);
+    hdr[14] = (unsigned char)((payload->len >> 16) & 0xFFul);
+    hdr[15] = (unsigned char)((payload->len >> 24) & 0xFFul);
+    checksum = header_checksum32_base(hdr);
+    hdr[16] = (unsigned char)(checksum & 0xFFul);
+    hdr[17] = (unsigned char)((checksum >> 8) & 0xFFul);
+    hdr[18] = (unsigned char)((checksum >> 16) & 0xFFul);
+    hdr[19] = (unsigned char)((checksum >> 24) & 0xFFul);
+    if (!buf_append(out_file, hdr, 20ul)) return 0;
+    if (!buf_append(out_file, payload->data, payload->len)) return 0;
+    return 1;
+}
+
 static int write_bytes_file(const char *path, const unsigned char *bytes, unsigned long len) {
     FILE *f;
     size_t n;
