@@ -613,6 +613,38 @@ static int dsu__is_setup_manifests_dir(const char *dir) {
     return 1;
 }
 
+static int dsu__is_manifests_dir(const char *dir) {
+    /* Match a terminal path segment: .../manifests (either slash). */
+    dsu_u32 len;
+    dsu_u32 end;
+    dsu_u32 seg_end;
+    dsu_u32 seg_start;
+
+    if (!dir) {
+        return 0;
+    }
+
+    len = dsu__strlen(dir);
+    end = len;
+    while (end > 0u && (dir[end - 1u] == '/' || dir[end - 1u] == '\\')) {
+        end--;
+    }
+    if (end == 0u) {
+        return 0;
+    }
+
+    seg_end = end;
+    seg_start = seg_end;
+    while (seg_start > 0u && dir[seg_start - 1u] != '/' && dir[seg_start - 1u] != '\\') {
+        seg_start--;
+    }
+    if (!dsu__path_segment_ieq(dir + seg_start, seg_end - seg_start, "manifests")) {
+        return 0;
+    }
+
+    return 1;
+}
+
 static dsu_status_t dsu__payload_base_dir_from_manifest_path(const char *manifest_path, char **out_dir) {
     dsu_status_t st;
     char *manifest_dir = NULL;
@@ -643,6 +675,23 @@ static dsu_status_t dsu__payload_base_dir_from_manifest_path(const char *manifes
             st = dsu__dirname_of_path(setup_dir, &artifact_root);
         }
         dsu__free(setup_dir);
+        dsu__free(manifest_dir);
+        if (st != DSU_STATUS_SUCCESS) {
+            dsu__free(artifact_root);
+            return st;
+        }
+        *out_dir = artifact_root;
+        return DSU_STATUS_SUCCESS;
+    }
+
+    /*
+      Test fixtures and ad-hoc layouts may place manifests under a top-level
+      "manifests" directory with payloads at the same parent as "manifests".
+      Treat that layout like the artifact root case.
+    */
+    if (dsu__is_manifests_dir(manifest_dir)) {
+        char *artifact_root = NULL;
+        st = dsu__dirname_of_path(manifest_dir, &artifact_root);
         dsu__free(manifest_dir);
         if (st != DSU_STATUS_SUCCESS) {
             dsu__free(artifact_root);

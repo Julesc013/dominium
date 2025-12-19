@@ -57,6 +57,15 @@ static dsu_status_t dsu__plat_missing(void) {
     return DSU_STATUS_INVALID_REQUEST;
 }
 
+static int dsu__plat_iface_has_register_handlers(const dsu_platform_iface_t *iface) {
+    if (!iface) return 0;
+    return iface->plat_register_app_entry ||
+           iface->plat_register_file_assoc ||
+           iface->plat_register_url_handler ||
+           iface->plat_register_uninstall_entry ||
+           iface->plat_declare_capability;
+}
+
 dsu_status_t plat_request_elevation(dsu_ctx_t *ctx) {
     if (!ctx) return DSU_STATUS_INVALID_ARGS;
     if (!dsu__plat_iface_valid(&ctx->platform_iface)) return DSU_STATUS_INTERNAL_ERROR;
@@ -585,6 +594,8 @@ dsu_status_t dsu_platform_register_from_state(dsu_ctx_t *ctx, const dsu_state_t 
     dsu_status_t st;
 
     if (!ctx || !state) return DSU_STATUS_INVALID_ARGS;
+    if (!dsu__plat_iface_valid(&ctx->platform_iface)) return DSU_STATUS_INTERNAL_ERROR;
+    if (!dsu__plat_iface_has_register_handlers(&ctx->platform_iface)) return DSU_STATUS_INVALID_REQUEST;
 
     st = dsu__build_reg_state(ctx, state, &rs, &intents);
     if (st != DSU_STATUS_SUCCESS) return st;

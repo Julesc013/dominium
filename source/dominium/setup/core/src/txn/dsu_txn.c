@@ -53,6 +53,58 @@ static int dsu__txn_parse_u32_dec(const char *p, dsu_u32 *out_val) {
     return 1;
 }
 
+static dsu_u64 dsu__u64_max(void) {
+    return ((dsu_u64)0xFFFFFFFFu << 32) | (dsu_u64)0xFFFFFFFFu;
+}
+
+static int dsu__parse_u64_dec(const char *p, dsu_u64 *out_val) {
+    dsu_u64 v = 0u;
+    dsu_u64 max;
+    if (!out_val) return 0;
+    *out_val = 0u;
+    if (!p || p[0] == '\0') return 0;
+    max = dsu__u64_max();
+    while (*p) {
+        char c = *p++;
+        if (c < '0' || c > '9') return 0;
+        if (v > (max - (dsu_u64)(c - '0')) / 10u) return 0;
+        v = (v * 10u) + (dsu_u64)(c - '0');
+    }
+    *out_val = v;
+    return 1;
+}
+
+static int dsu__parse_u64_hex(const char *p, dsu_u64 *out_val) {
+    dsu_u64 v = 0u;
+    dsu_u64 max;
+    if (!out_val) return 0;
+    *out_val = 0u;
+    if (!p || p[0] == '\0') return 0;
+    max = dsu__u64_max();
+    while (*p) {
+        unsigned char c = (unsigned char)*p++;
+        dsu_u64 digit;
+        if (c >= '0' && c <= '9') digit = (dsu_u64)(c - '0');
+        else if (c >= 'a' && c <= 'f') digit = (dsu_u64)(c - 'a' + 10u);
+        else if (c >= 'A' && c <= 'F') digit = (dsu_u64)(c - 'A' + 10u);
+        else return 0;
+        if (v > (max - digit) / 16u) return 0;
+        v = (v * 16u) + digit;
+    }
+    *out_val = v;
+    return 1;
+}
+
+static int dsu__test_seed_u64(dsu_u64 *out_val) {
+    const char *env = getenv("DSU_TEST_SEED");
+    if (!out_val) return 0;
+    if (!env || env[0] == '\0') return 0;
+    if (env[0] == '0' && (env[1] == 'x' || env[1] == 'X')) {
+        return dsu__parse_u64_hex(env + 2u, out_val);
+    }
+    return dsu__parse_u64_dec(env, out_val);
+}
+
 static int dsu__txn_failpoint_match(const char *fp, const char *name, dsu_u32 *out_value) {
     size_t n;
     if (!fp || !name) return 0;
@@ -439,6 +491,47 @@ static dsu_status_t dsu__canon_abs_path(const char *in, char *out_abs, dsu_u32 o
     }
 }
 
+static dsu_status_t dsu__mkdirs_abs(const char *abs_dir) {
+    dsu_u8 exists = 0u;
+    dsu_u8 is_dir = 0u;
+    dsu_u8 is_symlink = 0u;
+    dsu_status_t st;
+
+    if (!abs_dir || abs_dir[0] == '\0') {
+        return DSU_STATUS_INVALID_ARGS;
+    }
+
+    st = dsu_platform_path_info(abs_dir, &exists, &is_dir, &is_symlink);
+    if (st != DSU_STATUS_SUCCESS) {
+        return st;
+    }
+    if (exists) {
+        if (is_dir && !is_symlink) {
+            return DSU_STATUS_SUCCESS;
+        }
+        return DSU_STATUS_IO_ERROR;
+    }
+
+    {
+        char parent[1024];
+        char base[256];
+        parent[0] = '\0';
+        base[0] = '\0';
+        st = dsu_fs_path_split(abs_dir, parent, (dsu_u32)sizeof(parent), base, (dsu_u32)sizeof(base));
+        if (st != DSU_STATUS_SUCCESS) {
+            return st;
+        }
+        if (parent[0] != '\0' && dsu__is_abs_path_like(parent)) {
+            st = dsu__mkdirs_abs(parent);
+            if (st != DSU_STATUS_SUCCESS) {
+                return st;
+            }
+        }
+    }
+
+    return dsu_platform_mkdir(abs_dir);
+}
+
 static dsu_status_t dsu__mkdir_parent_abs(const char *abs_path) {
     char dir[1024];
     char base[256];
@@ -455,7 +548,7 @@ static dsu_status_t dsu__mkdir_parent_abs(const char *abs_path) {
     if (dir[0] == '\0') {
         return DSU_STATUS_SUCCESS;
     }
-    return dsu_platform_mkdir(dir);
+    return dsu__mkdirs_abs(dir);
 }
 
 static dsu_status_t dsu__rm_tree_abs(const char *abs_path) {
@@ -1048,6 +1141,10 @@ static dsu_u64 dsu__nonce64(dsu_ctx_t *ctx, dsu_u64 seed) {
     dsu_u64 t;
     dsu_u64 c;
     dsu_u64 v;
+    dsu_u64 test_seed;
+    if (dsu__test_seed_u64(&test_seed)) {
+        return seed ^ test_seed;
+    }
     if (ctx && (ctx->config.flags & DSU_CONFIG_FLAG_DETERMINISTIC)) {
         return seed;
     }
@@ -2257,8 +2354,16 @@ dsu_status_t dsu_txn_apply_plan(dsu_ctx_t *ctx,
         dsu_resolve_operation_t op = dsu_plan_operation(plan);
         if (op == DSU_RESOLVE_OPERATION_INSTALL) {
             if (prev_state) {
-                st = DSU_STATUS_INVALID_REQUEST;
-                goto done;
+                if (!local_opts.dry_run) {
+                    st = DSU_STATUS_INVALID_REQUEST;
+                    goto done;
+                }
+                if (dsu__strcmp_bytes(dsu_state_product_id(prev_state), dsu_plan_product_id(plan)) != 0 ||
+                    dsu_state_install_scope(prev_state) != dsu_plan_scope(plan) ||
+                    dsu__strcmp_bytes(dsu_state_platform(prev_state), dsu_plan_platform(plan)) != 0) {
+                    st = DSU_STATUS_INVALID_REQUEST;
+                    goto done;
+                }
             }
         } else {
             if (!prev_state) {

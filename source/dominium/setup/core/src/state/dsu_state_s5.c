@@ -493,10 +493,66 @@ static dsu_u64 dsu__digest64_from_sha256(const dsu_u8 sha256[32]) {
     return dsu_digest64_bytes(sha256, 32u);
 }
 
+static dsu_u64 dsu__u64_max(void) {
+    return ((dsu_u64)0xFFFFFFFFu << 32) | (dsu_u64)0xFFFFFFFFu;
+}
+
+static int dsu__parse_u64_dec(const char *p, dsu_u64 *out_val) {
+    dsu_u64 v = 0u;
+    dsu_u64 max;
+    if (!out_val) return 0;
+    *out_val = 0u;
+    if (!p || p[0] == '\0') return 0;
+    max = dsu__u64_max();
+    while (*p) {
+        char c = *p++;
+        if (c < '0' || c > '9') return 0;
+        if (v > (max - (dsu_u64)(c - '0')) / 10u) return 0;
+        v = (v * 10u) + (dsu_u64)(c - '0');
+    }
+    *out_val = v;
+    return 1;
+}
+
+static int dsu__parse_u64_hex(const char *p, dsu_u64 *out_val) {
+    dsu_u64 v = 0u;
+    dsu_u64 max;
+    if (!out_val) return 0;
+    *out_val = 0u;
+    if (!p || p[0] == '\0') return 0;
+    max = dsu__u64_max();
+    while (*p) {
+        unsigned char c = (unsigned char)*p++;
+        dsu_u64 digit;
+        if (c >= '0' && c <= '9') digit = (dsu_u64)(c - '0');
+        else if (c >= 'a' && c <= 'f') digit = (dsu_u64)(c - 'a' + 10u);
+        else if (c >= 'A' && c <= 'F') digit = (dsu_u64)(c - 'A' + 10u);
+        else return 0;
+        if (v > (max - digit) / 16u) return 0;
+        v = (v * 16u) + digit;
+    }
+    *out_val = v;
+    return 1;
+}
+
+static int dsu__test_seed_u64(dsu_u64 *out_val) {
+    const char *env = getenv("DSU_TEST_SEED");
+    if (!out_val) return 0;
+    if (!env || env[0] == '\0') return 0;
+    if (env[0] == '0' && (env[1] == 'x' || env[1] == 'X')) {
+        return dsu__parse_u64_hex(env + 2u, out_val);
+    }
+    return dsu__parse_u64_dec(env, out_val);
+}
+
 static dsu_u64 dsu__nonce64(dsu_ctx_t *ctx, dsu_u64 seed) {
     dsu_u64 t;
     dsu_u64 c;
     dsu_u64 v;
+    dsu_u64 test_seed;
+    if (dsu__test_seed_u64(&test_seed)) {
+        return seed ^ test_seed;
+    }
     if (ctx && (ctx->config.flags & DSU_CONFIG_FLAG_DETERMINISTIC)) {
         return seed;
     }
