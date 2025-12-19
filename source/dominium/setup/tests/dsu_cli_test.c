@@ -496,6 +496,21 @@ static int expect_golden_stdout(const char *src_dir,
     return ok;
 }
 
+static int expect_golden_file(const char *src_dir,
+                              const char *golden_rel_path,
+                              const char *file_path,
+                              const char *msg) {
+    unsigned char *file_bytes = NULL;
+    unsigned long file_len = 0ul;
+    int ok = 1;
+    ok &= expect(read_all_bytes(file_path, &file_bytes, &file_len), "read file");
+    if (ok) {
+        ok &= expect_golden_stdout(src_dir, golden_rel_path, file_bytes, file_len, msg);
+    }
+    free(file_bytes);
+    return ok;
+}
+
 int main(int argc, char **argv) {
     const char *cli_path = (argc >= 2) ? argv[1] : NULL;
     const char *src_dir = (argc >= 3) ? argv[2] : NULL;
@@ -532,6 +547,20 @@ int main(int argc, char **argv) {
     ok &= expect(write_manifest_fileset("m.dsumanifest", "install", "payload", "core"), "write manifest");
     if (!ok) return 1;
 
+    /* Golden JSON: manifest dump */
+    {
+        unsigned char *out = NULL;
+        unsigned long out_len = 0ul;
+        int ec = 1;
+        ok &= expect(run_capture(cli_path,
+                                 "manifest dump --in m.dsumanifest --format json --deterministic 1",
+                                 &out, &out_len, &ec),
+                     "run manifest dump");
+        ok &= expect(ec == 0, "manifest dump exit 0");
+        ok &= expect_golden_stdout(src_dir, "golden/cli/manifest_dump_core.json", out, out_len, "manifest dump golden");
+        free(out);
+    }
+
     /* Golden JSON: version */
     {
         unsigned char *out = NULL;
@@ -548,7 +577,8 @@ int main(int argc, char **argv) {
         unsigned char *out = NULL;
         unsigned long out_len = 0ul;
         int ec = 1;
-        ok &= expect(run_capture(cli_path, "resolve --manifest m.dsumanifest --op install --scope portable --components core",
+        ok &= expect(run_capture(cli_path,
+                                 "resolve --manifest m.dsumanifest --op install --scope portable --components core --format json --deterministic 1",
                                  &out, &out_len, &ec),
                      "run resolve");
         ok &= expect(ec == 0, "resolve exit 0");
@@ -560,7 +590,7 @@ int main(int argc, char **argv) {
         unsigned long out_len = 0ul;
         int ec = 1;
         ok &= expect(run_capture(cli_path,
-                                 "plan --manifest m.dsumanifest --op install --scope portable --components core --out out.dsuplan",
+                                 "plan --manifest m.dsumanifest --op install --scope portable --components core --out out.dsuplan --format json --deterministic 1",
                                  &out, &out_len, &ec),
                      "run plan");
         ok &= expect(ec == 0, "plan exit 0");
@@ -591,7 +621,7 @@ int main(int argc, char **argv) {
         int ec = 0;
         unsigned char *out = NULL;
         unsigned long out_len = 0ul;
-        ok &= expect(run_capture(cli_path, "apply --plan out.dsuplan --dry-run", &out, &out_len, &ec), "apply dry-run");
+        ok &= expect(run_capture(cli_path, "apply --plan out.dsuplan --dry-run --deterministic 1", &out, &out_len, &ec), "apply dry-run");
         ok &= expect(ec == 0, "apply dry-run exit 0");
         free(out);
     }
@@ -599,19 +629,33 @@ int main(int argc, char **argv) {
         int ec = 0;
         unsigned char *out = NULL;
         unsigned long out_len = 0ul;
-        ok &= expect(run_capture(cli_path, "apply --plan out.dsuplan", &out, &out_len, &ec), "apply");
+        ok &= expect(run_capture(cli_path, "apply --plan out.dsuplan --deterministic 1", &out, &out_len, &ec), "apply");
         ok &= expect(ec == 0, "apply exit 0");
         free(out);
     }
     ok &= expect(file_exists("install/bin/hello.txt"), "installed hello exists");
     ok &= expect(file_exists("install/data/config.json"), "installed config exists");
     ok &= expect(file_exists("install/.dsu/installed_state.dsustate"), "state exists");
+
+    /* Golden JSON: verify */
     {
         int ec = 0;
         unsigned char *out = NULL;
         unsigned long out_len = 0ul;
         ok &= expect(run_capture(cli_path,
-                                 "report --state install/.dsu/installed_state.dsustate --out report --format json",
+                                 "verify --state install/.dsu/installed_state.dsustate --format json --deterministic 1",
+                                 &out, &out_len, &ec),
+                     "verify");
+        ok &= expect(ec == 0, "verify exit 0");
+        ok &= expect_golden_stdout(src_dir, "golden/cli/verify_install_core.json", out, out_len, "verify golden");
+        free(out);
+    }
+    {
+        int ec = 0;
+        unsigned char *out = NULL;
+        unsigned long out_len = 0ul;
+        ok &= expect(run_capture(cli_path,
+                                 "report --state install/.dsu/installed_state.dsustate --out report --format json --deterministic 1",
                                  &out, &out_len, &ec),
                      "report");
         ok &= expect(ec == 0, "report exit 0");
@@ -651,7 +695,7 @@ int main(int argc, char **argv) {
         ok &= expect(st == DSU_STATUS_SUCCESS, "journal close");
         if (!ok) return 1;
 
-        ok &= expect(run_capture(cli_path, "rollback --journal mock.dsu.journal --dry-run", &out, &out_len, &ec), "rollback dry-run");
+        ok &= expect(run_capture(cli_path, "rollback --journal mock.dsu.journal --dry-run --deterministic 1", &out, &out_len, &ec), "rollback dry-run");
         ok &= expect(ec == 0, "rollback dry-run exit 0");
         free(out);
     }
@@ -661,10 +705,14 @@ int main(int argc, char **argv) {
         unsigned char *out = NULL;
         unsigned long out_len = 0ul;
         int ec = 0;
-        ok &= expect(run_capture(cli_path, "export-log --log audit.dsu.log --out audit.json --format json", &out, &out_len, &ec), "export-log json");
+        ok &= expect(run_capture(cli_path,
+                                 "export-log --log audit.dsu.log --out audit.json --format json --deterministic 1",
+                                 &out, &out_len, &ec),
+                     "export-log json");
         ok &= expect(ec == 0, "export-log json exit 0");
         free(out);
         ok &= expect(file_exists("audit.json"), "audit.json exists");
+        ok &= expect_golden_file(src_dir, "golden/cli/export_log.json", "audit.json", "export-log golden");
         ok &= expect(run_capture(cli_path, "export-log --log audit.dsu.log --out audit.tsv --format txt", &out, &out_len, &ec), "export-log txt");
         ok &= expect(ec == 0, "export-log txt exit 0");
         free(out);
@@ -677,4 +725,3 @@ int main(int argc, char **argv) {
 
     return ok ? 0 : 1;
 }
-
