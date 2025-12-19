@@ -1,5 +1,21 @@
 cmake_minimum_required(VERSION 3.16)
 
+add_library(dom_shared STATIC
+    system/core/base/shared/os_paths.cpp
+    system/core/base/shared/json.cpp
+    system/core/base/shared/logging.cpp
+    system/core/base/shared/uuid.cpp
+    system/core/base/shared/manifest_install.cpp
+    system/core/base/shared/process.cpp
+)
+
+target_include_directories(dom_shared
+    PUBLIC
+        ${CMAKE_SOURCE_DIR}/include/dominium/_internal/dom_priv
+)
+
+target_compile_features(dom_shared PRIVATE cxx_std_98)
+
 add_library(domino_core STATIC
     core/types.c
     core/dom_build_info.c
