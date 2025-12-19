@@ -27,6 +27,7 @@ PURPOSE: Plan S-4 transaction engine + filesystem safety tests.
 
 /* Internal-only platform helpers for directory enumeration in tests. */
 #include "../core/src/fs/dsu_platform_iface.h"
+#include "../core/src/txn/dsu_journal.h"
 
 static int expect(int cond, const char *msg) {
     if (!cond) {
@@ -279,6 +280,18 @@ static dsu_status_t rm_rf(const char *path) {
     }
     dsu_platform_free_dir_entries(ents, count);
     return dsu_platform_rmdir(path);
+}
+
+static int set_env_var(const char *key, const char *val) {
+#if defined(_WIN32)
+    if (!key) return 0;
+    if (!val) val = "";
+    return _putenv_s(key, val) == 0;
+#else
+    if (!key) return 0;
+    if (!val) return unsetenv(key) == 0;
+    return setenv(key, val, 1) == 0;
+#endif
 }
 
 typedef struct buf_t {
@@ -1494,6 +1507,213 @@ done:
     return ok;
 }
 
+static int test_journal_roundtrip(void) {
+    const char *path = "dsu_test_journal.dsujournal";
+    char cwd[1024];
+    char install_root[1024];
+    char txn_root[1024];
+    dsu_journal_writer_t w;
+    dsu_ctx_t *ctx = NULL;
+    dsu_journal_t *j = NULL;
+    dsu_status_t st;
+    int ok = 1;
+
+    memset(&w, 0, sizeof(w));
+    memset(cwd, 0, sizeof(cwd));
+    memset(install_root, 0, sizeof(install_root));
+    memset(txn_root, 0, sizeof(txn_root));
+
+    ok &= expect(dsu_platform_get_cwd(cwd, (dsu_u32)sizeof(cwd)) == DSU_STATUS_SUCCESS, "get cwd (journal)");
+    ok &= expect(path_join(cwd, "jr_install", install_root, (unsigned long)sizeof(install_root)), "join install_root");
+    ok &= expect(path_join(cwd, "jr_txn", txn_root, (unsigned long)sizeof(txn_root)), "join txn_root");
+    if (!ok) return 0;
+
+    (void)rm_rf(install_root);
+    (void)rm_rf(txn_root);
+    ok &= expect(dsu_platform_mkdir(install_root) == DSU_STATUS_SUCCESS, "mkdir install_root");
+    ok &= expect(dsu_platform_mkdir(txn_root) == DSU_STATUS_SUCCESS, "mkdir txn_root");
+    if (!ok) return 0;
+
+    st = dsu_journal_writer_open(&w, path, 0x1111222233334444ULL, 0xAAAABBBBCCCCDDDDULL);
+    ok &= expect_st(st, DSU_STATUS_SUCCESS, "journal open");
+    st = dsu_journal_writer_write_meta(&w, install_root, txn_root, ".dsu/installed_state.dsustate");
+    ok &= expect_st(st, DSU_STATUS_SUCCESS, "journal meta");
+    st = dsu_journal_writer_append_entry(&w,
+                                         (dsu_u16)DSU_JOURNAL_ENTRY_CREATE_DIR,
+                                         (dsu_u8)DSU_JOURNAL_ROOT_INSTALL,
+                                         "bin",
+                                         (dsu_u8)DSU_JOURNAL_ROOT_INSTALL,
+                                         "",
+                                         (dsu_u8)DSU_JOURNAL_ROOT_INSTALL,
+                                         "",
+                                         0u);
+    ok &= expect_st(st, DSU_STATUS_SUCCESS, "journal entry create_dir");
+    st = dsu_journal_writer_append_entry(&w,
+                                         (dsu_u16)DSU_JOURNAL_ENTRY_MOVE_FILE,
+                                         (dsu_u8)DSU_JOURNAL_ROOT_INSTALL,
+                                         "bin/hello.txt",
+                                         (dsu_u8)DSU_JOURNAL_ROOT_TXN,
+                                         "bin/hello.txt",
+                                         (dsu_u8)DSU_JOURNAL_ROOT_INSTALL,
+                                         "bin/hello.txt",
+                                         (dsu_u32)DSU_JOURNAL_FLAG_TARGET_PREEXISTED);
+    ok &= expect_st(st, DSU_STATUS_SUCCESS, "journal entry move_file");
+    st = dsu_journal_writer_append_entry(&w,
+                                         (dsu_u16)DSU_JOURNAL_ENTRY_WRITE_STATE,
+                                         (dsu_u8)DSU_JOURNAL_ROOT_INSTALL,
+                                         ".dsu/installed_state.dsustate",
+                                         (dsu_u8)DSU_JOURNAL_ROOT_INSTALL,
+                                         "",
+                                         (dsu_u8)DSU_JOURNAL_ROOT_INSTALL,
+                                         ".dsu/installed_state.dsustate",
+                                         0u);
+    ok &= expect_st(st, DSU_STATUS_SUCCESS, "journal entry write_state");
+    st = dsu_journal_writer_append_progress(&w, 2u);
+    ok &= expect_st(st, DSU_STATUS_SUCCESS, "journal progress");
+    st = dsu_journal_writer_close(&w);
+    ok &= expect_st(st, DSU_STATUS_SUCCESS, "journal close");
+    if (!ok) goto done;
+
+    ctx = create_ctx_deterministic();
+    ok &= expect(ctx != NULL, "ctx create (journal)");
+    if (!ok) goto done;
+
+    st = dsu_journal_read_file(ctx, path, &j);
+    ok &= expect_st(st, DSU_STATUS_SUCCESS, "journal read");
+    ok &= expect(j != NULL, "journal read non-null");
+    if (!ok) goto done;
+
+    ok &= expect(j->journal_id == 0x1111222233334444ULL, "journal id");
+    ok &= expect(j->plan_digest == 0xAAAABBBBCCCCDDDDULL, "journal digest");
+    ok &= expect(j->entry_count == 3u, "journal entry_count");
+    ok &= expect(j->commit_progress == 2u, "journal progress");
+    ok &= expect(j->install_root != NULL && strstr(j->install_root, "jr_install") != NULL, "journal install_root");
+    ok &= expect(j->txn_root != NULL && strstr(j->txn_root, "jr_txn") != NULL, "journal txn_root");
+    ok &= expect(j->state_path != NULL && strcmp(j->state_path, ".dsu/installed_state.dsustate") == 0, "journal state_path");
+    ok &= expect(j->entries[0].type == (dsu_u16)DSU_JOURNAL_ENTRY_CREATE_DIR, "journal entry[0] type");
+    ok &= expect(j->entries[1].type == (dsu_u16)DSU_JOURNAL_ENTRY_MOVE_FILE, "journal entry[1] type");
+    ok &= expect(j->entries[2].type == (dsu_u16)DSU_JOURNAL_ENTRY_WRITE_STATE, "journal entry[2] type");
+
+done:
+    if (j && ctx) dsu_journal_destroy(ctx, j);
+    if (ctx) dsu_ctx_destroy(ctx);
+    remove(path);
+    (void)rm_rf(install_root);
+    (void)rm_rf(txn_root);
+    return ok;
+}
+
+static int test_failpoint_rollback_pristine(void) {
+    const char *failpoints[] = {
+        "after_stage_write",
+        "after_verify",
+        "mid_commit:1",
+        "before_state_write"
+    };
+    dsu_u32 fp_count = (dsu_u32)(sizeof(failpoints) / sizeof(failpoints[0]));
+    dsu_u32 fi;
+    int ok = 1;
+
+    for (fi = 0u; fi < fp_count; ++fi) {
+        const char *base = "dsu_test_txn_failpoints";
+        char manifest_path[1024];
+        char payload_root[1024];
+        char payload_bin_dir[1024];
+        char payload_file[1024];
+        char install_root[1024];
+        char install_bin_dir[1024];
+        char install_file[1024];
+        char state_path[1024];
+
+        dsu_ctx_t *ctx = NULL;
+        dsu_manifest_t *m = NULL;
+        dsu_resolve_result_t *r = NULL;
+        dsu_plan_t *p = NULL;
+        dsu_txn_options_t opts;
+        dsu_txn_result_t res;
+        dsu_status_t st;
+        snap_t before;
+        snap_t after;
+
+        memset(&before, 0, sizeof(before));
+        memset(&after, 0, sizeof(after));
+
+        (void)rm_rf(base);
+        ok &= expect(mkdir_p_rel(base), "mkdir base (failpoints)");
+
+        ok &= expect(path_join(base, "payload", payload_root, (unsigned long)sizeof(payload_root)), "join payload root");
+        ok &= expect(path_join(payload_root, "bin", payload_bin_dir, (unsigned long)sizeof(payload_bin_dir)), "join payload/bin");
+        ok &= expect(mkdir_p_rel(payload_bin_dir), "mkdir payload/bin");
+        ok &= expect(path_join(payload_bin_dir, "hello.txt", payload_file, (unsigned long)sizeof(payload_file)), "join payload file");
+        ok &= expect(write_bytes_file(payload_file, (const unsigned char *)"NEW\n", 4ul), "write payload file");
+
+        ok &= expect(path_join(base, "install", install_root, (unsigned long)sizeof(install_root)), "join install root");
+        ok &= expect(path_join(install_root, "bin", install_bin_dir, (unsigned long)sizeof(install_bin_dir)), "join install/bin");
+        ok &= expect(mkdir_p_rel(install_bin_dir), "mkdir install/bin");
+        ok &= expect(path_join(install_bin_dir, "hello.txt", install_file, (unsigned long)sizeof(install_file)), "join install file");
+        ok &= expect(write_bytes_file(install_file, (const unsigned char *)"OLD\n", 4ul), "write preexisting file");
+
+        ok &= expect(path_join(install_root, ".dsu/installed_state.dsustate", state_path, (unsigned long)sizeof(state_path)), "join state path");
+        ok &= expect(!file_exists(state_path), "state does not exist before txn");
+
+        ok &= expect(path_join(base, "m.dsumanifest", manifest_path, (unsigned long)sizeof(manifest_path)), "join manifest path");
+        ok &= expect(write_manifest_fileset(manifest_path, install_root, "payload", "core"), "write manifest");
+        if (!ok) goto fp_done;
+
+        ok &= expect(snap_build(install_root, &before), "snapshot before (failpoints)");
+        if (!ok) goto fp_done;
+
+        ctx = create_ctx_deterministic();
+        ok &= expect(ctx != NULL, "ctx create (failpoints)");
+        if (!ok) goto fp_done;
+
+        st = dsu_manifest_load_file(ctx, manifest_path, &m);
+        ok &= expect_st(st, DSU_STATUS_SUCCESS, "manifest load (failpoints)");
+        if (!ok) goto fp_done;
+
+        {
+            const char *const requested[] = {"core"};
+            dsu_resolve_request_t req;
+            dsu_resolve_request_init(&req);
+            req.operation = DSU_RESOLVE_OPERATION_INSTALL;
+            req.scope = DSU_MANIFEST_INSTALL_SCOPE_PORTABLE;
+            req.requested_components = requested;
+            req.requested_component_count = 1u;
+            st = dsu_resolve_components(ctx, m, NULL, &req, &r);
+        }
+        ok &= expect_st(st, DSU_STATUS_SUCCESS, "resolve (failpoints)");
+        if (!ok) goto fp_done;
+
+        st = dsu_plan_build(ctx, m, manifest_path, r, &p);
+        ok &= expect_st(st, DSU_STATUS_SUCCESS, "plan build (failpoints)");
+        if (!ok) goto fp_done;
+
+        dsu_txn_options_init(&opts);
+        dsu_txn_result_init(&res);
+        ok &= expect(set_env_var("DSU_FAILPOINT", failpoints[fi]), "set DSU_FAILPOINT");
+        st = dsu_txn_apply_plan(ctx, p, &opts, &res);
+        ok &= expect(set_env_var("DSU_FAILPOINT", ""), "clear DSU_FAILPOINT");
+        ok &= expect(st != DSU_STATUS_SUCCESS, "txn fails (failpoint)");
+        ok &= expect(!file_exists(state_path), "state not written on failpoint");
+        if (!ok) goto fp_done;
+
+        ok &= expect(snap_build(install_root, &after), "snapshot after (failpoints)");
+        ok &= expect(snap_equal(&before, &after), "rollback restores pristine tree (failpoints)");
+
+fp_done:
+        snap_free(&before);
+        snap_free(&after);
+        if (p) dsu_plan_destroy(ctx, p);
+        if (r) dsu_resolve_result_destroy(ctx, r);
+        if (m) dsu_manifest_destroy(ctx, m);
+        if (ctx) dsu_ctx_destroy(ctx);
+        (void)rm_rf(base);
+        if (!ok) break;
+    }
+
+    return ok;
+}
+
 int main(void) {
     int ok = 1;
     ok &= test_path_traversal_rejection();
@@ -1503,5 +1723,7 @@ int main(void) {
     ok &= test_report_verify_detects_missing_and_modified();
     ok &= test_uninstall();
     ok &= test_failed_install_rollback_pristine();
+    ok &= test_journal_roundtrip();
+    ok &= test_failpoint_rollback_pristine();
     return ok ? 0 : 1;
 }
