@@ -12,7 +12,12 @@ Constraints:
 
 ## Common envelope (all JSON-capable commands)
 
-All JSON-capable commands output **one JSON object** to `stdout`:
+All JSON-capable commands output **one JSON object** to `stdout`.
+
+Exception (current behavior):
+
+- `dry-run`, `install`, `uninstall`, `platform-register`, and `platform-unregister`
+  emit a minimal JSON object without the standard envelope.
 
 Key ordering is fixed:
 
@@ -166,6 +171,47 @@ JSON paths are emitted as strings with `/` separators (even on Windows).
 6. (on success) `plan_file`, `plan_digest64`, `journal_id`, `install_root`, `txn_root`, `journal_file`, `journal_entry_count`, `commit_progress`, `staged_file_count`, `verified_ok`, `verified_missing`, `verified_mismatch`, `error`
 7. (on failure) `error`
 
+### `dry-run` (minimal object)
+
+Key order (success):
+
+1. `command`
+2. `status`
+3. `deterministic`
+4. `plan_file`
+5. `log_file`
+6. `plan_id_hash32`
+7. `plan_id_hash64`
+8. `step_count`
+
+On failure, the object contains: `command`, `status`, `error`, `exit_code`.
+
+### `install` (minimal object)
+
+Key order:
+
+1. `command`
+2. `status`
+3. `error`
+4. `exit_code`
+5. `deterministic`
+6. `dry_run`
+7. `log_file`
+8. (on success) `plan_file`, `plan_id_hash64`, `journal_id`, `install_root`, `txn_root`, `journal_file`, `journal_entry_count`, `commit_progress`, `staged_file_count`, `verified_ok`, `verified_missing`, `verified_mismatch`
+
+### `uninstall` (minimal object)
+
+Key order:
+
+1. `command`
+2. `status`
+3. `error`
+4. `exit_code`
+5. `deterministic`
+6. `dry_run`
+7. `log_file`
+8. (on success) `state_file`, `journal_id`, `install_root`, `txn_root`, `journal_file`, `journal_entry_count`, `commit_progress`
+
 ### `verify`
 
 `details` key order:
@@ -185,7 +231,9 @@ JSON paths are emitted as strings with `/` separators (even on Windows).
 
 Exit code is `2` when any of `missing/modified/extra/errors` is non-zero.
 
-### `list`
+### `list-installed` (alias: `list`)
+
+Schema is identical for both commands; the envelope `command` value is `list-installed` or `list` based on invocation.
 
 `details` key order:
 
@@ -257,3 +305,25 @@ Exit code is `2` when any of `missing/modified/extra/errors` is non-zero.
 
 The exported JSON log file schema is documented in `docs/setup/AUDIT_LOG_FORMAT.md`.
 
+### `platform-register`
+
+Minimal JSON object key order:
+
+1. `command`
+2. `state_file`
+3. `status`
+4. `error` (present only on failure)
+
+### `platform-unregister`
+
+Minimal JSON object key order:
+
+1. `command`
+2. `state_file`
+3. `status`
+4. `error` (present only on failure)
+
+## See also
+
+- `docs/setup/CLI_REFERENCE.md`
+- `docs/setup/AUDIT_LOG_FORMAT.md`

@@ -1186,7 +1186,9 @@ done:
     return dsu_cli_exit_code(st);
 }
 
-static int dsu_cli_cmd_list_installed(const char *state_path, const dsu_cli_opts_t *opts) {
+static int dsu_cli_cmd_list_installed(const char *command_name,
+                                      const char *state_path,
+                                      const dsu_cli_opts_t *opts) {
     dsu_ctx_t *ctx = NULL;
     dsu_state_t *state = NULL;
     char *report = NULL;
@@ -1210,7 +1212,7 @@ static int dsu_cli_cmd_list_installed(const char *state_path, const dsu_cli_opts
 done:
     code = dsu_cli_exit_code(st);
     if (opts && opts->format_json) {
-        dsu_cli_json_begin_envelope(stdout, "list", code);
+        dsu_cli_json_begin_envelope(stdout, command_name ? command_name : "list", code);
         fputs("\"core_status\":", stdout); fprintf(stdout, "%lu", (unsigned long)st); fputc(',', stdout);
         fputs("\"core_status_name\":", stdout); dsu_cli_json_put_escaped(stdout, dsu_cli_status_name(st)); fputc(',', stdout);
         fputs("\"state_file\":", stdout); dsu_cli_json_put_path(stdout, state_path ? state_path : ""); fputc(',', stdout);
@@ -2708,11 +2710,12 @@ int main(int argc, char **argv) {
             }
             return 3;
         }
-        return dsu_cli_cmd_list_installed(state_path, &opts);
+        return dsu_cli_cmd_list_installed("list", state_path, &opts);
     }
 
     if (dsu_cli_streq(cmd, "list-installed")) {
         const char *state_path = NULL;
+        const char *fmt = NULL;
         for (i = 2; i < argc; ++i) {
             const char *arg = argv[i];
             const char *v;
@@ -2722,8 +2725,29 @@ int main(int argc, char **argv) {
                 state_path = v;
                 continue;
             }
+            v = dsu_cli_kv_value_inline(arg, "--format");
+            if (v) {
+                fmt = v;
+                continue;
+            }
             if (dsu_cli_streq(arg, "--state") && i + 1 < argc) {
                 state_path = argv[++i];
+                continue;
+            }
+            if (dsu_cli_streq(arg, "--format") && i + 1 < argc) {
+                fmt = argv[++i];
+            }
+        }
+        if (fmt && fmt[0] != '\0') {
+            if (strcmp(fmt, "txt") == 0 || strcmp(fmt, "text") == 0) {
+                opts.format_json = 0;
+            } else if (strcmp(fmt, "json") == 0) {
+                opts.format_json = 1;
+            } else {
+                if (opts.format_json) {
+                    dsu_cli_json_error_envelope("list-installed", 3, DSU_STATUS_INVALID_ARGS, "invalid_args");
+                }
+                return 3;
             }
         }
         if (!state_path) {
@@ -2734,7 +2758,7 @@ int main(int argc, char **argv) {
             }
             return 3;
         }
-        return dsu_cli_cmd_list_installed(state_path, &opts);
+        return dsu_cli_cmd_list_installed("list-installed", state_path, &opts);
     }
 
     if (dsu_cli_streq(cmd, "uninstall")) {
