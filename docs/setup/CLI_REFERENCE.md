@@ -24,6 +24,12 @@ It does not implement install logic; it validates inputs, calls core APIs, and e
 - Paths in JSON outputs are normalized to `/` separators.
 - All numeric values are integers (no floats).
 
+## File locations (stable defaults)
+
+- Installed state: `<install_root>/.dsu/installed_state.dsustate`
+- Audit log (CLI default): `audit.dsu.log` in the current working directory
+- Transaction journal (default): `<install_root>.txn/<journal_id_hex>/.dsu_txn/journal/txn.dsujournal`
+
 ## Command surface (locked as v1)
 
 ### `dominium-setup version`
@@ -81,9 +87,10 @@ Verifies filesystem integrity against the installed state.
 - Exit code `0`: verified OK
 - Exit code `2`: verification issues (missing/modified/extra/errors)
 
-### `dominium-setup list --state <file> [--format json|txt]`
+### `dominium-setup list-installed --state <file> [--format json|txt]`
 
 Lists installed components from the installed state.
+Alias: `dominium-setup list --state <file> [--format json|txt]`.
 
 ### `dominium-setup report --state <file> --out <dir> [--format json|txt]`
 
@@ -101,6 +108,16 @@ Exit code is `2` when `verify` detects integrity issues.
 
 Previews uninstall effects (owned files, preserved user files) for all components or the specified subset.
 
+### `dominium-setup platform-register --state <file>`
+
+Invokes platform adapter registrations using intents stored in the installed state.
+JSON output is a minimal object (see `docs/setup/CLI_JSON_SCHEMAS.md`).
+
+### `dominium-setup platform-unregister --state <file>`
+
+Invokes platform adapter unregistration using intents stored in the installed state.
+JSON output is a minimal object (see `docs/setup/CLI_JSON_SCHEMAS.md`).
+
 ### `dominium-setup rollback --journal <file> [--dry-run]`
 
 Replays a transaction journal rollback. Intended for recovery after a failed/partial apply.
@@ -112,3 +129,23 @@ Exports a `.dsulog` file to:
 - JSON (`--format json`): stable schema (see `docs/setup/AUDIT_LOG_FORMAT.md`)
 - Text (`--format txt`): deterministic TSV
 
+## Adapter/internal commands (not listed in help)
+
+These commands are used by platform adapters and test harnesses. JSON output uses minimal objects (no envelope).
+
+### `dominium-setup dry-run --plan <planfile> --log <file>`
+
+Executes a plan in dry-run mode and writes an audit log to `--log` without mutating files.
+
+### `dominium-setup install --plan <planfile> [--log <file>] [--dry-run]`
+
+Applies a plan file and writes an audit log (`--log`, default `audit.dsu.log`). Uses the transaction engine; `--dry-run` simulates the apply.
+
+### `dominium-setup uninstall --state <file> [--log <file>] [--dry-run]`
+
+Uninstalls using the installed state file and writes an audit log (`--log`, default `audit.dsu.log`). Uses the transaction engine; `--dry-run` simulates the uninstall.
+
+## See also
+
+- `docs/setup/CLI_JSON_SCHEMAS.md`
+- `docs/setup/AUDIT_LOG_FORMAT.md`

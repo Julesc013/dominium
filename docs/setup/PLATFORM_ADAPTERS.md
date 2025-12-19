@@ -66,3 +66,23 @@ Core emits **intents** and calls the interface; adapters execute them:
 
 The unregister path is always driven by the installed state: `dsu_platform_unregister_from_state` calls `plat_remove_registrations` with the decoded intents.
 
+## CLI surface (adapter-backed)
+
+- Register platform intents:
+  - `dominium-setup platform-register --state <install_root>/.dsu/installed_state.dsustate --deterministic 1`
+- Unregister platform intents:
+  - `dominium-setup platform-unregister --state <install_root>/.dsu/installed_state.dsustate --deterministic 1`
+
+Exit codes follow `docs/setup/CLI_REFERENCE.md`.
+
+## Invariants and prohibitions
+
+- Adapters must treat intent lists as authoritative and deterministic; no reordering.
+- Adapters must not invent or mutate intents; they only execute what the installed state encodes.
+
+## See also
+
+- `docs/setup/WINDOWS_ADAPTER.md`
+- `docs/setup/MACOS_ADAPTER.md`
+- `docs/setup/LINUX_ADAPTER.md`
+- `docs/setup/STEAM_INTEGRATION.md`

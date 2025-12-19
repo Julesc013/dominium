@@ -21,7 +21,7 @@ All outputs are deterministic (stable ordering) when run with deterministic conf
 ### List installed components
 
 ```text
-dominium-setup list-installed --state <path-to-installed_state.dsustate> --json
+dominium-setup list-installed --state <path-to-installed_state.dsustate> --format json --deterministic 1
 ```
 
 Produces a component inventory + install roots + digests.
@@ -105,3 +105,7 @@ If `installed_state.dsustate` is missing or fails validation:
 - Verification does not follow symlinks out of root.
 - Uninstall removes owned files only and removes directories only when empty and safe; user data is preserved by default.
 
+## See also
+
+- `docs/setup/TROUBLESHOOTING.md`
+- `docs/setup/JOURNAL_FORMAT.md`
