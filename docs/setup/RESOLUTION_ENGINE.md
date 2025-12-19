@@ -72,6 +72,12 @@ The resolver is fully deterministic:
 - `resolved_digest64` is computed over stable inputs: `(platform, scope, component_id/version list)`.
 - `resolution_log` event ordering is stable and derived from deterministic phases.
 
+## Invariants and prohibitions
+
+- Resolver never mutates the filesystem or installed state.
+- Resolver never performs network calls.
+- Resolver rejects ambiguous platform selection when the manifest lists multiple targets and no target is specified by the caller.
+
 ## Resolution phases
 
 Resolution proceeds in fixed phases:
@@ -140,9 +146,21 @@ Finalize the resolved set:
 
 Resolve to JSON (stable ordering):
 
-`dominium-setup resolve --manifest docs/setup/sample_manifest.dsumf --install --components launcher,runtime --scope portable --platform any-any --json`
+`dominium-setup resolve --manifest <artifact_root>/setup/manifests/product.dsumanifest --op install --components launcher,runtime --scope portable --format json --deterministic 1`
 
 Resolve against an installed-state snapshot:
 
-`dominium-setup resolve --manifest manifest.dsumanifest --installed-state state.dsustate --upgrade --components launcher --scope user --platform win64-x64 --json`
+`dominium-setup resolve --manifest manifest.dsumanifest --state install/.dsu/installed_state.dsustate --op upgrade --components launcher --scope user --format json --deterministic 1`
 
+## Exit codes
+
+Resolver exit codes follow `docs/setup/CLI_REFERENCE.md`:
+
+- `0` success
+- `3` invalid input (manifest/state/args)
+- `1` operational failure (unexpected core error)
+
+## See also
+
+- `docs/setup/MANIFEST_SCHEMA.md`
+- `docs/setup/CLI_REFERENCE.md`

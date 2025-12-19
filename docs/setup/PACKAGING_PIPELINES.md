@@ -28,6 +28,29 @@ All targets:
 3. Compute and record digests (`setup/artifact_manifest.json`, `setup/SHA256SUMS`)
 4. Produce channel artifacts under `dist/`
 
+## Script entrypoints (CI-friendly)
+
+The repo also ships lightweight wrappers:
+
+- Windows: `scripts/setup/build_packages.bat`
+- POSIX: `scripts/setup/build_packages.sh`
+
+Default usage (portable only):
+
+```
+scripts/setup/build_packages.bat build\debug 0.1.0
+scripts/setup/build_packages.sh build/debug 0.1.0
+```
+
+These wrappers call:
+
+```
+python scripts/packaging/pipeline.py assemble --build-dir <build_dir> --out dist/artifacts/dominium-<version> --version <version> --manifest-template assets/setup/manifests/product.template.json
+python scripts/packaging/pipeline.py portable --artifact dist/artifacts/dominium-<version> --out dist/portable --version <version>
+```
+
+Exit code is `0` on success; non-zero indicates packaging failure.
+
 ## Variables
 
 `make` variables (override as needed):
@@ -68,3 +91,7 @@ The build pipelines are implemented by:
 - `scripts/packaging/dsumanifest.py` (compile manifest JSON → `*.dsumanifest`)
 - `scripts/packaging/make_deterministic_archive.py` (deterministic ZIP/tar.gz)
 
+## See also
+
+- `docs/setup/ARTIFACT_LAYOUT.md`
+- `docs/setup/REPRODUCIBLE_BUILDS.md`

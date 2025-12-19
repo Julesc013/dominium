@@ -2,6 +2,10 @@
 
 Canonical format: a versioned binary file header wrapping a TLV payload. The TLV payload is canonicalized (stable ordering + normalization) and is the input to manifest digests / plan IDs.
 
+Default location inside `artifact_root/`:
+
+- `artifact_root/setup/manifests/product.dsumanifest`
+
 ## File Header (DSU common header)
 
 All integer fields are little-endian.
@@ -179,6 +183,21 @@ Setup Core canonicalizes manifests on load:
 
 Manifest digests are computed over the canonical TLV payload bytes (the `payload` section only; not the file header).
 
+## Invariants and prohibitions
+
+- Unknown TLVs are skipped; unsupported `*_VERSION` values are rejected.
+- Fileset/archive payloads must include a non-empty `PAYLOAD_PATH` and a `PAYLOAD_SHA256`.
+- Required action fields must be present; invalid/missing fields are rejected at load time.
+
+## CLI commands (exact)
+
+- Validate a manifest:
+  - `dominium-setup manifest validate --in <path-to.dsumanifest> --format json --deterministic 1`
+- Dump canonical JSON:
+  - `dominium-setup manifest dump --in <path-to.dsumanifest> --out <manifest.json> --format json --deterministic 1`
+
+Exit codes follow `docs/setup/CLI_REFERENCE.md` (`0` success, `3` invalid input).
+
 ## Examples (component sketches)
 
 Launcher component (conceptual):
@@ -197,3 +216,7 @@ Launcher component (conceptual):
 }
 ```
 
+## See also
+
+- `docs/setup/RESOLUTION_ENGINE.md`
+- `docs/setup/PACKAGING_PIPELINES.md`
