@@ -9,6 +9,7 @@ Setup Core and packaging pipelines are designed for deterministic, byte-identica
   - timestamps to `0`
   - canonical ordering in JSON outputs
   - stable plan/log/state serialization
+- For test fixtures, set `DSU_TEST_SEED=<u64>` to override the installed-state instance id generator.
 
 Example:
 

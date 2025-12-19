@@ -23,6 +23,19 @@ The launcher is the **control plane** for the Dominium ecosystem:
 
 Control-plane commands must be usable in automation and CI under `--ui=null --gfx=null`.
 
+## Installed-State Contract (Setup ↔ Launcher)
+
+The launcher is a **consumer** of Setup Core’s installed-state file and never performs install logic.
+
+Contract:
+- The installed state lives at `<install_root>/.dsu/installed_state.dsustate`.
+- The launcher **refuses to run** when the state file is missing or invalid.
+- On refusal, the launcher prints recovery guidance (verify/repair) and exits without attempting install.
+- The installed state is the authoritative source for component enumeration and critical path validation.
+
+Smoke validation:
+- `dominium-launcher --smoke-test --state <install_root>/.dsu/installed_state.dsustate`
+
 ## Layers
 
 ### 1) Launcher Core (Deterministic Foundation)

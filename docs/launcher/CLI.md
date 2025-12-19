@@ -21,6 +21,21 @@ This document specifies the stable, automation-friendly CLI for the launcher-as-
 
 Note: `--ui` / `--gfx` influence backend selection and are recorded in audit; they do not change launcher core semantics.
 
+## Smoke/Test Flags
+
+These flags are side-effect free and do not invoke control-plane commands.
+
+- `--smoke-test`: validates installed-state contract and critical paths; refuses to run if state is missing/corrupt.
+- `--state <path>`: override installed-state path used by `--smoke-test`.
+- `--smoke-gui`: minimal GUI boot smoke (renders a small frame and exits).
+- `--smoke-tui`: minimal TUI boot smoke.
+
+Exit codes for `--smoke-test`:
+- `0`: success
+- `3`: installed state missing/invalid
+- `4`: installed state has zero components
+- `5`: critical paths missing under install root
+
 ## Commands
 
 ### `list-instances`
