@@ -1,21 +1,22 @@
-# Setup Core Architecture (Plan S-1)
+# Setup Core Architecture
 
-This document describes the **Setup Core** control-plane foundation added in Plan S-1.
-It is a deterministic, OS-agnostic engine that produces and consumes install **plans**
-and **audit logs**. Platform-specific installers/adapters should be thin shells.
+This document describes the **Setup Core** control-plane foundation.
+It is a deterministic, OS-agnostic engine that produces and consumes install **plans**,
+installed-state snapshots, and **audit logs**. Platform-specific installers/adapters are thin shells.
 
 ## Module boundaries
 
 Setup Core is organized as a set of small modules:
 
-- `manifest/`: Load and validate an installation manifest (baseline text format for S-1).
-- `resolve/`: Resolve requested components into a canonical resolved set (stub in S-1).
+- `manifest/`: Load and validate a TLV manifest (`*.dsumanifest`).
+- `resolve/`: Resolve requested components into a canonical resolved set.
 - `plan/`: Build an ordered execution plan; serialize/deserialize `.dsuplan`.
-- `txn/`: Transaction/execution coordinator (S-1 implements `DRY_RUN` only).
-- `fs/`: Filesystem abstraction (`stdio` adapter in S-1; no OS headers outside this boundary).
-- `state/`: Installed-state load/save (stub in S-1).
-- `log/`: Audit log event capture; serialize/deserialize `.dsulog`.
-- `platform_iface/`: Future boundary for platform services (not used yet in S-1).
+- `txn/`: Journaled transaction engine + rollback (`*.dsujournal`).
+- `fs/`: Filesystem abstraction (no OS headers outside this boundary).
+- `state/`: Installed-state load/save (`installed_state.dsustate`).
+- `log/`: Audit log event capture; serialize/deserialize `audit.dsu.log`.
+- `report/`: Inventory, verify, touched-paths, and uninstall preview reports.
+- `platform_iface/`: Platform intent encoding + adapter dispatch.
 - `util/`: Deterministic helpers (hashing, stable sort, endian IO, safe ASCII parsing).
 
 ## C ABI overview
@@ -29,87 +30,61 @@ Public headers live under `source/dominium/setup/core/include/dsu/`:
 - `dsu_manifest.h`: Manifest load + accessors.
 - `dsu_resolve.h`: Resolve stub + accessors.
 - `dsu_plan.h`: Plan build + accessors + `.dsuplan` read/write.
-- `dsu_execute.h`: Execute a plan (S-1: `DRY_RUN` only).
-- `dsu_state.h`: Installed state stubs (format TBD).
+- `dsu_txn.h`: Apply/uninstall transactions + rollback.
+- `dsu_state.h`: Installed state load/save + accessors.
+- `dsu_report.h`: Reports and integrity summaries.
 - `dsu_log.h`: Audit log capture + `.dsulog` read/write.
+- `dsu_platform_iface.h`: Platform intent interface for adapters.
 
-## Determinism guarantees (S-1)
+## Determinism guarantees
 
 - **Deterministic mode is enabled by default** via `DSU_CONFIG_FLAG_DETERMINISTIC`.
 - In deterministic mode:
   - Audit log timestamps are forced to `0`.
   - Component ordering is canonical and stable (ASCII lowercase + bytewise lexicographic sort).
-  - `.dsuplan` and `.dsulog` serialization is stable and independent of pointer order.
+  - `.dsuplan` and `audit.dsu.log` serialization is stable and independent of pointer order.
 - Hashing:
-  - Plan IDs use a deterministic non-cryptographic `hash32` (FNV-1a 32-bit).
+  - Plan IDs include deterministic `hash32` + `hash64` digests over canonical plan content.
+
+## Invariants and prohibitions
+
+- Setup Core never performs network calls.
+- Setup Core never writes outside the install roots and transaction root.
+- Invalid inputs are rejected deterministically (see exit codes in `docs/setup/CLI_REFERENCE.md`).
 
 ## CLI usage
 
 The minimal CLI target is `dominium-setup`:
 
 - Version:
-  - `dominium-setup version`
-  - `dominium-setup version --json`
-- Generate a plan + audit log (end-to-end):
-  - `dominium-setup plan --manifest docs/setup/sample_manifest.dsumf --out out.dsuplan --log out.dsulog`
-  - Add `--json` for machine-readable output.
-- Dry-run a plan (reads `.dsuplan`, writes `.dsulog`):
-  - `dominium-setup dry-run --plan out.dsuplan --log dry.dsulog`
+  - `dominium-setup version --format json --deterministic 1`
+- Build a plan:
+  - `dominium-setup plan --manifest <artifact_root>/setup/manifests/product.dsumanifest --op install --scope portable --components core --out out.dsuplan --format json --deterministic 1`
+- Apply a plan:
+  - `dominium-setup apply --plan out.dsuplan --deterministic 1`
+- Verify integrity:
+  - `dominium-setup verify --state <install_root>/.dsu/installed_state.dsustate --format json --deterministic 1`
+- Roll back from a journal (dry-run):
+  - `dominium-setup rollback --journal <path-to/txn.dsujournal> --dry-run --deterministic 1`
 
-## Baseline manifest format (S-1)
+## Manifest format
 
-Plan S-1 uses a strict INI-like format (no external JSON dependency).
+Manifests are binary `*.dsumanifest` files (DSU header + TLV payload).
+See `docs/setup/MANIFEST_SCHEMA.md` for the locked schema and validation rules.
 
-Required keys:
+## File formats (current)
 
-- `product_id` (normalized to lowercase ASCII id)
-- `version` (ASCII printable token)
-- `install_root` (ASCII printable token)
-- `components` (bracket list of component ids)
+- Plan files: `.dsuplan` (format v5) → `docs/setup/TRANSACTION_ENGINE.md`
+- Installed state: `installed_state.dsustate` (format v2) → `docs/setup/INSTALLED_STATE_SCHEMA.md`
+- Audit log: `audit.dsu.log` (format v2) → `docs/setup/AUDIT_LOG_FORMAT.md`
+- Transaction journal: `txn.dsujournal` (format v1) → `docs/setup/JOURNAL_FORMAT.md`
 
-Example: `docs/setup/sample_manifest.dsumf`
+## See also
 
-## Binary file formats (S-1)
-
-Both `.dsuplan` and `.dsulog` start with the same **base header** (little-endian):
-
-- `magic` (4 bytes)
-- `format_version` (u16)
-- `endian_marker` (u16) = `0xFFFE` (little-endian)
-- `header_size` (u32) = `20` in S-1
-- `payload_length` (u32)
-- `header_checksum` (u32) = sum of base header bytes 0..15
-
-### `.dsuplan` payload (v1)
-
-Field order (little-endian):
-
-- `flags` (u32)
-- `plan_id_hash32` (u32)
-- `product_id_len` (u32) + bytes
-- `version_len` (u32) + bytes
-- `install_root_len` (u32) + bytes
-- `component_count` (u32)
-- `step_count` (u32)
-- components:
-  - `id_len` (u32) + bytes (repeated)
-- steps:
-  - `kind` (u8)
-  - `reserved` (u8)
-  - `reserved` (u16)
-  - `arg_len` (u32) + bytes (repeated)
-
-### `.dsulog` payload (v1)
-
-Field order (little-endian):
-
-- `event_count` (u32)
-- `flags` (u32)
-- events:
-  - `event_id` (u32)
-  - `severity` (u8)
-  - `category` (u8)
-  - `reserved` (u16)
-  - `timestamp` (u32) (0 in deterministic mode)
-  - `message_len` (u32) + bytes (UTF-8; no embedded NUL)
-
+- `docs/setup/MANIFEST_SCHEMA.md`
+- `docs/setup/RESOLUTION_ENGINE.md`
+- `docs/setup/TRANSACTION_ENGINE.md`
+- `docs/setup/INSTALLED_STATE_SCHEMA.md`
+- `docs/setup/AUDIT_LOG_FORMAT.md`
+- `docs/setup/JOURNAL_FORMAT.md`
+- `docs/setup/CLI_REFERENCE.md`

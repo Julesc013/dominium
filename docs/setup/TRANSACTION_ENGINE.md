@@ -35,9 +35,17 @@ Setup Core applies installation changes through a journaled transaction engine (
 - Leave the transaction root and journal intact for forensics.
 - `dominium-setup rollback --journal <file>` replays rollback from the on-disk journal.
 
+## File locations (defaults)
+
+- Transaction root: `<install_root>.txn/<journal_id_hex>`
+- Staging root: `<txn_root>/.dsu_txn/staged`
+- State staging: `<txn_root>/.dsu_txn/state/new.dsustate`
+- Journal file: `<txn_root>/.dsu_txn/journal/txn.dsujournal`
+- Installed state: `<install_root>/.dsu/installed_state.dsustate`
+
 ## Journal Format
 
-Journal files are binary and append-only.
+Journal files are binary and append-only. The full record-level format is locked in `docs/setup/JOURNAL_FORMAT.md`.
 
 ### Header
 
@@ -99,12 +107,28 @@ Progress records are written *before* executing each entry. Rollback treats miss
 - **Commit fails mid-way**: rollback restores pre-transaction state using the inverse journal.
 - **Process crash mid-commit**: run `dominium-setup rollback --journal <file>` to restore.
 
+## Failure injection (tests)
+
+The transaction engine supports deterministic failpoints for rollback testing:
+
+- `DSU_FAILPOINT=after_stage_write`
+- `DSU_FAILPOINT=after_verify`
+- `DSU_FAILPOINT=mid_commit:<N>` (fail after `N` commit entries)
+- `DSU_FAILPOINT=before_state_write`
+
+Failpoints must not be enabled in production; they are test-only knobs.
+
 ## CLI Surface
 
-- `dominium-setup install --plan <file> [--dry-run]`
-- `dominium-setup uninstall --state <file> [--dry-run]`
-- `dominium-setup verify --state <file>`
-- `dominium-setup rollback --journal <file> [--dry-run]`
+- `dominium-setup plan --manifest <file> --op <install|upgrade|repair|uninstall> --out <planfile> --format json --deterministic 1`
+- `dominium-setup apply --plan <planfile> [--dry-run] --deterministic 1`
+- `dominium-setup uninstall --state <file> [--dry-run] --deterministic 1`
+- `dominium-setup rollback --journal <file> [--dry-run] --deterministic 1`
 
-All commands support deterministic JSON output via `--json`.
+Exit codes follow `docs/setup/CLI_REFERENCE.md`.
 
+## See also
+
+- `docs/setup/JOURNAL_FORMAT.md`
+- `docs/setup/INSTALLED_STATE_SCHEMA.md`
+- `docs/setup/FORENSICS_AND_RECOVERY.md`

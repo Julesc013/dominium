@@ -18,6 +18,19 @@ All integer fields are little-endian.
 | 16 | 4 | `header_checksum` | sum of bytes 0..15 (checksum bytes excluded) |
 | 20 | … | `payload` | TLV stream |
 
+## File location (default)
+
+- `audit.dsu.log` in the current working directory (CLI default; override with `--log`)
+
+## CLI commands (exact)
+
+- Export to JSON:
+  - `dominium-setup export-log --log audit.dsu.log --out audit.json --format json --deterministic 1`
+- Export to deterministic TSV:
+  - `dominium-setup export-log --log audit.dsu.log --out audit.tsv --format txt --deterministic 1`
+
+Exit codes follow `docs/setup/CLI_REFERENCE.md`.
+
 ## TLV Encoding Rules (locked)
 
 - `type`: `u16`
@@ -106,3 +119,7 @@ The exported JSON shape is stable:
 }
 ```
 
+## See also
+
+- `docs/setup/FORENSICS_AND_RECOVERY.md`
+- `docs/setup/CLI_JSON_SCHEMAS.md`

@@ -23,6 +23,23 @@ All integer fields are little-endian.
 | 16 | 4 | `header_checksum` | sum of bytes 0..15 (checksum bytes excluded) |
 | 20 | … | `payload` | TLV stream |
 
+## File location (default)
+
+- `<install_root>/.dsu/installed_state.dsustate`
+
+## CLI commands (exact)
+
+- List installed components:
+  - `dominium-setup list-installed --state <install_root>/.dsu/installed_state.dsustate --format json --deterministic 1`
+- Verify integrity:
+  - `dominium-setup verify --state <install_root>/.dsu/installed_state.dsustate --format json --deterministic 1`
+- Report bundle:
+  - `dominium-setup report --state <install_root>/.dsu/installed_state.dsustate --out <dir> --format json --deterministic 1`
+- Uninstall preview:
+  - `dominium-setup uninstall-preview --state <install_root>/.dsu/installed_state.dsustate --format json --deterministic 1`
+
+Exit codes follow `docs/setup/CLI_REFERENCE.md` (verify uses `2` for integrity issues).
+
 ## TLV Encoding Rules (locked)
 
 - `type`: `u16`
@@ -142,3 +159,7 @@ In deterministic mode:
 - All component file paths are validated as canonical relative paths (no `..`, no absolute injections).
 - Verification/uninstall must not follow symlinks out of root.
 
+## See also
+
+- `docs/setup/FORENSICS_AND_RECOVERY.md`
+- `docs/setup/TRANSACTION_ENGINE.md`
