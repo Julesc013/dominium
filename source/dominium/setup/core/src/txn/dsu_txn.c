@@ -32,6 +32,46 @@ static int dsu__is_alpha(char c);
 static int dsu__is_abs_path_like(const char *p);
 static dsu_u64 dsu__nonce64(dsu_ctx_t *ctx, dsu_u64 seed);
 
+static const char *dsu__txn_failpoint_env(void) {
+    const char *fp = getenv("DSU_FAILPOINT");
+    if (!fp || fp[0] == '\0') return NULL;
+    return fp;
+}
+
+static int dsu__txn_parse_u32_dec(const char *p, dsu_u32 *out_val) {
+    unsigned long v = 0ul;
+    if (!out_val) return 0;
+    *out_val = 0u;
+    if (!p || p[0] == '\0') return 0;
+    while (*p) {
+        char c = *p++;
+        if (c < '0' || c > '9') return 0;
+        v = (v * 10ul) + (unsigned long)(c - '0');
+        if (v > 0xFFFFFFFFul) return 0;
+    }
+    *out_val = (dsu_u32)v;
+    return 1;
+}
+
+static int dsu__txn_failpoint_match(const char *fp, const char *name, dsu_u32 *out_value) {
+    size_t n;
+    if (!fp || !name) return 0;
+    n = strlen(name);
+    if (strncmp(fp, name, n) != 0) return 0;
+    if (fp[n] == '\0') {
+        if (out_value) *out_value = 0u;
+        return 1;
+    }
+    if (fp[n] != ':') return 0;
+    if (!out_value) return 1;
+    return dsu__txn_parse_u32_dec(fp + n + 1u, out_value);
+}
+
+static int dsu__txn_failpoint_enabled(const char *name, dsu_u32 *out_value) {
+    const char *fp = dsu__txn_failpoint_env();
+    return dsu__txn_failpoint_match(fp, name, out_value);
+}
+
 static void dsu__u64_hex16(char out16[17], dsu_u64 v) {
     static const char *hex = "0123456789abcdef";
     int i;
@@ -1994,12 +2034,23 @@ static dsu_status_t dsu__txn_commit(dsu_ctx_t *ctx,
     dsu_status_t st;
     dsu_u32 i;
     dsu_u32 fail_after = 0u;
+    int fail_before_state = 0;
 
     if (out_progress) *out_progress = 0u;
     if (!ctx || !fs || !journal_path_abs || (!entries && entry_count != 0u)) {
         return DSU_STATUS_INVALID_ARGS;
     }
     if (opts) fail_after = opts->fail_after_entries;
+    {
+        dsu_u32 fp_count = 0u;
+        if (dsu__txn_failpoint_enabled("mid_commit", &fp_count)) {
+            fail_after = fp_count ? fp_count : fail_after;
+            if (fail_after == 0u) {
+                fail_after = 1u;
+            }
+        }
+        fail_before_state = dsu__txn_failpoint_enabled("before_state_write", NULL);
+    }
 
     memset(&w, 0, sizeof(w));
     st = dsu_journal_writer_open_append(&w, journal_path_abs);
@@ -2021,6 +2072,11 @@ static dsu_status_t dsu__txn_commit(dsu_ctx_t *ctx,
         }
 
         if (fail_after != 0u && prog == fail_after) {
+            st = DSU_STATUS_INTERNAL_ERROR;
+            break;
+        }
+
+        if (fail_before_state && entries[i].type == (dsu_u16)DSU_JOURNAL_ENTRY_WRITE_STATE) {
             st = DSU_STATUS_INTERNAL_ERROR;
             break;
         }
@@ -2225,6 +2281,11 @@ dsu_status_t dsu_txn_apply_plan(dsu_ctx_t *ctx,
     st = dsu__txn_write_state_file(ctx, fs, plan, prev_state, journal_id, state_txn_rel, (dsu_u32)sizeof(state_txn_rel));
     if (st != DSU_STATUS_SUCCESS) goto done;
 
+    if (dsu__txn_failpoint_enabled("after_stage_write", NULL)) {
+        st = DSU_STATUS_INTERNAL_ERROR;
+        goto done;
+    }
+
     (void)dsu_log_emit(ctx,
                       dsu_ctx_get_audit_log(ctx),
                       DSU_EVENT_TXN_STAGE_COMPLETE,
@@ -2282,6 +2343,11 @@ dsu_status_t dsu_txn_apply_plan(dsu_ctx_t *ctx,
                       (dsu_u8)DSU_LOG_SEVERITY_INFO,
                       (dsu_u8)DSU_LOG_CATEGORY_IO,
                       "verify complete");
+
+    if (dsu__txn_failpoint_enabled("after_verify", NULL)) {
+        st = DSU_STATUS_INTERNAL_ERROR;
+        goto done;
+    }
 
     if (local_opts.dry_run) {
         /* Dry-run must not leave staging artifacts behind. */
