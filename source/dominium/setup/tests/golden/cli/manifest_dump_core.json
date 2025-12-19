@@ -1,0 +1,18 @@
+{"schema_version":1,"command":"manifest dump","status":"ok","status_code":0,"details":{"core_status":0,"core_status_name":"success","in_file":"m.dsumanifest","out_file":"","content_digest32":1206996600,"content_digest64":"0x07cb5dd909302b38","wrote_file":false,"error":"","manifest":{
+  "format_version":2,
+  "schema_version":1,
+  "product_id":"dominium",
+  "product_version":"1.0.0",
+  "build_channel":"stable",
+  "platform_targets":["any-any"],
+  "default_install_roots":[
+    {"scope":"portable","platform":"any-any","path":"install"}
+  ],
+  "components":[
+    {"component_id":"core","component_version":"","component_kind":"other","flags":0,"dependencies":[],"conflicts":[],"payloads":[{"kind":"fileset","path":"payload","sha256":"0000000000000000000000000000000000000000000000000000000000000000","size":""}],"actions":[]}
+  ],
+  "uninstall_policy":null,
+  "content_digest32":1206996600,
+  "content_digest64":"0x07cb5dd909302b38"
+}
+}}
