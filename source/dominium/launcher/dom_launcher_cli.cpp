@@ -19,8 +19,16 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "dom_profile_cli.h"
 #include "launcher_control_plane.h"
 #include "launcher_tui.h"
+#include "dom_shared/os_paths.h"
 
 #include "dominium/version.h"
+
+extern "C" {
+#include "dsu/dsu_callbacks.h"
+#include "dsu/dsu_config.h"
+#include "dsu/dsu_ctx.h"
+#include "dsu/dsu_state.h"
+}
 
 extern "C" {
 #include "domino/build_info.h"
@@ -52,6 +60,269 @@ struct LauncherAuditGuard {
         core = 0;
     }
 };
+
+struct DsuStateHandle {
+    dsu_ctx_t* ctx;
+    dsu_state_t* state;
+
+    DsuStateHandle() : ctx(0), state(0) {}
+
+    ~DsuStateHandle() {
+        if (state) {
+            dsu_state_destroy(ctx, state);
+            state = 0;
+        }
+        if (ctx) {
+            dsu_ctx_destroy(ctx);
+            ctx = 0;
+        }
+    }
+};
+
+static const char* dsu_status_name(dsu_status_t st) {
+    switch (st) {
+    case DSU_STATUS_SUCCESS: return "success";
+    case DSU_STATUS_INVALID_ARGS: return "invalid_args";
+    case DSU_STATUS_IO_ERROR: return "io_error";
+    case DSU_STATUS_PARSE_ERROR: return "parse_error";
+    case DSU_STATUS_UNSUPPORTED_VERSION: return "unsupported_version";
+    case DSU_STATUS_INTEGRITY_ERROR: return "integrity_error";
+    case DSU_STATUS_INTERNAL_ERROR: return "internal_error";
+    case DSU_STATUS_MISSING_COMPONENT: return "missing_component";
+    case DSU_STATUS_UNSATISFIED_DEPENDENCY: return "unsatisfied_dependency";
+    case DSU_STATUS_VERSION_CONFLICT: return "version_conflict";
+    case DSU_STATUS_EXPLICIT_CONFLICT: return "explicit_conflict";
+    case DSU_STATUS_PLATFORM_INCOMPATIBLE: return "platform_incompatible";
+    case DSU_STATUS_ILLEGAL_DOWNGRADE: return "illegal_downgrade";
+    case DSU_STATUS_INVALID_REQUEST: return "invalid_request";
+    default: return "unknown";
+    }
+}
+
+static std::string dirname_of(const std::string& path) {
+    size_t i;
+    for (i = path.size(); i > 0u; --i) {
+        char c = path[i - 1u];
+        if (c == '/' || c == '\\') {
+            return path.substr(0u, i - 1u);
+        }
+    }
+    return std::string();
+}
+
+static std::string state_path_for_root(const std::string& root) {
+    return dom_shared::os_path_join(dom_shared::os_path_join(root, ".dsu"), "installed_state.dsustate");
+}
+
+static bool find_state_path_from_exe(std::string& out_state_path,
+                                     std::string& out_root,
+                                     std::string& out_expected_path) {
+    std::string exe_dir = dom_shared::os_get_executable_directory();
+    std::string root = exe_dir;
+    int i;
+
+    out_state_path.clear();
+    out_root.clear();
+    out_expected_path.clear();
+
+    for (i = 0; i < 3; ++i) {
+        if (!root.empty()) {
+            std::string cand = state_path_for_root(root);
+            if (out_expected_path.empty()) {
+                out_expected_path = cand;
+            }
+            if (dom_shared::os_file_exists(cand)) {
+                out_state_path = cand;
+                out_root = root;
+                return true;
+            }
+        }
+        root = dirname_of(root);
+    }
+
+    return false;
+}
+
+static bool load_installed_state(const std::string& state_path,
+                                 DsuStateHandle& out_handle,
+                                 std::string& out_error) {
+    dsu_config_t cfg;
+    dsu_callbacks_t cbs;
+    dsu_ctx_t* ctx = 0;
+    dsu_state_t* state = 0;
+    dsu_status_t st;
+
+    out_error.clear();
+
+    dsu_config_init(&cfg);
+    dsu_callbacks_init(&cbs);
+
+    st = dsu_ctx_create(&cfg, &cbs, 0, &ctx);
+    if (st != DSU_STATUS_SUCCESS) {
+        out_error = std::string("ctx_create_failed:") + dsu_status_name(st);
+        return false;
+    }
+
+    st = dsu_state_load(ctx, state_path.c_str(), &state);
+    if (st != DSU_STATUS_SUCCESS) {
+        dsu_ctx_destroy(ctx);
+        out_error = std::string("state_load_failed:") + dsu_status_name(st);
+        return false;
+    }
+
+    st = dsu_state_validate(state);
+    if (st != DSU_STATUS_SUCCESS) {
+        dsu_state_destroy(ctx, state);
+        dsu_ctx_destroy(ctx);
+        out_error = std::string("state_invalid:") + dsu_status_name(st);
+        return false;
+    }
+
+    out_handle.ctx = ctx;
+    out_handle.state = state;
+    return true;
+}
+
+static void print_state_recovery(const std::string& state_path, const std::string& detail) {
+    const char* path = state_path.empty() ? "<state-file>" : state_path.c_str();
+    std::fprintf(stderr, "Launcher error: installed state missing or invalid.\n");
+    std::fprintf(stderr, "State file: %s\n", path);
+    if (!detail.empty()) {
+        std::fprintf(stderr, "Detail: %s\n", detail.c_str());
+    }
+    std::fprintf(stderr, "Recovery:\n");
+    std::fprintf(stderr, "  1) dominium-setup verify --state \"%s\" --format json\n", path);
+    std::fprintf(stderr, "  2) If verify reports issues, run:\n");
+    std::fprintf(stderr, "     dominium-setup plan --manifest <manifest> --state \"%s\" --op repair --out repair.dsuplan\n", path);
+    std::fprintf(stderr, "     dominium-setup apply --plan repair.dsuplan\n");
+}
+
+static bool ensure_installed_state(std::string& out_state_path,
+                                   std::string& out_install_root,
+                                   std::string& out_error) {
+    std::string expected;
+    DsuStateHandle handle;
+
+    out_state_path.clear();
+    out_install_root.clear();
+    out_error.clear();
+
+    if (!find_state_path_from_exe(out_state_path, out_install_root, expected)) {
+        out_state_path = expected;
+        out_error = "state_not_found";
+        return false;
+    }
+
+    if (!load_installed_state(out_state_path, handle, out_error)) {
+        return false;
+    }
+
+    {
+        const char* root = dsu_state_primary_install_root(handle.state);
+        if (!root || !root[0]) {
+            out_error = "state_missing_install_root";
+            return false;
+        }
+        out_install_root = root;
+    }
+
+    if (!dom_shared::os_directory_exists(out_install_root)) {
+        out_error = "install_root_missing";
+        return false;
+    }
+
+    return true;
+}
+
+static std::string add_exe_suffix(const std::string& base) {
+#if defined(_WIN32) || defined(_WIN64)
+    if (base.size() >= 4u) {
+        const std::string tail = base.substr(base.size() - 4u);
+        if (tail == ".exe" || tail == ".EXE") {
+            return base;
+        }
+    }
+    return base + ".exe";
+#else
+    return base;
+#endif
+}
+
+static int run_state_smoke_test(const char* state_arg) {
+    std::string state_path;
+    std::string install_root;
+    std::string expected;
+    std::string err;
+    DsuStateHandle handle;
+    dsu_u32 component_count = 0u;
+    dsu_u32 pack_count = 0u;
+    dsu_u32 i;
+
+    if (state_arg && state_arg[0]) {
+        state_path = state_arg;
+    } else {
+        if (!find_state_path_from_exe(state_path, install_root, expected)) {
+            state_path = expected;
+        }
+    }
+
+    if (state_path.empty() || !dom_shared::os_file_exists(state_path)) {
+        print_state_recovery(state_path, "state_not_found");
+        return 3;
+    }
+
+    if (!load_installed_state(state_path, handle, err)) {
+        print_state_recovery(state_path, err);
+        return 3;
+    }
+
+    {
+        const char* root = dsu_state_primary_install_root(handle.state);
+        if (!root || !root[0]) {
+            print_state_recovery(state_path, "state_missing_install_root");
+            return 3;
+        }
+        install_root = root;
+    }
+
+    if (!dom_shared::os_directory_exists(install_root)) {
+        print_state_recovery(state_path, "install_root_missing");
+        return 3;
+    }
+
+    component_count = dsu_state_component_count(handle.state);
+    for (i = 0u; i < component_count; ++i) {
+        if (dsu_state_component_kind(handle.state, i) == DSU_MANIFEST_COMPONENT_KIND_PACK) {
+            pack_count += 1u;
+        }
+    }
+
+    if (component_count == 0u) {
+        std::fprintf(stderr, "Launcher smoke: no components in installed state.\n");
+        return 4;
+    }
+
+    {
+        const std::string bin_dir = dom_shared::os_path_join(install_root, "bin");
+        const std::string launcher_bin = dom_shared::os_path_join(bin_dir, add_exe_suffix("dominium-launcher"));
+        const std::string game_bin = dom_shared::os_path_join(bin_dir, add_exe_suffix("dominium_game"));
+
+        if (!dom_shared::os_file_exists(launcher_bin)) {
+            std::fprintf(stderr, "Launcher smoke: missing %s\n", launcher_bin.c_str());
+            return 5;
+        }
+        if (!dom_shared::os_file_exists(game_bin)) {
+            std::fprintf(stderr, "Launcher smoke: missing %s\n", game_bin.c_str());
+            return 5;
+        }
+    }
+
+    std::printf("launcher_smoke: state=%s\n", state_path.c_str());
+    std::printf("launcher_smoke: install_root=%s\n", install_root.c_str());
+    std::printf("launcher_smoke: components=%u packs=%u\n", (unsigned)component_count, (unsigned)pack_count);
+    std::printf("launcher_smoke: critical_paths=ok\n");
+    return 0;
+}
 
 static const char* profile_id_from_dom_profile(const dom_profile& p) {
     const bool lockstep = (p.lockstep_strict != 0u);
@@ -630,7 +901,9 @@ int main(int argc, char **argv) {
     {
         bool smoke_gui = false;
         bool smoke_tui = false;
+        bool smoke_state = false;
         const char* home_val = 0;
+        const char* state_val = 0;
         for (i = 1; i < argc; ++i) {
             const char* arg = argv[i];
             if (!arg) {
@@ -638,6 +911,18 @@ int main(int argc, char **argv) {
             }
             if (std::strncmp(arg, "--home=", 7) == 0) {
                 home_val = arg + 7;
+            }
+            if (std::strncmp(arg, "--state=", 8) == 0) {
+                state_val = arg + 8;
+                continue;
+            }
+            if (std::strcmp(arg, "--state") == 0 && (i + 1) < argc) {
+                state_val = argv[++i];
+                continue;
+            }
+            if (std::strcmp(arg, "--smoke-test") == 0) {
+                smoke_state = true;
+                continue;
             }
             if (std::strcmp(arg, "--smoke-gui") == 0) {
                 smoke_gui = true;
@@ -647,6 +932,13 @@ int main(int argc, char **argv) {
                 smoke_tui = true;
                 continue;
             }
+        }
+        if (smoke_state) {
+            if (lc) {
+                (void)launcher_core_add_reason(lc, "mode:smoke-state");
+            }
+            exit_code = run_state_smoke_test(state_val);
+            return exit_code;
         }
         if (smoke_gui) {
             if (lc) {
@@ -681,6 +973,24 @@ int main(int argc, char **argv) {
         dom::print_caps(stdout);
         exit_code = dom::print_selection(profile_cli.profile, stdout, stderr);
         return exit_code;
+    }
+
+    {
+        std::string state_path;
+        std::string install_root;
+        std::string state_err;
+        if (!ensure_installed_state(state_path, install_root, state_err)) {
+            if (lc) {
+                (void)launcher_core_add_reason(lc, "state_invalid");
+            }
+            print_state_recovery(state_path, state_err);
+            exit_code = 3;
+            return exit_code;
+        }
+        if (lc) {
+            (void)launcher_core_add_reason(lc, (std::string("state_path=") + state_path).c_str());
+            (void)launcher_core_add_reason(lc, (std::string("install_root=") + install_root).c_str());
+        }
     }
 
     /* Command-style control plane (no UI required). */

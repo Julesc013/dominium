@@ -14,6 +14,7 @@ add_executable(dominium-launcher
 
 target_include_directories(dominium-launcher PUBLIC
     ${DOMINIUM_INCLUDE_DIR}
+    ${CMAKE_SOURCE_DIR}/include/dominium/_internal/dom_priv
     ${CMAKE_SOURCE_DIR}/source/domino
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_SOURCE_DIR}/source/dominium/common
@@ -24,6 +25,8 @@ target_link_libraries(dominium-launcher
         dominium_common
         domino_core
         dominium_launcher_core
+        dom_shared
+        dsu_core
 )
 
 set_target_properties(dominium-launcher PROPERTIES
@@ -174,3 +177,30 @@ endif()
 add_dependencies(dominium_launcher_tui_smoke_tests dominium-launcher tool_manifest_inspector)
 
 add_test(NAME dominium_launcher_tui_smoke_tests COMMAND dominium_launcher_tui_smoke_tests)
+
+add_executable(dominium_launcher_state_smoke_tests
+    tests/launcher_state_smoke_tests.cpp
+)
+
+target_include_directories(dominium_launcher_state_smoke_tests PUBLIC
+    ${DOMINIUM_INCLUDE_DIR}
+    ${CMAKE_SOURCE_DIR}/source/domino
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+)
+
+target_link_libraries(dominium_launcher_state_smoke_tests
+    PRIVATE
+        dsu_core
+)
+
+set_target_properties(dominium_launcher_state_smoke_tests PROPERTIES
+    OUTPUT_NAME "dominium_launcher_state_smoke_tests"
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_dependencies(dominium_launcher_state_smoke_tests dominium-launcher)
+
+add_test(NAME dominium_launcher_state_smoke_tests COMMAND dominium_launcher_state_smoke_tests)
