@@ -1,0 +1,173 @@
+{
+  "format_version": 2,
+  "schema_version": 1,
+  "product_id": "dominium",
+  "product_version": "0.1.0",
+  "build_channel": "dev",
+  "platform_targets": ["win64-x64"],
+  "default_install_roots": [
+    {"scope": "portable", "platform": "win64-x64", "path": "install/portable"},
+    {"scope": "user", "platform": "win64-x64", "path": "install/user"},
+    {"scope": "system", "platform": "win64-x64", "path": "install/system"}
+  ],
+  "components": [
+    {
+      "component_id": "launcher",
+      "component_version": "",
+      "component_kind": "launcher",
+      "flags": 2,
+      "dependencies": [
+        {"id": "pack.base", "constraint": "any", "version": ""},
+        {"id": "runtime", "constraint": "any", "version": ""}
+      ],
+      "conflicts": [],
+      "payloads": [
+        {
+          "kind": "fileset",
+          "path": "payloads/launcher",
+          "sha256": "AUTO",
+          "size": "AUTO"
+        }
+      ],
+      "actions": [
+        {
+          "kind": "REGISTER_APP_ENTRY",
+          "app_id": "dominium.launcher",
+          "display_name": "Dominium Launcher",
+          "exec_relpath": "bin/dominium-launcher.exe",
+          "arguments": "",
+          "icon_relpath": "",
+          "extension": "",
+          "protocol": "",
+          "marker_relpath": "",
+          "capability_id": "",
+          "capability_value": "",
+          "publisher": ""
+        },
+        {
+          "kind": "REGISTER_FILE_ASSOC",
+          "app_id": "dominium.launcher",
+          "display_name": "",
+          "exec_relpath": "",
+          "arguments": "",
+          "icon_relpath": "",
+          "extension": ".domsave",
+          "protocol": "",
+          "marker_relpath": "",
+          "capability_id": "",
+          "capability_value": "",
+          "publisher": ""
+        },
+        {
+          "kind": "REGISTER_URL_HANDLER",
+          "app_id": "dominium.launcher",
+          "display_name": "",
+          "exec_relpath": "",
+          "arguments": "",
+          "icon_relpath": "",
+          "extension": "",
+          "protocol": "dominium",
+          "marker_relpath": "",
+          "capability_id": "",
+          "capability_value": "",
+          "publisher": ""
+        },
+        {
+          "kind": "REGISTER_UNINSTALL_ENTRY",
+          "app_id": "",
+          "display_name": "Dominium",
+          "exec_relpath": "",
+          "arguments": "",
+          "icon_relpath": "",
+          "extension": "",
+          "protocol": "",
+          "marker_relpath": "",
+          "capability_id": "",
+          "capability_value": "",
+          "publisher": "Dominium Project"
+        },
+        {
+          "kind": "WRITE_FIRST_RUN_MARKER",
+          "app_id": "",
+          "display_name": "",
+          "exec_relpath": "",
+          "arguments": "",
+          "icon_relpath": "",
+          "extension": "",
+          "protocol": "",
+          "marker_relpath": "data/first_run.marker",
+          "capability_id": "",
+          "capability_value": "",
+          "publisher": ""
+        }
+      ]
+    },
+    {
+      "component_id": "pack.base",
+      "component_version": "",
+      "component_kind": "pack",
+      "flags": 0,
+      "dependencies": [],
+      "conflicts": [],
+      "payloads": [
+        {
+          "kind": "fileset",
+          "path": "payloads/packs/base",
+          "sha256": "AUTO",
+          "size": "AUTO"
+        }
+      ],
+      "actions": []
+    },
+    {
+      "component_id": "runtime",
+      "component_version": "",
+      "component_kind": "runtime",
+      "flags": 0,
+      "dependencies": [],
+      "conflicts": [],
+      "payloads": [
+        {
+          "kind": "fileset",
+          "path": "payloads/runtime",
+          "sha256": "AUTO",
+          "size": "AUTO"
+        }
+      ],
+      "actions": [
+        {
+          "kind": "DECLARE_CAPABILITY",
+          "app_id": "",
+          "display_name": "",
+          "exec_relpath": "",
+          "arguments": "",
+          "icon_relpath": "",
+          "extension": "",
+          "protocol": "",
+          "marker_relpath": "",
+          "capability_id": "cap.runtime",
+          "capability_value": "present",
+          "publisher": ""
+        }
+      ]
+    },
+    {
+      "component_id": "tools",
+      "component_version": "",
+      "component_kind": "tools",
+      "flags": 1,
+      "dependencies": [{"id": "runtime", "constraint": "any", "version": ""}],
+      "conflicts": [],
+      "payloads": [
+        {
+          "kind": "fileset",
+          "path": "payloads/tools",
+          "sha256": "AUTO",
+          "size": "AUTO"
+        }
+      ],
+      "actions": []
+    }
+  ],
+  "uninstall_policy": {"remove_owned_files": 1, "preserve_user_data": 1, "preserve_cache": 1}
+}

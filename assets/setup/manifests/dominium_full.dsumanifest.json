@@ -1,0 +1,22 @@
+{
+  "format_version":2,
+  "schema_version":1,
+  "product_id":"dominium",
+  "product_version":"0.1.0",
+  "build_channel":"dev",
+  "platform_targets":["win64-x64"],
+  "default_install_roots":[
+    {"scope":"portable","platform":"win64-x64","path":"C:/Dominium"},
+    {"scope":"user","platform":"win64-x64","path":"C:/Dominium/User"},
+    {"scope":"system","platform":"win64-x64","path":"C:/Dominium/System"}
+  ],
+  "components":[
+    {"component_id":"launcher","component_version":"","component_kind":"launcher","flags":0,"dependencies":[{"id":"pack.base","constraint":"any","version":""},{"id":"runtime","constraint":"any","version":""}],"conflicts":[],"payloads":[{"kind":"archive","path":"payloads/launcher.zip","sha256":"0420000000000000000000000000000000000000000000000000000000000000","size":""}],"actions":[{"kind":"REGISTER_APP_ENTRY","app_id":"dominium.launcher","display_name":"Dominium Launcher","exec_relpath":"bin/dominium-launcher.exe","arguments":"","icon_relpath":"","extension":"","protocol":"","marker_relpath":"","capability_id":"","capability_value":"","publisher":""},{"kind":"REGISTER_FILE_ASSOC","app_id":"dominium.launcher","display_name":"","exec_relpath":"","arguments":"","icon_relpath":"","extension":".domsave","protocol":"","marker_relpath":"","capability_id":"","capability_value":"","publisher":""},{"kind":"REGISTER_URL_HANDLER","app_id":"dominium.launcher","display_name":"","exec_relpath":"","arguments":"","icon_relpath":"","extension":"","protocol":"dominium","marker_relpath":"","capability_id":"","capability_value":"","publisher":""},{"kind":"REGISTER_UNINSTALL_ENTRY","app_id":"","display_name":"Dominium","exec_relpath":"","arguments":"","icon_relpath":"","extension":"","protocol":"","marker_relpath":"","capability_id":"","capability_value":"","publisher":"Dominium Project"},{"kind":"WRITE_FIRST_RUN_MARKER","app_id":"","display_name":"","exec_relpath":"","arguments":"","icon_relpath":"","extension":"","protocol":"","marker_relpath":"data/first_run.marker","capability_id":"","capability_value":"","publisher":""}]},
+    {"component_id":"pack.base","component_version":"","component_kind":"pack","flags":0,"dependencies":[],"conflicts":[],"payloads":[{"kind":"archive","path":"payloads/pack_base.zip","sha256":"0220000000000000000000000000000000000000000000000000000000000000","size":""}],"actions":[]},
+    {"component_id":"runtime","component_version":"","component_kind":"runtime","flags":0,"dependencies":[],"conflicts":[],"payloads":[{"kind":"archive","path":"payloads/runtime.zip","sha256":"0120000000000000000000000000000000000000000000000000000000000000","size":""}],"actions":[{"kind":"DECLARE_CAPABILITY","app_id":"","display_name":"","exec_relpath":"","arguments":"","icon_relpath":"","extension":"","protocol":"","marker_relpath":"","capability_id":"cap.runtime","capability_value":"present","publisher":""}]},
+    {"component_id":"tools","component_version":"","component_kind":"tools","flags":0,"dependencies":[{"id":"runtime","constraint":"any","version":""}],"conflicts":[],"payloads":[{"kind":"archive","path":"payloads/tools.zip","sha256":"0320000000000000000000000000000000000000000000000000000000000000","size":""}],"actions":[]}
+  ],
+  "uninstall_policy":{"remove_owned_files":1,"preserve_user_data":1,"preserve_cache":1},
+  "content_digest32":3882687279,
+  "content_digest64":"0x0bbb6a1e68072bef"
+}

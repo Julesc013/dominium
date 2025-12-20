@@ -62,16 +62,16 @@ d_app_mode d_app_parse_mode(int argc, char** argv) {
         if (!arg) {
             continue;
         }
-        if (d_app_match_prefix(arg, "--mode=cli")) {
+        if (d_app_match_prefix(arg, "--front=cli") || d_app_match_prefix(arg, "--mode=cli")) {
             return D_APP_MODE_CLI;
         }
-        if (d_app_match_prefix(arg, "--mode=tui")) {
+        if (d_app_match_prefix(arg, "--front=tui") || d_app_match_prefix(arg, "--mode=tui")) {
             return D_APP_MODE_TUI;
         }
-        if (d_app_match_prefix(arg, "--mode=gui")) {
+        if (d_app_match_prefix(arg, "--front=gui") || d_app_match_prefix(arg, "--mode=gui")) {
             return D_APP_MODE_GUI;
         }
-        if (d_app_match_prefix(arg, "--mode=headless")) {
+        if (d_app_match_prefix(arg, "--front=headless") || d_app_match_prefix(arg, "--mode=headless")) {
             return D_APP_MODE_HEADLESS;
         }
     }

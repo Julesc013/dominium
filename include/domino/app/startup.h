@@ -51,12 +51,12 @@ typedef struct d_app_capabilities {
 #define D_APP_ERR_HEADLESS_ERROR    (-40)
 #define D_APP_ERR_NO_INTERFACE      (64)
 
-/* Parse explicit --mode=... flags from argv.
-   Recognizes:
-     --mode=cli
-     --mode=tui
-     --mode=gui
-     --mode=headless    (game)
+/* Parse explicit frontend flags from argv.
+   Recognizes (aliases):
+     --front=cli        (--mode=cli)
+     --front=tui        (--mode=tui)
+     --front=gui        (--mode=gui)
+     --front=headless   (--mode=headless)  (game)
    Returns D_APP_MODE_AUTO if not present. */
 /* Purpose: Mode d app parse.
  * Parameters: See `docs/CONTRACTS.md#Parameters`.

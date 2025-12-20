@@ -1,0 +1,14 @@
+Source: dominium
+Section: games
+Priority: optional
+Maintainer: Dominium Packaging <packaging@example.invalid>
+Standards-Version: 4.6.2
+Build-Depends: debhelper-compat (= 13)
+
+Package: dominium
+Architecture: amd64
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Dominium (Setup Core managed)
+ Dominium is distributed with Setup Core state/plan handling.
+ Platform registrations are applied declaratively via dominium-setup-linux.
+

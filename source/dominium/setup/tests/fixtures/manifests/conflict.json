@@ -1,0 +1,32 @@
+{
+  "product_id": "dominium",
+  "product_version": "1.0.0",
+  "build_channel": "stable",
+  "platform_targets": [
+    "any-any"
+  ],
+  "default_install_roots": [
+    {
+      "scope": "portable",
+      "platform": "any-any",
+      "path": "install_portable"
+    }
+  ],
+  "components": [
+    {
+      "component_id": "alpha",
+      "component_version": "1.0.0",
+      "component_kind": "other",
+      "flags": 0,
+      "conflicts": [
+        "beta"
+      ]
+    },
+    {
+      "component_id": "beta",
+      "component_version": "1.0.0",
+      "component_kind": "other",
+      "flags": 0
+    }
+  ]
+}

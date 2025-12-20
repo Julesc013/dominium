@@ -1,0 +1,187 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-test:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Windows: native UI + soft renderer.
+          - os: windows-latest
+            name: win32-soft
+            cmake_args: >-
+              -G Ninja
+              -DCMAKE_BUILD_TYPE=Debug
+              -DDOM_DISALLOW_DOWNLOADS=ON
+              -DFETCHCONTENT_FULLY_DISCONNECTED=ON
+              -DFETCHCONTENT_UPDATES_DISCONNECTED=ON
+              -DDOM_PLATFORM=win32
+              -DDOM_BACKEND_SOFT=ON
+              -DDOM_BACKEND_NULL=OFF
+              -DDOM_ENABLE_NET=ON
+            ctest_args: ""
+
+          # Windows: null UI/gfx (headless).
+          - os: windows-latest
+            name: win32-null
+            cmake_args: >-
+              -G Ninja
+              -DCMAKE_BUILD_TYPE=Debug
+              -DDOM_DISALLOW_DOWNLOADS=ON
+              -DFETCHCONTENT_FULLY_DISCONNECTED=ON
+              -DFETCHCONTENT_UPDATES_DISCONNECTED=ON
+              -DDOM_PLATFORM=null
+              -DDOM_BACKEND_SOFT=OFF
+              -DDOM_BACKEND_NULL=ON
+              -DDOM_ENABLE_NET=ON
+            ctest_args: "-E domino_dui_smoke_native"
+
+          # Linux: software renderer.
+          - os: ubuntu-latest
+            name: linux-soft
+            cmake_args: >-
+              -G Ninja
+              -DCMAKE_BUILD_TYPE=Debug
+              -DDOM_DISALLOW_DOWNLOADS=ON
+              -DFETCHCONTENT_FULLY_DISCONNECTED=ON
+              -DFETCHCONTENT_UPDATES_DISCONNECTED=ON
+              -DDOM_PLATFORM=posix_headless
+              -DDOM_BACKEND_SOFT=ON
+              -DDOM_BACKEND_NULL=OFF
+              -DDOM_ENABLE_NET=ON
+            ctest_args: ""
+
+          # Linux: null renderer + offline build.
+          - os: ubuntu-latest
+            name: linux-null-offline
+            cmake_args: >-
+              -G Ninja
+              -DCMAKE_BUILD_TYPE=Debug
+              -DDOM_DISALLOW_DOWNLOADS=ON
+              -DFETCHCONTENT_FULLY_DISCONNECTED=ON
+              -DFETCHCONTENT_UPDATES_DISCONNECTED=ON
+              -DDOM_PLATFORM=posix_headless
+              -DDOM_BACKEND_SOFT=OFF
+              -DDOM_BACKEND_NULL=ON
+              -DDOM_ENABLE_NET=OFF
+            ctest_args: ""
+
+          # macOS: headless build (no native UI required for CI).
+          - os: macos-latest
+            name: macos-soft
+            cmake_args: >-
+              -G Ninja
+              -DCMAKE_BUILD_TYPE=Debug
+              -DDOM_DISALLOW_DOWNLOADS=ON
+              -DFETCHCONTENT_FULLY_DISCONNECTED=ON
+              -DFETCHCONTENT_UPDATES_DISCONNECTED=ON
+              -DDOM_PLATFORM=posix_headless
+              -DDOM_BACKEND_SOFT=ON
+              -DDOM_BACKEND_NULL=OFF
+              -DDOM_ENABLE_NET=ON
+            ctest_args: ""
+
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Invariant checks (launcher core hardening)
+        run: python scripts/ci/check_launcher_core_invariants.py
+
+      - name: Configure
+        run: cmake -S . -B build/${{ matrix.name }} ${{ matrix.cmake_args }}
+
+      - name: Build
+        run: cmake --build build/${{ matrix.name }} --config Debug
+
+      - name: Test
+        run: ctest --test-dir build/${{ matrix.name }} --output-on-failure ${{ matrix.ctest_args }}
+
+      - name: Launcher CLI smoke (ui/gfx matrix)
+        run: python scripts/ci/launcher_cli_smoke_matrix.py --build-dir build/${{ matrix.name }}
+
+      - name: Support bundle determinism (crash bundle generation)
+        run: python scripts/ci/test_support_bundle_determinism.py --out-dir build/${{ matrix.name }}/ci_artifacts/support_bundle
+
+      - name: Upload test artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-${{ matrix.name }}
+          path: |
+            build/${{ matrix.name }}/Testing
+            build/${{ matrix.name }}/*.log
+            build/${{ matrix.name }}/*.txt
+            build/${{ matrix.name }}/ci_artifacts
+
+  reproducible-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reproducible build check (Release)
+        run: python3 scripts/repro/verify_reproducible_builds.py --generator Ninja --build-type Release --define DOM_DISALLOW_DOWNLOADS=ON --define FETCHCONTENT_FULLY_DISCONNECTED=ON --define FETCHCONTENT_UPDATES_DISCONNECTED=ON
+
+      - name: Upload repro artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: repro-failure
+          path: build/repro_compare
+
+  portable-packages:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            name: linux
+            cmake_args: >-
+              -DDOM_PLATFORM=posix_headless
+              -DDOM_BACKEND_SOFT=ON
+              -DDOM_BACKEND_NULL=OFF
+            target: dominium_portable_tgz
+          - os: windows-latest
+            name: windows
+            cmake_args: >-
+              -DDOM_PLATFORM=win32
+              -DDOM_BACKEND_SOFT=ON
+              -DDOM_BACKEND_NULL=OFF
+            target: dominium_portable_zip
+          - os: macos-latest
+            name: macos
+            cmake_args: >-
+              -DDOM_PLATFORM=posix_headless
+              -DDOM_BACKEND_SOFT=ON
+              -DDOM_BACKEND_NULL=OFF
+            target: dominium_portable_tgz
+
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure (packaging)
+        run: >
+          cmake -S . -B build/pack-${{ matrix.name }}
+          -G Ninja
+          -DCMAKE_BUILD_TYPE=Release
+          -DDOMINIUM_ENABLE_PACKAGING=ON
+          -DDOM_DISALLOW_DOWNLOADS=ON
+          -DFETCHCONTENT_FULLY_DISCONNECTED=ON
+          -DFETCHCONTENT_UPDATES_DISCONNECTED=ON
+          ${{ matrix.cmake_args }}
+
+      - name: Build portable package
+        run: cmake --build build/pack-${{ matrix.name }} --target ${{ matrix.target }}
+
+      - name: Build macOS app bundle
+        if: runner.os == 'macOS'
+        run: cmake --build build/pack-${{ matrix.name }} --target dominium_macos_app
+
+      - name: Upload portable packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: portable-packages-${{ matrix.name }}
+          path: build/pack-${{ matrix.name }}/dist

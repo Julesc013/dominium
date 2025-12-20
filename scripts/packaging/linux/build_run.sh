@@ -26,7 +26,20 @@ sed "s/@DOMINIUM_VERSION@/${VERSION}/g" "$STUB_TEMPLATE" > "$STUB"
 chmod +x "$STUB"
 
 PAYLOAD="$WORK_DIR/payload.tar.gz"
-tar -C "$DIST_DIR" -czf "$PAYLOAD" .
+SOURCE_DATE_EPOCH="${SOURCE_DATE_EPOCH:-0}"
+
+TAR_EXTRA=()
+if tar --help 2>/dev/null | grep -q -- '--sort'; then
+  TAR_EXTRA+=(--sort=name)
+fi
+if tar --help 2>/dev/null | grep -q -- '--mtime'; then
+  TAR_EXTRA+=(--mtime="@$SOURCE_DATE_EPOCH")
+fi
+if tar --help 2>/dev/null | grep -q -- '--owner'; then
+  TAR_EXTRA+=(--owner=0 --group=0 --numeric-owner)
+fi
+
+tar -C "$DIST_DIR" "${TAR_EXTRA[@]}" -czf "$PAYLOAD" .
 
 OUT_RUN="$OUT_DIR/Dominium-${VERSION}.run"
 cat "$STUB" > "$OUT_RUN"

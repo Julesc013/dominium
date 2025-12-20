@@ -2,12 +2,13 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
      xmlns:bal="http://schemas.microsoft.com/wix/BalExtension">
   <Bundle
+    Id="$(var.BundleCode)"
     Name="Dominium"
     Version="$(var.ProductVersion)"
     Manufacturer="$(var.Manufacturer)"
-    UpgradeCode="5DD3A6BD-4F3B-4E0C-B5D1-0B2C879C98E3"
+    UpgradeCode="$(var.BundleUpgradeCode)"
     Compressed="yes"
-    PerMachine="yes"
+    PerMachine="no"
     DisableModify="no"
     <?if $(var.BundleIcon) != ""?>
     IconSourceFile="$(var.BundleIcon)"

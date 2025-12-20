@@ -1,0 +1,2 @@
+{"schema_version":1,"command":"verify","status":"ok","status_code":0,"details":{"core_status":0,"core_status_name":"success","state_file":"install/.dsu/installed_state.dsustate","format":"json","checked":2,"ok":2,"missing":0,"modified":0,"extra":0,"errors":0,"report":{"checked":2,"ok":2,"missing":0,"modified":0,"extra":0,"errors":0,"missing_paths":[],"modified_paths":[],"extra_paths":[],"error_paths":[]}
+,"error":""}}

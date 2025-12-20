@@ -43,6 +43,7 @@ typedef u32 dom_subsystem_id;
 /* Built-in subsystem IDs (stable numeric identifiers). */
 #define DOM_SUBSYS_DSYS ((dom_subsystem_id)0x44535953u) /* 'DSYS' */
 #define DOM_SUBSYS_DGFX ((dom_subsystem_id)0x44474658u) /* 'DGFX' */
+#define DOM_SUBSYS_DUI  ((dom_subsystem_id)0x44554920u) /* 'DUI ' */
 
 /* dom_caps_perf_class: Public type used by `caps`. */
 typedef enum dom_caps_perf_class_e {
