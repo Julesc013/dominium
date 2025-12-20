@@ -59,6 +59,11 @@ const char* dom_build_id(void);
  * Returns: Non-NULL on success; NULL on failure or when not found.
  */
 const char* dom_git_hash(void);
+/* Purpose: Id dom toolchain.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Non-NULL on success; NULL on failure or when not found.
+ */
+const char* dom_toolchain_id(void);
 
 /* Deterministic simulation schema identifier (public serialization ABI). */
 u64 dom_sim_schema_id(void);

@@ -1,12 +1,7 @@
 #!/bin/sh
 set -e
 
-INSTALL_DIR="/opt/dominium"
-CLI_BIN="$INSTALL_DIR/dominium-setup-cli"
-
-# Clean up any residual state after removal.
-if [ "$1" = "purge" ] && [ -x "$CLI_BIN" ]; then
-    "$CLI_BIN" --scope=system --action=uninstall --dir="$INSTALL_DIR" || true
-fi
+# No post-remove actions beyond what prerm already invoked.
+# State cleanup is handled by Setup Core uninstall policy.
 
 exit 0

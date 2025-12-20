@@ -1,92 +1,139 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.16)
 
-file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+# Packaging helpers (deterministic staging + portable archives).
+#
+# This directory is only added when `DOMINIUM_ENABLE_PACKAGING=ON`.
+# Packaging must not change runtime behavior; it only stages already-built binaries/data.
 
-# Configure POSIX scripts
-if (UNIX)
-    if (APPLE)
-        set(DOM_LAUNCHER_PLATFORM "MACOSX")
-        set(DOM_LAUNCHER_BINARY   "dom_launcher")
-        set(DOM_SETUP_BINARY      "dom_setup")
-    else()
-        set(DOM_LAUNCHER_PLATFORM "POSIX")
-        set(DOM_LAUNCHER_BINARY   "dom_launcher")
-        set(DOM_SETUP_BINARY      "dom_setup")
-    endif()
+set(DOMINIUM_DIST_DIR "${CMAKE_BINARY_DIR}/dist/stage" CACHE PATH "Staging directory for portable packages (bundle root)")
+set(DOMINIUM_PACKAGE_DIR "${CMAKE_BINARY_DIR}/dist/packages" CACHE PATH "Output directory for portable packages")
+set(DOMINIUM_PACKAGE_VERSION "${DOM_BUILD_ID}" CACHE STRING "Version string used in portable package names and repo/products/<version> layout")
 
-    configure_file(
-        ${CMAKE_SOURCE_DIR}/packaging/scripts/dominium.sh.in
-        ${CMAKE_BINARY_DIR}/bin/dominium
-        @ONLY
-    )
-    configure_file(
-        ${CMAKE_SOURCE_DIR}/packaging/scripts/setup.sh.in
-        ${CMAKE_BINARY_DIR}/bin/setup
-        @ONLY
-    )
-    configure_file(
-        ${CMAKE_SOURCE_DIR}/packaging/scripts/dom-client.sh.in
-        ${CMAKE_BINARY_DIR}/bin/dom-client
-        @ONLY
-    )
-    configure_file(
-        ${CMAKE_SOURCE_DIR}/packaging/scripts/dom-server.sh.in
-        ${CMAKE_BINARY_DIR}/bin/dom-server
-        @ONLY
-    )
-
-    install(PROGRAMS
-        ${CMAKE_BINARY_DIR}/bin/dominium
-        ${CMAKE_BINARY_DIR}/bin/setup
-        ${CMAKE_BINARY_DIR}/bin/dom-client
-        ${CMAKE_BINARY_DIR}/bin/dom-server
-        DESTINATION bin
-    )
+if(DOMINIUM_PACKAGE_VERSION STREQUAL "" OR DOMINIUM_PACKAGE_VERSION STREQUAL "unknown")
+    set(DOMINIUM_PACKAGE_VERSION "0.1.0" CACHE STRING "Version string used in portable package names and repo/products/<version> layout" FORCE)
 endif()
 
-# Configure Windows scripts
-if (WIN32)
-    set(DOM_LAUNCHER_BINARY "dom_launcher.exe")
-    set(DOM_SETUP_BINARY    "dom_setup.exe")
-
-    configure_file(
-        ${CMAKE_SOURCE_DIR}/packaging/scripts/dominium.cmd.in
-        ${CMAKE_BINARY_DIR}/bin/dominium.cmd
-        @ONLY
-    )
-    configure_file(
-        ${CMAKE_SOURCE_DIR}/packaging/scripts/setup.cmd.in
-        ${CMAKE_BINARY_DIR}/bin/setup.cmd
-        @ONLY
-    )
-    configure_file(
-        ${CMAKE_SOURCE_DIR}/packaging/scripts/dom-client.cmd.in
-        ${CMAKE_BINARY_DIR}/bin/dom-client.cmd
-        @ONLY
-    )
-    configure_file(
-        ${CMAKE_SOURCE_DIR}/packaging/scripts/dom-server.cmd.in
-        ${CMAKE_BINARY_DIR}/bin/dom-server.cmd
-        @ONLY
-    )
-
-    install(PROGRAMS
-        ${CMAKE_BINARY_DIR}/bin/dominium.cmd
-        ${CMAKE_BINARY_DIR}/bin/setup.cmd
-        ${CMAKE_BINARY_DIR}/bin/dom-client.cmd
-        ${CMAKE_BINARY_DIR}/bin/dom-server.cmd
-        DESTINATION bin
-    )
+find_program(DOMINIUM_PYTHON NAMES python3 python)
+if(NOT DOMINIUM_PYTHON)
+    message(WARNING "python not found; packaging helper targets disabled")
+    return()
 endif()
 
-if (WIN32)
+set(_dom_conf_bin_dir "${CMAKE_BINARY_DIR}/dist/_configured/bin")
+file(MAKE_DIRECTORY "${_dom_conf_bin_dir}")
+
+if(WIN32)
+    set(DOM_LAUNCHER_BINARY "dominium-launcher.exe")
+    configure_file(
+        "${CMAKE_CURRENT_SOURCE_DIR}/scripts/dominium.cmd.in"
+        "${_dom_conf_bin_dir}/dominium.cmd"
+        @ONLY
+    )
+else()
+    set(DOM_LAUNCHER_BINARY "dominium-launcher")
+    configure_file(
+        "${CMAKE_CURRENT_SOURCE_DIR}/scripts/dominium.sh.in"
+        "${_dom_conf_bin_dir}/dominium"
+        @ONLY
+    )
+    file(CHMOD "${_dom_conf_bin_dir}/dominium"
+        PERMISSIONS
+            OWNER_READ OWNER_WRITE OWNER_EXECUTE
+            GROUP_READ GROUP_EXECUTE
+            WORLD_READ WORLD_EXECUTE)
+endif()
+
+set(DOMINIUM_DIST_STAMP "${DOMINIUM_DIST_DIR}/.stage_stamp")
+add_custom_command(
+    OUTPUT "${DOMINIUM_DIST_STAMP}"
+    COMMAND "${CMAKE_COMMAND}"
+        -DSTAGE_DIR="${DOMINIUM_DIST_DIR}"
+        -DVERSION="${DOMINIUM_PACKAGE_VERSION}"
+        -DLAUNCHER_BIN="$<TARGET_FILE:dominium-launcher>"
+        -DGAME_BIN="$<TARGET_FILE:dominium_game>"
+        -DSETUP_BIN="$<TARGET_FILE:dominium-setup>"
+        -DCONFIGURED_BIN_DIR="${_dom_conf_bin_dir}"
+        -DSOURCE_DIR="${CMAKE_SOURCE_DIR}"
+        -P "${CMAKE_CURRENT_SOURCE_DIR}/stage_dist.cmake"
+    DEPENDS
+        dominium-launcher
+        dominium_game
+        dominium-setup
+        "${CMAKE_CURRENT_SOURCE_DIR}/stage_dist.cmake"
+        "${CMAKE_CURRENT_SOURCE_DIR}/scripts/dominium.cmd.in"
+        "${CMAKE_CURRENT_SOURCE_DIR}/scripts/dominium.sh.in"
+    COMMENT "Staging Dominium portable dist into ${DOMINIUM_DIST_DIR}"
+    VERBATIM
+)
+
+add_custom_target(dominium_stage_dist
+    DEPENDS "${DOMINIUM_DIST_STAMP}"
+)
+
+file(MAKE_DIRECTORY "${DOMINIUM_PACKAGE_DIR}")
+
+set(_package_root_name "Dominium-${DOMINIUM_PACKAGE_VERSION}")
+
+if(WIN32)
+    set(_portable_zip "${DOMINIUM_PACKAGE_DIR}/${_package_root_name}-portable-win32.zip")
+    add_custom_command(
+        OUTPUT "${_portable_zip}"
+        COMMAND "${CMAKE_COMMAND}" -E make_directory "${DOMINIUM_PACKAGE_DIR}"
+        COMMAND "${DOMINIUM_PYTHON}" "${CMAKE_CURRENT_SOURCE_DIR}/make_deterministic_archive.py"
+            --format zip
+            --input "${DOMINIUM_DIST_DIR}"
+            --output "${_portable_zip}"
+            --root-name "${_package_root_name}"
+        DEPENDS "${DOMINIUM_DIST_STAMP}" "${CMAKE_CURRENT_SOURCE_DIR}/make_deterministic_archive.py"
+        COMMENT "Building portable ZIP: ${_portable_zip}"
+        VERBATIM
+    )
+    add_custom_target(dominium_portable_zip DEPENDS "${_portable_zip}")
+endif()
+
+if(UNIX AND NOT APPLE)
+    set(_portable_tgz "${DOMINIUM_PACKAGE_DIR}/${_package_root_name}-portable-linux.tar.gz")
+    add_custom_command(
+        OUTPUT "${_portable_tgz}"
+        COMMAND "${CMAKE_COMMAND}" -E make_directory "${DOMINIUM_PACKAGE_DIR}"
+        COMMAND "${DOMINIUM_PYTHON}" "${CMAKE_CURRENT_SOURCE_DIR}/make_deterministic_archive.py"
+            --format tar.gz
+            --input "${DOMINIUM_DIST_DIR}"
+            --output "${_portable_tgz}"
+            --root-name "${_package_root_name}"
+        DEPENDS "${DOMINIUM_DIST_STAMP}" "${CMAKE_CURRENT_SOURCE_DIR}/make_deterministic_archive.py"
+        COMMENT "Building portable tarball: ${_portable_tgz}"
+        VERBATIM
+    )
+    add_custom_target(dominium_portable_tgz DEPENDS "${_portable_tgz}")
+endif()
+
+if(APPLE)
+    # Portable tarball for macOS (app bundle creation handled in macos/).
+    set(_portable_tgz "${DOMINIUM_PACKAGE_DIR}/${_package_root_name}-portable-macos.tar.gz")
+    add_custom_command(
+        OUTPUT "${_portable_tgz}"
+        COMMAND "${CMAKE_COMMAND}" -E make_directory "${DOMINIUM_PACKAGE_DIR}"
+        COMMAND "${DOMINIUM_PYTHON}" "${CMAKE_CURRENT_SOURCE_DIR}/make_deterministic_archive.py"
+            --format tar.gz
+            --input "${DOMINIUM_DIST_DIR}"
+            --output "${_portable_tgz}"
+            --root-name "${_package_root_name}"
+        DEPENDS "${DOMINIUM_DIST_STAMP}" "${CMAKE_CURRENT_SOURCE_DIR}/make_deterministic_archive.py"
+        COMMENT "Building portable tarball: ${_portable_tgz}"
+        VERBATIM
+    )
+    add_custom_target(dominium_portable_tgz DEPENDS "${_portable_tgz}")
+endif()
+
+# Platform-specific installers/bundles (optional; do not affect portability targets).
+if(WIN32)
     add_subdirectory(windows)
 endif()
-
-if (APPLE)
+if(APPLE)
     add_subdirectory(macos)
 endif()
-
-if (UNIX AND NOT APPLE)
+if(UNIX AND NOT APPLE)
     add_subdirectory(linux)
 endif()
+

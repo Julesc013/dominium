@@ -106,6 +106,7 @@ Makefile
 *_autogen.h
 *_generated.h
 *_config.h
+!source/dominium/launcher/core/include/launcher_instance_config.h
 *_tables.h
 
 # Generated code from scripts or tools
@@ -297,6 +298,7 @@ venv/
 !/ports/**/config/**
 !/ports/**/include/**
 !/external/licenses/**
+!/source/dominium/setup/core/include/dsu/dsu_config.h
 
 
 # ---------------------------------------------------------------------

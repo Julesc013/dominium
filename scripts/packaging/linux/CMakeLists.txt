@@ -7,9 +7,10 @@ endif()
 option(DOMINIUM_BUILD_DEB "Build Debian package" ON)
 option(DOMINIUM_BUILD_RPM "Build RPM package" ON)
 option(DOMINIUM_BUILD_RUN "Build self-extracting .run installer" ON)
+option(DOMINIUM_BUILD_APPDIR "Build AppImage-like AppDir layout (directory, not .AppImage)" OFF)
 
 set(DOMINIUM_VERSION "1.0.0" CACHE STRING "Dominium product version for Linux packaging")
-set(DOMINIUM_DIST_DIR "${CMAKE_BINARY_DIR}/dist" CACHE PATH "Staging directory with dominium binaries/data")
+set(DOMINIUM_DIST_DIR "${CMAKE_BINARY_DIR}/dist/stage" CACHE PATH "Staging directory with dominium portable bundle root")
 set(DOMINIUM_INSTALLER_DIR "${CMAKE_BINARY_DIR}/dist/installers/linux" CACHE PATH "Output directory for Linux installers")
 set(DOMINIUM_DEB_DEPENDS "libc6, libstdc++6" CACHE STRING "Debian dependencies")
 set(DOMINIUM_DEB_MAINTAINER "Dominium Team <support@dominium.invalid>" CACHE STRING "Debian maintainer field")
@@ -21,6 +22,7 @@ find_program(RPMBUILD_EXECUTABLE rpmbuild)
 find_program(BASH_EXECUTABLE bash)
 
 file(MAKE_DIRECTORY "${DOMINIUM_INSTALLER_DIR}")
+set(_stage_stamp "${DOMINIUM_DIST_DIR}/.stage_stamp")
 
 # Configure static templates
 set(VERSION "${DOMINIUM_VERSION}")
@@ -59,7 +61,7 @@ if(DOMINIUM_BUILD_DEB)
             COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_CURRENT_SOURCE_DIR}/deb/DEBIAN/postrm" "${_deb_root}/DEBIAN/postrm"
             COMMAND "${CMAKE_COMMAND}" -E chmod 0755 "${_deb_root}/DEBIAN/postinst" "${_deb_root}/DEBIAN/prerm" "${_deb_root}/DEBIAN/postrm"
             COMMAND "${DPKG_DEB_EXECUTABLE}" --build "${_deb_root}" "${_deb_pkg}"
-            DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/deb/control"
+            DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/deb/control" "${_stage_stamp}"
             COMMENT "dpkg-deb -> ${_deb_pkg}"
         )
 
@@ -92,7 +94,7 @@ if(DOMINIUM_BUILD_RPM)
                 --define "_buildrootdir ${_rpm_top}/BUILDROOT"
                 --define "_rpmfilename %%{NAME}-%%{VERSION}-%%{RELEASE}.%%{ARCH}.rpm"
                 "${CMAKE_CURRENT_BINARY_DIR}/rpm/dominium.spec"
-            DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/rpm/dominium.spec"
+            DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/rpm/dominium.spec" "${_stage_stamp}"
             COMMENT "rpmbuild -> ${_rpm_pkg}"
         )
 
@@ -115,7 +117,7 @@ if(DOMINIUM_BUILD_RUN)
                 OUT_DIR="${DOMINIUM_INSTALLER_DIR}"
                 STUB_TEMPLATE="${CMAKE_CURRENT_SOURCE_DIR}/dominium-installer.sh.in"
                 "${BASH_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/build_run.sh"
-            DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/build_run.sh" "${CMAKE_CURRENT_SOURCE_DIR}/dominium-installer.sh.in"
+            DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/build_run.sh" "${CMAKE_CURRENT_SOURCE_DIR}/dominium-installer.sh.in" "${_stage_stamp}"
             COMMENT "Building Dominium self-extracting .run"
         )
 
@@ -123,4 +125,26 @@ if(DOMINIUM_BUILD_RUN)
             DEPENDS "${_run_path}"
         )
     endif()
+endif()
+
+if(DOMINIUM_BUILD_APPDIR)
+    set(_appdir_root "${DOMINIUM_INSTALLER_DIR}/Dominium.AppDir")
+    set(_appdir_stamp "${_appdir_root}/.appdir-stamp")
+    add_custom_command(
+        OUTPUT "${_appdir_stamp}"
+        COMMAND "${CMAKE_COMMAND}" -E rm -rf "${_appdir_root}"
+        COMMAND "${CMAKE_COMMAND}" -E make_directory "${_appdir_root}"
+        COMMAND "${CMAKE_COMMAND}" -E copy_directory "${DOMINIUM_DIST_DIR}/" "${_appdir_root}"
+        COMMAND "${CMAKE_COMMAND}"
+            -DOUT="${_appdir_root}/AppRun"
+            -P "${CMAKE_CURRENT_SOURCE_DIR}/write_apprun.cmake"
+        COMMAND "${CMAKE_COMMAND}" -E touch "${_appdir_stamp}"
+        DEPENDS "${_stage_stamp}" "${CMAKE_CURRENT_SOURCE_DIR}/write_apprun.cmake"
+        COMMENT "Staging AppDir layout at ${_appdir_root}"
+        VERBATIM
+    )
+
+    add_custom_target(dominium_appdir
+        DEPENDS "${_appdir_stamp}"
+    )
 endif()

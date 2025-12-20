@@ -41,5 +41,6 @@
 /* Build metadata */
 #define DOM_BUILD_ID                   "@DOM_BUILD_ID@"
 #define DOM_GIT_HASH                   "@DOM_GIT_HASH@"
+#define DOM_TOOLCHAIN_ID               "@DOM_TOOLCHAIN_ID@"
 
 #endif /* DOMINO_CONFIG_BASE_H */

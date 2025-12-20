@@ -25,6 +25,7 @@ function(dominium_baseline_header_check root_dir)
 
         file(STRINGS "${header_path}" lines)
         set(line_no 0)
+        set(in_block_comment 0)
         foreach(line IN LISTS lines)
             math(EXPR line_no "${line_no} + 1")
 
@@ -33,12 +34,43 @@ function(dominium_baseline_header_check root_dir)
             string(REPLACE ";" "\\;" line_disp "${line_disp}")
 
             # ------------------------------------------------------------
+            # Comment stripping (avoid false positives from doc blocks)
+            # ------------------------------------------------------------
+            set(line_scan "${line}")
+
+            # If we're currently inside a /* ... */ block, ignore until the closing */.
+            if(in_block_comment)
+                if(line_scan MATCHES "\\*/")
+                    # Drop up to and including the first */ and keep scanning the remainder.
+                    string(REGEX REPLACE "^.*\\*/" "" line_scan "${line_scan}")
+                    set(in_block_comment 0)
+                else()
+                    continue()
+                endif()
+            endif()
+
+            # Strip any /* ... */ segments on this line; enter block mode if unterminated.
+            if(line_scan MATCHES "/\\*")
+                if(line_scan MATCHES "/\\*.*\\*/")
+                    string(REGEX REPLACE "/\\*.*\\*/" "" line_scan "${line_scan}")
+                else()
+                    string(REGEX REPLACE "/\\*.*$" "" line_scan "${line_scan}")
+                    set(in_block_comment 1)
+                endif()
+            endif()
+
+            # Strip // comments for token scanning (C89-only rule is handled separately below).
+            if(line_scan MATCHES "//")
+                string(REGEX REPLACE "//.*$" "" line_scan "${line_scan}")
+            endif()
+
+            # ------------------------------------------------------------
             # Forbidden includes (baseline-visible public headers)
             # ------------------------------------------------------------
-            if(line MATCHES "<stdint\\.h>")
+            if(line_scan MATCHES "^[ \t]*#[ \t]*include[ \t]*<stdint\\.h>")
                 list(APPEND violations "${rel}:${line_no}: forbidden include: <stdint.h>: ${line_disp}")
             endif()
-            if(line MATCHES "<stdbool\\.h>")
+            if(line_scan MATCHES "^[ \t]*#[ \t]*include[ \t]*<stdbool\\.h>")
                 list(APPEND violations "${rel}:${line_no}: forbidden include: <stdbool.h>: ${line_disp}")
             endif()
 
@@ -46,21 +78,21 @@ function(dominium_baseline_header_check root_dir)
             # Forbidden keywords / constructs
             # ------------------------------------------------------------
             foreach(kw IN ITEMS constexpr nullptr noexcept override final thread_local auto inline)
-                if(line MATCHES "(^|[^A-Za-z0-9_])${kw}([^A-Za-z0-9_]|$)")
+                if(line_scan MATCHES "(^|[^A-Za-z0-9_])${kw}([^A-Za-z0-9_]|$)")
                     list(APPEND violations "${rel}:${line_no}: forbidden token: ${kw}: ${line_disp}")
                 endif()
             endforeach()
 
-            if(line MATCHES "long[ \t]+long")
+            if(line_scan MATCHES "long[ \t]+long")
                 list(APPEND violations "${rel}:${line_no}: forbidden token: long long: ${line_disp}")
             endif()
 
-            if(line MATCHES "\\.[A-Za-z_][A-Za-z0-9_]*[ \t]*=")
+            if(line_scan MATCHES "\\.[A-Za-z_][A-Za-z0-9_]*[ \t]*=")
                 list(APPEND violations "${rel}:${line_no}: forbidden C99 designated initializer: ${line_disp}")
             endif()
 
             # C89 headers must not use // comments.
-            if(is_c89_header AND line MATCHES "//")
+            if(is_c89_header AND NOT in_block_comment AND line MATCHES "//")
                 list(APPEND violations "${rel}:${line_no}: forbidden C++-style comment in C89 header: ${line_disp}")
             endif()
         endforeach()
@@ -75,4 +107,3 @@ function(dominium_baseline_header_check root_dir)
         )
     endif()
 endfunction()
-

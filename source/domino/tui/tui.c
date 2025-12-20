@@ -349,6 +349,10 @@ void d_tui_handle_key(d_tui_context* ctx, int keycode) {
         } else {
             d_tui_focus_next(ctx);
         }
+    } else if (keycode == D_TUI_KEY_LEFT) {
+        d_tui_focus_prev(ctx);
+    } else if (keycode == D_TUI_KEY_RIGHT) {
+        d_tui_focus_next(ctx);
     } else if (keycode == D_TUI_KEY_ENTER) {
         if (focused && focused->on_activate) {
             focused->on_activate(focused, focused->user);

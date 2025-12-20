@@ -545,6 +545,52 @@ set_target_properties(domino_sys_smoke PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
 )
 
+add_executable(domino_dui_smoke
+    domino_dui_smoke.c
+)
+
+target_include_directories(domino_dui_smoke PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+)
+
+target_link_libraries(domino_dui_smoke
+    domino_core
+)
+
+set_target_properties(domino_dui_smoke PROPERTIES
+    C_STANDARD 90
+    C_STANDARD_REQUIRED ON
+    C_EXTENSIONS OFF
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
+)
+
+add_test(NAME domino_dui_smoke_null COMMAND domino_dui_smoke null)
+add_test(NAME domino_dui_smoke_dgfx COMMAND domino_dui_smoke dgfx)
+if(WIN32)
+    add_test(NAME domino_dui_smoke_native COMMAND domino_dui_smoke win32)
+endif()
+
+add_executable(dominium_launcher_ui_backend_swap_test
+    launcher_ui_backend_swap_test.c
+)
+
+target_include_directories(dominium_launcher_ui_backend_swap_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+)
+
+target_link_libraries(dominium_launcher_ui_backend_swap_test
+    domino_core
+)
+
+set_target_properties(dominium_launcher_ui_backend_swap_test PROPERTIES
+    C_STANDARD 90
+    C_STANDARD_REQUIRED ON
+    C_EXTENSIONS OFF
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
+)
+
+add_test(NAME dominium_launcher_ui_backend_swap_test COMMAND dominium_launcher_ui_backend_swap_test)
+
 add_executable(dgfx_demo
     ../../tests/domino_gfx/dgfx_demo.c
 )

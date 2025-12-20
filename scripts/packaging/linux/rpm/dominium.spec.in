@@ -10,7 +10,7 @@ Requires:       @REQUIRES@
 
 %description
 Dominium binaries and setup helper. Installation and repair are performed by
-dominium-setup-cli for consistent layout across platforms.
+dominium-setup for consistent layout across platforms.
 
 %prep
 %setup -T -c -a 0
@@ -20,17 +20,21 @@ dominium-setup-cli for consistent layout across platforms.
 
 %install
 rm -rf %{buildroot}
-mkdir -p %{buildroot}/opt/dominium
-cp -a %{_sourcedir}/dominium/. %{buildroot}/opt/dominium/
+mkdir -p %{buildroot}/opt/dominium/artifact_root
+cp -a %{_sourcedir}/dominium/artifact_root/. %{buildroot}/opt/dominium/artifact_root/
 
 %post
-if [ -x /opt/dominium/dominium-setup-cli ]; then
-    /opt/dominium/dominium-setup-cli --scope=system --action=install --dir=/opt/dominium || true
+if [ -x /opt/dominium/artifact_root/setup/dominium-setup ]; then
+    cd /opt/dominium/artifact_root
+    /opt/dominium/artifact_root/setup/dominium-setup --deterministic 1 plan --manifest setup/manifests/product.dsumanifest --op install --scope system --out /tmp/dominium_install.dsuplan || true
+    /opt/dominium/artifact_root/setup/dominium-setup --deterministic 1 apply --plan /tmp/dominium_install.dsuplan || true
 fi
 
 %preun
-if [ $1 -eq 0 ] && [ -x /opt/dominium/dominium-setup-cli ]; then
-    /opt/dominium/dominium-setup-cli --scope=system --action=uninstall --dir=/opt/dominium || true
+if [ $1 -eq 0 ] && [ -x /opt/dominium/artifact_root/setup/dominium-setup ] && [ -f /opt/dominium/.dsu/installed_state.dsustate ]; then
+    cd /opt/dominium/artifact_root
+    /opt/dominium/artifact_root/setup/dominium-setup --deterministic 1 plan --manifest setup/manifests/product.dsumanifest --state /opt/dominium/.dsu/installed_state.dsustate --op uninstall --scope system --out /tmp/dominium_uninstall.dsuplan || true
+    /opt/dominium/artifact_root/setup/dominium-setup --deterministic 1 apply --plan /tmp/dominium_uninstall.dsuplan || true
 fi
 
 %files

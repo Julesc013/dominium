@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  WiX authoring template (design-level) for Dominium Setup (Plan S-6).
+
+  This template is intentionally minimal. It demonstrates:
+  - mapping installer selections to dominium-setup-win parameters
+  - invoking Setup Core through the Windows adapter executable
+
+  NOTE: IDs, GUIDs, file paths, and UI flow must be filled in by the packaging pipeline.
+-->
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product
+    Id="*"
+    Name="Dominium"
+    Manufacturer="Dominium"
+    Version="1.0.0"
+    Language="1033"
+    UpgradeCode="PUT-GUID-HERE">
+
+    <Package InstallerVersion="500" Compressed="yes" InstallScope="perMachine" />
+
+    <!-- Example properties mapped from UI/command line -->
+    <Property Id="DSU_PLAN_PATH" Value="[INSTALLFOLDER]dominium.dsuplan" />
+    <Property Id="DSU_STATE_PATH" Value="[INSTALLFOLDER].dsu\\installed_state.dsustate" />
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLFOLDER" Name="Dominium">
+          <Component Id="cmpSetupWin" Guid="PUT-GUID-HERE">
+            <File Id="filSetupWin" Source="dominium-setup-win.exe" KeyPath="yes" />
+          </Component>
+        </Directory>
+      </Directory>
+    </Directory>
+
+    <Feature Id="MainFeature" Title="Dominium" Level="1">
+      <ComponentRef Id="cmpSetupWin" />
+    </Feature>
+
+    <!--
+      Install sequence (design-level):
+      - Apply plan: install
+      - Register platform integrations: platform-register
+    -->
+    <CustomAction
+      Id="CA_DSU_INSTALL"
+      FileKey="filSetupWin"
+      Execute="deferred"
+      Impersonate="no"
+      Return="check"
+      ExeCommand='install --plan "[DSU_PLAN_PATH]" /quiet --log "[INSTALLFOLDER]audit.dsu.log"' />
+
+    <CustomAction
+      Id="CA_DSU_REGISTER"
+      FileKey="filSetupWin"
+      Execute="deferred"
+      Impersonate="no"
+      Return="check"
+      ExeCommand='platform-register --state "[DSU_STATE_PATH]" /quiet --log "[INSTALLFOLDER]audit.dsu.log"' />
+
+    <!--
+      Uninstall sequence (design-level):
+      - Unregister: platform-unregister
+      - Uninstall: uninstall
+    -->
+    <CustomAction
+      Id="CA_DSU_UNREGISTER"
+      FileKey="filSetupWin"
+      Execute="deferred"
+      Impersonate="no"
+      Return="check"
+      ExeCommand='platform-unregister --state "[DSU_STATE_PATH]" /quiet --log "[INSTALLFOLDER]audit.dsu.log"' />
+
+    <CustomAction
+      Id="CA_DSU_UNINSTALL"
+      FileKey="filSetupWin"
+      Execute="deferred"
+      Impersonate="no"
+      Return="check"
+      ExeCommand='uninstall --state "[DSU_STATE_PATH]" /quiet --log "[INSTALLFOLDER]audit.dsu.log"' />
+
+    <InstallExecuteSequence>
+      <Custom Action="CA_DSU_INSTALL" After="InstallFiles">NOT Installed</Custom>
+      <Custom Action="CA_DSU_REGISTER" After="CA_DSU_INSTALL">NOT Installed</Custom>
+      <Custom Action="CA_DSU_UNREGISTER" Before="RemoveFiles">REMOVE="ALL"</Custom>
+      <Custom Action="CA_DSU_UNINSTALL" After="CA_DSU_UNREGISTER">REMOVE="ALL"</Custom>
+    </InstallExecuteSequence>
+  </Product>
+</Wix>
+

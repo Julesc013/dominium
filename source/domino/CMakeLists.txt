@@ -1,5 +1,21 @@
 cmake_minimum_required(VERSION 3.16)
 
+add_library(dom_shared STATIC
+    system/core/base/shared/os_paths.cpp
+    system/core/base/shared/json.cpp
+    system/core/base/shared/logging.cpp
+    system/core/base/shared/uuid.cpp
+    system/core/base/shared/manifest_install.cpp
+    system/core/base/shared/process.cpp
+)
+
+target_include_directories(dom_shared
+    PUBLIC
+        ${CMAKE_SOURCE_DIR}/include/dominium/_internal/dom_priv
+)
+
+target_compile_features(dom_shared PRIVATE cxx_std_98)
+
 add_library(domino_core STATIC
     core/types.c
     core/dom_build_info.c
@@ -141,6 +157,14 @@ add_library(domino_core STATIC
     replay/d_replay.c
     view/d_view.c
     ui/d_ui.c
+    dui/dui_event_queue.c
+    dui/dui_schema_parse.c
+    dui/dui_caps.c
+    dui/dui_null.c
+    dui/dui_dgfx.c
+    $<$<BOOL:${WIN32}>:dui/dui_win32.c>
+    dui/dui_gtk.c
+    dui/dui_macos.c
     sim/d_sim.c
     sim/d_sim_process.c
     sim/d_sim_hash.c
@@ -499,5 +523,5 @@ set_target_properties(domino_core PROPERTIES
 )
 
 if(WIN32)
-    target_link_libraries(domino_core PRIVATE user32 gdi32)
+    target_link_libraries(domino_core PRIVATE user32 gdi32 comctl32)
 endif()
