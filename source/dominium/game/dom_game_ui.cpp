@@ -25,6 +25,7 @@ namespace {
 
 static dui_widget *g_status_label = (dui_widget *)0;
 static dui_widget *g_start_button = (dui_widget *)0;
+static dui_widget *g_exit_button = (dui_widget *)0;
 static dui_widget *g_place_button = (dui_widget *)0;
 static dui_widget *g_place_refiner_button = (dui_widget *)0;
 static dui_widget *g_place_assembler_button = (dui_widget *)0;
@@ -34,11 +35,13 @@ static dui_widget *g_cancel_tool_button = (dui_widget *)0;
 static dui_widget *g_instance_label = (dui_widget *)0;
 static dui_widget *g_remaining_label = (dui_widget *)0;
 static dui_widget *g_inventory_label = (dui_widget *)0;
+static dui_widget *g_loading_status_label = (dui_widget *)0;
 static DomGameApp *g_ui_app = (DomGameApp *)0;
 
 static void clear_children(dui_context &ctx) {
     g_status_label = (dui_widget *)0;
     g_start_button = (dui_widget *)0;
+    g_exit_button = (dui_widget *)0;
     g_place_button = (dui_widget *)0;
     g_place_refiner_button = (dui_widget *)0;
     g_place_assembler_button = (dui_widget *)0;
@@ -48,6 +51,7 @@ static void clear_children(dui_context &ctx) {
     g_instance_label = (dui_widget *)0;
     g_remaining_label = (dui_widget *)0;
     g_inventory_label = (dui_widget *)0;
+    g_loading_status_label = (dui_widget *)0;
     dom_game_ui_debug_reset();
     if (!ctx.root) {
         return;
@@ -87,6 +91,13 @@ static void on_click_start(dui_widget *self) {
     DomGameApp *app = self ? (DomGameApp *)self->user_data : (DomGameApp *)0;
     if (app) {
         app->request_state_change(GAME_STATE_LOADING);
+    }
+}
+
+static void on_click_exit(dui_widget *self) {
+    DomGameApp *app = self ? (DomGameApp *)self->user_data : (DomGameApp *)0;
+    if (app) {
+        app->request_state_change(GAME_STATE_EXITING);
     }
 }
 
@@ -192,15 +203,55 @@ void dom_game_ui_build_main_menu(dui_context &ctx) {
     if (!panel) {
         return;
     }
+    panel->layout_rect.h = d_q16_16_from_int(200);
 
     label = add_child(ctx, panel, DUI_WIDGET_LABEL);
-    set_text(label, "Dominium Demo");
+    set_text(label, "Dominium");
+
+    label = add_child(ctx, panel, DUI_WIDGET_LABEL);
+    set_text(label, "Prototype Build");
 
     g_start_button = add_child(ctx, panel, DUI_WIDGET_BUTTON);
     if (g_start_button) {
-        set_text(g_start_button, "Start Demo");
+        set_text(g_start_button, "Start Game");
         g_start_button->on_click = on_click_start;
         g_start_button->user_data = (void *)g_ui_app;
+    }
+
+    g_exit_button = add_child(ctx, panel, DUI_WIDGET_BUTTON);
+    if (g_exit_button) {
+        set_text(g_exit_button, "Exit");
+        g_exit_button->on_click = on_click_exit;
+        g_exit_button->user_data = (void *)g_ui_app;
+    }
+}
+
+void dom_game_ui_build_loading(dui_context &ctx) {
+    dui_widget *root = ctx.root;
+    dui_widget *panel;
+    dui_widget *label;
+
+    if (!root) {
+        return;
+    }
+
+    clear_children(ctx);
+
+    panel = add_child(ctx, root, DUI_WIDGET_PANEL);
+    if (!panel) {
+        return;
+    }
+    panel->layout_rect.h = d_q16_16_from_int(160);
+
+    label = add_child(ctx, panel, DUI_WIDGET_LABEL);
+    set_text(label, "Dominium");
+
+    label = add_child(ctx, panel, DUI_WIDGET_LABEL);
+    set_text(label, "Loading");
+
+    g_loading_status_label = add_child(ctx, panel, DUI_WIDGET_LABEL);
+    if (g_loading_status_label) {
+        set_text(g_loading_status_label, "Loading... 0%");
     }
 }
 
@@ -283,6 +334,13 @@ void dom_game_ui_set_status(dui_context &ctx, const char *text) {
     (void)ctx;
     if (g_status_label) {
         g_status_label->text = text;
+    }
+}
+
+void dom_game_ui_set_loading_status(dui_context &ctx, const char *text) {
+    (void)ctx;
+    if (g_loading_status_label) {
+        g_loading_status_label->text = text;
     }
 }
 
