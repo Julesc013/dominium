@@ -25,6 +25,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "dom_game_replay.h"
 #include "dom_game_tools_build.h"
 #include "dominium/version.h"
+#include "dominium/paths.h"
 
 extern "C" {
 #include "domino/core/fixed.h"
@@ -144,6 +145,34 @@ static unsigned suite_version_u32() {
                             DOMINIUM_VERSION_PATCH);
 }
 
+static bool is_dominium_repo_root(const std::string &root) {
+    std::string repo = join(root, "repo");
+    if (!dir_exists(repo)) {
+        return false;
+    }
+    if (dir_exists(join(repo, "mods"))) {
+        return true;
+    }
+    if (dir_exists(join(repo, "packs"))) {
+        return true;
+    }
+    if (dir_exists(join(repo, "products"))) {
+        return true;
+    }
+    return false;
+}
+
+static std::string find_dominium_home_from(const std::string &start) {
+    std::string cur = start.empty() ? std::string(".") : start;
+    for (unsigned i = 0u; i < 10u; ++i) {
+        if (is_dominium_repo_root(cur)) {
+            return cur;
+        }
+        cur = join(cur, "..");
+    }
+    return std::string();
+}
+
 static void apply_default_instance_values(InstanceInfo &inst) {
     inst.world_seed = 12345u;
     inst.world_size_m = 2048u;
@@ -155,12 +184,6 @@ static void apply_default_instance_values(InstanceInfo &inst) {
     inst.last_product_version = DOMINIUM_GAME_VERSION;
     inst.packs.clear();
     inst.mods.clear();
-    {
-        PackRef pref;
-        pref.id = "base";
-        pref.version = 1u;
-        inst.packs.push_back(pref);
-    }
     {
         ModRef mref;
         mref.id = "base_demo";
@@ -730,6 +753,15 @@ bool DomGameApp::init_paths(const GameConfig &cfg) {
         env_home = std::getenv("DOMINIUM_HOME");
         if (env_home && env_home[0] != '\0') {
             home = env_home;
+        }
+    }
+    if (home.empty()) {
+        home = find_dominium_home_from(".");
+        if (home.empty()) {
+            const char *install_root = dmn_get_install_root();
+            if (install_root && install_root[0] != '\0') {
+                home = find_dominium_home_from(install_root);
+            }
         }
     }
     if (home.empty()) {
