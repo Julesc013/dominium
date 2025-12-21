@@ -11,6 +11,7 @@ DETERMINISM: See `docs/SPEC_DETERMINISM.md` for deterministic subsystems; otherw
 VERSIONING / ABI / DATA FORMAT NOTES: N/A (implementation file).
 EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
 */
+#include "core/d_subsystem.h"
 #include "res/d_res.h"
 #include "env/d_env.h"
 #include "world/d_litho.h"
@@ -28,6 +29,17 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "replay/d_replay.h"
 
 static int g_subsystems_initialized = 0;
+
+static void d_subsystems_register_models(void) {
+    u32 i;
+    u32 count = d_subsystem_count();
+    for (i = 0u; i < count; ++i) {
+        const d_subsystem_desc *desc = d_subsystem_get_by_index(i);
+        if (desc && desc->register_models) {
+            desc->register_models();
+        }
+    }
+}
 
 void d_subsystems_init(void) {
     if (g_subsystems_initialized) {
@@ -48,5 +60,6 @@ void d_subsystems_init(void) {
     d_job_init();
     d_net_register_subsystem();
     d_replay_register_subsystem();
+    d_subsystems_register_models();
     g_subsystems_initialized = 1;
 }

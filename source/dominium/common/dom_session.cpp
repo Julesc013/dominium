@@ -184,7 +184,12 @@ bool DomSession::init_engine(const SessionConfig &cfg) {
 
 bool DomSession::load_content(const PackSet &pset) {
     size_t i;
-    unsigned expected_packs = static_cast<unsigned>(m_inst.packs.size()) + (pset.base_loaded ? 1u : 0u);
+    unsigned expected_packs = pset.base_loaded ? 1u : 0u;
+    for (i = 0u; i < m_inst.packs.size(); ++i) {
+        if (!str_ieq(m_inst.packs[i].id, "base")) {
+            expected_packs += 1u;
+        }
+    }
 
     if (pset.pack_blobs.size() != expected_packs) {
         return false;
@@ -220,7 +225,13 @@ bool DomSession::load_content(const PackSet &pset) {
         blob_index = 1u;
     }
 
-    for (i = 0u; blob_index < pset.pack_blobs.size(); ++i, ++blob_index) {
+    for (i = 0u; i < m_inst.packs.size(); ++i) {
+        if (str_ieq(m_inst.packs[i].id, "base")) {
+            continue;
+        }
+        if (blob_index >= pset.pack_blobs.size()) {
+            return false;
+        }
         d_proto_pack_manifest man;
         std::memset(&man, 0, sizeof(man));
         man.id = pack_ids.get(m_inst.packs[i].id);
@@ -232,6 +243,10 @@ bool DomSession::load_content(const PackSet &pset) {
         if (d_content_load_pack(&man) != 0) {
             return false;
         }
+        blob_index += 1u;
+    }
+    if (blob_index != pset.pack_blobs.size()) {
+        return false;
     }
 
     for (i = 0u; i < pset.mod_blobs.size(); ++i) {

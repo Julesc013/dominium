@@ -14,6 +14,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "dom_packset.h"
 
 #include <cstdio>
+#include <cstring>
 #include <vector>
 
 extern "C" {
@@ -23,6 +24,30 @@ extern "C" {
 namespace dom {
 
 namespace {
+
+static int str_ieq(const std::string &a, const char *b) {
+    size_t i;
+    if (!b) {
+        return 0;
+    }
+    if (a.size() != std::strlen(b)) {
+        return 0;
+    }
+    for (i = 0u; i < a.size(); ++i) {
+        char ca = a[i];
+        char cb = b[i];
+        if (ca >= 'A' && ca <= 'Z') ca = static_cast<char>(ca - 'A' + 'a');
+        if (cb >= 'A' && cb <= 'Z') cb = static_cast<char>(cb - 'A' + 'a');
+        if (ca != cb) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+static bool is_base_pack_id(const std::string &id) {
+    return str_ieq(id, "base") != 0;
+}
 
 static bool read_file(const std::string &path, std::vector<unsigned char> &out) {
     void *fh;
@@ -111,6 +136,35 @@ bool PackSet::load_for_instance(const Paths &paths, const InstanceInfo &inst) {
         }
     }
 
+    if (!base_loaded) {
+        const PackRef *base_pref = (const PackRef *)0;
+        for (i = 0u; i < inst.packs.size(); ++i) {
+            if (is_base_pack_id(inst.packs[i].id)) {
+                base_pref = &inst.packs[i];
+                break;
+            }
+        }
+        if (base_pref) {
+            d_tlv_blob blob;
+            std::vector<unsigned char> storage;
+            std::string version = version_string(base_pref->version);
+            std::string pack_dir = join(paths.packs, base_pref->id);
+            std::string ver_dir = join(pack_dir, version);
+            std::string tlv_path = join(ver_dir, "pack.tlv");
+            std::string bin_path = join(ver_dir, "pack.bin");
+
+            if (load_blob_from(tlv_path, storage, blob) || load_blob_from(bin_path, storage, blob)) {
+                m_pack_storage.push_back(std::vector<unsigned char>());
+                m_pack_storage.back().swap(storage);
+                blob.ptr = m_pack_storage.back().empty() ? (unsigned char *)0 : &m_pack_storage.back()[0];
+                blob.len = static_cast<unsigned int>(m_pack_storage.back().size());
+                pack_blobs.push_back(blob);
+                base_loaded = true;
+                base_version = base_pref->version;
+            }
+        }
+    }
+
     for (i = 0u; i < inst.packs.size(); ++i) {
         const PackRef &pref = inst.packs[i];
         d_tlv_blob blob;
@@ -121,6 +175,9 @@ bool PackSet::load_for_instance(const Paths &paths, const InstanceInfo &inst) {
         std::string tlv_path = join(ver_dir, "pack.tlv");
         std::string bin_path = join(ver_dir, "pack.bin");
 
+        if (is_base_pack_id(pref.id)) {
+            continue;
+        }
         if (!load_blob_from(tlv_path, storage, blob)) {
             if (!load_blob_from(bin_path, storage, blob)) {
                 return false;
