@@ -145,6 +145,12 @@ static dui_schema_node* dui_parse_node_payload(const unsigned char* tlv, u32 tlv
     memset(node, 0, sizeof(*node));
     node->v_min = 0u;
     node->v_max = 0u;
+    node->splitter_thickness = 4u;
+    node->tabs_placement = (u32)DUI_TABS_TOP;
+    node->tabs_selected = 0u;
+    node->tab_enabled = 1u;
+    node->scroll_h_enabled = 1u;
+    node->scroll_v_enabled = 1u;
 
     off = 0u;
     while (dtlv_tlv_next(tlv, tlv_len, &off, &tag, &payload, &payload_len) == 0) {
@@ -167,6 +173,30 @@ static dui_schema_node* dui_parse_node_payload(const unsigned char* tlv, u32 tlv
             node->required_caps = dui_read_u64_le(payload, payload_len, 0u);
         } else if (tag == DUI_TLV_VISIBLE_BIND_U32) {
             node->visible_bind_id = dui_read_u32_le(payload, payload_len, 0u);
+        } else if (tag == DUI_TLV_SPLITTER_ORIENT_U32) {
+            node->splitter_orient = dui_read_u32_le(payload, payload_len, 0u);
+        } else if (tag == DUI_TLV_SPLITTER_POS_U32) {
+            node->splitter_pos = dui_read_u32_le(payload, payload_len, 0u);
+        } else if (tag == DUI_TLV_SPLITTER_THICK_U32) {
+            node->splitter_thickness = dui_read_u32_le(payload, payload_len, 4u);
+        } else if (tag == DUI_TLV_SPLITTER_MIN_A_U32) {
+            node->splitter_min_a = dui_read_u32_le(payload, payload_len, 0u);
+        } else if (tag == DUI_TLV_SPLITTER_MIN_B_U32) {
+            node->splitter_min_b = dui_read_u32_le(payload, payload_len, 0u);
+        } else if (tag == DUI_TLV_TABS_SELECTED_U32) {
+            node->tabs_selected = dui_read_u32_le(payload, payload_len, 0u);
+        } else if (tag == DUI_TLV_TABS_PLACEMENT_U32) {
+            node->tabs_placement = dui_read_u32_le(payload, payload_len, (u32)DUI_TABS_TOP);
+        } else if (tag == DUI_TLV_TAB_ENABLED_U32) {
+            node->tab_enabled = dui_read_u32_le(payload, payload_len, 1u);
+        } else if (tag == DUI_TLV_SCROLL_H_ENABLED_U32) {
+            node->scroll_h_enabled = dui_read_u32_le(payload, payload_len, 1u);
+        } else if (tag == DUI_TLV_SCROLL_V_ENABLED_U32) {
+            node->scroll_v_enabled = dui_read_u32_le(payload, payload_len, 1u);
+        } else if (tag == DUI_TLV_SCROLL_X_U32) {
+            node->scroll_x = dui_read_u32_le(payload, payload_len, 0u);
+        } else if (tag == DUI_TLV_SCROLL_Y_U32) {
+            node->scroll_y = dui_read_u32_le(payload, payload_len, 0u);
         } else if (tag == DUI_TLV_VALIDATION_V1) {
             dui_parse_validation(node, payload, payload_len);
         } else if (tag == DUI_TLV_CHILDREN_V1) {
@@ -298,6 +328,10 @@ static i32 dui_pref_h_for_kind(u32 kind)
     case DUI_NODE_ROW: return 40;
     case DUI_NODE_COLUMN: return 40;
     case DUI_NODE_STACK: return 40;
+    case DUI_NODE_SPLITTER: return 200;
+    case DUI_NODE_TABS: return 200;
+    case DUI_NODE_TAB_PAGE: return 200;
+    case DUI_NODE_SCROLL_PANEL: return 200;
     case DUI_NODE_LABEL: return 20;
     case DUI_NODE_BUTTON: return 24;
     case DUI_NODE_CHECKBOX: return 24;
@@ -321,6 +355,10 @@ static i32 dui_pref_w_for_kind(u32 kind)
     case DUI_NODE_ROW:
     case DUI_NODE_COLUMN:
     case DUI_NODE_STACK:
+    case DUI_NODE_SPLITTER:
+    case DUI_NODE_TABS:
+    case DUI_NODE_TAB_PAGE:
+    case DUI_NODE_SCROLL_PANEL:
         return 320;
     default:
         break;
@@ -330,7 +368,13 @@ static i32 dui_pref_w_for_kind(u32 kind)
 
 static int dui_is_layout_kind(u32 kind)
 {
-    return (kind == (u32)DUI_NODE_ROW) || (kind == (u32)DUI_NODE_COLUMN) || (kind == (u32)DUI_NODE_STACK);
+    return (kind == (u32)DUI_NODE_ROW) ||
+           (kind == (u32)DUI_NODE_COLUMN) ||
+           (kind == (u32)DUI_NODE_STACK) ||
+           (kind == (u32)DUI_NODE_SPLITTER) ||
+           (kind == (u32)DUI_NODE_TABS) ||
+           (kind == (u32)DUI_NODE_TAB_PAGE) ||
+           (kind == (u32)DUI_NODE_SCROLL_PANEL);
 }
 
 static void dui_layout_children_column(dui_schema_node* parent, i32 x, i32 y, i32 w, i32 h)
@@ -554,6 +598,239 @@ static void dui_layout_children_stack(dui_schema_node* parent, i32 x, i32 y, i32
     }
 }
 
+static void dui_layout_children_splitter(dui_schema_node* parent, i32 x, i32 y, i32 w, i32 h)
+{
+    dui_schema_node* child;
+    dui_schema_node* a = (dui_schema_node*)0;
+    dui_schema_node* b = (dui_schema_node*)0;
+    i32 thickness;
+    i32 axis_len;
+    i32 avail_axis;
+    i32 pos;
+    i32 min_a;
+    i32 min_b;
+    int is_horizontal;
+
+    if (!parent) {
+        return;
+    }
+
+    child = parent->first_child;
+    if (child) {
+        a = child;
+        b = child->next_sibling;
+    }
+
+    thickness = (i32)parent->splitter_thickness;
+    if (thickness < 1) {
+        thickness = 1;
+    }
+    is_horizontal = (parent->splitter_orient == (u32)DUI_SPLIT_HORIZONTAL) ? 1 : 0;
+    axis_len = is_horizontal ? h : w;
+    avail_axis = axis_len - thickness;
+    if (avail_axis < 0) {
+        avail_axis = 0;
+    }
+    pos = (i32)parent->splitter_pos;
+    if (pos <= 0) {
+        pos = avail_axis / 2;
+    }
+    min_a = (i32)parent->splitter_min_a;
+    min_b = (i32)parent->splitter_min_b;
+    if (min_a < 0) min_a = 0;
+    if (min_b < 0) min_b = 0;
+    if ((min_a + min_b) > avail_axis) {
+        pos = avail_axis / 2;
+    }
+    if (pos < min_a) {
+        pos = min_a;
+    }
+    if (pos > (avail_axis - min_b)) {
+        pos = avail_axis - min_b;
+    }
+    if (pos < 0) {
+        pos = 0;
+    }
+
+    if (a) {
+        if (is_horizontal) {
+            a->x = x;
+            a->y = y;
+            a->w = w;
+            a->h = pos;
+        } else {
+            a->x = x;
+            a->y = y;
+            a->w = pos;
+            a->h = h;
+        }
+        if (dui_is_layout_kind(a->kind)) {
+            dui_schema_layout(a, a->x, a->y, a->w, a->h);
+        }
+    }
+    if (b) {
+        if (is_horizontal) {
+            b->x = x;
+            b->y = y + pos + thickness;
+            b->w = w;
+            b->h = avail_axis - pos;
+        } else {
+            b->x = x + pos + thickness;
+            b->y = y;
+            b->w = avail_axis - pos;
+            b->h = h;
+        }
+        if (dui_is_layout_kind(b->kind)) {
+            dui_schema_layout(b, b->x, b->y, b->w, b->h);
+        }
+    }
+
+    child = parent->first_child;
+    if (child) {
+        child = child->next_sibling;
+        if (child) {
+            child = child->next_sibling;
+        }
+    }
+    while (child) {
+        child->x = 0;
+        child->y = 0;
+        child->w = 0;
+        child->h = 0;
+        if (dui_is_layout_kind(child->kind)) {
+            dui_schema_layout(child, 0, 0, 0, 0);
+        }
+        child = child->next_sibling;
+    }
+}
+
+static void dui_layout_children_tabs(dui_schema_node* parent, i32 x, i32 y, i32 w, i32 h)
+{
+    const i32 strip = 24;
+    dui_schema_node* child;
+    u32 page_count = 0u;
+    u32 selected = 0u;
+    u32 page_index = 0u;
+    int use_explicit_pages = 0;
+    i32 cx = x;
+    i32 cy = y;
+    i32 cw = w;
+    i32 ch = h;
+
+    if (!parent) {
+        return;
+    }
+
+    child = parent->first_child;
+    while (child) {
+        if (child->kind == (u32)DUI_NODE_TAB_PAGE) {
+            use_explicit_pages = 1;
+            break;
+        }
+        child = child->next_sibling;
+    }
+
+    child = parent->first_child;
+    while (child) {
+        if (!use_explicit_pages || child->kind == (u32)DUI_NODE_TAB_PAGE) {
+            page_count += 1u;
+        }
+        child = child->next_sibling;
+    }
+
+    if (page_count > 0u) {
+        selected = parent->tabs_selected;
+        if (selected >= page_count) {
+            selected = page_count - 1u;
+        }
+    }
+
+    switch ((dui_tabs_placement)parent->tabs_placement) {
+    case DUI_TABS_BOTTOM:
+        ch -= strip;
+        break;
+    case DUI_TABS_LEFT:
+        cx += strip;
+        cw -= strip;
+        break;
+    case DUI_TABS_RIGHT:
+        cw -= strip;
+        break;
+    case DUI_TABS_TOP:
+    default:
+        cy += strip;
+        ch -= strip;
+        break;
+    }
+    if (cw < 0) cw = 0;
+    if (ch < 0) ch = 0;
+
+    child = parent->first_child;
+    while (child) {
+        int is_page = (!use_explicit_pages || child->kind == (u32)DUI_NODE_TAB_PAGE) ? 1 : 0;
+        if (is_page) {
+            if (page_index == selected) {
+                child->x = cx;
+                child->y = cy;
+                child->w = cw;
+                child->h = ch;
+                if (dui_is_layout_kind(child->kind)) {
+                    dui_schema_layout(child, child->x, child->y, child->w, child->h);
+                }
+            } else {
+                child->x = 0;
+                child->y = 0;
+                child->w = 0;
+                child->h = 0;
+                if (dui_is_layout_kind(child->kind)) {
+                    dui_schema_layout(child, 0, 0, 0, 0);
+                }
+            }
+            page_index += 1u;
+        } else {
+            child->x = 0;
+            child->y = 0;
+            child->w = 0;
+            child->h = 0;
+            if (dui_is_layout_kind(child->kind)) {
+                dui_schema_layout(child, 0, 0, 0, 0);
+            }
+        }
+        child = child->next_sibling;
+    }
+}
+
+static void dui_layout_children_scrollpanel(dui_schema_node* parent, i32 x, i32 y, i32 w, i32 h)
+{
+    dui_schema_node* child;
+    u32 index = 0u;
+    if (!parent) {
+        return;
+    }
+    child = parent->first_child;
+    while (child) {
+        if (index == 0u) {
+            child->x = x;
+            child->y = y;
+            child->w = (child->w > 0) ? child->w : w;
+            child->h = (child->h > 0) ? child->h : h;
+            if (dui_is_layout_kind(child->kind)) {
+                dui_schema_layout(child, child->x, child->y, child->w, child->h);
+            }
+        } else {
+            child->x = 0;
+            child->y = 0;
+            child->w = 0;
+            child->h = 0;
+            if (dui_is_layout_kind(child->kind)) {
+                dui_schema_layout(child, 0, 0, 0, 0);
+            }
+        }
+        index += 1u;
+        child = child->next_sibling;
+    }
+}
+
 void dui_schema_layout(dui_schema_node* root, i32 x, i32 y, i32 w, i32 h)
 {
     if (!root) {
@@ -572,6 +849,12 @@ void dui_schema_layout(dui_schema_node* root, i32 x, i32 y, i32 w, i32 h)
         dui_layout_children_row(root, x, y, w, h);
     } else if (root->kind == (u32)DUI_NODE_STACK) {
         dui_layout_children_stack(root, x, y, w, h);
+    } else if (root->kind == (u32)DUI_NODE_SPLITTER) {
+        dui_layout_children_splitter(root, x, y, w, h);
+    } else if (root->kind == (u32)DUI_NODE_TABS) {
+        dui_layout_children_tabs(root, x, y, w, h);
+    } else if (root->kind == (u32)DUI_NODE_SCROLL_PANEL) {
+        dui_layout_children_scrollpanel(root, x, y, w, h);
     } else {
         /* default to column */
         dui_layout_children_column(root, x, y, w, h);

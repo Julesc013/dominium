@@ -35,6 +35,24 @@ typedef struct dui_schema_node {
 
     char* text; /* heap; may be NULL */
 
+    /* Splitter properties. */
+    u32 splitter_orient;
+    u32 splitter_pos;
+    u32 splitter_thickness;
+    u32 splitter_min_a;
+    u32 splitter_min_b;
+
+    /* Tabs properties. */
+    u32 tabs_selected;
+    u32 tabs_placement;
+    u32 tab_enabled;
+
+    /* Scroll panel properties. */
+    u32 scroll_h_enabled;
+    u32 scroll_v_enabled;
+    u32 scroll_x;
+    u32 scroll_y;
+
     /* Layout rect (pixels). */
     i32 x;
     i32 y;
@@ -43,6 +61,7 @@ typedef struct dui_schema_node {
 
     /* Backend-native handle (e.g., HWND); opaque to parser. */
     void* native;
+    void* native_aux;
 
     struct dui_schema_node* first_child;
     struct dui_schema_node* next_sibling;

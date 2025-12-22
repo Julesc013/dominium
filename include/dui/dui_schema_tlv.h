@@ -49,6 +49,24 @@ extern "C" {
  */
 #define DUI_TLV_VISIBLE_BIND_U32 ((u32)0x56495342u) /* 'VISB' */
 
+/* Splitter-specific properties (payload = le u32). */
+#define DUI_TLV_SPLITTER_ORIENT_U32 ((u32)0x534F5249u) /* 'SORI' */
+#define DUI_TLV_SPLITTER_POS_U32    ((u32)0x53504F53u) /* 'SPOS' */
+#define DUI_TLV_SPLITTER_THICK_U32  ((u32)0x5354484Bu) /* 'STHK' */
+#define DUI_TLV_SPLITTER_MIN_A_U32  ((u32)0x534D4E41u) /* 'SMNA' */
+#define DUI_TLV_SPLITTER_MIN_B_U32  ((u32)0x534D4E42u) /* 'SMNB' */
+
+/* Tabs-specific properties (payload = le u32). */
+#define DUI_TLV_TABS_SELECTED_U32   ((u32)0x5453454Cu) /* 'TSEL' */
+#define DUI_TLV_TABS_PLACEMENT_U32  ((u32)0x54504C43u) /* 'TPLC' */
+#define DUI_TLV_TAB_ENABLED_U32     ((u32)0x54454E41u) /* 'TENA' */
+
+/* Scroll panel properties (payload = le u32). */
+#define DUI_TLV_SCROLL_H_ENABLED_U32 ((u32)0x53434845u) /* 'SCHE' */
+#define DUI_TLV_SCROLL_V_ENABLED_U32 ((u32)0x53435645u) /* 'SCVE' */
+#define DUI_TLV_SCROLL_X_U32         ((u32)0x5343585Fu) /* 'SCX_' */
+#define DUI_TLV_SCROLL_Y_U32         ((u32)0x5343595Fu) /* 'SCY_' */
+
 /* Node flags stored in DUI_TLV_FLAGS_U32 (bitset). */
 #define DUI_NODE_FLAG_FOCUSABLE ((u32)1u << 0u)
 #define DUI_NODE_FLAG_FLEX      ((u32)1u << 1u)
@@ -94,8 +112,26 @@ typedef enum dui_node_kind_e {
     DUI_NODE_CHECKBOX = 12,
     DUI_NODE_LIST = 13,
     DUI_NODE_TEXT_FIELD = 14,
-    DUI_NODE_PROGRESS = 15
+    DUI_NODE_PROGRESS = 15,
+
+    /* Complex widgets. */
+    DUI_NODE_SPLITTER = 20,
+    DUI_NODE_TABS = 21,
+    DUI_NODE_TAB_PAGE = 22,
+    DUI_NODE_SCROLL_PANEL = 23
 } dui_node_kind;
+
+typedef enum dui_splitter_orientation_e {
+    DUI_SPLIT_VERTICAL = 0,
+    DUI_SPLIT_HORIZONTAL = 1
+} dui_splitter_orientation;
+
+typedef enum dui_tabs_placement_e {
+    DUI_TABS_TOP = 0,
+    DUI_TABS_BOTTOM = 1,
+    DUI_TABS_LEFT = 2,
+    DUI_TABS_RIGHT = 3
+} dui_tabs_placement;
 
 /* Value types used by STATE/VALU records. */
 typedef enum dui_value_type_e {
