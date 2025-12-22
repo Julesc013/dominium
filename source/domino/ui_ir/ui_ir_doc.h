@@ -64,6 +64,7 @@ typedef struct domui_widget {
     int w;
     int h;
 
+    domui_container_layout_mode layout_mode;
     domui_dock_mode dock;
     domui_u32 anchors;
     domui_box margin;
@@ -96,6 +97,7 @@ typedef struct domui_doc_meta {
 class domui_doc {
 public:
     domui_doc();
+    void clear();
 
     domui_widget_id create_widget(domui_widget_type type, domui_widget_id parent_id);
     bool delete_widget(domui_widget_id id);
@@ -117,6 +119,8 @@ public:
 
     void recompute_next_id_from_widgets();
     domui_widget_id next_id() const;
+    size_t widget_count() const;
+    bool insert_widget_with_id(const domui_widget& w);
 
     domui_doc_meta meta;
 

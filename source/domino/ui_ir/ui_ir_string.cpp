@@ -81,6 +81,15 @@ void domui_string::set(const char* s)
     }
 }
 
+void domui_string::set_bytes(const char* s, size_t len)
+{
+    if (!s || len == 0u) {
+        m_value.clear();
+        return;
+    }
+    m_value.assign(s, len);
+}
+
 int domui_string_compare(const domui_string& a, const domui_string& b)
 {
     return domui_compare_bytes(a.str().c_str(), a.str().size(), b.str().c_str(), b.str().size());

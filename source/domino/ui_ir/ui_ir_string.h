@@ -27,6 +27,7 @@ public:
     bool empty() const;
     void clear();
     void set(const char* s);
+    void set_bytes(const char* s, size_t len);
 
 private:
     std::string m_value;
