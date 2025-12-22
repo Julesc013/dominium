@@ -282,6 +282,7 @@ option(DOMINIUM_ENABLE_PACKAGING "Enable packaging helper targets" OFF)
 
 add_subdirectory(source/domino)
 add_subdirectory(source/dominium)
+add_subdirectory(tools)
 add_subdirectory(source/tests)
 
 if(DOMINIUM_ENABLE_PACKAGING)

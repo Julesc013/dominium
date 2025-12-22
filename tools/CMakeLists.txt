@@ -6,3 +6,6 @@ add_custom_target(domino_tools ALL
 if(TARGET dominium_modcheck)
     add_dependencies(domino_tools dominium_modcheck)
 endif()
+
+add_subdirectory(ui_editor)
+add_subdirectory(tool_editor)
