@@ -17,3 +17,5 @@ set_target_properties(domino_ui_ir PROPERTIES
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
+
+add_subdirectory(tests)
