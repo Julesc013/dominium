@@ -72,21 +72,165 @@ static void d_gfx_soft_fill_rect(const d_gfx_draw_rect_cmd *rect)
     }
 }
 
+static void d_gfx_soft_store_pixel(i32 x, i32 y, u32 color)
+{
+    if (!g_soft_fb) {
+        return;
+    }
+    if (x < 0 || y < 0 || x >= g_soft_width || y >= g_soft_height) {
+        return;
+    }
+    if (x < g_soft_vp.x || y < g_soft_vp.y ||
+        x >= (g_soft_vp.x + g_soft_vp.w) ||
+        y >= (g_soft_vp.y + g_soft_vp.h)) {
+        return;
+    }
+    g_soft_fb[(u32)y * (u32)g_soft_width + (u32)x] = color;
+}
+
 static void d_gfx_soft_stub_text(const d_gfx_draw_text_cmd *text)
 {
-    d_gfx_draw_rect_cmd r;
-    size_t len;
+    int cursor_x;
+    int cursor_y;
+    int i;
+    u32 color;
+
+    static const u8 g_glyph_space[7] = { 0, 0, 0, 0, 0, 0, 0 };
+    static const u8 g_glyph_dot[7] = { 0, 0, 0, 0, 0, 0, 0x04 };
+    static const u8 g_glyph_colon[7] = { 0, 0x04, 0, 0, 0x04, 0, 0 };
+    static const u8 g_glyph_dash[7] = { 0, 0, 0, 0x1F, 0, 0, 0 };
+    static const u8 g_glyph_underscore[7] = { 0, 0, 0, 0, 0, 0, 0x1F };
+    static const u8 g_glyph_slash[7] = { 0x01, 0x02, 0x04, 0x08, 0x10, 0, 0 };
+    static const u8 g_glyph_percent[7] = { 0x19, 0x1A, 0x04, 0x08, 0x16, 0x13, 0 };
+    static const u8 g_glyph_lparen[7] = { 0x04, 0x08, 0x10, 0x10, 0x10, 0x08, 0x04 };
+    static const u8 g_glyph_rparen[7] = { 0x04, 0x02, 0x01, 0x01, 0x01, 0x02, 0x04 };
+    static const u8 g_glyph_question[7] = { 0x0E, 0x11, 0x01, 0x02, 0x04, 0, 0x04 };
+    static const u8 g_glyph_unknown[7] = { 0x1F, 0x11, 0x11, 0x11, 0x11, 0x11, 0x1F };
+
+    static const u8 g_glyph_0[7] = { 0x0E, 0x11, 0x13, 0x15, 0x19, 0x11, 0x0E };
+    static const u8 g_glyph_1[7] = { 0x04, 0x0C, 0x04, 0x04, 0x04, 0x04, 0x0E };
+    static const u8 g_glyph_2[7] = { 0x0E, 0x11, 0x01, 0x02, 0x04, 0x08, 0x1F };
+    static const u8 g_glyph_3[7] = { 0x1E, 0x01, 0x01, 0x0E, 0x01, 0x01, 0x1E };
+    static const u8 g_glyph_4[7] = { 0x02, 0x06, 0x0A, 0x12, 0x1F, 0x02, 0x02 };
+    static const u8 g_glyph_5[7] = { 0x1F, 0x10, 0x10, 0x1E, 0x01, 0x01, 0x1E };
+    static const u8 g_glyph_6[7] = { 0x0E, 0x10, 0x10, 0x1E, 0x11, 0x11, 0x0E };
+    static const u8 g_glyph_7[7] = { 0x1F, 0x01, 0x02, 0x04, 0x08, 0x08, 0x08 };
+    static const u8 g_glyph_8[7] = { 0x0E, 0x11, 0x11, 0x0E, 0x11, 0x11, 0x0E };
+    static const u8 g_glyph_9[7] = { 0x0E, 0x11, 0x11, 0x0F, 0x01, 0x01, 0x0E };
+
+    static const u8 g_glyph_A[7] = { 0x0E, 0x11, 0x11, 0x1F, 0x11, 0x11, 0x11 };
+    static const u8 g_glyph_B[7] = { 0x1E, 0x11, 0x11, 0x1E, 0x11, 0x11, 0x1E };
+    static const u8 g_glyph_C[7] = { 0x0E, 0x11, 0x10, 0x10, 0x10, 0x11, 0x0E };
+    static const u8 g_glyph_D[7] = { 0x1E, 0x11, 0x11, 0x11, 0x11, 0x11, 0x1E };
+    static const u8 g_glyph_E[7] = { 0x1F, 0x10, 0x10, 0x1E, 0x10, 0x10, 0x1F };
+    static const u8 g_glyph_F[7] = { 0x1F, 0x10, 0x10, 0x1E, 0x10, 0x10, 0x10 };
+    static const u8 g_glyph_G[7] = { 0x0E, 0x11, 0x10, 0x17, 0x11, 0x11, 0x0F };
+    static const u8 g_glyph_H[7] = { 0x11, 0x11, 0x11, 0x1F, 0x11, 0x11, 0x11 };
+    static const u8 g_glyph_I[7] = { 0x0E, 0x04, 0x04, 0x04, 0x04, 0x04, 0x0E };
+    static const u8 g_glyph_J[7] = { 0x01, 0x01, 0x01, 0x01, 0x11, 0x11, 0x0E };
+    static const u8 g_glyph_K[7] = { 0x11, 0x12, 0x14, 0x18, 0x14, 0x12, 0x11 };
+    static const u8 g_glyph_L[7] = { 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x1F };
+    static const u8 g_glyph_M[7] = { 0x11, 0x1B, 0x15, 0x11, 0x11, 0x11, 0x11 };
+    static const u8 g_glyph_N[7] = { 0x11, 0x19, 0x15, 0x13, 0x11, 0x11, 0x11 };
+    static const u8 g_glyph_O[7] = { 0x0E, 0x11, 0x11, 0x11, 0x11, 0x11, 0x0E };
+    static const u8 g_glyph_P[7] = { 0x1E, 0x11, 0x11, 0x1E, 0x10, 0x10, 0x10 };
+    static const u8 g_glyph_Q[7] = { 0x0E, 0x11, 0x11, 0x11, 0x15, 0x12, 0x0D };
+    static const u8 g_glyph_R[7] = { 0x1E, 0x11, 0x11, 0x1E, 0x14, 0x12, 0x11 };
+    static const u8 g_glyph_S[7] = { 0x0F, 0x10, 0x10, 0x0E, 0x01, 0x01, 0x1E };
+    static const u8 g_glyph_T[7] = { 0x1F, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04 };
+    static const u8 g_glyph_U[7] = { 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x0E };
+    static const u8 g_glyph_V[7] = { 0x11, 0x11, 0x11, 0x11, 0x11, 0x0A, 0x04 };
+    static const u8 g_glyph_W[7] = { 0x11, 0x11, 0x11, 0x11, 0x15, 0x1B, 0x11 };
+    static const u8 g_glyph_X[7] = { 0x11, 0x11, 0x0A, 0x04, 0x0A, 0x11, 0x11 };
+    static const u8 g_glyph_Y[7] = { 0x11, 0x11, 0x0A, 0x04, 0x04, 0x04, 0x04 };
+    static const u8 g_glyph_Z[7] = { 0x1F, 0x01, 0x02, 0x04, 0x08, 0x10, 0x1F };
 
     if (!text) {
         return;
     }
-    len = text->text ? strlen(text->text) : 0u;
-    r.x = text->x;
-    r.y = text->y;
-    r.w = (i32)(len ? (len * 8u) : 8u);
-    r.h = 12;
-    r.color = text->color;
-    d_gfx_soft_fill_rect(&r);
+
+    color = d_gfx_soft_pack_color(&text->color);
+    cursor_x = text->x;
+    cursor_y = text->y;
+
+    for (i = 0; text->text && text->text[i] != '\0'; ++i) {
+        const u8 *glyph = g_glyph_unknown;
+        unsigned char ch = (unsigned char)text->text[i];
+        int row;
+        int col;
+
+        if (text->text[i] == '\n') {
+            cursor_x = text->x;
+            cursor_y += 8;
+            continue;
+        }
+        if (ch >= 'a' && ch <= 'z') {
+            ch = (unsigned char)(ch - 'a' + 'A');
+        }
+
+        switch (ch) {
+        case ' ': glyph = g_glyph_space; break;
+        case '.': glyph = g_glyph_dot; break;
+        case ':': glyph = g_glyph_colon; break;
+        case '-': glyph = g_glyph_dash; break;
+        case '_': glyph = g_glyph_underscore; break;
+        case '/': glyph = g_glyph_slash; break;
+        case '%': glyph = g_glyph_percent; break;
+        case '(': glyph = g_glyph_lparen; break;
+        case ')': glyph = g_glyph_rparen; break;
+        case '?': glyph = g_glyph_question; break;
+        case '0': glyph = g_glyph_0; break;
+        case '1': glyph = g_glyph_1; break;
+        case '2': glyph = g_glyph_2; break;
+        case '3': glyph = g_glyph_3; break;
+        case '4': glyph = g_glyph_4; break;
+        case '5': glyph = g_glyph_5; break;
+        case '6': glyph = g_glyph_6; break;
+        case '7': glyph = g_glyph_7; break;
+        case '8': glyph = g_glyph_8; break;
+        case '9': glyph = g_glyph_9; break;
+        case 'A': glyph = g_glyph_A; break;
+        case 'B': glyph = g_glyph_B; break;
+        case 'C': glyph = g_glyph_C; break;
+        case 'D': glyph = g_glyph_D; break;
+        case 'E': glyph = g_glyph_E; break;
+        case 'F': glyph = g_glyph_F; break;
+        case 'G': glyph = g_glyph_G; break;
+        case 'H': glyph = g_glyph_H; break;
+        case 'I': glyph = g_glyph_I; break;
+        case 'J': glyph = g_glyph_J; break;
+        case 'K': glyph = g_glyph_K; break;
+        case 'L': glyph = g_glyph_L; break;
+        case 'M': glyph = g_glyph_M; break;
+        case 'N': glyph = g_glyph_N; break;
+        case 'O': glyph = g_glyph_O; break;
+        case 'P': glyph = g_glyph_P; break;
+        case 'Q': glyph = g_glyph_Q; break;
+        case 'R': glyph = g_glyph_R; break;
+        case 'S': glyph = g_glyph_S; break;
+        case 'T': glyph = g_glyph_T; break;
+        case 'U': glyph = g_glyph_U; break;
+        case 'V': glyph = g_glyph_V; break;
+        case 'W': glyph = g_glyph_W; break;
+        case 'X': glyph = g_glyph_X; break;
+        case 'Y': glyph = g_glyph_Y; break;
+        case 'Z': glyph = g_glyph_Z; break;
+        default:
+            glyph = g_glyph_unknown;
+            break;
+        }
+
+        for (row = 0; row < 7; ++row) {
+            u8 bits = glyph[row];
+            for (col = 0; col < 5; ++col) {
+                if (bits & (u8)(1u << (4 - col))) {
+                    d_gfx_soft_store_pixel(cursor_x + col, cursor_y + row, color);
+                }
+            }
+        }
+
+        cursor_x += 6;
+    }
 }
 
 static int d_gfx_soft_init(void)
