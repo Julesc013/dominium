@@ -11,6 +11,7 @@ add_library(domino_ui_ir STATIC
     ui_ir_json.cpp
     ui_ir_legacy_import.cpp
     ui_caps.cpp
+    ui_validate.cpp
 )
 
 target_include_directories(domino_ui_ir PUBLIC

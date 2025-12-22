@@ -19,6 +19,15 @@
 - Properties are stored and iterated in lexicographic byte order by key.
 - Events are stored and iterated in lexicographic byte order by event name.
 
+## Capability system and validation
+- Backends register capability tables declaratively in `source/domino/ui_ir/ui_caps.*`.
+- Targets are declared in `doc.meta.target_backends` and `doc.meta.target_tiers`.
+- If targets are empty, validation defaults to `["win32"]` and the highest known tier for that backend.
+- Validator checks widget types, properties, and events against each target backend/tier.
+- Unsupported widget/property/event is an error; emulated features are warnings.
+- Tier mismatches (e.g., doc requires `win32_t1` but targets include `win32_t0`) are errors.
+- Diagnostics are deterministically ordered by severity, widget id, feature key, and message.
+
 ## TLV wire format v1 (ui_doc.tlv)
 ### Container header
 - File is a DTLV container v1 (see `docs/SPEC_CONTAINER_TLV.md`).

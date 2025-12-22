@@ -20,6 +20,7 @@ RESPONSIBILITY: Unit tests for UI IR canonicalization and ID stability.
 #include "ui_ir_json.h"
 #include "ui_ir_legacy_import.h"
 #include "ui_ir_tlv.h"
+#include "ui_validate.h"
 
 static int g_failures = 0;
 
@@ -366,6 +367,93 @@ static void test_legacy_import_smoke(void)
     TEST_CHECK(doc.widget_count() > 0u);
 }
 
+static std::string domui_diag_to_string(const domui_diag& diag)
+{
+    std::string out;
+    size_t i;
+    char buf[64];
+    out += "errors\n";
+    for (i = 0u; i < diag.errors().size(); ++i) {
+        const domui_diag_item& item = diag.errors()[i];
+        snprintf(buf, sizeof(buf), "%u", (unsigned int)item.widget_id);
+        out += item.message.str();
+        out += "|";
+        out += buf;
+        out += "|";
+        out += item.context.str();
+        out += "\n";
+    }
+    out += "warnings\n";
+    for (i = 0u; i < diag.warnings().size(); ++i) {
+        const domui_diag_item& item = diag.warnings()[i];
+        snprintf(buf, sizeof(buf), "%u", (unsigned int)item.widget_id);
+        out += item.message.str();
+        out += "|";
+        out += buf;
+        out += "|";
+        out += item.context.str();
+        out += "\n";
+    }
+    return out;
+}
+
+static void domui_fill_listview_doc(domui_doc& doc)
+{
+    domui_widget_id root;
+    domui_widget_id listview;
+    domui_widget* w;
+    doc.clear();
+    root = doc.create_widget(DOMUI_WIDGET_CONTAINER, 0u);
+    listview = doc.create_widget(DOMUI_WIDGET_LISTVIEW, root);
+    w = doc.find_by_id(listview);
+    if (w) {
+        w->props.set("listview.columns", domui_value_uint(3u));
+        w->props.set("items", domui_value_string(domui_string("a,b,c")));
+    }
+}
+
+static void test_validation_win32_t1_pass(void)
+{
+    domui_doc doc;
+    domui_diag diag;
+    domui_target_set targets;
+    domui_fill_listview_doc(doc);
+    targets.backends.push_back(domui_string("win32"));
+    targets.tiers.push_back(domui_string("win32_t1"));
+    TEST_CHECK(domui_validate_doc(&doc, &targets, &diag));
+    TEST_CHECK(!diag.has_errors());
+}
+
+static void test_validation_win32_t0_fail(void)
+{
+    domui_doc doc;
+    domui_diag diag;
+    domui_target_set targets;
+    domui_fill_listview_doc(doc);
+    targets.backends.push_back(domui_string("win32"));
+    targets.tiers.push_back(domui_string("win32_t0"));
+    TEST_CHECK(!domui_validate_doc(&doc, &targets, &diag));
+    TEST_CHECK(diag.error_count() > 0u);
+}
+
+static void test_validation_determinism(void)
+{
+    domui_doc doc;
+    domui_diag diag_a;
+    domui_diag diag_b;
+    domui_target_set targets;
+    std::string a;
+    std::string b;
+    domui_fill_listview_doc(doc);
+    targets.backends.push_back(domui_string("win32"));
+    targets.tiers.push_back(domui_string("win32_t0"));
+    (void)domui_validate_doc(&doc, &targets, &diag_a);
+    (void)domui_validate_doc(&doc, &targets, &diag_b);
+    a = domui_diag_to_string(diag_a);
+    b = domui_diag_to_string(diag_b);
+    TEST_CHECK(a == b);
+}
+
 int main(void)
 {
     test_id_stability();
@@ -377,6 +465,9 @@ int main(void)
     test_json_stability();
     test_backup_rotation();
     test_legacy_import_smoke();
+    test_validation_win32_t1_pass();
+    test_validation_win32_t0_fail();
+    test_validation_determinism();
 
     if (g_failures != 0) {
         printf("UI IR tests failed: %d\n", g_failures);
