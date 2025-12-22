@@ -17,6 +17,12 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "d_gfx_soft.h"
 #include "domino/system/d_system.h"
 
+#define D_GFX_SOFT_FONT_SCALE 2
+#define D_GFX_SOFT_GLYPH_W 5
+#define D_GFX_SOFT_GLYPH_H 7
+#define D_GFX_SOFT_GLYPH_ADV (D_GFX_SOFT_GLYPH_W + 1)
+#define D_GFX_SOFT_LINE_ADV (D_GFX_SOFT_GLYPH_H + 1)
+
 static u32 *g_soft_fb = 0;
 static i32 g_soft_width = 800;
 static i32 g_soft_height = 600;
@@ -93,6 +99,7 @@ static void d_gfx_soft_stub_text(const d_gfx_draw_text_cmd *text)
     int cursor_x;
     int cursor_y;
     int i;
+    int scale;
     u32 color;
 
     static const u8 g_glyph_space[7] = { 0, 0, 0, 0, 0, 0, 0 };
@@ -152,6 +159,7 @@ static void d_gfx_soft_stub_text(const d_gfx_draw_text_cmd *text)
     color = d_gfx_soft_pack_color(&text->color);
     cursor_x = text->x;
     cursor_y = text->y;
+    scale = D_GFX_SOFT_FONT_SCALE;
 
     for (i = 0; text->text && text->text[i] != '\0'; ++i) {
         const u8 *glyph = g_glyph_unknown;
@@ -161,7 +169,7 @@ static void d_gfx_soft_stub_text(const d_gfx_draw_text_cmd *text)
 
         if (text->text[i] == '\n') {
             cursor_x = text->x;
-            cursor_y += 8;
+            cursor_y += D_GFX_SOFT_LINE_ADV * scale;
             continue;
         }
         if (ch >= 'a' && ch <= 'z') {
@@ -220,16 +228,24 @@ static void d_gfx_soft_stub_text(const d_gfx_draw_text_cmd *text)
             break;
         }
 
-        for (row = 0; row < 7; ++row) {
+        for (row = 0; row < D_GFX_SOFT_GLYPH_H; ++row) {
             u8 bits = glyph[row];
-            for (col = 0; col < 5; ++col) {
+            for (col = 0; col < D_GFX_SOFT_GLYPH_W; ++col) {
                 if (bits & (u8)(1u << (4 - col))) {
-                    d_gfx_soft_store_pixel(cursor_x + col, cursor_y + row, color);
+                    int sx;
+                    int sy;
+                    int base_x = cursor_x + col * scale;
+                    int base_y = cursor_y + row * scale;
+                    for (sy = 0; sy < scale; ++sy) {
+                        for (sx = 0; sx < scale; ++sx) {
+                            d_gfx_soft_store_pixel(base_x + sx, base_y + sy, color);
+                        }
+                    }
                 }
             }
         }
 
-        cursor_x += 6;
+        cursor_x += D_GFX_SOFT_GLYPH_ADV * scale;
     }
 }
 

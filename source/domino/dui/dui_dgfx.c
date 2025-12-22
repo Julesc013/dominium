@@ -22,6 +22,12 @@ EXTENSION POINTS: Test/native handle extensions via query_interface.
 #include "domino/gfx.h"
 #include "domino/system/d_system.h"
 
+#define DGFX_FONT_SCALE 2
+#define DGFX_FONT_GLYPH_W 5
+#define DGFX_FONT_GLYPH_H 7
+#define DGFX_FONT_GLYPH_ADV (DGFX_FONT_GLYPH_W + 1)
+#define DGFX_FONT_LINE_ADV (DGFX_FONT_GLYPH_H + 1)
+
 /* Internal input event type (engine-private). */
 #include "system/d_system_input.h"
 
@@ -78,6 +84,55 @@ static dui_caps dgfx_caps(void)
 
 static dui_test_api_v1 g_test_api;
 static dui_native_api_v1 g_native_api;
+
+static i32 dgfx_font_line_height(void)
+{
+    return (i32)(DGFX_FONT_LINE_ADV * DGFX_FONT_SCALE);
+}
+
+static i32 dgfx_ui_pad(void)
+{
+    return 6 + (DGFX_FONT_SCALE - 1) * 2;
+}
+
+static i32 dgfx_list_item_height(void)
+{
+    return dgfx_font_line_height() + 4;
+}
+
+static i32 dgfx_text_height(const char* text)
+{
+    i32 lines;
+    if (!text || !text[0]) {
+        return 0;
+    }
+    lines = 1;
+    while (*text) {
+        if (*text == '\n') {
+            lines += 1;
+        }
+        ++text;
+    }
+    return lines * dgfx_font_line_height();
+}
+
+static i32 dgfx_text_y_in_rect(const dui_schema_node* n, const char* text, i32 pad)
+{
+    i32 text_h;
+    i32 y;
+    if (!n) {
+        return 0;
+    }
+    text_h = dgfx_text_height(text);
+    y = n->y + pad;
+    if (text_h > 0 && n->h > (text_h + pad * 2)) {
+        y = n->y + (n->h - text_h) / 2;
+    }
+    if (y < n->y) {
+        y = n->y;
+    }
+    return y;
+}
 
 static dui_result dgfx_test_post_event(dui_context* ctx, const dui_event_v1* ev)
 {
@@ -478,8 +533,8 @@ static void dgfx_handle_click(dui_context* ctx, dui_window* win, i32 x, i32 y)
         v = (v == 0u) ? 1u : 0u;
         dgfx_emit_value_u32(ctx, hit->id, (u32)DUI_VALUE_BOOL, v, 0u);
     } else if (hit->kind == (u32)DUI_NODE_LIST) {
-        const i32 pad = 6;
-        const i32 item_h = 18;
+        const i32 pad = dgfx_ui_pad();
+        const i32 item_h = dgfx_list_item_height();
         i32 rel_y = y - (hit->y + pad);
         u32 idx = 0u;
         u32 count = 0u;
@@ -756,49 +811,72 @@ static void dgfx_render_leaf(const dui_window* win, const dui_schema_node* n, d_
     text_len = 0u;
 
     switch ((dui_node_kind)n->kind) {
-    case DUI_NODE_LABEL:
+    case DUI_NODE_LABEL: {
+        i32 pad = dgfx_ui_pad();
+        i32 text_y;
         (void)dgfx_state_get_widget_text(win, n->bind_id, text, (u32)sizeof(text), &text_len);
         if (!text[0] && n->text) {
             strncpy(text, n->text, sizeof(text) - 1u);
             text[sizeof(text) - 1u] = '\0';
         }
-        dgfx_draw_text(buf, n->x + 4, n->y + 4, text, fg);
+        text_y = dgfx_text_y_in_rect(n, text, pad);
+        dgfx_draw_text(buf, n->x + pad, text_y, text, fg);
         break;
-    case DUI_NODE_BUTTON:
+    }
+    case DUI_NODE_BUTTON: {
+        i32 pad = dgfx_ui_pad();
+        i32 text_y;
         dgfx_draw_rect(buf, n->x, n->y, n->w, n->h, btn);
         (void)dgfx_state_get_widget_text(win, n->bind_id, text, (u32)sizeof(text), &text_len);
         if (!text[0] && n->text) {
             strncpy(text, n->text, sizeof(text) - 1u);
             text[sizeof(text) - 1u] = '\0';
         }
-        dgfx_draw_text(buf, n->x + 6, n->y + 6, text, fg);
-        if (win->focused_is_valid && win->focused_widget_id == n->id) {
-            dgfx_draw_rect(buf, n->x - 2, n->y - 2, n->w + 4, n->h + 4, hi);
-        }
-        break;
-    case DUI_NODE_CHECKBOX: {
-        u32 v = 0u;
-        const i32 box = 14;
-        (void)dui_state_get_u32(win->state, win->state_len, n->bind_id, &v);
-        dgfx_draw_rect(buf, n->x, n->y, n->w, n->h, panel);
-        dgfx_draw_rect(buf, n->x + 6, n->y + 5, box, box, bg);
-        if (v) {
-            dgfx_draw_rect(buf, n->x + 9, n->y + 8, box - 6, box - 6, hi);
-        }
-        dgfx_draw_text(buf, n->x + 6 + box + 6, n->y + 6, n->text ? n->text : "", fg);
+        text_y = dgfx_text_y_in_rect(n, text, pad);
+        dgfx_draw_text(buf, n->x + pad, text_y, text, fg);
         if (win->focused_is_valid && win->focused_widget_id == n->id) {
             dgfx_draw_rect(buf, n->x - 2, n->y - 2, n->w + 4, n->h + 4, hi);
         }
         break;
     }
-    case DUI_NODE_TEXT_FIELD:
+    case DUI_NODE_CHECKBOX: {
+        u32 v = 0u;
+        i32 pad = dgfx_ui_pad();
+        i32 box = dgfx_font_line_height() - 2;
+        i32 box_y;
+        i32 text_y;
+        (void)dui_state_get_u32(win->state, win->state_len, n->bind_id, &v);
         dgfx_draw_rect(buf, n->x, n->y, n->w, n->h, panel);
-        (void)dgfx_state_get_widget_text(win, n->bind_id, text, (u32)sizeof(text), &text_len);
-        dgfx_draw_text(buf, n->x + 6, n->y + 6, text, fg);
+        if (box < 10) {
+            box = 10;
+        }
+        box_y = n->y + (n->h - box) / 2;
+        if (box_y < n->y + 2) {
+            box_y = n->y + 2;
+        }
+        dgfx_draw_rect(buf, n->x + pad, box_y, box, box, bg);
+        if (v) {
+            dgfx_draw_rect(buf, n->x + pad + 3, box_y + 3, box - 6, box - 6, hi);
+        }
+        text_y = dgfx_text_y_in_rect(n, n->text ? n->text : "", pad);
+        dgfx_draw_text(buf, n->x + pad + box + pad, text_y, n->text ? n->text : "", fg);
         if (win->focused_is_valid && win->focused_widget_id == n->id) {
             dgfx_draw_rect(buf, n->x - 2, n->y - 2, n->w + 4, n->h + 4, hi);
         }
         break;
+    }
+    case DUI_NODE_TEXT_FIELD: {
+        i32 pad = dgfx_ui_pad();
+        i32 text_y;
+        dgfx_draw_rect(buf, n->x, n->y, n->w, n->h, panel);
+        (void)dgfx_state_get_widget_text(win, n->bind_id, text, (u32)sizeof(text), &text_len);
+        text_y = dgfx_text_y_in_rect(n, text, pad);
+        dgfx_draw_text(buf, n->x + pad, text_y, text, fg);
+        if (win->focused_is_valid && win->focused_widget_id == n->id) {
+            dgfx_draw_rect(buf, n->x - 2, n->y - 2, n->w + 4, n->h + 4, hi);
+        }
+        break;
+    }
     case DUI_NODE_PROGRESS: {
         u32 v = 0u;
         i32 fill_w;
@@ -810,8 +888,8 @@ static void dgfx_render_leaf(const dui_window* win, const dui_schema_node* n, d_
         break;
     }
     case DUI_NODE_LIST: {
-        const i32 pad = 6;
-        const i32 item_h = 18;
+        const i32 pad = dgfx_ui_pad();
+        const i32 item_h = dgfx_list_item_height();
         u32 count = 0u;
         u32 selected_item_id = 0u;
         u32 i;
@@ -830,9 +908,15 @@ static void dgfx_render_leaf(const dui_window* win, const dui_schema_node* n, d_
                 continue;
             }
             if (item_id == selected_item_id) {
-                dgfx_draw_rect(buf, n->x + 2, iy - 2, n->w - 4, item_h, btn);
+                dgfx_draw_rect(buf, n->x + 2, iy - 2, n->w - 4, item_h + 4, btn);
             }
-            dgfx_draw_text(buf, n->x + pad, iy, item_text, fg);
+            {
+                i32 text_y = iy + (item_h - dgfx_text_height(item_text)) / 2;
+                if (text_y < iy) {
+                    text_y = iy;
+                }
+                dgfx_draw_text(buf, n->x + pad, text_y, item_text, fg);
+            }
             iy += item_h;
             if (iy > n->y + n->h - item_h) {
                 break;
