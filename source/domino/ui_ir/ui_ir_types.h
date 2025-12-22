@@ -52,7 +52,9 @@ typedef enum domui_widget_type_e {
     DOMUI_WIDGET_GROUPBOX,
     DOMUI_WIDGET_IMAGE,
     DOMUI_WIDGET_SPLITTER,
-    DOMUI_WIDGET_SCROLLPANEL
+    DOMUI_WIDGET_SCROLLPANEL,
+    DOMUI_WIDGET_TABS,
+    DOMUI_WIDGET_TAB_PAGE
 } domui_widget_type;
 
 typedef enum domui_container_layout_mode_e {

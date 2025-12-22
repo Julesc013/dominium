@@ -147,6 +147,311 @@ static void domui_layout_children(const domui_doc* doc,
                                   domui_layout_writer& writer,
                                   domui_diag* diag);
 
+static int domui_prop_get_int_default(const domui_props& props, const char* key, int def_v)
+{
+    domui_value v;
+    if (!props.get(key, &v)) {
+        return def_v;
+    }
+    switch (v.type) {
+    case DOMUI_VALUE_INT:
+        return v.v_int;
+    case DOMUI_VALUE_UINT:
+        return (int)v.v_uint;
+    case DOMUI_VALUE_BOOL:
+        return v.v_bool ? 1 : 0;
+    default:
+        break;
+    }
+    return def_v;
+}
+
+static int domui_prop_get_string(const domui_props& props, const char* key, domui_string& out)
+{
+    domui_value v;
+    if (!props.get(key, &v)) {
+        return 0;
+    }
+    if (v.type != DOMUI_VALUE_STRING) {
+        return 0;
+    }
+    out = v.v_string;
+    return 1;
+}
+
+static void domui_layout_hide_subtree(const domui_doc* doc,
+                                      domui_widget_id widget_id,
+                                      domui_layout_writer& writer)
+{
+    std::vector<domui_widget_id> children;
+    domui_layout_rect zero = domui_make_rect(0, 0, 0, 0);
+    domui_layout_write(writer, widget_id, zero);
+    if (!doc) {
+        return;
+    }
+    doc->enumerate_children(widget_id, children);
+    for (size_t i = 0u; i < children.size(); ++i) {
+        domui_layout_hide_subtree(doc, children[i], writer);
+    }
+}
+
+static void domui_layout_children_splitter(const domui_doc* doc,
+                                           const domui_widget* splitter,
+                                           domui_widget_id parent_id,
+                                           const domui_layout_rect& parent_content,
+                                           domui_layout_writer& writer,
+                                           domui_diag* diag)
+{
+    std::vector<domui_widget_id> children;
+    domui_layout_rect region_a;
+    domui_layout_rect region_b;
+    int is_horizontal = 0;
+    int thickness = 4;
+    int pos = -1;
+    int min_a = 0;
+    int min_b = 0;
+    int axis_len = 0;
+    int avail_axis = 0;
+    int max_pos = 0;
+
+    if (!doc || !splitter) {
+        return;
+    }
+
+    {
+        domui_string orient;
+        if (domui_prop_get_string(splitter->props, "splitter.orientation", orient)) {
+            const char* s = orient.c_str();
+            if (s && (s[0] == 'h' || s[0] == 'H')) {
+                is_horizontal = 1;
+            }
+        }
+    }
+
+    thickness = domui_prop_get_int_default(splitter->props, "splitter.thickness", 4);
+    if (thickness < 1) {
+        thickness = 1;
+    }
+    pos = domui_prop_get_int_default(splitter->props, "splitter.pos", -1);
+    min_a = domui_prop_get_int_default(splitter->props, "splitter.min_a", 0);
+    min_b = domui_prop_get_int_default(splitter->props, "splitter.min_b", 0);
+    if (min_a < 0) min_a = 0;
+    if (min_b < 0) min_b = 0;
+
+    axis_len = is_horizontal ? parent_content.h : parent_content.w;
+    avail_axis = axis_len - thickness;
+    if (avail_axis < 0) {
+        avail_axis = 0;
+    }
+    if (pos < 0) {
+        pos = avail_axis / 2;
+    }
+
+    if ((min_a + min_b) > avail_axis) {
+        domui_diag_error(diag, "layout: parent rect too small for splitter constraints", splitter->id, "splitter");
+    }
+    max_pos = avail_axis - min_b;
+    if (max_pos < 0) {
+        max_pos = 0;
+    }
+    if (pos < min_a) {
+        pos = min_a;
+    }
+    if (pos > max_pos) {
+        pos = max_pos;
+    }
+    if (pos < 0) {
+        pos = 0;
+    }
+
+    if (is_horizontal) {
+        region_a = domui_make_rect(parent_content.x, parent_content.y, parent_content.w, pos);
+        region_b = domui_make_rect(parent_content.x,
+                                   parent_content.y + pos + thickness,
+                                   parent_content.w,
+                                   avail_axis - pos);
+    } else {
+        region_a = domui_make_rect(parent_content.x, parent_content.y, pos, parent_content.h);
+        region_b = domui_make_rect(parent_content.x + pos + thickness,
+                                   parent_content.y,
+                                   avail_axis - pos,
+                                   parent_content.h);
+    }
+    domui_clamp_nonnegative(region_a);
+    domui_clamp_nonnegative(region_b);
+
+    doc->enumerate_children(parent_id, children);
+    for (size_t i = 0u; i < children.size(); ++i) {
+        const domui_widget* w = doc->find_by_id(children[i]);
+        if (!w) {
+            continue;
+        }
+        if (i >= 2u) {
+            domui_layout_hide_subtree(doc, w->id, writer);
+            continue;
+        }
+        {
+            domui_layout_rect rect = (i == 0u) ? region_a : region_b;
+            rect = domui_inset_rect(rect, w->margin);
+            domui_apply_constraints(w, rect, false, 0, false, 0, diag);
+            if (!domui_outer_fits_parent((i == 0u) ? region_a : region_b, rect, w->margin)) {
+                domui_diag_error(diag, "layout: parent rect too small for child constraints", w->id, "constraints");
+            }
+            domui_layout_write(writer, w->id, rect);
+            domui_layout_children(doc, w, w->id, rect, writer, diag);
+        }
+    }
+}
+
+static void domui_layout_children_tabs(const domui_doc* doc,
+                                       const domui_widget* tabs,
+                                       domui_widget_id parent_id,
+                                       const domui_layout_rect& parent_content,
+                                       domui_layout_writer& writer,
+                                       domui_diag* diag)
+{
+    std::vector<domui_widget_id> children;
+    std::vector<domui_widget_id> pages;
+    domui_layout_rect content = parent_content;
+    domui_string placement;
+    int selected_index = 0;
+    int strip_thickness = 24;
+    size_t i;
+    size_t selected_page = 0u;
+    int use_explicit_pages = 0;
+
+    if (!doc || !tabs) {
+        return;
+    }
+
+    doc->enumerate_children(parent_id, children);
+    for (i = 0u; i < children.size(); ++i) {
+        const domui_widget* w = doc->find_by_id(children[i]);
+        if (w && w->type == DOMUI_WIDGET_TAB_PAGE) {
+            use_explicit_pages = 1;
+            break;
+        }
+    }
+    for (i = 0u; i < children.size(); ++i) {
+        const domui_widget* w = doc->find_by_id(children[i]);
+        if (!w) {
+            continue;
+        }
+        if (!use_explicit_pages || w->type == DOMUI_WIDGET_TAB_PAGE) {
+            pages.push_back(w->id);
+        }
+    }
+
+    selected_index = domui_prop_get_int_default(tabs->props, "tabs.selected_index", 0);
+    if (selected_index < 0) {
+        selected_index = 0;
+    }
+    if (!pages.empty()) {
+        if ((size_t)selected_index >= pages.size()) {
+            selected_index = (int)(pages.size() - 1u);
+        }
+        selected_page = (size_t)selected_index;
+    }
+
+    if (domui_prop_get_string(tabs->props, "tabs.placement", placement)) {
+        const char* s = placement.c_str();
+        if (s && (s[0] == 'b' || s[0] == 'B')) {
+            content.h -= strip_thickness;
+        } else if (s && (s[0] == 'l' || s[0] == 'L')) {
+            content.x += strip_thickness;
+            content.w -= strip_thickness;
+        } else if (s && (s[0] == 'r' || s[0] == 'R')) {
+            content.w -= strip_thickness;
+        } else {
+            content.y += strip_thickness;
+            content.h -= strip_thickness;
+        }
+    } else {
+        content.y += strip_thickness;
+        content.h -= strip_thickness;
+    }
+    domui_clamp_nonnegative(content);
+
+    for (i = 0u; i < children.size(); ++i) {
+        const domui_widget* w = doc->find_by_id(children[i]);
+        size_t page_index = 0u;
+        int is_page = 0;
+        if (!w) {
+            continue;
+        }
+        if (use_explicit_pages && w->type == DOMUI_WIDGET_TAB_PAGE) {
+            is_page = 1;
+        } else if (!use_explicit_pages) {
+            is_page = 1;
+        }
+
+        if (is_page) {
+            size_t j;
+            for (j = 0u; j < pages.size(); ++j) {
+                if (pages[j] == w->id) {
+                    page_index = j;
+                    break;
+                }
+            }
+        }
+
+        if (!is_page || pages.empty() || page_index != selected_page) {
+            domui_layout_hide_subtree(doc, w->id, writer);
+            continue;
+        }
+
+        {
+            domui_layout_rect rect = domui_inset_rect(content, w->margin);
+            domui_apply_constraints(w, rect, false, 0, false, 0, diag);
+            domui_layout_write(writer, w->id, rect);
+            domui_layout_children(doc, w, w->id, rect, writer, diag);
+        }
+    }
+}
+
+static void domui_layout_children_scrollpanel(const domui_doc* doc,
+                                              const domui_widget* panel,
+                                              domui_widget_id parent_id,
+                                              const domui_layout_rect& parent_content,
+                                              domui_layout_writer& writer,
+                                              domui_diag* diag)
+{
+    std::vector<domui_widget_id> children;
+    size_t i;
+
+    if (!doc || !panel) {
+        return;
+    }
+
+    doc->enumerate_children(parent_id, children);
+    for (i = 0u; i < children.size(); ++i) {
+        const domui_widget* w = doc->find_by_id(children[i]);
+        if (!w) {
+            continue;
+        }
+        if (i >= 1u) {
+            domui_layout_hide_subtree(doc, w->id, writer);
+            continue;
+        }
+        {
+            domui_layout_rect rect = parent_content;
+            rect.x = parent_content.x + w->margin.left;
+            rect.y = parent_content.y + w->margin.top;
+            rect.w = w->w;
+            rect.h = w->h;
+            if (rect.w == 0) {
+                rect.w = parent_content.w - (w->margin.left + w->margin.right);
+            }
+            if (rect.h == 0) {
+                rect.h = parent_content.h - (w->margin.top + w->margin.bottom);
+            }
+            domui_apply_constraints(w, rect, false, 0, false, 0, diag);
+            domui_layout_write(writer, w->id, rect);
+            domui_layout_children(doc, w, w->id, rect, writer, diag);
+        }
+    }
+}
+
 static void domui_layout_children_stack(const domui_doc* doc,
                                         domui_widget_id parent_id,
                                         const domui_layout_rect& parent_content,
@@ -371,6 +676,21 @@ static void domui_layout_children(const domui_doc* doc,
         layout_mode = parent_widget->layout_mode;
     }
     domui_clamp_nonnegative(content);
+
+    if (parent_widget) {
+        if (parent_widget->type == DOMUI_WIDGET_SPLITTER) {
+            domui_layout_children_splitter(doc, parent_widget, parent_id, content, writer, diag);
+            return;
+        }
+        if (parent_widget->type == DOMUI_WIDGET_TABS) {
+            domui_layout_children_tabs(doc, parent_widget, parent_id, content, writer, diag);
+            return;
+        }
+        if (parent_widget->type == DOMUI_WIDGET_SCROLLPANEL) {
+            domui_layout_children_scrollpanel(doc, parent_widget, parent_id, content, writer, diag);
+            return;
+        }
+    }
 
     if (layout_mode == DOMUI_LAYOUT_STACK_ROW) {
         domui_layout_children_stack(doc, parent_id, content, true, writer, diag);

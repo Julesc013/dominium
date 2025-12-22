@@ -24,6 +24,10 @@ static const char* domui_event_name_for_widget(domui_widget_type t)
     case DOMUI_WIDGET_COMBOBOX:
     case DOMUI_WIDGET_SLIDER:
         return "on_change";
+    case DOMUI_WIDGET_SPLITTER:
+        return "on_change";
+    case DOMUI_WIDGET_TABS:
+        return "on_tab_change";
     default:
         break;
     }
@@ -60,6 +64,14 @@ static domui_widget_type domui_map_kind_to_widget(u32 kind, domui_container_layo
         return DOMUI_WIDGET_EDIT;
     case DUI_NODE_PROGRESS:
         return DOMUI_WIDGET_PROGRESS;
+    case DUI_NODE_SPLITTER:
+        return DOMUI_WIDGET_SPLITTER;
+    case DUI_NODE_TABS:
+        return DOMUI_WIDGET_TABS;
+    case DUI_NODE_TAB_PAGE:
+        return DOMUI_WIDGET_TAB_PAGE;
+    case DUI_NODE_SCROLL_PANEL:
+        return DOMUI_WIDGET_SCROLLPANEL;
     default:
         break;
     }

@@ -247,12 +247,16 @@ static domui_backend_caps domui_build_win32_caps(void)
     static const char* props_listview_t1[] = { "items", "selected_index", "listview.columns" };
     static const char* props_minmaxvalue[] = { "min", "max", "value" };
     static const char* props_image[] = { "image" };
-    static const char* props_splitter[] = { "orientation" };
+    static const char* props_splitter[] = { "splitter.orientation", "splitter.pos", "splitter.thickness", "splitter.min_a", "splitter.min_b" };
+    static const char* props_tabs[] = { "tabs.selected_index", "tabs.placement" };
+    static const char* props_tab_page[] = { "tab.title", "tab.enabled" };
+    static const char* props_scrollpanel[] = { "scroll.h_enabled", "scroll.v_enabled", "scroll.x", "scroll.y" };
 
     static const char* ev_click[] = { "on_click" };
     static const char* ev_change[] = { "on_change" };
     static const char* ev_submit[] = { "on_submit" };
     static const char* ev_change_submit[] = { "on_change", "on_submit" };
+    static const char* ev_tab_change[] = { "on_tab_change" };
 
     backend.backend_id.set("win32");
     backend.tiers.push_back(domui_string("win32_t0"));
@@ -274,6 +278,10 @@ static domui_backend_caps domui_build_win32_caps(void)
     t0.widgets.push_back(domui_make_widget_cap(DOMUI_WIDGET_SLIDER, props_minmaxvalue, 3u, ev_change, 1u));
     t0.widgets.push_back(domui_make_widget_cap(DOMUI_WIDGET_GROUPBOX, props_text, 1u, 0, 0u));
     t0.widgets.push_back(domui_make_widget_cap(DOMUI_WIDGET_IMAGE, props_image, 1u, 0, 0u));
+    t0.widgets.push_back(domui_make_widget_cap(DOMUI_WIDGET_SPLITTER, props_splitter, 5u, ev_change, 1u));
+    t0.widgets.push_back(domui_make_widget_cap(DOMUI_WIDGET_SCROLLPANEL, props_scrollpanel, 4u, 0, 0u));
+    t0.widgets.push_back(domui_make_widget_cap(DOMUI_WIDGET_TABS, props_tabs, 2u, ev_tab_change, 1u));
+    t0.widgets.push_back(domui_make_widget_cap(DOMUI_WIDGET_TAB_PAGE, props_tab_page, 2u, 0, 0u));
 
     t1.tier_id.set("win32_t1");
     t1.widgets.push_back(domui_make_widget_cap(DOMUI_WIDGET_CONTAINER, 0, 0u, 0, 0u));
@@ -291,10 +299,14 @@ static domui_backend_caps domui_build_win32_caps(void)
     t1.widgets.push_back(domui_make_widget_cap(DOMUI_WIDGET_SLIDER, props_minmaxvalue, 3u, ev_change, 1u));
     t1.widgets.push_back(domui_make_widget_cap(DOMUI_WIDGET_GROUPBOX, props_text, 1u, 0, 0u));
     t1.widgets.push_back(domui_make_widget_cap(DOMUI_WIDGET_IMAGE, props_image, 1u, 0, 0u));
-    t1.widgets.push_back(domui_make_widget_cap(DOMUI_WIDGET_SPLITTER, props_splitter, 1u, ev_change, 1u));
-    t1.widgets.push_back(domui_make_widget_cap(DOMUI_WIDGET_SCROLLPANEL, 0, 0u, 0, 0u));
+    t1.widgets.push_back(domui_make_widget_cap(DOMUI_WIDGET_SPLITTER, props_splitter, 5u, ev_change, 1u));
+    t1.widgets.push_back(domui_make_widget_cap(DOMUI_WIDGET_SCROLLPANEL, props_scrollpanel, 4u, 0, 0u));
+    t1.widgets.push_back(domui_make_widget_cap(DOMUI_WIDGET_TABS, props_tabs, 2u, ev_tab_change, 1u));
+    t1.widgets.push_back(domui_make_widget_cap(DOMUI_WIDGET_TAB_PAGE, props_tab_page, 2u, 0, 0u));
 
     domui_add_feature(t1, "widget.listview.columns", 0);
+    domui_add_feature(t0, "widget.splitter", 1);
+    domui_add_feature(t1, "widget.splitter", 1);
 
     backend.tier_caps.push_back(t0);
     backend.tier_caps.push_back(t1);
