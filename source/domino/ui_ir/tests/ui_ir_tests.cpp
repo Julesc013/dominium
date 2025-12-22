@@ -355,6 +355,99 @@ static void test_layout_stack(void)
     }
 }
 
+static void test_layout_splitter(void)
+{
+    domui_doc doc;
+    domui_widget_id root = doc.create_widget(DOMUI_WIDGET_CONTAINER, 0u);
+    domui_widget_id splitter = doc.create_widget(DOMUI_WIDGET_SPLITTER, root);
+    domui_widget_id a = doc.create_widget(DOMUI_WIDGET_BUTTON, splitter);
+    domui_widget_id b = doc.create_widget(DOMUI_WIDGET_BUTTON, splitter);
+    domui_widget* w;
+
+    w = doc.find_by_id(splitter);
+    w->x = 0;
+    w->y = 0;
+    w->w = 100;
+    w->h = 50;
+    w->props.set("splitter.orientation", domui_value_string(domui_string("v")));
+    w->props.set("splitter.pos", domui_value_int(30));
+    w->props.set("splitter.thickness", domui_value_int(4));
+
+    {
+        domui_layout_result results[8];
+        int count = 8;
+        domui_diag diag;
+        domui_layout_rect rect;
+
+        TEST_CHECK(domui_compute_layout(&doc, root, 0, 0, 100, 50, results, &count, &diag));
+        TEST_CHECK(domui_find_layout_rect(results, count, a, &rect));
+        domui_check_layout_rect(rect, 0, 0, 30, 50);
+        TEST_CHECK(domui_find_layout_rect(results, count, b, &rect));
+        domui_check_layout_rect(rect, 34, 0, 66, 50);
+    }
+}
+
+static void test_layout_tabs(void)
+{
+    domui_doc doc;
+    domui_widget_id root = doc.create_widget(DOMUI_WIDGET_CONTAINER, 0u);
+    domui_widget_id tabs = doc.create_widget(DOMUI_WIDGET_TABS, root);
+    domui_widget_id page_a = doc.create_widget(DOMUI_WIDGET_TAB_PAGE, tabs);
+    domui_widget_id page_b = doc.create_widget(DOMUI_WIDGET_TAB_PAGE, tabs);
+    domui_widget* w;
+
+    w = doc.find_by_id(tabs);
+    w->x = 0;
+    w->y = 0;
+    w->w = 200;
+    w->h = 100;
+    w->props.set("tabs.selected_index", domui_value_int(1));
+    w->props.set("tabs.placement", domui_value_string(domui_string("top")));
+
+    {
+        domui_layout_result results[8];
+        int count = 8;
+        domui_diag diag;
+        domui_layout_rect rect;
+
+        TEST_CHECK(domui_compute_layout(&doc, root, 0, 0, 200, 100, results, &count, &diag));
+        TEST_CHECK(domui_find_layout_rect(results, count, page_a, &rect));
+        domui_check_layout_rect(rect, 0, 0, 0, 0);
+        TEST_CHECK(domui_find_layout_rect(results, count, page_b, &rect));
+        domui_check_layout_rect(rect, 0, 24, 200, 76);
+    }
+}
+
+static void test_layout_scrollpanel(void)
+{
+    domui_doc doc;
+    domui_widget_id root = doc.create_widget(DOMUI_WIDGET_CONTAINER, 0u);
+    domui_widget_id scroll = doc.create_widget(DOMUI_WIDGET_SCROLLPANEL, root);
+    domui_widget_id content = doc.create_widget(DOMUI_WIDGET_CONTAINER, scroll);
+    domui_widget* w;
+
+    w = doc.find_by_id(scroll);
+    w->x = 0;
+    w->y = 0;
+    w->w = 100;
+    w->h = 100;
+
+    w = doc.find_by_id(content);
+    w->w = 200;
+    w->h = 150;
+
+    {
+        domui_layout_result results[8];
+        int count = 8;
+        domui_diag diag;
+        domui_layout_rect rect;
+
+        TEST_CHECK(domui_compute_layout(&doc, root, 0, 0, 100, 100, results, &count, &diag));
+        TEST_CHECK(domui_find_layout_rect(results, count, content, &rect));
+        domui_check_layout_rect(rect, 0, 0, 200, 150);
+    }
+}
+
 static void test_layout_determinism(void)
 {
     domui_doc doc_a;
@@ -490,7 +583,7 @@ static void domui_fill_sample_doc(domui_doc& doc, const char* name)
     domui_widget* w;
 
     doc.clear();
-    doc.meta.doc_version = 1u;
+    doc.meta.doc_version = 2u;
     doc.meta.doc_name.set(name ? name : "");
     doc.meta.target_backends.push_back(domui_string("win32"));
     doc.meta.target_tiers.push_back(domui_string("win32_t1"));
@@ -539,6 +632,87 @@ static void domui_fill_sample_doc(domui_doc& doc, const char* name)
     }
 }
 
+static void domui_fill_widget_doc(domui_doc& doc, const char* name)
+{
+    domui_widget_id root;
+    domui_widget_id splitter;
+    domui_widget_id pane_a;
+    domui_widget_id pane_b;
+    domui_widget_id tabs;
+    domui_widget_id page_a;
+    domui_widget_id page_b;
+    domui_widget_id scroll;
+    domui_widget_id scroll_content;
+    domui_widget* w;
+
+    doc.clear();
+    doc.meta.doc_version = 2u;
+    doc.meta.doc_name.set(name ? name : "");
+    doc.meta.target_backends.push_back(domui_string("win32"));
+    doc.meta.target_tiers.push_back(domui_string("win32_t1"));
+
+    root = doc.create_widget(DOMUI_WIDGET_CONTAINER, 0u);
+    splitter = doc.create_widget(DOMUI_WIDGET_SPLITTER, root);
+    pane_a = doc.create_widget(DOMUI_WIDGET_CONTAINER, splitter);
+    pane_b = doc.create_widget(DOMUI_WIDGET_CONTAINER, splitter);
+
+    w = doc.find_by_id(splitter);
+    if (w) {
+        w->x = 0;
+        w->y = 0;
+        w->w = 400;
+        w->h = 200;
+        w->props.set("splitter.orientation", domui_value_string(domui_string("v")));
+        w->props.set("splitter.pos", domui_value_int(140));
+        w->props.set("splitter.thickness", domui_value_int(4));
+        w->props.set("splitter.min_a", domui_value_int(40));
+        w->props.set("splitter.min_b", domui_value_int(40));
+    }
+
+    tabs = doc.create_widget(DOMUI_WIDGET_TABS, pane_a);
+    page_a = doc.create_widget(DOMUI_WIDGET_TAB_PAGE, tabs);
+    page_b = doc.create_widget(DOMUI_WIDGET_TAB_PAGE, tabs);
+
+    w = doc.find_by_id(tabs);
+    if (w) {
+        w->x = 0;
+        w->y = 0;
+        w->w = 200;
+        w->h = 180;
+        w->props.set("tabs.selected_index", domui_value_int(1));
+        w->props.set("tabs.placement", domui_value_string(domui_string("top")));
+    }
+    w = doc.find_by_id(page_a);
+    if (w) {
+        w->props.set("tab.title", domui_value_string(domui_string("First")));
+        w->props.set("tab.enabled", domui_value_bool(1));
+    }
+    w = doc.find_by_id(page_b);
+    if (w) {
+        w->props.set("tab.title", domui_value_string(domui_string("Second")));
+        w->props.set("tab.enabled", domui_value_bool(1));
+    }
+
+    scroll = doc.create_widget(DOMUI_WIDGET_SCROLLPANEL, pane_b);
+    scroll_content = doc.create_widget(DOMUI_WIDGET_CONTAINER, scroll);
+    w = doc.find_by_id(scroll);
+    if (w) {
+        w->x = 0;
+        w->y = 0;
+        w->w = 200;
+        w->h = 180;
+        w->props.set("scroll.h_enabled", domui_value_bool(1));
+        w->props.set("scroll.v_enabled", domui_value_bool(1));
+        w->props.set("scroll.x", domui_value_int(0));
+        w->props.set("scroll.y", domui_value_int(0));
+    }
+    w = doc.find_by_id(scroll_content);
+    if (w) {
+        w->w = 320;
+        w->h = 240;
+    }
+}
+
 static void test_tlv_roundtrip(void)
 {
     const char* path_a = "ui_ir_test_roundtrip.tlv";
@@ -553,6 +727,29 @@ static void test_tlv_roundtrip(void)
     domui_cleanup_tlv_with_json(path_b);
 
     domui_fill_sample_doc(doc, "roundtrip");
+    TEST_CHECK(domui_doc_save_tlv(&doc, path_a, &diag));
+    TEST_CHECK(domui_doc_load_tlv(&doc2, path_a, &diag));
+    TEST_CHECK(domui_doc_save_tlv(&doc2, path_b, &diag));
+
+    TEST_CHECK(domui_read_file_bytes(path_a, a_bytes, &diag));
+    TEST_CHECK(domui_read_file_bytes(path_b, b_bytes, &diag));
+    TEST_CHECK(domui_bytes_equal(a_bytes, b_bytes));
+}
+
+static void test_tlv_roundtrip_v2_widgets(void)
+{
+    const char* path_a = "ui_ir_test_roundtrip_v2.tlv";
+    const char* path_b = "ui_ir_test_roundtrip_v2_b.tlv";
+    domui_doc doc;
+    domui_doc doc2;
+    domui_diag diag;
+    std::vector<unsigned char> a_bytes;
+    std::vector<unsigned char> b_bytes;
+
+    domui_cleanup_tlv_with_json(path_a);
+    domui_cleanup_tlv_with_json(path_b);
+
+    domui_fill_widget_doc(doc, "roundtrip_v2");
     TEST_CHECK(domui_doc_save_tlv(&doc, path_a, &diag));
     TEST_CHECK(domui_doc_load_tlv(&doc2, path_a, &diag));
     TEST_CHECK(domui_doc_save_tlv(&doc2, path_b, &diag));
@@ -755,8 +952,12 @@ int main(void)
     test_layout_anchor();
     test_layout_dock();
     test_layout_stack();
+    test_layout_splitter();
+    test_layout_tabs();
+    test_layout_scrollpanel();
     test_layout_determinism();
     test_tlv_roundtrip();
+    test_tlv_roundtrip_v2_widgets();
     test_json_stability();
     test_backup_rotation();
     test_legacy_import_smoke();

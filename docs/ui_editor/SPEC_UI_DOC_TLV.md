@@ -2,16 +2,22 @@
 
 ## Scope
 - Defines the in-memory UI IR concepts and canonicalization rules implemented in `source/domino/ui_ir`.
-- Defines the TLV wire format v1 for `ui_doc.tlv` (DTLV container + nested TLV streams).
+- Defines the TLV wire format v2 for `ui_doc.tlv` (DTLV container + nested TLV streams).
 - TLV is the canonical on-disk format; JSON is a deterministic mirror generated on save.
 
 ## IR concepts
-- Document metadata: `doc_version` (starts at 1), `doc_name`, optional `doc_guid`.
+- Document metadata: `doc_version` (starts at 2), `doc_name`, optional `doc_guid`.
 - Widget table keyed by `id` (0 is reserved for “no parent”).
 - Widget fields: `type`, `name`, `parent_id`, `z_order`, rect (`x,y,w,h`), `layout_mode`, `dock`,
   `anchors`, `margin`, `padding`, constraints (`min_w/min_h/max_w/max_h`), `props`, and `events`.
 - Properties: typed key/value pairs (`INT`, `UINT`, `BOOL`, `STRING`, `VEC2I`, `RECTI`).
 - Events: `event_name -> action_key` bindings (e.g., `on_click`, `on_change`, `on_submit`).
+
+## Widget properties (v2 additions)
+- Splitter: `splitter.orientation` ("h"/"v"), `splitter.pos` (int), `splitter.thickness` (int), `splitter.min_a` (int), `splitter.min_b` (int).
+- Tabs: `tabs.selected_index` (int), `tabs.placement` ("top"/"bottom"/"left"/"right").
+- Tab page: `tab.title` (string), `tab.enabled` (bool).
+- Scroll panel: `scroll.h_enabled` (bool), `scroll.v_enabled` (bool), `scroll.x` (int), `scroll.y` (int).
 
 ## Canonicalization rules
 - IDs are monotonic per document; never reused after deletion.
@@ -44,15 +50,18 @@
 - Constraints clamp final sizes after base rect calculation; z-order never affects geometry.
 - Diagnostics: multiple FILL dock children -> warning; negative size after constraints -> error; child outer bounds exceeding parent content -> error.
 - Example: parent width 100, anchored L+R child `x=10`, `w=20` yields width `100 - 10 - 20 = 70`.
+- Splitter: divides content into two panes in canonical child order (first two children), with `splitter.pos` (pixels) and `splitter.thickness` (default 4). Orientation `"v"` splits left/right, `"h"` splits top/bottom. Extra children are hidden (zero rects).
+- Tabs: reserves a tab strip (default thickness 24) per `tabs.placement`; only the selected page is laid out to the remaining content rect; non-selected pages are hidden (zero rects).
+- Scroll panel: establishes a viewport (panel rect); first child is laid out at (0,0) with its own size (or viewport if size is 0); extra children are hidden.
 
-## TLV wire format v1 (ui_doc.tlv)
+## TLV wire format v2 (ui_doc.tlv)
 ### Container header
 - File is a DTLV container v1 (see `docs/SPEC_CONTAINER_TLV.md`).
 - Header fields: magic `DTLV`, endian marker `0xFFFE` (little-endian), version `1`, directory entries.
 
 ### Top-level chunks (DTLV directory entries)
-- `META` (version 1): document metadata TLV stream.
-- `WIDG` (version 1): widget records TLV stream.
+- `META` (version 2): document metadata TLV stream.
+- `WIDG` (version 2): widget records TLV stream.
 - `RSRC` (version 1): reserved (not written yet).
 - `EVNT` (version 1): reserved (not written yet).
 - `ORDR` (version 1): reserved (not written yet).
@@ -107,6 +116,7 @@
 - Properties are written in lexicographic key order.
 - Events are written in lexicographic event name order.
 - TLV tags/lengths are little-endian; no timestamps or random IDs.
+- v1 docs are accepted on load and migrated to v2 defaults.
 
 ### Save behavior
 - Writes `path.tmp`, rotates backups `path.bak1..bak10`, then atomically replaces `path`.
