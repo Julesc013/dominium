@@ -90,6 +90,11 @@ static i32 dgfx_font_line_height(void)
     return (i32)(DGFX_FONT_LINE_ADV * DGFX_FONT_SCALE);
 }
 
+static i32 dgfx_font_glyph_height(void)
+{
+    return (i32)(DGFX_FONT_GLYPH_H * DGFX_FONT_SCALE);
+}
+
 static i32 dgfx_ui_pad(void)
 {
     return 6 + (DGFX_FONT_SCALE - 1) * 2;
@@ -103,6 +108,8 @@ static i32 dgfx_list_item_height(void)
 static i32 dgfx_text_height(const char* text)
 {
     i32 lines;
+    i32 line_advance;
+    i32 glyph_h;
     if (!text || !text[0]) {
         return 0;
     }
@@ -113,25 +120,29 @@ static i32 dgfx_text_height(const char* text)
         }
         ++text;
     }
-    return lines * dgfx_font_line_height();
+    if (lines <= 0) {
+        return 0;
+    }
+    line_advance = dgfx_font_line_height();
+    glyph_h = dgfx_font_glyph_height();
+    return (lines - 1) * line_advance + glyph_h;
 }
 
 static i32 dgfx_text_y_in_rect(const dui_schema_node* n, const char* text, i32 pad)
 {
     i32 text_h;
     i32 y;
+    (void)pad;
     if (!n) {
         return 0;
     }
     text_h = dgfx_text_height(text);
-    y = n->y + pad;
-    if (text_h > 0 && n->h > (text_h + pad * 2)) {
+    if (text_h > 0 && n->h > text_h) {
         y = n->y + (n->h - text_h) / 2;
-    }
-    if (y < n->y) {
+    } else {
         y = n->y;
     }
-    return y;
+    return (y < n->y) ? n->y : y;
 }
 
 static dui_result dgfx_test_post_event(dui_context* ctx, const dui_event_v1* ev)
