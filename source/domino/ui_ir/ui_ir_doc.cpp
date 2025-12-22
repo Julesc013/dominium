@@ -9,6 +9,21 @@ RESPONSIBILITY: Implements canonical UI IR document model and ordering rules.
 #include <algorithm>
 #include <utility>
 
+struct domui_child_sort {
+    domui_u32 z;
+    domui_widget_id id;
+};
+
+struct domui_child_sort_less {
+    bool operator()(const domui_child_sort& a, const domui_child_sort& b) const
+    {
+        if (a.z != b.z) {
+            return a.z < b.z;
+        }
+        return a.id < b.id;
+    }
+};
+
 domui_events::domui_events()
     : m_entries()
 {
@@ -140,6 +155,7 @@ domui_widget::domui_widget()
       y(0),
       w(0),
       h(0),
+      layout_mode(DOMUI_LAYOUT_ABSOLUTE),
       dock(DOMUI_DOCK_NONE),
       anchors(0u),
       margin(),
@@ -185,6 +201,13 @@ domui_doc::domui_doc()
       m_widgets(),
       m_next_id(1u)
 {
+}
+
+void domui_doc::clear()
+{
+    m_widgets.clear();
+    m_next_id = 1u;
+    meta = domui_doc_meta();
 }
 
 domui_widget_id domui_doc::create_widget(domui_widget_type type, domui_widget_id parent_id)
@@ -357,20 +380,6 @@ const domui_widget* domui_doc::find_by_name(const domui_string& name) const
 
 void domui_doc::enumerate_children(domui_widget_id parent_id, std::vector<domui_widget_id>& out_ids) const
 {
-    struct domui_child_sort {
-        domui_u32 z;
-        domui_widget_id id;
-    };
-    struct domui_child_sort_less {
-        bool operator()(const domui_child_sort& a, const domui_child_sort& b) const
-        {
-            if (a.z != b.z) {
-                return a.z < b.z;
-            }
-            return a.id < b.id;
-        }
-    };
-
     widget_map::const_iterator it;
     std::vector<domui_child_sort> temp;
     out_ids.clear();
@@ -427,4 +436,27 @@ void domui_doc::recompute_next_id_from_widgets()
 domui_widget_id domui_doc::next_id() const
 {
     return m_next_id;
+}
+
+size_t domui_doc::widget_count() const
+{
+    return m_widgets.size();
+}
+
+bool domui_doc::insert_widget_with_id(const domui_widget& w)
+{
+    if (w.id == 0u) {
+        return false;
+    }
+    if (m_widgets.find(w.id) != m_widgets.end()) {
+        return false;
+    }
+    m_widgets.insert(std::make_pair(w.id, w));
+    if (w.id >= m_next_id) {
+        m_next_id = w.id + 1u;
+        if (m_next_id == 0u) {
+            m_next_id = 1u;
+        }
+    }
+    return true;
 }

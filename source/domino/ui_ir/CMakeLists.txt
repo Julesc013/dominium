@@ -5,11 +5,19 @@ add_library(domino_ui_ir STATIC
     ui_ir_string.cpp
     ui_ir_props.cpp
     ui_ir_doc.cpp
+    ui_ir_diag.cpp
+    ui_ir_fileio.cpp
+    ui_ir_tlv.cpp
 )
 
 target_include_directories(domino_ui_ir PUBLIC
     ${DOMINIUM_INCLUDE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+target_link_libraries(domino_ui_ir
+    PUBLIC
+        domino_core
 )
 
 set_target_properties(domino_ui_ir PROPERTIES
