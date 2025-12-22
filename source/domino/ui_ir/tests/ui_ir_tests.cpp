@@ -20,6 +20,7 @@ RESPONSIBILITY: Unit tests for UI IR canonicalization and ID stability.
 #include "ui_ir_json.h"
 #include "ui_ir_legacy_import.h"
 #include "ui_ir_tlv.h"
+#include "ui_layout.h"
 #include "ui_validate.h"
 
 static int g_failures = 0;
@@ -31,6 +32,61 @@ static int g_failures = 0;
             g_failures += 1; \
         } \
     } while (0)
+
+static bool domui_find_layout_rect(const domui_layout_result* results,
+                                   int count,
+                                   domui_widget_id widget_id,
+                                   domui_layout_rect* out_rect)
+{
+    int i;
+    if (!results || count <= 0) {
+        return false;
+    }
+    for (i = 0; i < count; ++i) {
+        if (results[i].widget_id == widget_id) {
+            if (out_rect) {
+                *out_rect = results[i].rect;
+            }
+            return true;
+        }
+    }
+    return false;
+}
+
+static void domui_check_layout_rect(const domui_layout_rect& rect,
+                                    int x,
+                                    int y,
+                                    int w,
+                                    int h)
+{
+    TEST_CHECK(rect.x == x);
+    TEST_CHECK(rect.y == y);
+    TEST_CHECK(rect.w == w);
+    TEST_CHECK(rect.h == h);
+}
+
+static bool domui_layout_results_equal(const domui_layout_result* a,
+                                       int count_a,
+                                       const domui_layout_result* b,
+                                       int count_b)
+{
+    int i;
+    if (count_a != count_b) {
+        return false;
+    }
+    for (i = 0; i < count_a; ++i) {
+        if (a[i].widget_id != b[i].widget_id) {
+            return false;
+        }
+        if (a[i].rect.x != b[i].rect.x ||
+            a[i].rect.y != b[i].rect.y ||
+            a[i].rect.w != b[i].rect.w ||
+            a[i].rect.h != b[i].rect.h) {
+            return false;
+        }
+    }
+    return true;
+}
 
 static void test_id_stability(void)
 {
@@ -130,6 +186,240 @@ static void test_reparent_stability(void)
         TEST_CHECK(order[0] == a);
         TEST_CHECK(order[1] == b);
         TEST_CHECK(order[2] == c);
+    }
+}
+
+static void test_layout_absolute(void)
+{
+    domui_doc doc;
+    domui_widget_id root = doc.create_widget(DOMUI_WIDGET_CONTAINER, 0u);
+    domui_widget_id child = doc.create_widget(DOMUI_WIDGET_BUTTON, root);
+    domui_widget_id label = doc.create_widget(DOMUI_WIDGET_STATIC_TEXT, root);
+    domui_widget* w;
+
+    w = doc.find_by_id(root);
+    w->padding.left = 5;
+    w->padding.top = 6;
+    w->padding.right = 7;
+    w->padding.bottom = 8;
+
+    w = doc.find_by_id(child);
+    w->x = 10;
+    w->y = 20;
+    w->w = 30;
+    w->h = 40;
+    w->margin.left = 2;
+    w->margin.top = 1;
+
+    w = doc.find_by_id(label);
+    w->x = 0;
+    w->y = 0;
+    w->w = 15;
+    w->h = 10;
+
+    {
+        domui_layout_result results[8];
+        int count = 8;
+        domui_diag diag;
+        domui_layout_rect rect;
+
+        TEST_CHECK(domui_compute_layout(&doc, root, 0, 0, 200, 100, results, &count, &diag));
+        TEST_CHECK(count == 3);
+
+        TEST_CHECK(domui_find_layout_rect(results, count, root, &rect));
+        domui_check_layout_rect(rect, 0, 0, 200, 100);
+
+        TEST_CHECK(domui_find_layout_rect(results, count, child, &rect));
+        domui_check_layout_rect(rect, 17, 27, 30, 40);
+
+        TEST_CHECK(domui_find_layout_rect(results, count, label, &rect));
+        domui_check_layout_rect(rect, 5, 6, 15, 10);
+    }
+}
+
+static void test_layout_anchor(void)
+{
+    domui_doc doc;
+    domui_widget_id root = doc.create_widget(DOMUI_WIDGET_CONTAINER, 0u);
+    domui_widget_id stretch = doc.create_widget(DOMUI_WIDGET_BUTTON, root);
+    domui_widget_id right = doc.create_widget(DOMUI_WIDGET_STATIC_TEXT, root);
+    domui_widget* w;
+
+    w = doc.find_by_id(stretch);
+    w->anchors = DOMUI_ANCHOR_L | DOMUI_ANCHOR_R | DOMUI_ANCHOR_T;
+    w->x = 10;
+    w->w = 20;
+    w->y = 5;
+    w->h = 15;
+
+    w = doc.find_by_id(right);
+    w->anchors = DOMUI_ANCHOR_R | DOMUI_ANCHOR_T;
+    w->x = 8;
+    w->w = 30;
+    w->y = 4;
+    w->h = 10;
+
+    {
+        domui_layout_result results[8];
+        int count = 8;
+        domui_diag diag;
+        domui_layout_rect rect;
+
+        TEST_CHECK(domui_compute_layout(&doc, root, 0, 0, 100, 50, results, &count, &diag));
+        TEST_CHECK(domui_find_layout_rect(results, count, stretch, &rect));
+        domui_check_layout_rect(rect, 10, 5, 70, 15);
+        TEST_CHECK(domui_find_layout_rect(results, count, right, &rect));
+        domui_check_layout_rect(rect, 62, 4, 30, 10);
+
+        count = 8;
+        TEST_CHECK(domui_compute_layout(&doc, root, 0, 0, 140, 50, results, &count, &diag));
+        TEST_CHECK(domui_find_layout_rect(results, count, stretch, &rect));
+        domui_check_layout_rect(rect, 10, 5, 110, 15);
+        TEST_CHECK(domui_find_layout_rect(results, count, right, &rect));
+        domui_check_layout_rect(rect, 102, 4, 30, 10);
+    }
+}
+
+static void test_layout_dock(void)
+{
+    domui_doc doc;
+    domui_widget_id root = doc.create_widget(DOMUI_WIDGET_CONTAINER, 0u);
+    domui_widget_id left = doc.create_widget(DOMUI_WIDGET_BUTTON, root);
+    domui_widget_id top = doc.create_widget(DOMUI_WIDGET_STATIC_TEXT, root);
+    domui_widget_id fill = doc.create_widget(DOMUI_WIDGET_EDIT, root);
+    domui_widget* w;
+
+    w = doc.find_by_id(left);
+    w->dock = DOMUI_DOCK_LEFT;
+    w->w = 10;
+
+    w = doc.find_by_id(top);
+    w->dock = DOMUI_DOCK_TOP;
+    w->h = 5;
+
+    w = doc.find_by_id(fill);
+    w->dock = DOMUI_DOCK_FILL;
+
+    {
+        domui_layout_result results[8];
+        int count = 8;
+        domui_diag diag;
+        domui_layout_rect rect;
+
+        TEST_CHECK(domui_compute_layout(&doc, root, 0, 0, 100, 100, results, &count, &diag));
+        TEST_CHECK(domui_find_layout_rect(results, count, left, &rect));
+        domui_check_layout_rect(rect, 0, 0, 10, 100);
+        TEST_CHECK(domui_find_layout_rect(results, count, top, &rect));
+        domui_check_layout_rect(rect, 10, 0, 90, 5);
+        TEST_CHECK(domui_find_layout_rect(results, count, fill, &rect));
+        domui_check_layout_rect(rect, 10, 5, 90, 95);
+    }
+}
+
+static void test_layout_stack(void)
+{
+    domui_doc doc;
+    domui_widget_id root = doc.create_widget(DOMUI_WIDGET_CONTAINER, 0u);
+    domui_widget_id a = doc.create_widget(DOMUI_WIDGET_BUTTON, root);
+    domui_widget_id b = doc.create_widget(DOMUI_WIDGET_BUTTON, root);
+    domui_widget* w;
+
+    w = doc.find_by_id(root);
+    w->layout_mode = DOMUI_LAYOUT_STACK_ROW;
+
+    w = doc.find_by_id(a);
+    w->w = 30;
+    w->h = 10;
+    w->min_w = 40;
+    w->margin.left = 2;
+    w->margin.right = 2;
+
+    w = doc.find_by_id(b);
+    w->w = 20;
+    w->h = 12;
+    w->max_w = 15;
+    w->margin.left = 1;
+    w->margin.right = 1;
+
+    {
+        domui_layout_result results[8];
+        int count = 8;
+        domui_diag diag;
+        domui_layout_rect rect;
+
+        TEST_CHECK(domui_compute_layout(&doc, root, 0, 0, 100, 30, results, &count, &diag));
+        TEST_CHECK(domui_find_layout_rect(results, count, a, &rect));
+        domui_check_layout_rect(rect, 2, 0, 40, 10);
+        TEST_CHECK(domui_find_layout_rect(results, count, b, &rect));
+        domui_check_layout_rect(rect, 45, 0, 15, 12);
+    }
+}
+
+static void test_layout_determinism(void)
+{
+    domui_doc doc_a;
+    domui_doc doc_b;
+    domui_widget_id root_a = doc_a.create_widget(DOMUI_WIDGET_CONTAINER, 0u);
+    domui_widget_id child_a = doc_a.create_widget(DOMUI_WIDGET_BUTTON, root_a);
+    domui_widget_id child_b = doc_a.create_widget(DOMUI_WIDGET_BUTTON, root_a);
+    domui_widget* w;
+
+    w = doc_a.find_by_id(child_a);
+    w->x = 10;
+    w->y = 10;
+    w->w = 20;
+    w->h = 10;
+    w->z_order = 1u;
+
+    w = doc_a.find_by_id(child_b);
+    w->x = 40;
+    w->y = 10;
+    w->w = 20;
+    w->h = 10;
+    w->z_order = 0u;
+
+    {
+        domui_widget wroot;
+        domui_widget wa;
+        domui_widget wb;
+
+        wroot.id = 1u;
+        wroot.type = DOMUI_WIDGET_CONTAINER;
+        wroot.parent_id = 0u;
+
+        wa.id = 2u;
+        wa.type = DOMUI_WIDGET_BUTTON;
+        wa.parent_id = 1u;
+        wa.x = 10;
+        wa.y = 10;
+        wa.w = 20;
+        wa.h = 10;
+        wa.z_order = 1u;
+
+        wb.id = 3u;
+        wb.type = DOMUI_WIDGET_BUTTON;
+        wb.parent_id = 1u;
+        wb.x = 40;
+        wb.y = 10;
+        wb.w = 20;
+        wb.h = 10;
+        wb.z_order = 0u;
+
+        TEST_CHECK(doc_b.insert_widget_with_id(wb));
+        TEST_CHECK(doc_b.insert_widget_with_id(wroot));
+        TEST_CHECK(doc_b.insert_widget_with_id(wa));
+    }
+
+    {
+        domui_layout_result results_a[8];
+        domui_layout_result results_b[8];
+        int count_a = 8;
+        int count_b = 8;
+        domui_diag diag;
+
+        TEST_CHECK(domui_compute_layout(&doc_a, root_a, 0, 0, 100, 50, results_a, &count_a, &diag));
+        TEST_CHECK(domui_compute_layout(&doc_b, 1u, 0, 0, 100, 50, results_b, &count_b, &diag));
+        TEST_CHECK(domui_layout_results_equal(results_a, count_a, results_b, count_b));
     }
 }
 
@@ -461,6 +751,11 @@ int main(void)
     test_prop_canonicalization();
     test_event_canonicalization();
     test_reparent_stability();
+    test_layout_absolute();
+    test_layout_anchor();
+    test_layout_dock();
+    test_layout_stack();
+    test_layout_determinism();
     test_tlv_roundtrip();
     test_json_stability();
     test_backup_rotation();

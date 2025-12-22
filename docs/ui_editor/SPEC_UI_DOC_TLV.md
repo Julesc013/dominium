@@ -28,6 +28,23 @@
 - Tier mismatches (e.g., doc requires `win32_t1` but targets include `win32_t0`) are errors.
 - Diagnostics are deterministically ordered by severity, widget id, feature key, and message.
 
+## Layout engine v1 (deterministic)
+- Layout is computed by `domui_compute_layout` in `source/domino/ui_ir/ui_layout.*` with canonical widget order output.
+- Parent content rect = parent rect inset by padding.
+- Precedence per child: dock (`dock != NONE`) -> anchors (`anchors != 0`) -> absolute.
+- Dock uses the remaining parent content rect (canonical order): LEFT/RIGHT reserve width, TOP/BOTTOM reserve height, FILL consumes remaining space.
+- Margins are treated as outer offsets and are included in dock reservations and stack spacing.
+- Anchor offsets are stored in widget fields:
+  - L only: `x` is left offset, `w` is width.
+  - R only: `x` is right offset, `w` is width.
+  - L+R: `x` is left offset, `w` is right offset (width grows/shrinks with parent).
+  - T/B use `y`/`h` with the same rules.
+- Absolute uses `x,y` as left/top offsets and `w,h` as size (margins shift by left/top).
+- Stack layouts (`STACK_ROW`/`STACK_COL`) place children sequentially along the axis using their sizes and margins; dock/anchors are ignored; no wrapping; excess space remains unused.
+- Constraints clamp final sizes after base rect calculation; z-order never affects geometry.
+- Diagnostics: multiple FILL dock children -> warning; negative size after constraints -> error; child outer bounds exceeding parent content -> error.
+- Example: parent width 100, anchored L+R child `x=10`, `w=20` yields width `100 - 10 - 20 = 70`.
+
 ## TLV wire format v1 (ui_doc.tlv)
 ### Container header
 - File is a DTLV container v1 (see `docs/SPEC_CONTAINER_TLV.md`).
@@ -98,4 +115,5 @@
 ## Non-goals (this prompt)
 - No TLV schema for resources/events/ordering chunks yet.
 - No JSON import or JSON-as-source-of-truth.
-- No editor UI or layout engine.
+- No editor UI.
+- No DPI scaling or backend-specific rendering changes.
