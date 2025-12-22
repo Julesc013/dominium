@@ -130,9 +130,13 @@ static bool domui_buf_write_box(std::vector<unsigned char>& out, domui_u32 tag, 
 static bool domui_write_meta_payload(const domui_doc& doc, std::vector<unsigned char>& out)
 {
     std::vector<unsigned char> list_payload;
+    domui_u32 doc_version = doc.meta.doc_version;
+    if (doc_version < 2u) {
+        doc_version = 2u;
+    }
     domui_buf_write_u32(out, DOMUI_TLV_DOC_VERSION);
     domui_buf_write_u32(out, 4u);
-    domui_buf_write_u32(out, doc.meta.doc_version);
+    domui_buf_write_u32(out, doc_version);
 
     domui_buf_write_string(out, DOMUI_TLV_DOC_NAME, doc.meta.doc_name);
 
@@ -647,6 +651,68 @@ static std::string domui_json_path_from_tlv(const char* path)
     return p;
 }
 
+static void domui_apply_default_prop(domui_widget* w, const char* key, const domui_value& value)
+{
+    if (!w || !key) {
+        return;
+    }
+    if (!w->props.has(key)) {
+        w->props.set(key, value);
+    }
+}
+
+static void domui_migrate_v1_to_v2(domui_doc& doc, domui_diag* diag)
+{
+    std::vector<domui_widget_id> order;
+    size_t i;
+
+    doc.meta.doc_version = 2u;
+
+    doc.canonical_widget_order(order);
+    for (i = 0u; i < order.size(); ++i) {
+        domui_widget* w = doc.find_by_id(order[i]);
+        if (!w) {
+            continue;
+        }
+        switch (w->type) {
+        case DOMUI_WIDGET_SPLITTER:
+            domui_apply_default_prop(w, "splitter.orientation", domui_value_string(domui_string("v")));
+            domui_apply_default_prop(w, "splitter.pos", domui_value_int(-1));
+            domui_apply_default_prop(w, "splitter.thickness", domui_value_int(4));
+            domui_apply_default_prop(w, "splitter.min_a", domui_value_int(0));
+            domui_apply_default_prop(w, "splitter.min_b", domui_value_int(0));
+            break;
+        case DOMUI_WIDGET_TABS:
+            domui_apply_default_prop(w, "tabs.selected_index", domui_value_int(0));
+            domui_apply_default_prop(w, "tabs.placement", domui_value_string(domui_string("top")));
+            break;
+        case DOMUI_WIDGET_TAB_PAGE:
+            domui_apply_default_prop(w, "tab.title", domui_value_string(domui_string("")));
+            domui_apply_default_prop(w, "tab.enabled", domui_value_bool(1));
+            break;
+        case DOMUI_WIDGET_SCROLLPANEL:
+            domui_apply_default_prop(w, "scroll.h_enabled", domui_value_bool(1));
+            domui_apply_default_prop(w, "scroll.v_enabled", domui_value_bool(1));
+            domui_apply_default_prop(w, "scroll.x", domui_value_int(0));
+            domui_apply_default_prop(w, "scroll.y", domui_value_int(0));
+            break;
+        default:
+            break;
+        }
+    }
+
+    if (diag) {
+        diag->add_warning("tlv: migrated doc version 1 -> 2", 0u, "");
+    }
+}
+
+static void domui_apply_migrations(domui_doc& doc, domui_diag* diag)
+{
+    if (doc.meta.doc_version < 2u) {
+        domui_migrate_v1_to_v2(doc, diag);
+    }
+}
+
 bool domui_doc_save_tlv(const domui_doc* doc, const char* path, domui_diag* diag)
 {
     std::vector<unsigned char> meta_payload;
@@ -698,7 +764,7 @@ bool domui_doc_save_tlv(const domui_doc* doc, const char* path, domui_diag* diag
         return false;
     }
 
-    if (dtlv_writer_begin_chunk(&writer, DOMUI_CHUNK_META, 1u, 0u) != 0) {
+    if (dtlv_writer_begin_chunk(&writer, DOMUI_CHUNK_META, 2u, 0u) != 0) {
         if (diag) {
             diag->add_error("save tlv: begin meta chunk failed", 0u, "");
         }
@@ -722,7 +788,7 @@ bool domui_doc_save_tlv(const domui_doc* doc, const char* path, domui_diag* diag
         return false;
     }
 
-    if (dtlv_writer_begin_chunk(&writer, DOMUI_CHUNK_WIDGETS, 1u, 0u) != 0) {
+    if (dtlv_writer_begin_chunk(&writer, DOMUI_CHUNK_WIDGETS, 2u, 0u) != 0) {
         if (diag) {
             diag->add_error("save tlv: begin widgets chunk failed", 0u, "");
         }
@@ -812,8 +878,14 @@ bool domui_doc_load_tlv(domui_doc* out, const char* path, domui_diag* diag)
         return false;
     }
 
-    meta_entry = dtlv_reader_find_first(&reader, DOMUI_CHUNK_META, 1u);
-    widgets_entry = dtlv_reader_find_first(&reader, DOMUI_CHUNK_WIDGETS, 1u);
+    meta_entry = dtlv_reader_find_first(&reader, DOMUI_CHUNK_META, 2u);
+    if (!meta_entry) {
+        meta_entry = dtlv_reader_find_first(&reader, DOMUI_CHUNK_META, 1u);
+    }
+    widgets_entry = dtlv_reader_find_first(&reader, DOMUI_CHUNK_WIDGETS, 2u);
+    if (!widgets_entry) {
+        widgets_entry = dtlv_reader_find_first(&reader, DOMUI_CHUNK_WIDGETS, 1u);
+    }
     if (!meta_entry || !widgets_entry) {
         if (diag) {
             diag->add_error("load tlv: missing required chunks", 0u, path);
@@ -836,6 +908,7 @@ bool domui_doc_load_tlv(domui_doc* out, const char* path, domui_diag* diag)
 
     domui_parse_meta(meta_payload, meta_len, *out, diag);
     domui_parse_widgets(widgets_payload, widgets_len, *out, diag);
+    domui_apply_migrations(*out, diag);
     out->recompute_next_id_from_widgets();
 
     if (meta_payload) {

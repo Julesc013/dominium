@@ -72,6 +72,8 @@ static const char* domui_widget_type_name(domui_widget_type t)
     case DOMUI_WIDGET_IMAGE: return "IMAGE";
     case DOMUI_WIDGET_SPLITTER: return "SPLITTER";
     case DOMUI_WIDGET_SCROLLPANEL: return "SCROLLPANEL";
+    case DOMUI_WIDGET_TABS: return "TABS";
+    case DOMUI_WIDGET_TAB_PAGE: return "TAB_PAGE";
     default:
         break;
     }
@@ -99,6 +101,8 @@ static void domui_widget_feature_key(domui_widget_type t, domui_string& out_key)
     case DOMUI_WIDGET_IMAGE: suffix = "image"; break;
     case DOMUI_WIDGET_SPLITTER: suffix = "splitter"; break;
     case DOMUI_WIDGET_SCROLLPANEL: suffix = "scrollpanel"; break;
+    case DOMUI_WIDGET_TABS: suffix = "tabs"; break;
+    case DOMUI_WIDGET_TAB_PAGE: suffix = "tab_page"; break;
     default:
         break;
     }

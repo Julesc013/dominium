@@ -188,7 +188,7 @@ void domui_widget::canonical_event_order(std::vector<domui_string>& out_names) c
 }
 
 domui_doc_meta::domui_doc_meta()
-    : doc_version(1u),
+    : doc_version(2u),
       doc_name(),
       doc_guid(),
       target_backends(),

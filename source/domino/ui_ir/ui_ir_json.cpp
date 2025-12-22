@@ -33,6 +33,8 @@ static const char* domui_widget_type_name(domui_widget_type t)
     case DOMUI_WIDGET_IMAGE: return "IMAGE";
     case DOMUI_WIDGET_SPLITTER: return "SPLITTER";
     case DOMUI_WIDGET_SCROLLPANEL: return "SCROLLPANEL";
+    case DOMUI_WIDGET_TABS: return "TABS";
+    case DOMUI_WIDGET_TAB_PAGE: return "TAB_PAGE";
     default:
         break;
     }
