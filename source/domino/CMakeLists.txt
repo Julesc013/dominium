@@ -525,3 +525,6 @@ set_target_properties(domino_core PROPERTIES
 if(WIN32)
     target_link_libraries(domino_core PRIVATE user32 gdi32 comctl32)
 endif()
+
+add_subdirectory(ui_ir)
+add_subdirectory(ui_codegen)
