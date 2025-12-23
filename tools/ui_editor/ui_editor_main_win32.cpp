@@ -89,7 +89,8 @@ enum {
 enum {
     ID_FILE_REFRESH_INDEX = 40100,
     ID_FILE_OPEN_TOOL = 40101,
-    ID_FILE_IMPORT_LEGACY = 40102
+    ID_FILE_IMPORT_LEGACY = 40102,
+    ID_FILE_EXPORT_TOOL = 40103
 };
 
 enum {
@@ -891,6 +892,27 @@ static void ui_collect_import_id_map(const domui_doc& doc,
     }
 }
 
+static size_t ui_count_action_keys(const domui_doc& doc)
+{
+    std::map<std::string, int> keys;
+    std::vector<domui_widget_id> order;
+    doc.canonical_widget_order(order);
+    for (size_t i = 0u; i < order.size(); ++i) {
+        const domui_widget* w = doc.find_by_id(order[i]);
+        if (!w) {
+            continue;
+        }
+        const domui_events::list_type& entries = w->events.entries();
+        for (size_t j = 0u; j < entries.size(); ++j) {
+            const std::string& key = entries[j].action_key.str();
+            if (!key.empty()) {
+                keys[key] = 1;
+            }
+        }
+    }
+    return keys.size();
+}
+
 static std::string ui_build_import_report_json(const std::string& source,
                                                const std::string& destination,
                                                const domui_diag& diag,
@@ -1515,6 +1537,7 @@ private:
     bool open_tool_ui_dialog();
     bool import_legacy_ui_dialog();
     bool import_legacy_ui_path(const char* legacy_path);
+    bool export_tool_ui();
 
     void new_document();
     bool open_document();
@@ -1799,6 +1822,7 @@ void UiEditorApp::on_create(HWND hwnd)
     AppendMenuA(file_menu, MF_STRING, ID_FILE_OPEN, "&Open...");
     AppendMenuA(file_menu, MF_STRING, ID_FILE_OPEN_TOOL, "Open Tool UI...");
     AppendMenuA(file_menu, MF_STRING, ID_FILE_IMPORT_LEGACY, "Import Legacy UI...");
+    AppendMenuA(file_menu, MF_STRING, ID_FILE_EXPORT_TOOL, "Export Tool UI...");
     AppendMenuA(file_menu, MF_STRING, ID_FILE_REFRESH_INDEX, "Refresh UI &Index");
     AppendMenuA(file_menu, MF_SEPARATOR, 0, 0);
     AppendMenuA(file_menu, MF_STRING, ID_FILE_SAVE, "&Save");
@@ -2439,6 +2463,137 @@ bool UiEditorApp::import_legacy_ui_path(const char* legacy_path)
 
     MessageBoxA(m_hwnd, "Legacy UI import completed.", "UI Editor", MB_OK | MB_ICONINFORMATION);
     return true;
+}
+
+bool UiEditorApp::export_tool_ui()
+{
+    domui_diag vdiag;
+    domui_diag sdiag;
+    domui_diag jdiag;
+    domui_diag cdiag;
+    std::string doc_root;
+    std::string doc_dir;
+    std::string tlv_path;
+    std::string export_path;
+    std::string export_dir;
+    std::string rel_export;
+    int save_ok = 0;
+    int json_ok = 0;
+    int codegen_ok = 0;
+
+    if (m_doc_origin == DOC_ORIGIN_LEGACY) {
+        MessageBoxA(m_hwnd,
+                    "Cannot export legacy UI docs. Import to canonical first.",
+                    "UI Editor",
+                    MB_OK | MB_ICONWARNING);
+        return false;
+    }
+    if (m_current_path.empty()) {
+        MessageBoxA(m_hwnd,
+                    "Save the canonical UI doc before export.",
+                    "UI Editor",
+                    MB_OK | MB_ICONWARNING);
+        return false;
+    }
+
+    domui_validate_doc(&m_doc, 0, &vdiag);
+    if (vdiag.has_errors()) {
+        log_from_diag(vdiag);
+        MessageBoxA(m_hwnd,
+                    "Export blocked: UI doc has validation errors.",
+                    "UI Editor",
+                    MB_OK | MB_ICONERROR);
+        return false;
+    }
+
+    ui_resolve_doc_paths(m_current_path, &doc_root, &doc_dir, &tlv_path);
+    if (doc_root.empty()) {
+        MessageBoxA(m_hwnd,
+                    "Export failed: unable to resolve UI doc root.",
+                    "UI Editor",
+                    MB_OK | MB_ICONERROR);
+        return false;
+    }
+    export_path = ui_join_path(doc_root, "ui_doc.tlv");
+
+    {
+        char path_buf[MAX_PATH];
+        OPENFILENAMEA ofn;
+        memset(&ofn, 0, sizeof(ofn));
+        memset(path_buf, 0, sizeof(path_buf));
+        strncpy(path_buf, export_path.c_str(), sizeof(path_buf) - 1u);
+        ofn.lStructSize = sizeof(ofn);
+        ofn.hwndOwner = m_hwnd;
+        ofn.lpstrFile = path_buf;
+        ofn.nMaxFile = sizeof(path_buf);
+        ofn.lpstrFilter = "UI Doc (*.tlv)\0*.tlv\0All Files\0*.*\0";
+        ofn.Flags = OFN_OVERWRITEPROMPT;
+        if (!GetSaveFileNameA(&ofn)) {
+            return false;
+        }
+        export_path = path_buf;
+    }
+
+    rel_export = ui_pretty_path(m_repo_root, export_path);
+    if (ui_path_is_canonical_doc(rel_export) && ui_path_is_file(export_path)) {
+        if (MessageBoxA(m_hwnd,
+                        "Export target is a canonical doc. Overwrite anyway?",
+                        "UI Editor",
+                        MB_YESNO | MB_ICONWARNING) != IDYES) {
+            return false;
+        }
+    }
+
+    export_dir = ui_path_dir(export_path);
+    if (!export_dir.empty()) {
+        ui_ensure_dir_recursive(export_dir);
+    }
+
+    save_ok = domui_doc_save_tlv(&m_doc, export_path.c_str(), &sdiag) ? 1 : 0;
+    if (!save_ok) {
+        log_from_diag(sdiag);
+        MessageBoxA(m_hwnd, "Export failed while writing TLV.", "UI Editor", MB_OK | MB_ICONERROR);
+        return false;
+    }
+    {
+        std::string json_path = ui_replace_extension(export_path, ".json");
+        json_ok = domui_doc_save_json_mirror(&m_doc, json_path.c_str(), &jdiag) ? 1 : 0;
+    }
+    codegen_ok = run_codegen(export_path.c_str(), &cdiag) ? 1 : 0;
+
+    {
+        size_t action_count = ui_count_action_keys(m_doc);
+        int warn_count = (int)vdiag.warning_count() + (int)sdiag.warning_count() +
+                         (int)jdiag.warning_count() + (int)cdiag.warning_count();
+        std::string summary = "Export complete:\r\n";
+        summary += "TLV written: ";
+        summary += save_ok ? "OK" : "FAILED";
+        summary += "\r\nJSON mirror: ";
+        summary += json_ok ? "OK" : "FAILED";
+        summary += "\r\nCodegen: ";
+        if (codegen_ok) {
+            summary += "OK (";
+            summary += ui_u32_to_string((domui_u32)action_count);
+            summary += " actions)";
+        } else {
+            summary += "FAILED";
+        }
+        if (warn_count > 0) {
+            summary += "\r\nWarnings: ";
+            summary += ui_int_to_string(warn_count);
+        }
+        MessageBoxA(m_hwnd,
+                    summary.c_str(),
+                    "UI Editor",
+                    codegen_ok ? MB_OK | MB_ICONINFORMATION : MB_OK | MB_ICONWARNING);
+    }
+
+    log_clear();
+    log_append_diag(vdiag);
+    log_append_diag(sdiag);
+    log_append_diag(jdiag);
+    log_append_diag(cdiag);
+    return codegen_ok ? true : false;
 }
 
 bool UiEditorApp::load_document(const char* path)
@@ -3991,6 +4146,10 @@ LRESULT UiEditorApp::handle_message(HWND hwnd, UINT msg, WPARAM wparam, LPARAM l
             }
             if (id == ID_FILE_IMPORT_LEGACY) {
                 import_legacy_ui_dialog();
+                return 0;
+            }
+            if (id == ID_FILE_EXPORT_TOOL) {
+                export_tool_ui();
                 return 0;
             }
             if (id == ID_FILE_REFRESH_INDEX) {
