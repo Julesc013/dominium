@@ -12,6 +12,7 @@ VERSIONING / ABI / DATA FORMAT NOTES: `dui_api_v1` vtable; schema/state TLV are 
 EXTENSION POINTS: Test/native handle extensions via query_interface.
 */
 #include "dui/dui_api_v1.h"
+#include "dui/dui_win32.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -47,6 +48,9 @@ typedef struct dui_window {
     u32 state_len;
     dui_schema_node* root;
     u32 suppress_events;
+    int relayout_pending;
+    int pending_w;
+    int pending_h;
 } dui_window;
 
 typedef struct dui_splitter_data {
@@ -208,6 +212,84 @@ const void* dom_dui_win32_get_api(u32 requested_abi)
 #define DUI_SET_WND_PTR(hwnd, ptr) SetWindowLong((hwnd), GWL_USERDATA, (LONG)(ptr))
 #define DUI_GET_WND_PTR(hwnd) ((dui_window*)GetWindowLong((hwnd), GWL_USERDATA))
 #endif
+
+#define DUI_WIN32_RELAYOUT_MSG (WM_APP + 42)
+
+typedef struct dui_win32_batch_state {
+    HWND hwnd;
+    u32 depth;
+    HDWP hdwp;
+    struct dui_win32_batch_state* next;
+} dui_win32_batch_state;
+
+static dui_win32_batch_state* g_win32_batch_states = 0;
+
+static dui_win32_batch_state* win32_batch_find(HWND hwnd)
+{
+    dui_win32_batch_state* it = g_win32_batch_states;
+    while (it) {
+        if (it->hwnd == hwnd) {
+            return it;
+        }
+        it = it->next;
+    }
+    return 0;
+}
+
+static dui_win32_batch_state* win32_batch_get(HWND hwnd)
+{
+    dui_win32_batch_state* state = win32_batch_find(hwnd);
+    if (state) {
+        return state;
+    }
+    state = (dui_win32_batch_state*)malloc(sizeof(dui_win32_batch_state));
+    if (!state) {
+        return 0;
+    }
+    memset(state, 0, sizeof(*state));
+    state->hwnd = hwnd;
+    state->next = g_win32_batch_states;
+    g_win32_batch_states = state;
+    return state;
+}
+
+void dui_win32_begin_batch(HWND parent)
+{
+    dui_win32_batch_state* state;
+    if (!parent) {
+        return;
+    }
+    state = win32_batch_get(parent);
+    if (!state) {
+        return;
+    }
+    if (state->depth == 0u) {
+        SendMessageA(parent, WM_SETREDRAW, (WPARAM)FALSE, 0);
+        state->hdwp = BeginDeferWindowPos(64);
+    }
+    state->depth += 1u;
+}
+
+void dui_win32_end_batch(HWND parent)
+{
+    dui_win32_batch_state* state;
+    if (!parent) {
+        return;
+    }
+    state = win32_batch_find(parent);
+    if (!state || state->depth == 0u) {
+        return;
+    }
+    state->depth -= 1u;
+    if (state->depth == 0u) {
+        if (state->hdwp) {
+            (void)EndDeferWindowPos(state->hdwp);
+            state->hdwp = (HDWP)0;
+        }
+        SendMessageA(parent, WM_SETREDRAW, (WPARAM)TRUE, 0);
+        RedrawWindow(parent, NULL, NULL, RDW_INVALIDATE | RDW_ALLCHILDREN);
+    }
+}
 
 static const char* dui_win32_class_name(void)
 {
@@ -843,11 +925,20 @@ static void win32_apply_layout_to_tree(dui_window* win, dui_schema_node* root)
 {
     u32 count;
     HDWP hdwp;
+    dui_win32_batch_state* batch;
     if (!win || !root || !win->hwnd) {
         return;
     }
     count = win32_count_native_controls(root);
     if (count == 0u) {
+        return;
+    }
+    batch = win32_batch_find(win->hwnd);
+    if (batch && batch->depth > 0u && batch->hdwp) {
+        batch->hdwp = win32_defer_layout_to_tree(batch->hdwp, root, 0, 0);
+        if (!batch->hdwp) {
+            win32_apply_layout_to_tree_fallback(root, 0, 0);
+        }
         return;
     }
     hdwp = BeginDeferWindowPos((int)count);
@@ -1151,18 +1242,46 @@ static void win32_update_control_values(dui_window* win,
     }
 }
 
-static void win32_relayout(dui_window* win)
+static void win32_relayout_with_size(dui_window* win, int width, int height, int use_size)
 {
     RECT rc;
+    int w;
+    int h;
     if (!win || !win->hwnd || !win->root) {
         return;
     }
-    GetClientRect(win->hwnd, &rc);
-    SendMessageA(win->hwnd, WM_SETREDRAW, (WPARAM)FALSE, 0);
-    dui_schema_layout(win->root, 0, 0, (i32)(rc.right - rc.left), (i32)(rc.bottom - rc.top));
+    if (!use_size) {
+        GetClientRect(win->hwnd, &rc);
+        w = (int)(rc.right - rc.left);
+        h = (int)(rc.bottom - rc.top);
+    } else {
+        w = width;
+        h = height;
+    }
+    if (w < 0) w = 0;
+    if (h < 0) h = 0;
+    dui_win32_begin_batch(win->hwnd);
+    dui_schema_layout(win->root, 0, 0, (i32)w, (i32)h);
     win32_apply_layout_to_tree(win, win->root);
-    SendMessageA(win->hwnd, WM_SETREDRAW, (WPARAM)TRUE, 0);
-    RedrawWindow(win->hwnd, NULL, NULL, RDW_INVALIDATE | RDW_ALLCHILDREN);
+    dui_win32_end_batch(win->hwnd);
+}
+
+static void win32_relayout(dui_window* win)
+{
+    win32_relayout_with_size(win, 0, 0, 0);
+}
+
+static void win32_schedule_relayout(dui_window* win, int width, int height)
+{
+    if (!win || !win->hwnd) {
+        return;
+    }
+    win->pending_w = width;
+    win->pending_h = height;
+    if (!win->relayout_pending) {
+        win->relayout_pending = 1;
+        PostMessageA(win->hwnd, DUI_WIN32_RELAYOUT_MSG, 0, 0);
+    }
 }
 
 static int win32_splitter_clamp_pos(const dui_schema_node* n, int axis_len, int pos)
@@ -1388,6 +1507,7 @@ static LRESULT CALLBACK dui_win32_wndproc(HWND hwnd, UINT msg, WPARAM wparam, LP
     }
     ctx = win->ctx;
 
+
     if (msg == WM_COMMAND) {
         const int ctrl_id = (int)LOWORD(wparam);
         const int notify = (int)HIWORD(wparam);
@@ -1497,8 +1617,16 @@ static LRESULT CALLBACK dui_win32_wndproc(HWND hwnd, UINT msg, WPARAM wparam, LP
         return 0;
     }
 
+    if (msg == DUI_WIN32_RELAYOUT_MSG) {
+        win->relayout_pending = 0;
+        win32_relayout_with_size(win, win->pending_w, win->pending_h, 1);
+        return 0;
+    }
+
     if (msg == WM_SIZE) {
-        win32_relayout(win);
+        int w = (int)LOWORD(lparam);
+        int h = (int)HIWORD(lparam);
+        win32_schedule_relayout(win, w, h);
         return 0;
     }
 
