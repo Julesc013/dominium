@@ -858,7 +858,7 @@ void ToolEditorApp::update_hierarchy_list()
                 line.append(") [");
                 {
                     char buf[32];
-                    std::sprintf(buf, "%u", (unsigned int)w->id);
+                    sprintf(buf, "%u", (unsigned int)w->id);
                     line.append(buf);
                 }
                 line.append("]");
@@ -910,19 +910,19 @@ void ToolEditorApp::update_inspector()
             SetWindowTextA(m_prop_name_hwnd, w->name.c_str());
         }
         if (m_prop_x_hwnd) {
-            std::sprintf(buf, "%d", w->x);
+            sprintf(buf, "%d", w->x);
             SetWindowTextA(m_prop_x_hwnd, buf);
         }
         if (m_prop_y_hwnd) {
-            std::sprintf(buf, "%d", w->y);
+            sprintf(buf, "%d", w->y);
             SetWindowTextA(m_prop_y_hwnd, buf);
         }
         if (m_prop_w_hwnd) {
-            std::sprintf(buf, "%d", w->w);
+            sprintf(buf, "%d", w->w);
             SetWindowTextA(m_prop_w_hwnd, buf);
         }
         if (m_prop_h_hwnd) {
-            std::sprintf(buf, "%d", w->h);
+            sprintf(buf, "%d", w->h);
             SetWindowTextA(m_prop_h_hwnd, buf);
         }
     }
@@ -1103,7 +1103,7 @@ void ToolEditorApp::add_widget(domui_widget_type type)
     w->z_order = next_z_for_parent(parent_id);
     {
         char name[64];
-        std::sprintf(name, "%s_%u", ui_widget_type_name(type), (unsigned int)id);
+        sprintf(name, "%s_%u", ui_widget_type_name(type), (unsigned int)id);
         w->name.set(name);
     }
     switch (type) {
