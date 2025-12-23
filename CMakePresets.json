@@ -53,7 +53,12 @@
       "displayName": "MSVC Debug",
       "inherits": "msvc-base",
       "cacheVariables": {
-        "DOM_BUILD_MODE": "Debug"
+        "DOM_BUILD_MODE": "Debug",
+        "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/out/bin",
+        "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/out/lib",
+        "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/out/lib",
+        "CMAKE_PDB_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/out/pdb",
+        "CMAKE_COMPILE_PDB_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/out/pdb"
       }
     },
     {
@@ -61,7 +66,12 @@
       "displayName": "MSVC Release",
       "inherits": "msvc-base",
       "cacheVariables": {
-        "DOM_BUILD_MODE": "Release"
+        "DOM_BUILD_MODE": "Release",
+        "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/out/bin",
+        "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/out/lib",
+        "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/out/lib",
+        "CMAKE_PDB_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/out/pdb",
+        "CMAKE_COMPILE_PDB_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/out/pdb"
       }
     },
     {
