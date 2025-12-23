@@ -40,7 +40,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
  * Typical usage (product main):
  *
  *   d_cli cli;
- *   d_cli_init(&cli, argv[0], "0.1.0");
+ *   d_cli_init(&cli, argv[0], "0.0.0");
  *   d_cli_register(&cli, "run-headless", "...", run_headless_cmd, &state);
  *   return d_cli_dispatch(&cli, argc, (const char**)argv);
  *

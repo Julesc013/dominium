@@ -6,7 +6,7 @@ endif()
 
 option(DOMINIUM_BUILD_MACOS_PKG "Build macOS .pkg and .dmg installers (optional)" OFF)
 
-set(DOMINIUM_VERSION "0.1.0" CACHE STRING "Dominium product version for macOS packaging")
+set(DOMINIUM_VERSION "0.0.0" CACHE STRING "Dominium product version for macOS packaging")
 set(DOMINIUM_DIST_DIR "${CMAKE_BINARY_DIR}/dist/stage" CACHE PATH "Staging directory with portable bundle root")
 set(DOMINIUM_INSTALLER_DIR "${CMAKE_BINARY_DIR}/dist/installers/macos" CACHE PATH "Output directory for macOS artifacts")
 set(DOMINIUM_BUNDLE_IDENTIFIER "com.dominium.dominium" CACHE STRING "CFBundleIdentifier for Dominium.app")

@@ -187,7 +187,7 @@ int main(int argc, char** argv)
     ldesc.core = core;
     ldesc.ui_mode = DOM_UI_MODE_GUI;
     ldesc.product_id = "dominium";
-    ldesc.version = "0.1.0";
+    ldesc.version = "0.0.0";
     ctx = dom_launch_create(&ldesc);
     if (!ctx) {
         fprintf(stderr, "Failed to create launcher ctx\n");

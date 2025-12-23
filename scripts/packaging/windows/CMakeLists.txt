@@ -8,7 +8,7 @@ option(DOMINIUM_BUILD_MSI "Build Windows MSI installer (per-user, no services)" 
 option(DOMINIUM_BUILD_BUNDLE "Build Windows bootstrapper EXE (Burn)" ON)
 
 # Note: MSI ProductVersion must be numeric (x.y.z[.w]).
-set(DOMINIUM_VERSION "0.1.0" CACHE STRING "Dominium product version for MSI/Burn (numeric)")
+set(DOMINIUM_VERSION "0.0.0" CACHE STRING "Dominium product version for MSI/Burn (numeric)")
 set(DOMINIUM_DIST_DIR "${CMAKE_BINARY_DIR}/dist/stage" CACHE PATH "Staging directory containing the portable bundle root")
 set(DOMINIUM_INSTALLER_DIR "${CMAKE_BINARY_DIR}/dist/installers/windows" CACHE PATH "Output directory for Windows installers")
 set(DOMINIUM_MANUFACTURER "Dominium" CACHE STRING "Manufacturer string for installers")

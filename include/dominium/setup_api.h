@@ -53,7 +53,7 @@ typedef struct {
     uint32_t          struct_size;
     uint32_t          struct_version;
     const char       *product_id;       /* "dominium" */
-    const char       *product_version;  /* "1.0.0" */
+    const char       *product_version;  /* "0.0.0" */
     const char       *build_id;         /* optional hash/branch */
     dom_setup_scope   scope;
     const char       *target_dir;       /* optional: custom directory */

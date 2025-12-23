@@ -31,7 +31,7 @@ extern "C" {
 }
 
 #define DOM_MAIN_BINARY_ID "dom_main"
-#define DOM_MAIN_BINARY_VERSION "0.1.0"
+#define DOM_MAIN_BINARY_VERSION "0.0.0"
 
 static bool is_tty()
 {

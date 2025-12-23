@@ -29,7 +29,7 @@ PURPOSE: Minimal setup control-plane CLI for Plan S-1 (plan + dry-run).
 #include "dsu/dsu_txn.h"
 
 #define DSU_CLI_NAME "dominium-setup"
-#define DSU_CLI_VERSION "1.0.0"
+#define DSU_CLI_VERSION "0.0.0"
 #define DSU_CLI_JSON_SCHEMA_VERSION 1u
 
 typedef struct dsu_cli_opts_t {

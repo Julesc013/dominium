@@ -22,7 +22,7 @@ struct InstallInfo {
     std::string install_id;     // uuid
     std::string install_type;   // "portable"|"per-user"|"system"
     std::string platform;       // "win_nt"|"linux"|"mac"
-    std::string version;        // e.g. "0.1.0"
+    std::string version;        // e.g. "0.0.0"
     std::string root_path;      // absolute path to INSTALL_ROOT
     std::string created_at;     // ISO8601 string
     std::string created_by;     // "setup"|"portable-zip"|"package"|"unknown"

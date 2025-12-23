@@ -60,7 +60,7 @@ typedef struct {
     dom_core        *core;           /* already created domino core */
     dom_ui_mode      ui_mode;        /* NONE/CLI/TUI/GUI */
     const char      *product_id;     /* "dominium" */
-    const char      *version;        /* "1.0.0" */
+    const char      *version;        /* "0.0.0" */
 } dom_launch_desc;
 
 /* dom_launch_snapshot: Public type used by `launch_api`. */
