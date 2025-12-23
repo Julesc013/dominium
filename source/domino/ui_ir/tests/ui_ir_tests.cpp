@@ -37,6 +37,13 @@ static int g_failures = 0;
         } \
     } while (0)
 
+static bool domui_find_fixture_path(const char* filename, std::string& out_path);
+static bool domui_prop_int_equals(const domui_props& props, const char* key, int expected);
+static bool domui_prop_bool_equals(const domui_props& props, const char* key, int expected);
+static bool domui_prop_string_equals(const domui_props& props, const char* key, const char* expected);
+static domui_widget_id domui_find_root_id(const domui_doc& doc);
+static void domui_get_root_size(const domui_doc& doc, domui_widget_id root_id, int* out_w, int* out_h);
+
 static bool domui_find_layout_rect(const domui_layout_result* results,
                                    int count,
                                    domui_widget_id widget_id,
