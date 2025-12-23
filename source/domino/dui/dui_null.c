@@ -22,6 +22,8 @@ EXTENSION POINTS: Test/native handle extensions via query_interface.
 typedef struct dui_context {
     dui_event_queue q;
     u32 quit_requested;
+    domui_action_fn action_dispatch;
+    void* action_user_ctx;
 } dui_context;
 
 typedef struct dui_window {
@@ -44,6 +46,7 @@ static int        null_poll_event(dui_context* ctx, dui_event_v1* out_ev);
 static dui_result null_request_quit(dui_context* ctx);
 
 static dom_abi_result null_query_interface(dom_iid iid, void** out_iface);
+static void null_set_action_dispatch(dui_context* ctx, domui_action_fn fn, void* user_ctx);
 
 static const char* null_backend_name(void) { return "null"; }
 
@@ -70,6 +73,7 @@ static dui_caps null_caps(void)
 
 static dui_test_api_v1 g_test_api;
 static dui_native_api_v1 g_native_api;
+static dui_action_api_v1 g_action_api;
 
 static dui_result null_test_post_event(dui_context* ctx, const dui_event_v1* ev)
 {
@@ -79,6 +83,20 @@ static dui_result null_test_post_event(dui_context* ctx, const dui_event_v1* ev)
     if (dui_event_queue_push(&ctx->q, ev) != 0) {
         return DUI_ERR;
     }
+    if (ctx->action_dispatch && ev->type == (u32)DUI_EVENT_ACTION) {
+        domui_event out_ev;
+        memset(&out_ev, 0, sizeof(out_ev));
+        out_ev.action_id = ev->u.action.action_id;
+        out_ev.widget_id = ev->u.action.widget_id;
+        out_ev.type = DOMUI_EVENT_CLICK;
+        out_ev.modifiers = 0u;
+        out_ev.backend_ext = (void*)0;
+        if (ev->u.action.item_id != 0u) {
+            out_ev.a.type = DOMUI_VALUE_U32;
+            out_ev.a.u.v_u32 = ev->u.action.item_id;
+        }
+        ctx->action_dispatch(ctx->action_user_ctx, &out_ev);
+    }
     return DUI_OK;
 }
 
@@ -86,6 +104,15 @@ static void* null_get_native_window_handle(dui_window* win)
 {
     (void)win;
     return (void*)0;
+}
+
+static void null_set_action_dispatch(dui_context* ctx, domui_action_fn fn, void* user_ctx)
+{
+    if (!ctx) {
+        return;
+    }
+    ctx->action_dispatch = fn;
+    ctx->action_user_ctx = user_ctx;
 }
 
 static dom_abi_result null_query_interface(dom_iid iid, void** out_iface)
@@ -107,6 +134,13 @@ static dom_abi_result null_query_interface(dom_iid iid, void** out_iface)
         g_native_api.struct_size = (u32)sizeof(g_native_api);
         g_native_api.get_native_window_handle = null_get_native_window_handle;
         *out_iface = (void*)&g_native_api;
+        return 0;
+    }
+    if (iid == DUI_IID_ACTION_API_V1) {
+        g_action_api.abi_version = DUI_API_ABI_VERSION;
+        g_action_api.struct_size = (u32)sizeof(g_action_api);
+        g_action_api.set_action_dispatch = null_set_action_dispatch;
+        *out_iface = (void*)&g_action_api;
         return 0;
     }
     return (dom_abi_result)DUI_ERR_UNSUPPORTED;
@@ -305,4 +339,3 @@ static dui_result null_request_quit(dui_context* ctx)
     ctx->quit_requested = 1u;
     return DUI_OK;
 }
-

@@ -35,6 +35,8 @@ typedef struct dui_context {
     dui_event_queue q;
     u32 quit_requested;
     u32 frame_counter;
+    domui_action_fn action_dispatch;
+    void* action_user_ctx;
 } dui_context;
 
 typedef struct dui_window {
@@ -62,6 +64,7 @@ static int        dgfx_poll_event(dui_context* ctx, dui_event_v1* out_ev);
 static dui_result dgfx_request_quit(dui_context* ctx);
 
 static dom_abi_result dgfx_query_interface(dom_iid iid, void** out_iface);
+static void dgfx_set_action_dispatch(dui_context* ctx, domui_action_fn fn, void* user_ctx);
 
 static const char* dgfx_backend_name(void) { return "dgfx"; }
 
@@ -84,6 +87,7 @@ static dui_caps dgfx_caps(void)
 
 static dui_test_api_v1 g_test_api;
 static dui_native_api_v1 g_native_api;
+static dui_action_api_v1 g_action_api;
 
 static i32 dgfx_font_line_height(void)
 {
@@ -162,6 +166,15 @@ static void* dgfx_get_native_window_handle(dui_window* win)
     return d_system_get_native_window_handle();
 }
 
+static void dgfx_set_action_dispatch(dui_context* ctx, domui_action_fn fn, void* user_ctx)
+{
+    if (!ctx) {
+        return;
+    }
+    ctx->action_dispatch = fn;
+    ctx->action_user_ctx = user_ctx;
+}
+
 static dom_abi_result dgfx_query_interface(dom_iid iid, void** out_iface)
 {
     if (!out_iface) {
@@ -181,6 +194,13 @@ static dom_abi_result dgfx_query_interface(dom_iid iid, void** out_iface)
         g_native_api.struct_size = (u32)sizeof(g_native_api);
         g_native_api.get_native_window_handle = dgfx_get_native_window_handle;
         *out_iface = (void*)&g_native_api;
+        return 0;
+    }
+    if (iid == DUI_IID_ACTION_API_V1) {
+        g_action_api.abi_version = DUI_API_ABI_VERSION;
+        g_action_api.struct_size = (u32)sizeof(g_action_api);
+        g_action_api.set_action_dispatch = dgfx_set_action_dispatch;
+        *out_iface = (void*)&g_action_api;
         return 0;
     }
     return (dom_abi_result)DUI_ERR_UNSUPPORTED;
@@ -342,7 +362,75 @@ static void dgfx_emit_quit(dui_context* ctx)
     (void)dui_event_queue_push(&ctx->q, &ev);
 }
 
-static void dgfx_emit_action(dui_context* ctx, u32 widget_id, u32 action_id, u32 item_id)
+static domui_value dgfx_domui_value_none(void)
+{
+    domui_value v;
+    memset(&v, 0, sizeof(v));
+    v.type = DOMUI_VALUE_NONE;
+    return v;
+}
+
+static domui_value dgfx_domui_value_u32(domui_u32 v)
+{
+    domui_value out = dgfx_domui_value_none();
+    out.type = DOMUI_VALUE_U32;
+    out.u.v_u32 = v;
+    return out;
+}
+
+static domui_value dgfx_domui_value_i32(int v)
+{
+    domui_value out = dgfx_domui_value_none();
+    out.type = DOMUI_VALUE_I32;
+    out.u.v_i32 = v;
+    return out;
+}
+
+static domui_value dgfx_domui_value_bool(int v)
+{
+    domui_value out = dgfx_domui_value_none();
+    out.type = DOMUI_VALUE_BOOL;
+    out.u.v_bool = v ? 1 : 0;
+    return out;
+}
+
+static domui_value dgfx_domui_value_str(const char* text, domui_u32 len)
+{
+    domui_value out = dgfx_domui_value_none();
+    out.type = DOMUI_VALUE_STR;
+    out.u.v_str.ptr = text;
+    out.u.v_str.len = len;
+    return out;
+}
+
+static void dgfx_dispatch_domui_event(dui_context* ctx,
+                                      domui_action_id action_id,
+                                      domui_widget_id widget_id,
+                                      domui_event_type type,
+                                      domui_value a,
+                                      domui_value b,
+                                      void* backend_ext)
+{
+    domui_event ev;
+    if (!ctx || !ctx->action_dispatch || action_id == 0u) {
+        return;
+    }
+    memset(&ev, 0, sizeof(ev));
+    ev.action_id = action_id;
+    ev.widget_id = widget_id;
+    ev.type = type;
+    ev.modifiers = 0u;
+    ev.a = a;
+    ev.b = b;
+    ev.backend_ext = backend_ext;
+    ctx->action_dispatch(ctx->action_user_ctx, &ev);
+}
+
+static void dgfx_emit_action_event(dui_context* ctx,
+                                   u32 widget_id,
+                                   u32 action_id,
+                                   domui_event_type type,
+                                   u32 item_id)
 {
     dui_event_v1 ev;
     if (!ctx) {
@@ -356,9 +444,18 @@ static void dgfx_emit_action(dui_context* ctx, u32 widget_id, u32 action_id, u32
     ev.u.action.action_id = action_id;
     ev.u.action.item_id = item_id;
     (void)dui_event_queue_push(&ctx->q, &ev);
+
+    {
+        domui_value a = dgfx_domui_value_none();
+        domui_value b = dgfx_domui_value_none();
+        if (item_id != 0u || type == DOMUI_EVENT_TAB_CHANGE) {
+            a = dgfx_domui_value_u32(item_id);
+        }
+        dgfx_dispatch_domui_event(ctx, action_id, widget_id, type, a, b, (void*)0);
+    }
 }
 
-static void dgfx_emit_value_text(dui_context* ctx, u32 widget_id, const char* text, u32 text_len)
+static void dgfx_emit_value_text(dui_context* ctx, u32 widget_id, u32 action_id, const char* text, u32 text_len)
 {
     dui_event_v1 ev;
     u32 n;
@@ -380,9 +477,20 @@ static void dgfx_emit_value_text(dui_context* ctx, u32 widget_id, const char* te
         memcpy(ev.u.value.text, text, (size_t)n);
     }
     (void)dui_event_queue_push(&ctx->q, &ev);
+
+    {
+        domui_value a = dgfx_domui_value_str(text ? text : "", n);
+        domui_value b = dgfx_domui_value_none();
+        dgfx_dispatch_domui_event(ctx, action_id, widget_id, DOMUI_EVENT_CHANGE, a, b, (void*)0);
+    }
 }
 
-static void dgfx_emit_value_u32(dui_context* ctx, u32 widget_id, u32 value_type, u32 v, u32 item_id)
+static void dgfx_emit_value_u32(dui_context* ctx,
+                                u32 widget_id,
+                                u32 action_id,
+                                u32 value_type,
+                                u32 v,
+                                u32 item_id)
 {
     dui_event_v1 ev;
     if (!ctx) {
@@ -397,6 +505,22 @@ static void dgfx_emit_value_u32(dui_context* ctx, u32 widget_id, u32 value_type,
     ev.u.value.v_u32 = v;
     ev.u.value.item_id = item_id;
     (void)dui_event_queue_push(&ctx->q, &ev);
+
+    {
+        domui_value a = dgfx_domui_value_none();
+        domui_value b = dgfx_domui_value_none();
+        if (value_type == (u32)DUI_VALUE_BOOL) {
+            a = dgfx_domui_value_bool(v ? 1 : 0);
+        } else if (value_type == (u32)DUI_VALUE_LIST) {
+            a = dgfx_domui_value_u32(v);
+            b = dgfx_domui_value_u32(item_id);
+        } else if (value_type == (u32)DUI_VALUE_I32) {
+            a = dgfx_domui_value_i32((int)v);
+        } else {
+            a = dgfx_domui_value_u32(v);
+        }
+        dgfx_dispatch_domui_event(ctx, action_id, widget_id, DOMUI_EVENT_CHANGE, a, b, (void*)0);
+    }
 }
 
 static int dgfx_state_get_widget_text(const dui_window* win, u32 bind_id, char* out_text, u32 out_cap, u32* out_len)
@@ -430,7 +554,7 @@ static void dgfx_handle_key_text_field(dui_context* ctx, dui_window* win, const 
             len -= 1u;
             buf[len] = '\0';
         }
-        dgfx_emit_value_text(ctx, n->id, buf, len);
+        dgfx_emit_value_text(ctx, n->id, n->action_id, buf, len);
         return;
     }
 
@@ -455,7 +579,7 @@ static void dgfx_handle_key_text_field(dui_context* ctx, dui_window* win, const 
             buf[len++] = c;
             buf[len] = '\0';
         }
-        dgfx_emit_value_text(ctx, n->id, buf, len);
+        dgfx_emit_value_text(ctx, n->id, n->action_id, buf, len);
     }
 }
 
@@ -514,7 +638,7 @@ static void dgfx_handle_list_move(dui_context* ctx, dui_window* win, const dui_s
     }
     next_id = 0u;
     if (dui_state_get_list_item_at(win->state, win->state_len, n->bind_id, next_idx, &next_id, tmp, (u32)sizeof(tmp), &tmp_len)) {
-        dgfx_emit_value_u32(ctx, n->id, (u32)DUI_VALUE_LIST, next_idx, next_id);
+        dgfx_emit_value_u32(ctx, n->id, n->action_id, (u32)DUI_VALUE_LIST, next_idx, next_id);
     }
 }
 
@@ -537,12 +661,12 @@ static void dgfx_handle_click(dui_context* ctx, dui_window* win, i32 x, i32 y)
     win->focused_is_valid = 1u;
 
     if (hit->kind == (u32)DUI_NODE_BUTTON) {
-        dgfx_emit_action(ctx, hit->id, hit->action_id, 0u);
+        dgfx_emit_action_event(ctx, hit->id, hit->action_id, DOMUI_EVENT_CLICK, 0u);
     } else if (hit->kind == (u32)DUI_NODE_CHECKBOX) {
         u32 v = 0u;
         (void)dui_state_get_u32(win->state, win->state_len, hit->bind_id, &v);
         v = (v == 0u) ? 1u : 0u;
-        dgfx_emit_value_u32(ctx, hit->id, (u32)DUI_VALUE_BOOL, v, 0u);
+        dgfx_emit_value_u32(ctx, hit->id, hit->action_id, (u32)DUI_VALUE_BOOL, v, 0u);
     } else if (hit->kind == (u32)DUI_NODE_LIST) {
         const i32 pad = dgfx_ui_pad();
         const i32 item_h = dgfx_list_item_height();
@@ -558,7 +682,7 @@ static void dgfx_handle_click(dui_context* ctx, dui_window* win, i32 x, i32 y)
             char txt[8];
             u32 txt_len;
             if (dui_state_get_list_item_at(win->state, win->state_len, hit->bind_id, idx, &item_id, txt, (u32)sizeof(txt), &txt_len)) {
-                dgfx_emit_value_u32(ctx, hit->id, (u32)DUI_VALUE_LIST, idx, item_id);
+                dgfx_emit_value_u32(ctx, hit->id, hit->action_id, (u32)DUI_VALUE_LIST, idx, item_id);
             }
         }
     }
@@ -598,11 +722,11 @@ static void dgfx_handle_key(dui_context* ctx, dui_window* win, d_sys_key key)
             return;
         }
         if (n->kind == (u32)DUI_NODE_BUTTON) {
-            dgfx_emit_action(ctx, n->id, n->action_id, 0u);
+            dgfx_emit_action_event(ctx, n->id, n->action_id, DOMUI_EVENT_CLICK, 0u);
         } else if (n->kind == (u32)DUI_NODE_LIST) {
             u32 selected_id = 0u;
             (void)dui_state_get_list_selected_item_id(win->state, win->state_len, n->bind_id, &selected_id);
-            dgfx_emit_action(ctx, n->id, n->action_id, selected_id);
+            dgfx_emit_action_event(ctx, n->id, n->action_id, DOMUI_EVENT_SUBMIT, selected_id);
         }
         return;
     }
@@ -612,7 +736,7 @@ static void dgfx_handle_key(dui_context* ctx, dui_window* win, d_sys_key key)
             u32 v = 0u;
             (void)dui_state_get_u32(win->state, win->state_len, n->bind_id, &v);
             v = (v == 0u) ? 1u : 0u;
-            dgfx_emit_value_u32(ctx, n->id, (u32)DUI_VALUE_BOOL, v, 0u);
+            dgfx_emit_value_u32(ctx, n->id, n->action_id, (u32)DUI_VALUE_BOOL, v, 0u);
         }
         return;
     }

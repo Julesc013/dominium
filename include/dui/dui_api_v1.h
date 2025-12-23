@@ -18,6 +18,7 @@ EXTENSION POINTS: `query_interface` + capability bits; schema/state TLV is skip-
 #include "domino/core/types.h"
 
 #include "dui/dui_schema_tlv.h"
+#include "dui/domui_event.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -30,6 +31,7 @@ extern "C" {
 #define DUI_IID_API_V1        ((dom_iid)0x44554901u) /* 'DUI\x01' */
 #define DUI_IID_TEST_API_V1   ((dom_iid)0x44554980u) /* 'DUI\x80' */
 #define DUI_IID_NATIVE_API_V1 ((dom_iid)0x44554981u) /* 'DUI\x81' */
+#define DUI_IID_ACTION_API_V1 ((dom_iid)0x44554982u) /* 'DUI\x82' */
 
 typedef u64 dui_caps;
 
@@ -110,10 +112,12 @@ typedef struct dui_window_desc_v1 {
     i32 width;
     i32 height;
     u32 flags; /* DUI_WINDOW_FLAG_* */
+    void* parent_hwnd; /* HWND on Win32 when DUI_WINDOW_FLAG_CHILD is set; may be NULL */
 } dui_window_desc_v1;
 
 /* Window flags */
 #define DUI_WINDOW_FLAG_HEADLESS ((u32)1u << 0u) /* no OS window; offscreen/headless operation when supported */
+#define DUI_WINDOW_FLAG_CHILD    ((u32)1u << 1u) /* embed as a child window when supported */
 
 typedef enum dui_result_e {
     DUI_OK = 0,
@@ -170,6 +174,14 @@ typedef struct dui_native_api_v1 {
     DOM_ABI_HEADER;
     void* (*get_native_window_handle)(dui_window* win); /* HWND on Win32, etc; may be NULL */
 } dui_native_api_v1;
+
+/* Optional action dispatch surface (IID: DUI_IID_ACTION_API_V1).
+ * This enables domui_event dispatch directly from the backend.
+ */
+typedef struct dui_action_api_v1 {
+    DOM_ABI_HEADER;
+    void (*set_action_dispatch)(dui_context* ctx, domui_action_fn fn, void* user_ctx);
+} dui_action_api_v1;
 
 #ifdef __cplusplus
 } /* extern "C" */

@@ -12,8 +12,10 @@ endif()
 
 target_link_libraries(dominium-ui-editor
     PRIVATE
+        domino_core
         domino_ui_ir
         domino_ui_codegen
+        comctl32
 )
 
 set_target_properties(dominium-ui-editor PROPERTIES
