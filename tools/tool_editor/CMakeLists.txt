@@ -28,45 +28,49 @@ file(MAKE_DIRECTORY ${TOOL_EDITOR_UI_USER_DIR})
 file(MAKE_DIRECTORY ${TOOL_EDITOR_UI_DOC_DIR})
 file(MAKE_DIRECTORY ${TOOL_EDITOR_UI_REGISTRY_DIR})
 
-add_custom_command(
-    OUTPUT
-        ${TOOL_EDITOR_ACTIONS_GEN_H}
-        ${TOOL_EDITOR_ACTIONS_GEN_CPP}
-        ${TOOL_EDITOR_ACTIONS_USER_H}
-        ${TOOL_EDITOR_ACTIONS_USER_CPP}
-    COMMAND
-        $<TARGET_FILE:domui_codegen>
-        --input ${TOOL_EDITOR_UI_DOC}
-        --registry ${TOOL_EDITOR_UI_REGISTRY}
-        --out-gen ${TOOL_EDITOR_UI_GEN_DIR}
-        --out-user ${TOOL_EDITOR_UI_USER_DIR}
-    DEPENDS
-        domui_codegen
-        ${TOOL_EDITOR_UI_DOC}
-        ${TOOL_EDITOR_UI_REGISTRY}
-    COMMENT "Generating tool editor UI action bindings"
-)
+if(DOMUI_ENABLE_CODEGEN)
+    add_custom_command(
+        OUTPUT
+            ${TOOL_EDITOR_ACTIONS_GEN_H}
+            ${TOOL_EDITOR_ACTIONS_GEN_CPP}
+            ${TOOL_EDITOR_ACTIONS_USER_H}
+            ${TOOL_EDITOR_ACTIONS_USER_CPP}
+        COMMAND
+            $<TARGET_FILE:domui_codegen>
+            --input ${TOOL_EDITOR_UI_DOC}
+            --registry ${TOOL_EDITOR_UI_REGISTRY}
+            --out-gen ${TOOL_EDITOR_UI_GEN_DIR}
+            --out-user ${TOOL_EDITOR_UI_USER_DIR}
+        DEPENDS
+            domui_codegen
+            ${TOOL_EDITOR_UI_DOC}
+            ${TOOL_EDITOR_UI_REGISTRY}
+        COMMENT "Generating tool editor UI action bindings"
+    )
 
-add_custom_target(dominium_tool_editor_codegen
-    DEPENDS
-        ${TOOL_EDITOR_ACTIONS_GEN_H}
-        ${TOOL_EDITOR_ACTIONS_GEN_CPP}
-        ${TOOL_EDITOR_ACTIONS_USER_H}
-        ${TOOL_EDITOR_ACTIONS_USER_CPP}
-)
+    add_custom_target(dominium_tool_editor_codegen
+        DEPENDS
+            ${TOOL_EDITOR_ACTIONS_GEN_H}
+            ${TOOL_EDITOR_ACTIONS_GEN_CPP}
+            ${TOOL_EDITOR_ACTIONS_USER_H}
+            ${TOOL_EDITOR_ACTIONS_USER_CPP}
+    )
 
-add_dependencies(dominium-tool-editor dominium_tool_editor_codegen)
+    add_dependencies(dominium-tool-editor dominium_tool_editor_codegen)
+endif()
 
 target_sources(dominium-tool-editor PRIVATE
     ${TOOL_EDITOR_ACTIONS_GEN_CPP}
     ${TOOL_EDITOR_ACTIONS_USER_CPP}
 )
 
-set_source_files_properties(
-    ${TOOL_EDITOR_ACTIONS_GEN_CPP}
-    ${TOOL_EDITOR_ACTIONS_USER_CPP}
-    PROPERTIES GENERATED TRUE
-)
+if(DOMUI_ENABLE_CODEGEN)
+    set_source_files_properties(
+        ${TOOL_EDITOR_ACTIONS_GEN_CPP}
+        ${TOOL_EDITOR_ACTIONS_USER_CPP}
+        PROPERTIES GENERATED TRUE
+    )
+endif()
 
 target_include_directories(dominium-tool-editor PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}

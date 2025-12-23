@@ -25,6 +25,8 @@ set(DOM_BUILD_ID "unknown" CACHE STRING "Build identifier embedded into binaries
 option(DOM_ENABLE_MODERN "Enable optional acceleration layers (never removes baseline correctness paths)" OFF)
 option(DOM_ENABLE_AUDIO "Enable audio subsystem/modules (if present)" ON)
 option(DOM_ENABLE_NET "Enable networking subsystem/modules (if present)" ON)
+option(DOMUI_ENABLE_JSON_MIRROR "Enable deterministic JSON mirror writes for UI docs" ON)
+option(DOMUI_ENABLE_CODEGEN "Enable DOMUI action codegen tools and build steps" ON)
 
 option(DOM_DISALLOW_DOWNLOADS "Disallow any build-time network downloads" ON)
 if(DOM_DISALLOW_DOWNLOADS)
