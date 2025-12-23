@@ -1,0 +1,11 @@
+/* User action stubs. */
+#include "ui_tool_editor_actions_user.h"
+
+// BEGIN AUTO-GENERATED ACTION STUBS
+void ui_tool_editor_act_TOOL_EDITOR_QUIT(void* user_ctx, const domui_event* e)
+{
+    (void)user_ctx;
+    (void)e;
+}
+
+// END AUTO-GENERATED ACTION STUBS
