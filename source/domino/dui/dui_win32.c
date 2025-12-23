@@ -563,7 +563,7 @@ static void win32_create_controls_for_tree(dui_window* win, HWND parent_hwnd, du
     child_parent = parent_hwnd;
 
     if (n->kind == (u32)DUI_NODE_TABS) {
-        DWORD style = WS_CHILD | WS_VISIBLE | WS_TABSTOP;
+        DWORD style = WS_CHILD | WS_VISIBLE | WS_TABSTOP | WS_CLIPCHILDREN | WS_CLIPSIBLINGS;
         HWND h = CreateWindowExA(
             0,
             WC_TABCONTROLA,
@@ -1041,6 +1041,26 @@ static int win32_list_find_index_by_item_id(HWND h, u32 item_id)
     return -1;
 }
 
+static void win32_batch_set_visibility(const dui_window* win, HWND hwnd, int visible)
+{
+    dui_win32_batch_state* state;
+    UINT flags;
+    if (!win || !hwnd) {
+        return;
+    }
+    state = win32_batch_find(win->hwnd);
+    if (state && state->depth > 0u && state->hdwp) {
+        flags = SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE |
+                (visible ? SWP_SHOWWINDOW : SWP_HIDEWINDOW);
+        state->hdwp = DeferWindowPos(state->hdwp, hwnd, NULL, 0, 0, 0, 0, flags);
+        if (!state->hdwp) {
+            ShowWindow(hwnd, visible ? SW_SHOW : SW_HIDE);
+        }
+    } else {
+        ShowWindow(hwnd, visible ? SW_SHOW : SW_HIDE);
+    }
+}
+
 static void win32_update_control_values(dui_window* win,
                                        dui_schema_node* n,
                                        int parent_visible,
@@ -1061,7 +1081,7 @@ static void win32_update_control_values(dui_window* win,
         const int cur_vis = IsWindowVisible(h) ? 1 : 0;
         const int cur_en = IsWindowEnabled(h) ? 1 : 0;
         if (cur_vis != (visible ? 1 : 0)) {
-            ShowWindow(h, visible ? SW_SHOW : SW_HIDE);
+            win32_batch_set_visibility(win, h, visible);
         }
         if (cur_en != (visible ? 1 : 0)) {
             EnableWindow(h, visible ? TRUE : FALSE);
@@ -1197,7 +1217,7 @@ static void win32_update_control_values(dui_window* win,
                 !win32_list_items_equal(n->bind_id, prev_state, prev_state_len, win->state, win->state_len)) {
                 int top = (int)SendMessageA(h, LB_GETTOPINDEX, 0, 0);
                 int found_sel = -1;
-                SendMessageA(h, WM_SETREDRAW, (WPARAM)FALSE, 0);
+                dui_win32_begin_batch(h);
                 SendMessageA(h, LB_RESETCONTENT, 0, 0);
                 for (i = 0u; i < count; ++i) {
                     u32 item_id = 0u;
@@ -1223,8 +1243,7 @@ static void win32_update_control_values(dui_window* win,
                     }
                     (void)SendMessageA(h, LB_SETTOPINDEX, (WPARAM)top, 0);
                 }
-                SendMessageA(h, WM_SETREDRAW, (WPARAM)TRUE, 0);
-                InvalidateRect(h, NULL, TRUE);
+                dui_win32_end_batch(h);
             } else if (prev_selected_id != selected_id) {
                 int idx = -1;
                 if (selected_id != 0u) {
@@ -1601,6 +1620,7 @@ static LRESULT CALLBACK dui_win32_wndproc(HWND hwnd, UINT msg, WPARAM wparam, LP
                     child = child->next_sibling;
                 }
                 child = n->first_child;
+                dui_win32_begin_batch(win->hwnd);
                 while (child) {
                     int is_page = (!use_explicit_pages || child->kind == (u32)DUI_NODE_TAB_PAGE) ? 1 : 0;
                     int child_visible = 0;
@@ -1611,6 +1631,7 @@ static LRESULT CALLBACK dui_win32_wndproc(HWND hwnd, UINT msg, WPARAM wparam, LP
                     win32_update_control_values(win, child, child_visible, win->state, win->state_len);
                     child = child->next_sibling;
                 }
+                dui_win32_end_batch(win->hwnd);
             }
             return 0;
         }
@@ -1909,11 +1930,13 @@ static dui_result win32_set_schema_tlv(dui_window* win, const void* schema_tlv, 
     }
 
 #if defined(_WIN32)
+    dui_win32_begin_batch(win->hwnd);
     win32_create_controls_for_tree(win, win->hwnd, win->root);
     win32_relayout(win);
     win->suppress_events = 1u;
     win32_update_control_values(win, win->root, 1, (const unsigned char*)0, 0u);
     win->suppress_events = 0u;
+    dui_win32_end_batch(win->hwnd);
 #endif
     return DUI_OK;
 }
@@ -1956,9 +1979,11 @@ static dui_result win32_set_state_tlv(dui_window* win, const void* state_tlv, u3
 
 #if defined(_WIN32)
     if (win->root) {
+        dui_win32_begin_batch(win->hwnd);
         win->suppress_events = 1u;
         win32_update_control_values(win, win->root, 1, prev_state, prev_state_len);
         win->suppress_events = 0u;
+        dui_win32_end_batch(win->hwnd);
     }
 #endif
     if (prev_state) {
