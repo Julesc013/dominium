@@ -1,0 +1,19 @@
+{
+  "next_id": 15,
+  "actions": {
+    "tool_editor.add_widget": 1,
+    "tool_editor.delete_widget": 2,
+    "tool_editor.hierarchy_select": 3,
+    "tool_editor.new": 4,
+    "tool_editor.open": 5,
+    "tool_editor.prop_h": 6,
+    "tool_editor.prop_name": 7,
+    "tool_editor.prop_w": 8,
+    "tool_editor.prop_x": 9,
+    "tool_editor.prop_y": 10,
+    "tool_editor.save": 11,
+    "tool_editor.save_as": 12,
+    "tool_editor.tab_change": 13,
+    "tool_editor.validate": 14
+  }
+}

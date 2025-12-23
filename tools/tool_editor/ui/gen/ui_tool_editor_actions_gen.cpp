@@ -1,0 +1,115 @@
+/* Auto-generated; do not edit. */
+#include "ui_tool_editor_actions_gen.h"
+#include "ui_tool_editor_actions_user.h"
+#include <cstring>
+
+typedef struct domui_action_key_entry {
+    const char* key;
+    domui_action_id id;
+} domui_action_key_entry;
+
+static const domui_action_entry g_actions[] = {
+    { DOMUI_ACT_TOOL_EDITOR_ADD_WIDGET, ui_tool_editor_act_TOOL_EDITOR_ADD_WIDGET, "tool_editor.add_widget" },
+    { DOMUI_ACT_TOOL_EDITOR_DELETE_WIDGET, ui_tool_editor_act_TOOL_EDITOR_DELETE_WIDGET, "tool_editor.delete_widget" },
+    { DOMUI_ACT_TOOL_EDITOR_HIERARCHY_SELECT, ui_tool_editor_act_TOOL_EDITOR_HIERARCHY_SELECT, "tool_editor.hierarchy_select" },
+    { DOMUI_ACT_TOOL_EDITOR_NEW, ui_tool_editor_act_TOOL_EDITOR_NEW, "tool_editor.new" },
+    { DOMUI_ACT_TOOL_EDITOR_OPEN, ui_tool_editor_act_TOOL_EDITOR_OPEN, "tool_editor.open" },
+    { DOMUI_ACT_TOOL_EDITOR_PROP_H, ui_tool_editor_act_TOOL_EDITOR_PROP_H, "tool_editor.prop_h" },
+    { DOMUI_ACT_TOOL_EDITOR_PROP_NAME, ui_tool_editor_act_TOOL_EDITOR_PROP_NAME, "tool_editor.prop_name" },
+    { DOMUI_ACT_TOOL_EDITOR_PROP_W, ui_tool_editor_act_TOOL_EDITOR_PROP_W, "tool_editor.prop_w" },
+    { DOMUI_ACT_TOOL_EDITOR_PROP_X, ui_tool_editor_act_TOOL_EDITOR_PROP_X, "tool_editor.prop_x" },
+    { DOMUI_ACT_TOOL_EDITOR_PROP_Y, ui_tool_editor_act_TOOL_EDITOR_PROP_Y, "tool_editor.prop_y" },
+    { DOMUI_ACT_TOOL_EDITOR_SAVE, ui_tool_editor_act_TOOL_EDITOR_SAVE, "tool_editor.save" },
+    { DOMUI_ACT_TOOL_EDITOR_SAVE_AS, ui_tool_editor_act_TOOL_EDITOR_SAVE_AS, "tool_editor.save_as" },
+    { DOMUI_ACT_TOOL_EDITOR_TAB_CHANGE, ui_tool_editor_act_TOOL_EDITOR_TAB_CHANGE, "tool_editor.tab_change" },
+    { DOMUI_ACT_TOOL_EDITOR_VALIDATE, ui_tool_editor_act_TOOL_EDITOR_VALIDATE, "tool_editor.validate" }
+};
+static const domui_u32 g_action_count = 14u;
+
+static const domui_action_key_entry g_action_keys[] = {
+    { "tool_editor.add_widget", DOMUI_ACT_TOOL_EDITOR_ADD_WIDGET },
+    { "tool_editor.delete_widget", DOMUI_ACT_TOOL_EDITOR_DELETE_WIDGET },
+    { "tool_editor.hierarchy_select", DOMUI_ACT_TOOL_EDITOR_HIERARCHY_SELECT },
+    { "tool_editor.new", DOMUI_ACT_TOOL_EDITOR_NEW },
+    { "tool_editor.open", DOMUI_ACT_TOOL_EDITOR_OPEN },
+    { "tool_editor.prop_h", DOMUI_ACT_TOOL_EDITOR_PROP_H },
+    { "tool_editor.prop_name", DOMUI_ACT_TOOL_EDITOR_PROP_NAME },
+    { "tool_editor.prop_w", DOMUI_ACT_TOOL_EDITOR_PROP_W },
+    { "tool_editor.prop_x", DOMUI_ACT_TOOL_EDITOR_PROP_X },
+    { "tool_editor.prop_y", DOMUI_ACT_TOOL_EDITOR_PROP_Y },
+    { "tool_editor.save", DOMUI_ACT_TOOL_EDITOR_SAVE },
+    { "tool_editor.save_as", DOMUI_ACT_TOOL_EDITOR_SAVE_AS },
+    { "tool_editor.tab_change", DOMUI_ACT_TOOL_EDITOR_TAB_CHANGE },
+    { "tool_editor.validate", DOMUI_ACT_TOOL_EDITOR_VALIDATE }
+};
+static const domui_u32 g_action_key_count = 14u;
+
+const domui_action_entry* ui_tool_editor_get_action_table(domui_u32* out_count)
+{
+    if (out_count) {
+        *out_count = g_action_count;
+    }
+    return g_actions;
+}
+
+static domui_action_fn ui_tool_editor_action_fn_from_id(domui_action_id id)
+{
+    size_t lo = 0u;
+    size_t hi = (size_t)g_action_count;
+    while (lo < hi) {
+        size_t mid = (lo + hi) / 2u;
+        domui_action_id cur = g_actions[mid].action_id;
+        if (cur < id) {
+            lo = mid + 1u;
+        } else {
+            hi = mid;
+        }
+    }
+    if (lo < (size_t)g_action_count && g_actions[lo].action_id == id) {
+        return g_actions[lo].fn;
+    }
+    return (domui_action_fn)0;
+}
+
+domui_action_id ui_tool_editor_action_id_from_key(const char* key, domui_u32 len)
+{
+    size_t lo = 0u;
+    size_t hi = (size_t)g_action_key_count;
+    if (!key) {
+        return 0u;
+    }
+    while (lo < hi) {
+        size_t mid = (lo + hi) / 2u;
+        const char* cur = g_action_keys[mid].key;
+        size_t cur_len = std::strlen(cur);
+        size_t min_len = (len < (domui_u32)cur_len) ? (size_t)len : cur_len;
+        int cmp = std::strncmp(key, cur, min_len);
+        if (cmp == 0) {
+            if (len < (domui_u32)cur_len) {
+                cmp = -1;
+            } else if (len > (domui_u32)cur_len) {
+                cmp = 1;
+            }
+        }
+        if (cmp < 0) {
+            hi = mid;
+        } else if (cmp > 0) {
+            lo = mid + 1u;
+        } else {
+            return g_action_keys[mid].id;
+        }
+    }
+    return 0u;
+}
+
+void ui_tool_editor_dispatch(void* user_ctx, const domui_event* e)
+{
+    domui_action_fn fn;
+    if (!e) {
+        return;
+    }
+    fn = ui_tool_editor_action_fn_from_id(e->action_id);
+    if (fn) {
+        fn(user_ctx, e);
+    }
+}
