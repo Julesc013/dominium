@@ -25,7 +25,26 @@ target_link_libraries(domino_ui_ir
         domino_core
 )
 
+target_compile_definitions(domino_ui_ir PUBLIC
+    DOMUI_ENABLE_JSON_MIRROR=$<BOOL:${DOMUI_ENABLE_JSON_MIRROR}>
+)
+
 set_target_properties(domino_ui_ir PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_executable(domui_validate
+    ui_validate_main.cpp
+)
+
+target_link_libraries(domui_validate
+    PRIVATE
+        domino_ui_ir
+)
+
+set_target_properties(domui_validate PROPERTIES
     CXX_STANDARD 98
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF

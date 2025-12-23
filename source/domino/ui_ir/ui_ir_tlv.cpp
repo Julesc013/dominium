@@ -835,6 +835,7 @@ bool domui_doc_save_tlv(const domui_doc* doc, const char* path, domui_diag* diag
     dtlv_writer_dispose(&writer);
 
     {
+#if DOMUI_ENABLE_JSON_MIRROR
         std::string json_path = domui_json_path_from_tlv(path);
         if (!domui_doc_save_json_mirror(doc, json_path.c_str(), diag)) {
             if (diag) {
@@ -842,6 +843,9 @@ bool domui_doc_save_tlv(const domui_doc* doc, const char* path, domui_diag* diag
             }
             return false;
         }
+#else
+        (void)doc;
+#endif
     }
     return true;
 }

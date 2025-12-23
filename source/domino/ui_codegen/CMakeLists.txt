@@ -21,19 +21,21 @@ set_target_properties(domino_ui_codegen PROPERTIES
     CXX_EXTENSIONS OFF
 )
 
-add_executable(domui_codegen
-    ui_codegen_main.cpp
-)
+if(DOMUI_ENABLE_CODEGEN)
+    add_executable(domui_codegen
+        ui_codegen_main.cpp
+    )
 
-target_link_libraries(domui_codegen
-    PRIVATE
-        domino_ui_codegen
-)
+    target_link_libraries(domui_codegen
+        PRIVATE
+            domino_ui_codegen
+    )
 
-set_target_properties(domui_codegen PROPERTIES
-    CXX_STANDARD 98
-    CXX_STANDARD_REQUIRED ON
-    CXX_EXTENSIONS OFF
-)
+    set_target_properties(domui_codegen PROPERTIES
+        CXX_STANDARD 98
+        CXX_STANDARD_REQUIRED ON
+        CXX_EXTENSIONS OFF
+    )
+endif()
 
 add_subdirectory(tests)
