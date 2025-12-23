@@ -1,0 +1,435 @@
+{
+  "doc_version": 2,
+  "doc_name": "fixture_tabs_split_scroll",
+  "doc_guid": "",
+  "target_backends": [
+    "win32"
+  ],
+  "target_tiers": [
+    "win32_t1"
+  ],
+  "widgets": [
+    {
+      "id": 1,
+      "type": "CONTAINER",
+      "name": "root",
+      "parent_id": 0,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 480,
+        "h": 240
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [],
+      "events": []
+    },
+    {
+      "id": 2,
+      "type": "SPLITTER",
+      "name": "main_splitter",
+      "parent_id": 1,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 480,
+        "h": 240
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "splitter.min_a",
+          "type": "INT",
+          "value": 60
+        },
+        {
+          "key": "splitter.min_b",
+          "type": "INT",
+          "value": 80
+        },
+        {
+          "key": "splitter.orientation",
+          "type": "STRING",
+          "value": "v"
+        },
+        {
+          "key": "splitter.pos",
+          "type": "INT",
+          "value": 160
+        },
+        {
+          "key": "splitter.thickness",
+          "type": "INT",
+          "value": 4
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": 3,
+      "type": "CONTAINER",
+      "name": "",
+      "parent_id": 2,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [],
+      "events": []
+    },
+    {
+      "id": 5,
+      "type": "TABS",
+      "name": "left_tabs",
+      "parent_id": 3,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 200,
+        "h": 200
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "tabs.placement",
+          "type": "STRING",
+          "value": "top"
+        },
+        {
+          "key": "tabs.selected_index",
+          "type": "INT",
+          "value": 0
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": 6,
+      "type": "TAB_PAGE",
+      "name": "page_a",
+      "parent_id": 5,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "tab.enabled",
+          "type": "BOOL",
+          "value": true
+        },
+        {
+          "key": "tab.title",
+          "type": "STRING",
+          "value": "A"
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": 7,
+      "type": "TAB_PAGE",
+      "name": "page_b",
+      "parent_id": 5,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "tab.enabled",
+          "type": "BOOL",
+          "value": true
+        },
+        {
+          "key": "tab.title",
+          "type": "STRING",
+          "value": "B"
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": 4,
+      "type": "CONTAINER",
+      "name": "",
+      "parent_id": 2,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [],
+      "events": []
+    },
+    {
+      "id": 8,
+      "type": "SCROLLPANEL",
+      "name": "right_scroll",
+      "parent_id": 4,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 200,
+        "h": 200
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "scroll.h_enabled",
+          "type": "BOOL",
+          "value": true
+        },
+        {
+          "key": "scroll.v_enabled",
+          "type": "BOOL",
+          "value": true
+        },
+        {
+          "key": "scroll.x",
+          "type": "INT",
+          "value": 0
+        },
+        {
+          "key": "scroll.y",
+          "type": "INT",
+          "value": 0
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": 9,
+      "type": "CONTAINER",
+      "name": "scroll_content",
+      "parent_id": 8,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 320,
+        "h": 260
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [],
+      "events": []
+    }
+  ]
+}

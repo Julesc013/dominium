@@ -23,6 +23,10 @@ RESPONSIBILITY: Unit tests for UI IR canonicalization and ID stability.
 #include "ui_layout.h"
 #include "ui_validate.h"
 
+#ifndef DOMUI_ENABLE_JSON_MIRROR
+#define DOMUI_ENABLE_JSON_MIRROR 1
+#endif
+
 static int g_failures = 0;
 
 #define TEST_CHECK(cond) \
@@ -82,6 +86,20 @@ static bool domui_layout_results_equal(const domui_layout_result* a,
             a[i].rect.y != b[i].rect.y ||
             a[i].rect.w != b[i].rect.w ||
             a[i].rect.h != b[i].rect.h) {
+            return false;
+        }
+    }
+    return true;
+}
+
+static bool domui_layout_results_non_negative(const domui_layout_result* results, int count)
+{
+    int i;
+    if (!results || count <= 0) {
+        return true;
+    }
+    for (i = 0; i < count; ++i) {
+        if (results[i].rect.w < 0 || results[i].rect.h < 0) {
             return false;
         }
     }
@@ -761,6 +779,10 @@ static void test_tlv_roundtrip_v2_widgets(void)
 
 static void test_json_stability(void)
 {
+#if !DOMUI_ENABLE_JSON_MIRROR
+    printf("SKIP: json stability (DOMUI_ENABLE_JSON_MIRROR=0)\n");
+    return;
+#endif
     const char* json_path = "ui_ir_test_json.json";
     domui_doc doc;
     domui_diag diag;
@@ -802,6 +824,112 @@ static void test_backup_rotation(void)
     TEST_CHECK(!domui_bytes_equal(cur_bytes, bak_bytes));
 }
 
+static void test_fixture_roundtrip(const char* base_name)
+{
+    std::string tlv_name = std::string(base_name) + ".tlv";
+    std::string json_name = std::string(base_name) + ".json";
+    std::string tlv_path;
+    std::string json_path;
+    std::string tmp_path = std::string("ui_ir_fixture_") + base_name + ".tlv";
+    domui_doc doc;
+    domui_diag diag;
+    std::vector<unsigned char> orig_bytes;
+    std::vector<unsigned char> round_bytes;
+
+    if (!domui_find_fixture_path(tlv_name.c_str(), tlv_path)) {
+        printf("FAIL: missing fixture %s\n", tlv_name.c_str());
+        g_failures += 1;
+        return;
+    }
+    if (!domui_read_file_bytes(tlv_path.c_str(), orig_bytes, &diag)) {
+        printf("FAIL: unable to read fixture %s\n", tlv_path.c_str());
+        g_failures += 1;
+        return;
+    }
+    domui_cleanup_tlv_with_json(tmp_path.c_str());
+    TEST_CHECK(domui_doc_load_tlv(&doc, tlv_path.c_str(), &diag));
+    TEST_CHECK(domui_doc_save_tlv(&doc, tmp_path.c_str(), &diag));
+    TEST_CHECK(domui_read_file_bytes(tmp_path.c_str(), round_bytes, &diag));
+    TEST_CHECK(domui_bytes_equal(orig_bytes, round_bytes));
+
+#if DOMUI_ENABLE_JSON_MIRROR
+    {
+        std::vector<unsigned char> fixture_json;
+        std::vector<unsigned char> out_json;
+        if (!domui_find_fixture_path(json_name.c_str(), json_path)) {
+            printf("FAIL: missing fixture %s\n", json_name.c_str());
+            g_failures += 1;
+            return;
+        }
+        TEST_CHECK(domui_read_file_bytes(json_path.c_str(), fixture_json, &diag));
+        {
+            std::string tmp_json = domui_json_path_from_tlv(tmp_path.c_str());
+            TEST_CHECK(domui_read_file_bytes(tmp_json.c_str(), out_json, &diag));
+        }
+        TEST_CHECK(domui_bytes_equal(fixture_json, out_json));
+    }
+#else
+    printf("SKIP: fixture json compare (DOMUI_ENABLE_JSON_MIRROR=0)\n");
+#endif
+}
+
+static void test_migration_v1_to_v2(void)
+{
+    std::string tlv_path;
+    domui_doc doc;
+    domui_doc doc2;
+    domui_diag diag;
+    const char* temp_path = "ui_ir_test_migrate_v1.tlv";
+
+    if (!domui_find_fixture_path("fixture_migrate_v1.tlv", tlv_path)) {
+        printf("FAIL: missing fixture fixture_migrate_v1.tlv\n");
+        g_failures += 1;
+        return;
+    }
+    TEST_CHECK(domui_doc_load_tlv(&doc, tlv_path.c_str(), &diag));
+    TEST_CHECK(doc.meta.doc_version == 2u);
+    TEST_CHECK(doc.widget_count() >= 5u);
+    TEST_CHECK(doc.find_by_id(1u) != 0);
+
+    {
+        const domui_widget* splitter = doc.find_by_id(2u);
+        const domui_widget* tabs = doc.find_by_id(3u);
+        const domui_widget* page = doc.find_by_id(4u);
+        const domui_widget* scroll = doc.find_by_id(5u);
+        TEST_CHECK(splitter != 0);
+        TEST_CHECK(tabs != 0);
+        TEST_CHECK(page != 0);
+        TEST_CHECK(scroll != 0);
+        if (splitter) {
+            TEST_CHECK(domui_prop_string_equals(splitter->props, "splitter.orientation", "v"));
+            TEST_CHECK(domui_prop_int_equals(splitter->props, "splitter.pos", -1));
+            TEST_CHECK(domui_prop_int_equals(splitter->props, "splitter.thickness", 4));
+            TEST_CHECK(domui_prop_int_equals(splitter->props, "splitter.min_a", 0));
+            TEST_CHECK(domui_prop_int_equals(splitter->props, "splitter.min_b", 0));
+        }
+        if (tabs) {
+            TEST_CHECK(domui_prop_int_equals(tabs->props, "tabs.selected_index", 0));
+            TEST_CHECK(domui_prop_string_equals(tabs->props, "tabs.placement", "top"));
+        }
+        if (page) {
+            TEST_CHECK(domui_prop_string_equals(page->props, "tab.title", ""));
+            TEST_CHECK(domui_prop_bool_equals(page->props, "tab.enabled", 1));
+        }
+        if (scroll) {
+            TEST_CHECK(domui_prop_bool_equals(scroll->props, "scroll.h_enabled", 1));
+            TEST_CHECK(domui_prop_bool_equals(scroll->props, "scroll.v_enabled", 1));
+            TEST_CHECK(domui_prop_int_equals(scroll->props, "scroll.x", 0));
+            TEST_CHECK(domui_prop_int_equals(scroll->props, "scroll.y", 0));
+        }
+    }
+
+    domui_cleanup_tlv_with_json(temp_path);
+    TEST_CHECK(domui_doc_save_tlv(&doc, temp_path, &diag));
+    TEST_CHECK(domui_doc_load_tlv(&doc2, temp_path, &diag));
+    TEST_CHECK(doc2.meta.doc_version == 2u);
+    TEST_CHECK(doc2.find_by_id(2u) != 0);
+}
+
 static bool domui_get_cwd(std::string& out)
 {
     char buf[512];
@@ -816,6 +944,33 @@ static bool domui_get_cwd(std::string& out)
 #endif
     out = buf;
     return true;
+}
+
+static bool domui_find_fixture_path(const char* filename, std::string& out_path)
+{
+    std::string cur;
+    if (!filename || !filename[0]) {
+        return false;
+    }
+    if (!domui_get_cwd(cur)) {
+        return false;
+    }
+    while (!cur.empty()) {
+        std::string candidate = cur + "/docs/ui_editor/fixtures/";
+        candidate += filename;
+        if (domui_file_exists(candidate.c_str())) {
+            out_path = candidate;
+            return true;
+        }
+        {
+            size_t pos = cur.find_last_of("\\/");
+            if (pos == std::string::npos) {
+                break;
+            }
+            cur = cur.substr(0u, pos);
+        }
+    }
+    return false;
 }
 
 static bool domui_find_legacy_path(std::string& out_path)
@@ -884,6 +1039,209 @@ static std::string domui_diag_to_string(const domui_diag& diag)
     return out;
 }
 
+static bool domui_prop_int_equals(const domui_props& props, const char* key, int expected)
+{
+    domui_value v;
+    if (!props.get(key, &v)) {
+        return false;
+    }
+    if (v.type != DOMUI_VALUE_INT) {
+        return false;
+    }
+    return v.v_int == expected;
+}
+
+static bool domui_prop_bool_equals(const domui_props& props, const char* key, int expected)
+{
+    domui_value v;
+    if (!props.get(key, &v)) {
+        return false;
+    }
+    if (v.type != DOMUI_VALUE_BOOL) {
+        return false;
+    }
+    return v.v_bool == expected;
+}
+
+static bool domui_prop_string_equals(const domui_props& props, const char* key, const char* expected)
+{
+    domui_value v;
+    if (!props.get(key, &v)) {
+        return false;
+    }
+    if (v.type != DOMUI_VALUE_STRING) {
+        return false;
+    }
+    return v.v_string.str() == std::string(expected ? expected : "");
+}
+
+static void domui_skip_ws(const char** p, const char* end)
+{
+    while (*p < end) {
+        char c = **p;
+        if (c != ' ' && c != '\t' && c != '\r' && c != '\n') {
+            break;
+        }
+        (*p)++;
+    }
+}
+
+static bool domui_parse_json_string(const char** p, const char* end, std::string& out)
+{
+    const char* cur;
+    out.clear();
+    domui_skip_ws(p, end);
+    if (*p >= end || **p != '"') {
+        return false;
+    }
+    (*p)++;
+    cur = *p;
+    while (cur < end) {
+        char c = *cur;
+        if (c == '"') {
+            *p = cur + 1;
+            return true;
+        }
+        if (c == '\\') {
+            cur++;
+            if (cur >= end) {
+                return false;
+            }
+            c = *cur;
+            if (c == '"' || c == '\\' || c == '/') {
+                out.push_back(c);
+            } else if (c == 'n') {
+                out.push_back('\n');
+            } else if (c == 'r') {
+                out.push_back('\r');
+            } else if (c == 't') {
+                out.push_back('\t');
+            } else {
+                out.push_back(c);
+            }
+        } else {
+            out.push_back(c);
+        }
+        cur++;
+    }
+    return false;
+}
+
+static bool domui_parse_json_u32(const char** p, const char* end, domui_u32* out)
+{
+    domui_u32 v = 0u;
+    int have = 0;
+    domui_skip_ws(p, end);
+    while (*p < end) {
+        char c = **p;
+        if (c < '0' || c > '9') {
+            break;
+        }
+        have = 1;
+        v = (v * 10u) + (domui_u32)(c - '0');
+        (*p)++;
+    }
+    if (!have) {
+        return false;
+    }
+    if (out) {
+        *out = v;
+    }
+    return true;
+}
+
+static bool domui_parse_expected_legacy_json(const char* path,
+                                             std::vector<std::string>& out_strings,
+                                             domui_u32* out_min_widgets)
+{
+    std::vector<unsigned char> bytes;
+    std::string text;
+    size_t pos;
+    out_strings.clear();
+    if (out_min_widgets) {
+        *out_min_widgets = 0u;
+    }
+    if (!domui_read_file_bytes(path, bytes, 0)) {
+        return false;
+    }
+    if (!bytes.empty()) {
+        text.assign((const char*)&bytes[0], bytes.size());
+    }
+
+    pos = text.find("\"min_widget_count\"");
+    if (pos != std::string::npos) {
+        pos = text.find(':', pos);
+        if (pos != std::string::npos) {
+            const char* p = text.c_str() + pos + 1;
+            const char* end = text.c_str() + text.size();
+            domui_u32 v = 0u;
+            if (domui_parse_json_u32(&p, end, &v)) {
+                if (out_min_widgets) {
+                    *out_min_widgets = v;
+                }
+            }
+        }
+    }
+
+    pos = text.find("\"must_contain_strings\"");
+    if (pos != std::string::npos) {
+        pos = text.find('[', pos);
+        if (pos != std::string::npos) {
+            const char* p = text.c_str() + pos + 1;
+            const char* end = text.c_str() + text.size();
+            domui_skip_ws(&p, end);
+            while (p < end && *p != ']') {
+                std::string item;
+                if (!domui_parse_json_string(&p, end, item)) {
+                    break;
+                }
+                out_strings.push_back(item);
+                domui_skip_ws(&p, end);
+                if (p < end && *p == ',') {
+                    p++;
+                }
+                domui_skip_ws(&p, end);
+            }
+        }
+    }
+    return !out_strings.empty() || (out_min_widgets && *out_min_widgets != 0u);
+}
+
+static domui_widget_id domui_find_root_id(const domui_doc& doc)
+{
+    std::vector<domui_widget_id> order;
+    size_t i;
+    doc.canonical_widget_order(order);
+    for (i = 0u; i < order.size(); ++i) {
+        const domui_widget* w = doc.find_by_id(order[i]);
+        if (w && w->parent_id == 0u) {
+            return w->id;
+        }
+    }
+    return 0u;
+}
+
+static void domui_get_root_size(const domui_doc& doc, domui_widget_id root_id, int* out_w, int* out_h)
+{
+    const domui_widget* w = doc.find_by_id(root_id);
+    int rw = 200;
+    int rh = 150;
+    if (w) {
+        if (w->w > 0) {
+            rw = w->w;
+        }
+        if (w->h > 0) {
+            rh = w->h;
+        }
+    }
+    if (out_w) {
+        *out_w = rw;
+    }
+    if (out_h) {
+        *out_h = rh;
+    }
+}
+
 static void domui_fill_listview_doc(domui_doc& doc)
 {
     domui_widget_id root;
@@ -941,6 +1299,101 @@ static void test_validation_determinism(void)
     TEST_CHECK(a == b);
 }
 
+static void test_validation_multi_target(void)
+{
+    domui_doc doc;
+    domui_diag diag;
+    domui_target_set targets;
+    std::string diag_text;
+
+    doc.clear();
+    doc.create_widget(DOMUI_WIDGET_CONTAINER, 0u);
+    doc.create_widget(DOMUI_WIDGET_BUTTON, 1u);
+
+    targets.backends.push_back(domui_string("win32"));
+    targets.backends.push_back(domui_string("null"));
+    targets.tiers.push_back(domui_string("win32_t1"));
+    targets.tiers.push_back(domui_string("null_basic"));
+
+    TEST_CHECK(!domui_validate_doc(&doc, &targets, &diag));
+    diag_text = domui_diag_to_string(diag);
+    TEST_CHECK(diag_text.find("null") != std::string::npos);
+}
+
+static void test_layout_fixture_non_negative(const char* base_name)
+{
+    std::string tlv_name = std::string(base_name) + ".tlv";
+    std::string tlv_path;
+    domui_doc doc;
+    domui_diag diag;
+    domui_layout_result results[256];
+    int count = 256;
+    domui_widget_id root_id;
+    int root_w = 0;
+    int root_h = 0;
+
+    if (!domui_find_fixture_path(tlv_name.c_str(), tlv_path)) {
+        printf("FAIL: missing fixture %s\n", tlv_name.c_str());
+        g_failures += 1;
+        return;
+    }
+    TEST_CHECK(domui_doc_load_tlv(&doc, tlv_path.c_str(), &diag));
+    root_id = domui_find_root_id(doc);
+    TEST_CHECK(root_id != 0u);
+    domui_get_root_size(doc, root_id, &root_w, &root_h);
+    TEST_CHECK(domui_compute_layout(&doc, root_id, 0, 0, root_w, root_h, results, &count, &diag));
+    TEST_CHECK(domui_layout_results_non_negative(results, count));
+}
+
+static void test_legacy_import_expected(void)
+{
+    std::string legacy_path;
+    std::string expected_path;
+    std::vector<std::string> must_contain;
+    domui_u32 min_widgets = 0u;
+    domui_doc doc;
+    domui_diag diag;
+
+    if (!domui_find_legacy_path(legacy_path)) {
+        printf("SKIP: legacy import expected (launcher_ui_v1.tlv not found)\n");
+        return;
+    }
+    if (!domui_find_fixture_path("fixture_legacy_import_expected.json", expected_path)) {
+        printf("FAIL: missing fixture fixture_legacy_import_expected.json\n");
+        g_failures += 1;
+        return;
+    }
+    if (!domui_parse_expected_legacy_json(expected_path.c_str(), must_contain, &min_widgets)) {
+        printf("FAIL: unable to parse legacy import expectations\n");
+        g_failures += 1;
+        return;
+    }
+
+    TEST_CHECK(domui_doc_import_legacy_launcher_tlv(&doc, legacy_path.c_str(), &diag));
+    if (min_widgets != 0u) {
+        TEST_CHECK(doc.widget_count() >= min_widgets);
+    }
+#if DOMUI_ENABLE_JSON_MIRROR
+    {
+        const char* json_path = "ui_ir_test_legacy_import.json";
+        std::string json_text;
+        std::vector<unsigned char> bytes;
+        size_t i;
+        domui_cleanup_file_family(json_path);
+        TEST_CHECK(domui_doc_save_json_mirror(&doc, json_path, &diag));
+        TEST_CHECK(domui_read_file_bytes(json_path, bytes, &diag));
+        if (!bytes.empty()) {
+            json_text.assign((const char*)&bytes[0], bytes.size());
+        }
+        for (i = 0u; i < must_contain.size(); ++i) {
+            TEST_CHECK(json_text.find(must_contain[i]) != std::string::npos);
+        }
+    }
+#else
+    printf("SKIP: legacy import expected (DOMUI_ENABLE_JSON_MIRROR=0)\n");
+#endif
+}
+
 int main(void)
 {
     test_id_stability();
@@ -960,10 +1413,19 @@ int main(void)
     test_tlv_roundtrip_v2_widgets();
     test_json_stability();
     test_backup_rotation();
+    test_fixture_roundtrip("fixture_abs");
+    test_fixture_roundtrip("fixture_dock");
+    test_fixture_roundtrip("fixture_tabs_split_scroll");
+    test_layout_fixture_non_negative("fixture_abs");
+    test_layout_fixture_non_negative("fixture_dock");
+    test_layout_fixture_non_negative("fixture_tabs_split_scroll");
+    test_migration_v1_to_v2();
     test_legacy_import_smoke();
+    test_legacy_import_expected();
     test_validation_win32_t1_pass();
     test_validation_win32_t0_fail();
     test_validation_determinism();
+    test_validation_multi_target();
 
     if (g_failures != 0) {
         printf("UI IR tests failed: %d\n", g_failures);
