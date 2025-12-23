@@ -32,9 +32,9 @@
     },
     {
       "name": "msvc-base",
-      "displayName": "MSVC (VS 2022)",
+      "displayName": "MSVC (VS 2026)",
       "description": "Native MSVC toolchain (Win32 backend).",
-      "generator": "Visual Studio 17 2022",
+      "generator": "Visual Studio 18 2026",
       "binaryDir": "${sourceDir}/build/${presetName}",
       "architecture": "x64",
       "cacheVariables": {
