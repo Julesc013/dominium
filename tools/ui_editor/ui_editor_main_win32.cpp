@@ -1762,6 +1762,8 @@ void UiEditorApp::rebuild_inspector()
         } else if (w->type == DOMUI_WIDGET_LISTBOX) {
             events.push_back("on_change");
             events.push_back("on_submit");
+        } else if (w->type == DOMUI_WIDGET_SCROLLPANEL) {
+            events.push_back("on_scroll");
         } else if (w->type == DOMUI_WIDGET_TABS) {
             events.push_back("on_tab_change");
         }
@@ -2695,6 +2697,16 @@ LRESULT UiEditorApp::handle_message(HWND hwnd, UINT msg, WPARAM wparam, LPARAM l
                     domui_doc before = m_doc;
                     delete_widget(m_selected_id);
                     push_command("delete", before);
+                }
+                return 0;
+            }
+            if (id == ID_LOG && code == LBN_SELCHANGE) {
+                int sel = (int)SendMessageA(m_log, LB_GETCURSEL, 0, 0);
+                if (sel >= 0) {
+                    domui_widget_id wid = (domui_widget_id)SendMessageA(m_log, LB_GETITEMDATA, sel, 0);
+                    if (wid != 0u) {
+                        select_widget(wid, 0);
+                    }
                 }
                 return 0;
             }
