@@ -22,3 +22,8 @@ Smoke checklist:
 Manual verification
 
 - See `docs/ui_editor/FLICKER_NOTES.md` for Win32 batching/resizing checks.
+
+Checklists
+
+- `docs/ui_editor/PHASE_A_DONE_CHECKLIST.md`
+- `docs/ui_editor/TOOL_EDITOR_BOOTSTRAP_CHECKLIST.md`
