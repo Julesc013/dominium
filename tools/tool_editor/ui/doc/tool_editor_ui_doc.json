@@ -1,0 +1,1608 @@
+{
+  "doc_version": 2,
+  "doc_name": "tool_editor",
+  "doc_guid": "",
+  "target_backends": [
+    "win32"
+  ],
+  "target_tiers": [],
+  "widgets": [
+    {
+      "id": 1,
+      "type": "CONTAINER",
+      "name": "root",
+      "parent_id": 0,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 720
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "FILL",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [],
+      "events": []
+    },
+    {
+      "id": 2,
+      "type": "CONTAINER",
+      "name": "top_bar",
+      "parent_id": 1,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 28
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "TOP",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [],
+      "events": []
+    },
+    {
+      "id": 3,
+      "type": "TABS",
+      "name": "doc_tabs",
+      "parent_id": 2,
+      "z_order": 0,
+      "rect": {
+        "x": 8,
+        "y": 2,
+        "w": 400,
+        "h": 22
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": ["L","R"],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "tabs.placement",
+          "type": "STRING",
+          "value": "top"
+        },
+        {
+          "key": "tabs.selected_index",
+          "type": "INT",
+          "value": 0
+        }
+      ],
+      "events": [
+        {
+          "event": "on_tab_change",
+          "action": "tool_editor.tab_change"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "TAB_PAGE",
+      "name": "doc_tab_0",
+      "parent_id": 3,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "tab.enabled",
+          "type": "BOOL",
+          "value": true
+        },
+        {
+          "key": "tab.title",
+          "type": "STRING",
+          "value": "Doc 1"
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": 5,
+      "type": "TAB_PAGE",
+      "name": "doc_tab_1",
+      "parent_id": 3,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "tab.enabled",
+          "type": "BOOL",
+          "value": false
+        },
+        {
+          "key": "tab.title",
+          "type": "STRING",
+          "value": "Doc 2"
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": 6,
+      "type": "TAB_PAGE",
+      "name": "doc_tab_2",
+      "parent_id": 3,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "tab.enabled",
+          "type": "BOOL",
+          "value": false
+        },
+        {
+          "key": "tab.title",
+          "type": "STRING",
+          "value": "Doc 3"
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": 7,
+      "type": "TAB_PAGE",
+      "name": "doc_tab_3",
+      "parent_id": 3,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "tab.enabled",
+          "type": "BOOL",
+          "value": false
+        },
+        {
+          "key": "tab.title",
+          "type": "STRING",
+          "value": "Doc 4"
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": 8,
+      "type": "BUTTON",
+      "name": "btn_new",
+      "parent_id": 2,
+      "z_order": 0,
+      "rect": {
+        "x": 8,
+        "y": 2,
+        "w": 52,
+        "h": 22
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "New"
+        }
+      ],
+      "events": [
+        {
+          "event": "on_click",
+          "action": "tool_editor.new"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "type": "BUTTON",
+      "name": "btn_open",
+      "parent_id": 2,
+      "z_order": 0,
+      "rect": {
+        "x": 64,
+        "y": 2,
+        "w": 56,
+        "h": 22
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "Open"
+        }
+      ],
+      "events": [
+        {
+          "event": "on_click",
+          "action": "tool_editor.open"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "type": "BUTTON",
+      "name": "btn_save",
+      "parent_id": 2,
+      "z_order": 0,
+      "rect": {
+        "x": 124,
+        "y": 2,
+        "w": 56,
+        "h": 22
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "Save"
+        }
+      ],
+      "events": [
+        {
+          "event": "on_click",
+          "action": "tool_editor.save"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "type": "BUTTON",
+      "name": "btn_save_as",
+      "parent_id": 2,
+      "z_order": 0,
+      "rect": {
+        "x": 184,
+        "y": 2,
+        "w": 68,
+        "h": 22
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "Save As"
+        }
+      ],
+      "events": [
+        {
+          "event": "on_click",
+          "action": "tool_editor.save_as"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "type": "BUTTON",
+      "name": "btn_validate",
+      "parent_id": 2,
+      "z_order": 0,
+      "rect": {
+        "x": 256,
+        "y": 2,
+        "w": 72,
+        "h": 22
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "Validate"
+        }
+      ],
+      "events": [
+        {
+          "event": "on_click",
+          "action": "tool_editor.validate"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "type": "LISTBOX",
+      "name": "log_list",
+      "parent_id": 1,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 140
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "BOTTOM",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [],
+      "events": []
+    },
+    {
+      "id": 14,
+      "type": "SPLITTER",
+      "name": "split_main",
+      "parent_id": 1,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "FILL",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "splitter.min_a",
+          "type": "INT",
+          "value": 160
+        },
+        {
+          "key": "splitter.min_b",
+          "type": "INT",
+          "value": 240
+        },
+        {
+          "key": "splitter.orientation",
+          "type": "STRING",
+          "value": "v"
+        },
+        {
+          "key": "splitter.pos",
+          "type": "INT",
+          "value": 240
+        },
+        {
+          "key": "splitter.thickness",
+          "type": "INT",
+          "value": 4
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": 15,
+      "type": "CONTAINER",
+      "name": "pane_left",
+      "parent_id": 14,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [],
+      "events": []
+    },
+    {
+      "id": 17,
+      "type": "STATIC_TEXT",
+      "name": "label_hierarchy",
+      "parent_id": 15,
+      "z_order": 0,
+      "rect": {
+        "x": 8,
+        "y": 6,
+        "w": 90,
+        "h": 16
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "Hierarchy"
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": 18,
+      "type": "BUTTON",
+      "name": "btn_add",
+      "parent_id": 15,
+      "z_order": 0,
+      "rect": {
+        "x": 100,
+        "y": 2,
+        "w": 48,
+        "h": 22
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "Add"
+        }
+      ],
+      "events": [
+        {
+          "event": "on_click",
+          "action": "tool_editor.add_widget"
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "type": "BUTTON",
+      "name": "btn_delete",
+      "parent_id": 15,
+      "z_order": 0,
+      "rect": {
+        "x": 152,
+        "y": 2,
+        "w": 56,
+        "h": 22
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "Delete"
+        }
+      ],
+      "events": [
+        {
+          "event": "on_click",
+          "action": "tool_editor.delete_widget"
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "type": "LISTBOX",
+      "name": "list_hierarchy",
+      "parent_id": 15,
+      "z_order": 0,
+      "rect": {
+        "x": 8,
+        "y": 26,
+        "w": 8,
+        "h": 8
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": ["L","R","T","B"],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [],
+      "events": [
+        {
+          "event": "on_change",
+          "action": "tool_editor.hierarchy_select"
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "type": "SPLITTER",
+      "name": "split_center_right",
+      "parent_id": 14,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "splitter.min_a",
+          "type": "INT",
+          "value": 240
+        },
+        {
+          "key": "splitter.min_b",
+          "type": "INT",
+          "value": 240
+        },
+        {
+          "key": "splitter.orientation",
+          "type": "STRING",
+          "value": "v"
+        },
+        {
+          "key": "splitter.pos",
+          "type": "INT",
+          "value": 640
+        },
+        {
+          "key": "splitter.thickness",
+          "type": "INT",
+          "value": 4
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": 21,
+      "type": "CONTAINER",
+      "name": "pane_center",
+      "parent_id": 16,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [],
+      "events": []
+    },
+    {
+      "id": 23,
+      "type": "STATIC_TEXT",
+      "name": "label_preview",
+      "parent_id": 21,
+      "z_order": 0,
+      "rect": {
+        "x": 8,
+        "y": 6,
+        "w": 90,
+        "h": 16
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "Preview"
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": 24,
+      "type": "CONTAINER",
+      "name": "preview_host",
+      "parent_id": 21,
+      "z_order": 0,
+      "rect": {
+        "x": 8,
+        "y": 26,
+        "w": 8,
+        "h": 8
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": ["L","R","T","B"],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [],
+      "events": []
+    },
+    {
+      "id": 22,
+      "type": "CONTAINER",
+      "name": "pane_right",
+      "parent_id": 16,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [],
+      "events": []
+    },
+    {
+      "id": 25,
+      "type": "STATIC_TEXT",
+      "name": "label_props",
+      "parent_id": 22,
+      "z_order": 0,
+      "rect": {
+        "x": 8,
+        "y": 8,
+        "w": 90,
+        "h": 16
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "Properties"
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": 26,
+      "type": "STATIC_TEXT",
+      "name": "label_name",
+      "parent_id": 22,
+      "z_order": 0,
+      "rect": {
+        "x": 8,
+        "y": 32,
+        "w": 60,
+        "h": 16
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "Name"
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": 27,
+      "type": "EDIT",
+      "name": "edit_name",
+      "parent_id": 22,
+      "z_order": 0,
+      "rect": {
+        "x": 72,
+        "y": 30,
+        "w": 140,
+        "h": 20
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": ["L","R"],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [],
+      "events": [
+        {
+          "event": "on_change",
+          "action": "tool_editor.prop_name"
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "type": "STATIC_TEXT",
+      "name": "label_x",
+      "parent_id": 22,
+      "z_order": 0,
+      "rect": {
+        "x": 8,
+        "y": 56,
+        "w": 20,
+        "h": 16
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "X"
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": 29,
+      "type": "EDIT",
+      "name": "edit_x",
+      "parent_id": 22,
+      "z_order": 0,
+      "rect": {
+        "x": 72,
+        "y": 54,
+        "w": 60,
+        "h": 20
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [],
+      "events": [
+        {
+          "event": "on_change",
+          "action": "tool_editor.prop_x"
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "type": "STATIC_TEXT",
+      "name": "label_y",
+      "parent_id": 22,
+      "z_order": 0,
+      "rect": {
+        "x": 8,
+        "y": 80,
+        "w": 20,
+        "h": 16
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "Y"
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": 31,
+      "type": "EDIT",
+      "name": "edit_y",
+      "parent_id": 22,
+      "z_order": 0,
+      "rect": {
+        "x": 72,
+        "y": 78,
+        "w": 60,
+        "h": 20
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [],
+      "events": [
+        {
+          "event": "on_change",
+          "action": "tool_editor.prop_y"
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "type": "STATIC_TEXT",
+      "name": "label_w",
+      "parent_id": 22,
+      "z_order": 0,
+      "rect": {
+        "x": 8,
+        "y": 104,
+        "w": 20,
+        "h": 16
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "W"
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": 33,
+      "type": "EDIT",
+      "name": "edit_w",
+      "parent_id": 22,
+      "z_order": 0,
+      "rect": {
+        "x": 72,
+        "y": 102,
+        "w": 60,
+        "h": 20
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [],
+      "events": [
+        {
+          "event": "on_change",
+          "action": "tool_editor.prop_w"
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "type": "STATIC_TEXT",
+      "name": "label_h",
+      "parent_id": 22,
+      "z_order": 0,
+      "rect": {
+        "x": 8,
+        "y": 128,
+        "w": 20,
+        "h": 16
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "H"
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": 35,
+      "type": "EDIT",
+      "name": "edit_h",
+      "parent_id": 22,
+      "z_order": 0,
+      "rect": {
+        "x": 72,
+        "y": 126,
+        "w": 60,
+        "h": 20
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [],
+      "events": [
+        {
+          "event": "on_change",
+          "action": "tool_editor.prop_h"
+        }
+      ]
+    }
+  ]
+}
