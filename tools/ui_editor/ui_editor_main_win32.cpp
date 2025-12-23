@@ -50,10 +50,12 @@ static const int kSplitterSize = 4;
 static const int kMinPanelSize = 120;
 static const int kMinPreviewSize = 200;
 static const int kInspectorEditHeight = 22;
+static const int kTreeSearchHeight = 22;
 static const int kHandleSize = 6;
 static const int kUndoLimit = 50;
 
 enum {
+    ID_TREE_SEARCH = 1000,
     ID_TREE = 1001,
     ID_PREVIEW_HOST = 1002,
     ID_INSPECTOR = 1003,
@@ -674,6 +676,7 @@ private:
     void rebuild_inspector();
     void refresh_inspector_edit();
     void select_widget(domui_widget_id id, int from_tree);
+    void search_tree(const char* text);
 
     void log_clear();
     void log_add(const char* text, domui_widget_id widget_id);
@@ -695,6 +698,7 @@ private:
     void undo();
     void redo();
 
+    domui_widget_id find_search_match(const std::string& needle) const;
     domui_layout_rect get_layout_rect(domui_widget_id id) const;
     domui_layout_rect get_parent_content_rect(domui_widget_id id) const;
     int apply_rect_to_widget(domui_widget* w, const domui_layout_rect& rect);
@@ -707,6 +711,7 @@ private:
     void nudge_selected(int dx, int dy);
     HINSTANCE m_instance;
     HWND m_hwnd;
+    HWND m_tree_search;
     HWND m_tree;
     HWND m_preview_host;
     HWND m_overlay;
@@ -763,6 +768,7 @@ static LRESULT CALLBACK UiEditor_SplitterWndProc(HWND hwnd, UINT msg, WPARAM wpa
 UiEditorApp::UiEditorApp()
     : m_instance(0),
       m_hwnd(0),
+      m_tree_search(0),
       m_tree(0),
       m_preview_host(0),
       m_overlay(0),
@@ -920,6 +926,16 @@ void UiEditorApp::on_create(HWND hwnd)
     AppendMenuA(menu, MF_POPUP, (UINT_PTR)edit_menu, "&Edit");
     SetMenu(hwnd, menu);
 
+    m_tree_search = CreateWindowExA(WS_EX_CLIENTEDGE,
+                                    "EDIT",
+                                    "",
+                                    WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL,
+                                    0, 0, 10, 10,
+                                    hwnd,
+                                    (HMENU)ID_TREE_SEARCH,
+                                    m_instance,
+                                    NULL);
+
     m_tree = CreateWindowExA(WS_EX_CLIENTEDGE,
                              WC_TREEVIEWA,
                              "",
@@ -1013,11 +1029,13 @@ void UiEditorApp::on_create(HWND hwnd)
                                      this);
 
     if (m_font) {
+        SendMessageA(m_tree_search, WM_SETFONT, (WPARAM)m_font, TRUE);
         SendMessageA(m_tree, WM_SETFONT, (WPARAM)m_font, TRUE);
         SendMessageA(m_inspector, WM_SETFONT, (WPARAM)m_font, TRUE);
         SendMessageA(m_inspector_edit, WM_SETFONT, (WPARAM)m_font, TRUE);
         SendMessageA(m_log, WM_SETFONT, (WPARAM)m_font, TRUE);
     }
+    SendMessageA(m_tree_search, EM_LIMITTEXT, 128, 0);
 
     {
         LVCOLUMNA col;
@@ -1122,7 +1140,8 @@ void UiEditorApp::layout_children()
         }
     }
 
-    MoveWindow(m_tree, 0, 0, left_w, top_h, TRUE);
+    MoveWindow(m_tree_search, 0, 0, left_w, kTreeSearchHeight, TRUE);
+    MoveWindow(m_tree, 0, kTreeSearchHeight, left_w, top_h - kTreeSearchHeight, TRUE);
     MoveWindow(m_split_left, left_w, 0, kSplitterSize, top_h, TRUE);
     MoveWindow(m_preview_host, left_w + kSplitterSize, 0,
                width - left_w - right_w - kSplitterSize * 2, top_h, TRUE);
@@ -1529,10 +1548,53 @@ void UiEditorApp::select_widget(domui_widget_id id, int from_tree)
         std::map<domui_widget_id, HTREEITEM>::iterator it = m_tree_items.find(id);
         if (it != m_tree_items.end()) {
             TreeView_SelectItem(m_tree, it->second);
+            TreeView_EnsureVisible(m_tree, it->second);
         }
     }
     rebuild_inspector();
     InvalidateRect(m_overlay, NULL, TRUE);
+}
+
+void UiEditorApp::search_tree(const char* text)
+{
+    if (!text || !text[0]) {
+        return;
+    }
+    domui_widget_id match = find_search_match(text);
+    if (match != 0u) {
+        select_widget(match, 0);
+    }
+}
+
+domui_widget_id UiEditorApp::find_search_match(const std::string& needle) const
+{
+    if (needle.empty()) {
+        return 0u;
+    }
+    domui_u32 id_val = 0u;
+    if (ui_parse_u32(needle, &id_val)) {
+        if (m_doc.find_by_id(id_val)) {
+            return id_val;
+        }
+    }
+    std::string q = ui_to_lower(needle);
+    std::vector<domui_widget_id> order;
+    m_doc.canonical_widget_order(order);
+    for (size_t i = 0u; i < order.size(); ++i) {
+        const domui_widget* w = m_doc.find_by_id(order[i]);
+        if (!w) {
+            continue;
+        }
+        std::string name = ui_to_lower(w->name.str());
+        std::string type = ui_to_lower(ui_widget_type_name(w->type));
+        std::string id = ui_u32_to_string(w->id);
+        if (name.find(q) != std::string::npos ||
+            type.find(q) != std::string::npos ||
+            id.find(q) != std::string::npos) {
+            return w->id;
+        }
+    }
+    return 0u;
 }
 
 void UiEditorApp::rebuild_inspector()
@@ -2239,6 +2301,13 @@ void UiEditorApp::overlay_start_drag(const POINT& pt)
         return;
     }
     select_widget((domui_widget_id)hit, 0);
+    {
+        domui_widget* w = m_doc.find_by_id((domui_widget_id)hit);
+        if (w && w->dock != DOMUI_DOCK_NONE) {
+            log_info("dock: drag disabled; use properties");
+            return;
+        }
+    }
     m_drag_mode = handle;
     m_drag_widget_id = (domui_widget_id)hit;
     m_drag_start_pt = pt;
@@ -2603,6 +2672,12 @@ LRESULT UiEditorApp::handle_message(HWND hwnd, UINT msg, WPARAM wparam, LPARAM l
                 }
                 return 0;
             }
+            if (id == ID_TREE_SEARCH && code == EN_CHANGE) {
+                char buf[256];
+                GetWindowTextA(m_tree_search, buf, sizeof(buf));
+                search_tree(buf);
+                return 0;
+            }
             if (id >= ID_ADD_WIDGET_BASE && id < (ID_ADD_WIDGET_BASE + 128)) {
                 domui_widget_type type = ui_widget_type_from_menu(id);
                 domui_doc before = m_doc;
@@ -2857,21 +2932,24 @@ LRESULT UiEditorApp::handle_message(HWND hwnd, UINT msg, WPARAM wparam, LPARAM l
             push_command("delete", before);
             return 0;
         }
-        if (wparam == VK_LEFT) {
-            nudge_selected(-1, 0);
-            return 0;
-        }
-        if (wparam == VK_RIGHT) {
-            nudge_selected(1, 0);
-            return 0;
-        }
-        if (wparam == VK_UP) {
-            nudge_selected(0, -1);
-            return 0;
-        }
-        if (wparam == VK_DOWN) {
-            nudge_selected(0, 1);
-            return 0;
+        {
+            int step = (GetKeyState(VK_SHIFT) & 0x8000) ? 10 : 1;
+            if (wparam == VK_LEFT) {
+                nudge_selected(-step, 0);
+                return 0;
+            }
+            if (wparam == VK_RIGHT) {
+                nudge_selected(step, 0);
+                return 0;
+            }
+            if (wparam == VK_UP) {
+                nudge_selected(0, -step);
+                return 0;
+            }
+            if (wparam == VK_DOWN) {
+                nudge_selected(0, step);
+                return 0;
+            }
         }
         break;
     case WM_CONTEXTMENU:
