@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "random": "c",
+        "d_tlv.h": "c",
+        "types.h": "c"
+    },
+    "cmake.configurePreset": "msvc-debug",
+    "cmake.buildPreset": "msvc-debug",
+    "cmake.testPreset": "msvc-debug"
+}
