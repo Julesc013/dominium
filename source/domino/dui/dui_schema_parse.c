@@ -37,6 +37,14 @@ static u64 dui_read_u64_le(const unsigned char* p, u32 len, u64 def_v)
     return v;
 }
 
+static i32 dui_read_i32_le(const unsigned char* p, u32 len, i32 def_v)
+{
+    if (!p || len < 4u) {
+        return def_v;
+    }
+    return (i32)dtlv_le_read_u32(p);
+}
+
 static char* dui_dup_text(const unsigned char* p, u32 len)
 {
     char* s;
@@ -171,6 +179,13 @@ static dui_schema_node* dui_parse_node_payload(const unsigned char* tlv, u32 tlv
             node->flags = dui_read_u32_le(payload, payload_len, 0u);
         } else if (tag == DUI_TLV_REQUIRED_CAPS_U64) {
             node->required_caps = dui_read_u64_le(payload, payload_len, 0u);
+        } else if (tag == DUI_TLV_RECT_I32) {
+            if (payload && payload_len >= 16u) {
+                node->x = dui_read_i32_le(payload + 0u, 4u, 0);
+                node->y = dui_read_i32_le(payload + 4u, 4u, 0);
+                node->w = dui_read_i32_le(payload + 8u, 4u, 0);
+                node->h = dui_read_i32_le(payload + 12u, 4u, 0);
+            }
         } else if (tag == DUI_TLV_VISIBLE_BIND_U32) {
             node->visible_bind_id = dui_read_u32_le(payload, payload_len, 0u);
         } else if (tag == DUI_TLV_SPLITTER_ORIENT_U32) {
@@ -834,6 +849,9 @@ static void dui_layout_children_scrollpanel(dui_schema_node* parent, i32 x, i32 
 void dui_schema_layout(dui_schema_node* root, i32 x, i32 y, i32 w, i32 h)
 {
     if (!root) {
+        return;
+    }
+    if (root->flags & DUI_NODE_FLAG_ABSOLUTE) {
         return;
     }
     root->x = x;

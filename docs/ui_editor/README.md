@@ -1,15 +1,20 @@
-# UI Editor Scaffolding
+# UI Editor (Phase A)
 
-Phase A: UI Editor (Windows-only, Win32 stub) with minimal window and build wiring.
-Phase A goal: establish targets and shared libraries without changing runtime UI behavior.
-Phase A scope: scaffolding only, no schema changes or generator changes.
+Phase A delivers a Windows-only Win32 UI Editor for authoring `ui_doc.tlv`.
+It supports live preview via the DUI Win32 backend, validation, and action codegen.
 
-Phase B: Tool Editor placeholder executable with minimal stub entrypoint.
-Phase B goal: reserve a target and future integration points.
+What it is:
+- New/Open/Save/Save As with atomic saves and JSON mirror output.
+- Hierarchy tree, canvas preview, property inspector, and diagnostics log.
+- Codegen on save: `ui_actions_registry.json`, `gen/`, and `user/` next to the TLV.
 
-Shared libraries: domino_ui_ir and domino_ui_codegen are stubs for UI IR and codegen.
-No external UI frameworks; Win32 only for now.
-C89/C++98 compatibility remains required.
+What it is not:
+- No cross-platform editor.
+- No DPI scaling, advanced docking, or performance tuning beyond correctness.
+- No Tool Editor UI (Phase B still a stub).
 
-See REPO_MAP_UI_SYSTEM.md for the current UI system map.
-See SPEC_UI_DOC_TLV.md for the future TLV document spec outline.
+Smoke checklist:
+1) New doc → add widgets → set dock/anchors → Save → reload.
+2) Preview resizes; selection/move/resize updates layout deterministically.
+3) Validate shows warnings/errors in the log and selects widgets.
+4) Save triggers codegen and generated sources compile.

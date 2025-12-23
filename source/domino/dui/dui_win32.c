@@ -30,6 +30,8 @@ typedef struct dui_context {
     dui_event_queue q;
     u32 quit_requested;
     u32 quit_emitted;
+    domui_action_fn action_dispatch;
+    void* action_user_ctx;
     struct dui_window* primary_window;
 } dui_context;
 
@@ -81,6 +83,7 @@ static void       win32_relayout(dui_window* win);
 static int        win32_splitter_clamp_pos(const dui_schema_node* n, int axis_len, int pos);
 
 static dom_abi_result win32_query_interface(dom_iid iid, void** out_iface);
+static void win32_set_action_dispatch(dui_context* ctx, domui_action_fn fn, void* user_ctx);
 
 static const char* win32_backend_name(void) { return "win32"; }
 
@@ -104,6 +107,7 @@ static dui_caps win32_caps(void)
 
 static dui_test_api_v1 g_test_api;
 static dui_native_api_v1 g_native_api;
+static dui_action_api_v1 g_action_api;
 
 static dui_result win32_test_post_event(dui_context* ctx, const dui_event_v1* ev)
 {
@@ -126,6 +130,15 @@ static void* win32_get_native_window_handle(dui_window* win)
 #endif
 }
 
+static void win32_set_action_dispatch(dui_context* ctx, domui_action_fn fn, void* user_ctx)
+{
+    if (!ctx) {
+        return;
+    }
+    ctx->action_dispatch = fn;
+    ctx->action_user_ctx = user_ctx;
+}
+
 static dom_abi_result win32_query_interface(dom_iid iid, void** out_iface)
 {
     if (!out_iface) {
@@ -145,6 +158,13 @@ static dom_abi_result win32_query_interface(dom_iid iid, void** out_iface)
         g_native_api.struct_size = (u32)sizeof(g_native_api);
         g_native_api.get_native_window_handle = win32_get_native_window_handle;
         *out_iface = (void*)&g_native_api;
+        return 0;
+    }
+    if (iid == DUI_IID_ACTION_API_V1) {
+        g_action_api.abi_version = DUI_API_ABI_VERSION;
+        g_action_api.struct_size = (u32)sizeof(g_action_api);
+        g_action_api.set_action_dispatch = win32_set_action_dispatch;
+        *out_iface = (void*)&g_action_api;
         return 0;
     }
     return (dom_abi_result)DUI_ERR_UNSUPPORTED;
@@ -221,7 +241,76 @@ static void win32_emit_quit(dui_context* ctx)
     (void)dui_event_queue_push(&ctx->q, &ev);
 }
 
-static void win32_emit_action(dui_context* ctx, u32 widget_id, u32 action_id, u32 item_id)
+static domui_value win32_domui_value_none(void)
+{
+    domui_value v;
+    memset(&v, 0, sizeof(v));
+    v.type = DOMUI_VALUE_NONE;
+    return v;
+}
+
+static domui_value win32_domui_value_u32(domui_u32 v)
+{
+    domui_value out = win32_domui_value_none();
+    out.type = DOMUI_VALUE_U32;
+    out.u.v_u32 = v;
+    return out;
+}
+
+static domui_value win32_domui_value_i32(int v)
+{
+    domui_value out = win32_domui_value_none();
+    out.type = DOMUI_VALUE_I32;
+    out.u.v_i32 = v;
+    return out;
+}
+
+static domui_value win32_domui_value_bool(int v)
+{
+    domui_value out = win32_domui_value_none();
+    out.type = DOMUI_VALUE_BOOL;
+    out.u.v_bool = v ? 1 : 0;
+    return out;
+}
+
+static domui_value win32_domui_value_str(const char* text, domui_u32 len)
+{
+    domui_value out = win32_domui_value_none();
+    out.type = DOMUI_VALUE_STR;
+    out.u.v_str.ptr = text;
+    out.u.v_str.len = len;
+    return out;
+}
+
+static void win32_dispatch_domui_event(dui_context* ctx,
+                                       domui_action_id action_id,
+                                       domui_widget_id widget_id,
+                                       domui_event_type type,
+                                       domui_value a,
+                                       domui_value b,
+                                       void* backend_ext)
+{
+    domui_event ev;
+    if (!ctx || !ctx->action_dispatch || action_id == 0u) {
+        return;
+    }
+    memset(&ev, 0, sizeof(ev));
+    ev.action_id = action_id;
+    ev.widget_id = widget_id;
+    ev.type = type;
+    ev.modifiers = 0u;
+    ev.a = a;
+    ev.b = b;
+    ev.backend_ext = backend_ext;
+    ctx->action_dispatch(ctx->action_user_ctx, &ev);
+}
+
+static void win32_emit_action_event(dui_context* ctx,
+                                    u32 widget_id,
+                                    u32 action_id,
+                                    domui_event_type type,
+                                    u32 item_id,
+                                    void* backend_ext)
 {
     dui_event_v1 ev;
     if (!ctx) {
@@ -235,9 +324,24 @@ static void win32_emit_action(dui_context* ctx, u32 widget_id, u32 action_id, u3
     ev.u.action.action_id = action_id;
     ev.u.action.item_id = item_id;
     (void)dui_event_queue_push(&ctx->q, &ev);
+
+    if (type != DOMUI_EVENT_CUSTOM) {
+        domui_value a = win32_domui_value_none();
+        domui_value b = win32_domui_value_none();
+        if (item_id != 0u || type == DOMUI_EVENT_TAB_CHANGE) {
+            a = win32_domui_value_u32(item_id);
+        }
+        win32_dispatch_domui_event(ctx, action_id, widget_id, type, a, b, backend_ext);
+    }
 }
 
-static void win32_emit_value_u32(dui_context* ctx, u32 widget_id, u32 value_type, u32 v, u32 item_id)
+static void win32_emit_value_u32(dui_context* ctx,
+                                 u32 widget_id,
+                                 u32 action_id,
+                                 u32 value_type,
+                                 u32 v,
+                                 u32 item_id,
+                                 void* backend_ext)
 {
     dui_event_v1 ev;
     if (!ctx) {
@@ -252,9 +356,30 @@ static void win32_emit_value_u32(dui_context* ctx, u32 widget_id, u32 value_type
     ev.u.value.v_u32 = v;
     ev.u.value.item_id = item_id;
     (void)dui_event_queue_push(&ctx->q, &ev);
+
+    {
+        domui_value a = win32_domui_value_none();
+        domui_value b = win32_domui_value_none();
+        if (value_type == (u32)DUI_VALUE_BOOL) {
+            a = win32_domui_value_bool(v ? 1 : 0);
+        } else if (value_type == (u32)DUI_VALUE_LIST) {
+            a = win32_domui_value_u32(v);
+            b = win32_domui_value_u32(item_id);
+        } else if (value_type == (u32)DUI_VALUE_I32) {
+            a = win32_domui_value_i32((int)v);
+        } else {
+            a = win32_domui_value_u32(v);
+        }
+        win32_dispatch_domui_event(ctx, action_id, widget_id, DOMUI_EVENT_CHANGE, a, b, backend_ext);
+    }
 }
 
-static void win32_emit_value_text(dui_context* ctx, u32 widget_id, const char* text, u32 text_len)
+static void win32_emit_value_text(dui_context* ctx,
+                                  u32 widget_id,
+                                  u32 action_id,
+                                  const char* text,
+                                  u32 text_len,
+                                  void* backend_ext)
 {
     dui_event_v1 ev;
     u32 n;
@@ -276,6 +401,12 @@ static void win32_emit_value_text(dui_context* ctx, u32 widget_id, const char* t
         memcpy(ev.u.value.text, text, (size_t)n);
     }
     (void)dui_event_queue_push(&ctx->q, &ev);
+
+    {
+        domui_value a = win32_domui_value_str(text ? text : "", n);
+        domui_value b = win32_domui_value_none();
+        win32_dispatch_domui_event(ctx, action_id, widget_id, DOMUI_EVENT_CHANGE, a, b, backend_ext);
+    }
 }
 
 static int win32_node_visible(const dui_window* win, const dui_schema_node* n)
@@ -1138,7 +1269,13 @@ static LRESULT CALLBACK win32_splitter_wndproc(HWND hwnd, UINT msg, WPARAM wpara
         data->node->splitter_pos = (u32)pos;
         win32_relayout(data->win);
         if (!data->win->suppress_events && data->node->bind_id != 0u) {
-            win32_emit_value_u32(data->win->ctx, data->node->id, (u32)DUI_VALUE_U32, (u32)pos, 0u);
+            win32_emit_value_u32(data->win->ctx,
+                                 data->node->id,
+                                 data->node->action_id,
+                                 (u32)DUI_VALUE_U32,
+                                 (u32)pos,
+                                 0u,
+                                 hwnd);
         }
         return 0;
     }
@@ -1266,7 +1403,7 @@ static LRESULT CALLBACK dui_win32_wndproc(HWND hwnd, UINT msg, WPARAM wparam, LP
         }
         if (n->kind == (u32)DUI_NODE_BUTTON) {
             if (notify == BN_CLICKED) {
-                win32_emit_action(ctx, n->id, n->action_id, 0u);
+                win32_emit_action_event(ctx, n->id, n->action_id, DOMUI_EVENT_CLICK, 0u, ctrl);
             }
             return 0;
         }
@@ -1274,7 +1411,7 @@ static LRESULT CALLBACK dui_win32_wndproc(HWND hwnd, UINT msg, WPARAM wparam, LP
             if (notify == BN_CLICKED) {
                 LRESULT st = SendMessageA(ctrl, BM_GETCHECK, 0, 0);
                 u32 v = (st == BST_CHECKED) ? 1u : 0u;
-                win32_emit_value_u32(ctx, n->id, (u32)DUI_VALUE_BOOL, v, 0u);
+                win32_emit_value_u32(ctx, n->id, n->action_id, (u32)DUI_VALUE_BOOL, v, 0u, ctrl);
             }
             return 0;
         }
@@ -1285,7 +1422,7 @@ static LRESULT CALLBACK dui_win32_wndproc(HWND hwnd, UINT msg, WPARAM wparam, LP
                 if (len < 0) {
                     len = 0;
                 }
-                win32_emit_value_text(ctx, n->id, buf, (u32)len);
+                win32_emit_value_text(ctx, n->id, n->action_id, buf, (u32)len, ctrl);
             }
             return 0;
         }
@@ -1297,9 +1434,9 @@ static LRESULT CALLBACK dui_win32_wndproc(HWND hwnd, UINT msg, WPARAM wparam, LP
                     item_id = (u32)SendMessageA(ctrl, LB_GETITEMDATA, (WPARAM)sel, 0);
                 }
                 if (notify == LBN_SELCHANGE) {
-                    win32_emit_value_u32(ctx, n->id, (u32)DUI_VALUE_LIST, (u32)((sel >= 0) ? sel : 0), item_id);
+                    win32_emit_value_u32(ctx, n->id, n->action_id, (u32)DUI_VALUE_LIST, (u32)((sel >= 0) ? sel : 0), item_id, ctrl);
                 } else if (notify == LBN_DBLCLK) {
-                    win32_emit_action(ctx, n->id, n->action_id, item_id);
+                    win32_emit_action_event(ctx, n->id, n->action_id, DOMUI_EVENT_SUBMIT, item_id, ctrl);
                 }
             }
             return 0;
@@ -1328,9 +1465,9 @@ static LRESULT CALLBACK dui_win32_wndproc(HWND hwnd, UINT msg, WPARAM wparam, LP
             n->tabs_selected = (u32)sel;
             if (!win->suppress_events) {
                 if (n->action_id != 0u) {
-                    win32_emit_action(ctx, n->id, n->action_id, 0u);
+                    win32_emit_action_event(ctx, n->id, n->action_id, DOMUI_EVENT_TAB_CHANGE, (u32)sel, hdr->hwndFrom);
                 }
-                win32_emit_value_u32(ctx, n->id, (u32)DUI_VALUE_U32, (u32)sel, 0u);
+                win32_emit_value_u32(ctx, n->id, n->action_id, (u32)DUI_VALUE_U32, (u32)sel, 0u, hdr->hwndFrom);
             }
             {
                 u32 page_index = 0u;
@@ -1473,6 +1610,12 @@ static dui_result win32_create_window(dui_context* ctx, const dui_window_desc_v1
     int w;
     int h;
     const char* title;
+    HWND parent_hwnd;
+    int is_child;
+    int win_x;
+    int win_y;
+    int win_w;
+    int win_h;
 #endif
 
     if (!ctx || !out_win) {
@@ -1499,23 +1642,45 @@ static dui_result win32_create_window(dui_context* ctx, const dui_window_desc_v1
     h = (desc) ? (int)desc->height : 600;
     if (w <= 0) w = 800;
     if (h <= 0) h = 600;
-    style = WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_CLIPSIBLINGS;
-    rect.left = 0;
-    rect.top = 0;
-    rect.right = w;
-    rect.bottom = h;
-    AdjustWindowRect(&rect, style, FALSE);
+    parent_hwnd = NULL;
+    is_child = 0;
+    if (desc && (desc->flags & DUI_WINDOW_FLAG_CHILD)) {
+        is_child = 1;
+        if (desc->struct_size >= (u32)sizeof(dui_window_desc_v1)) {
+            parent_hwnd = (HWND)desc->parent_hwnd;
+        }
+    }
+    if (is_child && parent_hwnd) {
+        style = WS_CHILD | WS_VISIBLE | WS_CLIPCHILDREN | WS_CLIPSIBLINGS;
+        win_x = 0;
+        win_y = 0;
+        win_w = w;
+        win_h = h;
+    } else {
+        style = WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_CLIPSIBLINGS;
+        rect.left = 0;
+        rect.top = 0;
+        rect.right = w;
+        rect.bottom = h;
+        AdjustWindowRect(&rect, style, FALSE);
+        win_x = CW_USEDEFAULT;
+        win_y = CW_USEDEFAULT;
+        win_w = rect.right - rect.left;
+        win_h = rect.bottom - rect.top;
+        parent_hwnd = NULL;
+        is_child = 0;
+    }
 
     win->hwnd = CreateWindowExA(
         0,
         dui_win32_class_name(),
         title,
         style,
-        CW_USEDEFAULT,
-        CW_USEDEFAULT,
-        rect.right - rect.left,
-        rect.bottom - rect.top,
-        NULL,
+        win_x,
+        win_y,
+        win_w,
+        win_h,
+        parent_hwnd,
         NULL,
         GetModuleHandleA(NULL),
         win);
@@ -1527,7 +1692,9 @@ static dui_result win32_create_window(dui_context* ctx, const dui_window_desc_v1
     ShowWindow(win->hwnd, SW_SHOW);
     UpdateWindow(win->hwnd);
 
-    ctx->primary_window = win;
+    if (!is_child) {
+        ctx->primary_window = win;
+    }
 #else
     (void)desc;
     free(win);
