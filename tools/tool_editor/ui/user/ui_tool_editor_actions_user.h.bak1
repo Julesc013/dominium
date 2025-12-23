@@ -1,0 +1,19 @@
+/* User action stubs. */
+#ifndef UI_TOOL_EDITOR_ACTIONS_USER_H_INCLUDED
+#define UI_TOOL_EDITOR_ACTIONS_USER_H_INCLUDED
+
+#include "dui/domui_event.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+// BEGIN AUTO-GENERATED ACTION STUBS
+void ui_tool_editor_act_TOOL_EDITOR_QUIT(void* user_ctx, const domui_event* e);
+// END AUTO-GENERATED ACTION STUBS
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
+
+#endif /* UI_TOOL_EDITOR_ACTIONS_USER_H_INCLUDED */
