@@ -15,6 +15,7 @@
 #include "ui_ir_json.h"
 #include "ui_ir_diag.h"
 #include "ui_ir_fileio.h"
+#include "ui_ir_legacy_import.h"
 #include "ui_layout.h"
 #include "ui_validate.h"
 #include "ui_codegen.h"
@@ -47,14 +48,17 @@ extern "C" const void* dom_dui_win32_get_api(u32 requested_abi);
 static const char* kMainClass = "DomUiEditorMain";
 static const char* kOverlayClass = "DomUiEditorOverlay";
 static const char* kSplitterClass = "DomUiEditorSplitter";
+static const char* kOpenToolDialogClass = "DomUiEditorOpenToolDialog";
 
 static const int kSplitterSize = 4;
 static const int kMinPanelSize = 120;
 static const int kMinPreviewSize = 200;
 static const int kInspectorEditHeight = 22;
+static const int kInfoPanelHeight = 64;
 static const int kTreeSearchHeight = 22;
 static const int kHandleSize = 6;
 static const int kUndoLimit = 50;
+static const COLORREF kOverlayClearColor = RGB(255, 0, 255);
 
 enum {
     ID_TREE_SEARCH = 1000,
@@ -63,6 +67,8 @@ enum {
     ID_INSPECTOR = 1003,
     ID_INSPECTOR_EDIT = 1004,
     ID_LOG = 1005,
+    ID_PREVIEW_TIMER = 1200,
+    ID_INFO_PANEL = 1006,
     ID_SPLIT_LEFT = 1101,
     ID_SPLIT_RIGHT = 1102,
     ID_SPLIT_BOTTOM = 1103
@@ -81,12 +87,22 @@ enum {
 };
 
 enum {
-    ID_FILE_REFRESH_INDEX = 40100
+    ID_FILE_REFRESH_INDEX = 40100,
+    ID_FILE_OPEN_TOOL = 40101,
+    ID_FILE_IMPORT_LEGACY = 40102
 };
 
 enum {
     ID_ADD_WIDGET_BASE = 42000,
     ID_CONTEXT_DELETE = 42100
+};
+
+enum {
+    ID_OPEN_TOOL_LIST = 5001,
+    ID_OPEN_TOOL_CANON = 5002,
+    ID_OPEN_TOOL_LEGACY = 5003,
+    ID_OPEN_TOOL_OPEN = 5004,
+    ID_OPEN_TOOL_CANCEL = 5005
 };
 
 enum InspectorRowType {
@@ -135,6 +151,14 @@ enum DragMode {
     DRAG_SW
 };
 
+enum DocOrigin {
+    DOC_ORIGIN_CANONICAL = 0,
+    DOC_ORIGIN_IMPORTED,
+    DOC_ORIGIN_LEGACY
+};
+
+class UiEditorApp;
+
 struct InspectorRow {
     InspectorRowType type;
     InspectorField field;
@@ -158,6 +182,33 @@ struct EditorCommand {
     domui_doc before;
     domui_doc after;
     std::string label;
+};
+
+struct UiOpenToolDialogState {
+    UiEditorApp* app;
+    HWND hwnd;
+    HWND list;
+    HWND check_canonical;
+    HWND check_legacy;
+    HWND btn_open;
+    HWND btn_cancel;
+    int result;
+    int selected_index;
+    std::vector<UiDiscoveryEntry> entries;
+
+    UiOpenToolDialogState()
+        : app(0),
+          hwnd(0),
+          list(0),
+          check_canonical(0),
+          check_legacy(0),
+          btn_open(0),
+          btn_cancel(0),
+          result(0),
+          selected_index(-1),
+          entries()
+    {
+    }
 };
 
 static RECT ui_make_rect(int l, int t, int r, int b)
@@ -383,6 +434,18 @@ static const char* ui_layout_mode_name(domui_container_layout_mode mode)
         break;
     }
     return "absolute";
+}
+
+static const char* ui_doc_origin_name(DocOrigin origin)
+{
+    switch (origin) {
+    case DOC_ORIGIN_CANONICAL: return "canonical";
+    case DOC_ORIGIN_IMPORTED: return "imported";
+    case DOC_ORIGIN_LEGACY: return "legacy";
+    default:
+        break;
+    }
+    return "canonical";
 }
 
 static domui_container_layout_mode ui_parse_layout_mode(const std::string& s, int* out_ok)
@@ -780,6 +843,116 @@ static std::string ui_json_escape(const std::string& in)
     return out;
 }
 
+static std::string ui_pretty_path(const std::string& repo_root, const std::string& abs_path)
+{
+    if (!repo_root.empty()) {
+        return ui_make_relative_path(repo_root, abs_path);
+    }
+    return ui_path_filename(abs_path);
+}
+
+static std::string ui_format_diag_item(const domui_diag_item& item)
+{
+    std::string text = item.message.str();
+    if (item.widget_id != 0u) {
+        text += " [widget ";
+        text += ui_u32_to_string(item.widget_id);
+        text += "]";
+    }
+    if (!item.context.empty()) {
+        text += " [";
+        text += item.context.str();
+        text += "]";
+    }
+    return text;
+}
+
+static void ui_collect_import_id_map(const domui_doc& doc,
+                                     const domui_diag& diag,
+                                     std::map<domui_u32, domui_u32>& out_map)
+{
+    out_map.clear();
+    const std::vector<domui_diag_item>& warns = diag.warnings();
+    for (size_t i = 0u; i < warns.size(); ++i) {
+        const domui_diag_item& item = warns[i];
+        if (item.widget_id == 0u) {
+            continue;
+        }
+        if (item.message.str().find("legacy id remapped") == std::string::npos) {
+            continue;
+        }
+        std::string name = "legacy.";
+        name += ui_u32_to_string(item.widget_id);
+        domui_string key(name.c_str());
+        const domui_widget* w = doc.find_by_name(key);
+        if (w && w->id != item.widget_id) {
+            out_map[item.widget_id] = w->id;
+        }
+    }
+}
+
+static std::string ui_build_import_report_json(const std::string& source,
+                                               const std::string& destination,
+                                               const domui_diag& diag,
+                                               const std::map<domui_u32, domui_u32>& id_map)
+{
+    std::string json;
+    const std::vector<domui_diag_item>& warns = diag.warnings();
+    const std::vector<domui_diag_item>& errs = diag.errors();
+
+    json += "{\n";
+    json += "  \"source\": \"";
+    json += ui_json_escape(source);
+    json += "\",\n";
+    json += "  \"destination\": \"";
+    json += ui_json_escape(destination);
+    json += "\",\n";
+    json += "  \"warnings\": [\n";
+    for (size_t i = 0u; i < warns.size(); ++i) {
+        std::string text = ui_format_diag_item(warns[i]);
+        json += "    \"";
+        json += ui_json_escape(text);
+        json += "\"";
+        if (i + 1u < warns.size()) {
+            json += ",";
+        }
+        json += "\n";
+    }
+    json += "  ],\n";
+    json += "  \"errors\": [\n";
+    for (size_t i = 0u; i < errs.size(); ++i) {
+        std::string text = ui_format_diag_item(errs[i]);
+        json += "    \"";
+        json += ui_json_escape(text);
+        json += "\"";
+        if (i + 1u < errs.size()) {
+            json += ",";
+        }
+        json += "\n";
+    }
+    json += "  ],\n";
+    json += "  \"id_map\": {";
+    if (!id_map.empty()) {
+        json += "\n";
+        std::map<domui_u32, domui_u32>::const_iterator it = id_map.begin();
+        while (it != id_map.end()) {
+            json += "    \"";
+            json += ui_u32_to_string(it->first);
+            json += "\": ";
+            json += ui_u32_to_string(it->second);
+            ++it;
+            if (it != id_map.end()) {
+                json += ",";
+            }
+            json += "\n";
+        }
+        json += "  ";
+    }
+    json += "}\n";
+    json += "}\n";
+    return json;
+}
+
 static void ui_scan_dir_recursive(const std::string& repo_root,
                                   const std::string& abs_dir,
                                   std::vector<UiDiscoveryEntry>& out_entries,
@@ -993,6 +1166,237 @@ static int ui_run_scan_cli(const std::vector<std::string>& args)
     return 0;
 }
 
+static int ui_open_tool_dialog_show(const UiOpenToolDialogState* state, int want_canonical)
+{
+    if (!state) {
+        return 0;
+    }
+    if (want_canonical) {
+        return (SendMessageA(state->check_canonical, BM_GETCHECK, 0, 0) == BST_CHECKED) ? 1 : 0;
+    }
+    return (SendMessageA(state->check_legacy, BM_GETCHECK, 0, 0) == BST_CHECKED) ? 1 : 0;
+}
+
+static void ui_open_tool_dialog_populate(UiOpenToolDialogState* state)
+{
+    if (!state || !state->list) {
+        return;
+    }
+    int show_canonical = ui_open_tool_dialog_show(state, 1);
+    int show_legacy = ui_open_tool_dialog_show(state, 0);
+    if (!show_canonical && !show_legacy) {
+        show_canonical = 1;
+        show_legacy = 1;
+    }
+    ListView_DeleteAllItems(state->list);
+    for (size_t i = 0u; i < state->entries.size(); ++i) {
+        const UiDiscoveryEntry& entry = state->entries[i];
+        if (entry.is_canonical && !show_canonical) {
+            continue;
+        }
+        if (!entry.is_canonical && !show_legacy) {
+            continue;
+        }
+        std::string type_text = entry.is_canonical ? "Canonical" : "Legacy";
+        std::string version_text = entry.is_canonical ? ui_u32_to_string(entry.format_version) : "-";
+        LVITEMA item;
+        memset(&item, 0, sizeof(item));
+        item.mask = LVIF_TEXT | LVIF_PARAM;
+        item.iItem = ListView_GetItemCount(state->list);
+        item.pszText = (LPSTR)entry.tool.c_str();
+        item.lParam = (LPARAM)i;
+        int row = ListView_InsertItemA(state->list, &item);
+        ListView_SetItemTextA(state->list, row, 1, (LPSTR)type_text.c_str());
+        ListView_SetItemTextA(state->list, row, 2, (LPSTR)entry.rel_path.c_str());
+        ListView_SetItemTextA(state->list, row, 3, (LPSTR)version_text.c_str());
+    }
+}
+
+static void ui_open_tool_dialog_accept(UiOpenToolDialogState* state)
+{
+    if (!state || !state->list) {
+        return;
+    }
+    int sel = ListView_GetNextItem(state->list, -1, LVNI_SELECTED);
+    if (sel < 0) {
+        return;
+    }
+    LVITEMA item;
+    memset(&item, 0, sizeof(item));
+    item.mask = LVIF_PARAM;
+    item.iItem = sel;
+    if (ListView_GetItem(state->list, &item)) {
+        state->selected_index = (int)item.lParam;
+        state->result = 1;
+        if (state->hwnd) {
+            DestroyWindow(state->hwnd);
+        }
+    }
+}
+
+static void ui_open_tool_dialog_layout(UiOpenToolDialogState* state, int width, int height)
+{
+    const int pad = 10;
+    const int check_h = 20;
+    const int btn_w = 90;
+    const int btn_h = 24;
+    int list_top = pad + check_h + 6;
+    int list_h = height - list_top - btn_h - pad * 2;
+    int list_w = width - pad * 2;
+    if (list_h < 20) {
+        list_h = 20;
+    }
+    MoveWindow(state->check_canonical, pad, pad, 140, check_h, TRUE);
+    MoveWindow(state->check_legacy, pad + 150, pad, 140, check_h, TRUE);
+    MoveWindow(state->list, pad, list_top, list_w, list_h, TRUE);
+    MoveWindow(state->btn_cancel, width - pad - btn_w, height - pad - btn_h, btn_w, btn_h, TRUE);
+    MoveWindow(state->btn_open, width - pad * 2 - btn_w * 2, height - pad - btn_h, btn_w, btn_h, TRUE);
+}
+
+static LRESULT CALLBACK UiEditor_OpenToolDialogWndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
+{
+    UiOpenToolDialogState* state = (UiOpenToolDialogState*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
+    switch (msg) {
+    case WM_CREATE:
+        {
+            CREATESTRUCTA* cs = (CREATESTRUCTA*)lparam;
+            state = cs ? (UiOpenToolDialogState*)cs->lpCreateParams : 0;
+            SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)state);
+            if (!state) {
+                return 0;
+            }
+            state->hwnd = hwnd;
+            state->check_canonical = CreateWindowExA(0,
+                                                     "BUTTON",
+                                                     "Canonical only",
+                                                     WS_CHILD | WS_VISIBLE | BS_AUTOCHECKBOX,
+                                                     0, 0, 10, 10,
+                                                     hwnd,
+                                                     (HMENU)ID_OPEN_TOOL_CANON,
+                                                     NULL,
+                                                     NULL);
+            state->check_legacy = CreateWindowExA(0,
+                                                  "BUTTON",
+                                                  "Legacy only",
+                                                  WS_CHILD | WS_VISIBLE | BS_AUTOCHECKBOX,
+                                                  0, 0, 10, 10,
+                                                  hwnd,
+                                                  (HMENU)ID_OPEN_TOOL_LEGACY,
+                                                  NULL,
+                                                  NULL);
+            state->list = CreateWindowExA(WS_EX_CLIENTEDGE,
+                                          WC_LISTVIEWA,
+                                          "",
+                                          WS_CHILD | WS_VISIBLE | LVS_REPORT | LVS_SINGLESEL |
+                                              LVS_SHOWSELALWAYS,
+                                          0, 0, 10, 10,
+                                          hwnd,
+                                          (HMENU)ID_OPEN_TOOL_LIST,
+                                          NULL,
+                                          NULL);
+            state->btn_open = CreateWindowExA(0,
+                                              "BUTTON",
+                                              "Open",
+                                              WS_CHILD | WS_VISIBLE | BS_DEFPUSHBUTTON,
+                                              0, 0, 10, 10,
+                                              hwnd,
+                                              (HMENU)ID_OPEN_TOOL_OPEN,
+                                              NULL,
+                                              NULL);
+            state->btn_cancel = CreateWindowExA(0,
+                                                "BUTTON",
+                                                "Cancel",
+                                                WS_CHILD | WS_VISIBLE,
+                                                0, 0, 10, 10,
+                                                hwnd,
+                                                (HMENU)ID_OPEN_TOOL_CANCEL,
+                                                NULL,
+                                                NULL);
+            {
+                HFONT font = (HFONT)GetStockObject(DEFAULT_GUI_FONT);
+                SendMessageA(state->check_canonical, WM_SETFONT, (WPARAM)font, TRUE);
+                SendMessageA(state->check_legacy, WM_SETFONT, (WPARAM)font, TRUE);
+                SendMessageA(state->list, WM_SETFONT, (WPARAM)font, TRUE);
+                SendMessageA(state->btn_open, WM_SETFONT, (WPARAM)font, TRUE);
+                SendMessageA(state->btn_cancel, WM_SETFONT, (WPARAM)font, TRUE);
+            }
+            {
+                LVCOLUMNA col;
+                memset(&col, 0, sizeof(col));
+                col.mask = LVCF_TEXT | LVCF_WIDTH | LVCF_SUBITEM;
+                col.pszText = (LPSTR)"Tool";
+                col.cx = 120;
+                ListView_InsertColumn(state->list, 0, &col);
+                col.pszText = (LPSTR)"UI Type";
+                col.cx = 90;
+                col.iSubItem = 1;
+                ListView_InsertColumn(state->list, 1, &col);
+                col.pszText = (LPSTR)"Path";
+                col.cx = 420;
+                col.iSubItem = 2;
+                ListView_InsertColumn(state->list, 2, &col);
+                col.pszText = (LPSTR)"Version";
+                col.cx = 70;
+                col.iSubItem = 3;
+                ListView_InsertColumn(state->list, 3, &col);
+                ListView_SetExtendedListViewStyle(state->list, LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
+            }
+            ui_open_tool_dialog_populate(state);
+            {
+                RECT rc;
+                GetClientRect(hwnd, &rc);
+                ui_open_tool_dialog_layout(state, rc.right - rc.left, rc.bottom - rc.top);
+            }
+        }
+        return 0;
+    case WM_SIZE:
+        if (state) {
+            ui_open_tool_dialog_layout(state, LOWORD(lparam), HIWORD(lparam));
+        }
+        return 0;
+    case WM_COMMAND:
+        if (!state) {
+            return 0;
+        }
+        switch (LOWORD(wparam)) {
+        case ID_OPEN_TOOL_OPEN:
+            ui_open_tool_dialog_accept(state);
+            return 0;
+        case ID_OPEN_TOOL_CANCEL:
+            state->result = 0;
+            DestroyWindow(hwnd);
+            return 0;
+        case ID_OPEN_TOOL_CANON:
+        case ID_OPEN_TOOL_LEGACY:
+            ui_open_tool_dialog_populate(state);
+            return 0;
+        default:
+            break;
+        }
+        break;
+    case WM_NOTIFY:
+        if (state) {
+            NMHDR* hdr = (NMHDR*)lparam;
+            if (hdr && hdr->idFrom == ID_OPEN_TOOL_LIST) {
+                if (hdr->code == NM_DBLCLK || hdr->code == LVN_ITEMACTIVATE) {
+                    ui_open_tool_dialog_accept(state);
+                    return 0;
+                }
+            }
+        }
+        break;
+    case WM_CLOSE:
+        if (state) {
+            state->result = 0;
+        }
+        DestroyWindow(hwnd);
+        return 0;
+    default:
+        break;
+    }
+    return DefWindowProcA(hwnd, msg, wparam, lparam);
+}
+
 static void ui_tlv_write_u32(std::vector<unsigned char>& out, u32 v)
 {
     out.push_back((unsigned char)(v & 0xFFu));
@@ -1107,6 +1511,10 @@ private:
     void update_title();
     void mark_dirty(int dirty);
     bool scan_ui_index(const char* out_path);
+    void update_info_panel();
+    bool open_tool_ui_dialog();
+    bool import_legacy_ui_dialog();
+    bool import_legacy_ui_path(const char* legacy_path);
 
     void new_document();
     bool open_document();
@@ -1152,16 +1560,25 @@ private:
 
     void overlay_paint(HDC hdc);
     int overlay_hit_test(const POINT& pt, domui_layout_rect* out_rect, DragMode* out_handle);
+    int overlay_should_capture(const POINT& pt) const;
     void overlay_start_drag(const POINT& pt);
     void overlay_update_drag(const POINT& pt);
     void overlay_end_drag();
     void nudge_selected(int dx, int dy);
+    static LRESULT CALLBACK DuiSubclassProc(HWND hwnd,
+                                            UINT msg,
+                                            WPARAM wparam,
+                                            LPARAM lparam,
+                                            UINT_PTR id,
+                                            DWORD_PTR ref);
     HINSTANCE m_instance;
     HWND m_hwnd;
     HWND m_tree_search;
     HWND m_tree;
     HWND m_preview_host;
     HWND m_overlay;
+    int m_overlay_layered;
+    HWND m_info_panel;
     HWND m_inspector;
     HWND m_inspector_edit;
     HWND m_log;
@@ -1184,6 +1601,9 @@ private:
     std::string m_current_path;
     std::string m_repo_root;
     std::vector<UiDiscoveryEntry> m_discovery;
+    DocOrigin m_doc_origin;
+    std::string m_owning_tool;
+    std::string m_import_report_path;
     int m_dirty;
     domui_widget_id m_selected_id;
     domui_layout_rect m_root_rect;
@@ -1213,6 +1633,7 @@ private:
 static LRESULT CALLBACK UiEditor_MainWndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 static LRESULT CALLBACK UiEditor_OverlayWndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 static LRESULT CALLBACK UiEditor_SplitterWndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
+static LRESULT CALLBACK UiEditor_OpenToolDialogWndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
 UiEditorApp::UiEditorApp()
     : m_instance(0),
@@ -1221,6 +1642,8 @@ UiEditorApp::UiEditorApp()
       m_tree(0),
       m_preview_host(0),
       m_overlay(0),
+      m_overlay_layered(0),
+      m_info_panel(0),
       m_inspector(0),
       m_inspector_edit(0),
       m_log(0),
@@ -1241,6 +1664,9 @@ UiEditorApp::UiEditorApp()
       m_current_path(),
       m_repo_root(),
       m_discovery(),
+      m_doc_origin(DOC_ORIGIN_CANONICAL),
+      m_owning_tool(),
+      m_import_report_path(),
       m_dirty(0),
       m_selected_id(0u),
       m_root_rect(),
@@ -1315,6 +1741,16 @@ bool UiEditorApp::init(HINSTANCE inst)
         return false;
     }
 
+    memset(&wc, 0, sizeof(wc));
+    wc.lpfnWndProc = UiEditor_OpenToolDialogWndProc;
+    wc.hInstance = inst;
+    wc.lpszClassName = kOpenToolDialogClass;
+    wc.hCursor = LoadCursor(NULL, IDC_ARROW);
+    wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+    if (!RegisterClassA(&wc)) {
+        return false;
+    }
+
     m_hwnd = CreateWindowExA(0,
                              kMainClass,
                              "Dominium UI Editor",
@@ -1361,7 +1797,10 @@ void UiEditorApp::on_create(HWND hwnd)
 
     AppendMenuA(file_menu, MF_STRING, ID_FILE_NEW, "&New");
     AppendMenuA(file_menu, MF_STRING, ID_FILE_OPEN, "&Open...");
+    AppendMenuA(file_menu, MF_STRING, ID_FILE_OPEN_TOOL, "Open Tool UI...");
+    AppendMenuA(file_menu, MF_STRING, ID_FILE_IMPORT_LEGACY, "Import Legacy UI...");
     AppendMenuA(file_menu, MF_STRING, ID_FILE_REFRESH_INDEX, "Refresh UI &Index");
+    AppendMenuA(file_menu, MF_SEPARATOR, 0, 0);
     AppendMenuA(file_menu, MF_STRING, ID_FILE_SAVE, "&Save");
     AppendMenuA(file_menu, MF_STRING, ID_FILE_SAVE_AS, "Save &As...");
     AppendMenuA(file_menu, MF_SEPARATOR, 0, 0);
@@ -1409,7 +1848,7 @@ void UiEditorApp::on_create(HWND hwnd)
                                      m_instance,
                                      NULL);
 
-    m_overlay = CreateWindowExA(0,
+    m_overlay = CreateWindowExA(WS_EX_LAYERED,
                                 kOverlayClass,
                                 "",
                                 WS_CHILD | WS_VISIBLE,
@@ -1418,6 +1857,24 @@ void UiEditorApp::on_create(HWND hwnd)
                                 NULL,
                                 m_instance,
                                 this);
+    if (m_overlay) {
+        if (SetLayeredWindowAttributes(m_overlay, kOverlayClearColor, 0, LWA_COLORKEY)) {
+            m_overlay_layered = 1;
+        }
+    }
+    if (m_overlay && !m_overlay_layered) {
+        SetTimer(m_hwnd, ID_PREVIEW_TIMER, 100, NULL);
+    }
+
+    m_info_panel = CreateWindowExA(WS_EX_CLIENTEDGE,
+                                   "STATIC",
+                                   "",
+                                   WS_CHILD | WS_VISIBLE | SS_LEFT | SS_NOPREFIX,
+                                   0, 0, 10, 10,
+                                   hwnd,
+                                   (HMENU)ID_INFO_PANEL,
+                                   m_instance,
+                                   NULL);
 
     m_inspector = CreateWindowExA(WS_EX_CLIENTEDGE,
                                   WC_LISTVIEWA,
@@ -1483,6 +1940,7 @@ void UiEditorApp::on_create(HWND hwnd)
     if (m_font) {
         SendMessageA(m_tree_search, WM_SETFONT, (WPARAM)m_font, TRUE);
         SendMessageA(m_tree, WM_SETFONT, (WPARAM)m_font, TRUE);
+        SendMessageA(m_info_panel, WM_SETFONT, (WPARAM)m_font, TRUE);
         SendMessageA(m_inspector, WM_SETFONT, (WPARAM)m_font, TRUE);
         SendMessageA(m_inspector_edit, WM_SETFONT, (WPARAM)m_font, TRUE);
         SendMessageA(m_log, WM_SETFONT, (WPARAM)m_font, TRUE);
@@ -1524,6 +1982,11 @@ void UiEditorApp::on_create(HWND hwnd)
                 dom_abi_result q = m_dui_api->query_interface(DUI_IID_NATIVE_API_V1, (void**)&m_dui_native);
                 if (q == 0 && m_dui_native && m_dui_win) {
                     m_dui_hwnd = (HWND)m_dui_native->get_native_window_handle(m_dui_win);
+                    if (m_dui_hwnd) {
+                        SetWindowSubclass(m_dui_hwnd, UiEditorApp::DuiSubclassProc, 1, (DWORD_PTR)this);
+                        ShowWindow(m_dui_hwnd, SW_SHOW);
+                        UpdateWindow(m_dui_hwnd);
+                    }
                 }
             }
         }
@@ -1534,6 +1997,7 @@ void UiEditorApp::on_create(HWND hwnd)
 
 void UiEditorApp::on_destroy()
 {
+    KillTimer(m_hwnd, ID_PREVIEW_TIMER);
     shutdown();
 }
 
@@ -1599,7 +2063,9 @@ void UiEditorApp::layout_children()
     MoveWindow(m_preview_host, left_w + kSplitterSize, 0,
                width - left_w - right_w - kSplitterSize * 2, top_h, TRUE);
     MoveWindow(m_split_right, width - right_w - kSplitterSize, 0, kSplitterSize, top_h, TRUE);
-    MoveWindow(m_inspector, width - right_w, 0, right_w, top_h - kInspectorEditHeight, TRUE);
+    MoveWindow(m_info_panel, width - right_w, 0, right_w, kInfoPanelHeight, TRUE);
+    MoveWindow(m_inspector, width - right_w, kInfoPanelHeight,
+               right_w, top_h - kInspectorEditHeight - kInfoPanelHeight, TRUE);
     MoveWindow(m_inspector_edit, width - right_w, top_h - kInspectorEditHeight,
                right_w, kInspectorEditHeight, TRUE);
     MoveWindow(m_split_bottom, 0, top_h, width, kSplitterSize, TRUE);
@@ -1611,14 +2077,20 @@ void UiEditorApp::layout_children()
 
 void UiEditorApp::update_preview_size()
 {
-    if (!m_preview_host || !m_overlay) {
+    if (!m_preview_host) {
         return;
     }
     RECT rc;
     GetClientRect(m_preview_host, &rc);
-    MoveWindow(m_overlay, 0, 0, rc.right - rc.left, rc.bottom - rc.top, TRUE);
+    if (m_overlay) {
+        MoveWindow(m_overlay, 0, 0, rc.right - rc.left, rc.bottom - rc.top, TRUE);
+    }
     if (m_dui_hwnd) {
         MoveWindow(m_dui_hwnd, 0, 0, rc.right - rc.left, rc.bottom - rc.top, TRUE);
+        ShowWindow(m_dui_hwnd, SW_SHOW);
+    }
+    if (m_overlay) {
+        SetWindowPos(m_overlay, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
     }
 }
 
@@ -1671,6 +2143,22 @@ bool UiEditorApp::scan_ui_index(const char* out_path)
     return true;
 }
 
+void UiEditorApp::update_info_panel()
+{
+    if (!m_info_panel) {
+        return;
+    }
+    std::string tool = m_owning_tool.empty() ? "unknown" : m_owning_tool;
+    std::string report = m_import_report_path.empty() ? "-" : m_import_report_path;
+    std::string text = "Origin: ";
+    text += ui_doc_origin_name(m_doc_origin);
+    text += "\r\nTool: ";
+    text += tool;
+    text += "\r\nImport report: ";
+    text += report;
+    SetWindowTextA(m_info_panel, text.c_str());
+}
+
 void UiEditorApp::new_document()
 {
     m_doc.clear();
@@ -1689,11 +2177,15 @@ void UiEditorApp::new_document()
         m_selected_id = 0u;
     }
     m_current_path.clear();
+    m_doc_origin = DOC_ORIGIN_CANONICAL;
+    m_owning_tool.clear();
+    m_import_report_path.clear();
     m_undo.clear();
     m_redo.clear();
     mark_dirty(0);
     rebuild_tree();
     rebuild_inspector();
+    update_info_panel();
     refresh_layout(1);
 }
 
@@ -1740,6 +2232,215 @@ bool UiEditorApp::open_document()
     return load_document(path);
 }
 
+bool UiEditorApp::open_tool_ui_dialog()
+{
+    UiOpenToolDialogState state;
+    std::string title = "Open Tool UI";
+    HWND dlg = 0;
+    RECT rc;
+
+    if (!confirm_discard()) {
+        return false;
+    }
+
+    if (m_discovery.empty()) {
+        scan_ui_index(NULL);
+    }
+    if (m_discovery.empty()) {
+        MessageBoxA(m_hwnd,
+                    "No UI docs found. Refresh the UI index and try again.",
+                    "UI Editor",
+                    MB_OK | MB_ICONINFORMATION);
+        return false;
+    }
+
+    state.app = this;
+    state.entries = m_discovery;
+
+    GetWindowRect(m_hwnd, &rc);
+    dlg = CreateWindowExA(WS_EX_DLGMODALFRAME,
+                          kOpenToolDialogClass,
+                          title.c_str(),
+                          WS_CAPTION | WS_SYSMENU | WS_POPUP | WS_VISIBLE,
+                          rc.left + 80,
+                          rc.top + 60,
+                          820,
+                          460,
+                          m_hwnd,
+                          NULL,
+                          m_instance,
+                          &state);
+    if (!dlg) {
+        return false;
+    }
+    EnableWindow(m_hwnd, FALSE);
+    {
+        MSG msg;
+        while (IsWindow(dlg) && GetMessageA(&msg, NULL, 0, 0) > 0) {
+            if (!IsDialogMessageA(dlg, &msg)) {
+                TranslateMessage(&msg);
+                DispatchMessageA(&msg);
+            }
+        }
+    }
+    EnableWindow(m_hwnd, TRUE);
+    SetActiveWindow(m_hwnd);
+
+    if (state.result && state.selected_index >= 0 &&
+        state.selected_index < (int)state.entries.size()) {
+        const UiDiscoveryEntry& entry = state.entries[state.selected_index];
+        if (entry.is_canonical) {
+            return load_document(entry.abs_path.c_str());
+        }
+        if (MessageBoxA(m_hwnd,
+                        "Legacy UI selected. Import to canonical doc now?",
+                        "UI Editor",
+                        MB_YESNO | MB_ICONQUESTION) == IDYES) {
+            return import_legacy_ui_path(entry.abs_path.c_str());
+        }
+    }
+    return false;
+}
+
+bool UiEditorApp::import_legacy_ui_dialog()
+{
+    char path[MAX_PATH];
+    OPENFILENAMEA ofn;
+    memset(&ofn, 0, sizeof(ofn));
+    if (!confirm_discard()) {
+        return false;
+    }
+    path[0] = '\0';
+    ofn.lStructSize = sizeof(ofn);
+    ofn.hwndOwner = m_hwnd;
+    ofn.lpstrFile = path;
+    ofn.nMaxFile = sizeof(path);
+    ofn.lpstrFilter = "Legacy UI (*.tlv)\0*.tlv\0All Files\0*.*\0";
+    ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+    if (!GetOpenFileNameA(&ofn)) {
+        return false;
+    }
+    return import_legacy_ui_path(path);
+}
+
+bool UiEditorApp::import_legacy_ui_path(const char* legacy_path)
+{
+    domui_doc imported;
+    domui_diag diag;
+    domui_diag vdiag;
+    domui_diag jdiag;
+    std::map<domui_u32, domui_u32> id_map;
+    std::string repo_root = m_repo_root;
+    std::string rel_source;
+    std::string tool;
+    std::string default_dest;
+    std::string dest_path;
+    std::string dest_dir;
+    std::string report_path;
+    std::string report_json;
+
+    if (!legacy_path || !legacy_path[0]) {
+        return false;
+    }
+    if (!domui_doc_import_legacy_launcher_tlv(&imported, legacy_path, &diag)) {
+        log_from_diag(diag);
+        MessageBoxA(m_hwnd, "Legacy import failed. See log for details.", "UI Editor", MB_OK | MB_ICONERROR);
+        return false;
+    }
+
+    if (repo_root.empty()) {
+        repo_root = ui_find_repo_root("");
+    }
+    rel_source = ui_pretty_path(repo_root, legacy_path);
+    tool = ui_guess_tool_from_path(rel_source);
+    if (tool.empty()) {
+        tool = "unknown";
+    }
+
+    if (!repo_root.empty()) {
+        std::string tools_dir = ui_join_path(repo_root, "tools");
+        std::string tool_dir = ui_join_path(tools_dir, tool);
+        std::string ui_dir = ui_join_path(tool_dir, "ui");
+        std::string doc_dir = ui_join_path(ui_dir, "doc");
+        std::string file_name = tool + "_ui_doc.tlv";
+        default_dest = ui_join_path(doc_dir, file_name);
+    } else {
+        std::string base = ui_path_basename(legacy_path);
+        default_dest = base + "_ui_doc.tlv";
+    }
+
+    {
+        char path_buf[MAX_PATH];
+        OPENFILENAMEA ofn;
+        memset(&ofn, 0, sizeof(ofn));
+        memset(path_buf, 0, sizeof(path_buf));
+        strncpy(path_buf, default_dest.c_str(), sizeof(path_buf) - 1u);
+        ofn.lStructSize = sizeof(ofn);
+        ofn.hwndOwner = m_hwnd;
+        ofn.lpstrFile = path_buf;
+        ofn.nMaxFile = sizeof(path_buf);
+        ofn.lpstrFilter = "UI Doc (*.tlv)\0*.tlv\0All Files\0*.*\0";
+        ofn.Flags = OFN_OVERWRITEPROMPT;
+        if (!GetSaveFileNameA(&ofn)) {
+            return false;
+        }
+        dest_path = path_buf;
+    }
+
+    dest_dir = ui_path_dir(dest_path);
+    if (!dest_dir.empty()) {
+        ui_ensure_dir_recursive(dest_dir);
+    }
+
+    if (imported.meta.doc_name.empty()) {
+        std::string base = ui_path_basename(dest_path);
+        imported.meta.doc_name.set(base.c_str());
+    }
+
+    if (!domui_doc_save_tlv(&imported, dest_path.c_str(), &diag)) {
+        log_from_diag(diag);
+        MessageBoxA(m_hwnd, "Failed to save imported UI doc.", "UI Editor", MB_OK | MB_ICONERROR);
+        return false;
+    }
+    {
+        std::string json_path = ui_replace_extension(dest_path, ".json");
+        (void)domui_doc_save_json_mirror(&imported, json_path.c_str(), &jdiag);
+    }
+
+    ui_collect_import_id_map(imported, diag, id_map);
+    report_path = ui_join_path(dest_dir, "import_report.json");
+    report_json = ui_build_import_report_json(rel_source,
+                                              ui_pretty_path(repo_root, dest_path),
+                                              diag,
+                                              id_map);
+    (void)domui_atomic_write_file(report_path.c_str(),
+                                  report_json.c_str(),
+                                  report_json.size(),
+                                  &diag);
+
+    m_doc = imported;
+    m_current_path = dest_path;
+    m_repo_root = repo_root;
+    m_doc_origin = DOC_ORIGIN_IMPORTED;
+    m_owning_tool = tool;
+    m_import_report_path = ui_pretty_path(repo_root, report_path);
+    m_undo.clear();
+    m_redo.clear();
+    mark_dirty(0);
+    rebuild_tree();
+    rebuild_inspector();
+    refresh_layout(1);
+    domui_validate_doc(&m_doc, 0, &vdiag);
+    log_clear();
+    log_append_diag(diag);
+    log_append_diag(jdiag);
+    log_append_diag(vdiag);
+    update_info_panel();
+
+    MessageBoxA(m_hwnd, "Legacy UI import completed.", "UI Editor", MB_OK | MB_ICONINFORMATION);
+    return true;
+}
+
 bool UiEditorApp::load_document(const char* path)
 {
     domui_diag diag;
@@ -1753,6 +2454,22 @@ bool UiEditorApp::load_document(const char* path)
         return false;
     }
     m_current_path = path;
+    {
+        std::string rel_path = m_current_path;
+        if (m_repo_root.empty()) {
+            m_repo_root = ui_find_repo_root("");
+        }
+        if (!m_repo_root.empty()) {
+            rel_path = ui_make_relative_path(m_repo_root, m_current_path);
+        }
+        if (ui_is_legacy_name(ui_path_filename(m_current_path))) {
+            m_doc_origin = DOC_ORIGIN_LEGACY;
+        } else {
+            m_doc_origin = DOC_ORIGIN_CANONICAL;
+        }
+        m_owning_tool = ui_guess_tool_from_path(rel_path);
+        m_import_report_path.clear();
+    }
     if (m_doc.meta.doc_name.empty()) {
         std::string base = ui_path_basename(m_current_path);
         m_doc.meta.doc_name.set(base.c_str());
@@ -1776,11 +2493,25 @@ bool UiEditorApp::load_document(const char* path)
     log_clear();
     log_append_diag(diag);
     log_append_diag(vdiag);
+    update_info_panel();
+    if (m_doc_origin == DOC_ORIGIN_LEGACY) {
+        MessageBoxA(m_hwnd,
+                    "Legacy UI docs are read-only. Use Import Legacy UI to create a canonical doc.",
+                    "UI Editor",
+                    MB_OK | MB_ICONINFORMATION);
+    }
     return true;
 }
 
 bool UiEditorApp::save_document()
 {
+    if (m_doc_origin == DOC_ORIGIN_LEGACY) {
+        MessageBoxA(m_hwnd,
+                    "Cannot save legacy UI docs. Use Import Legacy UI to create a canonical doc.",
+                    "UI Editor",
+                    MB_OK | MB_ICONWARNING);
+        return false;
+    }
     if (m_current_path.empty()) {
         return save_document_as();
     }
@@ -1789,6 +2520,13 @@ bool UiEditorApp::save_document()
 
 bool UiEditorApp::save_document_as()
 {
+    if (m_doc_origin == DOC_ORIGIN_LEGACY) {
+        MessageBoxA(m_hwnd,
+                    "Cannot save legacy UI docs. Use Import Legacy UI to create a canonical doc.",
+                    "UI Editor",
+                    MB_OK | MB_ICONWARNING);
+        return false;
+    }
     char path[MAX_PATH];
     OPENFILENAMEA ofn;
     memset(&ofn, 0, sizeof(ofn));
@@ -2728,20 +3466,22 @@ void UiEditorApp::overlay_paint(HDC hdc)
 {
     RECT client;
     GetClientRect(m_overlay, &client);
-    int client_w = client.right - client.left;
-    int client_h = client.bottom - client.top;
-    if (client_w > 0 && client_h > 0) {
-        if (m_dui_hwnd) {
-            HDC src = GetDC(m_dui_hwnd);
-            if (src) {
-                // Blit the preview to avoid overlay trails on redraw.
-                BitBlt(hdc, 0, 0, client_w, client_h, src, 0, 0, SRCCOPY);
-                ReleaseDC(m_dui_hwnd, src);
+    if (m_overlay_layered) {
+        HBRUSH clear_brush = CreateSolidBrush(kOverlayClearColor);
+        FillRect(hdc, &client, clear_brush);
+        DeleteObject(clear_brush);
+    } else {
+        int client_w = client.right - client.left;
+        int client_h = client.bottom - client.top;
+        if (client_w > 0 && client_h > 0) {
+            if (m_dui_hwnd) {
+                SendMessageA(m_dui_hwnd,
+                             WM_PRINT,
+                             (WPARAM)hdc,
+                             (LPARAM)(PRF_CLIENT | PRF_CHILDREN | PRF_ERASEBKGND));
             } else {
                 FillRect(hdc, &client, (HBRUSH)(COLOR_WINDOW + 1));
             }
-        } else {
-            FillRect(hdc, &client, (HBRUSH)(COLOR_WINDOW + 1));
         }
     }
     if (m_selected_id == 0u) {
@@ -2776,6 +3516,44 @@ void UiEditorApp::overlay_paint(HDC hdc)
     }
     DeleteObject(handle_brush);
     DeleteObject(pen);
+}
+
+int UiEditorApp::overlay_should_capture(const POINT& pt) const
+{
+    if (m_selected_id == 0u) {
+        return 0;
+    }
+    domui_layout_rect r = get_layout_rect(m_selected_id);
+    if (r.w <= 0 || r.h <= 0) {
+        return 0;
+    }
+    RECT rc = ui_make_rect(r.x, r.y, r.x + r.w, r.y + r.h);
+    int hs = kHandleSize;
+    RECT handles[8];
+    handles[0] = ui_make_rect(rc.left - hs, rc.top - hs, rc.left + hs, rc.top + hs);
+    handles[1] = ui_make_rect(rc.right - hs, rc.top - hs, rc.right + hs, rc.top + hs);
+    handles[2] = ui_make_rect(rc.left - hs, rc.bottom - hs, rc.left + hs, rc.bottom + hs);
+    handles[3] = ui_make_rect(rc.right - hs, rc.bottom - hs, rc.right + hs, rc.bottom + hs);
+    handles[4] = ui_make_rect((rc.left + rc.right) / 2 - hs, rc.top - hs, (rc.left + rc.right) / 2 + hs, rc.top + hs);
+    handles[5] = ui_make_rect((rc.left + rc.right) / 2 - hs, rc.bottom - hs, (rc.left + rc.right) / 2 + hs, rc.bottom + hs);
+    handles[6] = ui_make_rect(rc.left - hs, (rc.top + rc.bottom) / 2 - hs, rc.left + hs, (rc.top + rc.bottom) / 2 + hs);
+    handles[7] = ui_make_rect(rc.right - hs, (rc.top + rc.bottom) / 2 - hs, rc.right + hs, (rc.top + rc.bottom) / 2 + hs);
+    for (int i = 0; i < 8; ++i) {
+        if (PtInRect(&handles[i], pt)) {
+            return 1;
+        }
+    }
+    {
+        const int border = 2;
+        if (pt.x >= rc.left - border && pt.x <= rc.right + border &&
+            pt.y >= rc.top - border && pt.y <= rc.bottom + border) {
+            if (pt.x <= rc.left + border || pt.x >= rc.right - border ||
+                pt.y <= rc.top + border || pt.y >= rc.bottom - border) {
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 int UiEditorApp::overlay_hit_test(const POINT& pt, domui_layout_rect* out_rect, DragMode* out_handle)
@@ -2914,6 +3692,24 @@ void UiEditorApp::overlay_end_drag()
     ReleaseCapture();
 }
 
+LRESULT CALLBACK UiEditorApp::DuiSubclassProc(HWND hwnd,
+                                              UINT msg,
+                                              WPARAM wparam,
+                                              LPARAM lparam,
+                                              UINT_PTR id,
+                                              DWORD_PTR ref)
+{
+    UiEditorApp* app = (UiEditorApp*)ref;
+    LRESULT res = DefSubclassProc(hwnd, msg, wparam, lparam);
+    if (app && msg == WM_PAINT && app->m_overlay && !app->m_overlay_layered) {
+        InvalidateRect(app->m_overlay, NULL, TRUE);
+    }
+    if (msg == WM_NCDESTROY) {
+        RemoveWindowSubclass(hwnd, UiEditorApp::DuiSubclassProc, id);
+    }
+    return res;
+}
+
 void UiEditorApp::nudge_selected(int dx, int dy)
 {
     if (m_selected_id == 0u) {
@@ -2949,7 +3745,13 @@ void UiEditorApp::refresh_layout(int rebuild_schema)
     if (rebuild_schema && m_dui_api && m_dui_win) {
         std::vector<unsigned char> schema;
         if (build_dui_schema(schema)) {
-            m_dui_api->set_schema_tlv(m_dui_win, schema.empty() ? 0 : &schema[0], (u32)schema.size());
+            if (m_dui_api->set_schema_tlv(m_dui_win,
+                                          schema.empty() ? 0 : &schema[0],
+                                          (u32)schema.size()) != DUI_OK) {
+                log_info("preview: set_schema_tlv failed");
+            }
+        } else {
+            log_info("preview: schema build failed");
         }
     }
     InvalidateRect(m_overlay, NULL, TRUE);
@@ -3116,46 +3918,36 @@ void UiEditorApp::build_dui_node(domui_widget_id id, std::vector<unsigned char>&
 
 bool UiEditorApp::build_dui_schema(std::vector<unsigned char>& out_bytes)
 {
-    std::vector<unsigned char> root_payload;
-    std::vector<unsigned char> children_payload;
     std::vector<domui_widget_id> roots;
     m_doc.enumerate_children(0u, roots);
-
-    ui_tlv_write_u32_value(root_payload, DUI_TLV_ID_U32, 0u);
-    ui_tlv_write_u32_value(root_payload, DUI_TLV_KIND_U32, (u32)DUI_NODE_STACK);
-    ui_tlv_write_u32_value(root_payload, DUI_TLV_FLAGS_U32, (u32)DUI_NODE_FLAG_ABSOLUTE);
-    ui_tlv_write_rect(root_payload, DUI_TLV_RECT_I32, m_root_rect.x, m_root_rect.y, m_root_rect.w, m_root_rect.h);
-
-    for (size_t i = 0u; i < roots.size(); ++i) {
-        std::vector<unsigned char> node_payload;
-        build_dui_node(roots[i], node_payload);
-        if (!node_payload.empty()) {
-            ui_tlv_write_tlv(children_payload, DUI_TLV_NODE_V1,
-                             &node_payload[0], node_payload.size());
-        }
+    if (roots.empty()) {
+        out_bytes.clear();
+        return false;
     }
 
-    if (!children_payload.empty()) {
-        ui_tlv_write_tlv(root_payload, DUI_TLV_CHILDREN_V1,
-                         &children_payload[0], children_payload.size());
+    std::vector<unsigned char> root_payload;
+    build_dui_node(roots[0], root_payload);
+    if (root_payload.empty()) {
+        out_bytes.clear();
+        return false;
     }
 
     {
         std::vector<unsigned char> form_payload;
         std::vector<unsigned char> schema_payload;
         ui_tlv_write_tlv(form_payload, DUI_TLV_NODE_V1,
-                         root_payload.empty() ? 0 : &root_payload[0],
+                         &root_payload[0],
                          root_payload.size());
         ui_tlv_write_tlv(schema_payload, DUI_TLV_FORM_V1,
-                         form_payload.empty() ? 0 : &form_payload[0],
+                         &form_payload[0],
                          form_payload.size());
         out_bytes.clear();
         ui_tlv_write_tlv(out_bytes, DUI_TLV_SCHEMA_V1,
-                         schema_payload.empty() ? 0 : &schema_payload[0],
+                         &schema_payload[0],
                          schema_payload.size());
     }
 
-    return true;
+    return !out_bytes.empty();
 }
 
 LRESULT UiEditorApp::handle_message(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
@@ -3171,6 +3963,14 @@ LRESULT UiEditorApp::handle_message(HWND hwnd, UINT msg, WPARAM wparam, LPARAM l
     case WM_SIZE:
         on_size(LOWORD(lparam), HIWORD(lparam));
         return 0;
+    case WM_TIMER:
+        if (wparam == ID_PREVIEW_TIMER) {
+            if (m_overlay && !m_overlay_layered) {
+                InvalidateRect(m_overlay, NULL, TRUE);
+            }
+            return 0;
+        }
+        break;
     case WM_COMMAND:
         {
             int id = LOWORD(wparam);
@@ -3183,6 +3983,14 @@ LRESULT UiEditorApp::handle_message(HWND hwnd, UINT msg, WPARAM wparam, LPARAM l
             }
             if (id == ID_FILE_OPEN) {
                 open_document();
+                return 0;
+            }
+            if (id == ID_FILE_OPEN_TOOL) {
+                open_tool_ui_dialog();
+                return 0;
+            }
+            if (id == ID_FILE_IMPORT_LEGACY) {
+                import_legacy_ui_dialog();
                 return 0;
             }
             if (id == ID_FILE_REFRESH_INDEX) {
@@ -3544,6 +4352,17 @@ LRESULT UiEditorApp::handle_message(HWND hwnd, UINT msg, WPARAM wparam, LPARAM l
 LRESULT UiEditorApp::handle_overlay_message(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
     switch (msg) {
+    case WM_NCHITTEST:
+        {
+            POINT pt;
+            pt.x = (int)(short)LOWORD(lparam);
+            pt.y = (int)(short)HIWORD(lparam);
+            ScreenToClient(hwnd, &pt);
+            if (overlay_should_capture(pt)) {
+                return HTCLIENT;
+            }
+            return HTTRANSPARENT;
+        }
     case WM_LBUTTONDOWN:
         {
             POINT pt;
