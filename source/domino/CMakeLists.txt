@@ -377,6 +377,11 @@ target_include_directories(domino_core PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
+if(TARGET dom_update_build_number)
+    add_dependencies(dom_shared dom_update_build_number)
+    add_dependencies(domino_core dom_update_build_number)
+endif()
+
 # Platform backend selection (compile exactly one DSYS_BACKEND_*).
 string(TOLOWER "${DOM_PLATFORM}" _dom_platform_lc)
 if(_dom_platform_lc STREQUAL "null")

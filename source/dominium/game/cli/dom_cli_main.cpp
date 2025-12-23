@@ -60,7 +60,7 @@ static void print_version_json(void)
     std::cout << "{\n";
     std::cout << "  \"schema_version\": 1,\n";
     std::cout << "  \"binary_id\": \"dom_cli\",\n";
-    std::cout << "  \"binary_version\": \"0.1.0\",\n";
+    std::cout << "  \"binary_version\": \"0.0.0\",\n";
     std::cout << "  \"engine_version\": \"" << engine_version_stub() << "\"\n";
     std::cout << "}\n";
 }
@@ -70,7 +70,7 @@ static void print_capabilities_json(void)
     std::cout << "{\n";
     std::cout << "  \"schema_version\": 1,\n";
     std::cout << "  \"binary_id\": \"dom_cli\",\n";
-    std::cout << "  \"binary_version\": \"0.1.0\",\n";
+    std::cout << "  \"binary_version\": \"0.0.0\",\n";
     std::cout << "  \"engine_version\": \"" << engine_version_stub() << "\",\n";
     std::cout << "  \"roles\": [\"client\", \"tool\"],\n";
     std::cout << "  \"supported_display_modes\": [\"none\", \"cli\", \"tui\", \"gui\"],\n";

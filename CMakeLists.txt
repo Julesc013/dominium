@@ -21,6 +21,7 @@ set(DOMINIUM_INCLUDE_DIR "${DOMINIUM_GENERATED_INCLUDE_DIR};${DOMINIUM_SOURCE_IN
 
 # Generated baseline-safe config header (macros + integer literals only).
 set(DOM_BUILD_ID "unknown" CACHE STRING "Build identifier embedded into binaries")
+set(DOM_PROJECT_SEMVER "0.0.0" CACHE STRING "Project semantic version")
 
 option(DOM_ENABLE_MODERN "Enable optional acceleration layers (never removes baseline correctness paths)" OFF)
 option(DOM_ENABLE_AUDIO "Enable audio subsystem/modules (if present)" ON)
@@ -255,6 +256,21 @@ if(NOT DEFINED DOM_BUILD_ID OR DOM_BUILD_ID STREQUAL "" OR DOM_BUILD_ID STREQUAL
     set(DOM_BUILD_ID "${_dom_build_id}" CACHE STRING "Build identifier embedded into binaries" FORCE)
 endif()
 
+set(DOM_BUILD_STATE_FILE "${CMAKE_CURRENT_SOURCE_DIR}/.dominium_build_number")
+set(DOM_BUILD_HEADER_FILE "${DOMINIUM_GENERATED_INCLUDE_DIR}/dominium/build_version.generated.h")
+set(DOM_BUILD_NUMBER_FILE "${CMAKE_CURRENT_BINARY_DIR}/generated/build_number.txt")
+
+add_custom_target(dom_update_build_number ALL
+    COMMAND ${CMAKE_COMMAND}
+        -DSTATE_FILE=${DOM_BUILD_STATE_FILE}
+        -DHEADER_FILE=${DOM_BUILD_HEADER_FILE}
+        -DNUMBER_FILE=${DOM_BUILD_NUMBER_FILE}
+        -DPROJECT_SEMVER=${DOM_PROJECT_SEMVER}
+        -P ${CMAKE_CURRENT_SOURCE_DIR}/scripts/update_build_number.cmake
+    COMMENT "Incrementing global build number"
+)
+add_compile_definitions(DOM_BUILD_VERSION_GENERATED)
+
 file(MAKE_DIRECTORY "${DOMINIUM_GENERATED_INCLUDE_DIR}/domino")
 configure_file(
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake/config_base.h.in"
@@ -294,7 +310,7 @@ endif()
 set(CPACK_PACKAGE_NAME "dominium")
 set(CPACK_PACKAGE_VENDOR "Dominium")
 set(CPACK_PACKAGE_CONTACT "support@dominium.invalid")
-set(CPACK_PACKAGE_VERSION "0.1.0")
+set(CPACK_PACKAGE_VERSION "0.0.0")
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "${CPACK_PACKAGE_CONTACT}")
 set(CPACK_DEBIAN_PACKAGE_SECTION "games")
 set(CPACK_RPM_PACKAGE_LICENSE "MIT")

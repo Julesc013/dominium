@@ -14,6 +14,10 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #ifndef DOM_BUILD_VERSION_H
 #define DOM_BUILD_VERSION_H
 
+#ifdef DOM_BUILD_VERSION_GENERATED
+#include "dominium/build_version.generated.h"
+#endif
+
 /* Fallback build/version metadata for dom_core_version. */
 #ifndef DOM_VERSION_SEMVER
 /* Purpose: Compile-time semantic version string for the current build (fallback default). */

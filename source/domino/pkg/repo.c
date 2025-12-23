@@ -22,8 +22,8 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 {
   "product_id": "dominium_game",
   "role": "game",
-  "product_version": "0.0.1",
-  "core_version": "0.0.1",
+  "product_version": "0.0.0",
+  "core_version": "0.0.0",
   "os_family": "posix",
   "arch": "x86_64",
   "exec_rel_path": "dominium_game",
@@ -201,10 +201,10 @@ d_bool dom_repo_load_primary_game(dom_product_info* out_info) {
         return D_FALSE;
     }
 
-    /* DOMINIUM_HOME/repo/products/dominium_game/0.0.1/core-0.0.1/<platform>/product.json */
+    /* DOMINIUM_HOME/repo/products/dominium_game/0.0.0/core-0.0.0/<platform>/product.json */
     {
         int n = snprintf(path, sizeof(path),
-                         "%s/repo/products/dominium_game/0.0.1/core-0.0.1/%s/product.json",
+                         "%s/repo/products/dominium_game/0.0.0/core-0.0.0/%s/product.json",
                          root, platform_dir);
         if (n <= 0 || (size_t)n >= sizeof(path)) {
             return D_FALSE;

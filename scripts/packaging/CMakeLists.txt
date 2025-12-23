@@ -10,7 +10,7 @@ set(DOMINIUM_PACKAGE_DIR "${CMAKE_BINARY_DIR}/dist/packages" CACHE PATH "Output 
 set(DOMINIUM_PACKAGE_VERSION "${DOM_BUILD_ID}" CACHE STRING "Version string used in portable package names and repo/products/<version> layout")
 
 if(DOMINIUM_PACKAGE_VERSION STREQUAL "" OR DOMINIUM_PACKAGE_VERSION STREQUAL "unknown")
-    set(DOMINIUM_PACKAGE_VERSION "0.1.0" CACHE STRING "Version string used in portable package names and repo/products/<version> layout" FORCE)
+    set(DOMINIUM_PACKAGE_VERSION "0.0.0" CACHE STRING "Version string used in portable package names and repo/products/<version> layout" FORCE)
 endif()
 
 find_program(DOMINIUM_PYTHON NAMES python3 python)

@@ -46,7 +46,7 @@ struct InstanceInfo {
     std::vector<ModRef>  mods;
 
     std::string last_product;          /* "game", "launcher", etc. */
-    std::string last_product_version;  /* e.g. "0.1.0" */
+    std::string last_product_version;  /* e.g. "0.0.0" */
 
     /* Serialization helpers */
     bool load(const Paths &paths);

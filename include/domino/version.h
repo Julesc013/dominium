@@ -15,10 +15,10 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #define DOMINO_VERSION_H
 
 #define DOMINO_VERSION_MAJOR 0
-#define DOMINO_VERSION_MINOR 1
+#define DOMINO_VERSION_MINOR 0
 #define DOMINO_VERSION_PATCH 0
 
-#define DOMINO_VERSION_STRING "0.1.0"
+#define DOMINO_VERSION_STRING "0.0.0"
 
 #ifdef __cplusplus
 extern "C" {

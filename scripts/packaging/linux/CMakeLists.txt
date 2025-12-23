@@ -9,7 +9,7 @@ option(DOMINIUM_BUILD_RPM "Build RPM package" ON)
 option(DOMINIUM_BUILD_RUN "Build self-extracting .run installer" ON)
 option(DOMINIUM_BUILD_APPDIR "Build AppImage-like AppDir layout (directory, not .AppImage)" OFF)
 
-set(DOMINIUM_VERSION "1.0.0" CACHE STRING "Dominium product version for Linux packaging")
+set(DOMINIUM_VERSION "0.0.0" CACHE STRING "Dominium product version for Linux packaging")
 set(DOMINIUM_DIST_DIR "${CMAKE_BINARY_DIR}/dist/stage" CACHE PATH "Staging directory with dominium portable bundle root")
 set(DOMINIUM_INSTALLER_DIR "${CMAKE_BINARY_DIR}/dist/installers/linux" CACHE PATH "Output directory for Linux installers")
 set(DOMINIUM_DEB_DEPENDS "libc6, libstdc++6" CACHE STRING "Debian dependencies")
