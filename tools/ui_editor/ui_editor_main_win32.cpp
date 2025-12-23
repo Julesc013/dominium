@@ -12,6 +12,7 @@
 
 #include "ui_ir_doc.h"
 #include "ui_ir_tlv.h"
+#include "ui_ir_json.h"
 #include "ui_ir_diag.h"
 #include "ui_layout.h"
 #include "ui_validate.h"
@@ -461,6 +462,19 @@ static std::string ui_path_filename(const std::string& path)
         return path;
     }
     return path.substr(pos + 1u);
+}
+
+static std::string ui_replace_extension(const std::string& path, const char* ext)
+{
+    size_t slash = path.find_last_of("/\\");
+    size_t dot = path.find_last_of('.');
+    if (dot == std::string::npos || (slash != std::string::npos && dot < slash)) {
+        return path + (ext ? ext : "");
+    }
+    if (!ext) {
+        return path.substr(0u, dot);
+    }
+    return path.substr(0u, dot) + ext;
 }
 
 static std::string ui_join_path(const std::string& a, const std::string& b)
@@ -1326,6 +1340,10 @@ bool UiEditorApp::save_document_to(const char* path)
 {
     domui_diag diag;
     domui_diag cdiag;
+    int json_ok = 1;
+#if !defined(DOMUI_ENABLE_JSON_MIRROR) || DOMUI_ENABLE_JSON_MIRROR
+    domui_diag jdiag;
+#endif
     std::string doc_root;
     std::string doc_dir;
     std::string tlv_path;
@@ -1357,10 +1375,31 @@ bool UiEditorApp::save_document_to(const char* path)
         MessageBoxA(m_hwnd, "Failed to save UI doc.", "UI Editor", MB_OK | MB_ICONERROR);
         return false;
     }
+#if !defined(DOMUI_ENABLE_JSON_MIRROR) || DOMUI_ENABLE_JSON_MIRROR
+    {
+        std::string json_path = ui_replace_extension(tlv_path, ".json");
+        if (!domui_doc_save_json_mirror(&m_doc, json_path.c_str(), &jdiag)) {
+            json_ok = 0;
+        }
+    }
+#endif
     m_current_path = tlv_path;
+    if (!json_ok) {
+        log_clear();
+        log_append_diag(diag);
+#if !defined(DOMUI_ENABLE_JSON_MIRROR) || DOMUI_ENABLE_JSON_MIRROR
+        log_append_diag(jdiag);
+#endif
+        MessageBoxA(m_hwnd, "Failed to save JSON mirror.", "UI Editor", MB_OK | MB_ICONWARNING);
+        mark_dirty(1);
+        return false;
+    }
     mark_dirty(0);
     log_clear();
     log_append_diag(diag);
+#if !defined(DOMUI_ENABLE_JSON_MIRROR) || DOMUI_ENABLE_JSON_MIRROR
+    log_append_diag(jdiag);
+#endif
     if (tlv_path != path) {
         std::string msg = "save: " + tlv_path;
         log_info(msg.c_str());
