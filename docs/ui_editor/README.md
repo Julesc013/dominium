@@ -26,6 +26,7 @@ Manual verification
 - See `docs/ui_editor/FLICKER_NOTES.md` for Win32 batching/resizing checks.
 - If built with the MSYS2 presets, ensure `C:\msys64\ucrt64\bin` is on PATH when running `domui_validate.exe` or `domui_codegen.exe`.
 - Smoke run: not executed in this environment (GUI run required).
+- Build note: `dominium-ui-editor` link failed here because the EXE was running (LNK1168). Close it and rebuild.
 
 Checklists
 

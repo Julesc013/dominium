@@ -1416,6 +1416,12 @@ bool UiEditorApp::save_document_to(const char* path)
 
 bool UiEditorApp::run_codegen(const char* tlv_path, domui_diag* out_diag)
 {
+#if defined(DOMUI_ENABLE_CODEGEN) && (DOMUI_ENABLE_CODEGEN == 0)
+    if (out_diag) {
+        out_diag->add_warning("codegen disabled (DOMUI_ENABLE_CODEGEN=OFF)", 0u, "codegen");
+    }
+    return true;
+#endif
     domui_codegen_params params;
     domui_diag local;
     domui_diag* diag = out_diag ? out_diag : &local;
