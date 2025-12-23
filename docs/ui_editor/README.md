@@ -18,3 +18,7 @@ Smoke checklist:
 2) Preview resizes; selection/move/resize updates layout deterministically.
 3) Validate shows warnings/errors in the log and selects widgets.
 4) Save triggers codegen and generated sources compile.
+
+Manual verification
+
+- See `docs/ui_editor/FLICKER_NOTES.md` for Win32 batching/resizing checks.

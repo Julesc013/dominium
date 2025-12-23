@@ -19,6 +19,12 @@ extern "C" {
 void dui_win32_begin_batch(HWND parent);
 void dui_win32_end_batch(HWND parent);
 
+#if defined(DUI_WIN32_DEBUG_COUNTERS)
+void dui_win32_debug_dump_counters(void);
+#else
+static void dui_win32_debug_dump_counters(void) { }
+#endif
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
@@ -26,6 +32,7 @@ void dui_win32_end_batch(HWND parent);
 #else
 #define dui_win32_begin_batch(parent) ((void)(parent))
 #define dui_win32_end_batch(parent) ((void)(parent))
+#define dui_win32_debug_dump_counters() ((void)0)
 #endif
 
 #endif /* DUI_WIN32_H_INCLUDED */
