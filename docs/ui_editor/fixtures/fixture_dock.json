@@ -1,0 +1,177 @@
+{
+  "doc_version": 2,
+  "doc_name": "fixture_dock",
+  "doc_guid": "",
+  "target_backends": [
+    "win32"
+  ],
+  "target_tiers": [
+    "win32_t1"
+  ],
+  "widgets": [
+    {
+      "id": 1,
+      "type": "CONTAINER",
+      "name": "root",
+      "parent_id": 0,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 320,
+        "h": 200
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [],
+      "events": []
+    },
+    {
+      "id": 2,
+      "type": "GROUPBOX",
+      "name": "left_panel",
+      "parent_id": 1,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 0
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "LEFT",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "Tools"
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": 3,
+      "type": "STATIC_TEXT",
+      "name": "top_bar",
+      "parent_id": 1,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 24
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "TOP",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "Toolbar"
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": 4,
+      "type": "CONTAINER",
+      "name": "content",
+      "parent_id": 1,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "FILL",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [],
+      "events": []
+    }
+  ]
+}

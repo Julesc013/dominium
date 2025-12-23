@@ -1,0 +1,144 @@
+{
+  "doc_version": 2,
+  "doc_name": "fixture_abs",
+  "doc_guid": "",
+  "target_backends": [
+    "win32"
+  ],
+  "target_tiers": [
+    "win32_t1"
+  ],
+  "widgets": [
+    {
+      "id": 1,
+      "type": "CONTAINER",
+      "name": "root",
+      "parent_id": 0,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 640,
+        "h": 480
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 8,
+          "right": 0,
+          "top": 6,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [],
+      "events": []
+    },
+    {
+      "id": 2,
+      "type": "BUTTON",
+      "name": "ok_button",
+      "parent_id": 1,
+      "z_order": 0,
+      "rect": {
+        "x": 12,
+        "y": 16,
+        "w": 120,
+        "h": 28
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "OK"
+        }
+      ],
+      "events": [
+        {
+          "event": "on_click",
+          "action": "action.ok"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "STATIC_TEXT",
+      "name": "status_label",
+      "parent_id": 1,
+      "z_order": 0,
+      "rect": {
+        "x": 12,
+        "y": 60,
+        "w": 200,
+        "h": 20
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": [],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 0,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "Ready"
+        }
+      ],
+      "events": []
+    }
+  ]
+}

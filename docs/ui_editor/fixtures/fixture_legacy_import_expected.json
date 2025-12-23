@@ -1,0 +1,11 @@
+{
+  "min_widget_count": 10,
+  "must_contain_strings": [
+    "\"doc_version\"",
+    "\"widgets\"",
+    "\"type\"",
+    "\"CONTAINER\"",
+    "\"legacy.kind\"",
+    "\"legacy.\""
+  ]
+}
