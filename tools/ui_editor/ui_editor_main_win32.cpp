@@ -2251,6 +2251,24 @@ int UiEditorApp::apply_rect_to_widget(domui_widget* w, const domui_layout_rect& 
 
 void UiEditorApp::overlay_paint(HDC hdc)
 {
+    RECT client;
+    GetClientRect(m_overlay, &client);
+    int client_w = client.right - client.left;
+    int client_h = client.bottom - client.top;
+    if (client_w > 0 && client_h > 0) {
+        if (m_dui_hwnd) {
+            HDC src = GetDC(m_dui_hwnd);
+            if (src) {
+                // Blit the preview to avoid overlay trails on redraw.
+                BitBlt(hdc, 0, 0, client_w, client_h, src, 0, 0, SRCCOPY);
+                ReleaseDC(m_dui_hwnd, src);
+            } else {
+                FillRect(hdc, &client, (HBRUSH)(COLOR_WINDOW + 1));
+            }
+        } else {
+            FillRect(hdc, &client, (HBRUSH)(COLOR_WINDOW + 1));
+        }
+    }
     if (m_selected_id == 0u) {
         return;
     }
@@ -2289,6 +2307,20 @@ int UiEditorApp::overlay_hit_test(const POINT& pt, domui_layout_rect* out_rect, 
 {
     domui_widget_id hit = 0u;
     domui_layout_rect hit_rect;
+    if (m_dui_hwnd) {
+        POINT local = pt;
+        HWND child = ChildWindowFromPointEx(m_dui_hwnd,
+                                            local,
+                                            CWP_SKIPINVISIBLE | CWP_SKIPDISABLED | CWP_SKIPTRANSPARENT);
+        if (child && child != m_dui_hwnd) {
+            int ctrl_id = GetDlgCtrlID(child);
+            if (ctrl_id > 0) {
+                hit = (domui_widget_id)ctrl_id;
+                hit_rect = get_layout_rect(hit);
+            }
+        }
+    }
+    if (hit == 0u) {
     for (size_t i = 0u; i < m_layout_order.size(); ++i) {
         domui_layout_rect r = get_layout_rect(m_layout_order[i]);
         if (r.w <= 0 || r.h <= 0) {
@@ -2299,6 +2331,7 @@ int UiEditorApp::overlay_hit_test(const POINT& pt, domui_layout_rect* out_rect, 
             hit = m_layout_order[i];
             hit_rect = r;
         }
+    }
     }
     if (hit == 0u) {
         return 0;
