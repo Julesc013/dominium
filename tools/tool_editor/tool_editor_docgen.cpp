@@ -164,8 +164,8 @@ static domui_doc build_tool_editor_ui_doc(void)
         for (i = 0; i < max_tabs; ++i) {
             char name[32];
             char title[64];
-            std::sprintf(name, "doc_tab_%d", i);
-            std::sprintf(title, "Doc %d", i + 1);
+            sprintf(name, "doc_tab_%d", i);
+            sprintf(title, "Doc %d", i + 1);
             {
                 domui_widget_id page = add_widget(doc, DOMUI_WIDGET_TAB_PAGE, tabs, name, 0, 0, 0, 0);
                 set_tab_page_props(doc, page, title, (i == 0) ? 1 : 0);
