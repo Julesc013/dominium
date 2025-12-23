@@ -253,6 +253,39 @@ static dui_win32_batch_state* win32_batch_get(HWND hwnd)
     return state;
 }
 
+#if defined(DUI_WIN32_DEBUG_COUNTERS)
+typedef struct dui_win32_debug_counters {
+    u32 paints;
+    u32 erases;
+    u32 relayouts;
+    u32 invalidations;
+} dui_win32_debug_counters;
+
+static dui_win32_debug_counters g_win32_dbg;
+
+static void win32_debug_inc_paint(void) { g_win32_dbg.paints += 1u; }
+static void win32_debug_inc_erase(void) { g_win32_dbg.erases += 1u; }
+static void win32_debug_inc_relayout(void) { g_win32_dbg.relayouts += 1u; }
+static void win32_debug_inc_invalidate(void) { g_win32_dbg.invalidations += 1u; }
+
+void dui_win32_debug_dump_counters(void)
+{
+    char buf[256];
+    sprintf(buf,
+            "DUI win32 counters: paint=%u erase=%u relayout=%u invalidate=%u\n",
+            (unsigned int)g_win32_dbg.paints,
+            (unsigned int)g_win32_dbg.erases,
+            (unsigned int)g_win32_dbg.relayouts,
+            (unsigned int)g_win32_dbg.invalidations);
+    OutputDebugStringA(buf);
+}
+#else
+static void win32_debug_inc_paint(void) { }
+static void win32_debug_inc_erase(void) { }
+static void win32_debug_inc_relayout(void) { }
+static void win32_debug_inc_invalidate(void) { }
+#endif
+
 void dui_win32_begin_batch(HWND parent)
 {
     dui_win32_batch_state* state;
@@ -287,6 +320,7 @@ void dui_win32_end_batch(HWND parent)
             state->hdwp = (HDWP)0;
         }
         SendMessageA(parent, WM_SETREDRAW, (WPARAM)TRUE, 0);
+        win32_debug_inc_invalidate();
         RedrawWindow(parent, NULL, NULL, RDW_INVALIDATE | RDW_ALLCHILDREN);
     }
 }
@@ -1279,6 +1313,7 @@ static void win32_relayout_with_size(dui_window* win, int width, int height, int
     }
     if (w < 0) w = 0;
     if (h < 0) h = 0;
+    win32_debug_inc_relayout();
     dui_win32_begin_batch(win->hwnd);
     dui_schema_layout(win->root, 0, 0, (i32)w, (i32)h);
     win32_apply_layout_to_tree(win, win->root);
@@ -1525,6 +1560,12 @@ static LRESULT CALLBACK dui_win32_wndproc(HWND hwnd, UINT msg, WPARAM wparam, LP
         return DefWindowProcA(hwnd, msg, wparam, lparam);
     }
     ctx = win->ctx;
+
+    if (msg == WM_PAINT) {
+        win32_debug_inc_paint();
+    } else if (msg == WM_ERASEBKGND) {
+        win32_debug_inc_erase();
+    }
 
 
     if (msg == WM_COMMAND) {
