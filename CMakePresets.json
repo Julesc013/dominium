@@ -31,6 +31,40 @@
       "cmakeExecutable": "C:/msys64/ucrt64/bin/cmake.exe"
     },
     {
+      "name": "msvc-base",
+      "displayName": "MSVC (VS 2022)",
+      "description": "Native MSVC toolchain (Win32 backend).",
+      "generator": "Visual Studio 17 2022",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "architecture": "x64",
+      "cacheVariables": {
+        "DOM_PLATFORM": "win32",
+        "DOM_BACKEND_SDL2": "OFF",
+        "DOM_BACKEND_DX9": "ON",
+        "DOM_BACKEND_GL1": "OFF",
+        "DOM_BACKEND_GL2": "OFF",
+        "DOM_BACKEND_VECTOR2D": "ON",
+        "DOM_ENABLE_AUDIO": "ON",
+        "DOM_ENABLE_NET": "ON"
+      }
+    },
+    {
+      "name": "msvc-debug",
+      "displayName": "MSVC Debug",
+      "inherits": "msvc-base",
+      "cacheVariables": {
+        "DOM_BUILD_MODE": "Debug"
+      }
+    },
+    {
+      "name": "msvc-release",
+      "displayName": "MSVC Release",
+      "inherits": "msvc-base",
+      "cacheVariables": {
+        "DOM_BUILD_MODE": "Release"
+      }
+    },
+    {
       "name": "debug",
       "displayName": "Debug (MSYS2 UCRT64)",
       "inherits": "base-msys2",
@@ -106,6 +140,16 @@
   ],
   "buildPresets": [
     {
+      "name": "msvc-debug",
+      "configurePreset": "msvc-debug",
+      "configuration": "Debug"
+    },
+    {
+      "name": "msvc-release",
+      "configurePreset": "msvc-release",
+      "configuration": "Release"
+    },
+    {
       "name": "debug",
       "configurePreset": "debug"
     },
@@ -131,6 +175,14 @@
     }
   ],
   "testPresets": [
+    {
+      "name": "msvc-debug",
+      "configurePreset": "msvc-debug",
+      "configuration": "Debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
     {
       "name": "debug",
       "configurePreset": "debug",
