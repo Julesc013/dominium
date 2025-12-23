@@ -14,6 +14,7 @@
 #include "ui_ir_tlv.h"
 #include "ui_ir_json.h"
 #include "ui_ir_diag.h"
+#include "ui_ir_fileio.h"
 #include "ui_layout.h"
 #include "ui_validate.h"
 #include "ui_codegen.h"
@@ -77,6 +78,10 @@ enum {
     ID_EDIT_UNDO,
     ID_EDIT_REDO,
     ID_EDIT_DELETE
+};
+
+enum {
+    ID_FILE_REFRESH_INDEX = 40100
 };
 
 enum {
@@ -491,11 +496,40 @@ static std::string ui_join_path(const std::string& a, const std::string& b)
     return a + "\\" + b;
 }
 
+static std::string ui_normalize_slashes(const std::string& path)
+{
+    std::string out = path;
+    for (size_t i = 0u; i < out.size(); ++i) {
+        if (out[i] == '\\') {
+            out[i] = '/';
+        }
+    }
+    return out;
+}
+
 static int ui_path_basename_equals(const std::string& path, const char* name)
 {
     std::string base = ui_to_lower(ui_path_basename(path));
     std::string target = ui_to_lower(name ? name : "");
     return base == target;
+}
+
+static int ui_path_is_dir(const std::string& path)
+{
+    DWORD attrs = GetFileAttributesA(path.c_str());
+    if (attrs == INVALID_FILE_ATTRIBUTES) {
+        return 0;
+    }
+    return (attrs & FILE_ATTRIBUTE_DIRECTORY) ? 1 : 0;
+}
+
+static int ui_path_is_file(const std::string& path)
+{
+    DWORD attrs = GetFileAttributesA(path.c_str());
+    if (attrs == INVALID_FILE_ATTRIBUTES) {
+        return 0;
+    }
+    return (attrs & FILE_ATTRIBUTE_DIRECTORY) ? 0 : 1;
 }
 
 static int ui_ensure_dir(const std::string& path)
@@ -508,6 +542,26 @@ static int ui_ensure_dir(const std::string& path)
     }
     DWORD err = GetLastError();
     return (err == ERROR_ALREADY_EXISTS) ? 1 : 0;
+}
+
+static int ui_ensure_dir_recursive(const std::string& path)
+{
+    std::vector<std::string> stack;
+    std::string cur = path;
+    while (!cur.empty() && !ui_path_is_dir(cur)) {
+        stack.push_back(cur);
+        std::string parent = ui_path_dir(cur);
+        if (parent.empty() || parent == cur) {
+            break;
+        }
+        cur = parent;
+    }
+    for (size_t i = stack.size(); i > 0u; --i) {
+        if (!ui_ensure_dir(stack[i - 1u])) {
+            return 0;
+        }
+    }
+    return 1;
 }
 
 static void ui_resolve_doc_paths(const std::string& tlv_path,
@@ -543,6 +597,106 @@ static void ui_resolve_doc_paths(const std::string& tlv_path,
     }
 }
 
+static std::string ui_make_relative_path(const std::string& root, const std::string& abs_path)
+{
+    std::string root_norm = ui_normalize_slashes(root);
+    std::string abs_norm = ui_normalize_slashes(abs_path);
+    std::string root_lower = ui_to_lower(root_norm);
+    std::string abs_lower = ui_to_lower(abs_norm);
+    if (!root_lower.empty() && root_lower[root_lower.size() - 1u] != '/') {
+        root_lower += "/";
+        root_norm += "/";
+    }
+    if (!root_lower.empty() && abs_lower.find(root_lower) == 0u) {
+        return abs_norm.substr(root_norm.size());
+    }
+    return abs_norm;
+}
+
+static int ui_path_is_canonical_doc(const std::string& rel_path)
+{
+    std::string p = ui_to_lower(ui_normalize_slashes(rel_path));
+    return (p.find("/ui/doc/") != std::string::npos) ? 1 : 0;
+}
+
+static int ui_is_legacy_name(const std::string& filename)
+{
+    std::string name = ui_to_lower(filename);
+    if (name.size() < 4u) {
+        return 0;
+    }
+    if (name == "launcher_ui_v1.tlv") {
+        return 1;
+    }
+    if (name.rfind(".tlv") != name.size() - 4u) {
+        return 0;
+    }
+    if (name.find("_ui_v") != std::string::npos) {
+        return 1;
+    }
+    return 0;
+}
+
+static std::string ui_guess_tool_from_path(const std::string& rel_path)
+{
+    std::string p = ui_to_lower(ui_normalize_slashes(rel_path));
+    size_t pos = p.find("tools/");
+    if (pos != std::string::npos) {
+        size_t start = pos + 6u;
+        size_t end = p.find('/', start);
+        if (end != std::string::npos && end > start) {
+            return p.substr(start, end - start);
+        }
+    }
+    if (p.find("/launcher/") != std::string::npos) {
+        return "launcher";
+    }
+    return "unknown";
+}
+
+static std::string ui_get_cwd()
+{
+    char buf[MAX_PATH];
+    DWORD len = GetCurrentDirectoryA((DWORD)sizeof(buf), buf);
+    if (len == 0u || len >= sizeof(buf)) {
+        return "";
+    }
+    return std::string(buf);
+}
+
+static int ui_is_repo_root(const std::string& path)
+{
+    if (path.empty()) {
+        return 0;
+    }
+    if (!ui_path_is_file(ui_join_path(path, "CMakeLists.txt"))) {
+        return 0;
+    }
+    if (!ui_path_is_dir(ui_join_path(path, "tools"))) {
+        return 0;
+    }
+    if (!ui_path_is_dir(ui_join_path(path, "source"))) {
+        return 0;
+    }
+    return 1;
+}
+
+static std::string ui_find_repo_root(const std::string& start)
+{
+    std::string cur = start.empty() ? ui_get_cwd() : start;
+    while (!cur.empty()) {
+        if (ui_is_repo_root(cur)) {
+            return cur;
+        }
+        std::string parent = ui_path_dir(cur);
+        if (parent.empty() || parent == cur) {
+            break;
+        }
+        cur = parent;
+    }
+    return "";
+}
+
 static std::string ui_sanitize_key(const std::string& s)
 {
     std::string out;
@@ -559,6 +713,284 @@ static std::string ui_sanitize_key(const std::string& s)
         out = "action";
     }
     return out;
+}
+
+struct UiDiscoveryEntry {
+    int is_canonical;
+    std::string abs_path;
+    std::string rel_path;
+    std::string tool;
+    domui_u32 format_version;
+    u64 last_write;
+
+    UiDiscoveryEntry()
+        : is_canonical(0),
+          abs_path(),
+          rel_path(),
+          tool(),
+          format_version(0u),
+          last_write(0u)
+    {
+    }
+};
+
+static const char* ui_discovery_type_name(const UiDiscoveryEntry& entry)
+{
+    return entry.is_canonical ? "canonical" : "legacy";
+}
+
+static bool ui_discovery_entry_less(const UiDiscoveryEntry& a, const UiDiscoveryEntry& b)
+{
+    std::string al = ui_to_lower(a.rel_path);
+    std::string bl = ui_to_lower(b.rel_path);
+    if (al != bl) {
+        return al < bl;
+    }
+    if (a.is_canonical != b.is_canonical) {
+        return a.is_canonical > b.is_canonical;
+    }
+    return ui_to_lower(a.tool) < ui_to_lower(b.tool);
+}
+
+static std::string ui_json_escape(const std::string& in)
+{
+    std::string out;
+    out.reserve(in.size() + 8u);
+    for (size_t i = 0u; i < in.size(); ++i) {
+        unsigned char c = (unsigned char)in[i];
+        switch (c) {
+        case '\\': out += "\\\\"; break;
+        case '"': out += "\\\""; break;
+        case '\b': out += "\\b"; break;
+        case '\f': out += "\\f"; break;
+        case '\n': out += "\\n"; break;
+        case '\r': out += "\\r"; break;
+        case '\t': out += "\\t"; break;
+        default:
+            if (c < 0x20u) {
+                char buf[8];
+                sprintf(buf, "\\u%04x", (unsigned int)c);
+                out += buf;
+            } else {
+                out.push_back((char)c);
+            }
+            break;
+        }
+    }
+    return out;
+}
+
+static void ui_scan_dir_recursive(const std::string& repo_root,
+                                  const std::string& abs_dir,
+                                  std::vector<UiDiscoveryEntry>& out_entries,
+                                  domui_diag* diag)
+{
+    WIN32_FIND_DATAA data;
+    HANDLE handle = INVALID_HANDLE_VALUE;
+    std::string pattern = ui_join_path(abs_dir, "*");
+
+    handle = FindFirstFileA(pattern.c_str(), &data);
+    if (handle == INVALID_HANDLE_VALUE) {
+        return;
+    }
+    do {
+        const char* name = data.cFileName;
+        if (!name || !name[0]) {
+            continue;
+        }
+        if (strcmp(name, ".") == 0 || strcmp(name, "..") == 0) {
+            continue;
+        }
+        std::string abs_path = ui_join_path(abs_dir, name);
+        if (data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+            ui_scan_dir_recursive(repo_root, abs_path, out_entries, diag);
+        } else {
+            std::string filename = ui_path_filename(abs_path);
+            std::string lower = ui_to_lower(filename);
+            if (lower.find(".bak") != std::string::npos) {
+                continue;
+            }
+            if (lower.size() < 4u || lower.rfind(".tlv") != lower.size() - 4u) {
+                continue;
+            }
+            std::string rel_path = ui_make_relative_path(repo_root, abs_path);
+            int is_canonical = ui_path_is_canonical_doc(rel_path);
+            int is_legacy = ui_is_legacy_name(filename);
+            if (!is_canonical && !is_legacy) {
+                continue;
+            }
+            UiDiscoveryEntry entry;
+            ULARGE_INTEGER stamp;
+            stamp.LowPart = data.ftLastWriteTime.dwLowDateTime;
+            stamp.HighPart = data.ftLastWriteTime.dwHighDateTime;
+            entry.last_write = (u64)stamp.QuadPart;
+            entry.is_canonical = is_canonical ? 1 : 0;
+            entry.abs_path = abs_path;
+            entry.rel_path = ui_normalize_slashes(rel_path);
+            entry.tool = ui_guess_tool_from_path(entry.rel_path);
+            entry.format_version = 0u;
+            if (entry.is_canonical) {
+                domui_doc doc;
+                domui_diag local;
+                if (domui_doc_load_tlv(&doc, entry.abs_path.c_str(), &local)) {
+                    entry.format_version = doc.meta.doc_version;
+                } else if (diag) {
+                    diag->add_warning("ui scan: failed to read canonical doc", 0u, entry.abs_path.c_str());
+                }
+            }
+            out_entries.push_back(entry);
+        }
+    } while (FindNextFileA(handle, &data) != 0);
+    FindClose(handle);
+}
+
+static bool ui_scan_repo_ui(const std::string& repo_root,
+                            std::vector<UiDiscoveryEntry>& out_entries,
+                            domui_diag* diag)
+{
+    out_entries.clear();
+    if (repo_root.empty()) {
+        if (diag) {
+            diag->add_error("ui scan: repo root not found", 0u, "");
+        }
+        return false;
+    }
+    ui_scan_dir_recursive(repo_root, repo_root, out_entries, diag);
+    std::sort(out_entries.begin(), out_entries.end(), ui_discovery_entry_less);
+    return true;
+}
+
+static std::string ui_default_index_path(const std::string& repo_root)
+{
+    std::string tools_dir = ui_join_path(repo_root, "tools");
+    std::string index_dir = ui_join_path(tools_dir, "ui_index");
+    return ui_join_path(index_dir, "ui_index.json");
+}
+
+static bool ui_write_ui_index_json(const std::string& out_path,
+                                   const std::vector<UiDiscoveryEntry>& entries,
+                                   domui_diag* diag)
+{
+    std::string json;
+    std::string dir = ui_path_dir(out_path);
+    if (!dir.empty()) {
+        ui_ensure_dir_recursive(dir);
+    }
+    json += "{\n";
+    json += "  \"version\": 1,\n";
+    json += "  \"generated_by\": \"dominium-ui-editor\",\n";
+    json += "  \"entries\": [\n";
+    for (size_t i = 0u; i < entries.size(); ++i) {
+        const UiDiscoveryEntry& entry = entries[i];
+        json += "    {\n";
+        json += "      \"ui_type\": \"";
+        json += ui_discovery_type_name(entry);
+        json += "\",\n";
+        json += "      \"path\": \"";
+        json += ui_json_escape(entry.rel_path);
+        json += "\",\n";
+        json += "      \"tool\": \"";
+        json += ui_json_escape(entry.tool);
+        json += "\",\n";
+        json += "      \"format_version\": ";
+        json += ui_u32_to_string(entry.format_version);
+        json += "\n";
+        json += "    }";
+        if (i + 1u < entries.size()) {
+            json += ",";
+        }
+        json += "\n";
+    }
+    json += "  ]\n";
+    json += "}\n";
+    return domui_atomic_write_file(out_path.c_str(),
+                                   json.c_str(),
+                                   json.size(),
+                                   diag);
+}
+
+static void ui_split_args(const char* cmd, std::vector<std::string>& out_args)
+{
+    out_args.clear();
+    if (!cmd) {
+        return;
+    }
+    const char* p = cmd;
+    while (*p) {
+        while (*p && std::isspace((unsigned char)*p)) {
+            ++p;
+        }
+        if (!*p) {
+            break;
+        }
+        if (*p == '"') {
+            const char* start = ++p;
+            while (*p && *p != '"') {
+                ++p;
+            }
+            out_args.push_back(std::string(start, p - start));
+            if (*p == '"') {
+                ++p;
+            }
+        } else {
+            const char* start = p;
+            while (*p && !std::isspace((unsigned char)*p)) {
+                ++p;
+            }
+            out_args.push_back(std::string(start, p - start));
+        }
+    }
+}
+
+static int ui_has_arg(const std::vector<std::string>& args, const char* flag)
+{
+    if (!flag) {
+        return 0;
+    }
+    for (size_t i = 0u; i < args.size(); ++i) {
+        if (args[i] == flag) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+static int ui_get_arg_value(const std::vector<std::string>& args, const char* key, std::string& out_value)
+{
+    if (!key) {
+        return 0;
+    }
+    for (size_t i = 0u; i + 1u < args.size(); ++i) {
+        if (args[i] == key) {
+            out_value = args[i + 1u];
+            return 1;
+        }
+    }
+    return 0;
+}
+
+static int ui_run_scan_cli(const std::vector<std::string>& args)
+{
+    domui_diag diag;
+    std::vector<UiDiscoveryEntry> entries;
+    std::string repo_root = ui_find_repo_root("");
+    std::string out_path;
+    if (repo_root.empty()) {
+        fprintf(stderr, "ui scan: repo root not found\n");
+        return 1;
+    }
+    if (!ui_scan_repo_ui(repo_root, entries, &diag)) {
+        fprintf(stderr, "ui scan: failed\n");
+        return 1;
+    }
+    if (!ui_get_arg_value(args, "--out", out_path)) {
+        out_path = ui_default_index_path(repo_root);
+    }
+    if (!ui_write_ui_index_json(out_path, entries, &diag)) {
+        fprintf(stderr, "ui scan: failed to write index\n");
+        return 1;
+    }
+    return 0;
 }
 
 static void ui_tlv_write_u32(std::vector<unsigned char>& out, u32 v)
@@ -674,6 +1106,7 @@ private:
     void update_preview_size();
     void update_title();
     void mark_dirty(int dirty);
+    bool scan_ui_index(const char* out_path);
 
     void new_document();
     bool open_document();
@@ -749,6 +1182,8 @@ private:
 
     domui_doc m_doc;
     std::string m_current_path;
+    std::string m_repo_root;
+    std::vector<UiDiscoveryEntry> m_discovery;
     int m_dirty;
     domui_widget_id m_selected_id;
     domui_layout_rect m_root_rect;
@@ -804,6 +1239,8 @@ UiEditorApp::UiEditorApp()
       m_tree_drop_target(0),
       m_doc(),
       m_current_path(),
+      m_repo_root(),
+      m_discovery(),
       m_dirty(0),
       m_selected_id(0u),
       m_root_rect(),
@@ -924,6 +1361,7 @@ void UiEditorApp::on_create(HWND hwnd)
 
     AppendMenuA(file_menu, MF_STRING, ID_FILE_NEW, "&New");
     AppendMenuA(file_menu, MF_STRING, ID_FILE_OPEN, "&Open...");
+    AppendMenuA(file_menu, MF_STRING, ID_FILE_REFRESH_INDEX, "Refresh UI &Index");
     AppendMenuA(file_menu, MF_STRING, ID_FILE_SAVE, "&Save");
     AppendMenuA(file_menu, MF_STRING, ID_FILE_SAVE_AS, "Save &As...");
     AppendMenuA(file_menu, MF_SEPARATOR, 0, 0);
@@ -1065,6 +1503,7 @@ void UiEditorApp::on_create(HWND hwnd)
     }
 
     new_document();
+    scan_ui_index(NULL);
     layout_children();
 
     m_dui_api = (const dui_api_v1*)dom_dui_win32_get_api(DUI_API_ABI_VERSION);
@@ -1200,6 +1639,36 @@ void UiEditorApp::mark_dirty(int dirty)
 {
     m_dirty = dirty ? 1 : 0;
     update_title();
+}
+
+bool UiEditorApp::scan_ui_index(const char* out_path)
+{
+    domui_diag diag;
+    std::string repo_root = m_repo_root;
+    std::vector<UiDiscoveryEntry> entries;
+    std::string final_out = out_path ? out_path : "";
+
+    if (repo_root.empty()) {
+        repo_root = ui_find_repo_root("");
+    }
+    if (!ui_scan_repo_ui(repo_root, entries, &diag)) {
+        log_append_diag(diag);
+        log_info("ui scan: failed");
+        return false;
+    }
+    if (final_out.empty()) {
+        final_out = ui_default_index_path(repo_root);
+    }
+    if (!ui_write_ui_index_json(final_out, entries, &diag)) {
+        log_append_diag(diag);
+        log_info("ui scan: failed to write index");
+        return false;
+    }
+    m_repo_root = repo_root;
+    m_discovery = entries;
+    log_append_diag(diag);
+    log_info("ui scan: index updated");
+    return true;
 }
 
 void UiEditorApp::new_document()
@@ -2716,6 +3185,10 @@ LRESULT UiEditorApp::handle_message(HWND hwnd, UINT msg, WPARAM wparam, LPARAM l
                 open_document();
                 return 0;
             }
+            if (id == ID_FILE_REFRESH_INDEX) {
+                scan_ui_index(NULL);
+                return 0;
+            }
             if (id == ID_FILE_SAVE) {
                 save_document();
                 return 0;
@@ -3244,8 +3717,15 @@ int WINAPI WinMain(HINSTANCE inst, HINSTANCE prev, LPSTR cmd, int show)
 {
     UiEditorApp app;
     (void)prev;
-    (void)cmd;
     (void)show;
+
+    {
+        std::vector<std::string> args;
+        ui_split_args(cmd, args);
+        if (ui_has_arg(args, "--scan-ui")) {
+            return ui_run_scan_cli(args);
+        }
+    }
 
     if (!app.init(inst)) {
         return 1;
