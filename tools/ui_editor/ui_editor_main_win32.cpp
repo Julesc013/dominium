@@ -452,6 +452,15 @@ static std::string ui_path_basename(const std::string& path)
     return name;
 }
 
+static std::string ui_path_filename(const std::string& path)
+{
+    size_t pos = path.find_last_of("/\\");
+    if (pos == std::string::npos) {
+        return path;
+    }
+    return path.substr(pos + 1u);
+}
+
 static std::string ui_join_path(const std::string& a, const std::string& b)
 {
     if (a.empty()) {
@@ -464,6 +473,58 @@ static std::string ui_join_path(const std::string& a, const std::string& b)
         return a + b;
     }
     return a + "\\" + b;
+}
+
+static int ui_path_basename_equals(const std::string& path, const char* name)
+{
+    std::string base = ui_to_lower(ui_path_basename(path));
+    std::string target = ui_to_lower(name ? name : "");
+    return base == target;
+}
+
+static int ui_ensure_dir(const std::string& path)
+{
+    if (path.empty()) {
+        return 0;
+    }
+    if (CreateDirectoryA(path.c_str(), NULL)) {
+        return 1;
+    }
+    DWORD err = GetLastError();
+    return (err == ERROR_ALREADY_EXISTS) ? 1 : 0;
+}
+
+static void ui_resolve_doc_paths(const std::string& tlv_path,
+                                 std::string* out_doc_root,
+                                 std::string* out_doc_dir,
+                                 std::string* out_tlv_path)
+{
+    std::string dir = ui_path_dir(tlv_path);
+    std::string file = ui_path_filename(tlv_path);
+    std::string doc_dir = dir;
+    std::string doc_root = dir;
+    if (!dir.empty()) {
+        if (ui_path_basename_equals(dir, "doc")) {
+            doc_root = ui_path_dir(dir);
+        } else {
+            doc_dir = ui_join_path(dir, "doc");
+        }
+    }
+    std::string final_tlv = tlv_path;
+    if (!dir.empty() && !ui_path_basename_equals(dir, "doc")) {
+        if (!file.empty()) {
+            final_tlv = ui_join_path(doc_dir, file);
+        }
+    }
+    if (out_doc_root) {
+        *out_doc_root = doc_root;
+    }
+    if (out_doc_dir) {
+        *out_doc_dir = doc_dir;
+    }
+    if (out_tlv_path) {
+        *out_tlv_path = final_tlv;
+    }
 }
 
 static std::string ui_sanitize_key(const std::string& s)
@@ -604,7 +665,7 @@ private:
     bool save_document();
     bool save_document_as();
     bool save_document_to(const char* path);
-    bool run_codegen(const char* tlv_path);
+    bool run_codegen(const char* tlv_path, domui_diag* out_diag);
     void auto_fill_action_keys();
     bool confirm_discard();
 
@@ -618,6 +679,7 @@ private:
     void log_add(const char* text, domui_widget_id widget_id);
     void log_info(const char* text);
     void log_from_diag(const domui_diag& diag);
+    void log_append_diag(const domui_diag& diag);
 
     void refresh_layout(int rebuild_schema);
     void compute_layout(domui_diag* diag);
@@ -643,7 +705,6 @@ private:
     void overlay_update_drag(const POINT& pt);
     void overlay_end_drag();
     void nudge_selected(int dx, int dy);
-
     HINSTANCE m_instance;
     HWND m_hwnd;
     HWND m_tree;
@@ -1180,6 +1241,7 @@ bool UiEditorApp::open_document()
 bool UiEditorApp::load_document(const char* path)
 {
     domui_diag diag;
+    domui_diag vdiag;
     if (!path || !path[0]) {
         return false;
     }
@@ -1208,7 +1270,10 @@ bool UiEditorApp::load_document(const char* path)
     }
     rebuild_inspector();
     refresh_layout(1);
-    log_from_diag(diag);
+    domui_validate_doc(&m_doc, 0, &vdiag);
+    log_clear();
+    log_append_diag(diag);
+    log_append_diag(vdiag);
     return true;
 }
 
@@ -1241,46 +1306,75 @@ bool UiEditorApp::save_document_as()
 bool UiEditorApp::save_document_to(const char* path)
 {
     domui_diag diag;
+    domui_diag cdiag;
+    std::string doc_root;
+    std::string doc_dir;
+    std::string tlv_path;
     if (!path || !path[0]) {
         return false;
     }
+    ui_resolve_doc_paths(path, &doc_root, &doc_dir, &tlv_path);
+    if (!doc_root.empty()) {
+        ui_ensure_dir(doc_root);
+    }
+    if (!doc_dir.empty()) {
+        ui_ensure_dir(doc_dir);
+    }
+    {
+        std::string gen_dir = ui_join_path(doc_root, "gen");
+        std::string user_dir = ui_join_path(doc_root, "user");
+        std::string reg_dir = ui_join_path(doc_root, "registry");
+        ui_ensure_dir(gen_dir);
+        ui_ensure_dir(user_dir);
+        ui_ensure_dir(reg_dir);
+    }
     if (m_doc.meta.doc_name.empty()) {
-        std::string base = ui_path_basename(path);
+        std::string base = ui_path_basename(tlv_path);
         m_doc.meta.doc_name.set(base.c_str());
     }
     auto_fill_action_keys();
-    if (!domui_doc_save_tlv(&m_doc, path, &diag)) {
+    if (!domui_doc_save_tlv(&m_doc, tlv_path.c_str(), &diag)) {
         log_from_diag(diag);
         MessageBoxA(m_hwnd, "Failed to save UI doc.", "UI Editor", MB_OK | MB_ICONERROR);
         return false;
     }
-    m_current_path = path;
+    m_current_path = tlv_path;
     mark_dirty(0);
-    log_from_diag(diag);
-    run_codegen(path);
+    log_clear();
+    log_append_diag(diag);
+    if (tlv_path != path) {
+        std::string msg = "save: " + tlv_path;
+        log_info(msg.c_str());
+    }
+    if (!run_codegen(tlv_path.c_str(), &cdiag)) {
+        log_append_diag(cdiag);
+        MessageBoxA(m_hwnd, "Codegen failed. See log for details.", "UI Editor", MB_OK | MB_ICONWARNING);
+        return true;
+    }
+    log_append_diag(cdiag);
+    log_info("codegen: ok");
     return true;
 }
 
-bool UiEditorApp::run_codegen(const char* tlv_path)
+bool UiEditorApp::run_codegen(const char* tlv_path, domui_diag* out_diag)
 {
-    domui_diag diag;
     domui_codegen_params params;
-    std::string base_dir = ui_path_dir(tlv_path ? tlv_path : "");
-    std::string gen_dir = ui_join_path(base_dir, "gen");
-    std::string user_dir = ui_join_path(base_dir, "user");
-    std::string reg_path = ui_join_path(base_dir, "ui_actions_registry.json");
+    domui_diag local;
+    domui_diag* diag = out_diag ? out_diag : &local;
+    std::string doc_root;
+    ui_resolve_doc_paths(tlv_path ? tlv_path : "", &doc_root, NULL, NULL);
+    std::string gen_dir = ui_join_path(doc_root, "gen");
+    std::string user_dir = ui_join_path(doc_root, "user");
+    std::string reg_dir = ui_join_path(doc_root, "registry");
+    std::string reg_path = ui_join_path(reg_dir, "ui_actions_registry.json");
     params.input_tlv_path = tlv_path;
     params.registry_path = reg_path.c_str();
     params.out_gen_dir = gen_dir.c_str();
     params.out_user_dir = user_dir.c_str();
     params.doc_name_override = m_doc.meta.doc_name.c_str();
-    if (!domui_codegen_run(&params, &diag)) {
-        log_from_diag(diag);
-        MessageBoxA(m_hwnd, "Codegen failed. See log for details.", "UI Editor", MB_OK | MB_ICONWARNING);
+    if (!domui_codegen_run(&params, diag)) {
         return false;
     }
-    log_from_diag(diag);
-    log_info("codegen: ok");
     return true;
 }
 
@@ -1333,8 +1427,13 @@ void UiEditorApp::log_info(const char* text)
 
 void UiEditorApp::log_from_diag(const domui_diag& diag)
 {
-    size_t i;
     log_clear();
+    log_append_diag(diag);
+}
+
+void UiEditorApp::log_append_diag(const domui_diag& diag)
+{
+    size_t i;
     for (i = 0u; i < diag.error_count(); ++i) {
         const domui_diag_item& item = diag.errors()[i];
         std::string msg = "error: ";
