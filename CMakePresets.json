@@ -31,6 +31,24 @@
       "cmakeExecutable": "C:/msys64/ucrt64/bin/cmake.exe"
     },
     {
+      "name": "msys2-debug",
+      "displayName": "MSYS2 Debug (UCRT64)",
+      "inherits": "base-msys2",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "DOM_BUILD_MODE": "Debug"
+      }
+    },
+    {
+      "name": "msys2-release",
+      "displayName": "MSYS2 Release (UCRT64)",
+      "inherits": "base-msys2",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "DOM_BUILD_MODE": "Release"
+      }
+    },
+    {
       "name": "msvc-base",
       "displayName": "MSVC (VS 2026)",
       "description": "Native MSVC toolchain (Win32 backend).",
@@ -158,6 +176,14 @@
       "name": "msvc-release",
       "configurePreset": "msvc-release",
       "configuration": "Release"
+    },
+    {
+      "name": "msys2-debug",
+      "configurePreset": "msys2-debug"
+    },
+    {
+      "name": "msys2-release",
+      "configurePreset": "msys2-release"
     },
     {
       "name": "debug",

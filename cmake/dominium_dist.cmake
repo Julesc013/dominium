@@ -6,9 +6,9 @@ function(_dominium_dist_normalize_token out_var in_value)
         set(${out_var} "" PARENT_SCOPE)
         return()
     endif()
-    string(REGEX MATCH "^[a-z0-9_.-]+$" _ok "${_value}")
+    string(REGEX MATCH "^[a-z0-9_]+$" _ok "${_value}")
     if(NOT _ok)
-        message(FATAL_ERROR "dominium_dist: token '${in_value}' contains forbidden characters; use [a-z0-9_.-]")
+        message(FATAL_ERROR "dominium_dist: token '${in_value}' contains forbidden characters; use [a-z0-9_]")
     endif()
     set(${out_var} "${_value}" PARENT_SCOPE)
 endfunction()
@@ -169,7 +169,20 @@ function(dominium_dist_init)
         "dominium dist leaf\nos: ${_os}\narch: ${_arch}\nvariant: ${_variant_norm}\n")
 
     file(WRITE "${_root_abs}/docs/readme.txt"
-        "dominium dist\nspec: docs/BUILD_DIST.md (repo)\n")
+        "dominium dist\n"
+        "purpose: final post-link outputs only\n"
+        "intermediates: stay in build/*\n"
+        "how to build:\n"
+        "  cmake --preset msvc-debug\n"
+        "  cmake --build --preset msvc-debug\n"
+        "  cmake --preset msys2-debug\n"
+        "  cmake --build --preset msys2-debug\n"
+        "what ships:\n"
+        "  dist/sys/<os>/<arch>/bin/*\n"
+        "  dist/sys/<os>/<arch>/lib/*\n"
+        "  dist/sym/<os>/<arch>/* (symbols)\n"
+        "  dist/meta/* (metadata)\n"
+        "repo docs: docs/BUILD_DIST.md, docs/build_output.md\n")
 
     if(EXISTS "${CMAKE_SOURCE_DIR}/LICENSE")
         file(READ "${CMAKE_SOURCE_DIR}/LICENSE" _license_text)
