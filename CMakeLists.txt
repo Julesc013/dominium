@@ -395,14 +395,17 @@ add_custom_target(dist_meta
     COMMENT "Generating dist metadata"
 )
 
-add_custom_target(validate_dist
+add_custom_target(verify_dist
     COMMAND ${CMAKE_COMMAND}
         -DDOM_DIST_ROOT=${DOM_DIST_ROOT}
         -DDOM_DIST_LEAF=${DOM_DIST_LEAF}
+        -DDOM_DIST_VARIANT=${DOM_DIST_VARIANT}
         -P ${CMAKE_SOURCE_DIR}/tools/validate_dist.cmake
     COMMENT "Validating dist layout"
 )
-add_dependencies(validate_dist dist_meta)
+add_dependencies(verify_dist dist_meta)
+
+add_custom_target(validate_dist DEPENDS verify_dist)
 
 set(CPACK_PACKAGE_NAME "dominium")
 set(CPACK_PACKAGE_VENDOR "Dominium")
