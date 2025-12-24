@@ -18,6 +18,9 @@ This document covers headless CLI usage for `dominium-ui-editor`. Any
   - Validate then run action codegen and update the registry.
 - `--headless-build-ui --in <ui_doc.tlv> --docname <name> --out-root <tool/ui/> [--report <path.json>]`
   - Validate, format, and codegen into a tool UI root.
+- `--headless-apply <ui_doc.tlv> --script <ops.json> [--out <ui_doc_out.tlv>] [--report <path.json>] [--in-new]`
+  - Apply a deterministic ops.json script to a UI doc.
+  - If `--in-new` is set, start from an empty doc instead of loading the input.
 
 ## Exit Codes
 
@@ -42,6 +45,11 @@ This document covers headless CLI usage for `dominium-ui-editor`. Any
   - `0` success
   - `2` validation errors
   - `1` other failure
+- `--headless-apply`
+  - `0` success
+  - `2` validation errors
+  - `3` script parse/apply errors
+  - `1` IO or fatal error
 
 ## Reports (--report)
 
@@ -103,6 +111,27 @@ Reports include `status` for all commands; validation reports also include `targ
 }
 ```
 
+### Sample apply report
+
+```json
+{
+  "command": "headless-apply",
+  "input": "tools/launcher/ui/doc/launcher_ui_doc.tlv",
+  "output_files": [
+    "tools/launcher/ui/doc/launcher_ui_doc.json",
+    "tools/launcher/ui/doc/launcher_ui_doc.tlv"
+  ],
+  "errors": [],
+  "warnings": [],
+  "created_ids": {
+    "root": 1,
+    "play_button": 7
+  },
+  "exit_code": 0,
+  "status": "ok"
+}
+```
+
 ## Examples
 
 ```
@@ -112,4 +141,5 @@ dominium-ui-editor --headless-validate tools/tool_editor/ui/doc/tool_editor_ui_d
 dominium-ui-editor --headless-format tools/tool_editor/ui/doc/tool_editor_ui_doc.tlv --report out/format.json
 dominium-ui-editor --headless-codegen --in tools/tool_editor/ui/doc/tool_editor_ui_doc.tlv --out tools/tool_editor/ui/gen --registry tools/tool_editor/ui/registry/ui_actions_registry.json --docname tool_editor_ui_doc
 dominium-ui-editor --headless-build-ui --in tools/tool_editor/ui/doc/tool_editor_ui_doc.tlv --docname tool_editor_ui_doc --out-root tools/tool_editor/ui
+dominium-ui-editor --headless-apply tools/tool_editor/ui/doc/tool_editor_ui_doc.tlv --script ops.json --report out/apply.json
 ```

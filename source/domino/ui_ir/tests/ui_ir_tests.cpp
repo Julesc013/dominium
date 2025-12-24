@@ -19,6 +19,7 @@ RESPONSIBILITY: Unit tests for UI IR canonicalization and ID stability.
 #include "ui_ir_fileio.h"
 #include "ui_ir_json.h"
 #include "ui_ir_legacy_import.h"
+#include "ui_ops.h"
 #include "ui_ir_tlv.h"
 #include "ui_layout.h"
 #include "ui_validate.h"
@@ -1327,6 +1328,211 @@ static void test_validation_multi_target(void)
     TEST_CHECK(diag_text.find("null") != std::string::npos);
 }
 
+static const char* kOpsIdempotentScript =
+"{\n"
+"  \"version\": 1,\n"
+"  \"docname\": \"ops_idempotent\",\n"
+"  \"defaults\": { \"root_name\": \"root\" },\n"
+"  \"ops\": [\n"
+"    { \"op\": \"ensure_root\", \"name\": \"root\", \"type\": \"CONTAINER\", \"out\": \"$root\" },\n"
+"    { \"op\": \"create_widget\", \"parent\": { \"path\": \"root\" }, \"type\": \"CONTAINER\", \"name\": \"main\", \"if_exists\": \"reuse\", \"out\": \"$main\" },\n"
+"    { \"op\": \"create_widget\", \"parent\": { \"path\": \"root/main\" }, \"type\": \"BUTTON\", \"name\": \"play_button\", \"if_exists\": \"reuse\", \"out\": \"$play\" },\n"
+"    { \"op\": \"set_rect\", \"target\": { \"id\": \"$play\" }, \"x\": 10, \"y\": 20, \"w\": 120, \"h\": 40 },\n"
+"    { \"op\": \"set_prop\", \"target\": { \"id\": \"$play\" }, \"key\": \"text\", \"value\": { \"type\": \"string\", \"v\": \"Play\" } }\n"
+"  ]\n"
+"}\n";
+
+static const char* kOpsVariableScript =
+"{\n"
+"  \"version\": 1,\n"
+"  \"ops\": [\n"
+"    { \"op\": \"ensure_root\", \"name\": \"root\", \"type\": \"CONTAINER\", \"out\": \"$root\" },\n"
+"    { \"op\": \"create_widget\", \"parent\": { \"path\": \"root\" }, \"type\": \"BUTTON\", \"name\": \"ok_button\", \"out\": \"$ok\" },\n"
+"    { \"op\": \"set_rect\", \"target\": { \"id\": \"$ok\" }, \"x\": 5, \"y\": 6, \"w\": 70, \"h\": 20 }\n"
+"  ]\n"
+"}\n";
+
+static const char* kOpsAmbiguousPathScript =
+"{\n"
+"  \"version\": 1,\n"
+"  \"ops\": [\n"
+"    { \"op\": \"ensure_root\", \"name\": \"root\", \"type\": \"CONTAINER\" },\n"
+"    { \"op\": \"create_widget\", \"parent\": { \"path\": \"root\" }, \"type\": \"BUTTON\", \"name\": \"dup\" },\n"
+"    { \"op\": \"create_widget\", \"parent\": { \"path\": \"root\" }, \"type\": \"BUTTON\", \"name\": \"other\", \"out\": \"$other\" },\n"
+"    { \"op\": \"rename_widget\", \"target\": { \"id\": \"$other\" }, \"name\": \"dup\" },\n"
+"    { \"op\": \"set_rect\", \"target\": { \"path\": \"root/dup\" }, \"x\": 0, \"y\": 0, \"w\": 10, \"h\": 10 }\n"
+"  ]\n"
+"}\n";
+
+static const char* kOpsValidateScript =
+"{\n"
+"  \"version\": 1,\n"
+"  \"ops\": [\n"
+"    { \"op\": \"validate\", \"targets\": [\"win32\", \"win32_t0\"] }\n"
+"  ]\n"
+"}\n";
+
+static void test_ops_idempotent(void)
+{
+    const char* path_a = "ui_ir_test_ops_a.tlv";
+    const char* path_b = "ui_ir_test_ops_b.tlv";
+    domui_doc doc_a;
+    domui_doc doc_b;
+    domui_diag diag;
+    domui_ops_apply_params params;
+    domui_ops_result result_a;
+    domui_ops_result result_b;
+    std::vector<unsigned char> a_bytes;
+    std::vector<unsigned char> b_bytes;
+
+    domui_cleanup_tlv_with_json(path_a);
+    domui_cleanup_tlv_with_json(path_b);
+
+    TEST_CHECK(domui_ops_apply_json(&doc_a,
+                                    kOpsIdempotentScript,
+                                    strlen(kOpsIdempotentScript),
+                                    &params,
+                                    &result_a,
+                                    &diag));
+    TEST_CHECK(result_a.created_ids.find("play") != result_a.created_ids.end());
+    TEST_CHECK(domui_doc_save_tlv(&doc_a, path_a, &diag));
+#if DOMUI_ENABLE_JSON_MIRROR
+    {
+        std::string json_a = domui_json_path_from_tlv(path_a);
+        TEST_CHECK(domui_doc_save_json_mirror(&doc_a, json_a.c_str(), &diag));
+    }
+#endif
+    TEST_CHECK(domui_doc_load_tlv(&doc_b, path_a, &diag));
+    TEST_CHECK(domui_ops_apply_json(&doc_b,
+                                    kOpsIdempotentScript,
+                                    strlen(kOpsIdempotentScript),
+                                    &params,
+                                    &result_b,
+                                    &diag));
+    TEST_CHECK(result_b.created_ids.find("play") != result_b.created_ids.end());
+    if (result_a.created_ids.find("play") != result_a.created_ids.end() &&
+        result_b.created_ids.find("play") != result_b.created_ids.end()) {
+        TEST_CHECK(result_a.created_ids.find("play")->second == result_b.created_ids.find("play")->second);
+    }
+    TEST_CHECK(domui_doc_save_tlv(&doc_b, path_b, &diag));
+#if DOMUI_ENABLE_JSON_MIRROR
+    {
+        std::string json_b = domui_json_path_from_tlv(path_b);
+        TEST_CHECK(domui_doc_save_json_mirror(&doc_b, json_b.c_str(), &diag));
+    }
+#endif
+    TEST_CHECK(domui_read_file_bytes(path_a, a_bytes, &diag));
+    TEST_CHECK(domui_read_file_bytes(path_b, b_bytes, &diag));
+    TEST_CHECK(domui_bytes_equal(a_bytes, b_bytes));
+
+#if DOMUI_ENABLE_JSON_MIRROR
+    {
+        std::string json_a = domui_json_path_from_tlv(path_a);
+        std::string json_b = domui_json_path_from_tlv(path_b);
+        std::vector<unsigned char> json_a_bytes;
+        std::vector<unsigned char> json_b_bytes;
+        TEST_CHECK(domui_read_file_bytes(json_a.c_str(), json_a_bytes, &diag));
+        TEST_CHECK(domui_read_file_bytes(json_b.c_str(), json_b_bytes, &diag));
+        TEST_CHECK(domui_bytes_equal(json_a_bytes, json_b_bytes));
+    }
+#else
+    printf("SKIP: ops json compare (DOMUI_ENABLE_JSON_MIRROR=0)\n");
+#endif
+}
+
+static void test_ops_variable_capture(void)
+{
+    domui_doc doc;
+    domui_diag diag;
+    domui_ops_apply_params params;
+    domui_ops_result result;
+    const domui_widget* w = 0;
+    std::map<std::string, domui_u32>::const_iterator it;
+
+    TEST_CHECK(domui_ops_apply_json(&doc,
+                                    kOpsVariableScript,
+                                    strlen(kOpsVariableScript),
+                                    &params,
+                                    &result,
+                                    &diag));
+    it = result.created_ids.find("ok");
+    TEST_CHECK(it != result.created_ids.end());
+    if (it != result.created_ids.end()) {
+        w = doc.find_by_id(it->second);
+        TEST_CHECK(w != 0);
+        if (w) {
+            TEST_CHECK(w->x == 5);
+            TEST_CHECK(w->y == 6);
+            TEST_CHECK(w->w == 70);
+            TEST_CHECK(w->h == 20);
+        }
+    }
+}
+
+static void test_ops_path_ambiguity_determinism(void)
+{
+    domui_doc doc_a;
+    domui_doc doc_b;
+    domui_diag diag_a;
+    domui_diag diag_b;
+    domui_ops_apply_params params;
+    std::string text_a;
+    std::string text_b;
+
+    TEST_CHECK(!domui_ops_apply_json(&doc_a,
+                                     kOpsAmbiguousPathScript,
+                                     strlen(kOpsAmbiguousPathScript),
+                                     &params,
+                                     0,
+                                     &diag_a));
+    text_a = domui_diag_to_string(diag_a);
+    TEST_CHECK(text_a.find("path is ambiguous") != std::string::npos);
+    TEST_CHECK(!domui_ops_apply_json(&doc_b,
+                                     kOpsAmbiguousPathScript,
+                                     strlen(kOpsAmbiguousPathScript),
+                                     &params,
+                                     0,
+                                     &diag_b));
+    text_b = domui_diag_to_string(diag_b);
+    TEST_CHECK(text_a == text_b);
+}
+
+static void test_ops_validate_determinism(void)
+{
+    domui_doc doc_a;
+    domui_doc doc_b;
+    domui_diag diag_a;
+    domui_diag diag_b;
+    domui_ops_apply_params params;
+    domui_ops_result result_a;
+    domui_ops_result result_b;
+    std::string text_a;
+    std::string text_b;
+
+    domui_fill_listview_doc(doc_a);
+    domui_fill_listview_doc(doc_b);
+
+    TEST_CHECK(domui_ops_apply_json(&doc_a,
+                                    kOpsValidateScript,
+                                    strlen(kOpsValidateScript),
+                                    &params,
+                                    &result_a,
+                                    &diag_a));
+    TEST_CHECK(result_a.validation_failed);
+    text_a = domui_diag_to_string(diag_a);
+    TEST_CHECK(!text_a.empty());
+
+    TEST_CHECK(domui_ops_apply_json(&doc_b,
+                                    kOpsValidateScript,
+                                    strlen(kOpsValidateScript),
+                                    &params,
+                                    &result_b,
+                                    &diag_b));
+    TEST_CHECK(result_b.validation_failed);
+    text_b = domui_diag_to_string(diag_b);
+    TEST_CHECK(text_a == text_b);
+}
+
 static void test_layout_fixture_non_negative(const char* base_name)
 {
     std::string tlv_name = std::string(base_name) + ".tlv";
@@ -1433,6 +1639,10 @@ int main(void)
     test_validation_win32_t0_fail();
     test_validation_determinism();
     test_validation_multi_target();
+    test_ops_idempotent();
+    test_ops_variable_capture();
+    test_ops_path_ambiguity_determinism();
+    test_ops_validate_determinism();
 
     if (g_failures != 0) {
         printf("UI IR tests failed: %d\n", g_failures);
