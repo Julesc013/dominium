@@ -95,14 +95,25 @@ file(WRITE "${DOM_DIST_ROOT}/meta/build.txt" "${_build_txt}")
 
 file(WRITE "${DOM_DIST_ROOT}/meta/ver.txt" "${_version}\n")
 
-set(_rules_txt
-    "dist_root=dist\n"
-    "charset=a-z0-9_.-\n"
-    "no_spaces=1\n"
-    "no_build_config_dirs=1\n"
-    "symbols_root=dist/sym\n"
-    "runtime_root=dist/sys\n"
-    "max_depth=16\n"
-    "no_version_in_filenames=1\n"
-)
+set(_rules_txt "dist_root=dist\n")
+string(APPEND _rules_txt "dir_charset=a-z0-9_\n")
+string(APPEND _rules_txt "file_charset=a-z0-9_.-\n")
+string(APPEND _rules_txt "ascii_only=1\n")
+string(APPEND _rules_txt "no_spaces=1\n")
+string(APPEND _rules_txt "no_build_config_dirs=1\n")
+string(APPEND _rules_txt "no_build_intermediates=1\n")
+string(APPEND _rules_txt "symbols_root=dist/sym\n")
+string(APPEND _rules_txt "runtime_root=dist/sys\n")
+string(APPEND _rules_txt "max_depth=16\n")
+string(APPEND _rules_txt "no_version_in_filenames=1\n")
+string(APPEND _rules_txt "required_meta=dist/meta/{dist.json,targets.json,files.json,build.txt,ver.txt,hash.txt,rules.txt}\n")
+string(APPEND _rules_txt "required_docs=dist/docs/{readme.txt,licenses.txt,notes.txt}\n")
+string(APPEND _rules_txt "required_res=dist/res/{common,locale,packs}\n")
+string(APPEND _rules_txt "required_cfg=dist/cfg/{default,profiles,schemas}\n")
+string(APPEND _rules_txt "required_pkg=dist/pkg/{win,mac,linux,android,ios,web}\n")
+string(APPEND _rules_txt "required_redist=dist/redist/{msvc,dx,other}\n")
+string(APPEND _rules_txt "leaf=sys/<os>/<arch>/{bin/{launch,game,engine,rend,tools,share},lib,etc,man}\n")
+string(APPEND _rules_txt "leaf_files=sys/<os>/<arch>/etc/leaf.json;sys/<os>/<arch>/man/readme.txt\n")
+string(APPEND _rules_txt "os_tokens=winnt win9x win16 msdos os2 macos macos9 macos8 macos7 linux bsd android ios web\n")
+string(APPEND _rules_txt "arch_tokens=x86 x64 arm64 m68k ppc wasm\n")
 file(WRITE "${DOM_DIST_ROOT}/meta/rules.txt" "${_rules_txt}")
