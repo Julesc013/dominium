@@ -1,3 +1,16 @@
+/*
+FILE: tools/ui_editor/ui_editor_main_win32.cpp
+MODULE: Repository
+LAYER / SUBSYSTEM: tools/ui_editor
+RESPONSIBILITY: Windows-only entrypoint for the UI editor tool; does NOT provide cross-platform implementations.
+ALLOWED DEPENDENCIES: Project-local headers; C++98 standard headers.
+FORBIDDEN DEPENDENCIES: N/A.
+THREADING MODEL: Single-threaded tool entry; no internal synchronization unless noted.
+ERROR MODEL: Process exit codes and console diagnostics; no exceptions.
+DETERMINISM: N/A (tooling/UI layer).
+VERSIONING / ABI / DATA FORMAT NOTES: N/A.
+EXTENSION POINTS: Extend via UI editor modules and schema tooling; see `docs/ui_editor/README.md`.
+*/
 // UI Editor implementation scaffold.
 #include <stdio.h>
 #include <stdlib.h>

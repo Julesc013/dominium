@@ -1,3 +1,16 @@
+/*
+FILE: tools/tool_editor/ui/gen/ui_tool_editor_actions_gen.cpp
+MODULE: Repository
+LAYER / SUBSYSTEM: tools/tool_editor/ui
+RESPONSIBILITY: Implements generated action tables and dispatch lookup for the tool editor UI; does NOT implement user handler logic.
+ALLOWED DEPENDENCIES: Project-local headers; C89/C++98 standard headers.
+FORBIDDEN DEPENDENCIES: N/A.
+THREADING MODEL: Stateless tables; caller controls threading for UI dispatch.
+ERROR MODEL: Returns 0/NULL on lookup failure; no exceptions.
+DETERMINISM: N/A (tooling/UI layer).
+VERSIONING / ABI / DATA FORMAT NOTES: Auto-generated from the UI action schema; regenerate instead of hand-editing.
+EXTENSION POINTS: Add actions via schema and regenerate; implement handlers in user stubs.
+*/
 /* Auto-generated; do not edit. */
 #include "ui_tool_editor_actions_gen.h"
 #include "ui_tool_editor_actions_user.h"
@@ -9,14 +22,40 @@ typedef struct domui_action_key_entry {
 } domui_action_key_entry;
 
 static const domui_action_entry g_actions[] = {
-    { DOMUI_ACT_TOOL_EDITOR_QUIT, ui_tool_editor_act_TOOL_EDITOR_QUIT, "tool_editor.quit" }
+    { DOMUI_ACT_TOOL_EDITOR_ADD_WIDGET, ui_tool_editor_act_TOOL_EDITOR_ADD_WIDGET, "tool_editor.add_widget" },
+    { DOMUI_ACT_TOOL_EDITOR_DELETE_WIDGET, ui_tool_editor_act_TOOL_EDITOR_DELETE_WIDGET, "tool_editor.delete_widget" },
+    { DOMUI_ACT_TOOL_EDITOR_HIERARCHY_SELECT, ui_tool_editor_act_TOOL_EDITOR_HIERARCHY_SELECT, "tool_editor.hierarchy_select" },
+    { DOMUI_ACT_TOOL_EDITOR_NEW, ui_tool_editor_act_TOOL_EDITOR_NEW, "tool_editor.new" },
+    { DOMUI_ACT_TOOL_EDITOR_OPEN, ui_tool_editor_act_TOOL_EDITOR_OPEN, "tool_editor.open" },
+    { DOMUI_ACT_TOOL_EDITOR_PROP_H, ui_tool_editor_act_TOOL_EDITOR_PROP_H, "tool_editor.prop_h" },
+    { DOMUI_ACT_TOOL_EDITOR_PROP_NAME, ui_tool_editor_act_TOOL_EDITOR_PROP_NAME, "tool_editor.prop_name" },
+    { DOMUI_ACT_TOOL_EDITOR_PROP_W, ui_tool_editor_act_TOOL_EDITOR_PROP_W, "tool_editor.prop_w" },
+    { DOMUI_ACT_TOOL_EDITOR_PROP_X, ui_tool_editor_act_TOOL_EDITOR_PROP_X, "tool_editor.prop_x" },
+    { DOMUI_ACT_TOOL_EDITOR_PROP_Y, ui_tool_editor_act_TOOL_EDITOR_PROP_Y, "tool_editor.prop_y" },
+    { DOMUI_ACT_TOOL_EDITOR_SAVE, ui_tool_editor_act_TOOL_EDITOR_SAVE, "tool_editor.save" },
+    { DOMUI_ACT_TOOL_EDITOR_SAVE_AS, ui_tool_editor_act_TOOL_EDITOR_SAVE_AS, "tool_editor.save_as" },
+    { DOMUI_ACT_TOOL_EDITOR_TAB_CHANGE, ui_tool_editor_act_TOOL_EDITOR_TAB_CHANGE, "tool_editor.tab_change" },
+    { DOMUI_ACT_TOOL_EDITOR_VALIDATE, ui_tool_editor_act_TOOL_EDITOR_VALIDATE, "tool_editor.validate" }
 };
-static const domui_u32 g_action_count = 1u;
+static const domui_u32 g_action_count = 14u;
 
 static const domui_action_key_entry g_action_keys[] = {
-    { "tool_editor.quit", DOMUI_ACT_TOOL_EDITOR_QUIT }
+    { "tool_editor.add_widget", DOMUI_ACT_TOOL_EDITOR_ADD_WIDGET },
+    { "tool_editor.delete_widget", DOMUI_ACT_TOOL_EDITOR_DELETE_WIDGET },
+    { "tool_editor.hierarchy_select", DOMUI_ACT_TOOL_EDITOR_HIERARCHY_SELECT },
+    { "tool_editor.new", DOMUI_ACT_TOOL_EDITOR_NEW },
+    { "tool_editor.open", DOMUI_ACT_TOOL_EDITOR_OPEN },
+    { "tool_editor.prop_h", DOMUI_ACT_TOOL_EDITOR_PROP_H },
+    { "tool_editor.prop_name", DOMUI_ACT_TOOL_EDITOR_PROP_NAME },
+    { "tool_editor.prop_w", DOMUI_ACT_TOOL_EDITOR_PROP_W },
+    { "tool_editor.prop_x", DOMUI_ACT_TOOL_EDITOR_PROP_X },
+    { "tool_editor.prop_y", DOMUI_ACT_TOOL_EDITOR_PROP_Y },
+    { "tool_editor.save", DOMUI_ACT_TOOL_EDITOR_SAVE },
+    { "tool_editor.save_as", DOMUI_ACT_TOOL_EDITOR_SAVE_AS },
+    { "tool_editor.tab_change", DOMUI_ACT_TOOL_EDITOR_TAB_CHANGE },
+    { "tool_editor.validate", DOMUI_ACT_TOOL_EDITOR_VALIDATE }
 };
-static const domui_u32 g_action_key_count = 1u;
+static const domui_u32 g_action_key_count = 14u;
 
 const domui_action_entry* ui_tool_editor_get_action_table(domui_u32* out_count)
 {
