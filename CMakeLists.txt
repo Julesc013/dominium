@@ -360,6 +360,29 @@ if(DOMINIUM_ENABLE_PACKAGING)
     add_subdirectory(scripts/packaging)
 endif()
 
+get_property(_dom_dist_targets GLOBAL PROPERTY DOM_DIST_ROLE_TARGETS)
+if(NOT _dom_dist_targets)
+    set(_dom_dist_targets "")
+endif()
+
+add_custom_target(dist_meta
+    COMMAND ${CMAKE_COMMAND}
+        -DDOM_DIST_ROOT=${DOM_DIST_ROOT}
+        -DDOM_DIST_OS=${DOM_DIST_OS}
+        -DDOM_DIST_ARCH=${DOM_DIST_ARCH}
+        -DDOM_DIST_VARIANT=${DOM_DIST_VARIANT}
+        -DDOM_DIST_CONFIG=$<CONFIG>
+        -DDOM_DIST_GENERATOR=${CMAKE_GENERATOR}
+        -DDOM_DIST_PROJECT=${CMAKE_PROJECT_NAME}
+        -DDOM_BUILD_ID=${DOM_BUILD_ID}
+        -DDOM_TOOLCHAIN_ID=${DOM_TOOLCHAIN_ID}
+        -DDOM_GIT_HASH=${DOM_GIT_HASH}
+        -DDOM_PROJECT_SEMVER=${DOM_PROJECT_SEMVER}
+        -P ${CMAKE_SOURCE_DIR}/cmake/dominium_dist_meta.cmake
+    DEPENDS ${_dom_dist_targets}
+    COMMENT "Generating dist metadata"
+)
+
 set(CPACK_PACKAGE_NAME "dominium")
 set(CPACK_PACKAGE_VENDOR "Dominium")
 set(CPACK_PACKAGE_CONTACT "support@dominium.invalid")
