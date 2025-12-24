@@ -34,11 +34,12 @@ target_link_libraries(dominium-launcher
 )
 
 set_target_properties(dominium-launcher PROPERTIES
-    OUTPUT_NAME "dominium-launcher"
+    OUTPUT_NAME "launch_dominium"
     CXX_STANDARD 98
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
+dominium_dist_set_role(dominium-launcher ROLE launch)
 
 dominium_bundle_runtime(dominium-launcher)
 
@@ -125,6 +126,7 @@ set_target_properties(tool_manifest_inspector PROPERTIES
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
+dominium_dist_set_role(tool_manifest_inspector ROLE tools)
 
 dominium_bundle_runtime(tool_manifest_inspector)
 

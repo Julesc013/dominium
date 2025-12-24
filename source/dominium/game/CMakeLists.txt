@@ -30,9 +30,11 @@ if(WIN32)
 endif()
 
 set_target_properties(dominium_game PROPERTIES
+    OUTPUT_NAME "game_dominium"
     CXX_STANDARD 98
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
+dominium_dist_set_role(dominium_game ROLE game)
 
 dominium_bundle_runtime(dominium_game)
