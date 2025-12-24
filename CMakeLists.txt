@@ -14,6 +14,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(DominiumBundleRuntime)
 include(DominiumReproducible)
+include(dominium_dist)
 
 set(DOMINIUM_SOURCE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
 set(DOMINIUM_GENERATED_INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/generated/include")
@@ -297,6 +298,17 @@ if(WIN32 AND (MINGW OR MSYS))
 endif()
 
 option(DOMINIUM_ENABLE_PACKAGING "Enable packaging helper targets" OFF)
+
+set(DOM_DIST_ROOT "${CMAKE_SOURCE_DIR}/dist" CACHE PATH "Dist output root")
+set(DOM_DIST_OS "" CACHE STRING "Override dist os token")
+set(DOM_DIST_ARCH "" CACHE STRING "Override dist arch token")
+set(DOM_DIST_VARIANT "" CACHE STRING "Optional dist variant token (msvc, mingw, etc.)")
+dominium_dist_init(
+    DIST_ROOT "${DOM_DIST_ROOT}"
+    DIST_OS "${DOM_DIST_OS}"
+    DIST_ARCH "${DOM_DIST_ARCH}"
+    DIST_VARIANT "${DOM_DIST_VARIANT}"
+)
 
 add_subdirectory(source/domino)
 add_subdirectory(source/dominium)
