@@ -1506,6 +1506,11 @@ static std::string ui_strip_tlv_extension(const std::string& name)
     return name;
 }
 
+static void ui_sort_strings(std::vector<std::string>& items)
+{
+    std::sort(items.begin(), items.end());
+}
+
 static void ui_append_diag_strings(const domui_diag& diag,
                                    std::vector<std::string>& errors,
                                    std::vector<std::string>& warnings)
@@ -1626,8 +1631,12 @@ static int ui_write_cli_report(const std::string& report_path,
             report_outputs.push_back(entry);
         }
     }
+    ui_sort_unique_strings(report_outputs);
+    ui_sort_strings(report_errors);
+    ui_sort_strings(report_warnings);
     if (targets) {
         report_targets = *targets;
+        ui_sort_unique_strings(report_targets);
     }
     std::string json = ui_build_cli_report_json(command,
                                                 report_input,
