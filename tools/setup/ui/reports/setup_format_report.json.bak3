@@ -1,0 +1,15 @@
+{
+  "command": "headless-format",
+  "input": "tools/setup/ui/doc/setup_ui_doc.tlv",
+  "output_files": [
+    "tools/setup/ui/doc/setup_ui_doc.json",
+    "tools/setup/ui/doc/setup_ui_doc.tlv"
+  ],
+  "errors": [
+  ],
+  "warnings": [
+  ],
+  "created_ids": {},
+  "exit_code": 0,
+  "status": "ok"
+}
