@@ -9,6 +9,7 @@
 #include <cctype>
 
 #include "domino/core/types.h"
+#include "domino/version.h"
 
 #include "ui_ir_doc.h"
 #include "ui_ir_tlv.h"
@@ -779,6 +780,251 @@ static std::string ui_sanitize_key(const std::string& s)
     return out;
 }
 
+static std::string ui_trim(const std::string& s)
+{
+    size_t start = 0u;
+    size_t end = s.size();
+    while (start < end && std::isspace((unsigned char)s[start])) {
+        start++;
+    }
+    while (end > start && std::isspace((unsigned char)s[end - 1u])) {
+        end--;
+    }
+    return s.substr(start, end - start);
+}
+
+static void ui_split_csv(const std::string& s, std::vector<std::string>& out)
+{
+    out.clear();
+    size_t pos = 0u;
+    while (pos <= s.size()) {
+        size_t comma = s.find(',', pos);
+        if (comma == std::string::npos) {
+            comma = s.size();
+        }
+        {
+            std::string token = ui_trim(s.substr(pos, comma - pos));
+            if (!token.empty()) {
+                out.push_back(token);
+            }
+        }
+        if (comma >= s.size()) {
+            break;
+        }
+        pos = comma + 1u;
+    }
+}
+
+static int ui_is_absolute_path(const std::string& path)
+{
+    if (path.size() >= 2u) {
+        unsigned char c = (unsigned char)path[0];
+        if (std::isalpha(c) && path[1] == ':') {
+            return 1;
+        }
+        if ((path[0] == '\\' && path[1] == '\\') || (path[0] == '/' && path[1] == '/')) {
+            return 1;
+        }
+    }
+    if (!path.empty() && (path[0] == '\\' || path[0] == '/')) {
+        return 1;
+    }
+    return 0;
+}
+
+static std::string ui_report_path(const std::string& path,
+                                  const std::string& repo_root,
+                                  const std::string& cwd)
+{
+    if (path.empty()) {
+        return "";
+    }
+    std::string normalized = ui_normalize_slashes(path);
+    if (!ui_is_absolute_path(normalized)) {
+        return normalized;
+    }
+    if (!repo_root.empty()) {
+        std::string rel = ui_make_relative_path(repo_root, normalized);
+        if (!ui_is_absolute_path(rel)) {
+            return rel;
+        }
+    }
+    if (!cwd.empty()) {
+        std::string rel = ui_make_relative_path(cwd, normalized);
+        if (!ui_is_absolute_path(rel)) {
+            return rel;
+        }
+    }
+    return ui_path_filename(normalized);
+}
+
+static std::string ui_sanitize_doc_name(const std::string& in)
+{
+    std::string out;
+    out.reserve(in.size() + 8u);
+    for (size_t i = 0u; i < in.size(); ++i) {
+        unsigned char c = (unsigned char)in[i];
+        if (std::isalnum(c)) {
+            out.push_back((char)std::tolower(c));
+        } else {
+            out.push_back('_');
+        }
+    }
+    if (out.empty()) {
+        out = "doc";
+    }
+    if (out[0] >= '0' && out[0] <= '9') {
+        out.insert(0u, "ui_");
+    }
+    return out;
+}
+
+static std::string ui_doc_symbol_from_name(const std::string& name)
+{
+    return "ui_" + ui_sanitize_doc_name(name);
+}
+
+struct UiDocOutputPaths {
+    std::string doc_root;
+    std::string doc_dir;
+    std::string tlv_path;
+    std::string json_path;
+    std::string gen_dir;
+    std::string user_dir;
+    std::string reg_dir;
+    std::string reg_path;
+
+    UiDocOutputPaths()
+        : doc_root(),
+          doc_dir(),
+          tlv_path(),
+          json_path(),
+          gen_dir(),
+          user_dir(),
+          reg_dir(),
+          reg_path()
+    {
+    }
+};
+
+static void ui_compute_doc_paths(const std::string& path,
+                                 int normalize_to_doc,
+                                 UiDocOutputPaths& out_paths)
+{
+    out_paths = UiDocOutputPaths();
+    if (normalize_to_doc) {
+        ui_resolve_doc_paths(path, &out_paths.doc_root, &out_paths.doc_dir, &out_paths.tlv_path);
+    } else {
+        out_paths.doc_root = ui_path_dir(path);
+        out_paths.doc_dir = ui_path_dir(path);
+        out_paths.tlv_path = path;
+    }
+    out_paths.json_path = ui_replace_extension(out_paths.tlv_path, ".json");
+    out_paths.gen_dir = ui_join_path(out_paths.doc_root, "gen");
+    out_paths.user_dir = ui_join_path(out_paths.doc_root, "user");
+    out_paths.reg_dir = ui_join_path(out_paths.doc_root, "registry");
+    out_paths.reg_path = ui_join_path(out_paths.reg_dir, "ui_actions_registry.json");
+}
+
+static void ui_auto_fill_action_keys(domui_doc& doc)
+{
+    std::vector<domui_widget_id> order;
+    std::string doc_name = doc.meta.doc_name.str();
+    if (doc_name.empty()) {
+        doc_name = "doc";
+    }
+    doc_name = ui_sanitize_key(doc_name);
+    doc.canonical_widget_order(order);
+    for (size_t i = 0u; i < order.size(); ++i) {
+        domui_widget* w = doc.find_by_id(order[i]);
+        if (!w) {
+            continue;
+        }
+        const domui_events::list_type& entries = w->events.entries();
+        for (size_t e = 0u; e < entries.size(); ++e) {
+            if (!entries[e].action_key.empty()) {
+                continue;
+            }
+            std::string base = w->name.str();
+            if (base.empty()) {
+                base = ui_u32_to_string(w->id);
+            }
+            base = ui_sanitize_key(base);
+            std::string ev = ui_sanitize_key(entries[e].event_name.str());
+            std::string key = doc_name + "." + base + "." + ev;
+            w->events.set(entries[e].event_name, domui_string(key.c_str()));
+        }
+    }
+}
+
+static int ui_save_doc_tlv_json(domui_doc* doc,
+                                const UiDocOutputPaths& paths,
+                                const char* doc_name_override,
+                                int auto_fill_actions,
+                                int write_json,
+                                domui_diag* out_save_diag,
+                                domui_diag* out_json_diag,
+                                int* out_json_ok)
+{
+    if (out_json_ok) {
+        *out_json_ok = 1;
+    }
+    if (!doc || paths.tlv_path.empty()) {
+        if (out_save_diag) {
+            out_save_diag->add_error("save: invalid doc or path", 0u, "");
+        }
+        return 0;
+    }
+    if (doc_name_override && doc_name_override[0]) {
+        doc->meta.doc_name.set(doc_name_override);
+    }
+    if (doc->meta.doc_name.empty()) {
+        std::string base = ui_path_basename(paths.tlv_path);
+        doc->meta.doc_name.set(base.c_str());
+    }
+    if (auto_fill_actions) {
+        ui_auto_fill_action_keys(*doc);
+    }
+    if (!domui_doc_save_tlv(doc, paths.tlv_path.c_str(), out_save_diag)) {
+        return 0;
+    }
+    if (write_json) {
+        if (!domui_doc_save_json_mirror(doc, paths.json_path.c_str(), out_json_diag)) {
+            if (out_json_ok) {
+                *out_json_ok = 0;
+            }
+        }
+    }
+    return 1;
+}
+
+static bool ui_run_codegen_with_paths(const char* tlv_path,
+                                      const char* registry_path,
+                                      const char* out_gen_dir,
+                                      const char* out_user_dir,
+                                      const char* doc_name_override,
+                                      domui_diag* out_diag)
+{
+#if defined(DOMUI_ENABLE_CODEGEN) && (DOMUI_ENABLE_CODEGEN == 0)
+    if (out_diag) {
+        out_diag->add_warning("codegen disabled (DOMUI_ENABLE_CODEGEN=OFF)", 0u, "codegen");
+    }
+    return true;
+#endif
+    domui_codegen_params params;
+    domui_diag local;
+    domui_diag* diag = out_diag ? out_diag : &local;
+    params.input_tlv_path = tlv_path;
+    params.registry_path = registry_path;
+    params.out_gen_dir = out_gen_dir;
+    params.out_user_dir = out_user_dir;
+    params.doc_name_override = doc_name_override;
+    if (!domui_codegen_run(&params, diag)) {
+        return false;
+    }
+    return true;
+}
+
 struct UiDiscoveryEntry {
     int is_canonical;
     std::string abs_path;
@@ -1150,6 +1396,20 @@ static int ui_has_arg(const std::vector<std::string>& args, const char* flag)
     return 0;
 }
 
+static int ui_has_arg_prefix(const std::vector<std::string>& args, const char* prefix)
+{
+    if (!prefix) {
+        return 0;
+    }
+    size_t len = std::strlen(prefix);
+    for (size_t i = 0u; i < args.size(); ++i) {
+        if (args[i].compare(0u, len, prefix) == 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 static int ui_get_arg_value(const std::vector<std::string>& args, const char* key, std::string& out_value)
 {
     if (!key) {
@@ -1183,6 +1443,733 @@ static int ui_run_scan_cli(const std::vector<std::string>& args)
     }
     if (!ui_write_ui_index_json(out_path, entries, &diag)) {
         fprintf(stderr, "ui scan: failed to write index\n");
+        return 1;
+    }
+    return 0;
+}
+
+static void ui_print_diag_to_stderr(const domui_diag& diag)
+{
+    size_t i;
+    for (i = 0u; i < diag.error_count(); ++i) {
+        std::string text = ui_format_diag_item(diag.errors()[i]);
+        fprintf(stderr, "error: %s\n", text.c_str());
+    }
+    for (i = 0u; i < diag.warning_count(); ++i) {
+        std::string text = ui_format_diag_item(diag.warnings()[i]);
+        fprintf(stderr, "warning: %s\n", text.c_str());
+    }
+}
+
+static void ui_sort_unique_strings(std::vector<std::string>& items)
+{
+    std::sort(items.begin(), items.end());
+    items.erase(std::unique(items.begin(), items.end()), items.end());
+}
+
+static int ui_collect_targets(const std::vector<std::string>& args,
+                              domui_target_set& out_targets,
+                              std::vector<std::string>& out_tokens)
+{
+    std::string csv;
+    out_targets.backends.clear();
+    out_targets.tiers.clear();
+    out_tokens.clear();
+    if (!ui_get_arg_value(args, "--targets", csv)) {
+        return 0;
+    }
+    std::vector<std::string> tokens;
+    ui_split_csv(csv, tokens);
+    ui_sort_unique_strings(tokens);
+    if (tokens.empty()) {
+        return 0;
+    }
+    domui_register_default_backend_caps();
+    for (size_t i = 0u; i < tokens.size(); ++i) {
+        const char* token = tokens[i].c_str();
+        if (domui_get_backend_caps_cstr(token)) {
+            out_targets.backends.push_back(domui_string(token));
+        } else {
+            out_targets.tiers.push_back(domui_string(token));
+        }
+    }
+    out_tokens = tokens;
+    return 1;
+}
+
+static std::string ui_strip_tlv_extension(const std::string& name)
+{
+    std::string lower = ui_to_lower(name);
+    if (lower.size() >= 4u && lower.rfind(".tlv") == lower.size() - 4u) {
+        return name.substr(0u, name.size() - 4u);
+    }
+    return name;
+}
+
+static void ui_append_diag_strings(const domui_diag& diag,
+                                   std::vector<std::string>& errors,
+                                   std::vector<std::string>& warnings)
+{
+    size_t i;
+    for (i = 0u; i < diag.error_count(); ++i) {
+        errors.push_back(ui_format_diag_item(diag.errors()[i]));
+    }
+    for (i = 0u; i < diag.warning_count(); ++i) {
+        warnings.push_back(ui_format_diag_item(diag.warnings()[i]));
+    }
+}
+
+static void ui_collect_targets_for_report(const domui_doc* doc,
+                                          const std::vector<std::string>& cli_targets,
+                                          std::vector<std::string>& out_targets)
+{
+    out_targets.clear();
+    if (!cli_targets.empty()) {
+        out_targets = cli_targets;
+        ui_sort_unique_strings(out_targets);
+        return;
+    }
+    if (doc) {
+        size_t i;
+        for (i = 0u; i < doc->meta.target_backends.size(); ++i) {
+            out_targets.push_back(doc->meta.target_backends[i].str());
+        }
+        for (i = 0u; i < doc->meta.target_tiers.size(); ++i) {
+            out_targets.push_back(doc->meta.target_tiers[i].str());
+        }
+    }
+    if (out_targets.empty()) {
+        out_targets.push_back("win32");
+    }
+    ui_sort_unique_strings(out_targets);
+}
+
+static void ui_append_json_string_array(std::string& json,
+                                        const char* key,
+                                        const std::vector<std::string>& items)
+{
+    json += "  \"";
+    json += key ? key : "";
+    json += "\": [\n";
+    for (size_t i = 0u; i < items.size(); ++i) {
+        json += "    \"";
+        json += ui_json_escape(items[i]);
+        json += "\"";
+        if (i + 1u < items.size()) {
+            json += ",";
+        }
+        json += "\n";
+    }
+    json += "  ]";
+}
+
+static std::string ui_build_cli_report_json(const char* command,
+                                            const std::string& input,
+                                            const std::vector<std::string>& output_files,
+                                            const std::vector<std::string>& errors,
+                                            const std::vector<std::string>& warnings,
+                                            int exit_code,
+                                            const char* status,
+                                            const std::vector<std::string>* targets)
+{
+    std::string json;
+    json += "{\n";
+    json += "  \"command\": \"";
+    json += ui_json_escape(command ? command : "");
+    json += "\",\n";
+    json += "  \"input\": \"";
+    json += ui_json_escape(input);
+    json += "\",\n";
+    ui_append_json_string_array(json, "output_files", output_files);
+    json += ",\n";
+    ui_append_json_string_array(json, "errors", errors);
+    json += ",\n";
+    ui_append_json_string_array(json, "warnings", warnings);
+    json += ",\n";
+    json += "  \"created_ids\": {},\n";
+    json += "  \"exit_code\": ";
+    json += ui_int_to_string(exit_code);
+    if (status) {
+        json += ",\n  \"status\": \"";
+        json += ui_json_escape(status);
+        json += "\"";
+    }
+    if (targets) {
+        json += ",\n";
+        ui_append_json_string_array(json, "targets", *targets);
+    }
+    json += "\n";
+    json += "}\n";
+    return json;
+}
+
+static int ui_write_cli_report(const std::string& report_path,
+                               const char* command,
+                               const std::string& input_path,
+                               const std::vector<std::string>& output_files,
+                               const std::vector<std::string>& errors,
+                               const std::vector<std::string>& warnings,
+                               int exit_code,
+                               const char* status,
+                               const std::vector<std::string>* targets,
+                               const std::string& repo_root,
+                               const std::string& cwd)
+{
+    std::vector<std::string> report_outputs;
+    std::vector<std::string> report_errors = errors;
+    std::vector<std::string> report_warnings = warnings;
+    std::vector<std::string> report_targets;
+    std::string report_input = ui_report_path(input_path, repo_root, cwd);
+    for (size_t i = 0u; i < output_files.size(); ++i) {
+        std::string entry = ui_report_path(output_files[i], repo_root, cwd);
+        if (!entry.empty()) {
+            report_outputs.push_back(entry);
+        }
+    }
+    if (targets) {
+        report_targets = *targets;
+    }
+    std::string json = ui_build_cli_report_json(command,
+                                                report_input,
+                                                report_outputs,
+                                                report_errors,
+                                                report_warnings,
+                                                exit_code,
+                                                status,
+                                                targets ? &report_targets : 0);
+    {
+        std::string dir = ui_path_dir(report_path);
+        if (!dir.empty()) {
+            ui_ensure_dir_recursive(dir);
+        }
+    }
+    domui_diag diag;
+    if (!domui_atomic_write_file(report_path.c_str(),
+                                 json.c_str(),
+                                 json.size(),
+                                 &diag)) {
+        ui_print_diag_to_stderr(diag);
+        return 0;
+    }
+    return 1;
+}
+
+static void ui_print_help()
+{
+    std::printf("dominium-ui-editor %s\n", DOMINO_VERSION_STRING);
+    std::printf("Commands:\n");
+    std::printf("  --help\n");
+    std::printf("    Show this help text.\n");
+    std::printf("  --scan-ui [--out <path>]\n");
+    std::printf("    Scan repo for UI docs and write ui_index.json.\n");
+    std::printf("  --headless-validate <ui_doc.tlv> [--targets <list>] [--report <path.json>]\n");
+    std::printf("    Validate UI doc without GUI.\n");
+    std::printf("  --headless-format <ui_doc.tlv> [--out <ui_doc_out.tlv>] [--report <path.json>]\n");
+    std::printf("    Canonicalize UI doc and write JSON mirror.\n");
+    std::printf("  --headless-codegen --in <ui_doc.tlv> --out <gen_dir> --registry <registry.json> --docname <name>\n");
+    std::printf("    [--report <path.json>]\n");
+    std::printf("    Run action codegen and update registry.\n");
+    std::printf("  --headless-build-ui --in <ui_doc.tlv> --docname <name> --out-root <tool/ui/>\n");
+    std::printf("    [--report <path.json>]\n");
+    std::printf("    Validate, format, and codegen into tool UI root.\n");
+}
+
+static int ui_run_headless_validate(const std::vector<std::string>& args)
+{
+    std::string input_path;
+    std::string report_path;
+    std::string repo_root = ui_find_repo_root("");
+    std::string cwd = ui_get_cwd();
+    domui_doc doc;
+    domui_diag load_diag;
+    domui_diag vdiag;
+    domui_target_set targets;
+    std::vector<std::string> target_tokens;
+    std::vector<std::string> report_targets;
+    std::vector<std::string> errors;
+    std::vector<std::string> warnings;
+    std::vector<std::string> output_files;
+    domui_target_set* target_ptr = 0;
+    int exit_code = 0;
+    const char* status = "ok";
+    int doc_loaded = 0;
+    (void)ui_get_arg_value(args, "--report", report_path);
+    if (!ui_get_arg_value(args, "--headless-validate", input_path) || input_path.empty()) {
+        errors.push_back("headless-validate: missing input path");
+        fprintf(stderr, "headless-validate: missing input path\n");
+        exit_code = 1;
+    } else {
+        if (ui_collect_targets(args, targets, target_tokens)) {
+            target_ptr = &targets;
+        }
+        if (!domui_doc_load_tlv(&doc, input_path.c_str(), &load_diag)) {
+            ui_append_diag_strings(load_diag, errors, warnings);
+            ui_print_diag_to_stderr(load_diag);
+            exit_code = 1;
+        } else {
+            doc_loaded = 1;
+            ui_append_diag_strings(load_diag, errors, warnings);
+            if (!domui_validate_doc(&doc, target_ptr, &vdiag)) {
+                ui_append_diag_strings(vdiag, errors, warnings);
+                ui_print_diag_to_stderr(vdiag);
+                exit_code = 2;
+            } else {
+                ui_append_diag_strings(vdiag, errors, warnings);
+            }
+        }
+    }
+    if (exit_code != 0) {
+        status = "error";
+    }
+    ui_collect_targets_for_report(doc_loaded ? &doc : 0, target_tokens, report_targets);
+    if (!report_path.empty()) {
+        if (!ui_write_cli_report(report_path,
+                                 "headless-validate",
+                                 input_path,
+                                 output_files,
+                                 errors,
+                                 warnings,
+                                 exit_code,
+                                 status,
+                                 &report_targets,
+                                 repo_root,
+                                 cwd)) {
+            if (exit_code == 0) {
+                exit_code = 1;
+                status = "error";
+            }
+        }
+    }
+    return exit_code;
+}
+
+static int ui_run_headless_format(const std::vector<std::string>& args)
+{
+    std::string input_path;
+    std::string out_path;
+    std::string report_path;
+    std::string repo_root = ui_find_repo_root("");
+    std::string cwd = ui_get_cwd();
+    domui_doc doc;
+    domui_diag load_diag;
+    domui_diag vdiag;
+    domui_diag save_diag;
+    domui_diag json_diag;
+    UiDocOutputPaths paths;
+    std::vector<std::string> errors;
+    std::vector<std::string> warnings;
+    std::vector<std::string> output_files;
+    int json_ok = 1;
+    int exit_code = 0;
+    const char* status = "ok";
+    int tlv_ok = 0;
+    (void)ui_get_arg_value(args, "--report", report_path);
+    if (!ui_get_arg_value(args, "--headless-format", input_path) || input_path.empty()) {
+        errors.push_back("headless-format: missing input path");
+        fprintf(stderr, "headless-format: missing input path\n");
+        exit_code = 1;
+    } else {
+        if (!ui_get_arg_value(args, "--out", out_path)) {
+            out_path = input_path;
+        }
+        if (out_path.empty()) {
+            errors.push_back("headless-format: missing output path");
+            fprintf(stderr, "headless-format: missing output path\n");
+            exit_code = 1;
+        } else if (!domui_doc_load_tlv(&doc, input_path.c_str(), &load_diag)) {
+            ui_append_diag_strings(load_diag, errors, warnings);
+            ui_print_diag_to_stderr(load_diag);
+            exit_code = 1;
+        } else {
+            ui_append_diag_strings(load_diag, errors, warnings);
+            if (!domui_validate_doc(&doc, 0, &vdiag)) {
+                ui_append_diag_strings(vdiag, errors, warnings);
+                ui_print_diag_to_stderr(vdiag);
+                exit_code = 2;
+            } else {
+                ui_append_diag_strings(vdiag, errors, warnings);
+            }
+            if (exit_code == 0) {
+                ui_compute_doc_paths(out_path, 0, paths);
+                {
+                    std::string out_dir = ui_path_dir(paths.tlv_path);
+                    if (!out_dir.empty()) {
+                        ui_ensure_dir_recursive(out_dir);
+                    }
+                }
+                tlv_ok = ui_save_doc_tlv_json(&doc,
+                                              paths,
+                                              NULL,
+                                              1,
+                                              1,
+                                              &save_diag,
+                                              &json_diag,
+                                              &json_ok);
+                ui_append_diag_strings(save_diag, errors, warnings);
+                ui_append_diag_strings(json_diag, errors, warnings);
+                if (!tlv_ok) {
+                    ui_print_diag_to_stderr(save_diag);
+                    exit_code = 1;
+                } else {
+                    output_files.push_back(paths.tlv_path);
+                    if (!json_ok) {
+                        ui_print_diag_to_stderr(json_diag);
+                        exit_code = 1;
+                    } else {
+                        output_files.push_back(paths.json_path);
+                    }
+                }
+            }
+        }
+    }
+    if (exit_code != 0) {
+        status = "error";
+    }
+    if (!report_path.empty()) {
+        if (!ui_write_cli_report(report_path,
+                                 "headless-format",
+                                 input_path,
+                                 output_files,
+                                 errors,
+                                 warnings,
+                                 exit_code,
+                                 status,
+                                 0,
+                                 repo_root,
+                                 cwd)) {
+            if (exit_code == 0) {
+                exit_code = 1;
+                status = "error";
+            }
+        }
+    }
+    return exit_code;
+}
+
+static int ui_run_headless_codegen(const std::vector<std::string>& args)
+{
+    std::string input_path;
+    std::string out_gen_dir;
+    std::string registry_path;
+    std::string doc_name;
+    std::string report_path;
+    std::string repo_root = ui_find_repo_root("");
+    std::string cwd = ui_get_cwd();
+    std::string doc_base;
+    domui_doc doc;
+    domui_diag load_diag;
+    domui_diag vdiag;
+    domui_diag cdiag;
+    std::vector<std::string> errors;
+    std::vector<std::string> warnings;
+    std::vector<std::string> output_files;
+    std::string out_user_dir;
+    int exit_code = 0;
+    const char* status = "ok";
+    int codegen_ok = 0;
+    (void)ui_get_arg_value(args, "--report", report_path);
+    if (!ui_get_arg_value(args, "--in", input_path) || input_path.empty()) {
+        errors.push_back("headless-codegen: missing --in");
+        fprintf(stderr, "headless-codegen: missing --in\n");
+        exit_code = 1;
+    } else if (!ui_get_arg_value(args, "--out", out_gen_dir) || out_gen_dir.empty()) {
+        errors.push_back("headless-codegen: missing --out");
+        fprintf(stderr, "headless-codegen: missing --out\n");
+        exit_code = 1;
+    } else if (!ui_get_arg_value(args, "--registry", registry_path) || registry_path.empty()) {
+        errors.push_back("headless-codegen: missing --registry");
+        fprintf(stderr, "headless-codegen: missing --registry\n");
+        exit_code = 1;
+    } else if (!ui_get_arg_value(args, "--docname", doc_name) || doc_name.empty()) {
+        errors.push_back("headless-codegen: missing --docname");
+        fprintf(stderr, "headless-codegen: missing --docname\n");
+        exit_code = 1;
+    } else {
+        doc_base = ui_strip_tlv_extension(doc_name);
+        if (doc_base.empty()) {
+            errors.push_back("headless-codegen: invalid --docname");
+            fprintf(stderr, "headless-codegen: invalid --docname\n");
+            exit_code = 1;
+        } else if (!domui_doc_load_tlv(&doc, input_path.c_str(), &load_diag)) {
+            ui_append_diag_strings(load_diag, errors, warnings);
+            ui_print_diag_to_stderr(load_diag);
+            exit_code = 1;
+        } else {
+            ui_append_diag_strings(load_diag, errors, warnings);
+            if (!domui_validate_doc(&doc, 0, &vdiag)) {
+                ui_append_diag_strings(vdiag, errors, warnings);
+                ui_print_diag_to_stderr(vdiag);
+                exit_code = 2;
+            } else {
+                ui_append_diag_strings(vdiag, errors, warnings);
+            }
+        }
+        if (exit_code == 0) {
+            std::string out_parent = ui_path_dir(out_gen_dir);
+            out_user_dir = out_parent.empty() ? std::string("user") : ui_join_path(out_parent, "user");
+            {
+                std::string reg_dir = ui_path_dir(registry_path);
+                if (!out_gen_dir.empty()) {
+                    ui_ensure_dir_recursive(out_gen_dir);
+                }
+                if (!out_user_dir.empty()) {
+                    ui_ensure_dir_recursive(out_user_dir);
+                }
+                if (!reg_dir.empty()) {
+                    ui_ensure_dir_recursive(reg_dir);
+                }
+            }
+            if (!ui_run_codegen_with_paths(input_path.c_str(),
+                                           registry_path.c_str(),
+                                           out_gen_dir.c_str(),
+                                           out_user_dir.c_str(),
+                                           doc_base.c_str(),
+                                           &cdiag)) {
+                ui_append_diag_strings(cdiag, errors, warnings);
+                ui_print_diag_to_stderr(cdiag);
+                exit_code = 1;
+            } else {
+                ui_append_diag_strings(cdiag, errors, warnings);
+                codegen_ok = 1;
+            }
+        }
+    }
+    if (exit_code != 0) {
+        status = "error";
+    }
+    if (codegen_ok) {
+        std::string doc_sym = ui_doc_symbol_from_name(doc_base);
+        output_files.push_back(ui_join_path(out_gen_dir, doc_sym + "_actions_gen.h"));
+        output_files.push_back(ui_join_path(out_gen_dir, doc_sym + "_actions_gen.cpp"));
+        output_files.push_back(ui_join_path(out_user_dir, doc_sym + "_actions_user.h"));
+        output_files.push_back(ui_join_path(out_user_dir, doc_sym + "_actions_user.cpp"));
+        output_files.push_back(registry_path);
+    }
+    if (!report_path.empty()) {
+        if (!ui_write_cli_report(report_path,
+                                 "headless-codegen",
+                                 input_path,
+                                 output_files,
+                                 errors,
+                                 warnings,
+                                 exit_code,
+                                 status,
+                                 0,
+                                 repo_root,
+                                 cwd)) {
+            if (exit_code == 0) {
+                exit_code = 1;
+                status = "error";
+            }
+        }
+    }
+    return exit_code;
+}
+
+static int ui_run_headless_build_ui(const std::vector<std::string>& args)
+{
+    std::string input_path;
+    std::string out_root;
+    std::string doc_name;
+    std::string report_path;
+    std::string repo_root = ui_find_repo_root("");
+    std::string cwd = ui_get_cwd();
+    std::string doc_base;
+    domui_doc doc;
+    domui_diag load_diag;
+    domui_diag vdiag;
+    domui_diag save_diag;
+    domui_diag json_diag;
+    domui_diag cdiag;
+    UiDocOutputPaths paths;
+    std::vector<std::string> errors;
+    std::vector<std::string> warnings;
+    std::vector<std::string> output_files;
+    int json_ok = 1;
+    int exit_code = 0;
+    const char* status = "ok";
+    int tlv_ok = 0;
+    int codegen_ok = 0;
+    (void)ui_get_arg_value(args, "--report", report_path);
+    if (!ui_get_arg_value(args, "--in", input_path) || input_path.empty()) {
+        errors.push_back("headless-build-ui: missing --in");
+        fprintf(stderr, "headless-build-ui: missing --in\n");
+        exit_code = 1;
+    } else if (!ui_get_arg_value(args, "--docname", doc_name) || doc_name.empty()) {
+        errors.push_back("headless-build-ui: missing --docname");
+        fprintf(stderr, "headless-build-ui: missing --docname\n");
+        exit_code = 1;
+    } else if (!ui_get_arg_value(args, "--out-root", out_root) || out_root.empty()) {
+        errors.push_back("headless-build-ui: missing --out-root");
+        fprintf(stderr, "headless-build-ui: missing --out-root\n");
+        exit_code = 1;
+    } else {
+        doc_base = ui_strip_tlv_extension(doc_name);
+        if (doc_base.empty()) {
+            errors.push_back("headless-build-ui: invalid --docname");
+            fprintf(stderr, "headless-build-ui: invalid --docname\n");
+            exit_code = 1;
+        } else if (!domui_doc_load_tlv(&doc, input_path.c_str(), &load_diag)) {
+            ui_append_diag_strings(load_diag, errors, warnings);
+            ui_print_diag_to_stderr(load_diag);
+            exit_code = 1;
+        } else {
+            ui_append_diag_strings(load_diag, errors, warnings);
+            if (!domui_validate_doc(&doc, 0, &vdiag)) {
+                ui_append_diag_strings(vdiag, errors, warnings);
+                ui_print_diag_to_stderr(vdiag);
+                exit_code = 2;
+            } else {
+                ui_append_diag_strings(vdiag, errors, warnings);
+            }
+        }
+    }
+    if (exit_code == 0) {
+        std::string tlv_name = doc_base + ".tlv";
+        std::string base_path = ui_join_path(out_root, tlv_name);
+        ui_compute_doc_paths(base_path, 1, paths);
+        if (!paths.doc_root.empty()) {
+            ui_ensure_dir_recursive(paths.doc_root);
+        }
+        if (!paths.doc_dir.empty()) {
+            ui_ensure_dir_recursive(paths.doc_dir);
+        }
+        if (!paths.gen_dir.empty()) {
+            ui_ensure_dir_recursive(paths.gen_dir);
+        }
+        if (!paths.user_dir.empty()) {
+            ui_ensure_dir_recursive(paths.user_dir);
+        }
+        if (!paths.reg_dir.empty()) {
+            ui_ensure_dir_recursive(paths.reg_dir);
+        }
+        tlv_ok = ui_save_doc_tlv_json(&doc,
+                                      paths,
+                                      doc_base.c_str(),
+                                      1,
+                                      1,
+                                      &save_diag,
+                                      &json_diag,
+                                      &json_ok);
+        ui_append_diag_strings(save_diag, errors, warnings);
+        ui_append_diag_strings(json_diag, errors, warnings);
+        if (!tlv_ok) {
+            ui_print_diag_to_stderr(save_diag);
+            exit_code = 1;
+        } else {
+            output_files.push_back(paths.tlv_path);
+            if (!json_ok) {
+                ui_print_diag_to_stderr(json_diag);
+                exit_code = 1;
+            } else {
+                output_files.push_back(paths.json_path);
+            }
+        }
+    }
+    if (exit_code == 0) {
+        if (!ui_run_codegen_with_paths(paths.tlv_path.c_str(),
+                                       paths.reg_path.c_str(),
+                                       paths.gen_dir.c_str(),
+                                       paths.user_dir.c_str(),
+                                       doc_base.c_str(),
+                                       &cdiag)) {
+            ui_append_diag_strings(cdiag, errors, warnings);
+            ui_print_diag_to_stderr(cdiag);
+            exit_code = 1;
+        } else {
+            ui_append_diag_strings(cdiag, errors, warnings);
+            codegen_ok = 1;
+        }
+    }
+    if (codegen_ok) {
+        std::string doc_sym = ui_doc_symbol_from_name(doc_base);
+        output_files.push_back(ui_join_path(paths.gen_dir, doc_sym + "_actions_gen.h"));
+        output_files.push_back(ui_join_path(paths.gen_dir, doc_sym + "_actions_gen.cpp"));
+        output_files.push_back(ui_join_path(paths.user_dir, doc_sym + "_actions_user.h"));
+        output_files.push_back(ui_join_path(paths.user_dir, doc_sym + "_actions_user.cpp"));
+        output_files.push_back(paths.reg_path);
+    }
+    if (exit_code != 0) {
+        status = "error";
+    }
+    if (!report_path.empty()) {
+        if (!ui_write_cli_report(report_path,
+                                 "headless-build-ui",
+                                 input_path,
+                                 output_files,
+                                 errors,
+                                 warnings,
+                                 exit_code,
+                                 status,
+                                 0,
+                                 repo_root,
+                                 cwd)) {
+            if (exit_code == 0) {
+                exit_code = 1;
+                status = "error";
+            }
+        }
+    }
+    return exit_code;
+}
+
+static int ui_run_cli(const std::vector<std::string>& args)
+{
+    int cmd_count = 0;
+    int cmd_scan = ui_has_arg(args, "--scan-ui");
+    int cmd_validate = ui_has_arg(args, "--headless-validate");
+    int cmd_format = ui_has_arg(args, "--headless-format");
+    int cmd_codegen = ui_has_arg(args, "--headless-codegen");
+    int cmd_build = ui_has_arg(args, "--headless-build-ui");
+    if (ui_has_arg(args, "--help") || ui_has_arg(args, "-h")) {
+        ui_print_help();
+        return 0;
+    }
+    cmd_count += cmd_scan ? 1 : 0;
+    cmd_count += cmd_validate ? 1 : 0;
+    cmd_count += cmd_format ? 1 : 0;
+    cmd_count += cmd_codegen ? 1 : 0;
+    cmd_count += cmd_build ? 1 : 0;
+    if (cmd_count == 0) {
+        if (ui_has_arg_prefix(args, "--headless-")) {
+            fprintf(stderr, "cli: unknown headless command\n");
+        } else {
+            fprintf(stderr, "cli: no command specified\n");
+        }
+        ui_print_help();
+        return 1;
+    }
+    if (cmd_count > 1) {
+        fprintf(stderr, "cli: multiple commands specified\n");
+        return 1;
+    }
+    if (cmd_scan) {
+        return ui_run_scan_cli(args);
+    }
+    if (cmd_validate) {
+        return ui_run_headless_validate(args);
+    }
+    if (cmd_format) {
+        return ui_run_headless_format(args);
+    }
+    if (cmd_codegen) {
+        return ui_run_headless_codegen(args);
+    }
+    if (cmd_build) {
+        return ui_run_headless_build_ui(args);
+    }
+    return 1;
+}
+
+static int ui_should_run_cli(const std::vector<std::string>& args)
+{
+    if (ui_has_arg(args, "--help") || ui_has_arg(args, "-h")) {
+        return 1;
+    }
+    if (ui_has_arg(args, "--scan-ui")) {
+        return 1;
+    }
+    if (ui_has_arg_prefix(args, "--headless-")) {
         return 1;
     }
     return 0;
@@ -2703,50 +3690,43 @@ bool UiEditorApp::save_document_to(const char* path)
     domui_diag diag;
     domui_diag cdiag;
     int json_ok = 1;
+    int write_json = 0;
+    domui_diag* json_diag = NULL;
 #if !defined(DOMUI_ENABLE_JSON_MIRROR) || DOMUI_ENABLE_JSON_MIRROR
     domui_diag jdiag;
+    write_json = 1;
+    json_diag = &jdiag;
 #endif
-    std::string doc_root;
-    std::string doc_dir;
-    std::string tlv_path;
+    UiDocOutputPaths paths;
     if (!path || !path[0]) {
         return false;
     }
-    ui_resolve_doc_paths(path, &doc_root, &doc_dir, &tlv_path);
-    if (!doc_root.empty()) {
-        ui_ensure_dir(doc_root);
+    ui_compute_doc_paths(path, 1, paths);
+    if (!paths.doc_root.empty()) {
+        ui_ensure_dir(paths.doc_root);
     }
-    if (!doc_dir.empty()) {
-        ui_ensure_dir(doc_dir);
+    if (!paths.doc_dir.empty()) {
+        ui_ensure_dir(paths.doc_dir);
     }
     {
-        std::string gen_dir = ui_join_path(doc_root, "gen");
-        std::string user_dir = ui_join_path(doc_root, "user");
-        std::string reg_dir = ui_join_path(doc_root, "registry");
-        ui_ensure_dir(gen_dir);
-        ui_ensure_dir(user_dir);
-        ui_ensure_dir(reg_dir);
+        ui_ensure_dir(paths.gen_dir);
+        ui_ensure_dir(paths.user_dir);
+        ui_ensure_dir(paths.reg_dir);
     }
-    if (m_doc.meta.doc_name.empty()) {
-        std::string base = ui_path_basename(tlv_path);
-        m_doc.meta.doc_name.set(base.c_str());
-    }
-    auto_fill_action_keys();
-    if (!domui_doc_save_tlv(&m_doc, tlv_path.c_str(), &diag)) {
+    if (!ui_save_doc_tlv_json(&m_doc,
+                              paths,
+                              NULL,
+                              1,
+                              write_json,
+                              &diag,
+                              json_diag,
+                              &json_ok)) {
         log_from_diag(diag);
         MessageBoxA(m_hwnd, "Failed to save UI doc.", "UI Editor", MB_OK | MB_ICONERROR);
         return false;
     }
-#if !defined(DOMUI_ENABLE_JSON_MIRROR) || DOMUI_ENABLE_JSON_MIRROR
-    {
-        std::string json_path = ui_replace_extension(tlv_path, ".json");
-        if (!domui_doc_save_json_mirror(&m_doc, json_path.c_str(), &jdiag)) {
-            json_ok = 0;
-        }
-    }
-#endif
-    m_current_path = tlv_path;
-    if (!json_ok) {
+    m_current_path = paths.tlv_path;
+    if (write_json && !json_ok) {
         log_clear();
         log_append_diag(diag);
 #if !defined(DOMUI_ENABLE_JSON_MIRROR) || DOMUI_ENABLE_JSON_MIRROR
@@ -2762,11 +3742,11 @@ bool UiEditorApp::save_document_to(const char* path)
 #if !defined(DOMUI_ENABLE_JSON_MIRROR) || DOMUI_ENABLE_JSON_MIRROR
     log_append_diag(jdiag);
 #endif
-    if (tlv_path != path) {
-        std::string msg = "save: " + tlv_path;
+    if (paths.tlv_path != path) {
+        std::string msg = "save: " + paths.tlv_path;
         log_info(msg.c_str());
     }
-    if (!run_codegen(tlv_path.c_str(), &cdiag)) {
+    if (!run_codegen(paths.tlv_path.c_str(), &cdiag)) {
         log_append_diag(cdiag);
         MessageBoxA(m_hwnd, "Codegen failed. See log for details.", "UI Editor", MB_OK | MB_ICONWARNING);
         return true;
@@ -2778,13 +3758,6 @@ bool UiEditorApp::save_document_to(const char* path)
 
 bool UiEditorApp::run_codegen(const char* tlv_path, domui_diag* out_diag)
 {
-#if defined(DOMUI_ENABLE_CODEGEN) && (DOMUI_ENABLE_CODEGEN == 0)
-    if (out_diag) {
-        out_diag->add_warning("codegen disabled (DOMUI_ENABLE_CODEGEN=OFF)", 0u, "codegen");
-    }
-    return true;
-#endif
-    domui_codegen_params params;
     domui_diag local;
     domui_diag* diag = out_diag ? out_diag : &local;
     std::string doc_root;
@@ -2793,46 +3766,17 @@ bool UiEditorApp::run_codegen(const char* tlv_path, domui_diag* out_diag)
     std::string user_dir = ui_join_path(doc_root, "user");
     std::string reg_dir = ui_join_path(doc_root, "registry");
     std::string reg_path = ui_join_path(reg_dir, "ui_actions_registry.json");
-    params.input_tlv_path = tlv_path;
-    params.registry_path = reg_path.c_str();
-    params.out_gen_dir = gen_dir.c_str();
-    params.out_user_dir = user_dir.c_str();
-    params.doc_name_override = m_doc.meta.doc_name.c_str();
-    if (!domui_codegen_run(&params, diag)) {
-        return false;
-    }
-    return true;
+    return ui_run_codegen_with_paths(tlv_path,
+                                     reg_path.c_str(),
+                                     gen_dir.c_str(),
+                                     user_dir.c_str(),
+                                     m_doc.meta.doc_name.c_str(),
+                                     diag);
 }
 
 void UiEditorApp::auto_fill_action_keys()
 {
-    std::vector<domui_widget_id> order;
-    std::string doc_name = m_doc.meta.doc_name.str();
-    if (doc_name.empty()) {
-        doc_name = "doc";
-    }
-    doc_name = ui_sanitize_key(doc_name);
-    m_doc.canonical_widget_order(order);
-    for (size_t i = 0u; i < order.size(); ++i) {
-        domui_widget* w = m_doc.find_by_id(order[i]);
-        if (!w) {
-            continue;
-        }
-        const domui_events::list_type& entries = w->events.entries();
-        for (size_t e = 0u; e < entries.size(); ++e) {
-            if (!entries[e].action_key.empty()) {
-                continue;
-            }
-            std::string base = w->name.str();
-            if (base.empty()) {
-                base = ui_u32_to_string(w->id);
-            }
-            base = ui_sanitize_key(base);
-            std::string ev = ui_sanitize_key(entries[e].event_name.str());
-            std::string key = doc_name + "." + base + "." + ev;
-            w->events.set(entries[e].event_name, domui_string(key.c_str()));
-        }
-    }
+    ui_auto_fill_action_keys(m_doc);
 }
 
 void UiEditorApp::log_clear()
@@ -4700,8 +5644,8 @@ int WINAPI WinMain(HINSTANCE inst, HINSTANCE prev, LPSTR cmd, int show)
     {
         std::vector<std::string> args;
         ui_split_args(cmd, args);
-        if (ui_has_arg(args, "--scan-ui")) {
-            return ui_run_scan_cli(args);
+        if (ui_should_run_cli(args)) {
+            return ui_run_cli(args);
         }
     }
 
