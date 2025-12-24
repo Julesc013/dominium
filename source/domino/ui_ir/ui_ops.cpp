@@ -15,6 +15,7 @@ RESPONSIBILITY: Deterministic ops.json parsing and scripted edits for UI IR.
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <utility>
 #include <vector>
 
 enum domui_json_type {
@@ -26,25 +27,12 @@ enum domui_json_type {
     DOMUI_JSON_OBJECT
 };
 
-struct domui_json_value;
-
-struct domui_json_member {
-    std::string key;
-    domui_json_value value;
-
-    domui_json_member()
-        : key(),
-          value()
-    {
-    }
-};
-
 struct domui_json_value {
     domui_json_type type;
     int bool_value;
     std::string string_value;
     std::vector<domui_json_value> array;
-    std::vector<domui_json_member> object;
+    std::vector<std::pair<std::string, domui_json_value>> object;
 
     domui_json_value()
         : type(DOMUI_JSON_NULL),
@@ -289,10 +277,11 @@ static int domui_json_parse_array(domui_json_parser* p, domui_json_value& out)
     return 0;
 }
 
-static int domui_json_key_exists(const std::vector<domui_json_member>& members, const std::string& key)
+static int domui_json_key_exists(const std::vector<std::pair<std::string, domui_json_value>>& members,
+                                 const std::string& key)
 {
     for (size_t i = 0u; i < members.size(); ++i) {
-        if (members[i].key == key) {
+        if (members[i].first == key) {
             return 1;
         }
     }
@@ -317,7 +306,7 @@ static int domui_json_parse_object(domui_json_parser* p, domui_json_value& out)
     }
     while (p->cur < p->end) {
         std::string key;
-        domui_json_member member;
+        std::pair<std::string, domui_json_value> member;
         if (!domui_json_parse_string(p, key)) {
             return 0;
         }
@@ -327,14 +316,14 @@ static int domui_json_parse_object(domui_json_parser* p, domui_json_value& out)
             return 0;
         }
         p->cur++;
-        if (!domui_json_parse_value(p, member.value)) {
+        if (!domui_json_parse_value(p, member.second)) {
             return 0;
         }
         if (domui_json_key_exists(out.object, key)) {
             domui_json_add_error(p, "ops: duplicate key");
             return 0;
         }
-        member.key = key;
+        member.first = key;
         out.object.push_back(member);
         domui_json_skip_ws(p);
         if (p->cur >= p->end) {
@@ -426,8 +415,8 @@ static const domui_json_value* domui_json_find_member(const domui_json_value& ob
         return 0;
     }
     for (size_t i = 0u; i < obj.object.size(); ++i) {
-        if (obj.object[i].key == key) {
-            return &obj.object[i].value;
+        if (obj.object[i].first == key) {
+            return &obj.object[i].second;
         }
     }
     return 0;
@@ -519,13 +508,13 @@ static int domui_ops_check_unknown_fields(const domui_json_value& obj,
         size_t j;
         int found = 0;
         for (j = 0u; j < allowed_count; ++j) {
-            if (obj.object[i].key == allowed[j]) {
+            if (obj.object[i].first == allowed[j]) {
                 found = 1;
                 break;
             }
         }
         if (!found) {
-            std::string msg = "ops: unknown field '" + obj.object[i].key + "'";
+            std::string msg = "ops: unknown field '" + obj.object[i].first + "'";
             if (diag) {
                 diag->add_error(msg.c_str(), 0u, ctx);
             }

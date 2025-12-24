@@ -591,6 +591,74 @@ set_target_properties(dominium_launcher_ui_backend_swap_test PROPERTIES
 
 add_test(NAME dominium_launcher_ui_backend_swap_test COMMAND dominium_launcher_ui_backend_swap_test)
 
+if(WIN32)
+    add_executable(ui_cli_determinism_test
+        ui_cli_determinism_test.cpp
+    )
+
+    set_target_properties(ui_cli_determinism_test PROPERTIES
+        CXX_STANDARD 98
+        CXX_STANDARD_REQUIRED ON
+        CXX_EXTENSIONS OFF
+    )
+    add_dependencies(ui_cli_determinism_test dominium-ui-editor)
+
+    set(UI_CLI_TEST_ROOT ${CMAKE_CURRENT_BINARY_DIR}/ui_cli_tests)
+
+    add_test(NAME test_ui_apply_determinism_launcher
+        COMMAND ui_cli_determinism_test
+            --mode apply_determinism
+            --ui-editor $<TARGET_FILE:dominium-ui-editor>
+            --script ${CMAKE_SOURCE_DIR}/tools/launcher/ui/scripts/minecraft_launcher_v1.ops.json
+            --doc-basename launcher_ui_doc
+            --work-dir ${UI_CLI_TEST_ROOT}/launcher_apply
+    )
+
+    add_test(NAME test_ui_apply_determinism_setup
+        COMMAND ui_cli_determinism_test
+            --mode apply_determinism
+            --ui-editor $<TARGET_FILE:dominium-ui-editor>
+            --script ${CMAKE_SOURCE_DIR}/tools/setup/ui/scripts/minecraft_setup_v1.ops.json
+            --doc-basename setup_ui_doc
+            --work-dir ${UI_CLI_TEST_ROOT}/setup_apply
+    )
+
+    add_test(NAME test_ui_codegen_determinism_launcher
+        COMMAND ui_cli_determinism_test
+            --mode codegen_determinism
+            --ui-editor $<TARGET_FILE:dominium-ui-editor>
+            --doc ${CMAKE_SOURCE_DIR}/tools/launcher/ui/doc/launcher_ui_doc.tlv
+            --docname launcher_ui
+            --work-dir ${UI_CLI_TEST_ROOT}/launcher_codegen
+    )
+
+    add_test(NAME test_ui_codegen_determinism_setup
+        COMMAND ui_cli_determinism_test
+            --mode codegen_determinism
+            --ui-editor $<TARGET_FILE:dominium-ui-editor>
+            --doc ${CMAKE_SOURCE_DIR}/tools/setup/ui/doc/setup_ui_doc.tlv
+            --docname setup_ui
+            --work-dir ${UI_CLI_TEST_ROOT}/setup_codegen
+    )
+
+    add_test(NAME test_ui_registry_stability
+        COMMAND ui_cli_determinism_test
+            --mode registry_stability
+            --ui-editor $<TARGET_FILE:dominium-ui-editor>
+            --work-dir ${UI_CLI_TEST_ROOT}/registry
+    )
+
+    add_test(NAME test_ui_index_determinism
+        COMMAND ui_cli_determinism_test
+            --mode scan_determinism
+            --ui-editor $<TARGET_FILE:dominium-ui-editor>
+            --work-dir ${UI_CLI_TEST_ROOT}/scan
+    )
+    set_tests_properties(test_ui_index_determinism PROPERTIES
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    )
+endif()
+
 add_executable(dgfx_demo
     ../../tests/domino_gfx/dgfx_demo.c
 )

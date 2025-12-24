@@ -1,0 +1,16 @@
+{
+  "command": "headless-format",
+  "input": "tools/launcher/ui/doc/launcher_ui_doc.tlv",
+  "output_files": [
+    "tools/launcher/ui/doc/launcher_ui_doc.json",
+    "tools/launcher/ui/doc/launcher_ui_doc.tlv"
+  ],
+  "errors": [
+  ],
+  "warnings": [
+    "validate: feature 'widget.splitter' emulated on backend 'win32/win32_t1' [widget 31] [widget.splitter]"
+  ],
+  "created_ids": {},
+  "exit_code": 0,
+  "status": "ok"
+}

@@ -32,3 +32,13 @@ Checklists
 
 - `docs/ui_editor/PHASE_A_DONE_CHECKLIST.md`
 - `docs/ui_editor/TOOL_EDITOR_BOOTSTRAP_CHECKLIST.md`
+
+Docs
+
+- `docs/ui_editor/CLI.md`
+- `docs/ui_editor/OPS_FORMAT.md`
+- `docs/ui_editor/IMPORT_EXPORT.md`
+- `docs/ui_editor/CAPABILITY_TEST.md`
+- `docs/ui_editor/WORKFLOW_END_TO_END.md`
+- `docs/ui_editor/TEST_MINECRAFT_LAUNCHER.md`
+- `docs/ui_editor/TEST_MINECRAFT_SETUP.md`
