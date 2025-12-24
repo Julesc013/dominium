@@ -11,6 +11,11 @@ set(CMAKE_CXX_STANDARD 98)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+if(MSVC)
+    # Allow parallel compilation to share PDBs without contention.
+    add_compile_options(/FS)
+endif()
+
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(DominiumBundleRuntime)
 include(DominiumReproducible)
