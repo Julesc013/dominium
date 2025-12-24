@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "generated_by": "dominium-ui-editor",
+  "entries": [
+    {
+      "ui_type": "legacy",
+      "path": "source/dominium/launcher/ui_schema/launcher_ui_v1.tlv",
+      "tool": "launcher",
+      "format_version": 0
+    },
+    {
+      "ui_type": "canonical",
+      "path": "tools/launcher/ui/doc/launcher_ui_doc.tlv",
+      "tool": "launcher",
+      "format_version": 2
+    },
+    {
+      "ui_type": "canonical",
+      "path": "tools/setup/ui/doc/setup_ui_doc.tlv",
+      "tool": "setup",
+      "format_version": 2
+    },
+    {
+      "ui_type": "canonical",
+      "path": "tools/tool_editor/ui/doc/tool_editor_ui_doc.tlv",
+      "tool": "tool_editor",
+      "format_version": 2
+    },
+    {
+      "ui_type": "canonical",
+      "path": "tools/tool_editor/ui/doc/ui_doc_template_basic.tlv",
+      "tool": "tool_editor",
+      "format_version": 2
+    }
+  ]
+}

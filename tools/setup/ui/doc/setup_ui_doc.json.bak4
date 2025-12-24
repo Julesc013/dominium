@@ -1,0 +1,1946 @@
+{
+  "doc_version": 2,
+  "doc_name": "setup_ui",
+  "doc_guid": "",
+  "target_backends": [],
+  "target_tiers": [],
+  "widgets": [
+    {
+      "id": 1,
+      "type": "CONTAINER",
+      "name": "root",
+      "parent_id": 0,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 720
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": ["L","R","T","B"],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 800,
+          "min_h": 480,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [],
+      "events": []
+    },
+    {
+      "id": 2,
+      "type": "CONTAINER",
+      "name": "header",
+      "parent_id": 1,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 80
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "TOP",
+        "anchors": ["L","R","T"],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 64,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [],
+      "events": []
+    },
+    {
+      "id": 5,
+      "type": "IMAGE",
+      "name": "header_logo",
+      "parent_id": 2,
+      "z_order": 0,
+      "rect": {
+        "x": 16,
+        "y": 12,
+        "w": 48,
+        "h": 48
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": ["L","T"],
+        "margin": {
+          "left": 0,
+          "right": 8,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 32,
+          "min_h": 32,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [],
+      "events": []
+    },
+    {
+      "id": 6,
+      "type": "STATIC_TEXT",
+      "name": "header_title",
+      "parent_id": 2,
+      "z_order": 0,
+      "rect": {
+        "x": 72,
+        "y": 16,
+        "w": 520,
+        "h": 22
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": ["L","T"],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 240,
+          "min_h": 18,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "Dominium Setup"
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": 7,
+      "type": "STATIC_TEXT",
+      "name": "header_subtitle",
+      "parent_id": 2,
+      "z_order": 0,
+      "rect": {
+        "x": 72,
+        "y": 40,
+        "w": 620,
+        "h": 18
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": ["L","T"],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 240,
+          "min_h": 16,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "Minecraft-style wizard (structure only)"
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": 3,
+      "type": "CONTAINER",
+      "name": "body",
+      "parent_id": 1,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "FILL",
+        "anchors": ["L","R","T","B"],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 300,
+          "min_h": 240,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [],
+      "events": []
+    },
+    {
+      "id": 8,
+      "type": "TABS",
+      "name": "body_tabs",
+      "parent_id": 3,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "FILL",
+        "anchors": ["L","R","T","B"],
+        "margin": {
+          "left": 8,
+          "right": 8,
+          "top": 8,
+          "bottom": 8
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 300,
+          "min_h": 240,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "tabs.placement",
+          "type": "STRING",
+          "value": "top"
+        },
+        {
+          "key": "tabs.selected_index",
+          "type": "INT",
+          "value": 0
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": 9,
+      "type": "TAB_PAGE",
+      "name": "page_welcome",
+      "parent_id": 8,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "FILL",
+        "anchors": ["L","R","T","B"],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 240,
+          "min_h": 200,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "tab.title",
+          "type": "STRING",
+          "value": "Welcome"
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": 14,
+      "type": "CONTAINER",
+      "name": "welcome_content",
+      "parent_id": 9,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      },
+      "layout": {
+        "mode": "STACK_COL",
+        "dock": "FILL",
+        "anchors": ["L","R","T","B"],
+        "margin": {
+          "left": 12,
+          "right": 12,
+          "top": 12,
+          "bottom": 12
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 240,
+          "min_h": 200,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [],
+      "events": []
+    },
+    {
+      "id": 15,
+      "type": "IMAGE",
+      "name": "welcome_image",
+      "parent_id": 14,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 200,
+        "h": 120
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": ["L","T"],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 8
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 120,
+          "min_h": 80,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [],
+      "events": []
+    },
+    {
+      "id": 16,
+      "type": "STATIC_TEXT",
+      "name": "welcome_title",
+      "parent_id": 14,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 600,
+        "h": 24
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": ["L","T"],
+        "margin": {
+          "left": 4,
+          "right": 4,
+          "top": 4,
+          "bottom": 4
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 240,
+          "min_h": 20,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "Welcome to Dominium Setup"
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": 17,
+      "type": "STATIC_TEXT",
+      "name": "welcome_body",
+      "parent_id": 14,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 820,
+        "h": 80
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": ["L","T"],
+        "margin": {
+          "left": 4,
+          "right": 4,
+          "top": 2,
+          "bottom": 6
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 320,
+          "min_h": 60,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "This wizard guides you through installing Dominium. Layout only; content and behavior are placeholders."
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": 10,
+      "type": "TAB_PAGE",
+      "name": "page_path",
+      "parent_id": 8,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "FILL",
+        "anchors": ["L","R","T","B"],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 240,
+          "min_h": 200,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "tab.title",
+          "type": "STRING",
+          "value": "Install Location"
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": 18,
+      "type": "CONTAINER",
+      "name": "path_content",
+      "parent_id": 10,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      },
+      "layout": {
+        "mode": "STACK_COL",
+        "dock": "FILL",
+        "anchors": ["L","R","T","B"],
+        "margin": {
+          "left": 12,
+          "right": 12,
+          "top": 12,
+          "bottom": 12
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 240,
+          "min_h": 200,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [],
+      "events": []
+    },
+    {
+      "id": 19,
+      "type": "STATIC_TEXT",
+      "name": "path_label",
+      "parent_id": 18,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 520,
+        "h": 20
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": ["L","T"],
+        "margin": {
+          "left": 4,
+          "right": 4,
+          "top": 4,
+          "bottom": 4
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 240,
+          "min_h": 18,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "Install location:"
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": 20,
+      "type": "CONTAINER",
+      "name": "path_row",
+      "parent_id": 18,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 760,
+        "h": 32
+      },
+      "layout": {
+        "mode": "STACK_ROW",
+        "dock": "NONE",
+        "anchors": ["L","T"],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 8
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 320,
+          "min_h": 28,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [],
+      "events": []
+    },
+    {
+      "id": 21,
+      "type": "EDIT",
+      "name": "path_edit",
+      "parent_id": 20,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 520,
+        "h": 24
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": ["L","T"],
+        "margin": {
+          "left": 4,
+          "right": 4,
+          "top": 2,
+          "bottom": 2
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 260,
+          "min_h": 20,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [],
+      "events": []
+    },
+    {
+      "id": 22,
+      "type": "BUTTON",
+      "name": "path_browse",
+      "parent_id": 20,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 120,
+        "h": 24
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": ["L","T"],
+        "margin": {
+          "left": 4,
+          "right": 4,
+          "top": 2,
+          "bottom": 2
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 100,
+          "min_h": 20,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "Browse..."
+        }
+      ],
+      "events": [
+        {
+          "event": "on_click",
+          "action": "setup.browse_path"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "type": "TAB_PAGE",
+      "name": "page_components",
+      "parent_id": 8,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "FILL",
+        "anchors": ["L","R","T","B"],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 240,
+          "min_h": 200,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "tab.title",
+          "type": "STRING",
+          "value": "Components"
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": 23,
+      "type": "CONTAINER",
+      "name": "components_content",
+      "parent_id": 11,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      },
+      "layout": {
+        "mode": "STACK_COL",
+        "dock": "FILL",
+        "anchors": ["L","R","T","B"],
+        "margin": {
+          "left": 12,
+          "right": 12,
+          "top": 12,
+          "bottom": 12
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 240,
+          "min_h": 200,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [],
+      "events": []
+    },
+    {
+      "id": 24,
+      "type": "GROUPBOX",
+      "name": "components_group_core",
+      "parent_id": 23,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 760,
+        "h": 120
+      },
+      "layout": {
+        "mode": "STACK_COL",
+        "dock": "NONE",
+        "anchors": ["L","T"],
+        "margin": {
+          "left": 4,
+          "right": 4,
+          "top": 4,
+          "bottom": 4
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 320,
+          "min_h": 90,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "Core Components"
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": 25,
+      "type": "CHECKBOX",
+      "name": "components_core_game",
+      "parent_id": 24,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 520,
+        "h": 22
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": ["L","T"],
+        "margin": {
+          "left": 8,
+          "right": 8,
+          "top": 8,
+          "bottom": 2
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 240,
+          "min_h": 18,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "Game files"
+        }
+      ],
+      "events": [
+        {
+          "event": "on_change",
+          "action": "setup.options.changed"
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "type": "CHECKBOX",
+      "name": "components_core_assets",
+      "parent_id": 24,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 520,
+        "h": 22
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": ["L","T"],
+        "margin": {
+          "left": 8,
+          "right": 8,
+          "top": 2,
+          "bottom": 6
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 240,
+          "min_h": 18,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "Starter assets"
+        }
+      ],
+      "events": [
+        {
+          "event": "on_change",
+          "action": "setup.options.changed"
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "type": "GROUPBOX",
+      "name": "components_group_optional",
+      "parent_id": 23,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 760,
+        "h": 120
+      },
+      "layout": {
+        "mode": "STACK_COL",
+        "dock": "NONE",
+        "anchors": ["L","T"],
+        "margin": {
+          "left": 4,
+          "right": 4,
+          "top": 4,
+          "bottom": 4
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 320,
+          "min_h": 90,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "Optional Components"
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": 28,
+      "type": "CHECKBOX",
+      "name": "components_opt_examples",
+      "parent_id": 27,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 520,
+        "h": 22
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": ["L","T"],
+        "margin": {
+          "left": 8,
+          "right": 8,
+          "top": 8,
+          "bottom": 2
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 240,
+          "min_h": 18,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "Example content"
+        }
+      ],
+      "events": [
+        {
+          "event": "on_change",
+          "action": "setup.options.changed"
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "type": "CHECKBOX",
+      "name": "components_opt_mods",
+      "parent_id": 27,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 520,
+        "h": 22
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": ["L","T"],
+        "margin": {
+          "left": 8,
+          "right": 8,
+          "top": 2,
+          "bottom": 6
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 240,
+          "min_h": 18,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "Sample mods (optional)"
+        }
+      ],
+      "events": [
+        {
+          "event": "on_change",
+          "action": "setup.options.changed"
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "type": "LISTVIEW",
+      "name": "components_list",
+      "parent_id": 23,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 760,
+        "h": 140
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": ["L","T"],
+        "margin": {
+          "left": 4,
+          "right": 4,
+          "top": 6,
+          "bottom": 4
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 320,
+          "min_h": 90,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [],
+      "events": [
+        {
+          "event": "on_change",
+          "action": "setup.options.changed"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "type": "TAB_PAGE",
+      "name": "page_progress",
+      "parent_id": 8,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "FILL",
+        "anchors": ["L","R","T","B"],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 240,
+          "min_h": 200,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "tab.title",
+          "type": "STRING",
+          "value": "Progress"
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": 31,
+      "type": "CONTAINER",
+      "name": "progress_content",
+      "parent_id": 12,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      },
+      "layout": {
+        "mode": "STACK_COL",
+        "dock": "FILL",
+        "anchors": ["L","R","T","B"],
+        "margin": {
+          "left": 12,
+          "right": 12,
+          "top": 12,
+          "bottom": 12
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 240,
+          "min_h": 200,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [],
+      "events": []
+    },
+    {
+      "id": 32,
+      "type": "STATIC_TEXT",
+      "name": "progress_label",
+      "parent_id": 31,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 520,
+        "h": 20
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": ["L","T"],
+        "margin": {
+          "left": 4,
+          "right": 4,
+          "top": 4,
+          "bottom": 4
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 240,
+          "min_h": 18,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "Installing..."
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": 33,
+      "type": "PROGRESS",
+      "name": "progress_bar",
+      "parent_id": 31,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 520,
+        "h": 20
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": ["L","T"],
+        "margin": {
+          "left": 4,
+          "right": 4,
+          "top": 2,
+          "bottom": 6
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 240,
+          "min_h": 16,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [],
+      "events": []
+    },
+    {
+      "id": 34,
+      "type": "LISTVIEW",
+      "name": "progress_log",
+      "parent_id": 31,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 760,
+        "h": 220
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": ["L","R","T"],
+        "margin": {
+          "left": 4,
+          "right": 4,
+          "top": 4,
+          "bottom": 4
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 320,
+          "min_h": 140,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [],
+      "events": []
+    },
+    {
+      "id": 13,
+      "type": "TAB_PAGE",
+      "name": "page_finish",
+      "parent_id": 8,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "FILL",
+        "anchors": ["L","R","T","B"],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 240,
+          "min_h": 200,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "tab.title",
+          "type": "STRING",
+          "value": "Finish"
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": 35,
+      "type": "CONTAINER",
+      "name": "finish_content",
+      "parent_id": 13,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      },
+      "layout": {
+        "mode": "STACK_COL",
+        "dock": "FILL",
+        "anchors": ["L","R","T","B"],
+        "margin": {
+          "left": 12,
+          "right": 12,
+          "top": 12,
+          "bottom": 12
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 240,
+          "min_h": 200,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [],
+      "events": []
+    },
+    {
+      "id": 36,
+      "type": "STATIC_TEXT",
+      "name": "finish_title",
+      "parent_id": 35,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 520,
+        "h": 22
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": ["L","T"],
+        "margin": {
+          "left": 4,
+          "right": 4,
+          "top": 4,
+          "bottom": 4
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 240,
+          "min_h": 18,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "Setup Complete"
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": 37,
+      "type": "STATIC_TEXT",
+      "name": "finish_summary",
+      "parent_id": 35,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 760,
+        "h": 60
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": ["L","T"],
+        "margin": {
+          "left": 4,
+          "right": 4,
+          "top": 2,
+          "bottom": 6
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 320,
+          "min_h": 40,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "Installation completed successfully. You can launch Dominium now."
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": 38,
+      "type": "CHECKBOX",
+      "name": "finish_launch",
+      "parent_id": 35,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 420,
+        "h": 22
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": ["L","T"],
+        "margin": {
+          "left": 4,
+          "right": 4,
+          "top": 2,
+          "bottom": 4
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 240,
+          "min_h": 18,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "Launch after install"
+        }
+      ],
+      "events": [
+        {
+          "event": "on_change",
+          "action": "setup.options.changed"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "CONTAINER",
+      "name": "footer",
+      "parent_id": 1,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 56
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "BOTTOM",
+        "anchors": ["L","R","B"],
+        "margin": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 0,
+          "min_h": 44,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [],
+      "events": []
+    },
+    {
+      "id": 39,
+      "type": "CONTAINER",
+      "name": "footer_left",
+      "parent_id": 4,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 200,
+        "h": 0
+      },
+      "layout": {
+        "mode": "STACK_ROW",
+        "dock": "LEFT",
+        "anchors": ["L","B"],
+        "margin": {
+          "left": 8,
+          "right": 4,
+          "top": 8,
+          "bottom": 8
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 120,
+          "min_h": 28,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [],
+      "events": []
+    },
+    {
+      "id": 41,
+      "type": "BUTTON",
+      "name": "btn_back",
+      "parent_id": 39,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 100,
+        "h": 28
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": ["L","B"],
+        "margin": {
+          "left": 0,
+          "right": 4,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 80,
+          "min_h": 24,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "Back"
+        }
+      ],
+      "events": [
+        {
+          "event": "on_click",
+          "action": "setup.nav.back"
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "type": "CONTAINER",
+      "name": "footer_right",
+      "parent_id": 4,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 520,
+        "h": 0
+      },
+      "layout": {
+        "mode": "STACK_ROW",
+        "dock": "RIGHT",
+        "anchors": ["R","B"],
+        "margin": {
+          "left": 4,
+          "right": 8,
+          "top": 8,
+          "bottom": 8
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 320,
+          "min_h": 28,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [],
+      "events": []
+    },
+    {
+      "id": 42,
+      "type": "BUTTON",
+      "name": "btn_next",
+      "parent_id": 40,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 100,
+        "h": 28
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": ["R","B"],
+        "margin": {
+          "left": 4,
+          "right": 4,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 80,
+          "min_h": 24,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "Next"
+        }
+      ],
+      "events": [
+        {
+          "event": "on_click",
+          "action": "setup.nav.next"
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "type": "BUTTON",
+      "name": "btn_install",
+      "parent_id": 40,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 100,
+        "h": 28
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": ["R","B"],
+        "margin": {
+          "left": 4,
+          "right": 4,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 80,
+          "min_h": 24,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "Install"
+        }
+      ],
+      "events": [
+        {
+          "event": "on_click",
+          "action": "setup.nav.install"
+        }
+      ]
+    },
+    {
+      "id": 44,
+      "type": "BUTTON",
+      "name": "btn_finish",
+      "parent_id": 40,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 100,
+        "h": 28
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": ["R","B"],
+        "margin": {
+          "left": 4,
+          "right": 4,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 80,
+          "min_h": 24,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "Finish"
+        }
+      ],
+      "events": [
+        {
+          "event": "on_click",
+          "action": "setup.nav.finish"
+        }
+      ]
+    },
+    {
+      "id": 45,
+      "type": "BUTTON",
+      "name": "btn_cancel",
+      "parent_id": 40,
+      "z_order": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 100,
+        "h": 28
+      },
+      "layout": {
+        "mode": "ABSOLUTE",
+        "dock": "NONE",
+        "anchors": ["R","B"],
+        "margin": {
+          "left": 4,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "padding": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "constraints": {
+          "min_w": 80,
+          "min_h": 24,
+          "max_w": -1,
+          "max_h": -1
+        }
+      },
+      "props": [
+        {
+          "key": "text",
+          "type": "STRING",
+          "value": "Cancel"
+        }
+      ],
+      "events": [
+        {
+          "event": "on_click",
+          "action": "setup.nav.cancel"
+        }
+      ]
+    }
+  ]
+}

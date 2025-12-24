@@ -303,6 +303,47 @@ add_subdirectory(source/dominium)
 add_subdirectory(tools)
 add_subdirectory(source/tests)
 
+if(WIN32)
+    set(DOMUI_INDEX_PATH ${CMAKE_SOURCE_DIR}/tools/ui_index/ui_index.json)
+    set(DOMUI_LAUNCHER_DOC ${CMAKE_SOURCE_DIR}/tools/launcher/ui/doc/launcher_ui_doc.tlv)
+    set(DOMUI_SETUP_DOC ${CMAKE_SOURCE_DIR}/tools/setup/ui/doc/setup_ui_doc.tlv)
+
+    add_custom_target(ui_scan_all
+        COMMAND $<TARGET_FILE:dominium-ui-editor> --scan-ui --out ${DOMUI_INDEX_PATH}
+        COMMENT "Scanning repo UI docs"
+        VERBATIM
+    )
+    add_dependencies(ui_scan_all dominium-ui-editor)
+
+    add_custom_target(ui_validate_all
+        COMMAND $<TARGET_FILE:dominium-ui-editor> --headless-validate ${DOMUI_LAUNCHER_DOC} --targets win32_t1
+        COMMAND $<TARGET_FILE:dominium-ui-editor> --headless-validate ${DOMUI_SETUP_DOC} --targets win32_t1
+        COMMENT "Validating canonical launcher/setup UI docs"
+        VERBATIM
+    )
+    add_dependencies(ui_validate_all dominium-ui-editor)
+else()
+    add_custom_target(ui_scan_all
+        COMMAND ${CMAKE_COMMAND} -E echo "ui_scan_all: not supported on this platform"
+    )
+    add_custom_target(ui_validate_all
+        COMMAND ${CMAKE_COMMAND} -E echo "ui_validate_all: not supported on this platform"
+    )
+    add_custom_target(ui_capability_test
+        COMMAND ${CMAKE_COMMAND} -E echo "ui_capability_test: not supported on this platform"
+    )
+endif()
+
+if(WIN32)
+    add_custom_target(ui_capability_test
+        DEPENDS
+            ui_scan_all
+            ui_regen_launcher
+            ui_regen_setup
+            ui_validate_all
+    )
+endif()
+
 if(DOMINIUM_ENABLE_PACKAGING)
     add_subdirectory(scripts/packaging)
 endif()

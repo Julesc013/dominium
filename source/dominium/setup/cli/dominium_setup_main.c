@@ -32,6 +32,8 @@ PURPOSE: Minimal setup control-plane CLI for Plan S-1 (plan + dry-run).
 #define DSU_CLI_VERSION "0.0.0"
 #define DSU_CLI_JSON_SCHEMA_VERSION 1u
 
+int dom_setup_ui_run_gui(const char *argv0);
+
 typedef struct dsu_cli_opts_t {
     int deterministic;
     int quiet;
@@ -209,6 +211,7 @@ static void dsu_cli_print_help_root(FILE *out) {
             "Usage:\n"
             "  %s help [command]\n"
             "  %s version\n"
+            "  %s gui\n"
             "  %s manifest validate --in <file>\n"
             "  %s manifest dump --in <file> [--out <file>] [--format json]\n"
             "  %s resolve --manifest <file> [--state <file>] --op <install|upgrade|repair|uninstall>\n"
@@ -228,6 +231,7 @@ static void dsu_cli_print_help_root(FILE *out) {
             "  --quiet                 Suppress non-essential text\n"
             "  --json                  Shorthand for --format json\n",
             DSU_CLI_NAME, DSU_CLI_VERSION,
+            DSU_CLI_NAME,
             DSU_CLI_NAME,
             DSU_CLI_NAME,
             DSU_CLI_NAME,
@@ -281,6 +285,14 @@ static void dsu_cli_print_help_command(FILE *out, int argc, char **argv) {
         fprintf(out,
                 "Usage:\n"
                 "  %s version\n",
+                DSU_CLI_NAME);
+        return;
+    }
+
+    if (dsu_cli_streq(a, "gui")) {
+        fprintf(out,
+                "Usage:\n"
+                "  %s gui\n",
                 DSU_CLI_NAME);
         return;
     }
@@ -2107,6 +2119,10 @@ int main(int argc, char **argv) {
         }
         dsu_cli_print_help_command(stdout, help_argc, help_args);
         return 0;
+    }
+
+    if (dsu_cli_streq(cmd, "gui")) {
+        return dom_setup_ui_run_gui((argc > 0) ? argv[0] : NULL);
     }
 
     if (dsu_cli_streq(cmd, "manifest")) {

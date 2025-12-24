@@ -49,6 +49,11 @@ set(LAUNCHER_UI_SCRIPT ${LAUNCHER_UI_ROOT}/scripts/minecraft_launcher_v1.ops.jso
 set(LAUNCHER_UI_GEN_DIR ${LAUNCHER_UI_ROOT}/gen)
 set(LAUNCHER_UI_USER_DIR ${LAUNCHER_UI_ROOT}/user)
 set(LAUNCHER_UI_REGISTRY ${LAUNCHER_UI_ROOT}/registry/launcher_actions_registry.json)
+set(LAUNCHER_UI_REPORTS_DIR ${LAUNCHER_UI_ROOT}/reports)
+set(LAUNCHER_UI_REPORT_APPLY ${LAUNCHER_UI_REPORTS_DIR}/launcher_apply_report.json)
+set(LAUNCHER_UI_REPORT_FORMAT ${LAUNCHER_UI_REPORTS_DIR}/launcher_format_report.json)
+set(LAUNCHER_UI_REPORT_CODEGEN ${LAUNCHER_UI_REPORTS_DIR}/launcher_codegen_report.json)
+set(LAUNCHER_UI_REPORT_REGEN ${LAUNCHER_UI_REPORTS_DIR}/regen_report.json)
 set(LAUNCHER_UI_GEN_CPP ${LAUNCHER_UI_GEN_DIR}/ui_launcher_ui_actions_gen.cpp)
 set(LAUNCHER_UI_GEN_H ${LAUNCHER_UI_GEN_DIR}/ui_launcher_ui_actions_gen.h)
 set(LAUNCHER_UI_USER_CPP ${LAUNCHER_UI_USER_DIR}/ui_launcher_ui_actions_user.cpp)
@@ -63,13 +68,19 @@ add_custom_command(
         ${LAUNCHER_UI_USER_CPP}
         ${LAUNCHER_UI_USER_H}
         ${LAUNCHER_UI_REGISTRY}
+        ${LAUNCHER_UI_REPORT_APPLY}
+        ${LAUNCHER_UI_REPORT_FORMAT}
+        ${LAUNCHER_UI_REPORT_CODEGEN}
+        ${LAUNCHER_UI_REPORT_REGEN}
     COMMAND ${CMAKE_COMMAND} -E make_directory ${LAUNCHER_UI_ROOT}/doc
     COMMAND ${CMAKE_COMMAND} -E make_directory ${LAUNCHER_UI_GEN_DIR}
     COMMAND ${CMAKE_COMMAND} -E make_directory ${LAUNCHER_UI_USER_DIR}
     COMMAND ${CMAKE_COMMAND} -E make_directory ${LAUNCHER_UI_ROOT}/registry
-    COMMAND $<TARGET_FILE:dominium-ui-editor> --headless-apply ${LAUNCHER_UI_DOC} --script ${LAUNCHER_UI_SCRIPT} --out ${LAUNCHER_UI_DOC} --in-new
-    COMMAND $<TARGET_FILE:dominium-ui-editor> --headless-format ${LAUNCHER_UI_DOC}
-    COMMAND $<TARGET_FILE:dominium-ui-editor> --headless-codegen --in ${LAUNCHER_UI_DOC} --out ${LAUNCHER_UI_GEN_DIR} --registry ${LAUNCHER_UI_REGISTRY} --docname launcher_ui
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${LAUNCHER_UI_REPORTS_DIR}
+    COMMAND $<TARGET_FILE:dominium-ui-editor> --headless-apply ${LAUNCHER_UI_DOC} --script ${LAUNCHER_UI_SCRIPT} --out ${LAUNCHER_UI_DOC} --in-new --report ${LAUNCHER_UI_REPORT_APPLY}
+    COMMAND $<TARGET_FILE:dominium-ui-editor> --headless-format ${LAUNCHER_UI_DOC} --report ${LAUNCHER_UI_REPORT_FORMAT}
+    COMMAND $<TARGET_FILE:dominium-ui-editor> --headless-codegen --in ${LAUNCHER_UI_DOC} --out ${LAUNCHER_UI_GEN_DIR} --registry ${LAUNCHER_UI_REGISTRY} --docname launcher_ui --report ${LAUNCHER_UI_REPORT_CODEGEN}
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different ${LAUNCHER_UI_REPORT_CODEGEN} ${LAUNCHER_UI_REPORT_REGEN}
     DEPENDS ${LAUNCHER_UI_SCRIPT}
     COMMENT "Regenerating launcher UI from ops script"
     VERBATIM
@@ -84,6 +95,10 @@ add_custom_target(ui_regen_launcher
         ${LAUNCHER_UI_USER_CPP}
         ${LAUNCHER_UI_USER_H}
         ${LAUNCHER_UI_REGISTRY}
+        ${LAUNCHER_UI_REPORT_APPLY}
+        ${LAUNCHER_UI_REPORT_FORMAT}
+        ${LAUNCHER_UI_REPORT_CODEGEN}
+        ${LAUNCHER_UI_REPORT_REGEN}
 )
 add_dependencies(ui_regen_launcher dominium-ui-editor)
 
