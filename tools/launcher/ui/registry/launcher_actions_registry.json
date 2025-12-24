@@ -1,0 +1,14 @@
+{
+  "next_id": 10,
+  "actions": {
+    "launcher.instances.delete_selected": 1,
+    "launcher.instances.edit_selected": 2,
+    "launcher.instances.play_selected": 3,
+    "launcher.instances.select": 4,
+    "launcher.nav.instances": 5,
+    "launcher.nav.mods": 6,
+    "launcher.nav.play": 7,
+    "launcher.nav.settings": 8,
+    "launcher.settings.apply": 9
+  }
+}

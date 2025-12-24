@@ -10,6 +10,8 @@ add_executable(dominium-launcher
     launcher_tui.cpp
     launcher_control_plane.cpp
     launcher_launch_plumbing.cpp
+    ${CMAKE_SOURCE_DIR}/tools/launcher/ui/gen/ui_launcher_ui_actions_gen.cpp
+    ${CMAKE_SOURCE_DIR}/tools/launcher/ui/user/ui_launcher_ui_actions_user.cpp
 )
 
 target_include_directories(dominium-launcher PUBLIC
@@ -18,6 +20,8 @@ target_include_directories(dominium-launcher PUBLIC
     ${CMAKE_SOURCE_DIR}/source/domino
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/tools/launcher/ui/gen
+    ${CMAKE_SOURCE_DIR}/tools/launcher/ui/user
 )
 
 target_link_libraries(dominium-launcher
@@ -37,6 +41,51 @@ set_target_properties(dominium-launcher PROPERTIES
 )
 
 dominium_bundle_runtime(dominium-launcher)
+
+set(LAUNCHER_UI_ROOT ${CMAKE_SOURCE_DIR}/tools/launcher/ui)
+set(LAUNCHER_UI_DOC ${LAUNCHER_UI_ROOT}/doc/launcher_ui_doc.tlv)
+set(LAUNCHER_UI_DOC_JSON ${LAUNCHER_UI_ROOT}/doc/launcher_ui_doc.json)
+set(LAUNCHER_UI_SCRIPT ${LAUNCHER_UI_ROOT}/scripts/minecraft_launcher_v1.ops.json)
+set(LAUNCHER_UI_GEN_DIR ${LAUNCHER_UI_ROOT}/gen)
+set(LAUNCHER_UI_USER_DIR ${LAUNCHER_UI_ROOT}/user)
+set(LAUNCHER_UI_REGISTRY ${LAUNCHER_UI_ROOT}/registry/launcher_actions_registry.json)
+set(LAUNCHER_UI_GEN_CPP ${LAUNCHER_UI_GEN_DIR}/ui_launcher_ui_actions_gen.cpp)
+set(LAUNCHER_UI_GEN_H ${LAUNCHER_UI_GEN_DIR}/ui_launcher_ui_actions_gen.h)
+set(LAUNCHER_UI_USER_CPP ${LAUNCHER_UI_USER_DIR}/ui_launcher_ui_actions_user.cpp)
+set(LAUNCHER_UI_USER_H ${LAUNCHER_UI_USER_DIR}/ui_launcher_ui_actions_user.h)
+
+add_custom_command(
+    OUTPUT
+        ${LAUNCHER_UI_DOC}
+        ${LAUNCHER_UI_DOC_JSON}
+        ${LAUNCHER_UI_GEN_CPP}
+        ${LAUNCHER_UI_GEN_H}
+        ${LAUNCHER_UI_USER_CPP}
+        ${LAUNCHER_UI_USER_H}
+        ${LAUNCHER_UI_REGISTRY}
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${LAUNCHER_UI_ROOT}/doc
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${LAUNCHER_UI_GEN_DIR}
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${LAUNCHER_UI_USER_DIR}
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${LAUNCHER_UI_ROOT}/registry
+    COMMAND $<TARGET_FILE:dominium-ui-editor> --headless-apply ${LAUNCHER_UI_DOC} --script ${LAUNCHER_UI_SCRIPT} --out ${LAUNCHER_UI_DOC} --in-new
+    COMMAND $<TARGET_FILE:dominium-ui-editor> --headless-format ${LAUNCHER_UI_DOC}
+    COMMAND $<TARGET_FILE:dominium-ui-editor> --headless-codegen --in ${LAUNCHER_UI_DOC} --out ${LAUNCHER_UI_GEN_DIR} --registry ${LAUNCHER_UI_REGISTRY} --docname launcher_ui
+    DEPENDS ${LAUNCHER_UI_SCRIPT}
+    COMMENT "Regenerating launcher UI from ops script"
+    VERBATIM
+)
+
+add_custom_target(ui_regen_launcher
+    DEPENDS
+        ${LAUNCHER_UI_DOC}
+        ${LAUNCHER_UI_DOC_JSON}
+        ${LAUNCHER_UI_GEN_CPP}
+        ${LAUNCHER_UI_GEN_H}
+        ${LAUNCHER_UI_USER_CPP}
+        ${LAUNCHER_UI_USER_H}
+        ${LAUNCHER_UI_REGISTRY}
+)
+add_dependencies(ui_regen_launcher dominium-ui-editor)
 
 add_executable(tool_manifest_inspector
     tools/tool_manifest_inspector.cpp
