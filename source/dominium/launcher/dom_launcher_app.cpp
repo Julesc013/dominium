@@ -1885,6 +1885,8 @@ bool DomLauncherApp::load_dui_schema(std::vector<unsigned char>& out_schema,
                                     std::string& out_loaded_path,
                                     std::string& out_error) const {
     std::string err;
+    std::string canonical_err;
+    std::vector<std::string> canonical;
     std::vector<std::string> candidates;
     std::string cur;
     int i;
@@ -1892,6 +1894,19 @@ bool DomLauncherApp::load_dui_schema(std::vector<unsigned char>& out_schema,
     out_schema.clear();
     out_loaded_path.clear();
     out_error.clear();
+
+    canonical.push_back("tools/launcher/ui/doc/launcher_ui_doc.tlv");
+    canonical.push_back("tools\\launcher\\ui\\doc\\launcher_ui_doc.tlv");
+    for (i = 0; i < (int)canonical.size(); ++i) {
+        if (file_exists_stdio(canonical[(size_t)i])) {
+            if (!read_file_all_bytes(canonical[(size_t)i], out_schema, err)) {
+                canonical_err = std::string("schema_read_failed;path=") + canonical[(size_t)i] + ";err=" + err;
+                break;
+            }
+            out_loaded_path = canonical[(size_t)i];
+            return true;
+        }
+    }
 
     candidates.push_back("source/dominium/launcher/ui_schema/launcher_ui_v1.tlv");
     candidates.push_back("source\\dominium\\launcher\\ui_schema\\launcher_ui_v1.tlv");
@@ -1913,9 +1928,17 @@ bool DomLauncherApp::load_dui_schema(std::vector<unsigned char>& out_schema,
     cur = dirname_of(m_argv0.empty() ? std::string() : m_argv0);
     for (i = 0; i < 10; ++i) {
         if (!cur.empty()) {
+            const std::string cc0 = path_join(cur, "tools/launcher/ui/doc/launcher_ui_doc.tlv");
             const std::string c0 = path_join(cur, "source/dominium/launcher/ui_schema/launcher_ui_v1.tlv");
             const std::string c1 = path_join(cur, "ui_schema/launcher_ui_v1.tlv");
             const std::string c2 = path_join(cur, "launcher_ui_v1.tlv");
+            if (file_exists_stdio(cc0)) {
+                if (read_file_all_bytes(cc0, out_schema, err)) {
+                    out_loaded_path = cc0;
+                    return true;
+                }
+                canonical_err = std::string("schema_read_failed;path=") + cc0 + ";err=" + err;
+            }
             if (file_exists_stdio(c0) && read_file_all_bytes(c0, out_schema, err)) {
                 out_loaded_path = c0;
                 return true;
@@ -1935,7 +1958,11 @@ bool DomLauncherApp::load_dui_schema(std::vector<unsigned char>& out_schema,
         }
     }
 
-    out_error = "schema_not_found";
+    if (!canonical_err.empty()) {
+        out_error = canonical_err;
+    } else {
+        out_error = "schema_not_found";
+    }
     return false;
 }
 
@@ -2135,6 +2162,7 @@ bool DomLauncherApp::init_gui(const LauncherConfig &cfg) {
         shutdown();
         return false;
     }
+    std::printf("Launcher: loaded UI schema: %s\n", schema_path.c_str());
 
     if (m_dui_api->set_schema_tlv(m_dui_win, schema.empty() ? (const void*)0 : &schema[0], (u32)schema.size()) != DUI_OK) {
         std::printf("Launcher: DUI set_schema_tlv failed.\n");
