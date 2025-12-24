@@ -1,0 +1,19 @@
+{
+  "command": "headless-codegen",
+  "input": "tools/launcher/ui/doc/launcher_ui_doc.tlv",
+  "output_files": [
+    "tools/launcher/ui/gen/ui_launcher_ui_actions_gen.cpp",
+    "tools/launcher/ui/gen/ui_launcher_ui_actions_gen.h",
+    "tools/launcher/ui/registry/launcher_actions_registry.json",
+    "tools/launcher/ui/user/ui_launcher_ui_actions_user.cpp",
+    "tools/launcher/ui/user/ui_launcher_ui_actions_user.h"
+  ],
+  "errors": [
+  ],
+  "warnings": [
+    "validate: feature 'widget.splitter' emulated on backend 'win32/win32_t1' [widget 31] [widget.splitter]"
+  ],
+  "created_ids": {},
+  "exit_code": 0,
+  "status": "ok"
+}
