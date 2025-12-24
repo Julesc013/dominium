@@ -158,7 +158,7 @@ setup and packaging workflows are documented in `docs/SETUP_WINDOWS.md`,
 `docs/SETUP_LINUX.md`, `docs/SETUP_MACOS.md`, and `docs/SETUP_RETRO.md`.
 
 Dist output: final link artifacts are routed into the deterministic `dist/`
-tree described in `docs/BUILD_DIST.md`.
+tree described in `docs/BUILD_DIST.md` and `docs/build_output.md`.
 
 ## Project status and maturity
 Status: active development with a v0 deterministic core bootstrap in progress
