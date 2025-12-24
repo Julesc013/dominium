@@ -90,7 +90,7 @@ set_target_properties(dominium-tool-editor PROPERTIES
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
-dominium_dist_set_role(dominium-tool-editor ROLE tools)
+dist_set_role(dominium-tool-editor tools)
 
 add_executable(dominium-tool-editor-docgen
     tool_editor_docgen.cpp
@@ -105,4 +105,4 @@ set_target_properties(dominium-tool-editor-docgen PROPERTIES
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
-dominium_dist_set_role(dominium-tool-editor-docgen ROLE tools)
+dist_set_role(dominium-tool-editor-docgen tools)

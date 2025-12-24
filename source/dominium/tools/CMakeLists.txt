@@ -60,7 +60,7 @@ set_target_properties(dominium-modcheck PROPERTIES
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
-dominium_dist_set_role(dominium-modcheck ROLE tools)
+dist_set_role(dominium-modcheck tools)
 
 dominium_bundle_runtime(dominium-modcheck)
 
@@ -81,7 +81,7 @@ function(dominium_add_tool_exe target_name output_name)
         CXX_EXTENSIONS OFF
     )
     dominium_bundle_runtime(${target_name})
-    dominium_dist_set_role(${target_name} ROLE tools)
+    dist_set_role(${target_name} tools)
 endfunction()
 
 dominium_add_tool_exe(dominium-world-editor "tool_world_editor"

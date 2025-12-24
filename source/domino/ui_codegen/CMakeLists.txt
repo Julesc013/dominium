@@ -37,7 +37,7 @@ if(DOMUI_ENABLE_CODEGEN)
         CXX_STANDARD_REQUIRED ON
         CXX_EXTENSIONS OFF
     )
-    dominium_dist_set_role(domui_codegen ROLE tools)
+    dist_set_role(domui_codegen tools)
 endif()
 
 add_subdirectory(tests)
