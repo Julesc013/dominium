@@ -1,6 +1,5 @@
 # Dominium / Domino
-Dominium (built on the Domino engine) is a simulation and game runtime designed
-so the same inputs always produce the same world results on different computers.
+Dominium (built on the Domino engine) is a deterministic 3D simulation-type game runtime.
 
 ## High-level overview (non-technical)
 Dominium combines a deterministic simulation engine (Domino) with product code
