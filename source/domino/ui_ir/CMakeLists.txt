@@ -10,6 +10,7 @@ add_library(domino_ui_ir STATIC
     ui_ir_tlv.cpp
     ui_ir_json.cpp
     ui_ir_legacy_import.cpp
+    ui_ops.cpp
     ui_caps.cpp
     ui_validate.cpp
     ui_layout.cpp
