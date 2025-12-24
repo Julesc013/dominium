@@ -46,9 +46,11 @@ target_link_libraries(domui_validate
 )
 
 set_target_properties(domui_validate PROPERTIES
+    OUTPUT_NAME "tool_ui_validate"
     CXX_STANDARD 98
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
+dominium_dist_set_role(domui_validate ROLE tools)
 
 add_subdirectory(tests)

@@ -32,10 +32,12 @@ if(DOMUI_ENABLE_CODEGEN)
     )
 
     set_target_properties(domui_codegen PROPERTIES
+        OUTPUT_NAME "tool_ui_codegen"
         CXX_STANDARD 98
         CXX_STANDARD_REQUIRED ON
         CXX_EXTENSIONS OFF
     )
+    dominium_dist_set_role(domui_codegen ROLE tools)
 endif()
 
 add_subdirectory(tests)

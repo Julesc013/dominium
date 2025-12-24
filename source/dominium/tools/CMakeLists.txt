@@ -55,11 +55,12 @@ target_link_libraries(dominium-modcheck
 )
 
 set_target_properties(dominium-modcheck PROPERTIES
-    OUTPUT_NAME "dominium-modcheck"
+    OUTPUT_NAME "tool_modcheck"
     CXX_STANDARD 98
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
+dominium_dist_set_role(dominium-modcheck ROLE tools)
 
 dominium_bundle_runtime(dominium-modcheck)
 
@@ -80,65 +81,66 @@ function(dominium_add_tool_exe target_name output_name)
         CXX_EXTENSIONS OFF
     )
     dominium_bundle_runtime(${target_name})
+    dominium_dist_set_role(${target_name} ROLE tools)
 endfunction()
 
-dominium_add_tool_exe(dominium-world-editor "dominium-world-editor"
+dominium_add_tool_exe(dominium-world-editor "tool_world_editor"
     world_editor/main_world_editor.cpp
     world_editor/dom_world_editor_controller.cpp
 )
 
-dominium_add_tool_exe(dominium-blueprint-editor "dominium-blueprint-editor"
+dominium_add_tool_exe(dominium-blueprint-editor "tool_blueprint_editor"
     blueprint_editor/main_blueprint_editor.cpp
 )
 
-dominium_add_tool_exe(dominium-tech-editor "dominium-tech-editor"
+dominium_add_tool_exe(dominium-tech-editor "tool_tech_editor"
     tech_editor/main_tech_editor.cpp
 )
 
-dominium_add_tool_exe(dominium-policy-editor "dominium-policy-editor"
+dominium_add_tool_exe(dominium-policy-editor "tool_policy_editor"
     policy_editor/main_policy_editor.cpp
 )
 
-dominium_add_tool_exe(dominium-process-editor "dominium-process-editor"
+dominium_add_tool_exe(dominium-process-editor "tool_process_editor"
     process_editor/main_process_editor.cpp
 )
 
-dominium_add_tool_exe(dominium-transport-editor "dominium-transport-editor"
+dominium_add_tool_exe(dominium-transport-editor "tool_transport_editor"
     transport_editor/main_transport_editor.cpp
 )
 
-dominium_add_tool_exe(dominium-struct-editor "dominium-struct-editor"
+dominium_add_tool_exe(dominium-struct-editor "tool_struct_editor"
     struct_editor/main_struct_editor.cpp
 )
 
-dominium_add_tool_exe(dominium-item-editor "dominium-item-editor"
+dominium_add_tool_exe(dominium-item-editor "tool_item_editor"
     item_editor/main_item_editor.cpp
 )
 
-dominium_add_tool_exe(dominium-pack-editor "dominium-pack-editor"
+dominium_add_tool_exe(dominium-pack-editor "tool_pack_editor"
     pack_editor/main_pack_editor.cpp
 )
 
-dominium_add_tool_exe(dominium-mod-builder "dominium-mod-builder"
+dominium_add_tool_exe(dominium-mod-builder "tool_mod_builder"
     mod_builder/main_mod_builder.cpp
     mod_builder/dom_mod_builder_controller.cpp
 )
 
-dominium_add_tool_exe(dominium-save-inspector "dominium-save-inspector"
+dominium_add_tool_exe(dominium-save-inspector "tool_save_inspector"
     save_inspector/main_save_inspector.cpp
     save_inspector/dom_save_inspector_controller.cpp
 )
 
-dominium_add_tool_exe(dominium-replay-viewer "dominium-replay-viewer"
+dominium_add_tool_exe(dominium-replay-viewer "tool_replay_viewer"
     replay_viewer/main_replay_viewer.cpp
     replay_viewer/dom_replay_viewer_controller.cpp
 )
 
-dominium_add_tool_exe(dominium-net-inspector "dominium-net-inspector"
+dominium_add_tool_exe(dominium-net-inspector "tool_net_inspector"
     net_inspector/main_net_inspector.cpp
     net_inspector/dom_net_inspector_controller.cpp
 )
 
-dominium_add_tool_exe(dominium-tools-demo-gen "dominium-tools-demo-gen"
+dominium_add_tool_exe(dominium-tools-demo-gen "tool_tools_demo_gen"
     demo_gen/main_tools_demo_gen.cpp
 )

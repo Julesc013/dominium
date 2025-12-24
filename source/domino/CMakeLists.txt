@@ -16,6 +16,11 @@ target_include_directories(dom_shared
 
 target_compile_features(dom_shared PRIVATE cxx_std_98)
 
+set_target_properties(dom_shared PROPERTIES
+    OUTPUT_NAME "core_dominium"
+)
+dominium_dist_set_role(dom_shared ROLE share)
+
 add_library(domino_core STATIC
     core/types.c
     core/dom_build_info.c
@@ -522,10 +527,13 @@ if(DOM_BACKEND_METAL)
 endif()
 
 set_target_properties(domino_core PROPERTIES
+    OUTPUT_NAME "eng_domino"
     C_STANDARD 90
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )
+
+dominium_dist_set_role(domino_core ROLE engine)
 
 if(WIN32)
     target_link_libraries(domino_core PRIVATE user32 gdi32 comctl32)

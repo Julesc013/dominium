@@ -25,8 +25,9 @@ target_compile_definitions(dominium-ui-editor
 )
 
 set_target_properties(dominium-ui-editor PROPERTIES
-    OUTPUT_NAME "dominium-ui-editor"
+    OUTPUT_NAME "tool_ui_editor"
     CXX_STANDARD 98
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
+dominium_dist_set_role(dominium-ui-editor ROLE tools)

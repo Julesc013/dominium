@@ -24,7 +24,7 @@ target_link_libraries(dominium-setup
 )
 
 set_target_properties(dominium-setup PROPERTIES
-    OUTPUT_NAME "dominium-setup"
+    OUTPUT_NAME "tool_setup"
     C_STANDARD 90
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
@@ -32,6 +32,7 @@ set_target_properties(dominium-setup PROPERTIES
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
+dominium_dist_set_role(dominium-setup ROLE tools)
 
 dominium_bundle_runtime(dominium-setup)
 
