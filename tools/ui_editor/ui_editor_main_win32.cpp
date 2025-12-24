@@ -41,6 +41,9 @@ int main(int argc, char** argv)
 #else
 
 #define WIN32_LEAN_AND_MEAN
+#ifndef _WIN32_IE
+#define _WIN32_IE 0x0501
+#endif
 #include <windows.h>
 #include <commctrl.h>
 #include <commdlg.h>
@@ -187,6 +190,25 @@ struct EditorCommand {
     std::string label;
 };
 
+struct UiDiscoveryEntry {
+    int is_canonical;
+    std::string abs_path;
+    std::string rel_path;
+    std::string tool;
+    domui_u32 format_version;
+    u64 last_write;
+
+    UiDiscoveryEntry()
+        : is_canonical(0),
+          abs_path(),
+          rel_path(),
+          tool(),
+          format_version(0u),
+          last_write(0u)
+    {
+    }
+};
+
 struct UiOpenToolDialogState {
     UiEditorApp* app;
     HWND hwnd;
@@ -222,6 +244,26 @@ static RECT ui_make_rect(int l, int t, int r, int b)
     rc.right = r;
     rc.bottom = b;
     return rc;
+}
+
+static int ui_listview_insert_item(HWND list, const char* text, LPARAM lparam)
+{
+    LVITEMA item;
+    memset(&item, 0, sizeof(item));
+    item.mask = LVIF_TEXT | LVIF_PARAM;
+    item.iItem = ListView_GetItemCount(list);
+    item.pszText = (LPSTR)text;
+    item.lParam = lparam;
+    return (int)SendMessageA(list, LVM_INSERTITEMA, 0, (LPARAM)&item);
+}
+
+static void ui_listview_set_item_text(HWND list, int row, int col, const char* text)
+{
+    LVITEMA item;
+    memset(&item, 0, sizeof(item));
+    item.iSubItem = col;
+    item.pszText = (LPSTR)text;
+    (void)SendMessageA(list, LVM_SETITEMTEXTA, (WPARAM)row, (LPARAM)&item);
 }
 
 static std::string ui_to_lower(const std::string& in)
@@ -1025,25 +1067,6 @@ static bool ui_run_codegen_with_paths(const char* tlv_path,
     }
     return true;
 }
-
-struct UiDiscoveryEntry {
-    int is_canonical;
-    std::string abs_path;
-    std::string rel_path;
-    std::string tool;
-    domui_u32 format_version;
-    u64 last_write;
-
-    UiDiscoveryEntry()
-        : is_canonical(0),
-          abs_path(),
-          rel_path(),
-          tool(),
-          format_version(0u),
-          last_write(0u)
-    {
-    }
-};
 
 static const char* ui_discovery_type_name(const UiDiscoveryEntry& entry)
 {
@@ -2493,16 +2516,10 @@ static void ui_open_tool_dialog_populate(UiOpenToolDialogState* state)
         }
         std::string type_text = entry.is_canonical ? "Canonical" : "Legacy";
         std::string version_text = entry.is_canonical ? ui_u32_to_string(entry.format_version) : "-";
-        LVITEMA item;
-        memset(&item, 0, sizeof(item));
-        item.mask = LVIF_TEXT | LVIF_PARAM;
-        item.iItem = ListView_GetItemCount(state->list);
-        item.pszText = (LPSTR)entry.tool.c_str();
-        item.lParam = (LPARAM)i;
-        int row = ListView_InsertItemA(state->list, &item);
-        ListView_SetItemTextA(state->list, row, 1, (LPSTR)type_text.c_str());
-        ListView_SetItemTextA(state->list, row, 2, (LPSTR)entry.rel_path.c_str());
-        ListView_SetItemTextA(state->list, row, 3, (LPSTR)version_text.c_str());
+        int row = ui_listview_insert_item(state->list, entry.tool.c_str(), (LPARAM)i);
+        ui_listview_set_item_text(state->list, row, 1, type_text.c_str());
+        ui_listview_set_item_text(state->list, row, 2, entry.rel_path.c_str());
+        ui_listview_set_item_text(state->list, row, 3, version_text.c_str());
     }
 }
 
