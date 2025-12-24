@@ -32,7 +32,7 @@ set_target_properties(dominium-setup PROPERTIES
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
-dominium_dist_set_role(dominium-setup ROLE tools)
+dist_set_role(dominium-setup tools)
 
 dominium_bundle_runtime(dominium-setup)
 

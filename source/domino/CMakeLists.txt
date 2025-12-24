@@ -19,7 +19,7 @@ target_compile_features(dom_shared PRIVATE cxx_std_98)
 set_target_properties(dom_shared PROPERTIES
     OUTPUT_NAME "core_dominium"
 )
-dominium_dist_set_role(dom_shared ROLE share)
+dist_set_role(dom_shared share)
 
 add_library(domino_core STATIC
     core/types.c
@@ -533,7 +533,7 @@ set_target_properties(domino_core PROPERTIES
     C_EXTENSIONS OFF
 )
 
-dominium_dist_set_role(domino_core ROLE engine)
+dist_set_role(domino_core engine)
 
 if(WIN32)
     target_link_libraries(domino_core PRIVATE user32 gdi32 comctl32)

@@ -51,6 +51,6 @@ set_target_properties(domui_validate PROPERTIES
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
-dominium_dist_set_role(domui_validate ROLE tools)
+dist_set_role(domui_validate tools)
 
 add_subdirectory(tests)

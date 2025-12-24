@@ -39,7 +39,7 @@ set_target_properties(dominium-launcher PROPERTIES
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
-dominium_dist_set_role(dominium-launcher ROLE launch)
+dist_set_role(dominium-launcher launch)
 
 dominium_bundle_runtime(dominium-launcher)
 
@@ -126,7 +126,7 @@ set_target_properties(tool_manifest_inspector PROPERTIES
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
-dominium_dist_set_role(tool_manifest_inspector ROLE tools)
+dist_set_role(tool_manifest_inspector tools)
 
 dominium_bundle_runtime(tool_manifest_inspector)
 
