@@ -40,6 +40,28 @@ Naming rules:
 - No version numbers in filenames
 - Max depth from `dist/` is 16
 
+## Runtime Seed (Portable/User/System)
+
+For rapid local testing, the build can seed a minimal runtime layout under the
+active leaf:
+- `dist/sys/<os>/<arch>/.dsu/installed_state.dsustate`
+- `dist/sys/<os>/<arch>/dominium_install.json`
+- `dist/sys/<os>/<arch>/repo/{products,packs,mods}`
+- `dist/sys/<os>/<arch>/{instances,artifacts,audit,exports,temp}`
+Note: `.dsu` is a reserved seed directory (dot-prefix exception).
+
+Enable/disable:
+- `-DDOM_DIST_SEED_RUNTIME=ON|OFF` (default: ON)
+
+Install type + channel:
+- `-DDOM_DIST_INSTALL_TYPE=portable|user|system` (default: portable)
+- `-DDOM_DIST_BUILD_CHANNEL=dev|beta|stable` (default: dev)
+
+Generate/refresh:
+```
+cmake --build <builddir> --target dist_seed
+```
+
 ## Build Directories (Recommended)
 
 ```

@@ -10,6 +10,14 @@ endif()
 if(NOT DEFINED DOM_DIST_VARIANT)
     set(DOM_DIST_VARIANT "")
 endif()
+if(NOT DEFINED DOM_DIST_SEED_RUNTIME)
+    set(DOM_DIST_SEED_RUNTIME "ON")
+endif()
+string(TOLOWER "${DOM_DIST_SEED_RUNTIME}" _seed_runtime_raw)
+set(_seed_runtime OFF)
+if(_seed_runtime_raw STREQUAL "1" OR _seed_runtime_raw STREQUAL "on" OR _seed_runtime_raw STREQUAL "true" OR _seed_runtime_raw STREQUAL "yes")
+    set(_seed_runtime ON)
+endif()
 
 set(_required_top
     "${DOM_DIST_ROOT}/meta"
@@ -65,6 +73,20 @@ set(_required_leaf_dirs
     "${DOM_DIST_LEAF}/etc"
     "${DOM_DIST_LEAF}/man"
 )
+if(_seed_runtime)
+    list(APPEND _required_leaf_dirs
+        "${DOM_DIST_LEAF}/.dsu"
+        "${DOM_DIST_LEAF}/repo"
+        "${DOM_DIST_LEAF}/repo/products"
+        "${DOM_DIST_LEAF}/repo/packs"
+        "${DOM_DIST_LEAF}/repo/mods"
+        "${DOM_DIST_LEAF}/instances"
+        "${DOM_DIST_LEAF}/artifacts"
+        "${DOM_DIST_LEAF}/audit"
+        "${DOM_DIST_LEAF}/exports"
+        "${DOM_DIST_LEAF}/temp"
+    )
+endif()
 foreach(_dir IN LISTS _required_leaf_dirs)
     if(NOT EXISTS "${_dir}")
         message(FATAL_ERROR "validate_dist: missing leaf dir: ${_dir}")
@@ -75,6 +97,12 @@ set(_required_leaf_files
     "${DOM_DIST_LEAF}/etc/leaf.json"
     "${DOM_DIST_LEAF}/man/readme.txt"
 )
+if(_seed_runtime)
+    list(APPEND _required_leaf_files
+        "${DOM_DIST_LEAF}/.dsu/installed_state.dsustate"
+        "${DOM_DIST_LEAF}/dominium_install.json"
+    )
+endif()
 foreach(_file IN LISTS _required_leaf_files)
     if(NOT EXISTS "${_file}")
         message(FATAL_ERROR "validate_dist: missing leaf file: ${_file}")
@@ -83,6 +111,9 @@ endforeach()
 
 function(_dom_check_segment seg rel_path is_file)
     if("${seg}" STREQUAL "")
+        return()
+    endif()
+    if(NOT is_file AND "${seg}" STREQUAL ".dsu")
         return()
     endif()
     if(is_file)
@@ -200,4 +231,6 @@ message(STATUS "  dist/sys/winnt/x64/bin/rend/rend_<backend>.dll")
 message(STATUS "  dist/sys/winnt/x64/bin/tools/tool_<name>.exe")
 message(STATUS "  dist/sys/winnt/x64/etc/leaf.json")
 message(STATUS "  dist/sys/winnt/x64/man/readme.txt")
+message(STATUS "  dist/sys/winnt/x64/.dsu/installed_state.dsustate")
+message(STATUS "  dist/sys/winnt/x64/dominium_install.json")
 message(STATUS "  dist/sym/winnt/x64/bin/launch/launch_dominium.pdb")

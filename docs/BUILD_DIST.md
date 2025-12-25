@@ -128,6 +128,33 @@ Required files per leaf:
 - `sys/<os>/<arch>/etc/leaf.json`
 - `sys/<os>/<arch>/man/readme.txt`
 
+## Runtime Seed (Minimal Install + Home Layout)
+
+For rapid testing, CMake can seed a minimal install state and home layout under
+the active leaf. This is additive to the frozen layout and keeps the core
+artifact routing unchanged.
+
+Seeded paths:
+- `sys/<os>/<arch>/.dsu/installed_state.dsustate`
+- `sys/<os>/<arch>/dominium_install.json`
+- `sys/<os>/<arch>/repo/{products,packs,mods}`
+- `sys/<os>/<arch>/{instances,artifacts,audit,exports,temp}`
+Note: `.dsu` is a reserved seed directory (dot-prefix exception).
+
+Seed target:
+```
+cmake --build <builddir> --target dist_seed
+```
+
+Options:
+- `-DDOM_DIST_SEED_RUNTIME=ON|OFF` (default: ON)
+- `-DDOM_DIST_INSTALL_TYPE=portable|user|system` (default: portable)
+- `-DDOM_DIST_BUILD_CHANNEL=dev|beta|stable` (default: dev)
+
+Note: the seed uses deterministic placeholders (fixed install_id and timestamp)
+to keep dist outputs stable. For real installs, use `dominium-setup` or the
+packaging pipeline.
+
 ## Naming Contract (Frozen)
 
 Directories:

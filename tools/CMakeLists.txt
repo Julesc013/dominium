@@ -9,3 +9,4 @@ endif()
 
 add_subdirectory(ui_editor)
 add_subdirectory(tool_editor)
+add_subdirectory(dist_seed)

@@ -114,6 +114,19 @@ static std::string state_path_for_root(const std::string& root) {
     return dom_shared::os_path_join(dom_shared::os_path_join(root, ".dsu"), "installed_state.dsustate");
 }
 
+static std::string default_home_from_install_root(const std::string& root) {
+    if (root.empty()) {
+        return std::string();
+    }
+    {
+        const std::string cand = dom_shared::os_path_join(root, "dominium_home");
+        if (dom_shared::os_directory_exists(cand)) {
+            return cand;
+        }
+    }
+    return root;
+}
+
 static bool find_state_path_from_exe(std::string& out_state_path,
                                      std::string& out_root,
                                      std::string& out_expected_path) {
@@ -809,6 +822,7 @@ int main(int argc, char **argv) {
     dom::DomLauncherApp app;
     dom::ProfileCli profile_cli;
     std::string profile_err;
+    std::string install_root_for_home;
     int i;
 
     launcher_core_desc_v1 lc_desc;
@@ -987,6 +1001,7 @@ int main(int argc, char **argv) {
             exit_code = 3;
             return exit_code;
         }
+        install_root_for_home = default_home_from_install_root(install_root);
         if (lc) {
             (void)launcher_core_add_reason(lc, (std::string("state_path=") + state_path).c_str());
             (void)launcher_core_add_reason(lc, (std::string("install_root=") + install_root).c_str());
@@ -1038,6 +1053,9 @@ int main(int argc, char **argv) {
         } else if (std::strncmp(arg, "--product=", 10) == 0) {
             cfg.product = arg + 10;
         }
+    }
+    if (cfg.home.empty() && !install_root_for_home.empty()) {
+        cfg.home = install_root_for_home;
     }
 
     if (cfg.mode == dom::LAUNCHER_MODE_TUI) {
