@@ -308,6 +308,9 @@ set(DOM_DIST_ROOT "${CMAKE_SOURCE_DIR}/dist" CACHE PATH "Dist output root")
 set(DOM_DIST_OS "" CACHE STRING "Override dist os token")
 set(DOM_DIST_ARCH "" CACHE STRING "Override dist arch token")
 set(DOM_DIST_VARIANT "" CACHE STRING "Optional dist variant token (msvc, mingw, etc.)")
+option(DOM_DIST_SEED_RUNTIME "Generate minimal install state + home layout under dist leaf" ON)
+set(DOM_DIST_INSTALL_TYPE "portable" CACHE STRING "Dist seed install type (portable|user|system)")
+set(DOM_DIST_BUILD_CHANNEL "dev" CACHE STRING "Dist seed build channel")
 dist_init(
     DIST_ROOT "${DOM_DIST_ROOT}"
     DIST_OS "${DOM_DIST_OS}"
@@ -390,16 +393,21 @@ add_custom_target(dist_meta
         -DDOM_TOOLCHAIN_ID=${DOM_TOOLCHAIN_ID}
         -DDOM_GIT_HASH=${DOM_GIT_HASH}
         -DDOM_PROJECT_SEMVER=${DOM_PROJECT_SEMVER}
+        -DDOM_DIST_SEED_RUNTIME=${DOM_DIST_SEED_RUNTIME}
         -P ${CMAKE_SOURCE_DIR}/cmake/dominium_dist_meta.cmake
     DEPENDS ${_dom_dist_targets}
     COMMENT "Generating dist metadata"
 )
+if(TARGET dist_seed)
+    add_dependencies(dist_meta dist_seed)
+endif()
 
 add_custom_target(verify_dist
     COMMAND ${CMAKE_COMMAND}
         -DDOM_DIST_ROOT=${DOM_DIST_ROOT}
         -DDOM_DIST_LEAF=${DOM_DIST_LEAF}
         -DDOM_DIST_VARIANT=${DOM_DIST_VARIANT}
+        -DDOM_DIST_SEED_RUNTIME=${DOM_DIST_SEED_RUNTIME}
         -P ${CMAKE_SOURCE_DIR}/tools/validate_dist.cmake
     COMMENT "Validating dist layout"
 )
