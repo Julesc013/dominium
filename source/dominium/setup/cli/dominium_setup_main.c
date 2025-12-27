@@ -228,6 +228,7 @@ static void dsu_cli_print_help_root(FILE *out) {
             "               [--platform <triple>] [--install-root <path>] --out <file>\n"
             "               [--ui-mode <gui|tui|cli>] [--frontend-id <id>]\n"
             "               [--offline] [--allow-prerelease] [--legacy]\n"
+            "               [--shortcuts] [--file-assoc] [--url-handlers]\n"
             "  %s resolve --manifest <file> [--state <file>] --invocation <file>\n"
             "  %s plan --manifest <file> [--state <file>] --invocation <file> --out <planfile>\n"
             "  %s apply-invocation --manifest <file> [--state <file>] --invocation <file> --out <planfile> [--dry-run]\n"
@@ -320,7 +321,8 @@ static void dsu_cli_print_help_command(FILE *out, int argc, char **argv) {
                 "               [--components <csv>] [--exclude <csv>] [--scope <portable|user|system>]\n"
                 "               [--platform <triple>] [--install-root <path>] --out <file>\n"
                 "               [--ui-mode <gui|tui|cli>] [--frontend-id <id>]\n"
-                "               [--offline] [--allow-prerelease] [--legacy]\n",
+                "               [--offline] [--allow-prerelease] [--legacy]\n"
+                "               [--shortcuts] [--file-assoc] [--url-handlers]\n",
                 DSU_CLI_NAME);
         return;
     }
@@ -2880,6 +2882,9 @@ int main(int argc, char **argv) {
         int policy_offline = 0;
         int policy_allow_prerelease = 0;
         int policy_legacy = 0;
+        int policy_shortcuts = 0;
+        int policy_file_assoc = 0;
+        int policy_url_handlers = 0;
         dsu_u32 policy_flags = 0u;
 
         memset(&components, 0, sizeof(components));
@@ -2900,6 +2905,18 @@ int main(int argc, char **argv) {
             }
             if (dsu_cli_streq(arg, "--legacy")) {
                 policy_legacy = 1;
+                continue;
+            }
+            if (dsu_cli_streq(arg, "--shortcuts")) {
+                policy_shortcuts = 1;
+                continue;
+            }
+            if (dsu_cli_streq(arg, "--file-assoc")) {
+                policy_file_assoc = 1;
+                continue;
+            }
+            if (dsu_cli_streq(arg, "--url-handlers")) {
+                policy_url_handlers = 1;
                 continue;
             }
 
@@ -3036,6 +3053,15 @@ int main(int argc, char **argv) {
         }
         if (policy_legacy) {
             policy_flags |= DSU_INVOCATION_POLICY_LEGACY_MODE;
+        }
+        if (policy_shortcuts) {
+            policy_flags |= DSU_INVOCATION_POLICY_ENABLE_SHORTCUTS;
+        }
+        if (policy_file_assoc) {
+            policy_flags |= DSU_INVOCATION_POLICY_ENABLE_FILE_ASSOC;
+        }
+        if (policy_url_handlers) {
+            policy_flags |= DSU_INVOCATION_POLICY_ENABLE_URL_HANDLERS;
         }
 
         {

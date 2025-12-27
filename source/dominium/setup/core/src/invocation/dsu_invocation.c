@@ -35,7 +35,10 @@ PURPOSE: Invocation payload load/validate/digest (installer UX contract input).
 #define DSU_INVOCATION_POLICY_ALL (DSU_INVOCATION_POLICY_OFFLINE | \
                                    DSU_INVOCATION_POLICY_DETERMINISTIC | \
                                    DSU_INVOCATION_POLICY_ALLOW_PRERELEASE | \
-                                   DSU_INVOCATION_POLICY_LEGACY_MODE)
+                                   DSU_INVOCATION_POLICY_LEGACY_MODE | \
+                                   DSU_INVOCATION_POLICY_ENABLE_SHORTCUTS | \
+                                   DSU_INVOCATION_POLICY_ENABLE_FILE_ASSOC | \
+                                   DSU_INVOCATION_POLICY_ENABLE_URL_HANDLERS)
 
 typedef struct dsu__invocation_canon_t {
     dsu_u8 operation;

@@ -37,6 +37,7 @@ Defaults:
 - `install_roots`: if the manifest declares exactly one root for the selected scope and platform, default to that root; otherwise require explicit selection.
 - `selected_components` / `excluded_components`: if both are empty, use manifest defaults (`DEFAULT_SELECTED` components plus dependencies).
 - `policy_flags`: all false unless explicitly set (deterministic is true by default for Setup Core).
+- `policy_flags.enable_shortcuts`, `policy_flags.enable_file_assoc`, `policy_flags.enable_url_handlers` default to false unless explicitly set.
 
 Constraints:
 
@@ -74,6 +75,9 @@ but must map to the same error codes):
 | Deterministic mode | `policy_flags.deterministic` | Optional; default true |
 | Allow prerelease | `policy_flags.allow_prerelease` | Optional |
 | Legacy mode | `policy_flags.legacy_mode` | Optional |
+| Enable shortcuts | `policy_flags.enable_shortcuts` | Optional |
+| Enable file associations | `policy_flags.enable_file_assoc` | Optional |
+| Enable URL handlers | `policy_flags.enable_url_handlers` | Optional |
 | UI type | `ui_mode` | Informational only |
 | Frontend id | `frontend_id` | Informational only |
 
