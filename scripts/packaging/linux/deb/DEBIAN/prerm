@@ -4,6 +4,7 @@ set -e
 ARTIFACT_ROOT="/opt/dominium/artifact_root"
 CLI_BIN="$ARTIFACT_ROOT/setup/dominium-setup"
 MANIFEST_PATH="setup/manifests/product.dsumanifest"
+INVOCATION_PATH="/tmp/dominium_uninstall.dsuinv"
 PLAN_PATH="/tmp/dominium_uninstall.dsuplan"
 STATE_PATH="/opt/dominium/.dsu/installed_state.dsustate"
 
@@ -11,7 +12,8 @@ if [ "$1" = "remove" ] || [ "$1" = "purge" ]; then
     if [ -x "$CLI_BIN" ] && [ -f "$STATE_PATH" ]; then
         (
             cd "$ARTIFACT_ROOT"
-            "$CLI_BIN" --deterministic 1 plan --manifest "$MANIFEST_PATH" --state "$STATE_PATH" --op uninstall --scope system --out "$PLAN_PATH" || true
+            "$CLI_BIN" --deterministic 1 export-invocation --manifest "$MANIFEST_PATH" --state "$STATE_PATH" --op uninstall --scope system --ui-mode cli --frontend-id deb --out "$INVOCATION_PATH" || true
+            "$CLI_BIN" --deterministic 1 plan --manifest "$MANIFEST_PATH" --state "$STATE_PATH" --invocation "$INVOCATION_PATH" --out "$PLAN_PATH" || true
             "$CLI_BIN" --deterministic 1 apply --plan "$PLAN_PATH" || true
         )
     fi

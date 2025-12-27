@@ -4,12 +4,14 @@ set -e
 ARTIFACT_ROOT="/opt/dominium/artifact_root"
 CLI_BIN="$ARTIFACT_ROOT/setup/dominium-setup"
 MANIFEST_PATH="setup/manifests/product.dsumanifest"
+INVOCATION_PATH="/tmp/dominium_install.dsuinv"
 PLAN_PATH="/tmp/dominium_install.dsuplan"
 
 if [ -x "$CLI_BIN" ]; then
     (
         cd "$ARTIFACT_ROOT"
-        "$CLI_BIN" --deterministic 1 plan --manifest "$MANIFEST_PATH" --op install --scope system --out "$PLAN_PATH" || true
+        "$CLI_BIN" --deterministic 1 export-invocation --manifest "$MANIFEST_PATH" --op install --scope system --ui-mode cli --frontend-id deb --out "$INVOCATION_PATH" || true
+        "$CLI_BIN" --deterministic 1 plan --manifest "$MANIFEST_PATH" --invocation "$INVOCATION_PATH" --out "$PLAN_PATH" || true
         "$CLI_BIN" --deterministic 1 apply --plan "$PLAN_PATH" || true
     )
 fi

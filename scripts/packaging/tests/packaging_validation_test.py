@@ -68,9 +68,11 @@ def _dry_run_install(artifact_root):
     _must_exist(cli)
 
     manifest = os.path.join(setup_dir, "manifests", "product.dsumanifest")
+    invocation = os.path.join(artifact_root, "_test_install.dsuinv")
     plan = os.path.join(artifact_root, "_test_install.dsuplan")
 
-    _run([cli, "plan", "--manifest", manifest, "--op", "install", "--scope", "user", "--out", plan], cwd=artifact_root)
+    _run([cli, "export-invocation", "--manifest", manifest, "--op", "install", "--scope", "user", "--out", invocation], cwd=artifact_root)
+    _run([cli, "plan", "--manifest", manifest, "--invocation", invocation, "--out", plan], cwd=artifact_root)
     _run([cli, "apply", "--plan", plan, "--dry-run"], cwd=artifact_root)
 
 
