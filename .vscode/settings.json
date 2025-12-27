@@ -4,6 +4,9 @@
         "d_tlv.h": "c",
         "types.h": "c"
     },
+    "C_Cpp.default.includePath": [
+        "${workspaceFolder}/source/dominium/setup/core/include"
+    ],
     "cmake.configurePreset": "msvc-debug",
     "cmake.buildPreset": "msvc-debug",
     "cmake.testPreset": "msvc-debug"
