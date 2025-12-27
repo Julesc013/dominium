@@ -37,7 +37,8 @@ Installed-state path (by convention):
 
 ## Maintainer scripts (rule)
 
-Maintainer scripts may only invoke Setup Core (`dominium-setup`), and must be headless-safe.
+Maintainer scripts may only invoke Setup Core (`dominium-setup`) using
+invocation payloads, and must be headless-safe.
 
 Implemented scripts:
 
@@ -57,6 +58,10 @@ It does not download anything; it is an offline artifact bundle.
 Convenience wrapper (generated alongside the tarball):
 
 - `dist/linux/dominium-install.sh`
+
+The wrapper writes a `dsu_invocation` payload for the selected scope and
+invokes `dominium-setup export-invocation`, `dominium-setup plan`, and
+`dominium-setup apply`.
 
 ## Sources
 

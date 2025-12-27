@@ -1,14 +1,15 @@
 # macOS Installers
 
 macOS distribution ships a native `.app` bundle plus optional `.pkg` and `.dmg`
-wrappers. The app stays a thin shell over `dominium-setup-cli` and the core
-engine; installation logic remains in the shared setup code.
+wrappers. The app is a thin shell over Setup Core and emits `dsu_invocation`
+payloads; installation logic remains in the shared setup code.
+macOS GUI flows must follow the same canonical UX steps (expert UI allowed).
 
 ## Prerequisites
 - macOS with Xcode command line tools (for `pkgbuild`, `productbuild`, `hdiutil`).
 - Staged payload under `DOMINIUM_DIST_DIR` (defaults to `<build>/dist/`):
   - `dominium_launcher_cli` (will be renamed to the bundle executable)
-  - `dominium-setup-cli`
+  - `dominium-setup`
   - Optional data payload (copied manually into the bundle or handled by the CLI)
 - Optional: custom icon at `Dominium.app/Contents/Resources/AppIcon.icns`
   (place it before packaging).
@@ -51,14 +52,15 @@ Outputs (`dist/installers/macos/` by default):
   metadata (name, identifier, version, executable, min OS).
 - Bundle contains:
   - `Contents/MacOS/<bundle executable>` (copied from `dominium_launcher_cli`)
-  - `Contents/MacOS/dominium-setup-cli` (used for repair/install tasks)
+  - `Contents/MacOS/dominium-setup` (used for repair/install tasks)
   - `Contents/Resources/` (place icon/assets before packaging)
 
 ## PKG packaging
 - `build_pkg.sh` wraps `pkgbuild` + `productbuild`, staging the bundle to
   `/Applications/Dominium.app`.
-- `postinstall` script calls `dominium-setup-cli` for a system-level install
-  and seeds per-user data under `~/Library/Application Support/Dominium`.
+- `postinstall` script generates an invocation payload for system scope and calls
+  `dominium-setup` plan/apply. It may seed per-user data under
+  `~/Library/Application Support/Dominium`.
   It is resilient if the CLI is absent or fails (non-fatal).
 
 ## DMG creation
@@ -70,4 +72,4 @@ Outputs (`dist/installers/macos/` by default):
 - Ensure `DOMINIUM_DIST_DIR` holds macOS binaries named as expected; otherwise
   the staging copy step will fail.
 - The macOS GUI shim lives in `source/dominium/setup/os/macos` and
-  shells out to `dominium-setup-cli` for all real work.
+  emits `dsu_invocation` payloads for all real work.

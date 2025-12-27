@@ -40,6 +40,7 @@ artifact_root/
   normalize into the canonical name/location in `artifact_root/` before wrapping.
 - Channel wrappers must embed `artifact_root/` *as-is*.
 - The `policies/default.policy` file is optional; if present it must be deterministic (no timestamps, no hostnames).
+- Invocation payloads (`*.dsuinv`) are generated at install time and are not part of `artifact_root/`.
 
 ## Hashing rules
 

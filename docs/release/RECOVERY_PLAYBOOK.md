@@ -15,7 +15,8 @@ If verification fails, proceed to repair.
 ## 2) Repair in place
 
 ```
-dominium-setup plan --manifest <manifest> --state <install_root>/.dsu/installed_state.dsustate --op repair --out repair.dsuplan
+dominium-setup export-invocation --manifest <manifest> --state <install_root>/.dsu/installed_state.dsustate --op repair --out repair.dsuinv
+dominium-setup plan --manifest <manifest> --state <install_root>/.dsu/installed_state.dsustate --invocation repair.dsuinv --out repair.dsuplan
 dominium-setup apply --plan repair.dsuplan
 ```
 
@@ -59,7 +60,8 @@ dominium-setup uninstall --state <install_root>/.dsu/installed_state.dsustate
 3) Reinstall from the same manifest:
 
 ```
-dominium-setup plan --manifest <manifest> --op install --scope <user|system|portable> --out reinstall.dsuplan
+dominium-setup export-invocation --manifest <manifest> --op install --scope <user|system|portable> --out reinstall.dsuinv
+dominium-setup plan --manifest <manifest> --invocation reinstall.dsuinv --out reinstall.dsuplan
 dominium-setup apply --plan reinstall.dsuplan
 ```
 
@@ -77,7 +79,8 @@ When the launcher refuses to run due to invalid state:
 
 ```
 dominium-setup verify --state <install_root>/.dsu/installed_state.dsustate --format json
-dominium-setup plan --manifest <manifest> --state <install_root>/.dsu/installed_state.dsustate --op repair --out repair.dsuplan
+dominium-setup export-invocation --manifest <manifest> --state <install_root>/.dsu/installed_state.dsustate --op repair --out repair.dsuinv
+dominium-setup plan --manifest <manifest> --state <install_root>/.dsu/installed_state.dsustate --invocation repair.dsuinv --out repair.dsuplan
 dominium-setup apply --plan repair.dsuplan
 ```
 

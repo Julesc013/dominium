@@ -38,12 +38,14 @@ SteamPipe itself does not execute installers automatically; integration is achie
 Mapping table:
 
 - Install / update:
-  - `dominium-setup plan --manifest setup/manifests/product.dsumanifest --op install --scope portable --out <plan>`
+  - `dominium-setup export-invocation --manifest setup/manifests/product.dsumanifest --op install --scope portable --out <invocation>`
+  - `dominium-setup plan --manifest setup/manifests/product.dsumanifest --invocation <invocation> --out <plan>`
   - `dominium-setup apply --plan <plan>`
 - Verify:
   - `dominium-setup verify --state <install_root>/.dsu/installed_state.dsustate`
 - Uninstall:
-  - `dominium-setup plan --manifest setup/manifests/product.dsumanifest --state <install_root>/.dsu/installed_state.dsustate --op uninstall --scope portable --out <plan>`
+  - `dominium-setup export-invocation --manifest setup/manifests/product.dsumanifest --state <install_root>/.dsu/installed_state.dsustate --op uninstall --scope portable --out <invocation>`
+  - `dominium-setup plan --manifest setup/manifests/product.dsumanifest --state <install_root>/.dsu/installed_state.dsustate --invocation <invocation> --out <plan>`
   - `dominium-setup apply --plan <plan>`
 
 ## Sources

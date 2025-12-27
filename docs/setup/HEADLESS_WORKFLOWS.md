@@ -13,19 +13,23 @@ Notes:
 
 `dominium-setup manifest validate --in <manifest.dsumanifest>`
 
-2) Resolve + preview:
+2) Export invocation:
 
-`dominium-setup resolve --manifest <manifest.dsumanifest> --op install --scope portable --components core`
+`dominium-setup export-invocation --manifest <manifest.dsumanifest> --op install --scope portable --components core --out <install.dsuinv>`
 
-3) Produce a plan file:
+3) Resolve + preview:
 
-`dominium-setup plan --manifest <manifest.dsumanifest> --op install --scope portable --components core --out <plan.dsuplan>`
+`dominium-setup resolve --manifest <manifest.dsumanifest> --invocation <install.dsuinv>`
 
-4) Apply:
+4) Produce a plan file:
+
+`dominium-setup plan --manifest <manifest.dsumanifest> --invocation <install.dsuinv> --out <plan.dsuplan>`
+
+5) Apply:
 
 `dominium-setup apply --plan <plan.dsuplan>`
 
-5) Verify:
+6) Verify:
 
 `dominium-setup verify --state <installed_state.dsustate> --format json`
 
@@ -35,7 +39,9 @@ Exit code `2` indicates integrity issues (missing/modified/extra files).
 
 Use explicit scope and avoid prompts:
 
-`dominium-setup plan --manifest <manifest.dsumanifest> --op install --scope system --out <plan.dsuplan>`
+`dominium-setup export-invocation --manifest <manifest.dsumanifest> --op install --scope system --out <install.dsuinv>`
+
+`dominium-setup plan --manifest <manifest.dsumanifest> --invocation <install.dsuinv> --out <plan.dsuplan>`
 
 `dominium-setup apply --plan <plan.dsuplan>`
 
@@ -54,19 +60,23 @@ Suggested CI logic:
 
 ## Repair workflow
 
-1) Resolve a repair plan (scope inferred from state when possible):
+1) Export invocation:
 
-`dominium-setup resolve --manifest <manifest.dsumanifest> --state <installed_state.dsustate> --op repair`
+`dominium-setup export-invocation --manifest <manifest.dsumanifest> --op repair --out <repair.dsuinv>`
 
-2) Build a plan:
+2) Resolve a repair plan (scope inferred from state when possible):
 
-`dominium-setup plan --manifest <manifest.dsumanifest> --state <installed_state.dsustate> --op repair --out <repair.dsuplan>`
+`dominium-setup resolve --manifest <manifest.dsumanifest> --state <installed_state.dsustate> --invocation <repair.dsuinv>`
 
-3) Dry-run the apply to preview txn impact:
+3) Build a plan:
+
+`dominium-setup plan --manifest <manifest.dsumanifest> --state <installed_state.dsustate> --invocation <repair.dsuinv> --out <repair.dsuplan>`
+
+4) Dry-run the apply to preview txn impact:
 
 `dominium-setup apply --plan <repair.dsuplan> --dry-run`
 
-4) Apply for real:
+5) Apply for real:
 
 `dominium-setup apply --plan <repair.dsuplan>`
 

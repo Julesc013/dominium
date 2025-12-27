@@ -120,7 +120,8 @@ Failpoints must not be enabled in production; they are test-only knobs.
 
 ## CLI Surface
 
-- `dominium-setup plan --manifest <file> --op <install|upgrade|repair|uninstall> --out <planfile> --format json --deterministic 1`
+- `dominium-setup export-invocation --manifest <file> --op <install|upgrade|repair|uninstall> --out <invocation> --deterministic 1`
+- `dominium-setup plan --manifest <file> --invocation <invocation> --out <planfile> --format json --deterministic 1`
 - `dominium-setup apply --plan <planfile> [--dry-run] --deterministic 1`
 - `dominium-setup uninstall --state <file> [--dry-run] --deterministic 1`
 - `dominium-setup rollback --journal <file> [--dry-run] --deterministic 1`

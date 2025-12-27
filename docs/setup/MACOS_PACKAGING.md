@@ -28,7 +28,9 @@ Artifacts land in `dist/macos/`.
 - The PKG installs the canonical `artifact_root/` layout into:
   - `/Library/Application Support/Dominium/artifact_root`
 - A minimal `postinstall` script invokes `dominium-setup` only:
-  - `plan --op install --scope system`
+  - write a `dsu_invocation` payload (system scope, platform triple)
+  - `export-invocation --manifest <manifest> --op install --scope system --ui-mode gui --frontend-id pkg --out <file>`
+  - `plan --manifest <manifest> --invocation <file> --out <generated>`
   - `apply --plan <generated>`
 
 No other postinstall logic is permitted.

@@ -28,6 +28,7 @@ Public headers live under `source/dominium/setup/core/include/dsu/`:
 - `dsu_callbacks.h`: Optional host callbacks (log/progress).
 - `dsu_ctx.h`: `dsu_ctx_t` lifecycle and audit-log access.
 - `dsu_manifest.h`: Manifest load + accessors.
+- `dsu_invocation.h`: Invocation payload load/validate/digest.
 - `dsu_resolve.h`: Resolve stub + accessors.
 - `dsu_plan.h`: Plan build + accessors + `.dsuplan` read/write.
 - `dsu_txn.h`: Apply/uninstall transactions + rollback.
@@ -51,6 +52,7 @@ Public headers live under `source/dominium/setup/core/include/dsu/`:
 - Setup Core never performs network calls.
 - Setup Core never writes outside the install roots and transaction root.
 - Invalid inputs are rejected deterministically (see exit codes in `docs/setup/CLI_REFERENCE.md`).
+- Resolve/plan/apply are driven by `dsu_invocation`; no frontend-specific argument parsing occurs in core.
 
 ## CLI usage
 
@@ -59,7 +61,9 @@ The minimal CLI target is `dominium-setup`:
 - Version:
   - `dominium-setup version --format json --deterministic 1`
 - Build a plan:
-  - `dominium-setup plan --manifest <artifact_root>/setup/manifests/product.dsumanifest --op install --scope portable --components core --out out.dsuplan --format json --deterministic 1`
+  - `dominium-setup plan --manifest <artifact_root>/setup/manifests/product.dsumanifest --invocation install.dsuinv --out out.dsuplan --format json --deterministic 1`
+- Export invocation:
+  - `dominium-setup export-invocation --manifest <artifact_root>/setup/manifests/product.dsumanifest --op install --scope portable --components core --out install.dsuinv --format json`
 - Apply a plan:
   - `dominium-setup apply --plan out.dsuplan --deterministic 1`
 - Verify integrity:
@@ -74,7 +78,7 @@ See `docs/setup/MANIFEST_SCHEMA.md` for the locked schema and validation rules.
 
 ## File formats (current)
 
-- Plan files: `.dsuplan` (format v5) → `docs/setup/TRANSACTION_ENGINE.md`
+- Plan files: `.dsuplan` (format v6) → `docs/setup/TRANSACTION_ENGINE.md`
 - Installed state: `installed_state.dsustate` (format v2) → `docs/setup/INSTALLED_STATE_SCHEMA.md`
 - Audit log: `audit.dsu.log` (format v2) → `docs/setup/AUDIT_LOG_FORMAT.md`
 - Transaction journal: `txn.dsujournal` (format v1) → `docs/setup/JOURNAL_FORMAT.md`
