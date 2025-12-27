@@ -200,6 +200,23 @@ add_test(NAME test_manifest_unknown_tlv_skip COMMAND dsu_manifest_test)
 add_test(NAME test_resolve_conflict_detection COMMAND dsu_resolve_test)
 add_test(NAME test_platform_iface_idempotent_register_unregister COMMAND dsu_platform_iface_test)
 
+add_executable(dsu_exe_archive_test
+    dsu_exe_archive_test.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../installers/windows/exe/common/src/archive.c
+)
+
+target_include_directories(dsu_exe_archive_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../installers/windows/exe/common/include
+)
+
+set_target_properties(dsu_exe_archive_test PROPERTIES
+    C_STANDARD 90
+    C_STANDARD_REQUIRED ON
+    C_EXTENSIONS OFF
+)
+
+add_test(NAME dsu_exe_archive_test COMMAND dsu_exe_archive_test)
+
 if(WIN32)
     add_executable(dsu_adapter_smoke_test
         dsu_adapter_smoke_test.c
@@ -261,6 +278,23 @@ if(DOMINIUM_PYTHON)
     )
 
     set_tests_properties(dsu_msi_validation_test PROPERTIES
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+        ENVIRONMENT "SOURCE_DATE_EPOCH=946684800"
+    )
+
+    set(_dom_exe_test "${_dom_repo_root}/scripts/packaging/tests/exe_validation_test.py")
+
+    add_test(
+        NAME dsu_exe_validation_test
+        COMMAND
+            ${DOMINIUM_PYTHON}
+            ${_dom_exe_test}
+            --build-dir ${CMAKE_BINARY_DIR}
+            --version ${DOM_PROJECT_SEMVER}
+            --config $<CONFIG>
+    )
+
+    set_tests_properties(dsu_exe_validation_test PROPERTIES
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
         ENVIRONMENT "SOURCE_DATE_EPOCH=946684800"
     )
