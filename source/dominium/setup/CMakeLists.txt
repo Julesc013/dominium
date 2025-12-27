@@ -100,4 +100,5 @@ add_subdirectory(tests)
 
 if(WIN32)
     add_subdirectory(installers/windows/msi/cmake)
+    add_subdirectory(installers/windows/exe/cmake)
 endif()

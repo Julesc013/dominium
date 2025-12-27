@@ -397,13 +397,19 @@ def assemble_artifact(args):
 
     # Locate build outputs.
     build_dir = os.path.abspath(args.build_dir)
-    setup_bin = _find_unique_file(build_dir, "dominium-setup" + _exe_suffix(), prefer_subpaths=["source/dominium/setup/"])
+    try:
+        setup_bin = _find_unique_file(build_dir, "dominium-setup" + _exe_suffix(), prefer_subpaths=["source/dominium/setup/"])
+    except Exception:
+        setup_bin = _find_unique_file(build_dir, "tool_setup" + _exe_suffix(), prefer_subpaths=["source/dominium/setup/"])
     launcher_bin = _find_unique_file(build_dir, "dominium-launcher" + _exe_suffix(), prefer_subpaths=["source/dominium/launcher/"])
     game_bin = _find_unique_file(build_dir, "dominium_game" + _exe_suffix(), prefer_subpaths=["source/dominium/game/"])
 
     # Stage Setup Core binary into artifact_root/setup/.
     setup_dst = os.path.join(out_dir, "setup", os.path.basename(setup_bin))
     shutil.copy2(setup_bin, setup_dst)
+    setup_alias = os.path.join(out_dir, "setup", "dominium-setup" + _exe_suffix())
+    if os.path.basename(setup_bin).lower() != ("dominium-setup" + _exe_suffix()).lower():
+        shutil.copy2(setup_bin, setup_alias)
 
     # Populate payload file trees (fileset payloads).
     # Avoid per-component file path collisions by placing shared runtime DLLs
