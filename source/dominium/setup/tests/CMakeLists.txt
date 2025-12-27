@@ -20,6 +20,26 @@ set_target_properties(dsu_core_smoke_test PROPERTIES
 
 add_test(NAME dsu_core_smoke_test COMMAND dsu_core_smoke_test)
 
+add_executable(dsu_invocation_parity_test
+    dsu_invocation_parity_test.c
+)
+
+target_include_directories(dsu_invocation_parity_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../core/include
+)
+
+target_link_libraries(dsu_invocation_parity_test
+    PRIVATE dsu_core
+)
+
+set_target_properties(dsu_invocation_parity_test PROPERTIES
+    C_STANDARD 90
+    C_STANDARD_REQUIRED ON
+    C_EXTENSIONS OFF
+)
+
+add_test(NAME dsu_invocation_parity_test COMMAND dsu_invocation_parity_test ${CMAKE_CURRENT_SOURCE_DIR})
+
 add_executable(dsu_manifest_test
     dsu_manifest_test.c
 )
@@ -227,4 +247,5 @@ if(DOMINIUM_PYTHON)
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
         ENVIRONMENT "SOURCE_DATE_EPOCH=946684800"
     )
+
 endif()

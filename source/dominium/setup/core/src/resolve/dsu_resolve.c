@@ -160,10 +160,12 @@ void dsu_resolve_request_init(dsu_resolve_request_t *req) {
     }
     memset(req, 0, sizeof(*req));
     req->struct_size = (dsu_u32)sizeof(*req);
-    req->struct_version = 1u;
+    req->struct_version = 2u;
     req->operation = DSU_RESOLVE_OPERATION_INSTALL;
     req->scope = DSU_MANIFEST_INSTALL_SCOPE_PORTABLE;
     req->allow_prerelease = DSU_FALSE;
+    req->install_roots = NULL;
+    req->install_root_count = 0u;
 }
 
 static dsu_status_t dsu__dup_lower_ascii_id(const char *s, char **out) {
@@ -746,6 +748,8 @@ static dsu_status_t dsu__platform_supported(const dsu_manifest_t *manifest, cons
 static dsu_status_t dsu__select_install_root(const dsu_manifest_t *manifest,
                                             dsu_u8 scope,
                                             const char *plat,
+                                            const char *const *roots,
+                                            dsu_u32 root_count,
                                             const char **out_path) {
     dsu_u32 i;
     dsu_u32 count;
@@ -758,6 +762,9 @@ static dsu_status_t dsu__select_install_root(const dsu_manifest_t *manifest,
     *out_path = NULL;
     if (!manifest || !plat || plat[0] == '\0') {
         return DSU_STATUS_INVALID_ARGS;
+    }
+    if (root_count > 1u) {
+        return DSU_STATUS_INVALID_REQUEST;
     }
 
     count = dsu_manifest_install_root_count(manifest);
@@ -773,12 +780,23 @@ static dsu_status_t dsu__select_install_root(const dsu_manifest_t *manifest,
         if (!p || dsu__strcmp_bytes(p, plat) != 0) {
             continue;
         }
-        found = path ? path : "";
-        ++found_count;
+        if (root_count == 1u) {
+            const char *want = roots ? roots[0] : NULL;
+            if (!want || want[0] == '\0') {
+                return DSU_STATUS_INVALID_REQUEST;
+            }
+            if (path && dsu__strcmp_bytes(path, want) == 0) {
+                found = path;
+                ++found_count;
+            }
+        } else {
+            found = path ? path : "";
+            ++found_count;
+        }
     }
 
     if (found_count == 0u) {
-        return DSU_STATUS_PLATFORM_INCOMPATIBLE;
+        return (root_count == 0u) ? DSU_STATUS_PLATFORM_INCOMPATIBLE : DSU_STATUS_INVALID_REQUEST;
     }
     if (found_count != 1u) {
         return DSU_STATUS_INVALID_REQUEST;
@@ -911,7 +929,7 @@ dsu_status_t dsu_resolve_components(dsu_ctx_t *ctx,
     }
     *out_result = NULL;
 
-    if (request->struct_version != 1u || request->struct_size < (dsu_u32)sizeof(*request)) {
+    if (request->struct_version < 1u || request->struct_size < (dsu_u32)sizeof(*request)) {
         return DSU_STATUS_INVALID_REQUEST;
     }
     if (request->scope > DSU_MANIFEST_INSTALL_SCOPE_SYSTEM) {
@@ -1164,15 +1182,8 @@ dsu_status_t dsu_resolve_components(dsu_ctx_t *ctx,
         (void)dsu__log_push(r, (dsu_u8)DSU_RESOLVE_LOG_PLATFORM_FILTER, "platform", plat);
         goto fail_result;
     }
-    st = dsu__select_install_root(manifest, (dsu_u8)request->scope, plat, &install_root);
-    if (st != DSU_STATUS_SUCCESS || !install_root) {
-        (void)dsu__log_push(r, (dsu_u8)DSU_RESOLVE_LOG_PLATFORM_FILTER, "install_root", plat);
-        st = (st != DSU_STATUS_SUCCESS) ? st : DSU_STATUS_PLATFORM_INCOMPATIBLE;
-        goto fail_result;
-    }
     r->platform = dsu__strdup(plat);
-    r->install_root = dsu__strdup(install_root);
-    if (!r->platform || !r->install_root) {
+    if (!r->platform) {
         st = DSU_STATUS_IO_ERROR;
         goto fail_destroy;
     }
@@ -1199,6 +1210,60 @@ dsu_status_t dsu_resolve_components(dsu_ctx_t *ctx,
             (void)dsu__log_push(r, (dsu_u8)DSU_RESOLVE_LOG_RECONCILE_INSTALLED, "platform", "mismatch");
             st = DSU_STATUS_PLATFORM_INCOMPATIBLE;
             goto fail_result;
+        }
+    }
+
+    /* Install root selection (validated against manifest and state). */
+    {
+        const char *state_root = installed_state ? dsu_state_install_root(installed_state) : NULL;
+        if (request->operation == DSU_RESOLVE_OPERATION_REPAIR ||
+            request->operation == DSU_RESOLVE_OPERATION_UNINSTALL) {
+            if (request->install_root_count == 0u) {
+                const char *roots_tmp[1];
+                if (!state_root || state_root[0] == '\0') {
+                    (void)dsu__log_push(r, (dsu_u8)DSU_RESOLVE_LOG_RECONCILE_INSTALLED, "install_root", "missing");
+                    st = DSU_STATUS_INVALID_REQUEST;
+                    goto fail_result;
+                }
+                roots_tmp[0] = state_root;
+                st = dsu__select_install_root(manifest,
+                                              (dsu_u8)request->scope,
+                                              plat,
+                                              roots_tmp,
+                                              1u,
+                                              &install_root);
+            } else {
+                st = dsu__select_install_root(manifest,
+                                              (dsu_u8)request->scope,
+                                              plat,
+                                              request->install_roots,
+                                              request->install_root_count,
+                                              &install_root);
+            }
+        } else {
+            st = dsu__select_install_root(manifest,
+                                          (dsu_u8)request->scope,
+                                          plat,
+                                          request->install_roots,
+                                          request->install_root_count,
+                                          &install_root);
+        }
+        if (st != DSU_STATUS_SUCCESS || !install_root) {
+            (void)dsu__log_push(r, (dsu_u8)DSU_RESOLVE_LOG_PLATFORM_FILTER, "install_root", plat);
+            st = (st != DSU_STATUS_SUCCESS) ? st : DSU_STATUS_PLATFORM_INCOMPATIBLE;
+            goto fail_result;
+        }
+        if (state_root && state_root[0] != '\0') {
+            if (dsu__strcmp_bytes(state_root, install_root) != 0) {
+                (void)dsu__log_push(r, (dsu_u8)DSU_RESOLVE_LOG_RECONCILE_INSTALLED, "install_root", "mismatch");
+                st = DSU_STATUS_INVALID_REQUEST;
+                goto fail_result;
+            }
+        }
+        r->install_root = dsu__strdup(install_root);
+        if (!r->install_root) {
+            st = DSU_STATUS_IO_ERROR;
+            goto fail_destroy;
         }
     }
 

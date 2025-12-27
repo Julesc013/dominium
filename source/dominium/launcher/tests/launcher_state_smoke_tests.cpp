@@ -543,7 +543,7 @@ int main(int argc, char **argv) {
     ok &= expect(r != NULL, "resolve != NULL");
     if (!ok) goto done;
 
-    st = dsu_plan_build(ctx, m, manifest_path, r, &p);
+    st = dsu_plan_build(ctx, m, manifest_path, r, 0x1111222233334444ULL, &p);
     ok &= expect_st(st, DSU_STATUS_SUCCESS, "plan build");
     ok &= expect(p != NULL, "plan != NULL");
     if (!ok) goto done;

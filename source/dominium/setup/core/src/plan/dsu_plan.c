@@ -21,7 +21,7 @@ PURPOSE: Plan builder and deterministic dsuplan (de)serialization.
 #define DSU_PLAN_MAGIC_1 'S'
 #define DSU_PLAN_MAGIC_2 'U'
 #define DSU_PLAN_MAGIC_3 'P'
-#define DSU_PLAN_FORMAT_VERSION 5u
+#define DSU_PLAN_FORMAT_VERSION 6u
 
 #define DSU_PLAN_DEFAULT_STATE_REL ".dsu/installed_state.dsustate"
 
@@ -75,6 +75,7 @@ struct dsu_plan {
     dsu_u64 id_hash64;
     dsu_u64 manifest_digest64;
     dsu_u64 resolved_digest64;
+    dsu_u64 invocation_digest64;
     dsu_u8 operation;
     dsu_u8 scope;
     dsu_u8 reserved8[2];
@@ -194,6 +195,12 @@ static void dsu__plan_compute_id_hashes(const dsu_plan_t *p, dsu_u32 *out_hash32
     h64 = dsu_digest64_update(h64, &sep, 1u);
 
     dsu__u64_to_le_bytes(p->resolved_digest64, tmp8);
+    h32 = dsu_digest32_update(h32, tmp8, 8u);
+    h32 = dsu_digest32_update(h32, &sep, 1u);
+    h64 = dsu_digest64_update(h64, tmp8, 8u);
+    h64 = dsu_digest64_update(h64, &sep, 1u);
+
+    dsu__u64_to_le_bytes(p->invocation_digest64, tmp8);
     h32 = dsu_digest32_update(h32, tmp8, 8u);
     h32 = dsu_digest32_update(h32, &sep, 1u);
     h64 = dsu_digest64_update(h64, tmp8, 8u);
@@ -888,6 +895,7 @@ dsu_status_t dsu_plan_build(dsu_ctx_t *ctx,
                            const dsu_manifest_t *manifest,
                            const char *manifest_path,
                            const dsu_resolve_result_t *resolved,
+                           dsu_u64 invocation_digest64,
                            dsu_plan_t **out_plan) {
     dsu_plan_t *p;
     dsu_u32 resolved_count;
@@ -901,6 +909,9 @@ dsu_status_t dsu_plan_build(dsu_ctx_t *ctx,
     }
     *out_plan = NULL;
     st = DSU_STATUS_SUCCESS;
+    if (invocation_digest64 == (dsu_u64)0u) {
+        return DSU_STATUS_INVALID_REQUEST;
+    }
 
     resolved_count = dsu_resolve_result_component_count(resolved);
     apply_count = 0u;
@@ -920,6 +931,7 @@ dsu_status_t dsu_plan_build(dsu_ctx_t *ctx,
     p->flags = ctx->config.flags;
     p->manifest_digest64 = dsu_resolve_result_manifest_digest64(resolved);
     p->resolved_digest64 = dsu_resolve_result_resolved_digest64(resolved);
+    p->invocation_digest64 = invocation_digest64;
     p->operation = (dsu_u8)dsu_resolve_result_operation(resolved);
     p->scope = (dsu_u8)dsu_resolve_result_scope(resolved);
     p->reserved8[0] = 0u;
@@ -1502,6 +1514,13 @@ dsu_u64 dsu_plan_resolved_set_digest64(const dsu_plan_t *plan) {
     return plan->resolved_digest64;
 }
 
+dsu_u64 dsu_plan_invocation_digest64(const dsu_plan_t *plan) {
+    if (!plan) {
+        return (dsu_u64)0u;
+    }
+    return plan->invocation_digest64;
+}
+
 dsu_u32 dsu_plan_component_count(const dsu_plan_t *plan) {
     if (!plan) {
         return 0u;
@@ -1786,6 +1805,7 @@ dsu_status_t dsu_plan_write_file(dsu_ctx_t *ctx, const dsu_plan_t *plan, const c
     if (st == DSU_STATUS_SUCCESS) st = dsu__blob_put_u64le(&payload, plan->id_hash64);
     if (st == DSU_STATUS_SUCCESS) st = dsu__blob_put_u64le(&payload, plan->manifest_digest64);
     if (st == DSU_STATUS_SUCCESS) st = dsu__blob_put_u64le(&payload, plan->resolved_digest64);
+    if (st == DSU_STATUS_SUCCESS) st = dsu__blob_put_u64le(&payload, plan->invocation_digest64);
     if (st == DSU_STATUS_SUCCESS) st = dsu__blob_put_u8(&payload, plan->operation);
     if (st == DSU_STATUS_SUCCESS) st = dsu__blob_put_u8(&payload, plan->scope);
     if (st == DSU_STATUS_SUCCESS) st = dsu__blob_put_u16le(&payload, 0u);
@@ -2031,6 +2051,7 @@ dsu_status_t dsu_plan_read_file(dsu_ctx_t *ctx, const char *path, dsu_plan_t **o
     if (st == DSU_STATUS_SUCCESS) st = dsu__read_u64le(payload, payload_len, &off, &p->id_hash64);
     if (st == DSU_STATUS_SUCCESS) st = dsu__read_u64le(payload, payload_len, &off, &p->manifest_digest64);
     if (st == DSU_STATUS_SUCCESS) st = dsu__read_u64le(payload, payload_len, &off, &p->resolved_digest64);
+    if (st == DSU_STATUS_SUCCESS) st = dsu__read_u64le(payload, payload_len, &off, &p->invocation_digest64);
     if (st == DSU_STATUS_SUCCESS) st = dsu__read_u8(payload, payload_len, &off, &p->operation);
     if (st == DSU_STATUS_SUCCESS) st = dsu__read_u8(payload, payload_len, &off, &p->scope);
     if (st == DSU_STATUS_SUCCESS) st = dsu__read_u16le(payload, payload_len, &off, &reserved16);
@@ -2386,7 +2407,7 @@ dsu_status_t dsu_plan_validate(const dsu_plan_t *plan) {
         return DSU_STATUS_INVALID_ARGS;
     }
 
-    if (plan->manifest_digest64 == 0u || plan->resolved_digest64 == 0u) {
+    if (plan->manifest_digest64 == 0u || plan->resolved_digest64 == 0u || plan->invocation_digest64 == 0u) {
         return DSU_STATUS_INTEGRITY_ERROR;
     }
     if (plan->operation > (dsu_u8)DSU_RESOLVE_OPERATION_UNINSTALL) {

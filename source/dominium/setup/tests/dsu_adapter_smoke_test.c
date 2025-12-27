@@ -456,7 +456,7 @@ int main(void) {
         ok &= expect(st == DSU_STATUS_SUCCESS && res != NULL, "resolve");
         if (!ok) goto done;
 
-        st = dsu_plan_build(ctx, manifest, manifest_path, res, &plan);
+        st = dsu_plan_build(ctx, manifest, manifest_path, res, 0x1111222233334444ULL, &plan);
         ok &= expect(st == DSU_STATUS_SUCCESS && plan != NULL, "plan build");
         if (!ok) goto done;
 

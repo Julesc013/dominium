@@ -5,6 +5,7 @@ add_library(dsu_core STATIC
     src/dsu_config.c
     src/dsu_ctx.c
     src/dsu_execute.c
+    src/invocation/dsu_invocation.c
     src/fs/dsu_fs.c
     src/fs/dsu_fs_stdio.c
     src/fs/dsu_platform_iface.c

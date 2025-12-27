@@ -380,7 +380,7 @@ int main(void) {
     }
     ok &= expect(st == DSU_STATUS_SUCCESS && resolved != NULL, "resolve");
 
-    st = dsu_plan_build(ctx, manifest, manifest_path, resolved, &plan);
+    st = dsu_plan_build(ctx, manifest, manifest_path, resolved, 0x1111222233334444ULL, &plan);
     ok &= expect(st == DSU_STATUS_SUCCESS && plan != NULL, "plan build");
 
     st = dsu_plan_write_file(ctx, plan, plan_a_path);

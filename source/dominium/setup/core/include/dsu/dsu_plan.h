@@ -34,7 +34,15 @@ DSU_API dsu_status_t dsu_plan_build(dsu_ctx_t *ctx,
                                    const dsu_manifest_t *manifest,
                                    const char *manifest_path,
                                    const dsu_resolve_result_t *resolved,
+                                   dsu_u64 invocation_digest64,
                                    dsu_plan_t **out_plan);
+
+DSU_API dsu_status_t dsu_plan_build_from_invocation(dsu_ctx_t *ctx,
+                                                   const dsu_manifest_t *manifest,
+                                                   const char *manifest_path,
+                                                   const dsu_state_t *installed_state,
+                                                   const dsu_invocation_t *invocation,
+                                                   dsu_plan_t **out_plan);
 
 DSU_API void dsu_plan_destroy(dsu_ctx_t *ctx, dsu_plan_t *plan);
 
@@ -53,6 +61,7 @@ DSU_API const char *dsu_plan_install_root(const dsu_plan_t *plan);
 /* Source IDs used to derive the plan ID. */
 DSU_API dsu_u64 dsu_plan_manifest_digest64(const dsu_plan_t *plan);
 DSU_API dsu_u64 dsu_plan_resolved_set_digest64(const dsu_plan_t *plan);
+DSU_API dsu_u64 dsu_plan_invocation_digest64(const dsu_plan_t *plan);
 
 DSU_API dsu_u32 dsu_plan_component_count(const dsu_plan_t *plan);
 DSU_API const char *dsu_plan_component_id(const dsu_plan_t *plan, dsu_u32 index);

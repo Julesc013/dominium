@@ -44,6 +44,8 @@ typedef enum dsu_resolve_log_code_t {
     DSU_RESOLVE_LOG_RECONCILE_INSTALLED = 5
 } dsu_resolve_log_code_t;
 
+typedef struct dsu_invocation_t dsu_invocation_t;
+
 typedef struct dsu_resolve_pin_t {
     const char *component_id;
     const char *version;
@@ -59,6 +61,10 @@ typedef struct dsu_resolve_request_t {
 
     /* Optional: explicit target platform triple (NULL/empty => manifest-preferred). */
     const char *target_platform;
+
+    /* Optional: explicit install roots (count <= 1 in current core). */
+    const char *const *install_roots;
+    dsu_u32 install_root_count;
 
     /* Explicit user selection and exclusions (IDs; may be mixed-case). */
     const char *const *requested_components;
@@ -80,6 +86,13 @@ DSU_API dsu_status_t dsu_resolve_components(dsu_ctx_t *ctx,
                                            const dsu_state_t *installed_state,
                                            const dsu_resolve_request_t *request,
                                            dsu_resolve_result_t **out_result);
+
+DSU_API dsu_status_t dsu_resolve_components_from_invocation(dsu_ctx_t *ctx,
+                                                           const dsu_manifest_t *manifest,
+                                                           const dsu_state_t *installed_state,
+                                                           const dsu_invocation_t *invocation,
+                                                           dsu_resolve_result_t **out_result,
+                                                           dsu_u64 *out_invocation_digest);
 
 DSU_API void dsu_resolve_result_destroy(dsu_ctx_t *ctx, dsu_resolve_result_t *result);
 

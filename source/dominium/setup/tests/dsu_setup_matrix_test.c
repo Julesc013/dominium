@@ -740,7 +740,12 @@ static int test_install_fresh_portable(const test_env_t *env) {
     if (!ok) goto done;
 
     ok &= expect(run_capture_to_file(env->cli_path,
-                                    "plan --manifest manifests/minimal.dsumanifest --op install --scope portable --components core --out plan.dsuplan --format json --deterministic 1",
+                                    "export-invocation --manifest manifests/minimal.dsumanifest --op install --scope portable --components core --out plan.dsuinv --format json --deterministic 1",
+                                    "invocation.json",
+                                    NULL),
+                 "export invocation portable");
+    ok &= expect(run_capture_to_file(env->cli_path,
+                                    "plan --manifest manifests/minimal.dsumanifest --invocation plan.dsuinv --out plan.dsuplan --format json --deterministic 1",
                                     "plan.json",
                                     NULL),
                  "plan install portable");
@@ -776,7 +781,12 @@ static int test_install_fresh_user_scope(const test_env_t *env) {
     ok &= expect(path_join(install_root, ".dsu/installed_state.dsustate", state_path, (unsigned long)sizeof(state_path)), "state user");
 
     ok &= expect(run_capture_to_file(env->cli_path,
-                                    "plan --manifest manifests/minimal.dsumanifest --op install --scope user --components core --out plan.dsuplan --format json --deterministic 1",
+                                    "export-invocation --manifest manifests/minimal.dsumanifest --op install --scope user --components core --out plan.dsuinv --format json --deterministic 1",
+                                    "invocation.json",
+                                    NULL),
+                 "export invocation user");
+    ok &= expect(run_capture_to_file(env->cli_path,
+                                    "plan --manifest manifests/minimal.dsumanifest --invocation plan.dsuinv --out plan.dsuplan --format json --deterministic 1",
                                     "plan.json",
                                     NULL),
                  "plan install user");
@@ -808,7 +818,12 @@ static int test_upgrade_in_place(const test_env_t *env) {
     ok &= expect(path_join(install_root, "bin/version.txt", version_file, (unsigned long)sizeof(version_file)), "version file");
 
     ok &= expect(run_capture_to_file(env->cli_path,
-                                    "plan --manifest manifests/upgrade_v1.dsumanifest --op install --scope portable --components core --out v1.dsuplan --format json --deterministic 1",
+                                    "export-invocation --manifest manifests/upgrade_v1.dsumanifest --op install --scope portable --components core --out v1.dsuinv --format json --deterministic 1",
+                                    "invocation_v1.json",
+                                    NULL),
+                 "export invocation v1");
+    ok &= expect(run_capture_to_file(env->cli_path,
+                                    "plan --manifest manifests/upgrade_v1.dsumanifest --invocation v1.dsuinv --out v1.dsuplan --format json --deterministic 1",
                                     "plan_v1.json",
                                     NULL),
                  "plan v1");
@@ -818,7 +833,12 @@ static int test_upgrade_in_place(const test_env_t *env) {
     if (!ok) goto done;
 
     ok &= expect(run_capture_to_file(env->cli_path,
-                                    "plan --manifest manifests/upgrade_v2.dsumanifest --state install_portable/.dsu/installed_state.dsustate --op upgrade --scope portable --components core --out v2.dsuplan --format json --deterministic 1",
+                                    "export-invocation --manifest manifests/upgrade_v2.dsumanifest --state install_portable/.dsu/installed_state.dsustate --op upgrade --scope portable --components core --out v2.dsuinv --format json --deterministic 1",
+                                    "invocation_v2.json",
+                                    NULL),
+                 "export invocation v2");
+    ok &= expect(run_capture_to_file(env->cli_path,
+                                    "plan --manifest manifests/upgrade_v2.dsumanifest --state install_portable/.dsu/installed_state.dsustate --invocation v2.dsuinv --out v2.dsuplan --format json --deterministic 1",
                                     "plan_v2.json",
                                     NULL),
                  "plan v2 upgrade");
@@ -843,7 +863,12 @@ static int test_upgrade_side_by_side(const test_env_t *env) {
     ok &= expect(DSU_CHDIR(sandbox) == 0, "chdir sandbox");
 
     ok &= expect(run_capture_to_file(env->cli_path,
-                                    "plan --manifest manifests/upgrade_v1.dsumanifest --op install --scope portable --components core --out v1.dsuplan --format json --deterministic 1",
+                                    "export-invocation --manifest manifests/upgrade_v1.dsumanifest --op install --scope portable --components core --out v1.dsuinv --format json --deterministic 1",
+                                    "invocation_v1.json",
+                                    NULL),
+                 "export invocation v1");
+    ok &= expect(run_capture_to_file(env->cli_path,
+                                    "plan --manifest manifests/upgrade_v1.dsumanifest --invocation v1.dsuinv --out v1.dsuplan --format json --deterministic 1",
                                     "plan_v1.json",
                                     NULL),
                  "plan v1");
@@ -851,8 +876,13 @@ static int test_upgrade_side_by_side(const test_env_t *env) {
                  "apply v1");
     if (!ok) goto done;
 
+    ok &= expect(run_capture_to_file(env->cli_path,
+                                     "export-invocation --manifest manifests/upgrade_v2.dsumanifest --state install_portable/.dsu/installed_state.dsustate --op upgrade --scope user --components core --out v2_side.dsuinv --format json --deterministic 1",
+                                     "invocation_side.json",
+                                     NULL),
+                 "export invocation side");
     ok &= expect(run_cli_json_expect(env->cli_path,
-                                     "plan --manifest manifests/upgrade_v2.dsumanifest --state install_portable/.dsu/installed_state.dsustate --op upgrade --scope user --components core --out v2_side.dsuplan --format json --deterministic 1",
+                                     "plan --manifest manifests/upgrade_v2.dsumanifest --state install_portable/.dsu/installed_state.dsustate --invocation v2_side.dsuinv --out v2_side.dsuplan --format json --deterministic 1",
                                      "plan_side.json",
                                      3,
                                      "\"status_code\":3"),
@@ -880,7 +910,12 @@ static int test_repair_restores_missing_files(const test_env_t *env) {
     ok &= expect(path_join(install_root, "tools/tools.txt", tools_file, (unsigned long)sizeof(tools_file)), "tools file");
 
     ok &= expect(run_capture_to_file(env->cli_path,
-                                    "plan --manifest manifests/minimal.dsumanifest --op install --scope portable --components core --out plan.dsuplan --format json --deterministic 1",
+                                    "export-invocation --manifest manifests/minimal.dsumanifest --op install --scope portable --components core --out plan.dsuinv --format json --deterministic 1",
+                                    "invocation.json",
+                                    NULL),
+                 "export invocation install");
+    ok &= expect(run_capture_to_file(env->cli_path,
+                                    "plan --manifest manifests/minimal.dsumanifest --invocation plan.dsuinv --out plan.dsuplan --format json --deterministic 1",
                                     "plan.json",
                                     NULL),
                  "plan install");
@@ -891,7 +926,12 @@ static int test_repair_restores_missing_files(const test_env_t *env) {
 
     ok &= expect(remove(tools_file) == 0, "remove tools file");
     ok &= expect(run_capture_to_file(env->cli_path,
-                                    "plan --manifest manifests/minimal.dsumanifest --state install_portable/.dsu/installed_state.dsustate --op repair --scope portable --components core --out repair.dsuplan --format json --deterministic 1",
+                                    "export-invocation --manifest manifests/minimal.dsumanifest --state install_portable/.dsu/installed_state.dsustate --op repair --scope portable --components core --out repair.dsuinv --format json --deterministic 1",
+                                    "invocation_repair.json",
+                                    NULL),
+                 "export invocation repair");
+    ok &= expect(run_capture_to_file(env->cli_path,
+                                    "plan --manifest manifests/minimal.dsumanifest --state install_portable/.dsu/installed_state.dsustate --invocation repair.dsuinv --out repair.dsuplan --format json --deterministic 1",
                                     "plan_repair.json",
                                     NULL),
                  "plan repair");
@@ -926,7 +966,12 @@ static int test_uninstall_preserves_user_data(const test_env_t *env) {
     ok &= expect(path_join(user_dir, "marker.txt", user_file, (unsigned long)sizeof(user_file)), "user marker");
 
     ok &= expect(run_capture_to_file(env->cli_path,
-                                    "plan --manifest manifests/minimal.dsumanifest --op install --scope portable --components core --out plan.dsuplan --format json --deterministic 1",
+                                    "export-invocation --manifest manifests/minimal.dsumanifest --op install --scope portable --components core --out plan.dsuinv --format json --deterministic 1",
+                                    "invocation.json",
+                                    NULL),
+                 "export invocation install");
+    ok &= expect(run_capture_to_file(env->cli_path,
+                                    "plan --manifest manifests/minimal.dsumanifest --invocation plan.dsuinv --out plan.dsuplan --format json --deterministic 1",
                                     "plan.json",
                                     NULL),
                  "plan install");
@@ -969,7 +1014,12 @@ static int test_uninstall_removes_owned_files(const test_env_t *env) {
     ok &= expect(path_join(install_root, ".dsu/installed_state.dsustate", state_path, (unsigned long)sizeof(state_path)), "state file");
 
     ok &= expect(run_capture_to_file(env->cli_path,
-                                    "plan --manifest manifests/minimal.dsumanifest --op install --scope portable --components core --out plan.dsuplan --format json --deterministic 1",
+                                    "export-invocation --manifest manifests/minimal.dsumanifest --op install --scope portable --components core --out plan.dsuinv --format json --deterministic 1",
+                                    "invocation.json",
+                                    NULL),
+                 "export invocation install");
+    ok &= expect(run_capture_to_file(env->cli_path,
+                                    "plan --manifest manifests/minimal.dsumanifest --invocation plan.dsuinv --out plan.dsuplan --format json --deterministic 1",
                                     "plan.json",
                                     NULL),
                  "plan install");
@@ -1006,7 +1056,12 @@ static int test_verify_detects_modified_file(const test_env_t *env) {
     ok &= expect(path_join("install_portable", "bin/launcher.txt", launcher_file, (unsigned long)sizeof(launcher_file)), "launcher file");
 
     ok &= expect(run_capture_to_file(env->cli_path,
-                                    "plan --manifest manifests/minimal.dsumanifest --op install --scope portable --components core --out plan.dsuplan --format json --deterministic 1",
+                                    "export-invocation --manifest manifests/minimal.dsumanifest --op install --scope portable --components core --out plan.dsuinv --format json --deterministic 1",
+                                    "invocation.json",
+                                    NULL),
+                 "export invocation install");
+    ok &= expect(run_capture_to_file(env->cli_path,
+                                    "plan --manifest manifests/minimal.dsumanifest --invocation plan.dsuinv --out plan.dsuplan --format json --deterministic 1",
                                     "plan.json",
                                     NULL),
                  "plan install");
@@ -1051,7 +1106,12 @@ static int test_rollback_on_commit_failure(const test_env_t *env) {
     if (!ok) goto done;
 
     ok &= expect(run_capture_to_file(env->cli_path,
-                                    "plan --manifest manifests/minimal.dsumanifest --op install --scope portable --components core --out plan.dsuplan --format json --deterministic 1",
+                                    "export-invocation --manifest manifests/minimal.dsumanifest --op install --scope portable --components core --out plan.dsuinv --format json --deterministic 1",
+                                    "invocation.json",
+                                    NULL),
+                 "export invocation install");
+    ok &= expect(run_capture_to_file(env->cli_path,
+                                    "plan --manifest manifests/minimal.dsumanifest --invocation plan.dsuinv --out plan.dsuplan --format json --deterministic 1",
                                     "plan.json",
                                     NULL),
                  "plan install");
@@ -1107,7 +1167,12 @@ static int test_plan_determinism_repeat_run(const test_env_t *env) {
     ok &= expect(DSU_CHDIR(run_a) == 0, "chdir run_a");
     ok &= expect(write_manifest_fileset_abs("manifest_abs.dsumanifest", shared_install_dsu, "payloads/base", "core"), "write manifest a");
     ok &= expect(run_capture_to_file(env->cli_path,
-                                    "plan --manifest manifest_abs.dsumanifest --op install --scope portable --components core --out plan.dsuplan --format json --deterministic 1",
+                                    "export-invocation --manifest manifest_abs.dsumanifest --op install --scope portable --components core --out plan.dsuinv --format json --deterministic 1",
+                                    "invocation.json",
+                                    NULL),
+                 "export invocation a");
+    ok &= expect(run_capture_to_file(env->cli_path,
+                                    "plan --manifest manifest_abs.dsumanifest --invocation plan.dsuinv --out plan.dsuplan --format json --deterministic 1",
                                     "plan.json",
                                     NULL),
                  "plan a");
@@ -1134,7 +1199,12 @@ static int test_plan_determinism_repeat_run(const test_env_t *env) {
     ok &= expect(DSU_CHDIR(run_b) == 0, "chdir run_b");
     ok &= expect(write_manifest_fileset_abs("manifest_abs.dsumanifest", shared_install_dsu, "payloads/base", "core"), "write manifest b");
     ok &= expect(run_capture_to_file(env->cli_path,
-                                    "plan --manifest manifest_abs.dsumanifest --op install --scope portable --components core --out plan.dsuplan --format json --deterministic 1",
+                                    "export-invocation --manifest manifest_abs.dsumanifest --op install --scope portable --components core --out plan.dsuinv --format json --deterministic 1",
+                                    "invocation.json",
+                                    NULL),
+                 "export invocation b");
+    ok &= expect(run_capture_to_file(env->cli_path,
+                                    "plan --manifest manifest_abs.dsumanifest --invocation plan.dsuinv --out plan.dsuplan --format json --deterministic 1",
                                     "plan.json",
                                     NULL),
                  "plan b");
@@ -1180,7 +1250,12 @@ static int test_steam_lifecycle_simulation_mock(const test_env_t *env) {
     ok &= expect(DSU_CHDIR(sandbox) == 0, "chdir sandbox");
 
     ok &= expect(run_capture_to_file(env->cli_path,
-                                    "plan --manifest manifests/minimal.dsumanifest --op install --scope portable --components core --out plan.dsuplan --format json --deterministic 1",
+                                    "export-invocation --manifest manifests/minimal.dsumanifest --op install --scope portable --components core --out plan.dsuinv --format json --deterministic 1",
+                                    "invocation.json",
+                                    &ec),
+                 "export invocation install");
+    ok &= expect(run_capture_to_file(env->cli_path,
+                                    "plan --manifest manifests/minimal.dsumanifest --invocation plan.dsuinv --out plan.dsuplan --format json --deterministic 1",
                                     "plan.json",
                                     &ec),
                  "plan install");
@@ -1198,8 +1273,13 @@ static int test_steam_lifecycle_simulation_mock(const test_env_t *env) {
                      "steam uninstall dry-run");
         ok &= expect(ec == 0, "steam uninstall exit 0");
     } else {
+        ok &= expect(run_capture_to_file(env->cli_path,
+                                         "export-invocation --manifest manifests/minimal.dsumanifest --op install --scope portable --components core --out steam_missing.dsuinv --format json --deterministic 1",
+                                         "steam_missing_invocation.json",
+                                         &ec),
+                     "export invocation steam missing");
         ok &= expect(run_cli_json_expect(env->cli_path,
-                                         "plan --manifest manifests/minimal.dsumanifest --op install --scope portable --components core --out steam_missing.dsuplan --format json --deterministic 1",
+                                         "plan --manifest manifests/minimal.dsumanifest --invocation steam_missing.dsuinv --out steam_missing.dsuplan --format json --deterministic 1",
                                          "steam_missing.json",
                                          0,
                                          "\"status_code\":0"),
@@ -1224,7 +1304,12 @@ static int test_linux_pkg_lifecycle_simulation_mock(const test_env_t *env) {
     ok &= expect(DSU_CHDIR(sandbox) == 0, "chdir sandbox");
 
     ok &= expect(run_capture_to_file(env->cli_path,
-                                    "plan --manifest manifests/minimal.dsumanifest --op install --scope portable --components core --out plan.dsuplan --format json --deterministic 1",
+                                    "export-invocation --manifest manifests/minimal.dsumanifest --op install --scope portable --components core --out plan.dsuinv --format json --deterministic 1",
+                                    "invocation.json",
+                                    &ec),
+                 "export invocation install");
+    ok &= expect(run_capture_to_file(env->cli_path,
+                                    "plan --manifest manifests/minimal.dsumanifest --invocation plan.dsuinv --out plan.dsuplan --format json --deterministic 1",
                                     "plan.json",
                                     &ec),
                  "plan install");
