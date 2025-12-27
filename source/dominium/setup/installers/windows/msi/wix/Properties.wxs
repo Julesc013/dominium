@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <Property Id="ARPCONTACT" Value="$(var.Manufacturer)" />
+    <Property Id="ARPINSTALLLOCATION" Value="[INSTALLDIR]" />
+    <Property Id="ARPNOMODIFY" Value="no" />
+    <Property Id="ARPNOREPAIR" Value="no" />
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
+
+    <Property Id="DSU_OPERATION" Secure="yes" />
+    <Property Id="DSU_SCOPE" Secure="yes" />
+    <Property Id="DSU_PLATFORM" Secure="yes" Value="$(var.DsuPlatform)" />
+    <Property Id="DSU_DETERMINISTIC" Secure="yes" Value="1" />
+    <Property Id="DSU_OFFLINE" Secure="yes" Value="0" />
+    <Property Id="DSU_ALLOW_PRERELEASE" Secure="yes" Value="0" />
+    <Property Id="DSU_LEGACY_MODE" Secure="yes" Value="0" />
+    <Property Id="DSU_UI_MODE" Secure="yes" Value="gui" />
+    <Property Id="DSU_FRONTEND_ID" Secure="yes" Value="msi" />
+    <Property Id="DSU_INVOCATION_PATH" Secure="yes" Value="[TempFolder]dominium-invocation.tlv" />
+    <Property Id="DSU_INSTALL_MODE" Secure="yes" Value="quick" />
+
+    <Property Id="ALLUSERS" Secure="yes" Value="1" />
+    <Property Id="MSIINSTALLPERUSER" Secure="yes" />
+
+    <SetProperty Id="ALLUSERS" Value="2" After="LaunchConditions">DSU_SCOPE="user" OR DSU_SCOPE="portable"</SetProperty>
+    <SetProperty Id="MSIINSTALLPERUSER" Value="1" After="CostFinalize">DSU_SCOPE="user" OR DSU_SCOPE="portable"</SetProperty>
+
+    <SetProperty Id="INSTALLDIR" Value="[LocalAppDataFolder]Dominium"
+                 After="CostFinalize">UILevel&lt;5 AND DSU_SCOPE="user" AND INSTALLDIR&gt;&lt;"[ProgramFilesFolder]Dominium"</SetProperty>
+    <SetProperty Id="INSTALLDIR" Value="[PersonalFolder]DominiumPortable"
+                 After="CostFinalize">UILevel&lt;5 AND DSU_SCOPE="portable" AND INSTALLDIR&gt;&lt;"[ProgramFilesFolder]Dominium"</SetProperty>
+    <SetProperty Id="INSTALLDIR" Value="[ProgramFilesFolder]Dominium"
+                 After="CostFinalize">UILevel&lt;5 AND DSU_SCOPE="system"</SetProperty>
+  </Fragment>
+</Wix>

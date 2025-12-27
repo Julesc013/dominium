@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product
+    Id="$(var.ProductCode)"
+    Name="Dominium Setup"
+    Manufacturer="$(var.Manufacturer)"
+    Version="$(var.ProductVersion)"
+    Language="1033"
+    UpgradeCode="$(var.UpgradeCode)">
+
+    <Package
+      Id="$(var.PackageCode)"
+      InstallerVersion="500"
+      Compressed="yes"
+      InstallScope="perMachine" />
+
+    <MajorUpgrade
+      DowngradeErrorMessage="A newer version of Dominium is already installed."
+      AllowSameVersionUpgrades="yes" />
+
+    <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
+
+    <FeatureGroupRef Id="DominiumFeatures" />
+
+    <UIRef Id="DominiumSetupUI" />
+    <UIRef Id="WixUI_Common" />
+
+    <WixVariable Id="WixUIBannerBmp" Value="$(var.WixBannerBmp)" />
+    <WixVariable Id="WixUIDialogBmp" Value="$(var.WixDialogBmp)" />
+  </Product>
+</Wix>

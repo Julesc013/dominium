@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <Binary Id="InvokeSetupCoreBinary" SourceFile="$(var.InvokeSetupCorePath)" />
+
+    <CustomAction Id="SetInvokeSetupCore"
+                  Property="InvokeSetupCore"
+                  Value="INSTALLDIR=[INSTALLDIR];DSU_OPERATION=[DSU_OPERATION];DSU_SCOPE=[DSU_SCOPE];DSU_PLATFORM=[DSU_PLATFORM];DSU_DETERMINISTIC=[DSU_DETERMINISTIC];DSU_OFFLINE=[DSU_OFFLINE];DSU_ALLOW_PRERELEASE=[DSU_ALLOW_PRERELEASE];DSU_LEGACY_MODE=[DSU_LEGACY_MODE];DSU_UI_MODE=[DSU_UI_MODE];DSU_FRONTEND_ID=[DSU_FRONTEND_ID];DSU_INVOCATION_PATH=[DSU_INVOCATION_PATH];ADDLOCAL=[ADDLOCAL];REMOVE=[REMOVE];UILEVEL=[UILevel];REINSTALL=[REINSTALL];UPGRADINGPRODUCTCODE=[UPGRADINGPRODUCTCODE];ALLUSERS=[ALLUSERS];MSIINSTALLPERUSER=[MSIINSTALLPERUSER]" />
+
+    <CustomAction Id="InvokeSetupCore"
+                  BinaryKey="InvokeSetupCoreBinary"
+                  DllEntry="InvokeSetupCore"
+                  Execute="deferred"
+                  Impersonate="no"
+                  Return="check" />
+
+    <InstallExecuteSequence>
+      <Custom Action="SetInvokeSetupCore" After="InstallFiles">NOT Installed OR REINSTALL OR REMOVE=&quot;ALL&quot; OR UPGRADINGPRODUCTCODE</Custom>
+      <Custom Action="InvokeSetupCore" After="SetInvokeSetupCore">NOT Installed OR REINSTALL OR REMOVE=&quot;ALL&quot; OR UPGRADINGPRODUCTCODE</Custom>
+    </InstallExecuteSequence>
+  </Fragment>
+</Wix>

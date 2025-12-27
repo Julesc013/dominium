@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLDIR" Name="Dominium">
+          <Directory Id="DSU_DIR" Name=".dsu">
+            <Directory Id="DSU_ARTIFACT_ROOT" Name="artifact_root">
+              <Directory Id="DSU_SETUP_DIR" Name="setup">
+                <Directory Id="DSU_MANIFESTS_DIR" Name="manifests" />
+                <Directory Id="DSU_POLICIES_DIR" Name="policies" />
+              </Directory>
+              <Directory Id="DSU_PAYLOADS_DIR" Name="payloads" />
+              <Directory Id="DSU_DOCS_DIR" Name="docs" />
+            </Directory>
+          </Directory>
+        </Directory>
+      </Directory>
+    </Directory>
+  </Fragment>
+</Wix>

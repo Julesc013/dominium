@@ -248,4 +248,21 @@ if(DOMINIUM_PYTHON)
         ENVIRONMENT "SOURCE_DATE_EPOCH=946684800"
     )
 
+    set(_dom_msi_test "${_dom_repo_root}/scripts/packaging/tests/msi_validation_test.py")
+
+    add_test(
+        NAME dsu_msi_validation_test
+        COMMAND
+            ${DOMINIUM_PYTHON}
+            ${_dom_msi_test}
+            --build-dir ${CMAKE_BINARY_DIR}
+            --version ${DOM_PROJECT_SEMVER}
+            --config $<CONFIG>
+    )
+
+    set_tests_properties(dsu_msi_validation_test PROPERTIES
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+        ENVIRONMENT "SOURCE_DATE_EPOCH=946684800"
+    )
+
 endif()
