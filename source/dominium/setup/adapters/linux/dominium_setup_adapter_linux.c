@@ -7,6 +7,8 @@ PURPOSE: Linux setup adapter entrypoint (Plan S-6).
 #error "dominium_setup_adapter_linux.c is Linux-only"
 #endif
 
+#include "dsu_linux_platform_iface.h"
+
 #include "dsu/dsu_config.h"
 #include "dsu/dsu_ctx.h"
 #include "dsu/dsu_log.h"
@@ -17,41 +19,6 @@ PURPOSE: Linux setup adapter entrypoint (Plan S-6).
 
 #include <stdio.h>
 #include <string.h>
-
-static dsu_status_t dsu__linux_plat_request_elevation(void *user, dsu_ctx_t *ctx) {
-    (void)user;
-    (void)ctx;
-    return DSU_STATUS_INVALID_REQUEST;
-}
-
-static dsu_status_t dsu__linux_noop_register(void *user, dsu_ctx_t *ctx, const dsu_platform_registrations_state_t *state, const dsu_platform_intent_t *intent) {
-    (void)user;
-    (void)ctx;
-    (void)state;
-    (void)intent;
-    return DSU_STATUS_SUCCESS;
-}
-
-static dsu_status_t dsu__linux_noop_remove(void *user, dsu_ctx_t *ctx, const dsu_platform_registrations_state_t *state) {
-    (void)user;
-    (void)ctx;
-    (void)state;
-    return DSU_STATUS_SUCCESS;
-}
-
-static dsu_status_t dsu__linux_plat_atomic_dir_swap(void *user, dsu_ctx_t *ctx, const char *src_abs, const char *dst_abs) {
-    (void)user;
-    (void)ctx;
-    (void)src_abs;
-    (void)dst_abs;
-    return DSU_STATUS_INVALID_REQUEST;
-}
-
-static dsu_status_t dsu__linux_plat_flush_fs(void *user, dsu_ctx_t *ctx) {
-    (void)user;
-    (void)ctx;
-    return DSU_STATUS_SUCCESS;
-}
 
 static void dsu__usage(void) {
     fprintf(stderr,
@@ -81,6 +48,7 @@ int main(int argc, char **argv) {
     dsu_callbacks_t cbs;
     dsu_ctx_t *ctx = NULL;
     dsu_platform_iface_t iface;
+    dsu_linux_platform_user_t user;
     dsu_status_t st = DSU_STATUS_SUCCESS;
 
     for (i = 1; i < argc; ++i) {
@@ -129,17 +97,10 @@ int main(int argc, char **argv) {
     st = dsu_ctx_reset_audit_log(ctx);
     if (st != DSU_STATUS_SUCCESS) goto done;
 
-    dsu_platform_iface_init(&iface);
-    iface.plat_request_elevation = dsu__linux_plat_request_elevation;
-    iface.plat_register_app_entry = dsu__linux_noop_register;
-    iface.plat_register_file_assoc = dsu__linux_noop_register;
-    iface.plat_register_url_handler = dsu__linux_noop_register;
-    iface.plat_register_uninstall_entry = dsu__linux_noop_register;
-    iface.plat_declare_capability = dsu__linux_noop_register;
-    iface.plat_remove_registrations = dsu__linux_noop_remove;
-    iface.plat_atomic_dir_swap = dsu__linux_plat_atomic_dir_swap;
-    iface.plat_flush_fs = dsu__linux_plat_flush_fs;
-    st = dsu_ctx_set_platform_iface(ctx, &iface, NULL);
+    memset(&user, 0, sizeof(user));
+    st = dsu_linux_platform_iface_init(&iface);
+    if (st != DSU_STATUS_SUCCESS) goto done;
+    st = dsu_ctx_set_platform_iface(ctx, &iface, &user);
     if (st != DSU_STATUS_SUCCESS) goto done;
 
     if (dsu__streq(cmd, "install")) {

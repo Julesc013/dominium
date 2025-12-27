@@ -69,10 +69,12 @@ The unregister path is always driven by the installed state: `dsu_platform_unreg
 
 ## CLI surface (adapter-backed)
 
-- Register platform intents:
-  - `dominium-setup platform-register --state <install_root>/.dsu/installed_state.dsustate --deterministic 1`
-- Unregister platform intents:
-  - `dominium-setup platform-unregister --state <install_root>/.dsu/installed_state.dsustate --deterministic 1`
+Platform registration is executed by the platform adapter binary:
+
+- Linux: `dominium-setup-linux platform-register --state <install_root>/.dsu/installed_state.dsustate --deterministic 1`
+- Linux: `dominium-setup-linux platform-unregister --state <install_root>/.dsu/installed_state.dsustate --deterministic 1`
+- Windows: `dominium-setup-win platform-register --state <install_root>/.dsu/installed_state.dsustate --deterministic 1`
+- Windows: `dominium-setup-win platform-unregister --state <install_root>/.dsu/installed_state.dsustate --deterministic 1`
 
 Exit codes follow `docs/setup/CLI_REFERENCE.md`.
 

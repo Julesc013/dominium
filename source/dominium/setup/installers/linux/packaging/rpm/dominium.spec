@@ -1,22 +1,22 @@
 Name:           dominium
 Version:        @VERSION@
 Release:        @RELEASE@%{?dist}
-Summary:        Dominium launcher and setup
+Summary:        Dominium setup bundle
 
 License:        MIT
 URL:            https://example.com/dominium
-BuildArch:      x86_64
+BuildArch:      @ARCH@
 Requires:       @REQUIRES@
 
 %description
-Dominium binaries and setup helper. Installation and repair are performed by
-dominium-setup for consistent layout across platforms.
+Dominium payloads and Setup Core frontends. Installation and removal are
+performed by Setup Core to preserve parity across platforms.
 
 %prep
 %setup -T -c -a 0
 
 %build
-# Binaries are prebuilt; nothing to compile here.
+# Prebuilt binaries only.
 
 %install
 rm -rf %{buildroot}
