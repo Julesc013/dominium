@@ -162,6 +162,25 @@ int d_app_run_launcher(const d_app_params* p) {
         break;
     }
 
+    if (p->argc <= 1) {
+        if (caps.has_gui) {
+            rc = dom_launcher_run_gui(p);
+            if (rc != D_APP_ERR_GUI_UNSUPPORTED) {
+                return rc;
+            }
+        }
+        if (caps.has_tui) {
+            rc = dom_launcher_run_tui(p);
+            if (rc != D_APP_ERR_TUI_UNSUPPORTED) {
+                return rc;
+            }
+        }
+        if (caps.has_cli) {
+            return dom_launcher_run_cli(p);
+        }
+        return D_APP_ERR_NO_INTERFACE;
+    }
+
     if (p->has_terminal) {
         if (caps.has_cli) {
             return dom_launcher_run_cli(p);
@@ -230,6 +249,25 @@ int d_app_run_game(const d_app_params* p) {
         }
     }
 
+    if (p->argc <= 1) {
+        if (caps.has_gui) {
+            rc = dom_game_run_gui(p);
+            if (rc != D_APP_ERR_GUI_UNSUPPORTED) {
+                return rc;
+            }
+        }
+        if (caps.has_tui) {
+            rc = dom_game_run_tui(p);
+            if (rc != D_APP_ERR_TUI_UNSUPPORTED) {
+                return rc;
+            }
+        }
+        if (caps.has_cli) {
+            return dom_game_run_cli(p);
+        }
+        return D_APP_ERR_NO_INTERFACE;
+    }
+
     if (p->has_terminal) {
         if (caps.has_cli) {
             return dom_game_run_cli(p);
@@ -290,6 +328,25 @@ int d_app_run_setup(const d_app_params* p) {
     case D_APP_MODE_AUTO:
     default:
         break;
+    }
+
+    if (p->argc <= 1) {
+        if (caps.has_gui) {
+            rc = dom_setup_run_gui(p);
+            if (rc != D_APP_ERR_GUI_UNSUPPORTED) {
+                return rc;
+            }
+        }
+        if (caps.has_tui) {
+            rc = dom_setup_run_tui(p);
+            if (rc != D_APP_ERR_TUI_UNSUPPORTED) {
+                return rc;
+            }
+        }
+        if (caps.has_cli) {
+            return dom_setup_run_cli(p);
+        }
+        return D_APP_ERR_NO_INTERFACE;
     }
 
     if (p->has_terminal) {

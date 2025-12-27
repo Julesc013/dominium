@@ -673,7 +673,6 @@ static int launcher_run_gui_impl(LauncherApp* app) {
     dgui_widget* actions;
     dgui_widget* status;
     const float dt = 1.0f / 60.0f;
-    int frames = 0;
     int rc = 1;
 
     (void)app;
@@ -751,9 +750,8 @@ static int launcher_run_gui_impl(LauncherApp* app) {
         d_gui_window_set_root(inspector, iroot);
     }
 
-    while (d_gui_any_window_alive() && frames < 3) {
+    while (d_gui_any_window_alive()) {
         d_gui_tick_all_windows(dt);
-        ++frames;
     }
 
     if (inspector) {

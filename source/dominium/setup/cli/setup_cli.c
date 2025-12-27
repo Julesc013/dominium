@@ -652,7 +652,6 @@ int dom_setup_run_gui_impl(void) {
         d_gfx_pipeline* pipeline = NULL;
         d_gui_window* win = NULL;
         const float dt = 1.0f / 60.0f;
-        int frames = 0;
 
         memset(infos, 0, sizeof(infos));
         d_gfx_detect_backends(infos, D_GFX_BACKEND_MAX);
@@ -701,9 +700,8 @@ int dom_setup_run_gui_impl(void) {
             }
         }
 
-        while (d_gui_any_window_alive() && frames < 3) {
+        while (d_gui_any_window_alive()) {
             d_gui_tick_all_windows(dt);
-            ++frames;
         }
 
         if (win) {
