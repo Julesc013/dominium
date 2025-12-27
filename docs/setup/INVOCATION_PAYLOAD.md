@@ -61,6 +61,9 @@ UI mode values:
 - Bit 1: `deterministic`
 - Bit 2: `allow_prerelease`
 - Bit 3: `legacy_mode`
+- Bit 4: `enable_shortcuts`
+- Bit 5: `enable_file_assoc`
+- Bit 6: `enable_url_handlers`
 
 Unknown bits are rejected during validation.
 
@@ -126,7 +129,10 @@ Example:
     "offline": false,
     "deterministic": true,
     "allow_prerelease": false,
-    "legacy_mode": false
+    "legacy_mode": false,
+    "enable_shortcuts": true,
+    "enable_file_assoc": true,
+    "enable_url_handlers": true
   },
   "ui_mode": "gui",
   "frontend_id": "msi"
