@@ -26,14 +26,16 @@ cp -a %{_sourcedir}/dominium/artifact_root/. %{buildroot}/opt/dominium/artifact_
 %post
 if [ -x /opt/dominium/artifact_root/setup/dominium-setup ]; then
     cd /opt/dominium/artifact_root
-    /opt/dominium/artifact_root/setup/dominium-setup --deterministic 1 plan --manifest setup/manifests/product.dsumanifest --op install --scope system --out /tmp/dominium_install.dsuplan || true
+    /opt/dominium/artifact_root/setup/dominium-setup --deterministic 1 export-invocation --manifest setup/manifests/product.dsumanifest --op install --scope system --ui-mode cli --frontend-id rpm --out /tmp/dominium_install.dsuinv || true
+    /opt/dominium/artifact_root/setup/dominium-setup --deterministic 1 plan --manifest setup/manifests/product.dsumanifest --invocation /tmp/dominium_install.dsuinv --out /tmp/dominium_install.dsuplan || true
     /opt/dominium/artifact_root/setup/dominium-setup --deterministic 1 apply --plan /tmp/dominium_install.dsuplan || true
 fi
 
 %preun
 if [ $1 -eq 0 ] && [ -x /opt/dominium/artifact_root/setup/dominium-setup ] && [ -f /opt/dominium/.dsu/installed_state.dsustate ]; then
     cd /opt/dominium/artifact_root
-    /opt/dominium/artifact_root/setup/dominium-setup --deterministic 1 plan --manifest setup/manifests/product.dsumanifest --state /opt/dominium/.dsu/installed_state.dsustate --op uninstall --scope system --out /tmp/dominium_uninstall.dsuplan || true
+    /opt/dominium/artifact_root/setup/dominium-setup --deterministic 1 export-invocation --manifest setup/manifests/product.dsumanifest --state /opt/dominium/.dsu/installed_state.dsustate --op uninstall --scope system --ui-mode cli --frontend-id rpm --out /tmp/dominium_uninstall.dsuinv || true
+    /opt/dominium/artifact_root/setup/dominium-setup --deterministic 1 plan --manifest setup/manifests/product.dsumanifest --state /opt/dominium/.dsu/installed_state.dsustate --invocation /tmp/dominium_uninstall.dsuinv --out /tmp/dominium_uninstall.dsuplan || true
     /opt/dominium/artifact_root/setup/dominium-setup --deterministic 1 apply --plan /tmp/dominium_uninstall.dsuplan || true
 fi
 

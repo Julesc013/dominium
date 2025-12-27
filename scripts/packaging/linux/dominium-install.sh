@@ -37,10 +37,12 @@ if [ ! -f "$MANIFEST_PATH" ]; then
   exit 1
 fi
 
+INVOCATION_PATH="${TMPDIR:-/tmp}/dominium_install.dsuinv"
 PLAN_PATH="${TMPDIR:-/tmp}/dominium_install.dsuplan"
 
 cd "$ARTIFACT_ROOT"
-"$CLI_BIN" --deterministic "$DETERMINISTIC" plan --manifest "$MANIFEST_PATH" --op install --scope "$SCOPE" --out "$PLAN_PATH"
+"$CLI_BIN" --deterministic "$DETERMINISTIC" export-invocation --manifest "$MANIFEST_PATH" --op install --scope "$SCOPE" --ui-mode cli --frontend-id zip --out "$INVOCATION_PATH"
+"$CLI_BIN" --deterministic "$DETERMINISTIC" plan --manifest "$MANIFEST_PATH" --invocation "$INVOCATION_PATH" --out "$PLAN_PATH"
 
 if [ "$DRY_RUN" = "1" ]; then
   "$CLI_BIN" --deterministic "$DETERMINISTIC" apply --plan "$PLAN_PATH" --dry-run
