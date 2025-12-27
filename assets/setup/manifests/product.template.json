@@ -4,10 +4,13 @@
   "product_id": "dominium",
   "product_version": "0.0.0",
   "build_channel": "dev",
-  "platform_targets": ["win64-x64"],
+  "platform_targets": ["win32-x86", "win64-x64"],
   "default_install_roots": [
+    {"scope": "portable", "platform": "win32-x86", "path": "install/portable"},
     {"scope": "portable", "platform": "win64-x64", "path": "install/portable"},
+    {"scope": "user", "platform": "win32-x86", "path": "install/user"},
     {"scope": "user", "platform": "win64-x64", "path": "install/user"},
+    {"scope": "system", "platform": "win32-x86", "path": "install/system"},
     {"scope": "system", "platform": "win64-x64", "path": "install/system"}
   ],
   "components": [
