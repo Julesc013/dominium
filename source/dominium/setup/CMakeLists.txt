@@ -97,3 +97,7 @@ add_custom_target(ui_regen_setup
 add_dependencies(ui_regen_setup dominium-ui-editor)
 
 add_subdirectory(tests)
+
+if(WIN32)
+    add_subdirectory(installers/windows/msi/cmake)
+endif()
