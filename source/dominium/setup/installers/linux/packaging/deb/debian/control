@@ -1,0 +1,10 @@
+Package: dominium
+Version: @VERSION@
+Section: games
+Priority: optional
+Architecture: @ARCH@
+Maintainer: @MAINTAINER@
+Depends: @DEPENDS@
+Description: Dominium setup bundle (Setup Core managed)
+ Dominium payloads and installer frontends. Setup Core performs install,
+ repair, and uninstall to preserve parity across platforms.

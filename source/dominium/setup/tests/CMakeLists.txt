@@ -40,6 +40,54 @@ set_target_properties(dsu_invocation_parity_test PROPERTIES
 
 add_test(NAME dsu_invocation_parity_test COMMAND dsu_invocation_parity_test ${CMAKE_CURRENT_SOURCE_DIR})
 
+if(UNIX AND NOT APPLE AND TARGET dominium-setup-tui)
+    add_executable(dsu_linux_parity_test
+        dsu_linux_parity_test.c
+    )
+
+    target_include_directories(dsu_linux_parity_test PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../core/include
+    )
+
+    target_link_libraries(dsu_linux_parity_test
+        PRIVATE dsu_core
+    )
+
+    add_dependencies(dsu_linux_parity_test
+        dominium-setup
+        dominium-setup-tui
+    )
+
+    set_target_properties(dsu_linux_parity_test PROPERTIES
+        C_STANDARD 90
+        C_STANDARD_REQUIRED ON
+        C_EXTENSIONS OFF
+    )
+
+    add_test(NAME test_linux_tui_invocation_parity
+        COMMAND dsu_linux_parity_test
+            $<TARGET_FILE:dominium-setup>
+            $<TARGET_FILE:dominium-setup-tui>
+            ${CMAKE_CURRENT_SOURCE_DIR}
+            invocation
+    )
+
+    add_test(NAME test_linux_cli_plan_digest_parity
+        COMMAND dsu_linux_parity_test
+            $<TARGET_FILE:dominium-setup>
+            $<TARGET_FILE:dominium-setup-tui>
+            ${CMAKE_CURRENT_SOURCE_DIR}
+            plan
+    )
+
+    set_tests_properties(test_linux_tui_invocation_parity PROPERTIES
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    )
+    set_tests_properties(test_linux_cli_plan_digest_parity PROPERTIES
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    )
+endif()
+
 add_executable(dsu_manifest_test
     dsu_manifest_test.c
 )
@@ -195,6 +243,8 @@ add_test(NAME test_rollback_on_commit_failure COMMAND dsu_setup_matrix_test ${_d
 add_test(NAME test_plan_determinism_repeat_run COMMAND dsu_setup_matrix_test ${_dom_setup_cli} ${_dom_steam_cli} ${_dom_linux_cli} ${_dom_repo_root} test_plan_determinism_repeat_run)
 add_test(NAME test_steam_lifecycle_simulation_mock COMMAND dsu_setup_matrix_test ${_dom_setup_cli} ${_dom_steam_cli} ${_dom_linux_cli} ${_dom_repo_root} test_steam_lifecycle_simulation_mock)
 add_test(NAME test_linux_pkg_lifecycle_simulation_mock COMMAND dsu_setup_matrix_test ${_dom_setup_cli} ${_dom_steam_cli} ${_dom_linux_cli} ${_dom_repo_root} test_linux_pkg_lifecycle_simulation_mock)
+add_test(NAME test_linux_portable_install_sandbox COMMAND dsu_setup_matrix_test ${_dom_setup_cli} ${_dom_steam_cli} ${_dom_linux_cli} ${_dom_repo_root} test_linux_portable_install_sandbox)
+add_test(NAME test_linux_uninstall_preserves_user_data COMMAND dsu_setup_matrix_test ${_dom_setup_cli} ${_dom_steam_cli} ${_dom_linux_cli} ${_dom_repo_root} test_linux_uninstall_preserves_user_data)
 
 add_test(NAME test_manifest_unknown_tlv_skip COMMAND dsu_manifest_test)
 add_test(NAME test_resolve_conflict_detection COMMAND dsu_resolve_test)

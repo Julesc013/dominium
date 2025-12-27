@@ -42,12 +42,15 @@ Setup Core still computes canonical install roots; the packaging layer should pa
 
 ## Platform registrations
 
-The current Linux adapter implements `dsu_platform_iface` as **no-op success**.
+The Linux adapter implements `dsu_platform_iface` with native filesystem
+registrations:
 
-Future work should implement registrations via:
+- `.desktop` entries under `~/.local/share/applications/` (user) or
+  `/usr/share/applications/` (system)
+- MIME XML definitions under `~/.local/share/mime/packages/` or
+  `/usr/share/mime/packages/` for file associations and URL handlers
 
-- `.desktop` entries (`~/.local/share/applications/` for per-user)
-- MIME associations and URL handlers (desktop environment dependent)
+`REGISTER_UNINSTALL_ENTRY` and `DECLARE_CAPABILITY` are no-op success for now.
 
 ## Packaging forms (design)
 
@@ -59,6 +62,7 @@ Portable tarball:
 Debian (`.deb`) / RPM (`.rpm`):
 
 - package scripts should only call Setup Core with invocations (no business logic)
+- use `dominium-setup-linux platform-register/unregister` for desktop entries
 - ownership belongs to the package manager; avoid overwriting distro-owned files
 
 ## Failure modes
@@ -70,6 +74,6 @@ Debian (`.deb`) / RPM (`.rpm`):
 
 Recommended uninstall flow:
 
-1. `dominium-setup-linux platform-unregister --state <statefile>` (currently no-op)
+1. `dominium-setup-linux platform-unregister --state <statefile>`
 2. `dominium-setup-linux uninstall --state <statefile>`
 

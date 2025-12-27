@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 
 add_executable(dominium-setup-linux
     dominium_setup_adapter_linux.c
+    dsu_linux_platform_iface.c
 )
 
 target_include_directories(dominium-setup-linux PRIVATE

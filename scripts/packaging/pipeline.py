@@ -140,6 +140,13 @@ def _find_unique_file(root_dir, filename, prefer_subpaths=None):
                        % (len(hits), filename, root_dir, "\n".join(sorted(hits)[:50])))
 
 
+def _try_find_unique_file(root_dir, filename, prefer_subpaths=None):
+    try:
+        return _find_unique_file(root_dir, filename, prefer_subpaths=prefer_subpaths)
+    except Exception:
+        return None
+
+
 def _copy_exe_and_sidecars(src_exe, dst_dir, copy_exe=True, copy_sidecars=True):
     os.makedirs(dst_dir, exist_ok=True)
     if copy_exe:
@@ -410,6 +417,12 @@ def assemble_artifact(args):
     setup_alias = os.path.join(out_dir, "setup", "dominium-setup" + _exe_suffix())
     if os.path.basename(setup_bin).lower() != ("dominium-setup" + _exe_suffix()).lower():
         shutil.copy2(setup_bin, setup_alias)
+
+    # Optional Linux setup frontends/adapters (best-effort copy when built).
+    for extra in ("dominium-setup-tui", "dominium-setup-gui", "dominium-setup-linux"):
+        extra_bin = _try_find_unique_file(build_dir, extra + _exe_suffix(), prefer_subpaths=["source/dominium/setup/"])
+        if extra_bin:
+            shutil.copy2(extra_bin, os.path.join(out_dir, "setup", os.path.basename(extra_bin)))
 
     # Populate payload file trees (fileset payloads).
     # Avoid per-component file path collisions by placing shared runtime DLLs

@@ -1355,6 +1355,8 @@ static int dispatch_test(const test_env_t *env, const char *name) {
     if (strcmp(name, "test_plan_determinism_repeat_run") == 0) return test_plan_determinism_repeat_run(env);
     if (strcmp(name, "test_steam_lifecycle_simulation_mock") == 0) return test_steam_lifecycle_simulation_mock(env);
     if (strcmp(name, "test_linux_pkg_lifecycle_simulation_mock") == 0) return test_linux_pkg_lifecycle_simulation_mock(env);
+    if (strcmp(name, "test_linux_portable_install_sandbox") == 0) return test_install_fresh_portable(env);
+    if (strcmp(name, "test_linux_uninstall_preserves_user_data") == 0) return test_uninstall_preserves_user_data(env);
     fprintf(stderr, "unknown test name: %s\n", name);
     return 0;
 }

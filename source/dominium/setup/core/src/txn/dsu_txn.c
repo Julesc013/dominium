@@ -440,6 +440,9 @@ static dsu_status_t dsu__txn_try_load_prev_state(dsu_ctx_t *ctx,
 static dsu_status_t dsu__canon_abs_path(const char *in, char *out_abs, dsu_u32 out_abs_cap) {
     dsu_status_t st;
     char in_copy[1024];
+#if !defined(_WIN32)
+    char home_expanded[1024];
+#endif
     const char *src;
     dsu_u32 n;
     if (!in || !out_abs || out_abs_cap == 0u) {
@@ -458,6 +461,24 @@ static dsu_status_t dsu__canon_abs_path(const char *in, char *out_abs, dsu_u32 o
         src = in_copy;
     }
     out_abs[0] = '\0';
+#if !defined(_WIN32)
+    if (src[0] == '~' && (src[1] == '/' || src[1] == '\0')) {
+        const char *home = getenv("HOME");
+        size_t home_len;
+        size_t rest_len;
+        if (!home || !home[0]) {
+            return DSU_STATUS_INVALID_ARGS;
+        }
+        home_len = strlen(home);
+        rest_len = strlen(src + 1);
+        if (home_len + rest_len + 1u > sizeof(home_expanded)) {
+            return DSU_STATUS_INVALID_ARGS;
+        }
+        memcpy(home_expanded, home, home_len);
+        memcpy(home_expanded + home_len, src + 1, rest_len + 1u);
+        src = home_expanded;
+    }
+#endif
     if (dsu__is_abs_path_like(src)) {
         st = dsu_fs_path_canonicalize(src, out_abs, out_abs_cap);
         if (st != DSU_STATUS_SUCCESS) {
