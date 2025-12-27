@@ -540,7 +540,7 @@ static int test_platform_iface_idempotent_register_unregister(void) {
     ok &= expect(st == DSU_STATUS_SUCCESS && r != NULL, "resolve manifest");
     if (!ok) goto done;
 
-    st = dsu_plan_build(ctx, m, mf_path, r, &plan);
+    st = dsu_plan_build(ctx, m, mf_path, r, 0x1111222233334444ULL, &plan);
     ok &= expect(st == DSU_STATUS_SUCCESS && plan != NULL, "plan build");
     if (!ok) goto done;
 

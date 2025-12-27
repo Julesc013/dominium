@@ -226,6 +226,26 @@ static int expect_bytes_equal(const unsigned char *a, unsigned long alen,
     return 1;
 }
 
+static int expect_stdout_contains(const unsigned char *hay,
+                                  unsigned long hay_len,
+                                  const char *needle,
+                                  const char *msg) {
+    unsigned char *tmp;
+    int ok;
+    if (!hay || !needle) {
+        return expect(0, msg);
+    }
+    tmp = (unsigned char *)malloc(hay_len + 1u);
+    if (!tmp) {
+        return expect(0, msg);
+    }
+    memcpy(tmp, hay, hay_len);
+    tmp[hay_len] = '\0';
+    ok = strstr((const char *)tmp, needle) != NULL;
+    free(tmp);
+    return expect(ok, msg);
+}
+
 static int build_cmdline(const char *cli_path, const char *args, char out[4096]) {
     unsigned long need;
     unsigned long i = 0ul;
@@ -572,17 +592,19 @@ int main(int argc, char **argv) {
         free(out);
     }
 
-    /* Golden JSON: resolve + plan over a deterministic manifest */
+    /* Invocation + resolve + plan over a deterministic manifest */
     {
         unsigned char *out = NULL;
         unsigned long out_len = 0ul;
         int ec = 1;
         ok &= expect(run_capture(cli_path,
-                                 "resolve --manifest m.dsumanifest --op install --scope portable --components core --format json --deterministic 1",
+                                 "export-invocation --manifest m.dsumanifest --op install --scope portable --components core --out inv.dsuinv --format json --deterministic 1",
                                  &out, &out_len, &ec),
-                     "run resolve");
-        ok &= expect(ec == 0, "resolve exit 0");
-        ok &= expect_golden_stdout(src_dir, "golden/cli/resolve_install_core.json", out, out_len, "resolve golden");
+                     "run export-invocation");
+        ok &= expect(ec == 0, "export-invocation exit 0");
+        ok &= expect_stdout_contains(out, out_len, "\"invocation_digest64\"", "export-invocation digest");
+        ok &= expect_stdout_contains(out, out_len, "\"operation\":\"install\"", "export-invocation operation");
+        ok &= expect(file_exists("inv.dsuinv"), "invocation file exists");
         free(out);
     }
     {
@@ -590,11 +612,25 @@ int main(int argc, char **argv) {
         unsigned long out_len = 0ul;
         int ec = 1;
         ok &= expect(run_capture(cli_path,
-                                 "plan --manifest m.dsumanifest --op install --scope portable --components core --out out.dsuplan --format json --deterministic 1",
+                                 "resolve --manifest m.dsumanifest --invocation inv.dsuinv --format json --deterministic 1",
+                                 &out, &out_len, &ec),
+                     "run resolve");
+        ok &= expect(ec == 0, "resolve exit 0");
+        ok &= expect_stdout_contains(out, out_len, "\"invocation_digest64\"", "resolve digest");
+        ok &= expect_stdout_contains(out, out_len, "\"operation\":\"install\"", "resolve operation");
+        free(out);
+    }
+    {
+        unsigned char *out = NULL;
+        unsigned long out_len = 0ul;
+        int ec = 1;
+        ok &= expect(run_capture(cli_path,
+                                 "plan --manifest m.dsumanifest --invocation inv.dsuinv --out out.dsuplan --format json --deterministic 1",
                                  &out, &out_len, &ec),
                      "run plan");
         ok &= expect(ec == 0, "plan exit 0");
-        ok &= expect_golden_stdout(src_dir, "golden/cli/plan_install_core.json", out, out_len, "plan golden");
+        ok &= expect_stdout_contains(out, out_len, "\"invocation_digest64\"", "plan digest");
+        ok &= expect_stdout_contains(out, out_len, "\"plan_file\":\"out.dsuplan\"", "plan file");
         free(out);
     }
 

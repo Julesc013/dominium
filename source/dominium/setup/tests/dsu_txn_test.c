@@ -833,7 +833,7 @@ static int test_fresh_install(void) {
     ok &= expect(r != NULL, "resolve != NULL");
     if (!ok) goto done;
 
-    st = dsu_plan_build(ctx, m, manifest_path, r, &p);
+    st = dsu_plan_build(ctx, m, manifest_path, r, 0x1111222233334444ULL, &p);
     ok &= expect_st(st, DSU_STATUS_SUCCESS, "plan build");
     ok &= expect(p != NULL, "plan != NULL");
     if (!ok) goto done;
@@ -955,7 +955,7 @@ static int test_verify_only_mode(void) {
     ok &= expect_st(st, DSU_STATUS_SUCCESS, "resolve");
     if (!ok) goto done;
 
-    st = dsu_plan_build(ctx, m, manifest_path, r, &p);
+    st = dsu_plan_build(ctx, m, manifest_path, r, 0x1111222233334444ULL, &p);
     ok &= expect_st(st, DSU_STATUS_SUCCESS, "plan build");
     if (!ok) goto done;
 
@@ -1071,7 +1071,7 @@ static int test_state_roundtrip_and_atomic_save(void) {
     ok &= expect_st(st, DSU_STATUS_SUCCESS, "resolve");
     if (!ok) goto done;
 
-    st = dsu_plan_build(ctx, m, manifest_path, r, &p);
+    st = dsu_plan_build(ctx, m, manifest_path, r, 0x1111222233334444ULL, &p);
     ok &= expect_st(st, DSU_STATUS_SUCCESS, "plan build");
     if (!ok) goto done;
 
@@ -1247,7 +1247,7 @@ static int test_report_verify_detects_missing_and_modified(void) {
     ok &= expect_st(st, DSU_STATUS_SUCCESS, "resolve");
     if (!ok) goto done;
 
-    st = dsu_plan_build(ctx, m, manifest_path, r, &p);
+    st = dsu_plan_build(ctx, m, manifest_path, r, 0x1111222233334444ULL, &p);
     ok &= expect_st(st, DSU_STATUS_SUCCESS, "plan build");
     if (!ok) goto done;
 
@@ -1356,7 +1356,7 @@ static int test_uninstall(void) {
     ok &= expect_st(st, DSU_STATUS_SUCCESS, "resolve");
     if (!ok) goto done;
 
-    st = dsu_plan_build(ctx, m, manifest_path, r, &p);
+    st = dsu_plan_build(ctx, m, manifest_path, r, 0x1111222233334444ULL, &p);
     ok &= expect_st(st, DSU_STATUS_SUCCESS, "plan build");
     if (!ok) goto done;
 
@@ -1481,7 +1481,7 @@ static int test_failed_install_rollback_pristine(void) {
     ok &= expect_st(st, DSU_STATUS_SUCCESS, "resolve");
     if (!ok) goto done;
 
-    st = dsu_plan_build(ctx, m, manifest_path, r, &p);
+    st = dsu_plan_build(ctx, m, manifest_path, r, 0x1111222233334444ULL, &p);
     ok &= expect_st(st, DSU_STATUS_SUCCESS, "plan build");
     if (!ok) goto done;
 
@@ -1684,7 +1684,7 @@ static int test_failpoint_rollback_pristine(void) {
         ok &= expect_st(st, DSU_STATUS_SUCCESS, "resolve (failpoints)");
         if (!ok) goto fp_done;
 
-        st = dsu_plan_build(ctx, m, manifest_path, r, &p);
+        st = dsu_plan_build(ctx, m, manifest_path, r, 0x1111222233334444ULL, &p);
         ok &= expect_st(st, DSU_STATUS_SUCCESS, "plan build (failpoints)");
         if (!ok) goto fp_done;
 
