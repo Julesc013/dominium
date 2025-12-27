@@ -3,6 +3,7 @@
 ## Overview
 
 The macOS adapter is a thin wrapper around Setup Core for `.pkg`/`.dmg` distribution flows.
+macOS GUI frontends must follow the canonical UX contract (expert UI allowed).
 
 Code:
 
@@ -20,6 +21,9 @@ Supported commands:
 - `uninstall --state <file> [--dry-run] [--deterministic] [--log <file>]`
 - `platform-register --state <file> [--deterministic] [--log <file>]`
 - `platform-unregister --state <file> [--deterministic] [--log <file>]`
+
+The adapter executes plan/state operations only; invocation payloads are produced by the
+frontend or packaging layer and passed to `dominium-setup` for plan creation.
 
 ## Platform registrations
 

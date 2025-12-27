@@ -14,7 +14,10 @@ Input manifest must already be:
 
 See `docs/setup/MANIFEST_SCHEMA.md`.
 
-### 2) User request (`dsu_resolve_request_t`)
+### 2) Invocation (`dsu_invocation`) and derived request
+
+Setup Core accepts `dsu_invocation` as the external input. The resolver uses a
+`dsu_resolve_request_t` derived from the invocation payload.
 
 Fields (public ABI):
 - `operation`: `install | upgrade | repair | uninstall`
@@ -146,11 +149,15 @@ Finalize the resolved set:
 
 Resolve to JSON (stable ordering):
 
-`dominium-setup resolve --manifest <artifact_root>/setup/manifests/product.dsumanifest --op install --components launcher,runtime --scope portable --format json --deterministic 1`
+`dominium-setup export-invocation --manifest <artifact_root>/setup/manifests/product.dsumanifest --op install --components launcher,runtime --scope portable --out install.dsuinv`
+
+`dominium-setup resolve --manifest <artifact_root>/setup/manifests/product.dsumanifest --invocation install.dsuinv --format json --deterministic 1`
 
 Resolve against an installed-state snapshot:
 
-`dominium-setup resolve --manifest manifest.dsumanifest --state install/.dsu/installed_state.dsustate --op upgrade --components launcher --scope user --format json --deterministic 1`
+`dominium-setup export-invocation --manifest manifest.dsumanifest --op upgrade --components launcher --scope user --out upgrade.dsuinv`
+
+`dominium-setup resolve --manifest manifest.dsumanifest --state install/.dsu/installed_state.dsustate --invocation upgrade.dsuinv --format json --deterministic 1`
 
 ## Exit codes
 

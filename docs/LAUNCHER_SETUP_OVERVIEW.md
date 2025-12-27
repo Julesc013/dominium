@@ -7,17 +7,16 @@ This document summarizes how installs, the launcher, and runtimes fit together. 
 - **per-user** — binaries under user-local program directory; user data under user-local config/data roots.
 - **system** — binaries under system roots (Program Files/`/Applications`/`/opt`); optional shared data root; user data still per-user.
 
-Every install root contains `dominium_install.json` (see `docs/FORMATS/FORMAT_INSTALL_MANIFEST.md`) that records install ID, type, platform, version, timestamp, and origin.
+Every install root contains `installed_state.dsustate` (see `docs/setup/INSTALLED_STATE_SCHEMA.md`) that records install metadata, components, and platform intents.
 
-## dom_setup (installer/repair/uninstaller)
-- Commands: `install`, `repair`, `uninstall`, `list`, `info`.
-- Responsibilities: create/verify/uninstall installs, write/read manifests, and register installs (registry/index file where allowed).
+## Setup Core and frontends
+- `dominium-setup` is the reference CLI frontend over Setup Core.
+- Frontends (GUI/TUI/CLI/MSI/EXE) emit `dsu_invocation` and call Setup Core to resolve/plan/apply.
 - OS helpers map defaults for per-user/system installs and user-data roots.
-- Runs in C++98, cross-platform; prefers not to elevate. Portable installs avoid any system writes.
-- Plugin-ready: install profiles and post-install/repair/uninstall hooks can be loaded (stubs provided until plugins exist).
+- Portable installs avoid system writes; system scope is handled by native installers.
 
 ## dom_launcher (multi-mode launcher)
-- Roles: discover installs from manifests + registry/index, manage profiles/mod sets, spawn supervised instances (client/server/tools), and aggregate runtime logs.
+- Roles: discover installs from installed-state, manage profiles/mod sets, spawn supervised instances (client/server/tools), and aggregate runtime logs.
 - UI modes: CLI, TUI, GUI (GUI/TUI may be stubbed; core logic is shared).
 - Never links the engine or parses simulation internals; relies on runtime CLIs and metadata.
 - Stores a launcher DB (`db.json`) in user-data (or install-local for portable) with installs, profiles, and recent instances.
@@ -34,7 +33,7 @@ Every install root contains `dominium_install.json` (see `docs/FORMATS/FORMAT_IN
 
 ## Supervised vs standalone
 - **Standalone**: user launches runtime directly; no launcher IDs; runtime still honours `--display` and `--role`.
-- **Supervised**: launcher spawns runtime with session/instance IDs, aggregates logs, and tracks lifecycle/playtime. Repair/updates are delegated to `dom_setup`.
+- **Supervised**: launcher spawns runtime with session/instance IDs, aggregates logs, and tracks lifecycle/playtime. Repair/updates are delegated to `dominium-setup`.
 
 ## Data locations (summary)
 - Portable: everything under install root.

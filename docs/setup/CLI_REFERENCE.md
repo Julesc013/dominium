@@ -1,7 +1,8 @@
 # Dominium Setup CLI Reference (v1)
 
 `dominium-setup` is a contract-stable, scriptable control plane over **Setup Core**.
-It does not implement install logic; it validates inputs, calls core APIs, and emits deterministic outputs.
+It does not implement install logic; it validates inputs, builds `dsu_invocation` payloads,
+calls core APIs, and emits deterministic outputs. The CLI is the reference frontend.
 
 ## Global flags (all commands)
 
@@ -23,6 +24,7 @@ It does not implement install logic; it validates inputs, calls core APIs, and e
 - Commands that support JSON output emit a single JSON object on `stdout` using the envelope described in `docs/setup/CLI_JSON_SCHEMAS.md`.
 - Paths in JSON outputs are normalized to `/` separators.
 - All numeric values are integers (no floats).
+- JSON outputs include `invocation_digest64` when an invocation payload is involved.
 
 ## File locations (stable defaults)
 
@@ -48,23 +50,31 @@ Validates a manifest file and reports its content digests.
 
 Dumps a manifest to canonical JSON. If `--out` is omitted, the manifest JSON is embedded in the JSON envelope.
 
-### `dominium-setup resolve --manifest <file> [--state <file>] --op <install|upgrade|repair|uninstall> [--components <csv>] [--exclude <csv>] [--scope <user|system|portable>]`
+### `dominium-setup export-invocation --manifest <file> --op <install|upgrade|repair|uninstall> [--state <file>] [--components <csv>] [--exclude <csv>] [--scope <user|system|portable>] [--platform <triple>] [--install-root <path>] [--ui-mode <gui|tui|cli>] [--frontend-id <id>] [--offline] [--allow-prerelease] [--legacy] --out <file>`
+
+Builds a `dsu_invocation` payload from CLI flags and writes the TLV file.
+If `--format json` is provided, the canonical JSON form is also emitted.
+`--ui-mode` and `--frontend-id` default to `cli` when omitted.
+
+### `dominium-setup resolve --manifest <file> [--state <file>] --invocation <file>`
 
 Validates the manifest/state, resolves requested components into a canonical resolved set, and emits a preview (components + actions).
+The invocation payload is required; CLI flags are only used by `export-invocation`.
 
-Selector semantics:
+Selector semantics (invocation construction):
 
 - `--components`: Install exactly these components plus dependencies (no default selection).
 - `--exclude`: Remove components from the selection; if this breaks dependencies, the command fails.
 
-Scope semantics:
+Scope semantics (invocation construction):
 
 - `--scope` is required for `install`/`upgrade` unless the manifest permits exactly one scope.
 - For `repair`/`uninstall`, scope is inferred from state when possible.
 
-### `dominium-setup plan --manifest <file> [--state <file>] --op <install|upgrade|repair|uninstall> [--components <csv>] [--exclude <csv>] [--scope <user|system|portable>] --out <planfile>`
+### `dominium-setup plan --manifest <file> [--state <file>] --invocation <file> --out <planfile>`
 
 Calls core APIs in-order: validate manifest → load state (optional) → resolve → plan → write plan file.
+The invocation payload is required and recorded in the plan digest.
 
 The plan file embeds:
 
@@ -72,6 +82,7 @@ The plan file embeds:
 - resolved-set digest
 - operation
 - scope
+- invocation digest
 - plan format version
 
 ### `dominium-setup apply --plan <planfile> [--dry-run]`
@@ -79,6 +90,11 @@ The plan file embeds:
 Applies a plan file. The CLI never infers a manifest/state for apply; it uses the plan file only.
 
 When applying, Setup Core validates the plan file (header, version, checksum, internal coherence).
+
+### `dominium-setup apply-invocation --manifest <file> [--state <file>] --invocation <file> --out <planfile> [--dry-run]`
+
+Convenience flow: resolve + plan + apply using a single invocation payload.
+Equivalent to `plan` followed by `apply` with the same invocation.
 
 ### `dominium-setup verify --state <file> [--format json|txt]`
 

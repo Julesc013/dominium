@@ -2,7 +2,7 @@
 
 Setup Core is deterministic and OS-agnostic. **Platform adapters** are thin, replaceable shells that:
 
-- collect user/installer parameters (paths, scope, component selection)
+- collect user/installer parameters (paths, scope, component selection) by emitting `dsu_invocation`
 - handle privilege elevation and UI flow
 - invoke Setup Core exclusively through the stable C ABI
 - execute declarative platform registrations by implementing `dsu_platform_iface`
@@ -37,7 +37,8 @@ Typical adapter flow uses:
 The native installer ecosystem controls the high-level lifecycle; adapters only translate it into core calls:
 
 1. **Install/Upgrade/Repair**
-   - build or load a `.dsuplan`
+   - emit a `dsu_invocation` (frontend)
+   - build a `.dsuplan` from the invocation (Setup Core)
    - apply it via `dsu_txn_apply_plan`
 2. **Register platform integrations**
    - load installed state (`.dsustate`)

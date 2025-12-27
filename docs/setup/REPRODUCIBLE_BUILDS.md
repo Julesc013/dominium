@@ -13,7 +13,9 @@ Setup Core and packaging pipelines are designed for deterministic, byte-identica
 
 Example:
 
-`dominium-setup plan --manifest <artifact_root>/setup/manifests/product.dsumanifest --op install --scope portable --components core --out out.dsuplan --format json --deterministic 1`
+`dominium-setup export-invocation --manifest <artifact_root>/setup/manifests/product.dsumanifest --op install --scope portable --components core --out out.dsuinv --format json --deterministic 1`
+
+`dominium-setup plan --manifest <artifact_root>/setup/manifests/product.dsumanifest --invocation out.dsuinv --out out.dsuplan --format json --deterministic 1`
 
 ## Packaging reproducibility
 

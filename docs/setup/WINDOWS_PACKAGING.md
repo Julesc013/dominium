@@ -1,67 +1,67 @@
-# Windows Packaging (MSI + Bootstrapper)
+# Windows Packaging (MSI Canonical)
 
 ## Outputs
 
-- `dist/windows/DominiumSetup-x.y.z.msi`
-- `dist/windows/DominiumSetup-x.y.z.exe` (optional bootstrapper; produced by default via `make package-windows`)
+- `dist/installers/windows/msi/DominiumSetup-<version>-x86.msi`
+- `dist/installers/windows/msi/DominiumSetup-<version>-x64.msi`
+- EXE parity installer planned (not implemented in this prompt)
 
 ## Tooling
 
 Required (installed separately; not downloaded by the pipeline):
 
-- WiX Toolset (`candle`, `light`) available on `PATH`
+- WiX Toolset 3.x or 4.x (`candle`, `light`) on `PATH`
+- Python 3
+- CMake + MSVC
 
 ## Build
 
 From the repo root:
 
 ```
-SOURCE_DATE_EPOCH=946684800 REPRODUCIBLE=1 make package-windows BUILD_DIR=build/<your-build> VERSION=x.y.z
+cmake -S . -B build/msvc-x86 -DDOM_PROJECT_SEMVER=x.y.z
+cmake -S . -B build/msvc-x64 -DDOM_PROJECT_SEMVER=x.y.z
+cmake --build build/msvc-x86 --target msi-x86
+cmake --build build/msvc-x64 --target msi-x64
 ```
 
-Artifacts land in `dist/windows/`.
+Cross-arch inputs are configured via CMake cache:
 
-## MSI behavior (design)
+- `DOMINIUM_MSI_BUILD_DIR_X86` / `DOMINIUM_MSI_BUILD_DIR_X64`
+- `DOMINIUM_MSI_CA_X86` / `DOMINIUM_MSI_CA_X64` (InvokeSetupCore DLL per arch)
+
+Artifacts land in `dist/installers/windows/msi/`.
+
+## MSI behavior
 
 The MSI:
 
-- installs the canonical `artifact_root/` layout into `INSTALLDIR`
-- maps MSI properties to `dominium-setup` flags
-- runs `dominium-setup plan` then `dominium-setup apply` via custom actions (no other install logic)
+- installs only Setup Core and payload containers into `INSTALLDIR\.dsu\artifact_root`
+- maps MSI properties and tables to `dsu_invocation` fields
+- writes the invocation payload and runs `dominium-setup apply --invocation <payload>`
+- contains no additional install logic
 
-## MSI property → CLI mapping (locked)
-
-Properties are stable and `Secure="yes"`:
-
-- `DSU_SCOPE` → `--scope <portable|user|system>`
-- `DSU_DETERMINISTIC` → global `--deterministic <0|1>`
-
-Custom action command lines (conceptual):
-
-- Plan:
-  - `"dominium-setup.exe" --deterministic [DSU_DETERMINISTIC] plan --manifest "<...>/setup/manifests/product.dsumanifest" --op install --scope [DSU_SCOPE] --out "<tmp>/dominium.dsuplan"`
-- Apply:
-  - `"dominium-setup.exe" --deterministic [DSU_DETERMINISTIC] apply --plan "<tmp>/dominium.dsuplan"`
+See `docs/setup/MSI_MAPPING.md` for the mapping contract.
 
 ## Silent install
 
-The MSI supports standard `msiexec` modes (examples):
+Examples:
 
-- Silent: `msiexec /i DominiumSetup-x.y.z.msi /qn DSU_SCOPE=user`
-- Passive: `msiexec /i DominiumSetup-x.y.z.msi /passive DSU_SCOPE=system`
+- Silent: `msiexec /i DominiumSetup-x.y.z-x64.msi /qn DSU_SCOPE=user`
+- Passive: `msiexec /i DominiumSetup-x.y.z-x64.msi /passive DSU_SCOPE=system`
 
 ## Determinism notes
 
 Determinism is achieved by:
 
 - staging a deterministic `artifact_root/`
-- deterministic WiX IDs (product/package codes derived from version; file components derived from relative paths)
+- deterministic GUID generation in CMake (`_dom_msi_guid`)
 - fixed `SOURCE_DATE_EPOCH` in reproducible mode
 
 WiX itself must be a stable version in CI to guarantee byte-identical MSI outputs.
 
 ## Sources
 
-- WiX generator: `scripts/packaging/windows/generate_dominium_setup_wxs.py`
-- Pipeline entry: `scripts/packaging/pipeline.py` (`windows` subcommand)
-
+- WiX authoring: `source/dominium/setup/installers/windows/msi/wix`
+- WiX generator: `source/dominium/setup/installers/windows/msi/cmake/generate_msi_wix.py`
+- Pipeline entry: `scripts/packaging/pipeline.py` (`assemble`)

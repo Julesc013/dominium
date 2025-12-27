@@ -133,6 +133,7 @@ See:
 
 ## Related Documents
 
+- `docs/launcher/INSTALLED_STATE_CONTRACT.md`
 - `docs/launcher/INSTANCE_MODEL.md`
 - `docs/launcher/ARTIFACT_STORE.md`
 - `docs/launcher/PACK_SYSTEM.md`

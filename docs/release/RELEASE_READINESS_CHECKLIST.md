@@ -16,14 +16,16 @@ Each checkbox maps an acceptance criterion to code, tests, and a verification co
   Code: source/dominium/setup/cli/dominium_setup_main.c, source/dominium/setup/core/src/resolve/dsu_resolve.c
   Tests: dsu_resolve_test, dsu_cli_test
   Commits: 24e31e7
-  Verify: dominium-setup resolve --manifest assets/setup/manifests/dominium_full.dsumanifest --op install --scope user --json
+  Verify: dominium-setup export-invocation --manifest assets/setup/manifests/dominium_full.dsumanifest --op install --scope user --out install.dsuinv
+          dominium-setup resolve --manifest assets/setup/manifests/dominium_full.dsumanifest --invocation install.dsuinv --json
           ctest --preset debug -R dsu_resolve_test
 
 - [x] Plan
   Code: source/dominium/setup/cli/dominium_setup_main.c, source/dominium/setup/core/src/plan/dsu_plan.c
   Tests: dsu_cli_test, test_plan_determinism_repeat_run
   Commits: 9e4415b, 24e31e7
-  Verify: dominium-setup plan --manifest assets/setup/manifests/dominium_full.dsumanifest --op install --scope user --out out.dsuplan
+  Verify: dominium-setup export-invocation --manifest assets/setup/manifests/dominium_full.dsumanifest --op install --scope user --out out.dsuinv
+          dominium-setup plan --manifest assets/setup/manifests/dominium_full.dsumanifest --invocation out.dsuinv --out out.dsuplan
           ctest --preset debug -R test_plan_determinism_repeat_run
 
 - [x] Apply (install/upgrade/repair/uninstall)

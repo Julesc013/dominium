@@ -48,7 +48,7 @@ Meaning:
 
 Fix:
 
-- Re-run `plan --op repair` + `apply` using the same manifest/state.
+- Re-run `export-invocation` + `plan --invocation` + `apply` using the same manifest/state.
 - If state is trusted but files are not, reinstall/repair to restore owned files.
 
 ### Apply fails mid-commit

@@ -5,8 +5,11 @@
 The Windows adapter is a thin wrapper around Setup Core that:
 
 - parses MSI-style flags (`/quiet`, `/passive`)
-- runs Setup Core install/uninstall operations
+- executes plan/state operations produced by Setup Core
 - executes declarative platform registrations by implementing `dsu_platform_iface` using Windows Registry writes
+
+MSI is the canonical Windows installer model; EXE frontends must be parity clones
+that emit identical invocation payloads for identical inputs.
 
 Code:
 
@@ -32,6 +35,7 @@ Notes:
 - `/passive` is treated as “noisy but non-interactive”.
 - `--deterministic` sets `DSU_CONFIG_FLAG_DETERMINISTIC` for stable outputs.
 - `--log` writes the Setup Core audit log via `dsu_log_write_file`.
+- The adapter does not build invocations; MSI/EXE frontends generate `dsu_invocation` and call `dominium-setup` to plan/apply.
 
 ## Registry mapping (current minimal implementation)
 
@@ -64,20 +68,20 @@ Unregister:
 
 `plat_request_elevation` is currently a stub returning `DSU_STATUS_INVALID_REQUEST`.
 
-For system-scope installs, integrate elevation at the installer layer (MSI / bootstrapper) before invoking `dominium-setup-win`.
+For system-scope installs, integrate elevation at the installer layer (MSI / bootstrapper) before invoking Setup Core.
 
-## MSI integration (design template)
+## MSI integration (current)
 
-The WiX authoring template lives under:
+The MSI WiX sources live under:
 
-- `source/dominium/setup/adapters/windows/wix/`
+- `source/dominium/setup/installers/windows/msi/wix/`
 
-The installer should map UI selections to adapter arguments, then invoke:
+The MSI maps UI selections to `dsu_invocation` and invokes:
 
-- install: `dominium-setup-win install --plan <generated_plan> [/quiet|/passive]`
-- register: `dominium-setup-win platform-register --state <installed_state>`
-- unregister: `dominium-setup-win platform-unregister --state <installed_state>`
-- uninstall: `dominium-setup-win uninstall --state <installed_state>`
+- `dominium-setup apply --invocation <payload>`
+
+Platform registrations are executed by Setup Core via `dsu_platform_iface`.
+MSI does not call `dominium-setup-win` directly.
 
 ## Failure modes
 

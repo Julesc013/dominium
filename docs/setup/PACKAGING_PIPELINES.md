@@ -7,6 +7,7 @@ This phase produces **artifacts**, not install logic.
 
 - Packages embed **Setup Core** (`dominium-setup`) + **manifests** + **payloads**.
 - Packages must not embed install decisions or logic beyond invoking `dominium-setup`.
+- Installers generate `dsu_invocation` at install time; packaging does not encode logic.
 - The same `product.dsumanifest` is embedded across all channels for a given platform build (MSI, PKG, deb/rpm, Steam).
 - Canonical layout is deterministic and used by all wrappers (see `docs/setup/ARTIFACT_LAYOUT.md`).
 - Offline-first: no downloads or network calls at install time unless explicitly configured.

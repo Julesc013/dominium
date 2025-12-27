@@ -1,19 +1,21 @@
 # Windows Installers
 
-Windows installers wrap the cross-platform setup engine (`dominium-setup-cli`)
-without reimplementing install logic. Two formats are provided:
+Windows installers are MSI-centric and wrap Setup Core via the canonical
+`dsu_invocation` payload. MSI defines the canonical UX; EXE is a parity clone.
+GUI/TUI/CLI frontends are first-class and must follow the same UX contract.
 
-- **MSI** built with WiX (`Dominium.wxs`).
-- **Bootstrapper EXE** (WiX Burn, optional) chaining the MSI.
-- **Native Win32 wrapper** (`dominium_setup_win32_gui`) that shells out to the
-  setup CLI with a small wizard UI.
+- **MSI** built with WiX (`Dominium.wxs`) and the reference UX flow.
+- **Bootstrapper EXE** (WiX Burn, optional) that mirrors MSI UX and produces
+  byte-equivalent invocation payloads.
+- **Native Win32 GUI** (`dominium_setup_win32_gui`) that follows the same
+  contract and emits `dsu_invocation`.
 
 ## Prerequisites
 - Windows with the WiX Toolset (v3+): `candle.exe`, `light.exe` on `PATH`.
-- Staged payload under `DOMINIUM_DIST_DIR` (defaults to
-  `<build>/dist/`), containing at minimum:
-  - `dominium-setup-cli.exe`
-  - `dominium_setup_win32_gui.exe`
+- Staged payload under `DOMINIUM_DIST_DIR` (defaults to `<build>/dist/`),
+  containing at minimum:
+  - `dominium-setup.exe`
+  - `dominium_setup_win32_gui.exe` (optional GUI frontend)
   - Game/launcher binaries
   - `data/` payload
 - Optional: Custom license file
@@ -64,10 +66,11 @@ Outputs land under `dist/installers/windows/`:
 - Per-user fallback (`LocalAppData\Programs\Dominium`) when lacking privilege
   or when `ALLUSERS=2`/`MSIINSTALLPERUSER=1`.
 - Components:
-  - `dominium-setup-cli.exe` and `dominium_setup_win32_gui.exe`
-  - Launcher + game payload (`dominium_launcher_cli.exe`, `dominium_game_cli.exe`)
+  - `dominium-setup.exe` and (optional) `dominium_setup_win32_gui.exe`
+  - Launcher + game payload
   - `data\` structure including packs/mods folders (extend the manifest as your staged payload grows)
-  - Start Menu shortcuts for Dominium + Dominium (Safe mode) and a desktop shortcut to the launcher
+- Shortcuts and registrations are produced by Setup Core platform intents
+  during apply; the MSI does not own install logic.
 - Uses `WixUI_InstallDir` for a standard InstallDir wizard with license dialog.
 - UpgradeCode/Component GUIDs are stable for servicing.
 
@@ -79,15 +82,15 @@ Outputs land under `dist/installers/windows/`:
 
 ## Win32 wrapper (`dominium_setup_win32_gui`)
 - Built on Windows automatically when the setup product is built.
-- Wizard-style window with Back/Next navigation:
-  - Scope selection (portable/per-user/all-users) and install directory picker (Browse) on the first page
-  - Install/Repair/Uninstall/Verify buttons with a marquee progress bar on the actions page
-- Spawns `dominium-setup-cli.exe` via `CreateProcess`, so all install logic
-  stays in the core setup engine.
+- Wizard-style window with Back/Next navigation that mirrors MSI step order.
+- Emits a `dsu_invocation` payload and calls `dominium-setup` to resolve/plan/apply.
+- No install logic lives in the wrapper; it only collects choices.
 
 ## Notes
-- The MSI does not recreate install logic; it copies staged files and registers
-  shortcuts. Use `dominium-setup-cli` for repair/verify flows.
+- MSI/EXE do not recreate install logic; they only stage files and emit
+  invocation payloads for Setup Core.
+- Use `dominium-setup` for repair/verify flows; frontends should call it with
+  an invocation payload derived from the same UX contract.
 - Ensure staged payload and optional icon/license assets exist before running
   WiX to avoid `candle`/`light` failures.
 - Update `scripts/packaging/windows/Dominium.wxs` if your staged executable

@@ -67,6 +67,11 @@ Most commands include core status for diagnostics:
 
 - `"0x" + 16 hex digits` (e.g. `"0x0000000000000000"`)
 
+Invocation digest fields:
+
+- `invocation_digest64` is computed from the canonical invocation payload
+  (see `docs/setup/INVOCATION_PAYLOAD.md`).
+
 ### Paths
 
 JSON paths are emitted as strings with `/` separators (even on Windows).
@@ -118,14 +123,15 @@ JSON paths are emitted as strings with `/` separators (even on Windows).
 3. `operation`
 4. `scope`
 5. `platform`
-6. `allow_prerelease`
-7. `product_id`
-8. `product_version`
-9. `install_root`
-10. `manifest_digest64`
-11. `resolved_digest64`
-12. `components` (array)
-13. `log` (array)
+6. `invocation_digest64`
+7. `allow_prerelease`
+8. `product_id`
+9. `product_version`
+10. `install_root`
+11. `manifest_digest64`
+12. `resolved_digest64`
+13. `components` (array)
+14. `log` (array)
 
 `details.components[]` key order:
 
@@ -150,14 +156,15 @@ JSON paths are emitted as strings with `/` separators (even on Windows).
 4. `operation`
 5. `scope`
 6. `platform`
-7. `manifest_digest64`
-8. `resolved_digest64`
-9. `plan_file`
-10. `plan_id_hash32`
-11. `plan_id_hash64`
-12. `component_count`
-13. `step_count`
-14. `error`
+7. `invocation_digest64`
+8. `manifest_digest64`
+9. `resolved_digest64`
+10. `plan_file`
+11. `plan_id_hash32`
+12. `plan_id_hash64`
+13. `component_count`
+14. `step_count`
+15. `error`
 
 ### `apply`
 
@@ -168,8 +175,46 @@ JSON paths are emitted as strings with `/` separators (even on Windows).
 3. `deterministic`
 4. `dry_run`
 5. `log_file`
-6. (on success) `plan_file`, `plan_digest64`, `journal_id`, `install_root`, `txn_root`, `journal_file`, `journal_entry_count`, `commit_progress`, `staged_file_count`, `verified_ok`, `verified_missing`, `verified_mismatch`, `error`
+6. (on success) `plan_file`, `plan_digest64`, `invocation_digest64`, `journal_id`, `install_root`, `txn_root`, `journal_file`, `journal_entry_count`, `commit_progress`, `staged_file_count`, `verified_ok`, `verified_missing`, `verified_mismatch`, `error`
 7. (on failure) `error`
+
+### `export-invocation`
+
+`details` key order:
+
+1. `core_status`
+2. `core_status_name`
+3. `manifest_file`
+4. `invocation_file`
+5. `invocation_digest64`
+6. `operation`
+7. `scope`
+8. `platform`
+9. `error`
+
+### `apply-invocation`
+
+`details` key order:
+
+1. `core_status`
+2. `core_status_name`
+3. `deterministic`
+4. `dry_run`
+5. `invocation_file`
+6. `invocation_digest64`
+7. `plan_file`
+8. `plan_digest64`
+9. `journal_id`
+10. `install_root`
+11. `txn_root`
+12. `journal_file`
+13. `journal_entry_count`
+14. `commit_progress`
+15. `staged_file_count`
+16. `verified_ok`
+17. `verified_missing`
+18. `verified_mismatch`
+19. `error`
 
 ### `dry-run` (minimal object)
 
