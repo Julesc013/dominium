@@ -88,6 +88,54 @@ if(UNIX AND NOT APPLE AND TARGET dominium-setup-tui)
     )
 endif()
 
+if(APPLE AND TARGET dominium-setup-gui)
+    add_executable(dsu_macos_parity_test
+        dsu_macos_parity_test.c
+    )
+
+    target_include_directories(dsu_macos_parity_test PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../core/include
+    )
+
+    target_link_libraries(dsu_macos_parity_test
+        PRIVATE dsu_core
+    )
+
+    add_dependencies(dsu_macos_parity_test
+        dominium-setup
+        dominium-setup-gui
+    )
+
+    set_target_properties(dsu_macos_parity_test PROPERTIES
+        C_STANDARD 90
+        C_STANDARD_REQUIRED ON
+        C_EXTENSIONS OFF
+    )
+
+    add_test(NAME test_macos_invocation_parity_cli_vs_gui
+        COMMAND dsu_macos_parity_test
+            $<TARGET_FILE:dominium-setup>
+            $<TARGET_FILE:dominium-setup-gui>
+            ${CMAKE_CURRENT_SOURCE_DIR}
+            invocation
+    )
+
+    add_test(NAME test_macos_plan_digest_parity
+        COMMAND dsu_macos_parity_test
+            $<TARGET_FILE:dominium-setup>
+            $<TARGET_FILE:dominium-setup-gui>
+            ${CMAKE_CURRENT_SOURCE_DIR}
+            plan
+    )
+
+    set_tests_properties(test_macos_invocation_parity_cli_vs_gui PROPERTIES
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    )
+    set_tests_properties(test_macos_plan_digest_parity PROPERTIES
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    )
+endif()
+
 add_executable(dsu_manifest_test
     dsu_manifest_test.c
 )
@@ -246,6 +294,11 @@ add_test(NAME test_linux_pkg_lifecycle_simulation_mock COMMAND dsu_setup_matrix_
 add_test(NAME test_linux_portable_install_sandbox COMMAND dsu_setup_matrix_test ${_dom_setup_cli} ${_dom_steam_cli} ${_dom_linux_cli} ${_dom_repo_root} test_linux_portable_install_sandbox)
 add_test(NAME test_linux_uninstall_preserves_user_data COMMAND dsu_setup_matrix_test ${_dom_setup_cli} ${_dom_steam_cli} ${_dom_linux_cli} ${_dom_repo_root} test_linux_uninstall_preserves_user_data)
 
+if(APPLE)
+    add_test(NAME test_macos_portable_install_sandbox COMMAND dsu_setup_matrix_test ${_dom_setup_cli} ${_dom_steam_cli} ${_dom_linux_cli} ${_dom_repo_root} test_macos_portable_install_sandbox)
+    add_test(NAME test_macos_uninstall_preserves_user_data COMMAND dsu_setup_matrix_test ${_dom_setup_cli} ${_dom_steam_cli} ${_dom_linux_cli} ${_dom_repo_root} test_macos_uninstall_preserves_user_data)
+endif()
+
 add_test(NAME test_manifest_unknown_tlv_skip COMMAND dsu_manifest_test)
 add_test(NAME test_resolve_conflict_detection COMMAND dsu_resolve_test)
 add_test(NAME test_platform_iface_idempotent_register_unregister COMMAND dsu_platform_iface_test)
@@ -348,5 +401,22 @@ if(DOMINIUM_PYTHON)
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
         ENVIRONMENT "SOURCE_DATE_EPOCH=946684800"
     )
+
+    if(APPLE AND DOMINIUM_ENABLE_PACKAGING)
+        set(_dom_macos_test "${_dom_repo_root}/scripts/packaging/tests/macos_validation_test.py")
+        add_test(
+            NAME dsu_macos_validation_test
+            COMMAND
+                ${DOMINIUM_PYTHON}
+                ${_dom_macos_test}
+                --build-dir ${CMAKE_BINARY_DIR}
+                --version ${DOM_PROJECT_SEMVER}
+                --config $<CONFIG>
+        )
+        set_tests_properties(dsu_macos_validation_test PROPERTIES
+            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+            ENVIRONMENT "SOURCE_DATE_EPOCH=946684800"
+        )
+    endif()
 
 endif()

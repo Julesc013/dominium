@@ -103,6 +103,10 @@ if(WIN32)
     add_subdirectory(installers/windows/exe/cmake)
 endif()
 
+if(APPLE)
+    add_subdirectory(installers/macos/cmake)
+endif()
+
 if(UNIX AND NOT APPLE)
     add_subdirectory(installers/linux/cmake)
 endif()
