@@ -9,12 +9,20 @@ if(NOT DOMINIUM_ENABLE_SETUP_MSI)
     return()
 endif()
 
+find_program(WIX_EXECUTABLE wix)
 find_program(WIX_CANDLE_EXECUTABLE candle)
 find_program(WIX_LIGHT_EXECUTABLE light)
 find_program(DOMINIUM_PYTHON NAMES python3 python)
 
-if(NOT WIX_CANDLE_EXECUTABLE OR NOT WIX_LIGHT_EXECUTABLE)
-    message(WARNING "WiX candle/light not found; MSI targets disabled")
+set(DOMINIUM_WIX_MODE "")
+if(WIX_EXECUTABLE)
+    set(DOMINIUM_WIX_MODE "v4")
+elseif(WIX_CANDLE_EXECUTABLE AND WIX_LIGHT_EXECUTABLE)
+    set(DOMINIUM_WIX_MODE "v3")
+endif()
+
+if(DOMINIUM_WIX_MODE STREQUAL "")
+    message(WARNING "WiX v4 (wix.exe) or v3 (candle/light) not found; MSI targets disabled")
     return()
 endif()
 if(NOT DOMINIUM_PYTHON)
@@ -34,6 +42,10 @@ set(DOMINIUM_MSI_BUILD_DIR_X86 "" CACHE PATH "CMake build dir for x86 MSI inputs
 set(DOMINIUM_MSI_BUILD_DIR_X64 "" CACHE PATH "CMake build dir for x64 MSI inputs")
 set(DOMINIUM_MSI_CA_X86 "" CACHE FILEPATH "InvokeSetupCore DLL for x86 MSI")
 set(DOMINIUM_MSI_CA_X64 "" CACHE FILEPATH "InvokeSetupCore DLL for x64 MSI")
+set(DOMINIUM_WIX_UI_EXTENSION "WixUIExtension")
+if(DOMINIUM_WIX_MODE STREQUAL "v4")
+    set(DOMINIUM_WIX_UI_EXTENSION "WixToolset.UI.wixext")
+endif()
 
 set(_dom_msi_root "${CMAKE_CURRENT_LIST_DIR}/..")
 get_filename_component(_dom_msi_root_abs "${_dom_msi_root}" ABSOLUTE)
@@ -156,54 +168,89 @@ function(_dom_msi_add_target arch platform build_dir ca_hint)
     set(_msi_path "${DOMINIUM_MSI_OUTPUT_DIR}/DominiumSetup-${DOMINIUM_MSI_VERSION}-${arch}.msi")
     set(_msi_ok "${DOMINIUM_MSI_OUTPUT_DIR}/DominiumSetup-${DOMINIUM_MSI_VERSION}-${arch}.ok")
 
-    add_custom_command(
-        OUTPUT "${_wixobj}"
-        COMMAND "${WIX_CANDLE_EXECUTABLE}"
-            -dProductVersion="${DOMINIUM_MSI_VERSION}"
-            -dManufacturer="${DOMINIUM_MSI_MANUFACTURER}"
-            -dProductCode="${_product_code}"
-            -dUpgradeCode="${DOMINIUM_MSI_UPGRADE_CODE}"
-            -dPackageCode="${_package_code}"
-            -dDsuPlatform="${platform}"
-            -dWixBannerBmp="${_dom_msi_res_dir}/banner.bmp"
-            -dWixDialogBmp="${_dom_msi_res_dir}/dialog.bmp"
-            -dInvokeSetupCorePath="${ca_hint}"
-            -dArtifactDir="${_artifact_dir}"
-            -I "${_gen_dir}"
-            -out "${_wixobj}"
-            "${_dom_msi_wix_dir}/Product.wxs"
-            "${_dom_msi_wix_dir}/Properties.wxs"
-            "${_dom_msi_wix_dir}/Directories.wxs"
-            "${_dom_msi_wix_dir}/Features.wxs"
-            "${_dom_msi_wix_dir}/CustomActions.wxs"
-            "${_dom_msi_wix_dir}/UI.wxs"
-            "${_components_wxs}"
-        DEPENDS
-            "${_features_wxi}"
-            "${_components_wxs}"
-            dominium_msi_ca
-            "${_dom_msi_wix_dir}/Product.wxs"
-            "${_dom_msi_wix_dir}/Properties.wxs"
-            "${_dom_msi_wix_dir}/Directories.wxs"
-            "${_dom_msi_wix_dir}/Features.wxs"
-            "${_dom_msi_wix_dir}/CustomActions.wxs"
-            "${_dom_msi_wix_dir}/UI.wxs"
-            "${_dom_msi_res_dir}/banner.bmp"
-            "${_dom_msi_res_dir}/dialog.bmp"
-        COMMENT "WiX candle -> ${_wixobj}"
-        VERBATIM
+    set(_wix_sources
+        "${_dom_msi_wix_dir}/Product.wxs"
+        "${_dom_msi_wix_dir}/Properties.wxs"
+        "${_dom_msi_wix_dir}/Directories.wxs"
+        "${_dom_msi_wix_dir}/Features.wxs"
+        "${_dom_msi_wix_dir}/CustomActions.wxs"
+        "${_dom_msi_wix_dir}/UI.wxs"
+        "${_components_wxs}"
     )
 
-    add_custom_command(
-        OUTPUT "${_msi_path}"
-        COMMAND "${WIX_LIGHT_EXECUTABLE}"
-            -ext WixUIExtension
-            -out "${_msi_path}"
-            "${_wixobj}"
-        DEPENDS "${_wixobj}"
-        COMMENT "WiX light -> ${_msi_path}"
-        VERBATIM
-    )
+    if(DOMINIUM_WIX_MODE STREQUAL "v4")
+        set(_wix_arch "x86")
+        if(arch STREQUAL "x64")
+            set(_wix_arch "x64")
+        endif()
+        add_custom_command(
+            OUTPUT "${_msi_path}"
+            COMMAND "${WIX_EXECUTABLE}"
+                build
+                -arch "${_wix_arch}"
+                -ext "${DOMINIUM_WIX_UI_EXTENSION}"
+                -dProductVersion="${DOMINIUM_MSI_VERSION}"
+                -dManufacturer="${DOMINIUM_MSI_MANUFACTURER}"
+                -dProductCode="${_product_code}"
+                -dUpgradeCode="${DOMINIUM_MSI_UPGRADE_CODE}"
+                -dPackageCode="${_package_code}"
+                -dDsuPlatform="${platform}"
+                -dWixBannerBmp="${_dom_msi_res_dir}/banner.bmp"
+                -dWixDialogBmp="${_dom_msi_res_dir}/dialog.bmp"
+                -dInvokeSetupCorePath="${ca_hint}"
+                -dArtifactDir="${_artifact_dir}"
+                -I "${_gen_dir}"
+                -o "${_msi_path}"
+                ${_wix_sources}
+            DEPENDS
+                "${_features_wxi}"
+                "${_components_wxs}"
+                dominium_msi_ca
+                "${_dom_msi_res_dir}/banner.bmp"
+                "${_dom_msi_res_dir}/dialog.bmp"
+                ${_wix_sources}
+            COMMENT "WiX v4 build -> ${_msi_path}"
+            VERBATIM
+        )
+    else()
+        add_custom_command(
+            OUTPUT "${_wixobj}"
+            COMMAND "${WIX_CANDLE_EXECUTABLE}"
+                -dProductVersion="${DOMINIUM_MSI_VERSION}"
+                -dManufacturer="${DOMINIUM_MSI_MANUFACTURER}"
+                -dProductCode="${_product_code}"
+                -dUpgradeCode="${DOMINIUM_MSI_UPGRADE_CODE}"
+                -dPackageCode="${_package_code}"
+                -dDsuPlatform="${platform}"
+                -dWixBannerBmp="${_dom_msi_res_dir}/banner.bmp"
+                -dWixDialogBmp="${_dom_msi_res_dir}/dialog.bmp"
+                -dInvokeSetupCorePath="${ca_hint}"
+                -dArtifactDir="${_artifact_dir}"
+                -I "${_gen_dir}"
+                -out "${_wixobj}"
+                ${_wix_sources}
+            DEPENDS
+                "${_features_wxi}"
+                "${_components_wxs}"
+                dominium_msi_ca
+                "${_dom_msi_res_dir}/banner.bmp"
+                "${_dom_msi_res_dir}/dialog.bmp"
+                ${_wix_sources}
+            COMMENT "WiX candle -> ${_wixobj}"
+            VERBATIM
+        )
+
+        add_custom_command(
+            OUTPUT "${_msi_path}"
+            COMMAND "${WIX_LIGHT_EXECUTABLE}"
+                -ext "${DOMINIUM_WIX_UI_EXTENSION}"
+                -out "${_msi_path}"
+                "${_wixobj}"
+            DEPENDS "${_wixobj}"
+            COMMENT "WiX light -> ${_msi_path}"
+            VERBATIM
+        )
+    endif()
 
     add_custom_command(
         OUTPUT "${_msi_ok}"

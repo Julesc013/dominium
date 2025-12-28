@@ -43,7 +43,7 @@ typedef struct dsu_msi_data_t {
 static void dsu_msi_log(MSIHANDLE hInstall, const char *fmt, ...) {
     char buf[1024];
     va_list args;
-    PMSIHANDLE rec;
+    MSIHANDLE rec = 0;
     if (!fmt) {
         return;
     }
@@ -55,6 +55,7 @@ static void dsu_msi_log(MSIHANDLE hInstall, const char *fmt, ...) {
     if (rec) {
         MsiRecordSetStringA(rec, 0, buf);
         MsiProcessMessage(hInstall, INSTALLMESSAGE_INFO, rec);
+        MsiCloseHandle(rec);
     }
 }
 
