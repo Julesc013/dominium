@@ -73,6 +73,8 @@ Platform registration is executed by the platform adapter binary:
 
 - Linux: `dominium-setup-linux platform-register --state <install_root>/.dsu/installed_state.dsustate --deterministic 1`
 - Linux: `dominium-setup-linux platform-unregister --state <install_root>/.dsu/installed_state.dsustate --deterministic 1`
+- macOS: `dominium-setup-macos platform-register --state <install_root>/.dsu/installed_state.dsustate --deterministic 1`
+- macOS: `dominium-setup-macos platform-unregister --state <install_root>/.dsu/installed_state.dsustate --deterministic 1`
 - Windows: `dominium-setup-win platform-register --state <install_root>/.dsu/installed_state.dsustate --deterministic 1`
 - Windows: `dominium-setup-win platform-unregister --state <install_root>/.dsu/installed_state.dsustate --deterministic 1`
 

@@ -419,7 +419,7 @@ def assemble_artifact(args):
         shutil.copy2(setup_bin, setup_alias)
 
     # Optional Linux setup frontends/adapters (best-effort copy when built).
-    for extra in ("dominium-setup-tui", "dominium-setup-gui", "dominium-setup-linux"):
+    for extra in ("dominium-setup-tui", "dominium-setup-gui", "dominium-setup-linux", "dominium-setup-macos"):
         extra_bin = _try_find_unique_file(build_dir, extra + _exe_suffix(), prefer_subpaths=["source/dominium/setup/"])
         if extra_bin:
             shutil.copy2(extra_bin, os.path.join(out_dir, "setup", os.path.basename(extra_bin)))

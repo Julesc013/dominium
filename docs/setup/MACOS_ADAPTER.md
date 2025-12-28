@@ -27,10 +27,17 @@ frontend or packaging layer and passed to `dominium-setup` for plan creation.
 
 ## Platform registrations
 
-The current macOS adapter implements `dsu_platform_iface` as **no-op success**:
+The current macOS adapter implements `dsu_platform_iface` with a minimal native
+app bundle registration:
 
-- registrations are expected to be declared via the app bundle (`Info.plist`) and installer layout
-- `platform-register` / `platform-unregister` are idempotent and return `DSU_STATUS_SUCCESS`
+- creates a `.app` bundle in the Applications directory (system/user/portable)
+- writes a basic `Info.plist` and a wrapper shell script that launches the
+  installed executable from the install root
+- `platform-register` / `platform-unregister` are idempotent
+
+File associations and URL handlers are recorded as intents and treated as
+best-effort placeholders; they currently ensure the app bundle exists and are
+documented for future LaunchServices integration.
 
 ## Installer layout (design)
 

@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 
 add_executable(dominium-setup-macos
     dominium_setup_adapter_macos.c
+    dsu_macos_platform_iface.c
 )
 
 target_include_directories(dominium-setup-macos PRIVATE

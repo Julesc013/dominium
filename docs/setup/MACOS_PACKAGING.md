@@ -2,8 +2,8 @@
 
 ## Outputs
 
-- `dist/macos/Dominium-x.y.z.pkg`
-- `dist/macos/Dominium-x.y.z.dmg`
+- `dist/macos/DominiumSetup-x.y.z.pkg`
+- `dist/macos/DominiumSetup-x.y.z.dmg`
 
 ## Tooling
 
@@ -15,31 +15,41 @@ Required (installed separately; not downloaded by the pipeline):
 
 ## Build
 
+Enable packaging at configure time:
+
+```
+cmake -S . -B build -DDOMINIUM_ENABLE_PACKAGING=ON
+```
+
 Run on macOS:
 
 ```
-SOURCE_DATE_EPOCH=946684800 REPRODUCIBLE=1 make package-macos BUILD_DIR=build/<your-build> VERSION=x.y.z
+cmake --build build --target package-macos
 ```
 
 Artifacts land in `dist/macos/`.
 
-## PKG behavior (design)
+## PKG behavior
 
 - The PKG installs the canonical `artifact_root/` layout into:
-  - `/Library/Application Support/Dominium/artifact_root`
-- A minimal `postinstall` script invokes `dominium-setup` only:
-  - write a `dsu_invocation` payload (system scope, platform triple)
-  - `export-invocation --manifest <manifest> --op install --scope system --ui-mode gui --frontend-id pkg --out <file>`
-  - `plan --manifest <manifest> --invocation <file> --out <generated>`
-  - `apply --plan <generated>`
+  - `/Library/Application Support/Dominium/setup/artifact_root`
+- The installer also ships an invocation payload:
+  - `/Library/Application Support/Dominium/setup/invocation.tlv`
+- The `postinstall` script is minimal and deterministic:
+  - `plan --manifest <manifest> --invocation <payload> --out <plan>`
+  - `apply --plan <plan>`
 
 No other postinstall logic is permitted.
 
-## DMG layout (spec)
+## DMG layout
 
 The DMG contains:
 
-- `Dominium-x.y.z.pkg`
+- `DominiumSetup-x.y.z.pkg`
+- `docs/` from the artifact root
+- `SHA256SUMS`
+- `artifact_manifest.json`
+- optional portable archive (if provided)
 
 ## Codesign + notarization hooks (design-level)
 
@@ -49,10 +59,11 @@ The pipeline does not perform signing automatically. Recommended hooks:
 - Sign the resulting `.pkg` with `productbuild --sign "<Developer ID Installer: ...>"`
 - Notarize the signed pkg, then staple:
   - `xcrun notarytool submit ...`
-  - `xcrun stapler staple Dominium-x.y.z.pkg`
+  - `xcrun stapler staple DominiumSetup-x.y.z.pkg`
 
 ## Sources
 
-- Postinstall hook: `scripts/packaging/macos/pkg_scripts/postinstall`
-- Pipeline entry: `scripts/packaging/pipeline.py` (`macos` subcommand)
+- PKG build: `source/dominium/setup/installers/macos/packaging/pkg/scripts/build_pkg.sh`
+- Postinstall hook: `source/dominium/setup/installers/macos/packaging/pkg/scripts/postinstall`
+- DMG build: `source/dominium/setup/installers/macos/packaging/dmg/build_dmg.sh`
 
