@@ -1,7 +1,7 @@
 /*
-FILE: source/dominium/setup/installers/macos_classic/core_legacy/src/legacy_internal.h
+FILE: source/dominium/setup/installers/windows_legacy/legacy_core/src/legacy_internal.h
 MODULE: Dominium Setup (Legacy Core)
-PURPOSE: Internal helpers for Classic-compatible legacy core.
+PURPOSE: Internal helpers for legacy core.
 */
 #ifndef DSU_LEGACY_INTERNAL_H_INCLUDED
 #define DSU_LEGACY_INTERNAL_H_INCLUDED

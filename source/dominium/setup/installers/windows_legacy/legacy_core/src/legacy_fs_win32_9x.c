@@ -1,7 +1,7 @@
 /*
-FILE: source/dominium/setup/installers/macos_classic/core_legacy/src/legacy_fs.c
+FILE: source/dominium/setup/installers/windows_legacy/legacy_core/src/legacy_fs_win32_9x.c
 MODULE: Dominium Setup (Legacy Core)
-PURPOSE: Minimal filesystem helpers and archive extraction for legacy core.
+PURPOSE: Win32/Win9x filesystem helpers and archive extraction for legacy core.
 */
 #include "legacy_internal.h"
 

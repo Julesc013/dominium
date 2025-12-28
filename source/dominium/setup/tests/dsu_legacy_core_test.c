@@ -7,7 +7,7 @@ PURPOSE: Legacy core tests (TLV parsing, state determinism, rollback).
 #include <stdlib.h>
 #include <string.h>
 
-#include "../installers/macos_classic/core_legacy/include/dsu_legacy_core.h"
+#include "../installers/windows_legacy/legacy_core/include/dsu_legacy_core.h"
 
 #if defined(_WIN32)
 #include <direct.h>
@@ -388,11 +388,13 @@ int main(void) {
     const char *archive_path = "legacy_test_tmp/payloads/payload_a.dsuarch";
     const char *manifest_ok = "legacy_test_tmp/manifest_ok.dsumanifest";
     const char *manifest_fail = "legacy_test_tmp/manifest_fail.dsumanifest";
+    const char *manifest_traversal = "legacy_test_tmp/manifest_traversal.dsumanifest";
     const char *invocation_path = "legacy_test_tmp/invocation.dsui";
     const char *state_path = "legacy_test_tmp/state.dsus";
     const char *log_path = "legacy_test_tmp/install.log";
     const char *file_rel = "test.txt";
     const char *file_abs = "legacy_test_tmp/install/test.txt";
+    const char *archive_bad = "legacy_test_tmp/payloads/payload_bad.dsuarch";
     unsigned char *a_bytes = NULL;
     unsigned long a_len = 0ul;
     unsigned char *b_bytes = NULL;
@@ -406,8 +408,10 @@ int main(void) {
     dsu_test_mkdir(install_root);
 
     ok &= expect(build_archive_file(archive_path, file_rel, "hello"), "build archive");
+    ok &= expect(build_archive_file(archive_bad, "../evil.txt", "oops"), "build archive bad");
     ok &= expect(build_manifest_file(manifest_ok, install_root, "payloads/payload_a.dsuarch", NULL), "build manifest ok");
     ok &= expect(build_manifest_file(manifest_fail, install_root, "payloads/payload_a.dsuarch", "payloads/missing.dsuarch"), "build manifest fail");
+    ok &= expect(build_manifest_file(manifest_traversal, install_root, "payloads/payload_bad.dsuarch", NULL), "build manifest traversal");
     ok &= expect(build_invocation_file(invocation_path, install_root), "build invocation");
 
     ok &= expect(dsu_legacy_manifest_load(manifest_ok, &m) == DSU_LEGACY_STATUS_SUCCESS, "load legacy manifest");
@@ -475,9 +479,22 @@ int main(void) {
     if (m) dsu_legacy_manifest_free(m);
     if (inv) dsu_legacy_invocation_free(inv);
 
+    /* Apply failure on traversal */
+    ok &= expect(dsu_legacy_manifest_load(manifest_traversal, &m) == DSU_LEGACY_STATUS_SUCCESS, "load manifest traversal");
+    ok &= expect(dsu_legacy_invocation_load(invocation_path, &inv) == DSU_LEGACY_STATUS_SUCCESS, "load invocation traversal");
+    if (ok) {
+        dsu_legacy_status_t st = dsu_legacy_apply(m, inv, root, state_path, log_path);
+        ok &= expect(st != DSU_LEGACY_STATUS_SUCCESS, "legacy apply traversal rejection");
+        ok &= expect(read_all_bytes(file_abs, &a_bytes, &a_len) == 0, "traversal prevented file write");
+    }
+    if (m) dsu_legacy_manifest_free(m);
+    if (inv) dsu_legacy_invocation_free(inv);
+
     remove(archive_path);
+    remove(archive_bad);
     remove(manifest_ok);
     remove(manifest_fail);
+    remove(manifest_traversal);
     remove(invocation_path);
     remove("legacy_test_tmp/state_a.dsus");
     remove("legacy_test_tmp/state_b.dsus");

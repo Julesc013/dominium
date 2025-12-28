@@ -3,26 +3,9 @@ cmake_minimum_required(VERSION 3.16)
 option(DOMINIUM_ENABLE_CLASSIC "Enable Classic Mac OS legacy installer sources" ON)
 
 if(DOMINIUM_ENABLE_CLASSIC)
-    add_library(dsu_legacy_core
-        ${CMAKE_CURRENT_LIST_DIR}/../core_legacy/src/legacy_fs.c
-        ${CMAKE_CURRENT_LIST_DIR}/../core_legacy/src/legacy_invocation.c
-        ${CMAKE_CURRENT_LIST_DIR}/../core_legacy/src/legacy_log.c
-        ${CMAKE_CURRENT_LIST_DIR}/../core_legacy/src/legacy_manifest.c
-        ${CMAKE_CURRENT_LIST_DIR}/../core_legacy/src/legacy_state.c
-        ${CMAKE_CURRENT_LIST_DIR}/../core_legacy/src/legacy_txn.c
-        ${CMAKE_CURRENT_LIST_DIR}/../core_legacy/src/legacy_uninstall.c
-        ${CMAKE_CURRENT_LIST_DIR}/../core_legacy/src/legacy_verify.c
-    )
-
-    target_include_directories(dsu_legacy_core PUBLIC
-        ${CMAKE_CURRENT_LIST_DIR}/../core_legacy/include
-    )
-
-    set_target_properties(dsu_legacy_core PROPERTIES
-        C_STANDARD 90
-        C_STANDARD_REQUIRED ON
-        C_EXTENSIONS OFF
-    )
+    if(NOT TARGET dsu_legacy_core)
+        message(FATAL_ERROR "dsu_legacy_core target missing; enable legacy core build before Classic installer sources.")
+    endif()
 
     add_custom_target(dominium-setup-classic-sources
         SOURCES

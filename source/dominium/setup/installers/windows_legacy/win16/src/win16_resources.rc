@@ -1,0 +1,35 @@
+/*
+FILE: source/dominium/setup/installers/windows_legacy/win16/src/win16_resources.rc
+MODULE: Dominium Setup (Win16)
+PURPOSE: Win16 dialog resources for legacy installer.
+*/
+#include <windows.h>
+
+#define IDD_MAIN        100
+#define IDC_EASY        200
+#define IDC_CUSTOM      201
+#define IDC_PATH        202
+#define IDC_COMPONENTS  203
+#define IDC_INSTALL     210
+#define IDC_REPAIR      211
+#define IDC_VERIFY      212
+#define IDC_UNINSTALL   213
+
+IDD_MAIN DIALOG 10, 10, 220, 160
+STYLE WS_CAPTION | WS_SYSMENU | DS_MODALFRAME
+CAPTION "Dominium Setup"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT "Install mode:", -1, 8, 8, 80, 8
+    AUTORADIOBUTTON "Easy", IDC_EASY, 10, 20, 50, 10, WS_TABSTOP
+    AUTORADIOBUTTON "Custom", IDC_CUSTOM, 70, 20, 60, 10
+    LTEXT "Install path:", -1, 8, 38, 80, 8
+    EDITTEXT IDC_PATH, 10, 48, 180, 12, ES_AUTOHSCROLL
+    LTEXT "Components:", -1, 8, 66, 80, 8
+    LISTBOX IDC_COMPONENTS, 10, 76, 180, 50, LBS_EXTENDEDSEL | WS_BORDER | WS_TABSTOP
+    PUSHBUTTON "Install", IDC_INSTALL, 10, 130, 50, 14
+    PUSHBUTTON "Repair", IDC_REPAIR, 65, 130, 50, 14
+    PUSHBUTTON "Verify", IDC_VERIFY, 120, 130, 50, 14
+    PUSHBUTTON "Uninstall", IDC_UNINSTALL, 175, 130, 50, 14
+    PUSHBUTTON "Cancel", IDCANCEL, 85, 146, 50, 14
+END
