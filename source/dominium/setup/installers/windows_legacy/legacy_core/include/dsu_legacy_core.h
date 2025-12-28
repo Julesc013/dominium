@@ -1,7 +1,7 @@
 /*
-FILE: source/dominium/setup/installers/macos_classic/core_legacy/include/dsu_legacy_core.h
+FILE: source/dominium/setup/installers/windows_legacy/legacy_core/include/dsu_legacy_core.h
 MODULE: Dominium Setup (Legacy Core)
-PURPOSE: Minimal Classic-compatible legacy core API (C89-friendly).
+PURPOSE: Minimal legacy core API (C89-friendly).
 */
 #ifndef DSU_LEGACY_CORE_H_INCLUDED
 #define DSU_LEGACY_CORE_H_INCLUDED

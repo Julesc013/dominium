@@ -5,7 +5,7 @@ PURPOSE: Classic installer entry point (GUI + minimal CLI).
 */
 #include "dialogs.h"
 
-#include "../../../core_legacy/include/dsu_legacy_core.h"
+#include "../../../windows_legacy/legacy_core/include/dsu_legacy_core.h"
 
 #include <stdio.h>
 #include <stdlib.h>

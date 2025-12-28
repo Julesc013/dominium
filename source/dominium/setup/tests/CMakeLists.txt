@@ -326,7 +326,7 @@ if(TARGET dsu_legacy_core)
     )
 
     target_include_directories(dsu_legacy_core_test PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/../installers/macos_classic/core_legacy/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/../installers/windows_legacy/legacy_core/include
     )
 
     target_link_libraries(dsu_legacy_core_test

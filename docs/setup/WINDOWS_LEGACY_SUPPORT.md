@@ -1,7 +1,8 @@
 # Windows Legacy Support (Win16/Win9x)
 
-This document captures the legacy Windows installer profile used for the Win16 and
-Win9x builds of the EXE installer suite.
+This document captures legacy Windows installer profiles. For deep legacy DOS/Win3.x/Win9x,
+see `docs/setup/DOS_INSTALLER.md`, `docs/setup/WIN3X_INSTALLER.md`,
+`docs/setup/WIN9X_INSTALLER.md`, and `docs/setup/WINDOWS_LEGACY_MATRIX.md`.
 
 ## Scope
 
@@ -24,9 +25,13 @@ Win9x-compatible build of `dominium-setup`) with the following constraints:
 Legacy installers still emit an installed-state file compatible with modern
 Setup Core readers. Unknown TLVs are skipped, and unavailable fields are omitted.
 
-Default location remains:
+Default location (EXE legacy profile):
 
 - `<install_root>/.dsu/installed_state.dsustate`
+
+Deep legacy installers (DOS/Win3.x/Win9x) use:
+
+- `<install_root>\dominium_state.dsus`
 
 ## Build tooling notes
 
