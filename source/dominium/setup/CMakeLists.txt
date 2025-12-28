@@ -98,6 +98,8 @@ add_dependencies(ui_regen_setup dominium-ui-editor)
 
 add_subdirectory(tests)
 
+add_subdirectory(installers/macos_classic/cmake)
+
 if(WIN32)
     add_subdirectory(installers/windows/msi/cmake)
     add_subdirectory(installers/windows/exe/cmake)
