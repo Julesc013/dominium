@@ -75,6 +75,8 @@ u32 dom_game_runtime_next_cmd_tick(const dom_game_runtime *rt);
 struct d_world *dom_game_runtime_world(dom_game_runtime *rt);
 struct d_sim_context *dom_game_runtime_sim(dom_game_runtime *rt);
 struct d_replay_context *dom_game_runtime_replay(dom_game_runtime *rt);
+const void *dom_game_runtime_session(const dom_game_runtime *rt);
+const void *dom_game_runtime_instance(const dom_game_runtime *rt);
 
 int dom_game_runtime_set_replay_last_tick(dom_game_runtime *rt, u32 last_tick);
 

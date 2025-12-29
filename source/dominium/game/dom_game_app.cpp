@@ -22,6 +22,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "dom_game_ui.h"
 #include "dom_game_ui_debug.h"
 #include "dom_game_save.h"
+#include "runtime/dom_game_save.h"
 #include "dom_game_replay.h"
 #include "dom_game_tools_build.h"
 #include "dominium/version.h"
@@ -630,6 +631,8 @@ bool DomGameApp::init_from_cli(const dom_game_config &cfg) {
     m_detmode = cfg.deterministic_test ? 3u : 0u;
     m_replay_record_path = cfg.replay_record_path;
     m_replay_play_path = cfg.replay_play_path;
+    m_save_path = cfg.save_path;
+    m_load_path = cfg.load_path;
     m_show_debug_panel = m_dev_mode;
     m_last_hash = 0u;
     if (!m_replay_record_path.empty()) {
@@ -722,6 +725,14 @@ void DomGameApp::shutdown() {
         m_session.replay()->mode == DREPLAY_MODE_RECORD) {
         if (!game_save_replay(m_session.replay(), m_replay_record_path)) {
             std::printf("DomGameApp: failed to write replay '%s'\n", m_replay_record_path.c_str());
+        }
+    }
+
+    if (!m_save_path.empty() && m_runtime) {
+        const int rc = dom_game_runtime_save(m_runtime, m_save_path.c_str());
+        if (rc != DOM_GAME_SAVE_OK) {
+            std::printf("DomGameApp: failed to write save '%s' (rc=%d)\n",
+                        m_save_path.c_str(), rc);
         }
     }
 
@@ -917,6 +928,14 @@ bool DomGameApp::init_session(const dom_game_config &cfg) {
             (void)dom_game_runtime_set_replay_last_tick(m_runtime, m_replay_last_tick);
         }
         m_last_wall_us = 0u;
+        if (!m_load_path.empty()) {
+            const int rc = dom_game_runtime_load_save(m_runtime, m_load_path.c_str());
+            if (rc != DOM_GAME_SAVE_OK) {
+                std::printf("DomGameApp: failed to load save '%s' (rc=%d)\n",
+                            m_load_path.c_str(), rc);
+                return false;
+            }
+        }
     }
 
     ensure_demo_agents();

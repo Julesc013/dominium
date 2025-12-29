@@ -374,3 +374,11 @@ struct d_replay_context *dom_game_runtime_replay(dom_game_runtime *rt) {
     dom::DomSession *session = session_of(rt);
     return session ? session->replay() : 0;
 }
+
+const void *dom_game_runtime_session(const dom_game_runtime *rt) {
+    return rt ? rt->session : 0;
+}
+
+const void *dom_game_runtime_instance(const dom_game_runtime *rt) {
+    return rt ? rt->instance : 0;
+}
