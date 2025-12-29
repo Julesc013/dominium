@@ -38,6 +38,13 @@ endif()
 set(DOMINIUM_MSI_MANUFACTURER "Dominium" CACHE STRING "MSI Manufacturer")
 set(DOMINIUM_MSI_UPGRADE_CODE "{5E6234E6-0C7F-4D37-8DE8-4B79CF6C9445}" CACHE STRING "MSI UpgradeCode (stable)")
 set(DOMINIUM_MSI_OUTPUT_DIR "${CMAKE_BINARY_DIR}/dist/installers/windows/msi" CACHE PATH "Output directory for MSI builds")
+if(NOT DEFINED DOMINIUM_PUBLISH_INSTALLERS_TO_DIST)
+    option(DOMINIUM_PUBLISH_INSTALLERS_TO_DIST "Copy built installers into repo dist/ for convenience" ON)
+endif()
+if(NOT DEFINED DOMINIUM_DIST_INSTALLERS_DIR)
+    set(DOMINIUM_DIST_INSTALLERS_DIR "${CMAKE_SOURCE_DIR}/dist/installers" CACHE PATH "Repo dist/ installers root")
+endif()
+set(DOMINIUM_MSI_PUBLISH_DIR "${DOMINIUM_DIST_INSTALLERS_DIR}/windows/msi" CACHE PATH "Publish MSI outputs into repo dist")
 set(DOMINIUM_MSI_BUILD_DIR_X86 "" CACHE PATH "CMake build dir for x86 MSI inputs")
 set(DOMINIUM_MSI_BUILD_DIR_X64 "" CACHE PATH "CMake build dir for x64 MSI inputs")
 set(DOMINIUM_MSI_CA_X86 "" CACHE FILEPATH "InvokeSetupCore DLL for x86 MSI")
@@ -262,6 +269,19 @@ function(_dom_msi_add_target arch platform build_dir ca_hint)
     )
 
     add_custom_target(msi-${arch} DEPENDS "${_msi_ok}")
+    if(DOMINIUM_PUBLISH_INSTALLERS_TO_DIST)
+        set(_msi_publish_path "${DOMINIUM_MSI_PUBLISH_DIR}/DominiumSetup-${DOMINIUM_MSI_VERSION}-${arch}.msi")
+        add_custom_command(
+            OUTPUT "${_msi_publish_path}"
+            COMMAND "${CMAKE_COMMAND}" -E make_directory "${DOMINIUM_MSI_PUBLISH_DIR}"
+            COMMAND "${CMAKE_COMMAND}" -E copy_if_different "${_msi_path}" "${_msi_publish_path}"
+            DEPENDS "${_msi_ok}"
+            COMMENT "Publishing MSI (${arch}) -> ${_msi_publish_path}"
+            VERBATIM
+        )
+        add_custom_target(msi-${arch}-publish DEPENDS "${_msi_publish_path}")
+        add_dependencies(msi-${arch} msi-${arch}-publish)
+    endif()
 endfunction()
 
 set(_msi_ca_x86 "${DOMINIUM_MSI_CA_X86}")

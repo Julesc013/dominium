@@ -20,6 +20,13 @@ get_filename_component(EXE_ROOT "${EXE_ROOT}" ABSOLUTE)
 
 set(DOMINIUM_EXE_ARTIFACT_DIR "${CMAKE_BINARY_DIR}/dist/artifact_root" CACHE PATH "Artifact root for EXE packaging")
 set(DOMINIUM_EXE_OUTPUT_DIR "${CMAKE_BINARY_DIR}/dist/windows" CACHE PATH "EXE output directory")
+if(NOT DEFINED DOMINIUM_PUBLISH_INSTALLERS_TO_DIST)
+    option(DOMINIUM_PUBLISH_INSTALLERS_TO_DIST "Copy built installers into repo dist/ for convenience" ON)
+endif()
+if(NOT DEFINED DOMINIUM_DIST_INSTALLERS_DIR)
+    set(DOMINIUM_DIST_INSTALLERS_DIR "${CMAKE_SOURCE_DIR}/dist/installers" CACHE PATH "Repo dist/ installers root")
+endif()
+set(DOMINIUM_EXE_PUBLISH_DIR "${DOMINIUM_DIST_INSTALLERS_DIR}/windows/exe" CACHE PATH "Publish EXE installers into repo dist")
 set(DOMINIUM_EXE_VERSION "${DOM_PROJECT_SEMVER}")
 set(DOMINIUM_EXE_MANIFEST_TEMPLATE "${CMAKE_SOURCE_DIR}/assets/setup/manifests/product.template.json")
 
@@ -147,6 +154,31 @@ add_custom_command(
 
 add_custom_target(setup_exe_win32_nt DEPENDS "${_exe_win32}")
 add_custom_target(setup_exe_win64 DEPENDS "${_exe_win64}")
+if(DOMINIUM_PUBLISH_INSTALLERS_TO_DIST)
+    set(_exe_win32_publish "${DOMINIUM_EXE_PUBLISH_DIR}/DominiumSetup-win32.exe")
+    add_custom_command(
+        OUTPUT "${_exe_win32_publish}"
+        COMMAND "${CMAKE_COMMAND}" -E make_directory "${DOMINIUM_EXE_PUBLISH_DIR}"
+        COMMAND "${CMAKE_COMMAND}" -E copy_if_different "${_exe_win32}" "${_exe_win32_publish}"
+        DEPENDS "${_exe_win32}"
+        COMMENT "Publishing EXE -> ${_exe_win32_publish}"
+        VERBATIM
+    )
+    add_custom_target(setup_exe_win32_nt_publish DEPENDS "${_exe_win32_publish}")
+    add_dependencies(setup_exe_win32_nt setup_exe_win32_nt_publish)
+
+    set(_exe_win64_publish "${DOMINIUM_EXE_PUBLISH_DIR}/DominiumSetup-win64.exe")
+    add_custom_command(
+        OUTPUT "${_exe_win64_publish}"
+        COMMAND "${CMAKE_COMMAND}" -E make_directory "${DOMINIUM_EXE_PUBLISH_DIR}"
+        COMMAND "${CMAKE_COMMAND}" -E copy_if_different "${_exe_win64}" "${_exe_win64_publish}"
+        DEPENDS "${_exe_win64}"
+        COMMENT "Publishing EXE -> ${_exe_win64_publish}"
+        VERBATIM
+    )
+    add_custom_target(setup_exe_win64_publish DEPENDS "${_exe_win64_publish}")
+    add_dependencies(setup_exe_win64 setup_exe_win64_publish)
+endif()
 
 add_custom_target(setup_exe_win16
     COMMAND "${CMAKE_COMMAND}" -E echo "setup_exe_win16: requires external Win16 toolchain (see docs/setup/WINDOWS_LEGACY_SUPPORT.md)"
