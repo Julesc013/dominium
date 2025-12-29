@@ -62,7 +62,8 @@ target_include_directories(dominium_setup_exe_win32_stub PRIVATE
 )
 
 target_link_libraries(dominium_setup_exe_win32_stub PRIVATE
-    dsu_core
+    setup_kernel
+    setup_services_impl_platform
     shell32
     ole32
 )
@@ -88,7 +89,8 @@ target_include_directories(dominium_setup_exe_win64_stub PRIVATE
 )
 
 target_link_libraries(dominium_setup_exe_win64_stub PRIVATE
-    dsu_core
+    setup_kernel
+    setup_services_impl_platform
     shell32
     ole32
 )

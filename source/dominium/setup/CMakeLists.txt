@@ -1,13 +1,48 @@
 cmake_minimum_required(VERSION 3.16)
 
 add_subdirectory(core)
+add_subdirectory(services)
 add_subdirectory(adapters)
 
-add_executable(dominium-setup
-    cli/dominium_setup_main.c
+add_library(setup_services_api INTERFACE)
+target_include_directories(setup_services_api INTERFACE
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/include
+    ${PROJECT_SOURCE_DIR}/include
+)
+
+add_library(setup_frontend_cli INTERFACE)
+target_link_libraries(setup_frontend_cli INTERFACE
+    setup_services_api
+)
+
+add_library(setup_frontend_gui STATIC
     cli/setup_ui_gui.cpp
     ${CMAKE_SOURCE_DIR}/tools/setup/ui/gen/ui_setup_ui_actions_gen.cpp
     ${CMAKE_SOURCE_DIR}/tools/setup/ui/user/ui_setup_ui_actions_user.cpp
+)
+
+target_include_directories(setup_frontend_gui PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/include
+    ${PROJECT_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/tools/setup/ui/gen
+    ${CMAKE_SOURCE_DIR}/tools/setup/ui/user
+)
+
+target_link_libraries(setup_frontend_gui
+    PRIVATE
+        setup_kernel
+        setup_services_api
+        dui_api
+)
+
+set_target_properties(setup_frontend_gui PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_executable(dominium-setup
+    cli/dominium_setup_main.c
 )
 
 target_include_directories(dominium-setup PUBLIC
@@ -19,7 +54,10 @@ target_include_directories(dominium-setup PUBLIC
 
 target_link_libraries(dominium-setup
     PRIVATE
-        dsu_core
+        setup_kernel
+        setup_services_impl_platform
+        setup_frontend_gui
+        setup_frontend_cli
         domino_core
 )
 

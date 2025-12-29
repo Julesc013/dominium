@@ -9,7 +9,9 @@ target_include_directories(dsu_core_smoke_test PRIVATE
 )
 
 target_link_libraries(dsu_core_smoke_test
-    PRIVATE dsu_core
+    PRIVATE
+        dsu_core
+        setup_services_impl_platform
 )
 
 set_target_properties(dsu_core_smoke_test PROPERTIES
@@ -20,6 +22,29 @@ set_target_properties(dsu_core_smoke_test PROPERTIES
 
 add_test(NAME dsu_core_smoke_test COMMAND dsu_core_smoke_test)
 
+add_executable(setup_kernel_smoke
+    dsu_core_smoke_test.c
+)
+
+target_include_directories(setup_kernel_smoke PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../core/include
+)
+
+target_link_libraries(setup_kernel_smoke
+    PRIVATE
+        setup_kernel
+        setup_services_impl_null
+)
+
+set_target_properties(setup_kernel_smoke PROPERTIES
+    C_STANDARD 90
+    C_STANDARD_REQUIRED ON
+    C_EXTENSIONS OFF
+)
+
+add_test(NAME setup_kernel_smoke COMMAND setup_kernel_smoke)
+
+
 add_executable(dsu_invocation_parity_test
     dsu_invocation_parity_test.c
 )
@@ -29,7 +54,9 @@ target_include_directories(dsu_invocation_parity_test PRIVATE
 )
 
 target_link_libraries(dsu_invocation_parity_test
-    PRIVATE dsu_core
+    PRIVATE
+        dsu_core
+        setup_services_impl_platform
 )
 
 set_target_properties(dsu_invocation_parity_test PROPERTIES
@@ -50,7 +77,9 @@ if(UNIX AND NOT APPLE AND TARGET dominium-setup-tui)
     )
 
     target_link_libraries(dsu_linux_parity_test
-        PRIVATE dsu_core
+        PRIVATE
+            dsu_core
+            setup_services_impl_platform
     )
 
     add_dependencies(dsu_linux_parity_test
@@ -98,7 +127,9 @@ if(APPLE AND TARGET dominium-setup-gui)
     )
 
     target_link_libraries(dsu_macos_parity_test
-        PRIVATE dsu_core
+        PRIVATE
+            dsu_core
+            setup_services_impl_platform
     )
 
     add_dependencies(dsu_macos_parity_test
@@ -145,7 +176,9 @@ target_include_directories(dsu_manifest_test PRIVATE
 )
 
 target_link_libraries(dsu_manifest_test
-    PRIVATE dsu_core
+    PRIVATE
+        dsu_core
+        setup_services_impl_platform
 )
 
 set_target_properties(dsu_manifest_test PROPERTIES
@@ -165,7 +198,9 @@ target_include_directories(dsu_resolve_test PRIVATE
 )
 
 target_link_libraries(dsu_resolve_test
-    PRIVATE dsu_core
+    PRIVATE
+        dsu_core
+        setup_services_impl_platform
 )
 
 set_target_properties(dsu_resolve_test PROPERTIES
@@ -185,7 +220,9 @@ target_include_directories(dsu_txn_test PRIVATE
 )
 
 target_link_libraries(dsu_txn_test
-    PRIVATE dsu_core
+    PRIVATE
+        dsu_core
+        setup_services_impl_platform
 )
 
 set_target_properties(dsu_txn_test PROPERTIES
@@ -205,7 +242,9 @@ target_include_directories(dsu_cli_test PRIVATE
 )
 
 target_link_libraries(dsu_cli_test
-    PRIVATE dsu_core
+    PRIVATE
+        dsu_core
+        setup_services_impl_platform
 )
 
 add_dependencies(dsu_cli_test
@@ -232,7 +271,9 @@ target_include_directories(dsu_setup_matrix_test PRIVATE
 )
 
 target_link_libraries(dsu_setup_matrix_test
-    PRIVATE dsu_core
+    PRIVATE
+        dsu_core
+        setup_services_impl_platform
 )
 
 add_dependencies(dsu_setup_matrix_test
@@ -261,7 +302,9 @@ target_include_directories(dsu_platform_iface_test PRIVATE
 )
 
 target_link_libraries(dsu_platform_iface_test
-    PRIVATE dsu_core
+    PRIVATE
+        dsu_core
+        setup_services_impl_platform
 )
 
 set_target_properties(dsu_platform_iface_test PROPERTIES
@@ -352,7 +395,9 @@ if(WIN32)
     )
 
     target_link_libraries(dsu_adapter_smoke_test
-        PRIVATE dsu_core
+        PRIVATE
+            dsu_core
+            setup_services_impl_platform
     )
 
     add_dependencies(dsu_adapter_smoke_test

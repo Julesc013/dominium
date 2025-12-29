@@ -12,7 +12,8 @@ target_include_directories(dominium-setup-win PRIVATE
 
 target_link_libraries(dominium-setup-win
     PRIVATE
-        dsu_core
+        setup_kernel
+        setup_services_impl_platform
         advapi32
 )
 

@@ -1,5 +1,26 @@
 cmake_minimum_required(VERSION 3.16)
 
+add_library(core_tlv INTERFACE)
+target_include_directories(core_tlv INTERFACE
+    ${DOMINIUM_INCLUDE_DIR}
+)
+
+add_library(core_audit INTERFACE)
+target_include_directories(core_audit INTERFACE
+    ${DOMINIUM_INCLUDE_DIR}
+)
+
+add_library(core_util INTERFACE)
+target_include_directories(core_util INTERFACE
+    ${DOMINIUM_INCLUDE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+add_library(core_err INTERFACE)
+target_include_directories(core_err INTERFACE
+    ${DOMINIUM_INCLUDE_DIR}
+)
+
 add_library(dominium_common STATIC
     dominium_product_manifest.c
     dominium_version.c
