@@ -1,4 +1,4 @@
-# setup_audit.tlv (SR-1)
+# setup_audit.tlv (SR-3)
 
 All integers are little-endian.
 
@@ -10,25 +10,31 @@ Same as `install_manifest.tlv` (magic `DSK1`, version `1`, endian `0xFFFE`).
 - `0x4002` `manifest_digest64` (u64)
 - `0x4003` `request_digest64` (u64)
 - `0x4004` `selected_splat` (string)
-- `0x4005` `selection_reason` (container)
+- `0x4005` `selection` (container)
 - `0x4006` `operation` (u16)
 - `0x4007` `result` (container)
 - `0x4008` `events` (container)
 
-### selection_reason container
-- `0x4101` `candidates` (container)
-- `0x4102` `rejections` (container)
-- `0x4103` `chosen` (string)
+### selection container
+- `0x4101` `selection_candidates` (container)
+- `0x4102` `selection_rejections` (container)
+- `0x4103` `selected_splat_id` (string)
+- `0x4107` `selected_reason_code` (u16)
 
-#### candidates container
-- `0x4104` `candidate_entry` (string)
+#### selection_candidates container
+- `0x4104` `candidate_entry` (container)
 
-#### rejections container
+##### candidate_entry fields
+- `0x4105` `id` (string)
+- `0x4106` `caps_digest64` (u64)
+
+#### selection_rejections container
 - `0x4110` `rejection_entry` (container)
 
 ##### rejection_entry fields
 - `0x4111` `id` (string)
 - `0x4112` `code` (u16)
+- `0x4113` `detail` (string, optional)
 
 ### result container
 - `0x4302` `domain` (u16)

@@ -773,6 +773,34 @@ set_target_properties(setup2_kernel_services_tests PROPERTIES
 
 add_test(NAME test_kernel_uses_services_platform COMMAND setup2_kernel_services_tests kernel_uses_services_platform)
 
+add_executable(setup2_splat_tests
+    ../../tests/setup2/test_splat_selection.cpp
+)
+
+target_include_directories(setup2_splat_tests PRIVATE
+    ${CMAKE_SOURCE_DIR}/source/dominium/setup/services/include
+    ${CMAKE_SOURCE_DIR}/source/dominium/setup/kernel/include
+)
+
+target_link_libraries(setup2_splat_tests
+    PRIVATE dsk_kernel dss_services
+)
+
+set_target_properties(setup2_splat_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME test_splat_registry_sorted COMMAND setup2_splat_tests splat_registry_sorted)
+add_test(NAME test_splat_select_requested_id_success COMMAND setup2_splat_tests splat_select_requested_id_success)
+add_test(NAME test_splat_select_requested_id_not_found COMMAND setup2_splat_tests splat_select_requested_id_not_found)
+add_test(NAME test_splat_select_filters_by_platform COMMAND setup2_splat_tests splat_select_filters_by_platform)
+add_test(NAME test_splat_select_filters_by_scope COMMAND setup2_splat_tests splat_select_filters_by_scope)
+add_test(NAME test_splat_select_filters_by_ui_mode COMMAND setup2_splat_tests splat_select_filters_by_ui_mode)
+add_test(NAME test_splat_select_no_compatible_emits_rejections_and_audit COMMAND setup2_splat_tests splat_select_no_compatible_emits_rejections_and_audit)
+add_test(NAME test_splat_select_deterministic_choice_first_compatible COMMAND setup2_splat_tests splat_select_deterministic_choice_first_compatible)
+
 if(WIN32)
     add_test(NAME setup2_kernel_purity_check
         COMMAND ${CMAKE_SOURCE_DIR}/scripts/setup2/check_kernel_purity.bat

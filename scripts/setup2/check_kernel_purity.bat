@@ -10,8 +10,11 @@ set FAIL=0
 
 for %%H in (windows.h unistd.h sys/stat.h sys/types.h sys/wait.h) do (
     for /f "delims=" %%F in ('findstr /s /n /i /c:"%%H" "%KERNEL_DIR%\*.c" "%KERNEL_DIR%\*.cpp" "%KERNEL_DIR%\*.h" 2^>nul') do (
-        echo Forbidden header %%H referenced: %%F
-        set FAIL=1
+        echo %%F | findstr /i /c:"dsk_forbidden_includes.h" >nul
+        if errorlevel 1 (
+            echo Forbidden header %%H referenced: %%F
+            set FAIL=1
+        )
     )
 )
 

@@ -35,8 +35,8 @@ static void build_basic_manifest(dsk_manifest_t *out_manifest) {
     out_manifest->product_id = "dominium";
     out_manifest->version = "0.0.1";
     out_manifest->build_id = "dev";
-    out_manifest->platform_targets.push_back("win32");
-    out_manifest->platform_targets.push_back("linux");
+    out_manifest->supported_targets.push_back("win32_nt5");
+    out_manifest->supported_targets.push_back("linux_deb");
 
     {
         dsk_manifest_component_t comp;
@@ -68,10 +68,10 @@ static void build_basic_request(dsk_request_t *out_request,
                                 const char *platform) {
     dsk_request_clear(out_request);
     out_request->operation = operation;
-    out_request->install_scope = DSK_INSTALL_SCOPE_PORTABLE;
+    out_request->install_scope = DSK_INSTALL_SCOPE_SYSTEM;
     out_request->ui_mode = DSK_UI_MODE_CLI;
     out_request->policy_flags = DSK_POLICY_DETERMINISTIC;
-    out_request->platform_triple = platform ? platform : "win32";
+    out_request->target_platform_triple = platform ? platform : "win32_nt5";
 }
 
 static dsk_status_t write_manifest_bytes(const dsk_manifest_t &manifest,
@@ -222,7 +222,7 @@ static int test_request_validate_missing_required(void) {
     dsk_status_t st;
 
     build_basic_request(&request, DSK_OPERATION_INSTALL, "");
-    request.platform_triple.clear();
+    request.target_platform_triple.clear();
     st = write_request_bytes(request, bytes);
     if (!dsk_error_is_ok(st)) {
         return fail("request write failed");
@@ -259,7 +259,7 @@ static int test_kernel_emits_audit_on_failure(void) {
 
     build_basic_manifest(&manifest);
     manifest.product_id.clear();
-    build_basic_request(&request, DSK_OPERATION_INSTALL, "win32");
+    build_basic_request(&request, DSK_OPERATION_INSTALL, "win32_nt5");
 
     st = write_manifest_bytes(manifest, manifest_bytes);
     if (!dsk_error_is_ok(st)) return fail("manifest write failed");
@@ -267,7 +267,7 @@ static int test_kernel_emits_audit_on_failure(void) {
     if (!dsk_error_is_ok(st)) return fail("request write failed");
 
     dss_services_config_init(&cfg);
-    cfg.platform_triple = "win32";
+    cfg.platform_triple = "win32_nt5";
     dss_services_init_fake(&cfg, &services);
 
     dsk_kernel_request_init(&kernel_req);
@@ -319,7 +319,7 @@ static int test_splat_selection_deterministic(void) {
     dsk_audit_t audit_b;
 
     build_basic_manifest(&manifest);
-    build_basic_request(&request, DSK_OPERATION_INSTALL, "win32");
+    build_basic_request(&request, DSK_OPERATION_INSTALL, "win32_nt5");
 
     st = write_manifest_bytes(manifest, manifest_bytes);
     if (!dsk_error_is_ok(st)) return fail("manifest write failed");
@@ -327,7 +327,7 @@ static int test_splat_selection_deterministic(void) {
     if (!dsk_error_is_ok(st)) return fail("request write failed");
 
     dss_services_config_init(&cfg);
-    cfg.platform_triple = "win32";
+    cfg.platform_triple = "win32_nt5";
     dss_services_init_fake(&cfg, &services);
 
     dsk_kernel_request_init(&kernel_req);

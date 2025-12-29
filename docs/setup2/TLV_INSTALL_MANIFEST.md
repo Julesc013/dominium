@@ -1,4 +1,4 @@
-# install_manifest.tlv (SR-1)
+# install_manifest.tlv (SR-3)
 
 All integers are little-endian.
 
@@ -17,11 +17,16 @@ Tags are `u16` with `u32` length.
 - `0x1001` `product_id` (string)
 - `0x1002` `version` (string)
 - `0x1003` `build_id` (string)
-- `0x1004` `platform_targets` (container)
+- `0x1004` `supported_targets` (container)
 - `0x1005` `components` (container)
+- `0x1006` `allowed_splats` (container, optional)
+- `0x1007` `target_rules` (container, optional; reserved)
 
-### platform_targets container
+### supported_targets container
 - `0x1101` `platform_entry` (string)
+
+### allowed_splats container
+- `0x1102` `allowed_splat_entry` (string)
 
 ### components container
 - `0x1201` `component_entry` (container)
@@ -49,7 +54,8 @@ Tags are `u16` with `u32` length.
 - `0x1223` `path` (string)
 
 ## Canonical ordering
-- `platform_targets` sorted by string.
+- `supported_targets` sorted by string.
+- `allowed_splats` sorted by string.
 - `components` sorted by `component_id`.
 - `deps` and `conflicts` sorted by string.
 - `artifacts` sorted by `path`, then `hash`.

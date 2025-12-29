@@ -35,8 +35,8 @@ static void build_manifest(dsk_manifest_t *out_manifest) {
     out_manifest->product_id = "dominium";
     out_manifest->version = "0.0.1";
     out_manifest->build_id = "dev";
-    out_manifest->platform_targets.push_back("win32");
-    out_manifest->platform_targets.push_back("linux");
+    out_manifest->supported_targets.push_back("win32_nt5");
+    out_manifest->supported_targets.push_back("linux_deb");
     {
         dsk_manifest_component_t comp;
         comp.component_id = "core";
@@ -49,10 +49,10 @@ static void build_manifest(dsk_manifest_t *out_manifest) {
 static void build_request(dsk_request_t *out_request) {
     dsk_request_clear(out_request);
     out_request->operation = DSK_OPERATION_INSTALL;
-    out_request->install_scope = DSK_INSTALL_SCOPE_PORTABLE;
+    out_request->install_scope = DSK_INSTALL_SCOPE_SYSTEM;
     out_request->ui_mode = DSK_UI_MODE_CLI;
     out_request->policy_flags = DSK_POLICY_DETERMINISTIC;
-    out_request->platform_triple = "win32";
+    out_request->target_platform_triple = "win32_nt5";
 }
 
 static dsk_status_t write_manifest_bytes(const dsk_manifest_t &manifest,
@@ -99,7 +99,7 @@ static int test_kernel_uses_services_platform(void) {
     if (!dsk_error_is_ok(st)) return fail("request write failed");
 
     dss_services_config_init(&cfg);
-    cfg.platform_triple = "linux";
+    cfg.platform_triple = "linux_deb";
     dss_services_init_fake(&cfg, &services);
 
     dsk_kernel_request_init(&kernel_req);
