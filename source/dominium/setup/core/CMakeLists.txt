@@ -8,7 +8,6 @@ add_library(dsu_core STATIC
     src/invocation/dsu_invocation.c
     src/fs/dsu_fs.c
     src/fs/dsu_fs_stdio.c
-    src/fs/dsu_platform_iface.c
     src/platform_iface/dsu_platform_iface.c
     src/log/dsu_log.c
     src/manifest/dsu_manifest.c
@@ -37,8 +36,18 @@ target_include_directories(dsu_core
         ${PROJECT_SOURCE_DIR}/include
 )
 
+target_link_libraries(dsu_core
+    PRIVATE
+        core_tlv
+        core_audit
+        core_util
+        core_err
+)
+
 set_target_properties(dsu_core PROPERTIES
     C_STANDARD 90
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )
+
+add_library(setup_kernel ALIAS dsu_core)

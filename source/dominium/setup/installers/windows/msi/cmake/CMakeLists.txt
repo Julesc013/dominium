@@ -75,7 +75,7 @@ target_include_directories(dominium_msi_ca PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/../../../../core/include"
     "${CMAKE_SOURCE_DIR}/source/dominium/setup/core/include"
 )
-target_link_libraries(dominium_msi_ca PRIVATE dsu_core)
+target_link_libraries(dominium_msi_ca PRIVATE setup_kernel setup_services_impl_platform)
 target_link_libraries(dominium_msi_ca PRIVATE msi)
 set_target_properties(dominium_msi_ca PROPERTIES
     OUTPUT_NAME "DominiumSetupCA"

@@ -1,17 +1,127 @@
 cmake_minimum_required(VERSION 3.16)
 
+add_library(launcher_services_impl_null STATIC
+    services/null/launcher_services_null.c
+)
+
+target_include_directories(launcher_services_impl_null PRIVATE
+    ${DOMINIUM_INCLUDE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/include
+)
+
+set_target_properties(launcher_services_impl_null PROPERTIES
+    C_STANDARD 90
+    C_STANDARD_REQUIRED ON
+    C_EXTENSIONS OFF
+)
+
 add_subdirectory(core)
 
-add_executable(dominium-launcher
-    dom_launcher_cli.cpp
+add_library(launcher_services_impl_instances STATIC
+    services/instances/dominium_launcher_instances.c
+)
+
+target_include_directories(launcher_services_impl_instances PRIVATE
+    ${DOMINIUM_INCLUDE_DIR}
+    ${CMAKE_SOURCE_DIR}/source/domino
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/core
+)
+
+target_link_libraries(launcher_services_impl_instances
+    PRIVATE
+        launcher_kernel
+        domino_core
+)
+
+set_target_properties(launcher_services_impl_instances PROPERTIES
+    C_STANDARD 90
+    C_STANDARD_REQUIRED ON
+    C_EXTENSIONS OFF
+)
+
+add_library(launcher_frontend_cli STATIC
     dom_launcher_app.cpp
     dom_launcher_catalog.cpp
     dom_launcher_actions.cpp
-    launcher_tui.cpp
     launcher_control_plane.cpp
     launcher_launch_plumbing.cpp
     ${CMAKE_SOURCE_DIR}/tools/launcher/ui/gen/ui_launcher_ui_actions_gen.cpp
     ${CMAKE_SOURCE_DIR}/tools/launcher/ui/user/ui_launcher_ui_actions_user.cpp
+)
+
+target_include_directories(launcher_frontend_cli PRIVATE
+    ${DOMINIUM_INCLUDE_DIR}
+    ${CMAKE_SOURCE_DIR}/include/dominium/_internal/dom_priv
+    ${CMAKE_SOURCE_DIR}/source/domino
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/tools/launcher/ui/gen
+    ${CMAKE_SOURCE_DIR}/tools/launcher/ui/user
+)
+
+target_link_libraries(launcher_frontend_cli
+    PRIVATE
+        launcher_kernel
+        launcher_services_api
+)
+
+set_target_properties(launcher_frontend_cli PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_library(launcher_frontend_tui STATIC
+    launcher_tui.cpp
+)
+
+target_include_directories(launcher_frontend_tui PRIVATE
+    ${DOMINIUM_INCLUDE_DIR}
+    ${CMAKE_SOURCE_DIR}/include/dominium/_internal/dom_priv
+    ${CMAKE_SOURCE_DIR}/source/domino
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+)
+
+target_link_libraries(launcher_frontend_tui
+    PRIVATE
+        launcher_frontend_cli
+)
+
+set_target_properties(launcher_frontend_tui PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_library(launcher_frontend_gui STATIC
+    dom_launcher_ui.cpp
+)
+
+target_include_directories(launcher_frontend_gui PRIVATE
+    ${DOMINIUM_INCLUDE_DIR}
+    ${CMAKE_SOURCE_DIR}/include/dominium/_internal/dom_priv
+    ${CMAKE_SOURCE_DIR}/source/domino
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+)
+
+target_link_libraries(launcher_frontend_gui
+    PRIVATE
+        launcher_frontend_cli
+        dui_api
+)
+
+set_target_properties(launcher_frontend_gui PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_executable(dominium-launcher
+    dom_launcher_cli.cpp
 )
 
 target_include_directories(dominium-launcher PUBLIC
@@ -26,6 +136,9 @@ target_include_directories(dominium-launcher PUBLIC
 
 target_link_libraries(dominium-launcher
     PRIVATE
+        launcher_frontend_cli
+        launcher_frontend_tui
+        launcher_services_impl_instances
         dominium_common
         domino_core
         dominium_launcher_core

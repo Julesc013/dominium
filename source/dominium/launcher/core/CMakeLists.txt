@@ -36,10 +36,25 @@ target_include_directories(dominium_launcher_core
         ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
+target_link_libraries(dominium_launcher_core
+    PRIVATE
+        core_tlv
+        core_audit
+        core_util
+        core_err
+)
+
 set_target_properties(dominium_launcher_core PROPERTIES
     CXX_STANDARD 98
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
+)
+
+add_library(launcher_kernel ALIAS dominium_launcher_core)
+
+add_library(launcher_services_api INTERFACE)
+target_include_directories(launcher_services_api INTERFACE
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
 add_executable(dominium_launcher_core_smoke
@@ -68,6 +83,7 @@ else()
 endif()
 
 add_test(NAME dominium_launcher_core_smoke COMMAND dominium_launcher_core_smoke)
+
 
 add_executable(dominium_launcher_instance_system_tests
     tests/launcher_instance_system_tests.cpp
