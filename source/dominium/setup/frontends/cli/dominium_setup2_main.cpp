@@ -1,6 +1,7 @@
 #include "dsk/dsk_api.h"
 #include "dsk/dsk_audit.h"
 #include "dsk/dsk_contracts.h"
+#include "dsk/dsk_digest.h"
 #include "dsk/dsk_error.h"
 
 #include <cstdio>
@@ -269,6 +270,14 @@ int main(int argc, char **argv) {
                                                     (dsk_u32)audit_sink.data.size(),
                                                     &audit);
             if (dsk_error_is_ok(parse_st)) {
+                print_json_summary(audit, st);
+            } else {
+                dsk_audit_clear(&audit);
+                audit.operation = request.operation;
+                audit.manifest_digest64 = dsk_digest64_bytes(&manifest_bytes[0],
+                                                            (dsk_u32)manifest_bytes.size());
+                audit.request_digest64 = dsk_digest64_bytes(&request_bytes[0],
+                                                            (dsk_u32)request_bytes.size());
                 print_json_summary(audit, st);
             }
         }

@@ -24,6 +24,7 @@ typedef struct dsk_kernel_request_t {
     dsk_u32 request_size;
     dsk_byte_sink_t out_state;
     dsk_byte_sink_t out_audit;
+    /* deterministic_mode=1 forces run_id=0 and deterministic outputs. */
     dsk_u8 deterministic_mode;
 } dsk_kernel_request_t;
 
