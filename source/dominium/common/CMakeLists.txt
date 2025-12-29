@@ -16,9 +16,13 @@ target_include_directories(core_util INTERFACE
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-add_library(core_err INTERFACE)
-target_include_directories(core_err INTERFACE
-    ${DOMINIUM_INCLUDE_DIR}
+add_library(core_err STATIC
+    core_err.c
+)
+target_include_directories(core_err
+    PUBLIC
+        ${DOMINIUM_INCLUDE_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 add_library(dominium_common STATIC
