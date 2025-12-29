@@ -12,6 +12,11 @@ add_executable(dominium_game
     dom_game_replay.cpp
     dom_game_net.cpp
     entry.cpp
+    runtime/dom_game_runtime_placeholder.c
+    frontends/gui/dom_game_frontend_gui_placeholder.cpp
+    frontends/tui/dom_game_frontend_tui_placeholder.cpp
+    frontends/headless/dom_game_frontend_headless_placeholder.cpp
+    content/dom_game_content_placeholder.c
 )
 
 target_include_directories(dominium_game PUBLIC

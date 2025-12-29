@@ -36,10 +36,25 @@ target_include_directories(dominium_launcher_core
         ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
+target_link_libraries(dominium_launcher_core
+    PRIVATE
+        core_tlv
+        core_audit
+        core_util
+        core_err
+)
+
 set_target_properties(dominium_launcher_core PROPERTIES
     CXX_STANDARD 98
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
+)
+
+add_library(launcher_kernel ALIAS dominium_launcher_core)
+
+add_library(launcher_services_api INTERFACE)
+target_include_directories(launcher_services_api INTERFACE
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
 add_executable(dominium_launcher_core_smoke
@@ -48,6 +63,7 @@ add_executable(dominium_launcher_core_smoke
 
 target_link_libraries(dominium_launcher_core_smoke PRIVATE
     dominium_launcher_core
+    launcher_services_impl_null
 )
 
 target_include_directories(dominium_launcher_core_smoke PRIVATE
@@ -68,6 +84,35 @@ else()
 endif()
 
 add_test(NAME dominium_launcher_core_smoke COMMAND dominium_launcher_core_smoke)
+
+add_executable(launcher_kernel_smoke
+    tests/launcher_core_smoke.cpp
+)
+
+target_link_libraries(launcher_kernel_smoke PRIVATE
+    launcher_kernel
+    launcher_services_impl_null
+)
+
+target_include_directories(launcher_kernel_smoke PRIVATE
+    ${DOMINIUM_INCLUDE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+set_target_properties(launcher_kernel_smoke PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+if (MSVC)
+    target_compile_options(launcher_kernel_smoke PRIVATE $<$<CONFIG:Release>:/UNDEBUG>)
+else()
+    target_compile_options(launcher_kernel_smoke PRIVATE $<$<CONFIG:Release>:-UNDEBUG>)
+endif()
+
+add_test(NAME launcher_kernel_smoke COMMAND launcher_kernel_smoke)
+
 
 add_executable(dominium_launcher_instance_system_tests
     tests/launcher_instance_system_tests.cpp

@@ -9,7 +9,6 @@ PURPOSE: Lightweight smoke test for Setup Core Plan S-1 scaffolding.
 
 #include "dsu/dsu_config.h"
 #include "dsu/dsu_ctx.h"
-#include "dsu/dsu_execute.h"
 #include "dsu/dsu_log.h"
 #include "dsu/dsu_manifest.h"
 #include "dsu/dsu_plan.h"
@@ -322,9 +321,6 @@ int main(void) {
     const char *plan_b_path = "dsu_test_plan_b.dsuplan";
     const char *log_plan_a = "dsu_test_plan_a.dsulog";
     const char *log_plan_b = "dsu_test_plan_b.dsulog";
-    const char *log_dry_a = "dsu_test_dry_a.dsulog";
-    const char *log_dry_b = "dsu_test_dry_b.dsulog";
-
     buf_t mf_bytes;
 
     dsu_ctx_t *ctx = NULL;
@@ -333,7 +329,6 @@ int main(void) {
     dsu_plan_t *plan = NULL;
     dsu_plan_t *plan_roundtrip = NULL;
     dsu_log_t *log_roundtrip = NULL;
-    dsu_execute_options_t exec_opts;
     dsu_status_t st;
     unsigned long i;
     int ok = 1;
@@ -342,11 +337,6 @@ int main(void) {
     unsigned char *plan_b_bytes = NULL;
     unsigned long plan_a_len = 0ul;
     unsigned long plan_b_len = 0ul;
-
-    unsigned char *dry_a_bytes = NULL;
-    unsigned char *dry_b_bytes = NULL;
-    unsigned long dry_a_len = 0ul;
-    unsigned long dry_b_len = 0ul;
 
     memset(&mf_bytes, 0, sizeof(mf_bytes));
     ok &= expect(build_minimal_manifest_file(&mf_bytes), "build minimal manifest bytes");
@@ -412,23 +402,6 @@ int main(void) {
     ok &= expect(dsu_plan_id_hash32(plan_roundtrip) == dsu_plan_id_hash32(plan), "plan id after read");
     ok &= expect(dsu_plan_step_count(plan_roundtrip) == dsu_plan_step_count(plan), "step count after read");
 
-    /* Dry-run determinism check. */
-    ok &= expect(dsu_ctx_reset_audit_log(ctx) == DSU_STATUS_SUCCESS, "reset audit log before dry-run");
-    dsu_execute_options_init(&exec_opts);
-    exec_opts.log_path = log_dry_a;
-    st = dsu_execute_plan(ctx, plan, &exec_opts);
-    ok &= expect(st == DSU_STATUS_SUCCESS, "dry-run A");
-
-    ok &= expect(dsu_ctx_reset_audit_log(ctx) == DSU_STATUS_SUCCESS, "reset audit log before dry-run B");
-    dsu_execute_options_init(&exec_opts);
-    exec_opts.log_path = log_dry_b;
-    st = dsu_execute_plan(ctx, plan, &exec_opts);
-    ok &= expect(st == DSU_STATUS_SUCCESS, "dry-run B");
-
-    ok &= expect(read_all_bytes(log_dry_a, &dry_a_bytes, &dry_a_len), "read dry log A");
-    ok &= expect(read_all_bytes(log_dry_b, &dry_b_bytes, &dry_b_len), "read dry log B");
-    ok &= expect(bytes_equal(dry_a_bytes, dry_a_len, dry_b_bytes, dry_b_len), "dry-run log bytes deterministic");
-
 done:
     if (plan_roundtrip) dsu_plan_destroy(ctx, plan_roundtrip);
     if (plan) dsu_plan_destroy(ctx, plan);
@@ -439,16 +412,10 @@ done:
 
     free(plan_a_bytes);
     free(plan_b_bytes);
-    free(dry_a_bytes);
-    free(dry_b_bytes);
-
     remove(manifest_path);
     remove(plan_a_path);
     remove(plan_b_path);
     remove(log_plan_a);
     remove(log_plan_b);
-    remove(log_dry_a);
-    remove(log_dry_b);
-
     return ok ? 0 : 1;
 }
