@@ -52,6 +52,7 @@ public:
 
     const Paths&        paths()    const { return m_paths; }
     const InstanceInfo& instance() const { return m_inst; }
+    const PackSet&      packset()  const { return m_packset; }
 
     d_world*        world() { return m_world; }
     d_sim_context*  sim()   { return &m_sim; }

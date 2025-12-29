@@ -161,6 +161,8 @@ private:
     d_world_hash m_last_hash;
     std::string  m_replay_record_path;
     std::string  m_replay_play_path;
+    std::string  m_save_path;
+    std::string  m_load_path;
     u32          m_replay_last_tick;
     void        *m_net_replay_user;
     u64          m_last_wall_us;

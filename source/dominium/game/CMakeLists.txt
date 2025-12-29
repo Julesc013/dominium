@@ -14,6 +14,7 @@ add_executable(dominium_game
     entry.cpp
     runtime/dom_game_runtime.cpp
     runtime/dom_game_hash.c
+    runtime/dom_game_save.cpp
     frontends/gui/dom_game_frontend_gui.cpp
     frontends/tui/dom_game_frontend_tui.cpp
     frontends/headless/dom_game_frontend_headless.cpp
