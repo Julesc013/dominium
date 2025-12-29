@@ -15,9 +15,11 @@ RESPONSIBILITY: Non-interactive orchestration surface for dominium-launcher (com
 
 extern "C" {
 #include "domino/sys.h"
+#include "domino/system/dsys.h"
 }
 
 #include "launcher_launch_plumbing.h"
+#include "launcher_caps_snapshot.h"
 
 #include "core/include/launcher_pack_ops.h"
 #include "core/include/launcher_safety.h"
@@ -446,13 +448,98 @@ static void mkdir_p_best_effort(const std::string& path) {
     mkdir_one_best_effort(p);
 }
 
-static bool copy_file_best_effort(const std::string& src, const std::string& dst) {
-    std::vector<unsigned char> bytes;
-    if (!read_file_all(src, bytes)) {
+static bool resolve_support_bundle_script(const std::string& argv0, std::string& out_path) {
+    std::vector<std::string> candidates;
+    std::string dir = dirname_of(argv0);
+    out_path.clear();
+
+    candidates.push_back(path_join("scripts", "diagnostics/make_support_bundle.py"));
+    if (!dir.empty()) {
+        candidates.push_back(path_join(dir, "scripts/diagnostics/make_support_bundle.py"));
+        {
+            const std::string tail = basename_of(dir);
+            if (tail == "Debug" || tail == "Release") {
+                const std::string root = dirname_of(dirname_of(dir));
+                if (!root.empty()) {
+                    candidates.push_back(path_join(root, "scripts/diagnostics/make_support_bundle.py"));
+                }
+            }
+        }
+    }
+
+    for (size_t i = 0u; i < candidates.size(); ++i) {
+        if (file_exists(candidates[i])) {
+            out_path = candidates[i];
+            return true;
+        }
+    }
+    return false;
+}
+
+static std::string infer_bundle_format(const std::string& out_path, const char* explicit_format) {
+    if (explicit_format && explicit_format[0]) {
+        return std::string(explicit_format);
+    }
+    if (ends_with_ci(out_path, ".tar.gz")) {
+        return std::string("tar.gz");
+    }
+    if (ends_with_ci(out_path, ".zip")) {
+        return std::string("zip");
+    }
+    return std::string("zip");
+}
+
+static bool run_support_bundle_script(const std::string& python_exe,
+                                      const std::string& script_path,
+                                      const std::string& state_root,
+                                      const std::string& instance_id,
+                                      const std::string& out_path,
+                                      const std::string& format,
+                                      const std::string& mode,
+                                      std::string& out_err) {
+    std::vector<std::string> args;
+    std::vector<const char*> argv;
+    dsys_process_handle handle;
+    dsys_proc_result pr;
+    int exit_code = 0;
+    size_t i;
+
+    out_err.clear();
+    std::memset(&handle, 0, sizeof(handle));
+
+    args.push_back(python_exe);
+    args.push_back(script_path);
+    args.push_back("--home");
+    args.push_back(state_root);
+    args.push_back("--instance");
+    args.push_back(instance_id);
+    args.push_back("--output");
+    args.push_back(out_path);
+    args.push_back("--format");
+    args.push_back(format);
+    args.push_back("--mode");
+    args.push_back(mode);
+
+    for (i = 0u; i < args.size(); ++i) {
+        argv.push_back(args[i].c_str());
+    }
+    argv.push_back(0);
+
+    pr = dsys_proc_spawn(python_exe.c_str(), &argv[0], 1, &handle);
+    if (pr != DSYS_PROC_OK) {
+        out_err = "spawn_failed";
         return false;
     }
-    mkdir_p_best_effort(dirname_of(dst));
-    return write_file_all(dst, bytes);
+    pr = dsys_proc_wait(&handle, &exit_code);
+    if (pr != DSYS_PROC_OK) {
+        out_err = "wait_failed";
+        return false;
+    }
+    if (exit_code != 0) {
+        out_err = "bundle_failed";
+        return false;
+    }
+    return true;
 }
 
 static bool load_selection_summary_from_run_dir(const std::string& run_dir,
@@ -576,6 +663,7 @@ ControlPlaneRunResult launcher_control_plane_try_run(int argc,
         std::strcmp(cmd, "launch") != 0 &&
         std::strcmp(cmd, "safe-mode") != 0 &&
         std::strcmp(cmd, "audit-last") != 0 &&
+        std::strcmp(cmd, "caps") != 0 &&
         std::strcmp(cmd, "diag-bundle") != 0) {
         return r;
     }
@@ -1066,6 +1154,8 @@ ControlPlaneRunResult launcher_control_plane_try_run(int argc,
         out_kv(out, "launch_config_path", lr.launch_config_path);
         out_kv(out, "audit_path", lr.audit_path);
         out_kv(out, "selection_summary_path", lr.selection_summary_path);
+        out_kv(out, "run_summary_path", lr.run_summary_path);
+        out_kv(out, "caps_path", lr.caps_path);
         out_kv(out, "exit_status_path", lr.exit_status_path);
         out_kv(out, "refused", lr.refused ? "1" : "0");
         if (lr.refused) {
@@ -1192,14 +1282,92 @@ ControlPlaneRunResult launcher_control_plane_try_run(int argc,
         return r;
     }
 
+    if (std::strcmp(cmd, "caps") == 0) {
+        const char* fmt = find_arg_value(argc, argv, "--format=");
+        const char* out_path = find_arg_value(argc, argv, "--out=");
+        std::string format = (fmt && fmt[0]) ? std::string(fmt) : std::string("text");
+        std::string out_file = (out_path && out_path[0]) ? std::string(out_path) : std::string();
+        LauncherCapsSnapshot caps;
+        std::string caps_err;
+
+        audit_reason_kv(audit_core, "caps_format", format);
+        audit_reason_kv(audit_core, "caps_out", out_file);
+
+        if (format != "text" && format != "tlv") {
+            audit_reason_kv(audit_core, "outcome", "fail");
+            out_kv(out, "result", "fail");
+            out_kv(out, "error", "bad_format");
+            out_kv(out, "format", format);
+            r.exit_code = 2;
+            return r;
+        }
+
+        if (!launcher_caps_snapshot_build(profile, caps, caps_err)) {
+            audit_reason_kv(audit_core, "outcome", "fail");
+            out_kv(out, "result", "fail");
+            out_kv(out, "error", "caps_build_failed");
+            out_kv(out, "detail", caps_err);
+            r.exit_code = 1;
+            return r;
+        }
+
+        if (format == "tlv") {
+            if (out_file.empty()) {
+                audit_reason_kv(audit_core, "outcome", "fail");
+                out_kv(out, "result", "fail");
+                out_kv(out, "error", "missing_out");
+                r.exit_code = 2;
+                return r;
+            }
+            mkdir_p_best_effort(dirname_of(out_file));
+            if (!launcher_caps_snapshot_write_tlv(caps, out_file, caps_err)) {
+                audit_reason_kv(audit_core, "outcome", "fail");
+                out_kv(out, "result", "fail");
+                out_kv(out, "error", "caps_write_failed");
+                out_kv(out, "detail", caps_err);
+                r.exit_code = 1;
+                return r;
+            }
+        } else {
+            if (out_file.empty()) {
+                std::fputs(launcher_caps_snapshot_to_text(caps).c_str(), out);
+            } else {
+                mkdir_p_best_effort(dirname_of(out_file));
+                if (!launcher_caps_snapshot_write_text(caps, out_file, caps_err)) {
+                    audit_reason_kv(audit_core, "outcome", "fail");
+                    out_kv(out, "result", "fail");
+                    out_kv(out, "error", "caps_write_failed");
+                    out_kv(out, "detail", caps_err);
+                    r.exit_code = 1;
+                    return r;
+                }
+            }
+        }
+
+        if (!state_root.empty()) {
+            const std::string logs_root = path_join(state_root, "logs");
+            const std::string latest = path_join(logs_root, "caps_latest.tlv");
+            mkdir_p_best_effort(logs_root);
+            (void)launcher_caps_snapshot_write_tlv(caps, latest, caps_err);
+        }
+
+        audit_reason_kv(audit_core, "outcome", "ok");
+        out_kv(out, "result", "ok");
+        out_kv(out, "format", format);
+        if (!out_file.empty()) {
+            out_kv(out, "out", out_file);
+        }
+        r.exit_code = 0;
+        return r;
+    }
+
     if (std::strcmp(cmd, "diag-bundle") == 0) {
         std::string instance_id;
-        std::string out_root;
-        std::vector<std::string> run_ids;
-        std::string list_err;
-        std::string last_run;
-        std::string src_run_dir;
-        std::string dst_run_dir;
+        std::string out_path;
+        std::string script_path;
+        std::string format;
+        std::string mode = "default";
+        std::string run_err;
         int i;
 
         for (i = cmd_i + 1; i < argc; ++i) {
@@ -1211,13 +1379,18 @@ ControlPlaneRunResult launcher_control_plane_try_run(int argc,
         }
         {
             const char* ov = find_arg_value(argc, argv, "--out=");
-            if (ov && ov[0]) out_root = std::string(ov);
+            if (ov && ov[0]) out_path = std::string(ov);
+        }
+        {
+            const char* mv = find_arg_value(argc, argv, "--mode=");
+            if (mv && mv[0]) mode = std::string(mv);
         }
 
         audit_reason_kv(audit_core, "instance_id", instance_id);
-        audit_reason_kv(audit_core, "diag_out", out_root);
+        audit_reason_kv(audit_core, "diag_out", out_path);
+        audit_reason_kv(audit_core, "diag_mode", mode);
 
-        if (instance_id.empty() || out_root.empty()) {
+        if (instance_id.empty() || out_path.empty()) {
             audit_reason_kv(audit_core, "outcome", "fail");
             out_kv(out, "result", "fail");
             out_kv(out, "error", "missing_args");
@@ -1225,69 +1398,78 @@ ControlPlaneRunResult launcher_control_plane_try_run(int argc,
             return r;
         }
 
-        mkdir_p_best_effort(out_root);
-
-        if (!dom::launcher_core::launcher_instance_export_instance(services,
-                                                                   instance_id,
-                                                                   out_root,
-                                                                   state_root,
-                                                                   (u32)dom::launcher_core::LAUNCHER_INSTANCE_EXPORT_FULL_BUNDLE,
-                                                                   (dom::launcher_core::LauncherAuditLog*)0)) {
+        if (mode != "default" && mode != "extended") {
             audit_reason_kv(audit_core, "outcome", "fail");
             out_kv(out, "result", "fail");
-            out_kv(out, "error", "export_failed");
-            r.exit_code = 1;
+            out_kv(out, "error", "bad_mode");
+            out_kv(out, "mode", mode);
+            r.exit_code = 2;
             return r;
         }
 
-        /* Copy last run audit+handshake when present. */
-        if (launcher_list_instance_runs(state_root, instance_id, run_ids, list_err) && !run_ids.empty()) {
-            last_run = run_ids[run_ids.size() - 1u];
-            src_run_dir = path_join(path_join(path_join(path_join(state_root, "instances"), instance_id), "logs/runs"), last_run);
-            dst_run_dir = path_join(path_join(out_root, "last_run"), last_run);
-            mkdir_p_best_effort(dst_run_dir);
-            (void)copy_file_best_effort(path_join(src_run_dir, "handshake.tlv"),
-                                        path_join(dst_run_dir, "handshake.tlv"));
-            (void)copy_file_best_effort(path_join(src_run_dir, "launch_config.tlv"),
-                                        path_join(dst_run_dir, "launch_config.tlv"));
-            (void)copy_file_best_effort(path_join(src_run_dir, "audit_ref.tlv"),
-                                        path_join(dst_run_dir, "audit_ref.tlv"));
-            (void)copy_file_best_effort(path_join(src_run_dir, "selection_summary.tlv"),
-                                        path_join(dst_run_dir, "selection_summary.tlv"));
-            (void)copy_file_best_effort(path_join(src_run_dir, "exit_status.tlv"),
-                                        path_join(dst_run_dir, "exit_status.tlv"));
+        format = infer_bundle_format(out_path, find_arg_value(argc, argv, "--format="));
+        audit_reason_kv(audit_core, "diag_format", format);
 
-            {
-                dom::launcher_core::LauncherSelectionSummary ss;
-                std::string ss_err;
-                if (load_selection_summary_from_run_dir(src_run_dir, ss, ss_err)) {
-                    const std::string txt = dom::launcher_core::launcher_selection_summary_to_text(ss);
-                    std::vector<unsigned char> txt_bytes(txt.begin(), txt.end());
-                    (void)write_file_all(path_join(out_root, "last_run_selection_summary.txt"), txt_bytes);
-                } else {
-                    const std::string txt = std::string("selection_summary_error=") + ss_err + "\n";
-                    std::vector<unsigned char> txt_bytes(txt.begin(), txt.end());
-                    (void)write_file_all(path_join(out_root, "last_run_selection_summary.txt"), txt_bytes);
-                }
+        if (format != "zip" && format != "tar.gz") {
+            audit_reason_kv(audit_core, "outcome", "fail");
+            out_kv(out, "result", "fail");
+            out_kv(out, "error", "bad_format");
+            out_kv(out, "format", format);
+            r.exit_code = 2;
+            return r;
+        }
+
+        {
+            const std::string argv0 = (argc > 0 && argv[0]) ? std::string(argv[0]) : std::string();
+            if (!resolve_support_bundle_script(argv0, script_path)) {
+                audit_reason_kv(audit_core, "outcome", "fail");
+                out_kv(out, "result", "fail");
+                out_kv(out, "error", "script_not_found");
+                r.exit_code = 1;
+                return r;
             }
         }
 
-        /* Copy launch history when present. */
-        {
-            const std::string src = path_join(path_join(path_join(path_join(state_root, "instances"), instance_id), "logs"), "launch_history.tlv");
-            const std::string dst = path_join(out_root, "launch_history.tlv");
-            if (file_exists(src)) {
-                (void)copy_file_best_effort(src, dst);
+        if (!run_support_bundle_script("python",
+                                        script_path,
+                                        state_root,
+                                        instance_id,
+                                        out_path,
+                                        format,
+                                        mode,
+                                        run_err)) {
+            if (run_err == "spawn_failed") {
+                if (!run_support_bundle_script("python3",
+                                                script_path,
+                                                state_root,
+                                                instance_id,
+                                                out_path,
+                                                format,
+                                                mode,
+                                                run_err)) {
+                    audit_reason_kv(audit_core, "outcome", "fail");
+                    out_kv(out, "result", "fail");
+                    out_kv(out, "error", "bundle_failed");
+                    out_kv(out, "detail", run_err);
+                    r.exit_code = 1;
+                    return r;
+                }
+            } else {
+                audit_reason_kv(audit_core, "outcome", "fail");
+                out_kv(out, "result", "fail");
+                out_kv(out, "error", "bundle_failed");
+                out_kv(out, "detail", run_err);
+                r.exit_code = 1;
+                return r;
             }
         }
 
         audit_reason_kv(audit_core, "outcome", "ok");
         out_kv(out, "result", "ok");
         out_kv(out, "instance_id", instance_id);
-        out_kv(out, "out", out_root);
-        if (!last_run.empty()) {
-            out_kv(out, "last_run_id", last_run);
-        }
+        out_kv(out, "out", out_path);
+        out_kv(out, "format", format);
+        out_kv(out, "mode", mode);
         r.exit_code = 0;
         return r;
     }

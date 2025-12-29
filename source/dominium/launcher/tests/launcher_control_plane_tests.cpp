@@ -655,13 +655,13 @@ static void test_tool_launch_handshake_and_audit(const std::string& state_root,
                                                 const dom_profile& profile) {
     const launcher_services_api_v1* services = launcher_services_null_v1();
     const std::string instance_id = "inst_launch";
-    CmdRun lr, ar, sr, dr, no_runs;
+    CmdRun lr, ar, sr, dr, cr, no_runs;
     std::map<std::string, std::string> kv;
     std::vector<unsigned char> bytes;
     dom::launcher_core::LauncherHandshake hs;
     dom::launcher_core::LauncherInstanceManifest m;
     dom::launcher_core::LauncherAuditLog run_audit;
-    std::string diag_out_root;
+    std::string diag_out_path;
 
     create_instance_with_pins(services, state_root, instance_id, "engine.pinned", "game.pinned");
 
@@ -688,8 +688,12 @@ static void test_tool_launch_handshake_and_audit(const std::string& state_root,
 	        assert(file_exists(kv["launch_config_path"]));
 	        assert(file_exists(kv["audit_path"]));
 	        assert(!kv["selection_summary_path"].empty());
+	        assert(!kv["run_summary_path"].empty());
+	        assert(!kv["caps_path"].empty());
 	        assert(!kv["exit_status_path"].empty());
 	        assert(file_exists(kv["selection_summary_path"]));
+	        assert(file_exists(kv["run_summary_path"]));
+	        assert(file_exists(kv["caps_path"]));
 	        assert(file_exists(kv["exit_status_path"]));
 
 	        assert(read_file_all_bytes(kv["handshake_path"], bytes));
@@ -832,38 +836,52 @@ static void test_tool_launch_handshake_and_audit(const std::string& state_root,
 	        assert(audit_has_reason(run_audit, "safe_mode=1"));
 	    }
 
-    /* diag-bundle should export bundle + copy last run handshake/audit */
+    /* diag-bundle should emit deterministic archive */
     {
-        diag_out_root = path_join(state_root, "diag_out");
+        diag_out_path = path_join(state_root, "diag_out.zip");
         {
             std::vector<std::string> args;
             args.push_back(std::string("--home=") + state_root);
             args.push_back("diag-bundle");
             args.push_back(instance_id);
-            args.push_back(std::string("--out=") + diag_out_root);
+            args.push_back(std::string("--out=") + diag_out_path);
+            args.push_back("--mode=default");
             dr = run_control_plane(argv0_launcher, profile, args, path_join(state_root, "audit_diag_bundle.tlv"));
             kv = parse_kv_lines(dr.out_text);
             assert(dr.r.handled != 0);
             assert(dr.r.exit_code == 0);
             assert(kv["result"] == "ok");
+            assert(kv["format"] == "zip");
+            assert(kv["mode"] == "default");
         }
-        assert(file_exists(path_join(diag_out_root, "manifest.tlv")));
-        assert(file_exists(path_join(path_join(diag_out_root, "config"), "config.tlv")));
+        assert(file_exists(diag_out_path));
+    }
 
-        /* last_run copy */
-	        {
-	            const std::string last_run_root = path_join(diag_out_root, "last_run");
-	            const std::string run_subdir = kv["last_run_id"];
-	            assert(!run_subdir.empty());
-	            assert(file_exists(path_join(path_join(last_run_root, run_subdir), "handshake.tlv")));
-	            assert(file_exists(path_join(path_join(last_run_root, run_subdir), "launch_config.tlv")));
-	            assert(file_exists(path_join(path_join(last_run_root, run_subdir), "audit_ref.tlv")));
-	            assert(file_exists(path_join(path_join(last_run_root, run_subdir), "selection_summary.tlv")));
-	            assert(file_exists(path_join(path_join(last_run_root, run_subdir), "exit_status.tlv")));
-	        }
-	        assert(file_exists(path_join(diag_out_root, "last_run_selection_summary.txt")));
-	    }
-	}
+    /* caps should emit deterministic TLV */
+    {
+        std::string caps_out = path_join(state_root, "caps_snapshot.tlv");
+        std::vector<unsigned char> a;
+        std::vector<unsigned char> b;
+        std::vector<std::string> args;
+        args.push_back(std::string("--home=") + state_root);
+        args.push_back("caps");
+        args.push_back("--format=tlv");
+        args.push_back(std::string("--out=") + caps_out);
+        cr = run_control_plane(argv0_launcher, profile, args, path_join(state_root, "audit_caps.tlv"));
+        kv = parse_kv_lines(cr.out_text);
+        assert(cr.r.handled != 0);
+        assert(cr.r.exit_code == 0);
+        assert(kv["result"] == "ok");
+        assert(kv["format"] == "tlv");
+        assert(file_exists(caps_out));
+
+        assert(read_file_all_bytes(caps_out, a));
+        cr = run_control_plane(argv0_launcher, profile, args, path_join(state_root, "audit_caps2.tlv"));
+        assert(cr.r.exit_code == 0);
+        assert(read_file_all_bytes(caps_out, b));
+        assert(a == b);
+    }
+}
 
 static void test_pack_toggle_and_determinism(const std::string& state_root) {
     const launcher_services_api_v1* services = launcher_services_null_v1();

@@ -4,7 +4,7 @@ Determinism test for scripts/diagnostics/make_support_bundle.py.
 
 This creates a tiny synthetic launcher home with:
 - a deterministic audit TLV (fixed run_id/timestamp, fixed toolchain_id reason)
-- a minimal instance directory with placeholder TLV files
+- a minimal instance directory with placeholder TLV files and a run directory
 
 It then generates the support bundle twice with the same SOURCE_DATE_EPOCH and
 asserts the output archives are byte-identical.
@@ -68,14 +68,29 @@ def _build_fixture(home: str, instance_id: str) -> str:
     inst_root = os.path.join(home, "instances", instance_id)
     os.makedirs(os.path.join(inst_root, "config"), exist_ok=True)
     os.makedirs(os.path.join(inst_root, "logs"), exist_ok=True)
+    os.makedirs(os.path.join(inst_root, "logs", "runs", "0000000000000001"), exist_ok=True)
     os.makedirs(os.path.join(inst_root, "staging"), exist_ok=True)
+    os.makedirs(os.path.join(home, "logs"), exist_ok=True)
 
     # Placeholder TLVs (not parsed by bundler; only copied).
     _write(os.path.join(inst_root, "manifest.tlv"), b"manifest\x0a")
     _write(os.path.join(inst_root, "config", "config.tlv"), b"config\x0a")
     _write(os.path.join(inst_root, "logs", "launch_history.tlv"), b"history\x0a")
     _write(os.path.join(inst_root, "known_good.tlv"), b"known_good\x0a")
+    _write(os.path.join(inst_root, "payload_refs.tlv"), b"payload_refs\x0a")
     _write(os.path.join(inst_root, "staging", "transaction.tlv"), b"transaction\x0a")
+    _write(os.path.join(home, "logs", "caps_latest.tlv"), b"caps_latest\x0a")
+
+    # Run artifacts/logs.
+    run_root = os.path.join(inst_root, "logs", "runs", "0000000000000001")
+    _write(os.path.join(run_root, "events.tlv"), b"events\x0a")
+    _write(os.path.join(run_root, "handshake.tlv"), b"handshake\x0a")
+    _write(os.path.join(run_root, "launch_config.tlv"), b"launch_config\x0a")
+    _write(os.path.join(run_root, "audit_ref.tlv"), b"audit_ref\x0a")
+    _write(os.path.join(run_root, "selection_summary.tlv"), b"selection_summary\x0a")
+    _write(os.path.join(run_root, "exit_status.tlv"), b"exit_status\x0a")
+    _write(os.path.join(run_root, "last_run_summary.tlv"), b"last_run_summary\x0a")
+    _write(os.path.join(run_root, "caps.tlv"), b"caps\x0a")
 
     # Deterministic audit TLV.
     # Tags mirror launcher/core/include/launcher_audit.h:
@@ -121,6 +136,10 @@ def _generate_bundle(home: str, instance_id: str, out_path: str, fmt: str, audit
         fmt,
         "--audit-count",
         str(audit_count),
+        "--run-count",
+        "1",
+        "--mode",
+        "default",
     ]
     subprocess.check_call(cmd, env=env)
 
@@ -157,12 +176,24 @@ def main(argv: list[str]) -> int:
     root_name = "dominium_support_bundle_%s" % instance_id
     required_rel = [
         "build_info.txt",
+        "bundle_meta.tlv",
+        "bundle_index.tlv",
         "audit/launcher_audit_0000000000000001.tlv",
         "instance/manifest.tlv",
         "instance/config.tlv",
         "instance/launch_history.tlv",
         "instance/known_good.tlv",
+        "instance/payload_refs.tlv",
         "instance/staging/transaction.tlv",
+        "logs/caps_latest.tlv",
+        "runs/0000000000000001/events.tlv",
+        "runs/0000000000000001/handshake.tlv",
+        "runs/0000000000000001/launch_config.tlv",
+        "runs/0000000000000001/audit_ref.tlv",
+        "runs/0000000000000001/selection_summary.tlv",
+        "runs/0000000000000001/exit_status.tlv",
+        "runs/0000000000000001/last_run_summary.tlv",
+        "runs/0000000000000001/caps.tlv",
     ]
 
     fmts = ["zip", "tar.gz"] if args.format == "both" else [args.format]
