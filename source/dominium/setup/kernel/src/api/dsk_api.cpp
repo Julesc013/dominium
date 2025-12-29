@@ -158,6 +158,25 @@ static void dsk_audit_add_event(dsk_audit_t *audit, dsk_u16 event_id, dsk_error_
     audit->events.push_back(evt);
 }
 
+static void dsk_audit_capture_selection(dsk_audit_t *audit,
+                                        const dsk_splat_selection_t &selection) {
+    size_t i;
+    if (!audit) {
+        return;
+    }
+    audit->selection.candidates.clear();
+    for (i = 0u; i < selection.candidates.size(); ++i) {
+        dsk_audit_selection_candidate_t cand;
+        cand.id = selection.candidates[i].id;
+        cand.caps_digest64 = selection.candidates[i].caps_digest64;
+        audit->selection.candidates.push_back(cand);
+    }
+    audit->selection.rejections = selection.rejections;
+    audit->selection.selected_id = selection.selected_id;
+    audit->selection.selected_reason = selection.selected_reason;
+    audit->selected_splat = selection.selected_id;
+}
+
 static dsk_status_t dsk_sink_write(const dsk_byte_sink_t *sink, const dsk_tlv_buffer_t *buf) {
     if (!sink || !sink->write || !buf) {
         return dsk_error_make(DSK_DOMAIN_KERNEL, DSK_CODE_INVALID_ARGS, DSK_SUBCODE_NONE, 0u);
@@ -333,7 +352,7 @@ static dsk_status_t dsk_kernel_run(dsk_u16 expected_operation, const dsk_kernel_
             req->services->platform.ctx,
             &platform_override);
         if (dss_error_is_ok(pst) && !platform_override.empty()) {
-            request.platform_triple = platform_override;
+            request.target_platform_triple = platform_override;
         }
     }
 
@@ -352,6 +371,7 @@ static dsk_status_t dsk_kernel_run(dsk_u16 expected_operation, const dsk_kernel_
     dsk_emit_log_event(req_ex, audit.run_id, CORE_LOG_OP_SETUP_PARSE_REQUEST, CORE_LOG_EVT_OP_OK, ok);
 
     st = dsk_splat_select(manifest, request, &splat_sel);
+    dsk_audit_capture_selection(&audit, splat_sel);
     if (!dsk_error_is_ok(st)) {
         audit.result = st;
         dsk_audit_add_event(&audit, DSK_AUDIT_EVENT_SPLAT_SELECT_FAIL, st);
@@ -359,16 +379,12 @@ static dsk_status_t dsk_kernel_run(dsk_u16 expected_operation, const dsk_kernel_
         goto emit_audit;
     }
 
-    audit.selected_splat = splat_sel.chosen;
-    audit.selection_reason.candidates = splat_sel.candidates;
-    audit.selection_reason.rejections = splat_sel.rejections;
-    audit.selection_reason.chosen = splat_sel.chosen;
     dsk_audit_add_event(&audit, DSK_AUDIT_EVENT_SPLAT_SELECT_OK, ok);
     dsk_emit_log_event(req_ex, audit.run_id, CORE_LOG_OP_SETUP_SPLAT_SELECT, CORE_LOG_EVT_OP_OK, ok);
 
     st = dsk_build_installed_state(manifest,
                                    request,
-                                   splat_sel.chosen,
+                                   splat_sel.selected_id,
                                    manifest_digest,
                                    request_digest,
                                    &state);

@@ -96,15 +96,38 @@ dsk_status_t dsk_audit_parse(const dsk_u8 *data, dsk_u32 size, dsk_audit_t *out_
                         if (entry.type != DSK_TLV_TAG_AUDIT_CANDIDATE_ENTRY) {
                             continue;
                         }
-                        std::string value;
-                        lst = dsk_parse_string(entry, &value);
+                        dsk_tlv_stream_t cand_stream;
+                        dsk_audit_selection_candidate_t cand;
+                        dsk_u32 m;
+                        cand.caps_digest64 = 0u;
+                        lst = dsk_tlv_parse_stream(entry.payload, entry.length, &cand_stream);
                         if (!dsk_error_is_ok(lst)) {
                             dsk_tlv_stream_destroy(&list_stream);
                             dsk_tlv_stream_destroy(&sel_stream);
                             dsk_tlv_view_destroy(&view);
                             return lst;
                         }
-                        out_audit->selection_reason.candidates.push_back(value);
+                        for (m = 0u; m < cand_stream.record_count; ++m) {
+                            const dsk_tlv_record_t &cf = cand_stream.records[m];
+                            if (cf.type == DSK_TLV_TAG_AUDIT_CANDIDATE_ID) {
+                                lst = dsk_parse_string(cf, &cand.id);
+                            } else if (cf.type == DSK_TLV_TAG_AUDIT_CANDIDATE_CAPS_DIGEST64) {
+                                lst = dsk_parse_u64(cf, &cand.caps_digest64);
+                            } else {
+                                continue;
+                            }
+                            if (!dsk_error_is_ok(lst)) {
+                                dsk_tlv_stream_destroy(&cand_stream);
+                                dsk_tlv_stream_destroy(&list_stream);
+                                dsk_tlv_stream_destroy(&sel_stream);
+                                dsk_tlv_view_destroy(&view);
+                                return lst;
+                            }
+                        }
+                        dsk_tlv_stream_destroy(&cand_stream);
+                        if (!cand.id.empty()) {
+                            out_audit->selection.candidates.push_back(cand);
+                        }
                     }
                     dsk_tlv_stream_destroy(&list_stream);
                 } else if (field.type == DSK_TLV_TAG_AUDIT_REJECTIONS) {
@@ -142,6 +165,8 @@ dsk_status_t dsk_audit_parse(const dsk_u8 *data, dsk_u32 size, dsk_audit_t *out_
                                 if (dsk_error_is_ok(lst)) {
                                     rej.code = code;
                                 }
+                            } else if (rf.type == DSK_TLV_TAG_AUDIT_REJECTION_DETAIL) {
+                                lst = dsk_parse_string(rf, &rej.detail);
                             } else {
                                 continue;
                             }
@@ -155,13 +180,23 @@ dsk_status_t dsk_audit_parse(const dsk_u8 *data, dsk_u32 size, dsk_audit_t *out_
                         }
                         dsk_tlv_stream_destroy(&rej_stream);
                         if (!rej.id.empty()) {
-                            out_audit->selection_reason.rejections.push_back(rej);
+                            out_audit->selection.rejections.push_back(rej);
                         }
                     }
                     dsk_tlv_stream_destroy(&list_stream);
-                } else if (field.type == DSK_TLV_TAG_AUDIT_CHOSEN) {
-                    lst = dsk_parse_string(field, &out_audit->selection_reason.chosen);
+                } else if (field.type == DSK_TLV_TAG_AUDIT_SELECTED_ID) {
+                    lst = dsk_parse_string(field, &out_audit->selection.selected_id);
                     if (!dsk_error_is_ok(lst)) {
+                        dsk_tlv_stream_destroy(&sel_stream);
+                        dsk_tlv_view_destroy(&view);
+                        return lst;
+                    }
+                } else if (field.type == DSK_TLV_TAG_AUDIT_SELECTED_REASON) {
+                    dsk_u16 reason;
+                    lst = dsk_parse_u16(field, &reason);
+                    if (dsk_error_is_ok(lst)) {
+                        out_audit->selection.selected_reason = reason;
+                    } else {
                         dsk_tlv_stream_destroy(&sel_stream);
                         dsk_tlv_view_destroy(&view);
                         return lst;
@@ -284,8 +319,9 @@ dsk_status_t dsk_audit_parse(const dsk_u8 *data, dsk_u32 size, dsk_audit_t *out_
     return dsk_error_make(DSK_DOMAIN_NONE, DSK_CODE_OK, DSK_SUBCODE_NONE, 0u);
 }
 
-static bool dsk_string_less(const std::string &a, const std::string &b) {
-    return a < b;
+static bool dsk_candidate_less(const dsk_audit_selection_candidate_t &a,
+                               const dsk_audit_selection_candidate_t &b) {
+    return a.id < b.id;
 }
 
 static bool dsk_rejection_less(const dsk_splat_rejection_t &a,
@@ -317,9 +353,9 @@ dsk_status_t dsk_audit_write(const dsk_audit_t *audit, dsk_tlv_buffer_t *out_buf
     dsk_tlv_builder_add_u16(builder, DSK_TLV_TAG_AUDIT_OPERATION, audit->operation);
 
     {
-        std::vector<std::string> candidates = audit->selection_reason.candidates;
-        std::vector<dsk_splat_rejection_t> rejections = audit->selection_reason.rejections;
-        std::sort(candidates.begin(), candidates.end(), dsk_string_less);
+        std::vector<dsk_audit_selection_candidate_t> candidates = audit->selection.candidates;
+        std::vector<dsk_splat_rejection_t> rejections = audit->selection.rejections;
+        std::sort(candidates.begin(), candidates.end(), dsk_candidate_less);
         std::sort(rejections.begin(), rejections.end(), dsk_rejection_less);
 
         dsk_tlv_builder_t *sel_builder = dsk_tlv_builder_create();
@@ -329,9 +365,27 @@ dsk_status_t dsk_audit_write(const dsk_audit_t *audit, dsk_tlv_buffer_t *out_buf
             dsk_tlv_builder_t *cand_builder = dsk_tlv_builder_create();
             dsk_tlv_buffer_t cand_payload;
             for (i = 0u; i < candidates.size(); ++i) {
-                dsk_tlv_builder_add_string(cand_builder,
-                                           DSK_TLV_TAG_AUDIT_CANDIDATE_ENTRY,
-                                           candidates[i].c_str());
+                dsk_tlv_builder_t *entry_builder = dsk_tlv_builder_create();
+                dsk_tlv_buffer_t entry_payload;
+                dsk_tlv_builder_add_string(entry_builder,
+                                           DSK_TLV_TAG_AUDIT_CANDIDATE_ID,
+                                           candidates[i].id.c_str());
+                dsk_tlv_builder_add_u64(entry_builder,
+                                        DSK_TLV_TAG_AUDIT_CANDIDATE_CAPS_DIGEST64,
+                                        candidates[i].caps_digest64);
+                st = dsk_tlv_builder_finalize_payload(entry_builder, &entry_payload);
+                dsk_tlv_builder_destroy(entry_builder);
+                if (!dsk_error_is_ok(st)) {
+                    dsk_tlv_builder_destroy(cand_builder);
+                    dsk_tlv_builder_destroy(sel_builder);
+                    dsk_tlv_builder_destroy(builder);
+                    return st;
+                }
+                dsk_tlv_builder_add_container(cand_builder,
+                                              DSK_TLV_TAG_AUDIT_CANDIDATE_ENTRY,
+                                              entry_payload.data,
+                                              entry_payload.size);
+                dsk_tlv_buffer_free(&entry_payload);
             }
             st = dsk_tlv_builder_finalize_payload(cand_builder, &cand_payload);
             dsk_tlv_builder_destroy(cand_builder);
@@ -359,6 +413,11 @@ dsk_status_t dsk_audit_write(const dsk_audit_t *audit, dsk_tlv_buffer_t *out_buf
                 dsk_tlv_builder_add_u16(entry_builder,
                                         DSK_TLV_TAG_AUDIT_REJECTION_CODE,
                                         rejections[i].code);
+                if (!rejections[i].detail.empty()) {
+                    dsk_tlv_builder_add_string(entry_builder,
+                                               DSK_TLV_TAG_AUDIT_REJECTION_DETAIL,
+                                               rejections[i].detail.c_str());
+                }
                 st = dsk_tlv_builder_finalize_payload(entry_builder, &entry_payload);
                 dsk_tlv_builder_destroy(entry_builder);
                 if (!dsk_error_is_ok(st)) {
@@ -388,8 +447,11 @@ dsk_status_t dsk_audit_write(const dsk_audit_t *audit, dsk_tlv_buffer_t *out_buf
         }
 
         dsk_tlv_builder_add_string(sel_builder,
-                                   DSK_TLV_TAG_AUDIT_CHOSEN,
-                                   audit->selection_reason.chosen.c_str());
+                                   DSK_TLV_TAG_AUDIT_SELECTED_ID,
+                                   audit->selection.selected_id.c_str());
+        dsk_tlv_builder_add_u16(sel_builder,
+                                DSK_TLV_TAG_AUDIT_SELECTED_REASON,
+                                audit->selection.selected_reason);
 
         st = dsk_tlv_builder_finalize_payload(sel_builder, &sel_payload);
         dsk_tlv_builder_destroy(sel_builder);
