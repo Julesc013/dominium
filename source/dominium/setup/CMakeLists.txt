@@ -30,6 +30,7 @@ target_include_directories(dsk_kernel PUBLIC
 )
 
 target_include_directories(dsk_kernel PRIVATE
+    ${DOMINIUM_INCLUDE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/services/include
 )
 
@@ -45,6 +46,12 @@ set_target_properties(dsk_kernel PROPERTIES
 
 target_link_libraries(dss_services
     PRIVATE dsk_kernel
+)
+
+target_link_libraries(dsk_kernel
+    PUBLIC
+        core_err
+        core_log
 )
 
 add_executable(dominium-setup2
