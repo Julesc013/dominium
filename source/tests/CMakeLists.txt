@@ -681,3 +681,28 @@ set_target_properties(dgfx_demo PROPERTIES
     C_EXTENSIONS OFF
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
 )
+
+add_executable(setup2_kernel_tests
+    ../../tests/setup2/setup2_kernel_tests.cpp
+)
+
+target_include_directories(setup2_kernel_tests PRIVATE
+    ${CMAKE_SOURCE_DIR}/source/dominium/setup/kernel/include
+)
+
+target_link_libraries(setup2_kernel_tests
+    PRIVATE dsk_kernel
+)
+
+set_target_properties(setup2_kernel_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME test_tlv_roundtrip_known_fields COMMAND setup2_kernel_tests tlv_roundtrip_known_fields)
+add_test(NAME test_tlv_skip_unknown COMMAND setup2_kernel_tests tlv_skip_unknown)
+add_test(NAME test_manifest_validate_missing_required COMMAND setup2_kernel_tests manifest_validate_missing_required)
+add_test(NAME test_request_validate_missing_required COMMAND setup2_kernel_tests request_validate_missing_required)
+add_test(NAME test_kernel_emits_audit_on_failure COMMAND setup2_kernel_tests kernel_emits_audit_on_failure)
+add_test(NAME test_splat_selection_deterministic COMMAND setup2_kernel_tests splat_selection_deterministic)
