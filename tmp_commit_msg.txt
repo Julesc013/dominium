@@ -1,1 +1,4 @@
-test
+setup2: add tests and SR-1 docs
+
+why: validate TLV/contract/audit behavior and record SR-1 schemas
+how to verify: cmake --build --preset msvc-debug --target setup2_kernel_tests && ctest --preset msvc-debug -R test_tlv_roundtrip_known_fields
