@@ -11,7 +11,8 @@ target_include_directories(dominium-setup-steam PRIVATE
 
 target_link_libraries(dominium-setup-steam
     PRIVATE
-        dsu_core
+        setup_kernel
+        setup_services_impl_platform
 )
 
 set_target_properties(dominium-setup-steam PROPERTIES

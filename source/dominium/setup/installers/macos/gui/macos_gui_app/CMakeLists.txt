@@ -23,7 +23,8 @@ target_include_directories(dominium-setup-gui PRIVATE
 target_link_libraries(dominium-setup-gui
     PRIVATE
         dsu_macos_installer_common
-        dsu_core
+        setup_kernel
+        setup_services_impl_platform
         "-framework Cocoa"
         "-framework AppKit"
         "-framework Foundation"

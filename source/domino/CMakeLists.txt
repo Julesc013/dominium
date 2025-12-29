@@ -1,5 +1,10 @@
 cmake_minimum_required(VERSION 3.16)
 
+add_library(dui_api INTERFACE)
+target_include_directories(dui_api INTERFACE
+    ${DOMINIUM_INCLUDE_DIR}
+)
+
 add_library(dom_shared STATIC
     system/core/base/shared/os_paths.cpp
     system/core/base/shared/json.cpp

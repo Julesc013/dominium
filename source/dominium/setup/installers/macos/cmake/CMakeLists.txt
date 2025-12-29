@@ -23,7 +23,8 @@ target_include_directories(dsu_macos_installer_common PRIVATE
 )
 target_link_libraries(dsu_macos_installer_common
     PRIVATE
-        dsu_core
+        setup_kernel
+        setup_services_impl_platform
 )
 set_target_properties(dsu_macos_installer_common PROPERTIES
     C_STANDARD 90
@@ -42,7 +43,8 @@ target_include_directories(dominium-setup-tui PRIVATE
 target_link_libraries(dominium-setup-tui
     PRIVATE
         dsu_macos_installer_common
-        dsu_core
+        setup_kernel
+        setup_services_impl_platform
 )
 set_target_properties(dominium-setup-tui PROPERTIES
     OUTPUT_NAME "dominium-setup-tui"

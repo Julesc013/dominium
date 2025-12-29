@@ -12,7 +12,8 @@ target_include_directories(dominium-setup-macos PRIVATE
 
 target_link_libraries(dominium-setup-macos
     PRIVATE
-        dsu_core
+        setup_kernel
+        setup_services_impl_platform
 )
 
 set_target_properties(dominium-setup-macos PROPERTIES

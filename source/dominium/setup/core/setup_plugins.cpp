@@ -16,12 +16,6 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 
 #include <vector>
 
-#ifdef _WIN32
-#include <windows.h>
-#else
-#include <dlfcn.h>
-#endif
-
 struct PluginState {
     std::vector<DomInstallProfileDescriptor> profiles;
     std::vector<DomSetupHookDescriptor> post_install;
