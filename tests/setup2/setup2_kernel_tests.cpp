@@ -3,6 +3,7 @@
 #include "dsk/dsk_contracts.h"
 #include "dsk/dsk_error.h"
 #include "dsk/dsk_tlv.h"
+#include "dss/dss_services.h"
 
 #include <cstdio>
 #include <cstring>
@@ -251,6 +252,8 @@ static int test_kernel_emits_audit_on_failure(void) {
     dsk_kernel_request_t kernel_req;
     dsk_mem_sink_t state_sink;
     dsk_mem_sink_t audit_sink;
+    dss_services_t services;
+    dss_services_config_t cfg;
     dsk_status_t st;
     dsk_audit_t audit;
 
@@ -263,7 +266,12 @@ static int test_kernel_emits_audit_on_failure(void) {
     st = write_request_bytes(request, request_bytes);
     if (!dsk_error_is_ok(st)) return fail("request write failed");
 
+    dss_services_config_init(&cfg);
+    cfg.platform_triple = "win32";
+    dss_services_init_fake(&cfg, &services);
+
     dsk_kernel_request_init(&kernel_req);
+    kernel_req.services = &services;
     kernel_req.manifest_bytes = &manifest_bytes[0];
     kernel_req.manifest_size = (dsk_u32)manifest_bytes.size();
     kernel_req.request_bytes = &request_bytes[0];
@@ -275,6 +283,7 @@ static int test_kernel_emits_audit_on_failure(void) {
     kernel_req.out_audit.write = dsk_mem_sink_write;
 
     st = dsk_install(&kernel_req);
+    dss_services_shutdown(&services);
     if (dsk_error_is_ok(st)) {
         return fail("expected kernel failure");
     }
@@ -303,6 +312,8 @@ static int test_splat_selection_deterministic(void) {
     dsk_mem_sink_t audit_sink_b;
     dsk_mem_sink_t state_sink_a;
     dsk_mem_sink_t state_sink_b;
+    dss_services_t services;
+    dss_services_config_t cfg;
     dsk_status_t st;
     dsk_audit_t audit_a;
     dsk_audit_t audit_b;
@@ -315,7 +326,12 @@ static int test_splat_selection_deterministic(void) {
     st = write_request_bytes(request, request_bytes);
     if (!dsk_error_is_ok(st)) return fail("request write failed");
 
+    dss_services_config_init(&cfg);
+    cfg.platform_triple = "win32";
+    dss_services_init_fake(&cfg, &services);
+
     dsk_kernel_request_init(&kernel_req);
+    kernel_req.services = &services;
     kernel_req.manifest_bytes = &manifest_bytes[0];
     kernel_req.manifest_size = (dsk_u32)manifest_bytes.size();
     kernel_req.request_bytes = &request_bytes[0];
@@ -334,6 +350,7 @@ static int test_splat_selection_deterministic(void) {
     kernel_req.out_audit.user = &audit_sink_b;
     kernel_req.out_audit.write = dsk_mem_sink_write;
     st = dsk_install(&kernel_req);
+    dss_services_shutdown(&services);
     if (!dsk_error_is_ok(st)) return fail("second kernel run failed");
 
     st = dsk_audit_parse(&audit_sink_a.data[0],
