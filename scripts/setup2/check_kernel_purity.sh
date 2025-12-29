@@ -6,9 +6,10 @@ KERNEL_DIR="$ROOT_DIR/source/dominium/setup/kernel"
 
 FAIL=0
 for hdr in windows.h unistd.h sys/stat.h sys/types.h sys/wait.h; do
-    if grep -R -n -I -F "$hdr" "$KERNEL_DIR" >/dev/null 2>&1; then
+    matches=$(grep -R -n -I -F "$hdr" "$KERNEL_DIR" | grep -v "dsk_forbidden_includes.h" || true)
+    if [ -n "$matches" ]; then
         echo "Forbidden header $hdr referenced:"
-        grep -R -n -I -F "$hdr" "$KERNEL_DIR" || true
+        printf "%s\n" "$matches"
         FAIL=1
     fi
 done
