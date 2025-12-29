@@ -13,6 +13,7 @@ RESPONSIBILITY: Implements failure tracking, recovery suggestion logic, and post
 #include "launcher_audit.h"
 #include "launcher_instance_artifact_ops.h"
 #include "launcher_instance_ops.h"
+#include "launcher_log.h"
 #include "launcher_safety.h"
 
 namespace dom {
@@ -106,6 +107,59 @@ static u32 clamp_u32(u32 v, u32 lo, u32 hi, u32 defv) {
         return hi;
     }
     return v;
+}
+
+static err_t prelaunch_err_from_text(const std::string& text) {
+    if (text == "missing_services_or_fs") {
+        return err_make((u16)ERRD_COMMON, (u16)ERRC_COMMON_BAD_STATE, (u32)ERRF_FATAL, (u32)ERRMSG_COMMON_BAD_STATE);
+    }
+    if (text == "empty_instance_id" || text == "unsafe_instance_id") {
+        return err_make((u16)ERRD_LAUNCHER, (u16)ERRC_LAUNCHER_INSTANCE_INVALID, 0u,
+                        (u32)ERRMSG_LAUNCHER_INSTANCE_ID_INVALID);
+    }
+    if (text == "missing_state_root") {
+        return err_make((u16)ERRD_LAUNCHER, (u16)ERRC_LAUNCHER_STATE_ROOT_UNAVAILABLE, 0u,
+                        (u32)ERRMSG_LAUNCHER_STATE_ROOT_UNAVAILABLE);
+    }
+    if (text == "load_config_failed" || text == "load_launch_history_failed") {
+        return err_make((u16)ERRD_COMMON, (u16)ERRC_COMMON_BAD_STATE, 0u, (u32)ERRMSG_COMMON_BAD_STATE);
+    }
+    if (text == "prelaunch_plan_failed") {
+        return err_make((u16)ERRD_LAUNCHER, (u16)ERRC_LAUNCHER_HANDSHAKE_INVALID, 0u,
+                        (u32)ERRMSG_LAUNCHER_HANDSHAKE_INVALID);
+    }
+    return err_make((u16)ERRD_COMMON, (u16)ERRC_COMMON_INTERNAL, (u32)ERRF_FATAL, (u32)ERRMSG_COMMON_INTERNAL);
+}
+
+static void emit_prelaunch_event(const launcher_services_api_v1* services,
+                                 const std::string& instance_id,
+                                 const std::string& state_root,
+                                 u32 event_code,
+                                 const err_t* err) {
+    core_log_event ev;
+    core_log_scope scope;
+    const bool safe_id = (!instance_id.empty() && launcher_is_safe_id_component(instance_id));
+
+    core_log_event_clear(&ev);
+    ev.domain = CORE_LOG_DOMAIN_LAUNCHER;
+    ev.code = (u16)event_code;
+    ev.severity = (u8)((event_code == CORE_LOG_EVT_OP_FAIL) ? CORE_LOG_SEV_ERROR : CORE_LOG_SEV_INFO);
+    ev.msg_id = 0u;
+    ev.t_mono = 0u;
+    (void)core_log_event_add_u32(&ev, CORE_LOG_KEY_OPERATION_ID, CORE_LOG_OP_LAUNCHER_LAUNCH_PREPARE);
+    if (err && !err_is_ok(err)) {
+        launcher_log_add_err_fields(&ev, err);
+    }
+
+    std::memset(&scope, 0, sizeof(scope));
+    scope.state_root = state_root.empty() ? (const char*)0 : state_root.c_str();
+    if (safe_id) {
+        scope.kind = CORE_LOG_SCOPE_INSTANCE;
+        scope.instance_id = instance_id.c_str();
+    } else {
+        scope.kind = CORE_LOG_SCOPE_GLOBAL;
+    }
+    (void)launcher_services_emit_event(services, &scope, &ev);
 }
 
 static u32 consecutive_failures(const LauncherInstanceLaunchHistory& h) {
@@ -344,20 +398,36 @@ bool launcher_launch_prepare_attempt(const launcher_services_api_v1* services,
 
     if (!services || !fs) {
         if (out_error) *out_error = "missing_services_or_fs";
+        {
+            err_t err = prelaunch_err_from_text(std::string("missing_services_or_fs"));
+            emit_prelaunch_event(services, instance_id, state_root, CORE_LOG_EVT_OP_FAIL, &err);
+        }
         return false;
     }
     if (instance_id.empty()) {
         if (out_error) *out_error = "empty_instance_id";
+        {
+            err_t err = prelaunch_err_from_text(std::string("empty_instance_id"));
+            emit_prelaunch_event(services, instance_id, state_root, CORE_LOG_EVT_OP_FAIL, &err);
+        }
         return false;
     }
     if (!launcher_is_safe_id_component(instance_id)) {
         if (out_error) *out_error = "unsafe_instance_id";
         audit_reason(audit, std::string("launch_prepare;result=fail;code=unsafe_instance_id;instance_id=") + instance_id);
+        {
+            err_t err = prelaunch_err_from_text(std::string("unsafe_instance_id"));
+            emit_prelaunch_event(services, instance_id, state_root, CORE_LOG_EVT_OP_FAIL, &err);
+        }
         return false;
     }
     if (state_root.empty()) {
         if (!get_state_root(fs, state_root)) {
             if (out_error) *out_error = "missing_state_root";
+            {
+                err_t err = prelaunch_err_from_text(std::string("missing_state_root"));
+                emit_prelaunch_event(services, instance_id, state_root, CORE_LOG_EVT_OP_FAIL, &err);
+            }
             return false;
         }
     }
@@ -365,12 +435,20 @@ bool launcher_launch_prepare_attempt(const launcher_services_api_v1* services,
 
     if (!launcher_instance_config_load(services, paths, cfg)) {
         if (out_error) *out_error = "load_config_failed";
+        {
+            err_t err = prelaunch_err_from_text(std::string("load_config_failed"));
+            emit_prelaunch_event(services, instance_id, state_root, CORE_LOG_EVT_OP_FAIL, &err);
+        }
         return false;
     }
     threshold = clamp_u32(cfg.auto_recovery_failure_threshold, 1u, 16u, 3u);
 
     if (!launcher_instance_launch_history_load(services, paths, hist)) {
         if (out_error) *out_error = "load_launch_history_failed";
+        {
+            err_t err = prelaunch_err_from_text(std::string("load_launch_history_failed"));
+            emit_prelaunch_event(services, instance_id, state_root, CORE_LOG_EVT_OP_FAIL, &err);
+        }
         return false;
     }
     failures = consecutive_failures(hist);
@@ -397,12 +475,17 @@ bool launcher_launch_prepare_attempt(const launcher_services_api_v1* services,
         if (out_error && out_error->empty()) {
             *out_error = "prelaunch_plan_failed";
         }
+        {
+            err_t err = prelaunch_err_from_text(out_error ? *out_error : std::string("prelaunch_plan_failed"));
+            emit_prelaunch_event(services, instance_id, state_root, CORE_LOG_EVT_OP_FAIL, &err);
+        }
         return false;
     }
 
     audit_emit_plan_summary(audit, out_plan, rec);
 
     out_recovery = rec;
+    emit_prelaunch_event(services, instance_id, state_root, CORE_LOG_EVT_OP_OK, (const err_t*)0);
     return true;
 }
 

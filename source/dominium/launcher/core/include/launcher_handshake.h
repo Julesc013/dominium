@@ -19,6 +19,8 @@ extern "C" {
 #include "launcher_core_api.h"
 }
 
+#include "dominium/core_err.h"
+
 #include "launcher_instance.h"
 
 namespace dom {
@@ -150,6 +152,11 @@ u32 launcher_handshake_validate(const launcher_services_api_v1* services,
                                 const LauncherInstanceManifest& manifest,
                                 const std::string& state_root_override,
                                 std::string* out_detail);
+bool launcher_handshake_validate_ex(const launcher_services_api_v1* services,
+                                    const LauncherHandshake& hs,
+                                    const LauncherInstanceManifest& manifest,
+                                    const std::string& state_root_override,
+                                    err_t* out_err);
 
 } /* namespace launcher_core */
 } /* namespace dom */

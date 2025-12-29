@@ -19,6 +19,8 @@ extern "C" {
 #include "domino/core/types.h"
 }
 
+#include "dominium/core_err.h"
+
 namespace dom {
 namespace launcher_core {
 
@@ -147,6 +149,10 @@ bool launcher_instance_manifest_to_tlv_bytes(const LauncherInstanceManifest& man
 bool launcher_instance_manifest_from_tlv_bytes(const unsigned char* data,
                                                size_t size,
                                                LauncherInstanceManifest& out_manifest);
+bool launcher_instance_manifest_from_tlv_bytes_ex(const unsigned char* data,
+                                                  size_t size,
+                                                  LauncherInstanceManifest& out_manifest,
+                                                  err_t* out_err);
 
 /* Deterministic manifest hash computed over canonical TLV bytes. */
 u64 launcher_instance_manifest_hash64(const LauncherInstanceManifest& manifest);

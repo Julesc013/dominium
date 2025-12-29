@@ -18,6 +18,8 @@ extern "C" {
 #include "launcher_core_api.h"
 }
 
+#include "dominium/core_err.h"
+
 #include "launcher_instance.h"
 #include "launcher_instance_ops.h"
 #include "launcher_instance_payload_refs.h"
@@ -105,6 +107,10 @@ bool launcher_instance_tx_prepare(const launcher_services_api_v1* services,
 bool launcher_instance_tx_stage(const launcher_services_api_v1* services,
                                 LauncherInstanceTx& tx,
                                 LauncherAuditLog* audit);
+bool launcher_instance_tx_stage_ex(const launcher_services_api_v1* services,
+                                   LauncherInstanceTx& tx,
+                                   LauncherAuditLog* audit,
+                                   err_t* out_err);
 
 /* Verify: verifies all enabled artifacts in `after_manifest` against the artifact store and
  * writes `staging/payload_refs.tlv` for commit.
@@ -117,14 +123,21 @@ bool launcher_instance_tx_verify(const launcher_services_api_v1* services,
 bool launcher_instance_tx_commit(const launcher_services_api_v1* services,
                                  LauncherInstanceTx& tx,
                                  LauncherAuditLog* audit);
+bool launcher_instance_tx_commit_ex(const launcher_services_api_v1* services,
+                                    LauncherInstanceTx& tx,
+                                    LauncherAuditLog* audit,
+                                    err_t* out_err);
 
 /* Rollback: discards staged files and marks transaction done (live instance remains untouched). */
 bool launcher_instance_tx_rollback(const launcher_services_api_v1* services,
                                    LauncherInstanceTx& tx,
                                    LauncherAuditLog* audit);
+bool launcher_instance_tx_rollback_ex(const launcher_services_api_v1* services,
+                                      LauncherInstanceTx& tx,
+                                      LauncherAuditLog* audit,
+                                      err_t* out_err);
 
 } /* namespace launcher_core */
 } /* namespace dom */
 
 #endif /* DOMINIUM_LAUNCHER_CORE_LAUNCHER_INSTANCE_TX_H */
-

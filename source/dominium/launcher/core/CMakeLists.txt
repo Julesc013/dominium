@@ -2,10 +2,12 @@ cmake_minimum_required(VERSION 3.16)
 
 add_library(dominium_launcher_core STATIC
     src/launcher_core.cpp
+    src/log/launcher_log.cpp
     src/safety/launcher_safety.cpp
     src/tlv/launcher_tlv.cpp
     src/tlv/launcher_tlv_migrations.cpp
     src/selection/launcher_selection_summary.cpp
+    src/run/launcher_run_summary.cpp
     src/launch/launcher_prelaunch.cpp
     src/launch/launcher_launch_attempt.cpp
     src/launch/launcher_handshake.cpp
@@ -42,6 +44,7 @@ target_link_libraries(dominium_launcher_core
         core_audit
         core_util
         core_err
+        core_log
 )
 
 set_target_properties(dominium_launcher_core PROPERTIES

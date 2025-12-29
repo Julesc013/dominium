@@ -19,6 +19,8 @@ extern "C" {
 #include "launcher_core_api.h"
 }
 
+#include "dominium/core_err.h"
+
 #include "launcher_instance.h"
 
 namespace dom {
@@ -95,6 +97,11 @@ bool launcher_artifact_store_read_metadata(const launcher_services_api_v1* servi
                                            const std::string& state_root_override,
                                            const std::vector<unsigned char>& hash_bytes,
                                            LauncherArtifactMetadata& out_meta);
+bool launcher_artifact_store_read_metadata_ex(const launcher_services_api_v1* services,
+                                              const std::string& state_root_override,
+                                              const std::vector<unsigned char>& hash_bytes,
+                                              LauncherArtifactMetadata& out_meta,
+                                              err_t* out_err);
 
 /* Verifies that:
  * - artifact.tlv exists and matches the expected hash bytes
@@ -109,9 +116,14 @@ bool launcher_artifact_store_verify(const launcher_services_api_v1* services,
                                     const std::vector<unsigned char>& expected_hash_bytes,
                                     u32 expected_content_type,
                                     LauncherArtifactMetadata& out_meta);
+bool launcher_artifact_store_verify_ex(const launcher_services_api_v1* services,
+                                       const std::string& state_root_override,
+                                       const std::vector<unsigned char>& expected_hash_bytes,
+                                       u32 expected_content_type,
+                                       LauncherArtifactMetadata& out_meta,
+                                       err_t* out_err);
 
 } /* namespace launcher_core */
 } /* namespace dom */
 
 #endif /* DOMINIUM_LAUNCHER_CORE_LAUNCHER_ARTIFACT_STORE_H */
-
