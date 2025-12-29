@@ -3,6 +3,7 @@
 #include "dsk/dsk_contracts.h"
 #include "dsk/dsk_digest.h"
 #include "dsk/dsk_splat.h"
+#include "dss/dss_services.h"
 
 #include <algorithm>
 #include <ctime>
@@ -128,6 +129,7 @@ void dsk_kernel_request_init(dsk_kernel_request_t *req) {
     if (!req) {
         return;
     }
+    req->services = 0;
     req->manifest_bytes = 0;
     req->manifest_size = 0u;
     req->request_bytes = 0;
@@ -186,6 +188,16 @@ static dsk_status_t dsk_kernel_run(dsk_u16 expected_operation, const dsk_kernel_
         audit.result = st;
         dsk_audit_add_event(&audit, DSK_AUDIT_EVENT_PARSE_REQUEST_FAIL, st);
         goto emit_audit;
+    }
+
+    if (req->services && req->services->platform.get_platform_triple) {
+        std::string platform_override;
+        dss_error_t pst = req->services->platform.get_platform_triple(
+            req->services->platform.ctx,
+            &platform_override);
+        if (dss_error_is_ok(pst) && !platform_override.empty()) {
+            request.platform_triple = platform_override;
+        }
     }
 
     if (request.operation != expected_operation) {

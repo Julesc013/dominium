@@ -688,10 +688,11 @@ add_executable(setup2_kernel_tests
 
 target_include_directories(setup2_kernel_tests PRIVATE
     ${CMAKE_SOURCE_DIR}/source/dominium/setup/kernel/include
+    ${CMAKE_SOURCE_DIR}/source/dominium/setup/services/include
 )
 
 target_link_libraries(setup2_kernel_tests
-    PRIVATE dsk_kernel
+    PRIVATE dsk_kernel dss_services
 )
 
 set_target_properties(setup2_kernel_tests PROPERTIES
@@ -706,3 +707,78 @@ add_test(NAME test_manifest_validate_missing_required COMMAND setup2_kernel_test
 add_test(NAME test_request_validate_missing_required COMMAND setup2_kernel_tests request_validate_missing_required)
 add_test(NAME test_kernel_emits_audit_on_failure COMMAND setup2_kernel_tests kernel_emits_audit_on_failure)
 add_test(NAME test_splat_selection_deterministic COMMAND setup2_kernel_tests splat_selection_deterministic)
+
+add_executable(setup2_services_fs_tests
+    ../../tests/setup2/test_services_fs_sandbox.cpp
+)
+
+target_include_directories(setup2_services_fs_tests PRIVATE
+    ${CMAKE_SOURCE_DIR}/source/dominium/setup/services/include
+    ${CMAKE_SOURCE_DIR}/source/dominium/setup/kernel/include
+)
+
+target_link_libraries(setup2_services_fs_tests
+    PRIVATE dss_services
+)
+
+set_target_properties(setup2_services_fs_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME test_services_fs_rejects_escape COMMAND setup2_services_fs_tests services_fs_rejects_escape)
+add_test(NAME test_services_fs_atomic_write COMMAND setup2_services_fs_tests services_fs_atomic_write)
+add_test(NAME test_services_fs_canonicalize COMMAND setup2_services_fs_tests services_fs_canonicalize)
+
+add_executable(setup2_services_platform_tests
+    ../../tests/setup2/test_services_platform_fake.cpp
+)
+
+target_include_directories(setup2_services_platform_tests PRIVATE
+    ${CMAKE_SOURCE_DIR}/source/dominium/setup/services/include
+    ${CMAKE_SOURCE_DIR}/source/dominium/setup/kernel/include
+)
+
+target_link_libraries(setup2_services_platform_tests
+    PRIVATE dss_services
+)
+
+set_target_properties(setup2_services_platform_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME test_services_platform_fake COMMAND setup2_services_platform_tests services_platform_fake)
+
+add_executable(setup2_kernel_services_tests
+    ../../tests/setup2/test_kernel_uses_services_platform.cpp
+)
+
+target_include_directories(setup2_kernel_services_tests PRIVATE
+    ${CMAKE_SOURCE_DIR}/source/dominium/setup/services/include
+    ${CMAKE_SOURCE_DIR}/source/dominium/setup/kernel/include
+)
+
+target_link_libraries(setup2_kernel_services_tests
+    PRIVATE dsk_kernel dss_services
+)
+
+set_target_properties(setup2_kernel_services_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME test_kernel_uses_services_platform COMMAND setup2_kernel_services_tests kernel_uses_services_platform)
+
+if(WIN32)
+    add_test(NAME setup2_kernel_purity_check
+        COMMAND ${CMAKE_SOURCE_DIR}/scripts/setup2/check_kernel_purity.bat
+    )
+else()
+    add_test(NAME setup2_kernel_purity_check
+        COMMAND sh ${CMAKE_SOURCE_DIR}/scripts/setup2/check_kernel_purity.sh
+    )
+endif()

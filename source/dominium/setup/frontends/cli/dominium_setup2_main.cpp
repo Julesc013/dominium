@@ -3,6 +3,7 @@
 #include "dsk/dsk_contracts.h"
 #include "dsk/dsk_digest.h"
 #include "dsk/dsk_error.h"
+#include "dss/dss_services.h"
 
 #include <cstdio>
 #include <cstring>
@@ -24,50 +25,27 @@ static dsk_status_t dsk_mem_sink_write(void *user, const dsk_u8 *data, dsk_u32 l
     return dsk_error_make(DSK_DOMAIN_NONE, DSK_CODE_OK, DSK_SUBCODE_NONE, 0u);
 }
 
-static int load_file(const char *path, std::vector<dsk_u8> &out) {
-    FILE *f;
-    long len;
-    size_t read_count;
-    out.clear();
-    if (!path) {
+static int load_file(const dss_fs_api_t *fs, const char *path, std::vector<dsk_u8> &out) {
+    dss_error_t st;
+    if (!fs || !fs->read_file_bytes) {
         return 0;
     }
-    f = std::fopen(path, "rb");
-    if (!f) {
-        return 0;
-    }
-    if (std::fseek(f, 0, SEEK_END) != 0) {
-        std::fclose(f);
-        return 0;
-    }
-    len = std::ftell(f);
-    if (len < 0) {
-        std::fclose(f);
-        return 0;
-    }
-    if (std::fseek(f, 0, SEEK_SET) != 0) {
-        std::fclose(f);
-        return 0;
-    }
-    out.resize((size_t)len);
-    read_count = (len > 0) ? std::fread(&out[0], 1u, (size_t)len, f) : 0u;
-    std::fclose(f);
-    return read_count == (size_t)len;
+    st = fs->read_file_bytes(fs->ctx, path, &out);
+    return dss_error_is_ok(st);
 }
 
-static int write_file(const char *path, const std::vector<dsk_u8> &data) {
-    FILE *f;
-    size_t wrote;
-    if (!path) {
+static int write_file(const dss_fs_api_t *fs,
+                      const char *path,
+                      const std::vector<dsk_u8> &data) {
+    dss_error_t st;
+    if (!fs || !fs->write_file_bytes_atomic) {
         return 0;
     }
-    f = std::fopen(path, "wb");
-    if (!f) {
-        return 0;
-    }
-    wrote = data.empty() ? 0u : std::fwrite(&data[0], 1u, data.size(), f);
-    std::fclose(f);
-    return wrote == data.size();
+    st = fs->write_file_bytes_atomic(fs->ctx,
+                                     path,
+                                     data.empty() ? 0 : &data[0],
+                                     (dss_u32)data.size());
+    return dss_error_is_ok(st);
 }
 
 static const char *op_to_string(dsk_u16 op) {
@@ -129,6 +107,7 @@ static void print_usage(void) {
     std::printf("dominium-setup2 validate-manifest --in <file>\n");
     std::printf("dominium-setup2 validate-request --in <file>\n");
     std::printf("dominium-setup2 run --manifest <file> --request <file> --out-state <file> --out-audit <file> [--json]\n");
+    std::printf("options: --use-fake-services <sandbox_root>\n");
 }
 
 static const char *get_arg_value(int argc, char **argv, const char *name) {
@@ -141,9 +120,33 @@ static const char *get_arg_value(int argc, char **argv, const char *name) {
     return 0;
 }
 
+static int finish(dss_services_t *services, int code) {
+    if (services) {
+        dss_services_shutdown(services);
+    }
+    return code;
+}
+
 int main(int argc, char **argv) {
+    dss_services_t services;
+    dss_services_config_t services_cfg;
+    dss_error_t services_st;
+    const char *fake_root = get_arg_value(argc, argv, "--use-fake-services");
+
     if (argc < 2) {
         print_usage();
+        return 1;
+    }
+
+    dss_services_config_init(&services_cfg);
+    if (fake_root) {
+        services_cfg.sandbox_root = fake_root;
+        services_st = dss_services_init_fake(&services_cfg, &services);
+    } else {
+        services_st = dss_services_init_real(&services);
+    }
+    if (!dss_error_is_ok(services_st)) {
+        std::fprintf(stderr, "error: failed to init services\n");
         return 1;
     }
 
@@ -152,17 +155,17 @@ int main(int argc, char **argv) {
         std::vector<dsk_u8> bytes;
         dsk_manifest_t manifest;
         dsk_status_t st;
-        if (!path || !load_file(path, bytes)) {
+        if (!path || !load_file(&services.fs, path, bytes)) {
             std::fprintf(stderr, "error: failed to read manifest\n");
-            return 1;
+            return finish(&services, 1);
         }
         st = dsk_manifest_parse(&bytes[0], (dsk_u32)bytes.size(), &manifest);
         if (!dsk_error_is_ok(st)) {
             std::fprintf(stderr, "error: %s\n", dsk_error_to_string_stable(st));
-            return dsk_error_to_exit_code(st);
+            return finish(&services, dsk_error_to_exit_code(st));
         }
         std::printf("ok\n");
-        return 0;
+        return finish(&services, 0);
     }
 
     if (std::strcmp(argv[1], "validate-request") == 0) {
@@ -170,17 +173,17 @@ int main(int argc, char **argv) {
         std::vector<dsk_u8> bytes;
         dsk_request_t request;
         dsk_status_t st;
-        if (!path || !load_file(path, bytes)) {
+        if (!path || !load_file(&services.fs, path, bytes)) {
             std::fprintf(stderr, "error: failed to read request\n");
-            return 1;
+            return finish(&services, 1);
         }
         st = dsk_request_parse(&bytes[0], (dsk_u32)bytes.size(), &request);
         if (!dsk_error_is_ok(st)) {
             std::fprintf(stderr, "error: %s\n", dsk_error_to_string_stable(st));
-            return dsk_error_to_exit_code(st);
+            return finish(&services, dsk_error_to_exit_code(st));
         }
         std::printf("ok\n");
-        return 0;
+        return finish(&services, 0);
     }
 
     if (std::strcmp(argv[1], "run") == 0) {
@@ -209,13 +212,13 @@ int main(int argc, char **argv) {
             print_usage();
             return 1;
         }
-        if (!load_file(manifest_path, manifest_bytes)) {
+        if (!load_file(&services.fs, manifest_path, manifest_bytes)) {
             std::fprintf(stderr, "error: failed to read manifest\n");
-            return 1;
+            return finish(&services, 1);
         }
-        if (!load_file(request_path, request_bytes)) {
+        if (!load_file(&services.fs, request_path, request_bytes)) {
             std::fprintf(stderr, "error: failed to read request\n");
-            return 1;
+            return finish(&services, 1);
         }
 
         st = dsk_request_parse(&request_bytes[0], (dsk_u32)request_bytes.size(), &request);
@@ -229,6 +232,7 @@ int main(int argc, char **argv) {
         kernel_req.manifest_size = (dsk_u32)manifest_bytes.size();
         kernel_req.request_bytes = &request_bytes[0];
         kernel_req.request_size = (dsk_u32)request_bytes.size();
+        kernel_req.services = &services;
         kernel_req.deterministic_mode = (request.policy_flags & DSK_POLICY_DETERMINISTIC) ? 1u : 0u;
         kernel_req.out_state.user = &state_sink;
         kernel_req.out_state.write = dsk_mem_sink_write;
@@ -256,13 +260,13 @@ int main(int argc, char **argv) {
             return 1;
         }
 
-        if (!write_file(out_state, state_sink.data)) {
+        if (!write_file(&services.fs, out_state, state_sink.data)) {
             std::fprintf(stderr, "error: failed to write state\n");
-            return 1;
+            return finish(&services, 1);
         }
-        if (!write_file(out_audit, audit_sink.data)) {
+        if (!write_file(&services.fs, out_audit, audit_sink.data)) {
             std::fprintf(stderr, "error: failed to write audit\n");
-            return 1;
+            return finish(&services, 1);
         }
 
         if (json) {
@@ -282,9 +286,9 @@ int main(int argc, char **argv) {
             }
         }
 
-        return dsk_error_to_exit_code(st);
+        return finish(&services, dsk_error_to_exit_code(st));
     }
 
     print_usage();
-    return 1;
+    return finish(&services, 1);
 }

@@ -4,6 +4,12 @@
 #include "dsk_error.h"
 #include "dsk_types.h"
 
+#if defined(__cplusplus)
+struct dss_services_t;
+#else
+struct dss_services_t;
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -18,6 +24,7 @@ typedef struct dsk_byte_sink_t {
 } dsk_byte_sink_t;
 
 typedef struct dsk_kernel_request_t {
+    const struct dss_services_t *services;
     const dsk_u8 *manifest_bytes;
     dsk_u32 manifest_size;
     const dsk_u8 *request_bytes;
