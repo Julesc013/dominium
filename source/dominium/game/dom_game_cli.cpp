@@ -16,6 +16,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include <cstdlib>
 #include <cstring>
 
+#include "dom_game_cli.h"
 #include "dom_game_app.h"
 #include "dom_profile_cli.h"
 
@@ -26,6 +27,8 @@ extern "C" {
 #include "domino/sys.h"
 #include "domino/system/d_system.h"
 #include "system/d_system_input.h"
+#include "dominium/product_info.h"
+#include "dominium/version.h"
 }
 
 namespace {
@@ -116,7 +119,7 @@ static void force_profile_gfx_backend(dom_profile& profile, const char* backend_
     }
 }
 
-static int run_game_smoke_gui(const dom::ProfileCli& profile_cli) {
+static int run_game_smoke_gui(const dom_profile& profile) {
     const u32 max_frames = 120u;
     const u64 max_us = 2000000ull;
 
@@ -125,10 +128,10 @@ static int run_game_smoke_gui(const dom::ProfileCli& profile_cli) {
     dom_caps_result sel_rc;
     const char* gfx_backend_name;
     dom_profile smoke_profile;
-    const dom_profile* effective_profile = &profile_cli.profile;
+    const dom_profile* effective_profile = &profile;
 
-    smoke_profile = profile_cli.profile;
-    if (profile_cli.profile.lockstep_strict != 0u) {
+    smoke_profile = profile;
+    if (profile.lockstep_strict != 0u) {
         force_profile_gfx_backend(smoke_profile, "soft");
         effective_profile = &smoke_profile;
     }
@@ -313,50 +316,7 @@ static int run_game_smoke_gui(const dom::ProfileCli& profile_cli) {
 
 } // namespace
 
-namespace dom {
-
-void init_default_game_config(GameConfig &cfg) {
-    cfg.dominium_home.clear();
-    cfg.instance_id = "demo";
-    cfg.connect_addr.clear();
-    cfg.net_port = 7777u;
-    cfg.mode = GAME_MODE_GUI;
-    cfg.server_mode = SERVER_OFF;
-    cfg.demo_mode = false;
-    cfg.platform_backend.clear();
-    cfg.gfx_backend.clear();
-    cfg.tick_rate_hz = 60u;
-    cfg.dev_mode = false;
-    cfg.deterministic_test = false;
-    cfg.replay_record_path.clear();
-    cfg.replay_play_path.clear();
-}
-
-static int str_ieq(const char *a, const char *b) {
-    size_t i;
-    size_t len_a;
-    size_t len_b;
-    if (!a || !b) {
-        return 0;
-    }
-    len_a = std::strlen(a);
-    len_b = std::strlen(b);
-    if (len_a != len_b) {
-        return 0;
-    }
-    for (i = 0u; i < len_a; ++i) {
-        char ca = a[i];
-        char cb = b[i];
-        if (ca >= 'A' && ca <= 'Z') ca = static_cast<char>(ca - 'A' + 'a');
-        if (cb >= 'A' && cb <= 'Z') cb = static_cast<char>(cb - 'A' + 'a');
-        if (ca != cb) {
-            return 0;
-        }
-    }
-    return 1;
-}
-
-static bool parse_tick_rate(const char *val, unsigned &out_rate) {
+static bool parse_u32_range(const char *val, u32 min_v, u32 max_v, u32 &out_v) {
     char *endp = 0;
     unsigned long v;
     if (!val) {
@@ -366,165 +326,488 @@ static bool parse_tick_rate(const char *val, unsigned &out_rate) {
     if (val == endp) {
         return false;
     }
-    out_rate = static_cast<unsigned>(v);
+    if (v < min_v || v > max_v) {
+        return false;
+    }
+    out_v = static_cast<u32>(v);
     return true;
 }
 
-bool parse_game_cli_args(int argc, char **argv, GameConfig &cfg) {
+static void set_error(dom_game_cli_result *out_result, const char *msg) {
+    if (!out_result) {
+        return;
+    }
+    out_result->exit_code = 2;
+    if (msg && msg[0]) {
+        (void)copy_cstr_bounded(out_result->error, sizeof(out_result->error), msg);
+    }
+}
+
+static void init_profile_defaults(dom_profile &profile) {
+    std::memset(&profile, 0, sizeof(profile));
+    profile.abi_version = DOM_PROFILE_ABI_VERSION;
+    profile.struct_size = static_cast<u32>(sizeof(dom_profile));
+    profile.kind = DOM_PROFILE_BASELINE;
+    profile.lockstep_strict = 0u;
+}
+
+static bool parse_mode(const char *val, dom_game_mode &mode) {
+    if (!val) {
+        return false;
+    }
+    if (str_ieq(val, "gui")) {
+        mode = DOM_GAME_MODE_GUI;
+        return true;
+    }
+    if (str_ieq(val, "tui")) {
+        mode = DOM_GAME_MODE_TUI;
+        return true;
+    }
+    if (str_ieq(val, "headless")) {
+        mode = DOM_GAME_MODE_HEADLESS;
+        return true;
+    }
+    return false;
+}
+
+static bool parse_server_mode(const char *val, dom_game_server_mode &mode) {
+    if (!val) {
+        return false;
+    }
+    if (str_ieq(val, "off")) {
+        mode = DOM_GAME_SERVER_OFF;
+        return true;
+    }
+    if (str_ieq(val, "listen")) {
+        mode = DOM_GAME_SERVER_LISTEN;
+        return true;
+    }
+    if (str_ieq(val, "dedicated")) {
+        mode = DOM_GAME_SERVER_DEDICATED;
+        return true;
+    }
+    return false;
+}
+
+static bool parse_sys_override(const char *arg, char *out_key, size_t key_cap, const char **out_val) {
+    const char *eq;
+    size_t key_len;
+    if (!arg || !out_key || !out_val) {
+        return false;
+    }
+    if (std::strncmp(arg, "--sys.", 6) != 0) {
+        return false;
+    }
+    eq = std::strchr(arg, '=');
+    if (!eq || eq == arg) {
+        return false;
+    }
+    key_len = static_cast<size_t>(eq - (arg + 6));
+    if (key_len == 0u || key_len + 1u > key_cap) {
+        return false;
+    }
+    std::memcpy(out_key, arg + 6, key_len);
+    out_key[key_len] = '\0';
+    *out_val = eq + 1;
+    return true;
+}
+
+extern "C" {
+
+void dom_game_cli_init_defaults(dom_game_config *out_cfg) {
+    if (!out_cfg) {
+        return;
+    }
+    std::memset(out_cfg, 0, sizeof(*out_cfg));
+    out_cfg->mode = DOM_GAME_MODE_GUI;
+    out_cfg->server_mode = DOM_GAME_SERVER_OFF;
+    out_cfg->net_port = 7777u;
+    out_cfg->tick_rate_hz = 60u;
+    out_cfg->deterministic_test = 0u;
+    out_cfg->dev_mode = 0u;
+    out_cfg->demo_mode = 0u;
+    out_cfg->replay_strict_content = 1u;
+    (void)copy_cstr_bounded(out_cfg->instance_id, sizeof(out_cfg->instance_id), "demo");
+    init_profile_defaults(out_cfg->profile);
+}
+
+void dom_game_cli_init_result(dom_game_cli_result *out_result) {
+    if (!out_result) {
+        return;
+    }
+    std::memset(out_result, 0, sizeof(*out_result));
+    out_result->exit_code = 0;
+}
+
+int dom_game_cli_parse(int argc, char **argv, dom_game_config *out_cfg, dom_game_cli_result *out_result) {
+    dom::ProfileCli profile_cli;
+    std::string profile_err;
     int i;
+
+    if (!out_cfg || !out_result) {
+        return -1;
+    }
+    dom_game_cli_init_defaults(out_cfg);
+    dom_game_cli_init_result(out_result);
+
+    dom::init_default_profile_cli(profile_cli);
+    if (!dom::parse_profile_cli_args(argc, argv, profile_cli, profile_err)) {
+        set_error(out_result, profile_err.c_str());
+        return -1;
+    }
+    out_cfg->profile = profile_cli.profile;
+    out_result->want_print_caps = profile_cli.print_caps ? 1 : 0;
+    out_result->want_print_selection = profile_cli.print_selection ? 1 : 0;
+
     for (i = 1; i < argc; ++i) {
         const char *arg = argv[i];
         if (!arg) {
             continue;
         }
 
+        if (std::strcmp(arg, "--help") == 0 || std::strcmp(arg, "-h") == 0) {
+            out_result->want_help = 1;
+            continue;
+        }
+        if (std::strcmp(arg, "--capabilities") == 0) {
+            out_result->want_capabilities = 1;
+            continue;
+        }
+        if (std::strcmp(arg, "--introspect-json") == 0) {
+            out_result->want_introspect_json = 1;
+            continue;
+        }
+        if (std::strcmp(arg, "--version") == 0) {
+            out_result->want_version = 1;
+            continue;
+        }
+        if (std::strcmp(arg, "--smoke-gui") == 0) {
+            out_result->want_smoke_gui = 1;
+            continue;
+        }
+
         if (std::strncmp(arg, "--mode=", 7) == 0) {
-            const char *val = arg + 7;
-            if (str_ieq(val, "gui")) cfg.mode = GAME_MODE_GUI;
-            else if (str_ieq(val, "tui")) cfg.mode = GAME_MODE_TUI;
-            else if (str_ieq(val, "headless")) cfg.mode = GAME_MODE_HEADLESS;
-            else {
-                std::printf("Unknown mode '%s'\n", val);
-                return false;
+            dom_game_mode mode = out_cfg->mode;
+            if (!parse_mode(arg + 7, mode)) {
+                set_error(out_result, "Unknown --mode value; expected gui|tui|headless.");
+                return -1;
             }
+            out_cfg->mode = mode;
             continue;
         }
-        if (str_ieq(arg, "--server")) {
-            cfg.server_mode = SERVER_DEDICATED;
-            if (cfg.mode == GAME_MODE_GUI) {
-                cfg.mode = GAME_MODE_HEADLESS;
-            }
+        if (std::strcmp(arg, "--server") == 0) {
+            out_cfg->server_mode = DOM_GAME_SERVER_DEDICATED;
             continue;
         }
-        if (str_ieq(arg, "--listen")) {
-            cfg.server_mode = SERVER_LISTEN;
+        if (std::strcmp(arg, "--listen") == 0) {
+            out_cfg->server_mode = DOM_GAME_SERVER_LISTEN;
             continue;
         }
         if (std::strncmp(arg, "--server=", 9) == 0) {
-            const char *val = arg + 9;
-            if (str_ieq(val, "off")) cfg.server_mode = SERVER_OFF;
-            else if (str_ieq(val, "listen")) cfg.server_mode = SERVER_LISTEN;
-            else if (str_ieq(val, "dedicated")) cfg.server_mode = SERVER_DEDICATED;
-            else {
-                std::printf("Unknown server mode '%s'\n", val);
-                return false;
+            dom_game_server_mode mode = out_cfg->server_mode;
+            if (!parse_server_mode(arg + 9, mode)) {
+                set_error(out_result, "Unknown --server value; expected off|listen|dedicated.");
+                return -1;
             }
+            out_cfg->server_mode = mode;
             continue;
         }
         if (std::strncmp(arg, "--connect=", 10) == 0) {
-            cfg.connect_addr = std::string(arg + 10);
+            if (!copy_cstr_bounded(out_cfg->connect_addr, sizeof(out_cfg->connect_addr), arg + 10)) {
+                set_error(out_result, "Connect address too long.");
+                return -1;
+            }
             continue;
         }
         if (std::strncmp(arg, "--port=", 7) == 0) {
-            unsigned rate = 0u;
-            if (!parse_tick_rate(arg + 7, rate) || rate == 0u || rate > 65535u) {
-                std::printf("Invalid port '%s'\n", arg + 7);
-                return false;
+            u32 port = 0u;
+            if (!parse_u32_range(arg + 7, 1u, 65535u, port)) {
+                set_error(out_result, "Invalid --port value; expected 1..65535.");
+                return -1;
             }
-            cfg.net_port = rate;
+            out_cfg->net_port = port;
             continue;
         }
         if (std::strncmp(arg, "--instance=", 11) == 0) {
-            cfg.instance_id = std::string(arg + 11);
-            continue;
-        }
-        if (std::strncmp(arg, "--platform=", 11) == 0) {
-            cfg.platform_backend = std::string(arg + 11);
-            continue;
-        }
-        if (std::strncmp(arg, "--gfx=", 6) == 0) {
-            cfg.gfx_backend = std::string(arg + 6);
-            continue;
-        }
-        if (std::strncmp(arg, "--tickrate=", 11) == 0) {
-            unsigned rate = cfg.tick_rate_hz;
-            if (!parse_tick_rate(arg + 11, rate)) {
-                std::printf("Invalid tickrate '%s'\n", arg + 11);
-                return false;
+            if (!copy_cstr_bounded(out_cfg->instance_id, sizeof(out_cfg->instance_id), arg + 11)) {
+                set_error(out_result, "Instance id too long.");
+                return -1;
             }
-            cfg.tick_rate_hz = rate;
             continue;
         }
         if (std::strncmp(arg, "--home=", 7) == 0) {
-            cfg.dominium_home = std::string(arg + 7);
+            if (!copy_cstr_bounded(out_cfg->dominium_home, sizeof(out_cfg->dominium_home), arg + 7)) {
+                set_error(out_result, "DOMINIUM_HOME path too long.");
+                return -1;
+            }
             continue;
         }
-        if (str_ieq(arg, "--demo")) {
-            cfg.demo_mode = true;
+        if (std::strncmp(arg, "--gfx=", 6) == 0) {
+            if (!copy_cstr_bounded(out_cfg->gfx_backend, sizeof(out_cfg->gfx_backend), arg + 6)) {
+                set_error(out_result, "Gfx backend name too long.");
+                return -1;
+            }
             continue;
         }
-        if (str_ieq(arg, "--devmode")) {
-            cfg.dev_mode = true;
-            cfg.deterministic_test = true;
+        if (std::strncmp(arg, "--renderer=", 11) == 0) {
+            if (!out_result->warned_renderer_alias) {
+                std::fprintf(stderr, "Warning: --renderer is deprecated; use --gfx.\n");
+                out_result->warned_renderer_alias = 1;
+            }
+            if (out_cfg->gfx_backend[0] == '\0') {
+                if (!copy_cstr_bounded(out_cfg->gfx_backend, sizeof(out_cfg->gfx_backend), arg + 11)) {
+                    set_error(out_result, "Renderer backend name too long.");
+                    return -1;
+                }
+            }
+            force_profile_gfx_backend(out_cfg->profile, arg + 11);
             continue;
         }
-        if (str_ieq(arg, "--deterministic-test")) {
-            cfg.deterministic_test = true;
+        if (std::strncmp(arg, "--platform=", 11) == 0) {
+            if (!copy_cstr_bounded(out_cfg->platform_backend, sizeof(out_cfg->platform_backend), arg + 11)) {
+                set_error(out_result, "Platform backend name too long.");
+                return -1;
+            }
+            continue;
+        }
+        if (std::strncmp(arg, "--tickrate=", 11) == 0) {
+            u32 rate = 0u;
+            if (!parse_u32_range(arg + 11, 0u, 1000000u, rate)) {
+                set_error(out_result, "Invalid --tickrate value.");
+                return -1;
+            }
+            out_cfg->tick_rate_hz = rate;
+            continue;
+        }
+        if (std::strcmp(arg, "--demo") == 0) {
+            out_cfg->demo_mode = 1u;
+            continue;
+        }
+        if (std::strcmp(arg, "--devmode") == 0) {
+            out_cfg->dev_mode = 1u;
+            out_cfg->deterministic_test = 1u;
+            continue;
+        }
+        if (std::strcmp(arg, "--deterministic-test") == 0) {
+            out_cfg->deterministic_test = 1u;
             continue;
         }
         if (std::strncmp(arg, "--record-replay=", 16) == 0) {
-            cfg.replay_record_path = std::string(arg + 16);
+            if (!copy_cstr_bounded(out_cfg->replay_record_path, sizeof(out_cfg->replay_record_path), arg + 16)) {
+                set_error(out_result, "Replay record path too long.");
+                return -1;
+            }
             continue;
         }
         if (std::strncmp(arg, "--play-replay=", 14) == 0) {
-            cfg.replay_play_path = std::string(arg + 14);
+            if (!copy_cstr_bounded(out_cfg->replay_play_path, sizeof(out_cfg->replay_play_path), arg + 14)) {
+                set_error(out_result, "Replay playback path too long.");
+                return -1;
+            }
             continue;
         }
-    }
-    return true;
-}
+        if (std::strncmp(arg, "--replay-strict-content=", 24) == 0) {
+            u32 flag = 0u;
+            if (!parse_u32_range(arg + 24, 0u, 1u, flag)) {
+                set_error(out_result, "Invalid --replay-strict-content value; expected 0|1.");
+                return -1;
+            }
+            out_cfg->replay_strict_content = flag;
+            continue;
+        }
+        if (std::strncmp(arg, "--save=", 7) == 0) {
+            if (!copy_cstr_bounded(out_cfg->save_path, sizeof(out_cfg->save_path), arg + 7)) {
+                set_error(out_result, "Save path too long.");
+                return -1;
+            }
+            continue;
+        }
+        if (std::strncmp(arg, "--load=", 7) == 0) {
+            if (!copy_cstr_bounded(out_cfg->load_path, sizeof(out_cfg->load_path), arg + 7)) {
+                set_error(out_result, "Load path too long.");
+                return -1;
+            }
+            continue;
+        }
 
-} // namespace dom
-
-int main(int argc, char **argv) {
-    dom::GameConfig cfg;
-    dom::DomGameApp app;
-    dom::ProfileCli profile_cli;
-    std::string profile_err;
-
-    dom::init_default_profile_cli(profile_cli);
-    if (!dom::parse_profile_cli_args(argc, argv, profile_cli, profile_err)) {
-        std::printf("Error: %s\n", profile_err.c_str());
-        return 2;
-    }
-
-    {
-        bool smoke_gui = false;
-        int i;
-        for (i = 1; i < argc; ++i) {
-            const char* arg = argv[i];
-            if (!arg) {
+        {
+            char key[DOM_GAME_BACKEND_MAX];
+            const char *val = 0;
+            if (parse_sys_override(arg, key, sizeof(key), &val)) {
+                if (!val || !val[0]) {
+                    set_error(out_result, "Invalid --sys.* override; backend name required.");
+                    return -1;
+                }
+                if (str_ieq(key, "gfx")) {
+                    if (!copy_cstr_bounded(out_cfg->gfx_backend, sizeof(out_cfg->gfx_backend), val)) {
+                        set_error(out_result, "Gfx backend name too long.");
+                        return -1;
+                    }
+                } else if (str_ieq(key, "dsys") || str_ieq(key, "platform")) {
+                    if (!copy_cstr_bounded(out_cfg->platform_backend, sizeof(out_cfg->platform_backend), val)) {
+                        set_error(out_result, "Platform backend name too long.");
+                        return -1;
+                    }
+                }
                 continue;
             }
-            if (std::strcmp(arg, "--smoke-gui") == 0) {
-                smoke_gui = true;
-                break;
-            }
         }
-        if (smoke_gui) {
-            return run_game_smoke_gui(profile_cli);
+
+        if (std::strncmp(arg, "--launcher-", 11) == 0) {
+            continue;
+        }
+        if (std::strncmp(arg, "--role=", 7) == 0 ||
+            std::strncmp(arg, "--display=", 10) == 0 ||
+            std::strncmp(arg, "--universe=", 11) == 0) {
+            continue;
+        }
+
+        if (std::strcmp(arg, "--print-caps") == 0 ||
+            std::strcmp(arg, "--print-selection") == 0 ||
+            std::strncmp(arg, "--profile=", 10) == 0 ||
+            std::strncmp(arg, "--lockstep-strict=", 18) == 0 ||
+            std::strncmp(arg, "--sys.", 6) == 0) {
+            continue;
+        }
+
+        {
+            char buf[128];
+            std::snprintf(buf, sizeof(buf), "Unknown argument '%s'.", arg);
+            set_error(out_result, buf);
+            return -1;
         }
     }
 
-    if (profile_cli.print_caps) {
-        dom::print_caps(stdout);
-        return 0;
-    }
-    if (profile_cli.print_selection) {
-        dom::print_caps(stdout);
-        return dom::print_selection(profile_cli.profile, stdout, stderr);
+    if (out_cfg->replay_record_path[0] && out_cfg->replay_play_path[0]) {
+        set_error(out_result, "Cannot use --record-replay and --play-replay together.");
+        return -1;
     }
 
-    dom::init_default_game_config(cfg);
-    if (!dom::parse_game_cli_args(argc, argv, cfg)) {
+    if (out_cfg->server_mode == DOM_GAME_SERVER_DEDICATED) {
+        out_cfg->mode = DOM_GAME_MODE_HEADLESS;
+    }
+
+    return 0;
+}
+
+void dom_game_cli_print_help(FILE *out) {
+    if (!out) {
+        out = stdout;
+    }
+    std::fprintf(out, "Dominium game CLI\n");
+    std::fprintf(out, "Usage: game_dominium [options]\n");
+    std::fprintf(out, "  --mode=gui|tui|headless\n");
+    std::fprintf(out, "  --server=off|listen|dedicated\n");
+    std::fprintf(out, "  --connect=<addr[:port]>  --port=<u16>\n");
+    std::fprintf(out, "  --home=<path>  --instance=<id>  --profile=compat|baseline|perf\n");
+    std::fprintf(out, "  --gfx=<backend>  --sys.<subsystem>=<backend>  --tickrate=<ups>\n");
+    std::fprintf(out, "  --lockstep-strict=0|1  --deterministic-test\n");
+    std::fprintf(out, "  --record-replay=<path>  --play-replay=<path>  --replay-strict-content=0|1\n");
+    std::fprintf(out, "  --save=<path>  --load=<path>\n");
+    std::fprintf(out, "  --capabilities  --print-caps  --print-selection  --introspect-json\n");
+    std::fprintf(out, "  --help  --version\n");
+}
+
+int dom_game_cli_print_caps(FILE *out) {
+    dom::print_caps(out ? out : stdout);
+    return 0;
+}
+
+int dom_game_cli_print_selection(const dom_profile *profile, FILE *out, FILE *err) {
+    if (!profile) {
+        return 2;
+    }
+    dom::print_caps(out ? out : stdout);
+    return dom::print_selection(*profile, out, err);
+}
+
+int dom_game_cli_print_capabilities(FILE *out) {
+    const char *ver = dominium_get_game_version_string();
+    if (!out) {
+        out = stdout;
+    }
+    std::fprintf(out, "{\n");
+    std::fprintf(out, "  \"schema_version\": 1,\n");
+    std::fprintf(out, "  \"product\": \"dominium.game\",\n");
+    std::fprintf(out, "  \"version\": \"%s\",\n", ver ? ver : DOMINIUM_GAME_VERSION);
+    std::fprintf(out, "  \"modes\": [\"gui\", \"tui\", \"headless\"],\n");
+    std::fprintf(out, "  \"save_versions\": [1],\n");
+    std::fprintf(out, "  \"replay_versions\": [1],\n");
+    std::fprintf(out, "  \"content_pack_versions\": [1]\n");
+    std::fprintf(out, "}\n");
+    return 0;
+}
+
+int dom_game_cli_print_version(FILE *out) {
+    const char *ver = dominium_get_game_version_string();
+    if (!out) {
+        out = stdout;
+    }
+    std::fprintf(out, "%s\n", ver ? ver : DOMINIUM_GAME_VERSION);
+    return 0;
+}
+
+int dom_game_cli_print_introspect_json(FILE *out) {
+    if (!out) {
+        out = stdout;
+    }
+    dominium_print_product_info_json(dom_get_product_info_game(), out);
+    return 0;
+}
+
+int dom_game_run_config(const dom_game_config *cfg) {
+    dom::DomGameApp app;
+    if (!cfg) {
         return 1;
     }
-
-    if (!app.init_from_cli(cfg)) {
+    if (!app.init_from_cli(*cfg)) {
         return 1;
     }
-
     app.run();
     app.shutdown();
     return 0;
+}
+
+int dom_game_cli_dispatch(int argc, char **argv) {
+    dom_game_config cfg;
+    dom_game_cli_result res;
+
+    if (dom_game_cli_parse(argc, argv, &cfg, &res) != 0) {
+        if (res.error[0]) {
+            std::fprintf(stderr, "Error: %s\n", res.error);
+        }
+        return res.exit_code ? res.exit_code : 2;
+    }
+
+    if (res.want_help) {
+        dom_game_cli_print_help(stdout);
+        return 0;
+    }
+    if (res.want_version) {
+        return dom_game_cli_print_version(stdout);
+    }
+    if (res.want_capabilities) {
+        return dom_game_cli_print_capabilities(stdout);
+    }
+    if (res.want_introspect_json) {
+        return dom_game_cli_print_introspect_json(stdout);
+    }
+    if (res.want_print_caps) {
+        return dom_game_cli_print_caps(stdout);
+    }
+    if (res.want_print_selection) {
+        const int rc = dom_game_cli_print_selection(&cfg.profile, stdout, stderr);
+        return (rc == 0) ? 0 : 2;
+    }
+    if (res.want_smoke_gui) {
+        return run_game_smoke_gui(cfg.profile);
+    }
+
+    return dom_game_run_config(&cfg);
+}
+
+} /* extern "C" */
+
+int main(int argc, char **argv) {
+    return dom_game_cli_dispatch(argc, argv);
 }

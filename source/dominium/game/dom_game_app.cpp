@@ -613,18 +613,18 @@ DomGameApp::~DomGameApp() {
     shutdown();
 }
 
-bool DomGameApp::init_from_cli(const GameConfig &cfg) {
+bool DomGameApp::init_from_cli(const dom_game_config &cfg) {
     shutdown();
 
-    m_mode = cfg.mode;
-    m_server_mode = cfg.server_mode;
-    m_demo_mode = cfg.demo_mode;
+    m_mode = static_cast<GameMode>(cfg.mode);
+    m_server_mode = static_cast<ServerMode>(cfg.server_mode);
+    m_demo_mode = (cfg.demo_mode != 0u);
     m_connect_addr = cfg.connect_addr;
     m_net_port = cfg.net_port;
     m_tick_rate_hz = cfg.tick_rate_hz ? cfg.tick_rate_hz : DEFAULT_TICK_RATE;
     m_compat_read_only = false;
     m_compat_limited = false;
-    m_dev_mode = cfg.dev_mode;
+    m_dev_mode = (cfg.dev_mode != 0u);
     m_detmode = cfg.deterministic_test ? 3u : 0u;
     m_replay_record_path = cfg.replay_record_path;
     m_replay_play_path = cfg.replay_play_path;
@@ -652,7 +652,7 @@ bool DomGameApp::init_from_cli(const GameConfig &cfg) {
     }
 
     {
-        const char *sys_backend = cfg.platform_backend.empty() ? "win32" : cfg.platform_backend.c_str();
+        const char *sys_backend = (cfg.platform_backend[0] == '\0') ? "win32" : cfg.platform_backend;
         std::printf("DomGameApp: initializing system backend '%s'\n", sys_backend);
         if (!d_system_init(sys_backend)) {
             std::printf("DomGameApp: system init failed\n");
@@ -661,7 +661,7 @@ bool DomGameApp::init_from_cli(const GameConfig &cfg) {
     }
 
     if (m_mode != GAME_MODE_HEADLESS) {
-        const char *gfx_backend = cfg.gfx_backend.empty() ? "soft" : cfg.gfx_backend.c_str();
+        const char *gfx_backend = (cfg.gfx_backend[0] == '\0') ? "soft" : cfg.gfx_backend;
         std::printf("DomGameApp: initializing gfx backend '%s'\n", gfx_backend);
         if (!d_gfx_init(gfx_backend)) {
             std::printf("DomGameApp: gfx init failed\n");
@@ -679,8 +679,8 @@ bool DomGameApp::init_from_cli(const GameConfig &cfg) {
     }
 
     {
-        const bool auto_start = (cfg.server_mode != SERVER_OFF) || !cfg.connect_addr.empty() ||
-                                (cfg.mode == GAME_MODE_HEADLESS);
+        const bool auto_start = (cfg.server_mode != DOM_GAME_SERVER_OFF) || (cfg.connect_addr[0] != '\0') ||
+                                (cfg.mode == DOM_GAME_MODE_HEADLESS);
         m_state_id = auto_start ? GAME_STATE_LOADING : GAME_STATE_BOOT;
     }
     m_state = create_state(m_state_id);
@@ -745,7 +745,7 @@ void DomGameApp::request_exit() {
     m_running = false;
 }
 
-bool DomGameApp::init_paths(const GameConfig &cfg) {
+bool DomGameApp::init_paths(const dom_game_config &cfg) {
     std::string home = cfg.dominium_home;
     const char *env_home;
 
@@ -770,8 +770,8 @@ bool DomGameApp::init_paths(const GameConfig &cfg) {
     return resolve_paths(m_paths, home);
 }
 
-bool DomGameApp::load_instance(const GameConfig &cfg) {
-    m_instance.id = cfg.instance_id.empty() ? "demo" : cfg.instance_id;
+bool DomGameApp::load_instance(const dom_game_config &cfg) {
+    m_instance.id = cfg.instance_id[0] ? cfg.instance_id : "demo";
 
     if (!m_instance.load(m_paths)) {
         apply_default_instance_values(m_instance);
@@ -783,14 +783,14 @@ bool DomGameApp::load_instance(const GameConfig &cfg) {
     return true;
 }
 
-bool DomGameApp::evaluate_compatibility(const GameConfig &cfg) {
+bool DomGameApp::evaluate_compatibility(const dom_game_config &cfg) {
     ProductInfo prod;
     CompatResult res;
 
     prod.product = "game";
-    if (!cfg.connect_addr.empty()) {
+    if (cfg.connect_addr[0] != '\0') {
         prod.role_detail = "client";
-    } else if (cfg.server_mode != SERVER_OFF) {
+    } else if (cfg.server_mode != DOM_GAME_SERVER_OFF) {
         prod.role_detail = "server";
     } else {
         prod.role_detail = "client";
@@ -808,13 +808,13 @@ bool DomGameApp::evaluate_compatibility(const GameConfig &cfg) {
     return true;
 }
 
-bool DomGameApp::init_session(const GameConfig &cfg) {
+bool DomGameApp::init_session(const dom_game_config &cfg) {
     SessionConfig scfg;
     scfg.platform_backend = cfg.platform_backend;
     scfg.gfx_backend = cfg.gfx_backend;
     scfg.audio_backend = std::string();
-    scfg.headless = (cfg.mode == GAME_MODE_HEADLESS);
-    scfg.tui = (cfg.mode == GAME_MODE_TUI);
+    scfg.headless = (cfg.mode == DOM_GAME_MODE_HEADLESS);
+    scfg.tui = (cfg.mode == DOM_GAME_MODE_TUI);
     if (!m_session.init(m_paths, m_instance, scfg)) {
         return false;
     }
@@ -867,15 +867,15 @@ bool DomGameApp::init_session(const GameConfig &cfg) {
         if (!m_net.init_single(m_tick_rate_hz)) {
             return false;
         }
-    } else if (!cfg.connect_addr.empty()) {
+    } else if (cfg.connect_addr[0] != '\0') {
         if (!m_net.init_client(m_tick_rate_hz, cfg.connect_addr)) {
             return false;
         }
-    } else if (cfg.server_mode == SERVER_LISTEN) {
+    } else if (cfg.server_mode == DOM_GAME_SERVER_LISTEN) {
         if (!m_net.init_listen(m_tick_rate_hz, cfg.net_port)) {
             return false;
         }
-    } else if (cfg.server_mode == SERVER_DEDICATED) {
+    } else if (cfg.server_mode == DOM_GAME_SERVER_DEDICATED) {
         if (!m_net.init_dedicated(m_tick_rate_hz, cfg.net_port)) {
             return false;
         }
@@ -889,7 +889,7 @@ bool DomGameApp::init_session(const GameConfig &cfg) {
     return true;
 }
 
-bool DomGameApp::init_views_and_ui(const GameConfig &cfg) {
+bool DomGameApp::init_views_and_ui(const dom_game_config &cfg) {
     d_view_desc desc;
     (void)cfg;
 
