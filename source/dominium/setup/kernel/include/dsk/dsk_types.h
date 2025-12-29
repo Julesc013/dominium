@@ -1,6 +1,8 @@
 #ifndef DSK_TYPES_H
 #define DSK_TYPES_H
 
+#include "dsk_forbidden_includes.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
