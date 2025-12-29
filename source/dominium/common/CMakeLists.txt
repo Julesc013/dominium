@@ -25,6 +25,15 @@ target_include_directories(core_err
         ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
+add_library(core_log STATIC
+    core_log.c
+)
+target_include_directories(core_log
+    PUBLIC
+        ${DOMINIUM_INCLUDE_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
 add_library(dominium_common STATIC
     dominium_product_manifest.c
     dominium_version.c
