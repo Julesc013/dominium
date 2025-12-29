@@ -35,6 +35,9 @@ extern "C" {
 #include "struct/d_struct.h"
 }
 
+struct dom_game_replay_record;
+struct dom_game_replay_play;
+
 namespace dom {
 
 enum GameMode {
@@ -164,6 +167,8 @@ private:
     std::string  m_save_path;
     std::string  m_load_path;
     u32          m_replay_last_tick;
+    dom_game_replay_record *m_replay_record;
+    dom_game_replay_play *m_replay_play;
     void        *m_net_replay_user;
     u64          m_last_wall_us;
     bool         m_show_debug_panel;

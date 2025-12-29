@@ -23,7 +23,8 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "dom_game_ui_debug.h"
 #include "dom_game_save.h"
 #include "runtime/dom_game_save.h"
-#include "dom_game_replay.h"
+#include "runtime/dom_game_replay.h"
+#include "runtime/dom_game_content_id.h"
 #include "dom_game_tools_build.h"
 #include "dominium/version.h"
 #include "dominium/paths.h"
@@ -49,7 +50,7 @@ extern "C" {
 }
 
 struct DomNetReplayRecorder {
-    d_replay_context *replay;
+    dom_game_replay_record *record;
 };
 
 extern "C" void dom_net_replay_tick_observer(
@@ -60,20 +61,15 @@ extern "C" void dom_net_replay_tick_observer(
     u32              cmd_count
 ) {
     DomNetReplayRecorder *rec = (DomNetReplayRecorder *)user;
-    std::vector<d_net_input_frame> inputs;
-    std::vector<unsigned char *> bufs;
     u32 i;
     (void)w;
 
-    if (!rec || !rec->replay || rec->replay->mode != DREPLAY_MODE_RECORD) {
+    if (!rec || !rec->record) {
         return;
     }
     if (!cmds || cmd_count == 0u) {
         return;
     }
-
-    inputs.resize(static_cast<size_t>(cmd_count));
-    bufs.resize(static_cast<size_t>(cmd_count), (unsigned char *)0);
 
     for (i = 0u; i < cmd_count; ++i) {
         unsigned cap = 2048u;
@@ -100,33 +96,12 @@ extern "C" void dom_net_replay_tick_observer(
         }
 
         if (rc != 0 || !buf || out_size == 0u) {
-            for (i = 0u; i < (u32)bufs.size(); ++i) {
-                if (bufs[i]) {
-                    std::free(bufs[i]);
-                    bufs[i] = (unsigned char *)0;
-                }
-            }
             return;
         }
 
-        bufs[i] = buf;
-        std::memset(&inputs[i], 0, sizeof(inputs[i]));
-        inputs[i].tick_index = cmds[i].tick;
-        inputs[i].player_id = (u32)cmds[i].source_peer;
-        inputs[i].payload_size = out_size;
-        inputs[i].payload = (u8 *)buf;
-    }
-
-    (void)d_replay_record_frame(rec->replay,
-                                tick,
-                                &inputs[0],
-                                cmd_count);
-
-    for (i = 0u; i < (u32)bufs.size(); ++i) {
-        if (bufs[i]) {
-            std::free(bufs[i]);
-            bufs[i] = (unsigned char *)0;
-        }
+        (void)dom_game_replay_record_write_cmd(rec->record, (u64)tick, buf, out_size);
+        std::free(buf);
+        buf = (unsigned char *)0;
     }
 }
 
@@ -594,6 +569,8 @@ DomGameApp::DomGameApp()
       m_detmode(0u),
       m_last_hash(0u),
       m_replay_last_tick(0u),
+      m_replay_record(0),
+      m_replay_play(0),
       m_net_replay_user(0),
       m_runtime(0),
       m_last_wall_us(0u),
@@ -720,14 +697,6 @@ void DomGameApp::shutdown() {
 
     dui_shutdown_context(&m_ui_ctx);
 
-    /* Flush replay recording before shutting down the session (which frees replay state). */
-    if (!m_replay_record_path.empty() && m_session.replay() &&
-        m_session.replay()->mode == DREPLAY_MODE_RECORD) {
-        if (!game_save_replay(m_session.replay(), m_replay_record_path)) {
-            std::printf("DomGameApp: failed to write replay '%s'\n", m_replay_record_path.c_str());
-        }
-    }
-
     if (!m_save_path.empty() && m_runtime) {
         const int rc = dom_game_runtime_save(m_runtime, m_save_path.c_str());
         if (rc != DOM_GAME_SAVE_OK) {
@@ -740,6 +709,14 @@ void DomGameApp::shutdown() {
     if (m_net_replay_user) {
         delete (struct DomNetReplayRecorder *)m_net_replay_user;
         m_net_replay_user = 0;
+    }
+    if (m_replay_record) {
+        dom_game_replay_record_close(m_replay_record);
+        m_replay_record = 0;
+    }
+    if (m_replay_play) {
+        dom_game_replay_play_close(m_replay_play);
+        m_replay_play = 0;
     }
     m_replay_last_tick = 0u;
 
@@ -845,6 +822,14 @@ bool DomGameApp::init_session(const dom_game_config &cfg) {
         delete (struct DomNetReplayRecorder *)m_net_replay_user;
         m_net_replay_user = 0;
     }
+    if (m_replay_record) {
+        dom_game_replay_record_close(m_replay_record);
+        m_replay_record = 0;
+    }
+    if (m_replay_play) {
+        dom_game_replay_play_close(m_replay_play);
+        m_replay_play = 0;
+    }
     m_replay_last_tick = 0u;
 
     /* Choose/create a default org for ownership + research (demo/product-side). */
@@ -863,27 +848,73 @@ bool DomGameApp::init_session(const dom_game_config &cfg) {
 
     /* Replay integration: record or playback command stream. */
     if (!m_replay_play_path.empty()) {
-        if (!game_load_replay(m_replay_play_path, m_session.replay())) {
-            std::printf("DomGameApp: failed to load replay '%s'\n", m_replay_play_path.c_str());
+        dom_game_replay_desc rdesc;
+        std::memset(&rdesc, 0, sizeof(rdesc));
+        rdesc.struct_size = sizeof(rdesc);
+        rdesc.struct_version = DOM_GAME_REPLAY_DESC_VERSION;
+        m_replay_play = dom_game_replay_play_open(m_replay_play_path.c_str(), &rdesc);
+        if (!m_replay_play) {
+            if (rdesc.error_code == DOM_GAME_REPLAY_ERR_MIGRATION) {
+                std::printf("DomGameApp: replay migration required (version=%u)\n",
+                            (unsigned)rdesc.container_version);
+            } else {
+                std::printf("DomGameApp: failed to load replay '%s'\n", m_replay_play_path.c_str());
+            }
             return false;
         }
-        m_replay_last_tick = game_replay_last_tick(m_session.replay());
+        if (rdesc.ups == 0u || rdesc.ups != m_tick_rate_hz) {
+            std::printf("DomGameApp: replay ups mismatch (file=%u runtime=%u)\n",
+                        (unsigned)rdesc.ups, (unsigned)m_tick_rate_hz);
+            dom_game_replay_play_close(m_replay_play);
+            m_replay_play = 0;
+            return false;
+        }
+        if (cfg.replay_strict_content &&
+            !dom_game_content_match_tlv(&m_session, rdesc.content_tlv, rdesc.content_tlv_len)) {
+            std::printf("DomGameApp: replay content identity mismatch\n");
+            dom_game_replay_play_close(m_replay_play);
+            m_replay_play = 0;
+            return false;
+        }
+        {
+            const u64 last_tick = dom_game_replay_play_last_tick(m_replay_play);
+            if (last_tick > 0xffffffffull) {
+                std::printf("DomGameApp: replay tick index out of range (%llu)\n",
+                            (unsigned long long)last_tick);
+                dom_game_replay_play_close(m_replay_play);
+                m_replay_play = 0;
+                return false;
+            }
+            m_replay_last_tick = (u32)last_tick;
+        }
         (void)d_net_cmd_queue_init();
     } else if (!m_replay_record_path.empty()) {
-        if (d_replay_init_record(m_session.replay(), 1024u) != 0) {
+        std::vector<unsigned char> content_tlv;
+        u64 seed = (u64)m_instance.world_seed;
+        const d_world *world = m_session.world();
+        if (world) {
+            seed = (u64)world->meta.seed;
+        }
+        (void)dom_game_content_build_tlv(&m_session, content_tlv);
+        m_replay_record = dom_game_replay_record_open(m_replay_record_path.c_str(),
+                                                      m_tick_rate_hz,
+                                                      seed,
+                                                      content_tlv.empty() ? (const unsigned char *)0 : &content_tlv[0],
+                                                      (u32)content_tlv.size());
+        if (!m_replay_record) {
             std::printf("DomGameApp: failed to init replay record\n");
             return false;
         }
         {
             struct DomNetReplayRecorder *rec = new DomNetReplayRecorder();
-            rec->replay = m_session.replay();
+            rec->record = m_replay_record;
             m_net_replay_user = rec;
             d_net_set_tick_cmds_observer(dom_net_replay_tick_observer, rec);
         }
     }
 
     /* Network roles: client, host/listen, or single. */
-    if (m_session.replay() && m_session.replay()->mode == DREPLAY_MODE_PLAYBACK) {
+    if (m_replay_play) {
         if (!m_net.init_single(m_tick_rate_hz)) {
             return false;
         }
@@ -923,6 +954,9 @@ bool DomGameApp::init_session(const dom_game_config &cfg) {
         m_runtime = dom_game_runtime_create(&rdesc);
         if (!m_runtime) {
             return false;
+        }
+        if (m_replay_play) {
+            (void)dom_game_runtime_set_replay_playback(m_runtime, m_replay_play);
         }
         if (m_replay_last_tick > 0u) {
             (void)dom_game_runtime_set_replay_last_tick(m_runtime, m_replay_last_tick);

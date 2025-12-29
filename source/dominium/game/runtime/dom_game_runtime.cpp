@@ -14,18 +14,17 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "runtime/dom_game_runtime.h"
 
 #include <cstring>
-#include <vector>
 
 #include "dom_game_net.h"
 #include "dom_instance.h"
 #include "dom_session.h"
 #include "runtime/dom_game_hash.h"
+#include "runtime/dom_game_replay.h"
 
 extern "C" {
 #include "ai/d_agent.h"
 #include "net/d_net_cmd.h"
 #include "net/d_net_transport.h"
-#include "replay/d_replay.h"
 #include "struct/d_struct.h"
 }
 
@@ -36,9 +35,9 @@ struct dom_game_runtime {
     u32 ups;
     double dt_s;
     u64 wall_accum_us;
+    void *replay_play;
     u32 replay_last_tick;
     int replay_last_tick_valid;
-    std::vector<d_net_input_frame> replay_inputs;
 };
 
 namespace {
@@ -69,40 +68,36 @@ static u64 compute_seed(dom::DomSession *session, const dom::InstanceInfo *inst)
     return inst ? (u64)inst->world_seed : 0ull;
 }
 
-static int inject_replay(dom_game_runtime *rt, d_sim_context *sim, d_replay_context *replay) {
-    if (!rt || !sim || !replay) {
+static int inject_replay(dom_game_runtime *rt, d_sim_context *sim) {
+    const dom_game_replay_packet *packets = (const dom_game_replay_packet *)0;
+    u32 count = 0u;
+    const u64 next_tick = (u64)sim->tick_index + 1ull;
+    int rc;
+    u32 i;
+
+    if (!rt || !sim) {
         return DOM_GAME_RUNTIME_ERR;
     }
-    if (replay->mode != DREPLAY_MODE_PLAYBACK) {
+    if (!rt->replay_play) {
         return DOM_GAME_RUNTIME_OK;
     }
 
-    const u32 next_tick = sim->tick_index + 1u;
-    u32 count = 64u;
-    int grc;
-
-    if (rt->replay_inputs.size() < count) {
-        rt->replay_inputs.resize(count);
+    rc = dom_game_replay_play_next_for_tick((dom_game_replay_play *)rt->replay_play,
+                                            next_tick,
+                                            &packets,
+                                            &count);
+    if (rc == DOM_GAME_REPLAY_END) {
+        return DOM_GAME_RUNTIME_REPLAY_END;
+    }
+    if (rc != DOM_GAME_REPLAY_OK) {
+        return DOM_GAME_RUNTIME_ERR;
     }
 
-    grc = d_replay_get_frame(replay, next_tick, &rt->replay_inputs[0], &count);
-    if (grc == -3 && count > 0u) {
-        rt->replay_inputs.resize(count);
-        grc = d_replay_get_frame(replay, next_tick, &rt->replay_inputs[0], &count);
+    for (i = 0u; i < count; ++i) {
+        (void)d_net_receive_packet(0u, 0u, packets[i].payload, packets[i].size);
     }
 
-    if (grc == 0) {
-        u32 i;
-        for (i = 0u; i < count; ++i) {
-            (void)d_net_receive_packet(0u,
-                                       (d_peer_id)rt->replay_inputs[i].player_id,
-                                       rt->replay_inputs[i].payload,
-                                       (u32)rt->replay_inputs[i].payload_size);
-        }
-        return DOM_GAME_RUNTIME_OK;
-    }
-
-    if (grc == -2 && rt->replay_last_tick_valid && next_tick > rt->replay_last_tick) {
+    if (count == 0u && rt->replay_last_tick_valid && next_tick > (u64)rt->replay_last_tick) {
         return DOM_GAME_RUNTIME_REPLAY_END;
     }
 
@@ -128,6 +123,7 @@ dom_game_runtime *dom_game_runtime_create(const dom_game_runtime_init_desc *desc
     rt->ups = desc->ups ? desc->ups : DEFAULT_UPS;
     rt->dt_s = (rt->ups > 0u) ? (1.0 / (double)rt->ups) : (1.0 / 60.0);
     rt->wall_accum_us = 0u;
+    rt->replay_play = 0;
     rt->replay_last_tick = 0u;
     rt->replay_last_tick_valid = 0;
     return rt;
@@ -146,6 +142,14 @@ int dom_game_runtime_set_replay_last_tick(dom_game_runtime *rt, u32 last_tick) {
     }
     rt->replay_last_tick = last_tick;
     rt->replay_last_tick_valid = (last_tick > 0u) ? 1 : 0;
+    return DOM_GAME_RUNTIME_OK;
+}
+
+int dom_game_runtime_set_replay_playback(dom_game_runtime *rt, void *playback) {
+    if (!rt) {
+        return DOM_GAME_RUNTIME_ERR;
+    }
+    rt->replay_play = playback;
     return DOM_GAME_RUNTIME_OK;
 }
 
@@ -183,7 +187,6 @@ int dom_game_runtime_step(dom_game_runtime *rt) {
     dom::DomSession *session;
     d_world *w;
     d_sim_context *sim;
-    d_replay_context *replay;
     int rc;
 
     if (!rt) {
@@ -196,16 +199,13 @@ int dom_game_runtime_step(dom_game_runtime *rt) {
     }
     w = session->world();
     sim = session->sim();
-    replay = session->replay();
     if (!w || !sim) {
         return DOM_GAME_RUNTIME_ERR;
     }
 
-    if (replay && replay->mode == DREPLAY_MODE_PLAYBACK) {
-        rc = inject_replay(rt, sim, replay);
-        if (rc != DOM_GAME_RUNTIME_OK) {
-            return rc;
-        }
+    rc = inject_replay(rt, sim);
+    if (rc != DOM_GAME_RUNTIME_OK) {
+        return rc;
     }
 
     if (d_sim_step(sim, 1u) != 0) {

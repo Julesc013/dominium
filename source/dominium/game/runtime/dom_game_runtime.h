@@ -79,6 +79,7 @@ const void *dom_game_runtime_session(const dom_game_runtime *rt);
 const void *dom_game_runtime_instance(const dom_game_runtime *rt);
 
 int dom_game_runtime_set_replay_last_tick(dom_game_runtime *rt, u32 last_tick);
+int dom_game_runtime_set_replay_playback(dom_game_runtime *rt, void *playback);
 
 #ifdef __cplusplus
 } /* extern "C" */
