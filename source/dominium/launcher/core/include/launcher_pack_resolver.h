@@ -19,6 +19,8 @@ extern "C" {
 #include "launcher_core_api.h"
 }
 
+#include "dominium/core_err.h"
+
 #include "launcher_instance.h"
 #include "launcher_pack_manifest.h"
 
@@ -53,12 +55,21 @@ bool launcher_pack_resolve_enabled(const launcher_services_api_v1* services,
                                    const std::string& state_root_override,
                                    std::vector<LauncherResolvedPack>& out_ordered,
                                    std::string* out_error);
+bool launcher_pack_resolve_enabled_ex(const launcher_services_api_v1* services,
+                                      const LauncherInstanceManifest& manifest,
+                                      const std::string& state_root_override,
+                                      std::vector<LauncherResolvedPack>& out_ordered,
+                                      err_t* out_err);
 
 /* Simulation safety: refuses when any enabled, sim-affecting pack is missing, mismatched, or cannot be validated. */
 bool launcher_pack_validate_simulation_safety(const launcher_services_api_v1* services,
                                               const LauncherInstanceManifest& manifest,
                                               const std::string& state_root_override,
                                               std::string* out_error);
+bool launcher_pack_validate_simulation_safety_ex(const launcher_services_api_v1* services,
+                                                 const LauncherInstanceManifest& manifest,
+                                                 const std::string& state_root_override,
+                                                 err_t* out_err);
 
 /* Deterministic summary string for audit/logging (comma-separated pack ids in resolved order). */
 std::string launcher_pack_resolved_order_summary(const std::vector<LauncherResolvedPack>& ordered);
@@ -67,4 +78,3 @@ std::string launcher_pack_resolved_order_summary(const std::vector<LauncherResol
 } /* namespace dom */
 
 #endif /* DOMINIUM_LAUNCHER_CORE_LAUNCHER_PACK_RESOLVER_H */
-
