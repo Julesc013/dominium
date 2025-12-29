@@ -17,6 +17,7 @@ add_library(dsk_kernel STATIC
     kernel/src/digest/dsk_digest.cpp
     kernel/src/errors/dsk_error.cpp
     kernel/src/audit/dsk_audit.cpp
+    kernel/src/splat/dsk_splat_caps.cpp
     kernel/src/splat/dsk_splat_registry.cpp
     kernel/src/splat/dsk_splat_select.cpp
     kernel/src/contracts/dsk_contract_manifest.cpp
