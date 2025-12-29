@@ -8,10 +8,15 @@
 #define DSK_TLV_TAG_MANIFEST_PRODUCT_ID 0x1001u
 #define DSK_TLV_TAG_MANIFEST_VERSION 0x1002u
 #define DSK_TLV_TAG_MANIFEST_BUILD_ID 0x1003u
-#define DSK_TLV_TAG_MANIFEST_PLATFORM_TARGETS 0x1004u
+#define DSK_TLV_TAG_MANIFEST_SUPPORTED_TARGETS 0x1004u
 #define DSK_TLV_TAG_MANIFEST_COMPONENTS 0x1005u
+#define DSK_TLV_TAG_MANIFEST_ALLOWED_SPLATS 0x1006u
+#define DSK_TLV_TAG_MANIFEST_TARGET_RULES 0x1007u
+
+#define DSK_TLV_TAG_MANIFEST_PLATFORM_TARGETS DSK_TLV_TAG_MANIFEST_SUPPORTED_TARGETS
 
 #define DSK_TLV_TAG_PLATFORM_ENTRY 0x1101u
+#define DSK_TLV_TAG_ALLOWED_SPLAT_ENTRY 0x1102u
 
 #define DSK_TLV_TAG_COMPONENT_ENTRY 0x1201u
 #define DSK_TLV_TAG_COMPONENT_ID 0x1202u
@@ -35,9 +40,15 @@
 #define DSK_TLV_TAG_REQUEST_INSTALL_SCOPE 0x2004u
 #define DSK_TLV_TAG_REQUEST_PREFERRED_INSTALL_ROOT 0x2005u
 #define DSK_TLV_TAG_REQUEST_UI_MODE 0x2006u
-#define DSK_TLV_TAG_REQUEST_REQUESTED_SPLAT 0x2007u
+#define DSK_TLV_TAG_REQUEST_REQUESTED_SPLAT_ID 0x2007u
 #define DSK_TLV_TAG_REQUEST_POLICY_FLAGS 0x2008u
-#define DSK_TLV_TAG_REQUEST_PLATFORM_TRIPLE 0x2009u
+#define DSK_TLV_TAG_REQUEST_TARGET_PLATFORM_TRIPLE 0x2009u
+#define DSK_TLV_TAG_REQUEST_REQUIRED_CAPS 0x200Au
+#define DSK_TLV_TAG_REQUEST_PROHIBITED_CAPS 0x200Bu
+#define DSK_TLV_TAG_REQUEST_OWNERSHIP_PREFERENCE 0x200Cu
+
+#define DSK_TLV_TAG_REQUEST_REQUESTED_SPLAT DSK_TLV_TAG_REQUEST_REQUESTED_SPLAT_ID
+#define DSK_TLV_TAG_REQUEST_PLATFORM_TRIPLE DSK_TLV_TAG_REQUEST_TARGET_PLATFORM_TRIPLE
 
 #define DSK_TLV_TAG_REQUESTED_COMPONENT_ENTRY 0x2010u
 #define DSK_TLV_TAG_EXCLUDED_COMPONENT_ENTRY 0x2011u
@@ -106,6 +117,11 @@
 #define DSK_POLICY_LEGACY_MODE 0x00000004u
 #define DSK_POLICY_VERIFY_ONLY 0x00000008u
 
+#define DSK_OWNERSHIP_ANY 0u
+#define DSK_OWNERSHIP_PORTABLE 1u
+#define DSK_OWNERSHIP_PKG 2u
+#define DSK_OWNERSHIP_STEAM 3u
+
 #ifdef __cplusplus
 #include <string>
 #include <vector>
@@ -129,7 +145,8 @@ struct dsk_manifest_t {
     std::string product_id;
     std::string version;
     std::string build_id;
-    std::vector<std::string> platform_targets;
+    std::vector<std::string> supported_targets;
+    std::vector<std::string> allowed_splats;
     std::vector<dsk_manifest_component_t> components;
 };
 
@@ -140,9 +157,12 @@ struct dsk_request_t {
     dsk_u16 install_scope;
     std::string preferred_install_root;
     dsk_u16 ui_mode;
-    std::string requested_splat;
+    std::string requested_splat_id;
     dsk_u32 policy_flags;
-    std::string platform_triple;
+    dsk_u32 required_caps;
+    dsk_u32 prohibited_caps;
+    dsk_u16 ownership_preference;
+    std::string target_platform_triple;
 };
 
 struct dsk_installed_state_t {

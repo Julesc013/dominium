@@ -56,7 +56,8 @@ void dsk_manifest_clear(dsk_manifest_t *manifest) {
     manifest->product_id.clear();
     manifest->version.clear();
     manifest->build_id.clear();
-    manifest->platform_targets.clear();
+    manifest->supported_targets.clear();
+    manifest->allowed_splats.clear();
     manifest->components.clear();
 }
 
@@ -219,7 +220,8 @@ dsk_status_t dsk_manifest_parse(const dsk_u8 *data,
             st = dsk_parse_string(rec, &out_manifest->version);
         } else if (rec.type == DSK_TLV_TAG_MANIFEST_BUILD_ID) {
             st = dsk_parse_string(rec, &out_manifest->build_id);
-        } else if (rec.type == DSK_TLV_TAG_MANIFEST_PLATFORM_TARGETS ||
+        } else if (rec.type == DSK_TLV_TAG_MANIFEST_SUPPORTED_TARGETS ||
+                   rec.type == DSK_TLV_TAG_MANIFEST_ALLOWED_SPLATS ||
                    rec.type == DSK_TLV_TAG_MANIFEST_COMPONENTS) {
             dsk_tlv_stream_t list_stream;
             dsk_status_t lst;
@@ -231,7 +233,7 @@ dsk_status_t dsk_manifest_parse(const dsk_u8 *data,
                 return lst;
             }
 
-            if (rec.type == DSK_TLV_TAG_MANIFEST_PLATFORM_TARGETS) {
+            if (rec.type == DSK_TLV_TAG_MANIFEST_SUPPORTED_TARGETS) {
                 for (j = 0u; j < list_stream.record_count; ++j) {
                     const dsk_tlv_record_t &entry = list_stream.records[j];
                     if (entry.type != DSK_TLV_TAG_PLATFORM_ENTRY) {
@@ -244,7 +246,22 @@ dsk_status_t dsk_manifest_parse(const dsk_u8 *data,
                         dsk_tlv_view_destroy(&view);
                         return lst;
                     }
-                    out_manifest->platform_targets.push_back(platform);
+                    out_manifest->supported_targets.push_back(platform);
+                }
+            } else if (rec.type == DSK_TLV_TAG_MANIFEST_ALLOWED_SPLATS) {
+                for (j = 0u; j < list_stream.record_count; ++j) {
+                    const dsk_tlv_record_t &entry = list_stream.records[j];
+                    if (entry.type != DSK_TLV_TAG_ALLOWED_SPLAT_ENTRY) {
+                        continue;
+                    }
+                    std::string splat;
+                    lst = dsk_parse_string(entry, &splat);
+                    if (!dsk_error_is_ok(lst)) {
+                        dsk_tlv_stream_destroy(&list_stream);
+                        dsk_tlv_view_destroy(&view);
+                        return lst;
+                    }
+                    out_manifest->allowed_splats.push_back(splat);
                 }
             } else {
                 for (j = 0u; j < list_stream.record_count; ++j) {
@@ -279,7 +296,7 @@ dsk_status_t dsk_manifest_parse(const dsk_u8 *data,
     if (out_manifest->product_id.empty() ||
         out_manifest->version.empty() ||
         out_manifest->build_id.empty() ||
-        out_manifest->platform_targets.empty() ||
+        out_manifest->supported_targets.empty() ||
         out_manifest->components.empty()) {
         return dsk_contract_error(DSK_CODE_VALIDATION_ERROR, DSK_SUBCODE_MISSING_FIELD);
     }
@@ -334,7 +351,7 @@ dsk_status_t dsk_manifest_write(const dsk_manifest_t *manifest,
     st = dsk_tlv_builder_add_string(builder, DSK_TLV_TAG_MANIFEST_BUILD_ID, manifest->build_id.c_str());
     if (!dsk_error_is_ok(st)) goto done;
 
-    platforms = manifest->platform_targets;
+    platforms = manifest->supported_targets;
     std::sort(platforms.begin(), platforms.end(), dsk_string_less);
     {
         dsk_tlv_builder_t *list_builder = dsk_tlv_builder_create();
@@ -346,7 +363,28 @@ dsk_status_t dsk_manifest_write(const dsk_manifest_t *manifest,
         dsk_tlv_builder_destroy(list_builder);
         if (!dsk_error_is_ok(st)) goto done;
         st = dsk_tlv_builder_add_container(builder,
-                                           DSK_TLV_TAG_MANIFEST_PLATFORM_TARGETS,
+                                           DSK_TLV_TAG_MANIFEST_SUPPORTED_TARGETS,
+                                           list_payload.data,
+                                           list_payload.size);
+        dsk_tlv_buffer_free(&list_payload);
+        if (!dsk_error_is_ok(st)) goto done;
+    }
+
+    if (!manifest->allowed_splats.empty()) {
+        std::vector<std::string> allow = manifest->allowed_splats;
+        std::sort(allow.begin(), allow.end(), dsk_string_less);
+        dsk_tlv_builder_t *list_builder = dsk_tlv_builder_create();
+        dsk_tlv_buffer_t list_payload;
+        for (i = 0u; i < allow.size(); ++i) {
+            dsk_tlv_builder_add_string(list_builder,
+                                       DSK_TLV_TAG_ALLOWED_SPLAT_ENTRY,
+                                       allow[i].c_str());
+        }
+        st = dsk_tlv_builder_finalize_payload(list_builder, &list_payload);
+        dsk_tlv_builder_destroy(list_builder);
+        if (!dsk_error_is_ok(st)) goto done;
+        st = dsk_tlv_builder_add_container(builder,
+                                           DSK_TLV_TAG_MANIFEST_ALLOWED_SPLATS,
                                            list_payload.data,
                                            list_payload.size);
         dsk_tlv_buffer_free(&list_payload);

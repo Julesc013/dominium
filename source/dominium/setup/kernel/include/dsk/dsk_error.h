@@ -45,6 +45,7 @@ typedef dsk_error_t dsk_status_t;
 #define DSK_SUBCODE_INVALID_FIELD 8u
 #define DSK_SUBCODE_REQUEST_MISMATCH 9u
 #define DSK_SUBCODE_SPLAT_NOT_FOUND 10u
+#define DSK_SUBCODE_NO_COMPATIBLE_SPLAT 11u
 
 /* Flags */
 #define DSK_ERROR_FLAG_RETRYABLE 0x0001u
