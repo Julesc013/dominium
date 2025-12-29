@@ -37,11 +37,25 @@ typedef struct dsk_kernel_request_t {
 
 DSK_API void dsk_kernel_request_init(dsk_kernel_request_t *req);
 
+/* Extended request: adds optional structured log sink. */
+typedef struct dsk_kernel_request_ex_t {
+    dsk_kernel_request_t base;
+    dsk_byte_sink_t out_log;
+} dsk_kernel_request_ex_t;
+
+DSK_API void dsk_kernel_request_ex_init(dsk_kernel_request_ex_t *req);
+
 DSK_API dsk_status_t dsk_install(const dsk_kernel_request_t *req);
 DSK_API dsk_status_t dsk_repair(const dsk_kernel_request_t *req);
 DSK_API dsk_status_t dsk_uninstall(const dsk_kernel_request_t *req);
 DSK_API dsk_status_t dsk_verify(const dsk_kernel_request_t *req);
 DSK_API dsk_status_t dsk_status(const dsk_kernel_request_t *req);
+
+DSK_API dsk_status_t dsk_install_ex(const dsk_kernel_request_ex_t *req);
+DSK_API dsk_status_t dsk_repair_ex(const dsk_kernel_request_ex_t *req);
+DSK_API dsk_status_t dsk_uninstall_ex(const dsk_kernel_request_ex_t *req);
+DSK_API dsk_status_t dsk_verify_ex(const dsk_kernel_request_ex_t *req);
+DSK_API dsk_status_t dsk_status_ex(const dsk_kernel_request_ex_t *req);
 
 #ifdef __cplusplus
 } /* extern "C" */

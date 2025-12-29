@@ -106,7 +106,7 @@ static void print_json_summary(const dsk_audit_t &audit, dsk_status_t status) {
 static void print_usage(void) {
     std::printf("dominium-setup2 validate-manifest --in <file>\n");
     std::printf("dominium-setup2 validate-request --in <file>\n");
-    std::printf("dominium-setup2 run --manifest <file> --request <file> --out-state <file> --out-audit <file> [--json]\n");
+    std::printf("dominium-setup2 run --manifest <file> --request <file> --out-state <file> --out-audit <file> [--out-log <file>] [--json]\n");
     std::printf("options: --use-fake-services <sandbox_root>\n");
 }
 
@@ -191,13 +191,15 @@ int main(int argc, char **argv) {
         const char *request_path = get_arg_value(argc, argv, "--request");
         const char *out_state = get_arg_value(argc, argv, "--out-state");
         const char *out_audit = get_arg_value(argc, argv, "--out-audit");
+        const char *out_log = get_arg_value(argc, argv, "--out-log");
         int json = 0;
         std::vector<dsk_u8> manifest_bytes;
         std::vector<dsk_u8> request_bytes;
         dsk_request_t request;
-        dsk_kernel_request_t kernel_req;
+        dsk_kernel_request_ex_t kernel_req;
         dsk_mem_sink_t state_sink;
         dsk_mem_sink_t audit_sink;
+        dsk_mem_sink_t log_sink;
         dsk_status_t st;
         dsk_audit_t audit;
         int i;
@@ -227,33 +229,37 @@ int main(int argc, char **argv) {
             return dsk_error_to_exit_code(st);
         }
 
-        dsk_kernel_request_init(&kernel_req);
-        kernel_req.manifest_bytes = &manifest_bytes[0];
-        kernel_req.manifest_size = (dsk_u32)manifest_bytes.size();
-        kernel_req.request_bytes = &request_bytes[0];
-        kernel_req.request_size = (dsk_u32)request_bytes.size();
-        kernel_req.services = &services;
-        kernel_req.deterministic_mode = (request.policy_flags & DSK_POLICY_DETERMINISTIC) ? 1u : 0u;
-        kernel_req.out_state.user = &state_sink;
-        kernel_req.out_state.write = dsk_mem_sink_write;
-        kernel_req.out_audit.user = &audit_sink;
-        kernel_req.out_audit.write = dsk_mem_sink_write;
+        dsk_kernel_request_ex_init(&kernel_req);
+        kernel_req.base.manifest_bytes = &manifest_bytes[0];
+        kernel_req.base.manifest_size = (dsk_u32)manifest_bytes.size();
+        kernel_req.base.request_bytes = &request_bytes[0];
+        kernel_req.base.request_size = (dsk_u32)request_bytes.size();
+        kernel_req.base.services = &services;
+        kernel_req.base.deterministic_mode = (request.policy_flags & DSK_POLICY_DETERMINISTIC) ? 1u : 0u;
+        kernel_req.base.out_state.user = &state_sink;
+        kernel_req.base.out_state.write = dsk_mem_sink_write;
+        kernel_req.base.out_audit.user = &audit_sink;
+        kernel_req.base.out_audit.write = dsk_mem_sink_write;
+        if (out_log && out_log[0]) {
+            kernel_req.out_log.user = &log_sink;
+            kernel_req.out_log.write = dsk_mem_sink_write;
+        }
 
         switch (request.operation) {
         case DSK_OPERATION_INSTALL:
-            st = dsk_install(&kernel_req);
+            st = dsk_install_ex(&kernel_req);
             break;
         case DSK_OPERATION_REPAIR:
-            st = dsk_repair(&kernel_req);
+            st = dsk_repair_ex(&kernel_req);
             break;
         case DSK_OPERATION_UNINSTALL:
-            st = dsk_uninstall(&kernel_req);
+            st = dsk_uninstall_ex(&kernel_req);
             break;
         case DSK_OPERATION_VERIFY:
-            st = dsk_verify(&kernel_req);
+            st = dsk_verify_ex(&kernel_req);
             break;
         case DSK_OPERATION_STATUS:
-            st = dsk_status(&kernel_req);
+            st = dsk_status_ex(&kernel_req);
             break;
         default:
             std::fprintf(stderr, "error: invalid operation\n");
@@ -267,6 +273,12 @@ int main(int argc, char **argv) {
         if (!write_file(&services.fs, out_audit, audit_sink.data)) {
             std::fprintf(stderr, "error: failed to write audit\n");
             return finish(&services, 1);
+        }
+        if (out_log && out_log[0]) {
+            if (!write_file(&services.fs, out_log, log_sink.data)) {
+                std::fprintf(stderr, "error: failed to write log\n");
+                return finish(&services, 1);
+            }
         }
 
         if (json) {
