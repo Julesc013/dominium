@@ -1,0 +1,11 @@
+# Dominium Game
+
+Status: placeholder for M1.
+
+This folder will host the standalone game runtime, frontends, and content wiring.
+Specs:
+- SPEC_RUNTIME.md
+- SPEC_COMMANDS.md
+- SPEC_SAVE.md
+- SPEC_REPLAY.md
+- SPEC_CONTENT.md
