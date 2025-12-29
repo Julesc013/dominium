@@ -92,6 +92,9 @@ jobs:
       - name: Invariant checks (launcher core hardening)
         run: python scripts/ci/check_launcher_core_invariants.py
 
+      - name: Layer checks (kernel boundaries)
+        run: python scripts/check_layers.py
+
       - name: Configure
         run: cmake -S . -B build/${{ matrix.name }} ${{ matrix.cmake_args }}
 
@@ -100,6 +103,9 @@ jobs:
 
       - name: Test
         run: ctest --test-dir build/${{ matrix.name }} --output-on-failure ${{ matrix.ctest_args }}
+
+      - name: Kernel smoke tests
+        run: ctest --test-dir build/${{ matrix.name }} --output-on-failure -R "dominium_layer_checks|launcher_kernel_smoke|setup_kernel_smoke"
 
       - name: Launcher CLI smoke (ui/gfx matrix)
         run: python scripts/ci/launcher_cli_smoke_matrix.py --build-dir build/${{ matrix.name }}
