@@ -1,5 +1,19 @@
 cmake_minimum_required(VERSION 3.16)
 
+add_library(dss_services STATIC
+    src/dss_services.cpp
+)
+
+target_include_directories(dss_services PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+set_target_properties(dss_services PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
 add_library(setup_services_impl_platform STATIC
     platform/dsu_platform_iface.c
 )
