@@ -1,6 +1,12 @@
 cmake_minimum_required(VERSION 3.16)
 
 option(DOMINIUM_ENABLE_WINDOWS_LEGACY "Enable legacy Windows installers (DOS/Win16/Win9x)" ON)
+if(NOT DEFINED DOMINIUM_PUBLISH_INSTALLERS_TO_DIST)
+    option(DOMINIUM_PUBLISH_INSTALLERS_TO_DIST "Copy built installers into repo dist/ for convenience" ON)
+endif()
+if(NOT DEFINED DOMINIUM_LEGACY_PUBLISH_DIR)
+    set(DOMINIUM_LEGACY_PUBLISH_DIR "${CMAKE_SOURCE_DIR}/dist/legacy/windows" CACHE PATH "Publish legacy installers into repo dist")
+endif()
 
 set(_dom_legacy_root "${CMAKE_CURRENT_LIST_DIR}/..")
 get_filename_component(_dom_legacy_root_abs "${_dom_legacy_root}" ABSOLUTE)
@@ -73,6 +79,19 @@ if(DOMINIUM_ENABLE_WINDOWS_LEGACY)
         )
 
         add_custom_target(legacy_win9x_installer DEPENDS dominium-setup-win9x)
+        if(DOMINIUM_PUBLISH_INSTALLERS_TO_DIST)
+            set(_win9x_publish "${DOMINIUM_LEGACY_PUBLISH_DIR}/DominiumSetup-win9x.exe")
+            add_custom_command(
+                OUTPUT "${_win9x_publish}"
+                COMMAND "${CMAKE_COMMAND}" -E make_directory "${DOMINIUM_LEGACY_PUBLISH_DIR}"
+                COMMAND "${CMAKE_COMMAND}" -E copy_if_different "$<TARGET_FILE:dominium-setup-win9x>" "${_win9x_publish}"
+                DEPENDS dominium-setup-win9x
+                COMMENT "Publishing Win9x installer -> ${_win9x_publish}"
+                VERBATIM
+            )
+            add_custom_target(legacy_win9x_publish DEPENDS "${_win9x_publish}")
+            add_dependencies(legacy_win9x_installer legacy_win9x_publish)
+        endif()
     endif()
 
     add_custom_target(legacy_dos_installer
