@@ -50,9 +50,12 @@ void dsk_request_clear(dsk_request_t *request) {
     request->install_scope = 0u;
     request->preferred_install_root.clear();
     request->ui_mode = 0u;
-    request->requested_splat.clear();
+    request->requested_splat_id.clear();
     request->policy_flags = 0u;
-    request->platform_triple.clear();
+    request->required_caps = 0u;
+    request->prohibited_caps = 0u;
+    request->ownership_preference = DSK_OWNERSHIP_ANY;
+    request->target_platform_triple.clear();
 }
 
 dsk_status_t dsk_request_parse(const dsk_u8 *data,
@@ -91,13 +94,19 @@ dsk_status_t dsk_request_parse(const dsk_u8 *data,
         } else if (rec.type == DSK_TLV_TAG_REQUEST_POLICY_FLAGS) {
             st = dsk_parse_u32(rec, &out_request->policy_flags);
             has_policy = dsk_error_is_ok(st) ? DSK_TRUE : has_policy;
-        } else if (rec.type == DSK_TLV_TAG_REQUEST_PLATFORM_TRIPLE) {
-            st = dsk_parse_string(rec, &out_request->platform_triple);
+        } else if (rec.type == DSK_TLV_TAG_REQUEST_TARGET_PLATFORM_TRIPLE) {
+            st = dsk_parse_string(rec, &out_request->target_platform_triple);
             has_platform = dsk_error_is_ok(st) ? DSK_TRUE : has_platform;
         } else if (rec.type == DSK_TLV_TAG_REQUEST_PREFERRED_INSTALL_ROOT) {
             st = dsk_parse_string(rec, &out_request->preferred_install_root);
-        } else if (rec.type == DSK_TLV_TAG_REQUEST_REQUESTED_SPLAT) {
-            st = dsk_parse_string(rec, &out_request->requested_splat);
+        } else if (rec.type == DSK_TLV_TAG_REQUEST_REQUESTED_SPLAT_ID) {
+            st = dsk_parse_string(rec, &out_request->requested_splat_id);
+        } else if (rec.type == DSK_TLV_TAG_REQUEST_REQUIRED_CAPS) {
+            st = dsk_parse_u32(rec, &out_request->required_caps);
+        } else if (rec.type == DSK_TLV_TAG_REQUEST_PROHIBITED_CAPS) {
+            st = dsk_parse_u32(rec, &out_request->prohibited_caps);
+        } else if (rec.type == DSK_TLV_TAG_REQUEST_OWNERSHIP_PREFERENCE) {
+            st = dsk_parse_u16(rec, &out_request->ownership_preference);
         } else if (rec.type == DSK_TLV_TAG_REQUEST_REQUESTED_COMPONENTS ||
                    rec.type == DSK_TLV_TAG_REQUEST_EXCLUDED_COMPONENTS) {
             dsk_tlv_stream_t list_stream;
@@ -152,7 +161,7 @@ dsk_status_t dsk_request_parse(const dsk_u8 *data,
         out_request->operation == 0u ||
         out_request->install_scope == 0u ||
         out_request->ui_mode == 0u ||
-        out_request->platform_triple.empty()) {
+        out_request->target_platform_triple.empty()) {
         return dsk_request_error(DSK_CODE_VALIDATION_ERROR, DSK_SUBCODE_MISSING_FIELD);
     }
 
@@ -188,7 +197,9 @@ dsk_status_t dsk_request_write(const dsk_request_t *request,
     if (!dsk_error_is_ok(st)) goto done;
     st = dsk_tlv_builder_add_u32(builder, DSK_TLV_TAG_REQUEST_POLICY_FLAGS, request->policy_flags);
     if (!dsk_error_is_ok(st)) goto done;
-    st = dsk_tlv_builder_add_string(builder, DSK_TLV_TAG_REQUEST_PLATFORM_TRIPLE, request->platform_triple.c_str());
+    st = dsk_tlv_builder_add_string(builder,
+                                    DSK_TLV_TAG_REQUEST_TARGET_PLATFORM_TRIPLE,
+                                    request->target_platform_triple.c_str());
     if (!dsk_error_is_ok(st)) goto done;
 
     if (!request->preferred_install_root.empty()) {
@@ -197,10 +208,28 @@ dsk_status_t dsk_request_write(const dsk_request_t *request,
                                         request->preferred_install_root.c_str());
         if (!dsk_error_is_ok(st)) goto done;
     }
-    if (!request->requested_splat.empty()) {
+    if (!request->requested_splat_id.empty()) {
         st = dsk_tlv_builder_add_string(builder,
-                                        DSK_TLV_TAG_REQUEST_REQUESTED_SPLAT,
-                                        request->requested_splat.c_str());
+                                        DSK_TLV_TAG_REQUEST_REQUESTED_SPLAT_ID,
+                                        request->requested_splat_id.c_str());
+        if (!dsk_error_is_ok(st)) goto done;
+    }
+    if (request->required_caps != 0u) {
+        st = dsk_tlv_builder_add_u32(builder,
+                                     DSK_TLV_TAG_REQUEST_REQUIRED_CAPS,
+                                     request->required_caps);
+        if (!dsk_error_is_ok(st)) goto done;
+    }
+    if (request->prohibited_caps != 0u) {
+        st = dsk_tlv_builder_add_u32(builder,
+                                     DSK_TLV_TAG_REQUEST_PROHIBITED_CAPS,
+                                     request->prohibited_caps);
+        if (!dsk_error_is_ok(st)) goto done;
+    }
+    if (request->ownership_preference != DSK_OWNERSHIP_ANY) {
+        st = dsk_tlv_builder_add_u16(builder,
+                                     DSK_TLV_TAG_REQUEST_OWNERSHIP_PREFERENCE,
+                                     request->ownership_preference);
         if (!dsk_error_is_ok(st)) goto done;
     }
 
