@@ -14,12 +14,12 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "runtime/dom_game_save.h"
 
 #include <vector>
-#include <string>
 #include <cstdio>
 #include <cstring>
 #include <cstdlib>
 
 #include "runtime/dom_game_runtime.h"
+#include "runtime/dom_game_content_id.h"
 #include "dom_game_save.h"
 #include "dom_session.h"
 
@@ -36,16 +36,6 @@ enum {
     DMSG_CORE_VERSION = 1u,
     DMSG_RNG_VERSION = 1u
 };
-
-enum {
-    CONTENT_TAG_PACKSET_ID = 0x0001u,
-    CONTENT_TAG_PACK_HASH = 0x0002u,
-    CONTENT_TAG_MOD_HASH = 0x0003u,
-    CONTENT_TAG_INSTANCE_ID = 0x0004u
-};
-
-static const u64 FNV_OFFSET = 14695981039346656037ull;
-static const u64 FNV_PRIME = 1099511628211ull;
 
 static u32 read_u32_le(const unsigned char *p) {
     return (u32)p[0] |
@@ -88,143 +78,6 @@ static void append_u64_le(std::vector<unsigned char> &out, u64 v) {
     unsigned char buf[8];
     write_u64_le(buf, v);
     append_bytes(out, buf, 8u);
-}
-
-static void append_tlv(std::vector<unsigned char> &out, u32 tag, const unsigned char *payload, u32 len) {
-    append_u32_le(out, tag);
-    append_u32_le(out, len);
-    append_bytes(out, payload, (size_t)len);
-}
-
-static void append_tlv_u64(std::vector<unsigned char> &out, u32 tag, u64 value) {
-    unsigned char buf[8];
-    write_u64_le(buf, value);
-    append_tlv(out, tag, buf, 8u);
-}
-
-static u64 fnv1a64_update(u64 h, const unsigned char *data, size_t len) {
-    size_t i;
-    if (!data || len == 0u) {
-        return h;
-    }
-    for (i = 0u; i < len; ++i) {
-        h ^= (u64)data[i];
-        h *= FNV_PRIME;
-    }
-    return h;
-}
-
-static u64 fnv1a64_bytes(const unsigned char *data, size_t len) {
-    return fnv1a64_update(FNV_OFFSET, data, len);
-}
-
-static int str_ieq(const std::string &a, const char *b) {
-    size_t i;
-    if (!b) {
-        return 0;
-    }
-    if (a.size() != std::strlen(b)) {
-        return 0;
-    }
-    for (i = 0u; i < a.size(); ++i) {
-        char ca = a[i];
-        char cb = b[i];
-        if (ca >= 'A' && ca <= 'Z') ca = static_cast<char>(ca - 'A' + 'a');
-        if (cb >= 'A' && cb <= 'Z') cb = static_cast<char>(cb - 'A' + 'a');
-        if (ca != cb) {
-            return 0;
-        }
-    }
-    return 1;
-}
-
-static int is_base_id(const std::string &id) {
-    return str_ieq(id, "base") != 0;
-}
-
-static u64 hash_pack_entry(u64 h, const char *prefix, const std::string &id, u32 version) {
-    char ver_buf[32];
-    int wrote;
-
-    if (prefix && prefix[0]) {
-        h = fnv1a64_update(h, (const unsigned char *)prefix, std::strlen(prefix));
-    }
-    h = fnv1a64_update(h, (const unsigned char *)id.c_str(), id.size());
-    h = fnv1a64_update(h, (const unsigned char *)":", 1u);
-
-    wrote = std::snprintf(ver_buf, sizeof(ver_buf), "%u", (unsigned)version);
-    if (wrote > 0) {
-        h = fnv1a64_update(h, (const unsigned char *)ver_buf, (size_t)wrote);
-    }
-    h = fnv1a64_update(h, (const unsigned char *)";", 1u);
-    return h;
-}
-
-static u64 compute_packset_id(const dom::InstanceInfo &inst, const dom::PackSet *pset) {
-    u64 h = FNV_OFFSET;
-    bool base_added = false;
-    size_t i;
-
-    if (pset && pset->base_loaded) {
-        h = hash_pack_entry(h, "pack:", std::string("base"), pset->base_version);
-        base_added = true;
-    }
-
-    for (i = 0u; i < inst.packs.size(); ++i) {
-        const dom::PackRef &pref = inst.packs[i];
-        if (is_base_id(pref.id)) {
-            if (!base_added) {
-                h = hash_pack_entry(h, "pack:", pref.id, pref.version);
-                base_added = true;
-            }
-            continue;
-        }
-        h = hash_pack_entry(h, "pack:", pref.id, pref.version);
-    }
-
-    for (i = 0u; i < inst.mods.size(); ++i) {
-        const dom::ModRef &mref = inst.mods[i];
-        h = hash_pack_entry(h, "mod:", mref.id, mref.version);
-    }
-
-    return h;
-}
-
-static void build_content_tlv(const dom::DomSession *session, std::vector<unsigned char> &out) {
-    out.clear();
-    if (!session) {
-        return;
-    }
-
-    {
-        const dom::InstanceInfo &inst = session->instance();
-        const dom::PackSet &pset = session->packset();
-        const u64 packset_id = compute_packset_id(inst, &pset);
-        append_tlv_u64(out, CONTENT_TAG_PACKSET_ID, packset_id);
-
-        if (!pset.pack_blobs.empty()) {
-            size_t i;
-            for (i = 0u; i < pset.pack_blobs.size(); ++i) {
-                const d_tlv_blob &blob = pset.pack_blobs[i];
-                const u64 h = fnv1a64_bytes(blob.ptr, blob.len);
-                append_tlv_u64(out, CONTENT_TAG_PACK_HASH, h);
-            }
-        }
-        if (!pset.mod_blobs.empty()) {
-            size_t i;
-            for (i = 0u; i < pset.mod_blobs.size(); ++i) {
-                const d_tlv_blob &blob = pset.mod_blobs[i];
-                const u64 h = fnv1a64_bytes(blob.ptr, blob.len);
-                append_tlv_u64(out, CONTENT_TAG_MOD_HASH, h);
-            }
-        }
-
-        if (!inst.id.empty()) {
-            const u32 len = (u32)inst.id.size();
-            append_tlv(out, CONTENT_TAG_INSTANCE_ID,
-                       (const unsigned char *)inst.id.c_str(), len);
-        }
-    }
 }
 
 static bool write_file(const char *path, const unsigned char *data, size_t len) {
@@ -425,7 +278,9 @@ static bool build_save_bytes(const dom_game_runtime *rt, std::vector<unsigned ch
     }
 
     session = (const dom::DomSession *)dom_game_runtime_session(rt);
-    build_content_tlv(session, content_tlv);
+    if (!dom::dom_game_content_build_tlv(session, content_tlv)) {
+        content_tlv.clear();
+    }
 
     if (content_tlv.size() > 0xffffffffull || core_blob.size() > 0xffffffffull) {
         return false;
