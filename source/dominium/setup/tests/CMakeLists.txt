@@ -22,6 +22,28 @@ set_target_properties(dsu_core_smoke_test PROPERTIES
 
 add_test(NAME dsu_core_smoke_test COMMAND dsu_core_smoke_test)
 
+add_executable(setup_kernel_smoke
+    dsu_core_smoke_test.c
+)
+
+target_include_directories(setup_kernel_smoke PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../core/include
+)
+
+target_link_libraries(setup_kernel_smoke
+    PRIVATE
+        setup_kernel
+        setup_services_impl_null
+)
+
+set_target_properties(setup_kernel_smoke PROPERTIES
+    C_STANDARD 90
+    C_STANDARD_REQUIRED ON
+    C_EXTENSIONS OFF
+)
+
+add_test(NAME setup_kernel_smoke COMMAND setup_kernel_smoke)
+
 
 add_executable(dsu_invocation_parity_test
     dsu_invocation_parity_test.c
