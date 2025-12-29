@@ -13,6 +13,7 @@ set(DOM_KERNEL_ALLOWED_LINK_LIBS
     core_util
     core_err
     core_log
+    core_job
 )
 
 function(dom_check_kernel_links target_name)
