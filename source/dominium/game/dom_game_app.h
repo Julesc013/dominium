@@ -15,6 +15,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #define DOM_GAME_APP_H
 
 #include <string>
+#include "dom_game_cli.h"
 #include "dom_paths.h"
 #include "dom_instance.h"
 #include "dom_session.h"
@@ -47,33 +48,12 @@ enum ServerMode {
     SERVER_DEDICATED
 };
 
-struct GameConfig {
-    std::string dominium_home;
-    std::string instance_id;
-    std::string connect_addr;    /* client: addr[:port] */
-    unsigned    net_port;        /* host/listen port */
-
-    GameMode    mode;
-    ServerMode  server_mode;
-
-    bool        demo_mode;
-
-    std::string platform_backend;
-    std::string gfx_backend;
-
-    unsigned    tick_rate_hz;   /* e.g. 60; 0 = default */
-    bool        dev_mode;
-    bool        deterministic_test;
-    std::string replay_record_path;
-    std::string replay_play_path;
-};
-
 class DomGameApp {
 public:
     DomGameApp();
     ~DomGameApp();
 
-    bool init_from_cli(const GameConfig &cfg);
+    bool init_from_cli(const dom_game_config &cfg);
     void run();
     void shutdown();
 
@@ -124,11 +104,11 @@ public:
     void toggle_overlay_volumes();
 
 private:
-    bool init_paths(const GameConfig &cfg);
-    bool load_instance(const GameConfig &cfg);
-    bool evaluate_compatibility(const GameConfig &cfg);
-    bool init_session(const GameConfig &cfg);
-    bool init_views_and_ui(const GameConfig &cfg);
+    bool init_paths(const dom_game_config &cfg);
+    bool load_instance(const dom_game_config &cfg);
+    bool evaluate_compatibility(const dom_game_config &cfg);
+    bool init_session(const dom_game_config &cfg);
+    bool init_views_and_ui(const dom_game_config &cfg);
 
     void main_loop();
     void tick_fixed();
@@ -193,9 +173,6 @@ private:
 
     DomGameBuildTool m_build_tool;
 };
-
-bool parse_game_cli_args(int argc, char **argv, GameConfig &cfg);
-void init_default_game_config(GameConfig &cfg);
 
 } // namespace dom
 
