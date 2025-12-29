@@ -9,6 +9,11 @@ target_include_directories(launcher_services_impl_null PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/core/include
 )
 
+target_link_libraries(launcher_services_impl_null
+    PRIVATE
+        core_log
+)
+
 set_target_properties(launcher_services_impl_null PROPERTIES
     C_STANDARD 90
     C_STANDARD_REQUIRED ON
@@ -45,6 +50,7 @@ add_library(launcher_frontend_cli STATIC
     dom_launcher_app.cpp
     dom_launcher_catalog.cpp
     dom_launcher_actions.cpp
+    launcher_caps_snapshot.cpp
     launcher_control_plane.cpp
     launcher_launch_plumbing.cpp
     ${CMAKE_SOURCE_DIR}/tools/launcher/ui/gen/ui_launcher_ui_actions_gen.cpp
@@ -245,6 +251,7 @@ dominium_bundle_runtime(tool_manifest_inspector)
 
 add_executable(dominium_launcher_control_plane_tests
     tests/launcher_control_plane_tests.cpp
+    launcher_caps_snapshot.cpp
     launcher_control_plane.cpp
     launcher_launch_plumbing.cpp
 )
@@ -285,6 +292,7 @@ add_executable(dominium_launcher_ui_smoke_tests
     dom_launcher_app.cpp
     dom_launcher_catalog.cpp
     dom_launcher_actions.cpp
+    launcher_caps_snapshot.cpp
     launcher_launch_plumbing.cpp
 )
 
@@ -322,6 +330,7 @@ add_test(NAME dominium_launcher_ui_smoke_tests COMMAND dominium_launcher_ui_smok
 add_executable(dominium_launcher_tui_smoke_tests
     tests/launcher_tui_smoke_tests.cpp
     launcher_tui.cpp
+    launcher_caps_snapshot.cpp
     launcher_control_plane.cpp
     launcher_launch_plumbing.cpp
 )
@@ -356,6 +365,40 @@ endif()
 add_dependencies(dominium_launcher_tui_smoke_tests dominium-launcher tool_manifest_inspector)
 
 add_test(NAME dominium_launcher_tui_smoke_tests COMMAND dominium_launcher_tui_smoke_tests)
+
+add_executable(dominium_launcher_log_tests
+    tests/launcher_log_tests.cpp
+)
+
+target_include_directories(dominium_launcher_log_tests PUBLIC
+    ${DOMINIUM_INCLUDE_DIR}
+    ${CMAKE_SOURCE_DIR}/source/domino
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+)
+
+target_link_libraries(dominium_launcher_log_tests
+    PRIVATE
+        dominium_launcher_core
+        launcher_services_impl_null
+)
+
+set_target_properties(dominium_launcher_log_tests PROPERTIES
+    OUTPUT_NAME "dominium_launcher_log_tests"
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+if (MSVC)
+    target_compile_options(dominium_launcher_log_tests PRIVATE $<$<CONFIG:Release>:/UNDEBUG>)
+else()
+    target_compile_options(dominium_launcher_log_tests PRIVATE $<$<CONFIG:Release>:-UNDEBUG>)
+endif()
+
+add_dependencies(dominium_launcher_log_tests dominium-launcher)
+
+add_test(NAME dominium_launcher_log_tests COMMAND dominium_launcher_log_tests)
 
 add_executable(dominium_launcher_state_smoke_tests
     tests/launcher_state_smoke_tests.cpp
