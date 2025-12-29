@@ -594,6 +594,8 @@ DomGameApp::DomGameApp()
       m_last_hash(0u),
       m_replay_last_tick(0u),
       m_net_replay_user(0),
+      m_runtime(0),
+      m_last_wall_us(0u),
       m_show_debug_panel(false),
       m_debug_probe_set(false),
       m_debug_probe_x(0),
@@ -697,6 +699,7 @@ void DomGameApp::run() {
     if (!m_running) {
         return;
     }
+    m_last_wall_us = dsys_time_now_us();
     main_loop();
 }
 
@@ -728,6 +731,12 @@ void DomGameApp::shutdown() {
         m_net_replay_user = 0;
     }
     m_replay_last_tick = 0u;
+
+    if (m_runtime) {
+        dom_game_runtime_destroy(m_runtime);
+        m_runtime = 0;
+    }
+    m_last_wall_us = 0u;
 
     m_net.shutdown();
     m_session.shutdown();
@@ -885,6 +894,31 @@ bool DomGameApp::init_session(const dom_game_config &cfg) {
         }
     }
 
+    if (m_runtime) {
+        dom_game_runtime_destroy(m_runtime);
+        m_runtime = 0;
+    }
+
+    {
+        dom_game_runtime_init_desc rdesc;
+        std::memset(&rdesc, 0, sizeof(rdesc));
+        rdesc.struct_size = sizeof(rdesc);
+        rdesc.struct_version = DOM_GAME_RUNTIME_INIT_DESC_VERSION;
+        rdesc.session = &m_session;
+        rdesc.net = &m_net;
+        rdesc.instance = &m_instance;
+        rdesc.ups = m_tick_rate_hz;
+
+        m_runtime = dom_game_runtime_create(&rdesc);
+        if (!m_runtime) {
+            return false;
+        }
+        if (m_replay_last_tick > 0u) {
+            (void)dom_game_runtime_set_replay_last_tick(m_runtime, m_replay_last_tick);
+        }
+        m_last_wall_us = 0u;
+    }
+
     ensure_demo_agents();
     return true;
 }
@@ -924,7 +958,7 @@ bool DomGameApp::init_views_and_ui(const dom_game_config &cfg) {
 }
 
 void DomGameApp::ensure_demo_agents() {
-    d_world *w = m_session.world();
+    d_world *w = world();
     u32 i;
     if (!w) {
         return;
@@ -975,46 +1009,28 @@ void DomGameApp::main_loop() {
 }
 
 void DomGameApp::tick_fixed() {
+    const u64 now_us = dsys_time_now_us();
+    const u64 dt_us = (m_last_wall_us > 0u && now_us >= m_last_wall_us) ? (now_us - m_last_wall_us) : 0u;
+    m_last_wall_us = now_us;
+
     process_input_events();
     update_camera();
 
-    if (m_session.is_initialized()) {
-        m_net.pump(m_session.world(), m_session.sim(), m_instance);
+    if (m_session.is_initialized() && m_runtime) {
+        (void)dom_game_runtime_pump(m_runtime);
     }
 
     if (m_state) {
         m_state->tick(*this);
     }
 
-    if (m_session.is_initialized() && m_state_id == GAME_STATE_RUNNING) {
-        if (m_session.replay() && m_session.replay()->mode == DREPLAY_MODE_PLAYBACK) {
-            const u32 next_tick = m_session.sim()->tick_index + 1u;
-            std::vector<d_net_input_frame> inputs;
-            u32 count = 64u;
-            int grc;
-
-            inputs.resize(static_cast<size_t>(count));
-            grc = d_replay_get_frame(m_session.replay(), next_tick, &inputs[0], &count);
-            if (grc == -3 && count > 0u) {
-                inputs.resize(static_cast<size_t>(count));
-                grc = d_replay_get_frame(m_session.replay(), next_tick, &inputs[0], &count);
-            }
-
-            if (grc == 0) {
-                u32 i;
-                for (i = 0u; i < count; ++i) {
-                    (void)d_net_receive_packet(0u,
-                                               (d_peer_id)inputs[i].player_id,
-                                               inputs[i].payload,
-                                               (u32)inputs[i].payload_size);
-                }
-            } else if (grc == -2 && m_replay_last_tick > 0u && next_tick > m_replay_last_tick) {
-                request_exit();
-                return;
-            }
+    if (m_session.is_initialized() && m_state_id == GAME_STATE_RUNNING && m_runtime) {
+        u32 stepped = 0u;
+        const int rc = dom_game_runtime_tick_wall(m_runtime, dt_us, &stepped);
+        if (rc == DOM_GAME_RUNTIME_REPLAY_END || rc == DOM_GAME_RUNTIME_ERR) {
+            request_exit();
+            return;
         }
-
-        d_sim_step(m_session.sim(), 1u);
     }
     update_demo_hud();
     dom_game_ui_set_status(m_ui_ctx, m_build_tool.status_text());
@@ -1048,9 +1064,9 @@ void DomGameApp::render_frame() {
     root_rect.w = d_q16_16_from_int(width);
     root_rect.h = d_q16_16_from_int(height);
 
-    d_view_render(m_session.world(), view, &frame);
-    dom_draw_debug_overlays(*this, m_session.world(), cmd_buffer, width, height);
-    dom_draw_trans_overlays(*this, m_session.world(), cmd_buffer, width, height);
+    d_view_render(world(), view, &frame);
+    dom_draw_debug_overlays(*this, world(), cmd_buffer, width, height);
+    dom_draw_trans_overlays(*this, world(), cmd_buffer, width, height);
     m_build_tool.render_overlay(*this, cmd_buffer, width, height);
     dui_layout(&m_ui_ctx, &root_rect);
     dui_render(&m_ui_ctx, &frame);
@@ -1155,7 +1171,7 @@ void DomGameApp::update_camera() {
 }
 
 void DomGameApp::spawn_demo_blueprint() {
-    d_world *w = m_session.world();
+    d_world *w = world();
     const d_proto_blueprint *bp;
     q16_16 pos_x;
     q16_16 pos_y;
@@ -1183,7 +1199,7 @@ void DomGameApp::spawn_demo_blueprint() {
 }
 
 void DomGameApp::update_demo_hud() {
-    d_world *w = m_session.world();
+    d_world *w = world();
     const d_struct_instance *inst = (const d_struct_instance *)0;
     d_struct_instance_id current = m_last_struct_id;
     if (!w || m_state_id != GAME_STATE_RUNNING) {
@@ -1338,17 +1354,18 @@ void DomGameApp::build_tool_cancel() {
 }
 
 void DomGameApp::update_debug_panel() {
-    d_world *w = m_session.world();
     d_world_hash h = 0u;
-    if (!w) {
+    if (!m_runtime) {
         return;
     }
 
-    h = d_sim_hash_world(w);
+    h = (d_world_hash)dom_game_runtime_get_hash(m_runtime);
 
     if (m_detmode == 3u) {
         if (m_last_hash != 0u && h != m_last_hash) {
-            std::fprintf(stderr, "DET FAIL: world hash mismatch at tick %u\n", m_session.sim()->tick_index);
+            const u64 tick = dom_game_runtime_get_tick(m_runtime);
+            std::fprintf(stderr, "DET FAIL: world hash mismatch at tick %llu\n",
+                         (unsigned long long)tick);
             std::abort();
         }
         m_last_hash = h;

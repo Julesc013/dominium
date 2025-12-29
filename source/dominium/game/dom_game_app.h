@@ -24,6 +24,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "dom_game_camera.h"
 #include "dom_game_tools_build.h"
 #include "dom_game_net.h"
+#include "runtime/dom_game_runtime.h"
 
 extern "C" {
 #include "view/d_view.h"
@@ -78,6 +79,11 @@ public:
     DomGameNet&       net()           { return m_net; }
     const DomGameNet& net()     const { return m_net; }
 
+    dom_game_runtime*       runtime()       { return m_runtime; }
+    const dom_game_runtime* runtime() const { return m_runtime; }
+    d_world*                world()         { return dom_game_runtime_world(m_runtime); }
+    d_sim_context*          sim()           { return dom_game_runtime_sim(m_runtime); }
+
     dui_context& ui_context() { return m_ui_ctx; }
 
     bool dev_mode() const { return m_dev_mode; }
@@ -125,6 +131,7 @@ private:
     InstanceInfo m_instance;
     DomSession   m_session;
     DomGameNet   m_net;
+    dom_game_runtime *m_runtime;
 
     GameMode     m_mode;
     ServerMode   m_server_mode;
@@ -156,6 +163,7 @@ private:
     std::string  m_replay_play_path;
     u32          m_replay_last_tick;
     void        *m_net_replay_user;
+    u64          m_last_wall_us;
     bool         m_show_debug_panel;
     bool         m_debug_probe_set;
     q32_32       m_debug_probe_x;
