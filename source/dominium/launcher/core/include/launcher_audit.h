@@ -19,6 +19,8 @@ extern "C" {
 #include "domino/core/types.h"
 }
 
+#include "dominium/core_err.h"
+
 namespace dom {
 namespace launcher_core {
 
@@ -41,6 +43,12 @@ enum { LAUNCHER_AUDIT_TLV_VERSION = 1u };
  * - `LAUNCHER_AUDIT_TLV_TAG_MANIFEST_HASH64` (u64)
  * - `LAUNCHER_AUDIT_TLV_TAG_EXIT_RESULT` (i32)
  * - `LAUNCHER_AUDIT_TLV_TAG_SELECTION_SUMMARY` (container, optional): embedded `selection_summary.tlv` bytes (see `launcher_selection_summary.h`).
+ * - `LAUNCHER_AUDIT_TLV_TAG_ERR_DOMAIN` (u32, optional)
+ * - `LAUNCHER_AUDIT_TLV_TAG_ERR_CODE` (u32, optional)
+ * - `LAUNCHER_AUDIT_TLV_TAG_ERR_FLAGS` (u32, optional)
+ * - `LAUNCHER_AUDIT_TLV_TAG_ERR_MSG_ID` (u32, optional)
+ * - `LAUNCHER_AUDIT_TLV_TAG_ERR_DETAIL` (container, repeated, optional)
+ * - `LAUNCHER_AUDIT_TLV_TAG_REASON_MSG_ID` (u32, repeated, optional)
  *
  * Selected-backend entry payload (container TLV):
  * - `LAUNCHER_AUDIT_BACKEND_TLV_TAG_SUBSYS_ID` (u32)
@@ -63,7 +71,13 @@ enum LauncherAuditTlvTag {
     LAUNCHER_AUDIT_TLV_TAG_GIT_HASH = 11u,
     LAUNCHER_AUDIT_TLV_TAG_MANIFEST_HASH64 = 12u,
     LAUNCHER_AUDIT_TLV_TAG_EXIT_RESULT = 13u,
-    LAUNCHER_AUDIT_TLV_TAG_SELECTION_SUMMARY = 14u
+    LAUNCHER_AUDIT_TLV_TAG_SELECTION_SUMMARY = 14u,
+    LAUNCHER_AUDIT_TLV_TAG_ERR_DOMAIN = 20u,
+    LAUNCHER_AUDIT_TLV_TAG_ERR_CODE = 21u,
+    LAUNCHER_AUDIT_TLV_TAG_ERR_FLAGS = 22u,
+    LAUNCHER_AUDIT_TLV_TAG_ERR_MSG_ID = 23u,
+    LAUNCHER_AUDIT_TLV_TAG_ERR_DETAIL = 24u,
+    LAUNCHER_AUDIT_TLV_TAG_REASON_MSG_ID = 25u
 };
 
 enum LauncherAuditBackendTlvTag {
@@ -74,6 +88,13 @@ enum LauncherAuditBackendTlvTag {
     LAUNCHER_AUDIT_BACKEND_TLV_TAG_PERF_CLASS = 5u,
     LAUNCHER_AUDIT_BACKEND_TLV_TAG_PRIORITY = 6u,
     LAUNCHER_AUDIT_BACKEND_TLV_TAG_OVERRIDE = 7u
+};
+
+enum LauncherAuditErrDetailTlvTag {
+    LAUNCHER_AUDIT_ERR_TLV_TAG_KEY = 1u,
+    LAUNCHER_AUDIT_ERR_TLV_TAG_TYPE = 2u,
+    LAUNCHER_AUDIT_ERR_TLV_TAG_VALUE_U32 = 3u,
+    LAUNCHER_AUDIT_ERR_TLV_TAG_VALUE_U64 = 4u
 };
 
 struct LauncherAuditBackend {
@@ -101,6 +122,7 @@ struct LauncherAuditLog {
     std::vector<LauncherAuditBackend> selected_backends;
 
     std::vector<std::string> reasons;
+    std::vector<u32> reason_msg_ids;
 
     std::string version_string; /* launcher version */
     std::string build_id;       /* optional */
@@ -108,6 +130,7 @@ struct LauncherAuditLog {
     u64 manifest_hash64;        /* optional (0 when absent) */
 
     i32 exit_result;
+    err_t err;
 
     u32 has_selection_summary; /* 0/1 */
     std::vector<unsigned char> selection_summary_tlv; /* optional; raw TLV bytes */

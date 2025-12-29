@@ -4,6 +4,58 @@ add_subdirectory(core)
 add_subdirectory(services)
 add_subdirectory(adapters)
 
+# Setup2 layering:
+#   Layer 0: dsk_kernel (pure orchestration, no OS headers or side effects)
+#   Layer 1: dss_services (runtime side effects behind service contracts)
+#   Layer 2: dominium-setup2 (frontend, links only kernel + services)
+
+add_library(dsk_kernel STATIC
+    kernel/src/api/dsk_api.cpp
+    kernel/src/tlv/dsk_tlv_reader.cpp
+    kernel/src/tlv/dsk_tlv_writer.cpp
+    kernel/src/tlv/dsk_tlv_validate.cpp
+    kernel/src/digest/dsk_digest.cpp
+    kernel/src/errors/dsk_error.cpp
+    kernel/src/audit/dsk_audit.cpp
+    kernel/src/splat/dsk_splat_registry.cpp
+    kernel/src/splat/dsk_splat_select.cpp
+    kernel/src/contracts/dsk_contract_manifest.cpp
+    kernel/src/contracts/dsk_contract_request.cpp
+    kernel/src/contracts/dsk_contract_state.cpp
+    kernel/src/contracts/dsk_contract_audit.cpp
+)
+
+target_include_directories(dsk_kernel PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/include
+)
+
+set_target_properties(dsk_kernel PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_executable(dominium-setup2
+    frontends/cli/dominium_setup2_main.cpp
+)
+
+target_include_directories(dominium-setup2 PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/services/include
+)
+
+target_link_libraries(dominium-setup2
+    PRIVATE
+        dsk_kernel
+        dss_services
+)
+
+set_target_properties(dominium-setup2 PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
 add_library(setup_services_api INTERFACE)
 target_include_directories(setup_services_api INTERFACE
     ${CMAKE_CURRENT_SOURCE_DIR}/core/include

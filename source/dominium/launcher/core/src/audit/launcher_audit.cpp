@@ -28,7 +28,13 @@ enum {
     TAG_GIT_HASH = 11u,
     TAG_MANIFEST_HASH64 = 12u,
     TAG_EXIT_RESULT = 13u,
-    TAG_SELECTION_SUMMARY = 14u
+    TAG_SELECTION_SUMMARY = 14u,
+    TAG_ERR_DOMAIN = 20u,
+    TAG_ERR_CODE = 21u,
+    TAG_ERR_FLAGS = 22u,
+    TAG_ERR_MSG_ID = 23u,
+    TAG_ERR_DETAIL = 24u,
+    TAG_REASON_MSG_ID = 25u
 };
 
 enum {
@@ -39,6 +45,13 @@ enum {
     TAG_B_PERF_CLASS = 5u,
     TAG_B_PRIORITY = 6u,
     TAG_B_OVERRIDE = 7u
+};
+
+enum {
+    TAG_ED_KEY = 1u,
+    TAG_ED_TYPE = 2u,
+    TAG_ED_VALUE_U32 = 3u,
+    TAG_ED_VALUE_U64 = 4u
 };
 }
 
@@ -60,11 +73,13 @@ LauncherAuditLog::LauncherAuditLog()
       selected_profile_id(),
       selected_backends(),
       reasons(),
+      reason_msg_ids(),
       version_string(),
       build_id(),
       git_hash(),
       manifest_hash64(0ull),
       exit_result(0),
+      err(err_ok()),
       has_selection_summary(0u),
       selection_summary_tlv() {
 }
@@ -86,12 +101,35 @@ bool launcher_audit_to_tlv_bytes(const LauncherAuditLog& audit,
     if (audit.has_selection_summary != 0u || !audit.selection_summary_tlv.empty()) {
         w.add_container(TAG_SELECTION_SUMMARY, audit.selection_summary_tlv);
     }
+    if (!err_is_ok(&audit.err)) {
+        err_t e = audit.err;
+        err_sort_details_by_key(&e);
+        w.add_u32(TAG_ERR_DOMAIN, (u32)e.domain);
+        w.add_u32(TAG_ERR_CODE, (u32)e.code);
+        w.add_u32(TAG_ERR_FLAGS, e.flags);
+        w.add_u32(TAG_ERR_MSG_ID, e.msg_id);
+        for (i = 0u; i < e.detail_count; ++i) {
+            const err_detail& d = e.details[i];
+            TlvWriter entry;
+            entry.add_u32(TAG_ED_KEY, d.key_id);
+            entry.add_u32(TAG_ED_TYPE, d.type);
+            if (d.type == (u32)ERR_DETAIL_TYPE_U32 || d.type == (u32)ERR_DETAIL_TYPE_MSG_ID) {
+                entry.add_u32(TAG_ED_VALUE_U32, d.v.u32_value);
+            } else {
+                entry.add_u64(TAG_ED_VALUE_U64, d.v.u64_value);
+            }
+            w.add_container(TAG_ERR_DETAIL, entry.bytes());
+        }
+    }
 
     for (i = 0u; i < audit.inputs.size(); ++i) {
         w.add_string(TAG_INPUT, audit.inputs[i]);
     }
     for (i = 0u; i < audit.reasons.size(); ++i) {
         w.add_string(TAG_REASON, audit.reasons[i]);
+    }
+    for (i = 0u; i < audit.reason_msg_ids.size(); ++i) {
+        w.add_u32(TAG_REASON_MSG_ID, audit.reason_msg_ids[i]);
     }
     for (i = 0u; i < audit.selected_backends.size(); ++i) {
         TlvWriter entry;
@@ -180,6 +218,70 @@ bool launcher_audit_from_tlv_bytes(const unsigned char* data,
             out_audit.has_selection_summary = 1u;
             out_audit.selection_summary_tlv.assign(rec.payload, rec.payload + (size_t)rec.len);
             break;
+        case TAG_ERR_DOMAIN: {
+            u32 v;
+            if (tlv_read_u32_le(rec.payload, rec.len, v)) {
+                out_audit.err.domain = (u16)v;
+            }
+            break;
+        }
+        case TAG_ERR_CODE: {
+            u32 v;
+            if (tlv_read_u32_le(rec.payload, rec.len, v)) {
+                out_audit.err.code = (u16)v;
+            }
+            break;
+        }
+        case TAG_ERR_FLAGS: {
+            u32 v;
+            if (tlv_read_u32_le(rec.payload, rec.len, v)) {
+                out_audit.err.flags = v;
+            }
+            break;
+        }
+        case TAG_ERR_MSG_ID: {
+            u32 v;
+            if (tlv_read_u32_le(rec.payload, rec.len, v)) {
+                out_audit.err.msg_id = v;
+            }
+            break;
+        }
+        case TAG_ERR_DETAIL: {
+            TlvReader er(rec.payload, (size_t)rec.len);
+            TlvRecord e;
+            u32 key_id = 0u;
+            u32 type = 0u;
+            u32 value_u32 = 0u;
+            u64 value_u64 = 0ull;
+            while (er.next(e)) {
+                if (e.tag == TAG_ED_KEY) {
+                    (void)tlv_read_u32_le(e.payload, e.len, key_id);
+                } else if (e.tag == TAG_ED_TYPE) {
+                    (void)tlv_read_u32_le(e.payload, e.len, type);
+                } else if (e.tag == TAG_ED_VALUE_U32) {
+                    (void)tlv_read_u32_le(e.payload, e.len, value_u32);
+                } else if (e.tag == TAG_ED_VALUE_U64) {
+                    (void)tlv_read_u64_le(e.payload, e.len, value_u64);
+                } else {
+                    /* skip unknown */
+                }
+            }
+            if (key_id != 0u && type != 0u) {
+                if (type == (u32)ERR_DETAIL_TYPE_U32 || type == (u32)ERR_DETAIL_TYPE_MSG_ID) {
+                    (void)err_add_detail_u32(&out_audit.err, key_id, value_u32);
+                } else {
+                    (void)err_add_detail_u64(&out_audit.err, key_id, value_u64);
+                }
+            }
+            break;
+        }
+        case TAG_REASON_MSG_ID: {
+            u32 v;
+            if (tlv_read_u32_le(rec.payload, rec.len, v)) {
+                out_audit.reason_msg_ids.push_back(v);
+            }
+            break;
+        }
         case TAG_SELECTED_BACKEND: {
             LauncherAuditBackend b;
             TlvReader er(rec.payload, (size_t)rec.len);
@@ -274,6 +376,36 @@ std::string launcher_audit_to_text(const LauncherAuditLog& audit) {
     oss << "reasons=" << audit.reasons.size() << "\n";
     for (i = 0u; i < audit.reasons.size(); ++i) {
         oss << "  why=" << audit.reasons[i] << "\n";
+    }
+    if (!audit.reason_msg_ids.empty()) {
+        oss << "reason_msg_ids=" << audit.reason_msg_ids.size() << "\n";
+        for (i = 0u; i < audit.reason_msg_ids.size(); ++i) {
+            oss << "  reason_msg_id=" << err_msg_id_token(audit.reason_msg_ids[i]) << "\n";
+        }
+    }
+    if (!err_is_ok(&audit.err)) {
+        oss << "err_domain=" << err_domain_token(audit.err.domain) << "\n";
+        oss << "err_code=" << audit.err.code << "\n";
+        oss << "err_flags=" << audit.err.flags << "\n";
+        oss << "err_msg_id=" << err_msg_id_token(audit.err.msg_id) << "\n";
+        if (audit.err.detail_count != 0u) {
+            err_t e = audit.err;
+            err_sort_details_by_key(&e);
+            for (i = 0u; i < e.detail_count; ++i) {
+                const err_detail& d = e.details[i];
+                oss << "  detail." << err_detail_key_token(d.key_id) << "=";
+                if (d.type == (u32)ERR_DETAIL_TYPE_U32 || d.type == (u32)ERR_DETAIL_TYPE_MSG_ID) {
+                    if (d.type == (u32)ERR_DETAIL_TYPE_MSG_ID) {
+                        oss << err_msg_id_token(d.v.msg_id);
+                    } else {
+                        oss << d.v.u32_value;
+                    }
+                } else {
+                    oss << d.v.u64_value;
+                }
+                oss << "\n";
+            }
+        }
     }
     return oss.str();
 }
