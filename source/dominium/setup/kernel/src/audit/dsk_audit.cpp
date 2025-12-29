@@ -10,8 +10,9 @@ void dsk_audit_clear(dsk_audit_t *audit) {
     audit->selected_splat.clear();
     audit->operation = 0u;
     audit->result = dsk_error_make(DSK_DOMAIN_NONE, DSK_CODE_OK, DSK_SUBCODE_NONE, 0u);
-    audit->selection_reason.candidates.clear();
-    audit->selection_reason.rejections.clear();
-    audit->selection_reason.chosen.clear();
+    audit->selection.candidates.clear();
+    audit->selection.rejections.clear();
+    audit->selection.selected_id.clear();
+    audit->selection.selected_reason = 0u;
     audit->events.clear();
 }

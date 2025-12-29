@@ -28,10 +28,16 @@ struct dsk_audit_event_t {
     dsk_error_t error;
 };
 
-struct dsk_audit_selection_reason_t {
-    std::vector<std::string> candidates;
+struct dsk_audit_selection_candidate_t {
+    std::string id;
+    dsk_u64 caps_digest64;
+};
+
+struct dsk_audit_selection_t {
+    std::vector<dsk_audit_selection_candidate_t> candidates;
     std::vector<dsk_splat_rejection_t> rejections;
-    std::string chosen;
+    std::string selected_id;
+    dsk_u16 selected_reason;
 };
 
 struct dsk_audit_t {
@@ -41,7 +47,7 @@ struct dsk_audit_t {
     std::string selected_splat;
     dsk_u16 operation;
     dsk_error_t result;
-    dsk_audit_selection_reason_t selection_reason;
+    dsk_audit_selection_t selection;
     std::vector<dsk_audit_event_t> events;
 };
 
