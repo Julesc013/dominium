@@ -12,6 +12,11 @@
 #define DSK_TLV_TAG_MANIFEST_COMPONENTS 0x1005u
 #define DSK_TLV_TAG_MANIFEST_ALLOWED_SPLATS 0x1006u
 #define DSK_TLV_TAG_MANIFEST_TARGET_RULES 0x1007u
+#define DSK_TLV_TAG_MANIFEST_LAYOUT_TEMPLATES 0x1008u
+#define DSK_TLV_TAG_MANIFEST_UNINSTALL_RULES 0x1009u
+#define DSK_TLV_TAG_MANIFEST_REPAIR_RULES 0x100Au
+#define DSK_TLV_TAG_MANIFEST_MIGRATION_RULES 0x100Bu
+#define DSK_TLV_TAG_MANIFEST_SPLAT_OVERRIDES 0x100Cu
 
 #define DSK_TLV_TAG_MANIFEST_PLATFORM_TARGETS DSK_TLV_TAG_MANIFEST_SUPPORTED_TARGETS
 
@@ -25,13 +30,27 @@
 #define DSK_TLV_TAG_COMPONENT_DEPS 0x1205u
 #define DSK_TLV_TAG_COMPONENT_CONFLICTS 0x1206u
 #define DSK_TLV_TAG_COMPONENT_ARTIFACTS 0x1207u
+#define DSK_TLV_TAG_COMPONENT_VERSION 0x1208u
+#define DSK_TLV_TAG_COMPONENT_SUPPORTED_TARGETS 0x1209u
 #define DSK_TLV_TAG_COMPONENT_DEP_ENTRY 0x1210u
 #define DSK_TLV_TAG_COMPONENT_CONFLICT_ENTRY 0x1211u
+#define DSK_TLV_TAG_COMPONENT_TARGET_ENTRY 0x1212u
 
 #define DSK_TLV_TAG_ARTIFACT_ENTRY 0x1220u
 #define DSK_TLV_TAG_ARTIFACT_HASH 0x1221u
 #define DSK_TLV_TAG_ARTIFACT_SIZE 0x1222u
 #define DSK_TLV_TAG_ARTIFACT_PATH 0x1223u
+#define DSK_TLV_TAG_ARTIFACT_ID 0x1224u
+#define DSK_TLV_TAG_ARTIFACT_SOURCE_PATH 0x1225u
+#define DSK_TLV_TAG_ARTIFACT_DIGEST64 0x1226u
+#define DSK_TLV_TAG_ARTIFACT_LAYOUT_TEMPLATE_ID 0x1227u
+
+#define DSK_TLV_TAG_ARTIFACT_SOURCE DSK_TLV_TAG_ARTIFACT_SOURCE_PATH
+
+#define DSK_TLV_TAG_LAYOUT_TEMPLATE_ENTRY 0x1301u
+#define DSK_TLV_TAG_LAYOUT_TEMPLATE_ID 0x1302u
+#define DSK_TLV_TAG_LAYOUT_TEMPLATE_TARGET_ROOT 0x1303u
+#define DSK_TLV_TAG_LAYOUT_TEMPLATE_PATH_PREFIX 0x1304u
 
 /* Request tags (0x2000 range) */
 #define DSK_TLV_TAG_REQUEST_OPERATION 0x2001u
@@ -74,6 +93,10 @@
 #define DSK_TLV_TAG_AUDIT_OPERATION 0x4006u
 #define DSK_TLV_TAG_AUDIT_RESULT 0x4007u
 #define DSK_TLV_TAG_AUDIT_EVENTS 0x4008u
+#define DSK_TLV_TAG_AUDIT_SPLAT_CAPS_DIGEST64 0x4009u
+#define DSK_TLV_TAG_AUDIT_RESOLVED_SET_DIGEST64 0x400Au
+#define DSK_TLV_TAG_AUDIT_PLAN_DIGEST64 0x400Bu
+#define DSK_TLV_TAG_AUDIT_REFUSALS 0x400Cu
 
 #define DSK_TLV_TAG_AUDIT_SELECTION_REASON DSK_TLV_TAG_AUDIT_SELECTION
 
@@ -91,6 +114,10 @@
 #define DSK_TLV_TAG_AUDIT_REJECTION_ID 0x4111u
 #define DSK_TLV_TAG_AUDIT_REJECTION_CODE 0x4112u
 #define DSK_TLV_TAG_AUDIT_REJECTION_DETAIL 0x4113u
+
+#define DSK_TLV_TAG_AUDIT_REFUSAL_ENTRY 0x4120u
+#define DSK_TLV_TAG_AUDIT_REFUSAL_CODE 0x4121u
+#define DSK_TLV_TAG_AUDIT_REFUSAL_DETAIL 0x4122u
 
 #define DSK_TLV_TAG_AUDIT_EVENT_ENTRY 0x4201u
 #define DSK_TLV_TAG_AUDIT_EVENT_ID 0x4202u
@@ -111,6 +138,7 @@
 #define DSK_OPERATION_UNINSTALL 3u
 #define DSK_OPERATION_VERIFY 4u
 #define DSK_OPERATION_STATUS 5u
+#define DSK_OPERATION_UPGRADE 6u
 
 #define DSK_INSTALL_SCOPE_USER 1u
 #define DSK_INSTALL_SCOPE_SYSTEM 2u
@@ -135,17 +163,28 @@
 #include <vector>
 
 struct dsk_artifact_t {
+    std::string artifact_id;
     std::string hash;
+    dsk_u64 digest64;
     dsk_u64 size;
-    std::string path;
+    std::string source_path;
+    std::string layout_template_id;
+};
+
+struct dsk_layout_template_t {
+    std::string template_id;
+    std::string target_root;
+    std::string path_prefix;
 };
 
 struct dsk_manifest_component_t {
     std::string component_id;
+    std::string component_version;
     std::string kind;
     dsk_bool default_selected;
     std::vector<std::string> deps;
     std::vector<std::string> conflicts;
+    std::vector<std::string> supported_targets;
     std::vector<dsk_artifact_t> artifacts;
 };
 
@@ -155,6 +194,7 @@ struct dsk_manifest_t {
     std::string build_id;
     std::vector<std::string> supported_targets;
     std::vector<std::string> allowed_splats;
+    std::vector<dsk_layout_template_t> layout_templates;
     std::vector<dsk_manifest_component_t> components;
 };
 
