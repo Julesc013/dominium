@@ -30,6 +30,12 @@ add_library(dsk_kernel STATIC
     kernel/src/plan/dsk_plan_validate.cpp
     kernel/src/plan/dsk_plan_digest.cpp
     kernel/src/plan/dsk_plan_dump_json.cpp
+    kernel/src/jobs/dsk_jobs_build.cpp
+    kernel/src/jobs/dsk_jobs_checkpoint.cpp
+    kernel/src/jobs/dsk_jobs_common.cpp
+    kernel/src/jobs/dsk_jobs_execute.cpp
+    kernel/src/jobs/dsk_jobs_resume.cpp
+    kernel/src/jobs/dsk_jobs_rollback.cpp
 )
 
 target_include_directories(dsk_kernel PUBLIC

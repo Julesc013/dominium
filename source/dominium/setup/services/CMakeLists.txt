@@ -29,6 +29,10 @@ add_library(dss_services STATIC
     src/codesign_macos/dss_codesign_macos_iface.cpp
     src/codesign_macos/dss_codesign_macos_real.cpp
     src/codesign_macos/dss_codesign_macos_fake.cpp
+    src/txn/dss_txn_build.cpp
+    src/txn/dss_txn_execute.cpp
+    src/txn/dss_txn_rollback.cpp
+    src/txn/dss_txn_failpoints.cpp
 )
 
 target_include_directories(dss_services PUBLIC
