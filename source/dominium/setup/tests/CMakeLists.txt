@@ -233,6 +233,28 @@ set_target_properties(dsu_txn_test PROPERTIES
 
 add_test(NAME dsu_txn_test COMMAND dsu_txn_test)
 
+add_executable(dsu_job_resume_test
+    dsu_job_resume_test.c
+)
+
+target_include_directories(dsu_job_resume_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../core/include
+)
+
+target_link_libraries(dsu_job_resume_test
+    PRIVATE
+        dsu_core
+        setup_services_impl_platform
+)
+
+set_target_properties(dsu_job_resume_test PROPERTIES
+    C_STANDARD 90
+    C_STANDARD_REQUIRED ON
+    C_EXTENSIONS OFF
+)
+
+add_test(NAME dsu_job_resume_test COMMAND dsu_job_resume_test)
+
 add_executable(dsu_cli_test
     dsu_cli_test.c
 )
