@@ -76,6 +76,18 @@ set_target_properties(dominium-setup2 PROPERTIES
     CXX_EXTENSIONS OFF
 )
 
+if(WIN32)
+    get_filename_component(DSK_COMPILER_DIR "${CMAKE_CXX_COMPILER}" DIRECTORY)
+    set(DSK_WINPTHREAD_DLL "${DSK_COMPILER_DIR}/libwinpthread-1.dll")
+    if(EXISTS "${DSK_WINPTHREAD_DLL}")
+        add_custom_command(TARGET dominium-setup2 POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                "${DSK_WINPTHREAD_DLL}"
+                $<TARGET_FILE_DIR:dominium-setup2>
+        )
+    endif()
+endif()
+
 add_library(setup_services_api INTERFACE)
 target_include_directories(setup_services_api INTERFACE
     ${CMAKE_CURRENT_SOURCE_DIR}/core/include
