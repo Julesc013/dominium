@@ -23,6 +23,7 @@ extern "C" {
 
 #include "core/include/launcher_pack_ops.h"
 #include "core/include/launcher_safety.h"
+#include "core/include/launcher_job.h"
 
 #include "core/include/launcher_audit.h"
 #include "core/include/launcher_artifact_store.h"
@@ -265,6 +266,88 @@ static std::string u64_hex16(u64 v) {
     }
     buf[16] = '\0';
     return std::string(buf);
+}
+
+static bool parse_hex_u64(const std::string& text, u64& out_value) {
+    size_t i;
+    u64 value = 0ull;
+    if (text.empty() || text.size() > 16u) {
+        return false;
+    }
+    for (i = 0u; i < text.size(); ++i) {
+        char c = text[i];
+        u64 nib = 0ull;
+        if (c >= '0' && c <= '9') {
+            nib = (u64)(c - '0');
+        } else if (c >= 'a' && c <= 'f') {
+            nib = (u64)(10 + (c - 'a'));
+        } else if (c >= 'A' && c <= 'F') {
+            nib = (u64)(10 + (c - 'A'));
+        } else {
+            return false;
+        }
+        value = (value << 4) | nib;
+    }
+    out_value = value;
+    return true;
+}
+
+static bool find_incomplete_job_id(const launcher_services_api_v1* services,
+                                   const std::string& state_root,
+                                   const std::string& instance_id,
+                                   u32 job_type,
+                                   u64& out_job_id) {
+    dsys_dir_iter* it;
+    dsys_dir_entry e;
+    dom::launcher_core::LauncherInstancePaths paths;
+    std::string jobs_root;
+    u64 best = 0ull;
+
+    out_job_id = 0ull;
+    if (!services || state_root.empty() || instance_id.empty()) {
+        return false;
+    }
+
+    paths = dom::launcher_core::launcher_instance_paths_make(state_root, instance_id);
+    jobs_root = path_join(paths.staging_root, "jobs");
+
+    it = dsys_dir_open(jobs_root.c_str());
+    if (!it) {
+        return false;
+    }
+
+    std::memset(&e, 0, sizeof(e));
+    while (dsys_dir_next(it, &e)) {
+        std::string name;
+        u64 job_id = 0ull;
+        core_job_state st;
+        if (!e.is_dir) {
+            continue;
+        }
+        name = std::string(e.name);
+        if (!parse_hex_u64(name, job_id)) {
+            continue;
+        }
+        if (!dom::launcher_core::launcher_job_state_load(services, state_root, instance_id, job_id, st)) {
+            continue;
+        }
+        if (st.job_type != job_type) {
+            continue;
+        }
+        if (st.outcome != (u32)CORE_JOB_OUTCOME_NONE) {
+            continue;
+        }
+        if (job_id > best) {
+            best = job_id;
+        }
+    }
+
+    dsys_dir_close(it);
+    if (best != 0ull) {
+        out_job_id = best;
+        return true;
+    }
+    return false;
 }
 
 static bool ends_with_ci(const std::string& s, const char* suffix) {
@@ -858,7 +941,12 @@ ControlPlaneRunResult launcher_control_plane_try_run(int argc,
 
     if (std::strcmp(cmd, "verify-instance") == 0) {
         std::string instance_id;
-        std::string err_text;
+        dom::launcher_core::LauncherJobInput job_input;
+        dom::launcher_core::LauncherAuditLog job_audit;
+        core_job_state job_state;
+        err_t job_err;
+        u64 resume_job_id = 0ull;
+        int resumed = 0;
         int i;
 
         for (i = cmd_i + 1; i < argc; ++i) {
@@ -879,16 +967,39 @@ ControlPlaneRunResult launcher_control_plane_try_run(int argc,
             return r;
         }
 
-        if (!dom::launcher_core::launcher_pack_prelaunch_validate_instance(services,
-                                                                           instance_id,
-                                                                           state_root,
-                                                                           (dom::launcher_core::LauncherAuditLog*)0,
-                                                                           &err_text)) {
+        job_input.job_type = (u32)dom::launcher_core::CORE_JOB_TYPE_LAUNCHER_VERIFY_INSTANCE;
+        job_input.instance_id = instance_id;
+
+        if (find_incomplete_job_id(services, state_root, instance_id, job_input.job_type, resume_job_id)) {
+            resumed = 1;
+            if (!dom::launcher_core::launcher_job_resume(services,
+                                                         state_root,
+                                                         instance_id,
+                                                         resume_job_id,
+                                                         job_state,
+                                                         &job_err,
+                                                         &job_audit)) {
+                audit_reason_kv(audit_core, "outcome", "fail");
+                out_kv(out, "result", "fail");
+                out_kv(out, "instance_id", instance_id);
+                out_kv(out, "error", "verify_failed");
+                out_kv(out, "error_id", err_to_string_id(&job_err));
+                out_kv(out, "job_id", std::string("0x") + u64_hex16(resume_job_id));
+                r.exit_code = 1;
+                return r;
+            }
+        } else if (!dom::launcher_core::launcher_job_run(services,
+                                                         job_input,
+                                                         state_root,
+                                                         job_state,
+                                                         &job_err,
+                                                         &job_audit)) {
             audit_reason_kv(audit_core, "outcome", "fail");
             out_kv(out, "result", "fail");
             out_kv(out, "instance_id", instance_id);
             out_kv(out, "error", "verify_failed");
-            out_kv(out, "detail", err_text);
+            out_kv(out, "error_id", err_to_string_id(&job_err));
+            out_kv(out, "job_id", std::string("0x") + u64_hex16(job_state.job_id));
             r.exit_code = 1;
             return r;
         }
@@ -896,6 +1007,12 @@ ControlPlaneRunResult launcher_control_plane_try_run(int argc,
         audit_reason_kv(audit_core, "outcome", "ok");
         out_kv(out, "result", "ok");
         out_kv(out, "instance_id", instance_id);
+        if (job_state.job_id != 0ull) {
+            out_kv(out, "job_id", std::string("0x") + u64_hex16(job_state.job_id));
+        }
+        if (resumed) {
+            out_kv(out, "resumed", "1");
+        }
         r.exit_code = 0;
         return r;
     }
@@ -905,6 +1022,12 @@ ControlPlaneRunResult launcher_control_plane_try_run(int argc,
         std::string mode;
         u32 export_mode = 0u;
         std::string export_root;
+        dom::launcher_core::LauncherJobInput job_input;
+        core_job_state job_state;
+        err_t job_err = err_ok();
+        dom::launcher_core::LauncherAuditLog job_audit;
+        u64 resume_job_id = 0ull;
+        bool resumed = 0;
         int i;
 
         for (i = cmd_i + 1; i < argc; ++i) {
@@ -944,17 +1067,44 @@ ControlPlaneRunResult launcher_control_plane_try_run(int argc,
         }
 
         export_root = path_join(path_join(state_root, "exports"), instance_id);
-        if (!dom::launcher_core::launcher_instance_export_instance(services,
-                                                                   instance_id,
-                                                                   export_root,
-                                                                   state_root,
-                                                                   export_mode,
-                                                                   (dom::launcher_core::LauncherAuditLog*)0)) {
+
+        job_input.job_type = (u32)dom::launcher_core::CORE_JOB_TYPE_LAUNCHER_EXPORT_INSTANCE;
+        job_input.instance_id = instance_id;
+        job_input.path = export_root;
+        job_input.mode = export_mode;
+
+        if (find_incomplete_job_id(services, state_root, instance_id, job_input.job_type, resume_job_id)) {
+            resumed = 1;
+            if (!dom::launcher_core::launcher_job_resume(services,
+                                                         state_root,
+                                                         instance_id,
+                                                         resume_job_id,
+                                                         job_state,
+                                                         &job_err,
+                                                         &job_audit)) {
+                audit_reason_kv(audit_core, "outcome", "fail");
+                out_kv(out, "result", "fail");
+                out_kv(out, "error", "export_failed");
+                out_kv(out, "error_id", err_to_string_id(&job_err));
+                out_kv(out, "instance_id", instance_id);
+                out_kv(out, "export_root", export_root);
+                out_kv(out, "job_id", std::string("0x") + u64_hex16(resume_job_id));
+                r.exit_code = 1;
+                return r;
+            }
+        } else if (!dom::launcher_core::launcher_job_run(services,
+                                                         job_input,
+                                                         state_root,
+                                                         job_state,
+                                                         &job_err,
+                                                         &job_audit)) {
             audit_reason_kv(audit_core, "outcome", "fail");
             out_kv(out, "result", "fail");
             out_kv(out, "error", "export_failed");
+            out_kv(out, "error_id", err_to_string_id(&job_err));
             out_kv(out, "instance_id", instance_id);
             out_kv(out, "export_root", export_root);
+            out_kv(out, "job_id", std::string("0x") + u64_hex16(job_state.job_id));
             r.exit_code = 1;
             return r;
         }
@@ -964,6 +1114,12 @@ ControlPlaneRunResult launcher_control_plane_try_run(int argc,
         out_kv(out, "instance_id", instance_id);
         out_kv(out, "export_root", export_root);
         out_kv(out, "mode", mode);
+        if (job_state.job_id != 0ull) {
+            out_kv(out, "job_id", std::string("0x") + u64_hex16(job_state.job_id));
+        }
+        if (resumed) {
+            out_kv(out, "resumed", "1");
+        }
         r.exit_code = 0;
         return r;
     }
@@ -974,6 +1130,12 @@ ControlPlaneRunResult launcher_control_plane_try_run(int argc,
         dom::launcher_core::LauncherInstanceManifest imported;
         std::string new_id;
         dom::launcher_core::LauncherInstanceManifest created;
+        dom::launcher_core::LauncherJobInput job_input;
+        core_job_state job_state;
+        err_t job_err = err_ok();
+        dom::launcher_core::LauncherAuditLog job_audit;
+        u64 resume_job_id = 0ull;
+        bool resumed = 0;
         int i;
 
         for (i = cmd_i + 1; i < argc; ++i) {
@@ -1014,19 +1176,44 @@ ControlPlaneRunResult launcher_control_plane_try_run(int argc,
         audit_reason_kv(audit_core, "instance_id", new_id);
         audit_reason_kv(audit_core, "imported_instance_id", imported.instance_id);
 
-        if (!dom::launcher_core::launcher_instance_import_instance(services,
-                                                                   import_root,
-                                                                   new_id,
-                                                                   state_root,
-                                                                   (u32)dom::launcher_core::LAUNCHER_INSTANCE_IMPORT_FULL_BUNDLE,
-                                                                   0u,
-                                                                   created,
-                                                                   (dom::launcher_core::LauncherAuditLog*)0)) {
+        job_input.job_type = (u32)dom::launcher_core::CORE_JOB_TYPE_LAUNCHER_IMPORT_INSTANCE;
+        job_input.instance_id = new_id;
+        job_input.path = import_root;
+        job_input.mode = (u32)dom::launcher_core::LAUNCHER_INSTANCE_IMPORT_FULL_BUNDLE;
+        job_input.flags = 0u;
+
+        if (find_incomplete_job_id(services, state_root, new_id, job_input.job_type, resume_job_id)) {
+            resumed = 1;
+            if (!dom::launcher_core::launcher_job_resume(services,
+                                                         state_root,
+                                                         new_id,
+                                                         resume_job_id,
+                                                         job_state,
+                                                         &job_err,
+                                                         &job_audit)) {
+                audit_reason_kv(audit_core, "outcome", "fail");
+                out_kv(out, "result", "fail");
+                out_kv(out, "error", "import_failed");
+                out_kv(out, "error_id", err_to_string_id(&job_err));
+                out_kv(out, "import_root", import_root);
+                out_kv(out, "instance_id", new_id);
+                out_kv(out, "job_id", std::string("0x") + u64_hex16(resume_job_id));
+                r.exit_code = 1;
+                return r;
+            }
+        } else if (!dom::launcher_core::launcher_job_run(services,
+                                                         job_input,
+                                                         state_root,
+                                                         job_state,
+                                                         &job_err,
+                                                         &job_audit)) {
             audit_reason_kv(audit_core, "outcome", "fail");
             out_kv(out, "result", "fail");
             out_kv(out, "error", "import_failed");
+            out_kv(out, "error_id", err_to_string_id(&job_err));
             out_kv(out, "import_root", import_root);
             out_kv(out, "instance_id", new_id);
+            out_kv(out, "job_id", std::string("0x") + u64_hex16(job_state.job_id));
             r.exit_code = 1;
             return r;
         }
@@ -1035,6 +1222,12 @@ ControlPlaneRunResult launcher_control_plane_try_run(int argc,
         out_kv(out, "result", "ok");
         out_kv(out, "import_root", import_root);
         out_kv(out, "instance_id", new_id);
+        if (job_state.job_id != 0ull) {
+            out_kv(out, "job_id", std::string("0x") + u64_hex16(job_state.job_id));
+        }
+        if (resumed) {
+            out_kv(out, "resumed", "1");
+        }
         r.exit_code = 0;
         return r;
     }
@@ -1367,7 +1560,12 @@ ControlPlaneRunResult launcher_control_plane_try_run(int argc,
         std::string script_path;
         std::string format;
         std::string mode = "default";
-        std::string run_err;
+        dom::launcher_core::LauncherJobInput job_input;
+        core_job_state job_state;
+        err_t job_err = err_ok();
+        dom::launcher_core::LauncherAuditLog job_audit;
+        u64 resume_job_id = 0ull;
+        bool resumed = 0;
         int i;
 
         for (i = cmd_i + 1; i < argc; ++i) {
@@ -1430,38 +1628,45 @@ ControlPlaneRunResult launcher_control_plane_try_run(int argc,
             }
         }
 
-        if (!run_support_bundle_script("python",
-                                        script_path,
-                                        state_root,
-                                        instance_id,
-                                        out_path,
-                                        format,
-                                        mode,
-                                        run_err)) {
-            if (run_err == "spawn_failed") {
-                if (!run_support_bundle_script("python3",
-                                                script_path,
-                                                state_root,
-                                                instance_id,
-                                                out_path,
-                                                format,
-                                                mode,
-                                                run_err)) {
-                    audit_reason_kv(audit_core, "outcome", "fail");
-                    out_kv(out, "result", "fail");
-                    out_kv(out, "error", "bundle_failed");
-                    out_kv(out, "detail", run_err);
-                    r.exit_code = 1;
-                    return r;
-                }
-            } else {
+        job_input.job_type = (u32)dom::launcher_core::CORE_JOB_TYPE_LAUNCHER_DIAG_BUNDLE;
+        job_input.instance_id = instance_id;
+        job_input.path = out_path;
+        job_input.aux_path = script_path;
+        job_input.aux_id = format;
+        job_input.mode = (mode == "extended") ? 1u : 0u;
+
+        if (find_incomplete_job_id(services, state_root, instance_id, job_input.job_type, resume_job_id)) {
+            resumed = 1;
+            if (!dom::launcher_core::launcher_job_resume(services,
+                                                         state_root,
+                                                         instance_id,
+                                                         resume_job_id,
+                                                         job_state,
+                                                         &job_err,
+                                                         &job_audit)) {
                 audit_reason_kv(audit_core, "outcome", "fail");
                 out_kv(out, "result", "fail");
                 out_kv(out, "error", "bundle_failed");
-                out_kv(out, "detail", run_err);
+                out_kv(out, "error_id", err_to_string_id(&job_err));
+                out_kv(out, "detail", err_to_string_id(&job_err));
+                out_kv(out, "job_id", std::string("0x") + u64_hex16(resume_job_id));
                 r.exit_code = 1;
                 return r;
             }
+        } else if (!dom::launcher_core::launcher_job_run(services,
+                                                         job_input,
+                                                         state_root,
+                                                         job_state,
+                                                         &job_err,
+                                                         &job_audit)) {
+            audit_reason_kv(audit_core, "outcome", "fail");
+            out_kv(out, "result", "fail");
+            out_kv(out, "error", "bundle_failed");
+            out_kv(out, "error_id", err_to_string_id(&job_err));
+            out_kv(out, "detail", err_to_string_id(&job_err));
+            out_kv(out, "job_id", std::string("0x") + u64_hex16(job_state.job_id));
+            r.exit_code = 1;
+            return r;
         }
 
         audit_reason_kv(audit_core, "outcome", "ok");
@@ -1470,6 +1675,12 @@ ControlPlaneRunResult launcher_control_plane_try_run(int argc,
         out_kv(out, "out", out_path);
         out_kv(out, "format", format);
         out_kv(out, "mode", mode);
+        if (job_state.job_id != 0ull) {
+            out_kv(out, "job_id", std::string("0x") + u64_hex16(job_state.job_id));
+        }
+        if (resumed) {
+            out_kv(out, "resumed", "1");
+        }
         r.exit_code = 0;
         return r;
     }

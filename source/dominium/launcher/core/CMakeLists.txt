@@ -29,6 +29,7 @@ add_library(dominium_launcher_core STATIC
     src/artifact/launcher_sha256.cpp
     src/artifact/launcher_artifact_store.cpp
     src/task/launcher_task.cpp
+    src/job/launcher_job.cpp
     src/audit/launcher_audit.cpp
 )
 
@@ -45,6 +46,7 @@ target_link_libraries(dominium_launcher_core
         core_util
         core_err
         core_log
+        core_job
 )
 
 set_target_properties(dominium_launcher_core PROPERTIES

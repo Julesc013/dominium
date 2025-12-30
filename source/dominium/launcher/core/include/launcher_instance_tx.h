@@ -87,6 +87,12 @@ struct LauncherInstanceTx {
     LauncherInstanceTx();
 };
 
+/* Loads transaction.tlv if present for an instance (staging only). */
+bool launcher_instance_tx_load(const launcher_services_api_v1* services,
+                               const std::string& instance_id,
+                               const std::string& state_root_override,
+                               LauncherInstanceTx& out_tx);
+
 /* Clears partial staging for an instance if present.
  * Safe to call on every run; does not modify live instance state.
  */
