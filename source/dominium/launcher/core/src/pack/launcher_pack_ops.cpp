@@ -12,7 +12,6 @@ RESPONSIBILITY: Implements atomic, instance-scoped pack operations via the trans
 #include <vector>
 
 #include "launcher_audit.h"
-#include "launcher_artifact_store.h"
 #include "launcher_instance_ops.h"
 #include "launcher_instance_tx.h"
 #include "launcher_pack_manifest.h"
@@ -33,6 +32,25 @@ static const launcher_fs_api_v1* get_fs(const launcher_services_api_v1* services
         return 0;
     }
     return (const launcher_fs_api_v1*)iface;
+}
+
+static const launcher_providers_api_v1* get_providers(const launcher_services_api_v1* services) {
+    void* iface = 0;
+    if (!services || !services->query_interface) {
+        return 0;
+    }
+    if (services->query_interface(LAUNCHER_IID_PROVIDERS_V1, &iface) != 0) {
+        return 0;
+    }
+    return (const launcher_providers_api_v1*)iface;
+}
+
+static const provider_content_source_v1* get_content_provider(const launcher_services_api_v1* services) {
+    const launcher_providers_api_v1* providers = get_providers(services);
+    if (!providers || !providers->get_content_source) {
+        return 0;
+    }
+    return providers->get_content_source();
 }
 
 static void audit_reason(LauncherAuditLog* audit, const std::string& r) {
@@ -230,13 +248,12 @@ static bool load_pack_manifest_for_entry(const launcher_services_api_v1* service
                                          LauncherPackManifest& out_manifest,
                                          std::string& out_error) {
     const launcher_fs_api_v1* fs = get_fs(services);
-    std::string dir;
-    std::string meta_path;
     std::string payload_path;
     std::vector<unsigned char> payload;
     LauncherPackManifest pm;
     std::string verr;
     u32 expected_type = (u32)LAUNCHER_CONTENT_UNKNOWN;
+    const provider_content_source_v1* content_provider = 0;
 
     out_error.clear();
     if (!services || !fs) {
@@ -256,9 +273,42 @@ static bool load_pack_manifest_for_entry(const launcher_services_api_v1* service
         return false;
     }
 
-    if (!launcher_artifact_store_paths(state_root, entry.hash_bytes, dir, meta_path, payload_path)) {
-        out_error = "artifact_store_paths_failed";
+    content_provider = get_content_provider(services);
+    if (!content_provider || !content_provider->resolve_artifact) {
+        out_error = "missing_content_provider";
         return false;
+    }
+    if (entry.hash_bytes.size() > (size_t)PROVIDER_CONTENT_HASH_MAX) {
+        out_error = "content_hash_too_long";
+        return false;
+    }
+    {
+        provider_content_request_v1 req;
+        provider_content_artifact_ref_v1 ref;
+        err_t perr;
+        std::memset(&req, 0, sizeof(req));
+        std::memset(&ref, 0, sizeof(ref));
+        req.struct_size = (u32)sizeof(req);
+        req.struct_version = 1u;
+        req.content_type = entry.type;
+        req.content_id = entry.id.c_str();
+        req.content_version = entry.version.c_str();
+        req.hash_bytes = entry.hash_bytes.empty() ? (const unsigned char*)0 : &entry.hash_bytes[0];
+        req.hash_len = (u32)entry.hash_bytes.size();
+        req.state_root = state_root.c_str();
+        req.import_root = 0;
+        req.flags = PROVIDER_CONTENT_REQ_OFFLINE_OK;
+
+        perr = err_ok();
+        if (content_provider->resolve_artifact(&req, &ref, &perr) != 0) {
+            out_error = "content_provider_resolve_failed";
+            return false;
+        }
+        if (!ref.has_payload_path || !ref.payload_path[0]) {
+            out_error = "content_provider_missing_payload";
+            return false;
+        }
+        payload_path = std::string(ref.payload_path);
     }
     if (!fs_read_all(fs, payload_path, payload)) {
         out_error = std::string("pack_manifest_payload_missing;path=") + payload_path;
