@@ -28,6 +28,7 @@ add_library(dsk_kernel STATIC
     kernel/src/plan/dsk_plan_build.cpp
     kernel/src/plan/dsk_plan_validate.cpp
     kernel/src/plan/dsk_plan_digest.cpp
+    kernel/src/plan/dsk_plan_dump_json.cpp
 )
 
 target_include_directories(dsk_kernel PUBLIC
