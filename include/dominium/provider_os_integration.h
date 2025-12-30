@@ -53,6 +53,8 @@ typedef struct provider_os_integration_v1 {
                                   err_t* out_err);
 } provider_os_integration_v1;
 
+const provider_os_integration_v1* provider_os_integration_null_v1(void);
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif

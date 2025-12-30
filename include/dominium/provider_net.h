@@ -43,6 +43,8 @@ typedef struct provider_net_v1 {
                             err_t* out_err);
 } provider_net_v1;
 
+const provider_net_v1* provider_net_null_v1(void);
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif

@@ -57,6 +57,8 @@ typedef struct provider_trust_v1 {
                                       err_t* out_err);
 } provider_trust_v1;
 
+const provider_trust_v1* provider_trust_null_v1(void);
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
