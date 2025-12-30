@@ -22,6 +22,11 @@ EXTENSION POINTS: Extend via new IIDs + capability bits; skip-unknown TLV for pe
 
 #include "dominium/core_err.h"
 #include "dominium/core_log.h"
+#include "dominium/provider_content_source.h"
+#include "dominium/provider_keychain.h"
+#include "dominium/provider_net.h"
+#include "dominium/provider_os_integration.h"
+#include "dominium/provider_trust.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -49,6 +54,7 @@ typedef u64 launcher_services_caps;
 #define LAUNCHER_IID_ARCH_V1   ((dom_iid)0x4C415243u) /* 'LARC' */
 #define LAUNCHER_IID_TIME_V1   ((dom_iid)0x4C54494Du) /* 'LTIM' */
 #define LAUNCHER_IID_LOG_V1    ((dom_iid)0x4C4C4F47u) /* 'LLOG' */
+#define LAUNCHER_IID_PROVIDERS_V1 ((dom_iid)0x4C505256u) /* 'LPRV' */
 
 typedef enum launcher_fs_path_kind_e {
     LAUNCHER_FS_PATH_NONE = 0,
@@ -114,6 +120,16 @@ typedef struct launcher_net_api_v1 {
     void* reserved0;
     void* reserved1;
 } launcher_net_api_v1;
+
+/* launcher_providers_api_v1: Provider facade access (content/trust/keychain/net/os integration). */
+typedef struct launcher_providers_api_v1 {
+    DOM_ABI_HEADER;
+    const provider_content_source_v1* (*get_content_source)(void);
+    const provider_trust_v1* (*get_trust)(void);
+    const provider_keychain_v1* (*get_keychain)(void);
+    const provider_net_v1* (*get_net)(void);
+    const provider_os_integration_v1* (*get_os_integration)(void);
+} launcher_providers_api_v1;
 
 /* launcher_services_api_v1: Root facade that exposes capability bits and query_interface. */
 typedef struct launcher_services_api_v1 {

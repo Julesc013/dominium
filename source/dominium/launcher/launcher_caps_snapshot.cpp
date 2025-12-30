@@ -197,6 +197,26 @@ static std::string perf_class_name(u32 c) {
     return "baseline";
 }
 
+static u32 provider_id_hash_u32(const std::string& id) {
+    if (id.empty()) {
+        return 0u;
+    }
+    {
+        const unsigned char* data = (const unsigned char*)id.c_str();
+        const size_t len = id.size();
+        u64 h = launcher_core::tlv_fnv1a64(data, len);
+        return (u32)(h ^ (h >> 32));
+    }
+}
+
+static u32 caps_bool_or_zero(const core_caps& caps, u32 key_id) {
+    u32 v = 0u;
+    if (core_caps_get_bool(&caps, key_id, &v)) {
+        return v ? 1u : 0u;
+    }
+    return 0u;
+}
+
 static void tlv_add_backend(TlvWriter& w, const LauncherCapsBackend& b) {
     TlvWriter entry;
     entry.add_u32(LAUNCHER_CAPS_BACKEND_TLV_TAG_SUBSYS_ID, b.subsystem_id);
@@ -304,6 +324,24 @@ bool launcher_caps_snapshot_build(const dom_profile* profile,
         out_snapshot = snap;
         return false;
     }
+
+    for (i = 0u; i < solve.provider_backends.size(); ++i) {
+        const LauncherCapsProviderChoice& p = solve.provider_backends[i];
+        if (p.provider_type == "net") {
+            snap.provider_net = provider_id_hash_u32(p.provider_id);
+        } else if (p.provider_type == "trust") {
+            snap.provider_trust = provider_id_hash_u32(p.provider_id);
+        } else if (p.provider_type == "keychain") {
+            snap.provider_keychain = provider_id_hash_u32(p.provider_id);
+        } else if (p.provider_type == "content") {
+            snap.provider_content = provider_id_hash_u32(p.provider_id);
+        }
+    }
+
+    snap.supports_stdout_capture = caps_bool_or_zero(solve.effective_caps, CORE_CAP_KEY_SUPPORTS_STDOUT_CAPTURE);
+    snap.supports_file_picker = caps_bool_or_zero(solve.effective_caps, CORE_CAP_KEY_SUPPORTS_FILE_PICKER);
+    snap.supports_open_folder = caps_bool_or_zero(solve.effective_caps, CORE_CAP_KEY_SUPPORTS_OPEN_FOLDER);
+    snap.supports_tls = caps_bool_or_zero(solve.effective_caps, CORE_CAP_KEY_SUPPORTS_TLS);
 
     snap.backends = solve.backends;
     std::sort(snap.backends.begin(), snap.backends.end(), backend_less);

@@ -12,6 +12,7 @@ RESPONSIBILITY: Adapts legacy caps registry to core_caps + core_solver with expl
 extern "C" {
 #include "domino/caps.h"
 #include "dominium/product_info.h"
+#include "dominium/provider_registry.h"
 }
 
 namespace dom {
@@ -555,24 +556,34 @@ static bool build_components(const dom_profile* profile,
     }
 
     {
-        static const char* provider_null_id = "null";
-        const u32 provider_categories[] = {
-            CORE_SOLVER_CAT_PROVIDER_NET,
-            CORE_SOLVER_CAT_PROVIDER_TRUST,
-            CORE_SOLVER_CAT_PROVIDER_KEYCHAIN,
-            CORE_SOLVER_CAT_PROVIDER_CONTENT,
-            CORE_SOLVER_CAT_PROVIDER_OS_INTEGRATION
-        };
-        size_t j;
-        for (j = 0u; j < sizeof(provider_categories) / sizeof(provider_categories[0]); ++j) {
+        const provider_registry_entry* entries = 0;
+        u32 entry_count = 0u;
+        u32 j;
+        provider_registry_get_entries(&entries, &entry_count);
+        for (j = 0u; j < entry_count; ++j) {
+            const provider_registry_entry* e = &entries[j];
             ComponentStore comp;
             std::memset(&comp.desc, 0, sizeof(comp.desc));
             std::memset(&comp.backend, 0, sizeof(comp.backend));
-            comp.desc.component_id = provider_null_id;
-            comp.desc.category_id = provider_categories[j];
-            comp.desc.priority = 0u;
-            comp.desc.provides = (const core_cap_entry*)0;
-            comp.desc.provides_count = 0u;
+            comp.desc.component_id = e->provider_id;
+            comp.desc.category_id = e->category_id;
+            comp.desc.priority = e->priority;
+
+            if (e->provides && e->provides_count) {
+                comp.provides.assign(e->provides, e->provides + e->provides_count);
+            }
+            if (e->requires && e->requires_count) {
+                comp.requires.assign(e->requires, e->requires + e->requires_count);
+            }
+            if (e->forbids && e->forbids_count) {
+                comp.forbids.assign(e->forbids, e->forbids + e->forbids_count);
+            }
+            if (e->prefers && e->prefers_count) {
+                comp.prefers.assign(e->prefers, e->prefers + e->prefers_count);
+            }
+            if (e->conflicts && e->conflicts_count) {
+                comp.conflicts.assign(e->conflicts, e->conflicts + e->conflicts_count);
+            }
             components.push_back(comp);
         }
     }
