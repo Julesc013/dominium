@@ -23,6 +23,8 @@ static dsk_status_t dsk_tlv_make_error(dsk_u16 code, dsk_u16 subcode) {
     return dsk_error_make(DSK_DOMAIN_KERNEL, code, subcode, DSK_ERROR_FLAG_USER_ACTIONABLE);
 }
 
+static const dsk_u32 DSK_TLV_MAX_PAYLOAD = 64u * 1024u * 1024u;
+
 static dsk_status_t dsk_tlv_parse_records(const dsk_u8 *payload,
                                           dsk_u32 size,
                                           dsk_tlv_record_t **out_records,
@@ -132,6 +134,9 @@ dsk_status_t dsk_tlv_parse(const dsk_u8 *data,
     payload_size = header.payload_size;
     if (header_size < DSK_TLV_HEADER_SIZE || header_size > size) {
         return dsk_tlv_make_error(DSK_CODE_PARSE_ERROR, DSK_SUBCODE_TLV_BAD_HEADER_SIZE);
+    }
+    if (payload_size > DSK_TLV_MAX_PAYLOAD) {
+        return dsk_tlv_make_error(DSK_CODE_PARSE_ERROR, DSK_SUBCODE_TLV_BAD_PAYLOAD_SIZE);
     }
     if (header_size + payload_size > size) {
         return dsk_tlv_make_error(DSK_CODE_PARSE_ERROR, DSK_SUBCODE_TLV_BAD_PAYLOAD_SIZE);
