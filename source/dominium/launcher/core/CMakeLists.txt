@@ -6,6 +6,7 @@ add_library(dominium_launcher_core STATIC
     src/safety/launcher_safety.cpp
     src/tlv/launcher_tlv.cpp
     src/tlv/launcher_tlv_migrations.cpp
+    src/tlv/launcher_tlv_schema_registry.cpp
     src/selection/launcher_selection_summary.cpp
     src/run/launcher_run_summary.cpp
     src/launch/launcher_prelaunch.cpp
@@ -49,6 +50,7 @@ target_link_libraries(dominium_launcher_core
         core_caps
         core_solver
         core_job
+        core_tlv_schema
 )
 
 set_target_properties(dominium_launcher_core PROPERTIES

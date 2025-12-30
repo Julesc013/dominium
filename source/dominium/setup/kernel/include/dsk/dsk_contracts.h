@@ -65,6 +65,7 @@
 #define DSK_TLV_TAG_REQUEST_REQUIRED_CAPS 0x200Au
 #define DSK_TLV_TAG_REQUEST_PROHIBITED_CAPS 0x200Bu
 #define DSK_TLV_TAG_REQUEST_OWNERSHIP_PREFERENCE 0x200Cu
+#define DSK_TLV_TAG_REQUEST_PAYLOAD_ROOT 0x200Du
 
 #define DSK_TLV_TAG_REQUEST_REQUESTED_SPLAT DSK_TLV_TAG_REQUEST_REQUESTED_SPLAT_ID
 #define DSK_TLV_TAG_REQUEST_PLATFORM_TRIPLE DSK_TLV_TAG_REQUEST_TARGET_PLATFORM_TRIPLE
@@ -81,8 +82,25 @@
 #define DSK_TLV_TAG_STATE_INSTALLED_COMPONENTS 0x3006u
 #define DSK_TLV_TAG_STATE_MANIFEST_DIGEST64 0x3007u
 #define DSK_TLV_TAG_STATE_REQUEST_DIGEST64 0x3008u
+#define DSK_TLV_TAG_STATE_INSTALL_ROOTS 0x3009u
+#define DSK_TLV_TAG_STATE_OWNERSHIP 0x300Au
+#define DSK_TLV_TAG_STATE_ARTIFACTS 0x300Bu
+#define DSK_TLV_TAG_STATE_REGISTRATIONS 0x300Cu
+#define DSK_TLV_TAG_STATE_PREV_STATE_DIGEST64 0x300Du
 
 #define DSK_TLV_TAG_STATE_COMPONENT_ENTRY 0x3010u
+#define DSK_TLV_TAG_STATE_INSTALL_ROOT_ENTRY 0x3011u
+
+#define DSK_TLV_TAG_STATE_ARTIFACT_ENTRY 0x3020u
+#define DSK_TLV_TAG_STATE_ARTIFACT_ROOT_ID 0x3021u
+#define DSK_TLV_TAG_STATE_ARTIFACT_PATH 0x3022u
+#define DSK_TLV_TAG_STATE_ARTIFACT_DIGEST64 0x3023u
+#define DSK_TLV_TAG_STATE_ARTIFACT_SIZE 0x3024u
+
+#define DSK_TLV_TAG_STATE_REG_ENTRY 0x3030u
+#define DSK_TLV_TAG_STATE_REG_KIND 0x3031u
+#define DSK_TLV_TAG_STATE_REG_VALUE 0x3032u
+#define DSK_TLV_TAG_STATE_REG_STATUS 0x3033u
 
 /* Audit tags (0x4000 range) */
 #define DSK_TLV_TAG_AUDIT_RUN_ID 0x4001u
@@ -132,6 +150,32 @@
 #define DSK_TLV_TAG_RESULT_SUBCODE 0x4304u
 #define DSK_TLV_TAG_RESULT_FLAGS 0x4305u
 
+#define DSK_TLV_TAG_AUDIT_JOB_OUTCOMES 0x4401u
+#define DSK_TLV_TAG_AUDIT_JOB_ENTRY 0x4402u
+#define DSK_TLV_TAG_AUDIT_JOB_ID 0x4403u
+#define DSK_TLV_TAG_AUDIT_JOB_KIND 0x4404u
+#define DSK_TLV_TAG_AUDIT_JOB_STATUS 0x4405u
+
+/* Job journal tags (0x6000 range) */
+#define DSK_TLV_TAG_JOB_RUN_ID 0x6001u
+#define DSK_TLV_TAG_JOB_PLAN_DIGEST64 0x6002u
+#define DSK_TLV_TAG_JOB_SELECTED_SPLAT_ID 0x6003u
+#define DSK_TLV_TAG_JOB_STAGE_ROOT 0x6004u
+#define DSK_TLV_TAG_JOB_CHECKPOINTS 0x6005u
+#define DSK_TLV_TAG_JOB_ROLLBACK_REF 0x6006u
+#define DSK_TLV_TAG_JOB_LAST_ERROR 0x6007u
+#define DSK_TLV_TAG_JOB_PLAN_BYTES 0x6008u
+
+#define DSK_TLV_TAG_JOB_CHECKPOINT_ENTRY 0x6010u
+#define DSK_TLV_TAG_JOB_CHECKPOINT_ID 0x6011u
+#define DSK_TLV_TAG_JOB_CHECKPOINT_STATUS 0x6012u
+#define DSK_TLV_TAG_JOB_CHECKPOINT_LAST_STEP 0x6013u
+
+#define DSK_TLV_TAG_JOB_ERR_DOMAIN 0x6020u
+#define DSK_TLV_TAG_JOB_ERR_CODE 0x6021u
+#define DSK_TLV_TAG_JOB_ERR_SUBCODE 0x6022u
+#define DSK_TLV_TAG_JOB_ERR_FLAGS 0x6023u
+
 /* Enumerations */
 #define DSK_OPERATION_INSTALL 1u
 #define DSK_OPERATION_REPAIR 2u
@@ -157,6 +201,14 @@
 #define DSK_OWNERSHIP_PORTABLE 1u
 #define DSK_OWNERSHIP_PKG 2u
 #define DSK_OWNERSHIP_STEAM 3u
+
+#define DSK_REG_KIND_SHORTCUT 1u
+#define DSK_REG_KIND_FILE_ASSOC 2u
+#define DSK_REG_KIND_URL_HANDLER 3u
+
+#define DSK_REG_STATUS_SKIPPED 1u
+#define DSK_REG_STATUS_OK 2u
+#define DSK_REG_STATUS_FAILED 3u
 
 #ifdef __cplusplus
 #include <string>
@@ -204,6 +256,7 @@ struct dsk_request_t {
     std::vector<std::string> excluded_components;
     dsk_u16 install_scope;
     std::string preferred_install_root;
+    std::string payload_root;
     dsk_u16 ui_mode;
     std::string requested_splat_id;
     dsk_u32 policy_flags;
@@ -213,15 +266,33 @@ struct dsk_request_t {
     std::string target_platform_triple;
 };
 
+struct dsk_state_artifact_t {
+    dsk_u32 target_root_id;
+    std::string path;
+    dsk_u64 digest64;
+    dsk_u64 size;
+};
+
+struct dsk_state_registration_t {
+    dsk_u16 kind;
+    dsk_u16 status;
+    std::string value;
+};
+
 struct dsk_installed_state_t {
     std::string product_id;
     std::string installed_version;
     std::string selected_splat;
     dsk_u16 install_scope;
     std::string install_root;
+    std::vector<std::string> install_roots;
+    dsk_u16 ownership;
     std::vector<std::string> installed_components;
+    std::vector<dsk_state_artifact_t> artifacts;
+    std::vector<dsk_state_registration_t> registrations;
     dsk_u64 manifest_digest64;
     dsk_u64 request_digest64;
+    dsk_u64 previous_state_digest64;
 };
 
 DSK_API void dsk_manifest_clear(dsk_manifest_t *manifest);
@@ -239,6 +310,9 @@ DSK_API dsk_status_t dsk_request_write(const dsk_request_t *request,
                                        dsk_tlv_buffer_t *out_buf);
 
 DSK_API void dsk_installed_state_clear(dsk_installed_state_t *state);
+DSK_API dsk_status_t dsk_installed_state_parse(const dsk_u8 *data,
+                                               dsk_u32 size,
+                                               dsk_installed_state_t *out_state);
 DSK_API dsk_status_t dsk_installed_state_write(const dsk_installed_state_t *state,
                                                dsk_tlv_buffer_t *out_buf);
 #endif

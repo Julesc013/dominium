@@ -25,6 +25,19 @@ target_include_directories(core_err
         ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
+add_library(core_tlv_schema STATIC
+    core_tlv_schema.c
+)
+target_include_directories(core_tlv_schema
+    PUBLIC
+        ${DOMINIUM_INCLUDE_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}
+)
+target_link_libraries(core_tlv_schema
+    PUBLIC
+        core_err
+)
+
 add_library(core_log STATIC
     core_log.c
 )
@@ -54,11 +67,16 @@ target_include_directories(core_solver
 
 add_library(core_job STATIC
     core_job.c
+    core_job_schema.c
 )
 target_include_directories(core_job
     PUBLIC
         ${DOMINIUM_INCLUDE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}
+)
+target_link_libraries(core_job
+    PUBLIC
+        core_tlv_schema
 )
 
 add_library(dominium_common STATIC
