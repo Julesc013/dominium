@@ -38,6 +38,7 @@ target_include_directories(dsk_kernel PUBLIC
 target_include_directories(dsk_kernel PRIVATE
     ${DOMINIUM_INCLUDE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/services/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/src/plan
 )
 
 target_compile_definitions(dsk_kernel PRIVATE
