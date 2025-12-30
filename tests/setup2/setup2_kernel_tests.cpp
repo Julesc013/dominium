@@ -37,7 +37,21 @@ static void build_basic_manifest(dsk_manifest_t *out_manifest) {
     out_manifest->build_id = "dev";
     out_manifest->supported_targets.push_back("win32_nt5");
     out_manifest->supported_targets.push_back("linux_deb");
+    {
+        dsk_layout_template_t layout;
+        layout.template_id = "root_base";
+        layout.target_root = "primary";
+        layout.path_prefix = "app";
+        out_manifest->layout_templates.push_back(layout);
+    }
 
+    {
+        dsk_manifest_component_t comp;
+        comp.component_id = "base";
+        comp.kind = "runtime";
+        comp.default_selected = DSK_TRUE;
+        out_manifest->components.push_back(comp);
+    }
     {
         dsk_manifest_component_t comp;
         comp.component_id = "core";
@@ -47,11 +61,21 @@ static void build_basic_manifest(dsk_manifest_t *out_manifest) {
         comp.conflicts.push_back("legacy");
         {
             dsk_artifact_t art;
+            art.artifact_id = "core_bin";
             art.hash = "deadbeef";
+            art.digest64 = 0x1111111111111111ULL;
             art.size = 123u;
-            art.path = "bin/core.dat";
+            art.source_path = "bin/core.dat";
+            art.layout_template_id = "root_base";
             comp.artifacts.push_back(art);
         }
+        out_manifest->components.push_back(comp);
+    }
+    {
+        dsk_manifest_component_t comp;
+        comp.component_id = "legacy";
+        comp.kind = "product";
+        comp.default_selected = DSK_FALSE;
         out_manifest->components.push_back(comp);
     }
     {
