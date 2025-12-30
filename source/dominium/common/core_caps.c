@@ -414,6 +414,14 @@ const char* core_caps_key_token(u32 key_id) {
     case CORE_CAP_KEY_PERF_CLASS: return "perf_class";
     case CORE_CAP_KEY_BACKEND_PRIORITY: return "backend_priority";
     case CORE_CAP_KEY_SUBSYSTEM_ID: return "subsystem_id";
+    case CORE_CAP_KEY_SETUP_TARGET_OK: return "setup_target_ok";
+    case CORE_CAP_KEY_SETUP_SCOPE_OK: return "setup_scope_ok";
+    case CORE_CAP_KEY_SETUP_UI_OK: return "setup_ui_ok";
+    case CORE_CAP_KEY_SETUP_OWNERSHIP_OK: return "setup_ownership_ok";
+    case CORE_CAP_KEY_SETUP_MANIFEST_ALLOWLIST_OK: return "setup_manifest_allowlist_ok";
+    case CORE_CAP_KEY_SETUP_REQUIRED_CAPS_OK: return "setup_required_caps_ok";
+    case CORE_CAP_KEY_SETUP_PROHIBITED_CAPS_OK: return "setup_prohibited_caps_ok";
+    case CORE_CAP_KEY_SETUP_MANIFEST_TARGET_OK: return "setup_manifest_target_ok";
     default: break;
     }
     return "unknown";
