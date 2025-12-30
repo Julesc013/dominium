@@ -78,6 +78,9 @@ typedef struct provider_content_source_v1 {
                                        err_t* out_err);
 } provider_content_source_v1;
 
+const provider_content_source_v1* provider_content_null_v1(void);
+const provider_content_source_v1* provider_content_local_fs_v1(void);
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif

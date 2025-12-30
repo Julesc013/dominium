@@ -422,6 +422,9 @@ const char* core_caps_key_token(u32 key_id) {
     case CORE_CAP_KEY_SETUP_REQUIRED_CAPS_OK: return "setup_required_caps_ok";
     case CORE_CAP_KEY_SETUP_PROHIBITED_CAPS_OK: return "setup_prohibited_caps_ok";
     case CORE_CAP_KEY_SETUP_MANIFEST_TARGET_OK: return "setup_manifest_target_ok";
+    case CORE_CAP_KEY_SUPPORTS_NETWORK: return "supports_network";
+    case CORE_CAP_KEY_SUPPORTS_OFFLINE: return "supports_offline";
+    case CORE_CAP_KEY_SUPPORTS_TRUST: return "supports_trust";
     default: break;
     }
     return "unknown";

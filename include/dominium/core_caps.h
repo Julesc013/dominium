@@ -7,6 +7,7 @@ NOTES: Key IDs are append-only and never renumbered.
 #ifndef DOMINIUM_CORE_CAPS_H
 #define DOMINIUM_CORE_CAPS_H
 
+#include "domino/abi.h"
 #include "domino/core/types.h"
 
 #ifdef __cplusplus
@@ -94,7 +95,10 @@ typedef enum core_cap_key_e {
     CORE_CAP_KEY_SETUP_MANIFEST_ALLOWLIST_OK = 26u,
     CORE_CAP_KEY_SETUP_REQUIRED_CAPS_OK = 27u,
     CORE_CAP_KEY_SETUP_PROHIBITED_CAPS_OK = 28u,
-    CORE_CAP_KEY_SETUP_MANIFEST_TARGET_OK = 29u
+    CORE_CAP_KEY_SETUP_MANIFEST_TARGET_OK = 29u,
+    CORE_CAP_KEY_SUPPORTS_NETWORK = 30u,
+    CORE_CAP_KEY_SUPPORTS_OFFLINE = 31u,
+    CORE_CAP_KEY_SUPPORTS_TRUST = 32u
 } core_cap_key;
 
 /*------------------------------------------------------------
