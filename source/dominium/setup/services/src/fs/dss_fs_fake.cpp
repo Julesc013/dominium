@@ -4,6 +4,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <errno.h>
 
 #if defined(_WIN32)
 #include <direct.h>
@@ -39,6 +40,12 @@ static dss_error_t dss_fs_fake_resolve(dss_fs_context_t *ctx,
                                   DSS_SUBCODE_OUTSIDE_SANDBOX,
                                   DSS_ERROR_FLAG_USER_ACTIONABLE);
         }
+        *out_path = canon;
+        return dss_error_make(DSS_DOMAIN_SERVICES, DSS_CODE_OK, DSS_SUBCODE_NONE, 0u);
+    }
+    if (!ctx->root.empty() &&
+        !dss_fs_is_abs_path(ctx->root) &&
+        dss_fs_path_has_prefix(canon, ctx->root)) {
         *out_path = canon;
         return dss_error_make(DSS_DOMAIN_SERVICES, DSS_CODE_OK, DSS_SUBCODE_NONE, 0u);
     }
@@ -80,6 +87,93 @@ static dss_error_t dss_fs_fake_write_file_bytes_atomic(void *vctx,
     return dss_fs_real_write_file_bytes_atomic(0, resolved.c_str(), data, len);
 }
 
+static std::string dss_fs_fake_trim_trailing_sep(const std::string &path) {
+    size_t end = path.size();
+    if (end == 0u) {
+        return path;
+    }
+    while (end > 1u && (path[end - 1u] == '/' || path[end - 1u] == '\\')) {
+        if (end == 3u && path[1u] == ':' &&
+            (path[2u] == '/' || path[2u] == '\\')) {
+            break;
+        }
+        --end;
+    }
+    return path.substr(0u, end);
+}
+
+static std::string dss_fs_fake_parent_dir(const std::string &path) {
+    std::string trimmed = dss_fs_fake_trim_trailing_sep(path);
+    size_t i = trimmed.find_last_of("/\\");
+    if (i == std::string::npos) {
+        return std::string();
+    }
+    if (i == 2u && trimmed.size() > 2u && trimmed[1u] == ':') {
+        return trimmed.substr(0u, 3u);
+    }
+    if (i == 0u) {
+        return trimmed.substr(0u, 1u);
+    }
+    return trimmed.substr(0u, i);
+}
+
+static dss_error_t dss_fs_fake_make_dir_resolved(dss_fs_context_t *ctx,
+                                                 const std::string &resolved) {
+    std::string path = dss_fs_fake_trim_trailing_sep(resolved);
+    if (!ctx || path.empty()) {
+        return dss_error_make(DSS_DOMAIN_SERVICES, DSS_CODE_INVALID_ARGS, DSS_SUBCODE_NONE, 0u);
+    }
+    if (!dss_fs_path_has_prefix(path, ctx->root)) {
+        return dss_error_make(DSS_DOMAIN_SERVICES,
+                              DSS_CODE_SANDBOX_VIOLATION,
+                              DSS_SUBCODE_OUTSIDE_SANDBOX,
+                              DSS_ERROR_FLAG_USER_ACTIONABLE);
+    }
+#if defined(_WIN32)
+    if (_mkdir(path.c_str()) != 0) {
+        if (errno == EEXIST) {
+            return dss_error_make(DSS_DOMAIN_SERVICES, DSS_CODE_OK, DSS_SUBCODE_NONE, 0u);
+        }
+        if (errno != ENOENT) {
+            return dss_error_make(DSS_DOMAIN_SERVICES, DSS_CODE_IO, DSS_SUBCODE_NONE, 0u);
+        }
+    } else {
+        return dss_error_make(DSS_DOMAIN_SERVICES, DSS_CODE_OK, DSS_SUBCODE_NONE, 0u);
+    }
+#else
+    if (mkdir(path.c_str(), 0755) != 0) {
+        if (errno == EEXIST) {
+            return dss_error_make(DSS_DOMAIN_SERVICES, DSS_CODE_OK, DSS_SUBCODE_NONE, 0u);
+        }
+        if (errno != ENOENT) {
+            return dss_error_make(DSS_DOMAIN_SERVICES, DSS_CODE_IO, DSS_SUBCODE_NONE, 0u);
+        }
+    } else {
+        return dss_error_make(DSS_DOMAIN_SERVICES, DSS_CODE_OK, DSS_SUBCODE_NONE, 0u);
+    }
+#endif
+    {
+        std::string parent = dss_fs_fake_parent_dir(path);
+        if (parent.empty() || parent == path || !dss_fs_path_has_prefix(parent, ctx->root)) {
+            return dss_error_make(DSS_DOMAIN_SERVICES, DSS_CODE_IO, DSS_SUBCODE_NONE, 0u);
+        }
+        dss_error_t pst = dss_fs_fake_make_dir_resolved(ctx, parent);
+        if (!dss_error_is_ok(pst)) {
+            return pst;
+        }
+#if defined(_WIN32)
+        if (_mkdir(path.c_str()) != 0 && errno != EEXIST) {
+            return dss_error_make(DSS_DOMAIN_SERVICES, DSS_CODE_IO, DSS_SUBCODE_NONE, 0u);
+        }
+#else
+        if (mkdir(path.c_str(), 0755) != 0 && errno != EEXIST) {
+            return dss_error_make(DSS_DOMAIN_SERVICES, DSS_CODE_IO, DSS_SUBCODE_NONE, 0u);
+        }
+#endif
+    }
+    return dss_error_make(DSS_DOMAIN_SERVICES, DSS_CODE_OK, DSS_SUBCODE_NONE, 0u);
+}
+
 static dss_error_t dss_fs_fake_make_dir(void *vctx, const char *path) {
     dss_fs_context_t *ctx = reinterpret_cast<dss_fs_context_t *>(vctx);
     std::string resolved;
@@ -87,16 +181,7 @@ static dss_error_t dss_fs_fake_make_dir(void *vctx, const char *path) {
     if (!dss_error_is_ok(st)) {
         return st;
     }
-#if defined(_WIN32)
-    if (_mkdir(resolved.c_str()) != 0) {
-        return dss_error_make(DSS_DOMAIN_SERVICES, DSS_CODE_IO, DSS_SUBCODE_NONE, 0u);
-    }
-#else
-    if (mkdir(resolved.c_str(), 0755) != 0) {
-        return dss_error_make(DSS_DOMAIN_SERVICES, DSS_CODE_IO, DSS_SUBCODE_NONE, 0u);
-    }
-#endif
-    return dss_error_make(DSS_DOMAIN_SERVICES, DSS_CODE_OK, DSS_SUBCODE_NONE, 0u);
+    return dss_fs_fake_make_dir_resolved(ctx, resolved);
 }
 
 static dss_error_t dss_fs_fake_remove_file(void *vctx, const char *path) {
@@ -240,6 +325,7 @@ static dss_error_t dss_fs_fake_dir_swap(void *vctx,
     std::string dst_path;
     std::string backup;
     dss_error_t st;
+    dss_bool exists = DSS_FALSE;
     st = dss_fs_fake_resolve(ctx, src_dir, &src_path);
     if (!dss_error_is_ok(st)) {
         return st;
@@ -247,6 +333,12 @@ static dss_error_t dss_fs_fake_dir_swap(void *vctx,
     st = dss_fs_fake_resolve(ctx, dst_dir, &dst_path);
     if (!dss_error_is_ok(st)) {
         return st;
+    }
+    if (dss_error_is_ok(dss_fs_real_exists(0, dst_path.c_str(), &exists)) && !exists) {
+        if (std::rename(src_path.c_str(), dst_path.c_str()) != 0) {
+            return dss_error_make(DSS_DOMAIN_SERVICES, DSS_CODE_IO, DSS_SUBCODE_NONE, 0u);
+        }
+        return dss_error_make(DSS_DOMAIN_SERVICES, DSS_CODE_OK, DSS_SUBCODE_NONE, 0u);
     }
     backup = dst_path + ".swap";
     std::remove(backup.c_str());

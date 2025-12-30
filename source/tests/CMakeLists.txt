@@ -884,6 +884,41 @@ add_test(NAME test_plan_lists_canonically_sorted COMMAND setup2_plan_tests plan_
 add_test(NAME test_plan_golden_default COMMAND setup2_plan_tests plan_golden_default)
 add_test(NAME test_plan_golden_custom COMMAND setup2_plan_tests plan_golden_custom)
 
+add_executable(setup2_apply_tests
+    ../../tests/setup2/test_apply.cpp
+)
+
+target_include_directories(setup2_apply_tests PRIVATE
+    ${CMAKE_SOURCE_DIR}/source/dominium/setup/kernel/include
+    ${CMAKE_SOURCE_DIR}/source/dominium/setup/kernel/src/plan
+    ${CMAKE_SOURCE_DIR}/source/dominium/setup/services/include
+)
+
+target_compile_definitions(setup2_apply_tests PRIVATE
+    SETUP2_TESTS_SANDBOX_ROOT=\"${CMAKE_SOURCE_DIR}/setup2_fs_sandbox\"
+)
+
+target_link_libraries(setup2_apply_tests
+    PRIVATE dsk_kernel dss_services
+)
+
+set_target_properties(setup2_apply_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+dominium_bundle_runtime(setup2_apply_tests)
+if(WIN32)
+    setup2_copy_winpthread(setup2_apply_tests)
+endif()
+
+add_test(NAME test_apply_fresh_install_succeeds COMMAND setup2_apply_tests apply_fresh_install_succeeds)
+add_test(NAME test_fail_mid_commit_then_rollback_restores_pristine COMMAND setup2_apply_tests fail_mid_commit_then_rollback_restores_pristine)
+add_test(NAME test_fail_mid_commit_then_resume_completes COMMAND setup2_apply_tests fail_mid_commit_then_resume_completes)
+add_test(NAME test_crash_during_stage_then_resume COMMAND setup2_apply_tests crash_during_stage_then_resume)
+add_test(NAME test_no_in_place_mutation COMMAND setup2_apply_tests no_in_place_mutation)
+add_test(NAME test_deterministic_journals COMMAND setup2_apply_tests deterministic_journals)
+
 if(WIN32)
     add_test(NAME setup2_kernel_purity_check
         COMMAND ${CMAKE_SOURCE_DIR}/scripts/setup2/check_kernel_purity.bat
