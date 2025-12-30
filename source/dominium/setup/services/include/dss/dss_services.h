@@ -10,27 +10,11 @@
 #include "dss_proc.h"
 
 #ifdef __cplusplus
-#include <string>
-
-struct dss_registry_win_api_t {
-    void *ctx;
-    dss_error_t (*read_string)(void *ctx,
-                               const char *key,
-                               const char *value,
-                               std::string *out_value);
-};
-
-struct dss_pkgmgr_linux_api_t {
-    void *ctx;
-    dss_error_t (*query_installed)(void *ctx,
-                                   const char *package_name,
-                                   dss_bool *out_installed);
-};
-
-struct dss_codesign_macos_api_t {
-    void *ctx;
-    dss_error_t (*sign_path)(void *ctx, const char *path);
-};
+#include "dominium/provider_content_source.h"
+#include "dominium/provider_keychain.h"
+#include "dominium/provider_net.h"
+#include "dominium/provider_os_integration.h"
+#include "dominium/provider_trust.h"
 
 struct dss_services_t {
     dss_fs_api_t fs;
@@ -39,9 +23,11 @@ struct dss_services_t {
     dss_archive_api_t archive;
     dss_perms_api_t perms;
     dss_platform_api_t platform;
-    dss_registry_win_api_t registry_win;
-    dss_pkgmgr_linux_api_t pkgmgr_linux;
-    dss_codesign_macos_api_t codesign_macos;
+    const provider_content_source_v1* provider_content;
+    const provider_trust_v1* provider_trust;
+    const provider_keychain_v1* provider_keychain;
+    const provider_net_v1* provider_net;
+    const provider_os_integration_v1* provider_os_integration;
 };
 
 struct dss_services_config_t {

@@ -28,24 +28,12 @@ void dss_archive_init_fake(dss_archive_api_t *api);
 void dss_archive_shutdown(dss_archive_api_t *api);
 
 void dss_perms_init_real(dss_perms_api_t *api);
-void dss_perms_init_fake(dss_perms_api_t *api);
+void dss_perms_init_fake(dss_perms_api_t *api, const char *sandbox_root);
 void dss_perms_shutdown(dss_perms_api_t *api);
 
 void dss_platform_init_real(dss_platform_api_t *api);
 void dss_platform_init_fake(dss_platform_api_t *api, const char *triple);
 void dss_platform_shutdown(dss_platform_api_t *api);
-
-void dss_registry_win_init_real(dss_registry_win_api_t *api);
-void dss_registry_win_init_fake(dss_registry_win_api_t *api);
-void dss_registry_win_shutdown(dss_registry_win_api_t *api);
-
-void dss_pkgmgr_linux_init_real(dss_pkgmgr_linux_api_t *api);
-void dss_pkgmgr_linux_init_fake(dss_pkgmgr_linux_api_t *api);
-void dss_pkgmgr_linux_shutdown(dss_pkgmgr_linux_api_t *api);
-
-void dss_codesign_macos_init_real(dss_codesign_macos_api_t *api);
-void dss_codesign_macos_init_fake(dss_codesign_macos_api_t *api);
-void dss_codesign_macos_shutdown(dss_codesign_macos_api_t *api);
 
 dss_error_t dss_services_init_real(dss_services_t *out_services) {
     if (!out_services) {
@@ -58,9 +46,11 @@ dss_error_t dss_services_init_real(dss_services_t *out_services) {
     dss_archive_init_real(&out_services->archive);
     dss_perms_init_real(&out_services->perms);
     dss_platform_init_real(&out_services->platform);
-    dss_registry_win_init_real(&out_services->registry_win);
-    dss_pkgmgr_linux_init_real(&out_services->pkgmgr_linux);
-    dss_codesign_macos_init_real(&out_services->codesign_macos);
+    out_services->provider_content = provider_content_local_fs_v1();
+    out_services->provider_trust = provider_trust_null_v1();
+    out_services->provider_keychain = provider_keychain_null_v1();
+    out_services->provider_net = provider_net_null_v1();
+    out_services->provider_os_integration = provider_os_integration_null_v1();
     return dss_error_make(DSS_DOMAIN_SERVICES, DSS_CODE_OK, DSS_SUBCODE_NONE, 0u);
 }
 
@@ -80,11 +70,13 @@ dss_error_t dss_services_init_fake(const dss_services_config_t *config,
     dss_proc_init_fake(&out_services->proc);
     dss_hash_init_fake(&out_services->hash);
     dss_archive_init_fake(&out_services->archive);
-    dss_perms_init_fake(&out_services->perms);
+    dss_perms_init_fake(&out_services->perms, sandbox_root);
     dss_platform_init_fake(&out_services->platform, platform_triple);
-    dss_registry_win_init_fake(&out_services->registry_win);
-    dss_pkgmgr_linux_init_fake(&out_services->pkgmgr_linux);
-    dss_codesign_macos_init_fake(&out_services->codesign_macos);
+    out_services->provider_content = provider_content_local_fs_v1();
+    out_services->provider_trust = provider_trust_null_v1();
+    out_services->provider_keychain = provider_keychain_null_v1();
+    out_services->provider_net = provider_net_null_v1();
+    out_services->provider_os_integration = provider_os_integration_null_v1();
     return dss_error_make(DSS_DOMAIN_SERVICES, DSS_CODE_OK, DSS_SUBCODE_NONE, 0u);
 }
 
@@ -98,7 +90,9 @@ void dss_services_shutdown(dss_services_t *services) {
     dss_archive_shutdown(&services->archive);
     dss_perms_shutdown(&services->perms);
     dss_platform_shutdown(&services->platform);
-    dss_registry_win_shutdown(&services->registry_win);
-    dss_pkgmgr_linux_shutdown(&services->pkgmgr_linux);
-    dss_codesign_macos_shutdown(&services->codesign_macos);
+    services->provider_content = 0;
+    services->provider_trust = 0;
+    services->provider_keychain = 0;
+    services->provider_net = 0;
+    services->provider_os_integration = 0;
 }

@@ -20,15 +20,6 @@ add_library(dss_services STATIC
     src/perms/dss_perms_fake.cpp
     src/platform/dss_platform_real.cpp
     src/platform/dss_platform_fake.cpp
-    src/registry_win/dss_registry_win_iface.cpp
-    src/registry_win/dss_registry_win_real.cpp
-    src/registry_win/dss_registry_win_fake.cpp
-    src/pkgmgr_linux/dss_pkgmgr_linux_iface.cpp
-    src/pkgmgr_linux/dss_pkgmgr_linux_real.cpp
-    src/pkgmgr_linux/dss_pkgmgr_linux_fake.cpp
-    src/codesign_macos/dss_codesign_macos_iface.cpp
-    src/codesign_macos/dss_codesign_macos_real.cpp
-    src/codesign_macos/dss_codesign_macos_fake.cpp
     src/txn/dss_txn_build.cpp
     src/txn/dss_txn_execute.cpp
     src/txn/dss_txn_rollback.cpp
@@ -47,6 +38,7 @@ target_include_directories(dss_services PRIVATE
 target_link_libraries(dss_services
     PRIVATE
         dsu_core
+        providers_builtin
 )
 
 set_target_properties(dss_services PROPERTIES
