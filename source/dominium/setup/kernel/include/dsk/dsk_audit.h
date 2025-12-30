@@ -18,9 +18,13 @@ enum dsk_audit_event_id_t {
     DSK_AUDIT_EVENT_PARSE_REQUEST_FAIL = 5,
     DSK_AUDIT_EVENT_SPLAT_SELECT_OK = 6,
     DSK_AUDIT_EVENT_SPLAT_SELECT_FAIL = 7,
-    DSK_AUDIT_EVENT_WRITE_STATE_OK = 8,
-    DSK_AUDIT_EVENT_WRITE_STATE_FAIL = 9,
-    DSK_AUDIT_EVENT_END = 10
+    DSK_AUDIT_EVENT_PLAN_RESOLVE_OK = 8,
+    DSK_AUDIT_EVENT_PLAN_RESOLVE_FAIL = 9,
+    DSK_AUDIT_EVENT_PLAN_BUILD_OK = 10,
+    DSK_AUDIT_EVENT_PLAN_BUILD_FAIL = 11,
+    DSK_AUDIT_EVENT_WRITE_STATE_OK = 12,
+    DSK_AUDIT_EVENT_WRITE_STATE_FAIL = 13,
+    DSK_AUDIT_EVENT_END = 14
 };
 
 struct dsk_audit_event_t {
@@ -40,14 +44,23 @@ struct dsk_audit_selection_t {
     dsk_u16 selected_reason;
 };
 
+struct dsk_audit_refusal_t {
+    dsk_u16 code;
+    std::string detail;
+};
+
 struct dsk_audit_t {
     dsk_u64 run_id;
     dsk_u64 manifest_digest64;
     dsk_u64 request_digest64;
+    dsk_u64 splat_caps_digest64;
+    dsk_u64 resolved_set_digest64;
+    dsk_u64 plan_digest64;
     std::string selected_splat;
     dsk_u16 operation;
     dsk_error_t result;
     dsk_audit_selection_t selection;
+    std::vector<dsk_audit_refusal_t> refusals;
     std::vector<dsk_audit_event_t> events;
 };
 

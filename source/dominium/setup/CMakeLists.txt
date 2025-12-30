@@ -25,6 +25,7 @@ add_library(dsk_kernel STATIC
     kernel/src/contracts/dsk_contract_state.cpp
     kernel/src/contracts/dsk_contract_audit.cpp
     kernel/src/plan/dsk_resolve.cpp
+    kernel/src/plan/dsk_plan_build.cpp
     kernel/src/plan/dsk_plan_validate.cpp
     kernel/src/plan/dsk_plan_digest.cpp
 )

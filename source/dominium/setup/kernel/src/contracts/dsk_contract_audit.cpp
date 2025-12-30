@@ -67,10 +67,65 @@ dsk_status_t dsk_audit_parse(const dsk_u8 *data, dsk_u32 size, dsk_audit_t *out_
             st = dsk_parse_u64(rec, &out_audit->manifest_digest64);
         } else if (rec.type == DSK_TLV_TAG_AUDIT_REQUEST_DIGEST64) {
             st = dsk_parse_u64(rec, &out_audit->request_digest64);
+        } else if (rec.type == DSK_TLV_TAG_AUDIT_SPLAT_CAPS_DIGEST64) {
+            st = dsk_parse_u64(rec, &out_audit->splat_caps_digest64);
+        } else if (rec.type == DSK_TLV_TAG_AUDIT_RESOLVED_SET_DIGEST64) {
+            st = dsk_parse_u64(rec, &out_audit->resolved_set_digest64);
+        } else if (rec.type == DSK_TLV_TAG_AUDIT_PLAN_DIGEST64) {
+            st = dsk_parse_u64(rec, &out_audit->plan_digest64);
         } else if (rec.type == DSK_TLV_TAG_AUDIT_SELECTED_SPLAT) {
             st = dsk_parse_string(rec, &out_audit->selected_splat);
         } else if (rec.type == DSK_TLV_TAG_AUDIT_OPERATION) {
             st = dsk_parse_u16(rec, &out_audit->operation);
+        } else if (rec.type == DSK_TLV_TAG_AUDIT_REFUSALS) {
+            dsk_tlv_stream_t list_stream;
+            dsk_status_t lst;
+            dsk_u32 j;
+            lst = dsk_tlv_parse_stream(rec.payload, rec.length, &list_stream);
+            if (!dsk_error_is_ok(lst)) {
+                dsk_tlv_view_destroy(&view);
+                return lst;
+            }
+            for (j = 0u; j < list_stream.record_count; ++j) {
+                const dsk_tlv_record_t &entry = list_stream.records[j];
+                if (entry.type != DSK_TLV_TAG_AUDIT_REFUSAL_ENTRY) {
+                    continue;
+                }
+                dsk_tlv_stream_t ref_stream;
+                dsk_audit_refusal_t refusal;
+                dsk_u32 k;
+                refusal.code = 0u;
+                lst = dsk_tlv_parse_stream(entry.payload, entry.length, &ref_stream);
+                if (!dsk_error_is_ok(lst)) {
+                    dsk_tlv_stream_destroy(&list_stream);
+                    dsk_tlv_view_destroy(&view);
+                    return lst;
+                }
+                for (k = 0u; k < ref_stream.record_count; ++k) {
+                    const dsk_tlv_record_t &rf = ref_stream.records[k];
+                    if (rf.type == DSK_TLV_TAG_AUDIT_REFUSAL_CODE) {
+                        dsk_u16 code;
+                        lst = dsk_parse_u16(rf, &code);
+                        if (dsk_error_is_ok(lst)) {
+                            refusal.code = code;
+                        }
+                    } else if (rf.type == DSK_TLV_TAG_AUDIT_REFUSAL_DETAIL) {
+                        lst = dsk_parse_string(rf, &refusal.detail);
+                    } else {
+                        continue;
+                    }
+                    if (!dsk_error_is_ok(lst)) {
+                        dsk_tlv_stream_destroy(&ref_stream);
+                        dsk_tlv_stream_destroy(&list_stream);
+                        dsk_tlv_view_destroy(&view);
+                        return lst;
+                    }
+                }
+                dsk_tlv_stream_destroy(&ref_stream);
+                out_audit->refusals.push_back(refusal);
+            }
+            dsk_tlv_stream_destroy(&list_stream);
+            st = dsk_error_make(DSK_DOMAIN_NONE, DSK_CODE_OK, DSK_SUBCODE_NONE, 0u);
         } else if (rec.type == DSK_TLV_TAG_AUDIT_SELECTION_REASON) {
             dsk_tlv_stream_t sel_stream;
             dsk_status_t lst;
@@ -349,8 +404,50 @@ dsk_status_t dsk_audit_write(const dsk_audit_t *audit, dsk_tlv_buffer_t *out_buf
     dsk_tlv_builder_add_u64(builder, DSK_TLV_TAG_AUDIT_RUN_ID, audit->run_id);
     dsk_tlv_builder_add_u64(builder, DSK_TLV_TAG_AUDIT_MANIFEST_DIGEST64, audit->manifest_digest64);
     dsk_tlv_builder_add_u64(builder, DSK_TLV_TAG_AUDIT_REQUEST_DIGEST64, audit->request_digest64);
+    dsk_tlv_builder_add_u64(builder, DSK_TLV_TAG_AUDIT_SPLAT_CAPS_DIGEST64, audit->splat_caps_digest64);
+    dsk_tlv_builder_add_u64(builder, DSK_TLV_TAG_AUDIT_RESOLVED_SET_DIGEST64, audit->resolved_set_digest64);
+    dsk_tlv_builder_add_u64(builder, DSK_TLV_TAG_AUDIT_PLAN_DIGEST64, audit->plan_digest64);
     dsk_tlv_builder_add_string(builder, DSK_TLV_TAG_AUDIT_SELECTED_SPLAT, audit->selected_splat.c_str());
     dsk_tlv_builder_add_u16(builder, DSK_TLV_TAG_AUDIT_OPERATION, audit->operation);
+
+    if (!audit->refusals.empty()) {
+        dsk_tlv_builder_t *ref_builder = dsk_tlv_builder_create();
+        dsk_tlv_buffer_t ref_payload;
+        for (i = 0u; i < audit->refusals.size(); ++i) {
+            const dsk_audit_refusal_t &refusal = audit->refusals[i];
+            dsk_tlv_builder_t *entry_builder = dsk_tlv_builder_create();
+            dsk_tlv_buffer_t entry_payload;
+            dsk_tlv_builder_add_u16(entry_builder, DSK_TLV_TAG_AUDIT_REFUSAL_CODE, refusal.code);
+            if (!refusal.detail.empty()) {
+                dsk_tlv_builder_add_string(entry_builder,
+                                           DSK_TLV_TAG_AUDIT_REFUSAL_DETAIL,
+                                           refusal.detail.c_str());
+            }
+            st = dsk_tlv_builder_finalize_payload(entry_builder, &entry_payload);
+            dsk_tlv_builder_destroy(entry_builder);
+            if (!dsk_error_is_ok(st)) {
+                dsk_tlv_builder_destroy(ref_builder);
+                dsk_tlv_builder_destroy(builder);
+                return st;
+            }
+            dsk_tlv_builder_add_container(ref_builder,
+                                          DSK_TLV_TAG_AUDIT_REFUSAL_ENTRY,
+                                          entry_payload.data,
+                                          entry_payload.size);
+            dsk_tlv_buffer_free(&entry_payload);
+        }
+        st = dsk_tlv_builder_finalize_payload(ref_builder, &ref_payload);
+        dsk_tlv_builder_destroy(ref_builder);
+        if (!dsk_error_is_ok(st)) {
+            dsk_tlv_builder_destroy(builder);
+            return st;
+        }
+        dsk_tlv_builder_add_container(builder,
+                                      DSK_TLV_TAG_AUDIT_REFUSALS,
+                                      ref_payload.data,
+                                      ref_payload.size);
+        dsk_tlv_buffer_free(&ref_payload);
+    }
 
     {
         std::vector<dsk_audit_selection_candidate_t> candidates = audit->selection.candidates;

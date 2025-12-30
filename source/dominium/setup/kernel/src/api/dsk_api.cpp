@@ -2,7 +2,9 @@
 #include "dsk/dsk_audit.h"
 #include "dsk/dsk_contracts.h"
 #include "dsk/dsk_digest.h"
+#include "dsk/dsk_plan.h"
 #include "dsk/dsk_splat.h"
+#include "dsk_resolve.h"
 #include "dss/dss_services.h"
 
 #include "dominium/core_err.h"
@@ -164,17 +166,36 @@ static void dsk_audit_capture_selection(dsk_audit_t *audit,
     if (!audit) {
         return;
     }
+    audit->splat_caps_digest64 = 0u;
     audit->selection.candidates.clear();
     for (i = 0u; i < selection.candidates.size(); ++i) {
         dsk_audit_selection_candidate_t cand;
         cand.id = selection.candidates[i].id;
         cand.caps_digest64 = selection.candidates[i].caps_digest64;
         audit->selection.candidates.push_back(cand);
+        if (selection.candidates[i].id == selection.selected_id) {
+            audit->splat_caps_digest64 = selection.candidates[i].caps_digest64;
+        }
     }
     audit->selection.rejections = selection.rejections;
     audit->selection.selected_id = selection.selected_id;
     audit->selection.selected_reason = selection.selected_reason;
     audit->selected_splat = selection.selected_id;
+}
+
+static void dsk_audit_capture_refusals(dsk_audit_t *audit,
+                                       const std::vector<dsk_plan_refusal_t> &refusals) {
+    size_t i;
+    if (!audit) {
+        return;
+    }
+    audit->refusals.clear();
+    for (i = 0u; i < refusals.size(); ++i) {
+        dsk_audit_refusal_t ref;
+        ref.code = refusals[i].code;
+        ref.detail = refusals[i].detail;
+        audit->refusals.push_back(ref);
+    }
 }
 
 static dsk_status_t dsk_sink_write(const dsk_byte_sink_t *sink, const dsk_tlv_buffer_t *buf) {
@@ -184,50 +205,13 @@ static dsk_status_t dsk_sink_write(const dsk_byte_sink_t *sink, const dsk_tlv_bu
     return sink->write(sink->user, buf->data, buf->size);
 }
 
-static int dsk_manifest_has_component(const dsk_manifest_t &manifest, const std::string &id) {
-    size_t i;
-    for (i = 0u; i < manifest.components.size(); ++i) {
-        if (manifest.components[i].component_id == id) {
-            return 1;
-        }
-    }
-    return 0;
-}
-
-static void dsk_select_default_components(const dsk_manifest_t &manifest,
-                                          std::vector<std::string> &out_selected) {
-    size_t i;
-    for (i = 0u; i < manifest.components.size(); ++i) {
-        if (manifest.components[i].default_selected) {
-            out_selected.push_back(manifest.components[i].component_id);
-        }
-    }
-}
-
-static void dsk_select_component_unique(std::vector<std::string> &selected,
-                                        const std::string &id) {
-    if (std::find(selected.begin(), selected.end(), id) == selected.end()) {
-        selected.push_back(id);
-    }
-}
-
-static void dsk_remove_component(std::vector<std::string> &selected,
-                                 const std::string &id) {
-    std::vector<std::string>::iterator it = std::find(selected.begin(), selected.end(), id);
-    if (it != selected.end()) {
-        selected.erase(it);
-    }
-}
-
 static dsk_status_t dsk_build_installed_state(const dsk_manifest_t &manifest,
                                               const dsk_request_t &request,
                                               const std::string &selected_splat,
                                               dsk_u64 manifest_digest,
                                               dsk_u64 request_digest,
+                                              const dsk_resolved_set_t &resolved,
                                               dsk_installed_state_t *out_state) {
-    size_t i;
-    std::vector<std::string> selected;
-
     if (!out_state) {
         return dsk_error_make(DSK_DOMAIN_KERNEL, DSK_CODE_INVALID_ARGS, DSK_SUBCODE_NONE, 0u);
     }
@@ -239,32 +223,12 @@ static dsk_status_t dsk_build_installed_state(const dsk_manifest_t &manifest,
     out_state->install_root = request.preferred_install_root;
     out_state->manifest_digest64 = manifest_digest;
     out_state->request_digest64 = request_digest;
-
-    dsk_select_default_components(manifest, selected);
-
-    for (i = 0u; i < request.requested_components.size(); ++i) {
-        const std::string &id = request.requested_components[i];
-        if (!dsk_manifest_has_component(manifest, id)) {
-            return dsk_error_make(DSK_DOMAIN_KERNEL,
-                                  DSK_CODE_VALIDATION_ERROR,
-                                  DSK_SUBCODE_INVALID_FIELD,
-                                  DSK_ERROR_FLAG_USER_ACTIONABLE);
+    {
+        size_t i;
+        for (i = 0u; i < resolved.components.size(); ++i) {
+            out_state->installed_components.push_back(resolved.components[i].component_id);
         }
-        dsk_select_component_unique(selected, id);
     }
-
-    for (i = 0u; i < request.excluded_components.size(); ++i) {
-        const std::string &id = request.excluded_components[i];
-        if (!dsk_manifest_has_component(manifest, id)) {
-            return dsk_error_make(DSK_DOMAIN_KERNEL,
-                                  DSK_CODE_VALIDATION_ERROR,
-                                  DSK_SUBCODE_INVALID_FIELD,
-                                  DSK_ERROR_FLAG_USER_ACTIONABLE);
-        }
-        dsk_remove_component(selected, id);
-    }
-
-    out_state->installed_components = selected;
     return dsk_error_make(DSK_DOMAIN_NONE, DSK_CODE_OK, DSK_SUBCODE_NONE, 0u);
 }
 
@@ -277,6 +241,8 @@ void dsk_kernel_request_init(dsk_kernel_request_t *req) {
     req->manifest_size = 0u;
     req->request_bytes = 0;
     req->request_size = 0u;
+    req->out_plan.user = 0;
+    req->out_plan.write = 0;
     req->out_state.user = 0;
     req->out_state.write = 0;
     req->out_audit.user = 0;
@@ -298,8 +264,12 @@ static dsk_status_t dsk_kernel_run(dsk_u16 expected_operation, const dsk_kernel_
     dsk_manifest_t manifest;
     dsk_request_t request;
     dsk_installed_state_t state;
+    dsk_plan_t plan;
+    dsk_resolved_set_t resolved;
+    std::vector<dsk_plan_refusal_t> refusals;
     dsk_splat_selection_t splat_sel;
     dsk_audit_t audit;
+    dsk_tlv_buffer_t plan_buf;
     dsk_tlv_buffer_t state_buf;
     dsk_tlv_buffer_t audit_buf;
     dsk_u64 manifest_digest;
@@ -315,6 +285,10 @@ static dsk_status_t dsk_kernel_run(dsk_u16 expected_operation, const dsk_kernel_
     dsk_manifest_clear(&manifest);
     dsk_request_clear(&request);
     dsk_installed_state_clear(&state);
+    dsk_plan_clear(&plan);
+    resolved.components.clear();
+    resolved.digest64 = 0u;
+    refusals.clear();
     dsk_audit_clear(&audit);
 
     manifest_digest = dsk_digest64_bytes(req->manifest_bytes, req->manifest_size);
@@ -323,6 +297,9 @@ static dsk_status_t dsk_kernel_run(dsk_u16 expected_operation, const dsk_kernel_
     audit.run_id = dsk_generate_run_id(req->deterministic_mode);
     audit.manifest_digest64 = manifest_digest;
     audit.request_digest64 = request_digest;
+    audit.splat_caps_digest64 = 0u;
+    audit.resolved_set_digest64 = 0u;
+    audit.plan_digest64 = 0u;
     audit.operation = expected_operation;
     audit.result = ok;
 
@@ -382,11 +359,71 @@ static dsk_status_t dsk_kernel_run(dsk_u16 expected_operation, const dsk_kernel_
     dsk_audit_add_event(&audit, DSK_AUDIT_EVENT_SPLAT_SELECT_OK, ok);
     dsk_emit_log_event(req_ex, audit.run_id, CORE_LOG_OP_SETUP_SPLAT_SELECT, CORE_LOG_EVT_OP_OK, ok);
 
+    {
+        dsk_splat_caps_t selected_caps;
+        size_t i;
+        dsk_splat_caps_clear(&selected_caps);
+        for (i = 0u; i < splat_sel.candidates.size(); ++i) {
+            if (splat_sel.candidates[i].id == splat_sel.selected_id) {
+                selected_caps = splat_sel.candidates[i].caps;
+                break;
+            }
+        }
+
+        st = dsk_resolve_components(manifest,
+                                    request,
+                                    request.target_platform_triple,
+                                    &resolved,
+                                    &refusals);
+        if (!dsk_error_is_ok(st)) {
+            audit.result = st;
+            dsk_audit_capture_refusals(&audit, refusals);
+            dsk_audit_add_event(&audit, DSK_AUDIT_EVENT_PLAN_RESOLVE_FAIL, st);
+            goto emit_audit;
+        }
+        audit.resolved_set_digest64 = resolved.digest64;
+        dsk_audit_add_event(&audit, DSK_AUDIT_EVENT_PLAN_RESOLVE_OK, ok);
+
+        st = dsk_plan_build(manifest,
+                            request,
+                            splat_sel.selected_id,
+                            selected_caps,
+                            audit.splat_caps_digest64,
+                            resolved,
+                            manifest_digest,
+                            request_digest,
+                            &plan);
+        if (!dsk_error_is_ok(st)) {
+            audit.result = st;
+            dsk_audit_add_event(&audit, DSK_AUDIT_EVENT_PLAN_BUILD_FAIL, st);
+            goto emit_audit;
+        }
+        audit.plan_digest64 = plan.plan_digest64;
+        dsk_audit_add_event(&audit, DSK_AUDIT_EVENT_PLAN_BUILD_OK, ok);
+    }
+
+    if (req->out_plan.write) {
+        st = dsk_plan_write(&plan, &plan_buf);
+        if (!dsk_error_is_ok(st)) {
+            audit.result = st;
+            dsk_audit_add_event(&audit, DSK_AUDIT_EVENT_PLAN_BUILD_FAIL, st);
+            goto emit_audit;
+        }
+        st = dsk_sink_write(&req->out_plan, &plan_buf);
+        dsk_tlv_buffer_free(&plan_buf);
+        if (!dsk_error_is_ok(st)) {
+            audit.result = st;
+            dsk_audit_add_event(&audit, DSK_AUDIT_EVENT_PLAN_BUILD_FAIL, st);
+            goto emit_audit;
+        }
+    }
+
     st = dsk_build_installed_state(manifest,
                                    request,
                                    splat_sel.selected_id,
                                    manifest_digest,
                                    request_digest,
+                                   resolved,
                                    &state);
     if (!dsk_error_is_ok(st)) {
         audit.result = st;
@@ -442,6 +479,16 @@ dsk_status_t dsk_install(const dsk_kernel_request_t *req) {
     return dsk_kernel_run(DSK_OPERATION_INSTALL, &ex);
 }
 
+dsk_status_t dsk_upgrade(const dsk_kernel_request_t *req) {
+    dsk_kernel_request_ex_t ex;
+    if (!req) {
+        return dsk_error_make(DSK_DOMAIN_KERNEL, DSK_CODE_INVALID_ARGS, DSK_SUBCODE_NONE, 0u);
+    }
+    dsk_kernel_request_ex_init(&ex);
+    ex.base = *req;
+    return dsk_kernel_run(DSK_OPERATION_UPGRADE, &ex);
+}
+
 dsk_status_t dsk_repair(const dsk_kernel_request_t *req) {
     dsk_kernel_request_ex_t ex;
     if (!req) {
@@ -484,6 +531,10 @@ dsk_status_t dsk_status(const dsk_kernel_request_t *req) {
 
 dsk_status_t dsk_install_ex(const dsk_kernel_request_ex_t *req) {
     return dsk_kernel_run(DSK_OPERATION_INSTALL, req);
+}
+
+dsk_status_t dsk_upgrade_ex(const dsk_kernel_request_ex_t *req) {
+    return dsk_kernel_run(DSK_OPERATION_UPGRADE, req);
 }
 
 dsk_status_t dsk_repair_ex(const dsk_kernel_request_ex_t *req) {
