@@ -18,6 +18,7 @@ RESPONSIBILITY: Resumable job journal + execution wrapper for long launcher oper
 #include "launcher_launch_attempt.h"
 #include "launcher_log.h"
 #include "launcher_pack_resolver.h"
+#include "launcher_safety.h"
 #include "launcher_tlv.h"
 
 namespace dom {
@@ -385,7 +386,7 @@ static bool read_job_state(const launcher_fs_api_v1* fs,
     if (bytes.empty()) {
         return false;
     }
-    return core_job_state_read_tlv(&bytes[0], (u32)bytes.size(), out_state) == 0;
+    return core_job_state_read_tlv(&bytes[0], (u32)bytes.size(), &out_state) == 0;
 }
 
 static bool read_job_def(const launcher_fs_api_v1* fs,
@@ -398,7 +399,7 @@ static bool read_job_def(const launcher_fs_api_v1* fs,
     if (bytes.empty()) {
         return false;
     }
-    return core_job_def_read_tlv(&bytes[0], (u32)bytes.size(), out_def) == 0;
+    return core_job_def_read_tlv(&bytes[0], (u32)bytes.size(), &out_def) == 0;
 }
 
 static void add_job_reason(LauncherAuditLog& audit,
@@ -678,7 +679,10 @@ static bool execute_apply_packs_step(LauncherJobContext& ctx,
         if (!load_tx_with_staged_manifest(services, ctx.input.instance_id, ctx.state_root, tx, out_err)) {
             return false;
         }
-        if (!launcher_instance_tx_verify_ex(services, tx, audit, out_err)) {
+        if (!launcher_instance_tx_verify(services, tx, audit)) {
+            if (out_err) {
+                *out_err = err_make((u16)ERRD_TXN, (u16)ERRC_TXN_STAGE_FAILED, 0u, (u32)ERRMSG_TXN_STAGE_FAILED);
+            }
             return false;
         }
         return true;
@@ -1191,7 +1195,7 @@ static bool run_job_steps(LauncherJobContext& ctx, err_t* out_err) {
             st->retry_count[step_index] += 1u;
             st->outcome = (step_err.flags & (u32)ERRF_POLICY_REFUSAL) ? (u32)CORE_JOB_OUTCOME_REFUSED : (u32)CORE_JOB_OUTCOME_FAILED;
             ctx.audit.err = step_err;
-            add_job_reason(ctx.audit, std::string("outcome=") + ((st->outcome == (u32)CORE_JOB_OUTCOME_REFUSED) ? "refused" : "failed"));
+            add_job_reason(ctx.audit, "outcome", (st->outcome == (u32)CORE_JOB_OUTCOME_REFUSED) ? "refused" : "failed");
             (void)write_job_state(fs, ctx.paths, *st);
             (void)write_job_audit(fs, ctx);
             emit_job_event(ctx,
@@ -1215,7 +1219,7 @@ static bool run_job_steps(LauncherJobContext& ctx, err_t* out_err) {
         st->outcome = (u32)CORE_JOB_OUTCOME_OK;
         st->last_error = err_ok();
         ctx.audit.err = err_ok();
-        add_job_reason(ctx.audit, "outcome=ok");
+        add_job_reason(ctx.audit, "outcome", "ok");
         (void)write_job_state(fs, ctx.paths, *st);
         (void)write_job_audit(fs, ctx);
         emit_job_event(ctx, CORE_LOG_EVT_OP_OK, 0u, (const err_t*)0, st->outcome);

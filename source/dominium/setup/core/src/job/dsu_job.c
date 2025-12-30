@@ -10,6 +10,7 @@ PURPOSE: Resumable job journaling + execution wrapper for long setup operations.
 #include "../../include/dsu/dsu_state.h"
 #include "dominium/core_log.h"
 
+#include "../dsu_ctx_internal.h"
 #include "../fs/dsu_platform_iface.h"
 #include "../util/dsu_util_internal.h"
 
