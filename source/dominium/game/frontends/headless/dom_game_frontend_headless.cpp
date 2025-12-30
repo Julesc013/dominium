@@ -14,6 +14,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "runtime/dom_game_runtime.h"
 
 extern "C" {
+#include "domino/sys.h"
 #include "domino/system/d_system.h"
 }
 
