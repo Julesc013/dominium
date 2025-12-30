@@ -1,4 +1,4 @@
-# Setup2 Audit Model (SR-1)
+# Setup2 Audit Model (SR-4)
 
 Every kernel command emits `setup_audit.tlv` even on failure.
 
@@ -10,9 +10,13 @@ Every kernel command emits `setup_audit.tlv` even on failure.
 - `5` PARSE_REQUEST_FAIL
 - `6` SPLAT_SELECT_OK
 - `7` SPLAT_SELECT_FAIL
-- `8` WRITE_STATE_OK
-- `9` WRITE_STATE_FAIL
-- `10` END
+- `8` PLAN_RESOLVE_OK
+- `9` PLAN_RESOLVE_FAIL
+- `10` PLAN_BUILD_OK
+- `11` PLAN_BUILD_FAIL
+- `12` WRITE_STATE_OK
+- `13` WRITE_STATE_FAIL
+- `14` END
 
 ## Semantics
 - Events are emitted in deterministic order.
