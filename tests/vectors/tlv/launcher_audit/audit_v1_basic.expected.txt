@@ -1,0 +1,6 @@
+schema_version=1
+run_id=0x1111222233334444
+inputs=2
+selected_profile=baseline
+has_selection_summary=1
+selected_backends=1

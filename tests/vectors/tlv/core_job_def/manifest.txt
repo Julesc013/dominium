@@ -1,0 +1,5 @@
+schema_id=7
+version=1
+vector=job_def_v1.tlv
+summary=job_def_v1.expected.txt
+sha256=job_def_v1.sha256

@@ -1,0 +1,7 @@
+schema_version=1
+run_id=0xabcdef0123456789
+instance_id=inst_alpha
+profile_id=baseline
+determinism_profile_id=baseline
+resolved_packs_count=2
+resolved_packs_summary=pack.base,pack.core
