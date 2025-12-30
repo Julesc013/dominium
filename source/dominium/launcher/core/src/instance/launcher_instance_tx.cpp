@@ -458,6 +458,43 @@ LauncherInstanceTx::LauncherInstanceTx()
       after_manifest() {
 }
 
+bool launcher_instance_tx_load(const launcher_services_api_v1* services,
+                               const std::string& instance_id,
+                               const std::string& state_root_override,
+                               LauncherInstanceTx& out_tx) {
+    const launcher_fs_api_v1* fs = get_fs(services);
+    std::string state_root;
+    LauncherInstancePaths paths;
+    LauncherInstanceTx tx;
+
+    if (!services || !fs) {
+        return false;
+    }
+    if (instance_id.empty()) {
+        return false;
+    }
+    if (!launcher_is_safe_id_component(instance_id)) {
+        return false;
+    }
+    if (!state_root_override.empty()) {
+        state_root = state_root_override;
+    } else if (!get_state_root(fs, state_root)) {
+        return false;
+    }
+
+    paths = launcher_instance_paths_make(state_root, instance_id);
+    if (!read_tx_state(fs, paths, tx)) {
+        return false;
+    }
+
+    tx.state_root = state_root;
+    if (tx.instance_id.empty()) {
+        tx.instance_id = instance_id;
+    }
+    out_tx = tx;
+    return true;
+}
+
 bool launcher_instance_tx_recover_staging(const launcher_services_api_v1* services,
                                           const std::string& instance_id,
                                           const std::string& state_root_override,

@@ -21,6 +21,7 @@ extern "C" {
 #include "core/include/launcher_exit_status.h"
 #include "core/include/launcher_handshake.h"
 #include "core/include/launcher_instance_launch_history.h"
+#include "core/include/launcher_job.h"
 #include "core/include/launcher_launch_attempt.h"
 #include "core/include/launcher_log.h"
 #include "core/include/launcher_pack_resolver.h"
@@ -802,8 +803,7 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
     err_t run_err;
 
     dom::launcher_core::LauncherPrelaunchPlan plan;
-    dom::launcher_core::LauncherRecoverySuggestion recovery;
-    std::string prelaunch_err;
+    err_t prelaunch_err = err_ok();
     bool have_plan = false;
 
     std::vector<std::string> platform_backends;
@@ -884,19 +884,30 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
                    0u,
                    0u);
 
-    if (!dom::launcher_core::launcher_launch_prepare_attempt(services,
-                                                            (const dom::launcher_core::LauncherProfile*)0,
-                                                            instance_id,
-                                                            state_root,
-                                                            overrides,
-                                                            plan,
-                                                            recovery,
-                                                            (dom::launcher_core::LauncherAuditLog*)0,
-                                                            &prelaunch_err)) {
+    if (!dom::launcher_core::launcher_job_run_launch_prepare(services,
+                                                             instance_id,
+                                                             state_root,
+                                                             overrides,
+                                                             plan,
+                                                             &prelaunch_err)) {
+        const bool has_err_id = !err_is_ok(&prelaunch_err);
+        const char* err_id = has_err_id ? err_to_string_id(&prelaunch_err) : "";
+        if (!plan.instance_id.empty()) {
+            have_plan = true;
+        }
         out_result.refused = 1u;
-        out_result.refusal_code = (u32)dom::launcher_core::LAUNCHER_HANDSHAKE_REFUSAL_MISSING_REQUIRED_FIELDS;
-        out_result.refusal_detail = std::string("prelaunch_failed;") + prelaunch_err;
-        run_err = run_err_from_prelaunch_text(prelaunch_err.empty() ? std::string("prelaunch_plan_failed") : prelaunch_err);
+        if (prelaunch_err.flags & (u32)ERRF_POLICY_REFUSAL) {
+            out_result.refusal_code = (u32)dom::launcher_core::LAUNCHER_HANDSHAKE_REFUSAL_PRELAUNCH_VALIDATION_FAILED;
+            out_result.refusal_detail = std::string("prelaunch_validation_failed") +
+                                        (has_err_id ? std::string(";err=") + err_id : std::string());
+        } else {
+            out_result.refusal_code = (u32)dom::launcher_core::LAUNCHER_HANDSHAKE_REFUSAL_MISSING_REQUIRED_FIELDS;
+            out_result.refusal_detail = std::string("prelaunch_failed") +
+                                        (has_err_id ? std::string(";err=") + err_id : std::string());
+        }
+        if (err_is_ok(&run_err)) {
+            run_err = has_err_id ? prelaunch_err : run_err_from_prelaunch_text(std::string("prelaunch_plan_failed"));
+        }
     } else {
         have_plan = true;
     }
