@@ -685,14 +685,23 @@ set_target_properties(dgfx_demo PROPERTIES
 if(WIN32)
     function(setup2_copy_winpthread target)
         get_filename_component(DSK_COMPILER_DIR "${CMAKE_CXX_COMPILER}" DIRECTORY)
-        set(DSK_WINPTHREAD_DLL "${DSK_COMPILER_DIR}/libwinpthread-1.dll")
-        if(EXISTS "${DSK_WINPTHREAD_DLL}")
-            add_custom_command(TARGET ${target} POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                    "${DSK_WINPTHREAD_DLL}"
-                    $<TARGET_FILE_DIR:${target}>
-            )
-        endif()
+        set(DSK_RUNTIME_DLLS
+            "${DSK_COMPILER_DIR}/libwinpthread-1.dll"
+            "${DSK_COMPILER_DIR}/libstdc++-6.dll"
+            "${DSK_COMPILER_DIR}/libgcc_s_seh-1.dll"
+            "${DSK_COMPILER_DIR}/libgcc_s_dw2-1.dll"
+            "${DSK_COMPILER_DIR}/libgcc_s_sjlj-1.dll"
+            "${DSK_COMPILER_DIR}/libatomic-1.dll"
+        )
+        foreach(dll IN LISTS DSK_RUNTIME_DLLS)
+            if(EXISTS "${dll}")
+                add_custom_command(TARGET ${target} POST_BUILD
+                    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                        "${dll}"
+                        $<TARGET_FILE_DIR:${target}>
+                )
+            endif()
+        endforeach()
     endfunction()
 endif()
 
