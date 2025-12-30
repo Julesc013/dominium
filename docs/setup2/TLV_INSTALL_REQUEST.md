@@ -1,4 +1,4 @@
-# install_request.tlv (SR-3)
+# install_request.tlv (SR-4)
 
 All integers are little-endian.
 
@@ -6,7 +6,7 @@ All integers are little-endian.
 Same as `install_manifest.tlv` (magic `DSK1`, version `1`, endian `0xFFFE`).
 
 ## Top-level TLVs
-- `0x2001` `operation` (u16: install=1, repair=2, uninstall=3, verify=4, status=5)
+- `0x2001` `operation` (u16: install=1, repair=2, uninstall=3, verify=4, status=5, upgrade=6)
 - `0x2002` `requested_components` (container)
 - `0x2003` `excluded_components` (container)
 - `0x2004` `install_scope` (u16: user=1, system=2, portable=3)

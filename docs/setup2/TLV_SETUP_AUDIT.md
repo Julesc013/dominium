@@ -1,4 +1,4 @@
-# setup_audit.tlv (SR-3)
+# setup_audit.tlv (SR-4)
 
 All integers are little-endian.
 
@@ -9,11 +9,15 @@ Same as `install_manifest.tlv` (magic `DSK1`, version `1`, endian `0xFFFE`).
 - `0x4001` `run_id` (u64; deterministic mode => `0`)
 - `0x4002` `manifest_digest64` (u64)
 - `0x4003` `request_digest64` (u64)
+- `0x4009` `splat_caps_digest64` (u64)
+- `0x400A` `resolved_set_digest64` (u64)
+- `0x400B` `plan_digest64` (u64)
 - `0x4004` `selected_splat` (string)
 - `0x4005` `selection` (container)
 - `0x4006` `operation` (u16)
 - `0x4007` `result` (container)
 - `0x4008` `events` (container)
+- `0x400C` `refusals` (container, optional)
 
 ### selection container
 - `0x4101` `selection_candidates` (container)
@@ -36,6 +40,13 @@ Same as `install_manifest.tlv` (magic `DSK1`, version `1`, endian `0xFFFE`).
 - `0x4112` `code` (u16)
 - `0x4113` `detail` (string, optional)
 
+### refusals container
+- `0x4120` `refusal_entry` (container)
+
+#### refusal_entry fields
+- `0x4121` `code` (u16)
+- `0x4122` `detail` (string, optional)
+
 ### result container
 - `0x4302` `domain` (u16)
 - `0x4303` `code` (u16)
@@ -54,4 +65,5 @@ Same as `install_manifest.tlv` (magic `DSK1`, version `1`, endian `0xFFFE`).
 
 ## Ordering
 - Candidates and rejections are sorted by ID.
+- Refusals are emitted in detection order.
 - Events are emitted in execution order.
