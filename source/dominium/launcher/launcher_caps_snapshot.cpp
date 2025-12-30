@@ -6,6 +6,7 @@ RESPONSIBILITY: Implements deterministic capability snapshot build + TLV/text re
 */
 
 #include "launcher_caps_snapshot.h"
+#include "launcher_caps_solver.h"
 
 #include <algorithm>
 #include <cstdio>
@@ -268,12 +269,7 @@ bool launcher_caps_snapshot_build(const dom_profile* profile,
                                   LauncherCapsSnapshot& out_snapshot,
                                   std::string& out_error) {
     LauncherCapsSnapshot snap;
-    dom_backend_desc desc;
-    dom_hw_caps hw;
-    dom_selection sel;
-    dom_caps_result rc;
-    dom_profile fallback;
-    const dom_profile* used_profile = profile;
+    LauncherCapsSolveResult solve;
     u32 i;
 
     out_error.clear();
@@ -304,67 +300,15 @@ bool launcher_caps_snapshot_build(const dom_profile* profile,
     snap.supports_open_folder = 0u;
     snap.supports_tls = 0u;
 
-    (void)dom_caps_register_builtin_backends();
-    (void)dom_caps_finalize_registry();
-
-    std::memset(&desc, 0, sizeof(desc));
-    for (i = 0u; i < dom_caps_backend_count(); ++i) {
-        if (dom_caps_backend_get(i, &desc) != DOM_CAPS_OK) {
-            continue;
-        }
-        {
-            LauncherCapsBackend b;
-            b.subsystem_id = (u32)desc.subsystem_id;
-            b.subsystem_name = subsystem_name_or_hex(b.subsystem_id, desc.subsystem_name);
-            b.backend_name = safe_str(desc.backend_name);
-            b.determinism = (u32)desc.determinism;
-            b.perf_class = (u32)desc.perf_class;
-            b.priority = (u32)desc.backend_priority;
-            snap.backends.push_back(b);
-        }
-    }
-    std::sort(snap.backends.begin(), snap.backends.end(), backend_less);
-
-    std::memset(&hw, 0, sizeof(hw));
-    hw.abi_version = DOM_CAPS_ABI_VERSION;
-    hw.struct_size = (u32)sizeof(hw);
-    (void)dom_hw_caps_probe_host(&hw);
-
-    std::memset(&sel, 0, sizeof(sel));
-    sel.abi_version = DOM_CAPS_ABI_VERSION;
-    sel.struct_size = (u32)sizeof(sel);
-
-    if (!used_profile) {
-        std::memset(&fallback, 0, sizeof(fallback));
-        fallback.abi_version = DOM_PROFILE_ABI_VERSION;
-        fallback.struct_size = (u32)sizeof(fallback);
-        fallback.kind = DOM_PROFILE_BASELINE;
-        fallback.lockstep_strict = 0u;
-        used_profile = &fallback;
-    }
-
-    rc = dom_caps_select(used_profile, &hw, &sel);
-    if (rc != DOM_CAPS_OK) {
-        out_error = "caps_select_failed";
+    if (!launcher_caps_solve(profile, solve, out_error)) {
         out_snapshot = snap;
         return false;
     }
 
-    for (i = 0u; i < sel.entry_count; ++i) {
-        const dom_selection_entry* e = &sel.entries[i];
-        LauncherCapsSelection s;
-        if (!e || !e->backend_name) {
-            continue;
-        }
-        s.subsystem_id = (u32)e->subsystem_id;
-        s.subsystem_name = subsystem_name_or_hex(s.subsystem_id, e->subsystem_name);
-        s.backend_name = safe_str(e->backend_name);
-        s.determinism = (u32)e->determinism;
-        s.perf_class = (u32)e->perf_class;
-        s.priority = (u32)e->backend_priority;
-        s.chosen_by_override = e->chosen_by_override ? 1u : 0u;
-        snap.selections.push_back(s);
-    }
+    snap.backends = solve.backends;
+    std::sort(snap.backends.begin(), snap.backends.end(), backend_less);
+
+    snap.selections = solve.selections;
     std::sort(snap.selections.begin(), snap.selections.end(), selection_less);
 
     out_snapshot = snap;
@@ -500,4 +444,3 @@ bool launcher_caps_snapshot_write_text(const LauncherCapsSnapshot& snapshot,
 }
 
 } /* namespace dom */
-

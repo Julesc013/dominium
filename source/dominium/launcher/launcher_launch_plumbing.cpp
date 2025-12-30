@@ -32,6 +32,7 @@ extern "C" {
 #include "core/include/launcher_tools_registry.h"
 
 #include "launcher_caps_snapshot.h"
+#include "launcher_caps_solver.h"
 
 namespace dom {
 
@@ -188,67 +189,23 @@ static void remove_file_best_effort(const std::string& path) {
     (void)std::remove(path.c_str());
 }
 
-static int ascii_tolower(int c) {
-    if (c >= 'A' && c <= 'Z') {
-        return c - 'A' + 'a';
-    }
-    return c;
-}
-
-static bool str_ieq(const char* a, const char* b) {
-    if (!a || !b) {
-        return false;
-    }
-    while (*a && *b) {
-        int ca = ascii_tolower((unsigned char)*a);
-        int cb = ascii_tolower((unsigned char)*b);
-        if (ca != cb) {
-            return false;
-        }
-        ++a;
-        ++b;
-    }
-    return (*a == '\0' && *b == '\0');
-}
-
-static void profile_remove_override(dom_profile& p, const char* subsystem_key) {
-    u32 i;
-    u32 out = 0u;
-    if (!subsystem_key || !subsystem_key[0]) {
-        return;
-    }
-    for (i = 0u; i < p.override_count && i < (u32)DOM_PROFILE_MAX_OVERRIDES; ++i) {
-        dom_profile_override* ov = &p.overrides[i];
-        if (str_ieq(ov->subsystem_key, subsystem_key)) {
-            continue;
-        }
-        if (out != i) {
-            p.overrides[out] = p.overrides[i];
-        }
-        ++out;
-    }
-    p.override_count = out;
-    for (; out < (u32)DOM_PROFILE_MAX_OVERRIDES; ++out) {
-        std::memset(&p.overrides[out], 0, sizeof(p.overrides[out]));
-    }
-}
-
-static const char* selection_entry_why(const dom_selection_entry* e) {
+static const char* selection_entry_why(const LauncherCapsSelection* e) {
     if (!e) {
         return "";
     }
     return e->chosen_by_override ? "override" : "priority";
 }
 
-static const dom_selection_entry* selection_find_entry(const dom_selection& sel, dom_subsystem_id subsystem_id) {
-    u32 i;
-    for (i = 0u; i < sel.entry_count; ++i) {
-        const dom_selection_entry* e = &sel.entries[i];
+static const LauncherCapsSelection* selection_find_entry(const std::vector<LauncherCapsSelection>& sel,
+                                                         u32 subsystem_id) {
+    size_t i;
+    for (i = 0u; i < sel.size(); ++i) {
+        const LauncherCapsSelection* e = &sel[i];
         if (e && e->subsystem_id == subsystem_id) {
             return e;
         }
     }
-    return (const dom_selection_entry*)0;
+    return (const LauncherCapsSelection*)0;
 }
 
 static bool select_backends_for_handshake(const dom_profile* profile,
@@ -256,16 +213,9 @@ static bool select_backends_for_handshake(const dom_profile* profile,
                                          std::vector<std::string>& out_renderer,
                                          std::string& out_ui,
                                          std::string& out_error,
-                                         dom_selection* out_sel,
+                                         LauncherCapsSolveResult* out_caps,
                                          std::string* out_note) {
-    dom_hw_caps hw;
-    dom_selection sel;
-    dom_caps_result rc;
-    dom_profile fallback_profile;
-    const dom_profile* used_profile = profile;
-    u32 i;
-    bool requested_gfx_null = false;
-    bool relaxed_gfx_null = false;
+    LauncherCapsSolveResult caps;
 
     out_platform.clear();
     out_renderer.clear();
@@ -274,104 +224,41 @@ static bool select_backends_for_handshake(const dom_profile* profile,
     if (out_note) {
         out_note->clear();
     }
-    if (out_sel) {
-        std::memset(out_sel, 0, sizeof(*out_sel));
-        out_sel->abi_version = DOM_CAPS_ABI_VERSION;
-        out_sel->struct_size = (u32)sizeof(dom_selection);
+    if (out_caps) {
+        *out_caps = LauncherCapsSolveResult();
     }
 
-    (void)dom_caps_register_builtin_backends();
-    (void)dom_caps_finalize_registry();
-
-    std::memset(&hw, 0, sizeof(hw));
-    hw.abi_version = DOM_CAPS_ABI_VERSION;
-    hw.struct_size = (u32)sizeof(hw);
-    (void)dom_hw_caps_probe_host(&hw);
-
-    std::memset(&sel, 0, sizeof(sel));
-    sel.abi_version = DOM_CAPS_ABI_VERSION;
-    sel.struct_size = (u32)sizeof(sel);
-
-    if (!used_profile) {
-        std::memset(&fallback_profile, 0, sizeof(fallback_profile));
-        fallback_profile.abi_version = DOM_PROFILE_ABI_VERSION;
-        fallback_profile.struct_size = (u32)sizeof(dom_profile);
-        fallback_profile.kind = DOM_PROFILE_BASELINE;
-        fallback_profile.lockstep_strict = 0u;
-        used_profile = &fallback_profile;
-    }
-
-    rc = dom_caps_select(used_profile, &hw, &sel);
-    if (rc != DOM_CAPS_OK && used_profile) {
-        /* If the user requested --gfx=null but the null backend is not present in this build,
-           retry without the gfx preference so headless tooling can still function. */
-        if (used_profile->lockstep_strict == 0u) {
-            if (used_profile->preferred_gfx_backend[0] && str_ieq(used_profile->preferred_gfx_backend, "null")) {
-                requested_gfx_null = true;
-            }
-            if (!requested_gfx_null) {
-                u32 j;
-                for (j = 0u; j < used_profile->override_count && j < (u32)DOM_PROFILE_MAX_OVERRIDES; ++j) {
-                    const dom_profile_override* ov = &used_profile->overrides[j];
-                    if (str_ieq(ov->subsystem_key, "gfx") && ov->backend_name[0] && str_ieq(ov->backend_name, "null")) {
-                        requested_gfx_null = true;
-                        break;
-                    }
-                }
-            }
-            if (requested_gfx_null) {
-                dom_profile relaxed = *used_profile;
-                relaxed.preferred_gfx_backend[0] = '\0';
-                profile_remove_override(relaxed, "gfx");
-                rc = dom_caps_select(&relaxed, &hw, &sel);
-                if (rc == DOM_CAPS_OK) {
-                    relaxed_gfx_null = true;
-                }
-            }
-        }
-    }
-    if (rc != DOM_CAPS_OK) {
-        out_error = "caps_select_failed";
-        if (out_sel) {
-            *out_sel = sel;
+    if (!launcher_caps_solve(profile, caps, out_error)) {
+        if (out_caps) {
+            *out_caps = caps;
         }
         return false;
     }
 
-    for (i = 0u; i < sel.entry_count; ++i) {
-        const dom_selection_entry* e = &sel.entries[i];
-        if (!e || !e->backend_name || !e->backend_name[0]) {
-            continue;
-        }
-        if (e->subsystem_id == DOM_SUBSYS_DSYS) {
-            out_platform.push_back(std::string(e->backend_name));
-        } else if (e->subsystem_id == DOM_SUBSYS_DGFX) {
-            out_renderer.push_back(std::string(e->backend_name));
-        } else if (e->subsystem_id == DOM_SUBSYS_DUI) {
-            out_ui = std::string(e->backend_name);
-        }
-    }
+    out_platform = caps.platform_backends;
+    out_renderer = caps.renderer_backends;
+    out_ui = caps.ui_backend;
 
     if (out_platform.empty()) {
         out_error = "platform_backend_missing";
-        if (out_sel) {
-            *out_sel = sel;
+        if (out_caps) {
+            *out_caps = caps;
         }
         return false;
     }
     if (out_ui.empty()) {
         out_error = "ui_backend_missing";
-        if (out_sel) {
-            *out_sel = sel;
+        if (out_caps) {
+            *out_caps = caps;
         }
         return false;
     }
 
-    if (out_note && relaxed_gfx_null) {
-        *out_note = "caps_fallback_gfx_null_unavailable=1";
+    if (out_note && !caps.note.empty()) {
+        *out_note = caps.note;
     }
-    if (out_sel) {
-        *out_sel = sel;
+    if (out_caps) {
+        *out_caps = caps;
     }
     return true;
 }
@@ -810,7 +697,7 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
     std::vector<std::string> renderer_backends;
     std::string ui_backend;
     std::string caps_err;
-    dom_selection caps_sel;
+    LauncherCapsSolveResult caps_sel;
     std::string caps_note;
 
     dom::launcher_core::LauncherHandshake hs;
@@ -829,9 +716,7 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
     int exit_code = 0;
 
     out_result = LaunchRunResult();
-    std::memset(&caps_sel, 0, sizeof(caps_sel));
-    caps_sel.abi_version = DOM_CAPS_ABI_VERSION;
-    caps_sel.struct_size = (u32)sizeof(dom_selection);
+    caps_sel = LauncherCapsSolveResult();
 
     if (services && services->query_interface && services->query_interface(LAUNCHER_IID_TIME_V1, &iface) == 0) {
         time = (const ::launcher_time_api_v1*)iface;
@@ -1126,19 +1011,19 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
 
     /* Selected backends (selected-and-why) */
     {
-        u32 i;
-        for (i = 0u; i < caps_sel.entry_count; ++i) {
-            const dom_selection_entry* e = &caps_sel.entries[i];
-            if (!e || !e->backend_name || !e->backend_name[0]) {
+        size_t i;
+        for (i = 0u; i < caps_sel.selections.size(); ++i) {
+            const LauncherCapsSelection* e = &caps_sel.selections[i];
+            if (!e || e->backend_name.empty()) {
                 continue;
             }
             dom::launcher_core::LauncherAuditBackend b;
-            b.subsystem_id = (u32)e->subsystem_id;
-            b.subsystem_name = (e->subsystem_name && e->subsystem_name[0]) ? std::string(e->subsystem_name) : std::string();
-            b.backend_name = std::string(e->backend_name);
-            b.determinism_grade = (u32)e->determinism;
-            b.perf_class = (u32)e->perf_class;
-            b.priority = e->backend_priority;
+            b.subsystem_id = e->subsystem_id;
+            b.subsystem_name = e->subsystem_name;
+            b.backend_name = e->backend_name;
+            b.determinism_grade = e->determinism;
+            b.perf_class = e->perf_class;
+            b.priority = e->priority;
             b.chosen_by_override = e->chosen_by_override ? 1u : 0u;
             run_audit.selected_backends.push_back(b);
         }
@@ -1161,7 +1046,7 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
 
         sel_summary.ui_backend.backend_id = hs.selected_ui_backend_id;
         {
-            const dom_selection_entry* e = selection_find_entry(caps_sel, DOM_SUBSYS_DUI);
+            const LauncherCapsSelection* e = selection_find_entry(caps_sel.selections, (u32)DOM_SUBSYS_DUI);
             sel_summary.ui_backend.why = selection_entry_why(e);
         }
         {
@@ -1170,7 +1055,7 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
                 dom::launcher_core::LauncherSelectionBackendChoice c;
                 c.backend_id = platform_backends[i];
                 {
-                    const dom_selection_entry* e = selection_find_entry(caps_sel, DOM_SUBSYS_DSYS);
+                    const LauncherCapsSelection* e = selection_find_entry(caps_sel.selections, (u32)DOM_SUBSYS_DSYS);
                     c.why = selection_entry_why(e);
                 }
                 sel_summary.platform_backends.push_back(c);
@@ -1182,10 +1067,20 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
                 dom::launcher_core::LauncherSelectionBackendChoice c;
                 c.backend_id = renderer_backends[i];
                 {
-                    const dom_selection_entry* e = selection_find_entry(caps_sel, DOM_SUBSYS_DGFX);
+                    const LauncherCapsSelection* e = selection_find_entry(caps_sel.selections, (u32)DOM_SUBSYS_DGFX);
                     c.why = selection_entry_why(e);
                 }
                 sel_summary.renderer_backends.push_back(c);
+            }
+        }
+        {
+            size_t i;
+            for (i = 0u; i < caps_sel.provider_backends.size(); ++i) {
+                dom::launcher_core::LauncherSelectionProviderChoice p;
+                p.provider_type = caps_sel.provider_backends[i].provider_type;
+                p.provider_id = caps_sel.provider_backends[i].provider_id;
+                p.why = caps_sel.provider_backends[i].why;
+                sel_summary.provider_backends.push_back(p);
             }
         }
 
@@ -1203,6 +1098,9 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
                 sel_summary.resolved_packs_count += 1u;
             }
         }
+
+        (void)launcher_caps_write_effective_caps_tlv(caps_sel.effective_caps, sel_summary.effective_caps_tlv);
+        (void)launcher_caps_write_explain_tlv(caps_sel.solver_result, sel_summary.explanation_tlv);
 
         (void)dom::launcher_core::launcher_selection_summary_to_tlv_bytes(sel_summary, sel_summary_bytes);
         (void)write_file_all(selection_path, sel_summary_bytes);

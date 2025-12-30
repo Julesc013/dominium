@@ -51,6 +51,7 @@ add_library(launcher_frontend_cli STATIC
     dom_launcher_catalog.cpp
     dom_launcher_actions.cpp
     launcher_caps_snapshot.cpp
+    launcher_caps_solver.cpp
     launcher_control_plane.cpp
     launcher_launch_plumbing.cpp
     ${CMAKE_SOURCE_DIR}/tools/launcher/ui/gen/ui_launcher_ui_actions_gen.cpp
@@ -71,6 +72,8 @@ target_link_libraries(launcher_frontend_cli
     PRIVATE
         launcher_kernel
         launcher_services_api
+        core_caps
+        core_solver
 )
 
 set_target_properties(launcher_frontend_cli PROPERTIES
@@ -252,6 +255,7 @@ dominium_bundle_runtime(tool_manifest_inspector)
 add_executable(dominium_launcher_control_plane_tests
     tests/launcher_control_plane_tests.cpp
     launcher_caps_snapshot.cpp
+    launcher_caps_solver.cpp
     launcher_control_plane.cpp
     launcher_launch_plumbing.cpp
 )
@@ -268,6 +272,8 @@ target_link_libraries(dominium_launcher_control_plane_tests
         dominium_common
         domino_core
         dominium_launcher_core
+        core_caps
+        core_solver
 )
 
 set_target_properties(dominium_launcher_control_plane_tests PROPERTIES
@@ -293,6 +299,7 @@ add_executable(dominium_launcher_ui_smoke_tests
     dom_launcher_catalog.cpp
     dom_launcher_actions.cpp
     launcher_caps_snapshot.cpp
+    launcher_caps_solver.cpp
     launcher_launch_plumbing.cpp
 )
 
@@ -308,6 +315,8 @@ target_link_libraries(dominium_launcher_ui_smoke_tests
         dominium_common
         domino_core
         dominium_launcher_core
+        core_caps
+        core_solver
 )
 
 set_target_properties(dominium_launcher_ui_smoke_tests PROPERTIES
@@ -331,6 +340,7 @@ add_executable(dominium_launcher_tui_smoke_tests
     tests/launcher_tui_smoke_tests.cpp
     launcher_tui.cpp
     launcher_caps_snapshot.cpp
+    launcher_caps_solver.cpp
     launcher_control_plane.cpp
     launcher_launch_plumbing.cpp
 )
@@ -347,6 +357,8 @@ target_link_libraries(dominium_launcher_tui_smoke_tests
         dominium_common
         domino_core
         dominium_launcher_core
+        core_caps
+        core_solver
 )
 
 set_target_properties(dominium_launcher_tui_smoke_tests PROPERTIES
