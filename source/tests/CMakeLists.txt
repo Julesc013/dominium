@@ -844,6 +844,46 @@ add_test(NAME test_splat_select_filters_by_ui_mode COMMAND setup2_splat_tests sp
 add_test(NAME test_splat_select_no_compatible_emits_rejections_and_audit COMMAND setup2_splat_tests splat_select_no_compatible_emits_rejections_and_audit)
 add_test(NAME test_splat_select_deterministic_choice_first_compatible COMMAND setup2_splat_tests splat_select_deterministic_choice_first_compatible)
 
+add_executable(setup2_plan_tests
+    ../../tests/setup2/test_plan.cpp
+)
+
+target_include_directories(setup2_plan_tests PRIVATE
+    ${CMAKE_SOURCE_DIR}/source/dominium/setup/kernel/include
+    ${CMAKE_SOURCE_DIR}/source/dominium/setup/kernel/src/plan
+    ${CMAKE_SOURCE_DIR}/source/dominium/setup/services/include
+)
+
+target_compile_definitions(setup2_plan_tests PRIVATE
+    SETUP2_TESTS_SOURCE_DIR=\"${CMAKE_SOURCE_DIR}/tests/setup2\"
+)
+
+target_link_libraries(setup2_plan_tests
+    PRIVATE dsk_kernel
+)
+
+set_target_properties(setup2_plan_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+dominium_bundle_runtime(setup2_plan_tests)
+if(WIN32)
+    setup2_copy_winpthread(setup2_plan_tests)
+endif()
+
+add_test(NAME test_resolve_default_components COMMAND setup2_plan_tests resolve_default_components)
+add_test(NAME test_resolve_explicit_components COMMAND setup2_plan_tests resolve_explicit_components)
+add_test(NAME test_resolve_dependency_closure COMMAND setup2_plan_tests resolve_dependency_closure)
+add_test(NAME test_resolve_conflict_refusal COMMAND setup2_plan_tests resolve_conflict_refusal)
+add_test(NAME test_resolve_platform_incompat_refusal COMMAND setup2_plan_tests resolve_platform_incompat_refusal)
+add_test(NAME test_plan_byte_identical_repeat COMMAND setup2_plan_tests plan_byte_identical_repeat)
+add_test(NAME test_plan_digest_stable COMMAND setup2_plan_tests plan_digest_stable)
+add_test(NAME test_plan_validate_rejects_corrupt_header COMMAND setup2_plan_tests plan_validate_rejects_corrupt_header)
+add_test(NAME test_plan_lists_canonically_sorted COMMAND setup2_plan_tests plan_lists_canonically_sorted)
+add_test(NAME test_plan_golden_default COMMAND setup2_plan_tests plan_golden_default)
+add_test(NAME test_plan_golden_custom COMMAND setup2_plan_tests plan_golden_custom)
+
 if(WIN32)
     add_test(NAME setup2_kernel_purity_check
         COMMAND ${CMAKE_SOURCE_DIR}/scripts/setup2/check_kernel_purity.bat
