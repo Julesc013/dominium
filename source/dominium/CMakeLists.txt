@@ -13,6 +13,8 @@ set(DOM_KERNEL_ALLOWED_LINK_LIBS
     core_util
     core_err
     core_log
+    core_caps
+    core_solver
     core_job
 )
 
