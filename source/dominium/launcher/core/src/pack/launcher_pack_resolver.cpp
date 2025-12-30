@@ -10,7 +10,6 @@ RESPONSIBILITY: Implements deterministic dependency resolution and simulation sa
 #include <cstdio>
 #include <cstring>
 
-#include "launcher_artifact_store.h"
 #include "launcher_log.h"
 #include "launcher_safety.h"
 #include "launcher_tlv.h"
@@ -29,6 +28,25 @@ static const launcher_fs_api_v1* get_fs(const launcher_services_api_v1* services
         return 0;
     }
     return (const launcher_fs_api_v1*)iface;
+}
+
+static const launcher_providers_api_v1* get_providers(const launcher_services_api_v1* services) {
+    void* iface = 0;
+    if (!services || !services->query_interface) {
+        return 0;
+    }
+    if (services->query_interface(LAUNCHER_IID_PROVIDERS_V1, &iface) != 0) {
+        return 0;
+    }
+    return (const launcher_providers_api_v1*)iface;
+}
+
+static const provider_content_source_v1* get_content_provider(const launcher_services_api_v1* services) {
+    const launcher_providers_api_v1* providers = get_providers(services);
+    if (!providers || !providers->get_content_source) {
+        return 0;
+    }
+    return providers->get_content_source();
 }
 
 static bool get_state_root(const launcher_fs_api_v1* fs, std::string& out_state_root) {
@@ -136,6 +154,12 @@ static err_t pack_error_from_text(const std::string& text) {
     if (starts_with(text, "missing_services_or_fs")) {
         return err_make((u16)ERRD_COMMON, (u16)ERRC_COMMON_BAD_STATE, (u32)ERRF_FATAL, (u32)ERRMSG_COMMON_BAD_STATE);
     }
+    if (starts_with(text, "missing_content_provider")) {
+        return err_make((u16)ERRD_COMMON, (u16)ERRC_COMMON_BAD_STATE, (u32)ERRF_FATAL, (u32)ERRMSG_COMMON_BAD_STATE);
+    }
+    if (starts_with(text, "content_hash_too_long")) {
+        return err_make((u16)ERRD_COMMON, (u16)ERRC_COMMON_INVALID_ARGS, 0u, (u32)ERRMSG_COMMON_INVALID_ARGS);
+    }
     if (starts_with(text, "missing_state_root")) {
         return err_make((u16)ERRD_LAUNCHER, (u16)ERRC_LAUNCHER_STATE_ROOT_UNAVAILABLE, 0u, (u32)ERRMSG_LAUNCHER_STATE_ROOT_UNAVAILABLE);
     }
@@ -150,7 +174,8 @@ static err_t pack_error_from_text(const std::string& text) {
         return err_make((u16)ERRD_PACKS, (u16)ERRC_PACKS_DEPENDENCY_CONFLICT, (u32)ERRF_USER_ACTIONABLE, (u32)ERRMSG_PACKS_DEPENDENCY_CONFLICT);
     }
     if (starts_with(text, "pack_manifest_payload_missing") ||
-        starts_with(text, "artifact_store_paths_failed")) {
+        starts_with(text, "content_provider_resolve_failed") ||
+        starts_with(text, "content_provider_missing_payload")) {
         return err_make((u16)ERRD_PACKS, (u16)ERRC_PACKS_PACK_NOT_FOUND, 0u, (u32)ERRMSG_PACKS_PACK_NOT_FOUND);
     }
     if (starts_with(text, "pack_manifest_load_failed") ||
@@ -357,13 +382,12 @@ static bool load_pack_manifest_for_entry(const launcher_services_api_v1* service
                                          Node& out_node,
                                          std::string& out_error) {
     const launcher_fs_api_v1* fs = get_fs(services);
-    std::string dir;
-    std::string meta_path;
     std::string payload_path;
     std::vector<unsigned char> payload;
     LauncherPackManifest pm;
     std::string verr;
     u32 expected_type;
+    const provider_content_source_v1* content_provider = 0;
 
     out_error.clear();
     if (!services || !fs) {
@@ -383,9 +407,42 @@ static bool load_pack_manifest_for_entry(const launcher_services_api_v1* service
         return false;
     }
 
-    if (!launcher_artifact_store_paths(state_root, entry.hash_bytes, dir, meta_path, payload_path)) {
-        out_error = "artifact_store_paths_failed";
+    content_provider = get_content_provider(services);
+    if (!content_provider || !content_provider->resolve_artifact) {
+        out_error = "missing_content_provider";
         return false;
+    }
+    if (entry.hash_bytes.size() > (size_t)PROVIDER_CONTENT_HASH_MAX) {
+        out_error = "content_hash_too_long";
+        return false;
+    }
+    {
+        provider_content_request_v1 req;
+        provider_content_artifact_ref_v1 ref;
+        err_t perr;
+        std::memset(&req, 0, sizeof(req));
+        std::memset(&ref, 0, sizeof(ref));
+        req.struct_size = (u32)sizeof(req);
+        req.struct_version = 1u;
+        req.content_type = entry.type;
+        req.content_id = entry.id.c_str();
+        req.content_version = entry.version.c_str();
+        req.hash_bytes = entry.hash_bytes.empty() ? (const unsigned char*)0 : &entry.hash_bytes[0];
+        req.hash_len = (u32)entry.hash_bytes.size();
+        req.state_root = state_root.c_str();
+        req.import_root = 0;
+        req.flags = PROVIDER_CONTENT_REQ_OFFLINE_OK;
+
+        perr = err_ok();
+        if (content_provider->resolve_artifact(&req, &ref, &perr) != 0) {
+            out_error = "content_provider_resolve_failed";
+            return false;
+        }
+        if (!ref.has_payload_path || !ref.payload_path[0]) {
+            out_error = "content_provider_missing_payload";
+            return false;
+        }
+        payload_path = std::string(ref.payload_path);
     }
     if (!fs_read_all(fs, payload_path, payload)) {
         out_error = std::string("pack_manifest_payload_missing;path=") + payload_path;

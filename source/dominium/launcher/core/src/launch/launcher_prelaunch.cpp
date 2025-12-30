@@ -11,7 +11,6 @@ RESPONSIBILITY: Implements deterministic pre-launch config resolution, safe mode
 #include <cstring>
 
 #include "launcher_audit.h"
-#include "launcher_artifact_store.h"
 #include "launcher_instance_known_good.h"
 #include "launcher_instance_ops.h"
 #include "launcher_pack_resolver.h"
@@ -71,6 +70,25 @@ static const launcher_fs_api_v1* get_fs(const launcher_services_api_v1* services
     return (const launcher_fs_api_v1*)iface;
 }
 
+static const launcher_providers_api_v1* get_providers(const launcher_services_api_v1* services) {
+    void* iface = 0;
+    if (!services || !services->query_interface) {
+        return 0;
+    }
+    if (services->query_interface(LAUNCHER_IID_PROVIDERS_V1, &iface) != 0) {
+        return 0;
+    }
+    return (const launcher_providers_api_v1*)iface;
+}
+
+static const provider_content_source_v1* get_content_provider(const launcher_services_api_v1* services) {
+    const launcher_providers_api_v1* providers = get_providers(services);
+    if (!providers || !providers->get_content_source) {
+        return 0;
+    }
+    return providers->get_content_source();
+}
+
 static bool get_state_root(const launcher_fs_api_v1* fs, std::string& out_state_root) {
     char buf[260];
     std::memset(buf, 0, sizeof(buf));
@@ -124,19 +142,6 @@ static bool fs_read_all(const launcher_fs_api_v1* fs, const std::string& path, s
         out_bytes.clear();
         return false;
     }
-    return true;
-}
-
-static bool fs_file_exists(const launcher_fs_api_v1* fs, const std::string& path) {
-    void* fh;
-    if (!fs || !fs->file_open || !fs->file_close) {
-        return false;
-    }
-    fh = fs->file_open(path.c_str(), "rb");
-    if (!fh) {
-        return false;
-    }
-    (void)fs->file_close(fh);
     return true;
 }
 
@@ -288,14 +293,22 @@ static LauncherInstanceManifest apply_safe_mode_manifest_overrides(const Launche
     return m;
 }
 
-static bool validate_artifact_presence(const launcher_fs_api_v1* fs,
+static bool validate_artifact_presence(const launcher_services_api_v1* services,
                                       const std::string& state_root,
                                       const LauncherInstanceManifest& manifest,
                                       std::vector<LauncherPrelaunchValidationFailure>& out_failures) {
+    const provider_content_source_v1* content_provider = get_content_provider(services);
     size_t i;
+    if (!content_provider || !content_provider->resolve_artifact) {
+        LauncherPrelaunchValidationFailure f;
+        f.code = "missing_content_provider";
+        f.suggestion = "repair_or_select_provider";
+        f.detail = "provider=content";
+        out_failures.push_back(f);
+        return false;
+    }
     for (i = 0u; i < manifest.content_entries.size(); ++i) {
         const LauncherContentEntry& e = manifest.content_entries[i];
-        std::string dir, meta_path, payload_path;
         if (!e.enabled) {
             continue;
         }
@@ -312,21 +325,48 @@ static bool validate_artifact_presence(const launcher_fs_api_v1* fs,
             }
             continue;
         }
-        if (!launcher_artifact_store_paths(state_root, e.hash_bytes, dir, meta_path, payload_path)) {
+        if (e.hash_bytes.size() > (size_t)PROVIDER_CONTENT_HASH_MAX) {
             LauncherPrelaunchValidationFailure f;
-            f.code = "artifact_paths_failed";
+            f.code = "content_hash_too_long";
             f.suggestion = "repair_or_rollback";
             f.detail = std::string("content_id=") + e.id;
             out_failures.push_back(f);
             return false;
         }
-        if (!fs_file_exists(fs, payload_path)) {
-            LauncherPrelaunchValidationFailure f;
-            f.code = "missing_artifact_payload";
-            f.suggestion = "repair_or_rollback";
-            f.detail = std::string("content_id=") + e.id + ";path=" + payload_path;
-            out_failures.push_back(f);
-            return false;
+        {
+            provider_content_request_v1 req;
+            provider_content_artifact_ref_v1 ref;
+            err_t perr;
+            std::memset(&req, 0, sizeof(req));
+            std::memset(&ref, 0, sizeof(ref));
+            req.struct_size = (u32)sizeof(req);
+            req.struct_version = 1u;
+            req.content_type = e.type;
+            req.content_id = e.id.c_str();
+            req.content_version = e.version.c_str();
+            req.hash_bytes = e.hash_bytes.empty() ? (const unsigned char*)0 : &e.hash_bytes[0];
+            req.hash_len = (u32)e.hash_bytes.size();
+            req.state_root = state_root.c_str();
+            req.import_root = 0;
+            req.flags = PROVIDER_CONTENT_REQ_OFFLINE_OK;
+
+            perr = err_ok();
+            if (content_provider->resolve_artifact(&req, &ref, &perr) != 0) {
+                LauncherPrelaunchValidationFailure f;
+                f.code = "content_provider_resolve_failed";
+                f.suggestion = "repair_or_select_provider";
+                f.detail = std::string("content_id=") + e.id;
+                out_failures.push_back(f);
+                return false;
+            }
+            if (!ref.has_payload_path || !ref.payload_path[0]) {
+                LauncherPrelaunchValidationFailure f;
+                f.code = "content_provider_missing_payload";
+                f.suggestion = "repair_or_rollback";
+                f.detail = std::string("content_id=") + e.id;
+                out_failures.push_back(f);
+                return false;
+            }
         }
     }
     return true;
@@ -668,7 +708,7 @@ bool launcher_prelaunch_build_plan(const launcher_services_api_v1* services,
     }
 
     /* Validation: required artifacts present */
-    (void)validate_artifact_presence(fs, state_root, effective, failures);
+    (void)validate_artifact_presence(services, state_root, effective, failures);
 
     /* Validation: simulation safety (pack ecosystem) */
     (void)validate_simulation_safety(services, effective, state_root, failures);
