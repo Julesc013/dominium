@@ -1,0 +1,7 @@
+schema_version=1
+instance_id=inst_legacy
+content_entries=1
+content[0].id=legacy.pack
+known_good=0
+unknown_root_tags=0
+unknown_entry_tags=0

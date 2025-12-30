@@ -1,0 +1,5 @@
+schema_id=10
+version=1
+vector=caps_v1_basic.tlv
+summary=caps_v1_basic.expected.txt
+sha256=caps_v1_basic.sha256

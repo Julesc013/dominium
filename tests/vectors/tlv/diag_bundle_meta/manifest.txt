@@ -1,0 +1,5 @@
+schema_id=12
+version=1
+vector=bundle_meta_v1.tlv
+summary=bundle_meta_v1.expected.txt
+sha256=bundle_meta_v1.sha256

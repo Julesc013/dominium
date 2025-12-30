@@ -1,0 +1,6 @@
+schema_version=1
+os_family=1
+cpu_arch=3
+ram_class=4
+backends=1
+selections=1

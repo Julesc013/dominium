@@ -1,0 +1,5 @@
+schema_id=5
+version=1
+vector=selection_v1_basic.tlv
+summary=selection_v1_basic.expected.txt
+sha256=selection_v1_basic.sha256
