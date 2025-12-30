@@ -14,6 +14,7 @@ NOTES: Validates per-run handshake persistence/validation and per-run audit reco
 #include <string>
 #include <vector>
 
+#include "launcher_caps_solver.h"
 #include "launcher_control_plane.h"
 
 extern "C" {
@@ -1287,6 +1288,43 @@ static void test_caps_explain_is_stable(const std::string& state_root,
     assert(a.out_text.find("caps.explain.selected.count=") != std::string::npos);
 }
 
+static void test_provider_selection_defaults(const dom_profile& profile) {
+    dom::LauncherCapsSolveResult solve;
+    std::string err;
+    size_t i;
+    bool saw_content = false;
+    bool saw_net = false;
+    bool saw_trust = false;
+    bool saw_keychain = false;
+    bool saw_os = false;
+
+    assert(dom::launcher_caps_solve(&profile, solve, err));
+    for (i = 0u; i < solve.provider_backends.size(); ++i) {
+        const dom::LauncherCapsProviderChoice& p = solve.provider_backends[i];
+        if (p.provider_type == "content") {
+            saw_content = true;
+            assert(p.provider_id == "local_fs");
+        } else if (p.provider_type == "net") {
+            saw_net = true;
+            assert(p.provider_id == "null");
+        } else if (p.provider_type == "trust") {
+            saw_trust = true;
+            assert(p.provider_id == "null");
+        } else if (p.provider_type == "keychain") {
+            saw_keychain = true;
+            assert(p.provider_id == "null");
+        } else if (p.provider_type == "os_integration") {
+            saw_os = true;
+            assert(p.provider_id == "null");
+        }
+    }
+    assert(saw_content);
+    assert(saw_net);
+    assert(saw_trust);
+    assert(saw_keychain);
+    assert(saw_os);
+}
+
 } /* namespace */
 
 int main(int argc, char** argv) {
@@ -1322,6 +1360,7 @@ int main(int argc, char** argv) {
     test_safe_mode_flow_flags(state_root, argv0_launcher, profile);
     test_selection_summary_text_is_stable();
     test_caps_explain_is_stable(state_root, argv0_launcher, profile);
+    test_provider_selection_defaults(profile);
 
     std::printf("launcher_control_plane_tests: OK\n");
     return 0;
