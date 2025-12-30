@@ -34,6 +34,15 @@ target_include_directories(core_log
         ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
+add_library(core_caps STATIC
+    core_caps.c
+)
+target_include_directories(core_caps
+    PUBLIC
+        ${DOMINIUM_INCLUDE_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
 add_library(core_job STATIC
     core_job.c
 )
