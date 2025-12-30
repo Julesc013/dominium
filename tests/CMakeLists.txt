@@ -185,3 +185,32 @@ add_test(NAME dominium_contract_handshake COMMAND dominium_contract_tests handsh
 add_test(NAME dominium_contract_pack_resolver COMMAND dominium_contract_tests pack_resolver_contract)
 add_test(NAME dominium_contract_selection_audit COMMAND dominium_contract_tests selection_audit_contract)
 add_test(NAME dominium_contract_job_journal COMMAND dominium_contract_tests job_journal_contract)
+
+add_executable(dominium_tlv_fuzz_tests
+    contract/dominium_tlv_fuzz_tests.cpp
+)
+target_include_directories(dominium_tlv_fuzz_tests PRIVATE
+    ${DOMINIUM_INCLUDE_DIR}
+    ${CMAKE_SOURCE_DIR}/source/dominium/launcher/core/include
+    ${CMAKE_SOURCE_DIR}/source/dominium/setup/kernel/include
+)
+target_compile_definitions(dominium_tlv_fuzz_tests PRIVATE
+    DOM_TLV_VECTORS_DIR="${CMAKE_SOURCE_DIR}/tests/vectors/tlv"
+)
+target_link_libraries(dominium_tlv_fuzz_tests PRIVATE
+    dominium_launcher_core
+    dsk_kernel
+    core_job
+    core_tlv_schema
+)
+set_target_properties(dominium_tlv_fuzz_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+if (MSVC)
+    target_compile_options(dominium_tlv_fuzz_tests PRIVATE $<$<CONFIG:Release>:/UNDEBUG>)
+else()
+    target_compile_options(dominium_tlv_fuzz_tests PRIVATE $<$<CONFIG:Release>:-UNDEBUG>)
+endif()
+add_test(NAME dominium_tlv_fuzz COMMAND dominium_tlv_fuzz_tests)
