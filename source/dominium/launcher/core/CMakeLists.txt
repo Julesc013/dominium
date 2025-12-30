@@ -46,6 +46,8 @@ target_link_libraries(dominium_launcher_core
         core_util
         core_err
         core_log
+        core_caps
+        core_solver
         core_job
 )
 
