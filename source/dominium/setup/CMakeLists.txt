@@ -59,6 +59,8 @@ target_link_libraries(dsk_kernel
     PUBLIC
         core_err
         core_log
+        core_caps
+        core_solver
 )
 
 add_executable(dominium-setup2
