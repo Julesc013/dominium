@@ -25,7 +25,7 @@ static u64 tlv__read_u64_le_unsafe(const unsigned char* p) {
 }
 
 TlvReader::TlvReader(const unsigned char* data, size_t size)
-    : m_data(data), m_size(size), m_off(0u) {
+    : m_data(data), m_size(size), m_off(0u), m_record_count(0u) {
 }
 
 bool TlvReader::next(TlvRecord& out) {
@@ -33,6 +33,9 @@ bool TlvReader::next(TlvRecord& out) {
     u32 len;
 
     if (!m_data) {
+        return false;
+    }
+    if (m_record_count >= (u32)LAUNCHER_TLV_MAX_RECORDS) {
         return false;
     }
     if (m_off + (size_t)LAUNCHER_TLV_HEADER_BYTES > m_size) {
@@ -51,6 +54,7 @@ bool TlvReader::next(TlvRecord& out) {
     out.len = len;
     out.payload = (len > 0u) ? (m_data + m_off) : (const unsigned char*)0;
     m_off += (size_t)len;
+    m_record_count += 1u;
     return true;
 }
 

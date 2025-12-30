@@ -27,6 +27,8 @@ namespace launcher_core {
 
 /* Canonical TLV record header size (tag + len). */
 enum { LAUNCHER_TLV_HEADER_BYTES = 8u };
+/* Guardrail: refuse TLVs with unbounded record counts. */
+enum { LAUNCHER_TLV_MAX_RECORDS = 65535u };
 
 /* Root schema version tag (must appear at most once per root). */
 enum { LAUNCHER_TLV_TAG_SCHEMA_VERSION = 1u };
@@ -51,6 +53,7 @@ private:
     const unsigned char* m_data;
     size_t m_size;
     size_t m_off;
+    u32 m_record_count;
 };
 
 class TlvWriter {
@@ -96,4 +99,3 @@ bool tlv_read_schema_version_or_default(const unsigned char* data,
 } /* namespace dom */
 
 #endif /* DOMINIUM_LAUNCHER_CORE_LAUNCHER_TLV_H */
-
