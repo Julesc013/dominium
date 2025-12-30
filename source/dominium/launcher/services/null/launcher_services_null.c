@@ -492,6 +492,35 @@ static launcher_log_api_v1 launcher_null_log_api = {
     launcher_null_log_emit
 };
 
+static const provider_content_source_v1* launcher_null_get_content_source(void) {
+    return provider_content_local_fs_v1();
+}
+
+static const provider_trust_v1* launcher_null_get_trust(void) {
+    return provider_trust_null_v1();
+}
+
+static const provider_keychain_v1* launcher_null_get_keychain(void) {
+    return provider_keychain_null_v1();
+}
+
+static const provider_net_v1* launcher_null_get_net(void) {
+    return provider_net_null_v1();
+}
+
+static const provider_os_integration_v1* launcher_null_get_os_integration(void) {
+    return provider_os_integration_null_v1();
+}
+
+static launcher_providers_api_v1 launcher_null_providers_api = {
+    DOM_ABI_HEADER_INIT(1u, launcher_providers_api_v1),
+    launcher_null_get_content_source,
+    launcher_null_get_trust,
+    launcher_null_get_keychain,
+    launcher_null_get_net,
+    launcher_null_get_os_integration
+};
+
 static launcher_services_caps launcher_null_get_caps(void) {
     return LAUNCHER_SERVICES_CAP_FILESYSTEM |
            LAUNCHER_SERVICES_CAP_TIME |
@@ -518,6 +547,10 @@ static dom_abi_result launcher_null_query_interface(dom_iid iid, void **out_ifac
     }
     if (iid == LAUNCHER_IID_LOG_V1) {
         *out_iface = (void *)&launcher_null_log_api;
+        return 0;
+    }
+    if (iid == LAUNCHER_IID_PROVIDERS_V1) {
+        *out_iface = (void *)&launcher_null_providers_api;
         return 0;
     }
     return -1;

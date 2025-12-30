@@ -12,6 +12,7 @@ target_include_directories(launcher_services_impl_null PRIVATE
 target_link_libraries(launcher_services_impl_null
     PRIVATE
         core_log
+        providers_builtin
 )
 
 set_target_properties(launcher_services_impl_null PROPERTIES
@@ -74,6 +75,7 @@ target_link_libraries(launcher_frontend_cli
         launcher_services_api
         core_caps
         core_solver
+        providers_builtin
 )
 
 set_target_properties(launcher_frontend_cli PROPERTIES
@@ -274,6 +276,7 @@ target_link_libraries(dominium_launcher_control_plane_tests
         dominium_launcher_core
         core_caps
         core_solver
+        providers_builtin
 )
 
 set_target_properties(dominium_launcher_control_plane_tests PROPERTIES
@@ -317,6 +320,7 @@ target_link_libraries(dominium_launcher_ui_smoke_tests
         dominium_launcher_core
         core_caps
         core_solver
+        providers_builtin
 )
 
 set_target_properties(dominium_launcher_ui_smoke_tests PROPERTIES
@@ -359,6 +363,7 @@ target_link_libraries(dominium_launcher_tui_smoke_tests
         dominium_launcher_core
         core_caps
         core_solver
+        providers_builtin
 )
 
 set_target_properties(dominium_launcher_tui_smoke_tests PROPERTIES
