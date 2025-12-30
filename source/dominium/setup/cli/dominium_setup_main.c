@@ -19,6 +19,7 @@ PURPOSE: Minimal setup control-plane CLI for Plan S-1 (plan + dry-run).
 #include "dsu/dsu_config.h"
 #include "dsu/dsu_ctx.h"
 #include "dsu/dsu_execute.h"
+#include "dsu/dsu_job.h"
 #include "dsu/dsu_log.h"
 #include "dsu/dsu_manifest.h"
 #include "dsu/dsu_invocation.h"
@@ -432,6 +433,16 @@ static dsu_status_t dsu_cli_ctx_create(const dsu_cli_opts_t *opts, dsu_ctx_t **o
 }
 
 static void dsu_cli_json_put_u64_hex(FILE *out, dsu_u64 v);
+static dsu_u32 dsu_cli_job_type_from_operation(dsu_resolve_operation_t op);
+static int dsu_cli_parse_hex_u64(const char *s, dsu_u64 *out);
+static int dsu_cli_find_incomplete_job(dsu_ctx_t *ctx,
+                                      const char *job_root,
+                                      dsu_u32 expected_job_type,
+                                      dsu_u64 *out_job_id);
+static dsu_status_t dsu_cli_job_root_from_install_root(const char *install_root,
+                                                      char *out_root,
+                                                      dsu_u32 out_root_cap);
+static int dsu_cli_path_join(char *out, size_t cap, const char *a, const char *b);
 static const char *dsu_cli_scope_name(dsu_manifest_install_scope_t scope);
 static const char *dsu_cli_operation_name(dsu_resolve_operation_t op);
 static int dsu_cli_manifest_infer_single_scope(const dsu_manifest_t *manifest,
@@ -1258,17 +1269,146 @@ done:
     return code;
 }
 
+static dsu_u32 dsu_cli_job_type_from_operation(dsu_resolve_operation_t op) {
+    switch (op) {
+        case DSU_RESOLVE_OPERATION_INSTALL: return (dsu_u32)CORE_JOB_TYPE_SETUP_INSTALL;
+        case DSU_RESOLVE_OPERATION_UPGRADE: return (dsu_u32)CORE_JOB_TYPE_SETUP_UPGRADE;
+        case DSU_RESOLVE_OPERATION_REPAIR: return (dsu_u32)CORE_JOB_TYPE_SETUP_REPAIR;
+        case DSU_RESOLVE_OPERATION_UNINSTALL: return (dsu_u32)CORE_JOB_TYPE_SETUP_UNINSTALL;
+        default: return (dsu_u32)CORE_JOB_TYPE_NONE;
+    }
+}
+
+static int dsu_cli_hex_value(int c) {
+    if (c >= '0' && c <= '9') return c - '0';
+    if (c >= 'a' && c <= 'f') return 10 + (c - 'a');
+    if (c >= 'A' && c <= 'F') return 10 + (c - 'A');
+    return -1;
+}
+
+static int dsu_cli_parse_hex_u64(const char *s, dsu_u64 *out) {
+    dsu_u64 v = 0u;
+    int digits = 0;
+    if (out) *out = 0u;
+    if (!s || !out) return 0;
+    if (s[0] == '0' && (s[1] == 'x' || s[1] == 'X')) s += 2;
+    while (*s) {
+        int hv = dsu_cli_hex_value((unsigned char)*s++);
+        if (hv < 0) return 0;
+        if (digits >= 16) return 0;
+        v = (v << 4) | (dsu_u64)hv;
+        digits++;
+    }
+    if (digits == 0) return 0;
+    *out = v;
+    return 1;
+}
+
+static int dsu_cli_find_incomplete_job(dsu_ctx_t *ctx,
+                                      const char *job_root,
+                                      dsu_u32 expected_job_type,
+                                      dsu_u64 *out_job_id) {
+    dsu_platform_dir_entry_t *entries = NULL;
+    dsu_u32 count = 0u;
+    dsu_status_t st;
+    dsu_u32 i;
+    dsu_u64 best_id = 0u;
+    int found = 0;
+
+    if (out_job_id) *out_job_id = 0u;
+    if (!ctx || !job_root || job_root[0] == '\0' || !out_job_id) {
+        return 0;
+    }
+
+    st = dsu_platform_list_dir(job_root, &entries, &count);
+    if (st != DSU_STATUS_SUCCESS) {
+        return 0;
+    }
+
+    for (i = 0u; i < count; ++i) {
+        const char *name = entries[i].name ? entries[i].name : "";
+        dsu_u64 job_id = 0u;
+        core_job_state st_job;
+
+        if (!entries[i].is_dir || entries[i].is_symlink) continue;
+        if (name[0] == '\0') continue;
+        if (strcmp(name, ".") == 0 || strcmp(name, "..") == 0) continue;
+        if (!dsu_cli_parse_hex_u64(name, &job_id)) continue;
+
+        if (dsu_job_state_load(ctx, job_root, job_id, &st_job) != DSU_STATUS_SUCCESS) {
+            continue;
+        }
+        if (expected_job_type != 0u && st_job.job_type != expected_job_type) {
+            continue;
+        }
+        if (st_job.outcome != (u32)CORE_JOB_OUTCOME_NONE) {
+            continue;
+        }
+        if (!found || job_id > best_id) {
+            best_id = job_id;
+            found = 1;
+        }
+    }
+
+    dsu_platform_free_dir_entries(entries, count);
+    if (found) {
+        *out_job_id = best_id;
+        return 1;
+    }
+    return 0;
+}
+
+static int dsu_cli_is_abs_path(const char *path) {
+    if (!path || path[0] == '\0') return 0;
+    if (path[0] == '/' || path[0] == '\\') return 1;
+    if ((path[0] == '/' && path[1] == '/') || (path[0] == '\\' && path[1] == '\\')) return 1;
+    if (((path[0] >= 'A' && path[0] <= 'Z') || (path[0] >= 'a' && path[0] <= 'z')) &&
+        path[1] == ':' && (path[2] == '/' || path[2] == '\\')) {
+        return 1;
+    }
+    return 0;
+}
+
+static dsu_status_t dsu_cli_job_root_from_install_root(const char *install_root,
+                                                      char *out_root,
+                                                      dsu_u32 out_root_cap) {
+    char cwd[DSU_JOB_PATH_MAX];
+    char abs_root[DSU_JOB_PATH_MAX];
+    dsu_status_t st;
+
+    if (!install_root || !out_root || out_root_cap == 0u) return DSU_STATUS_INVALID_ARGS;
+    out_root[0] = '\0';
+
+    if (dsu_cli_is_abs_path(install_root)) {
+        return dsu_job_build_root_for_install_root(install_root, out_root, out_root_cap);
+    }
+    st = dsu_platform_get_cwd(cwd, (dsu_u32)sizeof(cwd));
+    if (st != DSU_STATUS_SUCCESS) return st;
+    if (!dsu_cli_path_join(abs_root, sizeof(abs_root), cwd, install_root)) {
+        return DSU_STATUS_INVALID_ARGS;
+    }
+    return dsu_job_build_root_for_install_root(abs_root, out_root, out_root_cap);
+}
+
 static int dsu_cli_cmd_install(const char *plan_path, const char *out_log_path, const dsu_cli_opts_t *opts) {
     dsu_ctx_t *ctx = NULL;
     dsu_plan_t *plan = NULL;
-    dsu_txn_options_t txn_opts;
+    dsu_job_input_t job_input;
+    dsu_job_options_t job_opts;
+    dsu_job_run_result_t job_res;
     dsu_txn_result_t res;
     dsu_status_t st;
     dsu_status_t log_st = DSU_STATUS_SUCCESS;
     const char *log_path = out_log_path ? out_log_path : "audit.dsu.log";
+    dsu_u32 job_type = (dsu_u32)CORE_JOB_TYPE_NONE;
+    dsu_u64 resume_job_id = 0u;
+    char job_root[DSU_JOB_PATH_MAX];
+    int ran_job = 0;
 
-    dsu_txn_options_init(&txn_opts);
+    dsu_job_input_init(&job_input);
+    dsu_job_options_init(&job_opts);
     dsu_txn_result_init(&res);
+    job_root[0] = '\0';
 
     st = dsu_cli_ctx_create(opts, &ctx);
     if (st != DSU_STATUS_SUCCESS) goto done;
@@ -1278,8 +1418,32 @@ static int dsu_cli_cmd_install(const char *plan_path, const char *out_log_path, 
     st = dsu_plan_read_file(ctx, plan_path, &plan);
     if (st != DSU_STATUS_SUCCESS) goto done;
 
-    txn_opts.dry_run = (dsu_bool)((opts && opts->dry_run) ? 1 : 0);
-    st = dsu_txn_apply_plan(ctx, plan, &txn_opts, &res);
+    job_type = dsu_cli_job_type_from_operation(dsu_plan_operation(plan));
+    if (job_type == (dsu_u32)CORE_JOB_TYPE_NONE) {
+        st = DSU_STATUS_INVALID_ARGS;
+        goto done;
+    }
+    st = dsu_cli_job_root_from_install_root(dsu_plan_install_root(plan),
+                                            job_root,
+                                            (dsu_u32)sizeof(job_root));
+    if (st != DSU_STATUS_SUCCESS) goto done;
+
+    job_input.job_type = job_type;
+    job_input.dry_run = (dsu_u32)((opts && opts->dry_run) ? 1u : 0u);
+    strncpy(job_input.plan_path, plan_path ? plan_path : "", sizeof(job_input.plan_path) - 1u);
+    job_input.plan_path[sizeof(job_input.plan_path) - 1u] = '\0';
+    if (log_path) {
+        strncpy(job_input.log_path, log_path, sizeof(job_input.log_path) - 1u);
+        job_input.log_path[sizeof(job_input.log_path) - 1u] = '\0';
+    }
+
+    if (dsu_cli_find_incomplete_job(ctx, job_root, job_type, &resume_job_id)) {
+        st = dsu_job_resume(ctx, job_root, resume_job_id, &job_res);
+    } else {
+        st = dsu_job_run(ctx, &job_input, job_root, &job_opts, &job_res);
+    }
+    ran_job = 1;
+    res = job_res.txn_result;
 
 done:
     if (ctx && log_path && log_path[0] != '\0') {
@@ -1296,7 +1460,7 @@ done:
         fputs("\"deterministic\":", stdout); dsu_cli_json_put_bool(stdout, (opts && opts->deterministic)); fputc(',', stdout);
         fputs("\"dry_run\":", stdout); dsu_cli_json_put_bool(stdout, (opts && opts->dry_run)); fputc(',', stdout);
         fputs("\"log_file\":", stdout); dsu_cli_json_put_path(stdout, log_path);
-        if (st == DSU_STATUS_SUCCESS) {
+        if (st == DSU_STATUS_SUCCESS && ran_job) {
             fputc(',', stdout);
             fputs("\"plan_file\":", stdout); dsu_cli_json_put_path(stdout, plan_path); fputc(',', stdout);
             fputs("\"plan_digest64\":", stdout); dsu_cli_json_put_u64_hex(stdout, res.digest64); fputc(',', stdout);
@@ -1317,7 +1481,7 @@ done:
         }
         dsu_cli_json_end_envelope(stdout);
     } else {
-        if (st == DSU_STATUS_SUCCESS) {
+        if (st == DSU_STATUS_SUCCESS && ran_job) {
             fprintf(stdout, "journal_id=0x%08lx%08lx\n",
                     (unsigned long)((res.journal_id >> 32) & 0xFFFFFFFFu),
                     (unsigned long)(res.journal_id & 0xFFFFFFFFu));
@@ -1336,15 +1500,23 @@ done:
 static int dsu_cli_cmd_apply(const char *plan_path, const dsu_cli_opts_t *opts) {
     dsu_ctx_t *ctx = NULL;
     dsu_plan_t *plan = NULL;
-    dsu_txn_options_t txn_opts;
+    dsu_job_input_t job_input;
+    dsu_job_options_t job_opts;
+    dsu_job_run_result_t job_res;
     dsu_txn_result_t res;
     dsu_status_t st;
     dsu_status_t log_st = DSU_STATUS_SUCCESS;
     const char *log_path = "audit.dsu.log";
     dsu_u64 invocation_digest = 0u;
+    dsu_u32 job_type = (dsu_u32)CORE_JOB_TYPE_NONE;
+    dsu_u64 resume_job_id = 0u;
+    char job_root[DSU_JOB_PATH_MAX];
+    int ran_job = 0;
 
-    dsu_txn_options_init(&txn_opts);
+    dsu_job_input_init(&job_input);
+    dsu_job_options_init(&job_opts);
     dsu_txn_result_init(&res);
+    job_root[0] = '\0';
 
     st = dsu_cli_ctx_create(opts, &ctx);
     if (st != DSU_STATUS_SUCCESS) goto done;
@@ -1357,8 +1529,30 @@ static int dsu_cli_cmd_apply(const char *plan_path, const dsu_cli_opts_t *opts) 
     if (st != DSU_STATUS_SUCCESS) goto done;
     invocation_digest = dsu_plan_invocation_digest64(plan);
 
-    txn_opts.dry_run = (dsu_bool)((opts && opts->dry_run) ? 1 : 0);
-    st = dsu_txn_apply_plan(ctx, plan, &txn_opts, &res);
+    job_type = dsu_cli_job_type_from_operation(dsu_plan_operation(plan));
+    if (job_type == (dsu_u32)CORE_JOB_TYPE_NONE) {
+        st = DSU_STATUS_INVALID_ARGS;
+        goto done;
+    }
+    st = dsu_cli_job_root_from_install_root(dsu_plan_install_root(plan),
+                                            job_root,
+                                            (dsu_u32)sizeof(job_root));
+    if (st != DSU_STATUS_SUCCESS) goto done;
+
+    job_input.job_type = job_type;
+    job_input.dry_run = (dsu_u32)((opts && opts->dry_run) ? 1u : 0u);
+    strncpy(job_input.plan_path, plan_path ? plan_path : "", sizeof(job_input.plan_path) - 1u);
+    job_input.plan_path[sizeof(job_input.plan_path) - 1u] = '\0';
+    strncpy(job_input.log_path, log_path ? log_path : "", sizeof(job_input.log_path) - 1u);
+    job_input.log_path[sizeof(job_input.log_path) - 1u] = '\0';
+
+    if (dsu_cli_find_incomplete_job(ctx, job_root, job_type, &resume_job_id)) {
+        st = dsu_job_resume(ctx, job_root, resume_job_id, &job_res);
+    } else {
+        st = dsu_job_run(ctx, &job_input, job_root, &job_opts, &job_res);
+    }
+    ran_job = 1;
+    res = job_res.txn_result;
 
 done:
     if (ctx && log_path && log_path[0] != '\0') {
@@ -1375,7 +1569,7 @@ done:
         fputs("\"deterministic\":", stdout); dsu_cli_json_put_bool(stdout, (opts && opts->deterministic)); fputc(',', stdout);
         fputs("\"dry_run\":", stdout); dsu_cli_json_put_bool(stdout, (opts && opts->dry_run)); fputc(',', stdout);
         fputs("\"log_file\":", stdout); dsu_cli_json_put_path(stdout, log_path);
-        if (st == DSU_STATUS_SUCCESS) {
+        if (st == DSU_STATUS_SUCCESS && ran_job) {
             fputc(',', stdout);
             fputs("\"plan_file\":", stdout); dsu_cli_json_put_path(stdout, plan_path); fputc(',', stdout);
             fputs("\"plan_digest64\":", stdout); dsu_cli_json_put_u64_hex(stdout, res.digest64); fputc(',', stdout);
@@ -1397,7 +1591,7 @@ done:
         }
         dsu_cli_json_end_envelope(stdout);
     } else {
-        if (st == DSU_STATUS_SUCCESS) {
+        if (st == DSU_STATUS_SUCCESS && ran_job) {
             fprintf(stdout, "journal_id=0x%08lx%08lx\n",
                     (unsigned long)((res.journal_id >> 32) & 0xFFFFFFFFu),
                     (unsigned long)(res.journal_id & 0xFFFFFFFFu));
@@ -1613,15 +1807,23 @@ static int dsu_cli_cmd_apply_invocation(const char *manifest_path,
     dsu_state_t *installed = NULL;
     dsu_invocation_t *invocation = NULL;
     dsu_plan_t *plan = NULL;
-    dsu_txn_options_t txn_opts;
+    dsu_job_input_t job_input;
+    dsu_job_options_t job_opts;
+    dsu_job_run_result_t job_res;
     dsu_txn_result_t res;
     dsu_status_t st;
     dsu_status_t log_st = DSU_STATUS_SUCCESS;
     const char *log_path = "audit.dsu.log";
     dsu_u64 invocation_digest = 0u;
+    dsu_u32 job_type = (dsu_u32)CORE_JOB_TYPE_NONE;
+    dsu_u64 resume_job_id = 0u;
+    char job_root[DSU_JOB_PATH_MAX];
+    int ran_job = 0;
 
-    dsu_txn_options_init(&txn_opts);
+    dsu_job_input_init(&job_input);
+    dsu_job_options_init(&job_opts);
     dsu_txn_result_init(&res);
+    job_root[0] = '\0';
 
     st = dsu_cli_ctx_create(opts, &ctx);
     if (st != DSU_STATUS_SUCCESS) goto done;
@@ -1652,8 +1854,30 @@ static int dsu_cli_cmd_apply_invocation(const char *manifest_path,
     if (st != DSU_STATUS_SUCCESS) goto done;
 
     invocation_digest = dsu_plan_invocation_digest64(plan);
-    txn_opts.dry_run = (dsu_bool)((opts && opts->dry_run) ? 1 : 0);
-    st = dsu_txn_apply_plan(ctx, plan, &txn_opts, &res);
+    job_type = dsu_cli_job_type_from_operation(dsu_plan_operation(plan));
+    if (job_type == (dsu_u32)CORE_JOB_TYPE_NONE) {
+        st = DSU_STATUS_INVALID_ARGS;
+        goto done;
+    }
+    st = dsu_cli_job_root_from_install_root(dsu_plan_install_root(plan),
+                                            job_root,
+                                            (dsu_u32)sizeof(job_root));
+    if (st != DSU_STATUS_SUCCESS) goto done;
+
+    job_input.job_type = job_type;
+    job_input.dry_run = (dsu_u32)((opts && opts->dry_run) ? 1u : 0u);
+    strncpy(job_input.plan_path, out_plan_path ? out_plan_path : "", sizeof(job_input.plan_path) - 1u);
+    job_input.plan_path[sizeof(job_input.plan_path) - 1u] = '\0';
+    strncpy(job_input.log_path, log_path ? log_path : "", sizeof(job_input.log_path) - 1u);
+    job_input.log_path[sizeof(job_input.log_path) - 1u] = '\0';
+
+    if (dsu_cli_find_incomplete_job(ctx, job_root, job_type, &resume_job_id)) {
+        st = dsu_job_resume(ctx, job_root, resume_job_id, &job_res);
+    } else {
+        st = dsu_job_run(ctx, &job_input, job_root, &job_opts, &job_res);
+    }
+    ran_job = 1;
+    res = job_res.txn_result;
 
 done:
     if (ctx && log_path && log_path[0] != '\0') {
@@ -1686,7 +1910,7 @@ done:
         fputs("\"error\":", stdout); dsu_cli_json_put_escaped(stdout, (st == DSU_STATUS_SUCCESS) ? "" : dsu_cli_status_name(st));
         dsu_cli_json_end_envelope(stdout);
     } else {
-        if (st == DSU_STATUS_SUCCESS) {
+        if (st == DSU_STATUS_SUCCESS && ran_job) {
             fprintf(stdout, "journal_id=0x%08lx%08lx\n",
                     (unsigned long)((res.journal_id >> 32) & 0xFFFFFFFFu),
                     (unsigned long)(res.journal_id & 0xFFFFFFFFu));
@@ -1711,14 +1935,21 @@ done:
 static int dsu_cli_cmd_uninstall(const char *state_path, const char *out_log_path, const dsu_cli_opts_t *opts) {
     dsu_ctx_t *ctx = NULL;
     dsu_state_t *state = NULL;
-    dsu_txn_options_t txn_opts;
+    dsu_job_input_t job_input;
+    dsu_job_options_t job_opts;
+    dsu_job_run_result_t job_res;
     dsu_txn_result_t res;
     dsu_status_t st;
     dsu_status_t log_st = DSU_STATUS_SUCCESS;
     const char *log_path = out_log_path ? out_log_path : "audit.dsu.log";
+    dsu_u64 resume_job_id = 0u;
+    char job_root[DSU_JOB_PATH_MAX];
+    int ran_job = 0;
 
-    dsu_txn_options_init(&txn_opts);
+    dsu_job_input_init(&job_input);
+    dsu_job_options_init(&job_opts);
     dsu_txn_result_init(&res);
+    job_root[0] = '\0';
 
     st = dsu_cli_ctx_create(opts, &ctx);
     if (st != DSU_STATUS_SUCCESS) goto done;
@@ -1728,8 +1959,27 @@ static int dsu_cli_cmd_uninstall(const char *state_path, const char *out_log_pat
     st = dsu_state_load_file(ctx, state_path, &state);
     if (st != DSU_STATUS_SUCCESS) goto done;
 
-    txn_opts.dry_run = (dsu_bool)((opts && opts->dry_run) ? 1 : 0);
-    st = dsu_txn_uninstall_state(ctx, state, state_path, &txn_opts, &res);
+    st = dsu_cli_job_root_from_install_root(dsu_state_primary_install_root(state),
+                                            job_root,
+                                            (dsu_u32)sizeof(job_root));
+    if (st != DSU_STATUS_SUCCESS) goto done;
+
+    job_input.job_type = (dsu_u32)CORE_JOB_TYPE_SETUP_UNINSTALL;
+    job_input.dry_run = (dsu_u32)((opts && opts->dry_run) ? 1u : 0u);
+    strncpy(job_input.state_path, state_path ? state_path : "", sizeof(job_input.state_path) - 1u);
+    job_input.state_path[sizeof(job_input.state_path) - 1u] = '\0';
+    if (log_path) {
+        strncpy(job_input.log_path, log_path, sizeof(job_input.log_path) - 1u);
+        job_input.log_path[sizeof(job_input.log_path) - 1u] = '\0';
+    }
+
+    if (dsu_cli_find_incomplete_job(ctx, job_root, (dsu_u32)CORE_JOB_TYPE_SETUP_UNINSTALL, &resume_job_id)) {
+        st = dsu_job_resume(ctx, job_root, resume_job_id, &job_res);
+    } else {
+        st = dsu_job_run(ctx, &job_input, job_root, &job_opts, &job_res);
+    }
+    ran_job = 1;
+    res = job_res.txn_result;
 
 done:
     if (ctx && log_path && log_path[0] != '\0') {
@@ -1747,7 +1997,7 @@ done:
         fputs("\"dry_run\":", stdout); dsu_cli_json_put_bool(stdout, (opts && opts->dry_run)); fputc(',', stdout);
         fputs("\"log_file\":", stdout); dsu_cli_json_put_path(stdout, log_path); fputc(',', stdout);
         fputs("\"state_file\":", stdout); dsu_cli_json_put_path(stdout, state_path ? state_path : "");
-        if (st == DSU_STATUS_SUCCESS) {
+        if (st == DSU_STATUS_SUCCESS && ran_job) {
             fputc(',', stdout);
             fputs("\"journal_id\":", stdout); dsu_cli_json_put_u64_hex(stdout, res.journal_id); fputc(',', stdout);
             fputs("\"install_root\":", stdout); dsu_cli_json_put_path(stdout, res.install_root); fputc(',', stdout);
@@ -1762,7 +2012,7 @@ done:
         }
         dsu_cli_json_end_envelope(stdout);
     } else {
-        if (st == DSU_STATUS_SUCCESS) {
+        if (st == DSU_STATUS_SUCCESS && ran_job) {
             fprintf(stdout, "journal_file=%s\n", res.journal_path);
             fprintf(stdout, "log_file=%s\n", log_path);
         } else {
