@@ -3,6 +3,7 @@
 #include "dsk/dsk_contracts.h"
 #include "dsk/dsk_digest.h"
 #include "dsk/dsk_error.h"
+#include "dsk/dsk_plan.h"
 #include "dsk/dsk_splat.h"
 #include "dss/dss_services.h"
 
@@ -53,6 +54,7 @@ static int write_file(const dss_fs_api_t *fs,
 static const char *op_to_string(dsk_u16 op) {
     switch (op) {
     case DSK_OPERATION_INSTALL: return "install";
+    case DSK_OPERATION_UPGRADE: return "upgrade";
     case DSK_OPERATION_REPAIR: return "repair";
     case DSK_OPERATION_UNINSTALL: return "uninstall";
     case DSK_OPERATION_VERIFY: return "verify";
@@ -363,12 +365,52 @@ static void print_json_summary(const dsk_audit_t &audit, dsk_status_t status) {
     std::printf("}\n");
 }
 
+static bool dsk_resolved_less(const dsk_resolved_component_t &a,
+                              const dsk_resolved_component_t &b) {
+    return a.component_id < b.component_id;
+}
+
+static void print_json_resolved_set(const dsk_plan_t &plan) {
+    std::vector<dsk_resolved_component_t> comps = plan.resolved_components;
+    size_t i;
+    std::sort(comps.begin(), comps.end(), dsk_resolved_less);
+    std::printf("{\"resolved_set_digest64\":");
+    print_json_u64_hex(plan.resolved_set_digest64);
+    std::printf(",\"components\":[");
+    for (i = 0u; i < comps.size(); ++i) {
+        if (i != 0u) {
+            std::printf(",");
+        }
+        std::printf("{\"component_id\":");
+        print_json_string(comps[i].component_id.c_str());
+        std::printf(",\"component_version\":");
+        print_json_string(comps[i].component_version.c_str());
+        std::printf(",\"kind\":");
+        print_json_string(comps[i].kind.c_str());
+        std::printf(",\"source\":%u}", (unsigned)comps[i].source);
+    }
+    std::printf("]}\n");
+}
+
+static int print_json_plan(const dsk_plan_t &plan) {
+    std::string json;
+    dsk_status_t st = dsk_plan_dump_json(&plan, &json);
+    if (!dsk_error_is_ok(st)) {
+        return 0;
+    }
+    std::printf("%s\n", json.c_str());
+    return 1;
+}
+
 static void print_usage(void) {
     std::printf("dominium-setup2 validate-manifest --in <file>\n");
     std::printf("dominium-setup2 validate-request --in <file>\n");
-    std::printf("dominium-setup2 run --manifest <file> --request <file> --out-state <file> --out-audit <file> [--out-log <file>] [--json]\n");
+    std::printf("dominium-setup2 run --manifest <file> --request <file> --out-state <file> --out-audit <file> [--out-plan <file>] [--out-log <file>] [--json]\n");
     std::printf("dominium-setup2 dump-splats --json\n");
     std::printf("dominium-setup2 select-splat --manifest <file> --request <file> --json\n");
+    std::printf("dominium-setup2 plan --manifest <file> --request <file> --out-plan <file> [--json]\n");
+    std::printf("dominium-setup2 dump-plan --plan <file> --json\n");
+    std::printf("dominium-setup2 resolve --manifest <file> --request <file> --json\n");
     std::printf("options: --use-fake-services <sandbox_root>\n");
 }
 
@@ -531,17 +573,232 @@ int main(int argc, char **argv) {
         return finish(&services, dsk_error_to_exit_code(st));
     }
 
+    if (std::strcmp(argv[1], "plan") == 0) {
+        const char *manifest_path = get_arg_value(argc, argv, "--manifest");
+        const char *request_path = get_arg_value(argc, argv, "--request");
+        const char *out_plan = get_arg_value(argc, argv, "--out-plan");
+        int json = has_flag(argc, argv, "--json");
+        std::vector<dsk_u8> manifest_bytes;
+        std::vector<dsk_u8> request_bytes;
+        dsk_request_t request;
+        dsk_kernel_request_ex_t kernel_req;
+        dsk_mem_sink_t plan_sink;
+        dsk_mem_sink_t state_sink;
+        dsk_mem_sink_t audit_sink;
+        dsk_status_t st;
+        dsk_plan_t plan;
+
+        if (!manifest_path || !request_path || !out_plan) {
+            print_usage();
+            return finish(&services, 1);
+        }
+        if (!load_file(&services.fs, manifest_path, manifest_bytes)) {
+            std::fprintf(stderr, "error: failed to read manifest\n");
+            return finish(&services, 1);
+        }
+        if (!load_file(&services.fs, request_path, request_bytes)) {
+            std::fprintf(stderr, "error: failed to read request\n");
+            return finish(&services, 1);
+        }
+        st = dsk_request_parse(&request_bytes[0], (dsk_u32)request_bytes.size(), &request);
+        if (!dsk_error_is_ok(st)) {
+            std::fprintf(stderr, "error: %s\n", dsk_error_to_string_stable(st));
+            return finish(&services, dsk_error_to_exit_code(st));
+        }
+
+        dsk_kernel_request_ex_init(&kernel_req);
+        kernel_req.base.manifest_bytes = &manifest_bytes[0];
+        kernel_req.base.manifest_size = (dsk_u32)manifest_bytes.size();
+        kernel_req.base.request_bytes = &request_bytes[0];
+        kernel_req.base.request_size = (dsk_u32)request_bytes.size();
+        kernel_req.base.services = &services;
+        kernel_req.base.deterministic_mode = (request.policy_flags & DSK_POLICY_DETERMINISTIC) ? 1u : 0u;
+        kernel_req.base.out_plan.user = &plan_sink;
+        kernel_req.base.out_plan.write = dsk_mem_sink_write;
+        kernel_req.base.out_state.user = &state_sink;
+        kernel_req.base.out_state.write = dsk_mem_sink_write;
+        kernel_req.base.out_audit.user = &audit_sink;
+        kernel_req.base.out_audit.write = dsk_mem_sink_write;
+
+        switch (request.operation) {
+        case DSK_OPERATION_INSTALL:
+            st = dsk_install_ex(&kernel_req);
+            break;
+        case DSK_OPERATION_UPGRADE:
+            st = dsk_upgrade_ex(&kernel_req);
+            break;
+        case DSK_OPERATION_REPAIR:
+            st = dsk_repair_ex(&kernel_req);
+            break;
+        case DSK_OPERATION_UNINSTALL:
+            st = dsk_uninstall_ex(&kernel_req);
+            break;
+        case DSK_OPERATION_VERIFY:
+            st = dsk_verify_ex(&kernel_req);
+            break;
+        case DSK_OPERATION_STATUS:
+            st = dsk_status_ex(&kernel_req);
+            break;
+        default:
+            std::fprintf(stderr, "error: invalid operation\n");
+            return finish(&services, 1);
+        }
+
+        if (plan_sink.data.empty()) {
+            std::fprintf(stderr, "error: plan not emitted\n");
+            return finish(&services, dsk_error_to_exit_code(st));
+        }
+        if (!write_file(&services.fs, out_plan, plan_sink.data)) {
+            std::fprintf(stderr, "error: failed to write plan\n");
+            return finish(&services, 1);
+        }
+        if (json) {
+            dsk_status_t parse_st = dsk_plan_parse(&plan_sink.data[0],
+                                                   (dsk_u32)plan_sink.data.size(),
+                                                   &plan);
+            if (dsk_error_is_ok(parse_st)) {
+                if (!print_json_plan(plan)) {
+                    std::fprintf(stderr, "error: failed to format plan\n");
+                }
+            } else {
+                std::fprintf(stderr, "error: %s\n", dsk_error_to_string_stable(parse_st));
+            }
+        }
+
+        return finish(&services, dsk_error_to_exit_code(st));
+    }
+
+    if (std::strcmp(argv[1], "dump-plan") == 0) {
+        const char *plan_path = get_arg_value(argc, argv, "--plan");
+        int json = has_flag(argc, argv, "--json");
+        std::vector<dsk_u8> plan_bytes;
+        dsk_plan_t plan;
+        dsk_status_t st;
+
+        if (!plan_path) {
+            print_usage();
+            return finish(&services, 1);
+        }
+        if (!load_file(&services.fs, plan_path, plan_bytes)) {
+            std::fprintf(stderr, "error: failed to read plan\n");
+            return finish(&services, 1);
+        }
+        st = dsk_plan_parse(&plan_bytes[0], (dsk_u32)plan_bytes.size(), &plan);
+        if (!dsk_error_is_ok(st)) {
+            std::fprintf(stderr, "error: %s\n", dsk_error_to_string_stable(st));
+            return finish(&services, dsk_error_to_exit_code(st));
+        }
+        if (json) {
+            if (!print_json_plan(plan)) {
+                std::fprintf(stderr, "error: failed to format plan\n");
+                return finish(&services, 1);
+            }
+        } else {
+            std::printf("ok\n");
+        }
+        return finish(&services, 0);
+    }
+
+    if (std::strcmp(argv[1], "resolve") == 0) {
+        const char *manifest_path = get_arg_value(argc, argv, "--manifest");
+        const char *request_path = get_arg_value(argc, argv, "--request");
+        int json = has_flag(argc, argv, "--json");
+        std::vector<dsk_u8> manifest_bytes;
+        std::vector<dsk_u8> request_bytes;
+        dsk_request_t request;
+        dsk_kernel_request_ex_t kernel_req;
+        dsk_mem_sink_t plan_sink;
+        dsk_mem_sink_t state_sink;
+        dsk_mem_sink_t audit_sink;
+        dsk_status_t st;
+        dsk_plan_t plan;
+
+        if (!manifest_path || !request_path) {
+            print_usage();
+            return finish(&services, 1);
+        }
+        if (!load_file(&services.fs, manifest_path, manifest_bytes)) {
+            std::fprintf(stderr, "error: failed to read manifest\n");
+            return finish(&services, 1);
+        }
+        if (!load_file(&services.fs, request_path, request_bytes)) {
+            std::fprintf(stderr, "error: failed to read request\n");
+            return finish(&services, 1);
+        }
+        st = dsk_request_parse(&request_bytes[0], (dsk_u32)request_bytes.size(), &request);
+        if (!dsk_error_is_ok(st)) {
+            std::fprintf(stderr, "error: %s\n", dsk_error_to_string_stable(st));
+            return finish(&services, dsk_error_to_exit_code(st));
+        }
+
+        dsk_kernel_request_ex_init(&kernel_req);
+        kernel_req.base.manifest_bytes = &manifest_bytes[0];
+        kernel_req.base.manifest_size = (dsk_u32)manifest_bytes.size();
+        kernel_req.base.request_bytes = &request_bytes[0];
+        kernel_req.base.request_size = (dsk_u32)request_bytes.size();
+        kernel_req.base.services = &services;
+        kernel_req.base.deterministic_mode = (request.policy_flags & DSK_POLICY_DETERMINISTIC) ? 1u : 0u;
+        kernel_req.base.out_plan.user = &plan_sink;
+        kernel_req.base.out_plan.write = dsk_mem_sink_write;
+        kernel_req.base.out_state.user = &state_sink;
+        kernel_req.base.out_state.write = dsk_mem_sink_write;
+        kernel_req.base.out_audit.user = &audit_sink;
+        kernel_req.base.out_audit.write = dsk_mem_sink_write;
+
+        switch (request.operation) {
+        case DSK_OPERATION_INSTALL:
+            st = dsk_install_ex(&kernel_req);
+            break;
+        case DSK_OPERATION_UPGRADE:
+            st = dsk_upgrade_ex(&kernel_req);
+            break;
+        case DSK_OPERATION_REPAIR:
+            st = dsk_repair_ex(&kernel_req);
+            break;
+        case DSK_OPERATION_UNINSTALL:
+            st = dsk_uninstall_ex(&kernel_req);
+            break;
+        case DSK_OPERATION_VERIFY:
+            st = dsk_verify_ex(&kernel_req);
+            break;
+        case DSK_OPERATION_STATUS:
+            st = dsk_status_ex(&kernel_req);
+            break;
+        default:
+            std::fprintf(stderr, "error: invalid operation\n");
+            return finish(&services, 1);
+        }
+
+        if (plan_sink.data.empty()) {
+            std::fprintf(stderr, "error: plan not emitted\n");
+            return finish(&services, dsk_error_to_exit_code(st));
+        }
+        st = dsk_plan_parse(&plan_sink.data[0], (dsk_u32)plan_sink.data.size(), &plan);
+        if (!dsk_error_is_ok(st)) {
+            std::fprintf(stderr, "error: %s\n", dsk_error_to_string_stable(st));
+            return finish(&services, dsk_error_to_exit_code(st));
+        }
+        if (json) {
+            print_json_resolved_set(plan);
+        } else {
+            std::printf("ok\n");
+        }
+        return finish(&services, dsk_error_to_exit_code(st));
+    }
+
     if (std::strcmp(argv[1], "run") == 0) {
         const char *manifest_path = get_arg_value(argc, argv, "--manifest");
         const char *request_path = get_arg_value(argc, argv, "--request");
         const char *out_state = get_arg_value(argc, argv, "--out-state");
         const char *out_audit = get_arg_value(argc, argv, "--out-audit");
+        const char *out_plan = get_arg_value(argc, argv, "--out-plan");
         const char *out_log = get_arg_value(argc, argv, "--out-log");
         int json = 0;
         std::vector<dsk_u8> manifest_bytes;
         std::vector<dsk_u8> request_bytes;
         dsk_request_t request;
         dsk_kernel_request_ex_t kernel_req;
+        dsk_mem_sink_t plan_sink;
         dsk_mem_sink_t state_sink;
         dsk_mem_sink_t audit_sink;
         dsk_mem_sink_t log_sink;
@@ -581,6 +838,10 @@ int main(int argc, char **argv) {
         kernel_req.base.request_size = (dsk_u32)request_bytes.size();
         kernel_req.base.services = &services;
         kernel_req.base.deterministic_mode = (request.policy_flags & DSK_POLICY_DETERMINISTIC) ? 1u : 0u;
+        if (out_plan && out_plan[0]) {
+            kernel_req.base.out_plan.user = &plan_sink;
+            kernel_req.base.out_plan.write = dsk_mem_sink_write;
+        }
         kernel_req.base.out_state.user = &state_sink;
         kernel_req.base.out_state.write = dsk_mem_sink_write;
         kernel_req.base.out_audit.user = &audit_sink;
@@ -593,6 +854,9 @@ int main(int argc, char **argv) {
         switch (request.operation) {
         case DSK_OPERATION_INSTALL:
             st = dsk_install_ex(&kernel_req);
+            break;
+        case DSK_OPERATION_UPGRADE:
+            st = dsk_upgrade_ex(&kernel_req);
             break;
         case DSK_OPERATION_REPAIR:
             st = dsk_repair_ex(&kernel_req);
@@ -618,6 +882,12 @@ int main(int argc, char **argv) {
         if (!write_file(&services.fs, out_audit, audit_sink.data)) {
             std::fprintf(stderr, "error: failed to write audit\n");
             return finish(&services, 1);
+        }
+        if (out_plan && out_plan[0]) {
+            if (!write_file(&services.fs, out_plan, plan_sink.data)) {
+                std::fprintf(stderr, "error: failed to write plan\n");
+                return finish(&services, 1);
+            }
         }
         if (out_log && out_log[0]) {
             if (!write_file(&services.fs, out_log, log_sink.data)) {
