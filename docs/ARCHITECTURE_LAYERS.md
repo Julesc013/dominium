@@ -27,7 +27,7 @@ Layer E: PLATFORM BACKENDS
 ## Canonical Modules (Current)
 Common:
 - core_tlv, core_audit, core_util, core_err (INTERFACE targets)
-- provider_api (INTERFACE), provider_null_stub (STATIC)
+- provider_api (INTERFACE), providers_builtin (STATIC)
 - dui_api (INTERFACE)
 
 Launcher:
