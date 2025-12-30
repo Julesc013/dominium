@@ -131,6 +131,9 @@ dom_abi_result core_job_state_read_tlv(const unsigned char* data, u32 size, core
 u32 core_job_def_encoded_size(const core_job_def* def);
 u32 core_job_state_encoded_size(const core_job_state* st);
 
+/* Register core_job TLV schemas with the shared core_tlv_schema registry. */
+int core_job_register_tlv_schemas(void);
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif

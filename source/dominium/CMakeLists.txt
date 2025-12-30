@@ -16,6 +16,7 @@ set(DOM_KERNEL_ALLOWED_LINK_LIBS
     core_caps
     core_solver
     core_job
+    core_tlv_schema
 )
 
 function(dom_check_kernel_links target_name)

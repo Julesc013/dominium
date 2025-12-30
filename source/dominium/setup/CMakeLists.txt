@@ -14,6 +14,7 @@ add_library(dsk_kernel STATIC
     kernel/src/tlv/dsk_tlv_reader.cpp
     kernel/src/tlv/dsk_tlv_writer.cpp
     kernel/src/tlv/dsk_tlv_validate.cpp
+    kernel/src/tlv/dsk_tlv_schema_registry.cpp
     kernel/src/digest/dsk_digest.cpp
     kernel/src/errors/dsk_error.cpp
     kernel/src/audit/dsk_audit.cpp
@@ -61,6 +62,7 @@ target_link_libraries(dsk_kernel
         core_log
         core_caps
         core_solver
+        core_tlv_schema
 )
 
 add_executable(dominium-setup2
