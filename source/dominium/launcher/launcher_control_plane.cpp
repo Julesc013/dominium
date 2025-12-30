@@ -10,6 +10,7 @@ RESPONSIBILITY: Non-interactive orchestration surface for dominium-launcher (com
 #include <algorithm>
 #include <cstdio>
 #include <cstring>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -20,6 +21,7 @@ extern "C" {
 
 #include "launcher_launch_plumbing.h"
 #include "launcher_caps_snapshot.h"
+#include "launcher_caps_solver.h"
 
 #include "core/include/launcher_pack_ops.h"
 #include "core/include/launcher_safety.h"
@@ -192,6 +194,119 @@ static const char* find_arg_value(int argc, char** argv, const char* prefix) {
         }
     }
     return 0;
+}
+
+static bool has_arg(int argc, char** argv, const char* flag) {
+    int i;
+    if (!flag) return false;
+    for (i = 1; i < argc; ++i) {
+        const char* a = argv[i];
+        if (!a) continue;
+        if (std::strcmp(a, flag) == 0) {
+            return true;
+        }
+    }
+    return false;
+}
+
+static std::string cap_value_to_string(u32 key_id, u8 type, const core_cap_value& v) {
+    std::ostringstream oss;
+    switch (type) {
+    case CORE_CAP_BOOL:
+        oss << (v.bool_value ? 1u : 0u);
+        break;
+    case CORE_CAP_U32:
+        oss << v.u32_value;
+        break;
+    case CORE_CAP_I32:
+        oss << v.i32_value;
+        break;
+    case CORE_CAP_U64:
+        oss << v.u64_value;
+        break;
+    case CORE_CAP_I64:
+        oss << v.i64_value;
+        break;
+    case CORE_CAP_STRING_ID:
+        oss << v.string_id;
+        break;
+    case CORE_CAP_ENUM_ID: {
+        const char* tok = core_caps_enum_token(key_id, v.enum_id);
+        if (tok && std::strcmp(tok, "unknown") != 0) {
+            oss << tok;
+        } else {
+            oss << v.enum_id;
+        }
+        break;
+    }
+    case CORE_CAP_RANGE_U32:
+        oss << v.range_u32.min_value << ".." << v.range_u32.max_value;
+        break;
+    default:
+        break;
+    }
+    return oss.str();
+}
+
+static bool solver_selected_less(const core_solver_selected& a, const core_solver_selected& b) {
+    if (a.category_id != b.category_id) return a.category_id < b.category_id;
+    return std::strcmp(a.component_id, b.component_id) < 0;
+}
+
+static bool solver_reject_less(const core_solver_reject& a, const core_solver_reject& b) {
+    if (a.category_id != b.category_id) return a.category_id < b.category_id;
+    return std::strcmp(a.component_id, b.component_id) < 0;
+}
+
+static std::string solver_explain_to_text(const core_solver_result& result, const char* prefix) {
+    std::ostringstream oss;
+    std::vector<core_solver_selected> selected;
+    std::vector<core_solver_reject> rejected;
+    std::string base = prefix ? std::string(prefix) : std::string("caps.explain");
+    size_t i;
+
+    selected.assign(result.selected, result.selected + result.selected_count);
+    rejected.assign(result.rejected, result.rejected + result.rejected_count);
+    std::sort(selected.begin(), selected.end(), solver_selected_less);
+    std::sort(rejected.begin(), rejected.end(), solver_reject_less);
+
+    oss << base << ".ok=" << (result.ok ? "1" : "0") << "\n";
+    oss << base << ".fail_reason=" << core_solver_fail_reason_token(result.fail_reason) << "\n";
+    oss << base << ".fail_category=" << core_solver_category_token(result.fail_category) << "\n";
+
+    oss << base << ".selected.count=" << (u32)selected.size() << "\n";
+    for (i = 0u; i < selected.size(); ++i) {
+        const core_solver_selected& s = selected[i];
+        oss << base << ".selected[" << (u32)i << "].category=" << core_solver_category_token(s.category_id) << "\n";
+        oss << base << ".selected[" << (u32)i << "].component=" << s.component_id << "\n";
+        oss << base << ".selected[" << (u32)i << "].reason=" << core_solver_select_reason_token(s.reason) << "\n";
+        oss << base << ".selected[" << (u32)i << "].score=" << s.score << "\n";
+        oss << base << ".selected[" << (u32)i << "].priority=" << s.priority << "\n";
+        oss << base << ".selected[" << (u32)i << "].prefers_satisfied=" << s.prefers_satisfied << "\n";
+    }
+
+    oss << base << ".rejected.count=" << (u32)rejected.size() << "\n";
+    for (i = 0u; i < rejected.size(); ++i) {
+        const core_solver_reject& r = rejected[i];
+        oss << base << ".rejected[" << (u32)i << "].category=" << core_solver_category_token(r.category_id) << "\n";
+        oss << base << ".rejected[" << (u32)i << "].component=" << r.component_id << "\n";
+        oss << base << ".rejected[" << (u32)i << "].reason=" << core_solver_reject_reason_token(r.reason) << "\n";
+        if (r.constraint.key_id != 0u) {
+            oss << base << ".rejected[" << (u32)i << "].constraint.key=" << core_caps_key_token(r.constraint.key_id) << "\n";
+            oss << base << ".rejected[" << (u32)i << "].constraint.op=" << core_solver_op_token(r.constraint.op) << "\n";
+            oss << base << ".rejected[" << (u32)i << "].constraint.type=" << core_caps_type_token(r.constraint.type) << "\n";
+            oss << base << ".rejected[" << (u32)i << "].constraint.value=" << cap_value_to_string(r.constraint.key_id, r.constraint.type, r.constraint.value) << "\n";
+        }
+        if (r.actual_present) {
+            oss << base << ".rejected[" << (u32)i << "].actual.type=" << core_caps_type_token(r.actual_type) << "\n";
+            oss << base << ".rejected[" << (u32)i << "].actual.value=" << cap_value_to_string(r.constraint.key_id, r.actual_type, r.actual_value) << "\n";
+        }
+        if (r.conflict_component_id[0]) {
+            oss << base << ".rejected[" << (u32)i << "].conflict=" << r.conflict_component_id << "\n";
+        }
+    }
+
+    return oss.str();
 }
 
 static std::string compute_state_root(int argc, char** argv) {
@@ -1478,13 +1593,17 @@ ControlPlaneRunResult launcher_control_plane_try_run(int argc,
     if (std::strcmp(cmd, "caps") == 0) {
         const char* fmt = find_arg_value(argc, argv, "--format=");
         const char* out_path = find_arg_value(argc, argv, "--out=");
+        const char* explain_v = find_arg_value(argc, argv, "--explain=");
+        const bool explain = explain_v ? (std::strcmp(explain_v, "0") != 0) : has_arg(argc, argv, "--explain");
         std::string format = (fmt && fmt[0]) ? std::string(fmt) : std::string("text");
         std::string out_file = (out_path && out_path[0]) ? std::string(out_path) : std::string();
         LauncherCapsSnapshot caps;
+        LauncherCapsSolveResult solve;
         std::string caps_err;
 
         audit_reason_kv(audit_core, "caps_format", format);
         audit_reason_kv(audit_core, "caps_out", out_file);
+        audit_reason_kv(audit_core, "caps_explain", explain ? "1" : "0");
 
         if (format != "text" && format != "tlv") {
             audit_reason_kv(audit_core, "outcome", "fail");
@@ -1493,6 +1612,26 @@ ControlPlaneRunResult launcher_control_plane_try_run(int argc,
             out_kv(out, "format", format);
             r.exit_code = 2;
             return r;
+        }
+
+        if (explain && format != "text") {
+            audit_reason_kv(audit_core, "outcome", "fail");
+            out_kv(out, "result", "fail");
+            out_kv(out, "error", "explain_requires_text");
+            out_kv(out, "format", format);
+            r.exit_code = 2;
+            return r;
+        }
+
+        if (explain) {
+            if (!launcher_caps_solve(profile, solve, caps_err)) {
+                audit_reason_kv(audit_core, "outcome", "fail");
+                out_kv(out, "result", "fail");
+                out_kv(out, "error", "caps_select_failed");
+                out_kv(out, "detail", caps_err);
+                r.exit_code = 1;
+                return r;
+            }
         }
 
         if (!launcher_caps_snapshot_build(profile, caps, caps_err)) {
@@ -1522,11 +1661,21 @@ ControlPlaneRunResult launcher_control_plane_try_run(int argc,
                 return r;
             }
         } else {
+            std::string text = launcher_caps_snapshot_to_text(caps);
+            if (explain) {
+                text += solver_explain_to_text(solve.solver_result, "caps.explain");
+            }
             if (out_file.empty()) {
-                std::fputs(launcher_caps_snapshot_to_text(caps).c_str(), out);
+                std::fputs(text.c_str(), out);
             } else {
                 mkdir_p_best_effort(dirname_of(out_file));
-                if (!launcher_caps_snapshot_write_text(caps, out_file, caps_err)) {
+                {
+                    std::vector<unsigned char> bytes(text.begin(), text.end());
+                    if (!write_file_all(out_file, bytes)) {
+                        caps_err = "caps_text_write_failed";
+                    }
+                }
+                if (!caps_err.empty()) {
                     audit_reason_kv(audit_core, "outcome", "fail");
                     out_kv(out, "result", "fail");
                     out_kv(out, "error", "caps_write_failed");

@@ -1262,6 +1262,31 @@ static void test_selection_summary_text_is_stable(void) {
     assert(a.find("selection_summary.backends.platform[1].id=a") != std::string::npos);
 }
 
+static void test_caps_explain_is_stable(const std::string& state_root,
+                                        const std::string& argv0_launcher,
+                                        const dom_profile& profile) {
+    CmdRun a;
+    CmdRun b;
+    std::vector<std::string> args;
+    std::map<std::string, std::string> kv;
+
+    args.push_back(std::string("--home=") + state_root);
+    args.push_back("caps");
+    args.push_back("--format=text");
+    args.push_back("--explain");
+
+    a = run_control_plane(argv0_launcher, profile, args, path_join(state_root, "audit_caps_explain1.tlv"));
+    b = run_control_plane(argv0_launcher, profile, args, path_join(state_root, "audit_caps_explain2.tlv"));
+
+    kv = parse_kv_lines(a.out_text);
+    assert(a.r.handled != 0);
+    assert(a.r.exit_code == 0);
+    assert(kv["result"] == "ok");
+    assert(a.out_text == b.out_text);
+    assert(a.out_text.find("caps.schema_version=") != std::string::npos);
+    assert(a.out_text.find("caps.explain.selected.count=") != std::string::npos);
+}
+
 } /* namespace */
 
 int main(int argc, char** argv) {
@@ -1296,6 +1321,7 @@ int main(int argc, char** argv) {
     test_offline_enforcement_refusal(state_root, argv0_launcher, profile);
     test_safe_mode_flow_flags(state_root, argv0_launcher, profile);
     test_selection_summary_text_is_stable();
+    test_caps_explain_is_stable(state_root, argv0_launcher, profile);
 
     std::printf("launcher_control_plane_tests: OK\n");
     return 0;
