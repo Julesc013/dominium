@@ -91,7 +91,11 @@ typedef enum core_log_field_key_e {
     CORE_LOG_KEY_ERR_FLAGS = 10u,
     CORE_LOG_KEY_ERR_MSG_ID = 11u,
     CORE_LOG_KEY_REFUSAL_CODE = 12u,
-    CORE_LOG_KEY_PATH = 13u
+    CORE_LOG_KEY_PATH = 13u,
+    CORE_LOG_KEY_JOB_ID = 14u,
+    CORE_LOG_KEY_JOB_TYPE = 15u,
+    CORE_LOG_KEY_JOB_STEP_ID = 16u,
+    CORE_LOG_KEY_JOB_OUTCOME = 17u
 } core_log_field_key;
 
 /*------------------------------------------------------------
@@ -116,10 +120,12 @@ typedef enum core_log_operation_id_e {
     CORE_LOG_OP_LAUNCHER_INSTANCE_TEMPLATE = 15u,
     CORE_LOG_OP_LAUNCHER_SIM_SAFETY_VALIDATE = 16u,
     CORE_LOG_OP_LAUNCHER_LAUNCH_EXECUTE = 17u,
+    CORE_LOG_OP_LAUNCHER_JOB = 18u,
     CORE_LOG_OP_SETUP_PARSE_MANIFEST = 100u,
     CORE_LOG_OP_SETUP_PARSE_REQUEST = 101u,
     CORE_LOG_OP_SETUP_SPLAT_SELECT = 102u,
-    CORE_LOG_OP_SETUP_WRITE_STATE = 103u
+    CORE_LOG_OP_SETUP_WRITE_STATE = 103u,
+    CORE_LOG_OP_SETUP_JOB = 104u
 } core_log_operation_id;
 
 /*------------------------------------------------------------
