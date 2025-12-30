@@ -682,6 +682,20 @@ set_target_properties(dgfx_demo PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
 )
 
+if(WIN32)
+    function(setup2_copy_winpthread target)
+        get_filename_component(DSK_COMPILER_DIR "${CMAKE_CXX_COMPILER}" DIRECTORY)
+        set(DSK_WINPTHREAD_DLL "${DSK_COMPILER_DIR}/libwinpthread-1.dll")
+        if(EXISTS "${DSK_WINPTHREAD_DLL}")
+            add_custom_command(TARGET ${target} POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                    "${DSK_WINPTHREAD_DLL}"
+                    $<TARGET_FILE_DIR:${target}>
+            )
+        endif()
+    endfunction()
+endif()
+
 add_executable(setup2_kernel_tests
     ../../tests/setup2/setup2_kernel_tests.cpp
 )
@@ -700,6 +714,10 @@ set_target_properties(setup2_kernel_tests PROPERTIES
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
+dominium_bundle_runtime(setup2_kernel_tests)
+if(WIN32)
+    setup2_copy_winpthread(setup2_kernel_tests)
+endif()
 
 add_test(NAME test_tlv_roundtrip_known_fields COMMAND setup2_kernel_tests tlv_roundtrip_known_fields)
 add_test(NAME test_tlv_skip_unknown COMMAND setup2_kernel_tests tlv_skip_unknown)
@@ -726,6 +744,10 @@ set_target_properties(setup2_services_fs_tests PROPERTIES
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
+dominium_bundle_runtime(setup2_services_fs_tests)
+if(WIN32)
+    setup2_copy_winpthread(setup2_services_fs_tests)
+endif()
 
 add_test(NAME test_services_fs_rejects_escape COMMAND setup2_services_fs_tests services_fs_rejects_escape)
 add_test(NAME test_services_fs_atomic_write COMMAND setup2_services_fs_tests services_fs_atomic_write)
@@ -749,6 +771,10 @@ set_target_properties(setup2_services_platform_tests PROPERTIES
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
+dominium_bundle_runtime(setup2_services_platform_tests)
+if(WIN32)
+    setup2_copy_winpthread(setup2_services_platform_tests)
+endif()
 
 add_test(NAME test_services_platform_fake COMMAND setup2_services_platform_tests services_platform_fake)
 
@@ -770,6 +796,10 @@ set_target_properties(setup2_kernel_services_tests PROPERTIES
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
+dominium_bundle_runtime(setup2_kernel_services_tests)
+if(WIN32)
+    setup2_copy_winpthread(setup2_kernel_services_tests)
+endif()
 
 add_test(NAME test_kernel_uses_services_platform COMMAND setup2_kernel_services_tests kernel_uses_services_platform)
 
@@ -791,6 +821,10 @@ set_target_properties(setup2_splat_tests PROPERTIES
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
+dominium_bundle_runtime(setup2_splat_tests)
+if(WIN32)
+    setup2_copy_winpthread(setup2_splat_tests)
+endif()
 
 add_test(NAME test_splat_registry_sorted COMMAND setup2_splat_tests splat_registry_sorted)
 add_test(NAME test_splat_select_requested_id_success COMMAND setup2_splat_tests splat_select_requested_id_success)
