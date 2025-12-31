@@ -1,5 +1,9 @@
 # Installed-State Contract (Launcher)
 
+Note: This document describes the legacy DSU `installed_state.dsustate` used by
+the current launcher CLI. The setup2 `installed_state.tlv` handoff is defined in
+`docs/core/INSTALLED_STATE_CONTRACT.md`.
+
 This document defines the launcher-facing contract for `installed_state.dsustate`.
 The installed-state file is the authoritative record of a Dominium installation.
 

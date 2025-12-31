@@ -23,6 +23,13 @@ The launcher is the **control plane** for the Dominium ecosystem:
 
 Control-plane commands must be usable in automation and CI under `--ui=null --gfx=null`.
 
+## Shared Core Libraries
+
+Launcher core is built on the shared core libraries defined in
+`docs/core/CORE_LIBRARIES.md` (TLV, err_t, logging, jobs, caps/solver, audit,
+providers). Any new launcher kernel code must use these shared modules rather
+than re-implementing equivalents.
+
 ## Installed-State Contract (Setup ↔ Launcher)
 
 The launcher is a **consumer** of Setup Core’s installed-state file and never performs install logic.
@@ -35,6 +42,11 @@ Contract:
 
 Smoke validation:
 - `dominium-launcher --smoke-test --state <install_root>/.dsu/installed_state.dsustate`
+
+Note: setup2 also produces `installed_state.tlv` with a shared core schema
+(`docs/core/INSTALLED_STATE_CONTRACT.md`). The setup2 handoff is parsed via the
+launcher core installed-state helpers; legacy `.dsu/installed_state.dsustate`
+remains the current CLI discovery path until integration is switched over.
 
 ## Layers
 
