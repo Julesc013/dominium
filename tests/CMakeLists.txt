@@ -214,3 +214,5 @@ else()
     target_compile_options(dominium_tlv_fuzz_tests PRIVATE $<$<CONFIG:Release>:-UNDEBUG>)
 endif()
 add_test(NAME dominium_tlv_fuzz COMMAND dominium_tlv_fuzz_tests)
+
+add_subdirectory(setup2)
