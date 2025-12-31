@@ -198,6 +198,20 @@ static void dsk_audit_capture_refusals(dsk_audit_t *audit,
     }
 }
 
+static dsk_u16 dsk_select_ownership(const dsk_request_t &request,
+                                    const dsk_splat_caps_t &caps) {
+    if (request.ownership_preference != DSK_OWNERSHIP_ANY) {
+        return request.ownership_preference;
+    }
+    if (caps.supports_pkg_ownership) {
+        return DSK_OWNERSHIP_PKG;
+    }
+    if (caps.supports_portable_ownership) {
+        return DSK_OWNERSHIP_PORTABLE;
+    }
+    return DSK_OWNERSHIP_ANY;
+}
+
 static dsk_status_t dsk_sink_write(const dsk_byte_sink_t *sink, const dsk_tlv_buffer_t *buf) {
     if (!sink || !sink->write || !buf) {
         return dsk_error_make(DSK_DOMAIN_KERNEL, DSK_CODE_INVALID_ARGS, DSK_SUBCODE_NONE, 0u);
@@ -206,8 +220,9 @@ static dsk_status_t dsk_sink_write(const dsk_byte_sink_t *sink, const dsk_tlv_bu
 }
 
 static dsk_status_t dsk_build_installed_state(const dsk_manifest_t &manifest,
-                                              const dsk_request_t &request,
+                                              const dsk_plan_t &plan,
                                               const std::string &selected_splat,
+                                              dsk_u16 ownership,
                                               dsk_u64 manifest_digest,
                                               dsk_u64 request_digest,
                                               const dsk_resolved_set_t &resolved,
@@ -219,8 +234,10 @@ static dsk_status_t dsk_build_installed_state(const dsk_manifest_t &manifest,
     out_state->product_id = manifest.product_id;
     out_state->installed_version = manifest.version;
     out_state->selected_splat = selected_splat;
-    out_state->install_scope = request.install_scope;
-    out_state->install_root = request.preferred_install_root;
+    out_state->install_scope = plan.install_scope;
+    out_state->install_root = plan.install_roots.empty() ? std::string() : plan.install_roots[0];
+    out_state->install_roots = plan.install_roots;
+    out_state->ownership = ownership;
     out_state->manifest_digest64 = manifest_digest;
     out_state->request_digest64 = request_digest;
     {
@@ -268,6 +285,7 @@ static dsk_status_t dsk_kernel_run(dsk_u16 expected_operation, const dsk_kernel_
     dsk_resolved_set_t resolved;
     std::vector<dsk_plan_refusal_t> refusals;
     dsk_splat_selection_t splat_sel;
+    dsk_splat_caps_t selected_caps;
     dsk_audit_t audit;
     dsk_tlv_buffer_t plan_buf;
     dsk_tlv_buffer_t state_buf;
@@ -290,6 +308,7 @@ static dsk_status_t dsk_kernel_run(dsk_u16 expected_operation, const dsk_kernel_
     resolved.digest64 = 0u;
     refusals.clear();
     dsk_audit_clear(&audit);
+    dsk_splat_caps_clear(&selected_caps);
 
     manifest_digest = dsk_digest64_bytes(req->manifest_bytes, req->manifest_size);
     request_digest = dsk_digest64_bytes(req->request_bytes, req->request_size);
@@ -362,9 +381,7 @@ static dsk_status_t dsk_kernel_run(dsk_u16 expected_operation, const dsk_kernel_
     dsk_emit_log_event(req_ex, audit.run_id, CORE_LOG_OP_SETUP_SPLAT_SELECT, CORE_LOG_EVT_OP_OK, ok);
 
     {
-        dsk_splat_caps_t selected_caps;
         size_t i;
-        dsk_splat_caps_clear(&selected_caps);
         for (i = 0u; i < splat_sel.candidates.size(); ++i) {
             if (splat_sel.candidates[i].id == splat_sel.selected_id) {
                 selected_caps = splat_sel.candidates[i].caps;
@@ -420,13 +437,17 @@ static dsk_status_t dsk_kernel_run(dsk_u16 expected_operation, const dsk_kernel_
         }
     }
 
-    st = dsk_build_installed_state(manifest,
-                                   request,
-                                   splat_sel.selected_id,
-                                   manifest_digest,
-                                   request_digest,
-                                   resolved,
-                                   &state);
+    {
+        dsk_u16 ownership = dsk_select_ownership(request, selected_caps);
+        st = dsk_build_installed_state(manifest,
+                                       plan,
+                                       splat_sel.selected_id,
+                                       ownership,
+                                       manifest_digest,
+                                       request_digest,
+                                       resolved,
+                                       &state);
+    }
     if (!dsk_error_is_ok(st)) {
         audit.result = st;
         dsk_audit_add_event(&audit, DSK_AUDIT_EVENT_WRITE_STATE_FAIL, st);

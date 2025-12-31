@@ -21,6 +21,7 @@ extern "C" {
 #include "launcher_pack_resolver.h"
 #include "launcher_selection_summary.h"
 #include "launcher_sha256.h"
+#include "launcher_installed_state.h"
 #include "launcher_tools_registry.h"
 #include "launcher_tlv.h"
 #include "launcher_tlv_migrations.h"
@@ -523,11 +524,11 @@ static std::string summarize_bundle_index(const std::vector<unsigned char>& data
 }
 
 static std::string summarize_installed_state(const std::vector<unsigned char>& data) {
-    dsk_installed_state_t state;
-    dsk_status_t st = dsk_installed_state_parse(data.empty() ? (const dsk_u8*)0 : &data[0],
-                                                (dsk_u32)data.size(),
-                                                &state);
-    if (!dsk_error_is_ok(st)) {
+    using namespace dom::launcher_core;
+    LauncherInstalledState state;
+    if (!launcher_installed_state_from_tlv_bytes(data.empty() ? (const unsigned char*)0 : &data[0],
+                                                 data.size(),
+                                                 state)) {
         return std::string();
     }
     std::ostringstream oss;
@@ -754,14 +755,14 @@ static void cleanup_state_root_best_effort(const std::string& state_root) {
 static int test_installed_state_contract(void) {
     std::string path = path_join(DOM_TLV_VECTORS_DIR, "installed_state/installed_state_v1.tlv");
     std::vector<unsigned char> bytes;
-    dsk_installed_state_t state;
-    dsk_status_t st;
+    dom::launcher_core::LauncherInstalledState state;
 
     if (!read_file_bytes(path, bytes)) {
         return fail("installed_state vector read failed");
     }
-    st = dsk_installed_state_parse(bytes.empty() ? (const dsk_u8*)0 : &bytes[0], (dsk_u32)bytes.size(), &state);
-    if (!dsk_error_is_ok(st)) {
+    if (!dom::launcher_core::launcher_installed_state_from_tlv_bytes(bytes.empty() ? (const unsigned char*)0 : &bytes[0],
+                                                                     bytes.size(),
+                                                                     state)) {
         return fail("installed_state parse failed");
     }
     if (state.product_id != "dominium") {

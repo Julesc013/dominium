@@ -14,6 +14,7 @@ add_library(dominium_launcher_core STATIC
     src/launch/launcher_exit_status.cpp
     src/tool/launcher_tools_registry.cpp
     src/profile/launcher_profile.cpp
+    src/installed_state/launcher_installed_state.cpp
     src/instance/launcher_instance.cpp
     src/instance/launcher_instance_config.cpp
     src/instance/launcher_instance_payload_refs.cpp
@@ -43,6 +44,7 @@ target_link_libraries(dominium_launcher_core
     PRIVATE
         core_tlv
         core_audit
+        core_installed_state
         core_util
         core_err
         core_log
