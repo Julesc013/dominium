@@ -18,6 +18,8 @@ Same as `install_manifest.tlv` (magic `DSK1`, version `1`, endian `0xFFFE`).
 - `0x200A` `required_caps` (u32 bitset, optional)
 - `0x200B` `prohibited_caps` (u32 bitset, optional)
 - `0x200C` `ownership_preference` (u16: any=0, portable=1, pkg=2, steam=3; optional)
+- `0x200D` `payload_root` (string, optional; defaults to manifest directory)
+- `0x200E` `frontend_id` (string, required)
 
 ### requested_components container
 - `0x2010` `requested_component_entry` (string)

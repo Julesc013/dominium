@@ -18,6 +18,8 @@ Same as `install_manifest.tlv` (magic `DSK1`, version `1`, endian `0xFFFE`).
 - `0x4007` `result` (container)
 - `0x4008` `events` (container)
 - `0x400C` `refusals` (container, optional)
+- `0x400D` `frontend_id` (string)
+- `0x400E` `platform_triple` (string)
 
 ### selection container
 - `0x4101` `selection_candidates` (container)
