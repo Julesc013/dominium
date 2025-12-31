@@ -429,6 +429,10 @@ static void dsk_json_write_audit_summary(dsk_json_writer_t *writer,
     dsk_json_string(writer, op_to_string(audit.operation));
     dsk_json_key(writer, "selected_splat");
     dsk_json_string(writer, audit.selected_splat.c_str());
+    dsk_json_key(writer, "frontend_id");
+    dsk_json_string(writer, audit.frontend_id.c_str());
+    dsk_json_key(writer, "platform_triple");
+    dsk_json_string(writer, audit.platform_triple.c_str());
     dsk_json_key(writer, "manifest_digest64");
     dsk_json_u64_hex(writer, audit.manifest_digest64);
     dsk_json_key(writer, "request_digest64");
@@ -759,6 +763,8 @@ static void dsk_json_write_request(dsk_json_writer_t *writer,
     dsk_json_string(writer, scope_to_string(request.install_scope));
     dsk_json_key(writer, "ui_mode");
     dsk_json_string(writer, ui_mode_to_string(request.ui_mode));
+    dsk_json_key(writer, "frontend_id");
+    dsk_json_string(writer, request.frontend_id.c_str());
     dsk_json_key(writer, "policy_flags");
     dsk_json_u32(writer, request.policy_flags);
     dsk_json_key(writer, "target_platform_triple");
@@ -790,6 +796,8 @@ static void print_usage(void) {
     std::printf("dominium-setup2 request make --manifest <file> --op <install|upgrade|repair|uninstall|verify|status>\n");
     std::printf("  --scope <user|system|portable> --ui-mode <cli|tui|gui>\n");
     std::printf("  [--components <csv>] [--exclude <csv>] [--root <path>] --out-request <file>\n");
+    std::printf("  [--frontend-id <id>] [--requested-splat <id>] [--ownership <portable|pkg|steam|any>]\n");
+    std::printf("  [--platform <triple>] [--payload-root <path>] [--required-caps <u32>] [--prohibited-caps <u32>]\n");
     std::printf("  [--deterministic 0|1] [--json]\n");
     std::printf("dominium-setup2 plan --manifest <file> --request <file> --out-plan <file> [--json]\n");
     std::printf("dominium-setup2 resolve --manifest <file> --request <file> [--json]\n");
@@ -802,7 +810,7 @@ static void print_usage(void) {
     std::printf("dominium-setup2 uninstall-preview --state <file> [--components <csv>] [--format json|txt] [--json]\n");
     std::printf("dominium-setup2 dump-splats [--json]\n");
     std::printf("dominium-setup2 select-splat --manifest <file> --request <file> [--json]\n");
-    std::printf("options: --use-fake-services <sandbox_root>\n");
+    std::printf("options: --use-fake-services <sandbox_root> [--platform <triple>]\n");
 }
 
 static const char *get_arg_value(int argc, char **argv, const char *name) {
@@ -827,6 +835,7 @@ int main(int argc, char **argv) {
     dss_services_config_t services_cfg;
     dss_error_t services_st;
     const char *fake_root = get_arg_value(argc, argv, "--use-fake-services");
+    const char *fake_platform = get_arg_value(argc, argv, "--platform");
 
     if (argc < 2) {
         print_usage();
@@ -836,6 +845,7 @@ int main(int argc, char **argv) {
     dss_services_config_init(&services_cfg);
     if (fake_root) {
         services_cfg.sandbox_root = fake_root;
+        services_cfg.platform_triple = fake_platform ? fake_platform : "";
         services_st = dss_services_init_fake(&services_cfg, &services);
     } else {
         services_st = dss_services_init_real(&services);
@@ -1093,10 +1103,19 @@ int main(int argc, char **argv) {
             const char *components = dsk_args_get_value(&args, "--components");
             const char *exclude = dsk_args_get_value(&args, "--exclude");
             const char *root = dsk_args_get_value(&args, "--root");
+            const char *frontend_id = dsk_args_get_value(&args, "--frontend-id");
+            const char *requested_splat = dsk_args_get_value(&args, "--requested-splat");
+            const char *ownership = dsk_args_get_value(&args, "--ownership");
+            const char *platform = dsk_args_get_value(&args, "--platform");
+            const char *payload_root = dsk_args_get_value(&args, "--payload-root");
+            const char *required_caps = dsk_args_get_value(&args, "--required-caps");
+            const char *prohibited_caps = dsk_args_get_value(&args, "--prohibited-caps");
             const char *out_request = dsk_args_get_value(&args, "--out-request");
             dsk_bool json = dsk_cli_is_json_requested(&args);
             dsk_bool deterministic = dsk_cli_parse_bool_option(&args, "--deterministic", DSK_TRUE);
             dsk_request_build_opts_t opts;
+            dsk_u32 required_caps_value = 0u;
+            dsk_u32 prohibited_caps_value = 0u;
             std::vector<std::string> component_list;
             std::vector<std::string> exclude_list;
             std::vector<dsk_u8> request_bytes;
@@ -1118,17 +1137,43 @@ int main(int argc, char **argv) {
             opts.ui_mode = dsk_request_parse_ui_mode(ui_mode);
             opts.policy_flags = deterministic ? DSK_POLICY_DETERMINISTIC : 0u;
             opts.preferred_install_root = root ? root : "";
+            opts.frontend_id = frontend_id ? frontend_id : "dominium-setup2-cli";
+            opts.requested_splat_id = requested_splat ? requested_splat : "";
+            opts.ownership_preference = ownership
+                ? dsk_request_parse_ownership(ownership)
+                : DSK_OWNERSHIP_ANY;
+            opts.target_platform_triple = platform ? platform : "";
+            opts.payload_root = payload_root ? payload_root : "";
             opts.requested_components = component_list;
             opts.excluded_components = exclude_list;
 
-            if (!manifest_path || !op || !scope || !ui_mode || !out_request ||
-                opts.operation == 0u || opts.install_scope == 0u || opts.ui_mode == 0u) {
+            if (required_caps && !dsk_args_parse_u32(required_caps, &required_caps_value)) {
                 st = dsk_error_make(DSK_DOMAIN_FRONTEND,
                                     DSK_CODE_INVALID_ARGS,
-                                    DSK_SUBCODE_MISSING_FIELD,
+                                    DSK_SUBCODE_INVALID_FIELD,
                                     DSK_ERROR_FLAG_USER_ACTIONABLE);
-            } else {
-                st = dsk_request_build_bytes(&opts, &services, &request_bytes, &request);
+            }
+            if (dsk_error_is_ok(st) &&
+                prohibited_caps &&
+                !dsk_args_parse_u32(prohibited_caps, &prohibited_caps_value)) {
+                st = dsk_error_make(DSK_DOMAIN_FRONTEND,
+                                    DSK_CODE_INVALID_ARGS,
+                                    DSK_SUBCODE_INVALID_FIELD,
+                                    DSK_ERROR_FLAG_USER_ACTIONABLE);
+            }
+            opts.required_caps = required_caps_value;
+            opts.prohibited_caps = prohibited_caps_value;
+
+            if (dsk_error_is_ok(st)) {
+                if (!manifest_path || !op || !scope || !ui_mode || !out_request ||
+                    opts.operation == 0u || opts.install_scope == 0u || opts.ui_mode == 0u) {
+                    st = dsk_error_make(DSK_DOMAIN_FRONTEND,
+                                        DSK_CODE_INVALID_ARGS,
+                                        DSK_SUBCODE_MISSING_FIELD,
+                                        DSK_ERROR_FLAG_USER_ACTIONABLE);
+                } else {
+                    st = dsk_request_build_bytes(&opts, &services, &request_bytes, &request);
+                }
             }
 
             if (dsk_error_is_ok(st)) {
