@@ -2,6 +2,8 @@
 
 #include "dsk/dsk_contracts.h"
 
+#include "dominium/core_audit.h"
+
 #include <algorithm>
 
 static dsk_status_t dsk_jobs_error(dsk_u16 code, dsk_u16 subcode) {
@@ -59,6 +61,42 @@ static dsk_status_t dsk_parse_string(const dsk_tlv_record_t &rec, std::string *o
     return dsk_error_make(DSK_DOMAIN_NONE, DSK_CODE_OK, DSK_SUBCODE_NONE, 0u);
 }
 
+static dsk_status_t dsk_jobs_add_err_details(dsk_tlv_builder_t *builder,
+                                             dsk_u16 entry_tag,
+                                             const err_t &err) {
+    dom::core_audit::ErrDetailTags tags;
+    dom::core_tlv::TlvWriter detail_bytes;
+    dom::core_tlv::TlvRecord rec;
+    dsk_status_t st;
+    const std::vector<unsigned char> &bytes = detail_bytes.bytes();
+
+    if (!builder) {
+        return dsk_jobs_error(DSK_CODE_INVALID_ARGS, DSK_SUBCODE_NONE);
+    }
+    tags.tag_key = DSK_TLV_TAG_ERR_DETAIL_KEY;
+    tags.tag_type = DSK_TLV_TAG_ERR_DETAIL_TYPE;
+    tags.tag_value_u32 = DSK_TLV_TAG_ERR_DETAIL_VALUE_U32;
+    tags.tag_value_u64 = DSK_TLV_TAG_ERR_DETAIL_VALUE_U64;
+    dom::core_audit::append_err_details(detail_bytes,
+                                        (u32)entry_tag,
+                                        err,
+                                        tags);
+    if (bytes.empty()) {
+        return dsk_error_make(DSK_DOMAIN_NONE, DSK_CODE_OK, DSK_SUBCODE_NONE, 0u);
+    }
+    dom::core_tlv::TlvReader reader(&bytes[0], bytes.size());
+    while (reader.next(rec)) {
+        st = dsk_tlv_builder_add_container(builder,
+                                           (dsk_u16)rec.tag,
+                                           rec.payload,
+                                           rec.len);
+        if (!dsk_error_is_ok(st)) {
+            return st;
+        }
+    }
+    return dsk_error_make(DSK_DOMAIN_NONE, DSK_CODE_OK, DSK_SUBCODE_NONE, 0u);
+}
+
 void dsk_job_journal_clear(dsk_job_journal_t *journal) {
     if (!journal) {
         return;
@@ -106,11 +144,14 @@ dsk_status_t dsk_job_journal_parse(const dsk_u8 *data,
             dsk_tlv_stream_t err_stream;
             dsk_status_t lst = dsk_tlv_parse_stream(rec.payload, rec.length, &err_stream);
             dsk_u32 j;
+            dsk_u16 subcode = 0u;
+            dsk_bool saw_msg_id = DSK_FALSE;
             if (!dsk_error_is_ok(lst)) {
                 dsk_tlv_view_destroy(&view);
                 return lst;
             }
             out_journal->last_error = dsk_error_make(DSK_DOMAIN_NONE, DSK_CODE_OK, DSK_SUBCODE_NONE, 0u);
+            out_journal->last_error.detail_count = 0u;
             for (j = 0u; j < err_stream.record_count; ++j) {
                 const dsk_tlv_record_t &field = err_stream.records[j];
                 if (field.type == DSK_TLV_TAG_JOB_ERR_DOMAIN) {
@@ -124,11 +165,28 @@ dsk_status_t dsk_job_journal_parse(const dsk_u8 *data,
                 } else if (field.type == DSK_TLV_TAG_JOB_ERR_SUBCODE) {
                     dsk_u16 v;
                     lst = dsk_parse_u16(field, &v);
-                    if (dsk_error_is_ok(lst)) out_journal->last_error.subcode = v;
+                    if (dsk_error_is_ok(lst)) subcode = v;
                 } else if (field.type == DSK_TLV_TAG_JOB_ERR_FLAGS) {
                     dsk_u16 v;
                     lst = dsk_parse_u16(field, &v);
                     if (dsk_error_is_ok(lst)) out_journal->last_error.flags = v;
+                } else if (field.type == DSK_TLV_TAG_JOB_ERR_MSG_ID) {
+                    dsk_u32 v;
+                    lst = dsk_parse_u32(field, &v);
+                    if (dsk_error_is_ok(lst)) {
+                        out_journal->last_error.msg_id = v;
+                        saw_msg_id = DSK_TRUE;
+                    }
+                } else if (field.type == DSK_TLV_TAG_JOB_ERR_DETAIL) {
+                    dom::core_audit::ErrDetailTags tags;
+                    tags.tag_key = DSK_TLV_TAG_ERR_DETAIL_KEY;
+                    tags.tag_type = DSK_TLV_TAG_ERR_DETAIL_TYPE;
+                    tags.tag_value_u32 = DSK_TLV_TAG_ERR_DETAIL_VALUE_U32;
+                    tags.tag_value_u64 = DSK_TLV_TAG_ERR_DETAIL_VALUE_U64;
+                    (void)dom::core_audit::parse_err_detail_entry(field.payload,
+                                                                  (size_t)field.length,
+                                                                  out_journal->last_error,
+                                                                  tags);
                 } else {
                     continue;
                 }
@@ -139,6 +197,19 @@ dsk_status_t dsk_job_journal_parse(const dsk_u8 *data,
                 }
             }
             dsk_tlv_stream_destroy(&err_stream);
+            if (subcode != 0u &&
+                dom::core_audit::err_subcode(out_journal->last_error) == 0u) {
+                (void)err_add_detail_u32(&out_journal->last_error,
+                                         (u32)ERR_DETAIL_KEY_SUBCODE,
+                                         (u32)subcode);
+            }
+            if (!saw_msg_id && out_journal->last_error.code != 0u) {
+                err_t base = dsk_error_make(out_journal->last_error.domain,
+                                            out_journal->last_error.code,
+                                            subcode,
+                                            (dsk_u16)out_journal->last_error.flags);
+                out_journal->last_error.msg_id = base.msg_id;
+            }
             st = dsk_error_make(DSK_DOMAIN_NONE, DSK_CODE_OK, DSK_SUBCODE_NONE, 0u);
         } else if (rec.type == DSK_TLV_TAG_JOB_CHECKPOINTS) {
             dsk_tlv_stream_t list_stream;
@@ -241,10 +312,18 @@ dsk_status_t dsk_job_journal_write(const dsk_job_journal_t *journal,
     if (!dsk_error_is_ok(journal->last_error)) {
         dsk_tlv_builder_t *err_builder = dsk_tlv_builder_create();
         dsk_tlv_buffer_t err_payload;
+        dsk_u32 subcode = dom::core_audit::err_subcode(journal->last_error);
         dsk_tlv_builder_add_u16(err_builder, DSK_TLV_TAG_JOB_ERR_DOMAIN, journal->last_error.domain);
         dsk_tlv_builder_add_u16(err_builder, DSK_TLV_TAG_JOB_ERR_CODE, journal->last_error.code);
-        dsk_tlv_builder_add_u16(err_builder, DSK_TLV_TAG_JOB_ERR_SUBCODE, journal->last_error.subcode);
-        dsk_tlv_builder_add_u16(err_builder, DSK_TLV_TAG_JOB_ERR_FLAGS, journal->last_error.flags);
+        dsk_tlv_builder_add_u16(err_builder, DSK_TLV_TAG_JOB_ERR_SUBCODE, (dsk_u16)subcode);
+        dsk_tlv_builder_add_u16(err_builder, DSK_TLV_TAG_JOB_ERR_FLAGS, (dsk_u16)journal->last_error.flags);
+        dsk_tlv_builder_add_u32(err_builder, DSK_TLV_TAG_JOB_ERR_MSG_ID, journal->last_error.msg_id);
+        st = dsk_jobs_add_err_details(err_builder, DSK_TLV_TAG_JOB_ERR_DETAIL, journal->last_error);
+        if (!dsk_error_is_ok(st)) {
+            dsk_tlv_builder_destroy(err_builder);
+            dsk_tlv_builder_destroy(builder);
+            return st;
+        }
         st = dsk_tlv_builder_finalize_payload(err_builder, &err_payload);
         dsk_tlv_builder_destroy(err_builder);
         if (!dsk_error_is_ok(st)) {

@@ -272,7 +272,8 @@ typedef enum err_detail_key_e {
     ERR_DETAIL_KEY_EXPORT_ROOT_HASH64 = 20u,
     ERR_DETAIL_KEY_IMPORT_ROOT_HASH64 = 21u,
     ERR_DETAIL_KEY_CONTENT_TYPE = 22u,
-    ERR_DETAIL_KEY_SAFE_MODE = 23u
+    ERR_DETAIL_KEY_SAFE_MODE = 23u,
+    ERR_DETAIL_KEY_SUBCODE = 24u
 } err_detail_key;
 
 typedef enum err_detail_type_e {

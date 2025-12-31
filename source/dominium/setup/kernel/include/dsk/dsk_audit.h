@@ -24,12 +24,35 @@ enum dsk_audit_event_id_t {
     DSK_AUDIT_EVENT_PLAN_BUILD_FAIL = 11,
     DSK_AUDIT_EVENT_WRITE_STATE_OK = 12,
     DSK_AUDIT_EVENT_WRITE_STATE_FAIL = 13,
-    DSK_AUDIT_EVENT_END = 14
+    DSK_AUDIT_EVENT_END = 14,
+    DSK_AUDIT_EVENT_APPLY_BEGIN = 15,
+    DSK_AUDIT_EVENT_STAGE_OK = 16,
+    DSK_AUDIT_EVENT_STAGE_FAIL = 17,
+    DSK_AUDIT_EVENT_VERIFY_OK = 18,
+    DSK_AUDIT_EVENT_VERIFY_FAIL = 19,
+    DSK_AUDIT_EVENT_COMMIT_OK = 20,
+    DSK_AUDIT_EVENT_COMMIT_FAIL = 21,
+    DSK_AUDIT_EVENT_REGISTER_OK = 22,
+    DSK_AUDIT_EVENT_REGISTER_FAIL = 23,
+    DSK_AUDIT_EVENT_WRITE_AUDIT_OK = 24,
+    DSK_AUDIT_EVENT_WRITE_AUDIT_FAIL = 25,
+    DSK_AUDIT_EVENT_ROLLBACK_BEGIN = 26,
+    DSK_AUDIT_EVENT_ROLLBACK_STEP_OK = 27,
+    DSK_AUDIT_EVENT_ROLLBACK_STEP_FAIL = 28,
+    DSK_AUDIT_EVENT_ROLLBACK_END = 29,
+    DSK_AUDIT_EVENT_RESUME_BEGIN = 30,
+    DSK_AUDIT_EVENT_RESUME_END = 31
 };
 
 struct dsk_audit_event_t {
     dsk_u16 event_id;
     dsk_error_t error;
+};
+
+struct dsk_audit_job_t {
+    dsk_u32 job_id;
+    dsk_u16 job_kind;
+    dsk_u16 job_status;
 };
 
 struct dsk_audit_selection_candidate_t {
@@ -57,10 +80,13 @@ struct dsk_audit_t {
     dsk_u64 resolved_set_digest64;
     dsk_u64 plan_digest64;
     std::string selected_splat;
+    std::string frontend_id;
+    std::string platform_triple;
     dsk_u16 operation;
     dsk_error_t result;
     dsk_audit_selection_t selection;
     std::vector<dsk_audit_refusal_t> refusals;
+    std::vector<dsk_audit_job_t> jobs;
     std::vector<dsk_audit_event_t> events;
 };
 

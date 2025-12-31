@@ -163,6 +163,9 @@ dsk_status_t dsk_plan_build(const dsk_manifest_t &manifest,
     out_plan->selected_splat_caps_digest64 = splat_caps_digest64;
     out_plan->operation = request.operation;
     out_plan->install_scope = request.install_scope;
+    out_plan->payload_root = request.payload_root;
+    out_plan->frontend_id = request.frontend_id;
+    out_plan->target_platform_triple = request.target_platform_triple;
     out_plan->manifest_digest64 = manifest_digest64;
     out_plan->request_digest64 = request_digest64;
     out_plan->resolved_set_digest64 = resolved.digest64;
@@ -218,6 +221,7 @@ dsk_status_t dsk_plan_build(const dsk_manifest_t &manifest,
                 op_build.op.ownership = ownership;
                 op_build.op.digest64 = art.digest64;
                 op_build.op.size = art.size;
+                op_build.op.target_root_id = root_id;
                 file_ops.push_back(op_build);
             }
 

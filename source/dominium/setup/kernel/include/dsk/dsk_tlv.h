@@ -2,53 +2,24 @@
 #define DSK_TLV_H
 
 #include "dsk_error.h"
+#include "dominium/core_tlv.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#define DSK_TLV_MAGIC "DSK1"
-#define DSK_TLV_MAGIC_LEN 4u
-#define DSK_TLV_VERSION 1u
-#define DSK_TLV_ENDIAN_LITTLE 0xFFFEu
-#define DSK_TLV_HEADER_SIZE 20u
+#define DSK_TLV_MAGIC CORE_TLV_FRAMED_MAGIC
+#define DSK_TLV_MAGIC_LEN CORE_TLV_FRAMED_MAGIC_LEN
+#define DSK_TLV_VERSION CORE_TLV_FRAMED_VERSION
+#define DSK_TLV_ENDIAN_LITTLE CORE_TLV_FRAMED_ENDIAN_LITTLE
+#define DSK_TLV_HEADER_SIZE CORE_TLV_FRAMED_HEADER_SIZE
 
-typedef struct dsk_tlv_header_t {
-    char magic[4];
-    dsk_u16 version;
-    dsk_u16 endian;
-    dsk_u32 header_size;
-    dsk_u32 payload_size;
-    dsk_u32 header_crc;
-} dsk_tlv_header_t;
-
-typedef struct dsk_tlv_record_t {
-    dsk_u16 type;
-    const dsk_u8 *payload;
-    dsk_u32 length;
-} dsk_tlv_record_t;
-
-typedef struct dsk_tlv_view_t {
-    dsk_tlv_header_t header;
-    const dsk_u8 *payload;
-    dsk_u32 payload_size;
-    dsk_tlv_record_t *records;
-    dsk_u32 record_count;
-} dsk_tlv_view_t;
-
-typedef struct dsk_tlv_stream_t {
-    const dsk_u8 *payload;
-    dsk_u32 payload_size;
-    dsk_tlv_record_t *records;
-    dsk_u32 record_count;
-} dsk_tlv_stream_t;
-
-typedef struct dsk_tlv_buffer_t {
-    dsk_u8 *data;
-    dsk_u32 size;
-} dsk_tlv_buffer_t;
-
-typedef struct dsk_tlv_builder_t dsk_tlv_builder_t;
+typedef core_tlv_framed_header_t dsk_tlv_header_t;
+typedef core_tlv_framed_record_t dsk_tlv_record_t;
+typedef core_tlv_framed_view_t dsk_tlv_view_t;
+typedef core_tlv_framed_stream_t dsk_tlv_stream_t;
+typedef core_tlv_framed_buffer_t dsk_tlv_buffer_t;
+typedef core_tlv_framed_builder_t dsk_tlv_builder_t;
 
 DSK_API dsk_status_t dsk_tlv_parse(const dsk_u8 *data,
                                    dsk_u32 size,

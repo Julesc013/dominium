@@ -1,18 +1,15 @@
 /*
-FILE: source/dominium/launcher/core/src/tlv/launcher_tlv.cpp
+FILE: source/dominium/common/core_tlv_stream.cpp
 MODULE: Dominium
-LAYER / SUBSYSTEM: Dominium impl / launcher/core (foundation) / tlv
-RESPONSIBILITY: Implements deterministic TLV encode/decode helpers (little-endian canonical encoding).
-ALLOWED DEPENDENCIES: C++98 standard headers and `include/domino/**` base types only.
-FORBIDDEN DEPENDENCIES: OS/UI/toolkit headers.
+PURPOSE: Implements deterministic stream TLV encode/decode helpers (u32 tag + len).
 */
 
-#include "launcher_tlv.h"
+#include "dominium/core_tlv.h"
 
 #include <cstring>
 
 namespace dom {
-namespace launcher_core {
+namespace core_tlv {
 
 static u32 tlv__read_u32_le_unsafe(const unsigned char* p) {
     return (u32)p[0] | ((u32)p[1] << 8u) | ((u32)p[2] << 16u) | ((u32)p[3] << 24u);
@@ -35,16 +32,16 @@ bool TlvReader::next(TlvRecord& out) {
     if (!m_data) {
         return false;
     }
-    if (m_record_count >= (u32)LAUNCHER_TLV_MAX_RECORDS) {
+    if (m_record_count >= (u32)CORE_TLV_MAX_RECORDS) {
         return false;
     }
-    if (m_off + (size_t)LAUNCHER_TLV_HEADER_BYTES > m_size) {
+    if (m_off + (size_t)CORE_TLV_HEADER_BYTES > m_size) {
         return false;
     }
 
     tag = tlv__read_u32_le_unsafe(m_data + m_off);
     len = tlv__read_u32_le_unsafe(m_data + m_off + 4u);
-    m_off += (size_t)LAUNCHER_TLV_HEADER_BYTES;
+    m_off += (size_t)CORE_TLV_HEADER_BYTES;
 
     if (m_off + (size_t)len > m_size) {
         return false;
@@ -182,7 +179,7 @@ bool tlv_read_schema_version_or_default(const unsigned char* data,
     TlvRecord rec;
     out_version = default_version;
     while (r.next(rec)) {
-        if (rec.tag == (u32)LAUNCHER_TLV_TAG_SCHEMA_VERSION) {
+        if (rec.tag == (u32)CORE_TLV_TAG_SCHEMA_VERSION) {
             u32 v;
             if (tlv_read_u32_le(rec.payload, rec.len, v)) {
                 out_version = v;
@@ -194,5 +191,5 @@ bool tlv_read_schema_version_or_default(const unsigned char* data,
     return true;
 }
 
-} /* namespace launcher_core */
+} /* namespace core_tlv */
 } /* namespace dom */

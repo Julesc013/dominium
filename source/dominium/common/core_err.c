@@ -120,7 +120,8 @@ static const err_detail_key_entry k_detail_keys[] = {
     {ERR_DETAIL_KEY_EXPORT_ROOT_HASH64, "export_root_hash64"},
     {ERR_DETAIL_KEY_IMPORT_ROOT_HASH64, "import_root_hash64"},
     {ERR_DETAIL_KEY_CONTENT_TYPE, "content_type"},
-    {ERR_DETAIL_KEY_SAFE_MODE, "safe_mode"}
+    {ERR_DETAIL_KEY_SAFE_MODE, "safe_mode"},
+    {ERR_DETAIL_KEY_SUBCODE, "subcode"}
 };
 
 static int err_add_detail(err_t* err, u32 key_id, u32 type) {

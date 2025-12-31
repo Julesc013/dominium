@@ -49,7 +49,9 @@ void dsk_request_clear(dsk_request_t *request) {
     request->excluded_components.clear();
     request->install_scope = 0u;
     request->preferred_install_root.clear();
+    request->payload_root.clear();
     request->ui_mode = 0u;
+    request->frontend_id.clear();
     request->requested_splat_id.clear();
     request->policy_flags = 0u;
     request->required_caps = 0u;
@@ -69,6 +71,7 @@ dsk_status_t dsk_request_parse(const dsk_u8 *data,
     dsk_bool has_ui = DSK_FALSE;
     dsk_bool has_policy = DSK_FALSE;
     dsk_bool has_platform = DSK_FALSE;
+    dsk_bool has_frontend = DSK_FALSE;
 
     if (!out_request) {
         return dsk_request_error(DSK_CODE_INVALID_ARGS, DSK_SUBCODE_NONE);
@@ -97,8 +100,13 @@ dsk_status_t dsk_request_parse(const dsk_u8 *data,
         } else if (rec.type == DSK_TLV_TAG_REQUEST_TARGET_PLATFORM_TRIPLE) {
             st = dsk_parse_string(rec, &out_request->target_platform_triple);
             has_platform = dsk_error_is_ok(st) ? DSK_TRUE : has_platform;
+        } else if (rec.type == DSK_TLV_TAG_REQUEST_FRONTEND_ID) {
+            st = dsk_parse_string(rec, &out_request->frontend_id);
+            has_frontend = dsk_error_is_ok(st) ? DSK_TRUE : has_frontend;
         } else if (rec.type == DSK_TLV_TAG_REQUEST_PREFERRED_INSTALL_ROOT) {
             st = dsk_parse_string(rec, &out_request->preferred_install_root);
+        } else if (rec.type == DSK_TLV_TAG_REQUEST_PAYLOAD_ROOT) {
+            st = dsk_parse_string(rec, &out_request->payload_root);
         } else if (rec.type == DSK_TLV_TAG_REQUEST_REQUESTED_SPLAT_ID) {
             st = dsk_parse_string(rec, &out_request->requested_splat_id);
         } else if (rec.type == DSK_TLV_TAG_REQUEST_REQUIRED_CAPS) {
@@ -157,11 +165,12 @@ dsk_status_t dsk_request_parse(const dsk_u8 *data,
 
     dsk_tlv_view_destroy(&view);
 
-    if (!has_operation || !has_scope || !has_ui || !has_policy || !has_platform ||
+    if (!has_operation || !has_scope || !has_ui || !has_policy || !has_platform || !has_frontend ||
         out_request->operation == 0u ||
         out_request->install_scope == 0u ||
         out_request->ui_mode == 0u ||
-        out_request->target_platform_triple.empty()) {
+        out_request->target_platform_triple.empty() ||
+        out_request->frontend_id.empty()) {
         return dsk_request_error(DSK_CODE_VALIDATION_ERROR, DSK_SUBCODE_MISSING_FIELD);
     }
 
@@ -201,11 +210,21 @@ dsk_status_t dsk_request_write(const dsk_request_t *request,
                                     DSK_TLV_TAG_REQUEST_TARGET_PLATFORM_TRIPLE,
                                     request->target_platform_triple.c_str());
     if (!dsk_error_is_ok(st)) goto done;
+    st = dsk_tlv_builder_add_string(builder,
+                                    DSK_TLV_TAG_REQUEST_FRONTEND_ID,
+                                    request->frontend_id.c_str());
+    if (!dsk_error_is_ok(st)) goto done;
 
     if (!request->preferred_install_root.empty()) {
         st = dsk_tlv_builder_add_string(builder,
                                         DSK_TLV_TAG_REQUEST_PREFERRED_INSTALL_ROOT,
                                         request->preferred_install_root.c_str());
+        if (!dsk_error_is_ok(st)) goto done;
+    }
+    if (!request->payload_root.empty()) {
+        st = dsk_tlv_builder_add_string(builder,
+                                        DSK_TLV_TAG_REQUEST_PAYLOAD_ROOT,
+                                        request->payload_root.c_str());
         if (!dsk_error_is_ok(st)) goto done;
     }
     if (!request->requested_splat_id.empty()) {

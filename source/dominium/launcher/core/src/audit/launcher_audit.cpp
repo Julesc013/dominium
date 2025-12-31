@@ -9,6 +9,7 @@ RESPONSIBILITY: Implements audit model + TLV persistence (selected-and-why, skip
 
 #include <sstream>
 
+#include "dominium/core_audit.h"
 #include "launcher_tlv.h"
 #include "launcher_tlv_migrations.h"
 
@@ -45,13 +46,6 @@ enum {
     TAG_B_PERF_CLASS = 5u,
     TAG_B_PRIORITY = 6u,
     TAG_B_OVERRIDE = 7u
-};
-
-enum {
-    TAG_ED_KEY = 1u,
-    TAG_ED_TYPE = 2u,
-    TAG_ED_VALUE_U32 = 3u,
-    TAG_ED_VALUE_U64 = 4u
 };
 }
 
@@ -102,24 +96,16 @@ bool launcher_audit_to_tlv_bytes(const LauncherAuditLog& audit,
         w.add_container(TAG_SELECTION_SUMMARY, audit.selection_summary_tlv);
     }
     if (!err_is_ok(&audit.err)) {
-        err_t e = audit.err;
-        err_sort_details_by_key(&e);
-        w.add_u32(TAG_ERR_DOMAIN, (u32)e.domain);
-        w.add_u32(TAG_ERR_CODE, (u32)e.code);
-        w.add_u32(TAG_ERR_FLAGS, e.flags);
-        w.add_u32(TAG_ERR_MSG_ID, e.msg_id);
-        for (i = 0u; i < e.detail_count; ++i) {
-            const err_detail& d = e.details[i];
-            TlvWriter entry;
-            entry.add_u32(TAG_ED_KEY, d.key_id);
-            entry.add_u32(TAG_ED_TYPE, d.type);
-            if (d.type == (u32)ERR_DETAIL_TYPE_U32 || d.type == (u32)ERR_DETAIL_TYPE_MSG_ID) {
-                entry.add_u32(TAG_ED_VALUE_U32, d.v.u32_value);
-            } else {
-                entry.add_u64(TAG_ED_VALUE_U64, d.v.u64_value);
-            }
-            w.add_container(TAG_ERR_DETAIL, entry.bytes());
-        }
+        core_audit::ErrDetailTags tags;
+        tags.tag_key = LAUNCHER_AUDIT_ERR_TLV_TAG_KEY;
+        tags.tag_type = LAUNCHER_AUDIT_ERR_TLV_TAG_TYPE;
+        tags.tag_value_u32 = LAUNCHER_AUDIT_ERR_TLV_TAG_VALUE_U32;
+        tags.tag_value_u64 = LAUNCHER_AUDIT_ERR_TLV_TAG_VALUE_U64;
+        w.add_u32(TAG_ERR_DOMAIN, (u32)audit.err.domain);
+        w.add_u32(TAG_ERR_CODE, (u32)audit.err.code);
+        w.add_u32(TAG_ERR_FLAGS, audit.err.flags);
+        w.add_u32(TAG_ERR_MSG_ID, audit.err.msg_id);
+        core_audit::append_err_details(w, TAG_ERR_DETAIL, audit.err, tags);
     }
 
     for (i = 0u; i < audit.inputs.size(); ++i) {
@@ -247,32 +233,15 @@ bool launcher_audit_from_tlv_bytes(const unsigned char* data,
             break;
         }
         case TAG_ERR_DETAIL: {
-            TlvReader er(rec.payload, (size_t)rec.len);
-            TlvRecord e;
-            u32 key_id = 0u;
-            u32 type = 0u;
-            u32 value_u32 = 0u;
-            u64 value_u64 = 0ull;
-            while (er.next(e)) {
-                if (e.tag == TAG_ED_KEY) {
-                    (void)tlv_read_u32_le(e.payload, e.len, key_id);
-                } else if (e.tag == TAG_ED_TYPE) {
-                    (void)tlv_read_u32_le(e.payload, e.len, type);
-                } else if (e.tag == TAG_ED_VALUE_U32) {
-                    (void)tlv_read_u32_le(e.payload, e.len, value_u32);
-                } else if (e.tag == TAG_ED_VALUE_U64) {
-                    (void)tlv_read_u64_le(e.payload, e.len, value_u64);
-                } else {
-                    /* skip unknown */
-                }
-            }
-            if (key_id != 0u && type != 0u) {
-                if (type == (u32)ERR_DETAIL_TYPE_U32 || type == (u32)ERR_DETAIL_TYPE_MSG_ID) {
-                    (void)err_add_detail_u32(&out_audit.err, key_id, value_u32);
-                } else {
-                    (void)err_add_detail_u64(&out_audit.err, key_id, value_u64);
-                }
-            }
+            core_audit::ErrDetailTags tags;
+            tags.tag_key = LAUNCHER_AUDIT_ERR_TLV_TAG_KEY;
+            tags.tag_type = LAUNCHER_AUDIT_ERR_TLV_TAG_TYPE;
+            tags.tag_value_u32 = LAUNCHER_AUDIT_ERR_TLV_TAG_VALUE_U32;
+            tags.tag_value_u64 = LAUNCHER_AUDIT_ERR_TLV_TAG_VALUE_U64;
+            (void)core_audit::parse_err_detail_entry(rec.payload,
+                                                     (size_t)rec.len,
+                                                     out_audit.err,
+                                                     tags);
             break;
         }
         case TAG_REASON_MSG_ID: {

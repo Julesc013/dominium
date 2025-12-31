@@ -1,13 +1,43 @@
 cmake_minimum_required(VERSION 3.16)
 
-add_library(core_tlv INTERFACE)
-target_include_directories(core_tlv INTERFACE
-    ${DOMINIUM_INCLUDE_DIR}
+add_library(core_tlv STATIC
+    core_tlv_stream.cpp
+    core_tlv_framed_reader.cpp
+    core_tlv_framed_writer.cpp
+    core_tlv_framed_validate.cpp
+)
+target_include_directories(core_tlv
+    PUBLIC
+        ${DOMINIUM_INCLUDE_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}
+)
+target_link_libraries(core_tlv
+    PUBLIC
+        core_err
+)
+set_target_properties(core_tlv PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
 )
 
-add_library(core_audit INTERFACE)
-target_include_directories(core_audit INTERFACE
-    ${DOMINIUM_INCLUDE_DIR}
+add_library(core_audit STATIC
+    core_audit.cpp
+)
+target_include_directories(core_audit
+    PUBLIC
+        ${DOMINIUM_INCLUDE_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}
+)
+target_link_libraries(core_audit
+    PUBLIC
+        core_tlv
+        core_err
+)
+set_target_properties(core_audit PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
 )
 
 add_library(core_util INTERFACE)

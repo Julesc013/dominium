@@ -27,6 +27,7 @@ struct dsk_plan_file_op_t {
     dsk_u16 ownership;
     dsk_u64 digest64;
     dsk_u64 size;
+    dsk_u32 target_root_id;
 };
 
 struct dsk_plan_registration_t {
@@ -55,6 +56,9 @@ struct dsk_plan_t {
     dsk_u16 operation;
     dsk_u16 install_scope;
     std::vector<std::string> install_roots;
+    std::string payload_root;
+    std::string frontend_id;
+    std::string target_platform_triple;
     dsk_u64 manifest_digest64;
     dsk_u64 request_digest64;
     dsk_u64 resolved_set_digest64;

@@ -70,6 +70,9 @@ void dsk_plan_clear(dsk_plan_t *plan) {
     plan->operation = 0u;
     plan->install_scope = 0u;
     plan->install_roots.clear();
+    plan->payload_root.clear();
+    plan->frontend_id.clear();
+    plan->target_platform_triple.clear();
     plan->manifest_digest64 = 0u;
     plan->request_digest64 = 0u;
     plan->resolved_set_digest64 = 0u;
@@ -119,6 +122,12 @@ dsk_status_t dsk_plan_parse(const dsk_u8 *data, dsk_u32 size, dsk_plan_t *out_pl
             st = dsk_parse_u64(rec, &out_plan->resolved_set_digest64);
         } else if (rec.type == DSK_TLV_TAG_PLAN_DIGEST64) {
             st = dsk_parse_u64(rec, &out_plan->plan_digest64);
+        } else if (rec.type == DSK_TLV_TAG_PLAN_PAYLOAD_ROOT) {
+            st = dsk_parse_string(rec, &out_plan->payload_root);
+        } else if (rec.type == DSK_TLV_TAG_PLAN_FRONTEND_ID) {
+            st = dsk_parse_string(rec, &out_plan->frontend_id);
+        } else if (rec.type == DSK_TLV_TAG_PLAN_TARGET_PLATFORM_TRIPLE) {
+            st = dsk_parse_string(rec, &out_plan->target_platform_triple);
         } else if (rec.type == DSK_TLV_TAG_PLAN_INSTALL_ROOTS) {
             dsk_tlv_stream_t list_stream;
             dsk_status_t lst;
@@ -280,6 +289,7 @@ dsk_status_t dsk_plan_parse(const dsk_u8 *data, dsk_u32 size, dsk_plan_t *out_pl
                 op.ownership = 0u;
                 op.digest64 = 0u;
                 op.size = 0u;
+                op.target_root_id = 0u;
                 lst = dsk_tlv_parse_stream(entry.payload, entry.length, &op_stream);
                 if (!dsk_error_is_ok(lst)) {
                     dsk_tlv_stream_destroy(&list_stream);
@@ -308,6 +318,8 @@ dsk_status_t dsk_plan_parse(const dsk_u8 *data, dsk_u32 size, dsk_plan_t *out_pl
                         lst = dsk_parse_u64(field, &op.digest64);
                     } else if (field.type == DSK_TLV_TAG_PLAN_FILE_OP_SIZE) {
                         lst = dsk_parse_u64(field, &op.size);
+                    } else if (field.type == DSK_TLV_TAG_PLAN_FILE_OP_TARGET_ROOT_ID) {
+                        lst = dsk_parse_u32(field, &op.target_root_id);
                     } else {
                         continue;
                     }
@@ -415,6 +427,9 @@ static bool dsk_step_id_less(const dsk_plan_step_t &a,
 
 static bool dsk_file_op_less(const dsk_plan_file_op_t &a,
                              const dsk_plan_file_op_t &b) {
+    if (a.target_root_id != b.target_root_id) {
+        return a.target_root_id < b.target_root_id;
+    }
     if (a.to_path != b.to_path) {
         return a.to_path < b.to_path;
     }
@@ -455,10 +470,15 @@ dsk_status_t dsk_plan_validate(const dsk_plan_t *plan) {
         plan->selected_splat_id.empty() ||
         plan->operation == 0u ||
         plan->install_scope == 0u ||
+        plan->frontend_id.empty() ||
+        plan->target_platform_triple.empty() ||
         plan->manifest_digest64 == 0u ||
         plan->request_digest64 == 0u ||
         plan->resolved_set_digest64 == 0u ||
         plan->plan_digest64 == 0u) {
+        return dsk_plan_error(DSK_CODE_VALIDATION_ERROR, DSK_SUBCODE_MISSING_FIELD);
+    }
+    if (!plan->file_ops.empty() && plan->payload_root.empty()) {
         return dsk_plan_error(DSK_CODE_VALIDATION_ERROR, DSK_SUBCODE_MISSING_FIELD);
     }
 
@@ -482,6 +502,11 @@ dsk_status_t dsk_plan_validate(const dsk_plan_t *plan) {
 
     for (i = 1u; i < plan->file_ops.size(); ++i) {
         if (dsk_file_op_less(plan->file_ops[i], plan->file_ops[i - 1u])) {
+            return dsk_plan_error(DSK_CODE_VALIDATION_ERROR, DSK_SUBCODE_INVALID_FIELD);
+        }
+    }
+    for (i = 0u; i < plan->file_ops.size(); ++i) {
+        if (plan->file_ops[i].target_root_id >= plan->install_roots.size()) {
             return dsk_plan_error(DSK_CODE_VALIDATION_ERROR, DSK_SUBCODE_INVALID_FIELD);
         }
     }
@@ -533,6 +558,20 @@ dsk_status_t dsk_plan_write(const dsk_plan_t *plan, dsk_tlv_buffer_t *out_buf) {
     st = dsk_tlv_builder_add_u16(builder, DSK_TLV_TAG_PLAN_OPERATION, working.operation);
     if (!dsk_error_is_ok(st)) goto done;
     st = dsk_tlv_builder_add_u16(builder, DSK_TLV_TAG_PLAN_INSTALL_SCOPE, working.install_scope);
+    if (!dsk_error_is_ok(st)) goto done;
+    if (!working.payload_root.empty()) {
+        st = dsk_tlv_builder_add_string(builder,
+                                        DSK_TLV_TAG_PLAN_PAYLOAD_ROOT,
+                                        working.payload_root.c_str());
+        if (!dsk_error_is_ok(st)) goto done;
+    }
+    st = dsk_tlv_builder_add_string(builder,
+                                    DSK_TLV_TAG_PLAN_FRONTEND_ID,
+                                    working.frontend_id.c_str());
+    if (!dsk_error_is_ok(st)) goto done;
+    st = dsk_tlv_builder_add_string(builder,
+                                    DSK_TLV_TAG_PLAN_TARGET_PLATFORM_TRIPLE,
+                                    working.target_platform_triple.c_str());
     if (!dsk_error_is_ok(st)) goto done;
     st = dsk_tlv_builder_add_u64(builder, DSK_TLV_TAG_PLAN_MANIFEST_DIGEST64, working.manifest_digest64);
     if (!dsk_error_is_ok(st)) goto done;
@@ -692,6 +731,9 @@ dsk_status_t dsk_plan_write(const dsk_plan_t *plan, dsk_tlv_buffer_t *out_buf) {
             dsk_tlv_builder_add_u64(entry_builder,
                                     DSK_TLV_TAG_PLAN_FILE_OP_SIZE,
                                     op.size);
+            dsk_tlv_builder_add_u32(entry_builder,
+                                    DSK_TLV_TAG_PLAN_FILE_OP_TARGET_ROOT_ID,
+                                    op.target_root_id);
             st = dsk_tlv_builder_finalize_payload(entry_builder, &entry_payload);
             dsk_tlv_builder_destroy(entry_builder);
             if (!dsk_error_is_ok(st)) {

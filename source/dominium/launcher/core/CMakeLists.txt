@@ -4,7 +4,6 @@ add_library(dominium_launcher_core STATIC
     src/launcher_core.cpp
     src/log/launcher_log.cpp
     src/safety/launcher_safety.cpp
-    src/tlv/launcher_tlv.cpp
     src/tlv/launcher_tlv_migrations.cpp
     src/tlv/launcher_tlv_schema_registry.cpp
     src/selection/launcher_selection_summary.cpp

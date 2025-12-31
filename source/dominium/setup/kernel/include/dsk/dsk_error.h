@@ -2,25 +2,20 @@
 #define DSK_ERROR_H
 
 #include "dsk_types.h"
+#include "dominium/core_err.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct dsk_error_t {
-    dsk_u16 domain;
-    dsk_u16 code;
-    dsk_u16 subcode;
-    dsk_u16 flags;
-} dsk_error_t;
-
-typedef dsk_error_t dsk_status_t;
+typedef err_t dsk_error_t;
+typedef err_t dsk_status_t;
 
 /* Domains */
-#define DSK_DOMAIN_NONE 0u
-#define DSK_DOMAIN_KERNEL 1u
-#define DSK_DOMAIN_SERVICES 2u
-#define DSK_DOMAIN_FRONTEND 3u
+#define DSK_DOMAIN_NONE ERRD_NONE
+#define DSK_DOMAIN_KERNEL ERRD_SETUP
+#define DSK_DOMAIN_SERVICES ERRD_SETUP
+#define DSK_DOMAIN_FRONTEND ERRD_SETUP
 
 /* Codes */
 #define DSK_CODE_OK 0u
@@ -54,9 +49,9 @@ typedef dsk_error_t dsk_status_t;
 #define DSK_SUBCODE_PLAN_RESOLVED_DIGEST_MISMATCH 17u
 
 /* Flags */
-#define DSK_ERROR_FLAG_RETRYABLE 0x0001u
-#define DSK_ERROR_FLAG_USER_ACTIONABLE 0x0002u
-#define DSK_ERROR_FLAG_FATAL 0x0004u
+#define DSK_ERROR_FLAG_RETRYABLE ERRF_RETRYABLE
+#define DSK_ERROR_FLAG_USER_ACTIONABLE ERRF_USER_ACTIONABLE
+#define DSK_ERROR_FLAG_FATAL ERRF_FATAL
 
 DSK_API dsk_error_t dsk_error_make(dsk_u16 domain,
                                    dsk_u16 code,
