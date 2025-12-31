@@ -108,7 +108,7 @@ void dsk_splat_registry_list(std::vector<dsk_splat_candidate_t> &out) {
         dsk_caps_add_platform(&caps, "*");
         caps.supported_scopes = DSK_SPLAT_SCOPE_PORTABLE;
         caps.supported_ui_modes = DSK_SPLAT_UI_GUI | DSK_SPLAT_UI_TUI | DSK_SPLAT_UI_CLI;
-        caps.supports_atomic_swap = DSK_TRUE;
+        caps.supports_atomic_swap = DSK_FALSE;
         caps.supports_resume = DSK_TRUE;
         caps.supports_portable_ownership = DSK_TRUE;
         caps.default_root_convention = DSK_SPLAT_ROOT_CONVENTION_PORTABLE;

@@ -1,6 +1,8 @@
 #include "dsk/dsk_audit.h"
 #include "dsk/dsk_contracts.h"
 
+#include "dominium/core_audit.h"
+
 #include <algorithm>
 
 static dsk_status_t dsk_audit_error(dsk_u16 code, dsk_u16 subcode) {
@@ -15,6 +17,20 @@ static dsk_status_t dsk_parse_u16(const dsk_tlv_record_t &rec, dsk_u16 *out) {
         return dsk_audit_error(DSK_CODE_PARSE_ERROR, DSK_SUBCODE_INVALID_FIELD);
     }
     *out = (dsk_u16)rec.payload[0] | (dsk_u16)((dsk_u16)rec.payload[1] << 8);
+    return dsk_error_make(DSK_DOMAIN_NONE, DSK_CODE_OK, DSK_SUBCODE_NONE, 0u);
+}
+
+static dsk_status_t dsk_parse_u32(const dsk_tlv_record_t &rec, dsk_u32 *out) {
+    if (!out) {
+        return dsk_audit_error(DSK_CODE_INVALID_ARGS, DSK_SUBCODE_NONE);
+    }
+    if (rec.length != 4u) {
+        return dsk_audit_error(DSK_CODE_PARSE_ERROR, DSK_SUBCODE_INVALID_FIELD);
+    }
+    *out = (dsk_u32)rec.payload[0]
+         | ((dsk_u32)rec.payload[1] << 8)
+         | ((dsk_u32)rec.payload[2] << 16)
+         | ((dsk_u32)rec.payload[3] << 24);
     return dsk_error_make(DSK_DOMAIN_NONE, DSK_CODE_OK, DSK_SUBCODE_NONE, 0u);
 }
 
@@ -41,6 +57,42 @@ static dsk_status_t dsk_parse_string(const dsk_tlv_record_t &rec, std::string *o
         return dsk_audit_error(DSK_CODE_INVALID_ARGS, DSK_SUBCODE_NONE);
     }
     out->assign(reinterpret_cast<const char *>(rec.payload), rec.length);
+    return dsk_error_make(DSK_DOMAIN_NONE, DSK_CODE_OK, DSK_SUBCODE_NONE, 0u);
+}
+
+static dsk_status_t dsk_add_err_details(dsk_tlv_builder_t *builder,
+                                        dsk_u16 entry_tag,
+                                        const err_t &err) {
+    dom::core_audit::ErrDetailTags tags;
+    dom::core_tlv::TlvWriter detail_bytes;
+    dom::core_tlv::TlvRecord rec;
+    dsk_status_t st;
+    const std::vector<unsigned char> &bytes = detail_bytes.bytes();
+
+    if (!builder) {
+        return dsk_audit_error(DSK_CODE_INVALID_ARGS, DSK_SUBCODE_NONE);
+    }
+    tags.tag_key = DSK_TLV_TAG_ERR_DETAIL_KEY;
+    tags.tag_type = DSK_TLV_TAG_ERR_DETAIL_TYPE;
+    tags.tag_value_u32 = DSK_TLV_TAG_ERR_DETAIL_VALUE_U32;
+    tags.tag_value_u64 = DSK_TLV_TAG_ERR_DETAIL_VALUE_U64;
+    dom::core_audit::append_err_details(detail_bytes,
+                                        (u32)entry_tag,
+                                        err,
+                                        tags);
+    if (bytes.empty()) {
+        return dsk_error_make(DSK_DOMAIN_NONE, DSK_CODE_OK, DSK_SUBCODE_NONE, 0u);
+    }
+    dom::core_tlv::TlvReader reader(&bytes[0], bytes.size());
+    while (reader.next(rec)) {
+        st = dsk_tlv_builder_add_container(builder,
+                                           (dsk_u16)rec.tag,
+                                           rec.payload,
+                                           rec.len);
+        if (!dsk_error_is_ok(st)) {
+            return st;
+        }
+    }
     return dsk_error_make(DSK_DOMAIN_NONE, DSK_CODE_OK, DSK_SUBCODE_NONE, 0u);
 }
 
@@ -75,6 +127,10 @@ dsk_status_t dsk_audit_parse(const dsk_u8 *data, dsk_u32 size, dsk_audit_t *out_
             st = dsk_parse_u64(rec, &out_audit->plan_digest64);
         } else if (rec.type == DSK_TLV_TAG_AUDIT_SELECTED_SPLAT) {
             st = dsk_parse_string(rec, &out_audit->selected_splat);
+        } else if (rec.type == DSK_TLV_TAG_AUDIT_FRONTEND_ID) {
+            st = dsk_parse_string(rec, &out_audit->frontend_id);
+        } else if (rec.type == DSK_TLV_TAG_AUDIT_PLATFORM_TRIPLE) {
+            st = dsk_parse_string(rec, &out_audit->platform_triple);
         } else if (rec.type == DSK_TLV_TAG_AUDIT_OPERATION) {
             st = dsk_parse_u16(rec, &out_audit->operation);
         } else if (rec.type == DSK_TLV_TAG_AUDIT_REFUSALS) {
@@ -264,12 +320,15 @@ dsk_status_t dsk_audit_parse(const dsk_u8 *data, dsk_u32 size, dsk_audit_t *out_
             dsk_tlv_stream_t res_stream;
             dsk_status_t lst;
             dsk_u32 j;
+            dsk_u16 subcode = 0u;
+            dsk_bool saw_msg_id = DSK_FALSE;
             lst = dsk_tlv_parse_stream(rec.payload, rec.length, &res_stream);
             if (!dsk_error_is_ok(lst)) {
                 dsk_tlv_view_destroy(&view);
                 return lst;
             }
             out_audit->result = dsk_error_make(DSK_DOMAIN_NONE, DSK_CODE_OK, DSK_SUBCODE_NONE, 0u);
+            out_audit->result.detail_count = 0u;
             for (j = 0u; j < res_stream.record_count; ++j) {
                 const dsk_tlv_record_t &field = res_stream.records[j];
                 if (field.type == DSK_TLV_TAG_RESULT_DOMAIN) {
@@ -283,11 +342,28 @@ dsk_status_t dsk_audit_parse(const dsk_u8 *data, dsk_u32 size, dsk_audit_t *out_
                 } else if (field.type == DSK_TLV_TAG_RESULT_SUBCODE) {
                     dsk_u16 v;
                     lst = dsk_parse_u16(field, &v);
-                    if (dsk_error_is_ok(lst)) out_audit->result.subcode = v;
+                    if (dsk_error_is_ok(lst)) subcode = v;
                 } else if (field.type == DSK_TLV_TAG_RESULT_FLAGS) {
                     dsk_u16 v;
                     lst = dsk_parse_u16(field, &v);
                     if (dsk_error_is_ok(lst)) out_audit->result.flags = v;
+                } else if (field.type == DSK_TLV_TAG_RESULT_MSG_ID) {
+                    dsk_u32 v;
+                    lst = dsk_parse_u32(field, &v);
+                    if (dsk_error_is_ok(lst)) {
+                        out_audit->result.msg_id = v;
+                        saw_msg_id = DSK_TRUE;
+                    }
+                } else if (field.type == DSK_TLV_TAG_RESULT_ERR_DETAIL) {
+                    dom::core_audit::ErrDetailTags tags;
+                    tags.tag_key = DSK_TLV_TAG_ERR_DETAIL_KEY;
+                    tags.tag_type = DSK_TLV_TAG_ERR_DETAIL_TYPE;
+                    tags.tag_value_u32 = DSK_TLV_TAG_ERR_DETAIL_VALUE_U32;
+                    tags.tag_value_u64 = DSK_TLV_TAG_ERR_DETAIL_VALUE_U64;
+                    (void)dom::core_audit::parse_err_detail_entry(field.payload,
+                                                                  (size_t)field.length,
+                                                                  out_audit->result,
+                                                                  tags);
                 } else {
                     continue;
                 }
@@ -298,6 +374,68 @@ dsk_status_t dsk_audit_parse(const dsk_u8 *data, dsk_u32 size, dsk_audit_t *out_
                 }
             }
             dsk_tlv_stream_destroy(&res_stream);
+            if (subcode != 0u &&
+                dom::core_audit::err_subcode(out_audit->result) == 0u) {
+                (void)err_add_detail_u32(&out_audit->result,
+                                         (u32)ERR_DETAIL_KEY_SUBCODE,
+                                         (u32)subcode);
+            }
+            if (!saw_msg_id && out_audit->result.code != 0u) {
+                err_t base = dsk_error_make(out_audit->result.domain,
+                                            out_audit->result.code,
+                                            subcode,
+                                            (dsk_u16)out_audit->result.flags);
+                out_audit->result.msg_id = base.msg_id;
+            }
+            st = dsk_error_make(DSK_DOMAIN_NONE, DSK_CODE_OK, DSK_SUBCODE_NONE, 0u);
+        } else if (rec.type == DSK_TLV_TAG_AUDIT_JOB_OUTCOMES) {
+            dsk_tlv_stream_t list_stream;
+            dsk_status_t lst;
+            dsk_u32 j;
+            lst = dsk_tlv_parse_stream(rec.payload, rec.length, &list_stream);
+            if (!dsk_error_is_ok(lst)) {
+                dsk_tlv_view_destroy(&view);
+                return lst;
+            }
+            for (j = 0u; j < list_stream.record_count; ++j) {
+                const dsk_tlv_record_t &entry = list_stream.records[j];
+                if (entry.type != DSK_TLV_TAG_AUDIT_JOB_ENTRY) {
+                    continue;
+                }
+                dsk_tlv_stream_t job_stream;
+                dsk_audit_job_t job;
+                dsk_u32 k;
+                job.job_id = 0u;
+                job.job_kind = 0u;
+                job.job_status = 0u;
+                lst = dsk_tlv_parse_stream(entry.payload, entry.length, &job_stream);
+                if (!dsk_error_is_ok(lst)) {
+                    dsk_tlv_stream_destroy(&list_stream);
+                    dsk_tlv_view_destroy(&view);
+                    return lst;
+                }
+                for (k = 0u; k < job_stream.record_count; ++k) {
+                    const dsk_tlv_record_t &field = job_stream.records[k];
+                    if (field.type == DSK_TLV_TAG_AUDIT_JOB_ID) {
+                        lst = dsk_parse_u32(field, &job.job_id);
+                    } else if (field.type == DSK_TLV_TAG_AUDIT_JOB_KIND) {
+                        lst = dsk_parse_u16(field, &job.job_kind);
+                    } else if (field.type == DSK_TLV_TAG_AUDIT_JOB_STATUS) {
+                        lst = dsk_parse_u16(field, &job.job_status);
+                    } else {
+                        continue;
+                    }
+                    if (!dsk_error_is_ok(lst)) {
+                        dsk_tlv_stream_destroy(&job_stream);
+                        dsk_tlv_stream_destroy(&list_stream);
+                        dsk_tlv_view_destroy(&view);
+                        return lst;
+                    }
+                }
+                dsk_tlv_stream_destroy(&job_stream);
+                out_audit->jobs.push_back(job);
+            }
+            dsk_tlv_stream_destroy(&list_stream);
             st = dsk_error_make(DSK_DOMAIN_NONE, DSK_CODE_OK, DSK_SUBCODE_NONE, 0u);
         } else if (rec.type == DSK_TLV_TAG_AUDIT_EVENTS) {
             dsk_tlv_stream_t list_stream;
@@ -317,8 +455,11 @@ dsk_status_t dsk_audit_parse(const dsk_u8 *data, dsk_u32 size, dsk_audit_t *out_
                 dsk_status_t evt;
                 dsk_u32 k;
                 dsk_audit_event_t event;
+                dsk_u16 subcode = 0u;
+                dsk_bool saw_msg_id = DSK_FALSE;
                 event.event_id = 0u;
                 event.error = dsk_error_make(DSK_DOMAIN_NONE, DSK_CODE_OK, DSK_SUBCODE_NONE, 0u);
+                event.error.detail_count = 0u;
                 evt = dsk_tlv_parse_stream(entry.payload, entry.length, &evt_stream);
                 if (!dsk_error_is_ok(evt)) {
                     dsk_tlv_stream_destroy(&list_stream);
@@ -340,11 +481,28 @@ dsk_status_t dsk_audit_parse(const dsk_u8 *data, dsk_u32 size, dsk_audit_t *out_
                     } else if (field.type == DSK_TLV_TAG_AUDIT_EVENT_ERR_SUBCODE) {
                         dsk_u16 v;
                         evt = dsk_parse_u16(field, &v);
-                        if (dsk_error_is_ok(evt)) event.error.subcode = v;
+                        if (dsk_error_is_ok(evt)) subcode = v;
                     } else if (field.type == DSK_TLV_TAG_AUDIT_EVENT_ERR_FLAGS) {
                         dsk_u16 v;
                         evt = dsk_parse_u16(field, &v);
                         if (dsk_error_is_ok(evt)) event.error.flags = v;
+                    } else if (field.type == DSK_TLV_TAG_AUDIT_EVENT_ERR_MSG_ID) {
+                        dsk_u32 v;
+                        evt = dsk_parse_u32(field, &v);
+                        if (dsk_error_is_ok(evt)) {
+                            event.error.msg_id = v;
+                            saw_msg_id = DSK_TRUE;
+                        }
+                    } else if (field.type == DSK_TLV_TAG_AUDIT_EVENT_ERR_DETAIL) {
+                        dom::core_audit::ErrDetailTags tags;
+                        tags.tag_key = DSK_TLV_TAG_ERR_DETAIL_KEY;
+                        tags.tag_type = DSK_TLV_TAG_ERR_DETAIL_TYPE;
+                        tags.tag_value_u32 = DSK_TLV_TAG_ERR_DETAIL_VALUE_U32;
+                        tags.tag_value_u64 = DSK_TLV_TAG_ERR_DETAIL_VALUE_U64;
+                        (void)dom::core_audit::parse_err_detail_entry(field.payload,
+                                                                      (size_t)field.length,
+                                                                      event.error,
+                                                                      tags);
                     } else {
                         continue;
                     }
@@ -356,6 +514,19 @@ dsk_status_t dsk_audit_parse(const dsk_u8 *data, dsk_u32 size, dsk_audit_t *out_
                     }
                 }
                 dsk_tlv_stream_destroy(&evt_stream);
+                if (subcode != 0u &&
+                    dom::core_audit::err_subcode(event.error) == 0u) {
+                    (void)err_add_detail_u32(&event.error,
+                                             (u32)ERR_DETAIL_KEY_SUBCODE,
+                                             (u32)subcode);
+                }
+                if (!saw_msg_id && event.error.code != 0u) {
+                    err_t base = dsk_error_make(event.error.domain,
+                                                event.error.code,
+                                                subcode,
+                                                (dsk_u16)event.error.flags);
+                    event.error.msg_id = base.msg_id;
+                }
                 out_audit->events.push_back(event);
             }
             dsk_tlv_stream_destroy(&list_stream);
@@ -408,6 +579,8 @@ dsk_status_t dsk_audit_write(const dsk_audit_t *audit, dsk_tlv_buffer_t *out_buf
     dsk_tlv_builder_add_u64(builder, DSK_TLV_TAG_AUDIT_RESOLVED_SET_DIGEST64, audit->resolved_set_digest64);
     dsk_tlv_builder_add_u64(builder, DSK_TLV_TAG_AUDIT_PLAN_DIGEST64, audit->plan_digest64);
     dsk_tlv_builder_add_string(builder, DSK_TLV_TAG_AUDIT_SELECTED_SPLAT, audit->selected_splat.c_str());
+    dsk_tlv_builder_add_string(builder, DSK_TLV_TAG_AUDIT_FRONTEND_ID, audit->frontend_id.c_str());
+    dsk_tlv_builder_add_string(builder, DSK_TLV_TAG_AUDIT_PLATFORM_TRIPLE, audit->platform_triple.c_str());
     dsk_tlv_builder_add_u16(builder, DSK_TLV_TAG_AUDIT_OPERATION, audit->operation);
 
     if (!audit->refusals.empty()) {
@@ -566,10 +739,18 @@ dsk_status_t dsk_audit_write(const dsk_audit_t *audit, dsk_tlv_buffer_t *out_buf
     {
         dsk_tlv_builder_t *res_builder = dsk_tlv_builder_create();
         dsk_tlv_buffer_t res_payload;
+        dsk_u32 subcode = dom::core_audit::err_subcode(audit->result);
         dsk_tlv_builder_add_u16(res_builder, DSK_TLV_TAG_RESULT_DOMAIN, audit->result.domain);
         dsk_tlv_builder_add_u16(res_builder, DSK_TLV_TAG_RESULT_CODE, audit->result.code);
-        dsk_tlv_builder_add_u16(res_builder, DSK_TLV_TAG_RESULT_SUBCODE, audit->result.subcode);
-        dsk_tlv_builder_add_u16(res_builder, DSK_TLV_TAG_RESULT_FLAGS, audit->result.flags);
+        dsk_tlv_builder_add_u16(res_builder, DSK_TLV_TAG_RESULT_SUBCODE, (dsk_u16)subcode);
+        dsk_tlv_builder_add_u16(res_builder, DSK_TLV_TAG_RESULT_FLAGS, (dsk_u16)audit->result.flags);
+        dsk_tlv_builder_add_u32(res_builder, DSK_TLV_TAG_RESULT_MSG_ID, audit->result.msg_id);
+        st = dsk_add_err_details(res_builder, DSK_TLV_TAG_RESULT_ERR_DETAIL, audit->result);
+        if (!dsk_error_is_ok(st)) {
+            dsk_tlv_builder_destroy(res_builder);
+            dsk_tlv_builder_destroy(builder);
+            return st;
+        }
         st = dsk_tlv_builder_finalize_payload(res_builder, &res_payload);
         dsk_tlv_builder_destroy(res_builder);
         if (!dsk_error_is_ok(st)) {
@@ -583,6 +764,42 @@ dsk_status_t dsk_audit_write(const dsk_audit_t *audit, dsk_tlv_buffer_t *out_buf
         dsk_tlv_buffer_free(&res_payload);
     }
 
+    if (!audit->jobs.empty()) {
+        dsk_tlv_builder_t *job_builder = dsk_tlv_builder_create();
+        dsk_tlv_buffer_t job_payload;
+        for (i = 0u; i < audit->jobs.size(); ++i) {
+            const dsk_audit_job_t &job = audit->jobs[i];
+            dsk_tlv_builder_t *entry_builder = dsk_tlv_builder_create();
+            dsk_tlv_buffer_t entry_payload;
+            dsk_tlv_builder_add_u32(entry_builder, DSK_TLV_TAG_AUDIT_JOB_ID, job.job_id);
+            dsk_tlv_builder_add_u16(entry_builder, DSK_TLV_TAG_AUDIT_JOB_KIND, job.job_kind);
+            dsk_tlv_builder_add_u16(entry_builder, DSK_TLV_TAG_AUDIT_JOB_STATUS, job.job_status);
+            st = dsk_tlv_builder_finalize_payload(entry_builder, &entry_payload);
+            dsk_tlv_builder_destroy(entry_builder);
+            if (!dsk_error_is_ok(st)) {
+                dsk_tlv_builder_destroy(job_builder);
+                dsk_tlv_builder_destroy(builder);
+                return st;
+            }
+            dsk_tlv_builder_add_container(job_builder,
+                                          DSK_TLV_TAG_AUDIT_JOB_ENTRY,
+                                          entry_payload.data,
+                                          entry_payload.size);
+            dsk_tlv_buffer_free(&entry_payload);
+        }
+        st = dsk_tlv_builder_finalize_payload(job_builder, &job_payload);
+        dsk_tlv_builder_destroy(job_builder);
+        if (!dsk_error_is_ok(st)) {
+            dsk_tlv_builder_destroy(builder);
+            return st;
+        }
+        dsk_tlv_builder_add_container(builder,
+                                      DSK_TLV_TAG_AUDIT_JOB_OUTCOMES,
+                                      job_payload.data,
+                                      job_payload.size);
+        dsk_tlv_buffer_free(&job_payload);
+    }
+
     {
         dsk_tlv_builder_t *evt_builder = dsk_tlv_builder_create();
         dsk_tlv_buffer_t evt_payload;
@@ -590,11 +807,20 @@ dsk_status_t dsk_audit_write(const dsk_audit_t *audit, dsk_tlv_buffer_t *out_buf
             const dsk_audit_event_t &event = audit->events[i];
             dsk_tlv_builder_t *entry_builder = dsk_tlv_builder_create();
             dsk_tlv_buffer_t entry_payload;
+            dsk_u32 subcode = dom::core_audit::err_subcode(event.error);
             dsk_tlv_builder_add_u16(entry_builder, DSK_TLV_TAG_AUDIT_EVENT_ID, event.event_id);
             dsk_tlv_builder_add_u16(entry_builder, DSK_TLV_TAG_AUDIT_EVENT_ERR_DOMAIN, event.error.domain);
             dsk_tlv_builder_add_u16(entry_builder, DSK_TLV_TAG_AUDIT_EVENT_ERR_CODE, event.error.code);
-            dsk_tlv_builder_add_u16(entry_builder, DSK_TLV_TAG_AUDIT_EVENT_ERR_SUBCODE, event.error.subcode);
-            dsk_tlv_builder_add_u16(entry_builder, DSK_TLV_TAG_AUDIT_EVENT_ERR_FLAGS, event.error.flags);
+            dsk_tlv_builder_add_u16(entry_builder, DSK_TLV_TAG_AUDIT_EVENT_ERR_SUBCODE, (dsk_u16)subcode);
+            dsk_tlv_builder_add_u16(entry_builder, DSK_TLV_TAG_AUDIT_EVENT_ERR_FLAGS, (dsk_u16)event.error.flags);
+            dsk_tlv_builder_add_u32(entry_builder, DSK_TLV_TAG_AUDIT_EVENT_ERR_MSG_ID, event.error.msg_id);
+            st = dsk_add_err_details(entry_builder, DSK_TLV_TAG_AUDIT_EVENT_ERR_DETAIL, event.error);
+            if (!dsk_error_is_ok(st)) {
+                dsk_tlv_builder_destroy(entry_builder);
+                dsk_tlv_builder_destroy(evt_builder);
+                dsk_tlv_builder_destroy(builder);
+                return st;
+            }
             st = dsk_tlv_builder_finalize_payload(entry_builder, &entry_payload);
             dsk_tlv_builder_destroy(entry_builder);
             if (!dsk_error_is_ok(st)) {

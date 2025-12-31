@@ -344,6 +344,8 @@ static dsk_status_t dsk_kernel_run(dsk_u16 expected_operation, const dsk_kernel_
         goto emit_audit;
     }
     audit.operation = request.operation;
+    audit.frontend_id = request.frontend_id;
+    audit.platform_triple = request.target_platform_triple;
     dsk_audit_add_event(&audit, DSK_AUDIT_EVENT_PARSE_REQUEST_OK, ok);
     dsk_emit_log_event(req_ex, audit.run_id, CORE_LOG_OP_SETUP_PARSE_REQUEST, CORE_LOG_EVT_OP_OK, ok);
 

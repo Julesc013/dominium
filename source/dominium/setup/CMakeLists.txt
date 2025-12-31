@@ -11,10 +11,8 @@ add_subdirectory(adapters)
 
 add_library(dsk_kernel STATIC
     kernel/src/api/dsk_api.cpp
-    kernel/src/tlv/dsk_tlv_reader.cpp
-    kernel/src/tlv/dsk_tlv_writer.cpp
-    kernel/src/tlv/dsk_tlv_validate.cpp
     kernel/src/tlv/dsk_tlv_schema_registry.cpp
+    kernel/src/tlv/dsk_tlv_bridge.cpp
     kernel/src/digest/dsk_digest.cpp
     kernel/src/errors/dsk_error.cpp
     kernel/src/audit/dsk_audit.cpp
@@ -64,6 +62,8 @@ target_link_libraries(dss_services
 
 target_link_libraries(dsk_kernel
     PUBLIC
+        core_tlv
+        core_audit
         core_err
         core_log
         core_caps
@@ -75,18 +75,61 @@ add_executable(dominium-setup2
     frontends/cli/dominium_setup2_main.cpp
 )
 
+add_executable(dominium-setup2-tui
+    frontends/tui/dominium_setup2_tui_main.cpp
+)
+
+add_library(setup2_frontend_common STATIC
+    frontends/common/args_parse.cpp
+    frontends/common/json_writer.cpp
+    frontends/common/request_builder.cpp
+)
+
+target_include_directories(setup2_frontend_common PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/services/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/frontends/common
+)
+
+set_target_properties(setup2_frontend_common PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
 target_include_directories(dominium-setup2 PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/kernel/include
     ${CMAKE_CURRENT_SOURCE_DIR}/services/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/frontends/common
+)
+
+target_include_directories(dominium-setup2-tui PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/services/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/frontends/common
 )
 
 target_link_libraries(dominium-setup2
     PRIVATE
         dsk_kernel
         dss_services
+        setup2_frontend_common
+)
+
+target_link_libraries(dominium-setup2-tui
+    PRIVATE
+        dsk_kernel
+        dss_services
+        setup2_frontend_common
 )
 
 set_target_properties(dominium-setup2 PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+set_target_properties(dominium-setup2-tui PROPERTIES
     CXX_STANDARD 98
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
@@ -100,6 +143,11 @@ if(WIN32)
             COMMAND ${CMAKE_COMMAND} -E copy_if_different
                 "${DSK_WINPTHREAD_DLL}"
                 $<TARGET_FILE_DIR:dominium-setup2>
+        )
+        add_custom_command(TARGET dominium-setup2-tui POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                "${DSK_WINPTHREAD_DLL}"
+                $<TARGET_FILE_DIR:dominium-setup2-tui>
         )
     endif()
 endif()

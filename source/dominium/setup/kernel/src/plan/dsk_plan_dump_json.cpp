@@ -72,6 +72,9 @@ static bool dsk_step_less(const dsk_plan_step_t &a, const dsk_plan_step_t &b) {
 }
 
 static bool dsk_file_op_less(const dsk_plan_file_op_t &a, const dsk_plan_file_op_t &b) {
+    if (a.target_root_id != b.target_root_id) {
+        return a.target_root_id < b.target_root_id;
+    }
     if (a.to_path != b.to_path) {
         return a.to_path < b.to_path;
     }
@@ -124,6 +127,12 @@ dsk_status_t dsk_plan_dump_json(const dsk_plan_t *plan, std::string *out_json) {
     append_json_u32(*out_json, plan->operation);
     out_json->append(",\"install_scope\":");
     append_json_u32(*out_json, plan->install_scope);
+    out_json->append(",\"payload_root\":");
+    append_json_string(*out_json, plan->payload_root);
+    out_json->append(",\"frontend_id\":");
+    append_json_string(*out_json, plan->frontend_id);
+    out_json->append(",\"target_platform_triple\":");
+    append_json_string(*out_json, plan->target_platform_triple);
 
     out_json->append(",\"install_roots\":[");
     for (i = 0u; i < roots.size(); ++i) {
@@ -188,6 +197,8 @@ dsk_status_t dsk_plan_dump_json(const dsk_plan_t *plan, std::string *out_json) {
         append_json_u64_hex(*out_json, file_ops[i].digest64);
         out_json->append(",\"size\":");
         append_json_u64_dec(*out_json, file_ops[i].size);
+        out_json->append(",\"target_root_id\":");
+        append_json_u32(*out_json, file_ops[i].target_root_id);
         out_json->append("}");
     }
     out_json->append("]");
