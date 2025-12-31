@@ -40,6 +40,25 @@ set_target_properties(core_audit PROPERTIES
     CXX_EXTENSIONS OFF
 )
 
+add_library(core_installed_state STATIC
+    core_installed_state.cpp
+)
+target_include_directories(core_installed_state
+    PUBLIC
+        ${DOMINIUM_INCLUDE_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}
+)
+target_link_libraries(core_installed_state
+    PUBLIC
+        core_tlv
+        core_err
+)
+set_target_properties(core_installed_state PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
 add_library(core_util INTERFACE)
 target_include_directories(core_util INTERFACE
     ${DOMINIUM_INCLUDE_DIR}

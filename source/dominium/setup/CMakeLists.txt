@@ -64,6 +64,7 @@ target_link_libraries(dsk_kernel
     PUBLIC
         core_tlv
         core_audit
+        core_installed_state
         core_err
         core_log
         core_caps
@@ -134,6 +135,8 @@ set_target_properties(dominium-setup2-tui PROPERTIES
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
+
+add_subdirectory(frontends/adapters)
 
 if(WIN32)
     get_filename_component(DSK_COMPILER_DIR "${CMAKE_CXX_COMPILER}" DIRECTORY)
