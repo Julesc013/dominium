@@ -21,6 +21,9 @@ Same as `install_manifest.tlv` (magic `DSK1`, version `1`, endian `0xFFFE`).
 - `0x500D` `job_graph_stub` (container)
 - `0x500E` `file_operations` (container)
 - `0x500F` `registrations` (container)
+- `0x5011` `payload_root` (string)
+- `0x5012` `frontend_id` (string)
+- `0x5013` `target_platform_triple` (string)
 
 ### install_roots container
 - `0x5010` `install_root_entry` (string)
