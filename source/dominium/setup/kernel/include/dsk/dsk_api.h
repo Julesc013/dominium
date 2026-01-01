@@ -46,6 +46,18 @@ typedef struct dsk_kernel_request_ex_t {
 
 DSK_API void dsk_kernel_request_ex_init(dsk_kernel_request_ex_t *req);
 
+typedef struct dsk_import_request_t {
+    const struct dss_services_t *services;
+    const dsk_u8 *legacy_state_bytes;
+    dsk_u32 legacy_state_size;
+    dsk_byte_sink_t out_state;
+    dsk_byte_sink_t out_audit;
+    dsk_u8 deterministic_mode;
+} dsk_import_request_t;
+
+DSK_API void dsk_import_request_init(dsk_import_request_t *req);
+DSK_API dsk_status_t dsk_import_legacy_state(const dsk_import_request_t *req);
+
 DSK_API dsk_status_t dsk_install(const dsk_kernel_request_t *req);
 DSK_API dsk_status_t dsk_upgrade(const dsk_kernel_request_t *req);
 DSK_API dsk_status_t dsk_repair(const dsk_kernel_request_t *req);

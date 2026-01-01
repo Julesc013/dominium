@@ -215,4 +215,8 @@ else()
 endif()
 add_test(NAME dominium_tlv_fuzz COMMAND dominium_tlv_fuzz_tests)
 
+add_test(NAME dominium_layer_checks
+    COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_SOURCE_DIR} python scripts/check_layers.py
+)
+
 add_subdirectory(setup2)

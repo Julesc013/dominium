@@ -70,6 +70,7 @@ struct dsk_splat_caps_t {
     dsk_u16 default_root_convention;
     dsk_u16 elevation_required;
     dsk_u16 rollback_semantics;
+    dsk_bool is_deprecated;
     std::string notes;
 };
 

@@ -31,6 +31,17 @@ static int fail(const char *msg) {
     return 1;
 }
 
+static dsk_u32 dsk_error_subcode(dsk_status_t st) {
+    dsk_u32 i;
+    for (i = 0u; i < st.detail_count; ++i) {
+        if (st.details[i].key_id == (u32)ERR_DETAIL_KEY_SUBCODE &&
+            st.details[i].type == (u32)ERR_DETAIL_TYPE_U32) {
+            return st.details[i].v.u32_value;
+        }
+    }
+    return 0u;
+}
+
 static void build_manifest_base(dsk_manifest_t *out_manifest) {
     dsk_manifest_clear(out_manifest);
     out_manifest->product_id = "dominium";
@@ -51,6 +62,7 @@ static void build_request_base(dsk_request_t *out_request, const char *target) {
     out_request->operation = DSK_OPERATION_INSTALL;
     out_request->install_scope = DSK_INSTALL_SCOPE_SYSTEM;
     out_request->ui_mode = DSK_UI_MODE_CLI;
+    out_request->frontend_id = "cli";
     out_request->policy_flags = DSK_POLICY_DETERMINISTIC;
     out_request->target_platform_triple = target ? target : "linux_deb";
 }
@@ -83,6 +95,16 @@ static int selection_has_rejection(const dsk_splat_selection_t &selection,
     size_t i;
     for (i = 0u; i < selection.rejections.size(); ++i) {
         if (selection.rejections[i].id == id && selection.rejections[i].code == code) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+static int audit_has_event(const dsk_audit_t &audit, dsk_u16 event_id) {
+    size_t i;
+    for (i = 0u; i < audit.events.size(); ++i) {
+        if (audit.events[i].event_id == event_id) {
             return 1;
         }
     }
@@ -167,11 +189,31 @@ static int test_splat_select_requested_id_not_found(void) {
     if (dsk_error_is_ok(st)) {
         return fail("expected splat not found failure");
     }
-    if (st.subcode != DSK_SUBCODE_SPLAT_NOT_FOUND) {
+    if (dsk_error_subcode(st) != DSK_SUBCODE_SPLAT_NOT_FOUND) {
         return fail("unexpected subcode for missing splat");
     }
     if (selection.rejections.empty()) {
         return fail("missing rejections for not found");
+    }
+    return 0;
+}
+
+static int test_splat_select_requested_id_removed(void) {
+    dsk_manifest_t manifest;
+    dsk_request_t request;
+    dsk_splat_selection_t selection;
+    dsk_status_t st;
+
+    build_manifest_base(&manifest);
+    build_request_base(&request, "win32_9x");
+    request.requested_splat_id = "splat_win32_nt4";
+
+    st = dsk_splat_select(manifest, request, &selection);
+    if (dsk_error_is_ok(st)) {
+        return fail("expected removed splat failure");
+    }
+    if (dsk_error_subcode(st) != DSK_SUBCODE_SPLAT_REMOVED) {
+        return fail("unexpected subcode for removed splat");
     }
     return 0;
 }
@@ -306,7 +348,7 @@ static int test_splat_select_no_compatible_emits_rejections_and_audit(void) {
     if (audit.selection.rejections.empty()) {
         return fail("missing audit rejections");
     }
-    if (audit.result.subcode != DSK_SUBCODE_NO_COMPATIBLE_SPLAT) {
+    if (dsk_error_subcode(audit.result) != DSK_SUBCODE_NO_COMPATIBLE_SPLAT) {
         return fail("unexpected audit subcode");
     }
     return 0;
@@ -338,6 +380,67 @@ static int test_splat_select_deterministic_choice_first_compatible(void) {
     return 0;
 }
 
+static int test_splat_select_deprecated_emits_warning(void) {
+    dsk_manifest_t manifest;
+    dsk_request_t request;
+    std::vector<dsk_u8> manifest_bytes;
+    std::vector<dsk_u8> request_bytes;
+    dsk_kernel_request_t kernel_req;
+    dsk_mem_sink_t audit_sink;
+    dsk_mem_sink_t state_sink;
+    dss_services_t services;
+    dss_services_config_t cfg;
+    dsk_status_t st;
+    dsk_audit_t audit;
+
+    build_manifest_base(&manifest);
+    manifest.supported_targets.clear();
+    manifest.supported_targets.push_back("win32_9x");
+    build_request_base(&request, "win32_9x");
+    request.install_scope = DSK_INSTALL_SCOPE_SYSTEM;
+    request.ui_mode = DSK_UI_MODE_CLI;
+
+    st = write_manifest_bytes(manifest, manifest_bytes);
+    if (!dsk_error_is_ok(st)) return fail("manifest write failed");
+    st = write_request_bytes(request, request_bytes);
+    if (!dsk_error_is_ok(st)) return fail("request write failed");
+
+    dss_services_config_init(&cfg);
+    cfg.platform_triple = "win32_9x";
+    dss_services_init_fake(&cfg, &services);
+
+    dsk_kernel_request_init(&kernel_req);
+    kernel_req.services = &services;
+    kernel_req.manifest_bytes = &manifest_bytes[0];
+    kernel_req.manifest_size = (dsk_u32)manifest_bytes.size();
+    kernel_req.request_bytes = &request_bytes[0];
+    kernel_req.request_size = (dsk_u32)request_bytes.size();
+    kernel_req.deterministic_mode = 1u;
+    kernel_req.out_state.user = &state_sink;
+    kernel_req.out_state.write = dsk_mem_sink_write;
+    kernel_req.out_audit.user = &audit_sink;
+    kernel_req.out_audit.write = dsk_mem_sink_write;
+
+    st = dsk_install(&kernel_req);
+    dss_services_shutdown(&services);
+    if (!dsk_error_is_ok(st)) {
+        return fail("expected deprecated splat selection success");
+    }
+    if (audit_sink.data.empty()) {
+        return fail("missing audit payload");
+    }
+    st = dsk_audit_parse(&audit_sink.data[0],
+                         (dsk_u32)audit_sink.data.size(),
+                         &audit);
+    if (!dsk_error_is_ok(st)) {
+        return fail("audit parse failed");
+    }
+    if (!audit_has_event(audit, DSK_AUDIT_EVENT_SPLAT_DEPRECATED)) {
+        return fail("missing deprecated splat audit event");
+    }
+    return 0;
+}
+
 int main(int argc, char **argv) {
     if (argc < 2) {
         std::fprintf(stderr, "usage: setup2_splat_tests <test>\n");
@@ -351,6 +454,9 @@ int main(int argc, char **argv) {
     }
     if (std::strcmp(argv[1], "splat_select_requested_id_not_found") == 0) {
         return test_splat_select_requested_id_not_found();
+    }
+    if (std::strcmp(argv[1], "splat_select_requested_id_removed") == 0) {
+        return test_splat_select_requested_id_removed();
     }
     if (std::strcmp(argv[1], "splat_select_filters_by_platform") == 0) {
         return test_splat_select_filters_by_platform();
@@ -366,6 +472,9 @@ int main(int argc, char **argv) {
     }
     if (std::strcmp(argv[1], "splat_select_deterministic_choice_first_compatible") == 0) {
         return test_splat_select_deterministic_choice_first_compatible();
+    }
+    if (std::strcmp(argv[1], "splat_select_deprecated_emits_warning") == 0) {
+        return test_splat_select_deprecated_emits_warning();
     }
     std::fprintf(stderr, "unknown test: %s\n", argv[1]);
     return 1;

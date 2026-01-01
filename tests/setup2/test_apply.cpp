@@ -36,13 +36,24 @@ static int fail(const char *msg) {
     return 1;
 }
 
+static dsk_u32 dsk_error_subcode(dsk_status_t st) {
+    dsk_u32 i;
+    for (i = 0u; i < st.detail_count; ++i) {
+        if (st.details[i].key_id == (u32)ERR_DETAIL_KEY_SUBCODE &&
+            st.details[i].type == (u32)ERR_DETAIL_TYPE_U32) {
+            return st.details[i].v.u32_value;
+        }
+    }
+    return 0u;
+}
+
 static int fail_status(const char *msg, dsk_status_t st) {
     std::fprintf(stderr,
                  "FAIL: %s (domain=%u code=%u subcode=%u flags=%u)\n",
                  msg,
                  (unsigned)st.domain,
                  (unsigned)st.code,
-                 (unsigned)st.subcode,
+                 (unsigned)dsk_error_subcode(st),
                  (unsigned)st.flags);
     return 1;
 }
@@ -217,6 +228,7 @@ static void build_request(dsk_request_t *out_request, const char *payload_root) 
     out_request->operation = DSK_OPERATION_INSTALL;
     out_request->install_scope = DSK_INSTALL_SCOPE_SYSTEM;
     out_request->ui_mode = DSK_UI_MODE_CLI;
+    out_request->frontend_id = "cli";
     out_request->policy_flags = DSK_POLICY_DETERMINISTIC;
     out_request->target_platform_triple = "win32_nt5";
     out_request->payload_root = payload_root ? payload_root : "payloads";

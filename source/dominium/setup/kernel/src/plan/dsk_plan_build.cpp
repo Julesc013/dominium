@@ -183,11 +183,15 @@ dsk_status_t dsk_plan_build(const dsk_manifest_t &manifest,
         const dsk_resolved_component_t &res = resolved.components[i];
         const dsk_manifest_component_t *comp = dsk_find_component(manifest, res.component_id);
         size_t j;
+        dsk_u16 file_op_kind = DSK_PLAN_FILE_OP_COPY;
         if (!comp) {
             return dsk_error_make(DSK_DOMAIN_KERNEL,
                                   DSK_CODE_VALIDATION_ERROR,
                                   DSK_SUBCODE_INVALID_FIELD,
                                   DSK_ERROR_FLAG_USER_ACTIONABLE);
+        }
+        if (request.operation == DSK_OPERATION_UNINSTALL) {
+            file_op_kind = DSK_PLAN_FILE_OP_REMOVE;
         }
         for (j = 0u; j < comp->artifacts.size(); ++j) {
             const dsk_artifact_t &art = comp->artifacts[j];
@@ -213,14 +217,21 @@ dsk_status_t dsk_plan_build(const dsk_manifest_t &manifest,
                 op_build.root_key = root_key;
                 op_build.component_id = res.component_id;
                 op_build.artifact_id = art.artifact_id;
-                op_build.op_kind = DSK_PLAN_FILE_OP_COPY;
+                op_build.op_kind = file_op_kind;
                 op_build.target_path = target_path;
-                op_build.op.op_kind = DSK_PLAN_FILE_OP_COPY;
-                op_build.op.from_path = art.source_path;
+                op_build.op.op_kind = file_op_kind;
+                if (file_op_kind != DSK_PLAN_FILE_OP_REMOVE) {
+                    op_build.op.from_path = art.source_path;
+                }
                 op_build.op.to_path = target_path;
                 op_build.op.ownership = ownership;
-                op_build.op.digest64 = art.digest64;
-                op_build.op.size = art.size;
+                if (file_op_kind != DSK_PLAN_FILE_OP_REMOVE) {
+                    op_build.op.digest64 = art.digest64;
+                    op_build.op.size = art.size;
+                } else {
+                    op_build.op.digest64 = 0u;
+                    op_build.op.size = 0u;
+                }
                 op_build.op.target_root_id = root_id;
                 file_ops.push_back(op_build);
             }

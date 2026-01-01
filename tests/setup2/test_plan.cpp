@@ -21,6 +21,17 @@ static int fail(const char *msg) {
     return 1;
 }
 
+static dsk_u32 dsk_error_subcode(dsk_status_t st) {
+    dsk_u32 i;
+    for (i = 0u; i < st.detail_count; ++i) {
+        if (st.details[i].key_id == (u32)ERR_DETAIL_KEY_SUBCODE &&
+            st.details[i].type == (u32)ERR_DETAIL_TYPE_U32) {
+            return st.details[i].v.u32_value;
+        }
+    }
+    return 0u;
+}
+
 static void build_fixture_manifest(dsk_manifest_t *out_manifest, int legacy_linux_only) {
     dsk_manifest_clear(out_manifest);
     out_manifest->product_id = "dominium";
@@ -102,8 +113,10 @@ static void build_request_default(dsk_request_t *out_request) {
     out_request->operation = DSK_OPERATION_INSTALL;
     out_request->install_scope = DSK_INSTALL_SCOPE_SYSTEM;
     out_request->ui_mode = DSK_UI_MODE_CLI;
+    out_request->frontend_id = "cli";
     out_request->policy_flags = DSK_POLICY_DETERMINISTIC;
     out_request->target_platform_triple = "win32_nt5";
+    out_request->payload_root = "payloads";
 }
 
 static void build_request_custom(dsk_request_t *out_request) {
@@ -111,9 +124,11 @@ static void build_request_custom(dsk_request_t *out_request) {
     out_request->operation = DSK_OPERATION_INSTALL;
     out_request->install_scope = DSK_INSTALL_SCOPE_SYSTEM;
     out_request->ui_mode = DSK_UI_MODE_CLI;
+    out_request->frontend_id = "cli";
     out_request->policy_flags = DSK_POLICY_DETERMINISTIC;
     out_request->target_platform_triple = "win32_nt5";
     out_request->requested_components.push_back("legacy");
+    out_request->payload_root = "payloads";
 }
 
 static dsk_status_t write_manifest_bytes(const dsk_manifest_t &manifest,
@@ -294,7 +309,7 @@ static int test_resolve_conflict_refusal(void) {
     if (dsk_error_is_ok(st)) {
         return fail("expected conflict refusal");
     }
-    if (st.subcode != DSK_SUBCODE_EXPLICIT_CONFLICT) {
+    if (dsk_error_subcode(st) != DSK_SUBCODE_EXPLICIT_CONFLICT) {
         return fail("unexpected conflict subcode");
     }
     if (refusals.empty() || refusals[0].code != DSK_PLAN_REFUSAL_EXPLICIT_CONFLICT) {
@@ -319,7 +334,7 @@ static int test_resolve_platform_incompat_refusal(void) {
     if (dsk_error_is_ok(st)) {
         return fail("expected platform incompat refusal");
     }
-    if (st.subcode != DSK_SUBCODE_PLATFORM_INCOMPATIBLE) {
+    if (dsk_error_subcode(st) != DSK_SUBCODE_PLATFORM_INCOMPATIBLE) {
         return fail("unexpected platform incompat subcode");
     }
     if (refusals.empty() || refusals[0].code != DSK_PLAN_REFUSAL_PLATFORM_INCOMPATIBLE) {
@@ -423,7 +438,7 @@ static int test_plan_validate_rejects_corrupt_header(void) {
     if (dsk_error_is_ok(st)) {
         return fail("expected corrupt header failure");
     }
-    if (st.subcode != DSK_SUBCODE_TLV_BAD_CRC) {
+    if (dsk_error_subcode(st) != DSK_SUBCODE_TLV_BAD_CRC) {
         return fail("unexpected corrupt header subcode");
     }
     return 0;
@@ -444,6 +459,7 @@ static int test_plan_lists_canonically_sorted(void) {
     plan.install_scope = DSK_INSTALL_SCOPE_SYSTEM;
     plan.install_roots.push_back("root:b");
     plan.install_roots.push_back("root:a");
+    plan.payload_root = "payloads";
     plan.manifest_digest64 = 0x1111111111111111ULL;
     plan.request_digest64 = 0x2222222222222222ULL;
     plan.resolved_set_digest64 = 0x3333333333333333ULL;
@@ -476,9 +492,19 @@ static int test_plan_lists_canonically_sorted(void) {
         dsk_plan_file_op_t op_a;
         dsk_plan_file_op_t op_b;
         op_a.op_kind = DSK_PLAN_FILE_OP_COPY;
+        op_a.ownership = 0u;
+        op_a.digest64 = 0u;
+        op_a.size = 0u;
         op_a.to_path = "z.dat";
+        op_a.from_path.clear();
+        op_a.target_root_id = 0u;
         op_b.op_kind = DSK_PLAN_FILE_OP_COPY;
+        op_b.ownership = 0u;
+        op_b.digest64 = 0u;
+        op_b.size = 0u;
         op_b.to_path = "a.dat";
+        op_b.from_path.clear();
+        op_b.target_root_id = 0u;
         plan.file_ops.push_back(op_a);
         plan.file_ops.push_back(op_b);
     }
@@ -574,6 +600,57 @@ static int test_plan_golden_custom(void) {
     return 0;
 }
 
+static int update_plan_golden(const dsk_manifest_t &manifest,
+                              const dsk_request_t &request,
+                              const std::string &path) {
+    dsk_plan_t plan;
+    dsk_tlv_buffer_t buf;
+    dsk_status_t st;
+    std::FILE *out;
+
+    st = build_plan(manifest, request, &plan);
+    if (!dsk_error_is_ok(st)) {
+        return fail("plan build failed");
+    }
+    st = dsk_plan_write(&plan, &buf);
+    if (!dsk_error_is_ok(st)) {
+        return fail("plan write failed");
+    }
+    out = std::fopen(path.c_str(), "wb");
+    if (!out) {
+        dsk_tlv_buffer_free(&buf);
+        return fail("failed to open golden output");
+    }
+    if (std::fwrite(buf.data, 1u, buf.size, out) != buf.size) {
+        std::fclose(out);
+        dsk_tlv_buffer_free(&buf);
+        return fail("failed to write golden output");
+    }
+    std::fclose(out);
+    dsk_tlv_buffer_free(&buf);
+    return 0;
+}
+
+static int update_golden_default(void) {
+    dsk_manifest_t manifest;
+    dsk_request_t request;
+    std::string path = std::string(SETUP2_TESTS_SOURCE_DIR) + "/golden/plan_default.tlv";
+
+    build_fixture_manifest(&manifest, 0);
+    build_request_default(&request);
+    return update_plan_golden(manifest, request, path);
+}
+
+static int update_golden_custom(void) {
+    dsk_manifest_t manifest;
+    dsk_request_t request;
+    std::string path = std::string(SETUP2_TESTS_SOURCE_DIR) + "/golden/plan_custom.tlv";
+
+    build_fixture_manifest(&manifest, 0);
+    build_request_custom(&request);
+    return update_plan_golden(manifest, request, path);
+}
+
 int main(int argc, char **argv) {
     if (argc < 2) {
         std::fprintf(stderr, "usage: setup2_plan_tests <test>\n");
@@ -611,6 +688,12 @@ int main(int argc, char **argv) {
     }
     if (std::strcmp(argv[1], "plan_golden_custom") == 0) {
         return test_plan_golden_custom();
+    }
+    if (std::strcmp(argv[1], "update_golden_default") == 0) {
+        return update_golden_default();
+    }
+    if (std::strcmp(argv[1], "update_golden_custom") == 0) {
+        return update_golden_custom();
     }
     std::fprintf(stderr, "unknown test: %s\n", argv[1]);
     return 1;

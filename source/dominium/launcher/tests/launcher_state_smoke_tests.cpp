@@ -1,7 +1,7 @@
 /*
 FILE: source/dominium/launcher/tests/launcher_state_smoke_tests.cpp
 MODULE: Dominium Launcher
-PURPOSE: Validate launcher installed-state contract via a real DSU install state.
+PURPOSE: Validate launcher installed-state contract via Setup2 state and legacy import.
 */
 
 #include <cstdio>
@@ -25,6 +25,9 @@ extern "C" {
 #include "dsu/dsu_resolve.h"
 #include "dsu/dsu_txn.h"
 }
+
+#include "dominium/core_installed_state.h"
+#include "dominium/core_tlv.h"
 
 /* Internal-only platform helpers for directory enumeration in tests. */
 extern "C" {
@@ -183,6 +186,86 @@ static int write_bytes_file(const char *path, const unsigned char *bytes, unsign
         return 0;
     }
     return 1;
+}
+
+static int read_bytes_file(const char *path, std::vector<unsigned char> &out_bytes) {
+    FILE *f;
+    long size;
+    if (!path) return 0;
+    out_bytes.clear();
+    f = std::fopen(path, "rb");
+    if (!f) return 0;
+    if (std::fseek(f, 0, SEEK_END) != 0) {
+        std::fclose(f);
+        return 0;
+    }
+    size = std::ftell(f);
+    if (size < 0) {
+        std::fclose(f);
+        return 0;
+    }
+    if (std::fseek(f, 0, SEEK_SET) != 0) {
+        std::fclose(f);
+        return 0;
+    }
+    if (size > 0) {
+        out_bytes.resize((size_t)size);
+        if (std::fread(&out_bytes[0], 1u, (size_t)size, f) != (size_t)size) {
+            std::fclose(f);
+            out_bytes.clear();
+            return 0;
+        }
+    }
+    if (std::fclose(f) != 0) {
+        out_bytes.clear();
+        return 0;
+    }
+    return 1;
+}
+
+static int write_setup2_state(const char *state_path,
+                              const char *install_root,
+                              const char *component_id) {
+    dom::core_installed_state::InstalledState state;
+    core_tlv_framed_buffer_t buf;
+    err_t err;
+    if (!state_path || !install_root || !component_id) {
+        return 0;
+    }
+    dom::core_installed_state::installed_state_clear(&state);
+    state.product_id = "dominium";
+    state.installed_version = "1.0.0";
+    state.selected_splat = "splat_portable";
+    state.install_scope = 3u; /* portable */
+    state.install_root = install_root;
+    state.install_roots.push_back(install_root);
+    state.ownership = 1u; /* portable */
+    state.installed_components.push_back(component_id);
+    state.manifest_digest64 = 0u;
+    state.request_digest64 = 0u;
+    state.state_version = dom::core_installed_state::CORE_INSTALLED_STATE_TLV_VERSION;
+    err = dom::core_installed_state::installed_state_write(&state, &buf);
+    if (!err_is_ok(&err)) {
+        return 0;
+    }
+    if (!write_bytes_file(state_path, buf.data, (unsigned long)buf.size)) {
+        core_tlv_framed_buffer_free(&buf);
+        return 0;
+    }
+    core_tlv_framed_buffer_free(&buf);
+    return 1;
+}
+
+static int parse_setup2_state(const char *state_path,
+                              dom::core_installed_state::InstalledState *out_state) {
+    std::vector<unsigned char> bytes;
+    err_t err;
+    if (!state_path || !out_state) return 0;
+    if (!read_bytes_file(state_path, bytes)) return 0;
+    err = dom::core_installed_state::installed_state_parse(bytes.empty() ? NULL : &bytes[0],
+                                                           (u32)bytes.size(),
+                                                           out_state);
+    return err_is_ok(&err);
 }
 
 typedef struct buf_t {
@@ -427,6 +510,32 @@ static std::string dirname_of(const std::string& path) {
     return std::string();
 }
 
+static std::string resolve_launcher_path(const char *argv0,
+                                         const char *launcher_arg,
+                                         const char *launcher_name) {
+    std::string argv0_path = (argv0 && argv0[0]) ? std::string(argv0) : std::string();
+    std::string dir = dirname_of(argv0_path);
+    if (launcher_arg && launcher_arg[0]) {
+        return std::string(launcher_arg);
+    }
+    if (dir.empty() && !argv0_path.empty()) {
+        char cwd[1024];
+        if (dsu_platform_get_cwd(cwd, (dsu_u32)sizeof(cwd)) == DSU_STATUS_SUCCESS) {
+            char joined[1024];
+            if (path_join(cwd, argv0_path.c_str(), joined, (unsigned long)sizeof(joined))) {
+                dir = dirname_of(joined);
+            }
+        }
+    }
+    if (dir.empty()) {
+        dir = ".";
+    }
+    if (!launcher_name) {
+        launcher_name = "";
+    }
+    return dir + "/" + launcher_name;
+}
+
 #if defined(_WIN32)
 static std::string path_to_native_win32(const char *path) {
     std::string out = path ? path : "";
@@ -480,7 +589,9 @@ int main(int argc, char **argv) {
     char install_bin_dir[1024];
     char install_launcher[1024];
     char install_game[1024];
-    char state_path[1024];
+    char state_dir[1024];
+    char legacy_state_path[1024];
+    char setup2_state_path[1024];
 
     dsu_ctx_t *ctx = NULL;
     dsu_manifest_t *m = NULL;
@@ -514,7 +625,11 @@ int main(int argc, char **argv) {
     ok &= expect(path_join(install_root, "bin", install_bin_dir, (unsigned long)sizeof(install_bin_dir)), "join install/bin");
     ok &= expect(path_join(install_bin_dir, launcher_name, install_launcher, (unsigned long)sizeof(install_launcher)), "join install launcher");
     ok &= expect(path_join(install_bin_dir, game_name, install_game, (unsigned long)sizeof(install_game)), "join install game");
-    ok &= expect(path_join(install_root, ".dsu/installed_state.dsustate", state_path, (unsigned long)sizeof(state_path)), "join state path");
+    ok &= expect(path_join(install_root, ".dsu", state_dir, (unsigned long)sizeof(state_dir)), "join state dir");
+    ok &= expect(path_join(state_dir, "installed_state.dsustate", legacy_state_path, (unsigned long)sizeof(legacy_state_path)),
+                 "join legacy state path");
+    ok &= expect(path_join(state_dir, "installed_state.tlv", setup2_state_path, (unsigned long)sizeof(setup2_state_path)),
+                 "join setup2 state path");
     ok &= expect(path_join(base, "m.dsumanifest", manifest_path, (unsigned long)sizeof(manifest_path)), "join manifest path");
     ok &= expect(write_manifest_fileset(manifest_path, install_root, payload_rel, component_id), "write manifest");
     if (!ok) goto done;
@@ -558,29 +673,17 @@ int main(int argc, char **argv) {
     ok &= expect_st(st, DSU_STATUS_SUCCESS, "txn apply plan");
     if (!ok) goto done;
 
-    ok &= expect(file_exists(state_path), "state exists");
+    ok &= expect(file_exists(legacy_state_path), "legacy state exists");
     ok &= expect(file_exists(install_launcher), "launcher file exists");
     ok &= expect(file_exists(install_game), "game file exists");
+    ok &= expect(write_setup2_state(setup2_state_path, install_root, component_id), "write setup2 state");
     if (!ok) goto done;
 
     {
-        char cwd[1024];
-        std::string argv0 = (argc > 0 && argv && argv[0]) ? std::string(argv[0]) : std::string();
-        std::string dir = dirname_of(argv0);
-        if (dir.empty() && !argv0.empty()) {
-            if (dsu_platform_get_cwd(cwd, (dsu_u32)sizeof(cwd)) == DSU_STATUS_SUCCESS) {
-                char joined[1024];
-                if (path_join(cwd, argv0.c_str(), joined, (unsigned long)sizeof(joined))) {
-                    argv0 = joined;
-                    dir = dirname_of(argv0);
-                }
-            }
-        }
-        if (dir.empty()) {
-            dir = ".";
-        }
-        std::string launcher_path = dir + "/" + launcher_name;
-        std::string state_arg = std::string(state_path);
+        std::string launcher_path = resolve_launcher_path(argc > 0 ? argv[0] : NULL,
+                                                          argc > 1 ? argv[1] : NULL,
+                                                          launcher_name);
+        std::string state_arg = std::string(setup2_state_path);
 #if defined(_WIN32)
         launcher_path = path_to_native_win32(launcher_path.c_str());
         state_arg = path_to_native_win32(state_arg.c_str());
@@ -594,6 +697,41 @@ int main(int argc, char **argv) {
                          rc);
         }
         ok &= expect(rc == 0, "launcher --smoke-test succeeds");
+    }
+
+    ok &= expect(dsu_platform_remove_file(setup2_state_path) == DSU_STATUS_SUCCESS, "remove setup2 state");
+    if (!ok) goto done;
+
+    {
+        dom::core_installed_state::InstalledState imported;
+        std::string launcher_path = resolve_launcher_path(argc > 0 ? argv[0] : NULL,
+                                                          argc > 1 ? argv[1] : NULL,
+                                                          launcher_name);
+        std::string state_arg = std::string(setup2_state_path);
+#if defined(_WIN32)
+        launcher_path = path_to_native_win32(launcher_path.c_str());
+        state_arg = path_to_native_win32(state_arg.c_str());
+#endif
+        int rc = run_launcher_smoke(launcher_path, state_arg);
+        ok &= expect(rc == 0, "launcher --smoke-test succeeds (legacy import)");
+        ok &= expect(file_exists(setup2_state_path), "setup2 state created after import");
+        ok &= expect(parse_setup2_state(setup2_state_path, &imported), "parse imported setup2 state");
+        ok &= expect(!imported.import_source.empty(), "import source set");
+    }
+
+    ok &= expect(write_bytes_file(setup2_state_path, (const unsigned char *)"bad", 3ul), "write corrupt state");
+    if (!ok) goto done;
+    {
+        std::string launcher_path = resolve_launcher_path(argc > 0 ? argv[0] : NULL,
+                                                          argc > 1 ? argv[1] : NULL,
+                                                          launcher_name);
+        std::string state_arg = std::string(setup2_state_path);
+#if defined(_WIN32)
+        launcher_path = path_to_native_win32(launcher_path.c_str());
+        state_arg = path_to_native_win32(state_arg.c_str());
+#endif
+        int rc = run_launcher_smoke(launcher_path, state_arg);
+        ok &= expect(rc != 0, "launcher --smoke-test fails on corrupt state");
     }
 
 done:

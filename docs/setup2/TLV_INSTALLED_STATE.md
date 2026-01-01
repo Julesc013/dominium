@@ -19,12 +19,22 @@ Same as `install_manifest.tlv` (magic `DSK1`, version `1`, endian `0xFFFE`).
 - `0x300B` `artifacts` (container; optional)
 - `0x300C` `registrations` (container; optional)
 - `0x300D` `previous_state_digest64` (u64; optional)
+- `0x300E` `import_source` (string; optional)
+- `0x300F` `import_details` (container; optional)
+- `0x3013` `state_version` (u32)
+- `0x3014` `migration_applied` (container; optional)
 
 ### installed_components container
 - `0x3010` `installed_component_entry` (string)
 
 ### install_roots container
 - `0x3011` `install_root_entry` (string)
+
+### import_details container
+- `0x3012` `import_detail_entry` (string)
+
+### migration_applied container
+- `0x3015` `migration_entry` (string)
 
 ### artifacts container
 - `0x3020` `artifact_entry` (container)
@@ -42,5 +52,7 @@ Same as `install_manifest.tlv` (magic `DSK1`, version `1`, endian `0xFFFE`).
 ## Canonical ordering
 - `installed_components` sorted by string.
 - `install_roots` sorted by string.
+- `import_details` sorted by string.
+- `migration_applied` sorted by string.
 - `artifacts` sorted by `(artifact_root_id, artifact_path)`.
 - `registrations` sorted by `(registration_kind, registration_value, registration_status)`.

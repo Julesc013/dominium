@@ -19,8 +19,15 @@ NOTES: Validates per-run handshake persistence/validation and per-run audit reco
 
 extern "C" {
 #include "domino/profile.h"
+#include "domino/sys.h"
 #include "core/include/launcher_core_api.h"
 }
+
+#if defined(_WIN32) || defined(_WIN64)
+#include <direct.h>
+#else
+#include <unistd.h>
+#endif
 
 #include "core/include/launcher_audit.h"
 #include "core/include/launcher_artifact_store.h"
@@ -46,6 +53,43 @@ static void dominium_test_assert_fail(const char* expr, const char* file, int li
 
 namespace {
 
+static void remove_tree(const char* path) {
+    dsys_dir_iter* it;
+    dsys_dir_entry ent;
+    char child[512];
+
+    if (!path || path[0] == '\0') {
+        return;
+    }
+
+    it = dsys_dir_open(path);
+    if (it) {
+        while (dsys_dir_next(it, &ent)) {
+            if (ent.name[0] == '.' && (ent.name[1] == '\0' ||
+                                       (ent.name[1] == '.' && ent.name[2] == '\0'))) {
+                continue;
+            }
+            std::snprintf(child, sizeof(child), "%s/%s", path, ent.name);
+            if (ent.is_dir) {
+                remove_tree(child);
+#if defined(_WIN32) || defined(_WIN64)
+                _rmdir(child);
+#else
+                rmdir(child);
+#endif
+            } else {
+                remove(child);
+            }
+        }
+        dsys_dir_close(it);
+    }
+#if defined(_WIN32) || defined(_WIN64)
+    _rmdir(path);
+#else
+    rmdir(path);
+#endif
+}
+
 static std::string normalize_seps(const std::string& in) {
     std::string out = in;
     size_t i;
@@ -68,6 +112,41 @@ static std::string path_join(const std::string& a, const std::string& b) {
     return aa + "/" + bb;
 }
 
+#if defined(_WIN32) || defined(_WIN64)
+static std::string add_exe_if_missing(const std::string& p) {
+    if (p.size() >= 4u && p.substr(p.size() - 4u) == ".exe") {
+        return p;
+    }
+    return p + ".exe";
+}
+#else
+static std::string add_exe_if_missing(const std::string& p) { return p; }
+#endif
+
+static std::string dist_sys_id(void) {
+#if defined(_WIN32) || defined(_WIN64)
+    return "winnt";
+#elif defined(__APPLE__)
+    return "macos";
+#else
+    return "linux";
+#endif
+}
+
+static std::string dist_arch_id(void) {
+#if defined(_M_X64) || defined(__x86_64__) || defined(__amd64__)
+    return "x64";
+#elif defined(_M_IX86) || defined(__i386__)
+    return "x86";
+#elif defined(_M_ARM64) || defined(__aarch64__)
+    return "arm64";
+#elif defined(_M_ARM) || defined(__arm__)
+    return "arm";
+#else
+    return "x64";
+#endif
+}
+
 static std::string dirname_of(const std::string& path) {
     size_t i;
     for (i = path.size(); i > 0u; --i) {
@@ -86,6 +165,23 @@ static bool file_exists(const std::string& path) {
         return true;
     }
     return false;
+}
+
+static std::string find_launcher_exe_near(const std::string& self_path) {
+    std::string dir = dirname_of(self_path);
+    const std::string sys_id = dist_sys_id();
+    const std::string arch_id = dist_arch_id();
+    int i;
+    for (i = 0; i < 8 && !dir.empty(); ++i) {
+        const std::string cand = path_join(
+            path_join(path_join(path_join(path_join(path_join(dir, "dist"), "sys"), sys_id), arch_id), "bin/launch"),
+            add_exe_if_missing("launch_dominium"));
+        if (file_exists(cand)) {
+            return cand;
+        }
+        dir = dirname_of(dir);
+    }
+    return std::string();
 }
 
 static bool read_file_all_bytes(const std::string& path, std::vector<unsigned char>& out) {
@@ -1335,6 +1431,8 @@ int main(int argc, char** argv) {
 
     (void)argc;
 
+    /* Ensure deterministic temp root across runs doesn't collide with prior state. */
+    remove_tree(state_root.c_str());
     mkdir_p_best_effort(state_root);
     write_tools_registry_minimal(state_root);
 
@@ -1343,13 +1441,19 @@ int main(int argc, char** argv) {
         std::string self = (argv && argv[0]) ? std::string(argv[0]) : std::string();
         std::string dir = dirname_of(self);
 #if defined(_WIN32) || defined(_WIN64)
-        argv0_launcher = path_join(dir, "dominium-launcher.exe");
+        const std::string cand0 = path_join(dir, "launch_dominium.exe");
+        const std::string cand1 = path_join(dir, "dominium-launcher.exe");
 #else
-        argv0_launcher = path_join(dir, "dominium-launcher");
+        const std::string cand0 = path_join(dir, "launch_dominium");
+        const std::string cand1 = path_join(dir, "dominium-launcher");
 #endif
-        if (!file_exists(argv0_launcher)) {
-            /* Fall back to using the test executable's argv0 directory anyway. */
-            argv0_launcher = self;
+        if (file_exists(cand0)) {
+            argv0_launcher = cand0;
+        } else if (file_exists(cand1)) {
+            argv0_launcher = cand1;
+        } else {
+            const std::string from_repo = find_launcher_exe_near(self);
+            argv0_launcher = from_repo.empty() ? self : from_repo;
         }
     }
 

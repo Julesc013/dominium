@@ -43,6 +43,8 @@ target_link_libraries(dsu_core
         core_audit
         core_util
         core_err
+        core_job
+        core_log
 )
 
 set_target_properties(dsu_core PROPERTIES

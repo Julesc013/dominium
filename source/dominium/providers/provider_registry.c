@@ -38,7 +38,7 @@ static const core_cap_entry g_caps_os_null[] = {
     CAP_BOOL(CORE_CAP_KEY_SUPPORTS_FILE_PICKER, 0u)
 };
 
-static const provider_registry_entry g_entries[] = {
+static provider_registry_entry g_entries[] = {
     {
         "null",
         CORE_SOLVER_CAT_PROVIDER_CONTENT,
@@ -48,7 +48,7 @@ static const provider_registry_entry g_entries[] = {
         0, 0u,
         0, 0u,
         0, 0u,
-        (const provider_base_v1*)provider_content_null_v1()
+        0
     },
     {
         "local_fs",
@@ -59,7 +59,7 @@ static const provider_registry_entry g_entries[] = {
         0, 0u,
         0, 0u,
         0, 0u,
-        (const provider_base_v1*)provider_content_local_fs_v1()
+        0
     },
     {
         "null",
@@ -70,7 +70,7 @@ static const provider_registry_entry g_entries[] = {
         0, 0u,
         0, 0u,
         0, 0u,
-        (const provider_base_v1*)provider_net_null_v1()
+        0
     },
     {
         "null",
@@ -81,7 +81,7 @@ static const provider_registry_entry g_entries[] = {
         0, 0u,
         0, 0u,
         0, 0u,
-        (const provider_base_v1*)provider_trust_null_v1()
+        0
     },
     {
         "null",
@@ -92,7 +92,7 @@ static const provider_registry_entry g_entries[] = {
         0, 0u,
         0, 0u,
         0, 0u,
-        (const provider_base_v1*)provider_keychain_null_v1()
+        0
     },
     {
         "null",
@@ -103,11 +103,24 @@ static const provider_registry_entry g_entries[] = {
         0, 0u,
         0, 0u,
         0, 0u,
-        (const provider_base_v1*)provider_os_integration_null_v1()
+        0
     }
 };
 
+static void provider_registry_init(void) {
+    if (g_entries[0].provider) {
+        return;
+    }
+    g_entries[0].provider = (const provider_base_v1*)provider_content_null_v1();
+    g_entries[1].provider = (const provider_base_v1*)provider_content_local_fs_v1();
+    g_entries[2].provider = (const provider_base_v1*)provider_net_null_v1();
+    g_entries[3].provider = (const provider_base_v1*)provider_trust_null_v1();
+    g_entries[4].provider = (const provider_base_v1*)provider_keychain_null_v1();
+    g_entries[5].provider = (const provider_base_v1*)provider_os_integration_null_v1();
+}
+
 void provider_registry_get_entries(const provider_registry_entry** out_entries, u32* out_count) {
+    provider_registry_init();
     if (out_entries) {
         *out_entries = g_entries;
     }
@@ -118,6 +131,7 @@ void provider_registry_get_entries(const provider_registry_entry** out_entries, 
 
 const provider_registry_entry* provider_registry_find(u32 category_id, const char* provider_id) {
     u32 i;
+    provider_registry_init();
     if (!provider_id || !provider_id[0]) {
         return 0;
     }

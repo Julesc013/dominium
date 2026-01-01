@@ -535,6 +535,14 @@ int dom_game_cli_parse(int argc, char **argv, dom_game_config *out_cfg, dom_game
             }
             continue;
         }
+        if (std::strncmp(arg, "--handshake=", 12) == 0) {
+            /* Launcher integration; consumed out-of-band. */
+            continue;
+        }
+        if (std::strncmp(arg, "--keep_last_runs=", 17) == 0) {
+            /* Launcher integration; ignored by game CLI. */
+            continue;
+        }
         if (std::strncmp(arg, "--home=", 7) == 0) {
             if (!copy_cstr_bounded(out_cfg->dominium_home, sizeof(out_cfg->dominium_home), arg + 7)) {
                 set_error(out_result, "DOMINIUM_HOME path too long.");

@@ -1,8 +1,33 @@
 cmake_minimum_required(VERSION 3.16)
 
-add_subdirectory(core)
-add_subdirectory(services)
-add_subdirectory(adapters)
+if(NOT DEFINED SETUP2_DEFAULT)
+    set(SETUP2_DEFAULT ON)
+endif()
+if(NOT DEFINED SETUP_LEGACY_BUILD)
+    set(SETUP_LEGACY_BUILD ON)
+endif()
+if(NOT DEFINED SETUP_LEGACY_DEPRECATED_WARN)
+    set(SETUP_LEGACY_DEPRECATED_WARN ON)
+endif()
+
+option(DOMINIUM_BUILD_SETUP2 "Build setup2 kernel/services/frontends" ${SETUP2_DEFAULT})
+option(DOMINIUM_BUILD_SETUP_LEGACY "Build legacy setup stack" ${SETUP_LEGACY_BUILD})
+
+if(DOMINIUM_BUILD_SETUP_LEGACY AND SETUP_LEGACY_DEPRECATED_WARN)
+    message(WARNING "Legacy setup build enabled; use dominium-setup-legacy explicitly (disable with -DSETUP_LEGACY_BUILD=OFF).")
+endif()
+
+if(DOMINIUM_BUILD_SETUP_LEGACY)
+    add_subdirectory(core)
+endif()
+if(DOMINIUM_BUILD_SETUP2 OR DOMINIUM_BUILD_SETUP_LEGACY)
+    add_subdirectory(services)
+endif()
+if(DOMINIUM_BUILD_SETUP_LEGACY)
+    add_subdirectory(adapters)
+endif()
+
+if(DOMINIUM_BUILD_SETUP2)
 
 # Setup2 layering:
 #   Layer 0: dsk_kernel (pure orchestration, no OS headers or side effects)
@@ -16,6 +41,7 @@ add_library(dsk_kernel STATIC
     kernel/src/digest/dsk_digest.cpp
     kernel/src/errors/dsk_error.cpp
     kernel/src/audit/dsk_audit.cpp
+    kernel/src/import/dsk_import_legacy.cpp
     kernel/src/splat/dsk_splat_caps.cpp
     kernel/src/splat/dsk_splat_registry.cpp
     kernel/src/splat/dsk_splat_select.cpp
@@ -40,8 +66,11 @@ target_include_directories(dsk_kernel PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/kernel/include
 )
 
-target_include_directories(dsk_kernel PRIVATE
+target_include_directories(dsk_kernel PUBLIC
     ${DOMINIUM_INCLUDE_DIR}
+)
+
+target_include_directories(dsk_kernel PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/services/include
     ${CMAKE_CURRENT_SOURCE_DIR}/kernel/src/plan
 )
@@ -72,8 +101,16 @@ target_link_libraries(dsk_kernel
         core_tlv_schema
 )
 
-add_executable(dominium-setup2
+set(SETUP2_CLI_SOURCES
     frontends/cli/dominium_setup2_main.cpp
+)
+
+add_executable(dominium-setup2
+    ${SETUP2_CLI_SOURCES}
+)
+
+add_executable(dominium-setup
+    ${SETUP2_CLI_SOURCES}
 )
 
 add_executable(dominium-setup2-tui
@@ -90,6 +127,7 @@ target_include_directories(setup2_frontend_common PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/kernel/include
     ${CMAKE_CURRENT_SOURCE_DIR}/services/include
     ${CMAKE_CURRENT_SOURCE_DIR}/frontends/common
+    ${PROJECT_SOURCE_DIR}/include
 )
 
 set_target_properties(setup2_frontend_common PROPERTIES
@@ -98,23 +136,31 @@ set_target_properties(setup2_frontend_common PROPERTIES
     CXX_EXTENSIONS OFF
 )
 
-target_include_directories(dominium-setup2 PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/services/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/frontends/common
-)
+foreach(setup2_cli_target IN ITEMS dominium-setup2 dominium-setup)
+    target_include_directories(${setup2_cli_target} PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/kernel/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/services/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/frontends/common
+        ${PROJECT_SOURCE_DIR}/include
+    )
+    target_link_libraries(${setup2_cli_target}
+        PRIVATE
+            dsk_kernel
+            dss_services
+            setup2_frontend_common
+    )
+    set_target_properties(${setup2_cli_target} PROPERTIES
+        CXX_STANDARD 98
+        CXX_STANDARD_REQUIRED ON
+        CXX_EXTENSIONS OFF
+    )
+endforeach()
 
 target_include_directories(dominium-setup2-tui PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/kernel/include
     ${CMAKE_CURRENT_SOURCE_DIR}/services/include
     ${CMAKE_CURRENT_SOURCE_DIR}/frontends/common
-)
-
-target_link_libraries(dominium-setup2
-    PRIVATE
-        dsk_kernel
-        dss_services
-        setup2_frontend_common
+    ${PROJECT_SOURCE_DIR}/include
 )
 
 target_link_libraries(dominium-setup2-tui
@@ -124,17 +170,17 @@ target_link_libraries(dominium-setup2-tui
         setup2_frontend_common
 )
 
-set_target_properties(dominium-setup2 PROPERTIES
-    CXX_STANDARD 98
-    CXX_STANDARD_REQUIRED ON
-    CXX_EXTENSIONS OFF
-)
-
 set_target_properties(dominium-setup2-tui PROPERTIES
     CXX_STANDARD 98
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
+
+dist_set_role(dominium-setup tools)
+dist_set_role(dominium-setup2 tools)
+
+dominium_bundle_runtime(dominium-setup)
+dominium_bundle_runtime(dominium-setup2)
 
 add_subdirectory(frontends/adapters)
 
@@ -147,6 +193,11 @@ if(WIN32)
                 "${DSK_WINPTHREAD_DLL}"
                 $<TARGET_FILE_DIR:dominium-setup2>
         )
+        add_custom_command(TARGET dominium-setup POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                "${DSK_WINPTHREAD_DLL}"
+                $<TARGET_FILE_DIR:dominium-setup>
+        )
         add_custom_command(TARGET dominium-setup2-tui POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy_if_different
                 "${DSK_WINPTHREAD_DLL}"
@@ -155,6 +206,9 @@ if(WIN32)
     endif()
 endif()
 
+endif() # DOMINIUM_BUILD_SETUP2
+
+if(DOMINIUM_BUILD_SETUP_LEGACY)
 add_library(setup_services_api INTERFACE)
 target_include_directories(setup_services_api INTERFACE
     ${CMAKE_CURRENT_SOURCE_DIR}/core/include
@@ -192,18 +246,18 @@ set_target_properties(setup_frontend_gui PROPERTIES
     CXX_EXTENSIONS OFF
 )
 
-add_executable(dominium-setup
+add_executable(dominium-setup-legacy
     cli/dominium_setup_main.c
 )
 
-target_include_directories(dominium-setup PUBLIC
+target_include_directories(dominium-setup-legacy PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/core/include
     ${PROJECT_SOURCE_DIR}/include
     ${CMAKE_SOURCE_DIR}/tools/setup/ui/gen
     ${CMAKE_SOURCE_DIR}/tools/setup/ui/user
 )
 
-target_link_libraries(dominium-setup
+target_link_libraries(dominium-setup-legacy
     PRIVATE
         setup_kernel
         setup_services_impl_platform
@@ -212,8 +266,8 @@ target_link_libraries(dominium-setup
         domino_core
 )
 
-set_target_properties(dominium-setup PROPERTIES
-    OUTPUT_NAME "tool_setup"
+set_target_properties(dominium-setup-legacy PROPERTIES
+    OUTPUT_NAME "dominium-setup-legacy"
     C_STANDARD 90
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
@@ -221,9 +275,9 @@ set_target_properties(dominium-setup PROPERTIES
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
-dist_set_role(dominium-setup tools)
+dist_set_role(dominium-setup-legacy tools)
 
-dominium_bundle_runtime(dominium-setup)
+dominium_bundle_runtime(dominium-setup-legacy)
 
 set(SETUP_UI_ROOT ${CMAKE_SOURCE_DIR}/tools/setup/ui)
 set(SETUP_UI_DOC ${SETUP_UI_ROOT}/doc/setup_ui_doc.tlv)
@@ -303,3 +357,5 @@ endif()
 if(UNIX AND NOT APPLE)
     add_subdirectory(installers/linux/cmake)
 endif()
+
+endif() # DOMINIUM_BUILD_SETUP_LEGACY

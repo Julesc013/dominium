@@ -478,8 +478,13 @@ dsk_status_t dsk_plan_validate(const dsk_plan_t *plan) {
         plan->plan_digest64 == 0u) {
         return dsk_plan_error(DSK_CODE_VALIDATION_ERROR, DSK_SUBCODE_MISSING_FIELD);
     }
-    if (!plan->file_ops.empty() && plan->payload_root.empty()) {
-        return dsk_plan_error(DSK_CODE_VALIDATION_ERROR, DSK_SUBCODE_MISSING_FIELD);
+    if (plan->payload_root.empty()) {
+        for (i = 0u; i < plan->file_ops.size(); ++i) {
+            dsk_u16 kind = plan->file_ops[i].op_kind;
+            if (kind == DSK_PLAN_FILE_OP_COPY || kind == DSK_PLAN_FILE_OP_EXTRACT) {
+                return dsk_plan_error(DSK_CODE_VALIDATION_ERROR, DSK_SUBCODE_MISSING_FIELD);
+            }
+        }
     }
 
     for (i = 1u; i < plan->install_roots.size(); ++i) {

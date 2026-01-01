@@ -29,6 +29,7 @@ add_library(dss_services STATIC
 target_include_directories(dss_services PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CMAKE_SOURCE_DIR}/source/dominium/setup/kernel/include
+    ${DOMINIUM_INCLUDE_DIR}
 )
 
 target_include_directories(dss_services PRIVATE
@@ -38,7 +39,6 @@ target_include_directories(dss_services PRIVATE
 target_link_libraries(dss_services
     PRIVATE
         dsu_core
-        providers_builtin
 )
 
 set_target_properties(dss_services PROPERTIES

@@ -109,6 +109,10 @@ void installed_state_clear(InstalledState* state) {
     state->manifest_digest64 = 0u;
     state->request_digest64 = 0u;
     state->previous_state_digest64 = 0u;
+    state->import_source.clear();
+    state->import_details.clear();
+    state->state_version = 0u;
+    state->migration_applied.clear();
 }
 
 static err_t parse_artifact(const core_tlv_framed_record_t& rec,
@@ -201,6 +205,7 @@ err_t installed_state_parse(const unsigned char* data,
     bool has_root = false;
     bool has_manifest = false;
     bool has_request = false;
+    bool has_state_version = false;
 
     if (!out_state) {
         return state_err_invalid_args();
@@ -237,6 +242,61 @@ err_t installed_state_parse(const unsigned char* data,
             has_request = err_is_ok(&st) ? true : has_request;
         } else if (rec.type == CORE_TLV_TAG_INSTALLED_STATE_PREV_STATE_DIGEST64) {
             st = parse_u64(rec, &out_state->previous_state_digest64);
+        } else if (rec.type == CORE_TLV_TAG_INSTALLED_STATE_IMPORT_SOURCE) {
+            st = parse_string(rec, &out_state->import_source);
+        } else if (rec.type == CORE_TLV_TAG_INSTALLED_STATE_IMPORT_DETAILS) {
+            core_tlv_framed_stream_t list_stream;
+            err_t lst;
+            u32 j;
+            lst = core_tlv_framed_parse_stream(rec.payload, rec.length, &list_stream);
+            if (!err_is_ok(&lst)) {
+                core_tlv_framed_view_destroy(&view);
+                return lst;
+            }
+            for (j = 0u; j < list_stream.record_count; ++j) {
+                const core_tlv_framed_record_t& entry = list_stream.records[j];
+                if (entry.type != CORE_TLV_TAG_INSTALLED_STATE_IMPORT_DETAIL_ENTRY) {
+                    continue;
+                }
+                std::string value;
+                lst = parse_string(entry, &value);
+                if (!err_is_ok(&lst)) {
+                    core_tlv_framed_stream_destroy(&list_stream);
+                    core_tlv_framed_view_destroy(&view);
+                    return lst;
+                }
+                out_state->import_details.push_back(value);
+            }
+            core_tlv_framed_stream_destroy(&list_stream);
+            st = err_ok();
+        } else if (rec.type == CORE_TLV_TAG_INSTALLED_STATE_VERSION) {
+            st = parse_u32(rec, &out_state->state_version);
+            has_state_version = err_is_ok(&st) ? true : has_state_version;
+        } else if (rec.type == CORE_TLV_TAG_INSTALLED_STATE_MIGRATIONS) {
+            core_tlv_framed_stream_t list_stream;
+            err_t lst;
+            u32 j;
+            lst = core_tlv_framed_parse_stream(rec.payload, rec.length, &list_stream);
+            if (!err_is_ok(&lst)) {
+                core_tlv_framed_view_destroy(&view);
+                return lst;
+            }
+            for (j = 0u; j < list_stream.record_count; ++j) {
+                const core_tlv_framed_record_t& entry = list_stream.records[j];
+                if (entry.type != CORE_TLV_TAG_INSTALLED_STATE_MIGRATION_ENTRY) {
+                    continue;
+                }
+                std::string value;
+                lst = parse_string(entry, &value);
+                if (!err_is_ok(&lst)) {
+                    core_tlv_framed_stream_destroy(&list_stream);
+                    core_tlv_framed_view_destroy(&view);
+                    return lst;
+                }
+                out_state->migration_applied.push_back(value);
+            }
+            core_tlv_framed_stream_destroy(&list_stream);
+            st = err_ok();
         } else if (rec.type == CORE_TLV_TAG_INSTALLED_STATE_OWNERSHIP) {
             st = parse_u16(rec, &out_state->ownership);
         } else if (rec.type == CORE_TLV_TAG_INSTALLED_STATE_COMPONENTS ||
@@ -357,6 +417,10 @@ err_t installed_state_parse(const unsigned char* data,
     if (!has_request) {
         return state_err_missing_field(CORE_TLV_TAG_INSTALLED_STATE_REQUEST_DIGEST64);
     }
+    if (!has_state_version) {
+        out_state->state_version = CORE_INSTALLED_STATE_TLV_VERSION;
+        out_state->migration_applied.push_back("backfill_state_version_v1");
+    }
 
     return err_ok();
 }
@@ -458,10 +522,63 @@ err_t installed_state_write(const InstalledState* state,
                                          CORE_TLV_TAG_INSTALLED_STATE_REQUEST_DIGEST64,
                                          state->request_digest64);
     if (!err_is_ok(&st)) goto done;
+    {
+        u32 state_version = state->state_version ? state->state_version : (u32)CORE_INSTALLED_STATE_TLV_VERSION;
+        st = core_tlv_framed_builder_add_u32(builder,
+                                             CORE_TLV_TAG_INSTALLED_STATE_VERSION,
+                                             state_version);
+        if (!err_is_ok(&st)) goto done;
+    }
     if (state->previous_state_digest64 != 0u) {
         st = core_tlv_framed_builder_add_u64(builder,
                                              CORE_TLV_TAG_INSTALLED_STATE_PREV_STATE_DIGEST64,
                                              state->previous_state_digest64);
+        if (!err_is_ok(&st)) goto done;
+    }
+    if (!state->import_source.empty()) {
+        st = core_tlv_framed_builder_add_string(builder,
+                                                CORE_TLV_TAG_INSTALLED_STATE_IMPORT_SOURCE,
+                                                state->import_source.c_str());
+        if (!err_is_ok(&st)) goto done;
+    }
+    if (!state->import_details.empty()) {
+        std::vector<std::string> details = state->import_details;
+        std::sort(details.begin(), details.end(), string_less);
+        core_tlv_framed_builder_t* list_builder = core_tlv_framed_builder_create();
+        core_tlv_framed_buffer_t list_payload;
+        for (i = 0u; i < details.size(); ++i) {
+            core_tlv_framed_builder_add_string(list_builder,
+                                               CORE_TLV_TAG_INSTALLED_STATE_IMPORT_DETAIL_ENTRY,
+                                               details[i].c_str());
+        }
+        st = core_tlv_framed_builder_finalize_payload(list_builder, &list_payload);
+        core_tlv_framed_builder_destroy(list_builder);
+        if (!err_is_ok(&st)) goto done;
+        st = core_tlv_framed_builder_add_container(builder,
+                                                   CORE_TLV_TAG_INSTALLED_STATE_IMPORT_DETAILS,
+                                                   list_payload.data,
+                                                   list_payload.size);
+        core_tlv_framed_buffer_free(&list_payload);
+        if (!err_is_ok(&st)) goto done;
+    }
+    if (!state->migration_applied.empty()) {
+        std::vector<std::string> details = state->migration_applied;
+        std::sort(details.begin(), details.end(), string_less);
+        core_tlv_framed_builder_t* list_builder = core_tlv_framed_builder_create();
+        core_tlv_framed_buffer_t list_payload;
+        for (i = 0u; i < details.size(); ++i) {
+            core_tlv_framed_builder_add_string(list_builder,
+                                               CORE_TLV_TAG_INSTALLED_STATE_MIGRATION_ENTRY,
+                                               details[i].c_str());
+        }
+        st = core_tlv_framed_builder_finalize_payload(list_builder, &list_payload);
+        core_tlv_framed_builder_destroy(list_builder);
+        if (!err_is_ok(&st)) goto done;
+        st = core_tlv_framed_builder_add_container(builder,
+                                                   CORE_TLV_TAG_INSTALLED_STATE_MIGRATIONS,
+                                                   list_payload.data,
+                                                   list_payload.size);
+        core_tlv_framed_buffer_free(&list_payload);
         if (!err_is_ok(&st)) goto done;
     }
 

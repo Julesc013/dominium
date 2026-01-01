@@ -6,6 +6,7 @@
 #ifdef __cplusplus
 DSK_API void dsk_splat_registry_list(std::vector<dsk_splat_candidate_t> &out);
 DSK_API int dsk_splat_registry_contains(const std::string &id);
+DSK_API int dsk_splat_registry_is_removed(const std::string &id);
 DSK_API int dsk_splat_registry_find(const std::string &id,
                                     dsk_splat_candidate_t *out_candidate);
 #endif /* __cplusplus */

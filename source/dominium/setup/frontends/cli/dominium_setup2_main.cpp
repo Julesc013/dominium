@@ -8,6 +8,7 @@
 #include "dsk/dsk_jobs.h"
 #include "dsk/dsk_splat.h"
 #include "dss/dss_services.h"
+#include "dss/dss_txn.h"
 
 #include "args_parse.h"
 #include "dominium/core_audit.h"
@@ -67,6 +68,7 @@ static const char *op_to_string(dsk_u16 op) {
     case DSK_OPERATION_UNINSTALL: return "uninstall";
     case DSK_OPERATION_VERIFY: return "verify";
     case DSK_OPERATION_STATUS: return "status";
+    case DSK_OPERATION_IMPORT_LEGACY: return "import-legacy";
     default: return "unknown";
     }
 }
@@ -136,6 +138,22 @@ static const char *selected_reason_to_string(dsk_u16 value) {
     }
 }
 
+static const char *refusal_code_to_string(dsk_u16 value) {
+    switch (value) {
+    case DSK_SUBCODE_UNSATISFIED_DEPENDENCY: return "unsatisfied_dependency";
+    case DSK_SUBCODE_EXPLICIT_CONFLICT: return "explicit_conflict";
+    case DSK_SUBCODE_PLATFORM_INCOMPATIBLE: return "platform_incompatible";
+    case DSK_SUBCODE_NO_COMPATIBLE_SPLAT: return "no_compatible_splat";
+    case DSK_SUBCODE_SPLAT_NOT_FOUND: return "splat_not_found";
+    case DSK_SUBCODE_SPLAT_REMOVED: return "splat_removed";
+    case DSK_SUBCODE_COMPONENT_NOT_FOUND: return "component_not_found";
+    case DSK_SUBCODE_PLAN_DIGEST_MISMATCH: return "plan_digest_mismatch";
+    case DSK_SUBCODE_PLAN_RESOLVED_DIGEST_MISMATCH: return "plan_resolved_digest_mismatch";
+    case DSK_SUBCODE_REQUEST_MISMATCH: return "request_mismatch";
+    default: return "unknown_refusal";
+    }
+}
+
 struct dsk_cli_artifacts_t {
     const char *manifest;
     const char *request;
@@ -158,6 +176,16 @@ struct dsk_cli_digests_t {
     dsk_u64 state;
     dsk_u64 audit;
 };
+
+static dsk_bool dsk_digest_from_bytes(const std::vector<dsk_u8> &bytes,
+                                      dsk_u64 *out_digest);
+static void dsk_cli_json_begin(dsk_json_writer_t *writer,
+                               const char *command,
+                               dsk_status_t status,
+                               int status_code,
+                               const dsk_cli_artifacts_t &artifacts,
+                               const dsk_cli_digests_t &digests);
+static void dsk_cli_json_end(dsk_json_writer_t *writer);
 
 static dsk_cli_artifacts_t dsk_cli_artifacts_empty(void) {
     dsk_cli_artifacts_t artifacts;
@@ -337,6 +365,8 @@ static void dsk_json_write_caps(dsk_json_writer_t *writer, const dsk_splat_caps_
     dsk_json_string(writer, elevation_to_string(caps.elevation_required));
     dsk_json_key(writer, "rollback_semantics");
     dsk_json_string(writer, rollback_to_string(caps.rollback_semantics));
+    dsk_json_key(writer, "is_deprecated");
+    dsk_json_bool(writer, caps.is_deprecated);
     dsk_json_key(writer, "notes");
     dsk_json_string(writer, caps.notes.c_str());
     dsk_json_end_object(writer);
@@ -354,6 +384,8 @@ static bool dsk_rejection_less(const dsk_splat_rejection_t &a,
     }
     return a.code < b.code;
 }
+
+static bool dsk_string_less(const std::string &a, const std::string &b);
 
 static void dsk_json_write_splat_registry(dsk_json_writer_t *writer,
                                           const std::vector<dsk_splat_candidate_t> &splats) {
@@ -433,12 +465,259 @@ static void dsk_json_write_audit_summary(dsk_json_writer_t *writer,
     dsk_json_string(writer, audit.frontend_id.c_str());
     dsk_json_key(writer, "platform_triple");
     dsk_json_string(writer, audit.platform_triple.c_str());
+    dsk_json_key(writer, "import_source");
+    dsk_json_string(writer, audit.import_source.c_str());
+    dsk_json_key(writer, "import_details");
+    {
+        std::vector<std::string> details = audit.import_details;
+        size_t i;
+        std::sort(details.begin(), details.end(), dsk_string_less);
+        dsk_json_begin_array(writer);
+        for (i = 0u; i < details.size(); ++i) {
+            dsk_json_string(writer, details[i].c_str());
+        }
+        dsk_json_end_array(writer);
+    }
     dsk_json_key(writer, "manifest_digest64");
     dsk_json_u64_hex(writer, audit.manifest_digest64);
     dsk_json_key(writer, "request_digest64");
     dsk_json_u64_hex(writer, audit.request_digest64);
     dsk_json_key(writer, "plan_digest64");
     dsk_json_u64_hex(writer, audit.plan_digest64);
+    dsk_json_end_object(writer);
+}
+
+static bool dsk_audit_candidate_less(const dsk_audit_selection_candidate_t &a,
+                                     const dsk_audit_selection_candidate_t &b) {
+    return a.id < b.id;
+}
+
+static bool dsk_audit_refusal_less(const dsk_audit_refusal_t &a,
+                                   const dsk_audit_refusal_t &b) {
+    if (a.code != b.code) {
+        return a.code < b.code;
+    }
+    return a.detail < b.detail;
+}
+
+static bool dsk_string_less(const std::string &a, const std::string &b) {
+    return a < b;
+}
+
+static void dsk_json_write_audit_selection_dump(dsk_json_writer_t *writer,
+                                                const dsk_audit_selection_t &selection) {
+    std::vector<dsk_audit_selection_candidate_t> candidates = selection.candidates;
+    std::vector<dsk_splat_rejection_t> rejections = selection.rejections;
+    size_t i;
+    std::sort(candidates.begin(), candidates.end(), dsk_audit_candidate_less);
+    std::sort(rejections.begin(), rejections.end(), dsk_rejection_less);
+
+    dsk_json_begin_object(writer);
+    dsk_json_key(writer, "selected_splat");
+    dsk_json_string(writer, selection.selected_id.c_str());
+    dsk_json_key(writer, "selected_reason");
+    dsk_json_u32(writer, selection.selected_reason);
+    dsk_json_key(writer, "selected_reason_label");
+    dsk_json_string(writer, selected_reason_to_string(selection.selected_reason));
+    dsk_json_key(writer, "candidates");
+    dsk_json_begin_array(writer);
+    for (i = 0u; i < candidates.size(); ++i) {
+        dsk_json_begin_object(writer);
+        dsk_json_key(writer, "id");
+        dsk_json_string(writer, candidates[i].id.c_str());
+        dsk_json_key(writer, "caps_digest64");
+        dsk_json_u64_hex(writer, candidates[i].caps_digest64);
+        dsk_json_end_object(writer);
+    }
+    dsk_json_end_array(writer);
+    dsk_json_key(writer, "rejections");
+    dsk_json_begin_array(writer);
+    for (i = 0u; i < rejections.size(); ++i) {
+        dsk_json_begin_object(writer);
+        dsk_json_key(writer, "id");
+        dsk_json_string(writer, rejections[i].id.c_str());
+        dsk_json_key(writer, "code");
+        dsk_json_u32(writer, rejections[i].code);
+        if (!rejections[i].detail.empty()) {
+            dsk_json_key(writer, "detail");
+            dsk_json_string(writer, rejections[i].detail.c_str());
+        }
+        dsk_json_end_object(writer);
+    }
+    dsk_json_end_array(writer);
+    dsk_json_end_object(writer);
+}
+
+static void dsk_json_write_audit_dump(dsk_json_writer_t *writer,
+                                      const dsk_audit_t &audit) {
+    std::vector<dsk_audit_refusal_t> refusals = audit.refusals;
+    size_t i;
+    std::sort(refusals.begin(), refusals.end(), dsk_audit_refusal_less);
+
+    dsk_json_begin_object(writer);
+    dsk_json_key(writer, "run_id");
+    dsk_json_u64_hex(writer, audit.run_id);
+    dsk_json_key(writer, "manifest_digest64");
+    dsk_json_u64_hex(writer, audit.manifest_digest64);
+    dsk_json_key(writer, "request_digest64");
+    dsk_json_u64_hex(writer, audit.request_digest64);
+    dsk_json_key(writer, "splat_caps_digest64");
+    dsk_json_u64_hex(writer, audit.splat_caps_digest64);
+    dsk_json_key(writer, "resolved_set_digest64");
+    dsk_json_u64_hex(writer, audit.resolved_set_digest64);
+    dsk_json_key(writer, "plan_digest64");
+    dsk_json_u64_hex(writer, audit.plan_digest64);
+    dsk_json_key(writer, "selected_splat");
+    dsk_json_string(writer, audit.selected_splat.c_str());
+    dsk_json_key(writer, "frontend_id");
+    dsk_json_string(writer, audit.frontend_id.c_str());
+    dsk_json_key(writer, "platform_triple");
+    dsk_json_string(writer, audit.platform_triple.c_str());
+    dsk_json_key(writer, "import_source");
+    dsk_json_string(writer, audit.import_source.c_str());
+    dsk_json_key(writer, "import_details");
+    {
+        std::vector<std::string> details = audit.import_details;
+        std::sort(details.begin(), details.end(), dsk_string_less);
+        dsk_json_begin_array(writer);
+        for (i = 0u; i < details.size(); ++i) {
+            dsk_json_string(writer, details[i].c_str());
+        }
+        dsk_json_end_array(writer);
+    }
+    dsk_json_key(writer, "operation");
+    dsk_json_string(writer, op_to_string(audit.operation));
+    dsk_json_key(writer, "result");
+    dsk_json_write_error(writer, audit.result);
+    dsk_json_key(writer, "selection");
+    dsk_json_write_audit_selection_dump(writer, audit.selection);
+    dsk_json_key(writer, "refusals");
+    dsk_json_begin_array(writer);
+    for (i = 0u; i < refusals.size(); ++i) {
+        dsk_json_begin_object(writer);
+        dsk_json_key(writer, "code");
+        dsk_json_u32(writer, refusals[i].code);
+        dsk_json_key(writer, "detail");
+        dsk_json_string(writer, refusals[i].detail.c_str());
+        dsk_json_end_object(writer);
+    }
+    dsk_json_end_array(writer);
+    dsk_json_key(writer, "jobs");
+    dsk_json_begin_array(writer);
+    for (i = 0u; i < audit.jobs.size(); ++i) {
+        dsk_json_begin_object(writer);
+        dsk_json_key(writer, "job_id");
+        dsk_json_u32(writer, audit.jobs[i].job_id);
+        dsk_json_key(writer, "job_kind");
+        dsk_json_u32(writer, audit.jobs[i].job_kind);
+        dsk_json_key(writer, "job_status");
+        dsk_json_u32(writer, audit.jobs[i].job_status);
+        dsk_json_end_object(writer);
+    }
+    dsk_json_end_array(writer);
+    dsk_json_key(writer, "events");
+    dsk_json_begin_array(writer);
+    for (i = 0u; i < audit.events.size(); ++i) {
+        dsk_json_begin_object(writer);
+        dsk_json_key(writer, "event_id");
+        dsk_json_u32(writer, audit.events[i].event_id);
+        dsk_json_key(writer, "error");
+        dsk_json_write_error(writer, audit.events[i].error);
+        dsk_json_end_object(writer);
+    }
+    dsk_json_end_array(writer);
+    dsk_json_end_object(writer);
+}
+
+static int dsk_handle_audit_dump(const dss_services_t *services,
+                                 const char *command_name,
+                                 const char *path,
+                                 const char *out_path,
+                                 const char *format,
+                                 dsk_bool json) {
+    std::vector<dsk_u8> bytes;
+    dsk_audit_t audit;
+    dsk_status_t st = dsk_error_make(DSK_DOMAIN_NONE, DSK_CODE_OK, DSK_SUBCODE_NONE, 0u);
+    std::string payload;
+
+    if (!services || !path || !out_path || !format || std::strcmp(format, "json") != 0) {
+        st = dsk_error_make(DSK_DOMAIN_FRONTEND,
+                            DSK_CODE_INVALID_ARGS,
+                            DSK_SUBCODE_MISSING_FIELD,
+                            DSK_ERROR_FLAG_USER_ACTIONABLE);
+    } else if (!load_file(&services->fs, path, bytes)) {
+        st = dsk_error_make(DSK_DOMAIN_SERVICES,
+                            DSK_CODE_IO_ERROR,
+                            DSK_SUBCODE_NONE,
+                            0u);
+    } else {
+        st = dsk_audit_parse(&bytes[0], (dsk_u32)bytes.size(), &audit);
+    }
+    if (dsk_error_is_ok(st)) {
+        dsk_json_writer_t json_writer;
+        dsk_json_writer_init(&json_writer);
+        dsk_json_write_audit_dump(&json_writer, audit);
+        payload = dsk_json_writer_str(&json_writer);
+        if (!write_file(&services->fs,
+                        out_path,
+                        std::vector<dsk_u8>(payload.begin(), payload.end()))) {
+            st = dsk_error_make(DSK_DOMAIN_SERVICES,
+                                DSK_CODE_IO_ERROR,
+                                DSK_SUBCODE_NONE,
+                                0u);
+        }
+    }
+    if (json) {
+        dsk_cli_artifacts_t artifacts = dsk_cli_artifacts_empty();
+        dsk_cli_digests_t digests = dsk_cli_digests_empty();
+        dsk_json_writer_t writer;
+        artifacts.audit = path ? path : "";
+        digests.has_audit = dsk_digest_from_bytes(bytes, &digests.audit);
+        dsk_json_writer_init(&writer);
+        dsk_cli_json_begin(&writer,
+                           command_name ? command_name : "audit dump",
+                           st,
+                           dsk_error_to_exit_code(st),
+                           artifacts,
+                           digests);
+        dsk_json_key(&writer, "error");
+        dsk_json_write_error(&writer, st);
+        dsk_json_key(&writer, "format");
+        dsk_json_string(&writer, format ? format : "");
+        dsk_json_key(&writer, "output_path");
+        dsk_json_string(&writer, out_path ? out_path : "");
+        dsk_json_key(&writer, "output_bytes");
+        dsk_json_u32(&writer, (dsk_u32)payload.size());
+        dsk_cli_json_end(&writer);
+        std::printf("%s\n", dsk_json_writer_str(&writer).c_str());
+    } else if (dsk_error_is_ok(st)) {
+        std::printf("ok\n");
+    } else {
+        std::fprintf(stderr, "error: %s\n", dsk_error_to_string_stable(st));
+    }
+    return dsk_error_to_exit_code(st);
+}
+
+static const char *dsk_doctor_status_string(dsk_bool present, dsk_status_t st) {
+    if (!present) {
+        return "missing";
+    }
+    return dsk_error_is_ok(st) ? "ok" : "error";
+}
+
+static void dsk_json_write_doctor_item(dsk_json_writer_t *writer,
+                                       const char *path,
+                                       dsk_bool present,
+                                       dsk_status_t st) {
+    dsk_json_begin_object(writer);
+    dsk_json_key(writer, "path");
+    dsk_json_string(writer, path ? path : "");
+    dsk_json_key(writer, "present");
+    dsk_json_bool(writer, present);
+    dsk_json_key(writer, "status");
+    dsk_json_string(writer, dsk_doctor_status_string(present, st));
+    dsk_json_key(writer, "error");
+    dsk_json_write_error(writer, st);
     dsk_json_end_object(writer);
 }
 
@@ -503,6 +782,99 @@ static void dsk_json_write_state_summary(dsk_json_writer_t *writer,
     dsk_json_string(writer, state.install_root.c_str());
     dsk_json_key(writer, "ownership");
     dsk_json_string(writer, ownership_to_string(state.ownership));
+    dsk_json_key(writer, "state_version");
+    dsk_json_u32(writer, state.state_version);
+    dsk_json_key(writer, "migration_applied");
+    dsk_json_write_string_list_sorted(writer, state.migration_applied);
+    dsk_json_end_object(writer);
+}
+
+static bool dsk_state_artifact_less(const dsk_state_artifact_t &a,
+                                    const dsk_state_artifact_t &b) {
+    if (a.target_root_id != b.target_root_id) {
+        return a.target_root_id < b.target_root_id;
+    }
+    return a.path < b.path;
+}
+
+static bool dsk_state_reg_less(const dsk_state_registration_t &a,
+                               const dsk_state_registration_t &b) {
+    if (a.kind != b.kind) {
+        return a.kind < b.kind;
+    }
+    if (a.status != b.status) {
+        return a.status < b.status;
+    }
+    return a.value < b.value;
+}
+
+static void dsk_json_write_state_dump(dsk_json_writer_t *writer,
+                                      const dsk_installed_state_t &state) {
+    std::vector<dsk_state_artifact_t> artifacts = state.artifacts;
+    std::vector<dsk_state_registration_t> regs = state.registrations;
+    size_t i;
+    std::sort(artifacts.begin(), artifacts.end(), dsk_state_artifact_less);
+    std::sort(regs.begin(), regs.end(), dsk_state_reg_less);
+
+    dsk_json_begin_object(writer);
+    dsk_json_key(writer, "product_id");
+    dsk_json_string(writer, state.product_id.c_str());
+    dsk_json_key(writer, "installed_version");
+    dsk_json_string(writer, state.installed_version.c_str());
+    dsk_json_key(writer, "selected_splat");
+    dsk_json_string(writer, state.selected_splat.c_str());
+    dsk_json_key(writer, "install_scope");
+    dsk_json_string(writer, scope_to_string(state.install_scope));
+    dsk_json_key(writer, "install_root");
+    dsk_json_string(writer, state.install_root.c_str());
+    dsk_json_key(writer, "install_roots");
+    dsk_json_write_string_list_sorted(writer, state.install_roots);
+    dsk_json_key(writer, "ownership");
+    dsk_json_string(writer, ownership_to_string(state.ownership));
+    dsk_json_key(writer, "installed_components");
+    dsk_json_write_string_list_sorted(writer, state.installed_components);
+    dsk_json_key(writer, "manifest_digest64");
+    dsk_json_u64_hex(writer, state.manifest_digest64);
+    dsk_json_key(writer, "request_digest64");
+    dsk_json_u64_hex(writer, state.request_digest64);
+    dsk_json_key(writer, "previous_state_digest64");
+    dsk_json_u64_hex(writer, state.previous_state_digest64);
+    dsk_json_key(writer, "state_version");
+    dsk_json_u32(writer, state.state_version);
+    dsk_json_key(writer, "import_source");
+    dsk_json_string(writer, state.import_source.c_str());
+    dsk_json_key(writer, "import_details");
+    dsk_json_write_string_list_sorted(writer, state.import_details);
+    dsk_json_key(writer, "migration_applied");
+    dsk_json_write_string_list_sorted(writer, state.migration_applied);
+    dsk_json_key(writer, "artifacts");
+    dsk_json_begin_array(writer);
+    for (i = 0u; i < artifacts.size(); ++i) {
+        dsk_json_begin_object(writer);
+        dsk_json_key(writer, "target_root_id");
+        dsk_json_u32(writer, artifacts[i].target_root_id);
+        dsk_json_key(writer, "path");
+        dsk_json_string(writer, artifacts[i].path.c_str());
+        dsk_json_key(writer, "digest64");
+        dsk_json_u64_hex(writer, artifacts[i].digest64);
+        dsk_json_key(writer, "size");
+        dsk_json_u64(writer, artifacts[i].size);
+        dsk_json_end_object(writer);
+    }
+    dsk_json_end_array(writer);
+    dsk_json_key(writer, "registrations");
+    dsk_json_begin_array(writer);
+    for (i = 0u; i < regs.size(); ++i) {
+        dsk_json_begin_object(writer);
+        dsk_json_key(writer, "kind");
+        dsk_json_u32(writer, regs[i].kind);
+        dsk_json_key(writer, "status");
+        dsk_json_u32(writer, regs[i].status);
+        dsk_json_key(writer, "value");
+        dsk_json_string(writer, regs[i].value.c_str());
+        dsk_json_end_object(writer);
+    }
+    dsk_json_end_array(writer);
     dsk_json_end_object(writer);
 }
 
@@ -793,6 +1165,13 @@ static void print_usage(void) {
     std::printf("dominium-setup2 manifest dump --in <file> --out <file> --format json [--json]\n");
     std::printf("dominium-setup2 request validate --in <file> [--json]\n");
     std::printf("dominium-setup2 request dump --in <file> --out <file> --format json [--json]\n");
+    std::printf("dominium-setup2 audit dump --in <file> --out <file> --format json [--json]\n");
+    std::printf("dominium-setup2 dump-audit --audit <file> --out <file> --format json [--json]\n");
+    std::printf("dominium-setup2 state dump --in <file> --out <file> --format json [--json]\n");
+    std::printf("dominium-setup2 explain-refusal --audit <file> [--json]\n");
+    std::printf("dominium-setup2 doctor --state <file> [--plan <file>] [--journal <file>]\n");
+    std::printf("  [--txn-journal <file>] [--audit <file>] [--json]\n");
+    std::printf("dominium-setup2 import-legacy-state --in <file> [--out <file>] [--out-audit <file>] [--deterministic 0|1] [--json]\n");
     std::printf("dominium-setup2 request make --manifest <file> --op <install|upgrade|repair|uninstall|verify|status>\n");
     std::printf("  --scope <user|system|portable> --ui-mode <cli|tui|gui>\n");
     std::printf("  [--components <csv>] [--exclude <csv>] [--root <path>] --out-request <file>\n");
@@ -879,7 +1258,9 @@ int main(int argc, char **argv) {
                                     DSK_SUBCODE_NONE,
                                     0u);
             } else {
-                st = dsk_manifest_parse(&bytes[0], (dsk_u32)bytes.size(), &manifest);
+                st = dsk_manifest_parse(bytes.empty() ? 0 : &bytes[0],
+                                        (dsk_u32)bytes.size(),
+                                        &manifest);
             }
             if (json) {
                 dsk_cli_artifacts_t artifacts = dsk_cli_artifacts_empty();
@@ -927,7 +1308,9 @@ int main(int argc, char **argv) {
                                     DSK_SUBCODE_NONE,
                                     0u);
             } else {
-                st = dsk_manifest_parse(&bytes[0], (dsk_u32)bytes.size(), &manifest);
+                st = dsk_manifest_parse(bytes.empty() ? 0 : &bytes[0],
+                                        (dsk_u32)bytes.size(),
+                                        &manifest);
             }
             if (dsk_error_is_ok(st)) {
                 dsk_json_writer_t json_writer;
@@ -1222,6 +1605,492 @@ int main(int argc, char **argv) {
         }
         print_usage();
         return finish(&services, 1);
+    }
+
+    if (std::strcmp(argv[1], "audit") == 0) {
+        if (argc < 3) {
+            print_usage();
+            return finish(&services, 1);
+        }
+        dsk_args_view_t args;
+        dsk_args_view_init(&args, argc, argv, 3);
+        if (std::strcmp(argv[2], "dump") == 0) {
+            const char *path = dsk_args_get_value(&args, "--in");
+            const char *out_path = dsk_args_get_value(&args, "--out");
+            const char *format = dsk_args_get_value(&args, "--format");
+            dsk_bool json = dsk_cli_is_json_requested(&args);
+            int exit_code = dsk_handle_audit_dump(&services,
+                                                  "audit dump",
+                                                  path,
+                                                  out_path,
+                                                  format,
+                                                  json);
+            return finish(&services, exit_code);
+        }
+        print_usage();
+        return finish(&services, 1);
+    }
+
+    if (std::strcmp(argv[1], "dump-audit") == 0) {
+        dsk_args_view_t args;
+        dsk_args_view_init(&args, argc, argv, 2);
+        const char *path = dsk_args_get_value(&args, "--audit");
+        const char *out_path = dsk_args_get_value(&args, "--out");
+        const char *format = dsk_args_get_value(&args, "--format");
+        dsk_bool json = dsk_cli_is_json_requested(&args);
+        if (!path) {
+            path = dsk_args_get_value(&args, "--in");
+        }
+        return finish(&services,
+                      dsk_handle_audit_dump(&services,
+                                            "dump-audit",
+                                            path,
+                                            out_path,
+                                            format,
+                                            json));
+    }
+
+    if (std::strcmp(argv[1], "state") == 0) {
+        if (argc < 3) {
+            print_usage();
+            return finish(&services, 1);
+        }
+        dsk_args_view_t args;
+        dsk_args_view_init(&args, argc, argv, 3);
+        if (std::strcmp(argv[2], "dump") == 0) {
+            const char *path = dsk_args_get_value(&args, "--in");
+            const char *out_path = dsk_args_get_value(&args, "--out");
+            const char *format = dsk_args_get_value(&args, "--format");
+            dsk_bool json = dsk_cli_is_json_requested(&args);
+            std::vector<dsk_u8> bytes;
+            dsk_installed_state_t state;
+            dsk_status_t st = dsk_error_make(DSK_DOMAIN_NONE, DSK_CODE_OK, DSK_SUBCODE_NONE, 0u);
+            std::string payload;
+            if (!path || !out_path || !format || std::strcmp(format, "json") != 0) {
+                st = dsk_error_make(DSK_DOMAIN_FRONTEND,
+                                    DSK_CODE_INVALID_ARGS,
+                                    DSK_SUBCODE_MISSING_FIELD,
+                                    DSK_ERROR_FLAG_USER_ACTIONABLE);
+            } else if (!load_file(&services.fs, path, bytes)) {
+                st = dsk_error_make(DSK_DOMAIN_SERVICES,
+                                    DSK_CODE_IO_ERROR,
+                                    DSK_SUBCODE_NONE,
+                                    0u);
+            } else {
+                st = dsk_installed_state_parse(&bytes[0], (dsk_u32)bytes.size(), &state);
+            }
+            if (dsk_error_is_ok(st)) {
+                dsk_json_writer_t json_writer;
+                dsk_json_writer_init(&json_writer);
+                dsk_json_write_state_dump(&json_writer, state);
+                payload = dsk_json_writer_str(&json_writer);
+                if (!write_file(&services.fs,
+                                out_path,
+                                std::vector<dsk_u8>(payload.begin(), payload.end()))) {
+                    st = dsk_error_make(DSK_DOMAIN_SERVICES,
+                                        DSK_CODE_IO_ERROR,
+                                        DSK_SUBCODE_NONE,
+                                        0u);
+                }
+            }
+            if (json) {
+                dsk_cli_artifacts_t artifacts = dsk_cli_artifacts_empty();
+                dsk_cli_digests_t digests = dsk_cli_digests_empty();
+                dsk_json_writer_t writer;
+                artifacts.state = path ? path : "";
+                digests.has_state = dsk_digest_from_bytes(bytes, &digests.state);
+                dsk_json_writer_init(&writer);
+                dsk_cli_json_begin(&writer,
+                                   "state dump",
+                                   st,
+                                   dsk_error_to_exit_code(st),
+                                   artifacts,
+                                   digests);
+                dsk_json_key(&writer, "error");
+                dsk_json_write_error(&writer, st);
+                dsk_json_key(&writer, "format");
+                dsk_json_string(&writer, format ? format : "");
+                dsk_json_key(&writer, "output_path");
+                dsk_json_string(&writer, out_path ? out_path : "");
+                dsk_json_key(&writer, "output_bytes");
+                dsk_json_u32(&writer, (dsk_u32)payload.size());
+                dsk_cli_json_end(&writer);
+                std::printf("%s\n", dsk_json_writer_str(&writer).c_str());
+            } else if (dsk_error_is_ok(st)) {
+                std::printf("ok\n");
+            } else {
+                std::fprintf(stderr, "error: %s\n", dsk_error_to_string_stable(st));
+            }
+            return finish(&services, dsk_error_to_exit_code(st));
+        }
+        print_usage();
+        return finish(&services, 1);
+    }
+
+    if (std::strcmp(argv[1], "explain-refusal") == 0) {
+        dsk_args_view_t args;
+        dsk_args_view_init(&args, argc, argv, 2);
+        const char *audit_path = dsk_args_get_value(&args, "--audit");
+        dsk_bool json = dsk_cli_is_json_requested(&args);
+        std::vector<dsk_u8> bytes;
+        dsk_audit_t audit;
+        dsk_status_t st = dsk_error_make(DSK_DOMAIN_NONE, DSK_CODE_OK, DSK_SUBCODE_NONE, 0u);
+        std::vector<dsk_audit_refusal_t> refusals;
+
+        if (!audit_path) {
+            st = dsk_error_make(DSK_DOMAIN_FRONTEND,
+                                DSK_CODE_INVALID_ARGS,
+                                DSK_SUBCODE_MISSING_FIELD,
+                                DSK_ERROR_FLAG_USER_ACTIONABLE);
+        } else if (!load_file(&services.fs, audit_path, bytes)) {
+            st = dsk_error_make(DSK_DOMAIN_SERVICES,
+                                DSK_CODE_IO_ERROR,
+                                DSK_SUBCODE_NONE,
+                                0u);
+        } else {
+            st = dsk_audit_parse(&bytes[0], (dsk_u32)bytes.size(), &audit);
+        }
+
+        if (dsk_error_is_ok(st)) {
+            refusals = audit.refusals;
+            if (refusals.empty() && !dsk_error_is_ok(audit.result)) {
+                dsk_u32 subcode = dom::core_audit::err_subcode(audit.result);
+                if (subcode != 0u) {
+                    dsk_audit_refusal_t ref;
+                    ref.code = (dsk_u16)subcode;
+                    ref.detail = dsk_error_to_string_stable(audit.result);
+                    refusals.push_back(ref);
+                }
+            }
+            std::sort(refusals.begin(), refusals.end(), dsk_audit_refusal_less);
+        }
+
+        if (json) {
+            dsk_cli_artifacts_t artifacts = dsk_cli_artifacts_empty();
+            dsk_cli_digests_t digests = dsk_cli_digests_empty();
+            dsk_json_writer_t writer;
+            artifacts.audit = audit_path ? audit_path : "";
+            digests.has_audit = dsk_digest_from_bytes(bytes, &digests.audit);
+            dsk_json_writer_init(&writer);
+            dsk_cli_json_begin(&writer,
+                               "explain-refusal",
+                               st,
+                               dsk_error_to_exit_code(st),
+                               artifacts,
+                               digests);
+            dsk_json_key(&writer, "error");
+            dsk_json_write_error(&writer, st);
+            if (dsk_error_is_ok(st)) {
+                size_t i;
+                dsk_json_key(&writer, "refusals");
+                dsk_json_begin_array(&writer);
+                for (i = 0u; i < refusals.size(); ++i) {
+                    dsk_json_begin_object(&writer);
+                    dsk_json_key(&writer, "code");
+                    dsk_json_u32(&writer, refusals[i].code);
+                    dsk_json_key(&writer, "label");
+                    dsk_json_string(&writer, refusal_code_to_string(refusals[i].code));
+                    dsk_json_key(&writer, "detail");
+                    dsk_json_string(&writer, refusals[i].detail.c_str());
+                    dsk_json_end_object(&writer);
+                }
+                dsk_json_end_array(&writer);
+            }
+            dsk_cli_json_end(&writer);
+            std::printf("%s\n", dsk_json_writer_str(&writer).c_str());
+        } else if (dsk_error_is_ok(st)) {
+            size_t i;
+            if (refusals.empty()) {
+                std::printf("no_refusals\n");
+            } else {
+                for (i = 0u; i < refusals.size(); ++i) {
+                    std::printf("code=%u label=%s detail=%s\n",
+                                (unsigned)refusals[i].code,
+                                refusal_code_to_string(refusals[i].code),
+                                refusals[i].detail.c_str());
+                }
+            }
+        } else {
+            std::fprintf(stderr, "error: %s\n", dsk_error_to_string_stable(st));
+        }
+        return finish(&services, dsk_error_to_exit_code(st));
+    }
+
+    if (std::strcmp(argv[1], "doctor") == 0) {
+        dsk_args_view_t args;
+        dsk_args_view_init(&args, argc, argv, 2);
+        const char *state_path = dsk_args_get_value(&args, "--state");
+        const char *plan_path = dsk_args_get_value(&args, "--plan");
+        const char *journal_path = dsk_args_get_value(&args, "--journal");
+        const char *txn_path = dsk_args_get_value(&args, "--txn-journal");
+        const char *audit_path = dsk_args_get_value(&args, "--audit");
+        dsk_bool json = dsk_cli_is_json_requested(&args);
+        dsk_status_t st = dsk_error_make(DSK_DOMAIN_NONE, DSK_CODE_OK, DSK_SUBCODE_NONE, 0u);
+        dsk_status_t state_st = st;
+        dsk_status_t plan_st = st;
+        dsk_status_t journal_st = st;
+        dsk_status_t txn_st = st;
+        dsk_status_t audit_st = st;
+        dsk_bool state_present = state_path ? DSK_TRUE : DSK_FALSE;
+        dsk_bool plan_present = plan_path ? DSK_TRUE : DSK_FALSE;
+        dsk_bool journal_present = journal_path ? DSK_TRUE : DSK_FALSE;
+        dsk_bool txn_present = txn_path ? DSK_TRUE : DSK_FALSE;
+        dsk_bool audit_present = audit_path ? DSK_TRUE : DSK_FALSE;
+        std::vector<dsk_u8> bytes;
+
+        if (!state_present) {
+            state_st = dsk_error_make(DSK_DOMAIN_FRONTEND,
+                                      DSK_CODE_INVALID_ARGS,
+                                      DSK_SUBCODE_MISSING_FIELD,
+                                      DSK_ERROR_FLAG_USER_ACTIONABLE);
+            st = state_st;
+        } else if (!load_file(&services.fs, state_path, bytes)) {
+            state_st = dsk_error_make(DSK_DOMAIN_SERVICES,
+                                      DSK_CODE_IO_ERROR,
+                                      DSK_SUBCODE_NONE,
+                                      0u);
+            st = state_st;
+        } else {
+            dsk_installed_state_t state;
+            state_st = dsk_installed_state_parse(&bytes[0], (dsk_u32)bytes.size(), &state);
+            if (!dsk_error_is_ok(state_st) && dsk_error_is_ok(st)) {
+                st = state_st;
+            }
+        }
+
+        if (plan_present) {
+            bytes.clear();
+            if (!load_file(&services.fs, plan_path, bytes)) {
+                plan_st = dsk_error_make(DSK_DOMAIN_SERVICES,
+                                         DSK_CODE_IO_ERROR,
+                                         DSK_SUBCODE_NONE,
+                                         0u);
+            } else {
+                dsk_plan_t plan;
+                plan_st = dsk_plan_parse(&bytes[0], (dsk_u32)bytes.size(), &plan);
+            }
+            if (!dsk_error_is_ok(plan_st) && dsk_error_is_ok(st)) {
+                st = plan_st;
+            }
+        }
+
+        if (journal_present) {
+            bytes.clear();
+            if (!load_file(&services.fs, journal_path, bytes)) {
+                journal_st = dsk_error_make(DSK_DOMAIN_SERVICES,
+                                            DSK_CODE_IO_ERROR,
+                                            DSK_SUBCODE_NONE,
+                                            0u);
+            } else {
+                dsk_job_journal_t journal;
+                journal_st = dsk_job_journal_parse(&bytes[0], (dsk_u32)bytes.size(), &journal);
+            }
+            if (!dsk_error_is_ok(journal_st) && dsk_error_is_ok(st)) {
+                st = journal_st;
+            }
+        }
+
+        if (txn_present) {
+            bytes.clear();
+            if (!load_file(&services.fs, txn_path, bytes)) {
+                txn_st = dsk_error_make(DSK_DOMAIN_SERVICES,
+                                        DSK_CODE_IO_ERROR,
+                                        DSK_SUBCODE_NONE,
+                                        0u);
+            } else {
+                dss_txn_journal_t journal;
+                dss_txn_journal_clear(&journal);
+                if (!dss_error_is_ok(dss_txn_journal_parse(&bytes[0],
+                                                           (dss_u32)bytes.size(),
+                                                           &journal))) {
+                    txn_st = dsk_error_make(DSK_DOMAIN_FRONTEND,
+                                            DSK_CODE_PARSE_ERROR,
+                                            DSK_SUBCODE_INVALID_FIELD,
+                                            DSK_ERROR_FLAG_USER_ACTIONABLE);
+                }
+            }
+            if (!dsk_error_is_ok(txn_st) && dsk_error_is_ok(st)) {
+                st = txn_st;
+            }
+        }
+
+        if (audit_present) {
+            bytes.clear();
+            if (!load_file(&services.fs, audit_path, bytes)) {
+                audit_st = dsk_error_make(DSK_DOMAIN_SERVICES,
+                                          DSK_CODE_IO_ERROR,
+                                          DSK_SUBCODE_NONE,
+                                          0u);
+            } else {
+                dsk_audit_t audit;
+                audit_st = dsk_audit_parse(&bytes[0], (dsk_u32)bytes.size(), &audit);
+            }
+            if (!dsk_error_is_ok(audit_st) && dsk_error_is_ok(st)) {
+                st = audit_st;
+            }
+        }
+
+        if (json) {
+            dsk_cli_artifacts_t artifacts = dsk_cli_artifacts_empty();
+            dsk_cli_digests_t digests = dsk_cli_digests_empty();
+            dsk_json_writer_t writer;
+            artifacts.state = state_path ? state_path : "";
+            artifacts.plan = plan_path ? plan_path : "";
+            artifacts.journal = journal_path ? journal_path : "";
+            artifacts.txn_journal = txn_path ? txn_path : "";
+            artifacts.audit = audit_path ? audit_path : "";
+            dsk_json_writer_init(&writer);
+            dsk_cli_json_begin(&writer,
+                               "doctor",
+                               st,
+                               dsk_error_to_exit_code(st),
+                               artifacts,
+                               digests);
+            dsk_json_key(&writer, "error");
+            dsk_json_write_error(&writer, st);
+            dsk_json_key(&writer, "state");
+            dsk_json_write_doctor_item(&writer, state_path, state_present, state_st);
+            dsk_json_key(&writer, "plan");
+            dsk_json_write_doctor_item(&writer, plan_path, plan_present, plan_st);
+            dsk_json_key(&writer, "journal");
+            dsk_json_write_doctor_item(&writer, journal_path, journal_present, journal_st);
+            dsk_json_key(&writer, "txn_journal");
+            dsk_json_write_doctor_item(&writer, txn_path, txn_present, txn_st);
+            dsk_json_key(&writer, "audit");
+            dsk_json_write_doctor_item(&writer, audit_path, audit_present, audit_st);
+            dsk_cli_json_end(&writer);
+            std::printf("%s\n", dsk_json_writer_str(&writer).c_str());
+        } else {
+            std::printf("state: %s %s\n",
+                        dsk_doctor_status_string(state_present, state_st),
+                        state_path ? state_path : "");
+            std::printf("plan: %s %s\n",
+                        dsk_doctor_status_string(plan_present, plan_st),
+                        plan_path ? plan_path : "");
+            std::printf("journal: %s %s\n",
+                        dsk_doctor_status_string(journal_present, journal_st),
+                        journal_path ? journal_path : "");
+            std::printf("txn_journal: %s %s\n",
+                        dsk_doctor_status_string(txn_present, txn_st),
+                        txn_path ? txn_path : "");
+            std::printf("audit: %s %s\n",
+                        dsk_doctor_status_string(audit_present, audit_st),
+                        audit_path ? audit_path : "");
+            if (!dsk_error_is_ok(st)) {
+                std::fprintf(stderr, "error: %s\n", dsk_error_to_string_stable(st));
+            }
+        }
+        return finish(&services, dsk_error_to_exit_code(st));
+    }
+
+    if (std::strcmp(argv[1], "import-legacy-state") == 0) {
+        dsk_args_view_t args;
+        dsk_args_view_init(&args, argc, argv, 2);
+        const char *in_path = dsk_args_get_value(&args, "--in");
+        const char *out_state = dsk_args_get_value(&args, "--out");
+        const char *out_audit = dsk_args_get_value(&args, "--out-audit");
+        dsk_bool json = dsk_cli_is_json_requested(&args);
+        dsk_bool deterministic = dsk_cli_parse_bool_option(&args, "--deterministic", DSK_TRUE);
+        std::vector<dsk_u8> legacy_bytes;
+        dsk_mem_sink_t state_sink;
+        dsk_mem_sink_t audit_sink;
+        dsk_status_t st = dsk_error_make(DSK_DOMAIN_NONE, DSK_CODE_OK, DSK_SUBCODE_NONE, 0u);
+
+        if (!in_path) {
+            st = dsk_error_make(DSK_DOMAIN_FRONTEND,
+                                DSK_CODE_INVALID_ARGS,
+                                DSK_SUBCODE_MISSING_FIELD,
+                                DSK_ERROR_FLAG_USER_ACTIONABLE);
+        }
+        if (!out_state) {
+            out_state = "installed_state.tlv";
+        }
+        if (!out_audit) {
+            out_audit = "setup_audit.tlv";
+        }
+        if (dsk_error_is_ok(st)) {
+            if (!load_file(&services.fs, in_path, legacy_bytes)) {
+                st = dsk_error_make(DSK_DOMAIN_SERVICES,
+                                    DSK_CODE_IO_ERROR,
+                                    DSK_SUBCODE_NONE,
+                                    0u);
+            }
+        }
+        if (dsk_error_is_ok(st)) {
+            dsk_import_request_t import_req;
+            dsk_import_request_init(&import_req);
+            import_req.services = &services;
+            import_req.legacy_state_bytes = legacy_bytes.empty() ? 0 : &legacy_bytes[0];
+            import_req.legacy_state_size = (dsk_u32)legacy_bytes.size();
+            import_req.deterministic_mode = deterministic ? 1u : 0u;
+            import_req.out_state.user = &state_sink;
+            import_req.out_state.write = dsk_mem_sink_write;
+            import_req.out_audit.user = &audit_sink;
+            import_req.out_audit.write = dsk_mem_sink_write;
+            st = dsk_import_legacy_state(&import_req);
+        }
+
+        if (!state_sink.data.empty()) {
+            if (!write_file(&services.fs, out_state, state_sink.data)) {
+                st = dsk_error_make(DSK_DOMAIN_SERVICES,
+                                    DSK_CODE_IO_ERROR,
+                                    DSK_SUBCODE_NONE,
+                                    0u);
+            }
+        }
+        if (!audit_sink.data.empty()) {
+            if (!write_file(&services.fs, out_audit, audit_sink.data)) {
+                st = dsk_error_make(DSK_DOMAIN_SERVICES,
+                                    DSK_CODE_IO_ERROR,
+                                    DSK_SUBCODE_NONE,
+                                    0u);
+            }
+        }
+
+        if (json) {
+            dsk_cli_artifacts_t artifacts = dsk_cli_artifacts_empty();
+            dsk_cli_digests_t digests = dsk_cli_digests_empty();
+            dsk_json_writer_t writer;
+            dsk_audit_t audit;
+            dsk_bool have_audit = DSK_FALSE;
+            artifacts.state = out_state ? out_state : "";
+            artifacts.audit = out_audit ? out_audit : "";
+            if (!state_sink.data.empty()) {
+                digests.has_state = dsk_digest_from_bytes(state_sink.data, &digests.state);
+            }
+            if (!audit_sink.data.empty()) {
+                digests.has_audit = dsk_digest_from_bytes(audit_sink.data, &digests.audit);
+                if (dsk_error_is_ok(dsk_audit_parse(&audit_sink.data[0],
+                                                    (dsk_u32)audit_sink.data.size(),
+                                                    &audit))) {
+                    have_audit = DSK_TRUE;
+                }
+            }
+            dsk_json_writer_init(&writer);
+            dsk_cli_json_begin(&writer,
+                               "import-legacy-state",
+                               st,
+                               dsk_error_to_exit_code(st),
+                               artifacts,
+                               digests);
+            dsk_json_key(&writer, "error");
+            dsk_json_write_error(&writer, st);
+            dsk_json_key(&writer, "input_path");
+            dsk_json_string(&writer, in_path ? in_path : "");
+            dsk_json_key(&writer, "deterministic");
+            dsk_json_bool(&writer, deterministic);
+            if (have_audit) {
+                dsk_json_key(&writer, "audit");
+                dsk_json_write_audit_summary(&writer, audit);
+            }
+            dsk_cli_json_end(&writer);
+            std::printf("%s\n", dsk_json_writer_str(&writer).c_str());
+        } else if (dsk_error_is_ok(st)) {
+            std::printf("ok\n");
+        } else {
+            std::fprintf(stderr, "error: %s\n", dsk_error_to_string_stable(st));
+        }
+        return finish(&services, dsk_error_to_exit_code(st));
     }
 
     if (std::strcmp(argv[1], "validate-manifest") == 0) {

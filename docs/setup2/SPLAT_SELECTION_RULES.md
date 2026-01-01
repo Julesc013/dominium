@@ -7,9 +7,10 @@
 - Optional: `requested_splat_id`.
 
 ## Algorithm
-Phase A: build candidate list from registry, sorted lexicographically by ID.
+Phase A: build candidate list from registry, sorted in lexicographic order by ID (bytewise). This is the canonical order.
 
 Phase B: if `requested_splat_id` is present:
+- If the ID is in the removed list, fail with `SPLAT_REMOVED`.
 - If the ID is not found in the registry, fail with `SPLAT_NOT_FOUND`.
 - Otherwise reject all non-requested candidates with `REQUESTED_ID_MISMATCH` and
   continue validating the requested candidate.
@@ -24,10 +25,13 @@ Phase C: for each candidate, apply checks in order and reject on the first failu
 7) Prohibited caps are present.
 8) Manifest `supported_targets` does not include the request target triple.
 
-Phase D: if any compatible candidates remain, select the first in sorted order.
+Phase D: if any compatible candidates remain, select the first compatible in canonical order.
 If none remain, fail with `NO_COMPATIBLE_SPLAT`.
 
 Phase E: emit audit evidence with candidate list, rejections, selected ID, and reason.
+
+## Deprecation
+- Deprecated SPLATs are still selectable but emit an audit warning event.
 
 ## Rejection codes
 - `1` REQUESTED_ID_MISMATCH

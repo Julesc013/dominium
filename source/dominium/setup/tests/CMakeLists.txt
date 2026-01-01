@@ -68,6 +68,11 @@ set_target_properties(dsu_invocation_parity_test PROPERTIES
 add_test(NAME dsu_invocation_parity_test COMMAND dsu_invocation_parity_test ${CMAKE_CURRENT_SOURCE_DIR})
 
 if(UNIX AND NOT APPLE AND TARGET dominium-setup-tui)
+    if(TARGET dominium-setup-legacy)
+        set(_dom_setup_cli_legacy $<TARGET_FILE:dominium-setup-legacy>)
+    else()
+        set(_dom_setup_cli_legacy $<TARGET_FILE:dominium-setup>)
+    endif()
     add_executable(dsu_linux_parity_test
         dsu_linux_parity_test.c
     )
@@ -82,10 +87,17 @@ if(UNIX AND NOT APPLE AND TARGET dominium-setup-tui)
             setup_services_impl_platform
     )
 
-    add_dependencies(dsu_linux_parity_test
-        dominium-setup
-        dominium-setup-tui
-    )
+    if(TARGET dominium-setup-legacy)
+        add_dependencies(dsu_linux_parity_test
+            dominium-setup-legacy
+            dominium-setup-tui
+        )
+    else()
+        add_dependencies(dsu_linux_parity_test
+            dominium-setup
+            dominium-setup-tui
+        )
+    endif()
 
     set_target_properties(dsu_linux_parity_test PROPERTIES
         C_STANDARD 90
@@ -95,7 +107,7 @@ if(UNIX AND NOT APPLE AND TARGET dominium-setup-tui)
 
     add_test(NAME test_linux_tui_invocation_parity
         COMMAND dsu_linux_parity_test
-            $<TARGET_FILE:dominium-setup>
+            ${_dom_setup_cli_legacy}
             $<TARGET_FILE:dominium-setup-tui>
             ${CMAKE_CURRENT_SOURCE_DIR}
             invocation
@@ -103,7 +115,7 @@ if(UNIX AND NOT APPLE AND TARGET dominium-setup-tui)
 
     add_test(NAME test_linux_cli_plan_digest_parity
         COMMAND dsu_linux_parity_test
-            $<TARGET_FILE:dominium-setup>
+            ${_dom_setup_cli_legacy}
             $<TARGET_FILE:dominium-setup-tui>
             ${CMAKE_CURRENT_SOURCE_DIR}
             plan
@@ -118,6 +130,11 @@ if(UNIX AND NOT APPLE AND TARGET dominium-setup-tui)
 endif()
 
 if(APPLE AND TARGET dominium-setup-gui)
+    if(TARGET dominium-setup-legacy)
+        set(_dom_setup_cli_legacy $<TARGET_FILE:dominium-setup-legacy>)
+    else()
+        set(_dom_setup_cli_legacy $<TARGET_FILE:dominium-setup>)
+    endif()
     add_executable(dsu_macos_parity_test
         dsu_macos_parity_test.c
     )
@@ -132,10 +149,17 @@ if(APPLE AND TARGET dominium-setup-gui)
             setup_services_impl_platform
     )
 
-    add_dependencies(dsu_macos_parity_test
-        dominium-setup
-        dominium-setup-gui
-    )
+    if(TARGET dominium-setup-legacy)
+        add_dependencies(dsu_macos_parity_test
+            dominium-setup-legacy
+            dominium-setup-gui
+        )
+    else()
+        add_dependencies(dsu_macos_parity_test
+            dominium-setup
+            dominium-setup-gui
+        )
+    endif()
 
     set_target_properties(dsu_macos_parity_test PROPERTIES
         C_STANDARD 90
@@ -145,7 +169,7 @@ if(APPLE AND TARGET dominium-setup-gui)
 
     add_test(NAME test_macos_invocation_parity_cli_vs_gui
         COMMAND dsu_macos_parity_test
-            $<TARGET_FILE:dominium-setup>
+            ${_dom_setup_cli_legacy}
             $<TARGET_FILE:dominium-setup-gui>
             ${CMAKE_CURRENT_SOURCE_DIR}
             invocation
@@ -153,7 +177,7 @@ if(APPLE AND TARGET dominium-setup-gui)
 
     add_test(NAME test_macos_plan_digest_parity
         COMMAND dsu_macos_parity_test
-            $<TARGET_FILE:dominium-setup>
+            ${_dom_setup_cli_legacy}
             $<TARGET_FILE:dominium-setup-gui>
             ${CMAKE_CURRENT_SOURCE_DIR}
             plan
@@ -269,9 +293,15 @@ target_link_libraries(dsu_cli_test
         setup_services_impl_platform
 )
 
-add_dependencies(dsu_cli_test
-    dominium-setup
-)
+if(TARGET dominium-setup-legacy)
+    add_dependencies(dsu_cli_test
+        dominium-setup-legacy
+    )
+else()
+    add_dependencies(dsu_cli_test
+        dominium-setup
+    )
+endif()
 
 set_target_properties(dsu_cli_test PROPERTIES
     C_STANDARD 90
@@ -279,7 +309,14 @@ set_target_properties(dsu_cli_test PROPERTIES
     C_EXTENSIONS OFF
 )
 
-add_test(NAME dsu_cli_test COMMAND dsu_cli_test $<TARGET_FILE:dominium-setup> ${CMAKE_CURRENT_SOURCE_DIR})
+get_filename_component(_dom_repo_root "${CMAKE_CURRENT_SOURCE_DIR}/../../../../" ABSOLUTE)
+if(TARGET dominium-setup-legacy)
+    set(_dom_setup_cli $<TARGET_FILE:dominium-setup-legacy>)
+else()
+    set(_dom_setup_cli $<TARGET_FILE:dominium-setup>)
+endif()
+
+add_test(NAME dsu_cli_test COMMAND dsu_cli_test ${_dom_setup_cli} ${CMAKE_CURRENT_SOURCE_DIR})
 set_tests_properties(dsu_cli_test PROPERTIES
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
 )
@@ -298,10 +335,17 @@ target_link_libraries(dsu_setup_matrix_test
         setup_services_impl_platform
 )
 
-add_dependencies(dsu_setup_matrix_test
-    dominium-setup
-    dominium-setup-steam
-)
+if(TARGET dominium-setup-legacy)
+    add_dependencies(dsu_setup_matrix_test
+        dominium-setup-legacy
+        dominium-setup-steam
+    )
+else()
+    add_dependencies(dsu_setup_matrix_test
+        dominium-setup
+        dominium-setup-steam
+    )
+endif()
 
 if(TARGET dominium-setup-linux)
     add_dependencies(dsu_setup_matrix_test
@@ -335,8 +379,6 @@ set_target_properties(dsu_platform_iface_test PROPERTIES
     C_EXTENSIONS OFF
 )
 
-get_filename_component(_dom_repo_root "${CMAKE_CURRENT_SOURCE_DIR}/../../../../" ABSOLUTE)
-set(_dom_setup_cli $<TARGET_FILE:dominium-setup>)
 set(_dom_steam_cli $<TARGET_FILE:dominium-setup-steam>)
 if(TARGET dominium-setup-linux)
     set(_dom_linux_cli $<TARGET_FILE:dominium-setup-linux>)

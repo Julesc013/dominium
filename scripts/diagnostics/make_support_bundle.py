@@ -340,7 +340,8 @@ def _collect_pack_manifests(home: str, manifest_path: str) -> list[Tuple[str, st
 
 
 def _run_deterministic_archive(input_dir: str, output_path: str, fmt: str, root_name: str) -> None:
-    script = os.path.join("scripts", "packaging", "make_deterministic_archive.py")
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    script = os.path.abspath(os.path.join(script_dir, "..", "packaging", "make_deterministic_archive.py"))
     argv = [
         sys.executable,
         script,

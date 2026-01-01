@@ -46,11 +46,11 @@ dss_error_t dss_services_init_real(dss_services_t *out_services) {
     dss_archive_init_real(&out_services->archive);
     dss_perms_init_real(&out_services->perms);
     dss_platform_init_real(&out_services->platform);
-    out_services->provider_content = provider_content_local_fs_v1();
-    out_services->provider_trust = provider_trust_null_v1();
-    out_services->provider_keychain = provider_keychain_null_v1();
-    out_services->provider_net = provider_net_null_v1();
-    out_services->provider_os_integration = provider_os_integration_null_v1();
+    out_services->provider_content = 0;
+    out_services->provider_trust = 0;
+    out_services->provider_keychain = 0;
+    out_services->provider_net = 0;
+    out_services->provider_os_integration = 0;
     return dss_error_make(DSS_DOMAIN_SERVICES, DSS_CODE_OK, DSS_SUBCODE_NONE, 0u);
 }
 
@@ -72,11 +72,11 @@ dss_error_t dss_services_init_fake(const dss_services_config_t *config,
     dss_archive_init_fake(&out_services->archive);
     dss_perms_init_fake(&out_services->perms, sandbox_root);
     dss_platform_init_fake(&out_services->platform, platform_triple);
-    out_services->provider_content = provider_content_local_fs_v1();
-    out_services->provider_trust = provider_trust_null_v1();
-    out_services->provider_keychain = provider_keychain_null_v1();
-    out_services->provider_net = provider_net_null_v1();
-    out_services->provider_os_integration = provider_os_integration_null_v1();
+    out_services->provider_content = 0;
+    out_services->provider_trust = 0;
+    out_services->provider_keychain = 0;
+    out_services->provider_net = 0;
+    out_services->provider_os_integration = 0;
     return dss_error_make(DSS_DOMAIN_SERVICES, DSS_CODE_OK, DSS_SUBCODE_NONE, 0u);
 }
 

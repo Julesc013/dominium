@@ -7,9 +7,23 @@ add_subdirectory(setup)
 add_subdirectory(providers)
 add_subdirectory(tools)
 
+if(TARGET dominium-launcher)
+    if(NOT TARGET dsk_kernel)
+        message(FATAL_ERROR "Setup2 kernel (dsk_kernel) is required for dominium-launcher")
+    endif()
+    target_link_libraries(dominium-launcher PRIVATE dsk_kernel)
+endif()
+if(TARGET dominium_launcher_state_smoke_tests)
+    if(NOT TARGET dsk_kernel)
+        message(FATAL_ERROR "Setup2 kernel (dsk_kernel) is required for launcher_state_smoke_tests")
+    endif()
+    target_link_libraries(dominium_launcher_state_smoke_tests PRIVATE dsk_kernel)
+endif()
+
 set(DOM_KERNEL_ALLOWED_LINK_LIBS
     core_tlv
     core_audit
+    core_installed_state
     core_util
     core_err
     core_log

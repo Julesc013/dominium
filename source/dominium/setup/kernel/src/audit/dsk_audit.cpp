@@ -13,6 +13,8 @@ void dsk_audit_clear(dsk_audit_t *audit) {
     audit->selected_splat.clear();
     audit->frontend_id.clear();
     audit->platform_triple.clear();
+    audit->import_source.clear();
+    audit->import_details.clear();
     audit->operation = 0u;
     audit->result = dsk_error_make(DSK_DOMAIN_NONE, DSK_CODE_OK, DSK_SUBCODE_NONE, 0u);
     audit->selection.candidates.clear();
