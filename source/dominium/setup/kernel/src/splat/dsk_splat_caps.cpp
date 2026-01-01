@@ -18,6 +18,7 @@ void dsk_splat_caps_clear(dsk_splat_caps_t *caps) {
     caps->default_root_convention = DSK_SPLAT_ROOT_CONVENTION_UNKNOWN;
     caps->elevation_required = DSK_SPLAT_ELEVATION_NEVER;
     caps->rollback_semantics = DSK_SPLAT_ROLLBACK_NONE;
+    caps->is_deprecated = DSK_FALSE;
     caps->notes.clear();
 }
 
@@ -103,6 +104,7 @@ dsk_u64 dsk_splat_caps_digest64(const dsk_splat_caps_t *caps) {
     hash = dsk_digest_u16(hash, caps->default_root_convention);
     hash = dsk_digest_u16(hash, caps->elevation_required);
     hash = dsk_digest_u16(hash, caps->rollback_semantics);
+    hash = dsk_digest_u8(hash, (dsk_u8)(caps->is_deprecated ? 1u : 0u));
     hash = dsk_digest_string(hash, caps->notes);
 
     return hash;

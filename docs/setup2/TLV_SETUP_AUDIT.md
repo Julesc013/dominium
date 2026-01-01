@@ -20,6 +20,9 @@ Same as `install_manifest.tlv` (magic `DSK1`, version `1`, endian `0xFFFE`).
 - `0x400C` `refusals` (container, optional)
 - `0x400D` `frontend_id` (string)
 - `0x400E` `platform_triple` (string)
+- `0x400F` `import_source` (string, optional)
+- `0x4010` `import_details` (container, optional)
+- `0x4401` `job_outcomes` (container, optional)
 
 ### selection container
 - `0x4101` `selection_candidates` (container)
@@ -49,11 +52,16 @@ Same as `install_manifest.tlv` (magic `DSK1`, version `1`, endian `0xFFFE`).
 - `0x4121` `code` (u16)
 - `0x4122` `detail` (string, optional)
 
+### import_details container
+- `0x4011` `import_detail_entry` (string)
+
 ### result container
 - `0x4302` `domain` (u16)
 - `0x4303` `code` (u16)
 - `0x4304` `subcode` (u16)
 - `0x4305` `flags` (u16)
+- `0x4306` `msg_id` (u32)
+- `0x4307` `err_detail` (container, optional)
 
 ### events container
 - `0x4201` `event_entry` (container)
@@ -64,6 +72,16 @@ Same as `install_manifest.tlv` (magic `DSK1`, version `1`, endian `0xFFFE`).
 - `0x4204` `error_code` (u16)
 - `0x4205` `error_subcode` (u16)
 - `0x4206` `error_flags` (u16)
+- `0x4207` `error_msg_id` (u32)
+- `0x4208` `error_detail` (container, optional)
+
+### job_outcomes container
+- `0x4402` `job_entry` (container)
+
+#### job_entry fields
+- `0x4403` `job_id` (u32)
+- `0x4404` `job_kind` (u16)
+- `0x4405` `job_status` (u16)
 
 ## Ordering
 - Candidates and rejections are sorted by ID.

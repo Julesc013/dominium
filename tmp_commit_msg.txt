@@ -1,4 +1,3 @@
-setup2: add tests and SR-1 docs
-
-why: validate TLV/contract/audit behavior and record SR-1 schemas
-how to verify: cmake --build --preset msvc-debug --target setup2_kernel_tests && ctest --preset msvc-debug -R test_tlv_roundtrip_known_fields
+Fix MinGW runtime bundle search path
+why: ensure runtime DLLs resolve from the toolchain bin on Windows to avoid 0xc000007b
+how: cmake --build build/msys2-debug --target setup2_splat_tests && build/msys2-debug/source/tests/setup2_splat_tests.exe splat_registry_sorted

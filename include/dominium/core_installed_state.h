@@ -27,9 +27,15 @@ extern "C" {
 #define CORE_TLV_TAG_INSTALLED_STATE_ARTIFACTS 0x300Bu
 #define CORE_TLV_TAG_INSTALLED_STATE_REGISTRATIONS 0x300Cu
 #define CORE_TLV_TAG_INSTALLED_STATE_PREV_STATE_DIGEST64 0x300Du
+#define CORE_TLV_TAG_INSTALLED_STATE_IMPORT_SOURCE 0x300Eu
+#define CORE_TLV_TAG_INSTALLED_STATE_IMPORT_DETAILS 0x300Fu
+#define CORE_TLV_TAG_INSTALLED_STATE_VERSION 0x3013u
+#define CORE_TLV_TAG_INSTALLED_STATE_MIGRATIONS 0x3014u
 
 #define CORE_TLV_TAG_INSTALLED_STATE_COMPONENT_ENTRY 0x3010u
 #define CORE_TLV_TAG_INSTALLED_STATE_INSTALL_ROOT_ENTRY 0x3011u
+#define CORE_TLV_TAG_INSTALLED_STATE_IMPORT_DETAIL_ENTRY 0x3012u
+#define CORE_TLV_TAG_INSTALLED_STATE_MIGRATION_ENTRY 0x3015u
 
 #define CORE_TLV_TAG_INSTALLED_STATE_ARTIFACT_ENTRY 0x3020u
 #define CORE_TLV_TAG_INSTALLED_STATE_ARTIFACT_ROOT_ID 0x3021u
@@ -78,6 +84,10 @@ struct InstalledState {
     u64 manifest_digest64;
     u64 request_digest64;
     u64 previous_state_digest64;
+    std::string import_source;
+    std::vector<std::string> import_details;
+    u32 state_version;
+    std::vector<std::string> migration_applied;
 };
 
 void installed_state_clear(InstalledState* state);

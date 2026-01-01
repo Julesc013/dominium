@@ -694,7 +694,7 @@ static bool apply_packs_transaction(LauncherTuiApp& app, std::string& out_err) {
         return false;
     }
 
-    job_input.job_type = (u32)dom::launcher_core::CORE_JOB_TYPE_LAUNCHER_APPLY_PACKS;
+    job_input.job_type = (u32)CORE_JOB_TYPE_LAUNCHER_APPLY_PACKS;
     job_input.instance_id = instance_id;
 
     for (i = 0u; i < app.manifest.content_entries.size(); ++i) {

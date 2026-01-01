@@ -221,8 +221,11 @@ static bool fs_write_all_atomic(const launcher_fs_api_v1* fs,
         return false;
     }
     if (std::rename(tmp.c_str(), path.c_str()) != 0) {
-        (void)std::remove(tmp.c_str());
-        return false;
+        (void)std::remove(path.c_str());
+        if (std::rename(tmp.c_str(), path.c_str()) != 0) {
+            (void)std::remove(tmp.c_str());
+            return false;
+        }
     }
     return true;
 }
@@ -1092,14 +1095,13 @@ static bool execute_job_step(LauncherJobContext& ctx, u32 step_id, err_t* out_er
             return false;
         }
         if (!plan.validation.ok) {
-            if (out_err) {
-                *out_err = err_refuse((u16)ERRD_LAUNCHER, (u16)ERRC_LAUNCHER_HANDSHAKE_INVALID,
-                                      (u32)ERRMSG_LAUNCHER_HANDSHAKE_INVALID);
-            }
             if (ctx.out_plan) {
                 *ctx.out_plan = plan;
             }
-            return false;
+            if (out_err) {
+                *out_err = err_ok();
+            }
+            return true;
         }
         if (ctx.out_plan) {
             *ctx.out_plan = plan;

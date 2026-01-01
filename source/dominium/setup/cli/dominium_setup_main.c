@@ -2,6 +2,7 @@
 FILE: source/dominium/setup/cli/dominium_setup_main.c
 MODULE: Dominium Setup
 PURPOSE: Minimal setup control-plane CLI for Plan S-1 (plan + dry-run).
+NOTE: Legacy setup entrypoint is frozen; see docs/setup2/DEPRECATION_PLAN.md.
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -29,9 +30,10 @@ PURPOSE: Minimal setup control-plane CLI for Plan S-1 (plan + dry-run).
 #include "dsu/dsu_resolve.h"
 #include "dsu/dsu_state.h"
 #include "dsu/dsu_txn.h"
+#include "../core/src/fs/dsu_platform_iface.h"
 #include "domino/system/dsys.h"
 
-#define DSU_CLI_NAME "dominium-setup"
+#define DSU_CLI_NAME "dominium-setup-legacy"
 #define DSU_CLI_VERSION "0.0.0"
 #define DSU_CLI_JSON_SCHEMA_VERSION 1u
 
@@ -247,6 +249,7 @@ static void dsu_cli_print_help_root(FILE *out) {
             "  --quiet                 Suppress non-essential text\n"
             "  --json                  Shorthand for --format json\n",
             DSU_CLI_NAME, DSU_CLI_VERSION,
+            DSU_CLI_NAME,
             DSU_CLI_NAME,
             DSU_CLI_NAME,
             DSU_CLI_NAME,

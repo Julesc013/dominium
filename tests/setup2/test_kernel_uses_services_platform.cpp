@@ -68,6 +68,7 @@ static void build_request(dsk_request_t *out_request) {
     out_request->operation = DSK_OPERATION_INSTALL;
     out_request->install_scope = DSK_INSTALL_SCOPE_SYSTEM;
     out_request->ui_mode = DSK_UI_MODE_CLI;
+    out_request->frontend_id = "cli";
     out_request->policy_flags = DSK_POLICY_DETERMINISTIC;
     out_request->target_platform_triple = "win32_nt5";
 }

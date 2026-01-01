@@ -12,6 +12,7 @@ add_executable(dominium_game
     dom_game_replay.cpp
     dom_game_net.cpp
     entry.cpp
+    core/product_info.c
     runtime/dom_game_runtime.cpp
     runtime/dom_game_hash.c
     runtime/dom_game_content_id.cpp

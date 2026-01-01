@@ -49,6 +49,85 @@ static std::string join_path(const std::string &dir, const char *name) {
     return dir + sep + name;
 }
 
+#if defined(_WIN32)
+static std::string normalize_win_path(const std::string &path) {
+    std::string out = path;
+    size_t i;
+    for (i = 0u; i < out.size(); ++i) {
+        if (out[i] == '/') {
+            out[i] = '\\';
+        }
+    }
+    return out;
+}
+
+static std::string lower_ascii(const std::string &value) {
+    std::string out = value;
+    size_t i;
+    for (i = 0u; i < out.size(); ++i) {
+        char c = out[i];
+        if (c >= 'A' && c <= 'Z') {
+            out[i] = (char)(c - 'A' + 'a');
+        }
+    }
+    return out;
+}
+
+static void split_path(const std::string &path, std::vector<std::string> &out) {
+    size_t i = 0u;
+    size_t start = 0u;
+    out.clear();
+    if (path.size() >= 2u && path[1] == ':') {
+        out.push_back(path.substr(0u, 2u));
+        i = 2u;
+        if (i < path.size() && (path[i] == '\\' || path[i] == '/')) {
+            i++;
+        }
+        start = i;
+    }
+    for (; i <= path.size(); ++i) {
+        if (i == path.size() || path[i] == '\\' || path[i] == '/') {
+            if (i > start) {
+                out.push_back(path.substr(start, i - start));
+            }
+            start = i + 1u;
+        }
+    }
+}
+
+static std::string make_relative_to_cwd(const std::string &path) {
+    char cwd_buf[1024];
+    std::vector<std::string> cwd_parts;
+    std::vector<std::string> path_parts;
+    size_t i;
+    size_t common = 0u;
+    std::string rel;
+
+    if (!_getcwd(cwd_buf, sizeof(cwd_buf))) {
+        return path;
+    }
+
+    split_path(normalize_win_path(cwd_buf), cwd_parts);
+    split_path(normalize_win_path(path), path_parts);
+    while (common < cwd_parts.size() && common < path_parts.size()) {
+        if (lower_ascii(cwd_parts[common]) != lower_ascii(path_parts[common])) {
+            break;
+        }
+        common++;
+    }
+
+    for (i = common; i < cwd_parts.size(); ++i) {
+        if (!rel.empty()) rel += "\\";
+        rel += "..";
+    }
+    for (i = common; i < path_parts.size(); ++i) {
+        if (!rel.empty()) rel += "\\";
+        rel += path_parts[i];
+    }
+    return rel.empty() ? std::string(".") : rel;
+}
+#endif
+
 static int write_file(const std::string &path, const std::vector<dsk_u8> &data) {
     std::FILE *out = std::fopen(path.c_str(), "wb");
     if (!out) {
@@ -184,6 +263,12 @@ int main(int argc, char **argv) {
     {
         std::string cli = argv[1];
         std::string adapter = argv[2];
+#if defined(_WIN32)
+        cli = normalize_win_path(cli);
+        adapter = normalize_win_path(adapter);
+        cli = make_relative_to_cwd(cli);
+        adapter = make_relative_to_cwd(adapter);
+#endif
         std::string work_dir = argv[3];
         std::string manifest_path = join_path(work_dir, "manifest.tlv");
         std::string request_path = join_path(work_dir, "steam_request.tlv");

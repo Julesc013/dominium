@@ -133,7 +133,7 @@ static void test_log_routing_and_bounds(void) {
 
     core_log_event_clear(&ev);
     ev.domain = CORE_LOG_DOMAIN_LAUNCHER;
-    ev.code = CORE_LOG_EVT_OP_STATE;
+    ev.code = CORE_LOG_EVT_STATE;
     ev.severity = CORE_LOG_SEV_INFO;
     (void)core_log_event_add_u32(&ev, CORE_LOG_KEY_STATUS_CODE, 1u);
 

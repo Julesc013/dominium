@@ -13,6 +13,10 @@
 #include <sys/stat.h>
 #endif
 
+#ifndef SETUP2_TESTS_SANDBOX_ROOT
+#define SETUP2_TESTS_SANDBOX_ROOT "setup2_fs_sandbox"
+#endif
+
 static int fail(const char *msg) {
     std::fprintf(stderr, "FAIL: %s\n", msg);
     return 1;
@@ -41,8 +45,7 @@ static int ends_with(const std::string &value, const std::string &suffix) {
     return value.compare(value.size() - suffix.size(), suffix.size(), suffix) == 0;
 }
 
-static int test_rejects_escape(void) {
-    const char *root = "setup2_fs_sandbox";
+static int test_rejects_escape(const char *root) {
     dss_services_t services;
     dss_services_config_t cfg;
     std::vector<dss_u8> bytes;
@@ -65,8 +68,7 @@ static int test_rejects_escape(void) {
     return 0;
 }
 
-static int test_atomic_write(void) {
-    const char *root = "setup2_fs_sandbox";
+static int test_atomic_write(const char *root) {
     dss_services_t services;
     dss_services_config_t cfg;
     std::vector<dss_u8> out;
@@ -108,8 +110,7 @@ static int test_atomic_write(void) {
     return 0;
 }
 
-static int test_canonicalize_stable(void) {
-    const char *root = "setup2_fs_sandbox";
+static int test_canonicalize_stable(const char *root) {
     dss_services_t services;
     dss_services_config_t cfg;
     std::string out;
@@ -135,18 +136,22 @@ static int test_canonicalize_stable(void) {
 }
 
 int main(int argc, char **argv) {
+    const char *root = SETUP2_TESTS_SANDBOX_ROOT;
     if (argc < 2) {
         std::fprintf(stderr, "usage: test_services_fs_sandbox <test>\n");
         return 1;
     }
+    if (argc > 2) {
+        root = argv[2];
+    }
     if (std::strcmp(argv[1], "services_fs_rejects_escape") == 0) {
-        return test_rejects_escape();
+        return test_rejects_escape(root);
     }
     if (std::strcmp(argv[1], "services_fs_atomic_write") == 0) {
-        return test_atomic_write();
+        return test_atomic_write(root);
     }
     if (std::strcmp(argv[1], "services_fs_canonicalize") == 0) {
-        return test_canonicalize_stable();
+        return test_canonicalize_stable(root);
     }
     std::fprintf(stderr, "unknown test: %s\n", argv[1]);
     return 1;

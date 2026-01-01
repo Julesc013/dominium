@@ -131,6 +131,33 @@ dsk_status_t dsk_audit_parse(const dsk_u8 *data, dsk_u32 size, dsk_audit_t *out_
             st = dsk_parse_string(rec, &out_audit->frontend_id);
         } else if (rec.type == DSK_TLV_TAG_AUDIT_PLATFORM_TRIPLE) {
             st = dsk_parse_string(rec, &out_audit->platform_triple);
+        } else if (rec.type == DSK_TLV_TAG_AUDIT_IMPORT_SOURCE) {
+            st = dsk_parse_string(rec, &out_audit->import_source);
+        } else if (rec.type == DSK_TLV_TAG_AUDIT_IMPORT_DETAILS) {
+            dsk_tlv_stream_t list_stream;
+            dsk_status_t lst;
+            dsk_u32 j;
+            lst = dsk_tlv_parse_stream(rec.payload, rec.length, &list_stream);
+            if (!dsk_error_is_ok(lst)) {
+                dsk_tlv_view_destroy(&view);
+                return lst;
+            }
+            for (j = 0u; j < list_stream.record_count; ++j) {
+                const dsk_tlv_record_t &entry = list_stream.records[j];
+                if (entry.type != DSK_TLV_TAG_AUDIT_IMPORT_DETAIL_ENTRY) {
+                    continue;
+                }
+                std::string value;
+                lst = dsk_parse_string(entry, &value);
+                if (!dsk_error_is_ok(lst)) {
+                    dsk_tlv_stream_destroy(&list_stream);
+                    dsk_tlv_view_destroy(&view);
+                    return lst;
+                }
+                out_audit->import_details.push_back(value);
+            }
+            dsk_tlv_stream_destroy(&list_stream);
+            st = dsk_error_make(DSK_DOMAIN_NONE, DSK_CODE_OK, DSK_SUBCODE_NONE, 0u);
         } else if (rec.type == DSK_TLV_TAG_AUDIT_OPERATION) {
             st = dsk_parse_u16(rec, &out_audit->operation);
         } else if (rec.type == DSK_TLV_TAG_AUDIT_REFUSALS) {
@@ -550,6 +577,10 @@ static bool dsk_candidate_less(const dsk_audit_selection_candidate_t &a,
     return a.id < b.id;
 }
 
+static bool dsk_string_less(const std::string &a, const std::string &b) {
+    return a < b;
+}
+
 static bool dsk_rejection_less(const dsk_splat_rejection_t &a,
                                const dsk_splat_rejection_t &b) {
     if (a.id != b.id) {
@@ -581,6 +612,33 @@ dsk_status_t dsk_audit_write(const dsk_audit_t *audit, dsk_tlv_buffer_t *out_buf
     dsk_tlv_builder_add_string(builder, DSK_TLV_TAG_AUDIT_SELECTED_SPLAT, audit->selected_splat.c_str());
     dsk_tlv_builder_add_string(builder, DSK_TLV_TAG_AUDIT_FRONTEND_ID, audit->frontend_id.c_str());
     dsk_tlv_builder_add_string(builder, DSK_TLV_TAG_AUDIT_PLATFORM_TRIPLE, audit->platform_triple.c_str());
+    if (!audit->import_source.empty()) {
+        dsk_tlv_builder_add_string(builder,
+                                   DSK_TLV_TAG_AUDIT_IMPORT_SOURCE,
+                                   audit->import_source.c_str());
+    }
+    if (!audit->import_details.empty()) {
+        std::vector<std::string> details = audit->import_details;
+        std::sort(details.begin(), details.end(), dsk_string_less);
+        dsk_tlv_builder_t *list_builder = dsk_tlv_builder_create();
+        dsk_tlv_buffer_t list_payload;
+        for (i = 0u; i < details.size(); ++i) {
+            dsk_tlv_builder_add_string(list_builder,
+                                       DSK_TLV_TAG_AUDIT_IMPORT_DETAIL_ENTRY,
+                                       details[i].c_str());
+        }
+        st = dsk_tlv_builder_finalize_payload(list_builder, &list_payload);
+        dsk_tlv_builder_destroy(list_builder);
+        if (!dsk_error_is_ok(st)) {
+            dsk_tlv_builder_destroy(builder);
+            return st;
+        }
+        dsk_tlv_builder_add_container(builder,
+                                      DSK_TLV_TAG_AUDIT_IMPORT_DETAILS,
+                                      list_payload.data,
+                                      list_payload.size);
+        dsk_tlv_buffer_free(&list_payload);
+    }
     dsk_tlv_builder_add_u16(builder, DSK_TLV_TAG_AUDIT_OPERATION, audit->operation);
 
     if (!audit->refusals.empty()) {

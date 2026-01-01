@@ -1,10 +1,10 @@
-#include "dss/dss_perms.h"
+#include "dss_perms_internal.h"
 
 void dss_perms_shutdown(dss_perms_api_t *api) {
     if (!api) {
         return;
     }
-    delete reinterpret_cast<dss_u32 *>(api->ctx);
+    delete reinterpret_cast<dss_perms_context_t *>(api->ctx);
     api->ctx = 0;
     api->is_elevated = 0;
     api->request_elevation_supported = 0;

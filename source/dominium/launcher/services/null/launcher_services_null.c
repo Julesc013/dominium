@@ -4,6 +4,7 @@ MODULE: Dominium Launcher
 PURPOSE: Null services backend for kernel-only smoke tests (filesystem + time + hashing).
 */
 #include "launcher_core_api.h"
+#include "domino/system/dsys.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -84,6 +85,67 @@ static u64 launcher_null_hash_fnv1a64(const void *data, u32 len) {
         h *= (u64)0x100000001b3ULL;
     }
     return h;
+}
+
+struct launcher_process {
+    dsys_process_handle handle;
+};
+
+static launcher_process* launcher_null_proc_spawn(const launcher_process_desc_v1* desc) {
+    launcher_process* proc = NULL;
+    const char* const* argv = NULL;
+    const char** argv_copy = NULL;
+    size_t i;
+
+    if (!desc || !desc->path) {
+        return NULL;
+    }
+
+    if (desc->argv && desc->argv_count > 0u) {
+        argv_copy = (const char**)malloc((desc->argv_count + 1u) * sizeof(*argv_copy));
+        if (!argv_copy) {
+            return NULL;
+        }
+        for (i = 0u; i < (size_t)desc->argv_count; ++i) {
+            argv_copy[i] = desc->argv[i];
+        }
+        argv_copy[desc->argv_count] = NULL;
+        argv = argv_copy;
+    } else {
+        argv = desc->argv;
+    }
+
+    proc = (launcher_process*)malloc(sizeof(*proc));
+    if (!proc) {
+        free(argv_copy);
+        return NULL;
+    }
+
+    if (dsys_proc_spawn(desc->path, argv, 1, &proc->handle) != DSYS_PROC_OK) {
+        free(proc);
+        free(argv_copy);
+        return NULL;
+    }
+
+    free(argv_copy);
+    return proc;
+}
+
+static int launcher_null_proc_wait(launcher_process* proc) {
+    int exit_code = -1;
+    if (!proc) {
+        return -1;
+    }
+    if (dsys_proc_wait(&proc->handle, &exit_code) != DSYS_PROC_OK) {
+        return -1;
+    }
+    return exit_code;
+}
+
+static void launcher_null_proc_destroy(launcher_process* proc) {
+    if (proc) {
+        free(proc);
+    }
 }
 
 #if defined(_WIN32) || defined(_WIN64)
@@ -486,6 +548,13 @@ static launcher_hash_api_v1 launcher_null_hash_api = {
     launcher_null_hash_fnv1a64
 };
 
+static launcher_process_api_v1 launcher_null_proc_api = {
+    DOM_ABI_HEADER_INIT(1u, launcher_process_api_v1),
+    launcher_null_proc_spawn,
+    launcher_null_proc_wait,
+    launcher_null_proc_destroy
+};
+
 static launcher_log_api_v1 launcher_null_log_api = {
     DOM_ABI_HEADER_INIT(CORE_LOG_SINK_ABI_VERSION, launcher_log_api_v1),
     0,
@@ -523,6 +592,7 @@ static launcher_providers_api_v1 launcher_null_providers_api = {
 
 static launcher_services_caps launcher_null_get_caps(void) {
     return LAUNCHER_SERVICES_CAP_FILESYSTEM |
+           LAUNCHER_SERVICES_CAP_PROCESS |
            LAUNCHER_SERVICES_CAP_TIME |
            LAUNCHER_SERVICES_CAP_HASHING |
            LAUNCHER_SERVICES_CAP_LOGGING;
@@ -543,6 +613,10 @@ static dom_abi_result launcher_null_query_interface(dom_iid iid, void **out_ifac
     }
     if (iid == LAUNCHER_IID_HASH_V1) {
         *out_iface = (void *)&launcher_null_hash_api;
+        return 0;
+    }
+    if (iid == LAUNCHER_IID_PROC_V1) {
+        *out_iface = (void *)&launcher_null_proc_api;
         return 0;
     }
     if (iid == LAUNCHER_IID_LOG_V1) {

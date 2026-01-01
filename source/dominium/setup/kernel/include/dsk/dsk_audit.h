@@ -41,7 +41,14 @@ enum dsk_audit_event_id_t {
     DSK_AUDIT_EVENT_ROLLBACK_STEP_FAIL = 28,
     DSK_AUDIT_EVENT_ROLLBACK_END = 29,
     DSK_AUDIT_EVENT_RESUME_BEGIN = 30,
-    DSK_AUDIT_EVENT_RESUME_END = 31
+    DSK_AUDIT_EVENT_RESUME_END = 31,
+    DSK_AUDIT_EVENT_IMPORT_BEGIN = 32,
+    DSK_AUDIT_EVENT_IMPORT_PARSE_OK = 33,
+    DSK_AUDIT_EVENT_IMPORT_PARSE_FAIL = 34,
+    DSK_AUDIT_EVENT_IMPORT_WRITE_STATE_OK = 35,
+    DSK_AUDIT_EVENT_IMPORT_WRITE_STATE_FAIL = 36,
+    DSK_AUDIT_EVENT_IMPORT_END = 37,
+    DSK_AUDIT_EVENT_SPLAT_DEPRECATED = 38
 };
 
 struct dsk_audit_event_t {
@@ -82,6 +89,8 @@ struct dsk_audit_t {
     std::string selected_splat;
     std::string frontend_id;
     std::string platform_triple;
+    std::string import_source;
+    std::vector<std::string> import_details;
     dsk_u16 operation;
     dsk_error_t result;
     dsk_audit_selection_t selection;

@@ -300,6 +300,9 @@ dsk_status_t dsk_manifest_parse(const dsk_u8 *data,
         return dsk_contract_error(DSK_CODE_INVALID_ARGS, DSK_SUBCODE_NONE);
     }
     dsk_manifest_clear(out_manifest);
+    if (!data || size == 0u) {
+        return dsk_contract_error(DSK_CODE_PARSE_ERROR, DSK_SUBCODE_INVALID_FIELD);
+    }
 
     st = dsk_tlv_parse(data, size, &view);
     if (!dsk_error_is_ok(st)) {

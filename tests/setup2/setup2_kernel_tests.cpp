@@ -4,6 +4,7 @@
 #include "dsk/dsk_error.h"
 #include "dsk/dsk_tlv.h"
 #include "dss/dss_services.h"
+#include "dominium/core_tlv.h"
 
 #include <cstdio>
 #include <cstring>
@@ -28,6 +29,19 @@ static dsk_status_t dsk_mem_sink_write(void *user, const dsk_u8 *data, dsk_u32 l
 static int fail(const char *msg) {
     std::fprintf(stderr, "FAIL: %s\n", msg);
     return 1;
+}
+
+static int has_string(const std::vector<std::string> &values, const char *value) {
+    size_t i;
+    if (!value) {
+        return 0;
+    }
+    for (i = 0u; i < values.size(); ++i) {
+        if (values[i] == value) {
+            return 1;
+        }
+    }
+    return 0;
 }
 
 static void build_basic_manifest(dsk_manifest_t *out_manifest) {
@@ -94,6 +108,7 @@ static void build_basic_request(dsk_request_t *out_request,
     out_request->operation = operation;
     out_request->install_scope = DSK_INSTALL_SCOPE_SYSTEM;
     out_request->ui_mode = DSK_UI_MODE_CLI;
+    out_request->frontend_id = "cli";
     out_request->policy_flags = DSK_POLICY_DETERMINISTIC;
     out_request->target_platform_triple = platform ? platform : "win32_nt5";
 }
@@ -173,6 +188,97 @@ static int append_unknown_record(std::vector<dsk_u8> &bytes) {
         write_u32_le(&bytes[16], crc);
     }
     return 1;
+}
+
+static int build_state_without_version(std::vector<dsk_u8> &out) {
+    core_tlv_framed_builder_t *builder = core_tlv_framed_builder_create();
+    core_tlv_framed_buffer_t buf;
+    err_t st;
+    if (!builder) {
+        return 0;
+    }
+    st = core_tlv_framed_builder_add_string(builder,
+                                            CORE_TLV_TAG_INSTALLED_STATE_PRODUCT_ID,
+                                            "dominium");
+    if (!err_is_ok(&st)) goto fail;
+    st = core_tlv_framed_builder_add_string(builder,
+                                            CORE_TLV_TAG_INSTALLED_STATE_INSTALLED_VERSION,
+                                            "1.0.0");
+    if (!err_is_ok(&st)) goto fail;
+    st = core_tlv_framed_builder_add_string(builder,
+                                            CORE_TLV_TAG_INSTALLED_STATE_SELECTED_SPLAT,
+                                            "splat_portable");
+    if (!err_is_ok(&st)) goto fail;
+    st = core_tlv_framed_builder_add_u16(builder,
+                                         CORE_TLV_TAG_INSTALLED_STATE_INSTALL_SCOPE,
+                                         DSK_INSTALL_SCOPE_PORTABLE);
+    if (!err_is_ok(&st)) goto fail;
+    st = core_tlv_framed_builder_add_string(builder,
+                                            CORE_TLV_TAG_INSTALLED_STATE_INSTALL_ROOT,
+                                            "C:/Dominium");
+    if (!err_is_ok(&st)) goto fail;
+    st = core_tlv_framed_builder_add_u16(builder,
+                                         CORE_TLV_TAG_INSTALLED_STATE_OWNERSHIP,
+                                         DSK_OWNERSHIP_PORTABLE);
+    if (!err_is_ok(&st)) goto fail;
+    st = core_tlv_framed_builder_add_u64(builder,
+                                         CORE_TLV_TAG_INSTALLED_STATE_MANIFEST_DIGEST64,
+                                         0u);
+    if (!err_is_ok(&st)) goto fail;
+    st = core_tlv_framed_builder_add_u64(builder,
+                                         CORE_TLV_TAG_INSTALLED_STATE_REQUEST_DIGEST64,
+                                         0u);
+    if (!err_is_ok(&st)) goto fail;
+
+    st = core_tlv_framed_builder_finalize(builder, &buf);
+    if (!err_is_ok(&st)) goto fail;
+    out.assign(buf.data, buf.data + buf.size);
+    core_tlv_framed_buffer_free(&buf);
+    core_tlv_framed_builder_destroy(builder);
+    return 1;
+
+fail:
+    core_tlv_framed_builder_destroy(builder);
+    return 0;
+}
+
+static int test_state_auto_migration_missing_version(void) {
+    std::vector<dsk_u8> bytes;
+    dsk_installed_state_t state;
+    dsk_status_t st;
+
+    if (!build_state_without_version(bytes)) {
+        return fail("build legacy state failed");
+    }
+    st = dsk_installed_state_parse(&bytes[0], (dsk_u32)bytes.size(), &state);
+    if (!dsk_error_is_ok(st)) {
+        return fail("state parse failed");
+    }
+    if (state.state_version != CORE_INSTALLED_STATE_TLV_VERSION) {
+        return fail("state_version not backfilled");
+    }
+    if (!has_string(state.migration_applied, "backfill_state_version_v1")) {
+        return fail("missing migration_applied backfill");
+    }
+    return 0;
+}
+
+static int test_state_skip_unknown_fields(void) {
+    std::vector<dsk_u8> bytes;
+    dsk_installed_state_t state;
+    dsk_status_t st;
+
+    if (!build_state_without_version(bytes)) {
+        return fail("build legacy state failed");
+    }
+    if (!append_unknown_record(bytes)) {
+        return fail("append unknown record failed");
+    }
+    st = dsk_installed_state_parse(&bytes[0], (dsk_u32)bytes.size(), &state);
+    if (!dsk_error_is_ok(st)) {
+        return fail("state parse failed on unknown field");
+    }
+    return 0;
 }
 
 static int test_tlv_roundtrip_known_fields(void) {
@@ -417,6 +523,12 @@ int main(int argc, char **argv) {
     }
     if (std::strcmp(argv[1], "splat_selection_deterministic") == 0) {
         return test_splat_selection_deterministic();
+    }
+    if (std::strcmp(argv[1], "state_auto_migration_missing_version") == 0) {
+        return test_state_auto_migration_missing_version();
+    }
+    if (std::strcmp(argv[1], "state_skip_unknown_fields") == 0) {
+        return test_state_skip_unknown_fields();
     }
     std::fprintf(stderr, "unknown test: %s\n", argv[1]);
     return 1;

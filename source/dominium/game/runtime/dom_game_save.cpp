@@ -20,7 +20,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 
 #include "runtime/dom_game_runtime.h"
 #include "runtime/dom_game_content_id.h"
-#include "dom_game_save.h"
+#include "../dom_game_save.h"
 #include "dom_session.h"
 
 extern "C" {

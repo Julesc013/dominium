@@ -29,9 +29,17 @@ Executable: `dominium-setup2`
 - `status --journal <file> [--json]`
 - `verify --state <file> [--format json|txt] [--json]`
 - `uninstall-preview --state <file> [--components <csv>] [--format json|txt] [--json]`
+- `audit dump --in <file> --out <file> --format json [--json]`
+- `state dump --in <file> --out <file> --format json [--json]`
+- `doctor --state <file> --plan <file> --journal <file> --txn-journal <file> --audit <file> [--json]`
+- `explain-refusal --audit <file> [--json]`
+- `import-legacy-state --in <file> --out <file> --out-audit <file> [--json]`
 - `dump-splats [--json]`
 - `select-splat --manifest <file> --request <file> [--json]`
 - `run --manifest <file> --request <file> --out-state <file> --out-audit <file> [--out-plan <file>] [--out-log <file>] [--json]`
+
+## Aliases
+- `dump-audit` is a shorthand for `audit dump`.
 
 ## Global Options
 - `--use-fake-services <sandbox_root>`: use the fake services backend rooted at `sandbox_root`.

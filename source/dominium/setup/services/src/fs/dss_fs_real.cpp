@@ -5,6 +5,7 @@
 #include <cstring>
 #include <algorithm>
 #include <vector>
+#include <errno.h>
 
 #if defined(_WIN32)
 #include <direct.h>
@@ -106,10 +107,16 @@ static dss_error_t dss_fs_real_make_dir(void *ctx, const char *path) {
     }
 #if defined(_WIN32)
     if (_mkdir(path) != 0) {
+        if (errno == EEXIST) {
+            return dss_error_make(DSS_DOMAIN_SERVICES, DSS_CODE_OK, DSS_SUBCODE_NONE, 0u);
+        }
         return dss_error_make(DSS_DOMAIN_SERVICES, DSS_CODE_IO, DSS_SUBCODE_NONE, 0u);
     }
 #else
     if (mkdir(path, 0755) != 0) {
+        if (errno == EEXIST) {
+            return dss_error_make(DSS_DOMAIN_SERVICES, DSS_CODE_OK, DSS_SUBCODE_NONE, 0u);
+        }
         return dss_error_make(DSS_DOMAIN_SERVICES, DSS_CODE_IO, DSS_SUBCODE_NONE, 0u);
     }
 #endif
@@ -234,10 +241,15 @@ static dss_error_t dss_fs_real_dir_swap(void *ctx,
                                         const char *src_dir,
                                         const char *dst_dir) {
     std::string backup;
+    dss_bool exists = DSS_FALSE;
     dss_error_t st;
     (void)ctx;
     if (!src_dir || !dst_dir) {
         return dss_error_make(DSS_DOMAIN_SERVICES, DSS_CODE_INVALID_ARGS, DSS_SUBCODE_NONE, 0u);
+    }
+    st = dss_fs_real_exists(ctx, dst_dir, &exists);
+    if (dss_error_is_ok(st) && !exists) {
+        return dss_fs_real_atomic_rename_internal(src_dir, dst_dir);
     }
     backup = std::string(dst_dir) + ".swap";
     std::remove(backup.c_str());

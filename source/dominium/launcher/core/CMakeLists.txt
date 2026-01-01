@@ -130,6 +130,7 @@ add_executable(dominium_launcher_instance_system_tests
 
 target_link_libraries(dominium_launcher_instance_system_tests PRIVATE
     dominium_launcher_core
+    launcher_services_impl_null
 )
 
 target_include_directories(dominium_launcher_instance_system_tests PRIVATE
@@ -157,6 +158,7 @@ add_executable(dominium_launcher_artifact_store_tx_tests
 
 target_link_libraries(dominium_launcher_artifact_store_tx_tests PRIVATE
     dominium_launcher_core
+    launcher_services_impl_null
 )
 
 target_include_directories(dominium_launcher_artifact_store_tx_tests PRIVATE
@@ -184,6 +186,7 @@ add_executable(dominium_launcher_pack_ecosystem_tests
 
 target_link_libraries(dominium_launcher_pack_ecosystem_tests PRIVATE
     dominium_launcher_core
+    launcher_services_impl_null
 )
 
 target_include_directories(dominium_launcher_pack_ecosystem_tests PRIVATE
@@ -211,6 +214,7 @@ add_executable(dominium_launcher_prelaunch_recovery_tests
 
 target_link_libraries(dominium_launcher_prelaunch_recovery_tests PRIVATE
     dominium_launcher_core
+    launcher_services_impl_null
 )
 
 target_include_directories(dominium_launcher_prelaunch_recovery_tests PRIVATE
@@ -265,6 +269,7 @@ add_executable(dominium_launcher_handshake_tests
 
 target_link_libraries(dominium_launcher_handshake_tests PRIVATE
     dominium_launcher_core
+    launcher_services_impl_null
 )
 
 target_include_directories(dominium_launcher_handshake_tests PRIVATE
@@ -292,6 +297,7 @@ add_executable(dominium_launcher_tools_registry_tests
 
 target_link_libraries(dominium_launcher_tools_registry_tests PRIVATE
     dominium_launcher_core
+    launcher_services_impl_null
 )
 
 target_include_directories(dominium_launcher_tools_registry_tests PRIVATE

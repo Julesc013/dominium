@@ -1,1 +1,1 @@
-{"schema_version":1,"command":"version","status":"ok","status_code":0,"details":{"core_status":0,"core_status_name":"success","name":"dominium-setup","version":"1.0.0"}}
+{"schema_version":1,"command":"version","status":"ok","status_code":0,"details":{"core_status":0,"core_status_name":"success","name":"dominium-setup-legacy","version":"1.0.0"}}

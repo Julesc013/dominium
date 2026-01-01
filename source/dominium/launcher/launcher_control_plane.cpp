@@ -567,6 +567,51 @@ static bool resolve_tool_executable_path(const ::launcher_services_api_v1* servi
             out_path = cand1;
             return true;
         }
+        {
+            const std::string tail = basename_of(dir);
+            if (tail == "launch") {
+                const std::string tools_dir = path_join(dirname_of(dir), "tools");
+                std::string cand2 = path_join(tools_dir, tool_id);
+                std::string cand3 = add_exe_if_missing(cand2);
+                if (file_exists(cand2)) {
+                    out_path = cand2;
+                    return true;
+                }
+                if (file_exists(cand3)) {
+                    out_path = cand3;
+                    return true;
+                }
+            } else if (tail == "Debug" || tail == "Release") {
+                const std::string parent = dirname_of(dir);
+                if (basename_of(parent) == "launch") {
+                    const std::string bin_root = dirname_of(parent);
+                    const std::string tools_dir = path_join(bin_root, "tools");
+                    std::string cand2 = path_join(tools_dir, tool_id);
+                    std::string cand3 = add_exe_if_missing(cand2);
+                    if (file_exists(cand2)) {
+                        out_path = cand2;
+                        return true;
+                    }
+                    if (file_exists(cand3)) {
+                        out_path = cand3;
+                        return true;
+                    }
+                    {
+                        const std::string tools_cfg = path_join(tools_dir, tail);
+                        std::string cand4 = path_join(tools_cfg, tool_id);
+                        std::string cand5 = add_exe_if_missing(cand4);
+                        if (file_exists(cand4)) {
+                            out_path = cand4;
+                            return true;
+                        }
+                        if (file_exists(cand5)) {
+                            out_path = cand5;
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /* Fall back to PATH/current-directory resolution by the process layer. */
@@ -661,6 +706,20 @@ static bool resolve_support_bundle_script(const std::string& argv0, std::string&
                 if (!root.empty()) {
                     candidates.push_back(path_join(root, "scripts/diagnostics/make_support_bundle.py"));
                 }
+            }
+        }
+        {
+            std::string cur = dir;
+            while (!cur.empty()) {
+                const std::string tail = basename_of(cur);
+                if (tail == "dist") {
+                    const std::string root = dirname_of(cur);
+                    if (!root.empty()) {
+                        candidates.push_back(path_join(root, "scripts/diagnostics/make_support_bundle.py"));
+                    }
+                    break;
+                }
+                cur = dirname_of(cur);
             }
         }
     }
@@ -1082,7 +1141,7 @@ ControlPlaneRunResult launcher_control_plane_try_run(int argc,
             return r;
         }
 
-        job_input.job_type = (u32)dom::launcher_core::CORE_JOB_TYPE_LAUNCHER_VERIFY_INSTANCE;
+        job_input.job_type = (u32)CORE_JOB_TYPE_LAUNCHER_VERIFY_INSTANCE;
         job_input.instance_id = instance_id;
 
         if (find_incomplete_job_id(services, state_root, instance_id, job_input.job_type, resume_job_id)) {
@@ -1183,7 +1242,7 @@ ControlPlaneRunResult launcher_control_plane_try_run(int argc,
 
         export_root = path_join(path_join(state_root, "exports"), instance_id);
 
-        job_input.job_type = (u32)dom::launcher_core::CORE_JOB_TYPE_LAUNCHER_EXPORT_INSTANCE;
+        job_input.job_type = (u32)CORE_JOB_TYPE_LAUNCHER_EXPORT_INSTANCE;
         job_input.instance_id = instance_id;
         job_input.path = export_root;
         job_input.mode = export_mode;
@@ -1291,7 +1350,7 @@ ControlPlaneRunResult launcher_control_plane_try_run(int argc,
         audit_reason_kv(audit_core, "instance_id", new_id);
         audit_reason_kv(audit_core, "imported_instance_id", imported.instance_id);
 
-        job_input.job_type = (u32)dom::launcher_core::CORE_JOB_TYPE_LAUNCHER_IMPORT_INSTANCE;
+        job_input.job_type = (u32)CORE_JOB_TYPE_LAUNCHER_IMPORT_INSTANCE;
         job_input.instance_id = new_id;
         job_input.path = import_root;
         job_input.mode = (u32)dom::launcher_core::LAUNCHER_INSTANCE_IMPORT_FULL_BUNDLE;
@@ -1777,7 +1836,7 @@ ControlPlaneRunResult launcher_control_plane_try_run(int argc,
             }
         }
 
-        job_input.job_type = (u32)dom::launcher_core::CORE_JOB_TYPE_LAUNCHER_DIAG_BUNDLE;
+        job_input.job_type = (u32)CORE_JOB_TYPE_LAUNCHER_DIAG_BUNDLE;
         job_input.instance_id = instance_id;
         job_input.path = out_path;
         job_input.aux_path = script_path;

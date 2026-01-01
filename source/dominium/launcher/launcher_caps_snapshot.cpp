@@ -37,6 +37,8 @@ extern "C" {
 
 namespace dom {
 
+using launcher_core::TlvWriter;
+
 namespace {
 
 static std::string safe_str(const char* s) {
@@ -358,7 +360,7 @@ bool launcher_caps_snapshot_to_tlv_bytes(const LauncherCapsSnapshot& snapshot,
     TlvWriter w;
     size_t i;
 
-    w.add_u32(LAUNCHER_TLV_TAG_SCHEMA_VERSION, LAUNCHER_CAPS_TLV_VERSION);
+    w.add_u32(launcher_core::LAUNCHER_TLV_TAG_SCHEMA_VERSION, LAUNCHER_CAPS_TLV_VERSION);
     w.add_string(LAUNCHER_CAPS_TLV_TAG_VERSION_STRING, snapshot.version_string);
     w.add_string(LAUNCHER_CAPS_TLV_TAG_BUILD_ID, snapshot.build_id);
     w.add_string(LAUNCHER_CAPS_TLV_TAG_GIT_HASH, snapshot.git_hash);

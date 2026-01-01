@@ -385,6 +385,9 @@ static dsk_status_t dsk_kernel_run(dsk_u16 expected_operation, const dsk_kernel_
         for (i = 0u; i < splat_sel.candidates.size(); ++i) {
             if (splat_sel.candidates[i].id == splat_sel.selected_id) {
                 selected_caps = splat_sel.candidates[i].caps;
+                if (selected_caps.is_deprecated) {
+                    dsk_audit_add_event(&audit, DSK_AUDIT_EVENT_SPLAT_DEPRECATED, ok);
+                }
                 break;
             }
         }

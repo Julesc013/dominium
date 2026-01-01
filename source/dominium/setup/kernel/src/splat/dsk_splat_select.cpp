@@ -190,6 +190,22 @@ static void dsk_add_rejection(dsk_splat_selection_t *selection,
     selection->rejections.push_back(rej);
 }
 
+static int dsk_has_rejection(const dsk_splat_selection_t *selection,
+                             const std::string &id,
+                             dsk_u16 code) {
+    size_t i;
+    if (!selection) {
+        return 0;
+    }
+    for (i = 0u; i < selection->rejections.size(); ++i) {
+        const dsk_splat_rejection_t &rej = selection->rejections[i];
+        if (rej.code == code && rej.id == id) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 static dsk_status_t dsk_select_error(dsk_u16 subcode) {
     return dsk_error_make(DSK_DOMAIN_KERNEL,
                           DSK_CODE_VALIDATION_ERROR,
@@ -221,6 +237,15 @@ dsk_status_t dsk_splat_select(const dsk_manifest_t &manifest,
     dsk_splat_registry_list(out_selection->candidates);
 
     has_requested = request.requested_splat_id.empty() ? DSK_FALSE : DSK_TRUE;
+    if (has_requested && dsk_splat_registry_is_removed(request.requested_splat_id)) {
+        for (i = 0u; i < out_selection->candidates.size(); ++i) {
+            dsk_add_rejection(out_selection,
+                              out_selection->candidates[i].id,
+                              DSK_SPLAT_REJECT_REQUESTED_ID_MISMATCH,
+                              dsk_reject_detail_from_code(DSK_SPLAT_REJECT_REQUESTED_ID_MISMATCH));
+        }
+        return dsk_select_error(DSK_SUBCODE_SPLAT_REMOVED);
+    }
     if (has_requested && !dsk_splat_registry_contains(request.requested_splat_id)) {
         for (i = 0u; i < out_selection->candidates.size(); ++i) {
             dsk_add_rejection(out_selection,
@@ -362,6 +387,21 @@ dsk_status_t dsk_splat_select(const dsk_manifest_t &manifest,
     out_selection->selected_reason = (has_requested && result.selected[0].reason == CORE_SOLVER_SELECT_OVERRIDE)
                                      ? DSK_SPLAT_SELECTED_REQUESTED
                                      : DSK_SPLAT_SELECTED_FIRST_COMPATIBLE;
+
+    if (has_requested) {
+        for (i = 0u; i < out_selection->candidates.size(); ++i) {
+            const std::string &id = out_selection->candidates[i].id;
+            if (id == out_selection->selected_id) {
+                continue;
+            }
+            if (!dsk_has_rejection(out_selection, id, DSK_SPLAT_REJECT_REQUESTED_ID_MISMATCH)) {
+                dsk_add_rejection(out_selection,
+                                  id,
+                                  DSK_SPLAT_REJECT_REQUESTED_ID_MISMATCH,
+                                  dsk_reject_detail_from_code(DSK_SPLAT_REJECT_REQUESTED_ID_MISMATCH));
+            }
+        }
+    }
 
     return dsk_error_make(DSK_DOMAIN_NONE, DSK_CODE_OK, DSK_SUBCODE_NONE, 0u);
 }

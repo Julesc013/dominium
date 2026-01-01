@@ -164,7 +164,15 @@ dsk_status_t dsk_stage_root_path(const dss_fs_api_t *fs,
         }
     }
     stage_name = std::string("dsk_stage_") + dsk_format_hex64(plan_digest64);
-    return dsk_fs_join(fs, temp, stage_name, out_stage_root);
+    if (temp.empty()) {
+        return dsk_error_make(DSK_DOMAIN_KERNEL, DSK_CODE_IO_ERROR, DSK_SUBCODE_NONE, 0u);
+    }
+    if (temp[temp.size() - 1u] == '/' || temp[temp.size() - 1u] == '\\') {
+        *out_stage_root = temp + stage_name;
+    } else {
+        *out_stage_root = temp + "/" + stage_name;
+    }
+    return dsk_error_make(DSK_DOMAIN_NONE, DSK_CODE_OK, DSK_SUBCODE_NONE, 0u);
 }
 
 static bool dsk_is_root_token(const std::string &root) {

@@ -390,7 +390,7 @@ void dss_fs_init_fake(dss_fs_api_t *api, const char *sandbox_root) {
         root = ".";
     }
     ctx->root = root;
-    ctx->temp_root = root + "/tmp";
+    ctx->temp_root = "tmp";
     api->ctx = ctx;
     api->read_file_bytes = dss_fs_fake_read_file_bytes;
     api->write_file_bytes_atomic = dss_fs_fake_write_file_bytes_atomic;

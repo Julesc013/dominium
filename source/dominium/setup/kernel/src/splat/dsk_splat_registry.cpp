@@ -33,6 +33,24 @@ static bool dsk_candidate_less(const dsk_splat_candidate_t &a,
     return a.id < b.id;
 }
 
+static int dsk_string_equals(const std::string &a, const char *b) {
+    return b && a == b;
+}
+
+static int dsk_is_removed(const std::string &id) {
+    static const char *k_removed[] = {
+        "splat_win32_nt4",
+        "splat_macos_ppc"
+    };
+    size_t i;
+    for (i = 0u; i < sizeof(k_removed) / sizeof(k_removed[0]); ++i) {
+        if (dsk_string_equals(id, k_removed[i])) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 void dsk_splat_registry_list(std::vector<dsk_splat_candidate_t> &out) {
     out.clear();
 
@@ -44,6 +62,7 @@ void dsk_splat_registry_list(std::vector<dsk_splat_candidate_t> &out) {
         caps.supports_portable_ownership = DSK_TRUE;
         caps.default_root_convention = DSK_SPLAT_ROOT_CONVENTION_PORTABLE;
         caps.rollback_semantics = DSK_SPLAT_ROLLBACK_NONE;
+        caps.is_deprecated = DSK_TRUE;
         dsk_add_candidate(out, "splat_dos", caps);
     }
     {
@@ -89,6 +108,7 @@ void dsk_splat_registry_list(std::vector<dsk_splat_candidate_t> &out) {
         caps.supported_ui_modes = DSK_SPLAT_UI_GUI;
         caps.default_root_convention = DSK_SPLAT_ROOT_CONVENTION_MACOS_APPLICATIONS;
         caps.rollback_semantics = DSK_SPLAT_ROLLBACK_NONE;
+        caps.is_deprecated = DSK_TRUE;
         dsk_add_candidate(out, "splat_macos_classic", caps);
     }
     {
@@ -133,6 +153,7 @@ void dsk_splat_registry_list(std::vector<dsk_splat_candidate_t> &out) {
         caps.supports_portable_ownership = DSK_TRUE;
         caps.default_root_convention = DSK_SPLAT_ROOT_CONVENTION_WINDOWS_PROGRAM_FILES;
         caps.rollback_semantics = DSK_SPLAT_ROLLBACK_NONE;
+        caps.is_deprecated = DSK_TRUE;
         dsk_add_candidate(out, "splat_win16_win3x", caps);
     }
     {
@@ -143,6 +164,7 @@ void dsk_splat_registry_list(std::vector<dsk_splat_candidate_t> &out) {
         caps.supports_actions = DSK_SPLAT_ACTION_SHORTCUTS;
         caps.default_root_convention = DSK_SPLAT_ROOT_CONVENTION_WINDOWS_PROGRAM_FILES;
         caps.rollback_semantics = DSK_SPLAT_ROLLBACK_NONE;
+        caps.is_deprecated = DSK_TRUE;
         dsk_add_candidate(out, "splat_win32_9x", caps);
     }
     {
@@ -180,4 +202,8 @@ int dsk_splat_registry_find(const std::string &id,
 
 int dsk_splat_registry_contains(const std::string &id) {
     return dsk_splat_registry_find(id, 0);
+}
+
+int dsk_splat_registry_is_removed(const std::string &id) {
+    return dsk_is_removed(id);
 }

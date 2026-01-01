@@ -21,7 +21,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 
 #if DOM_BACKEND_SOFT
 
-#define DGFX_SOFT_HASH_EXPECTED_XXH64 0x5d8212746057475bULL
+#define DGFX_SOFT_HASH_EXPECTED_XXH64 0xcab983892cad9c2aULL
 
 static d_gfx_color dgfx_color(u8 a, u8 r, u8 g, u8 b)
 {

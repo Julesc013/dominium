@@ -734,6 +734,8 @@ add_test(NAME test_manifest_validate_missing_required COMMAND setup2_kernel_test
 add_test(NAME test_request_validate_missing_required COMMAND setup2_kernel_tests request_validate_missing_required)
 add_test(NAME test_kernel_emits_audit_on_failure COMMAND setup2_kernel_tests kernel_emits_audit_on_failure)
 add_test(NAME test_splat_selection_deterministic COMMAND setup2_kernel_tests splat_selection_deterministic)
+add_test(NAME test_state_auto_migration_missing_version COMMAND setup2_kernel_tests state_auto_migration_missing_version)
+add_test(NAME test_state_skip_unknown_fields COMMAND setup2_kernel_tests state_skip_unknown_fields)
 
 add_executable(setup2_services_fs_tests
     ../../tests/setup2/test_services_fs_sandbox.cpp
@@ -748,6 +750,10 @@ target_link_libraries(setup2_services_fs_tests
     PRIVATE dss_services
 )
 
+target_compile_definitions(setup2_services_fs_tests PRIVATE
+    SETUP2_TESTS_SANDBOX_ROOT=\"${CMAKE_CURRENT_BINARY_DIR}/setup2_fs_sandbox\"
+)
+
 set_target_properties(setup2_services_fs_tests PROPERTIES
     CXX_STANDARD 98
     CXX_STANDARD_REQUIRED ON
@@ -758,9 +764,15 @@ if(WIN32)
     setup2_copy_winpthread(setup2_services_fs_tests)
 endif()
 
-add_test(NAME test_services_fs_rejects_escape COMMAND setup2_services_fs_tests services_fs_rejects_escape)
-add_test(NAME test_services_fs_atomic_write COMMAND setup2_services_fs_tests services_fs_atomic_write)
-add_test(NAME test_services_fs_canonicalize COMMAND setup2_services_fs_tests services_fs_canonicalize)
+add_test(NAME test_services_fs_rejects_escape
+    COMMAND setup2_services_fs_tests services_fs_rejects_escape ${CMAKE_CURRENT_BINARY_DIR}/setup2_fs_sandbox_escape
+)
+add_test(NAME test_services_fs_atomic_write
+    COMMAND setup2_services_fs_tests services_fs_atomic_write ${CMAKE_CURRENT_BINARY_DIR}/setup2_fs_sandbox_atomic
+)
+add_test(NAME test_services_fs_canonicalize
+    COMMAND setup2_services_fs_tests services_fs_canonicalize ${CMAKE_CURRENT_BINARY_DIR}/setup2_fs_sandbox_canon
+)
 
 add_executable(setup2_services_platform_tests
     ../../tests/setup2/test_services_platform_fake.cpp
@@ -838,11 +850,13 @@ endif()
 add_test(NAME test_splat_registry_sorted COMMAND setup2_splat_tests splat_registry_sorted)
 add_test(NAME test_splat_select_requested_id_success COMMAND setup2_splat_tests splat_select_requested_id_success)
 add_test(NAME test_splat_select_requested_id_not_found COMMAND setup2_splat_tests splat_select_requested_id_not_found)
+add_test(NAME test_splat_select_requested_id_removed COMMAND setup2_splat_tests splat_select_requested_id_removed)
 add_test(NAME test_splat_select_filters_by_platform COMMAND setup2_splat_tests splat_select_filters_by_platform)
 add_test(NAME test_splat_select_filters_by_scope COMMAND setup2_splat_tests splat_select_filters_by_scope)
 add_test(NAME test_splat_select_filters_by_ui_mode COMMAND setup2_splat_tests splat_select_filters_by_ui_mode)
 add_test(NAME test_splat_select_no_compatible_emits_rejections_and_audit COMMAND setup2_splat_tests splat_select_no_compatible_emits_rejections_and_audit)
 add_test(NAME test_splat_select_deterministic_choice_first_compatible COMMAND setup2_splat_tests splat_select_deterministic_choice_first_compatible)
+add_test(NAME test_splat_select_deprecated_emits_warning COMMAND setup2_splat_tests splat_select_deprecated_emits_warning)
 
 add_executable(setup2_plan_tests
     ../../tests/setup2/test_plan.cpp
@@ -895,7 +909,7 @@ target_include_directories(setup2_apply_tests PRIVATE
 )
 
 target_compile_definitions(setup2_apply_tests PRIVATE
-    SETUP2_TESTS_SANDBOX_ROOT=\"${CMAKE_SOURCE_DIR}/setup2_fs_sandbox\"
+    SETUP2_TESTS_SANDBOX_ROOT=\"${CMAKE_CURRENT_BINARY_DIR}/setup2_apply_sandbox\"
 )
 
 target_link_libraries(setup2_apply_tests
@@ -919,12 +933,444 @@ add_test(NAME test_crash_during_stage_then_resume COMMAND setup2_apply_tests cra
 add_test(NAME test_no_in_place_mutation COMMAND setup2_apply_tests no_in_place_mutation)
 add_test(NAME test_deterministic_journals COMMAND setup2_apply_tests deterministic_journals)
 
+add_executable(setup2_cli_golden_tests
+    ../../tests/setup2/test_cli_golden.cpp
+)
+
+add_dependencies(setup2_cli_golden_tests
+    dominium-setup2
+)
+
+set_target_properties(setup2_cli_golden_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+dominium_bundle_runtime(setup2_cli_golden_tests)
+if(WIN32)
+    setup2_copy_winpthread(setup2_cli_golden_tests)
+endif()
+
+file(RELATIVE_PATH setup2_fixtures_rel
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR}/tests/setup2/fixtures
+)
+file(RELATIVE_PATH setup2_golden_rel
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR}/tests/setup2/golden
+)
+file(RELATIVE_PATH setup2_gold_master_rel
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR}/artifacts/setup2/gold_master
+)
+
+add_test(NAME setup2_cli_golden
+    COMMAND setup2_cli_golden_tests
+        $<TARGET_FILE:dominium-setup2>
+        ${setup2_fixtures_rel}
+        ${setup2_golden_rel}
+        setup2_cli_golden
+)
+set_tests_properties(setup2_cli_golden PROPERTIES
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+add_executable(setup2_import_tests
+    ../../tests/setup2/test_import_legacy_state.cpp
+)
+target_include_directories(setup2_import_tests PRIVATE
+    ${CMAKE_SOURCE_DIR}/source/dominium/setup/kernel/include
+)
+target_link_libraries(setup2_import_tests PRIVATE
+    dsk_kernel
+)
+target_compile_definitions(setup2_import_tests PRIVATE
+    SETUP2_TESTS_SOURCE_DIR=\"${CMAKE_SOURCE_DIR}/tests/setup2\"
+)
+set_target_properties(setup2_import_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+dominium_bundle_runtime(setup2_import_tests)
+if(WIN32)
+    setup2_copy_winpthread(setup2_import_tests)
+endif()
+add_test(NAME setup2_import_legacy_state
+    COMMAND setup2_import_tests
+)
+
+add_executable(setup2_adapter_steam_tests
+    ../../tests/setup2/test_adapter_steam.cpp
+)
+target_include_directories(setup2_adapter_steam_tests PRIVATE
+    ${CMAKE_SOURCE_DIR}/source/dominium/setup/kernel/include
+)
+target_link_libraries(setup2_adapter_steam_tests PRIVATE
+    dsk_kernel
+)
+set_target_properties(setup2_adapter_steam_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_dependencies(setup2_adapter_steam_tests
+    dominium-setup2
+    dominium-setup2-steam
+)
+add_test(NAME setup2_adapter_steam
+    COMMAND setup2_adapter_steam_tests
+        $<TARGET_FILE:dominium-setup2>
+        $<TARGET_FILE:dominium-setup2-steam>
+        adapter_steam
+)
+set_tests_properties(setup2_adapter_steam PROPERTIES
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+add_executable(setup2_adapter_macos_pkg_tests
+    ../../tests/setup2/test_adapter_macos_pkg.cpp
+)
+set_target_properties(setup2_adapter_macos_pkg_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME setup2_adapter_macos_pkg
+    COMMAND setup2_adapter_macos_pkg_tests
+        ${CMAKE_SOURCE_DIR}
+)
+set_tests_properties(setup2_adapter_macos_pkg PROPERTIES
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+add_executable(setup2_adapter_linux_wrappers_tests
+    ../../tests/setup2/test_adapter_linux_wrappers.cpp
+)
+set_target_properties(setup2_adapter_linux_wrappers_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME setup2_adapter_linux_wrappers
+    COMMAND setup2_adapter_linux_wrappers_tests
+        ${CMAKE_SOURCE_DIR}
+)
+set_tests_properties(setup2_adapter_linux_wrappers PROPERTIES
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+add_executable(setup2_adapter_wrapper_tests
+    ../../tests/setup2/test_adapter_wrapper_scripts.cpp
+)
+set_target_properties(setup2_adapter_wrapper_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME setup2_adapter_wrapper_scripts
+    COMMAND setup2_adapter_wrapper_tests
+        ${CMAKE_SOURCE_DIR}
+)
+set_tests_properties(setup2_adapter_wrapper_scripts PROPERTIES
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+if(WIN32)
+    add_executable(setup2_adapter_windows_tests
+        ../../tests/setup2/test_adapter_windows_exe.cpp
+    )
+    target_include_directories(setup2_adapter_windows_tests PRIVATE
+        ${CMAKE_SOURCE_DIR}/source/dominium/setup/kernel/include
+    )
+    target_link_libraries(setup2_adapter_windows_tests PRIVATE
+        dsk_kernel
+    )
+    set_target_properties(setup2_adapter_windows_tests PROPERTIES
+        CXX_STANDARD 98
+        CXX_STANDARD_REQUIRED ON
+        CXX_EXTENSIONS OFF
+    )
+    add_dependencies(setup2_adapter_windows_tests
+        dominium-setup2
+        dominium-setup2-win-exe
+    )
+    add_test(NAME setup2_adapter_windows_exe
+        COMMAND setup2_adapter_windows_tests
+            $<TARGET_FILE:dominium-setup2>
+            $<TARGET_FILE:dominium-setup2-win-exe>
+            adapter_windows
+    )
+    set_tests_properties(setup2_adapter_windows_exe PROPERTIES
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    )
+endif()
+
+add_executable(setup2_parity_tests
+    ../../tests/setup2/parity/setup2_parity_tests.cpp
+)
+target_compile_definitions(setup2_parity_tests PRIVATE
+    SETUP2_SOURCE_DIR=\"${CMAKE_SOURCE_DIR}\"
+)
+set_target_properties(setup2_parity_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+dominium_bundle_runtime(setup2_parity_tests)
+if(WIN32)
+    setup2_copy_winpthread(setup2_parity_tests)
+endif()
+add_test(NAME setup2_parity_kernel_invariants_match_launcher
+    COMMAND setup2_parity_tests kernel_invariants_match_launcher
+)
+add_test(NAME setup2_parity_capability_registry_semantics_match
+    COMMAND setup2_parity_tests capability_registry_semantics_match
+)
+add_test(NAME setup2_parity_job_journal_semantics_match
+    COMMAND setup2_parity_tests job_journal_semantics_match
+)
+
+add_executable(setup2_parity_lock_tests
+    ../../tests/setup2/parity_lock/setup2_parity_lock_tests.cpp
+)
+target_include_directories(setup2_parity_lock_tests PRIVATE
+    ${CMAKE_SOURCE_DIR}/source/dominium/setup/kernel/include
+)
+target_link_libraries(setup2_parity_lock_tests PRIVATE
+    dsk_kernel
+)
+set_target_properties(setup2_parity_lock_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+dominium_bundle_runtime(setup2_parity_lock_tests)
+if(WIN32)
+    setup2_copy_winpthread(setup2_parity_lock_tests)
+endif()
+add_dependencies(setup2_parity_lock_tests
+    dominium-setup2
+    dominium-setup2-tui
+)
+if(TARGET dominium-setup2-steam)
+    add_dependencies(setup2_parity_lock_tests dominium-setup2-steam)
+    set(SETUP2_PARITY_STEAM_BIN $<TARGET_FILE:dominium-setup2-steam>)
+else()
+    set(SETUP2_PARITY_STEAM_BIN "none")
+endif()
+if(WIN32 AND TARGET dominium-setup2-win-exe)
+    add_dependencies(setup2_parity_lock_tests dominium-setup2-win-exe)
+    set(SETUP2_PARITY_WIN_EXE_BIN $<TARGET_FILE:dominium-setup2-win-exe>)
+else()
+    set(SETUP2_PARITY_WIN_EXE_BIN "none")
+endif()
+
+add_test(NAME setup2_parity_lock_request_equivalence_across_adapters
+    COMMAND setup2_parity_lock_tests request_equivalence_across_adapters
+        $<TARGET_FILE:dominium-setup2>
+        $<TARGET_FILE:dominium-setup2-tui>
+        ${setup2_fixtures_rel}
+        ${CMAKE_CURRENT_BINARY_DIR}/setup2_parity_lock
+        ${CMAKE_SOURCE_DIR}
+        ${SETUP2_PARITY_STEAM_BIN}
+        ${SETUP2_PARITY_WIN_EXE_BIN}
+)
+add_test(NAME setup2_parity_lock_plan_digest_equivalence_across_adapters
+    COMMAND setup2_parity_lock_tests plan_digest_equivalence_across_adapters
+        $<TARGET_FILE:dominium-setup2>
+        $<TARGET_FILE:dominium-setup2-tui>
+        ${setup2_fixtures_rel}
+        ${CMAKE_CURRENT_BINARY_DIR}/setup2_parity_lock
+        ${CMAKE_SOURCE_DIR}
+        ${SETUP2_PARITY_STEAM_BIN}
+        ${SETUP2_PARITY_WIN_EXE_BIN}
+)
+add_test(NAME setup2_parity_lock_refusal_code_equivalence
+    COMMAND setup2_parity_lock_tests refusal_code_equivalence
+        $<TARGET_FILE:dominium-setup2>
+        $<TARGET_FILE:dominium-setup2-tui>
+        ${setup2_fixtures_rel}
+        ${CMAKE_CURRENT_BINARY_DIR}/setup2_parity_lock
+        ${CMAKE_SOURCE_DIR}
+        ${SETUP2_PARITY_STEAM_BIN}
+        ${SETUP2_PARITY_WIN_EXE_BIN}
+)
+
+add_executable(setup2_conformance_runner
+    ../../tests/setup2/conformance/setup2_conformance_runner.cpp
+)
+
+target_include_directories(setup2_conformance_runner PRIVATE
+    ${CMAKE_SOURCE_DIR}/source/dominium/setup/kernel/include
+    ${CMAKE_SOURCE_DIR}/source/dominium/setup/services/include
+    ${CMAKE_SOURCE_DIR}/source/dominium/setup/kernel/src/plan
+)
+
+target_link_libraries(setup2_conformance_runner
+    PRIVATE dsk_kernel dss_services
+)
+
+set_target_properties(setup2_conformance_runner PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+dominium_bundle_runtime(setup2_conformance_runner)
+if(WIN32)
+    setup2_copy_winpthread(setup2_conformance_runner)
+endif()
+
+add_test(NAME setup2_conformance
+    COMMAND setup2_conformance_runner
+        --sandbox-root setup2_conformance
+        --fixtures-root ${setup2_fixtures_rel}
+        --deterministic 1
+        --out-json setup2_conformance/conformance_summary.json
+)
+
+add_test(NAME setup2_conformance_golden
+    COMMAND ${CMAKE_COMMAND} -E compare_files
+        ${CMAKE_CURRENT_BINARY_DIR}/setup2_conformance/conformance_summary.json
+        ${setup2_golden_rel}/conformance_summary.json
+)
+set_tests_properties(setup2_conformance_golden PROPERTIES
+    DEPENDS setup2_conformance
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+add_executable(setup2_conformance_repeat_tests
+    ../../tests/setup2/conformance/setup2_conformance_repeat_tests.cpp
+)
+set_target_properties(setup2_conformance_repeat_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+dominium_bundle_runtime(setup2_conformance_repeat_tests)
+if(WIN32)
+    setup2_copy_winpthread(setup2_conformance_repeat_tests)
+endif()
+add_dependencies(setup2_conformance_repeat_tests
+    setup2_conformance_runner
+)
+add_test(NAME setup2_conformance_repeat
+    COMMAND setup2_conformance_repeat_tests
+        $<TARGET_FILE:setup2_conformance_runner>
+        ${setup2_fixtures_rel}
+        ${CMAKE_CURRENT_BINARY_DIR}/setup2_conformance_repeat
+)
+
+add_executable(setup2_gold_master_tests
+    ../../tests/setup2/gold_master/setup2_gold_master_tests.cpp
+)
+target_include_directories(setup2_gold_master_tests PRIVATE
+    ${CMAKE_SOURCE_DIR}/source/dominium/setup/kernel/include
+    ${CMAKE_SOURCE_DIR}/source/dominium/setup/services/include
+)
+target_link_libraries(setup2_gold_master_tests PRIVATE
+    dsk_kernel dss_services
+)
+set_target_properties(setup2_gold_master_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+dominium_bundle_runtime(setup2_gold_master_tests)
+if(WIN32)
+    setup2_copy_winpthread(setup2_gold_master_tests)
+endif()
+add_dependencies(setup2_gold_master_tests
+    dominium-setup2
+)
+add_test(NAME setup2_gold_master_roundtrip
+    COMMAND setup2_gold_master_tests roundtrip
+        $<TARGET_FILE:dominium-setup2>
+        ${setup2_fixtures_rel}
+        ${setup2_gold_master_rel}
+        ${CMAKE_CURRENT_BINARY_DIR}/setup2_gold_master
+)
+add_test(NAME setup2_gold_master_digests_unchanged
+    COMMAND setup2_gold_master_tests digests
+        $<TARGET_FILE:dominium-setup2>
+        ${setup2_fixtures_rel}
+        ${setup2_gold_master_rel}
+        ${CMAKE_CURRENT_BINARY_DIR}/setup2_gold_master
+)
+
+set(setup2_labeled_tests
+    test_tlv_roundtrip_known_fields
+    test_tlv_skip_unknown
+    test_manifest_validate_missing_required
+    test_request_validate_missing_required
+    test_kernel_emits_audit_on_failure
+    test_splat_selection_deterministic
+    test_state_auto_migration_missing_version
+    test_state_skip_unknown_fields
+    test_services_platform_fake
+    test_kernel_uses_services_platform
+    test_splat_registry_sorted
+    test_splat_select_requested_id_success
+    test_splat_select_requested_id_not_found
+    test_splat_select_requested_id_removed
+    test_splat_select_filters_by_platform
+    test_splat_select_filters_by_scope
+    test_splat_select_filters_by_ui_mode
+    test_splat_select_no_compatible_emits_rejections_and_audit
+    test_splat_select_deterministic_choice_first_compatible
+    test_splat_select_deprecated_emits_warning
+    test_resolve_default_components
+    test_resolve_explicit_components
+    test_resolve_dependency_closure
+    test_resolve_conflict_refusal
+    test_resolve_platform_incompat_refusal
+    test_plan_byte_identical_repeat
+    test_plan_digest_stable
+    test_plan_validate_rejects_corrupt_header
+    test_plan_lists_canonically_sorted
+    test_plan_golden_default
+    test_plan_golden_custom
+    test_apply_fresh_install_succeeds
+    test_fail_mid_commit_then_rollback_restores_pristine
+    test_fail_mid_commit_then_resume_completes
+    test_crash_during_stage_then_resume
+    test_no_in_place_mutation
+    test_deterministic_journals
+    setup2_cli_golden
+    setup2_import_legacy_state
+    setup2_parity_kernel_invariants_match_launcher
+    setup2_parity_capability_registry_semantics_match
+    setup2_parity_job_journal_semantics_match
+    setup2_parity_lock_request_equivalence_across_adapters
+    setup2_parity_lock_plan_digest_equivalence_across_adapters
+    setup2_parity_lock_refusal_code_equivalence
+    setup2_gold_master_roundtrip
+    setup2_gold_master_digests_unchanged
+    setup2_conformance
+    setup2_conformance_golden
+    setup2_conformance_repeat
+)
+set_tests_properties(${setup2_labeled_tests} PROPERTIES LABELS setup2)
+
+set(setup2_adapter_tests
+    setup2_adapter_steam
+    setup2_adapter_macos_pkg
+    setup2_adapter_linux_wrappers
+    setup2_adapter_wrapper_scripts
+)
+set_tests_properties(${setup2_adapter_tests} PROPERTIES LABELS "setup2;setup2_adapters")
+if(WIN32)
+    set_tests_properties(setup2_adapter_windows_exe PROPERTIES LABELS "setup2;setup2_adapters")
+endif()
+
 if(WIN32)
     add_test(NAME setup2_kernel_purity_check
         COMMAND ${CMAKE_SOURCE_DIR}/scripts/setup2/check_kernel_purity.bat
     )
+    set_tests_properties(setup2_kernel_purity_check PROPERTIES LABELS setup2)
 else()
     add_test(NAME setup2_kernel_purity_check
         COMMAND sh ${CMAKE_SOURCE_DIR}/scripts/setup2/check_kernel_purity.sh
     )
+    set_tests_properties(setup2_kernel_purity_check PROPERTIES LABELS setup2)
 endif()
