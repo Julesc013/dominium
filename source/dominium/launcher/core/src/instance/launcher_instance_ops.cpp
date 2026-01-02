@@ -12,6 +12,7 @@ RESPONSIBILITY: Implements instance root operations with isolated roots, staging
 #include <vector>
 
 #include "launcher_audit.h"
+#include "launcher_log.h"
 #include "launcher_safety.h"
 #include "launcher_tlv.h"
 
@@ -332,6 +333,74 @@ static void audit_instance_op(LauncherAuditLog* audit,
         line += extra_kv;
     }
     audit_reason(audit, line);
+}
+
+static void emit_instance_event(const launcher_services_api_v1* services,
+                                const std::string& instance_id,
+                                const std::string& state_root,
+                                u32 op_id,
+                                u32 event_code,
+                                const err_t* err) {
+    core_log_event ev;
+    core_log_scope scope;
+
+    core_log_event_clear(&ev);
+    ev.domain = CORE_LOG_DOMAIN_LAUNCHER;
+    ev.code = (u16)event_code;
+    ev.severity = (u8)((event_code == CORE_LOG_EVT_OP_FAIL) ? CORE_LOG_SEV_ERROR : CORE_LOG_SEV_INFO);
+    ev.msg_id = 0u;
+    ev.t_mono = 0u;
+    (void)core_log_event_add_u32(&ev, CORE_LOG_KEY_OPERATION_ID, op_id);
+    if (err && !err_is_ok(err)) {
+        launcher_log_add_err_fields(&ev, err);
+    }
+
+    std::memset(&scope, 0, sizeof(scope));
+    scope.state_root = state_root.empty() ? (const char*)0 : state_root.c_str();
+    if (!instance_id.empty()) {
+        scope.kind = CORE_LOG_SCOPE_INSTANCE;
+        scope.instance_id = instance_id.c_str();
+    } else {
+        scope.kind = CORE_LOG_SCOPE_GLOBAL;
+    }
+    (void)launcher_services_emit_event(services, &scope, &ev);
+}
+
+static bool fail_with_err(err_t* out_err, LauncherAuditLog* audit, const err_t& err) {
+    if (out_err) {
+        *out_err = err;
+    }
+    if (audit) {
+        audit->err = err;
+    }
+    return false;
+}
+
+static bool ok_with_err(err_t* out_err) {
+    if (out_err) {
+        *out_err = err_ok();
+    }
+    return true;
+}
+
+static bool fail_with_err_and_log(const launcher_services_api_v1* services,
+                                  const std::string& instance_id,
+                                  const std::string& state_root,
+                                  u32 op_id,
+                                  LauncherAuditLog* audit,
+                                  err_t* out_err,
+                                  const err_t& err) {
+    emit_instance_event(services, instance_id, state_root, op_id, CORE_LOG_EVT_OP_FAIL, &err);
+    return fail_with_err(out_err, audit, err);
+}
+
+static bool ok_with_err_and_log(const launcher_services_api_v1* services,
+                                const std::string& instance_id,
+                                const std::string& state_root,
+                                u32 op_id,
+                                err_t* out_err) {
+    emit_instance_event(services, instance_id, state_root, op_id, CORE_LOG_EVT_OP_OK, (const err_t*)0);
+    return ok_with_err(out_err);
 }
 
 } /* namespace */
@@ -1344,6 +1413,220 @@ bool launcher_instance_import_instance(const launcher_services_api_v1* services,
                           ";safe_mode=" + std::string(safe_mode ? "1" : "0") +
                           ";source_instance_id=" + imported.instance_id);
     return true;
+}
+
+bool launcher_instance_load_manifest_ex(const launcher_services_api_v1* services,
+                                        const std::string& instance_id,
+                                        const std::string& state_root_override,
+                                        LauncherInstanceManifest& out_manifest,
+                                        err_t* out_err) {
+    const launcher_fs_api_v1* fs = get_fs(services);
+    std::string state_root;
+
+    if (!services || !fs) {
+        return fail_with_err(out_err, 0,
+                             err_make((u16)ERRD_COMMON, (u16)ERRC_COMMON_BAD_STATE, (u32)ERRF_FATAL, (u32)ERRMSG_COMMON_BAD_STATE));
+    }
+    if (instance_id.empty() || !launcher_is_safe_id_component(instance_id)) {
+        return fail_with_err(out_err, 0,
+                             err_make((u16)ERRD_LAUNCHER, (u16)ERRC_LAUNCHER_INSTANCE_INVALID, 0u,
+                                      (u32)ERRMSG_LAUNCHER_INSTANCE_ID_INVALID));
+    }
+    if (!state_root_override.empty()) {
+        state_root = state_root_override;
+    } else if (!get_state_root(fs, state_root)) {
+        return fail_with_err(out_err, 0,
+                             err_make((u16)ERRD_LAUNCHER, (u16)ERRC_LAUNCHER_STATE_ROOT_UNAVAILABLE, 0u,
+                                      (u32)ERRMSG_LAUNCHER_STATE_ROOT_UNAVAILABLE));
+    }
+    if (!launcher_instance_load_manifest(services, instance_id, state_root_override, out_manifest)) {
+        return fail_with_err(out_err, 0,
+                             err_make((u16)ERRD_LAUNCHER, (u16)ERRC_LAUNCHER_INSTANCE_NOT_FOUND, 0u,
+                                      (u32)ERRMSG_LAUNCHER_INSTANCE_NOT_FOUND));
+    }
+    return ok_with_err(out_err);
+}
+
+bool launcher_instance_create_instance_ex(const launcher_services_api_v1* services,
+                                          const LauncherInstanceManifest& desired_manifest,
+                                          const std::string& state_root_override,
+                                          LauncherInstanceManifest& out_created_manifest,
+                                          LauncherAuditLog* audit,
+                                          err_t* out_err) {
+    const launcher_fs_api_v1* fs = get_fs(services);
+    std::string state_root;
+    err_t err;
+
+    if (!services || !fs) {
+        err = err_make((u16)ERRD_COMMON, (u16)ERRC_COMMON_BAD_STATE, (u32)ERRF_FATAL, (u32)ERRMSG_COMMON_BAD_STATE);
+        return fail_with_err_and_log(services, std::string(), state_root_override,
+                                     CORE_LOG_OP_LAUNCHER_INSTANCE_CREATE, audit, out_err, err);
+    }
+    if (desired_manifest.instance_id.empty() || !launcher_is_safe_id_component(desired_manifest.instance_id)) {
+        err = err_make((u16)ERRD_LAUNCHER, (u16)ERRC_LAUNCHER_INSTANCE_INVALID, 0u,
+                       (u32)ERRMSG_LAUNCHER_INSTANCE_ID_INVALID);
+        return fail_with_err_and_log(services, std::string(), state_root_override,
+                                     CORE_LOG_OP_LAUNCHER_INSTANCE_CREATE, audit, out_err, err);
+    }
+    if (!state_root_override.empty()) {
+        state_root = state_root_override;
+    } else if (!get_state_root(fs, state_root)) {
+        err = err_make((u16)ERRD_LAUNCHER, (u16)ERRC_LAUNCHER_STATE_ROOT_UNAVAILABLE, 0u,
+                       (u32)ERRMSG_LAUNCHER_STATE_ROOT_UNAVAILABLE);
+        return fail_with_err_and_log(services, desired_manifest.instance_id, state_root,
+                                     CORE_LOG_OP_LAUNCHER_INSTANCE_CREATE, audit, out_err, err);
+    }
+    if (!launcher_instance_create_instance(services, desired_manifest, state_root_override, out_created_manifest, audit)) {
+        err = err_make((u16)ERRD_LAUNCHER, (u16)ERRC_LAUNCHER_MANIFEST_WRITE_FAILED, 0u,
+                       (u32)ERRMSG_LAUNCHER_INSTANCE_MANIFEST_WRITE_FAILED);
+        return fail_with_err_and_log(services, desired_manifest.instance_id, state_root,
+                                     CORE_LOG_OP_LAUNCHER_INSTANCE_CREATE, audit, out_err, err);
+    }
+    return ok_with_err_and_log(services, desired_manifest.instance_id, state_root,
+                               CORE_LOG_OP_LAUNCHER_INSTANCE_CREATE, out_err);
+}
+
+bool launcher_instance_delete_instance_ex(const launcher_services_api_v1* services,
+                                          const std::string& instance_id,
+                                          const std::string& state_root_override,
+                                          LauncherAuditLog* audit,
+                                          err_t* out_err) {
+    const launcher_fs_api_v1* fs = get_fs(services);
+    std::string state_root;
+    err_t err;
+
+    if (!services || !fs) {
+        err = err_make((u16)ERRD_COMMON, (u16)ERRC_COMMON_BAD_STATE, (u32)ERRF_FATAL, (u32)ERRMSG_COMMON_BAD_STATE);
+        return fail_with_err_and_log(services, std::string(), state_root_override,
+                                     CORE_LOG_OP_LAUNCHER_INSTANCE_DELETE, audit, out_err, err);
+    }
+    if (instance_id.empty() || !launcher_is_safe_id_component(instance_id)) {
+        err = err_make((u16)ERRD_LAUNCHER, (u16)ERRC_LAUNCHER_INSTANCE_INVALID, 0u,
+                       (u32)ERRMSG_LAUNCHER_INSTANCE_ID_INVALID);
+        return fail_with_err_and_log(services, std::string(), state_root_override,
+                                     CORE_LOG_OP_LAUNCHER_INSTANCE_DELETE, audit, out_err, err);
+    }
+    if (!state_root_override.empty()) {
+        state_root = state_root_override;
+    } else if (!get_state_root(fs, state_root)) {
+        err = err_make((u16)ERRD_LAUNCHER, (u16)ERRC_LAUNCHER_STATE_ROOT_UNAVAILABLE, 0u,
+                       (u32)ERRMSG_LAUNCHER_STATE_ROOT_UNAVAILABLE);
+        return fail_with_err_and_log(services, instance_id, state_root,
+                                     CORE_LOG_OP_LAUNCHER_INSTANCE_DELETE, audit, out_err, err);
+    }
+    if (!launcher_instance_delete_instance(services, instance_id, state_root_override, audit)) {
+        err = err_make((u16)ERRD_LAUNCHER, (u16)ERRC_LAUNCHER_INSTANCE_NOT_FOUND, 0u,
+                       (u32)ERRMSG_LAUNCHER_INSTANCE_NOT_FOUND);
+        return fail_with_err_and_log(services, instance_id, state_root,
+                                     CORE_LOG_OP_LAUNCHER_INSTANCE_DELETE, audit, out_err, err);
+    }
+    return ok_with_err_and_log(services, instance_id, state_root,
+                               CORE_LOG_OP_LAUNCHER_INSTANCE_DELETE, out_err);
+}
+
+bool launcher_instance_clone_instance_ex(const launcher_services_api_v1* services,
+                                         const std::string& source_instance_id,
+                                         const std::string& new_instance_id,
+                                         const std::string& state_root_override,
+                                         LauncherInstanceManifest& out_created_manifest,
+                                         LauncherAuditLog* audit,
+                                         err_t* out_err) {
+    if (!launcher_instance_clone_instance(services, source_instance_id, new_instance_id, state_root_override,
+                                          out_created_manifest, audit)) {
+        err_t err = err_make((u16)ERRD_LAUNCHER, (u16)ERRC_LAUNCHER_IMPORT_FAILED, 0u,
+                             (u32)ERRMSG_LAUNCHER_INSTANCE_IMPORT_FAILED);
+        return fail_with_err_and_log(services, new_instance_id, state_root_override,
+                                     CORE_LOG_OP_LAUNCHER_INSTANCE_TEMPLATE, audit, out_err, err);
+    }
+    return ok_with_err_and_log(services, new_instance_id, state_root_override,
+                               CORE_LOG_OP_LAUNCHER_INSTANCE_TEMPLATE, out_err);
+}
+
+bool launcher_instance_template_instance_ex(const launcher_services_api_v1* services,
+                                            const std::string& source_instance_id,
+                                            const std::string& new_instance_id,
+                                            const std::string& state_root_override,
+                                            LauncherInstanceManifest& out_created_manifest,
+                                            LauncherAuditLog* audit,
+                                            err_t* out_err) {
+    if (!launcher_instance_template_instance(services, source_instance_id, new_instance_id, state_root_override,
+                                             out_created_manifest, audit)) {
+        err_t err = err_make((u16)ERRD_LAUNCHER, (u16)ERRC_LAUNCHER_IMPORT_FAILED, 0u,
+                             (u32)ERRMSG_LAUNCHER_INSTANCE_IMPORT_FAILED);
+        return fail_with_err_and_log(services, new_instance_id, state_root_override,
+                                     CORE_LOG_OP_LAUNCHER_INSTANCE_CLONE, audit, out_err, err);
+    }
+    return ok_with_err_and_log(services, new_instance_id, state_root_override,
+                               CORE_LOG_OP_LAUNCHER_INSTANCE_CLONE, out_err);
+}
+
+bool launcher_instance_mark_known_good_ex(const launcher_services_api_v1* services,
+                                          const std::string& instance_id,
+                                          const std::string& state_root_override,
+                                          LauncherInstanceManifest& out_updated_manifest,
+                                          LauncherAuditLog* audit,
+                                          err_t* out_err) {
+    if (!launcher_instance_mark_known_good(services, instance_id, state_root_override, out_updated_manifest, audit)) {
+        err_t err = err_make((u16)ERRD_LAUNCHER, (u16)ERRC_LAUNCHER_MANIFEST_WRITE_FAILED, 0u,
+                             (u32)ERRMSG_LAUNCHER_INSTANCE_MANIFEST_WRITE_FAILED);
+        return fail_with_err_and_log(services, instance_id, state_root_override,
+                                     CORE_LOG_OP_LAUNCHER_INSTANCE_MARK_KNOWN_GOOD, audit, out_err, err);
+    }
+    return ok_with_err_and_log(services, instance_id, state_root_override,
+                               CORE_LOG_OP_LAUNCHER_INSTANCE_MARK_KNOWN_GOOD, out_err);
+}
+
+bool launcher_instance_mark_broken_ex(const launcher_services_api_v1* services,
+                                      const std::string& instance_id,
+                                      const std::string& state_root_override,
+                                      LauncherInstanceManifest& out_updated_manifest,
+                                      LauncherAuditLog* audit,
+                                      err_t* out_err) {
+    if (!launcher_instance_mark_broken(services, instance_id, state_root_override, out_updated_manifest, audit)) {
+        err_t err = err_make((u16)ERRD_LAUNCHER, (u16)ERRC_LAUNCHER_MANIFEST_WRITE_FAILED, 0u,
+                             (u32)ERRMSG_LAUNCHER_INSTANCE_MANIFEST_WRITE_FAILED);
+        return fail_with_err_and_log(services, instance_id, state_root_override,
+                                     CORE_LOG_OP_LAUNCHER_INSTANCE_MARK_BROKEN, audit, out_err, err);
+    }
+    return ok_with_err_and_log(services, instance_id, state_root_override,
+                               CORE_LOG_OP_LAUNCHER_INSTANCE_MARK_BROKEN, out_err);
+}
+
+bool launcher_instance_export_instance_ex(const launcher_services_api_v1* services,
+                                          const std::string& instance_id,
+                                          const std::string& export_root,
+                                          const std::string& state_root_override,
+                                          u32 export_mode,
+                                          LauncherAuditLog* audit,
+                                          err_t* out_err) {
+    if (!launcher_instance_export_instance(services, instance_id, export_root, state_root_override, export_mode, audit)) {
+        err_t err = err_make((u16)ERRD_LAUNCHER, (u16)ERRC_LAUNCHER_EXPORT_FAILED, 0u,
+                             (u32)ERRMSG_LAUNCHER_INSTANCE_EXPORT_FAILED);
+        return fail_with_err_and_log(services, instance_id, state_root_override,
+                                     CORE_LOG_OP_LAUNCHER_INSTANCE_EXPORT, audit, out_err, err);
+    }
+    return ok_with_err_and_log(services, instance_id, state_root_override,
+                               CORE_LOG_OP_LAUNCHER_INSTANCE_EXPORT, out_err);
+}
+
+bool launcher_instance_import_instance_ex(const launcher_services_api_v1* services,
+                                          const std::string& import_root,
+                                          const std::string& new_instance_id,
+                                          const std::string& state_root_override,
+                                          u32 import_mode,
+                                          u32 safe_mode,
+                                          LauncherInstanceManifest& out_created_manifest,
+                                          LauncherAuditLog* audit,
+                                          err_t* out_err) {
+    if (!launcher_instance_import_instance(services, import_root, new_instance_id, state_root_override, import_mode,
+                                           safe_mode, out_created_manifest, audit)) {
+        err_t err = err_make((u16)ERRD_LAUNCHER, (u16)ERRC_LAUNCHER_IMPORT_FAILED, 0u,
+                             (u32)ERRMSG_LAUNCHER_INSTANCE_IMPORT_FAILED);
+        return fail_with_err_and_log(services, new_instance_id, state_root_override,
+                                     CORE_LOG_OP_LAUNCHER_INSTANCE_IMPORT, audit, out_err, err);
+    }
+    return ok_with_err_and_log(services, new_instance_id, state_root_override,
+                               CORE_LOG_OP_LAUNCHER_INSTANCE_IMPORT, out_err);
 }
 
 } /* namespace launcher_core */

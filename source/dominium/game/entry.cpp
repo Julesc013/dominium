@@ -12,32 +12,53 @@ VERSIONING / ABI / DATA FORMAT NOTES: N/A (implementation file).
 EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
 */
 #include "domino/app/startup.h"
+#include "dom_game_cli.h"
 #include "dom_game_app.h"
 
 #include <cstdio>
 
 namespace {
 
-static int run_game_with_config(dom::GameConfig &cfg) {
-    dom::DomGameApp app;
-    if (!app.init_from_cli(cfg)) {
-        return 1;
-    }
-    app.run();
-    app.shutdown();
-    return 0;
-}
+static int run_game_with_mode(const d_app_params *p, dom_game_mode mode) {
+    dom_game_config cfg;
+    dom_game_cli_result res;
 
-static int run_game_with_mode(const d_app_params *p, dom::GameMode mode) {
-    dom::GameConfig cfg;
-    dom::init_default_game_config(cfg);
-    if (p) {
-        if (!dom::parse_game_cli_args(p->argc, p->argv, cfg)) {
-            return 1;
+    dom_game_cli_init_defaults(&cfg);
+    dom_game_cli_init_result(&res);
+
+    if (p && dom_game_cli_parse(p->argc, p->argv, &cfg, &res) != 0) {
+        if (res.error[0]) {
+            std::fprintf(stderr, "Error: %s\n", res.error);
         }
+        return res.exit_code ? res.exit_code : 2;
     }
+
+    if (res.want_help) {
+        dom_game_cli_print_help(stdout);
+        return 0;
+    }
+    if (res.want_version) {
+        return dom_game_cli_print_version(stdout);
+    }
+    if (res.want_capabilities) {
+        return dom_game_cli_print_capabilities(stdout);
+    }
+    if (res.want_introspect_json) {
+        return dom_game_cli_print_introspect_json(stdout);
+    }
+    if (res.want_print_caps) {
+        return dom_game_cli_print_caps(stdout);
+    }
+    if (res.want_print_selection) {
+        const int rc = dom_game_cli_print_selection(&cfg.profile, stdout, stderr);
+        return (rc == 0) ? 0 : 2;
+    }
+    if (res.want_smoke_gui) {
+        return dom_game_cli_dispatch(p ? p->argc : 0, p ? p->argv : (char **)0);
+    }
+
     cfg.mode = mode;
-    return run_game_with_config(cfg);
+    return dom_game_run_config(&cfg);
 }
 
 } // namespace
@@ -45,26 +66,22 @@ static int run_game_with_mode(const d_app_params *p, dom::GameMode mode) {
 extern "C" {
 
 int dom_game_run_cli(const d_app_params* p) {
-    dom::GameConfig cfg;
-    dom::init_default_game_config(cfg);
-    if (p) {
-        if (!dom::parse_game_cli_args(p->argc, p->argv, cfg)) {
-            return 1;
-        }
+    if (!p) {
+        return 1;
     }
-    return run_game_with_config(cfg);
+    return dom_game_cli_dispatch(p->argc, p->argv);
 }
 
 int dom_game_run_tui(const d_app_params* p) {
-    return run_game_with_mode(p, dom::GAME_MODE_TUI);
+    return run_game_with_mode(p, DOM_GAME_MODE_TUI);
 }
 
 int dom_game_run_gui(const d_app_params* p) {
-    return run_game_with_mode(p, dom::GAME_MODE_GUI);
+    return run_game_with_mode(p, DOM_GAME_MODE_GUI);
 }
 
 int dom_game_run_headless(const d_app_params* p) {
-    return run_game_with_mode(p, dom::GAME_MODE_HEADLESS);
+    return run_game_with_mode(p, DOM_GAME_MODE_HEADLESS);
 }
 
 int dom_launcher_run_cli(const d_app_params* p) {

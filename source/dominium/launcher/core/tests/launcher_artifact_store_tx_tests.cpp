@@ -12,6 +12,10 @@ NOTES: No UI/gfx dependencies; uses only standard C/C++ file IO and launcher nul
 #include <string>
 #include <vector>
 
+extern "C" {
+#include "domino/sys.h"
+}
+
 #include "launcher_artifact_store.h"
 #include "launcher_audit.h"
 #include "launcher_core_api.h"
@@ -23,6 +27,12 @@ NOTES: No UI/gfx dependencies; uses only standard C/C++ file IO and launcher nul
 #include "launcher_instance_tx.h"
 #include "launcher_sha256.h"
 #include "launcher_tlv.h"
+
+#if defined(_WIN32) || defined(_WIN64)
+extern "C" int _rmdir(const char* path);
+#else
+extern "C" int rmdir(const char* path);
+#endif
 
 namespace {
 
@@ -154,19 +164,68 @@ static void rmdir_best_effort(const std::string& path) {
 #endif
 }
 
+static void remove_tree(const char* path) {
+    dsys_dir_iter* it;
+    dsys_dir_entry ent;
+    char child[512];
+
+    if (!path || path[0] == '\0') {
+        return;
+    }
+
+    it = dsys_dir_open(path);
+    if (it) {
+        while (dsys_dir_next(it, &ent)) {
+            if (ent.name[0] == '.' && (ent.name[1] == '\0' ||
+                                       (ent.name[1] == '.' && ent.name[2] == '\0'))) {
+                continue;
+            }
+            std::snprintf(child, sizeof(child), "%s/%s", path, ent.name);
+            if (ent.is_dir) {
+                remove_tree(child);
+#if defined(_WIN32) || defined(_WIN64)
+                _rmdir(child);
+#else
+                rmdir(child);
+#endif
+            } else {
+                remove(child);
+            }
+        }
+        dsys_dir_close(it);
+    }
+#if defined(_WIN32) || defined(_WIN64)
+    _rmdir(path);
+#else
+    rmdir(path);
+#endif
+}
+
+static void ensure_clean_state_root(const std::string& state_root) {
+    remove_tree(state_root.c_str());
+    mkdir_p_best_effort(state_root);
+}
+
 static std::string make_temp_root(const launcher_services_api_v1* services, const char* prefix) {
     void* iface = 0;
     const launcher_time_api_v1* time = 0;
     char hex[17];
+    char pid_hex[17];
     u64 stamp = 0ull;
+    u64 pid = 0ull;
     if (services && services->query_interface && services->query_interface(LAUNCHER_IID_TIME_V1, &iface) == 0) {
         time = (const launcher_time_api_v1*)iface;
     }
     if (time && time->now_us) {
         stamp = time->now_us();
     }
+    if (stamp == 0ull) {
+        stamp = 1ull;
+    }
     u64_to_hex16(stamp, hex);
-    return std::string(prefix) + "_" + std::string(hex);
+    pid = 0ull;
+    u64_to_hex16(pid, pid_hex);
+    return std::string(prefix) + "_" + std::string(hex) + "_" + std::string(pid_hex);
 }
 
 static bool audit_find_hex16(const dom::launcher_core::LauncherAuditLog& audit,
@@ -228,6 +287,7 @@ static void make_store_artifact(const std::string& state_root,
 static void test_artifact_store_immutability_and_atomicity() {
     const launcher_services_api_v1* services = launcher_services_null_v1();
     std::string state_root = make_temp_root(services, "state_artifact_tx");
+    ensure_clean_state_root(state_root);
     dom::launcher_core::LauncherInstanceManifest created;
     dom::launcher_core::LauncherAuditLog a;
     dom::launcher_core::LauncherInstanceManifest desired = dom::launcher_core::launcher_instance_manifest_make_empty("inst_tx");
@@ -341,6 +401,7 @@ static void test_artifact_store_immutability_and_atomicity() {
 static void test_update_policy_verify_repair_and_rollback() {
     const launcher_services_api_v1* services = launcher_services_null_v1();
     std::string state_root = make_temp_root(services, "state_policy");
+    ensure_clean_state_root(state_root);
     dom::launcher_core::LauncherAuditLog a;
 
     /* Create artifacts */
@@ -556,6 +617,7 @@ static void test_update_policy_verify_repair_and_rollback() {
 static void test_crash_recovery_modes() {
     const launcher_services_api_v1* services = launcher_services_null_v1();
     std::string state_root = make_temp_root(services, "state_crash");
+    ensure_clean_state_root(state_root);
     dom::launcher_core::LauncherAuditLog a;
 
     /* Create valid artifact */

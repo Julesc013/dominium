@@ -9,6 +9,7 @@ RESPONSIBILITY: Implements audit model + TLV persistence (selected-and-why, skip
 
 #include <sstream>
 
+#include "dominium/core_audit.h"
 #include "launcher_tlv.h"
 #include "launcher_tlv_migrations.h"
 
@@ -28,7 +29,13 @@ enum {
     TAG_GIT_HASH = 11u,
     TAG_MANIFEST_HASH64 = 12u,
     TAG_EXIT_RESULT = 13u,
-    TAG_SELECTION_SUMMARY = 14u
+    TAG_SELECTION_SUMMARY = 14u,
+    TAG_ERR_DOMAIN = 20u,
+    TAG_ERR_CODE = 21u,
+    TAG_ERR_FLAGS = 22u,
+    TAG_ERR_MSG_ID = 23u,
+    TAG_ERR_DETAIL = 24u,
+    TAG_REASON_MSG_ID = 25u
 };
 
 enum {
@@ -60,11 +67,13 @@ LauncherAuditLog::LauncherAuditLog()
       selected_profile_id(),
       selected_backends(),
       reasons(),
+      reason_msg_ids(),
       version_string(),
       build_id(),
       git_hash(),
       manifest_hash64(0ull),
       exit_result(0),
+      err(err_ok()),
       has_selection_summary(0u),
       selection_summary_tlv() {
 }
@@ -86,12 +95,27 @@ bool launcher_audit_to_tlv_bytes(const LauncherAuditLog& audit,
     if (audit.has_selection_summary != 0u || !audit.selection_summary_tlv.empty()) {
         w.add_container(TAG_SELECTION_SUMMARY, audit.selection_summary_tlv);
     }
+    if (!err_is_ok(&audit.err)) {
+        core_audit::ErrDetailTags tags;
+        tags.tag_key = LAUNCHER_AUDIT_ERR_TLV_TAG_KEY;
+        tags.tag_type = LAUNCHER_AUDIT_ERR_TLV_TAG_TYPE;
+        tags.tag_value_u32 = LAUNCHER_AUDIT_ERR_TLV_TAG_VALUE_U32;
+        tags.tag_value_u64 = LAUNCHER_AUDIT_ERR_TLV_TAG_VALUE_U64;
+        w.add_u32(TAG_ERR_DOMAIN, (u32)audit.err.domain);
+        w.add_u32(TAG_ERR_CODE, (u32)audit.err.code);
+        w.add_u32(TAG_ERR_FLAGS, audit.err.flags);
+        w.add_u32(TAG_ERR_MSG_ID, audit.err.msg_id);
+        core_audit::append_err_details(w, TAG_ERR_DETAIL, audit.err, tags);
+    }
 
     for (i = 0u; i < audit.inputs.size(); ++i) {
         w.add_string(TAG_INPUT, audit.inputs[i]);
     }
     for (i = 0u; i < audit.reasons.size(); ++i) {
         w.add_string(TAG_REASON, audit.reasons[i]);
+    }
+    for (i = 0u; i < audit.reason_msg_ids.size(); ++i) {
+        w.add_u32(TAG_REASON_MSG_ID, audit.reason_msg_ids[i]);
     }
     for (i = 0u; i < audit.selected_backends.size(); ++i) {
         TlvWriter entry;
@@ -180,6 +204,53 @@ bool launcher_audit_from_tlv_bytes(const unsigned char* data,
             out_audit.has_selection_summary = 1u;
             out_audit.selection_summary_tlv.assign(rec.payload, rec.payload + (size_t)rec.len);
             break;
+        case TAG_ERR_DOMAIN: {
+            u32 v;
+            if (tlv_read_u32_le(rec.payload, rec.len, v)) {
+                out_audit.err.domain = (u16)v;
+            }
+            break;
+        }
+        case TAG_ERR_CODE: {
+            u32 v;
+            if (tlv_read_u32_le(rec.payload, rec.len, v)) {
+                out_audit.err.code = (u16)v;
+            }
+            break;
+        }
+        case TAG_ERR_FLAGS: {
+            u32 v;
+            if (tlv_read_u32_le(rec.payload, rec.len, v)) {
+                out_audit.err.flags = v;
+            }
+            break;
+        }
+        case TAG_ERR_MSG_ID: {
+            u32 v;
+            if (tlv_read_u32_le(rec.payload, rec.len, v)) {
+                out_audit.err.msg_id = v;
+            }
+            break;
+        }
+        case TAG_ERR_DETAIL: {
+            core_audit::ErrDetailTags tags;
+            tags.tag_key = LAUNCHER_AUDIT_ERR_TLV_TAG_KEY;
+            tags.tag_type = LAUNCHER_AUDIT_ERR_TLV_TAG_TYPE;
+            tags.tag_value_u32 = LAUNCHER_AUDIT_ERR_TLV_TAG_VALUE_U32;
+            tags.tag_value_u64 = LAUNCHER_AUDIT_ERR_TLV_TAG_VALUE_U64;
+            (void)core_audit::parse_err_detail_entry(rec.payload,
+                                                     (size_t)rec.len,
+                                                     out_audit.err,
+                                                     tags);
+            break;
+        }
+        case TAG_REASON_MSG_ID: {
+            u32 v;
+            if (tlv_read_u32_le(rec.payload, rec.len, v)) {
+                out_audit.reason_msg_ids.push_back(v);
+            }
+            break;
+        }
         case TAG_SELECTED_BACKEND: {
             LauncherAuditBackend b;
             TlvReader er(rec.payload, (size_t)rec.len);
@@ -274,6 +345,36 @@ std::string launcher_audit_to_text(const LauncherAuditLog& audit) {
     oss << "reasons=" << audit.reasons.size() << "\n";
     for (i = 0u; i < audit.reasons.size(); ++i) {
         oss << "  why=" << audit.reasons[i] << "\n";
+    }
+    if (!audit.reason_msg_ids.empty()) {
+        oss << "reason_msg_ids=" << audit.reason_msg_ids.size() << "\n";
+        for (i = 0u; i < audit.reason_msg_ids.size(); ++i) {
+            oss << "  reason_msg_id=" << err_msg_id_token(audit.reason_msg_ids[i]) << "\n";
+        }
+    }
+    if (!err_is_ok(&audit.err)) {
+        oss << "err_domain=" << err_domain_token(audit.err.domain) << "\n";
+        oss << "err_code=" << audit.err.code << "\n";
+        oss << "err_flags=" << audit.err.flags << "\n";
+        oss << "err_msg_id=" << err_msg_id_token(audit.err.msg_id) << "\n";
+        if (audit.err.detail_count != 0u) {
+            err_t e = audit.err;
+            err_sort_details_by_key(&e);
+            for (i = 0u; i < e.detail_count; ++i) {
+                const err_detail& d = e.details[i];
+                oss << "  detail." << err_detail_key_token(d.key_id) << "=";
+                if (d.type == (u32)ERR_DETAIL_TYPE_U32 || d.type == (u32)ERR_DETAIL_TYPE_MSG_ID) {
+                    if (d.type == (u32)ERR_DETAIL_TYPE_MSG_ID) {
+                        oss << err_msg_id_token(d.v.msg_id);
+                    } else {
+                        oss << d.v.u32_value;
+                    }
+                } else {
+                    oss << d.v.u64_value;
+                }
+                oss << "\n";
+            }
+        }
     }
     return oss.str();
 }

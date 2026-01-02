@@ -10,7 +10,8 @@ RESPONSIBILITY: Implements deterministic dependency resolution and simulation sa
 #include <cstdio>
 #include <cstring>
 
-#include "launcher_artifact_store.h"
+#include "launcher_log.h"
+#include "launcher_safety.h"
 #include "launcher_tlv.h"
 
 namespace dom {
@@ -29,6 +30,25 @@ static const launcher_fs_api_v1* get_fs(const launcher_services_api_v1* services
     return (const launcher_fs_api_v1*)iface;
 }
 
+static const launcher_providers_api_v1* get_providers(const launcher_services_api_v1* services) {
+    void* iface = 0;
+    if (!services || !services->query_interface) {
+        return 0;
+    }
+    if (services->query_interface(LAUNCHER_IID_PROVIDERS_V1, &iface) != 0) {
+        return 0;
+    }
+    return (const launcher_providers_api_v1*)iface;
+}
+
+static const provider_content_source_v1* get_content_provider(const launcher_services_api_v1* services) {
+    const launcher_providers_api_v1* providers = get_providers(services);
+    if (!providers || !providers->get_content_source) {
+        return 0;
+    }
+    return providers->get_content_source();
+}
+
 static bool get_state_root(const launcher_fs_api_v1* fs, std::string& out_state_root) {
     char buf[260];
     if (!fs || !fs->get_path) {
@@ -40,6 +60,38 @@ static bool get_state_root(const launcher_fs_api_v1* fs, std::string& out_state_
     }
     out_state_root = std::string(buf);
     return !out_state_root.empty();
+}
+
+static void emit_pack_event(const launcher_services_api_v1* services,
+                            const LauncherInstanceManifest& manifest,
+                            const std::string& state_root_override,
+                            u32 op_id,
+                            u32 event_code,
+                            const err_t* err) {
+    core_log_event ev;
+    core_log_scope scope;
+    const bool safe_id = (!manifest.instance_id.empty() && launcher_is_safe_id_component(manifest.instance_id));
+
+    core_log_event_clear(&ev);
+    ev.domain = CORE_LOG_DOMAIN_PACKS;
+    ev.code = (u16)event_code;
+    ev.severity = (u8)((event_code == CORE_LOG_EVT_OP_FAIL) ? CORE_LOG_SEV_ERROR : CORE_LOG_SEV_INFO);
+    ev.msg_id = 0u;
+    ev.t_mono = 0u;
+    (void)core_log_event_add_u32(&ev, CORE_LOG_KEY_OPERATION_ID, op_id);
+    if (err && !err_is_ok(err)) {
+        launcher_log_add_err_fields(&ev, err);
+    }
+
+    std::memset(&scope, 0, sizeof(scope));
+    scope.state_root = state_root_override.empty() ? (const char*)0 : state_root_override.c_str();
+    if (safe_id) {
+        scope.kind = CORE_LOG_SCOPE_INSTANCE;
+        scope.instance_id = manifest.instance_id.c_str();
+    } else {
+        scope.kind = CORE_LOG_SCOPE_GLOBAL;
+    }
+    (void)launcher_services_emit_event(services, &scope, &ev);
 }
 
 static bool fs_read_all(const launcher_fs_api_v1* fs,
@@ -84,6 +136,64 @@ static bool is_pack_like_type(u32 content_type) {
     return content_type == (u32)LAUNCHER_CONTENT_PACK ||
            content_type == (u32)LAUNCHER_CONTENT_MOD ||
            content_type == (u32)LAUNCHER_CONTENT_RUNTIME;
+}
+
+static bool starts_with(const std::string& s, const char* prefix) {
+    size_t n;
+    if (!prefix) {
+        return false;
+    }
+    n = std::strlen(prefix);
+    if (s.size() < n) {
+        return false;
+    }
+    return s.compare(0u, n, prefix) == 0;
+}
+
+static err_t pack_error_from_text(const std::string& text) {
+    if (starts_with(text, "missing_services_or_fs")) {
+        return err_make((u16)ERRD_COMMON, (u16)ERRC_COMMON_BAD_STATE, (u32)ERRF_FATAL, (u32)ERRMSG_COMMON_BAD_STATE);
+    }
+    if (starts_with(text, "missing_content_provider")) {
+        return err_make((u16)ERRD_COMMON, (u16)ERRC_COMMON_BAD_STATE, (u32)ERRF_FATAL, (u32)ERRMSG_COMMON_BAD_STATE);
+    }
+    if (starts_with(text, "content_hash_too_long")) {
+        return err_make((u16)ERRD_COMMON, (u16)ERRC_COMMON_INVALID_ARGS, 0u, (u32)ERRMSG_COMMON_INVALID_ARGS);
+    }
+    if (starts_with(text, "missing_state_root")) {
+        return err_make((u16)ERRD_LAUNCHER, (u16)ERRC_LAUNCHER_STATE_ROOT_UNAVAILABLE, 0u, (u32)ERRMSG_LAUNCHER_STATE_ROOT_UNAVAILABLE);
+    }
+    if (starts_with(text, "missing_required_pack")) {
+        return err_make((u16)ERRD_PACKS, (u16)ERRC_PACKS_DEPENDENCY_MISSING, (u32)ERRF_USER_ACTIONABLE, (u32)ERRMSG_PACKS_DEPENDENCY_MISSING);
+    }
+    if (starts_with(text, "conflict_violation") ||
+        starts_with(text, "required_version_mismatch") ||
+        starts_with(text, "optional_version_mismatch") ||
+        starts_with(text, "duplicate_pack_id") ||
+        starts_with(text, "cycle_detected")) {
+        return err_make((u16)ERRD_PACKS, (u16)ERRC_PACKS_DEPENDENCY_CONFLICT, (u32)ERRF_USER_ACTIONABLE, (u32)ERRMSG_PACKS_DEPENDENCY_CONFLICT);
+    }
+    if (starts_with(text, "pack_manifest_payload_missing") ||
+        starts_with(text, "content_provider_resolve_failed") ||
+        starts_with(text, "content_provider_missing_payload")) {
+        return err_make((u16)ERRD_PACKS, (u16)ERRC_PACKS_PACK_NOT_FOUND, 0u, (u32)ERRMSG_PACKS_PACK_NOT_FOUND);
+    }
+    if (starts_with(text, "pack_manifest_load_failed") ||
+        starts_with(text, "pack_manifest_decode_failed") ||
+        starts_with(text, "pack_manifest_invalid") ||
+        starts_with(text, "pack_id_mismatch") ||
+        starts_with(text, "pack_version_mismatch") ||
+        starts_with(text, "pack_type_mismatch")) {
+        return err_make((u16)ERRD_PACKS, (u16)ERRC_PACKS_PACK_INVALID, (u32)ERRF_INTEGRITY, (u32)ERRMSG_PACKS_PACK_INVALID);
+    }
+    if (starts_with(text, "sim_safety_resolve_failed")) {
+        return err_make((u16)ERRD_PACKS, (u16)ERRC_PACKS_DEPENDENCY_CONFLICT, (u32)ERRF_USER_ACTIONABLE, (u32)ERRMSG_PACKS_DEPENDENCY_CONFLICT);
+    }
+    if (starts_with(text, "sim_affecting_pack_unpinned")) {
+        return err_make((u16)ERRD_PACKS, (u16)ERRC_PACKS_SIM_FLAGS_MISSING, (u32)(ERRF_POLICY_REFUSAL | ERRF_USER_ACTIONABLE),
+                        (u32)ERRMSG_PACKS_SIM_FLAGS_MISSING);
+    }
+    return err_make((u16)ERRD_PACKS, (u16)ERRC_PACKS_PACK_INVALID, (u32)ERRF_INTEGRITY, (u32)ERRMSG_PACKS_PACK_INVALID);
 }
 
 static u32 content_type_from_pack_type(u32 pack_type) {
@@ -272,13 +382,12 @@ static bool load_pack_manifest_for_entry(const launcher_services_api_v1* service
                                          Node& out_node,
                                          std::string& out_error) {
     const launcher_fs_api_v1* fs = get_fs(services);
-    std::string dir;
-    std::string meta_path;
     std::string payload_path;
     std::vector<unsigned char> payload;
     LauncherPackManifest pm;
     std::string verr;
     u32 expected_type;
+    const provider_content_source_v1* content_provider = 0;
 
     out_error.clear();
     if (!services || !fs) {
@@ -298,9 +407,42 @@ static bool load_pack_manifest_for_entry(const launcher_services_api_v1* service
         return false;
     }
 
-    if (!launcher_artifact_store_paths(state_root, entry.hash_bytes, dir, meta_path, payload_path)) {
-        out_error = "artifact_store_paths_failed";
+    content_provider = get_content_provider(services);
+    if (!content_provider || !content_provider->resolve_artifact) {
+        out_error = "missing_content_provider";
         return false;
+    }
+    if (entry.hash_bytes.size() > (size_t)PROVIDER_CONTENT_HASH_MAX) {
+        out_error = "content_hash_too_long";
+        return false;
+    }
+    {
+        provider_content_request_v1 req;
+        provider_content_artifact_ref_v1 ref;
+        err_t perr;
+        std::memset(&req, 0, sizeof(req));
+        std::memset(&ref, 0, sizeof(ref));
+        req.struct_size = (u32)sizeof(req);
+        req.struct_version = 1u;
+        req.content_type = entry.type;
+        req.content_id = entry.id.c_str();
+        req.content_version = entry.version.c_str();
+        req.hash_bytes = entry.hash_bytes.empty() ? (const unsigned char*)0 : &entry.hash_bytes[0];
+        req.hash_len = (u32)entry.hash_bytes.size();
+        req.state_root = state_root.c_str();
+        req.import_root = 0;
+        req.flags = PROVIDER_CONTENT_REQ_OFFLINE_OK;
+
+        perr = err_ok();
+        if (content_provider->resolve_artifact(&req, &ref, &perr) != 0) {
+            out_error = "content_provider_resolve_failed";
+            return false;
+        }
+        if (!ref.has_payload_path || !ref.payload_path[0]) {
+            out_error = "content_provider_missing_payload";
+            return false;
+        }
+        payload_path = std::string(ref.payload_path);
     }
     if (!fs_read_all(fs, payload_path, payload)) {
         out_error = std::string("pack_manifest_payload_missing;path=") + payload_path;
@@ -626,6 +768,55 @@ bool launcher_pack_validate_simulation_safety(const launcher_services_api_v1* se
     return true;
 }
 
+bool launcher_pack_resolve_enabled_ex(const launcher_services_api_v1* services,
+                                      const LauncherInstanceManifest& manifest,
+                                      const std::string& state_root_override,
+                                      std::vector<LauncherResolvedPack>& out_ordered,
+                                      err_t* out_err) {
+    std::string err;
+    if (launcher_pack_resolve_enabled(services, manifest, state_root_override, out_ordered, &err)) {
+        if (out_err) {
+            *out_err = err_ok();
+        }
+        emit_pack_event(services, manifest, state_root_override,
+                        CORE_LOG_OP_LAUNCHER_PACK_RESOLVE, CORE_LOG_EVT_OP_OK, (const err_t*)0);
+        return true;
+    }
+    if (out_err) {
+        *out_err = pack_error_from_text(err);
+    }
+    {
+        err_t e = pack_error_from_text(err);
+        emit_pack_event(services, manifest, state_root_override,
+                        CORE_LOG_OP_LAUNCHER_PACK_RESOLVE, CORE_LOG_EVT_OP_FAIL, &e);
+    }
+    return false;
+}
+
+bool launcher_pack_validate_simulation_safety_ex(const launcher_services_api_v1* services,
+                                                 const LauncherInstanceManifest& manifest,
+                                                 const std::string& state_root_override,
+                                                 err_t* out_err) {
+    std::string err;
+    if (launcher_pack_validate_simulation_safety(services, manifest, state_root_override, &err)) {
+        if (out_err) {
+            *out_err = err_ok();
+        }
+        emit_pack_event(services, manifest, state_root_override,
+                        CORE_LOG_OP_LAUNCHER_SIM_SAFETY_VALIDATE, CORE_LOG_EVT_OP_OK, (const err_t*)0);
+        return true;
+    }
+    if (out_err) {
+        *out_err = pack_error_from_text(err);
+    }
+    {
+        err_t e = pack_error_from_text(err);
+        emit_pack_event(services, manifest, state_root_override,
+                        CORE_LOG_OP_LAUNCHER_SIM_SAFETY_VALIDATE, CORE_LOG_EVT_OP_FAIL, &e);
+    }
+    return false;
+}
+
 std::string launcher_pack_resolved_order_summary(const std::vector<LauncherResolvedPack>& ordered) {
     std::string out;
     size_t i;
@@ -638,4 +829,3 @@ std::string launcher_pack_resolved_order_summary(const std::vector<LauncherResol
 
 } /* namespace launcher_core */
 } /* namespace dom */
-

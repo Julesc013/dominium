@@ -212,19 +212,14 @@ static void on_research_set_next(dui_widget *self) {
 
     /* Route through deterministic net command stream. */
     {
-        d_world *w = app->session().world();
-        d_net_cmd cmd;
+        d_world *w = app->world();
+        dom_game_command cmd;
         unsigned char payload[32];
         u32 off = 0u;
-        u32 tick;
+        u32 tick = 0u;
 
-        if (!w || !app->net().ready()) {
+        if (!w || !app->runtime() || !app->net().ready()) {
             return;
-        }
-
-        tick = w->tick_count + (app->net().input_delay_ticks() ? app->net().input_delay_ticks() : 1u);
-        if (tick == 0u) {
-            tick = 1u;
         }
 
         {
@@ -245,13 +240,15 @@ static void on_research_set_next(dui_widget *self) {
         }
 
         std::memset(&cmd, 0, sizeof(cmd));
+        cmd.struct_size = sizeof(cmd);
+        cmd.struct_version = DOM_GAME_COMMAND_VERSION;
         cmd.schema_id = (u32)D_NET_SCHEMA_CMD_RESEARCH_V1;
         cmd.schema_ver = 1u;
-        cmd.tick = tick;
-        cmd.payload.ptr = payload;
-        cmd.payload.len = off;
+        cmd.tick = 0u;
+        cmd.payload = payload;
+        cmd.payload_size = off;
 
-        (void)app->net().submit_cmd(&cmd);
+        (void)dom_game_runtime_execute(app->runtime(), &cmd, &tick);
     }
 }
 
@@ -872,7 +869,7 @@ static void update_factory_inspectors(d_world *w) {
 }
 
 void dom_game_ui_debug_update(dui_context &ctx, DomGameApp &app, d_world_hash hash) {
-    d_world *w = app.session().world();
+    d_world *w = app.world();
     const InstanceInfo &inst = app.session().instance();
     ensure_widgets(ctx, app);
 

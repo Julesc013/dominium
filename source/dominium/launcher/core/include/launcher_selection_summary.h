@@ -32,6 +32,14 @@ struct LauncherSelectionBackendChoice {
     LauncherSelectionBackendChoice();
 };
 
+struct LauncherSelectionProviderChoice {
+    std::string provider_type; /* net/trust/keychain/content/os_integration */
+    std::string provider_id;
+    std::string why;
+
+    LauncherSelectionProviderChoice();
+};
+
 struct LauncherSelectionSummary {
     u32 schema_version;
 
@@ -52,10 +60,15 @@ struct LauncherSelectionSummary {
     LauncherSelectionBackendChoice ui_backend;
     std::vector<LauncherSelectionBackendChoice> platform_backends;
     std::vector<LauncherSelectionBackendChoice> renderer_backends;
+    std::vector<LauncherSelectionProviderChoice> provider_backends;
 
     /* Resolved packs (deterministic order). */
     u32 resolved_packs_count;
     std::string resolved_packs_summary; /* comma-separated pack ids */
+
+    /* Optional: merged effective caps + explain output (raw TLV bytes). */
+    std::vector<unsigned char> effective_caps_tlv;
+    std::vector<unsigned char> explanation_tlv;
 
     LauncherSelectionSummary();
 };

@@ -314,6 +314,22 @@ bool launcher_instance_manifest_from_tlv_bytes(const unsigned char* data,
     return true;
 }
 
+bool launcher_instance_manifest_from_tlv_bytes_ex(const unsigned char* data,
+                                                  size_t size,
+                                                  LauncherInstanceManifest& out_manifest,
+                                                  err_t* out_err) {
+    if (launcher_instance_manifest_from_tlv_bytes(data, size, out_manifest)) {
+        if (out_err) {
+            *out_err = err_ok();
+        }
+        return true;
+    }
+    if (out_err) {
+        *out_err = err_make((u16)ERRD_TLV, (u16)ERRC_TLV_PARSE_FAILED, (u32)ERRF_INTEGRITY, (u32)ERRMSG_TLV_PARSE_FAILED);
+    }
+    return false;
+}
+
 u64 launcher_instance_manifest_hash64(const LauncherInstanceManifest& manifest) {
     std::vector<unsigned char> bytes;
     if (!launcher_instance_manifest_to_tlv_bytes(manifest, bytes)) {

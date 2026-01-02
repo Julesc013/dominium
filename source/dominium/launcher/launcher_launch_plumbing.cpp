@@ -20,12 +20,19 @@ extern "C" {
 #include "core/include/launcher_audit.h"
 #include "core/include/launcher_exit_status.h"
 #include "core/include/launcher_handshake.h"
+#include "core/include/launcher_instance_launch_history.h"
+#include "core/include/launcher_job.h"
 #include "core/include/launcher_launch_attempt.h"
+#include "core/include/launcher_log.h"
 #include "core/include/launcher_pack_resolver.h"
+#include "core/include/launcher_run_summary.h"
 #include "core/include/launcher_selection_summary.h"
 #include "core/include/launcher_safety.h"
 #include "core/include/launcher_sha256.h"
 #include "core/include/launcher_tools_registry.h"
+
+#include "launcher_caps_snapshot.h"
+#include "launcher_caps_solver.h"
 
 namespace dom {
 
@@ -182,67 +189,23 @@ static void remove_file_best_effort(const std::string& path) {
     (void)std::remove(path.c_str());
 }
 
-static int ascii_tolower(int c) {
-    if (c >= 'A' && c <= 'Z') {
-        return c - 'A' + 'a';
-    }
-    return c;
-}
-
-static bool str_ieq(const char* a, const char* b) {
-    if (!a || !b) {
-        return false;
-    }
-    while (*a && *b) {
-        int ca = ascii_tolower((unsigned char)*a);
-        int cb = ascii_tolower((unsigned char)*b);
-        if (ca != cb) {
-            return false;
-        }
-        ++a;
-        ++b;
-    }
-    return (*a == '\0' && *b == '\0');
-}
-
-static void profile_remove_override(dom_profile& p, const char* subsystem_key) {
-    u32 i;
-    u32 out = 0u;
-    if (!subsystem_key || !subsystem_key[0]) {
-        return;
-    }
-    for (i = 0u; i < p.override_count && i < (u32)DOM_PROFILE_MAX_OVERRIDES; ++i) {
-        dom_profile_override* ov = &p.overrides[i];
-        if (str_ieq(ov->subsystem_key, subsystem_key)) {
-            continue;
-        }
-        if (out != i) {
-            p.overrides[out] = p.overrides[i];
-        }
-        ++out;
-    }
-    p.override_count = out;
-    for (; out < (u32)DOM_PROFILE_MAX_OVERRIDES; ++out) {
-        std::memset(&p.overrides[out], 0, sizeof(p.overrides[out]));
-    }
-}
-
-static const char* selection_entry_why(const dom_selection_entry* e) {
+static const char* selection_entry_why(const LauncherCapsSelection* e) {
     if (!e) {
         return "";
     }
     return e->chosen_by_override ? "override" : "priority";
 }
 
-static const dom_selection_entry* selection_find_entry(const dom_selection& sel, dom_subsystem_id subsystem_id) {
-    u32 i;
-    for (i = 0u; i < sel.entry_count; ++i) {
-        const dom_selection_entry* e = &sel.entries[i];
+static const LauncherCapsSelection* selection_find_entry(const std::vector<LauncherCapsSelection>& sel,
+                                                         u32 subsystem_id) {
+    size_t i;
+    for (i = 0u; i < sel.size(); ++i) {
+        const LauncherCapsSelection* e = &sel[i];
         if (e && e->subsystem_id == subsystem_id) {
             return e;
         }
     }
-    return (const dom_selection_entry*)0;
+    return (const LauncherCapsSelection*)0;
 }
 
 static bool select_backends_for_handshake(const dom_profile* profile,
@@ -250,16 +213,9 @@ static bool select_backends_for_handshake(const dom_profile* profile,
                                          std::vector<std::string>& out_renderer,
                                          std::string& out_ui,
                                          std::string& out_error,
-                                         dom_selection* out_sel,
+                                         LauncherCapsSolveResult* out_caps,
                                          std::string* out_note) {
-    dom_hw_caps hw;
-    dom_selection sel;
-    dom_caps_result rc;
-    dom_profile fallback_profile;
-    const dom_profile* used_profile = profile;
-    u32 i;
-    bool requested_gfx_null = false;
-    bool relaxed_gfx_null = false;
+    LauncherCapsSolveResult caps;
 
     out_platform.clear();
     out_renderer.clear();
@@ -268,104 +224,41 @@ static bool select_backends_for_handshake(const dom_profile* profile,
     if (out_note) {
         out_note->clear();
     }
-    if (out_sel) {
-        std::memset(out_sel, 0, sizeof(*out_sel));
-        out_sel->abi_version = DOM_CAPS_ABI_VERSION;
-        out_sel->struct_size = (u32)sizeof(dom_selection);
+    if (out_caps) {
+        *out_caps = LauncherCapsSolveResult();
     }
 
-    (void)dom_caps_register_builtin_backends();
-    (void)dom_caps_finalize_registry();
-
-    std::memset(&hw, 0, sizeof(hw));
-    hw.abi_version = DOM_CAPS_ABI_VERSION;
-    hw.struct_size = (u32)sizeof(hw);
-    (void)dom_hw_caps_probe_host(&hw);
-
-    std::memset(&sel, 0, sizeof(sel));
-    sel.abi_version = DOM_CAPS_ABI_VERSION;
-    sel.struct_size = (u32)sizeof(sel);
-
-    if (!used_profile) {
-        std::memset(&fallback_profile, 0, sizeof(fallback_profile));
-        fallback_profile.abi_version = DOM_PROFILE_ABI_VERSION;
-        fallback_profile.struct_size = (u32)sizeof(dom_profile);
-        fallback_profile.kind = DOM_PROFILE_BASELINE;
-        fallback_profile.lockstep_strict = 0u;
-        used_profile = &fallback_profile;
-    }
-
-    rc = dom_caps_select(used_profile, &hw, &sel);
-    if (rc != DOM_CAPS_OK && used_profile) {
-        /* If the user requested --gfx=null but the null backend is not present in this build,
-           retry without the gfx preference so headless tooling can still function. */
-        if (used_profile->lockstep_strict == 0u) {
-            if (used_profile->preferred_gfx_backend[0] && str_ieq(used_profile->preferred_gfx_backend, "null")) {
-                requested_gfx_null = true;
-            }
-            if (!requested_gfx_null) {
-                u32 j;
-                for (j = 0u; j < used_profile->override_count && j < (u32)DOM_PROFILE_MAX_OVERRIDES; ++j) {
-                    const dom_profile_override* ov = &used_profile->overrides[j];
-                    if (str_ieq(ov->subsystem_key, "gfx") && ov->backend_name[0] && str_ieq(ov->backend_name, "null")) {
-                        requested_gfx_null = true;
-                        break;
-                    }
-                }
-            }
-            if (requested_gfx_null) {
-                dom_profile relaxed = *used_profile;
-                relaxed.preferred_gfx_backend[0] = '\0';
-                profile_remove_override(relaxed, "gfx");
-                rc = dom_caps_select(&relaxed, &hw, &sel);
-                if (rc == DOM_CAPS_OK) {
-                    relaxed_gfx_null = true;
-                }
-            }
-        }
-    }
-    if (rc != DOM_CAPS_OK) {
-        out_error = "caps_select_failed";
-        if (out_sel) {
-            *out_sel = sel;
+    if (!launcher_caps_solve(profile, caps, out_error)) {
+        if (out_caps) {
+            *out_caps = caps;
         }
         return false;
     }
 
-    for (i = 0u; i < sel.entry_count; ++i) {
-        const dom_selection_entry* e = &sel.entries[i];
-        if (!e || !e->backend_name || !e->backend_name[0]) {
-            continue;
-        }
-        if (e->subsystem_id == DOM_SUBSYS_DSYS) {
-            out_platform.push_back(std::string(e->backend_name));
-        } else if (e->subsystem_id == DOM_SUBSYS_DGFX) {
-            out_renderer.push_back(std::string(e->backend_name));
-        } else if (e->subsystem_id == DOM_SUBSYS_DUI) {
-            out_ui = std::string(e->backend_name);
-        }
-    }
+    out_platform = caps.platform_backends;
+    out_renderer = caps.renderer_backends;
+    out_ui = caps.ui_backend;
 
     if (out_platform.empty()) {
         out_error = "platform_backend_missing";
-        if (out_sel) {
-            *out_sel = sel;
+        if (out_caps) {
+            *out_caps = caps;
         }
         return false;
     }
     if (out_ui.empty()) {
         out_error = "ui_backend_missing";
-        if (out_sel) {
-            *out_sel = sel;
+        if (out_caps) {
+            *out_caps = caps;
         }
         return false;
     }
 
-    if (out_note && relaxed_gfx_null) {
-        *out_note = "caps_fallback_gfx_null_unavailable=1";
+    if (out_note && !caps.note.empty()) {
+        *out_note = caps.note;
     }
-    if (out_sel) {
-        *out_sel = sel;
+    if (out_caps) {
+        *out_caps = caps;
     }
     return true;
 }
@@ -453,11 +346,108 @@ static void audit_add_reason(dom::launcher_core::LauncherAuditLog& audit, const 
     audit.reasons.push_back(s);
 }
 
+static err_t run_err_from_prelaunch_text(const std::string& text) {
+    if (text == "missing_services_or_fs") {
+        return err_make((u16)ERRD_COMMON, (u16)ERRC_COMMON_BAD_STATE, (u32)ERRF_FATAL, (u32)ERRMSG_COMMON_BAD_STATE);
+    }
+    if (text == "empty_instance_id" || text == "unsafe_instance_id") {
+        return err_make((u16)ERRD_LAUNCHER, (u16)ERRC_LAUNCHER_INSTANCE_INVALID, 0u,
+                        (u32)ERRMSG_LAUNCHER_INSTANCE_ID_INVALID);
+    }
+    if (text == "missing_state_root") {
+        return err_make((u16)ERRD_LAUNCHER, (u16)ERRC_LAUNCHER_STATE_ROOT_UNAVAILABLE, 0u,
+                        (u32)ERRMSG_LAUNCHER_STATE_ROOT_UNAVAILABLE);
+    }
+    if (text == "load_config_failed" || text == "load_launch_history_failed") {
+        return err_make((u16)ERRD_COMMON, (u16)ERRC_COMMON_BAD_STATE, 0u, (u32)ERRMSG_COMMON_BAD_STATE);
+    }
+    if (text == "prelaunch_plan_failed") {
+        return err_make((u16)ERRD_LAUNCHER, (u16)ERRC_LAUNCHER_HANDSHAKE_INVALID, 0u,
+                        (u32)ERRMSG_LAUNCHER_HANDSHAKE_INVALID);
+    }
+    return err_make((u16)ERRD_COMMON, (u16)ERRC_COMMON_INTERNAL, (u32)ERRF_FATAL, (u32)ERRMSG_COMMON_INTERNAL);
+}
+
+static err_t run_err_from_refusal_code(u32 refusal_code) {
+    (void)refusal_code;
+    return err_refuse((u16)ERRD_LAUNCHER, (u16)ERRC_LAUNCHER_HANDSHAKE_INVALID,
+                      (u32)ERRMSG_LAUNCHER_HANDSHAKE_INVALID);
+}
+
+static void emit_run_event(const launcher_services_api_v1* services,
+                           const std::string& instance_id,
+                           const std::string& state_root,
+                           u64 run_id,
+                           u32 event_code,
+                           const err_t* err,
+                           u32 status_code,
+                           u32 refusal_code) {
+    core_log_event ev;
+    core_log_scope scope;
+    const bool safe_id = (!instance_id.empty() && dom::launcher_core::launcher_is_safe_id_component(instance_id));
+
+    core_log_event_clear(&ev);
+    ev.domain = CORE_LOG_DOMAIN_LAUNCHER;
+    ev.code = (u16)event_code;
+    if (event_code == CORE_LOG_EVT_OP_FAIL) {
+        ev.severity = CORE_LOG_SEV_ERROR;
+    } else if (event_code == CORE_LOG_EVT_OP_REFUSED) {
+        ev.severity = CORE_LOG_SEV_WARN;
+    } else {
+        ev.severity = CORE_LOG_SEV_INFO;
+    }
+    ev.msg_id = 0u;
+    ev.t_mono = 0u;
+    (void)core_log_event_add_u32(&ev, CORE_LOG_KEY_OPERATION_ID, CORE_LOG_OP_LAUNCHER_LAUNCH_EXECUTE);
+    (void)core_log_event_add_u64(&ev, CORE_LOG_KEY_RUN_ID, run_id);
+    if (status_code != 0u) {
+        (void)core_log_event_add_u32(&ev, CORE_LOG_KEY_STATUS_CODE, status_code);
+    }
+    if (refusal_code != 0u) {
+        (void)core_log_event_add_u32(&ev, CORE_LOG_KEY_REFUSAL_CODE, refusal_code);
+    }
+    if (err && !err_is_ok(err)) {
+        launcher_log_add_err_fields(&ev, err);
+    }
+
+    std::memset(&scope, 0, sizeof(scope));
+    scope.state_root = state_root.empty() ? (const char*)0 : state_root.c_str();
+    if (safe_id && run_id != 0ull) {
+        scope.kind = CORE_LOG_SCOPE_RUN;
+        scope.instance_id = instance_id.c_str();
+        scope.run_id = run_id;
+    } else if (safe_id) {
+        scope.kind = CORE_LOG_SCOPE_INSTANCE;
+        scope.instance_id = instance_id.c_str();
+    } else {
+        scope.kind = CORE_LOG_SCOPE_GLOBAL;
+    }
+    (void)launcher_services_emit_event(services, &scope, &ev);
+}
+
 static void write_exit_status_best_effort(const std::string& path,
                                           const dom::launcher_core::LauncherExitStatus& st) {
     std::vector<unsigned char> bytes;
     (void)dom::launcher_core::launcher_exit_status_to_tlv_bytes(st, bytes);
     (void)write_file_all(path, bytes);
+}
+
+static void write_run_summary_best_effort(const std::string& path,
+                                          const dom::launcher_core::LauncherRunSummary& summary) {
+    std::vector<unsigned char> bytes;
+    (void)dom::launcher_core::launcher_run_summary_to_tlv_bytes(summary, bytes);
+    (void)write_file_all(path, bytes);
+}
+
+static u32 classify_refusal_outcome(const dom::launcher_core::LauncherPrelaunchPlan& plan) {
+    size_t i;
+    for (i = 0u; i < plan.validation.failures.size(); ++i) {
+        const std::string& code = plan.validation.failures[i].code;
+        if (code.find("missing_artifact") == 0u || code == "artifact_paths_failed") {
+            return (u32)dom::launcher_core::LAUNCHER_LAUNCH_OUTCOME_MISSING_ARTIFACT;
+        }
+    }
+    return (u32)dom::launcher_core::LAUNCHER_LAUNCH_OUTCOME_REFUSAL;
 }
 
 static bool compute_run_paths(const std::string& state_root,
@@ -560,6 +550,9 @@ static void cleanup_old_runs_best_effort(const std::string& state_root,
             remove_file_best_effort(path_join(dir, "handshake.tlv"));
             remove_file_best_effort(path_join(dir, "launch_config.tlv"));
             remove_file_best_effort(path_join(dir, "selection_summary.tlv"));
+            remove_file_best_effort(path_join(dir, "last_run_summary.tlv"));
+            remove_file_best_effort(path_join(dir, "caps.tlv"));
+            remove_file_best_effort(path_join(dir, "events.tlv"));
             remove_file_best_effort(path_join(dir, "exit_status.tlv"));
             remove_file_best_effort(path_join(dir, "audit_ref.tlv"));
             remove_file_best_effort(path_join(dir, "stdout.txt"));
@@ -622,6 +615,8 @@ LaunchRunResult::LaunchRunResult()
       launch_config_path(),
       audit_path(),
       selection_summary_path(),
+      run_summary_path(),
+      caps_path(),
       exit_status_path(),
       refused(0u),
       refusal_code(0u),
@@ -691,17 +686,18 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
     const ::launcher_time_api_v1* time = 0;
     u64 now_us = 0ull;
     dom::launcher_core::LauncherExitStatus exit_status;
+    dom::launcher_core::LauncherRunSummary run_summary;
+    err_t run_err;
 
     dom::launcher_core::LauncherPrelaunchPlan plan;
-    dom::launcher_core::LauncherRecoverySuggestion recovery;
-    std::string prelaunch_err;
+    err_t prelaunch_err = err_ok();
     bool have_plan = false;
 
     std::vector<std::string> platform_backends;
     std::vector<std::string> renderer_backends;
     std::string ui_backend;
     std::string caps_err;
-    dom_selection caps_sel;
+    LauncherCapsSolveResult caps_sel;
     std::string caps_note;
 
     dom::launcher_core::LauncherHandshake hs;
@@ -720,9 +716,7 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
     int exit_code = 0;
 
     out_result = LaunchRunResult();
-    std::memset(&caps_sel, 0, sizeof(caps_sel));
-    caps_sel.abi_version = DOM_CAPS_ABI_VERSION;
-    caps_sel.struct_size = (u32)sizeof(dom_selection);
+    caps_sel = LauncherCapsSolveResult();
 
     if (services && services->query_interface && services->query_interface(LAUNCHER_IID_TIME_V1, &iface) == 0) {
         time = (const ::launcher_time_api_v1*)iface;
@@ -741,6 +735,7 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
     exit_status.timestamp_end_us = now_us;
     exit_status.stdout_capture_supported = 0u;
     exit_status.stderr_capture_supported = 0u;
+    run_err = err_ok();
 
     if (state_root.empty() || instance_id.empty()) {
         out_result.error = "bad_args";
@@ -762,20 +757,42 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
 
     mkdir_p_best_effort(out_result.run_dir);
     out_result.launch_config_path = path_join(out_result.run_dir, "launch_config.tlv");
+    out_result.run_summary_path = path_join(out_result.run_dir, "last_run_summary.tlv");
+    out_result.caps_path = path_join(out_result.run_dir, "caps.tlv");
     out_result.exit_status_path = path_join(out_result.run_dir, "exit_status.tlv");
+    emit_run_event(services,
+                   instance_id,
+                   state_root,
+                   out_result.run_id,
+                   CORE_LOG_EVT_OP_BEGIN,
+                   (const err_t*)0,
+                   0u,
+                   0u);
 
-    if (!dom::launcher_core::launcher_launch_prepare_attempt(services,
-                                                            (const dom::launcher_core::LauncherProfile*)0,
-                                                            instance_id,
-                                                            state_root,
-                                                            overrides,
-                                                            plan,
-                                                            recovery,
-                                                            (dom::launcher_core::LauncherAuditLog*)0,
-                                                            &prelaunch_err)) {
+    if (!dom::launcher_core::launcher_job_run_launch_prepare(services,
+                                                             instance_id,
+                                                             state_root,
+                                                             overrides,
+                                                             plan,
+                                                             &prelaunch_err)) {
+        const bool has_err_id = !err_is_ok(&prelaunch_err);
+        const char* err_id = has_err_id ? err_to_string_id(&prelaunch_err) : "";
+        if (!plan.instance_id.empty()) {
+            have_plan = true;
+        }
         out_result.refused = 1u;
-        out_result.refusal_code = (u32)dom::launcher_core::LAUNCHER_HANDSHAKE_REFUSAL_MISSING_REQUIRED_FIELDS;
-        out_result.refusal_detail = std::string("prelaunch_failed;") + prelaunch_err;
+        if (prelaunch_err.flags & (u32)ERRF_POLICY_REFUSAL) {
+            out_result.refusal_code = (u32)dom::launcher_core::LAUNCHER_HANDSHAKE_REFUSAL_PRELAUNCH_VALIDATION_FAILED;
+            out_result.refusal_detail = std::string("prelaunch_validation_failed") +
+                                        (has_err_id ? std::string(";err=") + err_id : std::string());
+        } else {
+            out_result.refusal_code = (u32)dom::launcher_core::LAUNCHER_HANDSHAKE_REFUSAL_MISSING_REQUIRED_FIELDS;
+            out_result.refusal_detail = std::string("prelaunch_failed") +
+                                        (has_err_id ? std::string(";err=") + err_id : std::string());
+        }
+        if (err_is_ok(&run_err)) {
+            run_err = has_err_id ? prelaunch_err : run_err_from_prelaunch_text(std::string("prelaunch_plan_failed"));
+        }
     } else {
         have_plan = true;
     }
@@ -798,6 +815,9 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
         } else {
             out_result.refusal_detail = "prelaunch_validation_failed";
         }
+        if (err_is_ok(&run_err)) {
+            run_err = run_err_from_refusal_code(out_result.refusal_code);
+        }
     }
 
     {
@@ -812,6 +832,9 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
             out_result.refused = 1u;
             out_result.refusal_code = (u32)dom::launcher_core::LAUNCHER_HANDSHAKE_REFUSAL_MISSING_REQUIRED_FIELDS;
             out_result.refusal_detail = std::string("caps_failed;") + caps_err;
+            if (err_is_ok(&run_err)) {
+                run_err = run_err_from_refusal_code(out_result.refusal_code);
+            }
         }
     }
 
@@ -826,10 +849,16 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
             out_result.refused = 1u;
             out_result.refusal_code = (u32)dom::launcher_core::LAUNCHER_HANDSHAKE_REFUSAL_MISSING_REQUIRED_FIELDS;
             out_result.refusal_detail = std::string("tools_registry_load_failed;") + tool_err;
+            if (err_is_ok(&run_err)) {
+                run_err = run_err_from_refusal_code(out_result.refusal_code);
+            }
         } else if (!dom::launcher_core::launcher_tools_registry_find(reg, target.tool_id, te)) {
             out_result.refused = 1u;
             out_result.refusal_code = (u32)dom::launcher_core::LAUNCHER_HANDSHAKE_REFUSAL_MISSING_REQUIRED_FIELDS;
             out_result.refusal_detail = std::string("tool_not_found;tool_id=") + target.tool_id;
+            if (err_is_ok(&run_err)) {
+                run_err = run_err_from_refusal_code(out_result.refusal_code);
+            }
         } else {
             for (i = 0u; i < te.required_packs.size(); ++i) {
                 if (!manifest_has_enabled_entry_id(plan.effective_manifest, te.required_packs[i])) {
@@ -837,8 +866,28 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
                     out_result.refusal_code = (u32)dom::launcher_core::LAUNCHER_HANDSHAKE_REFUSAL_MISSING_REQUIRED_FIELDS;
                     out_result.refusal_detail = std::string("tool_required_pack_missing;tool_id=") + target.tool_id +
                                                 ";pack_id=" + te.required_packs[i];
+                    if (err_is_ok(&run_err)) {
+                        run_err = run_err_from_refusal_code(out_result.refusal_code);
+                    }
                     break;
                 }
+            }
+        }
+    }
+
+    /* Caps snapshot (per-run + latest). */
+    {
+        LauncherCapsSnapshot caps;
+        std::string caps_err;
+        if (launcher_caps_snapshot_build(profile, caps, caps_err)) {
+            if (!out_result.caps_path.empty()) {
+                (void)launcher_caps_snapshot_write_tlv(caps, out_result.caps_path, caps_err);
+            }
+            if (!state_root.empty()) {
+                const std::string logs_root = path_join(state_root, "logs");
+                const std::string latest = path_join(logs_root, "caps_latest.tlv");
+                mkdir_p_best_effort(logs_root);
+                (void)launcher_caps_snapshot_write_tlv(caps, latest, caps_err);
             }
         }
     }
@@ -933,6 +982,9 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
             out_result.refused = 1u;
             out_result.refusal_code = code;
             out_result.refusal_detail = detail;
+            if (err_is_ok(&run_err)) {
+                run_err = run_err_from_refusal_code(out_result.refusal_code);
+            }
         }
     }
 
@@ -959,19 +1011,19 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
 
     /* Selected backends (selected-and-why) */
     {
-        u32 i;
-        for (i = 0u; i < caps_sel.entry_count; ++i) {
-            const dom_selection_entry* e = &caps_sel.entries[i];
-            if (!e || !e->backend_name || !e->backend_name[0]) {
+        size_t i;
+        for (i = 0u; i < caps_sel.selections.size(); ++i) {
+            const LauncherCapsSelection* e = &caps_sel.selections[i];
+            if (!e || e->backend_name.empty()) {
                 continue;
             }
             dom::launcher_core::LauncherAuditBackend b;
-            b.subsystem_id = (u32)e->subsystem_id;
-            b.subsystem_name = (e->subsystem_name && e->subsystem_name[0]) ? std::string(e->subsystem_name) : std::string();
-            b.backend_name = std::string(e->backend_name);
-            b.determinism_grade = (u32)e->determinism;
-            b.perf_class = (u32)e->perf_class;
-            b.priority = e->backend_priority;
+            b.subsystem_id = e->subsystem_id;
+            b.subsystem_name = e->subsystem_name;
+            b.backend_name = e->backend_name;
+            b.determinism_grade = e->determinism;
+            b.perf_class = e->perf_class;
+            b.priority = e->priority;
             b.chosen_by_override = e->chosen_by_override ? 1u : 0u;
             run_audit.selected_backends.push_back(b);
         }
@@ -994,7 +1046,7 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
 
         sel_summary.ui_backend.backend_id = hs.selected_ui_backend_id;
         {
-            const dom_selection_entry* e = selection_find_entry(caps_sel, DOM_SUBSYS_DUI);
+            const LauncherCapsSelection* e = selection_find_entry(caps_sel.selections, (u32)DOM_SUBSYS_DUI);
             sel_summary.ui_backend.why = selection_entry_why(e);
         }
         {
@@ -1003,7 +1055,7 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
                 dom::launcher_core::LauncherSelectionBackendChoice c;
                 c.backend_id = platform_backends[i];
                 {
-                    const dom_selection_entry* e = selection_find_entry(caps_sel, DOM_SUBSYS_DSYS);
+                    const LauncherCapsSelection* e = selection_find_entry(caps_sel.selections, (u32)DOM_SUBSYS_DSYS);
                     c.why = selection_entry_why(e);
                 }
                 sel_summary.platform_backends.push_back(c);
@@ -1015,10 +1067,20 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
                 dom::launcher_core::LauncherSelectionBackendChoice c;
                 c.backend_id = renderer_backends[i];
                 {
-                    const dom_selection_entry* e = selection_find_entry(caps_sel, DOM_SUBSYS_DGFX);
+                    const LauncherCapsSelection* e = selection_find_entry(caps_sel.selections, (u32)DOM_SUBSYS_DGFX);
                     c.why = selection_entry_why(e);
                 }
                 sel_summary.renderer_backends.push_back(c);
+            }
+        }
+        {
+            size_t i;
+            for (i = 0u; i < caps_sel.provider_backends.size(); ++i) {
+                dom::launcher_core::LauncherSelectionProviderChoice p;
+                p.provider_type = caps_sel.provider_backends[i].provider_type;
+                p.provider_id = caps_sel.provider_backends[i].provider_id;
+                p.why = caps_sel.provider_backends[i].why;
+                sel_summary.provider_backends.push_back(p);
             }
         }
 
@@ -1037,6 +1099,9 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
             }
         }
 
+        (void)launcher_caps_write_effective_caps_tlv(caps_sel.effective_caps, sel_summary.effective_caps_tlv);
+        (void)launcher_caps_write_explain_tlv(caps_sel.solver_result, sel_summary.explanation_tlv);
+
         (void)dom::launcher_core::launcher_selection_summary_to_tlv_bytes(sel_summary, sel_summary_bytes);
         (void)write_file_all(selection_path, sel_summary_bytes);
 
@@ -1046,10 +1111,15 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
     }
 
     if (out_result.refused != 0u) {
+        u32 outcome = (u32)dom::launcher_core::LAUNCHER_LAUNCH_OUTCOME_REFUSAL;
+        if (have_plan) {
+            outcome = classify_refusal_outcome(plan);
+        }
         audit_add_reason(run_audit, std::string("outcome=refusal"));
         audit_add_reason(run_audit, std::string("refusal_code=") + u32_to_string(out_result.refusal_code));
         audit_add_reason(run_audit, std::string("refusal_detail=") + out_result.refusal_detail);
         run_audit.exit_result = 2;
+        run_audit.err = run_err;
         (void)dom::launcher_core::launcher_audit_to_tlv_bytes(run_audit, run_audit_bytes);
         (void)write_file_all(out_result.audit_path, run_audit_bytes);
         if (time && time->now_us) {
@@ -1059,6 +1129,23 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
         exit_status.exit_code = 2;
         exit_status.termination_type = (u32)dom::launcher_core::LAUNCHER_TERM_REFUSED;
         write_exit_status_best_effort(out_result.exit_status_path, exit_status);
+        emit_run_event(services,
+                       instance_id,
+                       state_root,
+                       out_result.run_id,
+                       CORE_LOG_EVT_OP_REFUSED,
+                       err_is_ok(&run_err) ? (const err_t*)0 : &run_err,
+                       (u32)exit_status.exit_code,
+                       out_result.refusal_code);
+        run_summary = dom::launcher_core::LauncherRunSummary();
+        run_summary.run_id = out_result.run_id;
+        run_summary.instance_id = instance_id;
+        run_summary.outcome = outcome;
+        run_summary.exit_code = exit_status.exit_code;
+        run_summary.termination_type = exit_status.termination_type;
+        run_summary.refusal_code = out_result.refusal_code;
+        run_summary.err = run_err;
+        write_run_summary_best_effort(out_result.run_summary_path, run_summary);
         cleanup_old_runs_best_effort(state_root, instance_id, keep_last_runs);
         out_result.ok = 0u;
         return false;
@@ -1089,8 +1176,12 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
     if (pr != DSYS_PROC_OK) {
         out_result.spawned = 0u;
         out_result.ok = 0u;
+        run_err = err_make((u16)ERRD_PROC, (u16)ERRC_PROC_SPAWN_FAILED,
+                           (u32)(ERRF_TRANSIENT | ERRF_RETRYABLE),
+                           (u32)ERRMSG_PROC_SPAWN_FAILED);
         run_audit.exit_result = 1;
         audit_add_reason(run_audit, "outcome=spawn_failed");
+        run_audit.err = run_err;
         (void)dom::launcher_core::launcher_audit_to_tlv_bytes(run_audit, run_audit_bytes);
         (void)write_file_all(out_result.audit_path, run_audit_bytes);
         if (time && time->now_us) {
@@ -1100,6 +1191,22 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
         exit_status.exit_code = 1;
         exit_status.termination_type = (u32)dom::launcher_core::LAUNCHER_TERM_UNKNOWN;
         write_exit_status_best_effort(out_result.exit_status_path, exit_status);
+        emit_run_event(services,
+                       instance_id,
+                       state_root,
+                       out_result.run_id,
+                       CORE_LOG_EVT_OP_FAIL,
+                       &run_err,
+                       (u32)exit_status.exit_code,
+                       0u);
+        run_summary = dom::launcher_core::LauncherRunSummary();
+        run_summary.run_id = out_result.run_id;
+        run_summary.instance_id = instance_id;
+        run_summary.outcome = (u32)dom::launcher_core::LAUNCHER_LAUNCH_OUTCOME_CRASH;
+        run_summary.exit_code = exit_status.exit_code;
+        run_summary.termination_type = exit_status.termination_type;
+        run_summary.err = run_err;
+        write_run_summary_best_effort(out_result.run_summary_path, run_summary);
         cleanup_old_runs_best_effort(state_root, instance_id, keep_last_runs);
         out_result.error = "spawn_failed";
         return false;
@@ -1112,8 +1219,12 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
         pr = dsys_proc_wait(&handle, &exit_code);
         if (pr != DSYS_PROC_OK) {
             out_result.ok = 0u;
+            run_err = err_make((u16)ERRD_PROC, (u16)ERRC_PROC_WAIT_FAILED,
+                               (u32)(ERRF_TRANSIENT | ERRF_RETRYABLE),
+                               (u32)ERRMSG_PROC_WAIT_FAILED);
             run_audit.exit_result = 1;
             audit_add_reason(run_audit, "outcome=wait_failed");
+            run_audit.err = run_err;
             (void)dom::launcher_core::launcher_audit_to_tlv_bytes(run_audit, run_audit_bytes);
             (void)write_file_all(out_result.audit_path, run_audit_bytes);
             if (time && time->now_us) {
@@ -1123,6 +1234,22 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
             exit_status.exit_code = 1;
             exit_status.termination_type = (u32)dom::launcher_core::LAUNCHER_TERM_UNKNOWN;
             write_exit_status_best_effort(out_result.exit_status_path, exit_status);
+            emit_run_event(services,
+                           instance_id,
+                           state_root,
+                           out_result.run_id,
+                           CORE_LOG_EVT_OP_FAIL,
+                           &run_err,
+                           (u32)exit_status.exit_code,
+                           0u);
+            run_summary = dom::launcher_core::LauncherRunSummary();
+            run_summary.run_id = out_result.run_id;
+            run_summary.instance_id = instance_id;
+            run_summary.outcome = (u32)dom::launcher_core::LAUNCHER_LAUNCH_OUTCOME_CRASH;
+            run_summary.exit_code = exit_status.exit_code;
+            run_summary.termination_type = exit_status.termination_type;
+            run_summary.err = run_err;
+            write_run_summary_best_effort(out_result.run_summary_path, run_summary);
             cleanup_old_runs_best_effort(state_root, instance_id, keep_last_runs);
             out_result.error = "wait_failed";
             return false;
@@ -1152,6 +1279,31 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
         exit_status.termination_type = (u32)dom::launcher_core::LAUNCHER_TERM_UNKNOWN;
     }
     write_exit_status_best_effort(out_result.exit_status_path, exit_status);
+
+    {
+        u32 outcome = (u32)dom::launcher_core::LAUNCHER_LAUNCH_OUTCOME_SUCCESS;
+        u32 event_code = CORE_LOG_EVT_OP_OK;
+        if (out_result.waited && out_result.child_exit_code != 0) {
+            outcome = (u32)dom::launcher_core::LAUNCHER_LAUNCH_OUTCOME_CRASH;
+            event_code = CORE_LOG_EVT_OP_FAIL;
+        }
+        emit_run_event(services,
+                       instance_id,
+                       state_root,
+                       out_result.run_id,
+                       event_code,
+                       (const err_t*)0,
+                       (u32)exit_status.exit_code,
+                       0u);
+        run_summary = dom::launcher_core::LauncherRunSummary();
+        run_summary.run_id = out_result.run_id;
+        run_summary.instance_id = instance_id;
+        run_summary.outcome = outcome;
+        run_summary.exit_code = exit_status.exit_code;
+        run_summary.termination_type = exit_status.termination_type;
+        run_summary.err = err_ok();
+        write_run_summary_best_effort(out_result.run_summary_path, run_summary);
+    }
 
     cleanup_old_runs_best_effort(state_root, instance_id, keep_last_runs);
 

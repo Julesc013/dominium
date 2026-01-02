@@ -61,18 +61,17 @@ def _read_json(path):
         return json.load(f)
 
 
-def _dry_run_install(artifact_root):
+def _dry_run_install(artifact_root, fixtures_root):
     setup_dir = os.path.join(artifact_root, "setup")
     exe = "dominium-setup.exe" if os.name == "nt" else "dominium-setup"
     cli = os.path.join(setup_dir, exe)
     _must_exist(cli)
 
-    manifest = os.path.join(setup_dir, "manifests", "product.dsumanifest")
-    invocation = os.path.join(artifact_root, "_test_install.dsuinv")
-    plan = os.path.join(artifact_root, "_test_install.dsuplan")
+    manifest = os.path.join(fixtures_root, "manifest_v1.tlv")
+    request = os.path.join(fixtures_root, "request_quick.tlv")
+    plan = os.path.join(artifact_root, "_test_install.plan.tlv")
 
-    _run([cli, "export-invocation", "--manifest", manifest, "--op", "install", "--scope", "user", "--out", invocation], cwd=artifact_root)
-    _run([cli, "plan", "--manifest", manifest, "--invocation", invocation, "--out", plan], cwd=artifact_root)
+    _run([cli, "plan", "--manifest", manifest, "--request", request, "--out-plan", plan], cwd=artifact_root)
     _run([cli, "apply", "--plan", plan, "--dry-run"], cwd=artifact_root)
 
 
@@ -95,6 +94,7 @@ def main():
     args = ap.parse_args()
 
     repo_root = _repo_root_from_script()
+    fixtures_root = os.path.join(repo_root, "tests", "setup2", "fixtures")
     pipeline = os.path.join(repo_root, "scripts", "packaging", "pipeline.py")
 
     env = os.environ.copy()
@@ -149,13 +149,13 @@ def main():
         _extract_zip(a_zip, ex_zip)
         _extract_tgz(a_tgz, ex_tgz)
 
-        _dry_run_install(os.path.join(ex_zip, "artifact_root"))
-        _dry_run_install(os.path.join(ex_tgz, "artifact_root"))
+        _dry_run_install(os.path.join(ex_zip, "artifact_root"), fixtures_root)
+        _dry_run_install(os.path.join(ex_tgz, "artifact_root"), fixtures_root)
 
         # Steam depot staging + dry-run install from depot root.
         steam_out = os.path.join(work, "steam")
         _run([sys.executable, pipeline, "steam", "--artifact", a_root, "--out", steam_out, "--version", args.version, "--appid", "0", "--depotid", "0", "--reproducible"], env=env)
-        _dry_run_install(os.path.join(steam_out, "depots", "0"))
+        _dry_run_install(os.path.join(steam_out, "depots", "0"), fixtures_root)
 
         # Verify artifact manifest has stable layout digest key.
         am = _read_json(os.path.join(a_root, "setup", "artifact_manifest.json"))

@@ -14,12 +14,20 @@ NOTES: Validates per-run handshake persistence/validation and per-run audit reco
 #include <string>
 #include <vector>
 
+#include "launcher_caps_solver.h"
 #include "launcher_control_plane.h"
 
 extern "C" {
 #include "domino/profile.h"
+#include "domino/sys.h"
 #include "core/include/launcher_core_api.h"
 }
+
+#if defined(_WIN32) || defined(_WIN64)
+#include <direct.h>
+#else
+#include <unistd.h>
+#endif
 
 #include "core/include/launcher_audit.h"
 #include "core/include/launcher_artifact_store.h"
@@ -45,6 +53,43 @@ static void dominium_test_assert_fail(const char* expr, const char* file, int li
 
 namespace {
 
+static void remove_tree(const char* path) {
+    dsys_dir_iter* it;
+    dsys_dir_entry ent;
+    char child[512];
+
+    if (!path || path[0] == '\0') {
+        return;
+    }
+
+    it = dsys_dir_open(path);
+    if (it) {
+        while (dsys_dir_next(it, &ent)) {
+            if (ent.name[0] == '.' && (ent.name[1] == '\0' ||
+                                       (ent.name[1] == '.' && ent.name[2] == '\0'))) {
+                continue;
+            }
+            std::snprintf(child, sizeof(child), "%s/%s", path, ent.name);
+            if (ent.is_dir) {
+                remove_tree(child);
+#if defined(_WIN32) || defined(_WIN64)
+                _rmdir(child);
+#else
+                rmdir(child);
+#endif
+            } else {
+                remove(child);
+            }
+        }
+        dsys_dir_close(it);
+    }
+#if defined(_WIN32) || defined(_WIN64)
+    _rmdir(path);
+#else
+    rmdir(path);
+#endif
+}
+
 static std::string normalize_seps(const std::string& in) {
     std::string out = in;
     size_t i;
@@ -67,6 +112,41 @@ static std::string path_join(const std::string& a, const std::string& b) {
     return aa + "/" + bb;
 }
 
+#if defined(_WIN32) || defined(_WIN64)
+static std::string add_exe_if_missing(const std::string& p) {
+    if (p.size() >= 4u && p.substr(p.size() - 4u) == ".exe") {
+        return p;
+    }
+    return p + ".exe";
+}
+#else
+static std::string add_exe_if_missing(const std::string& p) { return p; }
+#endif
+
+static std::string dist_sys_id(void) {
+#if defined(_WIN32) || defined(_WIN64)
+    return "winnt";
+#elif defined(__APPLE__)
+    return "macos";
+#else
+    return "linux";
+#endif
+}
+
+static std::string dist_arch_id(void) {
+#if defined(_M_X64) || defined(__x86_64__) || defined(__amd64__)
+    return "x64";
+#elif defined(_M_IX86) || defined(__i386__)
+    return "x86";
+#elif defined(_M_ARM64) || defined(__aarch64__)
+    return "arm64";
+#elif defined(_M_ARM) || defined(__arm__)
+    return "arm";
+#else
+    return "x64";
+#endif
+}
+
 static std::string dirname_of(const std::string& path) {
     size_t i;
     for (i = path.size(); i > 0u; --i) {
@@ -85,6 +165,23 @@ static bool file_exists(const std::string& path) {
         return true;
     }
     return false;
+}
+
+static std::string find_launcher_exe_near(const std::string& self_path) {
+    std::string dir = dirname_of(self_path);
+    const std::string sys_id = dist_sys_id();
+    const std::string arch_id = dist_arch_id();
+    int i;
+    for (i = 0; i < 8 && !dir.empty(); ++i) {
+        const std::string cand = path_join(
+            path_join(path_join(path_join(path_join(path_join(dir, "dist"), "sys"), sys_id), arch_id), "bin/launch"),
+            add_exe_if_missing("launch_dominium"));
+        if (file_exists(cand)) {
+            return cand;
+        }
+        dir = dirname_of(dir);
+    }
+    return std::string();
 }
 
 static bool read_file_all_bytes(const std::string& path, std::vector<unsigned char>& out) {
@@ -655,13 +752,13 @@ static void test_tool_launch_handshake_and_audit(const std::string& state_root,
                                                 const dom_profile& profile) {
     const launcher_services_api_v1* services = launcher_services_null_v1();
     const std::string instance_id = "inst_launch";
-    CmdRun lr, ar, sr, dr, no_runs;
+    CmdRun lr, ar, sr, dr, cr, no_runs;
     std::map<std::string, std::string> kv;
     std::vector<unsigned char> bytes;
     dom::launcher_core::LauncherHandshake hs;
     dom::launcher_core::LauncherInstanceManifest m;
     dom::launcher_core::LauncherAuditLog run_audit;
-    std::string diag_out_root;
+    std::string diag_out_path;
 
     create_instance_with_pins(services, state_root, instance_id, "engine.pinned", "game.pinned");
 
@@ -688,8 +785,12 @@ static void test_tool_launch_handshake_and_audit(const std::string& state_root,
 	        assert(file_exists(kv["launch_config_path"]));
 	        assert(file_exists(kv["audit_path"]));
 	        assert(!kv["selection_summary_path"].empty());
+	        assert(!kv["run_summary_path"].empty());
+	        assert(!kv["caps_path"].empty());
 	        assert(!kv["exit_status_path"].empty());
 	        assert(file_exists(kv["selection_summary_path"]));
+	        assert(file_exists(kv["run_summary_path"]));
+	        assert(file_exists(kv["caps_path"]));
 	        assert(file_exists(kv["exit_status_path"]));
 
 	        assert(read_file_all_bytes(kv["handshake_path"], bytes));
@@ -832,38 +933,52 @@ static void test_tool_launch_handshake_and_audit(const std::string& state_root,
 	        assert(audit_has_reason(run_audit, "safe_mode=1"));
 	    }
 
-    /* diag-bundle should export bundle + copy last run handshake/audit */
+    /* diag-bundle should emit deterministic archive */
     {
-        diag_out_root = path_join(state_root, "diag_out");
+        diag_out_path = path_join(state_root, "diag_out.zip");
         {
             std::vector<std::string> args;
             args.push_back(std::string("--home=") + state_root);
             args.push_back("diag-bundle");
             args.push_back(instance_id);
-            args.push_back(std::string("--out=") + diag_out_root);
+            args.push_back(std::string("--out=") + diag_out_path);
+            args.push_back("--mode=default");
             dr = run_control_plane(argv0_launcher, profile, args, path_join(state_root, "audit_diag_bundle.tlv"));
             kv = parse_kv_lines(dr.out_text);
             assert(dr.r.handled != 0);
             assert(dr.r.exit_code == 0);
             assert(kv["result"] == "ok");
+            assert(kv["format"] == "zip");
+            assert(kv["mode"] == "default");
         }
-        assert(file_exists(path_join(diag_out_root, "manifest.tlv")));
-        assert(file_exists(path_join(path_join(diag_out_root, "config"), "config.tlv")));
+        assert(file_exists(diag_out_path));
+    }
 
-        /* last_run copy */
-	        {
-	            const std::string last_run_root = path_join(diag_out_root, "last_run");
-	            const std::string run_subdir = kv["last_run_id"];
-	            assert(!run_subdir.empty());
-	            assert(file_exists(path_join(path_join(last_run_root, run_subdir), "handshake.tlv")));
-	            assert(file_exists(path_join(path_join(last_run_root, run_subdir), "launch_config.tlv")));
-	            assert(file_exists(path_join(path_join(last_run_root, run_subdir), "audit_ref.tlv")));
-	            assert(file_exists(path_join(path_join(last_run_root, run_subdir), "selection_summary.tlv")));
-	            assert(file_exists(path_join(path_join(last_run_root, run_subdir), "exit_status.tlv")));
-	        }
-	        assert(file_exists(path_join(diag_out_root, "last_run_selection_summary.txt")));
-	    }
-	}
+    /* caps should emit deterministic TLV */
+    {
+        std::string caps_out = path_join(state_root, "caps_snapshot.tlv");
+        std::vector<unsigned char> a;
+        std::vector<unsigned char> b;
+        std::vector<std::string> args;
+        args.push_back(std::string("--home=") + state_root);
+        args.push_back("caps");
+        args.push_back("--format=tlv");
+        args.push_back(std::string("--out=") + caps_out);
+        cr = run_control_plane(argv0_launcher, profile, args, path_join(state_root, "audit_caps.tlv"));
+        kv = parse_kv_lines(cr.out_text);
+        assert(cr.r.handled != 0);
+        assert(cr.r.exit_code == 0);
+        assert(kv["result"] == "ok");
+        assert(kv["format"] == "tlv");
+        assert(file_exists(caps_out));
+
+        assert(read_file_all_bytes(caps_out, a));
+        cr = run_control_plane(argv0_launcher, profile, args, path_join(state_root, "audit_caps2.tlv"));
+        assert(cr.r.exit_code == 0);
+        assert(read_file_all_bytes(caps_out, b));
+        assert(a == b);
+    }
+}
 
 static void test_pack_toggle_and_determinism(const std::string& state_root) {
     const launcher_services_api_v1* services = launcher_services_null_v1();
@@ -1244,6 +1359,68 @@ static void test_selection_summary_text_is_stable(void) {
     assert(a.find("selection_summary.backends.platform[1].id=a") != std::string::npos);
 }
 
+static void test_caps_explain_is_stable(const std::string& state_root,
+                                        const std::string& argv0_launcher,
+                                        const dom_profile& profile) {
+    CmdRun a;
+    CmdRun b;
+    std::vector<std::string> args;
+    std::map<std::string, std::string> kv;
+
+    args.push_back(std::string("--home=") + state_root);
+    args.push_back("caps");
+    args.push_back("--format=text");
+    args.push_back("--explain");
+
+    a = run_control_plane(argv0_launcher, profile, args, path_join(state_root, "audit_caps_explain1.tlv"));
+    b = run_control_plane(argv0_launcher, profile, args, path_join(state_root, "audit_caps_explain2.tlv"));
+
+    kv = parse_kv_lines(a.out_text);
+    assert(a.r.handled != 0);
+    assert(a.r.exit_code == 0);
+    assert(kv["result"] == "ok");
+    assert(a.out_text == b.out_text);
+    assert(a.out_text.find("caps.schema_version=") != std::string::npos);
+    assert(a.out_text.find("caps.explain.selected.count=") != std::string::npos);
+}
+
+static void test_provider_selection_defaults(const dom_profile& profile) {
+    dom::LauncherCapsSolveResult solve;
+    std::string err;
+    size_t i;
+    bool saw_content = false;
+    bool saw_net = false;
+    bool saw_trust = false;
+    bool saw_keychain = false;
+    bool saw_os = false;
+
+    assert(dom::launcher_caps_solve(&profile, solve, err));
+    for (i = 0u; i < solve.provider_backends.size(); ++i) {
+        const dom::LauncherCapsProviderChoice& p = solve.provider_backends[i];
+        if (p.provider_type == "content") {
+            saw_content = true;
+            assert(p.provider_id == "local_fs");
+        } else if (p.provider_type == "net") {
+            saw_net = true;
+            assert(p.provider_id == "null");
+        } else if (p.provider_type == "trust") {
+            saw_trust = true;
+            assert(p.provider_id == "null");
+        } else if (p.provider_type == "keychain") {
+            saw_keychain = true;
+            assert(p.provider_id == "null");
+        } else if (p.provider_type == "os_integration") {
+            saw_os = true;
+            assert(p.provider_id == "null");
+        }
+    }
+    assert(saw_content);
+    assert(saw_net);
+    assert(saw_trust);
+    assert(saw_keychain);
+    assert(saw_os);
+}
+
 } /* namespace */
 
 int main(int argc, char** argv) {
@@ -1254,6 +1431,8 @@ int main(int argc, char** argv) {
 
     (void)argc;
 
+    /* Ensure deterministic temp root across runs doesn't collide with prior state. */
+    remove_tree(state_root.c_str());
     mkdir_p_best_effort(state_root);
     write_tools_registry_minimal(state_root);
 
@@ -1262,13 +1441,19 @@ int main(int argc, char** argv) {
         std::string self = (argv && argv[0]) ? std::string(argv[0]) : std::string();
         std::string dir = dirname_of(self);
 #if defined(_WIN32) || defined(_WIN64)
-        argv0_launcher = path_join(dir, "dominium-launcher.exe");
+        const std::string cand0 = path_join(dir, "launch_dominium.exe");
+        const std::string cand1 = path_join(dir, "dominium-launcher.exe");
 #else
-        argv0_launcher = path_join(dir, "dominium-launcher");
+        const std::string cand0 = path_join(dir, "launch_dominium");
+        const std::string cand1 = path_join(dir, "dominium-launcher");
 #endif
-        if (!file_exists(argv0_launcher)) {
-            /* Fall back to using the test executable's argv0 directory anyway. */
-            argv0_launcher = self;
+        if (file_exists(cand0)) {
+            argv0_launcher = cand0;
+        } else if (file_exists(cand1)) {
+            argv0_launcher = cand1;
+        } else {
+            const std::string from_repo = find_launcher_exe_near(self);
+            argv0_launcher = from_repo.empty() ? self : from_repo;
         }
     }
 
@@ -1278,6 +1463,8 @@ int main(int argc, char** argv) {
     test_offline_enforcement_refusal(state_root, argv0_launcher, profile);
     test_safe_mode_flow_flags(state_root, argv0_launcher, profile);
     test_selection_summary_text_is_stable();
+    test_caps_explain_is_stable(state_root, argv0_launcher, profile);
+    test_provider_selection_defaults(profile);
 
     std::printf("launcher_control_plane_tests: OK\n");
     return 0;

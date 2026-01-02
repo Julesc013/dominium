@@ -1,0 +1,11 @@
+schema_id=1
+version=2
+vector=instance_v2_basic.tlv
+summary=instance_v2_basic.expected.txt
+sha256=instance_v2_basic.sha256
+
+schema_id=1
+version=1
+vector=instance_v1_legacy.tlv
+summary=instance_v1_legacy.expected.txt
+sha256=instance_v1_legacy.sha256

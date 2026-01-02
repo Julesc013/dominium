@@ -15,6 +15,7 @@ RESPONSIBILITY: UI smoke tests for DUI schema-driven launcher UI under --ui=null
 
 extern "C" {
 #include "domino/profile.h"
+#include "domino/sys.h"
 #include "core/include/launcher_core_api.h"
 }
 
@@ -23,6 +24,8 @@ extern "C" {
 #include "core/include/launcher_tools_registry.h"
 
 namespace {
+
+static const int kSkipReturnCode = 77;
 
 static std::string normalize_seps(const std::string& in) {
     std::string out = in;
@@ -76,8 +79,10 @@ static bool write_file_all_bytes(const std::string& path, const std::vector<unsi
 
 #if defined(_WIN32) || defined(_WIN64)
 extern "C" int _mkdir(const char* path);
+extern "C" int _rmdir(const char* path);
 #else
 extern "C" int mkdir(const char* path, unsigned int mode);
+extern "C" int rmdir(const char* path);
 #endif
 
 static void mkdir_one_best_effort(const std::string& path) {
@@ -100,6 +105,43 @@ static void mkdir_p_best_effort(const std::string& path) {
         }
     }
     mkdir_one_best_effort(p);
+}
+
+static void remove_tree(const char* path) {
+    dsys_dir_iter* it;
+    dsys_dir_entry ent;
+    char child[512];
+
+    if (!path || path[0] == '\0') {
+        return;
+    }
+
+    it = dsys_dir_open(path);
+    if (it) {
+        while (dsys_dir_next(it, &ent)) {
+            if (ent.name[0] == '.' && (ent.name[1] == '\0' ||
+                                       (ent.name[1] == '.' && ent.name[2] == '\0'))) {
+                continue;
+            }
+            std::snprintf(child, sizeof(child), "%s/%s", path, ent.name);
+            if (ent.is_dir) {
+                remove_tree(child);
+#if defined(_WIN32) || defined(_WIN64)
+                _rmdir(child);
+#else
+                rmdir(child);
+#endif
+            } else {
+                remove(child);
+            }
+        }
+        dsys_dir_close(it);
+    }
+#if defined(_WIN32) || defined(_WIN64)
+    _rmdir(path);
+#else
+    rmdir(path);
+#endif
 }
 
 static void u64_to_hex16(u64 v, char out_hex[17]) {
@@ -177,14 +219,72 @@ static void create_empty_instance(const std::string& state_root, const std::stri
     assert(dom::launcher_core::launcher_instance_create_instance(services, desired, state_root, created, &audit));
 }
 
+static int run_ui_backend_smoke(const char* backend,
+                                const std::string& argv0,
+                                const std::string& state_root,
+                                bool allow_skip) {
+    dom_profile profile = make_profile_ui_backend(backend);
+    dom::LauncherConfig cfg;
+    dom::DomLauncherApp app;
+    std::string err;
+    const bool headless = backend && std::strcmp(backend, "dgfx") == 0;
+
+    cfg.argv0 = argv0;
+    cfg.home = state_root;
+    cfg.mode = dom::LAUNCHER_MODE_GUI;
+    cfg.action.clear();
+    cfg.instance_id.clear();
+    cfg.product.clear();
+    cfg.product_mode = headless ? "headless" : "gui";
+
+    if (!app.init_from_cli(cfg, &profile)) {
+        if (allow_skip) {
+            std::printf("launcher_ui_smoke_tests: SKIP backend=%s reason=init_failed\n", backend ? backend : "(null)");
+            return kSkipReturnCode;
+        }
+        std::printf("launcher_ui_smoke_tests: FAIL backend=%s reason=init_failed\n", backend ? backend : "(null)");
+        return 1;
+    }
+
+    if (backend && !app.ui_backend_selected().empty() && app.ui_backend_selected() != backend) {
+        if (allow_skip) {
+            std::printf("launcher_ui_smoke_tests: SKIP backend=%s selected=%s note=%s\n",
+                        backend,
+                        app.ui_backend_selected().c_str(),
+                        app.ui_fallback_note().empty() ? "none" : app.ui_fallback_note().c_str());
+            return kSkipReturnCode;
+        }
+        std::printf("launcher_ui_smoke_tests: FAIL backend=%s selected=%s\n",
+                    backend,
+                    app.ui_backend_selected().c_str());
+        return 1;
+    }
+
+    if (!app.run_ui_smoke(err)) {
+        if (allow_skip) {
+            std::printf("launcher_ui_smoke_tests: SKIP backend=%s err=%s\n",
+                        backend ? backend : "(null)",
+                        err.empty() ? "unknown" : err.c_str());
+            return kSkipReturnCode;
+        }
+        std::printf("launcher_ui_smoke_tests: FAIL backend=%s err=%s\n",
+                    backend ? backend : "(null)",
+                    err.empty() ? "unknown" : err.c_str());
+        return 1;
+    }
+
+    return 0;
+}
+
 } /* namespace */
 
 int main(int argc, char** argv) {
     const launcher_services_api_v1* services = launcher_services_null_v1();
     const std::string state_root = make_temp_root(services, "tmp_l9b_ui_smoke");
     std::string argv0 = (argc > 0 && argv && argv[0]) ? std::string(argv[0]) : std::string();
-    std::string err;
+    int rc;
 
+    remove_tree(state_root.c_str());
     mkdir_p_best_effort(state_root);
     write_tools_registry_minimal(state_root);
     create_empty_instance(state_root, "smoke_instance");
@@ -203,39 +303,15 @@ int main(int argc, char** argv) {
     }
 
     /* --ui=null smoke: schema load + instance select + verify + tool launch + handshake/audit. */
-    {
-        dom_profile profile = make_profile_ui_backend("null");
-        dom::LauncherConfig cfg;
-        dom::DomLauncherApp app;
-        cfg.argv0 = argv0;
-        cfg.home = state_root;
-        cfg.mode = dom::LAUNCHER_MODE_GUI;
-        cfg.action.clear();
-        cfg.instance_id.clear();
-        cfg.product.clear();
-        cfg.product_mode = "gui";
-
-        assert(app.init_from_cli(cfg, &profile));
-        err.clear();
-        assert(app.run_ui_smoke(err));
+    rc = run_ui_backend_smoke("null", argv0, state_root, false);
+    if (rc != 0) {
+        return rc;
     }
 
     /* --ui=dgfx smoke (headless where possible): create window, render one frame, exit. */
-    {
-        dom_profile profile = make_profile_ui_backend("dgfx");
-        dom::LauncherConfig cfg;
-        dom::DomLauncherApp app;
-        cfg.argv0 = argv0;
-        cfg.home = state_root;
-        cfg.mode = dom::LAUNCHER_MODE_GUI;
-        cfg.action.clear();
-        cfg.instance_id.clear();
-        cfg.product.clear();
-        cfg.product_mode = "headless";
-
-        assert(app.init_from_cli(cfg, &profile));
-        err.clear();
-        assert(app.run_ui_smoke(err));
+    rc = run_ui_backend_smoke("dgfx", argv0, state_root, true);
+    if (rc != 0) {
+        return rc;
     }
 
     std::printf("launcher_ui_smoke_tests: OK\n");

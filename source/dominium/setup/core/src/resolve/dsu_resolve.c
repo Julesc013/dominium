@@ -5,8 +5,10 @@ PURPOSE: Deterministic component resolution engine (Plan S-3).
 */
 #include "../../include/dsu/dsu_resolve.h"
 #include "../../include/dsu/dsu_log.h"
+#include "../../include/dsu/dsu_fs.h"
 
 #include "../dsu_ctx_internal.h"
+#include "../fs/dsu_platform_iface.h"
 #include "../log/dsu_events.h"
 #include "../util/dsu_util_internal.h"
 
@@ -745,6 +747,41 @@ static dsu_status_t dsu__platform_supported(const dsu_manifest_t *manifest, cons
     return DSU_STATUS_PLATFORM_INCOMPATIBLE;
 }
 
+static dsu_bool dsu__is_abs_path_like(const char *p) {
+    if (!p || p[0] == '\0') {
+        return DSU_FALSE;
+    }
+    if (p[0] == '/' || p[0] == '\\') {
+        return DSU_TRUE;
+    }
+    if ((p[0] == '/' && p[1] == '/') || (p[0] == '\\' && p[1] == '\\')) {
+        return DSU_TRUE;
+    }
+    if (((p[0] >= 'A' && p[0] <= 'Z') || (p[0] >= 'a' && p[0] <= 'z')) && p[1] == ':' &&
+        (p[2] == '/' || p[2] == '\\')) {
+        return DSU_TRUE;
+    }
+    return DSU_FALSE;
+}
+
+static dsu_status_t dsu__canon_install_root(const char *path_in, char *path_out, dsu_u32 path_out_cap) {
+    dsu_status_t st;
+    if (!path_in || !path_out || path_out_cap == 0u) {
+        return DSU_STATUS_INVALID_ARGS;
+    }
+    if (dsu__is_abs_path_like(path_in)) {
+        return dsu_fs_path_canonicalize(path_in, path_out, path_out_cap);
+    }
+    {
+        char cwd[1024];
+        st = dsu_platform_get_cwd(cwd, (dsu_u32)sizeof(cwd));
+        if (st != DSU_STATUS_SUCCESS) {
+            return st;
+        }
+        return dsu_fs_path_join(cwd, path_in, path_out, path_out_cap);
+    }
+}
+
 static dsu_status_t dsu__select_install_root(const dsu_manifest_t *manifest,
                                             dsu_u8 scope,
                                             const char *plat,
@@ -785,9 +822,21 @@ static dsu_status_t dsu__select_install_root(const dsu_manifest_t *manifest,
             if (!want || want[0] == '\0') {
                 return DSU_STATUS_INVALID_REQUEST;
             }
-            if (path && dsu__strcmp_bytes(path, want) == 0) {
-                found = path;
-                ++found_count;
+            if (path) {
+                if (dsu__strcmp_bytes(path, want) == 0) {
+                    found = path;
+                    ++found_count;
+                } else {
+                    char want_abs[1024];
+                    char path_abs[1024];
+                    dsu_status_t st_want = dsu__canon_install_root(want, want_abs, (dsu_u32)sizeof(want_abs));
+                    dsu_status_t st_path = dsu__canon_install_root(path, path_abs, (dsu_u32)sizeof(path_abs));
+                    if (st_want == DSU_STATUS_SUCCESS && st_path == DSU_STATUS_SUCCESS &&
+                        dsu__strcmp_bytes(want_abs, path_abs) == 0) {
+                        found = path;
+                        ++found_count;
+                    }
+                }
             }
         } else {
             found = path ? path : "";
@@ -1241,12 +1290,23 @@ dsu_status_t dsu_resolve_components(dsu_ctx_t *ctx,
                                               &install_root);
             }
         } else {
-            st = dsu__select_install_root(manifest,
-                                          (dsu_u8)request->scope,
-                                          plat,
-                                          request->install_roots,
-                                          request->install_root_count,
-                                          &install_root);
+            if (request->install_root_count == 0u && state_root && state_root[0] != '\0') {
+                const char *roots_tmp[1];
+                roots_tmp[0] = state_root;
+                st = dsu__select_install_root(manifest,
+                                              (dsu_u8)request->scope,
+                                              plat,
+                                              roots_tmp,
+                                              1u,
+                                              &install_root);
+            } else {
+                st = dsu__select_install_root(manifest,
+                                              (dsu_u8)request->scope,
+                                              plat,
+                                              request->install_roots,
+                                              request->install_root_count,
+                                              &install_root);
+            }
         }
         if (st != DSU_STATUS_SUCCESS || !install_root) {
             (void)dsu__log_push(r, (dsu_u8)DSU_RESOLVE_LOG_PLATFORM_FILTER, "install_root", plat);
@@ -1255,9 +1315,17 @@ dsu_status_t dsu_resolve_components(dsu_ctx_t *ctx,
         }
         if (state_root && state_root[0] != '\0') {
             if (dsu__strcmp_bytes(state_root, install_root) != 0) {
-                (void)dsu__log_push(r, (dsu_u8)DSU_RESOLVE_LOG_RECONCILE_INSTALLED, "install_root", "mismatch");
-                st = DSU_STATUS_INVALID_REQUEST;
-                goto fail_result;
+                char state_abs[1024];
+                char install_abs[1024];
+                dsu_status_t st_state = dsu__canon_install_root(state_root, state_abs, (dsu_u32)sizeof(state_abs));
+                dsu_status_t st_install = dsu__canon_install_root(install_root, install_abs, (dsu_u32)sizeof(install_abs));
+                if (st_state != DSU_STATUS_SUCCESS ||
+                    st_install != DSU_STATUS_SUCCESS ||
+                    dsu__strcmp_bytes(state_abs, install_abs) != 0) {
+                    (void)dsu__log_push(r, (dsu_u8)DSU_RESOLVE_LOG_RECONCILE_INSTALLED, "install_root", "mismatch");
+                    st = DSU_STATUS_INVALID_REQUEST;
+                    goto fail_result;
+                }
             }
         }
         r->install_root = dsu__strdup(install_root);

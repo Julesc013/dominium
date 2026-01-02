@@ -1,0 +1,1 @@
+{"operation":"install","install_scope":"portable","ui_mode":"cli","frontend_id":"fixture-cli","policy_flags":1,"target_platform_triple":"win32_nt5","preferred_install_root":"","payload_root":"payloads/v1","requested_splat_id":"","required_caps":0,"prohibited_caps":0,"ownership_preference":"any","requested_components":[],"excluded_components":[]}

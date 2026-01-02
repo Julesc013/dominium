@@ -1,0 +1,5 @@
+schema_version=1
+run_id=0x1111222233334444
+instance_id=inst_alpha
+resolved_packs=2
+selected_ui=null

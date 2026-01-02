@@ -140,15 +140,15 @@ static const char *dsu__resolve_exe_path(const char *argv0, const char *name, ch
 }
 
 static const char *dsu__resolve_core_path(const char *argv0, char *out, size_t cap) {
-    const char *candidate = dsu__resolve_exe_path(argv0, "dominium-setup", out, cap);
+    const char *candidate = dsu__resolve_exe_path(argv0, "dominium-setup-legacy", out, cap);
     if (candidate && dsu__file_is_exec(candidate)) {
         return candidate;
     }
-    candidate = dsu__resolve_exe_path(argv0, "tool_setup", out, cap);
+    candidate = dsu__resolve_exe_path(argv0, "dominium-setup-legacy", out, cap);
     if (candidate && dsu__file_is_exec(candidate)) {
         return candidate;
     }
-    return "dominium-setup";
+    return "dominium-setup-legacy";
 }
 
 static const char *dsu__resolve_adapter_path(const char *argv0, char *out, size_t cap) {

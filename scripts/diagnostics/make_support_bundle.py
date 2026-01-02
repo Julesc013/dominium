@@ -5,6 +5,9 @@ Create a deterministic "support bundle" (crash bundle) from a launcher home.
 Bundle contents are intentionally minimal and offline:
 - Recent launcher audit TLV(s)
 - Instance manifest/config/history/known-good pointers
+- Recent run artifacts (handshake/selection/exit status/caps/run summary)
+- Structured event logs (run-scoped; rolling in extended mode)
+- Bundle metadata + index (deterministic TLV)
 - Optional staged transaction markers (if present)
 - A small derived build_info.txt summary (parsed from newest audit TLV)
 
@@ -16,6 +19,7 @@ The produced archive is deterministic:
 from __future__ import annotations
 
 import argparse
+import hashlib
 import os
 import re
 import shutil
@@ -102,6 +106,50 @@ def _tlv_read_string(payload: bytes) -> str:
         return ""
 
 
+def _tlv_rec(tag: int, payload: bytes) -> bytes:
+    return (
+        int(tag).to_bytes(4, "little", signed=False)
+        + int(len(payload)).to_bytes(4, "little", signed=False)
+        + payload
+    )
+
+
+def _tlv_u32(tag: int, v: int) -> bytes:
+    return _tlv_rec(tag, int(v).to_bytes(4, "little", signed=False))
+
+
+def _tlv_u64(tag: int, v: int) -> bytes:
+    return _tlv_rec(tag, int(v).to_bytes(8, "little", signed=False))
+
+
+def _tlv_bytes(tag: int, payload: bytes) -> bytes:
+    return _tlv_rec(tag, payload or b"")
+
+
+def _tlv_str(tag: int, s: str) -> bytes:
+    return _tlv_rec(tag, (s or "").encode("utf-8"))
+
+
+def _write_tlv(path: str, records: Iterable[bytes]) -> None:
+    data = b"".join(records)
+    parent = os.path.dirname(path)
+    if parent:
+        os.makedirs(parent, exist_ok=True)
+    with open(path, "wb") as f:
+        f.write(data)
+
+
+def _hash_file(path: str) -> bytes:
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        while True:
+            b = f.read(1024 * 1024)
+            if not b:
+                break
+            h.update(b)
+    return h.digest()
+
+
 @dataclass
 class AuditSummary:
     schema_version: Optional[int] = None
@@ -112,6 +160,12 @@ class AuditSummary:
     git_hash: str = ""
     exit_result: Optional[int] = None
     toolchain_id: str = ""
+
+
+@dataclass
+class BundleFile:
+    src: str
+    rel: str
 
 
 def _parse_audit_summary(audit_path: str) -> AuditSummary:
@@ -201,8 +255,93 @@ def _select_recent(paths: list[str], count: int) -> list[str]:
     return paths[-count:]
 
 
+def _run_id_from_dir(name: str) -> Optional[int]:
+    if len(name) != 16:
+        return None
+    try:
+        return int(name, 16)
+    except Exception:
+        return None
+
+
+def _list_run_dirs(instance_root: str) -> list[str]:
+    runs_root = os.path.join(instance_root, "logs", "runs")
+    if not os.path.isdir(runs_root):
+        return []
+    names: list[str] = []
+    try:
+        for name in os.listdir(runs_root):
+            full = os.path.join(runs_root, name)
+            if not os.path.isdir(full):
+                continue
+            names.append(name)
+    except OSError:
+        return []
+    with_ids: list[Tuple[int, str]] = []
+    no_ids: list[str] = []
+    for name in names:
+        rid = _run_id_from_dir(name)
+        if rid is None:
+            no_ids.append(name)
+        else:
+            with_ids.append((rid, name))
+    with_ids.sort(key=lambda t: (t[0], t[1]))
+    no_ids.sort()
+    return [name for (_, name) in with_ids] + no_ids
+
+
+def _parse_manifest_content_entries(data: bytes) -> list[Tuple[int, str, str]]:
+    # Tags mirror launcher_instance.h manifest schema.
+    TAG_CONTENT_ENTRY = 11
+    TAG_ENTRY_TYPE = 1
+    TAG_ENTRY_ID = 2
+    TAG_ENTRY_VERSION = 3
+    out: list[Tuple[int, str, str]] = []
+    for tag, payload in _iter_tlv_records(data):
+        if tag != TAG_CONTENT_ENTRY:
+            continue
+        entry_type: Optional[int] = None
+        entry_id = ""
+        entry_ver = ""
+        for etag, epl in _iter_tlv_records(payload):
+            if etag == TAG_ENTRY_TYPE:
+                entry_type = _tlv_read_u32(epl)
+            elif etag == TAG_ENTRY_ID:
+                entry_id = _tlv_read_string(epl)
+            elif etag == TAG_ENTRY_VERSION:
+                entry_ver = _tlv_read_string(epl)
+        if entry_type is not None and entry_id and entry_ver:
+            out.append((int(entry_type), entry_id, entry_ver))
+    return out
+
+
+def _collect_pack_manifests(home: str, manifest_path: str) -> list[Tuple[str, str]]:
+    # Returns list of (src_path, rel_path) for pack/mod manifests referenced by the instance manifest.
+    if not os.path.isfile(manifest_path):
+        return []
+    try:
+        data = _read_file(manifest_path)
+    except Exception:
+        return []
+    # LauncherContentType values: 3=pack, 4=mod, 5=runtime.
+    entries = _parse_manifest_content_entries(data)
+    out: list[Tuple[str, str]] = []
+    for (etype, eid, ever) in entries:
+        if etype == 3:
+            rel = os.path.join("packs", eid, ever, "pack.tlv")
+        elif etype == 4:
+            rel = os.path.join("mods", eid, ever, "mod.tlv")
+        else:
+            continue
+        src = os.path.join(home, rel)
+        if os.path.isfile(src):
+            out.append((src, rel))
+    return out
+
+
 def _run_deterministic_archive(input_dir: str, output_path: str, fmt: str, root_name: str) -> None:
-    script = os.path.join("scripts", "packaging", "make_deterministic_archive.py")
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    script = os.path.abspath(os.path.join(script_dir, "..", "packaging", "make_deterministic_archive.py"))
     argv = [
         sys.executable,
         script,
@@ -218,6 +357,22 @@ def _run_deterministic_archive(input_dir: str, output_path: str, fmt: str, root_
     subprocess.check_call(argv)
 
 
+def _iter_stage_files(root_dir: str) -> list[str]:
+    root_dir = os.path.abspath(root_dir)
+    files: list[str] = []
+    for cur_root, cur_dirs, cur_files in os.walk(root_dir):
+        cur_dirs.sort()
+        cur_files.sort()
+        rel_root = os.path.relpath(cur_root, root_dir)
+        rel_root = "" if rel_root == "." else _norm_rel(rel_root)
+        for f in cur_files:
+            if f in (".stage_stamp",):
+                continue
+            rel = _norm_rel(os.path.join(rel_root, f))
+            files.append(rel)
+    return sorted(set(files))
+
+
 def main(argv: list[str]) -> int:
     ap = argparse.ArgumentParser(description="Generate a deterministic support bundle (crash bundle) archive.")
     ap.add_argument("--home", default=".", help="Launcher home/state root (defaults to current directory)")
@@ -225,6 +380,8 @@ def main(argv: list[str]) -> int:
     ap.add_argument("--output", required=True, help="Output archive path (zip or tar.gz)")
     ap.add_argument("--format", choices=["zip", "tar.gz"], default="zip", help="Archive format (default: zip)")
     ap.add_argument("--audit-count", type=int, default=3, help="Number of most recent audit TLVs to include")
+    ap.add_argument("--run-count", type=int, default=3, help="Number of most recent runs to include")
+    ap.add_argument("--mode", choices=["default", "extended"], default="default", help="Redaction mode")
     args = ap.parse_args(argv)
 
     home = os.path.abspath(args.home)
@@ -236,9 +393,16 @@ def main(argv: list[str]) -> int:
     if not os.path.isdir(instance_root):
         raise SystemExit("instance not found: %s" % instance_root)
 
+    audit_count = max(0, int(args.audit_count))
+    run_count = max(0, int(args.run_count))
+    mode = args.mode
+    if mode == "extended":
+        audit_count = max(audit_count, 8)
+        run_count = max(run_count, 8)
+
     # Resolve candidate audit logs and derive build summary from newest audit (if any).
     audits_all = _find_audit_candidates(home)
-    audits = _select_recent(audits_all, args.audit_count)
+    audits = _select_recent(audits_all, audit_count)
     newest_audit = audits[-1] if audits else ""
     summary = _parse_audit_summary(newest_audit) if newest_audit else AuditSummary()
 
@@ -247,6 +411,13 @@ def main(argv: list[str]) -> int:
     with tempfile.TemporaryDirectory(prefix="dom_support_bundle_") as tmp:
         stage = os.path.join(tmp, "stage")
         os.makedirs(stage, exist_ok=True)
+
+        bundle_files: list[BundleFile] = []
+
+        def add_file(src: str, rel: str) -> None:
+            if not src or not rel:
+                return
+            bundle_files.append(BundleFile(src=src, rel=_norm_rel(rel)))
 
         # Build-info summary (derived; deterministic content).
         build_info = []
@@ -265,29 +436,95 @@ def main(argv: list[str]) -> int:
         # Audit logs (newest last; stable naming).
         for p in audits:
             name = os.path.basename(p)
-            _copy_file_best_effort(p, os.path.join(stage, "audit", name))
+            add_file(p, os.path.join("audit", name))
 
         # Core instance state.
-        _copy_file_best_effort(os.path.join(instance_root, "manifest.tlv"), os.path.join(stage, "instance", "manifest.tlv"))
-        _copy_file_best_effort(
-            os.path.join(instance_root, "config", "config.tlv"), os.path.join(stage, "instance", "config.tlv")
-        )
-        _copy_file_best_effort(
-            os.path.join(instance_root, "logs", "launch_history.tlv"), os.path.join(stage, "instance", "launch_history.tlv")
-        )
-        _copy_file_best_effort(os.path.join(instance_root, "known_good.tlv"), os.path.join(stage, "instance", "known_good.tlv"))
+        manifest_path = os.path.join(instance_root, "manifest.tlv")
+        add_file(manifest_path, os.path.join("instance", "manifest.tlv"))
+        add_file(os.path.join(instance_root, "config", "config.tlv"), os.path.join("instance", "config.tlv"))
+        add_file(os.path.join(instance_root, "logs", "launch_history.tlv"), os.path.join("instance", "launch_history.tlv"))
+        add_file(os.path.join(instance_root, "known_good.tlv"), os.path.join("instance", "known_good.tlv"))
+        add_file(os.path.join(instance_root, "payload_refs.tlv"), os.path.join("instance", "payload_refs.tlv"))
 
         # Optional staged crash markers (useful when a crash happened mid-transaction).
-        _copy_file_best_effort(
-            os.path.join(instance_root, "staging", "transaction.tlv"), os.path.join(stage, "instance", "staging", "transaction.tlv")
-        )
-        _copy_file_best_effort(
-            os.path.join(instance_root, "staging", "manifest.tlv"), os.path.join(stage, "instance", "staging", "manifest.tlv")
-        )
-        _copy_file_best_effort(
-            os.path.join(instance_root, "staging", "payload_refs.tlv"),
-            os.path.join(stage, "instance", "staging", "payload_refs.tlv"),
-        )
+        add_file(os.path.join(instance_root, "staging", "transaction.tlv"), os.path.join("instance", "staging", "transaction.tlv"))
+        add_file(os.path.join(instance_root, "staging", "manifest.tlv"), os.path.join("instance", "staging", "manifest.tlv"))
+        add_file(os.path.join(instance_root, "staging", "payload_refs.tlv"), os.path.join("instance", "staging", "payload_refs.tlv"))
+
+        # Pack/mod manifests referenced by the instance (when present).
+        for src, rel in _collect_pack_manifests(home, manifest_path):
+            add_file(src, rel)
+
+        # Run artifacts/logs (bounded).
+        run_dirs = _list_run_dirs(instance_root)
+        run_ids = _select_recent(run_dirs, run_count)
+        for run_id in run_ids:
+            run_root = os.path.join(instance_root, "logs", "runs", run_id)
+            add_file(os.path.join(run_root, "events.tlv"), os.path.join("runs", run_id, "events.tlv"))
+            add_file(os.path.join(run_root, "handshake.tlv"), os.path.join("runs", run_id, "handshake.tlv"))
+            add_file(os.path.join(run_root, "launch_config.tlv"), os.path.join("runs", run_id, "launch_config.tlv"))
+            add_file(os.path.join(run_root, "audit_ref.tlv"), os.path.join("runs", run_id, "audit_ref.tlv"))
+            add_file(os.path.join(run_root, "launcher_audit.tlv"), os.path.join("runs", run_id, "launcher_audit.tlv"))
+            add_file(os.path.join(run_root, "selection_summary.tlv"), os.path.join("runs", run_id, "selection_summary.tlv"))
+            add_file(os.path.join(run_root, "exit_status.tlv"), os.path.join("runs", run_id, "exit_status.tlv"))
+            add_file(os.path.join(run_root, "last_run_summary.tlv"), os.path.join("runs", run_id, "last_run_summary.tlv"))
+            add_file(os.path.join(run_root, "caps.tlv"), os.path.join("runs", run_id, "caps.tlv"))
+
+        # Rolling logs (extended mode only).
+        if mode == "extended":
+            add_file(os.path.join(instance_root, "logs", "rolling", "events_rolling.tlv"),
+                     os.path.join("instance", "logs", "rolling", "events_rolling.tlv"))
+            add_file(os.path.join(home, "logs", "rolling", "events_rolling.tlv"),
+                     os.path.join("logs", "rolling", "events_rolling.tlv"))
+
+        # Latest caps snapshot (global).
+        add_file(os.path.join(home, "logs", "caps_latest.tlv"), os.path.join("logs", "caps_latest.tlv"))
+
+        # Copy bundle files in deterministic order (dedupe by destination).
+        uniq: dict[str, str] = {}
+        for bf in bundle_files:
+            if bf.rel not in uniq:
+                uniq[bf.rel] = bf.src
+        for rel in sorted(uniq.keys()):
+            _copy_file_best_effort(uniq[rel], os.path.join(stage, rel))
+
+        # Bundle metadata TLV (deterministic, redaction-aware).
+        meta_records: list[bytes] = []
+        meta_records.append(_tlv_u32(1, 1))  # schema_version
+        meta_records.append(_tlv_u32(2, 1))  # bundle_version
+        meta_records.append(_tlv_str(3, mode))
+        meta_records.append(_tlv_str(4, instance_id))
+        meta_records.append(_tlv_str(5, summary.build_id or "unknown"))
+        meta_records.append(_tlv_str(6, summary.git_hash or "unknown"))
+        meta_records.append(_tlv_str(7, summary.version_string or "unknown"))
+        meta_records.append(_tlv_u32(8, audit_count))
+        meta_records.append(_tlv_u32(9, run_count))
+        for run_id in run_ids:
+            rid = _run_id_from_dir(run_id)
+            if rid is not None:
+                meta_records.append(_tlv_u64(10, rid))
+        _write_tlv(os.path.join(stage, "bundle_meta.tlv"), meta_records)
+
+        # Bundle index TLV (path + sha256 + size).
+        index_records: list[bytes] = []
+        index_records.append(_tlv_u32(1, 1))  # schema_version
+        for rel in _iter_stage_files(stage):
+            if rel == "bundle_index.tlv":
+                continue
+            full = os.path.join(stage, rel)
+            try:
+                size = os.path.getsize(full)
+            except OSError:
+                continue
+            payload = b"".join(
+                [
+                    _tlv_str(1, rel),
+                    _tlv_bytes(2, _hash_file(full)),
+                    _tlv_u64(3, size),
+                ]
+            )
+            index_records.append(_tlv_rec(2, payload))
+        _write_tlv(os.path.join(stage, "bundle_index.tlv"), index_records)
 
         # Write archive deterministically.
         _run_deterministic_archive(stage, args.output, args.format, bundle_root_name)

@@ -145,15 +145,6 @@ static void dom_tlv_write_q16_16(std::vector<unsigned char> &out, u32 tag, q16_1
     dom_tlv_write_raw(out, tag, &tmp, 4u);
 }
 
-static u32 dom_next_cmd_tick(const DomGameApp &app, const d_world *w) {
-    u32 now = (w) ? w->tick_count : 0u;
-    u32 delay = app.net().input_delay_ticks();
-    if (delay < 1u) {
-        delay = 1u;
-    }
-    return now + delay;
-}
-
 } // namespace
 
 DomGameBuildTool::DomGameBuildTool()
@@ -255,10 +246,10 @@ void DomGameBuildTool::rotate_step(int dir) {
 }
 
 int DomGameBuildTool::commit_place_structure(DomGameApp &app, q32_32 wx, q32_32 wy) {
-    d_world *w = app.session().world();
-    d_net_cmd cmd;
+    d_world *w = app.world();
+    dom_game_command cmd;
     std::vector<unsigned char> payload;
-    u32 tick;
+    u32 tick = 0u;
 
     if (!w || m_structure_id == 0u) {
         set_status("Build: no world or structure selected");
@@ -288,15 +279,16 @@ int DomGameBuildTool::commit_place_structure(DomGameApp &app, q32_32 wx, q32_32 
         dom_tlv_write_i64(payload, D_NET_TLV_BUILD2_TERRAIN_H, (i64)0);
     }
 
-    tick = dom_next_cmd_tick(app, w);
     std::memset(&cmd, 0, sizeof(cmd));
+    cmd.struct_size = sizeof(cmd);
+    cmd.struct_version = DOM_GAME_COMMAND_VERSION;
     cmd.schema_id = (u32)D_NET_SCHEMA_CMD_BUILD_V2;
     cmd.schema_ver = 1u;
-    cmd.tick = tick;
-    cmd.payload.ptr = payload.empty() ? (unsigned char *)0 : &payload[0];
-    cmd.payload.len = (u32)payload.size();
+    cmd.tick = 0u;
+    cmd.payload = payload.empty() ? (const void *)0 : &payload[0];
+    cmd.payload_size = (u32)payload.size();
 
-    if (!app.net().submit_cmd(&cmd)) {
+    if (!app.runtime() || dom_game_runtime_execute(app.runtime(), &cmd, &tick) != DOM_GAME_RUNTIME_OK) {
         set_status("Build: send failed");
         return 0;
     }

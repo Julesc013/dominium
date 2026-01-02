@@ -649,6 +649,49 @@ static void sort_strings_deterministic(std::vector<std::string>& v) {
     }
 }
 
+static void scan_repo_manifest_paths(const std::string& root,
+                                     const char* manifest_name,
+                                     std::vector<std::string>& out_paths) {
+    dsys_dir_iter* id_it;
+    dsys_dir_entry id_entry;
+
+    out_paths.clear();
+    if (root.empty() || !dir_exists(root) || !manifest_name) {
+        return;
+    }
+
+    id_it = dsys_dir_open(root.c_str());
+    if (!id_it) {
+        return;
+    }
+
+    while (dsys_dir_next(id_it, &id_entry)) {
+        if (!id_entry.is_dir) {
+            continue;
+        }
+        std::string id_root = join(root, id_entry.name);
+        dsys_dir_iter* ver_it = dsys_dir_open(id_root.c_str());
+        dsys_dir_entry ver_entry;
+        while (ver_it && dsys_dir_next(ver_it, &ver_entry)) {
+            if (!ver_entry.is_dir) {
+                continue;
+            }
+            std::string manifest_path = join(join(id_root, ver_entry.name), manifest_name);
+            if (file_exists_stdio(manifest_path)) {
+                out_paths.push_back(manifest_path);
+            }
+        }
+        if (ver_it) {
+            dsys_dir_close(ver_it);
+        }
+    }
+    dsys_dir_close(id_it);
+
+    if (!out_paths.empty()) {
+        sort_strings_deterministic(out_paths);
+    }
+}
+
 static const char* content_type_to_short(u32 type) {
     switch (type) {
     case (u32)launcher_core::LAUNCHER_CONTENT_PACK: return "pack";
@@ -1279,12 +1322,16 @@ static void ui_refresh_instance_cache(DomLauncherUiState& ui,
 
 } // namespace
 
+static std::string dom_u32_arg(const char *prefix, unsigned v);
+
 DomLauncherApp::DomLauncherApp()
     : m_paths(),
       m_mode(LAUNCHER_MODE_CLI),
       m_argv0(""),
       m_products(),
       m_instances(),
+      m_repo_mod_manifests(),
+      m_repo_pack_manifests(),
       m_profile(),
       m_profile_valid(false),
       m_dui_api(0),
@@ -1294,6 +1341,11 @@ DomLauncherApp::DomLauncherApp()
       m_selected_product(-1),
       m_selected_instance(-1),
       m_selected_mode("gui"),
+      m_show_tools(false),
+      m_edit_connect_host(false),
+      m_connect_host("127.0.0.1"),
+      m_net_port(7777u),
+      m_status_text("Ready."),
       m_ui_backend_selected(""),
       m_ui_caps_selected(0u),
       m_ui_fallback_note(""),
@@ -1665,6 +1717,178 @@ void DomLauncherApp::cycle_selected_mode() {
     }
 }
 
+void DomLauncherApp::toggle_tools_view() {
+    m_show_tools = !m_show_tools;
+}
+
+void DomLauncherApp::toggle_connect_host_edit() {
+    m_edit_connect_host = !m_edit_connect_host;
+}
+
+void DomLauncherApp::adjust_net_port(int delta) {
+    int port = (int)m_net_port + delta;
+    if (port < 1) {
+        port = 1;
+    } else if (port > 65535) {
+        port = 65535;
+    }
+    m_net_port = (u32)port;
+}
+
+bool DomLauncherApp::launch_game_listen() {
+    const InstanceInfo* inst = selected_instance();
+    if (!inst) {
+        m_status_text = "Refused: no instance selected.";
+        if (m_ui) m_ui->status_text = m_status_text;
+        return false;
+    }
+    std::vector<std::string> args;
+    args.push_back(std::string("--mode=") + (m_selected_mode.empty() ? "gui" : m_selected_mode));
+    args.push_back(std::string("--instance=") + inst->id);
+    args.push_back("--server=listen");
+    args.push_back(dom_u32_arg("--port=", (unsigned)m_net_port));
+    args.push_back(dom_u32_arg("--keep_last_runs=", 8u));
+    return spawn_product_args("game", args, true);
+}
+
+bool DomLauncherApp::launch_game_dedicated() {
+    const InstanceInfo* inst = selected_instance();
+    if (!inst) {
+        m_status_text = "Refused: no instance selected.";
+        if (m_ui) m_ui->status_text = m_status_text;
+        return false;
+    }
+    std::vector<std::string> args;
+    args.push_back(std::string("--mode=") + (m_selected_mode.empty() ? "gui" : m_selected_mode));
+    args.push_back(std::string("--instance=") + inst->id);
+    args.push_back("--server=dedicated");
+    args.push_back(dom_u32_arg("--port=", (unsigned)m_net_port));
+    args.push_back(dom_u32_arg("--keep_last_runs=", 8u));
+    return spawn_product_args("game", args, true);
+}
+
+bool DomLauncherApp::launch_game_connect() {
+    const InstanceInfo* inst = selected_instance();
+    if (!inst) {
+        m_status_text = "Refused: no instance selected.";
+        if (m_ui) m_ui->status_text = m_status_text;
+        return false;
+    }
+    std::vector<std::string> args;
+    args.push_back(std::string("--mode=") + (m_selected_mode.empty() ? "gui" : m_selected_mode));
+    args.push_back(std::string("--instance=") + inst->id);
+    if (!m_connect_host.empty()) {
+        args.push_back(std::string("--connect=") + m_connect_host);
+    }
+    args.push_back(dom_u32_arg("--port=", (unsigned)m_net_port));
+    args.push_back(dom_u32_arg("--keep_last_runs=", 8u));
+    return spawn_product_args("game", args, true);
+}
+
+bool DomLauncherApp::launch_tool(const std::string &tool_id,
+                                 const std::string &load_path,
+                                 bool use_demo) {
+    const InstanceInfo* inst = selected_instance();
+    if (!inst) {
+        m_status_text = "Refused: no instance selected.";
+        if (m_ui) m_ui->status_text = m_status_text;
+        return false;
+    }
+
+    const launcher_services_api_v1* services = launcher_services_null_v1();
+    launcher_core::LauncherInstanceManifest manifest;
+    if (!launcher_core::launcher_instance_load_manifest(services, inst->id, m_paths.root, manifest)) {
+        m_status_text = "Launch failed: manifest load failed.";
+        if (m_ui) m_ui->status_text = m_status_text;
+        return false;
+    }
+
+    launcher_core::LauncherToolsRegistry reg;
+    std::string reg_path;
+    std::string reg_err;
+    if (!launcher_core::launcher_tools_registry_load(services, m_paths.root, reg, &reg_path, &reg_err)) {
+        m_status_text = "Launch failed: tools registry unavailable.";
+        if (m_ui) m_ui->status_text = m_status_text;
+        return false;
+    }
+
+    launcher_core::LauncherToolEntry entry;
+    bool found = false;
+    {
+        std::vector<launcher_core::LauncherToolEntry> tools;
+        launcher_core::launcher_tools_registry_enumerate_for_instance(reg, manifest, tools);
+        size_t i;
+        for (i = 0u; i < tools.size(); ++i) {
+            if (tools[i].tool_id == tool_id) {
+                entry = tools[i];
+                found = true;
+                break;
+            }
+        }
+    }
+    if (!found && launcher_core::launcher_tools_registry_find(reg, tool_id, entry)) {
+        found = true;
+    }
+    if (!found) {
+        m_status_text = "Launch failed: tool not in registry.";
+        if (m_ui) m_ui->status_text = m_status_text;
+        return false;
+    }
+
+    std::string exe_path;
+    if (!resolve_tool_executable_path(m_paths.root, m_argv0, entry, exe_path) || exe_path.empty()) {
+        m_status_text = "Launch failed: tool executable not found.";
+        if (m_ui) m_ui->status_text = m_status_text;
+        return false;
+    }
+
+    std::vector<std::string> child_args;
+    child_args.push_back(std::string("--mode=") + (m_selected_mode.empty() ? "gui" : m_selected_mode));
+    child_args.push_back(std::string("--instance=") + inst->id);
+    child_args.push_back(dom_u32_arg("--keep_last_runs=", 8u));
+    if (!load_path.empty()) {
+        child_args.push_back(std::string("--load=") + load_path);
+    }
+    if (use_demo) {
+        child_args.push_back("--demo");
+    }
+
+    LaunchTarget target;
+    target.is_tool = 1u;
+    target.tool_id = tool_id;
+
+    launcher_core::LauncherLaunchOverrides ov;
+    LaunchRunResult lr;
+    if (!launcher_execute_launch_attempt(m_paths.root,
+                                         inst->id,
+                                         target,
+                                         m_profile_valid ? &m_profile : (const dom_profile*)0,
+                                         exe_path,
+                                         child_args,
+                                         1u,
+                                         8u,
+                                         ov,
+                                         lr)) {
+        if (lr.refused) {
+            m_status_text = std::string("Refused: ") + lr.refusal_detail;
+        } else if (!lr.error.empty()) {
+            m_status_text = std::string("Launch failed: ") + lr.error;
+        } else {
+            m_status_text = "Launch failed.";
+        }
+        if (m_ui) m_ui->status_text = m_status_text;
+        return false;
+    }
+
+    if (lr.ok) {
+        m_status_text = std::string("Tool exited: ") + (lr.child_exit_code == 0 ? "ok" : "nonzero");
+    } else {
+        m_status_text = "Tool launch failed.";
+    }
+    if (m_ui) m_ui->status_text = m_status_text;
+    return lr.ok != 0u;
+}
+
 std::string DomLauncherApp::home_join(const std::string &rel) const {
     return join(m_paths.root, rel);
 }
@@ -1707,6 +1931,8 @@ bool DomLauncherApp::scan_repo() {
         std::printf("Launcher: '%s' missing, no packs available.\n",
                     m_paths.packs.c_str());
     }
+    scan_repo_manifest_paths(m_paths.mods, "mod.tlv", m_repo_mod_manifests);
+    scan_repo_manifest_paths(m_paths.packs, "pack.tlv", m_repo_pack_manifests);
     return true;
 }
 
@@ -1895,8 +2121,8 @@ bool DomLauncherApp::load_dui_schema(std::vector<unsigned char>& out_schema,
     out_loaded_path.clear();
     out_error.clear();
 
-    canonical.push_back("tools/launcher/ui/doc/launcher_ui_doc.tlv");
-    canonical.push_back("tools\\launcher\\ui\\doc\\launcher_ui_doc.tlv");
+    canonical.push_back("source/dominium/launcher/ui_schema/launcher_ui_v1.tlv");
+    canonical.push_back("source\\dominium\\launcher\\ui_schema\\launcher_ui_v1.tlv");
     for (i = 0; i < (int)canonical.size(); ++i) {
         if (file_exists_stdio(canonical[(size_t)i])) {
             if (!read_file_all_bytes(canonical[(size_t)i], out_schema, err)) {
@@ -1908,8 +2134,6 @@ bool DomLauncherApp::load_dui_schema(std::vector<unsigned char>& out_schema,
         }
     }
 
-    candidates.push_back("source/dominium/launcher/ui_schema/launcher_ui_v1.tlv");
-    candidates.push_back("source\\dominium\\launcher\\ui_schema\\launcher_ui_v1.tlv");
     candidates.push_back("ui_schema/launcher_ui_v1.tlv");
     candidates.push_back("ui_schema\\launcher_ui_v1.tlv");
     candidates.push_back("launcher_ui_v1.tlv");
@@ -1928,17 +2152,9 @@ bool DomLauncherApp::load_dui_schema(std::vector<unsigned char>& out_schema,
     cur = dirname_of(m_argv0.empty() ? std::string() : m_argv0);
     for (i = 0; i < 10; ++i) {
         if (!cur.empty()) {
-            const std::string cc0 = path_join(cur, "tools/launcher/ui/doc/launcher_ui_doc.tlv");
             const std::string c0 = path_join(cur, "source/dominium/launcher/ui_schema/launcher_ui_v1.tlv");
             const std::string c1 = path_join(cur, "ui_schema/launcher_ui_v1.tlv");
             const std::string c2 = path_join(cur, "launcher_ui_v1.tlv");
-            if (file_exists_stdio(cc0)) {
-                if (read_file_all_bytes(cc0, out_schema, err)) {
-                    out_loaded_path = cc0;
-                    return true;
-                }
-                canonical_err = std::string("schema_read_failed;path=") + cc0 + ";err=" + err;
-            }
             if (file_exists_stdio(c0) && read_file_all_bytes(c0, out_schema, err)) {
                 out_loaded_path = c0;
                 return true;
@@ -2059,6 +2275,13 @@ bool DomLauncherApp::launch_product(const std::string &product,
     }
     args.push_back(dom_u32_arg("--keep_last_runs=", 8u));
     return spawn_product_args(product, args, true);
+}
+
+const std::string& DomLauncherApp::status_text() const {
+    if (m_ui) {
+        return m_ui->status_text;
+    }
+    return m_status_text;
 }
 
 bool DomLauncherApp::init_gui(const LauncherConfig &cfg) {

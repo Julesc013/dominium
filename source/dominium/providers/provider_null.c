@@ -5,7 +5,7 @@ PURPOSE: Null provider stub (R-1 placeholder).
 */
 #include "dominium/provider_api.h"
 
-static const char *provider_null_name(void) {
+static const char *provider_null_id(void) {
     return "null";
 }
 
@@ -14,7 +14,7 @@ static dom_abi_result provider_null_query_interface(dom_iid iid, void **out_ifac
 static const provider_api_v1 g_provider_null = {
     DOM_ABI_HEADER_INIT(PROVIDER_API_VERSION, provider_api_v1),
     provider_null_query_interface,
-    provider_null_name
+    provider_null_id
 };
 
 static dom_abi_result provider_null_query_interface(dom_iid iid, void **out_iface) {

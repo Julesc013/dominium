@@ -150,3 +150,73 @@ if(DOMINO_USE_POSIX_BACKEND)
     target_link_libraries(dsys_posix_tests PRIVATE domino_engine)
     add_test(NAME dsys_posix COMMAND dsys_posix_tests)
 endif()
+
+add_executable(dominium_contract_tests
+    contract/dominium_contract_tests.cpp
+)
+target_include_directories(dominium_contract_tests PRIVATE
+    ${DOMINIUM_INCLUDE_DIR}
+    ${CMAKE_SOURCE_DIR}/source/dominium/launcher/core/include
+    ${CMAKE_SOURCE_DIR}/source/dominium/setup/kernel/include
+)
+target_compile_definitions(dominium_contract_tests PRIVATE
+    DOM_TLV_VECTORS_DIR="${CMAKE_SOURCE_DIR}/tests/vectors/tlv"
+)
+target_link_libraries(dominium_contract_tests PRIVATE
+    dominium_launcher_core
+    launcher_services_impl_null
+    dsk_kernel
+    core_job
+    core_tlv_schema
+)
+set_target_properties(dominium_contract_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+if (MSVC)
+    target_compile_options(dominium_contract_tests PRIVATE $<$<CONFIG:Release>:/UNDEBUG>)
+else()
+    target_compile_options(dominium_contract_tests PRIVATE $<$<CONFIG:Release>:-UNDEBUG>)
+endif()
+add_test(NAME dominium_contract_schema_vectors COMMAND dominium_contract_tests schema_vectors)
+add_test(NAME dominium_contract_installed_state COMMAND dominium_contract_tests installed_state_contract)
+add_test(NAME dominium_contract_handshake COMMAND dominium_contract_tests handshake_contract)
+add_test(NAME dominium_contract_pack_resolver COMMAND dominium_contract_tests pack_resolver_contract)
+add_test(NAME dominium_contract_selection_audit COMMAND dominium_contract_tests selection_audit_contract)
+add_test(NAME dominium_contract_job_journal COMMAND dominium_contract_tests job_journal_contract)
+
+add_executable(dominium_tlv_fuzz_tests
+    contract/dominium_tlv_fuzz_tests.cpp
+)
+target_include_directories(dominium_tlv_fuzz_tests PRIVATE
+    ${DOMINIUM_INCLUDE_DIR}
+    ${CMAKE_SOURCE_DIR}/source/dominium/launcher/core/include
+    ${CMAKE_SOURCE_DIR}/source/dominium/setup/kernel/include
+)
+target_compile_definitions(dominium_tlv_fuzz_tests PRIVATE
+    DOM_TLV_VECTORS_DIR="${CMAKE_SOURCE_DIR}/tests/vectors/tlv"
+)
+target_link_libraries(dominium_tlv_fuzz_tests PRIVATE
+    dominium_launcher_core
+    dsk_kernel
+    core_job
+    core_tlv_schema
+)
+set_target_properties(dominium_tlv_fuzz_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+if (MSVC)
+    target_compile_options(dominium_tlv_fuzz_tests PRIVATE $<$<CONFIG:Release>:/UNDEBUG>)
+else()
+    target_compile_options(dominium_tlv_fuzz_tests PRIVATE $<$<CONFIG:Release>:-UNDEBUG>)
+endif()
+add_test(NAME dominium_tlv_fuzz COMMAND dominium_tlv_fuzz_tests)
+
+add_test(NAME dominium_layer_checks
+    COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_SOURCE_DIR} python scripts/check_layers.py
+)
+
+add_subdirectory(setup2)

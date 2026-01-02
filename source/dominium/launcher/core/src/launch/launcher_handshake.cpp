@@ -11,6 +11,8 @@ RESPONSIBILITY: Implements launcher handshake TLV encode/decode and deterministi
 #include <cstring>
 
 #include "launcher_pack_resolver.h"
+#include "launcher_log.h"
+#include "launcher_safety.h"
 #include "launcher_sha256.h"
 #include "launcher_tlv.h"
 
@@ -88,6 +90,48 @@ static bool find_expected_pack(const std::vector<LauncherResolvedPack>& expected
         }
     }
     return false;
+}
+
+static void emit_handshake_event(const launcher_services_api_v1* services,
+                                 const LauncherHandshake& hs,
+                                 const std::string& state_root_override,
+                                 u32 event_code,
+                                 u32 refusal_code,
+                                 const err_t* err) {
+    core_log_event ev;
+    core_log_scope scope;
+    const bool safe_id = (!hs.instance_id.empty() && launcher_is_safe_id_component(hs.instance_id));
+
+    core_log_event_clear(&ev);
+    ev.domain = CORE_LOG_DOMAIN_LAUNCHER;
+    ev.code = (u16)event_code;
+    ev.severity = (u8)((event_code == CORE_LOG_EVT_OP_FAIL) ? CORE_LOG_SEV_ERROR : CORE_LOG_SEV_INFO);
+    ev.msg_id = 0u;
+    ev.t_mono = 0u;
+    (void)core_log_event_add_u32(&ev, CORE_LOG_KEY_OPERATION_ID, CORE_LOG_OP_LAUNCHER_HANDSHAKE_VALIDATE);
+    if (hs.run_id != 0ull) {
+        (void)core_log_event_add_u64(&ev, CORE_LOG_KEY_RUN_ID, hs.run_id);
+    }
+    if (refusal_code != 0u) {
+        (void)core_log_event_add_u32(&ev, CORE_LOG_KEY_REFUSAL_CODE, refusal_code);
+    }
+    if (err && !err_is_ok(err)) {
+        launcher_log_add_err_fields(&ev, err);
+    }
+
+    std::memset(&scope, 0, sizeof(scope));
+    scope.state_root = state_root_override.empty() ? (const char*)0 : state_root_override.c_str();
+    if (safe_id && hs.run_id != 0ull) {
+        scope.kind = CORE_LOG_SCOPE_RUN;
+        scope.instance_id = hs.instance_id.c_str();
+        scope.run_id = hs.run_id;
+    } else if (safe_id) {
+        scope.kind = CORE_LOG_SCOPE_INSTANCE;
+        scope.instance_id = hs.instance_id.c_str();
+    } else {
+        scope.kind = CORE_LOG_SCOPE_GLOBAL;
+    }
+    (void)launcher_services_emit_event(services, &scope, &ev);
 }
 
 } /* namespace */
@@ -318,6 +362,29 @@ u64 launcher_handshake_hash64(const LauncherHandshake& hs) {
     return tlv_fnv1a64(bytes.empty() ? (const unsigned char*)0 : &bytes[0], bytes.size());
 }
 
+static err_t handshake_err_from_refusal(u32 refusal) {
+    switch (refusal) {
+    case LAUNCHER_HANDSHAKE_REFUSAL_MISSING_REQUIRED_FIELDS:
+        return err_make((u16)ERRD_LAUNCHER, (u16)ERRC_LAUNCHER_HANDSHAKE_INVALID,
+                        (u32)(ERRF_POLICY_REFUSAL | ERRF_USER_ACTIONABLE), (u32)ERRMSG_LAUNCHER_HANDSHAKE_INVALID);
+    case LAUNCHER_HANDSHAKE_REFUSAL_MANIFEST_HASH_MISMATCH:
+        return err_make((u16)ERRD_LAUNCHER, (u16)ERRC_LAUNCHER_HANDSHAKE_INVALID,
+                        (u32)ERRF_INTEGRITY, (u32)ERRMSG_LAUNCHER_HANDSHAKE_INVALID);
+    case LAUNCHER_HANDSHAKE_REFUSAL_MISSING_SIM_AFFECTING_PACK_DECLARATIONS:
+        return err_make((u16)ERRD_PACKS, (u16)ERRC_PACKS_SIM_FLAGS_MISSING,
+                        (u32)(ERRF_POLICY_REFUSAL | ERRF_USER_ACTIONABLE), (u32)ERRMSG_PACKS_SIM_FLAGS_MISSING);
+    case LAUNCHER_HANDSHAKE_REFUSAL_PACK_HASH_MISMATCH:
+        return err_make((u16)ERRD_ARTIFACT, (u16)ERRC_ARTIFACT_PAYLOAD_HASH_MISMATCH,
+                        (u32)ERRF_INTEGRITY, (u32)ERRMSG_ARTIFACT_PAYLOAD_HASH_MISMATCH);
+    case LAUNCHER_HANDSHAKE_REFUSAL_PRELAUNCH_VALIDATION_FAILED:
+        return err_make((u16)ERRD_LAUNCHER, (u16)ERRC_LAUNCHER_HANDSHAKE_INVALID,
+                        (u32)ERRF_POLICY_REFUSAL, (u32)ERRMSG_LAUNCHER_HANDSHAKE_INVALID);
+    default:
+        return err_make((u16)ERRD_LAUNCHER, (u16)ERRC_LAUNCHER_HANDSHAKE_INVALID,
+                        (u32)ERRF_POLICY_REFUSAL, (u32)ERRMSG_LAUNCHER_HANDSHAKE_INVALID);
+    }
+}
+
 u32 launcher_handshake_validate(const launcher_services_api_v1* services,
                                 const LauncherHandshake& hs,
                                 const LauncherInstanceManifest& manifest,
@@ -336,11 +403,21 @@ u32 launcher_handshake_validate(const launcher_services_api_v1* services,
         if (out_detail) {
             *out_detail = "missing_required_fields";
         }
+        {
+            const err_t err = handshake_err_from_refusal((u32)LAUNCHER_HANDSHAKE_REFUSAL_MISSING_REQUIRED_FIELDS);
+            emit_handshake_event(services, hs, state_root_override, CORE_LOG_EVT_OP_FAIL,
+                                 (u32)LAUNCHER_HANDSHAKE_REFUSAL_MISSING_REQUIRED_FIELDS, &err);
+        }
         return (u32)LAUNCHER_HANDSHAKE_REFUSAL_MISSING_REQUIRED_FIELDS;
     }
     if (!bytes_eq(hs.instance_manifest_hash_bytes, expected_manifest_hash)) {
         if (out_detail) {
             *out_detail = "instance_manifest_hash_mismatch";
+        }
+        {
+            const err_t err = handshake_err_from_refusal((u32)LAUNCHER_HANDSHAKE_REFUSAL_MANIFEST_HASH_MISMATCH);
+            emit_handshake_event(services, hs, state_root_override, CORE_LOG_EVT_OP_FAIL,
+                                 (u32)LAUNCHER_HANDSHAKE_REFUSAL_MANIFEST_HASH_MISMATCH, &err);
         }
         return (u32)LAUNCHER_HANDSHAKE_REFUSAL_MANIFEST_HASH_MISMATCH;
     }
@@ -348,6 +425,11 @@ u32 launcher_handshake_validate(const launcher_services_api_v1* services,
     if (!launcher_pack_resolve_enabled(services, manifest, state_root_override, expected_ordered, &err)) {
         if (out_detail) {
             *out_detail = std::string("pack_resolve_failed;") + err;
+        }
+        {
+            const err_t e = handshake_err_from_refusal((u32)LAUNCHER_HANDSHAKE_REFUSAL_MISSING_SIM_AFFECTING_PACK_DECLARATIONS);
+            emit_handshake_event(services, hs, state_root_override, CORE_LOG_EVT_OP_FAIL,
+                                 (u32)LAUNCHER_HANDSHAKE_REFUSAL_MISSING_SIM_AFFECTING_PACK_DECLARATIONS, &e);
         }
         return (u32)LAUNCHER_HANDSHAKE_REFUSAL_MISSING_SIM_AFFECTING_PACK_DECLARATIONS;
     }
@@ -370,17 +452,27 @@ u32 launcher_handshake_validate(const launcher_services_api_v1* services,
                 if (out_detail) {
                     *out_detail = std::string("missing_sim_affecting_pack;pack_id=") + exp.pack_id;
                 }
+                {
+                    const err_t e = handshake_err_from_refusal((u32)LAUNCHER_HANDSHAKE_REFUSAL_MISSING_SIM_AFFECTING_PACK_DECLARATIONS);
+                    emit_handshake_event(services, hs, state_root_override, CORE_LOG_EVT_OP_FAIL,
+                                         (u32)LAUNCHER_HANDSHAKE_REFUSAL_MISSING_SIM_AFFECTING_PACK_DECLARATIONS, &e);
+                }
                 return (u32)LAUNCHER_HANDSHAKE_REFUSAL_MISSING_SIM_AFFECTING_PACK_DECLARATIONS;
             }
             continue;
         }
         /* Pack hash mismatch */
-        if (!bytes_empty_or_eq(got.hash_bytes, exp.artifact_hash_bytes) && got.enabled) {
-            if (out_detail) {
-                *out_detail = std::string("pack_hash_mismatch;pack_id=") + exp.pack_id;
+            if (!bytes_empty_or_eq(got.hash_bytes, exp.artifact_hash_bytes) && got.enabled) {
+                if (out_detail) {
+                    *out_detail = std::string("pack_hash_mismatch;pack_id=") + exp.pack_id;
+                }
+                {
+                    const err_t e = handshake_err_from_refusal((u32)LAUNCHER_HANDSHAKE_REFUSAL_PACK_HASH_MISMATCH);
+                    emit_handshake_event(services, hs, state_root_override, CORE_LOG_EVT_OP_FAIL,
+                                         (u32)LAUNCHER_HANDSHAKE_REFUSAL_PACK_HASH_MISMATCH, &e);
+                }
+                return (u32)LAUNCHER_HANDSHAKE_REFUSAL_PACK_HASH_MISMATCH;
             }
-            return (u32)LAUNCHER_HANDSHAKE_REFUSAL_PACK_HASH_MISMATCH;
-        }
         /* Sim-affecting flags must be declared and match deterministically. */
         tmp = LauncherResolvedPack();
         if (find_expected_pack(expected_ordered, exp.pack_id, tmp) && !tmp.sim_affecting_flags.empty()) {
@@ -388,12 +480,37 @@ u32 launcher_handshake_validate(const launcher_services_api_v1* services,
                 if (out_detail) {
                     *out_detail = std::string("sim_flags_mismatch;pack_id=") + exp.pack_id;
                 }
+                {
+                    const err_t e = handshake_err_from_refusal((u32)LAUNCHER_HANDSHAKE_REFUSAL_MISSING_SIM_AFFECTING_PACK_DECLARATIONS);
+                    emit_handshake_event(services, hs, state_root_override, CORE_LOG_EVT_OP_FAIL,
+                                         (u32)LAUNCHER_HANDSHAKE_REFUSAL_MISSING_SIM_AFFECTING_PACK_DECLARATIONS, &e);
+                }
                 return (u32)LAUNCHER_HANDSHAKE_REFUSAL_MISSING_SIM_AFFECTING_PACK_DECLARATIONS;
             }
         }
     }
-
+    emit_handshake_event(services, hs, state_root_override, CORE_LOG_EVT_OP_OK, 0u, (const err_t*)0);
     return (u32)LAUNCHER_HANDSHAKE_REFUSAL_OK;
+}
+
+bool launcher_handshake_validate_ex(const launcher_services_api_v1* services,
+                                    const LauncherHandshake& hs,
+                                    const LauncherInstanceManifest& manifest,
+                                    const std::string& state_root_override,
+                                    err_t* out_err) {
+    u32 refusal;
+    std::string detail;
+    refusal = launcher_handshake_validate(services, hs, manifest, state_root_override, &detail);
+    if (refusal == (u32)LAUNCHER_HANDSHAKE_REFUSAL_OK) {
+        if (out_err) {
+            *out_err = err_ok();
+        }
+        return true;
+    }
+    if (out_err) {
+        *out_err = handshake_err_from_refusal(refusal);
+    }
+    return false;
 }
 
 } /* namespace launcher_core */

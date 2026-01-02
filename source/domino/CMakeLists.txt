@@ -85,6 +85,7 @@ add_library(domino_core STATIC
     $<$<BOOL:${WIN32}>:system/dsys_window_winnt.c>
     $<$<NOT:$<BOOL:${WIN32}>>:system/dsys_window_stub.c>
     $<$<NOT:$<BOOL:${WIN32}>>:system/dsys_proc_stub.c>
+    mod/domino_semver.c
     pkg/repo.c
     world/d_serialize.c
     world/d_world.c

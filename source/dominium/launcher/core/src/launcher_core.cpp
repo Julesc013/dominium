@@ -14,7 +14,6 @@ DETERMINISM: Core decisions are deterministic given explicit inputs; time and IO
 
 #include <cstdio>
 #include <cstring>
-#include <ctime>
 #include <new>
 #include <string>
 #include <vector>
@@ -41,6 +40,21 @@ struct CoreState {
 static CoreState reduce_add_reason(const CoreState& cur, const std::string& reason) {
     CoreState next = cur;
     next.audit.reasons.push_back(reason);
+    return next;
+}
+
+static CoreState reduce_add_reason_id(const CoreState& cur, u32 reason_msg_id) {
+    CoreState next = cur;
+    if (reason_msg_id != 0u) {
+        next.audit.reason_msg_ids.push_back(reason_msg_id);
+        next.audit.reasons.push_back(std::string(err_msg_id_token(reason_msg_id)));
+    }
+    return next;
+}
+
+static CoreState reduce_set_error(const CoreState& cur, const err_t& err) {
+    CoreState next = cur;
+    next.audit.err = err;
     return next;
 }
 
@@ -152,158 +166,6 @@ struct launcher_core {
 };
 
 /*------------------------------------------------------------
- * Null services backend (C ABI)
- *------------------------------------------------------------*/
-
-namespace {
-
-static u64 null_time_last_us = 0ull;
-
-static u64 null_time_now_us(void) {
-    /* Monotonic best-effort without OS headers: use wall time as seed + clamp monotonic. */
-    u64 v = 0ull;
-    time_t t = time((time_t*)0);
-    if (t > 0) {
-        v = (u64)t;
-    }
-    v *= 1000000ull;
-
-    /* Mix in a counter to avoid collisions within a second. */
-    v += (null_time_last_us & 0xFFFFFull);
-    if (v <= null_time_last_us) {
-        v = null_time_last_us + 1ull;
-    }
-    null_time_last_us = v;
-    return v;
-}
-
-static bool null_fs_get_path(launcher_fs_path_kind kind, char* buf, size_t buf_size) {
-    const char* val = 0;
-    size_t n;
-    if (!buf || buf_size == 0u) {
-        return false;
-    }
-    switch (kind) {
-    case LAUNCHER_FS_PATH_STATE: val = "."; break;
-    case LAUNCHER_FS_PATH_AUDIT: val = "."; break;
-    default: val = "."; break;
-    }
-    n = std::strlen(val);
-    if (n + 1u > buf_size) {
-        buf[0] = '\0';
-        return false;
-    }
-    std::memcpy(buf, val, n);
-    buf[n] = '\0';
-    return true;
-}
-
-static void* null_fs_file_open(const char* path, const char* mode) {
-    if (!path || !mode) {
-        return 0;
-    }
-    return (void*)std::fopen(path, mode);
-}
-
-static size_t null_fs_file_read(void* fh, void* buf, size_t size) {
-    if (!fh || !buf || size == 0u) {
-        return 0u;
-    }
-    return std::fread(buf, 1u, size, (FILE*)fh);
-}
-
-static size_t null_fs_file_write(void* fh, const void* buf, size_t size) {
-    if (!fh || !buf || size == 0u) {
-        return 0u;
-    }
-    return std::fwrite(buf, 1u, size, (FILE*)fh);
-}
-
-static int null_fs_file_seek(void* fh, long offset, int origin) {
-    if (!fh) {
-        return -1;
-    }
-    return std::fseek((FILE*)fh, offset, origin);
-}
-
-static long null_fs_file_tell(void* fh) {
-    if (!fh) {
-        return -1L;
-    }
-    return std::ftell((FILE*)fh);
-}
-
-static int null_fs_file_close(void* fh) {
-    if (!fh) {
-        return -1;
-    }
-    return std::fclose((FILE*)fh);
-}
-
-static u64 null_hash_fnv1a64(const void* data, u32 len) {
-    return dom::launcher_core::tlv_fnv1a64((const unsigned char*)data, (size_t)len);
-}
-
-static launcher_fs_api_v1 null_fs_api = {
-    DOM_ABI_HEADER_INIT(1u, launcher_fs_api_v1),
-    &null_fs_get_path,
-    &null_fs_file_open,
-    &null_fs_file_read,
-    &null_fs_file_write,
-    &null_fs_file_seek,
-    &null_fs_file_tell,
-    &null_fs_file_close
-};
-
-static launcher_time_api_v1 null_time_api = {
-    DOM_ABI_HEADER_INIT(1u, launcher_time_api_v1),
-    &null_time_now_us
-};
-
-static launcher_hash_api_v1 null_hash_api = {
-    DOM_ABI_HEADER_INIT(1u, launcher_hash_api_v1),
-    &null_hash_fnv1a64
-};
-
-static launcher_services_caps null_services_get_caps(void) {
-    return (launcher_services_caps)(LAUNCHER_SERVICES_CAP_FILESYSTEM |
-                                    LAUNCHER_SERVICES_CAP_TIME |
-                                    LAUNCHER_SERVICES_CAP_HASHING);
-}
-
-static dom_abi_result null_services_query_interface(dom_iid iid, void** out_iface) {
-    if (!out_iface) {
-        return (dom_abi_result)-1;
-    }
-    *out_iface = 0;
-    switch (iid) {
-    case LAUNCHER_IID_FS_V1:
-        *out_iface = (void*)&null_fs_api;
-        return (dom_abi_result)0;
-    case LAUNCHER_IID_TIME_V1:
-        *out_iface = (void*)&null_time_api;
-        return (dom_abi_result)0;
-    case LAUNCHER_IID_HASH_V1:
-        *out_iface = (void*)&null_hash_api;
-        return (dom_abi_result)0;
-    default:
-        return (dom_abi_result)-1;
-    }
-}
-
-static launcher_services_api_v1 null_services_api = {
-    DOM_ABI_HEADER_INIT(1u, launcher_services_api_v1),
-    &null_services_get_caps,
-    &null_services_query_interface
-};
-
-} /* namespace */
-
-extern "C" const launcher_services_api_v1* launcher_services_null_v1(void) {
-    return &null_services_api;
-}
-
-/*------------------------------------------------------------
  * Core C ABI wrapper
  *------------------------------------------------------------*/
 
@@ -360,22 +222,26 @@ static bool core_write_all(const launcher_fs_api_v1* fs,
     return wrote == bytes.size();
 }
 
-extern "C" launcher_core* launcher_core_create(const launcher_core_desc_v1* desc) {
+extern "C" launcher_core* launcher_core_create_ex(const launcher_core_desc_v1* desc, err_t* out_err) {
+    launcher_core* core = 0;
+    err_t err = err_ok();
     try {
-        launcher_core* core;
         u64 now_us;
         u32 i;
 
         if (!desc || desc->struct_size < (u32)sizeof(launcher_core_desc_v1) || desc->struct_version != LAUNCHER_CORE_DESC_VERSION) {
-            return 0;
+            err = err_make((u16)ERRD_COMMON, (u16)ERRC_COMMON_INVALID_ARGS, 0u, (u32)ERRMSG_COMMON_INVALID_ARGS);
+            goto fail;
         }
         if (!desc->services) {
-            return 0;
+            err = err_make((u16)ERRD_COMMON, (u16)ERRC_COMMON_INVALID_ARGS, 0u, (u32)ERRMSG_COMMON_INVALID_ARGS);
+            goto fail;
         }
 
         core = new (std::nothrow) launcher_core();
         if (!core) {
-            return 0;
+            err = err_make((u16)ERRD_COMMON, (u16)ERRC_COMMON_OUT_OF_MEMORY, (u32)ERRF_FATAL, (u32)ERRMSG_COMMON_OUT_OF_MEMORY);
+            goto fail;
         }
 
         core->services = desc->services;
@@ -390,12 +256,12 @@ extern "C" launcher_core* launcher_core_create(const launcher_core_desc_v1* desc
 
         /* Required capabilities for foundation: filesystem + monotonic time. */
         if (!core->fs || !core->fs->file_open || !core->fs->file_write || !core->fs->file_close) {
-            delete core;
-            return 0;
+            err = err_make((u16)ERRD_COMMON, (u16)ERRC_COMMON_BAD_STATE, (u32)ERRF_FATAL, (u32)ERRMSG_COMMON_BAD_STATE);
+            goto fail;
         }
         if (!core->time || !core->time->now_us) {
-            delete core;
-            return 0;
+            err = err_make((u16)ERRD_COMMON, (u16)ERRC_COMMON_BAD_STATE, (u32)ERRF_FATAL, (u32)ERRMSG_COMMON_BAD_STATE);
+            goto fail;
         }
 
         now_us = 0ull;
@@ -405,8 +271,8 @@ extern "C" launcher_core* launcher_core_create(const launcher_core_desc_v1* desc
         core->state.audit.timestamp_us = now_us;
         core->state.audit.selected_profile_id = desc->selected_profile_id ? desc->selected_profile_id : "null";
         core->state.audit.version_string = "launcher-core-foundation";
-        /* Exit result is explicitly set on emission; default is 0 and will be called out if auto-emitted. */
         core->state.audit.exit_result = 0;
+        core->state.audit.err = err_ok();
 
         if (desc->argv && desc->argv_count > 0u) {
             for (i = 0u; i < desc->argv_count; ++i) {
@@ -431,10 +297,25 @@ extern "C" launcher_core* launcher_core_create(const launcher_core_desc_v1* desc
         core->state = reduce_add_reason(core->state, "no_ui_assumptions");
         core->state = reduce_add_reason(core->state, "audit_required_each_run");
         core->state = reduce_add_reason(core->state, "selected_backends:none (foundation)");
+        if (out_err) {
+            *out_err = err_ok();
+        }
         return core;
     } catch (...) {
-        return 0;
+        err = err_make((u16)ERRD_COMMON, (u16)ERRC_COMMON_INTERNAL, (u32)ERRF_FATAL, (u32)ERRMSG_COMMON_INTERNAL);
     }
+fail:
+    if (core) {
+        delete core;
+    }
+    if (out_err) {
+        *out_err = err;
+    }
+    return 0;
+}
+
+extern "C" launcher_core* launcher_core_create(const launcher_core_desc_v1* desc) {
+    return launcher_core_create_ex(desc, (err_t*)0);
 }
 
 extern "C" void launcher_core_destroy(launcher_core* core) {
@@ -455,14 +336,36 @@ extern "C" void launcher_core_destroy(launcher_core* core) {
     }
 }
 
-extern "C" int launcher_core_load_null_profile(launcher_core* core) {
+extern "C" int launcher_core_load_null_profile_ex(launcher_core* core, err_t* out_err) {
+    err_t err = err_ok();
     try {
         if (!core) {
+            err = err_make((u16)ERRD_COMMON, (u16)ERRC_COMMON_INVALID_ARGS, 0u, (u32)ERRMSG_COMMON_INVALID_ARGS);
+            if (out_err) *out_err = err;
             return -1;
         }
         core->state = reduce_select_profile(core->state,
                                             dom::launcher_core::launcher_profile_make_null(),
                                             "explicit_null_profile");
+        if (out_err) *out_err = err_ok();
+        return 0;
+    } catch (...) {
+        err = err_make((u16)ERRD_COMMON, (u16)ERRC_COMMON_INTERNAL, (u32)ERRF_FATAL, (u32)ERRMSG_COMMON_INTERNAL);
+        if (out_err) *out_err = err;
+        return -1;
+    }
+}
+
+extern "C" int launcher_core_load_null_profile(launcher_core* core) {
+    return launcher_core_load_null_profile_ex(core, (err_t*)0);
+}
+
+extern "C" int launcher_core_add_reason_id(launcher_core* core, u32 reason_msg_id) {
+    try {
+        if (!core || reason_msg_id == 0u) {
+            return -1;
+        }
+        core->state = reduce_add_reason_id(core->state, reason_msg_id);
         return 0;
     } catch (...) {
         return -1;
@@ -481,55 +384,100 @@ extern "C" int launcher_core_add_reason(launcher_core* core, const char* reason)
     }
 }
 
-extern "C" int launcher_core_select_profile_id(launcher_core* core, const char* profile_id, const char* why) {
+extern "C" int launcher_core_select_profile_id_ex(launcher_core* core, const char* profile_id, u32 reason_msg_id, err_t* out_err) {
+    err_t err = err_ok();
     try {
         dom::launcher_core::LauncherProfile p;
         if (!core || !profile_id || profile_id[0] == '\0') {
+            err = err_make((u16)ERRD_COMMON, (u16)ERRC_COMMON_INVALID_ARGS, 0u, (u32)ERRMSG_COMMON_INVALID_ARGS);
+            if (out_err) *out_err = err;
             return -1;
         }
         p = dom::launcher_core::launcher_profile_make_null();
         p.profile_id = profile_id;
-        core->state = reduce_select_profile(core->state, p, why ? std::string(why) : std::string("select_profile_id"));
+        core->state = reduce_select_profile(core->state, p,
+                                            reason_msg_id != 0u ? err_msg_id_token(reason_msg_id) : "select_profile_id");
+        if (reason_msg_id != 0u) {
+            core->state = reduce_add_reason_id(core->state, reason_msg_id);
+        }
+        if (out_err) *out_err = err_ok();
         return 0;
     } catch (...) {
+        err = err_make((u16)ERRD_COMMON, (u16)ERRC_COMMON_INTERNAL, (u32)ERRF_FATAL, (u32)ERRMSG_COMMON_INTERNAL);
+        if (out_err) *out_err = err;
+        return -1;
+    }
+}
+
+extern "C" int launcher_core_select_profile_id(launcher_core* core, const char* profile_id, const char* why) {
+    (void)why;
+    return launcher_core_select_profile_id_ex(core, profile_id, 0u, (err_t*)0);
+}
+
+extern "C" int launcher_core_set_version_string_ex(launcher_core* core, const char* version_string, err_t* out_err) {
+    err_t err = err_ok();
+    try {
+        if (!core || !version_string) {
+            err = err_make((u16)ERRD_COMMON, (u16)ERRC_COMMON_INVALID_ARGS, 0u, (u32)ERRMSG_COMMON_INVALID_ARGS);
+            if (out_err) *out_err = err;
+            return -1;
+        }
+        core->state = reduce_set_version_string(core->state, std::string(version_string));
+        if (out_err) *out_err = err_ok();
+        return 0;
+    } catch (...) {
+        err = err_make((u16)ERRD_COMMON, (u16)ERRC_COMMON_INTERNAL, (u32)ERRF_FATAL, (u32)ERRMSG_COMMON_INTERNAL);
+        if (out_err) *out_err = err;
         return -1;
     }
 }
 
 extern "C" int launcher_core_set_version_string(launcher_core* core, const char* version_string) {
+    return launcher_core_set_version_string_ex(core, version_string, (err_t*)0);
+}
+
+extern "C" int launcher_core_set_build_id_ex(launcher_core* core, const char* build_id, err_t* out_err) {
+    err_t err = err_ok();
     try {
-        if (!core || !version_string) {
+        if (!core || !build_id) {
+            err = err_make((u16)ERRD_COMMON, (u16)ERRC_COMMON_INVALID_ARGS, 0u, (u32)ERRMSG_COMMON_INVALID_ARGS);
+            if (out_err) *out_err = err;
             return -1;
         }
-        core->state = reduce_set_version_string(core->state, std::string(version_string));
+        core->state = reduce_set_build_id(core->state, std::string(build_id));
+        if (out_err) *out_err = err_ok();
         return 0;
     } catch (...) {
+        err = err_make((u16)ERRD_COMMON, (u16)ERRC_COMMON_INTERNAL, (u32)ERRF_FATAL, (u32)ERRMSG_COMMON_INTERNAL);
+        if (out_err) *out_err = err;
         return -1;
     }
 }
 
 extern "C" int launcher_core_set_build_id(launcher_core* core, const char* build_id) {
+    return launcher_core_set_build_id_ex(core, build_id, (err_t*)0);
+}
+
+extern "C" int launcher_core_set_git_hash_ex(launcher_core* core, const char* git_hash, err_t* out_err) {
+    err_t err = err_ok();
     try {
-        if (!core || !build_id) {
+        if (!core || !git_hash) {
+            err = err_make((u16)ERRD_COMMON, (u16)ERRC_COMMON_INVALID_ARGS, 0u, (u32)ERRMSG_COMMON_INVALID_ARGS);
+            if (out_err) *out_err = err;
             return -1;
         }
-        core->state = reduce_set_build_id(core->state, std::string(build_id));
+        core->state = reduce_set_git_hash(core->state, std::string(git_hash));
+        if (out_err) *out_err = err_ok();
         return 0;
     } catch (...) {
+        err = err_make((u16)ERRD_COMMON, (u16)ERRC_COMMON_INTERNAL, (u32)ERRF_FATAL, (u32)ERRMSG_COMMON_INTERNAL);
+        if (out_err) *out_err = err;
         return -1;
     }
 }
 
 extern "C" int launcher_core_set_git_hash(launcher_core* core, const char* git_hash) {
-    try {
-        if (!core || !git_hash) {
-            return -1;
-        }
-        core->state = reduce_set_git_hash(core->state, std::string(git_hash));
-        return 0;
-    } catch (...) {
-        return -1;
-    }
+    return launcher_core_set_git_hash_ex(core, git_hash, (err_t*)0);
 }
 
 extern "C" int launcher_core_add_selected_backend(launcher_core* core,
@@ -559,33 +507,58 @@ extern "C" int launcher_core_add_selected_backend(launcher_core* core,
     }
 }
 
-extern "C" int launcher_core_create_empty_instance(launcher_core* core, const char* instance_id) {
+extern "C" int launcher_core_create_empty_instance_ex(launcher_core* core, const char* instance_id, err_t* out_err) {
+    err_t err = err_ok();
     try {
         if (!core || !instance_id || instance_id[0] == '\0') {
+            err = err_make((u16)ERRD_COMMON, (u16)ERRC_COMMON_INVALID_ARGS, 0u, (u32)ERRMSG_COMMON_INVALID_ARGS);
+            if (out_err) *out_err = err;
             return -1;
         }
         core->state = reduce_select_instance(core->state,
                                              dom::launcher_core::launcher_instance_manifest_make_empty(std::string(instance_id)),
                                              "explicit_create_empty_instance");
+        if (out_err) *out_err = err_ok();
+        return 0;
+    } catch (...) {
+        err = err_make((u16)ERRD_COMMON, (u16)ERRC_COMMON_INTERNAL, (u32)ERRF_FATAL, (u32)ERRMSG_COMMON_INTERNAL);
+        if (out_err) *out_err = err;
+        return -1;
+    }
+}
+
+extern "C" int launcher_core_create_empty_instance(launcher_core* core, const char* instance_id) {
+    return launcher_core_create_empty_instance_ex(core, instance_id, (err_t*)0);
+}
+
+extern "C" int launcher_core_set_error(launcher_core* core, const err_t* err) {
+    try {
+        if (!core) {
+            return -1;
+        }
+        core->state = reduce_set_error(core->state, err ? *err : err_ok());
         return 0;
     } catch (...) {
         return -1;
     }
 }
 
-extern "C" int launcher_core_emit_audit(launcher_core* core, int exit_result) {
+extern "C" int launcher_core_emit_audit_ex(launcher_core* core, int exit_result, err_t* out_err) {
+    err_t err = err_ok();
     try {
         std::vector<unsigned char> bytes;
         std::string out_path;
 
         if (!core || !core->fs) {
-            return -1;
+            err = err_make((u16)ERRD_COMMON, (u16)ERRC_COMMON_INVALID_ARGS, 0u, (u32)ERRMSG_COMMON_INVALID_ARGS);
+            goto fail;
         }
 
         core->state = reduce_finalize_audit(core->state, (i32)exit_result);
 
         if (!dom::launcher_core::launcher_audit_to_tlv_bytes(core->state.audit, bytes)) {
-            return -1;
+            err = err_make((u16)ERRD_TLV, (u16)ERRC_TLV_INTEGRITY, (u32)ERRF_INTEGRITY, (u32)ERRMSG_TLV_INTEGRITY);
+            goto fail;
         }
 
         out_path = core->audit_output_path;
@@ -596,11 +569,25 @@ extern "C" int launcher_core_emit_audit(launcher_core* core, int exit_result) {
         }
 
         if (!core_write_all(core->fs, out_path, bytes)) {
-            return -1;
+            err = err_make((u16)ERRD_FS, (u16)ERRC_FS_WRITE_FAILED, 0u, (u32)ERRMSG_FS_WRITE_FAILED);
+            goto fail;
         }
         core->audit_emitted = true;
+        if (out_err) *out_err = err_ok();
         return 0;
     } catch (...) {
-        return -1;
+        err = err_make((u16)ERRD_COMMON, (u16)ERRC_COMMON_INTERNAL, (u32)ERRF_FATAL, (u32)ERRMSG_COMMON_INTERNAL);
     }
+fail:
+    if (core) {
+        core->state = reduce_set_error(core->state, err);
+    }
+    if (out_err) {
+        *out_err = err;
+    }
+    return -1;
+}
+
+extern "C" int launcher_core_emit_audit(launcher_core* core, int exit_result) {
+    return launcher_core_emit_audit_ex(core, exit_result, (err_t*)0);
 }
