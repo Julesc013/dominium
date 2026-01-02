@@ -1,3 +1,6 @@
-Fix MinGW runtime bundle search path
-why: ensure runtime DLLs resolve from the toolchain bin on Windows to avoid 0xc000007b
-how: cmake --build build/msys2-debug --target setup2_splat_tests && build/msys2-debug/source/tests/setup2_splat_tests.exe splat_registry_sorted
+Setup2 SR9-11 reconciliation and launcher handoff smoke coverage
+
+why: validate Setup2 installed_state handoff/import path and close SR9-11 policy/test/doc work
+how: cmake --build build\msvc-debug --target dominium_launcher_state_smoke_tests setup2_parity_lock_tests
+how: ctest --test-dir build\msvc-debug -R launcher_state_smoke_tests
+how: scripts\setup2\doc_lint.bat
