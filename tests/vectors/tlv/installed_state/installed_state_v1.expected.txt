@@ -1,0 +1,7 @@
+product_id=dominium
+installed_version=1.0.0
+selected_splat=splat_default
+components=2
+install_roots=2
+artifacts=1
+registrations=1

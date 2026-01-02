@@ -35,6 +35,17 @@ option(DOM_ENABLE_NET "Enable networking subsystem/modules (if present)" ON)
 option(DOMUI_ENABLE_JSON_MIRROR "Enable deterministic JSON mirror writes for UI docs" ON)
 option(DOMUI_ENABLE_CODEGEN "Enable DOMUI action codegen tools and build steps" ON)
 
+option(SETUP2_DEFAULT "Make Setup2 the default installer CLI/packaging path" ON)
+option(SETUP_LEGACY_BUILD "Build legacy setup stack (deprecated)" ON)
+option(SETUP_LEGACY_DEPRECATED_WARN "Warn when building legacy setup targets" ON)
+
+if(NOT DEFINED DOMINIUM_BUILD_SETUP2)
+    set(DOMINIUM_BUILD_SETUP2 ${SETUP2_DEFAULT} CACHE BOOL "Build setup2 kernel/services/frontends")
+endif()
+if(NOT DEFINED DOMINIUM_BUILD_SETUP_LEGACY)
+    set(DOMINIUM_BUILD_SETUP_LEGACY ${SETUP_LEGACY_BUILD} CACHE BOOL "Build legacy setup stack")
+endif()
+
 option(DOM_DISALLOW_DOWNLOADS "Disallow any build-time network downloads" ON)
 if(DOM_DISALLOW_DOWNLOADS)
     set(FETCHCONTENT_FULLY_DISCONNECTED ON CACHE BOOL "Disallow downloads via FetchContent" FORCE)

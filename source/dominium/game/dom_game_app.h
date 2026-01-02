@@ -15,6 +15,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #define DOM_GAME_APP_H
 
 #include <string>
+#include "dom_game_cli.h"
 #include "dom_paths.h"
 #include "dom_instance.h"
 #include "dom_session.h"
@@ -23,6 +24,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "dom_game_camera.h"
 #include "dom_game_tools_build.h"
 #include "dom_game_net.h"
+#include "runtime/dom_game_runtime.h"
 
 extern "C" {
 #include "view/d_view.h"
@@ -32,6 +34,9 @@ extern "C" {
 #include "core/d_org.h"
 #include "struct/d_struct.h"
 }
+
+struct dom_game_replay_record;
+struct dom_game_replay_play;
 
 namespace dom {
 
@@ -47,33 +52,12 @@ enum ServerMode {
     SERVER_DEDICATED
 };
 
-struct GameConfig {
-    std::string dominium_home;
-    std::string instance_id;
-    std::string connect_addr;    /* client: addr[:port] */
-    unsigned    net_port;        /* host/listen port */
-
-    GameMode    mode;
-    ServerMode  server_mode;
-
-    bool        demo_mode;
-
-    std::string platform_backend;
-    std::string gfx_backend;
-
-    unsigned    tick_rate_hz;   /* e.g. 60; 0 = default */
-    bool        dev_mode;
-    bool        deterministic_test;
-    std::string replay_record_path;
-    std::string replay_play_path;
-};
-
 class DomGameApp {
 public:
     DomGameApp();
     ~DomGameApp();
 
-    bool init_from_cli(const GameConfig &cfg);
+    bool init_from_cli(const dom_game_config &cfg);
     void run();
     void shutdown();
 
@@ -97,6 +81,11 @@ public:
     const GameCamera& camera() const { return m_camera; }
     DomGameNet&       net()           { return m_net; }
     const DomGameNet& net()     const { return m_net; }
+
+    dom_game_runtime*       runtime()       { return m_runtime; }
+    const dom_game_runtime* runtime() const { return m_runtime; }
+    d_world*                world()         { return dom_game_runtime_world(m_runtime); }
+    d_sim_context*          sim()           { return dom_game_runtime_sim(m_runtime); }
 
     dui_context& ui_context() { return m_ui_ctx; }
 
@@ -124,11 +113,11 @@ public:
     void toggle_overlay_volumes();
 
 private:
-    bool init_paths(const GameConfig &cfg);
-    bool load_instance(const GameConfig &cfg);
-    bool evaluate_compatibility(const GameConfig &cfg);
-    bool init_session(const GameConfig &cfg);
-    bool init_views_and_ui(const GameConfig &cfg);
+    bool init_paths(const dom_game_config &cfg);
+    bool load_instance(const dom_game_config &cfg);
+    bool evaluate_compatibility(const dom_game_config &cfg);
+    bool init_session(const dom_game_config &cfg);
+    bool init_views_and_ui(const dom_game_config &cfg);
 
     void main_loop();
     void tick_fixed();
@@ -145,6 +134,7 @@ private:
     InstanceInfo m_instance;
     DomSession   m_session;
     DomGameNet   m_net;
+    dom_game_runtime *m_runtime;
 
     GameMode     m_mode;
     ServerMode   m_server_mode;
@@ -174,8 +164,13 @@ private:
     d_world_hash m_last_hash;
     std::string  m_replay_record_path;
     std::string  m_replay_play_path;
+    std::string  m_save_path;
+    std::string  m_load_path;
     u32          m_replay_last_tick;
+    dom_game_replay_record *m_replay_record;
+    dom_game_replay_play *m_replay_play;
     void        *m_net_replay_user;
+    u64          m_last_wall_us;
     bool         m_show_debug_panel;
     bool         m_debug_probe_set;
     q32_32       m_debug_probe_x;
@@ -193,9 +188,6 @@ private:
 
     DomGameBuildTool m_build_tool;
 };
-
-bool parse_game_cli_args(int argc, char **argv, GameConfig &cfg);
-void init_default_game_config(GameConfig &cfg);
 
 } // namespace dom
 

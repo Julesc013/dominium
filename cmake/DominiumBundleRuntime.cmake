@@ -13,11 +13,20 @@ function(dominium_bundle_runtime target_name)
         return()
     endif()
 
+    set(_dom_runtime_search_dirs "${DOMINIUM_RUNTIME_SEARCH_DIRS}")
+    if(WIN32 AND _dom_runtime_search_dirs STREQUAL "")
+        if(CMAKE_CXX_COMPILER)
+            get_filename_component(_dom_runtime_search_dirs "${CMAKE_CXX_COMPILER}" DIRECTORY)
+        elseif(CMAKE_C_COMPILER)
+            get_filename_component(_dom_runtime_search_dirs "${CMAKE_C_COMPILER}" DIRECTORY)
+        endif()
+    endif()
+
     add_custom_command(TARGET ${target_name} POST_BUILD
         COMMAND ${CMAKE_COMMAND}
             -DINPUT=$<TARGET_FILE:${target_name}>
             -DOUTPUT_DIR=$<TARGET_FILE_DIR:${target_name}>
-            -DSEARCH_DIRS=${DOMINIUM_RUNTIME_SEARCH_DIRS}
+            -DSEARCH_DIRS=${_dom_runtime_search_dirs}
             -P "${CMAKE_SOURCE_DIR}/cmake/CopyRuntimeDeps.cmake"
         VERBATIM
     )

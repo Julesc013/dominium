@@ -2,16 +2,19 @@ cmake_minimum_required(VERSION 3.16)
 
 add_library(dominium_launcher_core STATIC
     src/launcher_core.cpp
+    src/log/launcher_log.cpp
     src/safety/launcher_safety.cpp
-    src/tlv/launcher_tlv.cpp
     src/tlv/launcher_tlv_migrations.cpp
+    src/tlv/launcher_tlv_schema_registry.cpp
     src/selection/launcher_selection_summary.cpp
+    src/run/launcher_run_summary.cpp
     src/launch/launcher_prelaunch.cpp
     src/launch/launcher_launch_attempt.cpp
     src/launch/launcher_handshake.cpp
     src/launch/launcher_exit_status.cpp
     src/tool/launcher_tools_registry.cpp
     src/profile/launcher_profile.cpp
+    src/installed_state/launcher_installed_state.cpp
     src/instance/launcher_instance.cpp
     src/instance/launcher_instance_config.cpp
     src/instance/launcher_instance_payload_refs.cpp
@@ -27,6 +30,7 @@ add_library(dominium_launcher_core STATIC
     src/artifact/launcher_sha256.cpp
     src/artifact/launcher_artifact_store.cpp
     src/task/launcher_task.cpp
+    src/job/launcher_job.cpp
     src/audit/launcher_audit.cpp
 )
 
@@ -40,8 +44,14 @@ target_link_libraries(dominium_launcher_core
     PRIVATE
         core_tlv
         core_audit
+        core_installed_state
         core_util
         core_err
+        core_log
+        core_caps
+        core_solver
+        core_job
+        core_tlv_schema
 )
 
 set_target_properties(dominium_launcher_core PROPERTIES
@@ -120,6 +130,7 @@ add_executable(dominium_launcher_instance_system_tests
 
 target_link_libraries(dominium_launcher_instance_system_tests PRIVATE
     dominium_launcher_core
+    launcher_services_impl_null
 )
 
 target_include_directories(dominium_launcher_instance_system_tests PRIVATE
@@ -147,6 +158,7 @@ add_executable(dominium_launcher_artifact_store_tx_tests
 
 target_link_libraries(dominium_launcher_artifact_store_tx_tests PRIVATE
     dominium_launcher_core
+    launcher_services_impl_null
 )
 
 target_include_directories(dominium_launcher_artifact_store_tx_tests PRIVATE
@@ -174,6 +186,7 @@ add_executable(dominium_launcher_pack_ecosystem_tests
 
 target_link_libraries(dominium_launcher_pack_ecosystem_tests PRIVATE
     dominium_launcher_core
+    launcher_services_impl_null
 )
 
 target_include_directories(dominium_launcher_pack_ecosystem_tests PRIVATE
@@ -201,6 +214,7 @@ add_executable(dominium_launcher_prelaunch_recovery_tests
 
 target_link_libraries(dominium_launcher_prelaunch_recovery_tests PRIVATE
     dominium_launcher_core
+    launcher_services_impl_null
 )
 
 target_include_directories(dominium_launcher_prelaunch_recovery_tests PRIVATE
@@ -255,6 +269,7 @@ add_executable(dominium_launcher_handshake_tests
 
 target_link_libraries(dominium_launcher_handshake_tests PRIVATE
     dominium_launcher_core
+    launcher_services_impl_null
 )
 
 target_include_directories(dominium_launcher_handshake_tests PRIVATE
@@ -282,6 +297,7 @@ add_executable(dominium_launcher_tools_registry_tests
 
 target_link_libraries(dominium_launcher_tools_registry_tests PRIVATE
     dominium_launcher_core
+    launcher_services_impl_null
 )
 
 target_include_directories(dominium_launcher_tools_registry_tests PRIVATE

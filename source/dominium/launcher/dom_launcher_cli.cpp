@@ -13,8 +13,12 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 */
 #include <cstdio>
 #include <cstring>
+#include <string>
+#include <vector>
 
+#include "dsk/dsk_api.h"
 #include "core/include/launcher_core_api.h"
+#include "core/include/launcher_installed_state.h"
 #include "dom_launcher_app.h"
 #include "dom_profile_cli.h"
 #include "launcher_control_plane.h"
@@ -22,13 +26,6 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "dom_shared/os_paths.h"
 
 #include "dominium/version.h"
-
-extern "C" {
-#include "dsu/dsu_callbacks.h"
-#include "dsu/dsu_config.h"
-#include "dsu/dsu_ctx.h"
-#include "dsu/dsu_state.h"
-}
 
 extern "C" {
 #include "domino/build_info.h"
@@ -61,43 +58,22 @@ struct LauncherAuditGuard {
     }
 };
 
-struct DsuStateHandle {
-    dsu_ctx_t* ctx;
-    dsu_state_t* state;
+struct LauncherStateProbe {
+    std::string root;
+    std::string setup2_state_path;
+    std::string legacy_state_path;
+    std::string audit_path;
+    bool setup2_exists;
+    bool legacy_exists;
 
-    DsuStateHandle() : ctx(0), state(0) {}
-
-    ~DsuStateHandle() {
-        if (state) {
-            dsu_state_destroy(ctx, state);
-            state = 0;
-        }
-        if (ctx) {
-            dsu_ctx_destroy(ctx);
-            ctx = 0;
-        }
-    }
+    LauncherStateProbe()
+        : root(),
+          setup2_state_path(),
+          legacy_state_path(),
+          audit_path(),
+          setup2_exists(false),
+          legacy_exists(false) {}
 };
-
-static const char* dsu_status_name(dsu_status_t st) {
-    switch (st) {
-    case DSU_STATUS_SUCCESS: return "success";
-    case DSU_STATUS_INVALID_ARGS: return "invalid_args";
-    case DSU_STATUS_IO_ERROR: return "io_error";
-    case DSU_STATUS_PARSE_ERROR: return "parse_error";
-    case DSU_STATUS_UNSUPPORTED_VERSION: return "unsupported_version";
-    case DSU_STATUS_INTEGRITY_ERROR: return "integrity_error";
-    case DSU_STATUS_INTERNAL_ERROR: return "internal_error";
-    case DSU_STATUS_MISSING_COMPONENT: return "missing_component";
-    case DSU_STATUS_UNSATISFIED_DEPENDENCY: return "unsatisfied_dependency";
-    case DSU_STATUS_VERSION_CONFLICT: return "version_conflict";
-    case DSU_STATUS_EXPLICIT_CONFLICT: return "explicit_conflict";
-    case DSU_STATUS_PLATFORM_INCOMPATIBLE: return "platform_incompatible";
-    case DSU_STATUS_ILLEGAL_DOWNGRADE: return "illegal_downgrade";
-    case DSU_STATUS_INVALID_REQUEST: return "invalid_request";
-    default: return "unknown";
-    }
-}
 
 static std::string dirname_of(const std::string& path) {
     size_t i;
@@ -110,8 +86,16 @@ static std::string dirname_of(const std::string& path) {
     return std::string();
 }
 
-static std::string state_path_for_root(const std::string& root) {
+static std::string setup2_state_path_for_root(const std::string& root) {
+    return dom_shared::os_path_join(dom_shared::os_path_join(root, ".dsu"), "installed_state.tlv");
+}
+
+static std::string legacy_state_path_for_root(const std::string& root) {
     return dom_shared::os_path_join(dom_shared::os_path_join(root, ".dsu"), "installed_state.dsustate");
+}
+
+static std::string setup2_audit_path_for_root(const std::string& root) {
+    return dom_shared::os_path_join(dom_shared::os_path_join(root, ".dsu"), "setup_audit.tlv");
 }
 
 static std::string default_home_from_install_root(const std::string& root) {
@@ -127,26 +111,109 @@ static std::string default_home_from_install_root(const std::string& root) {
     return root;
 }
 
-static bool find_state_path_from_exe(std::string& out_state_path,
-                                     std::string& out_root,
-                                     std::string& out_expected_path) {
+struct LauncherMemSink {
+    std::vector<unsigned char> data;
+};
+
+static dsk_status_t launcher_mem_sink_write(void *user, const dsk_u8 *data, dsk_u32 len) {
+    LauncherMemSink *sink = reinterpret_cast<LauncherMemSink *>(user);
+    if (!sink) {
+        return dsk_error_make(DSK_DOMAIN_KERNEL, DSK_CODE_INVALID_ARGS, DSK_SUBCODE_NONE, 0u);
+    }
+    if (len && !data) {
+        return dsk_error_make(DSK_DOMAIN_KERNEL, DSK_CODE_INVALID_ARGS, DSK_SUBCODE_NONE, 0u);
+    }
+    sink->data.insert(sink->data.end(), data, data + len);
+    return dsk_error_make(DSK_DOMAIN_NONE, DSK_CODE_OK, DSK_SUBCODE_NONE, 0u);
+}
+
+static bool read_file_bytes(const std::string& path, std::vector<unsigned char>& out_bytes) {
+    std::FILE* f = std::fopen(path.c_str(), "rb");
+    long size;
+    size_t got;
+    out_bytes.clear();
+    if (!f) {
+        return false;
+    }
+    if (std::fseek(f, 0, SEEK_END) != 0) {
+        std::fclose(f);
+        return false;
+    }
+    size = std::ftell(f);
+    if (size < 0) {
+        std::fclose(f);
+        return false;
+    }
+    if (std::fseek(f, 0, SEEK_SET) != 0) {
+        std::fclose(f);
+        return false;
+    }
+    out_bytes.resize((size_t)size);
+    if (size > 0) {
+        got = std::fread(&out_bytes[0], 1u, (size_t)size, f);
+        if (got != (size_t)size) {
+            std::fclose(f);
+            out_bytes.clear();
+            return false;
+        }
+    }
+    std::fclose(f);
+    return true;
+}
+
+static bool write_file_bytes(const std::string& path, const std::vector<unsigned char>& bytes) {
+    const std::string dir = dirname_of(path);
+    std::FILE* f;
+    size_t wrote = 0u;
+    if (!dir.empty() && !dom_shared::os_ensure_directory_exists(dir)) {
+        return false;
+    }
+    f = std::fopen(path.c_str(), "wb");
+    if (!f) {
+        return false;
+    }
+    if (!bytes.empty()) {
+        wrote = std::fwrite(&bytes[0], 1u, bytes.size(), f);
+    }
+    std::fclose(f);
+    return wrote == bytes.size();
+}
+
+static bool find_state_probe_from_exe(LauncherStateProbe& out_probe) {
     std::string exe_dir = dom_shared::os_get_executable_directory();
     std::string root = exe_dir;
     int i;
 
-    out_state_path.clear();
-    out_root.clear();
-    out_expected_path.clear();
+    out_probe = LauncherStateProbe();
 
     for (i = 0; i < 3; ++i) {
         if (!root.empty()) {
-            std::string cand = state_path_for_root(root);
-            if (out_expected_path.empty()) {
-                out_expected_path = cand;
+            std::string setup2_path = setup2_state_path_for_root(root);
+            std::string legacy_path = legacy_state_path_for_root(root);
+            std::string audit_path = setup2_audit_path_for_root(root);
+
+            if (out_probe.setup2_state_path.empty()) {
+                out_probe.setup2_state_path = setup2_path;
+                out_probe.legacy_state_path = legacy_path;
+                out_probe.audit_path = audit_path;
             }
-            if (dom_shared::os_file_exists(cand)) {
-                out_state_path = cand;
-                out_root = root;
+
+            if (dom_shared::os_file_exists(setup2_path)) {
+                out_probe.root = root;
+                out_probe.setup2_state_path = setup2_path;
+                out_probe.legacy_state_path = legacy_path;
+                out_probe.audit_path = audit_path;
+                out_probe.setup2_exists = true;
+                out_probe.legacy_exists = dom_shared::os_file_exists(legacy_path);
+                return true;
+            }
+            if (dom_shared::os_file_exists(legacy_path)) {
+                out_probe.root = root;
+                out_probe.setup2_state_path = setup2_path;
+                out_probe.legacy_state_path = legacy_path;
+                out_probe.audit_path = audit_path;
+                out_probe.setup2_exists = false;
+                out_probe.legacy_exists = true;
                 return true;
             }
         }
@@ -156,89 +223,147 @@ static bool find_state_path_from_exe(std::string& out_state_path,
     return false;
 }
 
-static bool load_installed_state(const std::string& state_path,
-                                 DsuStateHandle& out_handle,
-                                 std::string& out_error) {
-    dsu_config_t cfg;
-    dsu_callbacks_t cbs;
-    dsu_ctx_t* ctx = 0;
-    dsu_state_t* state = 0;
-    dsu_status_t st;
-
+static bool load_setup2_state(const std::string& state_path,
+                              dom::launcher_core::LauncherInstalledState& out_state,
+                              std::string& out_error) {
+    std::vector<unsigned char> bytes;
+    err_t err;
     out_error.clear();
-
-    dsu_config_init(&cfg);
-    dsu_callbacks_init(&cbs);
-
-    st = dsu_ctx_create(&cfg, &cbs, 0, &ctx);
-    if (st != DSU_STATUS_SUCCESS) {
-        out_error = std::string("ctx_create_failed:") + dsu_status_name(st);
+    if (!read_file_bytes(state_path, bytes)) {
+        out_error = "state_read_failed";
         return false;
     }
-
-    st = dsu_state_load(ctx, state_path.c_str(), &state);
-    if (st != DSU_STATUS_SUCCESS) {
-        dsu_ctx_destroy(ctx);
-        out_error = std::string("state_load_failed:") + dsu_status_name(st);
+    if (bytes.empty()) {
+        out_error = "state_empty";
         return false;
     }
-
-    st = dsu_state_validate(state);
-    if (st != DSU_STATUS_SUCCESS) {
-        dsu_state_destroy(ctx, state);
-        dsu_ctx_destroy(ctx);
-        out_error = std::string("state_invalid:") + dsu_status_name(st);
+    if (!dom::launcher_core::launcher_installed_state_from_tlv_bytes_ex(&bytes[0],
+                                                                        bytes.size(),
+                                                                        out_state,
+                                                                        &err)) {
+        const char* err_id = err_to_string_id(&err);
+        out_error = std::string("state_invalid:") + (err_id ? err_id : "unknown");
         return false;
     }
-
-    out_handle.ctx = ctx;
-    out_handle.state = state;
     return true;
 }
 
-static void print_state_recovery(const std::string& state_path, const std::string& detail) {
+static bool import_legacy_state_to_setup2(const std::string& legacy_path,
+                                          const std::string& out_state_path,
+                                          const std::string& out_audit_path,
+                                          std::string& out_error) {
+    std::vector<unsigned char> legacy_bytes;
+    LauncherMemSink state_sink;
+    LauncherMemSink audit_sink;
+    dsk_import_request_t req;
+    dsk_status_t st;
+
+    out_error.clear();
+    if (!read_file_bytes(legacy_path, legacy_bytes)) {
+        out_error = "legacy_state_read_failed";
+        return false;
+    }
+
+    dsk_import_request_init(&req);
+    req.legacy_state_bytes = legacy_bytes.empty() ? 0 : &legacy_bytes[0];
+    req.legacy_state_size = (dsk_u32)legacy_bytes.size();
+    req.out_state.user = &state_sink;
+    req.out_state.write = launcher_mem_sink_write;
+    req.out_audit.user = &audit_sink;
+    req.out_audit.write = launcher_mem_sink_write;
+    req.deterministic_mode = 1u;
+    st = dsk_import_legacy_state(&req);
+
+    if (!audit_sink.data.empty() && !write_file_bytes(out_audit_path, audit_sink.data)) {
+        out_error = "import_write_audit_failed";
+        return false;
+    }
+    if (!state_sink.data.empty() && !write_file_bytes(out_state_path, state_sink.data)) {
+        out_error = "import_write_state_failed";
+        return false;
+    }
+
+    if (!dsk_error_is_ok(st)) {
+        out_error = std::string("import_failed:") + dsk_error_to_string_stable(st);
+        return false;
+    }
+    if (state_sink.data.empty()) {
+        out_error = "import_missing_state";
+        return false;
+    }
+    return true;
+}
+
+static void print_state_recovery(const std::string& state_path,
+                                 const std::string& legacy_path,
+                                 const std::string& detail) {
     const char* path = state_path.empty() ? "<state-file>" : state_path.c_str();
     std::fprintf(stderr, "Launcher error: installed state missing or invalid.\n");
     std::fprintf(stderr, "State file: %s\n", path);
+    if (!legacy_path.empty()) {
+        std::fprintf(stderr, "Legacy state: %s\n", legacy_path.c_str());
+    }
     if (!detail.empty()) {
         std::fprintf(stderr, "Detail: %s\n", detail.c_str());
     }
     std::fprintf(stderr, "Recovery:\n");
     std::fprintf(stderr, "  1) dominium-setup verify --state \"%s\" --format json\n", path);
-    std::fprintf(stderr, "  2) If verify reports issues, run:\n");
-    std::fprintf(stderr, "     dominium-setup plan --manifest <manifest> --state \"%s\" --op repair --out repair.dsuplan\n", path);
-    std::fprintf(stderr, "     dominium-setup apply --plan repair.dsuplan\n");
+    if (!legacy_path.empty()) {
+        std::fprintf(stderr, "  2) If legacy state exists, import once:\n");
+        std::fprintf(stderr, "     dominium-setup import-legacy-state --in \"%s\" --out \"%s\"\n",
+                     legacy_path.c_str(), path);
+    }
+    std::fprintf(stderr, "  3) If verify reports issues, run:\n");
+    std::fprintf(stderr, "     dominium-setup plan --manifest <manifest> --request <request> --out-plan repair.tlv\n");
+    std::fprintf(stderr, "     dominium-setup apply --plan repair.tlv\n");
 }
 
 static bool ensure_installed_state(std::string& out_state_path,
                                    std::string& out_install_root,
                                    std::string& out_error) {
-    std::string expected;
-    DsuStateHandle handle;
-
+    LauncherStateProbe probe;
+    dom::launcher_core::LauncherInstalledState state;
     out_state_path.clear();
     out_install_root.clear();
     out_error.clear();
 
-    if (!find_state_path_from_exe(out_state_path, out_install_root, expected)) {
-        out_state_path = expected;
+    if (!find_state_probe_from_exe(probe)) {
+        out_state_path = probe.setup2_state_path;
         out_error = "state_not_found";
         return false;
     }
 
-    if (!load_installed_state(out_state_path, handle, out_error)) {
+    if (probe.setup2_exists) {
+        out_state_path = probe.setup2_state_path;
+        if (!load_setup2_state(out_state_path, state, out_error)) {
+            return false;
+        }
+    } else if (probe.legacy_exists) {
+        out_state_path = probe.setup2_state_path;
+        if (!import_legacy_state_to_setup2(probe.legacy_state_path,
+                                           probe.setup2_state_path,
+                                           probe.audit_path,
+                                           out_error)) {
+            return false;
+        }
+        if (!load_setup2_state(out_state_path, state, out_error)) {
+            return false;
+        }
+    } else {
+        out_state_path = probe.setup2_state_path;
+        out_error = "state_not_found";
         return false;
     }
 
-    {
-        const char* root = dsu_state_primary_install_root(handle.state);
-        if (!root || !root[0]) {
-            out_error = "state_missing_install_root";
-            return false;
-        }
-        out_install_root = root;
+    out_install_root = state.install_root;
+    if (out_install_root.empty()) {
+        out_error = "state_missing_install_root";
+        return false;
     }
-
+    if (state.installed_components.empty()) {
+        out_error = "state_incomplete";
+        return false;
+    }
     if (!dom_shared::os_directory_exists(out_install_root)) {
         out_error = "install_root_missing";
         return false;
@@ -264,52 +389,79 @@ static std::string add_exe_suffix(const std::string& base) {
 static int run_state_smoke_test(const char* state_arg) {
     std::string state_path;
     std::string install_root;
-    std::string expected;
     std::string err;
-    DsuStateHandle handle;
-    dsu_u32 component_count = 0u;
-    dsu_u32 pack_count = 0u;
-    dsu_u32 i;
+    dom::launcher_core::LauncherInstalledState state;
+    LauncherStateProbe probe;
+    std::string legacy_hint;
+    size_t component_count = 0u;
+    unsigned pack_count = 0u;
 
     if (state_arg && state_arg[0]) {
         state_path = state_arg;
-    } else {
-        if (!find_state_path_from_exe(state_path, install_root, expected)) {
-            state_path = expected;
-        }
-    }
-
-    if (state_path.empty() || !dom_shared::os_file_exists(state_path)) {
-        print_state_recovery(state_path, "state_not_found");
-        return 3;
-    }
-
-    if (!load_installed_state(state_path, handle, err)) {
-        print_state_recovery(state_path, err);
-        return 3;
-    }
-
-    {
-        const char* root = dsu_state_primary_install_root(handle.state);
-        if (!root || !root[0]) {
-            print_state_recovery(state_path, "state_missing_install_root");
+        if (state_path.empty()) {
+            print_state_recovery(state_path, std::string(), "state_not_found");
             return 3;
         }
-        install_root = root;
-    }
-
-    if (!dom_shared::os_directory_exists(install_root)) {
-        print_state_recovery(state_path, "install_root_missing");
+        if (!dom_shared::os_file_exists(state_path)) {
+            std::string state_dir = dirname_of(state_path);
+            std::string legacy_path = dom_shared::os_path_join(state_dir, "installed_state.dsustate");
+            std::string audit_path = dom_shared::os_path_join(state_dir, "setup_audit.tlv");
+            legacy_hint = legacy_path;
+            if (!legacy_path.empty() && dom_shared::os_file_exists(legacy_path)) {
+                if (!import_legacy_state_to_setup2(legacy_path, state_path, audit_path, err)) {
+                    print_state_recovery(state_path, legacy_path, err);
+                    return 3;
+                }
+            } else {
+                print_state_recovery(state_path, legacy_path, "state_not_found");
+                return 3;
+            }
+        }
+        if (!load_setup2_state(state_path, state, err)) {
+            print_state_recovery(state_path, legacy_hint, err);
+            return 3;
+        }
+    } else if (!find_state_probe_from_exe(probe)) {
+        state_path = probe.setup2_state_path;
+        print_state_recovery(state_path, probe.legacy_state_path, "state_not_found");
+        return 3;
+    } else if (probe.setup2_exists) {
+        state_path = probe.setup2_state_path;
+        if (!load_setup2_state(state_path, state, err)) {
+            print_state_recovery(state_path, probe.legacy_state_path, err);
+            return 3;
+        }
+    } else if (probe.legacy_exists) {
+        state_path = probe.setup2_state_path;
+        if (!import_legacy_state_to_setup2(probe.legacy_state_path,
+                                           probe.setup2_state_path,
+                                           probe.audit_path,
+                                           err)) {
+            print_state_recovery(state_path, probe.legacy_state_path, err);
+            return 3;
+        }
+        if (!load_setup2_state(state_path, state, err)) {
+            print_state_recovery(state_path, probe.legacy_state_path, err);
+            return 3;
+        }
+    } else {
+        state_path = probe.setup2_state_path;
+        print_state_recovery(state_path, probe.legacy_state_path, "state_not_found");
         return 3;
     }
 
-    component_count = dsu_state_component_count(handle.state);
-    for (i = 0u; i < component_count; ++i) {
-        if (dsu_state_component_kind(handle.state, i) == DSU_MANIFEST_COMPONENT_KIND_PACK) {
-            pack_count += 1u;
-        }
+    install_root = state.install_root;
+    std::string legacy_report = legacy_hint.empty() ? probe.legacy_state_path : legacy_hint;
+    if (install_root.empty()) {
+        print_state_recovery(state_path, legacy_report, "state_missing_install_root");
+        return 3;
+    }
+    if (!dom_shared::os_directory_exists(install_root)) {
+        print_state_recovery(state_path, legacy_report, "install_root_missing");
+        return 3;
     }
 
+    component_count = state.installed_components.size();
     if (component_count == 0u) {
         std::fprintf(stderr, "Launcher smoke: no components in installed state.\n");
         return 4;
@@ -994,10 +1146,12 @@ int main(int argc, char **argv) {
         std::string install_root;
         std::string state_err;
         if (!ensure_installed_state(state_path, install_root, state_err)) {
+            LauncherStateProbe probe;
+            (void)find_state_probe_from_exe(probe);
             if (lc) {
                 (void)launcher_core_add_reason(lc, "state_invalid");
             }
-            print_state_recovery(state_path, state_err);
+            print_state_recovery(state_path, probe.legacy_state_path, state_err);
             exit_code = 3;
             return exit_code;
         }

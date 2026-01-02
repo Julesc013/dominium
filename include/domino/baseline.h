@@ -108,6 +108,14 @@ typedef unsigned char bool;
 #  define true  1
 #  define false 0
 #  define __bool_true_false_are_defined 1
+# elif !defined(bool)
+typedef unsigned char bool;
+#  if !defined(true)
+#   define true 1
+#  endif
+#  if !defined(false)
+#   define false 0
+#  endif
 # endif
 #endif
 

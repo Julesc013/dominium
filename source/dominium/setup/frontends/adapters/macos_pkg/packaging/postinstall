@@ -1,0 +1,22 @@
+#!/bin/sh
+set -e
+
+MANIFEST_PATH="${DSK_MANIFEST_PATH:-/Library/Application Support/Dominium/install_manifest.tlv}"
+REQUEST_PATH="${DSK_REQUEST_PATH:-${TMPDIR:-/tmp}/install_request.tlv}"
+PLAN_PATH="${DSK_PLAN_PATH:-${TMPDIR:-/tmp}/install_plan.tlv}"
+AUDIT_PATH="${DSK_AUDIT_PATH:-${TMPDIR:-/tmp}/setup_audit.tlv}"
+STATE_PATH="${DSK_STATE_PATH:-${TMPDIR:-/tmp}/installed_state.tlv}"
+JOURNAL_PATH="${DSK_JOURNAL_PATH:-${TMPDIR:-/tmp}/job_journal.tlv}"
+FRONTEND_ID="${DSK_FRONTEND_ID:-dominium-setup2-macos-pkg}"
+DETERMINISTIC="${DSK_DETERMINISTIC:-1}"
+
+dominium-setup2 request make --manifest "${MANIFEST_PATH}" --op install --scope system --ui-mode gui \
+  --frontend-id "${FRONTEND_ID}" --out-request "${REQUEST_PATH}" --deterministic "${DETERMINISTIC}"
+
+dominium-setup2 plan --manifest "${MANIFEST_PATH}" --request "${REQUEST_PATH}" --out-plan "${PLAN_PATH}"
+
+if [ "${DSK_DRY_RUN}" = "1" ]; then
+  dominium-setup2 apply --plan "${PLAN_PATH}" --out-audit "${AUDIT_PATH}" --out-journal "${JOURNAL_PATH}" --dry-run
+else
+  dominium-setup2 apply --plan "${PLAN_PATH}" --out-state "${STATE_PATH}" --out-audit "${AUDIT_PATH}" --out-journal "${JOURNAL_PATH}"
+fi

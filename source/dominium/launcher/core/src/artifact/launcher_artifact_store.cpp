@@ -10,6 +10,7 @@ RESPONSIBILITY: Implements artifact store metadata TLV and read-only verificatio
 #include <cstdio>
 #include <cstring>
 
+#include "launcher_log.h"
 #include "launcher_sha256.h"
 #include "launcher_tlv.h"
 #include "launcher_tlv_migrations.h"
@@ -156,6 +157,30 @@ static bool hash_bytes_equal(const std::vector<unsigned char>& a, const std::vec
         }
     }
     return true;
+}
+
+static void emit_artifact_event(const launcher_services_api_v1* services,
+                                const std::string& state_root_override,
+                                u32 event_code,
+                                const err_t* err) {
+    core_log_event ev;
+    core_log_scope scope;
+
+    core_log_event_clear(&ev);
+    ev.domain = CORE_LOG_DOMAIN_ARTIFACT;
+    ev.code = (u16)event_code;
+    ev.severity = (u8)((event_code == CORE_LOG_EVT_OP_FAIL) ? CORE_LOG_SEV_ERROR : CORE_LOG_SEV_INFO);
+    ev.msg_id = 0u;
+    ev.t_mono = 0u;
+    (void)core_log_event_add_u32(&ev, CORE_LOG_KEY_OPERATION_ID, CORE_LOG_OP_LAUNCHER_ARTIFACT_VERIFY);
+    if (err && !err_is_ok(err)) {
+        launcher_log_add_err_fields(&ev, err);
+    }
+
+    std::memset(&scope, 0, sizeof(scope));
+    scope.kind = CORE_LOG_SCOPE_GLOBAL;
+    scope.state_root = state_root_override.empty() ? (const char*)0 : state_root_override.c_str();
+    (void)launcher_services_emit_event(services, &scope, &ev);
 }
 
 } /* namespace */
@@ -329,6 +354,53 @@ bool launcher_artifact_store_read_metadata(const launcher_services_api_v1* servi
     return true;
 }
 
+bool launcher_artifact_store_read_metadata_ex(const launcher_services_api_v1* services,
+                                              const std::string& state_root_override,
+                                              const std::vector<unsigned char>& hash_bytes,
+                                              LauncherArtifactMetadata& out_meta,
+                                              err_t* out_err) {
+    const launcher_fs_api_v1* fs = get_fs(services);
+    std::string state_root;
+    std::string dir;
+    std::string meta_path;
+    std::string payload_path;
+    std::vector<unsigned char> bytes;
+    err_t err = err_ok();
+
+    if (!services || !fs) {
+        err = err_make((u16)ERRD_COMMON, (u16)ERRC_COMMON_BAD_STATE, (u32)ERRF_FATAL, (u32)ERRMSG_COMMON_BAD_STATE);
+        goto fail;
+    }
+    if (!state_root_override.empty()) {
+        state_root = state_root_override;
+    } else if (!get_state_root(fs, state_root)) {
+        err = err_make((u16)ERRD_LAUNCHER, (u16)ERRC_LAUNCHER_STATE_ROOT_UNAVAILABLE, 0u, (u32)ERRMSG_LAUNCHER_STATE_ROOT_UNAVAILABLE);
+        goto fail;
+    }
+    if (!launcher_artifact_store_paths(state_root, hash_bytes, dir, meta_path, payload_path)) {
+        err = err_make((u16)ERRD_COMMON, (u16)ERRC_COMMON_INVALID_ARGS, 0u, (u32)ERRMSG_COMMON_INVALID_ARGS);
+        goto fail;
+    }
+    if (!fs_read_all(fs, meta_path, bytes)) {
+        err = err_make((u16)ERRD_ARTIFACT, (u16)ERRC_ARTIFACT_METADATA_NOT_FOUND, 0u, (u32)ERRMSG_ARTIFACT_METADATA_NOT_FOUND);
+        goto fail;
+    }
+    if (!launcher_artifact_metadata_from_tlv_bytes(bytes.empty() ? (const unsigned char*)0 : &bytes[0], bytes.size(), out_meta)) {
+        err = err_make((u16)ERRD_ARTIFACT, (u16)ERRC_ARTIFACT_METADATA_INVALID, (u32)ERRF_INTEGRITY,
+                       (u32)ERRMSG_ARTIFACT_METADATA_INVALID);
+        goto fail;
+    }
+    if (out_err) {
+        *out_err = err_ok();
+    }
+    return true;
+fail:
+    if (out_err) {
+        *out_err = err;
+    }
+    return false;
+}
+
 bool launcher_artifact_store_verify(const launcher_services_api_v1* services,
                                     const std::string& state_root_override,
                                     const std::vector<unsigned char>& expected_hash_bytes,
@@ -377,6 +449,78 @@ bool launcher_artifact_store_verify(const launcher_services_api_v1* services,
 
     out_meta = meta;
     return true;
+}
+
+bool launcher_artifact_store_verify_ex(const launcher_services_api_v1* services,
+                                       const std::string& state_root_override,
+                                       const std::vector<unsigned char>& expected_hash_bytes,
+                                       u32 expected_content_type,
+                                       LauncherArtifactMetadata& out_meta,
+                                       err_t* out_err) {
+    const launcher_fs_api_v1* fs = get_fs(services);
+    std::string state_root;
+    std::string dir;
+    std::string meta_path;
+    std::string payload_path;
+    std::vector<unsigned char> payload_hash;
+    u64 payload_size = 0ull;
+    LauncherArtifactMetadata meta;
+    err_t err = err_ok();
+
+    if (!services || !fs) {
+        err = err_make((u16)ERRD_COMMON, (u16)ERRC_COMMON_BAD_STATE, (u32)ERRF_FATAL, (u32)ERRMSG_COMMON_BAD_STATE);
+        goto fail;
+    }
+    if (!state_root_override.empty()) {
+        state_root = state_root_override;
+    } else if (!get_state_root(fs, state_root)) {
+        err = err_make((u16)ERRD_LAUNCHER, (u16)ERRC_LAUNCHER_STATE_ROOT_UNAVAILABLE, 0u, (u32)ERRMSG_LAUNCHER_STATE_ROOT_UNAVAILABLE);
+        goto fail;
+    }
+    if (!launcher_artifact_store_paths(state_root, expected_hash_bytes, dir, meta_path, payload_path)) {
+        err = err_make((u16)ERRD_COMMON, (u16)ERRC_COMMON_INVALID_ARGS, 0u, (u32)ERRMSG_COMMON_INVALID_ARGS);
+        goto fail;
+    }
+    if (!launcher_artifact_store_read_metadata_ex(services, state_root, expected_hash_bytes, meta, &err)) {
+        goto fail;
+    }
+    if (!hash_bytes_equal(meta.hash_bytes, expected_hash_bytes)) {
+        err = err_make((u16)ERRD_ARTIFACT, (u16)ERRC_ARTIFACT_METADATA_INVALID, (u32)ERRF_INTEGRITY,
+                       (u32)ERRMSG_ARTIFACT_METADATA_INVALID);
+        goto fail;
+    }
+    if (expected_content_type != (u32)LAUNCHER_CONTENT_UNKNOWN && meta.content_type != expected_content_type) {
+        err = err_make((u16)ERRD_ARTIFACT, (u16)ERRC_ARTIFACT_CONTENT_TYPE_MISMATCH, (u32)ERRF_INTEGRITY,
+                       (u32)ERRMSG_ARTIFACT_CONTENT_TYPE_MISMATCH);
+        goto fail;
+    }
+    if (!launcher_sha256_file(services, payload_path, payload_hash, payload_size)) {
+        err = err_make((u16)ERRD_ARTIFACT, (u16)ERRC_ARTIFACT_PAYLOAD_MISSING, 0u, (u32)ERRMSG_ARTIFACT_PAYLOAD_MISSING);
+        goto fail;
+    }
+    if (!hash_bytes_equal(payload_hash, expected_hash_bytes)) {
+        err = err_make((u16)ERRD_ARTIFACT, (u16)ERRC_ARTIFACT_PAYLOAD_HASH_MISMATCH, (u32)ERRF_INTEGRITY,
+                       (u32)ERRMSG_ARTIFACT_PAYLOAD_HASH_MISMATCH);
+        goto fail;
+    }
+    if (meta.size_bytes != 0ull && meta.size_bytes != payload_size) {
+        err = err_make((u16)ERRD_ARTIFACT, (u16)ERRC_ARTIFACT_SIZE_MISMATCH, (u32)ERRF_INTEGRITY,
+                       (u32)ERRMSG_ARTIFACT_SIZE_MISMATCH);
+        goto fail;
+    }
+
+    out_meta = meta;
+    if (out_err) {
+        *out_err = err_ok();
+    }
+    emit_artifact_event(services, state_root_override, CORE_LOG_EVT_OP_OK, (const err_t*)0);
+    return true;
+fail:
+    if (out_err) {
+        *out_err = err;
+    }
+    emit_artifact_event(services, state_root_override, CORE_LOG_EVT_OP_FAIL, &err);
+    return false;
 }
 
 } /* namespace launcher_core */

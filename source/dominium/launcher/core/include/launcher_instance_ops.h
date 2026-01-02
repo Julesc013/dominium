@@ -18,6 +18,8 @@ extern "C" {
 #include "launcher_core_api.h"
 }
 
+#include "dominium/core_err.h"
+
 #include "launcher_instance.h"
 
 namespace dom {
@@ -64,11 +66,22 @@ bool launcher_instance_create_instance(const launcher_services_api_v1* services,
                                        const std::string& state_root_override,
                                        LauncherInstanceManifest& out_created_manifest,
                                        LauncherAuditLog* audit);
+bool launcher_instance_create_instance_ex(const launcher_services_api_v1* services,
+                                          const LauncherInstanceManifest& desired_manifest,
+                                          const std::string& state_root_override,
+                                          LauncherInstanceManifest& out_created_manifest,
+                                          LauncherAuditLog* audit,
+                                          err_t* out_err);
 
 bool launcher_instance_delete_instance(const launcher_services_api_v1* services,
                                        const std::string& instance_id,
                                        const std::string& state_root_override,
                                        LauncherAuditLog* audit);
+bool launcher_instance_delete_instance_ex(const launcher_services_api_v1* services,
+                                          const std::string& instance_id,
+                                          const std::string& state_root_override,
+                                          LauncherAuditLog* audit,
+                                          err_t* out_err);
 
 bool launcher_instance_clone_instance(const launcher_services_api_v1* services,
                                       const std::string& source_instance_id,
@@ -76,6 +89,13 @@ bool launcher_instance_clone_instance(const launcher_services_api_v1* services,
                                       const std::string& state_root_override,
                                       LauncherInstanceManifest& out_created_manifest,
                                       LauncherAuditLog* audit);
+bool launcher_instance_clone_instance_ex(const launcher_services_api_v1* services,
+                                         const std::string& source_instance_id,
+                                         const std::string& new_instance_id,
+                                         const std::string& state_root_override,
+                                         LauncherInstanceManifest& out_created_manifest,
+                                         LauncherAuditLog* audit,
+                                         err_t* out_err);
 
 bool launcher_instance_template_instance(const launcher_services_api_v1* services,
                                          const std::string& source_instance_id,
@@ -83,18 +103,37 @@ bool launcher_instance_template_instance(const launcher_services_api_v1* service
                                          const std::string& state_root_override,
                                          LauncherInstanceManifest& out_created_manifest,
                                          LauncherAuditLog* audit);
+bool launcher_instance_template_instance_ex(const launcher_services_api_v1* services,
+                                            const std::string& source_instance_id,
+                                            const std::string& new_instance_id,
+                                            const std::string& state_root_override,
+                                            LauncherInstanceManifest& out_created_manifest,
+                                            LauncherAuditLog* audit,
+                                            err_t* out_err);
 
 bool launcher_instance_mark_known_good(const launcher_services_api_v1* services,
                                        const std::string& instance_id,
                                        const std::string& state_root_override,
                                        LauncherInstanceManifest& out_updated_manifest,
                                        LauncherAuditLog* audit);
+bool launcher_instance_mark_known_good_ex(const launcher_services_api_v1* services,
+                                          const std::string& instance_id,
+                                          const std::string& state_root_override,
+                                          LauncherInstanceManifest& out_updated_manifest,
+                                          LauncherAuditLog* audit,
+                                          err_t* out_err);
 
 bool launcher_instance_mark_broken(const launcher_services_api_v1* services,
                                    const std::string& instance_id,
                                    const std::string& state_root_override,
                                    LauncherInstanceManifest& out_updated_manifest,
                                    LauncherAuditLog* audit);
+bool launcher_instance_mark_broken_ex(const launcher_services_api_v1* services,
+                                      const std::string& instance_id,
+                                      const std::string& state_root_override,
+                                      LauncherInstanceManifest& out_updated_manifest,
+                                      LauncherAuditLog* audit,
+                                      err_t* out_err);
 
 enum LauncherInstanceExportMode {
     LAUNCHER_INSTANCE_EXPORT_DEFINITION_ONLY = 1u,
@@ -112,6 +151,13 @@ bool launcher_instance_export_instance(const launcher_services_api_v1* services,
                                        const std::string& state_root_override,
                                        u32 export_mode,
                                        LauncherAuditLog* audit);
+bool launcher_instance_export_instance_ex(const launcher_services_api_v1* services,
+                                          const std::string& instance_id,
+                                          const std::string& export_root,
+                                          const std::string& state_root_override,
+                                          u32 export_mode,
+                                          LauncherAuditLog* audit,
+                                          err_t* out_err);
 
 bool launcher_instance_import_instance(const launcher_services_api_v1* services,
                                        const std::string& import_root,
@@ -121,12 +167,26 @@ bool launcher_instance_import_instance(const launcher_services_api_v1* services,
                                        u32 safe_mode,
                                        LauncherInstanceManifest& out_created_manifest,
                                        LauncherAuditLog* audit);
+bool launcher_instance_import_instance_ex(const launcher_services_api_v1* services,
+                                          const std::string& import_root,
+                                          const std::string& new_instance_id,
+                                          const std::string& state_root_override,
+                                          u32 import_mode,
+                                          u32 safe_mode,
+                                          LauncherInstanceManifest& out_created_manifest,
+                                          LauncherAuditLog* audit,
+                                          err_t* out_err);
 
 /* Lightweight helpers used by tests and higher layers. */
 bool launcher_instance_load_manifest(const launcher_services_api_v1* services,
                                      const std::string& instance_id,
                                      const std::string& state_root_override,
                                      LauncherInstanceManifest& out_manifest);
+bool launcher_instance_load_manifest_ex(const launcher_services_api_v1* services,
+                                        const std::string& instance_id,
+                                        const std::string& state_root_override,
+                                        LauncherInstanceManifest& out_manifest,
+                                        err_t* out_err);
 
 } /* namespace launcher_core */
 } /* namespace dom */

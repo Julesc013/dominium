@@ -398,25 +398,42 @@ def assemble_artifact(args):
     os.makedirs(os.path.join(out_dir, "docs"), exist_ok=True)
 
     # Docs.
-    shutil.copy2(os.path.join(repo_root, "LICENSE"), os.path.join(out_dir, "docs", "LICENSE"))
+    license_src = os.path.join(repo_root, "LICENSE")
+    if not os.path.exists(license_src):
+        license_src = os.path.join(repo_root, "LICENSE.md")
+    shutil.copy2(license_src, os.path.join(out_dir, "docs", "LICENSE"))
     shutil.copy2(os.path.join(repo_root, "README.md"), os.path.join(out_dir, "docs", "README"))
     _write_text(os.path.join(out_dir, "docs", "VERSION"), (args.version.strip() + "\n"))
 
     # Locate build outputs.
     build_dir = os.path.abspath(args.build_dir)
-    try:
-        setup_bin = _find_unique_file(build_dir, "dominium-setup" + _exe_suffix(), prefer_subpaths=["source/dominium/setup/"])
-    except Exception:
-        setup_bin = _find_unique_file(build_dir, "tool_setup" + _exe_suffix(), prefer_subpaths=["source/dominium/setup/"])
+    setup_bin = _try_find_unique_file(build_dir, "dominium-setup" + _exe_suffix(), prefer_subpaths=["source/dominium/setup/"])
+    if not setup_bin:
+        setup_bin = _try_find_unique_file(build_dir, "dominium-setup2" + _exe_suffix(), prefer_subpaths=["source/dominium/setup/"])
+    if not setup_bin:
+        legacy_bin = _try_find_unique_file(build_dir, "dominium-setup-legacy" + _exe_suffix(), prefer_subpaths=["source/dominium/setup/"])
+        if not legacy_bin:
+            legacy_bin = _try_find_unique_file(build_dir, "tool_setup" + _exe_suffix(), prefer_subpaths=["source/dominium/setup/"])
+        if legacy_bin and not args.allow_legacy_setup:
+            raise RuntimeError("legacy setup binary detected; rerun with --allow-legacy-setup to stage dominium-setup-legacy")
+        setup_bin = legacy_bin
+    if not setup_bin:
+        raise RuntimeError("setup2 binary not found (dominium-setup or dominium-setup2)")
     launcher_bin = _find_unique_file(build_dir, "dominium-launcher" + _exe_suffix(), prefer_subpaths=["source/dominium/launcher/"])
     game_bin = _find_unique_file(build_dir, "dominium_game" + _exe_suffix(), prefer_subpaths=["source/dominium/game/"])
 
     # Stage Setup Core binary into artifact_root/setup/.
     setup_dst = os.path.join(out_dir, "setup", os.path.basename(setup_bin))
     shutil.copy2(setup_bin, setup_dst)
-    setup_alias = os.path.join(out_dir, "setup", "dominium-setup" + _exe_suffix())
-    if os.path.basename(setup_bin).lower() != ("dominium-setup" + _exe_suffix()).lower():
-        shutil.copy2(setup_bin, setup_alias)
+    setup_base = os.path.basename(setup_bin).lower()
+    setup_is_legacy = setup_base in (
+        ("dominium-setup-legacy" + _exe_suffix()).lower(),
+        ("tool_setup" + _exe_suffix()).lower(),
+    )
+    if not setup_is_legacy:
+        setup_alias = os.path.join(out_dir, "setup", "dominium-setup" + _exe_suffix())
+        if setup_base != ("dominium-setup" + _exe_suffix()).lower():
+            shutil.copy2(setup_bin, setup_alias)
 
     # Optional Linux setup frontends/adapters (best-effort copy when built).
     for extra in ("dominium-setup-tui", "dominium-setup-gui", "dominium-setup-linux", "dominium-setup-macos"):
@@ -834,6 +851,8 @@ def main(argv):
 
     ap_asm = sub.add_parser("assemble", help="Assemble canonical artifact_root/ and record digests.")
     ap_asm.add_argument("--build-dir", required=True, help="CMake build directory containing built outputs")
+    ap_asm.add_argument("--allow-legacy-setup", action="store_true",
+                        help="Allow staging dominium-setup-legacy/tool_setup when setup2 is missing.")
     ap_asm.add_argument("--out", required=True, help="Output directory (artifact_root/)")
     ap_asm.add_argument("--version", required=True, help="Artifact/product version (x.y.z)")
     ap_asm.add_argument("--manifest-template", default=os.path.join("assets", "setup", "manifests", "product.template.json"),

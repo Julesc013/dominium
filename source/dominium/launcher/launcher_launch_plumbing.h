@@ -44,6 +44,8 @@ struct LaunchRunResult {
     std::string launch_config_path;
     std::string audit_path;
     std::string selection_summary_path;
+    std::string run_summary_path;
+    std::string caps_path;
     std::string exit_status_path;
 
     u32 refused; /* 0/1 */

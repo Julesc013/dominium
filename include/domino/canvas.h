@@ -24,6 +24,9 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 extern "C" {
 #endif
 
+/* Forward declaration for mesh draw type (opaque to canvas). */
+typedef struct dgfx_mesh_draw_t dgfx_mesh_draw_t;
+
 /*------------------------------------------------------------
  * Domino canvas recorder (dcvs)
  *------------------------------------------------------------*/

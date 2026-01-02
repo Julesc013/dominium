@@ -20,6 +20,14 @@ EXTENSION POINTS: Extend via new IIDs + capability bits; skip-unknown TLV for pe
 #include "domino/baseline.h"
 #include "domino/core/types.h"
 
+#include "dominium/core_err.h"
+#include "dominium/core_log.h"
+#include "dominium/provider_content_source.h"
+#include "dominium/provider_keychain.h"
+#include "dominium/provider_net.h"
+#include "dominium/provider_os_integration.h"
+#include "dominium/provider_trust.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -36,6 +44,7 @@ typedef u64 launcher_services_caps;
 #define LAUNCHER_SERVICES_CAP_HASHING      ((launcher_services_caps)1u << 3u)
 #define LAUNCHER_SERVICES_CAP_ARCHIVE      ((launcher_services_caps)1u << 4u)
 #define LAUNCHER_SERVICES_CAP_TIME         ((launcher_services_caps)1u << 5u)
+#define LAUNCHER_SERVICES_CAP_LOGGING      ((launcher_services_caps)1u << 6u)
 
 /* Interface IDs (IIDs) for query_interface. */
 #define LAUNCHER_IID_FS_V1     ((dom_iid)0x4C465331u) /* 'LFS1' */
@@ -44,6 +53,8 @@ typedef u64 launcher_services_caps;
 #define LAUNCHER_IID_HASH_V1   ((dom_iid)0x4C485348u) /* 'LHSH' */
 #define LAUNCHER_IID_ARCH_V1   ((dom_iid)0x4C415243u) /* 'LARC' */
 #define LAUNCHER_IID_TIME_V1   ((dom_iid)0x4C54494Du) /* 'LTIM' */
+#define LAUNCHER_IID_LOG_V1    ((dom_iid)0x4C4C4F47u) /* 'LLOG' */
+#define LAUNCHER_IID_PROVIDERS_V1 ((dom_iid)0x4C505256u) /* 'LPRV' */
 
 typedef enum launcher_fs_path_kind_e {
     LAUNCHER_FS_PATH_NONE = 0,
@@ -110,12 +121,25 @@ typedef struct launcher_net_api_v1 {
     void* reserved1;
 } launcher_net_api_v1;
 
+/* launcher_providers_api_v1: Provider facade access (content/trust/keychain/net/os integration). */
+typedef struct launcher_providers_api_v1 {
+    DOM_ABI_HEADER;
+    const provider_content_source_v1* (*get_content_source)(void);
+    const provider_trust_v1* (*get_trust)(void);
+    const provider_keychain_v1* (*get_keychain)(void);
+    const provider_net_v1* (*get_net)(void);
+    const provider_os_integration_v1* (*get_os_integration)(void);
+} launcher_providers_api_v1;
+
 /* launcher_services_api_v1: Root facade that exposes capability bits and query_interface. */
 typedef struct launcher_services_api_v1 {
     DOM_ABI_HEADER;
     launcher_services_caps (*get_caps)(void);
     dom_query_interface_fn  query_interface;
 } launcher_services_api_v1;
+
+/* Logging interface (query via LAUNCHER_IID_LOG_V1). */
+typedef core_log_sink_v1 launcher_log_api_v1;
 
 /* Null backend (headless-friendly). */
 const launcher_services_api_v1* launcher_services_null_v1(void);
@@ -141,18 +165,26 @@ typedef struct launcher_core_desc_v1 {
 } launcher_core_desc_v1;
 
 launcher_core* launcher_core_create(const launcher_core_desc_v1* desc);
+launcher_core* launcher_core_create_ex(const launcher_core_desc_v1* desc, err_t* out_err);
 void           launcher_core_destroy(launcher_core* core);
 
 /* Null/headless smoke helpers (required by prompt). */
 int launcher_core_load_null_profile(launcher_core* core);
+int launcher_core_load_null_profile_ex(launcher_core* core, err_t* out_err);
 int launcher_core_create_empty_instance(launcher_core* core, const char* instance_id);
+int launcher_core_create_empty_instance_ex(launcher_core* core, const char* instance_id, err_t* out_err);
 
 /* Audit enrichment (deterministic; no side effects). */
 int launcher_core_add_reason(launcher_core* core, const char* reason);
+int launcher_core_add_reason_id(launcher_core* core, u32 reason_msg_id);
 int launcher_core_select_profile_id(launcher_core* core, const char* profile_id, const char* why);
+int launcher_core_select_profile_id_ex(launcher_core* core, const char* profile_id, u32 reason_msg_id, err_t* out_err);
 int launcher_core_set_version_string(launcher_core* core, const char* version_string);
+int launcher_core_set_version_string_ex(launcher_core* core, const char* version_string, err_t* out_err);
 int launcher_core_set_build_id(launcher_core* core, const char* build_id);
+int launcher_core_set_build_id_ex(launcher_core* core, const char* build_id, err_t* out_err);
 int launcher_core_set_git_hash(launcher_core* core, const char* git_hash);
+int launcher_core_set_git_hash_ex(launcher_core* core, const char* git_hash, err_t* out_err);
 int launcher_core_add_selected_backend(launcher_core* core,
                                        u32 subsystem_id,
                                        const char* subsystem_name,
@@ -162,8 +194,12 @@ int launcher_core_add_selected_backend(launcher_core* core,
                                        u32 priority,
                                        u32 chosen_by_override);
 
+/* Set the current error for audit emission (overwrites prior error). */
+int launcher_core_set_error(launcher_core* core, const err_t* err);
+
 /* Finalize + persist audit TLV. Returns 0 on success, -1 on failure. */
 int launcher_core_emit_audit(launcher_core* core, int exit_result);
+int launcher_core_emit_audit_ex(launcher_core* core, int exit_result, err_t* out_err);
 
 #ifdef __cplusplus
 } /* extern "C" */

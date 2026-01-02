@@ -12,6 +12,10 @@ NOTES: No UI/gfx dependencies; uses only standard C/C++ file IO and launcher nul
 #include <string>
 #include <vector>
 
+extern "C" {
+#include "domino/sys.h"
+}
+
 #include "launcher_audit.h"
 #include "launcher_artifact_store.h"
 #include "launcher_core_api.h"
@@ -148,6 +152,48 @@ static void rmdir_best_effort(const std::string& path) {
 #else
     (void)rmdir(path.c_str());
 #endif
+}
+
+static void remove_tree(const char* path) {
+    dsys_dir_iter* it;
+    dsys_dir_entry ent;
+    char child[512];
+
+    if (!path || path[0] == '\0') {
+        return;
+    }
+
+    it = dsys_dir_open(path);
+    if (it) {
+        while (dsys_dir_next(it, &ent)) {
+            if (ent.name[0] == '.' && (ent.name[1] == '\0' ||
+                                       (ent.name[1] == '.' && ent.name[2] == '\0'))) {
+                continue;
+            }
+            std::snprintf(child, sizeof(child), "%s/%s", path, ent.name);
+            if (ent.is_dir) {
+                remove_tree(child);
+#if defined(_WIN32) || defined(_WIN64)
+                _rmdir(child);
+#else
+                rmdir(child);
+#endif
+            } else {
+                remove(child);
+            }
+        }
+        dsys_dir_close(it);
+    }
+#if defined(_WIN32) || defined(_WIN64)
+    _rmdir(path);
+#else
+    rmdir(path);
+#endif
+}
+
+static void ensure_clean_state_root(const std::string& state_root) {
+    remove_tree(state_root.c_str());
+    mkdir_p_best_effort(state_root);
 }
 
 static std::string make_temp_root(const launcher_services_api_v1* services, const char* prefix) {
@@ -296,6 +342,7 @@ static void cleanup_instance_best_effort(const std::string& state_root,
 static void test_config_resolution_determinism() {
     const launcher_services_api_v1* services = launcher_services_null_v1();
     std::string state_root = make_temp_root(services, "state_prelaunch_cfg_det");
+    ensure_clean_state_root(state_root);
     const std::string instance_id = "inst_cfg_det";
     dom::launcher_core::LauncherAuditLog a;
     dom::launcher_core::LauncherInstanceManifest created;
@@ -363,6 +410,7 @@ static void test_config_resolution_determinism() {
 static void test_override_isolation() {
     const launcher_services_api_v1* services = launcher_services_null_v1();
     std::string state_root = make_temp_root(services, "state_prelaunch_override_iso");
+    ensure_clean_state_root(state_root);
     const std::string instance_id = "inst_override_iso";
     dom::launcher_core::LauncherAuditLog a;
     dom::launcher_core::LauncherInstanceManifest created;
@@ -407,6 +455,7 @@ static void test_override_isolation() {
 static void test_safe_mode_known_good_selection_and_overlay() {
     const launcher_services_api_v1* services = launcher_services_null_v1();
     std::string state_root = make_temp_root(services, "state_prelaunch_safe_mode");
+    ensure_clean_state_root(state_root);
     const std::string instance_id = "inst_safe_mode";
     dom::launcher_core::LauncherAuditLog a;
     dom::launcher_core::LauncherInstanceManifest created;
@@ -521,6 +570,7 @@ static void test_safe_mode_known_good_selection_and_overlay() {
 static void test_auto_recovery_suggestion_logic() {
     const launcher_services_api_v1* services = launcher_services_null_v1();
     std::string state_root = make_temp_root(services, "state_prelaunch_recovery");
+    ensure_clean_state_root(state_root);
     const std::string instance_id = "inst_recovery";
     dom::launcher_core::LauncherAuditLog a;
     dom::launcher_core::LauncherInstanceManifest created;
@@ -592,6 +642,7 @@ static void test_auto_recovery_suggestion_logic() {
 static void test_rollback_to_known_good_after_successful_launch() {
     const launcher_services_api_v1* services = launcher_services_null_v1();
     std::string state_root = make_temp_root(services, "state_prelaunch_rollback");
+    ensure_clean_state_root(state_root);
     const std::string instance_id = "inst_rollback";
     dom::launcher_core::LauncherAuditLog a;
     dom::launcher_core::LauncherInstanceManifest created;
@@ -677,6 +728,7 @@ static void test_rollback_to_known_good_after_successful_launch() {
 static void test_forced_failure_safe_mode_rollback_success_offline() {
     const launcher_services_api_v1* services = launcher_services_null_v1();
     std::string state_root = make_temp_root(services, "state_prelaunch_forced_failure");
+    ensure_clean_state_root(state_root);
     const std::string instance_id = "inst_forced_failure";
     dom::launcher_core::LauncherAuditLog a;
     dom::launcher_core::LauncherInstanceManifest created;

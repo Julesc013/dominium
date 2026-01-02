@@ -31,6 +31,7 @@ extern "C" {
 #include "core/include/launcher_instance_config.h"
 #include "core/include/launcher_instance_ops.h"
 #include "core/include/launcher_instance_tx.h"
+#include "core/include/launcher_job.h"
 #include "core/include/launcher_pack_resolver.h"
 #include "core/include/launcher_safety.h"
 #include "core/include/launcher_tools_registry.h"
@@ -604,61 +605,138 @@ static std::string target_to_string(const LauncherTuiApp& app) {
     return std::string("game");
 }
 
+static bool parse_hex_u64(const char* s, u64& out_v) {
+    u64 v = 0ull;
+    size_t i = 0u;
+    if (!s || !s[0]) {
+        return false;
+    }
+    for (; s[i] != '\0'; ++i) {
+        unsigned char c = (unsigned char)s[i];
+        u64 digit = 0ull;
+        if (i >= 16u) {
+            return false;
+        }
+        if (c >= '0' && c <= '9') {
+            digit = (u64)(c - (unsigned char)'0');
+        } else if (c >= 'a' && c <= 'f') {
+            digit = (u64)(10u + (c - (unsigned char)'a'));
+        } else if (c >= 'A' && c <= 'F') {
+            digit = (u64)(10u + (c - (unsigned char)'A'));
+        } else {
+            return false;
+        }
+        v = (v << 4) | digit;
+    }
+    if (i == 0u) {
+        return false;
+    }
+    out_v = v;
+    return true;
+}
+
+static bool find_incomplete_job_id(const launcher_services_api_v1* services,
+                                   const std::string& state_root,
+                                   const std::string& instance_id,
+                                   u32 job_type,
+                                   u64& out_job_id) {
+    dsys_dir_iter* it;
+    dsys_dir_entry e;
+    const std::string jobs_root = path_join(path_join(path_join(path_join(state_root, "instances"), instance_id), "staging"),
+                                            "jobs");
+    bool found = false;
+    out_job_id = 0ull;
+
+    it = dsys_dir_open(jobs_root.c_str());
+    if (!it) {
+        return false;
+    }
+    std::memset(&e, 0, sizeof(e));
+    while (dsys_dir_next(it, &e)) {
+        core_job_state st;
+        u64 job_id = 0ull;
+        if (!e.is_dir) continue;
+        if (!e.name || !e.name[0]) continue;
+        if (!parse_hex_u64(e.name, job_id)) continue;
+        if (!dom::launcher_core::launcher_job_state_load(services, state_root, instance_id, job_id, st)) continue;
+        if (st.job_type != job_type) continue;
+        if (st.outcome == (u32)CORE_JOB_OUTCOME_OK ||
+            st.outcome == (u32)CORE_JOB_OUTCOME_FAILED ||
+            st.outcome == (u32)CORE_JOB_OUTCOME_REFUSED ||
+            st.outcome == (u32)CORE_JOB_OUTCOME_CANCELLED) {
+            continue;
+        }
+        if (!found || job_id > out_job_id) {
+            out_job_id = job_id;
+            found = true;
+        }
+    }
+    dsys_dir_close(it);
+    return found;
+}
+
 static bool apply_packs_transaction(LauncherTuiApp& app, std::string& out_err) {
-    dom::launcher_core::LauncherAuditLog audit;
-    dom::launcher_core::LauncherInstanceTx tx;
-    std::vector<dom::launcher_core::LauncherResolvedPack> resolved;
-    std::string resolve_err;
+    const std::string instance_id = selected_instance_id(app);
+    dom::launcher_core::LauncherJobInput job_input;
+    core_job_state job_state;
+    err_t job_err = err_ok();
+    dom::launcher_core::LauncherAuditLog job_audit;
+    u64 resume_job_id = 0ull;
     size_t i;
 
     out_err.clear();
+    if (instance_id.empty()) {
+        out_err = "missing_instance_id";
+        return false;
+    }
     if (app.staged_packs.empty()) {
         out_err = "no_changes";
         return false;
     }
 
-    if (!dom::launcher_core::launcher_instance_tx_prepare(app.services,
-                                                          selected_instance_id(app),
-                                                          app.state_root,
-                                                          (u32)dom::launcher_core::LAUNCHER_INSTANCE_TX_OP_UPDATE,
-                                                          tx,
-                                                          &audit)) {
-        out_err = "tx_prepare_failed";
-        return false;
-    }
+    job_input.job_type = (u32)CORE_JOB_TYPE_LAUNCHER_APPLY_PACKS;
+    job_input.instance_id = instance_id;
 
-    tx.after_manifest = tx.before_manifest;
-    for (i = 0u; i < tx.after_manifest.content_entries.size(); ++i) {
-        dom::launcher_core::LauncherContentEntry& e = tx.after_manifest.content_entries[i];
+    for (i = 0u; i < app.manifest.content_entries.size(); ++i) {
+        const dom::launcher_core::LauncherContentEntry& e = app.manifest.content_entries[i];
+        std::map<std::string, StagedPackChange>::const_iterator it;
+        dom::launcher_core::LauncherJobPackChange pc;
+        const std::string key = pack_key(e.type, e.id);
         if (!is_pack_like(e.type)) continue;
-        {
-            const std::string key = pack_key(e.type, e.id);
-            std::map<std::string, StagedPackChange>::const_iterator it = app.staged_packs.find(key);
-            if (it == app.staged_packs.end()) continue;
-            if (it->second.has_enabled) e.enabled = it->second.enabled ? 1u : 0u;
-            if (it->second.has_update_policy) e.update_policy = it->second.update_policy;
+        it = app.staged_packs.find(key);
+        if (it == app.staged_packs.end()) continue;
+        pc.content_type = e.type;
+        pc.pack_id = e.id;
+        pc.has_enabled = it->second.has_enabled ? 1u : 0u;
+        pc.enabled = it->second.enabled ? 1u : 0u;
+        pc.has_update_policy = it->second.has_update_policy ? 1u : 0u;
+        pc.update_policy = it->second.update_policy;
+        job_input.pack_changes.push_back(pc);
+    }
+
+    if (job_input.pack_changes.empty()) {
+        out_err = "no_changes";
+        return false;
+    }
+
+    if (find_incomplete_job_id(app.services, app.state_root, instance_id, job_input.job_type, resume_job_id)) {
+        if (!dom::launcher_core::launcher_job_resume(app.services,
+                                                     app.state_root,
+                                                     instance_id,
+                                                     resume_job_id,
+                                                     job_state,
+                                                     &job_err,
+                                                     &job_audit)) {
+            out_err = err_is_ok(&job_err) ? "apply_failed" : err_to_string_id(&job_err);
+            return false;
         }
-    }
-
-    if (!dom::launcher_core::launcher_pack_resolve_enabled(app.services, tx.after_manifest, app.state_root, resolved, &resolve_err)) {
-        (void)dom::launcher_core::launcher_instance_tx_rollback(app.services, tx, &audit);
-        out_err = std::string("pack_resolve_failed;") + resolve_err;
-        return false;
-    }
-
-    if (!dom::launcher_core::launcher_instance_tx_stage(app.services, tx, &audit)) {
-        (void)dom::launcher_core::launcher_instance_tx_rollback(app.services, tx, &audit);
-        out_err = "tx_stage_failed";
-        return false;
-    }
-    if (!dom::launcher_core::launcher_instance_tx_verify(app.services, tx, &audit)) {
-        (void)dom::launcher_core::launcher_instance_tx_rollback(app.services, tx, &audit);
-        out_err = "tx_verify_failed";
-        return false;
-    }
-    if (!dom::launcher_core::launcher_instance_tx_commit(app.services, tx, &audit)) {
-        (void)dom::launcher_core::launcher_instance_tx_rollback(app.services, tx, &audit);
-        out_err = "tx_commit_failed";
+    } else if (!dom::launcher_core::launcher_job_run(app.services,
+                                                     job_input,
+                                                     app.state_root,
+                                                     job_state,
+                                                     &job_err,
+                                                     &job_audit)) {
+        out_err = err_is_ok(&job_err) ? "apply_failed" : err_to_string_id(&job_err);
         return false;
     }
 

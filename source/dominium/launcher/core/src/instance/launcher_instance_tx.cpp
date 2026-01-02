@@ -13,6 +13,7 @@ RESPONSIBILITY: Implements transactional instance mutation engine with staging-o
 
 #include "launcher_artifact_store.h"
 #include "launcher_audit.h"
+#include "launcher_log.h"
 #include "launcher_tlv.h"
 #include "launcher_tlv_migrations.h"
 #include "launcher_safety.h"
@@ -242,6 +243,37 @@ static bool get_state_root(const launcher_fs_api_v1* fs, std::string& out_state_
     return !out_state_root.empty();
 }
 
+static void emit_tx_event(const launcher_services_api_v1* services,
+                          const LauncherInstanceTx& tx,
+                          u32 op_id,
+                          u32 event_code,
+                          const err_t* err) {
+    core_log_event ev;
+    core_log_scope scope;
+    const bool safe_id = (!tx.instance_id.empty() && launcher_is_safe_id_component(tx.instance_id));
+
+    core_log_event_clear(&ev);
+    ev.domain = CORE_LOG_DOMAIN_TXN;
+    ev.code = (u16)event_code;
+    ev.severity = (u8)((event_code == CORE_LOG_EVT_OP_FAIL) ? CORE_LOG_SEV_ERROR : CORE_LOG_SEV_INFO);
+    ev.msg_id = 0u;
+    ev.t_mono = 0u;
+    (void)core_log_event_add_u32(&ev, CORE_LOG_KEY_OPERATION_ID, op_id);
+    if (err && !err_is_ok(err)) {
+        launcher_log_add_err_fields(&ev, err);
+    }
+
+    std::memset(&scope, 0, sizeof(scope));
+    scope.state_root = tx.state_root.empty() ? (const char*)0 : tx.state_root.c_str();
+    if (safe_id) {
+        scope.kind = CORE_LOG_SCOPE_INSTANCE;
+        scope.instance_id = tx.instance_id.c_str();
+    } else {
+        scope.kind = CORE_LOG_SCOPE_GLOBAL;
+    }
+    (void)launcher_services_emit_event(services, &scope, &ev);
+}
+
 static std::string payload_refs_path_live(const LauncherInstancePaths& p) {
     return path_join(p.instance_root, "payload_refs.tlv");
 }
@@ -424,6 +456,43 @@ LauncherInstanceTx::LauncherInstanceTx()
       after_manifest_hash64(0ull),
       before_manifest(),
       after_manifest() {
+}
+
+bool launcher_instance_tx_load(const launcher_services_api_v1* services,
+                               const std::string& instance_id,
+                               const std::string& state_root_override,
+                               LauncherInstanceTx& out_tx) {
+    const launcher_fs_api_v1* fs = get_fs(services);
+    std::string state_root;
+    LauncherInstancePaths paths;
+    LauncherInstanceTx tx;
+
+    if (!services || !fs) {
+        return false;
+    }
+    if (instance_id.empty()) {
+        return false;
+    }
+    if (!launcher_is_safe_id_component(instance_id)) {
+        return false;
+    }
+    if (!state_root_override.empty()) {
+        state_root = state_root_override;
+    } else if (!get_state_root(fs, state_root)) {
+        return false;
+    }
+
+    paths = launcher_instance_paths_make(state_root, instance_id);
+    if (!read_tx_state(fs, paths, tx)) {
+        return false;
+    }
+
+    tx.state_root = state_root;
+    if (tx.instance_id.empty()) {
+        tx.instance_id = instance_id;
+    }
+    out_tx = tx;
+    return true;
 }
 
 bool launcher_instance_tx_recover_staging(const launcher_services_api_v1* services,
@@ -854,6 +923,78 @@ bool launcher_instance_tx_rollback(const launcher_services_api_v1* services,
                  std::string("instance_tx;result=ok;phase=rollback;instance_id=") + tx.instance_id +
                      ";txid=0x" + u64_hex16_string(tx.tx_id));
     return true;
+}
+
+bool launcher_instance_tx_stage_ex(const launcher_services_api_v1* services,
+                                   LauncherInstanceTx& tx,
+                                   LauncherAuditLog* audit,
+                                   err_t* out_err) {
+    if (launcher_instance_tx_stage(services, tx, audit)) {
+        if (out_err) {
+            *out_err = err_ok();
+        }
+        emit_tx_event(services, tx, CORE_LOG_OP_LAUNCHER_TXN_STAGE, CORE_LOG_EVT_OP_OK, (const err_t*)0);
+        return true;
+    }
+    if (out_err) {
+        *out_err = err_make((u16)ERRD_TXN, (u16)ERRC_TXN_STAGE_FAILED, 0u, (u32)ERRMSG_TXN_STAGE_FAILED);
+    }
+    if (audit) {
+        audit->err = err_make((u16)ERRD_TXN, (u16)ERRC_TXN_STAGE_FAILED, 0u, (u32)ERRMSG_TXN_STAGE_FAILED);
+    }
+    {
+        err_t err = err_make((u16)ERRD_TXN, (u16)ERRC_TXN_STAGE_FAILED, 0u, (u32)ERRMSG_TXN_STAGE_FAILED);
+        emit_tx_event(services, tx, CORE_LOG_OP_LAUNCHER_TXN_STAGE, CORE_LOG_EVT_OP_FAIL, &err);
+    }
+    return false;
+}
+
+bool launcher_instance_tx_commit_ex(const launcher_services_api_v1* services,
+                                    LauncherInstanceTx& tx,
+                                    LauncherAuditLog* audit,
+                                    err_t* out_err) {
+    if (launcher_instance_tx_commit(services, tx, audit)) {
+        if (out_err) {
+            *out_err = err_ok();
+        }
+        emit_tx_event(services, tx, CORE_LOG_OP_LAUNCHER_TXN_COMMIT, CORE_LOG_EVT_OP_OK, (const err_t*)0);
+        return true;
+    }
+    if (out_err) {
+        *out_err = err_make((u16)ERRD_TXN, (u16)ERRC_TXN_COMMIT_FAILED, 0u, (u32)ERRMSG_TXN_COMMIT_FAILED);
+    }
+    if (audit) {
+        audit->err = err_make((u16)ERRD_TXN, (u16)ERRC_TXN_COMMIT_FAILED, 0u, (u32)ERRMSG_TXN_COMMIT_FAILED);
+    }
+    {
+        err_t err = err_make((u16)ERRD_TXN, (u16)ERRC_TXN_COMMIT_FAILED, 0u, (u32)ERRMSG_TXN_COMMIT_FAILED);
+        emit_tx_event(services, tx, CORE_LOG_OP_LAUNCHER_TXN_COMMIT, CORE_LOG_EVT_OP_FAIL, &err);
+    }
+    return false;
+}
+
+bool launcher_instance_tx_rollback_ex(const launcher_services_api_v1* services,
+                                      LauncherInstanceTx& tx,
+                                      LauncherAuditLog* audit,
+                                      err_t* out_err) {
+    if (launcher_instance_tx_rollback(services, tx, audit)) {
+        if (out_err) {
+            *out_err = err_ok();
+        }
+        emit_tx_event(services, tx, CORE_LOG_OP_LAUNCHER_TXN_ROLLBACK, CORE_LOG_EVT_OP_OK, (const err_t*)0);
+        return true;
+    }
+    if (out_err) {
+        *out_err = err_make((u16)ERRD_TXN, (u16)ERRC_TXN_ROLLBACK_FAILED, 0u, (u32)ERRMSG_TXN_ROLLBACK_FAILED);
+    }
+    if (audit) {
+        audit->err = err_make((u16)ERRD_TXN, (u16)ERRC_TXN_ROLLBACK_FAILED, 0u, (u32)ERRMSG_TXN_ROLLBACK_FAILED);
+    }
+    {
+        err_t err = err_make((u16)ERRD_TXN, (u16)ERRC_TXN_ROLLBACK_FAILED, 0u, (u32)ERRMSG_TXN_ROLLBACK_FAILED);
+        emit_tx_event(services, tx, CORE_LOG_OP_LAUNCHER_TXN_ROLLBACK, CORE_LOG_EVT_OP_FAIL, &err);
+    }
+    return false;
 }
 
 } /* namespace launcher_core */

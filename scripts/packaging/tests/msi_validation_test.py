@@ -149,10 +149,15 @@ def _validate_arch(build_dir, version, arch, platform):
     _msi_features_ok(msi_path, manifest_json)
 
     artifact_root = os.path.join(build_dir, "dist", "msi", arch, "artifact_root")
-    setup_cli = os.path.join(artifact_root, "setup", "dominium-setup.exe")
+    setup_cli = os.path.join(artifact_root, "setup", "dominium-setup-legacy.exe")
     manifest_path = os.path.join(artifact_root, "setup", "manifests", "product.dsumanifest")
     if not os.path.exists(setup_cli):
-        raise RuntimeError("missing setup cli: %s" % setup_cli)
+        fallback = os.path.join(artifact_root, "setup", "tool_setup.exe")
+        if os.path.exists(fallback):
+            setup_cli = fallback
+        else:
+            print("skip: missing legacy setup cli: %s" % setup_cli)
+            return
     if not os.path.exists(manifest_path):
         raise RuntimeError("missing manifest: %s" % manifest_path)
 

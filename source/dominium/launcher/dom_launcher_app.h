@@ -79,11 +79,32 @@ public:
     void select_next_instance();
     void cycle_selected_mode();
 
+    void toggle_tools_view();
+    bool showing_tools() const { return m_show_tools; }
+
+    void toggle_connect_host_edit();
+    bool editing_connect_host() const { return m_edit_connect_host; }
+    const std::string& connect_host() const { return m_connect_host; }
+    u32 net_port() const { return m_net_port; }
+    void adjust_net_port(int delta);
+
+    bool launch_game_listen();
+    bool launch_game_dedicated();
+    bool launch_game_connect();
+    bool launch_tool(const std::string &tool_id,
+                     const std::string &load_path,
+                     bool use_demo);
+
+    const std::vector<std::string>& repo_mod_manifests() const { return m_repo_mod_manifests; }
+    const std::vector<std::string>& repo_pack_manifests() const { return m_repo_pack_manifests; }
+
     std::string home_join(const std::string &rel) const;
 
     bool launch_product(const std::string &product,
                         const std::string &instance_id,
                         const std::string &mode);
+
+    const std::string& status_text() const;
 
     const std::string& ui_backend_selected() const { return m_ui_backend_selected; }
     u64                ui_caps_selected() const { return m_ui_caps_selected; }
@@ -119,6 +140,9 @@ private:
     std::vector<ProductEntry> m_products;
     std::vector<InstanceInfo> m_instances;
 
+    std::vector<std::string> m_repo_mod_manifests;
+    std::vector<std::string> m_repo_pack_manifests;
+
     dom_profile       m_profile;
     bool              m_profile_valid;
 
@@ -131,6 +155,12 @@ private:
     int              m_selected_product;
     int              m_selected_instance;
     std::string      m_selected_mode;
+
+    bool             m_show_tools;
+    bool             m_edit_connect_host;
+    std::string      m_connect_host;
+    u32              m_net_port;
+    std::string      m_status_text;
 
     std::string      m_ui_backend_selected;
     u64              m_ui_caps_selected;

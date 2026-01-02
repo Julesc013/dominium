@@ -10,6 +10,7 @@ add_library(dsu_core STATIC
     src/fs/dsu_fs_stdio.c
     src/platform_iface/dsu_platform_iface.c
     src/log/dsu_log.c
+    src/job/dsu_job.c
     src/manifest/dsu_manifest.c
     src/plan/dsu_plan.c
     src/report/dsu_report.c
@@ -42,6 +43,8 @@ target_link_libraries(dsu_core
         core_audit
         core_util
         core_err
+        core_job
+        core_log
 )
 
 set_target_properties(dsu_core PROPERTIES
