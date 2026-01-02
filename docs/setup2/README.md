@@ -81,3 +81,16 @@ Setup2 is a long-lived, governed system with deterministic behavior and audited 
 ## Deferred Work (Non-Binding)
 - `docs/setup2/FUTURE_BACKLOG.md`
 - Setup2 is complete without these items.
+
+## Read-Only Status
+- `docs/setup2/READ_ONLY_LOCK.md`
+- `docs/setup2/SCHEMA_FREEZE_V1.md`
+- `docs/setup2/PARITY_LOCK_MATRIX.md`
+
+## Handoff Snapshot
+- `docs/setup2/HANDOFF_SNAPSHOT.md`
+- `docs/setup2/OPERATIONS_QUICKSTART.md`
+
+## How to Start v2 (If Ever)
+- Setup2 v1 is frozen; changes require a new ladder starting at SR-0.
+- See `docs/setup2/READ_ONLY_LOCK.md` for criteria and approvals.
