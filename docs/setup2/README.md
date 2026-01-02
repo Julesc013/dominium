@@ -77,3 +77,7 @@ Setup2 is a long-lived, governed system with deterministic behavior and audited 
 - `docs/setup2/SPLAT_LIFECYCLE.md`
 - `docs/setup2/PARITY_WITH_LAUNCHER.md`
 - `docs/setup2/PARITY_LOCK_MATRIX.md`
+
+## Deferred Work (Non-Binding)
+- `docs/setup2/FUTURE_BACKLOG.md`
+- Setup2 is complete without these items.
