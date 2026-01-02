@@ -1,7 +1,7 @@
 # Installed-State Contract (Launcher)
 
 Note: This document describes the legacy DSU `installed_state.dsustate` used by
-the current launcher CLI. The setup2 `installed_state.tlv` handoff is defined in
+the current launcher CLI. The setup `installed_state.tlv` handoff is defined in
 `docs/core/INSTALLED_STATE_CONTRACT.md`.
 
 This document defines the launcher-facing contract for `installed_state.dsustate`.
@@ -37,11 +37,11 @@ Any failure results in refusal to launch.
 
 On failure, the launcher prints deterministic recovery steps:
 
-1. `dominium-setup verify --state "<state_path>" --format json`
+1. `dominium-setup-legacy verify --state "<state_path>" --format json`
 2. If verify reports issues:
-   - `dominium-setup export-invocation --manifest <manifest> --state "<state_path>" --op repair --out repair.dsuinv`
-   - `dominium-setup plan --manifest <manifest> --state "<state_path>" --invocation repair.dsuinv --out repair.dsuplan`
-   - `dominium-setup apply --plan repair.dsuplan`
+   - `dominium-setup-legacy export-invocation --manifest <manifest> --state "<state_path>" --op repair --out repair.dsuinv`
+   - `dominium-setup-legacy plan --manifest <manifest> --state "<state_path>" --invocation repair.dsuinv --out repair.dsuplan`
+   - `dominium-setup-legacy apply --plan repair.dsuplan`
 
 The launcher never performs install, repair, or uninstall actions directly.
 
@@ -58,5 +58,5 @@ Smoke tests must fail deterministically when installed-state is missing or inval
 
 ## See also
 
-- `docs/setup/INSTALLED_STATE_SCHEMA.md`
-- `docs/setup/CLI_REFERENCE.md`
+- `docs/setup_legacy/INSTALLED_STATE_SCHEMA.md`
+- `docs/setup_legacy/CLI_REFERENCE.md`

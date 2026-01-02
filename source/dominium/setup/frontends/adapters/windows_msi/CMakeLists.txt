@@ -6,7 +6,7 @@ if(WIN32)
         COMMAND ${CMAKE_COMMAND} -E copy_directory
             ${CMAKE_CURRENT_SOURCE_DIR}/wix
             ${CMAKE_CURRENT_BINARY_DIR}/wix
-        COMMENT "Staging WiX sources for setup2 MSI wrapper"
+        COMMENT "Staging WiX sources for setup MSI wrapper"
     )
 else()
     add_custom_target(build-windows-msi-wrapper)

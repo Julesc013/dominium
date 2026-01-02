@@ -31,7 +31,7 @@ python scripts\check_layers.py
 if errorlevel 1 goto :fail
 
 echo Running headless tests...
-set "TEST_REGEX=dominium_launcher_control_plane_tests|dominium_launcher_artifact_store_tx_tests|dominium_launcher_prelaunch_recovery_tests|dominium_contract_|dominium_tlv_fuzz|launcher_kernel_smoke|setup_kernel_smoke|setup2_"
+set "TEST_REGEX=dominium_launcher_control_plane_tests|dominium_launcher_artifact_store_tx_tests|dominium_launcher_prelaunch_recovery_tests|dominium_contract_|dominium_tlv_fuzz|launcher_kernel_smoke|setup_kernel_smoke|setup_"
 ctest --test-dir "%BUILD_DIR%" --output-on-failure -C %CONFIG% -R "%TEST_REGEX%"
 if errorlevel 1 goto :fail
 

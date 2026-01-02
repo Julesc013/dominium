@@ -6,7 +6,7 @@ if(UNIX AND NOT APPLE)
         COMMAND ${CMAKE_COMMAND} -E copy_directory
             ${CMAKE_CURRENT_SOURCE_DIR}/packaging
             ${CMAKE_CURRENT_BINARY_DIR}/packaging
-        COMMENT "Staging setup2 Linux DEB wrapper scripts"
+        COMMENT "Staging setup Linux DEB wrapper scripts"
     )
 else()
     add_custom_target(build-linux-deb-wrapper)
