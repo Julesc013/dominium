@@ -4,6 +4,7 @@
 #include "dsk/dsk_error.h"
 #include "dsk/dsk_tlv.h"
 #include "dss/dss_services.h"
+#include "dominium/core_installed_state.h"
 #include "dominium/core_tlv.h"
 
 #include <cstdio>
@@ -254,7 +255,7 @@ static int test_state_auto_migration_missing_version(void) {
     if (!dsk_error_is_ok(st)) {
         return fail("state parse failed");
     }
-    if (state.state_version != CORE_INSTALLED_STATE_TLV_VERSION) {
+    if (state.state_version != dom::core_installed_state::CORE_INSTALLED_STATE_TLV_VERSION) {
         return fail("state_version not backfilled");
     }
     if (!has_string(state.migration_applied, "backfill_state_version_v1")) {
