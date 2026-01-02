@@ -60,18 +60,18 @@ struct LauncherAuditGuard {
 
 struct LauncherStateProbe {
     std::string root;
-    std::string setup2_state_path;
+    std::string setup_state_path;
     std::string legacy_state_path;
     std::string audit_path;
-    bool setup2_exists;
+    bool setup_exists;
     bool legacy_exists;
 
     LauncherStateProbe()
         : root(),
-          setup2_state_path(),
+          setup_state_path(),
           legacy_state_path(),
           audit_path(),
-          setup2_exists(false),
+          setup_exists(false),
           legacy_exists(false) {}
 };
 
@@ -86,7 +86,7 @@ static std::string dirname_of(const std::string& path) {
     return std::string();
 }
 
-static std::string setup2_state_path_for_root(const std::string& root) {
+static std::string setup_state_path_for_root(const std::string& root) {
     return dom_shared::os_path_join(dom_shared::os_path_join(root, ".dsu"), "installed_state.tlv");
 }
 
@@ -94,7 +94,7 @@ static std::string legacy_state_path_for_root(const std::string& root) {
     return dom_shared::os_path_join(dom_shared::os_path_join(root, ".dsu"), "installed_state.dsustate");
 }
 
-static std::string setup2_audit_path_for_root(const std::string& root) {
+static std::string setup_audit_path_for_root(const std::string& root) {
     return dom_shared::os_path_join(dom_shared::os_path_join(root, ".dsu"), "setup_audit.tlv");
 }
 
@@ -188,31 +188,31 @@ static bool find_state_probe_from_exe(LauncherStateProbe& out_probe) {
 
     for (i = 0; i < 3; ++i) {
         if (!root.empty()) {
-            std::string setup2_path = setup2_state_path_for_root(root);
+            std::string setup_path = setup_state_path_for_root(root);
             std::string legacy_path = legacy_state_path_for_root(root);
-            std::string audit_path = setup2_audit_path_for_root(root);
+            std::string audit_path = setup_audit_path_for_root(root);
 
-            if (out_probe.setup2_state_path.empty()) {
-                out_probe.setup2_state_path = setup2_path;
+            if (out_probe.setup_state_path.empty()) {
+                out_probe.setup_state_path = setup_path;
                 out_probe.legacy_state_path = legacy_path;
                 out_probe.audit_path = audit_path;
             }
 
-            if (dom_shared::os_file_exists(setup2_path)) {
+            if (dom_shared::os_file_exists(setup_path)) {
                 out_probe.root = root;
-                out_probe.setup2_state_path = setup2_path;
+                out_probe.setup_state_path = setup_path;
                 out_probe.legacy_state_path = legacy_path;
                 out_probe.audit_path = audit_path;
-                out_probe.setup2_exists = true;
+                out_probe.setup_exists = true;
                 out_probe.legacy_exists = dom_shared::os_file_exists(legacy_path);
                 return true;
             }
             if (dom_shared::os_file_exists(legacy_path)) {
                 out_probe.root = root;
-                out_probe.setup2_state_path = setup2_path;
+                out_probe.setup_state_path = setup_path;
                 out_probe.legacy_state_path = legacy_path;
                 out_probe.audit_path = audit_path;
-                out_probe.setup2_exists = false;
+                out_probe.setup_exists = false;
                 out_probe.legacy_exists = true;
                 return true;
             }
@@ -223,7 +223,7 @@ static bool find_state_probe_from_exe(LauncherStateProbe& out_probe) {
     return false;
 }
 
-static bool load_setup2_state(const std::string& state_path,
+static bool load_setup_state(const std::string& state_path,
                               dom::launcher_core::LauncherInstalledState& out_state,
                               std::string& out_error) {
     std::vector<unsigned char> bytes;
@@ -248,7 +248,7 @@ static bool load_setup2_state(const std::string& state_path,
     return true;
 }
 
-static bool import_legacy_state_to_setup2(const std::string& legacy_path,
+static bool import_legacy_state_to_setup(const std::string& legacy_path,
                                           const std::string& out_state_path,
                                           const std::string& out_audit_path,
                                           std::string& out_error) {
@@ -328,29 +328,29 @@ static bool ensure_installed_state(std::string& out_state_path,
     out_error.clear();
 
     if (!find_state_probe_from_exe(probe)) {
-        out_state_path = probe.setup2_state_path;
+        out_state_path = probe.setup_state_path;
         out_error = "state_not_found";
         return false;
     }
 
-    if (probe.setup2_exists) {
-        out_state_path = probe.setup2_state_path;
-        if (!load_setup2_state(out_state_path, state, out_error)) {
+    if (probe.setup_exists) {
+        out_state_path = probe.setup_state_path;
+        if (!load_setup_state(out_state_path, state, out_error)) {
             return false;
         }
     } else if (probe.legacy_exists) {
-        out_state_path = probe.setup2_state_path;
-        if (!import_legacy_state_to_setup2(probe.legacy_state_path,
-                                           probe.setup2_state_path,
+        out_state_path = probe.setup_state_path;
+        if (!import_legacy_state_to_setup(probe.legacy_state_path,
+                                           probe.setup_state_path,
                                            probe.audit_path,
                                            out_error)) {
             return false;
         }
-        if (!load_setup2_state(out_state_path, state, out_error)) {
+        if (!load_setup_state(out_state_path, state, out_error)) {
             return false;
         }
     } else {
-        out_state_path = probe.setup2_state_path;
+        out_state_path = probe.setup_state_path;
         out_error = "state_not_found";
         return false;
     }
@@ -408,7 +408,7 @@ static int run_state_smoke_test(const char* state_arg) {
             std::string audit_path = dom_shared::os_path_join(state_dir, "setup_audit.tlv");
             legacy_hint = legacy_path;
             if (!legacy_path.empty() && dom_shared::os_file_exists(legacy_path)) {
-                if (!import_legacy_state_to_setup2(legacy_path, state_path, audit_path, err)) {
+                if (!import_legacy_state_to_setup(legacy_path, state_path, audit_path, err)) {
                     print_state_recovery(state_path, legacy_path, err);
                     return 3;
                 }
@@ -417,35 +417,35 @@ static int run_state_smoke_test(const char* state_arg) {
                 return 3;
             }
         }
-        if (!load_setup2_state(state_path, state, err)) {
+        if (!load_setup_state(state_path, state, err)) {
             print_state_recovery(state_path, legacy_hint, err);
             return 3;
         }
     } else if (!find_state_probe_from_exe(probe)) {
-        state_path = probe.setup2_state_path;
+        state_path = probe.setup_state_path;
         print_state_recovery(state_path, probe.legacy_state_path, "state_not_found");
         return 3;
-    } else if (probe.setup2_exists) {
-        state_path = probe.setup2_state_path;
-        if (!load_setup2_state(state_path, state, err)) {
+    } else if (probe.setup_exists) {
+        state_path = probe.setup_state_path;
+        if (!load_setup_state(state_path, state, err)) {
             print_state_recovery(state_path, probe.legacy_state_path, err);
             return 3;
         }
     } else if (probe.legacy_exists) {
-        state_path = probe.setup2_state_path;
-        if (!import_legacy_state_to_setup2(probe.legacy_state_path,
-                                           probe.setup2_state_path,
+        state_path = probe.setup_state_path;
+        if (!import_legacy_state_to_setup(probe.legacy_state_path,
+                                           probe.setup_state_path,
                                            probe.audit_path,
                                            err)) {
             print_state_recovery(state_path, probe.legacy_state_path, err);
             return 3;
         }
-        if (!load_setup2_state(state_path, state, err)) {
+        if (!load_setup_state(state_path, state, err)) {
             print_state_recovery(state_path, probe.legacy_state_path, err);
             return 3;
         }
     } else {
-        state_path = probe.setup2_state_path;
+        state_path = probe.setup_state_path;
         print_state_recovery(state_path, probe.legacy_state_path, "state_not_found");
         return 3;
     }

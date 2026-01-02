@@ -1,6 +1,6 @@
-# Installed State Contract (Setup2 -> Launcher)
+# Installed State Contract (Setup -> Launcher)
 
-`installed_state.tlv` is the deterministic, versioned record produced by setup2
+`installed_state.tlv` is the deterministic, versioned record produced by setup
 and consumed by launcher core. It contains the selected splat, installed
 components, install roots, and artifact inventory needed for audit and
 verification.
@@ -14,7 +14,7 @@ verification.
 ## Schema Summary
 
 The schema is defined in `include/dominium/core_installed_state.h` and documented
-in `docs/setup2/TLV_INSTALLED_STATE.md`.
+in `docs/setup/TLV_INSTALLED_STATE.md`.
 
 Required root fields:
 - product id
@@ -34,7 +34,7 @@ Optional root fields:
 
 ## Location and Handoff
 
-Setup2 frontends write `installed_state.tlv` to the path they control (via
+Setup frontends write `installed_state.tlv` to the path they control (via
 `--out-state` or equivalent). The launcher core parses the file via
 `launcher_installed_state_from_tlv_bytes` and may compute a stable hash for audit.
 

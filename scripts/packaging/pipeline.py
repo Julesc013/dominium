@@ -409,7 +409,7 @@ def assemble_artifact(args):
     build_dir = os.path.abspath(args.build_dir)
     setup_bin = _try_find_unique_file(build_dir, "dominium-setup" + _exe_suffix(), prefer_subpaths=["source/dominium/setup/"])
     if not setup_bin:
-        setup_bin = _try_find_unique_file(build_dir, "dominium-setup2" + _exe_suffix(), prefer_subpaths=["source/dominium/setup/"])
+        setup_bin = _try_find_unique_file(build_dir, "dominium-setup" + _exe_suffix(), prefer_subpaths=["source/dominium/setup/"])
     if not setup_bin:
         legacy_bin = _try_find_unique_file(build_dir, "dominium-setup-legacy" + _exe_suffix(), prefer_subpaths=["source/dominium/setup/"])
         if not legacy_bin:
@@ -418,7 +418,7 @@ def assemble_artifact(args):
             raise RuntimeError("legacy setup binary detected; rerun with --allow-legacy-setup to stage dominium-setup-legacy")
         setup_bin = legacy_bin
     if not setup_bin:
-        raise RuntimeError("setup2 binary not found (dominium-setup or dominium-setup2)")
+        raise RuntimeError("setup binary not found (dominium-setup or dominium-setup)")
     launcher_bin = _find_unique_file(build_dir, "dominium-launcher" + _exe_suffix(), prefer_subpaths=["source/dominium/launcher/"])
     game_bin = _find_unique_file(build_dir, "dominium_game" + _exe_suffix(), prefer_subpaths=["source/dominium/game/"])
 
@@ -852,7 +852,7 @@ def main(argv):
     ap_asm = sub.add_parser("assemble", help="Assemble canonical artifact_root/ and record digests.")
     ap_asm.add_argument("--build-dir", required=True, help="CMake build directory containing built outputs")
     ap_asm.add_argument("--allow-legacy-setup", action="store_true",
-                        help="Allow staging dominium-setup-legacy/tool_setup when setup2 is missing.")
+                        help="Allow staging dominium-setup-legacy/tool_setup when setup is missing.")
     ap_asm.add_argument("--out", required=True, help="Output directory (artifact_root/)")
     ap_asm.add_argument("--version", required=True, help="Artifact/product version (x.y.z)")
     ap_asm.add_argument("--manifest-template", default=os.path.join("assets", "setup", "manifests", "product.template.json"),

@@ -1,6 +1,6 @@
-Setup2 SR9-11 reconciliation and launcher handoff smoke coverage
+Setup SR9-11 reconciliation and launcher handoff smoke coverage
 
-why: validate Setup2 installed_state handoff/import path and close SR9-11 policy/test/doc work
-how: cmake --build build\msvc-debug --target dominium_launcher_state_smoke_tests setup2_parity_lock_tests
+why: validate Setup installed_state handoff/import path and close SR9-11 policy/test/doc work
+how: cmake --build build\msvc-debug --target dominium_launcher_state_smoke_tests setup_parity_lock_tests
 how: ctest --test-dir build\msvc-debug -R launcher_state_smoke_tests
-how: scripts\setup2\doc_lint.bat
+how: scripts\setup\doc_lint.bat

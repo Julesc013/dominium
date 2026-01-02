@@ -13,7 +13,7 @@ should reference this document.
 ## Required Binaries / Entry Points
 
 - [ ] `dominium-launcher` supports `--front=gui|tui|cli` and `--ui=native|dgfx|null`.
-- [ ] `dominium-setup` exists (legacy setup) and `dominium-setup2` (setup2 CLI) builds.
+- [ ] `dominium-setup-legacy` exists (legacy setup) and `dominium-setup` (setup CLI) builds.
 - [ ] `tool_manifest_inspector` (or equivalent tool) builds and runs via launcher.
 
 ## TLV Schemas (Governance + Vectors)
@@ -25,7 +25,7 @@ Each schema must have: schema_id, version, validator, migration hook, vectors.
 - [ ] launcher_handshake
 - [ ] launcher_audit
 - [ ] selection_summary
-- [ ] installed_state (setup2)
+- [ ] installed_state (setup)
 - [ ] core_job_def / core_job_state
 - [ ] diagnostics bundle meta/index
 - [ ] caps snapshot
@@ -37,7 +37,7 @@ Each schema must have: schema_id, version, validator, migration hook, vectors.
 - [ ] `dominium-launcher --smoke-test` (state contract)
 - [ ] `dominium-launcher caps --format=tlv|text`
 - [ ] `dominium-launcher diag-bundle <instance_id> --out=<path>`
-- [ ] `dominium-setup2` plan/apply (installed_state.tlv output)
+- [ ] `dominium-setup` plan/apply (installed_state.tlv output)
 
 ## Required Tests
 
@@ -69,5 +69,5 @@ Per launcher run directory (`instances/<id>/logs/runs/<run_id>/`):
 
 - [ ] Core docs reflect shared modules (TLV, err_t, log, job, caps/solver, providers).
 - [ ] Launcher docs reflect run artifacts and selection summary rules.
-- [ ] Setup/setup2 docs reflect installed_state schema and CLI outputs.
+- [ ] Setup/setup docs reflect installed_state schema and CLI outputs.
 - [ ] This checklist matches scripts and actual binaries.

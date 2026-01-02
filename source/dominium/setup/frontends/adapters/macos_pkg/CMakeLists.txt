@@ -6,7 +6,7 @@ if(APPLE)
         COMMAND ${CMAKE_COMMAND} -E copy_directory
             ${CMAKE_CURRENT_SOURCE_DIR}/packaging
             ${CMAKE_CURRENT_BINARY_DIR}/packaging
-        COMMENT "Staging setup2 macOS PKG wrapper scripts"
+        COMMENT "Staging setup macOS PKG wrapper scripts"
     )
 else()
     add_custom_target(build-macos-pkg-wrapper)

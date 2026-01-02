@@ -94,7 +94,7 @@ def main():
     args = ap.parse_args()
 
     repo_root = _repo_root_from_script()
-    fixtures_root = os.path.join(repo_root, "tests", "setup2", "fixtures")
+    fixtures_root = os.path.join(repo_root, "tests", "setup", "fixtures")
     pipeline = os.path.join(repo_root, "scripts", "packaging", "pipeline.py")
 
     env = os.environ.copy()

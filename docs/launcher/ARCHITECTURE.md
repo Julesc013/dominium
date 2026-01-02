@@ -35,18 +35,19 @@ than re-implementing equivalents.
 The launcher is a **consumer** of Setup Core’s installed-state file and never performs install logic.
 
 Contract:
-- The installed state lives at `<install_root>/.dsu/installed_state.dsustate`.
+- The installed state lives at `<install_root>/.dsu/installed_state.tlv` (authoritative).
+- Legacy state lives at `<install_root>/.dsu/installed_state.dsustate` and is imported on first run when needed.
 - The launcher **refuses to run** when the state file is missing or invalid.
 - On refusal, the launcher prints recovery guidance (verify/repair) and exits without attempting install.
 - The installed state is the authoritative source for component enumeration and critical path validation.
 
 Smoke validation:
-- `dominium-launcher --smoke-test --state <install_root>/.dsu/installed_state.dsustate`
+- `dominium-launcher --smoke-test --state <install_root>/.dsu/installed_state.tlv`
 
-Note: setup2 also produces `installed_state.tlv` with a shared core schema
-(`docs/core/INSTALLED_STATE_CONTRACT.md`). The setup2 handoff is parsed via the
-launcher core installed-state helpers; legacy `.dsu/installed_state.dsustate`
-remains the current CLI discovery path until integration is switched over.
+Note: Setup produces `installed_state.tlv` with a shared core schema
+(`docs/core/INSTALLED_STATE_CONTRACT.md`). The launcher parses the Setup state
+via launcher core installed-state helpers and imports legacy
+`.dsu/installed_state.dsustate` on demand.
 
 ## Layers
 

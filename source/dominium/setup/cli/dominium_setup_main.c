@@ -2,7 +2,7 @@
 FILE: source/dominium/setup/cli/dominium_setup_main.c
 MODULE: Dominium Setup
 PURPOSE: Minimal setup control-plane CLI for Plan S-1 (plan + dry-run).
-NOTE: Legacy setup entrypoint is frozen; see docs/setup2/DEPRECATION_PLAN.md.
+NOTE: Legacy setup entrypoint is frozen; see docs/setup/DEPRECATION_PLAN.md.
 */
 #include <stdio.h>
 #include <stdlib.h>

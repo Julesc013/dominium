@@ -1,40 +1,18 @@
-# Security Model (Setup Core)
-
-Setup Core is a deterministic, offline-first install engine. It assumes local, trusted binaries but treats **inputs** (manifest, plan, state) as untrusted and validates them strictly.
+# Setup Security Model
 
 ## Trust boundaries
+- Kernel is pure orchestration: no OS APIs, no filesystem, no network.
+- Services perform all side effects behind explicit facades.
+- Frontends only emit requests and call kernel/services.
 
-- **Trusted**: `dominium-setup` binary + adapters shipped with the build.
-- **Untrusted**: manifest files, plan files, installed-state files, audit logs, and user-provided paths.
+## Data integrity
+- All contracts are TLV with checksums and skip-unknown support.
+- Audit and journal files are required for forensic recovery.
 
-## Enforcement points
+## Sandboxing
+- Fake services enforce sandbox roots and path traversal rejection.
+- Real services must validate paths and avoid escaping roots.
 
-- Manifest load: validates TLV schema, IDs, required fields (`docs/setup/MANIFEST_SCHEMA.md`).
-- Plan load: validates header/version/checksum and internal coherence.
-- State load: validates install roots, component/file paths, and digest fields.
-- Transaction engine: rejects absolute paths and path traversal; verifies staged file hashes before commit.
-- Verify/uninstall: never follows symlinks out of declared install roots.
-
-## Prohibitions (locked)
-
-- No network calls during install/verify/uninstall/rollback.
-- No execution of payload code during install (pure file operations).
-- No writes outside the selected install roots or transaction root.
-- No implicit elevation: adapters must explicitly request elevation.
-
-## CLI commands (exact)
-
-- Validate manifest:
-  - `dominium-setup manifest validate --in <path-to.dsumanifest> --format json --deterministic 1`
-- Validate plan:
-  - `dominium-setup apply --plan <planfile> --dry-run --deterministic 1`
-- Verify integrity:
-  - `dominium-setup verify --state <install_root>/.dsu/installed_state.dsustate --format json --deterministic 1`
-
-Exit codes follow `docs/setup/CLI_REFERENCE.md`.
-
-## See also
-
-- `docs/setup/MANIFEST_SCHEMA.md`
-- `docs/setup/INSTALLED_STATE_SCHEMA.md`
-- `docs/setup/TRANSACTION_ENGINE.md`
+## Offline-first
+- No network access is required for install, repair, or verify.
+- Offline policy flag is enforced in planning and execution.

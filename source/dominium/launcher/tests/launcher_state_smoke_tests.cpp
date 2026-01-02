@@ -1,7 +1,7 @@
 /*
 FILE: source/dominium/launcher/tests/launcher_state_smoke_tests.cpp
 MODULE: Dominium Launcher
-PURPOSE: Validate launcher installed-state contract via Setup2 state and legacy import.
+PURPOSE: Validate launcher installed-state contract via Setup state and legacy import.
 */
 
 #include <cstdio>
@@ -223,7 +223,7 @@ static int read_bytes_file(const char *path, std::vector<unsigned char> &out_byt
     return 1;
 }
 
-static int write_setup2_state(const char *state_path,
+static int write_setup_state(const char *state_path,
                               const char *install_root,
                               const char *component_id) {
     dom::core_installed_state::InstalledState state;
@@ -256,7 +256,7 @@ static int write_setup2_state(const char *state_path,
     return 1;
 }
 
-static int parse_setup2_state(const char *state_path,
+static int parse_setup_state(const char *state_path,
                               dom::core_installed_state::InstalledState *out_state) {
     std::vector<unsigned char> bytes;
     err_t err;
@@ -403,7 +403,7 @@ static int write_manifest_fileset(const char *manifest_path,
                                   const char *install_root_path,
                                   const char *payload_path,
                                   const char *component_id) {
-    /* TLV types from docs/setup/MANIFEST_SCHEMA.md */
+    /* TLV types from docs/setup_legacy/MANIFEST_SCHEMA.md */
     const unsigned short T_ROOT = 0x0001u;
     const unsigned short T_ROOT_VER = 0x0002u;
     const unsigned short T_PRODUCT_ID = 0x0010u;
@@ -591,7 +591,7 @@ int main(int argc, char **argv) {
     char install_game[1024];
     char state_dir[1024];
     char legacy_state_path[1024];
-    char setup2_state_path[1024];
+    char setup_state_path[1024];
 
     dsu_ctx_t *ctx = NULL;
     dsu_manifest_t *m = NULL;
@@ -628,8 +628,8 @@ int main(int argc, char **argv) {
     ok &= expect(path_join(install_root, ".dsu", state_dir, (unsigned long)sizeof(state_dir)), "join state dir");
     ok &= expect(path_join(state_dir, "installed_state.dsustate", legacy_state_path, (unsigned long)sizeof(legacy_state_path)),
                  "join legacy state path");
-    ok &= expect(path_join(state_dir, "installed_state.tlv", setup2_state_path, (unsigned long)sizeof(setup2_state_path)),
-                 "join setup2 state path");
+    ok &= expect(path_join(state_dir, "installed_state.tlv", setup_state_path, (unsigned long)sizeof(setup_state_path)),
+                 "join setup state path");
     ok &= expect(path_join(base, "m.dsumanifest", manifest_path, (unsigned long)sizeof(manifest_path)), "join manifest path");
     ok &= expect(write_manifest_fileset(manifest_path, install_root, payload_rel, component_id), "write manifest");
     if (!ok) goto done;
@@ -676,14 +676,14 @@ int main(int argc, char **argv) {
     ok &= expect(file_exists(legacy_state_path), "legacy state exists");
     ok &= expect(file_exists(install_launcher), "launcher file exists");
     ok &= expect(file_exists(install_game), "game file exists");
-    ok &= expect(write_setup2_state(setup2_state_path, install_root, component_id), "write setup2 state");
+    ok &= expect(write_setup_state(setup_state_path, install_root, component_id), "write setup state");
     if (!ok) goto done;
 
     {
         std::string launcher_path = resolve_launcher_path(argc > 0 ? argv[0] : NULL,
                                                           argc > 1 ? argv[1] : NULL,
                                                           launcher_name);
-        std::string state_arg = std::string(setup2_state_path);
+        std::string state_arg = std::string(setup_state_path);
 #if defined(_WIN32)
         launcher_path = path_to_native_win32(launcher_path.c_str());
         state_arg = path_to_native_win32(state_arg.c_str());
@@ -699,7 +699,7 @@ int main(int argc, char **argv) {
         ok &= expect(rc == 0, "launcher --smoke-test succeeds");
     }
 
-    ok &= expect(dsu_platform_remove_file(setup2_state_path) == DSU_STATUS_SUCCESS, "remove setup2 state");
+    ok &= expect(dsu_platform_remove_file(setup_state_path) == DSU_STATUS_SUCCESS, "remove setup state");
     if (!ok) goto done;
 
     {
@@ -707,25 +707,25 @@ int main(int argc, char **argv) {
         std::string launcher_path = resolve_launcher_path(argc > 0 ? argv[0] : NULL,
                                                           argc > 1 ? argv[1] : NULL,
                                                           launcher_name);
-        std::string state_arg = std::string(setup2_state_path);
+        std::string state_arg = std::string(setup_state_path);
 #if defined(_WIN32)
         launcher_path = path_to_native_win32(launcher_path.c_str());
         state_arg = path_to_native_win32(state_arg.c_str());
 #endif
         int rc = run_launcher_smoke(launcher_path, state_arg);
         ok &= expect(rc == 0, "launcher --smoke-test succeeds (legacy import)");
-        ok &= expect(file_exists(setup2_state_path), "setup2 state created after import");
-        ok &= expect(parse_setup2_state(setup2_state_path, &imported), "parse imported setup2 state");
+        ok &= expect(file_exists(setup_state_path), "setup state created after import");
+        ok &= expect(parse_setup_state(setup_state_path, &imported), "parse imported setup state");
         ok &= expect(!imported.import_source.empty(), "import source set");
     }
 
-    ok &= expect(write_bytes_file(setup2_state_path, (const unsigned char *)"bad", 3ul), "write corrupt state");
+    ok &= expect(write_bytes_file(setup_state_path, (const unsigned char *)"bad", 3ul), "write corrupt state");
     if (!ok) goto done;
     {
         std::string launcher_path = resolve_launcher_path(argc > 0 ? argv[0] : NULL,
                                                           argc > 1 ? argv[1] : NULL,
                                                           launcher_name);
-        std::string state_arg = std::string(setup2_state_path);
+        std::string state_arg = std::string(setup_state_path);
 #if defined(_WIN32)
         launcher_path = path_to_native_win32(launcher_path.c_str());
         state_arg = path_to_native_win32(state_arg.c_str());
