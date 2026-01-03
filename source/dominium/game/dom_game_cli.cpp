@@ -428,6 +428,7 @@ void dom_game_cli_init_defaults(dom_game_config *out_cfg) {
     out_cfg->demo_mode = 0u;
     out_cfg->replay_strict_content = 1u;
     out_cfg->dev_allow_ad_hoc_paths = 0u;
+    out_cfg->ui_transparent_loading = 0u;
     (void)copy_cstr_bounded(out_cfg->instance_id, sizeof(out_cfg->instance_id), "demo");
     init_profile_defaults(out_cfg->profile);
     out_cfg->handshake_path[0] = '\0';
@@ -614,6 +615,15 @@ int dom_game_cli_parse(int argc, char **argv, dom_game_config *out_cfg, dom_game
             out_cfg->dev_allow_ad_hoc_paths = flag;
             continue;
         }
+        if (std::strncmp(arg, "--ui.transparent-loading=", 25) == 0) {
+            u32 flag = 0u;
+            if (!parse_u32_range(arg + 25, 0u, 1u, flag)) {
+                set_error(out_result, "Invalid --ui.transparent-loading value; expected 0|1.");
+                return -1;
+            }
+            out_cfg->ui_transparent_loading = flag;
+            continue;
+        }
         if (std::strncmp(arg, "--record-replay=", 16) == 0) {
             if (!copy_cstr_bounded(out_cfg->replay_record_path, sizeof(out_cfg->replay_record_path), arg + 16)) {
                 set_error(out_result, "Replay record path too long.");
@@ -718,7 +728,7 @@ void dom_game_cli_print_help(FILE *out) {
     }
     std::fprintf(out, "Dominium game CLI\n");
     std::fprintf(out, "Usage: game_dominium [options]\n");
-    std::fprintf(out, "  --mode=gui|tui|headless\n");
+    std::fprintf(out, "  --mode=gui|tui|headless  --ui.transparent-loading=0|1\n");
     std::fprintf(out, "  --server=off|listen|dedicated\n");
     std::fprintf(out, "  --connect=<addr[:port]>  --port=<u16>\n");
     std::fprintf(out, "  --home=<path>  --instance=<id>  --profile=compat|baseline|perf\n");

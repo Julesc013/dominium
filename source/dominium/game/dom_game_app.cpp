@@ -693,6 +693,7 @@ DomGameApp::DomGameApp()
       m_runtime(0),
       m_last_wall_us(0u),
       m_show_debug_panel(false),
+      m_ui_transparent_loading(false),
       m_debug_probe_set(false),
       m_debug_probe_x(0),
       m_debug_probe_y(0),
@@ -738,6 +739,7 @@ bool DomGameApp::init_from_cli(const dom_game_config &cfg) {
     m_load_path = cfg.load_path;
     m_launcher_mode = (cfg.handshake_path[0] != '\0');
     m_dev_allow_ad_hoc_paths = (cfg.dev_allow_ad_hoc_paths != 0u);
+    m_ui_transparent_loading = (cfg.ui_transparent_loading != 0u);
     m_run_id = 0u;
     m_refusal_code = 0u;
     m_refusal_detail.clear();
@@ -1330,7 +1332,7 @@ bool DomGameApp::start_session(DomGamePhaseAction action, std::string &out_error
 
 void DomGameApp::handle_phase_enter(DomGamePhaseId prev_phase, DomGamePhaseId next_phase) {
     if (next_phase == DOM_GAME_PHASE_SPLASH) {
-        dom_game_ui_build_loading(m_ui_ctx);
+        dom_game_ui_build_splash(m_ui_ctx);
         if (!m_bootstrap_started) {
             m_bootstrap_started = true;
             if (!init_session(m_cfg)) {
@@ -1351,7 +1353,7 @@ void DomGameApp::handle_phase_enter(DomGamePhaseId prev_phase, DomGamePhaseId ne
     }
     if (next_phase == DOM_GAME_PHASE_SESSION_START) {
         std::string err;
-        dom_game_ui_build_loading(m_ui_ctx);
+        dom_game_ui_build_session_loading(m_ui_ctx);
         if (!start_session(m_phase.session_action, err)) {
             std::fprintf(stderr, "DomGameApp: session start failed (%s)\n", err.c_str());
             m_session_start_failed = true;
@@ -1362,7 +1364,7 @@ void DomGameApp::handle_phase_enter(DomGamePhaseId prev_phase, DomGamePhaseId ne
         return;
     }
     if (next_phase == DOM_GAME_PHASE_SESSION_LOADING) {
-        dom_game_ui_build_loading(m_ui_ctx);
+        dom_game_ui_build_session_loading(m_ui_ctx);
         return;
     }
     if (next_phase == DOM_GAME_PHASE_IN_SESSION) {
@@ -1405,7 +1407,6 @@ void DomGameApp::update_phase(u32 dt_ms) {
 
 bool DomGameApp::init_views_and_ui(const dom_game_config &cfg) {
     d_view_desc desc;
-    (void)cfg;
 
     std::memset(&desc, 0, sizeof(desc));
     desc.id = 1u;
@@ -1433,6 +1434,10 @@ bool DomGameApp::init_views_and_ui(const dom_game_config &cfg) {
     dom_game_ui_set_app(this);
 
     dom_game_ui_build_root(m_ui_ctx, m_mode);
+    if (cfg.ui_transparent_loading && m_mode != GAME_MODE_HEADLESS) {
+        std::fprintf(stderr,
+                     "DomGameApp: transparent loading requested; using opaque fallback.\n");
+    }
     m_camera.reset();
     return true;
 }

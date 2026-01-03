@@ -68,6 +68,11 @@ DomGamePhaseCtx::DomGamePhaseCtx()
       world_progress(0u),
       has_error(false),
       last_error(),
+      loading_status(),
+      loading_progress(),
+      loading_detail_content(),
+      loading_detail_net(),
+      loading_detail_world(),
       player_name(),
       server_addr(),
       server_port(0u) {
@@ -149,22 +154,48 @@ bool dom_game_phase_update(DomGamePhaseCtx &ctx, const DomGamePhaseInput &in) {
 
 void dom_game_phase_render(DomGamePhaseCtx &ctx, dui_context &ui, u32 dt_ms) {
     char buf[128];
+    const char spinner_chars[] = "|/-\\";
+    const char spinner = spinner_chars[(ctx.phase_time_ms / 150u) % 4u];
     (void)dt_ms;
     if (ctx.phase == DOM_GAME_PHASE_SPLASH) {
-        std::snprintf(buf,
-                      sizeof(buf),
-                      "Loading... %s%s",
-                      ctx.runtime_ready ? "runtime " : "",
-                      ctx.content_ready ? "content" : "");
-        dom_game_ui_set_loading_status(ui, buf);
-    } else if (ctx.phase == DOM_GAME_PHASE_SESSION_LOADING) {
-        std::snprintf(buf,
-                      sizeof(buf),
-                      "Session loading... %s%s%s",
-                      ctx.content_ready ? "content " : "",
-                      ctx.net_ready ? "net " : "",
-                      ctx.world_ready ? "world" : "");
-        dom_game_ui_set_loading_status(ui, buf);
+        u32 progress = 0u;
+        if (ctx.runtime_ready) {
+            progress += 50u;
+        }
+        if (ctx.content_ready) {
+            progress += 50u;
+        }
+        std::snprintf(buf, sizeof(buf), "Booting %c", spinner);
+        ctx.loading_status = buf;
+        std::snprintf(buf, sizeof(buf), "Progress: %u%%", progress);
+        ctx.loading_progress = buf;
+        dom_game_ui_set_loading_status(ui, ctx.loading_status.c_str());
+        dom_game_ui_set_loading_progress(ui, ctx.loading_progress.c_str());
+        return;
+    }
+    if (ctx.phase == DOM_GAME_PHASE_SESSION_START ||
+        ctx.phase == DOM_GAME_PHASE_SESSION_LOADING) {
+        u32 world_pct = ctx.world_ready ? 100u : ctx.world_progress;
+        if (world_pct > 100u) {
+            world_pct = 100u;
+        }
+        std::snprintf(buf, sizeof(buf), "Session loading %c", spinner);
+        ctx.loading_status = buf;
+        std::snprintf(buf, sizeof(buf), "Progress: %u%%", world_pct);
+        ctx.loading_progress = buf;
+        ctx.loading_detail_content = ctx.content_ready ? "Content: ready" : "Content: pending";
+        ctx.loading_detail_net = ctx.net_ready ? "Network: ready" : "Network: pending";
+        if (ctx.world_ready) {
+            ctx.loading_detail_world = "World: ready";
+        } else {
+            std::snprintf(buf, sizeof(buf), "World: %u%%", world_pct);
+            ctx.loading_detail_world = buf;
+        }
+        dom_game_ui_set_loading_status(ui, ctx.loading_status.c_str());
+        dom_game_ui_set_loading_progress(ui, ctx.loading_progress.c_str());
+        dom_game_ui_set_loading_detail_content(ui, ctx.loading_detail_content.c_str());
+        dom_game_ui_set_loading_detail_net(ui, ctx.loading_detail_net.c_str());
+        dom_game_ui_set_loading_detail_world(ui, ctx.loading_detail_world.c_str());
     }
 }
 

@@ -72,6 +72,11 @@ struct DomGamePhaseCtx {
     u32 world_progress;
     bool has_error;
     std::string last_error;
+    std::string loading_status;
+    std::string loading_progress;
+    std::string loading_detail_content;
+    std::string loading_detail_net;
+    std::string loading_detail_world;
     std::string player_name;
     std::string server_addr;
     u32 server_port;
