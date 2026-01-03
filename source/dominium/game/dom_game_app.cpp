@@ -712,6 +712,9 @@ DomGameApp::DomGameApp()
     std::memset(m_hud_instance_text, 0, sizeof(m_hud_instance_text));
     std::memset(m_hud_remaining_text, 0, sizeof(m_hud_remaining_text));
     std::memset(m_hud_inventory_text, 0, sizeof(m_hud_inventory_text));
+    std::memset(m_menu_player_text, 0, sizeof(m_menu_player_text));
+    std::memset(m_menu_server_text, 0, sizeof(m_menu_server_text));
+    std::memset(m_menu_error_text, 0, sizeof(m_menu_error_text));
     std::memset(&m_cfg, 0, sizeof(m_cfg));
 }
 
@@ -807,6 +810,9 @@ bool DomGameApp::init_from_cli(const dom_game_config &cfg) {
                                (m_server_mode != SERVER_OFF || m_mode == GAME_MODE_HEADLESS));
     m_phase.server_addr = m_connect_addr;
     m_phase.server_port = m_net_port;
+    if (m_phase.server_addr.empty()) {
+        m_phase.server_addr = "127.0.0.1";
+    }
     if (!m_instance.id.empty()) {
         m_phase.player_name = m_instance.id;
     }
@@ -1314,11 +1320,17 @@ bool DomGameApp::start_session(DomGamePhaseAction action, std::string &out_error
         return true;
     }
     if (action == DOM_GAME_PHASE_ACTION_START_JOIN) {
-        if (m_connect_addr.empty()) {
-            out_error = "missing_connect_addr";
+        std::string addr = m_phase.server_addr.empty() ? m_connect_addr : m_phase.server_addr;
+        if (addr.empty()) {
+            out_error = "missing_server_addr";
             return false;
         }
-        if (!m_net.init_client(m_tick_rate_hz, m_connect_addr)) {
+        if (addr.find(':') == std::string::npos && m_phase.server_port != 0u) {
+            char port_buf[16];
+            std::snprintf(port_buf, sizeof(port_buf), ":%u", (unsigned)m_phase.server_port);
+            addr += port_buf;
+        }
+        if (!m_net.init_client(m_tick_rate_hz, addr)) {
             out_error = "net_client_init_failed";
             return false;
         }
@@ -1347,8 +1359,14 @@ void DomGameApp::handle_phase_enter(DomGamePhaseId prev_phase, DomGamePhaseId ne
         if (prev_phase == DOM_GAME_PHASE_SESSION_LOADING ||
             prev_phase == DOM_GAME_PHASE_IN_SESSION) {
             m_net.shutdown();
+            if (!init_session(m_cfg)) {
+                std::fprintf(stderr, "DomGameApp: session reset failed\n");
+                m_phase.has_error = true;
+                m_phase.last_error = "session_reset_failed";
+            }
         }
         dom_game_ui_build_main_menu(m_ui_ctx);
+        update_menu_labels();
         return;
     }
     if (next_phase == DOM_GAME_PHASE_SESSION_START) {
@@ -1403,6 +1421,41 @@ void DomGameApp::update_phase(u32 dt_ms) {
         handle_phase_enter(m_phase.prev_phase, m_phase.phase);
     }
     dom_game_phase_render(m_phase, m_ui_ctx, dt_ms);
+}
+
+void DomGameApp::update_menu_labels() {
+    const char *player = m_phase.player_name.empty() ? "Player" : m_phase.player_name.c_str();
+    std::snprintf(m_menu_player_text, sizeof(m_menu_player_text), "Player: %s", player);
+
+    if (!m_phase.server_addr.empty()) {
+        if (m_phase.server_port != 0u) {
+            std::snprintf(m_menu_server_text,
+                          sizeof(m_menu_server_text),
+                          "Server: %s:%u",
+                          m_phase.server_addr.c_str(),
+                          (unsigned)m_phase.server_port);
+        } else {
+            std::snprintf(m_menu_server_text,
+                          sizeof(m_menu_server_text),
+                          "Server: %s",
+                          m_phase.server_addr.c_str());
+        }
+    } else {
+        std::snprintf(m_menu_server_text, sizeof(m_menu_server_text), "Server: (unset)");
+    }
+
+    if (m_phase.has_error && !m_phase.last_error.empty()) {
+        std::snprintf(m_menu_error_text,
+                      sizeof(m_menu_error_text),
+                      "Error: %s",
+                      m_phase.last_error.c_str());
+    } else {
+        m_menu_error_text[0] = '\0';
+    }
+
+    dom_game_ui_set_menu_player(m_ui_ctx, m_menu_player_text);
+    dom_game_ui_set_menu_server(m_ui_ctx, m_menu_server_text);
+    dom_game_ui_set_menu_error(m_ui_ctx, m_menu_error_text);
 }
 
 bool DomGameApp::init_views_and_ui(const dom_game_config &cfg) {
