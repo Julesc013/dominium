@@ -19,6 +19,13 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include <cstring>
 #include <cctype>
 
+#if defined(_WIN32) || defined(_WIN64)
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+#include <windows.h>
+#endif
+
 #include "dom_launcher_actions.h"
 #include "dom_launcher_catalog.h"
 
@@ -357,6 +364,37 @@ static bool str_ieq(const char* a, const char* b) {
         ++b;
     }
     return *a == '\0' && *b == '\0';
+}
+
+static std::string normalize_launch_behavior(const std::string& value) {
+    if (value.empty()) {
+        return std::string("stay");
+    }
+    if (str_ieq(value.c_str(), "stay")) {
+        return std::string("stay");
+    }
+    if (str_ieq(value.c_str(), "minimize")) {
+        return std::string("minimize");
+    }
+    if (str_ieq(value.c_str(), "close")) {
+        return std::string("close");
+    }
+    return std::string();
+}
+
+static bool minimize_window_best_effort(const dui_api_v1* api, dui_window* win) {
+    if (!api || !win || !api->get_native_window_handle) {
+        return false;
+    }
+    void* handle = api->get_native_window_handle(win);
+#if defined(_WIN32) || defined(_WIN64)
+    if (handle) {
+        return ShowWindow((HWND)handle, SW_MINIMIZE) != 0;
+    }
+#else
+    (void)handle;
+#endif
+    return false;
 }
 
 static bool ends_with_ci(const char* s, const char* suffix) {
@@ -1341,6 +1379,7 @@ DomLauncherApp::DomLauncherApp()
       m_selected_product(-1),
       m_selected_instance(-1),
       m_selected_mode("gui"),
+      m_launch_behavior("stay"),
       m_show_tools(false),
       m_edit_connect_host(false),
       m_connect_host("127.0.0.1"),
@@ -1388,6 +1427,12 @@ bool DomLauncherApp::init_from_cli(const LauncherConfig &cfg, const dom_profile*
 
     m_mode = cfg.mode;
     m_selected_mode = cfg.product_mode.empty() ? "gui" : cfg.product_mode;
+    m_launch_behavior = normalize_launch_behavior(cfg.launcher_launch_behavior);
+    if (m_launch_behavior.empty()) {
+        std::printf("Launcher: invalid launcher_launch_behavior '%s'.\n",
+                    cfg.launcher_launch_behavior.c_str());
+        return false;
+    }
 
     if (!scan_repo()) {
         return false;
@@ -2253,6 +2298,7 @@ bool DomLauncherApp::spawn_product_args(const std::string &product,
     }
 
     if (!wait_for_exit) {
+        apply_launch_behavior(lr, target.is_tool != 0u);
         if (m_ui) m_ui->status_text = "Spawned.";
         return true;
     }
@@ -2263,6 +2309,30 @@ bool DomLauncherApp::spawn_product_args(const std::string &product,
         if (m_ui) m_ui->status_text = buf;
     }
     return lr.ok != 0u;
+}
+
+void DomLauncherApp::apply_launch_behavior(const LaunchRunResult& lr, bool is_tool) {
+    if (m_mode == LAUNCHER_MODE_CLI) {
+        return;
+    }
+    if (is_tool) {
+        return;
+    }
+    if (m_launch_behavior == "stay") {
+        return;
+    }
+    if (!lr.spawned || !lr.ok) {
+        return;
+    }
+    if (m_launch_behavior == "close") {
+        shutdown();
+        return;
+    }
+    if (m_launch_behavior == "minimize") {
+        if (!minimize_window_best_effort(m_dui_api, m_dui_win)) {
+            std::printf("Launcher: minimize requested but unsupported by backend.\n");
+        }
+    }
 }
 
 bool DomLauncherApp::launch_product(const std::string &product,
@@ -3123,6 +3193,10 @@ void DomLauncherApp::process_ui_task() {
                 t.launch_result = lr;
                 m_ui->status_text = std::string("Spawned run_id=0x") + u64_hex16(lr.run_id);
                 m_ui->status_progress = 600u;
+                apply_launch_behavior(lr, target.is_tool != 0u);
+                if (!m_running) {
+                    return;
+                }
             }
 
             t.step = 1u;

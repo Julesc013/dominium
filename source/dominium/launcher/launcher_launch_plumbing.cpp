@@ -10,6 +10,7 @@ RESPONSIBILITY: Implements per-attempt handshake generation, persistence, valida
 #include <algorithm>
 #include <cstdio>
 #include <cstring>
+#include <cstdlib>
 
 extern "C" {
 #include "domino/caps.h"
@@ -67,6 +68,62 @@ static std::string path_join(const std::string& a, const std::string& b) {
     if (is_sep(aa[aa.size() - 1u])) return aa + bb;
     return aa + "/" + bb;
 }
+
+static bool set_env_var_value(const char* key, const char* value) {
+#if defined(_WIN32) || defined(_WIN64)
+    if (!key) {
+        return false;
+    }
+    if (!value) {
+        value = "";
+    }
+    return _putenv_s(key, value) == 0;
+#else
+    if (!key) {
+        return false;
+    }
+    if (!value) {
+        return unsetenv(key) == 0;
+    }
+    return setenv(key, value, 1) == 0;
+#endif
+}
+
+struct ScopedEnvVar {
+    const char* key;
+    std::string prev_value;
+    bool had_prev;
+    bool ok;
+
+    ScopedEnvVar(const char* k, const char* value)
+        : key(k),
+          prev_value(),
+          had_prev(false),
+          ok(false) {
+        if (!key) {
+            return;
+        }
+        {
+            const char* cur = std::getenv(key);
+            if (cur) {
+                had_prev = true;
+                prev_value = cur;
+            }
+        }
+        ok = set_env_var_value(key, value);
+    }
+
+    ~ScopedEnvVar() {
+        if (!key) {
+            return;
+        }
+        if (had_prev) {
+            (void)set_env_var_value(key, prev_value.c_str());
+        } else {
+            (void)set_env_var_value(key, 0);
+        }
+    }
+};
 
 static bool write_file_all(const std::string& path, const std::vector<unsigned char>& bytes) {
     FILE* f = std::fopen(path.c_str(), "wb");
@@ -1160,7 +1217,20 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
             argv_full.push_back(child_args[i]);
         }
     }
-    argv_full.push_back(std::string("--handshake=") + out_result.handshake_path);
+    {
+        std::string handshake_rel = "handshake.tlv";
+        if (!out_result.run_dir.empty()) {
+            std::string run_dir = normalize_seps(out_result.run_dir);
+            std::string hs_path = normalize_seps(out_result.handshake_path);
+            if (!run_dir.empty() && run_dir[run_dir.size() - 1u] != '/') {
+                run_dir.push_back('/');
+            }
+            if (!run_dir.empty() && hs_path.compare(0u, run_dir.size(), run_dir) == 0u) {
+                handshake_rel = hs_path.substr(run_dir.size());
+            }
+        }
+        argv_full.push_back(std::string("--handshake=") + handshake_rel);
+    }
 
     argv_ptrs.resize(argv_full.size() + 1u);
     {
@@ -1171,8 +1241,18 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
         argv_ptrs[argv_full.size()] = 0;
     }
 
+    bool env_ok = !out_result.run_dir.empty();
     std::memset(&handle, 0, sizeof(handle));
-    pr = dsys_proc_spawn(executable_path.c_str(), &argv_ptrs[0], 1, wait_for_exit ? &handle : (dsys_process_handle*)0);
+    {
+        ScopedEnvVar run_root_env("DOMINIUM_RUN_ROOT", out_result.run_dir.c_str());
+        ScopedEnvVar home_root_env("DOMINIUM_HOME", state_root.empty() ? (const char*)0 : state_root.c_str());
+        env_ok = env_ok && run_root_env.ok && home_root_env.ok;
+        if (env_ok) {
+            pr = dsys_proc_spawn(executable_path.c_str(), &argv_ptrs[0], 1, wait_for_exit ? &handle : (dsys_process_handle*)0);
+        } else {
+            pr = DSYS_PROC_ERROR_GENERIC;
+        }
+    }
     if (pr != DSYS_PROC_OK) {
         out_result.spawned = 0u;
         out_result.ok = 0u;
@@ -1181,6 +1261,9 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
                            (u32)ERRMSG_PROC_SPAWN_FAILED);
         run_audit.exit_result = 1;
         audit_add_reason(run_audit, "outcome=spawn_failed");
+        if (!env_ok) {
+            audit_add_reason(run_audit, "env_set_failed");
+        }
         run_audit.err = run_err;
         (void)dom::launcher_core::launcher_audit_to_tlv_bytes(run_audit, run_audit_bytes);
         (void)write_file_all(out_result.audit_path, run_audit_bytes);
@@ -1208,7 +1291,7 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
         run_summary.err = run_err;
         write_run_summary_best_effort(out_result.run_summary_path, run_summary);
         cleanup_old_runs_best_effort(state_root, instance_id, keep_last_runs);
-        out_result.error = "spawn_failed";
+        out_result.error = env_ok ? "spawn_failed" : "spawn_env_failed";
         return false;
     }
 

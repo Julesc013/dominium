@@ -44,6 +44,7 @@ struct LauncherConfig {
     std::string instance_id;
     std::string product;
     std::string product_mode; /* gui/tui/headless */
+    std::string launcher_launch_behavior; /* minimize|close|stay */
 };
 
 struct ProductEntry {
@@ -53,6 +54,7 @@ struct ProductEntry {
 };
 
 struct DomLauncherUiState; /* defined in dom_launcher_app.cpp */
+struct LaunchRunResult;
 
 class DomLauncherApp {
 public:
@@ -131,6 +133,7 @@ private:
     bool spawn_product_args(const std::string &product,
                             const std::vector<std::string> &args,
                             bool wait_for_exit);
+    void apply_launch_behavior(const LaunchRunResult& lr, bool is_tool);
 
 private:
     Paths            m_paths;
@@ -155,6 +158,7 @@ private:
     int              m_selected_product;
     int              m_selected_instance;
     std::string      m_selected_mode;
+    std::string      m_launch_behavior;
 
     bool             m_show_tools;
     bool             m_edit_connect_host;

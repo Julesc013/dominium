@@ -45,6 +45,8 @@ Phases are explicit, logged, and only advance via defined transitions.
 - All filesystem access resolves through launcher-defined roots:
   - `DOMINIUM_RUN_ROOT` (preferred; per-run writable root).
   - `DOMINIUM_HOME` (allowed; logical instance/content root).
+- Launcher sets `DOMINIUM_RUN_ROOT` per run and passes `--handshake=handshake.tlv`
+  relative to it; `DOMINIUM_HOME` is set when available.
 - The game refuses launcher mode runs if required roots are missing or invalid.
 - Refusals are written to `DOMINIUM_RUN_ROOT/refusal.tlv` if available; otherwise
   stderr only. See `docs/SPEC_FS_CONTRACT.md`.

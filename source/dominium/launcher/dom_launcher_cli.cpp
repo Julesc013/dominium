@@ -1186,6 +1186,7 @@ int main(int argc, char **argv) {
     cfg.instance_id.clear();
     cfg.product.clear();
     cfg.product_mode = "gui";
+    cfg.launcher_launch_behavior = "stay";
 
     for (i = 1; i < argc; ++i) {
         const char *arg = argv[i];
@@ -1206,6 +1207,10 @@ int main(int argc, char **argv) {
             cfg.instance_id = arg + 11;
         } else if (std::strncmp(arg, "--product=", 10) == 0) {
             cfg.product = arg + 10;
+        } else if (std::strncmp(arg, "--launcher-launch-behavior=", 27) == 0) {
+            cfg.launcher_launch_behavior = arg + 27;
+        } else if (std::strncmp(arg, "--launcher_launch_behavior=", 27) == 0) {
+            cfg.launcher_launch_behavior = arg + 27;
         }
     }
     if (cfg.home.empty() && !install_root_for_home.empty()) {

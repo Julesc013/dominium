@@ -39,3 +39,7 @@ and Domino view/canvas models without calling OS APIs directly.
 - Backends may be swapped by changing `dgfx_desc.backend` (soft, gl2, dx9, etc.).
 - This is a skeleton intended to validate the ABIs; styling, text rendering,
   and richer widgets are future work.
+- Launch policy is controlled by `launcher_launch_behavior = minimize|close|stay`
+  (applied after spawning the game).
+- Game spawns set `DOMINIUM_RUN_ROOT` and pass `--handshake=handshake.tlv`
+  relative to that run root; `DOMINIUM_HOME` is set when available.

@@ -63,7 +63,7 @@ struct LaunchRunResult {
 
 /* Executes a launch attempt (game or tool executable) with per-attempt run logs:
  * - Writes handshake and per-run audit TLV into `instances/<id>/logs/runs/<run_id>/`
- * - Appends `--handshake=<path>` to argv and spawns the child
+ * - Appends `--handshake=<relpath>` (relative to run root) and spawns the child
  * - Cleanup: keeps last `keep_last_runs` run directories (best-effort)
  */
 bool launcher_execute_launch_attempt(const std::string& state_root,
