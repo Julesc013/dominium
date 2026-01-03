@@ -15,6 +15,7 @@ add_executable(dominium_game
     core/product_info.c
     runtime/dom_game_runtime.cpp
     runtime/dom_game_hash.c
+    runtime/dom_game_paths.c
     runtime/dom_game_content_id.cpp
     runtime/dom_game_save.cpp
     runtime/dom_game_replay.cpp
@@ -45,6 +46,7 @@ set_target_properties(dominium_game PROPERTIES
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
+set_source_files_properties(runtime/dom_game_paths.c PROPERTIES LANGUAGE CXX)
 dist_set_role(dominium_game game)
 
 dominium_bundle_runtime(dominium_game)
