@@ -50,6 +50,7 @@ set_target_properties(launcher_services_impl_instances PROPERTIES
 
 add_library(launcher_frontend_cli STATIC
     dom_launcher_app.cpp
+    ui/launcher_ui_session_state.cpp
     dom_launcher_catalog.cpp
     dom_launcher_actions.cpp
     launcher_caps_snapshot.cpp
@@ -74,9 +75,11 @@ target_link_libraries(launcher_frontend_cli
     PRIVATE
         launcher_kernel
         launcher_services_api
+        core_tlv
         core_caps
         core_solver
         providers_builtin
+        dom_shared
 )
 
 set_target_properties(launcher_frontend_cli PROPERTIES
@@ -154,6 +157,7 @@ target_link_libraries(dominium-launcher
         launcher_services_impl_instances
         launcher_services_impl_null
         dominium_common
+        core_tlv
         domino_core
         dominium_launcher_core
         dom_shared
@@ -235,6 +239,66 @@ add_custom_target(ui_regen_launcher
 )
 add_dependencies(ui_regen_launcher dominium-ui-editor)
 
+if(TARGET dominium-ui-preview-host-win32)
+    add_custom_target(ui_preview_launcher_win32
+        COMMAND $<TARGET_FILE:dominium-ui-editor>
+            --headless-build-ui
+            --in ${LAUNCHER_UI_DOC}
+            --docname launcher_ui
+            --out-root ${LAUNCHER_UI_ROOT}
+        COMMAND $<TARGET_FILE:dominium-ui-preview-host-win32>
+            --ui ${LAUNCHER_UI_DOC}
+            --watch
+        DEPENDS
+            ui_regen_launcher
+            dominium-ui-editor
+            dominium-ui-preview-host-win32
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        COMMENT "Running launcher UI preview (Win32)"
+        VERBATIM
+    )
+endif()
+
+if(TARGET dominium-ui-preview-host-macos)
+    add_custom_target(ui_preview_launcher_macos
+        COMMAND $<TARGET_FILE:dominium-ui-editor>
+            --headless-build-ui
+            --in ${LAUNCHER_UI_DOC}
+            --docname launcher_ui
+            --out-root ${LAUNCHER_UI_ROOT}
+        COMMAND $<TARGET_FILE:dominium-ui-preview-host-macos>
+            --ui ${LAUNCHER_UI_DOC}
+            --watch
+        DEPENDS
+            ui_regen_launcher
+            dominium-ui-editor
+            dominium-ui-preview-host-macos
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        COMMENT "Running launcher UI preview (macOS)"
+        VERBATIM
+    )
+endif()
+
+if(TARGET dominium-ui-preview-host-linux)
+    add_custom_target(ui_preview_launcher_linux
+        COMMAND $<TARGET_FILE:dominium-ui-editor>
+            --headless-build-ui
+            --in ${LAUNCHER_UI_DOC}
+            --docname launcher_ui
+            --out-root ${LAUNCHER_UI_ROOT}
+        COMMAND $<TARGET_FILE:dominium-ui-preview-host-linux>
+            --ui ${LAUNCHER_UI_DOC}
+            --watch
+        DEPENDS
+            ui_regen_launcher
+            dominium-ui-editor
+            dominium-ui-preview-host-linux
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        COMMENT "Running launcher UI preview (Linux)"
+        VERBATIM
+    )
+endif()
+
 add_executable(tool_manifest_inspector
     tools/tool_manifest_inspector.cpp
 )
@@ -308,6 +372,7 @@ add_test(NAME dominium_launcher_control_plane_tests COMMAND dominium_launcher_co
 add_executable(dominium_launcher_ui_smoke_tests
     tests/launcher_ui_smoke_tests.cpp
     dom_launcher_app.cpp
+    ui/launcher_ui_session_state.cpp
     dom_launcher_catalog.cpp
     dom_launcher_actions.cpp
     launcher_caps_snapshot.cpp
@@ -327,6 +392,8 @@ target_link_libraries(dominium_launcher_ui_smoke_tests
         dominium_common
         domino_core
         dominium_launcher_core
+        core_tlv
+        dom_shared
         core_caps
         core_solver
         providers_builtin

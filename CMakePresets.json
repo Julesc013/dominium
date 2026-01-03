@@ -93,6 +93,68 @@
       }
     },
     {
+      "name": "windows-msvc-x64-debug",
+      "displayName": "Windows MSVC x64 Debug",
+      "inherits": "msvc-base",
+      "architecture": "x64",
+      "cacheVariables": {
+        "DOM_BUILD_MODE": "Debug",
+        "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/out/bin",
+        "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/out/lib",
+        "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/out/lib",
+        "CMAKE_PDB_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/out/pdb",
+        "CMAKE_COMPILE_PDB_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/out/pdb"
+      }
+    },
+    {
+      "name": "windows-msvc-x86-debug",
+      "displayName": "Windows MSVC x86 Debug",
+      "inherits": "msvc-base",
+      "architecture": "Win32",
+      "cacheVariables": {
+        "DOM_BUILD_MODE": "Debug",
+        "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/out/bin",
+        "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/out/lib",
+        "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/out/lib",
+        "CMAKE_PDB_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/out/pdb",
+        "CMAKE_COMPILE_PDB_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/out/pdb"
+      }
+    },
+    {
+      "name": "windows-msvc-vs2026",
+      "displayName": "Windows VS 2026 (Live UI Preview)",
+      "inherits": "msvc-debug"
+    },
+    {
+      "name": "macos-xcode-debug",
+      "displayName": "macOS Xcode Debug",
+      "generator": "Xcode",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "DOM_BUILD_MODE": "Debug"
+      }
+    },
+    {
+      "name": "macos-xcode",
+      "displayName": "macOS Xcode (Live UI Preview)",
+      "inherits": "macos-xcode-debug"
+    },
+    {
+      "name": "linux-debug",
+      "displayName": "Linux Debug",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "DOM_BUILD_MODE": "Debug"
+      }
+    },
+    {
+      "name": "linux-dev",
+      "displayName": "Linux Dev (Live UI Preview)",
+      "inherits": "linux-debug"
+    },
+    {
       "name": "debug",
       "displayName": "Debug (MSYS2 UCRT64)",
       "inherits": "base-msys2",
@@ -178,6 +240,48 @@
       "configuration": "Release"
     },
     {
+      "name": "windows-msvc-x64-debug",
+      "configurePreset": "windows-msvc-x64-debug",
+      "configuration": "Debug"
+    },
+    {
+      "name": "windows-msvc-x86-debug",
+      "configurePreset": "windows-msvc-x86-debug",
+      "configuration": "Debug"
+    },
+    {
+      "name": "windows-msvc-vs2026",
+      "configurePreset": "windows-msvc-vs2026",
+      "configuration": "Debug",
+      "targets": [
+        "ui_preview_launcher_win32"
+      ]
+    },
+    {
+      "name": "macos-xcode-debug",
+      "configurePreset": "macos-xcode-debug",
+      "configuration": "Debug"
+    },
+    {
+      "name": "macos-xcode",
+      "configurePreset": "macos-xcode",
+      "configuration": "Debug",
+      "targets": [
+        "ui_preview_launcher_macos"
+      ]
+    },
+    {
+      "name": "linux-debug",
+      "configurePreset": "linux-debug"
+    },
+    {
+      "name": "linux-dev",
+      "configurePreset": "linux-dev",
+      "targets": [
+        "ui_preview_launcher_linux"
+      ]
+    },
+    {
       "name": "msys2-debug",
       "configurePreset": "msys2-debug"
     },
@@ -215,6 +319,37 @@
       "name": "msvc-debug",
       "configurePreset": "msvc-debug",
       "configuration": "Debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "windows-msvc-x64-debug",
+      "configurePreset": "windows-msvc-x64-debug",
+      "configuration": "Debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "windows-msvc-x86-debug",
+      "configurePreset": "windows-msvc-x86-debug",
+      "configuration": "Debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "macos-xcode-debug",
+      "configurePreset": "macos-xcode-debug",
+      "configuration": "Debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "linux-debug",
+      "configurePreset": "linux-debug",
       "output": {
         "outputOnFailure": true
       }
