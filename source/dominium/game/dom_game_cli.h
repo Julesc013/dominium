@@ -58,6 +58,7 @@ typedef struct dom_game_config {
     u32                  dev_mode;
     u32                  demo_mode;
     u32                  replay_strict_content;
+    u32                  dev_allow_ad_hoc_paths;
 
     char dominium_home[DOM_GAME_PATH_MAX];
     char instance_id[DOM_GAME_ID_MAX];
@@ -68,6 +69,7 @@ typedef struct dom_game_config {
     char replay_play_path[DOM_GAME_PATH_MAX];
     char save_path[DOM_GAME_PATH_MAX];
     char load_path[DOM_GAME_PATH_MAX];
+    char handshake_path[DOM_GAME_PATH_MAX];
 
     dom_profile profile;
 } dom_game_config;

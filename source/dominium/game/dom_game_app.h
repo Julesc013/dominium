@@ -24,6 +24,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "dom_game_camera.h"
 #include "dom_game_tools_build.h"
 #include "dom_game_net.h"
+#include "runtime/dom_game_paths.h"
 #include "runtime/dom_game_runtime.h"
 
 extern "C" {
@@ -130,6 +131,7 @@ private:
     void change_state(GameStateId next);
 
 private:
+    DomGamePaths m_fs_paths;
     Paths        m_paths;
     InstanceInfo m_instance;
     DomSession   m_session;
@@ -176,6 +178,12 @@ private:
     q32_32       m_debug_probe_x;
     q32_32       m_debug_probe_y;
     q32_32       m_debug_probe_z;
+
+    bool         m_launcher_mode;
+    bool         m_dev_allow_ad_hoc_paths;
+    u64          m_run_id;
+    u32          m_refusal_code;
+    std::string  m_refusal_detail;
 
     bool         m_show_overlay_hydro;
     bool         m_show_overlay_temp;

@@ -25,13 +25,16 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "runtime/dom_game_save.h"
 #include "runtime/dom_game_replay.h"
 #include "runtime/dom_game_content_id.h"
+#include "runtime/dom_game_handshake.h"
 #include "dom_game_tools_build.h"
 #include "dominium/version.h"
+#include "dominium/core_tlv.h"
 #include "dominium/paths.h"
 
 extern "C" {
 #include "domino/core/fixed.h"
 #include "domino/gfx.h"
+#include "domino/sys.h"
 #include "domino/system/d_system.h"
 #include "system/d_system_input.h"
 #include "env/d_env_field.h"
@@ -119,6 +122,115 @@ static unsigned suite_version_u32() {
     return make_version_u32(DOMINIUM_VERSION_MAJOR,
                             DOMINIUM_VERSION_MINOR,
                             DOMINIUM_VERSION_PATCH);
+}
+
+enum {
+    DOM_GAME_REFUSAL_TLV_VERSION = 1u,
+    DOM_GAME_REFUSAL_TLV_TAG_CODE = 2u,
+    DOM_GAME_REFUSAL_TLV_TAG_DETAIL = 3u,
+    DOM_GAME_REFUSAL_TLV_TAG_RUN_ID = 4u,
+    DOM_GAME_REFUSAL_TLV_TAG_INSTANCE_ID = 5u
+};
+
+enum {
+    DOM_GAME_REFUSAL_HANDSHAKE_MISSING = 2001u,
+    DOM_GAME_REFUSAL_HANDSHAKE_INVALID = 2002u,
+    DOM_GAME_REFUSAL_HANDSHAKE_INSTANCE_MISMATCH = 2003u,
+    DOM_GAME_REFUSAL_INSTANCE_ROOT_UNAVAILABLE = 2004u
+};
+
+static const char *path_refusal_detail(u32 code) {
+    switch (code) {
+    case DOM_GAME_PATHS_REFUSAL_MISSING_RUN_ROOT:
+        return "missing_run_root";
+    case DOM_GAME_PATHS_REFUSAL_MISSING_HOME_ROOT:
+        return "missing_home_root";
+    case DOM_GAME_PATHS_REFUSAL_INVALID_RUN_ROOT:
+        return "invalid_run_root";
+    case DOM_GAME_PATHS_REFUSAL_INVALID_HOME_ROOT:
+        return "invalid_home_root";
+    case DOM_GAME_PATHS_REFUSAL_ABSOLUTE_PATH:
+        return "absolute_path_rejected";
+    case DOM_GAME_PATHS_REFUSAL_TRAVERSAL:
+        return "path_traversal_rejected";
+    case DOM_GAME_PATHS_REFUSAL_NORMALIZATION:
+        return "path_normalization_failed";
+    case DOM_GAME_PATHS_REFUSAL_NON_CANONICAL:
+        return "path_non_canonical";
+    case DOM_GAME_PATHS_REFUSAL_OUTSIDE_ROOT:
+        return "path_outside_root";
+    default:
+        return "path_refusal";
+    }
+}
+
+static bool is_abs_path_input(const std::string &path) {
+    if (path.empty()) {
+        return false;
+    }
+    if (path[0] == '/' || path[0] == '\\') {
+        return true;
+    }
+    if (path.size() >= 2u) {
+        char c0 = path[0];
+        if (((c0 >= 'A' && c0 <= 'Z') || (c0 >= 'a' && c0 <= 'z')) && path[1] == ':') {
+            return true;
+        }
+    }
+    return false;
+}
+
+static bool write_refusal_tlv(const DomGamePaths &paths,
+                              u64 run_id,
+                              const std::string &instance_id,
+                              u32 code,
+                              const std::string &detail) {
+    if (paths.run_root.empty()) {
+        return false;
+    }
+
+    core_tlv::TlvWriter w;
+    w.add_u32(core_tlv::CORE_TLV_TAG_SCHEMA_VERSION, DOM_GAME_REFUSAL_TLV_VERSION);
+    w.add_u32(DOM_GAME_REFUSAL_TLV_TAG_CODE, code);
+    if (run_id != 0ull) {
+        w.add_u64(DOM_GAME_REFUSAL_TLV_TAG_RUN_ID, run_id);
+    }
+    if (!instance_id.empty()) {
+        w.add_string(DOM_GAME_REFUSAL_TLV_TAG_INSTANCE_ID, instance_id);
+    }
+    if (!detail.empty()) {
+        w.add_string(DOM_GAME_REFUSAL_TLV_TAG_DETAIL, detail);
+    }
+
+    {
+        const std::string path = join(paths.run_root, "refusal.tlv");
+        const std::vector<unsigned char> &bytes = w.bytes();
+        void *fh = dsys_file_open(path.c_str(), "wb");
+        size_t wrote = 0u;
+        if (!fh) {
+            return false;
+        }
+        if (!bytes.empty()) {
+            wrote = dsys_file_write(fh, &bytes[0], bytes.size());
+        }
+        dsys_file_close(fh);
+        return wrote == bytes.size();
+    }
+}
+
+static void emit_refusal(const DomGamePaths &paths,
+                         u64 run_id,
+                         const std::string &instance_id,
+                         u32 code,
+                         const std::string &detail) {
+    const bool wrote = write_refusal_tlv(paths, run_id, instance_id, code, detail);
+    if (!wrote) {
+        if (!detail.empty()) {
+            std::fprintf(stderr, "DomGameApp refusal %u: %s\n", (unsigned)code, detail.c_str());
+        } else {
+            std::fprintf(stderr, "DomGameApp refusal %u\n", (unsigned)code);
+        }
+    }
 }
 
 static bool is_dominium_repo_root(const std::string &root) {
@@ -582,7 +694,12 @@ DomGameApp::DomGameApp()
       m_show_overlay_hydro(false),
       m_show_overlay_temp(false),
       m_show_overlay_pressure(false),
-      m_show_overlay_volumes(false) {
+      m_show_overlay_volumes(false),
+      m_launcher_mode(false),
+      m_dev_allow_ad_hoc_paths(false),
+      m_run_id(0u),
+      m_refusal_code(0u),
+      m_refusal_detail() {
     std::memset(&m_ui_ctx, 0, sizeof(m_ui_ctx));
     std::memset(m_hud_instance_text, 0, sizeof(m_hud_instance_text));
     std::memset(m_hud_remaining_text, 0, sizeof(m_hud_remaining_text));
@@ -610,6 +727,11 @@ bool DomGameApp::init_from_cli(const dom_game_config &cfg) {
     m_replay_play_path = cfg.replay_play_path;
     m_save_path = cfg.save_path;
     m_load_path = cfg.load_path;
+    m_launcher_mode = (cfg.handshake_path[0] != '\0');
+    m_dev_allow_ad_hoc_paths = (cfg.dev_allow_ad_hoc_paths != 0u);
+    m_run_id = 0u;
+    m_refusal_code = 0u;
+    m_refusal_detail.clear();
     m_show_debug_panel = m_dev_mode;
     m_last_hash = 0u;
     if (!m_replay_record_path.empty()) {
@@ -743,32 +865,142 @@ void DomGameApp::request_exit() {
 }
 
 bool DomGameApp::init_paths(const dom_game_config &cfg) {
+    DomGameHandshake hs;
     std::string home = cfg.dominium_home;
-    const char *env_home;
+    std::string instance_id = cfg.instance_id[0] ? cfg.instance_id : "demo";
+    u32 flags = DOM_GAME_PATHS_FLAG_NONE;
 
-    if (home.empty()) {
-        env_home = std::getenv("DOMINIUM_HOME");
-        if (env_home && env_home[0] != '\0') {
-            home = env_home;
-        }
+    if (m_launcher_mode) {
+        flags |= DOM_GAME_PATHS_FLAG_LAUNCHER_REQUIRED;
     }
-    if (home.empty()) {
-        home = find_dominium_home_from(".");
-        if (home.empty()) {
-            const char *install_root = dmn_get_install_root();
-            if (install_root && install_root[0] != '\0') {
-                home = find_dominium_home_from(install_root);
+    if (m_dev_allow_ad_hoc_paths) {
+        flags |= DOM_GAME_PATHS_FLAG_DEV_ALLOW_AD_HOC;
+    }
+
+    if (!dom_game_paths_init_from_env(m_fs_paths, instance_id, 0u, flags)) {
+        const u32 code = dom_game_paths_last_refusal(m_fs_paths);
+        m_refusal_code = code;
+        m_refusal_detail = path_refusal_detail(code);
+        emit_refusal(m_fs_paths, m_run_id, instance_id, m_refusal_code, m_refusal_detail);
+        return false;
+    }
+
+    if (m_launcher_mode) {
+        std::string handshake_abs;
+        const std::string handshake_rel = cfg.handshake_path;
+
+        if (handshake_rel.empty()) {
+            m_refusal_code = DOM_GAME_REFUSAL_HANDSHAKE_MISSING;
+            m_refusal_detail = "missing_handshake_path";
+            emit_refusal(m_fs_paths, m_run_id, instance_id, m_refusal_code, m_refusal_detail);
+            return false;
+        }
+
+        if (m_dev_allow_ad_hoc_paths && is_abs_path_input(handshake_rel)) {
+            handshake_abs = handshake_rel;
+        } else {
+            if (!dom_game_paths_resolve_rel(m_fs_paths,
+                                            DOM_GAME_PATH_BASE_RUN_ROOT,
+                                            handshake_rel,
+                                            handshake_abs)) {
+                const u32 code = dom_game_paths_last_refusal(m_fs_paths);
+                m_refusal_code = code;
+                m_refusal_detail = path_refusal_detail(code);
+                emit_refusal(m_fs_paths, m_run_id, instance_id, m_refusal_code, m_refusal_detail);
+                return false;
+            }
+        }
+
+        if (!dom_game_handshake_from_file(handshake_abs, hs)) {
+            m_refusal_code = DOM_GAME_REFUSAL_HANDSHAKE_INVALID;
+            m_refusal_detail = "handshake_parse_failed";
+            emit_refusal(m_fs_paths, m_run_id, instance_id, m_refusal_code, m_refusal_detail);
+            return false;
+        }
+        if (cfg.instance_id[0] != '\0' && hs.instance_id != cfg.instance_id) {
+            m_refusal_code = DOM_GAME_REFUSAL_HANDSHAKE_INSTANCE_MISMATCH;
+            m_refusal_detail = "handshake_instance_mismatch";
+            emit_refusal(m_fs_paths, m_run_id, instance_id, m_refusal_code, m_refusal_detail);
+            return false;
+        }
+
+        instance_id = hs.instance_id;
+        m_run_id = hs.run_id;
+
+        if (!dom_game_paths_init_from_env(m_fs_paths, instance_id, hs.run_id, flags)) {
+            const u32 code = dom_game_paths_last_refusal(m_fs_paths);
+            m_refusal_code = code;
+            m_refusal_detail = path_refusal_detail(code);
+            emit_refusal(m_fs_paths, m_run_id, instance_id, m_refusal_code, m_refusal_detail);
+            return false;
+        }
+        if (hs.instance_root_ref.has_value) {
+            if (!dom_game_paths_set_instance_root_ref(m_fs_paths,
+                                                      hs.instance_root_ref.base_kind,
+                                                      hs.instance_root_ref.rel)) {
+                const u32 code = dom_game_paths_last_refusal(m_fs_paths);
+                m_refusal_code = code;
+                m_refusal_detail = path_refusal_detail(code);
+                emit_refusal(m_fs_paths, m_run_id, instance_id, m_refusal_code, m_refusal_detail);
+                return false;
             }
         }
     }
-    if (home.empty()) {
-        home = ".";
+
+    if (!m_fs_paths.run_root.empty() && !dir_exists(m_fs_paths.run_root)) {
+        m_refusal_code = DOM_GAME_PATHS_REFUSAL_INVALID_RUN_ROOT;
+        m_refusal_detail = path_refusal_detail(m_refusal_code);
+        emit_refusal(m_fs_paths, m_run_id, instance_id, m_refusal_code, m_refusal_detail);
+        return false;
     }
+    if (!m_fs_paths.home_root.empty() && !dir_exists(m_fs_paths.home_root)) {
+        m_refusal_code = DOM_GAME_PATHS_REFUSAL_INVALID_HOME_ROOT;
+        m_refusal_detail = path_refusal_detail(m_refusal_code);
+        emit_refusal(m_fs_paths, m_run_id, instance_id, m_refusal_code, m_refusal_detail);
+        return false;
+    }
+
+    if (m_launcher_mode) {
+        if (m_fs_paths.home_root.empty()) {
+            m_refusal_code = DOM_GAME_REFUSAL_INSTANCE_ROOT_UNAVAILABLE;
+            m_refusal_detail = "missing_instance_root";
+            emit_refusal(m_fs_paths, m_run_id, instance_id, m_refusal_code, m_refusal_detail);
+            return false;
+        }
+        home = m_fs_paths.home_root;
+    } else {
+        if (home.empty() && !m_fs_paths.home_root.empty()) {
+            home = m_fs_paths.home_root;
+        }
+        if (home.empty()) {
+            const char *env_home = std::getenv("DOMINIUM_HOME");
+            if (env_home && env_home[0] != '\0') {
+                home = env_home;
+            }
+        }
+        if (home.empty()) {
+            home = find_dominium_home_from(".");
+            if (home.empty()) {
+                const char *install_root = dmn_get_install_root();
+                if (install_root && install_root[0] != '\0') {
+                    home = find_dominium_home_from(install_root);
+                }
+            }
+        }
+        if (home.empty()) {
+            home = ".";
+        }
+    }
+
     return resolve_paths(m_paths, home);
 }
 
 bool DomGameApp::load_instance(const dom_game_config &cfg) {
-    m_instance.id = cfg.instance_id[0] ? cfg.instance_id : "demo";
+    if (!m_fs_paths.instance_id.empty()) {
+        m_instance.id = m_fs_paths.instance_id;
+    } else {
+        m_instance.id = cfg.instance_id[0] ? cfg.instance_id : "demo";
+    }
 
     if (!m_instance.load(m_paths)) {
         apply_default_instance_values(m_instance);
