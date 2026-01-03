@@ -1,6 +1,21 @@
 /*
 FILE: source/dominium/setup/core/include/dsu/dsu_callbacks.h
 MODULE: Dominium Setup
+LAYER / SUBSYSTEM: Setup Core callbacks
+RESPONSIBILITY:
+  - Owns callback type definitions and the versioned callbacks struct.
+  - Does not implement logging, progress aggregation, or threading.
+ALLOWED DEPENDENCIES: dsu_types.h.
+FORBIDDEN DEPENDENCIES: Platform headers; UI/renderer subsystems.
+THREADING MODEL: Not applicable (callback signatures only).
+ERROR MODEL: Not applicable (callbacks do not return status codes).
+DETERMINISM GUARANTEES: Determinism is unaffected by callback presence; callbacks are observational.
+VERSIONING / ABI / DATA FORMAT NOTES: struct_size/struct_version gate ABI compatibility; DSU_CALLBACKS_VERSION is the current schema.
+EXTENSION POINTS: Reserved fields and version/size gating support forward-compatible extensions.
+*/
+/*
+FILE: source/dominium/setup/core/include/dsu/dsu_callbacks.h
+MODULE: Dominium Setup
 PURPOSE: Host callbacks for logging and progress reporting.
 */
 #ifndef DSU_CALLBACKS_H_INCLUDED
