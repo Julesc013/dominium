@@ -4,7 +4,7 @@ add_executable(dominium_game
     dom_game_cli.cpp
     dom_game_app.cpp
     dom_game_camera.cpp
-    dom_game_states.cpp
+    dom_game_phase.cpp
     dom_game_tools_build.cpp
     dom_game_ui.cpp
     dom_game_ui_debug.cpp

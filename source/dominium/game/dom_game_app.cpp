@@ -18,7 +18,6 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include <cstring>
 #include <vector>
 
-#include "dom_game_states.h"
 #include "dom_game_ui.h"
 #include "dom_game_ui_debug.h"
 #include "dom_game_save.h"
@@ -48,6 +47,7 @@ extern "C" {
 #include "content/d_content.h"
 #include "ai/d_agent.h"
 #include "net/d_net_apply.h"
+#include "net/d_net_cmd.h"
 #include "net/d_net_proto.h"
 #include "net/d_net_transport.h"
 }
@@ -670,8 +670,14 @@ DomGameApp::DomGameApp()
       m_compat_limited(false),
       m_tick_rate_hz(DEFAULT_TICK_RATE),
       m_main_view_id(0),
-      m_state_id(GAME_STATE_BOOT),
-      m_state(0),
+      m_phase(),
+      m_phase_action(DOM_GAME_PHASE_ACTION_NONE),
+      m_bootstrap_started(false),
+      m_bootstrap_failed(false),
+      m_session_start_attempted(false),
+      m_session_start_ok(false),
+      m_session_start_failed(false),
+      m_session_start_error(),
       m_running(false),
       m_mouse_x(0),
       m_mouse_y(0),
@@ -705,6 +711,7 @@ DomGameApp::DomGameApp()
     std::memset(m_hud_instance_text, 0, sizeof(m_hud_instance_text));
     std::memset(m_hud_remaining_text, 0, sizeof(m_hud_remaining_text));
     std::memset(m_hud_inventory_text, 0, sizeof(m_hud_inventory_text));
+    std::memset(&m_cfg, 0, sizeof(m_cfg));
 }
 
 DomGameApp::~DomGameApp() {
@@ -714,6 +721,7 @@ DomGameApp::~DomGameApp() {
 bool DomGameApp::init_from_cli(const dom_game_config &cfg) {
     shutdown();
 
+    m_cfg = cfg;
     m_mode = static_cast<GameMode>(cfg.mode);
     m_server_mode = static_cast<ServerMode>(cfg.server_mode);
     m_demo_mode = (cfg.demo_mode != 0u);
@@ -734,6 +742,14 @@ bool DomGameApp::init_from_cli(const dom_game_config &cfg) {
     m_refusal_code = 0u;
     m_refusal_detail.clear();
     m_instance_manifest_hash.clear();
+    m_phase_action = DOM_GAME_PHASE_ACTION_NONE;
+    m_bootstrap_started = false;
+    m_bootstrap_failed = false;
+    m_session_start_attempted = false;
+    m_session_start_ok = false;
+    m_session_start_failed = false;
+    m_session_start_error.clear();
+    dom_game_phase_init(m_phase);
     m_show_debug_panel = m_dev_mode;
     m_last_hash = 0u;
     if (!m_replay_record_path.empty()) {
@@ -779,25 +795,24 @@ bool DomGameApp::init_from_cli(const dom_game_config &cfg) {
         }
     }
 
-    if (!init_session(cfg)) {
-        std::printf("DomGameApp: session init failed\n");
-        return false;
-    }
     if (!init_views_and_ui(cfg)) {
         std::printf("DomGameApp: view/UI init failed\n");
         return false;
     }
 
-    {
-        const bool auto_start = (cfg.server_mode != DOM_GAME_SERVER_OFF) || (cfg.connect_addr[0] != '\0') ||
-                                (cfg.mode == DOM_GAME_MODE_HEADLESS);
-        m_state_id = auto_start ? GAME_STATE_LOADING : GAME_STATE_BOOT;
+    m_phase.auto_start_join = (!m_connect_addr.empty());
+    m_phase.auto_start_host = (!m_phase.auto_start_join &&
+                               (m_server_mode != SERVER_OFF || m_mode == GAME_MODE_HEADLESS));
+    m_phase.server_addr = m_connect_addr;
+    m_phase.server_port = m_net_port;
+    if (!m_instance.id.empty()) {
+        m_phase.player_name = m_instance.id;
     }
-    m_state = create_state(m_state_id);
-    if (!m_state) {
-        return false;
-    }
-    m_state->on_enter(*this);
+
+    m_phase.prev_phase = DOM_GAME_PHASE_BOOT;
+    m_phase.phase = DOM_GAME_PHASE_SPLASH;
+    m_phase.phase_time_ms = 0u;
+    handle_phase_enter(DOM_GAME_PHASE_BOOT, DOM_GAME_PHASE_SPLASH);
 
     m_running = true;
     return true;
@@ -812,12 +827,6 @@ void DomGameApp::run() {
 }
 
 void DomGameApp::shutdown() {
-    if (m_state) {
-        m_state->on_exit(*this);
-        destroy_state(m_state);
-        m_state = 0;
-    }
-
     if (m_main_view_id != 0u) {
         d_view_destroy(m_main_view_id);
         m_main_view_id = 0u;
@@ -862,12 +871,15 @@ void DomGameApp::shutdown() {
     m_running = false;
 }
 
-void DomGameApp::request_state_change(GameStateId next) {
-    change_state(next);
-}
-
 void DomGameApp::request_exit() {
     m_running = false;
+}
+
+void DomGameApp::request_phase_action(DomGamePhaseAction action) {
+    if (action == DOM_GAME_PHASE_ACTION_NONE) {
+        return;
+    }
+    m_phase_action = action;
 }
 
 bool DomGameApp::init_paths(const dom_game_config &cfg) {
@@ -1221,27 +1233,8 @@ bool DomGameApp::init_session(const dom_game_config &cfg) {
         }
     }
 
-    /* Network roles: client, host/listen, or single. */
-    if (m_replay_play) {
-        if (!m_net.init_single(m_tick_rate_hz)) {
-            return false;
-        }
-    } else if (cfg.connect_addr[0] != '\0') {
-        if (!m_net.init_client(m_tick_rate_hz, cfg.connect_addr)) {
-            return false;
-        }
-    } else if (cfg.server_mode == DOM_GAME_SERVER_LISTEN) {
-        if (!m_net.init_listen(m_tick_rate_hz, cfg.net_port)) {
-            return false;
-        }
-    } else if (cfg.server_mode == DOM_GAME_SERVER_DEDICATED) {
-        if (!m_net.init_dedicated(m_tick_rate_hz, cfg.net_port)) {
-            return false;
-        }
-    } else {
-        if (!m_net.init_single(m_tick_rate_hz)) {
-            return false;
-        }
+    if (!m_net.init_single(m_tick_rate_hz)) {
+        return false;
     }
 
     if (m_runtime) {
@@ -1286,6 +1279,128 @@ bool DomGameApp::init_session(const dom_game_config &cfg) {
 
     ensure_demo_agents();
     return true;
+}
+
+bool DomGameApp::start_session(DomGamePhaseAction action, std::string &out_error) {
+    out_error.clear();
+    if (!m_session.is_initialized() || !m_runtime) {
+        out_error = "runtime_not_ready";
+        return false;
+    }
+    if (m_replay_play) {
+        out_error = "replay_active";
+        return false;
+    }
+
+    if (action == DOM_GAME_PHASE_ACTION_START_HOST) {
+        ServerMode mode = m_server_mode;
+        if (mode == SERVER_OFF) {
+            mode = SERVER_LISTEN;
+        }
+        if (mode == SERVER_DEDICATED) {
+            if (!m_net.init_dedicated(m_tick_rate_hz, m_net_port)) {
+                out_error = "net_host_init_failed";
+                return false;
+            }
+        } else {
+            if (!m_net.init_listen(m_tick_rate_hz, m_net_port)) {
+                out_error = "net_host_init_failed";
+                return false;
+            }
+        }
+        (void)d_net_cmd_queue_init();
+        return true;
+    }
+    if (action == DOM_GAME_PHASE_ACTION_START_JOIN) {
+        if (m_connect_addr.empty()) {
+            out_error = "missing_connect_addr";
+            return false;
+        }
+        if (!m_net.init_client(m_tick_rate_hz, m_connect_addr)) {
+            out_error = "net_client_init_failed";
+            return false;
+        }
+        (void)d_net_cmd_queue_init();
+        return true;
+    }
+
+    out_error = "invalid_session_action";
+    return false;
+}
+
+void DomGameApp::handle_phase_enter(DomGamePhaseId prev_phase, DomGamePhaseId next_phase) {
+    if (next_phase == DOM_GAME_PHASE_SPLASH) {
+        dom_game_ui_build_loading(m_ui_ctx);
+        if (!m_bootstrap_started) {
+            m_bootstrap_started = true;
+            if (!init_session(m_cfg)) {
+                m_bootstrap_failed = true;
+                m_session_start_error = "bootstrap_failed";
+                request_phase_action(DOM_GAME_PHASE_ACTION_QUIT_APP);
+            }
+        }
+        return;
+    }
+    if (next_phase == DOM_GAME_PHASE_MAIN_MENU) {
+        if (prev_phase == DOM_GAME_PHASE_SESSION_LOADING ||
+            prev_phase == DOM_GAME_PHASE_IN_SESSION) {
+            m_net.shutdown();
+        }
+        dom_game_ui_build_main_menu(m_ui_ctx);
+        return;
+    }
+    if (next_phase == DOM_GAME_PHASE_SESSION_START) {
+        std::string err;
+        dom_game_ui_build_loading(m_ui_ctx);
+        if (!start_session(m_phase.session_action, err)) {
+            std::fprintf(stderr, "DomGameApp: session start failed (%s)\n", err.c_str());
+            m_session_start_failed = true;
+            m_session_start_error = err;
+        } else {
+            m_session_start_ok = true;
+        }
+        return;
+    }
+    if (next_phase == DOM_GAME_PHASE_SESSION_LOADING) {
+        dom_game_ui_build_loading(m_ui_ctx);
+        return;
+    }
+    if (next_phase == DOM_GAME_PHASE_IN_SESSION) {
+        dom_game_ui_build_in_game(m_ui_ctx);
+        return;
+    }
+    if (next_phase == DOM_GAME_PHASE_SHUTDOWN) {
+        request_exit();
+        return;
+    }
+}
+
+void DomGameApp::update_phase(u32 dt_ms) {
+    DomGamePhaseInput in;
+    std::memset(&in, 0, sizeof(in));
+    in.dt_ms = dt_ms;
+    in.action = m_phase_action;
+    in.runtime_ready = (m_runtime != 0);
+    in.content_ready = m_session.is_initialized();
+    in.net_ready = m_net.ready();
+    in.world_ready = m_session.is_initialized();
+    in.world_progress = m_session.is_initialized() ? 100u : 0u;
+    in.session_start_ok = m_session_start_ok;
+    in.session_start_failed = m_session_start_failed;
+    in.session_error = m_session_start_failed ? m_session_start_error.c_str() : (const char *)0;
+
+    m_phase_action = DOM_GAME_PHASE_ACTION_NONE;
+    m_session_start_ok = false;
+    m_session_start_failed = false;
+    m_session_start_error.clear();
+
+    if (dom_game_phase_update(m_phase, in)) {
+        std::printf("DomGameApp: phase %s -> %s\n",
+                    dom_game_phase_name(m_phase.prev_phase),
+                    dom_game_phase_name(m_phase.phase));
+        handle_phase_enter(m_phase.prev_phase, m_phase.phase);
+    }
+    dom_game_phase_render(m_phase, m_ui_ctx, dt_ms);
 }
 
 bool DomGameApp::init_views_and_ui(const dom_game_config &cfg) {
@@ -1381,15 +1496,21 @@ void DomGameApp::tick_fixed() {
     process_input_events();
     update_camera();
 
-    if (m_session.is_initialized() && m_runtime) {
+    if (m_session.is_initialized() && m_runtime &&
+        (m_phase.phase == DOM_GAME_PHASE_SESSION_LOADING ||
+         m_phase.phase == DOM_GAME_PHASE_IN_SESSION)) {
         (void)dom_game_runtime_pump(m_runtime);
     }
 
-    if (m_state) {
-        m_state->tick(*this);
+    {
+        u32 dt_ms = (u32)(dt_us / 1000ull);
+        if (dt_ms == 0u && dt_us > 0u) {
+            dt_ms = 1u;
+        }
+        update_phase(dt_ms);
     }
 
-    if (m_session.is_initialized() && m_state_id == GAME_STATE_RUNNING && m_runtime) {
+    if (m_session.is_initialized() && m_phase.phase == DOM_GAME_PHASE_IN_SESSION && m_runtime) {
         u32 stepped = 0u;
         const int rc = dom_game_runtime_tick_wall(m_runtime, dt_us, &stepped);
         if (rc == DOM_GAME_RUNTIME_REPLAY_END || rc == DOM_GAME_RUNTIME_ERR) {
@@ -1429,9 +1550,14 @@ void DomGameApp::render_frame() {
     root_rect.w = d_q16_16_from_int(width);
     root_rect.h = d_q16_16_from_int(height);
 
-    d_view_render(world(), view, &frame);
-    dom_draw_debug_overlays(*this, world(), cmd_buffer, width, height);
-    dom_draw_trans_overlays(*this, world(), cmd_buffer, width, height);
+    {
+        d_world *w = world();
+        if (w) {
+            d_view_render(w, view, &frame);
+        }
+        dom_draw_debug_overlays(*this, w, cmd_buffer, width, height);
+        dom_draw_trans_overlays(*this, w, cmd_buffer, width, height);
+    }
     m_build_tool.render_overlay(*this, cmd_buffer, width, height);
     dui_layout(&m_ui_ctx, &root_rect);
     dui_render(&m_ui_ctx, &frame);
@@ -1439,24 +1565,6 @@ void DomGameApp::render_frame() {
     d_gfx_cmd_buffer_end(cmd_buffer);
     d_gfx_submit(cmd_buffer);
     d_gfx_present();
-}
-
-void DomGameApp::change_state(GameStateId next) {
-    if (m_state_id == next && m_state) {
-        return;
-    }
-
-    if (m_state) {
-        m_state->on_exit(*this);
-        destroy_state(m_state);
-        m_state = 0;
-    }
-
-    m_state_id = next;
-    m_state = create_state(next);
-    if (m_state) {
-        m_state->on_enter(*this);
-    }
 }
 
 void DomGameApp::process_input_events() {
@@ -1512,7 +1620,12 @@ void DomGameApp::process_input_events() {
         }
         if (ev.type == D_SYS_EVENT_KEY_DOWN || ev.type == D_SYS_EVENT_KEY_UP) {
             if (ev.u.key.key == D_SYS_KEY_ESCAPE && ev.type == D_SYS_EVENT_KEY_DOWN) {
-                m_running = false;
+                if (m_phase.phase == DOM_GAME_PHASE_IN_SESSION ||
+                    m_phase.phase == DOM_GAME_PHASE_SESSION_LOADING) {
+                    request_phase_action(DOM_GAME_PHASE_ACTION_QUIT_TO_MENU);
+                } else {
+                    request_phase_action(DOM_GAME_PHASE_ACTION_QUIT_APP);
+                }
             }
             if (ev.type == D_SYS_EVENT_KEY_DOWN) {
                 build_consumed = m_build_tool.handle_event(*this, ev);
@@ -1567,7 +1680,7 @@ void DomGameApp::update_demo_hud() {
     d_world *w = world();
     const d_struct_instance *inst = (const d_struct_instance *)0;
     d_struct_instance_id current = m_last_struct_id;
-    if (!w || m_state_id != GAME_STATE_RUNNING) {
+    if (!w || m_phase.phase != DOM_GAME_PHASE_IN_SESSION) {
         return;
     }
 

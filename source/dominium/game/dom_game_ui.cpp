@@ -90,14 +90,14 @@ static int point_in_rect(const dui_rect *r, int px, int py) {
 static void on_click_start(dui_widget *self) {
     DomGameApp *app = self ? (DomGameApp *)self->user_data : (DomGameApp *)0;
     if (app) {
-        app->request_state_change(GAME_STATE_LOADING);
+        app->request_phase_action(DOM_GAME_PHASE_ACTION_START_HOST);
     }
 }
 
 static void on_click_exit(dui_widget *self) {
     DomGameApp *app = self ? (DomGameApp *)self->user_data : (DomGameApp *)0;
     if (app) {
-        app->request_state_change(GAME_STATE_EXITING);
+        app->request_phase_action(DOM_GAME_PHASE_ACTION_QUIT_APP);
     }
 }
 
