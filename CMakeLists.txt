@@ -21,6 +21,63 @@ include(DominiumBundleRuntime)
 include(DominiumReproducible)
 include(dist_output)
 
+find_package(Python3 REQUIRED COMPONENTS Interpreter)
+
+set(DOC_RATIO_ENABLE ON CACHE BOOL "Enable documentation ratio quality gate")
+set(DOC_RATIO_ROOTS "src;include" CACHE STRING "Roots to scan for documentation ratios")
+set(DOC_RATIO_EXCLUDES "third_party;external;build;out;.git;generated" CACHE STRING "Path fragments excluded from documentation ratios")
+set(DOC_RATIO_EXTS ".c;.h;.cpp;.hpp;.cc;.cxx;.hh;.hxx;.ipp;.inl" CACHE STRING "File extensions for documentation ratios")
+set(DOC_RATIO_MIN_LINE "0.20" CACHE STRING "Minimum comment line ratio")
+set(DOC_RATIO_MAX_LINE "0.40" CACHE STRING "Maximum comment line ratio")
+set(DOC_RATIO_MIN_WORD "0.15" CACHE STRING "Minimum comment word ratio")
+set(DOC_RATIO_MAX_WORD "0.30" CACHE STRING "Maximum comment word ratio")
+set(DOC_RATIO_MIN_CHAR "0.10" CACHE STRING "Minimum comment character ratio")
+set(DOC_RATIO_MAX_CHAR "0.25" CACHE STRING "Maximum comment character ratio")
+
+set(DOC_RATIO_MODE "warn")
+if(DEFINED ENV{CI})
+    set(_doc_ratio_ci "$ENV{CI}")
+    string(TOLOWER "${_doc_ratio_ci}" _doc_ratio_ci_lc)
+    if(NOT _doc_ratio_ci_lc STREQUAL "" AND NOT _doc_ratio_ci_lc STREQUAL "0" AND NOT _doc_ratio_ci_lc STREQUAL "false")
+        set(DOC_RATIO_MODE "fail")
+    endif()
+endif()
+
+set(_doc_ratio_args
+    --mode ${DOC_RATIO_MODE}
+    --format text
+    --quiet
+    --min-line ${DOC_RATIO_MIN_LINE}
+    --max-line ${DOC_RATIO_MAX_LINE}
+    --min-word ${DOC_RATIO_MIN_WORD}
+    --max-word ${DOC_RATIO_MAX_WORD}
+    --min-char ${DOC_RATIO_MIN_CHAR}
+    --max-char ${DOC_RATIO_MAX_CHAR}
+)
+foreach(_doc_ratio_root IN LISTS DOC_RATIO_ROOTS)
+    list(APPEND _doc_ratio_args --roots "${_doc_ratio_root}")
+endforeach()
+foreach(_doc_ratio_exclude IN LISTS DOC_RATIO_EXCLUDES)
+    list(APPEND _doc_ratio_args --exclude "${_doc_ratio_exclude}")
+endforeach()
+foreach(_doc_ratio_ext IN LISTS DOC_RATIO_EXTS)
+    list(APPEND _doc_ratio_args --ext "${_doc_ratio_ext}")
+endforeach()
+
+add_custom_target(doc_ratio_check
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/doc_ratio_check.py ${_doc_ratio_args}
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    COMMENT "Checking documentation ratios (mode=${DOC_RATIO_MODE})"
+    VERBATIM
+)
+
+if(NOT TARGET all_quality_gates)
+    add_custom_target(all_quality_gates ALL)
+endif()
+if(DOC_RATIO_ENABLE)
+    add_dependencies(all_quality_gates doc_ratio_check)
+endif()
+
 set(DOMINIUM_SOURCE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
 set(DOMINIUM_GENERATED_INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/generated/include")
 set(DOMINIUM_INCLUDE_DIR "${DOMINIUM_GENERATED_INCLUDE_DIR};${DOMINIUM_SOURCE_INCLUDE_DIR}")
