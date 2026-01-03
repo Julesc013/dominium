@@ -25,6 +25,10 @@ PURPOSE: Baseline C89/C++98 types and status codes for the Setup Core ABI.
 extern "C" {
 #endif
 
+/**
+ * Purpose: Declares public ABI symbols for the Setup Core library.
+ * ABI / layout constraints: Expands to platform-specific import/export attributes on Windows; empty elsewhere.
+ */
 /* Export macro (static library by default). */
 #if defined(_WIN32) || defined(__CYGWIN__)
 # if defined(DSU_BUILD_DLL)
@@ -38,6 +42,18 @@ extern "C" {
 # define DSU_API
 #endif
 
+/**
+ * Purpose: Fixed-width integer typedefs for the Setup Core ABI.
+ * ABI / layout constraints:
+ *   - dsu_i8: signed 8-bit integer.
+ *   - dsu_u8: unsigned 8-bit integer.
+ *   - dsu_i16: signed 16-bit integer.
+ *   - dsu_u16: unsigned 16-bit integer.
+ *   - dsu_i32: signed 32-bit integer.
+ *   - dsu_u32: unsigned 32-bit integer.
+ *   - dsu_i64: signed 64-bit integer.
+ *   - dsu_u64: unsigned 64-bit integer.
+ */
 /* Fixed-width integer types (C89-visible; does not include <stdint.h>). */
 #if defined(_MSC_VER)
 typedef signed __int8 dsu_i8;
@@ -67,10 +83,40 @@ typedef unsigned long dsu_u32;
 # error "dsu_types.h: no known 64-bit integer type for this toolchain"
 #endif
 
+/**
+ * Purpose: Boolean scalar type for the public ABI.
+ * ABI / layout constraints: Defined as int; use DSU_TRUE/DSU_FALSE constants.
+ */
 typedef int dsu_bool;
+/**
+ * Purpose: Boolean true value for dsu_bool.
+ * ABI / layout constraints: Integer constant 1.
+ */
 #define DSU_TRUE 1
+/**
+ * Purpose: Boolean false value for dsu_bool.
+ * ABI / layout constraints: Integer constant 0.
+ */
 #define DSU_FALSE 0
 
+/**
+ * Purpose: Status codes returned by Setup Core APIs.
+ * Return values / error codes:
+ *   - DSU_STATUS_SUCCESS: Operation succeeded.
+ *   - DSU_STATUS_INVALID_ARGS: Invalid pointer or argument values.
+ *   - DSU_STATUS_IO_ERROR: IO or allocation failure.
+ *   - DSU_STATUS_PARSE_ERROR: Input parse failed.
+ *   - DSU_STATUS_UNSUPPORTED_VERSION: Version mismatch or unsupported schema.
+ *   - DSU_STATUS_INTEGRITY_ERROR: Integrity or verification failure.
+ *   - DSU_STATUS_INTERNAL_ERROR: Internal invariant failure.
+ *   - DSU_STATUS_MISSING_COMPONENT: Required component not found.
+ *   - DSU_STATUS_UNSATISFIED_DEPENDENCY: Dependency constraints not met.
+ *   - DSU_STATUS_VERSION_CONFLICT: Version constraints conflict.
+ *   - DSU_STATUS_EXPLICIT_CONFLICT: Explicit conflict in request.
+ *   - DSU_STATUS_PLATFORM_INCOMPATIBLE: Platform constraints not satisfied.
+ *   - DSU_STATUS_ILLEGAL_DOWNGRADE: Request would downgrade below allowed bounds.
+ *   - DSU_STATUS_INVALID_REQUEST: Request violates validation rules.
+ */
 typedef enum dsu_status_t {
     DSU_STATUS_SUCCESS = 0,
     DSU_STATUS_INVALID_ARGS = 1,
@@ -90,6 +136,10 @@ typedef enum dsu_status_t {
     DSU_STATUS_INVALID_REQUEST = 106
 } dsu_status_t;
 
+/**
+ * Purpose: Alias for DSU_STATUS_SUCCESS.
+ * Return values / error codes: DSU_STATUS_SUCCESS.
+ */
 #define DSU_OK DSU_STATUS_SUCCESS
 
 #ifdef __cplusplus
