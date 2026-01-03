@@ -215,6 +215,31 @@ else()
 endif()
 add_test(NAME dominium_tlv_fuzz COMMAND dominium_tlv_fuzz_tests)
 
+add_executable(dominium_fs_contract_tests
+    contract/dominium_fs_contract_tests.cpp
+    ${CMAKE_SOURCE_DIR}/source/dominium/game/runtime/dom_game_paths.c
+)
+set_source_files_properties(${CMAKE_SOURCE_DIR}/source/dominium/game/runtime/dom_game_paths.c PROPERTIES LANGUAGE CXX)
+target_include_directories(dominium_fs_contract_tests PRIVATE
+    ${DOMINIUM_INCLUDE_DIR}
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+)
+target_link_libraries(dominium_fs_contract_tests PRIVATE
+    dominium_common
+)
+set_target_properties(dominium_fs_contract_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+if (MSVC)
+    target_compile_options(dominium_fs_contract_tests PRIVATE $<$<CONFIG:Release>:/UNDEBUG>)
+else()
+    target_compile_options(dominium_fs_contract_tests PRIVATE $<$<CONFIG:Release>:-UNDEBUG>)
+endif()
+add_test(NAME dominium_fs_contract COMMAND dominium_fs_contract_tests)
+
 add_test(NAME dominium_layer_checks
     COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_SOURCE_DIR} python scripts/check_layers.py
 )
