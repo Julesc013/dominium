@@ -36,6 +36,10 @@ static dui_widget *g_instance_label = (dui_widget *)0;
 static dui_widget *g_remaining_label = (dui_widget *)0;
 static dui_widget *g_inventory_label = (dui_widget *)0;
 static dui_widget *g_loading_status_label = (dui_widget *)0;
+static dui_widget *g_loading_progress_label = (dui_widget *)0;
+static dui_widget *g_loading_detail_content_label = (dui_widget *)0;
+static dui_widget *g_loading_detail_net_label = (dui_widget *)0;
+static dui_widget *g_loading_detail_world_label = (dui_widget *)0;
 static DomGameApp *g_ui_app = (DomGameApp *)0;
 
 static void clear_children(dui_context &ctx) {
@@ -52,6 +56,10 @@ static void clear_children(dui_context &ctx) {
     g_remaining_label = (dui_widget *)0;
     g_inventory_label = (dui_widget *)0;
     g_loading_status_label = (dui_widget *)0;
+    g_loading_progress_label = (dui_widget *)0;
+    g_loading_detail_content_label = (dui_widget *)0;
+    g_loading_detail_net_label = (dui_widget *)0;
+    g_loading_detail_world_label = (dui_widget *)0;
     dom_game_ui_debug_reset();
     if (!ctx.root) {
         return;
@@ -226,7 +234,7 @@ void dom_game_ui_build_main_menu(dui_context &ctx) {
     }
 }
 
-void dom_game_ui_build_loading(dui_context &ctx) {
+void dom_game_ui_build_splash(dui_context &ctx) {
     dui_widget *root = ctx.root;
     dui_widget *panel;
     dui_widget *label;
@@ -241,18 +249,76 @@ void dom_game_ui_build_loading(dui_context &ctx) {
     if (!panel) {
         return;
     }
-    panel->layout_rect.h = d_q16_16_from_int(160);
+    panel->layout_rect.h = d_q16_16_from_int(180);
 
     label = add_child(ctx, panel, DUI_WIDGET_LABEL);
     set_text(label, "Dominium");
 
     label = add_child(ctx, panel, DUI_WIDGET_LABEL);
-    set_text(label, "Loading");
+    set_text(label, "Booting");
 
     g_loading_status_label = add_child(ctx, panel, DUI_WIDGET_LABEL);
     if (g_loading_status_label) {
-        set_text(g_loading_status_label, "Loading... 0%");
+        set_text(g_loading_status_label, "Booting...");
     }
+
+    g_loading_progress_label = add_child(ctx, panel, DUI_WIDGET_LABEL);
+    if (g_loading_progress_label) {
+        set_text(g_loading_progress_label, "Progress: 0%");
+    }
+}
+
+void dom_game_ui_build_session_loading(dui_context &ctx) {
+    dui_widget *root = ctx.root;
+    dui_widget *panel;
+    dui_widget *label;
+
+    if (!root) {
+        return;
+    }
+
+    clear_children(ctx);
+
+    panel = add_child(ctx, root, DUI_WIDGET_PANEL);
+    if (!panel) {
+        return;
+    }
+    panel->layout_rect.h = d_q16_16_from_int(240);
+
+    label = add_child(ctx, panel, DUI_WIDGET_LABEL);
+    set_text(label, "Dominium");
+
+    label = add_child(ctx, panel, DUI_WIDGET_LABEL);
+    set_text(label, "Session Loading");
+
+    g_loading_status_label = add_child(ctx, panel, DUI_WIDGET_LABEL);
+    if (g_loading_status_label) {
+        set_text(g_loading_status_label, "Session loading...");
+    }
+
+    g_loading_progress_label = add_child(ctx, panel, DUI_WIDGET_LABEL);
+    if (g_loading_progress_label) {
+        set_text(g_loading_progress_label, "Progress: 0%");
+    }
+
+    g_loading_detail_content_label = add_child(ctx, panel, DUI_WIDGET_LABEL);
+    if (g_loading_detail_content_label) {
+        set_text(g_loading_detail_content_label, "Content: pending");
+    }
+
+    g_loading_detail_net_label = add_child(ctx, panel, DUI_WIDGET_LABEL);
+    if (g_loading_detail_net_label) {
+        set_text(g_loading_detail_net_label, "Network: pending");
+    }
+
+    g_loading_detail_world_label = add_child(ctx, panel, DUI_WIDGET_LABEL);
+    if (g_loading_detail_world_label) {
+        set_text(g_loading_detail_world_label, "World: 0%");
+    }
+}
+
+void dom_game_ui_build_loading(dui_context &ctx) {
+    dom_game_ui_build_session_loading(ctx);
 }
 
 void dom_game_ui_build_in_game(dui_context &ctx) {
@@ -341,6 +407,34 @@ void dom_game_ui_set_loading_status(dui_context &ctx, const char *text) {
     (void)ctx;
     if (g_loading_status_label) {
         g_loading_status_label->text = text;
+    }
+}
+
+void dom_game_ui_set_loading_progress(dui_context &ctx, const char *text) {
+    (void)ctx;
+    if (g_loading_progress_label) {
+        g_loading_progress_label->text = text;
+    }
+}
+
+void dom_game_ui_set_loading_detail_content(dui_context &ctx, const char *text) {
+    (void)ctx;
+    if (g_loading_detail_content_label) {
+        g_loading_detail_content_label->text = text;
+    }
+}
+
+void dom_game_ui_set_loading_detail_net(dui_context &ctx, const char *text) {
+    (void)ctx;
+    if (g_loading_detail_net_label) {
+        g_loading_detail_net_label->text = text;
+    }
+}
+
+void dom_game_ui_set_loading_detail_world(dui_context &ctx, const char *text) {
+    (void)ctx;
+    if (g_loading_detail_world_label) {
+        g_loading_detail_world_label->text = text;
     }
 }
 

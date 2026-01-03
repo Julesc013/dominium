@@ -26,10 +26,16 @@ void dom_game_ui_set_app(DomGameApp *app);
 void dom_game_ui_build_root(dui_context &ctx, GameMode mode);
 
 void dom_game_ui_build_main_menu(dui_context &ctx);
+void dom_game_ui_build_splash(dui_context &ctx);
 void dom_game_ui_build_loading(dui_context &ctx);
+void dom_game_ui_build_session_loading(dui_context &ctx);
 void dom_game_ui_build_in_game(dui_context &ctx);
 void dom_game_ui_set_status(dui_context &ctx, const char *text);
 void dom_game_ui_set_loading_status(dui_context &ctx, const char *text);
+void dom_game_ui_set_loading_progress(dui_context &ctx, const char *text);
+void dom_game_ui_set_loading_detail_content(dui_context &ctx, const char *text);
+void dom_game_ui_set_loading_detail_net(dui_context &ctx, const char *text);
+void dom_game_ui_set_loading_detail_world(dui_context &ctx, const char *text);
 
 dui_widget *dom_game_ui_get_start_button(void);
 dui_widget *dom_game_ui_get_place_button(void);

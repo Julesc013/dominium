@@ -184,6 +184,7 @@ private:
     void        *m_net_replay_user;
     u64          m_last_wall_us;
     bool         m_show_debug_panel;
+    bool         m_ui_transparent_loading;
     bool         m_debug_probe_set;
     q32_32       m_debug_probe_x;
     q32_32       m_debug_probe_y;

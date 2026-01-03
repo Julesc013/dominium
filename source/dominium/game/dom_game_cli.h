@@ -59,6 +59,7 @@ typedef struct dom_game_config {
     u32                  demo_mode;
     u32                  replay_strict_content;
     u32                  dev_allow_ad_hoc_paths;
+    u32                  ui_transparent_loading;
 
     char dominium_home[DOM_GAME_PATH_MAX];
     char instance_id[DOM_GAME_ID_MAX];
