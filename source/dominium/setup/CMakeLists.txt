@@ -328,6 +328,66 @@ add_custom_target(ui_regen_setup
 )
 add_dependencies(ui_regen_setup dominium-ui-editor)
 
+if(TARGET dominium-ui-preview-host-win32)
+    add_custom_target(ui_preview_setup_win32
+        COMMAND $<TARGET_FILE:dominium-ui-editor>
+            --headless-build-ui
+            --in ${SETUP_UI_DOC}
+            --docname setup_ui
+            --out-root ${SETUP_UI_ROOT}
+        COMMAND $<TARGET_FILE:dominium-ui-preview-host-win32>
+            --ui ${SETUP_UI_DOC}
+            --watch
+        DEPENDS
+            ui_regen_setup
+            dominium-ui-editor
+            dominium-ui-preview-host-win32
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        COMMENT "Running setup UI preview (Win32)"
+        VERBATIM
+    )
+endif()
+
+if(TARGET dominium-ui-preview-host-macos)
+    add_custom_target(ui_preview_setup_macos
+        COMMAND $<TARGET_FILE:dominium-ui-editor>
+            --headless-build-ui
+            --in ${SETUP_UI_DOC}
+            --docname setup_ui
+            --out-root ${SETUP_UI_ROOT}
+        COMMAND $<TARGET_FILE:dominium-ui-preview-host-macos>
+            --ui ${SETUP_UI_DOC}
+            --watch
+        DEPENDS
+            ui_regen_setup
+            dominium-ui-editor
+            dominium-ui-preview-host-macos
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        COMMENT "Running setup UI preview (macOS)"
+        VERBATIM
+    )
+endif()
+
+if(TARGET dominium-ui-preview-host-linux)
+    add_custom_target(ui_preview_setup_linux
+        COMMAND $<TARGET_FILE:dominium-ui-editor>
+            --headless-build-ui
+            --in ${SETUP_UI_DOC}
+            --docname setup_ui
+            --out-root ${SETUP_UI_ROOT}
+        COMMAND $<TARGET_FILE:dominium-ui-preview-host-linux>
+            --ui ${SETUP_UI_DOC}
+            --watch
+        DEPENDS
+            ui_regen_setup
+            dominium-ui-editor
+            dominium-ui-preview-host-linux
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        COMMENT "Running setup UI preview (Linux)"
+        VERBATIM
+    )
+endif()
+
 add_subdirectory(tests)
 
 add_subdirectory(installers/windows_legacy/cmake)
