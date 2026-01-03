@@ -1,0 +1,22 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run UI Preview Host (Linux)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/linux-dev/dominium-ui-preview-host-linux",
+            "args": [
+                "--ui",
+                "tools/launcher/ui/doc/launcher_ui_doc.tlv",
+                "--watch"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "MIMode": "gdb",
+            "miDebuggerPath": "/usr/bin/gdb",
+            "preLaunchTask": "cmake: build ui preview host (linux)",
+            "externalConsole": false
+        }
+    ]
+}
