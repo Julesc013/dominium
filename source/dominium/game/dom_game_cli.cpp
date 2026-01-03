@@ -427,8 +427,10 @@ void dom_game_cli_init_defaults(dom_game_config *out_cfg) {
     out_cfg->dev_mode = 0u;
     out_cfg->demo_mode = 0u;
     out_cfg->replay_strict_content = 1u;
+    out_cfg->dev_allow_ad_hoc_paths = 0u;
     (void)copy_cstr_bounded(out_cfg->instance_id, sizeof(out_cfg->instance_id), "demo");
     init_profile_defaults(out_cfg->profile);
+    out_cfg->handshake_path[0] = '\0';
 }
 
 void dom_game_cli_init_result(dom_game_cli_result *out_result) {
@@ -536,7 +538,10 @@ int dom_game_cli_parse(int argc, char **argv, dom_game_config *out_cfg, dom_game
             continue;
         }
         if (std::strncmp(arg, "--handshake=", 12) == 0) {
-            /* Launcher integration; consumed out-of-band. */
+            if (!copy_cstr_bounded(out_cfg->handshake_path, sizeof(out_cfg->handshake_path), arg + 12)) {
+                set_error(out_result, "Handshake path too long.");
+                return -1;
+            }
             continue;
         }
         if (std::strncmp(arg, "--keep_last_runs=", 17) == 0) {
@@ -598,6 +603,15 @@ int dom_game_cli_parse(int argc, char **argv, dom_game_config *out_cfg, dom_game
         }
         if (std::strcmp(arg, "--deterministic-test") == 0) {
             out_cfg->deterministic_test = 1u;
+            continue;
+        }
+        if (std::strncmp(arg, "--dev-allow-ad-hoc-paths=", 25) == 0) {
+            u32 flag = 0u;
+            if (!parse_u32_range(arg + 25, 0u, 1u, flag)) {
+                set_error(out_result, "Invalid --dev-allow-ad-hoc-paths value; expected 0|1.");
+                return -1;
+            }
+            out_cfg->dev_allow_ad_hoc_paths = flag;
             continue;
         }
         if (std::strncmp(arg, "--record-replay=", 16) == 0) {
@@ -708,6 +722,7 @@ void dom_game_cli_print_help(FILE *out) {
     std::fprintf(out, "  --server=off|listen|dedicated\n");
     std::fprintf(out, "  --connect=<addr[:port]>  --port=<u16>\n");
     std::fprintf(out, "  --home=<path>  --instance=<id>  --profile=compat|baseline|perf\n");
+    std::fprintf(out, "  --handshake=<relpath>  --dev-allow-ad-hoc-paths=0|1\n");
     std::fprintf(out, "  --gfx=<backend>  --sys.<subsystem>=<backend>  --tickrate=<ups>\n");
     std::fprintf(out, "  --lockstep-strict=0|1  --deterministic-test\n");
     std::fprintf(out, "  --record-replay=<path>  --play-replay=<path>  --replay-strict-content=0|1\n");

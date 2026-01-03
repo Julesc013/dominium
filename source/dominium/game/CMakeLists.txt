@@ -16,6 +16,7 @@ add_executable(dominium_game
     runtime/dom_game_runtime.cpp
     runtime/dom_game_hash.c
     runtime/dom_game_paths.c
+    runtime/dom_game_handshake.cpp
     runtime/dom_game_content_id.cpp
     runtime/dom_game_save.cpp
     runtime/dom_game_replay.cpp
