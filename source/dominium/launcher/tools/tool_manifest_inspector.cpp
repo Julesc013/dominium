@@ -7,6 +7,7 @@ RESPONSIBILITY: Example tool that reads `--handshake=` + instance manifest and p
 
 #include <cstdio>
 #include <cstring>
+#include <cstdlib>
 #include <string>
 #include <vector>
 
@@ -100,6 +101,29 @@ static std::string u64_hex16(u64 v) {
     return std::string(buf);
 }
 
+static bool is_abs_path(const std::string& path) {
+    if (path.empty()) {
+        return false;
+    }
+    if (path[0] == '/' || path[0] == '\\') {
+        return true;
+    }
+    return (path.size() > 1u && path[1] == ':');
+}
+
+static std::string resolve_handshake_path(const std::string& handshake_arg) {
+    if (handshake_arg.empty() || is_abs_path(handshake_arg)) {
+        return handshake_arg;
+    }
+    {
+        const char* run_root = std::getenv("DOMINIUM_RUN_ROOT");
+        if (run_root && run_root[0]) {
+            return path_join(run_root, handshake_arg);
+        }
+    }
+    return handshake_arg;
+}
+
 static std::string u32_to_string(u32 v) {
     char buf[32];
     std::snprintf(buf, sizeof(buf), "%u", (unsigned)v);
@@ -186,6 +210,8 @@ int main(int argc, char** argv) {
             handshake_path = std::string(a + 12);
         }
     }
+
+    handshake_path = resolve_handshake_path(handshake_path);
 
     out_kv("tool", "tool_manifest_inspector");
     out_kv("handshake.path", handshake_path);
