@@ -978,7 +978,8 @@ bool DomGameApp::init_paths(const dom_game_config &cfg) {
                 home = env_home;
             }
         }
-        if (home.empty()) {
+        if (home.empty() && m_dev_allow_ad_hoc_paths) {
+            std::fprintf(stderr, "DomGameApp: dev allow ad-hoc paths enabled; scanning for DOMINIUM_HOME\n");
             home = find_dominium_home_from(".");
             if (home.empty()) {
                 const char *install_root = dmn_get_install_root();
@@ -987,8 +988,14 @@ bool DomGameApp::init_paths(const dom_game_config &cfg) {
                 }
             }
         }
-        if (home.empty()) {
+        if (home.empty() && m_dev_allow_ad_hoc_paths) {
             home = ".";
+        }
+        if (home.empty()) {
+            m_refusal_code = DOM_GAME_PATHS_REFUSAL_MISSING_HOME_ROOT;
+            m_refusal_detail = path_refusal_detail(m_refusal_code);
+            emit_refusal(m_fs_paths, m_run_id, instance_id, m_refusal_code, m_refusal_detail);
+            return false;
         }
     }
 
