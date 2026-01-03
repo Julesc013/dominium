@@ -1,6 +1,21 @@
 /*
 FILE: source/dominium/setup/core/include/dsu/dsu_types.h
 MODULE: Dominium Setup
+LAYER / SUBSYSTEM: Setup Core ABI types
+RESPONSIBILITY:
+  - Owns fixed-width integer typedefs, boolean conventions, status codes, and the DSU_API export macro.
+  - Does not define platform services, algorithms, or IO behavior.
+ALLOWED DEPENDENCIES: Compiler predefined macros only.
+FORBIDDEN DEPENDENCIES: Standard library headers; OS/platform headers.
+THREADING MODEL: Not applicable (no runtime behavior).
+ERROR MODEL: Defines status codes; no error handling logic.
+DETERMINISM GUARANTEES: Not applicable (type and constant definitions only).
+VERSIONING / ABI / DATA FORMAT NOTES: Fixed-width typedef sizes are part of the public ABI; status code values are stable.
+EXTENSION POINTS: None.
+*/
+/*
+FILE: source/dominium/setup/core/include/dsu/dsu_types.h
+MODULE: Dominium Setup
 PURPOSE: Baseline C89/C++98 types and status codes for the Setup Core ABI.
 */
 #ifndef DSU_TYPES_H_INCLUDED

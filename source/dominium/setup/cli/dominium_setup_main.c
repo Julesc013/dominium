@@ -1,6 +1,21 @@
 /*
 FILE: source/dominium/setup/cli/dominium_setup_main.c
 MODULE: Dominium Setup
+LAYER / SUBSYSTEM: Setup CLI (legacy)
+RESPONSIBILITY:
+  - Owns command-line parsing, command dispatch, and output formatting.
+  - Does not implement setup core algorithms or UI flows.
+ALLOWED DEPENDENCIES: C runtime headers; platform file APIs; Setup Core public headers; dsys.
+FORBIDDEN DEPENDENCIES: Launcher/game subsystems; renderer/UI framework code.
+THREADING MODEL: Single-threaded process; synchronous execution.
+ERROR MODEL: Maps dsu_status_t to process exit codes and JSON error envelopes.
+DETERMINISM GUARANTEES: Deterministic mode delegates to Setup Core and emits stable formatting for identical inputs.
+VERSIONING / ABI / DATA FORMAT NOTES: JSON schema version is DSU_CLI_JSON_SCHEMA_VERSION; CLI version string is DSU_CLI_VERSION.
+EXTENSION POINTS: External GUI entrypoint via dom_setup_ui_run_gui.
+*/
+/*
+FILE: source/dominium/setup/cli/dominium_setup_main.c
+MODULE: Dominium Setup
 PURPOSE: Minimal setup control-plane CLI for Plan S-1 (plan + dry-run).
 NOTE: Legacy setup entrypoint is frozen; see docs/setup/DEPRECATION_PLAN.md.
 */

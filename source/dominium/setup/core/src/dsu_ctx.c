@@ -1,6 +1,21 @@
 /*
 FILE: source/dominium/setup/core/src/dsu_ctx.c
 MODULE: Dominium Setup
+LAYER / SUBSYSTEM: Setup Core context implementation
+RESPONSIBILITY:
+  - Owns context allocation, initialization, and audit log setup/teardown.
+  - Does not implement manifest/plan/execute logic or platform backends.
+ALLOWED DEPENDENCIES: dsu_ctx.h, dsu_log.h, dsu_platform_iface.h, setup core internal headers.
+FORBIDDEN DEPENDENCIES: Launcher/game subsystems; UI/renderer layers.
+THREADING MODEL: Single-threaded; no internal threads.
+ERROR MODEL: dsu_status_t codes for invalid args, allocation failures, and log init failures.
+DETERMINISM GUARANTEES: Determinism is configured by dsu_config_t; this file adds no nondeterministic sources.
+VERSIONING / ABI / DATA FORMAT NOTES: Validates struct_size/struct_version for config and callbacks.
+EXTENSION POINTS: None.
+*/
+/*
+FILE: source/dominium/setup/core/src/dsu_ctx.c
+MODULE: Dominium Setup
 PURPOSE: Setup Core context lifecycle implementation.
 */
 #include "../include/dsu/dsu_ctx.h"
