@@ -18,6 +18,11 @@ Usage:
 - `--connect=<addr[:port]>`
 - `--port=<u16>`
 
+### Headless / automation
+- `--auto-host` (auto-start host session)
+- `--headless-ticks=<u32>` (exit after N in-session ticks)
+- `--headless-local=0|1` (run local single-player session without sockets)
+
 ### Instance / content
 - `--home=<path>` (DOMINIUM_HOME override; dev/standalone only)
 - `--instance=<id>`
@@ -50,6 +55,8 @@ Usage:
   rejected unless the dev override is enabled.
 - `--dev-allow-ad-hoc-paths=0|1` explicitly allows local standalone runs without
   launcher roots and permits absolute paths (logged, not for launcher use).
+- `--dev-allow-missing-content=0|1` allows empty content packs/mods in dev/test
+  runs (logged, not for launcher use).
 
 ### Compatibility / introspection
 - `--capabilities`
