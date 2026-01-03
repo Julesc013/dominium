@@ -113,6 +113,8 @@ namespace dom {
 namespace {
 
 static const unsigned DEFAULT_TICK_RATE = 60u;
+static const unsigned HEADLESS_SPLASH_MIN_MS = 50u;
+static const unsigned HEADLESS_TIMEOUT_MS = 10000u;
 
 static unsigned make_version_u32(unsigned major, unsigned minor, unsigned patch) {
     return major * 10000u + minor * 100u + patch;
@@ -704,6 +706,15 @@ DomGameApp::DomGameApp()
       m_show_overlay_volumes(false),
       m_launcher_mode(false),
       m_dev_allow_ad_hoc_paths(false),
+      m_allow_missing_content(false),
+      m_headless_local(false),
+      m_headless_reached_session(false),
+      m_headless_abort_on_error(false),
+      m_headless_tick_limit(0u),
+      m_headless_ticks(0u),
+      m_headless_elapsed_ms(0u),
+      m_headless_timeout_ms(0u),
+      m_exit_code(0),
       m_run_id(0u),
       m_refusal_code(0u),
       m_refusal_detail(),
@@ -742,7 +753,18 @@ bool DomGameApp::init_from_cli(const dom_game_config &cfg) {
     m_load_path = cfg.load_path;
     m_launcher_mode = (cfg.handshake_path[0] != '\0');
     m_dev_allow_ad_hoc_paths = (cfg.dev_allow_ad_hoc_paths != 0u);
+    m_allow_missing_content = (cfg.dev_allow_missing_content != 0u);
     m_ui_transparent_loading = (cfg.ui_transparent_loading != 0u);
+    m_headless_tick_limit = cfg.headless_ticks;
+    m_headless_ticks = 0u;
+    m_headless_elapsed_ms = 0u;
+    m_headless_timeout_ms = (m_mode == GAME_MODE_HEADLESS && m_headless_tick_limit > 0u)
+                                ? HEADLESS_TIMEOUT_MS
+                                : 0u;
+    m_headless_local = (cfg.headless_local != 0u);
+    m_headless_reached_session = false;
+    m_headless_abort_on_error = (m_mode == GAME_MODE_HEADLESS && m_headless_tick_limit > 0u);
+    m_exit_code = 0;
     m_run_id = 0u;
     m_refusal_code = 0u;
     m_refusal_detail.clear();
@@ -755,6 +777,9 @@ bool DomGameApp::init_from_cli(const dom_game_config &cfg) {
     m_session_start_failed = false;
     m_session_start_error.clear();
     dom_game_phase_init(m_phase);
+    if (m_mode == GAME_MODE_HEADLESS) {
+        m_phase.splash_min_ms = HEADLESS_SPLASH_MIN_MS;
+    }
     m_show_debug_panel = m_dev_mode;
     m_last_hash = 0u;
     if (!m_replay_record_path.empty()) {
@@ -783,7 +808,9 @@ bool DomGameApp::init_from_cli(const dom_game_config &cfg) {
     }
 
     {
-        const char *sys_backend = (cfg.platform_backend[0] == '\0') ? "win32" : cfg.platform_backend;
+        const char *sys_backend = (cfg.platform_backend[0] == '\0')
+                                      ? ((m_mode == GAME_MODE_HEADLESS) ? "null" : "win32")
+                                      : cfg.platform_backend;
         std::printf("DomGameApp: initializing system backend '%s'\n", sys_backend);
         if (!d_system_init(sys_backend)) {
             std::printf("DomGameApp: system init failed\n");
@@ -806,8 +833,14 @@ bool DomGameApp::init_from_cli(const dom_game_config &cfg) {
     }
 
     m_phase.auto_start_join = (!m_connect_addr.empty());
-    m_phase.auto_start_host = (!m_phase.auto_start_join &&
-                               (m_server_mode != SERVER_OFF || m_mode == GAME_MODE_HEADLESS));
+    m_phase.auto_start_host = false;
+    if (cfg.auto_host != 0u) {
+        m_phase.auto_start_host = true;
+    }
+    if (!m_phase.auto_start_join &&
+        (m_server_mode != SERVER_OFF || m_mode == GAME_MODE_HEADLESS)) {
+        m_phase.auto_start_host = true;
+    }
     m_phase.server_addr = m_connect_addr;
     m_phase.server_port = m_net_port;
     if (m_phase.server_addr.empty()) {
@@ -1135,6 +1168,7 @@ bool DomGameApp::init_session(const dom_game_config &cfg) {
     scfg.audio_backend = std::string();
     scfg.headless = (cfg.mode == DOM_GAME_MODE_HEADLESS);
     scfg.tui = (cfg.mode == DOM_GAME_MODE_TUI);
+    scfg.allow_missing_content = m_allow_missing_content;
     if (!m_session.init(m_paths, m_instance, scfg)) {
         return false;
     }
@@ -1301,6 +1335,14 @@ bool DomGameApp::start_session(DomGamePhaseAction action, std::string &out_error
     }
 
     if (action == DOM_GAME_PHASE_ACTION_START_HOST) {
+        if (m_mode == GAME_MODE_HEADLESS && m_headless_local) {
+            if (!m_net.init_single(m_tick_rate_hz)) {
+                out_error = "net_single_init_failed";
+                return false;
+            }
+            (void)d_net_cmd_queue_init();
+            return true;
+        }
         ServerMode mode = m_server_mode;
         if (mode == SERVER_OFF) {
             mode = SERVER_LISTEN;
@@ -1376,6 +1418,10 @@ void DomGameApp::handle_phase_enter(DomGamePhaseId prev_phase, DomGamePhaseId ne
             std::fprintf(stderr, "DomGameApp: session start failed (%s)\n", err.c_str());
             m_session_start_failed = true;
             m_session_start_error = err;
+            if (m_mode == GAME_MODE_HEADLESS && m_headless_abort_on_error) {
+                m_exit_code = 1;
+                request_exit();
+            }
         } else {
             m_session_start_ok = true;
         }
@@ -1386,6 +1432,9 @@ void DomGameApp::handle_phase_enter(DomGamePhaseId prev_phase, DomGamePhaseId ne
         return;
     }
     if (next_phase == DOM_GAME_PHASE_IN_SESSION) {
+        if (m_mode == GAME_MODE_HEADLESS) {
+            m_headless_reached_session = true;
+        }
         dom_game_ui_build_in_game(m_ui_ctx);
         return;
     }
@@ -1477,9 +1526,13 @@ bool DomGameApp::init_views_and_ui(const dom_game_config &cfg) {
     desc.camera.up_y = 0;
     desc.camera.up_z = d_q16_16_from_int(1);
 
-    m_main_view_id = d_view_create(&desc);
-    if (m_main_view_id == 0u) {
-        return false;
+    if (m_mode != GAME_MODE_HEADLESS) {
+        m_main_view_id = d_view_create(&desc);
+        if (m_main_view_id == 0u) {
+            return false;
+        }
+    } else {
+        m_main_view_id = 0u;
     }
 
     dui_shutdown_context(&m_ui_ctx);
@@ -1551,8 +1604,10 @@ void DomGameApp::tick_fixed() {
     const u64 dt_us = (m_last_wall_us > 0u && now_us >= m_last_wall_us) ? (now_us - m_last_wall_us) : 0u;
     m_last_wall_us = now_us;
 
-    process_input_events();
-    update_camera();
+    if (m_mode != GAME_MODE_HEADLESS) {
+        process_input_events();
+        update_camera();
+    }
 
     if (m_session.is_initialized() && m_runtime &&
         (m_phase.phase == DOM_GAME_PHASE_SESSION_LOADING ||
@@ -1560,20 +1615,51 @@ void DomGameApp::tick_fixed() {
         (void)dom_game_runtime_pump(m_runtime);
     }
 
-    {
-        u32 dt_ms = (u32)(dt_us / 1000ull);
-        if (dt_ms == 0u && dt_us > 0u) {
-            dt_ms = 1u;
-        }
-        update_phase(dt_ms);
+    u32 dt_ms = (u32)(dt_us / 1000ull);
+    if (dt_ms == 0u && dt_us > 0u) {
+        dt_ms = 1u;
+    }
+    update_phase(dt_ms);
+
+    if (m_mode == GAME_MODE_HEADLESS && dt_ms > 0u) {
+        m_headless_elapsed_ms += dt_ms;
+    }
+    if (m_mode == GAME_MODE_HEADLESS && m_headless_abort_on_error && m_phase.has_error) {
+        m_exit_code = 1;
+        request_exit();
+        return;
+    }
+    if (m_mode == GAME_MODE_HEADLESS &&
+        m_headless_timeout_ms > 0u &&
+        !m_headless_reached_session &&
+        m_headless_elapsed_ms >= m_headless_timeout_ms) {
+        std::fprintf(stderr, "DomGameApp: headless timeout waiting for IN_SESSION\n");
+        m_exit_code = 1;
+        request_exit();
+        return;
     }
 
     if (m_session.is_initialized() && m_phase.phase == DOM_GAME_PHASE_IN_SESSION && m_runtime) {
         u32 stepped = 0u;
         const int rc = dom_game_runtime_tick_wall(m_runtime, dt_us, &stepped);
-        if (rc == DOM_GAME_RUNTIME_REPLAY_END || rc == DOM_GAME_RUNTIME_ERR) {
+        if (rc == DOM_GAME_RUNTIME_REPLAY_END) {
+            m_exit_code = 0;
             request_exit();
             return;
+        }
+        if (rc == DOM_GAME_RUNTIME_ERR) {
+            m_exit_code = 1;
+            request_exit();
+            return;
+        }
+        if (m_mode == GAME_MODE_HEADLESS && m_headless_tick_limit > 0u) {
+            m_headless_ticks += stepped;
+            if (m_headless_ticks >= m_headless_tick_limit) {
+                std::printf("DomGameApp: headless tick limit reached (%u)\n",
+                            (unsigned)m_headless_tick_limit);
+                request_exit();
+                return;
+            }
         }
     }
     update_demo_hud();

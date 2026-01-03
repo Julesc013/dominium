@@ -62,6 +62,7 @@ public:
     bool init_from_cli(const dom_game_config &cfg);
     void run();
     void shutdown();
+    int exit_code() const { return m_exit_code; }
 
     void request_exit();
     void request_phase_action(DomGamePhaseAction action);
@@ -193,6 +194,15 @@ private:
 
     bool         m_launcher_mode;
     bool         m_dev_allow_ad_hoc_paths;
+    bool         m_allow_missing_content;
+    bool         m_headless_local;
+    bool         m_headless_reached_session;
+    bool         m_headless_abort_on_error;
+    u32          m_headless_tick_limit;
+    u32          m_headless_ticks;
+    u32          m_headless_elapsed_ms;
+    u32          m_headless_timeout_ms;
+    int          m_exit_code;
     u64          m_run_id;
     u32          m_refusal_code;
     std::string  m_refusal_detail;

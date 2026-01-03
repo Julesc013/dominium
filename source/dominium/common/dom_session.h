@@ -37,6 +37,7 @@ struct SessionConfig {
     std::string audio_backend;      /* future */
     bool headless;
     bool tui;
+    bool allow_missing_content;
 };
 
 class DomSession {

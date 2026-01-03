@@ -60,6 +60,10 @@ typedef struct dom_game_config {
     u32                  replay_strict_content;
     u32                  dev_allow_ad_hoc_paths;
     u32                  ui_transparent_loading;
+    u32                  dev_allow_missing_content;
+    u32                  auto_host;
+    u32                  headless_ticks;
+    u32                  headless_local;
 
     char dominium_home[DOM_GAME_PATH_MAX];
     char instance_id[DOM_GAME_ID_MAX];

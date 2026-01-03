@@ -429,6 +429,10 @@ void dom_game_cli_init_defaults(dom_game_config *out_cfg) {
     out_cfg->replay_strict_content = 1u;
     out_cfg->dev_allow_ad_hoc_paths = 0u;
     out_cfg->ui_transparent_loading = 0u;
+    out_cfg->dev_allow_missing_content = 0u;
+    out_cfg->auto_host = 0u;
+    out_cfg->headless_ticks = 0u;
+    out_cfg->headless_local = 0u;
     (void)copy_cstr_bounded(out_cfg->instance_id, sizeof(out_cfg->instance_id), "demo");
     init_profile_defaults(out_cfg->profile);
     out_cfg->handshake_path[0] = '\0';
@@ -498,6 +502,10 @@ int dom_game_cli_parse(int argc, char **argv, dom_game_config *out_cfg, dom_game
             out_cfg->mode = mode;
             continue;
         }
+        if (std::strcmp(arg, "--auto-host") == 0) {
+            out_cfg->auto_host = 1u;
+            continue;
+        }
         if (std::strcmp(arg, "--server") == 0) {
             out_cfg->server_mode = DOM_GAME_SERVER_DEDICATED;
             continue;
@@ -529,6 +537,24 @@ int dom_game_cli_parse(int argc, char **argv, dom_game_config *out_cfg, dom_game
                 return -1;
             }
             out_cfg->net_port = port;
+            continue;
+        }
+        if (std::strncmp(arg, "--headless-ticks=", 17) == 0) {
+            u32 ticks = 0u;
+            if (!parse_u32_range(arg + 17, 0u, 1000000u, ticks)) {
+                set_error(out_result, "Invalid --headless-ticks value; expected 0..1000000.");
+                return -1;
+            }
+            out_cfg->headless_ticks = ticks;
+            continue;
+        }
+        if (std::strncmp(arg, "--headless-local=", 17) == 0) {
+            u32 flag = 0u;
+            if (!parse_u32_range(arg + 17, 0u, 1u, flag)) {
+                set_error(out_result, "Invalid --headless-local value; expected 0|1.");
+                return -1;
+            }
+            out_cfg->headless_local = flag;
             continue;
         }
         if (std::strncmp(arg, "--instance=", 11) == 0) {
@@ -613,6 +639,15 @@ int dom_game_cli_parse(int argc, char **argv, dom_game_config *out_cfg, dom_game
                 return -1;
             }
             out_cfg->dev_allow_ad_hoc_paths = flag;
+            continue;
+        }
+        if (std::strncmp(arg, "--dev-allow-missing-content=", 28) == 0) {
+            u32 flag = 0u;
+            if (!parse_u32_range(arg + 28, 0u, 1u, flag)) {
+                set_error(out_result, "Invalid --dev-allow-missing-content value; expected 0|1.");
+                return -1;
+            }
+            out_cfg->dev_allow_missing_content = flag;
             continue;
         }
         if (std::strncmp(arg, "--ui.transparent-loading=", 25) == 0) {
@@ -728,11 +763,11 @@ void dom_game_cli_print_help(FILE *out) {
     }
     std::fprintf(out, "Dominium game CLI\n");
     std::fprintf(out, "Usage: game_dominium [options]\n");
-    std::fprintf(out, "  --mode=gui|tui|headless  --ui.transparent-loading=0|1\n");
-    std::fprintf(out, "  --server=off|listen|dedicated\n");
+    std::fprintf(out, "  --mode=gui|tui|headless  --auto-host  --ui.transparent-loading=0|1\n");
+    std::fprintf(out, "  --server=off|listen|dedicated  --headless-ticks=<u32>  --headless-local=0|1\n");
     std::fprintf(out, "  --connect=<addr[:port]>  --port=<u16>\n");
     std::fprintf(out, "  --home=<path>  --instance=<id>  --profile=compat|baseline|perf\n");
-    std::fprintf(out, "  --handshake=<relpath>  --dev-allow-ad-hoc-paths=0|1\n");
+    std::fprintf(out, "  --handshake=<relpath>  --dev-allow-ad-hoc-paths=0|1  --dev-allow-missing-content=0|1\n");
     std::fprintf(out, "  --gfx=<backend>  --sys.<subsystem>=<backend>  --tickrate=<ups>\n");
     std::fprintf(out, "  --lockstep-strict=0|1  --deterministic-test\n");
     std::fprintf(out, "  --record-replay=<path>  --play-replay=<path>  --replay-strict-content=0|1\n");
@@ -798,7 +833,7 @@ int dom_game_run_config(const dom_game_config *cfg) {
     }
     app.run();
     app.shutdown();
-    return 0;
+    return app.exit_code();
 }
 
 int dom_game_cli_dispatch(int argc, char **argv) {

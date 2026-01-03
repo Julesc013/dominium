@@ -240,6 +240,17 @@ else()
 endif()
 add_test(NAME dominium_fs_contract COMMAND dominium_fs_contract_tests)
 
+add_test(NAME dominium_game_headless_flow
+    COMMAND $<TARGET_FILE:dominium_game>
+        --mode=headless
+        --auto-host
+        --headless-ticks=10
+        --headless-local=1
+        --dev-allow-ad-hoc-paths=1
+        --dev-allow-missing-content=1
+        --instance=headless_smoke
+)
+
 add_test(NAME dominium_layer_checks
     COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_SOURCE_DIR} python scripts/check_layers.py
 )
