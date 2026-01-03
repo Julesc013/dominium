@@ -124,6 +124,7 @@ private:
     bool start_session(DomGamePhaseAction action, std::string &out_error);
     void handle_phase_enter(DomGamePhaseId prev_phase, DomGamePhaseId next_phase);
     void update_phase(u32 dt_ms);
+    void update_menu_labels();
 
     void main_loop();
     void tick_fixed();
@@ -205,6 +206,9 @@ private:
     char         m_hud_instance_text[128];
     char         m_hud_remaining_text[128];
     char         m_hud_inventory_text[128];
+    char         m_menu_player_text[128];
+    char         m_menu_server_text[128];
+    char         m_menu_error_text[256];
 
     DomGameBuildTool m_build_tool;
 };

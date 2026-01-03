@@ -25,6 +25,7 @@ namespace {
 
 static dui_widget *g_status_label = (dui_widget *)0;
 static dui_widget *g_start_button = (dui_widget *)0;
+static dui_widget *g_join_button = (dui_widget *)0;
 static dui_widget *g_exit_button = (dui_widget *)0;
 static dui_widget *g_place_button = (dui_widget *)0;
 static dui_widget *g_place_refiner_button = (dui_widget *)0;
@@ -32,6 +33,10 @@ static dui_widget *g_place_assembler_button = (dui_widget *)0;
 static dui_widget *g_place_sink_button = (dui_widget *)0;
 static dui_widget *g_place_spline_button = (dui_widget *)0;
 static dui_widget *g_cancel_tool_button = (dui_widget *)0;
+static dui_widget *g_quit_to_menu_button = (dui_widget *)0;
+static dui_widget *g_menu_player_label = (dui_widget *)0;
+static dui_widget *g_menu_server_label = (dui_widget *)0;
+static dui_widget *g_menu_error_label = (dui_widget *)0;
 static dui_widget *g_instance_label = (dui_widget *)0;
 static dui_widget *g_remaining_label = (dui_widget *)0;
 static dui_widget *g_inventory_label = (dui_widget *)0;
@@ -45,6 +50,7 @@ static DomGameApp *g_ui_app = (DomGameApp *)0;
 static void clear_children(dui_context &ctx) {
     g_status_label = (dui_widget *)0;
     g_start_button = (dui_widget *)0;
+    g_join_button = (dui_widget *)0;
     g_exit_button = (dui_widget *)0;
     g_place_button = (dui_widget *)0;
     g_place_refiner_button = (dui_widget *)0;
@@ -52,6 +58,10 @@ static void clear_children(dui_context &ctx) {
     g_place_sink_button = (dui_widget *)0;
     g_place_spline_button = (dui_widget *)0;
     g_cancel_tool_button = (dui_widget *)0;
+    g_quit_to_menu_button = (dui_widget *)0;
+    g_menu_player_label = (dui_widget *)0;
+    g_menu_server_label = (dui_widget *)0;
+    g_menu_error_label = (dui_widget *)0;
     g_instance_label = (dui_widget *)0;
     g_remaining_label = (dui_widget *)0;
     g_inventory_label = (dui_widget *)0;
@@ -102,6 +112,13 @@ static void on_click_start(dui_widget *self) {
     }
 }
 
+static void on_click_join(dui_widget *self) {
+    DomGameApp *app = self ? (DomGameApp *)self->user_data : (DomGameApp *)0;
+    if (app) {
+        app->request_phase_action(DOM_GAME_PHASE_ACTION_START_JOIN);
+    }
+}
+
 static void on_click_exit(dui_widget *self) {
     DomGameApp *app = self ? (DomGameApp *)self->user_data : (DomGameApp *)0;
     if (app) {
@@ -148,6 +165,13 @@ static void on_click_cancel_tool(dui_widget *self) {
     DomGameApp *app = self ? (DomGameApp *)self->user_data : (DomGameApp *)0;
     if (app) {
         app->build_tool_cancel();
+    }
+}
+
+static void on_click_quit_to_menu(dui_widget *self) {
+    DomGameApp *app = self ? (DomGameApp *)self->user_data : (DomGameApp *)0;
+    if (app) {
+        app->request_phase_action(DOM_GAME_PHASE_ACTION_QUIT_TO_MENU);
     }
 }
 
@@ -211,7 +235,7 @@ void dom_game_ui_build_main_menu(dui_context &ctx) {
     if (!panel) {
         return;
     }
-    panel->layout_rect.h = d_q16_16_from_int(200);
+    panel->layout_rect.h = d_q16_16_from_int(260);
 
     label = add_child(ctx, panel, DUI_WIDGET_LABEL);
     set_text(label, "Dominium");
@@ -219,11 +243,28 @@ void dom_game_ui_build_main_menu(dui_context &ctx) {
     label = add_child(ctx, panel, DUI_WIDGET_LABEL);
     set_text(label, "Prototype Build");
 
+    g_menu_player_label = add_child(ctx, panel, DUI_WIDGET_LABEL);
+    if (g_menu_player_label) {
+        set_text(g_menu_player_label, "Player: (unset)");
+    }
+
+    g_menu_server_label = add_child(ctx, panel, DUI_WIDGET_LABEL);
+    if (g_menu_server_label) {
+        set_text(g_menu_server_label, "Server: (unset)");
+    }
+
     g_start_button = add_child(ctx, panel, DUI_WIDGET_BUTTON);
     if (g_start_button) {
-        set_text(g_start_button, "Start Game");
+        set_text(g_start_button, "Start Session (Host)");
         g_start_button->on_click = on_click_start;
         g_start_button->user_data = (void *)g_ui_app;
+    }
+
+    g_join_button = add_child(ctx, panel, DUI_WIDGET_BUTTON);
+    if (g_join_button) {
+        set_text(g_join_button, "Join Session");
+        g_join_button->on_click = on_click_join;
+        g_join_button->user_data = (void *)g_ui_app;
     }
 
     g_exit_button = add_child(ctx, panel, DUI_WIDGET_BUTTON);
@@ -231,6 +272,11 @@ void dom_game_ui_build_main_menu(dui_context &ctx) {
         set_text(g_exit_button, "Exit");
         g_exit_button->on_click = on_click_exit;
         g_exit_button->user_data = (void *)g_ui_app;
+    }
+
+    g_menu_error_label = add_child(ctx, panel, DUI_WIDGET_LABEL);
+    if (g_menu_error_label) {
+        set_text(g_menu_error_label, "");
     }
 }
 
@@ -336,7 +382,7 @@ void dom_game_ui_build_in_game(dui_context &ctx) {
     if (!bar) {
         return;
     }
-    bar->layout_rect.h = d_q16_16_from_int(260);
+    bar->layout_rect.h = d_q16_16_from_int(300);
 
     label_top = add_child(ctx, bar, DUI_WIDGET_LABEL);
     set_text(label_top, "Demo HUD");
@@ -394,12 +440,40 @@ void dom_game_ui_build_in_game(dui_context &ctx) {
         g_cancel_tool_button->on_click = on_click_cancel_tool;
         g_cancel_tool_button->user_data = (void *)g_ui_app;
     }
+
+    g_quit_to_menu_button = add_child(ctx, bar, DUI_WIDGET_BUTTON);
+    if (g_quit_to_menu_button) {
+        set_text(g_quit_to_menu_button, "Quit to Menu");
+        g_quit_to_menu_button->on_click = on_click_quit_to_menu;
+        g_quit_to_menu_button->user_data = (void *)g_ui_app;
+    }
 }
 
 void dom_game_ui_set_status(dui_context &ctx, const char *text) {
     (void)ctx;
     if (g_status_label) {
         g_status_label->text = text;
+    }
+}
+
+void dom_game_ui_set_menu_player(dui_context &ctx, const char *text) {
+    (void)ctx;
+    if (g_menu_player_label) {
+        g_menu_player_label->text = text;
+    }
+}
+
+void dom_game_ui_set_menu_server(dui_context &ctx, const char *text) {
+    (void)ctx;
+    if (g_menu_server_label) {
+        g_menu_server_label->text = text;
+    }
+}
+
+void dom_game_ui_set_menu_error(dui_context &ctx, const char *text) {
+    (void)ctx;
+    if (g_menu_error_label) {
+        g_menu_error_label->text = text;
     }
 }
 
