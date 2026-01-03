@@ -19,9 +19,10 @@ Usage:
 - `--port=<u16>`
 
 ### Instance / content
-- `--home=<path>` (DOMINIUM_HOME override)
+- `--home=<path>` (DOMINIUM_HOME override; dev/standalone only)
 - `--instance=<id>`
 - `--profile=compat|baseline|perf`
+- `--handshake=<path>` (launcher handshake TLV; relative to DOMINIUM_RUN_ROOT in launcher mode)
 
 ### Backends
 - `--gfx=<backend>` (canonical gfx backend selector)
@@ -34,13 +35,21 @@ Usage:
 - `--deterministic-test`
 
 ### Replay
-- `--record-replay=<path>`
-- `--play-replay=<path>`
+- `--record-replay=<path>` (relative to DOMINIUM_RUN_ROOT/replays in launcher mode)
+- `--play-replay=<path>` (relative to DOMINIUM_RUN_ROOT/replays in launcher mode)
 - `--replay-strict-content=0|1`
 
 ### Save / load
-- `--save=<path>`
-- `--load=<path>`
+- `--save=<path>` (relative to DOMINIUM_RUN_ROOT/saves in launcher mode)
+- `--load=<path>` (relative to DOMINIUM_RUN_ROOT/saves in launcher mode)
+
+### Filesystem / launcher mode
+- The game resolves filesystem access via `DOMINIUM_RUN_ROOT` and/or
+  `DOMINIUM_HOME` per `docs/SPEC_FS_CONTRACT.md`.
+- `--handshake` enables launcher mode; absolute save/replay/load paths are
+  rejected unless the dev override is enabled.
+- `--dev-allow-ad-hoc-paths=0|1` explicitly allows local standalone runs without
+  launcher roots and permits absolute paths (logged, not for launcher use).
 
 ### Compatibility / introspection
 - `--capabilities`
