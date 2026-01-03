@@ -699,7 +699,8 @@ DomGameApp::DomGameApp()
       m_dev_allow_ad_hoc_paths(false),
       m_run_id(0u),
       m_refusal_code(0u),
-      m_refusal_detail() {
+      m_refusal_detail(),
+      m_instance_manifest_hash() {
     std::memset(&m_ui_ctx, 0, sizeof(m_ui_ctx));
     std::memset(m_hud_instance_text, 0, sizeof(m_hud_instance_text));
     std::memset(m_hud_remaining_text, 0, sizeof(m_hud_remaining_text));
@@ -732,6 +733,7 @@ bool DomGameApp::init_from_cli(const dom_game_config &cfg) {
     m_run_id = 0u;
     m_refusal_code = 0u;
     m_refusal_detail.clear();
+    m_instance_manifest_hash.clear();
     m_show_debug_panel = m_dev_mode;
     m_last_hash = 0u;
     if (!m_replay_record_path.empty()) {
@@ -743,6 +745,10 @@ bool DomGameApp::init_from_cli(const dom_game_config &cfg) {
 
     if (!init_paths(cfg)) {
         std::printf("DomGameApp: failed to resolve paths\n");
+        return false;
+    }
+    if (!init_io_paths()) {
+        std::printf("DomGameApp: failed to resolve run-scoped IO paths\n");
         return false;
     }
     if (!load_instance(cfg)) {
@@ -926,6 +932,7 @@ bool DomGameApp::init_paths(const dom_game_config &cfg) {
 
         instance_id = hs.instance_id;
         m_run_id = hs.run_id;
+        m_instance_manifest_hash = hs.instance_manifest_hash_bytes;
 
         if (!dom_game_paths_init_from_env(m_fs_paths, instance_id, hs.run_id, flags)) {
             const u32 code = dom_game_paths_last_refusal(m_fs_paths);
@@ -1000,6 +1007,63 @@ bool DomGameApp::init_paths(const dom_game_config &cfg) {
     }
 
     return resolve_paths(m_paths, home);
+}
+
+bool DomGameApp::init_io_paths(void) {
+    struct PathSpec {
+        std::string *path;
+        DomGamePathBaseKind base_kind;
+        const char *label;
+    };
+
+    PathSpec specs[] = {
+        { &m_save_path, DOM_GAME_PATH_BASE_SAVE_DIR, "save" },
+        { &m_load_path, DOM_GAME_PATH_BASE_SAVE_DIR, "load" },
+        { &m_replay_record_path, DOM_GAME_PATH_BASE_REPLAY_DIR, "replay_record" },
+        { &m_replay_play_path, DOM_GAME_PATH_BASE_REPLAY_DIR, "replay_play" }
+    };
+    size_t i;
+
+    for (i = 0u; i < sizeof(specs) / sizeof(specs[0]); ++i) {
+        std::string &path = *specs[i].path;
+        if (path.empty()) {
+            continue;
+        }
+
+        if (m_dev_allow_ad_hoc_paths) {
+            if (is_abs_path_input(path)) {
+                std::fprintf(stderr,
+                             "DomGameApp: dev allow ad-hoc paths enabled; using absolute %s path '%s'\n",
+                             specs[i].label,
+                             path.c_str());
+                continue;
+            }
+            if (m_fs_paths.run_root.empty()) {
+                std::fprintf(stderr,
+                             "DomGameApp: dev allow ad-hoc paths enabled; using %s path '%s' as-is\n",
+                             specs[i].label,
+                             path.c_str());
+                continue;
+            }
+        }
+
+        {
+            std::string resolved;
+            if (!dom_game_paths_resolve_rel(m_fs_paths, specs[i].base_kind, path, resolved)) {
+                const u32 code = dom_game_paths_last_refusal(m_fs_paths);
+                m_refusal_code = code;
+                m_refusal_detail = std::string("path_") + specs[i].label + ":" + path_refusal_detail(code);
+                emit_refusal(m_fs_paths,
+                             m_run_id,
+                             m_fs_paths.instance_id.empty() ? m_instance.id : m_fs_paths.instance_id,
+                             m_refusal_code,
+                             m_refusal_detail);
+                return false;
+            }
+            path.swap(resolved);
+        }
+    }
+    return true;
 }
 
 bool DomGameApp::load_instance(const dom_game_config &cfg) {
@@ -1138,6 +1202,11 @@ bool DomGameApp::init_session(const dom_game_config &cfg) {
         m_replay_record = dom_game_replay_record_open(m_replay_record_path.c_str(),
                                                       m_tick_rate_hz,
                                                       seed,
+                                                      m_instance.id.c_str(),
+                                                      m_run_id,
+                                                      m_instance_manifest_hash.empty() ? (const unsigned char *)0
+                                                                                       : &m_instance_manifest_hash[0],
+                                                      (u32)m_instance_manifest_hash.size(),
                                                       content_tlv.empty() ? (const unsigned char *)0 : &content_tlv[0],
                                                       (u32)content_tlv.size());
         if (!m_replay_record) {
@@ -1189,6 +1258,10 @@ bool DomGameApp::init_session(const dom_game_config &cfg) {
         rdesc.net = &m_net;
         rdesc.instance = &m_instance;
         rdesc.ups = m_tick_rate_hz;
+        rdesc.run_id = m_run_id;
+        rdesc.instance_manifest_hash_bytes = m_instance_manifest_hash.empty() ? (const unsigned char *)0
+                                                                               : &m_instance_manifest_hash[0];
+        rdesc.instance_manifest_hash_len = (u32)m_instance_manifest_hash.size();
 
         m_runtime = dom_game_runtime_create(&rdesc);
         if (!m_runtime) {

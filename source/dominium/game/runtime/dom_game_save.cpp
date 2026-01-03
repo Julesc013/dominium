@@ -8,7 +8,7 @@ FORBIDDEN DEPENDENCIES: Dependency inversions that violate `docs/OVERVIEW_ARCHIT
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
 DETERMINISM: Determinism-sensitive (hash comparisons across save/load); see `docs/SPEC_DETERMINISM.md`.
-VERSIONING / ABI / DATA FORMAT NOTES: DMSG v1 container; see `source/dominium/game/SPEC_SAVE.md`.
+VERSIONING / ABI / DATA FORMAT NOTES: DMSG v2 container; see `source/dominium/game/SPEC_SAVE.md`.
 EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
 */
 #include "runtime/dom_game_save.h"
@@ -21,7 +21,9 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "runtime/dom_game_runtime.h"
 #include "runtime/dom_game_content_id.h"
 #include "../dom_game_save.h"
+#include "dom_instance.h"
 #include "dom_session.h"
+#include "dominium/core_tlv.h"
 
 extern "C" {
 #include "domino/sys.h"
@@ -31,10 +33,18 @@ extern "C" {
 namespace {
 
 enum {
-    DMSG_VERSION = 1u,
+    DMSG_VERSION = 2u,
     DMSG_ENDIAN = 0x0000FFFEu,
     DMSG_CORE_VERSION = 1u,
-    DMSG_RNG_VERSION = 1u
+    DMSG_RNG_VERSION = 1u,
+    DMSG_IDENTITY_VERSION = 1u
+};
+
+enum {
+    DMSG_IDENTITY_TAG_INSTANCE_ID = 2u,
+    DMSG_IDENTITY_TAG_RUN_ID = 3u,
+    DMSG_IDENTITY_TAG_MANIFEST_HASH = 4u,
+    DMSG_IDENTITY_TAG_CONTENT_HASH = 5u
 };
 
 static u32 read_u32_le(const unsigned char *p) {
@@ -140,6 +150,34 @@ static bool read_file_alloc(const char *path, unsigned char **out_data, size_t *
     return true;
 }
 
+static bool build_identity_tlv(const dom_game_runtime *rt,
+                               const unsigned char *content_tlv,
+                               size_t content_len,
+                               std::vector<unsigned char> &out) {
+    core_tlv::TlvWriter w;
+    const dom::InstanceInfo *inst = (const dom::InstanceInfo *)dom_game_runtime_instance(rt);
+    u32 manifest_len = 0u;
+    const unsigned char *manifest = dom_game_runtime_get_manifest_hash(rt, &manifest_len);
+    const u64 run_id = dom_game_runtime_get_run_id(rt);
+    const u64 content_hash = core_tlv::tlv_fnv1a64(content_tlv, content_len);
+    const std::string inst_id = inst ? inst->id : std::string();
+    const unsigned char *manifest_ptr = manifest;
+    u32 manifest_size = manifest_len;
+
+    if (!manifest_ptr) {
+        manifest_size = 0u;
+    }
+
+    w.add_u32(core_tlv::CORE_TLV_TAG_SCHEMA_VERSION, DMSG_IDENTITY_VERSION);
+    w.add_string(DMSG_IDENTITY_TAG_INSTANCE_ID, inst_id);
+    w.add_u64(DMSG_IDENTITY_TAG_RUN_ID, run_id);
+    w.add_bytes(DMSG_IDENTITY_TAG_MANIFEST_HASH, manifest_ptr, manifest_size);
+    w.add_u64(DMSG_IDENTITY_TAG_CONTENT_HASH, content_hash);
+
+    out = w.bytes();
+    return true;
+}
+
 static int parse_dmsg(const unsigned char *data, size_t len, dom_game_save_desc *out_desc) {
     u32 version;
     u32 endian;
@@ -152,6 +190,15 @@ static int parse_dmsg(const unsigned char *data, size_t len, dom_game_save_desc 
     const unsigned char *core_ptr = (const unsigned char *)0;
     u32 core_len = 0u;
     u32 core_version = 0u;
+
+    const char *instance_id = (const char *)0;
+    u32 instance_id_len = 0u;
+    u64 run_id_val = 0ull;
+    const unsigned char *manifest_hash = (const unsigned char *)0;
+    u32 manifest_hash_len = 0u;
+    u64 content_hash = 0ull;
+    int has_content_hash = 0;
+    int has_identity = 0;
 
     u32 rng_state = 0u;
     u32 rng_version = 0u;
@@ -168,7 +215,7 @@ static int parse_dmsg(const unsigned char *data, size_t len, dom_game_save_desc 
     }
 
     version = read_u32_le(data + 4u);
-    if (version != DMSG_VERSION) {
+    if (version != 1u && version != DMSG_VERSION) {
         return (version > DMSG_VERSION) ? DOM_GAME_SAVE_ERR_MIGRATION : DOM_GAME_SAVE_ERR_FORMAT;
     }
     endian = read_u32_le(data + 8u);
@@ -212,6 +259,45 @@ static int parse_dmsg(const unsigned char *data, size_t len, dom_game_save_desc 
             core_ptr = data + offset;
             core_len = chunk_size;
             core_version = chunk_version;
+        } else if (std::memcmp(tag, "IDEN", 4u) == 0) {
+            core_tlv::TlvReader ir(data + offset, (size_t)chunk_size);
+            core_tlv::TlvRecord irec;
+            u32 schema_version = 0u;
+            if (chunk_version > DMSG_IDENTITY_VERSION) {
+                return DOM_GAME_SAVE_ERR_MIGRATION;
+            }
+            if (chunk_version != DMSG_IDENTITY_VERSION || has_identity) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+            while (ir.next(irec)) {
+                switch (irec.tag) {
+                case core_tlv::CORE_TLV_TAG_SCHEMA_VERSION:
+                    (void)core_tlv::tlv_read_u32_le(irec.payload, irec.len, schema_version);
+                    break;
+                case DMSG_IDENTITY_TAG_INSTANCE_ID:
+                    instance_id = (const char *)irec.payload;
+                    instance_id_len = irec.len;
+                    break;
+                case DMSG_IDENTITY_TAG_RUN_ID:
+                    (void)core_tlv::tlv_read_u64_le(irec.payload, irec.len, run_id_val);
+                    break;
+                case DMSG_IDENTITY_TAG_MANIFEST_HASH:
+                    manifest_hash = irec.payload;
+                    manifest_hash_len = irec.len;
+                    break;
+                case DMSG_IDENTITY_TAG_CONTENT_HASH:
+                    if (core_tlv::tlv_read_u64_le(irec.payload, irec.len, content_hash)) {
+                        has_content_hash = 1;
+                    }
+                    break;
+                default:
+                    break;
+                }
+            }
+            if (schema_version != DMSG_IDENTITY_VERSION || !has_content_hash) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+            has_identity = 1;
         } else if (std::memcmp(tag, "RNG ", 4u) == 0) {
             if (chunk_version > DMSG_RNG_VERSION) {
                 return DOM_GAME_SAVE_ERR_MIGRATION;
@@ -230,6 +316,9 @@ static int parse_dmsg(const unsigned char *data, size_t len, dom_game_save_desc 
     if (!core_ptr || !has_rng) {
         return DOM_GAME_SAVE_ERR_FORMAT;
     }
+    if (version >= 2u && !has_identity) {
+        return DOM_GAME_SAVE_ERR_FORMAT;
+    }
 
     std::memset(out_desc, 0, sizeof(*out_desc));
     out_desc->struct_size = (u32)sizeof(*out_desc);
@@ -238,6 +327,13 @@ static int parse_dmsg(const unsigned char *data, size_t len, dom_game_save_desc 
     out_desc->ups = ups;
     out_desc->tick_index = tick_index;
     out_desc->seed = seed;
+    out_desc->instance_id = instance_id;
+    out_desc->instance_id_len = instance_id_len;
+    out_desc->run_id = run_id_val;
+    out_desc->manifest_hash_bytes = manifest_hash;
+    out_desc->manifest_hash_len = manifest_hash_len;
+    out_desc->content_hash64 = content_hash;
+    out_desc->has_identity = (u32)has_identity;
     out_desc->content_tlv = (content_len > 0u) ? (data + 36u) : (const unsigned char *)0;
     out_desc->content_tlv_len = content_len;
     out_desc->core_blob = core_ptr;
@@ -254,6 +350,7 @@ static bool build_save_bytes(const dom_game_runtime *rt, std::vector<unsigned ch
     const dom::DomSession *session;
     std::vector<unsigned char> core_blob;
     std::vector<unsigned char> content_tlv;
+    std::vector<unsigned char> identity_tlv;
     u32 ups;
     u64 tick;
     u64 seed;
@@ -285,6 +382,15 @@ static bool build_save_bytes(const dom_game_runtime *rt, std::vector<unsigned ch
     if (content_tlv.size() > 0xffffffffull || core_blob.size() > 0xffffffffull) {
         return false;
     }
+    if (!build_identity_tlv(rt,
+                            content_tlv.empty() ? (const unsigned char *)0 : &content_tlv[0],
+                            content_tlv.size(),
+                            identity_tlv)) {
+        return false;
+    }
+    if (identity_tlv.size() > 0xffffffffull) {
+        return false;
+    }
 
     out.clear();
     append_bytes(out, "DMSG", 4u);
@@ -295,6 +401,11 @@ static bool build_save_bytes(const dom_game_runtime *rt, std::vector<unsigned ch
     append_u64_le(out, seed);
     append_u32_le(out, (u32)content_tlv.size());
     append_bytes(out, content_tlv.empty() ? (const unsigned char *)0 : &content_tlv[0], content_tlv.size());
+
+    append_bytes(out, "IDEN", 4u);
+    append_u32_le(out, DMSG_IDENTITY_VERSION);
+    append_u32_le(out, (u32)identity_tlv.size());
+    append_bytes(out, identity_tlv.empty() ? (const unsigned char *)0 : &identity_tlv[0], identity_tlv.size());
 
     append_bytes(out, "CORE", 4u);
     append_u32_le(out, DMSG_CORE_VERSION);

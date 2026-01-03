@@ -116,6 +116,7 @@ DomGameHandshake::DomGameHandshake()
     : schema_version(DOM_GAME_HANDSHAKE_TLV_VERSION),
       run_id(0ull),
       instance_id(),
+      instance_manifest_hash_bytes(),
       run_root_ref(),
       instance_root_ref() {
 }
@@ -150,6 +151,9 @@ bool dom_game_handshake_from_tlv_bytes(const unsigned char *data,
         }
         case DOM_GAME_HANDSHAKE_TLV_TAG_INSTANCE_ID:
             out_hs.instance_id = core_tlv::tlv_read_string(rec.payload, rec.len);
+            break;
+        case DOM_GAME_HANDSHAKE_TLV_TAG_INSTANCE_MANIFEST_HASH:
+            out_hs.instance_manifest_hash_bytes.assign(rec.payload, rec.payload + rec.len);
             break;
         case DOM_GAME_HANDSHAKE_TLV_TAG_RUN_ROOT_REF:
             if (!parse_path_ref(rec.payload, rec.len, out_hs.run_root_ref)) {

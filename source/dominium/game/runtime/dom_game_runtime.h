@@ -40,7 +40,7 @@ enum {
 };
 
 enum {
-    DOM_GAME_RUNTIME_INIT_DESC_VERSION = 1u
+    DOM_GAME_RUNTIME_INIT_DESC_VERSION = 2u
 };
 
 typedef struct dom_game_runtime dom_game_runtime;
@@ -52,6 +52,9 @@ typedef struct dom_game_runtime_init_desc {
     void *net;            /* dom::DomGameNet* */
     const void *instance; /* dom::InstanceInfo* */
     u32 ups;
+    u64 run_id;
+    const unsigned char *instance_manifest_hash_bytes;
+    u32 instance_manifest_hash_len;
 } dom_game_runtime_init_desc;
 
 dom_game_runtime *dom_game_runtime_create(const dom_game_runtime_init_desc *desc);
@@ -67,6 +70,8 @@ u64 dom_game_runtime_get_tick(const dom_game_runtime *rt);
 u64 dom_game_runtime_get_seed(const dom_game_runtime *rt);
 u32 dom_game_runtime_get_ups(const dom_game_runtime *rt);
 u64 dom_game_runtime_get_hash(const dom_game_runtime *rt);
+u64 dom_game_runtime_get_run_id(const dom_game_runtime *rt);
+const unsigned char *dom_game_runtime_get_manifest_hash(const dom_game_runtime *rt, u32 *out_len);
 int dom_game_runtime_get_counts(const dom_game_runtime *rt, dom_game_counts *out_counts);
 
 u32 dom_game_runtime_input_delay(const dom_game_runtime *rt);
