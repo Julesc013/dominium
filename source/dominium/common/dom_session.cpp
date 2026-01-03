@@ -13,6 +13,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 */
 #include "dom_session.h"
 
+#include <cstdio>
 #include <cstring>
 #include <map>
 
@@ -136,8 +137,15 @@ bool DomSession::init(const Paths &paths,
     }
 
     if (!m_packset.load_for_instance(m_paths, m_inst)) {
-        shutdown();
-        return false;
+        if (!cfg.allow_missing_content) {
+            shutdown();
+            return false;
+        }
+        std::fprintf(stderr,
+                     "DomSession: content packs missing; continuing with empty content (dev)\n");
+        m_packset = PackSet();
+        m_inst.packs.clear();
+        m_inst.mods.clear();
     }
 
     if (!load_content(m_packset)) {
