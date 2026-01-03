@@ -15,6 +15,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #define DOM_GAME_HANDSHAKE_H
 
 #include <string>
+#include <vector>
 
 extern "C" {
 #include "domino/core/types.h"
@@ -29,6 +30,7 @@ enum { DOM_GAME_HANDSHAKE_TLV_VERSION = 1u };
 enum DomGameHandshakeTlvTag {
     DOM_GAME_HANDSHAKE_TLV_TAG_RUN_ID = 2u,
     DOM_GAME_HANDSHAKE_TLV_TAG_INSTANCE_ID = 3u,
+    DOM_GAME_HANDSHAKE_TLV_TAG_INSTANCE_MANIFEST_HASH = 4u,
     DOM_GAME_HANDSHAKE_TLV_TAG_RUN_ROOT_REF = 100u,
     DOM_GAME_HANDSHAKE_TLV_TAG_INSTANCE_ROOT_REF = 101u
 };
@@ -55,6 +57,7 @@ struct DomGameHandshake {
     u32 schema_version;
     u64 run_id;
     std::string instance_id;
+    std::vector<unsigned char> instance_manifest_hash_bytes;
     DomGamePathRef run_root_ref;
     DomGamePathRef instance_root_ref;
 

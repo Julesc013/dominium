@@ -8,7 +8,7 @@ FORBIDDEN DEPENDENCIES: Dependency inversions that violate `docs/OVERVIEW_ARCHIT
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
 DETERMINISM: Determinism-sensitive (hash comparisons across save/load); see `docs/SPEC_DETERMINISM.md`.
-VERSIONING / ABI / DATA FORMAT NOTES: DMSG v1 container; see `source/dominium/game/SPEC_SAVE.md`.
+VERSIONING / ABI / DATA FORMAT NOTES: DMSG v2 container; see `source/dominium/game/SPEC_SAVE.md`.
 EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
 */
 #ifndef DOM_GAME_RUNTIME_SAVE_H
@@ -30,7 +30,7 @@ enum {
 };
 
 enum {
-    DOM_GAME_SAVE_DESC_VERSION = 1u
+    DOM_GAME_SAVE_DESC_VERSION = 2u
 };
 
 typedef struct dom_game_save_desc {
@@ -41,6 +41,14 @@ typedef struct dom_game_save_desc {
     u32 ups;
     u64 tick_index;
     u64 seed;
+
+    const char *instance_id;
+    u32 instance_id_len;
+    u64 run_id;
+    const unsigned char *manifest_hash_bytes;
+    u32 manifest_hash_len;
+    u64 content_hash64;
+    u32 has_identity;
 
     const unsigned char *content_tlv;
     u32 content_tlv_len;

@@ -8,13 +8,15 @@ FORBIDDEN DEPENDENCIES: Dependency inversions that violate `docs/OVERVIEW_ARCHIT
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
 DETERMINISM: Determinism-sensitive (recorded command payloads must be stable).
-VERSIONING / ABI / DATA FORMAT NOTES: DMRP v1 container; see `source/dominium/game/SPEC_REPLAY.md`.
+VERSIONING / ABI / DATA FORMAT NOTES: DMRP v2 container; see `source/dominium/game/SPEC_REPLAY.md`.
 EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
 */
 #include "runtime/dom_game_replay.h"
 
 #include <vector>
 #include <cstring>
+
+#include "dominium/core_tlv.h"
 
 extern "C" {
 #include "domino/sys.h"
@@ -24,8 +26,16 @@ extern "C" {
 namespace {
 
 enum {
-    DMRP_VERSION = 1u,
-    DMRP_ENDIAN = 0x0000FFFEu
+    DMRP_VERSION = 2u,
+    DMRP_ENDIAN = 0x0000FFFEu,
+    DMRP_IDENTITY_VERSION = 1u
+};
+
+enum {
+    DMRP_IDENTITY_TAG_INSTANCE_ID = 2u,
+    DMRP_IDENTITY_TAG_RUN_ID = 3u,
+    DMRP_IDENTITY_TAG_MANIFEST_HASH = 4u,
+    DMRP_IDENTITY_TAG_CONTENT_HASH = 5u
 };
 
 static u32 read_u32_le(const unsigned char *p) {
@@ -98,6 +108,33 @@ static bool read_file(const char *path, std::vector<unsigned char> &out) {
     return true;
 }
 
+static bool build_identity_tlv(const char *instance_id,
+                               u64 run_id,
+                               const unsigned char *manifest_hash_bytes,
+                               u32 manifest_hash_len,
+                               const unsigned char *content_tlv,
+                               u32 content_tlv_len,
+                               std::vector<unsigned char> &out) {
+    core_tlv::TlvWriter w;
+    const u64 content_hash = core_tlv::tlv_fnv1a64(content_tlv, (size_t)content_tlv_len);
+    const std::string inst_id = instance_id ? instance_id : "";
+    const unsigned char *manifest_ptr = manifest_hash_bytes;
+    u32 manifest_size = manifest_hash_len;
+
+    if (!manifest_ptr) {
+        manifest_size = 0u;
+    }
+
+    w.add_u32(core_tlv::CORE_TLV_TAG_SCHEMA_VERSION, DMRP_IDENTITY_VERSION);
+    w.add_string(DMRP_IDENTITY_TAG_INSTANCE_ID, inst_id);
+    w.add_u64(DMRP_IDENTITY_TAG_RUN_ID, run_id);
+    w.add_bytes(DMRP_IDENTITY_TAG_MANIFEST_HASH, manifest_ptr, manifest_size);
+    w.add_u64(DMRP_IDENTITY_TAG_CONTENT_HASH, content_hash);
+
+    out = w.bytes();
+    return true;
+}
+
 struct dom_game_replay_record_view {
     u64 tick;
     const unsigned char *payload;
@@ -128,17 +165,34 @@ extern "C" {
 dom_game_replay_record *dom_game_replay_record_open(const char *path,
                                                     u32 ups,
                                                     u64 seed,
+                                                    const char *instance_id,
+                                                    u64 run_id,
+                                                    const unsigned char *manifest_hash_bytes,
+                                                    u32 manifest_hash_len,
                                                     const unsigned char *content_tlv,
                                                     u32 content_tlv_len) {
     dom_game_replay_record *rec;
     unsigned char buf32[4];
     unsigned char buf64[8];
     void *fh;
+    std::vector<unsigned char> identity_tlv;
 
     if (!path || !path[0] || ups == 0u) {
         return (dom_game_replay_record *)0;
     }
     if (content_tlv_len > 0u && !content_tlv) {
+        return (dom_game_replay_record *)0;
+    }
+    if (!build_identity_tlv(instance_id,
+                            run_id,
+                            manifest_hash_bytes,
+                            manifest_hash_len,
+                            content_tlv,
+                            content_tlv_len,
+                            identity_tlv)) {
+        return (dom_game_replay_record *)0;
+    }
+    if (identity_tlv.size() > 0xffffffffull) {
         return (dom_game_replay_record *)0;
     }
 
@@ -178,6 +232,17 @@ dom_game_replay_record *dom_game_replay_record_open(const char *path,
     }
     if (content_tlv_len > 0u) {
         if (!write_all(fh, content_tlv, content_tlv_len)) {
+            dsys_file_close(fh);
+            return (dom_game_replay_record *)0;
+        }
+    }
+    write_u32_le(buf32, (u32)identity_tlv.size());
+    if (!write_all(fh, buf32, 4u)) {
+        dsys_file_close(fh);
+        return (dom_game_replay_record *)0;
+    }
+    if (!identity_tlv.empty()) {
+        if (!write_all(fh, &identity_tlv[0], identity_tlv.size())) {
             dsys_file_close(fh);
             return (dom_game_replay_record *)0;
         }
@@ -241,6 +306,14 @@ dom_game_replay_play *dom_game_replay_play_open(const char *path,
     u64 seed;
     u32 content_len;
     const unsigned char *content_ptr;
+    const char *instance_id = (const char *)0;
+    u32 instance_id_len = 0u;
+    u64 run_id_val = 0ull;
+    const unsigned char *manifest_hash = (const unsigned char *)0;
+    u32 manifest_hash_len = 0u;
+    u64 content_hash = 0ull;
+    int has_content_hash = 0;
+    int has_identity = 0;
     u64 last_tick = 0u;
     int has_last_tick = 0;
     u64 prev_tick = 0u;
@@ -278,7 +351,7 @@ dom_game_replay_play *dom_game_replay_play_open(const char *path,
     if (out_desc) {
         out_desc->container_version = version;
     }
-    if (version != DMRP_VERSION) {
+    if (version != 1u && version != DMRP_VERSION) {
         if (out_desc) {
             out_desc->error_code = (version > DMRP_VERSION) ? DOM_GAME_REPLAY_ERR_MIGRATION
                                                             : DOM_GAME_REPLAY_ERR_FORMAT;
@@ -305,6 +378,71 @@ dom_game_replay_play *dom_game_replay_play_open(const char *path,
     }
     content_ptr = (content_len > 0u) ? (&data[offset]) : (const unsigned char *)0;
     offset += (size_t)content_len;
+
+    if (version >= 2u) {
+        u32 identity_len = 0u;
+        const unsigned char *identity_ptr = (const unsigned char *)0;
+        if (data_len - offset < 4u) {
+            if (out_desc) {
+                out_desc->error_code = DOM_GAME_REPLAY_ERR_FORMAT;
+            }
+            return (dom_game_replay_play *)0;
+        }
+        identity_len = read_u32_le(&data[offset]);
+        offset += 4u;
+        if ((size_t)identity_len > data_len - offset) {
+            if (out_desc) {
+                out_desc->error_code = DOM_GAME_REPLAY_ERR_FORMAT;
+            }
+            return (dom_game_replay_play *)0;
+        }
+        if (identity_len == 0u) {
+            if (out_desc) {
+                out_desc->error_code = DOM_GAME_REPLAY_ERR_FORMAT;
+            }
+            return (dom_game_replay_play *)0;
+        }
+        identity_ptr = &data[offset];
+        offset += (size_t)identity_len;
+
+        {
+            core_tlv::TlvReader ir(identity_ptr, (size_t)identity_len);
+            core_tlv::TlvRecord irec;
+            u32 schema_version = 0u;
+            while (ir.next(irec)) {
+                switch (irec.tag) {
+                case core_tlv::CORE_TLV_TAG_SCHEMA_VERSION:
+                    (void)core_tlv::tlv_read_u32_le(irec.payload, irec.len, schema_version);
+                    break;
+                case DMRP_IDENTITY_TAG_INSTANCE_ID:
+                    instance_id = (const char *)irec.payload;
+                    instance_id_len = irec.len;
+                    break;
+                case DMRP_IDENTITY_TAG_RUN_ID:
+                    (void)core_tlv::tlv_read_u64_le(irec.payload, irec.len, run_id_val);
+                    break;
+                case DMRP_IDENTITY_TAG_MANIFEST_HASH:
+                    manifest_hash = irec.payload;
+                    manifest_hash_len = irec.len;
+                    break;
+                case DMRP_IDENTITY_TAG_CONTENT_HASH:
+                    if (core_tlv::tlv_read_u64_le(irec.payload, irec.len, content_hash)) {
+                        has_content_hash = 1;
+                    }
+                    break;
+                default:
+                    break;
+                }
+            }
+            if (schema_version != DMRP_IDENTITY_VERSION || !has_content_hash) {
+                if (out_desc) {
+                    out_desc->error_code = DOM_GAME_REPLAY_ERR_FORMAT;
+                }
+                return (dom_game_replay_play *)0;
+            }
+            has_identity = 1;
+        }
+    }
 
     std::vector<dom_game_replay_record_view> records;
     while (offset < data_len) {
@@ -381,6 +519,13 @@ dom_game_replay_play *dom_game_replay_play_open(const char *path,
         out_desc->container_version = version;
         out_desc->ups = ups;
         out_desc->seed = seed;
+        out_desc->instance_id = instance_id;
+        out_desc->instance_id_len = instance_id_len;
+        out_desc->run_id = run_id_val;
+        out_desc->manifest_hash_bytes = manifest_hash;
+        out_desc->manifest_hash_len = manifest_hash_len;
+        out_desc->content_hash64 = content_hash;
+        out_desc->has_identity = (u32)has_identity;
         out_desc->content_tlv = content_ptr;
         out_desc->content_tlv_len = content_len;
         out_desc->error_code = DOM_GAME_REPLAY_OK;

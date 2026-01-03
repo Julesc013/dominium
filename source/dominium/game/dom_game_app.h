@@ -15,6 +15,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #define DOM_GAME_APP_H
 
 #include <string>
+#include <vector>
 #include "dom_game_cli.h"
 #include "dom_paths.h"
 #include "dom_instance.h"
@@ -115,6 +116,7 @@ public:
 
 private:
     bool init_paths(const dom_game_config &cfg);
+    bool init_io_paths(void);
     bool load_instance(const dom_game_config &cfg);
     bool evaluate_compatibility(const dom_game_config &cfg);
     bool init_session(const dom_game_config &cfg);
@@ -184,6 +186,7 @@ private:
     u64          m_run_id;
     u32          m_refusal_code;
     std::string  m_refusal_detail;
+    std::vector<unsigned char> m_instance_manifest_hash;
 
     bool         m_show_overlay_hydro;
     bool         m_show_overlay_temp;

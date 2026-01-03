@@ -14,6 +14,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "runtime/dom_game_runtime.h"
 
 #include <cstring>
+#include <vector>
 
 #include "dom_game_net.h"
 #include "dom_instance.h"
@@ -38,6 +39,8 @@ struct dom_game_runtime {
     void *replay_play;
     u32 replay_last_tick;
     int replay_last_tick_valid;
+    u64 run_id;
+    std::vector<unsigned char> manifest_hash_bytes;
 };
 
 namespace {
@@ -126,6 +129,12 @@ dom_game_runtime *dom_game_runtime_create(const dom_game_runtime_init_desc *desc
     rt->replay_play = 0;
     rt->replay_last_tick = 0u;
     rt->replay_last_tick_valid = 0;
+    rt->run_id = desc->run_id;
+    if (desc->instance_manifest_hash_bytes && desc->instance_manifest_hash_len > 0u) {
+        rt->manifest_hash_bytes.assign(desc->instance_manifest_hash_bytes,
+                                       desc->instance_manifest_hash_bytes +
+                                       desc->instance_manifest_hash_len);
+    }
     return rt;
 }
 
@@ -318,6 +327,23 @@ u64 dom_game_runtime_get_hash(const dom_game_runtime *rt) {
     dom::DomSession *session = session_of(rt);
     const d_world *w = session ? session->world() : 0;
     return (u64)dom_game_hash_world(w);
+}
+
+u64 dom_game_runtime_get_run_id(const dom_game_runtime *rt) {
+    return rt ? rt->run_id : 0ull;
+}
+
+const unsigned char *dom_game_runtime_get_manifest_hash(const dom_game_runtime *rt, u32 *out_len) {
+    if (out_len) {
+        *out_len = 0u;
+    }
+    if (!rt || rt->manifest_hash_bytes.empty()) {
+        return (const unsigned char *)0;
+    }
+    if (out_len) {
+        *out_len = (u32)rt->manifest_hash_bytes.size();
+    }
+    return &rt->manifest_hash_bytes[0];
 }
 
 int dom_game_runtime_get_counts(const dom_game_runtime *rt, dom_game_counts *out_counts) {
