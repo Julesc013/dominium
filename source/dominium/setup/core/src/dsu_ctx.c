@@ -30,6 +30,7 @@ static int dsu__validate_config(const dsu_config_t *cfg) {
     if (!cfg) {
         return 1;
     }
+    /* Version/size checks gate ABI compatibility for callers. */
     if (cfg->struct_version != DSU_CONFIG_VERSION) {
         return 0;
     }
@@ -43,6 +44,7 @@ static int dsu__validate_callbacks(const dsu_callbacks_t *cbs) {
     if (!cbs) {
         return 1;
     }
+    /* Version/size checks gate ABI compatibility for callers. */
     if (cbs->struct_version != DSU_CALLBACKS_VERSION) {
         return 0;
     }
@@ -73,6 +75,7 @@ dsu_status_t dsu_ctx_create(const dsu_config_t *config,
         return DSU_STATUS_INVALID_ARGS;
     }
 
+    /* Defaults apply when caller does not supply a config or callbacks. */
     dsu_config_init(&cfg_local);
     if (config) {
         cfg_local = *config;

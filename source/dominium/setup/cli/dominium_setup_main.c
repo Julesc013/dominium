@@ -144,6 +144,7 @@ static void dsu_cli_json_put_path(FILE *out, const char *path) {
     unsigned char c;
     fputc('"', out);
     while ((c = *p++) != 0u) {
+        /* Normalize path separators in JSON output. */
         if (c == '\\') c = '/';
         if (c == '\\' || c == '"') {
             fputc('\\', out);
