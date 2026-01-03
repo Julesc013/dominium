@@ -28,5 +28,5 @@ versioning rules.
 Recommended entry points:
 - Determinism + SIM: `docs/SPEC_DETERMINISM.md`, `docs/SPEC_SIM_SCHEDULER.md`, `docs/SPEC_ACTIONS.md`
 - Placement/structure: `docs/SPEC_POSE_AND_ANCHORS.md`, `docs/SPEC_TRANS_STRUCT_DECOR.md`
-- Products: `docs/SPEC_PRODUCTS.md`, `docs/SPEC_GAME_PRODUCT.md`, `docs/SPEC_LAUNCHER.md`, `docs/SPEC_SETUP_CORE.md`
-
+- Products: `docs/SPEC_PRODUCTS.md`, `docs/SPEC_GAME_PRODUCT.md`, `docs/SPEC_LAUNCHER.md`,
+  `docs/SPEC_SETUP_CORE.md`, `docs/SPEC_SETUP_CLI.md`

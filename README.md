@@ -149,6 +149,7 @@ Subsystem specs (selected; see `docs/README.md` for the full list):
 - `docs/SPEC_GAME_PRODUCT.md`
 - `docs/SPEC_LAUNCHER.md`
 - `docs/SPEC_SETUP_CORE.md`
+- `docs/SPEC_SETUP_CLI.md`
 - `docs/SPEC_TOOLS_CORE.md`
 
 ## Documentation Standards
