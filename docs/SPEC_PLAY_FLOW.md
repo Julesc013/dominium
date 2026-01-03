@@ -40,7 +40,16 @@ Game phases are authoritative in the game runtime:
 
 Phases are explicit, logged, and only advance via defined transitions.
 
-## 4. Filesystem and handshake constraints
+## 4. Headless / automation mode
+Headless mode runs the same phase machine without opening a window:
+- `--mode=headless` selects the headless frontend and defaults the system backend to `null`.
+- Headless auto-starts host unless `--connect` is provided (join).
+- `--auto-host` forces an automatic host start (useful for scripted runs).
+- `--headless-ticks=<u32>` exits after N in-session ticks (smoke/CI).
+- `--headless-local=1` runs a local single-player session without binding sockets.
+- `--dev-allow-missing-content=1` allows empty content packs for dev/test only (logged).
+
+## 5. Filesystem and handshake constraints
 - Handshake TLV contains no absolute paths.
 - All filesystem access resolves through launcher-defined roots:
   - `DOMINIUM_RUN_ROOT` (preferred; per-run writable root).
@@ -51,7 +60,7 @@ Phases are explicit, logged, and only advance via defined transitions.
 - Refusals are written to `DOMINIUM_RUN_ROOT/refusal.tlv` if available; otherwise
   stderr only. See `docs/SPEC_FS_CONTRACT.md`.
 
-## 5. Refusal points
+## 6. Refusal points
 Refusals can occur at:
 - handshake load/parse/validation (invalid or missing fields),
 - missing/invalid run/home roots,
@@ -61,13 +70,14 @@ Refusals can occur at:
 Refusals surface via:
 - `refusal.tlv` (run root) and stderr logs.
 
-## 6. Timing goals (non-binding)
+## 7. Timing goals (non-binding)
 These are UX targets and do not affect determinism:
 - Splash minimum duration: 750–1500 ms (configurable; non-blocking).
+- Headless automation uses a shorter minimum to keep tests fast.
 - Loading screens may advance as soon as required readiness signals are true.
 - Background loading tasks must not mutate deterministic sim state.
 
-## 7. Phase transition summary
+## 8. Phase transition summary
 ```
 BOOT -> SPLASH -> MAIN_MENU
 MAIN_MENU -> SESSION_START -> SESSION_LOADING -> IN_SESSION
@@ -75,7 +85,7 @@ IN_SESSION -> MAIN_MENU (quit to menu)
 Any phase -> SHUTDOWN (fatal error or explicit quit)
 ```
 
-## 8. Related specs
+## 9. Related specs
 - `docs/SPEC_FS_CONTRACT.md`
 - `docs/SPEC_LAUNCH_HANDSHAKE_GAME.md`
 - `docs/SPEC_GAME_CLI.md`
