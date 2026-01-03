@@ -151,6 +151,12 @@ Subsystem specs (selected; see `docs/README.md` for the full list):
 - `docs/SPEC_SETUP_CORE.md`
 - `docs/SPEC_TOOLS_CORE.md`
 
+## Documentation Standards
+Documentation density ratios act as a drift detector for under- or over-
+documentation. A CMake quality gate checks comment line/word/char ratios, warns
+locally, and fails in CI. See `docs/DOCUMENTATION_STANDARDS.md` for definitions,
+thresholds, and tuning.
+
 ## Build / usage (high-level only)
 Builds are CMake-based (minimum 3.16) and do not fetch network dependencies.
 Use the presets in `CMakePresets.json` or follow `docs/BUILDING.md`. Platform
