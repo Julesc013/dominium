@@ -21,7 +21,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "dom_instance.h"
 #include "dom_session.h"
 #include "dom_compat.h"
-#include "dom_game_states.h"
+#include "dom_game_phase.h"
 #include "dom_game_camera.h"
 #include "dom_game_tools_build.h"
 #include "dom_game_net.h"
@@ -63,8 +63,8 @@ public:
     void run();
     void shutdown();
 
-    void request_state_change(GameStateId next);
     void request_exit();
+    void request_phase_action(DomGamePhaseAction action);
     void spawn_demo_blueprint();
     void update_demo_hud();
     void set_last_struct_id(d_struct_instance_id id) { m_last_struct_id = id; }
@@ -121,6 +121,9 @@ private:
     bool evaluate_compatibility(const dom_game_config &cfg);
     bool init_session(const dom_game_config &cfg);
     bool init_views_and_ui(const dom_game_config &cfg);
+    bool start_session(DomGamePhaseAction action, std::string &out_error);
+    void handle_phase_enter(DomGamePhaseId prev_phase, DomGamePhaseId next_phase);
+    void update_phase(u32 dt_ms);
 
     void main_loop();
     void tick_fixed();
@@ -130,8 +133,6 @@ private:
     void update_debug_panel();
     void ensure_demo_agents();
 
-    void change_state(GameStateId next);
-
 private:
     DomGamePaths m_fs_paths;
     Paths        m_paths;
@@ -139,6 +140,7 @@ private:
     DomSession   m_session;
     DomGameNet   m_net;
     dom_game_runtime *m_runtime;
+    dom_game_config m_cfg;
 
     GameMode     m_mode;
     ServerMode   m_server_mode;
@@ -153,8 +155,14 @@ private:
     d_view_id    m_main_view_id;
     dui_context  m_ui_ctx;
 
-    GameStateId  m_state_id;
-    GameState   *m_state;
+    DomGamePhaseCtx m_phase;
+    DomGamePhaseAction m_phase_action;
+    bool         m_bootstrap_started;
+    bool         m_bootstrap_failed;
+    bool         m_session_start_attempted;
+    bool         m_session_start_ok;
+    bool         m_session_start_failed;
+    std::string  m_session_start_error;
 
     bool         m_running;
 
