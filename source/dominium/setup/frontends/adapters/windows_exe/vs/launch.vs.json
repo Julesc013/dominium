@@ -1,0 +1,80 @@
+{
+  "version": "0.2.1",
+  "configurations": [
+    {
+      "name": "Win64 GUI (Export Request)",
+      "project": "DominiumSetupWin64",
+      "args": [
+        "--gui",
+        "export-request",
+        "--manifest",
+        "${workspaceRoot}\\..\\..\\..\\..\\..\\..\\..\\source\\dominium\\setup\\tests\\fixtures\\manifests\\minimal.dsumanifest",
+        "--op",
+        "install",
+        "--scope",
+        "user",
+        "--platform",
+        "win32_nt5",
+        "--frontend-id",
+        "vs-win64-gui",
+        "--deterministic",
+        "1",
+        "--out-request",
+        "install_request.tlv",
+        "--use-fake-services",
+        "${workspaceRoot}\\..\\..\\..\\..\\..\\..\\..\\tmp\\setup2_sandbox\\win64\\gui"
+      ],
+      "cwd": "${workspaceRoot}\\..\\..\\..\\..\\..\\..\\..\\tmp\\setup2_sandbox\\win64\\gui"
+    },
+    {
+      "name": "Win64 TUI (Export Request)",
+      "project": "DominiumSetupWin64",
+      "args": [
+        "--tui",
+        "export-request",
+        "--manifest",
+        "${workspaceRoot}\\..\\..\\..\\..\\..\\..\\..\\source\\dominium\\setup\\tests\\fixtures\\manifests\\minimal.dsumanifest",
+        "--op",
+        "install",
+        "--scope",
+        "user",
+        "--platform",
+        "win32_nt5",
+        "--frontend-id",
+        "vs-win64-tui",
+        "--deterministic",
+        "1",
+        "--out-request",
+        "install_request.tlv",
+        "--use-fake-services",
+        "${workspaceRoot}\\..\\..\\..\\..\\..\\..\\..\\tmp\\setup2_sandbox\\win64\\tui"
+      ],
+      "cwd": "${workspaceRoot}\\..\\..\\..\\..\\..\\..\\..\\tmp\\setup2_sandbox\\win64\\tui"
+    },
+    {
+      "name": "Win64 CLI (Export Request)",
+      "project": "DominiumSetupWin64",
+      "args": [
+        "--cli",
+        "export-request",
+        "--manifest",
+        "${workspaceRoot}\\..\\..\\..\\..\\..\\..\\..\\source\\dominium\\setup\\tests\\fixtures\\manifests\\minimal.dsumanifest",
+        "--op",
+        "install",
+        "--scope",
+        "user",
+        "--platform",
+        "win32_nt5",
+        "--frontend-id",
+        "vs-win64-cli",
+        "--deterministic",
+        "1",
+        "--out-request",
+        "install_request.tlv",
+        "--use-fake-services",
+        "${workspaceRoot}\\..\\..\\..\\..\\..\\..\\..\\tmp\\setup2_sandbox\\win64\\cli"
+      ],
+      "cwd": "${workspaceRoot}\\..\\..\\..\\..\\..\\..\\..\\tmp\\setup2_sandbox\\win64\\cli"
+    }
+  ]
+}
