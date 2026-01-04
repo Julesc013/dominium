@@ -22,6 +22,8 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "dom_compat.h"
 
 #include "dui/dui_api_v1.h"
+#include "ui/launcher_ui_events.h"
+#include "ui/launcher_ui_session_state.h"
 
 extern "C" {
 #include "domino/sys.h"
@@ -112,6 +114,11 @@ public:
     u64                ui_caps_selected() const { return m_ui_caps_selected; }
     const std::string& ui_fallback_note() const { return m_ui_fallback_note; }
 
+    void ui_handle_action(u32 action_id);
+    void ui_handle_value(const LauncherUiValueEvent& value);
+    void ui_request_quit();
+    void ui_set_window_bounds(i32 x, i32 y, i32 w, i32 h);
+
 private:
     bool scan_products();
     bool scan_instances();
@@ -126,6 +133,9 @@ private:
     bool load_dui_schema(std::vector<unsigned char>& out_schema, std::string& out_loaded_path, std::string& out_error) const;
     bool build_dui_state(std::vector<unsigned char>& out_state) const;
     const dui_api_v1* select_dui_api(std::string& out_backend_name, std::string& out_err);
+    void apply_ui_session_state();
+    void save_ui_session_state_best_effort();
+    bool capture_ui_session_window_bounds(LauncherUiSessionState& io_state) const;
 
     ProductEntry* find_product_entry(const std::string &product);
     const InstanceInfo* selected_instance() const;
@@ -169,6 +179,10 @@ private:
     std::string      m_ui_backend_selected;
     u64              m_ui_caps_selected;
     std::string      m_ui_fallback_note;
+#if defined(DOMINIUM_DEV_UI)
+    LauncherUiSessionState m_ui_session_state;
+    bool                   m_ui_session_state_loaded;
+#endif
 
     DomLauncherUiState* m_ui; /* UI-only state (schema-driven DUI) */
 };

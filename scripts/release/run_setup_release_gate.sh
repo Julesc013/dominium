@@ -16,6 +16,7 @@ gold_log="$log_dir/gold_master.log"
 conf_log="$log_dir/conformance.log"
 adapter_log="$log_dir/adapter_checks.log"
 pack_log="$log_dir/packaging_checks.log"
+frontend_log="$log_dir/frontend_purity.log"
 
 run_cmd() {
     local cmd="$1"
@@ -33,6 +34,7 @@ gold_status="pass"
 conf_status="pass"
 adapter_status="pass"
 pack_status="pass"
+frontend_status="pass"
 
 > "$build_log"
 if ! run_cmd "cmake --build --preset ${preset} --target dominium-setup setup_kernel_tests setup_services_fs_tests setup_services_platform_tests setup_kernel_services_tests setup_splat_tests setup_plan_tests setup_apply_tests setup_cli_golden_tests setup_parity_lock_tests setup_gold_master_tests setup_conformance_runner setup_conformance_repeat_tests setup_adapter_steam_tests setup_adapter_macos_pkg_tests setup_adapter_linux_wrappers_tests setup_adapter_wrapper_tests setup_adapter_windows_tests setup-adapters" "$build_log"; then
@@ -42,6 +44,11 @@ fi
 > "$maint_log"
 if ! run_cmd "scripts/setup/maintenance_checks.sh" "$maint_log"; then
     maint_status="fail"
+fi
+
+> "$frontend_log"
+if ! run_cmd "scripts/setup2/check_frontend_purity.sh" "$frontend_log"; then
+    frontend_status="fail"
 fi
 
 > "$unit_log"
@@ -74,6 +81,9 @@ fi
 if ! run_cmd "ctest --preset ${preset} -R setup_adapter_windows_exe --output-on-failure" "$adapter_log"; then
     adapter_status="fail"
 fi
+if ! run_cmd "ctest --preset ${preset} -R setup_adapter_macos_gui_export --output-on-failure" "$adapter_log"; then
+    adapter_status="fail"
+fi
 
 > "$pack_log"
 if ! run_cmd "ctest --preset ${preset} -R setup_adapter_wrapper_scripts --output-on-failure" "$pack_log"; then
@@ -89,6 +99,7 @@ fi
 overall="pass"
 if [ "$build_status" != "pass" ] || \
    [ "$maint_status" != "pass" ] || \
+   [ "$frontend_status" != "pass" ] || \
    [ "$unit_status" != "pass" ] || \
    [ "$parity_status" != "pass" ] || \
    [ "$gold_status" != "pass" ] || \
@@ -106,6 +117,7 @@ cat > "$summary" <<EOF
   "stages":[
     {"name":"build","status":"${build_status}","log":"${log_dir_rel}/build.log"},
     {"name":"maintenance_checks","status":"${maint_status}","log":"${log_dir_rel}/maintenance.log"},
+    {"name":"frontend_purity","status":"${frontend_status}","log":"${log_dir_rel}/frontend_purity.log"},
     {"name":"unit_tests","status":"${unit_status}","log":"${log_dir_rel}/unit_tests.log"},
     {"name":"parity_lock","status":"${parity_status}","log":"${log_dir_rel}/parity_lock.log"},
     {"name":"gold_master","status":"${gold_status}","log":"${log_dir_rel}/gold_master.log"},

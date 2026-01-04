@@ -314,36 +314,7 @@ enum LauncherUiWidgetId {
     W_DIALOG_CANCEL = 2006
 };
 
-/* UI schema action IDs (scripts/gen_launcher_ui_schema_v1.py). */
-enum LauncherUiActionId {
-    ACT_TAB_PLAY = 100,
-    ACT_TAB_INST = 101,
-    ACT_TAB_PACKS = 102,
-    ACT_TAB_OPTIONS = 103,
-    ACT_TAB_LOGS = 104,
-
-    ACT_PLAY = 200,
-    ACT_SAFE_PLAY = 201,
-    ACT_VERIFY_REPAIR = 202,
-
-    ACT_INST_CREATE = 300,
-    ACT_INST_CLONE = 301,
-    ACT_INST_DELETE = 302,
-    ACT_INST_IMPORT = 303,
-    ACT_INST_EXPORT_DEF = 304,
-    ACT_INST_EXPORT_BUNDLE = 305,
-    ACT_INST_MARK_KG = 306,
-
-    ACT_PACKS_APPLY = 400,
-
-    ACT_OPT_RESET = 500,
-    ACT_OPT_DETAILS = 501,
-
-    ACT_LOGS_DIAG = 600,
-
-    ACT_DIALOG_OK = 900,
-    ACT_DIALOG_CANCEL = 901
-};
+/* UI schema action IDs are defined in launcher_ui_events.h. */
 
 static int ascii_tolower(int c) {
     if (c >= 'A' && c <= 'Z') {
@@ -1388,6 +1359,10 @@ DomLauncherApp::DomLauncherApp()
       m_ui_backend_selected(""),
       m_ui_caps_selected(0u),
       m_ui_fallback_note(""),
+#if defined(DOMINIUM_DEV_UI)
+      m_ui_session_state(),
+      m_ui_session_state_loaded(false),
+#endif
       m_ui(new DomLauncherUiState()) {
     std::memset(&m_profile, 0, sizeof(m_profile));
     m_profile.abi_version = DOM_PROFILE_ABI_VERSION;
@@ -1446,6 +1421,12 @@ bool DomLauncherApp::init_from_cli(const LauncherConfig &cfg, const dom_profile*
     if (m_selected_instance < 0 && !m_instances.empty()) {
         set_selected_instance(0);
     }
+
+#if defined(DOMINIUM_DEV_UI)
+    if (m_mode != LAUNCHER_MODE_CLI) {
+        apply_ui_session_state();
+    }
+#endif
 
     if (m_mode == LAUNCHER_MODE_CLI) {
         return perform_cli_action(cfg);
@@ -1564,7 +1545,7 @@ bool DomLauncherApp::run_ui_smoke(std::string& out_error) {
             ev.struct_size = (u32)sizeof(ev);
             ev.type = (u32)DUI_EVENT_ACTION;
             ev.u.action.widget_id = (u32)W_VERIFY_BTN;
-            ev.u.action.action_id = (u32)ACT_VERIFY_REPAIR;
+            ev.u.action.action_id = (u32)EVT_VERIFY;
             (void)test->post_event(m_dui_ctx, &ev);
         }
 
@@ -1602,7 +1583,7 @@ bool DomLauncherApp::run_ui_smoke(std::string& out_error) {
             ev.struct_size = (u32)sizeof(ev);
             ev.type = (u32)DUI_EVENT_ACTION;
             ev.u.action.widget_id = (u32)W_PLAY_BTN;
-            ev.u.action.action_id = (u32)ACT_PLAY;
+            ev.u.action.action_id = (u32)EVT_PLAY;
             (void)test->post_event(m_dui_ctx, &ev);
         }
 
@@ -1674,6 +1655,9 @@ bool DomLauncherApp::run_ui_smoke(std::string& out_error) {
 }
 
 void DomLauncherApp::shutdown() {
+#if defined(DOMINIUM_DEV_UI)
+    save_ui_session_state_best_effort();
+#endif
     if (m_dui_api && m_dui_win) {
         m_dui_api->destroy_window(m_dui_win);
         m_dui_win = 0;
@@ -2420,6 +2404,12 @@ bool DomLauncherApp::init_gui(const LauncherConfig &cfg) {
             wdesc.title = "Dominium Dev Launcher";
             wdesc.width = 960;
             wdesc.height = 640;
+#if defined(DOMINIUM_DEV_UI)
+            if (m_ui_session_state_loaded && m_ui_session_state.window_w > 0 && m_ui_session_state.window_h > 0) {
+                wdesc.width = m_ui_session_state.window_w;
+                wdesc.height = m_ui_session_state.window_h;
+            }
+#endif
             wdesc.flags = 0u;
             if (str_ieq(cfg.product_mode.c_str(), "headless")) {
                 wdesc.flags |= DUI_WINDOW_FLAG_HEADLESS;
@@ -2503,6 +2493,549 @@ void DomLauncherApp::gui_loop() {
     }
 }
 
+void DomLauncherApp::ui_request_quit() {
+    m_running = false;
+}
+
+void DomLauncherApp::ui_set_window_bounds(i32 x, i32 y, i32 w, i32 h) {
+#if defined(DOMINIUM_DEV_UI)
+    m_ui_session_state.window_x = x;
+    m_ui_session_state.window_y = y;
+    m_ui_session_state.window_w = w;
+    m_ui_session_state.window_h = h;
+    m_ui_session_state_loaded = true;
+#else
+    (void)x;
+    (void)y;
+    (void)w;
+    (void)h;
+#endif
+}
+
+void DomLauncherApp::ui_handle_action(u32 action_id) {
+    if (!m_ui) {
+        return;
+    }
+    const u32 act = action_id;
+    if (act == (u32)EVT_TAB_PLAY) {
+        m_ui->tab = (u32)DomLauncherUiState::TAB_PLAY;
+    } else if (act == (u32)EVT_TAB_INSTANCES) {
+        m_ui->tab = (u32)DomLauncherUiState::TAB_INSTANCES;
+    } else if (act == (u32)EVT_TAB_PACKS) {
+        m_ui->tab = (u32)DomLauncherUiState::TAB_PACKS;
+    } else if (act == (u32)EVT_TAB_OPTIONS) {
+        m_ui->tab = (u32)DomLauncherUiState::TAB_OPTIONS;
+    } else if (act == (u32)EVT_TAB_LOGS) {
+        m_ui->tab = (u32)DomLauncherUiState::TAB_LOGS;
+    } else if (act == (u32)EVT_PLAY || act == (u32)EVT_SAFE_MODE) {
+        if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
+            m_ui->status_text = std::string("Busy: ") + (m_ui->task.op.empty() ? std::string("operation") : m_ui->task.op);
+        } else {
+            const InstanceInfo* inst = selected_instance();
+            if (!inst) {
+                m_ui->status_text = "Refused: no instance selected.";
+            } else {
+                const u32 want = m_ui->play_target_item_id ? m_ui->play_target_item_id : stable_item_id(std::string("game"));
+                DomLauncherUiState::UiTask t;
+                t.kind = (u32)DomLauncherUiState::TASK_LAUNCH;
+                t.step = 0u;
+                t.total_steps = 2u;
+                t.op = (act == (u32)EVT_SAFE_MODE) ? "Safe Mode Play" : "Play";
+                t.instance_id = inst->id;
+                t.safe_mode = (act == (u32)EVT_SAFE_MODE) ? 1u : 0u;
+                if (want == stable_item_id(std::string("game"))) {
+                    t.flag_u32 = 0u;
+                } else {
+                    size_t i;
+                    bool found = false;
+                    for (i = 0u; i < m_ui->cache_tools.size(); ++i) {
+                        const launcher_core::LauncherToolEntry& te = m_ui->cache_tools[i];
+                        if (stable_item_id(std::string("tool:") + te.tool_id) == want) {
+                            t.flag_u32 = 1u;
+                            t.aux_id = te.tool_id;
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        m_ui->status_text = "Refused: target not available for this instance.";
+                        return;
+                    }
+                }
+                m_ui->task = t;
+                m_ui->status_text = t.op + " started.";
+                m_ui->status_progress = 0u;
+            }
+        }
+    } else if (act == (u32)EVT_VERIFY) {
+        if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
+            m_ui->status_text = std::string("Busy: ") + (m_ui->task.op.empty() ? std::string("operation") : m_ui->task.op);
+        } else {
+            const InstanceInfo* inst = selected_instance();
+            if (!inst) {
+                m_ui->status_text = "Refused: no instance selected.";
+            } else {
+                DomLauncherUiState::UiTask t;
+                t.kind = (u32)DomLauncherUiState::TASK_VERIFY_REPAIR;
+                t.step = 0u;
+                t.total_steps = 2u;
+                t.op = "Verify / Repair";
+                t.instance_id = inst->id;
+                m_ui->task = t;
+                m_ui->status_text = "Verify / Repair started.";
+                m_ui->status_progress = 0u;
+            }
+        }
+    } else if (act == (u32)EVT_INST_CREATE) {
+        if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
+            m_ui->status_text = std::string("Busy: ") + (m_ui->task.op.empty() ? std::string("operation") : m_ui->task.op);
+        } else {
+            const InstanceInfo* inst = selected_instance();
+            const std::string base = inst ? inst->id : std::string("instance");
+            DomLauncherUiState::UiTask t;
+            t.kind = (u32)DomLauncherUiState::TASK_INSTANCE_CREATE;
+            t.step = 0u;
+            t.total_steps = 2u;
+            t.op = "Create Instance";
+            t.instance_id = inst ? inst->id : std::string();
+            t.aux_id = make_unique_instance_id(m_instances, base, "tmpl");
+            t.flag_u32 = inst ? 1u : 0u; /* 1=template, 0=empty */
+            m_ui->task = t;
+            m_ui->status_text = std::string("Create instance: ") + t.aux_id;
+            m_ui->status_progress = 0u;
+        }
+    } else if (act == (u32)EVT_INST_CLONE) {
+        if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
+            m_ui->status_text = std::string("Busy: ") + (m_ui->task.op.empty() ? std::string("operation") : m_ui->task.op);
+        } else {
+            const InstanceInfo* inst = selected_instance();
+            if (!inst) {
+                m_ui->status_text = "Refused: no instance selected.";
+            } else {
+                DomLauncherUiState::UiTask t;
+                t.kind = (u32)DomLauncherUiState::TASK_INSTANCE_CLONE;
+                t.step = 0u;
+                t.total_steps = 2u;
+                t.op = "Clone Instance";
+                t.instance_id = inst->id;
+                t.aux_id = make_unique_instance_id(m_instances, inst->id, "clone");
+                m_ui->task = t;
+                m_ui->status_text = std::string("Clone instance: ") + t.aux_id;
+                m_ui->status_progress = 0u;
+            }
+        }
+    } else if (act == (u32)EVT_INST_DELETE) {
+        if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
+            m_ui->status_text = std::string("Busy: ") + (m_ui->task.op.empty() ? std::string("operation") : m_ui->task.op);
+        } else {
+            const InstanceInfo* inst = selected_instance();
+            if (!inst) {
+                m_ui->status_text = "Refused: no instance selected.";
+            } else {
+                m_ui->confirm_action_id = (u32)EVT_INST_DELETE;
+                m_ui->confirm_instance_id = inst->id;
+                m_ui->dialog_visible = 1u;
+                m_ui->dialog_title = "Confirm delete";
+                m_ui->dialog_text = "Delete selected instance (soft delete)?";
+                m_ui->dialog_lines.clear();
+                m_ui->dialog_lines.push_back(std::string("instance_id=") + inst->id);
+            }
+        }
+    } else if (act == (u32)EVT_INST_IMPORT) {
+        if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
+            m_ui->status_text = std::string("Busy: ") + (m_ui->task.op.empty() ? std::string("operation") : m_ui->task.op);
+        } else if (m_ui->inst_import_path.empty()) {
+            m_ui->status_text = "Refused: import path is empty.";
+        } else {
+            DomLauncherUiState::UiTask t;
+            t.kind = (u32)DomLauncherUiState::TASK_INSTANCE_IMPORT;
+            t.step = 0u;
+            t.total_steps = 2u;
+            t.op = "Import Instance";
+            t.path = m_ui->inst_import_path;
+            t.instance_id = make_unique_instance_id(m_instances, "imported", "imp");
+            t.flag_u32 = (u32)launcher_core::LAUNCHER_INSTANCE_IMPORT_FULL_BUNDLE;
+            m_ui->task = t;
+            m_ui->status_text = std::string("Import instance: ") + t.instance_id;
+            m_ui->status_progress = 0u;
+        }
+    } else if (act == (u32)EVT_INST_EXPORT_DEF || act == (u32)EVT_INST_EXPORT_BUNDLE) {
+        if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
+            m_ui->status_text = std::string("Busy: ") + (m_ui->task.op.empty() ? std::string("operation") : m_ui->task.op);
+        } else {
+            const InstanceInfo* inst = selected_instance();
+            if (!inst) {
+                m_ui->status_text = "Refused: no instance selected.";
+            } else if (m_ui->inst_export_path.empty()) {
+                m_ui->status_text = "Refused: export path is empty.";
+            } else {
+                DomLauncherUiState::UiTask t;
+                t.kind = (u32)DomLauncherUiState::TASK_INSTANCE_EXPORT;
+                t.step = 0u;
+                t.total_steps = 1u;
+                t.op = (act == (u32)EVT_INST_EXPORT_DEF) ? "Export Definition" : "Export Bundle";
+                t.instance_id = inst->id;
+                t.path = m_ui->inst_export_path;
+                t.flag_u32 = (act == (u32)EVT_INST_EXPORT_DEF)
+                                 ? (u32)launcher_core::LAUNCHER_INSTANCE_EXPORT_DEFINITION_ONLY
+                                 : (u32)launcher_core::LAUNCHER_INSTANCE_EXPORT_FULL_BUNDLE;
+                m_ui->task = t;
+                m_ui->status_text = std::string("Exporting to: ") + t.path;
+                m_ui->status_progress = 0u;
+            }
+        }
+    } else if (act == (u32)EVT_INST_MARK_KG) {
+        if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
+            m_ui->status_text = std::string("Busy: ") + (m_ui->task.op.empty() ? std::string("operation") : m_ui->task.op);
+        } else {
+            const InstanceInfo* inst = selected_instance();
+            if (!inst) {
+                m_ui->status_text = "Refused: no instance selected.";
+            } else {
+                DomLauncherUiState::UiTask t;
+                t.kind = (u32)DomLauncherUiState::TASK_INSTANCE_MARK_KG;
+                t.step = 0u;
+                t.total_steps = 2u;
+                t.op = "Mark Known Good";
+                t.instance_id = inst->id;
+                m_ui->task = t;
+                m_ui->status_text = "Mark known-good started.";
+                m_ui->status_progress = 0u;
+            }
+        }
+    } else if (act == (u32)EVT_PACKS_APPLY) {
+        if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
+            m_ui->status_text = std::string("Busy: ") + (m_ui->task.op.empty() ? std::string("operation") : m_ui->task.op);
+        } else {
+            const InstanceInfo* inst = selected_instance();
+            if (!inst) {
+                m_ui->status_text = "Refused: no instance selected.";
+            } else if (m_ui->packs_staged.empty()) {
+                m_ui->status_text = "Refused: no staged changes.";
+            } else {
+                DomLauncherUiState::UiTask t;
+                t.kind = (u32)DomLauncherUiState::TASK_PACKS_APPLY;
+                t.step = 0u;
+                t.total_steps = 5u;
+                t.op = "Apply Packs";
+                t.instance_id = inst->id;
+                t.packs_changes = m_ui->packs_staged;
+                m_ui->task = t;
+                m_ui->status_text = "Packs apply started.";
+                m_ui->status_progress = 0u;
+            }
+        }
+    } else if (act == (u32)EVT_OPT_RESET) {
+        if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
+            m_ui->status_text = std::string("Busy: ") + (m_ui->task.op.empty() ? std::string("operation") : m_ui->task.op);
+        } else {
+            const InstanceInfo* inst = selected_instance();
+            if (!inst) {
+                m_ui->status_text = "Refused: no instance selected.";
+            } else {
+                m_ui->confirm_action_id = (u32)EVT_OPT_RESET;
+                m_ui->confirm_instance_id = inst->id;
+                m_ui->dialog_visible = 1u;
+                m_ui->dialog_title = "Confirm reset";
+                m_ui->dialog_text = "Reset graphics overrides for the selected instance?";
+                m_ui->dialog_lines.clear();
+                m_ui->dialog_lines.push_back(std::string("instance_id=") + inst->id);
+                m_ui->dialog_lines.push_back("fields=gfx_backend,renderer_api,window_mode,window_width,window_height,window_dpi,window_monitor");
+            }
+        }
+    } else if (act == (u32)EVT_OPT_DETAILS) {
+        const InstanceInfo* inst = selected_instance();
+        launcher_core::LauncherInstanceConfig eff = m_ui->cache_config;
+        std::vector<std::string> lines;
+        u32 width = 0u;
+        u32 height = 0u;
+        u32 dpi = 0u;
+        u32 monitor = 0u;
+        bool ok_w = parse_u32_decimal(m_ui->opt_width_text, width);
+        bool ok_h = parse_u32_decimal(m_ui->opt_height_text, height);
+        bool ok_d = parse_u32_decimal(m_ui->opt_dpi_text, dpi);
+        bool ok_m = parse_u32_decimal(m_ui->opt_monitor_text, monitor);
+        if (ok_w) eff.window_width = width;
+        if (ok_h) eff.window_height = height;
+        if (ok_d) eff.window_dpi = dpi;
+        if (ok_m) eff.window_monitor = monitor;
+
+        if (inst) {
+            launcher_core::LauncherInstancePaths p = launcher_core::launcher_instance_paths_make(m_paths.root, inst->id);
+            lines.push_back(std::string("config_path=") + path_join(p.instance_root, "config/config.tlv"));
+        }
+        lines.push_back(std::string("gfx_backend=") + (eff.gfx_backend.empty() ? std::string("auto") : eff.gfx_backend));
+        lines.push_back(std::string("renderer_api=") + (eff.renderer_api.empty() ? std::string("auto") : eff.renderer_api));
+        lines.push_back(std::string("window_mode=") + window_mode_to_string(eff.window_mode));
+        if (!m_ui->opt_width_text.empty() && !ok_w) lines.push_back(std::string("window_width_invalid='") + m_ui->opt_width_text + "'");
+        else lines.push_back(std::string("window_width=") + (eff.window_width ? u32_to_string(eff.window_width) : std::string("auto")));
+        if (!m_ui->opt_height_text.empty() && !ok_h) lines.push_back(std::string("window_height_invalid='") + m_ui->opt_height_text + "'");
+        else lines.push_back(std::string("window_height=") + (eff.window_height ? u32_to_string(eff.window_height) : std::string("auto")));
+        if (!m_ui->opt_dpi_text.empty() && !ok_d) lines.push_back(std::string("window_dpi_invalid='") + m_ui->opt_dpi_text + "'");
+        else lines.push_back(std::string("window_dpi=") + (eff.window_dpi ? u32_to_string(eff.window_dpi) : std::string("auto")));
+        if (!m_ui->opt_monitor_text.empty() && !ok_m) lines.push_back(std::string("window_monitor_invalid='") + m_ui->opt_monitor_text + "'");
+        else lines.push_back(std::string("window_monitor=") + (eff.window_monitor ? u32_to_string(eff.window_monitor) : std::string("auto")));
+        lines.push_back(std::string("allow_network=") + u32_to_string(eff.allow_network));
+        lines.push_back(std::string("audio_device_id=") + (eff.audio_device_id.empty() ? std::string("auto") : eff.audio_device_id));
+        lines.push_back(std::string("input_backend=") + (eff.input_backend.empty() ? std::string("auto") : eff.input_backend));
+        lines.push_back(std::string("debug_flags=0x") + u64_hex16((u64)eff.debug_flags));
+
+        m_ui->confirm_action_id = 0u;
+        m_ui->confirm_instance_id.clear();
+        m_ui->dialog_visible = 1u;
+        m_ui->dialog_title = "Effective config";
+        m_ui->dialog_text = "Effective launcher config overrides.";
+        m_ui->dialog_lines = lines;
+    } else if (act == (u32)EVT_LOGS_DIAG) {
+        if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
+            m_ui->status_text = std::string("Busy: ") + (m_ui->task.op.empty() ? std::string("operation") : m_ui->task.op);
+        } else {
+            const InstanceInfo* inst = selected_instance();
+            std::string out_root = m_ui->logs_diag_out_path;
+            if (!inst) {
+                m_ui->status_text = "Refused: no instance selected.";
+            } else {
+                if (out_root.empty()) {
+                    launcher_core::LauncherInstancePaths p = launcher_core::launcher_instance_paths_make(m_paths.root, inst->id);
+                    std::string suffix = "latest";
+                    if (!m_ui->cache_run_ids.empty()) {
+                        suffix = m_ui->cache_run_ids[m_ui->cache_run_ids.size() - 1u];
+                    }
+                    out_root = path_join(p.logs_root, std::string("diagnostics_bundle_") + suffix);
+                    m_ui->logs_diag_out_path = out_root;
+                }
+
+                DomLauncherUiState::UiTask t;
+                t.kind = (u32)DomLauncherUiState::TASK_DIAG_BUNDLE;
+                t.step = 0u;
+                t.total_steps = 3u;
+                t.op = "Diagnostics Bundle";
+                t.instance_id = inst->id;
+                t.path = out_root;
+                m_ui->task = t;
+                m_ui->status_text = "Diagnostics bundle started.";
+                m_ui->status_progress = 0u;
+            }
+        }
+    } else if (act == (u32)EVT_DIALOG_OK) {
+        const u32 pending = m_ui->confirm_action_id;
+        const std::string pending_inst = m_ui->confirm_instance_id;
+        m_ui->confirm_action_id = 0u;
+        m_ui->confirm_instance_id.clear();
+        m_ui->dialog_visible = 0u;
+        m_ui->dialog_title.clear();
+        m_ui->dialog_text.clear();
+        m_ui->dialog_lines.clear();
+        if (pending == (u32)EVT_INST_DELETE) {
+            if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
+                m_ui->status_text = std::string("Busy: ") + (m_ui->task.op.empty() ? std::string("operation") : m_ui->task.op);
+            } else if (!pending_inst.empty()) {
+                DomLauncherUiState::UiTask t;
+                t.kind = (u32)DomLauncherUiState::TASK_INSTANCE_DELETE;
+                t.step = 0u;
+                t.total_steps = 2u;
+                t.op = "Delete Instance";
+                t.instance_id = pending_inst;
+                m_ui->task = t;
+                m_ui->status_text = std::string("Delete instance: ") + pending_inst;
+                m_ui->status_progress = 0u;
+            }
+        } else if (pending == (u32)EVT_OPT_RESET) {
+            if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
+                m_ui->status_text = std::string("Busy: ") + (m_ui->task.op.empty() ? std::string("operation") : m_ui->task.op);
+            } else if (!pending_inst.empty()) {
+                DomLauncherUiState::UiTask t;
+                t.kind = (u32)DomLauncherUiState::TASK_OPTIONS_RESET;
+                t.step = 0u;
+                t.total_steps = 2u;
+                t.op = "Reset Graphics Overrides";
+                t.instance_id = pending_inst;
+                m_ui->task = t;
+                m_ui->status_text = "Reset graphics overrides started.";
+                m_ui->status_progress = 0u;
+            }
+        }
+    } else if (act == (u32)EVT_DIALOG_CANCEL) {
+        m_ui->confirm_action_id = 0u;
+        m_ui->confirm_instance_id.clear();
+        m_ui->dialog_visible = 0u;
+        m_ui->dialog_title.clear();
+        m_ui->dialog_text.clear();
+        m_ui->dialog_lines.clear();
+    }
+}
+
+void DomLauncherApp::ui_handle_value(const LauncherUiValueEvent& value) {
+    if (!m_ui) {
+        return;
+    }
+    const u32 wid = value.widget_id;
+    const u32 vt = value.value_type;
+
+    if (wid == (u32)W_INST_SEARCH && vt == (u32)UI_VALUE_TEXT) {
+        std::string next;
+        u32 i;
+        for (i = 0u; value.text && i < value.text_len; ++i) {
+            next.push_back(value.text[i]);
+        }
+        m_ui->instance_search = next;
+    } else if (wid == (u32)W_INST_LIST && vt == (u32)UI_VALUE_LIST) {
+        const u32 item_id = value.item_id;
+        int idx = -1;
+        size_t i;
+        for (i = 0u; i < m_instances.size(); ++i) {
+            if (stable_item_id(m_instances[i].id) == item_id) {
+                idx = (int)i;
+                break;
+            }
+        }
+        if (idx >= 0) {
+            set_selected_instance(idx);
+        }
+    } else if (wid == (u32)W_PLAY_TARGET_LIST && vt == (u32)UI_VALUE_LIST) {
+        m_ui->play_target_item_id = value.item_id;
+    } else if (wid == (u32)W_PLAY_OFFLINE && vt == (u32)UI_VALUE_BOOL) {
+        m_ui->play_offline = value.v_u32 ? 1u : 0u;
+        m_ui->cache_config.allow_network = m_ui->play_offline ? 0u : 1u;
+    } else if (wid == (u32)W_INST_IMPORT_PATH && vt == (u32)UI_VALUE_TEXT) {
+        std::string next;
+        u32 i;
+        for (i = 0u; value.text && i < value.text_len; ++i) {
+            next.push_back(value.text[i]);
+        }
+        m_ui->inst_import_path = next;
+    } else if (wid == (u32)W_INST_EXPORT_PATH && vt == (u32)UI_VALUE_TEXT) {
+        std::string next;
+        u32 i;
+        for (i = 0u; value.text && i < value.text_len; ++i) {
+            next.push_back(value.text[i]);
+        }
+        m_ui->inst_export_path = next;
+    } else if (wid == (u32)W_PACKS_LIST && vt == (u32)UI_VALUE_LIST) {
+        const u32 item_id = value.item_id;
+        const launcher_core::LauncherInstanceManifest& m = m_ui->cache_manifest;
+        size_t i;
+
+        m_ui->packs_selected_item_id = item_id;
+        m_ui->packs_selected_key.clear();
+        for (i = 0u; i < m.content_entries.size(); ++i) {
+            const launcher_core::LauncherContentEntry& e = m.content_entries[i];
+            if (!is_pack_like(e.type)) {
+                continue;
+            }
+            const std::string key = pack_key(e.type, e.id);
+            if (stable_item_id(key) == item_id) {
+                m_ui->packs_selected_key = key;
+                break;
+            }
+        }
+    } else if (wid == (u32)W_PACKS_ENABLED && vt == (u32)UI_VALUE_BOOL) {
+        const launcher_core::LauncherContentEntry* e =
+            find_entry_by_pack_key(m_ui->cache_manifest, m_ui->packs_selected_key);
+        if (e && !m_ui->packs_selected_key.empty()) {
+            const u32 cur_enabled = e->enabled ? 1u : 0u;
+            const u32 next_enabled = value.v_u32 ? 1u : 0u;
+            DomLauncherUiState::StagedPackChange& sc = m_ui->packs_staged[m_ui->packs_selected_key];
+            sc.has_enabled = 1u;
+            sc.enabled = next_enabled;
+            if (sc.has_enabled && sc.enabled == cur_enabled) {
+                sc.has_enabled = 0u;
+            }
+            if (!sc.has_enabled && !sc.has_update_policy) {
+                m_ui->packs_staged.erase(m_ui->packs_selected_key);
+            }
+        }
+    } else if (wid == (u32)W_PACKS_POLICY_LIST && vt == (u32)UI_VALUE_LIST) {
+        const launcher_core::LauncherContentEntry* e =
+            find_entry_by_pack_key(m_ui->cache_manifest, m_ui->packs_selected_key);
+        if (e && !m_ui->packs_selected_key.empty()) {
+            const u32 cur_policy = e->update_policy;
+            const u32 next_policy = update_policy_from_item_id(value.item_id, cur_policy);
+            DomLauncherUiState::StagedPackChange& sc = m_ui->packs_staged[m_ui->packs_selected_key];
+            sc.has_update_policy = 1u;
+            sc.update_policy = next_policy;
+            if (sc.has_update_policy && sc.update_policy == cur_policy) {
+                sc.has_update_policy = 0u;
+            }
+            if (!sc.has_enabled && !sc.has_update_policy) {
+                m_ui->packs_staged.erase(m_ui->packs_selected_key);
+            }
+        }
+    } else if (wid == (u32)W_OPT_GFX_LIST && vt == (u32)UI_VALUE_LIST) {
+        const u32 item_id = value.item_id;
+        m_ui->opt_gfx_selected_item_id = item_id;
+        if (item_id == stable_item_id("auto")) {
+            m_ui->cache_config.gfx_backend.clear();
+        } else {
+            const std::string name = dgfx_backend_from_item_id(item_id);
+            if (!name.empty()) {
+                m_ui->cache_config.gfx_backend = name;
+            }
+        }
+    } else if (wid == (u32)W_OPT_API_FIELD && vt == (u32)UI_VALUE_TEXT) {
+        std::string next;
+        u32 i;
+        for (i = 0u; value.text && i < value.text_len; ++i) {
+            next.push_back(value.text[i]);
+        }
+        m_ui->opt_renderer_api_text = next;
+        m_ui->cache_config.renderer_api = next;
+    } else if (wid == (u32)W_OPT_WINMODE_LIST && vt == (u32)UI_VALUE_LIST) {
+        const u32 item_id = value.item_id;
+        m_ui->opt_winmode_selected_item_id = item_id;
+        m_ui->cache_config.window_mode = window_mode_from_item_id(item_id, m_ui->cache_config.window_mode);
+    } else if (wid == (u32)W_OPT_WIDTH_FIELD && vt == (u32)UI_VALUE_TEXT) {
+        std::string next;
+        u32 i;
+        for (i = 0u; value.text && i < value.text_len; ++i) {
+            next.push_back(value.text[i]);
+        }
+        m_ui->opt_width_text = next;
+    } else if (wid == (u32)W_OPT_HEIGHT_FIELD && vt == (u32)UI_VALUE_TEXT) {
+        std::string next;
+        u32 i;
+        for (i = 0u; value.text && i < value.text_len; ++i) {
+            next.push_back(value.text[i]);
+        }
+        m_ui->opt_height_text = next;
+    } else if (wid == (u32)W_OPT_DPI_FIELD && vt == (u32)UI_VALUE_TEXT) {
+        std::string next;
+        u32 i;
+        for (i = 0u; value.text && i < value.text_len; ++i) {
+            next.push_back(value.text[i]);
+        }
+        m_ui->opt_dpi_text = next;
+    } else if (wid == (u32)W_OPT_MONITOR_FIELD && vt == (u32)UI_VALUE_TEXT) {
+        std::string next;
+        u32 i;
+        for (i = 0u; value.text && i < value.text_len; ++i) {
+            next.push_back(value.text[i]);
+        }
+        m_ui->opt_monitor_text = next;
+    } else if (wid == (u32)W_LOGS_DIAG_OUT && vt == (u32)UI_VALUE_TEXT) {
+        std::string next;
+        u32 i;
+        for (i = 0u; value.text && i < value.text_len; ++i) {
+            next.push_back(value.text[i]);
+        }
+        m_ui->logs_diag_out_path = next;
+    } else if (wid == (u32)W_LOGS_RUNS_LIST && vt == (u32)UI_VALUE_LIST) {
+        const u32 item_id = value.item_id;
+        size_t i;
+        m_ui->logs_selected_run_item_id = item_id;
+        m_ui->logs_selected_run_id.clear();
+        for (i = 0u; i < m_ui->cache_run_ids.size(); ++i) {
+            if (stable_item_id(m_ui->cache_run_ids[i]) == item_id) {
+                m_ui->logs_selected_run_id = m_ui->cache_run_ids[i];
+                break;
+            }
+        }
+        if (!m_ui->logs_selected_run_id.empty() && selected_instance()) {
+            ui_load_selected_run_audit(*m_ui, m_paths.root, selected_instance()->id);
+        }
+    }
+}
+
 void DomLauncherApp::process_dui_events() {
     dui_event_v1 ev;
     if (!m_dui_api || !m_dui_ctx || !m_ui) {
@@ -2511,528 +3044,118 @@ void DomLauncherApp::process_dui_events() {
     std::memset(&ev, 0, sizeof(ev));
     while (m_dui_api->poll_event(m_dui_ctx, &ev) > 0) {
         if (ev.type == (u32)DUI_EVENT_QUIT) {
-            m_running = false;
+            ui_request_quit();
             return;
         }
         if (ev.type == (u32)DUI_EVENT_ACTION) {
-            const u32 act = ev.u.action.action_id;
-            if (act == (u32)ACT_TAB_PLAY) {
-                m_ui->tab = (u32)DomLauncherUiState::TAB_PLAY;
-            } else if (act == (u32)ACT_TAB_INST) {
-                m_ui->tab = (u32)DomLauncherUiState::TAB_INSTANCES;
-            } else if (act == (u32)ACT_TAB_PACKS) {
-                m_ui->tab = (u32)DomLauncherUiState::TAB_PACKS;
-            } else if (act == (u32)ACT_TAB_OPTIONS) {
-                m_ui->tab = (u32)DomLauncherUiState::TAB_OPTIONS;
-            } else if (act == (u32)ACT_TAB_LOGS) {
-                m_ui->tab = (u32)DomLauncherUiState::TAB_LOGS;
-            } else if (act == (u32)ACT_PLAY || act == (u32)ACT_SAFE_PLAY) {
-                if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
-                    m_ui->status_text = std::string("Busy: ") + (m_ui->task.op.empty() ? std::string("operation") : m_ui->task.op);
-                } else {
-                    const InstanceInfo* inst = selected_instance();
-                    if (!inst) {
-                        m_ui->status_text = "Refused: no instance selected.";
-                    } else {
-                        const u32 want = m_ui->play_target_item_id ? m_ui->play_target_item_id : stable_item_id(std::string("game"));
-                        DomLauncherUiState::UiTask t;
-                        t.kind = (u32)DomLauncherUiState::TASK_LAUNCH;
-                        t.step = 0u;
-                        t.total_steps = 2u;
-                        t.op = (act == (u32)ACT_SAFE_PLAY) ? "Safe Mode Play" : "Play";
-                        t.instance_id = inst->id;
-                        t.safe_mode = (act == (u32)ACT_SAFE_PLAY) ? 1u : 0u;
-                        if (want == stable_item_id(std::string("game"))) {
-                            t.flag_u32 = 0u;
-                        } else {
-                            size_t i;
-                            bool found = false;
-                            for (i = 0u; i < m_ui->cache_tools.size(); ++i) {
-                                const launcher_core::LauncherToolEntry& te = m_ui->cache_tools[i];
-                                if (stable_item_id(std::string("tool:") + te.tool_id) == want) {
-                                    t.flag_u32 = 1u;
-                                    t.aux_id = te.tool_id;
-                                    found = true;
-                                    break;
-                                }
-                            }
-                            if (!found) {
-                                m_ui->status_text = "Refused: target not available for this instance.";
-                                std::memset(&ev, 0, sizeof(ev));
-                                continue;
-                            }
-                        }
-                        m_ui->task = t;
-                        m_ui->status_text = t.op + " started.";
-                        m_ui->status_progress = 0u;
-                    }
-                }
-            } else if (act == (u32)ACT_VERIFY_REPAIR) {
-                if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
-                    m_ui->status_text = std::string("Busy: ") + (m_ui->task.op.empty() ? std::string("operation") : m_ui->task.op);
-                } else {
-                    const InstanceInfo* inst = selected_instance();
-                    if (!inst) {
-                        m_ui->status_text = "Refused: no instance selected.";
-                    } else {
-                        DomLauncherUiState::UiTask t;
-                        t.kind = (u32)DomLauncherUiState::TASK_VERIFY_REPAIR;
-                        t.step = 0u;
-                        t.total_steps = 2u;
-                        t.op = "Verify / Repair";
-                        t.instance_id = inst->id;
-                        m_ui->task = t;
-                        m_ui->status_text = "Verify / Repair started.";
-                        m_ui->status_progress = 0u;
-                    }
-                }
-            } else if (act == (u32)ACT_INST_CREATE) {
-                if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
-                    m_ui->status_text = std::string("Busy: ") + (m_ui->task.op.empty() ? std::string("operation") : m_ui->task.op);
-                } else {
-                    const InstanceInfo* inst = selected_instance();
-                    const std::string base = inst ? inst->id : std::string("instance");
-                    DomLauncherUiState::UiTask t;
-                    t.kind = (u32)DomLauncherUiState::TASK_INSTANCE_CREATE;
-                    t.step = 0u;
-                    t.total_steps = 2u;
-                    t.op = "Create Instance";
-                    t.instance_id = inst ? inst->id : std::string();
-                    t.aux_id = make_unique_instance_id(m_instances, base, "tmpl");
-                    t.flag_u32 = inst ? 1u : 0u; /* 1=template, 0=empty */
-                    m_ui->task = t;
-                    m_ui->status_text = std::string("Create instance: ") + t.aux_id;
-                    m_ui->status_progress = 0u;
-                }
-            } else if (act == (u32)ACT_INST_CLONE) {
-                if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
-                    m_ui->status_text = std::string("Busy: ") + (m_ui->task.op.empty() ? std::string("operation") : m_ui->task.op);
-                } else {
-                    const InstanceInfo* inst = selected_instance();
-                    if (!inst) {
-                        m_ui->status_text = "Refused: no instance selected.";
-                    } else {
-                        DomLauncherUiState::UiTask t;
-                        t.kind = (u32)DomLauncherUiState::TASK_INSTANCE_CLONE;
-                        t.step = 0u;
-                        t.total_steps = 2u;
-                        t.op = "Clone Instance";
-                        t.instance_id = inst->id;
-                        t.aux_id = make_unique_instance_id(m_instances, inst->id, "clone");
-                        m_ui->task = t;
-                        m_ui->status_text = std::string("Clone instance: ") + t.aux_id;
-                        m_ui->status_progress = 0u;
-                    }
-                }
-            } else if (act == (u32)ACT_INST_DELETE) {
-                if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
-                    m_ui->status_text = std::string("Busy: ") + (m_ui->task.op.empty() ? std::string("operation") : m_ui->task.op);
-                } else {
-                    const InstanceInfo* inst = selected_instance();
-                    if (!inst) {
-                        m_ui->status_text = "Refused: no instance selected.";
-                    } else {
-                        m_ui->confirm_action_id = (u32)ACT_INST_DELETE;
-                        m_ui->confirm_instance_id = inst->id;
-                        m_ui->dialog_visible = 1u;
-                        m_ui->dialog_title = "Confirm delete";
-                        m_ui->dialog_text = "Delete selected instance (soft delete)?";
-                        m_ui->dialog_lines.clear();
-                        m_ui->dialog_lines.push_back(std::string("instance_id=") + inst->id);
-                    }
-                }
-            } else if (act == (u32)ACT_INST_IMPORT) {
-                if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
-                    m_ui->status_text = std::string("Busy: ") + (m_ui->task.op.empty() ? std::string("operation") : m_ui->task.op);
-                } else if (m_ui->inst_import_path.empty()) {
-                    m_ui->status_text = "Refused: import path is empty.";
-                } else {
-                    DomLauncherUiState::UiTask t;
-                    t.kind = (u32)DomLauncherUiState::TASK_INSTANCE_IMPORT;
-                    t.step = 0u;
-                    t.total_steps = 2u;
-                    t.op = "Import Instance";
-                    t.path = m_ui->inst_import_path;
-                    t.instance_id = make_unique_instance_id(m_instances, "imported", "imp");
-                    t.flag_u32 = (u32)launcher_core::LAUNCHER_INSTANCE_IMPORT_FULL_BUNDLE;
-                    m_ui->task = t;
-                    m_ui->status_text = std::string("Import instance: ") + t.instance_id;
-                    m_ui->status_progress = 0u;
-                }
-            } else if (act == (u32)ACT_INST_EXPORT_DEF || act == (u32)ACT_INST_EXPORT_BUNDLE) {
-                if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
-                    m_ui->status_text = std::string("Busy: ") + (m_ui->task.op.empty() ? std::string("operation") : m_ui->task.op);
-                } else {
-                    const InstanceInfo* inst = selected_instance();
-                    if (!inst) {
-                        m_ui->status_text = "Refused: no instance selected.";
-                    } else if (m_ui->inst_export_path.empty()) {
-                        m_ui->status_text = "Refused: export path is empty.";
-                    } else {
-                        DomLauncherUiState::UiTask t;
-                        t.kind = (u32)DomLauncherUiState::TASK_INSTANCE_EXPORT;
-                        t.step = 0u;
-                        t.total_steps = 1u;
-                        t.op = (act == (u32)ACT_INST_EXPORT_DEF) ? "Export Definition" : "Export Bundle";
-                        t.instance_id = inst->id;
-                        t.path = m_ui->inst_export_path;
-                        t.flag_u32 = (act == (u32)ACT_INST_EXPORT_DEF)
-                                         ? (u32)launcher_core::LAUNCHER_INSTANCE_EXPORT_DEFINITION_ONLY
-                                         : (u32)launcher_core::LAUNCHER_INSTANCE_EXPORT_FULL_BUNDLE;
-                        m_ui->task = t;
-                        m_ui->status_text = std::string("Exporting to: ") + t.path;
-                        m_ui->status_progress = 0u;
-                    }
-                }
-            } else if (act == (u32)ACT_INST_MARK_KG) {
-                if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
-                    m_ui->status_text = std::string("Busy: ") + (m_ui->task.op.empty() ? std::string("operation") : m_ui->task.op);
-                } else {
-                    const InstanceInfo* inst = selected_instance();
-                    if (!inst) {
-                        m_ui->status_text = "Refused: no instance selected.";
-                    } else {
-                        DomLauncherUiState::UiTask t;
-                        t.kind = (u32)DomLauncherUiState::TASK_INSTANCE_MARK_KG;
-                        t.step = 0u;
-                        t.total_steps = 2u;
-                        t.op = "Mark Known Good";
-                        t.instance_id = inst->id;
-                        m_ui->task = t;
-                        m_ui->status_text = "Mark known-good started.";
-                        m_ui->status_progress = 0u;
-                    }
-                }
-            } else if (act == (u32)ACT_PACKS_APPLY) {
-                if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
-                    m_ui->status_text = std::string("Busy: ") + (m_ui->task.op.empty() ? std::string("operation") : m_ui->task.op);
-                } else {
-                    const InstanceInfo* inst = selected_instance();
-                    if (!inst) {
-                        m_ui->status_text = "Refused: no instance selected.";
-                    } else if (m_ui->packs_staged.empty()) {
-                        m_ui->status_text = "Refused: no staged changes.";
-                    } else {
-                        DomLauncherUiState::UiTask t;
-                        t.kind = (u32)DomLauncherUiState::TASK_PACKS_APPLY;
-                        t.step = 0u;
-                        t.total_steps = 5u;
-                        t.op = "Apply Packs";
-                        t.instance_id = inst->id;
-                        t.packs_changes = m_ui->packs_staged;
-                        m_ui->task = t;
-                        m_ui->status_text = "Packs apply started.";
-                        m_ui->status_progress = 0u;
-                    }
-                }
-            } else if (act == (u32)ACT_OPT_RESET) {
-                if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
-                    m_ui->status_text = std::string("Busy: ") + (m_ui->task.op.empty() ? std::string("operation") : m_ui->task.op);
-                } else {
-                    const InstanceInfo* inst = selected_instance();
-                    if (!inst) {
-                        m_ui->status_text = "Refused: no instance selected.";
-                    } else {
-                        m_ui->confirm_action_id = (u32)ACT_OPT_RESET;
-                        m_ui->confirm_instance_id = inst->id;
-                        m_ui->dialog_visible = 1u;
-                        m_ui->dialog_title = "Confirm reset";
-                        m_ui->dialog_text = "Reset graphics overrides for the selected instance?";
-                        m_ui->dialog_lines.clear();
-                        m_ui->dialog_lines.push_back(std::string("instance_id=") + inst->id);
-                        m_ui->dialog_lines.push_back("fields=gfx_backend,renderer_api,window_mode,window_width,window_height,window_dpi,window_monitor");
-                    }
-                }
-            } else if (act == (u32)ACT_OPT_DETAILS) {
-                const InstanceInfo* inst = selected_instance();
-                launcher_core::LauncherInstanceConfig eff = m_ui->cache_config;
-                std::vector<std::string> lines;
-                u32 width = 0u;
-                u32 height = 0u;
-                u32 dpi = 0u;
-                u32 monitor = 0u;
-                bool ok_w = parse_u32_decimal(m_ui->opt_width_text, width);
-                bool ok_h = parse_u32_decimal(m_ui->opt_height_text, height);
-                bool ok_d = parse_u32_decimal(m_ui->opt_dpi_text, dpi);
-                bool ok_m = parse_u32_decimal(m_ui->opt_monitor_text, monitor);
-                if (ok_w) eff.window_width = width;
-                if (ok_h) eff.window_height = height;
-                if (ok_d) eff.window_dpi = dpi;
-                if (ok_m) eff.window_monitor = monitor;
-
-                if (inst) {
-                    launcher_core::LauncherInstancePaths p = launcher_core::launcher_instance_paths_make(m_paths.root, inst->id);
-                    lines.push_back(std::string("config_path=") + path_join(p.instance_root, "config/config.tlv"));
-                }
-                lines.push_back(std::string("gfx_backend=") + (eff.gfx_backend.empty() ? std::string("auto") : eff.gfx_backend));
-                lines.push_back(std::string("renderer_api=") + (eff.renderer_api.empty() ? std::string("auto") : eff.renderer_api));
-                lines.push_back(std::string("window_mode=") + window_mode_to_string(eff.window_mode));
-                if (!m_ui->opt_width_text.empty() && !ok_w) lines.push_back(std::string("window_width_invalid='") + m_ui->opt_width_text + "'");
-                else lines.push_back(std::string("window_width=") + (eff.window_width ? u32_to_string(eff.window_width) : std::string("auto")));
-                if (!m_ui->opt_height_text.empty() && !ok_h) lines.push_back(std::string("window_height_invalid='") + m_ui->opt_height_text + "'");
-                else lines.push_back(std::string("window_height=") + (eff.window_height ? u32_to_string(eff.window_height) : std::string("auto")));
-                if (!m_ui->opt_dpi_text.empty() && !ok_d) lines.push_back(std::string("window_dpi_invalid='") + m_ui->opt_dpi_text + "'");
-                else lines.push_back(std::string("window_dpi=") + (eff.window_dpi ? u32_to_string(eff.window_dpi) : std::string("auto")));
-                if (!m_ui->opt_monitor_text.empty() && !ok_m) lines.push_back(std::string("window_monitor_invalid='") + m_ui->opt_monitor_text + "'");
-                else lines.push_back(std::string("window_monitor=") + (eff.window_monitor ? u32_to_string(eff.window_monitor) : std::string("auto")));
-                lines.push_back(std::string("allow_network=") + u32_to_string(eff.allow_network));
-                lines.push_back(std::string("audio_device_id=") + (eff.audio_device_id.empty() ? std::string("auto") : eff.audio_device_id));
-                lines.push_back(std::string("input_backend=") + (eff.input_backend.empty() ? std::string("auto") : eff.input_backend));
-                lines.push_back(std::string("debug_flags=0x") + u64_hex16((u64)eff.debug_flags));
-
-                m_ui->confirm_action_id = 0u;
-                m_ui->confirm_instance_id.clear();
-                m_ui->dialog_visible = 1u;
-                m_ui->dialog_title = "Effective config";
-                m_ui->dialog_text = "Effective launcher config overrides.";
-                m_ui->dialog_lines = lines;
-            } else if (act == (u32)ACT_LOGS_DIAG) {
-                if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
-                    m_ui->status_text = std::string("Busy: ") + (m_ui->task.op.empty() ? std::string("operation") : m_ui->task.op);
-                } else {
-                    const InstanceInfo* inst = selected_instance();
-                    std::string out_root = m_ui->logs_diag_out_path;
-                    if (!inst) {
-                        m_ui->status_text = "Refused: no instance selected.";
-                    } else {
-                        if (out_root.empty()) {
-                            launcher_core::LauncherInstancePaths p = launcher_core::launcher_instance_paths_make(m_paths.root, inst->id);
-                            std::string suffix = "latest";
-                            if (!m_ui->cache_run_ids.empty()) {
-                                suffix = m_ui->cache_run_ids[m_ui->cache_run_ids.size() - 1u];
-                            }
-                            out_root = path_join(p.logs_root, std::string("diagnostics_bundle_") + suffix);
-                            m_ui->logs_diag_out_path = out_root;
-                        }
-
-                        DomLauncherUiState::UiTask t;
-                        t.kind = (u32)DomLauncherUiState::TASK_DIAG_BUNDLE;
-                        t.step = 0u;
-                        t.total_steps = 3u;
-                        t.op = "Diagnostics Bundle";
-                        t.instance_id = inst->id;
-                        t.path = out_root;
-                        m_ui->task = t;
-                        m_ui->status_text = "Diagnostics bundle started.";
-                        m_ui->status_progress = 0u;
-                    }
-                }
-            } else if (act == (u32)ACT_DIALOG_OK) {
-                const u32 pending = m_ui->confirm_action_id;
-                const std::string pending_inst = m_ui->confirm_instance_id;
-                m_ui->confirm_action_id = 0u;
-                m_ui->confirm_instance_id.clear();
-                m_ui->dialog_visible = 0u;
-                m_ui->dialog_title.clear();
-                m_ui->dialog_text.clear();
-                m_ui->dialog_lines.clear();
-                if (pending == (u32)ACT_INST_DELETE) {
-                    if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
-                        m_ui->status_text = std::string("Busy: ") + (m_ui->task.op.empty() ? std::string("operation") : m_ui->task.op);
-                    } else if (!pending_inst.empty()) {
-                        DomLauncherUiState::UiTask t;
-                        t.kind = (u32)DomLauncherUiState::TASK_INSTANCE_DELETE;
-                        t.step = 0u;
-                        t.total_steps = 2u;
-                        t.op = "Delete Instance";
-                        t.instance_id = pending_inst;
-                        m_ui->task = t;
-                        m_ui->status_text = std::string("Delete instance: ") + pending_inst;
-                        m_ui->status_progress = 0u;
-                    }
-                } else if (pending == (u32)ACT_OPT_RESET) {
-                    if (m_ui->task.kind != (u32)DomLauncherUiState::TASK_NONE) {
-                        m_ui->status_text = std::string("Busy: ") + (m_ui->task.op.empty() ? std::string("operation") : m_ui->task.op);
-                    } else if (!pending_inst.empty()) {
-                        DomLauncherUiState::UiTask t;
-                        t.kind = (u32)DomLauncherUiState::TASK_OPTIONS_RESET;
-                        t.step = 0u;
-                        t.total_steps = 2u;
-                        t.op = "Reset Graphics Overrides";
-                        t.instance_id = pending_inst;
-                        m_ui->task = t;
-                        m_ui->status_text = "Reset graphics overrides started.";
-                        m_ui->status_progress = 0u;
-                    }
-                }
-            } else if (act == (u32)ACT_DIALOG_CANCEL) {
-                m_ui->confirm_action_id = 0u;
-                m_ui->confirm_instance_id.clear();
-                m_ui->dialog_visible = 0u;
-                m_ui->dialog_title.clear();
-                m_ui->dialog_text.clear();
-                m_ui->dialog_lines.clear();
-            }
+            ui_handle_action(ev.u.action.action_id);
         } else if (ev.type == (u32)DUI_EVENT_VALUE_CHANGED) {
-            const u32 wid = ev.u.value.widget_id;
-            const u32 vt = ev.u.value.value_type;
-
-            if (wid == (u32)W_INST_SEARCH && vt == (u32)DUI_VALUE_TEXT) {
-                std::string next;
-                u32 i;
-                for (i = 0u; i < ev.u.value.text_len; ++i) {
-                    next.push_back(ev.u.value.text[i]);
-                }
-                m_ui->instance_search = next;
-            } else if (wid == (u32)W_INST_LIST && vt == (u32)DUI_VALUE_LIST) {
-                const u32 item_id = ev.u.value.item_id;
-                int idx = -1;
-                size_t i;
-                for (i = 0u; i < m_instances.size(); ++i) {
-                    if (stable_item_id(m_instances[i].id) == item_id) {
-                        idx = (int)i;
-                        break;
-                    }
-                }
-                if (idx >= 0) {
-                    set_selected_instance(idx);
-                }
-            } else if (wid == (u32)W_PLAY_TARGET_LIST && vt == (u32)DUI_VALUE_LIST) {
-                m_ui->play_target_item_id = ev.u.value.item_id;
-            } else if (wid == (u32)W_PLAY_OFFLINE && vt == (u32)DUI_VALUE_BOOL) {
-                m_ui->play_offline = ev.u.value.v_u32 ? 1u : 0u;
-                m_ui->cache_config.allow_network = m_ui->play_offline ? 0u : 1u;
-            } else if (wid == (u32)W_INST_IMPORT_PATH && vt == (u32)DUI_VALUE_TEXT) {
-                std::string next;
-                u32 i;
-                for (i = 0u; i < ev.u.value.text_len; ++i) {
-                    next.push_back(ev.u.value.text[i]);
-                }
-                m_ui->inst_import_path = next;
-            } else if (wid == (u32)W_INST_EXPORT_PATH && vt == (u32)DUI_VALUE_TEXT) {
-                std::string next;
-                u32 i;
-                for (i = 0u; i < ev.u.value.text_len; ++i) {
-                    next.push_back(ev.u.value.text[i]);
-                }
-                m_ui->inst_export_path = next;
-            } else if (wid == (u32)W_PACKS_LIST && vt == (u32)DUI_VALUE_LIST) {
-                const u32 item_id = ev.u.value.item_id;
-                const launcher_core::LauncherInstanceManifest& m = m_ui->cache_manifest;
-                size_t i;
-
-                m_ui->packs_selected_item_id = item_id;
-                m_ui->packs_selected_key.clear();
-                for (i = 0u; i < m.content_entries.size(); ++i) {
-                    const launcher_core::LauncherContentEntry& e = m.content_entries[i];
-                    if (!is_pack_like(e.type)) {
-                        continue;
-                    }
-                    const std::string key = pack_key(e.type, e.id);
-                    if (stable_item_id(key) == item_id) {
-                        m_ui->packs_selected_key = key;
-                        break;
-                    }
-                }
-            } else if (wid == (u32)W_PACKS_ENABLED && vt == (u32)DUI_VALUE_BOOL) {
-                const launcher_core::LauncherContentEntry* e =
-                    find_entry_by_pack_key(m_ui->cache_manifest, m_ui->packs_selected_key);
-                if (e && !m_ui->packs_selected_key.empty()) {
-                    const u32 cur_enabled = e->enabled ? 1u : 0u;
-                    const u32 next_enabled = ev.u.value.v_u32 ? 1u : 0u;
-                    DomLauncherUiState::StagedPackChange& sc = m_ui->packs_staged[m_ui->packs_selected_key];
-                    sc.has_enabled = 1u;
-                    sc.enabled = next_enabled;
-                    if (sc.has_enabled && sc.enabled == cur_enabled) {
-                        sc.has_enabled = 0u;
-                    }
-                    if (!sc.has_enabled && !sc.has_update_policy) {
-                        m_ui->packs_staged.erase(m_ui->packs_selected_key);
-                    }
-                }
-            } else if (wid == (u32)W_PACKS_POLICY_LIST && vt == (u32)DUI_VALUE_LIST) {
-                const launcher_core::LauncherContentEntry* e =
-                    find_entry_by_pack_key(m_ui->cache_manifest, m_ui->packs_selected_key);
-                if (e && !m_ui->packs_selected_key.empty()) {
-                    const u32 cur_policy = e->update_policy;
-                    const u32 next_policy = update_policy_from_item_id(ev.u.value.item_id, cur_policy);
-                    DomLauncherUiState::StagedPackChange& sc = m_ui->packs_staged[m_ui->packs_selected_key];
-                    sc.has_update_policy = 1u;
-                    sc.update_policy = next_policy;
-                    if (sc.has_update_policy && sc.update_policy == cur_policy) {
-                        sc.has_update_policy = 0u;
-                    }
-                    if (!sc.has_enabled && !sc.has_update_policy) {
-                        m_ui->packs_staged.erase(m_ui->packs_selected_key);
-                    }
-                }
-            } else if (wid == (u32)W_OPT_GFX_LIST && vt == (u32)DUI_VALUE_LIST) {
-                const u32 item_id = ev.u.value.item_id;
-                m_ui->opt_gfx_selected_item_id = item_id;
-                if (item_id == stable_item_id("auto")) {
-                    m_ui->cache_config.gfx_backend.clear();
-                } else {
-                    const std::string name = dgfx_backend_from_item_id(item_id);
-                    if (!name.empty()) {
-                        m_ui->cache_config.gfx_backend = name;
-                    }
-                }
-            } else if (wid == (u32)W_OPT_API_FIELD && vt == (u32)DUI_VALUE_TEXT) {
-                std::string next;
-                u32 i;
-                for (i = 0u; i < ev.u.value.text_len; ++i) {
-                    next.push_back(ev.u.value.text[i]);
-                }
-                m_ui->opt_renderer_api_text = next;
-                m_ui->cache_config.renderer_api = next;
-            } else if (wid == (u32)W_OPT_WINMODE_LIST && vt == (u32)DUI_VALUE_LIST) {
-                const u32 item_id = ev.u.value.item_id;
-                m_ui->opt_winmode_selected_item_id = item_id;
-                m_ui->cache_config.window_mode = window_mode_from_item_id(item_id, m_ui->cache_config.window_mode);
-            } else if (wid == (u32)W_OPT_WIDTH_FIELD && vt == (u32)DUI_VALUE_TEXT) {
-                std::string next;
-                u32 i;
-                for (i = 0u; i < ev.u.value.text_len; ++i) {
-                    next.push_back(ev.u.value.text[i]);
-                }
-                m_ui->opt_width_text = next;
-            } else if (wid == (u32)W_OPT_HEIGHT_FIELD && vt == (u32)DUI_VALUE_TEXT) {
-                std::string next;
-                u32 i;
-                for (i = 0u; i < ev.u.value.text_len; ++i) {
-                    next.push_back(ev.u.value.text[i]);
-                }
-                m_ui->opt_height_text = next;
-            } else if (wid == (u32)W_OPT_DPI_FIELD && vt == (u32)DUI_VALUE_TEXT) {
-                std::string next;
-                u32 i;
-                for (i = 0u; i < ev.u.value.text_len; ++i) {
-                    next.push_back(ev.u.value.text[i]);
-                }
-                m_ui->opt_dpi_text = next;
-            } else if (wid == (u32)W_OPT_MONITOR_FIELD && vt == (u32)DUI_VALUE_TEXT) {
-                std::string next;
-                u32 i;
-                for (i = 0u; i < ev.u.value.text_len; ++i) {
-                    next.push_back(ev.u.value.text[i]);
-                }
-                m_ui->opt_monitor_text = next;
-            } else if (wid == (u32)W_LOGS_DIAG_OUT && vt == (u32)DUI_VALUE_TEXT) {
-                std::string next;
-                u32 i;
-                for (i = 0u; i < ev.u.value.text_len; ++i) {
-                    next.push_back(ev.u.value.text[i]);
-                }
-                m_ui->logs_diag_out_path = next;
-            } else if (wid == (u32)W_LOGS_RUNS_LIST && vt == (u32)DUI_VALUE_LIST) {
-                const u32 item_id = ev.u.value.item_id;
-                size_t i;
-                m_ui->logs_selected_run_item_id = item_id;
-                m_ui->logs_selected_run_id.clear();
-                for (i = 0u; i < m_ui->cache_run_ids.size(); ++i) {
-                    if (stable_item_id(m_ui->cache_run_ids[i]) == item_id) {
-                        m_ui->logs_selected_run_id = m_ui->cache_run_ids[i];
-                        break;
-                    }
-                }
-                if (!m_ui->logs_selected_run_id.empty() && selected_instance()) {
-                    ui_load_selected_run_audit(*m_ui, m_paths.root, selected_instance()->id);
-                }
-            }
+            LauncherUiValueEvent value;
+            value.widget_id = ev.u.value.widget_id;
+            value.value_type = ev.u.value.value_type;
+            value.v_u32 = ev.u.value.v_u32;
+            value.v_i32 = ev.u.value.v_i32;
+            value.v_u64 = ev.u.value.v_u64;
+            value.text = ev.u.value.text;
+            value.text_len = ev.u.value.text_len;
+            value.item_id = ev.u.value.item_id;
+            ui_handle_value(value);
         }
-
         std::memset(&ev, 0, sizeof(ev));
     }
+}
+
+void DomLauncherApp::apply_ui_session_state() {
+#if defined(DOMINIUM_DEV_UI)
+    LauncherUiSessionState state;
+    std::string err;
+    size_t i;
+    bool applied_instance = false;
+
+    if (!launcher_ui_session_state_load(state, err)) {
+        m_ui_session_state_loaded = false;
+        return;
+    }
+
+    m_ui_session_state = state;
+    m_ui_session_state_loaded = true;
+
+    if (m_ui && state.tab_id <= (u32)DomLauncherUiState::TAB_LOGS) {
+        m_ui->tab = state.tab_id;
+    }
+
+    if (!state.instance_id.empty()) {
+        for (i = 0u; i < m_instances.size(); ++i) {
+            if (m_instances[i].id == state.instance_id) {
+                set_selected_instance((int)i);
+                applied_instance = true;
+                break;
+            }
+        }
+    }
+
+    if (m_ui && state.play_target_item_id != 0u) {
+        m_ui->play_target_item_id = state.play_target_item_id;
+    } else if (m_ui && !applied_instance && m_ui->play_target_item_id == 0u) {
+        m_ui->play_target_item_id = stable_item_id(std::string("game"));
+    }
+#endif
+}
+
+void DomLauncherApp::save_ui_session_state_best_effort() {
+#if defined(DOMINIUM_DEV_UI)
+    LauncherUiSessionState state = m_ui_session_state;
+    const InstanceInfo* inst = selected_instance();
+    std::string err;
+
+    if (m_ui) {
+        state.tab_id = m_ui->tab;
+        state.play_target_item_id = m_ui->play_target_item_id;
+    }
+    state.instance_id = inst ? inst->id : std::string();
+    (void)capture_ui_session_window_bounds(state);
+
+    if (launcher_ui_session_state_save(state, err)) {
+        m_ui_session_state = state;
+        m_ui_session_state_loaded = true;
+    }
+#endif
+}
+
+bool DomLauncherApp::capture_ui_session_window_bounds(LauncherUiSessionState& io_state) const {
+#if defined(DOMINIUM_DEV_UI)
+    const void* iface = 0;
+    const dui_native_api_v1* native = 0;
+    void* handle = 0;
+
+    if (!m_dui_api || !m_dui_win || !m_dui_api->query_interface) {
+        return false;
+    }
+    if (m_dui_api->query_interface(DUI_IID_NATIVE_API_V1, &iface) != 0 || !iface) {
+        return false;
+    }
+    native = (const dui_native_api_v1*)iface;
+    if (!native->get_native_window_handle) {
+        return false;
+    }
+
+    handle = native->get_native_window_handle(m_dui_win);
+#if defined(_WIN32) || defined(_WIN64)
+    if (handle) {
+        RECT rc;
+        if (GetWindowRect((HWND)handle, &rc)) {
+            io_state.window_x = rc.left;
+            io_state.window_y = rc.top;
+            io_state.window_w = rc.right - rc.left;
+            io_state.window_h = rc.bottom - rc.top;
+            return true;
+        }
+    }
+#else
+    (void)handle;
+#endif
+#endif
+    return false;
 }
 
 void DomLauncherApp::process_ui_task() {

@@ -1044,6 +1044,29 @@ set_tests_properties(setup_adapter_macos_pkg PROPERTIES
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
 )
 
+if(APPLE)
+    add_executable(setup_adapter_macos_gui_tests
+        ../../tests/setup/test_adapter_macos_gui.cpp
+    )
+    set_target_properties(setup_adapter_macos_gui_tests PROPERTIES
+        CXX_STANDARD 98
+        CXX_STANDARD_REQUIRED ON
+        CXX_EXTENSIONS OFF
+    )
+    add_dependencies(setup_adapter_macos_gui_tests
+        dominium-setup-macos-gui
+    )
+    add_test(NAME setup_adapter_macos_gui_export
+        COMMAND setup_adapter_macos_gui_tests
+            $<TARGET_FILE:dominium-setup-macos-gui>
+            ${CMAKE_SOURCE_DIR}
+            ${CMAKE_CURRENT_BINARY_DIR}/setup_adapter_macos_gui
+    )
+    set_tests_properties(setup_adapter_macos_gui_export PROPERTIES
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    )
+endif()
+
 add_executable(setup_adapter_linux_wrappers_tests
     ../../tests/setup/test_adapter_linux_wrappers.cpp
 )
@@ -1361,6 +1384,9 @@ set(setup_adapter_tests
 set_tests_properties(${setup_adapter_tests} PROPERTIES LABELS "setup;setup_adapters")
 if(WIN32)
     set_tests_properties(setup_adapter_windows_exe PROPERTIES LABELS "setup;setup_adapters")
+endif()
+if(APPLE)
+    set_tests_properties(setup_adapter_macos_gui_export PROPERTIES LABELS "setup;setup_adapters")
 endif()
 
 if(WIN32)

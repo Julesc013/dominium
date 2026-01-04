@@ -270,3 +270,13 @@ endif()
 if(DOMINIUM_SH AND DOMINIUM_RPMBUILD)
     add_dependencies(package-linux linux_rpm_${DSU_LINUX_ARCH})
 endif()
+
+add_custom_target(package-linux-tar
+    DEPENDS linux_tarball_${DSU_LINUX_ARCH}
+)
+add_custom_target(package-linux-deb
+    DEPENDS linux_deb_${DSU_LINUX_ARCH}
+)
+add_custom_target(package-linux-rpm
+    DEPENDS linux_rpm_${DSU_LINUX_ARCH}
+)

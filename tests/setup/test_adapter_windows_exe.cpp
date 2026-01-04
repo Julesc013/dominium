@@ -290,7 +290,7 @@ int main(int argc, char **argv) {
 
         args.clear();
         args.push_back("--cli");
-        args.push_back("request-make");
+        args.push_back("export-request");
         args.push_back("--manifest");
         args.push_back(manifest_path);
         args.push_back("--op");
