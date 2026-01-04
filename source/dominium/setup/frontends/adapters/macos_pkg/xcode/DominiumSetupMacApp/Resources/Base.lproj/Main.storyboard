@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard" version="3.0" toolsVersion="22505" systemVersion="23A344" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="NO" useTraitCollections="YES" initialViewController="WC-01-001">
+    <scenes>
+        <scene sceneID="SC-01-001">
+            <objects>
+                <viewController id="VC-01-001" customClass="DominiumSetupViewController" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="V-01-001">
+                        <rect key="frame" x="0.0" y="0.0" width="720" height="520"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <textField id="lbl-manifest">
+                                <rect key="frame" x="20" y="484" width="140" height="17"/>
+                                <textFieldCell key="cell" stringValue="Manifest" lineBreakMode="clipping" selectable="NO" editable="NO" bezeled="NO" drawsBackground="NO"/>
+                            </textField>
+                            <textField id="fld-manifest" identifier="manifestPathField">
+                                <rect key="frame" x="180" y="480" width="500" height="22"/>
+                                <textFieldCell key="cell" placeholderString="path/to/manifest.dsumanifest" lineBreakMode="truncatingTail" editable="YES" selectable="YES" bezeled="YES" drawsBackground="YES"/>
+                            </textField>
+                            <textField id="lbl-operation">
+                                <rect key="frame" x="20" y="450" width="140" height="17"/>
+                                <textFieldCell key="cell" stringValue="Operation" lineBreakMode="clipping" selectable="NO" editable="NO" bezeled="NO" drawsBackground="NO"/>
+                            </textField>
+                            <popUpButton id="pop-operation" identifier="operationPopup">
+                                <rect key="frame" x="180" y="446" width="200" height="26"/>
+                                <popUpButtonCell key="cell" borderStyle="bezel" title="install" bezelStyle="rounded">
+                                    <menu key="menu" title="operationMenu" id="menu-operation">
+                                        <items>
+                                            <menuItem title="install" id="menu-operation-1"/>
+                                            <menuItem title="upgrade" id="menu-operation-2"/>
+                                            <menuItem title="repair" id="menu-operation-3"/>
+                                            <menuItem title="uninstall" id="menu-operation-4"/>
+                                            <menuItem title="verify" id="menu-operation-5"/>
+                                            <menuItem title="status" id="menu-operation-6"/>
+                                        </items>
+                                    </menu>
+                                </popUpButtonCell>
+                            </popUpButton>
+                            <textField id="lbl-scope">
+                                <rect key="frame" x="20" y="416" width="140" height="17"/>
+                                <textFieldCell key="cell" stringValue="Scope" lineBreakMode="clipping" selectable="NO" editable="NO" bezeled="NO" drawsBackground="NO"/>
+                            </textField>
+                            <popUpButton id="pop-scope" identifier="scopePopup">
+                                <rect key="frame" x="180" y="412" width="200" height="26"/>
+                                <popUpButtonCell key="cell" borderStyle="bezel" title="user" bezelStyle="rounded">
+                                    <menu key="menu" title="scopeMenu" id="menu-scope">
+                                        <items>
+                                            <menuItem title="user" id="menu-scope-1"/>
+                                            <menuItem title="system" id="menu-scope-2"/>
+                                            <menuItem title="portable" id="menu-scope-3"/>
+                                        </items>
+                                    </menu>
+                                </popUpButtonCell>
+                            </popUpButton>
+                            <textField id="lbl-root">
+                                <rect key="frame" x="20" y="382" width="140" height="17"/>
+                                <textFieldCell key="cell" stringValue="Install root" lineBreakMode="clipping" selectable="NO" editable="NO" bezeled="NO" drawsBackground="NO"/>
+                            </textField>
+                            <textField id="fld-root" identifier="installRootField">
+                                <rect key="frame" x="180" y="378" width="500" height="22"/>
+                                <textFieldCell key="cell" placeholderString="Optional" lineBreakMode="truncatingTail" editable="YES" selectable="YES" bezeled="YES" drawsBackground="YES"/>
+                            </textField>
+                            <textField id="lbl-components">
+                                <rect key="frame" x="20" y="348" width="140" height="17"/>
+                                <textFieldCell key="cell" stringValue="Components (csv)" lineBreakMode="clipping" selectable="NO" editable="NO" bezeled="NO" drawsBackground="NO"/>
+                            </textField>
+                            <textField id="fld-components" identifier="componentsField">
+                                <rect key="frame" x="180" y="344" width="500" height="22"/>
+                                <textFieldCell key="cell" placeholderString="Optional" lineBreakMode="truncatingTail" editable="YES" selectable="YES" bezeled="YES" drawsBackground="YES"/>
+                            </textField>
+                            <textField id="lbl-exclude">
+                                <rect key="frame" x="20" y="314" width="140" height="17"/>
+                                <textFieldCell key="cell" stringValue="Exclude (csv)" lineBreakMode="clipping" selectable="NO" editable="NO" bezeled="NO" drawsBackground="NO"/>
+                            </textField>
+                            <textField id="fld-exclude" identifier="excludeComponentsField">
+                                <rect key="frame" x="180" y="310" width="500" height="22"/>
+                                <textFieldCell key="cell" placeholderString="Optional" lineBreakMode="truncatingTail" editable="YES" selectable="YES" bezeled="YES" drawsBackground="YES"/>
+                            </textField>
+                            <textField id="lbl-ownership">
+                                <rect key="frame" x="20" y="280" width="140" height="17"/>
+                                <textFieldCell key="cell" stringValue="Ownership" lineBreakMode="clipping" selectable="NO" editable="NO" bezeled="NO" drawsBackground="NO"/>
+                            </textField>
+                            <popUpButton id="pop-ownership" identifier="ownershipPopup">
+                                <rect key="frame" x="180" y="276" width="200" height="26"/>
+                                <popUpButtonCell key="cell" borderStyle="bezel" title="any" bezelStyle="rounded">
+                                    <menu key="menu" title="ownershipMenu" id="menu-ownership">
+                                        <items>
+                                            <menuItem title="any" id="menu-ownership-1"/>
+                                            <menuItem title="portable" id="menu-ownership-2"/>
+                                            <menuItem title="pkg" id="menu-ownership-3"/>
+                                            <menuItem title="steam" id="menu-ownership-4"/>
+                                        </items>
+                                    </menu>
+                                </popUpButtonCell>
+                            </popUpButton>
+                            <textField id="lbl-splat">
+                                <rect key="frame" x="20" y="246" width="140" height="17"/>
+                                <textFieldCell key="cell" stringValue="Requested splat" lineBreakMode="clipping" selectable="NO" editable="NO" bezeled="NO" drawsBackground="NO"/>
+                            </textField>
+                            <textField id="fld-splat" identifier="requestedSplatField">
+                                <rect key="frame" x="180" y="242" width="500" height="22"/>
+                                <textFieldCell key="cell" placeholderString="Optional" lineBreakMode="truncatingTail" editable="YES" selectable="YES" bezeled="YES" drawsBackground="YES"/>
+                            </textField>
+                            <textField id="lbl-platform">
+                                <rect key="frame" x="20" y="212" width="140" height="17"/>
+                                <textFieldCell key="cell" stringValue="Platform triple" lineBreakMode="clipping" selectable="NO" editable="NO" bezeled="NO" drawsBackground="NO"/>
+                            </textField>
+                            <textField id="fld-platform" identifier="platformField">
+                                <rect key="frame" x="180" y="208" width="220" height="22"/>
+                                <textFieldCell key="cell" placeholderString="macos-x64" lineBreakMode="truncatingTail" editable="YES" selectable="YES" bezeled="YES" drawsBackground="YES"/>
+                            </textField>
+                            <textField id="lbl-payload">
+                                <rect key="frame" x="20" y="178" width="140" height="17"/>
+                                <textFieldCell key="cell" stringValue="Payload root" lineBreakMode="clipping" selectable="NO" editable="NO" bezeled="NO" drawsBackground="NO"/>
+                            </textField>
+                            <textField id="fld-payload" identifier="payloadRootField">
+                                <rect key="frame" x="180" y="174" width="500" height="22"/>
+                                <textFieldCell key="cell" placeholderString="Optional" lineBreakMode="truncatingTail" editable="YES" selectable="YES" bezeled="YES" drawsBackground="YES"/>
+                            </textField>
+                            <textField id="lbl-options">
+                                <rect key="frame" x="20" y="144" width="140" height="17"/>
+                                <textFieldCell key="cell" stringValue="Options" lineBreakMode="clipping" selectable="NO" editable="NO" bezeled="NO" drawsBackground="NO"/>
+                            </textField>
+                            <button id="chk-deterministic" identifier="deterministicCheck">
+                                <rect key="frame" x="180" y="142" width="140" height="18"/>
+                                <buttonCell key="cell" title="Deterministic" bezelStyle="regularSquare" buttonType="check" state="on"/>
+                            </button>
+                            <button id="chk-offline" identifier="offlineCheck">
+                                <rect key="frame" x="330" y="142" width="140" height="18"/>
+                                <buttonCell key="cell" title="Offline" bezelStyle="regularSquare" buttonType="check" state="off"/>
+                            </button>
+                            <textField id="lbl-status">
+                                <rect key="frame" x="20" y="110" width="140" height="17"/>
+                                <textFieldCell key="cell" stringValue="Status" lineBreakMode="clipping" selectable="NO" editable="NO" bezeled="NO" drawsBackground="NO"/>
+                            </textField>
+                            <textField id="fld-status" identifier="statusLabel">
+                                <rect key="frame" x="180" y="106" width="500" height="22"/>
+                                <textFieldCell key="cell" stringValue="Ready." lineBreakMode="truncatingTail" selectable="NO" editable="NO" bezeled="YES" drawsBackground="YES"/>
+                            </textField>
+                            <button id="btn-export">
+                                <rect key="frame" x="180" y="60" width="140" height="30"/>
+                                <buttonCell key="cell" title="Export Request" bezelStyle="rounded"/>
+                                <connections>
+                                    <action selector="exportRequestPressed:" target="VC-01-001" id="act-export"/>
+                                </connections>
+                            </button>
+                            <button id="btn-run">
+                                <rect key="frame" x="340" y="60" width="120" height="30"/>
+                                <buttonCell key="cell" title="Run Setup" bezelStyle="rounded"/>
+                                <connections>
+                                    <action selector="runPressed:" target="VC-01-001" id="act-run"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                    </view>
+                    <connections>
+                        <outlet property="componentsField" destination="fld-components" id="out-components"/>
+                        <outlet property="deterministicCheck" destination="chk-deterministic" id="out-deterministic"/>
+                        <outlet property="excludeComponentsField" destination="fld-exclude" id="out-exclude"/>
+                        <outlet property="installRootField" destination="fld-root" id="out-root"/>
+                        <outlet property="manifestField" destination="fld-manifest" id="out-manifest"/>
+                        <outlet property="offlineCheck" destination="chk-offline" id="out-offline"/>
+                        <outlet property="operationPopup" destination="pop-operation" id="out-operation"/>
+                        <outlet property="ownershipPopup" destination="pop-ownership" id="out-ownership"/>
+                        <outlet property="payloadRootField" destination="fld-payload" id="out-payload"/>
+                        <outlet property="platformField" destination="fld-platform" id="out-platform"/>
+                        <outlet property="requestedSplatField" destination="fld-splat" id="out-splat"/>
+                        <outlet property="scopePopup" destination="pop-scope" id="out-scope"/>
+                        <outlet property="statusLabel" destination="fld-status" id="out-status"/>
+                    </connections>
+                </viewController>
+                <windowController id="WC-01-001" sceneMemberID="viewController">
+                    <window key="window" id="W-01-001" title="Dominium Setup" visibleAtLaunch="YES" animationBehavior="default" frameAutosaveName="DominiumSetupWindow">
+                        <rect key="frame" x="0.0" y="0.0" width="720" height="520"/>
+                        <view key="contentView" id="CV-01-001">
+                            <rect key="frame" x="0.0" y="0.0" width="720" height="520"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </view>
+                        <connections>
+                            <outlet property="contentViewController" destination="VC-01-001" id="cn-content"/>
+                        </connections>
+                    </window>
+                </windowController>
+                <customObject id="APP-01-001" customClass="NSApplication">
+                    <connections>
+                        <outlet property="delegate" destination="APP-DELEGATE" id="app-delegate"/>
+                    </connections>
+                </customObject>
+                <customObject id="APP-DELEGATE" customClass="AppDelegate"/>
+                <customObject id="FR-01-001" customClass="FirstResponder" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
+    </scenes>
+</document>
