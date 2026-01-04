@@ -209,7 +209,7 @@ static void dsk_print_json_summary(const char *command,
 }
 
 static void dsk_print_usage(void) {
-    std::printf("dominium-setup-win-exe --cli|--tui|--gui <request-make|run> [options]\n");
+    std::printf("dominium-setup-win-exe --cli|--tui|--gui <request-make|export-request|run> [options]\n");
     std::printf("  request-make --manifest <file> --op <install|upgrade|repair|uninstall|verify|status>\n");
     std::printf("    --scope <user|system|portable> [--components <csv>] [--exclude <csv>] [--root <path>]\n");
     std::printf("    [--frontend-id <id>] [--requested-splat <id>] [--ownership <portable|pkg|steam|any>]\n");
@@ -369,7 +369,7 @@ int main(int argc, char **argv) {
         exclude = dsk_prompt("Exclude components (csv, blank for none)", "");
     }
 
-    if (std::strcmp(subcommand, "request-make") == 0) {
+    if (std::strcmp(subcommand, "request-make") == 0 || std::strcmp(subcommand, "export-request") == 0) {
         std::string cli = dsk_find_setup_cli(argc, argv);
         if (manifest_path.empty() || op.empty() || scope.empty()) {
             dsk_print_usage();
@@ -392,7 +392,10 @@ int main(int argc, char **argv) {
                                          deterministic,
                                          fake_root);
         if (json) {
-            dsk_print_json_summary("request-make",
+            const char *command_name = std::strcmp(subcommand, "export-request") == 0
+                ? "export-request"
+                : "request-make";
+            dsk_print_json_summary(command_name,
                                    exit_code,
                                    out_request,
                                    "",
