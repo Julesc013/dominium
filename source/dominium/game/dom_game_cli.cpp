@@ -33,6 +33,10 @@ extern "C" {
 
 namespace {
 
+static const u32 DEFAULT_DERIVED_BUDGET_MS = 2u;
+static const u32 DEFAULT_DERIVED_BUDGET_IO_BYTES = 256u * 1024u;
+static const u32 DEFAULT_DERIVED_BUDGET_JOBS = 4u;
+
 static int ascii_tolower(int c) {
     if (c >= 'A' && c <= 'Z') {
         return c - 'A' + 'a';
@@ -433,6 +437,9 @@ void dom_game_cli_init_defaults(dom_game_config *out_cfg) {
     out_cfg->auto_host = 0u;
     out_cfg->headless_ticks = 0u;
     out_cfg->headless_local = 0u;
+    out_cfg->derived_budget_ms = DEFAULT_DERIVED_BUDGET_MS;
+    out_cfg->derived_budget_io_bytes = DEFAULT_DERIVED_BUDGET_IO_BYTES;
+    out_cfg->derived_budget_jobs = DEFAULT_DERIVED_BUDGET_JOBS;
     (void)copy_cstr_bounded(out_cfg->instance_id, sizeof(out_cfg->instance_id), "demo");
     init_profile_defaults(out_cfg->profile);
     out_cfg->handshake_path[0] = '\0';
