@@ -265,6 +265,44 @@ else()
 endif()
 add_test(NAME dominium_universe_bundle COMMAND dominium_universe_bundle_tests)
 
+add_executable(dominium_no_modal_tests
+    contract/dominium_no_modal_tests.cpp
+    ${CMAKE_SOURCE_DIR}/source/dominium/game/runtime/dom_game_runtime.cpp
+    ${CMAKE_SOURCE_DIR}/source/dominium/game/runtime/dom_game_hash.c
+    ${CMAKE_SOURCE_DIR}/source/dominium/game/runtime/dom_snapshot.cpp
+    ${CMAKE_SOURCE_DIR}/source/dominium/game/runtime/dom_derived_jobs.cpp
+    ${CMAKE_SOURCE_DIR}/source/dominium/game/runtime/dom_io_guard.cpp
+    ${CMAKE_SOURCE_DIR}/source/dominium/game/runtime/dom_game_handshake.cpp
+    ${CMAKE_SOURCE_DIR}/source/dominium/game/runtime/dom_game_replay.cpp
+    ${CMAKE_SOURCE_DIR}/source/dominium/game/dom_game_net.cpp
+    ${CMAKE_SOURCE_DIR}/source/dominium/game/dom_game_save.cpp
+)
+target_include_directories(dominium_no_modal_tests PRIVATE
+    ${DOMINIUM_INCLUDE_DIR}
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+target_link_libraries(dominium_no_modal_tests PRIVATE
+    dominium_common
+    core_tlv
+    domino_core
+)
+set_target_properties(dominium_no_modal_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+if (MSVC)
+    target_compile_options(dominium_no_modal_tests PRIVATE $<$<CONFIG:Release>:/UNDEBUG>)
+else()
+    target_compile_options(dominium_no_modal_tests PRIVATE $<$<CONFIG:Release>:-UNDEBUG>)
+endif()
+if (WIN32)
+    target_link_libraries(dominium_no_modal_tests PRIVATE ws2_32)
+endif()
+add_test(NAME dominium_no_modal_loading COMMAND dominium_no_modal_tests)
+
 add_executable(domino_spacetime_tests
     determinism/test_spacetime_conversions.c
 )
