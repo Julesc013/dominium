@@ -772,6 +772,7 @@ DomGameApp::DomGameApp()
     std::memset(m_menu_server_text, 0, sizeof(m_menu_server_text));
     std::memset(m_menu_error_text, 0, sizeof(m_menu_error_text));
     std::memset(&m_cfg, 0, sizeof(m_cfg));
+    std::memset(&m_fidelity, 0, sizeof(m_fidelity));
 }
 
 DomGameApp::~DomGameApp() {
@@ -887,6 +888,7 @@ bool DomGameApp::init_from_cli(const dom_game_config &cfg) {
             return false;
         }
     }
+    dom_fidelity_init(&m_fidelity, DOM_FIDELITY_HIGH);
 
     if (m_mode != GAME_MODE_HEADLESS) {
         const char *gfx_backend = (cfg.gfx_backend[0] == '\0') ? "soft" : cfg.gfx_backend;
@@ -1752,6 +1754,17 @@ void DomGameApp::tick_fixed() {
                                (u64)m_derived_budget_io_bytes,
                                m_derived_budget_jobs);
         dom_io_guard_exit_derived();
+        {
+            dom_derived_stats stats;
+            if (dom_derived_stats(m_derived_queue, &stats) == 0) {
+                if (stats.queued > 0u || stats.running > 0u) {
+                    dom_fidelity_mark_missing(&m_fidelity, DOM_FIDELITY_MISSING_DERIVED);
+                } else {
+                    dom_fidelity_mark_ready(&m_fidelity, DOM_FIDELITY_MISSING_DERIVED);
+                }
+            }
+            dom_fidelity_step(&m_fidelity);
+        }
     }
 
     if (m_session.is_initialized() && m_runtime &&
@@ -1852,11 +1865,16 @@ void DomGameApp::render_frame() {
 
     {
         d_world *w = world();
-        if (w) {
+        const u32 fidelity = m_fidelity.level;
+        if (w && fidelity >= DOM_FIDELITY_LOW) {
             d_view_render(w, view, &frame);
         }
-        dom_draw_debug_overlays(*this, w, cmd_buffer, width, height);
-        dom_draw_trans_overlays(*this, w, cmd_buffer, width, height);
+        if (fidelity >= DOM_FIDELITY_MED) {
+            dom_draw_debug_overlays(*this, w, cmd_buffer, width, height);
+        }
+        if (fidelity >= DOM_FIDELITY_HIGH) {
+            dom_draw_trans_overlays(*this, w, cmd_buffer, width, height);
+        }
     }
     m_build_tool.render_overlay(*this, cmd_buffer, width, height);
     dui_layout(&m_ui_ctx, &root_rect);
