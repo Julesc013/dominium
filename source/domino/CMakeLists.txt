@@ -28,6 +28,7 @@ dist_set_role(dom_shared share)
 
 add_library(domino_core STATIC
     core/types.c
+    core/spacetime.c
     core/dom_build_info.c
     io/container/dtlv.c
     io/schema_registry.c
