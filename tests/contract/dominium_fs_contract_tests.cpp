@@ -142,6 +142,35 @@ static int test_absolute_save_rejected(void) {
     return 0;
 }
 
+static int test_absolute_run_root_rejected(void) {
+    EnvGuard run_root("DOMINIUM_RUN_ROOT", "run_root");
+    EnvGuard home_root("DOMINIUM_HOME", 0);
+    dom::DomGamePaths paths;
+    std::string out;
+
+    if (!dom::dom_game_paths_init_from_env(paths,
+                                           "demo",
+                                           1ull,
+                                           dom::DOM_GAME_PATHS_FLAG_LAUNCHER_REQUIRED)) {
+        return fail("init failed for absolute run root test");
+    }
+#if defined(_WIN32) || defined(_WIN64)
+    const std::string abs_path = "C:\\abs\\universe.dmu";
+#else
+    const std::string abs_path = "/abs/universe.dmu";
+#endif
+    if (dom::dom_game_paths_resolve_rel(paths,
+                                        dom::DOM_GAME_PATH_BASE_RUN_ROOT,
+                                        abs_path,
+                                        out)) {
+        return fail("expected absolute run root rejection");
+    }
+    if (dom::dom_game_paths_last_refusal(paths) != dom::DOM_GAME_PATHS_REFUSAL_ABSOLUTE_PATH) {
+        return fail("absolute run root refusal code mismatch");
+    }
+    return 0;
+}
+
 static int test_run_root_scopes_outputs(void) {
     EnvGuard run_root("DOMINIUM_RUN_ROOT", "run_root");
     EnvGuard home_root("DOMINIUM_HOME", 0);
@@ -223,6 +252,7 @@ int main(void) {
     if ((rc = test_missing_roots_refusal()) != 0) return rc;
     if ((rc = test_traversal_rejected()) != 0) return rc;
     if ((rc = test_absolute_save_rejected()) != 0) return rc;
+    if ((rc = test_absolute_run_root_rejected()) != 0) return rc;
     if ((rc = test_run_root_scopes_outputs()) != 0) return rc;
     if ((rc = test_home_instance_root()) != 0) return rc;
     if ((rc = test_run_root_precedence()) != 0) return rc;

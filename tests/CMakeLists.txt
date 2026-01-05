@@ -240,6 +240,37 @@ else()
 endif()
 add_test(NAME dominium_fs_contract COMMAND dominium_fs_contract_tests)
 
+add_executable(dominium_universe_bundle_tests
+    contract/dominium_universe_bundle_tests.cpp
+    ${CMAKE_SOURCE_DIR}/source/dominium/game/runtime/dom_universe_bundle.cpp
+)
+target_include_directories(dominium_universe_bundle_tests PRIVATE
+    ${DOMINIUM_INCLUDE_DIR}
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+)
+target_link_libraries(dominium_universe_bundle_tests PRIVATE
+    dominium_common
+    domino_core
+)
+set_target_properties(dominium_universe_bundle_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+if (MSVC)
+    target_compile_options(dominium_universe_bundle_tests PRIVATE $<$<CONFIG:Release>:/UNDEBUG>)
+else()
+    target_compile_options(dominium_universe_bundle_tests PRIVATE $<$<CONFIG:Release>:-UNDEBUG>)
+endif()
+add_test(NAME dominium_universe_bundle COMMAND dominium_universe_bundle_tests)
+
+add_executable(domino_spacetime_tests
+    determinism/test_spacetime_conversions.c
+)
+target_link_libraries(domino_spacetime_tests PRIVATE domino_core)
+add_test(NAME domino_spacetime_conversions COMMAND domino_spacetime_tests)
+
 add_test(NAME dominium_game_headless_flow
     COMMAND $<TARGET_FILE:dominium_game>
         --mode=headless
