@@ -1438,7 +1438,7 @@ static int ui_has_arg_prefix(const std::vector<std::string>& args, const char* p
     if (!prefix) {
         return 0;
     }
-    size_t len = std::strlen(prefix);
+    size_t len = strlen(prefix);
     for (size_t i = 0u; i < args.size(); ++i) {
         if (args[i].compare(0u, len, prefix) == 0) {
             return 1;
@@ -1751,25 +1751,25 @@ static int ui_write_cli_report(const std::string& report_path,
 
 static void ui_print_help()
 {
-    std::printf("dominium-ui-editor %s\n", DOMINO_VERSION_STRING);
-    std::printf("Commands:\n");
-    std::printf("  --help\n");
-    std::printf("    Show this help text.\n");
-    std::printf("  --scan-ui [--out <path>]\n");
-    std::printf("    Scan repo for UI docs and write ui_index.json.\n");
-    std::printf("  --headless-validate <ui_doc.tlv> [--targets <list>] [--report <path.json>]\n");
-    std::printf("    Validate UI doc without GUI.\n");
-    std::printf("  --headless-format <ui_doc.tlv> [--out <ui_doc_out.tlv>] [--report <path.json>]\n");
-    std::printf("    Canonicalize UI doc and write JSON mirror.\n");
-    std::printf("  --headless-codegen --in <ui_doc.tlv> --out <gen_dir> --registry <registry.json> --docname <name>\n");
-    std::printf("    [--report <path.json>]\n");
-    std::printf("    Run action codegen and update registry.\n");
-    std::printf("  --headless-build-ui --in <ui_doc.tlv> --docname <name> --out-root <tool/ui/>\n");
-    std::printf("    [--report <path.json>]\n");
-    std::printf("    Validate, format, and codegen into tool UI root.\n");
-    std::printf("  --headless-apply <ui_doc.tlv> --script <ops.json>\n");
-    std::printf("    [--out <ui_doc_out.tlv>] [--report <path.json>] [--in-new]\n");
-    std::printf("    Apply ops.json deterministically without GUI.\n");
+    printf("dominium-ui-editor %s\n", DOMINO_VERSION_STRING);
+    printf("Commands:\n");
+    printf("  --help\n");
+    printf("    Show this help text.\n");
+    printf("  --scan-ui [--out <path>]\n");
+    printf("    Scan repo for UI docs and write ui_index.json.\n");
+    printf("  --headless-validate <ui_doc.tlv> [--targets <list>] [--report <path.json>]\n");
+    printf("    Validate UI doc without GUI.\n");
+    printf("  --headless-format <ui_doc.tlv> [--out <ui_doc_out.tlv>] [--report <path.json>]\n");
+    printf("    Canonicalize UI doc and write JSON mirror.\n");
+    printf("  --headless-codegen --in <ui_doc.tlv> --out <gen_dir> --registry <registry.json> --docname <name>\n");
+    printf("    [--report <path.json>]\n");
+    printf("    Run action codegen and update registry.\n");
+    printf("  --headless-build-ui --in <ui_doc.tlv> --docname <name> --out-root <tool/ui/>\n");
+    printf("    [--report <path.json>]\n");
+    printf("    Validate, format, and codegen into tool UI root.\n");
+    printf("  --headless-apply <ui_doc.tlv> --script <ops.json>\n");
+    printf("    [--out <ui_doc_out.tlv>] [--report <path.json>] [--in-new]\n");
+    printf("    Apply ops.json deterministically without GUI.\n");
 }
 
 static int ui_run_headless_validate(const std::vector<std::string>& args)

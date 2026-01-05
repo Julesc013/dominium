@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 add_library(dominium_launcher_core STATIC
+    launcher_context.cpp
     src/launcher_core.cpp
     src/log/launcher_log.cpp
     src/safety/launcher_safety.cpp
@@ -37,6 +38,7 @@ add_library(dominium_launcher_core STATIC
 target_include_directories(dominium_launcher_core
     PUBLIC
         ${DOMINIUM_INCLUDE_DIR}
+        ${CMAKE_SOURCE_DIR}/include/dominium/_internal/dom_priv
         ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 

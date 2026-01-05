@@ -6,6 +6,8 @@ RESPONSIBILITY: Schema registry for versioned formats and migration dispatch.
 */
 #include "dom_schema_registry.h"
 
+#include <stddef.h>
+
 void dom_schema_registry_init(dom_schema_registry *registry) {
     if (!registry) {
         return;

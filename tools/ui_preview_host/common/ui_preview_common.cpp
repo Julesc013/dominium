@@ -628,58 +628,6 @@ static void ui_preview_build_list_items(const domui_widget* w, std::vector<UiPre
     }
 }
 
-static std::string ui_preview_value_to_string(const domui_value& v)
-{
-    char buf[64];
-    switch (v.type) {
-    case DOMUI_VALUE_I32:
-        std::sprintf(buf, "%d", v.u.v_i32);
-        return std::string(buf);
-    case DOMUI_VALUE_U32:
-        std::sprintf(buf, "%u", (unsigned int)v.u.v_u32);
-        return std::string(buf);
-    case DOMUI_VALUE_BOOL:
-        return v.u.v_bool ? "true" : "false";
-    case DOMUI_VALUE_STR:
-        if (v.u.v_str.ptr && v.u.v_str.len) {
-            return std::string(v.u.v_str.ptr, v.u.v_str.len);
-        }
-        return std::string();
-    case DOMUI_VALUE_VEC2I:
-        std::sprintf(buf, "%d,%d", v.u.v_vec2i.x, v.u.v_vec2i.y);
-        return std::string(buf);
-    case DOMUI_VALUE_RECTI:
-        std::sprintf(buf, "%d,%d,%d,%d", v.u.v_recti.x, v.u.v_recti.y, v.u.v_recti.w, v.u.v_recti.h);
-        return std::string(buf);
-    default:
-        break;
-    }
-    return std::string();
-}
-
-static const char* ui_preview_event_type_name(domui_event_type t)
-{
-    switch (t) {
-    case DOMUI_EVENT_CLICK: return "click";
-    case DOMUI_EVENT_CHANGE: return "change";
-    case DOMUI_EVENT_SUBMIT: return "submit";
-    case DOMUI_EVENT_TAB_CHANGE: return "tab_change";
-    case DOMUI_EVENT_KEYDOWN: return "keydown";
-    case DOMUI_EVENT_KEYUP: return "keyup";
-    case DOMUI_EVENT_TEXT_INPUT: return "text_input";
-    case DOMUI_EVENT_MOUSE_DOWN: return "mouse_down";
-    case DOMUI_EVENT_MOUSE_UP: return "mouse_up";
-    case DOMUI_EVENT_MOUSE_MOVE: return "mouse_move";
-    case DOMUI_EVENT_SCROLL: return "scroll";
-    case DOMUI_EVENT_FOCUS_GAIN: return "focus_gain";
-    case DOMUI_EVENT_FOCUS_LOST: return "focus_lost";
-    case DOMUI_EVENT_CUSTOM: return "custom";
-    default:
-        break;
-    }
-    return "unknown";
-}
-
 } // namespace
 
 UiPreviewLog::UiPreviewLog()
@@ -1171,31 +1119,8 @@ void ui_preview_log_diag(UiPreviewLog& log, const domui_diag& diag)
 void ui_preview_action_dispatch(void* user_ctx, const domui_event* e)
 {
     UiPreviewActionContext* ctx = (UiPreviewActionContext*)user_ctx;
-    const char* key = 0;
     if (!ctx || !ctx->log || !e) {
         return;
     }
-    if (ctx->registry) {
-        key = ctx->registry->key_from_id(e->action_id);
-    }
-    {
-        char buf[256];
-        std::string line = "action: ";
-        std::sprintf(buf, "id=%u widget=%u type=%s", (unsigned int)e->action_id,
-                     (unsigned int)e->widget_id, ui_preview_event_type_name(e->type));
-        line.append(buf);
-        if (key) {
-            line.append(" key=");
-            line.append(key);
-        }
-        if (e->a.type != DOMUI_VALUE_NONE) {
-            line.append(" a=");
-            line.append(ui_preview_value_to_string(e->a));
-        }
-        if (e->b.type != DOMUI_VALUE_NONE) {
-            line.append(" b=");
-            line.append(ui_preview_value_to_string(e->b));
-        }
-        ctx->log->line(line);
-    }
+    ctx->log->line("action: received (details unavailable in preview host build)");
 }

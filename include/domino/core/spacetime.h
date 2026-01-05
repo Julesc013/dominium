@@ -31,7 +31,7 @@ typedef struct dom_timebase {
 
 typedef struct dom_posseg_q16 {
     i32 seg[3];
-    fix32 loc[3];
+    q16_16 loc[3];
 } dom_posseg_q16;
 
 /* Validates a timebase; returns DOM_SPACETIME_OK or DOM_SPACETIME_INVALID. */
