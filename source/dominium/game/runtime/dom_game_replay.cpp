@@ -17,6 +17,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include <cstring>
 
 #include "dominium/core_tlv.h"
+#include "runtime/dom_io_guard.h"
 
 extern "C" {
 #include "domino/sys.h"
@@ -77,6 +78,10 @@ static bool read_file(const char *path, std::vector<unsigned char> &out) {
 
     out.clear();
     if (!path || !path[0]) {
+        return false;
+    }
+    if (!dom_io_guard_io_allowed()) {
+        dom_io_guard_note_violation("replay_read", path);
         return false;
     }
 
@@ -183,6 +188,10 @@ dom_game_replay_record *dom_game_replay_record_open(const char *path,
     if (content_tlv_len > 0u && !content_tlv) {
         return (dom_game_replay_record *)0;
     }
+    if (!dom_io_guard_io_allowed()) {
+        dom_io_guard_note_violation("replay_record_open", path);
+        return (dom_game_replay_record *)0;
+    }
     if (!build_identity_tlv(instance_id,
                             run_id,
                             manifest_hash_bytes,
@@ -272,6 +281,10 @@ int dom_game_replay_record_write_cmd(dom_game_replay_record *rec,
     unsigned char buf32[4];
 
     if (!rec || !rec->fh || !payload || size == 0u) {
+        return DOM_GAME_REPLAY_ERR;
+    }
+    if (!dom_io_guard_io_allowed()) {
+        dom_io_guard_note_violation("replay_record_write", "(stream)");
         return DOM_GAME_REPLAY_ERR;
     }
 

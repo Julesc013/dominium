@@ -15,6 +15,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 
 #include <cstring>
 
+#include "runtime/dom_io_guard.h"
 #include "runtime/dom_game_runtime.h"
 #include "runtime/dom_game_query.h"
 
@@ -44,6 +45,9 @@ dom_game_snapshot *dom_game_runtime_build_snapshot(const dom_game_runtime *rt, u
     snap->runtime.entity_count = 0u;
     snap->runtime.vessel_count = 0u;
     snap->runtime.construction_count = 0u;
+    snap->runtime.io_violation_count = dom_io_guard_violation_count();
+    snap->runtime.stall_count = dom_io_guard_stall_count();
+    snap->runtime.last_frame_ms = dom_io_guard_last_frame_ms();
 
     std::memset(&counts, 0, sizeof(counts));
     if (dom_game_runtime_get_counts(rt, &counts) == DOM_GAME_RUNTIME_OK) {

@@ -21,7 +21,7 @@ extern "C" {
 #endif
 
 enum {
-    DOM_RUNTIME_SUMMARY_SNAPSHOT_VERSION = 1u,
+    DOM_RUNTIME_SUMMARY_SNAPSHOT_VERSION = 2u,
     DOM_VIEW_STATE_SNAPSHOT_VERSION = 1u,
     DOM_GAME_SNAPSHOT_VERSION = 1u
 };
@@ -40,6 +40,9 @@ typedef struct dom_runtime_summary_snapshot {
     u32 entity_count;
     u32 vessel_count;
     u32 construction_count;
+    u32 io_violation_count;
+    u32 stall_count;
+    u32 last_frame_ms;
 } dom_runtime_summary_snapshot;
 
 typedef struct dom_view_state_snapshot {

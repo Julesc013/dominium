@@ -54,6 +54,8 @@ static dui_widget *g_struct_label = (dui_widget *)0;
 static dui_widget *g_pack_label = (dui_widget *)0;
 static dui_widget *g_content_label = (dui_widget *)0;
 static dui_widget *g_det_label = (dui_widget *)0;
+static dui_widget *g_io_label = (dui_widget *)0;
+static dui_widget *g_stall_label = (dui_widget *)0;
 static dui_widget *g_net_label = (dui_widget *)0;
 static dui_widget *g_probe_label = (dui_widget *)0;
 static dui_widget *g_env_label = (dui_widget *)0;
@@ -76,6 +78,8 @@ static char g_buf_struct[128];
 static char g_buf_pack[192];
 static char g_buf_content[192];
 static char g_buf_det[96];
+static char g_buf_io[96];
+static char g_buf_stall[96];
 static char g_buf_net[768];
 static char g_buf_probe[160];
 static char g_buf_env[256];
@@ -108,6 +112,8 @@ void dom_game_ui_debug_reset(void) {
     g_pack_label = (dui_widget *)0;
     g_content_label = (dui_widget *)0;
     g_det_label = (dui_widget *)0;
+    g_io_label = (dui_widget *)0;
+    g_stall_label = (dui_widget *)0;
     g_net_label = (dui_widget *)0;
     g_probe_label = (dui_widget *)0;
     g_env_label = (dui_widget *)0;
@@ -281,6 +287,8 @@ static void ensure_widgets(dui_context &ctx, DomGameApp &app) {
         g_pack_label = dui_widget_create(&ctx, DUI_WIDGET_LABEL);
         g_content_label = dui_widget_create(&ctx, DUI_WIDGET_LABEL);
         g_det_label = dui_widget_create(&ctx, DUI_WIDGET_LABEL);
+        g_io_label = dui_widget_create(&ctx, DUI_WIDGET_LABEL);
+        g_stall_label = dui_widget_create(&ctx, DUI_WIDGET_LABEL);
         g_net_label = dui_widget_create(&ctx, DUI_WIDGET_LABEL);
         g_probe_label = dui_widget_create(&ctx, DUI_WIDGET_LABEL);
         g_env_label = dui_widget_create(&ctx, DUI_WIDGET_LABEL);
@@ -308,6 +316,8 @@ static void ensure_widgets(dui_context &ctx, DomGameApp &app) {
         if (g_pack_label) dui_widget_add_child(g_panel, g_pack_label);
         if (g_content_label) dui_widget_add_child(g_panel, g_content_label);
         if (g_det_label) dui_widget_add_child(g_panel, g_det_label);
+        if (g_io_label) dui_widget_add_child(g_panel, g_io_label);
+        if (g_stall_label) dui_widget_add_child(g_panel, g_stall_label);
         if (g_net_label) dui_widget_add_child(g_panel, g_net_label);
         if (g_probe_label) dui_widget_add_child(g_panel, g_probe_label);
         if (g_env_label) dui_widget_add_child(g_panel, g_env_label);
@@ -989,6 +999,20 @@ void dom_game_ui_debug_update(dui_context &ctx, DomGameApp &app, const dom_game_
     std::snprintf(g_buf_det, sizeof(g_buf_det),
                   "Determinism: %s", determinism_text(app.determinism_mode()));
     if (g_det_label) g_det_label->text = g_buf_det;
+
+    if (rt) {
+        std::snprintf(g_buf_io, sizeof(g_buf_io),
+                      "IO violations: %u", (unsigned)rt->io_violation_count);
+        std::snprintf(g_buf_stall, sizeof(g_buf_stall),
+                      "Frame stalls: %u last_ms=%u",
+                      (unsigned)rt->stall_count,
+                      (unsigned)rt->last_frame_ms);
+    } else {
+        std::snprintf(g_buf_io, sizeof(g_buf_io), "IO violations: (n/a)");
+        std::snprintf(g_buf_stall, sizeof(g_buf_stall), "Frame stalls: (n/a)");
+    }
+    if (g_io_label) g_io_label->text = g_buf_io;
+    if (g_stall_label) g_stall_label->text = g_buf_stall;
 
     {
         const DomGameNet &net = app.net();
