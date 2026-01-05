@@ -26,6 +26,10 @@ namespace {
 static dui_widget *g_status_label = (dui_widget *)0;
 static dui_widget *g_start_button = (dui_widget *)0;
 static dui_widget *g_join_button = (dui_widget *)0;
+static dui_widget *g_universe_new_button = (dui_widget *)0;
+static dui_widget *g_universe_load_button = (dui_widget *)0;
+static dui_widget *g_universe_import_button = (dui_widget *)0;
+static dui_widget *g_universe_export_button = (dui_widget *)0;
 static dui_widget *g_exit_button = (dui_widget *)0;
 static dui_widget *g_place_button = (dui_widget *)0;
 static dui_widget *g_place_refiner_button = (dui_widget *)0;
@@ -51,6 +55,10 @@ static void clear_children(dui_context &ctx) {
     g_status_label = (dui_widget *)0;
     g_start_button = (dui_widget *)0;
     g_join_button = (dui_widget *)0;
+    g_universe_new_button = (dui_widget *)0;
+    g_universe_load_button = (dui_widget *)0;
+    g_universe_import_button = (dui_widget *)0;
+    g_universe_export_button = (dui_widget *)0;
     g_exit_button = (dui_widget *)0;
     g_place_button = (dui_widget *)0;
     g_place_refiner_button = (dui_widget *)0;
@@ -116,6 +124,34 @@ static void on_click_join(dui_widget *self) {
     DomGameApp *app = self ? (DomGameApp *)self->user_data : (DomGameApp *)0;
     if (app) {
         app->request_phase_action(DOM_GAME_PHASE_ACTION_START_JOIN);
+    }
+}
+
+static void on_click_universe_new(dui_widget *self) {
+    DomGameApp *app = self ? (DomGameApp *)self->user_data : (DomGameApp *)0;
+    if (app) {
+        app->request_phase_action(DOM_GAME_PHASE_ACTION_NEW_UNIVERSE);
+    }
+}
+
+static void on_click_universe_load(dui_widget *self) {
+    DomGameApp *app = self ? (DomGameApp *)self->user_data : (DomGameApp *)0;
+    if (app) {
+        app->request_phase_action(DOM_GAME_PHASE_ACTION_LOAD_UNIVERSE);
+    }
+}
+
+static void on_click_universe_import(dui_widget *self) {
+    DomGameApp *app = self ? (DomGameApp *)self->user_data : (DomGameApp *)0;
+    if (app) {
+        app->request_phase_action(DOM_GAME_PHASE_ACTION_IMPORT_UNIVERSE);
+    }
+}
+
+static void on_click_universe_export(dui_widget *self) {
+    DomGameApp *app = self ? (DomGameApp *)self->user_data : (DomGameApp *)0;
+    if (app) {
+        app->request_phase_action(DOM_GAME_PHASE_ACTION_EXPORT_UNIVERSE);
     }
 }
 
@@ -235,7 +271,7 @@ void dom_game_ui_build_main_menu(dui_context &ctx) {
     if (!panel) {
         return;
     }
-    panel->layout_rect.h = d_q16_16_from_int(260);
+    panel->layout_rect.h = d_q16_16_from_int(420);
 
     label = add_child(ctx, panel, DUI_WIDGET_LABEL);
     set_text(label, "Dominium");
@@ -265,6 +301,34 @@ void dom_game_ui_build_main_menu(dui_context &ctx) {
         set_text(g_join_button, "Join Session");
         g_join_button->on_click = on_click_join;
         g_join_button->user_data = (void *)g_ui_app;
+    }
+
+    g_universe_new_button = add_child(ctx, panel, DUI_WIDGET_BUTTON);
+    if (g_universe_new_button) {
+        set_text(g_universe_new_button, "New Universe");
+        g_universe_new_button->on_click = on_click_universe_new;
+        g_universe_new_button->user_data = (void *)g_ui_app;
+    }
+
+    g_universe_load_button = add_child(ctx, panel, DUI_WIDGET_BUTTON);
+    if (g_universe_load_button) {
+        set_text(g_universe_load_button, "Load Universe");
+        g_universe_load_button->on_click = on_click_universe_load;
+        g_universe_load_button->user_data = (void *)g_ui_app;
+    }
+
+    g_universe_import_button = add_child(ctx, panel, DUI_WIDGET_BUTTON);
+    if (g_universe_import_button) {
+        set_text(g_universe_import_button, "Import Universe");
+        g_universe_import_button->on_click = on_click_universe_import;
+        g_universe_import_button->user_data = (void *)g_ui_app;
+    }
+
+    g_universe_export_button = add_child(ctx, panel, DUI_WIDGET_BUTTON);
+    if (g_universe_export_button) {
+        set_text(g_universe_export_button, "Export Universe");
+        g_universe_export_button->on_click = on_click_universe_export;
+        g_universe_export_button->user_data = (void *)g_ui_app;
     }
 
     g_exit_button = add_child(ctx, panel, DUI_WIDGET_BUTTON);

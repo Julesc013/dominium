@@ -126,6 +126,7 @@ private:
     void handle_phase_enter(DomGamePhaseId prev_phase, DomGamePhaseId next_phase);
     void update_phase(u32 dt_ms);
     void update_menu_labels();
+    void handle_universe_action(DomGamePhaseAction action);
 
     void main_loop();
     void tick_fixed();
@@ -159,6 +160,7 @@ private:
 
     DomGamePhaseCtx m_phase;
     DomGamePhaseAction m_phase_action;
+    DomGamePhaseAction m_universe_pending_action;
     bool         m_bootstrap_started;
     bool         m_bootstrap_failed;
     bool         m_session_start_attempted;
@@ -180,6 +182,8 @@ private:
     std::string  m_replay_play_path;
     std::string  m_save_path;
     std::string  m_load_path;
+    std::string  m_universe_import_path;
+    std::string  m_universe_export_path;
     u32          m_replay_last_tick;
     dom_game_replay_record *m_replay_record;
     dom_game_replay_play *m_replay_play;

@@ -138,7 +138,8 @@ enum {
     DOM_GAME_REFUSAL_HANDSHAKE_MISSING = 2001u,
     DOM_GAME_REFUSAL_HANDSHAKE_INVALID = 2002u,
     DOM_GAME_REFUSAL_HANDSHAKE_INSTANCE_MISMATCH = 2003u,
-    DOM_GAME_REFUSAL_INSTANCE_ROOT_UNAVAILABLE = 2004u
+    DOM_GAME_REFUSAL_INSTANCE_ROOT_UNAVAILABLE = 2004u,
+    DOM_GAME_REFUSAL_UNIVERSE_OP_UNSUPPORTED = 2101u
 };
 
 static const char *path_refusal_detail(u32 code) {
@@ -180,6 +181,35 @@ static bool is_abs_path_input(const std::string &path) {
         }
     }
     return false;
+}
+
+static bool is_universe_action(DomGamePhaseAction action) {
+    switch (action) {
+    case DOM_GAME_PHASE_ACTION_NEW_UNIVERSE:
+    case DOM_GAME_PHASE_ACTION_LOAD_UNIVERSE:
+    case DOM_GAME_PHASE_ACTION_IMPORT_UNIVERSE:
+    case DOM_GAME_PHASE_ACTION_EXPORT_UNIVERSE:
+        return true;
+    default:
+        break;
+    }
+    return false;
+}
+
+static const char *universe_action_label(DomGamePhaseAction action) {
+    switch (action) {
+    case DOM_GAME_PHASE_ACTION_NEW_UNIVERSE:
+        return "new";
+    case DOM_GAME_PHASE_ACTION_LOAD_UNIVERSE:
+        return "load";
+    case DOM_GAME_PHASE_ACTION_IMPORT_UNIVERSE:
+        return "import";
+    case DOM_GAME_PHASE_ACTION_EXPORT_UNIVERSE:
+        return "export";
+    default:
+        break;
+    }
+    return "unknown";
 }
 
 static bool write_refusal_tlv(const DomGamePaths &paths,
@@ -674,6 +704,7 @@ DomGameApp::DomGameApp()
       m_main_view_id(0),
       m_phase(),
       m_phase_action(DOM_GAME_PHASE_ACTION_NONE),
+      m_universe_pending_action(DOM_GAME_PHASE_ACTION_NONE),
       m_bootstrap_started(false),
       m_bootstrap_failed(false),
       m_session_start_attempted(false),
@@ -751,6 +782,14 @@ bool DomGameApp::init_from_cli(const dom_game_config &cfg) {
     m_replay_play_path = cfg.replay_play_path;
     m_save_path = cfg.save_path;
     m_load_path = cfg.load_path;
+    m_universe_import_path = cfg.universe_import_path;
+    m_universe_export_path = cfg.universe_export_path;
+    m_universe_pending_action = DOM_GAME_PHASE_ACTION_NONE;
+    if (!m_universe_import_path.empty()) {
+        m_universe_pending_action = DOM_GAME_PHASE_ACTION_IMPORT_UNIVERSE;
+    } else if (!m_universe_export_path.empty()) {
+        m_universe_pending_action = DOM_GAME_PHASE_ACTION_EXPORT_UNIVERSE;
+    }
     m_launcher_mode = (cfg.handshake_path[0] != '\0');
     m_dev_allow_ad_hoc_paths = (cfg.dev_allow_ad_hoc_paths != 0u);
     m_allow_missing_content = (cfg.dev_allow_missing_content != 0u);
@@ -840,6 +879,10 @@ bool DomGameApp::init_from_cli(const dom_game_config &cfg) {
     if (!m_phase.auto_start_join &&
         (m_server_mode != SERVER_OFF || m_mode == GAME_MODE_HEADLESS)) {
         m_phase.auto_start_host = true;
+    }
+    if (m_universe_pending_action != DOM_GAME_PHASE_ACTION_NONE) {
+        m_phase.auto_start_join = false;
+        m_phase.auto_start_host = false;
     }
     m_phase.server_addr = m_connect_addr;
     m_phase.server_port = m_net_port;
@@ -1067,13 +1110,16 @@ bool DomGameApp::init_io_paths(void) {
         std::string *path;
         DomGamePathBaseKind base_kind;
         const char *label;
+        bool allow_ad_hoc;
     };
 
     PathSpec specs[] = {
-        { &m_save_path, DOM_GAME_PATH_BASE_SAVE_DIR, "save" },
-        { &m_load_path, DOM_GAME_PATH_BASE_SAVE_DIR, "load" },
-        { &m_replay_record_path, DOM_GAME_PATH_BASE_REPLAY_DIR, "replay_record" },
-        { &m_replay_play_path, DOM_GAME_PATH_BASE_REPLAY_DIR, "replay_play" }
+        { &m_save_path, DOM_GAME_PATH_BASE_SAVE_DIR, "save", true },
+        { &m_load_path, DOM_GAME_PATH_BASE_SAVE_DIR, "load", true },
+        { &m_replay_record_path, DOM_GAME_PATH_BASE_REPLAY_DIR, "replay_record", true },
+        { &m_replay_play_path, DOM_GAME_PATH_BASE_REPLAY_DIR, "replay_play", true },
+        { &m_universe_import_path, DOM_GAME_PATH_BASE_RUN_ROOT, "universe_import", false },
+        { &m_universe_export_path, DOM_GAME_PATH_BASE_RUN_ROOT, "universe_export", false }
     };
     size_t i;
 
@@ -1083,7 +1129,7 @@ bool DomGameApp::init_io_paths(void) {
             continue;
         }
 
-        if (m_dev_allow_ad_hoc_paths) {
+        if (m_dev_allow_ad_hoc_paths && specs[i].allow_ad_hoc) {
             if (is_abs_path_input(path)) {
                 std::fprintf(stderr,
                              "DomGameApp: dev allow ad-hoc paths enabled; using absolute %s path '%s'\n",
@@ -1409,6 +1455,10 @@ void DomGameApp::handle_phase_enter(DomGamePhaseId prev_phase, DomGamePhaseId ne
         }
         dom_game_ui_build_main_menu(m_ui_ctx);
         update_menu_labels();
+        if (m_universe_pending_action != DOM_GAME_PHASE_ACTION_NONE) {
+            handle_universe_action(m_universe_pending_action);
+            m_universe_pending_action = DOM_GAME_PHASE_ACTION_NONE;
+        }
         return;
     }
     if (next_phase == DOM_GAME_PHASE_SESSION_START) {
@@ -1446,9 +1496,10 @@ void DomGameApp::handle_phase_enter(DomGamePhaseId prev_phase, DomGamePhaseId ne
 
 void DomGameApp::update_phase(u32 dt_ms) {
     DomGamePhaseInput in;
+    const DomGamePhaseAction action = m_phase_action;
     std::memset(&in, 0, sizeof(in));
     in.dt_ms = dt_ms;
-    in.action = m_phase_action;
+    in.action = action;
     in.runtime_ready = (m_runtime != 0);
     in.content_ready = m_session.is_initialized();
     in.net_ready = m_net.ready();
@@ -1468,6 +1519,9 @@ void DomGameApp::update_phase(u32 dt_ms) {
                     dom_game_phase_name(m_phase.prev_phase),
                     dom_game_phase_name(m_phase.phase));
         handle_phase_enter(m_phase.prev_phase, m_phase.phase);
+    }
+    if (m_phase.phase == DOM_GAME_PHASE_MAIN_MENU && is_universe_action(action)) {
+        handle_universe_action(action);
     }
     dom_game_phase_render(m_phase, m_ui_ctx, dt_ms);
 }
@@ -1505,6 +1559,28 @@ void DomGameApp::update_menu_labels() {
     dom_game_ui_set_menu_player(m_ui_ctx, m_menu_player_text);
     dom_game_ui_set_menu_server(m_ui_ctx, m_menu_server_text);
     dom_game_ui_set_menu_error(m_ui_ctx, m_menu_error_text);
+}
+
+void DomGameApp::handle_universe_action(DomGamePhaseAction action) {
+    if (!is_universe_action(action)) {
+        return;
+    }
+    const char *label = universe_action_label(action);
+    std::string detail = std::string("universe_") + label + "_not_implemented";
+
+    m_phase.has_error = true;
+    m_phase.last_error = detail;
+    update_menu_labels();
+
+    m_refusal_code = DOM_GAME_REFUSAL_UNIVERSE_OP_UNSUPPORTED;
+    m_refusal_detail = detail;
+    emit_refusal(m_fs_paths,
+                 m_run_id,
+                 m_fs_paths.instance_id.empty() ? m_instance.id : m_fs_paths.instance_id,
+                 m_refusal_code,
+                 m_refusal_detail);
+
+    std::fprintf(stderr, "DomGameApp: universe %s not implemented\n", label);
 }
 
 bool DomGameApp::init_views_and_ui(const dom_game_config &cfg) {
