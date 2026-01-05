@@ -6,6 +6,7 @@ RESPONSIBILITY: Calendar registry and deterministic fixed-ratio conversion helpe
 */
 #include "runtime/dom_calendar.h"
 
+#include <stddef.h>
 #include <vector>
 
 namespace {

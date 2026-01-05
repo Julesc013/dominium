@@ -32,7 +32,7 @@ struct domui_json_value {
     int bool_value;
     std::string string_value;
     std::vector<domui_json_value> array;
-    std::vector<std::pair<std::string, domui_json_value>> object;
+    std::vector<std::pair<std::string, domui_json_value> > object;
 
     domui_json_value()
         : type(DOMUI_JSON_NULL),
@@ -277,7 +277,7 @@ static int domui_json_parse_array(domui_json_parser* p, domui_json_value& out)
     return 0;
 }
 
-static int domui_json_key_exists(const std::vector<std::pair<std::string, domui_json_value>>& members,
+static int domui_json_key_exists(const std::vector<std::pair<std::string, domui_json_value> >& members,
                                  const std::string& key)
 {
     for (size_t i = 0u; i < members.size(); ++i) {

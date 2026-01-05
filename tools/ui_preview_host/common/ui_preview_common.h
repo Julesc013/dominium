@@ -11,16 +11,19 @@ RESPONSIBILITY: Shared helpers for UI preview hosts (doc loading, schema/state b
 #include <string>
 #include <vector>
 
-#include "dui/domui_event.h"
 #include "dui/dui_schema_tlv.h"
 
 #include "ui_caps.h"
 #include "ui_ir_diag.h"
 #include "ui_ir_doc.h"
+#include "ui_ir_fileio.h"
+#include "ui_ir_tlv.h"
 #include "ui_ir_props.h"
 #include "ui_ir_string.h"
 #include "ui_layout.h"
 #include "ui_validate.h"
+
+typedef struct domui_event domui_event;
 
 struct UiPreviewLog {
     UiPreviewLog();

@@ -1768,6 +1768,12 @@ done:
     return ok;
 }
 
+static int dsu_cli_cmd_apply_invocation(const char *manifest_path,
+                                        const char *installed_state_path,
+                                        const char *invocation_path,
+                                        const char *out_plan_path,
+                                        const dsu_cli_opts_t *opts);
+
 static int dsu_cli_cmd_apply_invocation_auto(const char *argv0,
                                              const char *invocation_path,
                                              const dsu_cli_opts_t *opts) {

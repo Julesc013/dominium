@@ -115,8 +115,8 @@ static bool build_identity_tlv(const char *instance_id,
                                const unsigned char *content_tlv,
                                u32 content_tlv_len,
                                std::vector<unsigned char> &out) {
-    core_tlv::TlvWriter w;
-    const u64 content_hash = core_tlv::tlv_fnv1a64(content_tlv, (size_t)content_tlv_len);
+    dom::core_tlv::TlvWriter w;
+    const u64 content_hash = dom::core_tlv::tlv_fnv1a64(content_tlv, (size_t)content_tlv_len);
     const std::string inst_id = instance_id ? instance_id : "";
     const unsigned char *manifest_ptr = manifest_hash_bytes;
     u32 manifest_size = manifest_hash_len;
@@ -125,7 +125,7 @@ static bool build_identity_tlv(const char *instance_id,
         manifest_size = 0u;
     }
 
-    w.add_u32(core_tlv::CORE_TLV_TAG_SCHEMA_VERSION, DMRP_IDENTITY_VERSION);
+    w.add_u32(dom::core_tlv::CORE_TLV_TAG_SCHEMA_VERSION, DMRP_IDENTITY_VERSION);
     w.add_string(DMRP_IDENTITY_TAG_INSTANCE_ID, inst_id);
     w.add_u64(DMRP_IDENTITY_TAG_RUN_ID, run_id);
     w.add_bytes(DMRP_IDENTITY_TAG_MANIFEST_HASH, manifest_ptr, manifest_size);
@@ -406,27 +406,27 @@ dom_game_replay_play *dom_game_replay_play_open(const char *path,
         offset += (size_t)identity_len;
 
         {
-            core_tlv::TlvReader ir(identity_ptr, (size_t)identity_len);
-            core_tlv::TlvRecord irec;
+            dom::core_tlv::TlvReader ir(identity_ptr, (size_t)identity_len);
+            dom::core_tlv::TlvRecord irec;
             u32 schema_version = 0u;
             while (ir.next(irec)) {
                 switch (irec.tag) {
-                case core_tlv::CORE_TLV_TAG_SCHEMA_VERSION:
-                    (void)core_tlv::tlv_read_u32_le(irec.payload, irec.len, schema_version);
+                case dom::core_tlv::CORE_TLV_TAG_SCHEMA_VERSION:
+                    (void)dom::core_tlv::tlv_read_u32_le(irec.payload, irec.len, schema_version);
                     break;
                 case DMRP_IDENTITY_TAG_INSTANCE_ID:
                     instance_id = (const char *)irec.payload;
                     instance_id_len = irec.len;
                     break;
                 case DMRP_IDENTITY_TAG_RUN_ID:
-                    (void)core_tlv::tlv_read_u64_le(irec.payload, irec.len, run_id_val);
+                    (void)dom::core_tlv::tlv_read_u64_le(irec.payload, irec.len, run_id_val);
                     break;
                 case DMRP_IDENTITY_TAG_MANIFEST_HASH:
                     manifest_hash = irec.payload;
                     manifest_hash_len = irec.len;
                     break;
                 case DMRP_IDENTITY_TAG_CONTENT_HASH:
-                    if (core_tlv::tlv_read_u64_le(irec.payload, irec.len, content_hash)) {
+                    if (dom::core_tlv::tlv_read_u64_le(irec.payload, irec.len, content_hash)) {
                         has_content_hash = 1;
                     }
                     break;

@@ -6,6 +6,7 @@ RESPONSIBILITY: Reference frame registry scaffolding (tree + transform stubs).
 */
 #include "runtime/dom_frames.h"
 
+#include <stddef.h>
 #include <vector>
 
 namespace {

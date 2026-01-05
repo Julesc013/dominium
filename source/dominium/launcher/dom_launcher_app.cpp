@@ -354,10 +354,20 @@ static std::string normalize_launch_behavior(const std::string& value) {
 }
 
 static bool minimize_window_best_effort(const dui_api_v1* api, dui_window* win) {
-    if (!api || !win || !api->get_native_window_handle) {
+    void* iface = 0;
+    const dui_native_api_v1* native = 0;
+
+    if (!api || !win || !api->query_interface) {
         return false;
     }
-    void* handle = api->get_native_window_handle(win);
+    if (api->query_interface(DUI_IID_NATIVE_API_V1, &iface) != 0 || !iface) {
+        return false;
+    }
+    native = (const dui_native_api_v1*)iface;
+    if (!native->get_native_window_handle) {
+        return false;
+    }
+    void* handle = native->get_native_window_handle(win);
 #if defined(_WIN32) || defined(_WIN64)
     if (handle) {
         return ShowWindow((HWND)handle, SW_MINIMIZE) != 0;

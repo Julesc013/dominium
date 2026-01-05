@@ -38,6 +38,7 @@ target_include_directories(dominium_game PUBLIC
 
 target_link_libraries(dominium_game
     dominium_common
+    core_tlv
     domino_core
 )
 

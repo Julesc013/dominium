@@ -154,12 +154,12 @@ static bool build_identity_tlv(const dom_game_runtime *rt,
                                const unsigned char *content_tlv,
                                size_t content_len,
                                std::vector<unsigned char> &out) {
-    core_tlv::TlvWriter w;
+    dom::core_tlv::TlvWriter w;
     const dom::InstanceInfo *inst = (const dom::InstanceInfo *)dom_game_runtime_instance(rt);
     u32 manifest_len = 0u;
     const unsigned char *manifest = dom_game_runtime_get_manifest_hash(rt, &manifest_len);
     const u64 run_id = dom_game_runtime_get_run_id(rt);
-    const u64 content_hash = core_tlv::tlv_fnv1a64(content_tlv, content_len);
+    const u64 content_hash = dom::core_tlv::tlv_fnv1a64(content_tlv, content_len);
     const std::string inst_id = inst ? inst->id : std::string();
     const unsigned char *manifest_ptr = manifest;
     u32 manifest_size = manifest_len;
@@ -168,7 +168,7 @@ static bool build_identity_tlv(const dom_game_runtime *rt,
         manifest_size = 0u;
     }
 
-    w.add_u32(core_tlv::CORE_TLV_TAG_SCHEMA_VERSION, DMSG_IDENTITY_VERSION);
+    w.add_u32(dom::core_tlv::CORE_TLV_TAG_SCHEMA_VERSION, DMSG_IDENTITY_VERSION);
     w.add_string(DMSG_IDENTITY_TAG_INSTANCE_ID, inst_id);
     w.add_u64(DMSG_IDENTITY_TAG_RUN_ID, run_id);
     w.add_bytes(DMSG_IDENTITY_TAG_MANIFEST_HASH, manifest_ptr, manifest_size);
@@ -260,8 +260,8 @@ static int parse_dmsg(const unsigned char *data, size_t len, dom_game_save_desc 
             core_len = chunk_size;
             core_version = chunk_version;
         } else if (std::memcmp(tag, "IDEN", 4u) == 0) {
-            core_tlv::TlvReader ir(data + offset, (size_t)chunk_size);
-            core_tlv::TlvRecord irec;
+            dom::core_tlv::TlvReader ir(data + offset, (size_t)chunk_size);
+            dom::core_tlv::TlvRecord irec;
             u32 schema_version = 0u;
             if (chunk_version > DMSG_IDENTITY_VERSION) {
                 return DOM_GAME_SAVE_ERR_MIGRATION;
@@ -271,22 +271,22 @@ static int parse_dmsg(const unsigned char *data, size_t len, dom_game_save_desc 
             }
             while (ir.next(irec)) {
                 switch (irec.tag) {
-                case core_tlv::CORE_TLV_TAG_SCHEMA_VERSION:
-                    (void)core_tlv::tlv_read_u32_le(irec.payload, irec.len, schema_version);
+                case dom::core_tlv::CORE_TLV_TAG_SCHEMA_VERSION:
+                    (void)dom::core_tlv::tlv_read_u32_le(irec.payload, irec.len, schema_version);
                     break;
                 case DMSG_IDENTITY_TAG_INSTANCE_ID:
                     instance_id = (const char *)irec.payload;
                     instance_id_len = irec.len;
                     break;
                 case DMSG_IDENTITY_TAG_RUN_ID:
-                    (void)core_tlv::tlv_read_u64_le(irec.payload, irec.len, run_id_val);
+                    (void)dom::core_tlv::tlv_read_u64_le(irec.payload, irec.len, run_id_val);
                     break;
                 case DMSG_IDENTITY_TAG_MANIFEST_HASH:
                     manifest_hash = irec.payload;
                     manifest_hash_len = irec.len;
                     break;
                 case DMSG_IDENTITY_TAG_CONTENT_HASH:
-                    if (core_tlv::tlv_read_u64_le(irec.payload, irec.len, content_hash)) {
+                    if (dom::core_tlv::tlv_read_u64_le(irec.payload, irec.len, content_hash)) {
                         has_content_hash = 1;
                     }
                     break;
