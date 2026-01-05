@@ -49,3 +49,7 @@ and the setup CLI call into this layer instead of duplicating logic.
   optional `--dir=<path>`, and `--quiet`.
 - Uses the same API to drive installs; progress prints simple counters unless
   `--quiet` is set.
+
+## Related specs
+- `docs/LAUNCHER_SETUP_OVERVIEW.md`
+- `docs/SPEC_FS_CONTRACT.md`
