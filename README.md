@@ -19,7 +19,7 @@ Problems it is designed to solve:
 - Long-lived content and save formats with explicit versioning rules.
 
 Non-goals (by design constraints):
-- Not a floating-point or timing-driven simulation core.
+- Not a floating-point or wall-clock-driven simulation core.
 - Not a general-purpose engine that mixes user interface or rendering with
   authoritative state.
 - Not a build that downloads dependencies at configure or build time.
@@ -54,8 +54,46 @@ Major subsystems and roles:
   of truth.
 - **Dominium products**: game runtime, launcher, setup/packaging, and tools
   built on the public engine contracts in `include/`.
-- **Runtime repo layout**: `DOMINIUM_HOME` hosts `repo/`, `instances/`, and
-  `temp/` as the canonical on-disk structure.
+- **Runtime filesystem roots**: launcher-defined logical roots (read-only
+  `DOMINIUM_HOME`, per-run writable `DOMINIUM_RUN_ROOT`); the game does not
+  infer install layouts.
+
+### Runtime kernel (game layer)
+Domino is the deterministic simulation engine (C90/C89, fixed-point). Dominium
+is the product layer (game, launcher, setup, tools) built around it. The
+Dominium game contains a runtime kernel that orchestrates simulation ticks,
+ingests commands, computes determinism hashes, binds saves/replays, and
+validates the launcher handshake; GUI/TUI/headless frontends never touch engine
+state directly, and rendering/UI remain derived views.
+
+**Deterministic time model (tick-first):** authoritative time is `tick_index`
+(u64) and `ups` (ticks per second, default 60). Wall-clock seconds/days are
+derived for presentation; floating-point `dt` may exist in UI/runtime glue but
+never drives simulation.
+
+**Units and scale:** canonical length unit is meters; positions are stored as
+fixed-point Q16.16 meters. One tile/block equals 1 meter and one chunk equals
+16 meters by definition; larger groupings (segment, page, surface) are a
+conceptual hierarchy. Rendering and cache grids are non-authoritative.
+
+**Instance model and identity binding:** the instance is the top-level unit of
+reproducibility (isolated, hashable, reproducible). World state, saves, replays,
+and logs are instance-scoped; there is no mutable global universe directory.
+Saves and replays bind to instance identity, content/pack graph + hashes, and
+sim-affecting flags; mismatches refuse to run by default to support archival
+verification (`docs/SPEC_IDENTITY.md`, `docs/SPEC_GAME_PRODUCT.md`).
+
+**Launcher/setup control plane:** Setup2 (the current setup core) is the
+kernel-centric installer and deployment engine; the launcher is the long-lived
+control plane. The game does not install, repair, migrate, or guess paths, and
+it must not scan or infer install layouts. It accepts instance identity
+(`instance_id`), content hashes, and flags from the launcher handshake and
+refuses to run on mismatch
+(`docs/SPEC_LAUNCHER.md`, `docs/SPEC_SETUP_CORE.md`,
+`docs/LAUNCHER_SETUP_OVERVIEW.md`). `launcher_handshake.tlv` must not contain
+absolute paths; filesystem access is resolved through launcher-defined logical
+roots (`DOMINIUM_HOME` read-only, `DOMINIUM_RUN_ROOT` per-run writable) with
+relative, declarative paths only.
 
 Design philosophy highlights:
 - Determinism first: fixed-point, canonical order, replayable state.
@@ -117,7 +155,7 @@ across platforms and over long time horizons.
 - `source/` - implementation code (`domino`, `dominium`, `tests`)
 - `tests/` - integration tests and fixtures
 - `data/` - in-tree content sources
-- `repo/` - runtime repo layout used by `DOMINIUM_HOME`
+- `repo/` - runtime repo content referenced via `DOMINIUM_HOME` (read-only)
 - `tools/` - build-time and authoring tools
 - `scripts/` - build and packaging helpers
 - `cmake/` - CMake modules
@@ -163,6 +201,9 @@ Builds are CMake-based (minimum 3.16) and do not fetch network dependencies.
 Use the presets in `CMakePresets.json` or follow `docs/BUILDING.md`. Platform
 setup and packaging workflows are documented in `docs/SETUP_WINDOWS.md`,
 `docs/SETUP_LINUX.md`, `docs/SETUP_MACOS.md`, and `docs/SETUP_RETRO.md`.
+Runtime launch is normally mediated by the launcher control plane; standalone
+execution is supported only in explicit dev-mode flows (`docs/SPEC_GAME_PRODUCT.md`,
+`docs/SPEC_LAUNCHER.md`).
 
 Dist output: final link artifacts are routed into the deterministic `dist/`
 tree described in `docs/BUILD_DIST.md` and `docs/build_output.md`.
