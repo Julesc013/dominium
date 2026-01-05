@@ -12,6 +12,12 @@ dgfx IR renderer and the dui UI system.
 - UI actions are translated into high-level commands or phase transitions.
 - Runtime queries (read-only) may be used to display status.
 
+## 1.1 Non-blocking execution
+- The UI/render thread MUST NOT block on IO, decompression, or content loading.
+- Progress indicators are derived and MUST NOT gate simulation.
+- Missing data degrades fidelity rather than stalling rendering.
+- See `docs/SPEC_NO_MODAL_LOADING.md` and `docs/SPEC_FIDELITY_DEGRADATION.md`.
+
 ## 2. Phase-driven screens
 The UI is phase-driven (see `docs/SPEC_PLAY_FLOW.md`).
 
@@ -31,13 +37,14 @@ The UI is phase-driven (see `docs/SPEC_PLAY_FLOW.md`).
 - No direct sim mutation; only triggers net/session initialization.
 
 ### PHASE_SESSION_LOADING
-- Loading UI with readiness flags:
+- Non-blocking session transition overlay with readiness flags:
   - content loaded (yes/no)
   - net session ready (yes/no)
   - world init progress (stub % OK)
-- Optional transparent loading window:
+- Progress is derived; no blocking waits on IO or content loads.
+- Optional transparent overlay:
   - enabled by `--ui.transparent-loading=1` when backend supports it.
-  - fallback to opaque loading panel if unsupported.
+  - fallback to opaque overlay if unsupported.
 
 ### PHASE_IN_SESSION
 - Minimal HUD (instance id, seed, status).
