@@ -696,6 +696,24 @@ int dom_game_cli_parse(int argc, char **argv, dom_game_config *out_cfg, dom_game
             }
             continue;
         }
+        if (std::strncmp(arg, "--import-universe=", 18) == 0) {
+            if (!copy_cstr_bounded(out_cfg->universe_import_path,
+                                   sizeof(out_cfg->universe_import_path),
+                                   arg + 18)) {
+                set_error(out_result, "Import universe path too long.");
+                return -1;
+            }
+            continue;
+        }
+        if (std::strncmp(arg, "--export-universe=", 18) == 0) {
+            if (!copy_cstr_bounded(out_cfg->universe_export_path,
+                                   sizeof(out_cfg->universe_export_path),
+                                   arg + 18)) {
+                set_error(out_result, "Export universe path too long.");
+                return -1;
+            }
+            continue;
+        }
 
         {
             char key[DOM_GAME_BACKEND_MAX];
@@ -749,6 +767,10 @@ int dom_game_cli_parse(int argc, char **argv, dom_game_config *out_cfg, dom_game
         set_error(out_result, "Cannot use --record-replay and --play-replay together.");
         return -1;
     }
+    if (out_cfg->universe_import_path[0] && out_cfg->universe_export_path[0]) {
+        set_error(out_result, "Cannot use --import-universe and --export-universe together.");
+        return -1;
+    }
 
     if (out_cfg->server_mode == DOM_GAME_SERVER_DEDICATED) {
         out_cfg->mode = DOM_GAME_MODE_HEADLESS;
@@ -772,6 +794,7 @@ void dom_game_cli_print_help(FILE *out) {
     std::fprintf(out, "  --lockstep-strict=0|1  --deterministic-test\n");
     std::fprintf(out, "  --record-replay=<path>  --play-replay=<path>  --replay-strict-content=0|1\n");
     std::fprintf(out, "  --save=<path>  --load=<path>\n");
+    std::fprintf(out, "  --import-universe=<relpath>  --export-universe=<relpath>\n");
     std::fprintf(out, "  --capabilities  --print-caps  --print-selection  --introspect-json\n");
     std::fprintf(out, "  --help  --version\n");
 }

@@ -74,6 +74,8 @@ typedef struct dom_game_config {
     char replay_play_path[DOM_GAME_PATH_MAX];
     char save_path[DOM_GAME_PATH_MAX];
     char load_path[DOM_GAME_PATH_MAX];
+    char universe_import_path[DOM_GAME_PATH_MAX];
+    char universe_export_path[DOM_GAME_PATH_MAX];
     char handshake_path[DOM_GAME_PATH_MAX];
 
     dom_profile profile;
