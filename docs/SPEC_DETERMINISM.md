@@ -41,6 +41,15 @@ Then:
   after each tick
 - byte-for-byte, platform-independent (within the supported invariants below)
 
+## Authoritative timebase (tick-first)
+Deterministic systems MUST use the canonical timebase:
+- `tick_index` (`u64`) and `ups` (`u32`, ticks per second)
+- wall-clock time is never authoritative and MUST NOT mutate sim state
+- calendar labels (days/months/years) are derived presentation only
+
+Any float/double `dt` may exist only in UI/runtime glue and MUST NOT drive
+authoritative simulation.
+
 ## Supported invariants (enforced in code)
 Determinism paths MUST assume and enforce:
 - C89/C90 compilation for core deterministic modules
@@ -311,6 +320,9 @@ Determinism paths MUST explicitly forbid:
 - unordered iteration in determinism paths (unordered containers, hash tables)
 - UI-driven state mutation (UI/tools emit intents only)
 - platform-dependent behavior (endianness, alignment, file order, time)
+- wall-clock time or timers as simulation inputs
+- calendar labels stored in canonical state
+- absolute paths in handshake/save/replay artifacts
 
 ## Source of truth vs derived cache
 **Source of truth (authoritative):**
@@ -333,6 +345,8 @@ Determinism paths MUST explicitly forbid:
 - `docs/SPEC_ACTIONS.md`
 - `docs/SPEC_LOD.md`
 - `docs/SPEC_VM.md`
+- `docs/SPEC_SPACETIME.md`
+- `docs/SPEC_MIGRATIONS.md`
 - `docs/SPEC_GRAPH_TOOLKIT.md`
 - `docs/SPEC_POSE_AND_ANCHORS.md`
 - `docs/SPEC_TRANS_STRUCT_DECOR.md`

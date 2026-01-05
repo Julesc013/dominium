@@ -32,3 +32,8 @@ This launcher spec aligns with the multi-mode architecture described in `docs/LA
 - GUI/TUI layering on top of the core APIs.
 - IPC between launcher and runtimes for richer presence/telemetry.
 - Mod/profile management stored alongside the launcher DB.
+
+## Related specs
+- `docs/SPEC_LAUNCH_HANDSHAKE_GAME.md`
+- `docs/SPEC_FS_CONTRACT.md`
+- `docs/SPEC_UNIVERSE_BUNDLE.md`

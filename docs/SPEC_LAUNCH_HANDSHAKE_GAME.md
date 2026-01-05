@@ -13,6 +13,10 @@ handshake is a versioned TLV container and MUST NOT contain absolute paths.
 ## 2. Optional fields
 - `run_root_ref` (PATH_REF): tagged logical ref (relative only). This is
   metadata and MUST NOT be treated as a physical root.
+- `universe_id` (string, logical)
+- `universe_bundle_hash` (`u64_le`, DTLV canonical content hash)
+- `universe_bundle_ref` (PATH_REF): tagged logical ref for an instance-scoped
+  bundle path (relative only).
 - Additional launcher-defined metadata fields (skip-unknown).
 
 ## 3. Path rules
@@ -28,3 +32,9 @@ handshake is a versioned TLV container and MUST NOT contain absolute paths.
   `DOMINIUM_HOME` per `docs/SPEC_FS_CONTRACT.md`.
 - Handshake path refs are validated as relative and used only as tagged,
   reproducible references; they do not introduce new absolute roots.
+- Universe selection and bundle identity are validated per
+  `docs/SPEC_UNIVERSE_BUNDLE.md`.
+
+## Related specs
+- `docs/SPEC_FS_CONTRACT.md`
+- `docs/SPEC_UNIVERSE_BUNDLE.md`

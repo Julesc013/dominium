@@ -56,3 +56,8 @@ These codes are stable and intended for telemetry/audit:
 - Reject any ".." segment.
 - Reject absolute inputs (including drive-qualified and UNC paths).
 - Reject non-canonical paths that would normalize to a different string.
+
+## Related specs
+- `docs/SPEC_LAUNCH_HANDSHAKE_GAME.md`
+- `docs/SPEC_UNIVERSE_BUNDLE.md`
+- `docs/SPEC_GAME_PRODUCT.md`
