@@ -29,6 +29,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "runtime/dom_game_runtime.h"
 #include "runtime/dom_derived_jobs.h"
 #include "runtime/dom_snapshot.h"
+#include "runtime/dom_fidelity.h"
 
 extern "C" {
 #include "view/d_view.h"
@@ -192,6 +193,7 @@ private:
     dom_game_replay_play *m_replay_play;
     void        *m_net_replay_user;
     u64          m_last_wall_us;
+    dom_fidelity_state m_fidelity;
     u32          m_derived_budget_ms;
     u32          m_derived_budget_io_bytes;
     u32          m_derived_budget_jobs;
