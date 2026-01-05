@@ -27,6 +27,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "runtime/dom_game_handshake.h"
 #include "runtime/dom_derived_jobs.h"
 #include "runtime/dom_snapshot.h"
+#include "runtime/dom_io_guard.h"
 #include "dom_game_tools_build.h"
 #include "dominium/version.h"
 #include "dominium/core_tlv.h"
@@ -242,6 +243,10 @@ static bool write_refusal_tlv(const DomGamePaths &paths,
     {
         const std::string path = join(paths.run_root, "refusal.tlv");
         const std::vector<unsigned char> &bytes = w.bytes();
+        if (!dom_io_guard_io_allowed()) {
+            dom_io_guard_note_violation("refusal_write", path.c_str());
+            return false;
+        }
         void *fh = dsys_file_open(path.c_str(), "wb");
         size_t wrote = 0u;
         if (!fh) {
@@ -775,6 +780,7 @@ DomGameApp::~DomGameApp() {
 
 bool DomGameApp::init_from_cli(const dom_game_config &cfg) {
     shutdown();
+    dom_io_guard_reset();
 
     m_cfg = cfg;
     m_mode = static_cast<GameMode>(cfg.mode);
@@ -1686,21 +1692,45 @@ void DomGameApp::ensure_demo_agents() {
 
 void DomGameApp::main_loop() {
     const unsigned sleep_ms = (m_tick_rate_hz > 0u) ? (1000u / m_tick_rate_hz) : 0u;
+    const u32 stall_threshold_ms = 100u;
 
     while (m_running) {
+        bool should_break = false;
+        const u64 frame_start_us = dsys_time_now_us();
+
+        dom_io_guard_enter_ui();
+
         if (d_system_pump_events() != 0) {
             m_running = false;
-            break;
+            should_break = true;
         }
-        tick_fixed();
-        if (!m_running) {
-            break;
+        if (!should_break) {
+            tick_fixed();
+            if (!m_running) {
+                should_break = true;
+            }
         }
-        if (m_mode != GAME_MODE_HEADLESS) {
+        if (!should_break && m_mode != GAME_MODE_HEADLESS) {
             render_frame();
         }
-        if (sleep_ms > 0u) {
+        if (!should_break && sleep_ms > 0u) {
             d_system_sleep_ms(sleep_ms);
+        }
+
+        dom_io_guard_exit_ui();
+
+        {
+            const u64 frame_end_us = dsys_time_now_us();
+            const u64 frame_ms = (frame_end_us >= frame_start_us)
+                                     ? ((frame_end_us - frame_start_us) / 1000ull)
+                                     : 0ull;
+            if (frame_ms > (u64)stall_threshold_ms) {
+                dom_io_guard_note_stall((u32)frame_ms, stall_threshold_ms);
+            }
+        }
+
+        if (should_break) {
+            break;
         }
     }
 }
@@ -1716,10 +1746,12 @@ void DomGameApp::tick_fixed() {
     }
 
     if (m_derived_queue) {
+        dom_io_guard_enter_derived();
         (void)dom_derived_pump(m_derived_queue,
                                m_derived_budget_ms,
                                (u64)m_derived_budget_io_bytes,
                                m_derived_budget_jobs);
+        dom_io_guard_exit_derived();
     }
 
     if (m_session.is_initialized() && m_runtime &&

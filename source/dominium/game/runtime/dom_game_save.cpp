@@ -24,6 +24,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "dom_instance.h"
 #include "dom_session.h"
 #include "dominium/core_tlv.h"
+#include "runtime/dom_io_guard.h"
 
 extern "C" {
 #include "domino/sys.h"
@@ -96,6 +97,10 @@ static bool write_file(const char *path, const unsigned char *data, size_t len) 
     if (!path || !path[0]) {
         return false;
     }
+    if (!dom_io_guard_io_allowed()) {
+        dom_io_guard_note_violation("save_write", path);
+        return false;
+    }
     fh = dsys_file_open(path, "wb");
     if (!fh) {
         return false;
@@ -112,6 +117,10 @@ static bool read_file_alloc(const char *path, unsigned char **out_data, size_t *
     unsigned char *buf;
 
     if (!path || !path[0] || !out_data || !out_len) {
+        return false;
+    }
+    if (!dom_io_guard_io_allowed()) {
+        dom_io_guard_note_violation("save_read", path);
         return false;
     }
 

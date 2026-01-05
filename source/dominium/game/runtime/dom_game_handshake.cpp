@@ -17,6 +17,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include <vector>
 
 #include "dominium/core_tlv.h"
+#include "runtime/dom_io_guard.h"
 
 namespace dom {
 
@@ -89,6 +90,10 @@ static bool parse_path_ref(const unsigned char *data, u32 len, DomGamePathRef &o
 }
 
 static bool read_file_bytes(const std::string &path, std::vector<unsigned char> &out) {
+    if (!dom_io_guard_io_allowed()) {
+        dom_io_guard_note_violation("handshake_read", path.c_str());
+        return false;
+    }
     std::ifstream in(path.c_str(), std::ios::binary);
     if (!in) {
         return false;
