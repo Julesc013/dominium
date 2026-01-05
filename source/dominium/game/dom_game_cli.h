@@ -64,6 +64,9 @@ typedef struct dom_game_config {
     u32                  auto_host;
     u32                  headless_ticks;
     u32                  headless_local;
+    u32                  derived_budget_ms;
+    u32                  derived_budget_io_bytes;
+    u32                  derived_budget_jobs;
 
     char dominium_home[DOM_GAME_PATH_MAX];
     char instance_id[DOM_GAME_ID_MAX];

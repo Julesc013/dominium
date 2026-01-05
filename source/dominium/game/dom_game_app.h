@@ -27,6 +27,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "dom_game_net.h"
 #include "runtime/dom_game_paths.h"
 #include "runtime/dom_game_runtime.h"
+#include "runtime/dom_derived_jobs.h"
 
 extern "C" {
 #include "view/d_view.h"
@@ -143,6 +144,7 @@ private:
     DomSession   m_session;
     DomGameNet   m_net;
     dom_game_runtime *m_runtime;
+    dom_derived_queue *m_derived_queue;
     dom_game_config m_cfg;
 
     GameMode     m_mode;
@@ -189,6 +191,9 @@ private:
     dom_game_replay_play *m_replay_play;
     void        *m_net_replay_user;
     u64          m_last_wall_us;
+    u32          m_derived_budget_ms;
+    u32          m_derived_budget_io_bytes;
+    u32          m_derived_budget_jobs;
     bool         m_show_debug_panel;
     bool         m_ui_transparent_loading;
     bool         m_debug_probe_set;

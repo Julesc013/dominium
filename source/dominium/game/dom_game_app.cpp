@@ -25,6 +25,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "runtime/dom_game_replay.h"
 #include "runtime/dom_game_content_id.h"
 #include "runtime/dom_game_handshake.h"
+#include "runtime/dom_derived_jobs.h"
 #include "dom_game_tools_build.h"
 #include "dominium/version.h"
 #include "dominium/core_tlv.h"
@@ -115,6 +116,9 @@ namespace {
 static const unsigned DEFAULT_TICK_RATE = 60u;
 static const unsigned HEADLESS_SPLASH_MIN_MS = 50u;
 static const unsigned HEADLESS_TIMEOUT_MS = 10000u;
+static const u32 DEFAULT_DERIVED_BUDGET_MS = 2u;
+static const u32 DEFAULT_DERIVED_BUDGET_IO_BYTES = 256u * 1024u;
+static const u32 DEFAULT_DERIVED_BUDGET_JOBS = 4u;
 
 static unsigned make_version_u32(unsigned major, unsigned minor, unsigned patch) {
     return major * 10000u + minor * 100u + patch;
@@ -724,7 +728,11 @@ DomGameApp::DomGameApp()
       m_replay_play(0),
       m_net_replay_user(0),
       m_runtime(0),
+      m_derived_queue(0),
       m_last_wall_us(0u),
+      m_derived_budget_ms(0u),
+      m_derived_budget_io_bytes(0u),
+      m_derived_budget_jobs(0u),
       m_show_debug_panel(false),
       m_ui_transparent_loading(false),
       m_debug_probe_set(false),
@@ -803,6 +811,9 @@ bool DomGameApp::init_from_cli(const dom_game_config &cfg) {
     m_headless_local = (cfg.headless_local != 0u);
     m_headless_reached_session = false;
     m_headless_abort_on_error = (m_mode == GAME_MODE_HEADLESS && m_headless_tick_limit > 0u);
+    m_derived_budget_ms = cfg.derived_budget_ms ? cfg.derived_budget_ms : DEFAULT_DERIVED_BUDGET_MS;
+    m_derived_budget_io_bytes = cfg.derived_budget_io_bytes ? cfg.derived_budget_io_bytes : DEFAULT_DERIVED_BUDGET_IO_BYTES;
+    m_derived_budget_jobs = cfg.derived_budget_jobs ? cfg.derived_budget_jobs : DEFAULT_DERIVED_BUDGET_JOBS;
     m_exit_code = 0;
     m_run_id = 0u;
     m_refusal_code = 0u;
@@ -853,6 +864,19 @@ bool DomGameApp::init_from_cli(const dom_game_config &cfg) {
         std::printf("DomGameApp: initializing system backend '%s'\n", sys_backend);
         if (!d_system_init(sys_backend)) {
             std::printf("DomGameApp: system init failed\n");
+            return false;
+        }
+    }
+
+    {
+        dom_derived_queue_desc qdesc;
+        std::memset(&qdesc, 0, sizeof(qdesc));
+        qdesc.struct_size = sizeof(qdesc);
+        qdesc.struct_version = DOM_DERIVED_QUEUE_DESC_VERSION;
+        qdesc.flags = (m_mode == GAME_MODE_HEADLESS) ? DOM_DERIVED_QUEUE_FLAG_ALLOW_IO : 0u;
+        m_derived_queue = dom_derived_queue_create(&qdesc);
+        if (!m_derived_queue) {
+            std::printf("DomGameApp: derived job queue init failed\n");
             return false;
         }
     }
@@ -917,6 +941,11 @@ void DomGameApp::shutdown() {
     }
 
     dui_shutdown_context(&m_ui_ctx);
+
+    if (m_derived_queue) {
+        dom_derived_queue_destroy(m_derived_queue);
+        m_derived_queue = 0;
+    }
 
     if (!m_save_path.empty() && m_runtime) {
         const int rc = dom_game_runtime_save(m_runtime, m_save_path.c_str());
@@ -1683,6 +1712,13 @@ void DomGameApp::tick_fixed() {
     if (m_mode != GAME_MODE_HEADLESS) {
         process_input_events();
         update_camera();
+    }
+
+    if (m_derived_queue) {
+        (void)dom_derived_pump(m_derived_queue,
+                               m_derived_budget_ms,
+                               (u64)m_derived_budget_io_bytes,
+                               m_derived_budget_jobs);
     }
 
     if (m_session.is_initialized() && m_runtime &&
