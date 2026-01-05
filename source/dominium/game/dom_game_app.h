@@ -28,6 +28,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "runtime/dom_game_paths.h"
 #include "runtime/dom_game_runtime.h"
 #include "runtime/dom_derived_jobs.h"
+#include "runtime/dom_snapshot.h"
 
 extern "C" {
 #include "view/d_view.h"
@@ -68,7 +69,7 @@ public:
     void request_exit();
     void request_phase_action(DomGamePhaseAction action);
     void spawn_demo_blueprint();
-    void update_demo_hud();
+    void update_demo_hud(const dom_game_snapshot *snapshot);
     void set_last_struct_id(d_struct_instance_id id) { m_last_struct_id = id; }
 
     void build_tool_select_extractor();
@@ -134,7 +135,7 @@ private:
     void render_frame();
     void process_input_events();
     void update_camera();
-    void update_debug_panel();
+    void update_debug_panel(const dom_game_snapshot *snapshot);
     void ensure_demo_agents();
 
 private:

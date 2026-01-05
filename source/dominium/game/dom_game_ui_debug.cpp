@@ -868,9 +868,9 @@ static void update_factory_inspectors(d_world *w) {
     }
 }
 
-void dom_game_ui_debug_update(dui_context &ctx, DomGameApp &app, d_world_hash hash) {
-    d_world *w = app.world();
+void dom_game_ui_debug_update(dui_context &ctx, DomGameApp &app, const dom_game_snapshot *snapshot) {
     const InstanceInfo &inst = app.session().instance();
+    const dom_runtime_summary_snapshot *rt = snapshot ? &snapshot->runtime : (const dom_runtime_summary_snapshot *)0;
     ensure_widgets(ctx, app);
 
     if (g_panel) {
@@ -880,12 +880,16 @@ void dom_game_ui_debug_update(dui_context &ctx, DomGameApp &app, d_world_hash ha
             g_panel->flags &= ~DUI_WIDGET_VISIBLE;
         }
     }
-    if (!app.debug_panel_visible() || !w) {
+    if (!app.debug_panel_visible()) {
         return;
     }
 
-    std::snprintf(g_buf_hash, sizeof(g_buf_hash),
-                  "World hash: 0x%016llx", (unsigned long long)hash);
+    if (rt) {
+        std::snprintf(g_buf_hash, sizeof(g_buf_hash),
+                      "World hash: 0x%016llx", (unsigned long long)rt->sim_hash);
+    } else {
+        std::snprintf(g_buf_hash, sizeof(g_buf_hash), "World hash: (n/a)");
+    }
     if (g_hash_label) g_hash_label->text = g_buf_hash;
 
     std::snprintf(g_buf_overlay_hydro, sizeof(g_buf_overlay_hydro),
@@ -904,23 +908,75 @@ void dom_game_ui_debug_update(dui_context &ctx, DomGameApp &app, d_world_hash ha
                   "Overlay Volumes: %s", app.overlay_volumes() ? "ON" : "OFF");
     if (g_overlay_volumes_button) g_overlay_volumes_button->text = g_buf_overlay_volumes;
 
-    if (w->chunk_count > 0u && w->chunks) {
-        std::snprintf(g_buf_chunk, sizeof(g_buf_chunk),
-                      "Chunks: %u (first: %d,%d)",
-                      (unsigned)w->chunk_count,
-                      (int)w->chunks[0].cx, (int)w->chunks[0].cy);
-    } else {
-        std::snprintf(g_buf_chunk, sizeof(g_buf_chunk),
-                      "Chunks: 0");
-    }
+    std::snprintf(g_buf_chunk, sizeof(g_buf_chunk),
+                  "Chunks: (snapshot n/a)");
     if (g_chunk_label) g_chunk_label->text = g_buf_chunk;
 
-    update_resource_sample(app, w);
-    update_probe_samples(app, w);
+    std::snprintf(g_buf_res, sizeof(g_buf_res),
+                  "Resources: (snapshot n/a)");
+    if (g_res_label) g_res_label->text = g_buf_res;
 
-    std::snprintf(g_buf_struct, sizeof(g_buf_struct),
-                  "Structures: %u", (unsigned)d_struct_count(w));
+    std::snprintf(g_buf_probe, sizeof(g_buf_probe),
+                  "Probe: (snapshot n/a)");
+    if (g_probe_label) g_probe_label->text = g_buf_probe;
+
+    std::snprintf(g_buf_env, sizeof(g_buf_env),
+                  "Environment: (snapshot n/a)");
+    if (g_env_label) g_env_label->text = g_buf_env;
+
+    std::snprintf(g_buf_hydro, sizeof(g_buf_hydro),
+                  "Hydrology: (snapshot n/a)");
+    if (g_hydro_label) g_hydro_label->text = g_buf_hydro;
+
+    std::snprintf(g_buf_volume, sizeof(g_buf_volume),
+                  "Volumes: (snapshot n/a)");
+    if (g_volume_label) g_volume_label->text = g_buf_volume;
+
+    std::snprintf(g_buf_litho, sizeof(g_buf_litho),
+                  "Lithosphere: (snapshot n/a)");
+    if (g_litho_label) g_litho_label->text = g_buf_litho;
+
+    if (rt) {
+        std::snprintf(g_buf_struct, sizeof(g_buf_struct),
+                      "Structures: %u", (unsigned)rt->construction_count);
+    } else {
+        std::snprintf(g_buf_struct, sizeof(g_buf_struct),
+                      "Structures: (n/a)");
+    }
     if (g_struct_label) g_struct_label->text = g_buf_struct;
+
+    std::snprintf(g_buf_machines, sizeof(g_buf_machines),
+                  "Machines: (snapshot n/a)");
+    if (g_machine_label) g_machine_label->text = g_buf_machines;
+
+    std::snprintf(g_buf_jobs, sizeof(g_buf_jobs),
+                  "Jobs: (snapshot n/a)");
+    if (g_jobs_label) g_jobs_label->text = g_buf_jobs;
+
+    if (rt) {
+        std::snprintf(g_buf_agents, sizeof(g_buf_agents),
+                      "Agents: %u", (unsigned)rt->entity_count);
+    } else {
+        std::snprintf(g_buf_agents, sizeof(g_buf_agents),
+                      "Agents: (n/a)");
+    }
+    if (g_agents_label) g_agents_label->text = g_buf_agents;
+
+    std::snprintf(g_buf_throughput, sizeof(g_buf_throughput),
+                  "Throughput: (snapshot n/a)");
+    if (g_throughput_label) g_throughput_label->text = g_buf_throughput;
+
+    std::snprintf(g_buf_org, sizeof(g_buf_org),
+                  "Org: (snapshot n/a)");
+    if (g_org_label) g_org_label->text = g_buf_org;
+
+    std::snprintf(g_buf_econ, sizeof(g_buf_econ),
+                  "Economy: (snapshot n/a)");
+    if (g_econ_label) g_econ_label->text = g_buf_econ;
+
+    std::snprintf(g_buf_research, sizeof(g_buf_research),
+                  "Research: (snapshot n/a)");
+    if (g_research_label) g_research_label->text = g_buf_research;
 
     std::snprintf(g_buf_content, sizeof(g_buf_content),
                   "Content: mat=%u item=%u struct=%u proc=%u",
@@ -967,8 +1023,6 @@ void dom_game_ui_debug_update(dui_context &ctx, DomGameApp &app, d_world_hash ha
     }
 
     update_pack_info(inst);
-    update_org_research_econ(app, w);
-    update_factory_inspectors(w);
 }
 
 } // namespace dom
