@@ -23,6 +23,7 @@ add_executable(dominium_game
     runtime/dom_universe_bundle.cpp
     runtime/dom_frames.cpp
     runtime/dom_orbit_lane.cpp
+    runtime/dom_calendar.cpp
     frontends/gui/dom_game_frontend_gui.cpp
     frontends/tui/dom_game_frontend_tui.cpp
     frontends/headless/dom_game_frontend_headless.cpp
