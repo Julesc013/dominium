@@ -26,6 +26,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "runtime/dom_game_content_id.h"
 #include "runtime/dom_game_handshake.h"
 #include "runtime/dom_derived_jobs.h"
+#include "runtime/dom_snapshot.h"
 #include "dom_game_tools_build.h"
 #include "dominium/version.h"
 #include "dominium/core_tlv.h"
@@ -1774,9 +1775,20 @@ void DomGameApp::tick_fixed() {
             }
         }
     }
-    update_demo_hud();
+    dom_game_snapshot *snapshot = (dom_game_snapshot *)0;
+    if (m_runtime) {
+        snapshot = dom_game_runtime_build_snapshot(m_runtime, DOM_GAME_SNAPSHOT_FLAG_RUNTIME);
+        if (snapshot) {
+            snapshot->view.camera_x = m_camera.cx;
+            snapshot->view.camera_y = m_camera.cy;
+            snapshot->view.camera_zoom = m_camera.zoom;
+            snapshot->view.selected_struct_id = (u32)m_last_struct_id;
+        }
+    }
+    update_demo_hud(snapshot);
     dom_game_ui_set_status(m_ui_ctx, m_build_tool.status_text());
-    update_debug_panel();
+    update_debug_panel(snapshot);
+    dom_game_runtime_release_snapshot(snapshot);
 }
 
 void DomGameApp::render_frame() {
@@ -1932,37 +1944,9 @@ void DomGameApp::spawn_demo_blueprint() {
     }
 }
 
-void DomGameApp::update_demo_hud() {
-    d_world *w = world();
-    const d_struct_instance *inst = (const d_struct_instance *)0;
-    d_struct_instance_id current = m_last_struct_id;
-    if (!w || m_phase.phase != DOM_GAME_PHASE_IN_SESSION) {
+void DomGameApp::update_demo_hud(const dom_game_snapshot *snapshot) {
+    if (!snapshot || m_phase.phase != DOM_GAME_PHASE_IN_SESSION) {
         return;
-    }
-
-    if (current != 0u) {
-        inst = d_struct_get(w, current);
-    }
-    if (!inst) {
-        u32 count = d_struct_count(w);
-        double best_dist2 = 0.0;
-        u32 i;
-        for (i = 0u; i < count; ++i) {
-            const d_struct_instance *cand = d_struct_get_by_index(w, i);
-            if (!cand) {
-                continue;
-            }
-            double dx = d_q16_16_to_double(cand->pos_x) - (double)m_camera.cx;
-            double dy = d_q16_16_to_double(cand->pos_y) - (double)m_camera.cy;
-            double dist2 = dx * dx + dy * dy;
-            if (!inst || dist2 < best_dist2) {
-                inst = cand;
-                best_dist2 = dist2;
-            }
-        }
-        if (inst) {
-            m_last_struct_id = inst->id;
-        }
     }
 
     std::snprintf(m_hud_instance_text, sizeof(m_hud_instance_text),
@@ -1971,48 +1955,10 @@ void DomGameApp::update_demo_hud() {
                   (unsigned)m_instance.world_seed);
 
     std::snprintf(m_hud_remaining_text, sizeof(m_hud_remaining_text),
-                  "Remaining: (n/a)");
+                  "Entities: %u", (unsigned)snapshot->runtime.entity_count);
+
     std::snprintf(m_hud_inventory_text, sizeof(m_hud_inventory_text),
-                  "Inventory: (empty)");
-
-    if (inst) {
-        dres_sample samples[4];
-        u16 sample_count = 4u;
-        q16_16 best = 0;
-        q32_32 sx = ((q32_32)inst->pos_x) << (Q32_32_FRAC_BITS - Q16_16_FRAC_BITS);
-        q32_32 sy = ((q32_32)inst->pos_y) << (Q32_32_FRAC_BITS - Q16_16_FRAC_BITS);
-        q32_32 sz = ((q32_32)inst->pos_z) << (Q32_32_FRAC_BITS - Q16_16_FRAC_BITS);
-
-        if (dres_sample_at(w, sx, sy, sz, 0u, samples, &sample_count) == 0 && sample_count > 0u) {
-            u16 i;
-            for (i = 0u; i < sample_count; ++i) {
-                if (i == 0u || samples[i].value[0] > best) {
-                    best = samples[i].value[0];
-                }
-            }
-            std::snprintf(m_hud_remaining_text, sizeof(m_hud_remaining_text),
-                          "Remaining v0: %d", d_q16_16_to_int(best));
-        }
-
-        {
-            d_item_id item_id = 0u;
-            u32 item_count = 0u;
-            const d_proto_item *item_proto = (const d_proto_item *)0;
-            if (d_struct_get_inventory_summary(w, inst->id, &item_id, &item_count) == 0 && item_id != 0u && item_count > 0u) {
-                item_proto = d_content_get_item(item_id);
-            }
-            if (item_proto && item_proto->name) {
-                std::snprintf(m_hud_inventory_text, sizeof(m_hud_inventory_text),
-                              "Inventory: %s x %u", item_proto->name, (unsigned)item_count);
-            } else if (item_id != 0u && item_count > 0u) {
-                std::snprintf(m_hud_inventory_text, sizeof(m_hud_inventory_text),
-                              "Inventory: #%u x %u", (unsigned)item_id, (unsigned)item_count);
-            } else {
-                std::snprintf(m_hud_inventory_text, sizeof(m_hud_inventory_text),
-                              "Inventory: (empty)");
-            }
-        }
-    }
+                  "Constructions: %u", (unsigned)snapshot->runtime.construction_count);
 
     {
         dui_widget *inst_label = dom_game_ui_get_instance_label();
@@ -2087,17 +2033,17 @@ void DomGameApp::build_tool_cancel() {
     dom_game_ui_set_status(m_ui_ctx, m_build_tool.status_text());
 }
 
-void DomGameApp::update_debug_panel() {
+void DomGameApp::update_debug_panel(const dom_game_snapshot *snapshot) {
     d_world_hash h = 0u;
-    if (!m_runtime) {
-        return;
-    }
+    u64 tick = 0ull;
 
-    h = (d_world_hash)dom_game_runtime_get_hash(m_runtime);
+    if (snapshot) {
+        h = (d_world_hash)snapshot->runtime.sim_hash;
+        tick = snapshot->runtime.tick_index;
+    }
 
     if (m_detmode == 3u) {
         if (m_last_hash != 0u && h != m_last_hash) {
-            const u64 tick = dom_game_runtime_get_tick(m_runtime);
             std::fprintf(stderr, "DET FAIL: world hash mismatch at tick %llu\n",
                          (unsigned long long)tick);
             std::abort();
@@ -2108,7 +2054,7 @@ void DomGameApp::update_debug_panel() {
     }
 
     if (m_show_debug_panel) {
-        dom_game_ui_debug_update(m_ui_ctx, *this, h);
+        dom_game_ui_debug_update(m_ui_ctx, *this, snapshot);
     }
 }
 
