@@ -1,0 +1,107 @@
+/*
+FILE: source/dominium/game/runtime/dom_universe_bundle.h
+MODULE: Dominium
+LAYER / SUBSYSTEM: Dominium impl / game/runtime/universe_bundle
+RESPONSIBILITY: Portable universe bundle container (read/write + identity validation).
+ALLOWED DEPENDENCIES: `include/domino/**`, `source/dominium/**`, C++98 STL.
+FORBIDDEN DEPENDENCIES: OS-specific headers; direct filesystem probing.
+*/
+#ifndef DOM_UNIVERSE_BUNDLE_H
+#define DOM_UNIVERSE_BUNDLE_H
+
+#include "domino/core/types.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#define DOM_U32_FOURCC(a,b,c,d) \
+    ((u32)(a) | ((u32)(b) << 8) | ((u32)(c) << 16) | ((u32)(d) << 24))
+
+enum {
+    DOM_UNIVERSE_BUNDLE_OK = 0,
+    DOM_UNIVERSE_BUNDLE_ERR = -1,
+    DOM_UNIVERSE_BUNDLE_INVALID_ARGUMENT = -2,
+    DOM_UNIVERSE_BUNDLE_INVALID_FORMAT = -3,
+    DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH = -4,
+    DOM_UNIVERSE_BUNDLE_MIGRATION_REQUIRED = -5,
+    DOM_UNIVERSE_BUNDLE_UNSUPPORTED_SCHEMA = -6,
+    DOM_UNIVERSE_BUNDLE_IO_ERROR = -7,
+    DOM_UNIVERSE_BUNDLE_NO_MEMORY = -8
+};
+
+enum {
+    DOM_UNIVERSE_CHUNK_TIME = DOM_U32_FOURCC('T','I','M','E'),
+    DOM_UNIVERSE_CHUNK_CELE = DOM_U32_FOURCC('C','E','L','E'),
+    DOM_UNIVERSE_CHUNK_VESL = DOM_U32_FOURCC('V','E','S','L'),
+    DOM_UNIVERSE_CHUNK_SURF = DOM_U32_FOURCC('S','U','R','F'),
+    DOM_UNIVERSE_CHUNK_LOCL = DOM_U32_FOURCC('L','O','C','L'),
+    DOM_UNIVERSE_CHUNK_RNG  = DOM_U32_FOURCC('R','N','G',' '),
+    DOM_UNIVERSE_CHUNK_FORN = DOM_U32_FOURCC('F','O','R','N')
+};
+
+enum {
+    DOM_UNIVERSE_TLV_UNIVERSE_ID      = 0x0001u,
+    DOM_UNIVERSE_TLV_INSTANCE_ID      = 0x0002u,
+    DOM_UNIVERSE_TLV_CONTENT_HASH     = 0x0003u,
+    DOM_UNIVERSE_TLV_SIM_FLAGS_HASH   = 0x0004u,
+    DOM_UNIVERSE_TLV_UPS              = 0x0005u,
+    DOM_UNIVERSE_TLV_TICK_INDEX       = 0x0006u
+};
+
+typedef struct dom_universe_bundle_identity {
+    const char *universe_id;
+    u32 universe_id_len;
+    const char *instance_id;
+    u32 instance_id_len;
+    u64 content_graph_hash;
+    u64 sim_flags_hash;
+    u32 ups;
+    u64 tick_index;
+} dom_universe_bundle_identity;
+
+typedef struct dom_universe_bundle dom_universe_bundle;
+
+/* Allocation and lifecycle. */
+dom_universe_bundle *dom_universe_bundle_create(void);
+void dom_universe_bundle_destroy(dom_universe_bundle *bundle);
+
+/* Identity getters/setters (string pointers are copied into the bundle). */
+int dom_universe_bundle_set_identity(dom_universe_bundle *bundle,
+                                     const dom_universe_bundle_identity *id);
+int dom_universe_bundle_get_identity(const dom_universe_bundle *bundle,
+                                     dom_universe_bundle_identity *out_id);
+
+/* Set/get raw payloads for required known chunks (excluding TIME/FORN). */
+int dom_universe_bundle_set_chunk(dom_universe_bundle *bundle,
+                                  u32 type_id,
+                                  u16 version,
+                                  const void *payload,
+                                  u32 payload_size);
+int dom_universe_bundle_get_chunk(const dom_universe_bundle *bundle,
+                                  u32 type_id,
+                                  const unsigned char **out_payload,
+                                  u32 *out_size,
+                                  u16 *out_version);
+
+/* Foreign chunk preservation. */
+int dom_universe_bundle_clear_foreign(dom_universe_bundle *bundle);
+int dom_universe_bundle_add_foreign(dom_universe_bundle *bundle,
+                                    u32 type_id,
+                                    u16 version,
+                                    u16 flags,
+                                    const void *payload,
+                                    u32 payload_size);
+
+/* Read/write helpers. */
+int dom_universe_bundle_read_file(const char *path,
+                                  const dom_universe_bundle_identity *expected,
+                                  dom_universe_bundle *out_bundle);
+int dom_universe_bundle_write_file(const char *path,
+                                   const dom_universe_bundle *bundle);
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
+
+#endif /* DOM_UNIVERSE_BUNDLE_H */
