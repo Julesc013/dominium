@@ -67,6 +67,103 @@ set_target_properties(domino_numeric_test PROPERTIES
 
 add_test(NAME domino_numeric_test COMMAND domino_numeric_test)
 
+add_executable(dom_universe_bundle_epoch_test
+    dom_universe_bundle_epoch_test.cpp
+    ../dominium/game/runtime/dom_universe_bundle.cpp
+)
+
+target_include_directories(dom_universe_bundle_epoch_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+)
+
+target_link_libraries(dom_universe_bundle_epoch_test
+    domino_core
+)
+
+set_target_properties(dom_universe_bundle_epoch_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_universe_bundle_epoch_test COMMAND dom_universe_bundle_epoch_test)
+
+add_executable(dom_no_modal_loading_test
+    dom_no_modal_loading_test.cpp
+    ../dominium/game/runtime/dom_derived_jobs.cpp
+    ../dominium/game/runtime/dom_io_guard.cpp
+)
+
+target_include_directories(dom_no_modal_loading_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+)
+
+target_link_libraries(dom_no_modal_loading_test
+    domino_core
+)
+
+set_target_properties(dom_no_modal_loading_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME test_no_modal_loading COMMAND dom_no_modal_loading_test)
+
+add_executable(dom_derived_order_independence_test
+    dom_derived_order_independence_test.cpp
+    ../dominium/game/runtime/dom_derived_jobs.cpp
+)
+
+target_include_directories(dom_derived_order_independence_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_derived_order_independence_test
+    domino_core
+)
+
+set_target_properties(dom_derived_order_independence_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME test_derived_order_independence COMMAND dom_derived_order_independence_test)
+
+add_executable(dom_snapshot_isolation_test
+    dom_snapshot_isolation_test.cpp
+    ../dominium/game/runtime/dom_game_runtime.cpp
+    ../dominium/game/runtime/dom_game_hash.c
+    ../dominium/game/runtime/dom_game_replay.cpp
+    ../dominium/game/runtime/dom_snapshot.cpp
+    ../dominium/game/runtime/dom_io_guard.cpp
+)
+
+target_include_directories(dom_snapshot_isolation_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_snapshot_isolation_test
+    dominium_common
+    domino_core
+)
+
+set_target_properties(dom_snapshot_isolation_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME test_snapshot_isolation COMMAND dom_snapshot_isolation_test)
+
 add_executable(domino_pkt_determinism_test
     pkt_determinism_test.c
 )
