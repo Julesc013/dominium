@@ -359,7 +359,8 @@ DomGameNet::DomGameNet()
       m_ready(true),
       m_dedicated(false),
       m_handshake_sent(true),
-      m_impl(0) {
+      m_impl(0),
+      m_hash_events() {
     std::memset(&m_session, 0, sizeof(m_session));
 }
 
@@ -504,6 +505,7 @@ void DomGameNet::shutdown() {
     m_ready = true;
     m_dedicated = false;
     m_handshake_sent = true;
+    m_hash_events.clear();
 }
 
 void DomGameNet::pump(d_world *world, d_sim_context *sim, const InstanceInfo &inst) {
@@ -817,6 +819,8 @@ void DomGameNet::handle_events(d_world *world, d_sim_context *sim, const Instanc
                     m_ready = false;
                 }
             }
+        } else if (ev.type == D_NET_EVENT_HASH) {
+            m_hash_events.push_back(ev.u.hash);
         }
 
         d_net_event_free(&ev);
@@ -884,6 +888,15 @@ bool DomGameNet::submit_cmd(d_net_cmd *in_out_cmd) {
     }
 
     return false;
+}
+
+bool DomGameNet::poll_hash(d_net_hash *out_hash) {
+    if (!out_hash || m_hash_events.empty()) {
+        return false;
+    }
+    *out_hash = m_hash_events.front();
+    m_hash_events.erase(m_hash_events.begin());
+    return true;
 }
 
 } // namespace dom
