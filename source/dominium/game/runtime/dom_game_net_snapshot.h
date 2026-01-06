@@ -32,6 +32,16 @@ enum {
 };
 
 enum {
+    DOM_GAME_NET_SNAPSHOT_OPTS_VERSION = 1u
+};
+
+enum {
+    DOM_NET_SNAPSHOT_ASSIST_NONE = 0u,
+    DOM_NET_SNAPSHOT_ASSIST_LOCAL_MESH = 1u << 0,
+    DOM_NET_SNAPSHOT_ASSIST_LOCAL_CACHE = 1u << 1
+};
+
+enum {
     DOM_NET_SNAPSHOT_CHUNK_TIME = DOM_U32_FOURCC('T','I','M','E'),
     DOM_NET_SNAPSHOT_CHUNK_IDEN = DOM_U32_FOURCC('I','D','E','N'),
     DOM_NET_SNAPSHOT_CHUNK_VESL = DOM_U32_FOURCC('V','E','S','L'),
@@ -70,7 +80,16 @@ typedef struct dom_game_net_snapshot_desc {
     u32 surface_chunk_count;
 } dom_game_net_snapshot_desc;
 
+typedef struct dom_game_net_snapshot_opts {
+    u32 struct_size;
+    u32 struct_version;
+    u32 detail_level;
+    u32 interest_radius_m;
+    u32 assist_flags;
+} dom_game_net_snapshot_opts;
+
 int dom_game_net_snapshot_build(const struct dom_game_runtime *rt,
+                                const dom_game_net_snapshot_opts *opts,
                                 std::vector<unsigned char> &out_bytes);
 int dom_game_net_snapshot_parse(const unsigned char *data,
                                 size_t len,
