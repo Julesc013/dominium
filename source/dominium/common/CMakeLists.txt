@@ -146,6 +146,7 @@ add_library(dominium_common STATIC
     dom_migration.cpp
     dom_caps.cpp
     dom_caps_split.cpp
+    dom_feature_epoch.cpp
 )
 
 target_include_directories(dominium_common

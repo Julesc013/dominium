@@ -11,6 +11,8 @@ RESPONSIBILITY: Portable universe bundle container (read/write + identity valida
 #include <string>
 #include <vector>
 
+#include "dom_feature_epoch.h"
+
 extern "C" {
 #include "domino/io/container.h"
 }
@@ -39,6 +41,7 @@ struct BundleState {
     u64 sim_flags_hash;
     u32 ups;
     u64 tick_index;
+    u32 feature_epoch;
     bool identity_set;
 
     BundleChunk cele;
@@ -55,6 +58,7 @@ struct BundleState {
           sim_flags_hash(0ull),
           ups(0u),
           tick_index(0ull),
+          feature_epoch(0u),
           identity_set(false),
           cele(),
           vesl(),
@@ -93,6 +97,7 @@ static void bundle_reset(BundleState *state) {
     state->sim_flags_hash = 0ull;
     state->ups = 0u;
     state->tick_index = 0ull;
+    state->feature_epoch = 0u;
     state->identity_set = false;
     state->cele = BundleChunk();
     state->vesl = BundleChunk();
@@ -132,6 +137,7 @@ static int parse_time_chunk(BundleState *state,
     bool have_flags = false;
     bool have_ups = false;
     bool have_tick = false;
+    bool have_epoch = false;
 
     if (!state) {
         return DOM_UNIVERSE_BUNDLE_INVALID_ARGUMENT;
@@ -181,6 +187,13 @@ static int parse_time_chunk(BundleState *state,
                 state->tick_index = dtlv_le_read_u64(pl);
                 have_tick = true;
                 break;
+            case DOM_UNIVERSE_TLV_FEATURE_EPOCH:
+                if (!pl || pl_len != 4u) {
+                    return DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
+                }
+                state->feature_epoch = dtlv_le_read_u32(pl);
+                have_epoch = true;
+                break;
             default:
                 break;
         }
@@ -193,8 +206,17 @@ static int parse_time_chunk(BundleState *state,
         !have_flags || !have_ups || !have_tick) {
         return DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
     }
+    if (!have_epoch) {
+        return DOM_UNIVERSE_BUNDLE_MIGRATION_REQUIRED;
+    }
     if (state->ups == 0u) {
         return DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
+    }
+    if (state->feature_epoch == 0u) {
+        return DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
+    }
+    if (!dom::dom_feature_epoch_supported(state->feature_epoch)) {
+        return DOM_UNIVERSE_BUNDLE_MIGRATION_REQUIRED;
     }
 
     state->identity_set = true;
@@ -274,6 +296,11 @@ static int identity_matches(const BundleState *state,
         expected->tick_index != state->tick_index) {
         return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
     }
+    if (expected->feature_epoch != 0u &&
+        dom::dom_feature_epoch_requires_migration(expected->feature_epoch,
+                                                  state->feature_epoch)) {
+        return DOM_UNIVERSE_BUNDLE_MIGRATION_REQUIRED;
+    }
     return DOM_UNIVERSE_BUNDLE_OK;
 }
 
@@ -340,6 +367,17 @@ static int write_time_chunk(dtlv_writer *writer, const BundleState *state) {
                                    DOM_UNIVERSE_TLV_TICK_INDEX,
                                    buf,
                                    8u);
+    }
+    if (rc != 0) {
+        return DOM_UNIVERSE_BUNDLE_IO_ERROR;
+    }
+    {
+        unsigned char buf[4];
+        dtlv_le_write_u32(buf, state->feature_epoch);
+        rc = dtlv_writer_write_tlv(writer,
+                                   DOM_UNIVERSE_TLV_FEATURE_EPOCH,
+                                   buf,
+                                   4u);
     }
     if (rc != 0) {
         return DOM_UNIVERSE_BUNDLE_IO_ERROR;
@@ -428,7 +466,8 @@ int dom_universe_bundle_set_identity(dom_universe_bundle *bundle,
     }
     if (!id->universe_id || !id->instance_id ||
         id->universe_id_len == 0u || id->instance_id_len == 0u ||
-        id->ups == 0u) {
+        id->ups == 0u || id->feature_epoch == 0u ||
+        !dom::dom_feature_epoch_supported(id->feature_epoch)) {
         return DOM_UNIVERSE_BUNDLE_INVALID_ARGUMENT;
     }
     state = &bundle->state;
@@ -438,6 +477,7 @@ int dom_universe_bundle_set_identity(dom_universe_bundle *bundle,
     state->sim_flags_hash = id->sim_flags_hash;
     state->ups = id->ups;
     state->tick_index = id->tick_index;
+    state->feature_epoch = id->feature_epoch;
     state->identity_set = true;
     return DOM_UNIVERSE_BUNDLE_OK;
 }
@@ -460,6 +500,7 @@ int dom_universe_bundle_get_identity(const dom_universe_bundle *bundle,
     out_id->sim_flags_hash = state->sim_flags_hash;
     out_id->ups = state->ups;
     out_id->tick_index = state->tick_index;
+    out_id->feature_epoch = state->feature_epoch;
     return DOM_UNIVERSE_BUNDLE_OK;
 }
 
