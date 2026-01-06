@@ -50,6 +50,12 @@ Deterministic systems MUST use the canonical timebase:
 Any float/double `dt` may exist only in UI/runtime glue and MUST NOT drive
 authoritative simulation.
 
+## Capability split (SIM_CAPS vs PERF_CAPS)
+- SIM_CAPS are part of the identity digest and launcher handshake. Changes
+  require migration or explicit refusal.
+- PERF_CAPS are negotiable and MAY change derived/presentation behavior only.
+- See `docs/SPEC_CAPABILITIES.md` for field definitions and hashing rules.
+
 ## Supported invariants (enforced in code)
 Determinism paths MUST assume and enforce:
 - C89/C90 compilation for core deterministic modules
@@ -169,6 +175,8 @@ Determinism paths MUST use fixed-point math only:
 - Q formats only (see `domino/core/fixed.h`)
 - conversions and rounding MUST follow the explicit rules/macros in
   `source/domino/core/det_invariants.h`
+- deterministic trig/sqrt/div must use `source/domino/core/dom_deterministic_math.h`
+  (wrapping `include/domino/core/fixed_math.h`)
 
 Forbidden:
 - float/double/long double arithmetic in deterministic paths
@@ -323,6 +331,7 @@ Determinism paths MUST explicitly forbid:
 - wall-clock time or timers as simulation inputs
 - calendar labels stored in canonical state
 - absolute paths in handshake/save/replay artifacts
+- raw libc sin/cos/sqrt/pow in authoritative code (use fixed-point wrappers)
 
 ## Source of truth vs derived cache
 **Source of truth (authoritative):**
@@ -347,11 +356,13 @@ Determinism paths MUST explicitly forbid:
 - `docs/SPEC_VM.md`
 - `docs/SPEC_SPACETIME.md`
 - `docs/SPEC_MIGRATIONS.md`
+- `docs/SPEC_FEATURE_EPOCH.md`
 - `docs/SPEC_GRAPH_TOOLKIT.md`
 - `docs/SPEC_POSE_AND_ANCHORS.md`
 - `docs/SPEC_TRANS_STRUCT_DECOR.md`
 - `docs/SPEC_DOMAINS_FRAMES_PROP.md`
 - `docs/SPEC_KNOWLEDGE_VIS_COMMS.md`
+- `docs/SPEC_TIERS.md`
 
 ## Engine core eligibility
 
