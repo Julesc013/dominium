@@ -164,6 +164,39 @@ set_target_properties(dom_snapshot_isolation_test PROPERTIES
 
 add_test(NAME test_snapshot_isolation COMMAND dom_snapshot_isolation_test)
 
+add_executable(dom_session_authority_tests
+    dom_session_authority_tests.cpp
+    ../dominium/game/runtime/dom_game_runtime.cpp
+    ../dominium/game/runtime/dom_game_hash.c
+    ../dominium/game/runtime/dom_game_replay.cpp
+    ../dominium/game/runtime/dom_game_net_driver.cpp
+    ../dominium/game/runtime/dom_game_net_snapshot.cpp
+    ../dominium/game/runtime/dom_game_content_id.cpp
+    ../dominium/game/runtime/dom_game_session.cpp
+    ../dominium/game/runtime/dom_io_guard.cpp
+    ../dominium/game/runtime/dom_qos.cpp
+)
+
+target_include_directories(dom_session_authority_tests PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_session_authority_tests
+    dominium_common
+    domino_core
+)
+
+set_target_properties(dom_session_authority_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME test_session_authority_smoke COMMAND dom_session_authority_tests)
+
 add_executable(domino_pkt_determinism_test
     pkt_determinism_test.c
 )
