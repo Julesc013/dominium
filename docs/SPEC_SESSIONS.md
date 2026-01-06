@@ -30,4 +30,5 @@ Session configuration MUST reject:
 
 ## Related specs
 - `docs/SPEC_DETERMINISM.md`
+- `docs/SPEC_QOS_ASSISTANCE.md`
 - `source/dominium/game/SPEC_RUNTIME.md`
