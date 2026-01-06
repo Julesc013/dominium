@@ -59,25 +59,6 @@ snapshot, or refusal-first path).
   - Replacement: derived IO read + parse; runtime waits on readiness flags and
     degrades fidelity until loaded.
 
-- source/dominium/game/dom_game_app.cpp:1673
-  - Blocking behavior: `d_system_sleep_ms` in `main_loop` blocks UI thread.
-  - Replacement: frame pacing via non-blocking yield or budgeted pump; allow
-    idle without sleep (or move sleep to headless only).
-
-- source/dominium/game/frontends/gui/dom_game_frontend_gui.cpp:24-47
-  - Blocking behavior: `d_system_sleep_ms(1u)` used when no ticks are stepped.
-  - Replacement: no blocking sleeps on GUI thread; use derived queue pump and
-    non-blocking event polling.
-
-- source/dominium/game/frontends/tui/dom_game_frontend_tui.cpp:24-47
-  - Blocking behavior: `d_system_sleep_ms(1u)` in TUI loop.
-  - Replacement: same as GUI; budgeted pump, non-blocking idle handling.
-
-- source/dominium/game/frontends/headless/dom_game_frontend_headless.cpp:24-47
-  - Blocking behavior: `d_system_sleep_ms(1u)` in headless loop.
-  - Replacement: non-blocking pacing; if sleep remains, isolate to headless
-    worker thread (not UI thread).
-
 - source/dominium/game/runtime/dom_game_handshake.cpp:55-93, 128-142
   - Blocking behavior: `std::ifstream` read of handshake TLV.
   - Replacement: derived IO read; parser must accept bytes from job result.
@@ -96,4 +77,3 @@ snapshot, or refusal-first path).
 - source/dominium/common/dom_instance.cpp:34-92, 150-219
   - Blocking behavior: instance TLV read/write via `dsys_file_*`.
   - Replacement: derived IO jobs; instance info becomes a readiness snapshot.
-

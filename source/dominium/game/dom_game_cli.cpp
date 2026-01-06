@@ -308,7 +308,6 @@ static int run_game_smoke_gui(const dom_profile& profile) {
             d_gfx_submit(buf);
             d_gfx_present();
 
-            d_system_sleep_ms(16);
             frame += 1u;
             tick += 1u;
         }
