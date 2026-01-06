@@ -91,6 +91,81 @@ set_target_properties(dom_universe_bundle_epoch_test PROPERTIES
 
 add_test(NAME dom_universe_bundle_epoch_test COMMAND dom_universe_bundle_epoch_test)
 
+add_executable(dom_caps_hash_test
+    dom_caps_hash_test.cpp
+)
+
+target_include_directories(dom_caps_hash_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+)
+
+target_link_libraries(dom_caps_hash_test
+    dominium_common
+    core_tlv
+    domino_core
+)
+
+set_target_properties(dom_caps_hash_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_caps_hash_test COMMAND dom_caps_hash_test)
+
+add_executable(dom_handshake_identity_test
+    dom_handshake_identity_test.cpp
+    ../dominium/game/runtime/dom_game_handshake.cpp
+    ../dominium/game/runtime/dom_io_guard.cpp
+)
+
+target_include_directories(dom_handshake_identity_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+)
+
+target_link_libraries(dom_handshake_identity_test
+    dominium_common
+    core_tlv
+    domino_core
+)
+
+set_target_properties(dom_handshake_identity_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_handshake_identity_test COMMAND dom_handshake_identity_test)
+
+add_executable(dom_replay_epoch_test
+    dom_replay_epoch_test.cpp
+    ../dominium/game/runtime/dom_game_replay.cpp
+    ../dominium/game/runtime/dom_io_guard.cpp
+)
+
+target_include_directories(dom_replay_epoch_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+)
+
+target_link_libraries(dom_replay_epoch_test
+    dominium_common
+    core_tlv
+    domino_core
+)
+
+set_target_properties(dom_replay_epoch_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_replay_epoch_test COMMAND dom_replay_epoch_test)
+
 add_executable(dom_no_modal_loading_test
     dom_no_modal_loading_test.cpp
     ../dominium/game/runtime/dom_derived_jobs.cpp
