@@ -53,7 +53,8 @@ typedef enum d_net_event_type_e {
     D_NET_EVENT_SNAPSHOT,
     D_NET_EVENT_TICK,
     D_NET_EVENT_HASH,
-    D_NET_EVENT_ERROR
+    D_NET_EVENT_ERROR,
+    D_NET_EVENT_QOS
 } d_net_event_type;
 
 typedef struct d_net_event_s {
@@ -67,6 +68,7 @@ typedef struct d_net_event_s {
         d_net_tick             tick;
         d_net_hash             hash;
         d_net_error            error;
+        d_net_qos              qos;
     } u;
 } d_net_event;
 
@@ -91,10 +93,10 @@ int d_net_send_cmd(d_peer_id peer, const d_net_cmd *cmd);
 int d_net_broadcast_cmd(const d_net_cmd *cmd);
 int d_net_send_hash(d_peer_id peer, const d_net_hash *h);
 int d_net_send_error(d_peer_id peer, const d_net_error *e);
+int d_net_send_qos(d_peer_id peer, const d_net_qos *q);
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif /* D_NET_TRANSPORT_H */
-

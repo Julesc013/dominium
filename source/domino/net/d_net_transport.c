@@ -68,6 +68,8 @@ void d_net_event_free(d_net_event *ev) {
     }
     if (ev->type == D_NET_EVENT_SNAPSHOT) {
         d_net_snapshot_free(&ev->u.snapshot);
+    } else if (ev->type == D_NET_EVENT_QOS) {
+        d_net_qos_free(&ev->u.qos);
     }
     memset(ev, 0, sizeof(*ev));
 }
@@ -164,6 +166,12 @@ int d_net_receive_packet(
         } else if (type == D_NET_MSG_ERROR) {
             ev.type = D_NET_EVENT_ERROR;
             (void)d_net_decode_error(data, size, &ev.u.error);
+        } else if (type == D_NET_MSG_QOS) {
+            ev.type = D_NET_EVENT_QOS;
+            if (d_net_decode_qos(data, size, &ev.u.qos) != 0) {
+                d_net_event_free(&ev);
+                return -1;
+            }
         } else {
             return 0;
         }
@@ -304,6 +312,10 @@ static int d_net_encode_error_adapter(const void *obj, void *buf, u32 buf_size, 
     return d_net_encode_error((const d_net_error *)obj, buf, buf_size, out_size);
 }
 
+static int d_net_encode_qos_adapter(const void *obj, void *buf, u32 buf_size, u32 *out_size) {
+    return d_net_encode_qos((const d_net_qos *)obj, buf, buf_size, out_size);
+}
+
 int d_net_send_handshake(d_peer_id peer, const d_net_handshake *hs) {
     return d_net_send_with_encoder(peer, d_net_encode_handshake_adapter, hs);
 }
@@ -334,4 +346,8 @@ int d_net_send_hash(d_peer_id peer, const d_net_hash *h) {
 
 int d_net_send_error(d_peer_id peer, const d_net_error *e) {
     return d_net_send_with_encoder(peer, d_net_encode_error_adapter, e);
+}
+
+int d_net_send_qos(d_peer_id peer, const d_net_qos *q) {
+    return d_net_send_with_encoder(peer, d_net_encode_qos_adapter, q);
 }

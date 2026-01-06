@@ -32,7 +32,8 @@ typedef enum d_net_msg_type_e {
     D_NET_MSG_TICK = 4,
     D_NET_MSG_CMD = 5,
     D_NET_MSG_HASH = 6,
-    D_NET_MSG_ERROR = 7
+    D_NET_MSG_ERROR = 7,
+    D_NET_MSG_QOS = 8
 } d_net_msg_type;
 
 typedef struct d_net_handshake_s {
@@ -70,6 +71,10 @@ typedef struct d_net_error_s {
     u32 code;
 } d_net_error;
 
+typedef struct d_net_qos_s {
+    d_tlv_blob data;     /* bytes; QoS TLV payload */
+} d_net_qos;
+
 /* Parse just the frame header and return a payload view. */
 int d_net_decode_frame(
     const void     *buf,
@@ -100,12 +105,15 @@ int d_net_decode_hash(const void *buf, u32 size, d_net_hash *out_h);
 int d_net_encode_error(const d_net_error *e, void *buf, u32 buf_size, u32 *out_size);
 int d_net_decode_error(const void *buf, u32 size, d_net_error *out_e);
 
+int d_net_encode_qos(const d_net_qos *q, void *buf, u32 buf_size, u32 *out_size);
+int d_net_decode_qos(const void *buf, u32 size, d_net_qos *out_q);
+
 /* Free heap-owned buffers returned by decode_snapshot. */
 void d_net_snapshot_free(d_net_snapshot *snap);
+void d_net_qos_free(d_net_qos *qos);
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif /* D_NET_PROTO_H */
-

@@ -56,12 +56,19 @@ public:
     /* Poll the next received hash event (lockstep). */
     bool poll_hash(d_net_hash *out_hash);
 
+    /* Poll the next received QoS event (non-authoritative). */
+    bool poll_qos(d_peer_id *out_peer, std::vector<unsigned char> &out_bytes);
+
 private:
     DomGameNet(const DomGameNet &);
     DomGameNet &operator=(const DomGameNet &);
 
 private:
     struct Conn;
+    struct QosEvent {
+        d_peer_id peer;
+        std::vector<unsigned char> bytes;
+    };
 
     bool init_host_common(u32 tick_rate, unsigned port, bool dedicated);
     void update_session_tick(d_world *world);
@@ -88,6 +95,7 @@ private:
     void         *m_impl;
 
     std::vector<d_net_hash> m_hash_events;
+    std::vector<QosEvent> m_qos_events;
 };
 
 } // namespace dom
