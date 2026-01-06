@@ -26,6 +26,7 @@ extern "C" {
 #include "runtime/dom_game_command.h"
 
 struct dom_game_runtime;
+struct dom_game_net_snapshot_desc;
 
 namespace dom {
 
@@ -62,6 +63,7 @@ public:
     /* Server-authoritative snapshot/delta plumbing (v0 stubs). */
     virtual int poll_snapshot(std::vector<unsigned char> &out_bytes);
     virtual int consume_snapshot(const unsigned char *data, size_t len);
+    virtual int get_last_snapshot(dom_game_net_snapshot_desc *out_desc);
 
     /* Lockstep hash exchange (v0). */
     virtual int submit_tick_hash(u64 tick, u64 hash);
