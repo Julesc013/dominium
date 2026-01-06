@@ -52,6 +52,9 @@ public:
     /* Submit a locally authored command; assigns source_peer and cmd id. */
     bool submit_cmd(d_net_cmd *in_out_cmd);
 
+    /* Poll the next received hash event (lockstep). */
+    bool poll_hash(d_net_hash *out_hash);
+
 private:
     DomGameNet(const DomGameNet &);
     DomGameNet &operator=(const DomGameNet &);
@@ -82,6 +85,8 @@ private:
 
     /* Networking state (opaque; implemented in .cpp). */
     void         *m_impl;
+
+    std::vector<d_net_hash> m_hash_events;
 };
 
 } // namespace dom
