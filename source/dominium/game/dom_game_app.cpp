@@ -1796,7 +1796,6 @@ void DomGameApp::ensure_demo_agents() {
 }
 
 void DomGameApp::main_loop() {
-    const unsigned sleep_ms = (m_tick_rate_hz > 0u) ? (1000u / m_tick_rate_hz) : 0u;
     const u32 stall_threshold_ms = 100u;
 
     while (m_running) {
@@ -1818,10 +1817,6 @@ void DomGameApp::main_loop() {
         if (!should_break && m_mode != GAME_MODE_HEADLESS) {
             render_frame();
         }
-        if (!should_break && sleep_ms > 0u) {
-            d_system_sleep_ms(sleep_ms);
-        }
-
         dom_io_guard_exit_ui();
 
         {

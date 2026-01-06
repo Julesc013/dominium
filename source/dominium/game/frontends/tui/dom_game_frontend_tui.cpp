@@ -46,10 +46,6 @@ extern "C" int dom_game_frontend_tui_run(dom_game_runtime *rt, u32 max_ticks) {
             dom_io_guard_exit_ui();
             break;
         }
-        if (stepped == 0u) {
-            d_system_sleep_ms(1u);
-        }
-
         dom_io_guard_exit_ui();
 
         {
