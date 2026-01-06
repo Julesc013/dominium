@@ -8,7 +8,7 @@ FORBIDDEN DEPENDENCIES: Dependency inversions that violate `docs/OVERVIEW_ARCHIT
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
 DETERMINISM: Determinism-sensitive (hash comparisons across save/load); see `docs/SPEC_DETERMINISM.md`.
-VERSIONING / ABI / DATA FORMAT NOTES: DMSG v2 container; see `source/dominium/game/SPEC_SAVE.md`.
+VERSIONING / ABI / DATA FORMAT NOTES: DMSG v3 container; see `source/dominium/game/SPEC_SAVE.md`.
 EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
 */
 #include "runtime/dom_game_save.h"
@@ -24,6 +24,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "dom_instance.h"
 #include "dom_session.h"
 #include "dominium/core_tlv.h"
+#include "dom_feature_epoch.h"
 #include "runtime/dom_io_guard.h"
 
 extern "C" {
@@ -34,7 +35,7 @@ extern "C" {
 namespace {
 
 enum {
-    DMSG_VERSION = 2u,
+    DMSG_VERSION = 3u,
     DMSG_ENDIAN = 0x0000FFFEu,
     DMSG_CORE_VERSION = 1u,
     DMSG_RNG_VERSION = 1u,
@@ -193,8 +194,10 @@ static int parse_dmsg(const unsigned char *data, size_t len, dom_game_save_desc 
     u32 ups;
     u64 tick_index;
     u64 seed;
+    u32 feature_epoch;
     u32 content_len;
     size_t offset;
+    size_t content_offset;
 
     const unsigned char *core_ptr = (const unsigned char *)0;
     u32 core_len = 0u;
@@ -235,9 +238,27 @@ static int parse_dmsg(const unsigned char *data, size_t len, dom_game_save_desc 
     ups = read_u32_le(data + 12u);
     tick_index = read_u64_le(data + 16u);
     seed = read_u64_le(data + 24u);
-    content_len = read_u32_le(data + 32u);
+    feature_epoch = dom::dom_feature_epoch_current();
 
-    offset = 36u;
+    if (version >= 3u) {
+        if (len < 40u) {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+        feature_epoch = read_u32_le(data + 32u);
+        if (feature_epoch == 0u) {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+        if (!dom::dom_feature_epoch_supported(feature_epoch)) {
+            return DOM_GAME_SAVE_ERR_MIGRATION;
+        }
+        content_len = read_u32_le(data + 36u);
+        content_offset = 40u;
+    } else {
+        content_len = read_u32_le(data + 32u);
+        content_offset = 36u;
+    }
+
+    offset = content_offset;
     if ((size_t)content_len > len - offset) {
         return DOM_GAME_SAVE_ERR_FORMAT;
     }
@@ -336,6 +357,7 @@ static int parse_dmsg(const unsigned char *data, size_t len, dom_game_save_desc 
     out_desc->ups = ups;
     out_desc->tick_index = tick_index;
     out_desc->seed = seed;
+    out_desc->feature_epoch = feature_epoch;
     out_desc->instance_id = instance_id;
     out_desc->instance_id_len = instance_id_len;
     out_desc->run_id = run_id_val;
@@ -343,7 +365,7 @@ static int parse_dmsg(const unsigned char *data, size_t len, dom_game_save_desc 
     out_desc->manifest_hash_len = manifest_hash_len;
     out_desc->content_hash64 = content_hash;
     out_desc->has_identity = (u32)has_identity;
-    out_desc->content_tlv = (content_len > 0u) ? (data + 36u) : (const unsigned char *)0;
+    out_desc->content_tlv = (content_len > 0u) ? (data + content_offset) : (const unsigned char *)0;
     out_desc->content_tlv_len = content_len;
     out_desc->core_blob = core_ptr;
     out_desc->core_blob_len = core_len;
@@ -408,6 +430,7 @@ static bool build_save_bytes(const dom_game_runtime *rt, std::vector<unsigned ch
     append_u32_le(out, ups);
     append_u64_le(out, tick);
     append_u64_le(out, seed);
+    append_u32_le(out, dom::dom_feature_epoch_current());
     append_u32_le(out, (u32)content_tlv.size());
     append_bytes(out, content_tlv.empty() ? (const unsigned char *)0 : &content_tlv[0], content_tlv.size());
 

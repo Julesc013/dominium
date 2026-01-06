@@ -8,7 +8,7 @@ FORBIDDEN DEPENDENCIES: Dependency inversions that violate `docs/OVERVIEW_ARCHIT
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
 DETERMINISM: Determinism-sensitive (recorded command payloads must be stable).
-VERSIONING / ABI / DATA FORMAT NOTES: DMRP v2 container; see `source/dominium/game/SPEC_REPLAY.md`.
+VERSIONING / ABI / DATA FORMAT NOTES: DMRP v3 container; see `source/dominium/game/SPEC_REPLAY.md`.
 EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
 */
 #include "runtime/dom_game_replay.h"
@@ -17,6 +17,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include <cstring>
 
 #include "dominium/core_tlv.h"
+#include "dom_feature_epoch.h"
 #include "runtime/dom_io_guard.h"
 
 extern "C" {
@@ -27,7 +28,7 @@ extern "C" {
 namespace {
 
 enum {
-    DMRP_VERSION = 2u,
+    DMRP_VERSION = 3u,
     DMRP_ENDIAN = 0x0000FFFEu,
     DMRP_IDENTITY_VERSION = 1u
 };
@@ -161,6 +162,7 @@ struct dom_game_replay_play {
     int has_last_tick;
     u32 ups;
     u64 seed;
+    u32 feature_epoch;
     const unsigned char *content_tlv;
     u32 content_tlv_len;
 };
@@ -231,6 +233,11 @@ dom_game_replay_record *dom_game_replay_record_open(const char *path,
     }
     write_u64_le(buf64, seed);
     if (!write_all(fh, buf64, 8u)) {
+        dsys_file_close(fh);
+        return (dom_game_replay_record *)0;
+    }
+    write_u32_le(buf32, dom::dom_feature_epoch_current());
+    if (!write_all(fh, buf32, 4u)) {
         dsys_file_close(fh);
         return (dom_game_replay_record *)0;
     }
@@ -317,6 +324,7 @@ dom_game_replay_play *dom_game_replay_play_open(const char *path,
     u32 endian;
     u32 ups;
     u64 seed;
+    u32 feature_epoch;
     u32 content_len;
     const unsigned char *content_ptr;
     const char *instance_id = (const char *)0;
@@ -380,9 +388,33 @@ dom_game_replay_play *dom_game_replay_play_open(const char *path,
     }
     ups = read_u32_le(&data[12]);
     seed = read_u64_le(&data[16]);
-    content_len = read_u32_le(&data[24]);
-
-    offset = 28u;
+    feature_epoch = dom::dom_feature_epoch_current();
+    if (version >= 3u) {
+        if (data_len < 32u) {
+            if (out_desc) {
+                out_desc->error_code = DOM_GAME_REPLAY_ERR_FORMAT;
+            }
+            return (dom_game_replay_play *)0;
+        }
+        feature_epoch = read_u32_le(&data[24]);
+        if (feature_epoch == 0u) {
+            if (out_desc) {
+                out_desc->error_code = DOM_GAME_REPLAY_ERR_FORMAT;
+            }
+            return (dom_game_replay_play *)0;
+        }
+        if (!dom::dom_feature_epoch_supported(feature_epoch)) {
+            if (out_desc) {
+                out_desc->error_code = DOM_GAME_REPLAY_ERR_MIGRATION;
+            }
+            return (dom_game_replay_play *)0;
+        }
+        content_len = read_u32_le(&data[28]);
+        offset = 32u;
+    } else {
+        content_len = read_u32_le(&data[24]);
+        offset = 28u;
+    }
     if ((size_t)content_len > data_len - offset) {
         if (out_desc) {
             out_desc->error_code = DOM_GAME_REPLAY_ERR_FORMAT;
@@ -525,6 +557,7 @@ dom_game_replay_play *dom_game_replay_play_open(const char *path,
     play->has_last_tick = has_last_tick;
     play->ups = ups;
     play->seed = seed;
+    play->feature_epoch = feature_epoch;
     play->content_tlv = content_ptr;
     play->content_tlv_len = content_len;
 
@@ -532,6 +565,7 @@ dom_game_replay_play *dom_game_replay_play_open(const char *path,
         out_desc->container_version = version;
         out_desc->ups = ups;
         out_desc->seed = seed;
+        out_desc->feature_epoch = feature_epoch;
         out_desc->instance_id = instance_id;
         out_desc->instance_id_len = instance_id_len;
         out_desc->run_id = run_id_val;
