@@ -38,6 +38,8 @@ add_library(domino_core STATIC
     core/dg_quant.c
     core/fixed.c
     core/fixed_debug.c
+    core/fixed_math.c
+    core/dom_deterministic_math.c
     core/rng.c
     core/d_subsystem.c
     core/d_model.c
@@ -237,6 +239,7 @@ add_library(domino_core STATIC
 # Header-only scaffolding for the deterministic refactor (no compiled logic yet).
 target_sources(domino_core PRIVATE
     core/det_invariants.h
+    core/dom_deterministic_math.h
     core/dg_order_key.h
     core/dg_det_hash.h
     core/dg_pose.h
