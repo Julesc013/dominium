@@ -26,6 +26,11 @@ session lifetime.
 In SERVER_AUTH mode, clients consume snapshots/deltas and must not advance
 authoritative simulation ticks; any presentation state remains derived-only.
 
+## QoS and assistance (non-sim)
+QoS negotiation is defined in `docs/SPEC_QOS_ASSISTANCE.md`. QoS MAY adjust
+snapshot cadence, detail, interest radius, and diagnostics rate only. QoS MUST
+NOT affect tick progression, command ordering, or authoritative state.
+
 ## Determinism hooks
 Authoritative simulation uses tick-first time and fixed-point space; see
 `docs/SPEC_DETERMINISM.md`.
