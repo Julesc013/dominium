@@ -92,6 +92,7 @@ static int parse_count_block(const unsigned char *data, u32 len, u32 tag, u32 *o
 } // namespace
 
 int dom_game_net_snapshot_build(const dom_game_runtime *rt,
+                                const dom_game_net_snapshot_opts *opts,
                                 std::vector<unsigned char> &out_bytes) {
     dtlv_writer writer;
     unsigned char buf[8];
@@ -102,9 +103,30 @@ int dom_game_net_snapshot_build(const dom_game_runtime *rt,
     const u32 vessel_count = 0u;
     const u32 surface_count = 0u;
     const u32 cap = 4096u;
+    u32 detail_level = 100u;
+    u32 interest_radius_m = 1024u;
+    u32 assist_flags = 0u;
+    int include_vesl = 1;
+    int include_surf = 1;
 
     if (!rt || ups == 0u) {
         return DOM_NET_SNAPSHOT_ERR;
+    }
+    if (opts &&
+        opts->struct_size >= sizeof(*opts) &&
+        opts->struct_version == DOM_GAME_NET_SNAPSHOT_OPTS_VERSION) {
+        detail_level = opts->detail_level;
+        interest_radius_m = opts->interest_radius_m;
+        assist_flags = opts->assist_flags;
+    }
+    if (detail_level < 25u) {
+        include_vesl = 0;
+    }
+    if (detail_level < 50u || interest_radius_m == 0u) {
+        include_surf = 0;
+    }
+    if ((assist_flags & DOM_NET_SNAPSHOT_ASSIST_LOCAL_CACHE) != 0u) {
+        include_surf = 0;
     }
 
     out_bytes.assign(cap, 0u);
@@ -149,34 +171,38 @@ int dom_game_net_snapshot_build(const dom_game_runtime *rt,
         return DOM_NET_SNAPSHOT_ERR;
     }
 
-    if (dtlv_writer_begin_chunk(&writer, DOM_NET_SNAPSHOT_CHUNK_VESL,
-                                DOM_NET_SNAPSHOT_VESL_VERSION, 0u) != 0) {
-        dtlv_writer_dispose(&writer);
-        return DOM_NET_SNAPSHOT_ERR;
-    }
-    dtlv_le_write_u32(buf, vessel_count);
-    if (dtlv_writer_write_tlv(&writer, DOM_NET_SNAPSHOT_TLV_VESSEL_COUNT, buf, 4u) != 0) {
-        dtlv_writer_dispose(&writer);
-        return DOM_NET_SNAPSHOT_ERR;
-    }
-    if (dtlv_writer_end_chunk(&writer) != 0) {
-        dtlv_writer_dispose(&writer);
-        return DOM_NET_SNAPSHOT_ERR;
+    if (include_vesl) {
+        if (dtlv_writer_begin_chunk(&writer, DOM_NET_SNAPSHOT_CHUNK_VESL,
+                                    DOM_NET_SNAPSHOT_VESL_VERSION, 0u) != 0) {
+            dtlv_writer_dispose(&writer);
+            return DOM_NET_SNAPSHOT_ERR;
+        }
+        dtlv_le_write_u32(buf, vessel_count);
+        if (dtlv_writer_write_tlv(&writer, DOM_NET_SNAPSHOT_TLV_VESSEL_COUNT, buf, 4u) != 0) {
+            dtlv_writer_dispose(&writer);
+            return DOM_NET_SNAPSHOT_ERR;
+        }
+        if (dtlv_writer_end_chunk(&writer) != 0) {
+            dtlv_writer_dispose(&writer);
+            return DOM_NET_SNAPSHOT_ERR;
+        }
     }
 
-    if (dtlv_writer_begin_chunk(&writer, DOM_NET_SNAPSHOT_CHUNK_SURF,
-                                DOM_NET_SNAPSHOT_SURF_VERSION, 0u) != 0) {
-        dtlv_writer_dispose(&writer);
-        return DOM_NET_SNAPSHOT_ERR;
-    }
-    dtlv_le_write_u32(buf, surface_count);
-    if (dtlv_writer_write_tlv(&writer, DOM_NET_SNAPSHOT_TLV_SURFACE_COUNT, buf, 4u) != 0) {
-        dtlv_writer_dispose(&writer);
-        return DOM_NET_SNAPSHOT_ERR;
-    }
-    if (dtlv_writer_end_chunk(&writer) != 0) {
-        dtlv_writer_dispose(&writer);
-        return DOM_NET_SNAPSHOT_ERR;
+    if (include_surf) {
+        if (dtlv_writer_begin_chunk(&writer, DOM_NET_SNAPSHOT_CHUNK_SURF,
+                                    DOM_NET_SNAPSHOT_SURF_VERSION, 0u) != 0) {
+            dtlv_writer_dispose(&writer);
+            return DOM_NET_SNAPSHOT_ERR;
+        }
+        dtlv_le_write_u32(buf, surface_count);
+        if (dtlv_writer_write_tlv(&writer, DOM_NET_SNAPSHOT_TLV_SURFACE_COUNT, buf, 4u) != 0) {
+            dtlv_writer_dispose(&writer);
+            return DOM_NET_SNAPSHOT_ERR;
+        }
+        if (dtlv_writer_end_chunk(&writer) != 0) {
+            dtlv_writer_dispose(&writer);
+            return DOM_NET_SNAPSHOT_ERR;
+        }
     }
 
     if (dtlv_writer_finalize(&writer) != 0) {
@@ -225,7 +251,7 @@ int dom_game_net_snapshot_parse(const unsigned char *data,
     surf_entry = dtlv_reader_find_first(&reader, DOM_NET_SNAPSHOT_CHUNK_SURF,
                                         DOM_NET_SNAPSHOT_SURF_VERSION);
 
-    if (!time_entry || !iden_entry || !vesl_entry || !surf_entry) {
+    if (!time_entry || !iden_entry) {
         dtlv_reader_dispose(&reader);
         return DOM_NET_SNAPSHOT_FORMAT;
     }
@@ -248,18 +274,22 @@ int dom_game_net_snapshot_parse(const unsigned char *data,
         return DOM_NET_SNAPSHOT_FORMAT;
     }
 
-    if (dtlv_reader_chunk_memview(&reader, vesl_entry, &payload, &payload_len) != 0 ||
-        !parse_count_block(payload, payload_len, DOM_NET_SNAPSHOT_TLV_VESSEL_COUNT,
-                           &vessel_count)) {
-        dtlv_reader_dispose(&reader);
-        return DOM_NET_SNAPSHOT_FORMAT;
+    if (vesl_entry) {
+        if (dtlv_reader_chunk_memview(&reader, vesl_entry, &payload, &payload_len) != 0 ||
+            !parse_count_block(payload, payload_len, DOM_NET_SNAPSHOT_TLV_VESSEL_COUNT,
+                               &vessel_count)) {
+            dtlv_reader_dispose(&reader);
+            return DOM_NET_SNAPSHOT_FORMAT;
+        }
     }
 
-    if (dtlv_reader_chunk_memview(&reader, surf_entry, &payload, &payload_len) != 0 ||
-        !parse_count_block(payload, payload_len, DOM_NET_SNAPSHOT_TLV_SURFACE_COUNT,
-                           &surface_count)) {
-        dtlv_reader_dispose(&reader);
-        return DOM_NET_SNAPSHOT_FORMAT;
+    if (surf_entry) {
+        if (dtlv_reader_chunk_memview(&reader, surf_entry, &payload, &payload_len) != 0 ||
+            !parse_count_block(payload, payload_len, DOM_NET_SNAPSHOT_TLV_SURFACE_COUNT,
+                               &surface_count)) {
+            dtlv_reader_dispose(&reader);
+            return DOM_NET_SNAPSHOT_FORMAT;
+        }
     }
 
     dtlv_reader_dispose(&reader);

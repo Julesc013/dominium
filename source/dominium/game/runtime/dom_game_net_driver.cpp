@@ -115,32 +115,36 @@ static std::string make_connect_addr(const DomSessionConfig &cfg) {
 }
 
 static bool qos_policy_equal(const dom_qos_policy &a, const dom_qos_policy &b) {
-    return a.update_hz == b.update_hz &&
+    return a.snapshot_hz == b.snapshot_hz &&
            a.delta_detail == b.delta_detail &&
            a.interest_radius_m == b.interest_radius_m &&
-           a.recommended_profile == b.recommended_profile;
+           a.recommended_profile == b.recommended_profile &&
+           a.server_load_hint == b.server_load_hint &&
+           a.assist_flags == b.assist_flags;
 }
 
 static void qos_default_policy(u32 tick_rate_hz, dom_qos_policy &out) {
     std::memset(&out, 0, sizeof(out));
-    out.update_hz = (tick_rate_hz > 0u) ? tick_rate_hz : 60u;
+    out.snapshot_hz = (tick_rate_hz > 0u) ? tick_rate_hz : 60u;
     out.delta_detail = 100u;
     out.interest_radius_m = 1024u;
     out.recommended_profile = 0u;
+    out.server_load_hint = DOM_QOS_SERVER_LOAD_NOMINAL;
+    out.assist_flags = DOM_QOS_ASSIST_LOCAL_MESH | DOM_QOS_ASSIST_LOCAL_CACHE;
 }
 
-static u32 qos_stride_from_update_hz(u32 tick_rate_hz, u32 update_hz) {
-    if (update_hz == 0u) {
+static u32 qos_stride_from_rate_hz(u32 tick_rate_hz, u32 cadence_hz) {
+    if (cadence_hz == 0u) {
         return 0u;
     }
     if (tick_rate_hz == 0u) {
         return 1u;
     }
-    if (update_hz >= tick_rate_hz) {
+    if (cadence_hz >= tick_rate_hz) {
         return 1u;
     }
     {
-        u32 stride = tick_rate_hz / update_hz;
+        u32 stride = tick_rate_hz / cadence_hz;
         return (stride > 0u) ? stride : 1u;
     }
 }
@@ -286,9 +290,24 @@ public:
                 return DOM_NET_DRIVER_NO_DATA;
             }
         }
-        if (dom_game_net_snapshot_build(m_ctx.runtime, out_bytes) == DOM_NET_SNAPSHOT_OK) {
-            m_last_snapshot_tick = tick;
-            return DOM_NET_DRIVER_OK;
+        {
+            dom_game_net_snapshot_opts opts;
+            std::memset(&opts, 0, sizeof(opts));
+            opts.struct_size = sizeof(opts);
+            opts.struct_version = DOM_GAME_NET_SNAPSHOT_OPTS_VERSION;
+            opts.detail_level = m_effective_policy.delta_detail;
+            opts.interest_radius_m = m_effective_policy.interest_radius_m;
+            opts.assist_flags = 0u;
+            if ((m_effective_policy.assist_flags & DOM_QOS_ASSIST_LOCAL_MESH) != 0u) {
+                opts.assist_flags |= DOM_NET_SNAPSHOT_ASSIST_LOCAL_MESH;
+            }
+            if ((m_effective_policy.assist_flags & DOM_QOS_ASSIST_LOCAL_CACHE) != 0u) {
+                opts.assist_flags |= DOM_NET_SNAPSHOT_ASSIST_LOCAL_CACHE;
+            }
+            if (dom_game_net_snapshot_build(m_ctx.runtime, &opts, out_bytes) == DOM_NET_SNAPSHOT_OK) {
+                m_last_snapshot_tick = tick;
+                return DOM_NET_DRIVER_OK;
+            }
         }
         return DOM_NET_DRIVER_ERR;
     }
@@ -330,14 +349,22 @@ private:
         m_effective_policy = m_default_policy;
         (void)dom_qos_init(&m_client_state, &m_default_policy);
         std::memset(&m_client_status, 0, sizeof(m_client_status));
-        m_client_status.fps_budget = 60u;
-        m_client_status.backlog_ms = 0u;
-        m_client_status.desired_reduction = 0u;
-        m_client_status.status_flags = 0u;
+        m_client_state.caps.perf_caps_digest64 = 0ull;
+        m_client_state.caps.preferred_profile = 0u;
+        m_client_state.caps.max_snapshot_hz = m_default_policy.snapshot_hz;
+        m_client_state.caps.max_delta_detail = 100u;
+        m_client_state.caps.max_interest_radius_m = 1024u;
+        m_client_state.caps.diagnostic_rate_cap = 0u;
+        m_client_state.caps.assist_flags = DOM_QOS_ASSIST_LOCAL_MESH | DOM_QOS_ASSIST_LOCAL_CACHE;
+        m_client_status.render_fps_avg = 60u;
+        m_client_status.frame_time_ms_avg = 16u;
+        m_client_status.backlog_jobs = 0u;
+        m_client_status.derived_queue_pressure = 0u;
+        m_client_status.request_detail_reduction = 0u;
         m_client_hello_sent = false;
         m_last_status_tick = 0u;
         m_last_snapshot_tick = 0u;
-        m_snapshot_stride = qos_stride_from_update_hz(m_cfg.tick_rate_hz, m_effective_policy.update_hz);
+        m_snapshot_stride = qos_stride_from_rate_hz(m_cfg.tick_rate_hz, m_effective_policy.snapshot_hz);
         m_peer_qos.clear();
     }
 
@@ -367,17 +394,35 @@ private:
         }
     }
 
+    void refresh_server_load_hint() {
+        const size_t peers = m_peer_qos.size();
+        u32 hint = DOM_QOS_SERVER_LOAD_NOMINAL;
+        if (peers >= 8u) {
+            hint = DOM_QOS_SERVER_LOAD_OVERLOADED;
+        } else if (peers >= 4u) {
+            hint = DOM_QOS_SERVER_LOAD_BUSY;
+        }
+        if (hint != m_default_policy.server_load_hint) {
+            size_t i;
+            m_default_policy.server_load_hint = hint;
+            for (i = 0u; i < m_peer_qos.size(); ++i) {
+                (void)dom_qos_apply_server_policy(&m_peer_qos[i].state, &m_default_policy);
+            }
+        }
+    }
+
     void update_effective_policy() {
         size_t i;
+        refresh_server_load_hint();
         dom_qos_policy combined = m_default_policy;
         for (i = 0u; i < m_peer_qos.size(); ++i) {
             dom_qos_policy peer_policy;
             if (dom_qos_get_effective_params(&m_peer_qos[i].state, &peer_policy) != DOM_QOS_OK) {
                 continue;
             }
-            if (peer_policy.update_hz > 0u &&
-                (combined.update_hz == 0u || peer_policy.update_hz < combined.update_hz)) {
-                combined.update_hz = peer_policy.update_hz;
+            if (peer_policy.snapshot_hz > 0u &&
+                (combined.snapshot_hz == 0u || peer_policy.snapshot_hz < combined.snapshot_hz)) {
+                combined.snapshot_hz = peer_policy.snapshot_hz;
             }
             if (peer_policy.delta_detail < combined.delta_detail) {
                 combined.delta_detail = peer_policy.delta_detail;
@@ -385,9 +430,10 @@ private:
             if (peer_policy.interest_radius_m < combined.interest_radius_m) {
                 combined.interest_radius_m = peer_policy.interest_radius_m;
             }
+            combined.assist_flags &= peer_policy.assist_flags;
         }
         m_effective_policy = combined;
-        m_snapshot_stride = qos_stride_from_update_hz(m_cfg.tick_rate_hz, m_effective_policy.update_hz);
+        m_snapshot_stride = qos_stride_from_rate_hz(m_cfg.tick_rate_hz, m_effective_policy.snapshot_hz);
     }
 
     void send_policy_if_needed(PeerQos &peer) {
@@ -459,7 +505,7 @@ private:
             if (msg.kind == DOM_QOS_KIND_SERVER_POLICY) {
                 (void)dom_qos_apply_server_policy(&m_client_state, &msg.policy);
                 (void)dom_qos_get_effective_params(&m_client_state, &m_effective_policy);
-                m_snapshot_stride = qos_stride_from_update_hz(m_cfg.tick_rate_hz, m_effective_policy.update_hz);
+                m_snapshot_stride = qos_stride_from_rate_hz(m_cfg.tick_rate_hz, m_effective_policy.snapshot_hz);
             }
         }
     }
@@ -572,9 +618,18 @@ public:
         if (!m_ctx.runtime) {
             return DOM_NET_DRIVER_ERR;
         }
-        return (dom_game_net_snapshot_build(m_ctx.runtime, out_bytes) == DOM_NET_SNAPSHOT_OK)
-                   ? DOM_NET_DRIVER_OK
-                   : DOM_NET_DRIVER_ERR;
+        {
+            dom_game_net_snapshot_opts opts;
+            std::memset(&opts, 0, sizeof(opts));
+            opts.struct_size = sizeof(opts);
+            opts.struct_version = DOM_GAME_NET_SNAPSHOT_OPTS_VERSION;
+            opts.detail_level = 100u;
+            opts.interest_radius_m = 1024u;
+            opts.assist_flags = 0u;
+            return (dom_game_net_snapshot_build(m_ctx.runtime, &opts, out_bytes) == DOM_NET_SNAPSHOT_OK)
+                       ? DOM_NET_DRIVER_OK
+                       : DOM_NET_DRIVER_ERR;
+        }
     }
 
     int consume_snapshot(const unsigned char *data, size_t len) {
@@ -756,14 +811,22 @@ private:
         m_effective_policy = m_default_policy;
         (void)dom_qos_init(&m_client_state, &m_default_policy);
         std::memset(&m_client_status, 0, sizeof(m_client_status));
-        m_client_status.fps_budget = 60u;
-        m_client_status.backlog_ms = 0u;
-        m_client_status.desired_reduction = 0u;
-        m_client_status.status_flags = 0u;
+        m_client_state.caps.perf_caps_digest64 = 0ull;
+        m_client_state.caps.preferred_profile = 0u;
+        m_client_state.caps.max_snapshot_hz = 0u;
+        m_client_state.caps.max_delta_detail = 100u;
+        m_client_state.caps.max_interest_radius_m = 1024u;
+        m_client_state.caps.diagnostic_rate_cap = m_default_policy.snapshot_hz;
+        m_client_state.caps.assist_flags = DOM_QOS_ASSIST_LOCAL_MESH | DOM_QOS_ASSIST_LOCAL_CACHE;
+        m_client_status.render_fps_avg = 60u;
+        m_client_status.frame_time_ms_avg = 16u;
+        m_client_status.backlog_jobs = 0u;
+        m_client_status.derived_queue_pressure = 0u;
+        m_client_status.request_detail_reduction = 0u;
         m_client_hello_sent = false;
         m_last_status_tick = 0u;
         m_last_hash_sent_tick = 0u;
-        m_hash_stride = qos_stride_from_update_hz(m_cfg.tick_rate_hz, m_effective_policy.update_hz);
+        m_hash_stride = qos_stride_from_rate_hz(m_cfg.tick_rate_hz, m_effective_policy.snapshot_hz);
         m_peer_qos.clear();
     }
 
@@ -793,17 +856,35 @@ private:
         }
     }
 
+    void refresh_server_load_hint() {
+        const size_t peers = m_peer_qos.size();
+        u32 hint = DOM_QOS_SERVER_LOAD_NOMINAL;
+        if (peers >= 8u) {
+            hint = DOM_QOS_SERVER_LOAD_OVERLOADED;
+        } else if (peers >= 4u) {
+            hint = DOM_QOS_SERVER_LOAD_BUSY;
+        }
+        if (hint != m_default_policy.server_load_hint) {
+            size_t i;
+            m_default_policy.server_load_hint = hint;
+            for (i = 0u; i < m_peer_qos.size(); ++i) {
+                (void)dom_qos_apply_server_policy(&m_peer_qos[i].state, &m_default_policy);
+            }
+        }
+    }
+
     void update_effective_policy() {
         size_t i;
+        refresh_server_load_hint();
         dom_qos_policy combined = m_default_policy;
         for (i = 0u; i < m_peer_qos.size(); ++i) {
             dom_qos_policy peer_policy;
             if (dom_qos_get_effective_params(&m_peer_qos[i].state, &peer_policy) != DOM_QOS_OK) {
                 continue;
             }
-            if (peer_policy.update_hz > 0u &&
-                (combined.update_hz == 0u || peer_policy.update_hz < combined.update_hz)) {
-                combined.update_hz = peer_policy.update_hz;
+            if (peer_policy.snapshot_hz > 0u &&
+                (combined.snapshot_hz == 0u || peer_policy.snapshot_hz < combined.snapshot_hz)) {
+                combined.snapshot_hz = peer_policy.snapshot_hz;
             }
             if (peer_policy.delta_detail < combined.delta_detail) {
                 combined.delta_detail = peer_policy.delta_detail;
@@ -811,9 +892,10 @@ private:
             if (peer_policy.interest_radius_m < combined.interest_radius_m) {
                 combined.interest_radius_m = peer_policy.interest_radius_m;
             }
+            combined.assist_flags &= peer_policy.assist_flags;
         }
         m_effective_policy = combined;
-        m_hash_stride = qos_stride_from_update_hz(m_cfg.tick_rate_hz, m_effective_policy.update_hz);
+        m_hash_stride = qos_stride_from_rate_hz(m_cfg.tick_rate_hz, m_effective_policy.snapshot_hz);
     }
 
     void send_policy_if_needed(PeerQos &peer) {
@@ -885,7 +967,7 @@ private:
             if (msg.kind == DOM_QOS_KIND_SERVER_POLICY) {
                 (void)dom_qos_apply_server_policy(&m_client_state, &msg.policy);
                 (void)dom_qos_get_effective_params(&m_client_state, &m_effective_policy);
-                m_hash_stride = qos_stride_from_update_hz(m_cfg.tick_rate_hz, m_effective_policy.update_hz);
+                m_hash_stride = qos_stride_from_rate_hz(m_cfg.tick_rate_hz, m_effective_policy.snapshot_hz);
             }
         }
     }
