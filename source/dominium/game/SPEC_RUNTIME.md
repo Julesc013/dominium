@@ -23,6 +23,8 @@ mutate authoritative state. See `docs/SPEC_FIDELITY_DEGRADATION.md`.
 Session roles and authority modes are defined in `docs/SPEC_SESSIONS.md`. The
 runtime MUST enforce role/authority validation and keep authority fixed for the
 session lifetime.
+In SERVER_AUTH mode, clients consume snapshots/deltas and must not advance
+authoritative simulation ticks; any presentation state remains derived-only.
 
 ## Determinism hooks
 Authoritative simulation uses tick-first time and fixed-point space; see

@@ -35,8 +35,17 @@ enum DomSessionAuthority {
     DOM_SESSION_AUTH_LOCKSTEP = 1
 };
 
+enum DomSessionFlags {
+    DOM_SESSION_FLAG_NONE = 0u,
+    DOM_SESSION_FLAG_SAFE_MODE = 1u << 0,
+    DOM_SESSION_FLAG_OFFLINE_MODE = 1u << 1,
+    DOM_SESSION_FLAG_REQUIRE_UI = 1u << 2,
+    DOM_SESSION_FLAG_ENABLE_COMMANDS = 1u << 3,
+    DOM_SESSION_FLAG_ENABLE_HASH_EXCHANGE = 1u << 4
+};
+
 enum {
-    DOM_GAME_SESSION_CONFIG_VERSION = 1u
+    DOM_GAME_SESSION_CONFIG_VERSION = 2u
 };
 
 enum DomSessionRefusalCode {
@@ -47,13 +56,16 @@ enum DomSessionRefusalCode {
     DOM_SESSION_REFUSAL_MISSING_CONNECT_ADDR = 2004u,
     DOM_SESSION_REFUSAL_INVALID_TICK_RATE = 2005u,
     DOM_SESSION_REFUSAL_INVALID_PORT = 2006u,
-    DOM_SESSION_REFUSAL_INVALID_INPUT_DELAY = 2007u
+    DOM_SESSION_REFUSAL_INVALID_INPUT_DELAY = 2007u,
+    DOM_SESSION_REFUSAL_UI_REQUIRED = 2008u,
+    DOM_SESSION_REFUSAL_LOCKSTEP_EXCHANGE_DISABLED = 2009u
 };
 
 struct DomSessionIdentity {
     std::string instance_id;
     u64 run_id;
     std::vector<unsigned char> instance_manifest_hash;
+    std::vector<unsigned char> content_hash_bytes;
 
     DomSessionIdentity();
 };
@@ -63,6 +75,7 @@ struct DomSessionConfig {
     u32 struct_version;
     DomSessionRole role;
     DomSessionAuthority authority;
+    u32 flags;
     u32 tick_rate_hz;
     u32 input_delay_ticks;
     u32 net_port;
