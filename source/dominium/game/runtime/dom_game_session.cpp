@@ -20,7 +20,8 @@ namespace dom {
 DomSessionIdentity::DomSessionIdentity()
     : instance_id(),
       run_id(0ull),
-      instance_manifest_hash() {
+      instance_manifest_hash(),
+      content_hash_bytes() {
 }
 
 DomSessionConfig::DomSessionConfig()
@@ -28,6 +29,7 @@ DomSessionConfig::DomSessionConfig()
       struct_version(DOM_GAME_SESSION_CONFIG_VERSION),
       role(DOM_SESSION_ROLE_SINGLE),
       authority(DOM_SESSION_AUTH_SERVER_AUTH),
+      flags(DOM_SESSION_FLAG_ENABLE_COMMANDS | DOM_SESSION_FLAG_ENABLE_HASH_EXCHANGE),
       tick_rate_hz(60u),
       input_delay_ticks(1u),
       net_port(7777u),
@@ -91,6 +93,16 @@ bool dom_session_config_validate(const DomSessionConfig &cfg,
                            out_detail);
     }
 
+    if (cfg.authority == DOM_SESSION_AUTH_LOCKSTEP) {
+        const u32 required = DOM_SESSION_FLAG_ENABLE_COMMANDS | DOM_SESSION_FLAG_ENABLE_HASH_EXCHANGE;
+        if ((cfg.flags & required) != required) {
+            return set_refusal(DOM_SESSION_REFUSAL_LOCKSTEP_EXCHANGE_DISABLED,
+                               "lockstep_requires_cmd_hash_exchange",
+                               out_refusal_code,
+                               out_detail);
+        }
+    }
+
     switch (cfg.role) {
     case DOM_SESSION_ROLE_SINGLE:
         if (cfg.authority != DOM_SESSION_AUTH_SERVER_AUTH) {
@@ -112,6 +124,12 @@ bool dom_session_config_validate(const DomSessionConfig &cfg,
         if (cfg.authority != DOM_SESSION_AUTH_SERVER_AUTH) {
             return set_refusal(DOM_SESSION_REFUSAL_ROLE_AUTH_MISMATCH,
                                "dedicated_requires_server_auth",
+                               out_refusal_code,
+                               out_detail);
+        }
+        if ((cfg.flags & DOM_SESSION_FLAG_REQUIRE_UI) != 0u) {
+            return set_refusal(DOM_SESSION_REFUSAL_UI_REQUIRED,
+                               "dedicated_disallows_ui",
                                out_refusal_code,
                                out_detail);
         }

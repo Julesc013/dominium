@@ -17,6 +17,13 @@ runtime session layer.
 
 Authority mode is fixed for the session lifetime.
 
+## Session flags
+Session configuration carries launcher-provided flags and negotiation toggles:
+- **SAFE_MODE / OFFLINE_MODE:** launcher-defined policy flags (pass-through).
+- **REQUIRE_UI:** indicates a UI frontend is required.
+- **ENABLE_COMMANDS / ENABLE_HASH_EXCHANGE:** required for lockstep exchanges;
+  ignored by server-auth where applicable.
+
 ## Loopback singleplayer
 Singleplayer uses the same code paths as networked play:
 - SINGLE sessions run HOST + CLIENT in-process via a loopback driver.
@@ -26,7 +33,13 @@ Singleplayer uses the same code paths as networked play:
 Session configuration MUST reject:
 - SINGLE or DEDICATED_SERVER with LOCKSTEP authority.
 - CLIENT without a connect address.
+- DEDICATED_SERVER when REQUIRE_UI is set.
+- LOCKSTEP when command/hash exchange is disabled.
 - zero tick rate or invalid port values.
+
+Session configuration MUST ensure:
+- SINGLE does not require external network access (no connect address).
+- CLIENT in SERVER_AUTH never advances authoritative simulation state.
 
 ## Related specs
 - `docs/SPEC_DETERMINISM.md`
