@@ -197,6 +197,89 @@ set_target_properties(dom_session_authority_tests PROPERTIES
 
 add_test(NAME test_session_authority_smoke COMMAND dom_session_authority_tests)
 
+add_executable(dom_qos_determinism_test
+    dom_qos_determinism_test.cpp
+    ../dominium/game/runtime/dom_qos.cpp
+)
+
+target_include_directories(dom_qos_determinism_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+)
+
+target_link_libraries(dom_qos_determinism_test
+    core_tlv
+    domino_core
+)
+
+set_target_properties(dom_qos_determinism_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME test_qos_determinism COMMAND dom_qos_determinism_test)
+
+add_executable(dom_qos_no_sim_effect_test
+    dom_qos_no_sim_effect_test.cpp
+    ../dominium/game/runtime/dom_game_runtime.cpp
+    ../dominium/game/runtime/dom_game_hash.c
+    ../dominium/game/runtime/dom_game_replay.cpp
+    ../dominium/game/runtime/dom_io_guard.cpp
+    ../dominium/game/runtime/dom_qos.cpp
+)
+
+target_include_directories(dom_qos_no_sim_effect_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_qos_no_sim_effect_test
+    dominium_common
+    core_tlv
+    domino_core
+)
+
+set_target_properties(dom_qos_no_sim_effect_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME test_qos_no_sim_effect COMMAND dom_qos_no_sim_effect_test)
+
+add_executable(dom_qos_overload_test
+    dom_qos_overload_test.cpp
+    ../dominium/game/runtime/dom_game_runtime.cpp
+    ../dominium/game/runtime/dom_game_hash.c
+    ../dominium/game/runtime/dom_game_replay.cpp
+    ../dominium/game/runtime/dom_io_guard.cpp
+    ../dominium/game/runtime/dom_qos.cpp
+)
+
+target_include_directories(dom_qos_overload_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_qos_overload_test
+    dominium_common
+    core_tlv
+    domino_core
+)
+
+set_target_properties(dom_qos_overload_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME test_qos_overload COMMAND dom_qos_overload_test)
+
 add_executable(domino_pkt_determinism_test
     pkt_determinism_test.c
 )
