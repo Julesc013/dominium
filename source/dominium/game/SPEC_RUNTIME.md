@@ -34,3 +34,8 @@ NOT affect tick progression, command ordering, or authoritative state.
 ## Determinism hooks
 Authoritative simulation uses tick-first time and fixed-point space; see
 `docs/SPEC_DETERMINISM.md`.
+
+## Capabilities and epochs
+SIM_CAPS/PERF_CAPS split and handshake validation are defined in
+`docs/SPEC_CAPABILITIES.md`. Feature epoch gating for saves/replays/universe
+bundles is defined in `docs/SPEC_FEATURE_EPOCH.md`.
