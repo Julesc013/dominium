@@ -71,6 +71,11 @@ int DomNetDriver::consume_snapshot(const unsigned char *data, size_t len) {
     return DOM_NET_DRIVER_NOT_IMPLEMENTED;
 }
 
+int DomNetDriver::get_last_snapshot(dom_game_net_snapshot_desc *out_desc) {
+    (void)out_desc;
+    return DOM_NET_DRIVER_NO_DATA;
+}
+
 int DomNetDriver::submit_tick_hash(u64 tick, u64 hash) {
     (void)tick;
     (void)hash;
@@ -298,6 +303,17 @@ public:
         }
         m_last_snapshot = desc;
         m_has_snapshot = true;
+        return DOM_NET_DRIVER_OK;
+    }
+
+    int get_last_snapshot(dom_game_net_snapshot_desc *out_desc) {
+        if (!out_desc) {
+            return DOM_NET_DRIVER_ERR;
+        }
+        if (!m_has_snapshot) {
+            return DOM_NET_DRIVER_NO_DATA;
+        }
+        *out_desc = m_last_snapshot;
         return DOM_NET_DRIVER_OK;
     }
 
@@ -571,6 +587,17 @@ public:
         }
         m_last_snapshot = desc;
         m_has_snapshot = true;
+        return DOM_NET_DRIVER_OK;
+    }
+
+    int get_last_snapshot(dom_game_net_snapshot_desc *out_desc) {
+        if (!out_desc) {
+            return DOM_NET_DRIVER_ERR;
+        }
+        if (!m_has_snapshot) {
+            return DOM_NET_DRIVER_NO_DATA;
+        }
+        *out_desc = m_last_snapshot;
         return DOM_NET_DRIVER_OK;
     }
 

@@ -27,6 +27,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "dom_game_net.h"
 #include "runtime/dom_game_session.h"
 #include "runtime/dom_game_net_driver.h"
+#include "runtime/dom_game_net_snapshot.h"
 #include "runtime/dom_game_paths.h"
 #include "runtime/dom_game_runtime.h"
 #include "runtime/dom_derived_jobs.h"
@@ -149,6 +150,10 @@ private:
     DomGameNet   m_net;
     DomNetDriver *m_net_driver;
     dom_game_runtime *m_runtime;
+    DomSessionRole m_session_role;
+    DomSessionAuthority m_session_authority;
+    dom_game_net_snapshot_desc m_last_net_snapshot;
+    bool         m_has_net_snapshot;
     dom_derived_queue *m_derived_queue;
     dom_game_config m_cfg;
 

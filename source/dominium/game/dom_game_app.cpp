@@ -761,6 +761,10 @@ DomGameApp::DomGameApp()
       m_net_replay_user(0),
       m_net_driver(0),
       m_runtime(0),
+      m_session_role(DOM_SESSION_ROLE_SINGLE),
+      m_session_authority(DOM_SESSION_AUTH_SERVER_AUTH),
+      m_last_net_snapshot(),
+      m_has_net_snapshot(false),
       m_derived_queue(0),
       m_last_wall_us(0u),
       m_derived_budget_ms(0u),
@@ -800,6 +804,7 @@ DomGameApp::DomGameApp()
     std::memset(m_menu_error_text, 0, sizeof(m_menu_error_text));
     std::memset(&m_cfg, 0, sizeof(m_cfg));
     std::memset(&m_fidelity, 0, sizeof(m_fidelity));
+    std::memset(&m_last_net_snapshot, 0, sizeof(m_last_net_snapshot));
 }
 
 DomGameApp::~DomGameApp() {
@@ -1475,8 +1480,16 @@ bool DomGameApp::start_session(DomGamePhaseAction action, std::string &out_error
     scfg.identity.instance_id = m_instance.id;
     scfg.identity.run_id = m_run_id;
     scfg.identity.instance_manifest_hash = m_instance_manifest_hash;
+    scfg.identity.content_hash_bytes = m_instance_manifest_hash;
     if (m_cfg.session_authority_set != 0u) {
         scfg.authority = map_session_authority(m_cfg.session_authority);
+    }
+    scfg.flags = DOM_SESSION_FLAG_ENABLE_COMMANDS;
+    if (m_mode != GAME_MODE_HEADLESS) {
+        scfg.flags |= DOM_SESSION_FLAG_REQUIRE_UI;
+    }
+    if (scfg.authority == DOM_SESSION_AUTH_LOCKSTEP) {
+        scfg.flags |= DOM_SESSION_FLAG_ENABLE_HASH_EXCHANGE;
     }
 
     {
@@ -1538,6 +1551,11 @@ bool DomGameApp::start_session(DomGamePhaseAction action, std::string &out_error
             return false;
         }
     }
+
+    m_session_role = scfg.role;
+    m_session_authority = scfg.authority;
+    m_has_net_snapshot = false;
+    std::memset(&m_last_net_snapshot, 0, sizeof(m_last_net_snapshot));
 
     {
         DomNetDriverContext ctx;
@@ -1839,6 +1857,8 @@ void DomGameApp::tick_fixed() {
     const u64 now_us = dsys_time_now_us();
     const u64 dt_us = (m_last_wall_us > 0u && now_us >= m_last_wall_us) ? (now_us - m_last_wall_us) : 0u;
     m_last_wall_us = now_us;
+    const bool server_auth_client = (m_session_role == DOM_SESSION_ROLE_CLIENT &&
+                                     m_session_authority == DOM_SESSION_AUTH_SERVER_AUTH);
 
     if (m_mode != GAME_MODE_HEADLESS) {
         process_input_events();
@@ -1870,6 +1890,13 @@ void DomGameApp::tick_fixed() {
          m_phase.phase == DOM_GAME_PHASE_IN_SESSION)) {
         if (m_net_driver) {
             (void)m_net_driver->pump_network();
+            {
+                dom_game_net_snapshot_desc desc;
+                if (m_net_driver->get_last_snapshot(&desc) == DOM_NET_DRIVER_OK) {
+                    m_last_net_snapshot = desc;
+                    m_has_net_snapshot = true;
+                }
+            }
         } else {
             (void)dom_game_runtime_pump(m_runtime);
         }
@@ -1900,25 +1927,27 @@ void DomGameApp::tick_fixed() {
     }
 
     if (m_session.is_initialized() && m_phase.phase == DOM_GAME_PHASE_IN_SESSION && m_runtime) {
-        u32 stepped = 0u;
-        const int rc = dom_game_runtime_tick_wall(m_runtime, dt_us, &stepped);
-        if (rc == DOM_GAME_RUNTIME_REPLAY_END) {
-            m_exit_code = 0;
-            request_exit();
-            return;
-        }
-        if (rc == DOM_GAME_RUNTIME_ERR) {
-            m_exit_code = 1;
-            request_exit();
-            return;
-        }
-        if (m_mode == GAME_MODE_HEADLESS && m_headless_tick_limit > 0u) {
-            m_headless_ticks += stepped;
-            if (m_headless_ticks >= m_headless_tick_limit) {
-                std::printf("DomGameApp: headless tick limit reached (%u)\n",
-                            (unsigned)m_headless_tick_limit);
+        if (!server_auth_client) {
+            u32 stepped = 0u;
+            const int rc = dom_game_runtime_tick_wall(m_runtime, dt_us, &stepped);
+            if (rc == DOM_GAME_RUNTIME_REPLAY_END) {
+                m_exit_code = 0;
                 request_exit();
                 return;
+            }
+            if (rc == DOM_GAME_RUNTIME_ERR) {
+                m_exit_code = 1;
+                request_exit();
+                return;
+            }
+            if (m_mode == GAME_MODE_HEADLESS && m_headless_tick_limit > 0u) {
+                m_headless_ticks += stepped;
+                if (m_headless_ticks >= m_headless_tick_limit) {
+                    std::printf("DomGameApp: headless tick limit reached (%u)\n",
+                                (unsigned)m_headless_tick_limit);
+                    request_exit();
+                    return;
+                }
             }
         }
     }
@@ -1930,6 +1959,12 @@ void DomGameApp::tick_fixed() {
             snapshot->view.camera_y = m_camera.cy;
             snapshot->view.camera_zoom = m_camera.zoom;
             snapshot->view.selected_struct_id = (u32)m_last_struct_id;
+            if (server_auth_client && m_has_net_snapshot) {
+                snapshot->runtime.tick_index = m_last_net_snapshot.tick_index;
+                snapshot->runtime.ups = m_last_net_snapshot.ups;
+                snapshot->runtime.vessel_count = m_last_net_snapshot.vessel_count;
+                snapshot->runtime.sim_hash = 0u;
+            }
         }
     }
     update_demo_hud(snapshot);
