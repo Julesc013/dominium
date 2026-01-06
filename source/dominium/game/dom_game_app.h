@@ -25,6 +25,8 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "dom_game_camera.h"
 #include "dom_game_tools_build.h"
 #include "dom_game_net.h"
+#include "runtime/dom_game_session.h"
+#include "runtime/dom_game_net_driver.h"
 #include "runtime/dom_game_paths.h"
 #include "runtime/dom_game_runtime.h"
 #include "runtime/dom_derived_jobs.h"
@@ -145,6 +147,7 @@ private:
     InstanceInfo m_instance;
     DomSession   m_session;
     DomGameNet   m_net;
+    DomNetDriver *m_net_driver;
     dom_game_runtime *m_runtime;
     dom_derived_queue *m_derived_queue;
     dom_game_config m_cfg;

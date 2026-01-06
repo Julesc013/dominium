@@ -829,6 +829,13 @@ void DomGameNet::handle_events(d_world *world, d_sim_context *sim, const Instanc
     update_session_tick(world);
 }
 
+void DomGameNet::set_input_delay_ticks(u32 delay) {
+    if (delay == 0u) {
+        return;
+    }
+    m_session.input_delay_ticks = delay;
+}
+
 bool DomGameNet::submit_cmd(d_net_cmd *in_out_cmd) {
     if (!in_out_cmd) {
         return false;

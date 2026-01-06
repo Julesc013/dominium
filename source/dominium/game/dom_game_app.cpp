@@ -218,6 +218,32 @@ static const char *universe_action_label(DomGamePhaseAction action) {
     return "unknown";
 }
 
+static DomSessionRole map_session_role(dom_game_session_role role) {
+    switch (role) {
+    case DOM_GAME_SESSION_ROLE_HOST:
+        return DOM_SESSION_ROLE_HOST;
+    case DOM_GAME_SESSION_ROLE_DEDICATED_SERVER:
+        return DOM_SESSION_ROLE_DEDICATED_SERVER;
+    case DOM_GAME_SESSION_ROLE_CLIENT:
+        return DOM_SESSION_ROLE_CLIENT;
+    case DOM_GAME_SESSION_ROLE_SINGLE:
+    default:
+        break;
+    }
+    return DOM_SESSION_ROLE_SINGLE;
+}
+
+static DomSessionAuthority map_session_authority(dom_game_session_authority auth) {
+    switch (auth) {
+    case DOM_GAME_SESSION_AUTH_LOCKSTEP:
+        return DOM_SESSION_AUTH_LOCKSTEP;
+    case DOM_GAME_SESSION_AUTH_SERVER:
+    default:
+        break;
+    }
+    return DOM_SESSION_AUTH_SERVER_AUTH;
+}
+
 static bool write_refusal_tlv(const DomGamePaths &paths,
                               u64 run_id,
                               const std::string &instance_id,
@@ -733,6 +759,7 @@ DomGameApp::DomGameApp()
       m_replay_record(0),
       m_replay_play(0),
       m_net_replay_user(0),
+      m_net_driver(0),
       m_runtime(0),
       m_derived_queue(0),
       m_last_wall_us(0u),
@@ -913,6 +940,15 @@ bool DomGameApp::init_from_cli(const dom_game_config &cfg) {
         (m_server_mode != SERVER_OFF || m_mode == GAME_MODE_HEADLESS)) {
         m_phase.auto_start_host = true;
     }
+    if (cfg.session_role_set != 0u) {
+        if (cfg.session_role == DOM_GAME_SESSION_ROLE_CLIENT) {
+            m_phase.auto_start_join = true;
+            m_phase.auto_start_host = false;
+        } else {
+            m_phase.auto_start_join = false;
+            m_phase.auto_start_host = true;
+        }
+    }
     if (m_universe_pending_action != DOM_GAME_PHASE_ACTION_NONE) {
         m_phase.auto_start_join = false;
         m_phase.auto_start_host = false;
@@ -978,6 +1014,12 @@ void DomGameApp::shutdown() {
         m_replay_play = 0;
     }
     m_replay_last_tick = 0u;
+
+    if (m_net_driver) {
+        m_net_driver->stop();
+        dom_net_driver_destroy(m_net_driver);
+        m_net_driver = 0;
+    }
 
     if (m_runtime) {
         dom_game_runtime_destroy(m_runtime);
@@ -1418,54 +1460,110 @@ bool DomGameApp::start_session(DomGamePhaseAction action, std::string &out_error
         return false;
     }
 
-    if (action == DOM_GAME_PHASE_ACTION_START_HOST) {
-        if (m_mode == GAME_MODE_HEADLESS && m_headless_local) {
-            if (!m_net.init_single(m_tick_rate_hz)) {
-                out_error = "net_single_init_failed";
-                return false;
-            }
-            (void)d_net_cmd_queue_init();
-            return true;
-        }
-        ServerMode mode = m_server_mode;
-        if (mode == SERVER_OFF) {
-            mode = SERVER_LISTEN;
-        }
-        if (mode == SERVER_DEDICATED) {
-            if (!m_net.init_dedicated(m_tick_rate_hz, m_net_port)) {
-                out_error = "net_host_init_failed";
-                return false;
+    if (m_net_driver) {
+        m_net_driver->stop();
+        dom_net_driver_destroy(m_net_driver);
+        m_net_driver = 0;
+    }
+
+    DomSessionConfig scfg;
+    scfg.tick_rate_hz = m_tick_rate_hz;
+    scfg.net_port = (m_phase.server_port != 0u) ? m_phase.server_port : m_net_port;
+    if (m_cfg.session_input_delay != 0u) {
+        scfg.input_delay_ticks = m_cfg.session_input_delay;
+    }
+    scfg.identity.instance_id = m_instance.id;
+    scfg.identity.run_id = m_run_id;
+    scfg.identity.instance_manifest_hash = m_instance_manifest_hash;
+    if (m_cfg.session_authority_set != 0u) {
+        scfg.authority = map_session_authority(m_cfg.session_authority);
+    }
+
+    {
+        DomSessionRole role = DOM_SESSION_ROLE_SINGLE;
+        const bool role_locked = (m_cfg.session_role_set != 0u);
+        if (role_locked) {
+            role = map_session_role(m_cfg.session_role);
+        } else if (action == DOM_GAME_PHASE_ACTION_START_JOIN) {
+            role = DOM_SESSION_ROLE_CLIENT;
+        } else if (action == DOM_GAME_PHASE_ACTION_START_HOST) {
+            if (m_headless_local) {
+                role = DOM_SESSION_ROLE_SINGLE;
+            } else if (m_server_mode == SERVER_DEDICATED) {
+                role = DOM_SESSION_ROLE_DEDICATED_SERVER;
+            } else {
+                role = DOM_SESSION_ROLE_HOST;
             }
         } else {
-            if (!m_net.init_listen(m_tick_rate_hz, m_net_port)) {
-                out_error = "net_host_init_failed";
+            out_error = "invalid_session_action";
+            return false;
+        }
+
+        if (role_locked) {
+            if (action == DOM_GAME_PHASE_ACTION_START_JOIN &&
+                role != DOM_SESSION_ROLE_CLIENT) {
+                out_error = "role_action_mismatch";
+                return false;
+            }
+            if (action == DOM_GAME_PHASE_ACTION_START_HOST &&
+                role == DOM_SESSION_ROLE_CLIENT) {
+                out_error = "role_action_mismatch";
                 return false;
             }
         }
-        (void)d_net_cmd_queue_init();
-        return true;
+
+        scfg.role = role;
     }
-    if (action == DOM_GAME_PHASE_ACTION_START_JOIN) {
+
+    if (scfg.role == DOM_SESSION_ROLE_CLIENT) {
         std::string addr = m_phase.server_addr.empty() ? m_connect_addr : m_phase.server_addr;
         if (addr.empty()) {
             out_error = "missing_server_addr";
             return false;
         }
-        if (addr.find(':') == std::string::npos && m_phase.server_port != 0u) {
-            char port_buf[16];
-            std::snprintf(port_buf, sizeof(port_buf), ":%u", (unsigned)m_phase.server_port);
-            addr += port_buf;
+        scfg.connect_addr = addr;
+        if (scfg.net_port == 0u) {
+            scfg.net_port = m_net_port;
         }
-        if (!m_net.init_client(m_tick_rate_hz, addr)) {
-            out_error = "net_client_init_failed";
-            return false;
-        }
-        (void)d_net_cmd_queue_init();
-        return true;
+    } else {
+        scfg.connect_addr.clear();
     }
 
-    out_error = "invalid_session_action";
-    return false;
+    {
+        u32 refusal = 0u;
+        std::string detail;
+        if (!dom_session_config_validate(scfg, &refusal, &detail)) {
+            (void)refusal;
+            out_error = detail.empty() ? "invalid_session_config" : detail;
+            return false;
+        }
+    }
+
+    {
+        DomNetDriverContext ctx;
+        ctx.net = &m_net;
+        ctx.runtime = m_runtime;
+        ctx.instance = &m_instance;
+        ctx.paths = &m_fs_paths;
+        m_net_driver = dom_net_driver_create(scfg, ctx, &out_error);
+        if (!m_net_driver) {
+            if (out_error.empty()) {
+                out_error = "net_driver_create_failed";
+            }
+            return false;
+        }
+        if (m_net_driver->start() != DOM_NET_DRIVER_OK) {
+            m_net_driver->stop();
+            dom_net_driver_destroy(m_net_driver);
+            m_net_driver = 0;
+            if (out_error.empty()) {
+                out_error = "net_driver_start_failed";
+            }
+            return false;
+        }
+    }
+
+    return true;
 }
 
 void DomGameApp::handle_phase_enter(DomGamePhaseId prev_phase, DomGamePhaseId next_phase) {
@@ -1484,6 +1582,11 @@ void DomGameApp::handle_phase_enter(DomGamePhaseId prev_phase, DomGamePhaseId ne
     if (next_phase == DOM_GAME_PHASE_MAIN_MENU) {
         if (prev_phase == DOM_GAME_PHASE_SESSION_LOADING ||
             prev_phase == DOM_GAME_PHASE_IN_SESSION) {
+            if (m_net_driver) {
+                m_net_driver->stop();
+                dom_net_driver_destroy(m_net_driver);
+                m_net_driver = 0;
+            }
             m_net.shutdown();
             if (!init_session(m_cfg)) {
                 std::fprintf(stderr, "DomGameApp: session reset failed\n");
@@ -1540,7 +1643,7 @@ void DomGameApp::update_phase(u32 dt_ms) {
     in.action = action;
     in.runtime_ready = (m_runtime != 0);
     in.content_ready = m_session.is_initialized();
-    in.net_ready = m_net.ready();
+    in.net_ready = m_net_driver ? m_net_driver->ready() : false;
     in.world_ready = m_session.is_initialized();
     in.world_progress = m_session.is_initialized() ? 100u : 0u;
     in.session_start_ok = m_session_start_ok;
@@ -1770,7 +1873,11 @@ void DomGameApp::tick_fixed() {
     if (m_session.is_initialized() && m_runtime &&
         (m_phase.phase == DOM_GAME_PHASE_SESSION_LOADING ||
          m_phase.phase == DOM_GAME_PHASE_IN_SESSION)) {
-        (void)dom_game_runtime_pump(m_runtime);
+        if (m_net_driver) {
+            (void)m_net_driver->pump_network();
+        } else {
+            (void)dom_game_runtime_pump(m_runtime);
+        }
     }
 
     u32 dt_ms = (u32)(dt_us / 1000ull);

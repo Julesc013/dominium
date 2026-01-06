@@ -36,6 +36,7 @@ namespace {
 static const u32 DEFAULT_DERIVED_BUDGET_MS = 2u;
 static const u32 DEFAULT_DERIVED_BUDGET_IO_BYTES = 256u * 1024u;
 static const u32 DEFAULT_DERIVED_BUDGET_JOBS = 4u;
+static const u32 DEFAULT_NET_INPUT_DELAY_TICKS = 2u;
 
 static int ascii_tolower(int c) {
     if (c >= 'A' && c <= 'Z') {
@@ -393,6 +394,44 @@ static bool parse_server_mode(const char *val, dom_game_server_mode &mode) {
     return false;
 }
 
+static bool parse_session_role(const char *val, dom_game_session_role &role) {
+    if (!val) {
+        return false;
+    }
+    if (str_ieq(val, "single")) {
+        role = DOM_GAME_SESSION_ROLE_SINGLE;
+        return true;
+    }
+    if (str_ieq(val, "host")) {
+        role = DOM_GAME_SESSION_ROLE_HOST;
+        return true;
+    }
+    if (str_ieq(val, "server") || str_ieq(val, "dedicated")) {
+        role = DOM_GAME_SESSION_ROLE_DEDICATED_SERVER;
+        return true;
+    }
+    if (str_ieq(val, "client")) {
+        role = DOM_GAME_SESSION_ROLE_CLIENT;
+        return true;
+    }
+    return false;
+}
+
+static bool parse_session_authority(const char *val, dom_game_session_authority &auth) {
+    if (!val) {
+        return false;
+    }
+    if (str_ieq(val, "server") || str_ieq(val, "server-auth") || str_ieq(val, "server_auth")) {
+        auth = DOM_GAME_SESSION_AUTH_SERVER;
+        return true;
+    }
+    if (str_ieq(val, "lockstep")) {
+        auth = DOM_GAME_SESSION_AUTH_LOCKSTEP;
+        return true;
+    }
+    return false;
+}
+
 static bool parse_sys_override(const char *arg, char *out_key, size_t key_cap, const char **out_val) {
     const char *eq;
     size_t key_len;
@@ -425,6 +464,11 @@ void dom_game_cli_init_defaults(dom_game_config *out_cfg) {
     std::memset(out_cfg, 0, sizeof(*out_cfg));
     out_cfg->mode = DOM_GAME_MODE_GUI;
     out_cfg->server_mode = DOM_GAME_SERVER_OFF;
+    out_cfg->session_role_set = 0u;
+    out_cfg->session_authority_set = 0u;
+    out_cfg->session_role = DOM_GAME_SESSION_ROLE_SINGLE;
+    out_cfg->session_authority = DOM_GAME_SESSION_AUTH_SERVER;
+    out_cfg->session_input_delay = DEFAULT_NET_INPUT_DELAY_TICKS;
     out_cfg->net_port = 7777u;
     out_cfg->tick_rate_hz = 60u;
     out_cfg->deterministic_test = 0u;
@@ -507,6 +551,35 @@ int dom_game_cli_parse(int argc, char **argv, dom_game_config *out_cfg, dom_game
                 return -1;
             }
             out_cfg->mode = mode;
+            continue;
+        }
+        if (std::strncmp(arg, "--role=", 7) == 0) {
+            dom_game_session_role role = out_cfg->session_role;
+            if (!parse_session_role(arg + 7, role)) {
+                set_error(out_result, "Unknown --role value; expected single|host|server|client.");
+                return -1;
+            }
+            out_cfg->session_role = role;
+            out_cfg->session_role_set = 1u;
+            continue;
+        }
+        if (std::strncmp(arg, "--auth=", 7) == 0) {
+            dom_game_session_authority auth = out_cfg->session_authority;
+            if (!parse_session_authority(arg + 7, auth)) {
+                set_error(out_result, "Unknown --auth value; expected server|lockstep.");
+                return -1;
+            }
+            out_cfg->session_authority = auth;
+            out_cfg->session_authority_set = 1u;
+            continue;
+        }
+        if (std::strncmp(arg, "--input-delay=", 14) == 0) {
+            u32 delay = 0u;
+            if (!parse_u32_range(arg + 14, 1u, 256u, delay)) {
+                set_error(out_result, "Invalid --input-delay value; expected 1..256.");
+                return -1;
+            }
+            out_cfg->session_input_delay = delay;
             continue;
         }
         if (std::strcmp(arg, "--auto-host") == 0) {
@@ -748,8 +821,7 @@ int dom_game_cli_parse(int argc, char **argv, dom_game_config *out_cfg, dom_game
         if (std::strncmp(arg, "--launcher-", 11) == 0) {
             continue;
         }
-        if (std::strncmp(arg, "--role=", 7) == 0 ||
-            std::strncmp(arg, "--display=", 10) == 0 ||
+        if (std::strncmp(arg, "--display=", 10) == 0 ||
             std::strncmp(arg, "--universe=", 11) == 0) {
             continue;
         }
@@ -782,6 +854,10 @@ int dom_game_cli_parse(int argc, char **argv, dom_game_config *out_cfg, dom_game
     if (out_cfg->server_mode == DOM_GAME_SERVER_DEDICATED) {
         out_cfg->mode = DOM_GAME_MODE_HEADLESS;
     }
+    if (out_cfg->session_role_set &&
+        out_cfg->session_role == DOM_GAME_SESSION_ROLE_DEDICATED_SERVER) {
+        out_cfg->mode = DOM_GAME_MODE_HEADLESS;
+    }
 
     return 0;
 }
@@ -792,8 +868,9 @@ void dom_game_cli_print_help(FILE *out) {
     }
     std::fprintf(out, "Dominium game CLI\n");
     std::fprintf(out, "Usage: game_dominium [options]\n");
-    std::fprintf(out, "  --mode=gui|tui|headless  --auto-host  --ui.transparent-loading=0|1\n");
-    std::fprintf(out, "  --server=off|listen|dedicated  --headless-ticks=<u32>  --headless-local=0|1\n");
+    std::fprintf(out, "  --mode=gui|tui|headless  --role=single|host|server|client  --auth=server|lockstep\n");
+    std::fprintf(out, "  --server=off|listen|dedicated  --auto-host  --input-delay=<u32>\n");
+    std::fprintf(out, "  --headless-ticks=<u32>  --headless-local=0|1  --ui.transparent-loading=0|1\n");
     std::fprintf(out, "  --connect=<addr[:port]>  --port=<u16>\n");
     std::fprintf(out, "  --home=<path>  --instance=<id>  --profile=compat|baseline|perf\n");
     std::fprintf(out, "  --handshake=<relpath>  --dev-allow-ad-hoc-paths=0|1  --dev-allow-missing-content=0|1\n");

@@ -49,9 +49,26 @@ typedef enum dom_game_server_mode {
     DOM_GAME_SERVER_DEDICATED = 2
 } dom_game_server_mode;
 
+typedef enum dom_game_session_role {
+    DOM_GAME_SESSION_ROLE_SINGLE = 0,
+    DOM_GAME_SESSION_ROLE_HOST = 1,
+    DOM_GAME_SESSION_ROLE_DEDICATED_SERVER = 2,
+    DOM_GAME_SESSION_ROLE_CLIENT = 3
+} dom_game_session_role;
+
+typedef enum dom_game_session_authority {
+    DOM_GAME_SESSION_AUTH_SERVER = 0,
+    DOM_GAME_SESSION_AUTH_LOCKSTEP = 1
+} dom_game_session_authority;
+
 typedef struct dom_game_config {
     dom_game_mode        mode;
     dom_game_server_mode server_mode;
+    u32                  session_role_set;
+    u32                  session_authority_set;
+    dom_game_session_role session_role;
+    dom_game_session_authority session_authority;
+    u32                  session_input_delay;
     u32                  net_port;
     u32                  tick_rate_hz;
     u32                  deterministic_test;

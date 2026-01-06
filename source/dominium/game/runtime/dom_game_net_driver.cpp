@@ -137,6 +137,7 @@ public:
         } else {
             return DOM_NET_DRIVER_ERR;
         }
+        m_ctx.net->set_input_delay_ticks(m_cfg.input_delay_ticks);
         (void)d_net_cmd_queue_init();
         return DOM_NET_DRIVER_OK;
     }
@@ -192,6 +193,78 @@ private:
     bool m_has_snapshot;
 };
 
+class DomNetDriverLoopback : public DomNetDriver {
+public:
+    DomNetDriverLoopback(const DomSessionConfig &cfg, const DomNetDriverContext &ctx)
+        : DomNetDriver(cfg, ctx),
+          m_last_snapshot(),
+          m_has_snapshot(false) {
+    }
+
+    int start() {
+        if (!m_ctx.net || !ensure_runtime_ready(m_ctx)) {
+            return DOM_NET_DRIVER_ERR;
+        }
+        if (!m_ctx.net->init_single(m_cfg.tick_rate_hz)) {
+            return DOM_NET_DRIVER_ERR;
+        }
+        m_ctx.net->set_input_delay_ticks(m_cfg.input_delay_ticks);
+        (void)d_net_cmd_queue_init();
+        return DOM_NET_DRIVER_OK;
+    }
+
+    void stop() {
+        if (m_ctx.net) {
+            m_ctx.net->shutdown();
+        }
+        d_net_cmd_queue_shutdown();
+    }
+
+    int pump_network() {
+        std::vector<unsigned char> bytes;
+        if (!m_ctx.net || !ensure_runtime_ready(m_ctx)) {
+            return DOM_NET_DRIVER_ERR;
+        }
+        m_ctx.net->pump(dom_game_runtime_world(m_ctx.runtime),
+                        dom_game_runtime_sim(m_ctx.runtime),
+                        *m_ctx.instance);
+        if (poll_snapshot(bytes) == DOM_NET_DRIVER_OK && !bytes.empty()) {
+            (void)consume_snapshot(&bytes[0], bytes.size());
+        }
+        return DOM_NET_DRIVER_OK;
+    }
+
+    bool ready() const {
+        return m_ctx.net ? m_ctx.net->ready() : false;
+    }
+
+    int poll_snapshot(std::vector<unsigned char> &out_bytes) {
+        if (!m_ctx.runtime) {
+            return DOM_NET_DRIVER_ERR;
+        }
+        return (dom_game_net_snapshot_build(m_ctx.runtime, out_bytes) == DOM_NET_SNAPSHOT_OK)
+                   ? DOM_NET_DRIVER_OK
+                   : DOM_NET_DRIVER_ERR;
+    }
+
+    int consume_snapshot(const unsigned char *data, size_t len) {
+        dom_game_net_snapshot_desc desc;
+        if (!data || len == 0u) {
+            return DOM_NET_DRIVER_ERR;
+        }
+        if (dom_game_net_snapshot_parse(data, len, &desc) != DOM_NET_SNAPSHOT_OK) {
+            return DOM_NET_DRIVER_ERR;
+        }
+        m_last_snapshot = desc;
+        m_has_snapshot = true;
+        return DOM_NET_DRIVER_OK;
+    }
+
+private:
+    dom_game_net_snapshot_desc m_last_snapshot;
+    bool m_has_snapshot;
+};
+
 class DomNetDriverLockstep : public DomNetDriver {
 public:
     DomNetDriverLockstep(const DomSessionConfig &cfg, const DomNetDriverContext &ctx)
@@ -220,6 +293,7 @@ public:
         } else {
             return DOM_NET_DRIVER_ERR;
         }
+        m_ctx.net->set_input_delay_ticks(m_cfg.input_delay_ticks);
         (void)d_net_cmd_queue_init();
         return DOM_NET_DRIVER_OK;
     }
@@ -287,6 +361,15 @@ DomNetDriver *dom_net_driver_create(const DomSessionConfig &cfg,
                                     std::string *out_error) {
     if (out_error) {
         out_error->clear();
+    }
+    if (cfg.role == DOM_SESSION_ROLE_SINGLE) {
+        if (cfg.authority != DOM_SESSION_AUTH_SERVER_AUTH) {
+            if (out_error) {
+                *out_error = "single_requires_server_auth";
+            }
+            return 0;
+        }
+        return new DomNetDriverLoopback(cfg, ctx);
     }
     if (cfg.authority == DOM_SESSION_AUTH_LOCKSTEP) {
         return new DomNetDriverLockstep(cfg, ctx);

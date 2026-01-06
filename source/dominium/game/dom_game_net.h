@@ -48,6 +48,7 @@ public:
     d_peer_id local_peer() const { return m_local_peer; }
 
     u32 input_delay_ticks() const { return m_session.input_delay_ticks; }
+    void set_input_delay_ticks(u32 delay);
 
     /* Submit a locally authored command; assigns source_peer and cmd id. */
     bool submit_cmd(d_net_cmd *in_out_cmd);
