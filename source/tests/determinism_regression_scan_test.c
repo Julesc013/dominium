@@ -295,6 +295,30 @@ static int det_scan_file(const char *path) {
             } else if (det_streq(tok, "clock")) {
                 pending_call = 4;
                 pending_line = line;
+            } else if (det_streq(tok, "sin")) {
+                pending_call = 5;
+                pending_line = line;
+            } else if (det_streq(tok, "cos")) {
+                pending_call = 6;
+                pending_line = line;
+            } else if (det_streq(tok, "sqrt")) {
+                pending_call = 7;
+                pending_line = line;
+            } else if (det_streq(tok, "sinf")) {
+                pending_call = 8;
+                pending_line = line;
+            } else if (det_streq(tok, "cosf")) {
+                pending_call = 9;
+                pending_line = line;
+            } else if (det_streq(tok, "sqrtf")) {
+                pending_call = 10;
+                pending_line = line;
+            } else if (det_streq(tok, "pow")) {
+                pending_call = 11;
+                pending_line = line;
+            } else if (det_streq(tok, "powf")) {
+                pending_call = 12;
+                pending_line = line;
             }
 
             continue;
@@ -308,7 +332,15 @@ static int det_scan_file(const char *path) {
                 const char *name = (pending_call == 1) ? "rand(" :
                                    (pending_call == 2) ? "srand(" :
                                    (pending_call == 3) ? "time(" :
-                                   "clock(";
+                                   (pending_call == 4) ? "clock(" :
+                                   (pending_call == 5) ? "sin(" :
+                                   (pending_call == 6) ? "cos(" :
+                                   (pending_call == 7) ? "sqrt(" :
+                                   (pending_call == 8) ? "sinf(" :
+                                   (pending_call == 9) ? "cosf(" :
+                                   (pending_call == 10) ? "sqrtf(" :
+                                   (pending_call == 11) ? "pow(" :
+                                   "powf(";
                 det_report(path, pending_line ? pending_line : line, "forbidden call:", name);
                 fclose(f);
                 return 1;

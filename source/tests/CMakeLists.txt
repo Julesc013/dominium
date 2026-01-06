@@ -11,10 +11,12 @@ foreach(dir IN ITEMS
     ${CMAKE_SOURCE_DIR}/source/domino/struct
     ${CMAKE_SOURCE_DIR}/source/domino/trans
     ${CMAKE_SOURCE_DIR}/source/domino/world
+    ${CMAKE_SOURCE_DIR}/source/dominium/game/runtime
 )
     file(GLOB_RECURSE dir_files CONFIGURE_DEPENDS
         ${dir}/*.c
         ${dir}/*.h
+        ${dir}/*.cpp
     )
     list(APPEND DG_DET_SCAN_FILES ${dir_files})
 endforeach()
