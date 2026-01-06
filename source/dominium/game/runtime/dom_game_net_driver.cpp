@@ -16,12 +16,16 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include <cstdio>
 #include <cstring>
 
+#include "dom_paths.h"
 #include "dom_game_net.h"
 #include "dom_instance.h"
+#include "dominium/core_tlv.h"
 #include "runtime/dom_game_net_snapshot.h"
 #include "runtime/dom_game_runtime.h"
+#include "runtime/dom_io_guard.h"
 
 extern "C" {
+#include "domino/sys.h"
 #include "net/d_net_cmd.h"
 #include "net/d_net_transport.h"
 }
@@ -101,6 +105,49 @@ static std::string make_connect_addr(const DomSessionConfig &cfg) {
         char buf[32];
         std::snprintf(buf, sizeof(buf), ":%u", (unsigned)cfg.net_port);
         return cfg.connect_addr + buf;
+    }
+}
+
+enum {
+    DOM_GAME_DESYNC_TLV_VERSION = 1u,
+    DOM_GAME_DESYNC_TLV_TAG_TICK = 2u,
+    DOM_GAME_DESYNC_TLV_TAG_LOCAL_HASH = 3u,
+    DOM_GAME_DESYNC_TLV_TAG_PEER_HASH = 4u
+};
+
+static bool write_desync_bundle(const DomGamePaths &paths,
+                                u64 tick,
+                                u64 local_hash,
+                                u64 peer_hash) {
+    if (paths.run_root.empty()) {
+        return false;
+    }
+
+    core_tlv::TlvWriter w;
+    w.add_u32(core_tlv::CORE_TLV_TAG_SCHEMA_VERSION, DOM_GAME_DESYNC_TLV_VERSION);
+    w.add_u64(DOM_GAME_DESYNC_TLV_TAG_TICK, tick);
+    w.add_u64(DOM_GAME_DESYNC_TLV_TAG_LOCAL_HASH, local_hash);
+    w.add_u64(DOM_GAME_DESYNC_TLV_TAG_PEER_HASH, peer_hash);
+
+    {
+        char name[64];
+        const std::vector<unsigned char> &bytes = w.bytes();
+        std::snprintf(name, sizeof(name), "desync_bundle_%llu.tlv", (unsigned long long)tick);
+        const std::string path = join(paths.run_root, name);
+        if (!dom_io_guard_io_allowed()) {
+            dom_io_guard_note_violation("desync_bundle_write", path.c_str());
+            return false;
+        }
+        void *fh = dsys_file_open(path.c_str(), "wb");
+        size_t wrote = 0u;
+        if (!fh) {
+            return false;
+        }
+        if (!bytes.empty()) {
+            wrote = dsys_file_write(fh, &bytes[0], bytes.size());
+        }
+        dsys_file_close(fh);
+        return wrote == bytes.size();
     }
 }
 
@@ -268,7 +315,8 @@ private:
 class DomNetDriverLockstep : public DomNetDriver {
 public:
     DomNetDriverLockstep(const DomSessionConfig &cfg, const DomNetDriverContext &ctx)
-        : DomNetDriver(cfg, ctx) {
+        : DomNetDriver(cfg, ctx),
+          m_desync_written(false) {
     }
 
     int start() {
@@ -312,6 +360,21 @@ public:
         m_ctx.net->pump(dom_game_runtime_world(m_ctx.runtime),
                         dom_game_runtime_sim(m_ctx.runtime),
                         *m_ctx.instance);
+        if (m_ctx.runtime) {
+            u64 local_tick = dom_game_runtime_get_tick(m_ctx.runtime);
+            u64 local_hash = dom_game_runtime_get_hash(m_ctx.runtime);
+            u64 peer_tick = 0ull;
+            u64 peer_hash = 0ull;
+            while (poll_peer_hash(&peer_tick, &peer_hash) == DOM_NET_DRIVER_OK) {
+                if (!m_desync_written &&
+                    m_ctx.paths &&
+                    peer_tick == local_tick &&
+                    peer_hash != local_hash) {
+                    (void)write_desync_bundle(*m_ctx.paths, local_tick, local_hash, peer_hash);
+                    m_desync_written = true;
+                }
+            }
+        }
         return DOM_NET_DRIVER_OK;
     }
 
@@ -354,6 +417,9 @@ public:
         *out_hash = h.world_hash;
         return DOM_NET_DRIVER_OK;
     }
+
+private:
+    bool m_desync_written;
 };
 
 DomNetDriver *dom_net_driver_create(const DomSessionConfig &cfg,
