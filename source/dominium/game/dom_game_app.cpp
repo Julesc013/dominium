@@ -145,6 +145,7 @@ enum {
     DOM_GAME_REFUSAL_HANDSHAKE_INVALID = 2002u,
     DOM_GAME_REFUSAL_HANDSHAKE_INSTANCE_MISMATCH = 2003u,
     DOM_GAME_REFUSAL_INSTANCE_ROOT_UNAVAILABLE = 2004u,
+    DOM_GAME_REFUSAL_HANDSHAKE_SIM_CAPS_MISMATCH = 2005u,
     DOM_GAME_REFUSAL_UNIVERSE_OP_UNSUPPORTED = 2101u
 };
 
@@ -1109,6 +1110,16 @@ bool DomGameApp::init_paths(const dom_game_config &cfg) {
             m_refusal_detail = "handshake_instance_mismatch";
             emit_refusal(m_fs_paths, m_run_id, instance_id, m_refusal_code, m_refusal_detail);
             return false;
+        }
+        {
+            DomSimCaps required;
+            dom_sim_caps_init_default(required);
+            if (!dom_sim_caps_compatible(hs.sim_caps, required)) {
+                m_refusal_code = DOM_GAME_REFUSAL_HANDSHAKE_SIM_CAPS_MISMATCH;
+                m_refusal_detail = "handshake_sim_caps_mismatch";
+                emit_refusal(m_fs_paths, m_run_id, instance_id, m_refusal_code, m_refusal_detail);
+                return false;
+            }
         }
 
         instance_id = hs.instance_id;

@@ -123,7 +123,14 @@ DomGameHandshake::DomGameHandshake()
       instance_id(),
       instance_manifest_hash_bytes(),
       run_root_ref(),
-      instance_root_ref() {
+      instance_root_ref(),
+      sim_caps(),
+      has_sim_caps(0u),
+      perf_caps(),
+      has_perf_caps(0u),
+      has_provider_bindings_hash(0u),
+      provider_bindings_hash64(0ull),
+      identity_hash64(0ull) {
 }
 
 bool dom_game_handshake_from_tlv_bytes(const unsigned char *data,
@@ -170,14 +177,47 @@ bool dom_game_handshake_from_tlv_bytes(const unsigned char *data,
                 return false;
             }
             break;
+        case DOM_GAME_HANDSHAKE_TLV_TAG_SIM_CAPS: {
+            DomSimCaps caps;
+            if (!dom_sim_caps_from_tlv(rec.payload, rec.len, caps)) {
+                return false;
+            }
+            out_hs.sim_caps = caps;
+            out_hs.has_sim_caps = 1u;
+            break;
+        }
+        case DOM_GAME_HANDSHAKE_TLV_TAG_PERF_CAPS: {
+            DomPerfCaps caps;
+            if (!dom_perf_caps_from_tlv(rec.payload, rec.len, caps)) {
+                return false;
+            }
+            out_hs.perf_caps = caps;
+            out_hs.has_perf_caps = 1u;
+            break;
+        }
+        case DOM_GAME_HANDSHAKE_TLV_TAG_PROVIDER_BINDINGS_HASH: {
+            u64 v = 0ull;
+            if (core_tlv::tlv_read_u64_le(rec.payload, rec.len, v)) {
+                out_hs.has_provider_bindings_hash = 1u;
+                out_hs.provider_bindings_hash64 = v;
+            }
+            break;
+        }
         default:
             break;
         }
     }
 
-    if (out_hs.run_id == 0ull || out_hs.instance_id.empty()) {
+    if (out_hs.run_id == 0ull || out_hs.instance_id.empty() || !out_hs.has_sim_caps) {
         return false;
     }
+    out_hs.identity_hash64 = dom_identity_digest64(
+        out_hs.sim_caps,
+        out_hs.instance_manifest_hash_bytes.empty()
+            ? (const unsigned char *)0
+            : &out_hs.instance_manifest_hash_bytes[0],
+        (u32)out_hs.instance_manifest_hash_bytes.size(),
+        out_hs.has_provider_bindings_hash ? out_hs.provider_bindings_hash64 : 0ull);
     return true;
 }
 

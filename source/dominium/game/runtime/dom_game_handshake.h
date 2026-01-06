@@ -22,6 +22,7 @@ extern "C" {
 }
 
 #include "runtime/dom_game_paths.h"
+#include "dom_caps.h"
 
 namespace dom {
 
@@ -32,7 +33,10 @@ enum DomGameHandshakeTlvTag {
     DOM_GAME_HANDSHAKE_TLV_TAG_INSTANCE_ID = 3u,
     DOM_GAME_HANDSHAKE_TLV_TAG_INSTANCE_MANIFEST_HASH = 4u,
     DOM_GAME_HANDSHAKE_TLV_TAG_RUN_ROOT_REF = 100u,
-    DOM_GAME_HANDSHAKE_TLV_TAG_INSTANCE_ROOT_REF = 101u
+    DOM_GAME_HANDSHAKE_TLV_TAG_INSTANCE_ROOT_REF = 101u,
+    DOM_GAME_HANDSHAKE_TLV_TAG_SIM_CAPS = 15u,
+    DOM_GAME_HANDSHAKE_TLV_TAG_PERF_CAPS = 16u,
+    DOM_GAME_HANDSHAKE_TLV_TAG_PROVIDER_BINDINGS_HASH = 17u
 };
 
 enum DomGameHandshakePathRefTag {
@@ -60,6 +64,13 @@ struct DomGameHandshake {
     std::vector<unsigned char> instance_manifest_hash_bytes;
     DomGamePathRef run_root_ref;
     DomGamePathRef instance_root_ref;
+    DomSimCaps sim_caps;
+    u32 has_sim_caps;
+    DomPerfCaps perf_caps;
+    u32 has_perf_caps;
+    u32 has_provider_bindings_hash;
+    u64 provider_bindings_hash64;
+    u64 identity_hash64;
 
     DomGameHandshake();
 };
