@@ -22,6 +22,7 @@ add_executable(dominium_game
     runtime/dom_game_replay.cpp
     runtime/dom_game_session.cpp
     runtime/dom_game_net_driver.cpp
+    runtime/dom_game_net_snapshot.cpp
     runtime/dom_derived_jobs.cpp
     runtime/dom_io_guard.cpp
     runtime/dom_fidelity.cpp
