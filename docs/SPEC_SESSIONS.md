@@ -29,6 +29,11 @@ Singleplayer uses the same code paths as networked play:
 - SINGLE sessions run HOST + CLIENT in-process via a loopback driver.
 - This enforces identical command and snapshot paths.
 
+## QoS and assistance layer
+QoS negotiation is optional and non-sim; see `docs/SPEC_QOS_ASSISTANCE.md`.
+SERVER_AUTH uses QoS to adjust snapshot cadence/detail and interest radius.
+LOCKSTEP uses QoS for diagnostics cadence only; authority never moves.
+
 ## Validation requirements
 Session configuration MUST reject:
 - SINGLE or DEDICATED_SERVER with LOCKSTEP authority.
