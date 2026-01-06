@@ -18,6 +18,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 
 #include "dom_game_net.h"
 #include "dom_instance.h"
+#include "runtime/dom_game_net_snapshot.h"
 #include "runtime/dom_game_runtime.h"
 
 extern "C" {
@@ -108,7 +109,9 @@ static std::string make_connect_addr(const DomSessionConfig &cfg) {
 class DomNetDriverServerAuth : public DomNetDriver {
 public:
     DomNetDriverServerAuth(const DomSessionConfig &cfg, const DomNetDriverContext &ctx)
-        : DomNetDriver(cfg, ctx) {
+        : DomNetDriver(cfg, ctx),
+          m_last_snapshot(),
+          m_has_snapshot(false) {
     }
 
     int start() {
@@ -158,6 +161,35 @@ public:
     bool ready() const {
         return m_ctx.net ? m_ctx.net->ready() : false;
     }
+
+    int poll_snapshot(std::vector<unsigned char> &out_bytes) {
+        if (m_role == DOM_SESSION_ROLE_CLIENT) {
+            return DOM_NET_DRIVER_NO_DATA;
+        }
+        if (!m_ctx.runtime) {
+            return DOM_NET_DRIVER_ERR;
+        }
+        return (dom_game_net_snapshot_build(m_ctx.runtime, out_bytes) == DOM_NET_SNAPSHOT_OK)
+                   ? DOM_NET_DRIVER_OK
+                   : DOM_NET_DRIVER_ERR;
+    }
+
+    int consume_snapshot(const unsigned char *data, size_t len) {
+        dom_game_net_snapshot_desc desc;
+        if (!data || len == 0u) {
+            return DOM_NET_DRIVER_ERR;
+        }
+        if (dom_game_net_snapshot_parse(data, len, &desc) != DOM_NET_SNAPSHOT_OK) {
+            return DOM_NET_DRIVER_ERR;
+        }
+        m_last_snapshot = desc;
+        m_has_snapshot = true;
+        return DOM_NET_DRIVER_OK;
+    }
+
+private:
+    dom_game_net_snapshot_desc m_last_snapshot;
+    bool m_has_snapshot;
 };
 
 class DomNetDriverLockstep : public DomNetDriver {
