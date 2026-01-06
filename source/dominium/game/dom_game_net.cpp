@@ -360,7 +360,8 @@ DomGameNet::DomGameNet()
       m_dedicated(false),
       m_handshake_sent(true),
       m_impl(0),
-      m_hash_events() {
+      m_hash_events(),
+      m_qos_events() {
     std::memset(&m_session, 0, sizeof(m_session));
 }
 
@@ -506,6 +507,7 @@ void DomGameNet::shutdown() {
     m_dedicated = false;
     m_handshake_sent = true;
     m_hash_events.clear();
+    m_qos_events.clear();
 }
 
 void DomGameNet::pump(d_world *world, d_sim_context *sim, const InstanceInfo &inst) {
@@ -821,6 +823,14 @@ void DomGameNet::handle_events(d_world *world, d_sim_context *sim, const Instanc
             }
         } else if (ev.type == D_NET_EVENT_HASH) {
             m_hash_events.push_back(ev.u.hash);
+        } else if (ev.type == D_NET_EVENT_QOS) {
+            QosEvent q;
+            q.peer = ev.source_peer;
+            if (ev.u.qos.data.ptr && ev.u.qos.data.len > 0u) {
+                q.bytes.assign(ev.u.qos.data.ptr,
+                               ev.u.qos.data.ptr + ev.u.qos.data.len);
+            }
+            m_qos_events.push_back(q);
         }
 
         d_net_event_free(&ev);
@@ -903,6 +913,19 @@ bool DomGameNet::poll_hash(d_net_hash *out_hash) {
     }
     *out_hash = m_hash_events.front();
     m_hash_events.erase(m_hash_events.begin());
+    return true;
+}
+
+bool DomGameNet::poll_qos(d_peer_id *out_peer, std::vector<unsigned char> &out_bytes) {
+    if (!out_peer || m_qos_events.empty()) {
+        return false;
+    }
+    {
+        const QosEvent &q = m_qos_events.front();
+        *out_peer = q.peer;
+        out_bytes = q.bytes;
+    }
+    m_qos_events.erase(m_qos_events.begin());
     return true;
 }
 

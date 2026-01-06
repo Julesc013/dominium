@@ -553,6 +553,42 @@ int d_net_decode_error(const void *buf, u32 size, d_net_error *out_e) {
     return 0;
 }
 
+int d_net_encode_qos(const d_net_qos *q, void *buf, u32 buf_size, u32 *out_size) {
+    if (!q || !buf || !out_size) {
+        return -1;
+    }
+    if (q->data.len > 0u && !q->data.ptr) {
+        return -1;
+    }
+    return d_net_encode_frame(D_NET_MSG_QOS, q->data.ptr, q->data.len, buf, buf_size, out_size);
+}
+
+int d_net_decode_qos(const void *buf, u32 size, d_net_qos *out_q) {
+    d_net_msg_type type;
+    d_tlv_blob payload;
+    int rc;
+    if (!out_q) {
+        return -1;
+    }
+    memset(out_q, 0, sizeof(*out_q));
+    rc = d_net_decode_frame(buf, size, &type, &payload);
+    if (rc != 0) {
+        return rc;
+    }
+    if (type != D_NET_MSG_QOS) {
+        return -2;
+    }
+    if (payload.len > 0u && payload.ptr) {
+        out_q->data.ptr = (unsigned char *)malloc(payload.len);
+        if (!out_q->data.ptr) {
+            return -3;
+        }
+        memcpy(out_q->data.ptr, payload.ptr, payload.len);
+        out_q->data.len = payload.len;
+    }
+    return 0;
+}
+
 void d_net_snapshot_free(d_net_snapshot *snap) {
     if (!snap) {
         return;
@@ -563,3 +599,12 @@ void d_net_snapshot_free(d_net_snapshot *snap) {
     memset(snap, 0, sizeof(*snap));
 }
 
+void d_net_qos_free(d_net_qos *qos) {
+    if (!qos) {
+        return;
+    }
+    if (qos->data.ptr) {
+        free(qos->data.ptr);
+    }
+    memset(qos, 0, sizeof(*qos));
+}
