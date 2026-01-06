@@ -13,6 +13,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 */
 #include <cstdio>
 #include <cstring>
+#include <string>
 
 #include "dom_game_net.h"
 #include "dom_instance.h"
