@@ -20,6 +20,7 @@ add_executable(dominium_game
     runtime/dom_game_content_id.cpp
     runtime/dom_game_save.cpp
     runtime/dom_game_replay.cpp
+    runtime/dom_game_session.cpp
     runtime/dom_derived_jobs.cpp
     runtime/dom_io_guard.cpp
     runtime/dom_fidelity.cpp
