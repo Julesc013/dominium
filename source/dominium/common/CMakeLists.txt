@@ -144,6 +144,8 @@ add_library(dominium_common STATIC
     dom_profile_cli.cpp
     dom_schema_registry.cpp
     dom_migration.cpp
+    dom_caps.cpp
+    dom_caps_split.cpp
 )
 
 target_include_directories(dominium_common
