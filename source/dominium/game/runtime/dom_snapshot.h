@@ -14,6 +14,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #ifndef DOM_SNAPSHOT_H
 #define DOM_SNAPSHOT_H
 
+#include "domino/core/fixed.h"
 #include "domino/core/types.h"
 #include "runtime/dom_cosmo_transit.h"
 
@@ -26,7 +27,11 @@ enum {
     DOM_VIEW_STATE_SNAPSHOT_VERSION = 1u,
     DOM_GAME_SNAPSHOT_VERSION = 1u,
     DOM_COSMO_MAP_SNAPSHOT_VERSION = 1u,
-    DOM_COSMO_TRANSIT_SNAPSHOT_VERSION = 1u
+    DOM_COSMO_TRANSIT_SNAPSHOT_VERSION = 1u,
+    DOM_SYSTEM_LIST_SNAPSHOT_VERSION = 1u,
+    DOM_BODY_LIST_SNAPSHOT_VERSION = 1u,
+    DOM_FRAME_TREE_SNAPSHOT_VERSION = 1u,
+    DOM_BODY_TOPOLOGY_SNAPSHOT_VERSION = 1u
 };
 
 enum {
@@ -97,6 +102,63 @@ typedef struct dom_cosmo_transit_snapshot {
     u64 last_arrival_tick;
 } dom_cosmo_transit_snapshot;
 
+typedef struct dom_system_view {
+    u64 id;
+    u64 parent_id;
+} dom_system_view;
+
+typedef struct dom_body_view {
+    u64 id;
+    u64 system_id;
+    u32 kind;
+    q48_16 radius_m;
+    u64 mu_m3_s2;
+    u64 rotation_period_ticks;
+} dom_body_view;
+
+typedef struct dom_frame_view {
+    u64 id;
+    u64 parent_id;
+    u32 kind;
+    u64 body_id;
+} dom_frame_view;
+
+typedef struct dom_body_topology_view {
+    u64 body_id;
+    u32 topology_kind;
+    q48_16 param_a_m;
+    q48_16 param_b_m;
+    q48_16 param_c_m;
+} dom_body_topology_view;
+
+typedef struct dom_system_list_snapshot {
+    u32 struct_size;
+    u32 struct_version;
+    u32 system_count;
+    dom_system_view *systems;
+} dom_system_list_snapshot;
+
+typedef struct dom_body_list_snapshot {
+    u32 struct_size;
+    u32 struct_version;
+    u32 body_count;
+    dom_body_view *bodies;
+} dom_body_list_snapshot;
+
+typedef struct dom_frame_tree_snapshot {
+    u32 struct_size;
+    u32 struct_version;
+    u32 frame_count;
+    dom_frame_view *frames;
+} dom_frame_tree_snapshot;
+
+typedef struct dom_body_topology_snapshot {
+    u32 struct_size;
+    u32 struct_version;
+    u32 body_count;
+    dom_body_topology_view *bodies;
+} dom_body_topology_snapshot;
+
 struct dom_game_runtime;
 
 dom_game_snapshot *dom_game_runtime_build_snapshot(const struct dom_game_runtime *rt, u32 flags);
@@ -105,6 +167,14 @@ dom_cosmo_map_snapshot *dom_game_runtime_build_cosmo_map_snapshot(const struct d
 void dom_game_runtime_release_cosmo_map_snapshot(dom_cosmo_map_snapshot *snapshot);
 dom_cosmo_transit_snapshot *dom_game_runtime_build_cosmo_transit_snapshot(const struct dom_game_runtime *rt);
 void dom_game_runtime_release_cosmo_transit_snapshot(dom_cosmo_transit_snapshot *snapshot);
+dom_system_list_snapshot *dom_game_runtime_build_system_list_snapshot(const struct dom_game_runtime *rt);
+void dom_game_runtime_release_system_list_snapshot(dom_system_list_snapshot *snapshot);
+dom_body_list_snapshot *dom_game_runtime_build_body_list_snapshot(const struct dom_game_runtime *rt);
+void dom_game_runtime_release_body_list_snapshot(dom_body_list_snapshot *snapshot);
+dom_frame_tree_snapshot *dom_game_runtime_build_frame_tree_snapshot(const struct dom_game_runtime *rt);
+void dom_game_runtime_release_frame_tree_snapshot(dom_frame_tree_snapshot *snapshot);
+dom_body_topology_snapshot *dom_game_runtime_build_body_topology_snapshot(const struct dom_game_runtime *rt);
+void dom_game_runtime_release_body_topology_snapshot(dom_body_topology_snapshot *snapshot);
 
 #ifdef __cplusplus
 } /* extern "C" */

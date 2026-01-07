@@ -84,6 +84,9 @@ struct d_replay_context *dom_game_runtime_replay(dom_game_runtime *rt);
 const void *dom_game_runtime_session(const dom_game_runtime *rt);
 const void *dom_game_runtime_instance(const dom_game_runtime *rt);
 const void *dom_game_runtime_cosmo_graph(const dom_game_runtime *rt);
+const void *dom_game_runtime_system_registry(const dom_game_runtime *rt);
+const void *dom_game_runtime_body_registry(const dom_game_runtime *rt);
+const void *dom_game_runtime_frames(const dom_game_runtime *rt);
 
 int dom_game_runtime_set_replay_last_tick(dom_game_runtime *rt, u32 last_tick);
 int dom_game_runtime_set_replay_playback(dom_game_runtime *rt, void *playback);
