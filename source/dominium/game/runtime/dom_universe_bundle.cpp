@@ -12,6 +12,7 @@ RESPONSIBILITY: Portable universe bundle container (read/write + identity valida
 #include <vector>
 
 #include "dom_feature_epoch.h"
+#include "dominium/core_tlv.h"
 
 extern "C" {
 #include "domino/io/container.h"
@@ -39,11 +40,13 @@ struct BundleState {
     std::string instance_id;
     u64 content_graph_hash;
     u64 sim_flags_hash;
+    u64 cosmo_graph_hash;
     u32 ups;
     u64 tick_index;
     u32 feature_epoch;
     bool identity_set;
 
+    BundleChunk cosmo;
     BundleChunk cele;
     BundleChunk vesl;
     BundleChunk surf;
@@ -56,10 +59,12 @@ struct BundleState {
           instance_id(),
           content_graph_hash(0ull),
           sim_flags_hash(0ull),
+          cosmo_graph_hash(0ull),
           ups(0u),
           tick_index(0ull),
           feature_epoch(0u),
           identity_set(false),
+          cosmo(),
           cele(),
           vesl(),
           surf(),
@@ -73,6 +78,7 @@ static BundleChunk *chunk_for_type(BundleState *state, u32 type_id) {
         return 0;
     }
     switch (type_id) {
+        case DOM_UNIVERSE_CHUNK_COSM: return &state->cosmo;
         case DOM_UNIVERSE_CHUNK_CELE: return &state->cele;
         case DOM_UNIVERSE_CHUNK_VESL: return &state->vesl;
         case DOM_UNIVERSE_CHUNK_SURF: return &state->surf;
@@ -95,10 +101,12 @@ static void bundle_reset(BundleState *state) {
     state->instance_id.clear();
     state->content_graph_hash = 0ull;
     state->sim_flags_hash = 0ull;
+    state->cosmo_graph_hash = 0ull;
     state->ups = 0u;
     state->tick_index = 0ull;
     state->feature_epoch = 0u;
     state->identity_set = false;
+    state->cosmo = BundleChunk();
     state->cele = BundleChunk();
     state->vesl = BundleChunk();
     state->surf = BundleChunk();
@@ -122,6 +130,13 @@ static int read_chunk_payload(dtlv_reader *reader,
     return DOM_UNIVERSE_BUNDLE_OK;
 }
 
+static u64 hash_bytes_fnv1a64(const std::vector<unsigned char> &bytes) {
+    if (bytes.empty()) {
+        return 0ull;
+    }
+    return dom::core_tlv::tlv_fnv1a64(&bytes[0], bytes.size());
+}
+
 static int parse_time_chunk(BundleState *state,
                             const unsigned char *payload,
                             u32 payload_len) {
@@ -138,6 +153,7 @@ static int parse_time_chunk(BundleState *state,
     bool have_ups = false;
     bool have_tick = false;
     bool have_epoch = false;
+    bool have_cosmo = false;
 
     if (!state) {
         return DOM_UNIVERSE_BUNDLE_INVALID_ARGUMENT;
@@ -173,6 +189,13 @@ static int parse_time_chunk(BundleState *state,
                 state->sim_flags_hash = dtlv_le_read_u64(pl);
                 have_flags = true;
                 break;
+            case DOM_UNIVERSE_TLV_COSMO_HASH:
+                if (!pl || pl_len != 8u) {
+                    return DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
+                }
+                state->cosmo_graph_hash = dtlv_le_read_u64(pl);
+                have_cosmo = true;
+                break;
             case DOM_UNIVERSE_TLV_UPS:
                 if (!pl || pl_len != 4u) {
                     return DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
@@ -203,7 +226,7 @@ static int parse_time_chunk(BundleState *state,
         return DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
     }
     if (!have_universe || !have_instance || !have_content ||
-        !have_flags || !have_ups || !have_tick) {
+        !have_flags || !have_cosmo || !have_ups || !have_tick) {
         return DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
     }
     if (!have_epoch) {
@@ -292,6 +315,7 @@ static int identity_matches(const BundleState *state,
     }
     if (expected->content_graph_hash != state->content_graph_hash ||
         expected->sim_flags_hash != state->sim_flags_hash ||
+        expected->cosmo_graph_hash != state->cosmo_graph_hash ||
         expected->ups != state->ups ||
         expected->tick_index != state->tick_index) {
         return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
@@ -343,6 +367,17 @@ static int write_time_chunk(dtlv_writer *writer, const BundleState *state) {
         dtlv_le_write_u64(buf, state->sim_flags_hash);
         rc = dtlv_writer_write_tlv(writer,
                                    DOM_UNIVERSE_TLV_SIM_FLAGS_HASH,
+                                   buf,
+                                   8u);
+    }
+    if (rc != 0) {
+        return DOM_UNIVERSE_BUNDLE_IO_ERROR;
+    }
+    {
+        unsigned char buf[8];
+        dtlv_le_write_u64(buf, state->cosmo_graph_hash);
+        rc = dtlv_writer_write_tlv(writer,
+                                   DOM_UNIVERSE_TLV_COSMO_HASH,
                                    buf,
                                    8u);
     }
@@ -467,14 +502,20 @@ int dom_universe_bundle_set_identity(dom_universe_bundle *bundle,
     if (!id->universe_id || !id->instance_id ||
         id->universe_id_len == 0u || id->instance_id_len == 0u ||
         id->ups == 0u || id->feature_epoch == 0u ||
+        id->cosmo_graph_hash == 0ull ||
         !dom::dom_feature_epoch_supported(id->feature_epoch)) {
         return DOM_UNIVERSE_BUNDLE_INVALID_ARGUMENT;
     }
     state = &bundle->state;
+    if (state->cosmo.present &&
+        state->cosmo_graph_hash != id->cosmo_graph_hash) {
+        return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
+    }
     state->universe_id.assign(id->universe_id, id->universe_id_len);
     state->instance_id.assign(id->instance_id, id->instance_id_len);
     state->content_graph_hash = id->content_graph_hash;
     state->sim_flags_hash = id->sim_flags_hash;
+    state->cosmo_graph_hash = id->cosmo_graph_hash;
     state->ups = id->ups;
     state->tick_index = id->tick_index;
     state->feature_epoch = id->feature_epoch;
@@ -498,6 +539,7 @@ int dom_universe_bundle_get_identity(const dom_universe_bundle *bundle,
     out_id->instance_id_len = (u32)state->instance_id.size();
     out_id->content_graph_hash = state->content_graph_hash;
     out_id->sim_flags_hash = state->sim_flags_hash;
+    out_id->cosmo_graph_hash = state->cosmo_graph_hash;
     out_id->ups = state->ups;
     out_id->tick_index = state->tick_index;
     out_id->feature_epoch = state->feature_epoch;
@@ -531,6 +573,13 @@ int dom_universe_bundle_set_chunk(dom_universe_bundle *bundle,
                               (const unsigned char *)payload + payload_size);
     }
     chunk->present = true;
+    if (type_id == DOM_UNIVERSE_CHUNK_COSM) {
+        const u64 hash = hash_bytes_fnv1a64(chunk->payload);
+        if (bundle->state.identity_set && bundle->state.cosmo_graph_hash != hash) {
+            return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
+        }
+        bundle->state.cosmo_graph_hash = hash;
+    }
     return DOM_UNIVERSE_BUNDLE_OK;
 }
 
@@ -594,12 +643,15 @@ int dom_universe_bundle_read_file(const char *path,
     u32 count;
     u32 i;
     bool have_time = false;
+    bool have_cosm = false;
     bool have_cele = false;
     bool have_vesl = false;
     bool have_surf = false;
     bool have_locl = false;
     bool have_rng = false;
     bool have_forn = false;
+    u64 cosmo_payload_hash = 0ull;
+    bool cosmo_hash_set = false;
     int rc;
 
     if (!path || !out_bundle) {
@@ -637,6 +689,32 @@ int dom_universe_bundle_read_file(const char *path,
                     goto cleanup;
                 }
                 have_time = true;
+                break;
+            }
+            case DOM_UNIVERSE_CHUNK_COSM: {
+                BundleChunk *chunk = chunk_for_type(&out_bundle->state, entry->type_id);
+                if (!chunk) {
+                    rc = DOM_UNIVERSE_BUNDLE_UNSUPPORTED_SCHEMA;
+                    goto cleanup;
+                }
+                if (entry->version != 1u) {
+                    rc = DOM_UNIVERSE_BUNDLE_MIGRATION_REQUIRED;
+                    goto cleanup;
+                }
+                rc = read_chunk_payload(&reader, entry, chunk->payload);
+                if (rc != DOM_UNIVERSE_BUNDLE_OK) {
+                    goto cleanup;
+                }
+                chunk->version = entry->version;
+                chunk->present = true;
+                cosmo_payload_hash = hash_bytes_fnv1a64(chunk->payload);
+                cosmo_hash_set = true;
+                if (out_bundle->state.identity_set &&
+                    out_bundle->state.cosmo_graph_hash != cosmo_payload_hash) {
+                    rc = DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
+                    goto cleanup;
+                }
+                have_cosm = true;
                 break;
             }
             case DOM_UNIVERSE_CHUNK_CELE:
@@ -702,8 +780,14 @@ int dom_universe_bundle_read_file(const char *path,
         }
     }
 
-    if (!have_time || !have_cele || !have_vesl || !have_surf ||
+    if (!have_time || !have_cosm || !have_cele || !have_vesl || !have_surf ||
         !have_locl || !have_rng || !have_forn) {
+        rc = DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
+        goto cleanup;
+    }
+    if (out_bundle->state.identity_set &&
+        cosmo_hash_set &&
+        cosmo_payload_hash != out_bundle->state.cosmo_graph_hash) {
         rc = DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
         goto cleanup;
     }
@@ -738,6 +822,9 @@ int dom_universe_bundle_write_file(const char *path,
     if (!state->identity_set) {
         return DOM_UNIVERSE_BUNDLE_INVALID_ARGUMENT;
     }
+    if (hash_bytes_fnv1a64(state->cosmo.payload) != state->cosmo_graph_hash) {
+        return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
+    }
 
     dtlv_writer_init(&writer);
     if (dtlv_writer_open_file(&writer, path) != 0) {
@@ -746,6 +833,10 @@ int dom_universe_bundle_write_file(const char *path,
     }
 
     rc = write_time_chunk(&writer, state);
+    if (rc != DOM_UNIVERSE_BUNDLE_OK) {
+        goto cleanup;
+    }
+    rc = write_raw_chunk(&writer, DOM_UNIVERSE_CHUNK_COSM, state->cosmo);
     if (rc != DOM_UNIVERSE_BUNDLE_OK) {
         goto cleanup;
     }

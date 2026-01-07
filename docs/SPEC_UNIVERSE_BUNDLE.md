@@ -12,6 +12,7 @@ skip-unknown format intended for archival and migration.
 ## 2. Required chunks (v1)
 Chunk type IDs are ASCII fourcc values stored as `u32_le`:
 - `TIME` (v1): identity + timebase TLV (required)
+- `COSM` (v1): cosmos graph container (required; may be empty)
 - `CELE` (v1): celestial bodies and systems (required; may be empty)
 - `VESL` (v1): vessel records (required; may be empty)
 - `SURF` (v1): surface records (required; may be empty)
@@ -21,6 +22,12 @@ Chunk type IDs are ASCII fourcc values stored as `u32_le`:
 
 Unknown chunk types must be skipped safely and preserved for round-trip.
 
+## 2.1 COSM chunk (cosmos graph container)
+The `COSM` chunk payload is a DTLV container (see `docs/SPEC_CONTAINER_TLV.md`)
+that stores the logical cosmos graph:
+- Required subchunks (v1): `SEED`, `ENTY`, `EDGE`, `FORN`.
+- Unknown COSM subchunks must be preserved by copying into `COSM/FORN`.
+
 ## 3. TIME chunk TLV (identity + timebase)
 TLV records use `u32_le tag` + `u32_le len` headers.
 
@@ -29,8 +36,10 @@ Required tags:
 - `0x0002` `INSTANCE_ID` (UTF-8 bytes, no null terminator)
 - `0x0003` `CONTENT_GRAPH_HASH` (`u64_le`)
 - `0x0004` `SIM_FLAGS_HASH` (`u64_le`)
+- `0x0008` `COSMO_HASH` (`u64_le`)
 - `0x0005` `UPS` (`u32_le`)
 - `0x0006` `TICK_INDEX` (`u64_le`)
+- `0x0007` `FEATURE_EPOCH` (`u32_le`)
 
 Notes:
 - Missing required tags are a hard refusal.
@@ -59,7 +68,9 @@ Universe bundles are bound to:
 - `UNIVERSE_ID`, `INSTANCE_ID`
 - content/pack graph hash
 - sim-affecting flags hash
+- cosmos graph hash
 - timebase (`UPS`, `TICK_INDEX`)
+- feature epoch
 
 Mismatch with the launcher handshake or instance context must refuse by
 default (`IDENTITY_MISMATCH`).
