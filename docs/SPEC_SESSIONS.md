@@ -17,6 +17,10 @@ runtime session layer.
 
 Authority mode is fixed for the session lifetime.
 
+Cosmos-lane travel state is authoritative and must follow the selected
+authority mode for command/hash exchange and refusal behavior. See
+`docs/SPEC_COSMO_LANE.md` and `docs/SPEC_LOGICAL_TRAVEL.md`.
+
 ## Session flags
 Session configuration carries launcher-provided flags and negotiation toggles:
 - **SAFE_MODE / OFFLINE_MODE:** launcher-defined policy flags (pass-through).
@@ -49,4 +53,6 @@ Session configuration MUST ensure:
 ## Related specs
 - `docs/SPEC_DETERMINISM.md`
 - `docs/SPEC_QOS_ASSISTANCE.md`
+- `docs/SPEC_COSMO_LANE.md`
+- `docs/SPEC_LOGICAL_TRAVEL.md`
 - `source/dominium/game/SPEC_RUNTIME.md`

@@ -11,6 +11,8 @@ deterministic, instance-scoped graph and does not imply any global directory.
 
 ## 2. Core node types (graph)
 Minimum node types:
+- **Filament**: logical grouping of clusters (cosmos lane).
+- **Cluster**: logical grouping of galaxies (cosmos lane).
 - **Galaxy**: logical grouping of systems.
 - **System**: collection of bodies and local domains.
 - **Body**: star/planet/moon with orbital parameters and surfaces.
@@ -20,6 +22,9 @@ Minimum node types:
 
 Edges are explicit and typed (e.g., Galaxy->System, System->Body, Body->Surface,
 System->Vessel).
+
+Cosmos-lane nodes (Filament/Cluster/Galaxy/System) are logical-only and do not
+require physical coordinates. See `docs/SPEC_COSMO_LANE.md`.
 
 ## 3. Stable IDs and ordering
 - Each node has a stable string ID (UTF-8, case-sensitive).
@@ -33,6 +38,7 @@ Universe identity binds to:
 - instance identity
 - content/pack graph digests
 - sim-affecting flags digest
+- cosmos graph hash
 - timebase (`tick_index`, `ups`)
 
 Mismatches require explicit refusal by default.
@@ -41,3 +47,5 @@ Mismatches require explicit refusal by default.
 - `docs/SPEC_SPACETIME.md`
 - `docs/SPEC_REFERENCE_FRAMES.md`
 - `docs/SPEC_UNIVERSE_BUNDLE.md`
+- `docs/SPEC_COSMO_LANE.md`
+- `docs/SPEC_LOGICAL_TRAVEL.md`
