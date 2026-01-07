@@ -9,6 +9,7 @@ FORBIDDEN DEPENDENCIES: OS headers; non-deterministic inputs.
 #ifndef DOM_FRAMES_H
 #define DOM_FRAMES_H
 
+#include "domino/core/fixed.h"
 #include "domino/core/spacetime.h"
 
 #ifdef __cplusplus
@@ -27,10 +28,26 @@ enum {
 
 typedef u64 dom_frame_id;
 
+enum {
+    DOM_FRAME_KIND_INERTIAL_BARYCENTRIC = 1u,
+    DOM_FRAME_KIND_BODY_CENTERED_INERTIAL = 2u,
+    DOM_FRAME_KIND_BODY_FIXED = 3u
+};
+
 typedef struct dom_frame_desc {
     dom_frame_id id;
     dom_frame_id parent_id;
+    u32 kind;
+    u64 body_id;
+    dom_posseg_q16 origin_offset;
+    u64 rotation_period_ticks;
+    u64 rotation_epoch_tick;
+    q16_16 rotation_phase_turns;
 } dom_frame_desc;
+
+typedef struct dom_vec3_q16 {
+    q16_16 v[3];
+} dom_vec3_q16;
 
 typedef struct dom_frames dom_frames;
 
@@ -46,6 +63,13 @@ int dom_frames_transform_pos(const dom_frames *frames,
                              const dom_posseg_q16 *pos,
                              dom_tick tick,
                              dom_posseg_q16 *out_pos);
+
+int dom_frames_transform_vel(const dom_frames *frames,
+                             dom_frame_id src_frame,
+                             dom_frame_id dst_frame,
+                             const dom_vec3_q16 *vel,
+                             dom_tick tick,
+                             dom_vec3_q16 *out_vel);
 
 #ifdef __cplusplus
 } /* extern "C" */
