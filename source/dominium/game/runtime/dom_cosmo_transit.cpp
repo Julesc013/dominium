@@ -75,3 +75,10 @@ int dom_cosmo_transit_is_active(const dom_cosmo_transit_state *state) {
     }
     return state->active ? 1 : 0;
 }
+
+u64 dom_cosmo_transit_arrival_tick(const dom_cosmo_transit_state *state) {
+    if (!state) {
+        return 0ull;
+    }
+    return state->end_tick;
+}

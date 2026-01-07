@@ -270,7 +270,7 @@ int dom_game_runtime_step(dom_game_runtime *rt) {
                                      (u64)sim->tick_index,
                                      &arrived);
         if (arrived) {
-            rt->cosmo_last_arrival_tick = rt->cosmo_transit.end_tick;
+            rt->cosmo_last_arrival_tick = dom_cosmo_transit_arrival_tick(&rt->cosmo_transit);
         }
     }
 
