@@ -34,6 +34,8 @@ add_executable(dominium_game
     runtime/dom_frames.cpp
     runtime/dom_orbit_lane.cpp
     runtime/dom_calendar.cpp
+    runtime/dom_system_registry.cpp
+    runtime/dom_body_registry.cpp
     frontends/gui/dom_game_frontend_gui.cpp
     frontends/tui/dom_game_frontend_tui.cpp
     frontends/headless/dom_game_frontend_headless.cpp
