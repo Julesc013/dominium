@@ -7,6 +7,8 @@ deterministic, instance-scoped graph and does not imply any global directory.
 - A universe exists within an **instance** context.
 - Universe data is stored and transferred via the universe bundle container
   (`docs/SPEC_UNIVERSE_BUNDLE.md`).
+- Systems, bodies, frames, and topology bindings are stored in bundle chunks
+  `SYSM`, `BODS`, `FRAM`, and `TOPB`.
 - There is no mutable global universe directory.
 
 ## 2. Core node types (graph)
@@ -15,7 +17,7 @@ Minimum node types:
 - **Cluster**: logical grouping of galaxies (cosmos lane).
 - **Galaxy**: logical grouping of systems.
 - **System**: collection of bodies and local domains.
-- **Body**: star/planet/moon with orbital parameters and surfaces.
+- **Body**: star/planet/moon with orbital parameters and topology bindings.
 - **Surface**: local domain representation attached to a body.
 - **Vessel**: movable entity that may be in local space or orbital space.
 - **LocalDomain**: deterministic grid/anchor domain used by surface gameplay.
@@ -46,6 +48,8 @@ Mismatches require explicit refusal by default.
 ## Related specs
 - `docs/SPEC_SPACETIME.md`
 - `docs/SPEC_REFERENCE_FRAMES.md`
+- `docs/SPEC_SYSTEMS_BODIES.md`
+- `docs/SPEC_SURFACE_TOPOLOGY.md`
 - `docs/SPEC_UNIVERSE_BUNDLE.md`
 - `docs/SPEC_COSMO_LANE.md`
 - `docs/SPEC_LOGICAL_TRAVEL.md`

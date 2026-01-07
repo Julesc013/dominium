@@ -20,10 +20,15 @@ Inputs:
   local meters as defined by the provider binding).
 
 Outputs:
-- `altitude_m` (Q16.16 meters)
+- `altitude_m` (Q48.16 meters)
 - `lat_turns` (Q16.16 turns; range [-0.25, 0.25] for latitude)
 - `lon_turns` (Q16.16 turns; range [0, 1) or [-0.5, 0.5])
 - `surface_normal` (Q16.16 unit vector in body-fixed coordinates)
+
+Notes:
+- v1 providers assume a flattened body-fixed position (segments resolved to
+  local meters). Segmented inputs may be refused until a canonical resolver is
+  available.
 
 ## 4. Sphere provider rules (v1)
 - Altitude = `|pos| - radius`.
