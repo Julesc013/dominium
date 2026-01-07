@@ -72,14 +72,18 @@ add_test(NAME domino_numeric_test COMMAND domino_numeric_test)
 add_executable(dom_universe_bundle_epoch_test
     dom_universe_bundle_epoch_test.cpp
     ../dominium/game/runtime/dom_universe_bundle.cpp
+    ../dominium/game/runtime/dom_cosmo_graph.cpp
 )
 
 target_include_directories(dom_universe_bundle_epoch_test PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
     ${CMAKE_SOURCE_DIR}/source/dominium/game
 )
 
 target_link_libraries(dom_universe_bundle_epoch_test
+    core_tlv
+    dominium_common
     domino_core
 )
 
@@ -90,6 +94,76 @@ set_target_properties(dom_universe_bundle_epoch_test PROPERTIES
 )
 
 add_test(NAME dom_universe_bundle_epoch_test COMMAND dom_universe_bundle_epoch_test)
+
+add_executable(dom_cosmo_graph_determinism_test
+    dom_cosmo_graph_determinism_test.cpp
+    ../dominium/game/runtime/dom_cosmo_graph.cpp
+)
+
+target_include_directories(dom_cosmo_graph_determinism_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+)
+
+target_link_libraries(dom_cosmo_graph_determinism_test
+    domino_core
+)
+
+set_target_properties(dom_cosmo_graph_determinism_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_cosmo_graph_determinism_test COMMAND dom_cosmo_graph_determinism_test)
+
+add_executable(dom_cosmo_transit_determinism_test
+    dom_cosmo_transit_determinism_test.cpp
+    ../dominium/game/runtime/dom_cosmo_transit.cpp
+)
+
+target_include_directories(dom_cosmo_transit_determinism_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+)
+
+target_link_libraries(dom_cosmo_transit_determinism_test
+    domino_core
+)
+
+set_target_properties(dom_cosmo_transit_determinism_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_cosmo_transit_determinism_test COMMAND dom_cosmo_transit_determinism_test)
+
+add_executable(dom_cosmo_bundle_roundtrip_test
+    dom_cosmo_bundle_roundtrip_test.cpp
+    ../dominium/game/runtime/dom_universe_bundle.cpp
+    ../dominium/game/runtime/dom_cosmo_graph.cpp
+)
+
+target_include_directories(dom_cosmo_bundle_roundtrip_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+)
+
+target_link_libraries(dom_cosmo_bundle_roundtrip_test
+    core_tlv
+    dominium_common
+    domino_core
+)
+
+set_target_properties(dom_cosmo_bundle_roundtrip_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_cosmo_bundle_roundtrip_test COMMAND dom_cosmo_bundle_roundtrip_test)
 
 add_executable(dom_caps_hash_test
     dom_caps_hash_test.cpp
@@ -219,6 +293,8 @@ add_executable(dom_snapshot_isolation_test
     ../dominium/game/runtime/dom_game_replay.cpp
     ../dominium/game/runtime/dom_snapshot.cpp
     ../dominium/game/runtime/dom_io_guard.cpp
+    ../dominium/game/runtime/dom_cosmo_graph.cpp
+    ../dominium/game/runtime/dom_cosmo_transit.cpp
 )
 
 target_include_directories(dom_snapshot_isolation_test PRIVATE
@@ -252,6 +328,8 @@ add_executable(dom_session_authority_tests
     ../dominium/game/runtime/dom_game_session.cpp
     ../dominium/game/runtime/dom_io_guard.cpp
     ../dominium/game/runtime/dom_qos.cpp
+    ../dominium/game/runtime/dom_cosmo_graph.cpp
+    ../dominium/game/runtime/dom_cosmo_transit.cpp
 )
 
 target_include_directories(dom_session_authority_tests PRIVATE
@@ -304,6 +382,8 @@ add_executable(dom_qos_no_sim_effect_test
     ../dominium/game/runtime/dom_game_replay.cpp
     ../dominium/game/runtime/dom_io_guard.cpp
     ../dominium/game/runtime/dom_qos.cpp
+    ../dominium/game/runtime/dom_cosmo_graph.cpp
+    ../dominium/game/runtime/dom_cosmo_transit.cpp
 )
 
 target_include_directories(dom_qos_no_sim_effect_test PRIVATE
@@ -334,6 +414,8 @@ add_executable(dom_qos_overload_test
     ../dominium/game/runtime/dom_game_replay.cpp
     ../dominium/game/runtime/dom_io_guard.cpp
     ../dominium/game/runtime/dom_qos.cpp
+    ../dominium/game/runtime/dom_cosmo_graph.cpp
+    ../dominium/game/runtime/dom_cosmo_transit.cpp
 )
 
 target_include_directories(dom_qos_overload_test PRIVATE
