@@ -18,6 +18,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 
 #include "runtime/dom_game_command.h"
 #include "runtime/dom_game_query.h"
+#include "runtime/dom_cosmo_transit.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -82,9 +83,20 @@ struct d_sim_context *dom_game_runtime_sim(dom_game_runtime *rt);
 struct d_replay_context *dom_game_runtime_replay(dom_game_runtime *rt);
 const void *dom_game_runtime_session(const dom_game_runtime *rt);
 const void *dom_game_runtime_instance(const dom_game_runtime *rt);
+const void *dom_game_runtime_cosmo_graph(const dom_game_runtime *rt);
 
 int dom_game_runtime_set_replay_last_tick(dom_game_runtime *rt, u32 last_tick);
 int dom_game_runtime_set_replay_playback(dom_game_runtime *rt, void *playback);
+
+int dom_game_runtime_cosmo_transit_begin(dom_game_runtime *rt,
+                                         u64 src_entity_id,
+                                         u64 dst_entity_id,
+                                         u64 travel_edge_id,
+                                         u64 start_tick,
+                                         u64 duration_ticks);
+int dom_game_runtime_cosmo_transit_get(const dom_game_runtime *rt,
+                                       dom_cosmo_transit_state *out_state);
+u64 dom_game_runtime_cosmo_last_arrival_tick(const dom_game_runtime *rt);
 
 #ifdef __cplusplus
 } /* extern "C" */

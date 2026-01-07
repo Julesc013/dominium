@@ -19,6 +19,8 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "dom_game_net.h"
 #include "dom_instance.h"
 #include "dom_session.h"
+#include "runtime/dom_cosmo_graph.h"
+#include "runtime/dom_cosmo_transit.h"
 #include "runtime/dom_game_hash.h"
 #include "runtime/dom_game_replay.h"
 
@@ -41,6 +43,9 @@ struct dom_game_runtime {
     int replay_last_tick_valid;
     u64 run_id;
     std::vector<unsigned char> manifest_hash_bytes;
+    dom::dom_cosmo_graph cosmo_graph;
+    dom_cosmo_transit_state cosmo_transit;
+    u64 cosmo_last_arrival_tick;
 };
 
 namespace {
@@ -130,6 +135,11 @@ dom_game_runtime *dom_game_runtime_create(const dom_game_runtime_init_desc *desc
     rt->replay_last_tick = 0u;
     rt->replay_last_tick_valid = 0;
     rt->run_id = desc->run_id;
+    (void)dom::dom_cosmo_graph_init(&rt->cosmo_graph,
+                                    compute_seed(session_of(rt), inst_of(rt)),
+                                    0);
+    dom_cosmo_transit_reset(&rt->cosmo_transit);
+    rt->cosmo_last_arrival_tick = 0ull;
     if (desc->instance_manifest_hash_bytes && desc->instance_manifest_hash_len > 0u) {
         rt->manifest_hash_bytes.assign(desc->instance_manifest_hash_bytes,
                                        desc->instance_manifest_hash_bytes +
@@ -160,6 +170,40 @@ int dom_game_runtime_set_replay_playback(dom_game_runtime *rt, void *playback) {
     }
     rt->replay_play = playback;
     return DOM_GAME_RUNTIME_OK;
+}
+
+int dom_game_runtime_cosmo_transit_begin(dom_game_runtime *rt,
+                                         u64 src_entity_id,
+                                         u64 dst_entity_id,
+                                         u64 travel_edge_id,
+                                         u64 start_tick,
+                                         u64 duration_ticks) {
+    if (!rt) {
+        return DOM_GAME_RUNTIME_ERR;
+    }
+    if (dom_cosmo_transit_begin(&rt->cosmo_transit,
+                                src_entity_id,
+                                dst_entity_id,
+                                travel_edge_id,
+                                start_tick,
+                                duration_ticks) != DOM_COSMO_TRANSIT_OK) {
+        return DOM_GAME_RUNTIME_ERR;
+    }
+    rt->cosmo_last_arrival_tick = 0ull;
+    return DOM_GAME_RUNTIME_OK;
+}
+
+int dom_game_runtime_cosmo_transit_get(const dom_game_runtime *rt,
+                                       dom_cosmo_transit_state *out_state) {
+    if (!rt || !out_state) {
+        return DOM_GAME_RUNTIME_ERR;
+    }
+    *out_state = rt->cosmo_transit;
+    return DOM_GAME_RUNTIME_OK;
+}
+
+u64 dom_game_runtime_cosmo_last_arrival_tick(const dom_game_runtime *rt) {
+    return rt ? rt->cosmo_last_arrival_tick : 0ull;
 }
 
 int dom_game_runtime_pump(dom_game_runtime *rt) {
@@ -219,6 +263,15 @@ int dom_game_runtime_step(dom_game_runtime *rt) {
 
     if (d_sim_step(sim, 1u) != 0) {
         return DOM_GAME_RUNTIME_ERR;
+    }
+    {
+        int arrived = 0;
+        (void)dom_cosmo_transit_tick(&rt->cosmo_transit,
+                                     (u64)sim->tick_index,
+                                     &arrived);
+        if (arrived) {
+            rt->cosmo_last_arrival_tick = rt->cosmo_transit.end_tick;
+        }
     }
 
     return DOM_GAME_RUNTIME_OK;
@@ -407,4 +460,8 @@ const void *dom_game_runtime_session(const dom_game_runtime *rt) {
 
 const void *dom_game_runtime_instance(const dom_game_runtime *rt) {
     return rt ? rt->instance : 0;
+}
+
+const void *dom_game_runtime_cosmo_graph(const dom_game_runtime *rt) {
+    return rt ? static_cast<const void *>(&rt->cosmo_graph) : 0;
 }
