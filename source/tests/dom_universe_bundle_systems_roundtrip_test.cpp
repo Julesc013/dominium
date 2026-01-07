@@ -1,7 +1,7 @@
 /*
-FILE: source/tests/dom_cosmo_bundle_roundtrip_test.cpp
+FILE: source/tests/dom_universe_bundle_systems_roundtrip_test.cpp
 MODULE: Repository
-PURPOSE: Verifies COSMO_GRAPH chunk round-trips with identical bytes.
+PURPOSE: Verifies systems/bodies/frames/topology chunks round-trip with stable bytes.
 */
 #include <cassert>
 #include <cstdio>
@@ -49,53 +49,49 @@ static void build_graph(dom::dom_cosmo_graph &graph) {
     u64 cluster = 0ull;
     u64 galaxy = 0ull;
     u64 system = 0ull;
-    u64 system_peer = 0ull;
     u64 out_id = 0ull;
     dom::dom_cosmo_edge_params params;
 
-    assert(dom::dom_cosmo_graph_init(&graph, 7ull, 0) == dom::DOM_COSMO_GRAPH_OK);
+    assert(dom::dom_cosmo_graph_init(&graph, 9ull, 0) == dom::DOM_COSMO_GRAPH_OK);
     assert(dom::dom_cosmo_graph_add_entity(&graph, dom::DOM_COSMO_KIND_FILAMENT,
-                                           "filament.root", 0ull, &filament)
+                                           "filament.sys", 0ull, &filament)
            == dom::DOM_COSMO_GRAPH_OK);
     assert(dom::dom_cosmo_graph_add_entity(&graph, dom::DOM_COSMO_KIND_CLUSTER,
-                                           "cluster.root", filament, &cluster)
+                                           "cluster.sys", filament, &cluster)
            == dom::DOM_COSMO_GRAPH_OK);
     assert(dom::dom_cosmo_graph_add_entity(&graph, dom::DOM_COSMO_KIND_GALAXY,
-                                           "galaxy.root", cluster, &galaxy)
+                                           "galaxy.sys", cluster, &galaxy)
            == dom::DOM_COSMO_GRAPH_OK);
     assert(dom::dom_cosmo_graph_add_entity(&graph, dom::DOM_COSMO_KIND_SYSTEM,
-                                           "system.root", galaxy, &system)
-           == dom::DOM_COSMO_GRAPH_OK);
-    assert(dom::dom_cosmo_graph_add_entity(&graph, dom::DOM_COSMO_KIND_SYSTEM,
-                                           "system.peer", galaxy, &system_peer)
+                                           "system.sys", galaxy, &system)
            == dom::DOM_COSMO_GRAPH_OK);
 
-    params.duration_ticks = 90ull;
-    params.cost = 2u;
+    params.duration_ticks = 10ull;
+    params.cost = 1u;
     params.event_table_id = 0ull;
-    assert(dom::dom_cosmo_graph_add_travel_edge(&graph, system, system_peer, &params, &out_id)
+    assert(dom::dom_cosmo_graph_add_travel_edge(&graph, system, system, &params, &out_id)
            == dom::DOM_COSMO_GRAPH_OK);
 }
 
 int main(void) {
-    const char *path_a = "tmp_cosmo_roundtrip_a.dub";
-    const char *path_b = "tmp_cosmo_roundtrip_b.dub";
+    const char *path_a = "tmp_universe_systems_a.dub";
+    const char *path_b = "tmp_universe_systems_b.dub";
+    dom_universe_bundle *bundle = dom_universe_bundle_create();
+    dom_universe_bundle *read_bundle = dom_universe_bundle_create();
+    dom_universe_bundle_identity id;
     dom::dom_cosmo_graph graph;
     std::vector<unsigned char> cosmo_payload;
     std::vector<unsigned char> sysm_payload;
     std::vector<unsigned char> bods_payload;
     std::vector<unsigned char> fram_payload;
     std::vector<unsigned char> topb_payload;
+    std::vector<unsigned char> bytes_a;
+    std::vector<unsigned char> bytes_b;
     u64 cosmo_hash = 0ull;
     u64 sysm_hash = 0ull;
     u64 bods_hash = 0ull;
     u64 fram_hash = 0ull;
     u64 topb_hash = 0ull;
-    dom_universe_bundle *bundle = dom_universe_bundle_create();
-    dom_universe_bundle *read_bundle = dom_universe_bundle_create();
-    dom_universe_bundle_identity id;
-    std::vector<unsigned char> bytes_a;
-    std::vector<unsigned char> bytes_b;
     int rc;
 
     assert(bundle != 0);
@@ -134,12 +130,12 @@ int main(void) {
     fram_hash = dom::core_tlv::tlv_fnv1a64(&fram_payload[0], fram_payload.size());
     topb_hash = dom::core_tlv::tlv_fnv1a64(&topb_payload[0], topb_payload.size());
 
-    id.universe_id = "cosmo_u1";
-    id.universe_id_len = 8u;
-    id.instance_id = "inst_a";
-    id.instance_id_len = 6u;
-    id.content_graph_hash = 0xabcddcba11223344ull;
-    id.sim_flags_hash = 0x11223344abcddcbaull;
+    id.universe_id = "u_sys";
+    id.universe_id_len = 5u;
+    id.instance_id = "inst_sys";
+    id.instance_id_len = 8u;
+    id.content_graph_hash = 0x0123456789abcdefull;
+    id.sim_flags_hash = 0xfedcba9876543210ull;
     id.cosmo_graph_hash = cosmo_hash;
     id.systems_hash = sysm_hash;
     id.bodies_hash = bods_hash;
@@ -152,11 +148,8 @@ int main(void) {
     rc = dom_universe_bundle_set_identity(bundle, &id);
     assert(rc == DOM_UNIVERSE_BUNDLE_OK);
 
-    rc = dom_universe_bundle_set_chunk(bundle,
-                                       DOM_UNIVERSE_CHUNK_COSM,
-                                       1u,
-                                       &cosmo_payload[0],
-                                       (u32)cosmo_payload.size());
+    rc = dom_universe_bundle_set_chunk(bundle, DOM_UNIVERSE_CHUNK_COSM, 1u,
+                                       &cosmo_payload[0], (u32)cosmo_payload.size());
     assert(rc == DOM_UNIVERSE_BUNDLE_OK);
     rc = dom_universe_bundle_set_chunk(bundle, DOM_UNIVERSE_CHUNK_SYSM, 1u,
                                        &sysm_payload[0], (u32)sysm_payload.size());
@@ -181,6 +174,17 @@ int main(void) {
     rc = dom_universe_bundle_set_chunk(bundle, DOM_UNIVERSE_CHUNK_RNG, 1u, (const void *)0, 0u);
     assert(rc == DOM_UNIVERSE_BUNDLE_OK);
 
+    {
+        const unsigned char foreign_payload[] = { 0xAA, 0xBB, 0xCC };
+        rc = dom_universe_bundle_add_foreign(bundle,
+                                             DOM_U32_FOURCC('X','T','R','A'),
+                                             1u,
+                                             0u,
+                                             foreign_payload,
+                                             (u32)sizeof(foreign_payload));
+        assert(rc == DOM_UNIVERSE_BUNDLE_OK);
+    }
+
     rc = dom_universe_bundle_write_file(path_a, bundle);
     assert(rc == DOM_UNIVERSE_BUNDLE_OK);
 
@@ -200,6 +204,6 @@ int main(void) {
     std::remove(path_a);
     std::remove(path_b);
 
-    std::printf("dom_cosmo_bundle_roundtrip_test: OK\n");
+    std::printf("dom_universe_bundle_systems_roundtrip_test: OK\n");
     return 0;
 }
