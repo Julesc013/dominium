@@ -165,6 +165,102 @@ set_target_properties(dom_cosmo_bundle_roundtrip_test PROPERTIES
 
 add_test(NAME dom_cosmo_bundle_roundtrip_test COMMAND dom_cosmo_bundle_roundtrip_test)
 
+add_executable(dom_frames_validation_test
+    dom_frames_validation_test.cpp
+    ../dominium/game/runtime/dom_frames.cpp
+)
+
+target_include_directories(dom_frames_validation_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+)
+
+target_link_libraries(dom_frames_validation_test
+    domino_core
+)
+
+set_target_properties(dom_frames_validation_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_frames_validation_test COMMAND dom_frames_validation_test)
+
+add_executable(dom_frames_transform_roundtrip_test
+    dom_frames_transform_roundtrip_test.cpp
+    ../dominium/game/runtime/dom_frames.cpp
+)
+
+target_include_directories(dom_frames_transform_roundtrip_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+)
+
+target_link_libraries(dom_frames_transform_roundtrip_test
+    domino_core
+)
+
+set_target_properties(dom_frames_transform_roundtrip_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_frames_transform_roundtrip_test COMMAND dom_frames_transform_roundtrip_test)
+
+add_executable(dom_topology_default_test
+    dom_topology_default_test.cpp
+    ../dominium/game/runtime/dom_body_registry.cpp
+    ../dominium/game/runtime/dom_surface_topology.cpp
+    ../dominium/game/runtime/dom_surface_topology_sphere.cpp
+    ../dominium/game/runtime/dom_surface_topology_ellipsoid.cpp
+    ../dominium/game/runtime/dom_surface_topology_torus.cpp
+)
+
+target_include_directories(dom_topology_default_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+)
+
+target_link_libraries(dom_topology_default_test
+    domino_core
+)
+
+set_target_properties(dom_topology_default_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_topology_default_test COMMAND dom_topology_default_test)
+
+add_executable(dom_universe_bundle_systems_roundtrip_test
+    dom_universe_bundle_systems_roundtrip_test.cpp
+    ../dominium/game/runtime/dom_universe_bundle.cpp
+    ../dominium/game/runtime/dom_cosmo_graph.cpp
+)
+
+target_include_directories(dom_universe_bundle_systems_roundtrip_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+)
+
+target_link_libraries(dom_universe_bundle_systems_roundtrip_test
+    core_tlv
+    dominium_common
+    domino_core
+)
+
+set_target_properties(dom_universe_bundle_systems_roundtrip_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_universe_bundle_systems_roundtrip_test COMMAND dom_universe_bundle_systems_roundtrip_test)
+
 add_executable(dom_caps_hash_test
     dom_caps_hash_test.cpp
 )
@@ -289,9 +385,16 @@ add_test(NAME test_derived_order_independence COMMAND dom_derived_order_independ
 add_executable(dom_snapshot_isolation_test
     dom_snapshot_isolation_test.cpp
     ../dominium/game/runtime/dom_game_runtime.cpp
+    ../dominium/game/runtime/dom_system_registry.cpp
+    ../dominium/game/runtime/dom_body_registry.cpp
+    ../dominium/game/runtime/dom_frames.cpp
     ../dominium/game/runtime/dom_game_hash.c
     ../dominium/game/runtime/dom_game_replay.cpp
     ../dominium/game/runtime/dom_snapshot.cpp
+    ../dominium/game/runtime/dom_surface_topology.cpp
+    ../dominium/game/runtime/dom_surface_topology_sphere.cpp
+    ../dominium/game/runtime/dom_surface_topology_ellipsoid.cpp
+    ../dominium/game/runtime/dom_surface_topology_torus.cpp
     ../dominium/game/runtime/dom_io_guard.cpp
     ../dominium/game/runtime/dom_cosmo_graph.cpp
     ../dominium/game/runtime/dom_cosmo_transit.cpp
@@ -320,6 +423,9 @@ add_test(NAME test_snapshot_isolation COMMAND dom_snapshot_isolation_test)
 add_executable(dom_session_authority_tests
     dom_session_authority_tests.cpp
     ../dominium/game/runtime/dom_game_runtime.cpp
+    ../dominium/game/runtime/dom_system_registry.cpp
+    ../dominium/game/runtime/dom_body_registry.cpp
+    ../dominium/game/runtime/dom_frames.cpp
     ../dominium/game/runtime/dom_game_hash.c
     ../dominium/game/runtime/dom_game_replay.cpp
     ../dominium/game/runtime/dom_game_net_driver.cpp
@@ -378,6 +484,9 @@ add_test(NAME test_qos_determinism COMMAND dom_qos_determinism_test)
 add_executable(dom_qos_no_sim_effect_test
     dom_qos_no_sim_effect_test.cpp
     ../dominium/game/runtime/dom_game_runtime.cpp
+    ../dominium/game/runtime/dom_system_registry.cpp
+    ../dominium/game/runtime/dom_body_registry.cpp
+    ../dominium/game/runtime/dom_frames.cpp
     ../dominium/game/runtime/dom_game_hash.c
     ../dominium/game/runtime/dom_game_replay.cpp
     ../dominium/game/runtime/dom_io_guard.cpp
@@ -410,6 +519,9 @@ add_test(NAME test_qos_no_sim_effect COMMAND dom_qos_no_sim_effect_test)
 add_executable(dom_qos_overload_test
     dom_qos_overload_test.cpp
     ../dominium/game/runtime/dom_game_runtime.cpp
+    ../dominium/game/runtime/dom_system_registry.cpp
+    ../dominium/game/runtime/dom_body_registry.cpp
+    ../dominium/game/runtime/dom_frames.cpp
     ../dominium/game/runtime/dom_game_hash.c
     ../dominium/game/runtime/dom_game_replay.cpp
     ../dominium/game/runtime/dom_io_guard.cpp

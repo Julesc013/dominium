@@ -22,7 +22,15 @@ int main(void) {
     dom_universe_bundle_identity expect_bad;
     dom::dom_cosmo_graph graph;
     std::vector<unsigned char> cosmo_payload;
+    std::vector<unsigned char> sysm_payload;
+    std::vector<unsigned char> bods_payload;
+    std::vector<unsigned char> fram_payload;
+    std::vector<unsigned char> topb_payload;
     u64 cosmo_hash = 0ull;
+    u64 sysm_hash = 0ull;
+    u64 bods_hash = 0ull;
+    u64 fram_hash = 0ull;
+    u64 topb_hash = 0ull;
     int rc;
 
     assert(bundle != 0);
@@ -39,6 +47,10 @@ int main(void) {
     id.tick_index = 0ull;
     id.feature_epoch = DOM_FEATURE_EPOCH_DEFAULT;
     id.cosmo_graph_hash = 0ull;
+    id.systems_hash = 0ull;
+    id.bodies_hash = 0ull;
+    id.frames_hash = 0ull;
+    id.topology_hash = 0ull;
 
     rc = dom::dom_cosmo_graph_init(&graph, 0ull, 0);
     assert(rc == dom::DOM_COSMO_GRAPH_OK);
@@ -48,6 +60,35 @@ int main(void) {
     cosmo_hash = dom::core_tlv::tlv_fnv1a64(&cosmo_payload[0], cosmo_payload.size());
     assert(cosmo_hash != 0ull);
     id.cosmo_graph_hash = cosmo_hash;
+    sysm_payload.push_back('S');
+    sysm_payload.push_back('Y');
+    sysm_payload.push_back('S');
+    sysm_payload.push_back('M');
+    sysm_payload.push_back(1u);
+    bods_payload.push_back('B');
+    bods_payload.push_back('O');
+    bods_payload.push_back('D');
+    bods_payload.push_back('S');
+    bods_payload.push_back(2u);
+    fram_payload.push_back('F');
+    fram_payload.push_back('R');
+    fram_payload.push_back('A');
+    fram_payload.push_back('M');
+    fram_payload.push_back(3u);
+    topb_payload.push_back('T');
+    topb_payload.push_back('O');
+    topb_payload.push_back('P');
+    topb_payload.push_back('B');
+    topb_payload.push_back(4u);
+
+    sysm_hash = dom::core_tlv::tlv_fnv1a64(&sysm_payload[0], sysm_payload.size());
+    bods_hash = dom::core_tlv::tlv_fnv1a64(&bods_payload[0], bods_payload.size());
+    fram_hash = dom::core_tlv::tlv_fnv1a64(&fram_payload[0], fram_payload.size());
+    topb_hash = dom::core_tlv::tlv_fnv1a64(&topb_payload[0], topb_payload.size());
+    id.systems_hash = sysm_hash;
+    id.bodies_hash = bods_hash;
+    id.frames_hash = fram_hash;
+    id.topology_hash = topb_hash;
 
     rc = dom_universe_bundle_set_identity(bundle, &id);
     assert(rc == DOM_UNIVERSE_BUNDLE_OK);
@@ -57,6 +98,30 @@ int main(void) {
                                        1u,
                                        cosmo_payload.empty() ? (const void *)0 : &cosmo_payload[0],
                                        (u32)cosmo_payload.size());
+    assert(rc == DOM_UNIVERSE_BUNDLE_OK);
+    rc = dom_universe_bundle_set_chunk(bundle,
+                                       DOM_UNIVERSE_CHUNK_SYSM,
+                                       1u,
+                                       &sysm_payload[0],
+                                       (u32)sysm_payload.size());
+    assert(rc == DOM_UNIVERSE_BUNDLE_OK);
+    rc = dom_universe_bundle_set_chunk(bundle,
+                                       DOM_UNIVERSE_CHUNK_BODS,
+                                       1u,
+                                       &bods_payload[0],
+                                       (u32)bods_payload.size());
+    assert(rc == DOM_UNIVERSE_BUNDLE_OK);
+    rc = dom_universe_bundle_set_chunk(bundle,
+                                       DOM_UNIVERSE_CHUNK_FRAM,
+                                       1u,
+                                       &fram_payload[0],
+                                       (u32)fram_payload.size());
+    assert(rc == DOM_UNIVERSE_BUNDLE_OK);
+    rc = dom_universe_bundle_set_chunk(bundle,
+                                       DOM_UNIVERSE_CHUNK_TOPB,
+                                       1u,
+                                       &topb_payload[0],
+                                       (u32)topb_payload.size());
     assert(rc == DOM_UNIVERSE_BUNDLE_OK);
     rc = dom_universe_bundle_set_chunk(bundle, DOM_UNIVERSE_CHUNK_CELE, 1u, (const void *)0, 0u);
     assert(rc == DOM_UNIVERSE_BUNDLE_OK);
