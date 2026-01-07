@@ -42,6 +42,7 @@ int dom_cosmo_transit_tick(dom_cosmo_transit_state *state,
                            u64 current_tick,
                            int *out_arrived);
 int dom_cosmo_transit_is_active(const dom_cosmo_transit_state *state);
+u64 dom_cosmo_transit_arrival_tick(const dom_cosmo_transit_state *state);
 
 #ifdef __cplusplus
 } /* extern "C" */
