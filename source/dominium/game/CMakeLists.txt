@@ -24,6 +24,7 @@ add_executable(dominium_game
     runtime/dom_game_net_driver.cpp
     runtime/dom_game_net_snapshot.cpp
     runtime/dom_cosmo_graph.cpp
+    runtime/dom_cosmo_transit.cpp
     runtime/dom_qos.cpp
     runtime/dom_derived_jobs.cpp
     runtime/dom_io_guard.cpp
