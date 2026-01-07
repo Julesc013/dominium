@@ -24,6 +24,11 @@ enum {
     DOM_GAME_QUERY_VERSION = 1u
 };
 
+enum {
+    DOM_GAME_QUERY_COSMO_MAP = 1u,
+    DOM_GAME_QUERY_ACTIVE_TRANSIT = 2u
+};
+
 typedef struct dom_game_counts {
     u32 struct_size;
     u32 struct_version;

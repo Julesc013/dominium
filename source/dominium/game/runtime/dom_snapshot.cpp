@@ -16,6 +16,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include <cstring>
 
 #include "runtime/dom_io_guard.h"
+#include "runtime/dom_cosmo_graph.h"
 #include "runtime/dom_game_runtime.h"
 #include "runtime/dom_game_query.h"
 
@@ -66,6 +67,91 @@ dom_game_snapshot *dom_game_runtime_build_snapshot(const dom_game_runtime *rt, u
 }
 
 void dom_game_runtime_release_snapshot(dom_game_snapshot *snapshot) {
+    if (!snapshot) {
+        return;
+    }
+    delete snapshot;
+}
+
+dom_cosmo_map_snapshot *dom_game_runtime_build_cosmo_map_snapshot(const dom_game_runtime *rt) {
+    dom_cosmo_map_snapshot *snap;
+    const dom::dom_cosmo_graph *graph;
+    size_t i;
+
+    if (!rt) {
+        return (dom_cosmo_map_snapshot *)0;
+    }
+
+    snap = new dom_cosmo_map_snapshot();
+    std::memset(snap, 0, sizeof(*snap));
+    snap->struct_size = sizeof(*snap);
+    snap->struct_version = DOM_COSMO_MAP_SNAPSHOT_VERSION;
+
+    graph = static_cast<const dom::dom_cosmo_graph *>(dom_game_runtime_cosmo_graph(rt));
+    if (graph) {
+        if (graph->entities.size() > 0xffffffffu || graph->edges.size() > 0xffffffffu) {
+            delete snap;
+            return (dom_cosmo_map_snapshot *)0;
+        }
+        snap->entity_count = (u32)graph->entities.size();
+        snap->edge_count = (u32)graph->edges.size();
+        if (snap->entity_count > 0u) {
+            snap->entities = new dom_cosmo_entity_view[snap->entity_count];
+            for (i = 0u; i < graph->entities.size(); ++i) {
+                const dom::dom_cosmo_entity &ent = graph->entities[i];
+                snap->entities[i].id = ent.id;
+                snap->entities[i].parent_id = ent.parent_id;
+                snap->entities[i].kind = ent.kind;
+            }
+        }
+        if (snap->edge_count > 0u) {
+            snap->edges = new dom_cosmo_edge_view[snap->edge_count];
+            for (i = 0u; i < graph->edges.size(); ++i) {
+                const dom::dom_cosmo_edge &edge = graph->edges[i];
+                snap->edges[i].id = edge.id;
+                snap->edges[i].src_id = edge.src_id;
+                snap->edges[i].dst_id = edge.dst_id;
+                snap->edges[i].duration_ticks = edge.duration_ticks;
+                snap->edges[i].cost = edge.cost;
+            }
+        }
+    }
+
+    if (dom_game_runtime_cosmo_transit_get(rt, &snap->transit) == DOM_GAME_RUNTIME_OK) {
+        snap->transit_active = snap->transit.active ? 1 : 0;
+    }
+
+    return snap;
+}
+
+void dom_game_runtime_release_cosmo_map_snapshot(dom_cosmo_map_snapshot *snapshot) {
+    if (!snapshot) {
+        return;
+    }
+    delete[] snapshot->entities;
+    delete[] snapshot->edges;
+    delete snapshot;
+}
+
+dom_cosmo_transit_snapshot *dom_game_runtime_build_cosmo_transit_snapshot(const dom_game_runtime *rt) {
+    dom_cosmo_transit_snapshot *snap;
+
+    if (!rt) {
+        return (dom_cosmo_transit_snapshot *)0;
+    }
+
+    snap = new dom_cosmo_transit_snapshot();
+    std::memset(snap, 0, sizeof(*snap));
+    snap->struct_size = sizeof(*snap);
+    snap->struct_version = DOM_COSMO_TRANSIT_SNAPSHOT_VERSION;
+    if (dom_game_runtime_cosmo_transit_get(rt, &snap->transit) == DOM_GAME_RUNTIME_OK) {
+        snap->transit_active = snap->transit.active ? 1 : 0;
+    }
+    snap->last_arrival_tick = dom_game_runtime_cosmo_last_arrival_tick(rt);
+    return snap;
+}
+
+void dom_game_runtime_release_cosmo_transit_snapshot(dom_cosmo_transit_snapshot *snapshot) {
     if (!snapshot) {
         return;
     }

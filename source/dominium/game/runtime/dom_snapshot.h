@@ -15,6 +15,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #define DOM_SNAPSHOT_H
 
 #include "domino/core/types.h"
+#include "runtime/dom_cosmo_transit.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -23,7 +24,9 @@ extern "C" {
 enum {
     DOM_RUNTIME_SUMMARY_SNAPSHOT_VERSION = 2u,
     DOM_VIEW_STATE_SNAPSHOT_VERSION = 1u,
-    DOM_GAME_SNAPSHOT_VERSION = 1u
+    DOM_GAME_SNAPSHOT_VERSION = 1u,
+    DOM_COSMO_MAP_SNAPSHOT_VERSION = 1u,
+    DOM_COSMO_TRANSIT_SNAPSHOT_VERSION = 1u
 };
 
 enum {
@@ -61,10 +64,47 @@ typedef struct dom_game_snapshot {
     dom_view_state_snapshot view;
 } dom_game_snapshot;
 
+typedef struct dom_cosmo_entity_view {
+    u64 id;
+    u64 parent_id;
+    u32 kind;
+} dom_cosmo_entity_view;
+
+typedef struct dom_cosmo_edge_view {
+    u64 id;
+    u64 src_id;
+    u64 dst_id;
+    u64 duration_ticks;
+    u32 cost;
+} dom_cosmo_edge_view;
+
+typedef struct dom_cosmo_map_snapshot {
+    u32 struct_size;
+    u32 struct_version;
+    u32 entity_count;
+    u32 edge_count;
+    dom_cosmo_entity_view *entities;
+    dom_cosmo_edge_view *edges;
+    dom_cosmo_transit_state transit;
+    int transit_active;
+} dom_cosmo_map_snapshot;
+
+typedef struct dom_cosmo_transit_snapshot {
+    u32 struct_size;
+    u32 struct_version;
+    dom_cosmo_transit_state transit;
+    int transit_active;
+    u64 last_arrival_tick;
+} dom_cosmo_transit_snapshot;
+
 struct dom_game_runtime;
 
 dom_game_snapshot *dom_game_runtime_build_snapshot(const struct dom_game_runtime *rt, u32 flags);
 void dom_game_runtime_release_snapshot(dom_game_snapshot *snapshot);
+dom_cosmo_map_snapshot *dom_game_runtime_build_cosmo_map_snapshot(const struct dom_game_runtime *rt);
+void dom_game_runtime_release_cosmo_map_snapshot(dom_cosmo_map_snapshot *snapshot);
+dom_cosmo_transit_snapshot *dom_game_runtime_build_cosmo_transit_snapshot(const struct dom_game_runtime *rt);
+void dom_game_runtime_release_cosmo_transit_snapshot(dom_cosmo_transit_snapshot *snapshot);
 
 #ifdef __cplusplus
 } /* extern "C" */
