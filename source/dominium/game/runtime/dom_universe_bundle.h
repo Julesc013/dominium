@@ -32,6 +32,7 @@ enum {
 
 enum {
     DOM_UNIVERSE_CHUNK_TIME = DOM_U32_FOURCC('T','I','M','E'),
+    DOM_UNIVERSE_CHUNK_COSM = DOM_U32_FOURCC('C','O','S','M'),
     DOM_UNIVERSE_CHUNK_CELE = DOM_U32_FOURCC('C','E','L','E'),
     DOM_UNIVERSE_CHUNK_VESL = DOM_U32_FOURCC('V','E','S','L'),
     DOM_UNIVERSE_CHUNK_SURF = DOM_U32_FOURCC('S','U','R','F'),
@@ -46,7 +47,9 @@ enum {
     DOM_UNIVERSE_TLV_CONTENT_HASH     = 0x0003u,
     DOM_UNIVERSE_TLV_SIM_FLAGS_HASH   = 0x0004u,
     DOM_UNIVERSE_TLV_UPS              = 0x0005u,
-    DOM_UNIVERSE_TLV_TICK_INDEX       = 0x0006u
+    DOM_UNIVERSE_TLV_TICK_INDEX       = 0x0006u,
+    DOM_UNIVERSE_TLV_FEATURE_EPOCH    = 0x0007u,
+    DOM_UNIVERSE_TLV_COSMO_HASH       = 0x0008u
 };
 
 typedef struct dom_universe_bundle_identity {
@@ -56,8 +59,10 @@ typedef struct dom_universe_bundle_identity {
     u32 instance_id_len;
     u64 content_graph_hash;
     u64 sim_flags_hash;
+    u64 cosmo_graph_hash;
     u32 ups;
     u64 tick_index;
+    u32 feature_epoch;
 } dom_universe_bundle_identity;
 
 typedef struct dom_universe_bundle dom_universe_bundle;

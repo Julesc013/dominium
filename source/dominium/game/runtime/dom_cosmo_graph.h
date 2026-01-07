@@ -27,7 +27,10 @@ enum {
     DOM_COSMO_GRAPH_INVALID_KIND = -5,
     DOM_COSMO_GRAPH_INVALID_PARENT = -6,
     DOM_COSMO_GRAPH_INVALID_EDGE = -7,
-    DOM_COSMO_GRAPH_CYCLE = -8
+    DOM_COSMO_GRAPH_CYCLE = -8,
+    DOM_COSMO_GRAPH_INVALID_FORMAT = -9,
+    DOM_COSMO_GRAPH_MIGRATION_REQUIRED = -10,
+    DOM_COSMO_GRAPH_NO_MEMORY = -11
 };
 
 enum DomCosmoEntityKind {
@@ -78,6 +81,15 @@ struct dom_cosmo_edge_params {
     dom_cosmo_edge_params();
 };
 
+struct dom_cosmo_foreign_chunk {
+    u32 type_id;
+    u16 version;
+    u16 flags;
+    std::vector<unsigned char> payload;
+
+    dom_cosmo_foreign_chunk();
+};
+
 struct dom_cosmo_graph {
     u32 struct_size;
     u32 struct_version;
@@ -85,6 +97,7 @@ struct dom_cosmo_graph {
     dom_cosmo_graph_config config;
     std::vector<dom_cosmo_entity> entities;
     std::vector<dom_cosmo_edge> edges;
+    std::vector<dom_cosmo_foreign_chunk> foreign;
 
     dom_cosmo_graph();
 };
@@ -113,6 +126,12 @@ int dom_cosmo_graph_iterate(const dom_cosmo_graph *graph,
 const dom_cosmo_entity *dom_cosmo_graph_get_entity(const dom_cosmo_graph *graph, u64 id);
 const dom_cosmo_edge *dom_cosmo_graph_get_edge(const dom_cosmo_graph *graph, u64 id);
 u64 dom_cosmo_graph_hash(const dom_cosmo_graph *graph);
+int dom_cosmo_graph_serialize(const dom_cosmo_graph *graph,
+                              std::vector<unsigned char> *out_payload);
+int dom_cosmo_graph_parse(dom_cosmo_graph *graph,
+                          const unsigned char *payload,
+                          u32 payload_len,
+                          std::vector<std::string> *out_errors);
 
 } // namespace dom
 
