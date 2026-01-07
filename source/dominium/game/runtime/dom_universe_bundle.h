@@ -33,6 +33,10 @@ enum {
 enum {
     DOM_UNIVERSE_CHUNK_TIME = DOM_U32_FOURCC('T','I','M','E'),
     DOM_UNIVERSE_CHUNK_COSM = DOM_U32_FOURCC('C','O','S','M'),
+    DOM_UNIVERSE_CHUNK_SYSM = DOM_U32_FOURCC('S','Y','S','M'),
+    DOM_UNIVERSE_CHUNK_BODS = DOM_U32_FOURCC('B','O','D','S'),
+    DOM_UNIVERSE_CHUNK_FRAM = DOM_U32_FOURCC('F','R','A','M'),
+    DOM_UNIVERSE_CHUNK_TOPB = DOM_U32_FOURCC('T','O','P','B'),
     DOM_UNIVERSE_CHUNK_CELE = DOM_U32_FOURCC('C','E','L','E'),
     DOM_UNIVERSE_CHUNK_VESL = DOM_U32_FOURCC('V','E','S','L'),
     DOM_UNIVERSE_CHUNK_SURF = DOM_U32_FOURCC('S','U','R','F'),
@@ -49,7 +53,11 @@ enum {
     DOM_UNIVERSE_TLV_UPS              = 0x0005u,
     DOM_UNIVERSE_TLV_TICK_INDEX       = 0x0006u,
     DOM_UNIVERSE_TLV_FEATURE_EPOCH    = 0x0007u,
-    DOM_UNIVERSE_TLV_COSMO_HASH       = 0x0008u
+    DOM_UNIVERSE_TLV_COSMO_HASH       = 0x0008u,
+    DOM_UNIVERSE_TLV_SYSTEMS_HASH     = 0x0009u,
+    DOM_UNIVERSE_TLV_BODIES_HASH      = 0x000Au,
+    DOM_UNIVERSE_TLV_FRAMES_HASH      = 0x000Bu,
+    DOM_UNIVERSE_TLV_TOPOLOGY_HASH    = 0x000Cu
 };
 
 typedef struct dom_universe_bundle_identity {
@@ -60,6 +68,10 @@ typedef struct dom_universe_bundle_identity {
     u64 content_graph_hash;
     u64 sim_flags_hash;
     u64 cosmo_graph_hash;
+    u64 systems_hash;
+    u64 bodies_hash;
+    u64 frames_hash;
+    u64 topology_hash;
     u32 ups;
     u64 tick_index;
     u32 feature_epoch;

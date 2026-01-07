@@ -41,12 +41,20 @@ struct BundleState {
     u64 content_graph_hash;
     u64 sim_flags_hash;
     u64 cosmo_graph_hash;
+    u64 systems_hash;
+    u64 bodies_hash;
+    u64 frames_hash;
+    u64 topology_hash;
     u32 ups;
     u64 tick_index;
     u32 feature_epoch;
     bool identity_set;
 
     BundleChunk cosmo;
+    BundleChunk sysm;
+    BundleChunk bods;
+    BundleChunk fram;
+    BundleChunk topb;
     BundleChunk cele;
     BundleChunk vesl;
     BundleChunk surf;
@@ -60,11 +68,19 @@ struct BundleState {
           content_graph_hash(0ull),
           sim_flags_hash(0ull),
           cosmo_graph_hash(0ull),
+          systems_hash(0ull),
+          bodies_hash(0ull),
+          frames_hash(0ull),
+          topology_hash(0ull),
           ups(0u),
           tick_index(0ull),
           feature_epoch(0u),
           identity_set(false),
           cosmo(),
+          sysm(),
+          bods(),
+          fram(),
+          topb(),
           cele(),
           vesl(),
           surf(),
@@ -79,6 +95,10 @@ static BundleChunk *chunk_for_type(BundleState *state, u32 type_id) {
     }
     switch (type_id) {
         case DOM_UNIVERSE_CHUNK_COSM: return &state->cosmo;
+        case DOM_UNIVERSE_CHUNK_SYSM: return &state->sysm;
+        case DOM_UNIVERSE_CHUNK_BODS: return &state->bods;
+        case DOM_UNIVERSE_CHUNK_FRAM: return &state->fram;
+        case DOM_UNIVERSE_CHUNK_TOPB: return &state->topb;
         case DOM_UNIVERSE_CHUNK_CELE: return &state->cele;
         case DOM_UNIVERSE_CHUNK_VESL: return &state->vesl;
         case DOM_UNIVERSE_CHUNK_SURF: return &state->surf;
@@ -102,11 +122,19 @@ static void bundle_reset(BundleState *state) {
     state->content_graph_hash = 0ull;
     state->sim_flags_hash = 0ull;
     state->cosmo_graph_hash = 0ull;
+    state->systems_hash = 0ull;
+    state->bodies_hash = 0ull;
+    state->frames_hash = 0ull;
+    state->topology_hash = 0ull;
     state->ups = 0u;
     state->tick_index = 0ull;
     state->feature_epoch = 0u;
     state->identity_set = false;
     state->cosmo = BundleChunk();
+    state->sysm = BundleChunk();
+    state->bods = BundleChunk();
+    state->fram = BundleChunk();
+    state->topb = BundleChunk();
     state->cele = BundleChunk();
     state->vesl = BundleChunk();
     state->surf = BundleChunk();
@@ -154,6 +182,10 @@ static int parse_time_chunk(BundleState *state,
     bool have_tick = false;
     bool have_epoch = false;
     bool have_cosmo = false;
+    bool have_systems = false;
+    bool have_bodies = false;
+    bool have_frames = false;
+    bool have_topo = false;
 
     if (!state) {
         return DOM_UNIVERSE_BUNDLE_INVALID_ARGUMENT;
@@ -196,6 +228,34 @@ static int parse_time_chunk(BundleState *state,
                 state->cosmo_graph_hash = dtlv_le_read_u64(pl);
                 have_cosmo = true;
                 break;
+            case DOM_UNIVERSE_TLV_SYSTEMS_HASH:
+                if (!pl || pl_len != 8u) {
+                    return DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
+                }
+                state->systems_hash = dtlv_le_read_u64(pl);
+                have_systems = true;
+                break;
+            case DOM_UNIVERSE_TLV_BODIES_HASH:
+                if (!pl || pl_len != 8u) {
+                    return DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
+                }
+                state->bodies_hash = dtlv_le_read_u64(pl);
+                have_bodies = true;
+                break;
+            case DOM_UNIVERSE_TLV_FRAMES_HASH:
+                if (!pl || pl_len != 8u) {
+                    return DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
+                }
+                state->frames_hash = dtlv_le_read_u64(pl);
+                have_frames = true;
+                break;
+            case DOM_UNIVERSE_TLV_TOPOLOGY_HASH:
+                if (!pl || pl_len != 8u) {
+                    return DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
+                }
+                state->topology_hash = dtlv_le_read_u64(pl);
+                have_topo = true;
+                break;
             case DOM_UNIVERSE_TLV_UPS:
                 if (!pl || pl_len != 4u) {
                     return DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
@@ -229,7 +289,7 @@ static int parse_time_chunk(BundleState *state,
         !have_flags || !have_cosmo || !have_ups || !have_tick) {
         return DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
     }
-    if (!have_epoch) {
+    if (!have_epoch || !have_systems || !have_bodies || !have_frames || !have_topo) {
         return DOM_UNIVERSE_BUNDLE_MIGRATION_REQUIRED;
     }
     if (state->ups == 0u) {
@@ -316,6 +376,10 @@ static int identity_matches(const BundleState *state,
     if (expected->content_graph_hash != state->content_graph_hash ||
         expected->sim_flags_hash != state->sim_flags_hash ||
         expected->cosmo_graph_hash != state->cosmo_graph_hash ||
+        expected->systems_hash != state->systems_hash ||
+        expected->bodies_hash != state->bodies_hash ||
+        expected->frames_hash != state->frames_hash ||
+        expected->topology_hash != state->topology_hash ||
         expected->ups != state->ups ||
         expected->tick_index != state->tick_index) {
         return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
@@ -378,6 +442,50 @@ static int write_time_chunk(dtlv_writer *writer, const BundleState *state) {
         dtlv_le_write_u64(buf, state->cosmo_graph_hash);
         rc = dtlv_writer_write_tlv(writer,
                                    DOM_UNIVERSE_TLV_COSMO_HASH,
+                                   buf,
+                                   8u);
+    }
+    if (rc != 0) {
+        return DOM_UNIVERSE_BUNDLE_IO_ERROR;
+    }
+    {
+        unsigned char buf[8];
+        dtlv_le_write_u64(buf, state->systems_hash);
+        rc = dtlv_writer_write_tlv(writer,
+                                   DOM_UNIVERSE_TLV_SYSTEMS_HASH,
+                                   buf,
+                                   8u);
+    }
+    if (rc != 0) {
+        return DOM_UNIVERSE_BUNDLE_IO_ERROR;
+    }
+    {
+        unsigned char buf[8];
+        dtlv_le_write_u64(buf, state->bodies_hash);
+        rc = dtlv_writer_write_tlv(writer,
+                                   DOM_UNIVERSE_TLV_BODIES_HASH,
+                                   buf,
+                                   8u);
+    }
+    if (rc != 0) {
+        return DOM_UNIVERSE_BUNDLE_IO_ERROR;
+    }
+    {
+        unsigned char buf[8];
+        dtlv_le_write_u64(buf, state->frames_hash);
+        rc = dtlv_writer_write_tlv(writer,
+                                   DOM_UNIVERSE_TLV_FRAMES_HASH,
+                                   buf,
+                                   8u);
+    }
+    if (rc != 0) {
+        return DOM_UNIVERSE_BUNDLE_IO_ERROR;
+    }
+    {
+        unsigned char buf[8];
+        dtlv_le_write_u64(buf, state->topology_hash);
+        rc = dtlv_writer_write_tlv(writer,
+                                   DOM_UNIVERSE_TLV_TOPOLOGY_HASH,
                                    buf,
                                    8u);
     }
@@ -503,6 +611,10 @@ int dom_universe_bundle_set_identity(dom_universe_bundle *bundle,
         id->universe_id_len == 0u || id->instance_id_len == 0u ||
         id->ups == 0u || id->feature_epoch == 0u ||
         id->cosmo_graph_hash == 0ull ||
+        id->systems_hash == 0ull ||
+        id->bodies_hash == 0ull ||
+        id->frames_hash == 0ull ||
+        id->topology_hash == 0ull ||
         !dom::dom_feature_epoch_supported(id->feature_epoch)) {
         return DOM_UNIVERSE_BUNDLE_INVALID_ARGUMENT;
     }
@@ -511,11 +623,31 @@ int dom_universe_bundle_set_identity(dom_universe_bundle *bundle,
         state->cosmo_graph_hash != id->cosmo_graph_hash) {
         return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
     }
+    if (state->sysm.present &&
+        state->systems_hash != id->systems_hash) {
+        return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
+    }
+    if (state->bods.present &&
+        state->bodies_hash != id->bodies_hash) {
+        return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
+    }
+    if (state->fram.present &&
+        state->frames_hash != id->frames_hash) {
+        return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
+    }
+    if (state->topb.present &&
+        state->topology_hash != id->topology_hash) {
+        return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
+    }
     state->universe_id.assign(id->universe_id, id->universe_id_len);
     state->instance_id.assign(id->instance_id, id->instance_id_len);
     state->content_graph_hash = id->content_graph_hash;
     state->sim_flags_hash = id->sim_flags_hash;
     state->cosmo_graph_hash = id->cosmo_graph_hash;
+    state->systems_hash = id->systems_hash;
+    state->bodies_hash = id->bodies_hash;
+    state->frames_hash = id->frames_hash;
+    state->topology_hash = id->topology_hash;
     state->ups = id->ups;
     state->tick_index = id->tick_index;
     state->feature_epoch = id->feature_epoch;
@@ -540,6 +672,10 @@ int dom_universe_bundle_get_identity(const dom_universe_bundle *bundle,
     out_id->content_graph_hash = state->content_graph_hash;
     out_id->sim_flags_hash = state->sim_flags_hash;
     out_id->cosmo_graph_hash = state->cosmo_graph_hash;
+    out_id->systems_hash = state->systems_hash;
+    out_id->bodies_hash = state->bodies_hash;
+    out_id->frames_hash = state->frames_hash;
+    out_id->topology_hash = state->topology_hash;
     out_id->ups = state->ups;
     out_id->tick_index = state->tick_index;
     out_id->feature_epoch = state->feature_epoch;
@@ -579,6 +715,30 @@ int dom_universe_bundle_set_chunk(dom_universe_bundle *bundle,
             return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
         }
         bundle->state.cosmo_graph_hash = hash;
+    } else if (type_id == DOM_UNIVERSE_CHUNK_SYSM) {
+        const u64 hash = hash_bytes_fnv1a64(chunk->payload);
+        if (bundle->state.identity_set && bundle->state.systems_hash != hash) {
+            return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
+        }
+        bundle->state.systems_hash = hash;
+    } else if (type_id == DOM_UNIVERSE_CHUNK_BODS) {
+        const u64 hash = hash_bytes_fnv1a64(chunk->payload);
+        if (bundle->state.identity_set && bundle->state.bodies_hash != hash) {
+            return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
+        }
+        bundle->state.bodies_hash = hash;
+    } else if (type_id == DOM_UNIVERSE_CHUNK_FRAM) {
+        const u64 hash = hash_bytes_fnv1a64(chunk->payload);
+        if (bundle->state.identity_set && bundle->state.frames_hash != hash) {
+            return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
+        }
+        bundle->state.frames_hash = hash;
+    } else if (type_id == DOM_UNIVERSE_CHUNK_TOPB) {
+        const u64 hash = hash_bytes_fnv1a64(chunk->payload);
+        if (bundle->state.identity_set && bundle->state.topology_hash != hash) {
+            return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
+        }
+        bundle->state.topology_hash = hash;
     }
     return DOM_UNIVERSE_BUNDLE_OK;
 }
@@ -644,6 +804,10 @@ int dom_universe_bundle_read_file(const char *path,
     u32 i;
     bool have_time = false;
     bool have_cosm = false;
+    bool have_sysm = false;
+    bool have_bods = false;
+    bool have_fram = false;
+    bool have_topb = false;
     bool have_cele = false;
     bool have_vesl = false;
     bool have_surf = false;
@@ -652,6 +816,14 @@ int dom_universe_bundle_read_file(const char *path,
     bool have_forn = false;
     u64 cosmo_payload_hash = 0ull;
     bool cosmo_hash_set = false;
+    u64 systems_payload_hash = 0ull;
+    bool systems_hash_set = false;
+    u64 bodies_payload_hash = 0ull;
+    bool bodies_hash_set = false;
+    u64 frames_payload_hash = 0ull;
+    bool frames_hash_set = false;
+    u64 topology_payload_hash = 0ull;
+    bool topology_hash_set = false;
     int rc;
 
     if (!path || !out_bundle) {
@@ -715,6 +887,110 @@ int dom_universe_bundle_read_file(const char *path,
                     goto cleanup;
                 }
                 have_cosm = true;
+                break;
+            }
+            case DOM_UNIVERSE_CHUNK_SYSM: {
+                BundleChunk *chunk = chunk_for_type(&out_bundle->state, entry->type_id);
+                if (!chunk) {
+                    rc = DOM_UNIVERSE_BUNDLE_UNSUPPORTED_SCHEMA;
+                    goto cleanup;
+                }
+                if (entry->version != 1u) {
+                    rc = DOM_UNIVERSE_BUNDLE_MIGRATION_REQUIRED;
+                    goto cleanup;
+                }
+                rc = read_chunk_payload(&reader, entry, chunk->payload);
+                if (rc != DOM_UNIVERSE_BUNDLE_OK) {
+                    goto cleanup;
+                }
+                chunk->version = entry->version;
+                chunk->present = true;
+                systems_payload_hash = hash_bytes_fnv1a64(chunk->payload);
+                systems_hash_set = true;
+                if (out_bundle->state.identity_set &&
+                    out_bundle->state.systems_hash != systems_payload_hash) {
+                    rc = DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
+                    goto cleanup;
+                }
+                have_sysm = true;
+                break;
+            }
+            case DOM_UNIVERSE_CHUNK_BODS: {
+                BundleChunk *chunk = chunk_for_type(&out_bundle->state, entry->type_id);
+                if (!chunk) {
+                    rc = DOM_UNIVERSE_BUNDLE_UNSUPPORTED_SCHEMA;
+                    goto cleanup;
+                }
+                if (entry->version != 1u) {
+                    rc = DOM_UNIVERSE_BUNDLE_MIGRATION_REQUIRED;
+                    goto cleanup;
+                }
+                rc = read_chunk_payload(&reader, entry, chunk->payload);
+                if (rc != DOM_UNIVERSE_BUNDLE_OK) {
+                    goto cleanup;
+                }
+                chunk->version = entry->version;
+                chunk->present = true;
+                bodies_payload_hash = hash_bytes_fnv1a64(chunk->payload);
+                bodies_hash_set = true;
+                if (out_bundle->state.identity_set &&
+                    out_bundle->state.bodies_hash != bodies_payload_hash) {
+                    rc = DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
+                    goto cleanup;
+                }
+                have_bods = true;
+                break;
+            }
+            case DOM_UNIVERSE_CHUNK_FRAM: {
+                BundleChunk *chunk = chunk_for_type(&out_bundle->state, entry->type_id);
+                if (!chunk) {
+                    rc = DOM_UNIVERSE_BUNDLE_UNSUPPORTED_SCHEMA;
+                    goto cleanup;
+                }
+                if (entry->version != 1u) {
+                    rc = DOM_UNIVERSE_BUNDLE_MIGRATION_REQUIRED;
+                    goto cleanup;
+                }
+                rc = read_chunk_payload(&reader, entry, chunk->payload);
+                if (rc != DOM_UNIVERSE_BUNDLE_OK) {
+                    goto cleanup;
+                }
+                chunk->version = entry->version;
+                chunk->present = true;
+                frames_payload_hash = hash_bytes_fnv1a64(chunk->payload);
+                frames_hash_set = true;
+                if (out_bundle->state.identity_set &&
+                    out_bundle->state.frames_hash != frames_payload_hash) {
+                    rc = DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
+                    goto cleanup;
+                }
+                have_fram = true;
+                break;
+            }
+            case DOM_UNIVERSE_CHUNK_TOPB: {
+                BundleChunk *chunk = chunk_for_type(&out_bundle->state, entry->type_id);
+                if (!chunk) {
+                    rc = DOM_UNIVERSE_BUNDLE_UNSUPPORTED_SCHEMA;
+                    goto cleanup;
+                }
+                if (entry->version != 1u) {
+                    rc = DOM_UNIVERSE_BUNDLE_MIGRATION_REQUIRED;
+                    goto cleanup;
+                }
+                rc = read_chunk_payload(&reader, entry, chunk->payload);
+                if (rc != DOM_UNIVERSE_BUNDLE_OK) {
+                    goto cleanup;
+                }
+                chunk->version = entry->version;
+                chunk->present = true;
+                topology_payload_hash = hash_bytes_fnv1a64(chunk->payload);
+                topology_hash_set = true;
+                if (out_bundle->state.identity_set &&
+                    out_bundle->state.topology_hash != topology_payload_hash) {
+                    rc = DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
+                    goto cleanup;
+                }
+                have_topb = true;
                 break;
             }
             case DOM_UNIVERSE_CHUNK_CELE:
@@ -781,13 +1057,38 @@ int dom_universe_bundle_read_file(const char *path,
     }
 
     if (!have_time || !have_cosm || !have_cele || !have_vesl || !have_surf ||
-        !have_locl || !have_rng || !have_forn) {
+        !have_locl || !have_rng || !have_forn ||
+        !have_sysm || !have_bods || !have_fram || !have_topb) {
         rc = DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
         goto cleanup;
     }
     if (out_bundle->state.identity_set &&
         cosmo_hash_set &&
         cosmo_payload_hash != out_bundle->state.cosmo_graph_hash) {
+        rc = DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
+        goto cleanup;
+    }
+    if (out_bundle->state.identity_set &&
+        systems_hash_set &&
+        systems_payload_hash != out_bundle->state.systems_hash) {
+        rc = DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
+        goto cleanup;
+    }
+    if (out_bundle->state.identity_set &&
+        bodies_hash_set &&
+        bodies_payload_hash != out_bundle->state.bodies_hash) {
+        rc = DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
+        goto cleanup;
+    }
+    if (out_bundle->state.identity_set &&
+        frames_hash_set &&
+        frames_payload_hash != out_bundle->state.frames_hash) {
+        rc = DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
+        goto cleanup;
+    }
+    if (out_bundle->state.identity_set &&
+        topology_hash_set &&
+        topology_payload_hash != out_bundle->state.topology_hash) {
         rc = DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
         goto cleanup;
     }
@@ -825,6 +1126,18 @@ int dom_universe_bundle_write_file(const char *path,
     if (hash_bytes_fnv1a64(state->cosmo.payload) != state->cosmo_graph_hash) {
         return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
     }
+    if (hash_bytes_fnv1a64(state->sysm.payload) != state->systems_hash) {
+        return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
+    }
+    if (hash_bytes_fnv1a64(state->bods.payload) != state->bodies_hash) {
+        return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
+    }
+    if (hash_bytes_fnv1a64(state->fram.payload) != state->frames_hash) {
+        return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
+    }
+    if (hash_bytes_fnv1a64(state->topb.payload) != state->topology_hash) {
+        return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
+    }
 
     dtlv_writer_init(&writer);
     if (dtlv_writer_open_file(&writer, path) != 0) {
@@ -837,6 +1150,22 @@ int dom_universe_bundle_write_file(const char *path,
         goto cleanup;
     }
     rc = write_raw_chunk(&writer, DOM_UNIVERSE_CHUNK_COSM, state->cosmo);
+    if (rc != DOM_UNIVERSE_BUNDLE_OK) {
+        goto cleanup;
+    }
+    rc = write_raw_chunk(&writer, DOM_UNIVERSE_CHUNK_SYSM, state->sysm);
+    if (rc != DOM_UNIVERSE_BUNDLE_OK) {
+        goto cleanup;
+    }
+    rc = write_raw_chunk(&writer, DOM_UNIVERSE_CHUNK_BODS, state->bods);
+    if (rc != DOM_UNIVERSE_BUNDLE_OK) {
+        goto cleanup;
+    }
+    rc = write_raw_chunk(&writer, DOM_UNIVERSE_CHUNK_FRAM, state->fram);
+    if (rc != DOM_UNIVERSE_BUNDLE_OK) {
+        goto cleanup;
+    }
+    rc = write_raw_chunk(&writer, DOM_UNIVERSE_CHUNK_TOPB, state->topb);
     if (rc != DOM_UNIVERSE_BUNDLE_OK) {
         goto cleanup;
     }

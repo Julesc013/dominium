@@ -13,6 +13,10 @@ skip-unknown format intended for archival and migration.
 Chunk type IDs are ASCII fourcc values stored as `u32_le`:
 - `TIME` (v1): identity + timebase TLV (required)
 - `COSM` (v1): cosmos graph container (required; may be empty)
+- `SYSM` (v1): system descriptors (required; may be empty)
+- `BODS` (v1): body descriptors (required; may be empty)
+- `FRAM` (v1): frame tree descriptors (required; may be empty)
+- `TOPB` (v1): topology bindings (required; may be empty)
 - `CELE` (v1): celestial bodies and systems (required; may be empty)
 - `VESL` (v1): vessel records (required; may be empty)
 - `SURF` (v1): surface records (required; may be empty)
@@ -37,6 +41,10 @@ Required tags:
 - `0x0003` `CONTENT_GRAPH_HASH` (`u64_le`)
 - `0x0004` `SIM_FLAGS_HASH` (`u64_le`)
 - `0x0008` `COSMO_HASH` (`u64_le`)
+- `0x0009` `SYSTEMS_HASH` (`u64_le`)
+- `0x000A` `BODIES_HASH` (`u64_le`)
+- `0x000B` `FRAMES_HASH` (`u64_le`)
+- `0x000C` `TOPOLOGY_HASH` (`u64_le`)
 - `0x0005` `UPS` (`u32_le`)
 - `0x0006` `TICK_INDEX` (`u64_le`)
 - `0x0007` `FEATURE_EPOCH` (`u32_le`)
@@ -69,6 +77,10 @@ Universe bundles are bound to:
 - content/pack graph hash
 - sim-affecting flags hash
 - cosmos graph hash
+- systems hash
+- bodies hash
+- frames hash
+- topology bindings hash
 - timebase (`UPS`, `TICK_INDEX`)
 - feature epoch
 
