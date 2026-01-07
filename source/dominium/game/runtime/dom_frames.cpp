@@ -280,6 +280,30 @@ int dom_frames_validate(const dom_frames *frames) {
     return DOM_FRAMES_OK;
 }
 
+int dom_frames_iterate(const dom_frames *frames, dom_frame_iter_fn fn, void *user) {
+    size_t i;
+    if (!frames || !fn) {
+        return DOM_FRAMES_INVALID_ARGUMENT;
+    }
+    for (i = 0u; i < frames->frames.size(); ++i) {
+        const FrameEntry &entry = frames->frames[i];
+        dom_frame_info info;
+        info.id = entry.id;
+        info.parent_id = entry.parent_id;
+        info.kind = entry.kind;
+        info.body_id = entry.body_id;
+        fn(&info, user);
+    }
+    return DOM_FRAMES_OK;
+}
+
+u32 dom_frames_count(const dom_frames *frames) {
+    if (!frames) {
+        return 0u;
+    }
+    return (u32)frames->frames.size();
+}
+
 int dom_frames_transform_pos(const dom_frames *frames,
                              dom_frame_id src_frame,
                              dom_frame_id dst_frame,

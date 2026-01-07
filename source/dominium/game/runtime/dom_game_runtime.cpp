@@ -21,8 +21,12 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "dom_session.h"
 #include "runtime/dom_cosmo_graph.h"
 #include "runtime/dom_cosmo_transit.h"
+#include "runtime/dom_system_registry.h"
+#include "runtime/dom_body_registry.h"
+#include "runtime/dom_frames.h"
 #include "runtime/dom_game_hash.h"
 #include "runtime/dom_game_replay.h"
+#include "domino/core/spacetime.h"
 
 extern "C" {
 #include "ai/d_agent.h"
@@ -43,6 +47,9 @@ struct dom_game_runtime {
     int replay_last_tick_valid;
     u64 run_id;
     std::vector<unsigned char> manifest_hash_bytes;
+    dom_system_registry *system_registry;
+    dom_body_registry *body_registry;
+    dom_frames *frames;
     dom::dom_cosmo_graph cosmo_graph;
     dom_cosmo_transit_state cosmo_transit;
     u64 cosmo_last_arrival_tick;
@@ -74,6 +81,81 @@ static u64 compute_seed(dom::DomSession *session, const dom::InstanceInfo *inst)
         return w->meta.seed;
     }
     return inst ? (u64)inst->world_seed : 0ull;
+}
+
+static void zero_posseg(dom_posseg_q16 *pos) {
+    u32 i;
+    for (i = 0u; i < 3u; ++i) {
+        pos->seg[i] = 0;
+        pos->loc[i] = 0;
+    }
+}
+
+static int build_baseline_frames(dom_frames *frames, const dom_body_registry *bodies) {
+    dom_frame_desc desc;
+    dom_body_info earth_info;
+    dom_frame_id sol_frame = 0ull;
+    dom_frame_id earth_centered = 0ull;
+    dom_frame_id earth_fixed = 0ull;
+    dom_body_id earth_id = 0ull;
+    int rc;
+
+    if (!frames) {
+        return DOM_FRAMES_INVALID_ARGUMENT;
+    }
+
+    (void)dom_id_hash64("SOL_BARYCENTRIC_INERTIAL", 24u, &sol_frame);
+    (void)dom_id_hash64("EARTH_CENTERED_INERTIAL", 23u, &earth_centered);
+    (void)dom_id_hash64("EARTH_FIXED_ROTATING", 20u, &earth_fixed);
+    (void)dom_id_hash64("earth", 5u, &earth_id);
+
+    std::memset(&desc, 0, sizeof(desc));
+    desc.id = sol_frame;
+    desc.parent_id = 0ull;
+    desc.kind = DOM_FRAME_KIND_INERTIAL_BARYCENTRIC;
+    desc.body_id = 0ull;
+    zero_posseg(&desc.origin_offset);
+    desc.rotation_period_ticks = 0ull;
+    desc.rotation_epoch_tick = 0ull;
+    desc.rotation_phase_turns = 0;
+    rc = dom_frames_register(frames, &desc);
+    if (rc != DOM_FRAMES_OK) {
+        return rc;
+    }
+
+    std::memset(&desc, 0, sizeof(desc));
+    desc.id = earth_centered;
+    desc.parent_id = sol_frame;
+    desc.kind = DOM_FRAME_KIND_BODY_CENTERED_INERTIAL;
+    desc.body_id = earth_id;
+    zero_posseg(&desc.origin_offset);
+    desc.rotation_period_ticks = 0ull;
+    desc.rotation_epoch_tick = 0ull;
+    desc.rotation_phase_turns = 0;
+    rc = dom_frames_register(frames, &desc);
+    if (rc != DOM_FRAMES_OK) {
+        return rc;
+    }
+
+    std::memset(&desc, 0, sizeof(desc));
+    desc.id = earth_fixed;
+    desc.parent_id = earth_centered;
+    desc.kind = DOM_FRAME_KIND_BODY_FIXED;
+    desc.body_id = earth_id;
+    zero_posseg(&desc.origin_offset);
+    desc.rotation_period_ticks = 0ull;
+    desc.rotation_epoch_tick = 0ull;
+    desc.rotation_phase_turns = 0;
+    if (bodies && dom_body_registry_get(bodies, earth_id, &earth_info) == DOM_BODY_REGISTRY_OK) {
+        desc.rotation_period_ticks = earth_info.rotation_period_ticks;
+        desc.rotation_epoch_tick = earth_info.rotation_epoch_tick;
+    }
+    rc = dom_frames_register(frames, &desc);
+    if (rc != DOM_FRAMES_OK) {
+        return rc;
+    }
+
+    return dom_frames_validate(frames);
 }
 
 static int inject_replay(dom_game_runtime *rt, d_sim_context *sim) {
@@ -135,11 +217,33 @@ dom_game_runtime *dom_game_runtime_create(const dom_game_runtime_init_desc *desc
     rt->replay_last_tick = 0u;
     rt->replay_last_tick_valid = 0;
     rt->run_id = desc->run_id;
+    rt->system_registry = 0;
+    rt->body_registry = 0;
+    rt->frames = 0;
     (void)dom::dom_cosmo_graph_init(&rt->cosmo_graph,
                                     compute_seed(session_of(rt), inst_of(rt)),
                                     0);
     dom_cosmo_transit_reset(&rt->cosmo_transit);
     rt->cosmo_last_arrival_tick = 0ull;
+    rt->system_registry = dom_system_registry_create();
+    rt->body_registry = dom_body_registry_create();
+    rt->frames = dom_frames_create();
+    if (!rt->system_registry || !rt->body_registry || !rt->frames) {
+        dom_game_runtime_destroy(rt);
+        return 0;
+    }
+    if (dom_system_registry_add_baseline(rt->system_registry) != DOM_SYSTEM_REGISTRY_OK) {
+        dom_game_runtime_destroy(rt);
+        return 0;
+    }
+    if (dom_body_registry_add_baseline(rt->body_registry) != DOM_BODY_REGISTRY_OK) {
+        dom_game_runtime_destroy(rt);
+        return 0;
+    }
+    if (build_baseline_frames(rt->frames, rt->body_registry) != DOM_FRAMES_OK) {
+        dom_game_runtime_destroy(rt);
+        return 0;
+    }
     if (desc->instance_manifest_hash_bytes && desc->instance_manifest_hash_len > 0u) {
         rt->manifest_hash_bytes.assign(desc->instance_manifest_hash_bytes,
                                        desc->instance_manifest_hash_bytes +
@@ -152,6 +256,9 @@ void dom_game_runtime_destroy(dom_game_runtime *rt) {
     if (!rt) {
         return;
     }
+    dom_frames_destroy(rt->frames);
+    dom_body_registry_destroy(rt->body_registry);
+    dom_system_registry_destroy(rt->system_registry);
     delete rt;
 }
 
@@ -464,4 +571,16 @@ const void *dom_game_runtime_instance(const dom_game_runtime *rt) {
 
 const void *dom_game_runtime_cosmo_graph(const dom_game_runtime *rt) {
     return rt ? static_cast<const void *>(&rt->cosmo_graph) : 0;
+}
+
+const void *dom_game_runtime_system_registry(const dom_game_runtime *rt) {
+    return rt ? static_cast<const void *>(rt->system_registry) : 0;
+}
+
+const void *dom_game_runtime_body_registry(const dom_game_runtime *rt) {
+    return rt ? static_cast<const void *>(rt->body_registry) : 0;
+}
+
+const void *dom_game_runtime_frames(const dom_game_runtime *rt) {
+    return rt ? static_cast<const void *>(rt->frames) : 0;
 }

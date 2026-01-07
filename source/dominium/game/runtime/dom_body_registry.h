@@ -78,6 +78,7 @@ int dom_body_registry_get(const dom_body_registry *registry,
 int dom_body_registry_iterate(const dom_body_registry *registry,
                               dom_body_iter_fn fn,
                               void *user);
+u32 dom_body_registry_count(const dom_body_registry *registry);
 
 int dom_body_registry_add_baseline(dom_body_registry *registry);
 

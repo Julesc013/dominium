@@ -49,6 +49,15 @@ typedef struct dom_vec3_q16 {
     q16_16 v[3];
 } dom_vec3_q16;
 
+typedef struct dom_frame_info {
+    dom_frame_id id;
+    dom_frame_id parent_id;
+    u32 kind;
+    u64 body_id;
+} dom_frame_info;
+
+typedef void (*dom_frame_iter_fn)(const dom_frame_info *info, void *user);
+
 typedef struct dom_frames dom_frames;
 
 dom_frames *dom_frames_create(void);
@@ -56,6 +65,8 @@ void dom_frames_destroy(dom_frames *frames);
 
 int dom_frames_register(dom_frames *frames, const dom_frame_desc *desc);
 int dom_frames_validate(const dom_frames *frames);
+int dom_frames_iterate(const dom_frames *frames, dom_frame_iter_fn fn, void *user);
+u32 dom_frames_count(const dom_frames *frames);
 
 int dom_frames_transform_pos(const dom_frames *frames,
                              dom_frame_id src_frame,

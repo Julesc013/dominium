@@ -19,9 +19,86 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "runtime/dom_cosmo_graph.h"
 #include "runtime/dom_game_runtime.h"
 #include "runtime/dom_game_query.h"
+#include "runtime/dom_system_registry.h"
+#include "runtime/dom_body_registry.h"
+#include "runtime/dom_frames.h"
+#include "runtime/dom_surface_topology.h"
 
 extern "C" {
 }
+
+namespace {
+
+struct SystemFillContext {
+    dom_system_view *systems;
+    u32 index;
+};
+
+static void fill_system_view(const dom_system_info *info, void *user) {
+    SystemFillContext *ctx = static_cast<SystemFillContext *>(user);
+    dom_system_view *view = &ctx->systems[ctx->index++];
+    view->id = info->id;
+    view->parent_id = info->parent_id;
+}
+
+struct BodyFillContext {
+    dom_body_view *bodies;
+    u32 index;
+};
+
+static void fill_body_view(const dom_body_info *info, void *user) {
+    BodyFillContext *ctx = static_cast<BodyFillContext *>(user);
+    dom_body_view *view = &ctx->bodies[ctx->index++];
+    view->id = info->id;
+    view->system_id = info->system_id;
+    view->kind = info->kind;
+    view->radius_m = info->radius_m;
+    view->mu_m3_s2 = info->mu_m3_s2;
+    view->rotation_period_ticks = info->rotation_period_ticks;
+}
+
+struct FrameFillContext {
+    dom_frame_view *frames;
+    u32 index;
+};
+
+static void fill_frame_view(const dom_frame_info *info, void *user) {
+    FrameFillContext *ctx = static_cast<FrameFillContext *>(user);
+    dom_frame_view *view = &ctx->frames[ctx->index++];
+    view->id = info->id;
+    view->parent_id = info->parent_id;
+    view->kind = info->kind;
+    view->body_id = info->body_id;
+}
+
+struct TopologyFillContext {
+    const dom_body_registry *bodies;
+    dom_body_topology_view *views;
+    u32 index;
+};
+
+static void fill_topology_view(const dom_body_info *info, void *user) {
+    TopologyFillContext *ctx = static_cast<TopologyFillContext *>(user);
+    dom_body_topology_view *view = &ctx->views[ctx->index++];
+    dom_topology_binding binding;
+    int rc;
+
+    view->body_id = info->id;
+    view->topology_kind = 0u;
+    view->param_a_m = 0;
+    view->param_b_m = 0;
+    view->param_c_m = 0;
+
+    rc = dom_surface_topology_select(ctx->bodies, info->id, 0u, &binding);
+    if (rc == DOM_TOPOLOGY_OK) {
+        view->topology_kind = binding.kind;
+        view->param_a_m = binding.param_a_m;
+        view->param_b_m = binding.param_b_m;
+        view->param_c_m = binding.param_c_m;
+    }
+}
+
+} // namespace
 
 dom_game_snapshot *dom_game_runtime_build_snapshot(const dom_game_runtime *rt, u32 flags) {
     dom_game_snapshot *snap;
@@ -155,5 +232,158 @@ void dom_game_runtime_release_cosmo_transit_snapshot(dom_cosmo_transit_snapshot 
     if (!snapshot) {
         return;
     }
+    delete snapshot;
+}
+
+dom_system_list_snapshot *dom_game_runtime_build_system_list_snapshot(const dom_game_runtime *rt) {
+    dom_system_list_snapshot *snap;
+    const dom_system_registry *registry;
+    u32 count;
+    SystemFillContext ctx;
+
+    if (!rt) {
+        return (dom_system_list_snapshot *)0;
+    }
+    registry = static_cast<const dom_system_registry *>(dom_game_runtime_system_registry(rt));
+    if (!registry) {
+        return (dom_system_list_snapshot *)0;
+    }
+
+    snap = new dom_system_list_snapshot();
+    std::memset(snap, 0, sizeof(*snap));
+    snap->struct_size = sizeof(*snap);
+    snap->struct_version = DOM_SYSTEM_LIST_SNAPSHOT_VERSION;
+
+    count = dom_system_registry_count(registry);
+    snap->system_count = count;
+    if (count > 0u) {
+        snap->systems = new dom_system_view[count];
+        ctx.systems = snap->systems;
+        ctx.index = 0u;
+        (void)dom_system_registry_iterate(registry, fill_system_view, &ctx);
+    }
+    return snap;
+}
+
+void dom_game_runtime_release_system_list_snapshot(dom_system_list_snapshot *snapshot) {
+    if (!snapshot) {
+        return;
+    }
+    delete[] snapshot->systems;
+    delete snapshot;
+}
+
+dom_body_list_snapshot *dom_game_runtime_build_body_list_snapshot(const dom_game_runtime *rt) {
+    dom_body_list_snapshot *snap;
+    const dom_body_registry *registry;
+    u32 count;
+    BodyFillContext ctx;
+
+    if (!rt) {
+        return (dom_body_list_snapshot *)0;
+    }
+    registry = static_cast<const dom_body_registry *>(dom_game_runtime_body_registry(rt));
+    if (!registry) {
+        return (dom_body_list_snapshot *)0;
+    }
+
+    snap = new dom_body_list_snapshot();
+    std::memset(snap, 0, sizeof(*snap));
+    snap->struct_size = sizeof(*snap);
+    snap->struct_version = DOM_BODY_LIST_SNAPSHOT_VERSION;
+
+    count = dom_body_registry_count(registry);
+    snap->body_count = count;
+    if (count > 0u) {
+        snap->bodies = new dom_body_view[count];
+        ctx.bodies = snap->bodies;
+        ctx.index = 0u;
+        (void)dom_body_registry_iterate(registry, fill_body_view, &ctx);
+    }
+    return snap;
+}
+
+void dom_game_runtime_release_body_list_snapshot(dom_body_list_snapshot *snapshot) {
+    if (!snapshot) {
+        return;
+    }
+    delete[] snapshot->bodies;
+    delete snapshot;
+}
+
+dom_frame_tree_snapshot *dom_game_runtime_build_frame_tree_snapshot(const dom_game_runtime *rt) {
+    dom_frame_tree_snapshot *snap;
+    const dom_frames *frames;
+    u32 count;
+    FrameFillContext ctx;
+
+    if (!rt) {
+        return (dom_frame_tree_snapshot *)0;
+    }
+    frames = static_cast<const dom_frames *>(dom_game_runtime_frames(rt));
+    if (!frames) {
+        return (dom_frame_tree_snapshot *)0;
+    }
+
+    snap = new dom_frame_tree_snapshot();
+    std::memset(snap, 0, sizeof(*snap));
+    snap->struct_size = sizeof(*snap);
+    snap->struct_version = DOM_FRAME_TREE_SNAPSHOT_VERSION;
+
+    count = dom_frames_count(frames);
+    snap->frame_count = count;
+    if (count > 0u) {
+        snap->frames = new dom_frame_view[count];
+        ctx.frames = snap->frames;
+        ctx.index = 0u;
+        (void)dom_frames_iterate(frames, fill_frame_view, &ctx);
+    }
+    return snap;
+}
+
+void dom_game_runtime_release_frame_tree_snapshot(dom_frame_tree_snapshot *snapshot) {
+    if (!snapshot) {
+        return;
+    }
+    delete[] snapshot->frames;
+    delete snapshot;
+}
+
+dom_body_topology_snapshot *dom_game_runtime_build_body_topology_snapshot(const dom_game_runtime *rt) {
+    dom_body_topology_snapshot *snap;
+    const dom_body_registry *registry;
+    u32 count;
+    TopologyFillContext ctx;
+
+    if (!rt) {
+        return (dom_body_topology_snapshot *)0;
+    }
+    registry = static_cast<const dom_body_registry *>(dom_game_runtime_body_registry(rt));
+    if (!registry) {
+        return (dom_body_topology_snapshot *)0;
+    }
+
+    snap = new dom_body_topology_snapshot();
+    std::memset(snap, 0, sizeof(*snap));
+    snap->struct_size = sizeof(*snap);
+    snap->struct_version = DOM_BODY_TOPOLOGY_SNAPSHOT_VERSION;
+
+    count = dom_body_registry_count(registry);
+    snap->body_count = count;
+    if (count > 0u) {
+        snap->bodies = new dom_body_topology_view[count];
+        ctx.bodies = registry;
+        ctx.views = snap->bodies;
+        ctx.index = 0u;
+        (void)dom_body_registry_iterate(registry, fill_topology_view, &ctx);
+    }
+    return snap;
+}
+
+void dom_game_runtime_release_body_topology_snapshot(dom_body_topology_snapshot *snapshot) {
+    if (!snapshot) {
+        return;
+    }
+    delete[] snapshot->bodies;
     delete snapshot;
 }

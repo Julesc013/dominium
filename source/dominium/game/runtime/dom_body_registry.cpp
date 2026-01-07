@@ -206,6 +206,13 @@ int dom_body_registry_iterate(const dom_body_registry *registry,
     return DOM_BODY_REGISTRY_OK;
 }
 
+u32 dom_body_registry_count(const dom_body_registry *registry) {
+    if (!registry) {
+        return 0u;
+    }
+    return (u32)registry->bodies.size();
+}
+
 int dom_body_registry_add_baseline(dom_body_registry *registry) {
     dom_body_desc desc;
     dom_system_id sol_id = 0ull;

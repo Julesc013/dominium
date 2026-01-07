@@ -146,6 +146,13 @@ int dom_system_registry_iterate(const dom_system_registry *registry,
     return DOM_SYSTEM_REGISTRY_OK;
 }
 
+u32 dom_system_registry_count(const dom_system_registry *registry) {
+    if (!registry) {
+        return 0u;
+    }
+    return (u32)registry->systems.size();
+}
+
 int dom_system_registry_add_baseline(dom_system_registry *registry) {
     dom_system_desc desc;
     dom_system_id galaxy_id = 0ull;

@@ -55,6 +55,7 @@ int dom_system_registry_get(const dom_system_registry *registry,
 int dom_system_registry_iterate(const dom_system_registry *registry,
                                 dom_system_iter_fn fn,
                                 void *user);
+u32 dom_system_registry_count(const dom_system_registry *registry);
 
 int dom_system_registry_add_baseline(dom_system_registry *registry);
 
