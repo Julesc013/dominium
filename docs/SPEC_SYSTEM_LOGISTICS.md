@@ -86,8 +86,14 @@ Logistics state is sim-affecting and MUST be persisted:
 - Save chunks: `STAT`, `ROUT`, `TRAN`, `PROD`
 - Chunks are versioned, skip-unknown, and included in identity digests.
 
+## 6. Macro economy linkage (v0)
+- Macro economy aggregates MAY influence production rates or availability but
+  MUST NOT directly move inventory or bypass logistics rules.
+- See `docs/SPEC_COSMO_ECONOMY_EVENTS.md` for macro-level rules.
+
 ## Related specs
 - `docs/SPEC_UNIVERSE_MODEL.md`
 - `docs/SPEC_COSMO_LANE.md`
+- `docs/SPEC_COSMO_ECONOMY_EVENTS.md`
 - `docs/SPEC_SPACETIME.md`
 - `docs/SPEC_DETERMINISM.md`
