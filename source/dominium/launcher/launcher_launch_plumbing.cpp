@@ -342,6 +342,18 @@ static std::string determinism_profile_id_from_dom_profile(const dom_profile* p)
     return (p->lockstep_strict != 0u) ? std::string("lockstep_strict") : std::string("default");
 }
 
+static u32 perf_tier_from_dom_profile(const dom_profile* p) {
+    if (!p) {
+        return dom::DOM_PERF_TIER_BASELINE;
+    }
+    switch (p->kind) {
+    case DOM_PROFILE_PERF:     return dom::DOM_PERF_TIER_MODERN;
+    case DOM_PROFILE_COMPAT:   return dom::DOM_PERF_TIER_BASELINE;
+    case DOM_PROFILE_BASELINE: return dom::DOM_PERF_TIER_BASELINE;
+    default:                   return dom::DOM_PERF_TIER_BASELINE;
+    }
+}
+
 static std::vector<unsigned char> sha256_of_manifest(const dom::launcher_core::LauncherInstanceManifest& m) {
     std::vector<unsigned char> tlv;
     unsigned char h[dom::launcher_core::LAUNCHER_SHA256_BYTES];
@@ -960,6 +972,12 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
     hs.selected_ui_backend_id = ui_backend;
     hs.timestamp_monotonic_us = now_us;
     hs.has_timestamp_wall_us = 0u;
+    hs.has_sim_caps = 1u;
+    dom_sim_caps_init_default(hs.sim_caps);
+    hs.has_perf_caps = 1u;
+    dom_perf_caps_init_default(hs.perf_caps, perf_tier_from_dom_profile(profile));
+    hs.has_provider_bindings_hash = 0u;
+    hs.provider_bindings_hash64 = 0ull;
     if (have_plan) {
         hs.pinned_engine_build_id = plan.effective_manifest.pinned_engine_build_id;
         hs.pinned_game_build_id = plan.effective_manifest.pinned_game_build_id;

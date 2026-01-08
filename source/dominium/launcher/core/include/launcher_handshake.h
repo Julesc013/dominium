@@ -20,6 +20,7 @@ extern "C" {
 }
 
 #include "dominium/core_err.h"
+#include "dominium/caps_split.h"
 
 #include "launcher_instance.h"
 
@@ -46,6 +47,9 @@ enum { LAUNCHER_HANDSHAKE_TLV_VERSION = 1u };
  * - `LAUNCHER_HANDSHAKE_TLV_TAG_RESOLVED_PACK_ENTRY` (container, repeated; order preserved)
  * - `LAUNCHER_HANDSHAKE_TLV_TAG_TIMESTAMP_MONOTONIC_US` (u64)
  * - `LAUNCHER_HANDSHAKE_TLV_TAG_TIMESTAMP_WALL_US` (u64, optional)
+ * - `LAUNCHER_HANDSHAKE_TLV_TAG_SIM_CAPS` (container, required for canonical launch)
+ * - `LAUNCHER_HANDSHAKE_TLV_TAG_PERF_CAPS` (container, optional)
+ * - `LAUNCHER_HANDSHAKE_TLV_TAG_PROVIDER_BINDINGS_HASH` (u64, optional)
  *
  * Resolved-pack entry payload (container TLV):
  * - `LAUNCHER_HANDSHAKE_PACK_TLV_TAG_PACK_ID` (string)
@@ -69,7 +73,10 @@ enum LauncherHandshakeTlvTag {
     LAUNCHER_HANDSHAKE_TLV_TAG_PIN_GAME_BUILD_ID = 11u,
     LAUNCHER_HANDSHAKE_TLV_TAG_RESOLVED_PACK_ENTRY = 12u,
     LAUNCHER_HANDSHAKE_TLV_TAG_TIMESTAMP_MONOTONIC_US = 13u,
-    LAUNCHER_HANDSHAKE_TLV_TAG_TIMESTAMP_WALL_US = 14u
+    LAUNCHER_HANDSHAKE_TLV_TAG_TIMESTAMP_WALL_US = 14u,
+    LAUNCHER_HANDSHAKE_TLV_TAG_SIM_CAPS = 15u,
+    LAUNCHER_HANDSHAKE_TLV_TAG_PERF_CAPS = 16u,
+    LAUNCHER_HANDSHAKE_TLV_TAG_PROVIDER_BINDINGS_HASH = 17u
 };
 
 enum LauncherHandshakePackTlvTag {
@@ -114,6 +121,13 @@ struct LauncherHandshake {
 
     std::vector<LauncherHandshakePackEntry> resolved_packs; /* ordered */
 
+    dom::DomSimCaps sim_caps;
+    u32 has_sim_caps; /* 0/1 */
+    dom::DomPerfCaps perf_caps;
+    u32 has_perf_caps; /* 0/1 */
+    u32 has_provider_bindings_hash; /* 0/1 */
+    u64 provider_bindings_hash64;
+
     u64 timestamp_monotonic_us;
     u32 has_timestamp_wall_us; /* 0/1 */
     u64 timestamp_wall_us;     /* valid when has_timestamp_wall_us==1 */
@@ -127,7 +141,7 @@ bool launcher_handshake_from_tlv_bytes(const unsigned char* data,
                                        size_t size,
                                        LauncherHandshake& out_hs);
 
-/* Stable hash computed over canonical TLV bytes (FNV-1a 64). */
+/* Stable identity hash computed over canonical identity TLV bytes (FNV-1a 64). */
 u64 launcher_handshake_hash64(const LauncherHandshake& hs);
 
 /* Launcher-side refusal codes used by tests and stub validators. */

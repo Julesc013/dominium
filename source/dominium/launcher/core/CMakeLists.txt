@@ -44,6 +44,7 @@ target_include_directories(dominium_launcher_core
 
 target_link_libraries(dominium_launcher_core
     PRIVATE
+        dominium_common
         core_tlv
         core_audit
         core_installed_state
