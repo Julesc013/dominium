@@ -221,6 +221,7 @@ add_executable(dom_topology_default_test
 target_include_directories(dom_topology_default_test PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../../include
     ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
 )
 
 target_link_libraries(dom_topology_default_test
@@ -234,6 +235,372 @@ set_target_properties(dom_topology_default_test PROPERTIES
 )
 
 add_test(NAME dom_topology_default_test COMMAND dom_topology_default_test)
+
+add_executable(dom_surface_latlong_determinism_test
+    dom_surface_latlong_determinism_test.cpp
+    ../dominium/game/runtime/dom_body_registry.cpp
+    ../dominium/game/runtime/dom_surface_topology.cpp
+    ../dominium/game/runtime/dom_surface_topology_sphere.cpp
+    ../dominium/game/runtime/dom_surface_topology_ellipsoid.cpp
+    ../dominium/game/runtime/dom_surface_topology_torus.cpp
+)
+
+target_include_directories(dom_surface_latlong_determinism_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_surface_latlong_determinism_test
+    domino_core
+)
+
+set_target_properties(dom_surface_latlong_determinism_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_surface_latlong_determinism_test COMMAND dom_surface_latlong_determinism_test)
+
+add_executable(dom_surface_chunk_activation_determinism_test
+    dom_surface_chunk_activation_determinism_test.cpp
+    ../dominium/game/runtime/dom_surface_chunks.cpp
+    ../dominium/game/runtime/dom_derived_jobs.cpp
+    ../dominium/game/runtime/dom_body_registry.cpp
+)
+
+target_include_directories(dom_surface_chunk_activation_determinism_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_surface_chunk_activation_determinism_test
+    domino_core
+)
+
+set_target_properties(dom_surface_chunk_activation_determinism_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_surface_chunk_activation_determinism_test COMMAND dom_surface_chunk_activation_determinism_test)
+
+add_executable(dom_landing_attachment_invariance_test
+    dom_landing_attachment_invariance_test.cpp
+    ../dominium/game/runtime/dom_lane_scheduler.cpp
+    ../dominium/game/runtime/dom_body_registry.cpp
+    ../dominium/game/runtime/dom_surface_topology.cpp
+    ../dominium/game/runtime/dom_surface_topology_sphere.cpp
+    ../dominium/game/runtime/dom_surface_topology_ellipsoid.cpp
+    ../dominium/game/runtime/dom_surface_topology_torus.cpp
+)
+
+target_include_directories(dom_landing_attachment_invariance_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_landing_attachment_invariance_test
+    domino_core
+)
+
+set_target_properties(dom_landing_attachment_invariance_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_landing_attachment_invariance_test COMMAND dom_landing_attachment_invariance_test)
+
+add_executable(dom_surface_streaming_no_modal_loading_test
+    dom_surface_streaming_no_modal_loading_test.cpp
+    ../dominium/game/runtime/dom_surface_chunks.cpp
+    ../dominium/game/runtime/dom_derived_jobs.cpp
+    ../dominium/game/runtime/dom_body_registry.cpp
+    ../dominium/game/runtime/dom_io_guard.cpp
+)
+
+target_include_directories(dom_surface_streaming_no_modal_loading_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_surface_streaming_no_modal_loading_test
+    domino_core
+)
+
+set_target_properties(dom_surface_streaming_no_modal_loading_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_surface_streaming_no_modal_loading_test COMMAND dom_surface_streaming_no_modal_loading_test)
+
+add_executable(dom_construction_placement_determinism_test
+    dom_construction_placement_determinism_test.cpp
+    ../dominium/game/runtime/dom_construction_registry.cpp
+)
+
+target_include_directories(dom_construction_placement_determinism_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_construction_placement_determinism_test
+    core_tlv
+    domino_core
+)
+
+set_target_properties(dom_construction_placement_determinism_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_construction_placement_determinism_test COMMAND dom_construction_placement_determinism_test)
+
+add_executable(dom_construction_overlap_refusal_test
+    dom_construction_overlap_refusal_test.cpp
+    ../dominium/game/runtime/dom_construction_registry.cpp
+)
+
+target_include_directories(dom_construction_overlap_refusal_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_construction_overlap_refusal_test
+    domino_core
+)
+
+set_target_properties(dom_construction_overlap_refusal_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_construction_overlap_refusal_test COMMAND dom_construction_overlap_refusal_test)
+
+add_executable(dom_construction_save_load_roundtrip_test
+    dom_construction_save_load_roundtrip_test.cpp
+    ../dominium/game/runtime/dom_game_runtime.cpp
+    ../dominium/game/runtime/dom_system_registry.cpp
+    ../dominium/game/runtime/dom_body_registry.cpp
+    ../dominium/game/runtime/dom_frames.cpp
+    ../dominium/game/runtime/dom_lane_scheduler.cpp
+    ../dominium/game/runtime/dom_surface_chunks.cpp
+    ../dominium/game/runtime/dom_derived_jobs.cpp
+    ../dominium/game/runtime/dom_surface_topology.cpp
+    ../dominium/game/runtime/dom_surface_topology_sphere.cpp
+    ../dominium/game/runtime/dom_surface_topology_ellipsoid.cpp
+    ../dominium/game/runtime/dom_surface_topology_torus.cpp
+    ../dominium/game/runtime/dom_surface_height.cpp
+    ../dominium/game/runtime/dom_construction_registry.cpp
+    ../dominium/game/runtime/dom_game_hash.c
+    ../dominium/game/runtime/dom_game_replay.cpp
+    ../dominium/game/runtime/dom_game_save.cpp
+    ../dominium/game/runtime/dom_game_content_id.cpp
+    ../dominium/game/runtime/dom_io_guard.cpp
+    ../dominium/game/runtime/dom_cosmo_graph.cpp
+    ../dominium/game/runtime/dom_cosmo_transit.cpp
+)
+
+target_include_directories(dom_construction_save_load_roundtrip_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_construction_save_load_roundtrip_test
+    dominium_common
+    core_tlv
+    domino_core
+)
+
+set_target_properties(dom_construction_save_load_roundtrip_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_construction_save_load_roundtrip_test COMMAND dom_construction_save_load_roundtrip_test)
+
+add_executable(dom_construction_replay_test
+    dom_construction_replay_test.cpp
+    ../dominium/game/runtime/dom_game_runtime.cpp
+    ../dominium/game/runtime/dom_system_registry.cpp
+    ../dominium/game/runtime/dom_body_registry.cpp
+    ../dominium/game/runtime/dom_frames.cpp
+    ../dominium/game/runtime/dom_lane_scheduler.cpp
+    ../dominium/game/runtime/dom_surface_chunks.cpp
+    ../dominium/game/runtime/dom_derived_jobs.cpp
+    ../dominium/game/runtime/dom_surface_topology.cpp
+    ../dominium/game/runtime/dom_surface_topology_sphere.cpp
+    ../dominium/game/runtime/dom_surface_topology_ellipsoid.cpp
+    ../dominium/game/runtime/dom_surface_topology_torus.cpp
+    ../dominium/game/runtime/dom_surface_height.cpp
+    ../dominium/game/runtime/dom_construction_registry.cpp
+    ../dominium/game/runtime/dom_game_hash.c
+    ../dominium/game/runtime/dom_game_replay.cpp
+    ../dominium/game/runtime/dom_game_content_id.cpp
+    ../dominium/game/runtime/dom_io_guard.cpp
+    ../dominium/game/runtime/dom_cosmo_graph.cpp
+    ../dominium/game/runtime/dom_cosmo_transit.cpp
+)
+
+target_include_directories(dom_construction_replay_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_construction_replay_test
+    dominium_common
+    core_tlv
+    domino_core
+)
+
+set_target_properties(dom_construction_replay_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_construction_replay_test COMMAND dom_construction_replay_test)
+
+add_executable(dom_logistics_schedule_determinism_test
+    dom_logistics_schedule_determinism_test.cpp
+    ../dominium/game/runtime/dom_station_registry.cpp
+    ../dominium/game/runtime/dom_route_graph.cpp
+    ../dominium/game/runtime/dom_transfer_scheduler.cpp
+)
+
+target_include_directories(dom_logistics_schedule_determinism_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_logistics_schedule_determinism_test
+    domino_core
+)
+
+set_target_properties(dom_logistics_schedule_determinism_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_logistics_schedule_determinism_test COMMAND dom_logistics_schedule_determinism_test)
+
+add_executable(dom_logistics_inventory_conservation_test
+    dom_logistics_inventory_conservation_test.cpp
+    ../dominium/game/runtime/dom_station_registry.cpp
+    ../dominium/game/runtime/dom_route_graph.cpp
+    ../dominium/game/runtime/dom_transfer_scheduler.cpp
+)
+
+target_include_directories(dom_logistics_inventory_conservation_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_logistics_inventory_conservation_test
+    domino_core
+)
+
+set_target_properties(dom_logistics_inventory_conservation_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_logistics_inventory_conservation_test COMMAND dom_logistics_inventory_conservation_test)
+
+add_executable(dom_production_tick_invariance_test
+    dom_production_tick_invariance_test.cpp
+    ../dominium/game/runtime/dom_station_registry.cpp
+    ../dominium/game/runtime/dom_production.cpp
+)
+
+target_include_directories(dom_production_tick_invariance_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_production_tick_invariance_test
+    domino_core
+)
+
+set_target_properties(dom_production_tick_invariance_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_production_tick_invariance_test COMMAND dom_production_tick_invariance_test)
+
+add_executable(dom_logistics_save_load_roundtrip_test
+    dom_logistics_save_load_roundtrip_test.cpp
+    ../dominium/game/runtime/dom_game_runtime.cpp
+    ../dominium/game/runtime/dom_system_registry.cpp
+    ../dominium/game/runtime/dom_body_registry.cpp
+    ../dominium/game/runtime/dom_frames.cpp
+    ../dominium/game/runtime/dom_lane_scheduler.cpp
+    ../dominium/game/runtime/dom_surface_chunks.cpp
+    ../dominium/game/runtime/dom_derived_jobs.cpp
+    ../dominium/game/runtime/dom_surface_topology.cpp
+    ../dominium/game/runtime/dom_surface_topology_sphere.cpp
+    ../dominium/game/runtime/dom_surface_topology_ellipsoid.cpp
+    ../dominium/game/runtime/dom_surface_topology_torus.cpp
+    ../dominium/game/runtime/dom_surface_height.cpp
+    ../dominium/game/runtime/dom_construction_registry.cpp
+    ../dominium/game/runtime/dom_station_registry.cpp
+    ../dominium/game/runtime/dom_route_graph.cpp
+    ../dominium/game/runtime/dom_transfer_scheduler.cpp
+    ../dominium/game/runtime/dom_production.cpp
+    ../dominium/game/runtime/dom_game_hash.c
+    ../dominium/game/runtime/dom_game_replay.cpp
+    ../dominium/game/runtime/dom_game_save.cpp
+    ../dominium/game/runtime/dom_game_content_id.cpp
+    ../dominium/game/runtime/dom_io_guard.cpp
+    ../dominium/game/runtime/dom_cosmo_graph.cpp
+    ../dominium/game/runtime/dom_cosmo_transit.cpp
+)
+
+target_include_directories(dom_logistics_save_load_roundtrip_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_logistics_save_load_roundtrip_test
+    dominium_common
+    core_tlv
+    domino_core
+)
+
+set_target_properties(dom_logistics_save_load_roundtrip_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_logistics_save_load_roundtrip_test COMMAND dom_logistics_save_load_roundtrip_test)
 
 add_executable(dom_universe_bundle_systems_roundtrip_test
     dom_universe_bundle_systems_roundtrip_test.cpp
@@ -385,9 +752,17 @@ add_test(NAME test_derived_order_independence COMMAND dom_derived_order_independ
 add_executable(dom_snapshot_isolation_test
     dom_snapshot_isolation_test.cpp
     ../dominium/game/runtime/dom_game_runtime.cpp
+    ../dominium/game/runtime/dom_construction_registry.cpp
     ../dominium/game/runtime/dom_system_registry.cpp
     ../dominium/game/runtime/dom_body_registry.cpp
     ../dominium/game/runtime/dom_frames.cpp
+    ../dominium/game/runtime/dom_lane_scheduler.cpp
+    ../dominium/game/runtime/dom_surface_chunks.cpp
+    ../dominium/game/runtime/dom_derived_jobs.cpp
+    ../dominium/game/runtime/dom_surface_topology.cpp
+    ../dominium/game/runtime/dom_surface_topology_sphere.cpp
+    ../dominium/game/runtime/dom_surface_topology_ellipsoid.cpp
+    ../dominium/game/runtime/dom_surface_topology_torus.cpp
     ../dominium/game/runtime/dom_game_hash.c
     ../dominium/game/runtime/dom_game_replay.cpp
     ../dominium/game/runtime/dom_snapshot.cpp
@@ -395,6 +770,10 @@ add_executable(dom_snapshot_isolation_test
     ../dominium/game/runtime/dom_surface_topology_sphere.cpp
     ../dominium/game/runtime/dom_surface_topology_ellipsoid.cpp
     ../dominium/game/runtime/dom_surface_topology_torus.cpp
+    ../dominium/game/runtime/dom_lane_scheduler.cpp
+    ../dominium/game/runtime/dom_surface_chunks.cpp
+    ../dominium/game/runtime/dom_derived_jobs.cpp
+    ../dominium/game/runtime/dom_surface_height.cpp
     ../dominium/game/runtime/dom_io_guard.cpp
     ../dominium/game/runtime/dom_cosmo_graph.cpp
     ../dominium/game/runtime/dom_cosmo_transit.cpp
@@ -423,9 +802,17 @@ add_test(NAME test_snapshot_isolation COMMAND dom_snapshot_isolation_test)
 add_executable(dom_session_authority_tests
     dom_session_authority_tests.cpp
     ../dominium/game/runtime/dom_game_runtime.cpp
+    ../dominium/game/runtime/dom_construction_registry.cpp
     ../dominium/game/runtime/dom_system_registry.cpp
     ../dominium/game/runtime/dom_body_registry.cpp
     ../dominium/game/runtime/dom_frames.cpp
+    ../dominium/game/runtime/dom_lane_scheduler.cpp
+    ../dominium/game/runtime/dom_surface_chunks.cpp
+    ../dominium/game/runtime/dom_derived_jobs.cpp
+    ../dominium/game/runtime/dom_surface_topology.cpp
+    ../dominium/game/runtime/dom_surface_topology_sphere.cpp
+    ../dominium/game/runtime/dom_surface_topology_ellipsoid.cpp
+    ../dominium/game/runtime/dom_surface_topology_torus.cpp
     ../dominium/game/runtime/dom_game_hash.c
     ../dominium/game/runtime/dom_game_replay.cpp
     ../dominium/game/runtime/dom_game_net_driver.cpp
@@ -484,9 +871,17 @@ add_test(NAME test_qos_determinism COMMAND dom_qos_determinism_test)
 add_executable(dom_qos_no_sim_effect_test
     dom_qos_no_sim_effect_test.cpp
     ../dominium/game/runtime/dom_game_runtime.cpp
+    ../dominium/game/runtime/dom_construction_registry.cpp
     ../dominium/game/runtime/dom_system_registry.cpp
     ../dominium/game/runtime/dom_body_registry.cpp
     ../dominium/game/runtime/dom_frames.cpp
+    ../dominium/game/runtime/dom_lane_scheduler.cpp
+    ../dominium/game/runtime/dom_surface_chunks.cpp
+    ../dominium/game/runtime/dom_derived_jobs.cpp
+    ../dominium/game/runtime/dom_surface_topology.cpp
+    ../dominium/game/runtime/dom_surface_topology_sphere.cpp
+    ../dominium/game/runtime/dom_surface_topology_ellipsoid.cpp
+    ../dominium/game/runtime/dom_surface_topology_torus.cpp
     ../dominium/game/runtime/dom_game_hash.c
     ../dominium/game/runtime/dom_game_replay.cpp
     ../dominium/game/runtime/dom_io_guard.cpp
@@ -550,6 +945,160 @@ set_target_properties(dom_qos_overload_test PROPERTIES
 )
 
 add_test(NAME test_qos_overload COMMAND dom_qos_overload_test)
+
+add_executable(dom_orbit_golden_vectors_test
+    dom_orbit_golden_vectors_test.cpp
+    ../dominium/game/runtime/dom_orbit_lane.cpp
+)
+
+target_include_directories(dom_orbit_golden_vectors_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_orbit_golden_vectors_test
+    domino_core
+)
+
+set_target_properties(dom_orbit_golden_vectors_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_orbit_golden_vectors_test COMMAND dom_orbit_golden_vectors_test)
+
+add_executable(dom_orbit_warp_invariance_test
+    dom_orbit_warp_invariance_test.cpp
+    ../dominium/game/runtime/dom_orbit_lane.cpp
+)
+
+target_include_directories(dom_orbit_warp_invariance_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_orbit_warp_invariance_test
+    domino_core
+)
+
+set_target_properties(dom_orbit_warp_invariance_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_orbit_warp_invariance_test COMMAND dom_orbit_warp_invariance_test)
+
+add_executable(dom_orbit_event_consistency_test
+    dom_orbit_event_consistency_test.cpp
+    ../dominium/game/runtime/dom_orbit_lane.cpp
+)
+
+target_include_directories(dom_orbit_event_consistency_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_orbit_event_consistency_test
+    domino_core
+)
+
+set_target_properties(dom_orbit_event_consistency_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_orbit_event_consistency_test COMMAND dom_orbit_event_consistency_test)
+
+add_executable(dom_orbit_warp_authority_test
+    dom_orbit_warp_authority_test.cpp
+    ../dominium/game/runtime/dom_game_runtime.cpp
+    ../dominium/game/runtime/dom_system_registry.cpp
+    ../dominium/game/runtime/dom_body_registry.cpp
+    ../dominium/game/runtime/dom_frames.cpp
+    ../dominium/game/runtime/dom_lane_scheduler.cpp
+    ../dominium/game/runtime/dom_surface_chunks.cpp
+    ../dominium/game/runtime/dom_derived_jobs.cpp
+    ../dominium/game/runtime/dom_surface_topology.cpp
+    ../dominium/game/runtime/dom_surface_topology_sphere.cpp
+    ../dominium/game/runtime/dom_surface_topology_ellipsoid.cpp
+    ../dominium/game/runtime/dom_surface_topology_torus.cpp
+    ../dominium/game/runtime/dom_game_hash.c
+    ../dominium/game/runtime/dom_game_replay.cpp
+    ../dominium/game/runtime/dom_game_net_driver.cpp
+    ../dominium/game/runtime/dom_game_net_snapshot.cpp
+    ../dominium/game/runtime/dom_game_content_id.cpp
+    ../dominium/game/runtime/dom_game_session.cpp
+    ../dominium/game/runtime/dom_io_guard.cpp
+    ../dominium/game/runtime/dom_qos.cpp
+    ../dominium/game/runtime/dom_cosmo_graph.cpp
+    ../dominium/game/runtime/dom_cosmo_transit.cpp
+)
+
+target_include_directories(dom_orbit_warp_authority_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_orbit_warp_authority_test
+    dominium_common
+    domino_core
+)
+
+set_target_properties(dom_orbit_warp_authority_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_orbit_warp_authority_test COMMAND dom_orbit_warp_authority_test)
+
+add_executable(dom_orbit_replay_test
+    dom_orbit_replay_test.cpp
+    ../dominium/game/runtime/dom_game_runtime.cpp
+    ../dominium/game/runtime/dom_system_registry.cpp
+    ../dominium/game/runtime/dom_body_registry.cpp
+    ../dominium/game/runtime/dom_frames.cpp
+    ../dominium/game/runtime/dom_lane_scheduler.cpp
+    ../dominium/game/runtime/dom_surface_chunks.cpp
+    ../dominium/game/runtime/dom_derived_jobs.cpp
+    ../dominium/game/runtime/dom_surface_topology.cpp
+    ../dominium/game/runtime/dom_surface_topology_sphere.cpp
+    ../dominium/game/runtime/dom_surface_topology_ellipsoid.cpp
+    ../dominium/game/runtime/dom_surface_topology_torus.cpp
+    ../dominium/game/runtime/dom_game_hash.c
+    ../dominium/game/runtime/dom_game_replay.cpp
+    ../dominium/game/runtime/dom_io_guard.cpp
+    ../dominium/game/runtime/dom_cosmo_graph.cpp
+    ../dominium/game/runtime/dom_cosmo_transit.cpp
+)
+
+target_include_directories(dom_orbit_replay_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_orbit_replay_test
+    dominium_common
+    domino_core
+)
+
+set_target_properties(dom_orbit_replay_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_orbit_replay_test COMMAND dom_orbit_replay_test)
 
 add_executable(domino_pkt_determinism_test
     pkt_determinism_test.c
