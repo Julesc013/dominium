@@ -34,6 +34,8 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "runtime/dom_route_graph.h"
 #include "runtime/dom_transfer_scheduler.h"
 #include "runtime/dom_production.h"
+#include "runtime/dom_macro_economy.h"
+#include "runtime/dom_macro_events.h"
 #include "runtime/dom_game_hash.h"
 #include "runtime/dom_game_replay.h"
 #include "domino/core/spacetime.h"
@@ -74,6 +76,8 @@ struct dom_game_runtime {
     dom_route_graph *route_graph;
     dom_transfer_scheduler *transfer_scheduler;
     dom_production *production;
+    dom_macro_economy *macro_economy;
+    dom_macro_events *macro_events;
     dom_body_id surface_body_id;
     dom_topo_latlong_q16 surface_focus;
     int surface_focus_valid;
@@ -249,6 +253,22 @@ static int build_baseline_frames(dom_frames *frames, const dom_body_registry *bo
     }
 
     return dom_frames_validate(frames);
+}
+
+static void register_macro_system(const dom_system_info *info, void *user) {
+    dom_macro_economy *econ = static_cast<dom_macro_economy *>(user);
+    if (!econ || !info) {
+        return;
+    }
+    (void)dom_macro_economy_register_system(econ, info->id);
+}
+
+static void register_macro_galaxy(const dom::dom_cosmo_entity *ent, void *user) {
+    dom_macro_economy *econ = static_cast<dom_macro_economy *>(user);
+    if (!econ || !ent) {
+        return;
+    }
+    (void)dom_macro_economy_register_galaxy(econ, ent->id);
 }
 
 struct DomConstructionPlaceCmd {
@@ -854,6 +874,8 @@ dom_game_runtime *dom_game_runtime_create(const dom_game_runtime_init_desc *desc
     rt->route_graph = 0;
     rt->transfer_scheduler = 0;
     rt->production = 0;
+    rt->macro_economy = 0;
+    rt->macro_events = 0;
     rt->surface_body_id = 0ull;
     rt->surface_focus.lat_turns = 0;
     rt->surface_focus.lon_turns = 0;
@@ -872,6 +894,8 @@ dom_game_runtime *dom_game_runtime_create(const dom_game_runtime_init_desc *desc
     rt->route_graph = dom_route_graph_create();
     rt->transfer_scheduler = dom_transfer_scheduler_create();
     rt->production = dom_production_create();
+    rt->macro_economy = dom_macro_economy_create();
+    rt->macro_events = dom_macro_events_create();
     {
         dom_surface_chunks_desc sdesc;
         std::memset(&sdesc, 0, sizeof(sdesc));
@@ -884,7 +908,8 @@ dom_game_runtime *dom_game_runtime_create(const dom_game_runtime_init_desc *desc
     if (!rt->system_registry || !rt->body_registry || !rt->frames ||
         !rt->lane_sched || !rt->surface_chunks || !rt->construction_registry ||
         !rt->station_registry || !rt->route_graph ||
-        !rt->transfer_scheduler || !rt->production) {
+        !rt->transfer_scheduler || !rt->production ||
+        !rt->macro_economy || !rt->macro_events) {
         dom_game_runtime_destroy(rt);
         return 0;
     }
@@ -899,6 +924,15 @@ dom_game_runtime *dom_game_runtime_create(const dom_game_runtime_init_desc *desc
     if (build_baseline_frames(rt->frames, rt->body_registry) != DOM_FRAMES_OK) {
         dom_game_runtime_destroy(rt);
         return 0;
+    }
+    if (rt->macro_economy) {
+        (void)dom_system_registry_iterate(rt->system_registry,
+                                          register_macro_system,
+                                          rt->macro_economy);
+        (void)dom::dom_cosmo_graph_iterate(&rt->cosmo_graph,
+                                           dom::DOM_COSMO_KIND_GALAXY,
+                                           register_macro_galaxy,
+                                           rt->macro_economy);
     }
     {
         dom_body_id earth_id = 0ull;
@@ -928,6 +962,8 @@ void dom_game_runtime_destroy(dom_game_runtime *rt) {
     dom_transfer_scheduler_destroy(rt->transfer_scheduler);
     dom_route_graph_destroy(rt->route_graph);
     dom_station_registry_destroy(rt->station_registry);
+    dom_macro_events_destroy(rt->macro_events);
+    dom_macro_economy_destroy(rt->macro_economy);
     dom_surface_chunks_destroy(rt->surface_chunks);
     dom_construction_registry_destroy(rt->construction_registry);
     dom_lane_scheduler_destroy(rt->lane_sched);
@@ -1105,10 +1141,19 @@ int dom_game_runtime_step(dom_game_runtime *rt) {
             return DOM_GAME_RUNTIME_ERR;
         }
     }
+    if (rt->macro_events && rt->macro_economy) {
+        if (dom_macro_events_update(rt->macro_events,
+                                    rt->macro_economy,
+                                    (u64)sim->tick_index) != DOM_MACRO_EVENTS_OK) {
+            return DOM_GAME_RUNTIME_ERR;
+        }
+    }
     if (rt->production && rt->station_registry) {
-        if (dom_production_update(rt->production,
-                                  rt->station_registry,
-                                  (u64)sim->tick_index) != DOM_PRODUCTION_OK) {
+        if (dom_production_update_with_macro(rt->production,
+                                             rt->station_registry,
+                                             rt->body_registry,
+                                             rt->macro_economy,
+                                             (u64)sim->tick_index) != DOM_PRODUCTION_OK) {
             return DOM_GAME_RUNTIME_ERR;
         }
     }
