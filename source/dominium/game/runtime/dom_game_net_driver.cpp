@@ -27,6 +27,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 
 extern "C" {
 #include "domino/sys.h"
+#include "net/d_net_schema.h"
 #include "net/d_net_cmd.h"
 #include "net/d_net_transport.h"
 }
@@ -52,6 +53,9 @@ DomNetDriver::~DomNetDriver() {
 
 int DomNetDriver::submit_local_command(const dom_game_command *cmd, u32 *out_tick) {
     if (!m_ctx.runtime || !cmd) {
+        return DOM_NET_DRIVER_ERR;
+    }
+    if (is_warp_command(cmd) && !warp_command_allowed(m_role, m_authority)) {
         return DOM_NET_DRIVER_ERR;
     }
     if (dom_game_runtime_execute(m_ctx.runtime, cmd, out_tick) != DOM_GAME_RUNTIME_OK) {
@@ -98,6 +102,22 @@ static bool ensure_runtime_ready(const DomNetDriverContext &ctx) {
         return false;
     }
     return true;
+}
+
+static bool warp_command_allowed(DomSessionRole role, DomSessionAuthority authority) {
+    if (authority == DOM_SESSION_AUTH_SERVER_AUTH) {
+        return role == DOM_SESSION_ROLE_SINGLE ||
+               role == DOM_SESSION_ROLE_HOST ||
+               role == DOM_SESSION_ROLE_DEDICATED_SERVER;
+    }
+    if (authority == DOM_SESSION_AUTH_LOCKSTEP) {
+        return role == DOM_SESSION_ROLE_HOST;
+    }
+    return false;
+}
+
+static bool is_warp_command(const dom_game_command *cmd) {
+    return cmd && cmd->schema_id == D_NET_SCHEMA_CMD_WARP_V1;
 }
 
 static std::string make_connect_addr(const DomSessionConfig &cfg) {
