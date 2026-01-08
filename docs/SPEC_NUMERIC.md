@@ -19,6 +19,7 @@
 
 ## Helpers and rules
 - Integer-only helpers convert `int32` ↔ `Q16.16`, convert `Q16.16` ↔ `Q4.12`, and normalise `Turn` angles without floats.
+- Deterministic trig/sqrt/div helpers live in `include/domino/core/fixed_math.h`.
 - Angles wrap in [0,1) or [-0.5, +0.5) via `dnum_turn_normalise_*`.
 - Deterministic time uses fixed dt: `g_domino_dt_s = (1 << 16) / DOMINO_DEFAULT_UPS`.
 - No floating-point math in Domino core. Converting to/from floats is allowed only at UI/render/foreign API boundaries, never inside sim/state code.
