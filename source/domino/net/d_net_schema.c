@@ -47,6 +47,25 @@ static int d_net_schema_require_u64_bytes(const d_tlv_blob *in, u32 tag) {
     return -1;
 }
 
+static int d_net_schema_require_bytes(const d_tlv_blob *in,
+                                      u32 tag,
+                                      const unsigned char **out_ptr,
+                                      u32 *out_len) {
+    u32 off = 0u;
+    u32 t;
+    d_tlv_blob payload;
+    int rc;
+    if (!in || !out_ptr || !out_len) return -1;
+    while ((rc = d_tlv_kv_next(in, &off, &t, &payload)) == 0) {
+        if (t == tag) {
+            *out_ptr = payload.ptr;
+            *out_len = payload.len;
+            return 0;
+        }
+    }
+    return -1;
+}
+
 static int d_net_schema_validate_handshake(
     d_tlv_schema_id         schema_id,
     u16                     version,
@@ -181,6 +200,141 @@ static int d_net_schema_validate_research(
     return 0;
 }
 
+static int d_net_schema_validate_warp(
+    d_tlv_schema_id         schema_id,
+    u16                     version,
+    const struct d_tlv_blob *in,
+    struct d_tlv_blob       *out_upgraded
+) {
+    u32 factor = 0u;
+    (void)schema_id;
+    (void)version;
+    (void)out_upgraded;
+    if (!in) {
+        return -1;
+    }
+    if (d_net_schema_require_u32(in, D_NET_TLV_WARP_FACTOR, &factor) != 0) return -1;
+    if (factor == 0u) return -1;
+    return 0;
+}
+
+static int d_net_schema_validate_maneuver(
+    d_tlv_schema_id         schema_id,
+    u16                     version,
+    const struct d_tlv_blob *in,
+    struct d_tlv_blob       *out_upgraded
+) {
+    (void)schema_id;
+    (void)version;
+    (void)out_upgraded;
+    if (!in) {
+        return -1;
+    }
+    if (d_net_schema_require_u64_bytes(in, D_NET_TLV_MANEUVER_FRAME_ID) != 0) return -1;
+    if (d_net_schema_require_u64_bytes(in, D_NET_TLV_MANEUVER_DV_X) != 0) return -1;
+    if (d_net_schema_require_u64_bytes(in, D_NET_TLV_MANEUVER_DV_Y) != 0) return -1;
+    if (d_net_schema_require_u64_bytes(in, D_NET_TLV_MANEUVER_DV_Z) != 0) return -1;
+    return 0;
+}
+
+static int d_net_schema_validate_construction_place(
+    d_tlv_schema_id         schema_id,
+    u16                     version,
+    const struct d_tlv_blob *in,
+    struct d_tlv_blob       *out_upgraded
+) {
+    u32 tmp = 0u;
+    (void)schema_id;
+    (void)version;
+    (void)out_upgraded;
+    if (!in) {
+        return -1;
+    }
+    if (d_net_schema_require_u32(in, D_NET_TLV_CONSTRUCTION_TYPE_ID, &tmp) != 0) return -1;
+    if (d_net_schema_require_u64_bytes(in, D_NET_TLV_CONSTRUCTION_BODY_ID) != 0) return -1;
+    if (d_net_schema_require_u32(in, D_NET_TLV_CONSTRUCTION_LAT_TURNS, &tmp) != 0) return -1;
+    if (d_net_schema_require_u32(in, D_NET_TLV_CONSTRUCTION_LON_TURNS, &tmp) != 0) return -1;
+    if (d_net_schema_require_u32(in, D_NET_TLV_CONSTRUCTION_ORIENT, &tmp) != 0) return -1;
+    return 0;
+}
+
+static int d_net_schema_validate_construction_remove(
+    d_tlv_schema_id         schema_id,
+    u16                     version,
+    const struct d_tlv_blob *in,
+    struct d_tlv_blob       *out_upgraded
+) {
+    (void)schema_id;
+    (void)version;
+    (void)out_upgraded;
+    if (!in) {
+        return -1;
+    }
+    if (d_net_schema_require_u64_bytes(in, D_NET_TLV_CONSTRUCTION_INSTANCE_ID) != 0) return -1;
+    return 0;
+}
+
+static int d_net_schema_validate_station_create(
+    d_tlv_schema_id         schema_id,
+    u16                     version,
+    const struct d_tlv_blob *in,
+    struct d_tlv_blob       *out_upgraded
+) {
+    (void)schema_id;
+    (void)version;
+    (void)out_upgraded;
+    if (!in) {
+        return -1;
+    }
+    if (d_net_schema_require_u64_bytes(in, D_NET_TLV_STATION_ID) != 0) return -1;
+    if (d_net_schema_require_u64_bytes(in, D_NET_TLV_STATION_BODY_ID) != 0) return -1;
+    if (d_net_schema_require_u64_bytes(in, D_NET_TLV_STATION_FRAME_ID) != 0) return -1;
+    return 0;
+}
+
+static int d_net_schema_validate_route_create(
+    d_tlv_schema_id         schema_id,
+    u16                     version,
+    const struct d_tlv_blob *in,
+    struct d_tlv_blob       *out_upgraded
+) {
+    (void)schema_id;
+    (void)version;
+    (void)out_upgraded;
+    if (!in) {
+        return -1;
+    }
+    if (d_net_schema_require_u64_bytes(in, D_NET_TLV_ROUTE_ID) != 0) return -1;
+    if (d_net_schema_require_u64_bytes(in, D_NET_TLV_ROUTE_SRC_STATION_ID) != 0) return -1;
+    if (d_net_schema_require_u64_bytes(in, D_NET_TLV_ROUTE_DST_STATION_ID) != 0) return -1;
+    if (d_net_schema_require_u64_bytes(in, D_NET_TLV_ROUTE_DURATION_TICKS) != 0) return -1;
+    if (d_net_schema_require_u64_bytes(in, D_NET_TLV_ROUTE_CAPACITY_UNITS) != 0) return -1;
+    return 0;
+}
+
+static int d_net_schema_validate_transfer_schedule(
+    d_tlv_schema_id         schema_id,
+    u16                     version,
+    const struct d_tlv_blob *in,
+    struct d_tlv_blob       *out_upgraded
+) {
+    u32 count = 0u;
+    const unsigned char *items = 0;
+    u32 items_len = 0u;
+    (void)schema_id;
+    (void)version;
+    (void)out_upgraded;
+    if (!in) {
+        return -1;
+    }
+    if (d_net_schema_require_u64_bytes(in, D_NET_TLV_TRANSFER_ROUTE_ID) != 0) return -1;
+    if (d_net_schema_require_u32(in, D_NET_TLV_TRANSFER_ITEM_COUNT, &count) != 0) return -1;
+    if (d_net_schema_require_bytes(in, D_NET_TLV_TRANSFER_ITEMS, &items, &items_len) != 0) return -1;
+    if (!items || count == 0u) return -1;
+    if (items_len != (count * 16u)) return -1;
+    return 0;
+}
+
 void d_net_register_schemas(void) {
     static int registered = 0;
     d_tlv_schema_desc desc;
@@ -222,6 +376,48 @@ void d_net_register_schemas(void) {
     desc.schema_id = (d_tlv_schema_id)D_NET_SCHEMA_CMD_RESEARCH_V1;
     desc.version = 1u;
     desc.validate_fn = d_net_schema_validate_research;
+    (void)d_tlv_schema_register(&desc);
+
+    memset(&desc, 0, sizeof(desc));
+    desc.schema_id = (d_tlv_schema_id)D_NET_SCHEMA_CMD_WARP_V1;
+    desc.version = 1u;
+    desc.validate_fn = d_net_schema_validate_warp;
+    (void)d_tlv_schema_register(&desc);
+
+    memset(&desc, 0, sizeof(desc));
+    desc.schema_id = (d_tlv_schema_id)D_NET_SCHEMA_CMD_ORBIT_MANEUVER_V1;
+    desc.version = 1u;
+    desc.validate_fn = d_net_schema_validate_maneuver;
+    (void)d_tlv_schema_register(&desc);
+
+    memset(&desc, 0, sizeof(desc));
+    desc.schema_id = (d_tlv_schema_id)D_NET_SCHEMA_CMD_CONSTRUCTION_PLACE_V1;
+    desc.version = 1u;
+    desc.validate_fn = d_net_schema_validate_construction_place;
+    (void)d_tlv_schema_register(&desc);
+
+    memset(&desc, 0, sizeof(desc));
+    desc.schema_id = (d_tlv_schema_id)D_NET_SCHEMA_CMD_CONSTRUCTION_REMOVE_V1;
+    desc.version = 1u;
+    desc.validate_fn = d_net_schema_validate_construction_remove;
+    (void)d_tlv_schema_register(&desc);
+
+    memset(&desc, 0, sizeof(desc));
+    desc.schema_id = (d_tlv_schema_id)D_NET_SCHEMA_CMD_STATION_CREATE_V1;
+    desc.version = 1u;
+    desc.validate_fn = d_net_schema_validate_station_create;
+    (void)d_tlv_schema_register(&desc);
+
+    memset(&desc, 0, sizeof(desc));
+    desc.schema_id = (d_tlv_schema_id)D_NET_SCHEMA_CMD_ROUTE_CREATE_V1;
+    desc.version = 1u;
+    desc.validate_fn = d_net_schema_validate_route_create;
+    (void)d_tlv_schema_register(&desc);
+
+    memset(&desc, 0, sizeof(desc));
+    desc.schema_id = (d_tlv_schema_id)D_NET_SCHEMA_CMD_TRANSFER_SCHEDULE_V1;
+    desc.version = 1u;
+    desc.validate_fn = d_net_schema_validate_transfer_schedule;
     (void)d_tlv_schema_register(&desc);
 
     registered = 1;

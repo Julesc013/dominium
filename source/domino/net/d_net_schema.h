@@ -37,6 +37,13 @@ extern "C" {
 #define D_NET_SCHEMA_CMD_BLUEPRINT_V1     0x1003u
 #define D_NET_SCHEMA_CMD_POLICY_V1        0x1004u
 #define D_NET_SCHEMA_CMD_RESEARCH_V1      0x1005u
+#define D_NET_SCHEMA_CMD_WARP_V1          0x1007u
+#define D_NET_SCHEMA_CMD_ORBIT_MANEUVER_V1 0x1008u
+#define D_NET_SCHEMA_CMD_CONSTRUCTION_PLACE_V1  0x1009u
+#define D_NET_SCHEMA_CMD_CONSTRUCTION_REMOVE_V1 0x100Au
+#define D_NET_SCHEMA_CMD_STATION_CREATE_V1 0x100Bu
+#define D_NET_SCHEMA_CMD_ROUTE_CREATE_V1 0x100Cu
+#define D_NET_SCHEMA_CMD_TRANSFER_SCHEDULE_V1 0x100Du
 
 /* Shared handshake tags */
 enum {
@@ -159,6 +166,56 @@ enum {
 enum {
     D_NET_TLV_RESEARCH_ORG_ID     = 0x01u, /* u32 */
     D_NET_TLV_RESEARCH_ACTIVE_ID  = 0x02u  /* u32 */
+};
+
+/* CMD_WARP_V1 payload tags */
+enum {
+    D_NET_TLV_WARP_FACTOR         = 0x01u  /* u32 */
+};
+
+/* CMD_ORBIT_MANEUVER_V1 payload tags */
+enum {
+    D_NET_TLV_MANEUVER_FRAME_ID   = 0x01u, /* u64 */
+    D_NET_TLV_MANEUVER_DV_X       = 0x02u, /* q48_16 (i64) */
+    D_NET_TLV_MANEUVER_DV_Y       = 0x03u, /* q48_16 (i64) */
+    D_NET_TLV_MANEUVER_DV_Z       = 0x04u  /* q48_16 (i64) */
+};
+
+/* CMD_CONSTRUCTION_PLACE_V1 payload tags */
+enum {
+    D_NET_TLV_CONSTRUCTION_TYPE_ID   = 0x01u, /* u32 */
+    D_NET_TLV_CONSTRUCTION_BODY_ID   = 0x02u, /* u64 */
+    D_NET_TLV_CONSTRUCTION_LAT_TURNS = 0x03u, /* q16_16 (i32) */
+    D_NET_TLV_CONSTRUCTION_LON_TURNS = 0x04u, /* q16_16 (i32) */
+    D_NET_TLV_CONSTRUCTION_ORIENT    = 0x05u  /* u32 */
+};
+
+/* CMD_CONSTRUCTION_REMOVE_V1 payload tags */
+enum {
+    D_NET_TLV_CONSTRUCTION_INSTANCE_ID = 0x01u /* u64 */
+};
+
+/* CMD_STATION_CREATE_V1 payload tags */
+enum {
+    D_NET_TLV_STATION_ID = 0x01u,      /* u64 */
+    D_NET_TLV_STATION_BODY_ID = 0x02u, /* u64 */
+    D_NET_TLV_STATION_FRAME_ID = 0x03u /* u64 */
+};
+
+/* CMD_ROUTE_CREATE_V1 payload tags */
+enum {
+    D_NET_TLV_ROUTE_ID = 0x01u,              /* u64 */
+    D_NET_TLV_ROUTE_SRC_STATION_ID = 0x02u,  /* u64 */
+    D_NET_TLV_ROUTE_DST_STATION_ID = 0x03u,  /* u64 */
+    D_NET_TLV_ROUTE_DURATION_TICKS = 0x04u,  /* u64 */
+    D_NET_TLV_ROUTE_CAPACITY_UNITS = 0x05u   /* u64 */
+};
+
+/* CMD_TRANSFER_SCHEDULE_V1 payload tags */
+enum {
+    D_NET_TLV_TRANSFER_ROUTE_ID = 0x01u,     /* u64 */
+    D_NET_TLV_TRANSFER_ITEM_COUNT = 0x02u,  /* u32 */
+    D_NET_TLV_TRANSFER_ITEMS = 0x03u        /* bytes: u64 resource_id + i64 quantity */
 };
 
 /* Register schema validators with the global TLV schema registry. */
