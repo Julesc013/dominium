@@ -19,6 +19,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "runtime/dom_game_command.h"
 #include "runtime/dom_game_query.h"
 #include "runtime/dom_cosmo_transit.h"
+#include "runtime/dom_surface_topology.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -72,6 +73,7 @@ u64 dom_game_runtime_get_seed(const dom_game_runtime *rt);
 u32 dom_game_runtime_get_ups(const dom_game_runtime *rt);
 u64 dom_game_runtime_get_hash(const dom_game_runtime *rt);
 u64 dom_game_runtime_get_run_id(const dom_game_runtime *rt);
+u32 dom_game_runtime_get_warp_factor(const dom_game_runtime *rt);
 const unsigned char *dom_game_runtime_get_manifest_hash(const dom_game_runtime *rt, u32 *out_len);
 int dom_game_runtime_get_counts(const dom_game_runtime *rt, dom_game_counts *out_counts);
 
@@ -87,6 +89,25 @@ const void *dom_game_runtime_cosmo_graph(const dom_game_runtime *rt);
 const void *dom_game_runtime_system_registry(const dom_game_runtime *rt);
 const void *dom_game_runtime_body_registry(const dom_game_runtime *rt);
 const void *dom_game_runtime_frames(const dom_game_runtime *rt);
+const void *dom_game_runtime_lane_scheduler(const dom_game_runtime *rt);
+const void *dom_game_runtime_surface_chunks(const dom_game_runtime *rt);
+const void *dom_game_runtime_construction_registry(const dom_game_runtime *rt);
+const void *dom_game_runtime_station_registry(const dom_game_runtime *rt);
+const void *dom_game_runtime_route_graph(const dom_game_runtime *rt);
+const void *dom_game_runtime_transfer_scheduler(const dom_game_runtime *rt);
+const void *dom_game_runtime_production(const dom_game_runtime *rt);
+
+int dom_game_runtime_set_surface_focus(dom_game_runtime *rt,
+                                       dom_body_id body_id,
+                                       const dom_topo_latlong_q16 *latlong);
+int dom_game_runtime_get_surface_focus(const dom_game_runtime *rt,
+                                       dom_body_id *out_body_id,
+                                       dom_topo_latlong_q16 *out_latlong);
+int dom_game_runtime_pump_surface_chunks(dom_game_runtime *rt,
+                                         u32 max_ms,
+                                         u64 max_io_bytes,
+                                         u32 max_jobs);
+int dom_game_runtime_surface_has_pending(const dom_game_runtime *rt);
 
 int dom_game_runtime_set_replay_last_tick(dom_game_runtime *rt, u32 last_tick);
 int dom_game_runtime_set_replay_playback(dom_game_runtime *rt, void *playback);

@@ -32,11 +32,19 @@ add_executable(dominium_game
     runtime/dom_snapshot.cpp
     runtime/dom_universe_bundle.cpp
     runtime/dom_frames.cpp
+    runtime/dom_lane_scheduler.cpp
+    runtime/dom_construction_registry.cpp
+    runtime/dom_station_registry.cpp
+    runtime/dom_route_graph.cpp
+    runtime/dom_transfer_scheduler.cpp
+    runtime/dom_production.cpp
     runtime/dom_orbit_lane.cpp
     runtime/dom_calendar.cpp
     runtime/dom_system_registry.cpp
     runtime/dom_body_registry.cpp
     runtime/dom_surface_topology.cpp
+    runtime/dom_surface_height.cpp
+    runtime/dom_surface_chunks.cpp
     runtime/dom_surface_topology_sphere.cpp
     runtime/dom_surface_topology_ellipsoid.cpp
     runtime/dom_surface_topology_torus.cpp
