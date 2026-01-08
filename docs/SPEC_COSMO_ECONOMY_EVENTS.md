@@ -56,7 +56,8 @@ Rules:
 Macro economy and events are sim-affecting and must be persisted:
 - Universe bundle chunks: `MECO`, `MEVT` (versioned; skip-unknown)
 - Save chunks: `MECO`, `MEVT`
-- Replay records may include macro state snapshots for determinism.
+- Replay headers store macro economy/events blobs (DMRP v4+); the record stream
+  remains command-only.
 
 ## Related specs
 - `docs/SPEC_COSMO_LANE.md`

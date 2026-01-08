@@ -44,6 +44,8 @@ enum {
     DOM_UNIVERSE_CHUNK_ROUT = DOM_U32_FOURCC('R','O','U','T'),
     DOM_UNIVERSE_CHUNK_TRAN = DOM_U32_FOURCC('T','R','A','N'),
     DOM_UNIVERSE_CHUNK_PROD = DOM_U32_FOURCC('P','R','O','D'),
+    DOM_UNIVERSE_CHUNK_MECO = DOM_U32_FOURCC('M','E','C','O'),
+    DOM_UNIVERSE_CHUNK_MEVT = DOM_U32_FOURCC('M','E','V','T'),
     DOM_UNIVERSE_CHUNK_CELE = DOM_U32_FOURCC('C','E','L','E'),
     DOM_UNIVERSE_CHUNK_VESL = DOM_U32_FOURCC('V','E','S','L'),
     DOM_UNIVERSE_CHUNK_SURF = DOM_U32_FOURCC('S','U','R','F'),
@@ -71,7 +73,9 @@ enum {
     DOM_UNIVERSE_TLV_STATIONS_HASH    = 0x0010u,
     DOM_UNIVERSE_TLV_ROUTES_HASH      = 0x0011u,
     DOM_UNIVERSE_TLV_TRANSFERS_HASH   = 0x0012u,
-    DOM_UNIVERSE_TLV_PRODUCTION_HASH  = 0x0013u
+    DOM_UNIVERSE_TLV_PRODUCTION_HASH  = 0x0013u,
+    DOM_UNIVERSE_TLV_MACRO_ECONOMY_HASH = 0x0014u,
+    DOM_UNIVERSE_TLV_MACRO_EVENTS_HASH  = 0x0015u
 };
 
 typedef struct dom_universe_bundle_identity {
@@ -93,6 +97,8 @@ typedef struct dom_universe_bundle_identity {
     u64 routes_hash;
     u64 transfers_hash;
     u64 production_hash;
+    u64 macro_economy_hash;
+    u64 macro_events_hash;
     u32 ups;
     u64 tick_index;
     u32 feature_epoch;

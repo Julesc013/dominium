@@ -24,6 +24,8 @@ Chunk type IDs are ASCII fourcc values stored as `u32_le`:
 - `ROUT` (v1): route records (required; may be empty)
 - `TRAN` (v1): transfer records (required; may be empty)
 - `PROD` (v1): production rules (required; may be empty)
+- `MECO` (v1): macro economy aggregates (required; may be empty)
+- `MEVT` (v1): macro event schedule (required; may be empty)
 - `CELE` (v1): celestial bodies and systems (required; may be empty)
 - `VESL` (v1): vessel records (required; may be empty)
 - `SURF` (v1): surface records (required; may be empty)
@@ -63,6 +65,8 @@ Required tags:
 - `0x0011` `ROUTES_HASH` (`u64_le`)
 - `0x0012` `TRANSFERS_HASH` (`u64_le`)
 - `0x0013` `PRODUCTION_HASH` (`u64_le`)
+- `0x0014` `MACRO_ECONOMY_HASH` (`u64_le`)
+- `0x0015` `MACRO_EVENTS_HASH` (`u64_le`)
 
 Notes:
 - Missing required tags are a hard refusal.
@@ -103,6 +107,8 @@ Universe bundles are bound to:
 - routes hash
 - transfers hash
 - production rules hash
+- macro economy hash
+- macro events hash
 - timebase (`UPS`, `TICK_INDEX`)
 - feature epoch
 

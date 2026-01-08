@@ -8,7 +8,7 @@ FORBIDDEN DEPENDENCIES: Dependency inversions that violate `docs/OVERVIEW_ARCHIT
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
 DETERMINISM: Determinism-sensitive (recorded command payloads must be stable).
-VERSIONING / ABI / DATA FORMAT NOTES: DMRP v3 container; see `source/dominium/game/SPEC_REPLAY.md`.
+VERSIONING / ABI / DATA FORMAT NOTES: DMRP v4 container; see `source/dominium/game/SPEC_REPLAY.md`.
 EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
 */
 #ifndef DOM_GAME_REPLAY_V1_H
@@ -35,7 +35,7 @@ enum {
 };
 
 enum {
-    DOM_GAME_REPLAY_DESC_VERSION = 3u
+    DOM_GAME_REPLAY_DESC_VERSION = 4u
 };
 
 typedef struct dom_game_replay_record dom_game_replay_record;
@@ -57,6 +57,14 @@ typedef struct dom_game_replay_desc {
     u32 has_identity;
     const unsigned char *content_tlv;
     u32 content_tlv_len;
+    const unsigned char *macro_economy_blob;
+    u32 macro_economy_blob_len;
+    u32 macro_economy_version;
+    u32 has_macro_economy;
+    const unsigned char *macro_events_blob;
+    u32 macro_events_blob_len;
+    u32 macro_events_version;
+    u32 has_macro_events;
     int error_code;
 } dom_game_replay_desc;
 
@@ -73,7 +81,11 @@ dom_game_replay_record *dom_game_replay_record_open(const char *path,
                                                     const unsigned char *manifest_hash_bytes,
                                                     u32 manifest_hash_len,
                                                     const unsigned char *content_tlv,
-                                                    u32 content_tlv_len);
+                                                    u32 content_tlv_len,
+                                                    const unsigned char *macro_economy_blob,
+                                                    u32 macro_economy_len,
+                                                    const unsigned char *macro_events_blob,
+                                                    u32 macro_events_len);
 void dom_game_replay_record_close(dom_game_replay_record *rec);
 int dom_game_replay_record_write_cmd(dom_game_replay_record *rec,
                                      u64 tick,

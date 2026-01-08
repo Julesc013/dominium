@@ -149,6 +149,111 @@ static int write_time_chunk(dtlv_writer *writer, const dom_universe_bundle_ident
                               8u) != 0) {
         return 1;
     }
+    dtlv_le_write_u32(buf, id.feature_epoch);
+    if (dtlv_writer_write_tlv(writer,
+                              DOM_UNIVERSE_TLV_FEATURE_EPOCH,
+                              buf,
+                              4u) != 0) {
+        return 1;
+    }
+    dtlv_le_write_u64(buf, id.cosmo_graph_hash);
+    if (dtlv_writer_write_tlv(writer,
+                              DOM_UNIVERSE_TLV_COSMO_HASH,
+                              buf,
+                              8u) != 0) {
+        return 1;
+    }
+    dtlv_le_write_u64(buf, id.systems_hash);
+    if (dtlv_writer_write_tlv(writer,
+                              DOM_UNIVERSE_TLV_SYSTEMS_HASH,
+                              buf,
+                              8u) != 0) {
+        return 1;
+    }
+    dtlv_le_write_u64(buf, id.bodies_hash);
+    if (dtlv_writer_write_tlv(writer,
+                              DOM_UNIVERSE_TLV_BODIES_HASH,
+                              buf,
+                              8u) != 0) {
+        return 1;
+    }
+    dtlv_le_write_u64(buf, id.frames_hash);
+    if (dtlv_writer_write_tlv(writer,
+                              DOM_UNIVERSE_TLV_FRAMES_HASH,
+                              buf,
+                              8u) != 0) {
+        return 1;
+    }
+    dtlv_le_write_u64(buf, id.topology_hash);
+    if (dtlv_writer_write_tlv(writer,
+                              DOM_UNIVERSE_TLV_TOPOLOGY_HASH,
+                              buf,
+                              8u) != 0) {
+        return 1;
+    }
+    dtlv_le_write_u64(buf, id.orbits_hash);
+    if (dtlv_writer_write_tlv(writer,
+                              DOM_UNIVERSE_TLV_ORBITS_HASH,
+                              buf,
+                              8u) != 0) {
+        return 1;
+    }
+    dtlv_le_write_u64(buf, id.surface_overrides_hash);
+    if (dtlv_writer_write_tlv(writer,
+                              DOM_UNIVERSE_TLV_SURFACE_HASH,
+                              buf,
+                              8u) != 0) {
+        return 1;
+    }
+    dtlv_le_write_u64(buf, id.constructions_hash);
+    if (dtlv_writer_write_tlv(writer,
+                              DOM_UNIVERSE_TLV_CONSTRUCTIONS_HASH,
+                              buf,
+                              8u) != 0) {
+        return 1;
+    }
+    dtlv_le_write_u64(buf, id.stations_hash);
+    if (dtlv_writer_write_tlv(writer,
+                              DOM_UNIVERSE_TLV_STATIONS_HASH,
+                              buf,
+                              8u) != 0) {
+        return 1;
+    }
+    dtlv_le_write_u64(buf, id.routes_hash);
+    if (dtlv_writer_write_tlv(writer,
+                              DOM_UNIVERSE_TLV_ROUTES_HASH,
+                              buf,
+                              8u) != 0) {
+        return 1;
+    }
+    dtlv_le_write_u64(buf, id.transfers_hash);
+    if (dtlv_writer_write_tlv(writer,
+                              DOM_UNIVERSE_TLV_TRANSFERS_HASH,
+                              buf,
+                              8u) != 0) {
+        return 1;
+    }
+    dtlv_le_write_u64(buf, id.production_hash);
+    if (dtlv_writer_write_tlv(writer,
+                              DOM_UNIVERSE_TLV_PRODUCTION_HASH,
+                              buf,
+                              8u) != 0) {
+        return 1;
+    }
+    dtlv_le_write_u64(buf, id.macro_economy_hash);
+    if (dtlv_writer_write_tlv(writer,
+                              DOM_UNIVERSE_TLV_MACRO_ECONOMY_HASH,
+                              buf,
+                              8u) != 0) {
+        return 1;
+    }
+    dtlv_le_write_u64(buf, id.macro_events_hash);
+    if (dtlv_writer_write_tlv(writer,
+                              DOM_UNIVERSE_TLV_MACRO_EVENTS_HASH,
+                              buf,
+                              8u) != 0) {
+        return 1;
+    }
     if (dtlv_writer_end_chunk(writer) != 0) {
         return 1;
     }
@@ -189,6 +294,7 @@ static int test_bundle_identity_timebase(void) {
     id.sim_flags_hash = 0x090a0b0c0d0e0f10ull;
     id.ups = 60u;
     id.tick_index = 12345ull;
+    id.feature_epoch = 1u;
 
     bundle = dom_universe_bundle_create();
     if (!bundle) {
@@ -259,6 +365,7 @@ static int test_bundle_unknown_preservation(void) {
     id.sim_flags_hash = 0x2122232425262728ull;
     id.ups = 60u;
     id.tick_index = 9ull;
+    id.feature_epoch = 1u;
 
     dtlv_writer_init(&writer);
     if (dtlv_writer_open_file(&writer, path_in) != 0) {
@@ -266,6 +373,20 @@ static int test_bundle_unknown_preservation(void) {
         return fail("dtlv_writer_open_file failed");
     }
     if (write_time_chunk(&writer, id) != 0 ||
+        write_empty_chunk(&writer, DOM_UNIVERSE_CHUNK_COSM) != 0 ||
+        write_empty_chunk(&writer, DOM_UNIVERSE_CHUNK_SYSM) != 0 ||
+        write_empty_chunk(&writer, DOM_UNIVERSE_CHUNK_BODS) != 0 ||
+        write_empty_chunk(&writer, DOM_UNIVERSE_CHUNK_FRAM) != 0 ||
+        write_empty_chunk(&writer, DOM_UNIVERSE_CHUNK_TOPB) != 0 ||
+        write_empty_chunk(&writer, DOM_UNIVERSE_CHUNK_ORBT) != 0 ||
+        write_empty_chunk(&writer, DOM_UNIVERSE_CHUNK_SOVR) != 0 ||
+        write_empty_chunk(&writer, DOM_UNIVERSE_CHUNK_CNST) != 0 ||
+        write_empty_chunk(&writer, DOM_UNIVERSE_CHUNK_STAT) != 0 ||
+        write_empty_chunk(&writer, DOM_UNIVERSE_CHUNK_ROUT) != 0 ||
+        write_empty_chunk(&writer, DOM_UNIVERSE_CHUNK_TRAN) != 0 ||
+        write_empty_chunk(&writer, DOM_UNIVERSE_CHUNK_PROD) != 0 ||
+        write_empty_chunk(&writer, DOM_UNIVERSE_CHUNK_MECO) != 0 ||
+        write_empty_chunk(&writer, DOM_UNIVERSE_CHUNK_MEVT) != 0 ||
         write_empty_chunk(&writer, DOM_UNIVERSE_CHUNK_CELE) != 0 ||
         write_empty_chunk(&writer, DOM_UNIVERSE_CHUNK_VESL) != 0 ||
         write_empty_chunk(&writer, DOM_UNIVERSE_CHUNK_SURF) != 0 ||
@@ -414,6 +535,7 @@ static int test_bundle_hash_stable(void) {
     id.sim_flags_hash = 0x0000000000000002ull;
     id.ups = 60u;
     id.tick_index = 0ull;
+    id.feature_epoch = 1u;
 
     bundle = dom_universe_bundle_create();
     if (!bundle) {

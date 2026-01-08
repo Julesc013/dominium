@@ -8,7 +8,7 @@ FORBIDDEN DEPENDENCIES: Dependency inversions that violate `docs/OVERVIEW_ARCHIT
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
 DETERMINISM: Determinism-sensitive (hash comparisons across save/load); see `docs/SPEC_DETERMINISM.md`.
-VERSIONING / ABI / DATA FORMAT NOTES: DMSG v3 container; see `source/dominium/game/SPEC_SAVE.md`.
+VERSIONING / ABI / DATA FORMAT NOTES: DMSG v4 container; see `source/dominium/game/SPEC_SAVE.md`.
 EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
 */
 #include "runtime/dom_game_save.h"
@@ -26,6 +26,8 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "runtime/dom_route_graph.h"
 #include "runtime/dom_transfer_scheduler.h"
 #include "runtime/dom_production.h"
+#include "runtime/dom_macro_economy.h"
+#include "runtime/dom_macro_events.h"
 #include "../dom_game_save.h"
 #include "dom_instance.h"
 #include "dom_session.h"
@@ -41,7 +43,7 @@ extern "C" {
 namespace {
 
 enum {
-    DMSG_VERSION = 3u,
+    DMSG_VERSION = 4u,
     DMSG_ENDIAN = 0x0000FFFEu,
     DMSG_CORE_VERSION = 1u,
     DMSG_ORBIT_VERSION = 1u,
@@ -51,6 +53,8 @@ enum {
     DMSG_ROUTES_VERSION = 1u,
     DMSG_TRANSFERS_VERSION = 1u,
     DMSG_PRODUCTION_VERSION = 1u,
+    DMSG_MACRO_ECONOMY_VERSION = 1u,
+    DMSG_MACRO_EVENTS_VERSION = 1u,
     DMSG_RNG_VERSION = 1u,
     DMSG_IDENTITY_VERSION = 1u
 };
@@ -503,6 +507,218 @@ static bool build_production_blob(const dom_game_runtime *rt,
     return true;
 }
 
+static bool append_macro_scope_entries(const dom_macro_economy *econ,
+                                       u32 scope_kind,
+                                       std::vector<unsigned char> &out) {
+    u32 scope_count = 0u;
+    if (!econ) {
+        append_u32_le(out, 0u);
+        return true;
+    }
+    if (dom_macro_economy_list_scopes(econ, scope_kind, 0, 0u, &scope_count)
+        != DOM_MACRO_ECONOMY_OK) {
+        return false;
+    }
+    append_u32_le(out, scope_count);
+    if (scope_count == 0u) {
+        return true;
+    }
+    {
+        std::vector<dom_macro_scope_info> scopes;
+        scopes.resize(scope_count);
+        if (dom_macro_economy_list_scopes(econ,
+                                          scope_kind,
+                                          &scopes[0],
+                                          scope_count,
+                                          &scope_count) != DOM_MACRO_ECONOMY_OK) {
+            return false;
+        }
+        if (scopes.size() != scope_count) {
+            scopes.resize(scope_count);
+        }
+        for (u32 i = 0u; i < scope_count; ++i) {
+            const dom_macro_scope_info &info = scopes[i];
+            u32 prod_count = 0u;
+            u32 demand_count = 0u;
+            u32 stock_count = 0u;
+
+            if (info.scope_id == 0ull) {
+                return false;
+            }
+            if (dom_macro_economy_list_production(econ,
+                                                  scope_kind,
+                                                  info.scope_id,
+                                                  0,
+                                                  0u,
+                                                  &prod_count) != DOM_MACRO_ECONOMY_OK) {
+                return false;
+            }
+            if (dom_macro_economy_list_demand(econ,
+                                              scope_kind,
+                                              info.scope_id,
+                                              0,
+                                              0u,
+                                              &demand_count) != DOM_MACRO_ECONOMY_OK) {
+                return false;
+            }
+            if (dom_macro_economy_list_stockpile(econ,
+                                                 scope_kind,
+                                                 info.scope_id,
+                                                 0,
+                                                 0u,
+                                                 &stock_count) != DOM_MACRO_ECONOMY_OK) {
+                return false;
+            }
+
+            append_u64_le(out, info.scope_id);
+            append_u32_le(out, info.flags);
+            append_u32_le(out, prod_count);
+            append_u32_le(out, demand_count);
+            append_u32_le(out, stock_count);
+
+            if (prod_count > 0u) {
+                std::vector<dom_macro_rate_entry> prod;
+                u32 actual = prod_count;
+                prod.resize(prod_count);
+                if (dom_macro_economy_list_production(econ,
+                                                      scope_kind,
+                                                      info.scope_id,
+                                                      &prod[0],
+                                                      prod_count,
+                                                      &actual) != DOM_MACRO_ECONOMY_OK) {
+                    return false;
+                }
+                if (actual != prod_count) {
+                    return false;
+                }
+                for (u32 j = 0u; j < prod_count; ++j) {
+                    append_u64_le(out, prod[j].resource_id);
+                    append_i64_le(out, prod[j].rate_per_tick);
+                }
+            }
+
+            if (demand_count > 0u) {
+                std::vector<dom_macro_rate_entry> demand;
+                u32 actual = demand_count;
+                demand.resize(demand_count);
+                if (dom_macro_economy_list_demand(econ,
+                                                  scope_kind,
+                                                  info.scope_id,
+                                                  &demand[0],
+                                                  demand_count,
+                                                  &actual) != DOM_MACRO_ECONOMY_OK) {
+                    return false;
+                }
+                if (actual != demand_count) {
+                    return false;
+                }
+                for (u32 j = 0u; j < demand_count; ++j) {
+                    append_u64_le(out, demand[j].resource_id);
+                    append_i64_le(out, demand[j].rate_per_tick);
+                }
+            }
+
+            if (stock_count > 0u) {
+                std::vector<dom_macro_stock_entry> stock;
+                u32 actual = stock_count;
+                stock.resize(stock_count);
+                if (dom_macro_economy_list_stockpile(econ,
+                                                     scope_kind,
+                                                     info.scope_id,
+                                                     &stock[0],
+                                                     stock_count,
+                                                     &actual) != DOM_MACRO_ECONOMY_OK) {
+                    return false;
+                }
+                if (actual != stock_count) {
+                    return false;
+                }
+                for (u32 j = 0u; j < stock_count; ++j) {
+                    append_u64_le(out, stock[j].resource_id);
+                    append_i64_le(out, stock[j].quantity);
+                }
+            }
+        }
+    }
+    return true;
+}
+
+static bool build_macro_economy_blob(const dom_game_runtime *rt,
+                                     std::vector<unsigned char> &out) {
+    const dom_macro_economy *econ;
+    out.clear();
+    econ = rt ? (const dom_macro_economy *)dom_game_runtime_macro_economy(rt) : 0;
+    if (!append_macro_scope_entries(econ, DOM_MACRO_SCOPE_SYSTEM, out)) {
+        return false;
+    }
+    if (!append_macro_scope_entries(econ, DOM_MACRO_SCOPE_GALAXY, out)) {
+        return false;
+    }
+    return true;
+}
+
+static bool build_macro_events_blob(const dom_game_runtime *rt,
+                                    std::vector<unsigned char> &out) {
+    const dom_macro_events *events;
+    u32 count = 0u;
+
+    out.clear();
+    events = rt ? (const dom_macro_events *)dom_game_runtime_macro_events(rt) : 0;
+    if (!events) {
+        append_u32_le(out, 0u);
+        return true;
+    }
+    if (dom_macro_events_list(events, 0, 0u, &count) != DOM_MACRO_EVENTS_OK) {
+        return false;
+    }
+    append_u32_le(out, count);
+    if (count == 0u) {
+        return true;
+    }
+    {
+        std::vector<dom_macro_event_info> infos;
+        infos.resize(count);
+        if (dom_macro_events_list(events, &infos[0], count, &count) != DOM_MACRO_EVENTS_OK) {
+            return false;
+        }
+        if (infos.size() != count) {
+            infos.resize(count);
+        }
+        for (u32 i = 0u; i < count; ++i) {
+            const dom_macro_event_info &info = infos[i];
+            append_u64_le(out, info.event_id);
+            append_u32_le(out, info.scope_kind);
+            append_u64_le(out, info.scope_id);
+            append_u64_le(out, info.trigger_tick);
+            append_u32_le(out, info.effect_count);
+
+            if (info.effect_count > 0u) {
+                std::vector<dom_macro_event_effect> effects;
+                u32 actual = info.effect_count;
+                effects.resize(info.effect_count);
+                if (dom_macro_events_list_effects(events,
+                                                  info.event_id,
+                                                  &effects[0],
+                                                  info.effect_count,
+                                                  &actual) != DOM_MACRO_EVENTS_OK) {
+                    return false;
+                }
+                if (actual != info.effect_count) {
+                    return false;
+                }
+                for (u32 j = 0u; j < info.effect_count; ++j) {
+                    append_u64_le(out, effects[j].resource_id);
+                    append_i64_le(out, effects[j].production_delta);
+                    append_i64_le(out, effects[j].demand_delta);
+                    append_u32_le(out, effects[j].flags_set);
+                    append_u32_le(out, effects[j].flags_clear);
+                }
+            }
+        }
+    }
+    return true;
+}
+
 static int apply_construction_blob(dom_game_runtime *rt,
                                    const unsigned char *blob,
                                    u32 len) {
@@ -859,6 +1075,302 @@ static int apply_production_blob(dom_game_runtime *rt,
     return DOM_GAME_SAVE_OK;
 }
 
+static int apply_macro_economy_scopes(dom_macro_economy *econ,
+                                      u32 scope_kind,
+                                      u32 count,
+                                      const unsigned char *blob,
+                                      u32 len,
+                                      size_t *offset) {
+    u64 last_scope_id = 0ull;
+    if (!econ || !blob || !offset) {
+        return DOM_GAME_SAVE_ERR;
+    }
+    for (u32 i = 0u; i < count; ++i) {
+        u64 scope_id;
+        u32 flags;
+        u32 prod_count;
+        u32 demand_count;
+        u32 stock_count;
+        u64 last_resource = 0ull;
+        int rc;
+
+        if (*offset + 24u > len) {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+        scope_id = read_u64_le(blob + *offset + 0u);
+        flags = read_u32_le(blob + *offset + 8u);
+        prod_count = read_u32_le(blob + *offset + 12u);
+        demand_count = read_u32_le(blob + *offset + 16u);
+        stock_count = read_u32_le(blob + *offset + 20u);
+        *offset += 24u;
+
+        if (scope_id == 0ull || scope_id <= last_scope_id) {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+        if (scope_kind == DOM_MACRO_SCOPE_SYSTEM) {
+            rc = dom_macro_economy_register_system(econ, scope_id);
+        } else if (scope_kind == DOM_MACRO_SCOPE_GALAXY) {
+            rc = dom_macro_economy_register_galaxy(econ, scope_id);
+        } else {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+        if (rc != DOM_MACRO_ECONOMY_OK) {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+        if (flags != 0u) {
+            if (dom_macro_economy_flags_apply(econ, scope_kind, scope_id, flags, 0u)
+                != DOM_MACRO_ECONOMY_OK) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+        }
+
+        last_resource = 0ull;
+        for (u32 j = 0u; j < prod_count; ++j) {
+            u64 resource_id;
+            i64 rate;
+            if (*offset + 16u > len) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+            resource_id = read_u64_le(blob + *offset + 0u);
+            rate = read_i64_le(blob + *offset + 8u);
+            *offset += 16u;
+            if (resource_id == 0ull || resource_id <= last_resource) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+            last_resource = resource_id;
+            if (dom_macro_economy_rate_set(econ,
+                                           scope_kind,
+                                           scope_id,
+                                           resource_id,
+                                           rate,
+                                           0) != DOM_MACRO_ECONOMY_OK) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+        }
+
+        last_resource = 0ull;
+        for (u32 j = 0u; j < demand_count; ++j) {
+            u64 resource_id;
+            i64 rate;
+            i64 prod_rate = 0;
+            i64 dem_rate = 0;
+            if (*offset + 16u > len) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+            resource_id = read_u64_le(blob + *offset + 0u);
+            rate = read_i64_le(blob + *offset + 8u);
+            *offset += 16u;
+            if (resource_id == 0ull || resource_id <= last_resource) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+            last_resource = resource_id;
+            rc = dom_macro_economy_rate_get(econ,
+                                            scope_kind,
+                                            scope_id,
+                                            resource_id,
+                                            &prod_rate,
+                                            &dem_rate);
+            if (rc == DOM_MACRO_ECONOMY_NOT_FOUND) {
+                prod_rate = 0;
+            } else if (rc != DOM_MACRO_ECONOMY_OK) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+            if (dom_macro_economy_rate_set(econ,
+                                           scope_kind,
+                                           scope_id,
+                                           resource_id,
+                                           prod_rate,
+                                           rate) != DOM_MACRO_ECONOMY_OK) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+        }
+
+        last_resource = 0ull;
+        for (u32 j = 0u; j < stock_count; ++j) {
+            u64 resource_id;
+            i64 quantity;
+            if (*offset + 16u > len) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+            resource_id = read_u64_le(blob + *offset + 0u);
+            quantity = read_i64_le(blob + *offset + 8u);
+            *offset += 16u;
+            if (resource_id == 0ull || resource_id <= last_resource) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+            last_resource = resource_id;
+            if (dom_macro_economy_stockpile_set(econ,
+                                                scope_kind,
+                                                scope_id,
+                                                resource_id,
+                                                quantity) != DOM_MACRO_ECONOMY_OK) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+        }
+
+        last_scope_id = scope_id;
+    }
+    return DOM_GAME_SAVE_OK;
+}
+
+static int apply_macro_economy_blob(dom_game_runtime *rt,
+                                    const unsigned char *blob,
+                                    u32 len) {
+    dom_macro_economy *econ;
+    size_t offset = 0u;
+    u32 system_count = 0u;
+    u32 galaxy_count = 0u;
+    int rc;
+
+    if (!rt) {
+        return DOM_GAME_SAVE_ERR;
+    }
+    econ = (dom_macro_economy *)dom_game_runtime_macro_economy(rt);
+    if (!econ) {
+        return DOM_GAME_SAVE_ERR;
+    }
+    if (!blob || len < 8u) {
+        return DOM_GAME_SAVE_ERR_FORMAT;
+    }
+    if (dom_macro_economy_init(econ) != DOM_MACRO_ECONOMY_OK) {
+        return DOM_GAME_SAVE_ERR;
+    }
+    system_count = read_u32_le(blob + offset);
+    offset += 4u;
+    rc = apply_macro_economy_scopes(econ,
+                                    DOM_MACRO_SCOPE_SYSTEM,
+                                    system_count,
+                                    blob,
+                                    len,
+                                    &offset);
+    if (rc != DOM_GAME_SAVE_OK) {
+        return rc;
+    }
+    if (offset + 4u > len) {
+        return DOM_GAME_SAVE_ERR_FORMAT;
+    }
+    galaxy_count = read_u32_le(blob + offset);
+    offset += 4u;
+    rc = apply_macro_economy_scopes(econ,
+                                    DOM_MACRO_SCOPE_GALAXY,
+                                    galaxy_count,
+                                    blob,
+                                    len,
+                                    &offset);
+    if (rc != DOM_GAME_SAVE_OK) {
+        return rc;
+    }
+    if (offset != len) {
+        return DOM_GAME_SAVE_ERR_FORMAT;
+    }
+    return DOM_GAME_SAVE_OK;
+}
+
+static int apply_macro_events_blob(dom_game_runtime *rt,
+                                   const unsigned char *blob,
+                                   u32 len,
+                                   u64 current_tick) {
+    dom_macro_events *events;
+    size_t offset = 0u;
+    u32 count = 0u;
+    u64 last_tick = 0ull;
+    u64 last_event_id = 0ull;
+    int has_prev = 0;
+
+    if (!rt) {
+        return DOM_GAME_SAVE_ERR;
+    }
+    events = (dom_macro_events *)dom_game_runtime_macro_events(rt);
+    if (!events) {
+        return DOM_GAME_SAVE_ERR;
+    }
+    if (!blob || len < 4u) {
+        return DOM_GAME_SAVE_ERR_FORMAT;
+    }
+    if (dom_macro_events_init(events) != DOM_MACRO_EVENTS_OK) {
+        return DOM_GAME_SAVE_ERR;
+    }
+    count = read_u32_le(blob);
+    offset = 4u;
+    for (u32 i = 0u; i < count; ++i) {
+        dom_macro_event_desc desc;
+        std::vector<dom_macro_event_effect> effects;
+        u64 event_id;
+        u32 scope_kind;
+        u64 scope_id;
+        u64 trigger_tick;
+        u32 effect_count;
+
+        if (offset + 32u > len) {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+        event_id = read_u64_le(blob + offset + 0u);
+        scope_kind = read_u32_le(blob + offset + 8u);
+        scope_id = read_u64_le(blob + offset + 12u);
+        trigger_tick = read_u64_le(blob + offset + 20u);
+        effect_count = read_u32_le(blob + offset + 28u);
+        offset += 32u;
+
+        if (event_id == 0ull || scope_id == 0ull) {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+        if (scope_kind != DOM_MACRO_SCOPE_SYSTEM &&
+            scope_kind != DOM_MACRO_SCOPE_GALAXY) {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+        if (has_prev) {
+            if (trigger_tick < last_tick) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+            if (trigger_tick == last_tick && event_id <= last_event_id) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+        }
+
+        if (effect_count > 0u) {
+            effects.resize(effect_count);
+            for (u32 j = 0u; j < effect_count; ++j) {
+                dom_macro_event_effect effect;
+                if (offset + 32u > len) {
+                    return DOM_GAME_SAVE_ERR_FORMAT;
+                }
+                effect.resource_id = read_u64_le(blob + offset + 0u);
+                effect.production_delta = read_i64_le(blob + offset + 8u);
+                effect.demand_delta = read_i64_le(blob + offset + 16u);
+                effect.flags_set = read_u32_le(blob + offset + 24u);
+                effect.flags_clear = read_u32_le(blob + offset + 28u);
+                offset += 32u;
+                if (effect.resource_id == 0ull) {
+                    return DOM_GAME_SAVE_ERR_FORMAT;
+                }
+                effects[j] = effect;
+            }
+        }
+
+        std::memset(&desc, 0, sizeof(desc));
+        desc.event_id = event_id;
+        desc.scope_kind = scope_kind;
+        desc.scope_id = scope_id;
+        desc.trigger_tick = trigger_tick;
+        desc.effect_count = effect_count;
+        desc.effects = (effect_count > 0u) ? &effects[0] : (const dom_macro_event_effect *)0;
+        if (dom_macro_events_schedule(events, &desc) != DOM_MACRO_EVENTS_OK) {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+
+        last_tick = trigger_tick;
+        last_event_id = event_id;
+        has_prev = 1;
+    }
+    if (offset != len) {
+        return DOM_GAME_SAVE_ERR_FORMAT;
+    }
+    if (dom_macro_events_seek(events, current_tick) != DOM_MACRO_EVENTS_OK) {
+        return DOM_GAME_SAVE_ERR;
+    }
+    return DOM_GAME_SAVE_OK;
+}
+
 static int parse_dmsg(const unsigned char *data, size_t len, dom_game_save_desc *out_desc) {
     u32 version;
     u32 endian;
@@ -908,6 +1420,16 @@ static int parse_dmsg(const unsigned char *data, size_t len, dom_game_save_desc 
     u32 production_version = 0u;
     int has_production = 0;
 
+    const unsigned char *macro_economy_ptr = (const unsigned char *)0;
+    u32 macro_economy_len = 0u;
+    u32 macro_economy_version = 0u;
+    int has_macro_economy = 0;
+
+    const unsigned char *macro_events_ptr = (const unsigned char *)0;
+    u32 macro_events_len = 0u;
+    u32 macro_events_version = 0u;
+    int has_macro_events = 0;
+
     const char *instance_id = (const char *)0;
     u32 instance_id_len = 0u;
     u64 run_id_val = 0ull;
@@ -932,8 +1454,8 @@ static int parse_dmsg(const unsigned char *data, size_t len, dom_game_save_desc 
     }
 
     version = read_u32_le(data + 4u);
-    if (version != 1u && version != DMSG_VERSION) {
-        return (version > DMSG_VERSION) ? DOM_GAME_SAVE_ERR_MIGRATION : DOM_GAME_SAVE_ERR_FORMAT;
+    if (version != DMSG_VERSION) {
+        return DOM_GAME_SAVE_ERR_MIGRATION;
     }
     endian = read_u32_le(data + 8u);
     if (endian != DMSG_ENDIAN) {
@@ -1071,6 +1593,28 @@ static int parse_dmsg(const unsigned char *data, size_t len, dom_game_save_desc 
             production_len = chunk_size;
             production_version = chunk_version;
             has_production = 1;
+        } else if (std::memcmp(tag, "MECO", 4u) == 0) {
+            if (chunk_version > DMSG_MACRO_ECONOMY_VERSION) {
+                return DOM_GAME_SAVE_ERR_MIGRATION;
+            }
+            if (chunk_version != DMSG_MACRO_ECONOMY_VERSION || has_macro_economy) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+            macro_economy_ptr = data + offset;
+            macro_economy_len = chunk_size;
+            macro_economy_version = chunk_version;
+            has_macro_economy = 1;
+        } else if (std::memcmp(tag, "MEVT", 4u) == 0) {
+            if (chunk_version > DMSG_MACRO_EVENTS_VERSION) {
+                return DOM_GAME_SAVE_ERR_MIGRATION;
+            }
+            if (chunk_version != DMSG_MACRO_EVENTS_VERSION || has_macro_events) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+            macro_events_ptr = data + offset;
+            macro_events_len = chunk_size;
+            macro_events_version = chunk_version;
+            has_macro_events = 1;
         } else if (std::memcmp(tag, "IDEN", 4u) == 0) {
             dom::core_tlv::TlvReader ir(data + offset, (size_t)chunk_size);
             dom::core_tlv::TlvRecord irec;
@@ -1126,7 +1670,8 @@ static int parse_dmsg(const unsigned char *data, size_t len, dom_game_save_desc 
     }
 
     if (!core_ptr || !has_rng || !has_surface || !has_construction ||
-        !has_stations || !has_routes || !has_transfers || !has_production) {
+        !has_stations || !has_routes || !has_transfers || !has_production ||
+        !has_macro_economy || !has_macro_events) {
         return DOM_GAME_SAVE_ERR_FORMAT;
     }
     if (version >= 2u && !has_identity) {
@@ -1181,6 +1726,14 @@ static int parse_dmsg(const unsigned char *data, size_t len, dom_game_save_desc 
     out_desc->production_blob_len = production_len;
     out_desc->production_version = production_version;
     out_desc->has_production = (u32)has_production;
+    out_desc->macro_economy_blob = macro_economy_ptr;
+    out_desc->macro_economy_blob_len = macro_economy_len;
+    out_desc->macro_economy_version = macro_economy_version;
+    out_desc->has_macro_economy = (u32)has_macro_economy;
+    out_desc->macro_events_blob = macro_events_ptr;
+    out_desc->macro_events_blob_len = macro_events_len;
+    out_desc->macro_events_version = macro_events_version;
+    out_desc->has_macro_events = (u32)has_macro_events;
     out_desc->rng_state = rng_state;
     out_desc->rng_version = rng_version;
     out_desc->has_rng = (u32)has_rng;
@@ -1198,6 +1751,8 @@ static bool build_save_bytes(const dom_game_runtime *rt, std::vector<unsigned ch
     std::vector<unsigned char> routes_blob;
     std::vector<unsigned char> transfers_blob;
     std::vector<unsigned char> production_blob;
+    std::vector<unsigned char> macro_economy_blob;
+    std::vector<unsigned char> macro_events_blob;
     std::vector<unsigned char> content_tlv;
     std::vector<unsigned char> identity_tlv;
     u32 ups;
@@ -1237,6 +1792,12 @@ static bool build_save_bytes(const dom_game_runtime *rt, std::vector<unsigned ch
     if (!build_production_blob(rt, production_blob)) {
         return false;
     }
+    if (!build_macro_economy_blob(rt, macro_economy_blob)) {
+        return false;
+    }
+    if (!build_macro_events_blob(rt, macro_events_blob)) {
+        return false;
+    }
 
     session = (const dom::DomSession *)dom_game_runtime_session(rt);
     if (!dom::dom_game_content_build_tlv(session, content_tlv)) {
@@ -1251,7 +1812,9 @@ static bool build_save_bytes(const dom_game_runtime *rt, std::vector<unsigned ch
         stations_blob.size() > 0xffffffffull ||
         routes_blob.size() > 0xffffffffull ||
         transfers_blob.size() > 0xffffffffull ||
-        production_blob.size() > 0xffffffffull) {
+        production_blob.size() > 0xffffffffull ||
+        macro_economy_blob.size() > 0xffffffffull ||
+        macro_events_blob.size() > 0xffffffffull) {
         return false;
     }
     if (!build_identity_tlv(rt,
@@ -1326,6 +1889,18 @@ static bool build_save_bytes(const dom_game_runtime *rt, std::vector<unsigned ch
     append_u32_le(out, (u32)production_blob.size());
     append_bytes(out, production_blob.empty() ? (const unsigned char *)0 : &production_blob[0],
                  production_blob.size());
+
+    append_bytes(out, "MECO", 4u);
+    append_u32_le(out, DMSG_MACRO_ECONOMY_VERSION);
+    append_u32_le(out, (u32)macro_economy_blob.size());
+    append_bytes(out, macro_economy_blob.empty() ? (const unsigned char *)0 : &macro_economy_blob[0],
+                 macro_economy_blob.size());
+
+    append_bytes(out, "MEVT", 4u);
+    append_u32_le(out, DMSG_MACRO_EVENTS_VERSION);
+    append_u32_le(out, (u32)macro_events_blob.size());
+    append_bytes(out, macro_events_blob.empty() ? (const unsigned char *)0 : &macro_events_blob[0],
+                 macro_events_blob.size());
 
     append_bytes(out, "RNG ", 4u);
     append_u32_le(out, DMSG_RNG_VERSION);
@@ -1504,6 +2079,25 @@ int dom_game_runtime_load_save(dom_game_runtime *rt, const char *path) {
             if (prod) {
                 (void)dom_production_set_last_tick(prod, desc.tick_index);
             }
+        }
+    }
+    if (desc.has_macro_economy) {
+        rc = apply_macro_economy_blob(rt,
+                                      desc.macro_economy_blob,
+                                      desc.macro_economy_blob_len);
+        if (rc != DOM_GAME_SAVE_OK) {
+            dom_game_save_release(storage);
+            return rc;
+        }
+    }
+    if (desc.has_macro_events) {
+        rc = apply_macro_events_blob(rt,
+                                     desc.macro_events_blob,
+                                     desc.macro_events_blob_len,
+                                     desc.tick_index);
+        if (rc != DOM_GAME_SAVE_OK) {
+            dom_game_save_release(storage);
+            return rc;
         }
     }
 
