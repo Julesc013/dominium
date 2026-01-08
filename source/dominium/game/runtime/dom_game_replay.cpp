@@ -8,7 +8,7 @@ FORBIDDEN DEPENDENCIES: Dependency inversions that violate `docs/OVERVIEW_ARCHIT
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
 DETERMINISM: Determinism-sensitive (recorded command payloads must be stable).
-VERSIONING / ABI / DATA FORMAT NOTES: DMRP v3 container; see `source/dominium/game/SPEC_REPLAY.md`.
+VERSIONING / ABI / DATA FORMAT NOTES: DMRP v4 container; see `source/dominium/game/SPEC_REPLAY.md`.
 EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
 */
 #include "runtime/dom_game_replay.h"
@@ -28,9 +28,11 @@ extern "C" {
 namespace {
 
 enum {
-    DMRP_VERSION = 3u,
+    DMRP_VERSION = 4u,
     DMRP_ENDIAN = 0x0000FFFEu,
-    DMRP_IDENTITY_VERSION = 1u
+    DMRP_IDENTITY_VERSION = 1u,
+    DMRP_MACRO_ECONOMY_VERSION = 1u,
+    DMRP_MACRO_EVENTS_VERSION = 1u
 };
 
 enum {
@@ -165,6 +167,12 @@ struct dom_game_replay_play {
     u32 feature_epoch;
     const unsigned char *content_tlv;
     u32 content_tlv_len;
+    const unsigned char *macro_economy_blob;
+    u32 macro_economy_len;
+    u32 macro_economy_version;
+    const unsigned char *macro_events_blob;
+    u32 macro_events_len;
+    u32 macro_events_version;
 };
 
 extern "C" {
@@ -177,7 +185,11 @@ dom_game_replay_record *dom_game_replay_record_open(const char *path,
                                                     const unsigned char *manifest_hash_bytes,
                                                     u32 manifest_hash_len,
                                                     const unsigned char *content_tlv,
-                                                    u32 content_tlv_len) {
+                                                    u32 content_tlv_len,
+                                                    const unsigned char *macro_economy_blob,
+                                                    u32 macro_economy_len,
+                                                    const unsigned char *macro_events_blob,
+                                                    u32 macro_events_len) {
     dom_game_replay_record *rec;
     unsigned char buf32[4];
     unsigned char buf64[8];
@@ -188,6 +200,12 @@ dom_game_replay_record *dom_game_replay_record_open(const char *path,
         return (dom_game_replay_record *)0;
     }
     if (content_tlv_len > 0u && !content_tlv) {
+        return (dom_game_replay_record *)0;
+    }
+    if (macro_economy_len > 0u && !macro_economy_blob) {
+        return (dom_game_replay_record *)0;
+    }
+    if (macro_events_len > 0u && !macro_events_blob) {
         return (dom_game_replay_record *)0;
     }
     if (!dom_io_guard_io_allowed()) {
@@ -204,6 +222,9 @@ dom_game_replay_record *dom_game_replay_record_open(const char *path,
         return (dom_game_replay_record *)0;
     }
     if (identity_tlv.size() > 0xffffffffull) {
+        return (dom_game_replay_record *)0;
+    }
+    if (macro_economy_len > 0xffffffffu || macro_events_len > 0xffffffffu) {
         return (dom_game_replay_record *)0;
     }
 
@@ -259,6 +280,40 @@ dom_game_replay_record *dom_game_replay_record_open(const char *path,
     }
     if (!identity_tlv.empty()) {
         if (!write_all(fh, &identity_tlv[0], identity_tlv.size())) {
+            dsys_file_close(fh);
+            return (dom_game_replay_record *)0;
+        }
+    }
+
+    write_u32_le(buf32, DMRP_MACRO_ECONOMY_VERSION);
+    if (!write_all(fh, buf32, 4u)) {
+        dsys_file_close(fh);
+        return (dom_game_replay_record *)0;
+    }
+    write_u32_le(buf32, macro_economy_len);
+    if (!write_all(fh, buf32, 4u)) {
+        dsys_file_close(fh);
+        return (dom_game_replay_record *)0;
+    }
+    if (macro_economy_len > 0u) {
+        if (!write_all(fh, macro_economy_blob, macro_economy_len)) {
+            dsys_file_close(fh);
+            return (dom_game_replay_record *)0;
+        }
+    }
+
+    write_u32_le(buf32, DMRP_MACRO_EVENTS_VERSION);
+    if (!write_all(fh, buf32, 4u)) {
+        dsys_file_close(fh);
+        return (dom_game_replay_record *)0;
+    }
+    write_u32_le(buf32, macro_events_len);
+    if (!write_all(fh, buf32, 4u)) {
+        dsys_file_close(fh);
+        return (dom_game_replay_record *)0;
+    }
+    if (macro_events_len > 0u) {
+        if (!write_all(fh, macro_events_blob, macro_events_len)) {
             dsys_file_close(fh);
             return (dom_game_replay_record *)0;
         }
@@ -327,6 +382,14 @@ dom_game_replay_play *dom_game_replay_play_open(const char *path,
     u32 feature_epoch;
     u32 content_len;
     const unsigned char *content_ptr;
+    const unsigned char *macro_economy_ptr = (const unsigned char *)0;
+    u32 macro_economy_len = 0u;
+    u32 macro_economy_version = 0u;
+    int has_macro_economy = 0;
+    const unsigned char *macro_events_ptr = (const unsigned char *)0;
+    u32 macro_events_len = 0u;
+    u32 macro_events_version = 0u;
+    int has_macro_events = 0;
     const char *instance_id = (const char *)0;
     u32 instance_id_len = 0u;
     u64 run_id_val = 0ull;
@@ -372,10 +435,9 @@ dom_game_replay_play *dom_game_replay_play_open(const char *path,
     if (out_desc) {
         out_desc->container_version = version;
     }
-    if (version != 1u && version != DMRP_VERSION) {
+    if (version != DMRP_VERSION) {
         if (out_desc) {
-            out_desc->error_code = (version > DMRP_VERSION) ? DOM_GAME_REPLAY_ERR_MIGRATION
-                                                            : DOM_GAME_REPLAY_ERR_FORMAT;
+            out_desc->error_code = DOM_GAME_REPLAY_ERR_MIGRATION;
         }
         return (dom_game_replay_play *)0;
     }
@@ -489,6 +551,60 @@ dom_game_replay_play *dom_game_replay_play_open(const char *path,
         }
     }
 
+    if (version >= 4u) {
+        if (data_len - offset < 8u) {
+            if (out_desc) {
+                out_desc->error_code = DOM_GAME_REPLAY_ERR_FORMAT;
+            }
+            return (dom_game_replay_play *)0;
+        }
+        macro_economy_version = read_u32_le(&data[offset]);
+        offset += 4u;
+        if (macro_economy_version > DMRP_MACRO_ECONOMY_VERSION) {
+            if (out_desc) {
+                out_desc->error_code = DOM_GAME_REPLAY_ERR_MIGRATION;
+            }
+            return (dom_game_replay_play *)0;
+        }
+        macro_economy_len = read_u32_le(&data[offset]);
+        offset += 4u;
+        if ((size_t)macro_economy_len > data_len - offset) {
+            if (out_desc) {
+                out_desc->error_code = DOM_GAME_REPLAY_ERR_FORMAT;
+            }
+            return (dom_game_replay_play *)0;
+        }
+        macro_economy_ptr = (macro_economy_len > 0u) ? (&data[offset]) : (const unsigned char *)0;
+        offset += (size_t)macro_economy_len;
+        has_macro_economy = 1;
+
+        if (data_len - offset < 8u) {
+            if (out_desc) {
+                out_desc->error_code = DOM_GAME_REPLAY_ERR_FORMAT;
+            }
+            return (dom_game_replay_play *)0;
+        }
+        macro_events_version = read_u32_le(&data[offset]);
+        offset += 4u;
+        if (macro_events_version > DMRP_MACRO_EVENTS_VERSION) {
+            if (out_desc) {
+                out_desc->error_code = DOM_GAME_REPLAY_ERR_MIGRATION;
+            }
+            return (dom_game_replay_play *)0;
+        }
+        macro_events_len = read_u32_le(&data[offset]);
+        offset += 4u;
+        if ((size_t)macro_events_len > data_len - offset) {
+            if (out_desc) {
+                out_desc->error_code = DOM_GAME_REPLAY_ERR_FORMAT;
+            }
+            return (dom_game_replay_play *)0;
+        }
+        macro_events_ptr = (macro_events_len > 0u) ? (&data[offset]) : (const unsigned char *)0;
+        offset += (size_t)macro_events_len;
+        has_macro_events = 1;
+    }
+
     std::vector<dom_game_replay_record_view> records;
     while (offset < data_len) {
         u64 tick;
@@ -560,6 +676,12 @@ dom_game_replay_play *dom_game_replay_play_open(const char *path,
     play->feature_epoch = feature_epoch;
     play->content_tlv = content_ptr;
     play->content_tlv_len = content_len;
+    play->macro_economy_blob = macro_economy_ptr;
+    play->macro_economy_len = macro_economy_len;
+    play->macro_economy_version = macro_economy_version;
+    play->macro_events_blob = macro_events_ptr;
+    play->macro_events_len = macro_events_len;
+    play->macro_events_version = macro_events_version;
 
     if (out_desc) {
         out_desc->container_version = version;
@@ -575,6 +697,14 @@ dom_game_replay_play *dom_game_replay_play_open(const char *path,
         out_desc->has_identity = (u32)has_identity;
         out_desc->content_tlv = content_ptr;
         out_desc->content_tlv_len = content_len;
+        out_desc->macro_economy_blob = macro_economy_ptr;
+        out_desc->macro_economy_blob_len = macro_economy_len;
+        out_desc->macro_economy_version = macro_economy_version;
+        out_desc->has_macro_economy = (u32)has_macro_economy;
+        out_desc->macro_events_blob = macro_events_ptr;
+        out_desc->macro_events_blob_len = macro_events_len;
+        out_desc->macro_events_version = macro_events_version;
+        out_desc->has_macro_events = (u32)has_macro_events;
         out_desc->error_code = DOM_GAME_REPLAY_OK;
     }
 

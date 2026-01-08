@@ -79,6 +79,7 @@ u32 dom_macro_events_count(const dom_macro_events *events);
 int dom_macro_events_update(dom_macro_events *events,
                             dom_macro_economy *economy,
                             u64 current_tick);
+int dom_macro_events_seek(dom_macro_events *events, u64 tick);
 
 u64 dom_macro_events_last_tick(const dom_macro_events *events);
 

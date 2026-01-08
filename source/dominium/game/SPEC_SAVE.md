@@ -1,7 +1,7 @@
 # Save Spec (DMSG)
 
-Status: v2
-Version: 3
+Status: v3
+Version: 4
 
 This document defines the Dominium game snapshot container `DMSG`.
 
@@ -9,12 +9,12 @@ This document defines the Dominium game snapshot container `DMSG`.
 - All numeric fields in the `DMSG` header and chunk records are little-endian.
 - The endian marker is `0x0000FFFE` (u32_le).
 
-## File header (DMSG v3)
+## File header (DMSG v4)
 
 | Offset | Size | Field | Meaning |
 |---:|---:|---|---|
 | 0 | 4 | `magic` | ASCII `"DMSG"` |
-| 4 | 4 | `version` | container version (`3`) |
+| 4 | 4 | `version` | container version (`4`) |
 | 8 | 4 | `endian` | `0x0000FFFE` (little-endian marker) |
 | 12 | 4 | `ups` | updates per second |
 | 16 | 8 | `tick_index` | simulation tick |
@@ -67,8 +67,11 @@ payload[size]
 - `ROUT` v1: route records (may be empty).
 - `TRAN` v1: transfer records (may be empty).
 - `PROD` v1: production rules (may be empty).
+- `MECO` v1: macro economy aggregates (may be empty).
+- `MEVT` v1: macro event schedule (may be empty).
 
 Logistics chunk payloads are defined in `docs/SPEC_SYSTEM_LOGISTICS.md`.
+Macro economy/event payloads are defined in `docs/SPEC_COSMO_ECONOMY_EVENTS.md`.
 
 ## Optional chunks
 

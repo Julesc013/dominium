@@ -237,6 +237,22 @@ int dom_macro_events_update(dom_macro_events *events,
     return DOM_MACRO_EVENTS_OK;
 }
 
+int dom_macro_events_seek(dom_macro_events *events, u64 tick) {
+    size_t i;
+    if (!events) {
+        return DOM_MACRO_EVENTS_INVALID_ARGUMENT;
+    }
+    for (i = 0u; i < events->events.size(); ++i) {
+        if (events->events[i].trigger_tick > tick) {
+            break;
+        }
+    }
+    events->cursor = i;
+    events->last_tick = tick;
+    events->has_last_tick = 1;
+    return DOM_MACRO_EVENTS_OK;
+}
+
 u64 dom_macro_events_last_tick(const dom_macro_events *events) {
     if (!events || !events->has_last_tick) {
         return 0ull;
