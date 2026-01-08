@@ -96,6 +96,8 @@ const void *dom_game_runtime_station_registry(const dom_game_runtime *rt);
 const void *dom_game_runtime_route_graph(const dom_game_runtime *rt);
 const void *dom_game_runtime_transfer_scheduler(const dom_game_runtime *rt);
 const void *dom_game_runtime_production(const dom_game_runtime *rt);
+const void *dom_game_runtime_macro_economy(const dom_game_runtime *rt);
+const void *dom_game_runtime_macro_events(const dom_game_runtime *rt);
 
 int dom_game_runtime_set_surface_focus(dom_game_runtime *rt,
                                        dom_body_id body_id,

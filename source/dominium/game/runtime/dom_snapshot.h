@@ -39,7 +39,9 @@ enum {
     DOM_CONSTRUCTION_LIST_SNAPSHOT_VERSION = 1u,
     DOM_STATION_LIST_SNAPSHOT_VERSION = 1u,
     DOM_ROUTE_LIST_SNAPSHOT_VERSION = 1u,
-    DOM_TRANSFER_LIST_SNAPSHOT_VERSION = 1u
+    DOM_TRANSFER_LIST_SNAPSHOT_VERSION = 1u,
+    DOM_MACRO_ECONOMY_SNAPSHOT_VERSION = 1u,
+    DOM_MACRO_EVENT_LIST_SNAPSHOT_VERSION = 1u
 };
 
 enum {
@@ -277,6 +279,67 @@ typedef struct dom_transfer_list_snapshot {
     dom_transfer_view *transfers;
 } dom_transfer_list_snapshot;
 
+typedef struct dom_macro_rate_view {
+    u64 resource_id;
+    i64 rate_per_tick;
+} dom_macro_rate_view;
+
+typedef struct dom_macro_stock_view {
+    u64 resource_id;
+    i64 quantity;
+} dom_macro_stock_view;
+
+typedef struct dom_macro_scope_view {
+    u32 scope_kind;
+    u64 scope_id;
+    u32 flags;
+    u32 production_count;
+    u32 production_offset;
+    u32 demand_count;
+    u32 demand_offset;
+    u32 stockpile_count;
+    u32 stockpile_offset;
+} dom_macro_scope_view;
+
+typedef struct dom_macro_economy_snapshot {
+    u32 struct_size;
+    u32 struct_version;
+    u32 scope_count;
+    u32 production_count;
+    u32 demand_count;
+    u32 stockpile_count;
+    dom_macro_scope_view *scopes;
+    dom_macro_rate_view *production;
+    dom_macro_rate_view *demand;
+    dom_macro_stock_view *stockpile;
+} dom_macro_economy_snapshot;
+
+typedef struct dom_macro_event_view {
+    u64 event_id;
+    u32 scope_kind;
+    u64 scope_id;
+    u64 trigger_tick;
+    u32 effect_count;
+    u32 effect_offset;
+} dom_macro_event_view;
+
+typedef struct dom_macro_event_effect_view {
+    u64 resource_id;
+    i64 production_delta;
+    i64 demand_delta;
+    u32 flags_set;
+    u32 flags_clear;
+} dom_macro_event_effect_view;
+
+typedef struct dom_macro_event_list_snapshot {
+    u32 struct_size;
+    u32 struct_version;
+    u32 event_count;
+    u32 effect_count;
+    dom_macro_event_view *events;
+    dom_macro_event_effect_view *effects;
+} dom_macro_event_list_snapshot;
+
 struct dom_game_runtime;
 
 dom_game_snapshot *dom_game_runtime_build_snapshot(const struct dom_game_runtime *rt, u32 flags);
@@ -307,6 +370,10 @@ dom_route_list_snapshot *dom_game_runtime_build_route_list_snapshot(const struct
 void dom_game_runtime_release_route_list_snapshot(dom_route_list_snapshot *snapshot);
 dom_transfer_list_snapshot *dom_game_runtime_build_transfer_list_snapshot(const struct dom_game_runtime *rt);
 void dom_game_runtime_release_transfer_list_snapshot(dom_transfer_list_snapshot *snapshot);
+dom_macro_economy_snapshot *dom_game_runtime_build_macro_economy_snapshot(const struct dom_game_runtime *rt);
+void dom_game_runtime_release_macro_economy_snapshot(dom_macro_economy_snapshot *snapshot);
+dom_macro_event_list_snapshot *dom_game_runtime_build_macro_event_list_snapshot(const struct dom_game_runtime *rt);
+void dom_game_runtime_release_macro_event_list_snapshot(dom_macro_event_list_snapshot *snapshot);
 
 #ifdef __cplusplus
 } /* extern "C" */
