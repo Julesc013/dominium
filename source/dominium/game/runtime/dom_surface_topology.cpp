@@ -16,9 +16,16 @@ int dom_surface_topology_sphere_altitude(const dom_topology_binding *binding,
 int dom_surface_topology_sphere_latlong(const dom_topology_binding *binding,
                                         const dom_posseg_q16 *pos_body_fixed,
                                         dom_topo_latlong_q16 *out_latlong);
+int dom_surface_topology_sphere_pos_from_latlong(const dom_topology_binding *binding,
+                                                 const dom_topo_latlong_q16 *latlong,
+                                                 q48_16 altitude_m,
+                                                 dom_posseg_q16 *out_pos);
 int dom_surface_topology_sphere_normal(const dom_topology_binding *binding,
                                        const dom_posseg_q16 *pos_body_fixed,
                                        dom_topo_vec3_q16 *out_normal);
+int dom_surface_topology_sphere_tangent_frame(const dom_topology_binding *binding,
+                                              const dom_topo_latlong_q16 *latlong,
+                                              dom_topo_tangent_frame_q16 *out_frame);
 
 int dom_surface_topology_ellipsoid_altitude(const dom_topology_binding *binding,
                                             const dom_posseg_q16 *pos_body_fixed,
@@ -26,9 +33,16 @@ int dom_surface_topology_ellipsoid_altitude(const dom_topology_binding *binding,
 int dom_surface_topology_ellipsoid_latlong(const dom_topology_binding *binding,
                                            const dom_posseg_q16 *pos_body_fixed,
                                            dom_topo_latlong_q16 *out_latlong);
+int dom_surface_topology_ellipsoid_pos_from_latlong(const dom_topology_binding *binding,
+                                                    const dom_topo_latlong_q16 *latlong,
+                                                    q48_16 altitude_m,
+                                                    dom_posseg_q16 *out_pos);
 int dom_surface_topology_ellipsoid_normal(const dom_topology_binding *binding,
                                           const dom_posseg_q16 *pos_body_fixed,
                                           dom_topo_vec3_q16 *out_normal);
+int dom_surface_topology_ellipsoid_tangent_frame(const dom_topology_binding *binding,
+                                                 const dom_topo_latlong_q16 *latlong,
+                                                 dom_topo_tangent_frame_q16 *out_frame);
 
 int dom_surface_topology_torus_altitude(const dom_topology_binding *binding,
                                         const dom_posseg_q16 *pos_body_fixed,
@@ -36,9 +50,16 @@ int dom_surface_topology_torus_altitude(const dom_topology_binding *binding,
 int dom_surface_topology_torus_latlong(const dom_topology_binding *binding,
                                        const dom_posseg_q16 *pos_body_fixed,
                                        dom_topo_latlong_q16 *out_latlong);
+int dom_surface_topology_torus_pos_from_latlong(const dom_topology_binding *binding,
+                                                const dom_topo_latlong_q16 *latlong,
+                                                q48_16 altitude_m,
+                                                dom_posseg_q16 *out_pos);
 int dom_surface_topology_torus_normal(const dom_topology_binding *binding,
                                       const dom_posseg_q16 *pos_body_fixed,
                                       dom_topo_vec3_q16 *out_normal);
+int dom_surface_topology_torus_tangent_frame(const dom_topology_binding *binding,
+                                             const dom_topo_latlong_q16 *latlong,
+                                             dom_topo_tangent_frame_q16 *out_frame);
 
 static dom_body_id earth_body_id(void) {
     dom_body_id id = 0ull;
@@ -123,6 +144,26 @@ int dom_surface_topology_latlong(const dom_topology_binding *binding,
     return DOM_TOPOLOGY_INVALID_DATA;
 }
 
+int dom_surface_topology_pos_from_latlong(const dom_topology_binding *binding,
+                                          const dom_topo_latlong_q16 *latlong,
+                                          q48_16 altitude_m,
+                                          dom_posseg_q16 *out_pos) {
+    if (!binding || !latlong || !out_pos) {
+        return DOM_TOPOLOGY_INVALID_ARGUMENT;
+    }
+    switch (binding->kind) {
+        case DOM_TOPOLOGY_KIND_SPHERE:
+            return dom_surface_topology_sphere_pos_from_latlong(binding, latlong, altitude_m, out_pos);
+        case DOM_TOPOLOGY_KIND_ELLIPSOID:
+            return dom_surface_topology_ellipsoid_pos_from_latlong(binding, latlong, altitude_m, out_pos);
+        case DOM_TOPOLOGY_KIND_TORUS:
+            return dom_surface_topology_torus_pos_from_latlong(binding, latlong, altitude_m, out_pos);
+        default:
+            break;
+    }
+    return DOM_TOPOLOGY_INVALID_DATA;
+}
+
 int dom_surface_topology_surface_normal(const dom_topology_binding *binding,
                                         const dom_posseg_q16 *pos_body_fixed,
                                         dom_topo_vec3_q16 *out_normal) {
@@ -136,6 +177,25 @@ int dom_surface_topology_surface_normal(const dom_topology_binding *binding,
             return dom_surface_topology_ellipsoid_normal(binding, pos_body_fixed, out_normal);
         case DOM_TOPOLOGY_KIND_TORUS:
             return dom_surface_topology_torus_normal(binding, pos_body_fixed, out_normal);
+        default:
+            break;
+    }
+    return DOM_TOPOLOGY_INVALID_DATA;
+}
+
+int dom_surface_topology_tangent_frame(const dom_topology_binding *binding,
+                                       const dom_topo_latlong_q16 *latlong,
+                                       dom_topo_tangent_frame_q16 *out_frame) {
+    if (!binding || !latlong || !out_frame) {
+        return DOM_TOPOLOGY_INVALID_ARGUMENT;
+    }
+    switch (binding->kind) {
+        case DOM_TOPOLOGY_KIND_SPHERE:
+            return dom_surface_topology_sphere_tangent_frame(binding, latlong, out_frame);
+        case DOM_TOPOLOGY_KIND_ELLIPSOID:
+            return dom_surface_topology_ellipsoid_tangent_frame(binding, latlong, out_frame);
+        case DOM_TOPOLOGY_KIND_TORUS:
+            return dom_surface_topology_torus_tangent_frame(binding, latlong, out_frame);
         default:
             break;
     }

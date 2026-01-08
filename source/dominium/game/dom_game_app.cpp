@@ -1876,24 +1876,40 @@ void DomGameApp::tick_fixed() {
         update_camera();
     }
 
-    if (m_derived_queue) {
-        dom_io_guard_enter_derived();
-        (void)dom_derived_pump(m_derived_queue,
-                               m_derived_budget_ms,
-                               (u64)m_derived_budget_io_bytes,
-                               m_derived_budget_jobs);
-        dom_io_guard_exit_derived();
-        {
+    {
+        bool derived_pending = false;
+        bool surface_pending = false;
+        if (m_derived_queue || m_runtime) {
+            dom_io_guard_enter_derived();
+            if (m_derived_queue) {
+                (void)dom_derived_pump(m_derived_queue,
+                                       m_derived_budget_ms,
+                                       (u64)m_derived_budget_io_bytes,
+                                       m_derived_budget_jobs);
+            }
+            if (m_runtime) {
+                (void)dom_game_runtime_pump_surface_chunks(m_runtime,
+                                                           m_derived_budget_ms,
+                                                           (u64)m_derived_budget_io_bytes,
+                                                           m_derived_budget_jobs);
+                surface_pending = dom_game_runtime_surface_has_pending(m_runtime) != 0;
+            }
+            dom_io_guard_exit_derived();
+        }
+        if (m_derived_queue) {
             dom_derived_stats stats;
             if (dom_derived_stats(m_derived_queue, &stats) == 0) {
                 if (stats.queued > 0u || stats.running > 0u) {
-                    dom_fidelity_mark_missing(&m_fidelity, DOM_FIDELITY_MISSING_DERIVED);
-                } else {
-                    dom_fidelity_mark_ready(&m_fidelity, DOM_FIDELITY_MISSING_DERIVED);
+                    derived_pending = true;
                 }
             }
-            dom_fidelity_step(&m_fidelity);
         }
+        if (derived_pending || surface_pending) {
+            dom_fidelity_mark_missing(&m_fidelity, DOM_FIDELITY_MISSING_DERIVED);
+        } else {
+            dom_fidelity_mark_ready(&m_fidelity, DOM_FIDELITY_MISSING_DERIVED);
+        }
+        dom_fidelity_step(&m_fidelity);
     }
 
     if (m_session.is_initialized() && m_runtime &&
