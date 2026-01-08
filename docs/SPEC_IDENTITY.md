@@ -46,6 +46,10 @@ Identical behavior is mandatory across all OS/architecture pairs below. Tiers de
 | SDL1 shell                   | x86_32, arm_32                    | Tier 2 (retro)  | abstraction shell |
 | CPM80 / CPM86                | z80_8, x86_16                     | Tier 2 (retro)  | |
 
+Note: Performance tier profiles (`BASELINE`, `MODERN`, `SERVER`) are defined in
+`docs/SPEC_TIERS.md` and are separate from platform support tiers. They are
+non-authoritative and must not affect determinism.
+
 ## Layering & Abstractions
 - dsys: system abstraction for windowing, input, filesystem, processes, timing; sole path to host OS facilities.
 - dgfx: graphics IR and backends; all rendering flows game → Domino → dgfx IR → backend (software/GPU/retro).

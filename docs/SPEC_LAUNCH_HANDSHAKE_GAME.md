@@ -9,6 +9,7 @@ handshake is a versioned TLV container and MUST NOT contain absolute paths.
 - `installed_state_id` or `installed_state_hash` (bytes/string; launcher-defined)
 - `resolved_packs[]` (pack graph + hashes; ordered)
 - `flags` (safe/offline/etc; launcher-defined)
+- `sim_caps` (TLV container; SIM_CAPS, versioned)
 
 ## 2. Optional fields
 - `run_root_ref` (PATH_REF): tagged logical ref (relative only). This is
@@ -17,6 +18,9 @@ handshake is a versioned TLV container and MUST NOT contain absolute paths.
 - `universe_bundle_hash` (`u64_le`, DTLV canonical content hash)
 - `universe_bundle_ref` (PATH_REF): tagged logical ref for an instance-scoped
   bundle path (relative only).
+- `perf_caps` (TLV container; PERF_CAPS, negotiable)
+- `provider_bindings_hash` (`u64_le`): digest of provider bindings; missing
+  values are treated as `0` for legacy inputs.
 - Additional launcher-defined metadata fields (skip-unknown).
 
 ## 3. Path rules
@@ -35,6 +39,16 @@ handshake is a versioned TLV container and MUST NOT contain absolute paths.
 - Universe selection and bundle identity are validated per
   `docs/SPEC_UNIVERSE_BUNDLE.md`.
 
+## 5. Identity digest (sim-bound)
+The handshake identity digest is computed from:
+- SIM_CAPS (canonical TLV)
+- content digests and sim-affecting flags
+- provider bindings digest
+
+PERF_CAPS and other presentation metadata MUST NOT influence the identity
+digest.
+
 ## Related specs
 - `docs/SPEC_FS_CONTRACT.md`
 - `docs/SPEC_UNIVERSE_BUNDLE.md`
+- `docs/SPEC_TIERS.md`

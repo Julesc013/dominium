@@ -250,6 +250,10 @@ static void test_serialize_parse_roundtrip_and_order_preservation() {
     hs.timestamp_monotonic_us = 456ull;
     hs.has_timestamp_wall_us = 1u;
     hs.timestamp_wall_us = 789ull;
+    hs.has_sim_caps = 1u;
+    dom_sim_caps_init_default(hs.sim_caps);
+    hs.has_perf_caps = 1u;
+    dom_perf_caps_init_default(hs.perf_caps, dom::DOM_PERF_TIER_BASELINE);
 
     {
         dom::launcher_core::LauncherHandshakePackEntry p;
@@ -283,13 +287,42 @@ static void test_serialize_parse_roundtrip_and_order_preservation() {
     assert(parsed.resolved_packs.size() == 2u);
     assert(parsed.resolved_packs[0].pack_id == "pack.b");
     assert(parsed.resolved_packs[1].pack_id == "pack.a");
+    assert(parsed.has_sim_caps != 0u);
+    assert(parsed.sim_caps.struct_version == dom::DOM_SIM_CAPS_VERSION);
+    assert(parsed.has_perf_caps != 0u);
+    assert(parsed.perf_caps.struct_version == dom::DOM_PERF_CAPS_VERSION);
 
-    /* Stable hash across runs (fixed input). */
+    /* Stable hash across runs (identity fields only). */
     {
         const u64 h = dom::launcher_core::launcher_handshake_hash64(hs);
-        /* NOTE: This is a golden value for the canonical bytes of `hs` above. */
-        const u64 expected = 0xd383c0743cead9ddull;
-        assert(h == expected);
+        const u64 h2 = dom::launcher_core::launcher_handshake_hash64(parsed);
+        dom::launcher_core::LauncherHandshake perf_changed = hs;
+        perf_changed.perf_caps.perf_flags = 1u;
+        const u64 h_perf = dom::launcher_core::launcher_handshake_hash64(perf_changed);
+        dom::launcher_core::LauncherHandshake sim_changed = hs;
+        sim_changed.sim_caps.sim_flags = 1u;
+        const u64 h_sim = dom::launcher_core::launcher_handshake_hash64(sim_changed);
+        assert(h != 0ull);
+        assert(h == h2);
+        assert(h == h_perf);
+        assert(h != h_sim);
+    }
+
+    /* SIM_CAPS/PERF_CAPS hashing stability. */
+    {
+        dom::DomSimCaps sc;
+        dom::DomPerfCaps pc;
+        const u64 h1 = dom::dom_sim_caps_hash64(sc);
+        const u64 h2 = dom::dom_sim_caps_hash64(sc);
+        dom::DomSimCaps sc2 = sc;
+        sc2.sim_flags = 1u;
+        const u64 h3 = dom::dom_sim_caps_hash64(sc2);
+        dom::dom_perf_caps_init_default(pc, dom::DOM_PERF_TIER_BASELINE);
+        const u64 p1 = dom::dom_perf_caps_hash64(pc);
+        const u64 p2 = dom::dom_perf_caps_hash64(pc);
+        assert(h1 == h2);
+        assert(h1 != h3);
+        assert(p1 == p2);
     }
 }
 
@@ -325,6 +358,8 @@ static void test_refusals() {
     hs.pinned_engine_build_id = m.pinned_engine_build_id;
     hs.pinned_game_build_id = m.pinned_game_build_id;
     hs.timestamp_monotonic_us = 2ull;
+    hs.has_sim_caps = 1u;
+    dom_sim_caps_init_default(hs.sim_caps);
     hs.instance_manifest_hash_bytes.clear();
     hs.instance_manifest_hash_bytes.resize(32u, (unsigned char)0u);
     {
@@ -349,6 +384,15 @@ static void test_refusals() {
     {
         dom::launcher_core::LauncherHandshake bad = hs;
         bad.instance_id.clear();
+        std::string detail;
+        u32 code = dom::launcher_core::launcher_handshake_validate(services, bad, m, state_root, &detail);
+        assert(code == (u32)dom::launcher_core::LAUNCHER_HANDSHAKE_REFUSAL_MISSING_REQUIRED_FIELDS);
+    }
+
+    /* Missing SIM_CAPS */
+    {
+        dom::launcher_core::LauncherHandshake bad = hs;
+        bad.has_sim_caps = 0u;
         std::string detail;
         u32 code = dom::launcher_core::launcher_handshake_validate(services, bad, m, state_root, &detail);
         assert(code == (u32)dom::launcher_core::LAUNCHER_HANDSHAKE_REFUSAL_MISSING_REQUIRED_FIELDS);

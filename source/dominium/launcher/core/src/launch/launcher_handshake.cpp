@@ -57,6 +57,7 @@ static bool has_required_fields(const LauncherHandshake& hs) {
     if (hs.selected_ui_backend_id.empty()) return false;
     if (hs.pinned_engine_build_id.empty()) return false;
     if (hs.pinned_game_build_id.empty()) return false;
+    if (!hs.has_sim_caps) return false;
     if (hs.timestamp_monotonic_us == 0ull) return false;
     return true;
 }
@@ -64,6 +65,72 @@ static bool has_required_fields(const LauncherHandshake& hs) {
 static void stable_sort_pack_flags(LauncherHandshakePackEntry& e) {
     sort_strings(e.sim_affecting_flags);
     sort_strings(e.safe_mode_flags);
+}
+
+enum {
+    HANDSHAKE_IDENTITY_TLV_VERSION = 1u,
+    HANDSHAKE_IDENTITY_TLV_TAG_SIM_CAPS_HASH = 2u,
+    HANDSHAKE_IDENTITY_TLV_TAG_PROVIDER_BINDINGS_HASH = 3u,
+    HANDSHAKE_IDENTITY_TLV_TAG_PACK_ENTRY = 4u
+};
+
+enum {
+    HANDSHAKE_IDENTITY_PACK_TLV_TAG_PACK_ID = 1u,
+    HANDSHAKE_IDENTITY_PACK_TLV_TAG_VERSION = 2u,
+    HANDSHAKE_IDENTITY_PACK_TLV_TAG_HASH_BYTES = 3u,
+    HANDSHAKE_IDENTITY_PACK_TLV_TAG_SIM_FLAG = 4u
+};
+
+static bool build_identity_tlv(const LauncherHandshake& hs, std::vector<unsigned char>& out) {
+    TlvWriter w;
+    DomSimCaps sim_caps = hs.sim_caps;
+    std::vector<unsigned char> sim_caps_bytes;
+    const u64 provider_hash = hs.has_provider_bindings_hash ? hs.provider_bindings_hash64 : 0ull;
+    u64 sim_caps_hash = 0ull;
+    size_t i;
+
+    if (!hs.has_sim_caps) {
+        dom_sim_caps_init_default(sim_caps);
+    }
+    if (!dom_sim_caps_to_tlv(sim_caps, sim_caps_bytes)) {
+        return false;
+    }
+    sim_caps_hash = tlv_fnv1a64(sim_caps_bytes.empty() ? (const unsigned char*)0 : &sim_caps_bytes[0],
+                                sim_caps_bytes.size());
+
+    w.add_u32(LAUNCHER_TLV_TAG_SCHEMA_VERSION, HANDSHAKE_IDENTITY_TLV_VERSION);
+    w.add_u64(HANDSHAKE_IDENTITY_TLV_TAG_SIM_CAPS_HASH, sim_caps_hash);
+    w.add_u64(HANDSHAKE_IDENTITY_TLV_TAG_PROVIDER_BINDINGS_HASH, provider_hash);
+
+    for (i = 0u; i < hs.resolved_packs.size(); ++i) {
+        LauncherHandshakePackEntry e = hs.resolved_packs[i];
+        TlvWriter ew;
+        size_t j;
+
+        if (!e.enabled) {
+            continue;
+        }
+
+        stable_sort_pack_flags(e);
+        ew.add_string(HANDSHAKE_IDENTITY_PACK_TLV_TAG_PACK_ID, e.pack_id);
+        ew.add_string(HANDSHAKE_IDENTITY_PACK_TLV_TAG_VERSION, e.version);
+        if (!e.hash_bytes.empty()) {
+            ew.add_bytes(HANDSHAKE_IDENTITY_PACK_TLV_TAG_HASH_BYTES,
+                         &e.hash_bytes[0],
+                         (u32)e.hash_bytes.size());
+        } else {
+            ew.add_bytes(HANDSHAKE_IDENTITY_PACK_TLV_TAG_HASH_BYTES,
+                         (const unsigned char*)0,
+                         0u);
+        }
+        for (j = 0u; j < e.sim_affecting_flags.size(); ++j) {
+            ew.add_string(HANDSHAKE_IDENTITY_PACK_TLV_TAG_SIM_FLAG, e.sim_affecting_flags[j]);
+        }
+        w.add_container(HANDSHAKE_IDENTITY_TLV_TAG_PACK_ENTRY, ew.bytes());
+    }
+
+    out = w.bytes();
+    return true;
 }
 
 static std::vector<unsigned char> sha256_of_manifest(const LauncherInstanceManifest& m) {
@@ -159,6 +226,12 @@ LauncherHandshake::LauncherHandshake()
       pinned_engine_build_id(),
       pinned_game_build_id(),
       resolved_packs(),
+      sim_caps(),
+      has_sim_caps(0u),
+      perf_caps(),
+      has_perf_caps(0u),
+      has_provider_bindings_hash(0u),
+      provider_bindings_hash64(0ull),
       timestamp_monotonic_us(0ull),
       has_timestamp_wall_us(0u),
       timestamp_wall_us(0ull) {
@@ -227,6 +300,21 @@ bool launcher_handshake_to_tlv_bytes(const LauncherHandshake& hs,
     w.add_u64(LAUNCHER_HANDSHAKE_TLV_TAG_TIMESTAMP_MONOTONIC_US, hs.timestamp_monotonic_us);
     if (hs.has_timestamp_wall_us) {
         w.add_u64(LAUNCHER_HANDSHAKE_TLV_TAG_TIMESTAMP_WALL_US, hs.timestamp_wall_us);
+    }
+    if (hs.has_sim_caps) {
+        std::vector<unsigned char> sim_bytes;
+        if (dom_sim_caps_to_tlv(hs.sim_caps, sim_bytes)) {
+            w.add_container(LAUNCHER_HANDSHAKE_TLV_TAG_SIM_CAPS, sim_bytes);
+        }
+    }
+    if (hs.has_perf_caps) {
+        std::vector<unsigned char> perf_bytes;
+        if (dom_perf_caps_to_tlv(hs.perf_caps, perf_bytes)) {
+            w.add_container(LAUNCHER_HANDSHAKE_TLV_TAG_PERF_CAPS, perf_bytes);
+        }
+    }
+    if (hs.has_provider_bindings_hash) {
+        w.add_u64(LAUNCHER_HANDSHAKE_TLV_TAG_PROVIDER_BINDINGS_HASH, hs.provider_bindings_hash64);
     }
 
     out_bytes = w.bytes();
@@ -302,6 +390,30 @@ bool launcher_handshake_from_tlv_bytes(const unsigned char* data,
             }
             break;
         }
+        case LAUNCHER_HANDSHAKE_TLV_TAG_SIM_CAPS: {
+            DomSimCaps caps;
+            if (dom_sim_caps_from_tlv(rec.payload, (u32)rec.len, caps)) {
+                out_hs.sim_caps = caps;
+                out_hs.has_sim_caps = 1u;
+            }
+            break;
+        }
+        case LAUNCHER_HANDSHAKE_TLV_TAG_PERF_CAPS: {
+            DomPerfCaps caps;
+            if (dom_perf_caps_from_tlv(rec.payload, (u32)rec.len, caps)) {
+                out_hs.perf_caps = caps;
+                out_hs.has_perf_caps = 1u;
+            }
+            break;
+        }
+        case LAUNCHER_HANDSHAKE_TLV_TAG_PROVIDER_BINDINGS_HASH: {
+            u64 v;
+            if (tlv_read_u64_le(rec.payload, rec.len, v)) {
+                out_hs.has_provider_bindings_hash = 1u;
+                out_hs.provider_bindings_hash64 = v;
+            }
+            break;
+        }
         case LAUNCHER_HANDSHAKE_TLV_TAG_RESOLVED_PACK_ENTRY: {
             LauncherHandshakePackEntry e;
             TlvReader er(rec.payload, (size_t)rec.len);
@@ -356,7 +468,7 @@ bool launcher_handshake_from_tlv_bytes(const unsigned char* data,
 
 u64 launcher_handshake_hash64(const LauncherHandshake& hs) {
     std::vector<unsigned char> bytes;
-    if (!launcher_handshake_to_tlv_bytes(hs, bytes)) {
+    if (!build_identity_tlv(hs, bytes)) {
         return 0ull;
     }
     return tlv_fnv1a64(bytes.empty() ? (const unsigned char*)0 : &bytes[0], bytes.size());
