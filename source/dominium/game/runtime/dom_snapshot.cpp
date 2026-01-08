@@ -14,6 +14,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "runtime/dom_snapshot.h"
 
 #include <cstring>
+#include <vector>
 
 #include "runtime/dom_io_guard.h"
 #include "runtime/dom_cosmo_graph.h"
@@ -23,6 +24,11 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "runtime/dom_body_registry.h"
 #include "runtime/dom_frames.h"
 #include "runtime/dom_surface_topology.h"
+#include "runtime/dom_surface_height.h"
+#include "runtime/dom_construction_registry.h"
+#include "runtime/dom_station_registry.h"
+#include "runtime/dom_route_graph.h"
+#include "runtime/dom_transfer_scheduler.h"
 
 extern "C" {
 }
@@ -95,6 +101,28 @@ static void fill_topology_view(const dom_body_info *info, void *user) {
         view->param_a_m = binding.param_a_m;
         view->param_b_m = binding.param_b_m;
         view->param_c_m = binding.param_c_m;
+    }
+}
+
+struct StationCollectContext {
+    std::vector<dom_station_info> *stations;
+};
+
+static void collect_station_info(const dom_station_info *info, void *user) {
+    StationCollectContext *ctx = static_cast<StationCollectContext *>(user);
+    if (ctx && ctx->stations && info) {
+        ctx->stations->push_back(*info);
+    }
+}
+
+struct RouteCollectContext {
+    std::vector<dom_route_info> *routes;
+};
+
+static void collect_route_info(const dom_route_info *info, void *user) {
+    RouteCollectContext *ctx = static_cast<RouteCollectContext *>(user);
+    if (ctx && ctx->routes && info) {
+        ctx->routes->push_back(*info);
     }
 }
 
@@ -385,5 +413,421 @@ void dom_game_runtime_release_body_topology_snapshot(dom_body_topology_snapshot 
         return;
     }
     delete[] snapshot->bodies;
+    delete snapshot;
+}
+
+dom_orbit_summary_snapshot *dom_game_runtime_build_orbit_summary_snapshot(const dom_game_runtime *rt) {
+    dom_orbit_summary_snapshot *snap;
+
+    if (!rt) {
+        return (dom_orbit_summary_snapshot *)0;
+    }
+
+    snap = new dom_orbit_summary_snapshot();
+    std::memset(snap, 0, sizeof(*snap));
+    snap->struct_size = sizeof(*snap);
+    snap->struct_version = DOM_ORBIT_SUMMARY_SNAPSHOT_VERSION;
+    snap->has_orbit = 0u;
+    return snap;
+}
+
+void dom_game_runtime_release_orbit_summary_snapshot(dom_orbit_summary_snapshot *snapshot) {
+    if (!snapshot) {
+        return;
+    }
+    delete snapshot;
+}
+
+dom_surface_view_snapshot *dom_game_runtime_build_surface_view_snapshot(const dom_game_runtime *rt) {
+    dom_surface_view_snapshot *snap;
+    dom_body_id body_id = 0ull;
+    dom_topo_latlong_q16 center;
+    q48_16 height = 0;
+    const dom_surface_chunks *chunks = 0;
+    u32 count = 0u;
+
+    if (!rt) {
+        return (dom_surface_view_snapshot *)0;
+    }
+
+    center.lat_turns = 0;
+    center.lon_turns = 0;
+    if (dom_game_runtime_get_surface_focus(rt, &body_id, &center) != DOM_GAME_RUNTIME_OK) {
+        body_id = 0ull;
+    }
+    if (body_id != 0ull) {
+        (void)dom_surface_height_sample(body_id, &center, &height);
+    }
+
+    snap = new dom_surface_view_snapshot();
+    std::memset(snap, 0, sizeof(*snap));
+    snap->struct_size = sizeof(*snap);
+    snap->struct_version = DOM_SURFACE_VIEW_SNAPSHOT_VERSION;
+    snap->body_id = body_id;
+    snap->center_latlong = center;
+    snap->sampled_height_m = height;
+
+    chunks = static_cast<const dom_surface_chunks *>(dom_game_runtime_surface_chunks(rt));
+    if (chunks) {
+        if (dom_surface_chunks_list_active(const_cast<dom_surface_chunks *>(chunks),
+                                           0,
+                                           0u,
+                                           &count) == DOM_SURFACE_CHUNKS_OK &&
+            count > 0u) {
+            snap->chunks = new dom_surface_chunk_view[count];
+            if (dom_surface_chunks_list_active(const_cast<dom_surface_chunks *>(chunks),
+                                               snap->chunks,
+                                               count,
+                                               &snap->chunk_count) != DOM_SURFACE_CHUNKS_OK) {
+                delete[] snap->chunks;
+                snap->chunks = 0;
+                snap->chunk_count = 0u;
+            }
+        }
+    }
+
+    return snap;
+}
+
+void dom_game_runtime_release_surface_view_snapshot(dom_surface_view_snapshot *snapshot) {
+    if (!snapshot) {
+        return;
+    }
+    delete[] snapshot->chunks;
+    delete snapshot;
+}
+
+dom_local_tangent_frame_snapshot *dom_game_runtime_build_local_tangent_frame_snapshot(const dom_game_runtime *rt) {
+    dom_local_tangent_frame_snapshot *snap;
+    dom_body_id body_id = 0ull;
+    dom_topo_latlong_q16 center;
+    dom_topology_binding binding;
+    dom_posseg_q16 origin;
+    int have_frame = 0;
+    int have_origin = 0;
+
+    if (!rt) {
+        return (dom_local_tangent_frame_snapshot *)0;
+    }
+
+    center.lat_turns = 0;
+    center.lon_turns = 0;
+    if (dom_game_runtime_get_surface_focus(rt, &body_id, &center) != DOM_GAME_RUNTIME_OK) {
+        body_id = 0ull;
+    }
+
+    snap = new dom_local_tangent_frame_snapshot();
+    std::memset(snap, 0, sizeof(*snap));
+    snap->struct_size = sizeof(*snap);
+    snap->struct_version = DOM_LOCAL_TANGENT_FRAME_SNAPSHOT_VERSION;
+    snap->body_id = body_id;
+    snap->center_latlong = center;
+    std::memset(&snap->east, 0, sizeof(snap->east));
+    std::memset(&snap->north, 0, sizeof(snap->north));
+    std::memset(&snap->up, 0, sizeof(snap->up));
+    std::memset(&snap->origin_body_fixed, 0, sizeof(snap->origin_body_fixed));
+
+    if (body_id != 0ull) {
+        const dom_body_registry *bodies = static_cast<const dom_body_registry *>(
+            dom_game_runtime_body_registry(rt));
+        if (bodies &&
+            dom_surface_topology_select(bodies, body_id, 0u, &binding) == DOM_TOPOLOGY_OK) {
+            dom_topo_tangent_frame_q16 frame;
+            if (dom_surface_topology_tangent_frame(&binding, &center, &frame) == DOM_TOPOLOGY_OK) {
+                snap->east = frame.east;
+                snap->north = frame.north;
+                snap->up = frame.up;
+                have_frame = 1;
+            }
+            if (dom_surface_topology_pos_from_latlong(&binding, &center, 0, &origin) == DOM_TOPOLOGY_OK) {
+                snap->origin_body_fixed = origin;
+                have_origin = 1;
+            }
+        }
+    }
+
+    if (!have_frame) {
+        snap->east.v[0] = 0;
+        snap->east.v[1] = d_q16_16_from_int(1);
+        snap->east.v[2] = 0;
+        snap->north.v[0] = d_q16_16_from_int(1);
+        snap->north.v[1] = 0;
+        snap->north.v[2] = 0;
+        snap->up.v[0] = 0;
+        snap->up.v[1] = 0;
+        snap->up.v[2] = d_q16_16_from_int(1);
+    }
+    if (!have_origin) {
+        std::memset(&snap->origin_body_fixed, 0, sizeof(snap->origin_body_fixed));
+    }
+
+    return snap;
+}
+
+void dom_game_runtime_release_local_tangent_frame_snapshot(dom_local_tangent_frame_snapshot *snapshot) {
+    if (!snapshot) {
+        return;
+    }
+    delete snapshot;
+}
+
+dom_construction_list_snapshot *dom_game_runtime_build_construction_list_snapshot(const dom_game_runtime *rt) {
+    dom_construction_list_snapshot *snap;
+    const dom_construction_registry *registry;
+    u32 count = 0u;
+
+    if (!rt) {
+        return (dom_construction_list_snapshot *)0;
+    }
+    registry = static_cast<const dom_construction_registry *>(
+        dom_game_runtime_construction_registry(rt));
+    if (!registry) {
+        return (dom_construction_list_snapshot *)0;
+    }
+
+    snap = new dom_construction_list_snapshot();
+    std::memset(snap, 0, sizeof(*snap));
+    snap->struct_size = sizeof(*snap);
+    snap->struct_version = DOM_CONSTRUCTION_LIST_SNAPSHOT_VERSION;
+
+    if (dom_construction_list(registry, 0, 0u, &count) == DOM_CONSTRUCTION_OK && count > 0u) {
+        dom_construction_instance *tmp = new dom_construction_instance[count];
+        u32 filled = 0u;
+        if (dom_construction_list(registry, tmp, count, &filled) == DOM_CONSTRUCTION_OK) {
+            u32 i;
+            snap->constructions = new dom_construction_view[filled];
+            snap->construction_count = filled;
+            for (i = 0u; i < filled; ++i) {
+                dom_construction_view &view = snap->constructions[i];
+                view.instance_id = tmp[i].instance_id;
+                view.type_id = tmp[i].type_id;
+                view.body_id = tmp[i].body_id;
+                view.chunk_key = tmp[i].chunk_key;
+                view.local_pos_m[0] = tmp[i].local_pos_m[0];
+                view.local_pos_m[1] = tmp[i].local_pos_m[1];
+                view.local_pos_m[2] = tmp[i].local_pos_m[2];
+                view.orientation = tmp[i].orientation;
+            }
+        }
+        delete[] tmp;
+        if (!snap->constructions || snap->construction_count == 0u) {
+            snap->constructions = 0;
+            snap->construction_count = 0u;
+        }
+    }
+    return snap;
+}
+
+void dom_game_runtime_release_construction_list_snapshot(dom_construction_list_snapshot *snapshot) {
+    if (!snapshot) {
+        return;
+    }
+    delete[] snapshot->constructions;
+    delete snapshot;
+}
+
+dom_station_list_snapshot *dom_game_runtime_build_station_list_snapshot(const dom_game_runtime *rt) {
+    dom_station_list_snapshot *snap;
+    const dom_station_registry *registry;
+    u32 count = 0u;
+
+    if (!rt) {
+        return (dom_station_list_snapshot *)0;
+    }
+    registry = static_cast<const dom_station_registry *>(
+        dom_game_runtime_station_registry(rt));
+    if (!registry) {
+        return (dom_station_list_snapshot *)0;
+    }
+
+    snap = new dom_station_list_snapshot();
+    std::memset(snap, 0, sizeof(*snap));
+    snap->struct_size = sizeof(*snap);
+    snap->struct_version = DOM_STATION_LIST_SNAPSHOT_VERSION;
+
+    count = dom_station_count(registry);
+    snap->station_count = count;
+    if (count == 0u) {
+        return snap;
+    }
+
+    {
+        std::vector<dom_station_info> stations;
+        std::vector<u32> inv_counts;
+        StationCollectContext ctx;
+        u32 total_inv = 0u;
+
+        stations.reserve(count);
+        ctx.stations = &stations;
+        (void)dom_station_iterate(registry, collect_station_info, &ctx);
+
+        inv_counts.resize(stations.size());
+        for (size_t i = 0u; i < stations.size(); ++i) {
+            u32 inv_count = 0u;
+            if (dom_station_inventory_list(registry,
+                                           stations[i].station_id,
+                                           0,
+                                           0u,
+                                           &inv_count) != DOM_STATION_REGISTRY_OK) {
+                inv_count = 0u;
+            }
+            inv_counts[i] = inv_count;
+            if (inv_count > 0u && total_inv > (0xffffffffu - inv_count)) {
+                delete snap;
+                return (dom_station_list_snapshot *)0;
+            }
+            total_inv += inv_count;
+        }
+
+        snap->stations = new dom_station_view[stations.size()];
+        if (total_inv > 0u) {
+            snap->inventory = new dom_station_inventory_view[total_inv];
+        }
+        snap->inventory_count = total_inv;
+
+        u32 inv_offset = 0u;
+        for (size_t i = 0u; i < stations.size(); ++i) {
+            dom_station_view &view = snap->stations[i];
+            u32 inv_count = inv_counts[i];
+            u32 filled = 0u;
+
+            view.station_id = stations[i].station_id;
+            view.body_id = stations[i].body_id;
+            view.frame_id = stations[i].frame_id;
+            view.inventory_offset = inv_offset;
+            view.inventory_count = 0u;
+
+            if (inv_count > 0u && snap->inventory) {
+                std::vector<dom_inventory_entry> inv;
+                inv.resize(inv_count);
+                if (dom_station_inventory_list(registry,
+                                               stations[i].station_id,
+                                               &inv[0],
+                                               inv_count,
+                                               &filled) == DOM_STATION_REGISTRY_OK) {
+                    if (filled > inv_count) {
+                        filled = inv_count;
+                    }
+                    for (u32 j = 0u; j < filled; ++j) {
+                        dom_station_inventory_view &iview = snap->inventory[inv_offset + j];
+                        iview.station_id = stations[i].station_id;
+                        iview.resource_id = inv[j].resource_id;
+                        iview.quantity = inv[j].quantity;
+                    }
+                } else {
+                    filled = 0u;
+                }
+            }
+            view.inventory_count = filled;
+            inv_offset += filled;
+        }
+    }
+
+    return snap;
+}
+
+void dom_game_runtime_release_station_list_snapshot(dom_station_list_snapshot *snapshot) {
+    if (!snapshot) {
+        return;
+    }
+    delete[] snapshot->stations;
+    delete[] snapshot->inventory;
+    delete snapshot;
+}
+
+dom_route_list_snapshot *dom_game_runtime_build_route_list_snapshot(const dom_game_runtime *rt) {
+    dom_route_list_snapshot *snap;
+    const dom_route_graph *graph;
+    u32 count = 0u;
+
+    if (!rt) {
+        return (dom_route_list_snapshot *)0;
+    }
+    graph = static_cast<const dom_route_graph *>(dom_game_runtime_route_graph(rt));
+    if (!graph) {
+        return (dom_route_list_snapshot *)0;
+    }
+
+    snap = new dom_route_list_snapshot();
+    std::memset(snap, 0, sizeof(*snap));
+    snap->struct_size = sizeof(*snap);
+    snap->struct_version = DOM_ROUTE_LIST_SNAPSHOT_VERSION;
+
+    count = dom_route_graph_count(graph);
+    snap->route_count = count;
+    if (count > 0u) {
+        std::vector<dom_route_info> routes;
+        RouteCollectContext ctx;
+        routes.reserve(count);
+        ctx.routes = &routes;
+        (void)dom_route_graph_iterate(graph, collect_route_info, &ctx);
+        snap->routes = new dom_route_view[routes.size()];
+        for (size_t i = 0u; i < routes.size(); ++i) {
+            dom_route_view &view = snap->routes[i];
+            view.route_id = routes[i].route_id;
+            view.src_station_id = routes[i].src_station_id;
+            view.dst_station_id = routes[i].dst_station_id;
+            view.duration_ticks = routes[i].duration_ticks;
+            view.capacity_units = routes[i].capacity_units;
+        }
+    }
+    return snap;
+}
+
+void dom_game_runtime_release_route_list_snapshot(dom_route_list_snapshot *snapshot) {
+    if (!snapshot) {
+        return;
+    }
+    delete[] snapshot->routes;
+    delete snapshot;
+}
+
+dom_transfer_list_snapshot *dom_game_runtime_build_transfer_list_snapshot(const dom_game_runtime *rt) {
+    dom_transfer_list_snapshot *snap;
+    const dom_transfer_scheduler *sched;
+    u32 count = 0u;
+
+    if (!rt) {
+        return (dom_transfer_list_snapshot *)0;
+    }
+    sched = static_cast<const dom_transfer_scheduler *>(
+        dom_game_runtime_transfer_scheduler(rt));
+    if (!sched) {
+        return (dom_transfer_list_snapshot *)0;
+    }
+
+    snap = new dom_transfer_list_snapshot();
+    std::memset(snap, 0, sizeof(*snap));
+    snap->struct_size = sizeof(*snap);
+    snap->struct_version = DOM_TRANSFER_LIST_SNAPSHOT_VERSION;
+
+    if (dom_transfer_list(sched, 0, 0u, &count) != DOM_TRANSFER_OK) {
+        return snap;
+    }
+    snap->transfer_count = count;
+    if (count > 0u) {
+        std::vector<dom_transfer_info> transfers;
+        transfers.resize(count);
+        if (dom_transfer_list(sched, &transfers[0], count, &count) == DOM_TRANSFER_OK) {
+            snap->transfers = new dom_transfer_view[count];
+            for (u32 i = 0u; i < count; ++i) {
+                dom_transfer_view &view = snap->transfers[i];
+                view.transfer_id = transfers[i].transfer_id;
+                view.route_id = transfers[i].route_id;
+                view.start_tick = transfers[i].start_tick;
+                view.arrival_tick = transfers[i].arrival_tick;
+                view.entry_count = transfers[i].entry_count;
+                view.total_units = transfers[i].total_units;
+            }
+        }
+    }
+    return snap;
+}
+
+void dom_game_runtime_release_transfer_list_snapshot(dom_transfer_list_snapshot *snapshot) {
+    if (!snapshot) {
+        return;
+    }
+    delete[] snapshot->transfers;
     delete snapshot;
 }
