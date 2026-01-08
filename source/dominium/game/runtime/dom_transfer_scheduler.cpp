@@ -197,6 +197,71 @@ int dom_transfer_schedule(dom_transfer_scheduler *sched,
     return DOM_TRANSFER_OK;
 }
 
+int dom_transfer_add_loaded(dom_transfer_scheduler *sched,
+                            const dom_route_graph *routes,
+                            dom_route_id route_id,
+                            dom_transfer_id transfer_id,
+                            u64 start_tick,
+                            u64 arrival_tick,
+                            const dom_transfer_entry *entries,
+                            u32 entry_count,
+                            u64 total_units) {
+    dom_route_info route;
+    TransferRecord record;
+    std::vector<dom_transfer_entry> normalized;
+    u64 computed_units = 0ull;
+    int rc;
+
+    if (!sched || !routes || route_id == 0ull || transfer_id == 0ull) {
+        return DOM_TRANSFER_INVALID_ARGUMENT;
+    }
+    if (arrival_tick < start_tick) {
+        return DOM_TRANSFER_INVALID_DATA;
+    }
+    for (size_t i = 0u; i < sched->transfers.size(); ++i) {
+        if (sched->transfers[i].transfer_id == transfer_id) {
+            return DOM_TRANSFER_INVALID_DATA;
+        }
+    }
+
+    rc = dom_route_graph_get(routes, route_id, &route);
+    if (rc != DOM_ROUTE_GRAPH_OK) {
+        return DOM_TRANSFER_NOT_FOUND;
+    }
+    rc = normalize_entries(entries, entry_count, normalized, &computed_units);
+    if (rc != DOM_TRANSFER_OK) {
+        return rc;
+    }
+    if (total_units != 0ull && total_units != computed_units) {
+        return DOM_TRANSFER_INVALID_DATA;
+    }
+    if (computed_units > route.capacity_units) {
+        return DOM_TRANSFER_CAPACITY_EXCEEDED;
+    }
+
+    record.transfer_id = transfer_id;
+    record.route_id = route_id;
+    record.start_tick = start_tick;
+    record.arrival_tick = arrival_tick;
+    record.entries = normalized;
+    record.entry_count = (u32)normalized.size();
+    record.total_units = computed_units;
+
+    {
+        size_t i = 0u;
+        while (i < sched->transfers.size() && transfer_less(sched->transfers[i], record)) {
+            ++i;
+        }
+        sched->transfers.insert(sched->transfers.begin() +
+                                (std::vector<TransferRecord>::difference_type)i,
+                                record);
+    }
+    if (transfer_id >= sched->next_id) {
+        sched->next_id = transfer_id + 1ull;
+    }
+    return DOM_TRANSFER_OK;
+}
+
 int dom_transfer_update(dom_transfer_scheduler *sched,
                         const dom_route_graph *routes,
                         dom_station_registry *stations,
@@ -253,6 +318,31 @@ int dom_transfer_list(const dom_transfer_scheduler *sched,
     }
     *out_count = count;
     return DOM_TRANSFER_OK;
+}
+
+int dom_transfer_get_entries(const dom_transfer_scheduler *sched,
+                             dom_transfer_id transfer_id,
+                             dom_transfer_entry *out_entries,
+                             u32 max_entries,
+                             u32 *out_count) {
+    if (!sched || !out_count || transfer_id == 0ull) {
+        return DOM_TRANSFER_INVALID_ARGUMENT;
+    }
+    for (size_t i = 0u; i < sched->transfers.size(); ++i) {
+        if (sched->transfers[i].transfer_id == transfer_id) {
+            const TransferRecord &rec = sched->transfers[i];
+            const u32 count = (u32)rec.entries.size();
+            if (out_entries && max_entries > 0u) {
+                const u32 limit = (count < max_entries) ? count : max_entries;
+                for (u32 j = 0u; j < limit; ++j) {
+                    out_entries[j] = rec.entries[j];
+                }
+            }
+            *out_count = count;
+            return DOM_TRANSFER_OK;
+        }
+    }
+    return DOM_TRANSFER_NOT_FOUND;
 }
 
 u32 dom_transfer_count(const dom_transfer_scheduler *sched) {

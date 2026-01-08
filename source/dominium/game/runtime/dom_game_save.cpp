@@ -17,9 +17,15 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include <cstdio>
 #include <cstring>
 #include <cstdlib>
+#include <climits>
 
 #include "runtime/dom_game_runtime.h"
 #include "runtime/dom_game_content_id.h"
+#include "runtime/dom_construction_registry.h"
+#include "runtime/dom_station_registry.h"
+#include "runtime/dom_route_graph.h"
+#include "runtime/dom_transfer_scheduler.h"
+#include "runtime/dom_production.h"
 #include "../dom_game_save.h"
 #include "dom_instance.h"
 #include "dom_session.h"
@@ -38,6 +44,13 @@ enum {
     DMSG_VERSION = 3u,
     DMSG_ENDIAN = 0x0000FFFEu,
     DMSG_CORE_VERSION = 1u,
+    DMSG_ORBIT_VERSION = 1u,
+    DMSG_SURFACE_VERSION = 1u,
+    DMSG_CONSTRUCTION_VERSION = 1u,
+    DMSG_STATIONS_VERSION = 1u,
+    DMSG_ROUTES_VERSION = 1u,
+    DMSG_TRANSFERS_VERSION = 1u,
+    DMSG_PRODUCTION_VERSION = 1u,
     DMSG_RNG_VERSION = 1u,
     DMSG_IDENTITY_VERSION = 1u
 };
@@ -58,6 +71,14 @@ static u32 read_u32_le(const unsigned char *p) {
 
 static u64 read_u64_le(const unsigned char *p) {
     return (u64)read_u32_le(p) | ((u64)read_u32_le(p + 4u) << 32u);
+}
+
+static i32 read_i32_le(const unsigned char *p) {
+    return (i32)read_u32_le(p);
+}
+
+static i64 read_i64_le(const unsigned char *p) {
+    return (i64)read_u64_le(p);
 }
 
 static void write_u32_le(unsigned char out[4], u32 v) {
@@ -90,6 +111,14 @@ static void append_u64_le(std::vector<unsigned char> &out, u64 v) {
     unsigned char buf[8];
     write_u64_le(buf, v);
     append_bytes(out, buf, 8u);
+}
+
+static void append_i32_le(std::vector<unsigned char> &out, i32 v) {
+    append_u32_le(out, (u32)v);
+}
+
+static void append_i64_le(std::vector<unsigned char> &out, i64 v) {
+    append_u64_le(out, (u64)v);
 }
 
 static bool write_file(const char *path, const unsigned char *data, size_t len) {
@@ -188,6 +217,648 @@ static bool build_identity_tlv(const dom_game_runtime *rt,
     return true;
 }
 
+static bool construction_type_valid(u32 type_id) {
+    return type_id == DOM_CONSTRUCTION_TYPE_HABITAT ||
+           type_id == DOM_CONSTRUCTION_TYPE_STORAGE ||
+           type_id == DOM_CONSTRUCTION_TYPE_GENERIC_PLATFORM;
+}
+
+struct StationCollectCtx {
+    std::vector<dom_station_info> *stations;
+};
+
+static void collect_station_info(const dom_station_info *info, void *user) {
+    StationCollectCtx *ctx = static_cast<StationCollectCtx *>(user);
+    if (ctx && ctx->stations && info) {
+        ctx->stations->push_back(*info);
+    }
+}
+
+struct RouteCollectCtx {
+    std::vector<dom_route_info> *routes;
+};
+
+static void collect_route_info(const dom_route_info *info, void *user) {
+    RouteCollectCtx *ctx = static_cast<RouteCollectCtx *>(user);
+    if (ctx && ctx->routes && info) {
+        ctx->routes->push_back(*info);
+    }
+}
+
+struct ProductionCollectCtx {
+    std::vector<dom_production_rule_info> *rules;
+};
+
+static void collect_production_rule_info(const dom_production_rule_info *info, void *user) {
+    ProductionCollectCtx *ctx = static_cast<ProductionCollectCtx *>(user);
+    if (ctx && ctx->rules && info) {
+        ctx->rules->push_back(*info);
+    }
+}
+
+enum {
+    DMSG_CONSTRUCTION_RECORD_SIZE = 68u
+};
+
+enum {
+    DMSG_ROUTE_RECORD_SIZE = 40u,
+    DMSG_PRODUCTION_RECORD_SIZE = 40u
+};
+
+static bool build_construction_blob(const dom_game_runtime *rt,
+                                    std::vector<unsigned char> &out) {
+    const dom_construction_registry *registry;
+    u32 count = 0u;
+    int rc;
+
+    out.clear();
+    registry = rt ? (const dom_construction_registry *)dom_game_runtime_construction_registry(rt) : 0;
+    if (!registry) {
+        append_u32_le(out, 0u);
+        return true;
+    }
+    rc = dom_construction_list(registry, 0, 0u, &count);
+    if (rc != DOM_CONSTRUCTION_OK) {
+        return false;
+    }
+    append_u32_le(out, count);
+    if (count == 0u) {
+        return true;
+    }
+    {
+        std::vector<dom_construction_instance> list;
+        list.resize(count);
+        rc = dom_construction_list(registry, &list[0], count, &count);
+        if (rc != DOM_CONSTRUCTION_OK) {
+            return false;
+        }
+        if (list.size() != count) {
+            list.resize(count);
+        }
+        for (u32 i = 0u; i < count; ++i) {
+            const dom_construction_instance &inst = list[i];
+            append_u64_le(out, inst.instance_id);
+            append_u32_le(out, inst.type_id);
+            append_u32_le(out, inst.orientation);
+            append_u64_le(out, inst.body_id);
+            append_i32_le(out, inst.chunk_key.step_turns_q16);
+            append_i32_le(out, inst.chunk_key.lat_index);
+            append_i32_le(out, inst.chunk_key.lon_index);
+            append_i64_le(out, (i64)inst.local_pos_m[0]);
+            append_i64_le(out, (i64)inst.local_pos_m[1]);
+            append_i64_le(out, (i64)inst.local_pos_m[2]);
+            append_i32_le(out, inst.cell_x);
+            append_i32_le(out, inst.cell_y);
+        }
+    }
+    return true;
+}
+
+static bool build_station_blob(const dom_game_runtime *rt,
+                               std::vector<unsigned char> &out) {
+    const dom_station_registry *registry;
+    std::vector<dom_station_info> stations;
+    StationCollectCtx ctx;
+    u32 count = 0u;
+
+    out.clear();
+    registry = rt ? (const dom_station_registry *)dom_game_runtime_station_registry(rt) : 0;
+    if (!registry) {
+        append_u32_le(out, 0u);
+        return true;
+    }
+
+    count = dom_station_count(registry);
+    append_u32_le(out, count);
+    if (count == 0u) {
+        return true;
+    }
+
+    stations.reserve(count);
+    ctx.stations = &stations;
+    if (dom_station_iterate(registry, collect_station_info, &ctx) != DOM_STATION_REGISTRY_OK) {
+        return false;
+    }
+    if (stations.size() != count) {
+        count = (u32)stations.size();
+    }
+
+    for (u32 i = 0u; i < count; ++i) {
+        const dom_station_info &info = stations[i];
+        u32 inv_count = 0u;
+        append_u64_le(out, info.station_id);
+        append_u64_le(out, info.body_id);
+        append_u64_le(out, info.frame_id);
+
+        if (dom_station_inventory_list(registry, info.station_id, 0, 0u, &inv_count) != DOM_STATION_REGISTRY_OK) {
+            return false;
+        }
+        append_u32_le(out, inv_count);
+        if (inv_count > 0u) {
+            std::vector<dom_inventory_entry> inv;
+            inv.resize(inv_count);
+            if (dom_station_inventory_list(registry, info.station_id, &inv[0], inv_count, &inv_count)
+                != DOM_STATION_REGISTRY_OK) {
+                return false;
+            }
+            for (u32 j = 0u; j < inv_count; ++j) {
+                append_u64_le(out, inv[j].resource_id);
+                append_i64_le(out, inv[j].quantity);
+            }
+        }
+    }
+    return true;
+}
+
+static bool build_route_blob(const dom_game_runtime *rt,
+                             std::vector<unsigned char> &out) {
+    const dom_route_graph *graph;
+    std::vector<dom_route_info> routes;
+    RouteCollectCtx ctx;
+    u32 count = 0u;
+
+    out.clear();
+    graph = rt ? (const dom_route_graph *)dom_game_runtime_route_graph(rt) : 0;
+    if (!graph) {
+        append_u32_le(out, 0u);
+        return true;
+    }
+
+    count = dom_route_graph_count(graph);
+    append_u32_le(out, count);
+    if (count == 0u) {
+        return true;
+    }
+    routes.reserve(count);
+    ctx.routes = &routes;
+    if (dom_route_graph_iterate(graph, collect_route_info, &ctx) != DOM_ROUTE_GRAPH_OK) {
+        return false;
+    }
+    if (routes.size() != count) {
+        count = (u32)routes.size();
+    }
+
+    for (u32 i = 0u; i < count; ++i) {
+        const dom_route_info &info = routes[i];
+        append_u64_le(out, info.route_id);
+        append_u64_le(out, info.src_station_id);
+        append_u64_le(out, info.dst_station_id);
+        append_u64_le(out, info.duration_ticks);
+        append_u64_le(out, info.capacity_units);
+    }
+    return true;
+}
+
+static bool build_transfer_blob(const dom_game_runtime *rt,
+                                std::vector<unsigned char> &out) {
+    const dom_transfer_scheduler *sched;
+    u32 count = 0u;
+    std::vector<dom_transfer_info> transfers;
+
+    out.clear();
+    sched = rt ? (const dom_transfer_scheduler *)dom_game_runtime_transfer_scheduler(rt) : 0;
+    if (!sched) {
+        append_u32_le(out, 0u);
+        return true;
+    }
+
+    if (dom_transfer_list(sched, 0, 0u, &count) != DOM_TRANSFER_OK) {
+        return false;
+    }
+    append_u32_le(out, count);
+    if (count == 0u) {
+        return true;
+    }
+    transfers.resize(count);
+    if (dom_transfer_list(sched, &transfers[0], count, &count) != DOM_TRANSFER_OK) {
+        return false;
+    }
+    if (transfers.size() != count) {
+        transfers.resize(count);
+    }
+
+    for (u32 i = 0u; i < count; ++i) {
+        const dom_transfer_info &info = transfers[i];
+        std::vector<dom_transfer_entry> entries;
+        u32 entry_count = info.entry_count;
+
+        append_u64_le(out, info.transfer_id);
+        append_u64_le(out, info.route_id);
+        append_u64_le(out, info.start_tick);
+        append_u64_le(out, info.arrival_tick);
+        append_u32_le(out, entry_count);
+
+        if (entry_count > 0u) {
+            entries.resize(entry_count);
+            if (dom_transfer_get_entries(sched,
+                                         info.transfer_id,
+                                         &entries[0],
+                                         entry_count,
+                                         &entry_count) != DOM_TRANSFER_OK) {
+                return false;
+            }
+            for (u32 j = 0u; j < entry_count; ++j) {
+                append_u64_le(out, entries[j].resource_id);
+                append_i64_le(out, entries[j].quantity);
+            }
+        }
+    }
+    return true;
+}
+
+static bool build_production_blob(const dom_game_runtime *rt,
+                                  std::vector<unsigned char> &out) {
+    const dom_production *prod;
+    std::vector<dom_production_rule_info> rules;
+    ProductionCollectCtx ctx;
+    u32 count = 0u;
+
+    out.clear();
+    prod = rt ? (const dom_production *)dom_game_runtime_production(rt) : 0;
+    if (!prod) {
+        append_u32_le(out, 0u);
+        return true;
+    }
+    count = dom_production_count(prod);
+    append_u32_le(out, count);
+    if (count == 0u) {
+        return true;
+    }
+    rules.reserve(count);
+    ctx.rules = &rules;
+    if (dom_production_iterate(prod, collect_production_rule_info, &ctx) != DOM_PRODUCTION_OK) {
+        return false;
+    }
+    if (rules.size() != count) {
+        count = (u32)rules.size();
+    }
+    for (u32 i = 0u; i < count; ++i) {
+        const dom_production_rule_info &info = rules[i];
+        append_u64_le(out, info.rule_id);
+        append_u64_le(out, info.station_id);
+        append_u64_le(out, info.resource_id);
+        append_i64_le(out, info.delta_per_period);
+        append_u64_le(out, info.period_ticks);
+    }
+    return true;
+}
+
+static int apply_construction_blob(dom_game_runtime *rt,
+                                   const unsigned char *blob,
+                                   u32 len) {
+    dom_construction_registry *registry;
+    u32 count = 0u;
+    size_t offset = 0u;
+    u64 last_id = 0ull;
+
+    if (!rt) {
+        return DOM_GAME_SAVE_ERR;
+    }
+    registry = (dom_construction_registry *)dom_game_runtime_construction_registry(rt);
+    if (!registry) {
+        return DOM_GAME_SAVE_ERR;
+    }
+    if (!blob || len < 4u) {
+        return DOM_GAME_SAVE_ERR_FORMAT;
+    }
+    count = read_u32_le(blob);
+    if (count > 0u) {
+        const size_t remaining = len - 4u;
+        if ((remaining / DMSG_CONSTRUCTION_RECORD_SIZE) < count) {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+    }
+    if (len != 4u + ((size_t)count * (size_t)DMSG_CONSTRUCTION_RECORD_SIZE)) {
+        return DOM_GAME_SAVE_ERR_FORMAT;
+    }
+    if (dom_construction_registry_init(registry) != DOM_CONSTRUCTION_OK) {
+        return DOM_GAME_SAVE_ERR;
+    }
+
+    offset = 4u;
+    for (u32 i = 0u; i < count; ++i) {
+        dom_construction_instance inst;
+        u64 instance_id = read_u64_le(blob + offset);
+        u32 type_id = read_u32_le(blob + offset + 8u);
+        u32 orientation = read_u32_le(blob + offset + 12u);
+        u64 body_id = read_u64_le(blob + offset + 16u);
+        i32 step_turns = read_i32_le(blob + offset + 24u);
+        i32 lat_index = read_i32_le(blob + offset + 28u);
+        i32 lon_index = read_i32_le(blob + offset + 32u);
+        i64 local_e = read_i64_le(blob + offset + 36u);
+        i64 local_n = read_i64_le(blob + offset + 44u);
+        i64 local_u = read_i64_le(blob + offset + 52u);
+        i32 cell_x = read_i32_le(blob + offset + 60u);
+        i32 cell_y = read_i32_le(blob + offset + 64u);
+
+        if (instance_id == 0ull || body_id == 0ull || !construction_type_valid(type_id)) {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+        if (orientation > 3u) {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+        if (instance_id <= last_id) {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+
+        std::memset(&inst, 0, sizeof(inst));
+        inst.instance_id = instance_id;
+        inst.type_id = type_id;
+        inst.body_id = body_id;
+        inst.chunk_key.body_id = body_id;
+        inst.chunk_key.step_turns_q16 = step_turns;
+        inst.chunk_key.lat_index = lat_index;
+        inst.chunk_key.lon_index = lon_index;
+        inst.local_pos_m[0] = (q48_16)local_e;
+        inst.local_pos_m[1] = (q48_16)local_n;
+        inst.local_pos_m[2] = (q48_16)local_u;
+        inst.orientation = orientation;
+        inst.cell_x = cell_x;
+        inst.cell_y = cell_y;
+
+        if (dom_construction_register_instance(registry, &inst, 0) != DOM_CONSTRUCTION_OK) {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+        last_id = instance_id;
+        offset += DMSG_CONSTRUCTION_RECORD_SIZE;
+    }
+
+    return DOM_GAME_SAVE_OK;
+}
+
+static int apply_station_blob(dom_game_runtime *rt,
+                              const unsigned char *blob,
+                              u32 len) {
+    dom_station_registry *registry;
+    u32 count = 0u;
+    size_t offset = 0u;
+    u64 last_id = 0ull;
+
+    if (!rt) {
+        return DOM_GAME_SAVE_ERR;
+    }
+    registry = (dom_station_registry *)dom_game_runtime_station_registry(rt);
+    if (!registry) {
+        return DOM_GAME_SAVE_ERR;
+    }
+    if (!blob || len < 4u) {
+        return DOM_GAME_SAVE_ERR_FORMAT;
+    }
+
+    count = read_u32_le(blob);
+    offset = 4u;
+    if (dom_station_registry_init(registry) != DOM_STATION_REGISTRY_OK) {
+        return DOM_GAME_SAVE_ERR;
+    }
+
+    for (u32 i = 0u; i < count; ++i) {
+        dom_station_desc desc;
+        u32 inv_count = 0u;
+        if (offset + 28u > len) {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+        desc.station_id = read_u64_le(blob + offset + 0u);
+        desc.body_id = read_u64_le(blob + offset + 8u);
+        desc.frame_id = read_u64_le(blob + offset + 16u);
+        inv_count = read_u32_le(blob + offset + 24u);
+        offset += 28u;
+
+        if (desc.station_id == 0ull || desc.body_id == 0ull) {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+        if (desc.station_id <= last_id) {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+        if (dom_station_register(registry, &desc) != DOM_STATION_REGISTRY_OK) {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+
+        if (inv_count > 0u) {
+            const size_t entries_bytes = (size_t)inv_count * 16u;
+            if (entries_bytes > (len - offset)) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+            for (u32 j = 0u; j < inv_count; ++j) {
+                const size_t base = offset + (size_t)j * 16u;
+                dom_resource_id res_id = read_u64_le(blob + base);
+                i64 qty = read_i64_le(blob + base + 8u);
+                if (res_id == 0ull || qty <= 0) {
+                    return DOM_GAME_SAVE_ERR_FORMAT;
+                }
+                if (dom_station_inventory_add(registry,
+                                              desc.station_id,
+                                              res_id,
+                                              qty) != DOM_STATION_REGISTRY_OK) {
+                    return DOM_GAME_SAVE_ERR_FORMAT;
+                }
+            }
+            offset += entries_bytes;
+        }
+
+        last_id = desc.station_id;
+    }
+    if (offset != len) {
+        return DOM_GAME_SAVE_ERR_FORMAT;
+    }
+    return DOM_GAME_SAVE_OK;
+}
+
+static int apply_route_blob(dom_game_runtime *rt,
+                            const unsigned char *blob,
+                            u32 len) {
+    dom_route_graph *graph;
+    u32 count = 0u;
+    size_t offset = 0u;
+    u64 last_id = 0ull;
+
+    if (!rt) {
+        return DOM_GAME_SAVE_ERR;
+    }
+    graph = (dom_route_graph *)dom_game_runtime_route_graph(rt);
+    if (!graph) {
+        return DOM_GAME_SAVE_ERR;
+    }
+    if (!blob || len < 4u) {
+        return DOM_GAME_SAVE_ERR_FORMAT;
+    }
+    count = read_u32_le(blob);
+    if (len != 4u + ((size_t)count * (size_t)DMSG_ROUTE_RECORD_SIZE)) {
+        return DOM_GAME_SAVE_ERR_FORMAT;
+    }
+    if (dom_route_graph_init(graph) != DOM_ROUTE_GRAPH_OK) {
+        return DOM_GAME_SAVE_ERR;
+    }
+    offset = 4u;
+    for (u32 i = 0u; i < count; ++i) {
+        dom_route_desc desc;
+        desc.route_id = read_u64_le(blob + offset + 0u);
+        desc.src_station_id = read_u64_le(blob + offset + 8u);
+        desc.dst_station_id = read_u64_le(blob + offset + 16u);
+        desc.duration_ticks = read_u64_le(blob + offset + 24u);
+        desc.capacity_units = read_u64_le(blob + offset + 32u);
+
+        if (desc.route_id == 0ull || desc.src_station_id == 0ull || desc.dst_station_id == 0ull) {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+        if (desc.route_id <= last_id) {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+        if (dom_route_graph_register(graph, &desc) != DOM_ROUTE_GRAPH_OK) {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+        last_id = desc.route_id;
+        offset += DMSG_ROUTE_RECORD_SIZE;
+    }
+    return DOM_GAME_SAVE_OK;
+}
+
+static int apply_transfer_blob(dom_game_runtime *rt,
+                               const unsigned char *blob,
+                               u32 len,
+                               u64 current_tick) {
+    dom_transfer_scheduler *sched;
+    dom_route_graph *graph;
+    u32 count = 0u;
+    size_t offset = 0u;
+    u64 last_id = 0ull;
+
+    if (!rt) {
+        return DOM_GAME_SAVE_ERR;
+    }
+    sched = (dom_transfer_scheduler *)dom_game_runtime_transfer_scheduler(rt);
+    graph = (dom_route_graph *)dom_game_runtime_route_graph(rt);
+    if (!sched || !graph) {
+        return DOM_GAME_SAVE_ERR;
+    }
+    if (!blob || len < 4u) {
+        return DOM_GAME_SAVE_ERR_FORMAT;
+    }
+    count = read_u32_le(blob);
+    offset = 4u;
+    if (dom_transfer_scheduler_init(sched) != DOM_TRANSFER_OK) {
+        return DOM_GAME_SAVE_ERR;
+    }
+
+    for (u32 i = 0u; i < count; ++i) {
+        dom_transfer_id transfer_id;
+        dom_route_id route_id;
+        u64 start_tick;
+        u64 arrival_tick;
+        u32 entry_count;
+        u64 total_units = 0ull;
+        std::vector<dom_transfer_entry> entries;
+
+        if (offset + 36u > len) {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+        transfer_id = read_u64_le(blob + offset + 0u);
+        route_id = read_u64_le(blob + offset + 8u);
+        start_tick = read_u64_le(blob + offset + 16u);
+        arrival_tick = read_u64_le(blob + offset + 24u);
+        entry_count = read_u32_le(blob + offset + 32u);
+        offset += 36u;
+
+        if (transfer_id == 0ull || route_id == 0ull || entry_count == 0u) {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+        if (transfer_id <= last_id) {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+        if (arrival_tick <= current_tick) {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+
+        {
+            const size_t entry_bytes = (size_t)entry_count * 16u;
+            if (entry_bytes > (len - offset)) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+            entries.resize(entry_count);
+            for (u32 j = 0u; j < entry_count; ++j) {
+                const size_t base = offset + (size_t)j * 16u;
+                dom_resource_id res_id = read_u64_le(blob + base);
+                i64 qty = read_i64_le(blob + base + 8u);
+                if (res_id == 0ull || qty <= 0) {
+                    return DOM_GAME_SAVE_ERR_FORMAT;
+                }
+                entries[j].resource_id = res_id;
+                entries[j].quantity = qty;
+                if (total_units > (ULLONG_MAX - (u64)qty)) {
+                    return DOM_GAME_SAVE_ERR_FORMAT;
+                }
+                total_units += (u64)qty;
+            }
+            offset += entry_bytes;
+        }
+
+        if (dom_transfer_add_loaded(sched,
+                                    graph,
+                                    route_id,
+                                    transfer_id,
+                                    start_tick,
+                                    arrival_tick,
+                                    entries.empty() ? (const dom_transfer_entry *)0 : &entries[0],
+                                    entry_count,
+                                    total_units) != DOM_TRANSFER_OK) {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+        last_id = transfer_id;
+    }
+    if (offset != len) {
+        return DOM_GAME_SAVE_ERR_FORMAT;
+    }
+    return DOM_GAME_SAVE_OK;
+}
+
+static int apply_production_blob(dom_game_runtime *rt,
+                                 const unsigned char *blob,
+                                 u32 len) {
+    dom_production *prod;
+    u32 count = 0u;
+    size_t offset = 0u;
+    u64 last_id = 0ull;
+
+    if (!rt) {
+        return DOM_GAME_SAVE_ERR;
+    }
+    prod = (dom_production *)dom_game_runtime_production(rt);
+    if (!prod) {
+        return DOM_GAME_SAVE_ERR;
+    }
+    if (!blob || len < 4u) {
+        return DOM_GAME_SAVE_ERR_FORMAT;
+    }
+    count = read_u32_le(blob);
+    if (len != 4u + ((size_t)count * (size_t)DMSG_PRODUCTION_RECORD_SIZE)) {
+        return DOM_GAME_SAVE_ERR_FORMAT;
+    }
+    if (dom_production_init(prod) != DOM_PRODUCTION_OK) {
+        return DOM_GAME_SAVE_ERR;
+    }
+    offset = 4u;
+    for (u32 i = 0u; i < count; ++i) {
+        dom_production_rule_desc desc;
+        desc.rule_id = read_u64_le(blob + offset + 0u);
+        desc.station_id = read_u64_le(blob + offset + 8u);
+        desc.resource_id = read_u64_le(blob + offset + 16u);
+        desc.delta_per_period = read_i64_le(blob + offset + 24u);
+        desc.period_ticks = read_u64_le(blob + offset + 32u);
+
+        if (desc.rule_id == 0ull || desc.station_id == 0ull || desc.resource_id == 0ull) {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+        if (desc.rule_id <= last_id) {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+        if (dom_production_register(prod, &desc) != DOM_PRODUCTION_OK) {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+        last_id = desc.rule_id;
+        offset += DMSG_PRODUCTION_RECORD_SIZE;
+    }
+    return DOM_GAME_SAVE_OK;
+}
+
 static int parse_dmsg(const unsigned char *data, size_t len, dom_game_save_desc *out_desc) {
     u32 version;
     u32 endian;
@@ -202,6 +873,40 @@ static int parse_dmsg(const unsigned char *data, size_t len, dom_game_save_desc 
     const unsigned char *core_ptr = (const unsigned char *)0;
     u32 core_len = 0u;
     u32 core_version = 0u;
+    const unsigned char *orbit_ptr = (const unsigned char *)0;
+    u32 orbit_len = 0u;
+    u32 orbit_version = 0u;
+    int has_orbit = 0;
+
+    const unsigned char *surface_ptr = (const unsigned char *)0;
+    u32 surface_len = 0u;
+    u32 surface_version = 0u;
+    int has_surface = 0;
+
+    const unsigned char *construction_ptr = (const unsigned char *)0;
+    u32 construction_len = 0u;
+    u32 construction_version = 0u;
+    int has_construction = 0;
+
+    const unsigned char *stations_ptr = (const unsigned char *)0;
+    u32 stations_len = 0u;
+    u32 stations_version = 0u;
+    int has_stations = 0;
+
+    const unsigned char *routes_ptr = (const unsigned char *)0;
+    u32 routes_len = 0u;
+    u32 routes_version = 0u;
+    int has_routes = 0;
+
+    const unsigned char *transfers_ptr = (const unsigned char *)0;
+    u32 transfers_len = 0u;
+    u32 transfers_version = 0u;
+    int has_transfers = 0;
+
+    const unsigned char *production_ptr = (const unsigned char *)0;
+    u32 production_len = 0u;
+    u32 production_version = 0u;
+    int has_production = 0;
 
     const char *instance_id = (const char *)0;
     u32 instance_id_len = 0u;
@@ -289,6 +994,83 @@ static int parse_dmsg(const unsigned char *data, size_t len, dom_game_save_desc 
             core_ptr = data + offset;
             core_len = chunk_size;
             core_version = chunk_version;
+        } else if (std::memcmp(tag, "ORBT", 4u) == 0) {
+            if (chunk_version > DMSG_ORBIT_VERSION) {
+                return DOM_GAME_SAVE_ERR_MIGRATION;
+            }
+            if (chunk_version != DMSG_ORBIT_VERSION || has_orbit) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+            orbit_ptr = data + offset;
+            orbit_len = chunk_size;
+            orbit_version = chunk_version;
+            has_orbit = 1;
+        } else if (std::memcmp(tag, "SOVR", 4u) == 0) {
+            if (chunk_version > DMSG_SURFACE_VERSION) {
+                return DOM_GAME_SAVE_ERR_MIGRATION;
+            }
+            if (chunk_version != DMSG_SURFACE_VERSION || has_surface) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+            surface_ptr = data + offset;
+            surface_len = chunk_size;
+            surface_version = chunk_version;
+            has_surface = 1;
+        } else if (std::memcmp(tag, "CNST", 4u) == 0) {
+            if (chunk_version > DMSG_CONSTRUCTION_VERSION) {
+                return DOM_GAME_SAVE_ERR_MIGRATION;
+            }
+            if (chunk_version != DMSG_CONSTRUCTION_VERSION || has_construction) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+            construction_ptr = data + offset;
+            construction_len = chunk_size;
+            construction_version = chunk_version;
+            has_construction = 1;
+        } else if (std::memcmp(tag, "STAT", 4u) == 0) {
+            if (chunk_version > DMSG_STATIONS_VERSION) {
+                return DOM_GAME_SAVE_ERR_MIGRATION;
+            }
+            if (chunk_version != DMSG_STATIONS_VERSION || has_stations) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+            stations_ptr = data + offset;
+            stations_len = chunk_size;
+            stations_version = chunk_version;
+            has_stations = 1;
+        } else if (std::memcmp(tag, "ROUT", 4u) == 0) {
+            if (chunk_version > DMSG_ROUTES_VERSION) {
+                return DOM_GAME_SAVE_ERR_MIGRATION;
+            }
+            if (chunk_version != DMSG_ROUTES_VERSION || has_routes) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+            routes_ptr = data + offset;
+            routes_len = chunk_size;
+            routes_version = chunk_version;
+            has_routes = 1;
+        } else if (std::memcmp(tag, "TRAN", 4u) == 0) {
+            if (chunk_version > DMSG_TRANSFERS_VERSION) {
+                return DOM_GAME_SAVE_ERR_MIGRATION;
+            }
+            if (chunk_version != DMSG_TRANSFERS_VERSION || has_transfers) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+            transfers_ptr = data + offset;
+            transfers_len = chunk_size;
+            transfers_version = chunk_version;
+            has_transfers = 1;
+        } else if (std::memcmp(tag, "PROD", 4u) == 0) {
+            if (chunk_version > DMSG_PRODUCTION_VERSION) {
+                return DOM_GAME_SAVE_ERR_MIGRATION;
+            }
+            if (chunk_version != DMSG_PRODUCTION_VERSION || has_production) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+            production_ptr = data + offset;
+            production_len = chunk_size;
+            production_version = chunk_version;
+            has_production = 1;
         } else if (std::memcmp(tag, "IDEN", 4u) == 0) {
             dom::core_tlv::TlvReader ir(data + offset, (size_t)chunk_size);
             dom::core_tlv::TlvRecord irec;
@@ -343,7 +1125,8 @@ static int parse_dmsg(const unsigned char *data, size_t len, dom_game_save_desc 
         offset += (size_t)chunk_size;
     }
 
-    if (!core_ptr || !has_rng) {
+    if (!core_ptr || !has_rng || !has_surface || !has_construction ||
+        !has_stations || !has_routes || !has_transfers || !has_production) {
         return DOM_GAME_SAVE_ERR_FORMAT;
     }
     if (version >= 2u && !has_identity) {
@@ -370,6 +1153,34 @@ static int parse_dmsg(const unsigned char *data, size_t len, dom_game_save_desc 
     out_desc->core_blob = core_ptr;
     out_desc->core_blob_len = core_len;
     out_desc->core_version = core_version;
+    out_desc->orbit_blob = orbit_ptr;
+    out_desc->orbit_blob_len = orbit_len;
+    out_desc->orbit_version = orbit_version;
+    out_desc->has_orbit = (u32)has_orbit;
+    out_desc->surface_blob = surface_ptr;
+    out_desc->surface_blob_len = surface_len;
+    out_desc->surface_version = surface_version;
+    out_desc->has_surface = (u32)has_surface;
+    out_desc->construction_blob = construction_ptr;
+    out_desc->construction_blob_len = construction_len;
+    out_desc->construction_version = construction_version;
+    out_desc->has_construction = (u32)has_construction;
+    out_desc->stations_blob = stations_ptr;
+    out_desc->stations_blob_len = stations_len;
+    out_desc->stations_version = stations_version;
+    out_desc->has_stations = (u32)has_stations;
+    out_desc->routes_blob = routes_ptr;
+    out_desc->routes_blob_len = routes_len;
+    out_desc->routes_version = routes_version;
+    out_desc->has_routes = (u32)has_routes;
+    out_desc->transfers_blob = transfers_ptr;
+    out_desc->transfers_blob_len = transfers_len;
+    out_desc->transfers_version = transfers_version;
+    out_desc->has_transfers = (u32)has_transfers;
+    out_desc->production_blob = production_ptr;
+    out_desc->production_blob_len = production_len;
+    out_desc->production_version = production_version;
+    out_desc->has_production = (u32)has_production;
     out_desc->rng_state = rng_state;
     out_desc->rng_version = rng_version;
     out_desc->has_rng = (u32)has_rng;
@@ -380,6 +1191,13 @@ static bool build_save_bytes(const dom_game_runtime *rt, std::vector<unsigned ch
     d_world *world;
     const dom::DomSession *session;
     std::vector<unsigned char> core_blob;
+    std::vector<unsigned char> orbit_blob;
+    std::vector<unsigned char> surface_blob;
+    std::vector<unsigned char> construction_blob;
+    std::vector<unsigned char> stations_blob;
+    std::vector<unsigned char> routes_blob;
+    std::vector<unsigned char> transfers_blob;
+    std::vector<unsigned char> production_blob;
     std::vector<unsigned char> content_tlv;
     std::vector<unsigned char> identity_tlv;
     u32 ups;
@@ -404,13 +1222,36 @@ static bool build_save_bytes(const dom_game_runtime *rt, std::vector<unsigned ch
     if (!dom::game_save_world_blob(world, core_blob) || core_blob.empty()) {
         return false;
     }
+    if (!build_construction_blob(rt, construction_blob)) {
+        return false;
+    }
+    if (!build_station_blob(rt, stations_blob)) {
+        return false;
+    }
+    if (!build_route_blob(rt, routes_blob)) {
+        return false;
+    }
+    if (!build_transfer_blob(rt, transfers_blob)) {
+        return false;
+    }
+    if (!build_production_blob(rt, production_blob)) {
+        return false;
+    }
 
     session = (const dom::DomSession *)dom_game_runtime_session(rt);
     if (!dom::dom_game_content_build_tlv(session, content_tlv)) {
         content_tlv.clear();
     }
 
-    if (content_tlv.size() > 0xffffffffull || core_blob.size() > 0xffffffffull) {
+    if (content_tlv.size() > 0xffffffffull ||
+        core_blob.size() > 0xffffffffull ||
+        orbit_blob.size() > 0xffffffffull ||
+        surface_blob.size() > 0xffffffffull ||
+        construction_blob.size() > 0xffffffffull ||
+        stations_blob.size() > 0xffffffffull ||
+        routes_blob.size() > 0xffffffffull ||
+        transfers_blob.size() > 0xffffffffull ||
+        production_blob.size() > 0xffffffffull) {
         return false;
     }
     if (!build_identity_tlv(rt,
@@ -443,6 +1284,48 @@ static bool build_save_bytes(const dom_game_runtime *rt, std::vector<unsigned ch
     append_u32_le(out, DMSG_CORE_VERSION);
     append_u32_le(out, (u32)core_blob.size());
     append_bytes(out, &core_blob[0], core_blob.size());
+
+    append_bytes(out, "ORBT", 4u);
+    append_u32_le(out, DMSG_ORBIT_VERSION);
+    append_u32_le(out, (u32)orbit_blob.size());
+    append_bytes(out, orbit_blob.empty() ? (const unsigned char *)0 : &orbit_blob[0],
+                 orbit_blob.size());
+
+    append_bytes(out, "SOVR", 4u);
+    append_u32_le(out, DMSG_SURFACE_VERSION);
+    append_u32_le(out, (u32)surface_blob.size());
+    append_bytes(out, surface_blob.empty() ? (const unsigned char *)0 : &surface_blob[0],
+                 surface_blob.size());
+
+    append_bytes(out, "CNST", 4u);
+    append_u32_le(out, DMSG_CONSTRUCTION_VERSION);
+    append_u32_le(out, (u32)construction_blob.size());
+    append_bytes(out, construction_blob.empty() ? (const unsigned char *)0 : &construction_blob[0],
+                 construction_blob.size());
+
+    append_bytes(out, "STAT", 4u);
+    append_u32_le(out, DMSG_STATIONS_VERSION);
+    append_u32_le(out, (u32)stations_blob.size());
+    append_bytes(out, stations_blob.empty() ? (const unsigned char *)0 : &stations_blob[0],
+                 stations_blob.size());
+
+    append_bytes(out, "ROUT", 4u);
+    append_u32_le(out, DMSG_ROUTES_VERSION);
+    append_u32_le(out, (u32)routes_blob.size());
+    append_bytes(out, routes_blob.empty() ? (const unsigned char *)0 : &routes_blob[0],
+                 routes_blob.size());
+
+    append_bytes(out, "TRAN", 4u);
+    append_u32_le(out, DMSG_TRANSFERS_VERSION);
+    append_u32_le(out, (u32)transfers_blob.size());
+    append_bytes(out, transfers_blob.empty() ? (const unsigned char *)0 : &transfers_blob[0],
+                 transfers_blob.size());
+
+    append_bytes(out, "PROD", 4u);
+    append_u32_le(out, DMSG_PRODUCTION_VERSION);
+    append_u32_le(out, (u32)production_blob.size());
+    append_bytes(out, production_blob.empty() ? (const unsigned char *)0 : &production_blob[0],
+                 production_blob.size());
 
     append_bytes(out, "RNG ", 4u);
     append_u32_le(out, DMSG_RNG_VERSION);
@@ -576,6 +1459,52 @@ int dom_game_runtime_load_save(dom_game_runtime *rt, const char *path) {
         world->worldgen_seed = desc.seed;
         world->rng.state = desc.rng_state;
         sim->tick_index = tick;
+    }
+
+    if (desc.has_construction) {
+        rc = apply_construction_blob(rt, desc.construction_blob, desc.construction_blob_len);
+        if (rc != DOM_GAME_SAVE_OK) {
+            dom_game_save_release(storage);
+            return rc;
+        }
+    }
+
+    if (desc.has_stations) {
+        rc = apply_station_blob(rt, desc.stations_blob, desc.stations_blob_len);
+        if (rc != DOM_GAME_SAVE_OK) {
+            dom_game_save_release(storage);
+            return rc;
+        }
+    }
+    if (desc.has_routes) {
+        rc = apply_route_blob(rt, desc.routes_blob, desc.routes_blob_len);
+        if (rc != DOM_GAME_SAVE_OK) {
+            dom_game_save_release(storage);
+            return rc;
+        }
+    }
+    if (desc.has_transfers) {
+        rc = apply_transfer_blob(rt,
+                                 desc.transfers_blob,
+                                 desc.transfers_blob_len,
+                                 desc.tick_index);
+        if (rc != DOM_GAME_SAVE_OK) {
+            dom_game_save_release(storage);
+            return rc;
+        }
+    }
+    if (desc.has_production) {
+        rc = apply_production_blob(rt, desc.production_blob, desc.production_blob_len);
+        if (rc != DOM_GAME_SAVE_OK) {
+            dom_game_save_release(storage);
+            return rc;
+        }
+        {
+            dom_production *prod = (dom_production *)dom_game_runtime_production(rt);
+            if (prod) {
+                (void)dom_production_set_last_tick(prod, desc.tick_index);
+            }
+        }
     }
 
     (void)d_net_cmd_queue_init();

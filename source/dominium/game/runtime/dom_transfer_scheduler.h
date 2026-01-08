@@ -58,6 +58,15 @@ int dom_transfer_schedule(dom_transfer_scheduler *sched,
                           u32 entry_count,
                           u64 current_tick,
                           dom_transfer_id *out_id);
+int dom_transfer_add_loaded(dom_transfer_scheduler *sched,
+                            const dom_route_graph *routes,
+                            dom_route_id route_id,
+                            dom_transfer_id transfer_id,
+                            u64 start_tick,
+                            u64 arrival_tick,
+                            const dom_transfer_entry *entries,
+                            u32 entry_count,
+                            u64 total_units);
 int dom_transfer_update(dom_transfer_scheduler *sched,
                         const dom_route_graph *routes,
                         dom_station_registry *stations,
@@ -67,6 +76,11 @@ int dom_transfer_list(const dom_transfer_scheduler *sched,
                       dom_transfer_info *out_list,
                       u32 max_entries,
                       u32 *out_count);
+int dom_transfer_get_entries(const dom_transfer_scheduler *sched,
+                             dom_transfer_id transfer_id,
+                             dom_transfer_entry *out_entries,
+                             u32 max_entries,
+                             u32 *out_count);
 u32 dom_transfer_count(const dom_transfer_scheduler *sched);
 
 #ifdef __cplusplus

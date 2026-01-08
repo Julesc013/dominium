@@ -8,7 +8,7 @@ FORBIDDEN DEPENDENCIES: Dependency inversions that violate `docs/OVERVIEW_ARCHIT
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
 DETERMINISM: Determinism-sensitive (hash comparisons across save/load); see `docs/SPEC_DETERMINISM.md`.
-VERSIONING / ABI / DATA FORMAT NOTES: DMSG v2 container; see `source/dominium/game/SPEC_SAVE.md`.
+VERSIONING / ABI / DATA FORMAT NOTES: DMSG v3 container; see `source/dominium/game/SPEC_SAVE.md`.
 EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
 */
 #ifndef DOM_GAME_RUNTIME_SAVE_H
@@ -30,7 +30,7 @@ enum {
 };
 
 enum {
-    DOM_GAME_SAVE_DESC_VERSION = 2u
+    DOM_GAME_SAVE_DESC_VERSION = 7u
 };
 
 typedef struct dom_game_save_desc {
@@ -41,6 +41,7 @@ typedef struct dom_game_save_desc {
     u32 ups;
     u64 tick_index;
     u64 seed;
+    u32 feature_epoch;
 
     const char *instance_id;
     u32 instance_id_len;
@@ -56,6 +57,41 @@ typedef struct dom_game_save_desc {
     const unsigned char *core_blob;
     u32 core_blob_len;
     u32 core_version;
+
+    const unsigned char *orbit_blob;
+    u32 orbit_blob_len;
+    u32 orbit_version;
+    u32 has_orbit;
+
+    const unsigned char *surface_blob;
+    u32 surface_blob_len;
+    u32 surface_version;
+    u32 has_surface;
+
+    const unsigned char *construction_blob;
+    u32 construction_blob_len;
+    u32 construction_version;
+    u32 has_construction;
+
+    const unsigned char *stations_blob;
+    u32 stations_blob_len;
+    u32 stations_version;
+    u32 has_stations;
+
+    const unsigned char *routes_blob;
+    u32 routes_blob_len;
+    u32 routes_version;
+    u32 has_routes;
+
+    const unsigned char *transfers_blob;
+    u32 transfers_blob_len;
+    u32 transfers_version;
+    u32 has_transfers;
+
+    const unsigned char *production_blob;
+    u32 production_blob_len;
+    u32 production_version;
+    u32 has_production;
 
     u32 rng_state;
     u32 rng_version;

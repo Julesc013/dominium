@@ -86,11 +86,25 @@ int main(void) {
     std::vector<unsigned char> bods_payload;
     std::vector<unsigned char> fram_payload;
     std::vector<unsigned char> topb_payload;
+    std::vector<unsigned char> orbt_payload;
+    std::vector<unsigned char> sovr_payload;
+    std::vector<unsigned char> cnst_payload;
+    std::vector<unsigned char> stat_payload;
+    std::vector<unsigned char> rout_payload;
+    std::vector<unsigned char> tran_payload;
+    std::vector<unsigned char> prod_payload;
     u64 cosmo_hash = 0ull;
     u64 sysm_hash = 0ull;
     u64 bods_hash = 0ull;
     u64 fram_hash = 0ull;
     u64 topb_hash = 0ull;
+    u64 orbt_hash = 0ull;
+    u64 sovr_hash = 0ull;
+    u64 cnst_hash = 0ull;
+    u64 stat_hash = 0ull;
+    u64 rout_hash = 0ull;
+    u64 tran_hash = 0ull;
+    u64 prod_hash = 0ull;
     dom_universe_bundle *bundle = dom_universe_bundle_create();
     dom_universe_bundle *read_bundle = dom_universe_bundle_create();
     dom_universe_bundle_identity id;
@@ -128,11 +142,53 @@ int main(void) {
     topb_payload.push_back('P');
     topb_payload.push_back('B');
     topb_payload.push_back(4u);
+    orbt_payload.push_back('O');
+    orbt_payload.push_back('R');
+    orbt_payload.push_back('B');
+    orbt_payload.push_back('T');
+    orbt_payload.push_back(5u);
+    sovr_payload.push_back('S');
+    sovr_payload.push_back('O');
+    sovr_payload.push_back('V');
+    sovr_payload.push_back('R');
+    sovr_payload.push_back(6u);
+    cnst_payload.push_back('C');
+    cnst_payload.push_back('N');
+    cnst_payload.push_back('S');
+    cnst_payload.push_back('T');
+    cnst_payload.push_back(7u);
+    stat_payload.push_back('S');
+    stat_payload.push_back('T');
+    stat_payload.push_back('A');
+    stat_payload.push_back('T');
+    stat_payload.push_back(8u);
+    rout_payload.push_back('R');
+    rout_payload.push_back('O');
+    rout_payload.push_back('U');
+    rout_payload.push_back('T');
+    rout_payload.push_back(9u);
+    tran_payload.push_back('T');
+    tran_payload.push_back('R');
+    tran_payload.push_back('A');
+    tran_payload.push_back('N');
+    tran_payload.push_back(10u);
+    prod_payload.push_back('P');
+    prod_payload.push_back('R');
+    prod_payload.push_back('O');
+    prod_payload.push_back('D');
+    prod_payload.push_back(11u);
 
     sysm_hash = dom::core_tlv::tlv_fnv1a64(&sysm_payload[0], sysm_payload.size());
     bods_hash = dom::core_tlv::tlv_fnv1a64(&bods_payload[0], bods_payload.size());
     fram_hash = dom::core_tlv::tlv_fnv1a64(&fram_payload[0], fram_payload.size());
     topb_hash = dom::core_tlv::tlv_fnv1a64(&topb_payload[0], topb_payload.size());
+    orbt_hash = dom::core_tlv::tlv_fnv1a64(&orbt_payload[0], orbt_payload.size());
+    sovr_hash = dom::core_tlv::tlv_fnv1a64(&sovr_payload[0], sovr_payload.size());
+    cnst_hash = dom::core_tlv::tlv_fnv1a64(&cnst_payload[0], cnst_payload.size());
+    stat_hash = dom::core_tlv::tlv_fnv1a64(&stat_payload[0], stat_payload.size());
+    rout_hash = dom::core_tlv::tlv_fnv1a64(&rout_payload[0], rout_payload.size());
+    tran_hash = dom::core_tlv::tlv_fnv1a64(&tran_payload[0], tran_payload.size());
+    prod_hash = dom::core_tlv::tlv_fnv1a64(&prod_payload[0], prod_payload.size());
 
     id.universe_id = "cosmo_u1";
     id.universe_id_len = 8u;
@@ -145,6 +201,13 @@ int main(void) {
     id.bodies_hash = bods_hash;
     id.frames_hash = fram_hash;
     id.topology_hash = topb_hash;
+    id.orbits_hash = orbt_hash;
+    id.surface_overrides_hash = sovr_hash;
+    id.constructions_hash = cnst_hash;
+    id.stations_hash = stat_hash;
+    id.routes_hash = rout_hash;
+    id.transfers_hash = tran_hash;
+    id.production_hash = prod_hash;
     id.ups = 60u;
     id.tick_index = 0ull;
     id.feature_epoch = DOM_FEATURE_EPOCH_DEFAULT;
@@ -169,6 +232,27 @@ int main(void) {
     assert(rc == DOM_UNIVERSE_BUNDLE_OK);
     rc = dom_universe_bundle_set_chunk(bundle, DOM_UNIVERSE_CHUNK_TOPB, 1u,
                                        &topb_payload[0], (u32)topb_payload.size());
+    assert(rc == DOM_UNIVERSE_BUNDLE_OK);
+    rc = dom_universe_bundle_set_chunk(bundle, DOM_UNIVERSE_CHUNK_ORBT, 1u,
+                                       &orbt_payload[0], (u32)orbt_payload.size());
+    assert(rc == DOM_UNIVERSE_BUNDLE_OK);
+    rc = dom_universe_bundle_set_chunk(bundle, DOM_UNIVERSE_CHUNK_SOVR, 1u,
+                                       &sovr_payload[0], (u32)sovr_payload.size());
+    assert(rc == DOM_UNIVERSE_BUNDLE_OK);
+    rc = dom_universe_bundle_set_chunk(bundle, DOM_UNIVERSE_CHUNK_CNST, 1u,
+                                       &cnst_payload[0], (u32)cnst_payload.size());
+    assert(rc == DOM_UNIVERSE_BUNDLE_OK);
+    rc = dom_universe_bundle_set_chunk(bundle, DOM_UNIVERSE_CHUNK_STAT, 1u,
+                                       &stat_payload[0], (u32)stat_payload.size());
+    assert(rc == DOM_UNIVERSE_BUNDLE_OK);
+    rc = dom_universe_bundle_set_chunk(bundle, DOM_UNIVERSE_CHUNK_ROUT, 1u,
+                                       &rout_payload[0], (u32)rout_payload.size());
+    assert(rc == DOM_UNIVERSE_BUNDLE_OK);
+    rc = dom_universe_bundle_set_chunk(bundle, DOM_UNIVERSE_CHUNK_TRAN, 1u,
+                                       &tran_payload[0], (u32)tran_payload.size());
+    assert(rc == DOM_UNIVERSE_BUNDLE_OK);
+    rc = dom_universe_bundle_set_chunk(bundle, DOM_UNIVERSE_CHUNK_PROD, 1u,
+                                       &prod_payload[0], (u32)prod_payload.size());
     assert(rc == DOM_UNIVERSE_BUNDLE_OK);
     rc = dom_universe_bundle_set_chunk(bundle, DOM_UNIVERSE_CHUNK_CELE, 1u, (const void *)0, 0u);
     assert(rc == DOM_UNIVERSE_BUNDLE_OK);
