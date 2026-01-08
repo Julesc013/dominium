@@ -28,6 +28,10 @@ enum {
 };
 
 enum {
+    DOM_TOPOLOGY_POSSEG_SIZE_M = 16384
+};
+
+enum {
     DOM_TOPOLOGY_KIND_SPHERE = 1u,
     DOM_TOPOLOGY_KIND_ELLIPSOID = 2u,
     DOM_TOPOLOGY_KIND_TORUS = 3u
@@ -56,6 +60,12 @@ typedef struct dom_topo_vec3_q16 {
     q16_16 v[3];
 } dom_topo_vec3_q16;
 
+typedef struct dom_topo_tangent_frame_q16 {
+    dom_topo_vec3_q16 east;
+    dom_topo_vec3_q16 north;
+    dom_topo_vec3_q16 up;
+} dom_topo_tangent_frame_q16;
+
 int dom_surface_topology_select(const dom_body_registry *bodies,
                                 dom_body_id body_id,
                                 u32 select_flags,
@@ -67,9 +77,16 @@ int dom_surface_topology_altitude(const dom_topology_binding *binding,
 int dom_surface_topology_latlong(const dom_topology_binding *binding,
                                  const dom_posseg_q16 *pos_body_fixed,
                                  dom_topo_latlong_q16 *out_latlong);
+int dom_surface_topology_pos_from_latlong(const dom_topology_binding *binding,
+                                          const dom_topo_latlong_q16 *latlong,
+                                          q48_16 altitude_m,
+                                          dom_posseg_q16 *out_pos);
 int dom_surface_topology_surface_normal(const dom_topology_binding *binding,
                                         const dom_posseg_q16 *pos_body_fixed,
                                         dom_topo_vec3_q16 *out_normal);
+int dom_surface_topology_tangent_frame(const dom_topology_binding *binding,
+                                       const dom_topo_latlong_q16 *latlong,
+                                       dom_topo_tangent_frame_q16 *out_frame);
 
 #ifdef __cplusplus
 } /* extern "C" */

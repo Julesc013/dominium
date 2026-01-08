@@ -4,7 +4,8 @@ This spec defines deterministic surface topology providers for body surfaces.
 Topology is authoritative and must be bound, hashed, and versioned.
 
 ## 1. Scope
-- Topology defines altitude, lat/long mapping, and surface normals.
+- Topology defines altitude, lat/long mapping, surface normals, and the local
+  tangent basis used for surface projections.
 - Topology providers are deterministic and fixed-point only.
 - Topology selection is part of universe identity and must be hashed.
 
@@ -16,24 +17,25 @@ Canonical provider kinds:
 
 ## 3. Inputs and outputs
 Inputs:
-- Body-fixed position in segmented Q16.16 meters (`dom_posseg_q16` or flattened
-  local meters as defined by the provider binding).
+- Body-fixed position in segmented Q16.16 meters (`dom_posseg_q16`).
+- Lat/long in turns (`Q16.16`) for inverse mapping where supported.
 
 Outputs:
 - `altitude_m` (Q48.16 meters)
 - `lat_turns` (Q16.16 turns; range [-0.25, 0.25] for latitude)
 - `lon_turns` (Q16.16 turns; range [0, 1) or [-0.5, 0.5])
 - `surface_normal` (Q16.16 unit vector in body-fixed coordinates)
+- `tangent_frame` (ENU basis vectors in Q16.16)
 
 Notes:
-- v1 providers assume a flattened body-fixed position (segments resolved to
-  local meters). Segmented inputs may be refused until a canonical resolver is
-  available.
+- Segmented inputs are supported via a deterministic segment size defined by
+  the surface runtime (see `docs/SPEC_SURFACE_STREAMING.md`).
 
 ## 4. Sphere provider rules (v1)
 - Altitude = `|pos| - radius`.
 - Latitude/longitude are derived deterministically from position.
 - Surface normal is the normalized position vector.
+- Lat/long + altitude must map back to a deterministic body-fixed position.
 
 ## 5. Binding and defaults
 - Every body has a topology binding (`body_id -> provider + params`).
@@ -49,3 +51,4 @@ Notes:
 - `docs/SPEC_REFERENCE_FRAMES.md`
 - `docs/SPEC_UNIVERSE_BUNDLE.md`
 - `docs/SPEC_DETERMINISM.md`
+- `docs/SPEC_SURFACE_STREAMING.md`
