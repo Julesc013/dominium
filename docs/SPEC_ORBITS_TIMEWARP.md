@@ -44,7 +44,15 @@ Event queries are deterministic and purely analytic:
 - SOI entry/exit is supported only when a primary SOI radius is known; otherwise
   the API must return `NOT_IMPLEMENTED`.
 
-## 5. Deterministic math requirements
+## 5. Maneuver impulses (v1)
+- Maneuvers are discrete impulse commands applied at tick boundaries.
+- v1 supports deterministic impulse updates for circular, equatorial orbits
+  (`eccentricity == 0`, `inclination == 0`).
+- Unsupported orbit shapes must return `NOT_IMPLEMENTED` (no best-effort).
+- Maneuver application updates `semi_major_axis_m` and resets `epoch_tick` to the
+  maneuver tick while preserving deterministic angle normalization.
+
+## 6. Deterministic math requirements
 - All math must use deterministic fixed-point utilities (see
   `source/domino/core/dom_deterministic_math.h`).
 - Iterative solves must use fixed iteration counts or deterministic bounds.
