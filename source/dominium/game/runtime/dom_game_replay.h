@@ -8,7 +8,7 @@ FORBIDDEN DEPENDENCIES: Dependency inversions that violate `docs/OVERVIEW_ARCHIT
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
 DETERMINISM: Determinism-sensitive (recorded command payloads must be stable).
-VERSIONING / ABI / DATA FORMAT NOTES: DMRP v2 container; see `source/dominium/game/SPEC_REPLAY.md`.
+VERSIONING / ABI / DATA FORMAT NOTES: DMRP v3 container; see `source/dominium/game/SPEC_REPLAY.md`.
 EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
 */
 #ifndef DOM_GAME_REPLAY_V1_H
@@ -35,7 +35,7 @@ enum {
 };
 
 enum {
-    DOM_GAME_REPLAY_DESC_VERSION = 2u
+    DOM_GAME_REPLAY_DESC_VERSION = 3u
 };
 
 typedef struct dom_game_replay_record dom_game_replay_record;
@@ -47,6 +47,7 @@ typedef struct dom_game_replay_desc {
     u32 container_version;
     u32 ups;
     u64 seed;
+    u32 feature_epoch;
     const char *instance_id;
     u32 instance_id_len;
     u64 run_id;
