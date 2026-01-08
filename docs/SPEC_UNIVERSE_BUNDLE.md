@@ -17,6 +17,13 @@ Chunk type IDs are ASCII fourcc values stored as `u32_le`:
 - `BODS` (v1): body descriptors (required; may be empty)
 - `FRAM` (v1): frame tree descriptors (required; may be empty)
 - `TOPB` (v1): topology bindings (required; may be empty)
+- `ORBT` (v1): orbit state records (required; may be empty)
+- `SOVR` (v1): surface overrides (required; may be empty)
+- `CNST` (v1): construction instances (required; may be empty)
+- `STAT` (v1): station records (required; may be empty)
+- `ROUT` (v1): route records (required; may be empty)
+- `TRAN` (v1): transfer records (required; may be empty)
+- `PROD` (v1): production rules (required; may be empty)
 - `CELE` (v1): celestial bodies and systems (required; may be empty)
 - `VESL` (v1): vessel records (required; may be empty)
 - `SURF` (v1): surface records (required; may be empty)
@@ -25,6 +32,7 @@ Chunk type IDs are ASCII fourcc values stored as `u32_le`:
 - `FORN` (v1): preserved foreign chunks (required; may be empty)
 
 Unknown chunk types must be skipped safely and preserved for round-trip.
+Logistics chunk formats are defined in `docs/SPEC_SYSTEM_LOGISTICS.md`.
 
 ## 2.1 COSM chunk (cosmos graph container)
 The `COSM` chunk payload is a DTLV container (see `docs/SPEC_CONTAINER_TLV.md`)
@@ -40,14 +48,21 @@ Required tags:
 - `0x0002` `INSTANCE_ID` (UTF-8 bytes, no null terminator)
 - `0x0003` `CONTENT_GRAPH_HASH` (`u64_le`)
 - `0x0004` `SIM_FLAGS_HASH` (`u64_le`)
+- `0x0005` `UPS` (`u32_le`)
+- `0x0006` `TICK_INDEX` (`u64_le`)
+- `0x0007` `FEATURE_EPOCH` (`u32_le`)
 - `0x0008` `COSMO_HASH` (`u64_le`)
 - `0x0009` `SYSTEMS_HASH` (`u64_le`)
 - `0x000A` `BODIES_HASH` (`u64_le`)
 - `0x000B` `FRAMES_HASH` (`u64_le`)
 - `0x000C` `TOPOLOGY_HASH` (`u64_le`)
-- `0x0005` `UPS` (`u32_le`)
-- `0x0006` `TICK_INDEX` (`u64_le`)
-- `0x0007` `FEATURE_EPOCH` (`u32_le`)
+- `0x000D` `ORBITS_HASH` (`u64_le`)
+- `0x000E` `SURFACE_OVERRIDES_HASH` (`u64_le`)
+- `0x000F` `CONSTRUCTIONS_HASH` (`u64_le`)
+- `0x0010` `STATIONS_HASH` (`u64_le`)
+- `0x0011` `ROUTES_HASH` (`u64_le`)
+- `0x0012` `TRANSFERS_HASH` (`u64_le`)
+- `0x0013` `PRODUCTION_HASH` (`u64_le`)
 
 Notes:
 - Missing required tags are a hard refusal.
@@ -81,6 +96,13 @@ Universe bundles are bound to:
 - bodies hash
 - frames hash
 - topology bindings hash
+- orbits hash
+- surface overrides hash
+- constructions hash
+- stations hash
+- routes hash
+- transfers hash
+- production rules hash
 - timebase (`UPS`, `TICK_INDEX`)
 - feature epoch
 
@@ -94,6 +116,7 @@ default (`IDENTITY_MISMATCH`).
 ## Related specs
 - `docs/SPEC_CONTAINER_TLV.md`
 - `docs/SPEC_UNIVERSE_MODEL.md`
+- `docs/SPEC_SYSTEM_LOGISTICS.md`
 - `docs/SPEC_SPACETIME.md`
 - `docs/SPEC_MIGRATIONS.md`
 - `docs/SPEC_FS_CONTRACT.md`

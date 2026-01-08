@@ -57,8 +57,15 @@ Travel is an in-sim state (see `docs/SPEC_LOGICAL_TRAVEL.md`):
 - Arrival occurs at `start_tick + duration_ticks`.
 - Arrival must be emitted deterministically.
 
+## 8. System logistics (non-physical)
+- System-scale logistics are scheduled gameplay anchored to systems/bodies and
+  remain non-physical.
+- Logistics MUST NOT introduce physics or alter cosmos graph topology.
+- See `docs/SPEC_SYSTEM_LOGISTICS.md` for authoritative logistics rules.
+
 ## Related specs
 - `docs/SPEC_LOGICAL_TRAVEL.md`
 - `docs/SPEC_UNIVERSE_MODEL.md`
+- `docs/SPEC_SYSTEM_LOGISTICS.md`
 - `docs/SPEC_SPACETIME.md`
 - `docs/SPEC_DETERMINISM.md`

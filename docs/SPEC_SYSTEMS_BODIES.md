@@ -57,7 +57,12 @@ Validation:
 - If a string ID is provided, its hash must match `body_id`.
 - `axial_tilt_turns` must be in the range [0, 0.5] turns if present.
 
-## 5. Baseline content
+## 5. Logistics anchors (non-physical)
+- Logistics stations are defined in `docs/SPEC_SYSTEM_LOGISTICS.md` and are
+  separate from body descriptors.
+- Station anchors reference `body_id` and `frame_id` but do not add physics.
+
+## 6. Baseline content
 Baseline content MUST include:
 - Galaxy: Milky Way (defined in cosmos lane; referenced by ID only)
 - System: Sol
@@ -67,5 +72,6 @@ Baseline content MUST include:
 - `docs/SPEC_REFERENCE_FRAMES.md`
 - `docs/SPEC_SURFACE_TOPOLOGY.md`
 - `docs/SPEC_UNIVERSE_MODEL.md`
+- `docs/SPEC_SYSTEM_LOGISTICS.md`
 - `docs/SPEC_SPACETIME.md`
 - `docs/SPEC_DETERMINISM.md`

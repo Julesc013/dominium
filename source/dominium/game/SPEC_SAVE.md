@@ -1,7 +1,7 @@
 # Save Spec (DMSG)
 
-Status: v1
-Version: 1
+Status: v2
+Version: 3
 
 This document defines the Dominium game snapshot container `DMSG`.
 
@@ -9,18 +9,19 @@ This document defines the Dominium game snapshot container `DMSG`.
 - All numeric fields in the `DMSG` header and chunk records are little-endian.
 - The endian marker is `0x0000FFFE` (u32_le).
 
-## File header (DMSG v1)
+## File header (DMSG v3)
 
 | Offset | Size | Field | Meaning |
 |---:|---:|---|---|
 | 0 | 4 | `magic` | ASCII `"DMSG"` |
-| 4 | 4 | `version` | container version (`1`) |
+| 4 | 4 | `version` | container version (`3`) |
 | 8 | 4 | `endian` | `0x0000FFFE` (little-endian marker) |
 | 12 | 4 | `ups` | updates per second |
 | 16 | 8 | `tick_index` | simulation tick |
 | 24 | 8 | `seed` | world seed |
-| 32 | 4 | `content_tlv_len` | bytes of content identity TLV |
-| 36 | N | `content_tlv` | content identity TLV bytes |
+| 32 | 4 | `feature_epoch` | feature epoch (`u32_le`) |
+| 36 | 4 | `content_tlv_len` | bytes of content identity TLV |
+| 40 | N | `content_tlv` | content identity TLV bytes |
 
 Immediately after `content_tlv` comes the chunk stream.
 
@@ -58,10 +59,21 @@ payload[size]
     `docs/DATA_FORMATS.md`).
 - `RNG ` v1: deterministic RNG state.
   - Payload: `u32_le` of `d_rng_state.state`.
+- `IDEN` v1: identity TLV (required for v2+).
+  - Tags: `INSTANCE_ID`, `RUN_ID`, `MANIFEST_HASH`, `CONTENT_HASH` (see `SPEC_LAUNCH_HANDSHAKE_GAME.md` for meanings).
+- `SOVR` v1: surface override scaffold (may be empty).
+- `CNST` v1: construction instances (may be empty).
+- `STAT` v1: station records (may be empty).
+- `ROUT` v1: route records (may be empty).
+- `TRAN` v1: transfer records (may be empty).
+- `PROD` v1: production rules (may be empty).
+
+Logistics chunk payloads are defined in `docs/SPEC_SYSTEM_LOGISTICS.md`.
 
 ## Optional chunks
 
 - `NET ` v1: lockstep session state (not required in v1).
+- `ORBT` v1: orbit state snapshot (per-vessel on-rails state).
 - `META` v1: debug or provenance metadata (non-authoritative).
 
 ## Load policy
