@@ -63,6 +63,11 @@ u32 dom_production_count(const dom_production *prod);
 int dom_production_update(dom_production *prod,
                           dom_station_registry *stations,
                           u64 current_tick);
+int dom_production_update_with_macro(dom_production *prod,
+                                     dom_station_registry *stations,
+                                     const struct dom_body_registry *bodies,
+                                     const struct dom_macro_economy *macro,
+                                     u64 current_tick);
 int dom_production_set_last_tick(dom_production *prod, u64 last_tick);
 u64 dom_production_last_tick(const dom_production *prod);
 

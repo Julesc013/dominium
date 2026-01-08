@@ -6,6 +6,9 @@ RESPONSIBILITY: Deterministic production/consumption rules (scheduled deltas).
 */
 #include "runtime/dom_production.h"
 
+#include "runtime/dom_body_registry.h"
+#include "runtime/dom_macro_economy.h"
+
 #include <vector>
 #include <climits>
 
@@ -55,6 +58,67 @@ static int validate_rule_desc(const dom_production_rule_desc *desc) {
         return DOM_PRODUCTION_INVALID_DATA;
     }
     return DOM_PRODUCTION_OK;
+}
+
+static int resolve_station_system(const dom_station_registry *stations,
+                                  const dom_body_registry *bodies,
+                                  dom_station_id station_id,
+                                  dom_system_id *out_system_id) {
+    dom_station_info sinfo;
+    dom_body_info binfo;
+    if (!stations || !bodies || !out_system_id || station_id == 0ull) {
+        return DOM_PRODUCTION_INVALID_ARGUMENT;
+    }
+    if (dom_station_get(stations, station_id, &sinfo) != DOM_STATION_REGISTRY_OK) {
+        return DOM_PRODUCTION_ERR;
+    }
+    if (dom_body_registry_get(bodies, sinfo.body_id, &binfo) != DOM_BODY_REGISTRY_OK) {
+        return DOM_PRODUCTION_ERR;
+    }
+    *out_system_id = binfo.system_id;
+    return DOM_PRODUCTION_OK;
+}
+
+static int macro_override_delta(const dom_macro_economy *macro,
+                                dom_system_id system_id,
+                                dom_resource_id resource_id,
+                                u64 period_ticks,
+                                i64 *out_delta) {
+    i64 prod_rate = 0;
+    i64 demand_rate = 0;
+    (void)demand_rate;
+    if (!macro || !out_delta || system_id == 0ull || resource_id == 0ull) {
+        return 0;
+    }
+    if (dom_macro_economy_rate_get(macro,
+                                   DOM_MACRO_SCOPE_SYSTEM,
+                                   system_id,
+                                   resource_id,
+                                   &prod_rate,
+                                   &demand_rate) != DOM_MACRO_ECONOMY_OK) {
+        return 0;
+    }
+    if (prod_rate == 0) {
+        return 0;
+    }
+    if (period_ticks == 0ull) {
+        return 0;
+    }
+    if (prod_rate > 0) {
+        if (period_ticks > (u64)(LLONG_MAX / prod_rate)) {
+            return DOM_PRODUCTION_OVERFLOW;
+        }
+    } else {
+        i64 magnitude = -prod_rate;
+        if (magnitude == 0) {
+            return 0;
+        }
+        if (period_ticks > (u64)(LLONG_MAX / magnitude)) {
+            return DOM_PRODUCTION_OVERFLOW;
+        }
+    }
+    *out_delta = prod_rate * (i64)period_ticks;
+    return 1;
 }
 
 } // namespace
@@ -142,6 +206,14 @@ u32 dom_production_count(const dom_production *prod) {
 int dom_production_update(dom_production *prod,
                           dom_station_registry *stations,
                           u64 current_tick) {
+    return dom_production_update_with_macro(prod, stations, 0, 0, current_tick);
+}
+
+int dom_production_update_with_macro(dom_production *prod,
+                                     dom_station_registry *stations,
+                                     const dom_body_registry *bodies,
+                                     const dom_macro_economy *macro,
+                                     u64 current_tick) {
     if (!prod || !stations) {
         return DOM_PRODUCTION_INVALID_ARGUMENT;
     }
@@ -162,6 +234,22 @@ int dom_production_update(dom_production *prod,
         }
 
         i64 delta = rule.delta_per_period;
+        if (macro && bodies) {
+            dom_system_id system_id = 0ull;
+            if (resolve_station_system(stations, bodies, rule.station_id, &system_id) == DOM_PRODUCTION_OK) {
+                i64 override_delta = 0;
+                const int override_rc = macro_override_delta(macro,
+                                                             system_id,
+                                                             rule.resource_id,
+                                                             period,
+                                                             &override_delta);
+                if (override_rc == 1) {
+                    delta = override_delta;
+                } else if (override_rc == DOM_PRODUCTION_OVERFLOW) {
+                    return DOM_PRODUCTION_OVERFLOW;
+                }
+            }
+        }
         i64 total_delta = 0;
         if (delta > 0) {
             if (ticks_to_apply > (u64)(LLONG_MAX / delta)) {
