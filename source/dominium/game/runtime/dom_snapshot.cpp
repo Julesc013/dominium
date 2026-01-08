@@ -29,6 +29,8 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "runtime/dom_station_registry.h"
 #include "runtime/dom_route_graph.h"
 #include "runtime/dom_transfer_scheduler.h"
+#include "runtime/dom_macro_economy.h"
+#include "runtime/dom_macro_events.h"
 
 extern "C" {
 }
@@ -829,5 +831,299 @@ void dom_game_runtime_release_transfer_list_snapshot(dom_transfer_list_snapshot 
         return;
     }
     delete[] snapshot->transfers;
+    delete snapshot;
+}
+
+dom_macro_economy_snapshot *dom_game_runtime_build_macro_economy_snapshot(const dom_game_runtime *rt) {
+    dom_macro_economy_snapshot *snap;
+    const dom_macro_economy *econ;
+    u32 sys_count = 0u;
+    u32 gal_count = 0u;
+    u32 scope_count = 0u;
+    u32 total_prod = 0u;
+    u32 total_demand = 0u;
+    u32 total_stock = 0u;
+
+    if (!rt) {
+        return (dom_macro_economy_snapshot *)0;
+    }
+    econ = static_cast<const dom_macro_economy *>(dom_game_runtime_macro_economy(rt));
+    if (!econ) {
+        return (dom_macro_economy_snapshot *)0;
+    }
+    if (dom_macro_economy_list_scopes(econ, DOM_MACRO_SCOPE_SYSTEM, 0, 0u, &sys_count) != DOM_MACRO_ECONOMY_OK ||
+        dom_macro_economy_list_scopes(econ, DOM_MACRO_SCOPE_GALAXY, 0, 0u, &gal_count) != DOM_MACRO_ECONOMY_OK) {
+        return (dom_macro_economy_snapshot *)0;
+    }
+    scope_count = sys_count + gal_count;
+
+    snap = new dom_macro_economy_snapshot();
+    if (!snap) {
+        return (dom_macro_economy_snapshot *)0;
+    }
+    std::memset(snap, 0, sizeof(*snap));
+    snap->struct_size = sizeof(*snap);
+    snap->struct_version = DOM_MACRO_ECONOMY_SNAPSHOT_VERSION;
+    snap->scope_count = scope_count;
+
+    if (scope_count > 0u) {
+        std::vector<dom_macro_scope_info> scopes;
+        scopes.resize(scope_count);
+        if (sys_count > 0u) {
+            u32 out_count = sys_count;
+            if (dom_macro_economy_list_scopes(econ,
+                                              DOM_MACRO_SCOPE_SYSTEM,
+                                              &scopes[0],
+                                              sys_count,
+                                              &out_count) != DOM_MACRO_ECONOMY_OK) {
+                delete snap;
+                return (dom_macro_economy_snapshot *)0;
+            }
+            sys_count = out_count;
+        }
+        if (gal_count > 0u) {
+            u32 out_count = gal_count;
+            if (dom_macro_economy_list_scopes(econ,
+                                              DOM_MACRO_SCOPE_GALAXY,
+                                              &scopes[sys_count],
+                                              gal_count,
+                                              &out_count) != DOM_MACRO_ECONOMY_OK) {
+                delete snap;
+                return (dom_macro_economy_snapshot *)0;
+            }
+            gal_count = out_count;
+        }
+        scope_count = sys_count + gal_count;
+        snap->scope_count = scope_count;
+
+        for (u32 i = 0u; i < scope_count; ++i) {
+            total_prod += scopes[i].production_count;
+            total_demand += scopes[i].demand_count;
+            total_stock += scopes[i].stockpile_count;
+        }
+
+        snap->production_count = total_prod;
+        snap->demand_count = total_demand;
+        snap->stockpile_count = total_stock;
+
+        snap->scopes = new dom_macro_scope_view[scope_count];
+        if (!snap->scopes) {
+            delete snap;
+            return (dom_macro_economy_snapshot *)0;
+        }
+        if (total_prod > 0u) {
+            snap->production = new dom_macro_rate_view[total_prod];
+            if (!snap->production) {
+                dom_game_runtime_release_macro_economy_snapshot(snap);
+                return (dom_macro_economy_snapshot *)0;
+            }
+        }
+        if (total_demand > 0u) {
+            snap->demand = new dom_macro_rate_view[total_demand];
+            if (!snap->demand) {
+                dom_game_runtime_release_macro_economy_snapshot(snap);
+                return (dom_macro_economy_snapshot *)0;
+            }
+        }
+        if (total_stock > 0u) {
+            snap->stockpile = new dom_macro_stock_view[total_stock];
+            if (!snap->stockpile) {
+                dom_game_runtime_release_macro_economy_snapshot(snap);
+                return (dom_macro_economy_snapshot *)0;
+            }
+        }
+
+        u32 prod_offset = 0u;
+        u32 demand_offset = 0u;
+        u32 stock_offset = 0u;
+        for (u32 i = 0u; i < scope_count; ++i) {
+            const dom_macro_scope_info &info = scopes[i];
+            dom_macro_scope_view &view = snap->scopes[i];
+            view.scope_kind = info.scope_kind;
+            view.scope_id = info.scope_id;
+            view.flags = info.flags;
+            view.production_count = info.production_count;
+            view.production_offset = prod_offset;
+            view.demand_count = info.demand_count;
+            view.demand_offset = demand_offset;
+            view.stockpile_count = info.stockpile_count;
+            view.stockpile_offset = stock_offset;
+
+            if (info.production_count > 0u) {
+                std::vector<dom_macro_rate_entry> entries;
+                entries.resize(info.production_count);
+                u32 count = info.production_count;
+                if (dom_macro_economy_list_production(econ,
+                                                      info.scope_kind,
+                                                      info.scope_id,
+                                                      &entries[0],
+                                                      count,
+                                                      &count) != DOM_MACRO_ECONOMY_OK) {
+                    dom_game_runtime_release_macro_economy_snapshot(snap);
+                    return (dom_macro_economy_snapshot *)0;
+                }
+                for (u32 j = 0u; j < count; ++j) {
+                    dom_macro_rate_view &rview = snap->production[prod_offset + j];
+                    rview.resource_id = entries[j].resource_id;
+                    rview.rate_per_tick = entries[j].rate_per_tick;
+                }
+                prod_offset += count;
+            }
+
+            if (info.demand_count > 0u) {
+                std::vector<dom_macro_rate_entry> entries;
+                entries.resize(info.demand_count);
+                u32 count = info.demand_count;
+                if (dom_macro_economy_list_demand(econ,
+                                                  info.scope_kind,
+                                                  info.scope_id,
+                                                  &entries[0],
+                                                  count,
+                                                  &count) != DOM_MACRO_ECONOMY_OK) {
+                    dom_game_runtime_release_macro_economy_snapshot(snap);
+                    return (dom_macro_economy_snapshot *)0;
+                }
+                for (u32 j = 0u; j < count; ++j) {
+                    dom_macro_rate_view &rview = snap->demand[demand_offset + j];
+                    rview.resource_id = entries[j].resource_id;
+                    rview.rate_per_tick = entries[j].rate_per_tick;
+                }
+                demand_offset += count;
+            }
+
+            if (info.stockpile_count > 0u) {
+                std::vector<dom_macro_stock_entry> entries;
+                entries.resize(info.stockpile_count);
+                u32 count = info.stockpile_count;
+                if (dom_macro_economy_list_stockpile(econ,
+                                                     info.scope_kind,
+                                                     info.scope_id,
+                                                     &entries[0],
+                                                     count,
+                                                     &count) != DOM_MACRO_ECONOMY_OK) {
+                    dom_game_runtime_release_macro_economy_snapshot(snap);
+                    return (dom_macro_economy_snapshot *)0;
+                }
+                for (u32 j = 0u; j < count; ++j) {
+                    dom_macro_stock_view &sview = snap->stockpile[stock_offset + j];
+                    sview.resource_id = entries[j].resource_id;
+                    sview.quantity = entries[j].quantity;
+                }
+                stock_offset += count;
+            }
+        }
+    }
+
+    return snap;
+}
+
+void dom_game_runtime_release_macro_economy_snapshot(dom_macro_economy_snapshot *snapshot) {
+    if (!snapshot) {
+        return;
+    }
+    delete[] snapshot->scopes;
+    delete[] snapshot->production;
+    delete[] snapshot->demand;
+    delete[] snapshot->stockpile;
+    delete snapshot;
+}
+
+dom_macro_event_list_snapshot *dom_game_runtime_build_macro_event_list_snapshot(const dom_game_runtime *rt) {
+    dom_macro_event_list_snapshot *snap;
+    const dom_macro_events *events;
+    u32 event_count = 0u;
+    u32 effect_count = 0u;
+
+    if (!rt) {
+        return (dom_macro_event_list_snapshot *)0;
+    }
+    events = static_cast<const dom_macro_events *>(dom_game_runtime_macro_events(rt));
+    if (!events) {
+        return (dom_macro_event_list_snapshot *)0;
+    }
+    if (dom_macro_events_list(events, 0, 0u, &event_count) != DOM_MACRO_EVENTS_OK) {
+        return (dom_macro_event_list_snapshot *)0;
+    }
+
+    snap = new dom_macro_event_list_snapshot();
+    if (!snap) {
+        return (dom_macro_event_list_snapshot *)0;
+    }
+    std::memset(snap, 0, sizeof(*snap));
+    snap->struct_size = sizeof(*snap);
+    snap->struct_version = DOM_MACRO_EVENT_LIST_SNAPSHOT_VERSION;
+    snap->event_count = event_count;
+
+    if (event_count > 0u) {
+        std::vector<dom_macro_event_info> infos;
+        infos.resize(event_count);
+        if (dom_macro_events_list(events, &infos[0], event_count, &event_count) != DOM_MACRO_EVENTS_OK) {
+            delete snap;
+            return (dom_macro_event_list_snapshot *)0;
+        }
+        snap->event_count = event_count;
+        for (u32 i = 0u; i < event_count; ++i) {
+            effect_count += infos[i].effect_count;
+        }
+
+        snap->effect_count = effect_count;
+        snap->events = new dom_macro_event_view[event_count];
+        if (!snap->events) {
+            delete snap;
+            return (dom_macro_event_list_snapshot *)0;
+        }
+        if (effect_count > 0u) {
+            snap->effects = new dom_macro_event_effect_view[effect_count];
+            if (!snap->effects) {
+                dom_game_runtime_release_macro_event_list_snapshot(snap);
+                return (dom_macro_event_list_snapshot *)0;
+            }
+        }
+
+        u32 effect_offset = 0u;
+        for (u32 i = 0u; i < event_count; ++i) {
+            const dom_macro_event_info &info = infos[i];
+            dom_macro_event_view &view = snap->events[i];
+            view.event_id = info.event_id;
+            view.scope_kind = info.scope_kind;
+            view.scope_id = info.scope_id;
+            view.trigger_tick = info.trigger_tick;
+            view.effect_count = info.effect_count;
+            view.effect_offset = effect_offset;
+
+            if (info.effect_count > 0u) {
+                std::vector<dom_macro_event_effect> effects;
+                effects.resize(info.effect_count);
+                u32 count = info.effect_count;
+                if (dom_macro_events_list_effects(events,
+                                                  info.event_id,
+                                                  &effects[0],
+                                                  count,
+                                                  &count) != DOM_MACRO_EVENTS_OK) {
+                    dom_game_runtime_release_macro_event_list_snapshot(snap);
+                    return (dom_macro_event_list_snapshot *)0;
+                }
+                for (u32 j = 0u; j < count; ++j) {
+                    dom_macro_event_effect_view &eview = snap->effects[effect_offset + j];
+                    eview.resource_id = effects[j].resource_id;
+                    eview.production_delta = effects[j].production_delta;
+                    eview.demand_delta = effects[j].demand_delta;
+                    eview.flags_set = effects[j].flags_set;
+                    eview.flags_clear = effects[j].flags_clear;
+                }
+                effect_offset += count;
+            }
+        }
+    }
+
+    return snap;
+}
+
+void dom_game_runtime_release_macro_event_list_snapshot(dom_macro_event_list_snapshot *snapshot) {
+    if (!snapshot) {
+        return;
+    }
+    delete[] snapshot->events;
+    delete[] snapshot->effects;
     delete snapshot;
 }

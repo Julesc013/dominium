@@ -1420,6 +1420,14 @@ const void *dom_game_runtime_production(const dom_game_runtime *rt) {
     return rt ? static_cast<const void *>(rt->production) : 0;
 }
 
+const void *dom_game_runtime_macro_economy(const dom_game_runtime *rt) {
+    return rt ? static_cast<const void *>(rt->macro_economy) : 0;
+}
+
+const void *dom_game_runtime_macro_events(const dom_game_runtime *rt) {
+    return rt ? static_cast<const void *>(rt->macro_events) : 0;
+}
+
 int dom_game_runtime_set_surface_focus(dom_game_runtime *rt,
                                        dom_body_id body_id,
                                        const dom_topo_latlong_q16 *latlong) {
