@@ -101,6 +101,19 @@ static int hash_file(const char *path, u64 *out_hash) {
     return (rc == DOM_SPACETIME_OK) ? 0 : 1;
 }
 
+static int hash_payload(const std::vector<unsigned char> &bytes, u64 *out_hash) {
+    int rc;
+    if (!out_hash) {
+        return 1;
+    }
+    if (bytes.empty()) {
+        *out_hash = 0ull;
+        return 0;
+    }
+    rc = dom_id_hash64((const char *)&bytes[0], (u32)bytes.size(), out_hash);
+    return (rc == DOM_SPACETIME_OK) ? 0 : 1;
+}
+
 static int write_time_chunk(dtlv_writer *writer, const dom_universe_bundle_identity &id) {
     unsigned char buf[8];
     if (!writer || !id.universe_id || !id.instance_id) {
@@ -586,6 +599,124 @@ static int test_bundle_hash_stable(void) {
     return 0;
 }
 
+static int test_bundle_macro_roundtrip(void) {
+    char path[L_tmpnam];
+    dom_universe_bundle *bundle = 0;
+    dom_universe_bundle *bundle_in = 0;
+    dom_universe_bundle_identity id;
+    std::vector<unsigned char> meco_payload;
+    std::vector<unsigned char> mevt_payload;
+    const unsigned char *payload = 0;
+    u32 payload_size = 0u;
+    u16 version = 0u;
+    u64 meco_hash = 0ull;
+    u64 mevt_hash = 0ull;
+
+    if (!make_temp_path(path, sizeof(path))) {
+        return fail("temp path allocation failed");
+    }
+    remove_if_exists(path);
+
+    meco_payload.push_back(0x11u);
+    meco_payload.push_back(0x22u);
+    meco_payload.push_back(0x33u);
+    mevt_payload.push_back(0x44u);
+    mevt_payload.push_back(0x55u);
+
+    if (hash_payload(meco_payload, &meco_hash) != 0 ||
+        hash_payload(mevt_payload, &mevt_hash) != 0) {
+        return fail("macro payload hash failed");
+    }
+
+    std::memset(&id, 0, sizeof(id));
+    id.universe_id = "universe_macro";
+    id.universe_id_len = (u32)std::strlen(id.universe_id);
+    id.instance_id = "instance_macro";
+    id.instance_id_len = (u32)std::strlen(id.instance_id);
+    id.content_graph_hash = 0x0102030405060708ull;
+    id.sim_flags_hash = 0x1112131415161718ull;
+    id.macro_economy_hash = meco_hash;
+    id.macro_events_hash = mevt_hash;
+    id.ups = 60u;
+    id.tick_index = 42ull;
+    id.feature_epoch = 1u;
+
+    bundle = dom_universe_bundle_create();
+    if (!bundle) {
+        return fail("bundle_create failed");
+    }
+    if (dom_universe_bundle_set_identity(bundle, &id) != DOM_UNIVERSE_BUNDLE_OK) {
+        dom_universe_bundle_destroy(bundle);
+        return fail("bundle_set_identity failed");
+    }
+    if (dom_universe_bundle_set_chunk(bundle,
+                                      DOM_UNIVERSE_CHUNK_MECO,
+                                      1u,
+                                      meco_payload.empty() ? 0 : &meco_payload[0],
+                                      (u32)meco_payload.size()) != DOM_UNIVERSE_BUNDLE_OK) {
+        dom_universe_bundle_destroy(bundle);
+        return fail("bundle_set_chunk MECO failed");
+    }
+    if (dom_universe_bundle_set_chunk(bundle,
+                                      DOM_UNIVERSE_CHUNK_MEVT,
+                                      1u,
+                                      mevt_payload.empty() ? 0 : &mevt_payload[0],
+                                      (u32)mevt_payload.size()) != DOM_UNIVERSE_BUNDLE_OK) {
+        dom_universe_bundle_destroy(bundle);
+        return fail("bundle_set_chunk MEVT failed");
+    }
+    if (dom_universe_bundle_write_file(path, bundle) != DOM_UNIVERSE_BUNDLE_OK) {
+        dom_universe_bundle_destroy(bundle);
+        return fail("bundle_write_file failed");
+    }
+
+    bundle_in = dom_universe_bundle_create();
+    if (!bundle_in) {
+        dom_universe_bundle_destroy(bundle);
+        return fail("bundle_create read failed");
+    }
+    if (dom_universe_bundle_read_file(path, &id, bundle_in) != DOM_UNIVERSE_BUNDLE_OK) {
+        dom_universe_bundle_destroy(bundle_in);
+        dom_universe_bundle_destroy(bundle);
+        return fail("bundle_read_file failed");
+    }
+    if (dom_universe_bundle_get_chunk(bundle_in,
+                                      DOM_UNIVERSE_CHUNK_MECO,
+                                      &payload,
+                                      &payload_size,
+                                      &version) != DOM_UNIVERSE_BUNDLE_OK) {
+        dom_universe_bundle_destroy(bundle_in);
+        dom_universe_bundle_destroy(bundle);
+        return fail("bundle_get_chunk MECO failed");
+    }
+    if (version != 1u || payload_size != meco_payload.size() ||
+        (payload_size > 0u && std::memcmp(payload, &meco_payload[0], payload_size) != 0)) {
+        dom_universe_bundle_destroy(bundle_in);
+        dom_universe_bundle_destroy(bundle);
+        return fail("macro economy payload mismatch");
+    }
+    if (dom_universe_bundle_get_chunk(bundle_in,
+                                      DOM_UNIVERSE_CHUNK_MEVT,
+                                      &payload,
+                                      &payload_size,
+                                      &version) != DOM_UNIVERSE_BUNDLE_OK) {
+        dom_universe_bundle_destroy(bundle_in);
+        dom_universe_bundle_destroy(bundle);
+        return fail("bundle_get_chunk MEVT failed");
+    }
+    if (version != 1u || payload_size != mevt_payload.size() ||
+        (payload_size > 0u && std::memcmp(payload, &mevt_payload[0], payload_size) != 0)) {
+        dom_universe_bundle_destroy(bundle_in);
+        dom_universe_bundle_destroy(bundle);
+        return fail("macro events payload mismatch");
+    }
+
+    dom_universe_bundle_destroy(bundle_in);
+    dom_universe_bundle_destroy(bundle);
+    remove_if_exists(path);
+    return 0;
+}
+
 struct MigrationCounter {
     int calls;
 };
@@ -677,6 +808,7 @@ int main(void) {
     if ((rc = test_bundle_identity_timebase()) != 0) return rc;
     if ((rc = test_bundle_unknown_preservation()) != 0) return rc;
     if ((rc = test_bundle_hash_stable()) != 0) return rc;
+    if ((rc = test_bundle_macro_roundtrip()) != 0) return rc;
     if ((rc = test_migration_path()) != 0) return rc;
     std::printf("dominium universe bundle tests passed\n");
     return 0;

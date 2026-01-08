@@ -265,6 +265,30 @@ else()
 endif()
 add_test(NAME dominium_universe_bundle COMMAND dominium_universe_bundle_tests)
 
+add_executable(dominium_macro_tests
+    contract/dominium_macro_tests.cpp
+    ${CMAKE_SOURCE_DIR}/source/dominium/game/runtime/dom_macro_economy.cpp
+    ${CMAKE_SOURCE_DIR}/source/dominium/game/runtime/dom_macro_events.cpp
+)
+target_include_directories(dominium_macro_tests PRIVATE
+    ${DOMINIUM_INCLUDE_DIR}
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+)
+target_link_libraries(dominium_macro_tests PRIVATE
+    dominium_common
+)
+set_target_properties(dominium_macro_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+if (MSVC)
+    target_compile_options(dominium_macro_tests PRIVATE $<$<CONFIG:Release>:/UNDEBUG>)
+else()
+    target_compile_options(dominium_macro_tests PRIVATE $<$<CONFIG:Release>:-UNDEBUG>)
+endif()
+add_test(NAME dominium_macro COMMAND dominium_macro_tests)
+
 add_executable(dominium_no_modal_tests
     contract/dominium_no_modal_tests.cpp
     ${CMAKE_SOURCE_DIR}/source/dominium/game/runtime/dom_game_runtime.cpp
