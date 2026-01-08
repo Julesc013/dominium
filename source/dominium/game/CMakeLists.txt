@@ -26,6 +26,7 @@ add_executable(dominium_game
     runtime/dom_cosmo_graph.cpp
     runtime/dom_cosmo_transit.cpp
     runtime/dom_macro_economy.cpp
+    runtime/dom_macro_events.cpp
     runtime/dom_qos.cpp
     runtime/dom_derived_jobs.cpp
     runtime/dom_io_guard.cpp
