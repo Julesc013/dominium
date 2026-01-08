@@ -17,6 +17,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "domino/core/fixed.h"
 #include "domino/core/types.h"
 #include "runtime/dom_cosmo_transit.h"
+#include "runtime/dom_surface_chunks.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -31,7 +32,14 @@ enum {
     DOM_SYSTEM_LIST_SNAPSHOT_VERSION = 1u,
     DOM_BODY_LIST_SNAPSHOT_VERSION = 1u,
     DOM_FRAME_TREE_SNAPSHOT_VERSION = 1u,
-    DOM_BODY_TOPOLOGY_SNAPSHOT_VERSION = 1u
+    DOM_BODY_TOPOLOGY_SNAPSHOT_VERSION = 1u,
+    DOM_ORBIT_SUMMARY_SNAPSHOT_VERSION = 1u,
+    DOM_SURFACE_VIEW_SNAPSHOT_VERSION = 1u,
+    DOM_LOCAL_TANGENT_FRAME_SNAPSHOT_VERSION = 1u,
+    DOM_CONSTRUCTION_LIST_SNAPSHOT_VERSION = 1u,
+    DOM_STATION_LIST_SNAPSHOT_VERSION = 1u,
+    DOM_ROUTE_LIST_SNAPSHOT_VERSION = 1u,
+    DOM_TRANSFER_LIST_SNAPSHOT_VERSION = 1u
 };
 
 enum {
@@ -159,6 +167,116 @@ typedef struct dom_body_topology_snapshot {
     dom_body_topology_view *bodies;
 } dom_body_topology_snapshot;
 
+typedef struct dom_orbit_summary_snapshot {
+    u32 struct_size;
+    u32 struct_version;
+    u64 vessel_id;
+    u64 primary_body_id;
+    q48_16 altitude_m;
+    q48_16 apoapsis_m;
+    q48_16 periapsis_m;
+    u64 period_ticks;
+    u32 next_event_kind;
+    u64 next_event_tick;
+    u32 has_orbit;
+} dom_orbit_summary_snapshot;
+
+typedef struct dom_surface_chunk_view {
+    dom_surface_chunk_key key;
+    u32 state;
+} dom_surface_chunk_view;
+
+typedef struct dom_surface_view_snapshot {
+    u32 struct_size;
+    u32 struct_version;
+    u64 body_id;
+    dom_topo_latlong_q16 center_latlong;
+    q48_16 sampled_height_m;
+    u32 chunk_count;
+    dom_surface_chunk_view *chunks;
+} dom_surface_view_snapshot;
+
+typedef struct dom_local_tangent_frame_snapshot {
+    u32 struct_size;
+    u32 struct_version;
+    u64 body_id;
+    dom_topo_latlong_q16 center_latlong;
+    dom_topo_vec3_q16 east;
+    dom_topo_vec3_q16 north;
+    dom_topo_vec3_q16 up;
+    dom_posseg_q16 origin_body_fixed;
+} dom_local_tangent_frame_snapshot;
+
+typedef struct dom_construction_view {
+    u64 instance_id;
+    u32 type_id;
+    u64 body_id;
+    dom_surface_chunk_key chunk_key;
+    q48_16 local_pos_m[3];
+    u32 orientation;
+} dom_construction_view;
+
+typedef struct dom_construction_list_snapshot {
+    u32 struct_size;
+    u32 struct_version;
+    u32 construction_count;
+    dom_construction_view *constructions;
+} dom_construction_list_snapshot;
+
+typedef struct dom_station_view {
+    u64 station_id;
+    u64 body_id;
+    u64 frame_id;
+    u32 inventory_count;
+    u32 inventory_offset;
+} dom_station_view;
+
+typedef struct dom_station_inventory_view {
+    u64 station_id;
+    u64 resource_id;
+    i64 quantity;
+} dom_station_inventory_view;
+
+typedef struct dom_station_list_snapshot {
+    u32 struct_size;
+    u32 struct_version;
+    u32 station_count;
+    u32 inventory_count;
+    dom_station_view *stations;
+    dom_station_inventory_view *inventory;
+} dom_station_list_snapshot;
+
+typedef struct dom_route_view {
+    u64 route_id;
+    u64 src_station_id;
+    u64 dst_station_id;
+    u64 duration_ticks;
+    u64 capacity_units;
+} dom_route_view;
+
+typedef struct dom_route_list_snapshot {
+    u32 struct_size;
+    u32 struct_version;
+    u32 route_count;
+    dom_route_view *routes;
+} dom_route_list_snapshot;
+
+typedef struct dom_transfer_view {
+    u64 transfer_id;
+    u64 route_id;
+    u64 start_tick;
+    u64 arrival_tick;
+    u32 entry_count;
+    u64 total_units;
+} dom_transfer_view;
+
+typedef struct dom_transfer_list_snapshot {
+    u32 struct_size;
+    u32 struct_version;
+    u32 transfer_count;
+    dom_transfer_view *transfers;
+} dom_transfer_list_snapshot;
+
 struct dom_game_runtime;
 
 dom_game_snapshot *dom_game_runtime_build_snapshot(const struct dom_game_runtime *rt, u32 flags);
@@ -175,6 +293,20 @@ dom_frame_tree_snapshot *dom_game_runtime_build_frame_tree_snapshot(const struct
 void dom_game_runtime_release_frame_tree_snapshot(dom_frame_tree_snapshot *snapshot);
 dom_body_topology_snapshot *dom_game_runtime_build_body_topology_snapshot(const struct dom_game_runtime *rt);
 void dom_game_runtime_release_body_topology_snapshot(dom_body_topology_snapshot *snapshot);
+dom_orbit_summary_snapshot *dom_game_runtime_build_orbit_summary_snapshot(const struct dom_game_runtime *rt);
+void dom_game_runtime_release_orbit_summary_snapshot(dom_orbit_summary_snapshot *snapshot);
+dom_surface_view_snapshot *dom_game_runtime_build_surface_view_snapshot(const struct dom_game_runtime *rt);
+void dom_game_runtime_release_surface_view_snapshot(dom_surface_view_snapshot *snapshot);
+dom_local_tangent_frame_snapshot *dom_game_runtime_build_local_tangent_frame_snapshot(const struct dom_game_runtime *rt);
+void dom_game_runtime_release_local_tangent_frame_snapshot(dom_local_tangent_frame_snapshot *snapshot);
+dom_construction_list_snapshot *dom_game_runtime_build_construction_list_snapshot(const struct dom_game_runtime *rt);
+void dom_game_runtime_release_construction_list_snapshot(dom_construction_list_snapshot *snapshot);
+dom_station_list_snapshot *dom_game_runtime_build_station_list_snapshot(const struct dom_game_runtime *rt);
+void dom_game_runtime_release_station_list_snapshot(dom_station_list_snapshot *snapshot);
+dom_route_list_snapshot *dom_game_runtime_build_route_list_snapshot(const struct dom_game_runtime *rt);
+void dom_game_runtime_release_route_list_snapshot(dom_route_list_snapshot *snapshot);
+dom_transfer_list_snapshot *dom_game_runtime_build_transfer_list_snapshot(const struct dom_game_runtime *rt);
+void dom_game_runtime_release_transfer_list_snapshot(dom_transfer_list_snapshot *snapshot);
 
 #ifdef __cplusplus
 } /* extern "C" */
