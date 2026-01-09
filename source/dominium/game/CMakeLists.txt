@@ -9,6 +9,7 @@ add_executable(dominium_game
     dom_game_ui.cpp
     dom_game_ui_debug.cpp
     ui/dom_ui_state.cpp
+    ui/dom_ui_views.cpp
     dom_game_save.cpp
     dom_game_replay.cpp
     dom_game_net.cpp

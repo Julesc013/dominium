@@ -28,6 +28,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "runtime/dom_derived_jobs.h"
 #include "runtime/dom_snapshot.h"
 #include "runtime/dom_io_guard.h"
+#include "ui/dom_ui_views.h"
 #include "dom_game_tools_build.h"
 #include "dominium/version.h"
 #include "dominium/core_tlv.h"
@@ -416,6 +417,18 @@ static void dom_emit_outline_rect(d_gfx_cmd_buffer *buf, int x, int y, int w, in
     dom_emit_rect(buf, x, y + h - thickness, w, thickness, color);
     dom_emit_rect(buf, x, y, thickness, h, color);
     dom_emit_rect(buf, x + w - thickness, y, thickness, h, color);
+}
+
+static int dom_ui_view_needs_surface(DomUiViewState view) {
+    return view == DOM_UI_VIEW_PLANET_MAP ? 1 : 0;
+}
+
+static int dom_ui_view_needs_bodies(DomUiViewState view) {
+    return (view == DOM_UI_VIEW_PLANET_MAP || view == DOM_UI_VIEW_SYSTEM_MAP) ? 1 : 0;
+}
+
+static int dom_ui_view_needs_cosmo(DomUiViewState view) {
+    return (view == DOM_UI_VIEW_GALAXY_MAP || view == DOM_UI_VIEW_COSMOS_MAP) ? 1 : 0;
 }
 
 static q16_16 dom_find_env_field0(const d_env_sample *samples, u16 count, d_env_field_id field_id) {
@@ -2056,17 +2069,213 @@ void DomGameApp::render_frame() {
     {
         d_world *w = world();
         const u32 fidelity = m_fidelity.level;
-        if (w && fidelity >= DOM_FIDELITY_LOW) {
-            d_view_render(w, view, &frame);
+        const bool in_session = (m_phase.phase == DOM_GAME_PHASE_SESSION_LOADING ||
+                                 m_phase.phase == DOM_GAME_PHASE_IN_SESSION);
+        const DomUiViewState view_state = in_session ? m_ui_state.view : DOM_UI_VIEW_LOCAL;
+        const bool transition_active = in_session &&
+                                       m_ui_state.transition_active &&
+                                       view_state != DOM_UI_VIEW_TRANSIT;
+        const DomUiViewState from_view = m_ui_state.transition_from;
+        const DomUiViewState to_view = m_ui_state.transition_to;
+        const bool local_involved = transition_active &&
+                                    (from_view == DOM_UI_VIEW_LOCAL || to_view == DOM_UI_VIEW_LOCAL);
+        const bool render_local = (view_state == DOM_UI_VIEW_LOCAL) || local_involved;
+        const bool draw_map = (view_state != DOM_UI_VIEW_LOCAL) || transition_active;
+
+        dom_surface_view_snapshot *surface = 0;
+        dom_body_list_snapshot *bodies = 0;
+        dom_cosmo_map_snapshot *cosmo = 0;
+        dom_cosmo_transit_snapshot *transit = 0;
+        dom_game_snapshot *runtime_snapshot = 0;
+
+        if (!render_local) {
+            d_gfx_viewport vp;
+            vp.x = 0;
+            vp.y = 0;
+            vp.w = width;
+            vp.h = height;
+            d_gfx_cmd_set_viewport(cmd_buffer, &vp);
         }
-        if (fidelity >= DOM_FIDELITY_MED) {
-            dom_draw_debug_overlays(*this, w, cmd_buffer, width, height);
+
+        if (in_session && m_runtime) {
+            const bool need_surface = draw_map &&
+                                      (dom_ui_view_needs_surface(view_state) ||
+                                       (transition_active &&
+                                        (dom_ui_view_needs_surface(from_view) ||
+                                         dom_ui_view_needs_surface(to_view))));
+            const bool need_bodies = draw_map &&
+                                     (dom_ui_view_needs_bodies(view_state) ||
+                                      (transition_active &&
+                                       (dom_ui_view_needs_bodies(from_view) ||
+                                        dom_ui_view_needs_bodies(to_view))));
+            const bool need_cosmo = draw_map &&
+                                    (dom_ui_view_needs_cosmo(view_state) ||
+                                     (transition_active &&
+                                      (dom_ui_view_needs_cosmo(from_view) ||
+                                       dom_ui_view_needs_cosmo(to_view))));
+            if (need_surface) {
+                surface = dom_game_runtime_build_surface_view_snapshot(m_runtime);
+            }
+            if (need_bodies) {
+                bodies = dom_game_runtime_build_body_list_snapshot(m_runtime);
+            }
+            if (need_cosmo) {
+                cosmo = dom_game_runtime_build_cosmo_map_snapshot(m_runtime);
+            }
+            if (view_state == DOM_UI_VIEW_TRANSIT) {
+                transit = dom_game_runtime_build_cosmo_transit_snapshot(m_runtime);
+                runtime_snapshot = dom_game_runtime_build_snapshot(m_runtime,
+                                                                  DOM_GAME_SNAPSHOT_FLAG_RUNTIME);
+            }
         }
-        if (fidelity >= DOM_FIDELITY_HIGH) {
-            dom_draw_trans_overlays(*this, w, cmd_buffer, width, height);
+
+        if (render_local) {
+            (void)d_view_render(w, view, &frame);
+            if (fidelity >= DOM_FIDELITY_MED) {
+                dom_draw_debug_overlays(*this, w, cmd_buffer, width, height);
+            }
+            if (fidelity >= DOM_FIDELITY_HIGH) {
+                dom_draw_trans_overlays(*this, w, cmd_buffer, width, height);
+            }
+            m_build_tool.render_overlay(*this, cmd_buffer, width, height);
+        }
+
+        if (view_state == DOM_UI_VIEW_TRANSIT) {
+            DomUiViewParams params;
+            params.buf = cmd_buffer;
+            params.width = width;
+            params.height = height;
+            params.fidelity = fidelity;
+            params.alpha = 255u;
+            params.clear = render_local ? 0 : 1;
+            dom_ui_render_transit_view(&params,
+                                       transit,
+                                       runtime_snapshot ? &runtime_snapshot->runtime : 0);
+        } else if (draw_map) {
+            DomUiViewParams params;
+            params.buf = cmd_buffer;
+            params.width = width;
+            params.height = height;
+            params.fidelity = fidelity;
+
+            if (transition_active) {
+                const u8 alpha = dom_ui_state_transition_alpha(&m_ui_state);
+                if (local_involved) {
+                    if (from_view == DOM_UI_VIEW_LOCAL) {
+                        params.alpha = alpha;
+                        params.clear = 0;
+                        switch (to_view) {
+                        case DOM_UI_VIEW_PLANET_MAP:
+                            dom_ui_render_planet_map(&params, surface, bodies);
+                            break;
+                        case DOM_UI_VIEW_SYSTEM_MAP:
+                            dom_ui_render_system_map(&params, bodies);
+                            break;
+                        case DOM_UI_VIEW_GALAXY_MAP:
+                            dom_ui_render_galaxy_map(&params, cosmo);
+                            break;
+                        case DOM_UI_VIEW_COSMOS_MAP:
+                            dom_ui_render_cosmos_map(&params, cosmo);
+                            break;
+                        default:
+                            break;
+                        }
+                    } else if (to_view == DOM_UI_VIEW_LOCAL) {
+                        params.alpha = (u8)(255u - alpha);
+                        params.clear = 0;
+                        switch (from_view) {
+                        case DOM_UI_VIEW_PLANET_MAP:
+                            dom_ui_render_planet_map(&params, surface, bodies);
+                            break;
+                        case DOM_UI_VIEW_SYSTEM_MAP:
+                            dom_ui_render_system_map(&params, bodies);
+                            break;
+                        case DOM_UI_VIEW_GALAXY_MAP:
+                            dom_ui_render_galaxy_map(&params, cosmo);
+                            break;
+                        case DOM_UI_VIEW_COSMOS_MAP:
+                            dom_ui_render_cosmos_map(&params, cosmo);
+                            break;
+                        default:
+                            break;
+                        }
+                    }
+                } else {
+                    params.alpha = (u8)(255u - alpha);
+                    params.clear = 1;
+                    switch (from_view) {
+                    case DOM_UI_VIEW_PLANET_MAP:
+                        dom_ui_render_planet_map(&params, surface, bodies);
+                        break;
+                    case DOM_UI_VIEW_SYSTEM_MAP:
+                        dom_ui_render_system_map(&params, bodies);
+                        break;
+                    case DOM_UI_VIEW_GALAXY_MAP:
+                        dom_ui_render_galaxy_map(&params, cosmo);
+                        break;
+                    case DOM_UI_VIEW_COSMOS_MAP:
+                        dom_ui_render_cosmos_map(&params, cosmo);
+                        break;
+                    default:
+                        break;
+                    }
+                    params.alpha = alpha;
+                    params.clear = 0;
+                    switch (to_view) {
+                    case DOM_UI_VIEW_PLANET_MAP:
+                        dom_ui_render_planet_map(&params, surface, bodies);
+                        break;
+                    case DOM_UI_VIEW_SYSTEM_MAP:
+                        dom_ui_render_system_map(&params, bodies);
+                        break;
+                    case DOM_UI_VIEW_GALAXY_MAP:
+                        dom_ui_render_galaxy_map(&params, cosmo);
+                        break;
+                    case DOM_UI_VIEW_COSMOS_MAP:
+                        dom_ui_render_cosmos_map(&params, cosmo);
+                        break;
+                    default:
+                        break;
+                    }
+                }
+            } else {
+                params.alpha = 255u;
+                params.clear = render_local ? 0 : 1;
+                switch (view_state) {
+                case DOM_UI_VIEW_PLANET_MAP:
+                    dom_ui_render_planet_map(&params, surface, bodies);
+                    break;
+                case DOM_UI_VIEW_SYSTEM_MAP:
+                    dom_ui_render_system_map(&params, bodies);
+                    break;
+                case DOM_UI_VIEW_GALAXY_MAP:
+                    dom_ui_render_galaxy_map(&params, cosmo);
+                    break;
+                case DOM_UI_VIEW_COSMOS_MAP:
+                    dom_ui_render_cosmos_map(&params, cosmo);
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+
+        if (surface) {
+            dom_game_runtime_release_surface_view_snapshot(surface);
+        }
+        if (bodies) {
+            dom_game_runtime_release_body_list_snapshot(bodies);
+        }
+        if (cosmo) {
+            dom_game_runtime_release_cosmo_map_snapshot(cosmo);
+        }
+        if (transit) {
+            dom_game_runtime_release_cosmo_transit_snapshot(transit);
+        }
+        if (runtime_snapshot) {
+            dom_game_runtime_release_snapshot(runtime_snapshot);
         }
     }
-    m_build_tool.render_overlay(*this, cmd_buffer, width, height);
     dui_layout(&m_ui_ctx, &root_rect);
     dui_render(&m_ui_ctx, &frame);
 
