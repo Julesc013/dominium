@@ -2326,6 +2326,9 @@ void DomGameApp::process_input_events() {
     d_sys_event ev;
     while (d_system_poll_event(&ev) > 0) {
         int build_consumed = 0;
+        int ui_consumed = 0;
+        const bool in_session = (m_phase.phase == DOM_GAME_PHASE_SESSION_LOADING ||
+                                 m_phase.phase == DOM_GAME_PHASE_IN_SESSION);
         if (ev.type == D_SYS_EVENT_QUIT) {
             m_running = false;
             break;
@@ -2383,10 +2386,15 @@ void DomGameApp::process_input_events() {
                 }
             }
             if (ev.type == D_SYS_EVENT_KEY_DOWN) {
-                build_consumed = m_build_tool.handle_event(*this, ev);
+                if (in_session) {
+                    ui_consumed = dom_ui_state_handle_input(&m_ui_state, &ev);
+                }
+                if (!ui_consumed) {
+                    build_consumed = m_build_tool.handle_event(*this, ev);
+                }
             }
         }
-        if (!build_consumed) {
+        if (!build_consumed && !ui_consumed) {
             m_camera.handle_input(ev);
         } else if (ev.type == D_SYS_EVENT_KEY_UP) {
             m_camera.handle_input(ev);
