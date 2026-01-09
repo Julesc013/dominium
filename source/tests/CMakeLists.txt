@@ -1607,6 +1607,28 @@ set_target_properties(dgfx_caps_contract_test PROPERTIES
 
 add_test(NAME dgfx_caps_contract_test COMMAND dgfx_caps_contract_test)
 
+add_executable(dgfx_stall_watchdog_test
+    ../../tests/domino_gfx/test_dgfx_stall_watchdog.c
+)
+
+target_include_directories(dgfx_stall_watchdog_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../source/domino
+)
+
+target_link_libraries(dgfx_stall_watchdog_test
+    domino_core
+)
+
+set_target_properties(dgfx_stall_watchdog_test PROPERTIES
+    C_STANDARD 90
+    C_STANDARD_REQUIRED ON
+    C_EXTENSIONS OFF
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
+)
+
+add_test(NAME dgfx_stall_watchdog_test COMMAND dgfx_stall_watchdog_test)
+
 add_executable(domino_sys_smoke
     domino_sys_smoke.c
 )

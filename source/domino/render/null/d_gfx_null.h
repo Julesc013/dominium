@@ -21,10 +21,10 @@ extern "C" {
 #endif
 
 const d_gfx_backend_soft *d_gfx_null_register_backend(void);
+void d_gfx_null_set_delay_ms(u32 submit_ms, u32 present_ms);
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif /* D_GFX_NULL_H */
-
