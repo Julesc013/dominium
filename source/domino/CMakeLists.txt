@@ -79,6 +79,7 @@ add_library(domino_core STATIC
     input/input.c
     input/ime.c
     caps/d_caps.c
+    caps/d_caps_export.c
     caps/d_caps_builtin.c
     state/state.c
     system/sys.c

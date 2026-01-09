@@ -16,6 +16,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md`.
 
 #include "domino/config_base.h"
 #include "domino/gfx.h"
+#include "render/d_gfx_caps.h"
 #include "render/dgfx_trace.h"
 
 static d_gfx_color dgfx_color(u8 a, u8 r, u8 g, u8 b)
@@ -68,13 +69,16 @@ static void dgfx_emit_scene(d_gfx_cmd_buffer *buf)
     d_gfx_cmd_draw_text(buf, &text);
 }
 
-static int dgfx_run_backend(const char *backend_name, u64 frame_id, u64 *out_hash)
+static int dgfx_run_backend(const char *backend_name, u64 frame_id, u64 *out_hash, u32 *out_mask)
 {
     d_gfx_cmd_buffer *buf;
     dgfx_trace_blob blob;
     if (!d_gfx_init(backend_name)) {
         fprintf(stderr, "dgfx_conformance: backend '%s' not available\n", backend_name);
         return 0;
+    }
+    if (out_mask) {
+        *out_mask = d_gfx_get_opcode_mask();
     }
 
     buf = d_gfx_cmd_buffer_begin();
@@ -104,22 +108,31 @@ static int dgfx_run_backend(const char *backend_name, u64 frame_id, u64 *out_has
     return 1;
 }
 
-static int dgfx_compare_backend(const char *backend_name, u64 frame_id, u64 *io_ref_hash, int *io_ref_set)
+static int dgfx_compare_backend(const char *backend_name,
+                                u64 frame_id,
+                                u64 *io_ref_hash,
+                                u32 *io_ref_mask,
+                                int *io_ref_set)
 {
     u64 hash = 0u;
-    int r = dgfx_run_backend(backend_name, frame_id, &hash);
+    u32 mask = 0u;
+    int r = dgfx_run_backend(backend_name, frame_id, &hash, &mask);
     if (r < 0) {
         return 1;
     }
     if (r == 0) {
         return 0;
     }
-    if (!io_ref_set || !io_ref_hash) {
+    if (!io_ref_set || !io_ref_hash || !io_ref_mask) {
         return 1;
     }
     if (!(*io_ref_set)) {
         *io_ref_hash = hash;
+        *io_ref_mask = mask;
         *io_ref_set = 1;
+        return 0;
+    }
+    if (mask != *io_ref_mask) {
         return 0;
     }
     if (hash != *io_ref_hash) {
@@ -132,30 +145,31 @@ static int dgfx_compare_backend(const char *backend_name, u64 frame_id, u64 *io_
 int main(void)
 {
     u64 ref_hash = 0u;
+    u32 ref_mask = 0u;
     int ref_set = 0;
     int failures = 0;
     const u64 frame_id = 1u;
 
 #if DOM_BACKEND_SOFT
-    failures += dgfx_compare_backend("soft", frame_id, &ref_hash, &ref_set);
+    failures += dgfx_compare_backend("soft", frame_id, &ref_hash, &ref_mask, &ref_set);
 #endif
 #if DOM_BACKEND_NULL
-    failures += dgfx_compare_backend("null", frame_id, &ref_hash, &ref_set);
+    failures += dgfx_compare_backend("null", frame_id, &ref_hash, &ref_mask, &ref_set);
 #endif
 #if DOM_BACKEND_DX9
-    failures += dgfx_compare_backend("dx9", frame_id, &ref_hash, &ref_set);
+    failures += dgfx_compare_backend("dx9", frame_id, &ref_hash, &ref_mask, &ref_set);
 #endif
 #if DOM_BACKEND_DX11
-    failures += dgfx_compare_backend("dx11", frame_id, &ref_hash, &ref_set);
+    failures += dgfx_compare_backend("dx11", frame_id, &ref_hash, &ref_mask, &ref_set);
 #endif
 #if DOM_BACKEND_GL2
-    failures += dgfx_compare_backend("gl2", frame_id, &ref_hash, &ref_set);
+    failures += dgfx_compare_backend("gl2", frame_id, &ref_hash, &ref_mask, &ref_set);
 #endif
 #if DOM_BACKEND_VK1
-    failures += dgfx_compare_backend("vk1", frame_id, &ref_hash, &ref_set);
+    failures += dgfx_compare_backend("vk1", frame_id, &ref_hash, &ref_mask, &ref_set);
 #endif
 #if DOM_BACKEND_METAL
-    failures += dgfx_compare_backend("metal", frame_id, &ref_hash, &ref_set);
+    failures += dgfx_compare_backend("metal", frame_id, &ref_hash, &ref_mask, &ref_set);
 #endif
 
     if (!ref_set) {
