@@ -151,3 +151,8 @@ dominium_add_tool_exe(dominium-universe-editor "tool_universe_editor"
     universe_editor/ue_commands.cpp
     universe_editor/ue_queries.cpp
 )
+
+dominium_add_tool_exe(dominium-validator "tool_validator"
+    validator/validator_main.cpp
+    validator/validator_checks.cpp
+)
