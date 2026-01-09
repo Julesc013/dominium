@@ -229,6 +229,100 @@ static dom_tick dom_orbit_ticks_from_turns(dom_tick period_ticks, q16_16 delta_t
     return hi + lo;
 }
 
+static dom_tick dom_tick_add_clamp(dom_tick a, dom_tick b) {
+    if (UINT64_MAX - a < b) {
+        return UINT64_MAX;
+    }
+    return a + b;
+}
+
+static q48_16 dom_orbit_radius_at_tick(const dom_orbit_state *orbit,
+                                       dom_tick tick,
+                                       int *out_ok) {
+    dom_orbit_posvel posvel;
+    if (!orbit || !out_ok) {
+        return 0;
+    }
+    *out_ok = 0;
+    if (dom_orbit_eval_state(orbit, tick, &posvel) != DOM_ORBIT_LANE_OK) {
+        return 0;
+    }
+    i64 rx = d_q48_16_to_int(posvel.pos.x);
+    i64 ry = d_q48_16_to_int(posvel.pos.y);
+    i64 rz = d_q48_16_to_int(posvel.pos.z);
+    dom_u128 r2_sum = dom_vec3_square_sum(rx, ry, rz);
+    u64 r2 = dom_u128_to_u64_clamp(&r2_sum);
+    u64 r = dom_sqrt_u64(r2);
+    *out_ok = 1;
+    return d_q48_16_from_int((i64)r);
+}
+
+static q48_16 dom_orbit_periapsis_radius(const dom_orbit_state *orbit) {
+    q16_16 one = d_q16_16_from_int(1);
+    q16_16 one_minus_e = d_q16_16_sub(one, orbit->eccentricity);
+    return d_q48_16_mul(orbit->semi_major_axis_m, d_q48_16_from_q16_16(one_minus_e));
+}
+
+static q48_16 dom_orbit_apoapsis_radius(const dom_orbit_state *orbit) {
+    q16_16 one = d_q16_16_from_int(1);
+    q16_16 one_plus_e = d_q16_16_add(one, orbit->eccentricity);
+    return d_q48_16_mul(orbit->semi_major_axis_m, d_q48_16_from_q16_16(one_plus_e));
+}
+
+static int dom_orbit_find_crossing(const dom_orbit_state *orbit,
+                                   dom_tick start_tick,
+                                   dom_tick end_tick,
+                                   q48_16 boundary,
+                                   int entering,
+                                   dom_tick *out_tick) {
+    if (!orbit || !out_tick || end_tick <= start_tick) {
+        return DOM_ORBIT_LANE_INVALID_ARGUMENT;
+    }
+    int ok_start = 0;
+    int ok_end = 0;
+    q48_16 r_start = dom_orbit_radius_at_tick(orbit, start_tick, &ok_start);
+    q48_16 r_end = dom_orbit_radius_at_tick(orbit, end_tick, &ok_end);
+    if (!ok_start || !ok_end) {
+        return DOM_ORBIT_LANE_INVALID_STATE;
+    }
+
+    if (entering) {
+        if (r_start < boundary || r_end > boundary) {
+            return DOM_ORBIT_LANE_NOT_IMPLEMENTED;
+        }
+    } else {
+        if (r_start > boundary || r_end < boundary) {
+            return DOM_ORBIT_LANE_NOT_IMPLEMENTED;
+        }
+    }
+
+    dom_tick lo = start_tick;
+    dom_tick hi = end_tick;
+    while (hi > lo + 1u) {
+        dom_tick mid = lo + ((hi - lo) >> 1);
+        int ok_mid = 0;
+        q48_16 r_mid = dom_orbit_radius_at_tick(orbit, mid, &ok_mid);
+        if (!ok_mid) {
+            return DOM_ORBIT_LANE_INVALID_STATE;
+        }
+        if (entering) {
+            if (r_mid <= boundary) {
+                hi = mid;
+            } else {
+                lo = mid;
+            }
+        } else {
+            if (r_mid >= boundary) {
+                hi = mid;
+            } else {
+                lo = mid;
+            }
+        }
+    }
+    *out_tick = hi;
+    return DOM_ORBIT_LANE_OK;
+}
+
 int dom_orbit_state_validate(const dom_orbit_state *orbit) {
     if (!orbit) {
         return DOM_ORBIT_LANE_INVALID_ARGUMENT;
@@ -531,6 +625,60 @@ int dom_orbit_next_event(const dom_orbit_state *orbit,
         return DOM_ORBIT_LANE_INVALID_STATE;
     }
 
+    if (kind == DOM_ORBIT_EVENT_ATMOS_ENTER ||
+        kind == DOM_ORBIT_EVENT_ATMOS_EXIT) {
+        if (orbit->body_radius_m <= 0 || orbit->atmosphere_top_alt_m <= 0) {
+            return DOM_ORBIT_LANE_NOT_IMPLEMENTED;
+        }
+        q48_16 boundary = d_q48_16_add(orbit->body_radius_m,
+                                       orbit->atmosphere_top_alt_m);
+        q48_16 r_peri = dom_orbit_periapsis_radius(orbit);
+        q48_16 r_apo = dom_orbit_apoapsis_radius(orbit);
+        if (boundary <= r_peri || boundary >= r_apo) {
+            return DOM_ORBIT_LANE_NOT_IMPLEMENTED;
+        }
+        dom_tick t_peri = 0u;
+        dom_tick t_apo = 0u;
+        if (dom_orbit_next_event(orbit, tick, DOM_ORBIT_EVENT_PERIAPSIS, &t_peri)
+            != DOM_ORBIT_LANE_OK) {
+            return DOM_ORBIT_LANE_INVALID_STATE;
+        }
+        if (dom_orbit_next_event(orbit, tick, DOM_ORBIT_EVENT_APOAPSIS, &t_apo)
+            != DOM_ORBIT_LANE_OK) {
+            return DOM_ORBIT_LANE_INVALID_STATE;
+        }
+
+        dom_tick inc_start = 0u;
+        dom_tick inc_end = 0u;
+        dom_tick dec_start = 0u;
+        dom_tick dec_end = 0u;
+        if (t_peri <= t_apo) {
+            inc_start = t_peri;
+            inc_end = t_apo;
+            dec_start = t_apo;
+            dec_end = dom_tick_add_clamp(t_peri, period_ticks);
+        } else {
+            dec_start = t_apo;
+            dec_end = t_peri;
+            inc_start = t_peri;
+            inc_end = dom_tick_add_clamp(t_apo, period_ticks);
+        }
+
+        int entering = (kind == DOM_ORBIT_EVENT_ATMOS_ENTER) ? 1 : 0;
+        dom_tick start = entering ? dec_start : inc_start;
+        dom_tick end = entering ? dec_end : inc_end;
+        if (start < tick) {
+            start = tick;
+        }
+        int rc = dom_orbit_find_crossing(orbit, start, end, boundary, entering, out_tick);
+        if (rc == DOM_ORBIT_LANE_OK) {
+            return rc;
+        }
+        dom_tick start2 = dom_tick_add_clamp(start, period_ticks);
+        dom_tick end2 = dom_tick_add_clamp(end, period_ticks);
+        return dom_orbit_find_crossing(orbit, start2, end2, boundary, entering, out_tick);
+    }
+
     q16_16 target_turn = 0;
     switch (kind) {
         case DOM_ORBIT_EVENT_PERIAPSIS:
@@ -547,6 +695,9 @@ int dom_orbit_next_event(const dom_orbit_state *orbit,
             return DOM_ORBIT_LANE_NOT_IMPLEMENTED;
         case DOM_ORBIT_EVENT_ASC_NODE:
         case DOM_ORBIT_EVENT_DESC_NODE:
+            return DOM_ORBIT_LANE_NOT_IMPLEMENTED;
+        case DOM_ORBIT_EVENT_ATMOS_ENTER:
+        case DOM_ORBIT_EVENT_ATMOS_EXIT:
             return DOM_ORBIT_LANE_NOT_IMPLEMENTED;
         default:
             return DOM_ORBIT_LANE_INVALID_ARGUMENT;
@@ -585,7 +736,7 @@ int dom_orbit_next_any_event(const dom_orbit_state *orbit,
     dom_tick best_tick = 0u;
 
     for (u32 k = (u32)DOM_ORBIT_EVENT_PERIAPSIS;
-         k <= (u32)DOM_ORBIT_EVENT_DESC_NODE;
+         k <= (u32)DOM_ORBIT_EVENT_ATMOS_EXIT;
          ++k) {
         dom_orbit_event_kind kind = (dom_orbit_event_kind)k;
         if ((mask & DOM_ORBIT_EVENT_MASK(kind)) == 0u) {
