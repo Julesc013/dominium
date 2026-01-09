@@ -337,6 +337,9 @@ int print_selection(const dom_profile &profile, FILE *out, FILE *err) {
     std::memset(logbuf, 0, sizeof(logbuf));
     (void)dom_caps_get_audit_log(&sel, logbuf, &len);
     std::fwrite(logbuf, 1u, static_cast<size_t>(len), out);
+    if (dom_caps_write_capabilities_tlv(&sel, "capabilities.tlv") != DOM_CAPS_OK) {
+        std::fprintf(err, "caps: capabilities.tlv write failed\n");
+    }
 
     return (r == DOM_CAPS_OK) ? 0 : 1;
 }

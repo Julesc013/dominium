@@ -199,6 +199,13 @@ dom_caps_result dom_caps_get_audit_log(const dom_selection* sel,
                                        char* buf,
                                        u32* io_len);
 
+/* Purpose: Write capabilities export to a DTLV file.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
+dom_caps_result dom_caps_write_capabilities_tlv(const dom_selection* sel,
+                                                const char* path);
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif

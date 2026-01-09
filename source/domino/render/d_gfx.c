@@ -15,6 +15,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include <string.h>
 
 #include "domino/gfx.h"
+#include "render/d_gfx_caps.h"
 #include "render/dgfx_trace.h"
 #include "domino/caps.h"
 #include "domino/config_base.h"
@@ -32,6 +33,7 @@ static i32 g_backbuffer_w = 800;
 static i32 g_backbuffer_h = 600;
 static void* g_native_window = 0;
 static const char* g_backend_name = 0;
+static u32 g_backend_op_mask = 0u;
 
 static const d_gfx_backend_soft *g_backend = 0;
 static d_gfx_cmd_buffer g_frame_cmd_buffer;
@@ -73,6 +75,40 @@ static void dgfx_trace_record_bbox(i32 min_x, i32 min_y, i32 max_x, i32 max_y)
     dgfx_trace_write_i32(buf + 8, max_x);
     dgfx_trace_write_i32(buf + 12, max_y);
     dgfx_trace_record_backend_event(DGFX_TRACE_EVENT_BBOX, buf, 16u);
+}
+
+static u32 dgfx_caps_mask_for_backend(const char* name)
+{
+    if (!name || !name[0]) {
+        return 0u;
+    }
+    if (strcmp(name, "null") == 0) {
+        return 0u;
+    }
+    return DGFX_CAP_OP_ALL;
+}
+
+static int dgfx_opcode_supported(u32 opcode)
+{
+    if (opcode >= 32u) {
+        return 0;
+    }
+    return (g_backend_op_mask & (1u << opcode)) != 0u;
+}
+
+u32 d_gfx_get_opcode_mask(void)
+{
+    return g_backend_op_mask;
+}
+
+u32 d_gfx_get_opcode_mask_for_backend(const char* name)
+{
+    return dgfx_caps_mask_for_backend(name);
+}
+
+const char* d_gfx_get_backend_name(void)
+{
+    return g_backend_name ? g_backend_name : "";
 }
 
 static void dgfx_trace_text_metrics(const char *text, u32 *out_glyphs, i32 *out_w, i32 *out_h)
@@ -305,6 +341,10 @@ static void dgfx_trace_metrics(const d_gfx_cmd_buffer *buf)
 
     for (i = 0u; i < buf->count; ++i) {
         const d_gfx_cmd *cmd = buf->cmds + i;
+        if (!dgfx_opcode_supported((u32)cmd->opcode)) {
+            rejected += 1u;
+            continue;
+        }
         switch (cmd->opcode) {
         case D_GFX_OP_CLEAR:
         case D_GFX_OP_SET_VIEWPORT:
@@ -583,6 +623,7 @@ int d_gfx_init(const char *backend_name)
 {
     const d_gfx_backend_soft *chosen;
     const int have_request = (backend_name && backend_name[0]) ? 1 : 0;
+    const char* chosen_name = 0;
     chosen = (const d_gfx_backend_soft*)0;
 
 #if DOM_BACKEND_SOFT
@@ -592,60 +633,70 @@ int d_gfx_init(const char *backend_name)
 #if DOM_BACKEND_NULL
     if (have_request && strcmp(backend_name, "null") == 0) {
         chosen = d_gfx_null_register_backend();
+        chosen_name = "null";
     }
 #endif
 
 #if DOM_BACKEND_SOFT
     if ((have_request && strcmp(backend_name, "soft") == 0) && !chosen) {
         chosen = d_gfx_soft_register_backend();
+        chosen_name = "soft";
     }
 #endif
 
 #if DOM_BACKEND_DX9
     if (have_request && strcmp(backend_name, "dx9") == 0) {
         chosen = d_gfx_dx9_register_backend();
+        chosen_name = "dx9";
     }
 #endif
 
 #if DOM_BACKEND_DX11
     if (have_request && strcmp(backend_name, "dx11") == 0) {
         chosen = d_gfx_dx11_register_backend();
+        chosen_name = "dx11";
     }
 #endif
 
 #if DOM_BACKEND_GL2
     if (have_request && strcmp(backend_name, "gl2") == 0) {
         chosen = d_gfx_gl2_register_backend();
+        chosen_name = "gl2";
     }
 #endif
 
 #if DOM_BACKEND_VK1
     if (have_request && strcmp(backend_name, "vk1") == 0) {
         chosen = d_gfx_vk1_register_backend();
+        chosen_name = "vk1";
     }
 #endif
 
 #if DOM_BACKEND_METAL
     if (have_request && strcmp(backend_name, "metal") == 0) {
         chosen = d_gfx_metal_register_backend();
+        chosen_name = "metal";
     }
 #endif
 
 #if DOM_BACKEND_SOFT
     if (!have_request && !chosen) {
         chosen = d_gfx_soft_register_backend();
+        chosen_name = "soft";
     }
 #endif
 
 #if DOM_BACKEND_DX9
     if (!have_request && !chosen) {
         chosen = d_gfx_dx9_register_backend();
+        chosen_name = "dx9";
     }
 #endif
 
 #if DOM_BACKEND_NULL
     if (!have_request && !chosen) {
         chosen = d_gfx_null_register_backend();
+        chosen_name = "null";
     }
 #endif
 
@@ -660,7 +711,8 @@ int d_gfx_init(const char *backend_name)
         return 0;
     }
     g_backend = chosen;
-    g_backend_name = have_request ? backend_name : "soft";
+    g_backend_name = chosen_name ? chosen_name : (have_request ? backend_name : "soft");
+    g_backend_op_mask = dgfx_caps_mask_for_backend(g_backend_name);
     return 1;
 }
 
@@ -671,6 +723,7 @@ void d_gfx_shutdown(void)
     }
     g_backend = 0;
     g_backend_name = 0;
+    g_backend_op_mask = 0u;
     if (g_frame_cmd_buffer.cmds) {
         free(g_frame_cmd_buffer.cmds);
         g_frame_cmd_buffer.cmds = (d_gfx_cmd *)0;
@@ -753,7 +806,27 @@ void d_gfx_submit(d_gfx_cmd_buffer *buf)
     dgfx_trace_build_ir(buf);
     dgfx_trace_metrics(buf);
     if (g_backend && g_backend->submit_cmd_buffer) {
-        g_backend->submit_cmd_buffer(buf);
+        if (buf && buf->cmds && buf->count > 0u && g_backend_op_mask != DGFX_CAP_OP_ALL) {
+            d_gfx_cmd_buffer filtered;
+            filtered.count = 0u;
+            filtered.capacity = buf->count;
+            filtered.cmds = (d_gfx_cmd*)malloc(sizeof(d_gfx_cmd) * (size_t)buf->count);
+            if (filtered.cmds) {
+                u32 i;
+                for (i = 0u; i < buf->count; ++i) {
+                    const d_gfx_cmd *cmd = buf->cmds + i;
+                    if (dgfx_opcode_supported((u32)cmd->opcode)) {
+                        filtered.cmds[filtered.count++] = *cmd;
+                    }
+                }
+                if (filtered.count > 0u) {
+                    g_backend->submit_cmd_buffer(&filtered);
+                }
+                free(filtered.cmds);
+            }
+        } else {
+            g_backend->submit_cmd_buffer(buf);
+        }
     }
     dgfx_trace_record_backend_event(DGFX_TRACE_EVENT_BACKEND_SUBMIT_END, 0, 0u);
 }
