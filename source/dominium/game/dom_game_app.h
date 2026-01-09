@@ -33,6 +33,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "runtime/dom_derived_jobs.h"
 #include "runtime/dom_snapshot.h"
 #include "runtime/dom_fidelity.h"
+#include "ui/dom_ui_state.h"
 
 extern "C" {
 #include "view/d_view.h"
@@ -169,6 +170,7 @@ private:
 
     d_view_id    m_main_view_id;
     dui_context  m_ui_ctx;
+    DomUiState   m_ui_state;
 
     DomGamePhaseCtx m_phase;
     DomGamePhaseAction m_phase_action;

@@ -806,6 +806,7 @@ DomGameApp::DomGameApp()
     std::memset(&m_cfg, 0, sizeof(m_cfg));
     std::memset(&m_fidelity, 0, sizeof(m_fidelity));
     std::memset(&m_last_net_snapshot, 0, sizeof(m_last_net_snapshot));
+    dom_ui_state_init(&m_ui_state);
 }
 
 DomGameApp::~DomGameApp() {
@@ -868,6 +869,7 @@ bool DomGameApp::init_from_cli(const dom_game_config &cfg) {
     m_session_start_failed = false;
     m_session_start_error.clear();
     dom_game_phase_init(m_phase);
+    dom_ui_state_reset(&m_ui_state);
     if (m_mode == GAME_MODE_HEADLESS) {
         m_phase.splash_min_ms = HEADLESS_SPLASH_MIN_MS;
     }
@@ -1598,6 +1600,7 @@ bool DomGameApp::start_session(DomGamePhaseAction action, std::string &out_error
 void DomGameApp::handle_phase_enter(DomGamePhaseId prev_phase, DomGamePhaseId next_phase) {
     if (next_phase == DOM_GAME_PHASE_SPLASH) {
         dom_game_ui_build_splash(m_ui_ctx);
+        dom_ui_state_reset(&m_ui_state);
         if (!m_bootstrap_started) {
             m_bootstrap_started = true;
             if (!init_session(m_cfg)) {
@@ -1609,6 +1612,7 @@ void DomGameApp::handle_phase_enter(DomGamePhaseId prev_phase, DomGamePhaseId ne
         return;
     }
     if (next_phase == DOM_GAME_PHASE_MAIN_MENU) {
+        dom_ui_state_reset(&m_ui_state);
         if (prev_phase == DOM_GAME_PHASE_SESSION_LOADING ||
             prev_phase == DOM_GAME_PHASE_IN_SESSION) {
             if (m_net_driver) {
@@ -1634,6 +1638,7 @@ void DomGameApp::handle_phase_enter(DomGamePhaseId prev_phase, DomGamePhaseId ne
     if (next_phase == DOM_GAME_PHASE_SESSION_START) {
         std::string err;
         dom_game_ui_build_session_loading(m_ui_ctx);
+        dom_ui_state_reset(&m_ui_state);
         if (!start_session(m_phase.session_action, err)) {
             std::fprintf(stderr, "DomGameApp: session start failed (%s)\n", err.c_str());
             m_session_start_failed = true;
@@ -1649,6 +1654,7 @@ void DomGameApp::handle_phase_enter(DomGamePhaseId prev_phase, DomGamePhaseId ne
     }
     if (next_phase == DOM_GAME_PHASE_SESSION_LOADING) {
         dom_game_ui_build_session_loading(m_ui_ctx);
+        dom_ui_state_reset(&m_ui_state);
         return;
     }
     if (next_phase == DOM_GAME_PHASE_IN_SESSION) {
@@ -1656,6 +1662,7 @@ void DomGameApp::handle_phase_enter(DomGamePhaseId prev_phase, DomGamePhaseId ne
             m_headless_reached_session = true;
         }
         dom_game_ui_build_in_game(m_ui_ctx);
+        dom_ui_state_reset(&m_ui_state);
         return;
     }
     if (next_phase == DOM_GAME_PHASE_SHUTDOWN) {
@@ -1934,6 +1941,25 @@ void DomGameApp::tick_fixed() {
         dt_ms = 1u;
     }
     update_phase(dt_ms);
+
+    if (m_mode != GAME_MODE_HEADLESS) {
+        const bool in_session = (m_phase.phase == DOM_GAME_PHASE_SESSION_LOADING ||
+                                 m_phase.phase == DOM_GAME_PHASE_IN_SESSION);
+        if (in_session) {
+            int transit_active = 0;
+            if (m_runtime) {
+                dom_cosmo_transit_snapshot *transit =
+                    dom_game_runtime_build_cosmo_transit_snapshot(m_runtime);
+                if (transit) {
+                    transit_active = transit->transit_active ? 1 : 0;
+                }
+                dom_game_runtime_release_cosmo_transit_snapshot(transit);
+            }
+            dom_ui_state_tick(&m_ui_state, dt_ms, transit_active);
+        } else {
+            dom_ui_state_reset(&m_ui_state);
+        }
+    }
 
     if (m_mode == GAME_MODE_HEADLESS && dt_ms > 0u) {
         m_headless_elapsed_ms += dt_ms;
