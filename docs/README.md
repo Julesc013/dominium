@@ -33,3 +33,4 @@ Recommended entry points:
 - Universe model + spacetime: `docs/SPEC_UNIVERSE_MODEL.md`, `docs/SPEC_SPACETIME.md`,
   `docs/SPEC_REFERENCE_FRAMES.md`, `docs/SPEC_ORBITS_TIMEWARP.md`, `docs/SPEC_CALENDARS.md`
 - Universe portability + migrations: `docs/SPEC_UNIVERSE_BUNDLE.md`, `docs/SPEC_MIGRATIONS.md`
+- Renderer conformance: `docs/SPEC_DGFX_IR_VERSIONING.md`, `docs/SPEC_BACKEND_CONFORMANCE.md`
