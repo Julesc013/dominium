@@ -37,6 +37,7 @@ add_executable(dominium_game
     runtime/dom_universe_bundle.cpp
     runtime/dom_media_provider.cpp
     runtime/dom_atmos_provider.cpp
+    runtime/dom_atmos_provider_profile_v1.cpp
     runtime/dom_ocean_provider.cpp
     runtime/dom_weather_provider.cpp
     runtime/dom_frames.cpp
