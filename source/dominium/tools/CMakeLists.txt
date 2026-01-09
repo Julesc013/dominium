@@ -145,3 +145,9 @@ dominium_add_tool_exe(dominium-net-inspector "tool_net_inspector"
 dominium_add_tool_exe(dominium-tools-demo-gen "tool_tools_demo_gen"
     demo_gen/main_tools_demo_gen.cpp
 )
+
+dominium_add_tool_exe(dominium-universe-editor "tool_universe_editor"
+    universe_editor/ue_main.cpp
+    universe_editor/ue_commands.cpp
+    universe_editor/ue_queries.cpp
+)
