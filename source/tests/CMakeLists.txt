@@ -602,6 +602,226 @@ set_target_properties(dom_logistics_save_load_roundtrip_test PROPERTIES
 
 add_test(NAME dom_logistics_save_load_roundtrip_test COMMAND dom_logistics_save_load_roundtrip_test)
 
+add_executable(dom_ai_determinism_same_seed_test
+    dom_ai_determinism_same_seed_test.cpp
+    ../dominium/game/runtime/dom_game_runtime.cpp
+    ../dominium/game/runtime/dom_system_registry.cpp
+    ../dominium/game/runtime/dom_body_registry.cpp
+    ../dominium/game/runtime/dom_frames.cpp
+    ../dominium/game/runtime/dom_lane_scheduler.cpp
+    ../dominium/game/runtime/dom_surface_chunks.cpp
+    ../dominium/game/runtime/dom_derived_jobs.cpp
+    ../dominium/game/runtime/dom_surface_topology.cpp
+    ../dominium/game/runtime/dom_surface_topology_sphere.cpp
+    ../dominium/game/runtime/dom_surface_topology_ellipsoid.cpp
+    ../dominium/game/runtime/dom_surface_topology_torus.cpp
+    ../dominium/game/runtime/dom_surface_height.cpp
+    ../dominium/game/runtime/dom_construction_registry.cpp
+    ../dominium/game/runtime/dom_station_registry.cpp
+    ../dominium/game/runtime/dom_route_graph.cpp
+    ../dominium/game/runtime/dom_transfer_scheduler.cpp
+    ../dominium/game/runtime/dom_production.cpp
+    ../dominium/game/runtime/dom_macro_economy.cpp
+    ../dominium/game/runtime/dom_macro_events.cpp
+    ../dominium/game/runtime/dom_faction_registry.cpp
+    ../dominium/game/runtime/dom_ai_scheduler.cpp
+    ../dominium/game/runtime/dom_ai_planner_logistics.cpp
+    ../dominium/game/runtime/dom_ai_planner_events.cpp
+    ../dominium/game/runtime/dom_game_hash.c
+    ../dominium/game/runtime/dom_game_replay.cpp
+    ../dominium/game/runtime/dom_game_save.cpp
+    ../dominium/game/runtime/dom_game_content_id.cpp
+    ../dominium/game/runtime/dom_io_guard.cpp
+    ../dominium/game/runtime/dom_cosmo_graph.cpp
+    ../dominium/game/runtime/dom_cosmo_transit.cpp
+)
+
+target_include_directories(dom_ai_determinism_same_seed_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_ai_determinism_same_seed_test
+    dominium_common
+    core_tlv
+    domino_core
+)
+
+set_target_properties(dom_ai_determinism_same_seed_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_ai_determinism_same_seed_test COMMAND dom_ai_determinism_same_seed_test)
+
+add_executable(dom_ai_budget_behavior_test
+    dom_ai_budget_behavior_test.cpp
+    ../dominium/game/runtime/dom_game_runtime.cpp
+    ../dominium/game/runtime/dom_system_registry.cpp
+    ../dominium/game/runtime/dom_body_registry.cpp
+    ../dominium/game/runtime/dom_frames.cpp
+    ../dominium/game/runtime/dom_lane_scheduler.cpp
+    ../dominium/game/runtime/dom_surface_chunks.cpp
+    ../dominium/game/runtime/dom_derived_jobs.cpp
+    ../dominium/game/runtime/dom_surface_topology.cpp
+    ../dominium/game/runtime/dom_surface_topology_sphere.cpp
+    ../dominium/game/runtime/dom_surface_topology_ellipsoid.cpp
+    ../dominium/game/runtime/dom_surface_topology_torus.cpp
+    ../dominium/game/runtime/dom_surface_height.cpp
+    ../dominium/game/runtime/dom_construction_registry.cpp
+    ../dominium/game/runtime/dom_station_registry.cpp
+    ../dominium/game/runtime/dom_route_graph.cpp
+    ../dominium/game/runtime/dom_transfer_scheduler.cpp
+    ../dominium/game/runtime/dom_production.cpp
+    ../dominium/game/runtime/dom_macro_economy.cpp
+    ../dominium/game/runtime/dom_macro_events.cpp
+    ../dominium/game/runtime/dom_faction_registry.cpp
+    ../dominium/game/runtime/dom_ai_scheduler.cpp
+    ../dominium/game/runtime/dom_ai_planner_logistics.cpp
+    ../dominium/game/runtime/dom_ai_planner_events.cpp
+    ../dominium/game/runtime/dom_game_hash.c
+    ../dominium/game/runtime/dom_game_replay.cpp
+    ../dominium/game/runtime/dom_game_save.cpp
+    ../dominium/game/runtime/dom_game_content_id.cpp
+    ../dominium/game/runtime/dom_io_guard.cpp
+    ../dominium/game/runtime/dom_cosmo_graph.cpp
+    ../dominium/game/runtime/dom_cosmo_transit.cpp
+)
+
+target_include_directories(dom_ai_budget_behavior_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_ai_budget_behavior_test
+    dominium_common
+    core_tlv
+    domino_core
+)
+
+set_target_properties(dom_ai_budget_behavior_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_ai_budget_behavior_test COMMAND dom_ai_budget_behavior_test)
+
+add_executable(dom_ai_persistence_roundtrip_test
+    dom_ai_persistence_roundtrip_test.cpp
+    ../dominium/game/runtime/dom_game_runtime.cpp
+    ../dominium/game/runtime/dom_system_registry.cpp
+    ../dominium/game/runtime/dom_body_registry.cpp
+    ../dominium/game/runtime/dom_frames.cpp
+    ../dominium/game/runtime/dom_lane_scheduler.cpp
+    ../dominium/game/runtime/dom_surface_chunks.cpp
+    ../dominium/game/runtime/dom_derived_jobs.cpp
+    ../dominium/game/runtime/dom_surface_topology.cpp
+    ../dominium/game/runtime/dom_surface_topology_sphere.cpp
+    ../dominium/game/runtime/dom_surface_topology_ellipsoid.cpp
+    ../dominium/game/runtime/dom_surface_topology_torus.cpp
+    ../dominium/game/runtime/dom_surface_height.cpp
+    ../dominium/game/runtime/dom_construction_registry.cpp
+    ../dominium/game/runtime/dom_station_registry.cpp
+    ../dominium/game/runtime/dom_route_graph.cpp
+    ../dominium/game/runtime/dom_transfer_scheduler.cpp
+    ../dominium/game/runtime/dom_production.cpp
+    ../dominium/game/runtime/dom_macro_economy.cpp
+    ../dominium/game/runtime/dom_macro_events.cpp
+    ../dominium/game/runtime/dom_faction_registry.cpp
+    ../dominium/game/runtime/dom_ai_scheduler.cpp
+    ../dominium/game/runtime/dom_ai_planner_logistics.cpp
+    ../dominium/game/runtime/dom_ai_planner_events.cpp
+    ../dominium/game/runtime/dom_game_hash.c
+    ../dominium/game/runtime/dom_game_replay.cpp
+    ../dominium/game/runtime/dom_game_save.cpp
+    ../dominium/game/runtime/dom_game_content_id.cpp
+    ../dominium/game/runtime/dom_io_guard.cpp
+    ../dominium/game/runtime/dom_cosmo_graph.cpp
+    ../dominium/game/runtime/dom_cosmo_transit.cpp
+)
+
+target_include_directories(dom_ai_persistence_roundtrip_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_ai_persistence_roundtrip_test
+    dominium_common
+    core_tlv
+    domino_core
+)
+
+set_target_properties(dom_ai_persistence_roundtrip_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_ai_persistence_roundtrip_test COMMAND dom_ai_persistence_roundtrip_test)
+
+add_executable(dom_ai_replay_test
+    dom_ai_replay_test.cpp
+    ../dominium/game/runtime/dom_game_runtime.cpp
+    ../dominium/game/runtime/dom_system_registry.cpp
+    ../dominium/game/runtime/dom_body_registry.cpp
+    ../dominium/game/runtime/dom_frames.cpp
+    ../dominium/game/runtime/dom_lane_scheduler.cpp
+    ../dominium/game/runtime/dom_surface_chunks.cpp
+    ../dominium/game/runtime/dom_derived_jobs.cpp
+    ../dominium/game/runtime/dom_surface_topology.cpp
+    ../dominium/game/runtime/dom_surface_topology_sphere.cpp
+    ../dominium/game/runtime/dom_surface_topology_ellipsoid.cpp
+    ../dominium/game/runtime/dom_surface_topology_torus.cpp
+    ../dominium/game/runtime/dom_surface_height.cpp
+    ../dominium/game/runtime/dom_construction_registry.cpp
+    ../dominium/game/runtime/dom_station_registry.cpp
+    ../dominium/game/runtime/dom_route_graph.cpp
+    ../dominium/game/runtime/dom_transfer_scheduler.cpp
+    ../dominium/game/runtime/dom_production.cpp
+    ../dominium/game/runtime/dom_macro_economy.cpp
+    ../dominium/game/runtime/dom_macro_events.cpp
+    ../dominium/game/runtime/dom_faction_registry.cpp
+    ../dominium/game/runtime/dom_ai_scheduler.cpp
+    ../dominium/game/runtime/dom_ai_planner_logistics.cpp
+    ../dominium/game/runtime/dom_ai_planner_events.cpp
+    ../dominium/game/runtime/dom_game_hash.c
+    ../dominium/game/runtime/dom_game_replay.cpp
+    ../dominium/game/runtime/dom_game_save.cpp
+    ../dominium/game/runtime/dom_game_content_id.cpp
+    ../dominium/game/runtime/dom_io_guard.cpp
+    ../dominium/game/runtime/dom_cosmo_graph.cpp
+    ../dominium/game/runtime/dom_cosmo_transit.cpp
+)
+
+target_include_directories(dom_ai_replay_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_ai_replay_test
+    dominium_common
+    core_tlv
+    domino_core
+)
+
+set_target_properties(dom_ai_replay_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_ai_replay_test COMMAND dom_ai_replay_test)
+
 add_executable(dom_universe_bundle_systems_roundtrip_test
     dom_universe_bundle_systems_roundtrip_test.cpp
     ../dominium/game/runtime/dom_universe_bundle.cpp
