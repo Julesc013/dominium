@@ -359,6 +359,10 @@ void dom_ui_render_planet_map(const DomUiViewParams *params,
         dom_emit_line_h(params->buf, x0, x0 + size, height / 2, 1, outline);
         dom_emit_line_v(params->buf, width / 2, y0, y0 + size, 1, outline);
     }
+    if (params->fidelity >= DOM_FIDELITY_HIGH) {
+        d_gfx_color ring = dom_apply_alpha(dom_make_color(0x30u, 0x50u, 0x80u, 0xffu), params->alpha);
+        dom_emit_outline_rect(params->buf, x0 - 6, y0 - 6, size + 12, size + 12, 1, ring);
+    }
 
     if (surface && params->fidelity >= DOM_FIDELITY_MED && surface->chunk_count > 0u) {
         u32 i;
@@ -472,6 +476,15 @@ void dom_ui_render_transit_view(const DomUiViewParams *params,
     width = params->width;
     height = params->height;
     dom_ui_clear_if_needed(params, bg);
+
+    if (params->fidelity >= DOM_FIDELITY_MED) {
+        d_gfx_color star = dom_apply_alpha(dom_make_color(0xa0u, 0xa0u, 0xc0u, 0xffu), params->alpha);
+        dom_emit_rect(params->buf, width / 4, height / 3, 2, 2, star);
+        dom_emit_rect(params->buf, width / 2, height / 4, 2, 2, star);
+        dom_emit_rect(params->buf, (width * 3) / 4, height / 2, 2, 2, star);
+        dom_emit_rect(params->buf, width / 3, (height * 2) / 3, 2, 2, star);
+        dom_emit_rect(params->buf, (width * 2) / 3, (height * 3) / 4, 2, 2, star);
+    }
 
     if (transit && transit->transit_active && runtime) {
         u64 start = transit->transit.start_tick;
