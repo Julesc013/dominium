@@ -69,10 +69,17 @@ Travel is an in-sim state (see `docs/SPEC_LOGICAL_TRAVEL.md`):
 - Macro events MUST NOT alter cosmos graph topology.
 - See `docs/SPEC_COSMO_ECONOMY_EVENTS.md` for authoritative rules.
 
+## 10. Factions and AI planners (logical)
+- Factions operate at cosmos/logistics scales only; no physical simulation.
+- AI planners MUST emit explicit commands/events; no hidden mutations.
+- See `docs/SPEC_FACTIONS.md` and `docs/SPEC_AI_DETERMINISM.md`.
+
 ## Related specs
 - `docs/SPEC_LOGICAL_TRAVEL.md`
 - `docs/SPEC_UNIVERSE_MODEL.md`
 - `docs/SPEC_SYSTEM_LOGISTICS.md`
 - `docs/SPEC_COSMO_ECONOMY_EVENTS.md`
+- `docs/SPEC_FACTIONS.md`
+- `docs/SPEC_AI_DETERMINISM.md`
 - `docs/SPEC_SPACETIME.md`
 - `docs/SPEC_DETERMINISM.md`

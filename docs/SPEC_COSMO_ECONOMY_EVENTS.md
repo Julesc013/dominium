@@ -52,7 +52,12 @@ Rules:
 - Production rule deltas MAY be overridden by matching `production_rate` entries.
 - Demand rates MAY provide informational caps for route usage; no enforcement in v0.
 
-## 7. Persistence
+## 7. Factions and AI planners
+- Faction planners MAY read macro economy aggregates to schedule commands/events.
+- AI decisions MUST be deterministic and auditable.
+- See `docs/SPEC_FACTIONS.md` and `docs/SPEC_AI_DETERMINISM.md`.
+
+## 8. Persistence
 Macro economy and events are sim-affecting and must be persisted:
 - Universe bundle chunks: `MECO`, `MEVT` (versioned; skip-unknown)
 - Save chunks: `MECO`, `MEVT`
@@ -63,5 +68,7 @@ Macro economy and events are sim-affecting and must be persisted:
 - `docs/SPEC_COSMO_LANE.md`
 - `docs/SPEC_SYSTEM_LOGISTICS.md`
 - `docs/SPEC_UNIVERSE_BUNDLE.md`
+- `docs/SPEC_FACTIONS.md`
+- `docs/SPEC_AI_DETERMINISM.md`
 - `docs/SPEC_SPACETIME.md`
 - `docs/SPEC_DETERMINISM.md`

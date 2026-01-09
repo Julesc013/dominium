@@ -91,9 +91,17 @@ Logistics state is sim-affecting and MUST be persisted:
   MUST NOT directly move inventory or bypass logistics rules.
 - See `docs/SPEC_COSMO_ECONOMY_EVENTS.md` for macro-level rules.
 
+## 7. Factions and AI planners (v0)
+- Factions may create stations, routes, and transfers only through the same
+  command pipeline as players.
+- AI planners MUST be deterministic, budgeted, and auditable.
+- See `docs/SPEC_FACTIONS.md` and `docs/SPEC_AI_DETERMINISM.md`.
+
 ## Related specs
 - `docs/SPEC_UNIVERSE_MODEL.md`
 - `docs/SPEC_COSMO_LANE.md`
 - `docs/SPEC_COSMO_ECONOMY_EVENTS.md`
+- `docs/SPEC_FACTIONS.md`
+- `docs/SPEC_AI_DETERMINISM.md`
 - `docs/SPEC_SPACETIME.md`
 - `docs/SPEC_DETERMINISM.md`
