@@ -35,6 +35,8 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "runtime/dom_transfer_scheduler.h"
 #include "runtime/dom_macro_economy.h"
 #include "runtime/dom_macro_events.h"
+#include "runtime/dom_faction_registry.h"
+#include "runtime/dom_ai_scheduler.h"
 
 extern "C" {
 #include "domino/core/dom_deterministic_math.h"
@@ -133,6 +135,17 @@ static void collect_route_info(const dom_route_info *info, void *user) {
     RouteCollectContext *ctx = static_cast<RouteCollectContext *>(user);
     if (ctx && ctx->routes && info) {
         ctx->routes->push_back(*info);
+    }
+}
+
+struct FactionCollectContext {
+    std::vector<dom_faction_info> *factions;
+};
+
+static void collect_faction_info(const dom_faction_info *info, void *user) {
+    FactionCollectContext *ctx = static_cast<FactionCollectContext *>(user);
+    if (ctx && ctx->factions && info) {
+        ctx->factions->push_back(*info);
     }
 }
 
@@ -1365,5 +1378,293 @@ void dom_game_runtime_release_macro_event_list_snapshot(dom_macro_event_list_sna
     }
     delete[] snapshot->events;
     delete[] snapshot->effects;
+    delete snapshot;
+}
+
+dom_faction_list_snapshot *dom_game_runtime_build_faction_list_snapshot(const dom_game_runtime *rt) {
+    dom_faction_list_snapshot *snap;
+    const dom_faction_registry *registry;
+    u32 count = 0u;
+
+    if (!rt) {
+        return (dom_faction_list_snapshot *)0;
+    }
+    registry = static_cast<const dom_faction_registry *>(dom_game_runtime_faction_registry(rt));
+    if (!registry) {
+        return (dom_faction_list_snapshot *)0;
+    }
+
+    snap = new dom_faction_list_snapshot();
+    std::memset(snap, 0, sizeof(*snap));
+    snap->struct_size = sizeof(*snap);
+    snap->struct_version = DOM_FACTION_LIST_SNAPSHOT_VERSION;
+
+    count = dom_faction_count(registry);
+    snap->faction_count = count;
+    if (count == 0u) {
+        return snap;
+    }
+
+    {
+        std::vector<dom_faction_info> list;
+        FactionCollectContext ctx;
+        list.reserve(count);
+        ctx.factions = &list;
+        (void)dom_faction_iterate(registry, collect_faction_info, &ctx);
+        snap->faction_count = (u32)list.size();
+        if (!list.empty()) {
+            snap->factions = new dom_faction_view[list.size()];
+            for (size_t i = 0u; i < list.size(); ++i) {
+                dom_faction_view &view = snap->factions[i];
+                view.faction_id = list[i].faction_id;
+                view.home_scope_kind = list[i].home_scope_kind;
+                view.home_scope_id = list[i].home_scope_id;
+                view.policy_kind = list[i].policy_kind;
+                view.policy_flags = list[i].policy_flags;
+                view.ai_seed = list[i].ai_seed;
+            }
+        }
+    }
+
+    return snap;
+}
+
+void dom_game_runtime_release_faction_list_snapshot(dom_faction_list_snapshot *snapshot) {
+    if (!snapshot) {
+        return;
+    }
+    delete[] snapshot->factions;
+    delete snapshot;
+}
+
+dom_faction_summary_snapshot *dom_game_runtime_build_faction_summary_snapshot(const dom_game_runtime *rt) {
+    dom_faction_summary_snapshot *snap;
+    const dom_faction_registry *registry;
+    u32 count = 0u;
+    u32 total_resources = 0u;
+    u32 total_nodes = 0u;
+
+    if (!rt) {
+        return (dom_faction_summary_snapshot *)0;
+    }
+    registry = static_cast<const dom_faction_registry *>(dom_game_runtime_faction_registry(rt));
+    if (!registry) {
+        return (dom_faction_summary_snapshot *)0;
+    }
+
+    snap = new dom_faction_summary_snapshot();
+    std::memset(snap, 0, sizeof(*snap));
+    snap->struct_size = sizeof(*snap);
+    snap->struct_version = DOM_FACTION_SUMMARY_SNAPSHOT_VERSION;
+
+    count = dom_faction_count(registry);
+    snap->faction_count = count;
+    if (count == 0u) {
+        return snap;
+    }
+
+    {
+        std::vector<dom_faction_info> list;
+        FactionCollectContext ctx;
+        list.reserve(count);
+        ctx.factions = &list;
+        (void)dom_faction_iterate(registry, collect_faction_info, &ctx);
+        snap->faction_count = (u32)list.size();
+
+        for (size_t i = 0u; i < list.size(); ++i) {
+            u32 res_count = 0u;
+            u32 node_count = 0u;
+            if (dom_faction_resource_list(registry,
+                                          list[i].faction_id,
+                                          0,
+                                          0u,
+                                          &res_count) != DOM_FACTION_OK) {
+                res_count = 0u;
+            }
+            if (dom_faction_list_known_nodes(registry,
+                                             list[i].faction_id,
+                                             0,
+                                             0u,
+                                             &node_count) != DOM_FACTION_OK) {
+                node_count = 0u;
+            }
+            if (res_count > 0u && total_resources > (0xffffffffu - res_count)) {
+                delete snap;
+                return (dom_faction_summary_snapshot *)0;
+            }
+            if (node_count > 0u && total_nodes > (0xffffffffu - node_count)) {
+                delete snap;
+                return (dom_faction_summary_snapshot *)0;
+            }
+            total_resources += res_count;
+            total_nodes += node_count;
+        }
+
+        snap->resource_count = total_resources;
+        snap->known_node_count = total_nodes;
+        if (!list.empty()) {
+            snap->factions = new dom_faction_summary_view[list.size()];
+        }
+        if (total_resources > 0u) {
+            snap->resources = new dom_faction_resource_view[total_resources];
+        }
+        if (total_nodes > 0u) {
+            snap->known_nodes = new dom_faction_known_node_view[total_nodes];
+        }
+
+        u32 res_offset = 0u;
+        u32 node_offset = 0u;
+        for (size_t i = 0u; i < list.size(); ++i) {
+            dom_faction_summary_view &view = snap->factions[i];
+            u32 res_count = 0u;
+            u32 node_count = 0u;
+            u32 res_filled = 0u;
+            u32 node_filled = 0u;
+
+            view.faction_id = list[i].faction_id;
+            view.home_scope_kind = list[i].home_scope_kind;
+            view.home_scope_id = list[i].home_scope_id;
+            view.policy_kind = list[i].policy_kind;
+            view.policy_flags = list[i].policy_flags;
+            view.ai_seed = list[i].ai_seed;
+
+            if (dom_faction_resource_list(registry,
+                                          list[i].faction_id,
+                                          0,
+                                          0u,
+                                          &res_count) != DOM_FACTION_OK) {
+                res_count = 0u;
+            }
+            if (dom_faction_list_known_nodes(registry,
+                                             list[i].faction_id,
+                                             0,
+                                             0u,
+                                             &node_count) != DOM_FACTION_OK) {
+                node_count = 0u;
+            }
+
+            view.resource_offset = res_offset;
+            view.resource_count = res_count;
+            view.known_node_offset = node_offset;
+            view.known_node_count = node_count;
+
+            if (res_count > 0u && snap->resources) {
+                std::vector<dom_faction_resource_entry> entries;
+                entries.resize(res_count);
+                if (dom_faction_resource_list(registry,
+                                              list[i].faction_id,
+                                              &entries[0],
+                                              res_count,
+                                              &res_filled) == DOM_FACTION_OK) {
+                    if (res_filled > res_count) {
+                        res_filled = res_count;
+                    }
+                    for (u32 j = 0u; j < res_filled; ++j) {
+                        dom_faction_resource_view &rview = snap->resources[res_offset + j];
+                        rview.faction_id = list[i].faction_id;
+                        rview.resource_id = entries[j].resource_id;
+                        rview.quantity = entries[j].quantity;
+                    }
+                } else {
+                    res_filled = 0u;
+                }
+            }
+
+            if (node_count > 0u && snap->known_nodes) {
+                std::vector<u64> nodes;
+                nodes.resize(node_count);
+                if (dom_faction_list_known_nodes(registry,
+                                                 list[i].faction_id,
+                                                 &nodes[0],
+                                                 node_count,
+                                                 &node_filled) == DOM_FACTION_OK) {
+                    if (node_filled > node_count) {
+                        node_filled = node_count;
+                    }
+                    for (u32 j = 0u; j < node_filled; ++j) {
+                        dom_faction_known_node_view &nview = snap->known_nodes[node_offset + j];
+                        nview.faction_id = list[i].faction_id;
+                        nview.node_id = nodes[j];
+                    }
+                } else {
+                    node_filled = 0u;
+                }
+            }
+
+            view.resource_count = res_filled;
+            view.known_node_count = node_filled;
+            res_offset += res_filled;
+            node_offset += node_filled;
+        }
+
+        snap->resource_count = res_offset;
+        snap->known_node_count = node_offset;
+    }
+
+    return snap;
+}
+
+void dom_game_runtime_release_faction_summary_snapshot(dom_faction_summary_snapshot *snapshot) {
+    if (!snapshot) {
+        return;
+    }
+    delete[] snapshot->factions;
+    delete[] snapshot->resources;
+    delete[] snapshot->known_nodes;
+    delete snapshot;
+}
+
+dom_ai_decision_summary_snapshot *dom_game_runtime_build_ai_decision_summary_snapshot(const dom_game_runtime *rt) {
+    dom_ai_decision_summary_snapshot *snap;
+    const dom_ai_scheduler *sched;
+    u32 count = 0u;
+
+    if (!rt) {
+        return (dom_ai_decision_summary_snapshot *)0;
+    }
+    sched = static_cast<const dom_ai_scheduler *>(dom_game_runtime_ai_scheduler(rt));
+    if (!sched) {
+        return (dom_ai_decision_summary_snapshot *)0;
+    }
+    if (dom_ai_scheduler_list_states(sched, 0, 0u, &count) != DOM_AI_SCHEDULER_OK) {
+        return (dom_ai_decision_summary_snapshot *)0;
+    }
+
+    snap = new dom_ai_decision_summary_snapshot();
+    std::memset(snap, 0, sizeof(*snap));
+    snap->struct_size = sizeof(*snap);
+    snap->struct_version = DOM_AI_DECISION_SUMMARY_SNAPSHOT_VERSION;
+    snap->entry_count = count;
+
+    if (count > 0u) {
+        std::vector<dom_ai_faction_state> states;
+        states.resize(count);
+        if (dom_ai_scheduler_list_states(sched, &states[0], count, &count) != DOM_AI_SCHEDULER_OK) {
+            delete snap;
+            return (dom_ai_decision_summary_snapshot *)0;
+        }
+        snap->entry_count = count;
+        if (count > 0u) {
+            snap->entries = new dom_ai_decision_view[count];
+            for (u32 i = 0u; i < count; ++i) {
+                dom_ai_decision_view &view = snap->entries[i];
+                view.faction_id = states[i].faction_id;
+                view.next_decision_tick = states[i].next_decision_tick;
+                view.last_plan_id = states[i].last_plan_id;
+                view.last_output_count = states[i].last_output_count;
+                view.last_reason_code = states[i].last_reason_code;
+                view.last_budget_hit = states[i].last_budget_hit;
+            }
+        }
+    }
+
+    return snap;
+}
+
+void dom_game_runtime_release_ai_decision_summary_snapshot(dom_ai_decision_summary_snapshot *snapshot) {
+    if (!snapshot) {
+        return;
+    }
+    delete[] snapshot->entries;
     delete snapshot;
 }

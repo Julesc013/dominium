@@ -43,7 +43,10 @@ enum {
     DOM_ROUTE_LIST_SNAPSHOT_VERSION = 1u,
     DOM_TRANSFER_LIST_SNAPSHOT_VERSION = 1u,
     DOM_MACRO_ECONOMY_SNAPSHOT_VERSION = 1u,
-    DOM_MACRO_EVENT_LIST_SNAPSHOT_VERSION = 1u
+    DOM_MACRO_EVENT_LIST_SNAPSHOT_VERSION = 1u,
+    DOM_FACTION_LIST_SNAPSHOT_VERSION = 1u,
+    DOM_FACTION_SUMMARY_SNAPSHOT_VERSION = 1u,
+    DOM_AI_DECISION_SUMMARY_SNAPSHOT_VERSION = 1u
 };
 
 enum {
@@ -364,6 +367,73 @@ typedef struct dom_macro_event_list_snapshot {
     dom_macro_event_effect_view *effects;
 } dom_macro_event_list_snapshot;
 
+typedef struct dom_faction_view {
+    u64 faction_id;
+    u32 home_scope_kind;
+    u64 home_scope_id;
+    u32 policy_kind;
+    u32 policy_flags;
+    u64 ai_seed;
+} dom_faction_view;
+
+typedef struct dom_faction_summary_view {
+    u64 faction_id;
+    u32 home_scope_kind;
+    u64 home_scope_id;
+    u32 policy_kind;
+    u32 policy_flags;
+    u64 ai_seed;
+    u32 resource_count;
+    u32 resource_offset;
+    u32 known_node_count;
+    u32 known_node_offset;
+} dom_faction_summary_view;
+
+typedef struct dom_faction_resource_view {
+    u64 faction_id;
+    u64 resource_id;
+    i64 quantity;
+} dom_faction_resource_view;
+
+typedef struct dom_faction_known_node_view {
+    u64 faction_id;
+    u64 node_id;
+} dom_faction_known_node_view;
+
+typedef struct dom_faction_list_snapshot {
+    u32 struct_size;
+    u32 struct_version;
+    u32 faction_count;
+    dom_faction_view *factions;
+} dom_faction_list_snapshot;
+
+typedef struct dom_faction_summary_snapshot {
+    u32 struct_size;
+    u32 struct_version;
+    u32 faction_count;
+    u32 resource_count;
+    u32 known_node_count;
+    dom_faction_summary_view *factions;
+    dom_faction_resource_view *resources;
+    dom_faction_known_node_view *known_nodes;
+} dom_faction_summary_snapshot;
+
+typedef struct dom_ai_decision_view {
+    u64 faction_id;
+    u64 next_decision_tick;
+    u64 last_plan_id;
+    u32 last_output_count;
+    u32 last_reason_code;
+    u32 last_budget_hit;
+} dom_ai_decision_view;
+
+typedef struct dom_ai_decision_summary_snapshot {
+    u32 struct_size;
+    u32 struct_version;
+    u32 entry_count;
+    dom_ai_decision_view *entries;
+} dom_ai_decision_summary_snapshot;
+
 struct dom_game_runtime;
 
 dom_game_snapshot *dom_game_runtime_build_snapshot(const struct dom_game_runtime *rt, u32 flags);
@@ -402,6 +472,12 @@ dom_macro_economy_snapshot *dom_game_runtime_build_macro_economy_snapshot(const 
 void dom_game_runtime_release_macro_economy_snapshot(dom_macro_economy_snapshot *snapshot);
 dom_macro_event_list_snapshot *dom_game_runtime_build_macro_event_list_snapshot(const struct dom_game_runtime *rt);
 void dom_game_runtime_release_macro_event_list_snapshot(dom_macro_event_list_snapshot *snapshot);
+dom_faction_list_snapshot *dom_game_runtime_build_faction_list_snapshot(const struct dom_game_runtime *rt);
+void dom_game_runtime_release_faction_list_snapshot(dom_faction_list_snapshot *snapshot);
+dom_faction_summary_snapshot *dom_game_runtime_build_faction_summary_snapshot(const struct dom_game_runtime *rt);
+void dom_game_runtime_release_faction_summary_snapshot(dom_faction_summary_snapshot *snapshot);
+dom_ai_decision_summary_snapshot *dom_game_runtime_build_ai_decision_summary_snapshot(const struct dom_game_runtime *rt);
+void dom_game_runtime_release_ai_decision_summary_snapshot(dom_ai_decision_summary_snapshot *snapshot);
 
 #ifdef __cplusplus
 } /* extern "C" */
