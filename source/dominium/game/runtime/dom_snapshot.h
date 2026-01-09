@@ -34,6 +34,8 @@ enum {
     DOM_FRAME_TREE_SNAPSHOT_VERSION = 1u,
     DOM_BODY_TOPOLOGY_SNAPSHOT_VERSION = 1u,
     DOM_ORBIT_SUMMARY_SNAPSHOT_VERSION = 1u,
+    DOM_ATMOS_SAMPLE_SNAPSHOT_VERSION = 1u,
+    DOM_REENTRY_STATUS_SNAPSHOT_VERSION = 1u,
     DOM_SURFACE_VIEW_SNAPSHOT_VERSION = 1u,
     DOM_LOCAL_TANGENT_FRAME_SNAPSHOT_VERSION = 1u,
     DOM_CONSTRUCTION_LIST_SNAPSHOT_VERSION = 1u,
@@ -182,6 +184,28 @@ typedef struct dom_orbit_summary_snapshot {
     u64 next_event_tick;
     u32 has_orbit;
 } dom_orbit_summary_snapshot;
+
+typedef struct dom_atmos_sample_snapshot {
+    u32 struct_size;
+    u32 struct_version;
+    u64 body_id;
+    q48_16 altitude_m;
+    q16_16 density_q16;
+    q16_16 pressure_q16;
+    q16_16 temperature_q16;
+    u32 has_sample;
+} dom_atmos_sample_snapshot;
+
+typedef struct dom_reentry_status_snapshot {
+    u32 struct_size;
+    u32 struct_version;
+    u64 vessel_id;
+    q16_16 drag_accel_q16;
+    q16_16 heating_rate_q16;
+    q16_16 heat_accum_q16;
+    u32 max_warp_factor;
+    u32 has_data;
+} dom_reentry_status_snapshot;
 
 typedef struct dom_surface_chunk_view {
     dom_surface_chunk_key key;
@@ -358,6 +382,10 @@ dom_body_topology_snapshot *dom_game_runtime_build_body_topology_snapshot(const 
 void dom_game_runtime_release_body_topology_snapshot(dom_body_topology_snapshot *snapshot);
 dom_orbit_summary_snapshot *dom_game_runtime_build_orbit_summary_snapshot(const struct dom_game_runtime *rt);
 void dom_game_runtime_release_orbit_summary_snapshot(dom_orbit_summary_snapshot *snapshot);
+dom_atmos_sample_snapshot *dom_game_runtime_build_atmos_sample_snapshot(const struct dom_game_runtime *rt);
+void dom_game_runtime_release_atmos_sample_snapshot(dom_atmos_sample_snapshot *snapshot);
+dom_reentry_status_snapshot *dom_game_runtime_build_reentry_status_snapshot(const struct dom_game_runtime *rt);
+void dom_game_runtime_release_reentry_status_snapshot(dom_reentry_status_snapshot *snapshot);
 dom_surface_view_snapshot *dom_game_runtime_build_surface_view_snapshot(const struct dom_game_runtime *rt);
 void dom_game_runtime_release_surface_view_snapshot(dom_surface_view_snapshot *snapshot);
 dom_local_tangent_frame_snapshot *dom_game_runtime_build_local_tangent_frame_snapshot(const struct dom_game_runtime *rt);
