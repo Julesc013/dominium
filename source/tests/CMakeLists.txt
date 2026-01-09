@@ -1622,6 +1622,28 @@ set_target_properties(domino_sys_smoke PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
 )
 
+add_executable(dsys_input_trace_test
+    ../../tests/domino_sys/test_input_trace.c
+)
+
+target_include_directories(dsys_input_trace_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../source/domino
+)
+
+target_link_libraries(dsys_input_trace_test
+    domino_core
+)
+
+set_target_properties(dsys_input_trace_test PROPERTIES
+    C_STANDARD 90
+    C_STANDARD_REQUIRED ON
+    C_EXTENSIONS OFF
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
+)
+
+add_test(NAME dsys_input_trace_test COMMAND dsys_input_trace_test)
+
 add_executable(domino_dui_smoke
     domino_dui_smoke.c
 )

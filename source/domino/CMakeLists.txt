@@ -85,6 +85,7 @@ add_library(domino_core STATIC
     system/sys.c
     system/d_system.c
     system/d_system_input.c
+    system/input/input_trace.c
     system/dsys_term.c
     $<$<BOOL:${WIN32}>:system/dsys_proc_winnt.c>
     $<$<BOOL:${WIN32}>:system/dsys_window_winnt.c>

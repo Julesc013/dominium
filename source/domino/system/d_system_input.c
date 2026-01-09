@@ -12,6 +12,7 @@ VERSIONING / ABI / DATA FORMAT NOTES: N/A (implementation file).
 EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
 */
 #include "d_system_input.h"
+#include "system/input/input_trace.h"
 
 #include <string.h>
 #include "domino/system/dsys.h"
@@ -107,42 +108,52 @@ int d_system_poll_event(d_sys_event *out_ev) {
 
 int d_system_input_pump_dsys(void) {
     dsys_event ev;
-    int pumped = 0;
+    d_sys_event batch[D_SYS_INPUT_TRACE_MAX_EVENTS];
+    u32 count = 0u;
+    u32 i;
     while (dsys_poll_event(&ev)) {
         d_sys_event out;
         memset(&out, 0, sizeof(out));
         switch (ev.type) {
         case DSYS_EVENT_QUIT:
             out.type = D_SYS_EVENT_QUIT;
-            d_system_input_enqueue(&out);
-            pumped += 1;
             break;
         case DSYS_EVENT_KEY_DOWN:
         case DSYS_EVENT_KEY_UP:
             out.type = (ev.type == DSYS_EVENT_KEY_DOWN) ? D_SYS_EVENT_KEY_DOWN : D_SYS_EVENT_KEY_UP;
             out.u.key.key = d_system_map_keycode(ev.payload.key.key);
-            d_system_input_enqueue(&out);
-            pumped += 1;
             break;
         case DSYS_EVENT_MOUSE_MOVE:
             out.type = D_SYS_EVENT_MOUSE_MOVE;
             out.u.mouse.x = (i32)ev.payload.mouse_move.x;
             out.u.mouse.y = (i32)ev.payload.mouse_move.y;
             out.u.mouse.button = 0;
-            d_system_input_enqueue(&out);
-            pumped += 1;
             break;
         case DSYS_EVENT_MOUSE_BUTTON:
             out.type = ev.payload.mouse_button.pressed ? D_SYS_EVENT_MOUSE_BUTTON_DOWN : D_SYS_EVENT_MOUSE_BUTTON_UP;
             out.u.mouse.x = 0;
             out.u.mouse.y = 0;
             out.u.mouse.button = d_system_map_mouse_button(ev.payload.mouse_button.button);
-            d_system_input_enqueue(&out);
-            pumped += 1;
             break;
         default:
             break;
         }
+        if (out.type != D_SYS_EVENT_NONE) {
+            if (count >= D_SYS_INPUT_TRACE_MAX_EVENTS) {
+                memmove(batch,
+                        batch + 1,
+                        (D_SYS_INPUT_TRACE_MAX_EVENTS - 1u) * sizeof(d_sys_event));
+                count = D_SYS_INPUT_TRACE_MAX_EVENTS - 1u;
+            }
+            batch[count++] = out;
+        }
     }
-    return pumped;
+    if (count > 1u) {
+        /* Canonicalize ordering to avoid backend-dependent event sequences. */
+        d_sys_input_trace_normalize(batch, count);
+    }
+    for (i = 0u; i < count; ++i) {
+        d_system_input_enqueue(&batch[i]);
+    }
+    return (int)count;
 }
