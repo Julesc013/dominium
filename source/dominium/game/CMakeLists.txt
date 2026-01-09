@@ -40,6 +40,7 @@ add_executable(dominium_game
     runtime/dom_atmos_provider_profile_v1.cpp
     runtime/dom_ocean_provider.cpp
     runtime/dom_weather_provider.cpp
+    runtime/dom_vehicle_aero.cpp
     runtime/dom_frames.cpp
     runtime/dom_lane_scheduler.cpp
     runtime/dom_construction_registry.cpp
