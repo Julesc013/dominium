@@ -128,6 +128,7 @@ static void test_serialize_parse_roundtrip_is_canonical() {
     b.tool_id = "tool.b";
     b.display_name = "B";
     b.description = "desc b";
+    b.ui_mode = "cli";
     b.executable_artifact_hash_bytes.clear();
     b.required_packs.push_back("pack.z");
     b.required_packs.push_back("pack.a");
@@ -135,6 +136,7 @@ static void test_serialize_parse_roundtrip_is_canonical() {
     a.tool_id = "tool.a";
     a.display_name = "A";
     a.description = "desc a";
+    a.ui_mode = "tui";
     a.ui_entrypoint_metadata.label = "A";
     a.ui_entrypoint_metadata.icon_placeholder = "icon.a";
 
@@ -167,6 +169,7 @@ static void test_load_and_enumerate() {
     t.tool_id = "tool_manifest_inspector";
     t.display_name = "Manifest Inspector";
     t.description = "Reads handshake and instance manifest";
+    t.ui_mode = "cli";
     t.ui_entrypoint_metadata.label = "Manifest Inspector";
     t.ui_entrypoint_metadata.icon_placeholder = "icon.placeholder";
     reg.tools.push_back(t);

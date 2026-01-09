@@ -334,6 +334,7 @@ static void write_tools_registry_minimal(const std::string& state_root) {
     te.tool_id = "tool_manifest_inspector";
     te.display_name = "tool_manifest_inspector";
     te.description = "Reads handshake + instance manifest and prints a structured report to stdout.";
+    te.ui_mode = "cli";
     te.executable_artifact_hash_bytes.clear(); /* resolve via argv0 dir/PATH */
     te.required_packs.clear();
     te.optional_packs.clear();

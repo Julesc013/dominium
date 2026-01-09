@@ -41,6 +41,7 @@ enum { LAUNCHER_TOOLS_REGISTRY_TLV_VERSION = 1u };
  * - `LAUNCHER_TOOL_ENTRY_TLV_TAG_OPTIONAL_PACK` (string, repeated)
  * - `LAUNCHER_TOOL_ENTRY_TLV_TAG_CAPABILITY_REQUIREMENT` (string, repeated)
  * - `LAUNCHER_TOOL_ENTRY_TLV_TAG_UI_ENTRYPOINT_METADATA` (container, optional)
+ * - `LAUNCHER_TOOL_ENTRY_TLV_TAG_UI_MODE` (string; "cli"|"tui"|"gui"; optional)
  *
  * UI entrypoint metadata payload (container TLV; placeholders only):
  * - `LAUNCHER_TOOL_UI_META_TLV_TAG_LABEL` (string)
@@ -58,7 +59,8 @@ enum LauncherToolEntryTlvTag {
     LAUNCHER_TOOL_ENTRY_TLV_TAG_REQUIRED_PACK = 5u,
     LAUNCHER_TOOL_ENTRY_TLV_TAG_OPTIONAL_PACK = 6u,
     LAUNCHER_TOOL_ENTRY_TLV_TAG_CAPABILITY_REQUIREMENT = 7u,
-    LAUNCHER_TOOL_ENTRY_TLV_TAG_UI_ENTRYPOINT_METADATA = 8u
+    LAUNCHER_TOOL_ENTRY_TLV_TAG_UI_ENTRYPOINT_METADATA = 8u,
+    LAUNCHER_TOOL_ENTRY_TLV_TAG_UI_MODE = 9u
 };
 
 enum LauncherToolUiMetaTlvTag {
@@ -77,6 +79,7 @@ struct LauncherToolEntry {
     std::string tool_id;
     std::string display_name;
     std::string description;
+    std::string ui_mode;
     std::vector<unsigned char> executable_artifact_hash_bytes;
     std::vector<std::string> required_packs;
     std::vector<std::string> optional_packs;
