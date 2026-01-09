@@ -38,7 +38,9 @@ typedef enum dom_orbit_event_kind {
     DOM_ORBIT_EVENT_SOI_ENTER = 2,
     DOM_ORBIT_EVENT_SOI_EXIT = 3,
     DOM_ORBIT_EVENT_ASC_NODE = 4,
-    DOM_ORBIT_EVENT_DESC_NODE = 5
+    DOM_ORBIT_EVENT_DESC_NODE = 5,
+    DOM_ORBIT_EVENT_ATMOS_ENTER = 6,
+    DOM_ORBIT_EVENT_ATMOS_EXIT = 7
 } dom_orbit_event_kind;
 
 typedef u32 dom_orbit_event_mask;
@@ -62,6 +64,8 @@ typedef struct dom_orbit_state {
     dom_tick epoch_tick;
     u32 ups;
     q48_16 soi_radius_m;
+    q48_16 body_radius_m;
+    q48_16 atmosphere_top_alt_m;
 } dom_orbit_state;
 
 typedef struct dom_orbit_maneuver {
