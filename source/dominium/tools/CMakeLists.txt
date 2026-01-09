@@ -156,3 +156,9 @@ dominium_add_tool_exe(dominium-validator "tool_validator"
     validator/validator_main.cpp
     validator/validator_checks.cpp
 )
+
+dominium_add_tool_exe(dominium-replay-analyzer "tool_replay_analyzer"
+    replay_analyzer/ra_main.cpp
+    replay_analyzer/ra_parser.cpp
+    replay_analyzer/ra_diff.cpp
+)
