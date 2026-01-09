@@ -104,6 +104,14 @@ int dom_lane_scheduler_get_landing(const dom_lane_scheduler *sched,
                                    dom_topo_latlong_q16 *out_latlong,
                                    q48_16 *out_altitude_m,
                                    dom_posseg_q16 *out_pos);
+int dom_lane_scheduler_get_local_state(const dom_lane_scheduler *sched,
+                                       u64 vessel_id,
+                                       SpacePos *out_pos,
+                                       SpacePos *out_vel,
+                                       dom_lane_type *out_lane);
+int dom_lane_scheduler_get_aero_state(const dom_lane_scheduler *sched,
+                                      u64 vessel_id,
+                                      dom_vehicle_aero_state *out_state);
 
 #ifdef __cplusplus
 } /* extern "C" */

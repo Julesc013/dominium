@@ -708,3 +708,49 @@ int dom_lane_scheduler_get_landing(const dom_lane_scheduler *sched,
     }
     return DOM_LANE_NOT_FOUND;
 }
+
+int dom_lane_scheduler_get_local_state(const dom_lane_scheduler *sched,
+                                       u64 vessel_id,
+                                       SpacePos *out_pos,
+                                       SpacePos *out_vel,
+                                       dom_lane_type *out_lane) {
+    size_t i;
+    if (!sched || vessel_id == 0ull) {
+        return DOM_LANE_INVALID_ARGUMENT;
+    }
+    for (i = 0u; i < sched->vessels.size(); ++i) {
+        if (sched->vessels[i].id == vessel_id) {
+            if (out_pos) {
+                *out_pos = sched->vessels[i].local_pos;
+            }
+            if (out_vel) {
+                *out_vel = sched->vessels[i].local_vel;
+            }
+            if (out_lane) {
+                *out_lane = sched->vessels[i].state.lane_type;
+            }
+            return DOM_LANE_OK;
+        }
+    }
+    return DOM_LANE_NOT_FOUND;
+}
+
+int dom_lane_scheduler_get_aero_state(const dom_lane_scheduler *sched,
+                                      u64 vessel_id,
+                                      dom_vehicle_aero_state *out_state) {
+    size_t i;
+    if (!sched || vessel_id == 0ull || !out_state) {
+        return DOM_LANE_INVALID_ARGUMENT;
+    }
+    for (i = 0u; i < sched->vessels.size(); ++i) {
+        if (sched->vessels[i].id == vessel_id) {
+            if (!sched->vessels[i].has_aero_props) {
+                std::memset(out_state, 0, sizeof(*out_state));
+                return DOM_LANE_NOT_IMPLEMENTED;
+            }
+            *out_state = sched->vessels[i].aero_state;
+            return DOM_LANE_OK;
+        }
+    }
+    return DOM_LANE_NOT_FOUND;
+}

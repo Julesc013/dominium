@@ -15,6 +15,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 
 #include <cstring>
 #include <vector>
+#include <climits>
 
 #include "runtime/dom_io_guard.h"
 #include "runtime/dom_cosmo_graph.h"
@@ -23,6 +24,9 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "runtime/dom_system_registry.h"
 #include "runtime/dom_body_registry.h"
 #include "runtime/dom_frames.h"
+#include "runtime/dom_lane_scheduler.h"
+#include "runtime/dom_media_provider.h"
+#include "runtime/dom_weather_provider.h"
 #include "runtime/dom_surface_topology.h"
 #include "runtime/dom_surface_height.h"
 #include "runtime/dom_construction_registry.h"
@@ -31,6 +35,10 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "runtime/dom_transfer_scheduler.h"
 #include "runtime/dom_macro_economy.h"
 #include "runtime/dom_macro_events.h"
+
+extern "C" {
+#include "domino/core/dom_deterministic_math.h"
+}
 
 extern "C" {
 }
@@ -125,6 +133,92 @@ static void collect_route_info(const dom_route_info *info, void *user) {
     RouteCollectContext *ctx = static_cast<RouteCollectContext *>(user);
     if (ctx && ctx->routes && info) {
         ctx->routes->push_back(*info);
+    }
+}
+
+static u64 abs_i64_u64(i64 v) {
+    return v < 0 ? (u64)(-v) : (u64)v;
+}
+
+static u64 square_u64_clamp(u64 v) {
+    if (v != 0u && v > (UINT64_MAX / v)) {
+        return UINT64_MAX;
+    }
+    return v * v;
+}
+
+static u64 add_u64_clamp(u64 a, u64 b) {
+    u64 sum = a + b;
+    if (sum < a) {
+        return UINT64_MAX;
+    }
+    return sum;
+}
+
+static u64 spacepos_length_u64(const SpacePos *pos) {
+    u64 x2;
+    u64 y2;
+    u64 z2;
+    u64 sum;
+    if (!pos) {
+        return 0u;
+    }
+    x2 = square_u64_clamp(abs_i64_u64(d_q48_16_to_int(pos->x)));
+    y2 = square_u64_clamp(abs_i64_u64(d_q48_16_to_int(pos->y)));
+    z2 = square_u64_clamp(abs_i64_u64(d_q48_16_to_int(pos->z)));
+    sum = add_u64_clamp(x2, y2);
+    sum = add_u64_clamp(sum, z2);
+    return dom_sqrt_u64(sum);
+}
+
+static bool compute_altitude_from_pos(const dom_body_registry *bodies,
+                                      dom_body_id body_id,
+                                      const SpacePos *pos,
+                                      q48_16 *out_altitude) {
+    dom_body_info info;
+    if (!bodies || !pos || !out_altitude || body_id == 0ull) {
+        return false;
+    }
+    if (dom_body_registry_get(bodies, body_id, &info) != DOM_BODY_REGISTRY_OK) {
+        return false;
+    }
+    *out_altitude = d_q48_16_sub(d_q48_16_from_int((i64)spacepos_length_u64(pos)),
+                                 info.radius_m);
+    return true;
+}
+
+static void zero_media_sample(dom_media_sample *sample) {
+    if (!sample) {
+        return;
+    }
+    std::memset(sample, 0, sizeof(*sample));
+}
+
+static void apply_weather_mods(dom_media_sample *sample,
+                               const dom_weather_mods *mods) {
+    if (!sample || !mods) {
+        return;
+    }
+    sample->density_q16 = d_q16_16_add(sample->density_q16, mods->density_delta_q16);
+    if (sample->density_q16 < 0) {
+        sample->density_q16 = 0;
+    }
+    sample->pressure_q16 = d_q16_16_add(sample->pressure_q16, mods->pressure_delta_q16);
+    if (sample->pressure_q16 < 0) {
+        sample->pressure_q16 = 0;
+    }
+    sample->temperature_q16 = d_q16_16_add(sample->temperature_q16, mods->temperature_delta_q16);
+    if (sample->temperature_q16 < 0) {
+        sample->temperature_q16 = 0;
+    }
+    if (mods->has_wind || sample->has_wind) {
+        sample->wind_body_q16.v[0] =
+            d_q16_16_add(sample->wind_body_q16.v[0], mods->wind_delta_q16.v[0]);
+        sample->wind_body_q16.v[1] =
+            d_q16_16_add(sample->wind_body_q16.v[1], mods->wind_delta_q16.v[1]);
+        sample->wind_body_q16.v[2] =
+            d_q16_16_add(sample->wind_body_q16.v[2], mods->wind_delta_q16.v[2]);
+        sample->has_wind = 1u;
     }
 }
 
@@ -434,6 +528,152 @@ dom_orbit_summary_snapshot *dom_game_runtime_build_orbit_summary_snapshot(const 
 }
 
 void dom_game_runtime_release_orbit_summary_snapshot(dom_orbit_summary_snapshot *snapshot) {
+    if (!snapshot) {
+        return;
+    }
+    delete snapshot;
+}
+
+dom_atmos_sample_snapshot *dom_game_runtime_build_atmos_sample_snapshot(const dom_game_runtime *rt) {
+    dom_atmos_sample_snapshot *snap;
+    const dom_lane_scheduler *sched;
+    dom_activation_bubble bubble;
+    int bubble_active = 0;
+    dom_body_id body_id = 0ull;
+    SpacePos pos;
+    dom_lane_type lane = DOM_LANE_ORBITAL;
+    q48_16 altitude = 0;
+    dom_media_sample sample;
+    dom_weather_mods mods;
+    const dom_media_registry *media;
+    const dom_weather_registry *weather;
+    const dom_body_registry *bodies;
+
+    if (!rt) {
+        return (dom_atmos_sample_snapshot *)0;
+    }
+
+    snap = new dom_atmos_sample_snapshot();
+    std::memset(snap, 0, sizeof(*snap));
+    snap->struct_size = sizeof(*snap);
+    snap->struct_version = DOM_ATMOS_SAMPLE_SNAPSHOT_VERSION;
+    snap->has_sample = 0u;
+
+    sched = static_cast<const dom_lane_scheduler *>(dom_game_runtime_lane_scheduler(rt));
+    if (!sched) {
+        return snap;
+    }
+    if (dom_lane_scheduler_get_bubble(sched, &bubble, &bubble_active, &body_id, 0) != DOM_LANE_OK ||
+        !bubble_active || body_id == 0ull) {
+        return snap;
+    }
+    if (dom_lane_scheduler_get_local_state(sched, bubble.center_vessel_id, &pos, 0, &lane) != DOM_LANE_OK) {
+        return snap;
+    }
+    if (lane != DOM_LANE_LOCAL_KINEMATIC && lane != DOM_LANE_DOCKED_LANDED) {
+        return snap;
+    }
+
+    bodies = static_cast<const dom_body_registry *>(dom_game_runtime_body_registry(rt));
+    if (!compute_altitude_from_pos(bodies, body_id, &pos, &altitude)) {
+        altitude = 0;
+    }
+
+    zero_media_sample(&sample);
+    media = static_cast<const dom_media_registry *>(dom_game_runtime_media_registry(rt));
+    if (media) {
+        int rc = dom_media_sample(media,
+                                  body_id,
+                                  DOM_MEDIA_KIND_ATMOSPHERE,
+                                  0,
+                                  altitude,
+                                  dom_game_runtime_get_tick(rt),
+                                  &sample);
+        if (rc != DOM_MEDIA_OK) {
+            zero_media_sample(&sample);
+        }
+    }
+    weather = static_cast<const dom_weather_registry *>(dom_game_runtime_weather_registry(rt));
+    if (weather) {
+        std::memset(&mods, 0, sizeof(mods));
+        if (dom_weather_sample_modifiers(weather,
+                                         body_id,
+                                         0,
+                                         altitude,
+                                         dom_game_runtime_get_tick(rt),
+                                         &mods) == DOM_WEATHER_OK) {
+            apply_weather_mods(&sample, &mods);
+        }
+    }
+
+    snap->body_id = body_id;
+    snap->altitude_m = altitude;
+    snap->density_q16 = sample.density_q16;
+    snap->pressure_q16 = sample.pressure_q16;
+    snap->temperature_q16 = sample.temperature_q16;
+    snap->has_sample = 1u;
+    return snap;
+}
+
+void dom_game_runtime_release_atmos_sample_snapshot(dom_atmos_sample_snapshot *snapshot) {
+    if (!snapshot) {
+        return;
+    }
+    delete snapshot;
+}
+
+dom_reentry_status_snapshot *dom_game_runtime_build_reentry_status_snapshot(const dom_game_runtime *rt) {
+    dom_reentry_status_snapshot *snap;
+    const dom_lane_scheduler *sched;
+    dom_activation_bubble bubble;
+    int bubble_active = 0;
+    dom_lane_type lane = DOM_LANE_ORBITAL;
+    dom_vehicle_aero_state aero;
+    u64 vessel_id = 0ull;
+    int rc;
+
+    if (!rt) {
+        return (dom_reentry_status_snapshot *)0;
+    }
+
+    snap = new dom_reentry_status_snapshot();
+    std::memset(snap, 0, sizeof(*snap));
+    snap->struct_size = sizeof(*snap);
+    snap->struct_version = DOM_REENTRY_STATUS_SNAPSHOT_VERSION;
+    snap->max_warp_factor = 1u;
+    snap->has_data = 0u;
+
+    sched = static_cast<const dom_lane_scheduler *>(dom_game_runtime_lane_scheduler(rt));
+    if (!sched) {
+        return snap;
+    }
+    snap->max_warp_factor = dom_lane_scheduler_max_warp(sched);
+    if (dom_lane_scheduler_get_bubble(sched, &bubble, &bubble_active, 0, 0) != DOM_LANE_OK ||
+        !bubble_active) {
+        return snap;
+    }
+    vessel_id = bubble.center_vessel_id;
+    if (dom_lane_scheduler_get_local_state(sched, vessel_id, 0, 0, &lane) != DOM_LANE_OK) {
+        return snap;
+    }
+    if (lane != DOM_LANE_LOCAL_KINEMATIC && lane != DOM_LANE_DOCKED_LANDED) {
+        return snap;
+    }
+
+    rc = dom_lane_scheduler_get_aero_state(sched, vessel_id, &aero);
+    if (rc != DOM_LANE_OK) {
+        return snap;
+    }
+
+    snap->vessel_id = vessel_id;
+    snap->drag_accel_q16 = aero.last_drag_accel_q16;
+    snap->heating_rate_q16 = aero.last_heating_rate_q16;
+    snap->heat_accum_q16 = aero.heat_accum_q16;
+    snap->has_data = 1u;
+    return snap;
+}
+
+void dom_game_runtime_release_reentry_status_snapshot(dom_reentry_status_snapshot *snapshot) {
     if (!snapshot) {
         return;
     }
