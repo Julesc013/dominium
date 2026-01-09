@@ -15,6 +15,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include <string.h>
 
 #include "domino/gfx.h"
+#include "render/dgfx_trace.h"
 #include "domino/caps.h"
 #include "domino/config_base.h"
 #include "d_gfx_internal.h"
@@ -30,11 +31,354 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 static i32 g_backbuffer_w = 800;
 static i32 g_backbuffer_h = 600;
 static void* g_native_window = 0;
+static const char* g_backend_name = 0;
 
 static const d_gfx_backend_soft *g_backend = 0;
 static d_gfx_cmd_buffer g_frame_cmd_buffer;
 
 static dom_abi_result dgfx_ir_query_interface(dom_iid iid, void** out_iface);
+
+enum {
+    DGFX_TRACE_GLYPH_W = 5,
+    DGFX_TRACE_GLYPH_H = 7,
+    DGFX_TRACE_GLYPH_ADV = 6,
+    DGFX_TRACE_LINE_ADV = 8
+};
+
+static void dgfx_trace_write_u32(unsigned char out[4], u32 v)
+{
+    out[0] = (unsigned char)(v & 0xffu);
+    out[1] = (unsigned char)((v >> 8u) & 0xffu);
+    out[2] = (unsigned char)((v >> 16u) & 0xffu);
+    out[3] = (unsigned char)((v >> 24u) & 0xffu);
+}
+
+static void dgfx_trace_write_i32(unsigned char out[4], i32 v)
+{
+    dgfx_trace_write_u32(out, (u32)v);
+}
+
+static void dgfx_trace_record_u32(u16 kind, u32 v)
+{
+    unsigned char buf[4];
+    dgfx_trace_write_u32(buf, v);
+    dgfx_trace_record_backend_event(kind, buf, 4u);
+}
+
+static void dgfx_trace_record_bbox(i32 min_x, i32 min_y, i32 max_x, i32 max_y)
+{
+    unsigned char buf[16];
+    dgfx_trace_write_i32(buf + 0, min_x);
+    dgfx_trace_write_i32(buf + 4, min_y);
+    dgfx_trace_write_i32(buf + 8, max_x);
+    dgfx_trace_write_i32(buf + 12, max_y);
+    dgfx_trace_record_backend_event(DGFX_TRACE_EVENT_BBOX, buf, 16u);
+}
+
+static void dgfx_trace_text_metrics(const char *text, u32 *out_glyphs, i32 *out_w, i32 *out_h)
+{
+    u32 glyphs = 0u;
+    u32 line_len = 0u;
+    u32 max_line = 0u;
+    u32 lines = 0u;
+
+    if (!text || !text[0]) {
+        if (out_glyphs) *out_glyphs = 0u;
+        if (out_w) *out_w = 0;
+        if (out_h) *out_h = 0;
+        return;
+    }
+    lines = 1u;
+    while (*text) {
+        if (*text == '\n') {
+            if (line_len > max_line) {
+                max_line = line_len;
+            }
+            line_len = 0u;
+            lines += 1u;
+        } else {
+            line_len += 1u;
+            glyphs += 1u;
+        }
+        ++text;
+    }
+    if (line_len > max_line) {
+        max_line = line_len;
+    }
+    if (out_glyphs) {
+        *out_glyphs = glyphs;
+    }
+    if (out_w) {
+        *out_w = (i32)(max_line * DGFX_TRACE_GLYPH_ADV);
+    }
+    if (out_h) {
+        *out_h = (lines == 0u) ? 0 : (i32)((lines - 1u) * DGFX_TRACE_LINE_ADV + DGFX_TRACE_GLYPH_H);
+    }
+}
+
+typedef struct dgfx_ir_buf {
+    unsigned char *data;
+    u32 size;
+    u32 cap;
+} dgfx_ir_buf;
+
+static int dgfx_ir_reserve(dgfx_ir_buf *b, u32 need)
+{
+    unsigned char *p;
+    u32 new_cap;
+    if (!b) {
+        return 0;
+    }
+    if (b->cap >= need) {
+        return 1;
+    }
+    new_cap = b->cap ? b->cap : 256u;
+    while (new_cap < need) {
+        new_cap *= 2u;
+    }
+    p = (unsigned char *)realloc(b->data, (size_t)new_cap);
+    if (!p) {
+        return 0;
+    }
+    b->data = p;
+    b->cap = new_cap;
+    return 1;
+}
+
+static int dgfx_ir_append(dgfx_ir_buf *b, const void *data, u32 len)
+{
+    if (!b || (!data && len > 0u)) {
+        return 0;
+    }
+    if (!dgfx_ir_reserve(b, b->size + len)) {
+        return 0;
+    }
+    if (len > 0u) {
+        memcpy(b->data + b->size, data, len);
+        b->size += len;
+    }
+    return 1;
+}
+
+static int dgfx_ir_append_u16(dgfx_ir_buf *b, u16 v)
+{
+    unsigned char buf[2];
+    buf[0] = (unsigned char)(v & 0xffu);
+    buf[1] = (unsigned char)((v >> 8u) & 0xffu);
+    return dgfx_ir_append(b, buf, 2u);
+}
+
+static int dgfx_ir_append_u32(dgfx_ir_buf *b, u32 v)
+{
+    unsigned char buf[4];
+    dgfx_trace_write_u32(buf, v);
+    return dgfx_ir_append(b, buf, 4u);
+}
+
+static int dgfx_ir_append_i32(dgfx_ir_buf *b, i32 v)
+{
+    return dgfx_ir_append_u32(b, (u32)v);
+}
+
+static void dgfx_trace_build_ir(const d_gfx_cmd_buffer *buf)
+{
+    dgfx_ir_buf b;
+    u32 i;
+    if (!buf || !buf->cmds) {
+        return;
+    }
+    b.data = 0;
+    b.size = 0u;
+    b.cap = 0u;
+
+    if (!dgfx_ir_append_u32(&b, 0x52494744u)) { /* 'DGIR' */
+        if (b.data) free(b.data);
+        return;
+    }
+    if (!dgfx_ir_append_u32(&b, 1u)) {
+        if (b.data) free(b.data);
+        return;
+    }
+    if (!dgfx_ir_append_u32(&b, 0x0000FFFEu)) {
+        if (b.data) free(b.data);
+        return;
+    }
+    if (!dgfx_ir_append_u32(&b, buf->count)) {
+        if (b.data) free(b.data);
+        return;
+    }
+
+    for (i = 0u; i < buf->count; ++i) {
+        const d_gfx_cmd *cmd = buf->cmds + i;
+        u16 opcode = (u16)cmd->opcode;
+        dgfx_ir_buf payload;
+        payload.data = 0;
+        payload.size = 0u;
+        payload.cap = 0u;
+
+        switch (cmd->opcode) {
+        case D_GFX_OP_CLEAR:
+            dgfx_ir_append(&payload, &cmd->u.clear.color, 4u);
+            break;
+        case D_GFX_OP_SET_VIEWPORT:
+            dgfx_ir_append_i32(&payload, cmd->u.viewport.vp.x);
+            dgfx_ir_append_i32(&payload, cmd->u.viewport.vp.y);
+            dgfx_ir_append_i32(&payload, cmd->u.viewport.vp.w);
+            dgfx_ir_append_i32(&payload, cmd->u.viewport.vp.h);
+            break;
+        case D_GFX_OP_SET_CAMERA: {
+            const d_gfx_camera *cam = &cmd->u.camera.cam;
+            dgfx_ir_append_i32(&payload, cam->pos_x);
+            dgfx_ir_append_i32(&payload, cam->pos_y);
+            dgfx_ir_append_i32(&payload, cam->pos_z);
+            dgfx_ir_append_i32(&payload, cam->dir_x);
+            dgfx_ir_append_i32(&payload, cam->dir_y);
+            dgfx_ir_append_i32(&payload, cam->dir_z);
+            dgfx_ir_append_i32(&payload, cam->up_x);
+            dgfx_ir_append_i32(&payload, cam->up_y);
+            dgfx_ir_append_i32(&payload, cam->up_z);
+            dgfx_ir_append_i32(&payload, cam->fov);
+            break;
+        }
+        case D_GFX_OP_DRAW_RECT:
+            dgfx_ir_append_i32(&payload, cmd->u.rect.x);
+            dgfx_ir_append_i32(&payload, cmd->u.rect.y);
+            dgfx_ir_append_i32(&payload, cmd->u.rect.w);
+            dgfx_ir_append_i32(&payload, cmd->u.rect.h);
+            dgfx_ir_append(&payload, &cmd->u.rect.color, 4u);
+            break;
+        case D_GFX_OP_DRAW_TEXT: {
+            const char *text = cmd->u.text.text ? cmd->u.text.text : "";
+            u32 text_len = (u32)strlen(text);
+            u32 max_payload = 0xffffu - (4u + 4u + 4u + 4u);
+            if (text_len > max_payload) {
+                text_len = max_payload;
+            }
+            dgfx_ir_append_i32(&payload, cmd->u.text.x);
+            dgfx_ir_append_i32(&payload, cmd->u.text.y);
+            dgfx_ir_append(&payload, &cmd->u.text.color, 4u);
+            dgfx_ir_append_u32(&payload, text_len);
+            dgfx_ir_append(&payload, text, text_len);
+            break;
+        }
+        default:
+            break;
+        }
+
+        if (payload.size > 0xffffu) {
+            payload.size = 0xffffu;
+        }
+        dgfx_ir_append_u16(&b, opcode);
+        dgfx_ir_append_u16(&b, (u16)payload.size);
+        dgfx_ir_append(&b, payload.data, payload.size);
+        if (payload.data) {
+            free(payload.data);
+        }
+    }
+
+    dgfx_trace_record_ir(b.data, b.size);
+    if (b.data) {
+        free(b.data);
+    }
+}
+
+static void dgfx_trace_metrics(const d_gfx_cmd_buffer *buf)
+{
+    u32 accepted = 0u;
+    u32 rejected = 0u;
+    u32 prims = 0u;
+    u32 glyphs = 0u;
+    i32 min_x = 0;
+    i32 min_y = 0;
+    i32 max_x = 0;
+    i32 max_y = 0;
+    int have_bbox = 0;
+    u32 i;
+
+    if (!buf || !buf->cmds) {
+        dgfx_trace_record_u32(DGFX_TRACE_EVENT_ACCEPTED_COUNT, 0u);
+        dgfx_trace_record_u32(DGFX_TRACE_EVENT_REJECTED_COUNT, 0u);
+        dgfx_trace_record_u32(DGFX_TRACE_EVENT_PRIMITIVE_COUNT, 0u);
+        dgfx_trace_record_u32(DGFX_TRACE_EVENT_TEXT_GLYPH_COUNT, 0u);
+        return;
+    }
+
+    for (i = 0u; i < buf->count; ++i) {
+        const d_gfx_cmd *cmd = buf->cmds + i;
+        switch (cmd->opcode) {
+        case D_GFX_OP_CLEAR:
+        case D_GFX_OP_SET_VIEWPORT:
+        case D_GFX_OP_SET_CAMERA:
+            accepted += 1u;
+            break;
+        case D_GFX_OP_DRAW_RECT: {
+            i32 x0 = cmd->u.rect.x;
+            i32 y0 = cmd->u.rect.y;
+            i32 x1 = cmd->u.rect.x + cmd->u.rect.w;
+            i32 y1 = cmd->u.rect.y + cmd->u.rect.h;
+            i32 minx = (x0 < x1) ? x0 : x1;
+            i32 maxx = (x0 < x1) ? x1 : x0;
+            i32 miny = (y0 < y1) ? y0 : y1;
+            i32 maxy = (y0 < y1) ? y1 : y0;
+
+            accepted += 1u;
+            prims += 1u;
+            if (!have_bbox) {
+                min_x = minx;
+                min_y = miny;
+                max_x = maxx;
+                max_y = maxy;
+                have_bbox = 1;
+            } else {
+                if (minx < min_x) min_x = minx;
+                if (miny < min_y) min_y = miny;
+                if (maxx > max_x) max_x = maxx;
+                if (maxy > max_y) max_y = maxy;
+            }
+            break;
+        }
+        case D_GFX_OP_DRAW_TEXT: {
+            i32 w = 0;
+            i32 h = 0;
+            u32 g = 0u;
+            dgfx_trace_text_metrics(cmd->u.text.text, &g, &w, &h);
+            accepted += 1u;
+            prims += 1u;
+            glyphs += g;
+            if (w > 0 && h > 0) {
+                i32 minx = cmd->u.text.x;
+                i32 miny = cmd->u.text.y;
+                i32 maxx = cmd->u.text.x + w;
+                i32 maxy = cmd->u.text.y + h;
+                if (!have_bbox) {
+                    min_x = minx;
+                    min_y = miny;
+                    max_x = maxx;
+                    max_y = maxy;
+                    have_bbox = 1;
+                } else {
+                    if (minx < min_x) min_x = minx;
+                    if (miny < min_y) min_y = miny;
+                    if (maxx > max_x) max_x = maxx;
+                    if (maxy > max_y) max_y = maxy;
+                }
+            }
+            break;
+        }
+        default:
+            rejected += 1u;
+            break;
+        }
+    }
+
+    dgfx_trace_record_u32(DGFX_TRACE_EVENT_ACCEPTED_COUNT, accepted);
+    dgfx_trace_record_u32(DGFX_TRACE_EVENT_REJECTED_COUNT, rejected);
+    dgfx_trace_record_u32(DGFX_TRACE_EVENT_PRIMITIVE_COUNT, prims);
+    dgfx_trace_record_u32(DGFX_TRACE_EVENT_TEXT_GLYPH_COUNT, glyphs);
+    if (have_bbox) {
+        dgfx_trace_record_bbox(min_x, min_y, max_x, max_y);
+    }
+}
 
 void* d_gfx_get_native_window(void)
 {
@@ -316,6 +660,7 @@ int d_gfx_init(const char *backend_name)
         return 0;
     }
     g_backend = chosen;
+    g_backend_name = have_request ? backend_name : "soft";
     return 1;
 }
 
@@ -325,6 +670,7 @@ void d_gfx_shutdown(void)
         g_backend->shutdown();
     }
     g_backend = 0;
+    g_backend_name = 0;
     if (g_frame_cmd_buffer.cmds) {
         free(g_frame_cmd_buffer.cmds);
         g_frame_cmd_buffer.cmds = (d_gfx_cmd *)0;
@@ -403,16 +749,22 @@ void d_gfx_cmd_draw_text(d_gfx_cmd_buffer *buf, const d_gfx_draw_text_cmd *text)
 
 void d_gfx_submit(d_gfx_cmd_buffer *buf)
 {
+    dgfx_trace_record_backend_event(DGFX_TRACE_EVENT_BACKEND_SUBMIT_BEGIN, 0, 0u);
+    dgfx_trace_build_ir(buf);
+    dgfx_trace_metrics(buf);
     if (g_backend && g_backend->submit_cmd_buffer) {
         g_backend->submit_cmd_buffer(buf);
     }
+    dgfx_trace_record_backend_event(DGFX_TRACE_EVENT_BACKEND_SUBMIT_END, 0, 0u);
 }
 
 void d_gfx_present(void)
 {
+    dgfx_trace_record_backend_event(DGFX_TRACE_EVENT_BACKEND_PRESENT_BEGIN, 0, 0u);
     if (g_backend && g_backend->present) {
         g_backend->present();
     }
+    dgfx_trace_record_backend_event(DGFX_TRACE_EVENT_BACKEND_PRESENT_END, 0, 0u);
 }
 
 void d_gfx_get_surface_size(i32 *out_w, i32 *out_h)
