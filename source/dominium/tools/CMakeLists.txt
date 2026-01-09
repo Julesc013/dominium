@@ -14,6 +14,7 @@ add_library(dominium_tools_common STATIC
     common/dom_tool_registry.cpp
     common/dom_tool_tlv.cpp
     common/dom_tool_validate.cpp
+    dom_tool_runtime.cpp
 )
 
 target_include_directories(dominium_tools_common PUBLIC
