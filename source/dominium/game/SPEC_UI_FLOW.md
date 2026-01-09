@@ -18,6 +18,14 @@ dgfx IR renderer and the dui UI system.
 - Missing data degrades fidelity rather than stalling rendering.
 - See `docs/SPEC_NO_MODAL_LOADING.md` and `docs/SPEC_FIDELITY_DEGRADATION.md`.
 
+## 1.2 Player continuity and map views
+- The UI state machine provides view modes:
+  LOCAL, PLANET_MAP, SYSTEM_MAP, GALAXY_MAP, COSMOS_MAP, TRANSIT.
+- Transitions are presentation-only and snapshot-driven.
+- Transit view is forced by active transit state; exiting transit returns to the
+  previous view.
+- See `docs/SPEC_PLAYER_CONTINUITY.md`.
+
 ## 2. Phase-driven screens
 The UI is phase-driven (see `docs/SPEC_PLAY_FLOW.md`).
 
@@ -57,6 +65,8 @@ The UI is phase-driven (see `docs/SPEC_PLAY_FLOW.md`).
 ## 3. Input routing
 - UI click handling is performed via dui widget hit-tests.
 - Input that is not consumed by UI routes to camera controls and build tools.
+- Map-view selection and transitions are handled by the UI state machine and
+  must remain responsive during transitions.
 
 ## 4. Runtime queries used by UI
 - instance id / seed

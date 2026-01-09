@@ -19,6 +19,10 @@ Derived work MUST be budgeted, cancellable, and non-authoritative. See
 UI/render MUST consume immutable snapshots only; snapshot construction MUST NOT
 mutate authoritative state. See `docs/SPEC_FIDELITY_DEGRADATION.md`.
 
+## Player continuity (UI)
+View transitions and transit presentation are derived-only and must not block
+the UI/render thread. See `docs/SPEC_PLAYER_CONTINUITY.md`.
+
 ## Session roles and authority
 Session roles and authority modes are defined in `docs/SPEC_SESSIONS.md`. The
 runtime MUST enforce role/authority validation and keep authority fixed for the
