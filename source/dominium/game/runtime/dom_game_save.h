@@ -30,7 +30,7 @@ enum {
 };
 
 enum {
-    DOM_GAME_SAVE_DESC_VERSION = 8u
+    DOM_GAME_SAVE_DESC_VERSION = 9u
 };
 
 typedef struct dom_game_save_desc {
@@ -67,6 +67,26 @@ typedef struct dom_game_save_desc {
     u32 surface_blob_len;
     u32 surface_version;
     u32 has_surface;
+
+    const unsigned char *media_bindings_blob;
+    u32 media_bindings_blob_len;
+    u32 media_bindings_version;
+    u32 has_media_bindings;
+
+    const unsigned char *weather_bindings_blob;
+    u32 weather_bindings_blob_len;
+    u32 weather_bindings_version;
+    u32 has_weather_bindings;
+
+    const unsigned char *aero_props_blob;
+    u32 aero_props_blob_len;
+    u32 aero_props_version;
+    u32 has_aero_props;
+
+    const unsigned char *aero_state_blob;
+    u32 aero_state_blob_len;
+    u32 aero_state_version;
+    u32 has_aero_state;
 
     const unsigned char *construction_blob;
     u32 construction_blob_len;

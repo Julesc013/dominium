@@ -28,9 +28,13 @@ extern "C" {
 namespace {
 
 enum {
-    DMRP_VERSION = 4u,
+    DMRP_VERSION = 5u,
     DMRP_ENDIAN = 0x0000FFFEu,
     DMRP_IDENTITY_VERSION = 1u,
+    DMRP_MEDIA_BINDINGS_VERSION = 1u,
+    DMRP_WEATHER_BINDINGS_VERSION = 1u,
+    DMRP_AERO_PROPS_VERSION = 1u,
+    DMRP_AERO_STATE_VERSION = 1u,
     DMRP_MACRO_ECONOMY_VERSION = 1u,
     DMRP_MACRO_EVENTS_VERSION = 1u
 };
@@ -167,6 +171,18 @@ struct dom_game_replay_play {
     u32 feature_epoch;
     const unsigned char *content_tlv;
     u32 content_tlv_len;
+    const unsigned char *media_bindings_blob;
+    u32 media_bindings_len;
+    u32 media_bindings_version;
+    const unsigned char *weather_bindings_blob;
+    u32 weather_bindings_len;
+    u32 weather_bindings_version;
+    const unsigned char *aero_props_blob;
+    u32 aero_props_len;
+    u32 aero_props_version;
+    const unsigned char *aero_state_blob;
+    u32 aero_state_len;
+    u32 aero_state_version;
     const unsigned char *macro_economy_blob;
     u32 macro_economy_len;
     u32 macro_economy_version;
@@ -186,6 +202,14 @@ dom_game_replay_record *dom_game_replay_record_open(const char *path,
                                                     u32 manifest_hash_len,
                                                     const unsigned char *content_tlv,
                                                     u32 content_tlv_len,
+                                                    const unsigned char *media_bindings_blob,
+                                                    u32 media_bindings_len,
+                                                    const unsigned char *weather_bindings_blob,
+                                                    u32 weather_bindings_len,
+                                                    const unsigned char *aero_props_blob,
+                                                    u32 aero_props_len,
+                                                    const unsigned char *aero_state_blob,
+                                                    u32 aero_state_len,
                                                     const unsigned char *macro_economy_blob,
                                                     u32 macro_economy_len,
                                                     const unsigned char *macro_events_blob,
@@ -200,6 +224,18 @@ dom_game_replay_record *dom_game_replay_record_open(const char *path,
         return (dom_game_replay_record *)0;
     }
     if (content_tlv_len > 0u && !content_tlv) {
+        return (dom_game_replay_record *)0;
+    }
+    if (media_bindings_len > 0u && !media_bindings_blob) {
+        return (dom_game_replay_record *)0;
+    }
+    if (weather_bindings_len > 0u && !weather_bindings_blob) {
+        return (dom_game_replay_record *)0;
+    }
+    if (aero_props_len > 0u && !aero_props_blob) {
+        return (dom_game_replay_record *)0;
+    }
+    if (aero_state_len > 0u && !aero_state_blob) {
         return (dom_game_replay_record *)0;
     }
     if (macro_economy_len > 0u && !macro_economy_blob) {
@@ -224,7 +260,9 @@ dom_game_replay_record *dom_game_replay_record_open(const char *path,
     if (identity_tlv.size() > 0xffffffffull) {
         return (dom_game_replay_record *)0;
     }
-    if (macro_economy_len > 0xffffffffu || macro_events_len > 0xffffffffu) {
+    if (media_bindings_len > 0xffffffffu || weather_bindings_len > 0xffffffffu ||
+        aero_props_len > 0xffffffffu || aero_state_len > 0xffffffffu ||
+        macro_economy_len > 0xffffffffu || macro_events_len > 0xffffffffu) {
         return (dom_game_replay_record *)0;
     }
 
@@ -280,6 +318,74 @@ dom_game_replay_record *dom_game_replay_record_open(const char *path,
     }
     if (!identity_tlv.empty()) {
         if (!write_all(fh, &identity_tlv[0], identity_tlv.size())) {
+            dsys_file_close(fh);
+            return (dom_game_replay_record *)0;
+        }
+    }
+
+    write_u32_le(buf32, DMRP_MEDIA_BINDINGS_VERSION);
+    if (!write_all(fh, buf32, 4u)) {
+        dsys_file_close(fh);
+        return (dom_game_replay_record *)0;
+    }
+    write_u32_le(buf32, media_bindings_len);
+    if (!write_all(fh, buf32, 4u)) {
+        dsys_file_close(fh);
+        return (dom_game_replay_record *)0;
+    }
+    if (media_bindings_len > 0u) {
+        if (!write_all(fh, media_bindings_blob, media_bindings_len)) {
+            dsys_file_close(fh);
+            return (dom_game_replay_record *)0;
+        }
+    }
+
+    write_u32_le(buf32, DMRP_WEATHER_BINDINGS_VERSION);
+    if (!write_all(fh, buf32, 4u)) {
+        dsys_file_close(fh);
+        return (dom_game_replay_record *)0;
+    }
+    write_u32_le(buf32, weather_bindings_len);
+    if (!write_all(fh, buf32, 4u)) {
+        dsys_file_close(fh);
+        return (dom_game_replay_record *)0;
+    }
+    if (weather_bindings_len > 0u) {
+        if (!write_all(fh, weather_bindings_blob, weather_bindings_len)) {
+            dsys_file_close(fh);
+            return (dom_game_replay_record *)0;
+        }
+    }
+
+    write_u32_le(buf32, DMRP_AERO_PROPS_VERSION);
+    if (!write_all(fh, buf32, 4u)) {
+        dsys_file_close(fh);
+        return (dom_game_replay_record *)0;
+    }
+    write_u32_le(buf32, aero_props_len);
+    if (!write_all(fh, buf32, 4u)) {
+        dsys_file_close(fh);
+        return (dom_game_replay_record *)0;
+    }
+    if (aero_props_len > 0u) {
+        if (!write_all(fh, aero_props_blob, aero_props_len)) {
+            dsys_file_close(fh);
+            return (dom_game_replay_record *)0;
+        }
+    }
+
+    write_u32_le(buf32, DMRP_AERO_STATE_VERSION);
+    if (!write_all(fh, buf32, 4u)) {
+        dsys_file_close(fh);
+        return (dom_game_replay_record *)0;
+    }
+    write_u32_le(buf32, aero_state_len);
+    if (!write_all(fh, buf32, 4u)) {
+        dsys_file_close(fh);
+        return (dom_game_replay_record *)0;
+    }
+    if (aero_state_len > 0u) {
+        if (!write_all(fh, aero_state_blob, aero_state_len)) {
             dsys_file_close(fh);
             return (dom_game_replay_record *)0;
         }
@@ -382,6 +488,22 @@ dom_game_replay_play *dom_game_replay_play_open(const char *path,
     u32 feature_epoch;
     u32 content_len;
     const unsigned char *content_ptr;
+    const unsigned char *media_bindings_ptr = (const unsigned char *)0;
+    u32 media_bindings_len = 0u;
+    u32 media_bindings_version = 0u;
+    int has_media_bindings = 0;
+    const unsigned char *weather_bindings_ptr = (const unsigned char *)0;
+    u32 weather_bindings_len = 0u;
+    u32 weather_bindings_version = 0u;
+    int has_weather_bindings = 0;
+    const unsigned char *aero_props_ptr = (const unsigned char *)0;
+    u32 aero_props_len = 0u;
+    u32 aero_props_version = 0u;
+    int has_aero_props = 0;
+    const unsigned char *aero_state_ptr = (const unsigned char *)0;
+    u32 aero_state_len = 0u;
+    u32 aero_state_version = 0u;
+    int has_aero_state = 0;
     const unsigned char *macro_economy_ptr = (const unsigned char *)0;
     u32 macro_economy_len = 0u;
     u32 macro_economy_version = 0u;
@@ -551,6 +673,112 @@ dom_game_replay_play *dom_game_replay_play_open(const char *path,
         }
     }
 
+    if (version >= 5u) {
+        if (data_len - offset < 8u) {
+            if (out_desc) {
+                out_desc->error_code = DOM_GAME_REPLAY_ERR_FORMAT;
+            }
+            return (dom_game_replay_play *)0;
+        }
+        media_bindings_version = read_u32_le(&data[offset]);
+        offset += 4u;
+        if (media_bindings_version > DMRP_MEDIA_BINDINGS_VERSION) {
+            if (out_desc) {
+                out_desc->error_code = DOM_GAME_REPLAY_ERR_MIGRATION;
+            }
+            return (dom_game_replay_play *)0;
+        }
+        media_bindings_len = read_u32_le(&data[offset]);
+        offset += 4u;
+        if ((size_t)media_bindings_len > data_len - offset) {
+            if (out_desc) {
+                out_desc->error_code = DOM_GAME_REPLAY_ERR_FORMAT;
+            }
+            return (dom_game_replay_play *)0;
+        }
+        media_bindings_ptr = (media_bindings_len > 0u) ? (&data[offset]) : (const unsigned char *)0;
+        offset += (size_t)media_bindings_len;
+        has_media_bindings = 1;
+
+        if (data_len - offset < 8u) {
+            if (out_desc) {
+                out_desc->error_code = DOM_GAME_REPLAY_ERR_FORMAT;
+            }
+            return (dom_game_replay_play *)0;
+        }
+        weather_bindings_version = read_u32_le(&data[offset]);
+        offset += 4u;
+        if (weather_bindings_version > DMRP_WEATHER_BINDINGS_VERSION) {
+            if (out_desc) {
+                out_desc->error_code = DOM_GAME_REPLAY_ERR_MIGRATION;
+            }
+            return (dom_game_replay_play *)0;
+        }
+        weather_bindings_len = read_u32_le(&data[offset]);
+        offset += 4u;
+        if ((size_t)weather_bindings_len > data_len - offset) {
+            if (out_desc) {
+                out_desc->error_code = DOM_GAME_REPLAY_ERR_FORMAT;
+            }
+            return (dom_game_replay_play *)0;
+        }
+        weather_bindings_ptr = (weather_bindings_len > 0u) ? (&data[offset]) : (const unsigned char *)0;
+        offset += (size_t)weather_bindings_len;
+        has_weather_bindings = 1;
+
+        if (data_len - offset < 8u) {
+            if (out_desc) {
+                out_desc->error_code = DOM_GAME_REPLAY_ERR_FORMAT;
+            }
+            return (dom_game_replay_play *)0;
+        }
+        aero_props_version = read_u32_le(&data[offset]);
+        offset += 4u;
+        if (aero_props_version > DMRP_AERO_PROPS_VERSION) {
+            if (out_desc) {
+                out_desc->error_code = DOM_GAME_REPLAY_ERR_MIGRATION;
+            }
+            return (dom_game_replay_play *)0;
+        }
+        aero_props_len = read_u32_le(&data[offset]);
+        offset += 4u;
+        if ((size_t)aero_props_len > data_len - offset) {
+            if (out_desc) {
+                out_desc->error_code = DOM_GAME_REPLAY_ERR_FORMAT;
+            }
+            return (dom_game_replay_play *)0;
+        }
+        aero_props_ptr = (aero_props_len > 0u) ? (&data[offset]) : (const unsigned char *)0;
+        offset += (size_t)aero_props_len;
+        has_aero_props = 1;
+
+        if (data_len - offset < 8u) {
+            if (out_desc) {
+                out_desc->error_code = DOM_GAME_REPLAY_ERR_FORMAT;
+            }
+            return (dom_game_replay_play *)0;
+        }
+        aero_state_version = read_u32_le(&data[offset]);
+        offset += 4u;
+        if (aero_state_version > DMRP_AERO_STATE_VERSION) {
+            if (out_desc) {
+                out_desc->error_code = DOM_GAME_REPLAY_ERR_MIGRATION;
+            }
+            return (dom_game_replay_play *)0;
+        }
+        aero_state_len = read_u32_le(&data[offset]);
+        offset += 4u;
+        if ((size_t)aero_state_len > data_len - offset) {
+            if (out_desc) {
+                out_desc->error_code = DOM_GAME_REPLAY_ERR_FORMAT;
+            }
+            return (dom_game_replay_play *)0;
+        }
+        aero_state_ptr = (aero_state_len > 0u) ? (&data[offset]) : (const unsigned char *)0;
+        offset += (size_t)aero_state_len;
+        has_aero_state = 1;
+    }
+
     if (version >= 4u) {
         if (data_len - offset < 8u) {
             if (out_desc) {
@@ -676,6 +904,18 @@ dom_game_replay_play *dom_game_replay_play_open(const char *path,
     play->feature_epoch = feature_epoch;
     play->content_tlv = content_ptr;
     play->content_tlv_len = content_len;
+    play->media_bindings_blob = media_bindings_ptr;
+    play->media_bindings_len = media_bindings_len;
+    play->media_bindings_version = media_bindings_version;
+    play->weather_bindings_blob = weather_bindings_ptr;
+    play->weather_bindings_len = weather_bindings_len;
+    play->weather_bindings_version = weather_bindings_version;
+    play->aero_props_blob = aero_props_ptr;
+    play->aero_props_len = aero_props_len;
+    play->aero_props_version = aero_props_version;
+    play->aero_state_blob = aero_state_ptr;
+    play->aero_state_len = aero_state_len;
+    play->aero_state_version = aero_state_version;
     play->macro_economy_blob = macro_economy_ptr;
     play->macro_economy_len = macro_economy_len;
     play->macro_economy_version = macro_economy_version;
@@ -697,6 +937,22 @@ dom_game_replay_play *dom_game_replay_play_open(const char *path,
         out_desc->has_identity = (u32)has_identity;
         out_desc->content_tlv = content_ptr;
         out_desc->content_tlv_len = content_len;
+        out_desc->media_bindings_blob = media_bindings_ptr;
+        out_desc->media_bindings_blob_len = media_bindings_len;
+        out_desc->media_bindings_version = media_bindings_version;
+        out_desc->has_media_bindings = (u32)has_media_bindings;
+        out_desc->weather_bindings_blob = weather_bindings_ptr;
+        out_desc->weather_bindings_blob_len = weather_bindings_len;
+        out_desc->weather_bindings_version = weather_bindings_version;
+        out_desc->has_weather_bindings = (u32)has_weather_bindings;
+        out_desc->aero_props_blob = aero_props_ptr;
+        out_desc->aero_props_blob_len = aero_props_len;
+        out_desc->aero_props_version = aero_props_version;
+        out_desc->has_aero_props = (u32)has_aero_props;
+        out_desc->aero_state_blob = aero_state_ptr;
+        out_desc->aero_state_blob_len = aero_state_len;
+        out_desc->aero_state_version = aero_state_version;
+        out_desc->has_aero_state = (u32)has_aero_state;
         out_desc->macro_economy_blob = macro_economy_ptr;
         out_desc->macro_economy_blob_len = macro_economy_len;
         out_desc->macro_economy_version = macro_economy_version;

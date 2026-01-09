@@ -62,6 +62,13 @@ typedef struct dom_lane_vessel_desc {
     u32 has_aero_props;
 } dom_lane_vessel_desc;
 
+typedef struct dom_lane_vessel_aero {
+    u64 vessel_id;
+    u32 has_aero_props;
+    dom_vehicle_aero_props aero_props;
+    dom_vehicle_aero_state aero_state;
+} dom_lane_vessel_aero;
+
 typedef struct dom_lane_scheduler dom_lane_scheduler;
 
 dom_lane_scheduler *dom_lane_scheduler_create(void);
@@ -112,6 +119,16 @@ int dom_lane_scheduler_get_local_state(const dom_lane_scheduler *sched,
 int dom_lane_scheduler_get_aero_state(const dom_lane_scheduler *sched,
                                       u64 vessel_id,
                                       dom_vehicle_aero_state *out_state);
+int dom_lane_scheduler_list_aero(const dom_lane_scheduler *sched,
+                                 dom_lane_vessel_aero *out_list,
+                                 u32 capacity,
+                                 u32 *out_count);
+int dom_lane_scheduler_set_aero_props(dom_lane_scheduler *sched,
+                                      u64 vessel_id,
+                                      const dom_vehicle_aero_props *props);
+int dom_lane_scheduler_set_aero_state(dom_lane_scheduler *sched,
+                                      u64 vessel_id,
+                                      const dom_vehicle_aero_state *state);
 
 #ifdef __cplusplus
 } /* extern "C" */

@@ -35,7 +35,7 @@ enum {
 };
 
 enum {
-    DOM_GAME_REPLAY_DESC_VERSION = 4u
+    DOM_GAME_REPLAY_DESC_VERSION = 5u
 };
 
 typedef struct dom_game_replay_record dom_game_replay_record;
@@ -57,6 +57,22 @@ typedef struct dom_game_replay_desc {
     u32 has_identity;
     const unsigned char *content_tlv;
     u32 content_tlv_len;
+    const unsigned char *media_bindings_blob;
+    u32 media_bindings_blob_len;
+    u32 media_bindings_version;
+    u32 has_media_bindings;
+    const unsigned char *weather_bindings_blob;
+    u32 weather_bindings_blob_len;
+    u32 weather_bindings_version;
+    u32 has_weather_bindings;
+    const unsigned char *aero_props_blob;
+    u32 aero_props_blob_len;
+    u32 aero_props_version;
+    u32 has_aero_props;
+    const unsigned char *aero_state_blob;
+    u32 aero_state_blob_len;
+    u32 aero_state_version;
+    u32 has_aero_state;
     const unsigned char *macro_economy_blob;
     u32 macro_economy_blob_len;
     u32 macro_economy_version;
@@ -82,6 +98,14 @@ dom_game_replay_record *dom_game_replay_record_open(const char *path,
                                                     u32 manifest_hash_len,
                                                     const unsigned char *content_tlv,
                                                     u32 content_tlv_len,
+                                                    const unsigned char *media_bindings_blob,
+                                                    u32 media_bindings_len,
+                                                    const unsigned char *weather_bindings_blob,
+                                                    u32 weather_bindings_len,
+                                                    const unsigned char *aero_props_blob,
+                                                    u32 aero_props_len,
+                                                    const unsigned char *aero_state_blob,
+                                                    u32 aero_state_len,
                                                     const unsigned char *macro_economy_blob,
                                                     u32 macro_economy_len,
                                                     const unsigned char *macro_events_blob,

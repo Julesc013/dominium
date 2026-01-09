@@ -754,3 +754,69 @@ int dom_lane_scheduler_get_aero_state(const dom_lane_scheduler *sched,
     }
     return DOM_LANE_NOT_FOUND;
 }
+
+int dom_lane_scheduler_list_aero(const dom_lane_scheduler *sched,
+                                 dom_lane_vessel_aero *out_list,
+                                 u32 capacity,
+                                 u32 *out_count) {
+    size_t i;
+    u32 count;
+    if (!sched || !out_count) {
+        return DOM_LANE_INVALID_ARGUMENT;
+    }
+    count = (u32)sched->vessels.size();
+    *out_count = count;
+    if (!out_list || capacity == 0u) {
+        return DOM_LANE_OK;
+    }
+    if (capacity < count) {
+        return DOM_LANE_ERR;
+    }
+    for (i = 0u; i < sched->vessels.size(); ++i) {
+        const DomLaneVessel &v = sched->vessels[i];
+        out_list[i].vessel_id = v.id;
+        out_list[i].has_aero_props = v.has_aero_props ? 1u : 0u;
+        out_list[i].aero_props = v.aero_props;
+        out_list[i].aero_state = v.aero_state;
+    }
+    return DOM_LANE_OK;
+}
+
+int dom_lane_scheduler_set_aero_props(dom_lane_scheduler *sched,
+                                      u64 vessel_id,
+                                      const dom_vehicle_aero_props *props) {
+    size_t i;
+    if (!sched || vessel_id == 0ull || !props) {
+        return DOM_LANE_INVALID_ARGUMENT;
+    }
+    if (dom_vehicle_aero_props_validate(props) != DOM_VEHICLE_AERO_OK) {
+        return DOM_LANE_INVALID_ARGUMENT;
+    }
+    for (i = 0u; i < sched->vessels.size(); ++i) {
+        if (sched->vessels[i].id == vessel_id) {
+            sched->vessels[i].aero_props = *props;
+            sched->vessels[i].has_aero_props = 1;
+            return DOM_LANE_OK;
+        }
+    }
+    return DOM_LANE_NOT_FOUND;
+}
+
+int dom_lane_scheduler_set_aero_state(dom_lane_scheduler *sched,
+                                      u64 vessel_id,
+                                      const dom_vehicle_aero_state *state) {
+    size_t i;
+    if (!sched || vessel_id == 0ull || !state) {
+        return DOM_LANE_INVALID_ARGUMENT;
+    }
+    for (i = 0u; i < sched->vessels.size(); ++i) {
+        if (sched->vessels[i].id == vessel_id) {
+            if (!sched->vessels[i].has_aero_props) {
+                return DOM_LANE_NOT_IMPLEMENTED;
+            }
+            sched->vessels[i].aero_state = *state;
+            return DOM_LANE_OK;
+        }
+    }
+    return DOM_LANE_NOT_FOUND;
+}

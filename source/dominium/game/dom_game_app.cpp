@@ -1431,7 +1431,19 @@ bool DomGameApp::init_session(const dom_game_config &cfg) {
                                                                                        : &m_instance_manifest_hash[0],
                                                       (u32)m_instance_manifest_hash.size(),
                                                       content_tlv.empty() ? (const unsigned char *)0 : &content_tlv[0],
-                                                      (u32)content_tlv.size());
+                                                      (u32)content_tlv.size(),
+                                                      (const unsigned char *)0,
+                                                      0u,
+                                                      (const unsigned char *)0,
+                                                      0u,
+                                                      (const unsigned char *)0,
+                                                      0u,
+                                                      (const unsigned char *)0,
+                                                      0u,
+                                                      (const unsigned char *)0,
+                                                      0u,
+                                                      (const unsigned char *)0,
+                                                      0u);
         if (!m_replay_record) {
             std::printf("DomGameApp: failed to init replay record\n");
             return false;

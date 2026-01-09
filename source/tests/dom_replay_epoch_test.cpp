@@ -40,7 +40,19 @@ int main() {
                                       manifest_hash,
                                       (u32)sizeof(manifest_hash),
                                       content_tlv,
-                                      (u32)sizeof(content_tlv));
+                                      (u32)sizeof(content_tlv),
+                                      (const unsigned char *)0,
+                                      0u,
+                                      (const unsigned char *)0,
+                                      0u,
+                                      (const unsigned char *)0,
+                                      0u,
+                                      (const unsigned char *)0,
+                                      0u,
+                                      (const unsigned char *)0,
+                                      0u,
+                                      (const unsigned char *)0,
+                                      0u);
     if (!rec) {
         return fail("record_open");
     }
