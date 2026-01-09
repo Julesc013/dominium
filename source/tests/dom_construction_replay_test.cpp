@@ -406,6 +406,7 @@ int main(void) {
                                       (const unsigned char *)0, 0u,
                                       (const unsigned char *)0, 0u,
                                       (const unsigned char *)0, 0u,
+                                      (const unsigned char *)0, 0u,
                                       (const unsigned char *)0, 0u);
     assert(rec);
 

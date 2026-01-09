@@ -271,6 +271,45 @@ int dom_ai_scheduler_set_budget(dom_ai_scheduler *sched,
     return DOM_AI_SCHEDULER_OK;
 }
 
+int dom_ai_scheduler_get_config(const dom_ai_scheduler *sched,
+                                dom_ai_scheduler_config *out_cfg) {
+    if (!sched || !out_cfg) {
+        return DOM_AI_SCHEDULER_INVALID_ARGUMENT;
+    }
+    std::memset(out_cfg, 0, sizeof(*out_cfg));
+    out_cfg->struct_size = (u32)sizeof(*out_cfg);
+    out_cfg->struct_version = DOM_AI_SCHEDULER_CONFIG_VERSION;
+    out_cfg->period_ticks = sched->period_ticks;
+    out_cfg->max_ops_per_tick = sched->max_ops_per_tick;
+    out_cfg->max_factions_per_tick = sched->max_factions_per_tick;
+    out_cfg->enable_traces = sched->enable_traces;
+    return DOM_AI_SCHEDULER_OK;
+}
+
+int dom_ai_scheduler_load_states(dom_ai_scheduler *sched,
+                                 const dom_ai_faction_state *states,
+                                 u32 count) {
+    u64 last_id = 0ull;
+    if (!sched) {
+        return DOM_AI_SCHEDULER_INVALID_ARGUMENT;
+    }
+    if (count > 0u && !states) {
+        return DOM_AI_SCHEDULER_INVALID_ARGUMENT;
+    }
+    sched->states.clear();
+    for (u32 i = 0u; i < count; ++i) {
+        const dom_ai_faction_state &state = states[i];
+        AiStateEntry entry;
+        if (state.faction_id == 0ull || state.faction_id <= last_id) {
+            return DOM_AI_SCHEDULER_INVALID_ARGUMENT;
+        }
+        last_id = state.faction_id;
+        entry.state = state;
+        insert_state_sorted(sched->states, entry);
+    }
+    return DOM_AI_SCHEDULER_OK;
+}
+
 int dom_ai_scheduler_tick(dom_ai_scheduler *sched,
                           dom_game_runtime *runtime,
                           u64 tick) {

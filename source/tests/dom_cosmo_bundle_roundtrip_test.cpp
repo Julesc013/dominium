@@ -5,6 +5,7 @@ PURPOSE: Verifies COSMO_GRAPH chunk round-trips with identical bytes.
 */
 #include <cassert>
 #include <cstdio>
+#include <cstring>
 #include <vector>
 
 #include "dominium/core_tlv.h"
@@ -93,6 +94,8 @@ int main(void) {
     std::vector<unsigned char> rout_payload;
     std::vector<unsigned char> tran_payload;
     std::vector<unsigned char> prod_payload;
+    std::vector<unsigned char> fact_payload;
+    std::vector<unsigned char> aisc_payload;
     u64 cosmo_hash = 0ull;
     u64 sysm_hash = 0ull;
     u64 bods_hash = 0ull;
@@ -105,6 +108,8 @@ int main(void) {
     u64 rout_hash = 0ull;
     u64 tran_hash = 0ull;
     u64 prod_hash = 0ull;
+    u64 fact_hash = 0ull;
+    u64 aisc_hash = 0ull;
     dom_universe_bundle *bundle = dom_universe_bundle_create();
     dom_universe_bundle *read_bundle = dom_universe_bundle_create();
     dom_universe_bundle_identity id;
@@ -177,6 +182,16 @@ int main(void) {
     prod_payload.push_back('O');
     prod_payload.push_back('D');
     prod_payload.push_back(11u);
+    fact_payload.push_back('F');
+    fact_payload.push_back('A');
+    fact_payload.push_back('C');
+    fact_payload.push_back('T');
+    fact_payload.push_back(12u);
+    aisc_payload.push_back('A');
+    aisc_payload.push_back('I');
+    aisc_payload.push_back('S');
+    aisc_payload.push_back('C');
+    aisc_payload.push_back(13u);
 
     sysm_hash = dom::core_tlv::tlv_fnv1a64(&sysm_payload[0], sysm_payload.size());
     bods_hash = dom::core_tlv::tlv_fnv1a64(&bods_payload[0], bods_payload.size());
@@ -189,7 +204,10 @@ int main(void) {
     rout_hash = dom::core_tlv::tlv_fnv1a64(&rout_payload[0], rout_payload.size());
     tran_hash = dom::core_tlv::tlv_fnv1a64(&tran_payload[0], tran_payload.size());
     prod_hash = dom::core_tlv::tlv_fnv1a64(&prod_payload[0], prod_payload.size());
+    fact_hash = dom::core_tlv::tlv_fnv1a64(&fact_payload[0], fact_payload.size());
+    aisc_hash = dom::core_tlv::tlv_fnv1a64(&aisc_payload[0], aisc_payload.size());
 
+    std::memset(&id, 0, sizeof(id));
     id.universe_id = "cosmo_u1";
     id.universe_id_len = 8u;
     id.instance_id = "inst_a";
@@ -208,6 +226,8 @@ int main(void) {
     id.routes_hash = rout_hash;
     id.transfers_hash = tran_hash;
     id.production_hash = prod_hash;
+    id.factions_hash = fact_hash;
+    id.ai_scheduler_hash = aisc_hash;
     id.ups = 60u;
     id.tick_index = 0ull;
     id.feature_epoch = DOM_FEATURE_EPOCH_DEFAULT;
@@ -253,6 +273,12 @@ int main(void) {
     assert(rc == DOM_UNIVERSE_BUNDLE_OK);
     rc = dom_universe_bundle_set_chunk(bundle, DOM_UNIVERSE_CHUNK_PROD, 1u,
                                        &prod_payload[0], (u32)prod_payload.size());
+    assert(rc == DOM_UNIVERSE_BUNDLE_OK);
+    rc = dom_universe_bundle_set_chunk(bundle, DOM_UNIVERSE_CHUNK_FACT, 1u,
+                                       &fact_payload[0], (u32)fact_payload.size());
+    assert(rc == DOM_UNIVERSE_BUNDLE_OK);
+    rc = dom_universe_bundle_set_chunk(bundle, DOM_UNIVERSE_CHUNK_AISC, 1u,
+                                       &aisc_payload[0], (u32)aisc_payload.size());
     assert(rc == DOM_UNIVERSE_BUNDLE_OK);
     rc = dom_universe_bundle_set_chunk(bundle, DOM_UNIVERSE_CHUNK_CELE, 1u, (const void *)0, 0u);
     assert(rc == DOM_UNIVERSE_BUNDLE_OK);

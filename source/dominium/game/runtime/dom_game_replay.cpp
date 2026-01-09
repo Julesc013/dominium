@@ -28,7 +28,7 @@ extern "C" {
 namespace {
 
 enum {
-    DMRP_VERSION = 5u,
+    DMRP_VERSION = 6u,
     DMRP_ENDIAN = 0x0000FFFEu,
     DMRP_IDENTITY_VERSION = 1u,
     DMRP_MEDIA_BINDINGS_VERSION = 1u,
@@ -36,7 +36,9 @@ enum {
     DMRP_AERO_PROPS_VERSION = 1u,
     DMRP_AERO_STATE_VERSION = 1u,
     DMRP_MACRO_ECONOMY_VERSION = 1u,
-    DMRP_MACRO_EVENTS_VERSION = 1u
+    DMRP_MACRO_EVENTS_VERSION = 1u,
+    DMRP_FACTIONS_VERSION = 1u,
+    DMRP_AI_SCHED_VERSION = 1u
 };
 
 enum {
@@ -189,6 +191,12 @@ struct dom_game_replay_play {
     const unsigned char *macro_events_blob;
     u32 macro_events_len;
     u32 macro_events_version;
+    const unsigned char *factions_blob;
+    u32 factions_len;
+    u32 factions_version;
+    const unsigned char *ai_sched_blob;
+    u32 ai_sched_len;
+    u32 ai_sched_version;
 };
 
 extern "C" {
@@ -213,7 +221,11 @@ dom_game_replay_record *dom_game_replay_record_open(const char *path,
                                                     const unsigned char *macro_economy_blob,
                                                     u32 macro_economy_len,
                                                     const unsigned char *macro_events_blob,
-                                                    u32 macro_events_len) {
+                                                    u32 macro_events_len,
+                                                    const unsigned char *factions_blob,
+                                                    u32 factions_len,
+                                                    const unsigned char *ai_sched_blob,
+                                                    u32 ai_sched_len) {
     dom_game_replay_record *rec;
     unsigned char buf32[4];
     unsigned char buf64[8];
@@ -244,6 +256,12 @@ dom_game_replay_record *dom_game_replay_record_open(const char *path,
     if (macro_events_len > 0u && !macro_events_blob) {
         return (dom_game_replay_record *)0;
     }
+    if (factions_len > 0u && !factions_blob) {
+        return (dom_game_replay_record *)0;
+    }
+    if (ai_sched_len > 0u && !ai_sched_blob) {
+        return (dom_game_replay_record *)0;
+    }
     if (!dom_io_guard_io_allowed()) {
         dom_io_guard_note_violation("replay_record_open", path);
         return (dom_game_replay_record *)0;
@@ -262,7 +280,8 @@ dom_game_replay_record *dom_game_replay_record_open(const char *path,
     }
     if (media_bindings_len > 0xffffffffu || weather_bindings_len > 0xffffffffu ||
         aero_props_len > 0xffffffffu || aero_state_len > 0xffffffffu ||
-        macro_economy_len > 0xffffffffu || macro_events_len > 0xffffffffu) {
+        macro_economy_len > 0xffffffffu || macro_events_len > 0xffffffffu ||
+        factions_len > 0xffffffffu || ai_sched_len > 0xffffffffu) {
         return (dom_game_replay_record *)0;
     }
 
@@ -425,6 +444,40 @@ dom_game_replay_record *dom_game_replay_record_open(const char *path,
         }
     }
 
+    write_u32_le(buf32, DMRP_FACTIONS_VERSION);
+    if (!write_all(fh, buf32, 4u)) {
+        dsys_file_close(fh);
+        return (dom_game_replay_record *)0;
+    }
+    write_u32_le(buf32, factions_len);
+    if (!write_all(fh, buf32, 4u)) {
+        dsys_file_close(fh);
+        return (dom_game_replay_record *)0;
+    }
+    if (factions_len > 0u) {
+        if (!write_all(fh, factions_blob, factions_len)) {
+            dsys_file_close(fh);
+            return (dom_game_replay_record *)0;
+        }
+    }
+
+    write_u32_le(buf32, DMRP_AI_SCHED_VERSION);
+    if (!write_all(fh, buf32, 4u)) {
+        dsys_file_close(fh);
+        return (dom_game_replay_record *)0;
+    }
+    write_u32_le(buf32, ai_sched_len);
+    if (!write_all(fh, buf32, 4u)) {
+        dsys_file_close(fh);
+        return (dom_game_replay_record *)0;
+    }
+    if (ai_sched_len > 0u) {
+        if (!write_all(fh, ai_sched_blob, ai_sched_len)) {
+            dsys_file_close(fh);
+            return (dom_game_replay_record *)0;
+        }
+    }
+
     rec = new dom_game_replay_record();
     rec->fh = fh;
     return rec;
@@ -512,6 +565,14 @@ dom_game_replay_play *dom_game_replay_play_open(const char *path,
     u32 macro_events_len = 0u;
     u32 macro_events_version = 0u;
     int has_macro_events = 0;
+    const unsigned char *factions_ptr = (const unsigned char *)0;
+    u32 factions_len = 0u;
+    u32 factions_version = 0u;
+    int has_factions = 0;
+    const unsigned char *ai_sched_ptr = (const unsigned char *)0;
+    u32 ai_sched_len = 0u;
+    u32 ai_sched_version = 0u;
+    int has_ai_sched = 0;
     const char *instance_id = (const char *)0;
     u32 instance_id_len = 0u;
     u64 run_id_val = 0ull;
@@ -833,6 +894,60 @@ dom_game_replay_play *dom_game_replay_play_open(const char *path,
         has_macro_events = 1;
     }
 
+    if (version >= 6u) {
+        if (data_len - offset < 8u) {
+            if (out_desc) {
+                out_desc->error_code = DOM_GAME_REPLAY_ERR_FORMAT;
+            }
+            return (dom_game_replay_play *)0;
+        }
+        factions_version = read_u32_le(&data[offset]);
+        offset += 4u;
+        if (factions_version > DMRP_FACTIONS_VERSION) {
+            if (out_desc) {
+                out_desc->error_code = DOM_GAME_REPLAY_ERR_MIGRATION;
+            }
+            return (dom_game_replay_play *)0;
+        }
+        factions_len = read_u32_le(&data[offset]);
+        offset += 4u;
+        if ((size_t)factions_len > data_len - offset) {
+            if (out_desc) {
+                out_desc->error_code = DOM_GAME_REPLAY_ERR_FORMAT;
+            }
+            return (dom_game_replay_play *)0;
+        }
+        factions_ptr = (factions_len > 0u) ? (&data[offset]) : (const unsigned char *)0;
+        offset += (size_t)factions_len;
+        has_factions = 1;
+
+        if (data_len - offset < 8u) {
+            if (out_desc) {
+                out_desc->error_code = DOM_GAME_REPLAY_ERR_FORMAT;
+            }
+            return (dom_game_replay_play *)0;
+        }
+        ai_sched_version = read_u32_le(&data[offset]);
+        offset += 4u;
+        if (ai_sched_version > DMRP_AI_SCHED_VERSION) {
+            if (out_desc) {
+                out_desc->error_code = DOM_GAME_REPLAY_ERR_MIGRATION;
+            }
+            return (dom_game_replay_play *)0;
+        }
+        ai_sched_len = read_u32_le(&data[offset]);
+        offset += 4u;
+        if ((size_t)ai_sched_len > data_len - offset) {
+            if (out_desc) {
+                out_desc->error_code = DOM_GAME_REPLAY_ERR_FORMAT;
+            }
+            return (dom_game_replay_play *)0;
+        }
+        ai_sched_ptr = (ai_sched_len > 0u) ? (&data[offset]) : (const unsigned char *)0;
+        offset += (size_t)ai_sched_len;
+        has_ai_sched = 1;
+    }
+
     std::vector<dom_game_replay_record_view> records;
     while (offset < data_len) {
         u64 tick;
@@ -922,6 +1037,12 @@ dom_game_replay_play *dom_game_replay_play_open(const char *path,
     play->macro_events_blob = macro_events_ptr;
     play->macro_events_len = macro_events_len;
     play->macro_events_version = macro_events_version;
+    play->factions_blob = factions_ptr;
+    play->factions_len = factions_len;
+    play->factions_version = factions_version;
+    play->ai_sched_blob = ai_sched_ptr;
+    play->ai_sched_len = ai_sched_len;
+    play->ai_sched_version = ai_sched_version;
 
     if (out_desc) {
         out_desc->container_version = version;
@@ -961,6 +1082,14 @@ dom_game_replay_play *dom_game_replay_play_open(const char *path,
         out_desc->macro_events_blob_len = macro_events_len;
         out_desc->macro_events_version = macro_events_version;
         out_desc->has_macro_events = (u32)has_macro_events;
+        out_desc->factions_blob = factions_ptr;
+        out_desc->factions_blob_len = factions_len;
+        out_desc->factions_version = factions_version;
+        out_desc->has_factions = (u32)has_factions;
+        out_desc->ai_sched_blob = ai_sched_ptr;
+        out_desc->ai_sched_blob_len = ai_sched_len;
+        out_desc->ai_sched_version = ai_sched_version;
+        out_desc->has_ai_sched = (u32)has_ai_sched;
         out_desc->error_code = DOM_GAME_REPLAY_OK;
     }
 

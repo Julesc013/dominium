@@ -52,6 +52,8 @@ int main() {
                                       (const unsigned char *)0,
                                       0u,
                                       (const unsigned char *)0,
+                                      0u,
+                                      (const unsigned char *)0,
                                       0u);
     if (!rec) {
         return fail("record_open");

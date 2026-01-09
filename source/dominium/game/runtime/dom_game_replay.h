@@ -35,7 +35,7 @@ enum {
 };
 
 enum {
-    DOM_GAME_REPLAY_DESC_VERSION = 5u
+    DOM_GAME_REPLAY_DESC_VERSION = 6u
 };
 
 typedef struct dom_game_replay_record dom_game_replay_record;
@@ -81,6 +81,14 @@ typedef struct dom_game_replay_desc {
     u32 macro_events_blob_len;
     u32 macro_events_version;
     u32 has_macro_events;
+    const unsigned char *factions_blob;
+    u32 factions_blob_len;
+    u32 factions_version;
+    u32 has_factions;
+    const unsigned char *ai_sched_blob;
+    u32 ai_sched_blob_len;
+    u32 ai_sched_version;
+    u32 has_ai_sched;
     int error_code;
 } dom_game_replay_desc;
 
@@ -109,7 +117,11 @@ dom_game_replay_record *dom_game_replay_record_open(const char *path,
                                                     const unsigned char *macro_economy_blob,
                                                     u32 macro_economy_len,
                                                     const unsigned char *macro_events_blob,
-                                                    u32 macro_events_len);
+                                                    u32 macro_events_len,
+                                                    const unsigned char *factions_blob,
+                                                    u32 factions_len,
+                                                    const unsigned char *ai_sched_blob,
+                                                    u32 ai_sched_len);
 void dom_game_replay_record_close(dom_game_replay_record *rec);
 int dom_game_replay_record_write_cmd(dom_game_replay_record *rec,
                                      u64 tick,
