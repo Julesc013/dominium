@@ -21,6 +21,10 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 
 #include "runtime/dom_game_runtime.h"
 #include "runtime/dom_game_content_id.h"
+#include "runtime/dom_body_registry.h"
+#include "runtime/dom_media_provider.h"
+#include "runtime/dom_weather_provider.h"
+#include "runtime/dom_lane_scheduler.h"
 #include "runtime/dom_construction_registry.h"
 #include "runtime/dom_station_registry.h"
 #include "runtime/dom_route_graph.h"
@@ -43,11 +47,15 @@ extern "C" {
 namespace {
 
 enum {
-    DMSG_VERSION = 4u,
+    DMSG_VERSION = 5u,
     DMSG_ENDIAN = 0x0000FFFEu,
     DMSG_CORE_VERSION = 1u,
     DMSG_ORBIT_VERSION = 1u,
     DMSG_SURFACE_VERSION = 1u,
+    DMSG_MEDIA_BINDINGS_VERSION = 1u,
+    DMSG_WEATHER_BINDINGS_VERSION = 1u,
+    DMSG_AERO_PROPS_VERSION = 1u,
+    DMSG_AERO_STATE_VERSION = 1u,
     DMSG_CONSTRUCTION_VERSION = 1u,
     DMSG_STATIONS_VERSION = 1u,
     DMSG_ROUTES_VERSION = 1u,
@@ -64,6 +72,23 @@ enum {
     DMSG_IDENTITY_TAG_RUN_ID = 3u,
     DMSG_IDENTITY_TAG_MANIFEST_HASH = 4u,
     DMSG_IDENTITY_TAG_CONTENT_HASH = 5u
+};
+
+enum {
+    DMSG_MEDIA_BINDINGS_SCHEMA_VERSION = 1u,
+    DMSG_MEDIA_BINDINGS_TAG_BINDING = 0x0100u,
+    DMSG_MEDIA_BINDINGS_TAG_BODY_ID = 0x0101u,
+    DMSG_MEDIA_BINDINGS_TAG_KIND = 0x0102u,
+    DMSG_MEDIA_BINDINGS_TAG_PROVIDER_ID = 0x0103u,
+    DMSG_MEDIA_BINDINGS_TAG_PARAMS = 0x0104u
+};
+
+enum {
+    DMSG_WEATHER_BINDINGS_SCHEMA_VERSION = 1u,
+    DMSG_WEATHER_BINDINGS_TAG_BINDING = 0x0200u,
+    DMSG_WEATHER_BINDINGS_TAG_BODY_ID = 0x0201u,
+    DMSG_WEATHER_BINDINGS_TAG_PROVIDER_ID = 0x0202u,
+    DMSG_WEATHER_BINDINGS_TAG_PARAMS = 0x0203u
 };
 
 static u32 read_u32_le(const unsigned char *p) {
@@ -221,6 +246,213 @@ static bool build_identity_tlv(const dom_game_runtime *rt,
     return true;
 }
 
+struct BodyIdCollectCtx {
+    std::vector<dom_body_id> *ids;
+};
+
+static void collect_body_id(const dom_body_info *info, void *user) {
+    BodyIdCollectCtx *ctx = static_cast<BodyIdCollectCtx *>(user);
+    if (ctx && ctx->ids && info && info->id != 0ull) {
+        ctx->ids->push_back(info->id);
+    }
+}
+
+static bool build_media_bindings_blob(const dom_game_runtime *rt,
+                                      std::vector<unsigned char> &out) {
+    const dom_body_registry *bodies;
+    const dom_media_registry *media;
+    dom::core_tlv::TlvWriter writer;
+    static const u32 kinds[] = {
+        DOM_MEDIA_KIND_VACUUM,
+        DOM_MEDIA_KIND_ATMOSPHERE,
+        DOM_MEDIA_KIND_OCEAN
+    };
+
+    writer.add_u32(dom::core_tlv::CORE_TLV_TAG_SCHEMA_VERSION,
+                   DMSG_MEDIA_BINDINGS_SCHEMA_VERSION);
+    bodies = rt ? (const dom_body_registry *)dom_game_runtime_body_registry(rt) : 0;
+    media = rt ? (const dom_media_registry *)dom_game_runtime_media_registry(rt) : 0;
+    if (!bodies || !media) {
+        out = writer.bytes();
+        return true;
+    }
+
+    {
+        std::vector<dom_body_id> body_ids;
+        BodyIdCollectCtx ctx;
+        ctx.ids = &body_ids;
+        if (dom_body_registry_iterate(bodies, collect_body_id, &ctx) != DOM_BODY_REGISTRY_OK) {
+            return false;
+        }
+        for (size_t i = 0u; i < body_ids.size(); ++i) {
+            for (size_t k = 0u; k < (sizeof(kinds) / sizeof(kinds[0])); ++k) {
+                dom_media_binding binding;
+                std::memset(&binding, 0, sizeof(binding));
+                if (dom_media_registry_get_binding(media, body_ids[i], kinds[k], &binding)
+                    != DOM_MEDIA_OK) {
+                    continue;
+                }
+                if (binding.provider_id_len == 0u ||
+                    binding.provider_id_len >= DOM_MEDIA_PROVIDER_ID_MAX) {
+                    return false;
+                }
+                {
+                    dom::core_tlv::TlvWriter entry;
+                    entry.add_u64(DMSG_MEDIA_BINDINGS_TAG_BODY_ID, binding.body_id);
+                    entry.add_u32(DMSG_MEDIA_BINDINGS_TAG_KIND, binding.kind);
+                    entry.add_bytes(DMSG_MEDIA_BINDINGS_TAG_PROVIDER_ID,
+                                    (const unsigned char *)binding.provider_id,
+                                    binding.provider_id_len);
+                    entry.add_bytes(DMSG_MEDIA_BINDINGS_TAG_PARAMS,
+                                    binding.params,
+                                    binding.params_len);
+                    writer.add_container(DMSG_MEDIA_BINDINGS_TAG_BINDING, entry.bytes());
+                }
+            }
+        }
+    }
+
+    out = writer.bytes();
+    return true;
+}
+
+static bool build_weather_bindings_blob(const dom_game_runtime *rt,
+                                        std::vector<unsigned char> &out) {
+    const dom_body_registry *bodies;
+    const dom_weather_registry *weather;
+    dom::core_tlv::TlvWriter writer;
+
+    writer.add_u32(dom::core_tlv::CORE_TLV_TAG_SCHEMA_VERSION,
+                   DMSG_WEATHER_BINDINGS_SCHEMA_VERSION);
+    bodies = rt ? (const dom_body_registry *)dom_game_runtime_body_registry(rt) : 0;
+    weather = rt ? (const dom_weather_registry *)dom_game_runtime_weather_registry(rt) : 0;
+    if (!bodies || !weather) {
+        out = writer.bytes();
+        return true;
+    }
+
+    {
+        std::vector<dom_body_id> body_ids;
+        BodyIdCollectCtx ctx;
+        ctx.ids = &body_ids;
+        if (dom_body_registry_iterate(bodies, collect_body_id, &ctx) != DOM_BODY_REGISTRY_OK) {
+            return false;
+        }
+        for (size_t i = 0u; i < body_ids.size(); ++i) {
+            dom_weather_binding binding;
+            std::memset(&binding, 0, sizeof(binding));
+            if (dom_weather_registry_get_binding(weather, body_ids[i], &binding)
+                != DOM_WEATHER_OK) {
+                continue;
+            }
+            if (binding.provider_id_len == 0u ||
+                binding.provider_id_len >= DOM_WEATHER_PROVIDER_ID_MAX) {
+                return false;
+            }
+            {
+                dom::core_tlv::TlvWriter entry;
+                entry.add_u64(DMSG_WEATHER_BINDINGS_TAG_BODY_ID, binding.body_id);
+                entry.add_bytes(DMSG_WEATHER_BINDINGS_TAG_PROVIDER_ID,
+                                (const unsigned char *)binding.provider_id,
+                                binding.provider_id_len);
+                entry.add_bytes(DMSG_WEATHER_BINDINGS_TAG_PARAMS,
+                                binding.params,
+                                binding.params_len);
+                writer.add_container(DMSG_WEATHER_BINDINGS_TAG_BINDING, entry.bytes());
+            }
+        }
+    }
+
+    out = writer.bytes();
+    return true;
+}
+
+static bool build_aero_props_blob(const dom_game_runtime *rt,
+                                  std::vector<unsigned char> &out) {
+    const dom_lane_scheduler *sched;
+    u32 count = 0u;
+    std::vector<dom_lane_vessel_aero> list;
+    std::vector<dom_lane_vessel_aero> filtered;
+
+    out.clear();
+    sched = rt ? (const dom_lane_scheduler *)dom_game_runtime_lane_scheduler(rt) : 0;
+    if (!sched) {
+        append_u32_le(out, 0u);
+        return true;
+    }
+    if (dom_lane_scheduler_list_aero(sched, 0, 0u, &count) != DOM_LANE_OK) {
+        return false;
+    }
+    if (count == 0u) {
+        append_u32_le(out, 0u);
+        return true;
+    }
+    list.resize(count);
+    if (dom_lane_scheduler_list_aero(sched, &list[0], count, &count) != DOM_LANE_OK) {
+        return false;
+    }
+    filtered.reserve(count);
+    for (u32 i = 0u; i < count; ++i) {
+        if (list[i].has_aero_props) {
+            filtered.push_back(list[i]);
+        }
+    }
+
+    append_u32_le(out, (u32)filtered.size());
+    for (size_t i = 0u; i < filtered.size(); ++i) {
+        const dom_vehicle_aero_props &props = filtered[i].aero_props;
+        append_u64_le(out, filtered[i].vessel_id);
+        append_i32_le(out, props.mass_kg_q16);
+        append_i32_le(out, props.drag_area_cda_q16);
+        append_i32_le(out, props.heat_coeff_q16);
+        append_i32_le(out, props.max_heat_q16);
+        append_u32_le(out, props.has_max_heat ? 1u : 0u);
+    }
+    return true;
+}
+
+static bool build_aero_state_blob(const dom_game_runtime *rt,
+                                  std::vector<unsigned char> &out) {
+    const dom_lane_scheduler *sched;
+    u32 count = 0u;
+    std::vector<dom_lane_vessel_aero> list;
+    std::vector<dom_lane_vessel_aero> filtered;
+
+    out.clear();
+    sched = rt ? (const dom_lane_scheduler *)dom_game_runtime_lane_scheduler(rt) : 0;
+    if (!sched) {
+        append_u32_le(out, 0u);
+        return true;
+    }
+    if (dom_lane_scheduler_list_aero(sched, 0, 0u, &count) != DOM_LANE_OK) {
+        return false;
+    }
+    if (count == 0u) {
+        append_u32_le(out, 0u);
+        return true;
+    }
+    list.resize(count);
+    if (dom_lane_scheduler_list_aero(sched, &list[0], count, &count) != DOM_LANE_OK) {
+        return false;
+    }
+    filtered.reserve(count);
+    for (u32 i = 0u; i < count; ++i) {
+        if (list[i].has_aero_props) {
+            filtered.push_back(list[i]);
+        }
+    }
+
+    append_u32_le(out, (u32)filtered.size());
+    for (size_t i = 0u; i < filtered.size(); ++i) {
+        const dom_vehicle_aero_state &state = filtered[i].aero_state;
+        append_u64_le(out, filtered[i].vessel_id);
+        append_i32_le(out, state.heat_accum_q16);
+        append_i32_le(out, state.last_heating_rate_q16);
+        append_i32_le(out, state.last_drag_accel_q16);
+    }
+    return true;
+}
+
 static bool construction_type_valid(u32 type_id) {
     return type_id == DOM_CONSTRUCTION_TYPE_HABITAT ||
            type_id == DOM_CONSTRUCTION_TYPE_STORAGE ||
@@ -262,6 +494,11 @@ static void collect_production_rule_info(const dom_production_rule_info *info, v
 
 enum {
     DMSG_CONSTRUCTION_RECORD_SIZE = 68u
+};
+
+enum {
+    DMSG_AERO_PROPS_RECORD_SIZE = 28u,
+    DMSG_AERO_STATE_RECORD_SIZE = 20u
 };
 
 enum {
@@ -1371,6 +1608,272 @@ static int apply_macro_events_blob(dom_game_runtime *rt,
     return DOM_GAME_SAVE_OK;
 }
 
+static int apply_media_bindings_blob(dom_game_runtime *rt,
+                                     const unsigned char *blob,
+                                     u32 len) {
+    dom_media_registry *registry;
+    dom::core_tlv::TlvReader reader(blob, (size_t)len);
+    dom::core_tlv::TlvRecord rec;
+    u32 schema_version = 0u;
+
+    if (!rt) {
+        return DOM_GAME_SAVE_ERR;
+    }
+    registry = (dom_media_registry *)dom_game_runtime_media_registry(rt);
+    if (!registry) {
+        return DOM_GAME_SAVE_ERR;
+    }
+    if (!blob || len == 0u) {
+        return DOM_GAME_SAVE_OK;
+    }
+
+    while (reader.next(rec)) {
+        if (rec.tag == dom::core_tlv::CORE_TLV_TAG_SCHEMA_VERSION) {
+            (void)dom::core_tlv::tlv_read_u32_le(rec.payload, rec.len, schema_version);
+            continue;
+        }
+        if (rec.tag != DMSG_MEDIA_BINDINGS_TAG_BINDING) {
+            continue;
+        }
+        {
+            dom::core_tlv::TlvReader br(rec.payload, (size_t)rec.len);
+            dom::core_tlv::TlvRecord brec;
+            dom_body_id body_id = 0ull;
+            u32 kind = 0u;
+            const unsigned char *provider = 0;
+            u32 provider_len = 0u;
+            const unsigned char *params = 0;
+            u32 params_len = 0u;
+            int have_body = 0;
+            int have_kind = 0;
+            int have_provider = 0;
+
+            while (br.next(brec)) {
+                switch (brec.tag) {
+                case DMSG_MEDIA_BINDINGS_TAG_BODY_ID:
+                    if (brec.len == 8u) {
+                        body_id = dtlv_le_read_u64(brec.payload);
+                        have_body = 1;
+                    }
+                    break;
+                case DMSG_MEDIA_BINDINGS_TAG_KIND:
+                    if (brec.len == 4u) {
+                        kind = dtlv_le_read_u32(brec.payload);
+                        have_kind = 1;
+                    }
+                    break;
+                case DMSG_MEDIA_BINDINGS_TAG_PROVIDER_ID:
+                    provider = brec.payload;
+                    provider_len = brec.len;
+                    have_provider = 1;
+                    break;
+                case DMSG_MEDIA_BINDINGS_TAG_PARAMS:
+                    params = brec.payload;
+                    params_len = brec.len;
+                    break;
+                default:
+                    break;
+                }
+            }
+
+            if (!have_body || !have_kind || !have_provider || body_id == 0ull) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+            if (provider_len == 0u || provider_len >= DOM_MEDIA_PROVIDER_ID_MAX) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+
+            dom_media_binding binding;
+            std::memset(&binding, 0, sizeof(binding));
+            binding.body_id = body_id;
+            binding.kind = kind;
+            std::memcpy(binding.provider_id, provider, provider_len);
+            binding.provider_id_len = provider_len;
+            binding.params = params;
+            binding.params_len = params_len;
+            if (dom_media_registry_set_binding(registry, &binding) != DOM_MEDIA_OK) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+        }
+    }
+
+    if (schema_version != DMSG_MEDIA_BINDINGS_SCHEMA_VERSION) {
+        return DOM_GAME_SAVE_ERR_FORMAT;
+    }
+    return DOM_GAME_SAVE_OK;
+}
+
+static int apply_weather_bindings_blob(dom_game_runtime *rt,
+                                       const unsigned char *blob,
+                                       u32 len) {
+    dom_weather_registry *registry;
+    dom::core_tlv::TlvReader reader(blob, (size_t)len);
+    dom::core_tlv::TlvRecord rec;
+    u32 schema_version = 0u;
+
+    if (!rt) {
+        return DOM_GAME_SAVE_ERR;
+    }
+    registry = (dom_weather_registry *)dom_game_runtime_weather_registry(rt);
+    if (!registry) {
+        return DOM_GAME_SAVE_ERR;
+    }
+    if (!blob || len == 0u) {
+        return DOM_GAME_SAVE_OK;
+    }
+
+    while (reader.next(rec)) {
+        if (rec.tag == dom::core_tlv::CORE_TLV_TAG_SCHEMA_VERSION) {
+            (void)dom::core_tlv::tlv_read_u32_le(rec.payload, rec.len, schema_version);
+            continue;
+        }
+        if (rec.tag != DMSG_WEATHER_BINDINGS_TAG_BINDING) {
+            continue;
+        }
+        {
+            dom::core_tlv::TlvReader br(rec.payload, (size_t)rec.len);
+            dom::core_tlv::TlvRecord brec;
+            dom_body_id body_id = 0ull;
+            const unsigned char *provider = 0;
+            u32 provider_len = 0u;
+            const unsigned char *params = 0;
+            u32 params_len = 0u;
+            int have_body = 0;
+            int have_provider = 0;
+
+            while (br.next(brec)) {
+                switch (brec.tag) {
+                case DMSG_WEATHER_BINDINGS_TAG_BODY_ID:
+                    if (brec.len == 8u) {
+                        body_id = dtlv_le_read_u64(brec.payload);
+                        have_body = 1;
+                    }
+                    break;
+                case DMSG_WEATHER_BINDINGS_TAG_PROVIDER_ID:
+                    provider = brec.payload;
+                    provider_len = brec.len;
+                    have_provider = 1;
+                    break;
+                case DMSG_WEATHER_BINDINGS_TAG_PARAMS:
+                    params = brec.payload;
+                    params_len = brec.len;
+                    break;
+                default:
+                    break;
+                }
+            }
+
+            if (!have_body || !have_provider || body_id == 0ull) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+            if (provider_len == 0u || provider_len >= DOM_WEATHER_PROVIDER_ID_MAX) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+
+            dom_weather_binding binding;
+            std::memset(&binding, 0, sizeof(binding));
+            binding.body_id = body_id;
+            std::memcpy(binding.provider_id, provider, provider_len);
+            binding.provider_id_len = provider_len;
+            binding.params = params;
+            binding.params_len = params_len;
+            if (dom_weather_registry_set_binding(registry, &binding) != DOM_WEATHER_OK) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+        }
+    }
+
+    if (schema_version != DMSG_WEATHER_BINDINGS_SCHEMA_VERSION) {
+        return DOM_GAME_SAVE_ERR_FORMAT;
+    }
+    return DOM_GAME_SAVE_OK;
+}
+
+static int apply_aero_props_blob(dom_game_runtime *rt,
+                                 const unsigned char *blob,
+                                 u32 len) {
+    dom_lane_scheduler *sched;
+    u32 count;
+    size_t offset;
+
+    if (!rt) {
+        return DOM_GAME_SAVE_ERR;
+    }
+    sched = (dom_lane_scheduler *)dom_game_runtime_lane_scheduler(rt);
+    if (!sched) {
+        return DOM_GAME_SAVE_ERR;
+    }
+    if (!blob || len < 4u) {
+        return DOM_GAME_SAVE_ERR_FORMAT;
+    }
+    count = read_u32_le(blob);
+    if (len != 4u + ((size_t)count * (size_t)DMSG_AERO_PROPS_RECORD_SIZE)) {
+        return DOM_GAME_SAVE_ERR_FORMAT;
+    }
+    offset = 4u;
+    for (u32 i = 0u; i < count; ++i) {
+        dom_vehicle_aero_props props;
+        u64 vessel_id = read_u64_le(blob + offset + 0u);
+        if (vessel_id == 0ull) {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+        props.mass_kg_q16 = read_i32_le(blob + offset + 8u);
+        props.drag_area_cda_q16 = read_i32_le(blob + offset + 12u);
+        props.heat_coeff_q16 = read_i32_le(blob + offset + 16u);
+        props.max_heat_q16 = read_i32_le(blob + offset + 20u);
+        props.has_max_heat = read_u32_le(blob + offset + 24u) ? 1u : 0u;
+
+        if (dom_vehicle_aero_props_validate(&props) != DOM_VEHICLE_AERO_OK) {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+        if (dom_lane_scheduler_set_aero_props(sched, vessel_id, &props) != DOM_LANE_OK) {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+        offset += DMSG_AERO_PROPS_RECORD_SIZE;
+    }
+    return DOM_GAME_SAVE_OK;
+}
+
+static int apply_aero_state_blob(dom_game_runtime *rt,
+                                 const unsigned char *blob,
+                                 u32 len) {
+    dom_lane_scheduler *sched;
+    u32 count;
+    size_t offset;
+
+    if (!rt) {
+        return DOM_GAME_SAVE_ERR;
+    }
+    sched = (dom_lane_scheduler *)dom_game_runtime_lane_scheduler(rt);
+    if (!sched) {
+        return DOM_GAME_SAVE_ERR;
+    }
+    if (!blob || len < 4u) {
+        return DOM_GAME_SAVE_ERR_FORMAT;
+    }
+    count = read_u32_le(blob);
+    if (len != 4u + ((size_t)count * (size_t)DMSG_AERO_STATE_RECORD_SIZE)) {
+        return DOM_GAME_SAVE_ERR_FORMAT;
+    }
+    offset = 4u;
+    for (u32 i = 0u; i < count; ++i) {
+        dom_vehicle_aero_state state;
+        u64 vessel_id = read_u64_le(blob + offset + 0u);
+        if (vessel_id == 0ull) {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+        state.heat_accum_q16 = read_i32_le(blob + offset + 8u);
+        state.last_heating_rate_q16 = read_i32_le(blob + offset + 12u);
+        state.last_drag_accel_q16 = read_i32_le(blob + offset + 16u);
+
+        if (dom_lane_scheduler_set_aero_state(sched, vessel_id, &state) != DOM_LANE_OK) {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+        offset += DMSG_AERO_STATE_RECORD_SIZE;
+    }
+    return DOM_GAME_SAVE_OK;
+}
+
 static int parse_dmsg(const unsigned char *data, size_t len, dom_game_save_desc *out_desc) {
     u32 version;
     u32 endian;
@@ -1394,6 +1897,26 @@ static int parse_dmsg(const unsigned char *data, size_t len, dom_game_save_desc 
     u32 surface_len = 0u;
     u32 surface_version = 0u;
     int has_surface = 0;
+
+    const unsigned char *media_bindings_ptr = (const unsigned char *)0;
+    u32 media_bindings_len = 0u;
+    u32 media_bindings_version = 0u;
+    int has_media_bindings = 0;
+
+    const unsigned char *weather_bindings_ptr = (const unsigned char *)0;
+    u32 weather_bindings_len = 0u;
+    u32 weather_bindings_version = 0u;
+    int has_weather_bindings = 0;
+
+    const unsigned char *aero_props_ptr = (const unsigned char *)0;
+    u32 aero_props_len = 0u;
+    u32 aero_props_version = 0u;
+    int has_aero_props = 0;
+
+    const unsigned char *aero_state_ptr = (const unsigned char *)0;
+    u32 aero_state_len = 0u;
+    u32 aero_state_version = 0u;
+    int has_aero_state = 0;
 
     const unsigned char *construction_ptr = (const unsigned char *)0;
     u32 construction_len = 0u;
@@ -1538,6 +2061,50 @@ static int parse_dmsg(const unsigned char *data, size_t len, dom_game_save_desc 
             surface_len = chunk_size;
             surface_version = chunk_version;
             has_surface = 1;
+        } else if (std::memcmp(tag, "MEDI", 4u) == 0) {
+            if (chunk_version > DMSG_MEDIA_BINDINGS_VERSION) {
+                return DOM_GAME_SAVE_ERR_MIGRATION;
+            }
+            if (chunk_version != DMSG_MEDIA_BINDINGS_VERSION || has_media_bindings) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+            media_bindings_ptr = data + offset;
+            media_bindings_len = chunk_size;
+            media_bindings_version = chunk_version;
+            has_media_bindings = 1;
+        } else if (std::memcmp(tag, "WEAT", 4u) == 0) {
+            if (chunk_version > DMSG_WEATHER_BINDINGS_VERSION) {
+                return DOM_GAME_SAVE_ERR_MIGRATION;
+            }
+            if (chunk_version != DMSG_WEATHER_BINDINGS_VERSION || has_weather_bindings) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+            weather_bindings_ptr = data + offset;
+            weather_bindings_len = chunk_size;
+            weather_bindings_version = chunk_version;
+            has_weather_bindings = 1;
+        } else if (std::memcmp(tag, "AERP", 4u) == 0) {
+            if (chunk_version > DMSG_AERO_PROPS_VERSION) {
+                return DOM_GAME_SAVE_ERR_MIGRATION;
+            }
+            if (chunk_version != DMSG_AERO_PROPS_VERSION || has_aero_props) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+            aero_props_ptr = data + offset;
+            aero_props_len = chunk_size;
+            aero_props_version = chunk_version;
+            has_aero_props = 1;
+        } else if (std::memcmp(tag, "AERS", 4u) == 0) {
+            if (chunk_version > DMSG_AERO_STATE_VERSION) {
+                return DOM_GAME_SAVE_ERR_MIGRATION;
+            }
+            if (chunk_version != DMSG_AERO_STATE_VERSION || has_aero_state) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+            aero_state_ptr = data + offset;
+            aero_state_len = chunk_size;
+            aero_state_version = chunk_version;
+            has_aero_state = 1;
         } else if (std::memcmp(tag, "CNST", 4u) == 0) {
             if (chunk_version > DMSG_CONSTRUCTION_VERSION) {
                 return DOM_GAME_SAVE_ERR_MIGRATION;
@@ -1669,7 +2236,9 @@ static int parse_dmsg(const unsigned char *data, size_t len, dom_game_save_desc 
         offset += (size_t)chunk_size;
     }
 
-    if (!core_ptr || !has_rng || !has_surface || !has_construction ||
+    if (!core_ptr || !has_rng || !has_surface || !has_media_bindings ||
+        !has_weather_bindings || !has_aero_props || !has_aero_state ||
+        !has_construction ||
         !has_stations || !has_routes || !has_transfers || !has_production ||
         !has_macro_economy || !has_macro_events) {
         return DOM_GAME_SAVE_ERR_FORMAT;
@@ -1706,6 +2275,22 @@ static int parse_dmsg(const unsigned char *data, size_t len, dom_game_save_desc 
     out_desc->surface_blob_len = surface_len;
     out_desc->surface_version = surface_version;
     out_desc->has_surface = (u32)has_surface;
+    out_desc->media_bindings_blob = media_bindings_ptr;
+    out_desc->media_bindings_blob_len = media_bindings_len;
+    out_desc->media_bindings_version = media_bindings_version;
+    out_desc->has_media_bindings = (u32)has_media_bindings;
+    out_desc->weather_bindings_blob = weather_bindings_ptr;
+    out_desc->weather_bindings_blob_len = weather_bindings_len;
+    out_desc->weather_bindings_version = weather_bindings_version;
+    out_desc->has_weather_bindings = (u32)has_weather_bindings;
+    out_desc->aero_props_blob = aero_props_ptr;
+    out_desc->aero_props_blob_len = aero_props_len;
+    out_desc->aero_props_version = aero_props_version;
+    out_desc->has_aero_props = (u32)has_aero_props;
+    out_desc->aero_state_blob = aero_state_ptr;
+    out_desc->aero_state_blob_len = aero_state_len;
+    out_desc->aero_state_version = aero_state_version;
+    out_desc->has_aero_state = (u32)has_aero_state;
     out_desc->construction_blob = construction_ptr;
     out_desc->construction_blob_len = construction_len;
     out_desc->construction_version = construction_version;
@@ -1746,6 +2331,10 @@ static bool build_save_bytes(const dom_game_runtime *rt, std::vector<unsigned ch
     std::vector<unsigned char> core_blob;
     std::vector<unsigned char> orbit_blob;
     std::vector<unsigned char> surface_blob;
+    std::vector<unsigned char> media_bindings_blob;
+    std::vector<unsigned char> weather_bindings_blob;
+    std::vector<unsigned char> aero_props_blob;
+    std::vector<unsigned char> aero_state_blob;
     std::vector<unsigned char> construction_blob;
     std::vector<unsigned char> stations_blob;
     std::vector<unsigned char> routes_blob;
@@ -1775,6 +2364,18 @@ static bool build_save_bytes(const dom_game_runtime *rt, std::vector<unsigned ch
     }
 
     if (!dom::game_save_world_blob(world, core_blob) || core_blob.empty()) {
+        return false;
+    }
+    if (!build_media_bindings_blob(rt, media_bindings_blob)) {
+        return false;
+    }
+    if (!build_weather_bindings_blob(rt, weather_bindings_blob)) {
+        return false;
+    }
+    if (!build_aero_props_blob(rt, aero_props_blob)) {
+        return false;
+    }
+    if (!build_aero_state_blob(rt, aero_state_blob)) {
         return false;
     }
     if (!build_construction_blob(rt, construction_blob)) {
@@ -1808,6 +2409,10 @@ static bool build_save_bytes(const dom_game_runtime *rt, std::vector<unsigned ch
         core_blob.size() > 0xffffffffull ||
         orbit_blob.size() > 0xffffffffull ||
         surface_blob.size() > 0xffffffffull ||
+        media_bindings_blob.size() > 0xffffffffull ||
+        weather_bindings_blob.size() > 0xffffffffull ||
+        aero_props_blob.size() > 0xffffffffull ||
+        aero_state_blob.size() > 0xffffffffull ||
         construction_blob.size() > 0xffffffffull ||
         stations_blob.size() > 0xffffffffull ||
         routes_blob.size() > 0xffffffffull ||
@@ -1859,6 +2464,30 @@ static bool build_save_bytes(const dom_game_runtime *rt, std::vector<unsigned ch
     append_u32_le(out, (u32)surface_blob.size());
     append_bytes(out, surface_blob.empty() ? (const unsigned char *)0 : &surface_blob[0],
                  surface_blob.size());
+
+    append_bytes(out, "MEDI", 4u);
+    append_u32_le(out, DMSG_MEDIA_BINDINGS_VERSION);
+    append_u32_le(out, (u32)media_bindings_blob.size());
+    append_bytes(out, media_bindings_blob.empty() ? (const unsigned char *)0 : &media_bindings_blob[0],
+                 media_bindings_blob.size());
+
+    append_bytes(out, "WEAT", 4u);
+    append_u32_le(out, DMSG_WEATHER_BINDINGS_VERSION);
+    append_u32_le(out, (u32)weather_bindings_blob.size());
+    append_bytes(out, weather_bindings_blob.empty() ? (const unsigned char *)0 : &weather_bindings_blob[0],
+                 weather_bindings_blob.size());
+
+    append_bytes(out, "AERP", 4u);
+    append_u32_le(out, DMSG_AERO_PROPS_VERSION);
+    append_u32_le(out, (u32)aero_props_blob.size());
+    append_bytes(out, aero_props_blob.empty() ? (const unsigned char *)0 : &aero_props_blob[0],
+                 aero_props_blob.size());
+
+    append_bytes(out, "AERS", 4u);
+    append_u32_le(out, DMSG_AERO_STATE_VERSION);
+    append_u32_le(out, (u32)aero_state_blob.size());
+    append_bytes(out, aero_state_blob.empty() ? (const unsigned char *)0 : &aero_state_blob[0],
+                 aero_state_blob.size());
 
     append_bytes(out, "CNST", 4u);
     append_u32_le(out, DMSG_CONSTRUCTION_VERSION);
@@ -2034,6 +2663,43 @@ int dom_game_runtime_load_save(dom_game_runtime *rt, const char *path) {
         world->worldgen_seed = desc.seed;
         world->rng.state = desc.rng_state;
         sim->tick_index = tick;
+    }
+
+    if (desc.has_media_bindings) {
+        rc = apply_media_bindings_blob(rt,
+                                       desc.media_bindings_blob,
+                                       desc.media_bindings_blob_len);
+        if (rc != DOM_GAME_SAVE_OK) {
+            dom_game_save_release(storage);
+            return rc;
+        }
+    }
+    if (desc.has_weather_bindings) {
+        rc = apply_weather_bindings_blob(rt,
+                                         desc.weather_bindings_blob,
+                                         desc.weather_bindings_blob_len);
+        if (rc != DOM_GAME_SAVE_OK) {
+            dom_game_save_release(storage);
+            return rc;
+        }
+    }
+    if (desc.has_aero_props) {
+        rc = apply_aero_props_blob(rt,
+                                   desc.aero_props_blob,
+                                   desc.aero_props_blob_len);
+        if (rc != DOM_GAME_SAVE_OK) {
+            dom_game_save_release(storage);
+            return rc;
+        }
+    }
+    if (desc.has_aero_state) {
+        rc = apply_aero_state_blob(rt,
+                                   desc.aero_state_blob,
+                                   desc.aero_state_blob_len);
+        if (rc != DOM_GAME_SAVE_OK) {
+            dom_game_save_release(storage);
+            return rc;
+        }
     }
 
     if (desc.has_construction) {

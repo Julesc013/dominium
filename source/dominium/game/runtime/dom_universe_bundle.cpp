@@ -47,6 +47,10 @@ struct BundleState {
     u64 topology_hash;
     u64 orbits_hash;
     u64 surface_overrides_hash;
+    u64 media_bindings_hash;
+    u64 weather_bindings_hash;
+    u64 aero_props_hash;
+    u64 aero_state_hash;
     u64 constructions_hash;
     u64 stations_hash;
     u64 routes_hash;
@@ -66,6 +70,10 @@ struct BundleState {
     BundleChunk topb;
     BundleChunk orbt;
     BundleChunk sovr;
+    BundleChunk medb;
+    BundleChunk weat;
+    BundleChunk aerp;
+    BundleChunk aers;
     BundleChunk cnst;
     BundleChunk stat;
     BundleChunk rout;
@@ -92,6 +100,10 @@ struct BundleState {
           topology_hash(0ull),
           orbits_hash(0ull),
           surface_overrides_hash(0ull),
+          media_bindings_hash(0ull),
+          weather_bindings_hash(0ull),
+          aero_props_hash(0ull),
+          aero_state_hash(0ull),
           constructions_hash(0ull),
           stations_hash(0ull),
           routes_hash(0ull),
@@ -110,6 +122,10 @@ struct BundleState {
           topb(),
           orbt(),
           sovr(),
+          medb(),
+          weat(),
+          aerp(),
+          aers(),
           cnst(),
           stat(),
           rout(),
@@ -137,6 +153,10 @@ static BundleChunk *chunk_for_type(BundleState *state, u32 type_id) {
         case DOM_UNIVERSE_CHUNK_TOPB: return &state->topb;
         case DOM_UNIVERSE_CHUNK_ORBT: return &state->orbt;
         case DOM_UNIVERSE_CHUNK_SOVR: return &state->sovr;
+        case DOM_UNIVERSE_CHUNK_MEDB: return &state->medb;
+        case DOM_UNIVERSE_CHUNK_WEAT: return &state->weat;
+        case DOM_UNIVERSE_CHUNK_AERP: return &state->aerp;
+        case DOM_UNIVERSE_CHUNK_AERS: return &state->aers;
         case DOM_UNIVERSE_CHUNK_CNST: return &state->cnst;
         case DOM_UNIVERSE_CHUNK_STAT: return &state->stat;
         case DOM_UNIVERSE_CHUNK_ROUT: return &state->rout;
@@ -173,6 +193,10 @@ static void bundle_reset(BundleState *state) {
     state->topology_hash = 0ull;
     state->orbits_hash = 0ull;
     state->surface_overrides_hash = 0ull;
+    state->media_bindings_hash = 0ull;
+    state->weather_bindings_hash = 0ull;
+    state->aero_props_hash = 0ull;
+    state->aero_state_hash = 0ull;
     state->constructions_hash = 0ull;
     state->stations_hash = 0ull;
     state->routes_hash = 0ull;
@@ -191,6 +215,10 @@ static void bundle_reset(BundleState *state) {
     state->topb = BundleChunk();
     state->orbt = BundleChunk();
     state->sovr = BundleChunk();
+    state->medb = BundleChunk();
+    state->weat = BundleChunk();
+    state->aerp = BundleChunk();
+    state->aers = BundleChunk();
     state->cnst = BundleChunk();
     state->stat = BundleChunk();
     state->rout = BundleChunk();
@@ -251,6 +279,10 @@ static int parse_time_chunk(BundleState *state,
     bool have_topo = false;
     bool have_orbits = false;
     bool have_surface = false;
+    bool have_media_bindings = false;
+    bool have_weather_bindings = false;
+    bool have_aero_props = false;
+    bool have_aero_state = false;
     bool have_constructions = false;
     bool have_stations = false;
     bool have_routes = false;
@@ -342,6 +374,34 @@ static int parse_time_chunk(BundleState *state,
                 state->surface_overrides_hash = dtlv_le_read_u64(pl);
                 have_surface = true;
                 break;
+            case DOM_UNIVERSE_TLV_MEDIA_BINDINGS_HASH:
+                if (!pl || pl_len != 8u) {
+                    return DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
+                }
+                state->media_bindings_hash = dtlv_le_read_u64(pl);
+                have_media_bindings = true;
+                break;
+            case DOM_UNIVERSE_TLV_WEATHER_BINDINGS_HASH:
+                if (!pl || pl_len != 8u) {
+                    return DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
+                }
+                state->weather_bindings_hash = dtlv_le_read_u64(pl);
+                have_weather_bindings = true;
+                break;
+            case DOM_UNIVERSE_TLV_AERO_PROPS_HASH:
+                if (!pl || pl_len != 8u) {
+                    return DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
+                }
+                state->aero_props_hash = dtlv_le_read_u64(pl);
+                have_aero_props = true;
+                break;
+            case DOM_UNIVERSE_TLV_AERO_STATE_HASH:
+                if (!pl || pl_len != 8u) {
+                    return DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
+                }
+                state->aero_state_hash = dtlv_le_read_u64(pl);
+                have_aero_state = true;
+                break;
             case DOM_UNIVERSE_TLV_CONSTRUCTIONS_HASH:
                 if (!pl || pl_len != 8u) {
                     return DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
@@ -425,7 +485,9 @@ static int parse_time_chunk(BundleState *state,
         return DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
     }
     if (!have_epoch || !have_systems || !have_bodies || !have_frames ||
-        !have_topo || !have_orbits || !have_surface || !have_constructions ||
+        !have_topo || !have_orbits || !have_surface || !have_media_bindings ||
+        !have_weather_bindings || !have_aero_props || !have_aero_state ||
+        !have_constructions ||
         !have_stations || !have_routes || !have_transfers || !have_production ||
         !have_macro_economy || !have_macro_events) {
         return DOM_UNIVERSE_BUNDLE_MIGRATION_REQUIRED;
@@ -520,6 +582,10 @@ static int identity_matches(const BundleState *state,
         expected->topology_hash != state->topology_hash ||
         expected->orbits_hash != state->orbits_hash ||
         expected->surface_overrides_hash != state->surface_overrides_hash ||
+        expected->media_bindings_hash != state->media_bindings_hash ||
+        expected->weather_bindings_hash != state->weather_bindings_hash ||
+        expected->aero_props_hash != state->aero_props_hash ||
+        expected->aero_state_hash != state->aero_state_hash ||
         expected->constructions_hash != state->constructions_hash ||
         expected->stations_hash != state->stations_hash ||
         expected->routes_hash != state->routes_hash ||
@@ -655,6 +721,50 @@ static int write_time_chunk(dtlv_writer *writer, const BundleState *state) {
         dtlv_le_write_u64(buf, state->surface_overrides_hash);
         rc = dtlv_writer_write_tlv(writer,
                                    DOM_UNIVERSE_TLV_SURFACE_HASH,
+                                   buf,
+                                   8u);
+    }
+    if (rc != 0) {
+        return DOM_UNIVERSE_BUNDLE_IO_ERROR;
+    }
+    {
+        unsigned char buf[8];
+        dtlv_le_write_u64(buf, state->media_bindings_hash);
+        rc = dtlv_writer_write_tlv(writer,
+                                   DOM_UNIVERSE_TLV_MEDIA_BINDINGS_HASH,
+                                   buf,
+                                   8u);
+    }
+    if (rc != 0) {
+        return DOM_UNIVERSE_BUNDLE_IO_ERROR;
+    }
+    {
+        unsigned char buf[8];
+        dtlv_le_write_u64(buf, state->weather_bindings_hash);
+        rc = dtlv_writer_write_tlv(writer,
+                                   DOM_UNIVERSE_TLV_WEATHER_BINDINGS_HASH,
+                                   buf,
+                                   8u);
+    }
+    if (rc != 0) {
+        return DOM_UNIVERSE_BUNDLE_IO_ERROR;
+    }
+    {
+        unsigned char buf[8];
+        dtlv_le_write_u64(buf, state->aero_props_hash);
+        rc = dtlv_writer_write_tlv(writer,
+                                   DOM_UNIVERSE_TLV_AERO_PROPS_HASH,
+                                   buf,
+                                   8u);
+    }
+    if (rc != 0) {
+        return DOM_UNIVERSE_BUNDLE_IO_ERROR;
+    }
+    {
+        unsigned char buf[8];
+        dtlv_le_write_u64(buf, state->aero_state_hash);
+        rc = dtlv_writer_write_tlv(writer,
+                                   DOM_UNIVERSE_TLV_AERO_STATE_HASH,
                                    buf,
                                    8u);
     }
@@ -888,6 +998,22 @@ int dom_universe_bundle_set_identity(dom_universe_bundle *bundle,
         state->surface_overrides_hash != id->surface_overrides_hash) {
         return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
     }
+    if (state->medb.present &&
+        state->media_bindings_hash != id->media_bindings_hash) {
+        return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
+    }
+    if (state->weat.present &&
+        state->weather_bindings_hash != id->weather_bindings_hash) {
+        return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
+    }
+    if (state->aerp.present &&
+        state->aero_props_hash != id->aero_props_hash) {
+        return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
+    }
+    if (state->aers.present &&
+        state->aero_state_hash != id->aero_state_hash) {
+        return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
+    }
     if (state->cnst.present &&
         state->constructions_hash != id->constructions_hash) {
         return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
@@ -927,6 +1053,10 @@ int dom_universe_bundle_set_identity(dom_universe_bundle *bundle,
     state->topology_hash = id->topology_hash;
     state->orbits_hash = id->orbits_hash;
     state->surface_overrides_hash = id->surface_overrides_hash;
+    state->media_bindings_hash = id->media_bindings_hash;
+    state->weather_bindings_hash = id->weather_bindings_hash;
+    state->aero_props_hash = id->aero_props_hash;
+    state->aero_state_hash = id->aero_state_hash;
     state->constructions_hash = id->constructions_hash;
     state->stations_hash = id->stations_hash;
     state->routes_hash = id->routes_hash;
@@ -964,6 +1094,10 @@ int dom_universe_bundle_get_identity(const dom_universe_bundle *bundle,
     out_id->topology_hash = state->topology_hash;
     out_id->orbits_hash = state->orbits_hash;
     out_id->surface_overrides_hash = state->surface_overrides_hash;
+    out_id->media_bindings_hash = state->media_bindings_hash;
+    out_id->weather_bindings_hash = state->weather_bindings_hash;
+    out_id->aero_props_hash = state->aero_props_hash;
+    out_id->aero_state_hash = state->aero_state_hash;
     out_id->constructions_hash = state->constructions_hash;
     out_id->stations_hash = state->stations_hash;
     out_id->routes_hash = state->routes_hash;
@@ -1046,6 +1180,30 @@ int dom_universe_bundle_set_chunk(dom_universe_bundle *bundle,
             return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
         }
         bundle->state.surface_overrides_hash = hash;
+    } else if (type_id == DOM_UNIVERSE_CHUNK_MEDB) {
+        const u64 hash = hash_bytes_fnv1a64(chunk->payload);
+        if (bundle->state.identity_set && bundle->state.media_bindings_hash != hash) {
+            return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
+        }
+        bundle->state.media_bindings_hash = hash;
+    } else if (type_id == DOM_UNIVERSE_CHUNK_WEAT) {
+        const u64 hash = hash_bytes_fnv1a64(chunk->payload);
+        if (bundle->state.identity_set && bundle->state.weather_bindings_hash != hash) {
+            return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
+        }
+        bundle->state.weather_bindings_hash = hash;
+    } else if (type_id == DOM_UNIVERSE_CHUNK_AERP) {
+        const u64 hash = hash_bytes_fnv1a64(chunk->payload);
+        if (bundle->state.identity_set && bundle->state.aero_props_hash != hash) {
+            return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
+        }
+        bundle->state.aero_props_hash = hash;
+    } else if (type_id == DOM_UNIVERSE_CHUNK_AERS) {
+        const u64 hash = hash_bytes_fnv1a64(chunk->payload);
+        if (bundle->state.identity_set && bundle->state.aero_state_hash != hash) {
+            return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
+        }
+        bundle->state.aero_state_hash = hash;
     } else if (type_id == DOM_UNIVERSE_CHUNK_CNST) {
         const u64 hash = hash_bytes_fnv1a64(chunk->payload);
         if (bundle->state.identity_set && bundle->state.constructions_hash != hash) {
@@ -1147,6 +1305,10 @@ int dom_universe_bundle_read_file(const char *path,
     bool have_topb = false;
     bool have_orbt = false;
     bool have_sovr = false;
+    bool have_medb = false;
+    bool have_weat = false;
+    bool have_aerp = false;
+    bool have_aers = false;
     bool have_cnst = false;
     bool have_stat = false;
     bool have_rout = false;
@@ -1174,6 +1336,14 @@ int dom_universe_bundle_read_file(const char *path,
     bool orbits_hash_set = false;
     u64 surface_payload_hash = 0ull;
     bool surface_hash_set = false;
+    u64 media_payload_hash = 0ull;
+    bool media_hash_set = false;
+    u64 weather_payload_hash = 0ull;
+    bool weather_hash_set = false;
+    u64 aero_props_payload_hash = 0ull;
+    bool aero_props_hash_set = false;
+    u64 aero_state_payload_hash = 0ull;
+    bool aero_state_hash_set = false;
     u64 constructions_payload_hash = 0ull;
     bool constructions_hash_set = false;
     u64 stations_payload_hash = 0ull;
@@ -1407,6 +1577,110 @@ int dom_universe_bundle_read_file(const char *path,
                     goto cleanup;
                 }
                 have_sovr = true;
+                break;
+            }
+            case DOM_UNIVERSE_CHUNK_MEDB: {
+                BundleChunk *chunk = chunk_for_type(&out_bundle->state, entry->type_id);
+                if (!chunk) {
+                    rc = DOM_UNIVERSE_BUNDLE_UNSUPPORTED_SCHEMA;
+                    goto cleanup;
+                }
+                if (entry->version != 1u) {
+                    rc = DOM_UNIVERSE_BUNDLE_MIGRATION_REQUIRED;
+                    goto cleanup;
+                }
+                rc = read_chunk_payload(&reader, entry, chunk->payload);
+                if (rc != DOM_UNIVERSE_BUNDLE_OK) {
+                    goto cleanup;
+                }
+                chunk->version = entry->version;
+                chunk->present = true;
+                media_payload_hash = hash_bytes_fnv1a64(chunk->payload);
+                media_hash_set = true;
+                if (out_bundle->state.identity_set &&
+                    out_bundle->state.media_bindings_hash != media_payload_hash) {
+                    rc = DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
+                    goto cleanup;
+                }
+                have_medb = true;
+                break;
+            }
+            case DOM_UNIVERSE_CHUNK_WEAT: {
+                BundleChunk *chunk = chunk_for_type(&out_bundle->state, entry->type_id);
+                if (!chunk) {
+                    rc = DOM_UNIVERSE_BUNDLE_UNSUPPORTED_SCHEMA;
+                    goto cleanup;
+                }
+                if (entry->version != 1u) {
+                    rc = DOM_UNIVERSE_BUNDLE_MIGRATION_REQUIRED;
+                    goto cleanup;
+                }
+                rc = read_chunk_payload(&reader, entry, chunk->payload);
+                if (rc != DOM_UNIVERSE_BUNDLE_OK) {
+                    goto cleanup;
+                }
+                chunk->version = entry->version;
+                chunk->present = true;
+                weather_payload_hash = hash_bytes_fnv1a64(chunk->payload);
+                weather_hash_set = true;
+                if (out_bundle->state.identity_set &&
+                    out_bundle->state.weather_bindings_hash != weather_payload_hash) {
+                    rc = DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
+                    goto cleanup;
+                }
+                have_weat = true;
+                break;
+            }
+            case DOM_UNIVERSE_CHUNK_AERP: {
+                BundleChunk *chunk = chunk_for_type(&out_bundle->state, entry->type_id);
+                if (!chunk) {
+                    rc = DOM_UNIVERSE_BUNDLE_UNSUPPORTED_SCHEMA;
+                    goto cleanup;
+                }
+                if (entry->version != 1u) {
+                    rc = DOM_UNIVERSE_BUNDLE_MIGRATION_REQUIRED;
+                    goto cleanup;
+                }
+                rc = read_chunk_payload(&reader, entry, chunk->payload);
+                if (rc != DOM_UNIVERSE_BUNDLE_OK) {
+                    goto cleanup;
+                }
+                chunk->version = entry->version;
+                chunk->present = true;
+                aero_props_payload_hash = hash_bytes_fnv1a64(chunk->payload);
+                aero_props_hash_set = true;
+                if (out_bundle->state.identity_set &&
+                    out_bundle->state.aero_props_hash != aero_props_payload_hash) {
+                    rc = DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
+                    goto cleanup;
+                }
+                have_aerp = true;
+                break;
+            }
+            case DOM_UNIVERSE_CHUNK_AERS: {
+                BundleChunk *chunk = chunk_for_type(&out_bundle->state, entry->type_id);
+                if (!chunk) {
+                    rc = DOM_UNIVERSE_BUNDLE_UNSUPPORTED_SCHEMA;
+                    goto cleanup;
+                }
+                if (entry->version != 1u) {
+                    rc = DOM_UNIVERSE_BUNDLE_MIGRATION_REQUIRED;
+                    goto cleanup;
+                }
+                rc = read_chunk_payload(&reader, entry, chunk->payload);
+                if (rc != DOM_UNIVERSE_BUNDLE_OK) {
+                    goto cleanup;
+                }
+                chunk->version = entry->version;
+                chunk->present = true;
+                aero_state_payload_hash = hash_bytes_fnv1a64(chunk->payload);
+                aero_state_hash_set = true;
+                if (out_bundle->state.identity_set &&
+                    out_bundle->state.aero_state_hash != aero_state_payload_hash) {
+                    rc = DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
+                    goto cleanup;
+                }
+                have_aers = true;
                 break;
             }
             case DOM_UNIVERSE_CHUNK_CNST: {
@@ -1657,7 +1931,8 @@ int dom_universe_bundle_read_file(const char *path,
     if (!have_time || !have_cosm || !have_cele || !have_vesl || !have_surf ||
         !have_locl || !have_rng || !have_forn ||
         !have_sysm || !have_bods || !have_fram || !have_topb || !have_orbt ||
-        !have_sovr || !have_cnst || !have_stat || !have_rout || !have_tran || !have_prod ||
+        !have_sovr || !have_medb || !have_weat || !have_aerp || !have_aers ||
+        !have_cnst || !have_stat || !have_rout || !have_tran || !have_prod ||
         !have_meco || !have_mevt) {
         rc = DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
         goto cleanup;
@@ -1701,6 +1976,30 @@ int dom_universe_bundle_read_file(const char *path,
     if (out_bundle->state.identity_set &&
         surface_hash_set &&
         surface_payload_hash != out_bundle->state.surface_overrides_hash) {
+        rc = DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
+        goto cleanup;
+    }
+    if (out_bundle->state.identity_set &&
+        media_hash_set &&
+        media_payload_hash != out_bundle->state.media_bindings_hash) {
+        rc = DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
+        goto cleanup;
+    }
+    if (out_bundle->state.identity_set &&
+        weather_hash_set &&
+        weather_payload_hash != out_bundle->state.weather_bindings_hash) {
+        rc = DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
+        goto cleanup;
+    }
+    if (out_bundle->state.identity_set &&
+        aero_props_hash_set &&
+        aero_props_payload_hash != out_bundle->state.aero_props_hash) {
+        rc = DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
+        goto cleanup;
+    }
+    if (out_bundle->state.identity_set &&
+        aero_state_hash_set &&
+        aero_state_payload_hash != out_bundle->state.aero_state_hash) {
         rc = DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
         goto cleanup;
     }
@@ -1798,6 +2097,18 @@ int dom_universe_bundle_write_file(const char *path,
     if (hash_bytes_fnv1a64(state->sovr.payload) != state->surface_overrides_hash) {
         return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
     }
+    if (hash_bytes_fnv1a64(state->medb.payload) != state->media_bindings_hash) {
+        return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
+    }
+    if (hash_bytes_fnv1a64(state->weat.payload) != state->weather_bindings_hash) {
+        return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
+    }
+    if (hash_bytes_fnv1a64(state->aerp.payload) != state->aero_props_hash) {
+        return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
+    }
+    if (hash_bytes_fnv1a64(state->aers.payload) != state->aero_state_hash) {
+        return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
+    }
     if (hash_bytes_fnv1a64(state->cnst.payload) != state->constructions_hash) {
         return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
     }
@@ -1855,6 +2166,22 @@ int dom_universe_bundle_write_file(const char *path,
         goto cleanup;
     }
     rc = write_raw_chunk(&writer, DOM_UNIVERSE_CHUNK_SOVR, state->sovr);
+    if (rc != DOM_UNIVERSE_BUNDLE_OK) {
+        goto cleanup;
+    }
+    rc = write_raw_chunk(&writer, DOM_UNIVERSE_CHUNK_MEDB, state->medb);
+    if (rc != DOM_UNIVERSE_BUNDLE_OK) {
+        goto cleanup;
+    }
+    rc = write_raw_chunk(&writer, DOM_UNIVERSE_CHUNK_WEAT, state->weat);
+    if (rc != DOM_UNIVERSE_BUNDLE_OK) {
+        goto cleanup;
+    }
+    rc = write_raw_chunk(&writer, DOM_UNIVERSE_CHUNK_AERP, state->aerp);
+    if (rc != DOM_UNIVERSE_BUNDLE_OK) {
+        goto cleanup;
+    }
+    rc = write_raw_chunk(&writer, DOM_UNIVERSE_CHUNK_AERS, state->aers);
     if (rc != DOM_UNIVERSE_BUNDLE_OK) {
         goto cleanup;
     }

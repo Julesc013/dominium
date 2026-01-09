@@ -276,6 +276,12 @@ int main(void) {
 
     rec = dom_game_replay_record_open(path, 60u, 1ull, "inst", 1ull,
                                       (const unsigned char *)0, 0u,
+                                      (const unsigned char *)0, 0u,
+                                      (const unsigned char *)0, 0u,
+                                      (const unsigned char *)0, 0u,
+                                      (const unsigned char *)0, 0u,
+                                      (const unsigned char *)0, 0u,
+                                      (const unsigned char *)0, 0u,
                                       (const unsigned char *)0, 0u);
     assert(rec);
 

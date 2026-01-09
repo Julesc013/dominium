@@ -39,6 +39,10 @@ enum {
     DOM_UNIVERSE_CHUNK_TOPB = DOM_U32_FOURCC('T','O','P','B'),
     DOM_UNIVERSE_CHUNK_ORBT = DOM_U32_FOURCC('O','R','B','T'),
     DOM_UNIVERSE_CHUNK_SOVR = DOM_U32_FOURCC('S','O','V','R'),
+    DOM_UNIVERSE_CHUNK_MEDB = DOM_U32_FOURCC('M','E','D','B'),
+    DOM_UNIVERSE_CHUNK_WEAT = DOM_U32_FOURCC('W','E','A','T'),
+    DOM_UNIVERSE_CHUNK_AERP = DOM_U32_FOURCC('A','E','R','P'),
+    DOM_UNIVERSE_CHUNK_AERS = DOM_U32_FOURCC('A','E','R','S'),
     DOM_UNIVERSE_CHUNK_CNST = DOM_U32_FOURCC('C','N','S','T'),
     DOM_UNIVERSE_CHUNK_STAT = DOM_U32_FOURCC('S','T','A','T'),
     DOM_UNIVERSE_CHUNK_ROUT = DOM_U32_FOURCC('R','O','U','T'),
@@ -75,7 +79,11 @@ enum {
     DOM_UNIVERSE_TLV_TRANSFERS_HASH   = 0x0012u,
     DOM_UNIVERSE_TLV_PRODUCTION_HASH  = 0x0013u,
     DOM_UNIVERSE_TLV_MACRO_ECONOMY_HASH = 0x0014u,
-    DOM_UNIVERSE_TLV_MACRO_EVENTS_HASH  = 0x0015u
+    DOM_UNIVERSE_TLV_MACRO_EVENTS_HASH  = 0x0015u,
+    DOM_UNIVERSE_TLV_MEDIA_BINDINGS_HASH = 0x0016u,
+    DOM_UNIVERSE_TLV_WEATHER_BINDINGS_HASH = 0x0017u,
+    DOM_UNIVERSE_TLV_AERO_PROPS_HASH   = 0x0018u,
+    DOM_UNIVERSE_TLV_AERO_STATE_HASH   = 0x0019u
 };
 
 typedef struct dom_universe_bundle_identity {
@@ -92,6 +100,10 @@ typedef struct dom_universe_bundle_identity {
     u64 topology_hash;
     u64 orbits_hash;
     u64 surface_overrides_hash;
+    u64 media_bindings_hash;
+    u64 weather_bindings_hash;
+    u64 aero_props_hash;
+    u64 aero_state_hash;
     u64 constructions_hash;
     u64 stations_hash;
     u64 routes_hash;
