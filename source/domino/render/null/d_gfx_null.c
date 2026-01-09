@@ -13,6 +13,17 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 */
 #include "d_gfx_null.h"
 
+#include "domino/sys.h"
+
+static u32 g_null_submit_delay_ms = 0u;
+static u32 g_null_present_delay_ms = 0u;
+
+void d_gfx_null_set_delay_ms(u32 submit_ms, u32 present_ms)
+{
+    g_null_submit_delay_ms = submit_ms;
+    g_null_present_delay_ms = present_ms;
+}
+
 static int d_gfx_null_init(void)
 {
     return 0;
@@ -25,10 +36,16 @@ static void d_gfx_null_shutdown(void)
 static void d_gfx_null_submit(const d_gfx_cmd_buffer* buf)
 {
     (void)buf;
+    if (g_null_submit_delay_ms > 0u) {
+        dsys_sleep_ms(g_null_submit_delay_ms);
+    }
 }
 
 static void d_gfx_null_present(void)
 {
+    if (g_null_present_delay_ms > 0u) {
+        dsys_sleep_ms(g_null_present_delay_ms);
+    }
 }
 
 static d_gfx_backend_soft g_null_backend = {
@@ -42,4 +59,3 @@ const d_gfx_backend_soft* d_gfx_null_register_backend(void)
 {
     return &g_null_backend;
 }
-

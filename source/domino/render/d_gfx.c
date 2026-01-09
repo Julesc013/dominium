@@ -19,6 +19,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "render/dgfx_trace.h"
 #include "domino/caps.h"
 #include "domino/config_base.h"
+#include "domino/sys.h"
 #include "d_gfx_internal.h"
 #include "soft/d_gfx_soft.h"
 #include "null/d_gfx_null.h"
@@ -44,7 +45,8 @@ enum {
     DGFX_TRACE_GLYPH_W = 5,
     DGFX_TRACE_GLYPH_H = 7,
     DGFX_TRACE_GLYPH_ADV = 6,
-    DGFX_TRACE_LINE_ADV = 8
+    DGFX_TRACE_LINE_ADV = 8,
+    DGFX_STALL_THRESHOLD_MS = 100
 };
 
 static void dgfx_trace_write_u32(unsigned char out[4], u32 v)
@@ -75,6 +77,14 @@ static void dgfx_trace_record_bbox(i32 min_x, i32 min_y, i32 max_x, i32 max_y)
     dgfx_trace_write_i32(buf + 8, max_x);
     dgfx_trace_write_i32(buf + 12, max_y);
     dgfx_trace_record_backend_event(DGFX_TRACE_EVENT_BBOX, buf, 16u);
+}
+
+static u32 dgfx_elapsed_ms(u64 start_us, u64 end_us)
+{
+    if (end_us <= start_us) {
+        return 0u;
+    }
+    return (u32)((end_us - start_us) / 1000ull);
 }
 
 static u32 dgfx_caps_mask_for_backend(const char* name)
@@ -802,6 +812,7 @@ void d_gfx_cmd_draw_text(d_gfx_cmd_buffer *buf, const d_gfx_draw_text_cmd *text)
 
 void d_gfx_submit(d_gfx_cmd_buffer *buf)
 {
+    u64 t0 = dsys_time_now_us();
     dgfx_trace_record_backend_event(DGFX_TRACE_EVENT_BACKEND_SUBMIT_BEGIN, 0, 0u);
     dgfx_trace_build_ir(buf);
     dgfx_trace_metrics(buf);
@@ -829,15 +840,30 @@ void d_gfx_submit(d_gfx_cmd_buffer *buf)
         }
     }
     dgfx_trace_record_backend_event(DGFX_TRACE_EVENT_BACKEND_SUBMIT_END, 0, 0u);
+    {
+        u64 t1 = dsys_time_now_us();
+        u32 dt_ms = dgfx_elapsed_ms(t0, t1);
+        if (dt_ms > DGFX_STALL_THRESHOLD_MS) {
+            dgfx_trace_record_u32(DGFX_TRACE_EVENT_STALL_MS, dt_ms);
+        }
+    }
 }
 
 void d_gfx_present(void)
 {
+    u64 t0 = dsys_time_now_us();
     dgfx_trace_record_backend_event(DGFX_TRACE_EVENT_BACKEND_PRESENT_BEGIN, 0, 0u);
     if (g_backend && g_backend->present) {
         g_backend->present();
     }
     dgfx_trace_record_backend_event(DGFX_TRACE_EVENT_BACKEND_PRESENT_END, 0, 0u);
+    {
+        u64 t1 = dsys_time_now_us();
+        u32 dt_ms = dgfx_elapsed_ms(t0, t1);
+        if (dt_ms > DGFX_STALL_THRESHOLD_MS) {
+            dgfx_trace_record_u32(DGFX_TRACE_EVENT_STALL_MS, dt_ms);
+        }
+    }
 }
 
 void d_gfx_get_surface_size(i32 *out_w, i32 *out_h)
