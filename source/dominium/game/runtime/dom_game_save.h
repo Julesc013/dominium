@@ -30,7 +30,7 @@ enum {
 };
 
 enum {
-    DOM_GAME_SAVE_DESC_VERSION = 9u
+    DOM_GAME_SAVE_DESC_VERSION = 10u
 };
 
 typedef struct dom_game_save_desc {
@@ -122,6 +122,16 @@ typedef struct dom_game_save_desc {
     u32 macro_events_blob_len;
     u32 macro_events_version;
     u32 has_macro_events;
+
+    const unsigned char *factions_blob;
+    u32 factions_blob_len;
+    u32 factions_version;
+    u32 has_factions;
+
+    const unsigned char *ai_sched_blob;
+    u32 ai_sched_blob_len;
+    u32 ai_sched_version;
+    u32 has_ai_sched;
 
     u32 rng_state;
     u32 rng_version;

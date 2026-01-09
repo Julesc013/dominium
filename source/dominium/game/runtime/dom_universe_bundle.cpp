@@ -58,6 +58,8 @@ struct BundleState {
     u64 production_hash;
     u64 macro_economy_hash;
     u64 macro_events_hash;
+    u64 factions_hash;
+    u64 ai_scheduler_hash;
     u32 ups;
     u64 tick_index;
     u32 feature_epoch;
@@ -81,6 +83,8 @@ struct BundleState {
     BundleChunk prod;
     BundleChunk meco;
     BundleChunk mevt;
+    BundleChunk fact;
+    BundleChunk aisc;
     BundleChunk cele;
     BundleChunk vesl;
     BundleChunk surf;
@@ -164,6 +168,8 @@ static BundleChunk *chunk_for_type(BundleState *state, u32 type_id) {
         case DOM_UNIVERSE_CHUNK_PROD: return &state->prod;
         case DOM_UNIVERSE_CHUNK_MECO: return &state->meco;
         case DOM_UNIVERSE_CHUNK_MEVT: return &state->mevt;
+        case DOM_UNIVERSE_CHUNK_FACT: return &state->fact;
+        case DOM_UNIVERSE_CHUNK_AISC: return &state->aisc;
         case DOM_UNIVERSE_CHUNK_CELE: return &state->cele;
         case DOM_UNIVERSE_CHUNK_VESL: return &state->vesl;
         case DOM_UNIVERSE_CHUNK_SURF: return &state->surf;
@@ -204,6 +210,8 @@ static void bundle_reset(BundleState *state) {
     state->production_hash = 0ull;
     state->macro_economy_hash = 0ull;
     state->macro_events_hash = 0ull;
+    state->factions_hash = 0ull;
+    state->ai_scheduler_hash = 0ull;
     state->ups = 0u;
     state->tick_index = 0ull;
     state->feature_epoch = 0u;
@@ -226,6 +234,8 @@ static void bundle_reset(BundleState *state) {
     state->prod = BundleChunk();
     state->meco = BundleChunk();
     state->mevt = BundleChunk();
+    state->fact = BundleChunk();
+    state->aisc = BundleChunk();
     state->cele = BundleChunk();
     state->vesl = BundleChunk();
     state->surf = BundleChunk();
@@ -290,6 +300,8 @@ static int parse_time_chunk(BundleState *state,
     bool have_production = false;
     bool have_macro_economy = false;
     bool have_macro_events = false;
+    bool have_factions = false;
+    bool have_ai_sched = false;
 
     if (!state) {
         return DOM_UNIVERSE_BUNDLE_INVALID_ARGUMENT;
@@ -451,6 +463,20 @@ static int parse_time_chunk(BundleState *state,
                 state->macro_events_hash = dtlv_le_read_u64(pl);
                 have_macro_events = true;
                 break;
+            case DOM_UNIVERSE_TLV_FACTIONS_HASH:
+                if (!pl || pl_len != 8u) {
+                    return DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
+                }
+                state->factions_hash = dtlv_le_read_u64(pl);
+                have_factions = true;
+                break;
+            case DOM_UNIVERSE_TLV_AI_SCHED_HASH:
+                if (!pl || pl_len != 8u) {
+                    return DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
+                }
+                state->ai_scheduler_hash = dtlv_le_read_u64(pl);
+                have_ai_sched = true;
+                break;
             case DOM_UNIVERSE_TLV_UPS:
                 if (!pl || pl_len != 4u) {
                     return DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
@@ -489,7 +515,8 @@ static int parse_time_chunk(BundleState *state,
         !have_weather_bindings || !have_aero_props || !have_aero_state ||
         !have_constructions ||
         !have_stations || !have_routes || !have_transfers || !have_production ||
-        !have_macro_economy || !have_macro_events) {
+        !have_macro_economy || !have_macro_events ||
+        !have_factions || !have_ai_sched) {
         return DOM_UNIVERSE_BUNDLE_MIGRATION_REQUIRED;
     }
     if (state->ups == 0u) {
@@ -593,6 +620,8 @@ static int identity_matches(const BundleState *state,
         expected->production_hash != state->production_hash ||
         expected->macro_economy_hash != state->macro_economy_hash ||
         expected->macro_events_hash != state->macro_events_hash ||
+        expected->factions_hash != state->factions_hash ||
+        expected->ai_scheduler_hash != state->ai_scheduler_hash ||
         expected->ups != state->ups ||
         expected->tick_index != state->tick_index) {
         return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
@@ -849,6 +878,28 @@ static int write_time_chunk(dtlv_writer *writer, const BundleState *state) {
         return DOM_UNIVERSE_BUNDLE_IO_ERROR;
     }
     {
+        unsigned char buf[8];
+        dtlv_le_write_u64(buf, state->factions_hash);
+        rc = dtlv_writer_write_tlv(writer,
+                                   DOM_UNIVERSE_TLV_FACTIONS_HASH,
+                                   buf,
+                                   8u);
+    }
+    if (rc != 0) {
+        return DOM_UNIVERSE_BUNDLE_IO_ERROR;
+    }
+    {
+        unsigned char buf[8];
+        dtlv_le_write_u64(buf, state->ai_scheduler_hash);
+        rc = dtlv_writer_write_tlv(writer,
+                                   DOM_UNIVERSE_TLV_AI_SCHED_HASH,
+                                   buf,
+                                   8u);
+    }
+    if (rc != 0) {
+        return DOM_UNIVERSE_BUNDLE_IO_ERROR;
+    }
+    {
         unsigned char buf[4];
         dtlv_le_write_u32(buf, state->ups);
         rc = dtlv_writer_write_tlv(writer,
@@ -1042,6 +1093,14 @@ int dom_universe_bundle_set_identity(dom_universe_bundle *bundle,
         state->macro_events_hash != id->macro_events_hash) {
         return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
     }
+    if (state->fact.present &&
+        state->factions_hash != id->factions_hash) {
+        return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
+    }
+    if (state->aisc.present &&
+        state->ai_scheduler_hash != id->ai_scheduler_hash) {
+        return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
+    }
     state->universe_id.assign(id->universe_id, id->universe_id_len);
     state->instance_id.assign(id->instance_id, id->instance_id_len);
     state->content_graph_hash = id->content_graph_hash;
@@ -1064,6 +1123,8 @@ int dom_universe_bundle_set_identity(dom_universe_bundle *bundle,
     state->production_hash = id->production_hash;
     state->macro_economy_hash = id->macro_economy_hash;
     state->macro_events_hash = id->macro_events_hash;
+    state->factions_hash = id->factions_hash;
+    state->ai_scheduler_hash = id->ai_scheduler_hash;
     state->ups = id->ups;
     state->tick_index = id->tick_index;
     state->feature_epoch = id->feature_epoch;
@@ -1105,6 +1166,8 @@ int dom_universe_bundle_get_identity(const dom_universe_bundle *bundle,
     out_id->production_hash = state->production_hash;
     out_id->macro_economy_hash = state->macro_economy_hash;
     out_id->macro_events_hash = state->macro_events_hash;
+    out_id->factions_hash = state->factions_hash;
+    out_id->ai_scheduler_hash = state->ai_scheduler_hash;
     out_id->ups = state->ups;
     out_id->tick_index = state->tick_index;
     out_id->feature_epoch = state->feature_epoch;
@@ -1234,6 +1297,30 @@ int dom_universe_bundle_set_chunk(dom_universe_bundle *bundle,
             return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
         }
         bundle->state.production_hash = hash;
+    } else if (type_id == DOM_UNIVERSE_CHUNK_MECO) {
+        const u64 hash = hash_bytes_fnv1a64(chunk->payload);
+        if (bundle->state.identity_set && bundle->state.macro_economy_hash != hash) {
+            return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
+        }
+        bundle->state.macro_economy_hash = hash;
+    } else if (type_id == DOM_UNIVERSE_CHUNK_MEVT) {
+        const u64 hash = hash_bytes_fnv1a64(chunk->payload);
+        if (bundle->state.identity_set && bundle->state.macro_events_hash != hash) {
+            return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
+        }
+        bundle->state.macro_events_hash = hash;
+    } else if (type_id == DOM_UNIVERSE_CHUNK_FACT) {
+        const u64 hash = hash_bytes_fnv1a64(chunk->payload);
+        if (bundle->state.identity_set && bundle->state.factions_hash != hash) {
+            return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
+        }
+        bundle->state.factions_hash = hash;
+    } else if (type_id == DOM_UNIVERSE_CHUNK_AISC) {
+        const u64 hash = hash_bytes_fnv1a64(chunk->payload);
+        if (bundle->state.identity_set && bundle->state.ai_scheduler_hash != hash) {
+            return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
+        }
+        bundle->state.ai_scheduler_hash = hash;
     }
     return DOM_UNIVERSE_BUNDLE_OK;
 }
@@ -1316,6 +1403,8 @@ int dom_universe_bundle_read_file(const char *path,
     bool have_prod = false;
     bool have_meco = false;
     bool have_mevt = false;
+    bool have_fact = false;
+    bool have_aisc = false;
     bool have_cele = false;
     bool have_vesl = false;
     bool have_surf = false;
@@ -1358,6 +1447,10 @@ int dom_universe_bundle_read_file(const char *path,
     bool macro_economy_hash_set = false;
     u64 macro_events_payload_hash = 0ull;
     bool macro_events_hash_set = false;
+    u64 factions_payload_hash = 0ull;
+    bool factions_hash_set = false;
+    u64 ai_sched_payload_hash = 0ull;
+    bool ai_sched_hash_set = false;
     int rc;
 
     if (!path || !out_bundle) {
@@ -1865,6 +1958,58 @@ int dom_universe_bundle_read_file(const char *path,
                 have_mevt = true;
                 break;
             }
+            case DOM_UNIVERSE_CHUNK_FACT: {
+                BundleChunk *chunk = chunk_for_type(&out_bundle->state, entry->type_id);
+                if (!chunk) {
+                    rc = DOM_UNIVERSE_BUNDLE_UNSUPPORTED_SCHEMA;
+                    goto cleanup;
+                }
+                if (entry->version != 1u) {
+                    rc = DOM_UNIVERSE_BUNDLE_MIGRATION_REQUIRED;
+                    goto cleanup;
+                }
+                rc = read_chunk_payload(&reader, entry, chunk->payload);
+                if (rc != DOM_UNIVERSE_BUNDLE_OK) {
+                    goto cleanup;
+                }
+                chunk->version = entry->version;
+                chunk->present = true;
+                factions_payload_hash = hash_bytes_fnv1a64(chunk->payload);
+                factions_hash_set = true;
+                if (out_bundle->state.identity_set &&
+                    out_bundle->state.factions_hash != factions_payload_hash) {
+                    rc = DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
+                    goto cleanup;
+                }
+                have_fact = true;
+                break;
+            }
+            case DOM_UNIVERSE_CHUNK_AISC: {
+                BundleChunk *chunk = chunk_for_type(&out_bundle->state, entry->type_id);
+                if (!chunk) {
+                    rc = DOM_UNIVERSE_BUNDLE_UNSUPPORTED_SCHEMA;
+                    goto cleanup;
+                }
+                if (entry->version != 1u) {
+                    rc = DOM_UNIVERSE_BUNDLE_MIGRATION_REQUIRED;
+                    goto cleanup;
+                }
+                rc = read_chunk_payload(&reader, entry, chunk->payload);
+                if (rc != DOM_UNIVERSE_BUNDLE_OK) {
+                    goto cleanup;
+                }
+                chunk->version = entry->version;
+                chunk->present = true;
+                ai_sched_payload_hash = hash_bytes_fnv1a64(chunk->payload);
+                ai_sched_hash_set = true;
+                if (out_bundle->state.identity_set &&
+                    out_bundle->state.ai_scheduler_hash != ai_sched_payload_hash) {
+                    rc = DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
+                    goto cleanup;
+                }
+                have_aisc = true;
+                break;
+            }
             case DOM_UNIVERSE_CHUNK_CELE:
             case DOM_UNIVERSE_CHUNK_VESL:
             case DOM_UNIVERSE_CHUNK_SURF:
@@ -1933,7 +2078,7 @@ int dom_universe_bundle_read_file(const char *path,
         !have_sysm || !have_bods || !have_fram || !have_topb || !have_orbt ||
         !have_sovr || !have_medb || !have_weat || !have_aerp || !have_aers ||
         !have_cnst || !have_stat || !have_rout || !have_tran || !have_prod ||
-        !have_meco || !have_mevt) {
+        !have_meco || !have_mevt || !have_fact || !have_aisc) {
         rc = DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
         goto cleanup;
     }
@@ -2045,6 +2190,18 @@ int dom_universe_bundle_read_file(const char *path,
         rc = DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
         goto cleanup;
     }
+    if (out_bundle->state.identity_set &&
+        factions_hash_set &&
+        factions_payload_hash != out_bundle->state.factions_hash) {
+        rc = DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
+        goto cleanup;
+    }
+    if (out_bundle->state.identity_set &&
+        ai_sched_hash_set &&
+        ai_sched_payload_hash != out_bundle->state.ai_scheduler_hash) {
+        rc = DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
+        goto cleanup;
+    }
 
     if (expected) {
         rc = identity_matches(&out_bundle->state, expected);
@@ -2130,6 +2287,12 @@ int dom_universe_bundle_write_file(const char *path,
     if (hash_bytes_fnv1a64(state->mevt.payload) != state->macro_events_hash) {
         return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
     }
+    if (hash_bytes_fnv1a64(state->fact.payload) != state->factions_hash) {
+        return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
+    }
+    if (hash_bytes_fnv1a64(state->aisc.payload) != state->ai_scheduler_hash) {
+        return DOM_UNIVERSE_BUNDLE_IDENTITY_MISMATCH;
+    }
 
     dtlv_writer_init(&writer);
     if (dtlv_writer_open_file(&writer, path) != 0) {
@@ -2210,6 +2373,14 @@ int dom_universe_bundle_write_file(const char *path,
         goto cleanup;
     }
     rc = write_raw_chunk(&writer, DOM_UNIVERSE_CHUNK_MEVT, state->mevt);
+    if (rc != DOM_UNIVERSE_BUNDLE_OK) {
+        goto cleanup;
+    }
+    rc = write_raw_chunk(&writer, DOM_UNIVERSE_CHUNK_FACT, state->fact);
+    if (rc != DOM_UNIVERSE_BUNDLE_OK) {
+        goto cleanup;
+    }
+    rc = write_raw_chunk(&writer, DOM_UNIVERSE_CHUNK_AISC, state->aisc);
     if (rc != DOM_UNIVERSE_BUNDLE_OK) {
         goto cleanup;
     }

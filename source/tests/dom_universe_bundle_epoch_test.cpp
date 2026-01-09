@@ -5,6 +5,7 @@ PURPOSE: Validates feature_epoch mismatch refusal in universe bundle loads.
 */
 #include <cassert>
 #include <cstdio>
+#include <cstring>
 #include <vector>
 
 #include "dominium/core_tlv.h"
@@ -33,6 +34,8 @@ int main(void) {
     std::vector<unsigned char> rout_payload;
     std::vector<unsigned char> tran_payload;
     std::vector<unsigned char> prod_payload;
+    std::vector<unsigned char> fact_payload;
+    std::vector<unsigned char> aisc_payload;
     u64 cosmo_hash = 0ull;
     u64 sysm_hash = 0ull;
     u64 bods_hash = 0ull;
@@ -45,12 +48,15 @@ int main(void) {
     u64 rout_hash = 0ull;
     u64 tran_hash = 0ull;
     u64 prod_hash = 0ull;
+    u64 fact_hash = 0ull;
+    u64 aisc_hash = 0ull;
     int rc;
 
     assert(bundle != 0);
     assert(read_ok != 0);
     assert(read_bad != 0);
 
+    std::memset(&id, 0, sizeof(id));
     id.universe_id = "u1";
     id.universe_id_len = 2u;
     id.instance_id = "inst1";
@@ -136,6 +142,16 @@ int main(void) {
     prod_payload.push_back('O');
     prod_payload.push_back('D');
     prod_payload.push_back(11u);
+    fact_payload.push_back('F');
+    fact_payload.push_back('A');
+    fact_payload.push_back('C');
+    fact_payload.push_back('T');
+    fact_payload.push_back(12u);
+    aisc_payload.push_back('A');
+    aisc_payload.push_back('I');
+    aisc_payload.push_back('S');
+    aisc_payload.push_back('C');
+    aisc_payload.push_back(13u);
 
     sysm_hash = dom::core_tlv::tlv_fnv1a64(&sysm_payload[0], sysm_payload.size());
     bods_hash = dom::core_tlv::tlv_fnv1a64(&bods_payload[0], bods_payload.size());
@@ -148,6 +164,8 @@ int main(void) {
     rout_hash = dom::core_tlv::tlv_fnv1a64(&rout_payload[0], rout_payload.size());
     tran_hash = dom::core_tlv::tlv_fnv1a64(&tran_payload[0], tran_payload.size());
     prod_hash = dom::core_tlv::tlv_fnv1a64(&prod_payload[0], prod_payload.size());
+    fact_hash = dom::core_tlv::tlv_fnv1a64(&fact_payload[0], fact_payload.size());
+    aisc_hash = dom::core_tlv::tlv_fnv1a64(&aisc_payload[0], aisc_payload.size());
     id.systems_hash = sysm_hash;
     id.bodies_hash = bods_hash;
     id.frames_hash = fram_hash;
@@ -159,6 +177,8 @@ int main(void) {
     id.routes_hash = rout_hash;
     id.transfers_hash = tran_hash;
     id.production_hash = prod_hash;
+    id.factions_hash = fact_hash;
+    id.ai_scheduler_hash = aisc_hash;
 
     rc = dom_universe_bundle_set_identity(bundle, &id);
     assert(rc == DOM_UNIVERSE_BUNDLE_OK);
@@ -234,6 +254,18 @@ int main(void) {
                                        1u,
                                        &prod_payload[0],
                                        (u32)prod_payload.size());
+    assert(rc == DOM_UNIVERSE_BUNDLE_OK);
+    rc = dom_universe_bundle_set_chunk(bundle,
+                                       DOM_UNIVERSE_CHUNK_FACT,
+                                       1u,
+                                       &fact_payload[0],
+                                       (u32)fact_payload.size());
+    assert(rc == DOM_UNIVERSE_BUNDLE_OK);
+    rc = dom_universe_bundle_set_chunk(bundle,
+                                       DOM_UNIVERSE_CHUNK_AISC,
+                                       1u,
+                                       &aisc_payload[0],
+                                       (u32)aisc_payload.size());
     assert(rc == DOM_UNIVERSE_BUNDLE_OK);
     rc = dom_universe_bundle_set_chunk(bundle, DOM_UNIVERSE_CHUNK_CELE, 1u, (const void *)0, 0u);
     assert(rc == DOM_UNIVERSE_BUNDLE_OK);

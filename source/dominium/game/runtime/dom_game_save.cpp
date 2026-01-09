@@ -32,6 +32,8 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "runtime/dom_production.h"
 #include "runtime/dom_macro_economy.h"
 #include "runtime/dom_macro_events.h"
+#include "runtime/dom_faction_registry.h"
+#include "runtime/dom_ai_scheduler.h"
 #include "../dom_game_save.h"
 #include "dom_instance.h"
 #include "dom_session.h"
@@ -47,7 +49,7 @@ extern "C" {
 namespace {
 
 enum {
-    DMSG_VERSION = 5u,
+    DMSG_VERSION = 6u,
     DMSG_ENDIAN = 0x0000FFFEu,
     DMSG_CORE_VERSION = 1u,
     DMSG_ORBIT_VERSION = 1u,
@@ -63,6 +65,8 @@ enum {
     DMSG_PRODUCTION_VERSION = 1u,
     DMSG_MACRO_ECONOMY_VERSION = 1u,
     DMSG_MACRO_EVENTS_VERSION = 1u,
+    DMSG_FACTIONS_VERSION = 1u,
+    DMSG_AI_SCHED_VERSION = 1u,
     DMSG_RNG_VERSION = 1u,
     DMSG_IDENTITY_VERSION = 1u
 };
@@ -489,6 +493,17 @@ static void collect_production_rule_info(const dom_production_rule_info *info, v
     ProductionCollectCtx *ctx = static_cast<ProductionCollectCtx *>(user);
     if (ctx && ctx->rules && info) {
         ctx->rules->push_back(*info);
+    }
+}
+
+struct FactionCollectCtx {
+    std::vector<dom_faction_info> *factions;
+};
+
+static void collect_faction_info(const dom_faction_info *info, void *user) {
+    FactionCollectCtx *ctx = static_cast<FactionCollectCtx *>(user);
+    if (ctx && ctx->factions && info) {
+        ctx->factions->push_back(*info);
     }
 }
 
@@ -953,6 +968,155 @@ static bool build_macro_events_blob(const dom_game_runtime *rt,
             }
         }
     }
+    return true;
+}
+
+static bool build_factions_blob(const dom_game_runtime *rt,
+                                std::vector<unsigned char> &out) {
+    const dom_faction_registry *registry;
+    std::vector<dom_faction_info> factions;
+    FactionCollectCtx ctx;
+    u32 count = 0u;
+
+    out.clear();
+    registry = rt ? (const dom_faction_registry *)dom_game_runtime_faction_registry(rt) : 0;
+    if (!registry) {
+        append_u32_le(out, 0u);
+        return true;
+    }
+    count = dom_faction_count(registry);
+    append_u32_le(out, count);
+    if (count == 0u) {
+        return true;
+    }
+
+    factions.reserve(count);
+    ctx.factions = &factions;
+    if (dom_faction_iterate(registry, collect_faction_info, &ctx) != DOM_FACTION_OK) {
+        return false;
+    }
+    if (factions.size() != count) {
+        count = (u32)factions.size();
+    }
+
+    for (u32 i = 0u; i < count; ++i) {
+        const dom_faction_info &info = factions[i];
+        u32 known_count = 0u;
+        u32 resource_count = 0u;
+        append_u64_le(out, info.faction_id);
+        append_u32_le(out, info.home_scope_kind);
+        append_u64_le(out, info.home_scope_id);
+        append_u32_le(out, info.policy_kind);
+        append_u32_le(out, info.policy_flags);
+        append_u64_le(out, info.ai_seed);
+
+        if (dom_faction_list_known_nodes(registry,
+                                         info.faction_id,
+                                         0,
+                                         0u,
+                                         &known_count) != DOM_FACTION_OK) {
+            return false;
+        }
+        if (dom_faction_resource_list(registry,
+                                      info.faction_id,
+                                      0,
+                                      0u,
+                                      &resource_count) != DOM_FACTION_OK) {
+            return false;
+        }
+        append_u32_le(out, known_count);
+        append_u32_le(out, resource_count);
+
+        if (known_count > 0u) {
+            std::vector<u64> nodes;
+            u32 actual = known_count;
+            nodes.resize(known_count);
+            if (dom_faction_list_known_nodes(registry,
+                                             info.faction_id,
+                                             &nodes[0],
+                                             known_count,
+                                             &actual) != DOM_FACTION_OK) {
+                return false;
+            }
+            if (actual != known_count) {
+                return false;
+            }
+            for (u32 n = 0u; n < known_count; ++n) {
+                append_u64_le(out, nodes[n]);
+            }
+        }
+
+        if (resource_count > 0u) {
+            std::vector<dom_faction_resource_entry> resources;
+            u32 actual = resource_count;
+            resources.resize(resource_count);
+            if (dom_faction_resource_list(registry,
+                                          info.faction_id,
+                                          &resources[0],
+                                          resource_count,
+                                          &actual) != DOM_FACTION_OK) {
+                return false;
+            }
+            if (actual != resource_count) {
+                return false;
+            }
+            for (u32 r = 0u; r < resource_count; ++r) {
+                append_u64_le(out, resources[r].resource_id);
+                append_i64_le(out, resources[r].quantity);
+            }
+        }
+    }
+
+    return true;
+}
+
+static bool build_ai_sched_blob(const dom_game_runtime *rt,
+                                std::vector<unsigned char> &out) {
+    const dom_ai_scheduler *sched;
+    dom_ai_scheduler_config cfg;
+    u32 count = 0u;
+
+    out.clear();
+    sched = rt ? (const dom_ai_scheduler *)dom_game_runtime_ai_scheduler(rt) : 0;
+    if (!sched) {
+        return false;
+    }
+    std::memset(&cfg, 0, sizeof(cfg));
+    cfg.struct_size = (u32)sizeof(cfg);
+    cfg.struct_version = DOM_AI_SCHEDULER_CONFIG_VERSION;
+    if (dom_ai_scheduler_get_config(sched, &cfg) != DOM_AI_SCHEDULER_OK) {
+        return false;
+    }
+    if (dom_ai_scheduler_list_states(sched, 0, 0u, &count) != DOM_AI_SCHEDULER_OK) {
+        return false;
+    }
+
+    append_u32_le(out, cfg.period_ticks);
+    append_u32_le(out, cfg.max_ops_per_tick);
+    append_u32_le(out, cfg.max_factions_per_tick);
+    append_u32_le(out, cfg.enable_traces ? 1u : 0u);
+    append_u32_le(out, count);
+
+    if (count > 0u) {
+        std::vector<dom_ai_faction_state> states;
+        u32 actual = count;
+        states.resize(count);
+        if (dom_ai_scheduler_list_states(sched, &states[0], count, &actual) != DOM_AI_SCHEDULER_OK) {
+            return false;
+        }
+        if (actual != count) {
+            return false;
+        }
+        for (u32 i = 0u; i < count; ++i) {
+            append_u64_le(out, states[i].faction_id);
+            append_u64_le(out, states[i].next_decision_tick);
+            append_u64_le(out, states[i].last_plan_id);
+            append_u32_le(out, states[i].last_output_count);
+            append_u32_le(out, states[i].last_reason_code);
+            append_u32_le(out, states[i].last_budget_hit);
+        }
+    }
+
     return true;
 }
 
@@ -1608,6 +1772,190 @@ static int apply_macro_events_blob(dom_game_runtime *rt,
     return DOM_GAME_SAVE_OK;
 }
 
+static int apply_factions_blob(dom_game_runtime *rt,
+                               const unsigned char *blob,
+                               u32 len) {
+    dom_faction_registry *registry;
+    size_t offset = 0u;
+    u32 count = 0u;
+    u64 last_faction_id = 0ull;
+
+    if (!rt) {
+        return DOM_GAME_SAVE_ERR;
+    }
+    registry = (dom_faction_registry *)dom_game_runtime_faction_registry(rt);
+    if (!registry) {
+        return DOM_GAME_SAVE_ERR;
+    }
+    if (!blob || len < 4u) {
+        return DOM_GAME_SAVE_ERR_FORMAT;
+    }
+    if (dom_faction_registry_init(registry) != DOM_FACTION_OK) {
+        return DOM_GAME_SAVE_ERR;
+    }
+
+    count = read_u32_le(blob + offset);
+    offset += 4u;
+    for (u32 i = 0u; i < count; ++i) {
+        dom_faction_desc desc;
+        std::vector<u64> nodes;
+        std::vector<dom_faction_resource_delta> deltas;
+        u32 known_count;
+        u32 resource_count;
+        u64 last_node = 0ull;
+        u64 last_resource = 0ull;
+
+        if (offset + 44u > len) {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+        desc.faction_id = read_u64_le(blob + offset + 0u);
+        desc.home_scope_kind = read_u32_le(blob + offset + 8u);
+        desc.home_scope_id = read_u64_le(blob + offset + 12u);
+        desc.policy_kind = read_u32_le(blob + offset + 20u);
+        desc.policy_flags = read_u32_le(blob + offset + 24u);
+        desc.ai_seed = read_u64_le(blob + offset + 28u);
+        known_count = read_u32_le(blob + offset + 36u);
+        resource_count = read_u32_le(blob + offset + 40u);
+        offset += 44u;
+
+        if (desc.faction_id == 0ull || desc.home_scope_id == 0ull || desc.ai_seed == 0ull) {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+        if (desc.faction_id <= last_faction_id) {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+        last_faction_id = desc.faction_id;
+
+        if (known_count > 0u) {
+            if (offset + (size_t)known_count * 8u > len) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+            nodes.resize(known_count);
+            for (u32 n = 0u; n < known_count; ++n) {
+                u64 node_id = read_u64_le(blob + offset);
+                offset += 8u;
+                if (node_id == 0ull || node_id <= last_node) {
+                    return DOM_GAME_SAVE_ERR_FORMAT;
+                }
+                last_node = node_id;
+                nodes[n] = node_id;
+            }
+        }
+
+        if (resource_count > 0u) {
+            if (offset + (size_t)resource_count * 16u > len) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+            deltas.resize(resource_count);
+            for (u32 r = 0u; r < resource_count; ++r) {
+                dom_faction_resource_delta delta;
+                delta.resource_id = read_u64_le(blob + offset + 0u);
+                delta.delta = read_i64_le(blob + offset + 8u);
+                offset += 16u;
+                if (delta.resource_id == 0ull || delta.resource_id <= last_resource) {
+                    return DOM_GAME_SAVE_ERR_FORMAT;
+                }
+                if (delta.delta < 0) {
+                    return DOM_GAME_SAVE_ERR_FORMAT;
+                }
+                last_resource = delta.resource_id;
+                deltas[r] = delta;
+            }
+        }
+
+        desc.known_nodes = nodes.empty() ? 0 : &nodes[0];
+        desc.known_node_count = (u32)nodes.size();
+        if (dom_faction_register(registry, &desc) != DOM_FACTION_OK) {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+        if (!deltas.empty()) {
+            if (dom_faction_update_resources(registry,
+                                             desc.faction_id,
+                                             &deltas[0],
+                                             (u32)deltas.size()) != DOM_FACTION_OK) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+        }
+    }
+
+    if (offset != len) {
+        return DOM_GAME_SAVE_ERR_FORMAT;
+    }
+    return DOM_GAME_SAVE_OK;
+}
+
+static int apply_ai_sched_blob(dom_game_runtime *rt,
+                               const unsigned char *blob,
+                               u32 len) {
+    dom_ai_scheduler *sched;
+    dom_ai_scheduler_config cfg;
+    size_t offset = 0u;
+    u32 state_count = 0u;
+    u64 last_faction_id = 0ull;
+
+    if (!rt) {
+        return DOM_GAME_SAVE_ERR;
+    }
+    sched = (dom_ai_scheduler *)dom_game_runtime_ai_scheduler(rt);
+    if (!sched) {
+        return DOM_GAME_SAVE_ERR;
+    }
+    if (!blob || len < 20u) {
+        return DOM_GAME_SAVE_ERR_FORMAT;
+    }
+
+    std::memset(&cfg, 0, sizeof(cfg));
+    cfg.struct_size = (u32)sizeof(cfg);
+    cfg.struct_version = DOM_AI_SCHEDULER_CONFIG_VERSION;
+    cfg.period_ticks = read_u32_le(blob + offset);
+    cfg.max_ops_per_tick = read_u32_le(blob + offset + 4u);
+    cfg.max_factions_per_tick = read_u32_le(blob + offset + 8u);
+    cfg.enable_traces = read_u32_le(blob + offset + 12u);
+    state_count = read_u32_le(blob + offset + 16u);
+    offset += 20u;
+
+    if (cfg.period_ticks == 0u || cfg.max_ops_per_tick == 0u ||
+        cfg.max_factions_per_tick == 0u) {
+        return DOM_GAME_SAVE_ERR_FORMAT;
+    }
+    if (offset + (size_t)state_count * 36u > len) {
+        return DOM_GAME_SAVE_ERR_FORMAT;
+    }
+
+    if (dom_ai_scheduler_init(sched, &cfg) != DOM_AI_SCHEDULER_OK) {
+        return DOM_GAME_SAVE_ERR;
+    }
+
+    if (state_count > 0u) {
+        std::vector<dom_ai_faction_state> states;
+        states.resize(state_count);
+        for (u32 i = 0u; i < state_count; ++i) {
+            dom_ai_faction_state state;
+            state.faction_id = read_u64_le(blob + offset + 0u);
+            state.next_decision_tick = read_u64_le(blob + offset + 8u);
+            state.last_plan_id = read_u64_le(blob + offset + 16u);
+            state.last_output_count = read_u32_le(blob + offset + 24u);
+            state.last_reason_code = read_u32_le(blob + offset + 28u);
+            state.last_budget_hit = read_u32_le(blob + offset + 32u);
+            offset += 36u;
+
+            if (state.faction_id == 0ull || state.faction_id <= last_faction_id) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+            last_faction_id = state.faction_id;
+            states[i] = state;
+        }
+        if (dom_ai_scheduler_load_states(sched, &states[0], state_count) != DOM_AI_SCHEDULER_OK) {
+            return DOM_GAME_SAVE_ERR_FORMAT;
+        }
+    }
+
+    if (offset != len) {
+        return DOM_GAME_SAVE_ERR_FORMAT;
+    }
+    return DOM_GAME_SAVE_OK;
+}
+
 static int apply_media_bindings_blob(dom_game_runtime *rt,
                                      const unsigned char *blob,
                                      u32 len) {
@@ -1953,6 +2301,16 @@ static int parse_dmsg(const unsigned char *data, size_t len, dom_game_save_desc 
     u32 macro_events_version = 0u;
     int has_macro_events = 0;
 
+    const unsigned char *factions_ptr = (const unsigned char *)0;
+    u32 factions_len = 0u;
+    u32 factions_version = 0u;
+    int has_factions = 0;
+
+    const unsigned char *ai_sched_ptr = (const unsigned char *)0;
+    u32 ai_sched_len = 0u;
+    u32 ai_sched_version = 0u;
+    int has_ai_sched = 0;
+
     const char *instance_id = (const char *)0;
     u32 instance_id_len = 0u;
     u64 run_id_val = 0ull;
@@ -2182,6 +2540,28 @@ static int parse_dmsg(const unsigned char *data, size_t len, dom_game_save_desc 
             macro_events_len = chunk_size;
             macro_events_version = chunk_version;
             has_macro_events = 1;
+        } else if (std::memcmp(tag, "FACT", 4u) == 0) {
+            if (chunk_version > DMSG_FACTIONS_VERSION) {
+                return DOM_GAME_SAVE_ERR_MIGRATION;
+            }
+            if (chunk_version != DMSG_FACTIONS_VERSION || has_factions) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+            factions_ptr = data + offset;
+            factions_len = chunk_size;
+            factions_version = chunk_version;
+            has_factions = 1;
+        } else if (std::memcmp(tag, "AISC", 4u) == 0) {
+            if (chunk_version > DMSG_AI_SCHED_VERSION) {
+                return DOM_GAME_SAVE_ERR_MIGRATION;
+            }
+            if (chunk_version != DMSG_AI_SCHED_VERSION || has_ai_sched) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+            ai_sched_ptr = data + offset;
+            ai_sched_len = chunk_size;
+            ai_sched_version = chunk_version;
+            has_ai_sched = 1;
         } else if (std::memcmp(tag, "IDEN", 4u) == 0) {
             dom::core_tlv::TlvReader ir(data + offset, (size_t)chunk_size);
             dom::core_tlv::TlvRecord irec;
@@ -2240,7 +2620,8 @@ static int parse_dmsg(const unsigned char *data, size_t len, dom_game_save_desc 
         !has_weather_bindings || !has_aero_props || !has_aero_state ||
         !has_construction ||
         !has_stations || !has_routes || !has_transfers || !has_production ||
-        !has_macro_economy || !has_macro_events) {
+        !has_macro_economy || !has_macro_events ||
+        !has_factions || !has_ai_sched) {
         return DOM_GAME_SAVE_ERR_FORMAT;
     }
     if (version >= 2u && !has_identity) {
@@ -2319,6 +2700,14 @@ static int parse_dmsg(const unsigned char *data, size_t len, dom_game_save_desc 
     out_desc->macro_events_blob_len = macro_events_len;
     out_desc->macro_events_version = macro_events_version;
     out_desc->has_macro_events = (u32)has_macro_events;
+    out_desc->factions_blob = factions_ptr;
+    out_desc->factions_blob_len = factions_len;
+    out_desc->factions_version = factions_version;
+    out_desc->has_factions = (u32)has_factions;
+    out_desc->ai_sched_blob = ai_sched_ptr;
+    out_desc->ai_sched_blob_len = ai_sched_len;
+    out_desc->ai_sched_version = ai_sched_version;
+    out_desc->has_ai_sched = (u32)has_ai_sched;
     out_desc->rng_state = rng_state;
     out_desc->rng_version = rng_version;
     out_desc->has_rng = (u32)has_rng;
@@ -2342,6 +2731,8 @@ static bool build_save_bytes(const dom_game_runtime *rt, std::vector<unsigned ch
     std::vector<unsigned char> production_blob;
     std::vector<unsigned char> macro_economy_blob;
     std::vector<unsigned char> macro_events_blob;
+    std::vector<unsigned char> factions_blob;
+    std::vector<unsigned char> ai_sched_blob;
     std::vector<unsigned char> content_tlv;
     std::vector<unsigned char> identity_tlv;
     u32 ups;
@@ -2399,6 +2790,12 @@ static bool build_save_bytes(const dom_game_runtime *rt, std::vector<unsigned ch
     if (!build_macro_events_blob(rt, macro_events_blob)) {
         return false;
     }
+    if (!build_factions_blob(rt, factions_blob)) {
+        return false;
+    }
+    if (!build_ai_sched_blob(rt, ai_sched_blob)) {
+        return false;
+    }
 
     session = (const dom::DomSession *)dom_game_runtime_session(rt);
     if (!dom::dom_game_content_build_tlv(session, content_tlv)) {
@@ -2419,7 +2816,9 @@ static bool build_save_bytes(const dom_game_runtime *rt, std::vector<unsigned ch
         transfers_blob.size() > 0xffffffffull ||
         production_blob.size() > 0xffffffffull ||
         macro_economy_blob.size() > 0xffffffffull ||
-        macro_events_blob.size() > 0xffffffffull) {
+        macro_events_blob.size() > 0xffffffffull ||
+        factions_blob.size() > 0xffffffffull ||
+        ai_sched_blob.size() > 0xffffffffull) {
         return false;
     }
     if (!build_identity_tlv(rt,
@@ -2530,6 +2929,18 @@ static bool build_save_bytes(const dom_game_runtime *rt, std::vector<unsigned ch
     append_u32_le(out, (u32)macro_events_blob.size());
     append_bytes(out, macro_events_blob.empty() ? (const unsigned char *)0 : &macro_events_blob[0],
                  macro_events_blob.size());
+
+    append_bytes(out, "FACT", 4u);
+    append_u32_le(out, DMSG_FACTIONS_VERSION);
+    append_u32_le(out, (u32)factions_blob.size());
+    append_bytes(out, factions_blob.empty() ? (const unsigned char *)0 : &factions_blob[0],
+                 factions_blob.size());
+
+    append_bytes(out, "AISC", 4u);
+    append_u32_le(out, DMSG_AI_SCHED_VERSION);
+    append_u32_le(out, (u32)ai_sched_blob.size());
+    append_bytes(out, ai_sched_blob.empty() ? (const unsigned char *)0 : &ai_sched_blob[0],
+                 ai_sched_blob.size());
 
     append_bytes(out, "RNG ", 4u);
     append_u32_le(out, DMSG_RNG_VERSION);
@@ -2761,6 +3172,24 @@ int dom_game_runtime_load_save(dom_game_runtime *rt, const char *path) {
                                      desc.macro_events_blob,
                                      desc.macro_events_blob_len,
                                      desc.tick_index);
+        if (rc != DOM_GAME_SAVE_OK) {
+            dom_game_save_release(storage);
+            return rc;
+        }
+    }
+    if (desc.has_factions) {
+        rc = apply_factions_blob(rt,
+                                 desc.factions_blob,
+                                 desc.factions_blob_len);
+        if (rc != DOM_GAME_SAVE_OK) {
+            dom_game_save_release(storage);
+            return rc;
+        }
+    }
+    if (desc.has_ai_sched) {
+        rc = apply_ai_sched_blob(rt,
+                                 desc.ai_sched_blob,
+                                 desc.ai_sched_blob_len);
         if (rc != DOM_GAME_SAVE_OK) {
             dom_game_save_release(storage);
             return rc;

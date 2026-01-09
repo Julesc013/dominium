@@ -28,10 +28,12 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "runtime/dom_derived_jobs.h"
 #include "runtime/dom_snapshot.h"
 #include "runtime/dom_io_guard.h"
+#include "runtime/dom_ai_scheduler.h"
 #include "ui/dom_ui_views.h"
 #include "dom_game_tools_build.h"
 #include "dominium/version.h"
 #include "dominium/core_tlv.h"
+#include "dominium/caps_split.h"
 #include "dominium/paths.h"
 
 extern "C" {
@@ -244,6 +246,23 @@ static DomSessionAuthority map_session_authority(dom_game_session_authority auth
         break;
     }
     return DOM_SESSION_AUTH_SERVER_AUTH;
+}
+
+static u32 map_perf_tier(const dom_game_config &cfg) {
+    if (cfg.server_mode == DOM_GAME_SERVER_DEDICATED ||
+        (cfg.session_role_set &&
+         cfg.session_role == DOM_GAME_SESSION_ROLE_DEDICATED_SERVER)) {
+        return dom::DOM_PERF_TIER_SERVER;
+    }
+    switch (cfg.profile.kind) {
+    case DOM_PROFILE_PERF:
+        return dom::DOM_PERF_TIER_MODERN;
+    case DOM_PROFILE_COMPAT:
+    case DOM_PROFILE_BASELINE:
+    default:
+        break;
+    }
+    return dom::DOM_PERF_TIER_BASELINE;
 }
 
 static bool write_refusal_tlv(const DomGamePaths &paths,
@@ -793,6 +812,7 @@ DomGameApp::DomGameApp()
       m_has_net_snapshot(false),
       m_derived_queue(0),
       m_last_wall_us(0u),
+      m_budget_profile(),
       m_derived_budget_ms(0u),
       m_derived_budget_io_bytes(0u),
       m_derived_budget_jobs(0u),
@@ -878,9 +898,37 @@ bool DomGameApp::init_from_cli(const dom_game_config &cfg) {
     m_headless_local = (cfg.headless_local != 0u);
     m_headless_reached_session = false;
     m_headless_abort_on_error = (m_mode == GAME_MODE_HEADLESS && m_headless_tick_limit > 0u);
-    m_derived_budget_ms = cfg.derived_budget_ms ? cfg.derived_budget_ms : DEFAULT_DERIVED_BUDGET_MS;
-    m_derived_budget_io_bytes = cfg.derived_budget_io_bytes ? cfg.derived_budget_io_bytes : DEFAULT_DERIVED_BUDGET_IO_BYTES;
-    m_derived_budget_jobs = cfg.derived_budget_jobs ? cfg.derived_budget_jobs : DEFAULT_DERIVED_BUDGET_JOBS;
+    {
+        dom_game_budget_profile profile;
+        if (dom_game_budget_profile_for_tier(map_perf_tier(cfg), &profile) == DOM_GAME_BUDGET_OK) {
+            m_budget_profile = profile;
+        } else {
+            std::memset(&m_budget_profile, 0, sizeof(m_budget_profile));
+            m_budget_profile.struct_size = (u32)sizeof(m_budget_profile);
+            m_budget_profile.struct_version = DOM_GAME_BUDGET_PROFILE_VERSION;
+            m_budget_profile.perf_tier = dom::DOM_PERF_TIER_BASELINE;
+            m_budget_profile.derived_budget_ms = DEFAULT_DERIVED_BUDGET_MS;
+            m_budget_profile.derived_budget_io_bytes = DEFAULT_DERIVED_BUDGET_IO_BYTES;
+            m_budget_profile.derived_budget_jobs = DEFAULT_DERIVED_BUDGET_JOBS;
+            m_budget_profile.ai_max_ops_per_tick = 8u;
+            m_budget_profile.ai_max_factions_per_tick = 4u;
+        }
+    }
+    m_derived_budget_ms = cfg.derived_budget_ms
+                              ? cfg.derived_budget_ms
+                              : (m_budget_profile.derived_budget_ms
+                                     ? m_budget_profile.derived_budget_ms
+                                     : DEFAULT_DERIVED_BUDGET_MS);
+    m_derived_budget_io_bytes = cfg.derived_budget_io_bytes
+                                    ? cfg.derived_budget_io_bytes
+                                    : (m_budget_profile.derived_budget_io_bytes
+                                           ? m_budget_profile.derived_budget_io_bytes
+                                           : DEFAULT_DERIVED_BUDGET_IO_BYTES);
+    m_derived_budget_jobs = cfg.derived_budget_jobs
+                                ? cfg.derived_budget_jobs
+                                : (m_budget_profile.derived_budget_jobs
+                                       ? m_budget_profile.derived_budget_jobs
+                                       : DEFAULT_DERIVED_BUDGET_JOBS);
     m_exit_code = 0;
     m_run_id = 0u;
     m_refusal_code = 0u;
@@ -1443,6 +1491,8 @@ bool DomGameApp::init_session(const dom_game_config &cfg) {
                                                       (const unsigned char *)0,
                                                       0u,
                                                       (const unsigned char *)0,
+                                                      0u,
+                                                      (const unsigned char *)0,
                                                       0u);
         if (!m_replay_record) {
             std::printf("DomGameApp: failed to init replay record\n");
@@ -1482,6 +1532,15 @@ bool DomGameApp::init_session(const dom_game_config &cfg) {
         m_runtime = dom_game_runtime_create(&rdesc);
         if (!m_runtime) {
             return false;
+        }
+        {
+            dom_ai_scheduler *sched =
+                (dom_ai_scheduler *)dom_game_runtime_ai_scheduler(m_runtime);
+            if (sched) {
+                (void)dom_ai_scheduler_set_budget(sched,
+                                                  m_budget_profile.ai_max_ops_per_tick,
+                                                  m_budget_profile.ai_max_factions_per_tick);
+            }
         }
         if (m_replay_play) {
             (void)dom_game_runtime_set_replay_playback(m_runtime, m_replay_play);

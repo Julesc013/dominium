@@ -63,6 +63,11 @@ int dom_ai_scheduler_set_budget(dom_ai_scheduler *sched,
 int dom_ai_scheduler_tick(dom_ai_scheduler *sched,
                           struct dom_game_runtime *runtime,
                           u64 tick);
+int dom_ai_scheduler_get_config(const dom_ai_scheduler *sched,
+                                dom_ai_scheduler_config *out_cfg);
+int dom_ai_scheduler_load_states(dom_ai_scheduler *sched,
+                                 const dom_ai_faction_state *states,
+                                 u32 count);
 
 int dom_ai_scheduler_list_states(const dom_ai_scheduler *sched,
                                  dom_ai_faction_state *out_states,
