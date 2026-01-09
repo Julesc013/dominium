@@ -35,6 +35,10 @@ add_executable(dominium_game
     runtime/dom_fidelity.cpp
     runtime/dom_snapshot.cpp
     runtime/dom_universe_bundle.cpp
+    runtime/dom_media_provider.cpp
+    runtime/dom_atmos_provider.cpp
+    runtime/dom_ocean_provider.cpp
+    runtime/dom_weather_provider.cpp
     runtime/dom_frames.cpp
     runtime/dom_lane_scheduler.cpp
     runtime/dom_construction_registry.cpp
