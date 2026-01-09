@@ -33,6 +33,9 @@ static const DomToolDesc g_tools[] = {
     { "save_inspector",   "Save Inspector",   "Inspect saves and compute world hashes",    "dominium-save-inspector" },
     { "replay_viewer",    "Replay Viewer",    "Inspect replays and analyze desyncs",       "dominium-replay-viewer" },
     { "net_inspector",    "Net Inspector",    "Inspect network sessions and packet logs", "dominium-net-inspector" },
+    { "universe_editor",  "Universe Editor",  "Edit universe bundles and routing graphs", "dominium-universe-editor" },
+    { "validator",        "Universe Validator", "Validate universe bundles and schemas",  "dominium-validator" },
+    { "replay_analyzer",  "Replay Analyzer",  "Analyze replays and desync bundles",        "dominium-replay-analyzer" },
 };
 
 static size_t g_tool_count = sizeof(g_tools) / sizeof(g_tools[0]);
@@ -68,4 +71,3 @@ const DomToolDesc *find_tool(const char *id) {
 
 } // namespace tools
 } // namespace dom
-

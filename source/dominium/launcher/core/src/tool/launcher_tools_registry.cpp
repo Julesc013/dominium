@@ -138,6 +138,7 @@ LauncherToolEntry::LauncherToolEntry()
     : tool_id(),
       display_name(),
       description(),
+      ui_mode(),
       executable_artifact_hash_bytes(),
       required_packs(),
       optional_packs(),
@@ -176,6 +177,9 @@ bool launcher_tools_registry_to_tlv_bytes(const LauncherToolsRegistry& reg,
         tw.add_string(LAUNCHER_TOOL_ENTRY_TLV_TAG_TOOL_ID, t.tool_id);
         tw.add_string(LAUNCHER_TOOL_ENTRY_TLV_TAG_DISPLAY_NAME, t.display_name);
         tw.add_string(LAUNCHER_TOOL_ENTRY_TLV_TAG_DESCRIPTION, t.description);
+        if (!t.ui_mode.empty()) {
+            tw.add_string(LAUNCHER_TOOL_ENTRY_TLV_TAG_UI_MODE, t.ui_mode);
+        }
         if (!t.executable_artifact_hash_bytes.empty()) {
             tw.add_bytes(LAUNCHER_TOOL_ENTRY_TLV_TAG_EXECUTABLE_ARTIFACT_HASH,
                          &t.executable_artifact_hash_bytes[0],
@@ -241,6 +245,9 @@ bool launcher_tools_registry_from_tlv_bytes(const unsigned char* data,
                     break;
                 case LAUNCHER_TOOL_ENTRY_TLV_TAG_DESCRIPTION:
                     t.description = tlv_read_string(trr.payload, trr.len);
+                    break;
+                case LAUNCHER_TOOL_ENTRY_TLV_TAG_UI_MODE:
+                    t.ui_mode = tlv_read_string(trr.payload, trr.len);
                     break;
                 case LAUNCHER_TOOL_ENTRY_TLV_TAG_EXECUTABLE_ARTIFACT_HASH:
                     t.executable_artifact_hash_bytes.assign(trr.payload, trr.payload + (size_t)trr.len);

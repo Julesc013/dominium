@@ -204,6 +204,7 @@ static void write_tools_registry_minimal(const std::string& state_root) {
     te.tool_id = "tool_manifest_inspector";
     te.display_name = "Manifest Inspector";
     te.description = "Smoke-test tool entry.";
+    te.ui_mode = "cli";
     reg.tools.push_back(te);
 
     assert(dom::launcher_core::launcher_tools_registry_to_tlv_bytes(reg, bytes));
