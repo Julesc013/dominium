@@ -799,6 +799,33 @@ set_target_properties(dom_snapshot_isolation_test PROPERTIES
 
 add_test(NAME test_snapshot_isolation COMMAND dom_snapshot_isolation_test)
 
+add_executable(dom_ui_continuity_tests
+    dom_ui_continuity_tests.cpp
+    ../dominium/game/ui/dom_ui_state.cpp
+    ../dominium/game/ui/dom_ui_views.cpp
+    ../dominium/game/runtime/dom_io_guard.cpp
+)
+
+target_include_directories(dom_ui_continuity_tests PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_ui_continuity_tests
+    domino_core
+)
+
+set_target_properties(dom_ui_continuity_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME seamless_travel_test COMMAND dom_ui_continuity_tests seamless_travel)
+add_test(NAME fidelity_degradation_visual_test COMMAND dom_ui_continuity_tests fidelity_degradation_visual)
+add_test(NAME input_continuity_test COMMAND dom_ui_continuity_tests input_continuity)
+
 add_executable(dom_session_authority_tests
     dom_session_authority_tests.cpp
     ../dominium/game/runtime/dom_game_runtime.cpp
