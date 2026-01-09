@@ -23,12 +23,17 @@ add_executable(dominium_game
     runtime/dom_game_save.cpp
     runtime/dom_game_replay.cpp
     runtime/dom_game_session.cpp
+    runtime/dom_game_budgets.cpp
     runtime/dom_game_net_driver.cpp
     runtime/dom_game_net_snapshot.cpp
     runtime/dom_cosmo_graph.cpp
     runtime/dom_cosmo_transit.cpp
     runtime/dom_macro_economy.cpp
     runtime/dom_macro_events.cpp
+    runtime/dom_faction_registry.cpp
+    runtime/dom_ai_scheduler.cpp
+    runtime/dom_ai_planner_logistics.cpp
+    runtime/dom_ai_planner_events.cpp
     runtime/dom_qos.cpp
     runtime/dom_derived_jobs.cpp
     runtime/dom_io_guard.cpp

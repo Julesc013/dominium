@@ -40,6 +40,8 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "runtime/dom_production.h"
 #include "runtime/dom_macro_economy.h"
 #include "runtime/dom_macro_events.h"
+#include "runtime/dom_faction_registry.h"
+#include "runtime/dom_ai_scheduler.h"
 #include "runtime/dom_game_hash.h"
 #include "runtime/dom_game_replay.h"
 #include "domino/core/spacetime.h"
@@ -84,6 +86,8 @@ struct dom_game_runtime {
     dom_production *production;
     dom_macro_economy *macro_economy;
     dom_macro_events *macro_events;
+    dom_faction_registry *faction_registry;
+    dom_ai_scheduler *ai_scheduler;
     dom_body_id surface_body_id;
     dom_topo_latlong_q16 surface_focus;
     int surface_focus_valid;
@@ -955,6 +959,8 @@ dom_game_runtime *dom_game_runtime_create(const dom_game_runtime_init_desc *desc
     rt->production = 0;
     rt->macro_economy = 0;
     rt->macro_events = 0;
+    rt->faction_registry = 0;
+    rt->ai_scheduler = 0;
     rt->surface_body_id = 0ull;
     rt->surface_focus.lat_turns = 0;
     rt->surface_focus.lon_turns = 0;
@@ -977,6 +983,8 @@ dom_game_runtime *dom_game_runtime_create(const dom_game_runtime_init_desc *desc
     rt->production = dom_production_create();
     rt->macro_economy = dom_macro_economy_create();
     rt->macro_events = dom_macro_events_create();
+    rt->faction_registry = dom_faction_registry_create();
+    rt->ai_scheduler = dom_ai_scheduler_create();
     if (rt->media_registry) {
         if (dom_atmos_register_profile_v1(rt->media_registry) != DOM_MEDIA_OK ||
             dom_ocean_register_stub(rt->media_registry) != DOM_MEDIA_OK) {
@@ -998,7 +1006,8 @@ dom_game_runtime *dom_game_runtime_create(const dom_game_runtime_init_desc *desc
         !rt->surface_chunks || !rt->construction_registry ||
         !rt->station_registry || !rt->route_graph ||
         !rt->transfer_scheduler || !rt->production ||
-        !rt->macro_economy || !rt->macro_events) {
+        !rt->macro_economy || !rt->macro_events ||
+        !rt->faction_registry || !rt->ai_scheduler) {
         dom_game_runtime_destroy(rt);
         return 0;
     }
@@ -1063,6 +1072,8 @@ void dom_game_runtime_destroy(dom_game_runtime *rt) {
     dom_transfer_scheduler_destroy(rt->transfer_scheduler);
     dom_route_graph_destroy(rt->route_graph);
     dom_station_registry_destroy(rt->station_registry);
+    dom_ai_scheduler_destroy(rt->ai_scheduler);
+    dom_faction_registry_destroy(rt->faction_registry);
     dom_macro_events_destroy(rt->macro_events);
     dom_macro_economy_destroy(rt->macro_economy);
     dom_surface_chunks_destroy(rt->surface_chunks);
@@ -1274,6 +1285,13 @@ int dom_game_runtime_step(dom_game_runtime *rt) {
                                              rt->body_registry,
                                              rt->macro_economy,
                                              (u64)sim->tick_index) != DOM_PRODUCTION_OK) {
+            return DOM_GAME_RUNTIME_ERR;
+        }
+    }
+    if (rt->ai_scheduler) {
+        if (dom_ai_scheduler_tick(rt->ai_scheduler,
+                                  rt,
+                                  (u64)sim->tick_index) != DOM_AI_SCHEDULER_OK) {
             return DOM_GAME_RUNTIME_ERR;
         }
     }
@@ -1554,6 +1572,14 @@ const void *dom_game_runtime_macro_economy(const dom_game_runtime *rt) {
 
 const void *dom_game_runtime_macro_events(const dom_game_runtime *rt) {
     return rt ? static_cast<const void *>(rt->macro_events) : 0;
+}
+
+const void *dom_game_runtime_faction_registry(const dom_game_runtime *rt) {
+    return rt ? static_cast<const void *>(rt->faction_registry) : 0;
+}
+
+const void *dom_game_runtime_ai_scheduler(const dom_game_runtime *rt) {
+    return rt ? static_cast<const void *>(rt->ai_scheduler) : 0;
 }
 
 int dom_game_runtime_set_surface_focus(dom_game_runtime *rt,
