@@ -25,6 +25,10 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "runtime/dom_cosmo_transit.h"
 #include "runtime/dom_system_registry.h"
 #include "runtime/dom_body_registry.h"
+#include "runtime/dom_media_provider.h"
+#include "runtime/dom_atmos_provider.h"
+#include "runtime/dom_ocean_provider.h"
+#include "runtime/dom_weather_provider.h"
 #include "runtime/dom_frames.h"
 #include "runtime/dom_lane_scheduler.h"
 #include "runtime/dom_surface_chunks.h"
@@ -68,6 +72,8 @@ struct dom_game_runtime {
     std::vector<unsigned char> manifest_hash_bytes;
     dom_system_registry *system_registry;
     dom_body_registry *body_registry;
+    dom_media_registry *media_registry;
+    dom_weather_registry *weather_registry;
     dom_frames *frames;
     dom_lane_scheduler *lane_sched;
     dom_surface_chunks *surface_chunks;
@@ -269,6 +275,77 @@ static void register_macro_galaxy(const dom::dom_cosmo_entity *ent, void *user) 
         return;
     }
     (void)dom_macro_economy_register_galaxy(econ, ent->id);
+}
+
+struct DomMediaInitContext {
+    dom_media_registry *registry;
+    int ok;
+};
+
+static void register_vacuum_binding(const dom_body_info *info, void *user) {
+    DomMediaInitContext *ctx = static_cast<DomMediaInitContext *>(user);
+    if (!ctx || !ctx->registry || !info) {
+        return;
+    }
+    dom_media_binding binding;
+    std::memset(&binding, 0, sizeof(binding));
+    binding.body_id = info->id;
+    binding.kind = DOM_MEDIA_KIND_VACUUM;
+    if (dom_media_registry_set_binding(ctx->registry, &binding) != DOM_MEDIA_OK) {
+        ctx->ok = 0;
+    }
+}
+
+static int init_media_bindings(dom_media_registry *registry,
+                               const dom_body_registry *bodies) {
+    DomMediaInitContext ctx;
+    if (!registry || !bodies) {
+        return 0;
+    }
+    ctx.registry = registry;
+    ctx.ok = 1;
+    (void)dom_body_registry_iterate(bodies, register_vacuum_binding, &ctx);
+    return ctx.ok;
+}
+
+static int init_earth_atmosphere(dom_media_registry *registry,
+                                 dom_body_id earth_id) {
+    static const char kProfileId[] = "profile_v1";
+    dom_atmos_profile_segment segments[2];
+    std::vector<unsigned char> tlv;
+    dom_media_binding binding;
+    q48_16 top_alt = d_q48_16_from_int(100000);
+    int rc;
+
+    if (!registry || earth_id == 0ull) {
+        return 0;
+    }
+    std::memset(segments, 0, sizeof(segments));
+    segments[0].altitude_m = d_q48_16_from_int(0);
+    segments[0].density_q16 = d_q16_16_from_int(1);
+    segments[0].pressure_q16 = d_q16_16_from_int(1);
+    segments[0].temperature_q16 = d_q16_16_from_int(288);
+    segments[1].altitude_m = top_alt;
+    segments[1].density_q16 = 0;
+    segments[1].pressure_q16 = 0;
+    segments[1].temperature_q16 = d_q16_16_from_int(220);
+
+    rc = dom_atmos_profile_build_tlv(segments, 2u, top_alt, tlv);
+    if (rc != DOM_ATMOS_OK) {
+        return 0;
+    }
+
+    std::memset(&binding, 0, sizeof(binding));
+    binding.body_id = earth_id;
+    binding.kind = DOM_MEDIA_KIND_ATMOSPHERE;
+    std::memcpy(binding.provider_id, kProfileId, sizeof(kProfileId) - 1u);
+    binding.provider_id_len = (u32)(sizeof(kProfileId) - 1u);
+    binding.params = tlv.empty() ? 0 : &tlv[0];
+    binding.params_len = (u32)tlv.size();
+    if (dom_media_registry_set_binding(registry, &binding) != DOM_MEDIA_OK) {
+        return 0;
+    }
+    return 1;
 }
 
 struct DomConstructionPlaceCmd {
@@ -866,6 +943,8 @@ dom_game_runtime *dom_game_runtime_create(const dom_game_runtime_init_desc *desc
     rt->run_id = desc->run_id;
     rt->system_registry = 0;
     rt->body_registry = 0;
+    rt->media_registry = 0;
+    rt->weather_registry = 0;
     rt->frames = 0;
     rt->lane_sched = 0;
     rt->surface_chunks = 0;
@@ -887,6 +966,8 @@ dom_game_runtime *dom_game_runtime_create(const dom_game_runtime_init_desc *desc
     rt->cosmo_last_arrival_tick = 0ull;
     rt->system_registry = dom_system_registry_create();
     rt->body_registry = dom_body_registry_create();
+    rt->media_registry = dom_media_registry_create();
+    rt->weather_registry = dom_weather_registry_create();
     rt->frames = dom_frames_create();
     rt->lane_sched = dom_lane_scheduler_create();
     rt->construction_registry = dom_construction_registry_create();
@@ -896,6 +977,13 @@ dom_game_runtime *dom_game_runtime_create(const dom_game_runtime_init_desc *desc
     rt->production = dom_production_create();
     rt->macro_economy = dom_macro_economy_create();
     rt->macro_events = dom_macro_events_create();
+    if (rt->media_registry) {
+        if (dom_atmos_register_profile_v1(rt->media_registry) != DOM_MEDIA_OK ||
+            dom_ocean_register_stub(rt->media_registry) != DOM_MEDIA_OK) {
+            dom_game_runtime_destroy(rt);
+            return 0;
+        }
+    }
     {
         dom_surface_chunks_desc sdesc;
         std::memset(&sdesc, 0, sizeof(sdesc));
@@ -905,8 +993,9 @@ dom_game_runtime *dom_game_runtime_create(const dom_game_runtime_init_desc *desc
         sdesc.chunk_size_m = 2048u;
     rt->surface_chunks = dom_surface_chunks_create(&sdesc);
     }
-    if (!rt->system_registry || !rt->body_registry || !rt->frames ||
-        !rt->lane_sched || !rt->surface_chunks || !rt->construction_registry ||
+    if (!rt->system_registry || !rt->body_registry || !rt->media_registry ||
+        !rt->weather_registry || !rt->frames || !rt->lane_sched ||
+        !rt->surface_chunks || !rt->construction_registry ||
         !rt->station_registry || !rt->route_graph ||
         !rt->transfer_scheduler || !rt->production ||
         !rt->macro_economy || !rt->macro_events) {
@@ -920,6 +1009,12 @@ dom_game_runtime *dom_game_runtime_create(const dom_game_runtime_init_desc *desc
     if (dom_body_registry_add_baseline(rt->body_registry) != DOM_BODY_REGISTRY_OK) {
         dom_game_runtime_destroy(rt);
         return 0;
+    }
+    if (rt->media_registry) {
+        if (!init_media_bindings(rt->media_registry, rt->body_registry)) {
+            dom_game_runtime_destroy(rt);
+            return 0;
+        }
     }
     if (build_baseline_frames(rt->frames, rt->body_registry) != DOM_FRAMES_OK) {
         dom_game_runtime_destroy(rt);
@@ -942,6 +1037,12 @@ dom_game_runtime *dom_game_runtime_create(const dom_game_runtime_init_desc *desc
             rt->surface_focus.lat_turns = 0;
             rt->surface_focus.lon_turns = 0;
             rt->surface_focus_valid = 1;
+            if (rt->media_registry) {
+                if (!init_earth_atmosphere(rt->media_registry, earth_id)) {
+                    dom_game_runtime_destroy(rt);
+                    return 0;
+                }
+            }
         }
     }
     if (desc->instance_manifest_hash_bytes && desc->instance_manifest_hash_len > 0u) {
@@ -968,6 +1069,8 @@ void dom_game_runtime_destroy(dom_game_runtime *rt) {
     dom_construction_registry_destroy(rt->construction_registry);
     dom_lane_scheduler_destroy(rt->lane_sched);
     dom_frames_destroy(rt->frames);
+    dom_weather_registry_destroy(rt->weather_registry);
+    dom_media_registry_destroy(rt->media_registry);
     dom_body_registry_destroy(rt->body_registry);
     dom_system_registry_destroy(rt->system_registry);
     delete rt;
@@ -1079,6 +1182,13 @@ int dom_game_runtime_step(dom_game_runtime *rt) {
         return rc;
     }
 
+    u32 max_warp = MAX_WARP_FACTOR;
+    if (rt->lane_sched) {
+        u32 lane_max = dom_lane_scheduler_max_warp(rt->lane_sched);
+        if (lane_max > 0u && lane_max < max_warp) {
+            max_warp = lane_max;
+        }
+    }
     if (rt->pending_warp_valid &&
         (u64)sim->tick_index >= rt->pending_warp_tick) {
         u32 factor = rt->pending_warp_factor;
@@ -1086,6 +1196,9 @@ int dom_game_runtime_step(dom_game_runtime *rt) {
             factor = DEFAULT_WARP_FACTOR;
         } else if (factor > MAX_WARP_FACTOR) {
             factor = MAX_WARP_FACTOR;
+        }
+        if (factor > max_warp) {
+            factor = max_warp;
         }
         rt->warp_factor = factor;
         rt->pending_warp_valid = 0;
@@ -1107,6 +1220,13 @@ int dom_game_runtime_step(dom_game_runtime *rt) {
         int lane_rc = dom_lane_scheduler_update(rt->lane_sched, rt, (dom_tick)sim->tick_index);
         if (lane_rc != DOM_LANE_OK) {
             return DOM_GAME_RUNTIME_ERR;
+        }
+        u32 lane_max = dom_lane_scheduler_max_warp(rt->lane_sched);
+        if (lane_max > 0u && rt->warp_factor > lane_max) {
+            rt->warp_factor = lane_max;
+        }
+        if (lane_max > 0u && rt->pending_warp_valid && rt->pending_warp_factor > lane_max) {
+            rt->pending_warp_factor = lane_max;
         }
     }
     if (rt->lane_sched && rt->surface_chunks) {
@@ -1386,6 +1506,14 @@ const void *dom_game_runtime_system_registry(const dom_game_runtime *rt) {
 
 const void *dom_game_runtime_body_registry(const dom_game_runtime *rt) {
     return rt ? static_cast<const void *>(rt->body_registry) : 0;
+}
+
+const void *dom_game_runtime_media_registry(const dom_game_runtime *rt) {
+    return rt ? static_cast<const void *>(rt->media_registry) : 0;
+}
+
+const void *dom_game_runtime_weather_registry(const dom_game_runtime *rt) {
+    return rt ? static_cast<const void *>(rt->weather_registry) : 0;
 }
 
 const void *dom_game_runtime_frames(const dom_game_runtime *rt) {
