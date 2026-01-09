@@ -88,6 +88,8 @@ const void *dom_game_runtime_instance(const dom_game_runtime *rt);
 const void *dom_game_runtime_cosmo_graph(const dom_game_runtime *rt);
 const void *dom_game_runtime_system_registry(const dom_game_runtime *rt);
 const void *dom_game_runtime_body_registry(const dom_game_runtime *rt);
+const void *dom_game_runtime_media_registry(const dom_game_runtime *rt);
+const void *dom_game_runtime_weather_registry(const dom_game_runtime *rt);
 const void *dom_game_runtime_frames(const dom_game_runtime *rt);
 const void *dom_game_runtime_lane_scheduler(const dom_game_runtime *rt);
 const void *dom_game_runtime_surface_chunks(const dom_game_runtime *rt);

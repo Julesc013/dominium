@@ -48,6 +48,8 @@ typedef struct dom_atmos_profile_segment {
 } dom_atmos_profile_segment;
 
 int dom_atmos_register_profile_v1(dom_media_registry *registry);
+int dom_atmos_profile_top_altitude(const dom_media_binding *binding,
+                                   q48_16 *out_top_altitude_m);
 
 #ifdef __cplusplus
 } /* extern "C" */

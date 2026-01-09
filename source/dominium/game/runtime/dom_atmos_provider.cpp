@@ -20,7 +20,70 @@ static void write_i64_le(unsigned char out[8], i64 v) {
     dom::core_tlv::tlv_write_u64_le(out, (u64)v);
 }
 
+static int read_i64_le(const unsigned char *payload, u32 len, i64 *out_v) {
+    u64 value = 0;
+    if (!payload || !out_v) {
+        return 0;
+    }
+    if (!dom::core_tlv::tlv_read_u64_le(payload, len, value)) {
+        return 0;
+    }
+    *out_v = (i64)value;
+    return 1;
+}
+
 } // namespace
+
+int dom_atmos_profile_top_altitude(const dom_media_binding *binding,
+                                   q48_16 *out_top_altitude_m) {
+    if (!binding || !out_top_altitude_m) {
+        return DOM_ATMOS_INVALID_ARGUMENT;
+    }
+    if (!binding->params || binding->params_len == 0u) {
+        return DOM_ATMOS_INVALID_DATA;
+    }
+
+    dom::core_tlv::TlvReader reader(binding->params, binding->params_len);
+    dom::core_tlv::TlvRecord rec;
+    u32 schema_version = 0u;
+    q48_16 top_alt = 0;
+    q48_16 last_segment_alt = 0;
+    u32 segment_count = 0u;
+
+    while (reader.next(rec)) {
+        if (rec.tag == dom::core_tlv::CORE_TLV_TAG_SCHEMA_VERSION) {
+            (void)dom::core_tlv::tlv_read_u32_le(rec.payload, rec.len, schema_version);
+        } else if (rec.tag == DOM_ATMOS_TLV_TOP_ALT_M) {
+            i64 v = 0;
+            if (!read_i64_le(rec.payload, rec.len, &v)) {
+                return DOM_ATMOS_INVALID_DATA;
+            }
+            top_alt = (q48_16)v;
+        } else if (rec.tag == DOM_ATMOS_TLV_SEGMENT) {
+            i64 v = 0;
+            if (rec.len != 20u) {
+                return DOM_ATMOS_INVALID_DATA;
+            }
+            if (!read_i64_le(rec.payload, 8u, &v)) {
+                return DOM_ATMOS_INVALID_DATA;
+            }
+            last_segment_alt = (q48_16)v;
+            ++segment_count;
+        }
+    }
+
+    if (schema_version != DOM_ATMOS_PROFILE_V1 || segment_count < 2u) {
+        return DOM_ATMOS_INVALID_DATA;
+    }
+    if (top_alt <= 0) {
+        top_alt = last_segment_alt;
+    }
+    if (top_alt <= 0) {
+        return DOM_ATMOS_INVALID_DATA;
+    }
+    *out_top_altitude_m = top_alt;
+    return DOM_ATMOS_OK;
+}
 
 int dom_atmos_profile_build_tlv(const dom_atmos_profile_segment *segments,
                                 u32 segment_count,

@@ -13,6 +13,7 @@ FORBIDDEN DEPENDENCIES: OS headers; floating-point math.
 #include "domino/core/spacetime.h"
 #include "runtime/dom_orbit_lane.h"
 #include "runtime/dom_surface_topology.h"
+#include "runtime/dom_vehicle_aero.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -57,6 +58,8 @@ typedef struct dom_lane_vessel_desc {
     SpacePos local_pos;
     SpacePos local_vel;
     dom_lane_type lane_type;
+    dom_vehicle_aero_props aero_props;
+    u32 has_aero_props;
 } dom_lane_vessel_desc;
 
 typedef struct dom_lane_scheduler dom_lane_scheduler;
