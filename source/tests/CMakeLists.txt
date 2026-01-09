@@ -1563,6 +1563,28 @@ set_target_properties(dgfx_soft_hash_test PROPERTIES
 
 add_test(NAME dgfx_soft_hash_test COMMAND dgfx_soft_hash_test)
 
+add_executable(dgfx_conformance_test
+    ../../tests/domino_gfx/test_dgfx_conformance.c
+)
+
+target_include_directories(dgfx_conformance_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../source/domino
+)
+
+target_link_libraries(dgfx_conformance_test
+    domino_core
+)
+
+set_target_properties(dgfx_conformance_test PROPERTIES
+    C_STANDARD 90
+    C_STANDARD_REQUIRED ON
+    C_EXTENSIONS OFF
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
+)
+
+add_test(NAME dgfx_conformance_test COMMAND dgfx_conformance_test)
+
 add_executable(domino_sys_smoke
     domino_sys_smoke.c
 )
