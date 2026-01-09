@@ -403,6 +403,18 @@ static void dom_emit_rect(d_gfx_cmd_buffer *buf, int x, int y, int w, int h, d_g
     d_gfx_cmd_draw_rect(buf, &r);
 }
 
+static void dom_emit_text(d_gfx_cmd_buffer *buf, int x, int y, d_gfx_color color, const char *text) {
+    d_gfx_draw_text_cmd t;
+    if (!buf || !text) {
+        return;
+    }
+    t.x = x;
+    t.y = y;
+    t.text = text;
+    t.color = color;
+    d_gfx_cmd_draw_text(buf, &t);
+}
+
 static void dom_emit_outline_rect(d_gfx_cmd_buffer *buf, int x, int y, int w, int h, int thickness, d_gfx_color color) {
     if (!buf) {
         return;
@@ -2258,6 +2270,32 @@ void DomGameApp::render_frame() {
                     break;
                 }
             }
+        }
+
+        if (transition_active) {
+            char label[64];
+            u32 pct = 0u;
+            d_gfx_color bg;
+            d_gfx_color fg;
+            int bar_w = 180;
+            int bar_h = 10;
+            int bar_x = 16;
+            int bar_y = height - 28;
+            if (m_ui_state.transition_total_ms > 0u) {
+                pct = (m_ui_state.transition_ms * 100u) / m_ui_state.transition_total_ms;
+                if (pct > 100u) {
+                    pct = 100u;
+                }
+            }
+            bg.a = 0xa0u; bg.r = 0x10u; bg.g = 0x10u; bg.b = 0x18u;
+            fg.a = 0xffu; fg.r = 0xe0u; fg.g = 0xe0u; fg.b = 0xe0u;
+            dom_emit_rect(cmd_buffer, bar_x, bar_y, bar_w, bar_h, bg);
+            if (pct > 0u) {
+                int fill_w = (int)((pct * (u32)(bar_w - 2)) / 100u);
+                dom_emit_rect(cmd_buffer, bar_x + 1, bar_y + 1, fill_w, bar_h - 2, fg);
+            }
+            std::snprintf(label, sizeof(label), "Transition %u%%", (unsigned)pct);
+            dom_emit_text(cmd_buffer, bar_x, bar_y - 16, fg, label);
         }
 
         if (surface) {
