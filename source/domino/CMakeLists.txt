@@ -74,6 +74,7 @@ add_library(domino_core STATIC
     cli/cli.c
     tui/tui.c
     render/d_gfx.c
+    render/dgfx_trace.c
     render/soft/d_gfx_soft.c
     input/input.c
     input/ime.c
