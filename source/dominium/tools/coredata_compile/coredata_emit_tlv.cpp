@@ -112,6 +112,18 @@ static bool map_region_type(const std::string &s, u32 &out) {
         out = CORE_DATA_REGION_GALACTIC_CORE;
         return true;
     }
+    if (s == "belt") {
+        out = CORE_DATA_REGION_BELT;
+        return true;
+    }
+    if (s == "cloud") {
+        out = CORE_DATA_REGION_CLOUD;
+        return true;
+    }
+    if (s == "heliosphere") {
+        out = CORE_DATA_REGION_HELIOSPHERE;
+        return true;
+    }
     return false;
 }
 

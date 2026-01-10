@@ -58,6 +58,8 @@ static bool has_required_fields(const LauncherHandshake& hs) {
     if (hs.pinned_engine_build_id.empty()) return false;
     if (hs.pinned_game_build_id.empty()) return false;
     if (!hs.has_sim_caps) return false;
+    if (!hs.has_feature_epoch) return false;
+    if (!hs.has_coredata_sim_hash) return false;
     if (hs.timestamp_monotonic_us == 0ull) return false;
     return true;
 }
@@ -68,10 +70,12 @@ static void stable_sort_pack_flags(LauncherHandshakePackEntry& e) {
 }
 
 enum {
-    HANDSHAKE_IDENTITY_TLV_VERSION = 1u,
+    HANDSHAKE_IDENTITY_TLV_VERSION = 2u,
     HANDSHAKE_IDENTITY_TLV_TAG_SIM_CAPS_HASH = 2u,
     HANDSHAKE_IDENTITY_TLV_TAG_PROVIDER_BINDINGS_HASH = 3u,
-    HANDSHAKE_IDENTITY_TLV_TAG_PACK_ENTRY = 4u
+    HANDSHAKE_IDENTITY_TLV_TAG_PACK_ENTRY = 4u,
+    HANDSHAKE_IDENTITY_TLV_TAG_FEATURE_EPOCH = 5u,
+    HANDSHAKE_IDENTITY_TLV_TAG_COREDATA_SIM_HASH = 6u
 };
 
 enum {
@@ -101,6 +105,10 @@ static bool build_identity_tlv(const LauncherHandshake& hs, std::vector<unsigned
     w.add_u32(LAUNCHER_TLV_TAG_SCHEMA_VERSION, HANDSHAKE_IDENTITY_TLV_VERSION);
     w.add_u64(HANDSHAKE_IDENTITY_TLV_TAG_SIM_CAPS_HASH, sim_caps_hash);
     w.add_u64(HANDSHAKE_IDENTITY_TLV_TAG_PROVIDER_BINDINGS_HASH, provider_hash);
+    w.add_u32(HANDSHAKE_IDENTITY_TLV_TAG_FEATURE_EPOCH,
+              hs.has_feature_epoch ? hs.feature_epoch : 0u);
+    w.add_u64(HANDSHAKE_IDENTITY_TLV_TAG_COREDATA_SIM_HASH,
+              hs.has_coredata_sim_hash ? hs.coredata_sim_hash64 : 0ull);
 
     for (i = 0u; i < hs.resolved_packs.size(); ++i) {
         LauncherHandshakePackEntry e = hs.resolved_packs[i];
@@ -232,6 +240,10 @@ LauncherHandshake::LauncherHandshake()
       has_perf_caps(0u),
       has_provider_bindings_hash(0u),
       provider_bindings_hash64(0ull),
+      has_feature_epoch(0u),
+      feature_epoch(0u),
+      has_coredata_sim_hash(0u),
+      coredata_sim_hash64(0ull),
       timestamp_monotonic_us(0ull),
       has_timestamp_wall_us(0u),
       timestamp_wall_us(0ull) {
@@ -315,6 +327,12 @@ bool launcher_handshake_to_tlv_bytes(const LauncherHandshake& hs,
     }
     if (hs.has_provider_bindings_hash) {
         w.add_u64(LAUNCHER_HANDSHAKE_TLV_TAG_PROVIDER_BINDINGS_HASH, hs.provider_bindings_hash64);
+    }
+    if (hs.has_feature_epoch) {
+        w.add_u32(LAUNCHER_HANDSHAKE_TLV_TAG_FEATURE_EPOCH, hs.feature_epoch);
+    }
+    if (hs.has_coredata_sim_hash) {
+        w.add_u64(LAUNCHER_HANDSHAKE_TLV_TAG_COREDATA_SIM_HASH, hs.coredata_sim_hash64);
     }
 
     out_bytes = w.bytes();
@@ -411,6 +429,22 @@ bool launcher_handshake_from_tlv_bytes(const unsigned char* data,
             if (tlv_read_u64_le(rec.payload, rec.len, v)) {
                 out_hs.has_provider_bindings_hash = 1u;
                 out_hs.provider_bindings_hash64 = v;
+            }
+            break;
+        }
+        case LAUNCHER_HANDSHAKE_TLV_TAG_FEATURE_EPOCH: {
+            u32 v = 0u;
+            if (tlv_read_u32_le(rec.payload, rec.len, v)) {
+                out_hs.has_feature_epoch = 1u;
+                out_hs.feature_epoch = v;
+            }
+            break;
+        }
+        case LAUNCHER_HANDSHAKE_TLV_TAG_COREDATA_SIM_HASH: {
+            u64 v = 0ull;
+            if (tlv_read_u64_le(rec.payload, rec.len, v)) {
+                out_hs.has_coredata_sim_hash = 1u;
+                out_hs.coredata_sim_hash64 = v;
             }
             break;
         }

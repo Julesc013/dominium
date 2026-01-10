@@ -130,6 +130,10 @@ DomGameHandshake::DomGameHandshake()
       has_perf_caps(0u),
       has_provider_bindings_hash(0u),
       provider_bindings_hash64(0ull),
+      has_feature_epoch(0u),
+      feature_epoch(0u),
+      has_coredata_sim_hash(0u),
+      coredata_sim_hash64(0ull),
       identity_hash64(0ull) {
 }
 
@@ -203,12 +207,29 @@ bool dom_game_handshake_from_tlv_bytes(const unsigned char *data,
             }
             break;
         }
+        case DOM_GAME_HANDSHAKE_TLV_TAG_FEATURE_EPOCH: {
+            u32 v = 0u;
+            if (core_tlv::tlv_read_u32_le(rec.payload, rec.len, v)) {
+                out_hs.has_feature_epoch = 1u;
+                out_hs.feature_epoch = v;
+            }
+            break;
+        }
+        case DOM_GAME_HANDSHAKE_TLV_TAG_COREDATA_SIM_HASH: {
+            u64 v = 0ull;
+            if (core_tlv::tlv_read_u64_le(rec.payload, rec.len, v)) {
+                out_hs.has_coredata_sim_hash = 1u;
+                out_hs.coredata_sim_hash64 = v;
+            }
+            break;
+        }
         default:
             break;
         }
     }
 
-    if (out_hs.run_id == 0ull || out_hs.instance_id.empty() || !out_hs.has_sim_caps) {
+    if (out_hs.run_id == 0ull || out_hs.instance_id.empty() || !out_hs.has_sim_caps ||
+        !out_hs.has_feature_epoch || !out_hs.has_coredata_sim_hash) {
         return false;
     }
     out_hs.identity_hash64 = dom_identity_digest64(
@@ -217,7 +238,9 @@ bool dom_game_handshake_from_tlv_bytes(const unsigned char *data,
             ? (const unsigned char *)0
             : &out_hs.instance_manifest_hash_bytes[0],
         (u32)out_hs.instance_manifest_hash_bytes.size(),
-        out_hs.has_provider_bindings_hash ? out_hs.provider_bindings_hash64 : 0ull);
+        out_hs.feature_epoch,
+        out_hs.has_provider_bindings_hash ? out_hs.provider_bindings_hash64 : 0ull,
+        out_hs.coredata_sim_hash64);
     return true;
 }
 

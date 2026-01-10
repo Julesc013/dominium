@@ -35,7 +35,7 @@ enum {
 };
 
 enum {
-    DOM_GAME_REPLAY_DESC_VERSION = 6u
+    DOM_GAME_REPLAY_DESC_VERSION = 7u
 };
 
 typedef struct dom_game_replay_record dom_game_replay_record;
@@ -54,6 +54,8 @@ typedef struct dom_game_replay_desc {
     const unsigned char *manifest_hash_bytes;
     u32 manifest_hash_len;
     u64 content_hash64;
+    u64 coredata_sim_hash64;
+    u32 has_coredata_sim_hash;
     u32 has_identity;
     const unsigned char *content_tlv;
     u32 content_tlv_len;
@@ -106,6 +108,7 @@ dom_game_replay_record *dom_game_replay_record_open(const char *path,
                                                     u32 manifest_hash_len,
                                                     const unsigned char *content_tlv,
                                                     u32 content_tlv_len,
+                                                    u64 coredata_sim_hash,
                                                     const unsigned char *media_bindings_blob,
                                                     u32 media_bindings_len,
                                                     const unsigned char *weather_bindings_blob,

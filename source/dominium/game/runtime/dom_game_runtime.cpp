@@ -17,6 +17,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include <vector>
 #include <cstdio>
 #include <climits>
+#include <string>
 
 #include "dom_game_net.h"
 #include "dom_instance.h"
@@ -25,6 +26,8 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "runtime/dom_cosmo_transit.h"
 #include "runtime/dom_system_registry.h"
 #include "runtime/dom_body_registry.h"
+#include "runtime/dom_mech_profiles.h"
+#include "runtime/dom_coredata_load.h"
 #include "runtime/dom_media_provider.h"
 #include "runtime/dom_atmos_provider.h"
 #include "runtime/dom_ocean_provider.h"
@@ -73,6 +76,7 @@ struct dom_game_runtime {
     int replay_last_tick_valid;
     u64 run_id;
     std::vector<unsigned char> manifest_hash_bytes;
+    dom_mech_profiles *mech_profiles;
     dom_system_registry *system_registry;
     dom_body_registry *body_registry;
     dom_media_registry *media_registry;
@@ -95,6 +99,8 @@ struct dom_game_runtime {
     dom::dom_cosmo_graph cosmo_graph;
     dom_cosmo_transit_state cosmo_transit;
     u64 cosmo_last_arrival_tick;
+    dom_coredata_state coredata_state;
+    u32 coredata_loaded;
 };
 
 namespace {
@@ -102,6 +108,14 @@ namespace {
 static const u32 DEFAULT_UPS = 60u;
 static const u32 DEFAULT_WARP_FACTOR = 1u;
 static const u32 MAX_WARP_FACTOR = 1024u;
+
+static int s_last_runtime_error = DOM_GAME_RUNTIME_LAST_ERR_NONE;
+static std::string s_last_runtime_error_detail;
+
+static void set_last_runtime_error(int code, const std::string &detail) {
+    s_last_runtime_error = code;
+    s_last_runtime_error_detail = detail;
+}
 
 static dom::DomSession *session_of(dom_game_runtime *rt) {
     return rt ? static_cast<dom::DomSession *>(rt->session) : 0;
@@ -125,6 +139,84 @@ static u64 compute_seed(dom::DomSession *session, const dom::InstanceInfo *inst)
         return w->meta.seed;
     }
     return inst ? (u64)inst->world_seed : 0ull;
+}
+
+static int str_ieq(const std::string &a, const char *b) {
+    size_t i;
+    if (!b) {
+        return 0;
+    }
+    if (a.size() != std::strlen(b)) {
+        return 0;
+    }
+    for (i = 0u; i < a.size(); ++i) {
+        char ca = a[i];
+        char cb = b[i];
+        if (ca >= 'A' && ca <= 'Z') ca = static_cast<char>(ca - 'A' + 'a');
+        if (cb >= 'A' && cb <= 'Z') cb = static_cast<char>(cb - 'A' + 'a');
+        if (ca != cb) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+static bool is_coredata_pack_id(const std::string &id) {
+    return str_ieq(id, "base_cosmo") != 0;
+}
+
+static std::string format_pack_version(unsigned v) {
+    char buf[32];
+    std::sprintf(buf, "%08u", v);
+    return std::string(buf);
+}
+
+static unsigned pick_coredata_version(const dom::InstanceInfo *inst) {
+    size_t i;
+    if (!inst) {
+        return 1u;
+    }
+    for (i = 0u; i < inst->packs.size(); ++i) {
+        if (is_coredata_pack_id(inst->packs[i].id)) {
+            return inst->packs[i].version;
+        }
+    }
+    return 1u;
+}
+
+static int load_coredata_pack(dom_game_runtime *rt, std::string &err) {
+    const dom::DomSession *session = session_of(rt);
+    const dom::InstanceInfo *inst = inst_of(rt);
+    if (!rt || !session) {
+        err = "missing_session";
+        return DOM_COREDATA_INVALID_ARGUMENT;
+    }
+    {
+        const dom::Paths &paths = session->paths();
+        const unsigned version = pick_coredata_version(inst);
+        const std::string version_dir = format_pack_version(version);
+        const std::string pack_root = dom::join(paths.packs, "base_cosmo");
+        const std::string out_dir = dom::join(pack_root, version_dir);
+        const std::string pack_path = dom::join(out_dir, "pack.tlv");
+        int rc = dom_coredata_load_from_file(pack_path.c_str(), &rt->coredata_state, &err);
+        if (rc != DOM_COREDATA_OK) {
+            return rc;
+        }
+    }
+    {
+        int rc = dom_coredata_apply_to_registries(&rt->coredata_state,
+                                                  &rt->cosmo_graph,
+                                                  rt->mech_profiles,
+                                                  rt->system_registry,
+                                                  rt->body_registry,
+                                                  rt->ups,
+                                                  &err);
+        if (rc != DOM_COREDATA_OK) {
+            return rc;
+        }
+    }
+    rt->coredata_loaded = 1u;
+    return DOM_COREDATA_OK;
 }
 
 static int parse_warp_payload(const dom_game_command *cmd, u32 *out_factor) {
@@ -930,6 +1022,7 @@ dom_game_runtime *dom_game_runtime_create(const dom_game_runtime_init_desc *desc
     if (!desc->session || !desc->net) {
         return 0;
     }
+    set_last_runtime_error(DOM_GAME_RUNTIME_LAST_ERR_NONE, std::string());
 
     rt = new dom_game_runtime();
     rt->session = desc->session;
@@ -946,6 +1039,7 @@ dom_game_runtime *dom_game_runtime_create(const dom_game_runtime_init_desc *desc
     rt->replay_last_tick = 0u;
     rt->replay_last_tick_valid = 0;
     rt->run_id = desc->run_id;
+    rt->mech_profiles = 0;
     rt->system_registry = 0;
     rt->body_registry = 0;
     rt->media_registry = 0;
@@ -971,8 +1065,10 @@ dom_game_runtime *dom_game_runtime_create(const dom_game_runtime_init_desc *desc
                                     0);
     dom_cosmo_transit_reset(&rt->cosmo_transit);
     rt->cosmo_last_arrival_tick = 0ull;
+    rt->coredata_loaded = 0u;
     rt->system_registry = dom_system_registry_create();
     rt->body_registry = dom_body_registry_create();
+    rt->mech_profiles = dom_mech_profiles_create();
     rt->media_registry = dom_media_registry_create();
     rt->weather_registry = dom_weather_registry_create();
     rt->frames = dom_frames_create();
@@ -1002,8 +1098,8 @@ dom_game_runtime *dom_game_runtime_create(const dom_game_runtime_init_desc *desc
         sdesc.chunk_size_m = 2048u;
     rt->surface_chunks = dom_surface_chunks_create(&sdesc);
     }
-    if (!rt->system_registry || !rt->body_registry || !rt->media_registry ||
-        !rt->weather_registry || !rt->frames || !rt->lane_sched ||
+    if (!rt->system_registry || !rt->body_registry || !rt->mech_profiles ||
+        !rt->media_registry || !rt->weather_registry || !rt->frames || !rt->lane_sched ||
         !rt->surface_chunks || !rt->construction_registry ||
         !rt->station_registry || !rt->route_graph ||
         !rt->transfer_scheduler || !rt->production ||
@@ -1012,13 +1108,17 @@ dom_game_runtime *dom_game_runtime_create(const dom_game_runtime_init_desc *desc
         dom_game_runtime_destroy(rt);
         return 0;
     }
-    if (dom_system_registry_add_baseline(rt->system_registry) != DOM_SYSTEM_REGISTRY_OK) {
-        dom_game_runtime_destroy(rt);
-        return 0;
-    }
-    if (dom_body_registry_add_baseline(rt->body_registry) != DOM_BODY_REGISTRY_OK) {
-        dom_game_runtime_destroy(rt);
-        return 0;
+    {
+        std::string core_err;
+        int core_rc = load_coredata_pack(rt, core_err);
+        if (core_rc != DOM_COREDATA_OK) {
+            const int code = (core_rc == DOM_COREDATA_IO_ERROR)
+                                 ? DOM_GAME_RUNTIME_LAST_ERR_COREDATA_MISSING
+                                 : DOM_GAME_RUNTIME_LAST_ERR_COREDATA_INVALID;
+            set_last_runtime_error(code, core_err);
+            dom_game_runtime_destroy(rt);
+            return 0;
+        }
     }
     if (rt->media_registry) {
         if (!init_media_bindings(rt->media_registry, rt->body_registry)) {
@@ -1060,6 +1160,7 @@ dom_game_runtime *dom_game_runtime_create(const dom_game_runtime_init_desc *desc
                                        desc->instance_manifest_hash_bytes +
                                        desc->instance_manifest_hash_len);
     }
+    set_last_runtime_error(DOM_GAME_RUNTIME_LAST_ERR_NONE, std::string());
     d_net_set_tick_cmds_observer(dom_game_runtime_tick_observer, rt);
     return rt;
 }
@@ -1083,9 +1184,18 @@ void dom_game_runtime_destroy(dom_game_runtime *rt) {
     dom_frames_destroy(rt->frames);
     dom_weather_registry_destroy(rt->weather_registry);
     dom_media_registry_destroy(rt->media_registry);
+    dom_mech_profiles_destroy(rt->mech_profiles);
     dom_body_registry_destroy(rt->body_registry);
     dom_system_registry_destroy(rt->system_registry);
     delete rt;
+}
+
+int dom_game_runtime_last_error(void) {
+    return s_last_runtime_error;
+}
+
+const char *dom_game_runtime_last_error_detail(void) {
+    return s_last_runtime_error_detail.c_str();
 }
 
 int dom_game_runtime_set_replay_last_tick(dom_game_runtime *rt, u32 last_tick) {
@@ -1452,6 +1562,10 @@ const unsigned char *dom_game_runtime_get_manifest_hash(const dom_game_runtime *
     return &rt->manifest_hash_bytes[0];
 }
 
+u64 dom_game_runtime_get_coredata_sim_digest(const dom_game_runtime *rt) {
+    return rt ? rt->coredata_state.sim_digest : 0ull;
+}
+
 int dom_game_runtime_get_counts(const dom_game_runtime *rt, dom_game_counts *out_counts) {
     dom::DomSession *session;
     d_world *w;
@@ -1521,6 +1635,14 @@ const void *dom_game_runtime_instance(const dom_game_runtime *rt) {
 
 const void *dom_game_runtime_cosmo_graph(const dom_game_runtime *rt) {
     return rt ? static_cast<const void *>(&rt->cosmo_graph) : 0;
+}
+
+const void *dom_game_runtime_mech_profiles(const dom_game_runtime *rt) {
+    return rt ? static_cast<const void *>(rt->mech_profiles) : 0;
+}
+
+const void *dom_game_runtime_coredata(const dom_game_runtime *rt) {
+    return rt ? static_cast<const void *>(&rt->coredata_state) : 0;
 }
 
 const void *dom_game_runtime_system_registry(const dom_game_runtime *rt) {

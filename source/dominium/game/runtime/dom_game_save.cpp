@@ -68,14 +68,16 @@ enum {
     DMSG_FACTIONS_VERSION = 1u,
     DMSG_AI_SCHED_VERSION = 1u,
     DMSG_RNG_VERSION = 1u,
-    DMSG_IDENTITY_VERSION = 1u
+    DMSG_IDENTITY_VERSION = 2u
 };
 
 enum {
     DMSG_IDENTITY_TAG_INSTANCE_ID = 2u,
     DMSG_IDENTITY_TAG_RUN_ID = 3u,
     DMSG_IDENTITY_TAG_MANIFEST_HASH = 4u,
-    DMSG_IDENTITY_TAG_CONTENT_HASH = 5u
+    DMSG_IDENTITY_TAG_CONTENT_HASH = 5u,
+    DMSG_IDENTITY_TAG_FEATURE_EPOCH = 6u,
+    DMSG_IDENTITY_TAG_COREDATA_SIM_HASH = 7u
 };
 
 enum {
@@ -232,6 +234,8 @@ static bool build_identity_tlv(const dom_game_runtime *rt,
     const unsigned char *manifest = dom_game_runtime_get_manifest_hash(rt, &manifest_len);
     const u64 run_id = dom_game_runtime_get_run_id(rt);
     const u64 content_hash = dom::core_tlv::tlv_fnv1a64(content_tlv, content_len);
+    const u32 feature_epoch = dom::dom_feature_epoch_current();
+    const u64 coredata_sim_hash = dom_game_runtime_get_coredata_sim_digest(rt);
     const std::string inst_id = inst ? inst->id : std::string();
     const unsigned char *manifest_ptr = manifest;
     u32 manifest_size = manifest_len;
@@ -245,6 +249,8 @@ static bool build_identity_tlv(const dom_game_runtime *rt,
     w.add_u64(DMSG_IDENTITY_TAG_RUN_ID, run_id);
     w.add_bytes(DMSG_IDENTITY_TAG_MANIFEST_HASH, manifest_ptr, manifest_size);
     w.add_u64(DMSG_IDENTITY_TAG_CONTENT_HASH, content_hash);
+    w.add_u32(DMSG_IDENTITY_TAG_FEATURE_EPOCH, feature_epoch);
+    w.add_u64(DMSG_IDENTITY_TAG_COREDATA_SIM_HASH, coredata_sim_hash);
 
     out = w.bytes();
     return true;
@@ -2318,6 +2324,10 @@ static int parse_dmsg(const unsigned char *data, size_t len, dom_game_save_desc 
     u32 manifest_hash_len = 0u;
     u64 content_hash = 0ull;
     int has_content_hash = 0;
+    u32 identity_epoch = 0u;
+    int has_identity_epoch = 0;
+    u64 coredata_sim_hash = 0ull;
+    int has_coredata_sim_hash = 0;
     int has_identity = 0;
 
     u32 rng_state = 0u;
@@ -2593,11 +2603,27 @@ static int parse_dmsg(const unsigned char *data, size_t len, dom_game_save_desc 
                         has_content_hash = 1;
                     }
                     break;
+                case DMSG_IDENTITY_TAG_FEATURE_EPOCH:
+                    if (dom::core_tlv::tlv_read_u32_le(irec.payload, irec.len, identity_epoch)) {
+                        has_identity_epoch = 1;
+                    }
+                    break;
+                case DMSG_IDENTITY_TAG_COREDATA_SIM_HASH:
+                    if (dom::core_tlv::tlv_read_u64_le(irec.payload, irec.len, coredata_sim_hash)) {
+                        has_coredata_sim_hash = 1;
+                    }
+                    break;
                 default:
                     break;
                 }
             }
-            if (schema_version != DMSG_IDENTITY_VERSION || !has_content_hash) {
+            if (schema_version != DMSG_IDENTITY_VERSION ||
+                !has_content_hash ||
+                !has_identity_epoch ||
+                !has_coredata_sim_hash) {
+                return DOM_GAME_SAVE_ERR_FORMAT;
+            }
+            if (identity_epoch != feature_epoch) {
                 return DOM_GAME_SAVE_ERR_FORMAT;
             }
             has_identity = 1;
@@ -2642,6 +2668,8 @@ static int parse_dmsg(const unsigned char *data, size_t len, dom_game_save_desc 
     out_desc->manifest_hash_bytes = manifest_hash;
     out_desc->manifest_hash_len = manifest_hash_len;
     out_desc->content_hash64 = content_hash;
+    out_desc->coredata_sim_hash64 = coredata_sim_hash;
+    out_desc->has_coredata_sim_hash = (u32)has_coredata_sim_hash;
     out_desc->has_identity = (u32)has_identity;
     out_desc->content_tlv = (content_len > 0u) ? (data + content_offset) : (const unsigned char *)0;
     out_desc->content_tlv_len = content_len;

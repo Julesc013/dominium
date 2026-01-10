@@ -29,6 +29,7 @@ enum {
     DOM_GAME_SNAPSHOT_VERSION = 1u,
     DOM_COSMO_MAP_SNAPSHOT_VERSION = 1u,
     DOM_COSMO_TRANSIT_SNAPSHOT_VERSION = 1u,
+    DOM_COSMO_ANCHOR_LIST_SNAPSHOT_VERSION = 1u,
     DOM_SYSTEM_LIST_SNAPSHOT_VERSION = 1u,
     DOM_BODY_LIST_SNAPSHOT_VERSION = 1u,
     DOM_FRAME_TREE_SNAPSHOT_VERSION = 1u,
@@ -46,7 +47,8 @@ enum {
     DOM_MACRO_EVENT_LIST_SNAPSHOT_VERSION = 1u,
     DOM_FACTION_LIST_SNAPSHOT_VERSION = 1u,
     DOM_FACTION_SUMMARY_SNAPSHOT_VERSION = 1u,
-    DOM_AI_DECISION_SUMMARY_SNAPSHOT_VERSION = 1u
+    DOM_AI_DECISION_SUMMARY_SNAPSHOT_VERSION = 1u,
+    DOM_MECH_PROFILE_SUMMARY_SNAPSHOT_VERSION = 1u
 };
 
 enum {
@@ -116,6 +118,25 @@ typedef struct dom_cosmo_transit_snapshot {
     int transit_active;
     u64 last_arrival_tick;
 } dom_cosmo_transit_snapshot;
+
+typedef struct dom_cosmo_anchor_view {
+    u64 id_hash;
+    u32 kind;
+    u32 system_class;
+    u32 region_type;
+    u64 mechanics_profile_id_hash;
+    const char *display_name;
+    u32 display_name_len;
+    const char *mechanics_profile_id;
+    u32 mechanics_profile_id_len;
+} dom_cosmo_anchor_view;
+
+typedef struct dom_cosmo_anchor_list_snapshot {
+    u32 struct_size;
+    u32 struct_version;
+    u32 anchor_count;
+    dom_cosmo_anchor_view *anchors;
+} dom_cosmo_anchor_list_snapshot;
 
 typedef struct dom_system_view {
     u64 id;
@@ -434,6 +455,38 @@ typedef struct dom_ai_decision_summary_snapshot {
     dom_ai_decision_view *entries;
 } dom_ai_decision_summary_snapshot;
 
+typedef struct dom_mech_system_profile_view {
+    u64 id_hash;
+    const char *id;
+    u32 id_len;
+    i32 navigation_instability_q16;
+    i32 debris_collision_q16;
+    i32 radiation_baseline_q16;
+    i32 warp_cap_modifier_q16;
+    i32 survey_difficulty_q16;
+    u64 supernova_timer_ticks;
+    u8 has_supernova_timer;
+} dom_mech_system_profile_view;
+
+typedef struct dom_mech_site_profile_view {
+    u64 id_hash;
+    const char *id;
+    u32 id_len;
+    i32 hazard_radiation_q16;
+    i32 hazard_pressure_q16;
+    i32 corrosion_rate_q16;
+    i32 temperature_extreme_q16;
+} dom_mech_site_profile_view;
+
+typedef struct dom_mech_profile_summary_snapshot {
+    u32 struct_size;
+    u32 struct_version;
+    u32 system_profile_count;
+    u32 site_profile_count;
+    dom_mech_system_profile_view *system_profiles;
+    dom_mech_site_profile_view *site_profiles;
+} dom_mech_profile_summary_snapshot;
+
 struct dom_game_runtime;
 
 dom_game_snapshot *dom_game_runtime_build_snapshot(const struct dom_game_runtime *rt, u32 flags);
@@ -442,6 +495,8 @@ dom_cosmo_map_snapshot *dom_game_runtime_build_cosmo_map_snapshot(const struct d
 void dom_game_runtime_release_cosmo_map_snapshot(dom_cosmo_map_snapshot *snapshot);
 dom_cosmo_transit_snapshot *dom_game_runtime_build_cosmo_transit_snapshot(const struct dom_game_runtime *rt);
 void dom_game_runtime_release_cosmo_transit_snapshot(dom_cosmo_transit_snapshot *snapshot);
+dom_cosmo_anchor_list_snapshot *dom_game_runtime_build_cosmo_anchor_list_snapshot(const struct dom_game_runtime *rt);
+void dom_game_runtime_release_cosmo_anchor_list_snapshot(dom_cosmo_anchor_list_snapshot *snapshot);
 dom_system_list_snapshot *dom_game_runtime_build_system_list_snapshot(const struct dom_game_runtime *rt);
 void dom_game_runtime_release_system_list_snapshot(dom_system_list_snapshot *snapshot);
 dom_body_list_snapshot *dom_game_runtime_build_body_list_snapshot(const struct dom_game_runtime *rt);
@@ -478,6 +533,8 @@ dom_faction_summary_snapshot *dom_game_runtime_build_faction_summary_snapshot(co
 void dom_game_runtime_release_faction_summary_snapshot(dom_faction_summary_snapshot *snapshot);
 dom_ai_decision_summary_snapshot *dom_game_runtime_build_ai_decision_summary_snapshot(const struct dom_game_runtime *rt);
 void dom_game_runtime_release_ai_decision_summary_snapshot(dom_ai_decision_summary_snapshot *snapshot);
+dom_mech_profile_summary_snapshot *dom_game_runtime_build_mech_profile_summary_snapshot(const struct dom_game_runtime *rt);
+void dom_game_runtime_release_mech_profile_summary_snapshot(dom_mech_profile_summary_snapshot *snapshot);
 
 #ifdef __cplusplus
 } /* extern "C" */

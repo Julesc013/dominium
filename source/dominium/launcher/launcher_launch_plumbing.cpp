@@ -14,6 +14,7 @@ RESPONSIBILITY: Implements per-attempt handshake generation, persistence, valida
 
 extern "C" {
 #include "domino/caps.h"
+#include "domino/core/spacetime.h"
 #include "domino/profile.h"
 #include "domino/system/dsys.h"
 }
@@ -34,6 +35,10 @@ extern "C" {
 
 #include "launcher_caps_snapshot.h"
 #include "launcher_caps_solver.h"
+#include "launcher_coredata_sim.h"
+#include "dom_feature_epoch.h"
+#include "dominium/core_tlv.h"
+#include "dominium/coredata_schema.h"
 
 namespace dom {
 
@@ -976,8 +981,30 @@ bool launcher_execute_launch_attempt(const std::string& state_root,
     dom_sim_caps_init_default(hs.sim_caps);
     hs.has_perf_caps = 1u;
     dom_perf_caps_init_default(hs.perf_caps, perf_tier_from_dom_profile(profile));
+    hs.has_feature_epoch = 1u;
+    hs.feature_epoch = dom_feature_epoch_current();
+    hs.has_coredata_sim_hash = 0u;
+    hs.coredata_sim_hash64 = 0ull;
     hs.has_provider_bindings_hash = 0u;
     hs.provider_bindings_hash64 = 0ull;
+    if (have_plan && out_result.refused == 0u) {
+        u64 sim_hash = 0ull;
+        std::string core_err;
+        if (launcher_coredata_sim_hash_from_manifest(plan.effective_manifest,
+                                                      state_root,
+                                                      sim_hash,
+                                                      core_err)) {
+            hs.has_coredata_sim_hash = 1u;
+            hs.coredata_sim_hash64 = sim_hash;
+        } else {
+            out_result.refused = 1u;
+            out_result.refusal_code = (u32)dom::launcher_core::LAUNCHER_HANDSHAKE_REFUSAL_MISSING_REQUIRED_FIELDS;
+            out_result.refusal_detail = std::string("coredata_sim_hash_failed;") + core_err;
+            if (err_is_ok(&run_err)) {
+                run_err = run_err_from_refusal_code(out_result.refusal_code);
+            }
+        }
+    }
     if (have_plan) {
         hs.pinned_engine_build_id = plan.effective_manifest.pinned_engine_build_id;
         hs.pinned_game_build_id = plan.effective_manifest.pinned_game_build_id;

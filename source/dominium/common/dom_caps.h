@@ -27,7 +27,9 @@ bool dom_perf_caps_equal(const DomPerfCaps &a, const DomPerfCaps &b);
 u64 dom_identity_digest64(const DomSimCaps &sim_caps,
                           const unsigned char *content_hash_bytes,
                           u32 content_hash_len,
-                          u64 provider_bindings_hash64);
+                          u32 feature_epoch,
+                          u64 provider_bindings_hash64,
+                          u64 coredata_sim_hash64);
 
 } // namespace dom
 

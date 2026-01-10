@@ -31,6 +31,7 @@ layering.
 - Run `coredata_validate --input-root=data/core` before merging core data edits.
   See `docs/CORE_DATA_GUIDE.md` for common validation errors and fixes.
 - Schema changes require spec updates under `docs/SPEC_CORE_DATA*.md`.
+- Coredata ingestion tests MUST pass (`ctest -R dominium_coredata`).
 
 ## What will be rejected
 - Introducing non-determinism in deterministic core paths (unordered iteration,

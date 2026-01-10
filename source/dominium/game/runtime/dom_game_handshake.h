@@ -36,7 +36,9 @@ enum DomGameHandshakeTlvTag {
     DOM_GAME_HANDSHAKE_TLV_TAG_INSTANCE_ROOT_REF = 101u,
     DOM_GAME_HANDSHAKE_TLV_TAG_SIM_CAPS = 15u,
     DOM_GAME_HANDSHAKE_TLV_TAG_PERF_CAPS = 16u,
-    DOM_GAME_HANDSHAKE_TLV_TAG_PROVIDER_BINDINGS_HASH = 17u
+    DOM_GAME_HANDSHAKE_TLV_TAG_PROVIDER_BINDINGS_HASH = 17u,
+    DOM_GAME_HANDSHAKE_TLV_TAG_FEATURE_EPOCH = 18u,
+    DOM_GAME_HANDSHAKE_TLV_TAG_COREDATA_SIM_HASH = 19u
 };
 
 enum DomGameHandshakePathRefTag {
@@ -70,6 +72,10 @@ struct DomGameHandshake {
     u32 has_perf_caps;
     u32 has_provider_bindings_hash;
     u64 provider_bindings_hash64;
+    u32 has_feature_epoch;
+    u32 feature_epoch;
+    u32 has_coredata_sim_hash;
+    u64 coredata_sim_hash64;
     u64 identity_hash64;
 
     DomGameHandshake();

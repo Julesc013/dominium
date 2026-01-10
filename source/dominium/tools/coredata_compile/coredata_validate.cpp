@@ -56,6 +56,16 @@ static bool region_type_known(const std::string &s) {
     return (s == "nebula" ||
             s == "open_cluster" ||
             s == "globular_cluster" ||
+            s == "galactic_core" ||
+            s == "belt" ||
+            s == "cloud" ||
+            s == "heliosphere");
+}
+
+static bool region_type_requires_rules(const std::string &s) {
+    return (s == "nebula" ||
+            s == "open_cluster" ||
+            s == "globular_cluster" ||
             s == "galactic_core");
 }
 
@@ -196,6 +206,7 @@ bool coredata_validate(const CoredataData &data,
         const CoredataProceduralRules &r = data.rules[0];
         const i32 kRatioMin = 0;
         const i32 kRatioMax = 65536;
+        const size_t kProceduralRegionCount = 4u;
         std::set<std::string> region_keys;
         size_t j;
         if (r.systems_per_anchor_min == 0u ||
@@ -213,9 +224,11 @@ bool coredata_validate(const CoredataData &data,
             if (!region_type_known(r.cluster_density[j].region_type)) {
                 add_error(errors, "procedural_region_type_invalid", r.cluster_density[j].region_type);
             }
-            region_keys.insert(r.cluster_density[j].region_type);
+            if (region_type_requires_rules(r.cluster_density[j].region_type)) {
+                region_keys.insert(r.cluster_density[j].region_type);
+            }
         }
-        if (region_keys.size() != 4u) {
+        if (region_keys.size() != kProceduralRegionCount) {
             add_error(errors, "procedural_cluster_density_missing", "region coverage");
         }
         region_keys.clear();
@@ -223,9 +236,11 @@ bool coredata_validate(const CoredataData &data,
             if (!region_type_known(r.metallicity_bias[j].region_type)) {
                 add_error(errors, "procedural_region_type_invalid", r.metallicity_bias[j].region_type);
             }
-            region_keys.insert(r.metallicity_bias[j].region_type);
+            if (region_type_requires_rules(r.metallicity_bias[j].region_type)) {
+                region_keys.insert(r.metallicity_bias[j].region_type);
+            }
         }
-        if (region_keys.size() != 4u) {
+        if (region_keys.size() != kProceduralRegionCount) {
             add_error(errors, "procedural_metallicity_missing", "region coverage");
         }
         region_keys.clear();
@@ -233,9 +248,11 @@ bool coredata_validate(const CoredataData &data,
             if (!region_type_known(r.hazard_frequency[j].region_type)) {
                 add_error(errors, "procedural_region_type_invalid", r.hazard_frequency[j].region_type);
             }
-            region_keys.insert(r.hazard_frequency[j].region_type);
+            if (region_type_requires_rules(r.hazard_frequency[j].region_type)) {
+                region_keys.insert(r.hazard_frequency[j].region_type);
+            }
         }
-        if (region_keys.size() != 4u) {
+        if (region_keys.size() != kProceduralRegionCount) {
             add_error(errors, "procedural_hazard_missing", "region coverage");
         }
     }

@@ -20,6 +20,7 @@ add_executable(dominium_game
     runtime/dom_game_paths.c
     runtime/dom_game_handshake.cpp
     runtime/dom_game_content_id.cpp
+    runtime/dom_coredata_load.cpp
     runtime/dom_game_save.cpp
     runtime/dom_game_replay.cpp
     runtime/dom_game_session.cpp
@@ -28,6 +29,7 @@ add_executable(dominium_game
     runtime/dom_game_net_snapshot.cpp
     runtime/dom_cosmo_graph.cpp
     runtime/dom_cosmo_transit.cpp
+    runtime/dom_mech_profiles.cpp
     runtime/dom_macro_economy.cpp
     runtime/dom_macro_events.cpp
     runtime/dom_faction_registry.cpp

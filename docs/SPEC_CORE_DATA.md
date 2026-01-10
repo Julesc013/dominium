@@ -50,20 +50,21 @@ Runtime refusal:
 - Identity digest mismatch
 
 ## On-disk TLV record definitions (coredata pack)
-Records are emitted as DTLV chunks. Each chunk payload is a TLV stream of
-`u32_le tag` + `u32_le len` + payload bytes (little-endian).
+Records are emitted as a TLV stream of records where each record is
+`u32_le type_id` + `u32_le len` + payload bytes. Each record payload is a TLV
+stream of fields (`u32_le tag` + `u32_le len` + payload bytes; little-endian).
 
 Record type IDs (u32, stable):
 - `PACK_META`: `0x00000001`
 - `ASTRO_BODY_CONSTANTS`: `0x00030001`
 
-Chunk version: `1`.
+Chunk/record version: `1` (implicit in the pack; recorded in the manifest).
 
 ### ASTRO_BODY_CONSTANTS payload (TLV)
 Tags:
 - `1`: `id` (string, UTF-8)
 - `2`: `id_hash` (u64_le; FNV-1a of `id`)
-- `3`: `radius_m` (u64_le, optional; 0 if absent)
+- `3`: `radius_m` (u64_le, optional)
 - `4`: `mu_m3_s2_mantissa` (u64_le)
 - `5`: `mu_m3_s2_exp10` (i32_le; base-10 exponent)
 - `6`: `rotation_rate_rad_s_q16` (i32_le; Q16.16, optional)
@@ -76,6 +77,11 @@ Tags:
 - `3`: `pack_version_num` (u32_le)
 - `4`: `pack_version_str` (string, optional)
 - `5`: `content_hash` (u64_le)
+
+Notes:
+- The pack `content_hash` covers full record payloads (including non-sim fields).
+- The runtime computes a separate **coredata sim digest** that hashes only
+  sim-affecting fields for identity binding.
 
 ## Related specs
 - `docs/SPEC_CORE_DATA_PIPELINE.md`

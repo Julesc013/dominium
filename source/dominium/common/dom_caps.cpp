@@ -11,13 +11,15 @@ RESPONSIBILITY: SIM_CAPS/PERF_CAPS compatibility helpers + identity digest utili
 namespace {
 
 enum {
-    DOM_IDENTITY_TLV_VERSION = 1u
+    DOM_IDENTITY_TLV_VERSION = 2u
 };
 
 enum {
     DOM_IDENTITY_TAG_SIM_CAPS_HASH = 2u,
     DOM_IDENTITY_TAG_CONTENT_DIGEST = 3u,
-    DOM_IDENTITY_TAG_PROVIDER_BINDINGS_HASH = 4u
+    DOM_IDENTITY_TAG_PROVIDER_BINDINGS_HASH = 4u,
+    DOM_IDENTITY_TAG_FEATURE_EPOCH = 5u,
+    DOM_IDENTITY_TAG_COREDATA_SIM_HASH = 6u
 };
 
 } // namespace
@@ -44,7 +46,9 @@ bool dom_perf_caps_equal(const DomPerfCaps &a, const DomPerfCaps &b) {
 u64 dom_identity_digest64(const DomSimCaps &sim_caps,
                           const unsigned char *content_hash_bytes,
                           u32 content_hash_len,
-                          u64 provider_bindings_hash64) {
+                          u32 feature_epoch,
+                          u64 provider_bindings_hash64,
+                          u64 coredata_sim_hash64) {
     core_tlv::TlvWriter w;
     const u64 sim_caps_hash = dom_sim_caps_hash64(sim_caps);
 
@@ -54,6 +58,8 @@ u64 dom_identity_digest64(const DomSimCaps &sim_caps,
                 content_hash_bytes,
                 content_hash_bytes ? content_hash_len : 0u);
     w.add_u64(DOM_IDENTITY_TAG_PROVIDER_BINDINGS_HASH, provider_bindings_hash64);
+    w.add_u32(DOM_IDENTITY_TAG_FEATURE_EPOCH, feature_epoch);
+    w.add_u64(DOM_IDENTITY_TAG_COREDATA_SIM_HASH, coredata_sim_hash64);
 
     const std::vector<unsigned char> &bytes = w.bytes();
     return core_tlv::tlv_fnv1a64(bytes.empty() ? (const unsigned char *)0 : &bytes[0],

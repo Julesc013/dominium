@@ -30,7 +30,7 @@ namespace {
 enum {
     DMRP_VERSION = 6u,
     DMRP_ENDIAN = 0x0000FFFEu,
-    DMRP_IDENTITY_VERSION = 1u,
+    DMRP_IDENTITY_VERSION = 2u,
     DMRP_MEDIA_BINDINGS_VERSION = 1u,
     DMRP_WEATHER_BINDINGS_VERSION = 1u,
     DMRP_AERO_PROPS_VERSION = 1u,
@@ -45,7 +45,9 @@ enum {
     DMRP_IDENTITY_TAG_INSTANCE_ID = 2u,
     DMRP_IDENTITY_TAG_RUN_ID = 3u,
     DMRP_IDENTITY_TAG_MANIFEST_HASH = 4u,
-    DMRP_IDENTITY_TAG_CONTENT_HASH = 5u
+    DMRP_IDENTITY_TAG_CONTENT_HASH = 5u,
+    DMRP_IDENTITY_TAG_FEATURE_EPOCH = 6u,
+    DMRP_IDENTITY_TAG_COREDATA_SIM_HASH = 7u
 };
 
 static u32 read_u32_le(const unsigned char *p) {
@@ -128,6 +130,8 @@ static bool build_identity_tlv(const char *instance_id,
                                u32 manifest_hash_len,
                                const unsigned char *content_tlv,
                                u32 content_tlv_len,
+                               u32 feature_epoch,
+                               u64 coredata_sim_hash,
                                std::vector<unsigned char> &out) {
     dom::core_tlv::TlvWriter w;
     const u64 content_hash = dom::core_tlv::tlv_fnv1a64(content_tlv, (size_t)content_tlv_len);
@@ -144,6 +148,8 @@ static bool build_identity_tlv(const char *instance_id,
     w.add_u64(DMRP_IDENTITY_TAG_RUN_ID, run_id);
     w.add_bytes(DMRP_IDENTITY_TAG_MANIFEST_HASH, manifest_ptr, manifest_size);
     w.add_u64(DMRP_IDENTITY_TAG_CONTENT_HASH, content_hash);
+    w.add_u32(DMRP_IDENTITY_TAG_FEATURE_EPOCH, feature_epoch);
+    w.add_u64(DMRP_IDENTITY_TAG_COREDATA_SIM_HASH, coredata_sim_hash);
 
     out = w.bytes();
     return true;
@@ -210,6 +216,7 @@ dom_game_replay_record *dom_game_replay_record_open(const char *path,
                                                     u32 manifest_hash_len,
                                                     const unsigned char *content_tlv,
                                                     u32 content_tlv_len,
+                                                    u64 coredata_sim_hash,
                                                     const unsigned char *media_bindings_blob,
                                                     u32 media_bindings_len,
                                                     const unsigned char *weather_bindings_blob,
@@ -272,6 +279,8 @@ dom_game_replay_record *dom_game_replay_record_open(const char *path,
                             manifest_hash_len,
                             content_tlv,
                             content_tlv_len,
+                            dom::dom_feature_epoch_current(),
+                            coredata_sim_hash,
                             identity_tlv)) {
         return (dom_game_replay_record *)0;
     }
@@ -580,6 +589,10 @@ dom_game_replay_play *dom_game_replay_play_open(const char *path,
     u32 manifest_hash_len = 0u;
     u64 content_hash = 0ull;
     int has_content_hash = 0;
+    u32 identity_epoch = 0u;
+    int has_identity_epoch = 0;
+    u64 coredata_sim_hash = 0ull;
+    int has_coredata_sim_hash = 0;
     int has_identity = 0;
     u64 last_tick = 0u;
     int has_last_tick = 0;
@@ -720,11 +733,30 @@ dom_game_replay_play *dom_game_replay_play_open(const char *path,
                         has_content_hash = 1;
                     }
                     break;
+                case DMRP_IDENTITY_TAG_FEATURE_EPOCH:
+                    if (dom::core_tlv::tlv_read_u32_le(irec.payload, irec.len, identity_epoch)) {
+                        has_identity_epoch = 1;
+                    }
+                    break;
+                case DMRP_IDENTITY_TAG_COREDATA_SIM_HASH:
+                    if (dom::core_tlv::tlv_read_u64_le(irec.payload, irec.len, coredata_sim_hash)) {
+                        has_coredata_sim_hash = 1;
+                    }
+                    break;
                 default:
                     break;
                 }
             }
-            if (schema_version != DMRP_IDENTITY_VERSION || !has_content_hash) {
+            if (schema_version != DMRP_IDENTITY_VERSION ||
+                !has_content_hash ||
+                !has_identity_epoch ||
+                !has_coredata_sim_hash) {
+                if (out_desc) {
+                    out_desc->error_code = DOM_GAME_REPLAY_ERR_FORMAT;
+                }
+                return (dom_game_replay_play *)0;
+            }
+            if (identity_epoch != feature_epoch) {
                 if (out_desc) {
                     out_desc->error_code = DOM_GAME_REPLAY_ERR_FORMAT;
                 }
@@ -1055,6 +1087,8 @@ dom_game_replay_play *dom_game_replay_play_open(const char *path,
         out_desc->manifest_hash_bytes = manifest_hash;
         out_desc->manifest_hash_len = manifest_hash_len;
         out_desc->content_hash64 = content_hash;
+        out_desc->coredata_sim_hash64 = coredata_sim_hash;
+        out_desc->has_coredata_sim_hash = (u32)has_coredata_sim_hash;
         out_desc->has_identity = (u32)has_identity;
         out_desc->content_tlv = content_ptr;
         out_desc->content_tlv_len = content_len;
