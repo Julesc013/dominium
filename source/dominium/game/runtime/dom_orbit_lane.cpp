@@ -8,6 +8,7 @@ RESPONSIBILITY: Orbit lane scaffolding and analytic event API (v1 patched conics
 
 #include "domino/core/dom_deterministic_math.h"
 #include "domino/core/fixed_math.h"
+#include "dom_profiler.h"
 
 #include <limits.h>
 
@@ -417,6 +418,7 @@ int dom_orbit_period_ticks(const dom_orbit_state *orbit,
 int dom_orbit_eval_state(const dom_orbit_state *orbit,
                          dom_tick tick,
                          dom_orbit_posvel *out_posvel) {
+    DOM_PROFILE_SCOPE(DOM_PROFILER_ZONE_ORBIT_UPDATE);
     if (!orbit || !out_posvel) {
         return DOM_ORBIT_LANE_INVALID_ARGUMENT;
     }
@@ -611,6 +613,7 @@ int dom_orbit_next_event(const dom_orbit_state *orbit,
                          dom_tick tick,
                          dom_orbit_event_kind kind,
                          dom_tick *out_tick) {
+    DOM_PROFILE_SCOPE(DOM_PROFILER_ZONE_ORBIT_UPDATE);
     if (!orbit || !out_tick) {
         return DOM_ORBIT_LANE_INVALID_ARGUMENT;
     }

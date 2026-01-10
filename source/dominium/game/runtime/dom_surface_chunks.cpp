@@ -12,6 +12,7 @@ RESPONSIBILITY: Surface chunk keying, lifecycle, and non-blocking request pipeli
 
 #include "runtime/dom_derived_jobs.h"
 #include "domino/core/dom_deterministic_math.h"
+#include "dom_profiler.h"
 
 namespace {
 
@@ -283,6 +284,7 @@ int dom_surface_chunk_pump_jobs(dom_surface_chunks *chunks,
     if (!chunks) {
         return DOM_SURFACE_CHUNKS_INVALID_ARGUMENT;
     }
+    DOM_PROFILE_SCOPE(DOM_PROFILER_ZONE_SURFACE_STREAM);
     (void)dom_derived_pump(chunks->queue, max_ms, max_io_bytes, max_jobs);
     for (i = 0u; i < chunks->chunks.size(); ++i) {
         SurfaceChunk &chunk = chunks->chunks[i];
@@ -341,6 +343,7 @@ int dom_surface_chunks_set_interest(dom_surface_chunks *chunks,
                                     dom_body_id body_id,
                                     const dom_topo_latlong_q16 *center,
                                     q48_16 radius_m) {
+    DOM_PROFILE_SCOPE(DOM_PROFILER_ZONE_SURFACE_STREAM);
     dom_surface_chunk_key center_key;
     i32 radius_chunks;
     i32 dx;
