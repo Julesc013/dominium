@@ -12,6 +12,7 @@ Version: 1
 - `docs/SPEC_COSMO_CORE_DATA.md`
 - `docs/SPEC_MECHANICS_PROFILES.md`
 - `docs/SPEC_CORE_DATA_PIPELINE.md`
+- `docs/SPEC_CORE_DATA_VALIDATION.md`
 
 ## Runtime and determinism (selected)
 - `docs/SPEC_DETERMINISM.md`

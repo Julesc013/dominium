@@ -28,8 +28,8 @@ layering.
 ## Core data changes
 - For `/data/core` edits, run `coredata_compile` and verify deterministic output
   (`docs/COREDATA_BUILD.md`).
-- A dedicated `coredata_validate` step will be required once the validator tool
-  lands; treat missing or invalid schema as refusal conditions.
+- Run `coredata_validate --input-root=data/core` before merging core data edits.
+  See `docs/CORE_DATA_GUIDE.md` for common validation errors and fixes.
 - Schema changes require spec updates under `docs/SPEC_CORE_DATA*.md`.
 
 ## What will be rejected
