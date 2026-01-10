@@ -20,6 +20,7 @@ PURPOSE: Ensure tool runtime refuses mismatched SIM_CAPS handshakes.
 #else
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <unistd.h>
 #endif
 
 static int fail(const char *msg) {
