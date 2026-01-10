@@ -15,6 +15,12 @@ loading, or long computation. See `docs/SPEC_NO_MODAL_LOADING.md`.
 Derived work MUST be budgeted, cancellable, and non-authoritative. See
 `docs/SPEC_STREAMING_BUDGETS.md`.
 
+## Performance budgets and profiling
+Performance budgets and profiling contracts are defined in
+`docs/SPEC_PERF_BUDGETS.md` and `docs/SPEC_PROFILING.md`. Budget enforcement MAY
+degrade fidelity or cadence but MUST NOT change authoritative simulation
+semantics.
+
 ## Snapshot boundary
 UI/render MUST consume immutable snapshots only; snapshot construction MUST NOT
 mutate authoritative state. See `docs/SPEC_FIDELITY_DEGRADATION.md`.
