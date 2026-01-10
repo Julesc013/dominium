@@ -164,6 +164,9 @@ across platforms and over long time horizons.
 - `external/` - vendored third-party sources
 - `.github/` - CI and workflow config
 
+Core data authoring and the build pipeline are defined in
+`docs/SPEC_CORE_DATA.md` and `docs/SPEC_CORE_DATA_PIPELINE.md`.
+
 ## Documentation map
 Start here:
 - `docs/README.md` (documentation index)
