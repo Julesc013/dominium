@@ -35,6 +35,10 @@ Every migration chain must emit an audit record containing:
 
 Audit records are deterministic and must not contain absolute paths.
 
+## 6. Tooling
+- Tools and validators must use the same registry and refusal rules.
+- Missing migration paths are a refusal, not a best-effort fallback.
+
 ## Related specs
 - `docs/SPEC_CONTAINER_TLV.md`
 - `docs/SPEC_UNIVERSE_BUNDLE.md`

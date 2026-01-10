@@ -53,7 +53,9 @@ Major subsystems and roles:
 - **Rendering and user interface (UI)**: derived outputs only; never a source
   of truth.
 - **Dominium products**: game runtime, launcher, setup/packaging, and tools
-  built on the public engine contracts in `include/`.
+  built on the public engine contracts in `include/`. Tools are launched as
+  instance targets and consume the same handshake + logical roots; they do not
+  bypass launcher contracts.
 - **Runtime filesystem roots**: launcher-defined logical roots (read-only
   `DOMINIUM_HOME`, per-run writable `DOMINIUM_RUN_ROOT`); the game does not
   infer install layouts.
