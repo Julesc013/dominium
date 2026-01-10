@@ -4,8 +4,14 @@ MODULE: Domino
 PURPOSE: Deterministic fixed-point trig/sqrt/div helpers (no floating-point).
 */
 #include "domino/core/fixed_math.h"
+#include "domino/core/types.h"
 
 #include <limits.h>
+
+#ifndef INT32_MAX
+#define INT32_MAX ((i32)0x7fffffff)
+#define INT32_MIN ((i32)(-2147483647 - 1))
+#endif
 
 enum {
     TURN_QUARTER = 0x4000u,
