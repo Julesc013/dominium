@@ -17,3 +17,8 @@
 - **Recording net sessions:** Dominium can record the *applied* deterministic command stream by capturing encoded `D_NET_MSG_CMD` packets per tick (see `d_net_set_tick_cmds_observer` in `source/domino/net/d_net_apply.c` and usage in `source/dominium/game/dom_game_app.cpp`).
 - **Replay payloads:** For net capture, each `d_net_input_frame.payload` is a full framed packet (the same bytes that would be sent over the transport), which allows playback to use the same decode/enqueue path.
 - **Playback injection:** During playback, Dominium re-injects recorded packets by calling `d_net_receive_packet(...)` before `d_sim_step`, ensuring deterministic equivalence between offline replay and online command reception.
+
+## Tooling (read-only)
+- Replay analysis tools are read-only and must not modify replay data in-place.
+- When launched via the launcher, tools validate the handshake/instance identity before analysis.
+- Tool outputs (reports, diffs) are written under `DOMINIUM_RUN_ROOT`.

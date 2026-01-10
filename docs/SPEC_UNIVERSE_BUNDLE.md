@@ -119,6 +119,11 @@ default (`IDENTITY_MISMATCH`).
 - Unknown chunk versions must be refused or explicitly migrated.
 - Migration policy is defined in `docs/SPEC_MIGRATIONS.md`.
 
+## 7. Tools and editors
+- Tools must validate launcher handshake and instance identity before opening bundles.
+- Editor tools must emit a new bundle on save; never mutate a bundle in-place.
+- Unknown chunks and `FORN` preservation requirements apply equally to tools.
+
 ## Related specs
 - `docs/SPEC_CONTAINER_TLV.md`
 - `docs/SPEC_UNIVERSE_MODEL.md`
