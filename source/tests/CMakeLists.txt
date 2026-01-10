@@ -2824,3 +2824,123 @@ else()
     )
     set_tests_properties(setup_kernel_purity_check PROPERTIES LABELS setup)
 endif()
+
+add_executable(dom_tool_handshake_validation_test
+    dom_tool_handshake_validation_test.cpp
+    ../dominium/tools/dom_tool_runtime.cpp
+    ../dominium/game/runtime/dom_game_handshake.cpp
+    ../dominium/game/runtime/dom_game_paths.c
+    ../dominium/game/runtime/dom_io_guard.cpp
+)
+
+set_source_files_properties(../dominium/game/runtime/dom_game_paths.c
+    PROPERTIES LANGUAGE CXX
+)
+
+target_include_directories(dom_tool_handshake_validation_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/dominium/tools
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_tool_handshake_validation_test
+    dominium_common
+    core_tlv
+    domino_core
+)
+
+set_target_properties(dom_tool_handshake_validation_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_tool_handshake_validation_test COMMAND dom_tool_handshake_validation_test)
+
+add_executable(dom_universe_editor_roundtrip_test
+    dom_universe_editor_roundtrip_test.cpp
+    ../dominium/tools/universe_editor/ue_commands.cpp
+    ../dominium/game/runtime/dom_universe_bundle.cpp
+)
+
+target_include_directories(dom_universe_editor_roundtrip_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/dominium/tools
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_universe_editor_roundtrip_test
+    dominium_common
+    core_tlv
+    domino_core
+)
+
+set_target_properties(dom_universe_editor_roundtrip_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_universe_editor_roundtrip_test COMMAND dom_universe_editor_roundtrip_test)
+
+add_executable(dom_validator_invalid_content_test
+    dom_validator_invalid_content_test.cpp
+    ../dominium/tools/validator/validator_checks.cpp
+    ../dominium/game/runtime/dom_universe_bundle.cpp
+)
+
+target_include_directories(dom_validator_invalid_content_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/dominium/tools
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_validator_invalid_content_test
+    dominium_common
+    core_tlv
+    domino_core
+)
+
+set_target_properties(dom_validator_invalid_content_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_validator_invalid_content_test COMMAND dom_validator_invalid_content_test)
+
+add_executable(dom_replay_analyzer_basic_test
+    dom_replay_analyzer_basic_test.cpp
+    ../dominium/tools/replay_analyzer/ra_parser.cpp
+    ../dominium/tools/replay_analyzer/ra_diff.cpp
+    ../dominium/game/runtime/dom_game_replay.cpp
+)
+
+target_include_directories(dom_replay_analyzer_basic_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/dominium/tools
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_replay_analyzer_basic_test
+    dominium_common
+    core_tlv
+    domino_core
+)
+
+set_target_properties(dom_replay_analyzer_basic_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_replay_analyzer_basic_test COMMAND dom_replay_analyzer_basic_test)
