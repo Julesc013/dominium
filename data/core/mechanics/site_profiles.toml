@@ -11,6 +11,24 @@ resource_yield_modifiers = { common = 0.4, rare = 1.5, volatile = 2.0 }
 access_constraints = ["extreme_radiation", "thermal_shielding"]
 
 [[profile]]
+id = "airless_barren"
+hazard_radiation = 0.6
+hazard_pressure = 0.0
+corrosion_rate = 0.2
+temperature_extreme = 0.9
+resource_yield_modifiers = { common = 0.9, rare = 1.1, volatile = 0.6 }
+access_constraints = ["vacuum_ops", "thermal_suit"]
+
+[[profile]]
+id = "airless_ice_deposit"
+hazard_radiation = 0.5
+hazard_pressure = 0.0
+corrosion_rate = 0.2
+temperature_extreme = 1.0
+resource_yield_modifiers = { common = 0.8, rare = 1.2, volatile = 1.5 }
+access_constraints = ["cryogenic_ops", "vacuum_ops"]
+
+[[profile]]
 id = "asteroid_belt_dense"
 hazard_radiation = 0.6
 hazard_pressure = 0.0
@@ -18,6 +36,33 @@ corrosion_rate = 0.2
 temperature_extreme = 0.8
 resource_yield_modifiers = { common = 1.3, rare = 1.2, volatile = 0.9 }
 access_constraints = ["debris_navigation"]
+
+[[profile]]
+id = "dust_storm_hazard"
+hazard_radiation = 0.7
+hazard_pressure = 0.4
+corrosion_rate = 0.6
+temperature_extreme = 1.3
+resource_yield_modifiers = { common = 1.0, rare = 0.9, volatile = 0.8 }
+access_constraints = ["storm_shelter", "filtering"]
+
+[[profile]]
+id = "extreme_thermal_exposed"
+hazard_radiation = 0.9
+hazard_pressure = 0.0
+corrosion_rate = 0.6
+temperature_extreme = 2.2
+resource_yield_modifiers = { common = 0.9, rare = 1.1, volatile = 0.7 }
+access_constraints = ["thermal_shielding", "vacuum_ops"]
+
+[[profile]]
+id = "floating_city_candidate"
+hazard_radiation = 0.5
+hazard_pressure = 1.1
+corrosion_rate = 1.2
+temperature_extreme = 1.0
+resource_yield_modifiers = { common = 1.0, rare = 1.1, volatile = 1.0 }
+access_constraints = ["aero_stationkeeping", "corrosion_protection"]
 
 [[profile]]
 id = "gas_giant_atmospheric"
@@ -47,6 +92,15 @@ resource_yield_modifiers = { common = 0.7, rare = 1.1, volatile = 1.4 }
 access_constraints = ["thermal_shielding"]
 
 [[profile]]
+id = "magnetosphere_buffered"
+hazard_radiation = 0.4
+hazard_pressure = 0.0
+corrosion_rate = 0.2
+temperature_extreme = 0.6
+resource_yield_modifiers = { common = 1.0, rare = 1.0, volatile = 0.9 }
+access_constraints = ["radiation_monitoring"]
+
+[[profile]]
 id = "mars_like_thin_atmosphere"
 hazard_radiation = 0.8
 hazard_pressure = 0.3
@@ -54,6 +108,33 @@ corrosion_rate = 0.3
 temperature_extreme = 1.2
 resource_yield_modifiers = { common = 1.1, rare = 1.0, volatile = 0.8 }
 access_constraints = ["pressure_suit", "thermal_suit"]
+
+[[profile]]
+id = "orbital_transfer_node"
+hazard_radiation = 0.3
+hazard_pressure = 0.0
+corrosion_rate = 0.1
+temperature_extreme = 0.5
+resource_yield_modifiers = { common = 1.0, rare = 1.0, volatile = 1.0 }
+access_constraints = ["orbital_ops"]
+
+[[profile]]
+id = "outer_system_isolation"
+hazard_radiation = 0.4
+hazard_pressure = 0.0
+corrosion_rate = 0.2
+temperature_extreme = 1.5
+resource_yield_modifiers = { common = 0.7, rare = 1.3, volatile = 1.2 }
+access_constraints = ["autonomy_required"]
+
+[[profile]]
+id = "polar_ice_deposit"
+hazard_radiation = 0.6
+hazard_pressure = 0.2
+corrosion_rate = 0.3
+temperature_extreme = 1.4
+resource_yield_modifiers = { common = 0.8, rare = 1.1, volatile = 1.6 }
+access_constraints = ["cryogenic_ops", "thermal_suit"]
 
 [[profile]]
 id = "pulsar_beam_hazard"
@@ -65,6 +146,15 @@ resource_yield_modifiers = { common = 0.6, rare = 1.4, volatile = 1.2 }
 access_constraints = ["beam_timing", "radiation_shielding"]
 
 [[profile]]
+id = "radiation_belt_hazard"
+hazard_radiation = 1.8
+hazard_pressure = 0.0
+corrosion_rate = 0.4
+temperature_extreme = 1.0
+resource_yield_modifiers = { common = 0.7, rare = 1.2, volatile = 0.9 }
+access_constraints = ["radiation_shielding"]
+
+[[profile]]
 id = "ring_system_dense"
 hazard_radiation = 0.7
 hazard_pressure = 0.0
@@ -72,6 +162,24 @@ corrosion_rate = 0.3
 temperature_extreme = 0.7
 resource_yield_modifiers = { common = 1.2, rare = 1.3, volatile = 1.0 }
 access_constraints = ["debris_navigation"]
+
+[[profile]]
+id = "subsurface_shelter"
+hazard_radiation = 0.2
+hazard_pressure = 0.1
+corrosion_rate = 0.1
+temperature_extreme = 0.4
+resource_yield_modifiers = { common = 0.9, rare = 1.0, volatile = 0.8 }
+access_constraints = ["subsurface_access"]
+
+[[profile]]
+id = "temperate_atmosphere_layers"
+hazard_radiation = 0.3
+hazard_pressure = 0.6
+corrosion_rate = 0.3
+temperature_extreme = 0.6
+resource_yield_modifiers = { common = 1.0, rare = 1.0, volatile = 1.0 }
+access_constraints = ["aero_control"]
 
 [[profile]]
 id = "venus_like_extreme_pressure"

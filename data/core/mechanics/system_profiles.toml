@@ -67,6 +67,14 @@ warp_cap_modifier = 0.9
 survey_difficulty = 1.2
 
 [[profile]]
+id = "sol_reference_system"
+navigation_instability_factor = 1.05
+debris_collision_modifier = 1.1
+radiation_baseline = 1.05
+warp_cap_modifier = 1.0
+survey_difficulty = 1.1
+
+[[profile]]
 id = "young_debris_rich"
 navigation_instability_factor = 1.2
 debris_collision_modifier = 1.4

@@ -91,6 +91,60 @@ anchor_weight = 10
 tags = ["galactic_core", "high_hazard"]
 
 [[anchor]]
+id = "sol_heliosphere"
+kind = "region"
+display_name = "Sol Heliopause"
+region_type = "heliosphere"
+mechanics_profile_id = "sol_reference_system"
+anchor_weight = 4
+tags = ["sol", "heliosphere"]
+
+[[anchor]]
+id = "sol_inner_asteroid_belt"
+kind = "region"
+display_name = "Sol Inner Asteroid Belt"
+region_type = "belt"
+mechanics_profile_id = "young_debris_rich"
+anchor_weight = 5
+tags = ["sol", "belt", "asteroid"]
+
+[[anchor]]
+id = "sol_kuiper_belt"
+kind = "region"
+display_name = "Sol Kuiper Belt"
+region_type = "belt"
+mechanics_profile_id = "old_metal_poor"
+anchor_weight = 3
+tags = ["sol", "belt", "kuiper"]
+
+[[anchor]]
+id = "sol_oort_cloud_inner"
+kind = "region"
+display_name = "Sol Inner Oort Cloud"
+region_type = "cloud"
+mechanics_profile_id = "old_metal_poor"
+anchor_weight = 2
+tags = ["sol", "cloud", "oort"]
+
+[[anchor]]
+id = "sol_oort_cloud_outer"
+kind = "region"
+display_name = "Sol Outer Oort Cloud"
+region_type = "cloud"
+mechanics_profile_id = "old_metal_poor"
+anchor_weight = 1
+tags = ["sol", "cloud", "oort"]
+
+[[anchor]]
+id = "sol_scattered_disk"
+kind = "region"
+display_name = "Sol Scattered Disk"
+region_type = "belt"
+mechanics_profile_id = "old_metal_poor"
+anchor_weight = 2
+tags = ["sol", "belt", "scattered"]
+
+[[anchor]]
 id = "trifid_nebula"
 kind = "region"
 display_name = "Trifid Nebula"
