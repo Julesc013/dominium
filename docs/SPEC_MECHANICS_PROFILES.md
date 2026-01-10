@@ -31,6 +31,42 @@ Example fields:
 - Profiles MUST NOT encode physics equations; they provide modifiers only.
 - Sim-affecting fields MUST be included in identity digests.
 
+## On-disk TLV record definitions (coredata pack)
+Records are emitted as DTLV chunks. Each chunk payload is a TLV stream of
+`u32_le tag` + `u32_le len` + payload bytes (little-endian).
+
+Record type IDs (u32, stable):
+- `MECH_SYSTEM_PROFILE`: `0x00020001`
+- `MECH_SITE_PROFILE`: `0x00020002`
+
+Chunk version: `1`.
+
+### MECH_SYSTEM_PROFILE payload (TLV)
+Tags:
+- `1`: `id` (string, UTF-8)
+- `2`: `id_hash` (u64_le; FNV-1a of `id`)
+- `3`: `navigation_instability_q16` (i32_le; Q16.16)
+- `4`: `debris_collision_q16` (i32_le; Q16.16)
+- `5`: `radiation_baseline_q16` (i32_le; Q16.16)
+- `6`: `warp_cap_modifier_q16` (i32_le; Q16.16)
+- `7`: `survey_difficulty_q16` (i32_le; Q16.16)
+- `8`: `supernova_timer_ticks` (u64_le, optional)
+
+### MECH_SITE_PROFILE payload (TLV)
+Tags:
+- `1`: `id` (string, UTF-8)
+- `2`: `id_hash` (u64_le; FNV-1a of `id`)
+- `3`: `hazard_radiation_q16` (i32_le; Q16.16)
+- `4`: `hazard_pressure_q16` (i32_le; Q16.16)
+- `5`: `corrosion_rate_q16` (i32_le; Q16.16)
+- `6`: `temperature_extreme_q16` (i32_le; Q16.16)
+- `7`: `resource_yield` (container, repeated; tags below)
+- `8`: `access_constraint` (string, repeated)
+
+Resource yield container tags (for 7):
+- `1`: `resource_id` (string)
+- `2`: `modifier_q16` (i32_le; Q16.16)
+
 ## Related specs
 - `docs/SPEC_CORE_DATA.md`
 - `docs/SPEC_COSMO_CORE_DATA.md`

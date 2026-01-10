@@ -43,6 +43,64 @@ Rules:
   rules.
 - Edges MUST be stored in deterministic order (by canonical ID).
 
+## On-disk TLV record definitions (coredata pack)
+Records are emitted as DTLV chunks. Each chunk payload is a TLV stream of
+`u32_le tag` + `u32_le len` + payload bytes (little-endian).
+
+Record type IDs (u32, stable):
+- `COSMO_ANCHOR_NODE`: `0x00010001`
+- `COSMO_EDGE`: `0x00010002`
+- `COSMO_PROCEDURAL_RULES`: `0x00010003`
+
+Chunk version: `1`.
+
+### COSMO_ANCHOR_NODE payload (TLV)
+Tags:
+- `1`: `id` (string, UTF-8)
+- `2`: `id_hash` (u64_le; FNV-1a of `id`)
+- `3`: `kind` (u32_le; enum)
+- `4`: `display_name` (string; non-sim)
+- `5`: `system_class` (u32_le; enum; SYSTEM only)
+- `6`: `region_type` (u32_le; enum; REGION only)
+- `7`: `evidence_grade` (u32_le; enum)
+- `8`: `mechanics_profile_id` (string)
+- `9`: `anchor_weight` (u32_le)
+- `10`: `tag` (string, repeated; non-sim)
+- `11`: `presentational_position` (bytes; 3x i32_le Q16.16, x/y/z; non-sim)
+
+Enums:
+- `kind`: 1=SYSTEM, 2=REGION
+- `system_class`: 1=single, 2=binary, 3=cluster, 4=remnant, 5=exotic
+- `region_type`: 1=nebula, 2=open_cluster, 3=globular_cluster, 4=galactic_core
+- `evidence_grade`: 1=confirmed, 2=candidate, 3=historical, 4=fictionalized
+
+### COSMO_EDGE payload (TLV)
+Tags:
+- `1`: `src_id` (string)
+- `2`: `src_id_hash` (u64_le)
+- `3`: `dst_id` (string)
+- `4`: `dst_id_hash` (u64_le)
+- `5`: `travel_duration_ticks` (u64_le)
+- `6`: `cost_profile_id` (string)
+- `7`: `cost_profile_id_hash` (u64_le)
+- `8`: `hazard_profile_id` (string, optional)
+- `9`: `hazard_profile_id_hash` (u64_le, optional)
+
+### COSMO_PROCEDURAL_RULES payload (TLV)
+Tags:
+- `1`: `systems_per_anchor_min` (u32_le)
+- `2`: `systems_per_anchor_max` (u32_le)
+- `3`: `red_dwarf_ratio_q16` (i32_le; Q16.16)
+- `4`: `binary_ratio_q16` (i32_le; Q16.16)
+- `5`: `exotic_ratio_q16` (i32_le; Q16.16)
+- `6`: `cluster_density` (container, repeated; tags below)
+- `7`: `metallicity_bias` (container, repeated; tags below)
+- `8`: `hazard_frequency` (container, repeated; tags below)
+
+Container tags (for 6/7/8):
+- `1`: `region_type` (u32_le; enum above)
+- `2`: `value_q16` (i32_le; Q16.16)
+
 ## Related specs
 - `docs/SPEC_CORE_DATA.md`
 - `docs/SPEC_COSMO_LANE.md`
