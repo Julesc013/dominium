@@ -1,1 +1,109 @@
 # Milky Way REGION anchors (authoring). See docs/SPEC_COSMO_CORE_DATA.md.
+
+[[anchor]]
+id = "carina_nebula"
+kind = "region"
+display_name = "Carina Nebula"
+region_type = "nebula"
+mechanics_profile_id = "young_debris_rich"
+anchor_weight = 6
+tags = ["nebula", "star_forming"]
+
+[[anchor]]
+id = "eagle_nebula"
+kind = "region"
+display_name = "Eagle Nebula"
+region_type = "nebula"
+mechanics_profile_id = "young_debris_rich"
+anchor_weight = 5
+tags = ["nebula", "star_forming"]
+
+[[anchor]]
+id = "forty_seven_tucanae"
+kind = "region"
+display_name = "47 Tucanae"
+region_type = "globular_cluster"
+mechanics_profile_id = "old_metal_poor"
+anchor_weight = 5
+tags = ["globular_cluster"]
+
+[[anchor]]
+id = "hyades"
+kind = "region"
+display_name = "Hyades"
+region_type = "open_cluster"
+mechanics_profile_id = "baseline_single_star"
+anchor_weight = 4
+tags = ["open_cluster"]
+
+[[anchor]]
+id = "lagoon_nebula"
+kind = "region"
+display_name = "Lagoon Nebula"
+region_type = "nebula"
+mechanics_profile_id = "young_debris_rich"
+anchor_weight = 5
+tags = ["nebula", "star_forming"]
+
+[[anchor]]
+id = "ngc_3603"
+kind = "region"
+display_name = "NGC 3603"
+region_type = "open_cluster"
+mechanics_profile_id = "young_debris_rich"
+anchor_weight = 5
+tags = ["open_cluster", "massive_cluster"]
+
+[[anchor]]
+id = "omega_centauri"
+kind = "region"
+display_name = "Omega Centauri"
+region_type = "globular_cluster"
+mechanics_profile_id = "old_metal_poor"
+anchor_weight = 6
+tags = ["globular_cluster"]
+
+[[anchor]]
+id = "orion_nebula"
+kind = "region"
+display_name = "Orion Nebula"
+region_type = "nebula"
+mechanics_profile_id = "young_debris_rich"
+anchor_weight = 6
+tags = ["nebula", "star_forming"]
+
+[[anchor]]
+id = "pleiades"
+kind = "region"
+display_name = "Pleiades"
+region_type = "open_cluster"
+mechanics_profile_id = "young_debris_rich"
+anchor_weight = 5
+tags = ["open_cluster", "young"]
+
+[[anchor]]
+id = "sagittarius_a_star_region"
+kind = "region"
+display_name = "Sagittarius A* Region"
+region_type = "galactic_core"
+mechanics_profile_id = "galactic_core_extreme"
+anchor_weight = 10
+tags = ["galactic_core", "high_hazard"]
+
+[[anchor]]
+id = "trifid_nebula"
+kind = "region"
+display_name = "Trifid Nebula"
+region_type = "nebula"
+mechanics_profile_id = "young_debris_rich"
+anchor_weight = 5
+tags = ["nebula", "star_forming"]
+
+[[anchor]]
+id = "westerlund_1"
+kind = "region"
+display_name = "Westerlund 1"
+region_type = "open_cluster"
+mechanics_profile_id = "massive_star_short_lived"
+anchor_weight = 5
+tags = ["open_cluster", "massive_cluster"]
