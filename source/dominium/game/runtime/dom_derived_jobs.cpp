@@ -18,6 +18,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include <climits>
 
 #include "domino/sys.h"
+#include "dom_profiler.h"
 
 namespace {
 
@@ -324,6 +325,7 @@ int dom_derived_pump(dom_derived_queue *queue,
         return 0;
     }
 
+    DOM_PROFILE_SCOPE(DOM_PROFILER_ZONE_DERIVED_PUMP);
     while (processed < job_budget) {
         const u64 now_us = dsys_time_now_us();
         size_t idx;

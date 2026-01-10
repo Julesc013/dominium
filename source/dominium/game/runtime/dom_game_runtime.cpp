@@ -45,6 +45,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "runtime/dom_game_hash.h"
 #include "runtime/dom_game_replay.h"
 #include "domino/core/spacetime.h"
+#include "dom_profiler.h"
 
 extern "C" {
 #include "ai/d_agent.h"
@@ -1164,6 +1165,7 @@ int dom_game_runtime_pump(dom_game_runtime *rt) {
         return DOM_GAME_RUNTIME_ERR;
     }
 
+    DOM_PROFILE_SCOPE(DOM_PROFILER_ZONE_NET_PUMP);
     net->pump(w, sim, *inst);
     return DOM_GAME_RUNTIME_OK;
 }
@@ -1188,6 +1190,7 @@ int dom_game_runtime_step(dom_game_runtime *rt) {
         return DOM_GAME_RUNTIME_ERR;
     }
 
+    DOM_PROFILE_SCOPE(DOM_PROFILER_ZONE_SIM_TICK);
     rc = inject_replay(rt, sim);
     if (rc != DOM_GAME_RUNTIME_OK) {
         return rc;
@@ -1228,6 +1231,7 @@ int dom_game_runtime_step(dom_game_runtime *rt) {
         }
     }
     if (rt->lane_sched) {
+        DOM_PROFILE_SCOPE(DOM_PROFILER_ZONE_LANE_UPDATE);
         int lane_rc = dom_lane_scheduler_update(rt->lane_sched, rt, (dom_tick)sim->tick_index);
         if (lane_rc != DOM_LANE_OK) {
             return DOM_GAME_RUNTIME_ERR;
@@ -1289,6 +1293,7 @@ int dom_game_runtime_step(dom_game_runtime *rt) {
         }
     }
     if (rt->ai_scheduler) {
+        DOM_PROFILE_SCOPE(DOM_PROFILER_ZONE_AI);
         if (dom_ai_scheduler_tick(rt->ai_scheduler,
                                   rt,
                                   (u64)sim->tick_index) != DOM_AI_SCHEDULER_OK) {

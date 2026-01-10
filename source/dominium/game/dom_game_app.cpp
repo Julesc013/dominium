@@ -29,6 +29,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "runtime/dom_snapshot.h"
 #include "runtime/dom_io_guard.h"
 #include "runtime/dom_ai_scheduler.h"
+#include "dom_profiler.h"
 #include "ui/dom_ui_views.h"
 #include "dom_game_tools_build.h"
 #include "dominium/version.h"
@@ -2134,6 +2135,7 @@ void DomGameApp::render_frame() {
         return;
     }
 
+    dom_profiler_begin_frame();
     cmd_buffer = d_gfx_cmd_buffer_begin();
     if (!cmd_buffer) {
         return;
@@ -2388,12 +2390,17 @@ void DomGameApp::render_frame() {
     dui_layout(&m_ui_ctx, &root_rect);
     dui_render(&m_ui_ctx, &frame);
 
-    d_gfx_cmd_buffer_end(cmd_buffer);
-    d_gfx_submit(cmd_buffer);
-    d_gfx_present();
+    {
+        DOM_PROFILE_SCOPE(DOM_PROFILER_ZONE_RENDER_SUBMIT);
+        d_gfx_cmd_buffer_end(cmd_buffer);
+        d_gfx_submit(cmd_buffer);
+        d_gfx_present();
+    }
+    dom_profiler_end_frame();
 }
 
 void DomGameApp::process_input_events() {
+    DOM_PROFILE_SCOPE(DOM_PROFILER_ZONE_INPUT);
     d_sys_event ev;
     while (d_system_poll_event(&ev) > 0) {
         int build_consumed = 0;
