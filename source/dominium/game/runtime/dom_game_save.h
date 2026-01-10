@@ -30,7 +30,7 @@ enum {
 };
 
 enum {
-    DOM_GAME_SAVE_DESC_VERSION = 10u
+    DOM_GAME_SAVE_DESC_VERSION = 11u
 };
 
 typedef struct dom_game_save_desc {
@@ -49,6 +49,8 @@ typedef struct dom_game_save_desc {
     const unsigned char *manifest_hash_bytes;
     u32 manifest_hash_len;
     u64 content_hash64;
+    u64 coredata_sim_hash64;
+    u32 has_coredata_sim_hash;
     u32 has_identity;
 
     const unsigned char *content_tlv;

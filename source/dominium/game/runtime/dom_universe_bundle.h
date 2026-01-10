@@ -87,7 +87,8 @@ enum {
     DOM_UNIVERSE_TLV_AERO_PROPS_HASH   = 0x0018u,
     DOM_UNIVERSE_TLV_AERO_STATE_HASH   = 0x0019u,
     DOM_UNIVERSE_TLV_FACTIONS_HASH     = 0x001Au,
-    DOM_UNIVERSE_TLV_AI_SCHED_HASH     = 0x001Bu
+    DOM_UNIVERSE_TLV_AI_SCHED_HASH     = 0x001Bu,
+    DOM_UNIVERSE_TLV_COREDATA_SIM_HASH = 0x001Cu
 };
 
 typedef struct dom_universe_bundle_identity {
@@ -97,6 +98,7 @@ typedef struct dom_universe_bundle_identity {
     u32 instance_id_len;
     u64 content_graph_hash;
     u64 sim_flags_hash;
+    u64 coredata_sim_hash;
     u64 cosmo_graph_hash;
     u64 systems_hash;
     u64 bodies_hash;

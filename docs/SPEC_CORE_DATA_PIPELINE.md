@@ -31,6 +31,8 @@ Notes:
 ## Pack format
 - `pack.tlv` is a TLV stream of records (`u32_le tag` + `u32_le len`).
 - Each record payload is itself a TLV stream of fields (see per-schema specs).
+- Record schema version is implicit in the pack (currently `1`) and is recorded
+  in the manifest for auditing.
 - A `PACK_META` record (`type_id = 0x00000001`) appears once and includes:
   - pack schema version
   - pack id
@@ -38,6 +40,15 @@ Notes:
   - content hash
 - The content hash is computed over record hashes in canonical order and
   excludes the `PACK_META` record itself.
+- The runtime computes a separate **coredata sim digest** that hashes only
+  sim-affecting fields for identity binding.
+
+## Runtime pack selection
+- The game runtime resolves coredata packs via the instance pack graph.
+- `base_cosmo` is the canonical coredata pack id.
+- The resolved pack version is chosen from the instance pack list and loaded
+  from `<packs_root>/base_cosmo/<version_8digit>/pack.tlv`.
+- Missing or invalid coredata packs MUST refuse runtime startup.
 
 ## Determinism guarantees
 - Identical inputs MUST produce byte-identical TLV outputs.

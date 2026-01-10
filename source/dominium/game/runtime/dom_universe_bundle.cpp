@@ -40,6 +40,7 @@ struct BundleState {
     std::string instance_id;
     u64 content_graph_hash;
     u64 sim_flags_hash;
+    u64 coredata_sim_hash;
     u64 cosmo_graph_hash;
     u64 systems_hash;
     u64 bodies_hash;
@@ -97,6 +98,7 @@ struct BundleState {
           instance_id(),
           content_graph_hash(0ull),
           sim_flags_hash(0ull),
+          coredata_sim_hash(0ull),
           cosmo_graph_hash(0ull),
           systems_hash(0ull),
           bodies_hash(0ull),
@@ -115,6 +117,8 @@ struct BundleState {
           production_hash(0ull),
           macro_economy_hash(0ull),
           macro_events_hash(0ull),
+          factions_hash(0ull),
+          ai_scheduler_hash(0ull),
           ups(0u),
           tick_index(0ull),
           feature_epoch(0u),
@@ -192,6 +196,7 @@ static void bundle_reset(BundleState *state) {
     state->instance_id.clear();
     state->content_graph_hash = 0ull;
     state->sim_flags_hash = 0ull;
+    state->coredata_sim_hash = 0ull;
     state->cosmo_graph_hash = 0ull;
     state->systems_hash = 0ull;
     state->bodies_hash = 0ull;
@@ -279,6 +284,7 @@ static int parse_time_chunk(BundleState *state,
     bool have_instance = false;
     bool have_content = false;
     bool have_flags = false;
+    bool have_coredata_sim = false;
     bool have_ups = false;
     bool have_tick = false;
     bool have_epoch = false;
@@ -336,6 +342,13 @@ static int parse_time_chunk(BundleState *state,
                 }
                 state->sim_flags_hash = dtlv_le_read_u64(pl);
                 have_flags = true;
+                break;
+            case DOM_UNIVERSE_TLV_COREDATA_SIM_HASH:
+                if (!pl || pl_len != 8u) {
+                    return DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
+                }
+                state->coredata_sim_hash = dtlv_le_read_u64(pl);
+                have_coredata_sim = true;
                 break;
             case DOM_UNIVERSE_TLV_COSMO_HASH:
                 if (!pl || pl_len != 8u) {
@@ -507,7 +520,8 @@ static int parse_time_chunk(BundleState *state,
         return DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
     }
     if (!have_universe || !have_instance || !have_content ||
-        !have_flags || !have_cosmo || !have_ups || !have_tick) {
+        !have_flags || !have_coredata_sim || !have_cosmo ||
+        !have_ups || !have_tick) {
         return DOM_UNIVERSE_BUNDLE_INVALID_FORMAT;
     }
     if (!have_epoch || !have_systems || !have_bodies || !have_frames ||
@@ -602,6 +616,7 @@ static int identity_matches(const BundleState *state,
     }
     if (expected->content_graph_hash != state->content_graph_hash ||
         expected->sim_flags_hash != state->sim_flags_hash ||
+        expected->coredata_sim_hash != state->coredata_sim_hash ||
         expected->cosmo_graph_hash != state->cosmo_graph_hash ||
         expected->systems_hash != state->systems_hash ||
         expected->bodies_hash != state->bodies_hash ||
@@ -673,6 +688,17 @@ static int write_time_chunk(dtlv_writer *writer, const BundleState *state) {
         dtlv_le_write_u64(buf, state->sim_flags_hash);
         rc = dtlv_writer_write_tlv(writer,
                                    DOM_UNIVERSE_TLV_SIM_FLAGS_HASH,
+                                   buf,
+                                   8u);
+    }
+    if (rc != 0) {
+        return DOM_UNIVERSE_BUNDLE_IO_ERROR;
+    }
+    {
+        unsigned char buf[8];
+        dtlv_le_write_u64(buf, state->coredata_sim_hash);
+        rc = dtlv_writer_write_tlv(writer,
+                                   DOM_UNIVERSE_TLV_COREDATA_SIM_HASH,
                                    buf,
                                    8u);
     }
@@ -1105,6 +1131,7 @@ int dom_universe_bundle_set_identity(dom_universe_bundle *bundle,
     state->instance_id.assign(id->instance_id, id->instance_id_len);
     state->content_graph_hash = id->content_graph_hash;
     state->sim_flags_hash = id->sim_flags_hash;
+    state->coredata_sim_hash = id->coredata_sim_hash;
     state->cosmo_graph_hash = id->cosmo_graph_hash;
     state->systems_hash = id->systems_hash;
     state->bodies_hash = id->bodies_hash;
@@ -1148,6 +1175,7 @@ int dom_universe_bundle_get_identity(const dom_universe_bundle *bundle,
     out_id->instance_id_len = (u32)state->instance_id.size();
     out_id->content_graph_hash = state->content_graph_hash;
     out_id->sim_flags_hash = state->sim_flags_hash;
+    out_id->coredata_sim_hash = state->coredata_sim_hash;
     out_id->cosmo_graph_hash = state->cosmo_graph_hash;
     out_id->systems_hash = state->systems_hash;
     out_id->bodies_hash = state->bodies_hash;

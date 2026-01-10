@@ -32,14 +32,15 @@ Example fields:
 - Sim-affecting fields MUST be included in identity digests.
 
 ## On-disk TLV record definitions (coredata pack)
-Records are emitted as DTLV chunks. Each chunk payload is a TLV stream of
-`u32_le tag` + `u32_le len` + payload bytes (little-endian).
+Records are emitted as a TLV stream of records where each record is
+`u32_le type_id` + `u32_le len` + payload bytes. Each record payload is a TLV
+stream of fields (`u32_le tag` + `u32_le len` + payload bytes; little-endian).
 
 Record type IDs (u32, stable):
 - `MECH_SYSTEM_PROFILE`: `0x00020001`
 - `MECH_SITE_PROFILE`: `0x00020002`
 
-Chunk version: `1`.
+Record schema version: `1` (implicit in the pack; recorded in the manifest).
 
 ### MECH_SYSTEM_PROFILE payload (TLV)
 Tags:

@@ -19,6 +19,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 
 #include "runtime/dom_io_guard.h"
 #include "runtime/dom_cosmo_graph.h"
+#include "runtime/dom_coredata_load.h"
 #include "runtime/dom_game_runtime.h"
 #include "runtime/dom_game_query.h"
 #include "runtime/dom_system_registry.h"
@@ -37,6 +38,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "runtime/dom_macro_events.h"
 #include "runtime/dom_faction_registry.h"
 #include "runtime/dom_ai_scheduler.h"
+#include "runtime/dom_mech_profiles.h"
 
 extern "C" {
 #include "domino/core/dom_deterministic_math.h"
@@ -173,6 +175,43 @@ static void collect_faction_info(const dom_faction_info *info, void *user) {
     if (ctx && ctx->factions && info) {
         ctx->factions->push_back(*info);
     }
+}
+
+struct MechSystemFillContext {
+    dom_mech_system_profile_view *views;
+    u32 index;
+};
+
+static void fill_mech_system_view(const dom_mech_system_profile_info *info, void *user) {
+    MechSystemFillContext *ctx = static_cast<MechSystemFillContext *>(user);
+    dom_mech_system_profile_view *view = &ctx->views[ctx->index++];
+    view->id_hash = info->id_hash;
+    view->id = info->id;
+    view->id_len = info->id_len;
+    view->navigation_instability_q16 = info->navigation_instability_q16;
+    view->debris_collision_q16 = info->debris_collision_q16;
+    view->radiation_baseline_q16 = info->radiation_baseline_q16;
+    view->warp_cap_modifier_q16 = info->warp_cap_modifier_q16;
+    view->survey_difficulty_q16 = info->survey_difficulty_q16;
+    view->supernova_timer_ticks = info->supernova_timer_ticks;
+    view->has_supernova_timer = info->has_supernova_timer;
+}
+
+struct MechSiteFillContext {
+    dom_mech_site_profile_view *views;
+    u32 index;
+};
+
+static void fill_mech_site_view(const dom_mech_site_profile_info *info, void *user) {
+    MechSiteFillContext *ctx = static_cast<MechSiteFillContext *>(user);
+    dom_mech_site_profile_view *view = &ctx->views[ctx->index++];
+    view->id_hash = info->id_hash;
+    view->id = info->id;
+    view->id_len = info->id_len;
+    view->hazard_radiation_q16 = info->hazard_radiation_q16;
+    view->hazard_pressure_q16 = info->hazard_pressure_q16;
+    view->corrosion_rate_q16 = info->corrosion_rate_q16;
+    view->temperature_extreme_q16 = info->temperature_extreme_q16;
 }
 
 static u64 abs_i64_u64(i64 v) {
@@ -413,6 +452,55 @@ void dom_game_runtime_release_cosmo_transit_snapshot(dom_cosmo_transit_snapshot 
     if (!snapshot) {
         return;
     }
+    delete snapshot;
+}
+
+dom_cosmo_anchor_list_snapshot *dom_game_runtime_build_cosmo_anchor_list_snapshot(const dom_game_runtime *rt) {
+    dom_cosmo_anchor_list_snapshot *snap;
+    const dom_coredata_state *state;
+
+    if (!rt) {
+        return (dom_cosmo_anchor_list_snapshot *)0;
+    }
+    state = static_cast<const dom_coredata_state *>(dom_game_runtime_coredata(rt));
+    if (!state) {
+        return (dom_cosmo_anchor_list_snapshot *)0;
+    }
+    if (state->anchors.size() > 0xffffffffu) {
+        return (dom_cosmo_anchor_list_snapshot *)0;
+    }
+
+    snap = new dom_cosmo_anchor_list_snapshot();
+    std::memset(snap, 0, sizeof(*snap));
+    snap->struct_size = sizeof(*snap);
+    snap->struct_version = DOM_COSMO_ANCHOR_LIST_SNAPSHOT_VERSION;
+    snap->anchor_count = (u32)state->anchors.size();
+
+    if (snap->anchor_count > 0u) {
+        snap->anchors = new dom_cosmo_anchor_view[snap->anchor_count];
+        for (u32 i = 0u; i < snap->anchor_count; ++i) {
+            const dom_coredata_anchor &a = state->anchors[i];
+            dom_cosmo_anchor_view &view = snap->anchors[i];
+            view.id_hash = a.id_hash;
+            view.kind = a.kind;
+            view.system_class = a.system_class;
+            view.region_type = a.region_type;
+            view.mechanics_profile_id_hash = a.mechanics_profile_id_hash;
+            view.display_name = a.display_name.empty() ? 0 : a.display_name.c_str();
+            view.display_name_len = (u32)a.display_name.size();
+            view.mechanics_profile_id = a.mechanics_profile_id.empty() ? 0 : a.mechanics_profile_id.c_str();
+            view.mechanics_profile_id_len = (u32)a.mechanics_profile_id.size();
+        }
+    }
+
+    return snap;
+}
+
+void dom_game_runtime_release_cosmo_anchor_list_snapshot(dom_cosmo_anchor_list_snapshot *snapshot) {
+    if (!snapshot) {
+        return;
+    }
+    delete[] snapshot->anchors;
     delete snapshot;
 }
 
@@ -1732,5 +1820,58 @@ void dom_game_runtime_release_ai_decision_summary_snapshot(dom_ai_decision_summa
         return;
     }
     delete[] snapshot->entries;
+    delete snapshot;
+}
+
+dom_mech_profile_summary_snapshot *dom_game_runtime_build_mech_profile_summary_snapshot(const dom_game_runtime *rt) {
+    dom_mech_profile_summary_snapshot *snap;
+    const dom_mech_profiles *profiles;
+    u32 system_count = 0u;
+    u32 site_count = 0u;
+
+    if (!rt) {
+        return (dom_mech_profile_summary_snapshot *)0;
+    }
+    profiles = static_cast<const dom_mech_profiles *>(dom_game_runtime_mech_profiles(rt));
+    if (!profiles) {
+        return (dom_mech_profile_summary_snapshot *)0;
+    }
+
+    snap = new dom_mech_profile_summary_snapshot();
+    std::memset(snap, 0, sizeof(*snap));
+    snap->struct_size = sizeof(*snap);
+    snap->struct_version = DOM_MECH_PROFILE_SUMMARY_SNAPSHOT_VERSION;
+
+    system_count = dom_mech_profiles_system_count(profiles);
+    site_count = dom_mech_profiles_site_count(profiles);
+    snap->system_profile_count = system_count;
+    snap->site_profile_count = site_count;
+
+    if (system_count > 0u) {
+        MechSystemFillContext ctx;
+        snap->system_profiles = new dom_mech_system_profile_view[system_count];
+        ctx.views = snap->system_profiles;
+        ctx.index = 0u;
+        (void)dom_mech_profiles_iterate_system(profiles, fill_mech_system_view, &ctx);
+        snap->system_profile_count = ctx.index;
+    }
+    if (site_count > 0u) {
+        MechSiteFillContext ctx;
+        snap->site_profiles = new dom_mech_site_profile_view[site_count];
+        ctx.views = snap->site_profiles;
+        ctx.index = 0u;
+        (void)dom_mech_profiles_iterate_site(profiles, fill_mech_site_view, &ctx);
+        snap->site_profile_count = ctx.index;
+    }
+
+    return snap;
+}
+
+void dom_game_runtime_release_mech_profile_summary_snapshot(dom_mech_profile_summary_snapshot *snapshot) {
+    if (!snapshot) {
+        return;
+    }
+    delete[] snapshot->system_profiles;
+    delete[] snapshot->site_profiles;
     delete snapshot;
 }

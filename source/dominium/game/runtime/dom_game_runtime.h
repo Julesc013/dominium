@@ -42,6 +42,13 @@ enum {
 };
 
 enum {
+    DOM_GAME_RUNTIME_LAST_ERR_NONE = 0,
+    DOM_GAME_RUNTIME_LAST_ERR_COREDATA_MISSING = 1001,
+    DOM_GAME_RUNTIME_LAST_ERR_COREDATA_INVALID = 1002,
+    DOM_GAME_RUNTIME_LAST_ERR_INIT_FAILED = 1003
+};
+
+enum {
     DOM_GAME_RUNTIME_INIT_DESC_VERSION = 2u
 };
 
@@ -62,6 +69,9 @@ typedef struct dom_game_runtime_init_desc {
 dom_game_runtime *dom_game_runtime_create(const dom_game_runtime_init_desc *desc);
 void dom_game_runtime_destroy(dom_game_runtime *rt);
 
+int dom_game_runtime_last_error(void);
+const char *dom_game_runtime_last_error_detail(void);
+
 int dom_game_runtime_pump(dom_game_runtime *rt);
 int dom_game_runtime_step(dom_game_runtime *rt);
 int dom_game_runtime_tick_wall(dom_game_runtime *rt, u64 wall_dt_usec, u32 *out_ticks);
@@ -75,6 +85,7 @@ u64 dom_game_runtime_get_hash(const dom_game_runtime *rt);
 u64 dom_game_runtime_get_run_id(const dom_game_runtime *rt);
 u32 dom_game_runtime_get_warp_factor(const dom_game_runtime *rt);
 const unsigned char *dom_game_runtime_get_manifest_hash(const dom_game_runtime *rt, u32 *out_len);
+u64 dom_game_runtime_get_coredata_sim_digest(const dom_game_runtime *rt);
 int dom_game_runtime_get_counts(const dom_game_runtime *rt, dom_game_counts *out_counts);
 
 u32 dom_game_runtime_input_delay(const dom_game_runtime *rt);
@@ -86,6 +97,8 @@ struct d_replay_context *dom_game_runtime_replay(dom_game_runtime *rt);
 const void *dom_game_runtime_session(const dom_game_runtime *rt);
 const void *dom_game_runtime_instance(const dom_game_runtime *rt);
 const void *dom_game_runtime_cosmo_graph(const dom_game_runtime *rt);
+const void *dom_game_runtime_mech_profiles(const dom_game_runtime *rt);
+const void *dom_game_runtime_coredata(const dom_game_runtime *rt);
 const void *dom_game_runtime_system_registry(const dom_game_runtime *rt);
 const void *dom_game_runtime_body_registry(const dom_game_runtime *rt);
 const void *dom_game_runtime_media_registry(const dom_game_runtime *rt);

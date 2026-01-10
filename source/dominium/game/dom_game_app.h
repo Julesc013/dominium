@@ -242,6 +242,8 @@ private:
     u32          m_refusal_code;
     std::string  m_refusal_detail;
     std::vector<unsigned char> m_instance_manifest_hash;
+    bool         m_handshake_has_coredata_hash;
+    u64          m_handshake_coredata_hash;
 
     bool         m_show_overlay_hydro;
     bool         m_show_overlay_temp;

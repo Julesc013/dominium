@@ -44,15 +44,16 @@ Rules:
 - Edges MUST be stored in deterministic order (by canonical ID).
 
 ## On-disk TLV record definitions (coredata pack)
-Records are emitted as DTLV chunks. Each chunk payload is a TLV stream of
-`u32_le tag` + `u32_le len` + payload bytes (little-endian).
+Records are emitted as a TLV stream of records where each record is
+`u32_le type_id` + `u32_le len` + payload bytes. Each record payload is a TLV
+stream of fields (`u32_le tag` + `u32_le len` + payload bytes; little-endian).
 
 Record type IDs (u32, stable):
 - `COSMO_ANCHOR_NODE`: `0x00010001`
 - `COSMO_EDGE`: `0x00010002`
 - `COSMO_PROCEDURAL_RULES`: `0x00010003`
 
-Chunk version: `1`.
+Record schema version: `1` (implicit in the pack; recorded in the manifest).
 
 ### COSMO_ANCHOR_NODE payload (TLV)
 Tags:
@@ -71,7 +72,8 @@ Tags:
 Enums:
 - `kind`: 1=SYSTEM, 2=REGION
 - `system_class`: 1=single, 2=binary, 3=cluster, 4=remnant, 5=exotic
-- `region_type`: 1=nebula, 2=open_cluster, 3=globular_cluster, 4=galactic_core
+- `region_type`: 1=nebula, 2=open_cluster, 3=globular_cluster, 4=galactic_core,
+  5=belt, 6=cloud, 7=heliosphere
 - `evidence_grade`: 1=confirmed, 2=candidate, 3=historical, 4=fictionalized
 
 ### COSMO_EDGE payload (TLV)
@@ -100,6 +102,11 @@ Tags:
 Container tags (for 6/7/8):
 - `1`: `region_type` (u32_le; enum above)
 - `2`: `value_q16` (i32_le; Q16.16)
+
+Procedural rule maps MUST cover the canonical procedural region types
+(`nebula`, `open_cluster`, `globular_cluster`, `galactic_core`). Additional
+region types (e.g., `belt`, `cloud`, `heliosphere`) are valid for anchors but
+are not required in procedural maps.
 
 ## Related specs
 - `docs/SPEC_CORE_DATA.md`

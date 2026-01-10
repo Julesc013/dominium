@@ -50,6 +50,8 @@ enum { LAUNCHER_HANDSHAKE_TLV_VERSION = 1u };
  * - `LAUNCHER_HANDSHAKE_TLV_TAG_SIM_CAPS` (container, required for canonical launch)
  * - `LAUNCHER_HANDSHAKE_TLV_TAG_PERF_CAPS` (container, optional)
  * - `LAUNCHER_HANDSHAKE_TLV_TAG_PROVIDER_BINDINGS_HASH` (u64, optional)
+ * - `LAUNCHER_HANDSHAKE_TLV_TAG_FEATURE_EPOCH` (u32, required for canonical launch)
+ * - `LAUNCHER_HANDSHAKE_TLV_TAG_COREDATA_SIM_HASH` (u64, required for canonical launch)
  *
  * Resolved-pack entry payload (container TLV):
  * - `LAUNCHER_HANDSHAKE_PACK_TLV_TAG_PACK_ID` (string)
@@ -76,7 +78,9 @@ enum LauncherHandshakeTlvTag {
     LAUNCHER_HANDSHAKE_TLV_TAG_TIMESTAMP_WALL_US = 14u,
     LAUNCHER_HANDSHAKE_TLV_TAG_SIM_CAPS = 15u,
     LAUNCHER_HANDSHAKE_TLV_TAG_PERF_CAPS = 16u,
-    LAUNCHER_HANDSHAKE_TLV_TAG_PROVIDER_BINDINGS_HASH = 17u
+    LAUNCHER_HANDSHAKE_TLV_TAG_PROVIDER_BINDINGS_HASH = 17u,
+    LAUNCHER_HANDSHAKE_TLV_TAG_FEATURE_EPOCH = 18u,
+    LAUNCHER_HANDSHAKE_TLV_TAG_COREDATA_SIM_HASH = 19u
 };
 
 enum LauncherHandshakePackTlvTag {
@@ -127,6 +131,10 @@ struct LauncherHandshake {
     u32 has_perf_caps; /* 0/1 */
     u32 has_provider_bindings_hash; /* 0/1 */
     u64 provider_bindings_hash64;
+    u32 has_feature_epoch; /* 0/1 */
+    u32 feature_epoch;
+    u32 has_coredata_sim_hash; /* 0/1 */
+    u64 coredata_sim_hash64;
 
     u64 timestamp_monotonic_us;
     u32 has_timestamp_wall_us; /* 0/1 */

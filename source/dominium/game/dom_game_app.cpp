@@ -153,7 +153,9 @@ enum {
     DOM_GAME_REFUSAL_HANDSHAKE_INSTANCE_MISMATCH = 2003u,
     DOM_GAME_REFUSAL_INSTANCE_ROOT_UNAVAILABLE = 2004u,
     DOM_GAME_REFUSAL_HANDSHAKE_SIM_CAPS_MISMATCH = 2005u,
-    DOM_GAME_REFUSAL_UNIVERSE_OP_UNSUPPORTED = 2101u
+    DOM_GAME_REFUSAL_UNIVERSE_OP_UNSUPPORTED = 2101u,
+    DOM_GAME_REFUSAL_COREDATA_MISSING = 2201u,
+    DOM_GAME_REFUSAL_COREDATA_INVALID = 2202u
 };
 
 static const char *path_refusal_detail(u32 code) {
@@ -853,7 +855,9 @@ DomGameApp::DomGameApp()
       m_run_id(0u),
       m_refusal_code(0u),
       m_refusal_detail(),
-      m_instance_manifest_hash() {
+      m_instance_manifest_hash(),
+      m_handshake_has_coredata_hash(false),
+      m_handshake_coredata_hash(0ull) {
     std::memset(&m_ui_ctx, 0, sizeof(m_ui_ctx));
     std::memset(m_hud_instance_text, 0, sizeof(m_hud_instance_text));
     std::memset(m_hud_remaining_text, 0, sizeof(m_hud_remaining_text));
@@ -1198,6 +1202,9 @@ bool DomGameApp::init_paths(const dom_game_config &cfg) {
     std::string instance_id = cfg.instance_id[0] ? cfg.instance_id : "demo";
     u32 flags = DOM_GAME_PATHS_FLAG_NONE;
 
+    m_handshake_has_coredata_hash = false;
+    m_handshake_coredata_hash = 0ull;
+
     if (m_launcher_mode) {
         flags |= DOM_GAME_PATHS_FLAG_LAUNCHER_REQUIRED;
     }
@@ -1261,6 +1268,9 @@ bool DomGameApp::init_paths(const dom_game_config &cfg) {
                 return false;
             }
         }
+
+        m_handshake_has_coredata_hash = (hs.has_coredata_sim_hash != 0u);
+        m_handshake_coredata_hash = hs.coredata_sim_hash64;
 
         instance_id = hs.instance_id;
         m_run_id = hs.run_id;
@@ -1527,50 +1537,6 @@ bool DomGameApp::init_session(const dom_game_config &cfg) {
             m_replay_last_tick = (u32)last_tick;
         }
         (void)d_net_cmd_queue_init();
-    } else if (!m_replay_record_path.empty()) {
-        std::vector<unsigned char> content_tlv;
-        u64 seed = (u64)m_instance.world_seed;
-        const d_world *world = m_session.world();
-        if (world) {
-            seed = (u64)world->meta.seed;
-        }
-        (void)dom_game_content_build_tlv(&m_session, content_tlv);
-        m_replay_record = dom_game_replay_record_open(m_replay_record_path.c_str(),
-                                                      m_tick_rate_hz,
-                                                      seed,
-                                                      m_instance.id.c_str(),
-                                                      m_run_id,
-                                                      m_instance_manifest_hash.empty() ? (const unsigned char *)0
-                                                                                       : &m_instance_manifest_hash[0],
-                                                      (u32)m_instance_manifest_hash.size(),
-                                                      content_tlv.empty() ? (const unsigned char *)0 : &content_tlv[0],
-                                                      (u32)content_tlv.size(),
-                                                      (const unsigned char *)0,
-                                                      0u,
-                                                      (const unsigned char *)0,
-                                                      0u,
-                                                      (const unsigned char *)0,
-                                                      0u,
-                                                      (const unsigned char *)0,
-                                                      0u,
-                                                      (const unsigned char *)0,
-                                                      0u,
-                                                      (const unsigned char *)0,
-                                                      0u,
-                                                      (const unsigned char *)0,
-                                                      0u);
-        if (!m_replay_record) {
-            std::printf("DomGameApp: failed to init replay record\n");
-            return false;
-        }
-        {
-            struct DomNetReplayRecorder *rec = new DomNetReplayRecorder();
-            rec->record = m_replay_record;
-            m_net_replay_user = rec;
-            d_net_set_tick_cmds_observer(dom_net_replay_tick_observer, rec);
-        }
-    }
-
     if (!m_net.init_single(m_tick_rate_hz)) {
         return false;
     }
@@ -1596,7 +1562,32 @@ bool DomGameApp::init_session(const dom_game_config &cfg) {
 
         m_runtime = dom_game_runtime_create(&rdesc);
         if (!m_runtime) {
+            const int err = dom_game_runtime_last_error();
+            if (err == DOM_GAME_RUNTIME_LAST_ERR_COREDATA_MISSING ||
+                err == DOM_GAME_RUNTIME_LAST_ERR_COREDATA_INVALID) {
+                m_refusal_code = (err == DOM_GAME_RUNTIME_LAST_ERR_COREDATA_MISSING)
+                                     ? DOM_GAME_REFUSAL_COREDATA_MISSING
+                                     : DOM_GAME_REFUSAL_COREDATA_INVALID;
+                m_refusal_detail = dom_game_runtime_last_error_detail();
+                if (m_refusal_detail.empty()) {
+                    m_refusal_detail = (m_refusal_code == DOM_GAME_REFUSAL_COREDATA_MISSING)
+                                           ? "coredata_missing"
+                                           : "coredata_invalid";
+                }
+                emit_refusal(m_fs_paths, m_run_id, instance_id, m_refusal_code, m_refusal_detail);
+            }
             return false;
+        }
+        if (m_launcher_mode && m_handshake_has_coredata_hash) {
+            const u64 runtime_hash = dom_game_runtime_get_coredata_sim_digest(m_runtime);
+            if (runtime_hash != m_handshake_coredata_hash) {
+                dom_game_runtime_destroy(m_runtime);
+                m_runtime = 0;
+                m_refusal_code = DOM_GAME_REFUSAL_COREDATA_INVALID;
+                m_refusal_detail = "coredata_hash_mismatch";
+                emit_refusal(m_fs_paths, m_run_id, instance_id, m_refusal_code, m_refusal_detail);
+                return false;
+            }
         }
         {
             dom_ai_scheduler *sched =
@@ -1620,6 +1611,51 @@ bool DomGameApp::init_session(const dom_game_config &cfg) {
                 std::printf("DomGameApp: failed to load save '%s' (rc=%d)\n",
                             m_load_path.c_str(), rc);
                 return false;
+            }
+        }
+        if (!m_replay_play && !m_replay_record_path.empty()) {
+            std::vector<unsigned char> content_tlv;
+            u64 seed = (u64)m_instance.world_seed;
+            const d_world *world = m_session.world();
+            const u64 coredata_sim_hash = dom_game_runtime_get_coredata_sim_digest(m_runtime);
+            if (world) {
+                seed = (u64)world->meta.seed;
+            }
+            (void)dom_game_content_build_tlv(&m_session, content_tlv);
+            m_replay_record = dom_game_replay_record_open(m_replay_record_path.c_str(),
+                                                          m_tick_rate_hz,
+                                                          seed,
+                                                          m_instance.id.c_str(),
+                                                          m_run_id,
+                                                          m_instance_manifest_hash.empty() ? (const unsigned char *)0
+                                                                                           : &m_instance_manifest_hash[0],
+                                                          (u32)m_instance_manifest_hash.size(),
+                                                          content_tlv.empty() ? (const unsigned char *)0 : &content_tlv[0],
+                                                          (u32)content_tlv.size(),
+                                                          coredata_sim_hash,
+                                                          (const unsigned char *)0,
+                                                          0u,
+                                                          (const unsigned char *)0,
+                                                          0u,
+                                                          (const unsigned char *)0,
+                                                          0u,
+                                                          (const unsigned char *)0,
+                                                          0u,
+                                                          (const unsigned char *)0,
+                                                          0u,
+                                                          (const unsigned char *)0,
+                                                          0u,
+                                                          (const unsigned char *)0,
+                                                          0u);
+            if (!m_replay_record) {
+                std::printf("DomGameApp: failed to init replay record\n");
+                return false;
+            }
+            {
+                struct DomNetReplayRecorder *rec = new DomNetReplayRecorder();
+                rec->record = m_replay_record;
+                m_net_replay_user = rec;
+                d_net_set_tick_cmds_observer(dom_net_replay_tick_observer, rec);
             }
         }
     }

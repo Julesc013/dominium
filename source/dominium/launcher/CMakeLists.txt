@@ -56,6 +56,7 @@ add_library(launcher_frontend_cli STATIC
     launcher_caps_snapshot.cpp
     launcher_caps_solver.cpp
     launcher_control_plane.cpp
+    launcher_coredata_sim.cpp
     launcher_launch_plumbing.cpp
     ${CMAKE_SOURCE_DIR}/tools/launcher/ui/gen/ui_launcher_ui_actions_gen.cpp
     ${CMAKE_SOURCE_DIR}/tools/launcher/ui/user/ui_launcher_ui_actions_user.cpp
@@ -331,6 +332,7 @@ add_executable(dominium_launcher_control_plane_tests
     launcher_caps_snapshot.cpp
     launcher_caps_solver.cpp
     launcher_control_plane.cpp
+    launcher_coredata_sim.cpp
     launcher_launch_plumbing.cpp
 )
 
@@ -377,6 +379,7 @@ add_executable(dominium_launcher_ui_smoke_tests
     dom_launcher_actions.cpp
     launcher_caps_snapshot.cpp
     launcher_caps_solver.cpp
+    launcher_coredata_sim.cpp
     launcher_launch_plumbing.cpp
 )
 
@@ -424,6 +427,7 @@ add_executable(dominium_launcher_tui_smoke_tests
     launcher_caps_snapshot.cpp
     launcher_caps_solver.cpp
     launcher_control_plane.cpp
+    launcher_coredata_sim.cpp
     launcher_launch_plumbing.cpp
 )
 
