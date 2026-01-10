@@ -34,6 +34,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "runtime/dom_derived_jobs.h"
 #include "runtime/dom_snapshot.h"
 #include "runtime/dom_fidelity.h"
+#include "dom_budget_enforcer.h"
 #include "ui/dom_ui_state.h"
 
 extern "C" {
@@ -142,6 +143,7 @@ private:
     void process_input_events();
     void update_camera();
     void update_debug_panel(const dom_game_snapshot *snapshot);
+    void apply_budget_state();
     void ensure_demo_agents();
 
 private:
@@ -206,6 +208,15 @@ private:
     u64          m_last_wall_us;
     dom_fidelity_state m_fidelity;
     dom_game_budget_profile m_budget_profile;
+    dom_budget_enforcer m_budget_enforcer;
+    dom_budget_limits m_budget_limits;
+    dom_budget_state m_budget_state;
+    u32          m_budget_base_derived_ms;
+    u32          m_budget_base_derived_io_bytes;
+    u32          m_budget_base_derived_jobs;
+    dom_derived_stats m_last_derived_stats;
+    u32          m_last_surface_chunks;
+    u32          m_last_active_bubbles;
     u32          m_derived_budget_ms;
     u32          m_derived_budget_io_bytes;
     u32          m_derived_budget_jobs;

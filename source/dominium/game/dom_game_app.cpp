@@ -30,6 +30,9 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "runtime/dom_io_guard.h"
 #include "runtime/dom_ai_scheduler.h"
 #include "dom_profiler.h"
+#include "dom_budget_enforcer.h"
+#include "runtime/dom_surface_chunks.h"
+#include "runtime/dom_lane_scheduler.h"
 #include "ui/dom_ui_views.h"
 #include "dom_game_tools_build.h"
 #include "dominium/version.h"
@@ -814,6 +817,15 @@ DomGameApp::DomGameApp()
       m_derived_queue(0),
       m_last_wall_us(0u),
       m_budget_profile(),
+      m_budget_enforcer(),
+      m_budget_limits(),
+      m_budget_state(),
+      m_budget_base_derived_ms(0u),
+      m_budget_base_derived_io_bytes(0u),
+      m_budget_base_derived_jobs(0u),
+      m_last_derived_stats(),
+      m_last_surface_chunks(0u),
+      m_last_active_bubbles(0u),
       m_derived_budget_ms(0u),
       m_derived_budget_io_bytes(0u),
       m_derived_budget_jobs(0u),
@@ -851,6 +863,10 @@ DomGameApp::DomGameApp()
     std::memset(m_menu_error_text, 0, sizeof(m_menu_error_text));
     std::memset(&m_cfg, 0, sizeof(m_cfg));
     std::memset(&m_fidelity, 0, sizeof(m_fidelity));
+    std::memset(&m_budget_enforcer, 0, sizeof(m_budget_enforcer));
+    std::memset(&m_budget_limits, 0, sizeof(m_budget_limits));
+    std::memset(&m_budget_state, 0, sizeof(m_budget_state));
+    std::memset(&m_last_derived_stats, 0, sizeof(m_last_derived_stats));
     std::memset(&m_last_net_snapshot, 0, sizeof(m_last_net_snapshot));
     dom_ui_state_init(&m_ui_state);
 }
@@ -930,6 +946,41 @@ bool DomGameApp::init_from_cli(const dom_game_config &cfg) {
                                 : (m_budget_profile.derived_budget_jobs
                                        ? m_budget_profile.derived_budget_jobs
                                        : DEFAULT_DERIVED_BUDGET_JOBS);
+    m_budget_base_derived_ms = m_derived_budget_ms;
+    m_budget_base_derived_io_bytes = m_derived_budget_io_bytes;
+    m_budget_base_derived_jobs = m_derived_budget_jobs;
+    std::memset(&m_last_derived_stats, 0, sizeof(m_last_derived_stats));
+    {
+        dom_budget_limits limits;
+        if (dom_budget_limits_for_tier(map_perf_tier(cfg), &limits) == 0) {
+            m_budget_limits = limits;
+        } else {
+            std::memset(&m_budget_limits, 0, sizeof(m_budget_limits));
+            m_budget_limits.struct_size = (u32)sizeof(m_budget_limits);
+            m_budget_limits.struct_version = DOM_BUDGET_LIMITS_VERSION;
+            m_budget_limits.perf_tier = dom::DOM_PERF_TIER_BASELINE;
+        }
+    }
+    if (dom_budget_enforcer_init(&m_budget_enforcer, &m_budget_limits) == 0) {
+        dom_budget_derived_sample sample;
+        std::memset(&sample, 0, sizeof(sample));
+        (void)dom_budget_enforcer_set_base_derived(&m_budget_enforcer,
+                                                   m_budget_base_derived_ms,
+                                                   m_budget_base_derived_io_bytes,
+                                                   m_budget_base_derived_jobs);
+        (void)dom_budget_enforcer_update(&m_budget_enforcer, 0, &sample, 0u, 0u);
+        (void)dom_budget_enforcer_get_state(&m_budget_enforcer, &m_budget_state);
+    } else {
+        std::memset(&m_budget_state, 0, sizeof(m_budget_state));
+        m_budget_state.struct_size = (u32)sizeof(m_budget_state);
+        m_budget_state.struct_version = DOM_BUDGET_STATE_VERSION;
+        m_budget_state.fidelity_max = DOM_BUDGET_FIDELITY_HIGH;
+        m_budget_state.derived_budget_ms = m_budget_base_derived_ms;
+        m_budget_state.derived_budget_io_bytes = m_budget_base_derived_io_bytes;
+        m_budget_state.derived_budget_jobs = m_budget_base_derived_jobs;
+        m_budget_state.ai_max_ops_per_tick = m_budget_profile.ai_max_ops_per_tick;
+        m_budget_state.ai_max_factions_per_tick = m_budget_profile.ai_max_factions_per_tick;
+    }
     m_exit_code = 0;
     m_run_id = 0u;
     m_refusal_code = 0u;
@@ -998,6 +1049,7 @@ bool DomGameApp::init_from_cli(const dom_game_config &cfg) {
         }
     }
     dom_fidelity_init(&m_fidelity, DOM_FIDELITY_HIGH);
+    apply_budget_state();
 
     if (m_mode != GAME_MODE_HEADLESS) {
         const char *gfx_backend = (cfg.gfx_backend[0] == '\0') ? "soft" : cfg.gfx_backend;
@@ -1928,6 +1980,57 @@ void DomGameApp::ensure_demo_agents() {
     }
 }
 
+void DomGameApp::apply_budget_state() {
+    u32 fidelity_max = DOM_FIDELITY_HIGH;
+    switch (m_budget_state.fidelity_max) {
+    case DOM_BUDGET_FIDELITY_MIN:
+        fidelity_max = DOM_FIDELITY_MIN;
+        break;
+    case DOM_BUDGET_FIDELITY_LOW:
+        fidelity_max = DOM_FIDELITY_LOW;
+        break;
+    case DOM_BUDGET_FIDELITY_MED:
+        fidelity_max = DOM_FIDELITY_MED;
+        break;
+    case DOM_BUDGET_FIDELITY_HIGH:
+    default:
+        fidelity_max = DOM_FIDELITY_HIGH;
+        break;
+    }
+
+    m_fidelity.max_level = fidelity_max;
+    if (m_fidelity.level > m_fidelity.max_level) {
+        m_fidelity.level = m_fidelity.max_level;
+    }
+
+    m_derived_budget_ms = m_budget_state.derived_budget_ms
+                              ? m_budget_state.derived_budget_ms
+                              : m_budget_base_derived_ms;
+    m_derived_budget_io_bytes = m_budget_state.derived_budget_io_bytes
+                                    ? m_budget_state.derived_budget_io_bytes
+                                    : m_budget_base_derived_io_bytes;
+    m_derived_budget_jobs = m_budget_state.derived_budget_jobs
+                                ? m_budget_state.derived_budget_jobs
+                                : m_budget_base_derived_jobs;
+
+    if (m_runtime) {
+        dom_surface_chunks *chunks =
+            (dom_surface_chunks *)dom_game_runtime_surface_chunks(m_runtime);
+        if (chunks && m_budget_state.max_surface_chunks_active > 0u) {
+            (void)dom_surface_chunk_evict(chunks, m_budget_state.max_surface_chunks_active);
+        }
+        dom_ai_scheduler *sched =
+            (dom_ai_scheduler *)dom_game_runtime_ai_scheduler(m_runtime);
+        if (sched &&
+            m_budget_state.ai_max_ops_per_tick > 0u &&
+            m_budget_state.ai_max_factions_per_tick > 0u) {
+            (void)dom_ai_scheduler_set_budget(sched,
+                                              m_budget_state.ai_max_ops_per_tick,
+                                              m_budget_state.ai_max_factions_per_tick);
+        }
+    }
+}
+
 void DomGameApp::main_loop() {
     const u32 stall_threshold_ms = 100u;
 
@@ -1983,6 +2086,16 @@ void DomGameApp::tick_fixed() {
     {
         bool derived_pending = false;
         bool surface_pending = false;
+        dom_budget_derived_sample derived_sample;
+        dom_profiler_frame frame;
+        dom_profiler_frame *frame_ptr = 0;
+        u32 active_surface_chunks = 0u;
+        u32 active_bubbles = 0u;
+
+        std::memset(&derived_sample, 0, sizeof(derived_sample));
+
+        apply_budget_state();
+
         if (m_derived_queue || m_runtime) {
             dom_io_guard_enter_derived();
             if (m_derived_queue) {
@@ -2003,17 +2116,52 @@ void DomGameApp::tick_fixed() {
         if (m_derived_queue) {
             dom_derived_stats stats;
             if (dom_derived_stats(m_derived_queue, &stats) == 0) {
+                m_last_derived_stats = stats;
                 if (stats.queued > 0u || stats.running > 0u) {
                     derived_pending = true;
                 }
+                derived_sample.last_pump_jobs = stats.last_pump_jobs;
+                derived_sample.last_pump_ms = stats.last_pump_ms;
+                derived_sample.last_pump_io_bytes = stats.last_pump_io_bytes;
+            }
+        } else {
+            std::memset(&m_last_derived_stats, 0, sizeof(m_last_derived_stats));
+        }
+        if (m_runtime) {
+            dom_surface_chunks *chunks =
+                (dom_surface_chunks *)dom_game_runtime_surface_chunks(m_runtime);
+            if (chunks) {
+                (void)dom_surface_chunks_list_active(chunks, 0, 0u, &active_surface_chunks);
+            }
+            const dom_lane_scheduler *sched =
+                (const dom_lane_scheduler *)dom_game_runtime_lane_scheduler(m_runtime);
+            if (sched) {
+                int bubble_active = 0;
+                (void)dom_lane_scheduler_get_bubble(sched, 0, &bubble_active, 0, 0);
+                if (bubble_active) {
+                    active_bubbles = 1u;
+                }
             }
         }
+        m_last_surface_chunks = active_surface_chunks;
+        m_last_active_bubbles = active_bubbles;
         if (derived_pending || surface_pending) {
             dom_fidelity_mark_missing(&m_fidelity, DOM_FIDELITY_MISSING_DERIVED);
         } else {
             dom_fidelity_mark_ready(&m_fidelity, DOM_FIDELITY_MISSING_DERIVED);
         }
         dom_fidelity_step(&m_fidelity);
+
+        if (dom_profiler_get_last_frame(&frame) == 0) {
+            frame_ptr = &frame;
+        }
+        (void)dom_budget_enforcer_update(&m_budget_enforcer,
+                                         frame_ptr,
+                                         &derived_sample,
+                                         active_bubbles,
+                                         active_surface_chunks);
+        (void)dom_budget_enforcer_get_state(&m_budget_enforcer, &m_budget_state);
+        apply_budget_state();
     }
 
     if (m_session.is_initialized() && m_runtime &&
