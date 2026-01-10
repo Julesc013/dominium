@@ -172,3 +172,14 @@ dominium_add_tool_exe(coredata_compile "coredata_compile"
 )
 
 target_link_libraries(coredata_compile PRIVATE core_tlv)
+
+dominium_add_tool_exe(coredata_validate "coredata_validate"
+    coredata_validate/coredata_validate_main.cpp
+    coredata_validate/coredata_validate_load.cpp
+    coredata_validate/coredata_validate_checks.cpp
+    coredata_validate/coredata_validate_report.cpp
+    coredata_compile/coredata_load.cpp
+    coredata_compile/coredata_validate.cpp
+)
+
+target_link_libraries(coredata_validate PRIVATE core_tlv)
