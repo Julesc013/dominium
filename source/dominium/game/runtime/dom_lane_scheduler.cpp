@@ -323,8 +323,14 @@ int dom_lane_scheduler_register_vessel(dom_lane_scheduler *sched,
     entry.landed_latlong.lon_turns = 0;
     entry.landed_altitude_m = 0;
     std::memset(&entry.landed_pos, 0, sizeof(entry.landed_pos));
-    sched->vessels.push_back(entry);
-    std::sort(sched->vessels.begin(), sched->vessels.end(), vessel_id_less);
+    {
+        std::vector<DomLaneVessel>::iterator it =
+            std::lower_bound(sched->vessels.begin(),
+                             sched->vessels.end(),
+                             entry,
+                             vessel_id_less);
+        sched->vessels.insert(it, entry);
+    }
     return DOM_LANE_OK;
 }
 

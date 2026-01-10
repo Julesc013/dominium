@@ -231,8 +231,14 @@ int dom_surface_chunk_get_or_create(dom_surface_chunks *chunks,
     entry.state = DOM_SURFACE_CHUNK_STATE_INACTIVE;
     entry.generation = 0u;
     entry.job_id = 0u;
-    chunks->chunks.push_back(entry);
-    std::sort(chunks->chunks.begin(), chunks->chunks.end(), chunk_less);
+    {
+        std::vector<SurfaceChunk>::iterator it =
+            std::lower_bound(chunks->chunks.begin(),
+                             chunks->chunks.end(),
+                             entry,
+                             chunk_less);
+        chunks->chunks.insert(it, entry);
+    }
     found = find_chunk(chunks, *key, 0);
     if (found) {
         fill_status(*found, out_status);
