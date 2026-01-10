@@ -1,0 +1,8 @@
+[sol]
+mu_m3_s2 = 1.32712440018e20
+
+[earth]
+radius_m = 6371000
+mu_m3_s2 = 3.986004418e14
+rotation_rate_rad_s = 7.292115e-5
+atmosphere_profile_id = \"earth_atmosphere_v1^\"

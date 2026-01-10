@@ -1,0 +1,7 @@
+[[profile]]
+id = \"baseline_single_star^\"
+navigation_instability_factor = 1.0
+debris_collision_modifier = 1.0
+radiation_baseline = 1.0
+warp_cap_modifier = 1.0
+survey_difficulty = 1.0
