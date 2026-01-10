@@ -398,6 +398,19 @@ add_subdirectory(source/dominium)
 add_subdirectory(tools)
 add_subdirectory(source/tests)
 
+add_custom_target(coredata_build
+    COMMAND $<TARGET_FILE:coredata_compile>
+        --input-root=${CMAKE_SOURCE_DIR}/data/core
+        --output-pack-id=base_cosmo
+        --output-version=${DOM_PROJECT_SEMVER}
+        --output-root=${CMAKE_SOURCE_DIR}/repo/packs
+        --emit-manifest=1
+        --strict=1
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    DEPENDS coredata_compile
+    COMMENT "Building coredata pack"
+)
+
 if(WIN32)
     set(DOMUI_INDEX_PATH ${CMAKE_SOURCE_DIR}/tools/ui_index/ui_index.json)
     set(DOMUI_LAUNCHER_DOC ${CMAKE_SOURCE_DIR}/tools/launcher/ui/doc/launcher_ui_doc.tlv)
