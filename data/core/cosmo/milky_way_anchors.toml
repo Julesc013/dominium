@@ -1,1 +1,321 @@
 # Milky Way SYSTEM anchors (authoring). See docs/SPEC_COSMO_CORE_DATA.md.
+
+[[anchor]]
+id = "alpha_centauri"
+kind = "system"
+display_name = "Alpha Centauri"
+system_class = "binary"
+evidence_grade = "confirmed"
+mechanics_profile_id = "binary_unstable"
+anchor_weight = 8
+tags = ["nearby", "binary"]
+
+[[anchor]]
+id = "altair"
+kind = "system"
+display_name = "Altair"
+system_class = "single"
+evidence_grade = "confirmed"
+mechanics_profile_id = "baseline_single_star"
+anchor_weight = 5
+tags = ["luminous"]
+
+[[anchor]]
+id = "barnards_star"
+kind = "system"
+display_name = "Barnard's Star"
+system_class = "single"
+evidence_grade = "confirmed"
+mechanics_profile_id = "red_dwarf_active"
+anchor_weight = 6
+tags = ["nearby", "red_dwarf"]
+
+[[anchor]]
+id = "betelgeuse"
+kind = "system"
+display_name = "Betelgeuse"
+system_class = "single"
+evidence_grade = "confirmed"
+mechanics_profile_id = "massive_star_short_lived"
+anchor_weight = 3
+tags = ["massive", "supergiant"]
+
+[[anchor]]
+id = "crab_pulsar"
+kind = "system"
+display_name = "Crab Pulsar"
+system_class = "remnant"
+evidence_grade = "confirmed"
+mechanics_profile_id = "pulsar_extreme"
+anchor_weight = 2
+tags = ["pulsar", "remnant"]
+
+[[anchor]]
+id = "cygnus_x_1"
+kind = "system"
+display_name = "Cygnus X-1"
+system_class = "exotic"
+evidence_grade = "confirmed"
+mechanics_profile_id = "black_hole_extreme"
+anchor_weight = 2
+tags = ["black_hole", "binary"]
+
+[[anchor]]
+id = "deneb"
+kind = "system"
+display_name = "Deneb"
+system_class = "single"
+evidence_grade = "confirmed"
+mechanics_profile_id = "massive_star_short_lived"
+anchor_weight = 3
+tags = ["massive", "supergiant"]
+
+[[anchor]]
+id = "epsilon_eridani"
+kind = "system"
+display_name = "Epsilon Eridani"
+system_class = "single"
+evidence_grade = "confirmed"
+mechanics_profile_id = "young_debris_rich"
+anchor_weight = 6
+tags = ["nearby", "debris"]
+
+[[anchor]]
+id = "fomalhaut"
+kind = "system"
+display_name = "Fomalhaut"
+system_class = "single"
+evidence_grade = "confirmed"
+mechanics_profile_id = "young_debris_rich"
+anchor_weight = 4
+tags = ["debris"]
+
+[[anchor]]
+id = "gliese_667"
+kind = "system"
+display_name = "Gliese 667"
+system_class = "binary"
+evidence_grade = "confirmed"
+mechanics_profile_id = "binary_unstable"
+anchor_weight = 5
+tags = ["multi", "red_dwarf"]
+
+[[anchor]]
+id = "hd_40307"
+kind = "system"
+display_name = "HD 40307"
+system_class = "single"
+evidence_grade = "confirmed"
+mechanics_profile_id = "baseline_single_star"
+anchor_weight = 5
+tags = ["planet_host"]
+
+[[anchor]]
+id = "kepler_186"
+kind = "system"
+display_name = "Kepler-186"
+system_class = "single"
+evidence_grade = "confirmed"
+mechanics_profile_id = "baseline_single_star"
+anchor_weight = 4
+tags = ["planet_host"]
+
+[[anchor]]
+id = "kepler_452"
+kind = "system"
+display_name = "Kepler-452"
+system_class = "single"
+evidence_grade = "candidate"
+mechanics_profile_id = "baseline_single_star"
+anchor_weight = 4
+tags = ["planet_host", "candidate"]
+
+[[anchor]]
+id = "lalande_21185"
+kind = "system"
+display_name = "Lalande 21185"
+system_class = "single"
+evidence_grade = "confirmed"
+mechanics_profile_id = "red_dwarf_active"
+anchor_weight = 6
+tags = ["nearby", "red_dwarf"]
+
+[[anchor]]
+id = "lhs_1140"
+kind = "system"
+display_name = "LHS 1140"
+system_class = "single"
+evidence_grade = "confirmed"
+mechanics_profile_id = "red_dwarf_active"
+anchor_weight = 5
+tags = ["planet_host", "red_dwarf"]
+
+[[anchor]]
+id = "luyten_726_8"
+kind = "system"
+display_name = "Luyten 726-8"
+system_class = "binary"
+evidence_grade = "confirmed"
+mechanics_profile_id = "binary_unstable"
+anchor_weight = 5
+tags = ["nearby", "binary", "red_dwarf"]
+
+[[anchor]]
+id = "proxima_centauri"
+kind = "system"
+display_name = "Proxima Centauri"
+system_class = "single"
+evidence_grade = "confirmed"
+mechanics_profile_id = "red_dwarf_active"
+anchor_weight = 7
+tags = ["nearby", "red_dwarf"]
+
+[[anchor]]
+id = "psr_b1257_12"
+kind = "system"
+display_name = "PSR B1257+12"
+system_class = "remnant"
+evidence_grade = "confirmed"
+mechanics_profile_id = "pulsar_extreme"
+anchor_weight = 3
+tags = ["pulsar", "planet_host"]
+
+[[anchor]]
+id = "rigel"
+kind = "system"
+display_name = "Rigel"
+system_class = "single"
+evidence_grade = "confirmed"
+mechanics_profile_id = "massive_star_short_lived"
+anchor_weight = 3
+tags = ["massive", "supergiant"]
+
+[[anchor]]
+id = "ross_154"
+kind = "system"
+display_name = "Ross 154"
+system_class = "single"
+evidence_grade = "confirmed"
+mechanics_profile_id = "red_dwarf_active"
+anchor_weight = 5
+tags = ["nearby", "red_dwarf"]
+
+[[anchor]]
+id = "ross_248"
+kind = "system"
+display_name = "Ross 248"
+system_class = "single"
+evidence_grade = "confirmed"
+mechanics_profile_id = "red_dwarf_active"
+anchor_weight = 5
+tags = ["nearby", "red_dwarf"]
+
+[[anchor]]
+id = "sirius"
+kind = "system"
+display_name = "Sirius"
+system_class = "binary"
+evidence_grade = "confirmed"
+mechanics_profile_id = "binary_unstable"
+anchor_weight = 7
+tags = ["nearby", "binary"]
+
+[[anchor]]
+id = "sn_1987a"
+kind = "system"
+display_name = "SN 1987A"
+system_class = "remnant"
+evidence_grade = "confirmed"
+mechanics_profile_id = "massive_star_short_lived"
+anchor_weight = 2
+tags = ["supernova_remnant"]
+
+[[anchor]]
+id = "sol"
+kind = "system"
+display_name = "Sol"
+system_class = "single"
+evidence_grade = "confirmed"
+mechanics_profile_id = "baseline_single_star"
+anchor_weight = 10
+tags = ["home", "g_star"]
+
+[[anchor]]
+id = "spica"
+kind = "system"
+display_name = "Spica"
+system_class = "single"
+evidence_grade = "confirmed"
+mechanics_profile_id = "massive_star_short_lived"
+anchor_weight = 4
+tags = ["massive"]
+
+[[anchor]]
+id = "tabbys_star"
+kind = "system"
+display_name = "Tabby's Star"
+system_class = "single"
+evidence_grade = "candidate"
+mechanics_profile_id = "young_debris_rich"
+anchor_weight = 3
+tags = ["variable", "candidate"]
+
+[[anchor]]
+id = "tau_ceti"
+kind = "system"
+display_name = "Tau Ceti"
+system_class = "single"
+evidence_grade = "confirmed"
+mechanics_profile_id = "old_metal_poor"
+anchor_weight = 6
+tags = ["nearby", "old"]
+
+[[anchor]]
+id = "trappist_1"
+kind = "system"
+display_name = "TRAPPIST-1"
+system_class = "single"
+evidence_grade = "confirmed"
+mechanics_profile_id = "red_dwarf_active"
+anchor_weight = 6
+tags = ["planet_host", "red_dwarf"]
+
+[[anchor]]
+id = "v404_cygni"
+kind = "system"
+display_name = "V404 Cygni"
+system_class = "exotic"
+evidence_grade = "confirmed"
+mechanics_profile_id = "black_hole_extreme"
+anchor_weight = 2
+tags = ["black_hole", "binary"]
+
+[[anchor]]
+id = "vega"
+kind = "system"
+display_name = "Vega"
+system_class = "single"
+evidence_grade = "confirmed"
+mechanics_profile_id = "young_debris_rich"
+anchor_weight = 5
+tags = ["luminous", "debris"]
+
+[[anchor]]
+id = "vela_pulsar"
+kind = "system"
+display_name = "Vela Pulsar"
+system_class = "remnant"
+evidence_grade = "confirmed"
+mechanics_profile_id = "pulsar_extreme"
+anchor_weight = 2
+tags = ["pulsar", "remnant"]
+
+[[anchor]]
+id = "wolf_359"
+kind = "system"
+display_name = "Wolf 359"
+system_class = "single"
+evidence_grade = "confirmed"
+mechanics_profile_id = "red_dwarf_active"
+anchor_weight = 6
+tags = ["nearby", "red_dwarf"]
