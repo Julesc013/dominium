@@ -8,8 +8,9 @@
   "configurePresets": [
     {
       "name": "base-msys2",
-      "displayName": "MSYS2 UCRT64 (Ninja)",
-      "description": "Use MSYS2 UCRT64 toolchain with Ninja and Win32/DX9 backend",
+      "displayName": "MSYS2 UCRT64 (Legacy)",
+      "description": "Legacy MSYS2 toolchain (not supported under current Windows build policy).",
+      "hidden": true,
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
@@ -34,6 +35,7 @@
       "name": "msys2-debug",
       "displayName": "MSYS2 Debug (UCRT64)",
       "inherits": "base-msys2",
+      "hidden": true,
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
         "DOM_BUILD_MODE": "Debug"
@@ -43,6 +45,7 @@
       "name": "msys2-release",
       "displayName": "MSYS2 Release (UCRT64)",
       "inherits": "base-msys2",
+      "hidden": true,
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
         "DOM_BUILD_MODE": "Release"
@@ -51,19 +54,31 @@
     {
       "name": "msvc-base",
       "displayName": "MSVC (VS 2026)",
-      "description": "Native MSVC toolchain (Win32 backend).",
+      "description": "Native MSVC toolchain (SDL2 platform; GL2 preferred, DX9 fallback).",
       "generator": "Visual Studio 18 2026",
       "binaryDir": "${sourceDir}/build/${presetName}",
       "architecture": "x64",
       "cacheVariables": {
-        "DOM_PLATFORM": "win32",
-        "DOM_BACKEND_SDL2": "OFF",
+        "DOM_PLATFORM": "sdl2",
+        "DOM_BACKEND_SDL2": "ON",
         "DOM_BACKEND_DX9": "ON",
         "DOM_BACKEND_GL1": "OFF",
-        "DOM_BACKEND_GL2": "OFF",
+        "DOM_BACKEND_GL2": "ON",
         "DOM_BACKEND_VECTOR2D": "ON",
         "DOM_ENABLE_AUDIO": "ON",
         "DOM_ENABLE_NET": "ON"
+      }
+    },
+    {
+      "name": "msvc-win32-dx9",
+      "displayName": "MSVC Win32 + DX9 (Fallback)",
+      "description": "Win32 platform fallback with DX9 renderer (SDL2 disabled).",
+      "inherits": "msvc-base",
+      "cacheVariables": {
+        "DOM_PLATFORM": "win32",
+        "DOM_BACKEND_SDL2": "OFF",
+        "DOM_BACKEND_GL2": "OFF",
+        "DOM_BACKEND_DX9": "ON"
       }
     },
     {
@@ -141,11 +156,13 @@
     },
     {
       "name": "linux-debug",
-      "displayName": "Linux Debug",
+      "displayName": "Linux GCC Debug",
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_C_COMPILER": "gcc",
+        "CMAKE_CXX_COMPILER": "g++",
         "DOM_BUILD_MODE": "Debug"
       }
     },
@@ -156,19 +173,14 @@
     },
     {
       "name": "debug",
-      "displayName": "Debug (MSYS2 UCRT64)",
-      "inherits": "base-msys2",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "DOM_BUILD_MODE": "Debug"
-      }
+      "displayName": "Debug (MSVC)",
+      "inherits": "msvc-debug"
     },
     {
       "name": "deterministic",
-      "displayName": "DeterministicRelease (MSYS2 UCRT64)",
-      "inherits": "base-msys2",
+      "displayName": "DeterministicRelease (MSVC)",
+      "inherits": "msvc-base",
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "DeterministicRelease",
         "DOM_BUILD_MODE": "DeterministicRelease"
       }
     },
@@ -176,9 +188,8 @@
       "name": "baseline-debug",
       "displayName": "Baseline Debug (C89/C++98)",
       "description": "Canonical baseline toolchain/settings; no optional accel layers.",
-      "inherits": "base-msys2",
+      "inherits": "msvc-debug",
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
         "CMAKE_C_STANDARD": "90",
         "CMAKE_C_STANDARD_REQUIRED": "ON",
         "CMAKE_C_EXTENSIONS": "OFF",
@@ -186,10 +197,10 @@
         "CMAKE_CXX_STANDARD_REQUIRED": "ON",
         "CMAKE_CXX_EXTENSIONS": "OFF",
         "DOM_ENABLE_MODERN": "OFF",
-        "DOM_PLATFORM": "win32",
+        "DOM_PLATFORM": "sdl2",
         "DOM_BACKEND_SOFT": "ON",
         "DOM_BACKEND_NULL": "OFF",
-        "DOM_BACKEND_SDL2": "OFF",
+        "DOM_BACKEND_SDL2": "ON",
         "DOM_BACKEND_DX9": "OFF",
         "DOM_BACKEND_GL1": "OFF",
         "DOM_BACKEND_GL2": "OFF",
@@ -204,7 +215,8 @@
       "description": "Canonical baseline release toolchain/settings; no optional accel layers.",
       "inherits": "baseline-debug",
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release"
+        "CMAKE_BUILD_TYPE": "Release",
+        "DOM_BUILD_MODE": "Release"
       }
     },
     {
@@ -214,6 +226,7 @@
       "inherits": "baseline-debug",
       "cacheVariables": {
         "DOM_ENABLE_MODERN": "ON",
+        "DOM_BACKEND_GL2": "ON",
         "DOM_BACKEND_DX9": "ON"
       }
     },
@@ -258,6 +271,11 @@
       ]
     },
     {
+      "name": "msvc-win32-dx9",
+      "configurePreset": "msvc-win32-dx9",
+      "configuration": "Debug"
+    },
+    {
       "name": "macos-xcode-debug",
       "configurePreset": "macos-xcode-debug",
       "configuration": "Debug"
@@ -291,27 +309,33 @@
     },
     {
       "name": "debug",
-      "configurePreset": "debug"
+      "configurePreset": "debug",
+      "configuration": "Debug"
     },
     {
       "name": "deterministic",
-      "configurePreset": "deterministic"
+      "configurePreset": "deterministic",
+      "configuration": "Release"
     },
     {
       "name": "baseline-debug",
-      "configurePreset": "baseline-debug"
+      "configurePreset": "baseline-debug",
+      "configuration": "Debug"
     },
     {
       "name": "baseline-release",
-      "configurePreset": "baseline-release"
+      "configurePreset": "baseline-release",
+      "configuration": "Release"
     },
     {
       "name": "modern-debug",
-      "configurePreset": "modern-debug"
+      "configurePreset": "modern-debug",
+      "configuration": "Debug"
     },
     {
       "name": "modern-release",
-      "configurePreset": "modern-release"
+      "configurePreset": "modern-release",
+      "configuration": "Release"
     }
   ],
   "testPresets": [
@@ -357,6 +381,7 @@
     {
       "name": "debug",
       "configurePreset": "debug",
+      "configuration": "Debug",
       "output": {
         "outputOnFailure": true
       }
@@ -364,6 +389,7 @@
     {
       "name": "baseline-debug",
       "configurePreset": "baseline-debug",
+      "configuration": "Debug",
       "output": {
         "outputOnFailure": true
       }
@@ -371,6 +397,7 @@
     {
       "name": "modern-debug",
       "configurePreset": "modern-debug",
+      "configuration": "Debug",
       "output": {
         "outputOnFailure": true
       }
