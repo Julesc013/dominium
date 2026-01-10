@@ -483,6 +483,7 @@ void dom_game_cli_init_defaults(dom_game_config *out_cfg) {
     out_cfg->derived_budget_ms = DEFAULT_DERIVED_BUDGET_MS;
     out_cfg->derived_budget_io_bytes = DEFAULT_DERIVED_BUDGET_IO_BYTES;
     out_cfg->derived_budget_jobs = DEFAULT_DERIVED_BUDGET_JOBS;
+    out_cfg->dump_profile = 0u;
     (void)copy_cstr_bounded(out_cfg->instance_id, sizeof(out_cfg->instance_id), "demo");
     init_profile_defaults(out_cfg->profile);
     out_cfg->handshake_path[0] = '\0';
@@ -540,6 +541,10 @@ int dom_game_cli_parse(int argc, char **argv, dom_game_config *out_cfg, dom_game
         }
         if (std::strcmp(arg, "--smoke-gui") == 0) {
             out_result->want_smoke_gui = 1;
+            continue;
+        }
+        if (std::strcmp(arg, "--dump-profile") == 0) {
+            out_cfg->dump_profile = 1u;
             continue;
         }
 
@@ -878,6 +883,7 @@ void dom_game_cli_print_help(FILE *out) {
     std::fprintf(out, "  --record-replay=<path>  --play-replay=<path>  --replay-strict-content=0|1\n");
     std::fprintf(out, "  --save=<path>  --load=<path>\n");
     std::fprintf(out, "  --import-universe=<relpath>  --export-universe=<relpath>\n");
+    std::fprintf(out, "  --dump-profile\n");
     std::fprintf(out, "  --capabilities  --print-caps  --print-selection  --introspect-json\n");
     std::fprintf(out, "  --help  --version\n");
 }

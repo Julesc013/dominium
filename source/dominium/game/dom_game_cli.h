@@ -84,6 +84,7 @@ typedef struct dom_game_config {
     u32                  derived_budget_ms;
     u32                  derived_budget_io_bytes;
     u32                  derived_budget_jobs;
+    u32                  dump_profile;
 
     char dominium_home[DOM_GAME_PATH_MAX];
     char instance_id[DOM_GAME_ID_MAX];
