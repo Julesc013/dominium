@@ -167,6 +167,45 @@ static void update_stats(const dom_derived_queue *queue, dom_derived_stats *out_
     out_stats->canceled = canceled;
 }
 
+static bool payload_matches(const dom_derived_job &job,
+                            const unsigned char *src,
+                            u32 size) {
+    if (job.payload.size() != size) {
+        return false;
+    }
+    if (size == 0u) {
+        return true;
+    }
+    if (!src) {
+        return false;
+    }
+    return std::memcmp(&job.payload[0], src, size) == 0;
+}
+
+static dom_derived_job_id find_coalesced_job(dom_derived_queue *queue,
+                                             dom_derived_job_kind kind,
+                                             const unsigned char *src,
+                                             u32 size) {
+    size_t i;
+    if (!queue) {
+        return 0u;
+    }
+    for (i = 0u; i < queue->jobs.size(); ++i) {
+        const dom_derived_job &job = queue->jobs[i];
+        if (job.kind != kind) {
+            continue;
+        }
+        if (job.state != DOM_DERIVED_JOB_PENDING &&
+            job.state != DOM_DERIVED_JOB_RUNNING) {
+            continue;
+        }
+        if (payload_matches(job, src, size)) {
+            return job.id;
+        }
+    }
+    return 0u;
+}
+
 static void fill_status(const dom_derived_job &job, dom_derived_job_status *out_status) {
     if (!out_status) {
         return;
@@ -271,6 +310,13 @@ dom_derived_job_id dom_derived_submit(dom_derived_queue *queue,
     }
     if (size > queue->max_payload_bytes) {
         return 0u;
+    }
+
+    if (kind == DERIVED_BUILD_MAP_TILE || kind == DERIVED_BUILD_MESH) {
+        dom_derived_job_id existing = find_coalesced_job(queue, kind, src, size);
+        if (existing != 0u) {
+            return existing;
+        }
     }
 
     if (queue->jobs.size() >= queue->max_jobs) {

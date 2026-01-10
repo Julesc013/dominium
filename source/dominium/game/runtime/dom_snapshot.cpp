@@ -47,6 +47,32 @@ extern "C" {
 
 namespace {
 
+// Derived-only caches for stable registries and graphs.
+struct CachedSystemList {
+    u32 count;
+    std::vector<dom_system_view> systems;
+    CachedSystemList() : count(0u) {}
+};
+
+struct CachedBodyList {
+    u32 count;
+    std::vector<dom_body_view> bodies;
+    CachedBodyList() : count(0u) {}
+};
+
+struct CachedCosmoMap {
+    u64 hash;
+    u32 entity_count;
+    u32 edge_count;
+    std::vector<dom_cosmo_entity_view> entities;
+    std::vector<dom_cosmo_edge_view> edges;
+    CachedCosmoMap() : hash(0u), entity_count(0u), edge_count(0u) {}
+};
+
+static CachedSystemList g_system_cache;
+static CachedBodyList g_body_cache;
+static CachedCosmoMap g_cosmo_cache;
+
 struct SystemFillContext {
     dom_system_view *systems;
     u32 index;
@@ -307,27 +333,45 @@ dom_cosmo_map_snapshot *dom_game_runtime_build_cosmo_map_snapshot(const dom_game
             delete snap;
             return (dom_cosmo_map_snapshot *)0;
         }
-        snap->entity_count = (u32)graph->entities.size();
-        snap->edge_count = (u32)graph->edges.size();
-        if (snap->entity_count > 0u) {
-            snap->entities = new dom_cosmo_entity_view[snap->entity_count];
+        const u64 graph_hash = dom::dom_cosmo_graph_hash(graph);
+        const u32 entity_count = (u32)graph->entities.size();
+        const u32 edge_count = (u32)graph->edges.size();
+        if (graph_hash != g_cosmo_cache.hash ||
+            entity_count != g_cosmo_cache.entity_count ||
+            edge_count != g_cosmo_cache.edge_count) {
+            g_cosmo_cache.hash = graph_hash;
+            g_cosmo_cache.entity_count = entity_count;
+            g_cosmo_cache.edge_count = edge_count;
+            g_cosmo_cache.entities.resize(entity_count);
             for (i = 0u; i < graph->entities.size(); ++i) {
                 const dom::dom_cosmo_entity &ent = graph->entities[i];
-                snap->entities[i].id = ent.id;
-                snap->entities[i].parent_id = ent.parent_id;
-                snap->entities[i].kind = ent.kind;
+                g_cosmo_cache.entities[i].id = ent.id;
+                g_cosmo_cache.entities[i].parent_id = ent.parent_id;
+                g_cosmo_cache.entities[i].kind = ent.kind;
             }
+            g_cosmo_cache.edges.resize(edge_count);
+            for (i = 0u; i < graph->edges.size(); ++i) {
+                const dom::dom_cosmo_edge &edge = graph->edges[i];
+                g_cosmo_cache.edges[i].id = edge.id;
+                g_cosmo_cache.edges[i].src_id = edge.src_id;
+                g_cosmo_cache.edges[i].dst_id = edge.dst_id;
+                g_cosmo_cache.edges[i].duration_ticks = edge.duration_ticks;
+                g_cosmo_cache.edges[i].cost = edge.cost;
+            }
+        }
+        snap->entity_count = g_cosmo_cache.entity_count;
+        snap->edge_count = g_cosmo_cache.edge_count;
+        if (snap->entity_count > 0u) {
+            snap->entities = new dom_cosmo_entity_view[snap->entity_count];
+            std::memcpy(snap->entities,
+                        &g_cosmo_cache.entities[0],
+                        snap->entity_count * sizeof(dom_cosmo_entity_view));
         }
         if (snap->edge_count > 0u) {
             snap->edges = new dom_cosmo_edge_view[snap->edge_count];
-            for (i = 0u; i < graph->edges.size(); ++i) {
-                const dom::dom_cosmo_edge &edge = graph->edges[i];
-                snap->edges[i].id = edge.id;
-                snap->edges[i].src_id = edge.src_id;
-                snap->edges[i].dst_id = edge.dst_id;
-                snap->edges[i].duration_ticks = edge.duration_ticks;
-                snap->edges[i].cost = edge.cost;
-            }
+            std::memcpy(snap->edges,
+                        &g_cosmo_cache.edges[0],
+                        snap->edge_count * sizeof(dom_cosmo_edge_view));
         }
     }
 
@@ -392,12 +436,23 @@ dom_system_list_snapshot *dom_game_runtime_build_system_list_snapshot(const dom_
     snap->struct_version = DOM_SYSTEM_LIST_SNAPSHOT_VERSION;
 
     count = dom_system_registry_count(registry);
-    snap->system_count = count;
-    if (count > 0u) {
-        snap->systems = new dom_system_view[count];
-        ctx.systems = snap->systems;
+    if (count != g_system_cache.count) {
+        g_system_cache.systems.clear();
+        g_system_cache.systems.resize(count);
+        ctx.systems = count ? &g_system_cache.systems[0] : 0;
         ctx.index = 0u;
-        (void)dom_system_registry_iterate(registry, fill_system_view, &ctx);
+        if (count > 0u) {
+            (void)dom_system_registry_iterate(registry, fill_system_view, &ctx);
+        }
+        g_system_cache.count = ctx.index;
+        g_system_cache.systems.resize(g_system_cache.count);
+    }
+    snap->system_count = g_system_cache.count;
+    if (snap->system_count > 0u) {
+        snap->systems = new dom_system_view[snap->system_count];
+        std::memcpy(snap->systems,
+                    &g_system_cache.systems[0],
+                    snap->system_count * sizeof(dom_system_view));
     }
     return snap;
 }
@@ -430,12 +485,23 @@ dom_body_list_snapshot *dom_game_runtime_build_body_list_snapshot(const dom_game
     snap->struct_version = DOM_BODY_LIST_SNAPSHOT_VERSION;
 
     count = dom_body_registry_count(registry);
-    snap->body_count = count;
-    if (count > 0u) {
-        snap->bodies = new dom_body_view[count];
-        ctx.bodies = snap->bodies;
+    if (count != g_body_cache.count) {
+        g_body_cache.bodies.clear();
+        g_body_cache.bodies.resize(count);
+        ctx.bodies = count ? &g_body_cache.bodies[0] : 0;
         ctx.index = 0u;
-        (void)dom_body_registry_iterate(registry, fill_body_view, &ctx);
+        if (count > 0u) {
+            (void)dom_body_registry_iterate(registry, fill_body_view, &ctx);
+        }
+        g_body_cache.count = ctx.index;
+        g_body_cache.bodies.resize(g_body_cache.count);
+    }
+    snap->body_count = g_body_cache.count;
+    if (snap->body_count > 0u) {
+        snap->bodies = new dom_body_view[snap->body_count];
+        std::memcpy(snap->bodies,
+                    &g_body_cache.bodies[0],
+                    snap->body_count * sizeof(dom_body_view));
     }
     return snap;
 }
