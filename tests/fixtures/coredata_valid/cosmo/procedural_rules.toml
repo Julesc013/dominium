@@ -1,0 +1,23 @@
+[procedural]
+systems_per_anchor_range = [2, 6]
+red_dwarf_ratio = 0.65
+binary_ratio = 0.25
+exotic_ratio = 0.10
+
+[procedural.cluster_density_multiplier]
+nebula = 1.2
+open_cluster = 1.1
+globular_cluster = 1.3
+galactic_core = 1.5
+
+[procedural.metallicity_bias_by_region_type]
+nebula = 1.1
+open_cluster = 1.0
+globular_cluster = 0.8
+galactic_core = 1.4
+
+[procedural.hazard_frequency_by_region_type]
+nebula = 1.1
+open_cluster = 0.9
+globular_cluster = 1.3
+galactic_core = 1.6

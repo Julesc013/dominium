@@ -1,0 +1,8 @@
+[[profile]]
+id = "habitable_terrestrial"
+hazard_radiation = 0.2
+hazard_pressure = 0.1
+corrosion_rate = 0.1
+temperature_extreme = 0.2
+resource_yield_modifiers = { common = 1.0, rare = 1.0, volatile = 1.0 }
+access_constraints = ["open"]

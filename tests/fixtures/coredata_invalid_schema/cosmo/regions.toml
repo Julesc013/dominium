@@ -1,0 +1,9 @@
+[[anchor]]
+id = "orion_nebula_anchor"
+kind = "region"
+display_name = "Orion Nebula"
+region_type = "nebula"
+evidence_grade = "confirmed"
+mechanics_profile_id = "young_debris_rich"
+anchor_weight = 5
+tags = ["nebula"]

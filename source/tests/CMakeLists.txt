@@ -3009,3 +3009,145 @@ set_target_properties(coredata_compile_schema_failure_test PROPERTIES
 )
 
 add_test(NAME coredata_compile_schema_failure_test COMMAND coredata_compile_schema_failure_test)
+
+add_executable(coredata_validate_valid_passes
+    coredata_validate_valid_passes.cpp
+    ../dominium/tools/coredata_validate/coredata_validate_load.cpp
+    ../dominium/tools/coredata_validate/coredata_validate_checks.cpp
+    ../dominium/tools/coredata_validate/coredata_validate_report.cpp
+    ../dominium/tools/coredata_compile/coredata_load.cpp
+    ../dominium/tools/coredata_compile/coredata_validate.cpp
+)
+
+target_include_directories(coredata_validate_valid_passes PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/tools
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(coredata_validate_valid_passes
+    dominium_common
+    core_tlv
+    domino_core
+)
+
+target_compile_definitions(coredata_validate_valid_passes PRIVATE
+    COREDATA_FIXTURE_VALID_ROOT=\"${CMAKE_SOURCE_DIR}/tests/fixtures/coredata_valid\"
+)
+
+set_target_properties(coredata_validate_valid_passes PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME coredata_validate_valid_passes COMMAND coredata_validate_valid_passes)
+
+add_executable(coredata_validate_schema_error_fails
+    coredata_validate_schema_error_fails.cpp
+    ../dominium/tools/coredata_validate/coredata_validate_load.cpp
+    ../dominium/tools/coredata_validate/coredata_validate_checks.cpp
+    ../dominium/tools/coredata_validate/coredata_validate_report.cpp
+    ../dominium/tools/coredata_compile/coredata_load.cpp
+    ../dominium/tools/coredata_compile/coredata_validate.cpp
+)
+
+target_include_directories(coredata_validate_schema_error_fails PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/tools
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(coredata_validate_schema_error_fails
+    dominium_common
+    core_tlv
+    domino_core
+)
+
+target_compile_definitions(coredata_validate_schema_error_fails PRIVATE
+    COREDATA_FIXTURE_SCHEMA_INVALID_ROOT=\"${CMAKE_SOURCE_DIR}/tests/fixtures/coredata_invalid_schema\"
+)
+
+set_target_properties(coredata_validate_schema_error_fails PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME coredata_validate_schema_error_fails COMMAND coredata_validate_schema_error_fails)
+
+add_executable(coredata_validate_policy_error_fails
+    coredata_validate_policy_error_fails.cpp
+    ../dominium/tools/coredata_validate/coredata_validate_load.cpp
+    ../dominium/tools/coredata_validate/coredata_validate_checks.cpp
+    ../dominium/tools/coredata_validate/coredata_validate_report.cpp
+    ../dominium/tools/coredata_compile/coredata_load.cpp
+    ../dominium/tools/coredata_compile/coredata_validate.cpp
+)
+
+target_include_directories(coredata_validate_policy_error_fails PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/tools
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(coredata_validate_policy_error_fails
+    dominium_common
+    core_tlv
+    domino_core
+)
+
+target_compile_definitions(coredata_validate_policy_error_fails PRIVATE
+    COREDATA_FIXTURE_POLICY_INVALID_ROOT=\"${CMAKE_SOURCE_DIR}/tests/fixtures/coredata_invalid_candidate_progression\"
+)
+
+set_target_properties(coredata_validate_policy_error_fails PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME coredata_validate_policy_error_fails COMMAND coredata_validate_policy_error_fails)
+
+add_executable(coredata_validate_tlv_pack_passes
+    coredata_validate_tlv_pack_passes.cpp
+    ../dominium/tools/coredata_validate/coredata_validate_load.cpp
+    ../dominium/tools/coredata_validate/coredata_validate_checks.cpp
+    ../dominium/tools/coredata_validate/coredata_validate_report.cpp
+    ../dominium/tools/coredata_compile/coredata_load.cpp
+    ../dominium/tools/coredata_compile/coredata_validate.cpp
+    ../dominium/tools/coredata_compile/coredata_emit_tlv.cpp
+    ../dominium/tools/coredata_compile/coredata_manifest.cpp
+)
+
+target_include_directories(coredata_validate_tlv_pack_passes PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/tools
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(coredata_validate_tlv_pack_passes
+    dominium_common
+    core_tlv
+    domino_core
+)
+
+target_compile_definitions(coredata_validate_tlv_pack_passes PRIVATE
+    COREDATA_FIXTURE_VALID_ROOT=\"${CMAKE_SOURCE_DIR}/tests/fixtures/coredata_valid\"
+)
+
+set_target_properties(coredata_validate_tlv_pack_passes PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME coredata_validate_tlv_pack_passes COMMAND coredata_validate_tlv_pack_passes)

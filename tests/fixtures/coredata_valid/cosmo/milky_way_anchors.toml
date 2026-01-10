@@ -1,0 +1,9 @@
+[[anchor]]
+id = "sol"
+kind = "system"
+display_name = "Sol"
+system_class = "single"
+evidence_grade = "confirmed"
+mechanics_profile_id = "baseline_single_star"
+anchor_weight = 10
+tags = ["home"]
