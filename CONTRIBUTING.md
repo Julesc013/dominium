@@ -25,6 +25,13 @@ layering.
    - Run: `ctest --test-dir build`
    - Determinism scan: `ctest -R domino_det_regression_scan_test`
 
+## Core data changes
+- For `/data/core` edits, run `coredata_compile` and verify deterministic output
+  (`docs/COREDATA_BUILD.md`).
+- A dedicated `coredata_validate` step will be required once the validator tool
+  lands; treat missing or invalid schema as refusal conditions.
+- Schema changes require spec updates under `docs/SPEC_CORE_DATA*.md`.
+
 ## What will be rejected
 - Introducing non-determinism in deterministic core paths (unordered iteration,
   wall-clock, platform APIs, float/double math).

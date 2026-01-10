@@ -19,6 +19,7 @@ Domino (engine) and Dominium (product layer).
 - Building and tests: `docs/BUILDING.md`
 - Supported build matrix: `docs/BUILD_MATRIX.md`
 - Release notes process: `docs/RELEASE_NOTES_PROCESS.md`
+- Core data build pipeline: `docs/COREDATA_BUILD.md`
 
 ## Specs (Subsystem Design)
 Specs are named `docs/SPEC_*.md` and are the canonical home for subsystem
@@ -33,4 +34,6 @@ Recommended entry points:
 - Universe model + spacetime: `docs/SPEC_UNIVERSE_MODEL.md`, `docs/SPEC_SPACETIME.md`,
   `docs/SPEC_REFERENCE_FRAMES.md`, `docs/SPEC_ORBITS_TIMEWARP.md`, `docs/SPEC_CALENDARS.md`
 - Universe portability + migrations: `docs/SPEC_UNIVERSE_BUNDLE.md`, `docs/SPEC_MIGRATIONS.md`
+- Core data packs + authoring: `docs/SPEC_CORE_DATA.md`, `docs/SPEC_COSMO_CORE_DATA.md`,
+  `docs/SPEC_MECHANICS_PROFILES.md`, `docs/SPEC_CORE_DATA_PIPELINE.md`
 - Renderer conformance: `docs/SPEC_DGFX_IR_VERSIONING.md`, `docs/SPEC_BACKEND_CONFORMANCE.md`
