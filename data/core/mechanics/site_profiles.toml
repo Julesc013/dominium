@@ -1,1 +1,83 @@
 # Site mechanics profiles (authoring). See docs/SPEC_MECHANICS_PROFILES.md.
+# Values are normalized modifiers; compile-time validation enforces bounds.
+
+[[profile]]
+id = "accretion_disk_hazard"
+hazard_radiation = 2.0
+hazard_pressure = 1.0
+corrosion_rate = 2.0
+temperature_extreme = 2.5
+resource_yield_modifiers = { common = 0.4, rare = 1.5, volatile = 2.0 }
+access_constraints = ["extreme_radiation", "thermal_shielding"]
+
+[[profile]]
+id = "asteroid_belt_dense"
+hazard_radiation = 0.6
+hazard_pressure = 0.0
+corrosion_rate = 0.2
+temperature_extreme = 0.8
+resource_yield_modifiers = { common = 1.3, rare = 1.2, volatile = 0.9 }
+access_constraints = ["debris_navigation"]
+
+[[profile]]
+id = "gas_giant_atmospheric"
+hazard_radiation = 1.0
+hazard_pressure = 2.2
+corrosion_rate = 1.0
+temperature_extreme = 1.4
+resource_yield_modifiers = { common = 0.8, rare = 1.2, volatile = 1.6 }
+access_constraints = ["aero_capture", "pressure_shielding"]
+
+[[profile]]
+id = "habitable_terrestrial"
+hazard_radiation = 0.2
+hazard_pressure = 0.1
+corrosion_rate = 0.1
+temperature_extreme = 0.2
+resource_yield_modifiers = { common = 1.0, rare = 1.0, volatile = 1.0 }
+access_constraints = ["open"]
+
+[[profile]]
+id = "ice_giant_cryogenic"
+hazard_radiation = 0.9
+hazard_pressure = 1.6
+corrosion_rate = 0.4
+temperature_extreme = 2.0
+resource_yield_modifiers = { common = 0.7, rare = 1.1, volatile = 1.4 }
+access_constraints = ["thermal_shielding"]
+
+[[profile]]
+id = "mars_like_thin_atmosphere"
+hazard_radiation = 0.8
+hazard_pressure = 0.3
+corrosion_rate = 0.3
+temperature_extreme = 1.2
+resource_yield_modifiers = { common = 1.1, rare = 1.0, volatile = 0.8 }
+access_constraints = ["pressure_suit", "thermal_suit"]
+
+[[profile]]
+id = "pulsar_beam_hazard"
+hazard_radiation = 2.5
+hazard_pressure = 0.2
+corrosion_rate = 1.2
+temperature_extreme = 2.0
+resource_yield_modifiers = { common = 0.6, rare = 1.4, volatile = 1.2 }
+access_constraints = ["beam_timing", "radiation_shielding"]
+
+[[profile]]
+id = "ring_system_dense"
+hazard_radiation = 0.7
+hazard_pressure = 0.0
+corrosion_rate = 0.3
+temperature_extreme = 0.7
+resource_yield_modifiers = { common = 1.2, rare = 1.3, volatile = 1.0 }
+access_constraints = ["debris_navigation"]
+
+[[profile]]
+id = "venus_like_extreme_pressure"
+hazard_radiation = 0.4
+hazard_pressure = 2.5
+corrosion_rate = 1.5
+temperature_extreme = 1.8
+resource_yield_modifiers = { common = 1.2, rare = 0.9, volatile = 0.6 }
+access_constraints = ["pressure_shielding", "thermal_shielding"]
