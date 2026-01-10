@@ -1161,6 +1161,18 @@ void DomGameApp::shutdown() {
     }
     m_last_wall_us = 0u;
 
+    if (m_cfg.dump_profile && !m_fs_paths.run_root.empty()) {
+        dom_profiler_frame frame;
+        if (dom_profiler_get_last_frame(&frame) == 0) {
+            const std::string path = join(m_fs_paths.run_root, "profile.json");
+            if (dom_io_guard_io_allowed()) {
+                (void)dom_profiler_write_json(&frame, path.c_str());
+            } else {
+                dom_io_guard_note_violation("profile_dump", path.c_str());
+            }
+        }
+    }
+
     m_net.shutdown();
     m_session.shutdown();
     d_gfx_shutdown();
