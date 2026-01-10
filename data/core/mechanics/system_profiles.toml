@@ -1,1 +1,75 @@
 # System mechanics profiles (authoring). See docs/SPEC_MECHANICS_PROFILES.md.
+# Values are normalized modifiers; compile-time validation enforces bounds.
+
+[[profile]]
+id = "baseline_single_star"
+navigation_instability_factor = 1.0
+debris_collision_modifier = 1.0
+radiation_baseline = 1.0
+warp_cap_modifier = 1.0
+survey_difficulty = 1.0
+
+[[profile]]
+id = "binary_unstable"
+navigation_instability_factor = 1.3
+debris_collision_modifier = 1.2
+radiation_baseline = 1.1
+warp_cap_modifier = 0.85
+survey_difficulty = 1.3
+
+[[profile]]
+id = "black_hole_extreme"
+navigation_instability_factor = 1.7
+debris_collision_modifier = 1.3
+radiation_baseline = 2.2
+warp_cap_modifier = 0.5
+survey_difficulty = 2.0
+
+[[profile]]
+id = "galactic_core_extreme"
+navigation_instability_factor = 1.8
+debris_collision_modifier = 1.5
+radiation_baseline = 2.5
+warp_cap_modifier = 0.4
+survey_difficulty = 2.2
+
+[[profile]]
+id = "massive_star_short_lived"
+navigation_instability_factor = 1.4
+debris_collision_modifier = 1.2
+radiation_baseline = 1.5
+warp_cap_modifier = 0.8
+survey_difficulty = 1.4
+supernova_timer_ticks = 1892160000
+
+[[profile]]
+id = "old_metal_poor"
+navigation_instability_factor = 0.9
+debris_collision_modifier = 0.8
+radiation_baseline = 0.9
+warp_cap_modifier = 1.05
+survey_difficulty = 1.1
+
+[[profile]]
+id = "pulsar_extreme"
+navigation_instability_factor = 1.6
+debris_collision_modifier = 1.1
+radiation_baseline = 2.0
+warp_cap_modifier = 0.6
+survey_difficulty = 1.8
+
+[[profile]]
+id = "red_dwarf_active"
+navigation_instability_factor = 1.1
+debris_collision_modifier = 1.1
+radiation_baseline = 1.2
+warp_cap_modifier = 0.9
+survey_difficulty = 1.2
+
+[[profile]]
+id = "young_debris_rich"
+navigation_instability_factor = 1.2
+debris_collision_modifier = 1.4
+radiation_baseline = 1.0
+warp_cap_modifier = 0.95
+survey_difficulty = 1.2
