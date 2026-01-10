@@ -49,6 +49,34 @@ Runtime refusal:
 - Schema/version mismatch without migration
 - Identity digest mismatch
 
+## On-disk TLV record definitions (coredata pack)
+Records are emitted as DTLV chunks. Each chunk payload is a TLV stream of
+`u32_le tag` + `u32_le len` + payload bytes (little-endian).
+
+Record type IDs (u32, stable):
+- `PACK_META`: `0x00000001`
+- `ASTRO_BODY_CONSTANTS`: `0x00030001`
+
+Chunk version: `1`.
+
+### ASTRO_BODY_CONSTANTS payload (TLV)
+Tags:
+- `1`: `id` (string, UTF-8)
+- `2`: `id_hash` (u64_le; FNV-1a of `id`)
+- `3`: `radius_m` (u64_le, optional; 0 if absent)
+- `4`: `mu_m3_s2_mantissa` (u64_le)
+- `5`: `mu_m3_s2_exp10` (i32_le; base-10 exponent)
+- `6`: `rotation_rate_rad_s_q16` (i32_le; Q16.16, optional)
+- `7`: `atmosphere_profile_id` (string, optional)
+
+### PACK_META payload (TLV)
+Tags:
+- `1`: `pack_schema_version` (u32_le)
+- `2`: `pack_id` (string)
+- `3`: `pack_version_num` (u32_le)
+- `4`: `pack_version_str` (string, optional)
+- `5`: `content_hash` (u64_le)
+
 ## Related specs
 - `docs/SPEC_CORE_DATA_PIPELINE.md`
 - `docs/SPEC_COSMO_CORE_DATA.md`
