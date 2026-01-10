@@ -1,0 +1,8 @@
+[[profile]]
+id = \"habitable_terrestrial^\"
+hazard_radiation = 0.1
+hazard_pressure = 1.0
+corrosion_rate = 0.05
+temperature_extreme = 0.2
+resource_yield_modifiers = { iron = 1.1, water = 0.9 }
+access_constraints = [\"landing_clearance^\"]

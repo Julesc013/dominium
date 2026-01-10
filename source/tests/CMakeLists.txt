@@ -2944,3 +2944,68 @@ set_target_properties(dom_replay_analyzer_basic_test PROPERTIES
 )
 
 add_test(NAME dom_replay_analyzer_basic_test COMMAND dom_replay_analyzer_basic_test)
+
+add_executable(coredata_compile_determinism_test
+    coredata_compile_determinism_test.cpp
+    ../dominium/tools/coredata_compile/coredata_load.cpp
+    ../dominium/tools/coredata_compile/coredata_validate.cpp
+    ../dominium/tools/coredata_compile/coredata_emit_tlv.cpp
+    ../dominium/tools/coredata_compile/coredata_manifest.cpp
+)
+
+target_include_directories(coredata_compile_determinism_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/tools
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(coredata_compile_determinism_test
+    dominium_common
+    core_tlv
+    domino_core
+)
+
+target_compile_definitions(coredata_compile_determinism_test PRIVATE
+    COREDATA_FIXTURE_ROOT=\"${CMAKE_SOURCE_DIR}/tests/fixtures/coredata_min\"
+)
+
+set_target_properties(coredata_compile_determinism_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME coredata_compile_determinism_test COMMAND coredata_compile_determinism_test)
+
+add_executable(coredata_compile_schema_failure_test
+    coredata_compile_schema_failure_test.cpp
+    ../dominium/tools/coredata_compile/coredata_load.cpp
+    ../dominium/tools/coredata_compile/coredata_validate.cpp
+)
+
+target_include_directories(coredata_compile_schema_failure_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/tools
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(coredata_compile_schema_failure_test
+    dominium_common
+    domino_core
+)
+
+target_compile_definitions(coredata_compile_schema_failure_test PRIVATE
+    COREDATA_FIXTURE_INVALID_ROOT=\"${CMAKE_SOURCE_DIR}/tests/fixtures/coredata_invalid_missing_profile\"
+)
+
+set_target_properties(coredata_compile_schema_failure_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME coredata_compile_schema_failure_test COMMAND coredata_compile_schema_failure_test)
