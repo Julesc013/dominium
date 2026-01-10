@@ -8,6 +8,13 @@ so the engine can build and run without real OS hooks. Platform backends
 (win32, sdl2, x11, dos, etc.) live in platform-specific directories and replace
 the stub via build-time selection.
 
+## Build selection (current)
+- Platform backends are selected via `DOM_PLATFORM` in root `CMakeLists.txt`.
+- `DOM_PLATFORM=sdl2` is the primary GUI path; `DOM_PLATFORM=win32` is the
+  fallback on Windows when SDL2 is unavailable.
+- Legacy `DOMINO_USE_*` / `DSYS_BACKEND_*` toggles are not wired in current
+  CMake; use `DOM_PLATFORM` for supported hosts.
+
 ## API surface
 - Lifecycle: `dsys_init` → `DSYS_OK`, `dsys_shutdown` no-op, `dsys_get_caps` returns `{ name = "stub", ui_modes = 0, has_windows/mouse/gamepad/high_res_timer = false }`.
 - Time: `dsys_time_now_us` uses `clock()` ticks converted to microseconds; `dsys_sleep_ms` uses `Sleep`/`nanosleep` where available, otherwise a spin wait.
@@ -38,7 +45,7 @@ the stub via build-time selection.
 - UI modes: GUI (`ui_modes = 1`); windows and mouse supported, processes are stubbed.
 - Features: creates real SDL windows, forwards SDL events to `dsys_event`, high-resolution timers via `SDL_GetPerformanceCounter`, filesystem and directory iteration via stdio/OS calls.
 - Limitations: process spawning is unimplemented (returns `NULL`/`-1`), path resolution relies on `SDL_GetBasePath` and `SDL_GetPrefPath`, and native handles are `SDL_Window*`.
-- Build: enable with `-DDOMINO_USE_SDL2_BACKEND=ON` to compile `DSYS_BACKEND_SDL2` and link against SDL2.
+- Build: set `DOM_PLATFORM=sdl2` (requires SDL2 headers + libraries).
 
 ## X11 Backend
 - API: Xlib + POSIX (time, filesystem, dirent, fork/exec).
@@ -47,7 +54,7 @@ the stub via build-time selection.
 - Features: creates X11 windows, translates core X11 events (resize, key, mouse, wheel, WM_DELETE_WINDOW→quit), uses monotonic clocks for microsecond timing, stdio-based file IO, POSIX directory iteration, and `fork/execvp` process spawning. Native window handle is the X11 `Window` ID.
 - Paths: app root from `/proc/self/exe` (fallback `getcwd`), user data/config/cache from XDG base dirs (`$XDG_*` or `$HOME/.local/share|.config|.cache` + `/dominium`), temp from `$TMPDIR` or `/tmp`.
 - Limitations: fullscreen/borderless is best-effort via EWMH `_NET_WM_STATE_FULLSCREEN`; text input is minimal; requires a running display connection.
-- Build: enable with `-DDOMINO_USE_X11_BACKEND=ON` to compile `DSYS_BACKEND_X11`, add `source/domino/system/plat/x11/x11_sys.c`, and link against X11.
+- Build: set `DOM_PLATFORM=posix_x11` (requires X11 headers + libX11).
 
 ## Wayland Backend
 - Target: Linux/BSD systems running a Wayland compositor (GNOME/KDE/sway/etc.), single display/seat/window model for v1.
@@ -56,7 +63,7 @@ the stub via build-time selection.
 - Windowing: creates one toplevel surface, fullscreen toggled with `xdg_toplevel_set_fullscreen`; native handle returns the `wl_surface*`.
 - Paths/FS: POSIX stdio + dirent; paths from `/proc/self/exe` (fallback `getcwd`), XDG data/config/cache with `/dominium` suffix, temp from `$TMPDIR` or `/tmp`.
 - Processes: POSIX `fork/execvp` + `waitpid`.
-- Build: enable with `-DDOMINO_USE_WAYLAND_BACKEND=ON` (alias `-DDSYS_BACKEND_WAYLAND=ON`), compile `source/domino/system/plat/wayland/wayland_sys.c`, link against `wayland-client` (and system xdg-shell headers).
+- Build: set `DOM_PLATFORM=posix_wayland` (requires wayland-client headers/libs + xdg-shell protocol headers).
 
 ## POSIX Backend (Headless UNIX)
 - API: POSIX (monotonic clocks, nanosleep, stdio file IO, dirent, fork/execvp); no native GUI or event loop.
@@ -64,7 +71,7 @@ the stub via build-time selection.
 - UI modes: CLI/TUI only (`ui_modes = 0`); `has_windows = false`; mouse/gamepad unsupported.
 - Features: monotonic microsecond timer via `clock_gettime` (fallback `gettimeofday`), `nanosleep`, XDG data/config/cache roots under `dominium`, app root from `/proc/self/exe` dir (fallback `getcwd`), temp from `$TMPDIR` or `/tmp`, stdio-backed file IO, dirent iteration, and `fork/execvp` + `waitpid` processes.
 - Events/Windows: window APIs are no-ops/return `NULL`; `dsys_poll_event` always returns `false` (no stdin polling by default).
-- Build: enable with `-DDOMINO_USE_POSIX_BACKEND=ON` (alias `-DDSYS_BACKEND_POSIX=ON`) to compile `DSYS_BACKEND_POSIX` and include `source/domino/system/plat/posix/posix_sys.c`.
+- Build: set `DOM_PLATFORM=posix_headless`.
 
 ## DOS32 Backend (Fullscreen GUI/GFX)
 - Target: MS-DOS 5/6.x with a 32-bit extender (DOS4GW, CWSDPMI/DJGPP runtime, etc.), real hardware or emulators.
@@ -127,7 +134,7 @@ the stub via build-time selection.
 - Events: key up/down, mouse move/button/wheel, resize, and close→quit translated by an Objective-C delegate into a 128-slot ring buffer; `dsys_poll_event` pumps `[NSApp nextEventMatchingMask:untilDate:inMode:dequeue:]` non-blocking for deterministic delivery.
 - Paths: UTF-8 paths; executable root from `NSBundle` executable path, user data/config under `~/Library/Application Support/dominium/{data,config}`, cache under `~/Library/Caches/dominium`, temp from `NSTemporaryDirectory`.
 - Filesystem: stdio-backed file IO, POSIX dirent iteration; processes stubbed (`spawn` returns `NULL`, `wait` returns `-1`).
-- Build: enable with `-DDOMINO_USE_COCOA_BACKEND=ON` (alias `-DDSYS_BACKEND_COCOA=ON`) to compile `source/domino/system/plat/cocoa/cocoa_sys.c/.h` plus `cocoa_sys_objc.m` and link against Cocoa/AppKit/Foundation.
+- Build: set `DOM_PLATFORM=cocoa` (macOS only; requires Cocoa/AppKit/Foundation).
 
 ## Carbon Backend (Classic/Carbon GUI)
 - API: Carbon Event/Window Manager + CoreServices; 32-bit Carbon (`WindowRef` native handle) for CarbonLib and early macOS.

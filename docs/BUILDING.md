@@ -22,6 +22,11 @@ cmake --build build
 
 The language policy for deterministic code lives in `docs/LANGUAGE_POLICY.md`.
 
+## Toolchain policy (by host OS)
+- Windows builds MUST use MSVC (Visual Studio generator).
+- Linux builds MUST use GCC (`CMAKE_C_COMPILER=gcc`, `CMAKE_CXX_COMPILER=g++`).
+- macOS builds MUST use the Xcode generator.
+
 ## Key build targets
 - `domino_core` (static library): the engine implementation, including the
   deterministic core subsystems.
@@ -41,8 +46,10 @@ Renderer backend toggles (`source/domino/render/CMakeLists.txt`):
   `DOMINIUM_GFX_XGA`, etc.
 
 System backend selection:
-- System backends are selected via cache variables such as `DSYS_BACKEND_*` and
-  `DOMINO_USE_*_BACKEND` (see `source/domino/system/CMakeLists.txt`).
+- System backends are selected via `DOM_PLATFORM` (e.g. `sdl2`, `win32`,
+  `win32_headless`, `posix_x11`, `posix_wayland`, `cocoa`).
+- `DOM_BACKEND_SDL2` is kept in sync when `DOM_PLATFORM=sdl2`.
+- Deprecated toggles (`DSYS_BACKEND_*`, `DOMINO_USE_*_BACKEND`) are not used.
 
 ## Determinism build hygiene
 Deterministic core code is guarded by test-time scans and must satisfy:
@@ -55,19 +62,13 @@ See `docs/DETERMINISM_REGRESSION_RULES.md` and run the scan test:
 ctest -R domino_det_regression_scan_test
 ```
 
-## Build metadata (optional)
-The repository contains a build-number helper script:
+## Build metadata (required)
+The repository uses a unified build-number system driven by CMake:
 - State file: `.dominium_build_number`
 - Generator: `scripts/update_build_number.cmake`
 
-It can emit a generated header (e.g. under a build directory):
-```
-cmake -DSTATE_FILE=.dominium_build_number ^
-      -DHEADER_FILE=build/generated/dom_build_version.h ^
-      -DNUMBER_FILE=build/generated/build_number.txt ^
-      -DPROJECT_SEMVER=0.1.0 ^
-      -P scripts/update_build_number.cmake
-```
+The root CMake adds `dom_update_build_number` to `ALL`, so every build produces
+the generated header and build number artifacts automatically. Do not bypass it.
 
 ## Running tests
 After configuring/building, run:

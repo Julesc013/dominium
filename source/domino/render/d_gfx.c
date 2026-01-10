@@ -514,9 +514,9 @@ dom_caps_result dom_dgfx_register_caps_backends(void)
 
 #if DOM_BACKEND_GL2
     desc.backend_name = "gl2";
-    desc.backend_priority = 90u;
+    desc.backend_priority = 120u;
     desc.determinism = DOM_DET_D2_BEST_EFFORT;
-    desc.perf_class = DOM_CAPS_PERF_COMPAT;
+    desc.perf_class = DOM_CAPS_PERF_PERF;
     desc.required_hw_flags = DOM_HW_OS_WIN32;
     r = dom_caps_register_backend(&desc);
     if (r != DOM_CAPS_OK) {
@@ -690,9 +690,10 @@ int d_gfx_init(const char *backend_name)
 #endif
 
 #if DOM_BACKEND_SOFT
+#if DOM_BACKEND_GL2
     if (!have_request && !chosen) {
-        chosen = d_gfx_soft_register_backend();
-        chosen_name = "soft";
+        chosen = d_gfx_gl2_register_backend();
+        chosen_name = "gl2";
     }
 #endif
 
@@ -700,6 +701,13 @@ int d_gfx_init(const char *backend_name)
     if (!have_request && !chosen) {
         chosen = d_gfx_dx9_register_backend();
         chosen_name = "dx9";
+    }
+#endif
+
+#if DOM_BACKEND_SOFT
+    if (!have_request && !chosen) {
+        chosen = d_gfx_soft_register_backend();
+        chosen_name = "soft";
     }
 #endif
 
@@ -911,7 +919,7 @@ int dgfx_init(const dgfx_desc *desc)
     if (dgfx_get_ir_api(1u, &api) != DGFX_OK) {
         return 0;
     }
-    backend_name = "soft";
+    backend_name = 0;
     if (desc) {
         if (desc->backend == DGFX_BACKEND_SOFT) backend_name = "soft";
         else if (desc->backend == DGFX_BACKEND_DX9) backend_name = "dx9";
