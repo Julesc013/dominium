@@ -8,6 +8,8 @@ for large-scale universe structure and travel.
 - Cosmos state is authoritative and deterministic.
 - Time is tick-based (`tick_index` + `ups`).
 - No blocking I/O in runtime queries or updates.
+- Cosmos anchors and edges are sourced from core data packs; see
+  `docs/SPEC_CORE_DATA.md` and `docs/SPEC_COSMO_CORE_DATA.md`.
 
 ## 2. Entity kinds
 Canonical entity kinds:
@@ -77,6 +79,8 @@ Travel is an in-sim state (see `docs/SPEC_LOGICAL_TRAVEL.md`):
 ## Related specs
 - `docs/SPEC_LOGICAL_TRAVEL.md`
 - `docs/SPEC_UNIVERSE_MODEL.md`
+- `docs/SPEC_CORE_DATA.md`
+- `docs/SPEC_COSMO_CORE_DATA.md`
 - `docs/SPEC_SYSTEM_LOGISTICS.md`
 - `docs/SPEC_COSMO_ECONOMY_EVENTS.md`
 - `docs/SPEC_FACTIONS.md`

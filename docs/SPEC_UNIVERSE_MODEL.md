@@ -9,6 +9,8 @@ deterministic, instance-scoped graph and does not imply any global directory.
   (`docs/SPEC_UNIVERSE_BUNDLE.md`).
 - Systems, bodies, frames, and topology bindings are stored in bundle chunks
   `SYSM`, `BODS`, `FRAM`, and `TOPB`.
+- Baseline cosmos/system anchors are authored in core data packs; see
+  `docs/SPEC_CORE_DATA.md` and `docs/SPEC_COSMO_CORE_DATA.md`.
 - There is no mutable global universe directory.
 
 ## 2. Core node types (graph)
@@ -27,6 +29,8 @@ System->Vessel).
 
 Cosmos-lane nodes (Filament/Cluster/Galaxy/System) are logical-only and do not
 require physical coordinates. See `docs/SPEC_COSMO_LANE.md`.
+Mechanics profiles define sim-affecting modifiers; astronomical labels and
+positions are non-sim (`docs/SPEC_MECHANICS_PROFILES.md`).
 
 ## 3. Stable IDs and ordering
 - Each node has a stable string ID (UTF-8, case-sensitive).
@@ -53,3 +57,6 @@ Mismatches require explicit refusal by default.
 - `docs/SPEC_UNIVERSE_BUNDLE.md`
 - `docs/SPEC_COSMO_LANE.md`
 - `docs/SPEC_LOGICAL_TRAVEL.md`
+- `docs/SPEC_CORE_DATA.md`
+- `docs/SPEC_COSMO_CORE_DATA.md`
+- `docs/SPEC_MECHANICS_PROFILES.md`
