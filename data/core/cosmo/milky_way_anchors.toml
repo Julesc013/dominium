@@ -236,7 +236,7 @@ kind = "system"
 display_name = "Sol"
 system_class = "single"
 evidence_grade = "confirmed"
-mechanics_profile_id = "baseline_single_star"
+mechanics_profile_id = "sol_reference_system"
 anchor_weight = 10
 tags = ["home", "g_star"]
 

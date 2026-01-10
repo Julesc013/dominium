@@ -18,4 +18,7 @@ Consistency notes (v1):
 
 Current anchor totals (v1):
 - systems: 32
-- regions: 12
+- regions: 18
+
+Sol authoring notes (v1):
+- sol sites: 39 (see `data/core/astro/sol_sites.toml`)

@@ -1,0 +1,248 @@
+# Sol system sites (authoring). See docs/SPEC_MECHANICS_PROFILES.md.
+# Sites are mechanics containers bound to site profiles (no physics encoded).
+
+# Earth
+[[site]]
+id = "earth_atmosphere_layers"
+parent_body_id = "earth"
+site_profile_id = "temperate_atmosphere_layers"
+tags = ["atmosphere", "layered"]
+notes = "Representative atmosphere layers for local media sampling."
+
+[[site]]
+id = "earth_l1"
+parent_body_id = "earth"
+site_profile_id = "orbital_transfer_node"
+tags = ["lagrange", "transfer"]
+
+[[site]]
+id = "earth_l2"
+parent_body_id = "earth"
+site_profile_id = "orbital_transfer_node"
+tags = ["lagrange", "transfer"]
+
+[[site]]
+id = "earth_l3"
+parent_body_id = "earth"
+site_profile_id = "orbital_transfer_node"
+tags = ["lagrange", "transfer"]
+
+[[site]]
+id = "earth_l4"
+parent_body_id = "earth"
+site_profile_id = "orbital_transfer_node"
+tags = ["lagrange", "transfer"]
+
+[[site]]
+id = "earth_l5"
+parent_body_id = "earth"
+site_profile_id = "orbital_transfer_node"
+tags = ["lagrange", "transfer"]
+
+[[site]]
+id = "earth_magnetosphere"
+parent_body_id = "earth"
+site_profile_id = "magnetosphere_buffered"
+tags = ["radiation", "magnetosphere"]
+
+[[site]]
+id = "earth_surface"
+parent_body_id = "earth"
+site_profile_id = "habitable_terrestrial"
+tags = ["surface", "habitable"]
+
+[[site]]
+id = "earth_van_allen_belts"
+parent_body_id = "earth"
+site_profile_id = "radiation_belt_hazard"
+tags = ["radiation", "belt"]
+
+# Outer system isolation markers
+[[site]]
+id = "eris_extreme_isolation_zone"
+parent_body_id = "eris"
+site_profile_id = "outer_system_isolation"
+tags = ["outer_system", "isolation"]
+
+[[site]]
+id = "interstellar_intercept_zone"
+parent_body_id = "sol"
+site_profile_id = "outer_system_isolation"
+tags = ["interstellar", "intercept"]
+
+# Jupiter
+[[site]]
+id = "jupiter_radiation_belts"
+parent_body_id = "jupiter"
+site_profile_id = "radiation_belt_hazard"
+tags = ["radiation", "belt"]
+
+[[site]]
+id = "jupiter_trojan_region"
+parent_body_id = "jupiter"
+site_profile_id = "asteroid_belt_dense"
+tags = ["trojan", "debris"]
+
+# Mars
+[[site]]
+id = "mars_dust_storm_zone"
+parent_body_id = "mars"
+site_profile_id = "dust_storm_hazard"
+tags = ["storm", "surface"]
+
+[[site]]
+id = "mars_polar_caps"
+parent_body_id = "mars"
+site_profile_id = "polar_ice_deposit"
+tags = ["polar", "ice"]
+
+[[site]]
+id = "mars_surface"
+parent_body_id = "mars"
+site_profile_id = "mars_like_thin_atmosphere"
+tags = ["surface", "thin_atmosphere"]
+
+[[site]]
+id = "mars_thin_atmosphere"
+parent_body_id = "mars"
+site_profile_id = "mars_like_thin_atmosphere"
+tags = ["atmosphere", "thin"]
+
+# Mercury
+[[site]]
+id = "mercury_polar_crater_ice"
+parent_body_id = "mercury"
+site_profile_id = "airless_ice_deposit"
+tags = ["polar", "ice", "airless"]
+
+[[site]]
+id = "mercury_surface_extreme_thermal"
+parent_body_id = "mercury"
+site_profile_id = "extreme_thermal_exposed"
+tags = ["surface", "thermal_extreme"]
+
+# Moon
+[[site]]
+id = "moon_lagrange_l1_l2"
+parent_body_id = "moon"
+site_profile_id = "orbital_transfer_node"
+tags = ["lagrange", "transfer"]
+
+[[site]]
+id = "moon_lava_tubes"
+parent_body_id = "moon"
+site_profile_id = "subsurface_shelter"
+tags = ["subsurface", "shelter"]
+
+[[site]]
+id = "moon_polar_ice"
+parent_body_id = "moon"
+site_profile_id = "airless_ice_deposit"
+tags = ["polar", "ice", "airless"]
+
+[[site]]
+id = "moon_surface"
+parent_body_id = "moon"
+site_profile_id = "airless_barren"
+tags = ["surface", "airless"]
+
+# Neptune
+[[site]]
+id = "neptune_deep_atmospheric_harvest_zone"
+parent_body_id = "neptune"
+site_profile_id = "gas_giant_atmospheric"
+tags = ["atmosphere", "harvest"]
+
+[[site]]
+id = "neptune_seasonal_extreme_zone"
+parent_body_id = "neptune"
+site_profile_id = "ice_giant_cryogenic"
+tags = ["seasonal", "cryogenic"]
+
+# Pluto/Charon
+[[site]]
+id = "pluto_charon_binary_zone"
+parent_body_id = "pluto"
+site_profile_id = "outer_system_isolation"
+tags = ["binary", "outer_system"]
+
+# Saturn
+[[site]]
+id = "saturn_magnetosphere"
+parent_body_id = "saturn"
+site_profile_id = "radiation_belt_hazard"
+tags = ["radiation", "magnetosphere"]
+
+[[site]]
+id = "saturn_ring_a"
+parent_body_id = "saturn"
+site_profile_id = "ring_system_dense"
+tags = ["rings", "debris"]
+
+[[site]]
+id = "saturn_ring_b"
+parent_body_id = "saturn"
+site_profile_id = "ring_system_dense"
+tags = ["rings", "debris"]
+
+[[site]]
+id = "saturn_ring_c"
+parent_body_id = "saturn"
+site_profile_id = "ring_system_dense"
+tags = ["rings", "debris"]
+
+[[site]]
+id = "saturn_ring_d"
+parent_body_id = "saturn"
+site_profile_id = "ring_system_dense"
+tags = ["rings", "debris"]
+
+[[site]]
+id = "saturn_ring_e"
+parent_body_id = "saturn"
+site_profile_id = "ring_system_dense"
+tags = ["rings", "debris"]
+
+[[site]]
+id = "saturn_ring_f"
+parent_body_id = "saturn"
+site_profile_id = "ring_system_dense"
+tags = ["rings", "debris"]
+
+[[site]]
+id = "saturn_ring_g"
+parent_body_id = "saturn"
+site_profile_id = "ring_system_dense"
+tags = ["rings", "debris"]
+
+# Uranus
+[[site]]
+id = "uranus_deep_atmospheric_harvest_zone"
+parent_body_id = "uranus"
+site_profile_id = "gas_giant_atmospheric"
+tags = ["atmosphere", "harvest"]
+
+[[site]]
+id = "uranus_seasonal_extreme_zone"
+parent_body_id = "uranus"
+site_profile_id = "ice_giant_cryogenic"
+tags = ["seasonal", "cryogenic"]
+
+# Venus
+[[site]]
+id = "venus_cloud_layers"
+parent_body_id = "venus"
+site_profile_id = "floating_city_candidate"
+tags = ["atmosphere", "clouds"]
+
+[[site]]
+id = "venus_surface_extreme_pressure"
+parent_body_id = "venus"
+site_profile_id = "venus_like_extreme_pressure"
+tags = ["surface", "pressure_extreme"]
+
+[[site]]
+id = "venus_upper_atmosphere"
+parent_body_id = "venus"
+site_profile_id = "floating_city_candidate"
+tags = ["atmosphere", "upper"]
