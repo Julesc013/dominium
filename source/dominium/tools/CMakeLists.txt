@@ -162,3 +162,13 @@ dominium_add_tool_exe(dominium-replay-analyzer "tool_replay_analyzer"
     replay_analyzer/ra_parser.cpp
     replay_analyzer/ra_diff.cpp
 )
+
+dominium_add_tool_exe(coredata_compile "coredata_compile"
+    coredata_compile/coredata_compile_main.cpp
+    coredata_compile/coredata_load.cpp
+    coredata_compile/coredata_validate.cpp
+    coredata_compile/coredata_emit_tlv.cpp
+    coredata_compile/coredata_manifest.cpp
+)
+
+target_link_libraries(coredata_compile PRIVATE core_tlv)
