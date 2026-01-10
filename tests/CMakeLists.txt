@@ -327,6 +327,33 @@ if (WIN32)
 endif()
 add_test(NAME dominium_no_modal_loading COMMAND dominium_no_modal_tests)
 
+add_executable(dominium_perf_tests
+    contract/dominium_perf_tests.cpp
+    ${CMAKE_SOURCE_DIR}/source/dominium/game/runtime/dom_surface_chunks.cpp
+    ${CMAKE_SOURCE_DIR}/source/dominium/game/runtime/dom_derived_jobs.cpp
+)
+target_include_directories(dominium_perf_tests PRIVATE
+    ${DOMINIUM_INCLUDE_DIR}
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+target_link_libraries(dominium_perf_tests PRIVATE
+    dominium_common
+    domino_core
+)
+set_target_properties(dominium_perf_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+if (MSVC)
+    target_compile_options(dominium_perf_tests PRIVATE $<$<CONFIG:Release>:/UNDEBUG>)
+else()
+    target_compile_options(dominium_perf_tests PRIVATE $<$<CONFIG:Release>:-UNDEBUG>)
+endif()
+add_test(NAME dominium_perf COMMAND dominium_perf_tests)
+
 add_executable(dominium_session_tests
     contract/dominium_session_tests.cpp
     ${CMAKE_SOURCE_DIR}/source/dominium/game/runtime/dom_game_runtime.cpp
