@@ -18,6 +18,27 @@ runtime TLV packs.
 - Deterministic TLV emission.
 - Manifest and hash emission for identity binding.
 
+## Output layout
+Compiled packs are emitted under the canonical pack root:
+- `<output_root>/<pack_id>/<version_8digit>/pack.tlv`
+- `<output_root>/<pack_id>/<version_8digit>/pack_manifest.tlv`
+
+Notes:
+- `output_root` defaults to `repo/packs` at the repository root.
+- `version_8digit` is the zero-padded numeric pack version (e.g., `00000001`).
+- The compiler is responsible for creating intermediate directories.
+
+## Pack format
+- `pack.tlv` is a TLV stream of records (`u32_le tag` + `u32_le len`).
+- Each record payload is itself a TLV stream of fields (see per-schema specs).
+- A `PACK_META` record (`type_id = 0x00000001`) appears once and includes:
+  - pack schema version
+  - pack id
+  - pack version (numeric + optional string)
+  - content hash
+- The content hash is computed over record hashes in canonical order and
+  excludes the `PACK_META` record itself.
+
 ## Determinism guarantees
 - Identical inputs MUST produce byte-identical TLV outputs.
 - Canonical ordering MUST be stable across platforms.
