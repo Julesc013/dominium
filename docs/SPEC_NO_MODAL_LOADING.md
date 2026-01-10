@@ -17,6 +17,8 @@ scheduled or executed on that thread.
 - All expensive work MUST be explicit, derived, budgeted, and cancellable.
 - Missing or late derived data MUST degrade fidelity; it MUST NOT stall
   execution.
+- Performance budget enforcement MAY reduce derived cadence or fidelity but MUST
+  NOT change authoritative simulation semantics.
 - Derived work MUST NOT mutate authoritative state.
 - Derived job completion order MUST NOT affect determinism hashes.
 
@@ -26,7 +28,7 @@ scheduled or executed on that thread.
 - A stall watchdog MUST emit diagnostics for frames that exceed a configured
   threshold; repeated stalls are treated as contract failures.
 - Derived work pumping MUST obey the budgets defined in
-  `docs/SPEC_STREAMING_BUDGETS.md`.
+  `docs/SPEC_STREAMING_BUDGETS.md` and `docs/SPEC_PERF_BUDGETS.md`.
 
 ## Test gates (required)
 The following tests are mandatory and MUST pass:
@@ -36,5 +38,7 @@ The following tests are mandatory and MUST pass:
 
 ## Related specs
 - `docs/SPEC_STREAMING_BUDGETS.md`
+- `docs/SPEC_PERF_BUDGETS.md`
+- `docs/SPEC_PROFILING.md`
 - `docs/SPEC_FIDELITY_DEGRADATION.md`
 - `docs/SPEC_DETERMINISM.md`
