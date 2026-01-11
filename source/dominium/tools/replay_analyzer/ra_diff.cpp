@@ -45,7 +45,6 @@ bool ra_load_desync(const std::string &path,
                     RaDesyncInfo &out,
                     std::string *err) {
     std::vector<unsigned char> bytes;
-    core_tlv::TlvReader r;
     core_tlv::TlvRecord rec;
     u32 version = 0u;
     bool have_version = false;
@@ -61,7 +60,7 @@ bool ra_load_desync(const std::string &path,
         if (err) *err = "desync_read_failed";
         return false;
     }
-    r = core_tlv::TlvReader(bytes.empty() ? (const unsigned char *)0 : &bytes[0], bytes.size());
+    core_tlv::TlvReader r(bytes.empty() ? (const unsigned char *)0 : &bytes[0], bytes.size());
     while (r.next(rec)) {
         switch (rec.tag) {
         case core_tlv::CORE_TLV_TAG_SCHEMA_VERSION:

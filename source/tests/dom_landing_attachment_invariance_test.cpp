@@ -8,11 +8,139 @@ PURPOSE: Ensures landing attach/detach round-trips deterministically.
 #include <cstring>
 
 #include "runtime/dom_body_registry.h"
+#include "runtime/dom_game_runtime.h"
 #include "runtime/dom_lane_scheduler.h"
+#include "runtime/dom_media_provider.h"
+#include "runtime/dom_orbit_lane.h"
+#include "runtime/dom_weather_provider.h"
+#include "runtime/dom_vehicle_aero.h"
+#include "runtime/dom_atmos_provider.h"
 
 extern "C" {
 #include "domino/core/fixed.h"
 #include "domino/core/spacetime.h"
+}
+
+extern "C" {
+int dom_orbit_eval_state(const dom_orbit_state *orbit,
+                         dom_tick tick,
+                         dom_orbit_posvel *out_posvel) {
+    (void)orbit;
+    (void)tick;
+    if (out_posvel) {
+        std::memset(out_posvel, 0, sizeof(*out_posvel));
+    }
+    return DOM_ORBIT_LANE_NOT_IMPLEMENTED;
+}
+
+int dom_orbit_next_event(const dom_orbit_state *orbit,
+                         dom_tick tick,
+                         dom_orbit_event_kind kind,
+                         dom_tick *out_tick) {
+    (void)orbit;
+    (void)kind;
+    if (out_tick) {
+        *out_tick = tick;
+    }
+    return DOM_ORBIT_LANE_NOT_IMPLEMENTED;
+}
+
+int dom_media_registry_get_binding(const dom_media_registry *registry,
+                                   dom_body_id body_id,
+                                   u32 kind,
+                                   dom_media_binding *out_binding) {
+    (void)registry;
+    (void)body_id;
+    (void)kind;
+    if (out_binding) {
+        std::memset(out_binding, 0, sizeof(*out_binding));
+    }
+    return DOM_MEDIA_NOT_FOUND;
+}
+
+int dom_media_sample_query(const dom_media_registry *registry,
+                           dom_body_id body_id,
+                           u32 kind,
+                           const dom_posseg_q16 *pos_body_fixed,
+                           q48_16 altitude_m,
+                           dom_tick tick,
+                           dom_media_sample *out_sample) {
+    (void)registry;
+    (void)body_id;
+    (void)kind;
+    (void)pos_body_fixed;
+    (void)altitude_m;
+    (void)tick;
+    if (out_sample) {
+        std::memset(out_sample, 0, sizeof(*out_sample));
+    }
+    return DOM_MEDIA_NOT_FOUND;
+}
+
+int dom_vehicle_aero_props_validate(const dom_vehicle_aero_props *props) {
+    return props ? DOM_VEHICLE_AERO_OK : DOM_VEHICLE_AERO_INVALID_ARGUMENT;
+}
+
+void dom_vehicle_aero_state_reset(dom_vehicle_aero_state *state) {
+    if (state) {
+        std::memset(state, 0, sizeof(*state));
+    }
+}
+
+int dom_vehicle_aero_apply(const dom_vehicle_aero_props *props,
+                           const dom_media_sample *sample,
+                           SpacePos *inout_vel,
+                           dom_vehicle_aero_state *state) {
+    (void)props;
+    (void)sample;
+    (void)inout_vel;
+    if (state) {
+        state->last_heating_rate_q16 = 0;
+        state->last_drag_accel_q16 = 0;
+    }
+    return DOM_VEHICLE_AERO_OK;
+}
+
+const void *dom_game_runtime_body_registry(const dom_game_runtime *rt) {
+    (void)rt;
+    return 0;
+}
+
+const void *dom_game_runtime_media_registry(const dom_game_runtime *rt) {
+    (void)rt;
+    return 0;
+}
+
+const void *dom_game_runtime_weather_registry(const dom_game_runtime *rt) {
+    (void)rt;
+    return 0;
+}
+
+int dom_atmos_profile_top_altitude(const dom_media_binding *binding,
+                                   q48_16 *out_top_altitude_m) {
+    (void)binding;
+    if (out_top_altitude_m) {
+        *out_top_altitude_m = 0;
+    }
+    return DOM_ATMOS_OK;
+}
+
+int dom_weather_sample_modifiers(const dom_weather_registry *registry,
+                                 dom_body_id body_id,
+                                 const dom_posseg_q16 *pos_body_fixed,
+                                 q48_16 altitude_m,
+                                 dom_tick tick,
+                                 dom_weather_mods *out_mods) {
+    (void)registry;
+    (void)body_id;
+    (void)pos_body_fixed;
+    (void)altitude_m;
+    (void)tick;
+    if (out_mods) {
+        std::memset(out_mods, 0, sizeof(*out_mods));
+    }
+    return DOM_WEATHER_NOT_FOUND;
+}
 }
 
 int main(void) {

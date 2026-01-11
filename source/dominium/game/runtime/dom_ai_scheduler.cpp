@@ -22,6 +22,18 @@ RESPONSIBILITY: Budgeted, deterministic AI scheduler for faction planners.
 #include "runtime/dom_game_hash.h"
 #include "dominium/core_tlv.h"
 
+struct AiStateEntry {
+    dom_ai_faction_state state;
+};
+
+struct dom_ai_scheduler {
+    u32 period_ticks;
+    u32 max_ops_per_tick;
+    u32 max_factions_per_tick;
+    u32 enable_traces;
+    std::vector<AiStateEntry> states;
+};
+
 namespace {
 
 static const u32 DEFAULT_PERIOD_TICKS = 60u;
@@ -39,10 +51,6 @@ enum {
     AI_TRACE_TAG_REASON_CODE = 0x16u,
     AI_TRACE_TAG_OPS_USED = 0x17u,
     AI_TRACE_TAG_BUDGET_HIT = 0x18u
-};
-
-struct AiStateEntry {
-    dom_ai_faction_state state;
 };
 
 struct FactionListCtx {
@@ -139,7 +147,7 @@ static bool build_trace_path(dom_ai_scheduler *sched,
     if (!dom::dom_game_paths_init_from_env(paths,
                                            inst->id,
                                            dom_game_runtime_get_run_id(runtime),
-                                           DOM_GAME_PATHS_FLAG_LAUNCHER_REQUIRED)) {
+                                           dom::DOM_GAME_PATHS_FLAG_LAUNCHER_REQUIRED)) {
         return false;
     }
     dir = dom::dom_game_paths_get_log_dir(paths);
@@ -202,14 +210,6 @@ static void write_trace(dom_ai_scheduler *sched,
 }
 
 } // namespace
-
-struct dom_ai_scheduler {
-    u32 period_ticks;
-    u32 max_ops_per_tick;
-    u32 max_factions_per_tick;
-    u32 enable_traces;
-    std::vector<AiStateEntry> states;
-};
 
 dom_ai_scheduler *dom_ai_scheduler_create(void) {
     dom_ai_scheduler *sched = new dom_ai_scheduler();

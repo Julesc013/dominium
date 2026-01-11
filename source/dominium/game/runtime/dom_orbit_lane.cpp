@@ -11,6 +11,7 @@ RESPONSIBILITY: Orbit lane scaffolding and analytic event API (v1 patched conics
 #include "dom_profiler.h"
 
 #include <limits.h>
+#include <stdint.h>
 
 enum {
     DOM_ORBIT_TAU_NUM = 6283185u,

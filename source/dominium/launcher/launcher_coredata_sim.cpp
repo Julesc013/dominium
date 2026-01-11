@@ -201,6 +201,202 @@ static std::string read_string(const dom::core_tlv::TlvRecord& rec) {
 
 namespace {
 
+struct CoredataAnchor {
+    std::string id;
+    u64 id_hash;
+    u32 kind;
+    u32 system_class;
+    u32 region_type;
+    u32 evidence_grade;
+    std::string mechanics_profile_id;
+    u64 mechanics_profile_id_hash;
+    u32 anchor_weight;
+    std::string display_name;
+    bool has_present_pos;
+    i32 present_pos_q16[3];
+
+    CoredataAnchor()
+        : id(),
+          id_hash(0ull),
+          kind(0u),
+          system_class(0u),
+          region_type(0u),
+          evidence_grade(0u),
+          mechanics_profile_id(),
+          mechanics_profile_id_hash(0ull),
+          anchor_weight(0u),
+          display_name(),
+          has_present_pos(false) {
+        present_pos_q16[0] = 0;
+        present_pos_q16[1] = 0;
+        present_pos_q16[2] = 0;
+    }
+};
+
+struct CoredataEdge {
+    std::string src_id;
+    u64 src_id_hash;
+    std::string dst_id;
+    u64 dst_id_hash;
+    u64 duration_ticks;
+    std::string cost_profile_id;
+    u64 cost_profile_id_hash;
+    std::string hazard_profile_id;
+    u64 hazard_profile_id_hash;
+    bool has_hazard;
+
+    CoredataEdge()
+        : src_id(),
+          src_id_hash(0ull),
+          dst_id(),
+          dst_id_hash(0ull),
+          duration_ticks(0ull),
+          cost_profile_id(),
+          cost_profile_id_hash(0ull),
+          hazard_profile_id(),
+          hazard_profile_id_hash(0ull),
+          has_hazard(false) {}
+};
+
+struct CoredataRulesEntry {
+    u32 region_type;
+    i32 value_q16;
+
+    CoredataRulesEntry() : region_type(0u), value_q16(0) {}
+};
+
+struct CoredataProceduralRules {
+    bool present;
+    u32 systems_per_anchor_min;
+    u32 systems_per_anchor_max;
+    i32 red_dwarf_ratio_q16;
+    i32 binary_ratio_q16;
+    i32 exotic_ratio_q16;
+    std::vector<CoredataRulesEntry> cluster_density;
+    std::vector<CoredataRulesEntry> metallicity_bias;
+    std::vector<CoredataRulesEntry> hazard_frequency;
+
+    CoredataProceduralRules()
+        : present(false),
+          systems_per_anchor_min(0u),
+          systems_per_anchor_max(0u),
+          red_dwarf_ratio_q16(0),
+          binary_ratio_q16(0),
+          exotic_ratio_q16(0),
+          cluster_density(),
+          metallicity_bias(),
+          hazard_frequency() {}
+};
+
+struct CoredataSystemProfile {
+    std::string id;
+    u64 id_hash;
+    i32 navigation_instability_q16;
+    i32 debris_collision_q16;
+    i32 radiation_baseline_q16;
+    i32 warp_cap_modifier_q16;
+    i32 survey_difficulty_q16;
+    u64 supernova_timer_ticks;
+    bool has_supernova;
+
+    CoredataSystemProfile()
+        : id(),
+          id_hash(0ull),
+          navigation_instability_q16(0),
+          debris_collision_q16(0),
+          radiation_baseline_q16(0),
+          warp_cap_modifier_q16(0),
+          survey_difficulty_q16(0),
+          supernova_timer_ticks(0ull),
+          has_supernova(false) {}
+};
+
+struct CoredataResourceModifier {
+    std::string resource_id;
+    u64 resource_id_hash;
+    i32 modifier_q16;
+
+    CoredataResourceModifier()
+        : resource_id(),
+          resource_id_hash(0ull),
+          modifier_q16(0) {}
+};
+
+struct CoredataSiteProfile {
+    std::string id;
+    u64 id_hash;
+    i32 hazard_radiation_q16;
+    i32 hazard_pressure_q16;
+    i32 corrosion_rate_q16;
+    i32 temperature_extreme_q16;
+    std::vector<CoredataResourceModifier> resource_yield;
+    std::vector<std::string> access_constraints;
+
+    CoredataSiteProfile()
+        : id(),
+          id_hash(0ull),
+          hazard_radiation_q16(0),
+          hazard_pressure_q16(0),
+          corrosion_rate_q16(0),
+          temperature_extreme_q16(0),
+          resource_yield(),
+          access_constraints() {}
+};
+
+struct CoredataAstroBody {
+    std::string id;
+    u64 id_hash;
+    bool has_radius;
+    u64 radius_m;
+    u64 mu_mantissa;
+    i32 mu_exp10;
+    bool has_rotation_rate;
+    i32 rotation_rate_q16;
+    std::string atmosphere_profile_id;
+    u64 atmosphere_profile_id_hash;
+
+    CoredataAstroBody()
+        : id(),
+          id_hash(0ull),
+          has_radius(false),
+          radius_m(0ull),
+          mu_mantissa(0ull),
+          mu_exp10(0),
+          has_rotation_rate(false),
+          rotation_rate_q16(0),
+          atmosphere_profile_id(),
+          atmosphere_profile_id_hash(0ull) {}
+};
+
+struct CoredataState {
+    u32 pack_schema_version;
+    std::string pack_id;
+    u32 pack_version_num;
+    std::string pack_version_str;
+    u64 content_hash;
+    u64 sim_digest;
+    std::vector<CoredataAnchor> anchors;
+    std::vector<CoredataEdge> edges;
+    CoredataProceduralRules rules;
+    std::vector<CoredataSystemProfile> system_profiles;
+    std::vector<CoredataSiteProfile> site_profiles;
+    std::vector<CoredataAstroBody> astro_bodies;
+
+    CoredataState()
+        : pack_schema_version(0u),
+          pack_id(),
+          pack_version_num(0u),
+          pack_version_str(),
+          content_hash(0ull),
+          sim_digest(0ull),
+          anchors(),
+          edges(),
+          rules(),
+          system_profiles(),
+          site_profiles(),
+          astro_bodies() {}
+};
+
 static u64 compute_edge_key_hash(const CoredataEdge& edge) {
     std::string key = edge.src_id + "->" + edge.dst_id;
     u64 hash = 0ull;
@@ -836,202 +1032,6 @@ static bool record_is_canonical(const std::vector<RecordView>& records) {
     }
     return true;
 }
-
-struct CoredataAnchor {
-    std::string id;
-    u64 id_hash;
-    u32 kind;
-    u32 system_class;
-    u32 region_type;
-    u32 evidence_grade;
-    std::string mechanics_profile_id;
-    u64 mechanics_profile_id_hash;
-    u32 anchor_weight;
-    std::string display_name;
-    bool has_present_pos;
-    i32 present_pos_q16[3];
-
-    CoredataAnchor()
-        : id(),
-          id_hash(0ull),
-          kind(0u),
-          system_class(0u),
-          region_type(0u),
-          evidence_grade(0u),
-          mechanics_profile_id(),
-          mechanics_profile_id_hash(0ull),
-          anchor_weight(0u),
-          display_name(),
-          has_present_pos(false) {
-        present_pos_q16[0] = 0;
-        present_pos_q16[1] = 0;
-        present_pos_q16[2] = 0;
-    }
-};
-
-struct CoredataEdge {
-    std::string src_id;
-    u64 src_id_hash;
-    std::string dst_id;
-    u64 dst_id_hash;
-    u64 duration_ticks;
-    std::string cost_profile_id;
-    u64 cost_profile_id_hash;
-    std::string hazard_profile_id;
-    u64 hazard_profile_id_hash;
-    bool has_hazard;
-
-    CoredataEdge()
-        : src_id(),
-          src_id_hash(0ull),
-          dst_id(),
-          dst_id_hash(0ull),
-          duration_ticks(0ull),
-          cost_profile_id(),
-          cost_profile_id_hash(0ull),
-          hazard_profile_id(),
-          hazard_profile_id_hash(0ull),
-          has_hazard(false) {}
-};
-
-struct CoredataRulesEntry {
-    u32 region_type;
-    i32 value_q16;
-
-    CoredataRulesEntry() : region_type(0u), value_q16(0) {}
-};
-
-struct CoredataProceduralRules {
-    bool present;
-    u32 systems_per_anchor_min;
-    u32 systems_per_anchor_max;
-    i32 red_dwarf_ratio_q16;
-    i32 binary_ratio_q16;
-    i32 exotic_ratio_q16;
-    std::vector<CoredataRulesEntry> cluster_density;
-    std::vector<CoredataRulesEntry> metallicity_bias;
-    std::vector<CoredataRulesEntry> hazard_frequency;
-
-    CoredataProceduralRules()
-        : present(false),
-          systems_per_anchor_min(0u),
-          systems_per_anchor_max(0u),
-          red_dwarf_ratio_q16(0),
-          binary_ratio_q16(0),
-          exotic_ratio_q16(0),
-          cluster_density(),
-          metallicity_bias(),
-          hazard_frequency() {}
-};
-
-struct CoredataSystemProfile {
-    std::string id;
-    u64 id_hash;
-    i32 navigation_instability_q16;
-    i32 debris_collision_q16;
-    i32 radiation_baseline_q16;
-    i32 warp_cap_modifier_q16;
-    i32 survey_difficulty_q16;
-    u64 supernova_timer_ticks;
-    bool has_supernova;
-
-    CoredataSystemProfile()
-        : id(),
-          id_hash(0ull),
-          navigation_instability_q16(0),
-          debris_collision_q16(0),
-          radiation_baseline_q16(0),
-          warp_cap_modifier_q16(0),
-          survey_difficulty_q16(0),
-          supernova_timer_ticks(0ull),
-          has_supernova(false) {}
-};
-
-struct CoredataResourceModifier {
-    std::string resource_id;
-    u64 resource_id_hash;
-    i32 modifier_q16;
-
-    CoredataResourceModifier()
-        : resource_id(),
-          resource_id_hash(0ull),
-          modifier_q16(0) {}
-};
-
-struct CoredataSiteProfile {
-    std::string id;
-    u64 id_hash;
-    i32 hazard_radiation_q16;
-    i32 hazard_pressure_q16;
-    i32 corrosion_rate_q16;
-    i32 temperature_extreme_q16;
-    std::vector<CoredataResourceModifier> resource_yield;
-    std::vector<std::string> access_constraints;
-
-    CoredataSiteProfile()
-        : id(),
-          id_hash(0ull),
-          hazard_radiation_q16(0),
-          hazard_pressure_q16(0),
-          corrosion_rate_q16(0),
-          temperature_extreme_q16(0),
-          resource_yield(),
-          access_constraints() {}
-};
-
-struct CoredataAstroBody {
-    std::string id;
-    u64 id_hash;
-    bool has_radius;
-    u64 radius_m;
-    u64 mu_mantissa;
-    i32 mu_exp10;
-    bool has_rotation_rate;
-    i32 rotation_rate_q16;
-    std::string atmosphere_profile_id;
-    u64 atmosphere_profile_id_hash;
-
-    CoredataAstroBody()
-        : id(),
-          id_hash(0ull),
-          has_radius(false),
-          radius_m(0ull),
-          mu_mantissa(0ull),
-          mu_exp10(0),
-          has_rotation_rate(false),
-          rotation_rate_q16(0),
-          atmosphere_profile_id(),
-          atmosphere_profile_id_hash(0ull) {}
-};
-
-struct CoredataState {
-    u32 pack_schema_version;
-    std::string pack_id;
-    u32 pack_version_num;
-    std::string pack_version_str;
-    u64 content_hash;
-    u64 sim_digest;
-    std::vector<CoredataAnchor> anchors;
-    std::vector<CoredataEdge> edges;
-    CoredataProceduralRules rules;
-    std::vector<CoredataSystemProfile> system_profiles;
-    std::vector<CoredataSiteProfile> site_profiles;
-    std::vector<CoredataAstroBody> astro_bodies;
-
-    CoredataState()
-        : pack_schema_version(0u),
-          pack_id(),
-          pack_version_num(0u),
-          pack_version_str(),
-          content_hash(0ull),
-          sim_digest(0ull),
-          anchors(),
-          edges(),
-          rules(),
-          system_profiles(),
-          site_profiles(),
-          astro_bodies() {}
-};
 
 } // namespace
 

@@ -208,13 +208,13 @@ int dom_media_registry_get_binding(const dom_media_registry *registry,
     return DOM_MEDIA_NOT_FOUND;
 }
 
-int dom_media_sample(const dom_media_registry *registry,
-                     dom_body_id body_id,
-                     u32 kind,
-                     const dom_posseg_q16 *pos_body_fixed,
-                     q48_16 altitude_m,
-                     dom_tick tick,
-                     dom_media_sample *out_sample) {
+int dom_media_sample_query(const dom_media_registry *registry,
+                           dom_body_id body_id,
+                           u32 kind,
+                           const dom_posseg_q16 *pos_body_fixed,
+                           q48_16 altitude_m,
+                           dom_tick tick,
+                           dom_media_sample *out_sample) {
     if (!registry || !out_sample || body_id == 0ull) {
         return DOM_MEDIA_INVALID_ARGUMENT;
     }

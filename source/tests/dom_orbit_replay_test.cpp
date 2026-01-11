@@ -231,6 +231,10 @@ bool DomGameNet::init_client(u32 tick_rate, const std::string &addr_port) {
     return true;
 }
 
+void DomGameNet::set_input_delay_ticks(u32 delay) {
+    m_session.input_delay_ticks = delay;
+}
+
 void DomGameNet::shutdown() {
     m_ready = false;
     m_hash_events.clear();
@@ -274,16 +278,32 @@ int main(void) {
 
     d_net_register_schemas();
 
-    rec = dom_game_replay_record_open(path, 60u, 1ull, "inst", 1ull,
-                                      (const unsigned char *)0, 0u,
-                                      (const unsigned char *)0, 0u,
-                                      (const unsigned char *)0, 0u,
-                                      (const unsigned char *)0, 0u,
-                                      (const unsigned char *)0, 0u,
-                                      (const unsigned char *)0, 0u,
-                                      (const unsigned char *)0, 0u,
-                                      (const unsigned char *)0, 0u,
-                                      (const unsigned char *)0, 0u);
+    rec = dom_game_replay_record_open(path,
+                                      60u,
+                                      1ull,
+                                      "inst",
+                                      1ull,
+                                      (const unsigned char *)0,
+                                      0u,
+                                      (const unsigned char *)0,
+                                      0u,
+                                      0ull,
+                                      (const unsigned char *)0,
+                                      0u,
+                                      (const unsigned char *)0,
+                                      0u,
+                                      (const unsigned char *)0,
+                                      0u,
+                                      (const unsigned char *)0,
+                                      0u,
+                                      (const unsigned char *)0,
+                                      0u,
+                                      (const unsigned char *)0,
+                                      0u,
+                                      (const unsigned char *)0,
+                                      0u,
+                                      (const unsigned char *)0,
+                                      0u);
     assert(rec);
 
     build_warp_payload(payload, 2u);

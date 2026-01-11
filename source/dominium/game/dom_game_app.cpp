@@ -1537,6 +1537,7 @@ bool DomGameApp::init_session(const dom_game_config &cfg) {
             m_replay_last_tick = (u32)last_tick;
         }
         (void)d_net_cmd_queue_init();
+    }
     if (!m_net.init_single(m_tick_rate_hz)) {
         return false;
     }
@@ -1560,6 +1561,9 @@ bool DomGameApp::init_session(const dom_game_config &cfg) {
                                                                                : &m_instance_manifest_hash[0];
         rdesc.instance_manifest_hash_len = (u32)m_instance_manifest_hash.size();
 
+        const std::string &instance_id = m_fs_paths.instance_id.empty()
+                                             ? m_instance.id
+                                             : m_fs_paths.instance_id;
         m_runtime = dom_game_runtime_create(&rdesc);
         if (!m_runtime) {
             const int err = dom_game_runtime_last_error();
@@ -1625,7 +1629,7 @@ bool DomGameApp::init_session(const dom_game_config &cfg) {
             m_replay_record = dom_game_replay_record_open(m_replay_record_path.c_str(),
                                                           m_tick_rate_hz,
                                                           seed,
-                                                          m_instance.id.c_str(),
+                                                          instance_id.c_str(),
                                                           m_run_id,
                                                           m_instance_manifest_hash.empty() ? (const unsigned char *)0
                                                                                            : &m_instance_manifest_hash[0],
@@ -1633,6 +1637,8 @@ bool DomGameApp::init_session(const dom_game_config &cfg) {
                                                           content_tlv.empty() ? (const unsigned char *)0 : &content_tlv[0],
                                                           (u32)content_tlv.size(),
                                                           coredata_sim_hash,
+                                                          (const unsigned char *)0,
+                                                          0u,
                                                           (const unsigned char *)0,
                                                           0u,
                                                           (const unsigned char *)0,
@@ -2163,7 +2169,7 @@ void DomGameApp::tick_fixed() {
         }
         if (m_derived_queue) {
             dom_derived_stats stats;
-            if (dom_derived_stats(m_derived_queue, &stats) == 0) {
+            if (dom_derived_get_stats(m_derived_queue, &stats) == 0) {
                 m_last_derived_stats = stats;
                 if (stats.queued > 0u || stats.running > 0u) {
                     derived_pending = true;

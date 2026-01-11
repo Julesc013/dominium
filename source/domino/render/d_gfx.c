@@ -689,7 +689,6 @@ int d_gfx_init(const char *backend_name)
     }
 #endif
 
-#if DOM_BACKEND_SOFT
 #if DOM_BACKEND_GL2
     if (!have_request && !chosen) {
         chosen = d_gfx_gl2_register_backend();

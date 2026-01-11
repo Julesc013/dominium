@@ -20,11 +20,6 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "domino/sys.h"
 #include "dom_profiler.h"
 
-namespace {
-
-static const u32 DEFAULT_MAX_JOBS = 128u;
-static const u32 DEFAULT_MAX_PAYLOAD_BYTES = 256u * 1024u;
-
 struct dom_derived_job {
     u64 id;
     u64 submit_seq;
@@ -49,6 +44,11 @@ struct dom_derived_queue {
     std::vector<dom_derived_job> jobs;
     dom_derived_stats stats;
 };
+
+namespace {
+
+static const u32 DEFAULT_MAX_JOBS = 128u;
+static const u32 DEFAULT_MAX_PAYLOAD_BYTES = 256u * 1024u;
 
 static bool is_terminal_state(u32 state) {
     return state == DOM_DERIVED_JOB_DONE ||
@@ -429,8 +429,8 @@ int dom_derived_cancel(dom_derived_queue *queue,
     return -1;
 }
 
-int dom_derived_stats(dom_derived_queue *queue,
-                      dom_derived_stats *out_stats) {
+int dom_derived_get_stats(dom_derived_queue *queue,
+                          dom_derived_stats *out_stats) {
     if (!queue || !out_stats) {
         return -1;
     }

@@ -98,11 +98,22 @@ target_include_directories(core_log
 
 add_library(core_caps STATIC
     core_caps.c
+    dom_caps.cpp
+    dom_caps_split.cpp
 )
 target_include_directories(core_caps
     PUBLIC
         ${DOMINIUM_INCLUDE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}
+)
+target_link_libraries(core_caps
+    PUBLIC
+        core_tlv
+)
+set_target_properties(core_caps PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
 )
 
 add_library(core_solver STATIC
@@ -144,8 +155,6 @@ add_library(dominium_common STATIC
     dom_profile_cli.cpp
     dom_schema_registry.cpp
     dom_migration.cpp
-    dom_caps.cpp
-    dom_caps_split.cpp
     dom_feature_epoch.cpp
     dom_profiler.cpp
     dom_budget_enforcer.cpp
@@ -161,4 +170,5 @@ target_include_directories(dominium_common
 target_link_libraries(dominium_common
     PUBLIC
         domino_core
+        core_caps
 )

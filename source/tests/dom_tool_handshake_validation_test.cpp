@@ -93,13 +93,13 @@ int main() {
         unsigned char manifest_hash[8];
         std::memset(manifest_hash, 0, sizeof(manifest_hash));
         dom::core_tlv::TlvWriter w;
-        w.add_u32(dom::core_tlv::CORE_TLV_TAG_SCHEMA_VERSION, DOM_GAME_HANDSHAKE_TLV_VERSION);
-        w.add_u64(DOM_GAME_HANDSHAKE_TLV_TAG_RUN_ID, 1ull);
-        w.add_string(DOM_GAME_HANDSHAKE_TLV_TAG_INSTANCE_ID, "inst1");
-        w.add_bytes(DOM_GAME_HANDSHAKE_TLV_TAG_INSTANCE_MANIFEST_HASH,
+        w.add_u32(dom::core_tlv::CORE_TLV_TAG_SCHEMA_VERSION, dom::DOM_GAME_HANDSHAKE_TLV_VERSION);
+        w.add_u64(dom::DOM_GAME_HANDSHAKE_TLV_TAG_RUN_ID, 1ull);
+        w.add_string(dom::DOM_GAME_HANDSHAKE_TLV_TAG_INSTANCE_ID, "inst1");
+        w.add_bytes(dom::DOM_GAME_HANDSHAKE_TLV_TAG_INSTANCE_MANIFEST_HASH,
                     manifest_hash,
                     (u32)sizeof(manifest_hash));
-        w.add_container(DOM_GAME_HANDSHAKE_TLV_TAG_SIM_CAPS, sim_caps_tlv);
+        w.add_container(dom::DOM_GAME_HANDSHAKE_TLV_TAG_SIM_CAPS, sim_caps_tlv);
         hs_bytes = w.bytes();
     }
 

@@ -2,6 +2,54 @@ cmake_minimum_required(VERSION 3.16)
 
 enable_testing()
 
+include_directories(
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+)
+
+set(DOM_GAME_RUNTIME_TEST_EXTRAS
+    ../dominium/game/runtime/dom_coredata_load.cpp
+    ../dominium/game/runtime/dom_mech_profiles.cpp
+    ../dominium/game/runtime/dom_media_provider.cpp
+    ../dominium/game/runtime/dom_atmos_provider.cpp
+    ../dominium/game/runtime/dom_atmos_provider_profile_v1.cpp
+    ../dominium/game/runtime/dom_ocean_provider.cpp
+    ../dominium/game/runtime/dom_weather_provider.cpp
+    ../dominium/game/runtime/dom_vehicle_aero.cpp
+    ../dominium/game/runtime/dom_station_registry.cpp
+    ../dominium/game/runtime/dom_route_graph.cpp
+    ../dominium/game/runtime/dom_transfer_scheduler.cpp
+    ../dominium/game/runtime/dom_production.cpp
+    ../dominium/game/runtime/dom_macro_economy.cpp
+    ../dominium/game/runtime/dom_macro_events.cpp
+    ../dominium/game/runtime/dom_faction_registry.cpp
+    ../dominium/game/runtime/dom_ai_scheduler.cpp
+    ../dominium/game/runtime/dom_ai_planner_logistics.cpp
+    ../dominium/game/runtime/dom_ai_planner_events.cpp
+    ../dominium/game/runtime/dom_orbit_lane.cpp
+    ../dominium/game/dom_game_save.cpp
+    ../dominium/game/runtime/dom_game_paths.c
+)
+
+add_library(dom_game_runtime_test_support STATIC ${DOM_GAME_RUNTIME_TEST_EXTRAS})
+
+set_source_files_properties(../dominium/game/runtime/dom_game_paths.c
+    PROPERTIES LANGUAGE CXX
+)
+
+target_include_directories(dom_game_runtime_test_support PRIVATE
+    ${CMAKE_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/source
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+set_target_properties(dom_game_runtime_test_support PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
 set(DG_DET_SCAN_FILES "")
 foreach(dir IN ITEMS
     ${CMAKE_SOURCE_DIR}/source/domino/core
@@ -272,11 +320,13 @@ add_executable(dom_surface_chunk_activation_determinism_test
 
 target_include_directories(dom_surface_chunk_activation_determinism_test PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
     ${CMAKE_SOURCE_DIR}/source/dominium/game
     ${CMAKE_SOURCE_DIR}/source/domino
 )
 
 target_link_libraries(dom_surface_chunk_activation_determinism_test
+    dominium_common
     domino_core
 )
 
@@ -326,11 +376,13 @@ add_executable(dom_surface_streaming_no_modal_loading_test
 
 target_include_directories(dom_surface_streaming_no_modal_loading_test PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
     ${CMAKE_SOURCE_DIR}/source/dominium/game
     ${CMAKE_SOURCE_DIR}/source/domino
 )
 
 target_link_libraries(dom_surface_streaming_no_modal_loading_test
+    dominium_common
     domino_core
 )
 
@@ -452,6 +504,7 @@ add_executable(dom_construction_replay_test
     ../dominium/game/runtime/dom_construction_registry.cpp
     ../dominium/game/runtime/dom_game_hash.c
     ../dominium/game/runtime/dom_game_replay.cpp
+    ../dominium/game/runtime/dom_game_save.cpp
     ../dominium/game/runtime/dom_game_content_id.cpp
     ../dominium/game/runtime/dom_io_guard.cpp
     ../dominium/game/runtime/dom_cosmo_graph.cpp
@@ -532,6 +585,8 @@ add_test(NAME dom_logistics_inventory_conservation_test COMMAND dom_logistics_in
 add_executable(dom_production_tick_invariance_test
     dom_production_tick_invariance_test.cpp
     ../dominium/game/runtime/dom_station_registry.cpp
+    ../dominium/game/runtime/dom_body_registry.cpp
+    ../dominium/game/runtime/dom_macro_economy.cpp
     ../dominium/game/runtime/dom_production.cpp
 )
 
@@ -568,10 +623,6 @@ add_executable(dom_logistics_save_load_roundtrip_test
     ../dominium/game/runtime/dom_surface_topology_torus.cpp
     ../dominium/game/runtime/dom_surface_height.cpp
     ../dominium/game/runtime/dom_construction_registry.cpp
-    ../dominium/game/runtime/dom_station_registry.cpp
-    ../dominium/game/runtime/dom_route_graph.cpp
-    ../dominium/game/runtime/dom_transfer_scheduler.cpp
-    ../dominium/game/runtime/dom_production.cpp
     ../dominium/game/runtime/dom_game_hash.c
     ../dominium/game/runtime/dom_game_replay.cpp
     ../dominium/game/runtime/dom_game_save.cpp
@@ -617,16 +668,6 @@ add_executable(dom_ai_determinism_same_seed_test
     ../dominium/game/runtime/dom_surface_topology_torus.cpp
     ../dominium/game/runtime/dom_surface_height.cpp
     ../dominium/game/runtime/dom_construction_registry.cpp
-    ../dominium/game/runtime/dom_station_registry.cpp
-    ../dominium/game/runtime/dom_route_graph.cpp
-    ../dominium/game/runtime/dom_transfer_scheduler.cpp
-    ../dominium/game/runtime/dom_production.cpp
-    ../dominium/game/runtime/dom_macro_economy.cpp
-    ../dominium/game/runtime/dom_macro_events.cpp
-    ../dominium/game/runtime/dom_faction_registry.cpp
-    ../dominium/game/runtime/dom_ai_scheduler.cpp
-    ../dominium/game/runtime/dom_ai_planner_logistics.cpp
-    ../dominium/game/runtime/dom_ai_planner_events.cpp
     ../dominium/game/runtime/dom_game_hash.c
     ../dominium/game/runtime/dom_game_replay.cpp
     ../dominium/game/runtime/dom_game_save.cpp
@@ -672,16 +713,6 @@ add_executable(dom_ai_budget_behavior_test
     ../dominium/game/runtime/dom_surface_topology_torus.cpp
     ../dominium/game/runtime/dom_surface_height.cpp
     ../dominium/game/runtime/dom_construction_registry.cpp
-    ../dominium/game/runtime/dom_station_registry.cpp
-    ../dominium/game/runtime/dom_route_graph.cpp
-    ../dominium/game/runtime/dom_transfer_scheduler.cpp
-    ../dominium/game/runtime/dom_production.cpp
-    ../dominium/game/runtime/dom_macro_economy.cpp
-    ../dominium/game/runtime/dom_macro_events.cpp
-    ../dominium/game/runtime/dom_faction_registry.cpp
-    ../dominium/game/runtime/dom_ai_scheduler.cpp
-    ../dominium/game/runtime/dom_ai_planner_logistics.cpp
-    ../dominium/game/runtime/dom_ai_planner_events.cpp
     ../dominium/game/runtime/dom_game_hash.c
     ../dominium/game/runtime/dom_game_replay.cpp
     ../dominium/game/runtime/dom_game_save.cpp
@@ -727,16 +758,6 @@ add_executable(dom_ai_budget_baseline_cap_test
     ../dominium/game/runtime/dom_surface_topology_torus.cpp
     ../dominium/game/runtime/dom_surface_height.cpp
     ../dominium/game/runtime/dom_construction_registry.cpp
-    ../dominium/game/runtime/dom_station_registry.cpp
-    ../dominium/game/runtime/dom_route_graph.cpp
-    ../dominium/game/runtime/dom_transfer_scheduler.cpp
-    ../dominium/game/runtime/dom_production.cpp
-    ../dominium/game/runtime/dom_macro_economy.cpp
-    ../dominium/game/runtime/dom_macro_events.cpp
-    ../dominium/game/runtime/dom_faction_registry.cpp
-    ../dominium/game/runtime/dom_ai_scheduler.cpp
-    ../dominium/game/runtime/dom_ai_planner_logistics.cpp
-    ../dominium/game/runtime/dom_ai_planner_events.cpp
     ../dominium/game/runtime/dom_game_budgets.cpp
     ../dominium/game/runtime/dom_game_hash.c
     ../dominium/game/runtime/dom_game_replay.cpp
@@ -783,16 +804,6 @@ add_executable(dom_ai_persistence_roundtrip_test
     ../dominium/game/runtime/dom_surface_topology_torus.cpp
     ../dominium/game/runtime/dom_surface_height.cpp
     ../dominium/game/runtime/dom_construction_registry.cpp
-    ../dominium/game/runtime/dom_station_registry.cpp
-    ../dominium/game/runtime/dom_route_graph.cpp
-    ../dominium/game/runtime/dom_transfer_scheduler.cpp
-    ../dominium/game/runtime/dom_production.cpp
-    ../dominium/game/runtime/dom_macro_economy.cpp
-    ../dominium/game/runtime/dom_macro_events.cpp
-    ../dominium/game/runtime/dom_faction_registry.cpp
-    ../dominium/game/runtime/dom_ai_scheduler.cpp
-    ../dominium/game/runtime/dom_ai_planner_logistics.cpp
-    ../dominium/game/runtime/dom_ai_planner_events.cpp
     ../dominium/game/runtime/dom_game_hash.c
     ../dominium/game/runtime/dom_game_replay.cpp
     ../dominium/game/runtime/dom_game_save.cpp
@@ -838,16 +849,6 @@ add_executable(dom_ai_replay_test
     ../dominium/game/runtime/dom_surface_topology_torus.cpp
     ../dominium/game/runtime/dom_surface_height.cpp
     ../dominium/game/runtime/dom_construction_registry.cpp
-    ../dominium/game/runtime/dom_station_registry.cpp
-    ../dominium/game/runtime/dom_route_graph.cpp
-    ../dominium/game/runtime/dom_transfer_scheduler.cpp
-    ../dominium/game/runtime/dom_production.cpp
-    ../dominium/game/runtime/dom_macro_economy.cpp
-    ../dominium/game/runtime/dom_macro_events.cpp
-    ../dominium/game/runtime/dom_faction_registry.cpp
-    ../dominium/game/runtime/dom_ai_scheduler.cpp
-    ../dominium/game/runtime/dom_ai_planner_logistics.cpp
-    ../dominium/game/runtime/dom_ai_planner_events.cpp
     ../dominium/game/runtime/dom_game_hash.c
     ../dominium/game/runtime/dom_game_replay.cpp
     ../dominium/game/runtime/dom_game_save.cpp
@@ -991,6 +992,7 @@ target_include_directories(dom_no_modal_loading_test PRIVATE
 )
 
 target_link_libraries(dom_no_modal_loading_test
+    dominium_common
     domino_core
 )
 
@@ -1014,6 +1016,7 @@ target_include_directories(dom_derived_order_independence_test PRIVATE
 )
 
 target_link_libraries(dom_derived_order_independence_test
+    dominium_common
     domino_core
 )
 
@@ -1039,8 +1042,11 @@ add_executable(dom_snapshot_isolation_test
     ../dominium/game/runtime/dom_surface_topology_sphere.cpp
     ../dominium/game/runtime/dom_surface_topology_ellipsoid.cpp
     ../dominium/game/runtime/dom_surface_topology_torus.cpp
+    ../dominium/game/runtime/dom_surface_height.cpp
     ../dominium/game/runtime/dom_game_hash.c
     ../dominium/game/runtime/dom_game_replay.cpp
+    ../dominium/game/runtime/dom_game_save.cpp
+    ../dominium/game/runtime/dom_game_content_id.cpp
     ../dominium/game/runtime/dom_snapshot.cpp
     ../dominium/game/runtime/dom_surface_topology.cpp
     ../dominium/game/runtime/dom_surface_topology_sphere.cpp
@@ -1116,8 +1122,11 @@ add_executable(dom_session_authority_tests
     ../dominium/game/runtime/dom_surface_topology_sphere.cpp
     ../dominium/game/runtime/dom_surface_topology_ellipsoid.cpp
     ../dominium/game/runtime/dom_surface_topology_torus.cpp
+    ../dominium/game/runtime/dom_surface_height.cpp
+    ../dominium/game/runtime/dom_construction_registry.cpp
     ../dominium/game/runtime/dom_game_hash.c
     ../dominium/game/runtime/dom_game_replay.cpp
+    ../dominium/game/runtime/dom_game_save.cpp
     ../dominium/game/runtime/dom_game_net_driver.cpp
     ../dominium/game/runtime/dom_game_net_snapshot.cpp
     ../dominium/game/runtime/dom_game_content_id.cpp
@@ -1185,8 +1194,11 @@ add_executable(dom_qos_no_sim_effect_test
     ../dominium/game/runtime/dom_surface_topology_sphere.cpp
     ../dominium/game/runtime/dom_surface_topology_ellipsoid.cpp
     ../dominium/game/runtime/dom_surface_topology_torus.cpp
+    ../dominium/game/runtime/dom_surface_height.cpp
     ../dominium/game/runtime/dom_game_hash.c
     ../dominium/game/runtime/dom_game_replay.cpp
+    ../dominium/game/runtime/dom_game_save.cpp
+    ../dominium/game/runtime/dom_game_content_id.cpp
     ../dominium/game/runtime/dom_io_guard.cpp
     ../dominium/game/runtime/dom_qos.cpp
     ../dominium/game/runtime/dom_cosmo_graph.cpp
@@ -1220,8 +1232,19 @@ add_executable(dom_qos_overload_test
     ../dominium/game/runtime/dom_system_registry.cpp
     ../dominium/game/runtime/dom_body_registry.cpp
     ../dominium/game/runtime/dom_frames.cpp
+    ../dominium/game/runtime/dom_lane_scheduler.cpp
+    ../dominium/game/runtime/dom_surface_chunks.cpp
+    ../dominium/game/runtime/dom_derived_jobs.cpp
+    ../dominium/game/runtime/dom_surface_topology.cpp
+    ../dominium/game/runtime/dom_surface_topology_sphere.cpp
+    ../dominium/game/runtime/dom_surface_topology_ellipsoid.cpp
+    ../dominium/game/runtime/dom_surface_topology_torus.cpp
+    ../dominium/game/runtime/dom_surface_height.cpp
+    ../dominium/game/runtime/dom_construction_registry.cpp
     ../dominium/game/runtime/dom_game_hash.c
     ../dominium/game/runtime/dom_game_replay.cpp
+    ../dominium/game/runtime/dom_game_save.cpp
+    ../dominium/game/runtime/dom_game_content_id.cpp
     ../dominium/game/runtime/dom_io_guard.cpp
     ../dominium/game/runtime/dom_qos.cpp
     ../dominium/game/runtime/dom_cosmo_graph.cpp
@@ -1261,6 +1284,7 @@ target_include_directories(dom_orbit_golden_vectors_test PRIVATE
 )
 
 target_link_libraries(dom_orbit_golden_vectors_test
+    dominium_common
     domino_core
 )
 
@@ -1284,6 +1308,7 @@ target_include_directories(dom_orbit_warp_invariance_test PRIVATE
 )
 
 target_link_libraries(dom_orbit_warp_invariance_test
+    dominium_common
     domino_core
 )
 
@@ -1307,6 +1332,7 @@ target_include_directories(dom_orbit_event_consistency_test PRIVATE
 )
 
 target_link_libraries(dom_orbit_event_consistency_test
+    dominium_common
     domino_core
 )
 
@@ -1331,8 +1357,11 @@ add_executable(dom_orbit_warp_authority_test
     ../dominium/game/runtime/dom_surface_topology_sphere.cpp
     ../dominium/game/runtime/dom_surface_topology_ellipsoid.cpp
     ../dominium/game/runtime/dom_surface_topology_torus.cpp
+    ../dominium/game/runtime/dom_surface_height.cpp
+    ../dominium/game/runtime/dom_construction_registry.cpp
     ../dominium/game/runtime/dom_game_hash.c
     ../dominium/game/runtime/dom_game_replay.cpp
+    ../dominium/game/runtime/dom_game_save.cpp
     ../dominium/game/runtime/dom_game_net_driver.cpp
     ../dominium/game/runtime/dom_game_net_snapshot.cpp
     ../dominium/game/runtime/dom_game_content_id.cpp
@@ -1376,8 +1405,12 @@ add_executable(dom_orbit_replay_test
     ../dominium/game/runtime/dom_surface_topology_sphere.cpp
     ../dominium/game/runtime/dom_surface_topology_ellipsoid.cpp
     ../dominium/game/runtime/dom_surface_topology_torus.cpp
+    ../dominium/game/runtime/dom_surface_height.cpp
+    ../dominium/game/runtime/dom_construction_registry.cpp
     ../dominium/game/runtime/dom_game_hash.c
     ../dominium/game/runtime/dom_game_replay.cpp
+    ../dominium/game/runtime/dom_game_save.cpp
+    ../dominium/game/runtime/dom_game_content_id.cpp
     ../dominium/game/runtime/dom_io_guard.cpp
     ../dominium/game/runtime/dom_cosmo_graph.cpp
     ../dominium/game/runtime/dom_cosmo_transit.cpp
@@ -2831,6 +2864,7 @@ add_executable(dom_tool_handshake_validation_test
     ../dominium/game/runtime/dom_game_handshake.cpp
     ../dominium/game/runtime/dom_game_paths.c
     ../dominium/game/runtime/dom_io_guard.cpp
+    ../dominium/game/runtime/dom_universe_bundle.cpp
 )
 
 set_source_files_properties(../dominium/game/runtime/dom_game_paths.c
@@ -2903,6 +2937,7 @@ target_include_directories(dom_validator_invalid_content_test PRIVATE
 )
 
 target_link_libraries(dom_validator_invalid_content_test
+    dominium_tools_common
     dominium_common
     core_tlv
     domino_core
@@ -2921,6 +2956,7 @@ add_executable(dom_replay_analyzer_basic_test
     ../dominium/tools/replay_analyzer/ra_parser.cpp
     ../dominium/tools/replay_analyzer/ra_diff.cpp
     ../dominium/game/runtime/dom_game_replay.cpp
+    ../dominium/game/runtime/dom_io_guard.cpp
 )
 
 target_include_directories(dom_replay_analyzer_basic_test PRIVATE
@@ -2958,6 +2994,8 @@ target_include_directories(coredata_compile_determinism_test PRIVATE
     ${CMAKE_SOURCE_DIR}/source
     ${CMAKE_SOURCE_DIR}/source/dominium/common
     ${CMAKE_SOURCE_DIR}/source/dominium/tools
+    ${CMAKE_SOURCE_DIR}/source/dominium/tools/coredata_compile
+    ${CMAKE_SOURCE_DIR}/source/dominium/tools/coredata_validate
     ${CMAKE_SOURCE_DIR}/source/domino
 )
 
@@ -2990,6 +3028,8 @@ target_include_directories(coredata_compile_schema_failure_test PRIVATE
     ${CMAKE_SOURCE_DIR}/source
     ${CMAKE_SOURCE_DIR}/source/dominium/common
     ${CMAKE_SOURCE_DIR}/source/dominium/tools
+    ${CMAKE_SOURCE_DIR}/source/dominium/tools/coredata_compile
+    ${CMAKE_SOURCE_DIR}/source/dominium/tools/coredata_validate
     ${CMAKE_SOURCE_DIR}/source/domino
 )
 
@@ -3024,6 +3064,8 @@ target_include_directories(coredata_validate_valid_passes PRIVATE
     ${CMAKE_SOURCE_DIR}/source
     ${CMAKE_SOURCE_DIR}/source/dominium/common
     ${CMAKE_SOURCE_DIR}/source/dominium/tools
+    ${CMAKE_SOURCE_DIR}/source/dominium/tools/coredata_compile
+    ${CMAKE_SOURCE_DIR}/source/dominium/tools/coredata_validate
     ${CMAKE_SOURCE_DIR}/source/domino
 )
 
@@ -3059,6 +3101,8 @@ target_include_directories(coredata_validate_schema_error_fails PRIVATE
     ${CMAKE_SOURCE_DIR}/source
     ${CMAKE_SOURCE_DIR}/source/dominium/common
     ${CMAKE_SOURCE_DIR}/source/dominium/tools
+    ${CMAKE_SOURCE_DIR}/source/dominium/tools/coredata_compile
+    ${CMAKE_SOURCE_DIR}/source/dominium/tools/coredata_validate
     ${CMAKE_SOURCE_DIR}/source/domino
 )
 
@@ -3094,6 +3138,8 @@ target_include_directories(coredata_validate_policy_error_fails PRIVATE
     ${CMAKE_SOURCE_DIR}/source
     ${CMAKE_SOURCE_DIR}/source/dominium/common
     ${CMAKE_SOURCE_DIR}/source/dominium/tools
+    ${CMAKE_SOURCE_DIR}/source/dominium/tools/coredata_compile
+    ${CMAKE_SOURCE_DIR}/source/dominium/tools/coredata_validate
     ${CMAKE_SOURCE_DIR}/source/domino
 )
 
@@ -3131,6 +3177,8 @@ target_include_directories(coredata_validate_tlv_pack_passes PRIVATE
     ${CMAKE_SOURCE_DIR}/source
     ${CMAKE_SOURCE_DIR}/source/dominium/common
     ${CMAKE_SOURCE_DIR}/source/dominium/tools
+    ${CMAKE_SOURCE_DIR}/source/dominium/tools/coredata_compile
+    ${CMAKE_SOURCE_DIR}/source/dominium/tools/coredata_validate
     ${CMAKE_SOURCE_DIR}/source/domino
 )
 
@@ -3151,3 +3199,74 @@ set_target_properties(coredata_validate_tlv_pack_passes PROPERTIES
 )
 
 add_test(NAME coredata_validate_tlv_pack_passes COMMAND coredata_validate_tlv_pack_passes)
+
+function(dom_attach_runtime_test_support)
+    get_property(dom_all_targets GLOBAL PROPERTY TARGETS)
+    foreach(dom_tgt IN LISTS dom_all_targets)
+        if(TARGET ${dom_tgt})
+            get_target_property(dom_tgt_type ${dom_tgt} TYPE)
+            if(dom_tgt_type STREQUAL "EXECUTABLE")
+                get_target_property(dom_tgt_sources ${dom_tgt} SOURCES)
+                if(dom_tgt_sources)
+                    string(TOLOWER "${dom_tgt_sources}" dom_tgt_sources_lower)
+                    string(FIND "${dom_tgt_sources_lower}" "dom_game_runtime.cpp" dom_runtime_pos)
+                    if(NOT dom_runtime_pos EQUAL -1)
+                        target_link_libraries(${dom_tgt} dom_game_runtime_test_support)
+                        target_include_directories(${dom_tgt} PRIVATE
+                            ${CMAKE_SOURCE_DIR}/include
+                            ${CMAKE_SOURCE_DIR}/source
+                            ${CMAKE_SOURCE_DIR}/source/dominium/common
+                            ${CMAKE_SOURCE_DIR}/source/dominium/game
+                            ${CMAKE_SOURCE_DIR}/source/domino
+                        )
+                    endif()
+                endif()
+            endif()
+        endif()
+    endforeach()
+endfunction()
+
+dom_attach_runtime_test_support()
+
+set(dom_runtime_support_tests
+    dom_construction_save_load_roundtrip_test
+    dom_construction_replay_test
+    dom_logistics_save_load_roundtrip_test
+    dom_ai_determinism_same_seed_test
+    dom_ai_budget_behavior_test
+    dom_ai_budget_baseline_cap_test
+    dom_ai_persistence_roundtrip_test
+    dom_ai_replay_test
+    dom_snapshot_isolation_test
+    dom_session_authority_tests
+    dom_qos_no_sim_effect_test
+    dom_qos_overload_test
+    dom_orbit_warp_authority_test
+    dom_orbit_replay_test
+)
+foreach(dom_tgt IN LISTS dom_runtime_support_tests)
+    if(TARGET ${dom_tgt})
+        target_link_libraries(${dom_tgt} dom_game_runtime_test_support)
+    endif()
+endforeach()
+
+foreach(dom_budget_test IN ITEMS dom_ai_budget_baseline_cap_test dom_ai_budget_behavior_test)
+    if(TARGET ${dom_budget_test})
+        target_link_libraries(${dom_budget_test} dom_game_runtime_test_support)
+        target_include_directories(${dom_budget_test} PRIVATE
+            ${CMAKE_SOURCE_DIR}/include
+            ${CMAKE_SOURCE_DIR}/source
+            ${CMAKE_SOURCE_DIR}/source/dominium/common
+            ${CMAKE_SOURCE_DIR}/source/dominium/game
+            ${CMAKE_SOURCE_DIR}/source/domino
+        )
+    endif()
+endforeach()
+
+if(TARGET dom_ui_continuity_tests)
+    target_include_directories(dom_ui_continuity_tests PRIVATE
+        ${CMAKE_SOURCE_DIR}/include
+        ${CMAKE_SOURCE_DIR}/source
+        ${CMAKE_SOURCE_DIR}/source/domino
+    )
+endif()

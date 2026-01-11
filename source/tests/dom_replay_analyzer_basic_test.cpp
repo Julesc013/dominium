@@ -67,6 +67,7 @@ int main() {
                                       0u,
                                       (const unsigned char *)0,
                                       0u,
+                                      0ull,
                                       (const unsigned char *)0,
                                       0u,
                                       (const unsigned char *)0,
