@@ -57,6 +57,7 @@ add_executable(dominium_game
     runtime/dom_production.cpp
     runtime/dom_orbit_lane.cpp
     runtime/dom_calendar.cpp
+    runtime/dom_time_knowledge.cpp
     runtime/dom_system_registry.cpp
     runtime/dom_body_registry.cpp
     runtime/dom_surface_topology.cpp
