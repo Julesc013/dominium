@@ -32,12 +32,30 @@ static d_bool is_valid_frame(dom_time_frame_id frame) {
     return (frame >= DOM_TIME_FRAME_ACT && frame <= DOM_TIME_FRAME_CPT) ? D_TRUE : D_FALSE;
 }
 
+static d_bool is_valid_clock_kind(dom_time_clock_kind kind) {
+    return (kind >= DOM_TIME_CLOCK_SUNDIAL && kind <= DOM_TIME_CLOCK_ASTRONOMICAL) ? D_TRUE : D_FALSE;
+}
+
+static void insert_clock_sorted(std::vector<dom_time_clock_def> &defs,
+                                std::vector<dom_time_clock_state> &states,
+                                const dom_time_clock_def &def,
+                                const dom_time_clock_state &state) {
+    size_t i = 0u;
+    while (i < defs.size() && defs[i].clock_id < def.clock_id) {
+        ++i;
+    }
+    defs.insert(defs.begin() + (std::vector<dom_time_clock_def>::difference_type)i, def);
+    states.insert(states.begin() + (std::vector<dom_time_clock_state>::difference_type)i, state);
+}
+
 } // namespace
 
 struct dom_time_knowledge {
     dom_time_actor_id actor_id;
     u32 known_frames_mask;
     std::vector<dom_calendar_id> calendars;
+    std::vector<dom_time_clock_def> clocks;
+    std::vector<dom_time_clock_state> clock_states;
 };
 
 dom_time_knowledge *dom_time_knowledge_create(dom_time_actor_id actor_id) {
@@ -66,6 +84,8 @@ int dom_time_knowledge_init(dom_time_knowledge *knowledge, dom_time_actor_id act
     knowledge->actor_id = actor_id;
     knowledge->known_frames_mask = 0u;
     knowledge->calendars.clear();
+    knowledge->clocks.clear();
+    knowledge->clock_states.clear();
     return DOM_TIME_KNOWLEDGE_OK;
 }
 
@@ -130,5 +150,116 @@ int dom_time_knowledge_list_calendars(const dom_time_knowledge *knowledge,
         }
     }
     *out_count = count;
+    return DOM_TIME_KNOWLEDGE_OK;
+}
+
+int dom_time_knowledge_add_clock(dom_time_knowledge *knowledge,
+                                 const dom_time_clock_def *def,
+                                 dom_tick calibration_tick) {
+    size_t i;
+    dom_time_clock_state state;
+    if (!knowledge || !def) {
+        return DOM_TIME_KNOWLEDGE_INVALID_ARGUMENT;
+    }
+    if (def->clock_id == 0ull || !is_valid_clock_kind(def->kind)) {
+        return DOM_TIME_KNOWLEDGE_INVALID_ARGUMENT;
+    }
+    if (!is_valid_frame(def->frame)) {
+        return DOM_TIME_KNOWLEDGE_INVALID_ARGUMENT;
+    }
+    for (i = 0u; i < knowledge->clocks.size(); ++i) {
+        if (knowledge->clocks[i].clock_id == def->clock_id) {
+            return DOM_TIME_KNOWLEDGE_DUPLICATE_ID;
+        }
+    }
+    state.clock_id = def->clock_id;
+    state.state_flags = 0u;
+    state.damage_ppm = 0u;
+    state.damage_uncertainty_seconds = 0u;
+    state.last_calibration_tick = calibration_tick;
+    insert_clock_sorted(knowledge->clocks, knowledge->clock_states, *def, state);
+    return DOM_TIME_KNOWLEDGE_OK;
+}
+
+int dom_time_knowledge_set_clock_state(dom_time_knowledge *knowledge,
+                                       dom_time_clock_id clock_id,
+                                       u32 state_flags,
+                                       u32 damage_ppm,
+                                       u32 damage_uncertainty_seconds) {
+    size_t i;
+    if (!knowledge || clock_id == 0ull) {
+        return DOM_TIME_KNOWLEDGE_INVALID_ARGUMENT;
+    }
+    for (i = 0u; i < knowledge->clock_states.size(); ++i) {
+        if (knowledge->clock_states[i].clock_id == clock_id) {
+            knowledge->clock_states[i].state_flags = state_flags;
+            knowledge->clock_states[i].damage_ppm = damage_ppm;
+            knowledge->clock_states[i].damage_uncertainty_seconds = damage_uncertainty_seconds;
+            return DOM_TIME_KNOWLEDGE_OK;
+        }
+    }
+    return DOM_TIME_KNOWLEDGE_NOT_FOUND;
+}
+
+int dom_time_knowledge_sample_clock(const dom_time_knowledge *knowledge,
+                                    dom_time_clock_id clock_id,
+                                    dom_tick tick,
+                                    dom_ups ups,
+                                    const dom_time_clock_env *env,
+                                    dom_time_clock_reading *out_reading) {
+    (void)knowledge;
+    (void)clock_id;
+    (void)tick;
+    (void)ups;
+    (void)env;
+    if (!out_reading) {
+        return DOM_TIME_KNOWLEDGE_INVALID_ARGUMENT;
+    }
+    out_reading->flags = DOM_TIME_CLOCK_READING_UNKNOWN;
+    return DOM_TIME_KNOWLEDGE_NOT_IMPLEMENTED;
+}
+
+int dom_time_knowledge_sample_all(const dom_time_knowledge *knowledge,
+                                  dom_tick tick,
+                                  dom_ups ups,
+                                  const dom_time_clock_env *env,
+                                  dom_time_clock_reading *out_readings,
+                                  u32 max_readings,
+                                  u32 *out_count) {
+    if (!knowledge || !out_count) {
+        return DOM_TIME_KNOWLEDGE_INVALID_ARGUMENT;
+    }
+    *out_count = 0u;
+    if (knowledge->clocks.empty()) {
+        return DOM_TIME_KNOWLEDGE_UNKNOWN;
+    }
+    if (!out_readings || max_readings == 0u) {
+        return DOM_TIME_KNOWLEDGE_OK;
+    }
+    for (u32 i = 0u; i < (u32)knowledge->clocks.size() && i < max_readings; ++i) {
+        (void)dom_time_knowledge_sample_clock(knowledge,
+                                              knowledge->clocks[i].clock_id,
+                                              tick,
+                                              ups,
+                                              env,
+                                              &out_readings[i]);
+        *out_count += 1u;
+    }
+    return DOM_TIME_KNOWLEDGE_OK;
+}
+
+int dom_time_knowledge_apply_document(dom_time_knowledge *knowledge,
+                                      const dom_time_document *doc) {
+    if (!knowledge || !doc) {
+        return DOM_TIME_KNOWLEDGE_INVALID_ARGUMENT;
+    }
+    if (doc->frame_mask != 0u) {
+        knowledge->known_frames_mask |= doc->frame_mask;
+    }
+    if (doc->calendar_id != 0ull) {
+        if (dom_time_knowledge_add_calendar(knowledge, doc->calendar_id) != DOM_TIME_KNOWLEDGE_OK) {
+            return DOM_TIME_KNOWLEDGE_DUPLICATE_ID;
+        }
+    }
     return DOM_TIME_KNOWLEDGE_OK;
 }
