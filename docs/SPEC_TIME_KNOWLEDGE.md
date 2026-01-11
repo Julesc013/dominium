@@ -1,51 +1,126 @@
 # SPEC_TIME_KNOWLEDGE — Diegetic Time and Epistemic Gating
 
-Status: draft
+Status: draft  
 Version: 1
 
 ## Purpose
 Define how time knowledge is acquired, gated, and represented. Time knowledge is
-diegetic and subject to uncertainty; it does not affect authoritative ACT.
-
-This spec is documentation-only. It introduces no runtime logic.
+diegetic, uncertain, and actor-specific. It never alters authoritative ACT.
 
 ## Core rules
-- At start, actors may have no clock, no calendar, and no HUD time.
-- Time knowledge is unlocked via devices, documents, astronomy, organizations,
-  or networks.
-- HUD time is strictly diegetic: remove device -> info disappears.
-- Damaged devices produce drift and uncertainty.
+- Actors may start with no clock and no calendar.
+- Time knowledge is granted only via devices, documents, or institutions.
+- HUD time is diegetic: remove a device -> time becomes UNKNOWN.
+- Drift and uncertainty are deterministic; no RNG.
+- Conflicts between clocks are visible and must not be auto-resolved.
 
-ASCII diagram:
+## Time knowledge pipeline
 
-  ACT -> Time Standard -> Device/Knowledge Gate -> UI Label/UNKNOWN
+  ACT (engine) -> Frame conversion -> Clock device output
+       -> Effect fields -> Time knowledge update -> Belief store -> UI
 
-## Knowledge gating
-Time standards (calendar, clock, frame preference) are usable only if known and
-authorized. Lack of knowledge produces UNKNOWN, not defaults.
+No other path to time knowledge is allowed.
 
-## Uncertainty and drift
-- Devices can drift deterministically over ACT.
-- Uncertainty is explicit and bounded.
-- No RNG-based jitter.
+## Data model
+### Time knowledge state (per actor/faction)
+- known_frames_mask (ACT/BST/GCT/CPT)
+- known_calendars (IDs)
+- known_clocks (clock IDs)
+- uncertainty envelope per clock
+- last calibration tick per clock
+
+The state does NOT store ACT itself. It stores only epistemic artifacts.
+
+### Clock device
+A clock is a deterministic source of time information with explicit limits.
+
+Clock device fields:
+- reference frame
+- base accuracy (seconds)
+- drift rate (ppm)
+- calibration requirements
+- failure modes (power loss, damage, jamming)
+
+Clock taxonomy (minimum set):
+- sundial
+- mechanical clock
+- quartz clock
+- atomic clock
+- network time feed
+- astronomical observation
+
+### Time document
+Time documents grant knowledge of standards, not live time:
+- calendars
+- ephemerides
+- almanacs
+
+Documents never create time readings.
+
+## Drift & uncertainty
+Drift is deterministic and based on:
+- elapsed ACT since last calibration
+- device drift rate
+- effect-field degradation
+- damage and power state
+
+Uncertainty widens over ACT and never collapses without calibration or
+explicit observation. Unknown is returned when a device cannot produce a
+reading.
+
+## Calibration
+Calibration is an explicit action that:
+- resets drift accumulation
+- reduces uncertainty
+- consumes time/resources (game-layer)
+- produces an audit record
+
+Calibration does not change ACT and does not synchronize other devices unless
+explicitly commanded.
+
+## Multiple clocks & disagreement
+- Multiple clocks may exist per actor.
+- Conflicting readings are displayed side-by-side.
+- The player or UI selects which clock to trust.
+- No implicit reconciliation is permitted.
+
+## Failure & loss modes
+- Destruction -> clock removed -> UNKNOWN time
+- Power loss -> reading unavailable or downgraded
+- Isolation -> drift accumulates deterministically
+- Jamming -> clock output becomes UNKNOWN
 
 ## Examples
-Positive:
-- An actor without a clock sees UNKNOWN for time labels.
-- A damaged clock shows a bounded interval, not a precise time.
+Starting with no clock:
+- No devices -> UI shows UNKNOWN for time.
 
-Negative (forbidden):
-- Always showing time in UI regardless of devices.
-- Using wall-clock time to fill gaps.
+Losing a watch:
+- Remove device -> time readings disappear immediately.
+
+Syncing via radio:
+- Network time feed reduces uncertainty after calibration.
+
+Clocks drifting apart:
+- Two clocks with different drift rates show different times; both are visible.
+
+## Prohibitions
+- Implicit time knowledge
+- Automatic synchronization
+- OS time usage
+- Calendar math in the knowledge layer
+- UI time display without a clock
+
+## Test requirements (spec-only)
+- No clock -> UNKNOWN time
+- Drift accumulation correctness
+- Calibration reduces uncertainty
+- Device damage effects
+- Multiple clock disagreement
+- Deterministic behavior across replay
 
 ## References
-- docs/SPEC_STANDARDS_AND_RENDERERS.md
-- docs/SPEC_INFORMATION_MODEL.md
-- docs/SPEC_EPISTEMIC_GATING.md
-- docs/SPEC_TIME_STANDARDS.md
-- docs/SPEC_EFFECT_FIELDS.md
-
-## Test and validation requirements (spec-only)
-- Time knowledge gating tests
-- Device loss drift tests
-- UNKNOWN propagation tests
+- `docs/SPEC_STANDARDS_AND_RENDERERS.md`
+- `docs/SPEC_INFORMATION_MODEL.md`
+- `docs/SPEC_EPISTEMIC_GATING.md`
+- `docs/SPEC_TIME_STANDARDS.md`
+- `docs/SPEC_EFFECT_FIELDS.md`
