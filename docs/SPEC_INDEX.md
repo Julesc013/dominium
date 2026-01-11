@@ -41,6 +41,7 @@ Version: 1
 
 ## Epistemic interface canon
 - `docs/SPEC_EPISTEMIC_INTERFACE.md`
+- `docs/SPEC_UI_CAPABILITIES.md`
 
 ## Sensors and observation canon
 - `docs/SPEC_SENSORS.md`

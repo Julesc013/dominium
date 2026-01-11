@@ -41,6 +41,8 @@ add_executable(dominium_game
     runtime/dom_io_guard.cpp
     runtime/dom_fidelity.cpp
     runtime/dom_snapshot.cpp
+    runtime/dom_belief_store.cpp
+    runtime/dom_capability_engine.cpp
     runtime/dom_universe_bundle.cpp
     runtime/dom_media_provider.cpp
     runtime/dom_atmos_provider.cpp
