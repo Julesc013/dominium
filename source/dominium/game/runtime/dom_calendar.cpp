@@ -45,6 +45,110 @@ static void reset_date(dom_calendar_date *out_date) {
     out_date->fields_present = 0u;
 }
 
+static int add_u64(u64 a, u64 b, u64 *out_val);
+static int mul_u64(u64 a, u64 b, u64 *out_val);
+
+static int compute_calendar_id(const char *name, dom_calendar_id *out_id) {
+    u64 hash = 0ull;
+    if (!name || !out_id) {
+        return DOM_CALENDAR_INVALID_ARGUMENT;
+    }
+    if (dom_id_hash64(name, (u32)strlen(name), &hash) != DOM_SPACETIME_OK) {
+        return DOM_CALENDAR_ERR;
+    }
+    *out_id = hash;
+    return DOM_CALENDAR_OK;
+}
+
+static int sum_month_lengths(const u8 *months, u32 month_count, u64 *out_sum) {
+    u64 sum = 0ull;
+    u32 i;
+    if (!months || !out_sum || month_count == 0u) {
+        return DOM_CALENDAR_INVALID_ARGUMENT;
+    }
+    for (i = 0u; i < month_count; ++i) {
+        if (add_u64(sum, (u64)months[i], &sum) != DOM_CALENDAR_OK) {
+            return DOM_CALENDAR_OVERFLOW;
+        }
+    }
+    *out_sum = sum;
+    return DOM_CALENDAR_OK;
+}
+
+static int register_fixed_pattern(dom_calendar_registry *registry,
+                                  const char *id_name,
+                                  dom_calendar_kind kind,
+                                  const u8 *months,
+                                  u32 month_count,
+                                  u32 week_length,
+                                  u32 intercalary_after_month,
+                                  u32 intercalary_base_days,
+                                  u32 intercalary_leap_days,
+                                  dom_calendar_leap_rule leap_rule,
+                                  u64 day_seconds,
+                                  i32 year_offset) {
+    dom_calendar_def def;
+    dom_calendar_id id = 0ull;
+    u64 month_sum = 0ull;
+    u64 year_days = 0ull;
+    int rc;
+
+    if (!registry || !id_name || !months || month_count == 0u) {
+        return DOM_CALENDAR_INVALID_ARGUMENT;
+    }
+    rc = compute_calendar_id(id_name, &id);
+    if (rc != DOM_CALENDAR_OK) {
+        return rc;
+    }
+    rc = sum_month_lengths(months, month_count, &month_sum);
+    if (rc != DOM_CALENDAR_OK) {
+        return rc;
+    }
+    rc = add_u64(month_sum, (u64)intercalary_base_days, &year_days);
+    if (rc != DOM_CALENDAR_OK) {
+        return rc;
+    }
+    memset(&def, 0, sizeof(def));
+    def.id = id;
+    def.kind = kind;
+    def.day_seconds = day_seconds;
+    def.u.fixed.month_lengths = months;
+    def.u.fixed.month_count = month_count;
+    def.u.fixed.week_length = week_length;
+    def.u.fixed.year_days = (u32)year_days;
+    def.u.fixed.intercalary_after_month = intercalary_after_month;
+    def.u.fixed.intercalary_base_days = intercalary_base_days;
+    def.u.fixed.intercalary_leap_days = intercalary_leap_days;
+    def.u.fixed.leap_rule = leap_rule;
+    def.year_offset = year_offset;
+    return dom_calendar_registry_register(registry, &def);
+}
+
+static int register_day_count(dom_calendar_registry *registry,
+                              const char *id_name,
+                              u64 epoch_days,
+                              u64 day_seconds,
+                              i32 year_offset) {
+    dom_calendar_def def;
+    dom_calendar_id id = 0ull;
+    int rc;
+
+    if (!registry || !id_name) {
+        return DOM_CALENDAR_INVALID_ARGUMENT;
+    }
+    rc = compute_calendar_id(id_name, &id);
+    if (rc != DOM_CALENDAR_OK) {
+        return rc;
+    }
+    memset(&def, 0, sizeof(def));
+    def.id = id;
+    def.kind = DOM_CALENDAR_KIND_DAY_COUNT;
+    def.day_seconds = day_seconds;
+    def.u.epoch.epoch_days = epoch_days;
+    def.year_offset = year_offset;
+    return dom_calendar_registry_register(registry, &def);
+}
+
 static int add_u64(u64 a, u64 b, u64 *out_val) {
     u64 max = (u64)~(u64)0;
     if (!out_val) {
@@ -283,6 +387,65 @@ static int month_day_to_doy(const dom_calendar_fixed_pattern *fixed,
     return DOM_CALENDAR_OK;
 }
 
+static int intercalary_to_doy(const dom_calendar_fixed_pattern *fixed,
+                              dom_calendar_intercalary token,
+                              d_bool leap,
+                              u64 *out_doy) {
+    u64 doy = 0ull;
+    u64 intercalary_total = 0ull;
+    u32 i;
+
+    if (!fixed || !out_doy) {
+        return DOM_CALENDAR_INVALID_ARGUMENT;
+    }
+    if (token == DOM_CALENDAR_INTERCALARY_NONE) {
+        return DOM_CALENDAR_INVALID_ARGUMENT;
+    }
+
+    intercalary_total = (u64)fixed->intercalary_base_days;
+    if (leap == D_TRUE) {
+        intercalary_total += (u64)fixed->intercalary_leap_days;
+    }
+    if (intercalary_total == 0ull) {
+        return DOM_CALENDAR_INVALID_ARGUMENT;
+    }
+    if (fixed->intercalary_after_month > fixed->month_count) {
+        return DOM_CALENDAR_INVALID_ARGUMENT;
+    }
+
+    for (i = 0u; i < fixed->month_count; ++i) {
+        doy += (u64)fixed->month_lengths[i];
+        if (fixed->intercalary_after_month == (i + 1u)) {
+            break;
+        }
+    }
+    if (fixed->intercalary_after_month == 0u) {
+        doy = 0ull;
+        for (i = 0u; i < fixed->month_count; ++i) {
+            doy += (u64)fixed->month_lengths[i];
+        }
+    }
+
+    switch (token) {
+        case DOM_CALENDAR_INTERCALARY_YEAR_DAY:
+            if (fixed->intercalary_base_days == 0u) {
+                return DOM_CALENDAR_INVALID_ARGUMENT;
+            }
+            *out_doy = doy;
+            return DOM_CALENDAR_OK;
+        case DOM_CALENDAR_INTERCALARY_LEAP_DAY:
+            if (fixed->intercalary_leap_days == 0u || leap == D_FALSE) {
+                return DOM_CALENDAR_INVALID_ARGUMENT;
+            }
+            *out_doy = doy + (u64)fixed->intercalary_base_days;
+            return DOM_CALENDAR_OK;
+        case DOM_CALENDAR_INTERCALARY_CORRECTION_DAY:
+        case DOM_CALENDAR_INTERCALARY_CUSTOM:
+        default:
+            return DOM_CALENDAR_NOT_IMPLEMENTED;
+    }
+}
+
 static int render_fixed_pattern(const dom_calendar_def *def,
                                 u64 day_index,
                                 u64 seconds_in_day,
@@ -327,6 +490,38 @@ static int render_fixed_pattern(const dom_calendar_def *def,
 
     if (seconds_in_day >= def->day_seconds) {
         return DOM_CALENDAR_INVALID_ARGUMENT;
+    }
+    out_date->hour = (u32)(seconds_in_day / 3600ull);
+    out_date->minute = (u32)((seconds_in_day / 60ull) % 60ull);
+    out_date->second = (u32)(seconds_in_day % 60ull);
+    out_date->subsecond_ticks = subsecond_ticks;
+    out_date->fields_present |= DOM_CALENDAR_FIELD_TIME | DOM_CALENDAR_FIELD_SUBSECOND;
+    return DOM_CALENDAR_OK;
+}
+
+static int render_day_count(const dom_calendar_def *def,
+                            u64 day_index,
+                            u64 seconds_in_day,
+                            u32 subsecond_ticks,
+                            dom_calendar_date *out_date) {
+    u64 epoch_days;
+    if (!def || !out_date) {
+        return DOM_CALENDAR_INVALID_ARGUMENT;
+    }
+    if (def->day_seconds == 0ull) {
+        return DOM_CALENDAR_INVALID_ARGUMENT;
+    }
+    if (seconds_in_day >= def->day_seconds) {
+        return DOM_CALENDAR_INVALID_ARGUMENT;
+    }
+    epoch_days = def->u.epoch.epoch_days;
+    if (epoch_days > 0ull) {
+        out_date->year = day_index / epoch_days;
+        out_date->day_of_year = day_index % epoch_days;
+        out_date->fields_present |= DOM_CALENDAR_FIELD_YEAR | DOM_CALENDAR_FIELD_DAY_OF_YEAR;
+    } else {
+        out_date->day_of_year = day_index;
+        out_date->fields_present |= DOM_CALENDAR_FIELD_DAY_OF_YEAR;
     }
     out_date->hour = (u32)(seconds_in_day / 3600ull);
     out_date->minute = (u32)((seconds_in_day / 60ull) % 60ull);
@@ -384,8 +579,98 @@ int dom_calendar_registry_get(const dom_calendar_registry *registry,
 }
 
 int dom_calendar_registry_register_builtin(dom_calendar_registry *registry) {
+    static const u8 k_months_gregorian[12] = {
+        31u, 28u, 31u, 30u, 31u, 30u, 31u, 31u, 30u, 31u, 30u, 31u
+    };
+    static const u8 k_months_sec[10] = {
+        40u, 40u, 40u, 40u, 40u, 40u, 40u, 40u, 40u, 40u
+    };
+    static const u8 k_months_hpc_e[13] = {
+        28u, 28u, 28u, 28u, 28u, 28u, 28u, 28u, 28u, 28u, 28u, 28u, 28u
+    };
+    const u64 day_seconds = 86400ull;
+    int rc;
     if (!registry) {
         return DOM_CALENDAR_INVALID_ARGUMENT;
+    }
+    rc = register_day_count(registry, "sct", 0ull, day_seconds, 0);
+    if (rc != DOM_CALENDAR_OK) {
+        return rc;
+    }
+    rc = register_fixed_pattern(registry,
+                                "sec",
+                                DOM_CALENDAR_KIND_FIXED_PATTERN,
+                                k_months_sec,
+                                (u32)(sizeof(k_months_sec) / sizeof(k_months_sec[0])),
+                                8u,
+                                0u,
+                                0u,
+                                0u,
+                                DOM_CALENDAR_LEAP_NONE,
+                                day_seconds,
+                                0);
+    if (rc != DOM_CALENDAR_OK) {
+        return rc;
+    }
+    rc = register_fixed_pattern(registry,
+                                "hpc_e",
+                                DOM_CALENDAR_KIND_FIXED_PATTERN,
+                                k_months_hpc_e,
+                                (u32)(sizeof(k_months_hpc_e) / sizeof(k_months_hpc_e[0])),
+                                7u,
+                                13u,
+                                1u,
+                                1u,
+                                DOM_CALENDAR_LEAP_GREGORIAN,
+                                day_seconds,
+                                0);
+    if (rc != DOM_CALENDAR_OK) {
+        return rc;
+    }
+    rc = register_fixed_pattern(registry,
+                                "gregorian",
+                                DOM_CALENDAR_KIND_GREGORIAN,
+                                k_months_gregorian,
+                                (u32)(sizeof(k_months_gregorian) / sizeof(k_months_gregorian[0])),
+                                7u,
+                                2u,
+                                0u,
+                                1u,
+                                DOM_CALENDAR_LEAP_GREGORIAN,
+                                day_seconds,
+                                0);
+    if (rc != DOM_CALENDAR_OK) {
+        return rc;
+    }
+    rc = register_fixed_pattern(registry,
+                                "julian",
+                                DOM_CALENDAR_KIND_JULIAN,
+                                k_months_gregorian,
+                                (u32)(sizeof(k_months_gregorian) / sizeof(k_months_gregorian[0])),
+                                7u,
+                                2u,
+                                0u,
+                                1u,
+                                DOM_CALENDAR_LEAP_JULIAN,
+                                day_seconds,
+                                0);
+    if (rc != DOM_CALENDAR_OK) {
+        return rc;
+    }
+    rc = register_fixed_pattern(registry,
+                                "holocene",
+                                DOM_CALENDAR_KIND_GREGORIAN,
+                                k_months_gregorian,
+                                (u32)(sizeof(k_months_gregorian) / sizeof(k_months_gregorian[0])),
+                                7u,
+                                2u,
+                                0u,
+                                1u,
+                                DOM_CALENDAR_LEAP_GREGORIAN,
+                                day_seconds,
+                                10000);
+    if (rc != DOM_CALENDAR_OK) {
+        return rc;
     }
     return DOM_CALENDAR_OK;
 }
@@ -441,11 +726,19 @@ int dom_calendar_render(const dom_calendar_registry *registry,
 
     switch (def.kind) {
         case DOM_CALENDAR_KIND_FIXED_PATTERN:
+        case DOM_CALENDAR_KIND_GREGORIAN:
+        case DOM_CALENDAR_KIND_JULIAN:
             return render_fixed_pattern(&def,
                                         (u64)(frame_act / (dom_act_time_t)def.day_seconds),
                                         (u64)(frame_act % (dom_act_time_t)def.day_seconds),
                                         subsecond_ticks,
                                         out_date);
+        case DOM_CALENDAR_KIND_DAY_COUNT:
+            return render_day_count(&def,
+                                    (u64)(frame_act / (dom_act_time_t)def.day_seconds),
+                                    (u64)(frame_act % (dom_act_time_t)def.day_seconds),
+                                    subsecond_ticks,
+                                    out_date);
         default:
             return DOM_CALENDAR_NOT_IMPLEMENTED;
     }
@@ -483,11 +776,68 @@ int dom_calendar_parse(const dom_calendar_registry *registry,
     if (rc != DOM_CALENDAR_OK) {
         return rc;
     }
-    if (def.kind != DOM_CALENDAR_KIND_FIXED_PATTERN) {
-        return DOM_CALENDAR_NOT_IMPLEMENTED;
-    }
     if (def.day_seconds == 0ull) {
         return DOM_CALENDAR_INVALID_ARGUMENT;
+    }
+
+    if (def.kind == DOM_CALENDAR_KIND_DAY_COUNT) {
+        u64 total_days = 0ull;
+        u64 epoch_days = def.u.epoch.epoch_days;
+        if ((date->fields_present & DOM_CALENDAR_FIELD_DAY_OF_YEAR) == 0u) {
+            return DOM_CALENDAR_INVALID_ARGUMENT;
+        }
+        if (epoch_days == 0ull) {
+            if ((date->fields_present & DOM_CALENDAR_FIELD_YEAR) != 0u && date->year != 0ull) {
+                return DOM_CALENDAR_INVALID_ARGUMENT;
+            }
+            total_days = date->day_of_year;
+        } else {
+            if ((date->fields_present & DOM_CALENDAR_FIELD_YEAR) == 0u) {
+                return DOM_CALENDAR_INVALID_ARGUMENT;
+            }
+            rc = mul_u64(date->year, epoch_days, &total_days);
+            if (rc != DOM_CALENDAR_OK) {
+                return rc;
+            }
+            rc = add_u64(total_days, date->day_of_year, &total_days);
+            if (rc != DOM_CALENDAR_OK) {
+                return rc;
+            }
+        }
+        if ((date->fields_present & DOM_CALENDAR_FIELD_TIME) != 0u) {
+            seconds_in_day = ((u64)date->hour * 3600ull) +
+                             ((u64)date->minute * 60ull) +
+                             (u64)date->second;
+        }
+        if (seconds_in_day >= def.day_seconds) {
+            return DOM_CALENDAR_INVALID_ARGUMENT;
+        }
+        rc = mul_u64(total_days, def.day_seconds, &total_seconds);
+        if (rc != DOM_CALENDAR_OK) {
+            return rc;
+        }
+        rc = add_u64(total_seconds, seconds_in_day, &total_seconds);
+        if (rc != DOM_CALENDAR_OK) {
+            return rc;
+        }
+        if (total_seconds > (u64)DOM_TIME_ACT_MAX) {
+            return DOM_CALENDAR_OVERFLOW;
+        }
+        *out_act = (dom_act_time_t)total_seconds;
+        if (out_subsecond_ticks) {
+            if ((date->fields_present & DOM_CALENDAR_FIELD_SUBSECOND) != 0u) {
+                *out_subsecond_ticks = date->subsecond_ticks;
+            } else {
+                *out_subsecond_ticks = 0u;
+            }
+        }
+        return DOM_CALENDAR_OK;
+    }
+
+    if (def.kind != DOM_CALENDAR_KIND_FIXED_PATTERN &&
+        def.kind != DOM_CALENDAR_KIND_GREGORIAN &&
+        def.kind != DOM_CALENDAR_KIND_JULIAN) {
+        return DOM_CALENDAR_NOT_IMPLEMENTED;
     }
 
     if ((date->fields_present & DOM_CALENDAR_FIELD_YEAR) == 0u) {
@@ -500,7 +850,12 @@ int dom_calendar_parse(const dom_calendar_registry *registry,
     year_base = (u64)year_base_i;
     leap = is_leap_year(year_base, def.u.fixed.leap_rule);
 
-    if ((date->fields_present & DOM_CALENDAR_FIELD_DAY_OF_YEAR) != 0u) {
+    if ((date->fields_present & DOM_CALENDAR_FIELD_INTERCALARY) != 0u) {
+        rc = intercalary_to_doy(&def.u.fixed, date->intercalary, leap, &day_of_year);
+        if (rc != DOM_CALENDAR_OK) {
+            return rc;
+        }
+    } else if ((date->fields_present & DOM_CALENDAR_FIELD_DAY_OF_YEAR) != 0u) {
         day_of_year = date->day_of_year;
     } else if ((date->fields_present & DOM_CALENDAR_FIELD_MONTH) != 0u &&
                (date->fields_present & DOM_CALENDAR_FIELD_DAY) != 0u) {

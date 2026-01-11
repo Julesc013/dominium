@@ -10,7 +10,13 @@ and determinism rules are specified in `docs/SPEC_DETERMINISM.md`.
 - Builds MUST NOT fetch network dependencies. Vendored sources live under
   `external/`.
 
-Recommended out-of-source build:
+Preferred preset builds:
+```
+cmake --preset msvc-debug
+cmake --build --preset msvc-debug
+```
+
+Recommended generic out-of-source build:
 ```
 cmake -S . -B build
 cmake --build build
@@ -49,6 +55,8 @@ System backend selection:
 - System backends are selected via `DOM_PLATFORM` (e.g. `sdl2`, `win32`,
   `win32_headless`, `posix_x11`, `posix_wayland`, `cocoa`).
 - `DOM_BACKEND_SDL2` is kept in sync when `DOM_PLATFORM=sdl2`.
+- Windows presets prefer `sdl2` + `gl2`; if SDL2 is missing, configuration
+  falls back to `win32` + `dx9` (see `CMakePresets.json`).
 - Deprecated toggles (`DSYS_BACKEND_*`, `DOMINO_USE_*_BACKEND`) are not used.
 
 ## Determinism build hygiene
