@@ -29,6 +29,74 @@ enum {
 };
 
 typedef u64 dom_time_actor_id;
+typedef u64 dom_time_clock_id;
+typedef u64 dom_time_document_id;
+
+typedef enum dom_time_clock_kind {
+    DOM_TIME_CLOCK_SUNDIAL = 0,
+    DOM_TIME_CLOCK_MECHANICAL = 1,
+    DOM_TIME_CLOCK_QUARTZ = 2,
+    DOM_TIME_CLOCK_ATOMIC = 3,
+    DOM_TIME_CLOCK_NETWORK = 4,
+    DOM_TIME_CLOCK_ASTRONOMICAL = 5
+} dom_time_clock_kind;
+
+enum dom_time_clock_flags {
+    DOM_TIME_CLOCK_REQUIRES_DAYLIGHT = 1u << 0,
+    DOM_TIME_CLOCK_REQUIRES_POWER = 1u << 1,
+    DOM_TIME_CLOCK_REQUIRES_NETWORK = 1u << 2
+};
+
+enum dom_time_clock_state_flags {
+    DOM_TIME_CLOCK_STATE_POWERED = 1u << 0,
+    DOM_TIME_CLOCK_STATE_DAMAGED = 1u << 1,
+    DOM_TIME_CLOCK_STATE_JAMMED = 1u << 2
+};
+
+enum dom_time_clock_reading_flags {
+    DOM_TIME_CLOCK_READING_VALID = 1u << 0,
+    DOM_TIME_CLOCK_READING_UNKNOWN = 1u << 1,
+    DOM_TIME_CLOCK_READING_UNAVAILABLE = 1u << 2,
+    DOM_TIME_CLOCK_READING_DEGRADED = 1u << 3
+};
+
+typedef struct dom_time_clock_def {
+    dom_time_clock_id clock_id;
+    dom_time_clock_kind kind;
+    dom_time_frame_id frame;
+    u32 base_accuracy_seconds;
+    u32 drift_ppm;
+    u32 flags;
+} dom_time_clock_def;
+
+typedef struct dom_time_clock_state {
+    dom_time_clock_id clock_id;
+    u32 state_flags;
+    u32 damage_ppm;
+    u32 damage_uncertainty_seconds;
+    dom_tick last_calibration_tick;
+} dom_time_clock_state;
+
+typedef struct dom_time_clock_env {
+    d_bool has_daylight;
+    d_bool has_power;
+    u32 extra_drift_ppm;
+    u32 extra_uncertainty_seconds;
+} dom_time_clock_env;
+
+typedef struct dom_time_clock_reading {
+    dom_time_clock_id clock_id;
+    dom_time_frame_id frame;
+    dom_act_time_t observed_act;
+    u64 uncertainty_seconds;
+    u32 flags;
+} dom_time_clock_reading;
+
+typedef struct dom_time_document {
+    dom_time_document_id document_id;
+    u32 frame_mask;
+    dom_calendar_id calendar_id;
+} dom_time_document;
 
 typedef struct dom_time_knowledge dom_time_knowledge;
 
@@ -49,6 +117,31 @@ int dom_time_knowledge_list_calendars(const dom_time_knowledge *knowledge,
                                       dom_calendar_id *out_ids,
                                       u32 max_ids,
                                       u32 *out_count);
+
+int dom_time_knowledge_add_clock(dom_time_knowledge *knowledge,
+                                 const dom_time_clock_def *def,
+                                 dom_tick calibration_tick);
+int dom_time_knowledge_set_clock_state(dom_time_knowledge *knowledge,
+                                       dom_time_clock_id clock_id,
+                                       u32 state_flags,
+                                       u32 damage_ppm,
+                                       u32 damage_uncertainty_seconds);
+int dom_time_knowledge_sample_clock(const dom_time_knowledge *knowledge,
+                                    dom_time_clock_id clock_id,
+                                    dom_tick tick,
+                                    dom_ups ups,
+                                    const dom_time_clock_env *env,
+                                    dom_time_clock_reading *out_reading);
+int dom_time_knowledge_sample_all(const dom_time_knowledge *knowledge,
+                                  dom_tick tick,
+                                  dom_ups ups,
+                                  const dom_time_clock_env *env,
+                                  dom_time_clock_reading *out_readings,
+                                  u32 max_readings,
+                                  u32 *out_count);
+
+int dom_time_knowledge_apply_document(dom_time_knowledge *knowledge,
+                                      const dom_time_document *doc);
 
 #ifdef __cplusplus
 } /* extern "C" */
