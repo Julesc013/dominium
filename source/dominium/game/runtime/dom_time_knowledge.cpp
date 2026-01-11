@@ -238,6 +238,25 @@ int dom_time_knowledge_set_clock_state(dom_time_knowledge *knowledge,
     return DOM_TIME_KNOWLEDGE_NOT_FOUND;
 }
 
+int dom_time_knowledge_calibrate_clock(dom_time_knowledge *knowledge,
+                                       dom_time_clock_id clock_id,
+                                       dom_tick tick) {
+    size_t i;
+    if (!knowledge || clock_id == 0ull) {
+        return DOM_TIME_KNOWLEDGE_INVALID_ARGUMENT;
+    }
+    for (i = 0u; i < knowledge->clock_states.size(); ++i) {
+        if (knowledge->clock_states[i].clock_id == clock_id) {
+            if (tick < knowledge->clock_states[i].last_calibration_tick) {
+                return DOM_TIME_KNOWLEDGE_BACKWARDS;
+            }
+            knowledge->clock_states[i].last_calibration_tick = tick;
+            return DOM_TIME_KNOWLEDGE_OK;
+        }
+    }
+    return DOM_TIME_KNOWLEDGE_NOT_FOUND;
+}
+
 int dom_time_knowledge_sample_clock(const dom_time_knowledge *knowledge,
                                     dom_time_clock_id clock_id,
                                     dom_tick tick,
