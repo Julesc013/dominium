@@ -263,3 +263,18 @@ int dom_time_knowledge_apply_document(dom_time_knowledge *knowledge,
     }
     return DOM_TIME_KNOWLEDGE_OK;
 }
+
+int dom_time_clock_init_sundial(dom_time_clock_id clock_id,
+                                dom_time_frame_id frame,
+                                dom_time_clock_def *out_def) {
+    if (!out_def || clock_id == 0ull || !is_valid_frame(frame)) {
+        return DOM_TIME_KNOWLEDGE_INVALID_ARGUMENT;
+    }
+    out_def->clock_id = clock_id;
+    out_def->kind = DOM_TIME_CLOCK_SUNDIAL;
+    out_def->frame = frame;
+    out_def->base_accuracy_seconds = 600u;
+    out_def->drift_ppm = 0u;
+    out_def->flags = DOM_TIME_CLOCK_REQUIRES_DAYLIGHT;
+    return DOM_TIME_KNOWLEDGE_OK;
+}

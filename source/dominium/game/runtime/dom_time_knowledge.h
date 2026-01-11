@@ -143,6 +143,10 @@ int dom_time_knowledge_sample_all(const dom_time_knowledge *knowledge,
 int dom_time_knowledge_apply_document(dom_time_knowledge *knowledge,
                                       const dom_time_document *doc);
 
+int dom_time_clock_init_sundial(dom_time_clock_id clock_id,
+                                dom_time_frame_id frame,
+                                dom_time_clock_def *out_def);
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
