@@ -127,6 +127,9 @@ int dom_time_knowledge_set_clock_state(dom_time_knowledge *knowledge,
                                        u32 state_flags,
                                        u32 damage_ppm,
                                        u32 damage_uncertainty_seconds);
+int dom_time_knowledge_calibrate_clock(dom_time_knowledge *knowledge,
+                                       dom_time_clock_id clock_id,
+                                       dom_tick tick);
 int dom_time_knowledge_sample_clock(const dom_time_knowledge *knowledge,
                                     dom_time_clock_id clock_id,
                                     dom_tick tick,
