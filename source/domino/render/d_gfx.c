@@ -490,7 +490,11 @@ dom_caps_result dom_dgfx_register_caps_backends(void)
 
 #if DOM_BACKEND_DX9
     desc.backend_name = "dx9";
+#if DOM_PLATFORM_ID == DOM_PLATFORM_ID_WIN32
+    desc.backend_priority = 120u;
+#else
     desc.backend_priority = 100u;
+#endif
     desc.determinism = DOM_DET_D2_BEST_EFFORT;
     desc.perf_class = DOM_CAPS_PERF_PERF;
     desc.required_hw_flags = DOM_HW_OS_WIN32;
@@ -514,7 +518,11 @@ dom_caps_result dom_dgfx_register_caps_backends(void)
 
 #if DOM_BACKEND_GL2
     desc.backend_name = "gl2";
+#if DOM_PLATFORM_ID == DOM_PLATFORM_ID_WIN32
+    desc.backend_priority = 100u;
+#else
     desc.backend_priority = 120u;
+#endif
     desc.determinism = DOM_DET_D2_BEST_EFFORT;
     desc.perf_class = DOM_CAPS_PERF_PERF;
     desc.required_hw_flags = DOM_HW_OS_WIN32;
@@ -689,6 +697,21 @@ int d_gfx_init(const char *backend_name)
     }
 #endif
 
+#if DOM_PLATFORM_ID == DOM_PLATFORM_ID_WIN32
+#if DOM_BACKEND_DX9
+    if (!have_request && !chosen) {
+        chosen = d_gfx_dx9_register_backend();
+        chosen_name = "dx9";
+    }
+#endif
+
+#if DOM_BACKEND_GL2
+    if (!have_request && !chosen) {
+        chosen = d_gfx_gl2_register_backend();
+        chosen_name = "gl2";
+    }
+#endif
+#else
 #if DOM_BACKEND_GL2
     if (!have_request && !chosen) {
         chosen = d_gfx_gl2_register_backend();
@@ -701,6 +724,7 @@ int d_gfx_init(const char *backend_name)
         chosen = d_gfx_dx9_register_backend();
         chosen_name = "dx9";
     }
+#endif
 #endif
 
 #if DOM_BACKEND_SOFT
