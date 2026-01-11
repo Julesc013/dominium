@@ -80,6 +80,7 @@ typedef struct dom_time_clock_state {
 typedef struct dom_time_clock_env {
     d_bool has_daylight;
     d_bool has_power;
+    d_bool has_network;
     u32 extra_drift_ppm;
     u32 extra_uncertainty_seconds;
 } dom_time_clock_env;
