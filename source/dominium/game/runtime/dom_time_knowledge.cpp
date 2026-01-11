@@ -397,24 +397,29 @@ int dom_time_knowledge_sample_all(const dom_time_knowledge *knowledge,
                                   dom_time_clock_reading *out_readings,
                                   u32 max_readings,
                                   u32 *out_count) {
+    u32 available;
     if (!knowledge || !out_count) {
         return DOM_TIME_KNOWLEDGE_INVALID_ARGUMENT;
     }
-    *out_count = 0u;
+    available = (u32)knowledge->clocks.size();
+    *out_count = available;
     if (knowledge->clocks.empty()) {
         return DOM_TIME_KNOWLEDGE_UNKNOWN;
     }
     if (!out_readings || max_readings == 0u) {
         return DOM_TIME_KNOWLEDGE_OK;
     }
-    for (u32 i = 0u; i < (u32)knowledge->clocks.size() && i < max_readings; ++i) {
-        (void)dom_time_knowledge_sample_clock(knowledge,
-                                              knowledge->clocks[i].clock_id,
-                                              tick,
-                                              ups,
-                                              env,
-                                              &out_readings[i]);
-        *out_count += 1u;
+    {
+        const u32 limit = (available < max_readings) ? available : max_readings;
+        for (u32 i = 0u; i < limit; ++i) {
+            (void)dom_time_knowledge_sample_clock(knowledge,
+                                                  knowledge->clocks[i].clock_id,
+                                                  tick,
+                                                  ups,
+                                                  env,
+                                                  &out_readings[i]);
+        }
+        *out_count = limit;
     }
     return DOM_TIME_KNOWLEDGE_OK;
 }
