@@ -888,12 +888,3 @@ void metal_backend_begin_frame(void)                         { }
 void metal_backend_execute(const dgfx_cmd_buffer* cmd_buf)   { (void)cmd_buf; }
 void metal_backend_end_frame(void)                           { }
 #endif /* __APPLE__ */
-bool metal_backend_init(const dgfx_desc* desc)               { (void)desc; return false; }
-void metal_backend_shutdown(void)                            { }
-dgfx_caps metal_backend_get_caps(void)                       { dgfx_caps c; memset(&c, 0, sizeof(c)); return c; }
-void metal_backend_resize(int width, int height)             { (void)width; (void)height; }
-void metal_backend_begin_frame(void)                         { }
-void metal_backend_execute(const dgfx_cmd_buffer* cmd_buf)   { (void)cmd_buf; }
-void metal_backend_end_frame(void)                           { }
-
-#endif /* __APPLE__ */
