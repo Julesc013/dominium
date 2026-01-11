@@ -40,6 +40,10 @@ int dom_time_event_cancel(dom_time_event_queue *q, dom_time_event_id event_id);
 
 int dom_time_event_peek(const dom_time_event_queue *q, dom_time_event *out_ev);
 int dom_time_event_pop(dom_time_event_queue *q, dom_time_event *out_ev);
+int dom_time_event_next_time(const dom_time_event_queue *q, dom_act_time_t *out_time);
+
+/* Processes all events with trigger_time <= target_act, invoking callback for each. */
+int dom_time_process_until(dom_time_event_queue *q, dom_act_time_t target_act, dom_time_event_cb cb, void *user);
 
 int dom_time_event_id_init(dom_time_event_id_gen *gen, dom_time_event_id start_id);
 int dom_time_event_id_next(dom_time_event_id_gen *gen, dom_time_event_id *out_id);

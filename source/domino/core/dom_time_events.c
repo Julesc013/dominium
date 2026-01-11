@@ -139,6 +139,43 @@ int dom_time_event_pop(dom_time_event_queue *q, dom_time_event *out_ev) {
     return DOM_TIME_OK;
 }
 
+int dom_time_event_next_time(const dom_time_event_queue *q, dom_act_time_t *out_time) {
+    if (!q || !out_time) {
+        return DOM_TIME_INVALID;
+    }
+    if (q->count == 0u) {
+        return DOM_TIME_EMPTY;
+    }
+    *out_time = q->items[0u].trigger_time;
+    return DOM_TIME_OK;
+}
+
+int dom_time_process_until(dom_time_event_queue *q, dom_act_time_t target_act, dom_time_event_cb cb, void *user) {
+    dom_time_event ev;
+    int rc;
+    if (!q || !cb) {
+        return DOM_TIME_INVALID;
+    }
+    while (q->count > 0u) {
+        rc = dom_time_event_peek(q, &ev);
+        if (rc != DOM_TIME_OK) {
+            return rc;
+        }
+        if (ev.trigger_time > target_act) {
+            break;
+        }
+        rc = dom_time_event_pop(q, &ev);
+        if (rc != DOM_TIME_OK) {
+            return rc;
+        }
+        rc = cb(user, &ev);
+        if (rc != DOM_TIME_OK) {
+            return rc;
+        }
+    }
+    return DOM_TIME_OK;
+}
+
 int dom_time_event_id_init(dom_time_event_id_gen *gen, dom_time_event_id start_id) {
     if (!gen) {
         return DOM_TIME_INVALID;
