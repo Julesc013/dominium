@@ -70,6 +70,7 @@ Version: 1
 - `docs/SPEC_TIME_KNOWLEDGE.md`
 - `docs/SPEC_TIME_STANDARDS.md`
 - `docs/SPEC_SCHEDULING.md`
+- `docs/SPEC_TIME_WARP.md`
 
 ## Full index
 See `docs/README.md` for the complete list of specification documents.
