@@ -104,6 +104,8 @@ typedef struct dom_time_knowledge dom_time_knowledge;
 dom_time_knowledge *dom_time_knowledge_create(dom_time_actor_id actor_id);
 void dom_time_knowledge_destroy(dom_time_knowledge *knowledge);
 int dom_time_knowledge_init(dom_time_knowledge *knowledge, dom_time_actor_id actor_id);
+int dom_time_knowledge_get_revision(const dom_time_knowledge *knowledge,
+                                    u64 *out_revision);
 
 int dom_time_knowledge_add_frame(dom_time_knowledge *knowledge, dom_time_frame_id frame);
 int dom_time_knowledge_has_frame(const dom_time_knowledge *knowledge,

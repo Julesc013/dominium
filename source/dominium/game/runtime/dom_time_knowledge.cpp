@@ -90,6 +90,7 @@ static int mul_u64(u64 a, u64 b, u64 *out_val) {
 struct dom_time_knowledge {
     dom_time_actor_id actor_id;
     u32 known_frames_mask;
+    u64 revision;
     std::vector<dom_calendar_id> calendars;
     std::vector<dom_time_clock_def> clocks;
     std::vector<dom_time_clock_state> clock_states;
@@ -120,9 +121,18 @@ int dom_time_knowledge_init(dom_time_knowledge *knowledge, dom_time_actor_id act
     }
     knowledge->actor_id = actor_id;
     knowledge->known_frames_mask = 0u;
+    knowledge->revision = 0ull;
     knowledge->calendars.clear();
     knowledge->clocks.clear();
     knowledge->clock_states.clear();
+    return DOM_TIME_KNOWLEDGE_OK;
+}
+
+int dom_time_knowledge_get_revision(const dom_time_knowledge *knowledge, u64 *out_revision) {
+    if (!knowledge || !out_revision) {
+        return DOM_TIME_KNOWLEDGE_INVALID_ARGUMENT;
+    }
+    *out_revision = knowledge->revision;
     return DOM_TIME_KNOWLEDGE_OK;
 }
 
@@ -134,6 +144,7 @@ int dom_time_knowledge_add_frame(dom_time_knowledge *knowledge, dom_time_frame_i
         return DOM_TIME_KNOWLEDGE_INVALID_ARGUMENT;
     }
     knowledge->known_frames_mask |= (1u << (u32)frame);
+    knowledge->revision += 1ull;
     return DOM_TIME_KNOWLEDGE_OK;
 }
 
@@ -158,6 +169,7 @@ int dom_time_knowledge_add_calendar(dom_time_knowledge *knowledge, dom_calendar_
         return DOM_TIME_KNOWLEDGE_DUPLICATE_ID;
     }
     insert_calendar_sorted(knowledge->calendars, id);
+    knowledge->revision += 1ull;
     return DOM_TIME_KNOWLEDGE_OK;
 }
 
@@ -215,6 +227,7 @@ int dom_time_knowledge_add_clock(dom_time_knowledge *knowledge,
     state.damage_uncertainty_seconds = 0u;
     state.last_calibration_tick = calibration_tick;
     insert_clock_sorted(knowledge->clocks, knowledge->clock_states, *def, state);
+    knowledge->revision += 1ull;
     return DOM_TIME_KNOWLEDGE_OK;
 }
 
@@ -232,6 +245,7 @@ int dom_time_knowledge_set_clock_state(dom_time_knowledge *knowledge,
             knowledge->clock_states[i].state_flags = state_flags;
             knowledge->clock_states[i].damage_ppm = damage_ppm;
             knowledge->clock_states[i].damage_uncertainty_seconds = damage_uncertainty_seconds;
+            knowledge->revision += 1ull;
             return DOM_TIME_KNOWLEDGE_OK;
         }
     }
@@ -251,6 +265,7 @@ int dom_time_knowledge_calibrate_clock(dom_time_knowledge *knowledge,
                 return DOM_TIME_KNOWLEDGE_BACKWARDS;
             }
             knowledge->clock_states[i].last_calibration_tick = tick;
+            knowledge->revision += 1ull;
             return DOM_TIME_KNOWLEDGE_OK;
         }
     }
@@ -406,16 +421,22 @@ int dom_time_knowledge_sample_all(const dom_time_knowledge *knowledge,
 
 int dom_time_knowledge_apply_document(dom_time_knowledge *knowledge,
                                       const dom_time_document *doc) {
+    d_bool frame_changed = D_FALSE;
     if (!knowledge || !doc) {
         return DOM_TIME_KNOWLEDGE_INVALID_ARGUMENT;
     }
     if (doc->frame_mask != 0u) {
         knowledge->known_frames_mask |= doc->frame_mask;
+        frame_changed = D_TRUE;
     }
     if (doc->calendar_id != 0ull) {
         if (dom_time_knowledge_add_calendar(knowledge, doc->calendar_id) != DOM_TIME_KNOWLEDGE_OK) {
             return DOM_TIME_KNOWLEDGE_DUPLICATE_ID;
         }
+        return DOM_TIME_KNOWLEDGE_OK;
+    }
+    if (frame_changed) {
+        knowledge->revision += 1ull;
     }
     return DOM_TIME_KNOWLEDGE_OK;
 }
