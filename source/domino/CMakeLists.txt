@@ -30,6 +30,7 @@ add_library(domino_core STATIC
     core/types.c
     core/spacetime.c
     core/dom_time_core.c
+    core/dom_time_events.c
     core/dom_build_info.c
     io/container/dtlv.c
     io/schema_registry.c
