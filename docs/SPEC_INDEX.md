@@ -25,5 +25,51 @@ Version: 1
 - `docs/SPEC_PERF_BUDGETS.md`
 - `docs/SPEC_PROFILING.md`
 
+## Standards and renderers canon
+- `docs/SPEC_STANDARDS_AND_RENDERERS.md`
+- `docs/SPEC_STANDARD_RESOLUTION.md`
+- `docs/SPEC_EPISTEMIC_GATING.md`
+
+## World source stack canon
+- `docs/SPEC_WORLD_SOURCE_STACK.md`
+
+## Effect field canon
+- `docs/SPEC_EFFECT_FIELDS.md`
+
+## Information & belief canon
+- `docs/SPEC_INFORMATION_MODEL.md`
+
+## Sensors and observation canon
+- `docs/SPEC_SENSORS.md`
+
+## Communication canon
+- `docs/SPEC_COMMUNICATION.md`
+
+## Command intent canon
+- `docs/SPEC_COMMAND_MODEL.md`
+
+## Doctrine and autonomy canon
+- `docs/SPEC_DOCTRINE_AUTONOMY.md`
+
+## Fidelity projection canon
+- `docs/SPEC_FIDELITY_PROJECTION.md`
+
+## Provenance and construction law
+- `docs/SPEC_PROVENANCE.md`
+
+## Interest sets and relevance scheduler
+- `docs/SPEC_INTEREST_SETS.md`
+
+## Event-driven macro stepping
+- `docs/SPEC_EVENT_DRIVEN_STEPPING.md`
+
+## Temporal canon
+- `docs/SPEC_TIME_CORE.md`
+- `docs/SPEC_TIME_FRAMES.md`
+- `docs/SPEC_CALENDARS.md`
+- `docs/SPEC_TIME_KNOWLEDGE.md`
+- `docs/SPEC_TIME_STANDARDS.md`
+- `docs/SPEC_SCHEDULING.md`
+
 ## Full index
 See `docs/README.md` for the complete list of specification documents.
