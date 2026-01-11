@@ -289,6 +289,31 @@ else()
 endif()
 add_test(NAME dominium_macro COMMAND dominium_macro_tests)
 
+add_executable(dominium_time_knowledge_tests
+    contract/dominium_time_knowledge_tests.cpp
+    ${CMAKE_SOURCE_DIR}/source/dominium/game/runtime/dom_time_knowledge.cpp
+)
+target_include_directories(dominium_time_knowledge_tests PRIVATE
+    ${DOMINIUM_INCLUDE_DIR}
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+target_link_libraries(dominium_time_knowledge_tests PRIVATE
+    dominium_common
+    domino_core
+)
+set_target_properties(dominium_time_knowledge_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+if (MSVC)
+    target_compile_options(dominium_time_knowledge_tests PRIVATE $<$<CONFIG:Release>:/UNDEBUG>)
+else()
+    target_compile_options(dominium_time_knowledge_tests PRIVATE $<$<CONFIG:Release>:-UNDEBUG>)
+endif()
+add_test(NAME dominium_time_knowledge COMMAND dominium_time_knowledge_tests)
+
 add_executable(dominium_no_modal_tests
     contract/dominium_no_modal_tests.cpp
     ${CMAKE_SOURCE_DIR}/source/dominium/game/runtime/dom_game_runtime.cpp
