@@ -39,6 +39,9 @@ Version: 1
 ## Information & belief canon
 - `docs/SPEC_INFORMATION_MODEL.md`
 
+## Epistemic interface canon
+- `docs/SPEC_EPISTEMIC_INTERFACE.md`
+
 ## Sensors and observation canon
 - `docs/SPEC_SENSORS.md`
 
