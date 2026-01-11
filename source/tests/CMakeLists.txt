@@ -137,34 +137,6 @@ set_target_properties(dom_time_core_tests PROPERTIES
 
 add_test(NAME dom_time_core_tests COMMAND dom_time_core_tests)
 
-add_executable(dominium_capability_tests
-    dominium_capability_tests.cpp
-    ../dominium/game/runtime/dom_belief_store.cpp
-    ../dominium/game/runtime/dom_capability_engine.cpp
-    ../dominium/game/runtime/dom_time_knowledge.cpp
-)
-
-target_include_directories(dominium_capability_tests PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
-    ${CMAKE_SOURCE_DIR}/source
-    ${CMAKE_SOURCE_DIR}/source/dominium/common
-    ${CMAKE_SOURCE_DIR}/source/dominium/game
-    ${CMAKE_SOURCE_DIR}/source/domino
-)
-
-target_link_libraries(dominium_capability_tests
-    dominium_common
-    domino_core
-)
-
-set_target_properties(dominium_capability_tests PROPERTIES
-    CXX_STANDARD 98
-    CXX_STANDARD_REQUIRED ON
-    CXX_EXTENSIONS OFF
-)
-
-add_test(NAME dominium_capability_tests COMMAND dominium_capability_tests)
-
 add_executable(dom_universe_bundle_epoch_test
     dom_universe_bundle_epoch_test.cpp
     ../dominium/game/runtime/dom_universe_bundle.cpp
@@ -1160,7 +1132,7 @@ else()
     target_compile_options(dominium_capability_tests PRIVATE $<$<CONFIG:Release>:-UNDEBUG>)
 endif()
 
-add_test(NAME dominium_capabilities COMMAND dominium_capability_tests)
+add_test(NAME dominium_capability_tests COMMAND dominium_capability_tests)
 
 add_executable(dom_ui_continuity_tests
     dom_ui_continuity_tests.cpp
