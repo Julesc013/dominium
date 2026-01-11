@@ -549,13 +549,13 @@ int dom_lane_scheduler_update(dom_lane_scheduler *sched,
         dom_media_sample sample;
         zero_media_sample(&sample);
         if (media) {
-            int rc = dom_media_sample(media,
-                                      body_id,
-                                      DOM_MEDIA_KIND_ATMOSPHERE,
-                                      0,
-                                      altitude,
-                                      tick,
-                                      &sample);
+            int rc = dom_media_sample_query(media,
+                                            body_id,
+                                            DOM_MEDIA_KIND_ATMOSPHERE,
+                                            0,
+                                            altitude,
+                                            tick,
+                                            &sample);
             if (rc != DOM_MEDIA_OK) {
                 zero_media_sample(&sample);
             }

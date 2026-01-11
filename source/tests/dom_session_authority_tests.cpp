@@ -141,12 +141,12 @@ static int test_server_auth_equivalence() {
         return fail("setup_runtime");
     }
 
-    single_cfg.role = DOM_SESSION_ROLE_SINGLE;
-    single_cfg.authority = DOM_SESSION_AUTH_SERVER_AUTH;
+    single_cfg.role = dom::DOM_SESSION_ROLE_SINGLE;
+    single_cfg.authority = dom::DOM_SESSION_AUTH_SERVER_AUTH;
     single_cfg.tick_rate_hz = 60u;
 
-    host_cfg.role = DOM_SESSION_ROLE_HOST;
-    host_cfg.authority = DOM_SESSION_AUTH_SERVER_AUTH;
+    host_cfg.role = dom::DOM_SESSION_ROLE_HOST;
+    host_cfg.authority = dom::DOM_SESSION_AUTH_SERVER_AUTH;
     host_cfg.tick_rate_hz = 60u;
 
     if (!dom::dom_session_config_validate(single_cfg, 0, 0)) {
@@ -180,8 +180,8 @@ static int test_server_auth_equivalence() {
         rc = fail("driver_host_create");
         goto cleanup;
     }
-    if (driver_single->start() != DOM_NET_DRIVER_OK ||
-        driver_host->start() != DOM_NET_DRIVER_OK) {
+    if (driver_single->start() != dom::DOM_NET_DRIVER_OK ||
+        driver_host->start() != dom::DOM_NET_DRIVER_OK) {
         rc = fail("driver_start");
         goto cleanup;
     }
@@ -235,12 +235,12 @@ static int test_lockstep_smoke() {
         return fail("setup_runtime");
     }
 
-    host_cfg.role = DOM_SESSION_ROLE_HOST;
-    host_cfg.authority = DOM_SESSION_AUTH_LOCKSTEP;
+    host_cfg.role = dom::DOM_SESSION_ROLE_HOST;
+    host_cfg.authority = dom::DOM_SESSION_AUTH_LOCKSTEP;
     host_cfg.tick_rate_hz = 60u;
 
-    client_cfg.role = DOM_SESSION_ROLE_CLIENT;
-    client_cfg.authority = DOM_SESSION_AUTH_LOCKSTEP;
+    client_cfg.role = dom::DOM_SESSION_ROLE_CLIENT;
+    client_cfg.authority = dom::DOM_SESSION_AUTH_LOCKSTEP;
     client_cfg.tick_rate_hz = 60u;
     client_cfg.connect_addr = "127.0.0.1";
 
@@ -275,8 +275,8 @@ static int test_lockstep_smoke() {
         rc = fail("lockstep_client_create");
         goto cleanup;
     }
-    if (driver_host->start() != DOM_NET_DRIVER_OK ||
-        driver_client->start() != DOM_NET_DRIVER_OK) {
+    if (driver_host->start() != dom::DOM_NET_DRIVER_OK ||
+        driver_client->start() != dom::DOM_NET_DRIVER_OK) {
         rc = fail("lockstep_driver_start");
         goto cleanup;
     }
@@ -326,8 +326,8 @@ static int test_desync_bundle() {
         return fail("setup_runtime");
     }
 
-    host_cfg.role = DOM_SESSION_ROLE_HOST;
-    host_cfg.authority = DOM_SESSION_AUTH_LOCKSTEP;
+    host_cfg.role = dom::DOM_SESSION_ROLE_HOST;
+    host_cfg.authority = dom::DOM_SESSION_AUTH_LOCKSTEP;
     host_cfg.tick_rate_hz = 60u;
 
     if (!dom::dom_session_config_validate(host_cfg, 0, 0)) {
@@ -346,7 +346,7 @@ static int test_desync_bundle() {
         rc = fail("desync_driver_create");
         goto cleanup;
     }
-    if (driver->start() != DOM_NET_DRIVER_OK) {
+    if (driver->start() != dom::DOM_NET_DRIVER_OK) {
         rc = fail("desync_driver_start");
         goto cleanup;
     }
@@ -435,6 +435,10 @@ bool DomGameNet::init_client(u32 tick_rate, const std::string &addr_port) {
     m_dedicated = false;
     m_handshake_sent = true;
     return true;
+}
+
+void DomGameNet::set_input_delay_ticks(u32 delay) {
+    m_session.input_delay_ticks = delay;
 }
 
 void DomGameNet::shutdown() {

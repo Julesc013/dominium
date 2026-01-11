@@ -15,12 +15,17 @@ add_library(dominium_tools_common STATIC
     common/dom_tool_tlv.cpp
     common/dom_tool_validate.cpp
     dom_tool_runtime.cpp
+    ../game/runtime/dom_game_paths.c
+    ../game/runtime/dom_game_handshake.cpp
+    ../game/runtime/dom_universe_bundle.cpp
+    ../game/runtime/dom_io_guard.cpp
 )
 
 target_include_directories(dominium_tools_common PUBLIC
     ${DOMINIUM_INCLUDE_DIR}
     ${CMAKE_SOURCE_DIR}/source
     ${CMAKE_SOURCE_DIR}/source/domino
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
     ${CMAKE_SOURCE_DIR}/source/dominium/common
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
@@ -28,7 +33,12 @@ target_include_directories(dominium_tools_common PUBLIC
 target_link_libraries(dominium_tools_common
     PUBLIC
         dominium_common
+        core_tlv
         domino_core
+)
+
+set_source_files_properties(../game/runtime/dom_game_paths.c
+    PROPERTIES LANGUAGE CXX
 )
 
 set_target_properties(dominium_tools_common PROPERTIES
@@ -45,6 +55,7 @@ add_executable(dominium-modcheck
 target_include_directories(dominium-modcheck PUBLIC
     ${DOMINIUM_INCLUDE_DIR}
     ${CMAKE_SOURCE_DIR}/source/domino
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
     ${CMAKE_SOURCE_DIR}/source/dominium/common
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
@@ -71,6 +82,7 @@ function(dominium_add_tool_exe target_name output_name)
         ${DOMINIUM_INCLUDE_DIR}
         ${CMAKE_SOURCE_DIR}/source
         ${CMAKE_SOURCE_DIR}/source/domino
+        ${CMAKE_SOURCE_DIR}/source/dominium/game
         ${CMAKE_SOURCE_DIR}/source/dominium/common
         ${CMAKE_CURRENT_SOURCE_DIR}
     )
@@ -163,6 +175,10 @@ dominium_add_tool_exe(dominium-replay-analyzer "tool_replay_analyzer"
     replay_analyzer/ra_diff.cpp
 )
 
+target_sources(dominium-replay-analyzer PRIVATE
+    ../game/runtime/dom_game_replay.cpp
+)
+
 dominium_add_tool_exe(coredata_compile "coredata_compile"
     coredata_compile/coredata_compile_main.cpp
     coredata_compile/coredata_load.cpp
@@ -172,6 +188,9 @@ dominium_add_tool_exe(coredata_compile "coredata_compile"
 )
 
 target_link_libraries(coredata_compile PRIVATE core_tlv)
+target_include_directories(coredata_compile PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/coredata_compile
+)
 
 dominium_add_tool_exe(coredata_validate "coredata_validate"
     coredata_validate/coredata_validate_main.cpp
@@ -183,3 +202,7 @@ dominium_add_tool_exe(coredata_validate "coredata_validate"
 )
 
 target_link_libraries(coredata_validate PRIVATE core_tlv)
+target_include_directories(coredata_validate PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/coredata_compile
+    ${CMAKE_CURRENT_SOURCE_DIR}/coredata_validate
+)

@@ -14,12 +14,6 @@ RESPONSIBILITY: Surface chunk keying, lifecycle, and non-blocking request pipeli
 #include "domino/core/dom_deterministic_math.h"
 #include "dom_profiler.h"
 
-namespace {
-
-static const u32 DEFAULT_MAX_CHUNKS = 256u;
-static const u32 DEFAULT_CHUNK_SIZE_M = 2048u;
-static const q16_16 TWO_PI_Q16_16 = (q16_16)411775; /* 2*pi in Q16.16 */
-
 struct SurfaceChunk {
     dom_surface_chunk_key key;
     u32 state;
@@ -34,6 +28,12 @@ struct dom_surface_chunks {
     u32 chunk_size_m;
     u32 generation;
 };
+
+namespace {
+
+static const u32 DEFAULT_MAX_CHUNKS = 256u;
+static const u32 DEFAULT_CHUNK_SIZE_M = 2048u;
+static const q16_16 TWO_PI_Q16_16 = (q16_16)411775; /* 2*pi in Q16.16 */
 
 struct SurfaceJobPayload {
     dom_derived_job_budget_hint hint;

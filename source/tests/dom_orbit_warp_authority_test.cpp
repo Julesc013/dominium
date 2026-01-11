@@ -20,6 +20,7 @@ extern "C" {
 #include "runtime/dom_game_runtime.h"
 #include "runtime/dom_game_net_driver.h"
 #include "runtime/dom_game_command.h"
+#include "runtime/dom_game_session.h"
 
 extern "C" {
 #include "net/d_net_schema.h"
@@ -145,13 +146,13 @@ static int assert_warp_result(dom::DomSessionRole role,
 
     std::memset(&cfg, 0, sizeof(cfg));
     cfg.struct_size = sizeof(cfg);
-    cfg.struct_version = DOM_GAME_SESSION_CONFIG_VERSION;
+    cfg.struct_version = dom::DOM_GAME_SESSION_CONFIG_VERSION;
     cfg.role = role;
     cfg.authority = authority;
     cfg.tick_rate_hz = 60u;
     cfg.input_delay_ticks = 1u;
     cfg.struct_size = sizeof(cfg);
-    cfg.struct_version = DOM_GAME_SESSION_CONFIG_VERSION;
+    cfg.struct_version = dom::DOM_GAME_SESSION_CONFIG_VERSION;
 
     ctx.net = &tr.net;
     ctx.runtime = tr.rt;
@@ -219,6 +220,10 @@ bool DomGameNet::init_client(u32 tick_rate, const std::string &addr_port) {
     (void)addr_port;
     m_ready = true;
     return true;
+}
+
+void DomGameNet::set_input_delay_ticks(u32 delay) {
+    m_session.input_delay_ticks = delay;
 }
 
 void DomGameNet::shutdown() {

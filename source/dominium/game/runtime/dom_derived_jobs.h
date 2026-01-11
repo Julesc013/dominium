@@ -122,8 +122,8 @@ int dom_derived_poll(dom_derived_queue *queue,
 int dom_derived_cancel(dom_derived_queue *queue,
                        dom_derived_job_id job_id);
 
-int dom_derived_stats(dom_derived_queue *queue,
-                      dom_derived_stats *out_stats);
+int dom_derived_get_stats(dom_derived_queue *queue,
+                          dom_derived_stats *out_stats);
 
 #ifdef __cplusplus
 } /* extern "C" */

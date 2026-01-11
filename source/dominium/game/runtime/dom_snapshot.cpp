@@ -749,13 +749,13 @@ dom_atmos_sample_snapshot *dom_game_runtime_build_atmos_sample_snapshot(const do
     zero_media_sample(&sample);
     media = static_cast<const dom_media_registry *>(dom_game_runtime_media_registry(rt));
     if (media) {
-        int rc = dom_media_sample(media,
-                                  body_id,
-                                  DOM_MEDIA_KIND_ATMOSPHERE,
-                                  0,
-                                  altitude,
-                                  dom_game_runtime_get_tick(rt),
-                                  &sample);
+        int rc = dom_media_sample_query(media,
+                                        body_id,
+                                        DOM_MEDIA_KIND_ATMOSPHERE,
+                                        0,
+                                        altitude,
+                                        dom_game_runtime_get_tick(rt),
+                                        &sample);
         if (rc != DOM_MEDIA_OK) {
             zero_media_sample(&sample);
         }
@@ -883,11 +883,23 @@ dom_surface_view_snapshot *dom_game_runtime_build_surface_view_snapshot(const do
                                            0u,
                                            &count) == DOM_SURFACE_CHUNKS_OK &&
             count > 0u) {
-            snap->chunks = new dom_surface_chunk_view[count];
+            std::vector<dom_surface_chunk_status> statuses;
+            u32 filled = 0u;
+            statuses.resize(count);
             if (dom_surface_chunks_list_active(const_cast<dom_surface_chunks *>(chunks),
-                                               snap->chunks,
+                                               &statuses[0],
                                                count,
-                                               &snap->chunk_count) != DOM_SURFACE_CHUNKS_OK) {
+                                               &filled) == DOM_SURFACE_CHUNKS_OK) {
+                if (filled > count) {
+                    filled = count;
+                }
+                snap->chunks = new dom_surface_chunk_view[filled];
+                snap->chunk_count = filled;
+                for (u32 i = 0u; i < filled; ++i) {
+                    snap->chunks[i].key = statuses[i].key;
+                    snap->chunks[i].state = statuses[i].state;
+                }
+            } else {
                 delete[] snap->chunks;
                 snap->chunks = 0;
                 snap->chunk_count = 0u;

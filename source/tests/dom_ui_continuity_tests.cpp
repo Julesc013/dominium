@@ -12,6 +12,7 @@ extern "C" {
 }
 
 #include "runtime/dom_io_guard.h"
+#include "runtime/dom_fidelity.h"
 #include "ui/dom_ui_state.h"
 #include "ui/dom_ui_views.h"
 
@@ -107,7 +108,7 @@ static int test_fidelity_degradation_visual() {
     params.buf = buf;
     params.width = 640;
     params.height = 480;
-    params.fidelity = dom::DOM_FIDELITY_LOW;
+    params.fidelity = DOM_FIDELITY_LOW;
     params.alpha = 255u;
     params.clear = 1;
 

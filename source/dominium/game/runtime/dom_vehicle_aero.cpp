@@ -7,6 +7,7 @@ RESPONSIBILITY: Deterministic aero properties/state and drag/heating update help
 #include "runtime/dom_vehicle_aero.h"
 
 #include <climits>
+#include <stdint.h>
 
 #include "domino/core/dom_deterministic_math.h"
 

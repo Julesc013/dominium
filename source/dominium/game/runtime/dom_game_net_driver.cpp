@@ -34,6 +34,13 @@ extern "C" {
 
 namespace dom {
 
+namespace {
+
+static bool warp_command_allowed(DomSessionRole role, DomSessionAuthority authority);
+static bool is_warp_command(const dom_game_command *cmd);
+
+} // namespace
+
 DomNetDriverContext::DomNetDriverContext()
     : net(0),
       runtime(0),

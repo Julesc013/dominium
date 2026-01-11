@@ -34,7 +34,7 @@ int main() {
     id.instance_id_len = 5u;
     id.ups = 60u;
     id.tick_index = 0ull;
-    id.feature_epoch = DOM_FEATURE_EPOCH_DEFAULT;
+    id.feature_epoch = dom::dom_feature_epoch_current();
     if (dom_universe_bundle_set_identity(bundle, &id) != DOM_UNIVERSE_BUNDLE_OK) {
         dom_universe_bundle_destroy(bundle);
         return fail("identity_set_failed");

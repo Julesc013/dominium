@@ -116,6 +116,14 @@ static i64 read_i64_le(const unsigned char *p) {
     return (i64)read_u64_le(p);
 }
 
+static u32 dtlv_le_read_u32(const unsigned char *p) {
+    return read_u32_le(p);
+}
+
+static u64 dtlv_le_read_u64(const unsigned char *p) {
+    return read_u64_le(p);
+}
+
 static void write_u32_le(unsigned char out[4], u32 v) {
     out[0] = (unsigned char)(v & 0xffu);
     out[1] = (unsigned char)((v >> 8u) & 0xffu);
