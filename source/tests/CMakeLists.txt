@@ -3253,6 +3253,38 @@ set_target_properties(coredata_validate_tlv_pack_passes PROPERTIES
 
 add_test(NAME coredata_validate_tlv_pack_passes COMMAND coredata_validate_tlv_pack_passes)
 
+add_executable(dom_ui_widgets_tests
+    dom_ui_widgets_tests.cpp
+    ../dominium/game/ui/dom_ui_widgets.cpp
+    ../dominium/game/runtime/dom_belief_store.cpp
+    ../dominium/game/runtime/dom_capability_engine.cpp
+    ../dominium/game/runtime/dom_time_knowledge.cpp
+)
+
+target_include_directories(dom_ui_widgets_tests PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_ui_widgets_tests
+    domino_core
+)
+
+target_compile_definitions(dom_ui_widgets_tests PRIVATE
+    UI_FIXTURE_ROOT=\"${CMAKE_SOURCE_DIR}/tests/fixtures/ui\"
+)
+
+set_target_properties(dom_ui_widgets_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_ui_widgets_tests COMMAND dom_ui_widgets_tests)
+
 function(dom_attach_runtime_test_support)
     get_property(dom_all_targets GLOBAL PROPERTY TARGETS)
     foreach(dom_tgt IN LISTS dom_all_targets)

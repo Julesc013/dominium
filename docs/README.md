@@ -37,3 +37,5 @@ Recommended entry points:
 - Core data packs + authoring: `docs/SPEC_CORE_DATA.md`, `docs/SPEC_COSMO_CORE_DATA.md`,
   `docs/SPEC_MECHANICS_PROFILES.md`, `docs/SPEC_CORE_DATA_PIPELINE.md`
 - Renderer conformance: `docs/SPEC_DGFX_IR_VERSIONING.md`, `docs/SPEC_BACKEND_CONFORMANCE.md`
+- Epistemic UI: `docs/SPEC_EPISTEMIC_INTERFACE.md`, `docs/SPEC_UI_CAPABILITIES.md`,
+  `docs/SPEC_UI_WIDGETS.md`

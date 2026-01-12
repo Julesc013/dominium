@@ -1,0 +1,19 @@
+[[widget]]
+id = "time"
+label = "Time"
+capability = "time_readout"
+min_resolution = 1
+allow_uncertainty = true
+width_px = 200
+height_px = 36
+draw_panel = true
+
+[[widget]]
+id = "health"
+label = "Health"
+capability = "health_status"
+min_resolution = 2
+allow_uncertainty = false
+width_px = 200
+height_px = 36
+draw_panel = true
