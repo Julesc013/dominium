@@ -33,6 +33,8 @@ add_library(domino_core STATIC
     core/dom_time_events.c
     core/dom_time_frames.c
     core/dom_time_astronomy.c
+    core/dom_ledger_core.c
+    core/dom_ledger_accounts.c
     core/dom_build_info.c
     io/container/dtlv.c
     io/schema_registry.c
@@ -251,6 +253,7 @@ target_sources(domino_core PRIVATE
     core/dg_det_hash.h
     core/dg_pose.h
     core/dg_quant.h
+    core/dom_ledger_internal.h
     core/graph/dg_graph.h
     core/graph/dg_graph_node.h
     core/graph/dg_graph_edge.h
