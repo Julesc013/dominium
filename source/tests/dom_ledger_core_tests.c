@@ -14,18 +14,41 @@ static int fail(const char *msg) {
 }
 
 static int test_double_entry_conservation(void) {
-    dom_ledger ledger;
+    static dom_ledger ledger;
     dom_ledger_posting postings[2];
+    dom_ledger_posting fund_postings[2];
+    dom_ledger_transaction fund_tx;
     dom_ledger_transaction tx;
     dom_amount_t bal = 0;
     int rc;
 
+    printf("test_double_entry_conservation\n");
+    fflush(stdout);
     rc = dom_ledger_init(&ledger);
     if (rc != DOM_LEDGER_OK) {
         return fail("ledger_init");
     }
     (void)dom_ledger_account_create(&ledger, 1u, 0u);
     (void)dom_ledger_account_create(&ledger, 2u, 0u);
+    (void)dom_ledger_account_create(&ledger, 99u, DOM_LEDGER_ACCOUNT_ALLOW_NEGATIVE);
+
+    fund_postings[0].account_id = 99u;
+    fund_postings[0].asset_id = 10u;
+    fund_postings[0].amount = -100;
+    fund_postings[0].lot_id = 0u;
+    fund_postings[0].provenance_id = 0u;
+    fund_postings[1].account_id = 1u;
+    fund_postings[1].asset_id = 10u;
+    fund_postings[1].amount = 100;
+    fund_postings[1].lot_id = 0u;
+    fund_postings[1].provenance_id = 1u;
+    fund_tx.tx_id = 1u;
+    fund_tx.posting_count = 2u;
+    fund_tx.postings = fund_postings;
+    rc = dom_ledger_transaction_apply(&ledger, &fund_tx, 4);
+    if (rc != DOM_LEDGER_OK) {
+        return fail("funding failed");
+    }
 
     postings[0].account_id = 1u;
     postings[0].asset_id = 10u;
@@ -39,7 +62,7 @@ static int test_double_entry_conservation(void) {
     postings[1].lot_id = 0u;
     postings[1].provenance_id = 1u;
 
-    tx.tx_id = 1u;
+    tx.tx_id = 2u;
     tx.posting_count = 2u;
     tx.postings = postings;
     rc = dom_ledger_transaction_apply(&ledger, &tx, 5);
@@ -60,26 +83,35 @@ static int test_double_entry_conservation(void) {
 }
 
 static int test_lot_tracking(void) {
-    dom_ledger ledger;
-    dom_ledger_posting postings[1];
+    static dom_ledger ledger;
+    dom_ledger_posting postings[2];
     dom_ledger_transaction tx;
     dom_ledger_account acc;
     int rc;
 
+    printf("test_lot_tracking\n");
+    fflush(stdout);
     rc = dom_ledger_init(&ledger);
     if (rc != DOM_LEDGER_OK) {
         return fail("ledger_init");
     }
     (void)dom_ledger_account_create(&ledger, 3u, 0u);
+    (void)dom_ledger_account_create(&ledger, 99u, DOM_LEDGER_ACCOUNT_ALLOW_NEGATIVE);
 
-    postings[0].account_id = 3u;
+    postings[0].account_id = 99u;
     postings[0].asset_id = 20u;
-    postings[0].amount = 250;
+    postings[0].amount = -250;
     postings[0].lot_id = 0u;
-    postings[0].provenance_id = 99u;
+    postings[0].provenance_id = 0u;
+
+    postings[1].account_id = 3u;
+    postings[1].asset_id = 20u;
+    postings[1].amount = 250;
+    postings[1].lot_id = 0u;
+    postings[1].provenance_id = 99u;
 
     tx.tx_id = 2u;
-    tx.posting_count = 1u;
+    tx.posting_count = 2u;
     tx.postings = postings;
     rc = dom_ledger_transaction_apply(&ledger, &tx, 7);
     if (rc != DOM_LEDGER_OK) {
@@ -102,20 +134,43 @@ static int test_lot_tracking(void) {
 }
 
 static int test_obligation_trigger_and_order(void) {
-    dom_ledger ledger;
+    static dom_ledger ledger;
     dom_ledger_posting postings_a[2];
     dom_ledger_posting postings_b[2];
+    dom_ledger_posting fund_postings[2];
     dom_ledger_transaction tx_a;
     dom_ledger_transaction tx_b;
+    dom_ledger_transaction fund_tx;
     dom_ledger_account acc;
     int rc;
 
+    printf("test_obligation_trigger_and_order\n");
+    fflush(stdout);
     rc = dom_ledger_init(&ledger);
     if (rc != DOM_LEDGER_OK) {
         return fail("ledger_init");
     }
     (void)dom_ledger_account_create(&ledger, 10u, 0u);
     (void)dom_ledger_account_create(&ledger, 11u, 0u);
+    (void)dom_ledger_account_create(&ledger, 99u, DOM_LEDGER_ACCOUNT_ALLOW_NEGATIVE);
+
+    fund_postings[0].account_id = 99u;
+    fund_postings[0].asset_id = 30u;
+    fund_postings[0].amount = -100;
+    fund_postings[0].lot_id = 0u;
+    fund_postings[0].provenance_id = 0u;
+    fund_postings[1].account_id = 10u;
+    fund_postings[1].asset_id = 30u;
+    fund_postings[1].amount = 100;
+    fund_postings[1].lot_id = 0u;
+    fund_postings[1].provenance_id = 0u;
+    fund_tx.tx_id = 10u;
+    fund_tx.posting_count = 2u;
+    fund_tx.postings = fund_postings;
+    rc = dom_ledger_transaction_apply(&ledger, &fund_tx, 1);
+    if (rc != DOM_LEDGER_OK) {
+        return fail("funding obligation test");
+    }
 
     postings_a[0].account_id = 10u;
     postings_a[0].asset_id = 30u;
@@ -169,16 +224,20 @@ static int test_obligation_trigger_and_order(void) {
 }
 
 static int test_batch_vs_step(void) {
-    dom_ledger ledger_a;
-    dom_ledger ledger_b;
+    static dom_ledger ledger_a;
+    static dom_ledger ledger_b;
     dom_ledger_posting postings[2];
+    dom_ledger_posting fund_postings[2];
     dom_ledger_transaction tx;
+    dom_ledger_transaction fund_tx;
     dom_ledger_asset_summary assets_a[4];
     dom_ledger_asset_summary assets_b[4];
     dom_ledger_account_summary sum_a;
     dom_ledger_account_summary sum_b;
     int rc;
 
+    printf("test_batch_vs_step\n");
+    fflush(stdout);
     rc = dom_ledger_init(&ledger_a);
     if (rc != DOM_LEDGER_OK) {
         return fail("ledger_init a");
@@ -189,8 +248,32 @@ static int test_batch_vs_step(void) {
     }
     (void)dom_ledger_account_create(&ledger_a, 21u, 0u);
     (void)dom_ledger_account_create(&ledger_a, 22u, 0u);
+    (void)dom_ledger_account_create(&ledger_a, 99u, DOM_LEDGER_ACCOUNT_ALLOW_NEGATIVE);
     (void)dom_ledger_account_create(&ledger_b, 21u, 0u);
     (void)dom_ledger_account_create(&ledger_b, 22u, 0u);
+    (void)dom_ledger_account_create(&ledger_b, 99u, DOM_LEDGER_ACCOUNT_ALLOW_NEGATIVE);
+
+    fund_postings[0].account_id = 99u;
+    fund_postings[0].asset_id = 50u;
+    fund_postings[0].amount = -40;
+    fund_postings[0].lot_id = 0u;
+    fund_postings[0].provenance_id = 0u;
+    fund_postings[1].account_id = 21u;
+    fund_postings[1].asset_id = 50u;
+    fund_postings[1].amount = 40;
+    fund_postings[1].lot_id = 0u;
+    fund_postings[1].provenance_id = 2u;
+    fund_tx.tx_id = 20u;
+    fund_tx.posting_count = 2u;
+    fund_tx.postings = fund_postings;
+    rc = dom_ledger_transaction_apply(&ledger_a, &fund_tx, 2);
+    if (rc != DOM_LEDGER_OK) {
+        return fail("funding a");
+    }
+    rc = dom_ledger_transaction_apply(&ledger_b, &fund_tx, 2);
+    if (rc != DOM_LEDGER_OK) {
+        return fail("funding b");
+    }
 
     postings[0].account_id = 21u;
     postings[0].asset_id = 50u;
@@ -254,6 +337,8 @@ static int test_batch_vs_step(void) {
 
 int main(void) {
     int rc;
+    printf("dom_ledger_core_tests start\n");
+    fflush(stdout);
     rc = test_double_entry_conservation();
     if (rc != 0) return rc;
     rc = test_lot_tracking();
