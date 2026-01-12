@@ -60,6 +60,17 @@ Ledger updates are event-driven:
 - The ledger does not scan accounts per tick.
 - Batch execution up to a target tick must equal step-by-step execution.
 
+## Engine implementation notes
+Domino engine implementation provides:
+- Fixed-capacity account storage with deterministic ordering by account_id.
+- Asset slots ordered by asset_id per account.
+- Lot tracking per asset slot with deterministic insertion order.
+- Obligation scheduling via `dom_time_events` with payload_id = obligation_id.
+- Batch processing via `dom_ledger_process_until` with deterministic ordering by
+  (trigger_tick, order_key, event_id).
+
+Lots are consumed in deterministic order and preserve provenance metadata.
+
 ## Engine vs game responsibilities
 ENGINE (Domino, C89/C90) MAY:
 - implement ledger primitives (accounts, postings, transactions).
