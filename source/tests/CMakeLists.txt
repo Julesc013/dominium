@@ -3285,6 +3285,33 @@ set_target_properties(dom_ui_widgets_tests PROPERTIES
 
 add_test(NAME dom_ui_widgets_tests COMMAND dom_ui_widgets_tests)
 
+add_executable(dom_ui_projection_tests
+    dom_ui_projection_tests.cpp
+    ../dominium/game/ui/dom_ui_widgets.cpp
+    ../dominium/game/ui/dom_ui_projection.cpp
+    ../dominium/game/runtime/dom_io_guard.cpp
+)
+
+target_include_directories(dom_ui_projection_tests PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_ui_projection_tests
+    domino_core
+)
+
+set_target_properties(dom_ui_projection_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_ui_projection_tests COMMAND dom_ui_projection_tests)
+
 function(dom_attach_runtime_test_support)
     get_property(dom_all_targets GLOBAL PROPERTY TARGETS)
     foreach(dom_tgt IN LISTS dom_all_targets)
