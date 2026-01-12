@@ -1,0 +1,21 @@
+[[profile]]
+id = "default"
+projection = "hud"
+
+[[instance]]
+widget_id = "time"
+anchor = "top_left"
+x = 16
+y = 16
+scale = 1.0
+opacity = 1.0
+enabled = true
+
+[[instance]]
+widget_id = "health"
+anchor = "top_left"
+x = 16
+y = 60
+scale = 1.0
+opacity = 1.0
+enabled = true
