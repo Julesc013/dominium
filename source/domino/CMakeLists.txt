@@ -35,6 +35,8 @@ add_library(domino_core STATIC
     core/dom_time_astronomy.c
     core/dom_ledger_core.c
     core/dom_ledger_accounts.c
+    core/dom_ledger_transactions.c
+    core/dom_ledger_lots.c
     core/dom_build_info.c
     io/container/dtlv.c
     io/schema_registry.c
