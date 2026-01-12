@@ -484,6 +484,7 @@ static void init_instance_default(DomUiWidgetInstance &inst,
     inst.opacity_q16 = (1 << 16);
     inst.enabled = 1;
     inst.input_binding.clear();
+    inst.device_tag.clear();
 }
 
 static d_gfx_color make_color(u8 r, u8 g, u8 b, u8 a) {
@@ -907,6 +908,11 @@ bool dom_ui_widgets_load_layouts(const std::string &path,
                     set_error(err, path, line_no, perr);
                     return false;
                 }
+            } else if (key == "device_tag") {
+                if (!parse_string(value, instance.device_tag, perr)) {
+                    set_error(err, path, line_no, perr);
+                    return false;
+                }
             } else {
                 set_error(err, path, line_no, "unknown_field");
                 return false;
@@ -991,6 +997,9 @@ bool dom_ui_widgets_save_layouts(const std::string &path,
             out << "enabled = " << (inst.enabled ? "true" : "false") << "\n";
             if (!inst.input_binding.empty()) {
                 out << "input_binding = \"" << inst.input_binding << "\"\n";
+            }
+            if (!inst.device_tag.empty()) {
+                out << "device_tag = \"" << inst.device_tag << "\"\n";
             }
             switch (inst.anchor) {
             case DOM_UI_ANCHOR_TOP_RIGHT: out << "anchor = \"top_right\"\n"; break;
@@ -1164,11 +1173,29 @@ void dom_ui_widgets_render(const DomUiWidgetRegistry &defs,
                            const DomUiLayoutProfile &profile,
                            const dom_capability_snapshot *snapshot,
                            const DomUiWidgetRenderParams &params) {
+    dom_ui_widgets_render_ex(defs, profile, snapshot, params, 0, 0);
+}
+
+void dom_ui_widgets_render_ex(const DomUiWidgetRegistry &defs,
+                              const DomUiLayoutProfile &profile,
+                              const dom_capability_snapshot *snapshot,
+                              const DomUiWidgetRenderParams &params,
+                              const DomUiWidgetRenderFilter *filter,
+                              DomUiWidgetRenderContext *context) {
+    std::vector<std::string> *scratch = 0;
+    if (context && context->text_scratch) {
+        scratch = context->text_scratch;
+        if (context->clear_before) {
+            scratch->clear();
+        }
+    } else {
+        scratch = &g_text_scratch;
+        scratch->clear();
+    }
     if (!params.buf) {
         return;
     }
-    g_text_scratch.clear();
-    g_text_scratch.reserve(profile.instances.size());
+    scratch->reserve(scratch->size() + profile.instances.size());
 
     for (size_t i = 0u; i < profile.instances.size(); ++i) {
         const DomUiWidgetInstance &inst = profile.instances[i];
@@ -1212,6 +1239,11 @@ void dom_ui_widgets_render(const DomUiWidgetRegistry &defs,
         if (unknown && !def->allow_uncertainty) {
             continue;
         }
+        if (filter && filter->allow) {
+            if (!filter->allow(inst, *def, cap, filter->user)) {
+                continue;
+            }
+        }
 
         label = def->label.empty() ? def->id : def->label;
         value = format_value(cap, *def, unknown);
@@ -1226,7 +1258,7 @@ void dom_ui_widgets_render(const DomUiWidgetRegistry &defs,
             append_flag(text, "conflict");
         }
 
-        g_text_scratch.push_back(text);
+        scratch->push_back(text);
 
         width = scale_i32(def->width_px, inst.scale_q16);
         height = scale_i32(def->height_px, inst.scale_q16);
@@ -1241,7 +1273,7 @@ void dom_ui_widgets_render(const DomUiWidgetRegistry &defs,
             emit_rect(params.buf, x, y, width, height, panel);
         }
         emit_text(params.buf, x + 8, y + (height / 2) - 6,
-                  text_col, g_text_scratch.back().c_str());
+                  text_col, scratch->back().c_str());
     }
 }
 

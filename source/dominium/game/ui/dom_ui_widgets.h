@@ -62,6 +62,7 @@ struct DomUiWidgetInstance {
     i32 opacity_q16;
     int enabled;
     std::string input_binding;
+    std::string device_tag;
 };
 
 struct DomUiLayoutProfile {
@@ -83,6 +84,19 @@ struct DomUiWidgetRenderParams {
     int width;
     int height;
     DomUiWidgetProjection projection;
+};
+
+struct DomUiWidgetRenderFilter {
+    bool (*allow)(const DomUiWidgetInstance &inst,
+                  const DomUiWidgetDefinition &def,
+                  const dom_capability *cap,
+                  void *user);
+    void *user;
+};
+
+struct DomUiWidgetRenderContext {
+    std::vector<std::string> *text_scratch;
+    int clear_before;
 };
 
 bool dom_ui_widgets_load_definitions(const std::string &path,
@@ -108,6 +122,13 @@ void dom_ui_widgets_render(const DomUiWidgetRegistry &defs,
                            const DomUiLayoutProfile &profile,
                            const dom_capability_snapshot *snapshot,
                            const DomUiWidgetRenderParams &params);
+
+void dom_ui_widgets_render_ex(const DomUiWidgetRegistry &defs,
+                              const DomUiLayoutProfile &profile,
+                              const dom_capability_snapshot *snapshot,
+                              const DomUiWidgetRenderParams &params,
+                              const DomUiWidgetRenderFilter *filter,
+                              DomUiWidgetRenderContext *context);
 
 } // namespace dom
 
