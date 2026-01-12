@@ -160,6 +160,12 @@ Game (Dominium, C++98) MUST:
 - integrate with economy and law
 - expose inspection tools
 
+## Ledger integration notes
+- Ledger lots MUST carry provenance_id and source transaction metadata.
+- Lot creation is deterministic and tied to transaction application time.
+- Aggregate provenance hashes are derived from lot metadata and preserved across
+  refinement/collapse.
+
 ## Integration points (mandatory)
 - Fidelity Projection Engine (FP0)
 - Economy & Ledger (E*)
