@@ -69,6 +69,14 @@ Version: 1
 ## Event-driven macro stepping
 - `docs/SPEC_EVENT_DRIVEN_STEPPING.md`
 
+## Economic ledger and money standards
+- `docs/SPEC_LEDGER.md`
+- `docs/SPEC_ASSETS_INSTRUMENTS.md`
+- `docs/SPEC_CONTRACTS.md`
+- `docs/SPEC_MARKETS.md`
+- `docs/SPEC_MONEY_STANDARDS.md`
+- `docs/SPEC_PROPERTY_RIGHTS.md`
+
 ## Temporal canon
 - `docs/SPEC_TIME_CORE.md`
 - `docs/SPEC_TIME_FRAMES.md`
