@@ -39,3 +39,5 @@ Recommended entry points:
 - Renderer conformance: `docs/SPEC_DGFX_IR_VERSIONING.md`, `docs/SPEC_BACKEND_CONFORMANCE.md`
 - Epistemic UI: `docs/SPEC_EPISTEMIC_INTERFACE.md`, `docs/SPEC_UI_CAPABILITIES.md`,
   `docs/SPEC_UI_WIDGETS.md`, `docs/SPEC_UI_PROJECTIONS.md`
+- Economy and ledgers: `docs/SPEC_LEDGER.md`, `docs/SPEC_ASSETS_INSTRUMENTS.md`,
+  `docs/SPEC_CONTRACTS.md`, `docs/SPEC_MARKETS.md`, `docs/SPEC_MONEY_STANDARDS.md`
