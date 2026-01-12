@@ -43,6 +43,7 @@ Version: 1
 - `docs/SPEC_EPISTEMIC_INTERFACE.md`
 - `docs/SPEC_UI_CAPABILITIES.md`
 - `docs/SPEC_UI_WIDGETS.md`
+- `docs/SPEC_UI_PROJECTIONS.md`
 
 ## Sensors and observation canon
 - `docs/SPEC_SENSORS.md`
