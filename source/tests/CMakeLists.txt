@@ -137,6 +137,26 @@ set_target_properties(dom_time_core_tests PROPERTIES
 
 add_test(NAME dom_time_core_tests COMMAND dom_time_core_tests)
 
+add_executable(dom_ledger_core_tests
+    dom_ledger_core_tests.c
+)
+
+target_include_directories(dom_ledger_core_tests PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+)
+
+target_link_libraries(dom_ledger_core_tests
+    domino_core
+)
+
+set_target_properties(dom_ledger_core_tests PROPERTIES
+    C_STANDARD 90
+    C_STANDARD_REQUIRED ON
+    C_EXTENSIONS OFF
+)
+
+add_test(NAME dom_ledger_core_tests COMMAND dom_ledger_core_tests)
+
 add_executable(dom_universe_bundle_epoch_test
     dom_universe_bundle_epoch_test.cpp
     ../dominium/game/runtime/dom_universe_bundle.cpp
