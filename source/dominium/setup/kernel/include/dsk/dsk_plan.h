@@ -77,6 +77,7 @@ DSK_API dsk_u64 dsk_plan_payload_digest(const dsk_plan_t *plan);
 DSK_API dsk_status_t dsk_plan_dump_json(const dsk_plan_t *plan, std::string *out_json);
 DSK_API dsk_status_t dsk_plan_build(const dsk_manifest_t &manifest,
                                     const dsk_request_t &request,
+                                    const dsk_installed_state_t *installed_state,
                                     const std::string &selected_splat_id,
                                     const dsk_splat_caps_t &splat_caps,
                                     dsk_u64 splat_caps_digest64,

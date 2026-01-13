@@ -128,6 +128,13 @@ static dsk_status_t dsk_build_installed_state_from_plan(const dsk_plan_t &plan,
             break;
         }
     }
+    out_state->manifest_digest64 = plan.manifest_digest64;
+    out_state->request_digest64 = plan.request_digest64;
+    out_state->previous_state_digest64 = 0u;
+
+    if (plan.operation == DSK_OPERATION_UNINSTALL) {
+        return dsk_error_make(DSK_DOMAIN_NONE, DSK_CODE_OK, DSK_SUBCODE_NONE, 0u);
+    }
     for (i = 0u; i < plan.resolved_components.size(); ++i) {
         out_state->installed_components.push_back(plan.resolved_components[i].component_id);
     }

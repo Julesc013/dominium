@@ -60,6 +60,8 @@ void dsk_manifest_clear(dsk_manifest_t *manifest) {
     manifest->build_id.clear();
     manifest->supported_targets.clear();
     manifest->allowed_splats.clear();
+    manifest->allow_downgrade = DSK_FALSE;
+    manifest->migration_rules.clear();
     manifest->layout_templates.clear();
     manifest->components.clear();
 }
@@ -394,6 +396,59 @@ dsk_status_t dsk_manifest_parse(const dsk_u8 *data,
             }
             dsk_tlv_stream_destroy(&list_stream);
             st = dsk_error_make(DSK_DOMAIN_NONE, DSK_CODE_OK, DSK_SUBCODE_NONE, 0u);
+        } else if (rec.type == DSK_TLV_TAG_MANIFEST_TARGET_RULES) {
+            dsk_tlv_stream_t list_stream;
+            dsk_status_t lst;
+            dsk_u32 j;
+
+            lst = dsk_tlv_parse_stream(rec.payload, rec.length, &list_stream);
+            if (!dsk_error_is_ok(lst)) {
+                dsk_tlv_view_destroy(&view);
+                return lst;
+            }
+            for (j = 0u; j < list_stream.record_count; ++j) {
+                const dsk_tlv_record_t &entry = list_stream.records[j];
+                if (entry.type == DSK_TLV_TAG_TARGET_RULE_ALLOW_DOWNGRADE) {
+                    dsk_bool allow = DSK_FALSE;
+                    lst = dsk_parse_bool(entry, &allow);
+                    if (!dsk_error_is_ok(lst)) {
+                        dsk_tlv_stream_destroy(&list_stream);
+                        dsk_tlv_view_destroy(&view);
+                        return lst;
+                    }
+                    out_manifest->allow_downgrade = allow;
+                }
+            }
+            dsk_tlv_stream_destroy(&list_stream);
+            st = dsk_error_make(DSK_DOMAIN_NONE, DSK_CODE_OK, DSK_SUBCODE_NONE, 0u);
+        } else if (rec.type == DSK_TLV_TAG_MANIFEST_MIGRATION_RULES) {
+            dsk_tlv_stream_t list_stream;
+            dsk_status_t lst;
+            dsk_u32 j;
+
+            lst = dsk_tlv_parse_stream(rec.payload, rec.length, &list_stream);
+            if (!dsk_error_is_ok(lst)) {
+                dsk_tlv_view_destroy(&view);
+                return lst;
+            }
+            for (j = 0u; j < list_stream.record_count; ++j) {
+                const dsk_tlv_record_t &entry = list_stream.records[j];
+                if (entry.type != DSK_TLV_TAG_MIGRATION_ENTRY) {
+                    continue;
+                }
+                std::string rule_id;
+                lst = dsk_parse_string(entry, &rule_id);
+                if (!dsk_error_is_ok(lst)) {
+                    dsk_tlv_stream_destroy(&list_stream);
+                    dsk_tlv_view_destroy(&view);
+                    return lst;
+                }
+                if (!rule_id.empty()) {
+                    out_manifest->migration_rules.push_back(rule_id);
+                }
+            }
+            dsk_tlv_stream_destroy(&list_stream);
+            st = dsk_error_make(DSK_DOMAIN_NONE, DSK_CODE_OK, DSK_SUBCODE_NONE, 0u);
         } else {
             continue;
         }
@@ -564,6 +619,46 @@ dsk_status_t dsk_manifest_write(const dsk_manifest_t *manifest,
         if (!dsk_error_is_ok(st)) goto done;
         st = dsk_tlv_builder_add_container(builder,
                                            DSK_TLV_TAG_MANIFEST_ALLOWED_SPLATS,
+                                           list_payload.data,
+                                           list_payload.size);
+        dsk_tlv_buffer_free(&list_payload);
+        if (!dsk_error_is_ok(st)) goto done;
+    }
+
+    if (manifest->allow_downgrade) {
+        dsk_tlv_builder_t *rules_builder = dsk_tlv_builder_create();
+        dsk_tlv_buffer_t rules_payload;
+        dsk_u8 allow = 1u;
+        dsk_tlv_builder_add_bytes(rules_builder,
+                                  DSK_TLV_TAG_TARGET_RULE_ALLOW_DOWNGRADE,
+                                  &allow,
+                                  1u);
+        st = dsk_tlv_builder_finalize_payload(rules_builder, &rules_payload);
+        dsk_tlv_builder_destroy(rules_builder);
+        if (!dsk_error_is_ok(st)) goto done;
+        st = dsk_tlv_builder_add_container(builder,
+                                           DSK_TLV_TAG_MANIFEST_TARGET_RULES,
+                                           rules_payload.data,
+                                           rules_payload.size);
+        dsk_tlv_buffer_free(&rules_payload);
+        if (!dsk_error_is_ok(st)) goto done;
+    }
+
+    if (!manifest->migration_rules.empty()) {
+        std::vector<std::string> rules = manifest->migration_rules;
+        std::sort(rules.begin(), rules.end(), dsk_string_less);
+        dsk_tlv_builder_t *list_builder = dsk_tlv_builder_create();
+        dsk_tlv_buffer_t list_payload;
+        for (i = 0u; i < rules.size(); ++i) {
+            dsk_tlv_builder_add_string(list_builder,
+                                       DSK_TLV_TAG_MIGRATION_ENTRY,
+                                       rules[i].c_str());
+        }
+        st = dsk_tlv_builder_finalize_payload(list_builder, &list_payload);
+        dsk_tlv_builder_destroy(list_builder);
+        if (!dsk_error_is_ok(st)) goto done;
+        st = dsk_tlv_builder_add_container(builder,
+                                           DSK_TLV_TAG_MANIFEST_MIGRATION_RULES,
                                            list_payload.data,
                                            list_payload.size);
         dsk_tlv_buffer_free(&list_payload);

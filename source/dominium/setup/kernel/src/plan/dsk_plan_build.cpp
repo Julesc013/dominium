@@ -1,6 +1,9 @@
 #include "dsk/dsk_plan.h"
 
 #include <algorithm>
+#include <cstdio>
+#include <map>
+#include <set>
 
 static const dsk_manifest_component_t *dsk_find_component(const dsk_manifest_t &manifest,
                                                           const std::string &id) {
@@ -103,6 +106,157 @@ struct dsk_step_build_t {
     dsk_plan_step_t step;
 };
 
+struct dsk_target_artifact_t {
+    std::string component_id;
+    std::string artifact_id;
+    std::string root_key;
+    dsk_u32 root_id;
+    std::string target_path;
+    std::string source_path;
+    dsk_u64 digest64;
+    dsk_u64 size;
+};
+
+struct dsk_installed_artifact_info_t {
+    dsk_u64 digest64;
+    dsk_u64 size;
+};
+
+static std::string dsk_artifact_key(dsk_u32 root_id, const std::string &path) {
+    char buf[32];
+    std::snprintf(buf, sizeof(buf), "%u|", (unsigned)root_id);
+    return std::string(buf) + path;
+}
+
+static dsk_status_t dsk_collect_target_artifacts(const dsk_manifest_t &manifest,
+                                                 const std::vector<std::string> &component_ids,
+                                                 const std::vector<std::string> &roots,
+                                                 std::vector<dsk_target_artifact_t> *out) {
+    size_t i;
+    if (!out) {
+        return dsk_error_make(DSK_DOMAIN_KERNEL,
+                              DSK_CODE_INVALID_ARGS,
+                              DSK_SUBCODE_NONE,
+                              0u);
+    }
+    out->clear();
+    for (i = 0u; i < component_ids.size(); ++i) {
+        const dsk_manifest_component_t *comp = dsk_find_component(manifest, component_ids[i]);
+        size_t j;
+        if (!comp) {
+            return dsk_error_make(DSK_DOMAIN_KERNEL,
+                                  DSK_CODE_VALIDATION_ERROR,
+                                  DSK_SUBCODE_INVALID_FIELD,
+                                  DSK_ERROR_FLAG_USER_ACTIONABLE);
+        }
+        for (j = 0u; j < comp->artifacts.size(); ++j) {
+            const dsk_artifact_t &art = comp->artifacts[j];
+            const dsk_layout_template_t *layout = dsk_find_layout_template(manifest,
+                                                                           art.layout_template_id);
+            std::string target_path;
+            dsk_u32 root_id;
+            std::string root_key;
+
+            if (!layout) {
+                return dsk_error_make(DSK_DOMAIN_KERNEL,
+                                      DSK_CODE_VALIDATION_ERROR,
+                                      DSK_SUBCODE_INVALID_FIELD,
+                                      DSK_ERROR_FLAG_USER_ACTIONABLE);
+            }
+
+            target_path = dsk_join_rel_path(layout->path_prefix, art.source_path);
+            root_id = dsk_root_index_for(layout->target_root, roots);
+            root_key = (root_id < roots.size()) ? roots[root_id] : (roots.empty() ? std::string() : roots[0]);
+
+            dsk_target_artifact_t entry;
+            entry.component_id = comp->component_id;
+            entry.artifact_id = art.artifact_id;
+            entry.root_key = root_key;
+            entry.root_id = root_id;
+            entry.target_path = target_path;
+            entry.source_path = art.source_path;
+            entry.digest64 = art.digest64;
+            entry.size = art.size;
+            out->push_back(entry);
+        }
+    }
+    return dsk_error_make(DSK_DOMAIN_NONE, DSK_CODE_OK, DSK_SUBCODE_NONE, 0u);
+}
+
+static void dsk_append_artifact_op(std::vector<dsk_file_op_build_t> &file_ops,
+                                   std::vector<dsk_step_build_t> &steps,
+                                   const dsk_target_artifact_t &artifact,
+                                   dsk_u16 op_kind,
+                                   dsk_u16 ownership) {
+    dsk_file_op_build_t op_build;
+    op_build.root_key = artifact.root_key;
+    op_build.component_id = artifact.component_id;
+    op_build.artifact_id = artifact.artifact_id;
+    op_build.op_kind = op_kind;
+    op_build.target_path = artifact.target_path;
+    op_build.op.op_kind = op_kind;
+    if (op_kind != DSK_PLAN_FILE_OP_REMOVE) {
+        op_build.op.from_path = artifact.source_path;
+    }
+    op_build.op.to_path = artifact.target_path;
+    op_build.op.ownership = ownership;
+    if (op_kind != DSK_PLAN_FILE_OP_REMOVE) {
+        op_build.op.digest64 = artifact.digest64;
+        op_build.op.size = artifact.size;
+    } else {
+        op_build.op.digest64 = 0u;
+        op_build.op.size = 0u;
+    }
+    op_build.op.target_root_id = artifact.root_id;
+    file_ops.push_back(op_build);
+
+    {
+        dsk_step_build_t step_build;
+        step_build.root_key = artifact.root_key;
+        step_build.component_id = artifact.component_id;
+        step_build.artifact_id = artifact.artifact_id;
+        step_build.step_kind = DSK_PLAN_STEP_STAGE_ARTIFACT;
+        step_build.target_path = artifact.target_path;
+        step_build.step.step_id = 0u;
+        step_build.step.step_kind = DSK_PLAN_STEP_STAGE_ARTIFACT;
+        step_build.step.component_id = artifact.component_id;
+        step_build.step.artifact_id = artifact.artifact_id;
+        step_build.step.target_root_id = artifact.root_id;
+        steps.push_back(step_build);
+    }
+    {
+        dsk_step_build_t step_build;
+        step_build.root_key = artifact.root_key;
+        step_build.component_id = artifact.component_id;
+        step_build.artifact_id = artifact.artifact_id;
+        step_build.step_kind = DSK_PLAN_STEP_VERIFY_HASHES;
+        step_build.target_path = artifact.target_path;
+        step_build.step.step_id = 0u;
+        step_build.step.step_kind = DSK_PLAN_STEP_VERIFY_HASHES;
+        step_build.step.component_id = artifact.component_id;
+        step_build.step.artifact_id = artifact.artifact_id;
+        step_build.step.target_root_id = artifact.root_id;
+        steps.push_back(step_build);
+    }
+}
+
+static void dsk_append_remove_op(std::vector<dsk_file_op_build_t> &file_ops,
+                                 std::vector<dsk_step_build_t> &steps,
+                                 const std::string &root_key,
+                                 dsk_u32 root_id,
+                                 const std::string &path) {
+    dsk_target_artifact_t artifact;
+    artifact.component_id.clear();
+    artifact.artifact_id.clear();
+    artifact.root_key = root_key;
+    artifact.root_id = root_id;
+    artifact.target_path = path;
+    artifact.source_path.clear();
+    artifact.digest64 = 0u;
+    artifact.size = 0u;
+    dsk_append_artifact_op(file_ops, steps, artifact, DSK_PLAN_FILE_OP_REMOVE, DSK_OWNERSHIP_ANY);
+}
+
 static bool dsk_file_op_build_less(const dsk_file_op_build_t &a,
                                    const dsk_file_op_build_t &b) {
     if (a.root_key != b.root_key) {
@@ -139,6 +293,7 @@ static bool dsk_step_build_less(const dsk_step_build_t &a,
 
 dsk_status_t dsk_plan_build(const dsk_manifest_t &manifest,
                             const dsk_request_t &request,
+                            const dsk_installed_state_t *installed_state,
                             const std::string &selected_splat_id,
                             const dsk_splat_caps_t &splat_caps,
                             dsk_u64 splat_caps_digest64,
@@ -151,6 +306,10 @@ dsk_status_t dsk_plan_build(const dsk_manifest_t &manifest,
     std::vector<dsk_step_build_t> steps;
     std::vector<std::string> roots;
     dsk_u16 ownership;
+    std::vector<std::string> component_ids;
+    std::vector<dsk_target_artifact_t> desired_artifacts;
+    std::set<std::string> desired_keys;
+    std::map<std::string, dsk_installed_artifact_info_t> installed_map;
 
     if (!out_plan) {
         return dsk_error_make(DSK_DOMAIN_KERNEL, DSK_CODE_INVALID_ARGS, DSK_SUBCODE_NONE, 0u);
@@ -171,7 +330,11 @@ dsk_status_t dsk_plan_build(const dsk_manifest_t &manifest,
     out_plan->resolved_set_digest64 = resolved.digest64;
     out_plan->resolved_components = resolved.components;
 
-    if (!request.preferred_install_root.empty()) {
+    if (installed_state && !installed_state->install_roots.empty()) {
+        out_plan->install_roots = installed_state->install_roots;
+    } else if (installed_state && !installed_state->install_root.empty()) {
+        out_plan->install_roots.push_back(installed_state->install_root);
+    } else if (!request.preferred_install_root.empty()) {
         out_plan->install_roots.push_back(request.preferred_install_root);
     } else {
         out_plan->install_roots.push_back(dsk_root_convention_token(splat_caps.default_root_convention));
@@ -179,90 +342,103 @@ dsk_status_t dsk_plan_build(const dsk_manifest_t &manifest,
     roots = out_plan->install_roots;
     ownership = dsk_select_ownership(request, splat_caps);
 
+    if (request.operation == DSK_OPERATION_VERIFY || request.operation == DSK_OPERATION_STATUS) {
+        out_plan->plan_digest64 = dsk_plan_payload_digest(out_plan);
+        return dsk_error_make(DSK_DOMAIN_NONE, DSK_CODE_OK, DSK_SUBCODE_NONE, 0u);
+    }
+
     for (i = 0u; i < resolved.components.size(); ++i) {
-        const dsk_resolved_component_t &res = resolved.components[i];
-        const dsk_manifest_component_t *comp = dsk_find_component(manifest, res.component_id);
-        size_t j;
-        dsk_u16 file_op_kind = DSK_PLAN_FILE_OP_COPY;
-        if (!comp) {
-            return dsk_error_make(DSK_DOMAIN_KERNEL,
-                                  DSK_CODE_VALIDATION_ERROR,
-                                  DSK_SUBCODE_INVALID_FIELD,
-                                  DSK_ERROR_FLAG_USER_ACTIONABLE);
-        }
-        if (request.operation == DSK_OPERATION_UNINSTALL) {
-            file_op_kind = DSK_PLAN_FILE_OP_REMOVE;
-        }
-        for (j = 0u; j < comp->artifacts.size(); ++j) {
-            const dsk_artifact_t &art = comp->artifacts[j];
-            const dsk_layout_template_t *layout = dsk_find_layout_template(manifest,
-                                                                           art.layout_template_id);
-            std::string target_path;
-            std::string root_key;
-            dsk_u32 root_id;
+        component_ids.push_back(resolved.components[i].component_id);
+    }
 
-            if (!layout) {
-                return dsk_error_make(DSK_DOMAIN_KERNEL,
-                                      DSK_CODE_VALIDATION_ERROR,
-                                      DSK_SUBCODE_INVALID_FIELD,
-                                      DSK_ERROR_FLAG_USER_ACTIONABLE);
+    {
+        dsk_status_t st = dsk_collect_target_artifacts(manifest,
+                                                       component_ids,
+                                                       roots,
+                                                       &desired_artifacts);
+        if (!dsk_error_is_ok(st)) {
+            return st;
+        }
+    }
+
+    if (installed_state) {
+        for (i = 0u; i < installed_state->artifacts.size(); ++i) {
+            const dsk_state_artifact_t &art = installed_state->artifacts[i];
+            dsk_installed_artifact_info_t info;
+            std::string key = dsk_artifact_key(art.target_root_id, art.path);
+            info.digest64 = art.digest64;
+            info.size = art.size;
+            installed_map[key] = info;
+        }
+    }
+
+    for (i = 0u; i < desired_artifacts.size(); ++i) {
+        desired_keys.insert(dsk_artifact_key(desired_artifacts[i].root_id,
+                                             desired_artifacts[i].target_path));
+    }
+
+    if (request.operation == DSK_OPERATION_UNINSTALL) {
+        if (installed_state && request.requested_components.empty()) {
+            for (i = 0u; i < installed_state->artifacts.size(); ++i) {
+                const dsk_state_artifact_t &art = installed_state->artifacts[i];
+                std::string root_key = (art.target_root_id < roots.size())
+                    ? roots[art.target_root_id]
+                    : (roots.empty() ? std::string() : roots[0]);
+                dsk_append_remove_op(file_ops, steps, root_key, art.target_root_id, art.path);
             }
-
-            target_path = dsk_join_rel_path(layout->path_prefix, art.source_path);
-            root_id = dsk_root_index_for(layout->target_root, roots);
-            root_key = (root_id < roots.size()) ? roots[root_id] : roots[0];
-
-            {
-                dsk_file_op_build_t op_build;
-                op_build.root_key = root_key;
-                op_build.component_id = res.component_id;
-                op_build.artifact_id = art.artifact_id;
-                op_build.op_kind = file_op_kind;
-                op_build.target_path = target_path;
-                op_build.op.op_kind = file_op_kind;
-                if (file_op_kind != DSK_PLAN_FILE_OP_REMOVE) {
-                    op_build.op.from_path = art.source_path;
-                }
-                op_build.op.to_path = target_path;
-                op_build.op.ownership = ownership;
-                if (file_op_kind != DSK_PLAN_FILE_OP_REMOVE) {
-                    op_build.op.digest64 = art.digest64;
-                    op_build.op.size = art.size;
+        } else {
+            for (i = 0u; i < desired_artifacts.size(); ++i) {
+                dsk_append_artifact_op(file_ops,
+                                       steps,
+                                       desired_artifacts[i],
+                                       DSK_PLAN_FILE_OP_REMOVE,
+                                       ownership);
+            }
+        }
+    } else {
+        dsk_bool always_copy = (request.operation == DSK_OPERATION_INSTALL ||
+                                request.operation == DSK_OPERATION_REPAIR)
+            ? DSK_TRUE
+            : DSK_FALSE;
+        for (i = 0u; i < desired_artifacts.size(); ++i) {
+            const dsk_target_artifact_t &artifact = desired_artifacts[i];
+            std::string key = dsk_artifact_key(artifact.root_id, artifact.target_path);
+            dsk_bool should_copy = always_copy;
+            if (!always_copy) {
+                std::map<std::string, dsk_installed_artifact_info_t>::const_iterator it = installed_map.find(key);
+                if (it == installed_map.end() ||
+                    it->second.digest64 != artifact.digest64 ||
+                    it->second.size != artifact.size) {
+                    should_copy = DSK_TRUE;
                 } else {
-                    op_build.op.digest64 = 0u;
-                    op_build.op.size = 0u;
+                    should_copy = DSK_FALSE;
                 }
-                op_build.op.target_root_id = root_id;
-                file_ops.push_back(op_build);
             }
+            if (should_copy) {
+                dsk_append_artifact_op(file_ops,
+                                       steps,
+                                       artifact,
+                                       DSK_PLAN_FILE_OP_COPY,
+                                       ownership);
+            }
+        }
 
-            {
-                dsk_step_build_t step_build;
-                step_build.root_key = root_key;
-                step_build.component_id = res.component_id;
-                step_build.artifact_id = art.artifact_id;
-                step_build.step_kind = DSK_PLAN_STEP_STAGE_ARTIFACT;
-                step_build.target_path = target_path;
-                step_build.step.step_id = 0u;
-                step_build.step.step_kind = DSK_PLAN_STEP_STAGE_ARTIFACT;
-                step_build.step.component_id = res.component_id;
-                step_build.step.artifact_id = art.artifact_id;
-                step_build.step.target_root_id = root_id;
-                steps.push_back(step_build);
-            }
-            {
-                dsk_step_build_t step_build;
-                step_build.root_key = root_key;
-                step_build.component_id = res.component_id;
-                step_build.artifact_id = art.artifact_id;
-                step_build.step_kind = DSK_PLAN_STEP_VERIFY_HASHES;
-                step_build.target_path = target_path;
-                step_build.step.step_id = 0u;
-                step_build.step.step_kind = DSK_PLAN_STEP_VERIFY_HASHES;
-                step_build.step.component_id = res.component_id;
-                step_build.step.artifact_id = art.artifact_id;
-                step_build.step.target_root_id = root_id;
-                steps.push_back(step_build);
+        if (installed_state &&
+            (request.operation == DSK_OPERATION_CHANGE ||
+             request.operation == DSK_OPERATION_UPGRADE ||
+             request.operation == DSK_OPERATION_DOWNGRADE)) {
+            for (i = 0u; i < installed_state->artifacts.size(); ++i) {
+                const dsk_state_artifact_t &art = installed_state->artifacts[i];
+                std::string key = dsk_artifact_key(art.target_root_id, art.path);
+                if (desired_keys.find(key) != desired_keys.end()) {
+                    continue;
+                }
+                {
+                    std::string root_key = (art.target_root_id < roots.size())
+                        ? roots[art.target_root_id]
+                        : (roots.empty() ? std::string() : roots[0]);
+                    dsk_append_remove_op(file_ops, steps, root_key, art.target_root_id, art.path);
+                }
             }
         }
     }

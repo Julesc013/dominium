@@ -248,7 +248,9 @@ dsk_u16 dsk_request_parse_operation(const char *value) {
     std::string v = dsk_lowercase_copy(value ? value : "");
     if (v == "install") return DSK_OPERATION_INSTALL;
     if (v == "upgrade") return DSK_OPERATION_UPGRADE;
+    if (v == "downgrade") return DSK_OPERATION_DOWNGRADE;
     if (v == "repair") return DSK_OPERATION_REPAIR;
+    if (v == "change") return DSK_OPERATION_CHANGE;
     if (v == "uninstall") return DSK_OPERATION_UNINSTALL;
     if (v == "verify") return DSK_OPERATION_VERIFY;
     if (v == "status") return DSK_OPERATION_STATUS;
