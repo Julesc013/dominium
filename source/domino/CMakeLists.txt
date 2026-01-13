@@ -247,6 +247,15 @@ add_library(domino_core STATIC
     sim/sim.c
 )
 
+# Legacy window shims (dsys_window_*.c) duplicate the canonical sys.c exports.
+# Mark as header-only to avoid duplicate symbols if they are pulled into IDE sources.
+set_source_files_properties(
+    system/dsys_window_winnt.c
+    system/dsys_window_stub.c
+    PROPERTIES
+        HEADER_FILE_ONLY TRUE
+)
+
 # Header-only scaffolding for the deterministic refactor (no compiled logic yet).
 target_sources(domino_core PRIVATE
     core/det_invariants.h
@@ -467,6 +476,29 @@ elseif(_dom_platform_lc STREQUAL "sdl2")
             PATHS ${DOM_SDL2_ROOT} ENV SDL2_DIR ENV SDL2_PATH
             PATH_SUFFIXES lib lib/x64 lib/x86
         )
+    endif()
+    if((NOT DOM_SDL2_INCLUDE_DIR OR (NOT DOM_SDL2_LIBRARY AND NOT DOM_SDL2_TARGET)) AND DOM_FETCH_SDL2)
+        if(FETCHCONTENT_FULLY_DISCONNECTED)
+            message(FATAL_ERROR "DOM_FETCH_SDL2=ON but FetchContent is disconnected; set DOM_SDL2_ROOT (or SDL2_DIR/SDL2_PATH) explicitly.")
+        endif()
+        include(FetchContent)
+        set(SDL2_DISABLE_INSTALL ON CACHE BOOL "Disable SDL2 install targets" FORCE)
+        set(SDL2_DISABLE_UNINSTALL ON CACHE BOOL "Disable SDL2 uninstall target" FORCE)
+        set(SDL2_TESTS OFF CACHE BOOL "Disable SDL2 tests" FORCE)
+        FetchContent_Declare(dom_sdl2
+            URL https://github.com/libsdl-org/SDL/releases/download/release-2.30.5/SDL2-2.30.5.zip
+        )
+        FetchContent_MakeAvailable(dom_sdl2)
+        if(TARGET SDL2::SDL2)
+            set(DOM_SDL2_TARGET SDL2::SDL2)
+        elseif(TARGET SDL2-static)
+            set(DOM_SDL2_TARGET SDL2-static)
+        elseif(TARGET SDL2)
+            set(DOM_SDL2_TARGET SDL2)
+        endif()
+        if(NOT DOM_SDL2_INCLUDE_DIR AND DOM_SDL2_TARGET)
+            get_target_property(DOM_SDL2_INCLUDE_DIR ${DOM_SDL2_TARGET} INTERFACE_INCLUDE_DIRECTORIES)
+        endif()
     endif()
     if(NOT DOM_SDL2_INCLUDE_DIR OR (NOT DOM_SDL2_LIBRARY AND NOT DOM_SDL2_TARGET))
         message(FATAL_ERROR "DOM_PLATFORM=sdl2 requires SDL2 headers and libraries (SDL.h, SDL2). Set DOM_SDL2_ROOT (or SDL2_DIR/SDL2_PATH), or use a win32/posix preset explicitly.")

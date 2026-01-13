@@ -113,6 +113,8 @@ Makefile
 generated/
 codegen/
 autogen/
+/source/dominium/launcher/frontend_api/
+/source/dominium/launcher/frontends/
 
 # Generated assets
 assets/cache/
