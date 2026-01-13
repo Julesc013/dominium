@@ -1,0 +1,89 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "cmake: configure (debug)",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--preset",
+                "debug"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "cmake: build (debug)",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "build/debug"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "run: dom_tests (debug)",
+            "type": "shell",
+            "command": "${workspaceFolder}/build/debug/tests/dom_tests.exe",
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "PATH": "C:/msys64/ucrt64/bin;C:/Windows/System32;$PATH"
+                }
+            },
+            "dependsOn": "cmake: build (debug)",
+            "problemMatcher": []
+        },
+        {
+            "label": "cmake: configure (linux-dev)",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--preset",
+                "linux-dev"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "cmake: build ui preview host (linux)",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "--preset",
+                "linux-dev",
+                "--target",
+                "dominium-ui-preview-host-linux"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "dependsOn": "cmake: configure (linux-dev)",
+            "problemMatcher": []
+        },
+        {
+            "label": "run: ui preview host (linux launcher)",
+            "type": "shell",
+            "command": "${workspaceFolder}/build/linux-dev/dominium-ui-preview-host-linux",
+            "args": [
+                "--ui",
+                "tools/launcher/ui/doc/launcher_ui_doc.tlv",
+                "--watch"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "dependsOn": "cmake: build ui preview host (linux)",
+            "problemMatcher": []
+        }
+    ]
+}

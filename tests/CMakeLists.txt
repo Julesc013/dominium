@@ -3,25 +3,25 @@ enable_testing()
 add_executable(domino_sys_probe_tests
     domino_sys/test_platform_probe.c
 )
-target_link_libraries(domino_sys_probe_tests PRIVATE domino_sys)
+target_link_libraries(domino_sys_probe_tests PRIVATE domino_sys domino_core)
 add_test(NAME domino_sys_probe COMMAND domino_sys_probe_tests)
 
 add_executable(domino_sys_dynarray_tests
     domino_sys/test_dynarray.c
 )
-target_link_libraries(domino_sys_dynarray_tests PRIVATE domino_sys)
+target_link_libraries(domino_sys_dynarray_tests PRIVATE domino_sys domino_core)
 add_test(NAME domino_sys_dynarray COMMAND domino_sys_dynarray_tests)
 
 add_executable(dsys_stub_tests
     domino_sys/test_dsys_stub.c
 )
-target_link_libraries(dsys_stub_tests PRIVATE domino_sys)
+target_link_libraries(dsys_stub_tests PRIVATE domino_sys domino_core)
 add_test(NAME dsys_stub COMMAND dsys_stub_tests)
 
 add_executable(domino_gfx_tests
     domino_gfx/test_gfx_soft.c
 )
-target_link_libraries(domino_gfx_tests PRIVATE domino_gfx domino_sys)
+target_link_libraries(domino_gfx_tests PRIVATE domino_gfx domino_sys domino_core)
 add_test(NAME domino_gfx_soft COMMAND domino_gfx_tests)
 
 add_executable(domino_core_smoke

@@ -1,2 +1,0 @@
-# Keep CLI golden outputs LF for byte-identical tests across platforms.
-source/dominium/setup/tests/golden/** text eol=lf
