@@ -66,6 +66,7 @@
         "DOM_BACKEND_GL2": "ON",
         "DOM_BACKEND_VECTOR2D": "ON",
         "DOM_SDL2_ROOT": "${sourceDir}/external/SDL2",
+        "DOM_FETCH_SDL2": "ON",
         "DOM_ENABLE_AUDIO": "ON",
         "DOM_ENABLE_NET": "ON"
       }
@@ -214,6 +215,7 @@
         "DOM_BACKEND_GL1": "OFF",
         "DOM_BACKEND_GL2": "OFF",
         "DOM_BACKEND_VECTOR2D": "OFF",
+        "DOM_FETCH_SDL2": "OFF",
         "FETCHCONTENT_FULLY_DISCONNECTED": "ON",
         "FETCHCONTENT_UPDATES_DISCONNECTED": "ON"
       }
