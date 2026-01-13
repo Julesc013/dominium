@@ -32,6 +32,20 @@ add_executable(dominium_game
     runtime/dom_cosmo_graph.cpp
     runtime/dom_cosmo_transit.cpp
     runtime/dom_mech_profiles.cpp
+    runtime/dom_asset_registry.cpp
+    runtime/dom_money_standard.cpp
+    runtime/dom_contract_templates.cpp
+    runtime/dom_instrument_registry.cpp
+    runtime/dom_econ_access_control.cpp
+    runtime/dom_econ_pack_load.cpp
+    runtime/dom_contract_runtime.cpp
+    runtime/dom_market_registry.cpp
+    runtime/dom_market_quote_stream.cpp
+    runtime/dom_market_barter.cpp
+    runtime/dom_market_fixed_price.cpp
+    runtime/dom_market_auction.cpp
+    runtime/dom_market_orderbook.cpp
+    runtime/dom_market_clearinghouse.cpp
     runtime/dom_macro_economy.cpp
     runtime/dom_macro_events.cpp
     runtime/dom_faction_registry.cpp

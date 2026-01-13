@@ -9,6 +9,13 @@ include_directories(
 set(DOM_GAME_RUNTIME_TEST_EXTRAS
     ../dominium/game/runtime/dom_coredata_load.cpp
     ../dominium/game/runtime/dom_mech_profiles.cpp
+    ../dominium/game/runtime/dom_asset_registry.cpp
+    ../dominium/game/runtime/dom_money_standard.cpp
+    ../dominium/game/runtime/dom_contract_templates.cpp
+    ../dominium/game/runtime/dom_instrument_registry.cpp
+    ../dominium/game/runtime/dom_econ_access_control.cpp
+    ../dominium/game/runtime/dom_econ_pack_load.cpp
+    ../dominium/game/runtime/dom_contract_runtime.cpp
     ../dominium/game/runtime/dom_media_provider.cpp
     ../dominium/game/runtime/dom_atmos_provider.cpp
     ../dominium/game/runtime/dom_atmos_provider_profile_v1.cpp
@@ -3338,6 +3345,294 @@ if(WIN32)
 endif()
 
 add_test(NAME dominium_coredata_tests COMMAND dominium_coredata_tests)
+
+add_executable(dom_money_standard_roundtrip_test
+    dom_money_standard_roundtrip_test.cpp
+    ../dominium/game/runtime/dom_money_standard.cpp
+)
+
+target_include_directories(dom_money_standard_roundtrip_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_money_standard_roundtrip_test
+    domino_core
+)
+
+set_target_properties(dom_money_standard_roundtrip_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_money_standard_roundtrip_test COMMAND dom_money_standard_roundtrip_test)
+
+add_executable(dom_econ_access_control_test
+    dom_econ_access_control_test.cpp
+    ../dominium/game/runtime/dom_econ_access_control.cpp
+)
+
+target_include_directories(dom_econ_access_control_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_econ_access_control_test
+    domino_core
+)
+
+set_target_properties(dom_econ_access_control_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_econ_access_control_test COMMAND dom_econ_access_control_test)
+
+add_executable(dom_contract_runtime_schedule_test
+    dom_contract_runtime_schedule_test.cpp
+    ../dominium/game/runtime/dom_contract_templates.cpp
+    ../dominium/game/runtime/dom_contract_runtime.cpp
+)
+
+target_include_directories(dom_contract_runtime_schedule_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_contract_runtime_schedule_test
+    domino_core
+)
+
+set_target_properties(dom_contract_runtime_schedule_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_contract_runtime_schedule_test COMMAND dom_contract_runtime_schedule_test)
+
+add_executable(dom_econ_pack_load_test
+    dom_econ_pack_load_test.cpp
+    ../dominium/game/runtime/dom_econ_pack_load.cpp
+    ../dominium/game/runtime/dom_io_guard.cpp
+)
+
+target_include_directories(dom_econ_pack_load_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_econ_pack_load_test
+    core_tlv
+    domino_core
+)
+
+set_target_properties(dom_econ_pack_load_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_econ_pack_load_test COMMAND dom_econ_pack_load_test)
+
+add_executable(dom_market_orderbook_determinism_test
+    dom_market_orderbook_determinism_test.cpp
+    ../dominium/game/runtime/dom_market_registry.cpp
+    ../dominium/game/runtime/dom_market_orderbook.cpp
+    ../dominium/game/runtime/dom_market_quote_stream.cpp
+)
+
+target_include_directories(dom_market_orderbook_determinism_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_market_orderbook_determinism_test
+    domino_core
+)
+
+set_target_properties(dom_market_orderbook_determinism_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_market_orderbook_determinism_test COMMAND dom_market_orderbook_determinism_test)
+
+add_executable(dom_market_auction_determinism_test
+    dom_market_auction_determinism_test.cpp
+    ../dominium/game/runtime/dom_market_registry.cpp
+    ../dominium/game/runtime/dom_market_auction.cpp
+    ../dominium/game/runtime/dom_market_quote_stream.cpp
+)
+
+target_include_directories(dom_market_auction_determinism_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_market_auction_determinism_test
+    domino_core
+)
+
+set_target_properties(dom_market_auction_determinism_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_market_auction_determinism_test COMMAND dom_market_auction_determinism_test)
+
+add_executable(dom_market_barter_determinism_test
+    dom_market_barter_determinism_test.cpp
+    ../dominium/game/runtime/dom_market_registry.cpp
+    ../dominium/game/runtime/dom_market_barter.cpp
+    ../dominium/game/runtime/dom_market_quote_stream.cpp
+)
+
+target_include_directories(dom_market_barter_determinism_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_market_barter_determinism_test
+    domino_core
+)
+
+set_target_properties(dom_market_barter_determinism_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_market_barter_determinism_test COMMAND dom_market_barter_determinism_test)
+
+add_executable(dom_market_settlement_conservation_test
+    dom_market_settlement_conservation_test.cpp
+    ../dominium/game/runtime/dom_market_registry.cpp
+)
+
+target_include_directories(dom_market_settlement_conservation_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_market_settlement_conservation_test
+    domino_core
+)
+
+set_target_properties(dom_market_settlement_conservation_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_market_settlement_conservation_test COMMAND dom_market_settlement_conservation_test)
+
+add_executable(dom_market_quote_stream_test
+    dom_market_quote_stream_test.cpp
+    ../dominium/game/runtime/dom_market_quote_stream.cpp
+)
+
+target_include_directories(dom_market_quote_stream_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_market_quote_stream_test
+    domino_core
+)
+
+set_target_properties(dom_market_quote_stream_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_market_quote_stream_test COMMAND dom_market_quote_stream_test)
+
+add_executable(dom_market_due_tick_test
+    dom_market_due_tick_test.cpp
+    ../dominium/game/runtime/dom_market_registry.cpp
+    ../dominium/game/runtime/dom_market_orderbook.cpp
+    ../dominium/game/runtime/dom_market_quote_stream.cpp
+)
+
+target_include_directories(dom_market_due_tick_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_market_due_tick_test
+    domino_core
+)
+
+set_target_properties(dom_market_due_tick_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_market_due_tick_test COMMAND dom_market_due_tick_test)
+
+add_executable(dom_market_batch_equivalence_test
+    dom_market_batch_equivalence_test.cpp
+    ../dominium/game/runtime/dom_market_registry.cpp
+    ../dominium/game/runtime/dom_market_orderbook.cpp
+    ../dominium/game/runtime/dom_market_quote_stream.cpp
+)
+
+target_include_directories(dom_market_batch_equivalence_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dom_market_batch_equivalence_test
+    domino_core
+)
+
+set_target_properties(dom_market_batch_equivalence_test PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(NAME dom_market_batch_equivalence_test COMMAND dom_market_batch_equivalence_test)
 
 add_executable(dom_ui_widgets_tests
     dom_ui_widgets_tests.cpp
