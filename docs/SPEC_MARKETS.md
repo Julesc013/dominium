@@ -24,19 +24,24 @@ Out of scope:
 - Quote: An InfoRecord representing observed prices.
 
 ## Market types (minimum set)
-1) Auction
-- Clears at scheduled ticks.
-- All valid orders are collected until the auction tick.
+1) Barter
+- Reciprocal exchange of asset A for asset B.
+- Deterministic matching of reciprocal orders.
 
-2) Order book
-- Clears on order arrival or at scheduled ticks.
-- Uses deterministic tie-breaking.
+2) Fixed price
+- Clears at posted price (market account acts as counterparty).
+- Deterministic fill; no best-effort price shifts.
 
-3) Fixed price
-- Clears at posted price with bounded volume.
+3) Auction
+- Clears only at scheduled ticks.
+- Orders collected until the auction tick; clearing uses deterministic priority.
 
-4) OTC bilateral
-- Deterministic pairing by explicit counterparty.
+4) Order book (CDA with discrete clearing)
+- Clears on order arrival or scheduled ticks, but only via bounded clears.
+- Matching uses deterministic price-time ordering.
+
+5) Clearinghouse
+- Coordination stub for multi-market settlement (v0: NOT_IMPLEMENTED).
 
 ## Deterministic matching rules
 Tie-breaking order (mandatory):
@@ -46,12 +51,33 @@ Tie-breaking order (mandatory):
 
 No randomness. No probabilistic fills.
 
+## Provider matching behavior (implementation notes)
+- Barter:
+  - Orders match only if asset_in/asset_out and quantities are reciprocal.
+  - Deterministic buy/sell assignment derived from base/quote asset IDs.
+- Fixed price:
+  - Price is fixed; orders are converted to base/quote quantities deterministically.
+  - Market account acts as counterparty; refusal if no market account defined.
+- Auction:
+  - Buy orders sorted by descending price, then order_id.
+  - Sell orders sorted by ascending price, then order_id.
+  - Execution price is the sell price in the matched pair.
+- Order book:
+  - Same sorting and tie-break as auction.
+  - Clears only via explicit clear calls; no continuous matching loop.
+
 ## Clearing schedule
 Markets clear only when:
 - a scheduled auction tick occurs, OR
 - a bounded order arrival trigger fires.
 
 No continuous price simulation. No per-tick scanning.
+
+## Settlement and ledger integration
+- Each trade settles via a deterministic double-entry transaction:
+  - buyer: quote decrease, base increase
+  - seller: base decrease, quote increase
+- Settlement is atomic: insufficient balance refuses the trade.
 
 ## Quotes and epistemic gating
 Price quotes are InfoRecords:
@@ -101,6 +127,8 @@ Future tests MUST include:
 - Deterministic clearing under identical inputs.
 - Batch vs step equivalence on clearing events.
 - Quote production determinism with latency.
+- Settlement conservation (double-entry).
+- No-clearing when market has no active orders.
 
 ## Related specs
 - `docs/SPEC_LEDGER.md`

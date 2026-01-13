@@ -42,6 +42,17 @@ Sim-affecting fields are explicitly enumerated and hashed.
 3. Conversion rules are explicit and deterministic.
 4. Rounding rules are explicit and deterministic.
 
+## Implementation notes (game layer)
+- Standards load into a deterministic registry keyed by `id_hash`.
+- Registry ordering is stable by `(id_hash, id_string)` for iteration and hashing.
+- Sim-affecting fields hashed for identity:
+  - id_hash
+  - base_asset_id_hash
+  - denom_scale
+  - rounding_mode
+  - convert_rule_id_hash
+- Non-sim metadata (display_name, locale namesets) is excluded from sim digests.
+
 ## Resolution order
 Standards are resolved by context (see `docs/SPEC_STANDARD_RESOLUTION.md`):
 1. Explicit context

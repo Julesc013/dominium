@@ -60,6 +60,19 @@ Batch processing up to a target ACT tick must equal step-by-step processing.
 Contracts expose next_due_tick and are processed by scheduled events only.
 No per-tick scanning is allowed.
 
+## Implementation notes (game layer)
+- Templates load into a registry and are addressed by `template_id_hash`.
+- Obligations are sorted deterministically by:
+  1. offset_ticks
+  2. role_from_hash
+  3. role_to_hash
+  4. asset_id_hash
+  5. amount
+- Scheduling binds roles to ledger accounts, then computes trigger_time as
+  `start_act + offset_ticks` with overflow checks.
+- Each obligation schedules a ledger transaction via engine obligations.
+- Missing roles or ledger failures MUST refuse deterministically.
+
 ## Engine vs game responsibilities
 ENGINE (Domino, C89/C90) MAY:
 - provide deterministic event scheduling primitives.

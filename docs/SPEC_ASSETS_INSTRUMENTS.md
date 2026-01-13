@@ -59,6 +59,16 @@ Optional fields:
 3. All identifiers are stable and deterministic.
 4. No implicit conversion between assets.
 
+## Implementation notes (game layer)
+- Assets and instruments are loaded from TLV packs into deterministic registries.
+- Sim-affecting fields hashed for identity:
+  - asset: id_hash, kind, unit_scale, divisibility, provenance_required, issuer_id_hash
+  - instrument: id_hash, kind, contract_id_hash, asset_id_hash list (sorted)
+- Non-sim metadata (display_name, tags) is excluded from sim digests.
+- References are validated at load:
+  - money standards must reference existing assets
+  - instruments must reference existing contracts and assets
+
 ## Engine vs game responsibilities
 ENGINE (Domino, C89/C90) MAY:
 - implement asset ID hashing and serialization helpers.
