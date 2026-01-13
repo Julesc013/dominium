@@ -64,7 +64,9 @@ static const char *op_to_string(dsk_u16 op) {
     switch (op) {
     case DSK_OPERATION_INSTALL: return "install";
     case DSK_OPERATION_UPGRADE: return "upgrade";
+    case DSK_OPERATION_DOWNGRADE: return "downgrade";
     case DSK_OPERATION_REPAIR: return "repair";
+    case DSK_OPERATION_CHANGE: return "change";
     case DSK_OPERATION_UNINSTALL: return "uninstall";
     case DSK_OPERATION_VERIFY: return "verify";
     case DSK_OPERATION_STATUS: return "status";
@@ -150,6 +152,11 @@ static const char *refusal_code_to_string(dsk_u16 value) {
     case DSK_SUBCODE_PLAN_DIGEST_MISMATCH: return "plan_digest_mismatch";
     case DSK_SUBCODE_PLAN_RESOLVED_DIGEST_MISMATCH: return "plan_resolved_digest_mismatch";
     case DSK_SUBCODE_REQUEST_MISMATCH: return "request_mismatch";
+    case DSK_SUBCODE_ALREADY_INSTALLED: return "already_installed";
+    case DSK_SUBCODE_NOT_INSTALLED: return "not_installed";
+    case DSK_SUBCODE_STATE_MISMATCH: return "state_mismatch";
+    case DSK_SUBCODE_MANIFEST_MISMATCH: return "manifest_mismatch";
+    case DSK_SUBCODE_DOWNGRADE_BLOCKED: return "downgrade_blocked";
     default: return "unknown_refusal";
     }
 }

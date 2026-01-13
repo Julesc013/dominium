@@ -29,6 +29,8 @@ typedef struct dsk_kernel_request_t {
     dsk_u32 manifest_size;
     const dsk_u8 *request_bytes;
     dsk_u32 request_size;
+    const dsk_u8 *installed_state_bytes;
+    dsk_u32 installed_state_size;
     dsk_byte_sink_t out_plan;
     dsk_byte_sink_t out_state;
     dsk_byte_sink_t out_audit;

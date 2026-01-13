@@ -54,6 +54,12 @@
 #define DSK_TLV_TAG_LAYOUT_TEMPLATE_TARGET_ROOT 0x1303u
 #define DSK_TLV_TAG_LAYOUT_TEMPLATE_PATH_PREFIX 0x1304u
 
+/* Target rules (0x1400 range). */
+#define DSK_TLV_TAG_TARGET_RULE_ALLOW_DOWNGRADE 0x1401u
+
+/* Migration rules (0x1500 range). */
+#define DSK_TLV_TAG_MIGRATION_ENTRY 0x1501u
+
 /* Request tags (0x2000 range) */
 #define DSK_TLV_TAG_REQUEST_OPERATION 0x2001u
 #define DSK_TLV_TAG_REQUEST_REQUESTED_COMPONENTS 0x2002u
@@ -210,6 +216,8 @@
 #define DSK_OPERATION_STATUS 5u
 #define DSK_OPERATION_UPGRADE 6u
 #define DSK_OPERATION_IMPORT_LEGACY 7u
+#define DSK_OPERATION_CHANGE 8u
+#define DSK_OPERATION_DOWNGRADE 9u
 
 #define DSK_INSTALL_SCOPE_USER 1u
 #define DSK_INSTALL_SCOPE_SYSTEM 2u
@@ -223,6 +231,7 @@
 #define DSK_POLICY_OFFLINE 0x00000002u
 #define DSK_POLICY_LEGACY_MODE 0x00000004u
 #define DSK_POLICY_VERIFY_ONLY 0x00000008u
+#define DSK_POLICY_ALLOW_DOWNGRADE 0x00000010u
 
 #define DSK_OWNERSHIP_ANY 0u
 #define DSK_OWNERSHIP_PORTABLE 1u
@@ -273,6 +282,8 @@ struct dsk_manifest_t {
     std::string build_id;
     std::vector<std::string> supported_targets;
     std::vector<std::string> allowed_splats;
+    dsk_bool allow_downgrade;
+    std::vector<std::string> migration_rules;
     std::vector<dsk_layout_template_t> layout_templates;
     std::vector<dsk_manifest_component_t> components;
 };

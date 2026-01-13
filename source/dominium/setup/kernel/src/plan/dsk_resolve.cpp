@@ -103,6 +103,21 @@ static dsk_status_t dsk_refusal_status(dsk_u16 refusal_code) {
     case DSK_PLAN_REFUSAL_PLATFORM_INCOMPATIBLE:
         subcode = DSK_SUBCODE_PLATFORM_INCOMPATIBLE;
         break;
+    case DSK_PLAN_REFUSAL_ALREADY_INSTALLED:
+        subcode = DSK_SUBCODE_ALREADY_INSTALLED;
+        break;
+    case DSK_PLAN_REFUSAL_NOT_INSTALLED:
+        subcode = DSK_SUBCODE_NOT_INSTALLED;
+        break;
+    case DSK_PLAN_REFUSAL_STATE_MISMATCH:
+        subcode = DSK_SUBCODE_STATE_MISMATCH;
+        break;
+    case DSK_PLAN_REFUSAL_MANIFEST_MISMATCH:
+        subcode = DSK_SUBCODE_MANIFEST_MISMATCH;
+        break;
+    case DSK_PLAN_REFUSAL_DOWNGRADE_BLOCKED:
+        subcode = DSK_SUBCODE_DOWNGRADE_BLOCKED;
+        break;
     default:
         subcode = DSK_SUBCODE_INVALID_FIELD;
         break;
