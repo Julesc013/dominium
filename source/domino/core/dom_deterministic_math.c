@@ -4,7 +4,7 @@ MODULE: Domino
 LAYER / SUBSYSTEM: Domino impl / core/dom_deterministic_math
 RESPONSIBILITY: Canonical deterministic math wrappers for authoritative code paths.
 */
-#include "dom_deterministic_math.h"
+#include "domino/core/dom_deterministic_math.h"
 
 #include "domino/core/fixed_math.h"
 

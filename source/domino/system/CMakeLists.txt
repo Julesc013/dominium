@@ -1,5 +1,4 @@
 set(DOMINO_SYS_SOURCES
-    sys.c
     core/domino_sys_core.c
     core/domino_term.c
     core/domino_ui_stub.c

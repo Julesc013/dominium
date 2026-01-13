@@ -1,0 +1,60 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug dom_client (gdb)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${command:cmake.buildDirectory}/game/client/dom_client.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [
+                {
+                    "name": "PATH",
+                    "value": "C:/msys64/ucrt64/bin;C:/Windows/System32;${env:PATH}"
+                }
+            ],
+            "MIMode": "gdb",
+            "miDebuggerPath": "C:/msys64/ucrt64/bin/gdb.exe",
+            "preLaunchTask": "CMake: build",
+            "externalConsole": false
+        },
+        {
+            "name": "Debug dom_tests (gdb)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${command:cmake.buildDirectory}/tests/dom_tests.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [
+                {
+                    "name": "PATH",
+                    "value": "C:/msys64/ucrt64/bin;C:/Windows/System32;${env:PATH}"
+                }
+            ],
+            "MIMode": "gdb",
+            "miDebuggerPath": "C:/msys64/ucrt64/bin/gdb.exe",
+            "preLaunchTask": "CMake: build",
+            "externalConsole": false
+        },
+        {
+            "name": "Run UI Preview Host (Linux)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/linux-dev/dominium-ui-preview-host-linux",
+            "args": [
+                "--ui",
+                "tools/launcher/ui/doc/launcher_ui_doc.tlv",
+                "--watch"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "MIMode": "gdb",
+            "miDebuggerPath": "/usr/bin/gdb",
+            "preLaunchTask": "cmake: build ui preview host (linux)",
+            "externalConsole": false
+        }
+    ]
+}

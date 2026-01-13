@@ -98,8 +98,6 @@ add_library(domino_core STATIC
     system/input/input_trace.c
     system/dsys_term.c
     $<$<BOOL:${WIN32}>:system/dsys_proc_winnt.c>
-    $<$<BOOL:${WIN32}>:system/dsys_window_winnt.c>
-    $<$<NOT:$<BOOL:${WIN32}>>:system/dsys_window_stub.c>
     $<$<NOT:$<BOOL:${WIN32}>>:system/dsys_proc_stub.c>
     mod/domino_semver.c
     pkg/repo.c
@@ -429,44 +427,61 @@ elseif(_dom_platform_lc STREQUAL "win32_headless")
     target_compile_definitions(domino_core PRIVATE DSYS_BACKEND_WIN32_HEADLESS)
 elseif(_dom_platform_lc STREQUAL "sdl2")
     if(NOT DOM_BACKEND_SDL2)
-        if(NOT WIN32)
-            message(FATAL_ERROR "DOM_PLATFORM=sdl2 fallback requires a WIN32 host.")
-        endif()
-        message(WARNING "DOM_PLATFORM=sdl2 requested but SDL2 backend disabled; falling back to win32 backend.")
-        target_sources(domino_core PRIVATE system/plat/win32/win32_sys.c)
-        target_compile_definitions(domino_core PRIVATE DSYS_BACKEND_WIN32)
-    else()
+        message(FATAL_ERROR "DOM_PLATFORM=sdl2 requires DOM_BACKEND_SDL2=ON. Use a win32/posix preset explicitly if SDL2 is unavailable.")
+    endif()
+    if(NOT DEFINED DOM_SDL2_ROOT)
         set(DOM_SDL2_ROOT "" CACHE PATH "Root path for SDL2 (headers + libraries)")
-        if(NOT DOM_SDL2_INCLUDE_DIR)
-            find_path(DOM_SDL2_INCLUDE_DIR SDL.h
-                PATHS ${DOM_SDL2_ROOT} ENV SDL2_DIR ENV SDL2_PATH
-                PATH_SUFFIXES include include/SDL2 SDL2
-            )
-        endif()
-        if(NOT DOM_SDL2_LIBRARY)
-            find_library(DOM_SDL2_LIBRARY NAMES SDL2
-                PATHS ${DOM_SDL2_ROOT} ENV SDL2_DIR ENV SDL2_PATH
-                PATH_SUFFIXES lib lib/x64 lib/x86
-            )
-        endif()
-        if(NOT DOM_SDL2_INCLUDE_DIR OR NOT DOM_SDL2_LIBRARY)
-            if(WIN32)
-                message(WARNING "DOM_PLATFORM=sdl2 requested but SDL2 not found; falling back to win32 backend.")
-                set(DOM_BACKEND_SDL2 OFF CACHE BOOL "Enable DSYS SDL2 platform backend" FORCE)
-                set(DOM_PLATFORM "win32" CACHE STRING "Dominium platform backend" FORCE)
-                set(_dom_platform_lc "win32")
-                target_sources(domino_core PRIVATE system/plat/win32/win32_sys.c)
-                target_compile_definitions(domino_core PRIVATE DSYS_BACKEND_WIN32)
-            else()
-                message(FATAL_ERROR "DOM_PLATFORM=sdl2 requires SDL2 headers and libraries (SDL.h, SDL2)")
+    endif()
+    if(DOM_SDL2_ROOT STREQUAL "")
+        set(_dom_sdl2_hint "")
+        file(GLOB _dom_sdl2_glob
+            "${CMAKE_SOURCE_DIR}/external/SDL2*"
+            "${CMAKE_SOURCE_DIR}/deps/SDL2*"
+            "${CMAKE_SOURCE_DIR}/third_party/SDL2*"
+            "${CMAKE_SOURCE_DIR}/artifacts/SDL2*"
+        )
+        foreach(_dom_path IN LISTS _dom_sdl2_glob)
+            if(EXISTS "${_dom_path}/include/SDL.h" OR EXISTS "${_dom_path}/include/SDL2/SDL.h")
+                set(_dom_sdl2_hint "${_dom_path}")
+                break()
             endif()
-        else()
-            target_sources(domino_core PRIVATE system/plat/sdl2/sdl2_sys.c)
-            target_include_directories(domino_core PRIVATE ${DOM_SDL2_INCLUDE_DIR})
-            target_link_libraries(domino_core PRIVATE ${DOM_SDL2_LIBRARY})
-            target_compile_definitions(domino_core PRIVATE DSYS_BACKEND_SDL2)
+        endforeach()
+        if(_dom_sdl2_hint)
+            set(DOM_SDL2_ROOT "${_dom_sdl2_hint}" CACHE PATH "Root path for SDL2 (headers + libraries)" FORCE)
         endif()
     endif()
+    if(NOT DOM_SDL2_TARGET AND NOT DOM_SDL2_INCLUDE_DIR AND NOT DOM_SDL2_LIBRARY)
+        find_package(SDL2 CONFIG QUIET)
+        if(TARGET SDL2::SDL2)
+            set(DOM_SDL2_TARGET SDL2::SDL2)
+        endif()
+    endif()
+    if(NOT DOM_SDL2_INCLUDE_DIR)
+        find_path(DOM_SDL2_INCLUDE_DIR SDL.h
+            PATHS ${DOM_SDL2_ROOT} ENV SDL2_DIR ENV SDL2_PATH
+            PATH_SUFFIXES include include/SDL2 SDL2
+        )
+    endif()
+    if(NOT DOM_SDL2_LIBRARY AND NOT DOM_SDL2_TARGET)
+        find_library(DOM_SDL2_LIBRARY NAMES SDL2
+            PATHS ${DOM_SDL2_ROOT} ENV SDL2_DIR ENV SDL2_PATH
+            PATH_SUFFIXES lib lib/x64 lib/x86
+        )
+    endif()
+    if(NOT DOM_SDL2_INCLUDE_DIR OR (NOT DOM_SDL2_LIBRARY AND NOT DOM_SDL2_TARGET))
+        message(FATAL_ERROR "DOM_PLATFORM=sdl2 requires SDL2 headers and libraries (SDL.h, SDL2). Set DOM_SDL2_ROOT (or SDL2_DIR/SDL2_PATH), or use a win32/posix preset explicitly.")
+    endif()
+    target_sources(domino_core PRIVATE system/plat/sdl2/sdl2_sys.c)
+    if(DOM_SDL2_TARGET)
+        target_link_libraries(domino_core PRIVATE ${DOM_SDL2_TARGET})
+        if(DOM_SDL2_INCLUDE_DIR)
+            target_include_directories(domino_core PRIVATE ${DOM_SDL2_INCLUDE_DIR})
+        endif()
+    else()
+        target_include_directories(domino_core PRIVATE ${DOM_SDL2_INCLUDE_DIR})
+        target_link_libraries(domino_core PRIVATE ${DOM_SDL2_LIBRARY})
+    endif()
+    target_compile_definitions(domino_core PRIVATE DSYS_BACKEND_SDL2)
 elseif(_dom_platform_lc STREQUAL "posix_headless")
     if(NOT UNIX)
         message(FATAL_ERROR "DOM_PLATFORM=posix_headless requires a UNIX host")

@@ -15,6 +15,24 @@ set(DOM_GAME_RUNTIME_TEST_EXTRAS
     ../dominium/game/runtime/dom_ocean_provider.cpp
     ../dominium/game/runtime/dom_weather_provider.cpp
     ../dominium/game/runtime/dom_vehicle_aero.cpp
+    ../dominium/game/runtime/dom_system_registry.cpp
+    ../dominium/game/runtime/dom_body_registry.cpp
+    ../dominium/game/runtime/dom_frames.cpp
+    ../dominium/game/runtime/dom_lane_scheduler.cpp
+    ../dominium/game/runtime/dom_surface_chunks.cpp
+    ../dominium/game/runtime/dom_surface_topology.cpp
+    ../dominium/game/runtime/dom_surface_topology_sphere.cpp
+    ../dominium/game/runtime/dom_surface_topology_ellipsoid.cpp
+    ../dominium/game/runtime/dom_surface_topology_torus.cpp
+    ../dominium/game/runtime/dom_surface_height.cpp
+    ../dominium/game/runtime/dom_construction_registry.cpp
+    ../dominium/game/runtime/dom_derived_jobs.cpp
+    ../dominium/game/runtime/dom_cosmo_graph.cpp
+    ../dominium/game/runtime/dom_cosmo_transit.cpp
+    ../dominium/game/runtime/dom_qos.cpp
+    ../dominium/game/runtime/dom_game_hash.c
+    ../dominium/game/runtime/dom_game_replay.cpp
+    ../dominium/game/runtime/dom_game_content_id.cpp
     ../dominium/game/runtime/dom_station_registry.cpp
     ../dominium/game/runtime/dom_route_graph.cpp
     ../dominium/game/runtime/dom_transfer_scheduler.cpp
@@ -500,7 +518,6 @@ add_executable(dom_construction_save_load_roundtrip_test
     ../dominium/game/runtime/dom_game_hash.c
     ../dominium/game/runtime/dom_game_replay.cpp
     ../dominium/game/runtime/dom_game_save.cpp
-    ../dominium/game/runtime/dom_game_content_id.cpp
     ../dominium/game/runtime/dom_io_guard.cpp
     ../dominium/game/runtime/dom_cosmo_graph.cpp
     ../dominium/game/runtime/dom_cosmo_transit.cpp
@@ -513,7 +530,7 @@ target_include_directories(dom_construction_save_load_roundtrip_test PRIVATE
     ${CMAKE_SOURCE_DIR}/source/domino
 )
 
-target_link_libraries(dom_construction_save_load_roundtrip_test
+target_link_libraries(dom_construction_save_load_roundtrip_test PRIVATE
     dominium_common
     core_tlv
     domino_core
@@ -545,7 +562,6 @@ add_executable(dom_construction_replay_test
     ../dominium/game/runtime/dom_game_hash.c
     ../dominium/game/runtime/dom_game_replay.cpp
     ../dominium/game/runtime/dom_game_save.cpp
-    ../dominium/game/runtime/dom_game_content_id.cpp
     ../dominium/game/runtime/dom_io_guard.cpp
     ../dominium/game/runtime/dom_cosmo_graph.cpp
     ../dominium/game/runtime/dom_cosmo_transit.cpp
@@ -558,7 +574,7 @@ target_include_directories(dom_construction_replay_test PRIVATE
     ${CMAKE_SOURCE_DIR}/source/domino
 )
 
-target_link_libraries(dom_construction_replay_test
+target_link_libraries(dom_construction_replay_test PRIVATE
     dominium_common
     core_tlv
     domino_core
@@ -679,7 +695,7 @@ target_include_directories(dom_logistics_save_load_roundtrip_test PRIVATE
     ${CMAKE_SOURCE_DIR}/source/domino
 )
 
-target_link_libraries(dom_logistics_save_load_roundtrip_test
+target_link_libraries(dom_logistics_save_load_roundtrip_test PRIVATE
     dominium_common
     core_tlv
     domino_core
@@ -724,7 +740,7 @@ target_include_directories(dom_ai_determinism_same_seed_test PRIVATE
     ${CMAKE_SOURCE_DIR}/source/domino
 )
 
-target_link_libraries(dom_ai_determinism_same_seed_test
+target_link_libraries(dom_ai_determinism_same_seed_test PRIVATE
     dominium_common
     core_tlv
     domino_core
@@ -769,7 +785,7 @@ target_include_directories(dom_ai_budget_behavior_test PRIVATE
     ${CMAKE_SOURCE_DIR}/source/domino
 )
 
-target_link_libraries(dom_ai_budget_behavior_test
+target_link_libraries(dom_ai_budget_behavior_test PRIVATE
     dominium_common
     core_tlv
     domino_core
@@ -815,7 +831,7 @@ target_include_directories(dom_ai_budget_baseline_cap_test PRIVATE
     ${CMAKE_SOURCE_DIR}/source/domino
 )
 
-target_link_libraries(dom_ai_budget_baseline_cap_test
+target_link_libraries(dom_ai_budget_baseline_cap_test PRIVATE
     dominium_common
     core_tlv
     domino_core
@@ -860,7 +876,7 @@ target_include_directories(dom_ai_persistence_roundtrip_test PRIVATE
     ${CMAKE_SOURCE_DIR}/source/domino
 )
 
-target_link_libraries(dom_ai_persistence_roundtrip_test
+target_link_libraries(dom_ai_persistence_roundtrip_test PRIVATE
     dominium_common
     core_tlv
     domino_core
@@ -905,7 +921,7 @@ target_include_directories(dom_ai_replay_test PRIVATE
     ${CMAKE_SOURCE_DIR}/source/domino
 )
 
-target_link_libraries(dom_ai_replay_test
+target_link_libraries(dom_ai_replay_test PRIVATE
     dominium_common
     core_tlv
     domino_core
@@ -1108,7 +1124,7 @@ target_include_directories(dom_snapshot_isolation_test PRIVATE
     ${CMAKE_SOURCE_DIR}/source/domino
 )
 
-target_link_libraries(dom_snapshot_isolation_test
+target_link_libraries(dom_snapshot_isolation_test PRIVATE
     dominium_common
     domino_core
 )
@@ -1217,7 +1233,7 @@ target_include_directories(dom_session_authority_tests PRIVATE
     ${CMAKE_SOURCE_DIR}/source/domino
 )
 
-target_link_libraries(dom_session_authority_tests
+target_link_libraries(dom_session_authority_tests PRIVATE
     dominium_common
     domino_core
 )
@@ -1285,7 +1301,7 @@ target_include_directories(dom_qos_no_sim_effect_test PRIVATE
     ${CMAKE_SOURCE_DIR}/source/domino
 )
 
-target_link_libraries(dom_qos_no_sim_effect_test
+target_link_libraries(dom_qos_no_sim_effect_test PRIVATE
     dominium_common
     core_tlv
     domino_core
@@ -1331,7 +1347,7 @@ target_include_directories(dom_qos_overload_test PRIVATE
     ${CMAKE_SOURCE_DIR}/source/domino
 )
 
-target_link_libraries(dom_qos_overload_test
+target_link_libraries(dom_qos_overload_test PRIVATE
     dominium_common
     core_tlv
     domino_core
@@ -1452,7 +1468,7 @@ target_include_directories(dom_orbit_warp_authority_test PRIVATE
     ${CMAKE_SOURCE_DIR}/source/domino
 )
 
-target_link_libraries(dom_orbit_warp_authority_test
+target_link_libraries(dom_orbit_warp_authority_test PRIVATE
     dominium_common
     domino_core
 )
@@ -1496,7 +1512,7 @@ target_include_directories(dom_orbit_replay_test PRIVATE
     ${CMAKE_SOURCE_DIR}/source/domino
 )
 
-target_link_libraries(dom_orbit_replay_test
+target_link_libraries(dom_orbit_replay_test PRIVATE
     dominium_common
     domino_core
 )
@@ -3273,6 +3289,56 @@ set_target_properties(coredata_validate_tlv_pack_passes PROPERTIES
 
 add_test(NAME coredata_validate_tlv_pack_passes COMMAND coredata_validate_tlv_pack_passes)
 
+add_executable(dominium_coredata_tests
+    ../../tests/contract/dominium_coredata_tests.cpp
+    ../dominium/game/dom_game_net.cpp
+    ../dominium/game/runtime/dom_game_runtime.cpp
+    ../dominium/game/runtime/dom_game_handshake.cpp
+    ../dominium/game/runtime/dom_game_session.cpp
+    ../dominium/game/runtime/dom_game_net_driver.cpp
+    ../dominium/game/runtime/dom_game_net_snapshot.cpp
+    ../dominium/game/runtime/dom_io_guard.cpp
+    ../dominium/game/runtime/dom_universe_bundle.cpp
+    ../dominium/tools/coredata_compile/coredata_load.cpp
+    ../dominium/tools/coredata_compile/coredata_validate.cpp
+    ../dominium/tools/coredata_compile/coredata_emit_tlv.cpp
+    ../dominium/tools/coredata_compile/coredata_manifest.cpp
+)
+
+target_include_directories(dominium_coredata_tests PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_SOURCE_DIR}/source
+    ${CMAKE_SOURCE_DIR}/source/dominium/common
+    ${CMAKE_SOURCE_DIR}/source/dominium/game
+    ${CMAKE_SOURCE_DIR}/source/dominium/tools
+    ${CMAKE_SOURCE_DIR}/source/dominium/tools/coredata_compile
+    ${CMAKE_SOURCE_DIR}/source/dominium/tools/coredata_validate
+    ${CMAKE_SOURCE_DIR}/source/domino
+)
+
+target_link_libraries(dominium_coredata_tests PRIVATE
+    dominium_common
+    core_tlv
+    domino_core
+    dom_game_runtime_test_support
+)
+
+target_compile_definitions(dominium_coredata_tests PRIVATE
+    DOMINIUM_TEST_FIXTURES_DIR=\"${CMAKE_SOURCE_DIR}/tests/fixtures\"
+)
+
+set_target_properties(dominium_coredata_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+if(WIN32)
+    target_link_libraries(dominium_coredata_tests PRIVATE ws2_32)
+endif()
+
+add_test(NAME dominium_coredata_tests COMMAND dominium_coredata_tests)
+
 add_executable(dom_ui_widgets_tests
     dom_ui_widgets_tests.cpp
     ../dominium/game/ui/dom_ui_widgets.cpp
@@ -3343,7 +3409,11 @@ function(dom_attach_runtime_test_support)
                     string(TOLOWER "${dom_tgt_sources}" dom_tgt_sources_lower)
                     string(FIND "${dom_tgt_sources_lower}" "dom_game_runtime.cpp" dom_runtime_pos)
                     if(NOT dom_runtime_pos EQUAL -1)
-                        target_link_libraries(${dom_tgt} dom_game_runtime_test_support)
+                        get_target_property(dom_skip_support ${dom_tgt} DOM_SKIP_RUNTIME_SUPPORT)
+                        if(dom_skip_support)
+                            continue()
+                        endif()
+                        target_link_libraries(${dom_tgt} PRIVATE dom_game_runtime_test_support)
                         target_include_directories(${dom_tgt} PRIVATE
                             ${CMAKE_SOURCE_DIR}/include
                             ${CMAKE_SOURCE_DIR}/source
@@ -3378,13 +3448,13 @@ set(dom_runtime_support_tests
 )
 foreach(dom_tgt IN LISTS dom_runtime_support_tests)
     if(TARGET ${dom_tgt})
-        target_link_libraries(${dom_tgt} dom_game_runtime_test_support)
+        target_link_libraries(${dom_tgt} PRIVATE dom_game_runtime_test_support)
     endif()
 endforeach()
 
 foreach(dom_budget_test IN ITEMS dom_ai_budget_baseline_cap_test dom_ai_budget_behavior_test)
     if(TARGET ${dom_budget_test})
-        target_link_libraries(${dom_budget_test} dom_game_runtime_test_support)
+        target_link_libraries(${dom_budget_test} PRIVATE dom_game_runtime_test_support)
         target_include_directories(${dom_budget_test} PRIVATE
             ${CMAKE_SOURCE_DIR}/include
             ${CMAKE_SOURCE_DIR}/source
