@@ -1,3 +1,306 @@
-build/
-dist/
-tmp/
+# =====================================================================
+# DOMINIUM — GLOBAL .gitignore
+# =====================================================================
+# This file excludes:
+# - Build outputs
+# - Temporary files
+# - Generated assets
+# - Editor caches
+# - Platform-specific clutter
+# - Retro toolchain intermediates
+#
+# It preserves:
+# - Source code
+# - Determinism-critical build scripts
+# - Retro project files (when non-generated)
+# - Documentation
+# =====================================================================
+
+
+# ---------------------------------------------------------------------
+# 1. CORE BUILD DIRECTORIES
+# ---------------------------------------------------------------------
+/build/
+/build/*/
+/build/output/
+/dist/
+/bin/
+/obj/
+/out/
+/lib/
+/tmp/
+/temp/
+/.dominium_build_number
+
+# CMake builddirs
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Ninja
+.ninja_deps
+.ninja_log
+
+
+# ---------------------------------------------------------------------
+# 2. COMPILER AND TOOLCHAIN OUTPUTS
+# ---------------------------------------------------------------------
+*.o
+*.obj
+*.lo
+*.a
+*.la
+*.lib
+*.dll
+*.so
+*.dylib
+*.exe
+*.out
+*.elf
+*.map
+*.lst
+*.pdb
+*.idb
+*.ilk
+*.manifest
+*.exp
+
+
+# ---------------------------------------------------------------------
+# 3. RETRO TOOLCHAIN INTERMEDIATES
+# (kept strict to protect determinism-critical sources)
+# ---------------------------------------------------------------------
+# DOS / Watcom / Borland
+*.err
+*.sym
+*.bsc
+*.cod
+*.exe.err
+*.map.bak
+*.tr
+
+# CodeWarrior / MPW / Classic Mac
+*.xSYM
+*.rsrc
+*.pef
+*.ppc
+*.bin
+*.srec
+
+# Win3.x / Win16
+*.res
+*.lib16
+*.exe16
+
+# Assembly intermediates
+*.asm.tmp
+*.inc.tmp
+*.lst.tmp
+
+
+# ---------------------------------------------------------------------
+# 4. GENERATED FILES
+# ---------------------------------------------------------------------
+# Auto-generated headers
+*_autogen.h
+*_generated.h
+*_config.h
+!source/dominium/launcher/core/include/launcher_instance_config.h
+*_tables.h
+
+# Generated code from scripts or tools
+generated/
+codegen/
+autogen/
+
+# Generated assets
+assets/cache/
+assets/generated/
+assets/converted/
+assets_compiled/
+
+
+# ---------------------------------------------------------------------
+# 5. PLATFORM AND IDE TRASH
+# ---------------------------------------------------------------------
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*.swp
+*.swo
+*~
+.*.swp
+
+# JetBrains
+.idea/
+*.iml
+
+# Visual Studio
+.vs/
+*.vcxproj.user
+*.sln.docstates
+*.VC.db
+*.VC.VC.opendb
+
+# VSCode
+.vscode/
+.history/
+
+# Xcode
+*.xcworkspace
+*.xcuserdatad/
+*.xcuserdata/
+*.xcsettings
+DerivedData/
+
+
+# ---------------------------------------------------------------------
+# 6. TEST OUTPUT
+# ---------------------------------------------------------------------
+/tests/output/
+/tests/temp/
+/tests/logs/
+/tests/replay_dumps/
+
+*.testlog
+*.replaydump
+*.perfdata
+
+
+# ---------------------------------------------------------------------
+# 7. LOGS AND RUNTIME ARTIFACTS
+# ---------------------------------------------------------------------
+*.log
+*.trace
+*.old
+*.bak
+*.tmp
+*.lock
+
+# Crash reports
+crash_*.txt
+hs_err_pid*
+
+
+# ---------------------------------------------------------------------
+# 8. PACKAGE & MEDIA ARTIFACTS
+# ---------------------------------------------------------------------
+/package/output/
+/package/temp/
+
+# Installer outputs
+*.msi
+*.rpm
+*.deb
+*.flatpak
+*.dmg
+*.pkg
+*.zip
+*.tar
+*.tar.gz
+*.iso
+*.img
+
+
+# ---------------------------------------------------------------------
+# 9. MOD AND DATA PACK TEMPORARY FILES
+# ---------------------------------------------------------------------
+/mods/local/*/temp/
+/mods/local/*/build/
+/mods/local/*/generated/
+/mods/workshop/*/temp/
+/mods/workshop/*/build/
+
+# Pack compilation caches
+/data/packs/*/compiled/
+/data/packs/*/cache/
+
+
+# ---------------------------------------------------------------------
+# 10. TOOLING CACHES
+# ---------------------------------------------------------------------
+/tools/*/cache/
+/tools/*/temp/
+/tools/editor/cache/
+/tools/editor/autosave/
+/tools/pipeline/cache/
+
+*.cache
+*.tmp
+*.bak
+
+
+# ---------------------------------------------------------------------
+# 11. SCRIPTS & PIPELINE TRASH
+# ---------------------------------------------------------------------
+*.pyc
+__pycache__/
+*.class
+node_modules/
+venv/
+.env
+.env.*
+
+
+# ---------------------------------------------------------------------
+# 12. SAVEGAME AND WORLD OUTPUTS
+# (Never checked in to repo)
+/saves/
+/worlds/
+/universes/
+*.sav
+*.world
+*.universe
+
+
+# ---------------------------------------------------------------------
+# 13. CRITICAL RULES FOR DOMINIUM PROJECT STRUCTURE
+# ---------------------------------------------------------------------
+# We NEVER ignore:
+# - Source code (.c, .h, .cpp)
+# - Platform project files (.dsw, .dsp, CodeWarrior .mcp when not generated)
+# - Deterministic tables in /engine
+# - Asset source files (svg, png, wav) stored intentionally
+# - Specification documents
+#
+# Explicit allow-list overrides follow below.
+
+
+# ---------------------------------------------------------------------
+# 14. NEGATION RULES (FILES TO FORCE-CHECK-IN)
+# ---------------------------------------------------------------------
+!/.gitignore
+!/docs/
+!/docs/**
+!/engine/
+!/engine/**
+!/game/
+!/game/**
+!/data/base/**
+!/data/dlc/**
+!/data/templates/**
+!/tools/editor/src/**
+!/tools/devkit/**
+!/tools/pipeline/scripts/**
+!/mods/*/mod.json
+!/package/scripts/**
+!/build/cmake/
+!/scripts/**
+!/ports/**/config/**
+!/ports/**/include/**
+!/external/licenses/**
+!/source/dominium/setup/core/include/dsu/dsu_config.h
+
+
+# ---------------------------------------------------------------------
+# END OF FILE
+# ---------------------------------------------------------------------
