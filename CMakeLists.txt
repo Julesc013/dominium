@@ -108,6 +108,7 @@ option(DOMUI_ENABLE_CODEGEN "Enable DOMUI action codegen tools and build steps" 
 option(SETUP_DEFAULT "Make Setup the default installer CLI/packaging path" ON)
 option(SETUP_LEGACY_BUILD "Build legacy setup stack (deprecated)" ON)
 option(SETUP_LEGACY_DEPRECATED_WARN "Warn when building legacy setup targets" ON)
+option(ENABLE_NSIS_DEV_INSTALLER "Build development-only NSIS setup wrapper" OFF)
 
 if(NOT DEFINED DOMINIUM_BUILD_SETUP)
     set(DOMINIUM_BUILD_SETUP ${SETUP_DEFAULT} CACHE BOOL "Build setup kernel/services/frontends")

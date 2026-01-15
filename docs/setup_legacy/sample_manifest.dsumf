@@ -1,5 +1,0 @@
-product_id=dominium
-version=1.0.0
-install_root=C:/Dominium
-components=[core,data]
-
