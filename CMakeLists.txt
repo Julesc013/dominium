@@ -1,6 +1,24 @@
 cmake_minimum_required(VERSION 3.16)
 project(DominiumDomino LANGUAGES C CXX)
 
+set(DOMINIUM_OUTPUT_BIN_DIR "${CMAKE_BINARY_DIR}/bin")
+set(DOMINIUM_OUTPUT_LIB_DIR "${CMAKE_BINARY_DIR}/lib")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${DOMINIUM_OUTPUT_BIN_DIR}")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${DOMINIUM_OUTPUT_LIB_DIR}")
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${DOMINIUM_OUTPUT_LIB_DIR}")
+foreach(_cfg IN ITEMS Debug Release RelWithDebInfo MinSizeRel)
+    string(TOUPPER "${_cfg}" _cfg_upper)
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_${_cfg_upper} "${DOMINIUM_OUTPUT_BIN_DIR}")
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_${_cfg_upper} "${DOMINIUM_OUTPUT_LIB_DIR}")
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${_cfg_upper} "${DOMINIUM_OUTPUT_LIB_DIR}")
+endforeach()
+
+option(DOM_BUILD_TESTS "Build tests" OFF)
+option(DOM_BUILD_TOOLS "Build tools" OFF)
+option(DOM_BUILD_SETUP "Build setup" ON)
+option(DOM_BUILD_LAUNCHER "Build launcher" ON)
+option(DOM_BUILD_GAME "Build game/client/server" ON)
+
 enable_testing()
 
 if(WIN32 AND NOT MSVC)
@@ -78,7 +96,7 @@ foreach(_doc_ratio_ext IN LISTS DOC_RATIO_EXTS)
 endforeach()
 
 add_custom_target(doc_ratio_check
-    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/doc_ratio_check.py ${_doc_ratio_args}
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/setup/packages/scripts/doc_ratio_check.py ${_doc_ratio_args}
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     COMMENT "Checking documentation ratios (mode=${DOC_RATIO_MODE})"
     VERBATIM
@@ -91,9 +109,13 @@ if(DOC_RATIO_ENABLE)
     add_dependencies(all_quality_gates doc_ratio_check)
 endif()
 
-set(DOMINIUM_SOURCE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
+set(DOMINIUM_ENGINE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/engine/include")
+set(DOMINIUM_GAME_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/game/include")
+set(DOMINIUM_SETUP_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/setup/include")
+set(DOMINIUM_TOOLS_UI_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/tools/ui_shared/include")
 set(DOMINIUM_GENERATED_INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/generated/include")
-set(DOMINIUM_INCLUDE_DIR "${DOMINIUM_GENERATED_INCLUDE_DIR};${DOMINIUM_SOURCE_INCLUDE_DIR}")
+set(DOMINIUM_SOURCE_INCLUDE_DIR "${DOMINIUM_ENGINE_INCLUDE_DIR}")
+set(DOMINIUM_INCLUDE_DIR "${DOMINIUM_GENERATED_INCLUDE_DIR};${DOMINIUM_ENGINE_INCLUDE_DIR}")
 
 # Generated baseline-safe config header (macros + integer literals only).
 set(DOM_BUILD_ID "unknown" CACHE STRING "Build identifier embedded into binaries")
@@ -438,7 +460,7 @@ add_custom_target(dom_update_build_number ALL
         -DHEADER_FILE=${DOM_BUILD_HEADER_FILE}
         -DNUMBER_FILE=${DOM_BUILD_NUMBER_FILE}
         -DPROJECT_SEMVER=${DOM_PROJECT_SEMVER}
-        -P ${CMAKE_CURRENT_SOURCE_DIR}/scripts/update_build_number.cmake
+        -P ${CMAKE_CURRENT_SOURCE_DIR}/setup/packages/scripts/update_build_number.cmake
     COMMENT "Incrementing global build number"
 )
 add_compile_definitions(DOM_BUILD_VERSION_GENERATED)
@@ -491,25 +513,39 @@ file(MAKE_DIRECTORY
     "${CMAKE_SOURCE_DIR}/build/msys2-release"
 )
 
-add_subdirectory(source/domino)
-add_subdirectory(source/dominium)
-add_subdirectory(tools)
-add_subdirectory(source/tests)
+add_subdirectory(libs)
+add_subdirectory(engine)
+if(DOM_BUILD_SETUP)
+    add_subdirectory(setup)
+endif()
+if(DOM_BUILD_LAUNCHER)
+    add_subdirectory(launcher)
+endif()
+if(DOM_BUILD_TOOLS)
+    add_subdirectory(tools)
+endif()
+if(DOM_BUILD_GAME)
+    add_subdirectory(game)
+    add_subdirectory(client)
+    add_subdirectory(server)
+endif()
 
-add_custom_target(coredata_build
-    COMMAND $<TARGET_FILE:coredata_compile>
-        --input-root=${CMAKE_SOURCE_DIR}/data/core
-        --output-pack-id=base_cosmo
-        --output-version=${DOM_PROJECT_SEMVER}
-        --output-root=${CMAKE_SOURCE_DIR}/repo/packs
-        --emit-manifest=1
-        --strict=1
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    DEPENDS coredata_compile
-    COMMENT "Building coredata pack"
-)
+if(TARGET coredata_compile)
+    add_custom_target(coredata_build
+        COMMAND $<TARGET_FILE:coredata_compile>
+            --input-root=${CMAKE_SOURCE_DIR}/data/core
+            --output-pack-id=base_cosmo
+            --output-version=${DOM_PROJECT_SEMVER}
+            --output-root=${CMAKE_SOURCE_DIR}/repo/packs
+            --emit-manifest=1
+            --strict=1
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        DEPENDS coredata_compile
+        COMMENT "Building coredata pack"
+    )
+endif()
 
-if(WIN32)
+if(WIN32 AND TARGET dominium-ui-editor)
     set(DOMUI_INDEX_PATH ${CMAKE_SOURCE_DIR}/tools/ui_index/ui_index.json)
     set(DOMUI_LAUNCHER_DOC ${CMAKE_SOURCE_DIR}/tools/launcher/ui/doc/launcher_ui_doc.tlv)
     set(DOMUI_SETUP_DOC ${CMAKE_SOURCE_DIR}/tools/setup/ui/doc/setup_ui_doc.tlv)
@@ -540,7 +576,7 @@ else()
     )
 endif()
 
-if(WIN32)
+if(WIN32 AND TARGET ui_scan_all)
     add_custom_target(ui_capability_test
         DEPENDS
             ui_scan_all
