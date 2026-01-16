@@ -58,13 +58,33 @@ AUTHORITATIVE_DIRS = (
     os.path.join("engine", "modules", "core"),
     os.path.join("engine", "modules", "sim"),
     os.path.join("engine", "modules", "world"),
+    os.path.join("game", "core"),
     os.path.join("game", "rules"),
     os.path.join("game", "economy"),
 )
 
 FLOAT_TOKENS_RE = re.compile(r"\b(long\s+double|double|float)\b")
 MATH_CALL_RE = re.compile(r"\b(sin|cos|tan|asin|acos|atan|atan2|sqrt|pow|exp|log)\s*\(")
-MATH_INCLUDE_RE = re.compile(r'^\s*#\s*include\s*[<"]([^">]*math[^">]*)[">]')
+FORBIDDEN_MATH_HEADERS = ("math.h", "cmath")
+
+FORBIDDEN_TIME_HEADERS = ("time.h", "sys/time.h", "sys/timeb.h", "chrono", "ctime")
+TIME_CALL_RE = re.compile(
+    r"\b(time|clock_gettime|gettimeofday|QueryPerformanceCounter|GetSystemTime|"
+    r"GetTickCount|GetTickCount64|mach_absolute_time)\s*\("
+)
+TIME_STD_RE = re.compile(r"\bstd::chrono::|\bchrono::")
+
+FORBIDDEN_RNG_HEADERS = ("random",)
+RNG_CALL_RE = re.compile(
+    r"\b(rand|srand|rand_r|random|arc4random|drand48|lrand48|mrand48|getrandom|"
+    r"BCryptGenRandom|RtlGenRandom|CryptGenRandom)\s*\("
+)
+RNG_STD_RE = re.compile(
+    r"\bstd::(random_device|mt19937|mt19937_64|seed_seq|uniform_|normal_|"
+    r"bernoulli|binomial|poisson)\b"
+)
+
+UNORDERED_RE = re.compile(r"\bunordered_(map|set|multimap|multiset)\b")
 
 UI_FORBIDDEN_INCLUDES = (
     "engine/modules/",
@@ -146,6 +166,35 @@ def iter_files(root, repo_root):
             yield os.path.join(dirpath, filename)
 
 
+def iter_include_lines(path):
+    in_block = False
+    try:
+        with open(path, "r", errors="ignore") as handle:
+            for idx, line in enumerate(handle, start=1):
+                work = line
+                if in_block:
+                    end = work.find("*/")
+                    if end == -1:
+                        continue
+                    work = work[end + 2:]
+                    in_block = False
+                while True:
+                    start = work.find("/*")
+                    if start == -1:
+                        break
+                    end = work.find("*/", start + 2)
+                    if end == -1:
+                        work = work[:start]
+                        in_block = True
+                        break
+                    work = work[:start] + work[end + 2:]
+                if "//" in work:
+                    work = work.split("//", 1)[0]
+                yield idx, work
+    except IOError:
+        return
+
+
 def iter_code_lines(path):
     in_block = False
     in_string = None
@@ -192,7 +241,7 @@ def iter_code_lines(path):
 def scan_includes(root, repo_root, include_predicate, check):
     for path in iter_files(root, repo_root):
         rel = repo_rel(repo_root, path)
-        for idx, code in iter_code_lines(path):
+        for idx, code in iter_include_lines(path):
             match = INCLUDE_RE.match(code)
             if not match:
                 continue
@@ -205,7 +254,7 @@ def scan_engine_refs(repo_root, check):
     engine_root = os.path.join(repo_root, "engine")
     for path in iter_files(engine_root, repo_root):
         rel = repo_rel(repo_root, path)
-        for idx, code in iter_code_lines(path):
+        for idx, code in iter_include_lines(path):
             match = INCLUDE_RE.match(code)
             if not match:
                 continue
@@ -444,38 +493,151 @@ def check_ui_bypass_001(repo_root):
             continue
         for path in iter_files(root, repo_root):
             rel = repo_rel(repo_root, path)
-            for idx, code in iter_code_lines(path):
+            for idx, code in iter_include_lines(path):
                 match = INCLUDE_RE.match(code)
-                if match:
-                    include_path = normalize_include(match.group(1))
-                    if include_predicate(include_path):
-                        check.add_violation(rel, idx, include_path)
-                        continue
+                if not match:
+                    continue
+                include_path = normalize_include(match.group(1))
+                if include_predicate(include_path):
+                    check.add_violation(rel, idx, include_path)
+            for idx, code in iter_code_lines(path):
                 if UI_FORBIDDEN_CALL_RE.search(code):
                     check.add_violation(rel, idx, "authoritative sim/world call")
     return check
 
 
-def check_det_float_001(repo_root):
+def check_det_float_003(repo_root):
     check = Check(
-        "DET-FLOAT-001",
+        "DET-FLOAT-003",
         "floating point or math intrinsics in authoritative zones (forbidden)",
         "Replace with deterministic fixed-point or approved math APIs.",
-        severity="warn",
     )
+
+    def is_forbidden_math_header(include_path):
+        lower = include_path.lower()
+        for header in FORBIDDEN_MATH_HEADERS:
+            if lower == header or lower.endswith("/" + header):
+                return True
+        return False
+
     for rel_dir in AUTHORITATIVE_DIRS:
         root = os.path.join(repo_root, rel_dir)
         if not os.path.isdir(root):
             continue
         for path in iter_files(root, repo_root):
             rel = repo_rel(repo_root, path)
+            for idx, code in iter_include_lines(path):
+                match = INCLUDE_RE.match(code)
+                if not match:
+                    continue
+                include_path = normalize_include(match.group(1))
+                if is_forbidden_math_header(include_path):
+                    check.add_violation(rel, idx, "math header include")
             for idx, code in iter_code_lines(path):
                 if FLOAT_TOKENS_RE.search(code):
                     check.add_violation(rel, idx, "floating point token")
                 if MATH_CALL_RE.search(code):
                     check.add_violation(rel, idx, "math intrinsic call")
-                if MATH_INCLUDE_RE.match(code):
-                    check.add_violation(rel, idx, "math header include")
+    return check
+
+
+def check_det_time_001(repo_root):
+    check = Check(
+        "DET-TIME-001",
+        "OS time usage in authoritative zones (forbidden)",
+        "Use ACT time and deterministic scheduling only.",
+    )
+
+    def is_forbidden_time_header(include_path):
+        lower = include_path.lower()
+        for header in FORBIDDEN_TIME_HEADERS:
+            if lower == header or lower.endswith("/" + header):
+                return True
+        return False
+
+    for rel_dir in AUTHORITATIVE_DIRS:
+        root = os.path.join(repo_root, rel_dir)
+        if not os.path.isdir(root):
+            continue
+        for path in iter_files(root, repo_root):
+            rel = repo_rel(repo_root, path)
+            for idx, code in iter_include_lines(path):
+                match = INCLUDE_RE.match(code)
+                if not match:
+                    continue
+                include_path = normalize_include(match.group(1))
+                if is_forbidden_time_header(include_path):
+                    check.add_violation(rel, idx, "time header include")
+            for idx, code in iter_code_lines(path):
+                if TIME_CALL_RE.search(code):
+                    check.add_violation(rel, idx, "time API call")
+                if TIME_STD_RE.search(code):
+                    check.add_violation(rel, idx, "std::chrono usage")
+    return check
+
+
+def check_det_rng_002(repo_root):
+    check = Check(
+        "DET-RNG-002",
+        "non-deterministic RNG usage in authoritative zones (forbidden)",
+        "Use domino/core/rng.h only; pass RNG state explicitly.",
+    )
+
+    def is_forbidden_rng_header(include_path):
+        lower = include_path.lower()
+        for header in FORBIDDEN_RNG_HEADERS:
+            if lower == header or lower.endswith("/" + header):
+                return True
+        return False
+
+    for rel_dir in AUTHORITATIVE_DIRS:
+        root = os.path.join(repo_root, rel_dir)
+        if not os.path.isdir(root):
+            continue
+        for path in iter_files(root, repo_root):
+            rel = repo_rel(repo_root, path)
+            for idx, code in iter_include_lines(path):
+                match = INCLUDE_RE.match(code)
+                if not match:
+                    continue
+                include_path = normalize_include(match.group(1))
+                if is_forbidden_rng_header(include_path):
+                    check.add_violation(rel, idx, "random header include")
+            for idx, code in iter_code_lines(path):
+                if RNG_CALL_RE.search(code):
+                    check.add_violation(rel, idx, "non-deterministic RNG call")
+                if RNG_STD_RE.search(code):
+                    check.add_violation(rel, idx, "std::random usage")
+    return check
+
+
+def check_det_ord_004(repo_root):
+    check = Check(
+        "DET-ORD-004",
+        "unordered container usage in authoritative zones (forbidden)",
+        "Use ordered containers or normalize iteration before use.",
+    )
+
+    def is_forbidden_unordered_header(include_path):
+        lower = include_path.lower()
+        return lower.endswith("unordered_map") or lower.endswith("unordered_set") or lower.endswith("unordered_multimap") or lower.endswith("unordered_multiset")
+
+    for rel_dir in AUTHORITATIVE_DIRS:
+        root = os.path.join(repo_root, rel_dir)
+        if not os.path.isdir(root):
+            continue
+        for path in iter_files(root, repo_root):
+            rel = repo_rel(repo_root, path)
+            for idx, code in iter_include_lines(path):
+                match = INCLUDE_RE.match(code)
+                if not match:
+                    continue
+                include_path = normalize_include(match.group(1))
+                if is_forbidden_unordered_header(include_path):
+                    check.add_violation(rel, idx, "unordered header include")
+            for idx, code in iter_code_lines(path):
+                if UNORDERED_RE.search(code):
+                    check.add_violation(rel, idx, "unordered container usage")
     return check
 
 
@@ -521,7 +683,10 @@ def run_checks(repo_root, strict=False):
         check_arch_render_001(repo_root),
         check_arch_top_001(repo_root),
         check_ui_bypass_001(repo_root),
-        check_det_float_001(repo_root),
+        check_det_float_003(repo_root),
+        check_det_time_001(repo_root),
+        check_det_rng_002(repo_root),
+        check_det_ord_004(repo_root),
         check_build_global_001(repo_root),
     ]
     failed = False
@@ -549,7 +714,7 @@ def main():
     parser.add_argument(
         "--strict",
         action="store_true",
-        help="Treat warnings as errors (including DET-FLOAT-001).",
+        help="Treat warnings as errors.",
     )
     args = parser.parse_args()
     repo_root = args.repo_root
