@@ -4,8 +4,8 @@ add_executable(dominium_server
     main_server.c
 )
 target_link_libraries(dominium_server PRIVATE
-    engine::domino
-    game::dominium
+    domino_engine
+    dominium_game
 )
 set_target_properties(dominium_server PROPERTIES
     OUTPUT_NAME "server"
