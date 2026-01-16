@@ -124,6 +124,7 @@ set(ENGINE_CORE_LEGACY_SOURCES
     modules/core/dom_time_core.c
     modules/core/dom_time_events.c
     modules/core/dom_time_frames.c
+    modules/core/det_order.c
     modules/core/d_account.c
     modules/core/d_container_state.c
     modules/core/d_model.c
