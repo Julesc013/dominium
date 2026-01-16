@@ -78,6 +78,46 @@ RULES = {
             "tools/",
         ],
     },
+    "client": {
+        "forbid": [
+            "engine/",
+            "modules/",
+            "core/",
+            "ecs/",
+            "sim/",
+            "world/",
+            "io/",
+            "sys/",
+            "render/",
+            "game/",
+            "rules/",
+            "ai/",
+            "economy/",
+            "content/",
+            "mods/",
+            "ui/",
+        ],
+    },
+    "server": {
+        "forbid": [
+            "engine/",
+            "modules/",
+            "core/",
+            "ecs/",
+            "sim/",
+            "world/",
+            "io/",
+            "sys/",
+            "render/",
+            "game/",
+            "rules/",
+            "ai/",
+            "economy/",
+            "content/",
+            "mods/",
+            "ui/",
+        ],
+    },
 }
 
 SKIP_DIRS = {
@@ -91,6 +131,7 @@ SKIP_DIRS = {
     "docs",
     "schema",
     "ci",
+    "tests",
 }
 
 

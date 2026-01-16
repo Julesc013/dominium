@@ -57,6 +57,15 @@ include(dist_output)
 
 find_package(Python3 REQUIRED COMPONENTS Interpreter)
 
+execute_process(
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/verify_cmake_no_global_includes.py
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    RESULT_VARIABLE _dom_cmake_sanity_res
+)
+if(NOT _dom_cmake_sanity_res EQUAL 0)
+    message(FATAL_ERROR "CMake global include check failed; remove include_directories() usage.")
+endif()
+
 set(DOC_RATIO_ENABLE ON CACHE BOOL "Enable documentation ratio quality gate")
 set(DOC_RATIO_ROOTS "src;include" CACHE STRING "Roots to scan for documentation ratios")
 set(DOC_RATIO_EXCLUDES "third_party;external;build;out;.git;generated" CACHE STRING "Path fragments excluded from documentation ratios")
@@ -540,6 +549,46 @@ if(DOM_BUILD_GAME)
     add_subdirectory(client)
     add_subdirectory(server)
 endif()
+
+function(dom_assert_no_link target)
+    if(NOT TARGET ${target})
+        return()
+    endif()
+    get_target_property(_dom_links ${target} LINK_LIBRARIES)
+    if(_dom_links STREQUAL "LINK_LIBRARIES-NOTFOUND")
+        set(_dom_links "")
+    endif()
+    get_target_property(_dom_iface_links ${target} INTERFACE_LINK_LIBRARIES)
+    if(_dom_iface_links STREQUAL "INTERFACE_LINK_LIBRARIES-NOTFOUND")
+        set(_dom_iface_links "")
+    endif()
+    set(_dom_all_links ${_dom_links} ${_dom_iface_links})
+    foreach(_dom_forbid IN LISTS ARGN)
+        list(FIND _dom_all_links ${_dom_forbid} _dom_idx)
+        if(NOT _dom_idx EQUAL -1)
+            message(FATAL_ERROR "Boundary violation: target '${target}' links forbidden target '${_dom_forbid}'.")
+        endif()
+    endforeach()
+endfunction()
+
+dom_assert_no_link(domino_engine
+    dominium_game
+    game::dominium
+    launcher_core
+    launcher::launcher
+    setup_core
+    setup::setup
+    tools_shared
+    tools::shared
+    dominium-tools
+    tools::host
+)
+dom_assert_no_link(dominium_game
+    launcher_core
+    launcher::launcher
+    setup_core
+    setup::setup
+)
 
 if(TARGET coredata_compile)
     add_custom_target(coredata_build

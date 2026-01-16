@@ -182,7 +182,7 @@ else()
     )
 endif()
 
-add_library(engine_domino STATIC
+add_library(domino_engine STATIC
     ${ENGINE_CORE_SOURCES}
     ${ENGINE_CORE_LEGACY_SOURCES}
     ${ENGINE_SYSTEM_SOURCES}
@@ -194,9 +194,9 @@ add_custom_target(engine_include_sanity
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     COMMENT "Checking include boundaries for engine sources"
 )
-add_dependencies(engine_domino engine_include_sanity)
+add_dependencies(domino_engine engine_include_sanity)
 
-target_include_directories(engine_domino
+target_include_directories(domino_engine
     PUBLIC
         ${DOMINIUM_ENGINE_INCLUDE_DIR}
     PRIVATE
@@ -233,11 +233,11 @@ target_include_directories(engine_domino
         ${CMAKE_CURRENT_SOURCE_DIR}/modules/world
 )
 
-target_compile_definitions(engine_domino PUBLIC
+target_compile_definitions(domino_engine PUBLIC
     DOMUI_ENABLE_JSON_MIRROR=$<BOOL:${DOMUI_ENABLE_JSON_MIRROR}>
 )
 
-set_target_properties(engine_domino PROPERTIES
+set_target_properties(domino_engine PROPERTIES
     C_STANDARD 90
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
@@ -247,18 +247,18 @@ set_target_properties(engine_domino PROPERTIES
 )
 
 if(WIN32)
-    target_link_libraries(engine_domino PRIVATE user32 gdi32)
+    target_link_libraries(domino_engine PRIVATE user32 gdi32)
 else()
-    target_link_libraries(engine_domino PRIVATE m)
+    target_link_libraries(domino_engine PRIVATE m)
 endif()
 
-add_library(engine::domino ALIAS engine_domino)
-add_library(domino_core ALIAS engine_domino)
-add_library(domino_engine ALIAS engine_domino)
-add_library(domino_gfx ALIAS engine_domino)
-add_library(domino_sys ALIAS engine_domino)
-add_library(domino_sim ALIAS engine_domino)
-add_library(domino_mod ALIAS engine_domino)
+add_library(engine::domino ALIAS domino_engine)
+add_library(engine_domino ALIAS domino_engine)
+add_library(domino_core ALIAS domino_engine)
+add_library(domino_gfx ALIAS domino_engine)
+add_library(domino_sys ALIAS domino_engine)
+add_library(domino_sim ALIAS domino_engine)
+add_library(domino_mod ALIAS domino_engine)
 
 if(DOM_BUILD_TESTS)
     add_subdirectory(tests)

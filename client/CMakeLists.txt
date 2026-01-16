@@ -4,8 +4,8 @@ add_executable(dominium_client
     main_client.c
 )
 target_link_libraries(dominium_client PRIVATE
-    engine::domino
-    game::dominium
+    domino_engine
+    dominium_game
 )
 set_target_properties(dominium_client PROPERTIES
     OUTPUT_NAME "client"
