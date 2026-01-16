@@ -75,19 +75,6 @@ set(ENGINE_CORE_SOURCES
     modules/world/d_world_terrain.c
 )
 
-set(ENGINE_DUI_SOURCES
-    modules/dui/dui_caps.c
-    modules/dui/dui_dgfx.c
-    modules/dui/dui_event_queue.c
-    modules/dui/dui_schema_parse.c
-    modules/dui/dui_null.c
-)
-if(WIN32)
-    list(APPEND ENGINE_DUI_SOURCES modules/dui/dui_win32.c)
-elseif(APPLE)
-    list(APPEND ENGINE_DUI_SOURCES modules/dui/dui_macos.c)
-endif()
-
 set(ENGINE_SYSTEM_SOURCES
     modules/system/dsys_stub.c
     modules/system/dsys_term.c
@@ -109,29 +96,17 @@ else()
     )
 endif()
 
-set(ENGINE_UI_SOURCES
-    modules/ui_ir/ui_caps.cpp
-    modules/ui_ir/ui_ir_diag.cpp
-    modules/ui_ir/ui_ir_doc.cpp
-    modules/ui_ir/ui_ir_fileio.cpp
-    modules/ui_ir/ui_ir_json.cpp
-    modules/ui_ir/ui_ir_legacy_import.cpp
-    modules/ui_ir/ui_ir_props.cpp
-    modules/ui_ir/ui_ir_string.cpp
-    modules/ui_ir/ui_ir_tlv.cpp
-    modules/ui_ir/ui_ir_types.cpp
-    modules/ui_ir/ui_layout.cpp
-    modules/ui_ir/ui_ops.cpp
-    modules/ui_ir/ui_validate.cpp
-    modules/ui_codegen/ui_codegen.cpp
-)
-
 add_library(engine_domino STATIC
     ${ENGINE_CORE_SOURCES}
-    ${ENGINE_DUI_SOURCES}
     ${ENGINE_SYSTEM_SOURCES}
-    ${ENGINE_UI_SOURCES}
 )
+
+add_custom_target(engine_include_sanity
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/verify_includes_sanity.py
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    COMMENT "Checking include boundaries for engine sources"
+)
+add_dependencies(engine_domino engine_include_sanity)
 
 target_include_directories(engine_domino
     PUBLIC
@@ -145,7 +120,6 @@ target_include_directories(engine_domino
         ${CMAKE_CURRENT_SOURCE_DIR}/modules/compat
         ${CMAKE_CURRENT_SOURCE_DIR}/modules/content
         ${CMAKE_CURRENT_SOURCE_DIR}/modules/decor
-        ${CMAKE_CURRENT_SOURCE_DIR}/modules/dui
         ${CMAKE_CURRENT_SOURCE_DIR}/modules/econ
         ${CMAKE_CURRENT_SOURCE_DIR}/modules/env
         ${CMAKE_CURRENT_SOURCE_DIR}/modules/hydro
@@ -164,8 +138,6 @@ target_include_directories(engine_domino
         ${CMAKE_CURRENT_SOURCE_DIR}/modules/trans
         ${CMAKE_CURRENT_SOURCE_DIR}/modules/tui
         ${CMAKE_CURRENT_SOURCE_DIR}/modules/ui
-        ${CMAKE_CURRENT_SOURCE_DIR}/modules/ui_codegen
-        ${CMAKE_CURRENT_SOURCE_DIR}/modules/ui_ir
         ${CMAKE_CURRENT_SOURCE_DIR}/modules/vehicle
         ${CMAKE_CURRENT_SOURCE_DIR}/modules/view
         ${CMAKE_CURRENT_SOURCE_DIR}/modules/world
@@ -197,5 +169,3 @@ add_library(domino_gfx ALIAS engine_domino)
 add_library(domino_sys ALIAS engine_domino)
 add_library(domino_sim ALIAS engine_domino)
 add_library(domino_mod ALIAS engine_domino)
-add_library(domino_ui_ir ALIAS engine_domino)
-add_library(domino_ui_codegen ALIAS engine_domino)
