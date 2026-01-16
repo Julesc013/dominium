@@ -17,6 +17,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "econ/d_econ_metrics.h"
 
 #include "core/d_subsystem.h"
+#include "domino/sim/dg_due_sched.h"
 
 #define DECON_MAX_ORGS 1024u
 #define DECON_EMA_WINDOW 64u
@@ -33,12 +34,48 @@ typedef struct decon_entry_s {
     q32_32 ema_in;
     q32_32 ema_price;
 
+    u32 sched_handle;
+    dom_act_time_t last_tick;
+    dom_act_time_t next_due;
+    int sched_active;
+    int sched_registered;
+
     int in_use;
 } decon_entry;
 
 static decon_entry g_econ_orgs[DECON_MAX_ORGS];
 static int g_econ_initialized = 0;
 static int g_econ_registered = 0;
+
+static dg_due_scheduler g_econ_sched;
+static dom_time_event g_econ_sched_events[DECON_MAX_ORGS];
+static dg_due_entry g_econ_sched_entries[DECON_MAX_ORGS];
+static int g_econ_sched_ready = 0;
+static dom_act_time_t g_econ_current_tick = 0;
+
+static dom_act_time_t decon_due_next(void* user, dom_act_time_t now_tick);
+static int decon_due_process(void* user, dom_act_time_t target_tick);
+
+static const dg_due_vtable g_econ_due_vtable = {
+    decon_due_next,
+    decon_due_process
+};
+
+static void decon_scheduler_init(void) {
+    if (g_econ_sched_ready) {
+        return;
+    }
+    (void)dg_due_scheduler_init(
+        &g_econ_sched,
+        g_econ_sched_events,
+        DECON_MAX_ORGS,
+        g_econ_sched_entries,
+        DECON_MAX_ORGS,
+        0
+    );
+    g_econ_sched_ready = 1;
+    g_econ_current_tick = 0;
+}
 
 static decon_entry *decon_find(d_org_id org_id) {
     u32 i;
@@ -62,7 +99,21 @@ static decon_entry *decon_alloc(d_org_id org_id) {
             g_econ_orgs[i].ema_out = 0;
             g_econ_orgs[i].ema_in = 0;
             g_econ_orgs[i].ema_price = 0;
+            g_econ_orgs[i].last_tick = g_econ_current_tick;
+            g_econ_orgs[i].next_due = DG_DUE_TICK_NONE;
+            g_econ_orgs[i].sched_active = 0;
+            g_econ_orgs[i].sched_registered = 0;
             g_econ_orgs[i].in_use = 1;
+            if (!g_econ_sched_ready) {
+                decon_scheduler_init();
+            }
+            if (g_econ_sched_ready) {
+                u32 handle = 0u;
+                if (dg_due_scheduler_register(&g_econ_sched, &g_econ_due_vtable, &g_econ_orgs[i], (u64)org_id, &handle) == DG_DUE_OK) {
+                    g_econ_orgs[i].sched_handle = handle;
+                    g_econ_orgs[i].sched_registered = 1;
+                }
+            }
             return &g_econ_orgs[i];
         }
     }
@@ -74,12 +125,15 @@ int d_econ_metrics_init(void) {
         return 0;
     }
     memset(g_econ_orgs, 0, sizeof(g_econ_orgs));
+    g_econ_sched_ready = 0;
+    decon_scheduler_init();
     g_econ_initialized = 1;
     return 0;
 }
 
 void d_econ_metrics_shutdown(void) {
     memset(g_econ_orgs, 0, sizeof(g_econ_orgs));
+    g_econ_sched_ready = 0;
     g_econ_initialized = 0;
 }
 
@@ -101,6 +155,9 @@ void d_econ_register_production(
     }
     if (!g_econ_initialized) {
         (void)d_econ_metrics_init();
+    }
+    if (!g_econ_sched_ready) {
+        decon_scheduler_init();
     }
 
     e = decon_find(org_id);
@@ -136,6 +193,12 @@ void d_econ_register_production(
         e->step_in_qty += qty_q32;
         e->step_in_value += val_q32;
     }
+
+    if (e->sched_registered && !e->sched_active) {
+        e->sched_active = 1;
+        e->next_due = g_econ_current_tick + 1;
+        (void)dg_due_scheduler_refresh(&g_econ_sched, e->sched_handle);
+    }
 }
 
 static q32_32 decon_ema_update(q32_32 ema, q32_32 sample) {
@@ -143,8 +206,74 @@ static q32_32 decon_ema_update(q32_32 ema, q32_32 sample) {
     return ema + (diff / (q32_32)DECON_EMA_WINDOW);
 }
 
+static dom_act_time_t decon_due_next(void* user, dom_act_time_t now_tick) {
+    decon_entry* e = (decon_entry*)user;
+    (void)now_tick;
+    if (!e || !e->in_use || !e->sched_active) {
+        return DG_DUE_TICK_NONE;
+    }
+    return e->next_due;
+}
+
+static int decon_due_process(void* user, dom_act_time_t target_tick) {
+    decon_entry* e = (decon_entry*)user;
+    dom_act_time_t delta;
+    i32 ticks_i32;
+    q32_32 sample_out;
+    q32_32 sample_in;
+    q32_32 sample_price;
+    i64 qty_int;
+    i64 value_sum_q16;
+    i64 avg_q16;
+
+    if (!e || !e->in_use) {
+        return -1;
+    }
+    delta = target_tick - e->last_tick;
+    if (delta <= 0) {
+        return 0;
+    }
+    if (delta > (dom_act_time_t)0x7fffffffL) {
+        ticks_i32 = (i32)0x7fffffffL;
+    } else {
+        ticks_i32 = (i32)delta;
+    }
+    if (ticks_i32 <= 0) {
+        return 0;
+    }
+
+    sample_out = e->step_out_value / (q32_32)ticks_i32;
+    sample_in = e->step_in_value / (q32_32)ticks_i32;
+    sample_price = e->ema_price;
+
+    e->ema_out = decon_ema_update(e->ema_out, sample_out);
+    e->ema_in = decon_ema_update(e->ema_in, sample_in);
+
+    /* Price index proxy: average base_value of outputs in this step. */
+    qty_int = ((i64)e->step_out_qty) >> Q32_32_FRAC_BITS;
+    if (qty_int > 0) {
+        value_sum_q16 = ((i64)e->step_out_value) >> (Q32_32_FRAC_BITS - Q16_16_FRAC_BITS);
+        avg_q16 = value_sum_q16 / qty_int;
+        sample_price = (q32_32)(avg_q16 << (Q32_32_FRAC_BITS - Q16_16_FRAC_BITS));
+    }
+    e->ema_price = decon_ema_update(e->ema_price, sample_price);
+
+    e->metrics.total_output = e->ema_out;
+    e->metrics.total_input = e->ema_in;
+    e->metrics.net_throughput = e->ema_out - e->ema_in;
+    e->metrics.price_index = e->ema_price;
+
+    e->step_out_value = 0;
+    e->step_out_qty = 0;
+    e->step_in_value = 0;
+    e->step_in_qty = 0;
+    e->last_tick = target_tick;
+    e->sched_active = 0;
+    e->next_due = DG_DUE_TICK_NONE;
+    return 0;
+}
+
 void d_econ_metrics_tick(d_world *w, u32 ticks) {
-    u32 i;
     (void)w;
     if (ticks == 0u) {
         return;
@@ -152,45 +281,11 @@ void d_econ_metrics_tick(d_world *w, u32 ticks) {
     if (!g_econ_initialized) {
         (void)d_econ_metrics_init();
     }
-
-    for (i = 0u; i < DECON_MAX_ORGS; ++i) {
-        decon_entry *e = &g_econ_orgs[i];
-        q32_32 sample_out;
-        q32_32 sample_in;
-        q32_32 sample_price = e->ema_price;
-        i64 qty_int;
-        i64 value_sum_q16;
-        i64 avg_q16;
-
-        if (!e->in_use) {
-            continue;
-        }
-
-        sample_out = e->step_out_value / (q32_32)(i32)ticks;
-        sample_in = e->step_in_value / (q32_32)(i32)ticks;
-
-        e->ema_out = decon_ema_update(e->ema_out, sample_out);
-        e->ema_in = decon_ema_update(e->ema_in, sample_in);
-
-        /* Price index proxy: average base_value of outputs in this step. */
-        qty_int = ((i64)e->step_out_qty) >> Q32_32_FRAC_BITS;
-        if (qty_int > 0) {
-            value_sum_q16 = ((i64)e->step_out_value) >> (Q32_32_FRAC_BITS - Q16_16_FRAC_BITS);
-            avg_q16 = value_sum_q16 / qty_int;
-            sample_price = (q32_32)(avg_q16 << (Q32_32_FRAC_BITS - Q16_16_FRAC_BITS));
-        }
-        e->ema_price = decon_ema_update(e->ema_price, sample_price);
-
-        e->metrics.total_output = e->ema_out;
-        e->metrics.total_input = e->ema_in;
-        e->metrics.net_throughput = e->ema_out - e->ema_in;
-        e->metrics.price_index = e->ema_price;
-
-        e->step_out_value = 0;
-        e->step_out_qty = 0;
-        e->step_in_value = 0;
-        e->step_in_qty = 0;
+    if (!g_econ_sched_ready) {
+        decon_scheduler_init();
     }
+    g_econ_current_tick += (dom_act_time_t)ticks;
+    (void)dg_due_scheduler_advance(&g_econ_sched, g_econ_current_tick);
 }
 
 int d_econ_get_org_metrics(d_org_id org_id, d_econ_org_metrics *out) {
@@ -452,4 +547,3 @@ void d_econ_register_subsystem(void) {
         g_econ_registered = 1;
     }
 }
-
