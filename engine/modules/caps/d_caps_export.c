@@ -15,7 +15,7 @@ EXTENSION POINTS: Extend by adding TLV tags or new chunk versions.
 
 #include "domino/io/container.h"
 #include "domino/sys.h"
-#include "render/d_gfx_caps.h"
+#include "d_gfx_caps.h"
 
 #include <string.h>
 #include <stdlib.h>

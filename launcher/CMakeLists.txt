@@ -50,6 +50,6 @@ set_target_properties(launcher_tui PROPERTIES
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )
-add_library(launcher::cli ALIAS launcher_cli)
-add_library(launcher::gui ALIAS launcher_gui)
-add_library(launcher::tui ALIAS launcher_tui)
+add_executable(launcher::cli ALIAS launcher_cli)
+add_executable(launcher::gui ALIAS launcher_gui)
+add_executable(launcher::tui ALIAS launcher_tui)

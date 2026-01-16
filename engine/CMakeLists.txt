@@ -5,6 +5,8 @@ set(ENGINE_CORE_SOURCES
     modules/agent/dg_agent_comp.c
     modules/ai/d_agent.c
     modules/audio/audio.c
+    modules/build/d_build.c
+    modules/build/d_build_validate.c
     modules/caps/d_caps.c
     modules/caps/d_caps_builtin.c
     modules/caps/d_caps_export.c
@@ -54,6 +56,30 @@ set(ENGINE_CORE_SOURCES
     modules/sim/d_sim_hash.c
     modules/sim/d_sim_process.c
     modules/sim/sim.c
+    modules/sim/act/dg_action.c
+    modules/sim/act/dg_action_registry.c
+    modules/sim/act/dg_capability.c
+    modules/sim/act/dg_delta_buffer.c
+    modules/sim/act/dg_delta_commit.c
+    modules/sim/act/dg_delta_registry.c
+    modules/sim/lod/dg_accum.c
+    modules/sim/lod/dg_interest.c
+    modules/sim/lod/dg_lod_index.c
+    modules/sim/lod/dg_promo.c
+    modules/sim/lod/dg_rep.c
+    modules/sim/lod/dg_representable.c
+    modules/sim/lod/dg_stride.c
+    modules/sim/pkt/dg_pkt_common.c
+    modules/sim/pkt/pkt_hash.c
+    modules/sim/pkt/idmap/dg_idmap.c
+    modules/sim/pkt/registry/dg_type_registry.c
+    modules/sim/sched/dg_budget.c
+    modules/sim/sched/dg_phase.c
+    modules/sim/sched/dg_sched.c
+    modules/sim/sched/dg_sched_hash.c
+    modules/sim/sched/dg_sched_replay.c
+    modules/sim/sched/dg_work_item.c
+    modules/sim/sched/dg_work_queue.c
     modules/state/state.c
     modules/struct/d_struct.c
     modules/struct/d_struct_blueprint.c
@@ -73,6 +99,65 @@ set(ENGINE_CORE_SOURCES
     modules/world/d_world.c
     modules/world/d_worldgen.c
     modules/world/d_world_terrain.c
+    modules/world/frame/dg_anchor.c
+    modules/world/frame/dg_frame.c
+    modules/world/frame/dg_frame_eval.c
+    modules/world/frame/dg_frame_graph.c
+    modules/world/frame/d_world_frame.c
+)
+
+set(ENGINE_CORE_LEGACY_SOURCES
+    modules/core/core.c
+    modules/core/dg_det_hash.c
+    modules/core/dg_order_key.c
+    modules/core/dg_pose.c
+    modules/core/dg_quant.c
+    modules/core/dom_build_info.c
+    modules/core/dom_deterministic_math.c
+    modules/core/dom_ledger_accounts.c
+    modules/core/dom_ledger_aggregate.c
+    modules/core/dom_ledger_core.c
+    modules/core/dom_ledger_events.c
+    modules/core/dom_ledger_lots.c
+    modules/core/dom_ledger_transactions.c
+    modules/core/dom_time_astronomy.c
+    modules/core/dom_time_core.c
+    modules/core/dom_time_events.c
+    modules/core/dom_time_frames.c
+    modules/core/d_account.c
+    modules/core/d_container_state.c
+    modules/core/d_model.c
+    modules/core/d_org.c
+    modules/core/d_org_validate.c
+    modules/core/d_registry.c
+    modules/core/d_subsystem.c
+    modules/core/d_subsystems_init.c
+    modules/core/d_tlv_schema.c
+    modules/core/event.c
+    modules/core/fixed.c
+    modules/core/fixed_debug.c
+    modules/core/fixed_math.c
+    modules/core/fs_util.c
+    modules/core/inst.c
+    modules/core/model_table.c
+    modules/core/model_tree.c
+    modules/core/mod_loader.c
+    modules/core/pkg.c
+    modules/core/rng.c
+    modules/core/spacetime.c
+    modules/core/types.c
+    modules/core/view.c
+    modules/core/graph/dg_graph.c
+    modules/core/graph/dg_graph_adj.c
+    modules/core/graph/dg_graph_iter.c
+    modules/core/graph/dg_graph_registry.c
+    modules/core/graph/dg_graph_sort.c
+    modules/core/graph/part/dg_graph_boundary.c
+    modules/core/graph/part/dg_graph_part.c
+)
+
+set(ENGINE_RENDER_STUB_SOURCES
+    render/d_gfx_caps_stub.c
 )
 
 set(ENGINE_SYSTEM_SOURCES
@@ -81,6 +166,7 @@ set(ENGINE_SYSTEM_SOURCES
     modules/system/d_system.c
     modules/system/d_system_input.c
     modules/system/sys.c
+    modules/system/input/input_trace.c
 )
 if(WIN32)
     list(APPEND ENGINE_SYSTEM_SOURCES
@@ -98,7 +184,9 @@ endif()
 
 add_library(engine_domino STATIC
     ${ENGINE_CORE_SOURCES}
+    ${ENGINE_CORE_LEGACY_SOURCES}
     ${ENGINE_SYSTEM_SOURCES}
+    ${ENGINE_RENDER_STUB_SOURCES}
 )
 
 add_custom_target(engine_include_sanity
@@ -112,6 +200,9 @@ target_include_directories(engine_domino
     PUBLIC
         ${DOMINIUM_ENGINE_INCLUDE_DIR}
     PRIVATE
+        ${DOMINIUM_GENERATED_INCLUDE_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}/modules
+        ${CMAKE_CURRENT_SOURCE_DIR}/render
         ${CMAKE_CURRENT_SOURCE_DIR}/modules/agent
         ${CMAKE_CURRENT_SOURCE_DIR}/modules/ai
         ${CMAKE_CURRENT_SOURCE_DIR}/modules/audio

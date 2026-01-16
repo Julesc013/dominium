@@ -14,7 +14,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #ifndef DOM_SETUP_PLUGIN_H
 #define DOM_SETUP_PLUGIN_H
 
-#include "domino/baseline.h"
+#include "dom_contracts/core_err.h"
 
 #include "dom_contracts/dom_shared/manifest_install.h"
 

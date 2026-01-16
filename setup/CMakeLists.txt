@@ -30,6 +30,7 @@ set_target_properties(setup_cli PROPERTIES
 add_executable(setup_gui
     gui/dsu_gui_stub.c
 )
+target_link_libraries(setup_gui PRIVATE setup::setup)
 set_target_properties(setup_gui PROPERTIES
     OUTPUT_NAME "setup_gui"
     C_STANDARD 90
@@ -39,12 +40,13 @@ set_target_properties(setup_gui PROPERTIES
 add_executable(setup_tui
     tui/dsu_tui_stub.c
 )
+target_link_libraries(setup_tui PRIVATE setup::setup)
 set_target_properties(setup_tui PROPERTIES
     OUTPUT_NAME "setup_tui"
     C_STANDARD 90
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )
-add_library(setup::cli ALIAS setup_cli)
-add_library(setup::gui ALIAS setup_gui)
-add_library(setup::tui ALIAS setup_tui)
+add_executable(setup::cli ALIAS setup_cli)
+add_executable(setup::gui ALIAS setup_gui)
+add_executable(setup::tui ALIAS setup_tui)

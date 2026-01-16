@@ -46,6 +46,6 @@ set_target_properties(coredata_validate PROPERTIES
     C_EXTENSIONS OFF
 )
 
-add_library(tools::host ALIAS dominium-tools)
-add_library(tools::coredata_compile ALIAS coredata_compile)
-add_library(tools::coredata_validate ALIAS coredata_validate)
+add_executable(tools::host ALIAS dominium-tools)
+add_executable(tools::coredata_compile ALIAS coredata_compile)
+add_executable(tools::coredata_validate ALIAS coredata_validate)
