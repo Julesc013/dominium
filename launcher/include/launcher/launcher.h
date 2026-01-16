@@ -14,10 +14,10 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #ifndef DOMINO_LAUNCHER_H_INCLUDED
 #define DOMINO_LAUNCHER_H_INCLUDED
 
-#include "domino/launcher_config.h"
-#include "domino/launcher_profile.h"
-#include "domino/launcher_mods.h"
-#include "domino/launcher_process.h"
+#include "launcher/launcher_config.h"
+#include "launcher/launcher_profile.h"
+#include "launcher/launcher_mods.h"
+#include "launcher/launcher_process.h"
 
 #ifdef __cplusplus
 extern "C" {
