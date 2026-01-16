@@ -15,7 +15,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #define DOMINIUM_LAUNCHER_EDIT_API_H_INCLUDED
 
 #include "domino/baseline.h"
-#include "dominium/launch_api.h"
+#include "dom_contracts/launcher_api.h"
 
 #ifdef __cplusplus
 extern "C" {

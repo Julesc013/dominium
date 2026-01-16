@@ -16,7 +16,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 
 #include "domino/baseline.h"
 
-#include "dom_shared/manifest_install.h"
+#include "dom_contracts/dom_shared/manifest_install.h"
 
 struct SetupConfig;
 

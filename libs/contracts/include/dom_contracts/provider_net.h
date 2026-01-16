@@ -8,8 +8,8 @@ PURPOSE: Network transport provider ABI (optional).
 
 #include "domino/abi.h"
 #include "domino/core/types.h"
-#include "dominium/core_err.h"
-#include "dominium/provider_base.h"
+#include "dom_contracts/core_err.h"
+#include "dom_contracts/provider_base.h"
 
 #ifdef __cplusplus
 extern "C" {

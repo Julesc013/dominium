@@ -7,6 +7,11 @@ target_include_directories(dominium_game
     PUBLIC
         ${DOMINIUM_GAME_INCLUDE_DIR}
 )
+target_link_libraries(dominium_game
+    PUBLIC
+        engine::domino
+        libs::contracts
+)
 set_target_properties(dominium_game PROPERTIES
     C_STANDARD 90
     C_STANDARD_REQUIRED ON

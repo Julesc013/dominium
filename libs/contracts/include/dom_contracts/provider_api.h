@@ -6,7 +6,7 @@ PURPOSE: Provider API facade (base interface).
 #ifndef DOMINIUM_PROVIDER_API_H
 #define DOMINIUM_PROVIDER_API_H
 
-#include "dominium/provider_base.h"
+#include "dom_contracts/provider_base.h"
 
 #ifdef __cplusplus
 extern "C" {

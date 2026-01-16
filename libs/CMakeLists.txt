@@ -23,3 +23,5 @@ target_include_directories(libs_netproto INTERFACE
     ${CMAKE_CURRENT_SOURCE_DIR}/netproto/include
 )
 add_library(libs::netproto ALIAS libs_netproto)
+
+add_subdirectory(contracts)

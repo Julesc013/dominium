@@ -15,7 +15,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #define DOM_LAUNCHER_DB_H
 
 #include "launcher_context.h"
-#include "dom_shared/json.h"
+#include "dom_contracts/dom_shared/json.h"
 
 #include <string>
 #include <vector>

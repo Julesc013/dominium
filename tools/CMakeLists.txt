@@ -6,6 +6,10 @@ add_library(tools_shared STATIC
 target_include_directories(tools_shared PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/_shared
 )
+target_link_libraries(tools_shared
+    PUBLIC
+        libs::contracts
+)
 set_target_properties(tools_shared PROPERTIES
     C_STANDARD 90
     C_STANDARD_REQUIRED ON

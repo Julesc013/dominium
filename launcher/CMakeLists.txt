@@ -9,8 +9,11 @@ add_library(launcher_core STATIC
 )
 target_include_directories(launcher_core PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
-    ${DOMINIUM_ENGINE_INCLUDE_DIR}
-    ${DOMINIUM_GENERATED_INCLUDE_DIR}
+)
+target_link_libraries(launcher_core
+    PUBLIC
+        engine::domino
+        libs::contracts
 )
 set_target_properties(launcher_core PROPERTIES
     C_STANDARD 90

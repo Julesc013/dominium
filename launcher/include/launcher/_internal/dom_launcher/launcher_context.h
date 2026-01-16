@@ -15,7 +15,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #define DOM_LAUNCHER_CONTEXT_H
 
 #include <string>
-#include "dom_shared/manifest_install.h"
+#include "dom_contracts/dom_shared/manifest_install.h"
 
 namespace dom_launcher {
 

@@ -12,7 +12,7 @@ extern "C" {
 #include "domino/core/types.h"
 }
 
-#include "dominium/core_err.h"
+#include "dom_contracts/core_err.h"
 
 #ifdef __cplusplus
 #include <string>

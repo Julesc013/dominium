@@ -10,8 +10,8 @@ extern "C" {
 #include "domino/core/types.h"
 }
 
-#include "dominium/core_err.h"
-#include "dominium/core_tlv.h"
+#include "dom_contracts/core_err.h"
+#include "dom_contracts/core_tlv.h"
 
 /* Installed state tags (0x3000 range). */
 #define CORE_TLV_TAG_INSTALLED_STATE_PRODUCT_ID 0x3001u
