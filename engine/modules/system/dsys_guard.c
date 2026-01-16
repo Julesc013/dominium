@@ -86,6 +86,16 @@ static u32 g_job_head = 0u;
 static u32 g_job_tail = 0u;
 static u32 g_job_count = 0u;
 
+static int g_stall_enabled = 1;
+static u64 g_stall_frame_start_us = 0u;
+static u64 g_stall_longest_us = 0u;
+static u64 g_stall_threshold_us = 2000u;
+static u32 g_stall_report_seq = 0u;
+static u32 g_stall_count = 0u;
+static int g_stall_triggered = 0;
+static char g_stall_tag[DSYS_GUARD_MAX_TAG];
+static u64 g_stall_thread_id = 0u;
+
 static u64 dsys_guard_thread_id(void)
 {
 #if defined(_WIN32)
@@ -438,6 +448,33 @@ static void dsys_guard_write_io_report(const char* op, const char* path, const c
     fclose(fp);
 }
 
+static void dsys_guard_write_stall_report(u64 duration_us)
+{
+    char report_path[DSYS_GUARD_MAX_PATH];
+    FILE* fp;
+    u32 seq = ++g_stall_report_seq;
+    if (!dsys_guard_build_report_path(report_path, sizeof(report_path), "PERF-STALL-001", seq)) {
+        return;
+    }
+    fp = fopen(report_path, "wb");
+    if (!fp) {
+        return;
+    }
+    dsys_guard_write_kv(fp, "check_id", "PERF-STALL-001");
+    dsys_guard_write_kv(fp, "description", "Render/UI stall watchdog threshold exceeded");
+    dsys_guard_write_kv_u64(fp, "act_us", g_guard_act_us);
+    dsys_guard_write_kv_u64(fp, "sim_tick", g_guard_sim_tick);
+    dsys_guard_write_kv_u64(fp, "thread_id", g_stall_thread_id);
+    dsys_guard_write_kv(fp, "thread_name", dsys_thread_current_name());
+    dsys_guard_write_kv_u32(fp, "thread_flags", dsys_thread_current_flags());
+    dsys_guard_write_kv(fp, "stall_tag", g_stall_tag[0] ? g_stall_tag : "unknown");
+    dsys_guard_write_kv_u64(fp, "duration_us", duration_us);
+    dsys_guard_write_kv_u64(fp, "threshold_us", g_stall_threshold_us);
+    dsys_guard_write_kv_u64(fp, "longest_us", g_stall_longest_us);
+    dsys_guard_write_kv_u32(fp, "stall_count", g_stall_count);
+    fclose(fp);
+}
+
 static void dsys_guard_count_io_op(const char* op)
 {
     if (!op) {
@@ -649,4 +686,87 @@ int dsys_derived_job_run_next(void)
 u32 dsys_derived_job_pending(void)
 {
     return g_job_count;
+}
+
+void dsys_stall_watchdog_set_enabled(int enabled)
+{
+    g_stall_enabled = enabled ? 1 : 0;
+}
+
+void dsys_stall_watchdog_set_threshold_ms(u32 threshold_ms)
+{
+    g_stall_threshold_us = (u64)threshold_ms * 1000u;
+}
+
+void dsys_stall_watchdog_frame_begin(const char* tag)
+{
+    if (!g_stall_enabled) {
+        return;
+    }
+    if ((dsys_thread_current_flags() & DSYS_THREAD_FLAG_NO_BLOCK) == 0u) {
+        return;
+    }
+    g_stall_frame_start_us = dsys_time_now_us();
+    g_stall_thread_id = dsys_thread_current_id();
+    if (tag && tag[0]) {
+        strncpy(g_stall_tag, tag, DSYS_GUARD_MAX_TAG - 1u);
+        g_stall_tag[DSYS_GUARD_MAX_TAG - 1u] = '\0';
+    } else {
+        g_stall_tag[0] = '\0';
+    }
+}
+
+void dsys_stall_watchdog_frame_end(void)
+{
+    u64 end_us;
+    u64 delta;
+    if (!g_stall_enabled) {
+        return;
+    }
+    if (g_stall_frame_start_us == 0u) {
+        return;
+    }
+    end_us = dsys_time_now_us();
+    if (end_us < g_stall_frame_start_us) {
+        g_stall_frame_start_us = 0u;
+        return;
+    }
+    delta = end_us - g_stall_frame_start_us;
+    g_stall_frame_start_us = 0u;
+    if (delta > g_stall_longest_us) {
+        g_stall_longest_us = delta;
+    }
+    if (delta > g_stall_threshold_us) {
+        g_stall_count++;
+        g_stall_triggered = 1;
+        dsys_guard_write_stall_report(delta);
+        if (g_io_guard_fatal) {
+            abort();
+        }
+    }
+}
+
+int dsys_stall_watchdog_was_triggered(void)
+{
+    return g_stall_triggered ? 1 : 0;
+}
+
+u64 dsys_stall_watchdog_longest_us(void)
+{
+    return g_stall_longest_us;
+}
+
+u32 dsys_stall_watchdog_report_count(void)
+{
+    return g_stall_report_seq;
+}
+
+void dsys_stall_watchdog_reset(void)
+{
+    g_stall_frame_start_us = 0u;
+    g_stall_longest_us = 0u;
+    g_stall_triggered = 0;
+    g_stall_count = 0u;
+    g_stall_tag[0] = '\0';
+    g_stall_thread_id = 0u;
 }
