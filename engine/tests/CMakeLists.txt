@@ -64,3 +64,13 @@ set_tests_properties(engine_perf_budget_fixture PROPERTIES
     FIXTURES_SETUP perf_budget
     ENVIRONMENT "DOMINIUM_RUN_ROOT=${_dom_perf_run_root}"
 )
+
+add_test(NAME engine_perf_budget_check
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/ci/perf_budget_check.py
+        --run-root ${_dom_perf_run_root}
+        --budgets ${CMAKE_SOURCE_DIR}/docs/PERF_BUDGETS.md
+)
+set_tests_properties(engine_perf_budget_check PROPERTIES
+    FIXTURES_REQUIRED perf_budget
+    ENVIRONMENT "DOMINIUM_RUN_ROOT=${_dom_perf_run_root}"
+)
