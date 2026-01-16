@@ -144,6 +144,7 @@ set(ENGINE_CORE_LEGACY_SOURCES
     modules/core/mod_loader.c
     modules/core/pkg.c
     modules/core/rng.c
+    modules/core/rng_streams.c
     modules/core/spacetime.c
     modules/core/types.c
     modules/core/view.c
