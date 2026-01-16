@@ -163,6 +163,7 @@ set(ENGINE_RENDER_STUB_SOURCES
 )
 
 set(ENGINE_SYSTEM_SOURCES
+    modules/system/dsys_guard.c
     modules/system/dsys_stub.c
     modules/system/dsys_term.c
     modules/system/d_system.c
