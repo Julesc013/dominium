@@ -1,16 +1,46 @@
 cmake_minimum_required(VERSION 3.16)
 
-add_library(setup_core INTERFACE)
-target_include_directories(setup_core INTERFACE
-    ${DOMINIUM_SETUP_INCLUDE_DIR}
+add_library(setup_core STATIC
+    core/dsk_setup_core.c
+)
+target_include_directories(setup_core PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+set_target_properties(setup_core PROPERTIES
+    C_STANDARD 90
+    C_STANDARD_REQUIRED ON
+    C_EXTENSIONS OFF
 )
 add_library(setup::setup ALIAS setup_core)
 
-add_library(setup_cli INTERFACE)
+add_executable(setup_cli
+    cli/setup_cli_main.c
+)
+target_link_libraries(setup_cli PRIVATE setup::setup)
+set_target_properties(setup_cli PROPERTIES
+    OUTPUT_NAME "setup"
+    C_STANDARD 90
+    C_STANDARD_REQUIRED ON
+    C_EXTENSIONS OFF
+)
+add_executable(setup_gui
+    gui/dsu_gui_stub.c
+)
+set_target_properties(setup_gui PROPERTIES
+    OUTPUT_NAME "setup_gui"
+    C_STANDARD 90
+    C_STANDARD_REQUIRED ON
+    C_EXTENSIONS OFF
+)
+add_executable(setup_tui
+    tui/dsu_tui_stub.c
+)
+set_target_properties(setup_tui PROPERTIES
+    OUTPUT_NAME "setup_tui"
+    C_STANDARD 90
+    C_STANDARD_REQUIRED ON
+    C_EXTENSIONS OFF
+)
 add_library(setup::cli ALIAS setup_cli)
-
-add_library(setup_gui INTERFACE)
 add_library(setup::gui ALIAS setup_gui)
-
-add_library(setup_tui INTERFACE)
 add_library(setup::tui ALIAS setup_tui)
