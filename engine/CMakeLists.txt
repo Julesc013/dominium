@@ -56,6 +56,7 @@ set(ENGINE_CORE_SOURCES
     modules/sim/d_sim_hash.c
     modules/sim/d_sim_process.c
     modules/sim/sim.c
+    modules/sim/dg_due_sched.c
     modules/sim/act/dg_action.c
     modules/sim/act/dg_action_registry.c
     modules/sim/act/dg_capability.c
