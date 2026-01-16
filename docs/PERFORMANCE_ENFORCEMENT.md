@@ -81,3 +81,25 @@ Forbidden degradation mechanisms include:
 
 **Rationale**
 Degradation must preserve authoritative state and provenance while scaling performance costs.
+
+## D. Profiling and Budget Enforcement
+
+Profiling is mandatory and merge-blocking when budgets regress.
+
+**MUST**
+- Emit structured telemetry under `run_root/perf/telemetry/` when profiling is enabled.
+- Emit budget reports under `run_root/perf/budgets/` for PERF3 fixtures.
+- Attribute every metric to a lane (LOCAL, MESO, MACRO, ORBITAL).
+- Record metrics deterministically without influencing simulation state or ordering.
+
+**MUST NOT**
+- Gate simulation behavior on profiling outputs.
+- Write telemetry on render/UI critical paths; only flush out-of-band.
+- Use wall-clock timing to alter authoritative decisions.
+
+**Enforcement**
+- PERF-PROFILE-001 verifies telemetry output presence and required metrics.
+- PERF-BUDGET-002 enforces tier budgets from `docs/PERF_BUDGETS.md`.
+
+**Rationale**
+Budgets and telemetry make regressions observable and prevent performance drift across tiers.
