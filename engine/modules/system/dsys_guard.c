@@ -12,6 +12,7 @@ VERSIONING / ABI / DATA FORMAT NOTES: N/A (implementation file).
 EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
 */
 #include "domino/system/dsys_guard.h"
+#include "domino/system/dsys_perf.h"
 
 #include "domino/sys.h"
 
@@ -660,12 +661,14 @@ int dsys_derived_job_submit(const dsys_derived_job_desc* desc)
     }
     g_job_tail = (g_job_tail + 1u) % DSYS_GUARD_MAX_JOBS;
     g_job_count++;
+    dsys_perf_metric_max(DSYS_PERF_LANE_LOCAL, DSYS_PERF_METRIC_DERIVED_QUEUE_DEPTH, g_job_count);
     return 0;
 }
 
 int dsys_derived_job_run_next(void)
 {
     dsys_job_entry job;
+    dsys_perf_timer timer;
     if (g_job_count == 0u) {
         return 0;
     }
@@ -677,7 +680,9 @@ int dsys_derived_job_run_next(void)
     g_job_head = (g_job_head + 1u) % DSYS_GUARD_MAX_JOBS;
     g_job_count--;
     if (job.fn) {
+        dsys_perf_timer_begin(&timer, DSYS_PERF_LANE_LOCAL, DSYS_PERF_METRIC_DERIVED_JOB_US);
         job.fn(job.user);
+        dsys_perf_timer_end(&timer);
         return 1;
     }
     return 0;
