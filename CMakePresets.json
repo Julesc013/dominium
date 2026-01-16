@@ -73,6 +73,34 @@
       }
     },
     {
+      "name": "vs2026-x64-debug",
+      "displayName": "VS 2026 x64 Debug",
+      "inherits": "msvc-base",
+      "binaryDir": "${sourceDir}/out/build/vs2026/${presetName}",
+      "cacheVariables": {
+        "DOM_BUILD_MODE": "Debug",
+        "DOM_BUILD_TOOLS": "ON",
+        "DOM_BUILD_SETUP": "ON",
+        "DOM_BUILD_LAUNCHER": "ON",
+        "DOM_BUILD_GAME": "ON",
+        "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>"
+      }
+    },
+    {
+      "name": "vs2026-x64-release",
+      "displayName": "VS 2026 x64 Release",
+      "inherits": "msvc-base",
+      "binaryDir": "${sourceDir}/out/build/vs2026/${presetName}",
+      "cacheVariables": {
+        "DOM_BUILD_MODE": "Release",
+        "DOM_BUILD_TOOLS": "ON",
+        "DOM_BUILD_SETUP": "ON",
+        "DOM_BUILD_LAUNCHER": "ON",
+        "DOM_BUILD_GAME": "ON",
+        "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>"
+      }
+    },
+    {
       "name": "msvc-win32-dx9",
       "displayName": "MSVC Win32 + DX9 (Fallback)",
       "description": "Win32 platform fallback with DX9 renderer (SDL2 disabled).",
@@ -256,6 +284,16 @@
   ],
   "buildPresets": [
     {
+      "name": "vs2026-x64-debug",
+      "configurePreset": "vs2026-x64-debug",
+      "configuration": "Debug"
+    },
+    {
+      "name": "vs2026-x64-release",
+      "configurePreset": "vs2026-x64-release",
+      "configuration": "Release"
+    },
+    {
       "name": "msvc-debug",
       "configurePreset": "msvc-debug",
       "configuration": "Debug"
@@ -352,6 +390,22 @@
     }
   ],
   "testPresets": [
+    {
+      "name": "vs2026-x64-debug",
+      "configurePreset": "vs2026-x64-debug",
+      "configuration": "Debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "vs2026-x64-release",
+      "configurePreset": "vs2026-x64-release",
+      "configuration": "Release",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
     {
       "name": "msvc-debug",
       "configurePreset": "msvc-debug",
