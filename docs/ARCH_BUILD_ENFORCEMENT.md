@@ -1,12 +1,11 @@
-# ARCH_BUILD_ENFORCEMENT — Build and Boundary Lockdown
+# ARCH_BUILD_ENFORCEMENT — Build and Boundary Lockdown (ENF1)
 
-Status: draft
-Version: 1
+Status: enforced
+Version: 2
 
 ## Purpose
-This document describes the enforced build graph and architectural boundaries.
-It defines what the build system and CI must reject to keep engine and game
-separable and reusable.
+This document defines the enforced build graph and architectural boundaries.
+All violations MUST fail at configure or build time and MUST be treated as merge-blocking.
 
 ## Target graph (authoritative)
 ```
@@ -16,57 +15,53 @@ domino_engine (engine/)
 dominium_game (game/)
    ^        ^
    |        |
- client   server
+client   server
 
-launcher (launcher/)  -> libs + schema + engine public API
-setup    (setup/)     -> libs + schema
-tools    (tools/)     -> libs + engine public API + schema
+tools (tools/)   -> domino_engine + dominium_game only
+launcher (launcher/) -> libs + schema only
+setup (setup/)       -> libs + schema only
+
+libs (libs/)   -> leaf libraries (no engine/game dependency)
+schema (schema/) -> data contracts (no engine/game dependency)
 ```
 
 ## Include boundaries (hard rules)
 - `engine/include/**` is the ONLY public engine API surface.
-- `engine/modules/**` and `engine/render/**` are engine-internal only.
-- `game/` may include `domino/*` public headers only.
-- `client/` and `server/` may include public engine/game headers only.
-- `launcher/`, `setup/`, and `tools/` must never include engine internals.
+- `engine/modules/**` and `engine/render/**` are internal and FORBIDDEN outside `engine/`.
+- `game/` MUST NOT include from `engine/modules/**` (ARCH-INC-001).
+- `client/`, `server/`, `tools/` MUST NOT include from `engine/modules/**` (ARCH-INC-002).
+- Public headers MUST live only under `engine/include/**` (ARCH-INC-003).
+- No `include_directories()` usage is allowed anywhere (enforced by `scripts/verify_cmake_no_global_includes.py`).
 
-## CMake enforcement
-Enforcement is done via target-scoped includes and configure-time checks:
-- `domino_engine` exposes only `engine/include/` publicly.
-- `dominium_game` links against `domino_engine`; no engine internals are added.
-- `client` and `server` link `domino_engine` + `dominium_game` only.
-- Configure-time boundary checks in `CMakeLists.txt` fail if:
-  - `domino_engine` links to game/launcher/setup/tools targets.
-  - `dominium_game` links to launcher/setup targets.
+## CMake enforcement (configure/build failures)
+Enforcement is done via target-scoped includes and configure-time assertions:
+- `domino_engine` exposes only `engine/include/` as PUBLIC include directories.
+- `dominium_game` links only `domino_engine` and MUST NOT link launcher/setup/libs targets.
+- `dominium_client` and `dominium_server` link only `domino_engine` + `dominium_game`.
+- Configure-time boundary checks fail if:
+  - `domino_engine` exposes any public include outside `engine/include/` (ARCH-INC-003).
+  - `domino_engine` links to forbidden top-level targets (ARCH-DEP-001).
+  - `dominium_game` links to launcher/setup/libs targets (ARCH-DEP-002).
 
-## CI / static enforcement
-The following checks must run in CI (and locally when possible):
-- `scripts/verify_includes_sanity.py`
-  - Fails if engine includes game/launcher/setup/tools headers.
-  - Fails if game includes engine internals (`engine/modules/**`, `core/`, `sim/`, etc.).
-  - Fails if client/server include engine or game internals.
-- `scripts/verify_cmake_no_global_includes.py`
-  - Fails if any `include_directories()` usage is detected.
-- `scripts/verify_tree_sanity.bat`
-  - Fails if engine tree contains launcher/setup/tools contaminants.
+## How violations fail
+- **Configure-time**: target graph assertions and include boundary checks (ARCH-DEP-001..006, ARCH-INC-003).
+- **Build-time**: illegal includes fail compilation due to missing include paths (ARCH-INC-001, ARCH-INC-002).
+- **Static checks**: `scripts/verify_includes_sanity.py` validates include boundaries by path.
 
-## Determinism smoke gates
-Required CI baseline:
-- Configure + build engine + game (headless).
-- Run engine smoke tests via CTest.
+## Common errors and fixes
+- **Error**: include of `engine/modules/**` from game/client/server/tools fails.
+  - **Fix**: move the include to a public header under `engine/include/**` or use the public API.
+- **Error**: `domino_engine` exposes non-public include directories.
+  - **Fix**: remove public include paths and keep internal paths PRIVATE.
+- **Error**: `dominium_game` links to launcher/setup/libs targets.
+  - **Fix**: remove the dependency and route through `domino_engine` public interfaces.
+- **Error**: `include_directories()` used in any CMake file.
+  - **Fix**: replace with `target_include_directories()` on specific targets.
 
-## Common failure modes
-- Including internal headers (e.g., `sim/`, `core/`, `modules/`) from game/client/server.
-- Adding `include_directories()` in any CMake file.
-- Linking `domino_engine` to game or launcher/setup targets.
-- Linking `dominium_game` to launcher/setup targets.
-
-## Local verification
-Recommended commands:
+## Local verification (recommended)
 ```
-scripts\verify_tree_sanity.bat
-python scripts\verify_includes_sanity.py
-python scripts\verify_cmake_no_global_includes.py
+python scripts/verify_includes_sanity.py
+python scripts/verify_cmake_no_global_includes.py
 cmake --preset vs2026-x64-debug
 cmake --build --preset vs2026-x64-debug
 ctest --preset vs2026-x64-debug
