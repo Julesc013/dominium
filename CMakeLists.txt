@@ -1,4 +1,5 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.21...4.2)
+cmake_policy(VERSION 3.21)
 if(POLICY CMP0135)
     cmake_policy(SET CMP0135 NEW)
 endif()
@@ -535,6 +536,11 @@ file(MAKE_DIRECTORY
 
 add_subdirectory(libs)
 add_subdirectory(engine)
+if(DOM_BUILD_GAME)
+    add_subdirectory(game)
+    add_subdirectory(client)
+    add_subdirectory(server)
+endif()
 if(DOM_BUILD_SETUP)
     add_subdirectory(setup)
 endif()
@@ -543,11 +549,6 @@ if(DOM_BUILD_LAUNCHER)
 endif()
 if(DOM_BUILD_TOOLS)
     add_subdirectory(tools)
-endif()
-if(DOM_BUILD_GAME)
-    add_subdirectory(game)
-    add_subdirectory(client)
-    add_subdirectory(server)
 endif()
 
 function(dom_assert_no_link target)
@@ -574,6 +575,16 @@ endfunction()
 dom_assert_no_link(domino_engine
     dominium_game
     game::dominium
+    libs_base
+    libs_crypto
+    libs_fsmodel
+    libs_netproto
+    libs_contracts
+    libs::base
+    libs::crypto
+    libs::fsmodel
+    libs::netproto
+    libs::contracts
     launcher_core
     launcher::launcher
     setup_core
@@ -584,6 +595,16 @@ dom_assert_no_link(domino_engine
     tools::host
 )
 dom_assert_no_link(dominium_game
+    libs_base
+    libs_crypto
+    libs_fsmodel
+    libs_netproto
+    libs_contracts
+    libs::base
+    libs::crypto
+    libs::fsmodel
+    libs::netproto
+    libs::contracts
     launcher_core
     launcher::launcher
     setup_core

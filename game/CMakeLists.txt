@@ -16,7 +16,6 @@ target_include_directories(dominium_game
 target_link_libraries(dominium_game
     PUBLIC
         domino_engine
-        libs::contracts
 )
 set_target_properties(dominium_game PROPERTIES
     C_STANDARD 90
