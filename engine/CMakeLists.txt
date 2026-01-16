@@ -233,6 +233,26 @@ target_include_directories(domino_engine
         ${CMAKE_CURRENT_SOURCE_DIR}/modules/world
 )
 
+get_target_property(_dom_engine_iface_includes domino_engine INTERFACE_INCLUDE_DIRECTORIES)
+if(NOT _dom_engine_iface_includes OR _dom_engine_iface_includes STREQUAL "INTERFACE_INCLUDE_DIRECTORIES-NOTFOUND")
+    message(FATAL_ERROR "domino_engine must expose engine/include as its only public include directory.")
+endif()
+set(_dom_engine_expected_include "${DOMINIUM_ENGINE_INCLUDE_DIR}")
+set(_dom_engine_expected_found FALSE)
+foreach(_dom_inc IN LISTS _dom_engine_iface_includes)
+    if(_dom_inc MATCHES "engine/modules")
+        message(FATAL_ERROR "domino_engine exposes internal engine/modules include path: '${_dom_inc}'.")
+    endif()
+    if(_dom_inc STREQUAL "${_dom_engine_expected_include}")
+        set(_dom_engine_expected_found TRUE)
+    else()
+        message(FATAL_ERROR "domino_engine exposes non-public include path: '${_dom_inc}'. Only '${_dom_engine_expected_include}' is allowed.")
+    endif()
+endforeach()
+if(NOT _dom_engine_expected_found)
+    message(FATAL_ERROR "domino_engine must expose engine/include as its only public include directory.")
+endif()
+
 target_compile_definitions(domino_engine PUBLIC
     DOMUI_ENABLE_JSON_MIRROR=$<BOOL:${DOMUI_ENABLE_JSON_MIRROR}>
 )
