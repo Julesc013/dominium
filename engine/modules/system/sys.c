@@ -13,6 +13,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 */
 #define DOMINO_SYS_INTERNAL 1
 #include "domino/sys.h"
+#include "domino/system/dsys_guard.h"
 #include "domino/caps.h"
 #include "dsys_internal.h"
 
@@ -925,9 +926,16 @@ bool dsys_get_path(dsys_path_kind kind, char* buf, size_t buf_size)
 void* dsys_file_open(const char* path, const char* mode)
 {
     const dsys_backend_vtable* backend;
+    if (dsys_guard_io_blocked("file_open", path, NULL, 0u)) {
+        return NULL;
+    }
     backend = dsys_active_backend();
     if (backend->file_open) {
-        return backend->file_open(path, mode);
+        void* fh = backend->file_open(path, mode);
+        if (fh) {
+            dsys_guard_track_file_handle(fh, path);
+        }
+        return fh;
     }
     return NULL;
 }
@@ -935,6 +943,10 @@ void* dsys_file_open(const char* path, const char* mode)
 size_t dsys_file_read(void* fh, void* buf, size_t size)
 {
     const dsys_backend_vtable* backend;
+    const char* path = dsys_guard_lookup_file_path(fh);
+    if (dsys_guard_io_blocked("file_read", path, NULL, 0u)) {
+        return 0u;
+    }
     backend = dsys_active_backend();
     if (backend->file_read) {
         return backend->file_read(fh, buf, size);
@@ -945,6 +957,10 @@ size_t dsys_file_read(void* fh, void* buf, size_t size)
 size_t dsys_file_write(void* fh, const void* buf, size_t size)
 {
     const dsys_backend_vtable* backend;
+    const char* path = dsys_guard_lookup_file_path(fh);
+    if (dsys_guard_io_blocked("file_write", path, NULL, 0u)) {
+        return 0u;
+    }
     backend = dsys_active_backend();
     if (backend->file_write) {
         return backend->file_write(fh, buf, size);
@@ -955,6 +971,10 @@ size_t dsys_file_write(void* fh, const void* buf, size_t size)
 int dsys_file_seek(void* fh, long offset, int origin)
 {
     const dsys_backend_vtable* backend;
+    const char* path = dsys_guard_lookup_file_path(fh);
+    if (dsys_guard_io_blocked("file_seek", path, NULL, 0u)) {
+        return -1;
+    }
     backend = dsys_active_backend();
     if (backend->file_seek) {
         return backend->file_seek(fh, offset, origin);
@@ -965,6 +985,10 @@ int dsys_file_seek(void* fh, long offset, int origin)
 long dsys_file_tell(void* fh)
 {
     const dsys_backend_vtable* backend;
+    const char* path = dsys_guard_lookup_file_path(fh);
+    if (dsys_guard_io_blocked("file_tell", path, NULL, 0u)) {
+        return -1L;
+    }
     backend = dsys_active_backend();
     if (backend->file_tell) {
         return backend->file_tell(fh);
@@ -975,19 +999,34 @@ long dsys_file_tell(void* fh)
 int dsys_file_close(void* fh)
 {
     const dsys_backend_vtable* backend;
+    const char* path = dsys_guard_lookup_file_path(fh);
+    if (dsys_guard_io_blocked("file_close", path, NULL, 0u)) {
+        dsys_guard_untrack_file_handle(fh);
+        return -1;
+    }
     backend = dsys_active_backend();
     if (backend->file_close) {
-        return backend->file_close(fh);
+        int rc = backend->file_close(fh);
+        dsys_guard_untrack_file_handle(fh);
+        return rc;
     }
+    dsys_guard_untrack_file_handle(fh);
     return -1;
 }
 
 dsys_dir_iter* dsys_dir_open(const char* path)
 {
     const dsys_backend_vtable* backend;
+    if (dsys_guard_io_blocked("dir_open", path, NULL, 0u)) {
+        return NULL;
+    }
     backend = dsys_active_backend();
     if (backend->dir_open) {
-        return backend->dir_open(path);
+        dsys_dir_iter* it = backend->dir_open(path);
+        if (it) {
+            dsys_guard_track_dir_handle(it, path);
+        }
+        return it;
     }
     return NULL;
 }
@@ -995,6 +1034,10 @@ dsys_dir_iter* dsys_dir_open(const char* path)
 bool dsys_dir_next(dsys_dir_iter* it, dsys_dir_entry* out)
 {
     const dsys_backend_vtable* backend;
+    const char* path = dsys_guard_lookup_dir_path(it);
+    if (dsys_guard_io_blocked("dir_next", path, NULL, 0u)) {
+        return false;
+    }
     backend = dsys_active_backend();
     if (backend->dir_next) {
         return backend->dir_next(it, out);
@@ -1005,10 +1048,16 @@ bool dsys_dir_next(dsys_dir_iter* it, dsys_dir_entry* out)
 void dsys_dir_close(dsys_dir_iter* it)
 {
     const dsys_backend_vtable* backend;
+    const char* path = dsys_guard_lookup_dir_path(it);
+    if (dsys_guard_io_blocked("dir_close", path, NULL, 0u)) {
+        dsys_guard_untrack_dir_handle(it);
+        return;
+    }
     backend = dsys_active_backend();
     if (backend->dir_close) {
         backend->dir_close(it);
     }
+    dsys_guard_untrack_dir_handle(it);
 }
 
 dsys_process* dsys_process_spawn(const dsys_process_desc* desc)
