@@ -53,7 +53,7 @@ Enforcement is done via target-scoped includes and configure-time assertions:
 python tools/ci/arch_checks.py
 cmake --build --preset vs2026-x64-debug --target check_arch
 ```
-Use `--strict` to treat DET-FLOAT-001 warnings as errors.
+Use `--strict` to treat warnings as errors when applicable.
 
 ## CI command (noninteractive)
 ```
