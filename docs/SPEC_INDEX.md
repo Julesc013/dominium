@@ -1,3 +1,26 @@
+--------------------------------
+OWNERSHIP & RESPONSIBILITY
+--------------------------------
+ENGINE:
+- None. This document is documentation only.
+
+GAME:
+- None. This document is documentation only.
+
+TOOLS:
+- Maintains the canonical spec catalog and ownership metadata.
+
+SCHEMA:
+- None (no canonical schema formats defined here).
+
+FORBIDDEN:
+- No runtime logic or system redesign in this index.
+- Do not treat this document as a public API surface.
+
+DEPENDENCIES:
+- Documentation only; no runtime dependencies.
+--------------------------------
+
 # SPEC_INDEX — Canonical Specification Index
 
 Status: draft
