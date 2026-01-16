@@ -46,6 +46,13 @@ u64 dom_div_u64(u64 num, u64 den);
  */
 q16_16 dom_angle_normalize_q16(q16_16 angle_turns);
 
+/* dom_round_q16
+ * Purpose: Deterministic rounding of a Q16.16 value to the nearest integer.
+ * Rounding rule: half-away-from-zero (adds/subtracts 0.5 then truncates).
+ * Returns: rounded value in Q16.16 (fractional bits cleared).
+ */
+q16_16 dom_round_q16(q16_16 value);
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif

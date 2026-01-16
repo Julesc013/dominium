@@ -48,3 +48,11 @@ u64 dom_div_u64(u64 num, u64 den) {
 q16_16 dom_angle_normalize_q16(q16_16 angle_turns) {
     return (q16_16)(((u32)angle_turns) & 0xFFFFu);
 }
+
+q16_16 dom_round_q16(q16_16 value) {
+    const i32 mask = (i32)0xFFFF0000;
+    if (value >= 0) {
+        return (q16_16)((value + (q16_16)0x8000) & mask);
+    }
+    return (q16_16)((value - (q16_16)0x8000) & mask);
+}
