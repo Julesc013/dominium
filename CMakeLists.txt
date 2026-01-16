@@ -576,7 +576,7 @@ else()
     )
 endif()
 
-if(WIN32 AND TARGET ui_scan_all)
+if(WIN32 AND TARGET ui_scan_all AND NOT TARGET ui_capability_test)
     add_custom_target(ui_capability_test
         DEPENDS
             ui_scan_all
