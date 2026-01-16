@@ -1,3 +1,30 @@
+--------------------------------
+OWNERSHIP & RESPONSIBILITY
+--------------------------------
+ENGINE:
+- None. Engine provides generic primitives only if referenced.
+
+GAME:
+- Rules, policy, and interpretation defined by this spec.
+- Implementation lives under `game/` (rules/content/ui as applicable).
+
+TOOLS:
+- None. Tools may only consume public APIs if needed.
+
+SCHEMA:
+- None (no canonical schema formats defined here).
+
+FORBIDDEN:
+- No launcher/setup orchestration logic in engine or game.
+- No engine internal headers exposed outside engine targets.
+- No game rules or policy implemented inside engine primitives.
+
+DEPENDENCIES:
+- Engine -> libs/ and schema/ only (never game/launcher/setup/tools).
+- Game -> engine public API and schema/ only.
+- Tools -> engine public API, game public API, and schema/ only.
+- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API).
+--------------------------------
 # Dominium Rules Surface
 
 The Dominium rules layer exposes a small C89-friendly API that sits **behind** `dom_core`, `dom_sim`, and `dom_canvas`. It is not a cross-process ABI; it is a local facade used by the game runtime and, later, by the SDK. Each public struct begins with `{struct_size, struct_version}` and all handles are opaque integers.

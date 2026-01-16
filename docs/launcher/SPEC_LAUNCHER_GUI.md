@@ -1,3 +1,29 @@
+--------------------------------
+OWNERSHIP & RESPONSIBILITY
+--------------------------------
+ENGINE:
+- None. This spec is implemented under `launcher/`.
+
+GAME:
+- None. This spec is implemented under `launcher/`.
+
+TOOLS:
+- None. Tools may only consume public APIs if needed.
+
+SCHEMA:
+- None (no canonical schema formats defined here).
+
+FORBIDDEN:
+- No launcher/setup orchestration logic in engine or game.
+- No engine internal headers exposed outside engine targets.
+- No game rules or policy implemented inside engine primitives.
+
+DEPENDENCIES:
+- Engine -> libs/ and schema/ only (never game/launcher/setup/tools).
+- Game -> engine public API and schema/ only.
+- Tools -> engine public API, game public API, and schema/ only.
+- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API).
+--------------------------------
 # Launcher GUI
 
 The GUI launcher is a minimal immediate-mode front-end built on Domino platform
