@@ -169,3 +169,7 @@ add_library(domino_gfx ALIAS engine_domino)
 add_library(domino_sys ALIAS engine_domino)
 add_library(domino_sim ALIAS engine_domino)
 add_library(domino_mod ALIAS engine_domino)
+
+if(DOM_BUILD_TESTS)
+    add_subdirectory(tests)
+endif()

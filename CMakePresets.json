@@ -83,6 +83,7 @@
         "DOM_BUILD_SETUP": "ON",
         "DOM_BUILD_LAUNCHER": "ON",
         "DOM_BUILD_GAME": "ON",
+        "DOM_BUILD_TESTS": "ON",
         "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>"
       }
     },
@@ -97,6 +98,7 @@
         "DOM_BUILD_SETUP": "ON",
         "DOM_BUILD_LAUNCHER": "ON",
         "DOM_BUILD_GAME": "ON",
+        "DOM_BUILD_TESTS": "ON",
         "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>"
       }
     },
