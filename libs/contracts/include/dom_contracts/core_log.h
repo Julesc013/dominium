@@ -9,7 +9,7 @@ NOTES: No free-form strings in kernel logs; paths must be redacted or safe relat
 
 #include "domino/abi.h"
 #include "domino/core/types.h"
-#include "dominium/core_err.h"
+#include "dom_contracts/core_err.h"
 
 #ifdef __cplusplus
 extern "C" {

@@ -15,8 +15,8 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #define DOM_LAUNCHER_DISCOVERY_H
 
 #include <vector>
-#include "dom_shared/manifest_install.h"
-#include "dom_launcher/launcher_state.h"
+#include "dom_contracts/dom_shared/manifest_install.h"
+#include "launcher_state.h"
 
 namespace dom_launcher {
 

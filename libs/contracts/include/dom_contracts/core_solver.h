@@ -8,7 +8,7 @@ NOTES: Selection order and tie-breaks are stable; component IDs are ASCII tokens
 #define DOMINIUM_CORE_SOLVER_H
 
 #include "domino/core/types.h"
-#include "dominium/core_caps.h"
+#include "dom_contracts/core_caps.h"
 
 #ifdef __cplusplus
 extern "C" {

@@ -22,7 +22,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
  */
 /* TODO: publish stable C structs for package/manifest IO. */
 #ifdef __cplusplus
-#include "dominium/_internal/dom_priv/dom_shared/manifest_install.h"
+#include "dom_contracts/dom_shared/manifest_install.h"
 #else
 #error "dom_package_manifest.h currently requires C++ (std::string); refactor to C ABI"
 #endif

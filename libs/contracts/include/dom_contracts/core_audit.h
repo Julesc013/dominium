@@ -10,8 +10,8 @@ extern "C" {
 #include "domino/core/types.h"
 }
 
-#include "dominium/core_err.h"
-#include "dominium/core_tlv.h"
+#include "dom_contracts/core_err.h"
+#include "dom_contracts/core_tlv.h"
 
 typedef struct dom_core_audit_sink {
     const char *path;

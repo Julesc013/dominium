@@ -8,14 +8,14 @@ NOTES: Entries are append-only; provider IDs are stable ASCII tokens.
 #define DOMINIUM_PROVIDER_REGISTRY_H
 
 #include "domino/core/types.h"
-#include "dominium/core_caps.h"
-#include "dominium/core_solver.h"
-#include "dominium/provider_base.h"
-#include "dominium/provider_content_source.h"
-#include "dominium/provider_trust.h"
-#include "dominium/provider_keychain.h"
-#include "dominium/provider_net.h"
-#include "dominium/provider_os_integration.h"
+#include "dom_contracts/core_caps.h"
+#include "dom_contracts/core_solver.h"
+#include "dom_contracts/provider_base.h"
+#include "dom_contracts/provider_content_source.h"
+#include "dom_contracts/provider_trust.h"
+#include "dom_contracts/provider_keychain.h"
+#include "dom_contracts/provider_net.h"
+#include "dom_contracts/provider_os_integration.h"
 
 #ifdef __cplusplus
 extern "C" {

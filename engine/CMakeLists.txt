@@ -111,7 +111,6 @@ add_dependencies(engine_domino engine_include_sanity)
 target_include_directories(engine_domino
     PUBLIC
         ${DOMINIUM_ENGINE_INCLUDE_DIR}
-        ${DOMINIUM_GENERATED_INCLUDE_DIR}
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/modules/agent
         ${CMAKE_CURRENT_SOURCE_DIR}/modules/ai

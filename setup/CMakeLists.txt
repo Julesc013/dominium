@@ -6,6 +6,10 @@ add_library(setup_core STATIC
 target_include_directories(setup_core PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
+target_link_libraries(setup_core
+    PUBLIC
+        libs::contracts
+)
 set_target_properties(setup_core PROPERTIES
     C_STANDARD 90
     C_STANDARD_REQUIRED ON
