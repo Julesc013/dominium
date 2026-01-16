@@ -22,3 +22,14 @@ set_target_properties(engine_det_order_test PROPERTIES
     C_EXTENSIONS OFF
 )
 add_test(NAME engine_det_order COMMAND engine_det_order_test)
+
+add_executable(engine_perf_no_modal_test
+    engine_perf_no_modal_test.c
+)
+target_link_libraries(engine_perf_no_modal_test PRIVATE engine::domino)
+set_target_properties(engine_perf_no_modal_test PROPERTIES
+    C_STANDARD 90
+    C_STANDARD_REQUIRED ON
+    C_EXTENSIONS OFF
+)
+add_test(NAME engine_perf_no_modal COMMAND engine_perf_no_modal_test)
