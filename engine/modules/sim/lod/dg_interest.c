@@ -17,6 +17,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "sim/lod/dg_interest.h"
 
 #include "core/det_invariants.h"
+#include "domino/system/dsys_perf.h"
 
 /* Quantization for interest volumes (q16_16): 1/16m resolution. */
 #define DG_IV_QUANT_RSHIFT 12u
@@ -256,6 +257,7 @@ int dg_interest_collect(dg_interest_ctx *ic, dg_tick tick, dg_interest_list *out
 
     /* Canonicalize list to make downstream hashing/replay comparisons stable. */
     dg_interest_list_insertion_sort(out_list);
+    dsys_perf_metric_max(DSYS_PERF_LANE_MESO, DSYS_PERF_METRIC_INTEREST_SET_SIZE, out_list->count);
     return 0;
 }
 

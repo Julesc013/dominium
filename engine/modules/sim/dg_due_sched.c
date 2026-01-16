@@ -10,6 +10,7 @@ ERROR MODEL: Return codes; no exceptions.
 DETERMINISM: Stable ordering by (due_tick, stable_key, event_id).
 */
 #include "domino/sim/dg_due_sched.h"
+#include "domino/system/dsys_perf.h"
 
 #include <string.h>
 
@@ -177,12 +178,16 @@ int dg_due_scheduler_advance(dg_due_scheduler* sched, dom_act_time_t target_tick
 {
     dom_time_event ev;
     int rc;
+    u32 processed = 0u;
+    u32 pending = 0u;
+    dsys_perf_timer sched_timer;
     if (!sched) {
         return DG_DUE_INVALID;
     }
     if (target_tick < sched->current_tick) {
         return DG_DUE_BACKWARDS;
     }
+    dsys_perf_timer_begin(&sched_timer, DSYS_PERF_LANE_MACRO, DSYS_PERF_METRIC_MACRO_SCHED_US);
     while (dom_time_event_peek(&sched->queue, &ev) == DOM_TIME_OK) {
         u32 handle;
         dg_due_entry* entry;
@@ -209,6 +214,7 @@ int dg_due_scheduler_advance(dg_due_scheduler* sched, dom_act_time_t target_tick
         if (rc != 0) {
             return DG_DUE_ERR;
         }
+        processed += 1u;
         rc = dg_due_scheduler_refresh(sched, handle);
         if (rc == DG_DUE_BACKWARDS) {
             return rc;
@@ -216,6 +222,13 @@ int dg_due_scheduler_advance(dg_due_scheduler* sched, dom_act_time_t target_tick
         if (rc != DG_DUE_OK) {
             return rc;
         }
+    }
+    dsys_perf_timer_end(&sched_timer);
+    if (processed > 0u) {
+        dsys_perf_metric_add(DSYS_PERF_LANE_MACRO, DSYS_PERF_METRIC_MACRO_EVENTS, processed);
+    }
+    if (dom_time_event_queue_size(&sched->queue, &pending) == DOM_TIME_OK) {
+        dsys_perf_metric_max(DSYS_PERF_LANE_MACRO, DSYS_PERF_METRIC_EVENT_QUEUE_DEPTH, pending);
     }
     sched->current_tick = target_tick;
     return DG_DUE_OK;

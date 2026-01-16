@@ -16,6 +16,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "d_sim.h"
 #include "core/d_subsystem.h"
 #include "net/d_net_apply.h"
+#include "domino/system/dsys_perf.h"
 
 #define DSIM_MAX_SYSTEMS 64u
 
@@ -76,8 +77,12 @@ int d_sim_step(d_sim_context *ctx, u32 ticks) {
 
     for (t = 0u; t < ticks; ++t) {
         u32 subsystem_count;
+        dsys_perf_timer sim_timer;
         ctx->tick_index += 1u;
         ctx->world->tick_count += 1u;
+
+        dsys_perf_tick_begin((dom_act_time_t)ctx->tick_index, (u64)ctx->tick_index);
+        dsys_perf_timer_begin(&sim_timer, DSYS_PERF_LANE_MACRO, DSYS_PERF_METRIC_SIM_TICK_US);
 
         /* 0) Deterministic network command application for this tick. */
         (void)d_net_apply_for_tick(ctx->world, ctx->tick_index);
@@ -97,6 +102,9 @@ int d_sim_step(d_sim_context *ctx, u32 ticks) {
                 g_dsim_systems[i].tick(ctx, 1u);
             }
         }
+
+        dsys_perf_timer_end(&sim_timer);
+        dsys_perf_tick_end();
     }
 
     return 0;
