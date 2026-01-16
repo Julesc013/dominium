@@ -1,3 +1,31 @@
+--------------------------------
+OWNERSHIP & RESPONSIBILITY
+--------------------------------
+ENGINE:
+- Deterministic primitives and invariants defined by this spec.
+- Implementation lives under `engine/` (public API in `engine/include/`).
+
+GAME:
+- None. Game consumes engine primitives where applicable.
+
+TOOLS:
+- Authoring/inspection utilities described here.
+- Implementation lives under `tools/` (including shared tool runtime).
+
+SCHEMA:
+- Canonical formats and migrations defined here live under `schema/`.
+
+FORBIDDEN:
+- No launcher/setup orchestration logic in engine or game.
+- No engine internal headers exposed outside engine targets.
+- No game rules or policy implemented inside engine primitives.
+
+DEPENDENCIES:
+- Engine -> libs/ and schema/ only (never game/launcher/setup/tools).
+- Game -> engine public API and schema/ only.
+- Tools -> engine public API, game public API, and schema/ only.
+- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API).
+--------------------------------
 # Dominium TLV Container (DTLV) — Authoritative Serialization ABI
 
 This document defines the **DTLV** container format and TLV encoding rules used by the `dtlv_*` reader/writer API (`include/domino/io/container.h`, `source/domino/io/container/dtlv.c`). DTLV is the target ABI for versioned, skip-friendly on-disk containers; several existing artifacts still use legacy/native-endian blob formats (see `docs/DATA_FORMATS.md` for current shapes).

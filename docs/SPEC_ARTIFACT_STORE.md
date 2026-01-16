@@ -1,3 +1,30 @@
+--------------------------------
+OWNERSHIP & RESPONSIBILITY
+--------------------------------
+ENGINE:
+- None. Engine provides generic primitives only if referenced.
+
+GAME:
+- None. Game consumes engine primitives where applicable.
+
+TOOLS:
+- Authoring/inspection utilities described here.
+- Implementation lives under `tools/` (including shared tool runtime).
+
+SCHEMA:
+- None (no canonical schema formats defined here).
+
+FORBIDDEN:
+- No launcher/setup orchestration logic in engine or game.
+- No engine internal headers exposed outside engine targets.
+- No game rules or policy implemented inside engine primitives.
+
+DEPENDENCIES:
+- Engine -> libs/ and schema/ only (never game/launcher/setup/tools).
+- Game -> engine public API and schema/ only.
+- Tools -> engine public API, game public API, and schema/ only.
+- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API).
+--------------------------------
 # Artifact Store (Launcher State)
 
 This spec defines the launcher artifact store: a read-only, hash-addressed
