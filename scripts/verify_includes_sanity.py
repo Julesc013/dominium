@@ -19,6 +19,7 @@ SOURCE_EXTS = {
 RULES = {
     "engine": {
         "forbid": [
+            "dom_contracts/",
             "dominium/",
             "dsk/",
             "dsu/",
@@ -36,8 +37,7 @@ RULES = {
             "dui/",
             "setup/",
             "tools/",
-            "engine/internal/",
-            "engine/source/",
+            "engine/",
         ],
     },
     "setup": {
@@ -47,8 +47,7 @@ RULES = {
             "dui/",
             "launcher/",
             "tools/",
-            "engine/internal/",
-            "engine/source/",
+            "engine/",
         ],
     },
     "tools": {
@@ -57,8 +56,7 @@ RULES = {
             "dsu/",
             "launcher/",
             "setup/",
-            "engine/internal/",
-            "engine/source/",
+            "engine/",
         ],
     },
 }
