@@ -59,6 +59,25 @@ RULES = {
             "engine/",
         ],
     },
+    "game": {
+        "forbid": [
+            "engine/",
+            "modules/",
+            "core/",
+            "ecs/",
+            "sim/",
+            "world/",
+            "io/",
+            "sys/",
+            "render/",
+            "dsk/",
+            "dsu/",
+            "dui/",
+            "launcher/",
+            "setup/",
+            "tools/",
+        ],
+    },
 }
 
 SKIP_DIRS = {
