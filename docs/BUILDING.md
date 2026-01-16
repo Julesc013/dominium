@@ -10,10 +10,11 @@ and determinism rules are specified in `docs/SPEC_DETERMINISM.md`.
 - Builds MUST NOT fetch network dependencies. Vendored sources live under
   `external/`.
 
-Preferred preset builds:
+Preferred preset builds (VS 2026):
 ```
-cmake --preset msvc-debug
-cmake --build --preset msvc-debug
+cmake --preset vs2026-x64-debug
+cmake --build --preset vs2026-x64-debug
+ctest --preset vs2026-x64-debug
 ```
 
 Recommended generic out-of-source build:
@@ -33,16 +34,28 @@ The language policy for deterministic code lives in `docs/LANGUAGE_POLICY.md`.
 - Linux builds MUST use GCC (`CMAKE_C_COMPILER=gcc`, `CMAKE_CXX_COMPILER=g++`).
 - macOS builds MUST use the Xcode generator.
 
+## Visual Studio 2026 (Open Folder)
+1. Open the repository folder in Visual Studio.
+2. Select the `vs2026-x64-debug` or `vs2026-x64-release` preset.
+3. Build the default target (ALL) to compile engine, setup, launcher, and tools.
+
+Preset build outputs land under `out/build/vs2026/<preset>/bin` and `out/build/vs2026/<preset>/lib`.
+
 ## Key build targets
-- `domino_core` (static library): the engine implementation, including the
-  deterministic core subsystems.
-- `domino_sys` (static library): platform/system layer (dsys backends).
-- Dominium products under `source/dominium/` (game, launcher, setup, tools).
-- Tests are defined under `source/tests/` (ctest) and `tests/` (additional
-  harnesses and fixtures).
+- `engine::domino` (`engine_domino`): engine library.
+- `setup_cli` (output `setup`): setup CLI (stubbed).
+- `launcher_cli` (output `launcher`): launcher CLI (stubbed).
+- `dominium-tools` (output `tools`): tools host (stubbed).
+- `coredata_compile`, `coredata_validate`: coredata tooling (stubbed).
+- `dominium_client` (output `client`), `dominium_server` (output `server`): game stubs.
 
 ## Important CMake options
 Repository-wide options (root `CMakeLists.txt`):
+- `DOM_BUILD_TESTS`: build CTest targets and smoke tests.
+- `DOM_BUILD_TOOLS`: build tool targets.
+- `DOM_BUILD_SETUP`: build setup targets.
+- `DOM_BUILD_LAUNCHER`: build launcher targets.
+- `DOM_BUILD_GAME`: build game/client/server targets.
 - `DOMINIUM_STATIC_GNU_RUNTIME` (MinGW/MSYS): links libgcc/libstdc++ statically.
 - `DOMINIUM_ENABLE_PACKAGING`: enables `scripts/packaging/**` helper targets.
 
@@ -73,7 +86,7 @@ ctest -R domino_det_regression_scan_test
 ## Build metadata (required)
 The repository uses a unified build-number system driven by CMake:
 - State file: `.dominium_build_number`
-- Generator: `scripts/update_build_number.cmake`
+- Generator: `setup/packages/scripts/update_build_number.cmake`
 
 The root CMake adds `dom_update_build_number` to `ALL`, so every build produces
 the generated header and build number artifacts automatically. Do not bypass it.
@@ -84,16 +97,16 @@ After configuring/building, run:
 ctest --test-dir build
 ```
 
-Useful deterministic tests include:
-- `domino_det_regression_scan_test`
-- `domino_pkt_determinism_test`
-- `domino_sched_determinism_test`
-- `domino_pose_anchor_quant_test`
+Smoke tests wired into CTest include:
+- `engine_smoke`
+- `launcher_help`
+- `setup_help`
 
-## Inspecting backend selection
-`dominium_game` and `dominium-launcher` can print the compiled backend set and
-the deterministic selection result:
+For VS 2026 presets:
 ```
-dominium_game.exe --profile=baseline --print-caps
-dominium_game.exe --profile=compat --lockstep-strict=1 --print-selection
+ctest --preset vs2026-x64-debug
 ```
+
+## Codex workflow
+- Prefer presets (`vs2026-x64-debug` / `vs2026-x64-release`) so CMake stays aligned with VS.
+- Use `CMAKE_EXPORT_COMPILE_COMMANDS=ON` output at `out/build/vs2026/<preset>/compile_commands.json` for clangd/Codex tooling.
