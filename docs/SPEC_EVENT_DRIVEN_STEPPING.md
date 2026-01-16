@@ -146,6 +146,21 @@ Engine provides deterministic scheduling primitives only:
 Engine does not interpret event meaning or mutate macro objects.
 Game provides the event handlers and updates next_due_tick per macro object.
 
+## Implementation (PERF2)
+
+Engine now provides a deterministic due-event scheduler:
+- API: `domino/sim/dg_due_sched.h`
+- Queue order: (due_tick, stable_key, event_id)
+- Entry contract:
+  - `get_next_due_tick(now_tick)` MUST return the next due tick or `DG_DUE_TICK_NONE`.
+  - `process_until(target_tick)` MUST process all internal events up to `target_tick`.
+  - After `process_until`, `get_next_due_tick` MUST return a tick strictly greater than `target_tick`
+    (or `DG_DUE_TICK_NONE`). Returning an earlier tick is a violation.
+- Stable keys MUST be deterministic and unique per scheduler (e.g., org_id, system_id).
+
+Macro subsystems MUST register with the scheduler and MUST NOT perform global scans
+from their tick entrypoints. The scheduler is the only authorized macro stepping path.
+
 ## Performance requirements
 - O(log n) enqueue/dequeue
 - no per-tick scans

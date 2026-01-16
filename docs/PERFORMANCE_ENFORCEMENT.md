@@ -27,6 +27,17 @@ Runtime stepping MUST be event-driven and bounded by interest sets.
 **Rationale**
 Global iteration scales poorly and undermines deterministic scheduling and throughput budgets.
 
+### How to add a macro subsystem correctly (PERF2)
+
+All macro subsystems MUST use the due-event scheduler:
+- Implement `get_next_due_tick` and `process_until` for the subsystem or per-object entry.
+- Register entries with `dg_due_sched` using deterministic stable keys.
+- Schedule only when work is due; return `DG_DUE_TICK_NONE` when idle.
+- Never loop over all entities/regions/markets in a tick entrypoint.
+
+If a subsystem still requires a global sweep during migration, it MUST be documented
+and timeboxed in `docs/NO_GLOBAL_ITERATION_GUIDE.md`.
+
 ## B. No-Modal-Loading Rule
 
 The following behaviors are FORBIDDEN:
