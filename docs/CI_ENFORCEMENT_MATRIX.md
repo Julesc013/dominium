@@ -47,5 +47,8 @@ All failures are merge-blocking.
 | PERF-ASSET-003 | Synchronous asset decode on render/UI threads is FORBIDDEN. | Runtime trace | Test | CI fail: PERF-ASSET-003 | Decode asynchronously and cache results. | Keeps UI smooth under load. |
 | PERF-STALL-004 | Stall watchdog thresholds MUST NOT be exceeded. | Perf regression test | Test | CI fail: PERF-STALL-004 | Reduce stalls or move work off render/UI threads. | Enforces predictable frame budgets. |
 | PERF-FID-005 | Forbidden fidelity degradation is FORBIDDEN. | Scenario tests + invariants | Test | CI fail: PERF-FID-005 | Use only approved degradation mechanisms. | Protects authoritative state integrity. |
+| PERF-STREAM-001 | Streaming budgets MUST NOT be exceeded. | Runtime budget check | Test | CI fail: PERF-STREAM-001 | Reduce per-frame IO/decode/job costs. | Keeps streaming bounded. |
+| PERF-BUDGET-001 | Tier performance budgets MUST NOT be exceeded. | PERF3 fixture regression | Test | CI fail: PERF-BUDGET-001 | Optimize hot paths or reduce workload. | Enforces tier targets. |
+| PERF-NOMODAL-001 | Modal loading is FORBIDDEN. | Runtime trace + watchdog | Test | CI fail: PERF-NOMODAL-001 | Move work to async pipelines. | Eliminates blocking loads. |
 | UI-BYPASS-001 | UI code reading authoritative world state is FORBIDDEN. | Static scan (tools/ci/arch_checks.py) + unit test | Test | CI fail: UI-BYPASS-001 | Route UI through authorized projection layers. | Preserves epistemic separation. |
 | BUILD-GLOBAL-001 | `include_directories()` or `link_directories()` usage is FORBIDDEN. | CMake lint (tools/ci/arch_checks.py) | Configure | CI fail: BUILD-GLOBAL-001 | Use target-scoped include/link directories only. | Prevents global include leakage. |
