@@ -118,6 +118,15 @@ RENDER_TOKENS = (
     "software",
 )
 
+GLOBAL_ITER_PATTERNS = [
+    re.compile(r"\bupdate_all\b"),
+    re.compile(r"\btick_all\b"),
+    re.compile(r"\biterate_all\b"),
+    re.compile(r"\bupdate_everything\b"),
+    re.compile(r"\bfor_each_entity\b"),
+    re.compile(r"\biterate_all_systems\b"),
+]
+
 
 class Check(object):
     def __init__(self, check_id, description, remediation, severity="error"):
@@ -641,6 +650,25 @@ def check_det_ord_004(repo_root):
     return check
 
 
+def check_perf_global_002(repo_root):
+    check = Check(
+        "PERF-GLOBAL-002",
+        "global iteration patterns in authoritative zones (forbidden)",
+        "Replace global scans with event-driven scheduling and bounded interest sets.",
+    )
+    for rel_dir in AUTHORITATIVE_DIRS:
+        root = os.path.join(repo_root, rel_dir)
+        if not os.path.isdir(root):
+            continue
+        for path in iter_files(root, repo_root):
+            rel = repo_rel(repo_root, path)
+            for idx, code in iter_code_lines(path):
+                for pattern in GLOBAL_ITER_PATTERNS:
+                    if pattern.search(code):
+                        check.add_violation(rel, idx, pattern.pattern)
+    return check
+
+
 def check_build_global_001(repo_root):
     check = Check(
         "BUILD-GLOBAL-001",
@@ -687,6 +715,7 @@ def run_checks(repo_root, strict=False):
         check_det_time_001(repo_root),
         check_det_rng_002(repo_root),
         check_det_ord_004(repo_root),
+        check_perf_global_002(repo_root),
         check_build_global_001(repo_root),
     ]
     failed = False
