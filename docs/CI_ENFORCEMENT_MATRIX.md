@@ -33,6 +33,12 @@ All failures are merge-blocking.
 | DET-GATE-LOCKSTEP-003 | Lockstep vs server-auth equivalence MUST hold. | Network determinism suite | Test | CI fail: DET-GATE-LOCKSTEP-003 | Align authoritative rules and client prediction. | Maintains network determinism. |
 | DET-GATE-HASH-004 | Hash partition invariance MUST hold. | Shard invariance suite | Test | CI fail: DET-GATE-HASH-004 | Normalize partition ordering and hash inputs. | Preserves sharding correctness. |
 | DET-EXC-006 | Determinism exceptions are FORBIDDEN. | Policy scan for exception tags | Configure | CI fail: DET-EXC-006 | Remove the exception and fix root determinism issue. | Prevents erosion of determinism law. |
+| DET-G1 | Step vs batch equivalence MUST hold. | Determinism suite (DET0 matrix) | Test | CI fail: DET-G1 | Fix update order or batch stepping logic. | Ensures step and batch equivalence. |
+| DET-G2 | Replay equivalence MUST hold. | Replay determinism suite (DET0 matrix) | Test | CI fail: DET-G2 | Fix nondeterministic inputs or ordering. | Protects replay fidelity. |
+| DET-G3 | Lockstep parity MUST hold. | Lockstep determinism suite (DET0 matrix) | Test | CI fail: DET-G3 | Align peer ordering and sync rules. | Preserves lockstep convergence. |
+| DET-G4 | Server-auth parity MUST hold. | Server-auth determinism suite (DET0 matrix) | Test | CI fail: DET-G4 | Fix authoritative state divergence. | Preserves server authority. |
+| DET-G5 | No float/OS time/nondeterministic RNG in authoritative dirs. | Static scan + compile checks | Configure | CI fail: DET-G5 | Remove forbidden constructs in authoritative paths. | Prevents nondeterministic inputs. |
+| DET-G6 | Canonical ordering under permuted insertions MUST hold. | Ordering invariance suite | Test | CI fail: DET-G6 | Normalize container ordering. | Prevents order-dependent divergence. |
 | PERF-GLOBAL-002 | Global iteration in runtime update paths is FORBIDDEN. | Lint + fixture test | Test | CI fail: PERF-GLOBAL-002 | Convert to event-driven, interest-set bounded processing. | Avoids O(N) frame scaling. |
 | PERF-MODAL-001 | Blocking IO on render/UI threads is FORBIDDEN. | Runtime trace + watchdog | Test | CI fail: PERF-MODAL-001 | Move IO to background jobs and stream results. | Prevents hitches and stalls. |
 | PERF-SHADER-002 | Shader compilation on demand is FORBIDDEN. | Runtime trace + build audit | Test | CI fail: PERF-SHADER-002 | Precompile shaders or compile during preload. | Avoids runtime shader stalls. |
