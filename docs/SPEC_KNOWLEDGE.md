@@ -19,13 +19,20 @@ FORBIDDEN:
 - No engine internal headers exposed outside engine targets.
 - No game rules or policy implemented inside engine primitives.
 
-DEPENDENCIES:
-- Engine -> libs/ and schema/ only (never game/launcher/setup/tools).
-- Game -> engine public API and schema/ only.
-- Tools -> engine public API, game public API, and schema/ only.
-- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API).
+DEPENDENCIES (Phase 1 overrides apply):
+- Engine -> (no dependencies outside engine/).
+- Game -> engine public API only.
+- Tools -> engine public API + game public API only.
+- Launcher/Setup -> libs/ + schema only (no engine/game dependencies).
 --------------------------------
 # Knowledge / Fog of War
+
+NOTE:
+This document is legacy and is superseded by:
+- `docs/SPEC_INFORMATION_MODEL.md`
+- `docs/SPEC_KNOWLEDGE_VIS_COMMS.md`
+Any `dknowledge_*` naming here is a placeholder for game-layer derived cache
+functions. It MUST NOT imply engine ownership or authoritative state.
 
 - Knowledge types: tile visibility, entity sightings, market info. Keys are `KnowledgeKey { type, subject_id }`.
 - Records: `KnowledgeRecord { key, last_seen_tick, confidence_0_1 }` stored in `KnowledgeBase { id, records[], record_count, record_capacity }`.

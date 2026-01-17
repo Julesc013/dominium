@@ -20,11 +20,11 @@ FORBIDDEN:
 - No engine internal headers exposed outside engine targets.
 - No game rules or policy implemented inside engine primitives.
 
-DEPENDENCIES:
-- Engine -> libs/ and schema/ only (never game/launcher/setup/tools).
-- Game -> engine public API and schema/ only.
-- Tools -> engine public API, game public API, and schema/ only.
-- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API).
+DEPENDENCIES (Phase 1 overrides apply):
+- Engine -> (no dependencies outside engine/).
+- Game -> engine public API only.
+- Tools -> engine public API + game public API only.
+- Launcher/Setup -> libs/ + schema only (no engine/game dependencies).
 --------------------------------
 # SPEC_INFORMATION_MODEL — Information & Belief Model Canon
 
@@ -72,6 +72,11 @@ A deterministic collection of InfoRecords for an actor. Supports:
 - conflict coexistence
 Never stores authoritative facts.
 
+Belief maintenance MUST be event-driven:
+- each BeliefStore exposes `next_due_tick` for decay/merge work,
+- processing is bounded by interest sets and scheduled events,
+- no global or per-tick scans are permitted.
+
 ### Resolution tiers
 At minimum:
 - UNKNOWN
@@ -87,6 +92,9 @@ A deterministic widening of uncertainty over ACT. Decay may:
 - mark info as stale
 
 Decay NEVER introduces randomness.
+
+InfoRecord formats and BeliefStore persistence MUST be schema-versioned and
+migrated per `schema/SCHEMA_*` governance rules.
 
 ## Belief update pipeline (mandatory)
 
