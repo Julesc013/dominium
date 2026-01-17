@@ -196,6 +196,11 @@ ownership rules and boundary enforcement.
 | `docs/SPEC_WORLD_COORDS.md` | game | client, server, tools | extension |
 | `docs/SPEC_WORLD_SOURCE_STACK.md` | game | client, server, tools | extension |
 | `docs/SPEC_ZONES.md` | game | client, server, tools | extension |
+| `schema/life/SPEC_LIFE_CONTINUITY.md` | schema | game, client, server, tools | core |
+| `schema/life/SPEC_DEATH_AND_ESTATE.md` | schema | game, client, server, tools | core |
+| `schema/life/SPEC_CONTROL_AUTHORITY.md` | schema | game, client, server, tools | core |
+| `schema/life/SPEC_CONTINUATION_POLICIES.md` | schema | game, client, server, tools | core |
+| `schema/life/SPEC_BIRTH_LINEAGE_OVERVIEW.md` | schema | game, client, server, tools | core |
 | `docs/launcher/SPEC_LAUNCHER.md` | tools | launcher | optional |
 | `docs/launcher/SPEC_LAUNCHER_CLI.md` | tools | launcher | optional |
 | `docs/launcher/SPEC_LAUNCHER_CORE.md` | tools | launcher | optional |

@@ -82,6 +82,11 @@ All failures are merge-blocking.
 | EPIS-API-002 | UI calls forbidden sim/world APIs are FORBIDDEN. | Static scan (tools/ci/arch_checks.py) | Configure | CI fail: EPIS-API-002 | Route UI access through EIL only. | Prevents authoritative queries from UI. |
 | EPIS-CAP-003 | UI displays info without capability justification is FORBIDDEN. | CTest `dominium_epistemic` | Test | CI fail: EPIS-CAP-003 | Use capability snapshots and epistemic queries for UI output. | Ensures UI reflects epistemic state only. |
 | BUILD-GLOBAL-001 | `include_directories()` or `link_directories()` usage is FORBIDDEN. | Configure-time check (`scripts/verify_cmake_no_global_includes.py`) + arch_checks (link_directories) | Configure | CI fail: BUILD-GLOBAL-001 | Use target-scoped include/link directories only. | Prevents global include leakage. |
+| LIFE-SPEC-001 | LIFE continuity spec is required. | Documentation gate (manual audit) | Docs | Audit fail: LIFE-SPEC-001 | Add/update `schema/life/SPEC_LIFE_CONTINUITY.md`. | Establishes person/body/controller canon. |
+| LIFE-SPEC-002 | LIFE death and estate spec is required. | Documentation gate (manual audit) | Docs | Audit fail: LIFE-SPEC-002 | Add/update `schema/life/SPEC_DEATH_AND_ESTATE.md`. | Ensures deterministic death and estate creation. |
+| LIFE-SPEC-003 | LIFE control authority spec is required. | Documentation gate (manual audit) | Docs | Audit fail: LIFE-SPEC-003 | Add/update `schema/life/SPEC_CONTROL_AUTHORITY.md`. | Defines control delegation and authority resolution. |
+| LIFE-SPEC-004 | LIFE continuation policies spec is required. | Documentation gate (manual audit) | Docs | Audit fail: LIFE-SPEC-004 | Add/update `schema/life/SPEC_CONTINUATION_POLICIES.md`. | Defines S1–S4 continuation and ability packages. |
+| LIFE-SPEC-005 | LIFE birth/lineage overview spec is required. | Documentation gate (manual audit) | Docs | Audit fail: LIFE-SPEC-005 | Add/update `schema/life/SPEC_BIRTH_LINEAGE_OVERVIEW.md`. | Reserves lineage schema and constraints for LIFE3. |
 
 ## Phase-1 Audit Notes (PH1-AUDIT)
 
