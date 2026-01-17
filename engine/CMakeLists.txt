@@ -44,6 +44,7 @@ set(ENGINE_CORE_SOURCES
     modules/res/dg_tlv_canon.c
     modules/res/dg_tlv_schema.c
     modules/res/dg_tlv_validate.c
+    modules/res/dg_data_validate.c
     modules/res/d_res.c
     modules/res/d_res_model_strata.c
     modules/res/d_res_validate.c
