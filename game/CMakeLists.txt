@@ -4,6 +4,7 @@ add_library(dominium_game STATIC
     dominium_game_stub.c
     core/dom_interest_set.c
     core/dom_interest_sources.c
+    core/dom_interest_macro.c
 )
 add_custom_target(game_include_sanity
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/verify_includes_sanity.py
