@@ -87,6 +87,9 @@ All failures are merge-blocking.
 | LIFE-SPEC-003 | LIFE control authority spec is required. | Documentation gate (manual audit) | Docs | Audit fail: LIFE-SPEC-003 | Add/update `schema/life/SPEC_CONTROL_AUTHORITY.md`. | Defines control delegation and authority resolution. |
 | LIFE-SPEC-004 | LIFE continuation policies spec is required. | Documentation gate (manual audit) | Docs | Audit fail: LIFE-SPEC-004 | Add/update `schema/life/SPEC_CONTINUATION_POLICIES.md`. | Defines S1–S4 continuation and ability packages. |
 | LIFE-SPEC-005 | LIFE birth/lineage overview spec is required. | Documentation gate (manual audit) | Docs | Audit fail: LIFE-SPEC-005 | Add/update `schema/life/SPEC_BIRTH_LINEAGE_OVERVIEW.md`. | Reserves lineage schema and constraints for LIFE3. |
+| LIFE-CONT-DET-001 | Continuation candidate selection MUST be deterministic. | CTest `dominium_life_continuation` | Test | CI fail: LIFE-CONT-DET-001 | Use stable ordering and tie-breaks (`person_id`, reason priority). | Prevents divergence across peers. |
+| LIFE-CONT-AUTH-001 | Continuation MUST enforce control authority rules. | CTest `dominium_life_continuation` | Test | CI fail: LIFE-CONT-AUTH-001 | Require authority records before transferring control. | Prevents unauthorized control transfer. |
+| LIFE-CONT-NOFAB-001 | Continuation MUST NOT fabricate persons or bodies. | CTest `dominium_life_continuation` | Test | CI fail: LIFE-CONT-NOFAB-001 | Use pending actions and explicit construction pipelines only. | Enforces provenance and no-fabrication law. |
 
 ## Phase-1 Audit Notes (PH1-AUDIT)
 
