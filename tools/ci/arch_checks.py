@@ -69,6 +69,12 @@ INTEREST_ENFORCED_DIRS = (
     os.path.join("game", "economy"),
 )
 
+FIDELITY_ENFORCED_DIRS = (
+    os.path.join("game", "core"),
+    os.path.join("game", "rules"),
+    os.path.join("game", "economy"),
+)
+
 FLOAT_TOKENS_RE = re.compile(r"\b(long\s+double|double|float)\b")
 MATH_CALL_RE = re.compile(r"\b(sin|cos|tan|asin|acos|atan|atan2|sqrt|pow|exp|log)\s*\(")
 FORBIDDEN_MATH_HEADERS = ("math.h", "cmath")
@@ -136,6 +142,14 @@ GLOBAL_ITER_PATTERNS = [
 INTEREST_REQUIRED_NAME_RE = re.compile(r"\b(update|tick|step|process)\b", re.IGNORECASE)
 INTEREST_PARAM_RE = re.compile(r"\b(dom_interest_set|interest_set)\b")
 CAMERA_VIEW_RE = re.compile(r"\b(camera|view|viewport|render)\b", re.IGNORECASE)
+
+FIDELITY_SPAWN_RE = re.compile(r"\b(despawn|respawn|spawn|destroy|delete)\b", re.IGNORECASE)
+FIDELITY_APPROX_RE = re.compile(r"\b(approx(?:imate|imation)?|simplif\w*|placeholder|coarse|lod)\b",
+                                re.IGNORECASE)
+FIDELITY_ALLOWLIST = {
+    "game/core/dom_fidelity.c",
+    "game/include/dominium/fidelity.h",
+}
 
 
 class Check(object):
@@ -738,6 +752,46 @@ def check_scale_int_002(repo_root):
     return check
 
 
+def iter_fidelity_enforced_files(repo_root):
+    for rel_dir in FIDELITY_ENFORCED_DIRS:
+        root = os.path.join(repo_root, rel_dir)
+        if not os.path.isdir(root):
+            continue
+        for path in iter_files(root, repo_root):
+            rel = repo_rel(repo_root, path)
+            if rel in FIDELITY_ALLOWLIST:
+                continue
+            yield path, rel
+
+
+def check_scale_fid_001(repo_root):
+    check = Check(
+        "SCALE-FID-001",
+        "direct spawn/despawn/destroy patterns outside fidelity interfaces (forbidden)",
+        "Route entity lifecycle changes through dom_fidelity request/apply interfaces.",
+    )
+    for path, rel in iter_fidelity_enforced_files(repo_root):
+        for idx, code in iter_code_lines(path):
+            match = FIDELITY_SPAWN_RE.search(code)
+            if match:
+                check.add_violation(rel, idx, match.group(0))
+    return check
+
+
+def check_scale_fid_002(repo_root):
+    check = Check(
+        "SCALE-FID-002",
+        "ad-hoc approximation or LOD shortcuts in authoritative code (forbidden)",
+        "Use fidelity projection refine/collapse paths with provenance preservation.",
+    )
+    for path, rel in iter_fidelity_enforced_files(repo_root):
+        for idx, code in iter_code_lines(path):
+            match = FIDELITY_APPROX_RE.search(code)
+            if match:
+                check.add_violation(rel, idx, match.group(0))
+    return check
+
+
 def check_build_global_001(repo_root):
     check = Check(
         "BUILD-GLOBAL-001",
@@ -787,6 +841,8 @@ def run_checks(repo_root, strict=False):
         check_perf_global_002(repo_root),
         check_scale_int_001(repo_root),
         check_scale_int_002(repo_root),
+        check_scale_fid_001(repo_root),
+        check_scale_fid_002(repo_root),
         check_build_global_001(repo_root),
     ]
     failed = False
