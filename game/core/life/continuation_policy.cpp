@@ -133,6 +133,61 @@ static int life_continuation_select_s1(const life_continuation_context* ctx,
     return 0;
 }
 
+static int life_continuation_check_prereqs(life_policy_type type,
+                                           const life_continuation_prereqs* prereqs,
+                                           life_refusal_code* out_refusal)
+{
+    if (out_refusal) {
+        *out_refusal = LIFE_REFUSAL_NONE;
+    }
+    if (!prereqs) {
+        if (out_refusal) {
+            *out_refusal = LIFE_REFUSAL_PREREQ_MISSING_FACILITY;
+        }
+        return 0;
+    }
+    if (type == LIFE_POLICY_S2) {
+        if (!prereqs->has_facility) {
+            if (out_refusal) {
+                *out_refusal = LIFE_REFUSAL_PREREQ_MISSING_FACILITY;
+            }
+            return 0;
+        }
+        if (!prereqs->has_resources) {
+            if (out_refusal) {
+                *out_refusal = LIFE_REFUSAL_PREREQ_MISSING_RESOURCES;
+            }
+            return 0;
+        }
+        return 1;
+    }
+    if (type == LIFE_POLICY_S3) {
+        if (!prereqs->has_drone) {
+            if (out_refusal) {
+                *out_refusal = LIFE_REFUSAL_PREREQ_MISSING_FACILITY;
+            }
+            return 0;
+        }
+        return 1;
+    }
+    if (type == LIFE_POLICY_S4) {
+        if (!prereqs->has_recording) {
+            if (out_refusal) {
+                *out_refusal = LIFE_REFUSAL_PREREQ_MISSING_RECORDING;
+            }
+            return 0;
+        }
+        if (!prereqs->has_facility) {
+            if (out_refusal) {
+                *out_refusal = LIFE_REFUSAL_PREREQ_MISSING_FACILITY;
+            }
+            return 0;
+        }
+        return 1;
+    }
+    return 0;
+}
+
 int life_continuation_decide(const life_continuation_context* ctx,
                              life_continuation_decision* out_decision)
 {
@@ -169,6 +224,16 @@ int life_continuation_decide(const life_continuation_context* ctx,
         return 0;
     }
 
-    life_decision_refuse(out_decision, ctx->ability, LIFE_REFUSAL_POLICY_NOT_ALLOWED);
+    {
+        life_refusal_code refusal = LIFE_REFUSAL_NONE;
+        int ok = life_continuation_check_prereqs(ctx->policy_type, &ctx->prereqs, &refusal);
+        if (!ok) {
+            life_decision_refuse(out_decision, ctx->ability, refusal);
+            return 0;
+        }
+    }
+
+    out_decision->action = LIFE_CONT_ACTION_PENDING;
+    out_decision->refusal = LIFE_REFUSAL_NONE;
     return 0;
 }
