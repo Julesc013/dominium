@@ -46,6 +46,18 @@ set_target_properties(coredata_validate PROPERTIES
     C_EXTENSIONS OFF
 )
 
+add_executable(data_validate
+    data_validate/data_validate_main.c
+)
+target_link_libraries(data_validate PRIVATE domino_engine)
+set_target_properties(data_validate PROPERTIES
+    OUTPUT_NAME "data_validate"
+    C_STANDARD 90
+    C_STANDARD_REQUIRED ON
+    C_EXTENSIONS OFF
+)
+
 add_executable(tools::host ALIAS dominium-tools)
 add_executable(tools::coredata_compile ALIAS coredata_compile)
 add_executable(tools::coredata_validate ALIAS coredata_validate)
+add_executable(tools::data_validate ALIAS data_validate)
