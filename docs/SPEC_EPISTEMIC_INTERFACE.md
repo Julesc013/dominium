@@ -159,6 +159,22 @@ This enables HUD customization without granting new knowledge.
 - Silent capability grants.
 - UI-only logic branches that affect gameplay.
 
+## Enforcement (EPIS0)
+- UI zones (`game/ui/`, `client/`, `tools/`) MUST NOT include authoritative headers.
+- UI zones MUST NOT call sim/world APIs or access ECS containers directly.
+- UI outputs MUST be derived from capability snapshots only.
+
+CI enforcement:
+- EPIS-BYPASS-001: authoritative includes in UI zones are FORBIDDEN.
+- EPIS-API-002: forbidden sim/world API calls in UI zones are FORBIDDEN.
+- EPIS-CAP-003: UI outputs without capability justification are FORBIDDEN.
+
+Required tests:
+- UI bypass compile-fail test.
+- Capability removal test (source removed -> UI degrades).
+- Latency/uncertainty test.
+- Replay equivalence test for capability snapshots.
+
 ## Positive examples
 
 ### No clock -> no time UI
