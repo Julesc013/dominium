@@ -63,6 +63,12 @@ AUTHORITATIVE_DIRS = (
     os.path.join("game", "economy"),
 )
 
+INTEREST_ENFORCED_DIRS = (
+    os.path.join("game", "core"),
+    os.path.join("game", "rules"),
+    os.path.join("game", "economy"),
+)
+
 FLOAT_TOKENS_RE = re.compile(r"\b(long\s+double|double|float)\b")
 MATH_CALL_RE = re.compile(r"\b(sin|cos|tan|asin|acos|atan|atan2|sqrt|pow|exp|log)\s*\(")
 FORBIDDEN_MATH_HEADERS = ("math.h", "cmath")
@@ -126,6 +132,10 @@ GLOBAL_ITER_PATTERNS = [
     re.compile(r"\bfor_each_entity\b"),
     re.compile(r"\biterate_all_systems\b"),
 ]
+
+INTEREST_REQUIRED_NAME_RE = re.compile(r"\b(update|tick|step|process)\b", re.IGNORECASE)
+INTEREST_PARAM_RE = re.compile(r"\b(dom_interest_set|interest_set)\b")
+CAMERA_VIEW_RE = re.compile(r"\b(camera|view|viewport|render)\b", re.IGNORECASE)
 
 
 class Check(object):
@@ -669,6 +679,65 @@ def check_perf_global_002(repo_root):
     return check
 
 
+def check_scale_int_001(repo_root):
+    check = Check(
+        "SCALE-INT-001",
+        "authoritative update paths must accept an InterestSet parameter",
+        "Add dom_interest_set parameters to macro/meso update functions and use them for iteration.",
+    )
+
+    def scan_file(path, rel):
+        buffer = ""
+        start_line = None
+        for idx, code in iter_code_lines(path):
+            line = code.strip()
+            if not line:
+                continue
+            if not buffer:
+                if "(" not in line:
+                    continue
+                buffer = line
+                start_line = idx
+            else:
+                buffer += " " + line
+            if "{" not in line:
+                continue
+            match = re.search(r"\b([A-Za-z_][A-Za-z0-9_]*)\s*\([^;]*\)\s*\{", buffer)
+            if match:
+                name = match.group(1)
+                if INTEREST_REQUIRED_NAME_RE.search(name) and not INTEREST_PARAM_RE.search(buffer):
+                    check.add_violation(rel, start_line or idx, "missing dom_interest_set in signature")
+            buffer = ""
+            start_line = None
+
+    for rel_dir in INTEREST_ENFORCED_DIRS:
+        root = os.path.join(repo_root, rel_dir)
+        if not os.path.isdir(root):
+            continue
+        for path in iter_files(root, repo_root):
+            rel = repo_rel(repo_root, path)
+            scan_file(path, rel)
+    return check
+
+
+def check_scale_int_002(repo_root):
+    check = Check(
+        "SCALE-INT-002",
+        "camera/view-driven activation in authoritative code is forbidden",
+        "Route relevance through explicit interest sources; do not activate simulation based on camera or view state.",
+    )
+    for rel_dir in INTEREST_ENFORCED_DIRS:
+        root = os.path.join(repo_root, rel_dir)
+        if not os.path.isdir(root):
+            continue
+        for path in iter_files(root, repo_root):
+            rel = repo_rel(repo_root, path)
+            for idx, code in iter_code_lines(path):
+                if CAMERA_VIEW_RE.search(code):
+                    check.add_violation(rel, idx, "camera/view token in authoritative code")
+    return check
+
+
 def check_build_global_001(repo_root):
     check = Check(
         "BUILD-GLOBAL-001",
@@ -716,6 +785,8 @@ def run_checks(repo_root, strict=False):
         check_det_rng_002(repo_root),
         check_det_ord_004(repo_root),
         check_perf_global_002(repo_root),
+        check_scale_int_001(repo_root),
+        check_scale_int_002(repo_root),
         check_build_global_001(repo_root),
     ]
     failed = False
