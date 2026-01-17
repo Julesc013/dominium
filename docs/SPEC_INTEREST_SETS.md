@@ -20,11 +20,11 @@ FORBIDDEN:
 - No engine internal headers exposed outside engine targets.
 - No game rules or policy implemented inside engine primitives.
 
-DEPENDENCIES:
-- Engine -> libs/ and schema/ only (never game/launcher/setup/tools).
-- Game -> engine public API and schema/ only.
-- Tools -> engine public API, game public API, and schema/ only.
-- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API).
+DEPENDENCIES (Phase 1 overrides apply):
+- Engine -> (no dependencies outside engine/).
+- Game -> engine public API only.
+- Tools -> engine public API + game public API only.
+- Launcher/Setup -> libs/ + schema only (no engine/game dependencies).
 --------------------------------
 # SPEC_INTEREST_SETS — Interest Sets & Relevance Scheduler Canon
 
@@ -140,6 +140,11 @@ At minimum:
    - jurisdictional control
    - taxation scope
    - law enforcement
+
+Clarification:
+- UI/camera focus MAY request interest, but MUST NOT activate micro simulation
+  or authoritative work on its own. UI-driven interest is bounded to macro/meso
+  summaries unless backed by explicit command, sensor, or governance sources.
 
 Each source must produce bounded interest and include expiry semantics.
 

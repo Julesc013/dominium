@@ -21,11 +21,11 @@ FORBIDDEN:
 - No engine internal headers exposed outside engine targets.
 - No game rules or policy implemented inside engine primitives.
 
-DEPENDENCIES:
-- Engine -> libs/ and schema/ only (never game/launcher/setup/tools).
-- Game -> engine public API and schema/ only.
-- Tools -> engine public API, game public API, and schema/ only.
-- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API).
+DEPENDENCIES (Phase 1 overrides apply):
+- Engine -> (no dependencies outside engine/).
+- Game -> engine public API only.
+- Tools -> engine public API + game public API only.
+- Launcher/Setup -> libs/ + schema only (no engine/game dependencies).
 --------------------------------
 # SPEC_WORLD_SOURCE_STACK — World Source Stack Canon
 
@@ -117,7 +117,7 @@ Engine (Domino, C89/C90) MAY:
 - define provider interfaces
 - perform deterministic sampling
 - cache sampled results
-- manage LOD and interest sets
+- provide deterministic LOD helpers and cache containers
 - hash provider outputs
 
 Engine MUST NOT:
@@ -128,6 +128,7 @@ Engine MUST NOT:
 Game (Dominium, C++98) MAY:
 - load provider bindings from data packs
 - configure stacks per body/system
+- define interest-set and LOD selection policy
 - expose tools for import and inspection
 
 ## Determinism and identity binding

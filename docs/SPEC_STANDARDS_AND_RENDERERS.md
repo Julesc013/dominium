@@ -19,11 +19,11 @@ FORBIDDEN:
 - No engine internal headers exposed outside engine targets.
 - No game rules or policy implemented inside engine primitives.
 
-DEPENDENCIES:
-- Engine -> libs/ and schema/ only (never game/launcher/setup/tools).
-- Game -> engine public API and schema/ only.
-- Tools -> engine public API, game public API, and schema/ only.
-- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API).
+DEPENDENCIES (Phase 1 overrides apply):
+- Engine -> (no dependencies outside engine/).
+- Game -> engine public API only.
+- Tools -> engine public API + game public API only.
+- Launcher/Setup -> libs/ + schema only (no engine/game dependencies).
 --------------------------------
 # SPEC_STANDARDS_AND_RENDERERS — Standards, Ledgers, and Renderers Canon
 

@@ -20,11 +20,11 @@ FORBIDDEN:
 - No engine internal headers exposed outside engine targets.
 - No game rules or policy implemented inside engine primitives.
 
-DEPENDENCIES:
-- Engine -> libs/ and schema/ only (never game/launcher/setup/tools).
-- Game -> engine public API and schema/ only.
-- Tools -> engine public API, game public API, and schema/ only.
-- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API).
+DEPENDENCIES (Phase 1 overrides apply):
+- Engine -> (no dependencies outside engine/).
+- Game -> engine public API only.
+- Tools -> engine public API + game public API only.
+- Launcher/Setup -> libs/ + schema only (no engine/game dependencies).
 --------------------------------
 # SPEC_TIME_WARP — Time Warp and Batch Scheduler Canon
 
@@ -52,6 +52,10 @@ Examples:
 - 1/86400 (1 ACT second per real day)
 - 1       (real time)
 - 3.15e10 (~1 ACT millennium per real second)
+
+Sim rate MUST be represented as a deterministic fixed-point or rational value.
+Wall-clock time is used only to pace execution and MUST NOT enter authoritative
+state or hashes. Warp changes are explicit commands logged for replay/lockstep.
 
 ### Time warp state
 Immutable, deterministic parameters:
