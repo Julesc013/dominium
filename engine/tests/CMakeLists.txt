@@ -74,3 +74,14 @@ set_tests_properties(engine_perf_budget_check PROPERTIES
     FIXTURES_REQUIRED perf_budget
     ENVIRONMENT "DOMINIUM_RUN_ROOT=${_dom_perf_run_root}"
 )
+
+add_executable(engine_data_validate_test
+    engine_data_validate_test.c
+)
+target_link_libraries(engine_data_validate_test PRIVATE engine::domino)
+set_target_properties(engine_data_validate_test PROPERTIES
+    C_STANDARD 90
+    C_STANDARD_REQUIRED ON
+    C_EXTENSIONS OFF
+)
+add_test(NAME engine_data_validate COMMAND engine_data_validate_test)
