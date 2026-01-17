@@ -50,3 +50,11 @@ Validators MUST return exactly one of:
 - Loading authoritative data that fails validation.
 - Skipping validation for performance reasons.
 - Allowing warnings to bypass determinism or performance rules.
+
+## Implementation Notes (DATA1)
+
+- Shared validation library: `domino/io/data_validate.h` (engine).
+- Game wrapper: `game/include/dominium/data_validate.h`.
+- Tool entry point: `data_validate` (built under `tools/`).
+- CI and tests: `engine_data_validate` CTest and `data_validate` CLI for fixture runs.
+- Validators MUST preserve unknown fields; unknown tags are warnings only.

@@ -47,6 +47,7 @@ Enforcement is done via target-scoped includes and configure-time assertions:
 - **Configure-time**: target graph assertions and include boundary checks (ARCH-DEP-001..006, ARCH-INC-003).
 - **Build-time**: illegal includes fail compilation due to missing include paths (ARCH-INC-001, ARCH-INC-002).
 - **Static checks**: `tools/ci/arch_checks.py` enforces repo-wide guards (ARCH-TOP-001, ARCH-RENDER-001, UI-BYPASS-001, BUILD-GLOBAL-001, DET-FLOAT-001).
+- **Data validation**: `data_validate` and `engine_data_validate` enforce DATA* rules (DATA-VALID-001/002, DATA-MIGRATE-001).
 
 ## How to run architecture checks locally
 ```
@@ -55,9 +56,20 @@ cmake --build --preset vs2026-x64-debug --target check_arch
 ```
 Use `--strict` to treat warnings as errors when applicable.
 
+## How to run data validation locally
+```
+data_validate --input=<path> --schema-id=<u64> --schema-version=MAJOR.MINOR.PATCH
+ctest -R engine_data_validate
+```
+
 ## CI command (noninteractive)
 ```
 python tools/ci/arch_checks.py
+```
+
+## Data validation command (noninteractive)
+```
+data_validate --input=<path> --schema-id=<u64> --schema-version=MAJOR.MINOR.PATCH
 ```
 
 ## Common errors and fixes
