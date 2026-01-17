@@ -108,6 +108,28 @@ UI_FORBIDDEN_INCLUDES = (
 )
 UI_FORBIDDEN_CALL_RE = re.compile(r"\b(dg?_sim_|dg?_world_|dg?_state_)\w*\s*\(")
 
+EPISTEMIC_UI_DIRS = (
+    os.path.join("game", "ui"),
+    os.path.join("client"),
+    os.path.join("tools"),
+)
+
+EPISTEMIC_FORBIDDEN_INCLUDES = (
+    "engine/modules/",
+    "game/rules/",
+    "game/economy/",
+    "domino/sim/",
+    "domino/world/",
+    "domino/state/",
+    "domino/core/dom_time",
+)
+
+EPISTEMIC_FORBIDDEN_CALL_RE = re.compile(
+    r"\b(dg?_sim_|dg?_world_|dg?_state_|dg?_ecs_|dom_sim_|dom_world_|dom_time_)\w*\s*\(")
+
+EPISTEMIC_CAPABILITY_HINT_RE = re.compile(r"\b(capability|epistemic|snapshot)\b", re.IGNORECASE)
+EPISTEMIC_UI_MARKER_RE = re.compile(r"\b(ui_|hud_|widget|projection|overlay)\w*", re.IGNORECASE)
+
 RENDER_TOKENS = (
     "d3d9",
     "d3d11",
@@ -539,6 +561,72 @@ def check_ui_bypass_001(repo_root):
     return check
 
 
+def check_epis_bypass_001(repo_root):
+    check = Check(
+        "EPIS-BYPASS-001",
+        "UI includes authoritative headers (forbidden)",
+        "Include EIL/capability snapshot headers only; remove authoritative includes.",
+    )
+
+    def include_predicate(include_path):
+        lower = include_path.lower()
+        for token in EPISTEMIC_FORBIDDEN_INCLUDES:
+            if lower.startswith(token) or token in lower:
+                return True
+        return False
+
+    for rel_root in EPISTEMIC_UI_DIRS:
+        root = os.path.join(repo_root, rel_root)
+        if not os.path.isdir(root):
+            continue
+        scan_includes(root, repo_root, include_predicate, check)
+    return check
+
+
+def check_epis_api_002(repo_root):
+    check = Check(
+        "EPIS-API-002",
+        "UI calls forbidden sim/world APIs (forbidden)",
+        "Route all UI access through the Epistemic Interface Layer (EIL).",
+    )
+    for rel_root in EPISTEMIC_UI_DIRS:
+        root = os.path.join(repo_root, rel_root)
+        if not os.path.isdir(root):
+            continue
+        for path in iter_files(root, repo_root):
+            rel = repo_rel(repo_root, path)
+            for idx, code in iter_code_lines(path):
+                if EPISTEMIC_FORBIDDEN_CALL_RE.search(code):
+                    check.add_violation(rel, idx, "authoritative sim/world call")
+    return check
+
+
+def check_epis_cap_003(repo_root):
+    check = Check(
+        "EPIS-CAP-003",
+        "UI displays information without capability justification (forbidden)",
+        "UI must consume capability snapshots and epistemic queries only.",
+    )
+    for rel_root in EPISTEMIC_UI_DIRS:
+        root = os.path.join(repo_root, rel_root)
+        if not os.path.isdir(root):
+            continue
+        for path in iter_files(root, repo_root):
+            rel = repo_rel(repo_root, path)
+            has_ui_marker = False
+            has_capability = False
+            for _, code in iter_code_lines(path):
+                if EPISTEMIC_UI_MARKER_RE.search(code):
+                    has_ui_marker = True
+                if EPISTEMIC_CAPABILITY_HINT_RE.search(code):
+                    has_capability = True
+                if has_ui_marker and has_capability:
+                    break
+            if has_ui_marker and not has_capability:
+                check.add_violation(rel, 1, "missing capability snapshot usage")
+    return check
+
+
 def check_det_float_003(repo_root):
     check = Check(
         "DET-FLOAT-003",
@@ -834,6 +922,8 @@ def run_checks(repo_root, strict=False):
         check_arch_render_001(repo_root),
         check_arch_top_001(repo_root),
         check_ui_bypass_001(repo_root),
+        check_epis_bypass_001(repo_root),
+        check_epis_api_002(repo_root),
         check_det_float_003(repo_root),
         check_det_time_001(repo_root),
         check_det_rng_002(repo_root),
