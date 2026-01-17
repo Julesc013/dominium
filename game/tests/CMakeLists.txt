@@ -546,6 +546,17 @@ add_executable(domino_spacetime_tests
 target_link_libraries(domino_spacetime_tests PRIVATE domino_core)
 add_test(NAME domino_spacetime_conversions COMMAND domino_spacetime_tests)
 
+add_executable(dominium_interest_tests
+    interest/dom_interest_tests.c
+)
+target_link_libraries(dominium_interest_tests PRIVATE dominium_game)
+set_target_properties(dominium_interest_tests PROPERTIES
+    C_STANDARD 90
+    C_STANDARD_REQUIRED ON
+    C_EXTENSIONS OFF
+)
+add_test(NAME dominium_interest COMMAND dominium_interest_tests)
+
 add_test(NAME dominium_game_headless_flow
     COMMAND $<TARGET_FILE:dominium_game>
         --mode=headless
