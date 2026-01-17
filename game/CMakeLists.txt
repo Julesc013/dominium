@@ -8,6 +8,11 @@ add_library(dominium_game STATIC
     core/dom_fidelity.c
     core/dom_data_validate.c
     core/dom_epistemic.c
+    core/life/ability_packages.cpp
+    core/life/control_authority.cpp
+    core/life/continuation_policy.cpp
+    core/life/controller_binding.cpp
+    core/life/life_events_stub.cpp
 )
 add_custom_target(game_include_sanity
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/verify_includes_sanity.py
