@@ -568,6 +568,27 @@ set_target_properties(dominium_fidelity_tests PROPERTIES
 )
 add_test(NAME dominium_fidelity COMMAND dominium_fidelity_tests)
 
+add_executable(dominium_epistemic_tests
+    epistemic/dom_epistemic_tests.c
+)
+target_link_libraries(dominium_epistemic_tests PRIVATE dominium_game)
+set_target_properties(dominium_epistemic_tests PROPERTIES
+    C_STANDARD 90
+    C_STANDARD_REQUIRED ON
+    C_EXTENSIONS OFF
+)
+add_test(NAME dominium_epistemic COMMAND dominium_epistemic_tests)
+
+set(_dom_epis_try_script "${CMAKE_CURRENT_BINARY_DIR}/epistemic_ui_bypass_trycompile.cmake")
+configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/epistemic/epistemic_ui_bypass_trycompile.cmake.in
+    ${_dom_epis_try_script}
+    @ONLY
+)
+add_test(NAME dominium_epistemic_ui_bypass
+    COMMAND ${CMAKE_COMMAND} -P ${_dom_epis_try_script}
+)
+
 add_test(NAME dominium_game_headless_flow
     COMMAND $<TARGET_FILE:dominium_game>
         --mode=headless

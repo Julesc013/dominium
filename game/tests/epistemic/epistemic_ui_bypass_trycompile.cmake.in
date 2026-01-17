@@ -1,0 +1,21 @@
+cmake_minimum_required(VERSION 3.16)
+
+set(src "@CMAKE_CURRENT_SOURCE_DIR@/epistemic/epistemic_ui_bypass.c")
+set(build_dir "@CMAKE_CURRENT_BINARY_DIR@/epistemic_ui_bypass_build")
+
+file(MAKE_DIRECTORY "${build_dir}")
+
+try_compile(COMPILE_OK
+    "${build_dir}"
+    SOURCES "${src}"
+    CMAKE_FLAGS
+        "-DCMAKE_C_COMPILER=@CMAKE_C_COMPILER@"
+        "-DCMAKE_C_STANDARD=90"
+        "-DCMAKE_C_STANDARD_REQUIRED=ON"
+        "-DCMAKE_C_EXTENSIONS=OFF"
+        "-DCMAKE_C_FLAGS=-I@DOMINIUM_ENGINE_INCLUDE_DIR@ -I@DOMINIUM_GAME_INCLUDE_DIR@"
+)
+
+if (COMPILE_OK)
+    message(FATAL_ERROR "UI bypass test unexpectedly compiled; boundary enforcement failed.")
+endif()
