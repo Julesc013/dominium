@@ -81,6 +81,11 @@ Optional fields:
 - Resolution uses stable ordering keys and is deterministic.
 - Batch vs step equivalence must hold.
 
+## Executor authority (LIFE2 integration)
+- Estate actions require explicit executor authority.
+- If executor authority is missing or revoked, estate resolution must refuse deterministically.
+- No implicit executor assignment is allowed.
+
 ## Epistemic boundary
 - Control bindings do not grant knowledge.
 - UI may only display authority status via capability snapshots.

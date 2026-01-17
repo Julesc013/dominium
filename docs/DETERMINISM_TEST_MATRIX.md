@@ -51,7 +51,7 @@ Each row is a required matrix cell. If a row is marked "future", it is planned b
 
 | Exec mode | Step strategy | Hardware/Backend variance | Fidelity tier | Required hashes | Allowed divergence | Fixtures |
 | --- | --- | --- | --- | --- | --- | --- |
-| Singleplayer (loopback) | Step-by-step | Same CPU/OS | Macro | SIM_CORE, SIM_ECON, SIM_INFO, SIM_TIME, SIM_WORLD | Presentation only | Minimal Earth-only |
+| Singleplayer (loopback) | Step-by-step | Same CPU/OS | Macro | SIM_CORE, SIM_ECON, SIM_INFO, SIM_TIME, SIM_WORLD | Presentation only | Minimal Earth-only, Death/Estate |
 | Singleplayer (loopback) | Batch (N) | Same CPU/OS | Macro | SIM_CORE, SIM_ECON, SIM_INFO, SIM_TIME, SIM_WORLD | Presentation only | Minimal Earth-only, Warp |
 | Singleplayer (loopback) | Event-driven jump | Same CPU/OS | Macro | SIM_CORE, SIM_ECON, SIM_INFO, SIM_TIME, SIM_WORLD | Presentation only | Minimal Earth-only |
 | Local MP lockstep | Step-by-step | Same CPU/OS | Macro | SIM_CORE, SIM_ECON, SIM_INFO, SIM_TIME, SIM_WORLD | Presentation only | Sol-only |
@@ -90,6 +90,8 @@ All fixtures are required and MUST be versioned and stable. Minimal data packs a
   - Data packs: core/time, core/sim, core/world
 - Sensor scenario (degraded info)
   - Data packs: core/sensors, core/info, core/time
+- Death/Estate scenario (LIFE2 pipeline)
+  - Data packs: core/time, core/economy (ledger core), core/life (death/estate)
 
 ## Required artifacts on failure
 
