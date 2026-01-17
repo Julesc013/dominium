@@ -130,6 +130,13 @@ Provenance requirements:
 - Eligible candidates are bounded by authority scope and interest sets.
 - No global scans over all persons are permitted.
 
+## Implementation notes (LIFE1)
+- Runtime code lives under `game/include/dominium/life/*` and `game/core/life/*`.
+- Ability packages resolve inheritance deterministically with explicit overrides and additive capability masks.
+- S1 selection filters by epistemic knowledge and authority, then selects by reason priority and stable `person_id`.
+- S2–S4 are prerequisite-validation stubs only; they return `PENDING` and MUST NOT fabricate persons or bodies.
+- Refusal codes are stable enums and are required for auditability and replay parity.
+
 ## Prohibitions (absolute)
 - "Respawn at nearest spawn point" without causal pipeline.
 - Creating a new body without construction provenance.
