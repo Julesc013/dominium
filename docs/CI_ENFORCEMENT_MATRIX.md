@@ -90,6 +90,12 @@ All failures are merge-blocking.
 | LIFE-CONT-DET-001 | Continuation candidate selection MUST be deterministic. | CTest `dominium_life_continuation` | Test | CI fail: LIFE-CONT-DET-001 | Use stable ordering and tie-breaks (`person_id`, reason priority). | Prevents divergence across peers. |
 | LIFE-CONT-AUTH-001 | Continuation MUST enforce control authority rules. | CTest `dominium_life_continuation` | Test | CI fail: LIFE-CONT-AUTH-001 | Require authority records before transferring control. | Prevents unauthorized control transfer. |
 | LIFE-CONT-NOFAB-001 | Continuation MUST NOT fabricate persons or bodies. | CTest `dominium_life_continuation` | Test | CI fail: LIFE-CONT-NOFAB-001 | Use pending actions and explicit construction pipelines only. | Enforces provenance and no-fabrication law. |
+| LIFE-DEATH-DET-001 | Death pipeline produces deterministic estate records. | CTest `dominium_life_death` | Test | CI fail: LIFE-DEATH-DET-001 | Sort account IDs and use stable IDs for death events and estates. | Prevents nondeterministic estate ordering. |
+| LIFE-LEDGER-001 | Death MUST NOT change ledger balances. | CTest `dominium_life_death` | Test | CI fail: LIFE-LEDGER-001 | Keep balances intact; only change ownership relations. | Preserves ledger conservation. |
+| LIFE-INH-SCHED-001 | Inheritance scheduling MUST fire at exact ACT ticks. | CTest `dominium_life_death` | Test | CI fail: LIFE-INH-SCHED-001 | Use ACT-based claim periods and due-event scheduling only. | Ensures batch vs step equivalence. |
+| LIFE-ESTATE-AUTH-001 | Estate resolution requires explicit executor authority. | CTest `dominium_life_death` | Test | CI fail: LIFE-ESTATE-AUTH-001 | Refuse resolution without authority; do not transfer assets. | Prevents unauthorized estate execution. |
+| LIFE-EPIS-001 | Death knowledge is not omniscient. | CTest `dominium_life_death` | Test | CI fail: LIFE-EPIS-001 | Emit death notices via explicit epistemic hooks only. | Enforces epistemic boundary. |
+| LIFE-REPLAY-001 | Death/estate replay equivalence MUST hold. | CTest `dominium_life_death` | Test | CI fail: LIFE-REPLAY-001 | Ensure deterministic IDs and ordering for death and estate records. | Keeps replay stable. |
 
 ## Phase-1 Audit Notes (PH1-AUDIT)
 

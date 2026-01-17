@@ -97,6 +97,13 @@ Optional fields:
 - Resolution uses deterministic queues and stable ordering keys.
 - Batch vs step invariance must hold for estate resolution events.
 
+## Implementation notes (LIFE2)
+- Runtime code lives under `game/include/dominium/life/*` and `game/core/life/*`.
+- The death pipeline entrypoint is `life_handle_death(...)` and is deterministic.
+- Estate creation copies and sorts account IDs and reassigns ownership to the estate.
+- Inheritance scheduling uses the due-event scheduler and emits `InheritanceAction` records.
+- Epistemic visibility is provided via an explicit death-notice callback; no implicit broadcasts exist.
+
 ## Prohibitions (absolute)
 - Deleting Person on death.
 - Fabricating heirs or assets.
