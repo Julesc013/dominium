@@ -48,6 +48,7 @@ Enforcement is done via target-scoped includes and configure-time assertions:
 - **Build-time**: illegal includes fail compilation due to missing include paths (ARCH-INC-001, ARCH-INC-002).
 - **Static checks**: `tools/ci/arch_checks.py` enforces repo-wide guards (ARCH-TOP-001, ARCH-RENDER-001, UI-BYPASS-001, BUILD-GLOBAL-001, DET-FLOAT-001).
 - **Data validation**: `data_validate` and `engine_data_validate` enforce DATA* rules (DATA-VALID-001/002, DATA-MIGRATE-001).
+- **Epistemic UI boundary**: `tools/ci/arch_checks.py` enforces EPIS-* rules; `dominium_epistemic` tests capability gating.
 
 ## How to run architecture checks locally
 ```
@@ -87,6 +88,8 @@ data_validate --input=<path> --schema-id=<u64> --schema-version=MAJOR.MINOR.PATC
   - **Fix**: remove or relocate into canonical top-level domains.
 - **Error**: UI code directly queries sim/world state (UI-BYPASS-001).
   - **Fix**: route through EIL/capability snapshot interfaces.
+- **Error**: UI includes authoritative headers or calls sim/world APIs (EPIS-*).
+  - **Fix**: use `dominium/epistemic.h` and capability snapshots only.
 - **Error**: `include_directories()` or `link_directories()` used in any CMake file (BUILD-GLOBAL-001).
   - **Fix**: replace with `target_include_directories()` on specific targets.
 
