@@ -579,6 +579,17 @@ set_target_properties(dominium_epistemic_tests PROPERTIES
 )
 add_test(NAME dominium_epistemic COMMAND dominium_epistemic_tests)
 
+add_executable(dominium_life_continuation_tests
+    life/dom_life_continuation_tests.cpp
+)
+target_link_libraries(dominium_life_continuation_tests PRIVATE dominium_game)
+set_target_properties(dominium_life_continuation_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME dominium_life_continuation COMMAND dominium_life_continuation_tests)
+
 set(_dom_epis_try_script "${CMAKE_CURRENT_BINARY_DIR}/epistemic_ui_bypass_trycompile.cmake")
 configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/epistemic/epistemic_ui_bypass_trycompile.cmake.in
