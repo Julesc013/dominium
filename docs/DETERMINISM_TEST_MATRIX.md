@@ -51,7 +51,7 @@ Each row is a required matrix cell. If a row is marked "future", it is planned b
 
 | Exec mode | Step strategy | Hardware/Backend variance | Fidelity tier | Required hashes | Allowed divergence | Fixtures |
 | --- | --- | --- | --- | --- | --- | --- |
-| Singleplayer (loopback) | Step-by-step | Same CPU/OS | Macro | SIM_CORE, SIM_ECON, SIM_INFO, SIM_TIME, SIM_WORLD | Presentation only | Minimal Earth-only, Death/Estate, Birth/Lineage, Remains/Salvage, CIV0a Survival |
+| Singleplayer (loopback) | Step-by-step | Same CPU/OS | Macro | SIM_CORE, SIM_ECON, SIM_INFO, SIM_TIME, SIM_WORLD | Presentation only | Minimal Earth-only, Death/Estate, Birth/Lineage, Remains/Salvage, CIV0a Survival, CIV0 Population |
 | Singleplayer (loopback) | Batch (N) | Same CPU/OS | Macro | SIM_CORE, SIM_ECON, SIM_INFO, SIM_TIME, SIM_WORLD | Presentation only | Minimal Earth-only, Warp |
 | Singleplayer (loopback) | Event-driven jump | Same CPU/OS | Macro | SIM_CORE, SIM_ECON, SIM_INFO, SIM_TIME, SIM_WORLD | Presentation only | Minimal Earth-only |
 | Local MP lockstep | Step-by-step | Same CPU/OS | Macro | SIM_CORE, SIM_ECON, SIM_INFO, SIM_TIME, SIM_WORLD | Presentation only | Sol-only, MP0 Local Parity |
@@ -98,6 +98,8 @@ All fixtures are required and MUST be versioned and stable. Minimal data packs a
   - Data packs: core/time, core/life (remains/salvage), core/economy (ledger core)
 - CIV0a Survival scenario (cohort needs/consumption)
   - Data packs: core/time, core/civ (cohorts/needs minimal)
+- CIV0 Population scenario (cohorts/households/migration)
+  - Data packs: core/time, core/civ (population cohorts/households/migration)
 - MP0 Local Parity scenario (loopback/lockstep/server-auth)
   - Data packs: core/time, core/civ, core/life (continuation/death)
 
