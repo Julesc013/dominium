@@ -37,6 +37,13 @@ add_library(dominium_game STATIC
     rules/survival/consumption_scheduler.cpp
     rules/survival/survival_production_actions.cpp
     rules/survival/shelter_proxy.cpp
+    rules/population/population_refusal_codes.cpp
+    rules/population/cohort_types.cpp
+    rules/population/demographics.cpp
+    rules/population/household_model.cpp
+    rules/population/migration_model.cpp
+    rules/population/population_scheduler.cpp
+    rules/population/population_projections.cpp
     rules/reproduction_rules.cpp
     rules/needs_constraints.cpp
 )
