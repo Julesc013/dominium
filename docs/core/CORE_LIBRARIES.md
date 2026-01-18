@@ -1,7 +1,7 @@
 # Core Libraries (Shared)
 
-This document lists the shared core libraries under `source/dominium/common` that
-are used by both launcher and setup kernels.
+This document lists the shared contract modules under
+`libs/contracts/include/dom_contracts` that are used by launcher and setup.
 
 ## Modules
 
@@ -18,16 +18,15 @@ are used by both launcher and setup kernels.
 
 ## Invariants
 
-- No OS/UI headers in core libraries.
+- No OS/UI headers in core contract headers.
 - Deterministic output: stable ordering and canonical encoding.
 - C89-compatible ABIs at module boundaries; launcher/setup code uses C++98 only.
 - Skip-unknown TLV semantics for forward compatibility.
 
 ## Extending Safely
 
-- Add new core headers under `include/dominium/` and sources under
-  `source/dominium/common/`.
+- Add new core headers under `libs/contracts/include/dom_contracts/`.
 - Register new schemas through `core_tlv_schema` with deterministic validators.
-- Update `source/dominium/common/CMakeLists.txt` and link the new core lib into
-  `launcher_kernel` and `setup_kernel`.
+- Update `libs/contracts/CMakeLists.txt` and link the new contract header into
+  launcher/setup/tool targets as needed.
 - Keep error IDs append-only; never renumber msg_id or schema IDs.

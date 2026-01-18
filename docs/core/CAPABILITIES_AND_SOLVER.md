@@ -1,7 +1,8 @@
 # CAPABILITIES_AND_SOLVER
 
-This document defines the typed capabilities model and deterministic solver used by launcher/setup selection.
-It is an implementation-level contract; key IDs and rules are append-only and must not change once shipped.
+This document defines the typed capabilities model and deterministic solver
+contracts used by launcher/setup selection. Key IDs and rules are append-only
+and must not change once shipped.
 
 ## Core caps (core_caps)
 Caps are small typed entries used for selection and reporting:
@@ -42,8 +43,8 @@ Key catalog (current):
 - 28 setup_prohibited_caps_ok
 - 29 setup_manifest_target_ok
 
-Add new keys by appending to `include/dominium/core_caps.h` and tokens in
-`source/dominium/common/core_caps.c`. Never renumber or reuse IDs.
+Add new keys by appending to
+`libs/contracts/include/dom_contracts/core_caps.h`. Never renumber or reuse IDs.
 
 ## Constraints (core_solver)
 Each component declares:
@@ -76,21 +77,8 @@ Selected entries record reason (override or score), score, priority, and prefers
 - Selected: category_id, component_id, reason, score, priority, prefers_satisfied
 - Rejected: category_id, component_id, reason, failing constraint, actual value, conflict id
 
-Launcher selection summaries store:
-- effective_caps_tlv (merged caps)
-- explanation_tlv (solver explain output)
-
-CLI (launcher):
-- `dominium-launcher caps --format=text --explain`
-  - emits stable `caps.explain.*` lines
-
-## Selection summary TLV (launcher)
-`selection_summary.tlv` captures selected backend ids + why, provider choices, and optional explain/caps bytes.
-Use `launcher_selection_summary_to_text` for stable, deterministic rendering.
-
-## Adding a backend/provider safely
-1) Register the backend/provider with a stable ASCII component_id.
-2) Choose the category_id (platform/ui/renderer/provider_*).
-3) Define provides/requirements in `launcher_caps_solver.cpp` (or setup splat selection).
-4) If new caps are needed, append new key IDs and update token tables.
-5) Add or update tests to confirm deterministic selection and explain output.
+## Implementation note
+Current build targets expose the contracts in
+`libs/contracts/include/dom_contracts/core_caps.h` and
+`libs/contracts/include/dom_contracts/core_solver.h`. Solver implementations
+are not linked into the launcher/setup targets in this repository.

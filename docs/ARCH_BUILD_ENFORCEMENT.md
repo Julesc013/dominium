@@ -17,12 +17,12 @@ dominium_game (game/)
    |        |
 client   server
 
-tools (tools/)   -> domino_engine + dominium_game only
-launcher (launcher/) -> libs + schema only
-setup (setup/)       -> libs + schema only
-
-libs (libs/)   -> leaf libraries (no engine/game dependency)
-schema (schema/) -> data contracts (no engine/game dependency)
+launcher_core (launcher/) -> engine::domino + libs::contracts
+setup_core (setup/)       -> libs::contracts
+tools_shared (tools/)     -> libs::contracts
+dominium-tools (tools/)   -> tools_shared
+data_validate (tools/)    -> engine::domino
+validate_all (tools/)     -> (no engine link)
 ```
 
 ## Include boundaries (hard rules)
@@ -30,8 +30,7 @@ schema (schema/) -> data contracts (no engine/game dependency)
 - `engine/modules/**` and `engine/render/**` are internal and FORBIDDEN outside `engine/`.
 - `game/` MUST NOT include from `engine/modules/**` or platform headers (ARCH-INC-001).
 - `client/`, `server/`, `tools/` MUST NOT include from `engine/modules/**` (ARCH-INC-002).
-- Public headers MUST live only under `engine/include/**` (ARCH-INC-003).
-- No `include_directories()` usage is allowed anywhere (BUILD-GLOBAL-001).
+- No `include_directories()` or `link_directories()` usage is allowed anywhere (BUILD-GLOBAL-001).
 
 ## CMake enforcement (configure/build failures)
 Enforcement is done via target-scoped includes and configure-time assertions:
@@ -39,22 +38,21 @@ Enforcement is done via target-scoped includes and configure-time assertions:
 - `dominium_game` links only `domino_engine` and MUST NOT link launcher/setup/libs targets.
 - `dominium_client` and `dominium_server` link only `domino_engine` + `dominium_game`.
 - Configure-time boundary checks fail if:
-  - `domino_engine` exposes any public include outside `engine/include/` (ARCH-INC-003).
+  - `domino_engine` exposes any public include outside `engine/include/`.
   - `domino_engine` links to forbidden top-level targets (ARCH-DEP-001).
   - `dominium_game` links to launcher/setup/libs targets (ARCH-DEP-002).
 
 ## How violations fail
-- **Configure-time**: target graph assertions and include boundary checks (ARCH-DEP-001..006, ARCH-INC-003).
-- **Build-time**: illegal includes fail compilation due to missing include paths (ARCH-INC-001, ARCH-INC-002).
-- **Static checks**: `tools/ci/arch_checks.py` enforces repo-wide guards (ARCH-TOP-001, ARCH-RENDER-001, UI-BYPASS-001, BUILD-GLOBAL-001, DET-FLOAT-001).
-- **Data validation**: `data_validate` and `engine_data_validate` enforce DATA* rules (DATA-VALID-001/002, DATA-MIGRATE-001).
-- **Governance validation**: `tools/validation/validate_all` enforces GOV-VAL-* rules (schema governance, rendering canon, epistemic boundary, provenance, performance).
-- **Epistemic UI boundary**: `tools/ci/arch_checks.py` enforces EPIS-* rules; `dominium_epistemic` tests capability gating.
+- **Configure-time**: target graph assertions and include boundary checks (ARCH-DEP-001/002).
+- **Build-time**: illegal includes fail compilation due to missing include paths (ARCH-INC-001/002).
+- **Static checks**: `tools/ci/arch_checks.py` enforces repo-wide guards (ARCH-TOP-001, ARCH-RENDER-001, UI-BYPASS-001, EPIS-*).
+- **Data validation**: `data_validate` and `engine_data_validate` validate data invariants (see `docs/DATA_VALIDATION_GUIDE.md`).
+- **Governance validation**: `tools/validation/validate_all` validates schema governance and policy enforcement.
 
 ## How to run architecture checks locally
 ```
-python tools/ci/arch_checks.py
-cmake --build --preset vs2026-x64-debug --target check_arch
+python tools/ci/arch_checks.py --repo-root .
+cmake --build <build-dir> --target check_arch
 ```
 Use `--strict` to treat warnings as errors when applicable.
 
@@ -66,14 +64,14 @@ ctest -R engine_data_validate
 
 ## How to run governance validation locally
 ```
-cmake --build build/msvc-base --target validate_all
-build/msvc-base/bin/validate_all --repo-root=.
+cmake --build <build-dir> --target validate_all
+<build-dir>\\bin\\validate_all --repo-root=.
 ```
 
 ## CI command (noninteractive)
 ```
-python tools/ci/arch_checks.py
-build/msvc-base/bin/validate_all --repo-root=. --strict=1
+python tools/ci/arch_checks.py --repo-root .
+<build-dir>\\bin\\validate_all --repo-root=. --strict=1
 ```
 
 ## Data validation command (noninteractive)
@@ -105,9 +103,9 @@ data_validate --input=<path> --schema-id=<u64> --schema-version=MAJOR.MINOR.PATC
 ```
 python scripts/verify_includes_sanity.py
 python scripts/verify_cmake_no_global_includes.py
-python tools/ci/arch_checks.py
-cmake --preset vs2026-x64-debug
-cmake --build --preset vs2026-x64-debug
-ctest --preset vs2026-x64-debug
-build/msvc-base/bin/validate_all --repo-root=.
+python tools/ci/arch_checks.py --repo-root .
+cmake -S . -B <build-dir>
+cmake --build <build-dir>
+ctest --test-dir <build-dir>
+<build-dir>\\bin\\validate_all --repo-root=.
 ```

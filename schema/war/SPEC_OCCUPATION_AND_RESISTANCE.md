@@ -75,9 +75,24 @@ Rules:
 - Governance: `schema/governance/SPEC_LEGITIMACY.md`,
   `schema/governance/SPEC_ENFORCEMENT.md`
 - Logistics: `schema/civ/SPEC_LOGISTICS_FLOWS.md`
+- Survival needs: `docs/CIV0a_SURVIVAL_LOOP.md`,
+  `schema/civ/SPEC_NEEDS_MINIMAL.md`
 - LIFE pipelines: `schema/life/SPEC_DEATH_AND_ESTATE.md`
 - Knowledge gating: `schema/knowledge/SPEC_SECRECY.md`,
   `docs/SPEC_EPISTEMIC_INTERFACE.md`
+
+## Implementation notes (CIV5-WAR3)
+- Canonical game implementation lives under `game/rules/war/` with public headers
+  in `game/include/dominium/rules/war/`.
+- Occupation and resistance are scheduled via `resistance_scheduler` due events;
+  `next_due_tick` is authoritative for processing.
+- Resistance pressure is computed from legitimacy deficits, deprivation signals
+  (CIV0a survival needs), and coercion intensity with deterministic thresholds.
+- Disruption effects apply deterministic capacity reductions and store depletion;
+  no RNG-based losses or per-tick attrition.
+- Enforcement attrition is applied deterministically when resistance is active.
+- Pacification policies consume resources and apply legitimacy/pressure deltas
+  through scheduled effects only.
 
 ## Prohibitions
 - No random resistance events.

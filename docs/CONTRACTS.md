@@ -1,12 +1,13 @@
 # Contracts (Public Header API Rules)
 
 This document defines the **API contract conventions** used by public headers in
-`include/domino/**` and `include/dominium/**`. It is referenced by per-symbol
-doc blocks to avoid repeating the same rules across headers.
+`engine/include/domino/**`, `game/include/dominium/**`, `launcher/include/launcher/**`,
+`setup/include/{dsk,dsu}/**`, and `libs/contracts/include/dom_contracts/**`. It is
+referenced by per-symbol doc blocks to avoid repeating the same rules across headers.
 
 ## Scope
-- Applies to declarations in `include/**` that are consumed across translation
-  units and/or module boundaries.
+- Applies to declarations in public header trees that are consumed across
+  translation units and/or module boundaries.
 - Does not replace subsystem specs under `docs/SPEC_*.md`; those specs remain
   the canonical home for behavioral rules and invariants.
 
@@ -54,6 +55,6 @@ doc blocks to avoid repeating the same rules across headers.
 ## Documentation Placement (No Duplication)
 - Each public symbol is documented **exactly once**, in the public header that
   declares it.
-- Source files (`source/**`) may add comments only for internal invariants,
+- Source files (`engine/modules/**`, `engine/render/**`, `game/**`, `launcher/**`,
+  `setup/**`, `tools/**`) may add comments only for internal invariants,
   rationale, and non-obvious algorithms; they must not restate header contracts.
-

@@ -18,12 +18,15 @@ Use existing prefixes consistently:
 Do not introduce new prefixes without an explicit spec update.
 
 ## File placement and naming
-- Public headers live under `include/domino/**` and `include/dominium/**`.
-- Implementations live under `source/domino/**` and `source/dominium/**`.
+- Public headers live under `engine/include/domino/**` and `game/include/dominium/**`,
+  plus `launcher/include/launcher/**` and `setup/include/{dsk,dsu}/**` for those products.
+- Implementations live under `engine/modules/**`, `engine/render/**`, `game/**`,
+  `launcher/**`, `setup/**`, and `tools/**`.
 - Prefer `d_*.{c,h}` / `dg_*.{c,h}` for new Domino C code; legacy single-token
   names (e.g. `dworld.c`) are allowed only where already established.
-- Tests live under `source/tests/` and `tests/`. Prefer descriptive `*_test.c`
-  names that match the subsystem under test.
+- Tests live under `engine/tests/`, `game/tests/`, and tool fixtures under
+  `tools/validation/fixtures/`. Prefer descriptive `*_test.c` names that match
+  the subsystem under test.
 
 ## Formatting
 - 4 spaces, no tabs.
@@ -40,8 +43,8 @@ Do not introduce new prefixes without an explicit spec update.
 
 ## Header rules
 - Public headers must be self-contained and include only what they need.
-- Do not include private implementation headers from `source/**` across module
-  boundaries; use `include/**` APIs.
+- Do not include private implementation headers from `engine/modules/**` or
+  `engine/render/**` across module boundaries; use `engine/include/**` APIs.
 
 ## Documentation blocks
 - Non-trivial C/C++ source and header files begin with a structured file header

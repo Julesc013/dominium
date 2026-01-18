@@ -82,6 +82,15 @@ Rules:
   `docs/SPEC_EPISTEMIC_INTERFACE.md`
 - Event scheduling: `docs/SPEC_EVENT_DRIVEN_STEPPING.md`
 
+## Implementation notes (CIV5-WAR2)
+- Canonical game implementation lives under `game/rules/war/` with public headers
+  in `game/include/dominium/rules/war/`.
+- Engagements resolve via `engagement_scheduler` using due-event scheduling.
+- Resolution is deterministic and consumes logistics through CIV1 stores only.
+- Casualties are generated via LIFE2 `life_handle_death` with provenance.
+- Epistemic summaries use estimate bucketing when capability is absent.
+- Casualty generation requires pre-registered LIFE bodies; no fabrication.
+
 ## Prohibitions
 - No real-time physics combat globally.
 - No per-entity combat ticks.

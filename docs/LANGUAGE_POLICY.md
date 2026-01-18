@@ -15,8 +15,8 @@ Build contract:
 
 Type policy:
 - Prefer project-defined fixed-width and fixed-point types:
-  - `include/domino/core/types.h` (`u32`, `i32`, `d_bool`, etc.)
-  - `include/domino/core/fixed.h` / `include/domino/dnumeric.h` (fixed-point Q types)
+  - `engine/include/domino/core/types.h` (`u32`, `i32`, `d_bool`, etc.)
+  - `engine/include/domino/core/fixed.h` / `engine/include/domino/dnumeric.h` (fixed-point Q types)
 - If `<stdint.h>`/`<stdbool.h>` appear in non-deterministic glue or public façade
   headers, deterministic serialization/hashing MUST still encode fields
   explicitly and MUST NOT hash raw struct bytes.
@@ -28,8 +28,9 @@ Forbidden in deterministic core (non-exhaustive):
 - dynamic allocation in deterministic tick loops (unless explicitly specified)
 
 ## 2. C++98 rules (product/non-core modules)
-Applies to non-deterministic runtime/product layers (e.g. `source/dominium/**`)
-and optional tooling where determinism is not part of the simulation contract.
+Applies to non-deterministic runtime/product layers (e.g. `game/**`, `launcher/**`,
+`setup/**`, `client/**`, `server/**`, `tools/**`) and optional tooling where
+determinism is not part of the simulation contract.
 
 Rules:
 - Must compile as C++98.

@@ -8,17 +8,16 @@ verifies state, not what the state “means”.
 
 ## Scan-enforced subset
 
-The following rules are enforced by the build test `domino_det_regression_scan_test`
-(see `source/tests/determinism_regression_scan_test.c`):
+The following rules are enforced by `tools/ci/arch_checks.py` (via the
+`check_arch` target):
 
 **Scope (deterministic core only)**
-- `source/domino/sim/**`
-- `source/domino/world/**`
-- `source/domino/trans/**`
-- `source/domino/struct/**`
-- `source/domino/decor/**`
-- `source/domino/agent/**`
-- `source/domino/core/**` (excluding known non-deterministic/debug helpers)
+- `engine/modules/core/**`
+- `engine/modules/sim/**`
+- `engine/modules/world/**`
+- `game/core/**`
+- `game/rules/**`
+- `game/economy/**`
 
 **Forbidden patterns**
 - No floating point: tokens `float`, `double` (covers `long double` as well)
@@ -43,4 +42,3 @@ covered by the scan tool:
 
 Any system that cannot be hashed, replayed, budgeted, and ordered canonically is
 not eligible to exist in the engine core.
-

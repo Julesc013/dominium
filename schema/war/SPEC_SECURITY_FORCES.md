@@ -67,6 +67,16 @@ Rules:
 - Knowledge gating: `schema/knowledge/SPEC_SECRECY.md`,
   `docs/SPEC_EPISTEMIC_INTERFACE.md`
 
+## Implementation notes (CIV5-WAR1)
+- Canonical game implementation lives under `game/rules/war/` with public headers
+  in `game/include/dominium/rules/war/`.
+- Mobilization/demobilization pipelines enforce population, equipment, legitimacy,
+  and authority checks and produce provenance-backed records.
+- Readiness and morale updates are scheduled through due-event schedulers only.
+- Refusal codes are defined in `dominium/rules/war/security_force.h`.
+- WAR1 projections map `authority_id` to owning org/jurisdiction and
+  `home_domain_id` to the current domain scope reference.
+
 ## Prohibitions
 - No autonomous AI implied by force definitions.
 - No random capacity or morale adjustments.
