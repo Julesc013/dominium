@@ -9,51 +9,58 @@ file is the source of truth.
 ```
 dominium/
 ├── docs/                     – specifications and policy docs (authoritative)
-├── include/                  – public headers
-│   ├── domino/               – Domino engine public API (and `domino/_internal/`)
-│   └── dominium/             – Dominium product-facing headers
-├── source/                   – all source code
-│   ├── domino/               – Domino engine implementation
-│   ├── dominium/             – Dominium products (common, game, launcher, setup, tools)
-│   └── tests/                – buildable unit-style tests (C/C++)
-├── tests/                    – integration-style tests and fixtures
-├── data/                     – in-tree content source (authoring/packs/mods/versions/test)
-├── repo/                     – runtime repository layout used by `DOMINIUM_HOME` tooling
+├── engine/                   – Domino engine sources + headers
+│   ├── include/              – public engine API (domino/*)
+│   ├── modules/              – engine subsystem implementations
+│   ├── render/               – render backends and glue
+│   └── tests/                – engine tests (optional build)
+├── game/                     – Dominium game sources + headers
+│   ├── include/              – public game API (dominium/*)
+│   ├── core/                 – shared game logic
+│   ├── rules/                – authoritative rules
+│   ├── economy/              – economy systems
+│   ├── ai/                   – AI scaffolding
+│   ├── content/              – game content sources
+│   ├── mods/                 – mod-facing integration
+│   ├── ui/                   – UI semantics (non-rendering)
+│   └── tests/                – game tests and fixtures
+├── client/                   – client executable entrypoint
+├── server/                   – server executable entrypoint
+├── launcher/                 – launcher core + frontends
+├── setup/                    – setup core + frontends
+├── tools/                    – tool host + validators/editors
+├── libs/                     – interface libraries and shared contracts
+├── schema/                   – data schemas and validation docs
+├── sdk/                      – SDK headers, docs, and samples
 ├── scripts/                  – build helpers and packaging automation
 ├── cmake/                    – CMake modules used by the root build
-├── external/                 – vendored third-party sources
+├── legacy/                   – archived sources excluded from current builds
 ├── build/                    – out-of-source build directory (ephemeral)
+├── dist/                     – build outputs (ephemeral)
 └── .github/                  – workflow/CI configuration
 ```
 
 ## Domino engine subdirectories (module boundaries)
 
-`source/domino/` contains both deterministic core subsystems and non-authoritative
+`engine/modules/` contains both deterministic core subsystems and non-authoritative
 runtime/front-end subsystems:
 
 - Deterministic core subsystems (must obey `docs/SPEC_DETERMINISM.md`):
   `core/`, `sim/`, `world/`, `trans/`, `struct/`, `decor/`, `agent/`, plus the
   deterministic parts of `env/`, `res/`, `build/`, `job/`, `net/`, `replay/`,
-  `vehicle/` and other stateful domains. Legacy AI/agent scaffolding also exists
-  under `ai/` (see `docs/SPEC_AGENT.md`).
-- Platform/system layer: `system/` (dsys) – may call OS APIs; MUST NOT be used as
-  an input to deterministic simulation decisions.
-- Rendering: `render/` and `gfx`/canvas APIs – derived outputs only; never
-  authoritative.
+  `vehicle/`, and other stateful domains.
+- Platform/system layer: `system/` and `sys/` – may call OS APIs; MUST NOT be used as
+  inputs to deterministic simulation decisions.
+- Rendering: `engine/render/` and render-facing headers – derived outputs only.
 - UI/view: `ui/` and `view/` – derived presentation and event routing; never
   authoritative.
 
-Domino public headers live under `include/domino/`. Dominium product code MUST
-NOT include private headers from `source/domino/**`; use `include/domino/**`
-only.
+Domino public headers live under `engine/include/domino/`. Dominium product code
+MUST NOT include private headers from `engine/modules/**`; use
+`engine/include/domino/**` only.
 
-## DOMINIUM_HOME (runtime/tooling root)
+## DOMINIUM_HOME / DOMINIUM_RUN_ROOT
 
-Dominium tools and products treat `DOMINIUM_HOME` as a root for a runtime repo
-layout (see `source/dominium/common/dom_paths.*`):
-
-- `repo/products/` – product manifests (and/or build outputs staged for launch)
-- `repo/packs/` – pack blobs (`pack.tlv`/`pack.bin`) by id and version
-- `repo/mods/` – mod blobs (`mod.tlv`/`mod.bin`) by id and version
-- `instances/` – per-instance roots (metadata, saves, logs)
-- `temp/` – scratch space for setup/tools
+Filesystem root contracts are defined in `docs/SPEC_FS_CONTRACT.md` and
+`engine/include/domino/pkg/repo.h`. This repository does not ship a `repo/`
+runtime tree; runtime layouts live outside the source tree.

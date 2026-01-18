@@ -1,32 +1,40 @@
 # Dependencies (Allowed / Forbidden)
 
-This document defines the **allowed dependency directions** between major
-subsystems. It complements:
+This document defines the enforceable dependency directions between current
+top-level components. It complements:
 - Layout contract: `docs/DIRECTORY_CONTEXT.md`
 - Language/determinism constraints: `docs/LANGUAGE_POLICY.md`, `docs/SPEC_DETERMINISM.md`
 
-## High-Level Graph
-Allowed (→):
-- `dominium` → `domino`
-- `domino` → `domino/system` (platform abstractions)
-- `tools` → `domino`, `dominium`
-- `tests` → `domino`, `dominium`
+## Allowed dependency graph (high level)
+- `engine/` → (no top-level product directories)
+- `game/` → `engine/`
+- `client/`, `server/` → `engine/` + `game/`
+- `launcher/` → `engine/` (public headers) + `libs/contracts`
+- `setup/` → `libs/contracts`
+- `tools/` → `libs/contracts` and select engine public APIs (e.g., `data_validate`)
+- `libs/` → leaf (no engine/game/launcher/setup/tools dependencies)
+- `schema/` → data-only (no code dependencies)
 
-Forbidden (✗):
-- `domino` → `dominium` (engine must not depend on product layer)
-- Deterministic simulation code → OS/platform APIs (see `docs/LANGUAGE_POLICY.md`)
-- Public headers (`include/**`) → private implementation headers (`source/**`)
+## Forbidden dependency edges (must not exist)
+- `engine/` → `game/`, `client/`, `server/`, `launcher/`, `setup/`, `tools/`, `libs/`
+- `game/` → `launcher/`, `setup/`, `tools/`, `libs/`
+- `client/`, `server/` → `launcher/`, `setup/`, `tools/`, `libs/`
+- `launcher/` → `game/`, `setup/`, `tools/`
+- `setup/` → `engine/`, `game/`, `launcher/`, `tools/`
+- `tools/` → `game/`, `launcher/`, `setup/`
+- Any circular dependency between top-level directories
 
-## Public Header Rules
-- Headers under `include/**` are contracts; they must be self-contained and include only what they need.
-- Do not include `source/**` headers from `include/**` or across module boundaries.
-- ABI-visible structures and interfaces follow `docs/SPEC_ABI_TEMPLATES.md`.
+## Public header rules
+- `engine/include/**` is the only public engine API surface.
+- `game/include/**` is the only public game API surface.
+- `launcher/include/**` and `setup/include/**` are the public product headers.
+- `engine/modules/**` and `engine/render/**` are internal and must not be included
+  outside `engine/` (enforced by `tools/ci/arch_checks.py`).
 
-## Determinism Boundary
-- Non-deterministic sources (wall clock time, OS randomness, platform input timing, floating point)
-  must not affect authoritative simulation outcomes. See `docs/SPEC_DETERMINISM.md`.
+## Determinism boundary
+- Authoritative code must not use wall-clock time, non-deterministic RNG, or
+  platform APIs. See `docs/SPEC_DETERMINISM.md`.
 
-## External/Vendored Code
-- Vendored third-party sources (e.g., `external/**`) are treated as external dependencies.
-- Prefer wrapping external APIs behind a Domino/Dominium façade rather than leaking them through public headers.
-
+## Enforcement
+- CMake boundary checks: root `CMakeLists.txt` uses `dom_assert_no_link(...)`.
+- Include/scan checks: `tools/ci/arch_checks.py` (ARCH-DEP-001/002, ARCH-INC-001/002).

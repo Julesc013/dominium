@@ -1,13 +1,17 @@
 # Dominium Architecture Overview
 
-- **Domino**: C89 deterministic engine exposing systems (world, sim, gfx, ui, content). No RTTI/exceptions; ABI kept stable via POD structs and TLV blobs.
-- **Dominium**: C++98 product layer (game, launcher, setup, tools) built on top of the Dominium Common Layer. Products never reach into backend/platform details directly.
-- **Repository layout** rooted at `DOMINIUM_HOME`:
-  - `repo/products/<product>/<version>/bin/` – packaged executables.
-  - `repo/packs/<id>/<version>/pack.tlv` – content packs.
-  - `repo/mods/<id>/<version>/mod.tlv` – mods/blueprints.
-  - `instances/<id>/` – per-instance metadata and saves.
-  - `temp/` – scratch space for setup/tools.
-- **Common Layer** (dom_paths/instance/packset/session/compat): resolves paths, loads instance metadata, picks packs/mods, boots the engine, and evaluates compatibility without touching platform APIs.
-- **Product flow**: Launcher discovers products/instances → compatibility check → spawns chosen product with `DomSession` wiring packs/mods → DSIM drives world; DVIEW + DUI render UI; replay/net subsystems bolt on through the engine.
-- **Extensibility**: Tools and setup reuse the same path/instance/compat helpers; future GUI/TUI shells stay inside DVIEW/DUI while respecting deterministic ordering for content resolution.
+- **Domino engine** (`engine/`): C90 deterministic core with modules under
+  `engine/modules/` and render backends under `engine/render/`. Public headers
+  live under `engine/include/domino/`.
+- **Dominium game** (`game/`): C++98 rules and domain logic that depend only on
+  the engine public API. Public headers live under `game/include/dominium/`.
+- **Products**:
+  - `client/` and `server/` are entrypoints that link the engine + game libraries.
+  - `launcher/` provides orchestration frontends and links `engine::domino` +
+    `libs::contracts`.
+  - `setup/` provides installer frontends and links `libs::contracts`.
+- **Tools** (`tools/`): offline validators and editors; some tools link
+  `engine::domino` and others are contract-only.
+- **Shared contracts** (`libs/contracts`): cross-product headers used by
+  launcher/setup/tools.
+- **Schemas** (`schema/`): data schemas and validation docs (no build targets).

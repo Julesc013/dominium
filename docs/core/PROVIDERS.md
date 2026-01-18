@@ -15,9 +15,9 @@ This repo quarantines external ecosystem integrations behind small, stable provi
 - Provider IDs are stable ASCII tokens and must never be renamed.
 
 ## Selection + Recording
-- Providers are registered in `source/dominium/providers/provider_registry.c`.
+- Provider registry contracts live in `libs/contracts/include/dom_contracts/provider_registry.h`.
 - Each entry declares typed caps + constraints for the solver.
-- Selection results are recorded in `selection_summary.tlv` and audit.
+- Current build targets do not link a provider registry implementation.
 
 ## Built-in Providers
 - null: returns `ERRF_NOT_SUPPORTED | ERRF_POLICY_REFUSAL` for operations.

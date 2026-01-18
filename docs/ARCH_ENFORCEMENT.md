@@ -98,36 +98,35 @@ Server code must be authoritative, deterministic, and independent from client pr
 ### LAUNCHER (launcher/)
 
 **Allowed responsibilities**
-- Product discovery, installation, update, launch configuration.
+- Product discovery, launch configuration, and orchestration.
 - User-facing UI for product management.
-- Integration with schema-driven data for installed state and manifests.
+- Reading launcher contracts via `libs/contracts`.
 
 **Forbidden responsibilities**
-- Engine or game runtime code.
-- Authoritative simulation logic.
-- Rendering backend code.
+- Game rules or authoritative simulation logic.
+- Rendering backend implementations.
 
 **MUST NOT**
-- Depend on `engine/` or `game/` or their internal headers.
+- Include `engine/modules/**` or `engine/render/**` headers.
+- Depend on `game/` or `setup/`.
 - Read or modify authoritative world state.
-- Embed runtime simulation code.
 
 **Rationale**
-Launcher concerns are operational and must not bind to runtime architecture or determinism rules.
+Launcher concerns are operational; it may call engine public APIs but must not
+cross into engine internals or game rules.
 
 ### SETUP (setup/)
 
 **Allowed responsibilities**
 - Installation, packaging, system integration, repair, and removal.
-- Schema-driven install plans and deterministic setup state.
+- Setup contracts and plan/state handling via `libs/contracts`.
 
 **Forbidden responsibilities**
 - Engine or game runtime code.
 - Client or server runtime assembly.
-- Rendering backends or UI frameworks beyond setup UI.
 
 **MUST NOT**
-- Depend on `engine/` or `game/` or their internal headers.
+- Depend on `engine/`, `game/`, `launcher/`, or `tools/`.
 - Execute or embed authoritative simulation logic.
 - Access runtime world state.
 
@@ -138,7 +137,7 @@ Setup must remain isolated to installation and system policy to keep runtime arc
 
 **Allowed responsibilities**
 - Offline tooling, validators, editors, compilers, and asset pipelines.
-- Developer productivity tools that consume engine/game public APIs.
+- Developer productivity tools that consume engine public APIs and contracts.
 
 **Forbidden responsibilities**
 - Runtime shipping code paths.
@@ -148,7 +147,7 @@ Setup must remain isolated to installation and system policy to keep runtime arc
 **MUST NOT**
 - Be a runtime dependency of shipped client/server executables.
 - Include engine internal headers from `engine/modules/**`.
-- Bypass deterministic data pipelines.
+- Depend on `game/`, `launcher/`, or `setup/`.
 
 **Rationale**
 Tooling must be isolated from runtime to avoid leakage of dev-only behavior into production.
@@ -156,8 +155,8 @@ Tooling must be isolated from runtime to avoid leakage of dev-only behavior into
 ### LIBS (libs/)
 
 **Allowed responsibilities**
-- Standalone shared libraries and third-party dependencies.
-- Libraries consumed by launcher/setup or tooling where explicitly allowed.
+- Standalone interface libraries and shared contracts.
+- Libraries consumed by launcher/setup/tools where explicitly allowed.
 
 **Forbidden responsibilities**
 - Engine runtime or simulation modules.
@@ -165,9 +164,8 @@ Tooling must be isolated from runtime to avoid leakage of dev-only behavior into
 - Renderer backend implementations.
 
 **MUST NOT**
-- Become a dependency of `engine/`, `game/`, `client/`, or `server/`.
+- Become a dependency of `engine/` or `game/`.
 - Contain game rules or deterministic simulation logic.
-- Host build system logic that alters architecture boundaries.
 
 **Rationale**
 Shared libraries are leaf dependencies to avoid architectural back-edges and coupling.
@@ -176,11 +174,9 @@ Shared libraries are leaf dependencies to avoid architectural back-edges and cou
 
 **Allowed responsibilities**
 - Data schemas, versioned formats, and validation definitions.
-- Canonical data contracts for tools, launcher, and setup.
 
 **Forbidden responsibilities**
 - Runtime code, gameplay logic, or engine systems.
-- Rendering, platform, or networking implementations.
 
 **MUST NOT**
 - Contain compiled runtime code.
@@ -194,19 +190,21 @@ Schemas are contracts, not behavior; they must remain stable and tooling-friendl
 
 Allowed dependency directions are strict and exclusive:
 
-- `engine/` → (nothing)
+- `engine/` → (no top-level product directories)
 - `game/` → `engine/`
 - `client/` → `engine/`, `game/`
 - `server/` → `engine/`, `game/`
-- `tools/` → `engine/`, `game/`
-- `launcher/` and `setup/` → `libs/`, `schema/` only
+- `launcher/` → `engine/` (public) + `libs/contracts`
+- `setup/` → `libs/contracts`
+- `tools/` → `libs/contracts` and select engine public APIs
 
 **Forbidden edges**
 - Any dependency from `engine/` to any other top-level directory.
-- Any dependency from `game/` to `client/`, `server/`, `tools/`, `launcher/`, `setup/`, `libs/`, or `schema/`.
-- Any dependency from `client/` or `server/` to `tools/`, `launcher/`, `setup/`, `libs/`, or `schema/`.
-- Any dependency from `tools/` to `client/`, `server/`, `launcher/`, `setup/`, `libs/`, or `schema/`.
-- Any dependency from `launcher/` or `setup/` to `engine/` or `game/`.
+- Any dependency from `game/` to `client/`, `server/`, `tools/`, `launcher/`, `setup/`, or `libs/`.
+- Any dependency from `client/` or `server/` to `tools/`, `launcher/`, `setup/`, or `libs/`.
+- Any dependency from `tools/` to `game/`, `launcher/`, or `setup/`.
+- Any dependency from `launcher/` to `game/`, `setup/`, or `tools/`.
+- Any dependency from `setup/` to `engine/`, `game/`, `launcher/`, or `tools/`.
 - Any circular dependency between top-level directories.
 
 **Rationale**
