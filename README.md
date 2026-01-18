@@ -22,7 +22,6 @@ Non-goals (by design constraints):
 - Not a floating-point or wall-clock-driven simulation core.
 - Not a general-purpose engine that mixes user interface or rendering with
   authoritative state.
-- Not a build that downloads dependencies at configure or build time.
 
 ## Key features (at a glance)
 - Deterministic C90 simulation core with fixed-point math and world hashing.
@@ -31,7 +30,6 @@ Non-goals (by design constraints):
 - Strict dependency boundaries and public-header API contracts.
 - Multiple platform and renderer backends selected at configure time.
 - Built-in determinism regression scans and test suites.
-- No build-time network downloads; vendored sources live under `external/`.
 
 ## Architecture overview (mid-level technical)
 Layering (simplified):
