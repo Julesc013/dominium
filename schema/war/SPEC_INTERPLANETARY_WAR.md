@@ -86,6 +86,16 @@ Rules:
   `schema/civ/SPEC_PRODUCTION_CHAINS.md`
 - Epistemic gating: `docs/SPEC_EPISTEMIC_INTERFACE.md`
 
+## Implementation notes (CIV5-WAR4)
+- Canonical game implementation lives under `game/rules/war/` with public headers
+  in `game/include/dominium/rules/war/`.
+- Route control, blockades, interdictions, and sieges are scheduled via
+  `war_scale_scheduler` and expose `next_due_tick` only.
+- Blockades apply deterministic deny/throttle/inspect effects to logistics flows.
+- Interdictions schedule WAR2 engagements deterministically and record outcomes.
+- Siege deprivation is derived from CIV0a survival needs and applies legitimacy decay.
+- Cross-shard route control updates use ordered message queues with stable keys.
+
 ## Prohibitions
 - No real-time physics combat globally.
 - No per-entity combat ticks.

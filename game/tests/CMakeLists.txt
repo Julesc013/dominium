@@ -678,6 +678,50 @@ set_target_properties(dominium_civ4_scale_tests PROPERTIES
 )
 add_test(NAME dominium_civ4_scale COMMAND dominium_civ4_scale_tests)
 
+add_executable(dominium_civ5_war1_security_force_tests
+    civ5_war1_security_force_tests.cpp
+)
+target_link_libraries(dominium_civ5_war1_security_force_tests PRIVATE dominium_game)
+set_target_properties(dominium_civ5_war1_security_force_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME dominium_civ5_war1_security_force COMMAND dominium_civ5_war1_security_force_tests)
+
+add_executable(dominium_civ5_war2_engagement_tests
+    civ5_war2_engagement_tests.cpp
+)
+target_link_libraries(dominium_civ5_war2_engagement_tests PRIVATE dominium_game)
+set_target_properties(dominium_civ5_war2_engagement_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME dominium_civ5_war2_engagement COMMAND dominium_civ5_war2_engagement_tests)
+
+add_executable(dominium_civ5_war3_occupation_tests
+    civ5_war3_occupation_tests.cpp
+)
+target_link_libraries(dominium_civ5_war3_occupation_tests PRIVATE dominium_game)
+set_target_properties(dominium_civ5_war3_occupation_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME dominium_civ5_war3_occupation COMMAND dominium_civ5_war3_occupation_tests)
+
+add_executable(dominium_civ5_war4_scale_tests
+    civ5_war4_scale_tests.cpp
+)
+target_link_libraries(dominium_civ5_war4_scale_tests PRIVATE dominium_game)
+set_target_properties(dominium_civ5_war4_scale_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME dominium_civ5_war4_scale COMMAND dominium_civ5_war4_scale_tests)
+
 add_executable(dominium_mp0_parity_tests
     mp0/dom_mp0_parity_tests.cpp
 )

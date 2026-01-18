@@ -65,6 +65,29 @@ add_library(dominium_game STATIC
     rules/logistics/transport_capacity.cpp
     rules/logistics/routing_stub.cpp
     rules/logistics/logistics_flow.cpp
+    rules/war/security_force.cpp
+    rules/war/military_cohort.cpp
+    rules/war/readiness_state.cpp
+    rules/war/morale_state.cpp
+    rules/war/mobilization_pipeline.cpp
+    rules/war/demobilization_pipeline.cpp
+    rules/war/engagement.cpp
+    rules/war/engagement_resolution.cpp
+    rules/war/engagement_scheduler.cpp
+    rules/war/casualty_generator.cpp
+    rules/war/loss_accounting.cpp
+    rules/war/territory_control.cpp
+    rules/war/occupation_state.cpp
+    rules/war/resistance_state.cpp
+    rules/war/resistance_scheduler.cpp
+    rules/war/disruption_effects.cpp
+    rules/war/pacification_policies.cpp
+    rules/war/route_control.cpp
+    rules/war/blockade.cpp
+    rules/war/convoy_security.cpp
+    rules/war/interdiction.cpp
+    rules/war/siege_effects.cpp
+    rules/war/war_scale_scheduler.cpp
     rules/survival/cohort_model.cpp
     rules/survival/needs_model.cpp
     rules/survival/consumption_scheduler.cpp
