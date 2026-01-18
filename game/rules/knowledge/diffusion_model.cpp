@@ -165,7 +165,7 @@ static int diffusion_due_process_until(void* user, dom_act_time_t target_tick)
     if (sched->secrecy && ev->secrecy_policy_id) {
         policy = knowledge_secrecy_find((knowledge_secrecy_registry*)sched->secrecy,
                                         ev->secrecy_policy_id);
-        if (!knowledge_secrecy_allows(policy, ev->fidelity)) {
+        if (!policy || !knowledge_secrecy_allows(policy, ev->fidelity)) {
             ev->status = KNOW_DIFFUSION_BLOCKED;
             ev->next_due_tick = DG_DUE_TICK_NONE;
             return DG_DUE_OK;
