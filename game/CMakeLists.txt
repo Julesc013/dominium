@@ -38,6 +38,15 @@ add_library(dominium_game STATIC
     rules/governance/policy_model.cpp
     rules/governance/policy_scheduler.cpp
     rules/governance/org_governance_binding.cpp
+    rules/knowledge/knowledge_refusal_codes.cpp
+    rules/knowledge/knowledge_item.cpp
+    rules/knowledge/institution_knowledge_binding.cpp
+    rules/knowledge/secrecy_controls.cpp
+    rules/knowledge/research_process.cpp
+    rules/knowledge/diffusion_model.cpp
+    rules/technology/tech_prerequisites.cpp
+    rules/technology/tech_effects.cpp
+    rules/technology/tech_activation.cpp
     rules/city/city_refusal_codes.cpp
     rules/city/city_model.cpp
     rules/city/zoning_rules.cpp
