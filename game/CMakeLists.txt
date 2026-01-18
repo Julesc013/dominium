@@ -19,6 +19,11 @@ add_library(dominium_game STATIC
     core/life/inheritance_scheduler.cpp
     core/life/life_audit_log.cpp
     core/life/death_pipeline.cpp
+    core/life/death_scene_observation_hooks.cpp
+    core/life/remains.cpp
+    core/life/remains_decay_scheduler.cpp
+    core/life/rights_post_death.cpp
+    core/life/salvage.cpp
     core/life/birth_refusal_codes.cpp
     core/life/birth_event.cpp
     core/life/gestation_state.cpp
