@@ -6,28 +6,26 @@ for the authoritative layout contract and `docs/DEPENDENCIES.md` for enforceable
 dependency rules.
 
 ## Top-level components
-- `engine/` — Domino engine library (`domino_engine`), public headers in `engine/include/`.
-- `game/` — Dominium game library (`dominium_game`), public headers in `game/include/`.
-- `client/` — client executable (`dominium_client`) linking engine + game.
-- `server/` — server executable (`dominium_server`) linking engine + game.
-- `launcher/` — launcher core library + CLI/GUI/TUI frontends.
-- `setup/` — setup core library + CLI/GUI/TUI frontends.
-- `tools/` — tools host + validators/editors (some tools link engine; most link libs/contracts).
-- `libs/` — interface libraries (`base`, `crypto`, `fsmodel`, `netproto`, `contracts`).
+- `engine/` — Domino engine sources (deterministic core + runtime subsystems).
+- `game/` — Dominium game sources (authoritative rules + domain logic).
+- `client/` — client executable entrypoint.
+- `server/` — server executable entrypoint.
+- `launcher/` — launcher core and frontends.
+- `setup/` — setup core and frontends.
+- `tools/` — tool host plus validators/editors.
+- `libs/` — shared interface libraries and contracts.
 - `schema/` — data schemas and validation docs (data-only; no build targets).
 - `legacy/` — archived sources excluded from current builds and checks.
 
 ## Layering model
 ### Domino engine (deterministic core + runtime subsystems)
 - Deterministic simulation logic lives under `engine/modules/` and is C90.
-- Public engine APIs live under `engine/include/domino/`.
 - `engine/modules/system/` contains platform backends; it must not influence authoritative simulation state.
 - Render backends live under `engine/render/` and are treated as derived output.
 
 ### Dominium game (authoritative rules + domain logic)
 - Game logic lives under `game/core/`, `game/rules/`, and `game/economy/`.
 - Game code uses engine public headers only; it must not include `engine/modules/**`.
-- Public game APIs live under `game/include/dominium/`.
 
 ### Product executables
 - `client/` and `server/` are entrypoints that link `domino_engine` + `dominium_game`.
@@ -45,11 +43,8 @@ dependency rules.
 - `libs/` → leaf (no engine/game/launcher/setup/tools dependencies)
 - `schema/` → data-only (no code dependencies)
 
-## Public header boundaries
-- `engine/include/**` is the only public engine API surface.
-- `game/include/**` is the only public game API surface.
-- `launcher/include/**` and `setup/include/**` expose their product APIs.
-- `engine/modules/**` and `engine/render/**` are internal.
+## Public API boundaries
+Public header paths and ABI rules are defined in `docs/CONTRACTS.md`.
 
 ## Further reading
 - `docs/ARCHITECTURE_LAYERS.md` (layer summary + target graph)

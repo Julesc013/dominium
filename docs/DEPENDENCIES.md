@@ -25,11 +25,8 @@ top-level components. It complements:
 - Any circular dependency between top-level directories
 
 ## Public header rules
-- `engine/include/**` is the only public engine API surface.
-- `game/include/**` is the only public game API surface.
-- `launcher/include/**` and `setup/include/**` are the public product headers.
-- `engine/modules/**` and `engine/render/**` are internal and must not be included
-  outside `engine/` (enforced by `tools/ci/arch_checks.py`).
+Public header boundaries and ABI rules are defined in `docs/CONTRACTS.md`.
+Include rules are enforced by `tools/ci/arch_checks.py`.
 
 ## Determinism boundary
 - Authoritative code must not use wall-clock time, non-deterministic RNG, or
