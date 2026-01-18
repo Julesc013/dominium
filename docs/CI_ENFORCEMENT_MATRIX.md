@@ -81,6 +81,7 @@ All failures are merge-blocking.
 | GOV-VAL-EPIS-003 | Epistemic UI boundary violations are FORBIDDEN. | `tools/validation/validate_all` | Configure | CI fail: GOV-VAL-EPIS-003 | Use EIL/capability snapshots; remove authoritative includes/calls in UI/tools. | Prevents UI bypass of knowledge gates. |
 | GOV-VAL-PROV-004 | Provenance / non-fabrication violations are FORBIDDEN. | `tools/validation/validate_all` | Configure | CI fail: GOV-VAL-PROV-004 | Remove fabrication markers; require provenance-backed construction. | Enforces FP1 non-fabrication law. |
 | GOV-VAL-PERF-005 | Performance schema violations are FORBIDDEN (unbounded lists, missing fallbacks). | `tools/validation/validate_all` | Configure | CI fail: GOV-VAL-PERF-005 | Add bounded sizes and render feature requires/fallback/cost. | Prevents unbounded or non-scalable content. |
+| PH6-AUDIT-001 | Phase 6 audit gates MUST pass (docs, CI IDs, test assets). | `tools/ci/phase6_audit_checks.py` (CTest `phase6_audit`) | Test | CI fail: PH6-AUDIT-001 | Restore required Phase 6 docs/tests and CI matrix IDs. | Ensures Phase 6 coverage stays complete. |
 | PERF-NOMODAL-001 | Modal loading is FORBIDDEN. | Runtime trace + watchdog | Test | CI fail: PERF-NOMODAL-001 | Move work to async pipelines. | Eliminates blocking loads. |
 | UI-BYPASS-001 | UI code reading authoritative world state is FORBIDDEN. | Static scan (tools/ci/arch_checks.py) | Configure | CI fail: UI-BYPASS-001 | Route UI through authorized projection layers. | Preserves epistemic separation. |
 | EPIS-BYPASS-001 | UI includes authoritative headers are FORBIDDEN. | Static scan (tools/ci/arch_checks.py) + CTest `dominium_epistemic_ui_bypass` | Test | CI fail: EPIS-BYPASS-001 | Include EIL/capability snapshot headers only. | Blocks direct sim access from UI zones. |
@@ -151,3 +152,7 @@ All failures are merge-blocking.
 - `docs/ARCH_BUILD_ENFORCEMENT.md` references `DET-FLOAT-001`, but the implemented check ID is `DET-FLOAT-003`.
 - `BUILD-GLOBAL-001` is enforced for `include_directories()` at configure time; `link_directories()` is only covered by `tools/ci/arch_checks.py`.
 - `PERF-STALL-004` and `PERF-BUDGET-001` duplicate `PERF-STALL-001` and `PERF-BUDGET-002` without implementation.
+
+## Phase-6 Coverage (PH6-AUDIT)
+
+`PH6-AUDIT-001` verifies Phase 6 documentation, test assets, and CI IDs for LIFE/CIV/MP0/GOV.
