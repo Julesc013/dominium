@@ -656,6 +656,17 @@ set_target_properties(dominium_civ2_governance_tests PROPERTIES
 )
 add_test(NAME dominium_civ2_governance COMMAND dominium_civ2_governance_tests)
 
+add_executable(dominium_civ3_knowledge_tests
+    civ3/dom_civ3_knowledge_tests.cpp
+)
+target_link_libraries(dominium_civ3_knowledge_tests PRIVATE dominium_game)
+set_target_properties(dominium_civ3_knowledge_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME dominium_civ3_knowledge COMMAND dominium_civ3_knowledge_tests)
+
 add_executable(dominium_mp0_parity_tests
     mp0/dom_mp0_parity_tests.cpp
 )
