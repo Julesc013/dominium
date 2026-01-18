@@ -47,6 +47,12 @@ add_library(dominium_game STATIC
     rules/technology/tech_prerequisites.cpp
     rules/technology/tech_effects.cpp
     rules/technology/tech_activation.cpp
+    rules/scale/scale_domains.cpp
+    rules/scale/domain_transitions.cpp
+    rules/scale/interplanetary_logistics.cpp
+    rules/scale/interstellar_logistics.cpp
+    rules/scale/scale_time_warp.cpp
+    rules/scale/scale_interest_binding.cpp
     rules/city/city_refusal_codes.cpp
     rules/city/city_model.cpp
     rules/city/zoning_rules.cpp
