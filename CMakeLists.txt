@@ -128,6 +128,10 @@ add_custom_target(check_arch
     COMMENT "Running architecture boundary checks"
 )
 
+add_test(NAME phase6_audit
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/ci/phase6_audit_checks.py --repo-root ${CMAKE_SOURCE_DIR}
+)
+
 set(DOMINIUM_ENGINE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/engine/include")
 set(DOMINIUM_GAME_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/game/include")
 set(DOMINIUM_SETUP_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/setup/include")
@@ -546,6 +550,9 @@ if(DOM_BUILD_GAME)
     add_subdirectory(game)
     add_subdirectory(client)
     add_subdirectory(server)
+    if(DOM_BUILD_TESTS)
+        add_subdirectory(game/tests/phase6)
+    endif()
 endif()
 if(DOM_BUILD_SETUP)
     add_subdirectory(setup)
