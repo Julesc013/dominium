@@ -18,6 +18,7 @@ DETERMINISM: Pipeline ordering and IDs are deterministic.
 #include "dominium/life/cohort_update_hooks.h"
 #include "dominium/life/death_pipeline.h"
 #include "dominium/life/gestation_state.h"
+#include "dominium/life/lineage.h"
 #include "dominium/life/life_audit_log.h"
 #include "dominium/life/control_authority.h"
 #include "dominium/rules/needs_constraints.h"
@@ -65,6 +66,7 @@ typedef struct life_birth_scheduler {
     struct life_birth_due_user* due_users;
     life_gestation_registry* gestations;
     life_birth_event_list* births;
+    life_lineage_registry* lineage;
     life_cohort_registry* cohorts;
     life_person_registry* persons;
     life_body_registry* bodies;
@@ -84,6 +86,7 @@ typedef struct life_birth_context {
     life_gestation_registry* gestations;
     life_birth_scheduler* scheduler;
     life_birth_event_list* births;
+    life_lineage_registry* lineage;
     life_cohort_registry* cohorts;
     life_person_registry* persons;
     life_body_registry* bodies;
@@ -105,6 +108,7 @@ int life_birth_scheduler_init(life_birth_scheduler* sched,
                               dom_act_time_t start_tick,
                               life_gestation_registry* gestations,
                               life_birth_event_list* births,
+                              life_lineage_registry* lineage,
                               life_cohort_registry* cohorts,
                               life_person_registry* persons,
                               life_body_registry* bodies,

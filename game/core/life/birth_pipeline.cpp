@@ -105,6 +105,7 @@ static int life_birth_complete(life_birth_scheduler* sched,
     u64 child_person_id = 0u;
     u64 birth_event_id = 0u;
     life_birth_event birth_event;
+    life_lineage_record lineage;
 
     if (!sched || !gestation) {
         return DG_DUE_ERR;
@@ -128,6 +129,20 @@ static int life_birth_complete(life_birth_scheduler* sched,
 
     if (!gestation->micro_active && sched->cohorts && gestation->cohort_id != 0u) {
         (void)life_cohort_add_birth(sched->cohorts, gestation->cohort_id, 1u);
+    }
+
+    if (sched->lineage) {
+        memset(&lineage, 0, sizeof(lineage));
+        lineage.person_id = child_person_id;
+        lineage.parent_count = gestation->parent_count;
+        lineage.parent_ids[0] = gestation->parent_ids[0];
+        lineage.parent_ids[1] = gestation->parent_ids[1];
+        lineage.parent_certainty[0] = gestation->parent_certainty[0];
+        lineage.parent_certainty[1] = gestation->parent_certainty[1];
+        lineage.lineage_provenance_ref = gestation->provenance_ref;
+        if (life_lineage_set(sched->lineage, &lineage) != 0) {
+            return DG_DUE_ERR;
+        }
     }
 
     memset(&birth_event, 0, sizeof(birth_event));
@@ -191,6 +206,7 @@ int life_birth_scheduler_init(life_birth_scheduler* sched,
                               dom_act_time_t start_tick,
                               life_gestation_registry* gestations,
                               life_birth_event_list* births,
+                              life_lineage_registry* lineage,
                               life_cohort_registry* cohorts,
                               life_person_registry* persons,
                               life_body_registry* bodies,
@@ -218,6 +234,7 @@ int life_birth_scheduler_init(life_birth_scheduler* sched,
     sched->due_users = user_storage;
     sched->gestations = gestations;
     sched->births = births;
+    sched->lineage = lineage;
     sched->cohorts = cohorts;
     sched->persons = persons;
     sched->bodies = bodies;

@@ -22,6 +22,7 @@ add_library(dominium_game STATIC
     core/life/birth_refusal_codes.cpp
     core/life/birth_event.cpp
     core/life/gestation_state.cpp
+    core/life/lineage.cpp
     core/life/cohort_update_hooks.cpp
     core/life/birth_pipeline.cpp
     rules/reproduction_rules.cpp
