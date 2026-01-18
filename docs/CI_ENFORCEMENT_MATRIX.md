@@ -102,6 +102,12 @@ All failures are merge-blocking.
 | LIFE-COHORT-001 | Cohort/micro birth integration MUST preserve counts. | CTest `dominium_life_birth` | Test | CI fail: LIFE-COHORT-001 | Update cohorts only in macro mode; preserve counts across refinement. | Prevents population drift. |
 | LIFE-BIRTH-EPIS-001 | Birth knowledge is not omniscient. | CTest `dominium_life_birth` | Test | CI fail: LIFE-BIRTH-EPIS-001 | Emit birth notices via explicit epistemic hooks only. | Enforces epistemic boundary. |
 | LIFE-BIRTH-BATCH-001 | Gestation completion MUST be batch vs step equivalent. | CTest `dominium_life_birth` | Test | CI fail: LIFE-BIRTH-BATCH-001 | Use due-event scheduler with deterministic ordering. | Preserves determinism under batching. |
+| LIFE-REM-DET-001 | Remains creation MUST be deterministic. | CTest `dominium_life_remains` | Test | CI fail: LIFE-REM-DET-001 | Ensure stable IDs/ordering for remains records. | Prevents post-death drift. |
+| LIFE-REM-DECAY-001 | Remains decay MUST be batch vs step equivalent. | CTest `dominium_life_remains` | Test | CI fail: LIFE-REM-DECAY-001 | Use due-event scheduler with deterministic ordering. | Preserves decay determinism. |
+| LIFE-REM-RIGHTS-001 | Salvage rights resolution order MUST be deterministic. | CTest `dominium_life_remains` | Test | CI fail: LIFE-REM-RIGHTS-001 | Apply contract > executor > jurisdiction > finder ordering only. | Enforces rights order. |
+| LIFE-REM-LEDGER-001 | Salvage MUST conserve ledger balances. | CTest `dominium_life_remains` | Test | CI fail: LIFE-REM-LEDGER-001 | Use ledger transactions; no implicit transfer or balance changes. | Preserves ledger conservation. |
+| LIFE-REM-EPIS-001 | Salvage MUST be epistemically gated. | CTest `dominium_life_remains` | Test | CI fail: LIFE-REM-EPIS-001 | Require explicit epistemic knowledge before salvage actions. | Prevents omniscient salvage. |
+| LIFE-REM-COUNT-001 | Remains collapse/refine MUST preserve counts and provenance. | CTest `dominium_life_remains` | Test | CI fail: LIFE-REM-COUNT-001 | Preserve counts and provenance hashes across collapse/refine. | Prevents provenance loss. |
 
 ## Phase-1 Audit Notes (PH1-AUDIT)
 

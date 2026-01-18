@@ -87,6 +87,62 @@ Optional fields:
 - executor_authority_id
 - audit_trail_ref
 
+## Remains & salvage model (mandatory)
+Remains persist deterministically after death and are the only lawful source
+for post-death recovery. Remains are not globally known; discovery is
+epistemic.
+
+### Remains schema (conceptual)
+Required fields:
+- remains_id
+- person_id (identity link)
+- body_id (embodiment link)
+- location_ref
+- created_act
+- state (fresh | decayed | skeletal | unknown | collapsed)
+- ownership_rights_ref (post-death rights)
+- next_due_tick (for decay scheduling)
+- provenance_ref
+
+Optional fields:
+- inventory_account_id (ledger account for carried items)
+- active_claim_id
+
+### Post-death rights schema (conceptual)
+Required fields:
+- rights_id
+- estate_id
+- jurisdiction_id
+- has_contract
+- allow_finder
+- jurisdiction_allows
+- estate_locked
+
+Rights resolution order (deterministic):
+1) Explicit contract
+2) Estate executor (if authorized)
+3) Jurisdiction default
+4) Finder policy (if allowed)
+5) Refusal
+
+### Salvage claims (conceptual)
+Required fields:
+- claim_id
+- claimant_id
+- claimant_account_id
+- remains_id
+- claim_basis (contract | executor | jurisdiction | finder)
+- status (pending | accepted | refused)
+- resolution_tick
+- refusal_code
+
+Salvage outcomes MUST produce ledger transactions and provenance entries.
+
+### Decay & persistence
+- Remains decay is event-driven using ACT ticks (no global scans).
+- Decay stages are deterministic and batch/step invariant.
+- Collapse/refine MUST preserve counts and provenance summary hashes.
+
 ## Epistemic knowledge of death
 - The death event is authoritative; knowledge of death is not.
 - Knowledge must be produced by sensors or communication (INF0/INF2).
@@ -104,6 +160,13 @@ Optional fields:
 - Inheritance scheduling uses the due-event scheduler and emits `InheritanceAction` records.
 - Epistemic visibility is provided via an explicit death-notice callback; no implicit broadcasts exist.
 
+## Implementation notes (LIFE4)
+- Remains creation is part of the death pipeline and emits audit log entries.
+- Remains decay is scheduled via the due-event scheduler (no global iteration).
+- Post-death rights records are created alongside remains.
+- Salvage claims resolve deterministically and use ledger transactions only.
+- Remains discovery is emitted via explicit observation hooks (no omniscient broadcast).
+
 ## Prohibitions (absolute)
 - Deleting Person on death.
 - Fabricating heirs or assets.
@@ -119,6 +182,11 @@ Implementations MUST provide tests for:
 - replay equivalence for death and estate events
 - batch vs step invariance for scheduled estate resolution
 - epistemic correctness (death knowledge delayed via sensors/comms)
+- deterministic remains creation and decay scheduling
+- salvage rights resolution order determinism
+- ledger conservation during salvage transfers
+- epistemic gating for salvage attempts
+- collapse/refine count and provenance hash preservation
 
 ## Integration points (mandatory)
 - Provenance: `docs/SPEC_PROVENANCE.md`
