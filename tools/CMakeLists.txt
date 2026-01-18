@@ -57,7 +57,21 @@ set_target_properties(data_validate PROPERTIES
     C_EXTENSIONS OFF
 )
 
+add_executable(validate_all
+    validation/validate_all_main.cpp
+    validation/validator_common.cpp
+    validation/validator_reports.cpp
+    validation/validators_registry.cpp
+)
+set_target_properties(validate_all PROPERTIES
+    OUTPUT_NAME "validate_all"
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
 add_executable(tools::host ALIAS dominium-tools)
 add_executable(tools::coredata_compile ALIAS coredata_compile)
 add_executable(tools::coredata_validate ALIAS coredata_validate)
 add_executable(tools::data_validate ALIAS data_validate)
+add_executable(tools::validate_all ALIAS validate_all)
