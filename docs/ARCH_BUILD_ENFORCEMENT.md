@@ -48,6 +48,7 @@ Enforcement is done via target-scoped includes and configure-time assertions:
 - **Build-time**: illegal includes fail compilation due to missing include paths (ARCH-INC-001, ARCH-INC-002).
 - **Static checks**: `tools/ci/arch_checks.py` enforces repo-wide guards (ARCH-TOP-001, ARCH-RENDER-001, UI-BYPASS-001, BUILD-GLOBAL-001, DET-FLOAT-001).
 - **Data validation**: `data_validate` and `engine_data_validate` enforce DATA* rules (DATA-VALID-001/002, DATA-MIGRATE-001).
+- **Governance validation**: `tools/validation/validate_all` enforces GOV-VAL-* rules (schema governance, rendering canon, epistemic boundary, provenance, performance).
 - **Epistemic UI boundary**: `tools/ci/arch_checks.py` enforces EPIS-* rules; `dominium_epistemic` tests capability gating.
 
 ## How to run architecture checks locally
@@ -63,9 +64,16 @@ data_validate --input=<path> --schema-id=<u64> --schema-version=MAJOR.MINOR.PATC
 ctest -R engine_data_validate
 ```
 
+## How to run governance validation locally
+```
+cmake --build build/msvc-base --target validate_all
+build/msvc-base/bin/validate_all --repo-root=.
+```
+
 ## CI command (noninteractive)
 ```
 python tools/ci/arch_checks.py
+build/msvc-base/bin/validate_all --repo-root=. --strict=1
 ```
 
 ## Data validation command (noninteractive)
@@ -101,4 +109,5 @@ python tools/ci/arch_checks.py
 cmake --preset vs2026-x64-debug
 cmake --build --preset vs2026-x64-debug
 ctest --preset vs2026-x64-debug
+build/msvc-base/bin/validate_all --repo-root=.
 ```
