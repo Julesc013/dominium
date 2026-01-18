@@ -32,6 +32,12 @@ add_library(dominium_game STATIC
     core/life/birth_pipeline.cpp
     core/sim/macro_due_scheduler_hooks.cpp
     core/session/mp0_session.cpp
+    rules/governance/jurisdiction_model.cpp
+    rules/governance/legitimacy_model.cpp
+    rules/governance/enforcement_capacity.cpp
+    rules/governance/policy_model.cpp
+    rules/governance/policy_scheduler.cpp
+    rules/governance/org_governance_binding.cpp
     rules/city/city_refusal_codes.cpp
     rules/city/city_model.cpp
     rules/city/zoning_rules.cpp
