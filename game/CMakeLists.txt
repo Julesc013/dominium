@@ -19,6 +19,13 @@ add_library(dominium_game STATIC
     core/life/inheritance_scheduler.cpp
     core/life/life_audit_log.cpp
     core/life/death_pipeline.cpp
+    core/life/birth_refusal_codes.cpp
+    core/life/birth_event.cpp
+    core/life/gestation_state.cpp
+    core/life/cohort_update_hooks.cpp
+    core/life/birth_pipeline.cpp
+    rules/reproduction_rules.cpp
+    rules/needs_constraints.cpp
 )
 add_custom_target(game_include_sanity
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/verify_includes_sanity.py

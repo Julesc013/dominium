@@ -22,8 +22,9 @@ extern "C" {
 typedef enum life_audit_kind {
     LIFE_AUDIT_DEATH = 1,
     LIFE_AUDIT_ESTATE = 2,
-    LIFE_AUDIT_INHERITANCE = 3,
-    LIFE_AUDIT_REFUSAL = 4
+    LIFE_AUDIT_BIRTH = 3,
+    LIFE_AUDIT_INHERITANCE = 4,
+    LIFE_AUDIT_REFUSAL = 5
 } life_audit_kind;
 
 typedef struct life_audit_entry {
