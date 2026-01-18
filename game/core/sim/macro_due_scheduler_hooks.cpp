@@ -2,7 +2,7 @@
 FILE: game/core/sim/macro_due_scheduler_hooks.cpp
 MODULE: Dominium
 LAYER / SUBSYSTEM: Game / sim
-RESPONSIBILITY: Implements macro due-scheduler hooks for survival subsystems.
+RESPONSIBILITY: Implements macro due-scheduler hooks for survival and population subsystems.
 ALLOWED DEPENDENCIES: game/include/**, engine/include/** public headers, and C++98 headers only.
 FORBIDDEN DEPENDENCIES: engine internal headers; OS/platform headers.
 THREADING MODEL: No internal synchronization; callers must serialize access.
@@ -34,6 +34,9 @@ dom_act_time_t dom_macro_next_due(const dom_macro_due_hooks* hooks)
     if (hooks->production) {
         next = dom_macro_min_due(next, survival_production_next_due(hooks->production));
     }
+    if (hooks->population) {
+        next = dom_macro_min_due(next, population_scheduler_next_due(hooks->population));
+    }
     return next;
 }
 
@@ -50,6 +53,11 @@ int dom_macro_process_until(dom_macro_due_hooks* hooks, dom_act_time_t target_ti
     if (hooks->production) {
         if (survival_production_advance(hooks->production, target_tick) != 0) {
             return -3;
+        }
+    }
+    if (hooks->population) {
+        if (population_scheduler_advance(hooks->population, target_tick) != 0) {
+            return -4;
         }
     }
     return 0;

@@ -2,7 +2,7 @@
 FILE: include/dominium/sim/macro_due_scheduler_hooks.h
 MODULE: Dominium
 LAYER / SUBSYSTEM: Dominium API / sim
-RESPONSIBILITY: Defines minimal macro due-scheduler hooks for survival subsystems.
+RESPONSIBILITY: Defines minimal macro due-scheduler hooks for survival and population subsystems.
 ALLOWED DEPENDENCIES: game/include/**, engine/include/** public headers, and C89/C++98 headers only.
 FORBIDDEN DEPENDENCIES: engine internal headers; OS/platform headers.
 THREADING MODEL: No internal synchronization; callers must serialize access.
@@ -15,6 +15,7 @@ DETERMINISM: Aggregation is deterministic.
 #include "domino/core/dom_time_core.h"
 #include "dominium/rules/survival/consumption_scheduler.h"
 #include "dominium/rules/survival/survival_production_actions.h"
+#include "dominium/rules/population/population_scheduler.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -23,6 +24,7 @@ extern "C" {
 typedef struct dom_macro_due_hooks {
     survival_consumption_scheduler* consumption;
     survival_production_scheduler* production;
+    population_scheduler* population;
 } dom_macro_due_hooks;
 
 dom_act_time_t dom_macro_next_due(const dom_macro_due_hooks* hooks);
