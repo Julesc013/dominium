@@ -32,6 +32,18 @@ add_library(dominium_game STATIC
     core/life/birth_pipeline.cpp
     core/sim/macro_due_scheduler_hooks.cpp
     core/session/mp0_session.cpp
+    rules/city/city_refusal_codes.cpp
+    rules/city/city_model.cpp
+    rules/city/zoning_rules.cpp
+    rules/city/city_services_stub.cpp
+    rules/infrastructure/store_model.cpp
+    rules/infrastructure/maintenance_model.cpp
+    rules/infrastructure/production_chain.cpp
+    rules/infrastructure/building_machine.cpp
+    rules/infrastructure/machine_scheduler.cpp
+    rules/logistics/transport_capacity.cpp
+    rules/logistics/routing_stub.cpp
+    rules/logistics/logistics_flow.cpp
     rules/survival/cohort_model.cpp
     rules/survival/needs_model.cpp
     rules/survival/consumption_scheduler.cpp
