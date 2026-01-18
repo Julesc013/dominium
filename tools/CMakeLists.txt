@@ -75,3 +75,45 @@ add_executable(tools::coredata_compile ALIAS coredata_compile)
 add_executable(tools::coredata_validate ALIAS coredata_validate)
 add_executable(tools::data_validate ALIAS data_validate)
 add_executable(tools::validate_all ALIAS validate_all)
+
+add_test(NAME dominium_validate_all_bad_fallback
+    COMMAND $<TARGET_FILE:validate_all>
+        --repo-root=${CMAKE_SOURCE_DIR}/tools/validation/fixtures/bad_fallback
+        --strict=1
+)
+set_tests_properties(dominium_validate_all_bad_fallback PROPERTIES WILL_FAIL TRUE)
+
+add_test(NAME dominium_validate_all_bad_float
+    COMMAND $<TARGET_FILE:validate_all>
+        --repo-root=${CMAKE_SOURCE_DIR}/tools/validation/fixtures/bad_float
+        --strict=1
+)
+set_tests_properties(dominium_validate_all_bad_float PROPERTIES WILL_FAIL TRUE)
+
+add_test(NAME dominium_validate_all_bad_unbounded
+    COMMAND $<TARGET_FILE:validate_all>
+        --repo-root=${CMAKE_SOURCE_DIR}/tools/validation/fixtures/bad_unbounded
+        --strict=1
+)
+set_tests_properties(dominium_validate_all_bad_unbounded PROPERTIES WILL_FAIL TRUE)
+
+add_test(NAME dominium_validate_all_bad_fabrication
+    COMMAND $<TARGET_FILE:validate_all>
+        --repo-root=${CMAKE_SOURCE_DIR}/tools/validation/fixtures/bad_fabrication
+        --strict=1
+)
+set_tests_properties(dominium_validate_all_bad_fabrication PROPERTIES WILL_FAIL TRUE)
+
+add_test(NAME dominium_validate_all_bad_ui
+    COMMAND $<TARGET_FILE:validate_all>
+        --repo-root=${CMAKE_SOURCE_DIR}/tools/validation/fixtures/bad_ui
+        --strict=1
+)
+set_tests_properties(dominium_validate_all_bad_ui PROPERTIES WILL_FAIL TRUE)
+
+add_test(NAME dominium_validate_all_bad_renderer
+    COMMAND $<TARGET_FILE:validate_all>
+        --repo-root=${CMAKE_SOURCE_DIR}/tools/validation/fixtures/bad_renderer
+        --strict=1
+)
+set_tests_properties(dominium_validate_all_bad_renderer PROPERTIES WILL_FAIL TRUE)
