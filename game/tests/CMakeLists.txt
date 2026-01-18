@@ -612,6 +612,17 @@ set_target_properties(dominium_life_birth_tests PROPERTIES
 )
 add_test(NAME dominium_life_birth COMMAND dominium_life_birth_tests)
 
+add_executable(dominium_civ0a_survival_tests
+    civ0a/dom_civ0a_survival_tests.cpp
+)
+target_link_libraries(dominium_civ0a_survival_tests PRIVATE dominium_game)
+set_target_properties(dominium_civ0a_survival_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME dominium_civ0a_survival COMMAND dominium_civ0a_survival_tests)
+
 add_executable(dominium_life_remains_tests
     life/dom_life_remains_salvage_tests.cpp
 )
