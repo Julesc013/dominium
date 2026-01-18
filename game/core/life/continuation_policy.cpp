@@ -66,7 +66,7 @@ static int life_continuation_select_s1(const life_continuation_context* ctx,
     u32 total = 0u;
     u32 known = 0u;
     u32 authorized = 0u;
-    const life_candidate* best = NULL;
+    const life_candidate* best = 0;
 
     if (!ctx || !out_decision) {
         return -1;
@@ -96,7 +96,7 @@ static int life_continuation_select_s1(const life_continuation_context* ctx,
             has_authority = life_authority_can_control(ctx->authority,
                                                        ctx->controller_id,
                                                        cand->person_id,
-                                                       NULL);
+                                                       0);
         } else {
             has_authority = 1;
         }
