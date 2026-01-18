@@ -1,228 +1,91 @@
 # Dominium / Domino
-Dominium (built on the Domino engine) is a deterministic 3D simulation-type game runtime.
+Dominium is a deterministic simulation game runtime built on the Domino engine.
 
-## High-level overview (non-technical)
-Dominium combines a deterministic simulation engine (Domino) with product code
-for a game, launcher, setup tools, and editors. Its focus is reproducibility:
-given the same inputs, the simulation produces the same outcomes, replays, and
-hashes across supported platforms.
+## What this project is (non-technical)
+Dominium provides a deterministic simulation runtime and the surrounding product
+stack needed to install, launch, and run it. It is designed so the same inputs
+produce the same results across supported builds, enabling reproducible saves,
+replays, and verification.
 
-What makes it distinct:
-- Uses fixed-point math and strict ordering rules to keep results stable.
-- Separates authoritative simulation from user interface, rendering, and
-  platform code.
-- Treats its repository layout and specs as long-term compatibility contracts.
+It is:
+- a game runtime and toolchain (engine + game + launcher + setup + tools).
+- a deterministic simulation stack focused on reproducibility and long-lived data.
 
-Problems it is designed to solve:
-- Replayable, verifiable simulations that stay consistent across machines.
-- Lockstep-style workflows where every peer must agree on results.
-- Long-lived content and save formats with explicit versioning rules.
+It is not:
+- a general-purpose rendering engine or game framework.
+- a floating-point or wall-clock-driven authoritative simulation.
+- a monolithic launcher/installer/game binary.
 
-Non-goals (by design constraints):
-- Not a floating-point or wall-clock-driven simulation core.
-- Not a general-purpose engine that mixes user interface or rendering with
-  authoritative state.
+## High-level architecture (technical but accessible)
+Domino (engine) provides the deterministic core. Dominium (game) implements the
+authoritative rules and domain logic on top of it. The launcher and setup are
+separate control-plane tools: setup installs and prepares the product, and the
+launcher orchestrates runtime instances and hands the game an explicit launch
+handshake. Client and server are entrypoints that link the engine and game.
 
-## Key features (at a glance)
-- Deterministic C90 simulation core with fixed-point math and world hashing.
-- C++98 product layer (game, launcher, setup, tools) on top of stable contracts.
-- Replay and lockstep scaffolding with canonical ordering rules.
-- Strict dependency boundaries and public-header API contracts.
-- Multiple platform and renderer backends selected at configure time.
-- Built-in determinism regression scans and test suites.
+Separation keeps authoritative simulation isolated from platform/UI and from
+installation or repair logic while preserving deterministic boundaries.
 
-## Architecture overview (mid-level technical)
-Layering (simplified):
-- Dominium products: game, launcher, setup, tools
-  - Dominium common layer: paths, instances, packsets, compatibility
-- Domino engine
-  - Deterministic core: sim, world, TRANS/STRUCT/DECOR (transport, structure,
-    decor), replay, hashing
-  - Derived presentation: rendering and user interface (UI) view
-    (non-authoritative)
-- Domino system layer (dsys): operating system, window, input, filesystem,
-  process backends
+## Key characteristics
+- Determinism: fixed-point simulation and canonical ordering.
+- Portability: C90/C++98 codebases with multiple platform backends.
+- Long-term maintenance focus: stable layout and compatibility contracts.
+- Explicit invariants: public headers and specs define behavior and ABI rules.
+- Tooling-enforced discipline: static architecture checks and build guards.
 
-Major subsystems and roles:
-- **Domino deterministic core**: authoritative simulation state, fixed-point
-  math, canonical ordering, replay and world hashing.
-- **Domino system layer**: platform abstractions; must not influence simulation
-  outcomes.
-- **Rendering and user interface (UI)**: derived outputs only; never a source
-  of truth.
-- **Dominium products**: game runtime, launcher, setup/packaging, and tools
-  built on the public engine contracts in `include/`. Tools are launched as
-  instance targets and consume the same handshake + logical roots; they do not
-  bypass launcher contracts.
-- **Runtime filesystem roots**: launcher-defined logical roots (read-only
-  `DOMINIUM_HOME`, per-run writable `DOMINIUM_RUN_ROOT`); the game does not
-  infer install layouts.
+## Intended audiences & use cases
+- Players: packaged builds of the game and launcher.
+- Modders: content packs and rule-driven extensions.
+- Developers: engine/game/launcher/setup contributors.
+- Researchers: reproducible simulation and verification workflows.
 
-### Runtime kernel (game layer)
-Domino is the deterministic simulation engine (C90/C89, fixed-point). Dominium
-is the product layer (game, launcher, setup, tools) built around it. The
-Dominium game contains a runtime kernel that orchestrates simulation ticks,
-ingests commands, computes determinism hashes, binds saves/replays, and
-validates the launcher handshake; GUI/TUI/headless frontends never touch engine
-state directly, and rendering/UI remain derived views.
+## Supported platforms (high level only)
+- Presets target Windows (MSVC), Linux (GCC), and macOS (Xcode).
+- Platform backends are selected via `DOM_PLATFORM` and are host-dependent;
+  see `docs/BUILD_MATRIX.md` for the current preset list.
 
-**Deterministic time model (tick-first):** authoritative time is `tick_index`
-(u64) and `ups` (ticks per second, default 60). Wall-clock seconds/days are
-derived for presentation; floating-point `dt` may exist in UI/runtime glue but
-never drives simulation.
-
-**Units and scale:** canonical length unit is meters; positions are stored as
-fixed-point Q16.16 meters. One tile/block equals 1 meter and one chunk equals
-16 meters by definition; larger groupings (segment, page, surface) are a
-conceptual hierarchy. Rendering and cache grids are non-authoritative.
-
-**Instance model and identity binding:** the instance is the top-level unit of
-reproducibility (isolated, hashable, reproducible). World state, saves, replays,
-and logs are instance-scoped; there is no mutable global universe directory.
-Saves and replays bind to instance identity, content/pack graph + hashes, and
-sim-affecting flags; mismatches refuse to run by default to support archival
-verification (`docs/SPEC_IDENTITY.md`, `docs/SPEC_GAME_PRODUCT.md`).
-
-**Launcher/setup control plane:** Setup2 (the current setup core) is the
-kernel-centric installer and deployment engine; the launcher is the long-lived
-control plane. The game does not install, repair, migrate, or guess paths, and
-it must not scan or infer install layouts. It accepts instance identity
-(`instance_id`), content hashes, and flags from the launcher handshake and
-refuses to run on mismatch
-(`docs/SPEC_LAUNCHER.md`, `docs/SPEC_SETUP_CORE.md`,
-`docs/LAUNCHER_SETUP_OVERVIEW.md`). `launcher_handshake.tlv` must not contain
-absolute paths; filesystem access is resolved through launcher-defined logical
-roots (`DOMINIUM_HOME` read-only, `DOMINIUM_RUN_ROOT` per-run writable) with
-relative, declarative paths only.
-
-Design philosophy highlights:
-- Determinism first: fixed-point, canonical order, replayable state.
-- Portability: C90/C++98 targets and explicit platform backends.
-- Explicit contracts: public headers define the ABI and behavior.
-- Long-term maintainability: specs and layout contracts are authoritative.
-
-Further reading: `docs/ARCHITECTURE.md`, `docs/OVERVIEW_ARCHITECTURE.md`,
-`docs/SPEC_DOMINIUM_LAYER.md`, `docs/SPEC_DOMINO_SUBSYSTEMS.md`.
-
-## Supported platforms (summary)
-- Primary validated: Windows `win32` and `win32_headless` (see
-  `docs/BUILD_MATRIX.md`).
-- Secondary / compile-gated: `posix_headless`, `posix_x11`, `posix_wayland`,
-  `cocoa` (host dependencies required; see `docs/BUILD_MATRIX.md`).
-- Headless/CI (continuous integration): `null` platform with `null` renderer
-  backend.
-- Renderer backends: software baseline; optional `dx9`, `dx11`, `gl2`, `vk1`,
-  `metal` when host tooling is available.
-- Legacy installer stubs: DOS, Win16, CP/M-80, CP/M-86, Carbon OS
-  (`docs/SETUP_RETRO.md`).
-- Architectural constraints: little-endian, two's complement, arithmetic right
-  shift, truncating signed division; packaging templates name `amd64`/`x86_64`
-  by default (`docs/SETUP_LINUX.md`).
-
-## Intended audience and use cases
-For:
-- Engine developers who need deterministic simulation, replay, and hashing.
-- Teams building a game + launcher + setup workflow with strict layering.
-- Researchers/educators who need reproducible simulations over time.
-
-Not for:
-- Projects that require floating-point authoritative physics or time-based
-  simulation in the core.
-- Teams expecting modern C++ features (run-time type information, exceptions,
-  or STL types across the ABI boundary) or large dynamic dependency stacks.
-
-## Design constraints and philosophy
-- **Language standards**: deterministic core is C90; product layer is C++98
-  (see `docs/LANGUAGE_POLICY.md`).
-- **Determinism**: fixed-point math only, canonical ordering, replay/hash
-  invariants, no wall-clock or OS APIs in authoritative paths
-  (`docs/SPEC_DETERMINISM.md`).
-- **Dependencies**: no build-time downloads; external code is vendored under
-  `external/` (`docs/BUILDING.md`, `docs/DEPENDENCIES.md`).
-- **Contracts**: public headers are the application binary interface (ABI) and
-  must be self-contained; data structs are plain-old-data (POD) and versioned
-  when crossing module boundaries (`docs/CONTRACTS.md`).
-- **Layering**: engine core never depends on product code; platform/user
-  interface/render layers must not influence authoritative state
-  (`docs/DEPENDENCIES.md`).
-
-These constraints exist to keep simulation results reproducible and maintainable
-across platforms and over long time horizons.
-
-## Repository structure (map)
-- `docs/` - specifications and policy documents (authoritative)
-- `include/` - public headers (`include/domino/**`, `include/dominium/**`)
-- `source/` - implementation code (`domino`, `dominium`, `tests`)
-- `tests/` - integration tests and fixtures
-- `data/` - in-tree content sources
-- `repo/` - runtime repo content referenced via `DOMINIUM_HOME` (read-only)
-- `tools/` - build-time and authoring tools
-- `scripts/` - build and packaging helpers
-- `cmake/` - CMake modules
-- `external/` - vendored third-party sources
-- `.github/` - CI and workflow config
-
-Core data authoring and the build pipeline are defined in
-`docs/SPEC_CORE_DATA.md` and `docs/SPEC_CORE_DATA_PIPELINE.md`.
+## Project structure (top-level map)
+- `docs/` — authoritative specifications and policy docs
+- `engine/` — Domino engine sources and public headers
+- `game/` — Dominium game sources and public headers
+- `client/` — client runtime entrypoint
+- `server/` — server runtime entrypoint
+- `launcher/` — launcher core and frontends
+- `setup/` — setup core and frontends
+- `tools/` — tool host and validators
+- `libs/` — interface libraries and contracts
+- `schema/` — data schema sources and validation references
+- `sdk/` — SDK headers, docs, and samples
+- `scripts/` — build and packaging helpers
+- `cmake/` — CMake modules used by the root build
+- `legacy/` — archived sources excluded from the root build graph
+- `build/` — out-of-source build directory (ephemeral)
+- `dist/` — dist layout outputs (ephemeral, opt-in)
+- `.github/` — workflow and CI configuration
 
 ## Documentation map
-Start here:
-- `docs/README.md` (documentation index)
-- `docs/DIRECTORY_CONTEXT.md` (authoritative layout contract)
-- `docs/ARCHITECTURE.md` and `docs/OVERVIEW_ARCHITECTURE.md`
-- `docs/DEPENDENCIES.md` (allowed dependency directions)
-- `docs/CONTRACTS.md` (public API rules)
-- `docs/STYLE.md` (style and naming)
-- `docs/LANGUAGE_POLICY.md` (language/toolchain constraints)
+- `docs/README.md` — documentation index and entry points
+- `docs/ARCHITECTURE.md` — system architecture and layering
+- `docs/COMPONENTS.md` — component roles and build products
+- `docs/DEPENDENCIES.md` — allowed and forbidden dependency edges
+- `docs/CONTRACTS.md` — public API contract rules
+- `docs/BUILD_OVERVIEW.md` — build topology summary
+- `docs/BUILDING.md` — build system and configuration
+- `docs/BUILD_MATRIX.md` — canonical presets
+- `docs/BUILD_DIST.md` and `docs/build_output.md` — dist layout and outputs
+- `docs/SPEC_*.md` — subsystem specifications (see `docs/README.md`)
 
-Build and release:
-- `docs/BUILDING.md`
-- `docs/BUILD_MATRIX.md`
-- `docs/RELEASE_NOTES_PROCESS.md`
+## Build & usage overview (non-procedural)
+Builds produce the engine and game libraries, client/server entrypoints,
+launcher/setup frontends, and tool executables. Default outputs go to the build
+directory (`bin/` and `lib/`); the `dist/` layout is opt-in. Detailed build
+instructions and presets live in `docs/BUILDING.md` and `docs/BUILD_MATRIX.md`.
 
-Subsystem specs (selected; see `docs/README.md` for the full list):
-- `docs/SPEC_DETERMINISM.md`
-- `docs/DETERMINISM_REGRESSION_RULES.md`
-- `docs/SPEC_DOMINO_SUBSYSTEMS.md`
-- `docs/SPEC_DOMINIUM_LAYER.md`
-- `docs/SPEC_SIM_SCHEDULER.md`
-- `docs/SPEC_ACTIONS.md`
-- `docs/SPEC_GAME_PRODUCT.md`
-- `docs/SPEC_LAUNCHER.md`
-- `docs/SPEC_SETUP_CORE.md`
-- `docs/SPEC_SETUP_CLI.md`
-- `docs/SPEC_TOOLS_CORE.md`
-
-## Documentation Standards
-Documentation density ratios act as a drift detector for under- or over-
-documentation. A CMake quality gate checks comment line/word/char ratios, warns
-locally, and fails in CI. See `docs/DOCUMENTATION_STANDARDS.md` for definitions,
-thresholds, and tuning.
-
-## Build / usage (high-level only)
-Builds are CMake-based (minimum 3.16) and do not fetch network dependencies.
-Use the presets in `CMakePresets.json` or follow `docs/BUILDING.md`. Platform
-setup and packaging workflows are documented in `docs/SETUP_WINDOWS.md`,
-`docs/SETUP_LINUX.md`, `docs/SETUP_MACOS.md`, and `docs/SETUP_RETRO.md`.
-Runtime launch is normally mediated by the launcher control plane; standalone
-execution is supported only in explicit dev-mode flows (`docs/SPEC_GAME_PRODUCT.md`,
-`docs/SPEC_LAUNCHER.md`).
-
-Dist output: final link artifacts are routed into the deterministic `dist/`
-tree described in `docs/BUILD_DIST.md` and `docs/build_output.md`.
-
-## Project status and maturity
-Status: active development with a v0 deterministic core bootstrap in progress
-(`docs/MILESTONES.md`). The Windows baseline configurations in
-`docs/BUILD_MATRIX.md` are the primary validated targets; other backends are
-compile-gated and may be incomplete. Expect specs to lead implementation.
+## Project status & maturity
+Status: active development. The core build graph is in place, and several
+components still contain stub implementations (see `*_stub.c`) while the specs
+define the long-term contracts.
 
 ## License
 This repository is under the "Dominium Engine and Game - Restricted Source
-Viewing License, Version 1.0 (Draft)". See `LICENSE`.
-
-## Contributing / contact
-Contributions are spec-driven and must preserve determinism and layering. Start
-with `CONTRIBUTING.md` and follow the policies in `docs/STYLE.md`,
-`docs/LANGUAGE_POLICY.md`, and `docs/DEPENDENCIES.md`. The security policy and
-reporting expectations are in `SECURITY.md`.
+Viewing License, Version 1.0 (Draft)". See `LICENSE.md`.
