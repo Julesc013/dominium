@@ -667,6 +667,17 @@ set_target_properties(dominium_civ3_knowledge_tests PROPERTIES
 )
 add_test(NAME dominium_civ3_knowledge COMMAND dominium_civ3_knowledge_tests)
 
+add_executable(dominium_civ4_scale_tests
+    civ4/dom_civ4_scale_tests.cpp
+)
+target_link_libraries(dominium_civ4_scale_tests PRIVATE dominium_game)
+set_target_properties(dominium_civ4_scale_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME dominium_civ4_scale COMMAND dominium_civ4_scale_tests)
+
 add_executable(dominium_mp0_parity_tests
     mp0/dom_mp0_parity_tests.cpp
 )
