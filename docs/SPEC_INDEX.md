@@ -201,6 +201,11 @@ ownership rules and boundary enforcement.
 | `schema/life/SPEC_CONTROL_AUTHORITY.md` | schema | game, client, server, tools | core |
 | `schema/life/SPEC_CONTINUATION_POLICIES.md` | schema | game, client, server, tools | core |
 | `schema/life/SPEC_BIRTH_LINEAGE_OVERVIEW.md` | schema | game, client, server, tools | core |
+| `schema/war/SPEC_CONFLICT_CANON.md` | schema | game, client, server, tools | core |
+| `schema/war/SPEC_SECURITY_FORCES.md` | schema | game, client, server, tools | core |
+| `schema/war/SPEC_ENGAGEMENTS.md` | schema | game, client, server, tools | core |
+| `schema/war/SPEC_OCCUPATION_AND_RESISTANCE.md` | schema | game, client, server, tools | core |
+| `schema/war/SPEC_INTERPLANETARY_WAR.md` | schema | game, client, server, tools | core |
 | `docs/launcher/SPEC_LAUNCHER.md` | tools | launcher | optional |
 | `docs/launcher/SPEC_LAUNCHER_CLI.md` | tools | launcher | optional |
 | `docs/launcher/SPEC_LAUNCHER_CORE.md` | tools | launcher | optional |
