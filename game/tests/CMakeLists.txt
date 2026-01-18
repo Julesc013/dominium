@@ -623,6 +623,17 @@ set_target_properties(dominium_civ0a_survival_tests PROPERTIES
 )
 add_test(NAME dominium_civ0a_survival COMMAND dominium_civ0a_survival_tests)
 
+add_executable(dominium_mp0_parity_tests
+    mp0/dom_mp0_parity_tests.cpp
+)
+target_link_libraries(dominium_mp0_parity_tests PRIVATE dominium_game)
+set_target_properties(dominium_mp0_parity_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME dominium_mp0_parity COMMAND dominium_mp0_parity_tests)
+
 add_executable(dominium_life_remains_tests
     life/dom_life_remains_salvage_tests.cpp
 )
