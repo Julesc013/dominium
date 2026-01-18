@@ -96,6 +96,12 @@ All failures are merge-blocking.
 | LIFE-ESTATE-AUTH-001 | Estate resolution requires explicit executor authority. | CTest `dominium_life_death` | Test | CI fail: LIFE-ESTATE-AUTH-001 | Refuse resolution without authority; do not transfer assets. | Prevents unauthorized estate execution. |
 | LIFE-EPIS-001 | Death knowledge is not omniscient. | CTest `dominium_life_death` | Test | CI fail: LIFE-EPIS-001 | Emit death notices via explicit epistemic hooks only. | Enforces epistemic boundary. |
 | LIFE-REPLAY-001 | Death/estate replay equivalence MUST hold. | CTest `dominium_life_death` | Test | CI fail: LIFE-REPLAY-001 | Ensure deterministic IDs and ordering for death and estate records. | Keeps replay stable. |
+| LIFE-BIRTH-DET-001 | Birth scheduling MUST be deterministic. | CTest `dominium_life_birth` | Test | CI fail: LIFE-BIRTH-DET-001 | Use ACT-based gestation ticks and deterministic scheduling. | Prevents divergence in birth timing. |
+| LIFE-BIRTH-RES-001 | Births MUST enforce resource constraints. | CTest `dominium_life_birth` | Test | CI fail: LIFE-BIRTH-RES-001 | Require food/shelter constraints before scheduling gestation. | Prevents fabricated population growth. |
+| LIFE-LINEAGE-DET-001 | Lineage records MUST be deterministic. | CTest `dominium_life_birth` | Test | CI fail: LIFE-LINEAGE-DET-001 | Sort parent IDs and preserve certainty flags deterministically. | Keeps lineage stable across peers. |
+| LIFE-COHORT-001 | Cohort/micro birth integration MUST preserve counts. | CTest `dominium_life_birth` | Test | CI fail: LIFE-COHORT-001 | Update cohorts only in macro mode; preserve counts across refinement. | Prevents population drift. |
+| LIFE-BIRTH-EPIS-001 | Birth knowledge is not omniscient. | CTest `dominium_life_birth` | Test | CI fail: LIFE-BIRTH-EPIS-001 | Emit birth notices via explicit epistemic hooks only. | Enforces epistemic boundary. |
+| LIFE-BIRTH-BATCH-001 | Gestation completion MUST be batch vs step equivalent. | CTest `dominium_life_birth` | Test | CI fail: LIFE-BIRTH-BATCH-001 | Use due-event scheduler with deterministic ordering. | Preserves determinism under batching. |
 
 ## Phase-1 Audit Notes (PH1-AUDIT)
 
