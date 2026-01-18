@@ -56,6 +56,13 @@ Optional fields:
 - Refinement must preserve lineage provenance when possible.
 - No global scans are permitted to resolve lineage; scope must be bounded.
 
+## Implementation notes (LIFE3)
+- Runtime code lives under `game/include/dominium/life/*` and `game/core/life/*`.
+- Births are scheduled via the ACT due-event scheduler; no per-tick scans.
+- Lineage records are deterministic and stored per person.
+- Cohort updates are explicit and bounded; micro births do not require cohort scans.
+- Epistemic knowledge of birth is emitted via an explicit callback hook only.
+
 ## Integration points
 - Provenance: `docs/SPEC_PROVENANCE.md`
 - Information model: `docs/SPEC_INFORMATION_MODEL.md`
