@@ -4,20 +4,23 @@ This directory contains the authoritative design specs and policy documents for
 Domino (engine) and Dominium (product layer).
 
 ## Start Here
-- Project overview and entry-point spec links: `README.md`
+- Project landing page: `../README.md`
 - Directory/layout contract (authoritative): `docs/DIRECTORY_CONTEXT.md`
 - Architecture and layering: `docs/ARCHITECTURE.md` (see also `docs/OVERVIEW_ARCHITECTURE.md`)
+- Component roles and outputs: `docs/COMPONENTS.md`
 - API contract conventions: `docs/CONTRACTS.md`
+- Dependency boundaries: `docs/DEPENDENCIES.md`
 
 ## Policy / Standards
 - Language/toolchain constraints: `docs/LANGUAGE_POLICY.md`
 - Coding/commenting style: `docs/STYLE.md`
 - Determinism rules + regressions: `docs/SPEC_DETERMINISM.md`, `docs/DETERMINISM_REGRESSION_RULES.md`
-- Dependency boundaries: `docs/DEPENDENCIES.md`
 
 ## Build / Release
+- Build topology overview: `docs/BUILD_OVERVIEW.md`
 - Building and tests: `docs/BUILDING.md`
 - Supported build matrix: `docs/BUILD_MATRIX.md`
+- Dist layout and outputs: `docs/BUILD_DIST.md`, `docs/build_output.md`
 - Release notes process: `docs/RELEASE_NOTES_PROCESS.md`
 - Core data build pipeline: `docs/COREDATA_BUILD.md`
 

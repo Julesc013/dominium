@@ -1,14 +1,16 @@
 # Build Dist Output Specification
 
-This document defines the frozen, deterministic distribution layout produced
-directly by CMake. It is a post-link output tree only; build intermediates stay
-inside `build/`.
+This document defines the frozen, deterministic distribution layout used when
+targets are routed into `dist/` via `dist_set_role`. Default build outputs
+remain under the build directory; dist routing is opt-in.
 
 Goals:
 - one unified output root: `dist/`
 - deterministic, media-ready, copy-safe layout (FAT/ISO/USB/zip)
 - no build-system leakage in paths
 - runtime payload separated from symbols
+
+Validation is performed by `verify_dist` using `tools/validate_dist.cmake`.
 
 ## Frozen Directory Spec
 
@@ -133,6 +135,8 @@ Required files per leaf:
 For rapid testing, CMake can seed a minimal install state and home layout under
 the active leaf. This is additive to the frozen layout and keeps the core
 artifact routing unchanged.
+The `dist_seed` target is defined under `tools/dist_seed` and is not part of
+the root build graph unless that subdirectory is added.
 
 Seeded paths:
 - `sys/<os>/<arch>/.dsu/installed_state.dsustate`
@@ -141,7 +145,7 @@ Seeded paths:
 - `sys/<os>/<arch>/{instances,artifacts,audit,exports,temp}`
 Note: `.dsu` is a reserved seed directory (dot-prefix exception).
 
-Seed target:
+Seed target (when `dist_seed` is available; defined under `tools/dist_seed`):
 ```
 cmake --build <builddir> --target dist_seed
 ```
@@ -173,6 +177,8 @@ Filenames:
 
 ## Role-Based Binary Naming (Frozen; Extension Platform-Native)
 
+These names are enforced by `tools/validate_dist.cmake` when `verify_dist` runs.
+
 - launcher exe: `launch_dominium.<ext>`
 - game exe: `game_dominium.<ext>`
 - tools: `tool_<name>.<ext>`
@@ -180,44 +186,17 @@ Filenames:
 - shared core lib: `core_dominium.<ext>`
 - renderer libs: `rend_<backend>.<ext>`
 
-## Target-to-Artifact Mapping
+## Target naming
 
-Dist naming is applied without renaming CMake targets. Current mappings:
-
-Launch/game/engine/share:
-- `dominium-launcher` -> `launch_dominium`
-- `dominium_game` -> `game_dominium`
-- `domino_core` -> `eng_domino`
-- `dom_shared` -> `core_dominium`
-
-Tools:
-- `dominium-setup` -> `tool_setup`
-- `dominium-modcheck` -> `tool_modcheck`
-- `dominium-world-editor` -> `tool_world_editor`
-- `dominium-blueprint-editor` -> `tool_blueprint_editor`
-- `dominium-tech-editor` -> `tool_tech_editor`
-- `dominium-policy-editor` -> `tool_policy_editor`
-- `dominium-process-editor` -> `tool_process_editor`
-- `dominium-transport-editor` -> `tool_transport_editor`
-- `dominium-struct-editor` -> `tool_struct_editor`
-- `dominium-item-editor` -> `tool_item_editor`
-- `dominium-pack-editor` -> `tool_pack_editor`
-- `dominium-mod-builder` -> `tool_mod_builder`
-- `dominium-save-inspector` -> `tool_save_inspector`
-- `dominium-replay-viewer` -> `tool_replay_viewer`
-- `dominium-net-inspector` -> `tool_net_inspector`
-- `dominium-tools-demo-gen` -> `tool_tools_demo_gen`
-- `dominium-ui-editor` -> `tool_ui_editor`
-- `dominium-tool-editor` -> `tool_tool_editor`
-- `dominium-tool-editor-docgen` -> `tool_tool_editor_docgen`
-- `domui_validate` -> `tool_ui_validate`
-- `domui_codegen` -> `tool_ui_codegen`
-- `tool_manifest_inspector` -> `tool_manifest_inspector`
+Dist routing does not rename targets. Output names are defined per target via
+`OUTPUT_NAME` in component `CMakeLists.txt`; `dist_set_role` only changes the
+output directory.
 
 ## CMake Dist Routing
 
-The dist module computes the active leaf and routes final link outputs directly
-into `dist/` without config subfolders.
+The dist module computes the active leaf and can route final link outputs into
+`dist/` for targets that call `dist_set_role`. Targets that do not call
+`dist_set_role` continue to use the default build output directories.
 
 Entry points:
 - `cmake/dist_output.cmake`
