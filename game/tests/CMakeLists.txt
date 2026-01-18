@@ -601,6 +601,17 @@ set_target_properties(dominium_life_death_tests PROPERTIES
 )
 add_test(NAME dominium_life_death COMMAND dominium_life_death_tests)
 
+add_executable(dominium_life_birth_tests
+    life/dom_life_birth_tests.cpp
+)
+target_link_libraries(dominium_life_birth_tests PRIVATE dominium_game)
+set_target_properties(dominium_life_birth_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME dominium_life_birth COMMAND dominium_life_birth_tests)
+
 set(_dom_epis_try_script "${CMAKE_CURRENT_BINARY_DIR}/epistemic_ui_bypass_trycompile.cmake")
 configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/epistemic/epistemic_ui_bypass_trycompile.cmake.in
