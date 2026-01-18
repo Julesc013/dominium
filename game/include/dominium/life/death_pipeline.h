@@ -13,10 +13,14 @@ DETERMINISM: Pipeline ordering and IDs are deterministic.
 #define DOMINIUM_LIFE_DEATH_PIPELINE_H
 
 #include "dominium/life/death_event.h"
+#include "dominium/life/death_scene_observation_hooks.h"
 #include "dominium/life/estate.h"
 #include "dominium/life/inheritance_scheduler.h"
 #include "dominium/life/life_audit_log.h"
 #include "dominium/life/life_refusal_codes.h"
+#include "dominium/life/remains.h"
+#include "dominium/life/remains_decay_scheduler.h"
+#include "dominium/life/rights_post_death.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -68,6 +72,13 @@ typedef struct life_death_input {
     u64 location_ref;
     u64 provenance_ref;
     u32 policy_id;
+    dom_account_id_t remains_inventory_account_id;
+    u64 jurisdiction_id;
+    u8 has_contract;
+    u8 allow_finder;
+    u8 jurisdiction_allows;
+    u8 estate_locked;
+    u8 collapse_remains;
 } life_death_input;
 
 typedef struct life_death_context {
@@ -82,6 +93,11 @@ typedef struct life_death_context {
     dom_ledger* ledger;
     life_death_notice_cb notice_cb;
     void* notice_user;
+    life_remains_registry* remains;
+    life_post_death_rights_registry* rights;
+    life_remains_decay_scheduler* remains_decay;
+    life_remains_aggregate_registry* remains_aggregates;
+    life_death_scene_observation_hooks* observation_hooks;
 } life_death_context;
 
 void life_body_registry_init(life_body_registry* reg,

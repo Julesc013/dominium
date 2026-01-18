@@ -173,6 +173,8 @@ int life_handle_death(life_death_context* ctx,
     u32 account_count = 0u;
     u64 estate_id = 0u;
     u64 death_event_id = 0u;
+    u64 remains_id = 0u;
+    u64 rights_id = 0u;
     life_death_event death_event;
     life_death_refusal_code refusal = LIFE_DEATH_REFUSAL_NONE;
 
@@ -183,7 +185,8 @@ int life_handle_death(life_death_context* ctx,
         return -1;
     }
     if (!ctx->bodies || !ctx->persons || !ctx->person_accounts ||
-        !ctx->death_events || !ctx->estates || !ctx->scheduler) {
+        !ctx->death_events || !ctx->estates || !ctx->scheduler ||
+        !ctx->remains || !ctx->rights) {
         return -2;
     }
 
@@ -217,7 +220,7 @@ int life_handle_death(life_death_context* ctx,
                            accounts,
                            account_count,
                            input->act_time,
-                           0u,
+                           input->jurisdiction_id,
                            0u,
                            input->policy_id,
                            &estate_id) != 0) {
@@ -226,6 +229,50 @@ int life_handle_death(life_death_context* ctx,
     }
 
     body->alive_state = LIFE_BODY_DEAD;
+
+    if (life_post_death_rights_create(ctx->rights,
+                                      estate_id,
+                                      input->jurisdiction_id,
+                                      input->has_contract,
+                                      input->allow_finder,
+                                      input->jurisdiction_allows,
+                                      input->estate_locked,
+                                      &rights_id) != 0) {
+        refusal = LIFE_DEATH_REFUSAL_SCHEDULE_INVALID;
+        goto refusal_out;
+    }
+
+    if (life_remains_create(ctx->remains,
+                            body->person_id,
+                            body->body_id,
+                            input->location_ref,
+                            input->act_time,
+                            rights_id,
+                            input->provenance_ref,
+                            input->remains_inventory_account_id,
+                            &remains_id) != 0) {
+        refusal = LIFE_DEATH_REFUSAL_SCHEDULE_INVALID;
+        goto refusal_out;
+    }
+
+    if (input->collapse_remains) {
+        if (!ctx->remains_aggregates) {
+            refusal = LIFE_DEATH_REFUSAL_SCHEDULE_INVALID;
+            goto refusal_out;
+        }
+        if (life_remains_collapse(ctx->remains, ctx->remains_aggregates,
+                                  remains_id, 0) != 0) {
+            refusal = LIFE_DEATH_REFUSAL_SCHEDULE_INVALID;
+            goto refusal_out;
+        }
+    } else {
+        life_remains* remains = life_remains_find(ctx->remains, remains_id);
+        if (!remains || !ctx->remains_decay ||
+            life_remains_decay_register(ctx->remains_decay, remains) != 0) {
+            refusal = LIFE_DEATH_REFUSAL_SCHEDULE_INVALID;
+            goto refusal_out;
+        }
+    }
 
     memset(&death_event, 0, sizeof(death_event));
     death_event.body_id = body->body_id;
@@ -253,6 +300,7 @@ int life_handle_death(life_death_context* ctx,
 
     life_audit_append(ctx->audit_log, LIFE_AUDIT_DEATH, body->body_id, estate_id, input->cause_code, input->act_time);
     life_audit_append(ctx->audit_log, LIFE_AUDIT_ESTATE, estate_id, body->person_id, 0u, input->act_time);
+    life_audit_append(ctx->audit_log, LIFE_AUDIT_REMAINS, remains_id, body->body_id, 0u, input->act_time);
 
     if (ctx->notice_cb) {
         life_death_notice notice;
@@ -263,6 +311,18 @@ int life_handle_death(life_death_context* ctx,
         notice.act_time_of_death = input->act_time;
         notice.location_ref = input->location_ref;
         ctx->notice_cb(ctx->notice_user, &notice);
+    }
+    if (ctx->observation_hooks) {
+        life_death_scene_observation observation;
+        memset(&observation, 0, sizeof(observation));
+        observation.death_event_id = death_event_id;
+        observation.remains_id = remains_id;
+        observation.body_id = body->body_id;
+        observation.person_id = body->person_id;
+        observation.cause_code = input->cause_code;
+        observation.act_time = input->act_time;
+        observation.location_ref = input->location_ref;
+        life_death_scene_observation_emit(ctx->observation_hooks, &observation);
     }
 
     if (out_death_event_id) {

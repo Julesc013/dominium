@@ -31,6 +31,12 @@ typedef struct life_test_context {
     dom_time_event due_event_storage[16];
     dg_due_entry due_entry_storage[8];
     life_inheritance_due_user due_user_storage[8];
+    life_remains remains_storage[8];
+    life_remains_aggregate remains_aggregate_storage[4];
+    life_post_death_rights rights_storage[8];
+    dom_time_event remains_due_event_storage[8];
+    dg_due_entry remains_due_entry_storage[8];
+    life_remains_decay_user remains_due_user_storage[8];
 
     life_body_registry bodies;
     life_person_registry persons;
@@ -41,6 +47,10 @@ typedef struct life_test_context {
     life_inheritance_action_list actions;
     life_inheritance_scheduler scheduler;
     life_audit_log audit_log;
+    life_remains_registry remains;
+    life_remains_aggregate_registry remains_aggregates;
+    life_post_death_rights_registry rights;
+    life_remains_decay_scheduler remains_decay;
 
     life_death_context ctx;
 } life_test_context;
@@ -72,6 +82,27 @@ static void life_test_context_init(life_test_context* t,
                                           claim_period,
                                           &t->estates,
                                           &t->actions);
+    life_remains_registry_init(&t->remains, t->remains_storage, 8u, 1u);
+    life_remains_aggregate_registry_init(&t->remains_aggregates,
+                                         t->remains_aggregate_storage,
+                                         4u,
+                                         1u);
+    life_post_death_rights_registry_init(&t->rights, t->rights_storage, 8u, 1u);
+    {
+        life_remains_decay_rules rules;
+        rules.fresh_to_decayed = 5;
+        rules.decayed_to_skeletal = 5;
+        rules.skeletal_to_unknown = 5;
+        (void)life_remains_decay_scheduler_init(&t->remains_decay,
+                                                t->remains_due_event_storage,
+                                                8u,
+                                                t->remains_due_entry_storage,
+                                                t->remains_due_user_storage,
+                                                8u,
+                                                start_tick,
+                                                &t->remains,
+                                                &rules);
+    }
 
     t->ctx.bodies = &t->bodies;
     t->ctx.persons = &t->persons;
@@ -84,6 +115,11 @@ static void life_test_context_init(life_test_context* t,
     t->ctx.ledger = &t->ledger;
     t->ctx.notice_cb = 0;
     t->ctx.notice_user = 0;
+    t->ctx.remains = &t->remains;
+    t->ctx.rights = &t->rights;
+    t->ctx.remains_decay = &t->remains_decay;
+    t->ctx.remains_aggregates = &t->remains_aggregates;
+    t->ctx.observation_hooks = 0;
 }
 
 static int setup_basic_person(life_test_context* t,
@@ -287,6 +323,9 @@ static int test_epistemic_notice_hook(void)
     life_death_refusal_code refusal;
     dom_account_id_t accounts[1] = { 31u };
     u32 notice_count = 0u;
+    life_death_scene_observation_log obs_log;
+    life_death_scene_observation obs_storage[4];
+    life_death_scene_observation_hooks obs_hooks;
 
     life_test_context_init(&t, 0, 5);
     EXPECT(setup_basic_person(&t, 55u, 88u, accounts, 1u) == 0, "setup failed");
@@ -304,9 +343,13 @@ static int test_epistemic_notice_hook(void)
     EXPECT(setup_basic_person(&t, 55u, 88u, accounts, 1u) == 0, "setup failed");
     t.ctx.notice_cb = notice_counter;
     t.ctx.notice_user = &notice_count;
+    life_death_scene_observation_log_init(&obs_log, obs_storage, 4u);
+    life_death_scene_observation_hooks_init(&obs_hooks, &obs_log, 0, 0);
+    t.ctx.observation_hooks = &obs_hooks;
     notice_count = 0u;
     EXPECT(life_handle_death(&t.ctx, &input, &refusal, 0, 0) == 0, "death failed (cb)");
     EXPECT(notice_count == 1u, "expected one notice");
+    EXPECT(obs_log.count == 1u, "expected one observation");
     return 0;
 }
 
