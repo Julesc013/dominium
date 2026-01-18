@@ -31,6 +31,7 @@ add_library(dominium_game STATIC
     core/life/cohort_update_hooks.cpp
     core/life/birth_pipeline.cpp
     core/sim/macro_due_scheduler_hooks.cpp
+    core/session/mp0_session.cpp
     rules/survival/cohort_model.cpp
     rules/survival/needs_model.cpp
     rules/survival/consumption_scheduler.cpp
