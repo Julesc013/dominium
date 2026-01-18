@@ -51,7 +51,7 @@ Each row is a required matrix cell. If a row is marked "future", it is planned b
 
 | Exec mode | Step strategy | Hardware/Backend variance | Fidelity tier | Required hashes | Allowed divergence | Fixtures |
 | --- | --- | --- | --- | --- | --- | --- |
-| Singleplayer (loopback) | Step-by-step | Same CPU/OS | Macro | SIM_CORE, SIM_ECON, SIM_INFO, SIM_TIME, SIM_WORLD | Presentation only | Minimal Earth-only, Death/Estate, Birth/Lineage, Remains/Salvage, CIV0a Survival, CIV0 Population, CIV1 Cities/Infra, CIV2 Governance |
+| Singleplayer (loopback) | Step-by-step | Same CPU/OS | Macro | SIM_CORE, SIM_ECON, SIM_INFO, SIM_TIME, SIM_WORLD | Presentation only | Minimal Earth-only, Death/Estate, Birth/Lineage, Remains/Salvage, CIV0a Survival, CIV0 Population, CIV1 Cities/Infra, CIV2 Governance, CIV3 Knowledge/Tech |
 | Singleplayer (loopback) | Batch (N) | Same CPU/OS | Macro | SIM_CORE, SIM_ECON, SIM_INFO, SIM_TIME, SIM_WORLD | Presentation only | Minimal Earth-only, Warp |
 | Singleplayer (loopback) | Event-driven jump | Same CPU/OS | Macro | SIM_CORE, SIM_ECON, SIM_INFO, SIM_TIME, SIM_WORLD | Presentation only | Minimal Earth-only |
 | Local MP lockstep | Step-by-step | Same CPU/OS | Macro | SIM_CORE, SIM_ECON, SIM_INFO, SIM_TIME, SIM_WORLD | Presentation only | Sol-only, MP0 Local Parity |
@@ -104,6 +104,8 @@ All fixtures are required and MUST be versioned and stable. Minimal data packs a
   - Data packs: core/time, core/civ (cities/buildings/production/logistics)
 - CIV2 Governance scenario (jurisdictions/legitimacy/policies)
   - Data packs: core/time, core/governance (jurisdictions/legitimacy/policy)
+- CIV3 Knowledge/Tech scenario (research, diffusion, activation)
+  - Data packs: core/time, core/knowledge (knowledge/research/diffusion), core/technology (tech effects/prereqs)
 - MP0 Local Parity scenario (loopback/lockstep/server-auth)
   - Data packs: core/time, core/civ, core/life (continuation/death)
 
