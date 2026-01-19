@@ -73,6 +73,11 @@ Deterministic reordering, reduction, and commit ordering are governed by:
 - `docs/arch/EXECUTION_REORDERING_POLICY.md`
 - `docs/arch/DETERMINISTIC_REDUCTION_RULES.md`
 
+## ECS Component Schema (ECSX0)
+Component meaning and field semantics are defined by ECSX0 schema docs under
+`schema/ecs/README.md`. Physical storage layout is a backend choice and must
+not alter logical meaning or determinism guarantees.
+
 ## Irreversibility Framework
 Every sim-affecting effect must declare one of:
 - REVERSIBLE (UI, planning, advisory only)

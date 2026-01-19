@@ -226,6 +226,10 @@ ownership rules and boundary enforcement.
 | `schema/mods/SPEC_MOD_MANIFEST.md` | schema | game, client, server, tools | core |
 | `schema/mods/SPEC_MOD_GRAPH.md` | schema | game, client, server, tools | core |
 | `schema/mods/SPEC_MOD_COMPATIBILITY.md` | schema | game, client, server, tools | core |
+| `schema/ecs/SPEC_COMPONENT_SCHEMA.md` | schema | engine, game, tools | core |
+| `schema/ecs/SPEC_FIELD_IDS.md` | schema | engine, game, tools | core |
+| `schema/ecs/SPEC_STORAGE_BACKENDS.md` | schema | engine, game, tools | core |
+| `schema/ecs/SPEC_PACKING_AND_DELTAS.md` | schema | engine, game, tools | core |
 | `docs/specs/launcher/SPEC_LAUNCHER.md` | tools | launcher | optional |
 | `docs/specs/launcher/SPEC_LAUNCHER_CLI.md` | tools | launcher | optional |
 | `docs/specs/launcher/SPEC_LAUNCHER_CORE.md` | tools | launcher | optional |
