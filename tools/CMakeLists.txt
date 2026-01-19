@@ -63,6 +63,7 @@ add_executable(validate_all
     validation/validator_reports.cpp
     validation/validators_registry.cpp
     validate/tool_validation.cpp
+    validate/policy_validation.cpp
 )
 target_include_directories(validate_all PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
