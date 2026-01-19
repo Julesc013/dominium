@@ -1,0 +1,34 @@
+{
+  "schema_id": "world.celestial_body",
+  "schema_version": "1.0.0",
+  "migration_stub": {
+    "from_version": "1.0.0",
+    "to_version": "1.1.0",
+    "status": "placeholder"
+  },
+  "record": {
+    "body_id": "sol_mars",
+    "system_ref": "sol_system",
+    "parent_body_ref": "sol_sun",
+    "body_type": "planet",
+    "name": "Mars",
+    "radius_m": 3389500,
+    "mass_class": "terrestrial",
+    "surface_refs": [
+      "mars_surface"
+    ],
+    "volume_refs": [],
+    "orbital_rail_ref": "sol_orbit_mars",
+    "scale_domain_ref": "domain.planetary",
+    "provenance_ref": "prov.sol.body.v1",
+    "data_source_refs": [
+      "iau_2024",
+      "nasa_naif_2024"
+    ],
+    "body_tags": [
+      "rocky",
+      "atm_thin",
+      "gravity_low"
+    ]
+  }
+}
