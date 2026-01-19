@@ -117,3 +117,8 @@ add_test(NAME dominium_validate_all_bad_renderer
         --strict=1
 )
 set_tests_properties(dominium_validate_all_bad_renderer PROPERTIES WILL_FAIL TRUE)
+
+add_test(NAME dominium_content1_sol_data
+    COMMAND python ${CMAKE_SOURCE_DIR}/tools/ci/validate_sol_data.py
+        --repo-root=${CMAKE_SOURCE_DIR}
+)
