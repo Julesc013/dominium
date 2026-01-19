@@ -28,7 +28,9 @@ installation or repair logic while preserving deterministic boundaries.
 
 ## Key characteristics
 - Determinism: fixed-point simulation and canonical ordering.
-- Portability: C90/C++98 codebases with multiple platform backends.
+- Law-gated Work IR: authoritative work is emitted as TaskGraph/AccessSet and
+  evaluated by existence/capability/policy gates before execution and commit.
+- Portability: baseline C90/C++98 builds with optional modern presets.
 - Long-term maintenance focus: stable layout and compatibility contracts.
 - Explicit invariants: public headers and specs define behavior and ABI rules.
 - Tooling-enforced discipline: static architecture checks and build guards.
@@ -54,6 +56,7 @@ installation or repair logic while preserving deterministic boundaries.
 - `setup/` — setup core and frontends
 - `tools/` — tool host and validators
 - `libs/` — interface libraries and contracts
+- `data/` — runtime-configurable content and profiles
 - `schema/` — data schema sources and validation references
 - `sdk/` — SDK headers, docs, and samples
 - `scripts/` — build and packaging helpers
@@ -66,14 +69,19 @@ installation or repair logic while preserving deterministic boundaries.
 ## Documentation map
 - `docs/guides/README.md` — documentation index and entry points
 - `docs/arch/ARCH0_CONSTITUTION.md` — architectural constitution (binding)
+- `docs/arch/CHANGE_PROTOCOL.md` — required process for sim-affecting change
+- `docs/arch/DIRECTORY_CONTEXT.md` — authoritative repo layout and boundaries
 - `docs/arch/ARCHITECTURE.md` — system architecture and layering
-- `docs/arch/COMPONENTS.md` — component roles and build products
+- `docs/arch/LAW_ENFORCEMENT_POINTS.md` — law gates and enforcement phases
+- `schema/execution/README.md` and `schema/law/README.md` — execution and law schemas
+- `docs/arch/EXECUTION_REORDERING_POLICY.md` and `docs/arch/DETERMINISTIC_REDUCTION_RULES.md` — deterministic reordering and reduction rules
 - `docs/guides/DEPENDENCIES.md` — allowed and forbidden dependency edges
 - `docs/specs/CONTRACTS.md` — public API contract rules
 - `docs/guides/BUILD_OVERVIEW.md` — build topology summary
 - `docs/guides/BUILDING.md` — build system and configuration
 - `docs/ci/BUILD_MATRIX.md` — canonical presets
 - `docs/guides/BUILD_DIST.md` and `docs/guides/build_output.md` — dist layout and outputs
+- `docs/ci/CI_ENFORCEMENT_MATRIX.md` — CI checks enforcing ARCH0/EXEC*
 - `docs/specs/SPEC_*.md` — subsystem specifications (see `docs/specs/SPEC_INDEX.md`)
 
 ## Build & usage overview (non-procedural)

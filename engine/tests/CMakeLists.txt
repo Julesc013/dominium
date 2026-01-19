@@ -85,3 +85,42 @@ set_target_properties(engine_data_validate_test PROPERTIES
     C_EXTENSIONS OFF
 )
 add_test(NAME engine_data_validate COMMAND engine_data_validate_test)
+
+add_executable(execution_ir_tests
+    execution_ir_tests.cpp
+)
+target_link_libraries(execution_ir_tests PRIVATE engine::domino)
+set_target_properties(execution_ir_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME execution_ir COMMAND execution_ir_tests)
+
+add_executable(execution_scheduler_ref_tests
+    execution_scheduler_ref_tests.cpp
+)
+target_link_libraries(execution_scheduler_ref_tests PRIVATE engine::domino)
+target_include_directories(execution_scheduler_ref_tests PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../modules
+)
+set_target_properties(execution_scheduler_ref_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME execution_scheduler_ref COMMAND execution_scheduler_ref_tests)
+
+add_executable(execution_scheduler_law_tests
+    execution_scheduler_law_tests.cpp
+)
+target_link_libraries(execution_scheduler_law_tests PRIVATE engine::domino)
+target_include_directories(execution_scheduler_law_tests PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../modules
+)
+set_target_properties(execution_scheduler_law_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME execution_scheduler_law COMMAND execution_scheduler_law_tests)
