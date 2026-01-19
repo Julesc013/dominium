@@ -42,7 +42,7 @@ installation or repair logic while preserving deterministic boundaries.
 ## Supported platforms (high level only)
 - Presets target Windows (MSVC), Linux (GCC), and macOS (Xcode).
 - Platform backends are selected via `DOM_PLATFORM` and are host-dependent;
-  see `docs/BUILD_MATRIX.md` for the current preset list.
+  see `docs/ci/BUILD_MATRIX.md` for the current preset list.
 
 ## Project structure (top-level map)
 - `docs/` — authoritative specifications and policy docs
@@ -64,22 +64,23 @@ installation or repair logic while preserving deterministic boundaries.
 - `.github/` — workflow and CI configuration
 
 ## Documentation map
-- `docs/README.md` — documentation index and entry points
-- `docs/ARCHITECTURE.md` — system architecture and layering
-- `docs/COMPONENTS.md` — component roles and build products
-- `docs/DEPENDENCIES.md` — allowed and forbidden dependency edges
-- `docs/CONTRACTS.md` — public API contract rules
-- `docs/BUILD_OVERVIEW.md` — build topology summary
-- `docs/BUILDING.md` — build system and configuration
-- `docs/BUILD_MATRIX.md` — canonical presets
-- `docs/BUILD_DIST.md` and `docs/build_output.md` — dist layout and outputs
-- `docs/SPEC_*.md` — subsystem specifications (see `docs/README.md`)
+- `docs/guides/README.md` — documentation index and entry points
+- `docs/arch/ARCH0_CONSTITUTION.md` — architectural constitution (binding)
+- `docs/arch/ARCHITECTURE.md` — system architecture and layering
+- `docs/arch/COMPONENTS.md` — component roles and build products
+- `docs/guides/DEPENDENCIES.md` — allowed and forbidden dependency edges
+- `docs/specs/CONTRACTS.md` — public API contract rules
+- `docs/guides/BUILD_OVERVIEW.md` — build topology summary
+- `docs/guides/BUILDING.md` — build system and configuration
+- `docs/ci/BUILD_MATRIX.md` — canonical presets
+- `docs/guides/BUILD_DIST.md` and `docs/guides/build_output.md` — dist layout and outputs
+- `docs/specs/SPEC_*.md` — subsystem specifications (see `docs/specs/SPEC_INDEX.md`)
 
 ## Build & usage overview (non-procedural)
 Builds produce the engine and game libraries, client/server entrypoints,
 launcher/setup frontends, and tool executables. Default outputs go to the build
 directory (`bin/` and `lib/`); the `dist/` layout is opt-in. Detailed build
-instructions and presets live in `docs/BUILDING.md` and `docs/BUILD_MATRIX.md`.
+instructions and presets live in `docs/guides/BUILDING.md` and `docs/ci/BUILD_MATRIX.md`.
 
 ## Project status & maturity
 Status: active development. The core build graph is in place, and several
