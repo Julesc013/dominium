@@ -1,7 +1,7 @@
 /*
-FILE: source/domino/sim/sched/dg_phase.h
+FILE: source/domino/execution/scheduler/dg_phase.h
 MODULE: Domino
-LAYER / SUBSYSTEM: Domino impl / sim/sched/dg_phase
+LAYER / SUBSYSTEM: Domino impl / execution/scheduler/dg_phase
 RESPONSIBILITY: Defines internal contract for `dg_phase`; shared within its subsystem; does NOT define a public API (see `include/**`).
 ALLOWED DEPENDENCIES: `include/domino/**`, `source/domino/**`, and C89/C++98 standard headers as needed.
 FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**` (engine must not depend on product layer).
@@ -54,4 +54,3 @@ const char *dg_phase_name(dg_phase phase);
 #endif
 
 #endif /* DG_PHASE_H */
-

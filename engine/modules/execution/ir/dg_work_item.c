@@ -1,7 +1,7 @@
 /*
-FILE: source/domino/sim/sched/dg_work_item.c
+FILE: source/domino/execution/ir/dg_work_item.c
 MODULE: Domino
-LAYER / SUBSYSTEM: Domino impl / sim/sched/dg_work_item
+LAYER / SUBSYSTEM: Domino impl / execution/ir/dg_work_item
 RESPONSIBILITY: Implements `dg_work_item`; owns translation-unit-local helpers/state; does NOT define the public contract (see `include/**`).
 ALLOWED DEPENDENCIES: `include/domino/**`, `source/domino/**`, and C89/C++98 standard headers as needed.
 FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**` (engine must not depend on product layer).
@@ -13,7 +13,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 */
 #include <string.h>
 
-#include "sim/sched/dg_work_item.h"
+#include "execution/ir/dg_work_item.h"
 
 void dg_work_item_clear(dg_work_item *it) {
     if (!it) {
@@ -59,4 +59,3 @@ int dg_work_item_set_payload_inline(dg_work_item *it, const unsigned char *ptr, 
     it->payload_len = 0u;
     return 0;
 }
-

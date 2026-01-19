@@ -1,9 +1,10 @@
-# SIM/SCHED (Tick Scheduler)
+# EXECUTION (Work IR + Scheduler)
 
-Authoritative deterministic tick scheduler and phase orchestration for SIM.
+Deterministic Work IR, scheduling, and budget enforcement for engine execution.
 
 ## Responsibilities
-- Define global tick phases and their ordering.
+- Define work item schemas and queues (Work IR).
+- Define scheduler phases and their ordering.
 - Enforce bounded work per tick via budgets and carryover.
 - Provide canonical traversal ordering hooks for deterministic execution.
 
@@ -13,4 +14,3 @@ Authoritative deterministic tick scheduler and phase orchestration for SIM.
 
 ## Spec
 See `docs/SPEC_SIM_SCHEDULER.md` and `docs/SPEC_DETERMINISM.md`.
-

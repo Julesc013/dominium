@@ -1,7 +1,7 @@
 /*
-FILE: source/domino/sim/sched/dg_sched.c
+FILE: source/domino/execution/scheduler/dg_sched.c
 MODULE: Domino
-LAYER / SUBSYSTEM: Domino impl / sim/sched/dg_sched
+LAYER / SUBSYSTEM: Domino impl / execution/scheduler/dg_sched
 RESPONSIBILITY: Implements `dg_sched`; owns translation-unit-local helpers/state; does NOT define the public contract (see `include/**`).
 ALLOWED DEPENDENCIES: `include/domino/**`, `source/domino/**`, and C89/C++98 standard headers as needed.
 FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**` (engine must not depend on product layer).
@@ -14,7 +14,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include <stdlib.h>
 #include <string.h>
 
-#include "sim/sched/dg_sched.h"
+#include "execution/scheduler/dg_sched.h"
 
 static void dg_sched_phase_handlers_init(dg_sched_phase_handlers *ph) {
     if (!ph) {

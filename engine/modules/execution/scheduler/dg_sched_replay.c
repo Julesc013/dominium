@@ -1,7 +1,7 @@
 /*
-FILE: source/domino/sim/sched/dg_sched_replay.c
+FILE: source/domino/execution/scheduler/dg_sched_replay.c
 MODULE: Domino
-LAYER / SUBSYSTEM: Domino impl / sim/sched/dg_sched_replay
+LAYER / SUBSYSTEM: Domino impl / execution/scheduler/dg_sched_replay
 RESPONSIBILITY: Implements `dg_sched_replay`; owns translation-unit-local helpers/state; does NOT define the public contract (see `include/**`).
 ALLOWED DEPENDENCIES: `include/domino/**`, `source/domino/**`, and C89/C++98 standard headers as needed.
 FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**` (engine must not depend on product layer).
@@ -13,7 +13,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 */
 #include <string.h>
 
-#include "sim/sched/dg_sched_replay.h"
+#include "execution/scheduler/dg_sched_replay.h"
 
 void dg_sched_replay_init(dg_sched_replay_ctx *rc) {
     if (!rc) {

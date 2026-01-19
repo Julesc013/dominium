@@ -1,7 +1,7 @@
 /*
-FILE: source/domino/sim/sched/dg_work_queue.h
+FILE: source/domino/execution/ir/dg_work_queue.h
 MODULE: Domino
-LAYER / SUBSYSTEM: Domino impl / sim/sched/dg_work_queue
+LAYER / SUBSYSTEM: Domino impl / execution/ir/dg_work_queue
 RESPONSIBILITY: Defines internal contract for `dg_work_queue`; shared within its subsystem; does NOT define a public API (see `include/**`).
 ALLOWED DEPENDENCIES: `include/domino/**`, `source/domino/**`, and C89/C++98 standard headers as needed.
 FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**` (engine must not depend on product layer).
@@ -19,7 +19,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #ifndef DG_WORK_QUEUE_H
 #define DG_WORK_QUEUE_H
 
-#include "sim/sched/dg_work_item.h"
+#include "execution/ir/dg_work_item.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -69,4 +69,3 @@ int dg_work_queue_merge(dg_work_queue *dst, dg_work_queue *src);
 #endif
 
 #endif /* DG_WORK_QUEUE_H */
-

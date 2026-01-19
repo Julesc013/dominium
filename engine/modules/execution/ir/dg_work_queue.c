@@ -1,7 +1,7 @@
 /*
-FILE: source/domino/sim/sched/dg_work_queue.c
+FILE: source/domino/execution/ir/dg_work_queue.c
 MODULE: Domino
-LAYER / SUBSYSTEM: Domino impl / sim/sched/dg_work_queue
+LAYER / SUBSYSTEM: Domino impl / execution/ir/dg_work_queue
 RESPONSIBILITY: Implements `dg_work_queue`; owns translation-unit-local helpers/state; does NOT define the public contract (see `include/**`).
 ALLOWED DEPENDENCIES: `include/domino/**`, `source/domino/**`, and C89/C++98 standard headers as needed.
 FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**` (engine must not depend on product layer).
@@ -14,7 +14,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include <stdlib.h>
 #include <string.h>
 
-#include "sim/sched/dg_work_queue.h"
+#include "execution/ir/dg_work_queue.h"
 
 #include "core/det_invariants.h"
 

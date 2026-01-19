@@ -1,7 +1,7 @@
 /*
-FILE: source/domino/sim/sched/dg_sched.h
+FILE: source/domino/execution/scheduler/dg_sched.h
 MODULE: Domino
-LAYER / SUBSYSTEM: Domino impl / sim/sched/dg_sched
+LAYER / SUBSYSTEM: Domino impl / execution/scheduler/dg_sched
 RESPONSIBILITY: Defines internal contract for `dg_sched`; shared within its subsystem; does NOT define a public API (see `include/**`).
 ALLOWED DEPENDENCIES: `include/domino/**`, `source/domino/**`, and C89/C++98 standard headers as needed.
 FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**` (engine must not depend on product layer).
@@ -19,11 +19,11 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #ifndef DG_SCHED_H
 #define DG_SCHED_H
 
-#include "sim/sched/dg_phase.h"
-#include "sim/sched/dg_budget.h"
-#include "sim/sched/dg_work_queue.h"
-#include "sim/sched/dg_sched_hash.h"
-#include "sim/sched/dg_sched_replay.h"
+#include "execution/scheduler/dg_phase.h"
+#include "execution/budgets/dg_budget.h"
+#include "execution/ir/dg_work_queue.h"
+#include "execution/scheduler/dg_sched_hash.h"
+#include "execution/scheduler/dg_sched_replay.h"
 
 #include "sim/act/dg_delta_registry.h"
 #include "sim/act/dg_delta_buffer.h"

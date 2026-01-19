@@ -1,7 +1,7 @@
 /*
-FILE: source/domino/sim/sched/dg_sched_replay.h
+FILE: source/domino/execution/scheduler/dg_sched_replay.h
 MODULE: Domino
-LAYER / SUBSYSTEM: Domino impl / sim/sched/dg_sched_replay
+LAYER / SUBSYSTEM: Domino impl / execution/scheduler/dg_sched_replay
 RESPONSIBILITY: Defines internal contract for `dg_sched_replay`; shared within its subsystem; does NOT define a public API (see `include/**`).
 ALLOWED DEPENDENCIES: `include/domino/**`, `source/domino/**`, and C89/C++98 standard headers as needed.
 FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**` (engine must not depend on product layer).
@@ -20,7 +20,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #ifndef DG_SCHED_REPLAY_H
 #define DG_SCHED_REPLAY_H
 
-#include "sim/sched/dg_phase.h"
+#include "execution/scheduler/dg_phase.h"
 #include "core/dg_order_key.h"
 #include "sim/pkt/dg_pkt_delta.h"
 
