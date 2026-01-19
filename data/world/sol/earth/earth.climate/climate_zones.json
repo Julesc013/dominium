@@ -1,0 +1,43 @@
+{
+  "schema_id": "world.climate_zones",
+  "schema_version": "1.0.0",
+  "migration_stub": {
+    "from_version": "1.0.0",
+    "to_version": "1.1.0",
+    "status": "placeholder"
+  },
+  "record": {
+    "climate_zone_records": [
+      {
+        "zone_id": "earth_climate_tropical",
+        "tag": "tropical",
+        "region_refs": [],
+        "provenance_ref": "prov.earth.climate.v1"
+      },
+      {
+        "zone_id": "earth_climate_arid",
+        "tag": "arid",
+        "region_refs": [],
+        "provenance_ref": "prov.earth.climate.v1"
+      },
+      {
+        "zone_id": "earth_climate_temperate",
+        "tag": "temperate",
+        "region_refs": [],
+        "provenance_ref": "prov.earth.climate.v1"
+      },
+      {
+        "zone_id": "earth_climate_polar",
+        "tag": "polar",
+        "region_refs": [],
+        "provenance_ref": "prov.earth.climate.v1"
+      }
+    ],
+    "valid_climate_tags": [
+      "tropical",
+      "arid",
+      "temperate",
+      "polar"
+    ]
+  }
+}

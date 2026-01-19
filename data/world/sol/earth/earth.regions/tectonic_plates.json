@@ -1,0 +1,133 @@
+{
+  "schema_id": "world.surface_and_regions",
+  "schema_version": "1.0.0",
+  "migration_stub": {
+    "from_version": "1.0.0",
+    "to_version": "1.1.0",
+    "status": "placeholder"
+  },
+  "record": {
+    "surface_records": [],
+    "region_records": [
+      {
+        "region_id": "earth_plate_region",
+        "surface_ref": "earth_land_surface",
+        "volume_ref": null,
+        "boundary_ref": "boundary.earth_plate_global_v1",
+        "region_type": "natural",
+        "parent_region_ref": "earth_land_region",
+        "layer_id": "planetary",
+        "region_tags": [
+          "tectonic",
+          "plate_base"
+        ],
+        "provenance_ref": "prov.earth.regions.v1"
+      },
+      {
+        "region_id": "earth_pacific_plate_region",
+        "surface_ref": "earth_land_surface",
+        "volume_ref": null,
+        "boundary_ref": "boundary.earth_pacific_plate_v1",
+        "region_type": "natural",
+        "parent_region_ref": "earth_plate_region",
+        "layer_id": "planetary",
+        "region_tags": [
+          "tectonic_plate",
+          "pacific",
+          "multi_surface_placeholder"
+        ],
+        "provenance_ref": "prov.earth.regions.v1"
+      },
+      {
+        "region_id": "earth_north_american_plate_region",
+        "surface_ref": "earth_land_surface",
+        "volume_ref": null,
+        "boundary_ref": "boundary.earth_north_american_plate_v1",
+        "region_type": "natural",
+        "parent_region_ref": "earth_plate_region",
+        "layer_id": "planetary",
+        "region_tags": [
+          "tectonic_plate",
+          "north_america",
+          "multi_surface_placeholder"
+        ],
+        "provenance_ref": "prov.earth.regions.v1"
+      },
+      {
+        "region_id": "earth_eurasian_plate_region",
+        "surface_ref": "earth_land_surface",
+        "volume_ref": null,
+        "boundary_ref": "boundary.earth_eurasian_plate_v1",
+        "region_type": "natural",
+        "parent_region_ref": "earth_plate_region",
+        "layer_id": "planetary",
+        "region_tags": [
+          "tectonic_plate",
+          "eurasia",
+          "multi_surface_placeholder"
+        ],
+        "provenance_ref": "prov.earth.regions.v1"
+      },
+      {
+        "region_id": "earth_african_plate_region",
+        "surface_ref": "earth_land_surface",
+        "volume_ref": null,
+        "boundary_ref": "boundary.earth_african_plate_v1",
+        "region_type": "natural",
+        "parent_region_ref": "earth_plate_region",
+        "layer_id": "planetary",
+        "region_tags": [
+          "tectonic_plate",
+          "africa",
+          "multi_surface_placeholder"
+        ],
+        "provenance_ref": "prov.earth.regions.v1"
+      },
+      {
+        "region_id": "earth_south_american_plate_region",
+        "surface_ref": "earth_land_surface",
+        "volume_ref": null,
+        "boundary_ref": "boundary.earth_south_american_plate_v1",
+        "region_type": "natural",
+        "parent_region_ref": "earth_plate_region",
+        "layer_id": "planetary",
+        "region_tags": [
+          "tectonic_plate",
+          "south_america",
+          "multi_surface_placeholder"
+        ],
+        "provenance_ref": "prov.earth.regions.v1"
+      },
+      {
+        "region_id": "earth_indo_australian_plate_region",
+        "surface_ref": "earth_land_surface",
+        "volume_ref": null,
+        "boundary_ref": "boundary.earth_indo_australian_plate_v1",
+        "region_type": "natural",
+        "parent_region_ref": "earth_plate_region",
+        "layer_id": "planetary",
+        "region_tags": [
+          "tectonic_plate",
+          "indo_australian",
+          "multi_surface_placeholder"
+        ],
+        "provenance_ref": "prov.earth.regions.v1"
+      },
+      {
+        "region_id": "earth_antarctic_plate_region",
+        "surface_ref": "earth_land_surface",
+        "volume_ref": null,
+        "boundary_ref": "boundary.earth_antarctic_plate_v1",
+        "region_type": "natural",
+        "parent_region_ref": "earth_plate_region",
+        "layer_id": "planetary",
+        "region_tags": [
+          "tectonic_plate",
+          "antarctic",
+          "multi_surface_placeholder"
+        ],
+        "provenance_ref": "prov.earth.regions.v1"
+      }
+    ]
+  }
+}

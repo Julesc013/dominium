@@ -1,0 +1,15 @@
+{
+  "schema_id": "world.orbital_rails",
+  "schema_version": "1.0.0",
+  "migration_stub": {
+    "from_version": "1.0.0",
+    "to_version": "1.1.0",
+    "status": "placeholder"
+  },
+  "record": {
+    "rail_records": []
+  },
+  "meta": {
+    "note": "Earth-Moon rails are defined in system-level Sol data for now."
+  }
+}

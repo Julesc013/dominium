@@ -1,0 +1,63 @@
+{
+  "schema_id": "world.biome_tags",
+  "schema_version": "1.0.0",
+  "migration_stub": {
+    "from_version": "1.0.0",
+    "to_version": "1.1.0",
+    "status": "placeholder"
+  },
+  "record": {
+    "biome_tag_records": [
+      {
+        "tag_id": "forest",
+        "category": "land",
+        "provenance_ref": "prov.earth.climate.v1"
+      },
+      {
+        "tag_id": "desert",
+        "category": "land",
+        "provenance_ref": "prov.earth.climate.v1"
+      },
+      {
+        "tag_id": "grassland",
+        "category": "land",
+        "provenance_ref": "prov.earth.climate.v1"
+      },
+      {
+        "tag_id": "tundra",
+        "category": "land",
+        "provenance_ref": "prov.earth.climate.v1"
+      },
+      {
+        "tag_id": "ocean",
+        "category": "ocean",
+        "provenance_ref": "prov.earth.climate.v1"
+      },
+      {
+        "tag_id": "polar",
+        "category": "climate",
+        "provenance_ref": "prov.earth.climate.v1"
+      },
+      {
+        "tag_id": "temperate",
+        "category": "climate",
+        "provenance_ref": "prov.earth.climate.v1"
+      },
+      {
+        "tag_id": "tropical",
+        "category": "climate",
+        "provenance_ref": "prov.earth.climate.v1"
+      }
+    ],
+    "valid_biome_tags": [
+      "forest",
+      "desert",
+      "grassland",
+      "tundra",
+      "ocean",
+      "polar",
+      "temperate",
+      "tropical"
+    ]
+  }
+}
