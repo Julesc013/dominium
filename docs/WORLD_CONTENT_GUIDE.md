@@ -1,7 +1,7 @@
-# WORLD_CONTENT_GUIDE - World Data Authoring (CONTENT1)
+# WORLD_CONTENT_GUIDE - World Data Authoring (CONTENT2)
 
 Status: draft
-Version: 1
+Version: 2
 
 ## Purpose
 Define how canonical world data is authored and organized under `data/world/`
@@ -19,6 +19,7 @@ Recommended structure:
   - `*.orbits.*` for orbital rails
   - `bodies/`, `moons/`, `belts/` for celestial bodies
   - `*.surfaces.*` for surfaces and regions
+  - `earth/` for detailed Earth partitions (surfaces, regions, climate, imports)
 
 ## Determinism and performance
 - No file may include unbounded lists.
@@ -35,3 +36,8 @@ Run the Sol dataset validator:
 python tools/ci/validate_sol_data.py --repo-root=.
 ```
 This is a structural check only; it does not apply gameplay logic.
+
+Run the Earth dataset validator:
+```
+python tools/ci/validate_earth_data.py --repo-root=.
+```
