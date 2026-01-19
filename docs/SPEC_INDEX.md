@@ -221,6 +221,8 @@ ownership rules and boundary enforcement.
 | `schema/agents/SPEC_AGENT_DOCTRINE.md` | schema | game, client, server, tools | core |
 | `schema/agents/SPEC_AGENT_ROLES.md` | schema | game, client, server, tools | core |
 | `schema/agents/SPEC_DELEGATION.md` | schema | game, client, server, tools | core |
+| `schema/agents/SPEC_AGENT_AGGREGATION.md` | schema | game, client, server, tools | core |
+| `schema/agents/SPEC_AGENT_REFINEMENT.md` | schema | game, client, server, tools | core |
 | `docs/launcher/SPEC_LAUNCHER.md` | tools | launcher | optional |
 | `docs/launcher/SPEC_LAUNCHER_CLI.md` | tools | launcher | optional |
 | `docs/launcher/SPEC_LAUNCHER_CORE.md` | tools | launcher | optional |

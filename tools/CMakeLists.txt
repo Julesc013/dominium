@@ -62,12 +62,46 @@ add_executable(validate_all
     validation/validator_common.cpp
     validation/validator_reports.cpp
     validation/validators_registry.cpp
+    validate/tool_validation.cpp
+)
+target_include_directories(validate_all PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
 )
 set_target_properties(validate_all PROPERTIES
     OUTPUT_NAME "validate_all"
     CXX_STANDARD 98
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
+)
+
+add_library(dominium_tools_inspect STATIC
+    inspect/replay_inspector.cpp
+    inspect/provenance_browser.cpp
+    inspect/ledger_inspector.cpp
+    inspect/event_timeline_view.cpp
+)
+target_include_directories(dominium_tools_inspect
+    PUBLIC
+        ${DOMINIUM_ENGINE_INCLUDE_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}/inspect
+)
+set_target_properties(dominium_tools_inspect PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_executable(dominium_tool0_inspection_tests
+    tests/tool0_inspection_tests.cpp
+)
+target_link_libraries(dominium_tool0_inspection_tests PRIVATE dominium_tools_inspect)
+set_target_properties(dominium_tool0_inspection_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME dominium_tool0_inspection
+    COMMAND $<TARGET_FILE:dominium_tool0_inspection_tests>
 )
 
 add_executable(tools::host ALIAS dominium-tools)

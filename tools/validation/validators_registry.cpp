@@ -10,6 +10,7 @@ ERROR MODEL: Return codes; no exceptions.
 DETERMINISM: Validation order is deterministic.
 */
 #include "validators_registry.h"
+#include "validate/tool_validation.h"
 
 namespace dom {
 namespace validation {
@@ -428,6 +429,7 @@ void run_all_validators(const ValidationContext& ctx, ValidationReport& report) 
     validate_render_dirs(ctx, report);
     validate_render_api_references(ctx, report);
     validate_epistemic_ui(ctx, report);
+    validate_tooling_inventory(ctx, report);
 }
 
 } /* namespace validation */

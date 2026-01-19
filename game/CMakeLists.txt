@@ -41,6 +41,11 @@ add_library(dominium_game STATIC
     agents/agent_role.cpp
     agents/delegation.cpp
     agents/doctrine_scheduler.cpp
+    agents/aggregate_beliefs.cpp
+    agents/aggregate_goals.cpp
+    agents/agent_aggregate.cpp
+    agents/agent_refinement.cpp
+    agents/agent_collapse.cpp
     rules/governance/jurisdiction_model.cpp
     rules/governance/legitimacy_model.cpp
     rules/governance/enforcement_capacity.cpp
