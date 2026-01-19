@@ -20,6 +20,7 @@ Recommended structure:
   - `bodies/`, `moons/`, `belts/` for celestial bodies
   - `*.surfaces.*` for surfaces and regions
   - `earth/` for detailed Earth partitions (surfaces, regions, climate, imports)
+  - `milky_way/` for galactic structure, anchors, and procedural rules
 
 ## Determinism and performance
 - No file may include unbounded lists.
@@ -40,4 +41,9 @@ This is a structural check only; it does not apply gameplay logic.
 Run the Earth dataset validator:
 ```
 python tools/ci/validate_earth_data.py --repo-root=.
+```
+
+Run the Milky Way dataset validator:
+```
+python tools/ci/validate_milky_way_data.py --repo-root=.
 ```
