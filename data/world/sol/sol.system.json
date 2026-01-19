@@ -1,0 +1,67 @@
+{
+  "schema_id": "world.star_system",
+  "schema_version": "1.0.0",
+  "migration_stub": {
+    "from_version": "1.0.0",
+    "to_version": "1.1.0",
+    "status": "placeholder"
+  },
+  "record": {
+    "system_id": "sol_system",
+    "galaxy_ref": "milky_way_galaxy",
+    "name": "Sol",
+    "coordinate_frame_ref": "frame.sol.system",
+    "scale_domain_ref": "domain.system",
+    "star_ids": [
+      "sol_sun"
+    ],
+    "planet_ids": [
+      "sol_mercury",
+      "sol_venus",
+      "sol_earth",
+      "sol_mars",
+      "sol_jupiter",
+      "sol_saturn",
+      "sol_uranus",
+      "sol_neptune"
+    ],
+    "belt_ids": [
+      "sol_asteroid_belt",
+      "sol_kuiper_belt",
+      "sol_oort_cloud"
+    ],
+    "orbital_rail_ids": [
+      "sol_orbit_mercury",
+      "sol_orbit_venus",
+      "sol_orbit_earth",
+      "sol_orbit_mars",
+      "sol_orbit_jupiter",
+      "sol_orbit_saturn",
+      "sol_orbit_uranus",
+      "sol_orbit_neptune",
+      "sol_orbit_asteroid_belt",
+      "sol_orbit_kuiper_belt",
+      "sol_orbit_oort_cloud",
+      "sol_orbit_moon",
+      "sol_orbit_phobos",
+      "sol_orbit_deimos",
+      "sol_orbit_io",
+      "sol_orbit_europa",
+      "sol_orbit_ganymede",
+      "sol_orbit_callisto",
+      "sol_orbit_titan",
+      "sol_orbit_enceladus"
+    ],
+    "route_node_ref": "route.sol.system",
+    "provenance_ref": "prov.sol.system.v1",
+    "data_source_refs": [
+      "iau_2024",
+      "nasa_naif_2024"
+    ],
+    "system_tags": [
+      "real_world",
+      "baseline",
+      "sol"
+    ]
+  }
+}
