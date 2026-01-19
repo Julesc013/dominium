@@ -213,6 +213,9 @@ ownership rules and boundary enforcement.
 | `schema/world/SPEC_ORBITAL_RAILS.md` | schema | game, client, server, tools | core |
 | `schema/world/SPEC_SURFACE_AND_REGIONS.md` | schema | game, client, server, tools | core |
 | `schema/world/SPEC_WORLD_DATA_IMPORT.md` | schema | game, client, server, tools | core |
+| `schema/agents/SPEC_AGENT_CANON.md` | schema | game, client, server, tools | core |
+| `schema/agents/SPEC_AGENT_CONTEXT.md` | schema | game, client, server, tools | core |
+| `schema/agents/SPEC_AGENT_INTENT.md` | schema | game, client, server, tools | core |
 | `docs/launcher/SPEC_LAUNCHER.md` | tools | launcher | optional |
 | `docs/launcher/SPEC_LAUNCHER_CLI.md` | tools | launcher | optional |
 | `docs/launcher/SPEC_LAUNCHER_CORE.md` | tools | launcher | optional |
