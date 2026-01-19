@@ -29,6 +29,10 @@ A4. Laws govern existence and action.
 - Meta-law (existence), capability law (who), policy law (how) apply everywhere.
 - No bypasses, no hard-coded exceptions.
 
+Law enforcement points and law kernel schemas are defined in:
+- `docs/arch/LAW_ENFORCEMENT_POINTS.md`
+- `schema/law/README.md`
+
 A5. Engine and game are strictly separated.
 - Engine defines mechanisms.
 - Game defines meaning.
@@ -59,6 +63,15 @@ Each layer must be interceptable by:
 - Governance
 - Tooling (read-only)
 - Explanation system
+
+## Execution Substrate (EXEC0)
+All authoritative work MUST be expressed as Work IR with Access IR declarations,
+as defined in `schema/execution/README.md`. EXEC0 is binding and subordinate to
+ARCH0.
+
+Deterministic reordering, reduction, and commit ordering are governed by:
+- `docs/arch/EXECUTION_REORDERING_POLICY.md`
+- `docs/arch/DETERMINISTIC_REDUCTION_RULES.md`
 
 ## Irreversibility Framework
 Every sim-affecting effect must declare one of:

@@ -24,3 +24,14 @@ See:
 - `docs/policies/VALIDATION_AND_GOVERNANCE.md`
 - `docs/ci/CI_ENFORCEMENT_MATRIX.md`
 - `schema/SCHEMA_GOVERNANCE.md`
+
+--------------------------------
+EXEC0c LAW KERNEL SPECS
+--------------------------------
+This folder also defines the canonical law kernel schemas used by Work IR and
+execution backends. See:
+- `schema/law/SPEC_LAW_KERNEL.md`
+- `schema/law/SPEC_LAW_SCOPES.md`
+- `schema/law/SPEC_LAW_TARGETS.md`
+- `schema/law/SPEC_LAW_EFFECTS.md`
+- `docs/arch/LAW_ENFORCEMENT_POINTS.md`
