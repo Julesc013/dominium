@@ -10,6 +10,7 @@ ERROR MODEL: Return codes; no exceptions.
 DETERMINISM: Snapshot ordering and queries are deterministic.
 */
 #include "dominium/epistemic.h"
+#include "dominium/law/law_kernel.h"
 
 #include <string.h>
 
@@ -123,6 +124,13 @@ dom_epistemic_view dom_epistemic_query(
     view.latency_ticks = 0u;
     view.is_stale = 0;
     view.is_uncertain = 0;
+
+    if (dom_law_check_epistemic((const dom_law_context*)0,
+                                capability_id,
+                                subject_kind,
+                                subject_id) != DOM_LAW_ALLOW) {
+        return view;
+    }
 
     if (!entry) {
         return view;
