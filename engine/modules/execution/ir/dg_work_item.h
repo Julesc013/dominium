@@ -1,7 +1,7 @@
 /*
-FILE: source/domino/sim/sched/dg_work_item.h
+FILE: source/domino/execution/ir/dg_work_item.h
 MODULE: Domino
-LAYER / SUBSYSTEM: Domino impl / sim/sched/dg_work_item
+LAYER / SUBSYSTEM: Domino impl / execution/ir/dg_work_item
 RESPONSIBILITY: Defines internal contract for `dg_work_item`; shared within its subsystem; does NOT define a public API (see `include/**`).
 ALLOWED DEPENDENCIES: `include/domino/**`, `source/domino/**`, and C89/C++98 standard headers as needed.
 FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**` (engine must not depend on product layer).
@@ -56,4 +56,3 @@ int dg_work_item_set_payload_inline(dg_work_item *it, const unsigned char *ptr, 
 #endif
 
 #endif /* DG_WORK_ITEM_H */
-

@@ -27,7 +27,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "domino/core/types.h"
 #include "sim/pkt/dg_pkt_common.h"
 
-#include "sim/sched/dg_sched.h"
+#include "execution/scheduler/dg_sched.h"
 
 #include "sim/dg_dirtyset.h"
 #include "sim/dg_rebuild_work.h"

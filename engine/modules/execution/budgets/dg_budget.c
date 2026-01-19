@@ -1,7 +1,7 @@
 /*
-FILE: source/domino/sim/sched/dg_budget.c
+FILE: source/domino/execution/budgets/dg_budget.c
 MODULE: Domino
-LAYER / SUBSYSTEM: Domino impl / sim/sched/dg_budget
+LAYER / SUBSYSTEM: Domino impl / execution/budgets/dg_budget
 RESPONSIBILITY: Implements `dg_budget`; owns translation-unit-local helpers/state; does NOT define the public contract (see `include/**`).
 ALLOWED DEPENDENCIES: `include/domino/**`, `source/domino/**`, and C89/C++98 standard headers as needed.
 FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**` (engine must not depend on product layer).
@@ -14,7 +14,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include <stdlib.h>
 #include <string.h>
 
-#include "sim/sched/dg_budget.h"
+#include "execution/budgets/dg_budget.h"
 
 static u32 dg_budget_remaining_limit_used(u32 limit, u32 used) {
     if (limit == DG_BUDGET_UNLIMITED) {

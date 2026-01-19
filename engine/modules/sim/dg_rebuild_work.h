@@ -31,7 +31,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "core/graph/dg_graph_registry.h"
 #include "core/graph/part/dg_graph_part.h"
 
-#include "sim/sched/dg_work_item.h"
+#include "execution/ir/dg_work_item.h"
 
 #ifdef __cplusplus
 extern "C" {

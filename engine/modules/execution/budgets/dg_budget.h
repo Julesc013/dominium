@@ -1,7 +1,7 @@
 /*
-FILE: source/domino/sim/sched/dg_budget.h
+FILE: source/domino/execution/budgets/dg_budget.h
 MODULE: Domino
-LAYER / SUBSYSTEM: Domino impl / sim/sched/dg_budget
+LAYER / SUBSYSTEM: Domino impl / execution/budgets/dg_budget
 RESPONSIBILITY: Defines internal contract for `dg_budget`; shared within its subsystem; does NOT define a public API (see `include/**`).
 ALLOWED DEPENDENCIES: `include/domino/**`, `source/domino/**`, and C89/C++98 standard headers as needed.
 FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**` (engine must not depend on product layer).
@@ -99,4 +99,3 @@ u32 dg_budget_probe_chunk_overflow(const dg_budget *b);
 #endif
 
 #endif /* DG_BUDGET_H */
-

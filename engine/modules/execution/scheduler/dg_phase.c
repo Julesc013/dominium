@@ -1,7 +1,7 @@
 /*
-FILE: source/domino/sim/sched/dg_phase.c
+FILE: source/domino/execution/scheduler/dg_phase.c
 MODULE: Domino
-LAYER / SUBSYSTEM: Domino impl / sim/sched/dg_phase
+LAYER / SUBSYSTEM: Domino impl / execution/scheduler/dg_phase
 RESPONSIBILITY: Implements `dg_phase`; owns translation-unit-local helpers/state; does NOT define the public contract (see `include/**`).
 ALLOWED DEPENDENCIES: `include/domino/**`, `source/domino/**`, and C89/C++98 standard headers as needed.
 FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**` (engine must not depend on product layer).
@@ -11,7 +11,7 @@ DETERMINISM: See `docs/SPEC_DETERMINISM.md` for deterministic subsystems; otherw
 VERSIONING / ABI / DATA FORMAT NOTES: N/A (implementation file).
 EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
 */
-#include "sim/sched/dg_phase.h"
+#include "execution/scheduler/dg_phase.h"
 
 static const dg_phase_meta g_dg_phase_meta[DG_PH_COUNT] = {
     { DG_PH_INPUT,    "PH_INPUT" },
@@ -43,4 +43,3 @@ const char *dg_phase_name(dg_phase phase) {
     const dg_phase_meta *m = dg_phase_meta_get(phase);
     return m ? m->name : "PH_INVALID";
 }
-

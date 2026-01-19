@@ -75,13 +75,13 @@ set(ENGINE_CORE_SOURCES
     modules/sim/pkt/pkt_hash.c
     modules/sim/pkt/idmap/dg_idmap.c
     modules/sim/pkt/registry/dg_type_registry.c
-    modules/sim/sched/dg_budget.c
-    modules/sim/sched/dg_phase.c
-    modules/sim/sched/dg_sched.c
-    modules/sim/sched/dg_sched_hash.c
-    modules/sim/sched/dg_sched_replay.c
-    modules/sim/sched/dg_work_item.c
-    modules/sim/sched/dg_work_queue.c
+    modules/execution/budgets/dg_budget.c
+    modules/execution/ir/dg_work_item.c
+    modules/execution/ir/dg_work_queue.c
+    modules/execution/scheduler/dg_phase.c
+    modules/execution/scheduler/dg_sched.c
+    modules/execution/scheduler/dg_sched_hash.c
+    modules/execution/scheduler/dg_sched_replay.c
     modules/state/state.c
     modules/struct/d_struct.c
     modules/struct/d_struct_blueprint.c
@@ -218,6 +218,7 @@ target_include_directories(domino_engine
         ${CMAKE_CURRENT_SOURCE_DIR}/modules/decor
         ${CMAKE_CURRENT_SOURCE_DIR}/modules/econ
         ${CMAKE_CURRENT_SOURCE_DIR}/modules/env
+        ${CMAKE_CURRENT_SOURCE_DIR}/modules/execution
         ${CMAKE_CURRENT_SOURCE_DIR}/modules/hydro
         ${CMAKE_CURRENT_SOURCE_DIR}/modules/input
         ${CMAKE_CURRENT_SOURCE_DIR}/modules/job

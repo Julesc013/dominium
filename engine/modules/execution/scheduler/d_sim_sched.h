@@ -1,7 +1,7 @@
 /*
-FILE: source/domino/sim/sched/d_sim_sched.h
+FILE: source/domino/execution/scheduler/d_sim_sched.h
 MODULE: Domino
-LAYER / SUBSYSTEM: Domino impl / sim/sched/d_sim_sched
+LAYER / SUBSYSTEM: Domino impl / execution/scheduler/d_sim_sched
 RESPONSIBILITY: Defines internal contract for `d_sim_sched`; shared within its subsystem; does NOT define a public API (see `include/**`).
 ALLOWED DEPENDENCIES: `include/domino/**`, `source/domino/**`, and C89/C++98 standard headers as needed.
 FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**` (engine must not depend on product layer).
@@ -31,4 +31,3 @@ typedef struct d_sim_sched d_sim_sched;
 #endif
 
 #endif /* D_SIM_SCHED_H */
-
