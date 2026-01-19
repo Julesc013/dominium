@@ -47,7 +47,7 @@ Each refusal includes:
 ## Adding validators
 
 1) Add a new check in `tools/validation/validators_registry.cpp`.
-2) Use a GOV-* rule ID from `docs/CI_ENFORCEMENT_MATRIX.md`.
+2) Use a GOV-* rule ID from `docs/ci/CI_ENFORCEMENT_MATRIX.md`.
 3) Add a fixture under `tools/validation/fixtures/`.
 4) Add a failing CTest entry in `tools/CMakeLists.txt`.
 5) Document the check in this file and in the CI matrix.

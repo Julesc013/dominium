@@ -18,9 +18,10 @@ Top-level domains:
 - `setup/` — setup core library and frontends.
 - `tools/` — tool host, validators, and editors.
 - `libs/` — interface libraries and shared contracts.
+- `data/` — runtime-configurable content and profiles.
 - `schema/` — data schemas and validation docs (data-only).
 - `sdk/` — public SDK headers, docs, and samples.
-- `docs/` — specifications and policy documents.
+- `docs/` — architecture, policies, specs, CI rules, and guides.
 - `legacy/` — archived sources excluded from current builds and checks.
 
 ## Dependency summary (high level)
@@ -44,8 +45,8 @@ Top-level domains:
 ```
 engine/
   include/           public engine ABI only
-  modules/           engine subsystems (core, sim, world, net, etc.)
-  render/            render backends and renderer-facing glue
+  modules/           engine subsystems (core, sim, execution, world, net, etc.)
+  render/            render backends and renderer-facing glue (legacy path)
   tests/             engine tests (optional build)
   CMakeLists.txt
 ```
@@ -55,9 +56,6 @@ engine/
 game/
   core/              game-level orchestration and shared logic
   rules/             authoritative rules and domain logic
-  economy/           economy-related systems
-  ai/                AI scaffolding and rule wiring
-  content/           game content sources
   mods/              mod-facing integration
   ui/                UI semantics (non-rendering)
   tests/             game tests and fixtures
