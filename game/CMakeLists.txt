@@ -8,6 +8,8 @@ add_library(dominium_game STATIC
     core/dom_fidelity.c
     core/dom_data_validate.c
     core/dom_epistemic.c
+    core/execution/access_ir.cpp
+    core/execution/work_ir_emit.cpp
     core/law/law_kernel.cpp
     rules/life/ability_packages.cpp
     rules/life/control_authority.cpp
