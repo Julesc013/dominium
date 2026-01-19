@@ -60,19 +60,16 @@ AUTHORITATIVE_DIRS = (
     os.path.join("engine", "modules", "world"),
     os.path.join("game", "core"),
     os.path.join("game", "rules"),
-    os.path.join("game", "economy"),
 )
 
 INTEREST_ENFORCED_DIRS = (
     os.path.join("game", "core"),
     os.path.join("game", "rules"),
-    os.path.join("game", "economy"),
 )
 
 FIDELITY_ENFORCED_DIRS = (
     os.path.join("game", "core"),
     os.path.join("game", "rules"),
-    os.path.join("game", "economy"),
 )
 
 FLOAT_TOKENS_RE = re.compile(r"\b(long\s+double|double|float)\b")
@@ -117,7 +114,6 @@ EPISTEMIC_UI_DIRS = (
 EPISTEMIC_FORBIDDEN_INCLUDES = (
     "engine/modules/",
     "game/rules/",
-    "game/economy/",
     "domino/sim/",
     "domino/world/",
     "domino/state/",
