@@ -120,6 +120,8 @@ All fixtures are required and MUST be versioned and stable. Minimal data packs a
   - Data packs: core/time, core/info (epistemic), core/commands (minimal)
 - AGENT2 Doctrine/Roles scenario (doctrine filtering, delegation, scheduling)
   - Data packs: core/time, core/info (epistemic), core/commands (minimal)
+- AGENT3 Aggregation scenario (aggregate/refine/collapse)
+  - Data packs: core/time, core/info (epistemic), core/commands (minimal)
 - MP0 Local Parity scenario (loopback/lockstep/server-auth)
   - Data packs: core/time, core/civ, core/life (continuation/death)
 

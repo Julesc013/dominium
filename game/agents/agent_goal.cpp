@@ -26,6 +26,10 @@ const char* agent_refusal_to_string(agent_refusal_code code)
         case AGENT_REFUSAL_GOAL_FORBIDDEN_BY_DOCTRINE: return "goal_forbidden_by_doctrine";
         case AGENT_REFUSAL_DELEGATION_EXPIRED: return "delegation_expired";
         case AGENT_REFUSAL_ROLE_MISMATCH: return "role_mismatch";
+        case AGENT_REFUSAL_AGGREGATION_NOT_ALLOWED: return "aggregation_not_allowed";
+        case AGENT_REFUSAL_REFINEMENT_LIMIT_REACHED: return "refinement_limit_reached";
+        case AGENT_REFUSAL_COLLAPSE_BLOCKED_BY_INTEREST: return "collapse_blocked_by_interest";
+        case AGENT_REFUSAL_AGENT_STATE_INCONSISTENT: return "agent_state_inconsistent";
         default: return "unknown";
     }
 }
