@@ -8,6 +8,8 @@ layering.
 `docs/DIRECTORY_CONTEXT.md` is the authoritative directory/layout contract.
 
 ## Mandatory constraints
+- Architecture constitution: `docs/arch/ARCH0_CONSTITUTION.md`,
+  `docs/arch/CHANGE_PROTOCOL.md`, `docs/arch/GLOSSARY.md`
 - Determinism: `docs/SPEC_DETERMINISM.md` and `docs/DETERMINISM_REGRESSION_RULES.md`
 - Placement: anchors + quantized poses (`docs/SPEC_POSE_AND_ANCHORS.md`)
 - Authoring vs compiled: compiled artifacts are derived caches
