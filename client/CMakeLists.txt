@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 add_executable(dominium_client
-    main_client.c
+    app/main_client.c
 )
 target_link_libraries(dominium_client PRIVATE
     domino_engine
