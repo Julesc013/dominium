@@ -1,5 +1,5 @@
 # Dominium / Domino
-Dominium is a deterministic simulation game runtime built on the Domino engine.
+Dominium is a deterministic simulation kernel whose engine/game layers guarantee coherence, authority, provenance, and conservation across a scale-free topology, while all realism, assets, rulesets, and expansion are supplied externally via capability-driven packs that may be mixed arbitrarily across versions, with explicit degradation instead of breakage.
 
 ## What this project is (non-technical)
 Dominium provides a deterministic simulation runtime and the surrounding product
