@@ -127,3 +127,8 @@ add_test(NAME dominium_content2_earth_data
     COMMAND python ${CMAKE_SOURCE_DIR}/tools/ci/validate_earth_data.py
         --repo-root=${CMAKE_SOURCE_DIR}
 )
+
+add_test(NAME dominium_content3_milky_way_data
+    COMMAND python ${CMAKE_SOURCE_DIR}/tools/ci/validate_milky_way_data.py
+        --repo-root=${CMAKE_SOURCE_DIR}
+)
