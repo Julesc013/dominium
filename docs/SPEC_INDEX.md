@@ -206,6 +206,13 @@ ownership rules and boundary enforcement.
 | `schema/war/SPEC_ENGAGEMENTS.md` | schema | game, client, server, tools | core |
 | `schema/war/SPEC_OCCUPATION_AND_RESISTANCE.md` | schema | game, client, server, tools | core |
 | `schema/war/SPEC_INTERPLANETARY_WAR.md` | schema | game, client, server, tools | core |
+| `schema/world/SPEC_UNIVERSE_MODEL.md` | schema | game, client, server, tools | core |
+| `schema/world/SPEC_GALAXY_MODEL.md` | schema | game, client, server, tools | core |
+| `schema/world/SPEC_SYSTEM_MODEL.md` | schema | game, client, server, tools | core |
+| `schema/world/SPEC_CELESTIAL_BODY.md` | schema | game, client, server, tools | core |
+| `schema/world/SPEC_ORBITAL_RAILS.md` | schema | game, client, server, tools | core |
+| `schema/world/SPEC_SURFACE_AND_REGIONS.md` | schema | game, client, server, tools | core |
+| `schema/world/SPEC_WORLD_DATA_IMPORT.md` | schema | game, client, server, tools | core |
 | `docs/launcher/SPEC_LAUNCHER.md` | tools | launcher | optional |
 | `docs/launcher/SPEC_LAUNCHER_CLI.md` | tools | launcher | optional |
 | `docs/launcher/SPEC_LAUNCHER_CORE.md` | tools | launcher | optional |
