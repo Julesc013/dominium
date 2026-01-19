@@ -1,0 +1,95 @@
+{
+  "schema_id": "world.galaxy_arms",
+  "schema_version": "1.0.0",
+  "migration_stub": {
+    "from_version": "1.0.0",
+    "to_version": "1.1.0",
+    "status": "placeholder"
+  },
+  "record": {
+    "arm_records": [
+      {
+        "arm_id": "arm_perseus",
+        "name": "Perseus Arm",
+        "geometry_model_id": "log_spiral_stub",
+        "geometry_tags": [
+          "pitch_medium",
+          "extent_long"
+        ],
+        "density_class": "density_high",
+        "star_formation_class": "formation_high",
+        "arm_region_ref": "region_arm_perseus"
+      },
+      {
+        "arm_id": "arm_sagittarius",
+        "name": "Sagittarius Arm",
+        "geometry_model_id": "log_spiral_stub",
+        "geometry_tags": [
+          "pitch_medium",
+          "extent_long"
+        ],
+        "density_class": "density_high",
+        "star_formation_class": "formation_high",
+        "arm_region_ref": "region_arm_sagittarius"
+      },
+      {
+        "arm_id": "arm_scutum_centaurus",
+        "name": "Scutum-Centaurus Arm",
+        "geometry_model_id": "log_spiral_stub",
+        "geometry_tags": [
+          "pitch_low",
+          "extent_long"
+        ],
+        "density_class": "density_high",
+        "star_formation_class": "formation_high",
+        "arm_region_ref": "region_arm_scutum_centaurus"
+      },
+      {
+        "arm_id": "arm_norma",
+        "name": "Norma Arm",
+        "geometry_model_id": "log_spiral_stub",
+        "geometry_tags": [
+          "pitch_low",
+          "extent_long"
+        ],
+        "density_class": "density_medium",
+        "star_formation_class": "formation_medium",
+        "arm_region_ref": "region_arm_norma"
+      },
+      {
+        "arm_id": "arm_outer",
+        "name": "Outer Arm",
+        "geometry_model_id": "log_spiral_stub",
+        "geometry_tags": [
+          "pitch_high",
+          "extent_long"
+        ],
+        "density_class": "density_low",
+        "star_formation_class": "formation_low",
+        "arm_region_ref": "region_arm_outer"
+      },
+      {
+        "arm_id": "arm_orion_spur",
+        "name": "Orion Spur",
+        "geometry_model_id": "spur_stub",
+        "geometry_tags": [
+          "spur",
+          "extent_short"
+        ],
+        "density_class": "density_medium",
+        "star_formation_class": "formation_medium",
+        "arm_region_ref": "region_arm_orion_spur"
+      }
+    ],
+    "valid_density_classes": [
+      "density_low",
+      "density_medium",
+      "density_high"
+    ],
+    "valid_star_formation_classes": [
+      "formation_low",
+      "formation_medium",
+      "formation_high"
+    ]
+  }
+}

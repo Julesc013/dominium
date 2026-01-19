@@ -1,0 +1,250 @@
+{
+  "schema_id": "world.galaxy_anchors",
+  "schema_version": "1.0.0",
+  "migration_stub": {
+    "from_version": "1.0.0",
+    "to_version": "1.1.0",
+    "status": "placeholder"
+  },
+  "record": {
+    "anchor_records": [
+      {
+        "system_id": "sol_system",
+        "name": "Sol",
+        "region_ref": "region_arm_orion_spur",
+        "arm_ref": "arm_orion_spur",
+        "position_tags": [
+          "local_neighborhood",
+          "inner_disk"
+        ],
+        "star_class_tags": [
+          "g2v"
+        ],
+        "hazard_tags": [],
+        "system_ref": "sol_system",
+        "anchor_tags": [
+          "baseline",
+          "reference"
+        ]
+      },
+      {
+        "system_id": "alpha_centauri_system",
+        "name": "Alpha Centauri",
+        "region_ref": "region_arm_orion_spur",
+        "arm_ref": "arm_orion_spur",
+        "position_tags": [
+          "local_neighborhood"
+        ],
+        "star_class_tags": [
+          "g2v",
+          "k1v"
+        ],
+        "hazard_tags": [],
+        "system_ref": null,
+        "anchor_tags": [
+          "neighbor"
+        ]
+      },
+      {
+        "system_id": "proxima_centauri_system",
+        "name": "Proxima Centauri",
+        "region_ref": "region_arm_orion_spur",
+        "arm_ref": "arm_orion_spur",
+        "position_tags": [
+          "local_neighborhood"
+        ],
+        "star_class_tags": [
+          "m5v"
+        ],
+        "hazard_tags": [
+          "flare_active"
+        ],
+        "system_ref": null,
+        "anchor_tags": [
+          "neighbor"
+        ]
+      },
+      {
+        "system_id": "sirius_system",
+        "name": "Sirius",
+        "region_ref": "region_arm_orion_spur",
+        "arm_ref": "arm_orion_spur",
+        "position_tags": [
+          "local_neighborhood"
+        ],
+        "star_class_tags": [
+          "a1v",
+          "white_dwarf"
+        ],
+        "hazard_tags": [],
+        "system_ref": null,
+        "anchor_tags": [
+          "bright_star"
+        ]
+      },
+      {
+        "system_id": "barnards_star_system",
+        "name": "Barnard's Star",
+        "region_ref": "region_arm_orion_spur",
+        "arm_ref": "arm_orion_spur",
+        "position_tags": [
+          "local_neighborhood"
+        ],
+        "star_class_tags": [
+          "m4v"
+        ],
+        "hazard_tags": [
+          "flare_active"
+        ],
+        "system_ref": null,
+        "anchor_tags": [
+          "neighbor"
+        ]
+      },
+      {
+        "system_id": "tau_ceti_system",
+        "name": "Tau Ceti",
+        "region_ref": "region_arm_orion_spur",
+        "arm_ref": "arm_orion_spur",
+        "position_tags": [
+          "local_neighborhood"
+        ],
+        "star_class_tags": [
+          "g8v"
+        ],
+        "hazard_tags": [],
+        "system_ref": null,
+        "anchor_tags": [
+          "candidate_habitable"
+        ]
+      },
+      {
+        "system_id": "trappist_1_system",
+        "name": "TRAPPIST-1",
+        "region_ref": "region_arm_orion_spur",
+        "arm_ref": "arm_orion_spur",
+        "position_tags": [
+          "local_neighborhood"
+        ],
+        "star_class_tags": [
+          "m8v"
+        ],
+        "hazard_tags": [
+          "flare_active"
+        ],
+        "system_ref": null,
+        "anchor_tags": [
+          "compact_system"
+        ]
+      },
+      {
+        "system_id": "vega_system",
+        "name": "Vega",
+        "region_ref": "region_arm_orion_spur",
+        "arm_ref": "arm_orion_spur",
+        "position_tags": [
+          "local_neighborhood"
+        ],
+        "star_class_tags": [
+          "a0v"
+        ],
+        "hazard_tags": [],
+        "system_ref": null,
+        "anchor_tags": [
+          "bright_star"
+        ]
+      },
+      {
+        "system_id": "betelgeuse_system",
+        "name": "Betelgeuse",
+        "region_ref": "region_arm_orion_spur",
+        "arm_ref": "arm_orion_spur",
+        "position_tags": [
+          "local_neighborhood"
+        ],
+        "star_class_tags": [
+          "red_supergiant"
+        ],
+        "hazard_tags": [
+          "unstable_star"
+        ],
+        "system_ref": null,
+        "anchor_tags": [
+          "hazard_reference"
+        ]
+      },
+      {
+        "system_id": "rigel_system",
+        "name": "Rigel",
+        "region_ref": "region_arm_orion_spur",
+        "arm_ref": "arm_orion_spur",
+        "position_tags": [
+          "local_neighborhood"
+        ],
+        "star_class_tags": [
+          "blue_supergiant"
+        ],
+        "hazard_tags": [
+          "unstable_star"
+        ],
+        "system_ref": null,
+        "anchor_tags": [
+          "hazard_reference"
+        ]
+      },
+      {
+        "system_id": "cygnus_x1_system",
+        "name": "Cygnus X-1",
+        "region_ref": "region_arm_orion_spur",
+        "arm_ref": "arm_orion_spur",
+        "position_tags": [
+          "local_neighborhood"
+        ],
+        "star_class_tags": [
+          "black_hole_binary"
+        ],
+        "hazard_tags": [
+          "radiation_high"
+        ],
+        "system_ref": null,
+        "anchor_tags": [
+          "hazard_reference"
+        ]
+      },
+      {
+        "system_id": "sagittarius_a_star_system",
+        "name": "Sagittarius A*",
+        "region_ref": "region_galactic_core",
+        "arm_ref": null,
+        "position_tags": [
+          "core"
+        ],
+        "star_class_tags": [
+          "supermassive_black_hole"
+        ],
+        "hazard_tags": [
+          "radiation_extreme"
+        ],
+        "system_ref": null,
+        "anchor_tags": [
+          "core_reference"
+        ]
+      }
+    ],
+    "valid_star_class_tags": [
+      "g2v",
+      "k1v",
+      "m5v",
+      "a1v",
+      "white_dwarf",
+      "m4v",
+      "g8v",
+      "m8v",
+      "a0v",
+      "red_supergiant",
+      "blue_supergiant",
+      "black_hole_binary",
+      "supermassive_black_hole"
+    ]
+  }
+}

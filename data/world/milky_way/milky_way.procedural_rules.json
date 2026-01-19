@@ -1,0 +1,129 @@
+{
+  "schema_id": "world.procedural_rules",
+  "schema_version": "1.0.0",
+  "migration_stub": {
+    "from_version": "1.0.0",
+    "to_version": "1.1.0",
+    "status": "placeholder"
+  },
+  "record": {
+    "seed": 440621,
+    "rule_sets": [
+      {
+        "rule_id": "rule_core_dense",
+        "order_key": 10,
+        "applies_to": "region",
+        "target_ref": "region_galactic_core",
+        "density_class": "density_extreme",
+        "metallicity_class": "metal_rich",
+        "age_class": "age_old",
+        "hazard_class": "hazard_extreme",
+        "spawn_rate_class": "spawn_high"
+      },
+      {
+        "rule_id": "rule_inner_disk",
+        "order_key": 20,
+        "applies_to": "region",
+        "target_ref": "region_inner_disk",
+        "density_class": "density_high",
+        "metallicity_class": "metal_rich",
+        "age_class": "age_mixed",
+        "hazard_class": "hazard_medium",
+        "spawn_rate_class": "spawn_high"
+      },
+      {
+        "rule_id": "rule_outer_disk",
+        "order_key": 30,
+        "applies_to": "region",
+        "target_ref": "region_outer_disk",
+        "density_class": "density_medium",
+        "metallicity_class": "metal_poor",
+        "age_class": "age_mixed",
+        "hazard_class": "hazard_low",
+        "spawn_rate_class": "spawn_medium"
+      },
+      {
+        "rule_id": "rule_halo",
+        "order_key": 40,
+        "applies_to": "region",
+        "target_ref": "region_halo",
+        "density_class": "density_very_low",
+        "metallicity_class": "metal_poor",
+        "age_class": "age_old",
+        "hazard_class": "hazard_low",
+        "spawn_rate_class": "spawn_low"
+      },
+      {
+        "rule_id": "rule_arm_orion_spur",
+        "order_key": 50,
+        "applies_to": "arm",
+        "target_ref": "arm_orion_spur",
+        "density_class": "density_medium",
+        "metallicity_class": "metal_rich",
+        "age_class": "age_mixed",
+        "hazard_class": "hazard_low",
+        "spawn_rate_class": "spawn_medium"
+      },
+      {
+        "rule_id": "rule_arm_perseus",
+        "order_key": 60,
+        "applies_to": "arm",
+        "target_ref": "arm_perseus",
+        "density_class": "density_high",
+        "metallicity_class": "metal_rich",
+        "age_class": "age_mixed",
+        "hazard_class": "hazard_medium",
+        "spawn_rate_class": "spawn_high"
+      },
+      {
+        "rule_id": "rule_void_local",
+        "order_key": 70,
+        "applies_to": "region",
+        "target_ref": "region_void_local",
+        "density_class": "density_very_low",
+        "metallicity_class": "metal_poor",
+        "age_class": "age_mixed",
+        "hazard_class": "hazard_low",
+        "spawn_rate_class": "spawn_low"
+      },
+      {
+        "rule_id": "rule_fallback",
+        "order_key": 999,
+        "applies_to": "fallback",
+        "target_ref": "region_milky_way",
+        "density_class": "density_low",
+        "metallicity_class": "metal_mixed",
+        "age_class": "age_mixed",
+        "hazard_class": "hazard_low",
+        "spawn_rate_class": "spawn_low"
+      }
+    ],
+    "valid_density_classes": [
+      "density_very_low",
+      "density_low",
+      "density_medium",
+      "density_high",
+      "density_extreme"
+    ],
+    "valid_metallicity_classes": [
+      "metal_poor",
+      "metal_mixed",
+      "metal_rich"
+    ],
+    "valid_age_classes": [
+      "age_old",
+      "age_mixed",
+      "age_young"
+    ],
+    "valid_hazard_classes": [
+      "hazard_low",
+      "hazard_medium",
+      "hazard_extreme"
+    ],
+    "valid_spawn_rate_classes": [
+      "spawn_low",
+      "spawn_medium",
+      "spawn_high"
+    ]
+  }
+}
