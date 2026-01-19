@@ -76,12 +76,19 @@ set(ENGINE_CORE_SOURCES
     modules/sim/pkt/idmap/dg_idmap.c
     modules/sim/pkt/registry/dg_type_registry.c
     modules/execution/budgets/dg_budget.c
+    modules/execution/execution_context.cpp
+    modules/execution/ir/access_set.cpp
+    modules/execution/ir/cost_model.cpp
+    modules/execution/ir/task_graph.cpp
+    modules/execution/ir/task_node.cpp
     modules/execution/ir/dg_work_item.c
     modules/execution/ir/dg_work_queue.c
     modules/execution/scheduler/dg_phase.c
     modules/execution/scheduler/dg_sched.c
     modules/execution/scheduler/dg_sched_hash.c
     modules/execution/scheduler/dg_sched_replay.c
+    modules/execution/scheduler/scheduler_single_thread.cpp
+    modules/execution/scheduler/scheduler_iface.cpp
     modules/state/state.c
     modules/struct/d_struct.c
     modules/struct/d_struct_blueprint.c
