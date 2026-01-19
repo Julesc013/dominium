@@ -229,8 +229,8 @@ All failures are merge-blocking.
 ## Phase-1 Audit Notes (PH1-AUDIT)
 
 - `tools/ci/arch_checks.py` is not invoked by `.github/workflows/ci.yml`. IDs that rely solely on this script are not CI-enforced without an explicit `check_arch` step.
-- ID alias conflict: `DET-GATE-*` (docs/DETERMINISM_ENFORCEMENT.md) and `DET-G*` (docs/DETERMINISM_GATES.md) describe the same gates. Align to one canonical ID set.
-- `docs/ARCH_BUILD_ENFORCEMENT.md` references `DET-FLOAT-001`, but the implemented check ID is `DET-FLOAT-003`.
+- ID alias conflict: `DET-GATE-*` (docs/policies/DETERMINISM_ENFORCEMENT.md) and `DET-G*` (docs/policies/DETERMINISM_GATES.md) describe the same gates. Align to one canonical ID set.
+- `docs/arch/ARCH_BUILD_ENFORCEMENT.md` references `DET-FLOAT-001`, but the implemented check ID is `DET-FLOAT-003`.
 - `BUILD-GLOBAL-001` is enforced for `include_directories()` at configure time; `link_directories()` is only covered by `tools/ci/arch_checks.py`.
 - `PERF-STALL-004` and `PERF-BUDGET-001` duplicate `PERF-STALL-001` and `PERF-BUDGET-002` without implementation.
 
