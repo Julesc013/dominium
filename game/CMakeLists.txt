@@ -46,6 +46,11 @@ add_library(dominium_game STATIC
     agents/agent_aggregate.cpp
     agents/agent_refinement.cpp
     agents/agent_collapse.cpp
+    mods/mod_manifest.cpp
+    mods/mod_graph_resolver.cpp
+    mods/mod_compat.cpp
+    mods/mod_safe_mode.cpp
+    mods/mod_loader.cpp
     rules/governance/jurisdiction_model.cpp
     rules/governance/legitimacy_model.cpp
     rules/governance/enforcement_capacity.cpp

@@ -104,6 +104,40 @@ add_test(NAME dominium_tool0_inspection
     COMMAND $<TARGET_FILE:dominium_tool0_inspection_tests>
 )
 
+add_executable(mod_pack_builder
+    modpack/mod_pack_builder.cpp
+    validation/validator_common.cpp
+)
+target_include_directories(mod_pack_builder PRIVATE
+    ${DOMINIUM_ENGINE_INCLUDE_DIR}
+    ${DOMINIUM_GAME_INCLUDE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+target_link_libraries(mod_pack_builder PRIVATE dominium_game)
+set_target_properties(mod_pack_builder PROPERTIES
+    OUTPUT_NAME "mod_pack_builder"
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_executable(mod_pack_validator
+    modpack/mod_pack_validator.cpp
+    validation/validator_common.cpp
+)
+target_include_directories(mod_pack_validator PRIVATE
+    ${DOMINIUM_ENGINE_INCLUDE_DIR}
+    ${DOMINIUM_GAME_INCLUDE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+target_link_libraries(mod_pack_validator PRIVATE dominium_game)
+set_target_properties(mod_pack_validator PROPERTIES
+    OUTPUT_NAME "mod_pack_validator"
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
 add_executable(tools::host ALIAS dominium-tools)
 add_executable(tools::coredata_compile ALIAS coredata_compile)
 add_executable(tools::coredata_validate ALIAS coredata_validate)

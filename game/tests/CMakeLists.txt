@@ -755,6 +755,17 @@ set_target_properties(dominium_agent3_aggregation_tests PROPERTIES
 )
 add_test(NAME dominium_agent3_aggregation COMMAND dominium_agent3_aggregation_tests)
 
+add_executable(dominium_mod0_compat_tests
+    mod0_compat_tests.cpp
+)
+target_link_libraries(dominium_mod0_compat_tests PRIVATE dominium_game)
+set_target_properties(dominium_mod0_compat_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME dominium_mod0_compat COMMAND dominium_mod0_compat_tests)
+
 add_executable(dominium_mp0_parity_tests
     mp0/dom_mp0_parity_tests.cpp
 )
