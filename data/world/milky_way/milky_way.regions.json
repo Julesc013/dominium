@@ -1,0 +1,230 @@
+{
+  "schema_id": "world.galaxy_regions",
+  "schema_version": "1.0.0",
+  "migration_stub": {
+    "from_version": "1.0.0",
+    "to_version": "1.1.0",
+    "status": "placeholder"
+  },
+  "record": {
+    "region_records": [
+      {
+        "region_id": "region_milky_way",
+        "name": "Milky Way",
+        "boundary_ref": "boundary.milky_way_v1",
+        "parent_region_ref": null,
+        "region_type": "galactic",
+        "region_tags": [
+          "galaxy_root"
+        ],
+        "density_class": "density_variable",
+        "age_class": "age_mixed",
+        "hazard_tags": [],
+        "provenance_ref": "prov.milky_way.regions.v1"
+      },
+      {
+        "region_id": "region_galactic_core",
+        "name": "Galactic Core",
+        "boundary_ref": "boundary.milky_way_core_v1",
+        "parent_region_ref": "region_milky_way",
+        "region_type": "galactic",
+        "region_tags": [
+          "core",
+          "dense"
+        ],
+        "density_class": "density_high",
+        "age_class": "age_old",
+        "hazard_tags": [
+          "radiation_high",
+          "gravity_complex"
+        ],
+        "provenance_ref": "prov.milky_way.regions.v1"
+      },
+      {
+        "region_id": "region_inner_disk",
+        "name": "Inner Disk",
+        "boundary_ref": "boundary.milky_way_inner_disk_v1",
+        "parent_region_ref": "region_milky_way",
+        "region_type": "galactic",
+        "region_tags": [
+          "disk",
+          "inner"
+        ],
+        "density_class": "density_high",
+        "age_class": "age_mixed",
+        "hazard_tags": [
+          "radiation_medium"
+        ],
+        "provenance_ref": "prov.milky_way.regions.v1"
+      },
+      {
+        "region_id": "region_outer_disk",
+        "name": "Outer Disk",
+        "boundary_ref": "boundary.milky_way_outer_disk_v1",
+        "parent_region_ref": "region_milky_way",
+        "region_type": "galactic",
+        "region_tags": [
+          "disk",
+          "outer"
+        ],
+        "density_class": "density_low",
+        "age_class": "age_mixed",
+        "hazard_tags": [],
+        "provenance_ref": "prov.milky_way.regions.v1"
+      },
+      {
+        "region_id": "region_halo",
+        "name": "Galactic Halo",
+        "boundary_ref": "boundary.milky_way_halo_v1",
+        "parent_region_ref": "region_milky_way",
+        "region_type": "galactic",
+        "region_tags": [
+          "halo",
+          "sparse"
+        ],
+        "density_class": "density_low",
+        "age_class": "age_old",
+        "hazard_tags": [
+          "void_like"
+        ],
+        "provenance_ref": "prov.milky_way.regions.v1"
+      },
+      {
+        "region_id": "region_void_local",
+        "name": "Local Void Zone",
+        "boundary_ref": "boundary.milky_way_void_local_v1",
+        "parent_region_ref": "region_outer_disk",
+        "region_type": "galactic",
+        "region_tags": [
+          "void",
+          "sparse"
+        ],
+        "density_class": "density_very_low",
+        "age_class": "age_mixed",
+        "hazard_tags": [
+          "navigation_sparse"
+        ],
+        "provenance_ref": "prov.milky_way.regions.v1"
+      },
+      {
+        "region_id": "region_dense_cluster",
+        "name": "Dense Cluster Zone",
+        "boundary_ref": "boundary.milky_way_cluster_v1",
+        "parent_region_ref": "region_inner_disk",
+        "region_type": "galactic",
+        "region_tags": [
+          "cluster",
+          "dense"
+        ],
+        "density_class": "density_high",
+        "age_class": "age_young",
+        "hazard_tags": [
+          "radiation_medium"
+        ],
+        "provenance_ref": "prov.milky_way.regions.v1"
+      },
+      {
+        "region_id": "region_arm_perseus",
+        "name": "Perseus Arm Region",
+        "boundary_ref": "boundary.milky_way_arm_perseus_v1",
+        "parent_region_ref": "region_outer_disk",
+        "region_type": "galactic",
+        "region_tags": [
+          "arm",
+          "perseus"
+        ],
+        "density_class": "density_high",
+        "age_class": "age_mixed",
+        "hazard_tags": [],
+        "provenance_ref": "prov.milky_way.regions.v1"
+      },
+      {
+        "region_id": "region_arm_sagittarius",
+        "name": "Sagittarius Arm Region",
+        "boundary_ref": "boundary.milky_way_arm_sagittarius_v1",
+        "parent_region_ref": "region_inner_disk",
+        "region_type": "galactic",
+        "region_tags": [
+          "arm",
+          "sagittarius"
+        ],
+        "density_class": "density_high",
+        "age_class": "age_mixed",
+        "hazard_tags": [],
+        "provenance_ref": "prov.milky_way.regions.v1"
+      },
+      {
+        "region_id": "region_arm_scutum_centaurus",
+        "name": "Scutum-Centaurus Arm Region",
+        "boundary_ref": "boundary.milky_way_arm_scutum_centaurus_v1",
+        "parent_region_ref": "region_inner_disk",
+        "region_type": "galactic",
+        "region_tags": [
+          "arm",
+          "scutum_centaurus"
+        ],
+        "density_class": "density_high",
+        "age_class": "age_mixed",
+        "hazard_tags": [],
+        "provenance_ref": "prov.milky_way.regions.v1"
+      },
+      {
+        "region_id": "region_arm_norma",
+        "name": "Norma Arm Region",
+        "boundary_ref": "boundary.milky_way_arm_norma_v1",
+        "parent_region_ref": "region_inner_disk",
+        "region_type": "galactic",
+        "region_tags": [
+          "arm",
+          "norma"
+        ],
+        "density_class": "density_medium",
+        "age_class": "age_mixed",
+        "hazard_tags": [],
+        "provenance_ref": "prov.milky_way.regions.v1"
+      },
+      {
+        "region_id": "region_arm_outer",
+        "name": "Outer Arm Region",
+        "boundary_ref": "boundary.milky_way_arm_outer_v1",
+        "parent_region_ref": "region_outer_disk",
+        "region_type": "galactic",
+        "region_tags": [
+          "arm",
+          "outer"
+        ],
+        "density_class": "density_low",
+        "age_class": "age_mixed",
+        "hazard_tags": [],
+        "provenance_ref": "prov.milky_way.regions.v1"
+      },
+      {
+        "region_id": "region_arm_orion_spur",
+        "name": "Orion Spur Region",
+        "boundary_ref": "boundary.milky_way_arm_orion_spur_v1",
+        "parent_region_ref": "region_inner_disk",
+        "region_type": "galactic",
+        "region_tags": [
+          "arm",
+          "orion_spur"
+        ],
+        "density_class": "density_medium",
+        "age_class": "age_mixed",
+        "hazard_tags": [],
+        "provenance_ref": "prov.milky_way.regions.v1"
+      }
+    ],
+    "valid_density_classes": [
+      "density_very_low",
+      "density_low",
+      "density_medium",
+      "density_high",
+      "density_variable"
+    ],
+    "valid_age_classes": [
+      "age_old",
+      "age_mixed",
+      "age_young"
+    ]
+  }
+}
