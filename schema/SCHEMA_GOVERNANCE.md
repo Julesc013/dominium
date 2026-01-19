@@ -87,3 +87,10 @@ The following are FORBIDDEN:
 - Runtime mutation of schema definitions.
 - Loading tool-only schemas in runtime.
 - Schema changes without CI validation.
+
+## FINAL0 Policy References
+- `docs/LONG_TERM_SUPPORT_POLICY.md`
+- `docs/DEPRECATION_POLICY.md`
+- `docs/COMPATIBILITY_PROMISES.md`
+- `docs/FEATURE_EPOCH_POLICY.md`
+- `docs/RENDER_BACKEND_LIFECYCLE.md`

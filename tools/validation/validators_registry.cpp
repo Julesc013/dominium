@@ -11,6 +11,7 @@ DETERMINISM: Validation order is deterministic.
 */
 #include "validators_registry.h"
 #include "validate/tool_validation.h"
+#include "validate/policy_validation.h"
 
 namespace dom {
 namespace validation {
@@ -430,6 +431,7 @@ void run_all_validators(const ValidationContext& ctx, ValidationReport& report) 
     validate_render_api_references(ctx, report);
     validate_epistemic_ui(ctx, report);
     validate_tooling_inventory(ctx, report);
+    validate_policy_docs(ctx, report);
 }
 
 } /* namespace validation */
