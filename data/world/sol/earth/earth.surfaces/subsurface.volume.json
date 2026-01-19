@@ -1,0 +1,39 @@
+{
+  "schema_id": "world.surface_and_regions",
+  "schema_version": "1.0.0",
+  "migration_stub": {
+    "from_version": "1.0.0",
+    "to_version": "1.1.0",
+    "status": "placeholder"
+  },
+  "record": {
+    "volume_records": [
+      {
+        "volume_id": "earth_subsurface_volume",
+        "body_ref": "sol_earth",
+        "volume_type": "underground",
+        "coordinate_frame_ref": "frame.earth.surface",
+        "bounds_ref": "bounds.earth_subsurface_v1",
+        "region_ids": [
+          "earth_subsurface_region"
+        ],
+        "provenance_ref": "prov.earth.volumes.v1"
+      }
+    ],
+    "region_records": [
+      {
+        "region_id": "earth_subsurface_region",
+        "surface_ref": null,
+        "volume_ref": "earth_subsurface_volume",
+        "boundary_ref": "boundary.earth_subsurface_v1",
+        "region_type": "natural",
+        "parent_region_ref": null,
+        "layer_id": "subsurface",
+        "region_tags": [
+          "subsurface"
+        ],
+        "provenance_ref": "prov.earth.volumes.v1"
+      }
+    ]
+  }
+}

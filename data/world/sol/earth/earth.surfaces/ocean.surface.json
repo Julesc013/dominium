@@ -1,0 +1,37 @@
+{
+  "schema_id": "world.surface_and_regions",
+  "schema_version": "1.0.0",
+  "migration_stub": {
+    "from_version": "1.0.0",
+    "to_version": "1.1.0",
+    "status": "placeholder"
+  },
+  "record": {
+    "surface_records": [
+      {
+        "surface_id": "earth_ocean_surface",
+        "body_ref": "sol_earth",
+        "surface_type": "ocean",
+        "coordinate_frame_ref": "frame.earth.surface",
+        "heightmap_ref": "earth_bathymetry_placeholder",
+        "climate_map_ref": "earth_ocean_climate_placeholder",
+        "biome_tags": [
+          "ocean",
+          "polar",
+          "temperate",
+          "tropical"
+        ],
+        "region_ids": [
+          "earth_ocean_region",
+          "earth_pacific_ocean_region",
+          "earth_atlantic_ocean_region",
+          "earth_indian_ocean_region",
+          "earth_arctic_ocean_region",
+          "earth_southern_ocean_region"
+        ],
+        "provenance_ref": "prov.earth.surfaces.v1"
+      }
+    ],
+    "region_records": []
+  }
+}

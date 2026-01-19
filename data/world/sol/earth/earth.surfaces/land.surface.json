@@ -1,0 +1,39 @@
+{
+  "schema_id": "world.surface_and_regions",
+  "schema_version": "1.0.0",
+  "migration_stub": {
+    "from_version": "1.0.0",
+    "to_version": "1.1.0",
+    "status": "placeholder"
+  },
+  "record": {
+    "surface_records": [
+      {
+        "surface_id": "earth_land_surface",
+        "body_ref": "sol_earth",
+        "surface_type": "land",
+        "coordinate_frame_ref": "frame.earth.surface",
+        "heightmap_ref": "earth_heightmap_placeholder",
+        "climate_map_ref": "earth_climate_placeholder",
+        "biome_tags": [
+          "forest",
+          "grassland",
+          "desert",
+          "tundra"
+        ],
+        "region_ids": [
+          "earth_land_region",
+          "earth_africa_region",
+          "earth_eurasia_region",
+          "earth_north_america_region",
+          "earth_south_america_region",
+          "earth_antarctica_region",
+          "earth_australia_region",
+          "earth_arctic_land_region"
+        ],
+        "provenance_ref": "prov.earth.surfaces.v1"
+      }
+    ],
+    "region_records": []
+  }
+}

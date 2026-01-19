@@ -1,0 +1,53 @@
+{
+  "schema_id": "world.surface_and_regions",
+  "schema_version": "1.0.0",
+  "migration_stub": {
+    "from_version": "1.0.0",
+    "to_version": "1.1.0",
+    "status": "placeholder"
+  },
+  "record": {
+    "volume_records": [
+      {
+        "volume_id": "earth_atmosphere_volume",
+        "body_ref": "sol_earth",
+        "volume_type": "atmosphere_layer",
+        "coordinate_frame_ref": "frame.earth.surface",
+        "bounds_ref": "bounds.earth_atmosphere_v1",
+        "region_ids": [
+          "earth_troposphere_region",
+          "earth_stratosphere_region"
+        ],
+        "provenance_ref": "prov.earth.volumes.v1"
+      }
+    ],
+    "region_records": [
+      {
+        "region_id": "earth_troposphere_region",
+        "surface_ref": null,
+        "volume_ref": "earth_atmosphere_volume",
+        "boundary_ref": "boundary.earth_troposphere_v1",
+        "region_type": "natural",
+        "parent_region_ref": null,
+        "layer_id": "atmosphere",
+        "region_tags": [
+          "troposphere"
+        ],
+        "provenance_ref": "prov.earth.volumes.v1"
+      },
+      {
+        "region_id": "earth_stratosphere_region",
+        "surface_ref": null,
+        "volume_ref": "earth_atmosphere_volume",
+        "boundary_ref": "boundary.earth_stratosphere_v1",
+        "region_type": "natural",
+        "parent_region_ref": null,
+        "layer_id": "atmosphere",
+        "region_tags": [
+          "stratosphere"
+        ],
+        "provenance_ref": "prov.earth.volumes.v1"
+      }
+    ]
+  }
+}
