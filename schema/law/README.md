@@ -21,6 +21,6 @@ DEPENDENCIES:
 
 This folder anchors governance and enforcement references for schema policies.
 See:
-- `docs/VALIDATION_AND_GOVERNANCE.md`
-- `docs/CI_ENFORCEMENT_MATRIX.md`
+- `docs/policies/VALIDATION_AND_GOVERNANCE.md`
+- `docs/ci/CI_ENFORCEMENT_MATRIX.md`
 - `schema/SCHEMA_GOVERNANCE.md`

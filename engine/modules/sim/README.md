@@ -22,6 +22,6 @@ All code here is expected to participate in replay, hashing, and lockstep.
 - `prop/` propagators and bounded incremental updates.
 
 ## Specs
-See `docs/SPEC_DETERMINISM.md`, `docs/SPEC_SIM_SCHEDULER.md`, `docs/SPEC_PACKETS.md`,
-`docs/SPEC_FIELDS_EVENTS.md`, `docs/SPEC_ACTIONS.md`, `docs/SPEC_LOD.md`,
-`docs/SPEC_DOMAINS_FRAMES_PROP.md`, `docs/SPEC_KNOWLEDGE_VIS_COMMS.md`.
+See `docs/specs/SPEC_DETERMINISM.md`, `docs/specs/SPEC_SIM_SCHEDULER.md`, `docs/specs/SPEC_PACKETS.md`,
+`docs/specs/SPEC_FIELDS_EVENTS.md`, `docs/specs/SPEC_ACTIONS.md`, `docs/specs/SPEC_LOD.md`,
+`docs/specs/SPEC_DOMAINS_FRAMES_PROP.md`, `docs/specs/SPEC_KNOWLEDGE_VIS_COMMS.md`.

@@ -42,8 +42,8 @@ Each schema MUST declare its class explicitly:
   - `schema/world/**` for game world data.
   - `schema/save/**` for saves.
   - `schema/net/**` for network payloads.
-  - `schema/mod/**` for mod manifests and compatibility.
-  - `schema/tool/**` for authoring-only metadata.
+  - `schema/mods/**` for mod manifests and compatibility.
+  - `schema/law/**` for law and policy formats.
 
 **Rationale**
 Centralized schema ownership prevents format drift and preserves determinism.
@@ -89,8 +89,8 @@ The following are FORBIDDEN:
 - Schema changes without CI validation.
 
 ## FINAL0 Policy References
-- `docs/LONG_TERM_SUPPORT_POLICY.md`
-- `docs/DEPRECATION_POLICY.md`
-- `docs/COMPATIBILITY_PROMISES.md`
-- `docs/FEATURE_EPOCH_POLICY.md`
-- `docs/RENDER_BACKEND_LIFECYCLE.md`
+- `docs/policies/LONG_TERM_SUPPORT_POLICY.md`
+- `docs/policies/DEPRECATION_POLICY.md`
+- `docs/policies/COMPATIBILITY_PROMISES.md`
+- `docs/policies/FEATURE_EPOCH_POLICY.md`
+- `docs/policies/RENDER_BACKEND_LIFECYCLE.md`
