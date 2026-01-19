@@ -32,6 +32,15 @@ add_library(dominium_game STATIC
     core/life/birth_pipeline.cpp
     core/sim/macro_due_scheduler_hooks.cpp
     core/session/mp0_session.cpp
+    agents/agent_goal.cpp
+    agents/agent_evaluator.cpp
+    agents/agent_planner.cpp
+    agents/agent_schedule.cpp
+    agents/agent_belief_update.cpp
+    agents/doctrine.cpp
+    agents/agent_role.cpp
+    agents/delegation.cpp
+    agents/doctrine_scheduler.cpp
     rules/governance/jurisdiction_model.cpp
     rules/governance/legitimacy_model.cpp
     rules/governance/enforcement_capacity.cpp

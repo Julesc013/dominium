@@ -116,6 +116,10 @@ All fixtures are required and MUST be versioned and stable. Minimal data packs a
   - Data packs: core/time, core/civ (logistics/needs), core/governance (legitimacy/enforcement)
 - CIV5 War Interplanetary scenario (blockades/interdictions/siege)
   - Data packs: core/time, core/scale (routes/logistics), core/civ (logistics/needs), core/governance (legitimacy)
+- AGENT1 Goals/Planning scenario (goal selection, bounded planning, schedule)
+  - Data packs: core/time, core/info (epistemic), core/commands (minimal)
+- AGENT2 Doctrine/Roles scenario (doctrine filtering, delegation, scheduling)
+  - Data packs: core/time, core/info (epistemic), core/commands (minimal)
 - MP0 Local Parity scenario (loopback/lockstep/server-auth)
   - Data packs: core/time, core/civ, core/life (continuation/death)
 
