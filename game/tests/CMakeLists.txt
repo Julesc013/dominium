@@ -722,6 +722,28 @@ set_target_properties(dominium_civ5_war4_scale_tests PROPERTIES
 )
 add_test(NAME dominium_civ5_war4_scale COMMAND dominium_civ5_war4_scale_tests)
 
+add_executable(dominium_agent1_goal_planning_tests
+    agent1_goal_planning_tests.cpp
+)
+target_link_libraries(dominium_agent1_goal_planning_tests PRIVATE dominium_game)
+set_target_properties(dominium_agent1_goal_planning_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME dominium_agent1_goal_planning COMMAND dominium_agent1_goal_planning_tests)
+
+add_executable(dominium_agent2_doctrine_tests
+    agent2_doctrine_tests.cpp
+)
+target_link_libraries(dominium_agent2_doctrine_tests PRIVATE dominium_game)
+set_target_properties(dominium_agent2_doctrine_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME dominium_agent2_doctrine COMMAND dominium_agent2_doctrine_tests)
+
 add_executable(dominium_mp0_parity_tests
     mp0/dom_mp0_parity_tests.cpp
 )
