@@ -89,6 +89,13 @@ set(ENGINE_CORE_SOURCES
     modules/execution/scheduler/dg_sched_replay.c
     modules/execution/scheduler/scheduler_single_thread.cpp
     modules/execution/scheduler/scheduler_iface.cpp
+    modules/ecs/storage_iface.cpp
+    modules/ecs/component_view.cpp
+    modules/ecs/entity_range.cpp
+    modules/ecs/soa_archetype_storage.cpp
+    modules/ecs/packed_view.cpp
+    modules/ecs/delta_codec.cpp
+    modules/ecs/visibility_mask.cpp
     modules/state/state.c
     modules/struct/d_struct.c
     modules/struct/d_struct_blueprint.c
