@@ -160,3 +160,73 @@ set_target_properties(ecs_packed_view_tests PROPERTIES
     CXX_EXTENSIONS OFF
 )
 add_test(NAME ecs_packed_view COMMAND ecs_packed_view_tests)
+
+add_executable(kernel_iface_tests
+    kernel_iface_tests.cpp
+)
+target_link_libraries(kernel_iface_tests PRIVATE engine::domino)
+target_include_directories(kernel_iface_tests PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../modules
+)
+set_target_properties(kernel_iface_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME kernel_iface COMMAND kernel_iface_tests)
+
+add_executable(kernel_scalar_tests
+    kernel_scalar_tests.cpp
+)
+target_link_libraries(kernel_scalar_tests PRIVATE engine::domino)
+target_include_directories(kernel_scalar_tests PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../modules
+)
+set_target_properties(kernel_scalar_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME kernel_scalar COMMAND kernel_scalar_tests)
+
+add_executable(kernel_simd_equivalence_tests
+    kernel_simd_equivalence_tests.cpp
+)
+target_link_libraries(kernel_simd_equivalence_tests PRIVATE engine::domino)
+target_include_directories(kernel_simd_equivalence_tests PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../modules
+)
+set_target_properties(kernel_simd_equivalence_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME kernel_simd_equivalence COMMAND kernel_simd_equivalence_tests)
+
+add_executable(kernel_gpu_fallback_tests
+    kernel_gpu_fallback_tests.cpp
+)
+target_link_libraries(kernel_gpu_fallback_tests PRIVATE engine::domino)
+target_include_directories(kernel_gpu_fallback_tests PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../modules
+)
+set_target_properties(kernel_gpu_fallback_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME kernel_gpu_fallback COMMAND kernel_gpu_fallback_tests)
+
+add_executable(kernel_policy_tests
+    kernel_policy_tests.cpp
+)
+target_link_libraries(kernel_policy_tests PRIVATE engine::domino)
+target_include_directories(kernel_policy_tests PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../modules
+)
+set_target_properties(kernel_policy_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME kernel_policy COMMAND kernel_policy_tests)

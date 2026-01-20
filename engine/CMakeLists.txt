@@ -89,6 +89,16 @@ set(ENGINE_CORE_SOURCES
     modules/execution/scheduler/dg_sched_replay.c
     modules/execution/scheduler/scheduler_single_thread.cpp
     modules/execution/scheduler/scheduler_iface.cpp
+    modules/execution/kernels/kernel_registry.cpp
+    modules/execution/kernels/kernel_dispatch.cpp
+    modules/execution/kernels/kernel_policy.cpp
+    modules/execution/kernels/kernel_selector.cpp
+    modules/execution/kernels/scalar/op_ids.cpp
+    modules/execution/kernels/scalar/scalar_kernels.cpp
+    modules/execution/kernels/simd/simd_caps.cpp
+    modules/execution/kernels/simd/simd_kernels.cpp
+    modules/execution/kernels/gpu/gpu_caps.cpp
+    modules/execution/kernels/gpu/gpu_kernels.cpp
     modules/ecs/storage_iface.cpp
     modules/ecs/component_view.cpp
     modules/ecs/entity_range.cpp
