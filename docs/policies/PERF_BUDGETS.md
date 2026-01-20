@@ -110,6 +110,19 @@ macro_net_bytes_sent_max=4194304
 macro_net_bytes_recv_max=4194304
 ```
 
+## Fixture bindings (EXEC-AUDIT1)
+
+These fixtures exercise the budgets above. Each fixture declares per-tier
+caps in `game/tests/fixtures/**/fixture.cfg`.
+
+| Fixture | Budget profile | Primary focus |
+| --- | --- | --- |
+| fixture_earth_only | baseline | Minimal world cost and determinism baseline |
+| fixture_10k_systems_latent | baseline | Latent scaling, no global iteration |
+| fixture_war_campaign | baseline | War workloads and degradation |
+| fixture_market_crisis | modern | Economy burst amortization |
+| fixture_timewarp_1000y | baseline | Long-horizon batch stepping |
+
 ## Failure artifacts
 
 On violation, emit a report with:

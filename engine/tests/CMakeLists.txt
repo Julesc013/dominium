@@ -125,6 +125,34 @@ set_target_properties(execution_scheduler_law_tests PROPERTIES
 )
 add_test(NAME execution_scheduler_law COMMAND execution_scheduler_law_tests)
 
+add_executable(execution_contract_tests
+    execution_contract_tests.cpp
+)
+target_link_libraries(execution_contract_tests PRIVATE engine::domino)
+target_include_directories(execution_contract_tests PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../modules
+)
+set_target_properties(execution_contract_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME execution_contract COMMAND execution_contract_tests)
+
+add_executable(execution_equivalence_tests
+    execution_equivalence_tests.cpp
+)
+target_link_libraries(execution_equivalence_tests PRIVATE engine::domino)
+target_include_directories(execution_equivalence_tests PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../modules
+)
+set_target_properties(execution_equivalence_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME execution_equivalence COMMAND execution_equivalence_tests)
+
 add_executable(ecs_storage_iface_tests
     ecs_storage_iface_tests.cpp
 )
@@ -230,6 +258,23 @@ set_target_properties(kernel_policy_tests PROPERTIES
     CXX_EXTENSIONS OFF
 )
 add_test(NAME kernel_policy COMMAND kernel_policy_tests)
+
+add_executable(execution_perf_regression_tests
+    execution_perf_regression_tests.cpp
+)
+target_link_libraries(execution_perf_regression_tests PRIVATE engine::domino)
+target_include_directories(execution_perf_regression_tests PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../modules
+)
+target_compile_definitions(execution_perf_regression_tests PRIVATE
+    DOMINIUM_FIXTURES_DIR="${CMAKE_SOURCE_DIR}/game/tests/fixtures"
+)
+set_target_properties(execution_perf_regression_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME execution_perf_regression COMMAND execution_perf_regression_tests)
 
 add_executable(render_prep_work_ir_tests
     render_prep_work_ir_tests.cpp

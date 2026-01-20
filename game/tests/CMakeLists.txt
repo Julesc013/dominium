@@ -593,6 +593,17 @@ set_target_properties(dominium_execution_emit_tests PROPERTIES
 )
 add_test(NAME dominium_execution_emit COMMAND dominium_execution_emit_tests)
 
+add_executable(dominium_work_ir_completeness_tests
+    work_ir_completeness_tests.cpp
+)
+target_link_libraries(dominium_work_ir_completeness_tests PRIVATE dominium_game)
+set_target_properties(dominium_work_ir_completeness_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME dominium_work_ir_completeness COMMAND dominium_work_ir_completeness_tests)
+
 add_executable(dominium_interest_work_ir_tests
     interest_work_ir_tests.cpp
 )
