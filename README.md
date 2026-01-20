@@ -70,12 +70,17 @@ installation or repair logic while preserving deterministic boundaries.
 - `docs/guides/README.md` — documentation index and entry points
 - `docs/arch/ARCH0_CONSTITUTION.md` — architectural constitution (binding)
 - `docs/arch/CHANGE_PROTOCOL.md` — required process for sim-affecting change
-- `docs/arch/DIRECTORY_CONTEXT.md` — authoritative repo layout and boundaries
+- `docs/arch/DIRECTORY_CONTEXT.md` and `docs/arch/ARCH_REPO_LAYOUT.md` — authoritative repo layout and ownership boundaries
 - `docs/arch/ARCHITECTURE.md` — system architecture and layering
+- `docs/arch/GLOSSARY.md` — canonical terminology
 - `docs/arch/LAW_ENFORCEMENT_POINTS.md` — law gates and enforcement phases
+- `docs/arch/ADOPTION_PROTOCOL.md` — incremental migration rules for Work IR adoption
 - `schema/execution/README.md` and `schema/law/README.md` — execution and law schemas
+- `schema/ecs/README.md` — ECS component schema and storage backend policy
 - `docs/arch/EXECUTION_REORDERING_POLICY.md` and `docs/arch/DETERMINISTIC_REDUCTION_RULES.md` — deterministic reordering and reduction rules
 - `docs/guides/DEPENDENCIES.md` — allowed and forbidden dependency edges
+- `docs/guides/WORK_IR_EMISSION_GUIDE.md` — how game systems emit Work IR and Access IR
+- `docs/guides/KERNEL_BACKEND_SELECTION.md` — kernel backend selection policy
 - `docs/specs/CONTRACTS.md` — public API contract rules
 - `docs/guides/BUILD_OVERVIEW.md` — build topology summary
 - `docs/guides/BUILDING.md` — build system and configuration
