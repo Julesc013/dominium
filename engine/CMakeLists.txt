@@ -88,6 +88,7 @@ set(ENGINE_CORE_SOURCES
     modules/execution/scheduler/dg_sched_hash.c
     modules/execution/scheduler/dg_sched_replay.c
     modules/execution/scheduler/scheduler_single_thread.cpp
+    modules/execution/scheduler/scheduler_parallel.cpp
     modules/execution/scheduler/scheduler_iface.cpp
     modules/execution/kernels/kernel_registry.cpp
     modules/execution/kernels/kernel_dispatch.cpp

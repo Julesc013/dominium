@@ -51,8 +51,8 @@ Each row is a required matrix cell. If a row is marked "future", it is planned b
 
 | Exec mode | Step strategy | Hardware/Backend variance | Fidelity tier | Required hashes | Allowed divergence | Fixtures |
 | --- | --- | --- | --- | --- | --- | --- |
-| Singleplayer (loopback) | Step-by-step | Same CPU/OS | Macro | SIM_CORE, SIM_ECON, SIM_INFO, SIM_TIME, SIM_WORLD | Presentation only | Minimal Earth-only, Death/Estate, Birth/Lineage, Remains/Salvage, CIV0a Survival, CIV0 Population, CIV1 Cities/Infra, CIV2 Governance, CIV3 Knowledge/Tech, CIV4 Scale/Logistics |
-| Singleplayer (loopback) | Batch (N) | Same CPU/OS | Macro | SIM_CORE, SIM_ECON, SIM_INFO, SIM_TIME, SIM_WORLD | Presentation only | Minimal Earth-only, Warp |
+| Singleplayer (loopback) | Step-by-step | Same CPU/OS | Macro | SIM_CORE, SIM_ECON, SIM_INFO, SIM_TIME, SIM_WORLD | Presentation only | Minimal Earth-only, War Campaign, Market Crisis, Death/Estate, Birth/Lineage, Remains/Salvage, CIV0a Survival, CIV0 Population, CIV1 Cities/Infra, CIV2 Governance, CIV3 Knowledge/Tech, CIV4 Scale/Logistics |
+| Singleplayer (loopback) | Batch (N) | Same CPU/OS | Macro | SIM_CORE, SIM_ECON, SIM_INFO, SIM_TIME, SIM_WORLD | Presentation only | Minimal Earth-only, Timewarp 1000y, Warp |
 | Singleplayer (loopback) | Event-driven jump | Same CPU/OS | Macro | SIM_CORE, SIM_ECON, SIM_INFO, SIM_TIME, SIM_WORLD | Presentation only | Minimal Earth-only |
 | Local MP lockstep | Step-by-step | Same CPU/OS | Macro | SIM_CORE, SIM_ECON, SIM_INFO, SIM_TIME, SIM_WORLD | Presentation only | Sol-only, MP0 Local Parity |
 | Local MP lockstep | Batch (N) | Same CPU/OS | Macro | SIM_CORE, SIM_ECON, SIM_INFO, SIM_TIME, SIM_WORLD | Presentation only | Sol-only, Warp |
@@ -75,9 +75,14 @@ Each row is a required matrix cell. If a row is marked "future", it is planned b
 ## Fixtures (required)
 
 All fixtures are required and MUST be versioned and stable. Minimal data packs are listed per fixture.
+EXEC-AUDIT1 fixture configs live under `game/tests/fixtures/`.
 
 - Minimal Earth-only scenario
   - Data packs: core/astro, core/biomes, core/time, core/economy (minimal)
+- War campaign scenario
+  - Data packs: core/time, core/war, core/governance, core/logistics
+- Market crisis scenario
+  - Data packs: core/time, core/economy, core/markets, core/contracts
 - Sol-only scenario
   - Data packs: core/astro (Sol set), core/time, core/world
 - 10k systems latent scenario (macro only)
@@ -87,6 +92,8 @@ All fixtures are required and MUST be versioned and stable. Minimal data packs a
 - Info/comm scenario (delayed message)
   - Data packs: core/info, core/comm, core/time
 - Warp scenario (TW batch stepping)
+  - Data packs: core/time, core/sim, core/world
+- Timewarp 1000y scenario (long horizon)
   - Data packs: core/time, core/sim, core/world
 - Sensor scenario (degraded info)
   - Data packs: core/sensors, core/info, core/time
