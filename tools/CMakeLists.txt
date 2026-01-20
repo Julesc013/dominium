@@ -80,6 +80,7 @@ add_library(dominium_tools_inspect STATIC
     inspect/provenance_browser.cpp
     inspect/ledger_inspector.cpp
     inspect/event_timeline_view.cpp
+    inspect/dispute_replay_inspector.cpp
 )
 target_include_directories(dominium_tools_inspect
     PUBLIC

@@ -73,6 +73,11 @@ Deterministic reordering, reduction, and commit ordering are governed by:
 - `docs/arch/EXECUTION_REORDERING_POLICY.md`
 - `docs/arch/DETERMINISTIC_REDUCTION_RULES.md`
 
+## Distributed Execution Boundary (DIST0)
+Distributed placement, shard ownership, and cross-shard message ordering are
+defined by DIST0 specs under `schema/distribution/README.md`. Shard placement
+is deterministic and opaque to gameplay systems.
+
 ## ECS Component Schema (ECSX0)
 Component meaning and field semantics are defined by ECSX0 schema docs under
 `schema/ecs/README.md`. Physical storage layout is a backend choice and must
