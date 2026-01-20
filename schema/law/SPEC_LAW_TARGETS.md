@@ -1,7 +1,7 @@
 # SPEC_LAW_TARGETS (EXEC0c)
 
 Schema ID: LAW_TARGETS
-Schema Version: 1.0.0
+Schema Version: 1.1.0
 Status: binding.
 Scope: canonical law target identifiers.
 
@@ -30,6 +30,15 @@ This list is binding for EXEC0c and may expand over time:
 - TOOL.ADMIN_ACTION
 - EXEC.DERIVED_TASK
 - EXEC.AUTH_TASK
+- EXEC.BACKEND_SELECT
+- EXEC.MULTITHREAD_ENABLE
+- EXEC.SIMD_ENABLE
+- EXEC.GPU_DERIVED_ENABLE
+- EXEC.BUDGET_PROFILE_SELECT
+- NET.UNAUTHENTICATED_PLAYERS
+- NET.MODIFIED_CLIENTS
+- TOOL.ADMIN_ACTIONS
+- UI.DEBUG_OVERLAYS
 
 ## Declaration Rules
 - AUTHORITATIVE TaskNode entries MUST declare non-empty law_targets.

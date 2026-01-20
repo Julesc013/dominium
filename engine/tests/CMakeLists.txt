@@ -259,6 +259,39 @@ set_target_properties(kernel_policy_tests PROPERTIES
 )
 add_test(NAME kernel_policy COMMAND kernel_policy_tests)
 
+add_executable(sys_caps_tests
+    sys_caps_tests.cpp
+)
+target_link_libraries(sys_caps_tests PRIVATE engine::domino)
+set_target_properties(sys_caps_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME sys_caps COMMAND sys_caps_tests)
+
+add_executable(execution_policy_tests
+    execution_policy_tests.cpp
+)
+target_link_libraries(execution_policy_tests PRIVATE engine::domino)
+set_target_properties(execution_policy_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME execution_policy COMMAND execution_policy_tests)
+
+add_executable(budget_model_tests
+    budget_model_tests.cpp
+)
+target_link_libraries(budget_model_tests PRIVATE engine::domino)
+set_target_properties(budget_model_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME budget_model COMMAND budget_model_tests)
+
 add_executable(execution_perf_regression_tests
     execution_perf_regression_tests.cpp
 )

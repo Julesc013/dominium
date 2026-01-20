@@ -10,6 +10,7 @@ add_library(dominium_game STATIC
     core/dom_epistemic.c
     core/execution/access_ir.cpp
     core/execution/work_ir_emit.cpp
+    core/execution/policy_bridge.cpp
     core/execution/system_registry.cpp
     core/execution/work_graph_builder.cpp
     core/law/law_kernel.cpp
