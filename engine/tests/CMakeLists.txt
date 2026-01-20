@@ -230,3 +230,36 @@ set_target_properties(kernel_policy_tests PROPERTIES
     CXX_EXTENSIONS OFF
 )
 add_test(NAME kernel_policy COMMAND kernel_policy_tests)
+
+add_executable(render_prep_work_ir_tests
+    render_prep_work_ir_tests.cpp
+)
+target_sources(render_prep_work_ir_tests PRIVATE
+    ${CMAKE_SOURCE_DIR}/client/presentation/frame_graph_builder.cpp
+    ${CMAKE_SOURCE_DIR}/client/presentation/render_prep_system.cpp
+)
+target_link_libraries(render_prep_work_ir_tests PRIVATE engine::domino game::dominium)
+target_include_directories(render_prep_work_ir_tests PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../modules
+    ${CMAKE_SOURCE_DIR}/client/presentation
+)
+set_target_properties(render_prep_work_ir_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME render_prep_work_ir COMMAND render_prep_work_ir_tests)
+
+add_executable(streaming_work_ir_tests
+    streaming_work_ir_tests.cpp
+)
+target_link_libraries(streaming_work_ir_tests PRIVATE engine::domino game::dominium)
+target_include_directories(streaming_work_ir_tests PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../modules
+)
+set_target_properties(streaming_work_ir_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME streaming_work_ir COMMAND streaming_work_ir_tests)
