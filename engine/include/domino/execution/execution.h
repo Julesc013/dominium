@@ -14,5 +14,6 @@ RESPONSIBILITY: Public execution umbrella header.
 #include "domino/execution/task_graph.h"
 #include "domino/execution/task_node.h"
 #include "domino/execution/scheduler_iface.h"
+#include "domino/execution/kernel_iface.h"
 
 #endif /* DOMINO_EXECUTION_H */
