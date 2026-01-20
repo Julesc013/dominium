@@ -124,3 +124,39 @@ set_target_properties(execution_scheduler_law_tests PROPERTIES
     CXX_EXTENSIONS OFF
 )
 add_test(NAME execution_scheduler_law COMMAND execution_scheduler_law_tests)
+
+add_executable(ecs_storage_iface_tests
+    ecs_storage_iface_tests.cpp
+)
+target_link_libraries(ecs_storage_iface_tests PRIVATE engine::domino)
+set_target_properties(ecs_storage_iface_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME ecs_storage_iface COMMAND ecs_storage_iface_tests)
+
+add_executable(ecs_soa_storage_tests
+    ecs_soa_storage_tests.cpp
+)
+target_link_libraries(ecs_soa_storage_tests PRIVATE engine::domino)
+target_include_directories(ecs_soa_storage_tests PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../modules
+)
+set_target_properties(ecs_soa_storage_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME ecs_soa_storage COMMAND ecs_soa_storage_tests)
+
+add_executable(ecs_packed_view_tests
+    ecs_packed_view_tests.cpp
+)
+target_link_libraries(ecs_packed_view_tests PRIVATE engine::domino)
+set_target_properties(ecs_packed_view_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME ecs_packed_view COMMAND ecs_packed_view_tests)
