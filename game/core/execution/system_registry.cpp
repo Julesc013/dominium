@@ -172,3 +172,38 @@ u64 dom_system_registry_system_id_at(const dom_system_registry* registry, u32 in
     }
     return registry->entries[index].system_id;
 }
+
+int dom_system_registry_register_streaming(dom_system_registry* registry, ISimSystem* system)
+{
+    return dom_system_registry_register(registry, system);
+}
+
+int dom_system_registry_register_render_prep(dom_system_registry* registry, ISimSystem* system)
+{
+    return dom_system_registry_register(registry, system);
+}
+
+int dom_system_registry_register_interest(dom_system_registry* registry, ISimSystem* system)
+{
+    return dom_system_registry_register(registry, system);
+}
+
+int dom_system_registry_register_economy(dom_system_registry* registry, ISimSystem* system)
+{
+    return dom_system_registry_register(registry, system);
+}
+
+int dom_system_registry_register_governance(dom_system_registry* registry, ISimSystem* system)
+{
+    return dom_system_registry_register(registry, system);
+}
+
+int dom_system_registry_register_war(dom_system_registry* registry, ISimSystem* system)
+{
+    return dom_system_registry_register(registry, system);
+}
+
+int dom_system_registry_register_agents(dom_system_registry* registry, ISimSystem* system)
+{
+    return dom_system_registry_register(registry, system);
+}

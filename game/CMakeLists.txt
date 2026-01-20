@@ -51,6 +51,10 @@ add_library(dominium_game STATIC
     rules/agents/agent_aggregate.cpp
     rules/agents/agent_refinement.cpp
     rules/agents/agent_collapse.cpp
+    rules/agents/agent_planning_tasks.cpp
+    rules/agents/agent_doctrine_tasks.cpp
+    rules/agents/agent_aggregation_tasks.cpp
+    rules/agents/agent_system.cpp
     mods/runtime/mod_manifest.cpp
     mods/runtime/mod_graph_resolver.cpp
     mods/runtime/mod_compat.cpp
@@ -62,6 +66,8 @@ add_library(dominium_game STATIC
     rules/governance/policy_model.cpp
     rules/governance/policy_scheduler.cpp
     rules/governance/org_governance_binding.cpp
+    rules/governance/legitimacy_tasks.cpp
+    rules/governance/governance_system.cpp
     rules/knowledge/knowledge_refusal_codes.cpp
     rules/knowledge/knowledge_item.cpp
     rules/knowledge/institution_knowledge_binding.cpp
@@ -77,6 +83,9 @@ add_library(dominium_game STATIC
     rules/scale/interstellar_logistics.cpp
     rules/scale/scale_time_warp.cpp
     rules/scale/scale_interest_binding.cpp
+    rules/scale/relevance_transitions.cpp
+    rules/scale/interest_system.cpp
+    rules/scale/world_streaming_system.cpp
     rules/city/city_refusal_codes.cpp
     rules/city/city_model.cpp
     rules/city/zoning_rules.cpp
@@ -86,6 +95,8 @@ add_library(dominium_game STATIC
     rules/infrastructure/production_chain.cpp
     rules/infrastructure/building_machine.cpp
     rules/infrastructure/machine_scheduler.cpp
+    rules/economy/ledger_tasks.cpp
+    rules/economy/economy_system.cpp
     rules/logistics/transport_capacity.cpp
     rules/logistics/routing_stub.cpp
     rules/logistics/logistics_flow.cpp
@@ -112,6 +123,10 @@ add_library(dominium_game STATIC
     rules/war/interdiction.cpp
     rules/war/siege_effects.cpp
     rules/war/war_scale_scheduler.cpp
+    rules/war/war_tasks_engagement.cpp
+    rules/war/war_tasks_occupation.cpp
+    rules/war/war_tasks_interdiction.cpp
+    rules/war/war_system.cpp
     rules/survival/cohort_model.cpp
     rules/survival/needs_model.cpp
     rules/survival/consumption_scheduler.cpp

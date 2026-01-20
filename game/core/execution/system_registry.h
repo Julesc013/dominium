@@ -54,6 +54,14 @@ int dom_system_registry_emit(dom_system_registry* registry,
                              struct dom_work_graph_builder* graph_builder,
                              struct dom_access_set_builder* access_builder);
 
+int dom_system_registry_register_streaming(dom_system_registry* registry, ISimSystem* system);
+int dom_system_registry_register_render_prep(dom_system_registry* registry, ISimSystem* system);
+int dom_system_registry_register_interest(dom_system_registry* registry, ISimSystem* system);
+int dom_system_registry_register_economy(dom_system_registry* registry, ISimSystem* system);
+int dom_system_registry_register_governance(dom_system_registry* registry, ISimSystem* system);
+int dom_system_registry_register_war(dom_system_registry* registry, ISimSystem* system);
+int dom_system_registry_register_agents(dom_system_registry* registry, ISimSystem* system);
+
 u32 dom_system_registry_count(const dom_system_registry* registry);
 u64 dom_system_registry_system_id_at(const dom_system_registry* registry, u32 index);
 

@@ -593,6 +593,61 @@ set_target_properties(dominium_execution_emit_tests PROPERTIES
 )
 add_test(NAME dominium_execution_emit COMMAND dominium_execution_emit_tests)
 
+add_executable(dominium_interest_work_ir_tests
+    interest_work_ir_tests.cpp
+)
+target_link_libraries(dominium_interest_work_ir_tests PRIVATE dominium_game)
+set_target_properties(dominium_interest_work_ir_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME dominium_interest_work_ir COMMAND dominium_interest_work_ir_tests)
+
+add_executable(dominium_economy_work_ir_tests
+    economy_work_ir_tests.cpp
+)
+target_link_libraries(dominium_economy_work_ir_tests PRIVATE dominium_game)
+set_target_properties(dominium_economy_work_ir_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME dominium_economy_work_ir COMMAND dominium_economy_work_ir_tests)
+
+add_executable(dominium_governance_work_ir_tests
+    governance_work_ir_tests.cpp
+)
+target_link_libraries(dominium_governance_work_ir_tests PRIVATE dominium_game)
+set_target_properties(dominium_governance_work_ir_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME dominium_governance_work_ir COMMAND dominium_governance_work_ir_tests)
+
+add_executable(dominium_war_work_ir_tests
+    war_work_ir_tests.cpp
+)
+target_link_libraries(dominium_war_work_ir_tests PRIVATE dominium_game)
+set_target_properties(dominium_war_work_ir_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME dominium_war_work_ir COMMAND dominium_war_work_ir_tests)
+
+add_executable(dominium_agent_work_ir_tests
+    agent_work_ir_tests.cpp
+)
+target_link_libraries(dominium_agent_work_ir_tests PRIVATE dominium_game)
+set_target_properties(dominium_agent_work_ir_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME dominium_agent_work_ir COMMAND dominium_agent_work_ir_tests)
+
 add_executable(dominium_life_continuation_tests
     life/dom_life_continuation_tests.cpp
 )

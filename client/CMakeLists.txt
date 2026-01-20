@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.16)
 
 add_executable(dominium_client
     app/main_client.c
+    presentation/frame_graph_builder.cpp
+    presentation/render_prep_system.cpp
 )
 target_link_libraries(dominium_client PRIVATE
     domino_engine
