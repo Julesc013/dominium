@@ -76,6 +76,8 @@ set(ENGINE_CORE_SOURCES
     modules/sim/pkt/idmap/dg_idmap.c
     modules/sim/pkt/registry/dg_type_registry.c
     modules/execution/budgets/dg_budget.c
+    modules/execution/budget_model.cpp
+    modules/execution/execution_policy.cpp
     modules/execution/execution_context.cpp
     modules/execution/ir/access_set.cpp
     modules/execution/ir/cost_model.cpp
@@ -109,6 +111,7 @@ set(ENGINE_CORE_SOURCES
     modules/ecs/visibility_mask.cpp
     modules/state/state.c
     modules/struct/d_struct.c
+    modules/sys/sys_caps.cpp
     modules/struct/d_struct_blueprint.c
     modules/struct/d_struct_instance.c
     modules/struct/d_struct_validate.c

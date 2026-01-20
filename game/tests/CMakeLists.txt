@@ -593,6 +593,23 @@ set_target_properties(dominium_execution_emit_tests PROPERTIES
 )
 add_test(NAME dominium_execution_emit COMMAND dominium_execution_emit_tests)
 
+add_executable(policy_bridge_tests
+    policy_bridge_tests.cpp
+)
+target_include_directories(policy_bridge_tests PRIVATE
+    ${CMAKE_SOURCE_DIR}
+)
+target_compile_definitions(policy_bridge_tests PRIVATE
+    DOMINIUM_DATA_ROOT="${CMAKE_SOURCE_DIR}/data"
+)
+target_link_libraries(policy_bridge_tests PRIVATE dominium_game)
+set_target_properties(policy_bridge_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME policy_bridge COMMAND policy_bridge_tests)
+
 add_executable(dominium_work_ir_completeness_tests
     work_ir_completeness_tests.cpp
 )
