@@ -48,6 +48,10 @@ Domain volumes and spatial bounds are defined in:
 - `docs/arch/DOMAIN_VOLUMES.md`
 - `docs/arch/SPACE_AND_BOUNDS.md`
 - `schema/domain/README.md`
+Travel graphs and scheduled movement are defined in:
+- `docs/arch/TRAVEL_AND_MOVEMENT.md`
+- `docs/arch/NO_TELEPORTATION_EXCEPT_BY_CONTRACT.md`
+- `schema/travel/README.md`
 
 A5. Engine and game are strictly separated.
 - Engine defines mechanisms.
