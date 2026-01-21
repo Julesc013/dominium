@@ -5,17 +5,17 @@ reflected in the spec set under `docs/` and must preserve determinism and hard
 layering.
 
 ## Repository structure
-`docs/DIRECTORY_CONTEXT.md` is the authoritative directory/layout contract.
+`docs/arch/DIRECTORY_CONTEXT.md` is the authoritative directory/layout contract.
 
 ## Mandatory constraints
 - Architecture constitution: `docs/arch/ARCH0_CONSTITUTION.md`,
   `docs/arch/CHANGE_PROTOCOL.md`, `docs/arch/GLOSSARY.md`
-- Determinism: `docs/SPEC_DETERMINISM.md` and `docs/DETERMINISM_REGRESSION_RULES.md`
-- Placement: anchors + quantized poses (`docs/SPEC_POSE_AND_ANCHORS.md`)
+- Determinism: `docs/specs/SPEC_DETERMINISM.md` and `docs/ci/DETERMINISM_TEST_MATRIX.md`
+- Placement: anchors + quantized poses (`docs/specs/SPEC_POSE_AND_ANCHORS.md`)
 - Authoring vs compiled: compiled artifacts are derived caches
-  (`docs/SPEC_TRANS_STRUCT_DECOR.md`)
-- Language/toolchain: `docs/LANGUAGE_POLICY.md`
-- Style/naming: `docs/STYLE.md`
+  (`docs/specs/SPEC_TRANS_STRUCT_DECOR.md`)
+- Language/toolchain: `docs/policies/LANGUAGE_POLICY.md`
+- Style/naming: `docs/guides/STYLE.md`
 
 ## Contribution workflow
 1. Identify the relevant spec(s) under `docs/` for the area you are changing.
@@ -23,16 +23,16 @@ layering.
 3. Keep changes within module boundaries (no private header peeking across
    subsystems).
 4. Run tests and determinism checks:
-   - Build: see `docs/BUILDING.md`
+   - Build: see `docs/guides/BUILDING.md`
    - Run: `ctest --test-dir build`
    - Determinism scan: `ctest -R domino_det_regression_scan_test`
 
 ## Core data changes
 - For `/data/core` edits, run `coredata_compile` and verify deterministic output
-  (`docs/COREDATA_BUILD.md`).
+  (`docs/specs/COREDATA_BUILD.md`).
 - Run `coredata_validate --input-root=data/core` before merging core data edits.
-  See `docs/CORE_DATA_GUIDE.md` for common validation errors and fixes.
-- Schema changes require spec updates under `docs/SPEC_CORE_DATA*.md`.
+  See `docs/guides/CORE_DATA_GUIDE.md` for common validation errors and fixes.
+- Schema changes require spec updates under `docs/specs/SPEC_CORE_DATA*.md`.
 - Coredata ingestion tests MUST pass (`ctest -R dominium_coredata`).
 
 ## What will be rejected

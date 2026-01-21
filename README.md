@@ -1,5 +1,8 @@
 # Dominium / Domino
-Dominium is a deterministic simulation kernel whose engine/game layers guarantee coherence, authority, provenance, and conservation across a scale-free topology, while all realism, assets, rulesets, and expansion are supplied externally via capability-driven packs that may be mixed arbitrarily across versions, with explicit degradation instead of breakage.
+Dominium is a deterministic world runtime and law-governed simulation OS. The
+engine/game split is non-negotiable, and authoritative outcomes are reproducible
+across builds. Existence, travel, authority, and time perception are explicit,
+data-defined, and auditable.
 
 ## What this project is (non-technical)
 Dominium provides a deterministic simulation runtime and the surrounding product
@@ -8,13 +11,25 @@ produce the same results across supported builds, enabling reproducible saves,
 replays, and verification.
 
 It is:
-- a game runtime and toolchain (engine + game + launcher + setup + tools).
-- a deterministic simulation stack focused on reproducibility and long-lived data.
+- a deterministic world runtime with law-governed authority.
+- a multi-scale reality model with explicit existence and refinement.
+- a product stack (engine + game + client/server + launcher/setup + tools).
+- a host for player-only, AI-only, mixed, spectator, anarchy, and admin worlds.
 
 It is not:
-- a general-purpose rendering engine or game framework.
+- a traditional game engine or tick-everything sandbox.
+- a modes-based game (laws and capabilities define behavior).
+- a cheat-based admin system or a monolithic binary.
 - a floating-point or wall-clock-driven authoritative simulation.
-- a monolithic launcher/installer/game binary.
+
+## Read this first (required)
+This is not a typical game project. Contributors must read `docs/arch/` first.
+- `docs/arch/WHAT_THIS_IS.md`
+- `docs/arch/WHAT_THIS_IS_NOT.md`
+- `docs/arch/CANONICAL_SYSTEM_MAP.md`
+- `docs/arch/INVARIANTS.md`
+- `docs/arch/ARCH0_CONSTITUTION.md`
+- `docs/arch/CHANGE_PROTOCOL.md`
 
 ## High-level architecture (technical but accessible)
 Domino (engine) provides the deterministic core. Dominium (game) implements the
@@ -28,8 +43,10 @@ installation or repair logic while preserving deterministic boundaries.
 
 ## Key characteristics
 - Determinism: fixed-point simulation and canonical ordering.
+- Law-gated authority: capabilities + policy + law gates at intent/task/commit.
 - Law-gated Work IR: authoritative work is emitted as TaskGraph/AccessSet and
   evaluated by existence/capability/policy gates before execution and commit.
+- Multi-scale refinement: macro state is valid; micro detail is on-demand.
 - Portability: baseline C90/C++98 builds with optional modern presets.
 - Long-term maintenance focus: stable layout and compatibility contracts.
 - Explicit invariants: public headers and specs define behavior and ABI rules.
@@ -68,9 +85,15 @@ installation or repair logic while preserving deterministic boundaries.
 
 ## Documentation map
 - `docs/guides/README.md` — documentation index and entry points
+- `docs/arch/WHAT_THIS_IS.md` and `docs/arch/WHAT_THIS_IS_NOT.md` — scope and non-goals
+- `docs/arch/CANONICAL_SYSTEM_MAP.md` — canonical dependency map
+- `docs/arch/INVARIANTS.md` — hard invariants
 - `docs/arch/ARCH0_CONSTITUTION.md` — architectural constitution (binding)
 - `docs/arch/CHANGE_PROTOCOL.md` — required process for sim-affecting change
-- `docs/arch/DIRECTORY_CONTEXT.md` and `docs/arch/ARCH_REPO_LAYOUT.md` — authoritative repo layout and ownership boundaries
+- `docs/arch/REALITY_MODEL.md` — unified existence/refinement/domain/travel model
+- `docs/arch/AUTHORITY_MODEL.md` — authority and capability summary
+- `docs/arch/EXECUTION_MODEL.md` — Work IR and performance summary
+- `docs/arch/DIRECTORY_CONTEXT.md` and `docs/arch/ARCH_REPO_LAYOUT.md` — layout boundaries
 - `docs/arch/ARCHITECTURE.md` — system architecture and layering
 - `docs/arch/GLOSSARY.md` — canonical terminology
 - `docs/arch/LAW_ENFORCEMENT_POINTS.md` — law gates and enforcement phases
