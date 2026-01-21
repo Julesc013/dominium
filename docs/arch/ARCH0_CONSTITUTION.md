@@ -78,7 +78,8 @@ A5. Engine and game are strictly separated.
 - Engine defines mechanisms.
 - Game defines meaning.
 - Data defines configuration.
-- Tools observe, never mutate.
+- Tools observe; they do not mutate authoritative state directly. Any mutation
+  requested via tools must be routed through ToolIntents, law-gated, and audited.
 
 A6. Everything degrades gracefully.
 - Every system declares fidelity tiers.
@@ -178,6 +179,16 @@ semantics, or execution model requires the change protocol in
 ## Enforcement
 ARCH0 must be referenced by all future prompts, enforced by CI checks, and
 required reading for contributors. Violations result in refusal, not workaround.
+
+## Canon0 Consolidation
+CANON0 provides the single-source narrative of the project:
+- `docs/arch/CANONICAL_SYSTEM_MAP.md`
+- `docs/arch/INVARIANTS.md`
+- `docs/arch/WHAT_THIS_IS.md`
+- `docs/arch/WHAT_THIS_IS_NOT.md`
+- `docs/arch/REALITY_MODEL.md`
+- `docs/arch/AUTHORITY_MODEL.md`
+- `docs/arch/EXECUTION_MODEL.md`
 
 ## Glossary
 See `docs/arch/GLOSSARY.md` for binding definitions.

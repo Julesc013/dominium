@@ -2,8 +2,9 @@
 
 This document defines the enforceable dependency directions between current
 top-level components. It complements:
-- Layout contract: `docs/DIRECTORY_CONTEXT.md`
-- Language/determinism constraints: `docs/LANGUAGE_POLICY.md`, `docs/SPEC_DETERMINISM.md`
+- Layout contract: `docs/arch/DIRECTORY_CONTEXT.md`
+- Language/determinism constraints: `docs/specs/SPEC_LANGUAGE_BASELINES.md`,
+  `docs/specs/SPEC_DETERMINISM.md`
 
 ## Allowed dependency graph (high level)
 - `engine/` → (no top-level product directories)
@@ -25,13 +26,17 @@ top-level components. It complements:
 - Any circular dependency between top-level directories
 
 ## Public header rules
-Public header boundaries and ABI rules are defined in `docs/CONTRACTS.md`.
+Public header boundaries and ABI rules are defined in `docs/specs/CONTRACTS.md`.
 Include rules are enforced by `tools/ci/arch_checks.py`.
 
 ## Determinism boundary
 - Authoritative code must not use wall-clock time, non-deterministic RNG, or
-  platform APIs. See `docs/SPEC_DETERMINISM.md`.
+  platform APIs. See `docs/specs/SPEC_DETERMINISM.md`.
 
 ## Enforcement
 - CMake boundary checks: root `CMakeLists.txt` uses `dom_assert_no_link(...)`.
 - Include/scan checks: `tools/ci/arch_checks.py` (ARCH-DEP-001/002, ARCH-INC-001/002).
+
+## See also
+- `docs/arch/CANONICAL_SYSTEM_MAP.md`
+- `docs/arch/INVARIANTS.md`
