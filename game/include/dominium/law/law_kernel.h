@@ -22,10 +22,15 @@ typedef enum dom_law_result {
     DOM_LAW_DEFER = 2
 } dom_law_result;
 
+#define DOM_LAW_MAX_JURISDICTIONS 16u
+
 typedef struct dom_law_context {
     u64 authority_id;
     u32 authority_kind;
     u32 reserved;
+    u64 jurisdiction_ids[DOM_LAW_MAX_JURISDICTIONS];
+    u32 jurisdiction_count;
+    u32 jurisdiction_flags;
 } dom_law_context;
 
 typedef struct dom_law_intent {
