@@ -92,6 +92,7 @@ Refusal, absence, and deferral are valid outcomes.
 - Budgets and degradation are enforced via EXEC/HWCAPS interfaces.
 
 ## See also
+- `docs/arch/LIFE_AND_POPULATION.md`
 - `docs/arch/SPACE_TIME_EXISTENCE.md`
 - `docs/arch/VISITABILITY_AND_REFINEMENT.md`
 - `docs/arch/AUTHORITY_IN_REALITY.md`
