@@ -1,7 +1,7 @@
 # SPEC_LAW_TARGETS (EXEC0c)
 
 Schema ID: LAW_TARGETS
-Schema Version: 1.1.0
+Schema Version: 1.2.0
 Status: binding.
 Scope: canonical law target identifiers.
 
@@ -39,6 +39,12 @@ This list is binding for EXEC0c and may expand over time:
 - NET.MODIFIED_CLIENTS
 - TOOL.ADMIN_ACTIONS
 - UI.DEBUG_OVERLAYS
+- AUTH.CAPABILITY_GRANT
+- AUTH.CAPABILITY_DENY
+- AUTH.CAPABILITY_OVERRIDE
+- AUTH.OMNIPOTENT_ACTION
+- AUTH.LAW_MODIFY
+- AUTH.ARCHIVAL_OVERRIDE
 
 ## Declaration Rules
 - AUTHORITATIVE TaskNode entries MUST declare non-empty law_targets.
