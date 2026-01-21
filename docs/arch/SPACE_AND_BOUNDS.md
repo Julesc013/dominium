@@ -36,3 +36,4 @@ Scope: define what "space" means in terms of domain volumes and boundaries.
 ## References
 - `docs/arch/DOMAIN_VOLUMES.md`
 - `schema/domain/README.md`
+- `docs/arch/SPACE_TIME_EXISTENCE.md`

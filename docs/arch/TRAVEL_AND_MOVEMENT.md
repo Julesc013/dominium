@@ -47,3 +47,5 @@ Denials are explicit and auditable:
 - `schema/travel/SPEC_TRAVEL_EDGES.md`
 - `schema/travel/SPEC_TRAVEL_SCHEDULING.md`
 - `schema/travel/SPEC_TRAVEL_DENIAL.md`
+- `docs/arch/VISITABILITY_AND_REFINEMENT.md`
+- `docs/arch/REALITY_LAYER.md`

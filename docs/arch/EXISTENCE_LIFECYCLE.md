@@ -38,3 +38,7 @@ Existence transitions are expressed as Work IR effects. Tasks must:
 ## Sharding and Ownership
 Transitions respect shard ownership and routing. Cross-shard transitions must
 use deterministic messages and ownership rules.
+
+## See also
+- `docs/arch/SPACE_TIME_EXISTENCE.md`
+- `schema/existence/SPEC_LIFECYCLE_TRANSITIONS.md`

@@ -20,3 +20,4 @@ All exotic travel must be auditable and deterministic.
 ## References
 - `docs/arch/EXOTIC_TRAVEL_AND_REALITY.md`
 - `schema/travel/SPEC_EXOTIC_TRAVEL.md`
+- `docs/arch/REALITY_LAYER.md`

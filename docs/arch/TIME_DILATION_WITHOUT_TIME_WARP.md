@@ -28,3 +28,4 @@ Law and capability may:
 ## References
 - `schema/time/SPEC_TIME_DILATION.md`
 - `schema/time/SPEC_PERCEPTION_BUFFERS.md`
+- `docs/arch/SPACE_TIME_EXISTENCE.md`

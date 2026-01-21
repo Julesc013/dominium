@@ -40,3 +40,5 @@ resolution without changing correctness.
 
 ## References
 - `schema/domain/README.md`
+- `docs/arch/REALITY_LAYER.md`
+- `docs/arch/SPACE_TIME_EXISTENCE.md`

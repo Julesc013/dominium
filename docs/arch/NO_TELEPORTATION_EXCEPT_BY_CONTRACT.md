@@ -27,3 +27,4 @@ must be scheduled and auditable. Examples:
 ## References
 - `docs/arch/TRAVEL_AND_MOVEMENT.md`
 - `schema/travel/SPEC_TRAVEL_EDGES.md`
+- `docs/arch/REALITY_LAYER.md`

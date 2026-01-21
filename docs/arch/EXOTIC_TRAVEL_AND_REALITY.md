@@ -35,3 +35,4 @@ Denials are explicit and auditable:
 - `schema/travel/SPEC_PORTALS.md`
 - `schema/travel/SPEC_WORMHOLES.md`
 - `schema/travel/SPEC_HYPERSPACE.md`
+- `docs/arch/REALITY_LAYER.md`

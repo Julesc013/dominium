@@ -1,7 +1,11 @@
 # Visitability and Reality (DOMAIN4)
 
-Status: draft.
-Scope: binding reachability, refinement, and existence so visitable space is real.
+Status: deprecated.
+Scope: historical summary of visitability and reachability.
+
+Deprecated by `docs/arch/VISITABILITY_AND_REFINEMENT.md`, which is the canonical
+REALITY0 visitability contract. This document remains for context but is no
+longer authoritative.
 
 ## Core Promise
 If a location can be reached, it is real, consistent, and refinable.
@@ -52,3 +56,4 @@ Admin capability may bypass visit checks, but:
 - `schema/domain/SPEC_REACHABILITY.md`
 - `schema/domain/SPEC_VISITABILITY.md`
 - `docs/arch/EXISTENCE_AND_REALITY.md`
+- `docs/arch/VISITABILITY_AND_REFINEMENT.md`

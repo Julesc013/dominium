@@ -54,3 +54,4 @@ Examples:
 ## Cross-References
 - `schema/authority/SPEC_CAPABILITY_DOMAINS.md`
 - `schema/capabilities/SPEC_CAPABILITY_TAXONOMY.md`
+- `docs/arch/AUTHORITY_IN_REALITY.md`

@@ -26,3 +26,4 @@ Authoritative outcomes remain identical.
 - `schema/time/SPEC_BUFFERED_PERCEPTION.md`
 - `schema/time/SPEC_REPLAY_MODES.md`
 - `schema/time/SPEC_ASYMMETRIC_TIME.md`
+- `docs/arch/SPACE_TIME_EXISTENCE.md`

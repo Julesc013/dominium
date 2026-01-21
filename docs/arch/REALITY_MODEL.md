@@ -1,7 +1,11 @@
 # Reality Model (CANON0)
 
-Status: binding.
-Scope: unified model for existence, refinement, domains, travel, time, and authority.
+Status: deprecated.
+Scope: historical summary of existence, refinement, domains, travel, time, and authority.
+
+Deprecated by `docs/arch/REALITY_LAYER.md` (REALITY0) to consolidate the Reality
+Layer into a single canonical model with explicit flow and visitability rules.
+This document remains as a snapshot but is no longer authoritative.
 
 This document consolidates the canonical reality model so contributors do not
 need to stitch it together from dozens of files.
@@ -48,6 +52,8 @@ with audit records and provenance. Archived history is immutable; edits require
 explicit fork effects. There is no silent bypass for history mutation.
 
 ## See also
+- `docs/arch/REALITY_LAYER.md`
+- `docs/arch/REALITY_FLOW.md`
 - `docs/arch/EXISTENCE_AND_REALITY.md`
 - `docs/arch/EXISTENCE_LIFECYCLE.md`
 - `docs/arch/REFINEMENT_CONTRACTS.md`

@@ -54,3 +54,4 @@ epistemic boundary.
 - Scopes: `schema/law/SPEC_LAW_SCOPES.md`
 - Targets: `schema/law/SPEC_LAW_TARGETS.md`
 - Effects: `schema/law/SPEC_LAW_EFFECTS.md`
+- `docs/arch/REALITY_FLOW.md`
