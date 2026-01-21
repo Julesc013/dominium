@@ -132,6 +132,7 @@ set(ENGINE_CORE_SOURCES
     modules/world/domain_tile.cpp
     modules/world/domain_volume.cpp
     modules/world/domain_query.cpp
+    modules/world/domain_cache.cpp
     modules/world/frame/dg_anchor.c
     modules/world/frame/dg_frame.c
     modules/world/frame/dg_frame_eval.c

@@ -10,6 +10,7 @@ ERROR MODEL: Return codes/NULL pointers; no exceptions.
 DETERMINISM: Fixed-point math, deterministic ladder.
 */
 #include "domino/world/domain_query.h"
+#include "domino/world/domain_cache.h"
 
 #include <string.h>
 
@@ -269,6 +270,54 @@ static const dom_domain_tile* dom_domain_local_tile_get(dom_domain_volume* volum
     return tile;
 }
 
+static d_bool dom_domain_tile_cached(dom_domain_volume* volume, const dom_domain_tile_desc* desc)
+{
+    if (!volume || !desc) {
+        return D_FALSE;
+    }
+    if (volume->cache) {
+        return dom_domain_cache_peek(volume->cache, volume->domain_id, desc->tile_id,
+                                     desc->resolution, desc->authoring_version) != (const dom_domain_tile *)0;
+    }
+    return dom_domain_local_tile_get(volume, desc, D_FALSE) != (const dom_domain_tile *)0;
+}
+
+static const dom_domain_tile* dom_domain_tile_get(dom_domain_volume* volume,
+                                                  const dom_domain_tile_desc* desc,
+                                                  d_bool allow_build)
+{
+    if (!volume || !desc) {
+        return (const dom_domain_tile *)0;
+    }
+    if (volume->cache) {
+        const dom_domain_tile* cached = dom_domain_cache_get(volume->cache, volume->domain_id,
+                                                             desc->tile_id, desc->resolution,
+                                                             desc->authoring_version);
+        if (cached) {
+            return cached;
+        }
+        if (!allow_build) {
+            return (const dom_domain_tile *)0;
+        }
+        if (volume->source) {
+            dom_domain_tile temp;
+            dom_domain_tile_init(&temp);
+            if (dom_domain_tile_build(&temp, desc, volume->source) != 0) {
+                dom_domain_tile_free(&temp);
+                return (const dom_domain_tile *)0;
+            }
+            cached = dom_domain_cache_put(volume->cache, volume->domain_id, &temp);
+            if (!cached) {
+                dom_domain_tile_free(&temp);
+                return (const dom_domain_tile *)0;
+            }
+            return cached;
+        }
+        return (const dom_domain_tile *)0;
+    }
+    return dom_domain_local_tile_get(volume, desc, allow_build);
+}
+
 static q16_16 dom_domain_l1_distance(const dom_domain_point* a, const dom_domain_point* b)
 {
     q16_16 dx;
@@ -341,12 +390,11 @@ static dom_domain_eval_result dom_domain_eval_distance(const dom_domain_volume* 
     if (dom_domain_resolution_allowed(volume->policy.max_resolution, DOM_DOMAIN_RES_MEDIUM)) {
         cost = volume->policy.cost_medium;
         if (dom_domain_build_tile_desc(volume, point, DOM_DOMAIN_RES_MEDIUM, &desc) == 0) {
-            tile = dom_domain_local_tile_get((dom_domain_volume *)volume, &desc, D_FALSE);
-            if (!tile) {
+            if (!dom_domain_tile_cached((dom_domain_volume *)volume, &desc)) {
                 cost += volume->policy.tile_build_cost_medium;
             }
             if (dom_domain_budget_consume(budget, cost)) {
-                tile = dom_domain_local_tile_get((dom_domain_volume *)volume, &desc, D_TRUE);
+                tile = dom_domain_tile_get((dom_domain_volume *)volume, &desc, D_TRUE);
                 if (tile) {
                     dom_domain_point sample_point;
                     q16_16 sample = dom_domain_tile_sample_nearest(tile, point, &sample_point);
@@ -366,12 +414,11 @@ static dom_domain_eval_result dom_domain_eval_distance(const dom_domain_volume* 
     if (dom_domain_resolution_allowed(volume->policy.max_resolution, DOM_DOMAIN_RES_COARSE)) {
         cost = volume->policy.cost_coarse;
         if (dom_domain_build_tile_desc(volume, point, DOM_DOMAIN_RES_COARSE, &desc) == 0) {
-            tile = dom_domain_local_tile_get((dom_domain_volume *)volume, &desc, D_FALSE);
-            if (!tile) {
+            if (!dom_domain_tile_cached((dom_domain_volume *)volume, &desc)) {
                 cost += volume->policy.tile_build_cost_coarse;
             }
             if (dom_domain_budget_consume(budget, cost)) {
-                tile = dom_domain_local_tile_get((dom_domain_volume *)volume, &desc, D_TRUE);
+                tile = dom_domain_tile_get((dom_domain_volume *)volume, &desc, D_TRUE);
                 if (tile) {
                     dom_domain_point sample_point;
                     q16_16 sample = dom_domain_tile_sample_nearest(tile, point, &sample_point);
