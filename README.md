@@ -90,6 +90,11 @@ installation or repair logic while preserving deterministic boundaries.
 - `docs/arch/INVARIANTS.md` — hard invariants
 - `docs/arch/ARCH0_CONSTITUTION.md` — architectural constitution (binding)
 - `docs/arch/CHANGE_PROTOCOL.md` — required process for sim-affecting change
+- `docs/arch/FUTURE_PROOFING.md` — long-term guardrails and evolution rules
+- `docs/arch/EXTENSION_RULES.md` — how new systems are added safely
+- `docs/arch/SCALE_AND_COMPLEXITY.md` — macro/micro scale model and limits
+- `docs/arch/UNKNOWN_UNKNOWNS.md` — handling new paradigms without refactor
+- `docs/arch/ARCH_CHANGE_PROCESS.md` — architectural change checklist
 - `docs/arch/REALITY_MODEL.md` — unified existence/refinement/domain/travel model
 - `docs/arch/AUTHORITY_MODEL.md` — authority and capability summary
 - `docs/arch/EXECUTION_MODEL.md` — Work IR and performance summary
@@ -110,7 +115,11 @@ installation or repair logic while preserving deterministic boundaries.
 - `docs/ci/BUILD_MATRIX.md` — canonical presets
 - `docs/guides/BUILD_DIST.md` and `docs/guides/build_output.md` — dist layout and outputs
 - `docs/ci/CI_ENFORCEMENT_MATRIX.md` — CI checks enforcing ARCH0/EXEC*
+- `docs/ci/FUTURE_ENFORCEMENT.md` — FUTURE0 enforcement notes
 - `docs/specs/SPEC_*.md` — subsystem specifications (see `docs/specs/SPEC_INDEX.md`)
+- `docs/MODDING.md` — modding policy and boundaries
+- `docs/GOVERNANCE.md` — project governance summary
+- `schema/schema_policy.md` and `schema/mod_extension_policy.md` — schema/mod extension rules
 
 ## Build & usage overview (non-procedural)
 Builds produce the engine and game libraries, client/server entrypoints,

@@ -1,0 +1,47 @@
+# Governance and Institutions (CIV0+)
+
+Status: binding.
+Scope: canonical model for institutions, governance, and legitimacy.
+
+Institutions enforce rules using resources and legitimacy. Governance is law
+layered on institutions, scoped to domains, and never a hard-coded game mode.
+
+## Institutions
+Institutions are organized rule-enforcing entities:
+- governments, corporations, guilds, religions, militaries
+- backed by resources and legitimacy
+- bounded to domains and authority scopes
+
+Institutions cannot bypass law or capability gates. They act through explicit,
+audited effects.
+
+## Governance
+Governance is a configuration of:
+- institutions (enforcement bodies)
+- law profiles (targets and policies)
+- legitimacy signals
+- resources and budgets
+- domain scope
+
+No abstract "civ bonuses" exist. All governance effects are law-gated.
+
+## Legitimacy
+Legitimacy represents acceptance, compliance, and stability:
+- decays when needs are unmet
+- grows with successful outcomes
+- bounds enforcement capacity
+
+## Macro and micro consistency
+Governance outcomes at macro scale must reconcile with refined micro details.
+If enforcement is weak at macro scale, micro outcomes must reflect that.
+
+## Integration points
+- Authority and law: `docs/arch/AUTHORITY_MODEL.md`
+- Domain jurisdictions: `docs/arch/DOMAIN_JURISDICTIONS_AND_LAW.md`
+- Reality flow: `docs/arch/REALITY_FLOW.md`
+- Institutions schema: `schema/civ/SPEC_INSTITUTIONS.md`
+- Governance schema: `schema/civ/SPEC_GOVERNANCE.md`
+- Legitimacy schema: `schema/civ/SPEC_LEGITIMACY.md`
+
+## See also
+- `docs/arch/CIVILIZATION_MODEL.md`

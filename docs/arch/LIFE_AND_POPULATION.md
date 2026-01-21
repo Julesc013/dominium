@@ -45,6 +45,7 @@ abilities + authority + contracts. There are no game modes.
 - Refinement contracts: `schema/existence/SPEC_REFINEMENT_CONTRACTS.md`
 - Life entities: `schema/life/SPEC_LIFE_ENTITIES.md`
 - Population models: `schema/life/SPEC_POPULATION_MODELS.md`
+- Civilization model: `docs/arch/CIVILIZATION_MODEL.md`
 
 ## See also
 - `docs/arch/WHY_NPCS_DONT_POP.md`

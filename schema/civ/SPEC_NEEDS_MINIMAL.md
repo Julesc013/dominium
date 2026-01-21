@@ -23,6 +23,10 @@ DEPENDENCIES:
 Status: draft  
 Version: 1
 
+NOTE: Legacy CIV1 spec. Superseded by CIV0+ canonical documents in
+`schema/civ/README.md` and `schema/economy/README.md`. Retained for reference
+and non-authoritative if conflicts exist.
+
 ## Purpose
 Define the minimal deterministic needs state used by the CIV0a survival loop.
 
