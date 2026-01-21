@@ -15,3 +15,8 @@
 - **Shared contracts** (`libs/contracts`): cross-product headers used by
   launcher/setup/tools.
 - **Schemas** (`schema/`): data schemas and validation docs (no build targets).
+
+## See also
+- `docs/arch/CANONICAL_SYSTEM_MAP.md`
+- `docs/arch/ARCHITECTURE.md`
+- `docs/arch/ARCHITECTURE_LAYERS.md`

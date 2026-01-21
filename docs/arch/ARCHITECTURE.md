@@ -1,9 +1,9 @@
 # Architecture (High-Level)
 
 This document summarizes the current component boundaries and directory layout
-for Dominium (product layer) and Domino (engine). See `docs/DIRECTORY_CONTEXT.md`
-for the authoritative layout contract and `docs/DEPENDENCIES.md` for enforceable
-dependency rules.
+for Dominium (product layer) and Domino (engine). See
+`docs/arch/DIRECTORY_CONTEXT.md` for the authoritative layout contract and
+`docs/guides/DEPENDENCIES.md` for enforceable dependency rules.
 
 ## Top-level components
 - `engine/` — Domino engine sources (deterministic core + runtime subsystems).
@@ -44,9 +44,11 @@ dependency rules.
 - `schema/` → data-only (no code dependencies)
 
 ## Public API boundaries
-Public header paths and ABI rules are defined in `docs/CONTRACTS.md`.
+Public header paths and ABI rules are defined in `docs/specs/CONTRACTS.md`.
 
 ## Further reading
-- `docs/ARCHITECTURE_LAYERS.md` (layer summary + target graph)
-- `docs/ARCH_REPO_LAYOUT.md` (ownership map)
-- `docs/DEPENDENCIES.md` (allowed/forbidden edges)
+- `docs/arch/ARCHITECTURE_LAYERS.md` (layer summary + target graph)
+- `docs/arch/ARCH_REPO_LAYOUT.md` (ownership map)
+- `docs/guides/DEPENDENCIES.md` (allowed/forbidden edges)
+- `docs/arch/CANONICAL_SYSTEM_MAP.md` (canonical dependency map)
+- `docs/arch/INVARIANTS.md` (hard invariants)

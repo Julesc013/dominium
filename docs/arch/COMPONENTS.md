@@ -1,8 +1,9 @@
 # Components
 
 This document describes the current top-level components and their build
-products. It complements `docs/ARCHITECTURE.md` and `docs/DEPENDENCIES.md`.
-Directory layout is authoritative in `docs/DIRECTORY_CONTEXT.md`.
+products. It complements `docs/arch/ARCHITECTURE.md` and
+`docs/guides/DEPENDENCIES.md`. Directory layout is authoritative in
+`docs/arch/DIRECTORY_CONTEXT.md`.
 
 ## Engine (`engine/`)
 - Role: Domino deterministic engine library (authoritative simulation + runtime subsystems).
@@ -57,3 +58,9 @@ Directory layout is authoritative in `docs/DIRECTORY_CONTEXT.md`.
 
 ## Legacy (`legacy/`)
 - Role: Archived sources excluded from the root build graph.
+
+## See also
+- `docs/arch/ARCHITECTURE.md`
+- `docs/arch/ARCHITECTURE_LAYERS.md`
+- `docs/arch/CANONICAL_SYSTEM_MAP.md`
+- `docs/arch/DIRECTORY_CONTEXT.md`

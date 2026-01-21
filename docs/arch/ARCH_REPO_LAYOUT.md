@@ -78,3 +78,8 @@ game/
 ## Contract ownership
 Cross-product contracts live in `libs/contracts/include/dom_contracts/`.
 `engine` does not link `libs::contracts`; launcher/setup/tools do.
+
+## See also
+- `docs/arch/DIRECTORY_CONTEXT.md`
+- `docs/arch/ARCHITECTURE_LAYERS.md`
+- `docs/arch/CANONICAL_SYSTEM_MAP.md`

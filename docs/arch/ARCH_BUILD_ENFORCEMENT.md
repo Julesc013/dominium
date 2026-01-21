@@ -46,7 +46,7 @@ Enforcement is done via target-scoped includes and configure-time assertions:
 - **Configure-time**: target graph assertions and include boundary checks (ARCH-DEP-001/002).
 - **Build-time**: illegal includes fail compilation due to missing include paths (ARCH-INC-001/002).
 - **Static checks**: `tools/ci/arch_checks.py` enforces repo-wide guards (ARCH-TOP-001, ARCH-RENDER-001, UI-BYPASS-001, EPIS-*).
-- **Data validation**: `data_validate` and `engine_data_validate` validate data invariants (see `docs/DATA_VALIDATION_GUIDE.md`).
+- **Data validation**: `data_validate` and `engine_data_validate` validate data invariants (see `docs/guides/DATA_VALIDATION_GUIDE.md`).
 - **Governance validation**: `tools/validation/validate_all` validates schema governance and policy enforcement.
 
 ## How to run architecture checks locally
@@ -109,3 +109,7 @@ cmake --build <build-dir>
 ctest --test-dir <build-dir>
 <build-dir>\\bin\\validate_all --repo-root=.
 ```
+
+## See also
+- `docs/arch/ARCH_ENFORCEMENT.md`
+- `docs/arch/CANONICAL_SYSTEM_MAP.md`

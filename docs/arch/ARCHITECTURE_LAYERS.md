@@ -32,3 +32,8 @@ keep the engine isolated and prevent cross-layer leakage.
 - `scripts/verify_includes_sanity.py`
 - `scripts/verify_cmake_no_global_includes.py`
 - `tools/ci/arch_checks.py` (via `check_arch` target)
+
+## See also
+- `docs/arch/ARCHITECTURE.md`
+- `docs/arch/CANONICAL_SYSTEM_MAP.md`
+- `docs/arch/INVARIANTS.md`

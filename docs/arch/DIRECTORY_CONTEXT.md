@@ -45,7 +45,7 @@ dominium/
 `engine/modules/` contains both deterministic core subsystems and non-authoritative
 runtime/front-end subsystems:
 
-- Deterministic core subsystems (must obey `docs/SPEC_DETERMINISM.md`):
+- Deterministic core subsystems (must obey `docs/specs/SPEC_DETERMINISM.md`):
   `core/`, `sim/`, `world/`, `trans/`, `struct/`, `decor/`, `agent/`, plus the
   deterministic parts of `env/`, `res/`, `build/`, `job/`, `net/`, `replay/`,
   `vehicle/`, and other stateful domains.
@@ -61,6 +61,10 @@ MUST NOT include private headers from `engine/modules/**`; use
 
 ## DOMINIUM_HOME / DOMINIUM_RUN_ROOT
 
-Filesystem root contracts are defined in `docs/SPEC_FS_CONTRACT.md` and
+Filesystem root contracts are defined in `docs/specs/SPEC_FS_CONTRACT.md` and
 `engine/include/domino/pkg/repo.h`. This repository does not ship a `repo/`
 runtime tree; runtime layouts live outside the source tree.
+
+## See also
+- `docs/arch/CANONICAL_SYSTEM_MAP.md`
+- `docs/arch/ARCH_REPO_LAYOUT.md`

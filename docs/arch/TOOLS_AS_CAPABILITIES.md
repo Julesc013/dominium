@@ -13,6 +13,9 @@ No special-case dev hooks or admin bypass paths are allowed.
 - ToolIntents resolve to explicit effects only.
 - Tool powers are scoped by domain, jurisdiction, session, and time window.
 
+Tools do not mutate authoritative state directly. Any mutation requested via
+tools must travel through ToolIntents, law evaluation, and audit.
+
 ## Tool Intent Examples
 - console command
 - freecam enable/disable

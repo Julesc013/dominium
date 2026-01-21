@@ -58,3 +58,7 @@ All new systems must:
 - Declare AccessSets for every task.
 - Declare law_targets for authoritative tasks.
 - Remain deterministic under batch vs step equivalence.
+
+## See also
+- `docs/arch/EXECUTION_MODEL.md`
+- `schema/execution/README.md`

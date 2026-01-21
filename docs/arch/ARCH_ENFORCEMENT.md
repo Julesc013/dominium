@@ -240,3 +240,8 @@ The following actions are permanently FORBIDDEN:
 - Adding "temporary exceptions" to determinism rules.
 - Adding renderer-specific code outside `engine/render/**`.
 - Adding UI code that reads authoritative world state.
+
+## See also
+- `docs/arch/ARCH_BUILD_ENFORCEMENT.md`
+- `docs/arch/CANONICAL_SYSTEM_MAP.md`
+- `docs/arch/INVARIANTS.md`
