@@ -23,8 +23,12 @@ DEPENDENCIES:
 --------------------------------
 # SPEC_DEATH_AND_ESTATE — Death Event & Estate Canon
 
-Status: draft
+Status: legacy (superseded by LIFE0+)
 Version: 1
+
+Note: LIFE0+ canonical specs live in `schema/life/SPEC_DEATH_CONTRACTS.md` and
+`schema/life/SPEC_IDENTITY_AND_LINEAGE.md`. This document remains for legacy
+context; if any statement conflicts with LIFE0+, LIFE0+ wins.
 
 ## Purpose
 Define deterministic death events and estate creation. This is a schema and
@@ -189,7 +193,7 @@ Implementations MUST provide tests for:
 - collapse/refine count and provenance hash preservation
 
 ## Integration points (mandatory)
-- Provenance: `docs/SPEC_PROVENANCE.md`
-- Ledger: `docs/SPEC_LEDGER.md`
-- Time scheduling: `docs/SPEC_SCHEDULING.md`
-- Epistemic model: `docs/SPEC_INFORMATION_MODEL.md` and `docs/SPEC_COMMUNICATION.md`
+- Provenance: `docs/specs/SPEC_PROVENANCE.md`
+- Ledger: `docs/specs/SPEC_LEDGER.md`
+- Time scheduling: `docs/specs/SPEC_SCHEDULING.md`
+- Epistemic model: `docs/specs/SPEC_INFORMATION_MODEL.md` and `docs/specs/SPEC_COMMUNICATION.md`

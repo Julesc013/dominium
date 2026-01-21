@@ -20,8 +20,12 @@ DEPENDENCIES:
 --------------------------------
 # SPEC_CONTROL_AUTHORITY — Control Authority and Delegation Canon
 
-Status: draft
+Status: legacy (superseded by LIFE0+)
 Version: 1
+
+Note: LIFE0+ canonical specs live in `schema/life/SPEC_LIFE_ENTITIES.md` and
+`schema/life/SPEC_IDENTITY_AND_LINEAGE.md`. This document remains for legacy
+context; if any statement conflicts with LIFE0+, LIFE0+ wins.
 
 ## Purpose
 Define who may control whom, how authority is delegated, and how controller
@@ -97,5 +101,5 @@ Optional fields:
 
 ## Integration points
 - Continuation policies: `schema/life/SPEC_CONTINUATION_POLICIES.md`
-- Contracts: `docs/SPEC_CONTRACTS.md`
-- Epistemic UI: `docs/SPEC_EPISTEMIC_INTERFACE.md`
+- Contracts: `docs/specs/SPEC_CONTRACTS.md`
+- Epistemic UI: `docs/specs/SPEC_EPISTEMIC_INTERFACE.md`

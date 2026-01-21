@@ -22,8 +22,12 @@ DEPENDENCIES:
 --------------------------------
 # SPEC_LIFE_CONTINUITY — Person/Body/Controller Canon
 
-Status: draft
+Status: legacy (superseded by LIFE0+)
 Version: 1
+
+Note: LIFE0+ canonical specs live in `schema/life/SPEC_LIFE_ENTITIES.md` and
+related files. This document remains as a legacy continuity guide; if any
+statement conflicts with LIFE0+, LIFE0+ wins.
 
 ## Purpose
 Define the canonical LIFE continuity model: Person identity, Body embodiment,
@@ -83,9 +87,10 @@ Data-defined capability bundle referenced by controllers.
 See `schema/life/SPEC_CONTINUATION_POLICIES.md`.
 
 ## Defaults (mandatory)
-- Default mode: HARDCORE lineage realism.
-- Default world start: at least two humans (male + female) unless scenario selects
-  "last human" explicitly.
+- Default mode is scenario-defined; HARDCORE lineage realism is the baseline
+  template but not required.
+- World start population is scenario-defined; zero, one, or many humans are all
+  valid. The earlier "two humans by default" assumption is deprecated.
 - Default continuation: S1 (transfer to existing eligible person only).
 - Any respawn that creates a new body requires a constructed causal pipeline
   (clone/vat, drone, backup) and is not default.
@@ -116,7 +121,7 @@ Server-auth:
 - Any design that requires global iteration over all persons.
 
 ## Integration points (mandatory)
-- Provenance: `docs/SPEC_PROVENANCE.md`
-- Ledger: `docs/SPEC_LEDGER.md`
-- Time scheduling: `docs/SPEC_SCHEDULING.md` and `docs/SPEC_TIME_CORE.md`
-- Epistemic model: `docs/SPEC_INFORMATION_MODEL.md` and `docs/SPEC_EPISTEMIC_INTERFACE.md`
+- Provenance: `docs/specs/SPEC_PROVENANCE.md`
+- Ledger: `docs/specs/SPEC_LEDGER.md`
+- Time scheduling: `docs/specs/SPEC_SCHEDULING.md` and `docs/specs/SPEC_TIME_CORE.md`
+- Epistemic model: `docs/specs/SPEC_INFORMATION_MODEL.md` and `docs/specs/SPEC_EPISTEMIC_INTERFACE.md`
