@@ -43,3 +43,8 @@ See `schema/existence/SPEC_EXISTENCE_STATES.md` for definitions.
 - Absence is valid.
 - Refinement never fabricates history.
 - Collapses preserve invariants and provenance.
+
+## See also
+- `docs/arch/REALITY_LAYER.md`
+- `docs/arch/SPACE_TIME_EXISTENCE.md`
+- `schema/existence/SPEC_EXISTENCE_STATES.md`

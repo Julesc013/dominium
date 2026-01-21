@@ -1,7 +1,11 @@
 # Visitability Consistency (EXIST1)
 
-Status: draft.
-Scope: definition of "visitable and alive" without global micro simulation.
+Status: deprecated.
+Scope: historical definition of visitability and "alive" without global micro simulation.
+
+Deprecated by `docs/arch/VISITABILITY_AND_REFINEMENT.md`, which is the canonical
+REALITY0 visitability contract. This document remains for context but is no
+longer authoritative.
 
 ## Definition: Visitable
 A subject is VISITABLE if:
@@ -34,3 +38,4 @@ An "alive" subject satisfies:
 ## References
 - `schema/existence/SPEC_REFINEMENT_CONTRACTS.md`
 - `schema/existence/SPEC_REFINEMENT_DENIAL.md`
+- `docs/arch/VISITABILITY_AND_REFINEMENT.md`

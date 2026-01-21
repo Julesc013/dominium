@@ -24,3 +24,5 @@ Observer clocks are non-authoritative and must not alter schedules.
 ## References
 - `schema/time/SPEC_OBSERVER_CLOCKS.md`
 - `schema/time/SPEC_TIME_DILATION.md`
+- `docs/arch/SPACE_TIME_EXISTENCE.md`
+- `docs/arch/REALITY_LAYER.md`

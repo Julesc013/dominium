@@ -22,3 +22,4 @@ Scope: spectator views, buffered inspection, and audit replay.
 ## References
 - `schema/time/SPEC_REPLAY_MODES.md`
 - `schema/time/SPEC_BUFFERED_PERCEPTION.md`
+- `docs/arch/AUTHORITY_IN_REALITY.md`

@@ -51,3 +51,4 @@ Every authority outcome MUST explain:
 - `schema/capabilities/SPEC_CAPABILITY_TAXONOMY.md`
 - `schema/capabilities/SPEC_NEGATIVE_CAPABILITIES.md`
 - `schema/law/SPEC_LAW_KERNEL.md`
+- `docs/arch/AUTHORITY_IN_REALITY.md`

@@ -27,3 +27,4 @@ Signals do not cause punishment alone.
 - Refusal codes: `schema/integrity/SPEC_REFUSAL_CODES.md`
 - Integrity signals: `schema/integrity/SPEC_INTEGRITY_SIGNALS.md`
 - Law effects: `schema/law/SPEC_LAW_EFFECTS.md`
+- `docs/arch/REALITY_FLOW.md`

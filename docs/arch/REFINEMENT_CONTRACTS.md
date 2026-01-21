@@ -42,3 +42,4 @@ Each contract specifies:
 - `schema/existence/SPEC_REFINEMENT_CONTRACTS.md`
 - `schema/existence/SPEC_COLLAPSE_CONTRACTS.md`
 - `schema/existence/SPEC_REFINEMENT_DENIAL.md`
+- `docs/arch/VISITABILITY_AND_REFINEMENT.md`
