@@ -6,6 +6,11 @@ Scope: Work IR, Access IR, deterministic scheduling, budgets, and HWCAPS0.
 This is the human-readable summary of the execution substrate and performance
 model. It does not replace the schema specifications.
 
+## Invariants
+- Authoritative work must be expressed as Work IR + Access IR.
+- Scheduling and commits are deterministic.
+- Budgets degrade deterministically; no silent fallback.
+
 ## Work IR and Access IR
 Authoritative work is emitted as Work IR:
 - TaskGraph and TaskNode records describe what should execute.
@@ -37,6 +42,15 @@ Silent fallback is forbidden; degradations are audited.
 SysCaps describe conservative hardware signals. Execution policy uses SysCaps
 and law outputs to select backends deterministically. Unknown caps are treated
 as unavailable. GPU usage is derived-only.
+
+## Forbidden assumptions
+- Authoritative work may bypass Work IR.
+- Backend choice can change simulation outcomes.
+- Unknown hardware capabilities are treated as available.
+
+## Dependencies
+- Execution schema: `schema/execution/README.md`
+- SysCaps policy: `docs/arch/SYS_CAPS_AND_EXEC_POLICY.md`
 
 ## See also
 - `schema/execution/README.md`

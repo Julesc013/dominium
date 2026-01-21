@@ -22,6 +22,21 @@ DEPENDENCIES:
 This folder defines the canonical travel graph model used to schedule all
 movement and reachability across scales.
 
+Scope: travel graph edges, scheduling, capacity, cost, and denial semantics.
+
+## Invariants
+- Movement occurs only along explicit travel edges.
+- Travel is scheduled on ACT and law-gated.
+- Reachability does not imply visitability.
+
+## Forbidden assumptions
+- Teleportation is allowed without an edge.
+- Travel can bypass capacity or cost declarations.
+
+## Dependencies
+- `docs/arch/REALITY_LAYER.md`
+- `docs/arch/TRAVEL_AND_MOVEMENT.md`
+
 See:
 - `SPEC_TRAVEL_GRAPH.md`
 - `SPEC_TRAVEL_EDGES.md`

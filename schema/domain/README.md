@@ -22,6 +22,21 @@ DEPENDENCIES:
 This folder defines the canonical spatial domain volume model used to decide
 where simulation, travel, and refinement may occur.
 
+Scope: spatial volumes, reachability, and visitability rules.
+
+## Invariants
+- Domains are explicit SDF volumes, not implicit bounds.
+- Domain queries are deterministic and authoritative.
+- Visitability requires refinement contracts.
+
+## Forbidden assumptions
+- Rectangular world bounds are implied.
+- Reachability implies visitability without contracts.
+
+## Dependencies
+- `docs/arch/REALITY_LAYER.md`
+- `docs/arch/VISITABILITY_AND_REFINEMENT.md`
+
 See:
 - `SPEC_DOMAIN_VOLUMES.md`
 - `SPEC_DOMAIN_RUNTIME_SDF.md`

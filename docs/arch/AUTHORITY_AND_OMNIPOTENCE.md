@@ -8,6 +8,11 @@ Unify spectator, competitive, anarchy, and omnipotent control without modes or
 hard-coded admin/cheat checks. Authority is data-defined, law-gated, and
 auditable.
 
+## Invariants
+- Capabilities are additive and scoped.
+- Law gates every authoritative action.
+- Omnipotence never bypasses audit or archival rules.
+
 ## Authority Model
 - All power is granted via capabilities.
 - All restriction is enforced via law (including anti-cheat).
@@ -46,7 +51,15 @@ Every authority outcome MUST explain:
 - which law targets and scopes were evaluated,
 - which effect token was emitted.
 
-## Cross-References
+## Forbidden assumptions
+- "Admin" checks replace law and capability gating.
+- Omnipotence implies unlimited, unaudited mutation.
+
+## Dependencies
+- Authority layers: `schema/authority/SPEC_AUTHORITY_LAYERS.md`
+- Law kernel: `schema/law/SPEC_LAW_KERNEL.md`
+
+## See also
 - `schema/authority/SPEC_OMNIPOTENCE.md`
 - `schema/capabilities/SPEC_CAPABILITY_TAXONOMY.md`
 - `schema/capabilities/SPEC_NEGATIVE_CAPABILITIES.md`

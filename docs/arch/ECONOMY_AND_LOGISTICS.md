@@ -37,16 +37,20 @@ Logistics moves goods through the Travel graph:
 Macro totals (production, trade, inventory) must reconcile with micro details
 when refined. Refinement cannot invent goods to satisfy UI or balance.
 
-## Invariants (absolute)
+## Invariants
 - No goods without production inputs.
 - No production without explicit contracts.
 - No logistics bypasses the Travel graph.
 
-## Integration points
+## Dependencies
 - Civilization model: `docs/arch/CIVILIZATION_MODEL.md`
 - Travel and movement: `docs/arch/TRAVEL_AND_MOVEMENT.md`
 - Reality layer: `docs/arch/REALITY_LAYER.md`
 - Resource conservation: `schema/economy/SPEC_RESOURCE_CONSERVATION.md`
+
+## Forbidden assumptions
+- Markets create goods or value.
+- Supply chains are instantaneous or global by default.
 
 ## See also
 - `schema/economy/README.md`

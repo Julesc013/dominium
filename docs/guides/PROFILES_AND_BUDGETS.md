@@ -3,6 +3,14 @@
 Status: draft.
 Scope: selecting execution profiles and safe budget overrides.
 
+## Invariants
+- Profiles affect performance only, never gameplay meaning.
+- Budget overrides are deterministic and auditable.
+- Law flags can only restrict, not expand, capabilities.
+
+## Dependencies
+- `docs/arch/SYS_CAPS_AND_EXEC_POLICY.md`
+- `schema/syscaps/README.md`
 ## Selecting a Profile
 Profiles are data-defined under `data/defaults/profiles/*.tlv`. Server and
 client launch configuration should point to one profile ID or file path:
@@ -46,3 +54,10 @@ Retro client mode:
 - allow_simd = 0
 - allow_gpu_derived = 0
 - allow_multithread = 0
+
+## Forbidden assumptions
+- Profile selection can change authoritative outcomes.
+- Wall-clock benchmarking can set budgets.
+
+## See also
+- `docs/arch/EXECUTION_MODEL.md`

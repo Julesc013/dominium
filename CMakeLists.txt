@@ -132,6 +132,54 @@ add_test(NAME phase6_audit
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/ci/phase6_audit_checks.py --repo-root ${CMAKE_SOURCE_DIR}
 )
 
+add_custom_target(check_hygiene
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/ci/check_hygiene_scan.py --mode check --queue ${CMAKE_SOURCE_DIR}/docs/ci/HYGIENE_QUEUE.md
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    COMMENT "Checking code/data hygiene queue consistency"
+)
+
+add_custom_target(check_comment_density
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/ci/check_comment_density.py --mode warn
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    COMMENT "Checking comment density and doc blocks"
+)
+
+add_custom_target(check_todo_blockers
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/ci/check_todo_blockers.py --mode fail
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    COMMENT "Checking TODO blocker policy"
+)
+
+add_custom_target(check_magic_numbers
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/ci/check_magic_numbers.py --mode warn
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    COMMENT "Checking magic number policy"
+)
+
+add_custom_target(check_forbidden_enums
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/ci/check_forbidden_enums.py --mode fail
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    COMMENT "Checking forbidden enum values"
+)
+
+add_custom_target(check_switch_on_taxonomy
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/ci/check_switch_on_taxonomy.py --mode warn
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    COMMENT "Checking switch statements on taxonomy ids/types"
+)
+
+add_custom_target(check_all)
+add_dependencies(check_all
+    all_quality_gates
+    check_arch
+    check_hygiene
+    check_comment_density
+    check_todo_blockers
+    check_magic_numbers
+    check_forbidden_enums
+    check_switch_on_taxonomy
+)
+
 set(DOMINIUM_ENGINE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/engine/include")
 set(DOMINIUM_GAME_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/game/include")
 set(DOMINIUM_SETUP_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/setup/include")

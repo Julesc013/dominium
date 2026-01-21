@@ -1,5 +1,25 @@
 # Work IR Emission Guide (EXEC4)
 
+Scope: game-side emission contract for Work IR and Access IR.
+
+## Invariants
+- Authoritative work is emitted as Work IR + Access IR.
+- Task IDs and AccessSet IDs are deterministic.
+- Law targets are required for authoritative tasks.
+
+## Dependencies
+- `schema/execution/README.md`
+- `docs/arch/EXECUTION_MODEL.md`
+- `docs/arch/LAW_ENFORCEMENT_POINTS.md`
+
+## Forbidden assumptions
+- Game code may execute tasks directly.
+- Undeclared reads/writes are acceptable.
+
+## See also
+- `docs/guides/INTEREST_SYSTEM_WORK_IR.md`
+- `docs/guides/ECONOMY_WORK_IR.md`
+
 This guide defines the **game-side contract** for emitting Work IR and Access IR.
 Systems must **emit tasks**; they must never execute work directly.
 

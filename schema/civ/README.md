@@ -8,6 +8,21 @@ infrastructure, institutions, organizations, governance, and legitimacy. These
 documents define authoritative data formats and invariants only; no runtime
 logic is introduced here.
 
+Scope: CIV data formats for settlements, infrastructure, institutions, and governance.
+
+## Invariants
+- No settlement or infrastructure exists without construction contracts.
+- Governance is institution-backed and law-gated.
+- Schemas do not encode runtime logic.
+
+## Forbidden assumptions
+- Schemas may define authoritative behavior.
+- Free settlements or governance are allowed.
+
+## Dependencies
+- `docs/arch/CIVILIZATION_MODEL.md`
+- `schema/economy/README.md`
+
 ## Canonical CIV0+ index
 - `schema/civ/SPEC_SETTLEMENTS.md`
 - `schema/civ/SPEC_INFRASTRUCTURE.md`

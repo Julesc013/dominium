@@ -6,6 +6,11 @@ Scope: how new systems and features are added without violating canon.
 All new systems must be introduced as extensions, not replacements. The
 canonical model is not redefined by implementation convenience.
 
+## Invariants
+- Intent -> law/capability gate -> effect -> audit is mandatory.
+- Work IR is required for authoritative work.
+- Refusal and absence are valid outcomes.
+
 ## Required properties of any new system
 - Express intent -> law/capability gate -> effect -> audit.
 - Emit Work IR for authoritative work.
@@ -27,10 +32,14 @@ Prefer data and contracts over code for gameplay variation:
 - New production chains, institutions, and policies are schema-defined.
 - New content lives under `data/` and must be validated.
 
-## Forbidden extension patterns
+## Forbidden assumptions
 - Backdoor code paths that bypass law or audit.
 - Implicit existence or resource creation for convenience.
-- Unbounded global iteration or per-tick loops.
+- Unbounded global iteration or per-ACT loops.
+
+## Dependencies
+- Canon and invariants: `docs/arch/INVARIANTS.md`
+- Change protocol: `docs/arch/CHANGE_PROTOCOL.md`
 
 ## See also
 - `docs/arch/FUTURE_PROOFING.md`

@@ -6,6 +6,11 @@ Scope: death, estate, continuation, and reincarnation rules.
 Death is an explicit effect. Identity does not silently disappear, and all
 post-death actions are audited.
 
+## Invariants
+- No death without a DeathContract effect.
+- Identity does not disappear; it is archived or continued by contract.
+- Refusal or deferral is valid and auditable.
+
 ## Death is explicit
 Death requires a DeathContract and produces:
 - a death event record,
@@ -30,12 +35,16 @@ All continuation requires explicit authority and audit.
 - Remains persist deterministically and decay via ACT scheduling.
 - Knowledge of death is epistemic; UI is gated by observation or comms.
 
-## Integration points
+## Dependencies
 - Reality flow: `docs/arch/REALITY_FLOW.md`
 - Identity and lineage: `schema/life/SPEC_IDENTITY_AND_LINEAGE.md`
 - Death contracts: `schema/life/SPEC_DEATH_CONTRACTS.md`
 - Reincarnation: `schema/life/SPEC_REINCARNATION.md`
 - Death/estate legacy guide: `schema/life/SPEC_DEATH_AND_ESTATE.md`
+
+## Forbidden assumptions
+- Death can be silent or implicit.
+- Reincarnation is default or free.
 
 ## See also
 - `docs/arch/IDENTITY_ACROSS_TIME.md`

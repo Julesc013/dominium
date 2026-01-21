@@ -7,8 +7,8 @@ Scope: guardrails against common misunderstandings.
 It is not a generic rendering or physics framework; rendering is derived and
 authoritative logic is deterministic and law-gated.
 
-## Not a tick-everything sandbox
-No global scans or per-tick AI loops; simulation advances via scheduled events.
+## Not a step-everything sandbox
+No global scans or per-ACT AI loops; simulation advances via scheduled events.
 
 ## Not a physics-everywhere simulator
 Micro detail is refined only when required; macro existence is valid.
@@ -21,6 +21,19 @@ Admin power is capability- and law-gated, audited, and fork-aware.
 
 ## Not a single-scale simulation
 It supports macro-only, meso, and micro refinement with explicit contracts.
+
+## Invariants
+- Deterministic, law-gated authority is mandatory.
+- Global iteration and implicit background simulation are forbidden.
+- No hard-coded modes exist.
+
+## Forbidden assumptions
+- "Convenient" implicit behavior is not allowed.
+- Authority cannot bypass audit or law gates.
+
+## Dependencies
+- Canon and invariants: `docs/arch/INVARIANTS.md`
+- Reality layer: `docs/arch/REALITY_LAYER.md`
 
 ## See also
 - `docs/arch/WHAT_THIS_IS.md`

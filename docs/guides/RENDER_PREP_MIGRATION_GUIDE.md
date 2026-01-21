@@ -1,5 +1,17 @@
 # Render Prep Migration Guide (ADOPT2)
 
+Scope: migrate render frame preparation to derived Work IR tasks.
+
+## Invariants
+- Render prep is derived-only; it never mutates authoritative state.
+- Emission is deterministic and budgeted.
+- Law can disable presentation before emission.
+
+## Dependencies
+- `docs/arch/EXECUTION_MODEL.md`
+- `docs/guides/WORK_IR_EMISSION_GUIDE.md`
+- `docs/arch/LAW_ENFORCEMENT_POINTS.md`
+
 This guide defines the Work IR migration for render frame preparation.
 Render prep is **derived work** and must be schedulable, budgeted, and degradable.
 
@@ -58,9 +70,16 @@ Render prep respects law by:
 - The client consumes derived buffers when ready.
 - If tasks are delayed or skipped, stale buffers are reused.
 
+## Forbidden assumptions
+- Render prep may write authoritative state.
+- Presentation requires successful prep in the same frame.
+
 ## Tests
 `engine/tests/render_prep_work_ir_tests.cpp` validates:
 - deterministic emission
 - budget degradation
 - presentation disabled -> no tasks emitted
 - stale-buffer fallback behavior
+
+## See also
+- `docs/arch/EXECUTION_MODEL.md`

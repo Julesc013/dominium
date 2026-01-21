@@ -1,5 +1,16 @@
 # Kernel Backend Selection
 
+Scope: deterministic kernel backend selection for Work IR execution.
+
+## Invariants
+- Authoritative selection is deterministic and auditable.
+- Profiling never affects authoritative selection.
+- GPU is derived-only for authoritative classes.
+
+## Dependencies
+- `docs/arch/EXECUTION_MODEL.md`
+- `docs/arch/SYS_CAPS_AND_EXEC_POLICY.md`
+
 This guide defines how kernel backends are selected deterministically while
 preserving authoritative correctness.
 
@@ -72,3 +83,10 @@ To debug selection:
 - Check per-op overrides and order
 
 If no candidate is selected, the selector returns a deterministic refusal code.
+
+## Forbidden assumptions
+- Adaptive profiling can change authoritative outcomes.
+- Unknown capabilities imply availability.
+
+## See also
+- `schema/syscaps/README.md`

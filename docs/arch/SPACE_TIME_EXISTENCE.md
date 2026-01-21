@@ -56,6 +56,20 @@ Alive means:
 
 It does not require continuous micro simulation.
 
+## Invariants
+- Existence states are explicit and not inferred.
+- ACT is immutable; perception is derived only.
+- Refinement requires contracts and preserves observed history.
+
+## Forbidden assumptions
+- Existence implies realization or micro simulation.
+- Time perception can alter authoritative scheduling.
+
+## Dependencies
+- Reality layer: `docs/arch/REALITY_LAYER.md`
+- Existence and archival: `schema/existence/README.md`
+- Domain volumes: `schema/domain/README.md`
+
 ## See also
 - `docs/arch/REALITY_LAYER.md`
 - `docs/arch/EXISTENCE_AND_REALITY.md`

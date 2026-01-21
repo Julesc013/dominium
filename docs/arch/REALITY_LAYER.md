@@ -31,7 +31,7 @@ domains that define spatial legality, advancing on ACT, and operating under law
 and capability gates. Refinement and visitability are contract-driven; absence,
 refusal, and deferral are valid outcomes.
 
-## Reality layer guarantees
+## Invariants
 - Existence is explicit; there is no implicit pop-in.
 - Domains are first-class; there are no hidden world bounds.
 - Travel is scheduled on ACT and never magical.
@@ -90,6 +90,15 @@ Refusal, absence, and deferral are valid outcomes.
 - AI planning collapses to cohorts when appropriate.
 - Domains bound computation and interest.
 - Budgets and degradation are enforced via EXEC/HWCAPS interfaces.
+
+## Forbidden assumptions
+- Implicit existence or implicit refinement is allowed.
+- Reachability implies visitability without contracts.
+- Authority may bypass law or audit.
+
+## Dependencies
+- Canon and invariants: `docs/arch/INVARIANTS.md`
+- Reality flow: `docs/arch/REALITY_FLOW.md`
 
 ## See also
 - `docs/arch/LIFE_AND_POPULATION.md`

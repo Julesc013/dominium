@@ -7,6 +7,21 @@ This directory contains canonical LIFE0+ schema specifications for life
 entities, population models, birth/death contracts, identity, and continuity.
 These are documentation-only and define authoritative formats and constraints.
 
+Scope: life entity, population, birth/death, and identity formats.
+
+## Invariants
+- No life appears without birth contracts.
+- No life disappears without death contracts.
+- Schemas do not encode runtime logic.
+
+## Forbidden assumptions
+- Life entities can be fabricated for convenience.
+- Identity can be overwritten by refinement details.
+
+## Dependencies
+- `docs/arch/LIFE_AND_POPULATION.md`
+- `docs/arch/REALITY_LAYER.md`
+
 ## Canonical LIFE0+ index
 - `schema/life/SPEC_LIFE_ENTITIES.md`
 - `schema/life/SPEC_POPULATION_MODELS.md`

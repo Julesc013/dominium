@@ -25,6 +25,11 @@ Layers are schema-defined; capabilities are additive and scoped.
 - Omnipotence is additive capability, not bypass.
 - Archived history is immutable; changes require explicit forks.
 
+## Invariants
+- No authority bypass without law and audit.
+- Capabilities are additive and scoped.
+- Archived history is immutable unless forked.
+
 ## Reality interactions (examples)
 Spectator volume:
 - EPISTEMIC allow, SIMULATION deny.
@@ -41,6 +46,14 @@ Anarchy frontier:
 Admin chamber:
 - Scoped omnipotent capability inside a domain.
 - Requires explicit effects and audit for any mutation.
+
+## Forbidden assumptions
+- "Game modes" can replace law and capability.
+- Admins may bypass audit or archival rules.
+
+## Dependencies
+- Authority model: `docs/arch/AUTHORITY_MODEL.md`
+- Law enforcement points: `docs/arch/LAW_ENFORCEMENT_POINTS.md`
 
 ## See also
 - `docs/arch/REALITY_LAYER.md`

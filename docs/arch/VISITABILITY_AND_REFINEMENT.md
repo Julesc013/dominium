@@ -17,7 +17,7 @@ A location is VISITABLE iff:
 
 If any condition fails, the outcome is explicit refusal or deferral.
 
-## Non-negotiable rules
+## Invariants
 - If a location cannot be refined, it must be unreachable.
 - Placeholder or fake micro worlds are forbidden.
 - Refinement is contract-driven; collapse preserves conservation and provenance.
@@ -33,6 +33,15 @@ Collapse:
 - deterministic aggregation back to macro state,
 - preserves pinned/observed entities and history,
 - never erases provenance.
+
+## Forbidden assumptions
+- Reachability implies visitability without contracts.
+- Refinement can fabricate micro state without provenance.
+
+## Dependencies
+- Travel graph: `schema/travel/README.md`
+- Domain visitability: `schema/domain/README.md`
+- Refinement contracts: `schema/existence/SPEC_REFINEMENT_CONTRACTS.md`
 
 ## See also
 - `docs/arch/REALITY_LAYER.md`

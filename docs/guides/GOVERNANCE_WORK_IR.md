@@ -1,5 +1,17 @@
 # Governance Work IR Guide (ADOPT4)
 
+Scope: authoritative governance Work IR emission and scheduling.
+
+## Invariants
+- Governance tasks are authoritative and emitted as Work IR only.
+- Ordering is deterministic and auditable.
+- Law gates remain mandatory.
+
+## Dependencies
+- `docs/guides/WORK_IR_EMISSION_GUIDE.md`
+- `docs/arch/GOVERNANCE_AND_INSTITUTIONS.md`
+- `docs/arch/LAW_ENFORCEMENT_POINTS.md`
+
 This guide defines the authoritative GovernanceSystem Work IR contract and how to
 emit governance tasks deterministically.
 
@@ -26,14 +38,14 @@ Each task declares:
 
 ## Scheduling Rules
 
-- `next_due_tick` is driven by policy schedules and event queues.
+- `next_due_act` (legacy field name: `next_due_tick`, deprecated terminology) is driven by policy schedules and event queues.
 - Tasks emit only when inputs exist and are due.
 - Emission order is deterministic and stable.
 
 ## Amortization Strategy
 
 - Work is sliced with `start_index` + `count`.
-- Budgets cap the number of records processed per tick.
+- Budgets cap the number of records processed per ACT step.
 - Remainders carry forward deterministically.
 
 ## Law & Module Integration
@@ -42,9 +54,12 @@ Each task declares:
 - Disabled operations emit no tasks.
 - No “silent fallback” behavior is allowed.
 
-## Anti-Patterns (Forbidden)
+## Forbidden assumptions
 
 - Background loops that bypass Work IR.
 - Non-deterministic ordering of policies or legitimacy updates.
 - Implicit policy application without audit records.
 - Direct execution outside Work IR.
+
+## See also
+- `schema/governance/README.md`

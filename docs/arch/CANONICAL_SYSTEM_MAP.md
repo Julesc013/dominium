@@ -7,6 +7,11 @@ This map locks the project into one mental model. It is written for humans and
 is the authoritative dependency direction statement. "A -> B" means A depends
 on B and must not be inverted.
 
+## Invariants
+- Dependency direction is authoritative and must not be inverted.
+- Engine and game responsibilities remain separated.
+- Law gates and audit are mandatory for authoritative effects.
+
 ## 1) Engine vs Game Boundary
 Engine defines mechanisms; game defines meaning; data defines configuration.
 Tools are read-only observers unless they emit explicit ToolIntents that are
@@ -140,6 +145,14 @@ Forbidden dependencies:
 - tool-side mutation outside ToolIntents
 - history edits without archival fork + audit
 - bypassing law or integrity gates
+
+## Forbidden assumptions
+- Dependency inversion is acceptable for convenience.
+- Tooling can mutate authoritative state directly.
+
+## Dependencies
+- `docs/arch/ARCH0_CONSTITUTION.md`
+- `docs/arch/INVARIANTS.md`
 
 ## See also
 - `docs/arch/ARCH0_CONSTITUTION.md`

@@ -2,13 +2,24 @@
 
 This document maps execution-substrate rules to their enforcement scripts and tests.
 
+Scope: execution-substrate enforcement mapping for EXEC-AUDIT0.
+
+## Invariants
+- Authoritative work uses Work IR + Access IR only.
+- Law gates run before execution and commit.
+- Access conflicts are resolved deterministically.
+
+## Dependencies
+- `docs/arch/EXECUTION_MODEL.md`
+- `schema/execution/README.md`
+
 ## Rule Mapping
 
 ### EXEC-AUDIT0-BYPASS-001
 - Mechanism: `scripts/ci/check_execution_contracts.py`
 - Failure output: `EXEC-AUDIT0-BYPASS-001: game includes engine/modules or scheduler backend`
 - Fix: remove forbidden includes and thread creation calls in `game/`.
- - Scope includes IR-only systems calling legacy execution paths.
+- Scope includes IR-only systems calling legacy execution paths.
 
 ### EXEC-AUDIT0-IR-REQ-002
 - Mechanism: CTest `execution_contract`, CTest `dominium_work_ir_completeness`
@@ -30,3 +41,10 @@ This document maps execution-substrate rules to their enforcement scripts and te
 - These checks are refusal-first and merge-blocking.
 - When adding a new system, update the Work IR emission tests before shipping.
 - Scheduler equivalence is validated by CTest `execution_equivalence`.
+
+## Forbidden assumptions
+- Legacy execution paths are acceptable in authoritative systems.
+- Missing AccessSets can be inferred.
+
+## See also
+- `docs/ci/CI_ENFORCEMENT_MATRIX.md`

@@ -9,6 +9,11 @@ anarchy, and omnipotent control are expressed through the same primitives.
 
 Profiles are data only; they are not modes and do not imply code paths.
 
+## Invariants
+- Profiles are data-defined; no hard-coded modes exist.
+- Capabilities are additive; denials are explicit.
+- Law and audit gates remain mandatory.
+
 ## Canonical Profiles (Examples)
 SPECTATOR_ONLY
 - Capabilities: CAN_OBSERVE
@@ -51,7 +56,15 @@ Examples:
 - Freecam allowed only inside a dedicated admin chamber volume.
 - Spectator-only zones that deny mutation.
 
-## Cross-References
+## Forbidden assumptions
+- Profiles can bypass law gates.
+- "Godmode" implies unaudited mutation.
+
+## Dependencies
+- Authority layers: `schema/authority/SPEC_AUTHORITY_LAYERS.md`
+- Capability domains: `schema/authority/SPEC_CAPABILITY_DOMAINS.md`
+
+## See also
 - `schema/authority/SPEC_CAPABILITY_DOMAINS.md`
 - `schema/capabilities/SPEC_CAPABILITY_TAXONOMY.md`
 - `docs/arch/AUTHORITY_IN_REALITY.md`

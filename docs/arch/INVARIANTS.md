@@ -150,6 +150,14 @@ Enforced by:
 - `schema/tools/README.md`
 - CI: OMNI1-NOTOOLBYPASS-001, TOOL0-NOMUT-004
 
+## Forbidden assumptions
+- Invariants are optional or "guidelines" rather than binding rules.
+- Convenience exceptions are acceptable without a canon update.
+
+## Dependencies
+- `docs/arch/ARCH0_CONSTITUTION.md`
+- `docs/arch/CHANGE_PROTOCOL.md`
+
 ## See also
 - `docs/arch/CANONICAL_SYSTEM_MAP.md`
 - `docs/arch/REALITY_MODEL.md`

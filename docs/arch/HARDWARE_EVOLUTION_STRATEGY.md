@@ -3,6 +3,11 @@
 Status: draft.
 Scope: performance adaptation without gameplay rewrites.
 
+## Invariants
+- Hardware changes may alter performance, never authoritative truth.
+- Authoritative outcomes remain deterministic across backends.
+- Execution policy is data-driven (SysCaps + profiles), not ad hoc code.
+
 ## Historical Shifts (2000+)
 - Multicore CPUs forced parallel scheduling and stable commit ordering.
 - SIMD widening (SSE2 → AVX2/AVX-512, NEON → SVE) split scalar vs vector paths.
@@ -24,3 +29,16 @@ Scope: performance adaptation without gameplay rewrites.
 ## Determinism Statement
 Policies may change performance, not truth. Authoritative outcomes remain
 identical across hardware profiles and backend selections.
+
+## Forbidden assumptions
+- New hardware justifies changing simulation semantics.
+- GPU or accelerator paths may write authoritative state.
+
+## Dependencies
+- Execution model: `docs/arch/EXECUTION_MODEL.md`
+- SysCaps policy: `docs/arch/SYS_CAPS_AND_EXEC_POLICY.md`
+- SysCaps schema: `schema/syscaps/README.md`
+
+## See also
+- `docs/arch/EXECUTION_MODEL.md`
+- `docs/arch/SYS_CAPS_AND_EXEC_POLICY.md`

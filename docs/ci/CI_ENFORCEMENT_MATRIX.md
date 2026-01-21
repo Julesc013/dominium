@@ -3,6 +3,24 @@
 This matrix defines mandatory, mechanical CI enforcement for architectural law.
 All failures are merge-blocking.
 
+Scope: canonical enforcement IDs for architecture, execution, reality, life, and civ.
+
+## Invariants
+- Enforcement IDs are binding and merge-blocking.
+- New systems must add enforcement coverage.
+- Refusal is valid when invariants are violated.
+
+## Dependencies
+- `docs/arch/ARCH0_CONSTITUTION.md`
+- `docs/arch/INVARIANTS.md`
+
+## Forbidden assumptions
+- CI IDs are optional or informational only.
+- Silent fallback is acceptable when checks fail.
+
+## See also
+- `docs/ci/FUTURE_ENFORCEMENT.md`
+
 ## Enforcement Table
 
 | ID | Description | Enforcement Mechanism | Stage | Failure Mode | Remediation | Rationale |
@@ -324,6 +342,13 @@ All failures are merge-blocking.
 | TOOL0-LEDGER-003 | Ledger inspection MUST report conservation. | CTest `dominium_tool0_inspection` | Test | CI fail: TOOL0-LEDGER-003 | Ensure ledger inspection sums balance deterministically. | Verifies conservation without mutation. |
 | TOOL0-NOMUT-004 | Tool mutation requests MUST be refused. | CTest `dominium_tool0_inspection` | Test | CI fail: TOOL0-NOMUT-004 | Block any tool-side mutation paths. | Prevents privileged backdoors. |
 | TOOL0-VAL-001 | Tooling inventory MUST be present. | `tools/validation/validate_all` | Configure | CI fail: TOOL0-VAL-001 | Restore required TOOL0 files and docs. | Keeps tooling substrate complete. |
+| HYGIENE-SCAN-001 | Hygiene scan queue MUST be up to date. | `scripts/ci/check_hygiene_scan.py` (check mode) | Configure | CI fail: HYGIENE-SCAN-001 | Run scan in write mode and commit updated queue. | Keeps hygiene queue current. |
+| HYGIENE-ENUM-002 | CUSTOM/OTHER/UNKNOWN enums are forbidden (non-architectural). | `scripts/ci/check_forbidden_enums.py` | Configure | CI fail: HYGIENE-ENUM-002 | Replace with registry ids or remove forbidden tokens. | Preserves closed-world enums. |
+| HYGIENE-SWITCH-003 | Switch on taxonomy ids/types is forbidden. | `scripts/ci/check_switch_on_taxonomy.py` | Configure | CI warn/fail: HYGIENE-SWITCH-003 | Use registry dispatch tables instead. | Prevents hardcoded taxonomy branching. |
+| HYGIENE-MAGIC-004 | Magic numbers are forbidden outside constants/data. | `scripts/ci/check_magic_numbers.py` | Configure | CI warn/fail: HYGIENE-MAGIC-004 | Replace with named constants or data-driven params. | Eliminates hidden tuning. |
+| HYGIENE-TODO-005 | TODOs must use TODO_BLOCKER/FUTURE/DOC format. | `scripts/ci/check_todo_blockers.py` | Configure | CI fail: HYGIENE-TODO-005 | Convert to standardized TODO_* and update blockers. | Keeps blockers auditable. |
+| HYGIENE-COMMENT-006 | Comment density + doc blocks are required. | `scripts/ci/check_comment_density.py` | Configure | CI warn/fail: HYGIENE-COMMENT-006 | Add doc blocks or add COMMENT_DENSITY_EXCEPTION. | Ensures invariant rationale is recorded. |
+| HYGIENE-ADMIN-007 | isAdmin/isCheat flags are forbidden. | `scripts/ci/check_hygiene_scan.py` | Configure | CI fail: HYGIENE-ADMIN-007 | Replace with law/capability gating. | Prevents privilege backdoors. |
 | MP0-PARITY-001 | Offline loopback must match authoritative outcomes. | CTest `dominium_mp0_parity` | Test | CI fail: MP0-PARITY-001 | Use loopback server-auth path; avoid singleplayer-only logic. | Ensures offline parity with MP. |
 | MP0-LOCKSTEP-001 | Local lockstep peers must converge identically. | CTest `dominium_mp0_parity` | Test | CI fail: MP0-LOCKSTEP-001 | Ensure deterministic command ordering and simulation. | Prevents lockstep divergence. |
 | MP0-SERVERAUTH-001 | Server-auth clients must accept authoritative state without divergence. | CTest `dominium_mp0_parity` | Test | CI fail: MP0-SERVERAUTH-001 | Keep clients non-authoritative and reconcile to server. | Preserves server authority. |

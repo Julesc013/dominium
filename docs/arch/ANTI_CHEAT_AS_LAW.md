@@ -7,6 +7,11 @@ Scope: integrity and anti-cheat expressed through capability law.
 Define anti-cheat as law, not code exceptions. Cheat tools and admin tools are
 the same intents, gated by capabilities, and fully auditable.
 
+## Invariants
+- Anti-cheat is law-gated, not hard-coded exceptions.
+- Tool and admin intents require explicit capabilities.
+- Overrides are audited and effect-driven.
+
 ## Anti-Cheat Model
 - Integrity is an authority layer (INTEGRITY).
 - Client admission, tool usage, and modified client policy are law targets.
@@ -30,7 +35,15 @@ Any override (for testing or investigation) MUST:
 - include capability evidence,
 - record a full audit trail.
 
-## Cross-References
+## Forbidden assumptions
+- Cheats can be blocked by hidden code paths instead of law.
+- Admin tools may bypass audit.
+
+## Dependencies
+- Authority layers: `schema/authority/SPEC_AUTHORITY_LAYERS.md`
+- Law kernel: `schema/law/SPEC_LAW_KERNEL.md`
+
+## See also
 - `schema/authority/SPEC_AUTHORITY_LAYERS.md`
 - `schema/capabilities/SPEC_NEGATIVE_CAPABILITIES.md`
 - `schema/law/SPEC_LAW_KERNEL.md`
