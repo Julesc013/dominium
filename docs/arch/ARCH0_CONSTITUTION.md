@@ -190,5 +190,11 @@ CANON0 provides the single-source narrative of the project:
 - `docs/arch/AUTHORITY_MODEL.md`
 - `docs/arch/EXECUTION_MODEL.md`
 
+LIFE0+ provides the canonical life model:
+- `docs/arch/LIFE_AND_POPULATION.md`
+- `docs/arch/DEATH_AND_CONTINUITY.md`
+- `docs/arch/IDENTITY_ACROSS_TIME.md`
+- `docs/arch/WHY_NPCS_DONT_POP.md`
+
 ## Glossary
 See `docs/arch/GLOSSARY.md` for binding definitions.
