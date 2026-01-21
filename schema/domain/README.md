@@ -27,6 +27,8 @@ See:
 - `SPEC_DOMAIN_RUNTIME_SDF.md`
 - `SPEC_DOMAIN_AUTHORING.md`
 - `SPEC_DOMAIN_NESTING.md`
+- `SPEC_REACHABILITY.md`
+- `SPEC_VISITABILITY.md`
 Law bindings and jurisdiction precedence:
 - `schema/law/SPEC_DOMAIN_JURISDICTIONS.md`
 - `schema/law/SPEC_JURISDICTION_PRECEDENCE.md`
