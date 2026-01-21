@@ -10,6 +10,7 @@ ERROR MODEL: Return codes/NULL pointers; no exceptions.
 DETERMINISM: Fixed defaults; policy-driven resolution selection.
 */
 #include "domino/world/domain_volume.h"
+#include "domino/world/domain_cache.h"
 
 #include <string.h>
 
@@ -88,6 +89,9 @@ void dom_domain_volume_set_source(dom_domain_volume* volume, const dom_domain_sd
         return;
     }
     volume->source = source;
+    if (volume->cache) {
+        dom_domain_cache_invalidate_domain(volume->cache, volume->domain_id);
+    }
     dom_domain_volume_clear_local_tiles(volume);
 }
 
@@ -105,6 +109,9 @@ void dom_domain_volume_set_policy(dom_domain_volume* volume, const dom_domain_po
         return;
     }
     volume->policy = *policy;
+    if (volume->cache) {
+        dom_domain_cache_invalidate_domain(volume->cache, volume->domain_id);
+    }
     dom_domain_volume_clear_local_tiles(volume);
 }
 
@@ -116,6 +123,9 @@ void dom_domain_volume_set_state(dom_domain_volume* volume, u32 existence_state,
     if (volume->existence_state != existence_state || volume->archival_state != archival_state) {
         volume->existence_state = existence_state;
         volume->archival_state = archival_state;
+        if (volume->cache) {
+            dom_domain_cache_invalidate_domain(volume->cache, volume->domain_id);
+        }
         dom_domain_volume_clear_local_tiles(volume);
     }
 }
@@ -127,6 +137,9 @@ void dom_domain_volume_set_authoring_version(dom_domain_volume* volume, u32 vers
     }
     if (volume->authoring_version != version) {
         volume->authoring_version = version;
+        if (volume->cache) {
+            dom_domain_cache_invalidate_domain(volume->cache, volume->domain_id);
+        }
         dom_domain_volume_clear_local_tiles(volume);
     }
 }
