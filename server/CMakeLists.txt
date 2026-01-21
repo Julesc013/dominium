@@ -4,6 +4,8 @@ add_executable(dominium_server
     app/main_server.c
     shard/shard_api.cpp
     shard/shard_router.cpp
+    shard/shard_domain_index.cpp
+    shard/domain_shard_mapper.cpp
     shard/task_splitter.cpp
     shard/message_bus.cpp
     shard/shard_executor.cpp
@@ -34,6 +36,8 @@ if(DOM_BUILD_TESTS)
         tests/shard_api_tests.cpp
         shard/shard_api.cpp
         shard/shard_router.cpp
+        shard/shard_domain_index.cpp
+        shard/domain_shard_mapper.cpp
         shard/task_splitter.cpp
         shard/message_bus.cpp
         shard/shard_executor.cpp
@@ -59,6 +63,8 @@ if(DOM_BUILD_TESTS)
         tests/shard_routing_tests.cpp
         shard/shard_api.cpp
         shard/shard_router.cpp
+        shard/shard_domain_index.cpp
+        shard/domain_shard_mapper.cpp
         shard/task_splitter.cpp
         shard/message_bus.cpp
         shard/shard_executor.cpp
@@ -84,6 +90,8 @@ if(DOM_BUILD_TESTS)
         tests/integrity_checkpoint_tests.cpp
         shard/shard_api.cpp
         shard/shard_router.cpp
+        shard/shard_domain_index.cpp
+        shard/domain_shard_mapper.cpp
         shard/task_splitter.cpp
         shard/message_bus.cpp
         shard/shard_executor.cpp
@@ -109,6 +117,8 @@ if(DOM_BUILD_TESTS)
         tests/shard_regression_tests.cpp
         shard/shard_api.cpp
         shard/shard_router.cpp
+        shard/shard_domain_index.cpp
+        shard/domain_shard_mapper.cpp
         shard/task_splitter.cpp
         shard/message_bus.cpp
         shard/shard_executor.cpp
