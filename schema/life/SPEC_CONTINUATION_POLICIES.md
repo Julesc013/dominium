@@ -21,8 +21,12 @@ DEPENDENCIES:
 --------------------------------
 # SPEC_CONTINUATION_POLICIES — Continuation Policy Catalog
 
-Status: draft
+Status: legacy (superseded by LIFE0+)
 Version: 1
+
+Note: LIFE0+ canonical specs live in `schema/life/SPEC_REINCARNATION.md` and
+`schema/life/SPEC_IDENTITY_AND_LINEAGE.md`. This document remains for legacy
+context; if any statement conflicts with LIFE0+, LIFE0+ wins.
 
 ## Purpose
 Define continuation policies and ability packages that govern control after
@@ -154,4 +158,4 @@ Implementations MUST provide tests for:
 ## Integration points
 - Control authority: `schema/life/SPEC_CONTROL_AUTHORITY.md`
 - Death and estate: `schema/life/SPEC_DEATH_AND_ESTATE.md`
-- Provenance: `docs/SPEC_PROVENANCE.md`
+- Provenance: `docs/specs/SPEC_PROVENANCE.md`

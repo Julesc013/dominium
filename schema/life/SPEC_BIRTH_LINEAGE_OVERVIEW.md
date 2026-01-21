@@ -20,8 +20,12 @@ DEPENDENCIES:
 --------------------------------
 # SPEC_BIRTH_LINEAGE_OVERVIEW — Birth and Lineage (Overview)
 
-Status: draft
+Status: legacy (superseded by LIFE0+)
 Version: 1
+
+Note: LIFE0+ canonical specs live in `schema/life/SPEC_BIRTH_CONTRACTS.md` and
+`schema/life/SPEC_IDENTITY_AND_LINEAGE.md`. This overview remains for legacy
+context; if any statement conflicts with LIFE0+, LIFE0+ wins.
 
 ## Purpose
 Define the overview schema for birth and lineage. Full implementation is deferred
@@ -64,9 +68,9 @@ Optional fields:
 - Epistemic knowledge of birth is emitted via an explicit callback hook only.
 
 ## Integration points
-- Provenance: `docs/SPEC_PROVENANCE.md`
-- Information model: `docs/SPEC_INFORMATION_MODEL.md`
-- Fidelity projection: `docs/SPEC_FIDELITY_PROJECTION.md`
+- Provenance: `docs/specs/SPEC_PROVENANCE.md`
+- Information model: `docs/specs/SPEC_INFORMATION_MODEL.md`
+- Fidelity projection: `docs/specs/SPEC_FIDELITY_PROJECTION.md`
 
 ## Prohibitions
 - Fabricating lineage links.
