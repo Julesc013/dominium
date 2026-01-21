@@ -35,3 +35,7 @@ See:
 - `SPEC_PORTALS.md`
 - `SPEC_WORMHOLES.md`
 - `SPEC_HYPERSPACE.md`
+
+Reality layer:
+- `docs/arch/REALITY_LAYER.md`
+- `docs/arch/VISITABILITY_AND_REFINEMENT.md`

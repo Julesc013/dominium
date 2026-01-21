@@ -33,3 +33,7 @@ Related:
 - Capability taxonomy: `schema/capabilities/README.md`
 - Law kernel: `schema/law/SPEC_LAW_KERNEL.md`
 - Authority architecture: `docs/arch/AUTHORITY_AND_OMNIPOTENCE.md`
+
+Reality layer:
+- `docs/arch/REALITY_LAYER.md`
+- `docs/arch/AUTHORITY_IN_REALITY.md`

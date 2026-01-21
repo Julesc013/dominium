@@ -32,3 +32,8 @@ See:
 Law bindings and jurisdiction precedence:
 - `schema/law/SPEC_DOMAIN_JURISDICTIONS.md`
 - `schema/law/SPEC_JURISDICTION_PRECEDENCE.md`
+
+Reality layer:
+- `docs/arch/REALITY_LAYER.md`
+- `docs/arch/SPACE_TIME_EXISTENCE.md`
+- `docs/arch/VISITABILITY_AND_REFINEMENT.md`

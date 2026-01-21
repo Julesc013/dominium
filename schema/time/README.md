@@ -29,3 +29,7 @@ See:
 - `SPEC_BUFFERED_PERCEPTION.md`
 - `SPEC_REPLAY_MODES.md`
 - `SPEC_ASYMMETRIC_TIME.md`
+
+Reality layer:
+- `docs/arch/REALITY_LAYER.md`
+- `docs/arch/SPACE_TIME_EXISTENCE.md`
