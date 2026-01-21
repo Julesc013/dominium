@@ -44,6 +44,10 @@ Archival, freezing, and timeline forking are defined in:
 - `docs/arch/ARCHIVAL_AND_PERMANENCE.md`
 - `docs/arch/TIMELINE_FORKS_AND_HISTORY.md`
 - `schema/existence/SPEC_ARCHIVAL_STATES.md`
+Domain volumes and spatial bounds are defined in:
+- `docs/arch/DOMAIN_VOLUMES.md`
+- `docs/arch/SPACE_AND_BOUNDS.md`
+- `schema/domain/README.md`
 
 A5. Engine and game are strictly separated.
 - Engine defines mechanisms.
