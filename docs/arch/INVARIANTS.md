@@ -1,0 +1,157 @@
+# Invariants (CANON0)
+
+Status: binding.
+Scope: hard invariants for all systems, documentation, and data.
+
+Each invariant includes why it exists, what breaks if violated, and which
+systems enforce it.
+
+## Invariant: Deterministic authoritative simulation (batch == step)
+Why:
+- Reproducibility, auditability, and cross-platform agreement depend on it.
+Breaks if violated:
+- Replays diverge, cross-shard reconciliation fails, and saves become invalid.
+Enforced by:
+- Work IR + Access IR (`schema/execution/README.md`)
+- `docs/arch/EXECUTION_REORDERING_POLICY.md`
+- `docs/arch/DETERMINISTIC_REDUCTION_RULES.md`
+- CI: EXEC0b-REORDER-001, EXEC0b-COMMIT-001
+
+## Invariant: Simulation advances only via explicit events (no global scans)
+Why:
+- Event scheduling keeps costs bounded and deterministic.
+Breaks if violated:
+- Hidden background work, O(N) scans, and per-tick AI loops cause drift and
+  unpredictable budgets.
+Enforced by:
+- ARCH0 A2 (`docs/arch/ARCH0_CONSTITUTION.md`)
+- Event-driven scheduling specs (e.g., `docs/specs/SPEC_EVENT_DRIVEN_STEPPING.md`)
+- Guides: `docs/guides/NO_GLOBAL_ITERATION_GUIDE.md`
+- CI: CIV5-WAR3-NOGLOB-005, CIV5-WAR4-NOGLOB-004
+
+## Invariant: ACT is monotonic and never warped
+Why:
+- ACT is the authoritative time axis for determinism and ordering.
+Breaks if violated:
+- Travel scheduling, replay, and law decisions become nondeterministic.
+Enforced by:
+- `docs/arch/TIME_DILATION_WITHOUT_TIME_WARP.md`
+- `schema/time/README.md`
+- CI: TIME2-NO-ACT-WARP-001
+
+## Invariant: No implicit existence
+Why:
+- Existence must be auditable and lawful.
+Breaks if violated:
+- Pop-in creation, silent erasure, and unverifiable provenance.
+Enforced by:
+- `docs/arch/EXISTENCE_AND_REALITY.md`
+- `schema/existence/README.md`
+- CI: EXIST0-STATE-001, EXIST0-NOPOP-002
+
+## Invariant: No refinement without a contract
+Why:
+- Refinement must be deterministic and provenance-preserving.
+Breaks if violated:
+- Fake worlds, fabricated history, and nondeterministic detail.
+Enforced by:
+- `docs/arch/REFINEMENT_CONTRACTS.md`
+- `docs/arch/VISITABILITY_CONSISTENCY.md`
+- CI: EXIST1-CONTRACT-001, DOMAIN4-NOFAKE-002
+
+## Invariant: No teleport without a TravelEdge
+Why:
+- Movement must be schedulable, law-gated, and auditable.
+Breaks if violated:
+- Reachability lies, bypassed costs, and broken domain law.
+Enforced by:
+- `docs/arch/TRAVEL_AND_MOVEMENT.md`
+- `docs/arch/NO_MAGIC_TELEPORTS.md`
+- CI: TRAVEL0-NO-TELEPORT-001, TRAVEL2-NO-MAGIC-001
+
+## Invariant: Reachability implies visitability
+Why:
+- If something can be reached, it must be real and refinable.
+Breaks if violated:
+- Players can arrive at non-real or non-refinable destinations.
+Enforced by:
+- `docs/arch/VISITABILITY_AND_REALITY.md`
+- `schema/domain/SPEC_VISITABILITY.md`
+- CI: DOMAIN4-VISIT-001, DOMAIN4-NOFAKE-002
+
+## Invariant: No authority without capability and law
+Why:
+- Authority must be explicit, scoped, and auditable.
+Breaks if violated:
+- Hidden admin bypass, cheat-only paths, and unverifiable outcomes.
+Enforced by:
+- `docs/arch/AUTHORITY_AND_OMNIPOTENCE.md`
+- `docs/arch/LAW_ENFORCEMENT_POINTS.md`
+- `schema/authority/README.md`
+- CI: OMNI0-NO-ISADMIN-001, OMNI0-NOBYPASS-003
+
+## Invariant: Refusal and absence are first-class outcomes
+Why:
+- Systems must fail deterministically and explainably.
+Breaks if violated:
+- Silent fallbacks, undefined behavior, or forced workarounds.
+Enforced by:
+- `docs/arch/REFUSAL_AND_EXPLANATION_MODEL.md`
+- ARCH0 A7 (`docs/arch/ARCH0_CONSTITUTION.md`)
+- CI: EXEC0-ABSENCE-001
+
+## Invariant: Authoritative mutation only through Work IR + law gates
+Why:
+- Ensures auditability and enforcement consistency.
+Breaks if violated:
+- Untracked state changes and law bypass paths.
+Enforced by:
+- `docs/arch/EXECUTION_SUBSTRATE_AUDIT.md`
+- `docs/arch/LAW_ENFORCEMENT_POINTS.md`
+- CI: EXEC0-IR-001, EXEC0c-LAW-REQ-001
+
+## Invariant: Deterministic reductions and commit ordering
+Why:
+- Parallelism must not change outcomes.
+Breaks if violated:
+- Nondeterministic totals, inconsistent ledgers, and diverging replicas.
+Enforced by:
+- `docs/arch/DETERMINISTIC_REDUCTION_RULES.md`
+- `docs/arch/EXECUTION_REORDERING_POLICY.md`
+- CI: EXEC0b-REDUCE-001, EXEC0b-COMMIT-001
+
+## Invariant: Distribution and sharding are deterministic
+Why:
+- Cross-shard outcomes must be reproducible and auditable.
+Breaks if violated:
+- Divergent shard ownership, nondeterministic message ordering.
+Enforced by:
+- `schema/distribution/README.md`
+- `docs/arch/DOMAIN_SHARDING_AND_STREAMING.md`
+- CI: DOMAIN3-SHARD-001, CIV5-WAR4-SHARD-005
+
+## Invariant: Archived history is immutable (fork to change it)
+Why:
+- Historical integrity and auditability depend on immutability.
+Breaks if violated:
+- Silent history edits and unverifiable replays.
+Enforced by:
+- `docs/arch/ARCHIVAL_AND_PERMANENCE.md`
+- `docs/arch/TIMELINE_FORKS_AND_HISTORY.md`
+- CI: EXIST2-FREEZE-001, EXIST2-FORK-002
+
+## Invariant: Tools cannot bypass law (read-only by default)
+Why:
+- Tooling must not become a hidden admin channel.
+Breaks if violated:
+- Untracked mutations, integrity drift, and replay divergence.
+Enforced by:
+- `docs/arch/TOOLS_AS_CAPABILITIES.md`
+- `schema/tools/README.md`
+- CI: OMNI1-NOTOOLBYPASS-001, TOOL0-NOMUT-004
+
+## See also
+- `docs/arch/CANONICAL_SYSTEM_MAP.md`
+- `docs/arch/REALITY_MODEL.md`
+- `docs/arch/AUTHORITY_MODEL.md`
+- `docs/arch/EXECUTION_MODEL.md`
