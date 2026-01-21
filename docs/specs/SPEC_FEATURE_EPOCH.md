@@ -60,4 +60,4 @@ Implementations MUST expose deterministic helpers equivalent to:
 
 ## Related specs
 - `docs/SPEC_MIGRATIONS.md`
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`

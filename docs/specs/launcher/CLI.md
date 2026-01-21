@@ -229,13 +229,13 @@ Output:
 - `out=<dir>`
 - optional: `last_run_id=<16_hex_digits>`
 
-Bundle layout is specified in `docs/launcher/ARCHITECTURE.md`.
+Bundle layout is specified in `docs/specs/launcher/ARCHITECTURE.md`.
 
 Example:
 - `dominium-launcher --ui=null --gfx=null --home=state diag-bundle inst0 --out=state/diag/inst0`
 
 ## Related Docs
 
-- `docs/launcher/ARCHITECTURE.md`
+- `docs/specs/launcher/ARCHITECTURE.md`
 - `docs/launcher/ECOSYSTEM_INTEGRATION.md`
 - `docs/launcher/TESTING.md`

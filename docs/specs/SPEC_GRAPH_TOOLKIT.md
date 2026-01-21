@@ -119,7 +119,7 @@ Rules:
 - stitch caches (must be regenerable)
 
 ## Related specs
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`
 - `docs/SPEC_SIM_SCHEDULER.md`
 - `docs/SPEC_LOD.md`
 - `docs/SPEC_DOMAINS_FRAMES_PROP.md`

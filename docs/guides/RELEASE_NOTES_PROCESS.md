@@ -6,7 +6,9 @@ Release notes are generated offline from commit subjects and then curated.
 ## 1) Preconditions
 
 - Working tree is clean (`git status --porcelain`).
-- Commits follow `docs/COMMIT_CONVENTIONS.md` (prompt prefix + What/Why/Impact/Verification).
+- Commits follow the conventions in `CONTRIBUTING.md` (prompt prefix +
+  What/Why/Impact/Verification). The former `docs/COMMIT_CONVENTIONS.md` path is
+  deprecated and no longer authoritative.
 - Builds run with no downloads (`DOM_DISALLOW_DOWNLOADS=ON`).
 
 ## 2) Verify (“done gate”)
@@ -22,7 +24,7 @@ Expected outcome:
 - prints per-config PASS/FAIL
 - returns exit code `0` on success
 
-See `docs/BUILD_MATRIX.md` and `docs/SPEC_SMOKE_TESTS.md` for the matrix entries
+See `docs/ci/BUILD_MATRIX.md` and `docs/specs/SPEC_SMOKE_TESTS.md` for the matrix entries
 and smoke contract.
 
 ## 3) Generate a draft changelog (offline)
@@ -70,10 +72,10 @@ git push --tags
 
 ## Related specs
 
-- `docs/SPEC_LANGUAGE_BASELINES.md`
-- `docs/SPEC_ABI_TEMPLATES.md`
-- `docs/SPEC_CAPABILITY_REGISTRY.md`
-- `docs/SPEC_LAUNCHER_PROFILES.md`
-- `docs/SPEC_CONTAINER_TLV.md`
-- `docs/SPEC_NET_HANDSHAKE.md`
-- `docs/SPEC_SMOKE_TESTS.md`
+- `docs/specs/SPEC_LANGUAGE_BASELINES.md`
+- `docs/specs/SPEC_ABI_TEMPLATES.md`
+- `docs/specs/SPEC_CAPABILITY_REGISTRY.md`
+- `docs/specs/SPEC_LAUNCHER_PROFILES.md`
+- `docs/specs/SPEC_CONTAINER_TLV.md`
+- `docs/specs/SPEC_NET_HANDSHAKE.md`
+- `docs/specs/SPEC_SMOKE_TESTS.md`

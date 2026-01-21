@@ -77,5 +77,5 @@ Notes:
 - `docs/SPEC_SYSTEMS_BODIES.md`
 - `docs/SPEC_REFERENCE_FRAMES.md`
 - `docs/SPEC_UNIVERSE_BUNDLE.md`
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`
 - `docs/SPEC_SURFACE_STREAMING.md`

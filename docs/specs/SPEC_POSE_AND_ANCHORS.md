@@ -128,7 +128,7 @@ Traversal MUST be bounded and non-recursive.
 - render meshes, collision meshes, visualization geometry
 
 ## Related specs
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`
 - `docs/SPEC_PACKETS.md`
 - `docs/SPEC_DOMAINS_FRAMES_PROP.md`
 - `docs/SPEC_TRANS_STRUCT_DECOR.md`

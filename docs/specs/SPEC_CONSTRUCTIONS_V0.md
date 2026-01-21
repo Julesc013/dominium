@@ -90,4 +90,4 @@ Unknown fields/chunks are skipped and preserved per container rules.
 - `docs/SPEC_LANES_AND_BUBBLES.md`
 - `docs/SPEC_SURFACE_STREAMING.md`
 - `docs/SPEC_SURFACE_TOPOLOGY.md`
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`

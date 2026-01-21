@@ -67,7 +67,7 @@ dom_posseg_q16 {
 - Hash input is the exact UTF-8 byte sequence (no normalization).
 
 ## Related specs
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`
 - `docs/SPEC_REFERENCE_FRAMES.md`
 - `docs/SPEC_UNIVERSE_MODEL.md`
 - `docs/SPEC_UNIVERSE_BUNDLE.md`

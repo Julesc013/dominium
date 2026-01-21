@@ -131,4 +131,4 @@ Logistics state is sim-affecting and MUST be persisted:
 - `docs/SPEC_FACTIONS.md`
 - `docs/SPEC_AI_DETERMINISM.md`
 - `docs/SPEC_SPACETIME.md`
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`

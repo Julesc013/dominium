@@ -104,7 +104,7 @@ See `docs/SPEC_LOD.md`.
 - R1–R3 representations
 
 ## Related specs
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`
 - `docs/SPEC_SIM_SCHEDULER.md`
 - `docs/SPEC_LOD.md`
 - `docs/SPEC_GRAPH_TOOLKIT.md`

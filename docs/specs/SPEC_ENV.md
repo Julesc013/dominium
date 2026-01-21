@@ -136,7 +136,7 @@ the same as the legacy `dzone` interior atmosphere registry in
 - `source/domino/env/d_env.c`, `source/domino/env/d_env_volume.c`
 
 ## Related specs
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`
 - `docs/SPEC_FIELDS_EVENTS.md`
 - `docs/SPEC_DOMINO_SUBSYSTEMS.md`
 - `docs/SPEC_SIM.md`

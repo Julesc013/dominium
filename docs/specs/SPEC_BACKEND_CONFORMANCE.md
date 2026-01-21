@@ -71,4 +71,4 @@ Backend submission and present operations MUST:
 
 ## 6. Related specs
 - `docs/SPEC_DGFX_IR_VERSIONING.md`
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`

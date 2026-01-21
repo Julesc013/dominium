@@ -10,7 +10,7 @@ This document describes how to build the launcher reproducibly and how to produc
 - Prefer Ninja generators for CI and local determinism.
 - Networking can be disabled for offline-capable builds.
 
-See `docs/BUILDING.md` and `docs/BUILD_MATRIX.md` for full matrices.
+See `docs/guides/BUILDING.md` and `docs/ci/BUILD_MATRIX.md` for full matrices.
 
 ## Build Metadata
 
@@ -51,4 +51,4 @@ Packaging is performed by staging a distribution root and then producing determi
 
 Packaging must not introduce hard-coded paths in launcher core; distribution wrappers set an explicit home/root for execution.
 
-See `docs/launcher/ARCHITECTURE.md` and `docs/CONTRACTS.md`.
+See `docs/specs/launcher/ARCHITECTURE.md` and `docs/specs/CONTRACTS.md`.

@@ -78,7 +78,7 @@ Session configuration MUST ensure:
 - CLIENT in SERVER_AUTH never advances authoritative simulation state.
 
 ## Related specs
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`
 - `docs/SPEC_QOS_ASSISTANCE.md`
 - `docs/SPEC_COSMO_LANE.md`
 - `docs/SPEC_LOGICAL_TRAVEL.md`

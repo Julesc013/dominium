@@ -114,7 +114,7 @@ Anchors evaluate through the world frame graph; DECOR never stores baked world-s
 - Compiled artifacts are deterministic derived caches used for performance and
   SIM queries; they MUST be rebuildable under budget and MUST NOT be
   authoritative truth.
-- Compilation MUST be deterministic and canonically ordered (`docs/SPEC_DETERMINISM.md`).
+- Compilation MUST be deterministic and canonically ordered (`docs/specs/SPEC_DETERMINISM.md`).
 
 ## Explicit prohibitions
 TRANS/STRUCT/DECOR MUST forbid:
@@ -159,7 +159,7 @@ TRANS/STRUCT/DECOR MUST forbid:
 - DECOR MUST NOT read STRUCT authoring directly.
 
 ## Related specs
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`
 - `docs/SPEC_PACKETS.md`
 - `docs/SPEC_GRAPH_TOOLKIT.md`
 - `docs/SPEC_POSE_AND_ANCHORS.md`

@@ -85,4 +85,4 @@ Baseline transforms:
 - `docs/SPEC_SPACETIME.md`
 - `docs/SPEC_ORBITS_TIMEWARP.md`
 - `docs/SPEC_UNIVERSE_MODEL.md`
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`

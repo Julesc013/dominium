@@ -83,7 +83,7 @@ Applies to:
 - Treating UI state (camera, selection, framerate) as authoritative state.
 
 ## Related specs
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`
 - `docs/SPEC_ACTIONS.md`
 - `docs/SPEC_PACKETS.md`
 - `docs/SPEC_SIM_SCHEDULER.md`

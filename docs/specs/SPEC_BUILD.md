@@ -84,4 +84,4 @@ placement contract.
 - `docs/SPEC_POSE_AND_ANCHORS.md`
 - `docs/SPEC_PACKETS.md`
 - `docs/SPEC_TRANS_STRUCT_DECOR.md`
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`

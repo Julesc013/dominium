@@ -1,7 +1,7 @@
 # Build Matrix
 
 This document enumerates the canonical build presets defined in
-`CMakePresets.json`. For usage, see `docs/BUILDING.md`.
+`CMakePresets.json`. For usage, see `docs/guides/BUILDING.md`.
 
 ## Primary Windows presets (MSVC)
 - `vs2026-x64-debug` / `vs2026-x64-release`:

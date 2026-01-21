@@ -115,6 +115,6 @@ Cadence decimation uses:
   accumulator-safe.
 
 ## Related specs
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`
 - `docs/SPEC_SIM_SCHEDULER.md`
 - `docs/SPEC_DOMAINS_FRAMES_PROP.md`

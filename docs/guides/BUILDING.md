@@ -2,7 +2,7 @@
 
 This document defines the build contract for this repository: Domino (engine),
 Dominium (products), and tests. Build topology is summarized in
-`docs/BUILD_OVERVIEW.md`.
+`docs/guides/BUILD_OVERVIEW.md`.
 
 ## Build system
 - CMake is the canonical build system.
@@ -13,7 +13,7 @@ Dominium (products), and tests. Build topology is summarized in
 ## Presets and configuration
 - `CMakePresets.json` defines the canonical configure/build/test presets.
 - Windows development uses the `vs2026-x64-debug` / `vs2026-x64-release` presets.
-- Baseline and modern presets are documented in `docs/BUILD_MATRIX.md`.
+- Baseline and modern presets are documented in `docs/ci/BUILD_MATRIX.md`.
 
 Example (Windows, VS 2026):
 ```
@@ -35,8 +35,8 @@ ctest --preset vs2026-x64-debug
 ## Output locations
 - Default outputs go to `${CMAKE_BINARY_DIR}/bin` and `${CMAKE_BINARY_DIR}/lib`.
 - Some presets override output directories; see `CMakePresets.json`.
-- Dist layout outputs are opt-in via `dist_set_role`; see `docs/BUILD_DIST.md`
-  and `docs/build_output.md`.
+- Dist layout outputs are opt-in via `dist_set_role`; see
+  `docs/guides/BUILD_DIST.md` and `docs/guides/build_output.md`.
 
 ## Component build toggles (root CMake)
 - `DOM_BUILD_TESTS`, `DOM_BUILD_TOOLS`, `DOM_BUILD_SETUP`,

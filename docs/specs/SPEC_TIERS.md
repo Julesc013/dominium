@@ -62,4 +62,4 @@ If no tier is supplied, runtime defaults to `BASELINE`.
 - `docs/SPEC_LAUNCH_HANDSHAKE_GAME.md`
 - `docs/SPEC_CAPABILITIES.md`
 - `docs/SPEC_QOS_ASSISTANCE.md`
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`

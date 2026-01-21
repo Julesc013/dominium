@@ -81,4 +81,4 @@ The IR command opcode values map to `d_gfx_opcode`:
 
 ## 7. Related specs
 - `docs/SPEC_BACKEND_CONFORMANCE.md`
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`

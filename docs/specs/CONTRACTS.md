@@ -42,13 +42,13 @@ referenced by per-symbol doc blocks to avoid repeating the same rules across hea
 - If a struct is intended for cross-module ABI use, it must be **versioned and
   size-stamped** as described in `docs/SPEC_ABI_TEMPLATES.md`.
 - Do not rely on raw `memcmp()` of public structs for determinism or hashing
-  unless the spec explicitly permits it (`docs/SPEC_DETERMINISM.md`).
+  unless the spec explicitly permits it (`docs/specs/SPEC_DETERMINISM.md`).
 
 ## Thread-Safety and Determinism
 - Thread-safety is **explicitly documented** per API. If not stated, assume:
   - no internal synchronization; callers must serialize access.
 - Determinism requirements are subsystem-specific:
-  - Deterministic simulation code must follow `docs/SPEC_DETERMINISM.md`.
+  - Deterministic simulation code must follow `docs/specs/SPEC_DETERMINISM.md`.
   - UI/platform/tools layers are not required to be deterministic, but must not
     feed nondeterministic sources into authoritative simulation decisions.
 

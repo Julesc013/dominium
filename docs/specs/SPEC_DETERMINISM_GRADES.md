@@ -30,7 +30,7 @@ DEPENDENCIES:
 
 This spec defines a determinism grading system for runtime subsystems and
 backends selected at launch time (system/platform, rendering, audio IO, etc.).
-It complements `docs/SPEC_DETERMINISM.md`, which defines the deterministic core
+It complements `docs/specs/SPEC_DETERMINISM.md`, which defines the deterministic core
 contract for simulation, replay, and hashing.
 
 ## 1. Grades
@@ -48,7 +48,7 @@ and toolchains.
 **Notes:**
 - D0 is a *strong* guarantee; “usually matches” is not D0.
 - D0 backends must avoid platform-dependent floating point, unordered iteration,
-  and dependence on wall-clock time or OS state (see `docs/SPEC_DETERMINISM.md`).
+  and dependence on wall-clock time or OS state (see `docs/specs/SPEC_DETERMINISM.md`).
 
 ### D1 — Tick-exact
 **Definition:** Authoritative simulation results (tick-by-tick) match across

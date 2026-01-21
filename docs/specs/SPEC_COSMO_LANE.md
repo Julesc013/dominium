@@ -113,4 +113,4 @@ Travel is an in-sim state (see `docs/SPEC_LOGICAL_TRAVEL.md`):
 - `docs/SPEC_FACTIONS.md`
 - `docs/SPEC_AI_DETERMINISM.md`
 - `docs/SPEC_SPACETIME.md`
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`

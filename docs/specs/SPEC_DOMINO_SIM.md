@@ -92,7 +92,7 @@ packet/delta commit contract (`docs/SPEC_ACTIONS.md`).
 - Determinism note: `ticks` is authoritative; `sim_time_s` and `dt_s` are
   non-authoritative telemetry and MUST NOT be used as inputs to deterministic
   simulation decisions. Deterministic simulation uses integer ticks and fixed-
-  point quantities (see `docs/SPEC_DETERMINISM.md` and `docs/SPEC_NUMERIC.md`).
+  point quantities (see `docs/specs/SPEC_DETERMINISM.md` and `docs/SPEC_NUMERIC.md`).
 - Dominium handoff: `dom_game_sim_step` is the single hook into the Dominium
   rules surface; it runs a fixed subsystem pipeline (`dom_world_sim_step`,
   `dom_constructions_sim_step`, `dom_actors_sim_step`, then stubbed networks

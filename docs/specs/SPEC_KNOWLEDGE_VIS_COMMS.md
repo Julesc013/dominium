@@ -80,7 +80,7 @@ Comms routing is deterministic and explicit:
 - routing tables and acceleration structures
 
 ## Related specs
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`
 - `docs/SPEC_FIELDS_EVENTS.md`
 - `docs/SPEC_PACKETS.md`
 - `docs/SPEC_LOD.md`

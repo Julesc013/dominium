@@ -91,7 +91,7 @@ Legacy `d_agent_*` code is permitted to exist as compatibility scaffolding, but:
 - perception/visibility/knowledge state, observation buffers, debug probes
 
 ## Related specs
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`
 - `docs/SPEC_ACTIONS.md`
 - `docs/SPEC_FIELDS_EVENTS.md`
 - `docs/SPEC_SIM_SCHEDULER.md`

@@ -117,10 +117,10 @@ Smoke GUI for the game must:
 
 ## Related docs
 
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`
 - `docs/SPEC_DETERMINISM_GRADES.md`
 - `docs/SPEC_CAPABILITY_REGISTRY.md`
-- `docs/BUILD_MATRIX.md`
+- `docs/ci/BUILD_MATRIX.md`
 - `docs/SPEC_LAUNCHER_GUI.md`
 
 ## DONE gate

@@ -102,4 +102,4 @@ the authoritative placement model for the BUILD/TRANS/STRUCT/DECOR refactor.
 - `docs/SPEC_POSE_AND_ANCHORS.md`
 - `docs/SPEC_GRAPH_TOOLKIT.md`
 - `docs/SPEC_SIM_SCHEDULER.md`
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`

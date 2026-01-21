@@ -83,5 +83,5 @@ PERF_CAPS MUST NOT influence the identity digest.
 - `docs/SPEC_TIERS.md`
 - `docs/SPEC_LAUNCH_HANDSHAKE_GAME.md`
 - `docs/SPEC_QOS_ASSISTANCE.md`
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`
 - `docs/SPEC_FEATURE_EPOCH.md`

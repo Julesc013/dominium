@@ -90,4 +90,4 @@ they affect authoritative behavior.
 - `docs/SPEC_SYSTEM_LOGISTICS.md`
 - `docs/SPEC_AI_DETERMINISM.md`
 - `docs/SPEC_AI_DECISION_TRACES.md`
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`

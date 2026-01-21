@@ -181,4 +181,4 @@ Negative (forbidden):
 - docs/SPEC_INFORMATION_MODEL.md
 - docs/SPEC_EFFECT_FIELDS.md
 - docs/SPEC_SPACETIME.md
-- docs/SPEC_DETERMINISM.md
+- docs/specs/SPEC_DETERMINISM.md
