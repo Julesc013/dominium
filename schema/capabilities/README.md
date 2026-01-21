@@ -4,11 +4,11 @@ OWNERSHIP & RESPONSIBILITY
 ENGINE:
 - None (policy docs only).
 GAME:
-- Uses capability schema for intent gating.
+- Uses capability taxonomy and sets for authority decisions.
 SCHEMA:
-- Canonical capability taxonomy and denial semantics.
+- Canonical capability identifiers and denial semantics.
 TOOLS:
-- Capability audit and inspection tooling.
+- Audit and inspection tooling reads capability data.
 FORBIDDEN:
 - No runtime logic in schema docs.
 DEPENDENCIES:
@@ -19,8 +19,13 @@ DEPENDENCIES:
 --------------------------------
 # Capabilities Schema (OMNI0)
 
-This folder defines the taxonomy of capabilities and explicit denials.
+This folder defines the canonical capability vocabulary used by law-gated
+authority across all profiles.
 
-See:
+Specs:
 - `SPEC_CAPABILITY_TAXONOMY.md`
 - `SPEC_NEGATIVE_CAPABILITIES.md`
+
+Related:
+- Authority layers: `schema/authority/SPEC_AUTHORITY_LAYERS.md`
+- Law kernel: `schema/law/SPEC_LAW_KERNEL.md`

@@ -1,21 +1,36 @@
 # Anti-Cheat as Law (OMNI0)
 
-Status: draft.
-Scope: anti-cheat enforcement through law and capabilities.
+Status: binding.
+Scope: integrity and anti-cheat expressed through capability law.
 
-## Principle
-Anti-cheat is expressed as law + negative capabilities, not special cases.
+## Purpose
+Define anti-cheat as law, not code exceptions. Cheat tools and admin tools are
+the same intents, gated by capabilities, and fully auditable.
 
-## Examples
-- DENY_MODIFIED_CLIENTS
-- DENY_EXTERNAL_TOOLS
-- DENY_TIME_MANIPULATION
+## Anti-Cheat Model
+- Integrity is an authority layer (INTEGRITY).
+- Client admission, tool usage, and modified client policy are law targets.
+- Denials such as DENY_MODIFIED_CLIENTS and DENY_EXTERNAL_TOOLS are explicit.
+- Absence of capability is not a denial; law must refuse explicitly.
 
-## Rules
-- All powerful actions require capability targets.
-- All enforcement is auditable.
-- No hard-coded admin or cheat flags.
+## Tools and Cheats as Capabilities
+The following are intents that require explicit capabilities and law targets:
+- console commands
+- freecam
+- teleport / forced travel
+- spawn or destroy subjects
+- terrain edits
+- inspect hidden state
 
-## References
+Anti-cheat is law that refuses these intents for most actors.
+
+## Overrides and Audit
+Any override (for testing or investigation) MUST:
+- emit explicit effects,
+- include capability evidence,
+- record a full audit trail.
+
+## Cross-References
+- `schema/authority/SPEC_AUTHORITY_LAYERS.md`
 - `schema/capabilities/SPEC_NEGATIVE_CAPABILITIES.md`
-- `schema/law/SPEC_LAW_TARGETS.md`
+- `schema/law/SPEC_LAW_KERNEL.md`
