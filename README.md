@@ -117,8 +117,8 @@ installation or repair logic while preserving deterministic boundaries.
 - `docs/ci/CI_ENFORCEMENT_MATRIX.md` — CI checks enforcing ARCH0/EXEC*
 - `docs/ci/FUTURE_ENFORCEMENT.md` — FUTURE0 enforcement notes
 - `docs/specs/SPEC_*.md` — subsystem specifications (see `docs/specs/SPEC_INDEX.md`)
-- `docs/MODDING.md` — modding policy and boundaries
-- `docs/GOVERNANCE.md` — project governance summary
+- `MODDING.md` — modding policy and boundaries
+- `GOVERNANCE.md` — project governance summary
 - `schema/schema_policy.md` and `schema/mod_extension_policy.md` — schema/mod extension rules
 
 ## Build & usage overview (non-procedural)

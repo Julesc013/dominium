@@ -29,7 +29,7 @@ Macro populations may exist indefinitely without micro simulation. Micro
 individuals are realized only when interacted with, observed, or required by
 law/refinement.
 
-## Anti-fabrication invariants (absolute)
+## Invariants
 - No life appears without birth.
 - No life disappears without death.
 - No population changes without explicit effects.
@@ -39,13 +39,17 @@ law/refinement.
 Hardcore, softcore, spectator, and reincarnation are data configurations:
 abilities + authority + contracts. There are no game modes.
 
-## Integration points
+## Dependencies
 - Reality layer: `docs/arch/REALITY_LAYER.md`
 - Existence states: `schema/existence/SPEC_EXISTENCE_STATES.md`
 - Refinement contracts: `schema/existence/SPEC_REFINEMENT_CONTRACTS.md`
 - Life entities: `schema/life/SPEC_LIFE_ENTITIES.md`
 - Population models: `schema/life/SPEC_POPULATION_MODELS.md`
 - Civilization model: `docs/arch/CIVILIZATION_MODEL.md`
+
+## Forbidden assumptions
+- NPCs can pop in/out without contracts.
+- Life can be spawned for balance or convenience.
 
 ## See also
 - `docs/arch/WHY_NPCS_DONT_POP.md`

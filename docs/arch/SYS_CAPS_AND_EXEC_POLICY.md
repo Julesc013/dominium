@@ -3,6 +3,11 @@
 Status: draft.
 Scope: deterministic backend selection and budget resolution.
 
+## Invariants
+- Backend selection is deterministic and auditable.
+- Unknown SysCaps are treated conservatively.
+- GPU is derived-only for authoritative work.
+
 ## SysCaps Fields
 SysCaps define conservative hardware/platform signals:
 - CPU: core counts, SMT presence, core class, cache class, SIMD caps.
@@ -46,3 +51,14 @@ Policy selection produces a structured audit summary:
 - Deterministic budget outputs and policy hash.
 
 Audits prevent silent fallbacks and allow tooling to explain degradations.
+
+## Forbidden assumptions
+- Benchmarking or wall-clock timing can drive authoritative selection.
+- Unknown hardware is treated as available.
+
+## Dependencies
+- SysCaps schema: `schema/syscaps/README.md`
+- Execution model: `docs/arch/EXECUTION_MODEL.md`
+
+## See also
+- `docs/arch/HARDWARE_EVOLUTION_STRATEGY.md`

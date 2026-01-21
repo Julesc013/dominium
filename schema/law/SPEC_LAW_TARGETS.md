@@ -18,7 +18,11 @@ Rules:
 - Targets are stable identifiers; renames require a migration note.
 
 ## Canonical Target Registry (Initial)
-This list is binding for EXEC0c and may expand over time:
+This list is binding for EXEC0c and may expand over time.
+The canonical data file is `data/registries/law_targets.registry` (used for
+deterministic ID assignment per `docs/arch/REGISTRY_PATTERN.md`).
+
+Current entries:
 - LIFE.BIRTH
 - LIFE.DEATH
 - CIV.PRODUCTION

@@ -3,6 +3,11 @@
 Status: binding.
 Scope: identity continuity across refinement, collapse, archival, and forks.
 
+## Invariants
+- Identity persists across refinement and collapse.
+- Archived identity is immutable unless forked.
+- Instance details do not define identity.
+
 ## Identity vs instance
 - Identity persists across time.
 - Instance is a micro realization and can appear/disappear with refinement.
@@ -30,10 +35,14 @@ Persists across archival:
 - Parent identity remains immutable and archived.
 - Forked identity records must reference the parent lineage.
 
-## Integration points
+## Dependencies
 - Existence and archival: `schema/existence/README.md`
 - Identity and lineage: `schema/life/SPEC_IDENTITY_AND_LINEAGE.md`
 - Reality layer: `docs/arch/REALITY_LAYER.md`
+
+## Forbidden assumptions
+- Identity can be overwritten by refinement details.
+- Archived history can be edited without a fork.
 
 ## See also
 - `docs/arch/DEATH_AND_CONTINUITY.md`

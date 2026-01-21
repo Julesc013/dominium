@@ -7,6 +7,11 @@ Civilizations can fail. Collapse is gradual, auditable, and consistent with
 resource, infrastructure, and legitimacy constraints. There is no reset
 mechanic.
 
+## Invariants
+- Collapse is gradual and scheduled on ACT.
+- All decay is auditable and provenance-preserving.
+- Ruins persist until explicitly removed.
+
 ## Natural failure modes
 - Infrastructure decay when maintenance fails.
 - Resource depletion or logistics breakdown.
@@ -23,11 +28,15 @@ mechanic.
 Macro decline must be reflected in refined micro outcomes. If macro capacity
 collapses, micro systems must show scarcity, outages, and degraded services.
 
-## Integration points
+## Dependencies
 - Life and death: `docs/arch/DEATH_AND_CONTINUITY.md`
 - Infrastructure: `schema/civ/SPEC_INFRASTRUCTURE.md`
 - Legitimacy: `schema/civ/SPEC_LEGITIMACY.md`
 - Economy: `docs/arch/ECONOMY_AND_LOGISTICS.md`
+
+## Forbidden assumptions
+- Civilizations can be reset without explicit effects.
+- Collapse can be skipped for convenience.
 
 ## See also
 - `docs/arch/CIVILIZATION_MODEL.md`

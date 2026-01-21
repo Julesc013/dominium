@@ -3,6 +3,17 @@
 This document defines the canonical regression suite used to guard
 determinism, performance budgets, and degradation behavior.
 
+Scope: regression tests for determinism, budgets, and degradation.
+
+## Invariants
+- Regression suites guard deterministic equivalence across backends.
+- Budgets and degradation are enforced deterministically.
+- Hash updates require change protocol and audit.
+
+## Dependencies
+- `docs/arch/INVARIANTS.md`
+- `docs/arch/EXECUTION_MODEL.md`
+
 ## How to run locally
 
 - Engine regression: `ctest -R execution_perf_regression`
@@ -38,3 +49,10 @@ Updating `expected_hash` or `expected_degraded_hash` in fixtures requires:
 3) CI matrix update if the enforcement scope changes.
 
 Never update hashes to "fix" a flake.
+
+## Forbidden assumptions
+- Hash updates are acceptable without a canon change.
+- Degradation differences are benign without investigation.
+
+## See also
+- `docs/ci/CI_ENFORCEMENT_MATRIX.md`

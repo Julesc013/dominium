@@ -23,6 +23,21 @@ This folder defines the canonical authority model used across spectator,
 competitive, anarchy, and omnipotent control without modes or hard-coded
 admin flags.
 
+Scope: authority layers, capability domains, and omnipotence definitions.
+
+## Invariants
+- Capabilities are additive and scoped.
+- Law gates every authoritative action.
+- Omnipotence is capability union, not bypass.
+
+## Forbidden assumptions
+- "Admin" flags replace law gating.
+- Authority implies unsandboxed mutation.
+
+## Dependencies
+- `docs/arch/AUTHORITY_AND_OMNIPOTENCE.md`
+- `docs/arch/REALITY_LAYER.md`
+
 Specs:
 - `SPEC_AUTHORITY_LAYERS.md`
 - `SPEC_CAPABILITY_DOMAINS.md`

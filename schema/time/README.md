@@ -22,6 +22,21 @@ DEPENDENCIES:
 This folder defines the canonical model for observer clocks and time
 perception without altering authoritative ACT.
 
+Scope: observer clocks, perception buffers, and replay timing.
+
+## Invariants
+- ACT is immutable and authoritative.
+- Observer clocks are derived only.
+- Perception never alters scheduling.
+
+## Forbidden assumptions
+- Time perception can change authoritative order.
+- Buffering implies future leakage.
+
+## Dependencies
+- `docs/arch/REALITY_LAYER.md`
+- `docs/arch/SPACE_TIME_EXISTENCE.md`
+
 See:
 - `SPEC_OBSERVER_CLOCKS.md`
 - `SPEC_TIME_DILATION.md`

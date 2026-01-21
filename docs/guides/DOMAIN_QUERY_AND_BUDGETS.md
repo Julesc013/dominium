@@ -12,6 +12,11 @@ Domain queries provide a deterministic, conservative way to answer:
 
 All runtime spatial checks must go through this API.
 
+## Invariants
+- Domain queries are deterministic and conservative.
+- Budgets degrade resolution explicitly; no silent fallback.
+- Domain queries are the only spatial authority.
+
 ## Public API
 Headers:
 - `engine/include/domino/world/domain_volume.h`
@@ -73,7 +78,7 @@ Usage:
 
 If no cache is bound, the volume uses a small local tile reuse slot.
 
-## Integration Points
+## Dependencies
 Runtime systems must treat domain queries as the only spatial authority:
 - INTEREST: bounds checks for interest sampling
 - TRAVEL: path feasibility and reachability tests
@@ -85,3 +90,11 @@ Runtime systems must treat domain queries as the only spatial authority:
 - Domain queries never fabricate “inside” results.
 - Correctness does not depend on resolution level.
 - All downgrades are explicit and auditable via query metadata.
+
+## Forbidden assumptions
+- Direct spatial checks outside the domain API are acceptable.
+- Higher resolution is always available regardless of budget.
+
+## See also
+- `docs/arch/DOMAIN_VOLUMES.md`
+- `schema/domain/README.md`

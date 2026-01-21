@@ -8,6 +8,21 @@ economic actors, production chains, markets, logistics, and conservation.
 These documents define authoritative data formats and invariants only; no
 runtime logic is introduced here.
 
+Scope: economy actor, production, market, logistics, and conservation formats.
+
+## Invariants
+- No goods without production inputs and contracts.
+- Logistics uses travel edges and schedules only.
+- Schemas do not encode runtime logic.
+
+## Forbidden assumptions
+- Markets create goods or value.
+- Schema defaults imply free resources.
+
+## Dependencies
+- `docs/arch/ECONOMY_AND_LOGISTICS.md`
+- `schema/civ/README.md`
+
 ## Canonical CIV0+ economy index
 - `schema/economy/SPEC_ECONOMIC_ACTORS.md`
 - `schema/economy/SPEC_PRODUCTION_CHAINS.md`

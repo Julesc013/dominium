@@ -22,11 +22,19 @@ authority, and time perception.
 - anarchy servers
 - god-mode admin tools (law-gated and audited)
 
-## Guarantees
+## Invariants
 - Engine/game separation is preserved.
 - Determinism and provenance are enforced.
 - Absence and refusal are valid outcomes, not errors.
 - There are no game modes; behavior is law + capability + policy.
+
+## Forbidden assumptions
+- It is not acceptable to bypass law or audit for convenience.
+- It is not acceptable to fabricate existence or resources.
+
+## Dependencies
+- Canon and invariants: `docs/arch/INVARIANTS.md`
+- Reality layer: `docs/arch/REALITY_LAYER.md`
 
 ## See also
 - `docs/arch/CANONICAL_SYSTEM_MAP.md`

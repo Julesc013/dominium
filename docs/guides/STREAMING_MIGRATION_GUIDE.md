@@ -1,5 +1,17 @@
 # Streaming Migration Guide (ADOPT1)
 
+Scope: migrate world streaming to derived Work IR with deterministic emission.
+
+## Invariants
+- Streaming work is derived and emitted as Work IR tasks only.
+- Emission is deterministic and budgeted.
+- Law gates data access requests.
+
+## Dependencies
+- `docs/arch/EXECUTION_MODEL.md`
+- `docs/arch/REALITY_LAYER.md`
+- `docs/guides/WORK_IR_EMISSION_GUIDE.md`
+
 This guide defines the first Work IR migration for world streaming, paging, and
 data access. It is **derived work** and must be schedulable, budgeted, and
 law-gated.
@@ -42,7 +54,7 @@ Fidelity tiers control work volume:
 - `macro`: minimal
 - `latent`: no tasks
 
-Budget hints clamp total emitted tasks per tick. When budgets are tight:
+Budget hints clamp total emitted tasks per ACT step. When budgets are tight:
 - load requests are prioritized
 - unload requests are delayed
 - stale cached data is tolerated
@@ -53,7 +65,7 @@ While DUAL:
 - plans are compared deterministically
 - mismatches increment a counter (no silent accept)
 
-## Prohibitions
+## Forbidden assumptions
 - No direct IO or background streaming in gameplay code.
 - No blocking the main loop for streaming.
 - No implicit access without Work IR tasks.
@@ -65,3 +77,6 @@ While DUAL:
 - degradation behavior
 - law refusal handling
 - legacy vs IR parity
+
+## See also
+- `docs/arch/DOMAIN_SHARDING_AND_STREAMING.md`

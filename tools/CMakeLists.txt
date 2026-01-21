@@ -75,6 +75,34 @@ set_target_properties(validate_all PROPERTIES
     CXX_EXTENSIONS OFF
 )
 
+add_executable(registry_dump_cli
+    validate/registry_dump_cli.cpp
+)
+target_link_libraries(registry_dump_cli PRIVATE
+    domino_engine
+    libs::contracts
+)
+set_target_properties(registry_dump_cli PROPERTIES
+    OUTPUT_NAME "registry_dump_cli"
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_executable(hygiene_validate_cli
+    validate/hygiene_validate_cli.cpp
+)
+target_link_libraries(hygiene_validate_cli PRIVATE
+    domino_engine
+    libs::contracts
+)
+set_target_properties(hygiene_validate_cli PROPERTIES
+    OUTPUT_NAME "hygiene_validate_cli"
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
 add_library(dominium_tools_inspect STATIC
     inspect/replay_inspector.cpp
     inspect/provenance_browser.cpp
@@ -104,6 +132,25 @@ set_target_properties(dominium_tool0_inspection_tests PROPERTIES
 )
 add_test(NAME dominium_tool0_inspection
     COMMAND $<TARGET_FILE:dominium_tool0_inspection_tests>
+)
+
+add_executable(dominium_registry_tests
+    tests/registry_tests.cpp
+)
+target_link_libraries(dominium_registry_tests PRIVATE
+    domino_engine
+    libs::contracts
+)
+target_compile_definitions(dominium_registry_tests PRIVATE
+    DOMINIUM_LAW_TARGETS_REGISTRY_PATH="${CMAKE_SOURCE_DIR}/data/registries/law_targets.registry"
+)
+set_target_properties(dominium_registry_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME dominium_registry
+    COMMAND $<TARGET_FILE:dominium_registry_tests>
 )
 
 add_executable(mod_pack_builder

@@ -22,6 +22,21 @@ DEPENDENCIES:
 This folder defines the canonical existence model used by all domains,
 entities, and worlds.
 
+Scope: existence states, lifecycle transitions, refinement, and archival.
+
+## Invariants
+- Existence is explicit; no implicit creation or erasure.
+- Refinement and collapse are contract-driven.
+- Archival history is immutable unless forked.
+
+## Forbidden assumptions
+- Existence can be inferred without explicit state.
+- Refinement can fabricate provenance.
+
+## Dependencies
+- `docs/arch/REALITY_LAYER.md`
+- `docs/arch/SPACE_TIME_EXISTENCE.md`
+
 See:
 - `SPEC_EXISTENCE_STATES.md`
 - `SPEC_LIFECYCLE_TRANSITIONS.md`

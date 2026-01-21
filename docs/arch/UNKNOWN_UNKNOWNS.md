@@ -10,15 +10,25 @@ If it changes how work executes, add a backend.
 If it changes what exists, add data and contracts.  
 If it changes who may act, add law and capabilities.
 
+## Invariants
+- Deterministic execution is mandatory for authoritative work.
+- Law and capability gates remain the only path to authority.
+- Data and contracts define what exists.
+
 ## Examples
 - New accelerators (NPU, FPGA, GPU clusters): implement a backend for Work IR.
 - New networking paradigms: implement transport/backpressure adapters only.
 - New genres: express rules as data and contracts; no new execution model.
 - New AI integration: advisory or derived layers only; no authority bypass.
 
-## Anti-refactor stance
-Never rewrite core logic to chase trends. Add adapters, backends, or data
-extensions that preserve deterministic and law-gated behavior.
+## Forbidden assumptions
+- Never rewrite core logic to chase trends.
+- Never bypass law or audit to integrate new paradigms.
+- Never trade determinism for convenience.
+
+## Dependencies
+- Execution model: `docs/arch/EXECUTION_MODEL.md`
+- Canon and invariants: `docs/arch/INVARIANTS.md`
 
 ## See also
 - `docs/arch/FUTURE_PROOFING.md`

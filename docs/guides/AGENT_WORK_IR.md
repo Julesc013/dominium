@@ -1,5 +1,17 @@
 # Agent Work IR Guide (ADOPT6)
 
+Scope: authoritative agent Work IR emission for planning, doctrine, aggregation.
+
+## Invariants
+- Agents never mutate authoritative state directly.
+- Emission is deterministic and law-gated.
+- Zero-agent runs are valid.
+
+## Dependencies
+- `docs/guides/WORK_IR_EMISSION_GUIDE.md`
+- `docs/arch/INVARIANTS.md`
+- `docs/arch/LIFE_AND_POPULATION.md`
+
 This guide defines the authoritative AgentSystem Work IR contract for
 planning, doctrine, and aggregation. Agents are optional, law-governed
 command emitters; they never mutate authoritative state directly.
@@ -8,7 +20,7 @@ command emitters; they never mutate authoritative state directly.
 
 - Authoritative system with ORDERED determinism class.
 - IR-only migration state.
-- Event-driven planning; no per-tick agent loops.
+- Event-driven planning; no per-ACT agent loops.
 - Zero-agent runs must remain valid.
 
 ## Task Structure
@@ -37,7 +49,7 @@ Each task declares:
 
 ## Scheduling Rules
 
-- `next_due_tick` is event-driven by schedules, doctrine updates, and
+- `next_due_act` (legacy field name: `next_due_tick`, deprecated terminology) is event-driven by schedules, doctrine updates, and
   aggregation cadence.
 - Task emission order is deterministic and stable across runs.
 - Planning tasks must complete before command emission.
@@ -45,8 +57,8 @@ Each task declares:
 ## Aggregation & Degradation
 
 - Aggregation uses explicit thresholds and cohort policies.
-- Refinement and collapse are deterministic and reversible.
-- Degradation increases cadence and reduces per-tick slices; it never
+- Refinement and collapse are deterministic and contract-driven.
+- Degradation increases cadence and reduces per-ACT slices; it never
   fabricates outcomes or bypasses law gates.
 
 ## Law & Capability Integration
@@ -61,9 +73,12 @@ Each task declares:
 - Simulation remains valid with zero agents.
 - Derived systems must not assume agent activity.
 
-## Anti-Patterns (Forbidden)
+## Forbidden assumptions
 
-- Per-tick agent loops or global scans.
+- Per-ACT agent loops or global scans.
 - Direct state mutation from agent logic.
 - Nondeterministic planning or unordered reductions.
 - Bypassing Work IR for "fast" autonomy.
+
+## See also
+- `docs/arch/REALITY_LAYER.md`

@@ -53,7 +53,7 @@ u32 d_registry_add(d_registry *reg, void *ptr) {
     entry->ptr = ptr;
     reg->count += 1u;
     reg->next_id += 1u;
-    /* TODO: upgrade to open-addressing or sorted lookup if hot. */
+    /* TODO_FUTURE(REGISTRY-OPENADDR-001): docs/arch/FUTURE_PROOFING.md - upgrade to open-addressing or sorted lookup if hot. */
     return entry->id;
 }
 

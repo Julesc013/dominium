@@ -1,8 +1,20 @@
 # War Work IR Guide (ADOPT5)
 
+Scope: authoritative war Work IR emission for engagements and occupation.
+
+## Invariants
+- War actions are event-driven and emitted as Work IR only.
+- Deterministic ordering is mandatory.
+- Law gates every authoritative action.
+
+## Dependencies
+- `docs/guides/WORK_IR_EMISSION_GUIDE.md`
+- `docs/arch/REALITY_LAYER.md`
+- `docs/arch/DEATH_AND_CONTINUITY.md`
+
 This guide defines the authoritative WarSystem Work IR contract for engagements,
 occupation, resistance, and interdiction. War is event-driven, budgeted, and
-law-gated; no combat ticks are allowed.
+law-gated; no per-ACT combat loops are allowed.
 
 ## Scope
 
@@ -39,14 +51,14 @@ Each task declares:
 
 ## Scheduling Rules
 
-- `next_due_tick` is driven by due queues; no background scans.
+- `next_due_act` (legacy field name: `next_due_tick`, deprecated terminology) is driven by due queues; no background scans.
 - Task emission order is deterministic and stable across runs.
 - Phase ordering preserves engagement -> effects -> occupation -> interdiction.
 
 ## Amortization & Degradation
 
 - Work uses `start_index` + `count` slices.
-- Budgets cap per-tick processing and preserve determinism.
+- Budgets cap per-ACT processing and preserve determinism.
 - Degradation reduces fidelity tier or cadence; it never skips irreversible effects.
 
 ## Law & Capability Integration
@@ -55,9 +67,12 @@ Each task declares:
 - Refused operations emit no tasks and must be auditable.
 - No silent fallback paths are allowed.
 
-## Anti-Patterns (Forbidden)
+## Forbidden assumptions
 
-- Per-tick global combat scans.
+- Per-ACT global combat scans.
 - Direct combat resolution outside Work IR.
 - Hidden bypass of law or capability checks.
 - Nondeterministic reductions or ordering.
+
+## See also
+- `docs/arch/INVARIANTS.md`

@@ -19,6 +19,11 @@ layering.
   (`docs/specs/SPEC_TRANS_STRUCT_DECOR.md`)
 - Language/toolchain: `docs/policies/LANGUAGE_POLICY.md`
 - Style/naming: `docs/guides/STYLE.md`
+- Refusal is a valid outcome; design for explicit refusals and explanations.
+
+## Architectural review (required)
+Changes that touch invariants, ACT semantics, existence states, refinement
+guarantees, or law gates require architectural review and canon updates.
 
 ## Contribution workflow
 1. Identify the relevant spec(s) under `docs/` for the area you are changing.
@@ -48,3 +53,4 @@ layering.
   documented in the spec set.
 - Introducing implicit behavior, silent fallback, or unaudited shortcuts.
 - Simplifying by assumption instead of explicit, documented rules.
+- Changes that alter invariants without architectural review.
