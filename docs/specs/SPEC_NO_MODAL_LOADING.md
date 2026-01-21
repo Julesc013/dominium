@@ -68,4 +68,4 @@ The following tests are mandatory and MUST pass:
 - `docs/SPEC_PERF_BUDGETS.md`
 - `docs/SPEC_PROFILING.md`
 - `docs/SPEC_FIDELITY_DEGRADATION.md`
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`

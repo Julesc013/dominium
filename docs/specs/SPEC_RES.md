@@ -113,7 +113,7 @@ Rules:
 - Model params tags: `source/domino/content/d_content_extra.h`
 
 ## Related specs
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`
 - `docs/SPEC_PACKETS.md`
 - `docs/SPEC_ACTIONS.md`
 - `docs/SPEC_SIM.md`

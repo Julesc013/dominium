@@ -92,5 +92,5 @@ When diagnosing a refusal, inspect:
 ## Related Docs
 
 - `docs/launcher/CLI.md`
-- `docs/launcher/ARCHITECTURE.md`
+- `docs/specs/launcher/ARCHITECTURE.md`
 - `docs/launcher/ECOSYSTEM_INTEGRATION.md`

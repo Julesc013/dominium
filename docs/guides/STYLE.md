@@ -1,7 +1,7 @@
 # Dominium — Code Style and Naming Rules
 
 This document defines repository-wide style and naming conventions. Determinism
-requirements are specified in `docs/SPEC_DETERMINISM.md` and enforced by
+requirements are specified in `docs/specs/SPEC_DETERMINISM.md` and enforced by
 `docs/DETERMINISM_REGRESSION_RULES.md`.
 
 ## Language levels (build-enforced)
@@ -50,6 +50,6 @@ Do not introduce new prefixes without an explicit spec update.
 - Non-trivial C/C++ source and header files begin with a structured file header
   comment (fields: `FILE`, `MODULE`, `LAYER / SUBSYSTEM`, `RESPONSIBILITY`, etc.).
 - Public header symbols are documented as **contracts**; shared conventions live
-  in `docs/CONTRACTS.md` to avoid duplication across headers.
+  in `docs/specs/CONTRACTS.md` to avoid duplication across headers.
 - Source files may comment internal invariants and rationale, but must not
   restate public header contracts.

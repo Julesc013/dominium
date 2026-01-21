@@ -107,7 +107,7 @@ Additional canonical orderings for the agent substrate:
 - action graphs built from intents (rebuildable)
 
 ## Related specs
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`
 - `docs/SPEC_PACKETS.md`
 - `docs/SPEC_SIM_SCHEDULER.md`
 - `docs/SPEC_VM.md`

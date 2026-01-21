@@ -44,7 +44,7 @@ Transport networks own:
 
 Nodes carry a `WPosTile` anchor (tile/chunk lattice addressing). This lattice is
 domain-specific and MUST NOT be treated as a universal placement grid for other
-subsystems (`docs/SPEC_DETERMINISM.md`).
+subsystems (`docs/specs/SPEC_DETERMINISM.md`).
 
 ## Determinism + ordering
 - IDs are stable integers allocated monotonically (no pointer-derived IDs).
@@ -69,6 +69,6 @@ Implemented plumbing (`include/domino/dtransport.h`, `source/domino/dtransport.c
 - Platform-dependent inputs (wall-clock time, filesystem/network IO).
 
 ## Related specs
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`
 - `docs/SPEC_GRAPH_TOOLKIT.md`
 - `docs/SPEC_PACKETS.md`

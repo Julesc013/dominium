@@ -101,4 +101,4 @@ Baseline content MUST include:
 - `docs/SPEC_UNIVERSE_MODEL.md`
 - `docs/SPEC_SYSTEM_LOGISTICS.md`
 - `docs/SPEC_SPACETIME.md`
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`

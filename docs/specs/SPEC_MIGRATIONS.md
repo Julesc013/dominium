@@ -70,4 +70,4 @@ Audit records are deterministic and must not contain absolute paths.
 ## Related specs
 - `docs/SPEC_CONTAINER_TLV.md`
 - `docs/SPEC_UNIVERSE_BUNDLE.md`
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`

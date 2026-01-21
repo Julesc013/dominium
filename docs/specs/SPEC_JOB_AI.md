@@ -89,6 +89,6 @@ cap MUST apply deterministic truncation:
 - Shared TLV tags: `source/domino/content/d_content_extra.h`
 
 ## Related specs
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`
 - `docs/SPEC_JOBS.md`
 - `docs/SPEC_AGENT.md`

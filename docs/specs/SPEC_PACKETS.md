@@ -115,7 +115,7 @@ Packets that reference world objects MUST use stable numeric IDs:
 
 Within packet payloads:
 - repeated elements MUST be emitted in canonical order (sorted by stable key)
-- tie-breaking MUST be stable and explicit (see `docs/SPEC_DETERMINISM.md`)
+- tie-breaking MUST be stable and explicit (see `docs/specs/SPEC_DETERMINISM.md`)
 
 For packet batches/streams:
 - canonical ordering is `(tick, stream_id, family, primary_key..., seq)`
@@ -157,7 +157,7 @@ machine-local runtime ID is required, a remap table MUST be provided:
 - debug probe outputs
 
 ## Related specs
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`
 - `docs/SPEC_ACTIONS.md`
 - `docs/SPEC_SIM_SCHEDULER.md`
 - `docs/SPEC_FIELDS_EVENTS.md`

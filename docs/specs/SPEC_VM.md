@@ -73,7 +73,7 @@ Applies to:
 - JIT/decoded instruction caches (if any) — must be regenerable and deterministic
 
 ## Related specs
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`
 - `docs/SPEC_ACTIONS.md`
 - `docs/SPEC_SIM_SCHEDULER.md`
 - `docs/SPEC_PACKETS.md`

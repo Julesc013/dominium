@@ -99,7 +99,7 @@ Notes/uncertainty:
 - Fixed-point math is the deterministic numeric core (Q16.16, Q48.16, etc). Evidence: include/domino/core/fixed.h:10, 37-47.
 - Deterministic RNG (LCG) with explicit seeding is provided. Evidence: include/domino/core/rng.h:10, 36-42.
 - Deterministic hashing helpers and per-domain/tick hash streams exist. Evidence: source/domino/core/dg_det_hash.h:14-33; source/domino/sim/hash/dg_hash_stream.h:35-38.
-- Determinism spec mandates fixed-point only and defines lockstep/world hashing rules. Evidence: docs/SPEC_DETERMINISM.md:4, 159-160, 233.
+- Determinism spec mandates fixed-point only and defines lockstep/world hashing rules. Evidence: docs/specs/SPEC_DETERMINISM.md:4, 159-160, 233.
 - Game seeds instance world_seed to a fixed constant (current default). Evidence: source/dominium/game/dom_game_app.cpp:177.
 
 ### Q10 Contradictions / blockers

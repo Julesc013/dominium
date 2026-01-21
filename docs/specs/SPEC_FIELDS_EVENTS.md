@@ -134,7 +134,7 @@ such as:
 - emitted events/messages/observations (reproducible outputs)
 
 ## Related specs
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`
 - `docs/SPEC_PACKETS.md`
 - `docs/SPEC_ACTIONS.md`
 - `docs/SPEC_SIM_SCHEDULER.md`

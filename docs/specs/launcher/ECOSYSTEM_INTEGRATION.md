@@ -28,7 +28,7 @@ Files produced (best-effort, stable names):
 - `audit_ref.tlv`
 - `stdout.txt` / `stderr.txt` when capture is supported; otherwise the files may be absent and `exit_status.tlv` must state capture support explicitly.
 
-The exact directory layout invariants are defined in `docs/launcher/ARCHITECTURE.md`.
+The exact directory layout invariants are defined in `docs/specs/launcher/ARCHITECTURE.md`.
 
 ## 2) Handshake (`handshake.tlv`) Schema v1
 
@@ -170,6 +170,6 @@ Invariants:
 - The audit may embed `selection_summary.tlv` bytes as an attached TLV sub-chunk; when present, the embedded bytes must match the `selection_summary.tlv` file for that run.
 
 See:
-- `docs/launcher/ARCHITECTURE.md`
+- `docs/specs/launcher/ARCHITECTURE.md`
 - `docs/launcher/CLI.md`
 

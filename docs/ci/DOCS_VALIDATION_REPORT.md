@@ -4,6 +4,11 @@ This report records the documentation reconciliation work performed to make the
 spec set internally consistent, technically correct relative to the current
 Domino/Dominium refactor scaffolding, and aligned with repository structure.
 
+Note (CANON0): this report predates the docs/arch and docs/specs split. Any
+paths in this report that start with `docs/` but no longer exist are deprecated
+and have moved under `docs/arch/`, `docs/specs/`, or `docs/guides/`. See
+`docs/guides/README.md` for current paths.
+
 ## Documents reviewed
 
 Top-level:
@@ -14,8 +19,8 @@ Top-level:
 - `SECURITY.md`
 
 `docs/` policy + guides:
-- `docs/BUILDING.md`
-- `docs/DIRECTORY_CONTEXT.md`
+- `docs/guides/BUILDING.md`
+- `docs/arch/DIRECTORY_CONTEXT.md`
 - `docs/LANGUAGE_POLICY.md`
 - `docs/STYLE.md`
 - `docs/DETERMINISM_REGRESSION_RULES.md`
@@ -32,7 +37,7 @@ Top-level:
 - `docs/SETUP_RETRO.md`
 
 `docs/` specifications:
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`
 - `docs/SPEC_SIM_SCHEDULER.md`
 - `docs/SPEC_ACTIONS.md`
 - `docs/SPEC_PACKETS.md`
@@ -150,12 +155,12 @@ Directory/path drift:
 - Conflict: references to deprecated `/engine` and `docs/spec` paths and stale
   layout assumptions across entry docs.
 - Resolution: normalized all paths to the current repository layout and made
-  `docs/DIRECTORY_CONTEXT.md` the authoritative layout contract.
+  `docs/arch/DIRECTORY_CONTEXT.md` the authoritative layout contract.
 
 Terminology ambiguity (authority vs caches):
 - Conflict: “compiled artifacts” and other derived outputs were sometimes
   described as authoritative.
-- Resolution: standardized terminology in `docs/SPEC_DETERMINISM.md`:
+- Resolution: standardized terminology in `docs/specs/SPEC_DETERMINISM.md`:
   authoritative state vs derived cache vs compiled artifacts; updated affected
   specs/READMEs to match (compiled artifacts are rebuildable derived caches).
 
@@ -163,7 +168,7 @@ World hash vs build identifier:
 - Conflict: mixing “world hash” (authoritative replay/lockstep check) with
   build-identity hashes/diagnostics.
 - Resolution: explicitly separated “world hash” from “determinism build hash”
-  in `docs/SPEC_DETERMINISM.md`; updated docs that reference hashing to use the
+  in `docs/specs/SPEC_DETERMINISM.md`; updated docs that reference hashing to use the
   correct term.
 
 “No grids” vs tile/chunk lattices in code:
@@ -214,26 +219,26 @@ Subsystem registry documentation mismatch:
 
 ## Invariants now explicitly enforced (cross-document)
 - **Determinism**: integer ticks, fixed-point only, canonical ordering keys, and
-  explicit tie-break rules (`docs/SPEC_DETERMINISM.md`,
+  explicit tie-break rules (`docs/specs/SPEC_DETERMINISM.md`,
   `docs/SPEC_SIM_SCHEDULER.md`).
 - **Authoritative mutation**: refactor SIM mutation occurs via deltas at commit;
   no ad-hoc writes outside the commit point (`docs/SPEC_ACTIONS.md`,
   `docs/SPEC_SIM_SCHEDULER.md`).
 - **Serialization/hashing**: no hashing/serializing raw struct bytes; explicit
   encoding rules for deterministic IO (`docs/SPEC_PACKETS.md`,
-  `docs/SPEC_DETERMINISM.md`).
+  `docs/specs/SPEC_DETERMINISM.md`).
 - **Placement**: authoritative placement/editing uses anchors + quantized poses;
   UI snapping is non-authoritative (`docs/SPEC_POSE_AND_ANCHORS.md`,
   `docs/SPEC_BUILD.md`).
 - **No baked geometry**: baked world-space mesh geometry is never authoritative;
   compiled artifacts are derived and rebuildable (`docs/SPEC_TRANS_STRUCT_DECOR.md`,
-  `docs/SPEC_DETERMINISM.md`).
+  `docs/specs/SPEC_DETERMINISM.md`).
 - **Budgeting**: bounded work units and carryover semantics; no skipping and no
   reordering when budgets exhaust (`docs/SPEC_SIM_SCHEDULER.md`).
 
 ## Assumptions removed or clarified
 - Clarified that “no grids” forbids a universal authoritative placement grid,
-  not all subsystem-owned lattices (`docs/SPEC_DETERMINISM.md`,
+  not all subsystem-owned lattices (`docs/specs/SPEC_DETERMINISM.md`,
   `docs/SPEC_WORLD_COORDS.md`).
 - Clarified that “compiled artifacts” are derived caches and must be rebuildable
   (multiple specs + module READMEs).
@@ -242,4 +247,3 @@ Subsystem registry documentation mismatch:
   `docs/SPEC_LAUNCHER_EXT.md`, `docs/SPEC_SETUP_CORE.md`).
 - Clarified ENV “zones” (`denv_zone_state`) vs the legacy `dzone` atmosphere
   registry (`docs/SPEC_ENV.md`, `docs/SPEC_ZONES.md`).
-

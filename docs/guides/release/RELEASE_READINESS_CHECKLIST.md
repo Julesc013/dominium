@@ -147,7 +147,7 @@ Each checkbox maps an acceptance criterion to code, tests, and a verification co
   Verify: docs/release/BUILD_AND_PACKAGE.md, docs/release/RECOVERY_PLAYBOOK.md (added during release)
 
 - [x] Launcher docs complete + consistent (installed-state contract, error handling, smoke tests, recovery workflow)
-  Code: docs/launcher/ARCHITECTURE.md, docs/launcher/RECOVERY_AND_SAFE_MODE.md, docs/launcher/TESTING.md
+  Code: docs/specs/launcher/ARCHITECTURE.md, docs/specs/launcher/RECOVERY_AND_SAFE_MODE.md, docs/specs/launcher/TESTING.md
   Tests: docs validation pass (manual review)
   Commits: b89f63a
   Verify: docs/launcher/CLI.md, docs/release/RECOVERY_PLAYBOOK.md (launcher section)

@@ -105,7 +105,7 @@ Any future enforcement MUST be deterministic, budgeted, and ordered canonically.
 - assignment plans and diagnostics
 
 ## Related specs
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`
 - `docs/SPEC_ACTIONS.md`
 - `docs/SPEC_SIM.md`
 - `docs/SPEC_DOMINO_SUBSYSTEMS.md`

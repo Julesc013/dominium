@@ -30,6 +30,6 @@ The exhaustive CLI surface is defined in `docs/SPEC_LAUNCHER_CLI.md`.
 Profiles constrain backend choices deterministically; the core records any overrides and the final selection in audit.
 
 See:
-- `docs/launcher/ARCHITECTURE.md`
+- `docs/specs/launcher/ARCHITECTURE.md`
 - `docs/SPEC_LAUNCHER_PROFILES.md`
 

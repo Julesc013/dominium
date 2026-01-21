@@ -69,4 +69,4 @@ AI MUST NOT:
 ## Related specs
 - `docs/SPEC_FACTIONS.md`
 - `docs/SPEC_AI_DECISION_TRACES.md`
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`

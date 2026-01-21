@@ -155,7 +155,7 @@ Fairness must be deterministic:
 - any opportunistic caches used to accelerate scheduling decisions
 
 ## Related specs
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`
 - `docs/SPEC_ACTIONS.md`
 - `docs/SPEC_PACKETS.md`
 - `docs/SPEC_FIELDS_EVENTS.md`

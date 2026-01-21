@@ -56,4 +56,4 @@ Transit state fields:
 
 ## Related specs
 - `docs/SPEC_COSMO_LANE.md`
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`

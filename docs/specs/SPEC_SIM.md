@@ -50,7 +50,7 @@ Authoritative contract:
 - Ordering is deterministic:
   - subsystem iteration order is `d_subsystem_get_by_index(i)` (stable registry order)
   - DSIM system callbacks run in DSIM registration order
-- DSIM code and all tick callbacks must obey `docs/SPEC_DETERMINISM.md`.
+- DSIM code and all tick callbacks must obey `docs/specs/SPEC_DETERMINISM.md`.
 
 DSIM is a compatibility orchestrator. It does not define the phase-based
 stimulus/action/delta/commit semantics; those are specified by the SIM scheduler
@@ -76,4 +76,4 @@ Refactor rule:
 ## Related specs
 - `docs/SPEC_SIM_SCHEDULER.md`
 - `docs/SPEC_ACTIONS.md`
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`

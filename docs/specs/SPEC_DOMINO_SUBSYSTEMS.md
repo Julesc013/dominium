@@ -82,7 +82,7 @@ Rules:
 
 Deterministic IO rule:
 - Subsystem payloads MUST define explicit endianness/field widths and MUST NOT
-  serialize raw C structs as blobs; see `docs/SPEC_DETERMINISM.md`.
+  serialize raw C structs as blobs; see `docs/specs/SPEC_DETERMINISM.md`.
 
 ## Forbidden behaviors
 - Save callbacks mutating authoritative world state.
@@ -90,6 +90,6 @@ Deterministic IO rule:
   source as input to authoritative state.
 
 ## Related specs
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`
 - `docs/SPEC_SIM.md`
 - `docs/SPEC_VALIDATION.md`

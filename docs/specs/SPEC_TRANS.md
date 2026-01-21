@@ -64,7 +64,7 @@ Compiled TRANS artifacts are derived caches and MUST be rebuildable:
 - slotmaps and surface catalogs for STRUCT/DECOR binding
 
 Compilation is deterministic, budgeted, and ordered canonically (see
-`docs/SPEC_SIM_SCHEDULER.md` and `docs/SPEC_DETERMINISM.md`).
+`docs/SPEC_SIM_SCHEDULER.md` and `docs/specs/SPEC_DETERMINISM.md`).
 
 ## Consumes
 - BUILD placement/edit intents expressed as `(dg_anchor, dg_pose)` plus TLV
@@ -113,4 +113,4 @@ refactor TRANS corridor pipeline described in this spec.
 - `docs/SPEC_POSE_AND_ANCHORS.md`
 - `docs/SPEC_GRAPH_TOOLKIT.md`
 - `docs/SPEC_SIM_SCHEDULER.md`
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`

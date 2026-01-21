@@ -65,7 +65,7 @@ Rules:
 Save verification re-loads the freshly written world into a temporary instance
 and compares **world hashes**:
 - The comparison uses the authoritative world hash, not a build hash
-  (`docs/SPEC_DETERMINISM.md`).
+  (`docs/specs/SPEC_DETERMINISM.md`).
 - Any mismatch MUST be reported immediately; silent corruption is forbidden.
 
 ## Forbidden behaviors
@@ -74,6 +74,6 @@ and compares **world hashes**:
 - Non-deterministic “auto repair” during validation.
 
 ## Related specs
-- `docs/SPEC_DETERMINISM.md`
+- `docs/specs/SPEC_DETERMINISM.md`
 - `docs/SPEC_DOMINO_SUBSYSTEMS.md`
 - `docs/SPEC_PACKETS.md`
