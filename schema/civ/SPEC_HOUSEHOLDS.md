@@ -23,6 +23,10 @@ DEPENDENCIES:
 Status: draft  
 Version: 1
 
+NOTE: Legacy CIV1 spec. Superseded by CIV0+ canonical documents in
+`schema/civ/README.md` and `schema/economy/README.md`. Retained for reference
+and non-authoritative if conflicts exist.
+
 ## Purpose
 Define the bounded household model used to constrain authority queries and
 eligibility without global scans.

@@ -10,6 +10,9 @@ layering.
 ## Mandatory constraints
 - Architecture constitution: `docs/arch/ARCH0_CONSTITUTION.md`,
   `docs/arch/CHANGE_PROTOCOL.md`, `docs/arch/GLOSSARY.md`
+- Canonical system map and invariants: `docs/arch/CANONICAL_SYSTEM_MAP.md`,
+  `docs/arch/INVARIANTS.md`
+- Reality layer: `docs/arch/REALITY_LAYER.md`
 - Determinism: `docs/specs/SPEC_DETERMINISM.md` and `docs/ci/DETERMINISM_TEST_MATRIX.md`
 - Placement: anchors + quantized poses (`docs/specs/SPEC_POSE_AND_ANCHORS.md`)
 - Authoring vs compiled: compiled artifacts are derived caches
@@ -22,7 +25,8 @@ layering.
 2. If behavior/format changes, update the spec(s) first (or in the same PR).
 3. Keep changes within module boundaries (no private header peeking across
    subsystems).
-4. Run tests and determinism checks:
+4. Describe changes in terms of intent, law/capability gate, and effect.
+5. Run tests and determinism checks:
    - Build: see `docs/guides/BUILDING.md`
    - Run: `ctest --test-dir build`
    - Determinism scan: `ctest -R domino_det_regression_scan_test`
@@ -42,3 +46,5 @@ layering.
   authoritative state.
 - Cross-layer mutation or shortcut access that violates the subsystem boundaries
   documented in the spec set.
+- Introducing implicit behavior, silent fallback, or unaudited shortcuts.
+- Simplifying by assumption instead of explicit, documented rules.

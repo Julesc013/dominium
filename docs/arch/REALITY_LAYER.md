@@ -93,6 +93,8 @@ Refusal, absence, and deferral are valid outcomes.
 
 ## See also
 - `docs/arch/LIFE_AND_POPULATION.md`
+- `docs/arch/CIVILIZATION_MODEL.md`
+- `docs/arch/ECONOMY_AND_LOGISTICS.md`
 - `docs/arch/SPACE_TIME_EXISTENCE.md`
 - `docs/arch/VISITABILITY_AND_REFINEMENT.md`
 - `docs/arch/AUTHORITY_IN_REALITY.md`
