@@ -610,6 +610,20 @@ set_target_properties(policy_bridge_tests PROPERTIES
 )
 add_test(NAME policy_bridge COMMAND policy_bridge_tests)
 
+add_executable(jurisdiction_domain_tests
+    jurisdiction_domain_tests.cpp
+)
+target_include_directories(jurisdiction_domain_tests PRIVATE
+    ${CMAKE_SOURCE_DIR}
+)
+target_link_libraries(jurisdiction_domain_tests PRIVATE dominium_game)
+set_target_properties(jurisdiction_domain_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME jurisdiction_domain COMMAND jurisdiction_domain_tests)
+
 add_executable(dominium_work_ir_completeness_tests
     work_ir_completeness_tests.cpp
 )
