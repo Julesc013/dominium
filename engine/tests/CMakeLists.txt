@@ -303,6 +303,17 @@ set_target_properties(domain_volume_tests PROPERTIES
 )
 add_test(NAME domain_volume COMMAND domain_volume_tests)
 
+add_executable(visitability_contract_tests
+    visitability_contract_tests.cpp
+)
+target_link_libraries(visitability_contract_tests PRIVATE engine::domino game::dominium)
+set_target_properties(visitability_contract_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME visitability_contract COMMAND visitability_contract_tests)
+
 add_executable(execution_perf_regression_tests
     execution_perf_regression_tests.cpp
 )
