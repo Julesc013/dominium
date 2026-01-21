@@ -32,6 +32,18 @@ A4. Laws govern existence and action.
 Law enforcement points and law kernel schemas are defined in:
 - `docs/arch/LAW_ENFORCEMENT_POINTS.md`
 - `schema/law/README.md`
+Existence canon and lifecycle are defined in:
+- `docs/arch/EXISTENCE_AND_REALITY.md`
+- `docs/arch/EXISTENCE_LIFECYCLE.md`
+- `schema/existence/README.md`
+Refinement contracts and visitability are defined in:
+- `docs/arch/REFINEMENT_CONTRACTS.md`
+- `docs/arch/VISITABILITY_CONSISTENCY.md`
+- `schema/existence/SPEC_REFINEMENT_CONTRACTS.md`
+Archival, freezing, and timeline forking are defined in:
+- `docs/arch/ARCHIVAL_AND_PERMANENCE.md`
+- `docs/arch/TIMELINE_FORKS_AND_HISTORY.md`
+- `schema/existence/SPEC_ARCHIVAL_STATES.md`
 
 A5. Engine and game are strictly separated.
 - Engine defines mechanisms.
