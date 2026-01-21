@@ -34,4 +34,6 @@ execution backends. See:
 - `schema/law/SPEC_LAW_SCOPES.md`
 - `schema/law/SPEC_LAW_TARGETS.md`
 - `schema/law/SPEC_LAW_EFFECTS.md`
+- `schema/law/SPEC_DOMAIN_JURISDICTIONS.md`
+- `schema/law/SPEC_JURISDICTION_PRECEDENCE.md`
 - `docs/arch/LAW_ENFORCEMENT_POINTS.md`
