@@ -52,6 +52,10 @@ Travel graphs and scheduled movement are defined in:
 - `docs/arch/TRAVEL_AND_MOVEMENT.md`
 - `docs/arch/NO_TELEPORTATION_EXCEPT_BY_CONTRACT.md`
 - `schema/travel/README.md`
+Time perception and observer clocks are defined in:
+- `docs/arch/TIME_PERCEPTION_VS_SIMULATION.md`
+- `docs/arch/TIME_DILATION_WITHOUT_TIME_WARP.md`
+- `schema/time/README.md`
 
 A5. Engine and game are strictly separated.
 - Engine defines mechanisms.
