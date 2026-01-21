@@ -58,6 +58,12 @@ Time perception and observer clocks are defined in:
 - `schema/time/README.md`
 - `docs/arch/REPLAY_AND_TIME_ASYMMETRY.md`
 - `docs/arch/SPECTATOR_AND_AUDIT_MODES.md`
+Authority, capabilities, and omnipotence are defined in:
+- `docs/arch/AUTHORITY_AND_OMNIPOTENCE.md`
+- `docs/arch/SPECTATOR_TO_GODMODE.md`
+- `docs/arch/ANTI_CHEAT_AS_LAW.md`
+- `schema/authority/README.md`
+- `schema/capabilities/README.md`
 
 A5. Engine and game are strictly separated.
 - Engine defines mechanisms.
