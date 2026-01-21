@@ -56,6 +56,8 @@ Time perception and observer clocks are defined in:
 - `docs/arch/TIME_PERCEPTION_VS_SIMULATION.md`
 - `docs/arch/TIME_DILATION_WITHOUT_TIME_WARP.md`
 - `schema/time/README.md`
+- `docs/arch/REPLAY_AND_TIME_ASYMMETRY.md`
+- `docs/arch/SPECTATOR_AND_AUDIT_MODES.md`
 
 A5. Engine and game are strictly separated.
 - Engine defines mechanisms.
