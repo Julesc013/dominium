@@ -62,8 +62,17 @@ Authority, capabilities, and omnipotence are defined in:
 - `docs/arch/AUTHORITY_AND_OMNIPOTENCE.md`
 - `docs/arch/SPECTATOR_TO_GODMODE.md`
 - `docs/arch/ANTI_CHEAT_AS_LAW.md`
+- `docs/arch/ANTI_CHEAT_AND_INTEGRITY.md`
+- `docs/arch/REFUSAL_AND_EXPLANATION_MODEL.md`
+- `docs/arch/ENFORCEMENT_ESCALATION.md`
+- `schema/authority/SPEC_AUTHORITY_LAYERS.md`
+- `schema/authority/SPEC_CAPABILITY_DOMAINS.md`
+- `schema/authority/SPEC_OMNIPOTENCE.md`
+- `schema/capabilities/SPEC_CAPABILITY_TAXONOMY.md`
+- `schema/capabilities/SPEC_NEGATIVE_CAPABILITIES.md`
 - `schema/authority/README.md`
 - `schema/capabilities/README.md`
+- `schema/integrity/README.md`
 
 A5. Engine and game are strictly separated.
 - Engine defines mechanisms.
