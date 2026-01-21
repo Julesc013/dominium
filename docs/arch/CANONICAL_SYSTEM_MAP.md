@@ -145,6 +145,8 @@ Forbidden dependencies:
 - `docs/arch/ARCH0_CONSTITUTION.md`
 - `docs/arch/EXECUTION_MODEL.md`
 - `docs/arch/REALITY_MODEL.md`
+- `docs/arch/REALITY_LAYER.md`
+- `docs/arch/REALITY_FLOW.md`
 - `docs/arch/AUTHORITY_MODEL.md`
 - `schema/execution/README.md`
 - `schema/existence/README.md`

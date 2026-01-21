@@ -34,3 +34,8 @@ See:
 - `SPEC_FREEZE_SEMANTICS.md`
 - `SPEC_FORKING_RULES.md`
 - `SPEC_DESTRUCTION_RULES.md`
+
+Reality layer:
+- `docs/arch/REALITY_LAYER.md`
+- `docs/arch/SPACE_TIME_EXISTENCE.md`
+- `docs/arch/VISITABILITY_AND_REFINEMENT.md`
