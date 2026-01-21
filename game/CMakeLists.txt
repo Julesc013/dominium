@@ -89,6 +89,7 @@ add_library(dominium_game STATIC
     rules/scale/relevance_transitions.cpp
     rules/scale/interest_system.cpp
     rules/scale/world_streaming_system.cpp
+    rules/scale/visitability_system.cpp
     rules/city/city_refusal_codes.cpp
     rules/city/city_model.cpp
     rules/city/zoning_rules.cpp
