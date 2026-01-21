@@ -14,6 +14,8 @@ add_library(dominium_game STATIC
     core/execution/system_registry.cpp
     core/execution/work_graph_builder.cpp
     core/law/law_kernel.cpp
+    core/law/jurisdiction_resolver.cpp
+    core/law/law_context_builder.cpp
     rules/life/ability_packages.cpp
     rules/life/control_authority.cpp
     rules/life/continuation_policy.cpp
