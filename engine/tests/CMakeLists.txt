@@ -292,6 +292,17 @@ set_target_properties(budget_model_tests PROPERTIES
 )
 add_test(NAME budget_model COMMAND budget_model_tests)
 
+add_executable(domain_volume_tests
+    domain_volume_tests.cpp
+)
+target_link_libraries(domain_volume_tests PRIVATE engine::domino)
+set_target_properties(domain_volume_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME domain_volume COMMAND domain_volume_tests)
+
 add_executable(execution_perf_regression_tests
     execution_perf_regression_tests.cpp
 )
