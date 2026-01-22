@@ -29,8 +29,8 @@ DEPENDENCIES:
 # DVIEW and DUI – minimal GUI slice
 
 ## IR and path
-- **dgfx IR (minimal):** `d_gfx_cmd` opcodes CLEAR, SET_VIEWPORT, SET_CAMERA, DRAW_RECT, DRAW_TEXT. Command buffers are arrays of these commands, submitted to a backend (soft in this slice) then presented via `d_system_present_framebuffer`.
-- **Pipeline:** Dominium Game/Launcher → `d_view_render` emits CLEAR/VIEWPORT/CAMERA → `dui_render` appends rect/text → `d_gfx_submit` → soft backend rasterises → `d_system_present_framebuffer` blits to the OS window.
+- **dgfx IR (minimal):** `d_gfx_cmd` opcodes CLEAR, SET_VIEWPORT, SET_CAMERA, DRAW_RECT, DRAW_TEXT. Command buffers are arrays of these commands, submitted to a backend (soft in this slice) then presented via `d_system_present_framebuffer(native_window, ...)`.
+- **Pipeline:** Dominium Game/Launcher → `d_view_render` emits CLEAR/VIEWPORT/CAMERA → `dui_render` appends rect/text → `d_gfx_submit` → soft backend rasterises → `d_system_present_framebuffer(native_window, ...)` blits to the OS window.
 
 ## DVIEW (engine-level views)
 - **Descriptors:** `d_view_desc` holds `id`, flags, `d_view_camera`, normalized viewport (`vp_x/y/w/h` in `q16_16`, 0..1), and layer mask.

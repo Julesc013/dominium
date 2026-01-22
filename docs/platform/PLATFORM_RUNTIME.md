@@ -32,6 +32,7 @@ process), and higher layers must not call OS APIs directly.
 - Surface: `dsys_window_get_native_handle`
 - Framebuffer: `dsys_window_get_framebuffer_size`
 - DPI: `dsys_window_get_dpi_scale` (best-effort)
+- Identity: `dsys_window_get_id`
 
 ## Events
 `dsys_poll_event` returns queued events only; no callbacks are used.
@@ -39,6 +40,7 @@ Event types include:
 - `DSYS_EVENT_WINDOW_RESIZED`
 - `DSYS_EVENT_DPI_CHANGED` (payload: `scale`)
 - Keyboard/mouse/gamepad input events (raw)
+Each event includes `window`/`window_id` for per-window routing when applicable.
 
 Raw input is available via `dsys_input_poll_raw`. IME is exposed via
 `dsys_ime_start`, `dsys_ime_stop`, `dsys_ime_set_cursor`, `dsys_ime_poll`.
@@ -51,10 +53,13 @@ Raw input is available via `dsys_input_poll_raw`. IME is exposed via
 ## Extensions
 `dsys_query_extension(name, 1)` returns a versioned vtable or NULL.
 Known extensions:
-- `dsys.window_ex` -> `dsys_window_ex_api_v1`
+- `dsys.window_ex` -> `dsys_window_ex_api_v1` (show/hide/state/framebuffer/DPI)
+- `dsys.dpi` -> alias of `dsys.window_ex`
+- `dsys.window_mode` -> `dsys_window_mode_api_v1`
+- `dsys.text_input` -> `dsys_text_input_api_v1` (IME hooks may be stubbed)
 - `dsys.error` -> `dsys_error_api_v1`
-- `dsys.cliptext` -> `dsys_cliptext_api_v1` (stubbed)
-- `dsys.cursor` -> `dsys_cursor_api_v1` (stubbed)
+- `dsys.cliptext` -> `dsys_cliptext_api_v1` (Win32 implemented; others stubbed)
+- `dsys.cursor` -> `dsys_cursor_api_v1` (Win32 implemented; others stubbed)
 - `dsys.dragdrop` -> `dsys_dragdrop_api_v1` (stubbed)
 - `dsys.gamepad` -> `dsys_gamepad_api_v1` (stubbed)
 - `dsys.power` -> `dsys_power_api_v1` (stubbed)
@@ -64,4 +69,3 @@ Known extensions:
 - `dom_dsys_register_caps_backends` registers the compiled backend in caps
 - `dom_sys_select_backend` only accepts the compiled backend name; otherwise it
   fails loudly (no silent fallback for explicit requests)
-

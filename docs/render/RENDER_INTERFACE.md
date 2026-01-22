@@ -27,10 +27,10 @@ logic lives in engine/game subsystems.
 - Surface binding: `d_gfx_bind_surface`, `d_gfx_resize`, `d_gfx_get_native_window`
 
 ## Built-in backends
-- `soft`: CPU buffer + platform present (`d_system_present_framebuffer`)
+- `soft`: CPU buffer + platform present (`d_system_present_framebuffer` with native window)
 - `null`: headless renderer, no presentation (use for tests/servers)
-- `dx9`/`dx11`/`gl2`/`vk1`/`metal`: compiled stubs map to `null` until real
-  backends land
+- `dx9`/`dx11`/`gl2`/`vk1`/`metal`: compiled stubs are reported as unavailable;
+  explicit selection fails loudly until real backends land
 
 ## Capabilities
 - Opcode mask: `d_gfx_get_opcode_mask` and `d_gfx_get_opcode_mask_for_backend`
@@ -38,4 +38,3 @@ logic lives in engine/game subsystems.
 
 ## Shader cache policy
 - Shader caches are disposable and never required for boot
-
