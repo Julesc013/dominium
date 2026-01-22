@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 
 add_executable(dominium_server
     app/main_server.c
+    authority/dom_server_authority.cpp
     shard/shard_api.cpp
     shard/shard_router.cpp
     shard/shard_domain_index.cpp
@@ -16,6 +17,7 @@ add_executable(dominium_server
 target_link_libraries(dominium_server PRIVATE
     domino_engine
     dominium_game
+    libs::contracts
 )
 set_target_properties(dominium_server PROPERTIES
     OUTPUT_NAME "server"
