@@ -121,16 +121,142 @@ int dsys_terminal_poll_key(void) {
 
 #else /* _WIN32 */
 
-int dsys_terminal_init(void) { return 0; }
-void dsys_terminal_shutdown(void) { }
-void dsys_terminal_clear(void) { }
-void dsys_terminal_draw_text(int row, int col, const char* text) {
-    (void)row; (void)col; (void)text;
+#include <windows.h>
+
+static HANDLE g_dsys_term_in = INVALID_HANDLE_VALUE;
+static HANDLE g_dsys_term_out = INVALID_HANDLE_VALUE;
+static DWORD g_dsys_term_in_mode = 0;
+static DWORD g_dsys_term_out_mode = 0;
+static int g_dsys_term_active = 0;
+
+int dsys_terminal_init(void) {
+    DWORD mode;
+    if (g_dsys_term_active) {
+        return 1;
+    }
+    g_dsys_term_in = GetStdHandle(STD_INPUT_HANDLE);
+    g_dsys_term_out = GetStdHandle(STD_OUTPUT_HANDLE);
+    if (g_dsys_term_in == INVALID_HANDLE_VALUE || g_dsys_term_out == INVALID_HANDLE_VALUE) {
+        return 0;
+    }
+    if (!GetConsoleMode(g_dsys_term_in, &g_dsys_term_in_mode)) {
+        return 0;
+    }
+    if (!GetConsoleMode(g_dsys_term_out, &g_dsys_term_out_mode)) {
+        return 0;
+    }
+    mode = g_dsys_term_in_mode;
+    mode &= ~(ENABLE_LINE_INPUT | ENABLE_ECHO_INPUT);
+    mode |= ENABLE_PROCESSED_INPUT;
+    SetConsoleMode(g_dsys_term_in, mode);
+    g_dsys_term_active = 1;
+    return 1;
 }
+
+void dsys_terminal_shutdown(void) {
+    if (!g_dsys_term_active) {
+        return;
+    }
+    SetConsoleMode(g_dsys_term_in, g_dsys_term_in_mode);
+    SetConsoleMode(g_dsys_term_out, g_dsys_term_out_mode);
+    g_dsys_term_active = 0;
+}
+
+void dsys_terminal_clear(void) {
+    HANDLE out = g_dsys_term_out;
+    CONSOLE_SCREEN_BUFFER_INFO info;
+    DWORD cells;
+    DWORD written;
+    COORD origin;
+
+    if (out == INVALID_HANDLE_VALUE) {
+        out = GetStdHandle(STD_OUTPUT_HANDLE);
+    }
+    if (out == INVALID_HANDLE_VALUE) {
+        return;
+    }
+    if (!GetConsoleScreenBufferInfo(out, &info)) {
+        return;
+    }
+    cells = (DWORD)info.dwSize.X * (DWORD)info.dwSize.Y;
+    origin.X = 0;
+    origin.Y = 0;
+    FillConsoleOutputCharacterA(out, ' ', cells, origin, &written);
+    FillConsoleOutputAttribute(out, info.wAttributes, cells, origin, &written);
+    SetConsoleCursorPosition(out, origin);
+}
+
+void dsys_terminal_draw_text(int row, int col, const char* text) {
+    HANDLE out = g_dsys_term_out;
+    COORD pos;
+    DWORD written;
+
+    if (!text) {
+        return;
+    }
+    if (out == INVALID_HANDLE_VALUE) {
+        out = GetStdHandle(STD_OUTPUT_HANDLE);
+    }
+    if (out == INVALID_HANDLE_VALUE) {
+        return;
+    }
+    pos.X = (SHORT)col;
+    pos.Y = (SHORT)row;
+    SetConsoleCursorPosition(out, pos);
+    WriteConsoleA(out, text, (DWORD)strlen(text), &written, NULL);
+}
+
 void dsys_terminal_get_size(int* rows, int* cols) {
+    HANDLE out = g_dsys_term_out;
+    CONSOLE_SCREEN_BUFFER_INFO info;
+
     if (rows) *rows = 24;
     if (cols) *cols = 80;
+    if (out == INVALID_HANDLE_VALUE) {
+        out = GetStdHandle(STD_OUTPUT_HANDLE);
+    }
+    if (out == INVALID_HANDLE_VALUE) {
+        return;
+    }
+    if (GetConsoleScreenBufferInfo(out, &info)) {
+        if (rows) {
+            *rows = (int)(info.srWindow.Bottom - info.srWindow.Top + 1);
+        }
+        if (cols) {
+            *cols = (int)(info.srWindow.Right - info.srWindow.Left + 1);
+        }
+    }
 }
-int dsys_terminal_poll_key(void) { return 0; }
+
+int dsys_terminal_poll_key(void) {
+    HANDLE in = g_dsys_term_in;
+    INPUT_RECORD rec;
+    DWORD read = 0;
+
+    if (in == INVALID_HANDLE_VALUE) {
+        in = GetStdHandle(STD_INPUT_HANDLE);
+    }
+    if (in == INVALID_HANDLE_VALUE) {
+        return 0;
+    }
+    while (PeekConsoleInputA(in, &rec, 1, &read) && read > 0) {
+        if (!ReadConsoleInputA(in, &rec, 1, &read)) {
+            return 0;
+        }
+        if (rec.EventType == KEY_EVENT && rec.Event.KeyEvent.bKeyDown) {
+            WORD vk = rec.Event.KeyEvent.wVirtualKeyCode;
+            CHAR ch = rec.Event.KeyEvent.uChar.AsciiChar;
+            if (vk == VK_UP) return 1001;
+            if (vk == VK_DOWN) return 1002;
+            if (vk == VK_RIGHT) return 1003;
+            if (vk == VK_LEFT) return 1004;
+            if (vk == VK_RETURN) return 10;
+            if (ch != 0) {
+                return (int)ch;
+            }
+        }
+    }
+    return 0;
+}
 
 #endif
