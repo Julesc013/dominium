@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.16)
 
 add_library(dominium_app_runtime STATIC
     src/app_runtime.c
+    src/compat_report.c
+    src/readonly_adapter.c
+    src/readonly_format.c
 )
 target_include_directories(dominium_app_runtime PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
