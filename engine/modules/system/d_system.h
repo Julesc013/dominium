@@ -38,6 +38,7 @@ int d_system_process_spawn(const char *path, const char *args);
  * or NULL when no window exists (e.g. headless).
  */
 void* d_system_get_native_window_handle(void);
+void d_system_set_native_window_handle(void* handle);
 
 /* Soft framebuffer hook:
  * Called by soft backend to hand over framebuffer for presentation.
