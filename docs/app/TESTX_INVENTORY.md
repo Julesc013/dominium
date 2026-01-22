@@ -20,10 +20,10 @@ Short discovery summary for the APR0 platform/runtime and renderer work.
 - No explicit `TESTX` label or dedicated CLI smoke tests for client/server/tools found in ctest.
 
 ## CLI contracts (current)
-- Client (`client/app/main_client.c`): `--help`, `--version`, `--build-info`, `--status`, `--smoke`, `--selftest`, `--renderer`, `--control-*`, `--mp0-connect=local`.
+- Client (`client/app/main_client.c`): `--help`, `--version`, `--build-info`, `--status`, `--smoke`, `--selftest`, `--renderer`, window flags (`--windowed`, `--borderless`, `--fullscreen`, `--width`, `--height`), `--control-*`, `--mp0-connect=local`.
 - Server (`server/app/main_server.c`): `--help`, `--version`, `--build-info`, `--status`, `--smoke`, `--selftest`, `--control-*`, `--mp0-loopback`, `--mp0-server-auth`.
-- Launcher CLI (`launcher/cli/launcher_cli_main.c`): `--help`, `--version`, `--build-info`, `--status`, `--smoke`, `--selftest`, `version` and `list-profiles` commands.
-- Setup CLI (`setup/cli/setup_cli_main.c`): `--help`, `--version`, `--build-info`, `--status`, `--smoke`, `--selftest`, `version` and `status` commands.
+- Launcher CLI (`launcher/cli/launcher_cli_main.c`): `--help`, `--version`, `--build-info`, `--status`, `--smoke`, `--selftest`, `version`, `list-profiles`, `capabilities` commands.
+- Setup CLI (`setup/cli/setup_cli_main.c`): `--help`, `--version`, `--build-info`, `--status`, `--smoke`, `--selftest`, `version`, `status`, `prepare` commands.
 - Tools host (`tools/tools_host_main.c`): `--help`, `--version`, `--build-info`, `--status`, `--smoke`, `--selftest`, plus `inspect`/`validate`/`replay` stubs.
 
 ## Version/build reporting (current)
@@ -50,7 +50,4 @@ Short discovery summary for the APR0 platform/runtime and renderer work.
 - Selection policy enforces explicit failure and auto-selection logging; interfaces documented under `docs/render/`.
 
 ## Missing items to implement in APR0
-- Wire platform runtime + renderer selection into client windowed path (resizable window per OS backend).
-- Add launcher capability probe output (platform + renderer availability).
-- Add CLI smoke/build-info/version tests in existing ctest structure for client/server/launcher/setup/tools.
 - Run ctest to validate TESTX alignment and document compliance results.
