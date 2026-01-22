@@ -20,6 +20,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <wchar.h>
 #include <time.h>
 #include <ctype.h>
 #include <signal.h>
@@ -47,6 +48,10 @@ static dsys_log_fn g_dsys_log_cb = 0;
 #define DSYS_LAST_ERROR_TEXT_MAX 256u
 static dsys_result g_dsys_last_error_code = DSYS_OK;
 static char g_dsys_last_error_text[DSYS_LAST_ERROR_TEXT_MAX];
+
+static dsys_window* g_dsys_window_list = NULL;
+static uint32_t g_dsys_window_next_id = 1u;
+static int g_dsys_cursor_visible = 1;
 
 uint64_t dsys_time_now_us(void);
 
@@ -84,6 +89,43 @@ static void dsys_event_queue_reset(void)
     g_dsys_event_tail = 0u;
 }
 
+static void dsys_window_registry_reset(void)
+{
+    g_dsys_window_list = NULL;
+    g_dsys_window_next_id = 1u;
+}
+
+static void dsys_window_register(dsys_window* win)
+{
+    if (!win) {
+        return;
+    }
+    win->window_id = g_dsys_window_next_id++;
+    win->cursor_visible = 1;
+    win->cursor_confined = 0;
+    win->relative_mouse = 0;
+    win->cursor_shape = (uint32_t)DSYS_CURSOR_ARROW;
+    win->next = g_dsys_window_list;
+    g_dsys_window_list = win;
+}
+
+static void dsys_window_unregister(dsys_window* win)
+{
+    dsys_window** it;
+    if (!win) {
+        return;
+    }
+    it = &g_dsys_window_list;
+    while (*it) {
+        if (*it == win) {
+            *it = win->next;
+            win->next = NULL;
+            return;
+        }
+        it = &(*it)->next;
+    }
+}
+
 int dsys_internal_event_push(const dsys_event* ev)
 {
     unsigned int next_tail;
@@ -94,6 +136,9 @@ int dsys_internal_event_push(const dsys_event* ev)
     local = *ev;
     if (local.timestamp_us == 0u) {
         local.timestamp_us = dsys_time_now_us();
+    }
+    if (local.window && local.window_id == 0u) {
+        local.window_id = local.window->window_id;
     }
     next_tail = g_dsys_event_tail + 1u;
     if (next_tail >= DSYS_EVENT_QUEUE_MAX) {
@@ -200,16 +245,31 @@ static const dsys_input_api_v1 g_dsys_input_api_v1 = {
     dsys_ime_poll
 };
 
+static dsys_result dsys_cliptext_get_text(char* buf, size_t cap);
+static dsys_result dsys_cliptext_set_text(const char* text);
+static dsys_result dsys_cursor_set(dsys_window* win, dsys_cursor_shape shape);
+static dsys_result dsys_cursor_show(dsys_window* win, bool visible);
+static dsys_result dsys_cursor_confine(dsys_window* win, bool confined);
+static dsys_result dsys_cursor_set_relative(dsys_window* win, bool enabled);
+static dsys_result dsys_text_input_start(dsys_window* win);
+static dsys_result dsys_text_input_stop(dsys_window* win);
+static dsys_result dsys_text_input_set_cursor(dsys_window* win, int32_t x, int32_t y);
+static int dsys_text_input_poll(dsys_ime_event* ev);
+static dsys_result dsys_window_mode_set(dsys_window* win, dsys_window_mode mode);
+static dsys_window_mode dsys_window_mode_get(dsys_window* win);
+
 static const dsys_cliptext_api_v1 g_dsys_cliptext_api_v1 = {
     DOM_ABI_HEADER_INIT(1u, dsys_cliptext_api_v1),
-    NULL,
-    NULL
+    dsys_cliptext_get_text,
+    dsys_cliptext_set_text
 };
 
 static const dsys_cursor_api_v1 g_dsys_cursor_api_v1 = {
     DOM_ABI_HEADER_INIT(1u, dsys_cursor_api_v1),
-    NULL,
-    NULL
+    dsys_cursor_set,
+    dsys_cursor_show,
+    dsys_cursor_confine,
+    dsys_cursor_set_relative
 };
 
 static const dsys_dragdrop_api_v1 g_dsys_dragdrop_api_v1 = {
@@ -228,6 +288,20 @@ static const dsys_power_api_v1 g_dsys_power_api_v1 = {
     DOM_ABI_HEADER_INIT(1u, dsys_power_api_v1),
     NULL,
     NULL
+};
+
+static const dsys_text_input_api_v1 g_dsys_text_input_api_v1 = {
+    DOM_ABI_HEADER_INIT(1u, dsys_text_input_api_v1),
+    dsys_text_input_start,
+    dsys_text_input_stop,
+    dsys_text_input_set_cursor,
+    dsys_text_input_poll
+};
+
+static const dsys_window_mode_api_v1 g_dsys_window_mode_api_v1 = {
+    DOM_ABI_HEADER_INIT(1u, dsys_window_mode_api_v1),
+    dsys_window_mode_set,
+    dsys_window_mode_get
 };
 
 static const dsys_error_api_v1 g_dsys_error_api_v1 = {
@@ -807,6 +881,7 @@ dsys_result dsys_init(void)
     dsys_result result;
     dsys_clear_last_error();
     dsys_event_queue_reset();
+    dsys_window_registry_reset();
 #if defined(DSYS_BACKEND_CPM80)
     {
         extern const dsys_backend_vtable* dsys_cpm80_get_vtable(void);
@@ -904,6 +979,7 @@ void dsys_shutdown(void)
     if (backend->shutdown) {
         backend->shutdown();
     }
+    dsys_window_registry_reset();
     g_dsys = NULL;
 }
 
@@ -941,6 +1017,7 @@ dsys_window* dsys_window_create(const dsys_window_desc* desc)
     if (backend->window_create) {
         dsys_window* win = backend->window_create(desc);
         if (win) {
+            dsys_window_register(win);
             return win;
         }
         dsys_set_last_error(DSYS_ERR, "window_create: backend failure");
@@ -953,6 +1030,7 @@ dsys_window* dsys_window_create(const dsys_window_desc* desc)
 void dsys_window_destroy(dsys_window* win)
 {
     const dsys_backend_vtable* backend;
+    dsys_window_unregister(win);
     backend = dsys_active_backend();
     if (backend->window_destroy) {
         backend->window_destroy(win);
@@ -962,10 +1040,17 @@ void dsys_window_destroy(dsys_window* win)
 void dsys_window_set_mode(dsys_window* win, dsys_window_mode mode)
 {
     const dsys_backend_vtable* backend;
+    dsys_clear_last_error();
+    if (!win) {
+        dsys_set_last_error(DSYS_ERR, "window_set_mode: null window");
+        return;
+    }
     backend = dsys_active_backend();
     if (backend->window_set_mode) {
         backend->window_set_mode(win, mode);
+        return;
     }
+    dsys_set_last_error(DSYS_ERR_UNSUPPORTED, "window_set_mode: unsupported");
 }
 
 void dsys_window_set_size(dsys_window* win, int32_t w, int32_t h)
@@ -1089,6 +1174,11 @@ float dsys_window_get_dpi_scale(dsys_window* win)
     return 1.0f;
 }
 
+uint32_t dsys_window_get_id(dsys_window* win)
+{
+    return win ? win->window_id : 0u;
+}
+
 bool dsys_poll_event(dsys_event* out)
 {
     const dsys_backend_vtable* backend;
@@ -1145,6 +1235,333 @@ int dsys_ime_poll(dsys_ime_event* ev)
         memset(ev, 0, sizeof(*ev));
     }
     return 0;
+}
+
+static dsys_result dsys_cliptext_get_text(char* buf, size_t cap)
+{
+    dsys_clear_last_error();
+    if (!buf || cap == 0u) {
+        dsys_set_last_error(DSYS_ERR, "cliptext_get: null buffer");
+        return DSYS_ERR;
+    }
+#if defined(_WIN32)
+    {
+        HANDLE handle;
+        wchar_t* wide;
+        int needed;
+        int written;
+
+        if (!OpenClipboard(NULL)) {
+            dsys_set_last_error(DSYS_ERR, "cliptext_get: open failed");
+            return DSYS_ERR;
+        }
+        handle = GetClipboardData(CF_UNICODETEXT);
+        if (!handle) {
+            CloseClipboard();
+            dsys_set_last_error(DSYS_ERR_NOT_FOUND, "cliptext_get: empty");
+            return DSYS_ERR_NOT_FOUND;
+        }
+        wide = (wchar_t*)GlobalLock(handle);
+        if (!wide) {
+            CloseClipboard();
+            dsys_set_last_error(DSYS_ERR, "cliptext_get: lock failed");
+            return DSYS_ERR;
+        }
+        needed = WideCharToMultiByte(CP_UTF8, 0, wide, -1, NULL, 0, NULL, NULL);
+        if (needed <= 0) {
+            GlobalUnlock(handle);
+            CloseClipboard();
+            dsys_set_last_error(DSYS_ERR, "cliptext_get: convert failed");
+            return DSYS_ERR;
+        }
+        if ((size_t)needed > cap) {
+            written = WideCharToMultiByte(CP_UTF8, 0, wide, -1, buf, (int)cap - 1, NULL, NULL);
+            if (written <= 0) {
+                GlobalUnlock(handle);
+                CloseClipboard();
+                dsys_set_last_error(DSYS_ERR, "cliptext_get: truncation failed");
+                return DSYS_ERR;
+            }
+            buf[cap - 1u] = '\0';
+            GlobalUnlock(handle);
+            CloseClipboard();
+            dsys_set_last_error(DSYS_ERR, "cliptext_get: buffer too small");
+            return DSYS_ERR;
+        }
+        written = WideCharToMultiByte(CP_UTF8, 0, wide, -1, buf, (int)cap, NULL, NULL);
+        GlobalUnlock(handle);
+        CloseClipboard();
+        if (written <= 0) {
+            dsys_set_last_error(DSYS_ERR, "cliptext_get: conversion failed");
+            return DSYS_ERR;
+        }
+        return DSYS_OK;
+    }
+#else
+    dsys_set_last_error(DSYS_ERR_UNSUPPORTED, "cliptext_get: unsupported");
+    return DSYS_ERR_UNSUPPORTED;
+#endif
+}
+
+static dsys_result dsys_cliptext_set_text(const char* text)
+{
+    dsys_clear_last_error();
+    if (!text) {
+        text = "";
+    }
+#if defined(_WIN32)
+    {
+        int wlen;
+        HGLOBAL hmem;
+        wchar_t* wide;
+
+        wlen = MultiByteToWideChar(CP_UTF8, 0, text, -1, NULL, 0);
+        if (wlen <= 0) {
+            dsys_set_last_error(DSYS_ERR, "cliptext_set: convert failed");
+            return DSYS_ERR;
+        }
+        hmem = GlobalAlloc(GMEM_MOVEABLE, (SIZE_T)wlen * sizeof(wchar_t));
+        if (!hmem) {
+            dsys_set_last_error(DSYS_ERR, "cliptext_set: alloc failed");
+            return DSYS_ERR;
+        }
+        wide = (wchar_t*)GlobalLock(hmem);
+        if (!wide) {
+            GlobalFree(hmem);
+            dsys_set_last_error(DSYS_ERR, "cliptext_set: lock failed");
+            return DSYS_ERR;
+        }
+        MultiByteToWideChar(CP_UTF8, 0, text, -1, wide, wlen);
+        GlobalUnlock(hmem);
+        if (!OpenClipboard(NULL)) {
+            GlobalFree(hmem);
+            dsys_set_last_error(DSYS_ERR, "cliptext_set: open failed");
+            return DSYS_ERR;
+        }
+        EmptyClipboard();
+        if (!SetClipboardData(CF_UNICODETEXT, hmem)) {
+            CloseClipboard();
+            GlobalFree(hmem);
+            dsys_set_last_error(DSYS_ERR, "cliptext_set: set failed");
+            return DSYS_ERR;
+        }
+        CloseClipboard();
+        return DSYS_OK;
+    }
+#else
+    dsys_set_last_error(DSYS_ERR_UNSUPPORTED, "cliptext_set: unsupported");
+    return DSYS_ERR_UNSUPPORTED;
+#endif
+}
+
+static dsys_result dsys_cursor_set(dsys_window* win, dsys_cursor_shape shape)
+{
+    dsys_clear_last_error();
+    if (!win) {
+        dsys_set_last_error(DSYS_ERR, "cursor_set: null window");
+        return DSYS_ERR;
+    }
+    win->cursor_shape = (uint32_t)shape;
+#if defined(_WIN32)
+    {
+        HCURSOR cursor = NULL;
+        switch (shape) {
+        case DSYS_CURSOR_IBEAM: cursor = LoadCursor(NULL, IDC_IBEAM); break;
+        case DSYS_CURSOR_HAND: cursor = LoadCursor(NULL, IDC_HAND); break;
+        case DSYS_CURSOR_SIZE_H: cursor = LoadCursor(NULL, IDC_SIZEWE); break;
+        case DSYS_CURSOR_SIZE_V: cursor = LoadCursor(NULL, IDC_SIZENS); break;
+        case DSYS_CURSOR_SIZE_ALL: cursor = LoadCursor(NULL, IDC_SIZEALL); break;
+        case DSYS_CURSOR_ARROW:
+        default:
+            cursor = LoadCursor(NULL, IDC_ARROW);
+            break;
+        }
+        if (cursor) {
+            SetCursor(cursor);
+        }
+    }
+    return DSYS_OK;
+#else
+    dsys_set_last_error(DSYS_ERR_UNSUPPORTED, "cursor_set: unsupported");
+    return DSYS_ERR_UNSUPPORTED;
+#endif
+}
+
+static void dsys_win32_set_cursor_visible(int visible)
+{
+#if defined(_WIN32)
+    int count;
+    if (visible) {
+        count = ShowCursor(TRUE);
+        while (count < 0) {
+            count = ShowCursor(TRUE);
+        }
+    } else {
+        count = ShowCursor(FALSE);
+        while (count >= 0) {
+            count = ShowCursor(FALSE);
+        }
+    }
+#else
+    (void)visible;
+#endif
+}
+
+static dsys_result dsys_cursor_show(dsys_window* win, bool visible)
+{
+    dsys_clear_last_error();
+    if (!win) {
+        dsys_set_last_error(DSYS_ERR, "cursor_show: null window");
+        return DSYS_ERR;
+    }
+    win->cursor_visible = visible ? 1 : 0;
+#if defined(_WIN32)
+    if (g_dsys_cursor_visible != win->cursor_visible) {
+        g_dsys_cursor_visible = win->cursor_visible;
+        dsys_win32_set_cursor_visible(g_dsys_cursor_visible);
+    }
+    return DSYS_OK;
+#else
+    dsys_set_last_error(DSYS_ERR_UNSUPPORTED, "cursor_show: unsupported");
+    return DSYS_ERR_UNSUPPORTED;
+#endif
+}
+
+static dsys_result dsys_cursor_confine(dsys_window* win, bool confined)
+{
+    dsys_clear_last_error();
+    if (!win) {
+        dsys_set_last_error(DSYS_ERR, "cursor_confine: null window");
+        return DSYS_ERR;
+    }
+#if defined(_WIN32)
+    if (!confined) {
+        ClipCursor(NULL);
+        win->cursor_confined = 0;
+        return DSYS_OK;
+    }
+    {
+        HWND hwnd = (HWND)dsys_window_get_native_handle(win);
+        RECT rc;
+        POINT tl;
+        POINT br;
+        if (!hwnd) {
+            dsys_set_last_error(DSYS_ERR, "cursor_confine: null hwnd");
+            return DSYS_ERR;
+        }
+        if (!GetClientRect(hwnd, &rc)) {
+            dsys_set_last_error(DSYS_ERR, "cursor_confine: rect failed");
+            return DSYS_ERR;
+        }
+        tl.x = rc.left;
+        tl.y = rc.top;
+        br.x = rc.right;
+        br.y = rc.bottom;
+        ClientToScreen(hwnd, &tl);
+        ClientToScreen(hwnd, &br);
+        rc.left = tl.x;
+        rc.top = tl.y;
+        rc.right = br.x;
+        rc.bottom = br.y;
+        if (!ClipCursor(&rc)) {
+            dsys_set_last_error(DSYS_ERR, "cursor_confine: clip failed");
+            return DSYS_ERR;
+        }
+    }
+    win->cursor_confined = 1;
+    return DSYS_OK;
+#else
+    dsys_set_last_error(DSYS_ERR_UNSUPPORTED, "cursor_confine: unsupported");
+    return DSYS_ERR_UNSUPPORTED;
+#endif
+}
+
+static dsys_result dsys_cursor_set_relative(dsys_window* win, bool enabled)
+{
+    dsys_clear_last_error();
+    if (!win) {
+        dsys_set_last_error(DSYS_ERR, "cursor_relative: null window");
+        return DSYS_ERR;
+    }
+#if defined(_WIN32)
+    if (enabled) {
+        RAWINPUTDEVICE rid;
+        HWND hwnd = (HWND)dsys_window_get_native_handle(win);
+        if (!hwnd) {
+            dsys_set_last_error(DSYS_ERR, "cursor_relative: null hwnd");
+            return DSYS_ERR;
+        }
+        rid.usUsagePage = 0x01;
+        rid.usUsage = 0x02;
+        rid.dwFlags = RIDEV_INPUTSINK;
+        rid.hwndTarget = hwnd;
+        if (!RegisterRawInputDevices(&rid, 1, sizeof(rid))) {
+            dsys_set_last_error(DSYS_ERR, "cursor_relative: raw input failed");
+            return DSYS_ERR;
+        }
+        win->relative_mouse = 1;
+        (void)dsys_cursor_show(win, false);
+    } else {
+        win->relative_mouse = 0;
+        (void)dsys_cursor_show(win, true);
+    }
+    return DSYS_OK;
+#else
+    dsys_set_last_error(DSYS_ERR_UNSUPPORTED, "cursor_relative: unsupported");
+    return DSYS_ERR_UNSUPPORTED;
+#endif
+}
+
+static dsys_result dsys_text_input_start(dsys_window* win)
+{
+    (void)win;
+    dsys_clear_last_error();
+    dsys_ime_start();
+    return DSYS_OK;
+}
+
+static dsys_result dsys_text_input_stop(dsys_window* win)
+{
+    (void)win;
+    dsys_clear_last_error();
+    dsys_ime_stop();
+    return DSYS_OK;
+}
+
+static dsys_result dsys_text_input_set_cursor(dsys_window* win, int32_t x, int32_t y)
+{
+    (void)win;
+    dsys_clear_last_error();
+    dsys_ime_set_cursor(x, y);
+    return DSYS_OK;
+}
+
+static int dsys_text_input_poll(dsys_ime_event* ev)
+{
+    return dsys_ime_poll(ev);
+}
+
+static dsys_result dsys_window_mode_set(dsys_window* win, dsys_window_mode mode)
+{
+    dsys_clear_last_error();
+    if (!win) {
+        dsys_set_last_error(DSYS_ERR, "window_mode_set: null window");
+        return DSYS_ERR;
+    }
+    if (!dsys_get_caps().has_windows) {
+        dsys_set_last_error(DSYS_ERR_UNSUPPORTED, "window_mode_set: unsupported");
+        return DSYS_ERR_UNSUPPORTED;
+    }
+    dsys_window_set_mode(win, mode);
+    return DSYS_OK;
+}
+
+static dsys_window_mode dsys_window_mode_get(dsys_window* win)
+{
+    if (!win) {
+        return DWIN_MODE_WINDOWED;
+    }
+    return win->mode;
 }
 
 #if defined(_WIN32)
@@ -1533,14 +1950,33 @@ void* dsys_query_extension(const char* name, u32 version)
     if (dsys_str_ieq(name, DSYS_EXTENSION_WINDOW_EX)) {
         return (void*)&g_dsys_window_ex_api_v1;
     }
+    if (dsys_str_ieq(name, DSYS_EXTENSION_DPI)) {
+        return (void*)&g_dsys_window_ex_api_v1;
+    }
     if (dsys_str_ieq(name, DSYS_EXTENSION_ERROR)) {
         return (void*)&g_dsys_error_api_v1;
     }
     if (dsys_str_ieq(name, DSYS_EXTENSION_CLIPTEXT)) {
+#if defined(_WIN32)
         return (void*)&g_dsys_cliptext_api_v1;
+#else
+        dsys_set_last_error(DSYS_ERR_UNSUPPORTED, "dsys_query_extension: unsupported");
+        return NULL;
+#endif
     }
     if (dsys_str_ieq(name, DSYS_EXTENSION_CURSOR)) {
+#if defined(_WIN32)
         return (void*)&g_dsys_cursor_api_v1;
+#else
+        dsys_set_last_error(DSYS_ERR_UNSUPPORTED, "dsys_query_extension: unsupported");
+        return NULL;
+#endif
+    }
+    if (dsys_str_ieq(name, DSYS_EXTENSION_TEXT_INPUT)) {
+        return (void*)&g_dsys_text_input_api_v1;
+    }
+    if (dsys_str_ieq(name, DSYS_EXTENSION_WINDOW_MODE)) {
+        return (void*)&g_dsys_window_mode_api_v1;
     }
     if (dsys_str_ieq(name, DSYS_EXTENSION_DRAGDROP)) {
         return (void*)&g_dsys_dragdrop_api_v1;
