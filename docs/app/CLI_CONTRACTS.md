@@ -11,6 +11,8 @@ for tests, and no packs are required for `--help`, `--version`, `--build-info`,
 - `--status`: deterministic status output
 - `--smoke`: deterministic CLI smoke run
 - `--selftest`: alias for `--smoke`
+- `--deterministic`: fixed timestep (no wall-clock sleep)
+- `--interactive`: variable timestep (wall-clock)
 
 ## Build-info output (all products)
 Key/value lines include:
@@ -24,9 +26,11 @@ Key/value lines include:
 ## Client (`client`)
 - `--renderer <name>`: explicit renderer selection; fails loudly if unavailable
 - `--windowed`: start a windowed shell (not used by CLI tests)
+- `--tui`: start a terminal UI shell (not used by CLI tests)
 - `--borderless`: start a borderless window
 - `--fullscreen`: start a fullscreen window (best-effort)
 - `--width <px>`, `--height <px>`: window size override
+- `--frame-cap-ms <ms>`: frame cap for interactive loops
 - `--mp0-connect=local`: MP0 local demo (deterministic)
 
 ## Server (`server`)
@@ -45,3 +49,5 @@ Key/value lines include:
 ## Tools (`tools`)
 - Commands: `inspect`, `validate`, `replay` (stubs)
 - `--status`/`--smoke`: prints `tools_status=ok` or `tools_smoke=ok`
+- `--tui`: start a terminal UI shell (not used by CLI tests)
+- `--frame-cap-ms <ms>`: frame cap for interactive loops
