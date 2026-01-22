@@ -4,8 +4,11 @@ TUI is a runtime feature for client and tools. Tests remain CLI-only and do not
 depend on TUI paths.
 
 ## Entry points
-- `client --tui`
-- `tools --tui`
+- `client --ui=tui` (or `--tui`)
+- `tools --ui=tui` (or `--tui`)
+
+Environment defaults:
+- `DOM_UI=tui` (or `DOM_UI_MODE=tui`) when no CLI flag is provided
 
 Optional flags:
 - `--deterministic` / `--interactive`
