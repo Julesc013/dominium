@@ -22,6 +22,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include <string.h>
 #include <time.h>
 #include <ctype.h>
+#include <signal.h>
 
 #if defined(_WIN32)
 #include <windows.h>
@@ -47,6 +48,20 @@ static dsys_log_fn g_dsys_log_cb = 0;
 static dsys_result g_dsys_last_error_code = DSYS_OK;
 static char g_dsys_last_error_text[DSYS_LAST_ERROR_TEXT_MAX];
 
+uint64_t dsys_time_now_us(void);
+
+#define DSYS_EVENT_QUEUE_MAX 128u
+static dsys_event g_dsys_event_queue[DSYS_EVENT_QUEUE_MAX];
+static unsigned int g_dsys_event_head = 0u;
+static unsigned int g_dsys_event_tail = 0u;
+
+static volatile sig_atomic_t g_dsys_shutdown_requested = 0;
+static volatile sig_atomic_t g_dsys_shutdown_reason = (sig_atomic_t)DSYS_SHUTDOWN_NONE;
+#if !defined(_WIN32)
+static struct sigaction g_dsys_prev_sigint;
+static struct sigaction g_dsys_prev_sigterm;
+#endif
+
 static void dsys_set_last_error(dsys_result code, const char* text)
 {
     g_dsys_last_error_code = code;
@@ -61,6 +76,50 @@ static void dsys_set_last_error(dsys_result code, const char* text)
 static void dsys_clear_last_error(void)
 {
     dsys_set_last_error(DSYS_OK, "");
+}
+
+static void dsys_event_queue_reset(void)
+{
+    g_dsys_event_head = 0u;
+    g_dsys_event_tail = 0u;
+}
+
+int dsys_internal_event_push(const dsys_event* ev)
+{
+    unsigned int next_tail;
+    dsys_event local;
+    if (!ev) {
+        return 0;
+    }
+    local = *ev;
+    if (local.timestamp_us == 0u) {
+        local.timestamp_us = dsys_time_now_us();
+    }
+    next_tail = g_dsys_event_tail + 1u;
+    if (next_tail >= DSYS_EVENT_QUEUE_MAX) {
+        next_tail = 0u;
+    }
+    if (next_tail == g_dsys_event_head) {
+        return 0;
+    }
+    g_dsys_event_queue[g_dsys_event_tail] = local;
+    g_dsys_event_tail = next_tail;
+    return 1;
+}
+
+int dsys_internal_event_pop(dsys_event* out)
+{
+    if (g_dsys_event_head == g_dsys_event_tail) {
+        return 0;
+    }
+    if (out) {
+        *out = g_dsys_event_queue[g_dsys_event_head];
+    }
+    g_dsys_event_head += 1u;
+    if (g_dsys_event_head >= DSYS_EVENT_QUEUE_MAX) {
+        g_dsys_event_head = 0u;
+    }
+    return 1;
 }
 
 void dsys_set_log_callback(dsys_log_fn fn)
@@ -434,6 +493,9 @@ static void* null_window_get_native_handle(dsys_window* win)
 
 static bool null_poll_event(dsys_event* out)
 {
+    if (dsys_internal_event_pop(out)) {
+        return true;
+    }
     if (out) {
         memset(out, 0, sizeof(*out));
     }
@@ -744,6 +806,7 @@ dsys_result dsys_init(void)
 {
     dsys_result result;
     dsys_clear_last_error();
+    dsys_event_queue_reset();
 #if defined(DSYS_BACKEND_CPM80)
     {
         extern const dsys_backend_vtable* dsys_cpm80_get_vtable(void);
@@ -1039,6 +1102,20 @@ bool dsys_poll_event(dsys_event* out)
     return false;
 }
 
+bool dsys_inject_event(const dsys_event* ev)
+{
+    dsys_clear_last_error();
+    if (!ev) {
+        dsys_set_last_error(DSYS_ERR, "dsys_inject_event: null event");
+        return false;
+    }
+    if (!dsys_internal_event_push(ev)) {
+        dsys_set_last_error(DSYS_ERR, "dsys_inject_event: queue full");
+        return false;
+    }
+    return true;
+}
+
 int dsys_input_poll_raw(dsys_input_event* ev)
 {
     if (ev) {
@@ -1068,6 +1145,95 @@ int dsys_ime_poll(dsys_ime_event* ev)
         memset(ev, 0, sizeof(*ev));
     }
     return 0;
+}
+
+#if defined(_WIN32)
+static BOOL WINAPI dsys_console_ctrl_handler(DWORD type)
+{
+    dsys_shutdown_reason reason = DSYS_SHUTDOWN_SIGNAL;
+    switch (type) {
+    case CTRL_C_EVENT:
+    case CTRL_BREAK_EVENT:
+        reason = DSYS_SHUTDOWN_SIGNAL;
+        break;
+    case CTRL_CLOSE_EVENT:
+    case CTRL_LOGOFF_EVENT:
+    case CTRL_SHUTDOWN_EVENT:
+        reason = DSYS_SHUTDOWN_CONSOLE;
+        break;
+    default:
+        break;
+    }
+    g_dsys_shutdown_reason = (sig_atomic_t)reason;
+    g_dsys_shutdown_requested = 1;
+    return TRUE;
+}
+#else
+static void dsys_posix_signal_handler(int sig)
+{
+    (void)sig;
+    g_dsys_shutdown_reason = (sig_atomic_t)DSYS_SHUTDOWN_SIGNAL;
+    g_dsys_shutdown_requested = 1;
+}
+#endif
+
+void dsys_lifecycle_init(void)
+{
+    g_dsys_shutdown_requested = 0;
+    g_dsys_shutdown_reason = (sig_atomic_t)DSYS_SHUTDOWN_NONE;
+#if defined(_WIN32)
+    SetConsoleCtrlHandler(dsys_console_ctrl_handler, TRUE);
+#else
+    {
+        struct sigaction sa;
+        memset(&sa, 0, sizeof(sa));
+        sa.sa_handler = dsys_posix_signal_handler;
+        sigemptyset(&sa.sa_mask);
+        sigaction(SIGINT, &sa, &g_dsys_prev_sigint);
+        sigaction(SIGTERM, &sa, &g_dsys_prev_sigterm);
+    }
+#endif
+}
+
+void dsys_lifecycle_shutdown(void)
+{
+#if defined(_WIN32)
+    SetConsoleCtrlHandler(dsys_console_ctrl_handler, FALSE);
+#else
+    sigaction(SIGINT, &g_dsys_prev_sigint, NULL);
+    sigaction(SIGTERM, &g_dsys_prev_sigterm, NULL);
+#endif
+}
+
+void dsys_lifecycle_request_shutdown(dsys_shutdown_reason reason)
+{
+    if (!g_dsys_shutdown_requested) {
+        g_dsys_shutdown_reason = (sig_atomic_t)reason;
+        g_dsys_shutdown_requested = 1;
+    }
+}
+
+bool dsys_lifecycle_shutdown_requested(void)
+{
+    return g_dsys_shutdown_requested ? true : false;
+}
+
+dsys_shutdown_reason dsys_lifecycle_shutdown_reason(void)
+{
+    return (dsys_shutdown_reason)g_dsys_shutdown_reason;
+}
+
+const char* dsys_lifecycle_shutdown_reason_text(dsys_shutdown_reason reason)
+{
+    switch (reason) {
+    case DSYS_SHUTDOWN_NONE: return "none";
+    case DSYS_SHUTDOWN_SIGNAL: return "signal";
+    case DSYS_SHUTDOWN_CONSOLE: return "console_close";
+    case DSYS_SHUTDOWN_WINDOW: return "window_close";
+    case DSYS_SHUTDOWN_APP_REQUEST: return "app_request";
+    default: break;
+    }
+    return "unknown";
 }
 
 static void* dsys_dynlib_open(const char* path)
