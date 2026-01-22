@@ -223,7 +223,6 @@ else()
     list(APPEND ENGINE_SYSTEM_SOURCES
         modules/system/dsys_proc_stub.c
         modules/system/dsys_terminal_detect_posix.c
-        modules/system/dsys_window_stub.c
     )
 endif()
 
@@ -313,6 +312,7 @@ set_target_properties(domino_engine PROPERTIES
 )
 
 if(WIN32)
+    target_compile_definitions(domino_engine PRIVATE DSYS_BACKEND_WIN32)
     target_link_libraries(domino_engine PRIVATE user32 gdi32)
 else()
     target_link_libraries(domino_engine PRIVATE m)

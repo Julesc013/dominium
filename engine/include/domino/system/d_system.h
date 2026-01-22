@@ -49,6 +49,10 @@ int  d_system_process_spawn(const char *path, const char *args);
  * or NULL when no window exists (e.g. headless).
  */
 void* d_system_get_native_window_handle(void);
+/* Purpose: Set native window handle for presentation (external window ownership).
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
+void d_system_set_native_window_handle(void* handle);
 
 /* Purpose: Present framebuffer.
  * Parameters: See `docs/CONTRACTS.md#Parameters`.

@@ -27,6 +27,7 @@ static int g_system_initialized = 0;
 
 #if defined(_WIN32)
 static HWND g_hwnd = NULL;
+static int g_hwnd_external = 0;
 
 static const char *d_system_class_name(void)
 {
@@ -183,10 +184,11 @@ static int d_system_create_window(void)
 
 static void d_system_destroy_window(void)
 {
-    if (g_hwnd) {
+    if (g_hwnd && !g_hwnd_external) {
         DestroyWindow(g_hwnd);
-        g_hwnd = NULL;
     }
+    g_hwnd = NULL;
+    g_hwnd_external = 0;
 }
 #endif /* _WIN32 */
 
@@ -207,8 +209,10 @@ int d_system_init(const char *backend_name)
 
 #if defined(_WIN32)
     if (!headless) {
-        if (!d_system_create_window()) {
-            return 0;
+        if (!g_hwnd) {
+            if (!d_system_create_window()) {
+                return 0;
+            }
         }
     }
 #else
@@ -225,6 +229,16 @@ void* d_system_get_native_window_handle(void)
     return (void*)g_hwnd;
 #else
     return (void*)0;
+#endif
+}
+
+void d_system_set_native_window_handle(void* handle)
+{
+#if defined(_WIN32)
+    g_hwnd = (HWND)handle;
+    g_hwnd_external = handle ? 1 : 0;
+#else
+    (void)handle;
 #endif
 }
 
