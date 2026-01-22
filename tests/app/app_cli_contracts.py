@@ -137,7 +137,13 @@ def main():
 
     ok = ok and run_cmd(
         [args.launcher, "capabilities"],
-        expect_contains=["platform_backend=", "renderer_auto=", "renderer="],
+        expect_contains=[
+            "platform_backend=",
+            "renderer_auto=",
+            "renderer=",
+            "platform_ext_dpi=",
+            "platform_ext_window_mode=",
+        ],
     )
 
     temp_root = os.path.abspath(args.temp_root)
