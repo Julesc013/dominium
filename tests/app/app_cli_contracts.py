@@ -97,6 +97,12 @@ def main():
     ok = ok and run_cmd([args.setup, "--smoke"])
     ok = ok and run_cmd([args.tools, "--smoke"])
 
+    ok = ok and run_cmd([args.client, "--ui=none", "--smoke"])
+    ok = ok and run_cmd([args.server, "--ui=none", "--smoke"])
+    ok = ok and run_cmd([args.launcher, "--ui=none", "--smoke"])
+    ok = ok and run_cmd([args.setup, "--ui=none", "--smoke"])
+    ok = ok and run_cmd([args.tools, "--ui=none", "--smoke"])
+
     ok = ok and run_cmd([args.client, "--deterministic", "--smoke"])
     ok = ok and run_cmd([args.server, "--deterministic", "--smoke"])
     ok = ok and run_cmd([args.launcher, "--deterministic", "--smoke"])
@@ -144,6 +150,27 @@ def main():
             "platform_ext_dpi=",
             "platform_ext_window_mode=",
         ],
+    )
+
+    ok = ok and run_cmd(
+        [args.server, "--ui=gui"],
+        expect_nonzero=True,
+        expect_contains=["gui not implemented"],
+    )
+    ok = ok and run_cmd(
+        [args.launcher, "--ui=gui"],
+        expect_nonzero=True,
+        expect_contains=["gui not implemented"],
+    )
+    ok = ok and run_cmd(
+        [args.setup, "--ui=gui"],
+        expect_nonzero=True,
+        expect_contains=["gui not implemented"],
+    )
+    ok = ok and run_cmd(
+        [args.tools, "--ui=gui"],
+        expect_nonzero=True,
+        expect_contains=["gui not implemented"],
     )
 
     temp_root = os.path.abspath(args.temp_root)
