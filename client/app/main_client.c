@@ -31,6 +31,7 @@ static void print_help(void)
     printf("  --smoke                     Run deterministic CLI smoke\n");
     printf("  --selftest                  Alias for --smoke\n");
     printf("  --renderer <name>           Select renderer (explicit; no fallback)\n");
+    printf("  --ui=gui|tui|none           Select UI shell (gui maps to windowed)\n");
     printf("  --windowed                  Start a windowed client shell\n");
     printf("  --tui                       Start a terminal client shell\n");
     printf("  --borderless                Start a borderless window\n");
@@ -67,6 +68,7 @@ static void print_build_info(const char* product_name, const char* product_versi
     printf("abi_dom_caps=%u\n", (unsigned int)DOM_CAPS_ABI_VERSION);
     printf("api_dsys=%u\n", 1u);
     printf("api_dgfx=%u\n", (unsigned int)DGFX_PROTOCOL_VERSION);
+    print_platform_caps();
 }
 
 static void print_control_caps(const dom_control_caps* caps)
@@ -89,6 +91,42 @@ static void print_control_caps(const dom_control_caps* caps)
             printf("control_cap=%s\n", entry->key);
         }
     }
+}
+
+static void print_platform_caps(void)
+{
+    dsys_caps caps;
+    void* ext;
+    if (dsys_init() != DSYS_OK) {
+        printf("platform_init=failed\n");
+        printf("platform_error=%s\n", dsys_last_error_text());
+        return;
+    }
+    caps = dsys_get_caps();
+    printf("platform_backend=%s\n", caps.name ? caps.name : "");
+    printf("platform_ui_modes=%u\n", (unsigned int)caps.ui_modes);
+    printf("platform_has_windows=%u\n", caps.has_windows ? 1u : 0u);
+    printf("platform_has_mouse=%u\n", caps.has_mouse ? 1u : 0u);
+    printf("platform_has_gamepad=%u\n", caps.has_gamepad ? 1u : 0u);
+    printf("platform_has_high_res_timer=%u\n", caps.has_high_res_timer ? 1u : 0u);
+
+    ext = dsys_query_extension(DSYS_EXTENSION_DPI, 1u);
+    printf("platform_ext_dpi=%s\n", (ext && caps.has_windows) ? "available" : "missing");
+    ext = dsys_query_extension(DSYS_EXTENSION_WINDOW_MODE, 1u);
+    printf("platform_ext_window_mode=%s\n", (ext && caps.has_windows) ? "available" : "missing");
+    ext = dsys_query_extension(DSYS_EXTENSION_CURSOR, 1u);
+    printf("platform_ext_cursor=%s\n", (ext && caps.has_windows) ? "available" : "missing");
+    ext = dsys_query_extension(DSYS_EXTENSION_CLIPTEXT, 1u);
+    printf("platform_ext_cliptext=%s\n", (ext && caps.has_windows) ? "available" : "missing");
+    ext = dsys_query_extension(DSYS_EXTENSION_TEXT_INPUT, 1u);
+    printf("platform_ext_text_input=%s\n", (ext && caps.has_windows) ? "available" : "missing");
+
+    printf("window_default_width=800\n");
+    printf("window_default_height=600\n");
+    printf("framebuffer_default_width=800\n");
+    printf("framebuffer_default_height=600\n");
+    printf("dpi_scale_default=1.0\n");
+    dsys_shutdown();
 }
 
 static int enable_control_list(dom_control_caps* caps, const char* list)
@@ -284,6 +322,8 @@ static int client_run_windowed(const client_window_config* cfg, const char* rend
     int32_t fb_w = 0;
     int32_t fb_h = 0;
     dsys_event ev;
+    const dsys_window_mode_api_v1* window_mode_api = 0;
+    dsys_window_mode current_mode = DWIN_MODE_WINDOWED;
     float dpi_scale = 1.0f;
     client_clock clock;
     uint64_t frame_start_us = 0u;
@@ -293,6 +333,7 @@ static int client_run_windowed(const client_window_config* cfg, const char* rend
         return D_APP_EXIT_FAILURE;
     }
     dsys_ready = 1;
+    window_mode_api = (const dsys_window_mode_api_v1*)dsys_query_extension(DSYS_EXTENSION_WINDOW_MODE, 1u);
     dsys_lifecycle_init();
     lifecycle_ready = 1;
     client_clock_init(&clock, timing_mode);
@@ -310,6 +351,17 @@ static int client_run_windowed(const client_window_config* cfg, const char* rend
         goto cleanup;
     }
     dsys_window_show(win);
+    current_mode = desc.mode;
+    if (window_mode_api) {
+        if (window_mode_api->set_mode(win, current_mode) != DSYS_OK) {
+            fprintf(stderr, "client: window mode set failed (%s)\n", dsys_last_error_text());
+            goto cleanup;
+        }
+        current_mode = window_mode_api->get_mode(win);
+    } else if (current_mode != DWIN_MODE_WINDOWED) {
+        fprintf(stderr, "client: window mode extension unavailable\n");
+        goto cleanup;
+    }
 
     d_system_set_native_window_handle(dsys_window_get_native_handle(win));
 
@@ -337,6 +389,22 @@ static int client_run_windowed(const client_window_config* cfg, const char* rend
             if (ev.type == DSYS_EVENT_QUIT) {
                 dsys_lifecycle_request_shutdown(DSYS_SHUTDOWN_WINDOW);
                 break;
+            }
+            if (ev.type == DSYS_EVENT_KEY_DOWN) {
+                int key = ev.payload.key.key;
+                if (key == 'B' || key == 'b') {
+                    dsys_window_mode target = (current_mode == DWIN_MODE_BORDERLESS)
+                        ? DWIN_MODE_WINDOWED
+                        : DWIN_MODE_BORDERLESS;
+                    if (!window_mode_api) {
+                        fprintf(stderr, "client: window mode extension unavailable\n");
+                    } else if (window_mode_api->set_mode(win, target) != DSYS_OK) {
+                        fprintf(stderr, "client: window mode change failed (%s)\n", dsys_last_error_text());
+                    } else {
+                        current_mode = window_mode_api->get_mode(win);
+                        fprintf(stderr, "client: window mode=%d\n", (int)current_mode);
+                    }
+                }
             }
             if (ev.type == DSYS_EVENT_WINDOW_RESIZED) {
                 dsys_window_get_framebuffer_size(win, &fb_w, &fb_h);
@@ -582,6 +650,7 @@ int main(int argc, char** argv)
     const char* control_registry_path = "data/registries/control_capabilities.registry";
     const char* control_enable = 0;
     const char* renderer = 0;
+    const char* ui_mode = 0;
     client_window_config window_cfg;
     d_app_timing_mode timing_mode = D_APP_TIMING_DETERMINISTIC;
     uint32_t frame_cap_ms = 16u;
@@ -706,6 +775,15 @@ int main(int argc, char** argv)
             i += 1;
             continue;
         }
+        if (strncmp(argv[i], "--ui=", 5) == 0) {
+            ui_mode = argv[i] + 5;
+            continue;
+        }
+        if (strcmp(argv[i], "--ui") == 0 && i + 1 < argc) {
+            ui_mode = argv[i + 1];
+            i += 1;
+            continue;
+        }
         if (strcmp(argv[i], "--control-registry") == 0 && i + 1 < argc) {
             control_registry_path = argv[i + 1];
             i += 1;
@@ -731,6 +809,32 @@ int main(int argc, char** argv)
     if (want_version) {
         print_version(DOMINIUM_GAME_VERSION);
         return 0;
+    }
+    if (ui_mode) {
+        if (strcmp(ui_mode, "gui") == 0) {
+            if (want_tui) {
+                fprintf(stderr, "client: --ui=gui conflicts with --tui\n");
+                return D_APP_EXIT_USAGE;
+            }
+            window_cfg.enabled = 1;
+        } else if (strcmp(ui_mode, "tui") == 0) {
+            if (window_cfg.enabled) {
+                fprintf(stderr, "client: --ui=tui conflicts with windowed flags\n");
+                return D_APP_EXIT_USAGE;
+            }
+            want_tui = 1;
+            window_cfg.enabled = 0;
+        } else if (strcmp(ui_mode, "none") == 0) {
+            if (window_cfg.enabled || want_tui) {
+                fprintf(stderr, "client: --ui=none conflicts with ui flags\n");
+                return D_APP_EXIT_USAGE;
+            }
+            window_cfg.enabled = 0;
+            want_tui = 0;
+        } else {
+            fprintf(stderr, "client: invalid --ui value (use gui|tui|none)\n");
+            return D_APP_EXIT_USAGE;
+        }
     }
     if (want_deterministic && want_interactive) {
         fprintf(stderr, "client: --deterministic and --interactive are mutually exclusive\n");
