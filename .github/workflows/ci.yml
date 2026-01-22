@@ -5,6 +5,43 @@ on:
   pull_request:
 
 jobs:
+  repo-sanity:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: IDE quarantine
+        run: python scripts/verify_ide_quarantine.py --repo-root .
+      - name: Tree sanity
+        run: scripts/verify_tree_sanity.bat
+      - name: UI shell purity
+        run: python scripts/verify_ui_shell_purity.py --repo-root .
+      - name: ABI boundary check
+        run: python scripts/verify_abi_boundaries.py --repo-root .
+
+  projection-sanity:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            preset: ide-win-vc6-win9x-client-gui
+          - os: ubuntu-latest
+            preset: ide-linux-gcc295-legacy-client-gui
+          - os: macos-latest
+            preset: ide-mac-xcode3-universal-setup-gui
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Projection regen clean
+        run: python scripts/verify_projection_regen_clean.py --repo-root . --preset ${{ matrix.preset }}
+
+  docs-sanity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Docs sanity
+        run: python3 scripts/verify_docs_sanity.py --repo-root .
+
   build-test:
     strategy:
       fail-fast: false

@@ -3,6 +3,7 @@ setlocal enabledelayedexpansion
 
 set "fail=0"
 
+call :run_python "scripts\\verify_ide_quarantine.py"
 call :check_glob "engine\\launcher_*"
 call :check_glob "engine\\setup_*"
 call :check_dir "engine\\include\\dominium"
@@ -19,6 +20,13 @@ if "%fail%"=="0" (
 
 echo Tree sanity FAILED.
 exit /b 1
+
+:run_python
+python %~1 --repo-root "%CD%"
+if not "%ERRORLEVEL%"=="0" (
+  set "fail=1"
+)
+exit /b 0
 
 :check_dir
 if exist "%~1" (
