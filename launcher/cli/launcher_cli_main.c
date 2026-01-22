@@ -154,6 +154,7 @@ static int launcher_print_capabilities(void)
     d_gfx_backend_type auto_backend;
     const char* auto_name;
     int dsys_ok = 0;
+    void* ext;
     u32 i;
 
     if (dsys_init() == DSYS_OK) {
@@ -175,6 +176,16 @@ static int launcher_print_capabilities(void)
     printf("platform_mouse=%u\n", caps.has_mouse ? 1u : 0u);
     printf("platform_gamepad=%u\n", caps.has_gamepad ? 1u : 0u);
     printf("platform_hr_timer=%u\n", caps.has_high_res_timer ? 1u : 0u);
+    ext = dsys_query_extension(DSYS_EXTENSION_DPI, 1u);
+    printf("platform_ext_dpi=%s\n", (ext && caps.has_windows) ? "available" : "missing");
+    ext = dsys_query_extension(DSYS_EXTENSION_WINDOW_MODE, 1u);
+    printf("platform_ext_window_mode=%s\n", (ext && caps.has_windows) ? "available" : "missing");
+    ext = dsys_query_extension(DSYS_EXTENSION_CURSOR, 1u);
+    printf("platform_ext_cursor=%s\n", (ext && caps.has_windows) ? "available" : "missing");
+    ext = dsys_query_extension(DSYS_EXTENSION_CLIPTEXT, 1u);
+    printf("platform_ext_cliptext=%s\n", (ext && caps.has_windows) ? "available" : "missing");
+    ext = dsys_query_extension(DSYS_EXTENSION_TEXT_INPUT, 1u);
+    printf("platform_ext_text_input=%s\n", (ext && caps.has_windows) ? "available" : "missing");
 
     count = d_gfx_detect_backends(infos, (u32)(sizeof(infos) / sizeof(infos[0])));
     auto_backend = d_gfx_select_backend();
