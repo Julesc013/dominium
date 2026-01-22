@@ -6,6 +6,7 @@ Minimal server entrypoint with MP0 loopback/local modes.
 #include "domino/caps.h"
 #include "domino/config_base.h"
 #include "domino/gfx.h"
+#include "domino/app/runtime.h"
 #include "domino/version.h"
 #include "dom_contracts/version.h"
 #include "dom_contracts/_internal/dom_build_version.h"
@@ -25,6 +26,8 @@ static void print_help(void)
     printf("  --status                    Show active control layers\n");
     printf("  --smoke                     Run deterministic CLI smoke\n");
     printf("  --selftest                  Alias for --smoke\n");
+    printf("  --deterministic             Use fixed timestep (no wall-clock sleep)\n");
+    printf("  --interactive               Use variable timestep (wall-clock)\n");
     printf("  --control-enable=K1,K2       Enable control capabilities (canonical keys)\n");
     printf("  --control-registry <path>    Override control registry path\n");
     printf("  --mp0-loopback               Run MP0 loopback demo\n");
@@ -169,13 +172,13 @@ static int mp0_run_server_auth(void)
     u64 hash_client;
 
     if (mp0_build_commands(&queue, storage) != 0) {
-        return 1;
+        return D_APP_EXIT_FAILURE;
     }
     if (mp0_build_state(&server) != 0) {
-        return 1;
+        return D_APP_EXIT_FAILURE;
     }
     if (mp0_build_state(&client) != 0) {
-        return 1;
+        return D_APP_EXIT_FAILURE;
     }
     (void)dom_mp0_run(&server, &queue, 30);
     dom_mp0_copy_authoritative(&server, &client);
@@ -184,7 +187,7 @@ static int mp0_run_server_auth(void)
     printf("MP0 server-auth hash: %llu (client %llu)\n",
            (unsigned long long)hash_server,
            (unsigned long long)hash_client);
-    return (hash_server == hash_client) ? 0 : 1;
+    return (hash_server == hash_client) ? D_APP_EXIT_OK : D_APP_EXIT_FAILURE;
 }
 
 static int mp0_run_loopback(void)
@@ -195,15 +198,15 @@ static int mp0_run_loopback(void)
     u64 hash_state;
 
     if (mp0_build_commands(&queue, storage) != 0) {
-        return 1;
+        return D_APP_EXIT_FAILURE;
     }
     if (mp0_build_state(&state) != 0) {
-        return 1;
+        return D_APP_EXIT_FAILURE;
     }
     (void)dom_mp0_run(&state, &queue, 30);
     hash_state = dom_mp0_hash_state(&state);
     printf("MP0 loopback hash: %llu\n", (unsigned long long)hash_state);
-    return 0;
+    return D_APP_EXIT_OK;
 }
 
 int main(int argc, char** argv)
@@ -218,6 +221,8 @@ int main(int argc, char** argv)
     int want_server_auth = 0;
     int want_smoke = 0;
     int want_selftest = 0;
+    int want_deterministic = 0;
+    int want_interactive = 0;
     dom_control_caps control_caps;
     int control_loaded = 0;
     int i;
@@ -246,6 +251,14 @@ int main(int argc, char** argv)
             want_selftest = 1;
             continue;
         }
+        if (strcmp(argv[i], "--deterministic") == 0) {
+            want_deterministic = 1;
+            continue;
+        }
+        if (strcmp(argv[i], "--interactive") == 0) {
+            want_interactive = 1;
+            continue;
+        }
         if (strcmp(argv[i], "--control-registry") == 0 && i + 1 < argc) {
             control_registry_path = argv[i + 1];
             i += 1;
@@ -269,11 +282,19 @@ int main(int argc, char** argv)
     }
     if (want_help) {
         print_help();
-        return 0;
+        return D_APP_EXIT_OK;
     }
     if (want_version) {
         print_version(DOMINIUM_GAME_VERSION);
-        return 0;
+        return D_APP_EXIT_OK;
+    }
+    if (want_deterministic && want_interactive) {
+        fprintf(stderr, "server: --deterministic and --interactive are mutually exclusive\n");
+        return D_APP_EXIT_USAGE;
+    }
+    if ((want_smoke || want_selftest) && want_interactive) {
+        fprintf(stderr, "server: --smoke requires deterministic mode\n");
+        return D_APP_EXIT_USAGE;
     }
     if (want_smoke || want_selftest) {
         want_loopback = 1;
@@ -281,13 +302,13 @@ int main(int argc, char** argv)
     if (want_build_info || want_status || control_enable) {
         if (dom_control_caps_init(&control_caps, control_registry_path) != DOM_CONTROL_OK) {
             fprintf(stderr, "server: failed to load control registry: %s\n", control_registry_path);
-            return 2;
+            return D_APP_EXIT_FAILURE;
         }
         control_loaded = 1;
         if (enable_control_list(&control_caps, control_enable) != 0) {
             fprintf(stderr, "server: invalid control capability list\n");
             dom_control_caps_free(&control_caps);
-            return 2;
+            return D_APP_EXIT_USAGE;
         }
     }
     if (want_build_info) {
@@ -296,7 +317,7 @@ int main(int argc, char** argv)
             print_control_caps(&control_caps);
             dom_control_caps_free(&control_caps);
         }
-        return 0;
+        return D_APP_EXIT_OK;
     }
     if (want_status) {
         if (!control_loaded) {
@@ -304,12 +325,12 @@ int main(int argc, char** argv)
                 control_loaded = 1;
             } else {
                 fprintf(stderr, "server: failed to load control registry: %s\n", control_registry_path);
-                return 2;
+                return D_APP_EXIT_FAILURE;
             }
         }
         print_control_caps(&control_caps);
         dom_control_caps_free(&control_caps);
-        return 0;
+        return D_APP_EXIT_OK;
     }
     if (want_loopback) {
         if (control_loaded) {
@@ -327,5 +348,5 @@ int main(int argc, char** argv)
     if (control_loaded) {
         dom_control_caps_free(&control_caps);
     }
-    return 0;
+    return D_APP_EXIT_OK;
 }
