@@ -195,8 +195,12 @@ set(ENGINE_CORE_LEGACY_SOURCES
     modules/core/graph/part/dg_graph_part.c
 )
 
-set(ENGINE_RENDER_STUB_SOURCES
-    render/d_gfx_caps_stub.c
+set(ENGINE_RENDER_SOURCES
+    render/d_gfx.c
+    render/dgfx_trace.c
+    render/backend_detect.c
+    render/soft/d_gfx_soft.c
+    render/null/d_gfx_null.c
 )
 
 set(ENGINE_SYSTEM_SOURCES
@@ -227,7 +231,7 @@ add_library(domino_engine STATIC
     ${ENGINE_CORE_SOURCES}
     ${ENGINE_CORE_LEGACY_SOURCES}
     ${ENGINE_SYSTEM_SOURCES}
-    ${ENGINE_RENDER_STUB_SOURCES}
+    ${ENGINE_RENDER_SOURCES}
 )
 
 add_custom_target(engine_include_sanity

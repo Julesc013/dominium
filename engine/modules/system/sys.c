@@ -43,6 +43,26 @@ static uint64_t g_null_time_us = 0u;
 
 static dsys_log_fn g_dsys_log_cb = 0;
 
+#define DSYS_LAST_ERROR_TEXT_MAX 256u
+static dsys_result g_dsys_last_error_code = DSYS_OK;
+static char g_dsys_last_error_text[DSYS_LAST_ERROR_TEXT_MAX];
+
+static void dsys_set_last_error(dsys_result code, const char* text)
+{
+    g_dsys_last_error_code = code;
+    if (!text) {
+        g_dsys_last_error_text[0] = '\0';
+        return;
+    }
+    strncpy(g_dsys_last_error_text, text, DSYS_LAST_ERROR_TEXT_MAX - 1u);
+    g_dsys_last_error_text[DSYS_LAST_ERROR_TEXT_MAX - 1u] = '\0';
+}
+
+static void dsys_clear_last_error(void)
+{
+    dsys_set_last_error(DSYS_OK, "");
+}
+
 void dsys_set_log_callback(dsys_log_fn fn)
 {
     g_dsys_log_cb = fn;
@@ -102,6 +122,15 @@ static const dsys_window_api_v1 g_dsys_window_api_v1 = {
     dsys_window_present
 };
 
+static const dsys_window_ex_api_v1 g_dsys_window_ex_api_v1 = {
+    DOM_ABI_HEADER_INIT(1u, dsys_window_ex_api_v1),
+    dsys_window_show,
+    dsys_window_hide,
+    dsys_window_get_state,
+    dsys_window_get_framebuffer_size,
+    dsys_window_get_dpi_scale
+};
+
 static const dsys_input_api_v1 g_dsys_input_api_v1 = {
     DOM_ABI_HEADER_INIT(1u, dsys_input_api_v1),
     dsys_poll_event,
@@ -110,6 +139,42 @@ static const dsys_input_api_v1 g_dsys_input_api_v1 = {
     dsys_ime_stop,
     dsys_ime_set_cursor,
     dsys_ime_poll
+};
+
+static const dsys_cliptext_api_v1 g_dsys_cliptext_api_v1 = {
+    DOM_ABI_HEADER_INIT(1u, dsys_cliptext_api_v1),
+    NULL,
+    NULL
+};
+
+static const dsys_cursor_api_v1 g_dsys_cursor_api_v1 = {
+    DOM_ABI_HEADER_INIT(1u, dsys_cursor_api_v1),
+    NULL,
+    NULL
+};
+
+static const dsys_dragdrop_api_v1 g_dsys_dragdrop_api_v1 = {
+    DOM_ABI_HEADER_INIT(1u, dsys_dragdrop_api_v1),
+    NULL,
+    NULL
+};
+
+static const dsys_gamepad_api_v1 g_dsys_gamepad_api_v1 = {
+    DOM_ABI_HEADER_INIT(1u, dsys_gamepad_api_v1),
+    NULL,
+    NULL
+};
+
+static const dsys_power_api_v1 g_dsys_power_api_v1 = {
+    DOM_ABI_HEADER_INIT(1u, dsys_power_api_v1),
+    NULL,
+    NULL
+};
+
+static const dsys_error_api_v1 g_dsys_error_api_v1 = {
+    DOM_ABI_HEADER_INIT(1u, dsys_error_api_v1),
+    dsys_last_error_code,
+    dsys_last_error_text
 };
 
 static const dsys_core_api_v1 g_dsys_core_api_v1 = {
@@ -327,6 +392,38 @@ static void null_window_get_size(dsys_window* win, int32_t* w, int32_t* h)
     if (h) {
         *h = win->height;
     }
+}
+
+static void null_window_show(dsys_window* win)
+{
+    (void)win;
+}
+
+static void null_window_hide(dsys_window* win)
+{
+    (void)win;
+}
+
+static void null_window_get_state(dsys_window* win, dsys_window_state* out_state)
+{
+    if (!out_state) {
+        return;
+    }
+    memset(out_state, 0, sizeof(*out_state));
+    if (!win) {
+        out_state->should_close = true;
+    }
+}
+
+static void null_window_get_framebuffer_size(dsys_window* win, int32_t* w, int32_t* h)
+{
+    null_window_get_size(win, w, h);
+}
+
+static float null_window_get_dpi_scale(dsys_window* win)
+{
+    (void)win;
+    return 1.0f;
 }
 
 static void* null_window_get_native_handle(dsys_window* win)
@@ -621,6 +718,11 @@ static const dsys_backend_vtable g_null_vtable = {
     null_window_set_mode,
     null_window_set_size,
     null_window_get_size,
+    null_window_show,
+    null_window_hide,
+    null_window_get_state,
+    null_window_get_framebuffer_size,
+    null_window_get_dpi_scale,
     null_window_get_native_handle,
     null_poll_event,
     null_get_path,
@@ -641,6 +743,7 @@ static const dsys_backend_vtable g_null_vtable = {
 dsys_result dsys_init(void)
 {
     dsys_result result;
+    dsys_clear_last_error();
 #if defined(DSYS_BACKEND_CPM80)
     {
         extern const dsys_backend_vtable* dsys_cpm80_get_vtable(void);
@@ -724,12 +827,16 @@ dsys_result dsys_init(void)
     if (result != DSYS_OK && g_dsys != &g_null_vtable) {
         g_dsys = &g_null_vtable;
     }
+    if (result != DSYS_OK) {
+        dsys_set_last_error(result, "dsys_init: backend init failed");
+    }
     return result;
 }
 
 void dsys_shutdown(void)
 {
     const dsys_backend_vtable* backend;
+    dsys_clear_last_error();
     backend = dsys_active_backend();
     if (backend->shutdown) {
         backend->shutdown();
@@ -766,10 +873,17 @@ void dsys_sleep_ms(uint32_t ms)
 dsys_window* dsys_window_create(const dsys_window_desc* desc)
 {
     const dsys_backend_vtable* backend;
+    dsys_clear_last_error();
     backend = dsys_active_backend();
     if (backend->window_create) {
-        return backend->window_create(desc);
+        dsys_window* win = backend->window_create(desc);
+        if (win) {
+            return win;
+        }
+        dsys_set_last_error(DSYS_ERR, "window_create: backend failure");
+        return NULL;
     }
+    dsys_set_last_error(DSYS_ERR_UNSUPPORTED, "window_create: unsupported");
     return NULL;
 }
 
@@ -821,14 +935,95 @@ void* dsys_window_get_native_handle(dsys_window* win)
 
 int dsys_window_should_close(dsys_window* win)
 {
-    /* No backend-driven close signal in this ABI yet; treat null as closed. */
-    return win ? 0 : 1;
+    dsys_window_state state;
+    dsys_window_get_state(win, &state);
+    return state.should_close ? 1 : 0;
 }
 
 void dsys_window_present(dsys_window* win)
 {
     (void)win;
     /* Rendering is handled by higher layers; nothing to do here. */
+}
+
+void dsys_window_show(dsys_window* win)
+{
+    const dsys_backend_vtable* backend;
+    dsys_clear_last_error();
+    if (!win) {
+        dsys_set_last_error(DSYS_ERR, "window_show: null window");
+        return;
+    }
+    backend = dsys_active_backend();
+    if (backend->window_show) {
+        backend->window_show(win);
+        return;
+    }
+    dsys_set_last_error(DSYS_ERR_UNSUPPORTED, "window_show: unsupported");
+}
+
+void dsys_window_hide(dsys_window* win)
+{
+    const dsys_backend_vtable* backend;
+    dsys_clear_last_error();
+    if (!win) {
+        dsys_set_last_error(DSYS_ERR, "window_hide: null window");
+        return;
+    }
+    backend = dsys_active_backend();
+    if (backend->window_hide) {
+        backend->window_hide(win);
+        return;
+    }
+    dsys_set_last_error(DSYS_ERR_UNSUPPORTED, "window_hide: unsupported");
+}
+
+void dsys_window_get_state(dsys_window* win, dsys_window_state* out_state)
+{
+    const dsys_backend_vtable* backend;
+    dsys_clear_last_error();
+    if (!out_state) {
+        dsys_set_last_error(DSYS_ERR, "window_get_state: null out_state");
+        return;
+    }
+    memset(out_state, 0, sizeof(*out_state));
+    if (!win) {
+        out_state->should_close = true;
+        dsys_set_last_error(DSYS_ERR, "window_get_state: null window");
+        return;
+    }
+    backend = dsys_active_backend();
+    if (backend->window_get_state) {
+        backend->window_get_state(win, out_state);
+        return;
+    }
+    out_state->should_close = false;
+    dsys_set_last_error(DSYS_ERR_UNSUPPORTED, "window_get_state: unsupported");
+}
+
+void dsys_window_get_framebuffer_size(dsys_window* win, int32_t* w, int32_t* h)
+{
+    const dsys_backend_vtable* backend;
+    dsys_clear_last_error();
+    backend = dsys_active_backend();
+    if (backend->window_get_framebuffer_size) {
+        backend->window_get_framebuffer_size(win, w, h);
+        return;
+    }
+    dsys_window_get_size(win, w, h);
+    dsys_set_last_error(DSYS_ERR_UNSUPPORTED, "window_get_framebuffer_size: unsupported");
+}
+
+float dsys_window_get_dpi_scale(dsys_window* win)
+{
+    const dsys_backend_vtable* backend;
+    dsys_clear_last_error();
+    backend = dsys_active_backend();
+    if (backend->window_get_dpi_scale) {
+        return backend->window_get_dpi_scale(win);
+    }
+    dsys_set_last_error(DSYS_ERR_UNSUPPORTED, "window_get_dpi_scale: unsupported");
+    return 1.0f;
 }
 
 bool dsys_poll_event(dsys_event* out)
@@ -1115,6 +1310,27 @@ static dom_abi_result dsys_core_query_interface(dom_iid iid, void** out_iface)
     case DSYS_IID_INPUT_API_V1:
         *out_iface = (void*)&g_dsys_input_api_v1;
         return DSYS_OK;
+    case DSYS_IID_WINDOW_EX_API_V1:
+        *out_iface = (void*)&g_dsys_window_ex_api_v1;
+        return DSYS_OK;
+    case DSYS_IID_ERROR_API_V1:
+        *out_iface = (void*)&g_dsys_error_api_v1;
+        return DSYS_OK;
+    case DSYS_IID_CLIPTEXT_API_V1:
+        *out_iface = (void*)&g_dsys_cliptext_api_v1;
+        return DSYS_OK;
+    case DSYS_IID_CURSOR_API_V1:
+        *out_iface = (void*)&g_dsys_cursor_api_v1;
+        return DSYS_OK;
+    case DSYS_IID_DRAGDROP_API_V1:
+        *out_iface = (void*)&g_dsys_dragdrop_api_v1;
+        return DSYS_OK;
+    case DSYS_IID_GAMEPAD_API_V1:
+        *out_iface = (void*)&g_dsys_gamepad_api_v1;
+        return DSYS_OK;
+    case DSYS_IID_POWER_API_V1:
+        *out_iface = (void*)&g_dsys_power_api_v1;
+        return DSYS_OK;
     default:
         break;
     }
@@ -1124,12 +1340,61 @@ static dom_abi_result dsys_core_query_interface(dom_iid iid, void** out_iface)
 
 dsys_result dsys_get_core_api(u32 requested_abi, dsys_core_api_v1* out)
 {
+    dsys_clear_last_error();
     if (!out) {
+        dsys_set_last_error(DSYS_ERR, "dsys_get_core_api: null out");
         return DSYS_ERR;
     }
     if (requested_abi != g_dsys_core_api_v1.abi_version) {
+        dsys_set_last_error(DSYS_ERR_UNSUPPORTED, "dsys_get_core_api: unsupported abi");
         return DSYS_ERR_UNSUPPORTED;
     }
     *out = g_dsys_core_api_v1;
     return DSYS_OK;
+}
+
+void* dsys_query_extension(const char* name, u32 version)
+{
+    dsys_clear_last_error();
+    if (!name || !name[0]) {
+        dsys_set_last_error(DSYS_ERR, "dsys_query_extension: null name");
+        return NULL;
+    }
+    if (version != 1u) {
+        dsys_set_last_error(DSYS_ERR_UNSUPPORTED, "dsys_query_extension: unsupported version");
+        return NULL;
+    }
+    if (dsys_str_ieq(name, DSYS_EXTENSION_WINDOW_EX)) {
+        return (void*)&g_dsys_window_ex_api_v1;
+    }
+    if (dsys_str_ieq(name, DSYS_EXTENSION_ERROR)) {
+        return (void*)&g_dsys_error_api_v1;
+    }
+    if (dsys_str_ieq(name, DSYS_EXTENSION_CLIPTEXT)) {
+        return (void*)&g_dsys_cliptext_api_v1;
+    }
+    if (dsys_str_ieq(name, DSYS_EXTENSION_CURSOR)) {
+        return (void*)&g_dsys_cursor_api_v1;
+    }
+    if (dsys_str_ieq(name, DSYS_EXTENSION_DRAGDROP)) {
+        return (void*)&g_dsys_dragdrop_api_v1;
+    }
+    if (dsys_str_ieq(name, DSYS_EXTENSION_GAMEPAD)) {
+        return (void*)&g_dsys_gamepad_api_v1;
+    }
+    if (dsys_str_ieq(name, DSYS_EXTENSION_POWER)) {
+        return (void*)&g_dsys_power_api_v1;
+    }
+    dsys_set_last_error(DSYS_ERR_UNSUPPORTED, "dsys_query_extension: unsupported");
+    return NULL;
+}
+
+dsys_result dsys_last_error_code(void)
+{
+    return g_dsys_last_error_code;
+}
+
+const char* dsys_last_error_text(void)
+{
+    return g_dsys_last_error_text;
 }
