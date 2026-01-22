@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.16)
 add_library(launcher_core STATIC
     core/launcher_core.c
     core/launcher_config_stub.c
+    core/launcher_authority.c
     core/launcher_profile_stub.c
     core/launcher_mods_stub.c
     core/launcher_process_stub.c
