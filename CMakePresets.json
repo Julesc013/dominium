@@ -282,6 +282,201 @@
         "DOM_ENABLE_MODERN": "ON",
         "DOM_BACKEND_DX9": "ON"
       }
+    },
+    {
+      "name": "ide-win-vc6-win9x-client-gui",
+      "displayName": "IDE VC6 Win9x Client GUI",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/ide/win/vc6_win9x/client_gui",
+      "cacheVariables": {
+        "DOM_PROJECTION": "ON",
+        "DOM_PROJECTION_ID": "ide-win-vc6-win9x-client-gui",
+        "DOM_PRODUCT": "client",
+        "DOM_UI_SHELL": "client/ui",
+        "DOM_TOOLCHAIN_TIER": "vc6",
+        "DOM_TARGET_OS_FAMILY": "win9x",
+        "DOM_TARGET_OS_MIN": "win98",
+        "DOM_TARGET_ARCH": "x86_32",
+        "DOM_LANG_MODE": "c89_cpp98",
+        "DOM_SDK_PIN": "vc6_sp6_win9x_sdk",
+        "DOM_CRT_POLICY": "static:/MT",
+        "DOM_IDE_OUT_DIR": "ide/win/vc6_win9x/client_gui",
+        "DOM_IDE_GENERATOR_OVERRIDE": "VC6",
+        "DOM_BUILD_GAME": "ON"
+      }
+    },
+    {
+      "name": "ide-win-vc6-nt4-server-cli",
+      "displayName": "IDE VC6 NT4 Server CLI",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/ide/win/vc6_nt/server_cli",
+      "cacheVariables": {
+        "DOM_PROJECTION": "ON",
+        "DOM_PROJECTION_ID": "ide-win-vc6-nt4-server-cli",
+        "DOM_PRODUCT": "server",
+        "DOM_UI_SHELL": "server/app",
+        "DOM_TOOLCHAIN_TIER": "vc6",
+        "DOM_TARGET_OS_FAMILY": "winnt",
+        "DOM_TARGET_OS_MIN": "nt4",
+        "DOM_TARGET_ARCH": "x86_32",
+        "DOM_LANG_MODE": "c89_cpp98",
+        "DOM_SDK_PIN": "vc6_sp6_nt4_sdk",
+        "DOM_CRT_POLICY": "static:/MT",
+        "DOM_IDE_OUT_DIR": "ide/win/vc6_nt/server_cli",
+        "DOM_IDE_GENERATOR_OVERRIDE": "VC6",
+        "DOM_BUILD_GAME": "ON"
+      }
+    },
+    {
+      "name": "ide-win-vc71-xp-launcher-gui",
+      "displayName": "IDE VC7.1 XP Launcher GUI",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/ide/win/vc71_xp/launcher_gui",
+      "cacheVariables": {
+        "DOM_PROJECTION": "ON",
+        "DOM_PROJECTION_ID": "ide-win-vc71-xp-launcher-gui",
+        "DOM_PRODUCT": "launcher",
+        "DOM_UI_SHELL": "launcher/gui",
+        "DOM_TOOLCHAIN_TIER": "vc71",
+        "DOM_TARGET_OS_FAMILY": "winnt",
+        "DOM_TARGET_OS_MIN": "winxp",
+        "DOM_TARGET_ARCH": "x86_32",
+        "DOM_LANG_MODE": "c89_cpp98",
+        "DOM_SDK_PIN": "vc71_xp_sdk",
+        "DOM_CRT_POLICY": "static:/MT",
+        "DOM_IDE_OUT_DIR": "ide/win/vc71_xp/launcher_gui",
+        "DOM_IDE_GENERATOR_OVERRIDE": "VC7.1",
+        "DOM_BUILD_LAUNCHER": "ON"
+      }
+    },
+    {
+      "name": "ide-win-vs2015-win10-1507-1607-setup-gui",
+      "displayName": "IDE VS2015 Win10 1507/1607 Setup GUI",
+      "generator": "Visual Studio 14 2015",
+      "binaryDir": "${sourceDir}/ide/win/vs2015_win10_1507_1607/setup_gui",
+      "cacheVariables": {
+        "DOM_PROJECTION": "ON",
+        "DOM_PROJECTION_ID": "ide-win-vs2015-win10-1507-1607-setup-gui",
+        "DOM_PRODUCT": "setup",
+        "DOM_UI_SHELL": "setup/gui",
+        "DOM_TOOLCHAIN_TIER": "vs2015",
+        "DOM_TARGET_OS_FAMILY": "winnt",
+        "DOM_TARGET_OS_MIN": "win10_1507",
+        "DOM_TARGET_ARCH": "x86_64",
+        "DOM_LANG_MODE": "c89_cpp98",
+        "DOM_SDK_PIN": "win10_sdk_10240_10586",
+        "DOM_CRT_POLICY": "static:/MT",
+        "DOM_IDE_OUT_DIR": "ide/win/vs2015_win10_1507_1607/setup_gui",
+        "DOM_BUILD_SETUP": "ON"
+      }
+    },
+    {
+      "name": "ide-win-vs2026-win11-client-gui",
+      "displayName": "IDE VS2026 Win11 Client GUI",
+      "generator": "Visual Studio 18 2026",
+      "binaryDir": "${sourceDir}/ide/win/vs2026_win10plus/client_gui",
+      "cacheVariables": {
+        "DOM_PROJECTION": "ON",
+        "DOM_PROJECTION_ID": "ide-win-vs2026-win11-client-gui",
+        "DOM_PRODUCT": "client",
+        "DOM_UI_SHELL": "client/ui",
+        "DOM_TOOLCHAIN_TIER": "vs2026",
+        "DOM_TARGET_OS_FAMILY": "winnt",
+        "DOM_TARGET_OS_MIN": "win11",
+        "DOM_TARGET_ARCH": "x86_64",
+        "DOM_LANG_MODE": "c17_cpp17",
+        "DOM_SDK_PIN": "win11_sdk_current",
+        "DOM_CRT_POLICY": "static:/MT",
+        "DOM_IDE_OUT_DIR": "ide/win/vs2026_win10plus/client_gui",
+        "DOM_BUILD_GAME": "ON"
+      }
+    },
+    {
+      "name": "ide-mac-cw-classic-launcher-gui",
+      "displayName": "IDE CodeWarrior Classic Launcher GUI",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/ide/mac/cw_classic/launcher_gui",
+      "cacheVariables": {
+        "DOM_PROJECTION": "ON",
+        "DOM_PROJECTION_ID": "ide-mac-cw-classic-launcher-gui",
+        "DOM_PRODUCT": "launcher",
+        "DOM_UI_SHELL": "launcher/gui",
+        "DOM_TOOLCHAIN_TIER": "cw_classic",
+        "DOM_TARGET_OS_FAMILY": "macos_classic",
+        "DOM_TARGET_OS_MIN": "system7",
+        "DOM_TARGET_ARCH": "ppc",
+        "DOM_LANG_MODE": "c89_cpp98",
+        "DOM_SDK_PIN": "codewarrior_classic_10",
+        "DOM_CRT_POLICY": "static:classic",
+        "DOM_IDE_OUT_DIR": "ide/mac/cw_classic/launcher_gui",
+        "DOM_IDE_GENERATOR_OVERRIDE": "CodeWarrior Classic 10",
+        "DOM_BUILD_LAUNCHER": "ON"
+      }
+    },
+    {
+      "name": "ide-mac-xcode3-universal-setup-gui",
+      "displayName": "IDE Xcode3 Universal Setup GUI",
+      "generator": "Xcode",
+      "binaryDir": "${sourceDir}/ide/mac/xcode3_universal/setup_gui",
+      "cacheVariables": {
+        "DOM_PROJECTION": "ON",
+        "DOM_PROJECTION_ID": "ide-mac-xcode3-universal-setup-gui",
+        "DOM_PRODUCT": "setup",
+        "DOM_UI_SHELL": "setup/gui",
+        "DOM_TOOLCHAIN_TIER": "xcode3",
+        "DOM_TARGET_OS_FAMILY": "macosx",
+        "DOM_TARGET_OS_MIN": "10.4",
+        "DOM_TARGET_ARCH": "x86_32",
+        "DOM_LANG_MODE": "c89_cpp98",
+        "DOM_SDK_PIN": "xcode3_10_4_sdk",
+        "DOM_CRT_POLICY": "dynamic:macos",
+        "DOM_IDE_OUT_DIR": "ide/mac/xcode3_universal/setup_gui",
+        "DOM_IDE_GENERATOR_OVERRIDE": "Xcode3",
+        "DOM_BUILD_SETUP": "ON"
+      }
+    },
+    {
+      "name": "ide-linux-gcc295-legacy-client-gui",
+      "displayName": "IDE GCC 2.95 Legacy Client GUI",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/ide/linux/gcc295_legacy/client_gui",
+      "cacheVariables": {
+        "DOM_PROJECTION": "ON",
+        "DOM_PROJECTION_ID": "ide-linux-gcc295-legacy-client-gui",
+        "DOM_PRODUCT": "client",
+        "DOM_UI_SHELL": "client/ui",
+        "DOM_TOOLCHAIN_TIER": "gcc295",
+        "DOM_TARGET_OS_FAMILY": "linux",
+        "DOM_TARGET_OS_MIN": "glibc_2.2",
+        "DOM_TARGET_ARCH": "x86_32",
+        "DOM_LANG_MODE": "c89_cpp98",
+        "DOM_SDK_PIN": "gcc_2_95_glibc_2_2",
+        "DOM_CRT_POLICY": "dynamic:glibc",
+        "DOM_IDE_OUT_DIR": "ide/linux/gcc295_legacy/client_gui",
+        "DOM_IDE_GENERATOR_OVERRIDE": "GCC 2.95",
+        "DOM_BUILD_GAME": "ON"
+      }
+    },
+    {
+      "name": "ide-linux-clang-modern-client-gui",
+      "displayName": "IDE Clang Modern Client GUI",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/ide/linux/clang_modern/client_gui",
+      "cacheVariables": {
+        "DOM_PROJECTION": "ON",
+        "DOM_PROJECTION_ID": "ide-linux-clang-modern-client-gui",
+        "DOM_PRODUCT": "client",
+        "DOM_UI_SHELL": "client/ui",
+        "DOM_TOOLCHAIN_TIER": "clang_modern",
+        "DOM_TARGET_OS_FAMILY": "linux",
+        "DOM_TARGET_OS_MIN": "glibc_2.17",
+        "DOM_TARGET_ARCH": "x86_64",
+        "DOM_LANG_MODE": "c17_cpp17",
+        "DOM_SDK_PIN": "llvm_17",
+        "DOM_CRT_POLICY": "dynamic:glibc",
+        "DOM_IDE_OUT_DIR": "ide/linux/clang_modern/client_gui",
+        "DOM_BUILD_GAME": "ON"
+      }
     }
   ],
   "buildPresets": [

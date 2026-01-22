@@ -1,0 +1,4 @@
+# CodeWarrior Project Stub (REPOX)
+# Generated projection; do not edit.
+# Import list: @DOM_IDE_CW_PROJECT_NAME@_import_list.txt
+PROJECT_NAME=@DOM_IDE_CW_PROJECT_NAME@

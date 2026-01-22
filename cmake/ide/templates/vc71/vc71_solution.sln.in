@@ -1,0 +1,16 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+# Visual Studio 2003
+Project("{@DOM_IDE_VC71_PROJECT_GUID@}") = "@DOM_IDE_VC71_PROJECT_NAME@", "@DOM_IDE_VC71_PROJECT_NAME@.vcproj", "@DOM_IDE_VC71_PROJECT_GUID@"
+EndProject
+Global
+    GlobalSection(SolutionConfiguration) = preSolution
+        Debug = Debug
+        Release = Release
+    EndGlobalSection
+    GlobalSection(ProjectConfiguration) = postSolution
+        @DOM_IDE_VC71_PROJECT_GUID@.Debug.ActiveCfg = Debug|Win32
+        @DOM_IDE_VC71_PROJECT_GUID@.Debug.Build.0 = Debug|Win32
+        @DOM_IDE_VC71_PROJECT_GUID@.Release.ActiveCfg = Release|Win32
+        @DOM_IDE_VC71_PROJECT_GUID@.Release.Build.0 = Release|Win32
+    EndGlobalSection
+EndGlobal
