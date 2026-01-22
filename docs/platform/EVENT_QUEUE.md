@@ -6,6 +6,8 @@ by application loops via `dsys_poll_event()`.
 ## Event structure
 - `dsys_event` includes `timestamp_us`, populated from the platform monotonic
   clock if not already set.
+- `dsys_event.window` is the owning window handle (NULL for non-window events).
+- `dsys_event.window_id` is a stable numeric id (0 when not associated).
 - Event categories: window events, input events (raw), lifecycle events, and
   internal application events.
 

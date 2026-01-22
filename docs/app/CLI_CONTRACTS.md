@@ -22,9 +22,12 @@ Key/value lines include:
 - protocol lines: `protocol_law_targets`, `protocol_control_caps`,
   `protocol_authority_tokens`
 - API/ABI lines: `abi_dom_build_info`, `abi_dom_caps`, `api_dsys`, `api_dgfx`
+- Products may append platform capability lines (e.g. `platform_*`,
+  `window_default_*`, `dpi_scale_default`).
 
 ## Client (`client`)
 - `--renderer <name>`: explicit renderer selection; fails loudly if unavailable
+- `--ui=gui|tui|none`: select GUI/TUI/CLI-only shell
 - `--windowed`: start a windowed shell (not used by CLI tests)
 - `--tui`: start a terminal UI shell (not used by CLI tests)
 - `--borderless`: start a borderless window
