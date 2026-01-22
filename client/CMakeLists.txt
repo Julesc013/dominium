@@ -8,6 +8,7 @@ add_executable(dominium_client
 target_link_libraries(dominium_client PRIVATE
     domino_engine
     dominium_game
+    libs::contracts
 )
 set_target_properties(dominium_client PROPERTIES
     OUTPUT_NAME "client"
