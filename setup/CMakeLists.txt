@@ -24,6 +24,7 @@ add_executable(setup_cli
     cli/setup_cli_main.c
 )
 target_link_libraries(setup_cli PRIVATE setup::setup)
+target_link_libraries(setup_cli PRIVATE app::runtime)
 target_include_directories(setup_cli PRIVATE
     ${DOMINIUM_ENGINE_INCLUDE_DIR}
     ${DOMINIUM_GENERATED_INCLUDE_DIR}

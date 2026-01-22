@@ -15,6 +15,7 @@ add_executable(dominium_server
     persistence/dispute_bundle.cpp
 )
 target_link_libraries(dominium_server PRIVATE
+    app::runtime
     domino_engine
     dominium_game
     libs::contracts
