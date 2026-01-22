@@ -283,6 +283,7 @@ int d_system_process_spawn(const char *path, const char *args)
 }
 
 int d_system_present_framebuffer(
+    void*       native_window,
     const void *pixels,
     i32         width,
     i32         height,
@@ -294,9 +295,13 @@ int d_system_present_framebuffer(
     HDC hdc;
     int rc;
     int expected_pitch;
+    HWND hwnd = native_window ? (HWND)native_window : g_hwnd;
 
-    if (!g_hwnd || !pixels || width <= 0 || height <= 0) {
+    if (!hwnd || !pixels || width <= 0 || height <= 0) {
         return -1;
+    }
+    if (IsIconic(hwnd)) {
+        return 0;
     }
 
     expected_pitch = width * 4;
@@ -313,7 +318,7 @@ int d_system_present_framebuffer(
     bmi.bmiHeader.biBitCount = 32;
     bmi.bmiHeader.biCompression = BI_RGB;
 
-    hdc = GetDC(g_hwnd);
+    hdc = GetDC(hwnd);
     if (!hdc) {
         return -1;
     }
@@ -327,9 +332,10 @@ int d_system_present_framebuffer(
         DIB_RGB_COLORS,
         SRCCOPY);
 
-    ReleaseDC(g_hwnd, hdc);
+    ReleaseDC(hwnd, hdc);
     return (rc == 0) ? -1 : 0;
 #else
+    (void)native_window;
     (void)pixels;
     (void)width;
     (void)height;

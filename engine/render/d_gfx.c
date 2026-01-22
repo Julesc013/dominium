@@ -440,6 +440,7 @@ int d_gfx_bind_surface(void* native_window, i32 width, i32 height)
         g_backbuffer_h = height;
     }
 #if DOM_BACKEND_SOFT
+    d_gfx_soft_set_native_window(native_window);
     d_gfx_soft_set_framebuffer_size(g_backbuffer_w, g_backbuffer_h);
     if (g_backend == d_gfx_soft_register_backend()) {
         if (g_backend->shutdown) {
@@ -700,36 +701,36 @@ static const d_gfx_backend_soft* dgfx_choose_backend(const char* backend_name, c
 #if DOM_BACKEND_DX9
     if (strcmp(backend_name, "dx9") == 0) {
         if (out_name) *out_name = "dx9";
-        if (out_reason) *out_reason = "stubbed (null backend)";
-        return d_gfx_null_register_backend();
+        if (out_reason) *out_reason = "unavailable (stubbed)";
+        return 0;
     }
 #endif
 #if DOM_BACKEND_DX11
     if (strcmp(backend_name, "dx11") == 0) {
         if (out_name) *out_name = "dx11";
-        if (out_reason) *out_reason = "stubbed (null backend)";
-        return d_gfx_null_register_backend();
+        if (out_reason) *out_reason = "unavailable (stubbed)";
+        return 0;
     }
 #endif
 #if DOM_BACKEND_GL2
     if (strcmp(backend_name, "gl2") == 0) {
         if (out_name) *out_name = "gl2";
-        if (out_reason) *out_reason = "stubbed (null backend)";
-        return d_gfx_null_register_backend();
+        if (out_reason) *out_reason = "unavailable (stubbed)";
+        return 0;
     }
 #endif
 #if DOM_BACKEND_VK1
     if (strcmp(backend_name, "vk1") == 0) {
         if (out_name) *out_name = "vk1";
-        if (out_reason) *out_reason = "stubbed (null backend)";
-        return d_gfx_null_register_backend();
+        if (out_reason) *out_reason = "unavailable (stubbed)";
+        return 0;
     }
 #endif
 #if DOM_BACKEND_METAL
     if (strcmp(backend_name, "metal") == 0) {
         if (out_name) *out_name = "metal";
-        if (out_reason) *out_reason = "stubbed (null backend)";
-        return d_gfx_null_register_backend();
+        if (out_reason) *out_reason = "unavailable (stubbed)";
+        return 0;
     }
 #endif
 
