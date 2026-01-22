@@ -6,6 +6,9 @@ add_library(setup_core STATIC
 target_include_directories(setup_core PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
+target_include_directories(setup_core PRIVATE
+    ${DOMINIUM_ENGINE_INCLUDE_DIR}
+)
 target_link_libraries(setup_core
     PUBLIC
         libs::contracts
@@ -21,6 +24,10 @@ add_executable(setup_cli
     cli/setup_cli_main.c
 )
 target_link_libraries(setup_cli PRIVATE setup::setup)
+target_include_directories(setup_cli PRIVATE
+    ${DOMINIUM_ENGINE_INCLUDE_DIR}
+    ${DOMINIUM_GENERATED_INCLUDE_DIR}
+)
 set_target_properties(setup_cli PROPERTIES
     OUTPUT_NAME "setup"
     C_STANDARD 90

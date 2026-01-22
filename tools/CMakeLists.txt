@@ -21,6 +21,10 @@ add_executable(dominium-tools
     tools_host_main.c
 )
 target_link_libraries(dominium-tools PRIVATE tools::shared)
+target_include_directories(dominium-tools PRIVATE
+    ${DOMINIUM_ENGINE_INCLUDE_DIR}
+    ${DOMINIUM_GENERATED_INCLUDE_DIR}
+)
 set_target_properties(dominium-tools PROPERTIES
     OUTPUT_NAME "tools"
     C_STANDARD 90

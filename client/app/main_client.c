@@ -2,6 +2,10 @@
 Minimal client entrypoint with MP0 local-connect demo.
 */
 #include "domino/control.h"
+#include "domino/build_info.h"
+#include "domino/caps.h"
+#include "domino/config_base.h"
+#include "domino/gfx.h"
 #include "domino/version.h"
 #include "dom_contracts/version.h"
 #include "dom_contracts/_internal/dom_build_version.h"
@@ -11,14 +15,44 @@ Minimal client entrypoint with MP0 local-connect demo.
 #include <stdlib.h>
 #include <string.h>
 
-static void print_version_banner(void)
+static void print_help(void)
 {
+    printf("usage: client [options]\n");
+    printf("options:\n");
+    printf("  --help                      Show this help\n");
+    printf("  --version                   Show product version\n");
+    printf("  --build-info                Show build info + control capabilities\n");
+    printf("  --status                    Show active control layers\n");
+    printf("  --smoke                     Run deterministic CLI smoke\n");
+    printf("  --selftest                  Alias for --smoke\n");
+    printf("  --renderer <name>           Select renderer (explicit; no fallback)\n");
+    printf("  --control-enable=K1,K2       Enable control capabilities (canonical keys)\n");
+    printf("  --control-registry <path>    Override control registry path\n");
+    printf("  --mp0-connect=local          Run MP0 local client demo\n");
+}
+
+static void print_version(const char* product_version)
+{
+    printf("client %s\n", product_version);
+}
+
+static void print_build_info(const char* product_name, const char* product_version)
+{
+    printf("product=%s\n", product_name);
+    printf("product_version=%s\n", product_version);
     printf("engine_version=%s\n", DOMINO_VERSION_STRING);
     printf("game_version=%s\n", DOMINIUM_GAME_VERSION);
     printf("build_number=%u\n", (unsigned int)DOM_BUILD_NUMBER);
+    printf("build_id=%s\n", DOM_BUILD_ID);
+    printf("git_hash=%s\n", DOM_GIT_HASH);
+    printf("toolchain_id=%s\n", DOM_TOOLCHAIN_ID);
     printf("protocol_law_targets=LAW_TARGETS@1.4.0\n");
     printf("protocol_control_caps=CONTROL_CAPS@1.0.0\n");
     printf("protocol_authority_tokens=AUTHORITY_TOKEN@1.0.0\n");
+    printf("abi_dom_build_info=%u\n", (unsigned int)DOM_BUILD_INFO_ABI_VERSION);
+    printf("abi_dom_caps=%u\n", (unsigned int)DOM_CAPS_ABI_VERSION);
+    printf("api_dsys=%u\n", 1u);
+    printf("api_dgfx=%u\n", (unsigned int)DGFX_PROTOCOL_VERSION);
 }
 
 static void print_control_caps(const dom_control_caps* caps)
@@ -113,23 +147,66 @@ static int mp0_run_local_client(void)
     return 0;
 }
 
+static int client_validate_renderer(const char* renderer)
+{
+    if (!renderer || !renderer[0]) {
+        return 1;
+    }
+    if (!d_gfx_init(renderer)) {
+        fprintf(stderr, "client: renderer '%s' unavailable\n", renderer);
+        return 0;
+    }
+    d_gfx_shutdown();
+    return 1;
+}
+
 int main(int argc, char** argv)
 {
     const char* control_registry_path = "data/registries/control_capabilities.registry";
     const char* control_enable = 0;
+    const char* renderer = 0;
+    int want_help = 0;
+    int want_version = 0;
     int want_build_info = 0;
     int want_status = 0;
     int want_mp0 = 0;
+    int want_smoke = 0;
+    int want_selftest = 0;
     dom_control_caps control_caps;
     int control_loaded = 0;
     int i;
     for (i = 1; i < argc; ++i) {
+        if (strcmp(argv[i], "--help") == 0 || strcmp(argv[i], "-h") == 0) {
+            want_help = 1;
+            continue;
+        }
+        if (strcmp(argv[i], "--version") == 0) {
+            want_version = 1;
+            continue;
+        }
         if (strcmp(argv[i], "--build-info") == 0) {
             want_build_info = 1;
             continue;
         }
         if (strcmp(argv[i], "--status") == 0) {
             want_status = 1;
+            continue;
+        }
+        if (strcmp(argv[i], "--smoke") == 0) {
+            want_smoke = 1;
+            continue;
+        }
+        if (strcmp(argv[i], "--selftest") == 0) {
+            want_selftest = 1;
+            continue;
+        }
+        if (strncmp(argv[i], "--renderer=", 11) == 0) {
+            renderer = argv[i] + 11;
+            continue;
+        }
+        if (strcmp(argv[i], "--renderer") == 0 && i + 1 < argc) {
+            renderer = argv[i + 1];
+            i += 1;
             continue;
         }
         if (strcmp(argv[i], "--control-registry") == 0 && i + 1 < argc) {
@@ -150,6 +227,17 @@ int main(int argc, char** argv)
             want_mp0 = 1;
         }
     }
+    if (want_help) {
+        print_help();
+        return 0;
+    }
+    if (want_version) {
+        print_version(DOMINIUM_GAME_VERSION);
+        return 0;
+    }
+    if (want_smoke || want_selftest) {
+        want_mp0 = 1;
+    }
     if (want_build_info || want_status || control_enable) {
         if (dom_control_caps_init(&control_caps, control_registry_path) != DOM_CONTROL_OK) {
             fprintf(stderr, "client: failed to load control registry: %s\n", control_registry_path);
@@ -163,7 +251,7 @@ int main(int argc, char** argv)
         }
     }
     if (want_build_info) {
-        print_version_banner();
+        print_build_info("client", DOMINIUM_GAME_VERSION);
         if (control_loaded) {
             print_control_caps(&control_caps);
             dom_control_caps_free(&control_caps);
@@ -185,12 +273,18 @@ int main(int argc, char** argv)
         return 0;
     }
     if (want_mp0) {
+        if (!client_validate_renderer(renderer)) {
+            if (control_loaded) {
+                dom_control_caps_free(&control_caps);
+            }
+            return 2;
+        }
         if (control_loaded) {
             dom_control_caps_free(&control_caps);
         }
         return mp0_run_local_client();
     }
-    printf("Dominium client stub. Use --mp0-connect=local.\\n");
+    printf("Dominium client stub. Use --help.\\n");
     if (control_loaded) {
         dom_control_caps_free(&control_caps);
     }

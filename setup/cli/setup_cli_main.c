@@ -1,6 +1,10 @@
 /*
 Stub setup CLI entrypoint.
 */
+#include "domino/build_info.h"
+#include "domino/caps.h"
+#include "domino/config_base.h"
+#include "domino/gfx.h"
 #include "dom_contracts/version.h"
 #include "dom_contracts/_internal/dom_build_version.h"
 #include <stdio.h>
@@ -9,14 +13,28 @@ Stub setup CLI entrypoint.
 
 #include "dsk/dsk_setup.h"
 
-static void print_version_banner(void)
+static void print_version(const char* product_version)
 {
+    printf("setup %s\\n", product_version);
+}
+
+static void print_build_info(const char* product_name, const char* product_version)
+{
+    printf("product=%s\n", product_name);
+    printf("product_version=%s\n", product_version);
     printf("engine_version=%s\n", DOMINO_VERSION_STRING);
     printf("game_version=%s\n", DOMINIUM_GAME_VERSION);
     printf("build_number=%u\n", (unsigned int)DOM_BUILD_NUMBER);
+    printf("build_id=%s\n", DOM_BUILD_ID);
+    printf("git_hash=%s\n", DOM_GIT_HASH);
+    printf("toolchain_id=%s\n", DOM_TOOLCHAIN_ID);
     printf("protocol_law_targets=LAW_TARGETS@1.4.0\n");
     printf("protocol_control_caps=CONTROL_CAPS@1.0.0\n");
     printf("protocol_authority_tokens=AUTHORITY_TOKEN@1.0.0\n");
+    printf("abi_dom_build_info=%u\n", (unsigned int)DOM_BUILD_INFO_ABI_VERSION);
+    printf("abi_dom_caps=%u\n", (unsigned int)DOM_CAPS_ABI_VERSION);
+    printf("api_dsys=%u\n", 1u);
+    printf("api_dgfx=%u\n", (unsigned int)DGFX_PROTOCOL_VERSION);
 }
 
 typedef struct setup_control_caps {
@@ -261,10 +279,12 @@ static int enable_control_list(setup_control_caps* caps, const char* list)
 
 static void setup_print_help(void)
 {
-    printf("usage: setup [--help] [--version] [--build-info] [--status] <command>\\n");
+    printf("usage: setup [--help] [--version] [--build-info] [--status] [--smoke] [--selftest] <command>\\n");
     printf("options:\\n");
     printf("  --build-info                 Show build info + control capabilities\\n");
     printf("  --status                     Show active control layers\\n");
+    printf("  --smoke                      Run deterministic CLI smoke\\n");
+    printf("  --selftest                   Alias for --smoke\\n");
     printf("  --control-enable=K1,K2       Enable control capabilities (canonical keys)\\n");
     printf("  --control-registry <path>    Override control registry path\\n");
     printf("commands:\\n");
@@ -278,6 +298,8 @@ int main(int argc, char** argv)
     const char* control_enable = 0;
     int want_build_info = 0;
     int want_status = 0;
+    int want_smoke = 0;
+    int want_selftest = 0;
     const char* cmd = 0;
     int i;
 
@@ -303,6 +325,14 @@ int main(int argc, char** argv)
             want_status = 1;
             continue;
         }
+        if (strcmp(argv[i], "--smoke") == 0) {
+            want_smoke = 1;
+            continue;
+        }
+        if (strcmp(argv[i], "--selftest") == 0) {
+            want_selftest = 1;
+            continue;
+        }
         if (strcmp(argv[i], "--control-registry") == 0 && i + 1 < argc) {
             control_registry_path = argv[i + 1];
             i += 1;
@@ -320,6 +350,11 @@ int main(int argc, char** argv)
         if (argv[i][0] != '-') {
             cmd = argv[i];
             break;
+        }
+    }
+    if (want_smoke || want_selftest) {
+        if (!cmd) {
+            cmd = "status";
         }
     }
     if (!cmd && !want_build_info && !want_status) {
@@ -343,7 +378,7 @@ int main(int argc, char** argv)
             return 2;
         }
         if (want_build_info) {
-            print_version_banner();
+            print_build_info("setup", DOMINIUM_SETUP_VERSION);
         }
         if (cmd && strcmp(cmd, "status") == 0) {
             int status;
@@ -362,7 +397,7 @@ int main(int argc, char** argv)
         return 2;
     }
     if (strcmp(cmd, "--version") == 0 || strcmp(cmd, "version") == 0) {
-        printf("setup %s\\n", dsk_setup_version());
+        print_version(DOMINIUM_SETUP_VERSION);
         return 0;
     }
 
