@@ -90,6 +90,101 @@ Enforced by:
 - `schema/authority/README.md`
 - CI: OMNI0-NO-ISADMIN-001, OMNI0-NOBYPASS-003
 
+## Invariant: Authority gates actions only, never visibility (AUTH3-AUTH-001)
+Why:
+- Visibility is epistemic; authority is action gating only.
+Breaks if violated:
+- Hidden enforcement, nondeterministic views, and un-auditable censorship.
+Enforced by:
+- `docs/arch/AUTHORITY_AND_ENTITLEMENTS.md`
+- `docs/arch/DEMO_AND_TOURIST_MODEL.md`
+- Tests: `tests/authority/`, `tests/tourist/`
+
+## Invariant: Entitlements gate authority issuance only (AUTH3-ENT-002)
+Why:
+- Entitlements are platform-facing; engine/game must stay neutral.
+Breaks if violated:
+- Platform lock-in and hidden enforcement in simulation logic.
+Enforced by:
+- `docs/arch/DISTRIBUTION_AND_STOREFRONTS.md`
+- Tests: `tests/entitlement/`
+
+## Invariant: Demo is an authority profile, not a build (AUTH3-DEMO-003)
+Why:
+- One distribution prevents paywalled forks and drift.
+Breaks if violated:
+- Divergent code paths and inconsistent determinism.
+Enforced by:
+- `docs/arch/DISTRIBUTION_AND_STOREFRONTS.md`
+- `docs/arch/DEMO_AND_TOURIST_MODEL.md`
+- Tests: `tests/demo/`, `tests/distribution/`
+
+## Invariant: Tourists never mutate authoritative state (AUTH3-TOURIST-004)
+Why:
+- Observation must not become hidden authority.
+Breaks if violated:
+- Untracked mutations and integrity drift.
+Enforced by:
+- `docs/arch/DEMO_AND_TOURIST_MODEL.md`
+- Tests: `tests/tourist/`
+
+## Invariant: Services affect access only (AUTH3-SERVICE-005)
+Why:
+- Services are optional and external to determinism.
+Breaks if violated:
+- Altered outcomes and invalidated replays.
+Enforced by:
+- `docs/arch/SERVICES_AND_PRODUCTS.md`
+- Tests: `tests/services/`
+
+## Invariant: Piracy contained by authority, not DRM (AUTH3-PIRACY-006)
+Why:
+- Copying is allowed; durable value is authority-bound.
+Breaks if violated:
+- Hidden penalties, degraded simulation, and non-archival behavior.
+Enforced by:
+- `docs/arch/PIRACY_CONTAINMENT.md`
+- Tests: `tests/piracy_containment/`
+
+## Invariant: Authority upgrades/downgrades do not mutate state (AUTH3-UPGRADE-007)
+Why:
+- Authority changes are administrative, not simulation events.
+Breaks if violated:
+- Hidden state mutation and replay divergence.
+Enforced by:
+- `docs/arch/UPGRADE_AND_CONVERSION.md`
+- Tests: `tests/authority/`, `tests/services/`
+
+## Invariant: Saves are tagged by authority scope (AUTH3-SAVE-008)
+Why:
+- Save provenance must remain explicit and auditable.
+Breaks if violated:
+- Silent promotion of non-authoritative saves.
+Enforced by:
+- `docs/arch/UPGRADE_AND_CONVERSION.md`
+- Tests: `tests/authority/`
+
+## Invariant: Control layers never interfere with authoritative simulation
+Why:
+- Control layers are optional and external; they must not change outcomes.
+Breaks if violated:
+- Replays diverge, archival verification fails, and law enforcement becomes
+  untrustworthy.
+Enforced by:
+- `docs/arch/NON_INTERFERENCE.md`
+- `docs/arch/CONTROL_LAYERS.md`
+- Tests: `tests/control/interference/`
+
+## Invariant: No secrets in engine or game
+Why:
+- Engine/game are portable, public, and replay-verifiable; secrets break trust.
+Breaks if violated:
+- Credential exposure, covert policy enforcement, and irreproducible builds.
+Enforced by:
+- `docs/arch/CONTROL_LAYERS.md`
+- `docs/arch/THREAT_MODEL.md`
+- Tests: `tests/control/audit/`
+
 ## Invariant: Refusal and absence are first-class outcomes
 Why:
 - Systems must fail deterministically and explainably.
