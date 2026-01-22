@@ -30,6 +30,7 @@ typedef struct d_gfx_backend_soft_s {
 /* Registration for dispatcher */
 const d_gfx_backend_soft *d_gfx_soft_register_backend(void);
 void d_gfx_soft_set_framebuffer_size(i32 w, i32 h);
+void d_gfx_soft_set_native_window(void* native_window);
 const u32* d_gfx_soft_get_framebuffer(i32* out_w, i32* out_h, i32* out_pitch_bytes);
 
 #ifdef __cplusplus

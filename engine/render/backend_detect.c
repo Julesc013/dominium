@@ -75,48 +75,53 @@ u32 d_gfx_detect_backends(d_gfx_backend_info* out_list, u32 max_count)
     }
 
     if (count < max_count) {
+        int built = DOM_BACKEND_DX9 ? 1 : 0;
         d_gfx_backend_info_set(
             &out_list[count++],
             D_GFX_BACKEND_DX9,
-            DOM_BACKEND_DX9,
+            0,
             "dx9",
-            d_gfx_detail_for(DOM_BACKEND_DX9, "Stubbed backend (null)", "Disabled at build"));
+            built ? "Stubbed backend (unavailable)" : "Disabled at build");
     }
 
     if (count < max_count) {
+        int built = DOM_BACKEND_DX11 ? 1 : 0;
         d_gfx_backend_info_set(
             &out_list[count++],
             D_GFX_BACKEND_DX11,
-            DOM_BACKEND_DX11,
+            0,
             "dx11",
-            d_gfx_detail_for(DOM_BACKEND_DX11, "Stubbed backend (null)", "Disabled at build"));
+            built ? "Stubbed backend (unavailable)" : "Disabled at build");
     }
 
     if (count < max_count) {
+        int built = DOM_BACKEND_GL2 ? 1 : 0;
         d_gfx_backend_info_set(
             &out_list[count++],
             D_GFX_BACKEND_GL2,
-            DOM_BACKEND_GL2,
+            0,
             "gl2",
-            d_gfx_detail_for(DOM_BACKEND_GL2, "Stubbed backend (null)", "Disabled at build"));
+            built ? "Stubbed backend (unavailable)" : "Disabled at build");
     }
 
     if (count < max_count) {
+        int built = DOM_BACKEND_VK1 ? 1 : 0;
         d_gfx_backend_info_set(
             &out_list[count++],
             D_GFX_BACKEND_VK1,
-            DOM_BACKEND_VK1,
+            0,
             "vk1",
-            d_gfx_detail_for(DOM_BACKEND_VK1, "Stubbed backend (null)", "Disabled at build"));
+            built ? "Stubbed backend (unavailable)" : "Disabled at build");
     }
 
     if (count < max_count) {
+        int built = DOM_BACKEND_METAL ? 1 : 0;
         d_gfx_backend_info_set(
             &out_list[count++],
             D_GFX_BACKEND_METAL,
-            DOM_BACKEND_METAL,
+            0,
             "metal",
-            d_gfx_detail_for(DOM_BACKEND_METAL, "Stubbed backend (null)", "Disabled at build"));
+            built ? "Stubbed backend (unavailable)" : "Disabled at build");
     }
 
     return count;

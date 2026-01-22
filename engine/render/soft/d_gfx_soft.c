@@ -27,6 +27,7 @@ static u32 *g_soft_fb = 0;
 static i32 g_soft_width = 800;
 static i32 g_soft_height = 600;
 static d_gfx_viewport g_soft_vp = { 0, 0, 800, 600 };
+static void* g_soft_native_window = 0;
 
 static u32 d_gfx_soft_pack_color(const d_gfx_color *c)
 {
@@ -275,6 +276,7 @@ static void d_gfx_soft_shutdown(void)
     }
     g_soft_width = 0;
     g_soft_height = 0;
+    g_soft_native_window = 0;
 }
 
 static void d_gfx_soft_submit(const d_gfx_cmd_buffer *buf)
@@ -317,7 +319,11 @@ static void d_gfx_soft_submit(const d_gfx_cmd_buffer *buf)
 
 static void d_gfx_soft_present(void)
 {
+    if (!g_soft_fb || g_soft_width <= 0 || g_soft_height <= 0) {
+        return;
+    }
     d_system_present_framebuffer(
+        g_soft_native_window,
         g_soft_fb,
         g_soft_width,
         g_soft_height,
@@ -348,6 +354,11 @@ void d_gfx_soft_set_framebuffer_size(i32 w, i32 h)
     g_soft_vp.y = 0;
     g_soft_vp.w = g_soft_width;
     g_soft_vp.h = g_soft_height;
+}
+
+void d_gfx_soft_set_native_window(void* native_window)
+{
+    g_soft_native_window = native_window;
 }
 
 const u32* d_gfx_soft_get_framebuffer(i32* out_w, i32* out_h, i32* out_pitch_bytes)

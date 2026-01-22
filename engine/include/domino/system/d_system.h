@@ -56,9 +56,11 @@ void d_system_set_native_window_handle(void* handle);
 
 /* Purpose: Present framebuffer.
  * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Notes: native_window may be NULL to use the current platform handle.
  * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
  */
 int d_system_present_framebuffer(
+    void*       native_window,
     const void *pixels,
     i32         width,
     i32         height,

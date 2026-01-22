@@ -42,8 +42,10 @@ void d_system_set_native_window_handle(void* handle);
 
 /* Soft framebuffer hook:
  * Called by soft backend to hand over framebuffer for presentation.
+ * native_window may be NULL to use the current platform handle.
  */
 int d_system_present_framebuffer(
+    void*       native_window,
     const void *pixels,
     i32         width,
     i32         height,
