@@ -148,6 +148,7 @@ set(ENGINE_CORE_LEGACY_SOURCES
     modules/core/dg_pose.c
     modules/core/dg_quant.c
     modules/core/dom_build_info.c
+    modules/core/dom_control.c
     modules/core/dom_registry.c
     modules/core/dom_deterministic_math.c
     modules/core/dom_ledger_accounts.c
