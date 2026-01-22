@@ -5,6 +5,7 @@ Stub setup CLI entrypoint.
 #include "domino/caps.h"
 #include "domino/config_base.h"
 #include "domino/gfx.h"
+#include "domino/app/runtime.h"
 #include "dom_contracts/version.h"
 #include "dom_contracts/_internal/dom_build_version.h"
 #include <errno.h>
@@ -291,6 +292,8 @@ static void setup_print_help(void)
     printf("  --status                     Show active control layers\\n");
     printf("  --smoke                      Run deterministic CLI smoke\\n");
     printf("  --selftest                   Alias for --smoke\\n");
+    printf("  --deterministic             Use fixed timestep (no wall-clock sleep)\\n");
+    printf("  --interactive               Use variable timestep (wall-clock)\\n");
     printf("  --root <path>                Install root for prepare command\\n");
     printf("  --control-enable=K1,K2       Enable control capabilities (canonical keys)\\n");
     printf("  --control-registry <path>    Override control registry path\\n");
@@ -367,22 +370,22 @@ static int setup_prepare(const char* root)
     }
     if (setup_mkdir(root) != 0) {
         fprintf(stderr, "setup: failed to create root '%s' (%s)\\n", root, strerror(errno));
-        return 2;
+        return D_APP_EXIT_FAILURE;
     }
     printf("setup_prepare_root=%s\\n", root);
     for (i = 0u; i < (sizeof(dirs) / sizeof(dirs[0])); ++i) {
         if (setup_join_path(path, sizeof(path), root, dirs[i]) != 0) {
             fprintf(stderr, "setup: path too long for '%s'\\n", dirs[i]);
-            return 2;
+            return D_APP_EXIT_FAILURE;
         }
         if (setup_mkdir(path) != 0) {
             fprintf(stderr, "setup: failed to create '%s' (%s)\\n", path, strerror(errno));
-            return 2;
+            return D_APP_EXIT_FAILURE;
         }
         printf("setup_prepare_dir=%s\\n", path);
     }
     printf("setup_prepare=ok\\n");
-    return 0;
+    return D_APP_EXIT_OK;
 }
 
 int main(int argc, char** argv)
@@ -394,6 +397,8 @@ int main(int argc, char** argv)
     int want_status = 0;
     int want_smoke = 0;
     int want_selftest = 0;
+    int want_deterministic = 0;
+    int want_interactive = 0;
     const char* cmd = 0;
     int i;
 
@@ -425,6 +430,14 @@ int main(int argc, char** argv)
         }
         if (strcmp(argv[i], "--selftest") == 0) {
             want_selftest = 1;
+            continue;
+        }
+        if (strcmp(argv[i], "--deterministic") == 0) {
+            want_deterministic = 1;
+            continue;
+        }
+        if (strcmp(argv[i], "--interactive") == 0) {
+            want_interactive = 1;
             continue;
         }
         if (strncmp(argv[i], "--root=", 7) == 0) {
@@ -460,25 +473,33 @@ int main(int argc, char** argv)
             cmd = "status";
         }
     }
+    if (want_deterministic && want_interactive) {
+        fprintf(stderr, "setup: --deterministic and --interactive are mutually exclusive\\n");
+        return D_APP_EXIT_USAGE;
+    }
+    if ((want_smoke || want_selftest) && want_interactive) {
+        fprintf(stderr, "setup: --smoke requires deterministic mode\\n");
+        return D_APP_EXIT_USAGE;
+    }
     if (!cmd && !want_build_info && !want_status) {
         setup_print_help();
-        return 2;
+        return D_APP_EXIT_USAGE;
     }
 
     if (strcmp(cmd, "--help") == 0 || strcmp(cmd, "-h") == 0) {
         setup_print_help();
-        return 0;
+        return D_APP_EXIT_OK;
     }
     if (want_build_info || want_status || (cmd && strcmp(cmd, "status") == 0)) {
         setup_control_caps caps;
         if (control_caps_init(&caps, control_registry_path) != 0) {
             fprintf(stderr, "setup: failed to load control registry: %s\\n", control_registry_path);
-            return 2;
+            return D_APP_EXIT_FAILURE;
         }
         if (enable_control_list(&caps, control_enable) != 0) {
             fprintf(stderr, "setup: invalid control capability list\\n");
             control_free_caps(&caps);
-            return 2;
+            return D_APP_EXIT_USAGE;
         }
         if (want_build_info) {
             print_build_info("setup", DOMINIUM_SETUP_VERSION);
@@ -493,15 +514,15 @@ int main(int argc, char** argv)
         }
         print_control_caps(&caps);
         control_free_caps(&caps);
-        return 0;
+        return D_APP_EXIT_OK;
     }
     if (!cmd) {
         setup_print_help();
-        return 2;
+        return D_APP_EXIT_USAGE;
     }
     if (strcmp(cmd, "--version") == 0 || strcmp(cmd, "version") == 0) {
         print_version(DOMINIUM_SETUP_VERSION);
-        return 0;
+        return D_APP_EXIT_OK;
     }
     if (strcmp(cmd, "prepare") == 0) {
         return setup_prepare(prepare_root);
@@ -509,5 +530,5 @@ int main(int argc, char** argv)
 
     printf("setup: unknown command '%s'\\n", cmd);
     setup_print_help();
-    return 2;
+    return D_APP_EXIT_USAGE;
 }

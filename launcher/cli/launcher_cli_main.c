@@ -8,6 +8,7 @@ Stub launcher CLI entrypoint.
 #include "domino/gfx.h"
 #include "domino/render/backend_detect.h"
 #include "domino/sys.h"
+#include "domino/app/runtime.h"
 #include "domino/version.h"
 #include "dom_contracts/version.h"
 #include "dom_contracts/_internal/dom_build_version.h"
@@ -101,6 +102,8 @@ static void launcher_print_help(void)
     printf("  --status                     Show active control layers\n");
     printf("  --smoke                      Run deterministic CLI smoke\n");
     printf("  --selftest                   Alias for --smoke\n");
+    printf("  --deterministic             Use fixed timestep (no wall-clock sleep)\n");
+    printf("  --interactive               Use variable timestep (wall-clock)\n");
     printf("  --control-enable=K1,K2       Enable control capabilities (canonical keys)\n");
     printf("  --control-registry <path>    Override control registry path\n");
     printf("commands:\n");
@@ -187,7 +190,7 @@ static int launcher_print_capabilities(void)
     if (dsys_ok) {
         dsys_shutdown();
     }
-    return dsys_ok ? 0 : 2;
+    return dsys_ok ? D_APP_EXIT_OK : D_APP_EXIT_FAILURE;
 }
 
 int main(int argc, char** argv)
@@ -198,6 +201,8 @@ int main(int argc, char** argv)
     int want_status = 0;
     int want_smoke = 0;
     int want_selftest = 0;
+    int want_deterministic = 0;
+    int want_interactive = 0;
     const char* cmd = 0;
     int i;
 
@@ -231,6 +236,14 @@ int main(int argc, char** argv)
             want_selftest = 1;
             continue;
         }
+        if (strcmp(argv[i], "--deterministic") == 0) {
+            want_deterministic = 1;
+            continue;
+        }
+        if (strcmp(argv[i], "--interactive") == 0) {
+            want_interactive = 1;
+            continue;
+        }
         if (strcmp(argv[i], "--control-registry") == 0 && i + 1 < argc) {
             control_registry_path = argv[i + 1];
             i += 1;
@@ -253,44 +266,52 @@ int main(int argc, char** argv)
     if (want_smoke || want_selftest) {
         want_status = 1;
     }
+    if (want_deterministic && want_interactive) {
+        fprintf(stderr, "launcher: --deterministic and --interactive are mutually exclusive\n");
+        return D_APP_EXIT_USAGE;
+    }
+    if ((want_smoke || want_selftest) && want_interactive) {
+        fprintf(stderr, "launcher: --smoke requires deterministic mode\n");
+        return D_APP_EXIT_USAGE;
+    }
     if (!cmd && !want_build_info && !want_status) {
         launcher_print_help();
-        return 2;
+        return D_APP_EXIT_USAGE;
     }
 
     if (strcmp(cmd, "--help") == 0 || strcmp(cmd, "-h") == 0) {
         launcher_print_help();
-        return 0;
+        return D_APP_EXIT_OK;
     }
     if (want_build_info || want_status) {
         dom_control_caps caps;
         if (dom_control_caps_init(&caps, control_registry_path) != DOM_CONTROL_OK) {
             fprintf(stderr, "launcher: failed to load control registry: %s\n", control_registry_path);
-            return 2;
+            return D_APP_EXIT_FAILURE;
         }
         if (enable_control_list(&caps, control_enable) != 0) {
             fprintf(stderr, "launcher: invalid control capability list\n");
             dom_control_caps_free(&caps);
-            return 2;
+            return D_APP_EXIT_USAGE;
         }
         if (want_build_info) {
             print_build_info("launcher", DOMINIUM_LAUNCHER_VERSION);
         }
         print_control_caps(&caps);
         dom_control_caps_free(&caps);
-        return 0;
+        return D_APP_EXIT_OK;
     }
     if (!cmd) {
         launcher_print_help();
-        return 2;
+        return D_APP_EXIT_USAGE;
     }
     if (strcmp(cmd, "--version") == 0 || strcmp(cmd, "version") == 0) {
         print_version(DOMINIUM_LAUNCHER_VERSION);
-        return 0;
+        return D_APP_EXIT_OK;
     }
     if (strcmp(cmd, "list-profiles") == 0) {
         launcher_print_profiles();
-        return 0;
+        return D_APP_EXIT_OK;
     }
     if (strcmp(cmd, "capabilities") == 0) {
         return launcher_print_capabilities();
@@ -298,5 +319,5 @@ int main(int argc, char** argv)
 
     printf("launcher: unknown command '%s'\n", cmd);
     launcher_print_help();
-    return 2;
+    return D_APP_EXIT_USAGE;
 }
