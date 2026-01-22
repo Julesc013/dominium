@@ -13,6 +13,8 @@ for tests, and no packs are required for `--help`, `--version`, `--build-info`,
 - `--selftest`: alias for `--smoke`
 - `--deterministic`: fixed timestep (no wall-clock sleep)
 - `--interactive`: variable timestep (wall-clock)
+- `--ui=none|tui|gui`: select CLI/TUI/GUI shells
+- `--tui`: legacy alias for `--ui=tui`
 
 ## Build-info output (all products)
 Key/value lines include:
@@ -27,7 +29,7 @@ Key/value lines include:
 
 ## Client (`client`)
 - `--renderer <name>`: explicit renderer selection; fails loudly if unavailable
-- `--ui=gui|tui|none`: select GUI/TUI/CLI-only shell
+- `--ui=none|tui|gui`: select GUI/TUI/CLI-only shell
 - `--windowed`: start a windowed shell (not used by CLI tests)
 - `--tui`: start a terminal UI shell (not used by CLI tests)
 - `--borderless`: start a borderless window
@@ -39,18 +41,22 @@ Key/value lines include:
 ## Server (`server`)
 - `--mp0-loopback`: MP0 loopback (deterministic)
 - `--mp0-server-auth`: MP0 server-auth demo (deterministic)
+- `--ui=none|tui|gui`: optional UI selection (TUI/GUI are stubs in APR3)
 
 ## Launcher (`launcher`)
 - Commands: `version`, `list-profiles`, `capabilities`
 - `--status`/`--smoke`: prints control capability status
+- `--ui=none|tui|gui`: optional UI selection (TUI/GUI are stubs in APR3)
 
 ## Setup (`setup`)
 - Commands: `version`, `status`, `prepare`
 - `status` prints `setup status: ok (stub)` and control capability status
 - `prepare` creates an empty install layout (uses `--root` when provided)
+- `--ui=none|tui|gui`: optional UI selection (TUI/GUI are stubs in APR3)
 
 ## Tools (`tools`)
 - Commands: `inspect`, `validate`, `replay` (stubs)
 - `--status`/`--smoke`: prints `tools_status=ok` or `tools_smoke=ok`
-- `--tui`: start a terminal UI shell (not used by CLI tests)
+- `--ui=none|tui|gui`: select CLI/TUI/GUI shells
+- `--tui`: legacy alias for `--ui=tui` (not used by CLI tests)
 - `--frame-cap-ms <ms>`: frame cap for interactive loops
