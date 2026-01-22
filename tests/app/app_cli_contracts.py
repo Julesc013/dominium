@@ -97,6 +97,38 @@ def main():
     ok = ok and run_cmd([args.setup, "--smoke"])
     ok = ok and run_cmd([args.tools, "--smoke"])
 
+    ok = ok and run_cmd([args.client, "--deterministic", "--smoke"])
+    ok = ok and run_cmd([args.server, "--deterministic", "--smoke"])
+    ok = ok and run_cmd([args.launcher, "--deterministic", "--smoke"])
+    ok = ok and run_cmd([args.setup, "--deterministic", "--smoke"])
+    ok = ok and run_cmd([args.tools, "--deterministic", "--smoke"])
+
+    ok = ok and run_cmd(
+        [args.client, "--interactive", "--smoke"],
+        expect_nonzero=True,
+        expect_contains=["requires deterministic"],
+    )
+    ok = ok and run_cmd(
+        [args.server, "--interactive", "--smoke"],
+        expect_nonzero=True,
+        expect_contains=["requires deterministic"],
+    )
+    ok = ok and run_cmd(
+        [args.launcher, "--interactive", "--smoke"],
+        expect_nonzero=True,
+        expect_contains=["requires deterministic"],
+    )
+    ok = ok and run_cmd(
+        [args.setup, "--interactive", "--smoke"],
+        expect_nonzero=True,
+        expect_contains=["requires deterministic"],
+    )
+    ok = ok and run_cmd(
+        [args.tools, "--interactive", "--smoke"],
+        expect_nonzero=True,
+        expect_contains=["requires deterministic"],
+    )
+
     ok = ok and run_cmd(
         [args.client, "--renderer=missing", "--smoke"],
         expect_nonzero=True,
