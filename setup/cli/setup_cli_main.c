@@ -7,9 +7,15 @@ Stub setup CLI entrypoint.
 #include "domino/gfx.h"
 #include "dom_contracts/version.h"
 #include "dom_contracts/_internal/dom_build_version.h"
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#if defined(_WIN32)
+#include <direct.h>
+#else
+#include <sys/stat.h>
+#endif
 
 #include "dsk/dsk_setup.h"
 
@@ -285,17 +291,105 @@ static void setup_print_help(void)
     printf("  --status                     Show active control layers\\n");
     printf("  --smoke                      Run deterministic CLI smoke\\n");
     printf("  --selftest                   Alias for --smoke\\n");
+    printf("  --root <path>                Install root for prepare command\\n");
     printf("  --control-enable=K1,K2       Enable control capabilities (canonical keys)\\n");
     printf("  --control-registry <path>    Override control registry path\\n");
     printf("commands:\\n");
     printf("  version   Show setup version\\n");
     printf("  status    Show setup status\\n");
+    printf("  prepare   Create empty install layout\\n");
+}
+
+static char setup_path_sep(void)
+{
+#if defined(_WIN32)
+    return '\\\\';
+#else
+    return '/';
+#endif
+}
+
+static int setup_mkdir(const char* path)
+{
+    int rc;
+    if (!path || !path[0]) {
+        return -1;
+    }
+#if defined(_WIN32)
+    rc = _mkdir(path);
+#else
+    rc = mkdir(path, 0755);
+#endif
+    if (rc == 0) {
+        return 0;
+    }
+    if (errno == EEXIST) {
+        return 0;
+    }
+    return -1;
+}
+
+static int setup_join_path(char* out, size_t cap, const char* root, const char* leaf)
+{
+    size_t root_len;
+    size_t leaf_len;
+    size_t total;
+    char sep;
+    if (!out || cap == 0u || !leaf) {
+        return -1;
+    }
+    if (!root || !root[0]) {
+        root = ".";
+    }
+    root_len = strlen(root);
+    leaf_len = strlen(leaf);
+    sep = setup_path_sep();
+    total = root_len + leaf_len + 2u;
+    if (total > cap) {
+        return -1;
+    }
+    memcpy(out, root, root_len);
+    if (root_len > 0u && root[root_len - 1u] != '/' && root[root_len - 1u] != '\\\\') {
+        out[root_len++] = sep;
+    }
+    memcpy(out + root_len, leaf, leaf_len);
+    out[root_len + leaf_len] = '\\0';
+    return 0;
+}
+
+static int setup_prepare(const char* root)
+{
+    static const char* dirs[] = { "program", "data", "user", "state", "temp" };
+    char path[512];
+    size_t i;
+    if (!root || !root[0]) {
+        root = ".";
+    }
+    if (setup_mkdir(root) != 0) {
+        fprintf(stderr, "setup: failed to create root '%s' (%s)\\n", root, strerror(errno));
+        return 2;
+    }
+    printf("setup_prepare_root=%s\\n", root);
+    for (i = 0u; i < (sizeof(dirs) / sizeof(dirs[0])); ++i) {
+        if (setup_join_path(path, sizeof(path), root, dirs[i]) != 0) {
+            fprintf(stderr, "setup: path too long for '%s'\\n", dirs[i]);
+            return 2;
+        }
+        if (setup_mkdir(path) != 0) {
+            fprintf(stderr, "setup: failed to create '%s' (%s)\\n", path, strerror(errno));
+            return 2;
+        }
+        printf("setup_prepare_dir=%s\\n", path);
+    }
+    printf("setup_prepare=ok\\n");
+    return 0;
 }
 
 int main(int argc, char** argv)
 {
     const char* control_registry_path = "data/registries/control_capabilities.registry";
     const char* control_enable = 0;
+    const char* prepare_root = ".";
     int want_build_info = 0;
     int want_status = 0;
     int want_smoke = 0;
@@ -331,6 +425,15 @@ int main(int argc, char** argv)
         }
         if (strcmp(argv[i], "--selftest") == 0) {
             want_selftest = 1;
+            continue;
+        }
+        if (strncmp(argv[i], "--root=", 7) == 0) {
+            prepare_root = argv[i] + 7;
+            continue;
+        }
+        if (strcmp(argv[i], "--root") == 0 && i + 1 < argc) {
+            prepare_root = argv[i + 1];
+            i += 1;
             continue;
         }
         if (strcmp(argv[i], "--control-registry") == 0 && i + 1 < argc) {
@@ -399,6 +502,9 @@ int main(int argc, char** argv)
     if (strcmp(cmd, "--version") == 0 || strcmp(cmd, "version") == 0) {
         print_version(DOMINIUM_SETUP_VERSION);
         return 0;
+    }
+    if (strcmp(cmd, "prepare") == 0) {
+        return setup_prepare(prepare_root);
     }
 
     printf("setup: unknown command '%s'\\n", cmd);
