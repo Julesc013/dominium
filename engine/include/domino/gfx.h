@@ -146,6 +146,21 @@ void d_gfx_present(void);
 
 /* Optional helper: query current backbuffer size (soft backend only). */
 void d_gfx_get_surface_size(i32 *out_w, i32 *out_h);
+/* Purpose: Bind native surface/window to current renderer.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
+int  d_gfx_bind_surface(void* native_window, i32 width, i32 height);
+/* Purpose: Resize render surface/backbuffer.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
+int  d_gfx_resize(i32 width, i32 height);
+/* Purpose: Get native window handle bound to renderer.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
+void* d_gfx_get_native_window(void);
 
 /*------------------------------------------------------------
  * Versioned DGFX facade vtables (v1)
@@ -156,6 +171,9 @@ typedef enum dgfx_result_e {
     DGFX_ERR,
     DGFX_ERR_UNSUPPORTED
 } dgfx_result;
+
+/* Renderer protocol version (API vtables follow this). */
+#define DGFX_PROTOCOL_VERSION 1u
 
 /* Interface IDs (u32 constants) */
 #define DGFX_IID_IR_API_V1     ((dom_iid)0x44474601u)
@@ -191,8 +209,9 @@ typedef struct dgfx_ir_api_v1 {
 /* dgfx_native_api_v1: Public type used by `gfx`. */
 typedef struct dgfx_native_api_v1 {
     DOM_ABI_HEADER;
-    void* reserved0;
-    void* reserved1;
+    int   (*bind_surface)(void* native_window, i32 width, i32 height);
+    int   (*resize)(i32 width, i32 height);
+    void* (*get_native_window)(void);
 } dgfx_native_api_v1;
 
 /* Purpose: Api dgfx get ir.

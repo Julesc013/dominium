@@ -32,6 +32,7 @@ typedef enum d_gfx_backend_type {
     D_GFX_BACKEND_METAL,
     D_GFX_BACKEND_VESA,
     D_GFX_BACKEND_VGA,
+    D_GFX_BACKEND_NULL = 100,
     D_GFX_BACKEND_MAX_ENUM
 } d_gfx_backend_type;
 

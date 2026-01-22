@@ -2,41 +2,18 @@
 FILE: source/domino/render/d_gfx_caps.h
 MODULE: Domino
 LAYER / SUBSYSTEM: Domino impl / render/d_gfx_caps
-RESPONSIBILITY: Declares DGFX IR capability masks for internal use/tests.
-ALLOWED DEPENDENCIES: `include/domino/**`, `source/domino/**`.
+RESPONSIBILITY: Compatibility wrapper for `render/d_gfx_caps.h`.
+ALLOWED DEPENDENCIES: `include/domino/**`, `include/render/**`.
 FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**`.
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
 DETERMINISM: Capability masks are deterministic and fixed per backend build.
-VERSIONING / ABI / DATA FORMAT NOTES: Internal header, not part of public ABI.
-EXTENSION POINTS: Extend by adding new opcode bits as IR grows.
+VERSIONING / ABI / DATA FORMAT NOTES: N/A (wrapper only).
+EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
 */
-#ifndef D_GFX_CAPS_H
-#define D_GFX_CAPS_H
+#ifndef DOMINO_RENDER_D_GFX_CAPS_WRAPPER_H
+#define DOMINO_RENDER_D_GFX_CAPS_WRAPPER_H
 
-#include "domino/core/types.h"
-#include "domino/gfx.h"
+#include "render/d_gfx_caps.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#define DGFX_CAP_OP_CLEAR        (1u << D_GFX_OP_CLEAR)
-#define DGFX_CAP_OP_SET_VIEWPORT (1u << D_GFX_OP_SET_VIEWPORT)
-#define DGFX_CAP_OP_SET_CAMERA   (1u << D_GFX_OP_SET_CAMERA)
-#define DGFX_CAP_OP_DRAW_RECT    (1u << D_GFX_OP_DRAW_RECT)
-#define DGFX_CAP_OP_DRAW_TEXT    (1u << D_GFX_OP_DRAW_TEXT)
-
-#define DGFX_CAP_OP_ALL (DGFX_CAP_OP_CLEAR | DGFX_CAP_OP_SET_VIEWPORT | \
-                         DGFX_CAP_OP_SET_CAMERA | DGFX_CAP_OP_DRAW_RECT | \
-                         DGFX_CAP_OP_DRAW_TEXT)
-
-u32 d_gfx_get_opcode_mask(void);
-u32 d_gfx_get_opcode_mask_for_backend(const char* name);
-const char* d_gfx_get_backend_name(void);
-
-#ifdef __cplusplus
-} /* extern "C" */
-#endif
-
-#endif /* D_GFX_CAPS_H */
+#endif /* DOMINO_RENDER_D_GFX_CAPS_WRAPPER_H */

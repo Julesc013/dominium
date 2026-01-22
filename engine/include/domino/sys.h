@@ -367,6 +367,15 @@ typedef struct dsys_window_desc {
     dsys_window_mode mode;
 } dsys_window_desc;
 
+/* dsys_window_state: Public type used by `sys`. */
+typedef struct dsys_window_state {
+    bool should_close;
+    bool focused;
+    bool minimized;
+    bool maximized;
+    bool occluded;
+} dsys_window_state;
+
 /* Purpose: Create window.
  * Parameters: See `docs/CONTRACTS.md#Parameters`.
  * Returns: Non-NULL on success; NULL on failure or when not found.
@@ -401,11 +410,32 @@ int          dsys_window_should_close(dsys_window* win);
  * Parameters: See `docs/CONTRACTS.md#Parameters`.
  */
 void         dsys_window_present(dsys_window* win);
+/* Purpose: Show dsys window.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
+void         dsys_window_show(dsys_window* win);
+/* Purpose: Hide dsys window.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
+void         dsys_window_hide(dsys_window* win);
+/* Purpose: State dsys window get.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
+void         dsys_window_get_state(dsys_window* win, dsys_window_state* out_state);
+/* Purpose: Framebuffer size dsys window get.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
+void         dsys_window_get_framebuffer_size(dsys_window* win, int32_t* w, int32_t* h);
+/* Purpose: Dpi scale dsys window get.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
+float        dsys_window_get_dpi_scale(dsys_window* win);
 
 /* Input events */
 typedef enum dsys_event_type {
     DSYS_EVENT_QUIT = 0,
     DSYS_EVENT_WINDOW_RESIZED,
+    DSYS_EVENT_DPI_CHANGED,
     DSYS_EVENT_KEY_DOWN,
     DSYS_EVENT_KEY_UP,
     DSYS_EVENT_TEXT_INPUT,
@@ -421,6 +451,7 @@ typedef struct dsys_event {
     dsys_event_type type;
     union {
         struct { int32_t width; int32_t height; } window;
+        struct { float scale; } dpi;
         struct { int32_t key; bool repeat; } key;
         struct { char text[8]; } text;
         struct { int32_t x; int32_t y; int32_t dx; int32_t dy; } mouse_move;
@@ -606,6 +637,21 @@ int  dsys_ime_poll(dsys_ime_event* ev);
 #define DSYS_IID_NET_API_V1      ((dom_iid)0x4453590Au)
 #define DSYS_IID_AUDIOIO_API_V1  ((dom_iid)0x4453590Bu)
 #define DSYS_IID_CLIPTEXT_API_V1 ((dom_iid)0x4453590Cu)
+#define DSYS_IID_WINDOW_EX_API_V1 ((dom_iid)0x4453590Du)
+#define DSYS_IID_ERROR_API_V1     ((dom_iid)0x4453590Eu)
+#define DSYS_IID_CURSOR_API_V1    ((dom_iid)0x4453590Fu)
+#define DSYS_IID_DRAGDROP_API_V1  ((dom_iid)0x44535910u)
+#define DSYS_IID_GAMEPAD_API_V1   ((dom_iid)0x44535911u)
+#define DSYS_IID_POWER_API_V1     ((dom_iid)0x44535912u)
+
+/* Extension names for dsys_query_extension (name + version). */
+#define DSYS_EXTENSION_WINDOW_EX "dsys.window_ex"
+#define DSYS_EXTENSION_ERROR     "dsys.error"
+#define DSYS_EXTENSION_CLIPTEXT  "dsys.cliptext"
+#define DSYS_EXTENSION_CURSOR    "dsys.cursor"
+#define DSYS_EXTENSION_DRAGDROP  "dsys.dragdrop"
+#define DSYS_EXTENSION_GAMEPAD   "dsys.gamepad"
+#define DSYS_EXTENSION_POWER     "dsys.power"
 
 /* dsys_core_api_v1: Public type used by `sys`. */
 typedef struct dsys_core_api_v1 {
@@ -674,6 +720,16 @@ typedef struct dsys_window_api_v1 {
     void         (*present)(dsys_window* win);
 } dsys_window_api_v1;
 
+/* dsys_window_ex_api_v1: Public type used by `sys`. */
+typedef struct dsys_window_ex_api_v1 {
+    DOM_ABI_HEADER;
+    void  (*show)(dsys_window* win);
+    void  (*hide)(dsys_window* win);
+    void  (*get_state)(dsys_window* win, dsys_window_state* out_state);
+    void  (*get_framebuffer_size)(dsys_window* win, int32_t* w, int32_t* h);
+    float (*get_dpi_scale)(dsys_window* win);
+} dsys_window_ex_api_v1;
+
 /* dsys_input_api_v1: Public type used by `sys`. */
 typedef struct dsys_input_api_v1 {
     DOM_ABI_HEADER;
@@ -721,11 +777,61 @@ typedef struct dsys_cliptext_api_v1 {
     void* reserved1;
 } dsys_cliptext_api_v1;
 
+/* dsys_cursor_api_v1: Public type used by `sys`. */
+typedef struct dsys_cursor_api_v1 {
+    DOM_ABI_HEADER;
+    void* reserved0;
+    void* reserved1;
+} dsys_cursor_api_v1;
+
+/* dsys_dragdrop_api_v1: Public type used by `sys`. */
+typedef struct dsys_dragdrop_api_v1 {
+    DOM_ABI_HEADER;
+    void* reserved0;
+    void* reserved1;
+} dsys_dragdrop_api_v1;
+
+/* dsys_gamepad_api_v1: Public type used by `sys`. */
+typedef struct dsys_gamepad_api_v1 {
+    DOM_ABI_HEADER;
+    void* reserved0;
+    void* reserved1;
+} dsys_gamepad_api_v1;
+
+/* dsys_power_api_v1: Public type used by `sys`. */
+typedef struct dsys_power_api_v1 {
+    DOM_ABI_HEADER;
+    void* reserved0;
+    void* reserved1;
+} dsys_power_api_v1;
+
+/* dsys_error_api_v1: Public type used by `sys`. */
+typedef struct dsys_error_api_v1 {
+    DOM_ABI_HEADER;
+    dsys_result (*last_error_code)(void);
+    const char* (*last_error_text)(void);
+} dsys_error_api_v1;
+
 /* Purpose: Api dsys get core.
  * Parameters: See `docs/CONTRACTS.md#Parameters`.
  * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
  */
 dsys_result dsys_get_core_api(u32 requested_abi, dsys_core_api_v1* out);
+/* Purpose: Query dsys extension by name + version.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: Extension table pointer or NULL.
+ */
+void*      dsys_query_extension(const char* name, u32 version);
+/* Purpose: Last dsys error code.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
+dsys_result dsys_last_error_code(void);
+/* Purpose: Last dsys error text.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ */
+const char* dsys_last_error_text(void);
 
 #ifdef DOMINO_SYS_INTERNAL
 /* dsys_backend_vtable: Public type used by `sys`. */
@@ -745,6 +851,11 @@ typedef struct dsys_backend_vtable_t {
     void         (*window_set_mode)(dsys_window* win, dsys_window_mode mode);
     void         (*window_set_size)(dsys_window* win, int32_t w, int32_t h);
     void         (*window_get_size)(dsys_window* win, int32_t* w, int32_t* h);
+    void         (*window_show)(dsys_window* win);
+    void         (*window_hide)(dsys_window* win);
+    void         (*window_get_state)(dsys_window* win, dsys_window_state* out_state);
+    void         (*window_get_framebuffer_size)(dsys_window* win, int32_t* w, int32_t* h);
+    float        (*window_get_dpi_scale)(dsys_window* win);
     void*        (*window_get_native_handle)(dsys_window* win);
 
     /* events */
