@@ -23,6 +23,10 @@ Key/value lines include:
 
 ## Client (`client`)
 - `--renderer <name>`: explicit renderer selection; fails loudly if unavailable
+- `--windowed`: start a windowed shell (not used by CLI tests)
+- `--borderless`: start a borderless window
+- `--fullscreen`: start a fullscreen window (best-effort)
+- `--width <px>`, `--height <px>`: window size override
 - `--mp0-connect=local`: MP0 local demo (deterministic)
 
 ## Server (`server`)
@@ -30,14 +34,14 @@ Key/value lines include:
 - `--mp0-server-auth`: MP0 server-auth demo (deterministic)
 
 ## Launcher (`launcher`)
-- Commands: `version`, `list-profiles`
+- Commands: `version`, `list-profiles`, `capabilities`
 - `--status`/`--smoke`: prints control capability status
 
 ## Setup (`setup`)
-- Commands: `version`, `status`
+- Commands: `version`, `status`, `prepare`
 - `status` prints `setup status: ok (stub)` and control capability status
+- `prepare` creates an empty install layout (uses `--root` when provided)
 
 ## Tools (`tools`)
 - Commands: `inspect`, `validate`, `replay` (stubs)
 - `--status`/`--smoke`: prints `tools_status=ok` or `tools_smoke=ok`
-

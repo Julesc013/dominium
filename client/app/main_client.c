@@ -6,6 +6,8 @@ Minimal client entrypoint with MP0 local-connect demo.
 #include "domino/caps.h"
 #include "domino/config_base.h"
 #include "domino/gfx.h"
+#include "domino/sys.h"
+#include "domino/system/d_system.h"
 #include "domino/version.h"
 #include "dom_contracts/version.h"
 #include "dom_contracts/_internal/dom_build_version.h"
@@ -26,6 +28,11 @@ static void print_help(void)
     printf("  --smoke                     Run deterministic CLI smoke\n");
     printf("  --selftest                  Alias for --smoke\n");
     printf("  --renderer <name>           Select renderer (explicit; no fallback)\n");
+    printf("  --windowed                  Start a windowed client shell\n");
+    printf("  --borderless                Start a borderless window\n");
+    printf("  --fullscreen                Start a fullscreen window\n");
+    printf("  --width <px>                Window width (default 800)\n");
+    printf("  --height <px>               Window height (default 600)\n");
     printf("  --control-enable=K1,K2       Enable control capabilities (canonical keys)\n");
     printf("  --control-registry <path>    Override control registry path\n");
     printf("  --mp0-connect=local          Run MP0 local client demo\n");
@@ -106,6 +113,145 @@ static int enable_control_list(dom_control_caps* caps, const char* list)
     return 0;
 }
 
+typedef struct client_window_config {
+    int enabled;
+    int width;
+    int height;
+    dsys_window_mode mode;
+} client_window_config;
+
+static void client_window_defaults(client_window_config* cfg)
+{
+    if (!cfg) {
+        return;
+    }
+    cfg->enabled = 0;
+    cfg->width = 800;
+    cfg->height = 600;
+    cfg->mode = DWIN_MODE_WINDOWED;
+}
+
+static int client_parse_positive_int(const char* text, int* out_value)
+{
+    char* end = 0;
+    long value;
+    if (!text || !out_value) {
+        return 0;
+    }
+    value = strtol(text, &end, 10);
+    if (!end || *end != '\0' || value <= 0 || value > 8192) {
+        return 0;
+    }
+    *out_value = (int)value;
+    return 1;
+}
+
+static int client_run_windowed(const client_window_config* cfg, const char* renderer)
+{
+    dsys_window_desc desc;
+    dsys_window* win = 0;
+    int renderer_ready = 0;
+    int result = 2;
+    int32_t fb_w = 0;
+    int32_t fb_h = 0;
+    dsys_event ev;
+    float dpi_scale = 1.0f;
+
+    if (dsys_init() != DSYS_OK) {
+        fprintf(stderr, "client: dsys_init failed (%s)\n", dsys_last_error_text());
+        return 2;
+    }
+
+    memset(&desc, 0, sizeof(desc));
+    desc.x = 0;
+    desc.y = 0;
+    desc.width = cfg ? cfg->width : 800;
+    desc.height = cfg ? cfg->height : 600;
+    desc.mode = cfg ? cfg->mode : DWIN_MODE_WINDOWED;
+
+    win = dsys_window_create(&desc);
+    if (!win) {
+        fprintf(stderr, "client: window creation failed (%s)\n", dsys_last_error_text());
+        goto cleanup;
+    }
+    dsys_window_show(win);
+
+    d_system_set_native_window_handle(dsys_window_get_native_handle(win));
+
+    if (!d_gfx_init(renderer)) {
+        fprintf(stderr, "client: renderer init failed\n");
+        goto cleanup;
+    }
+    renderer_ready = 1;
+
+    dsys_window_get_framebuffer_size(win, &fb_w, &fb_h);
+    if (fb_w <= 0 || fb_h <= 0) {
+        dsys_window_get_size(win, &fb_w, &fb_h);
+    }
+    d_gfx_bind_surface(dsys_window_get_native_handle(win), fb_w, fb_h);
+
+    dpi_scale = dsys_window_get_dpi_scale(win);
+    fprintf(stderr, "client: dpi_scale=%.2f\n", (double)dpi_scale);
+
+    while (!dsys_window_should_close(win)) {
+        while (dsys_poll_event(&ev)) {
+            if (ev.type == DSYS_EVENT_QUIT) {
+                goto cleanup;
+            }
+            if (ev.type == DSYS_EVENT_WINDOW_RESIZED) {
+                dsys_window_get_framebuffer_size(win, &fb_w, &fb_h);
+                if (fb_w <= 0 || fb_h <= 0) {
+                    fb_w = ev.payload.window.width;
+                    fb_h = ev.payload.window.height;
+                }
+                if (fb_w > 0 && fb_h > 0) {
+                    d_gfx_resize(fb_w, fb_h);
+                }
+            }
+            if (ev.type == DSYS_EVENT_DPI_CHANGED) {
+                fprintf(stderr, "client: dpi_scale=%.2f\n", (double)ev.payload.dpi.scale);
+            }
+        }
+
+        {
+            d_gfx_cmd_buffer* buf = d_gfx_cmd_buffer_begin();
+            if (buf) {
+                d_gfx_viewport vp;
+                d_gfx_draw_text_cmd text;
+                d_gfx_color clear = { 0xff, 0x12, 0x12, 0x18 };
+                d_gfx_color ink = { 0xff, 0xee, 0xee, 0xee };
+                d_gfx_cmd_clear(buf, clear);
+                vp.x = 0;
+                vp.y = 0;
+                vp.w = (fb_w > 0) ? fb_w : 800;
+                vp.h = (fb_h > 0) ? fb_h : 600;
+                d_gfx_cmd_set_viewport(buf, &vp);
+                text.x = 16;
+                text.y = 16;
+                text.text = "Dominium client (windowed)";
+                text.color = ink;
+                d_gfx_cmd_draw_text(buf, &text);
+                d_gfx_cmd_buffer_end(buf);
+                d_gfx_submit(buf);
+            }
+        }
+        d_gfx_present();
+        dsys_sleep_ms(16);
+    }
+    result = 0;
+
+cleanup:
+    if (renderer_ready) {
+        d_gfx_shutdown();
+    }
+    d_system_set_native_window_handle(0);
+    if (win) {
+        dsys_window_destroy(win);
+    }
+    dsys_shutdown();
+    return result;
+}
+
 static int mp0_run_local_client(void)
 {
     dom_mp0_state state;
@@ -165,6 +311,7 @@ int main(int argc, char** argv)
     const char* control_registry_path = "data/registries/control_capabilities.registry";
     const char* control_enable = 0;
     const char* renderer = 0;
+    client_window_config window_cfg;
     int want_help = 0;
     int want_version = 0;
     int want_build_info = 0;
@@ -175,6 +322,7 @@ int main(int argc, char** argv)
     dom_control_caps control_caps;
     int control_loaded = 0;
     int i;
+    client_window_defaults(&window_cfg);
     for (i = 1; i < argc; ++i) {
         if (strcmp(argv[i], "--help") == 0 || strcmp(argv[i], "-h") == 0) {
             want_help = 1;
@@ -198,6 +346,51 @@ int main(int argc, char** argv)
         }
         if (strcmp(argv[i], "--selftest") == 0) {
             want_selftest = 1;
+            continue;
+        }
+        if (strcmp(argv[i], "--windowed") == 0) {
+            window_cfg.enabled = 1;
+            window_cfg.mode = DWIN_MODE_WINDOWED;
+            continue;
+        }
+        if (strcmp(argv[i], "--borderless") == 0) {
+            window_cfg.enabled = 1;
+            window_cfg.mode = DWIN_MODE_BORDERLESS;
+            continue;
+        }
+        if (strcmp(argv[i], "--fullscreen") == 0) {
+            window_cfg.enabled = 1;
+            window_cfg.mode = DWIN_MODE_FULLSCREEN;
+            continue;
+        }
+        if (strncmp(argv[i], "--width=", 8) == 0) {
+            if (!client_parse_positive_int(argv[i] + 8, &window_cfg.width)) {
+                fprintf(stderr, "client: invalid --width value\n");
+                return 2;
+            }
+            continue;
+        }
+        if (strcmp(argv[i], "--width") == 0 && i + 1 < argc) {
+            if (!client_parse_positive_int(argv[i + 1], &window_cfg.width)) {
+                fprintf(stderr, "client: invalid --width value\n");
+                return 2;
+            }
+            i += 1;
+            continue;
+        }
+        if (strncmp(argv[i], "--height=", 9) == 0) {
+            if (!client_parse_positive_int(argv[i] + 9, &window_cfg.height)) {
+                fprintf(stderr, "client: invalid --height value\n");
+                return 2;
+            }
+            continue;
+        }
+        if (strcmp(argv[i], "--height") == 0 && i + 1 < argc) {
+            if (!client_parse_positive_int(argv[i + 1], &window_cfg.height)) {
+                fprintf(stderr, "client: invalid --height value\n");
+                return 2;
+            }
+            i += 1;
             continue;
         }
         if (strncmp(argv[i], "--renderer=", 11) == 0) {
@@ -238,6 +431,9 @@ int main(int argc, char** argv)
     if (want_smoke || want_selftest) {
         want_mp0 = 1;
     }
+    if (want_mp0) {
+        window_cfg.enabled = 0;
+    }
     if (want_build_info || want_status || control_enable) {
         if (dom_control_caps_init(&control_caps, control_registry_path) != DOM_CONTROL_OK) {
             fprintf(stderr, "client: failed to load control registry: %s\n", control_registry_path);
@@ -271,6 +467,12 @@ int main(int argc, char** argv)
             dom_control_caps_free(&control_caps);
         }
         return 0;
+    }
+    if (window_cfg.enabled) {
+        if (control_loaded) {
+            dom_control_caps_free(&control_caps);
+        }
+        return client_run_windowed(&window_cfg, renderer);
     }
     if (want_mp0) {
         if (!client_validate_renderer(renderer)) {

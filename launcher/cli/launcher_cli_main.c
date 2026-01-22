@@ -6,6 +6,8 @@ Stub launcher CLI entrypoint.
 #include "domino/caps.h"
 #include "domino/config_base.h"
 #include "domino/gfx.h"
+#include "domino/render/backend_detect.h"
+#include "domino/sys.h"
 #include "domino/version.h"
 #include "dom_contracts/version.h"
 #include "dom_contracts/_internal/dom_build_version.h"
@@ -104,6 +106,7 @@ static void launcher_print_help(void)
     printf("commands:\n");
     printf("  version         Show launcher version\n");
     printf("  list-profiles   List known profiles\n");
+    printf("  capabilities    Report platform + renderer availability\n");
 }
 
 static void launcher_print_profiles(void)
@@ -125,6 +128,66 @@ static void launcher_print_profiles(void)
         }
         printf("%s\t%s\n", p->id, p->name);
     }
+}
+
+static const char* launcher_backend_name_for(d_gfx_backend_type backend,
+                                             const d_gfx_backend_info* infos,
+                                             u32 count)
+{
+    u32 i;
+    for (i = 0u; i < count; ++i) {
+        if (infos[i].backend == backend) {
+            return infos[i].name;
+        }
+    }
+    return "unknown";
+}
+
+static int launcher_print_capabilities(void)
+{
+    dsys_caps caps;
+    d_gfx_backend_info infos[D_GFX_BACKEND_MAX];
+    u32 count;
+    d_gfx_backend_type auto_backend;
+    const char* auto_name;
+    int dsys_ok = 0;
+    u32 i;
+
+    if (dsys_init() == DSYS_OK) {
+        caps = dsys_get_caps();
+        dsys_ok = 1;
+    } else {
+        caps.name = "unknown";
+        caps.ui_modes = 0u;
+        caps.has_windows = false;
+        caps.has_mouse = false;
+        caps.has_gamepad = false;
+        caps.has_high_res_timer = false;
+        fprintf(stderr, "launcher: dsys_init failed (%s)\n", dsys_last_error_text());
+    }
+
+    printf("platform_backend=%s\n", caps.name ? caps.name : "unknown");
+    printf("platform_ui_modes=%u\n", (unsigned int)caps.ui_modes);
+    printf("platform_windows=%u\n", caps.has_windows ? 1u : 0u);
+    printf("platform_mouse=%u\n", caps.has_mouse ? 1u : 0u);
+    printf("platform_gamepad=%u\n", caps.has_gamepad ? 1u : 0u);
+    printf("platform_hr_timer=%u\n", caps.has_high_res_timer ? 1u : 0u);
+
+    count = d_gfx_detect_backends(infos, (u32)(sizeof(infos) / sizeof(infos[0])));
+    auto_backend = d_gfx_select_backend();
+    auto_name = launcher_backend_name_for(auto_backend, infos, count);
+    printf("renderer_auto=%s\n", auto_name ? auto_name : "unknown");
+    for (i = 0u; i < count; ++i) {
+        printf("renderer=%s supported=%u detail=%s\n",
+               infos[i].name,
+               infos[i].supported ? 1u : 0u,
+               infos[i].detail);
+    }
+
+    if (dsys_ok) {
+        dsys_shutdown();
+    }
+    return dsys_ok ? 0 : 2;
 }
 
 int main(int argc, char** argv)
@@ -228,6 +291,9 @@ int main(int argc, char** argv)
     if (strcmp(cmd, "list-profiles") == 0) {
         launcher_print_profiles();
         return 0;
+    }
+    if (strcmp(cmd, "capabilities") == 0) {
+        return launcher_print_capabilities();
     }
 
     printf("launcher: unknown command '%s'\n", cmd);
