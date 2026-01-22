@@ -1,0 +1,8 @@
+add_subdirectory(control)
+add_subdirectory(authority)
+add_subdirectory(entitlement)
+add_subdirectory(demo)
+add_subdirectory(tourist)
+add_subdirectory(distribution)
+add_subdirectory(services)
+add_subdirectory(piracy_containment)
