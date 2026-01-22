@@ -19,6 +19,9 @@ target_link_libraries(dominium_server PRIVATE
     dominium_game
     libs::contracts
 )
+target_include_directories(dominium_server PRIVATE
+    ${DOMINIUM_GENERATED_INCLUDE_DIR}
+)
 set_target_properties(dominium_server PROPERTIES
     OUTPUT_NAME "server"
     LINKER_LANGUAGE CXX

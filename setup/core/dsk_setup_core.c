@@ -2,10 +2,11 @@
 Stub setup core implementation.
 */
 #include "dsk/dsk_setup.h"
+#include "dom_contracts/version.h"
 
 const char* dsk_setup_version(void)
 {
-    return "0.0.0";
+    return DOMINIUM_SETUP_VERSION;
 }
 
 int dsk_setup_status(void)

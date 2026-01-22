@@ -27,6 +27,9 @@ add_executable(launcher_cli
     cli/launcher_cli_main.c
 )
 target_link_libraries(launcher_cli PRIVATE launcher::launcher)
+target_include_directories(launcher_cli PRIVATE
+    ${DOMINIUM_GENERATED_INCLUDE_DIR}
+)
 set_target_properties(launcher_cli PROPERTIES
     OUTPUT_NAME "launcher"
     C_STANDARD 90
