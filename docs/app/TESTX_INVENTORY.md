@@ -18,6 +18,7 @@ Short discovery summary for the APR0 platform/runtime and renderer work.
 - Server tests: shard/integrity suites (`server/CMakeLists.txt`).
 - Tools tests: validator fixture failures and content checks (`tools/CMakeLists.txt`).
 - No explicit `TESTX` label or dedicated CLI smoke tests for client/server/tools found in ctest.
+- Added app CLI contract test: `app_cli_contracts` (`tests/app/app_cli_contracts.py`).
 
 ## CLI contracts (current)
 - Client (`client/app/main_client.c`): `--help`, `--version`, `--build-info`, `--status`, `--smoke`, `--selftest`, `--renderer`, window flags (`--windowed`, `--borderless`, `--fullscreen`, `--width`, `--height`), `--control-*`, `--mp0-connect=local`.
