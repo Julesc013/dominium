@@ -51,6 +51,18 @@ static void dsys_win32_push_event(const dsys_event* ev)
     (void)dsys_internal_event_push(&local);
 }
 
+static void dsys_win32_event_init(dsys_event* ev, dsys_window_impl* impl)
+{
+    if (!ev) {
+        return;
+    }
+    memset(ev, 0, sizeof(*ev));
+    if (impl && impl->owner) {
+        ev->window = impl->owner;
+        ev->window_id = impl->owner->window_id;
+    }
+}
+
 static int dsys_win32_pop_event(dsys_event* out)
 {
     return dsys_internal_event_pop(out);
@@ -98,6 +110,21 @@ static float dsys_win32_query_scale(HWND hwnd)
     return (float)dpi / 96.0f;
 }
 
+static HCURSOR dsys_win32_cursor_for_shape(dsys_cursor_shape shape)
+{
+    switch (shape) {
+    case DSYS_CURSOR_IBEAM: return LoadCursor(NULL, IDC_IBEAM);
+    case DSYS_CURSOR_HAND: return LoadCursor(NULL, IDC_HAND);
+    case DSYS_CURSOR_SIZE_H: return LoadCursor(NULL, IDC_SIZEWE);
+    case DSYS_CURSOR_SIZE_V: return LoadCursor(NULL, IDC_SIZENS);
+    case DSYS_CURSOR_SIZE_ALL: return LoadCursor(NULL, IDC_SIZEALL);
+    case DSYS_CURSOR_ARROW:
+    default:
+        break;
+    }
+    return LoadCursor(NULL, IDC_ARROW);
+}
+
 static const char* dsys_win_class_name(void)
 {
     return "DominoDsysWindowClass";
@@ -113,7 +140,7 @@ static LRESULT CALLBACK dsys_win_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
         if (impl) {
             impl->should_close = 1;
         }
-        memset(&ev, 0, sizeof(ev));
+        dsys_win32_event_init(&ev, impl);
         ev.type = DSYS_EVENT_QUIT;
         dsys_win32_push_event(&ev);
         return 0;
@@ -142,7 +169,7 @@ static LRESULT CALLBACK dsys_win_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
             impl->maximized = (wp == SIZE_MAXIMIZED) ? 1 : 0;
             impl->owner->width = (int32_t)width;
             impl->owner->height = (int32_t)height;
-            memset(&ev, 0, sizeof(ev));
+            dsys_win32_event_init(&ev, impl);
             ev.type = DSYS_EVENT_WINDOW_RESIZED;
             ev.payload.window.width = (int32_t)width;
             ev.payload.window.height = (int32_t)height;
@@ -155,7 +182,7 @@ static LRESULT CALLBACK dsys_win_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
     case WM_SYSKEYUP:
         if (impl) {
             dsys_event ev;
-            memset(&ev, 0, sizeof(ev));
+            dsys_win32_event_init(&ev, impl);
             ev.type = (msg == WM_KEYDOWN || msg == WM_SYSKEYDOWN)
                 ? DSYS_EVENT_KEY_DOWN
                 : DSYS_EVENT_KEY_UP;
@@ -168,7 +195,7 @@ static LRESULT CALLBACK dsys_win_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
         if (impl) {
             dsys_event ev;
             unsigned int ch = (unsigned int)wp;
-            memset(&ev, 0, sizeof(ev));
+            dsys_win32_event_init(&ev, impl);
             ev.type = DSYS_EVENT_TEXT_INPUT;
             if (ch > 0u && ch < 0x80u) {
                 ev.payload.text.text[0] = (char)ch;
@@ -184,7 +211,12 @@ static LRESULT CALLBACK dsys_win_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
             dsys_event ev;
             int x = (int)(short)LOWORD(lp);
             int y = (int)(short)HIWORD(lp);
-            memset(&ev, 0, sizeof(ev));
+            if (impl->owner && impl->owner->relative_mouse) {
+                impl->last_mouse_x = x;
+                impl->last_mouse_y = y;
+                break;
+            }
+            dsys_win32_event_init(&ev, impl);
             ev.type = DSYS_EVENT_MOUSE_MOVE;
             ev.payload.mouse_move.x = (int32_t)x;
             ev.payload.mouse_move.y = (int32_t)y;
@@ -215,7 +247,7 @@ static LRESULT CALLBACK dsys_win_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
                 int xbtn = (int)HIWORD(wp);
                 button = (xbtn == XBUTTON2) ? 5 : 4;
             }
-            memset(&ev, 0, sizeof(ev));
+            dsys_win32_event_init(&ev, impl);
             ev.type = DSYS_EVENT_MOUSE_BUTTON;
             ev.payload.mouse_button.button = (int32_t)button;
             ev.payload.mouse_button.pressed = pressed ? true : false;
@@ -228,7 +260,7 @@ static LRESULT CALLBACK dsys_win_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
         if (impl) {
             dsys_event ev;
             int delta = (short)HIWORD(wp);
-            memset(&ev, 0, sizeof(ev));
+            dsys_win32_event_init(&ev, impl);
             ev.type = DSYS_EVENT_MOUSE_WHEEL;
             if (msg == WM_MOUSEHWHEEL) {
                 ev.payload.mouse_wheel.delta_x = (int32_t)(delta / WHEEL_DELTA);
@@ -259,10 +291,57 @@ static LRESULT CALLBACK dsys_win_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
                              rc->bottom - rc->top,
                              SWP_NOZORDER | SWP_NOACTIVATE);
             }
-            memset(&ev, 0, sizeof(ev));
+            dsys_win32_event_init(&ev, impl);
             ev.type = DSYS_EVENT_DPI_CHANGED;
             ev.payload.dpi.scale = impl->dpi_scale;
             dsys_win32_push_event(&ev);
+        }
+        break;
+    case WM_INPUT:
+        if (impl && impl->owner && impl->owner->relative_mouse) {
+            UINT size = 0u;
+            if (GetRawInputData((HRAWINPUT)lp, RID_INPUT, NULL, &size, sizeof(RAWINPUTHEADER)) == 0 && size > 0u) {
+                unsigned char stack_buf[128];
+                void* heap_buf = NULL;
+                RAWINPUT* raw = (RAWINPUT*)stack_buf;
+                if (size > sizeof(stack_buf)) {
+                    heap_buf = malloc(size);
+                    raw = (RAWINPUT*)heap_buf;
+                }
+                if (raw) {
+                    if (GetRawInputData((HRAWINPUT)lp, RID_INPUT, raw, &size, sizeof(RAWINPUTHEADER)) == size) {
+                        if (raw->header.dwType == RIM_TYPEMOUSE) {
+                            int dx = (int)raw->data.mouse.lLastX;
+                            int dy = (int)raw->data.mouse.lLastY;
+                            if (dx != 0 || dy != 0) {
+                                dsys_event ev;
+                                impl->last_mouse_x += dx;
+                                impl->last_mouse_y += dy;
+                                dsys_win32_event_init(&ev, impl);
+                                ev.type = DSYS_EVENT_MOUSE_MOVE;
+                                ev.payload.mouse_move.x = (int32_t)impl->last_mouse_x;
+                                ev.payload.mouse_move.y = (int32_t)impl->last_mouse_y;
+                                ev.payload.mouse_move.dx = (int32_t)dx;
+                                ev.payload.mouse_move.dy = (int32_t)dy;
+                                dsys_win32_push_event(&ev);
+                            }
+                        }
+                    }
+                }
+                if (heap_buf) {
+                    free(heap_buf);
+                }
+            }
+            return 0;
+        }
+        break;
+    case WM_SETCURSOR:
+        if (impl && impl->owner) {
+            HCURSOR cursor = dsys_win32_cursor_for_shape((dsys_cursor_shape)impl->owner->cursor_shape);
+            if (cursor) {
+                SetCursor(cursor);
+                return TRUE;
+            }
         }
         break;
     default:

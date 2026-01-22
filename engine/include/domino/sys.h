@@ -430,6 +430,10 @@ void         dsys_window_get_framebuffer_size(dsys_window* win, int32_t* w, int3
  * Parameters: See `docs/CONTRACTS.md#Parameters`.
  */
 float        dsys_window_get_dpi_scale(dsys_window* win);
+/* Purpose: Window id dsys window get.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
+uint32_t     dsys_window_get_id(dsys_window* win);
 
 /* Input events */
 typedef enum dsys_event_type {
@@ -450,6 +454,8 @@ typedef enum dsys_event_type {
 typedef struct dsys_event {
     dsys_event_type type;
     uint64_t        timestamp_us;
+    dsys_window*    window;
+    uint32_t        window_id;
     union {
         struct { int32_t width; int32_t height; } window;
         struct { float scale; } dpi;
@@ -695,6 +701,9 @@ int  dsys_ime_poll(dsys_ime_event* ev);
 #define DSYS_EXTENSION_DRAGDROP  "dsys.dragdrop"
 #define DSYS_EXTENSION_GAMEPAD   "dsys.gamepad"
 #define DSYS_EXTENSION_POWER     "dsys.power"
+#define DSYS_EXTENSION_TEXT_INPUT "dsys.text_input"
+#define DSYS_EXTENSION_WINDOW_MODE "dsys.window_mode"
+#define DSYS_EXTENSION_DPI "dsys.dpi"
 
 /* dsys_core_api_v1: Public type used by `sys`. */
 typedef struct dsys_core_api_v1 {
@@ -816,15 +825,27 @@ typedef struct dsys_audioio_api_v1 {
 /* dsys_cliptext_api_v1: Public type used by `sys`. */
 typedef struct dsys_cliptext_api_v1 {
     DOM_ABI_HEADER;
-    void* reserved0;
-    void* reserved1;
+    dsys_result (*get_text)(char* buf, size_t cap);
+    dsys_result (*set_text)(const char* text);
 } dsys_cliptext_api_v1;
+
+/* dsys_cursor_shape: Public type used by `sys`. */
+typedef enum dsys_cursor_shape {
+    DSYS_CURSOR_ARROW = 0,
+    DSYS_CURSOR_IBEAM,
+    DSYS_CURSOR_HAND,
+    DSYS_CURSOR_SIZE_H,
+    DSYS_CURSOR_SIZE_V,
+    DSYS_CURSOR_SIZE_ALL
+} dsys_cursor_shape;
 
 /* dsys_cursor_api_v1: Public type used by `sys`. */
 typedef struct dsys_cursor_api_v1 {
     DOM_ABI_HEADER;
-    void* reserved0;
-    void* reserved1;
+    dsys_result (*set_cursor)(dsys_window* win, dsys_cursor_shape shape);
+    dsys_result (*show_cursor)(dsys_window* win, bool visible);
+    dsys_result (*confine_cursor)(dsys_window* win, bool confined);
+    dsys_result (*set_relative_mode)(dsys_window* win, bool enabled);
 } dsys_cursor_api_v1;
 
 /* dsys_dragdrop_api_v1: Public type used by `sys`. */
@@ -847,6 +868,22 @@ typedef struct dsys_power_api_v1 {
     void* reserved0;
     void* reserved1;
 } dsys_power_api_v1;
+
+/* dsys_text_input_api_v1: Public type used by `sys`. */
+typedef struct dsys_text_input_api_v1 {
+    DOM_ABI_HEADER;
+    dsys_result (*start)(dsys_window* win);
+    dsys_result (*stop)(dsys_window* win);
+    dsys_result (*set_ime_cursor)(dsys_window* win, int32_t x, int32_t y);
+    int         (*poll_ime)(dsys_ime_event* ev);
+} dsys_text_input_api_v1;
+
+/* dsys_window_mode_api_v1: Public type used by `sys`. */
+typedef struct dsys_window_mode_api_v1 {
+    DOM_ABI_HEADER;
+    dsys_result      (*set_mode)(dsys_window* win, dsys_window_mode mode);
+    dsys_window_mode (*get_mode)(dsys_window* win);
+} dsys_window_mode_api_v1;
 
 /* dsys_error_api_v1: Public type used by `sys`. */
 typedef struct dsys_error_api_v1 {

@@ -65,6 +65,10 @@ struct dsys_window_t {
     int32_t          width;
     int32_t          height;
     dsys_window_mode mode;
+    int             cursor_visible;
+    int             cursor_confined;
+    int             relative_mouse;
+    uint32_t        cursor_shape;
     uint32_t         window_id;
     struct dsys_window_t* next;
 };
