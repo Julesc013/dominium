@@ -24,8 +24,6 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #define WM_DPICHANGED 0x02E0
 #endif
 
-#define DSYS_WIN32_EVENT_CAP 64
-
 typedef struct dsys_window_impl {
     HWND hwnd;
     int should_close;
@@ -38,42 +36,24 @@ typedef struct dsys_window_impl {
     int last_mouse_y;
 } dsys_window_impl;
 
-static dsys_event g_win32_events[DSYS_WIN32_EVENT_CAP];
-static int g_win32_event_head = 0;
-static int g_win32_event_tail = 0;
-
 static LARGE_INTEGER g_win32_perf_freq;
 
 static void dsys_win32_push_event(const dsys_event* ev)
 {
-    int next_tail;
+    dsys_event local;
     if (!ev) {
         return;
     }
-    next_tail = g_win32_event_tail + 1;
-    if (next_tail >= DSYS_WIN32_EVENT_CAP) {
-        next_tail = 0;
+    local = *ev;
+    if (local.timestamp_us == 0u) {
+        local.timestamp_us = dsys_win32_time_now_us();
     }
-    if (next_tail == g_win32_event_head) {
-        return;
-    }
-    g_win32_events[g_win32_event_tail] = *ev;
-    g_win32_event_tail = next_tail;
+    (void)dsys_internal_event_push(&local);
 }
 
 static int dsys_win32_pop_event(dsys_event* out)
 {
-    if (g_win32_event_head == g_win32_event_tail) {
-        return 0;
-    }
-    if (out) {
-        *out = g_win32_events[g_win32_event_head];
-    }
-    g_win32_event_head += 1;
-    if (g_win32_event_head >= DSYS_WIN32_EVENT_CAP) {
-        g_win32_event_head = 0;
-    }
-    return 1;
+    return dsys_internal_event_pop(out);
 }
 
 static UINT dsys_win32_query_dpi(HWND hwnd)
@@ -598,8 +578,6 @@ static dsys_caps dsys_win32_get_caps(void)
 
 static dsys_result dsys_win32_init(void)
 {
-    g_win32_event_head = 0;
-    g_win32_event_tail = 0;
     if (!QueryPerformanceFrequency(&g_win32_perf_freq)) {
         g_win32_perf_freq.QuadPart = 0;
     }

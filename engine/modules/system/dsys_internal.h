@@ -23,6 +23,10 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include <stddef.h>
 #include <stdint.h>
 
+/* Internal event queue helpers (shared across backends). */
+int  dsys_internal_event_push(const dsys_event* ev);
+int  dsys_internal_event_pop(dsys_event* out);
+
 #if defined(DSYS_BACKEND_X11)
 #include "plat/x11/x11_sys.h"
 #elif defined(DSYS_BACKEND_WAYLAND)

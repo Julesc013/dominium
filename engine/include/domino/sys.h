@@ -449,6 +449,7 @@ typedef enum dsys_event_type {
 /* window: Public type used by `sys`. */
 typedef struct dsys_event {
     dsys_event_type type;
+    uint64_t        timestamp_us;
     union {
         struct { int32_t width; int32_t height; } window;
         struct { float scale; } dpi;
@@ -467,6 +468,48 @@ typedef struct dsys_event {
  * Returns: `true` on success; `false` on failure.
  */
 bool dsys_poll_event(dsys_event* out);
+
+/* Purpose: Inject event into the runtime queue (for TUI/internal events).
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` on success; `false` if the queue is full.
+ */
+bool dsys_inject_event(const dsys_event* ev);
+
+/* Shutdown lifecycle */
+typedef enum dsys_shutdown_reason {
+    DSYS_SHUTDOWN_NONE = 0,
+    DSYS_SHUTDOWN_SIGNAL,
+    DSYS_SHUTDOWN_CONSOLE,
+    DSYS_SHUTDOWN_WINDOW,
+    DSYS_SHUTDOWN_APP_REQUEST
+} dsys_shutdown_reason;
+
+/* Purpose: Install lifecycle/signal handlers.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
+void dsys_lifecycle_init(void);
+/* Purpose: Uninstall lifecycle/signal handlers.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
+void dsys_lifecycle_shutdown(void);
+/* Purpose: Request shutdown (set flag only; safe for signal handlers).
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
+void dsys_lifecycle_request_shutdown(dsys_shutdown_reason reason);
+/* Purpose: Check whether shutdown was requested.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: `true` if shutdown was requested.
+ */
+bool dsys_lifecycle_shutdown_requested(void);
+/* Purpose: Read last shutdown reason.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ */
+dsys_shutdown_reason dsys_lifecycle_shutdown_reason(void);
+/* Purpose: Reason text.
+ * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Returns: String label for reason.
+ */
+const char* dsys_lifecycle_shutdown_reason_text(dsys_shutdown_reason reason);
 
 /* Filesystem */
 typedef enum dsys_path_kind {
