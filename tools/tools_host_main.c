@@ -7,6 +7,7 @@ Stub tools host entrypoint; replace with tool router once runtime is wired.
 #include "domino/gfx.h"
 #include "domino/sys.h"
 #include "domino/app/runtime.h"
+#include "domino/system/dsys.h"
 #include "domino/tui/tui.h"
 #include "dom_contracts/version.h"
 #include "dom_contracts/_internal/dom_build_version.h"

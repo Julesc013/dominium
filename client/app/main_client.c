@@ -8,6 +8,7 @@ Minimal client entrypoint with MP0 local-connect demo.
 #include "domino/gfx.h"
 #include "domino/sys.h"
 #include "domino/app/runtime.h"
+#include "domino/system/dsys.h"
 #include "domino/system/d_system.h"
 #include "domino/tui/tui.h"
 #include "domino/version.h"
