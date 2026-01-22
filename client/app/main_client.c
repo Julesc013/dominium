@@ -14,7 +14,9 @@ Minimal client entrypoint with MP0 local-connect demo.
 #include "domino/version.h"
 #include "dom_contracts/version.h"
 #include "dom_contracts/_internal/dom_build_version.h"
+#include "dominium/app/app_runtime.h"
 #include "dominium/session/mp0_session.h"
+#include "client_ui_compositor.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -31,7 +33,7 @@ static void print_help(void)
     printf("  --smoke                     Run deterministic CLI smoke\n");
     printf("  --selftest                  Alias for --smoke\n");
     printf("  --renderer <name>           Select renderer (explicit; no fallback)\n");
-    printf("  --ui=gui|tui|none           Select UI shell (gui maps to windowed)\n");
+    printf("  --ui=none|tui|gui           Select UI shell (gui maps to windowed)\n");
     printf("  --windowed                  Start a windowed client shell\n");
     printf("  --tui                       Start a terminal client shell\n");
     printf("  --borderless                Start a borderless window\n");
@@ -53,21 +55,9 @@ static void print_version(const char* product_version)
 
 static void print_build_info(const char* product_name, const char* product_version)
 {
-    printf("product=%s\n", product_name);
-    printf("product_version=%s\n", product_version);
-    printf("engine_version=%s\n", DOMINO_VERSION_STRING);
-    printf("game_version=%s\n", DOMINIUM_GAME_VERSION);
-    printf("build_number=%u\n", (unsigned int)DOM_BUILD_NUMBER);
-    printf("build_id=%s\n", DOM_BUILD_ID);
-    printf("git_hash=%s\n", DOM_GIT_HASH);
-    printf("toolchain_id=%s\n", DOM_TOOLCHAIN_ID);
-    printf("protocol_law_targets=LAW_TARGETS@1.4.0\n");
-    printf("protocol_control_caps=CONTROL_CAPS@1.0.0\n");
-    printf("protocol_authority_tokens=AUTHORITY_TOKEN@1.0.0\n");
-    printf("abi_dom_build_info=%u\n", (unsigned int)DOM_BUILD_INFO_ABI_VERSION);
-    printf("abi_dom_caps=%u\n", (unsigned int)DOM_CAPS_ABI_VERSION);
-    printf("api_dsys=%u\n", 1u);
-    printf("api_dgfx=%u\n", (unsigned int)DGFX_PROTOCOL_VERSION);
+    dom_app_build_info info;
+    dom_app_build_info_init(&info, product_name, product_version);
+    dom_app_print_build_info(&info);
     print_platform_caps();
 }
 
@@ -95,38 +85,9 @@ static void print_control_caps(const dom_control_caps* caps)
 
 static void print_platform_caps(void)
 {
-    dsys_caps caps;
-    void* ext;
-    if (dsys_init() != DSYS_OK) {
-        printf("platform_init=failed\n");
-        printf("platform_error=%s\n", dsys_last_error_text());
-        return;
-    }
-    caps = dsys_get_caps();
-    printf("platform_backend=%s\n", caps.name ? caps.name : "");
-    printf("platform_ui_modes=%u\n", (unsigned int)caps.ui_modes);
-    printf("platform_has_windows=%u\n", caps.has_windows ? 1u : 0u);
-    printf("platform_has_mouse=%u\n", caps.has_mouse ? 1u : 0u);
-    printf("platform_has_gamepad=%u\n", caps.has_gamepad ? 1u : 0u);
-    printf("platform_has_high_res_timer=%u\n", caps.has_high_res_timer ? 1u : 0u);
-
-    ext = dsys_query_extension(DSYS_EXTENSION_DPI, 1u);
-    printf("platform_ext_dpi=%s\n", (ext && caps.has_windows) ? "available" : "missing");
-    ext = dsys_query_extension(DSYS_EXTENSION_WINDOW_MODE, 1u);
-    printf("platform_ext_window_mode=%s\n", (ext && caps.has_windows) ? "available" : "missing");
-    ext = dsys_query_extension(DSYS_EXTENSION_CURSOR, 1u);
-    printf("platform_ext_cursor=%s\n", (ext && caps.has_windows) ? "available" : "missing");
-    ext = dsys_query_extension(DSYS_EXTENSION_CLIPTEXT, 1u);
-    printf("platform_ext_cliptext=%s\n", (ext && caps.has_windows) ? "available" : "missing");
-    ext = dsys_query_extension(DSYS_EXTENSION_TEXT_INPUT, 1u);
-    printf("platform_ext_text_input=%s\n", (ext && caps.has_windows) ? "available" : "missing");
-
-    printf("window_default_width=800\n");
-    printf("window_default_height=600\n");
-    printf("framebuffer_default_width=800\n");
-    printf("framebuffer_default_height=600\n");
-    printf("dpi_scale_default=1.0\n");
-    dsys_shutdown();
+    dom_app_platform_caps caps;
+    (void)dom_app_query_platform_caps(&caps);
+    dom_app_print_platform_caps(&caps, 1, 0);
 }
 
 static int enable_control_list(dom_control_caps* caps, const char* list)
@@ -206,81 +167,6 @@ static int client_parse_frame_cap_ms(const char* text, uint32_t* out_value)
     return 1;
 }
 
-typedef struct client_clock {
-    d_app_timing_mode mode;
-    uint64_t app_time_us;
-    uint64_t last_platform_us;
-} client_clock;
-
-static void client_clock_init(client_clock* clock, d_app_timing_mode mode)
-{
-    if (!clock) {
-        return;
-    }
-    clock->mode = mode;
-    clock->app_time_us = 0u;
-    clock->last_platform_us = dsys_time_now_us();
-}
-
-static void client_clock_advance(client_clock* clock)
-{
-    uint64_t now;
-    uint64_t delta;
-    if (!clock) {
-        return;
-    }
-    if (clock->mode == D_APP_TIMING_DETERMINISTIC) {
-        clock->app_time_us += (uint64_t)D_APP_FIXED_TIMESTEP_US;
-        return;
-    }
-    now = dsys_time_now_us();
-    delta = (now >= clock->last_platform_us) ? (now - clock->last_platform_us) : 0u;
-    clock->last_platform_us = now;
-    clock->app_time_us += delta;
-}
-
-static void client_sleep_for_cap(d_app_timing_mode mode, uint32_t frame_cap_ms, uint64_t frame_start_us)
-{
-    uint64_t target_us;
-    uint64_t elapsed;
-    uint64_t remaining;
-    uint32_t sleep_ms;
-    if (mode != D_APP_TIMING_INTERACTIVE || frame_cap_ms == 0u) {
-        return;
-    }
-    target_us = (uint64_t)frame_cap_ms * 1000u;
-    elapsed = dsys_time_now_us() - frame_start_us;
-    if (elapsed >= target_us) {
-        return;
-    }
-    remaining = target_us - elapsed;
-    sleep_ms = (uint32_t)((remaining + 999u) / 1000u);
-    if (sleep_ms > 0u) {
-        dsys_sleep_ms(sleep_ms);
-    }
-}
-
-static void client_pump_terminal_input(void)
-{
-    int key;
-    dsys_event ev;
-    while ((key = dsys_terminal_poll_key()) != 0) {
-        memset(&ev, 0, sizeof(ev));
-        ev.type = DSYS_EVENT_KEY_DOWN;
-        ev.payload.key.key = (int32_t)key;
-        ev.payload.key.repeat = false;
-        (void)dsys_inject_event(&ev);
-    }
-}
-
-static int client_exit_code_for_shutdown(dsys_shutdown_reason reason)
-{
-    if (reason == DSYS_SHUTDOWN_SIGNAL || reason == DSYS_SHUTDOWN_CONSOLE) {
-        return D_APP_EXIT_SIGNAL;
-    }
-    return D_APP_EXIT_OK;
-}
-
 typedef struct client_tui_state {
     d_tui_context* ctx;
     d_tui_widget* status;
@@ -325,8 +211,9 @@ static int client_run_windowed(const client_window_config* cfg, const char* rend
     const dsys_window_mode_api_v1* window_mode_api = 0;
     dsys_window_mode current_mode = DWIN_MODE_WINDOWED;
     float dpi_scale = 1.0f;
-    client_clock clock;
+    dom_app_clock clock;
     uint64_t frame_start_us = 0u;
+    dom_client_ui_compositor ui;
 
     if (dsys_init() != DSYS_OK) {
         fprintf(stderr, "client: dsys_init failed (%s)\n", dsys_last_error_text());
@@ -336,7 +223,8 @@ static int client_run_windowed(const client_window_config* cfg, const char* rend
     window_mode_api = (const dsys_window_mode_api_v1*)dsys_query_extension(DSYS_EXTENSION_WINDOW_MODE, 1u);
     dsys_lifecycle_init();
     lifecycle_ready = 1;
-    client_clock_init(&clock, timing_mode);
+    dom_app_clock_init(&clock, timing_mode);
+    dom_client_ui_compositor_init(&ui);
 
     memset(&desc, 0, sizeof(desc));
     desc.x = 0;
@@ -419,37 +307,24 @@ static int client_run_windowed(const client_window_config* cfg, const char* rend
             if (ev.type == DSYS_EVENT_DPI_CHANGED) {
                 fprintf(stderr, "client: dpi_scale=%.2f\n", (double)ev.payload.dpi.scale);
             }
+            dom_client_ui_compositor_handle_event(&ui, &ev);
         }
         if (dsys_lifecycle_shutdown_requested()) {
             normal_exit = 1;
             break;
         }
-        client_clock_advance(&clock);
+        dom_app_clock_advance(&clock);
 
         {
             d_gfx_cmd_buffer* buf = d_gfx_cmd_buffer_begin();
             if (buf) {
-                d_gfx_viewport vp;
-                d_gfx_draw_text_cmd text;
-                d_gfx_color clear = { 0xff, 0x12, 0x12, 0x18 };
-                d_gfx_color ink = { 0xff, 0xee, 0xee, 0xee };
-                d_gfx_cmd_clear(buf, clear);
-                vp.x = 0;
-                vp.y = 0;
-                vp.w = (fb_w > 0) ? fb_w : 800;
-                vp.h = (fb_h > 0) ? fb_h : 600;
-                d_gfx_cmd_set_viewport(buf, &vp);
-                text.x = 16;
-                text.y = 16;
-                text.text = "Dominium client (windowed)";
-                text.color = ink;
-                d_gfx_cmd_draw_text(buf, &text);
+                dom_client_ui_compositor_draw(&ui, buf, fb_w, fb_h);
                 d_gfx_cmd_buffer_end(buf);
                 d_gfx_submit(buf);
             }
         }
         d_gfx_present();
-        client_sleep_for_cap(timing_mode, frame_cap_ms, frame_start_us);
+        dom_app_sleep_for_cap(timing_mode, frame_cap_ms, frame_start_us);
     }
     normal_exit = 1;
 
@@ -467,7 +342,7 @@ cleanup:
             fprintf(stderr, "client: shutdown=%s\n",
                     dsys_lifecycle_shutdown_reason_text(reason));
             if (normal_exit) {
-                result = client_exit_code_for_shutdown(reason);
+                result = dom_app_exit_code_for_shutdown(reason);
             }
         } else if (normal_exit) {
             result = D_APP_EXIT_OK;
@@ -488,7 +363,7 @@ static int client_run_tui(d_app_timing_mode timing_mode, uint32_t frame_cap_ms, 
     d_tui_widget* status = 0;
     d_tui_widget* quit_btn = 0;
     client_tui_state state;
-    client_clock clock;
+    dom_app_clock clock;
     dsys_event ev;
     int dsys_ready = 0;
     int terminal_ready = 0;
@@ -513,7 +388,7 @@ static int client_run_tui(d_app_timing_mode timing_mode, uint32_t frame_cap_ms, 
     terminal_ready = 1;
     dsys_lifecycle_init();
     lifecycle_ready = 1;
-    client_clock_init(&clock, timing_mode);
+    dom_app_clock_init(&clock, timing_mode);
 
     memset(&state, 0, sizeof(state));
     tui = d_tui_create();
@@ -540,7 +415,7 @@ static int client_run_tui(d_app_timing_mode timing_mode, uint32_t frame_cap_ms, 
         if (timing_mode == D_APP_TIMING_INTERACTIVE) {
             frame_start_us = dsys_time_now_us();
         }
-        client_pump_terminal_input();
+        dom_app_pump_terminal_input();
         while (dsys_poll_event(&ev)) {
             if (ev.type == DSYS_EVENT_QUIT) {
                 dsys_lifecycle_request_shutdown(DSYS_SHUTDOWN_CONSOLE);
@@ -558,10 +433,10 @@ static int client_run_tui(d_app_timing_mode timing_mode, uint32_t frame_cap_ms, 
             normal_exit = 1;
             break;
         }
-        client_clock_advance(&clock);
+        dom_app_clock_advance(&clock);
         client_tui_update_status(&state, timing_mode, clock.app_time_us);
         d_tui_render(tui);
-        client_sleep_for_cap(timing_mode, frame_cap_ms, frame_start_us);
+        dom_app_sleep_for_cap(timing_mode, frame_cap_ms, frame_start_us);
     }
     normal_exit = 1;
 
@@ -578,7 +453,7 @@ cleanup:
             fprintf(stderr, "client: shutdown=%s\n",
                     dsys_lifecycle_shutdown_reason_text(reason));
             if (normal_exit) {
-                result = client_exit_code_for_shutdown(reason);
+                result = dom_app_exit_code_for_shutdown(reason);
             }
         } else if (normal_exit) {
             result = D_APP_EXIT_OK;
@@ -645,12 +520,13 @@ static int client_validate_renderer(const char* renderer)
     return 1;
 }
 
-int main(int argc, char** argv)
+int client_main(int argc, char** argv)
 {
     const char* control_registry_path = "data/registries/control_capabilities.registry";
     const char* control_enable = 0;
     const char* renderer = 0;
-    const char* ui_mode = 0;
+    dom_app_ui_request ui_req;
+    dom_app_ui_mode ui_mode = DOM_APP_UI_NONE;
     client_window_config window_cfg;
     d_app_timing_mode timing_mode = D_APP_TIMING_DETERMINISTIC;
     uint32_t frame_cap_ms = 16u;
@@ -661,7 +537,6 @@ int main(int argc, char** argv)
     int want_mp0 = 0;
     int want_smoke = 0;
     int want_selftest = 0;
-    int want_tui = 0;
     int want_deterministic = 0;
     int want_interactive = 0;
     dom_control_caps control_caps;
@@ -669,7 +544,24 @@ int main(int argc, char** argv)
     int timing_mode_set = 0;
     int i;
     client_window_defaults(&window_cfg);
+    dom_app_ui_request_init(&ui_req);
     for (i = 1; i < argc; ++i) {
+        int ui_consumed = 0;
+        char ui_err[96];
+        int ui_res = dom_app_parse_ui_arg(&ui_req,
+                                          argv[i],
+                                          (i + 1 < argc) ? argv[i + 1] : 0,
+                                          &ui_consumed,
+                                          ui_err,
+                                          sizeof(ui_err));
+        if (ui_res < 0) {
+            fprintf(stderr, "client: %s\n", ui_err);
+            return D_APP_EXIT_USAGE;
+        }
+        if (ui_res > 0) {
+            i += ui_consumed - 1;
+            continue;
+        }
         if (strcmp(argv[i], "--help") == 0 || strcmp(argv[i], "-h") == 0) {
             want_help = 1;
             continue;
@@ -705,10 +597,6 @@ int main(int argc, char** argv)
         if (strcmp(argv[i], "--windowed") == 0) {
             window_cfg.enabled = 1;
             window_cfg.mode = DWIN_MODE_WINDOWED;
-            continue;
-        }
-        if (strcmp(argv[i], "--tui") == 0) {
-            want_tui = 1;
             continue;
         }
         if (strcmp(argv[i], "--borderless") == 0) {
@@ -775,15 +663,6 @@ int main(int argc, char** argv)
             i += 1;
             continue;
         }
-        if (strncmp(argv[i], "--ui=", 5) == 0) {
-            ui_mode = argv[i] + 5;
-            continue;
-        }
-        if (strcmp(argv[i], "--ui") == 0 && i + 1 < argc) {
-            ui_mode = argv[i + 1];
-            i += 1;
-            continue;
-        }
         if (strcmp(argv[i], "--control-registry") == 0 && i + 1 < argc) {
             control_registry_path = argv[i + 1];
             i += 1;
@@ -810,31 +689,28 @@ int main(int argc, char** argv)
         print_version(DOMINIUM_GAME_VERSION);
         return 0;
     }
-    if (ui_mode) {
-        if (strcmp(ui_mode, "gui") == 0) {
-            if (want_tui) {
-                fprintf(stderr, "client: --ui=gui conflicts with --tui\n");
-                return D_APP_EXIT_USAGE;
-            }
-            window_cfg.enabled = 1;
-        } else if (strcmp(ui_mode, "tui") == 0) {
-            if (window_cfg.enabled) {
-                fprintf(stderr, "client: --ui=tui conflicts with windowed flags\n");
-                return D_APP_EXIT_USAGE;
-            }
-            want_tui = 1;
-            window_cfg.enabled = 0;
-        } else if (strcmp(ui_mode, "none") == 0) {
-            if (window_cfg.enabled || want_tui) {
-                fprintf(stderr, "client: --ui=none conflicts with ui flags\n");
-                return D_APP_EXIT_USAGE;
-            }
-            window_cfg.enabled = 0;
-            want_tui = 0;
-        } else {
-            fprintf(stderr, "client: invalid --ui value (use gui|tui|none)\n");
+    ui_mode = dom_app_select_ui_mode(&ui_req, DOM_APP_UI_NONE);
+    if (window_cfg.enabled) {
+        if (ui_req.mode_explicit && ui_mode != DOM_APP_UI_GUI) {
+            fprintf(stderr, "client: windowed flags conflict with --ui=%s\n",
+                    dom_app_ui_mode_name(ui_mode));
             return D_APP_EXIT_USAGE;
         }
+        ui_mode = DOM_APP_UI_GUI;
+    }
+    if (ui_mode == DOM_APP_UI_GUI) {
+        window_cfg.enabled = 1;
+    } else if (ui_mode == DOM_APP_UI_TUI) {
+        if (window_cfg.enabled) {
+            fprintf(stderr, "client: --ui=tui conflicts with windowed flags\n");
+            return D_APP_EXIT_USAGE;
+        }
+    } else if (ui_mode == DOM_APP_UI_NONE) {
+        if (window_cfg.enabled && ui_req.mode_explicit) {
+            fprintf(stderr, "client: --ui=none conflicts with ui flags\n");
+            return D_APP_EXIT_USAGE;
+        }
+        window_cfg.enabled = 0;
     }
     if (want_deterministic && want_interactive) {
         fprintf(stderr, "client: --deterministic and --interactive are mutually exclusive\n");
@@ -847,7 +723,7 @@ int main(int argc, char** argv)
     if (want_smoke || want_selftest) {
         want_mp0 = 1;
     }
-    if (want_mp0 && (window_cfg.enabled || want_tui)) {
+    if (want_mp0 && (window_cfg.enabled || ui_mode == DOM_APP_UI_TUI)) {
         fprintf(stderr, "client: --smoke/mp0 cannot combine with windowed or tui modes\n");
         return D_APP_EXIT_USAGE;
     }
@@ -860,8 +736,9 @@ int main(int argc, char** argv)
         timing_mode_set = 1;
     }
     if (!timing_mode_set) {
-        timing_mode = (window_cfg.enabled || want_tui) ? D_APP_TIMING_INTERACTIVE
-                                                       : D_APP_TIMING_DETERMINISTIC;
+        timing_mode = (window_cfg.enabled || ui_mode == DOM_APP_UI_TUI)
+                          ? D_APP_TIMING_INTERACTIVE
+                          : D_APP_TIMING_DETERMINISTIC;
     }
     if (timing_mode == D_APP_TIMING_DETERMINISTIC) {
         frame_cap_ms = 0u;
@@ -900,7 +777,7 @@ int main(int argc, char** argv)
         }
         return 0;
     }
-    if (want_tui) {
+    if (ui_mode == DOM_APP_UI_TUI) {
         if (control_loaded) {
             dom_control_caps_free(&control_caps);
         }
@@ -929,4 +806,9 @@ int main(int argc, char** argv)
         dom_control_caps_free(&control_caps);
     }
     return 0;
+}
+
+int main(int argc, char** argv)
+{
+    return client_main(argc, argv);
 }
