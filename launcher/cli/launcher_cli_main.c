@@ -12,6 +12,7 @@ Stub launcher CLI entrypoint.
 #include "domino/version.h"
 #include "dom_contracts/version.h"
 #include "dom_contracts/_internal/dom_build_version.h"
+#include "dominium/app/app_runtime.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -26,21 +27,9 @@ static void print_version(const char* product_version)
 
 static void print_build_info(const char* product_name, const char* product_version)
 {
-    printf("product=%s\n", product_name);
-    printf("product_version=%s\n", product_version);
-    printf("engine_version=%s\n", DOMINO_VERSION_STRING);
-    printf("game_version=%s\n", DOMINIUM_GAME_VERSION);
-    printf("build_number=%u\n", (unsigned int)DOM_BUILD_NUMBER);
-    printf("build_id=%s\n", DOM_BUILD_ID);
-    printf("git_hash=%s\n", DOM_GIT_HASH);
-    printf("toolchain_id=%s\n", DOM_TOOLCHAIN_ID);
-    printf("protocol_law_targets=LAW_TARGETS@1.4.0\n");
-    printf("protocol_control_caps=CONTROL_CAPS@1.0.0\n");
-    printf("protocol_authority_tokens=AUTHORITY_TOKEN@1.0.0\n");
-    printf("abi_dom_build_info=%u\n", (unsigned int)DOM_BUILD_INFO_ABI_VERSION);
-    printf("abi_dom_caps=%u\n", (unsigned int)DOM_CAPS_ABI_VERSION);
-    printf("api_dsys=%u\n", 1u);
-    printf("api_dgfx=%u\n", (unsigned int)DGFX_PROTOCOL_VERSION);
+    dom_app_build_info info;
+    dom_app_build_info_init(&info, product_name, product_version);
+    dom_app_print_build_info(&info);
 }
 
 static void print_control_caps(const dom_control_caps* caps)
@@ -102,6 +91,7 @@ static void launcher_print_help(void)
     printf("  --status                     Show active control layers\n");
     printf("  --smoke                      Run deterministic CLI smoke\n");
     printf("  --selftest                   Alias for --smoke\n");
+    printf("  --ui=none|tui|gui            Select UI shell (optional)\n");
     printf("  --deterministic             Use fixed timestep (no wall-clock sleep)\n");
     printf("  --interactive               Use variable timestep (wall-clock)\n");
     printf("  --control-enable=K1,K2       Enable control capabilities (canonical keys)\n");
@@ -133,6 +123,18 @@ static void launcher_print_profiles(void)
     }
 }
 
+static int launcher_run_tui(void)
+{
+    fprintf(stderr, "launcher: tui not implemented\n");
+    return D_APP_EXIT_UNAVAILABLE;
+}
+
+static int launcher_run_gui(void)
+{
+    fprintf(stderr, "launcher: gui not implemented\n");
+    return D_APP_EXIT_UNAVAILABLE;
+}
+
 static const char* launcher_backend_name_for(d_gfx_backend_type backend,
                                              const d_gfx_backend_info* infos,
                                              u32 count)
@@ -148,44 +150,20 @@ static const char* launcher_backend_name_for(d_gfx_backend_type backend,
 
 static int launcher_print_capabilities(void)
 {
-    dsys_caps caps;
+    dom_app_platform_caps caps;
     d_gfx_backend_info infos[D_GFX_BACKEND_MAX];
     u32 count;
     d_gfx_backend_type auto_backend;
     const char* auto_name;
-    int dsys_ok = 0;
-    void* ext;
+    int dsys_ok;
     u32 i;
 
-    if (dsys_init() == DSYS_OK) {
-        caps = dsys_get_caps();
-        dsys_ok = 1;
-    } else {
-        caps.name = "unknown";
-        caps.ui_modes = 0u;
-        caps.has_windows = false;
-        caps.has_mouse = false;
-        caps.has_gamepad = false;
-        caps.has_high_res_timer = false;
-        fprintf(stderr, "launcher: dsys_init failed (%s)\n", dsys_last_error_text());
+    dsys_ok = dom_app_query_platform_caps(&caps);
+    if (!dsys_ok) {
+        fprintf(stderr, "launcher: dsys_init failed (%s)\n",
+                caps.error_text ? caps.error_text : "unknown");
     }
-
-    printf("platform_backend=%s\n", caps.name ? caps.name : "unknown");
-    printf("platform_ui_modes=%u\n", (unsigned int)caps.ui_modes);
-    printf("platform_windows=%u\n", caps.has_windows ? 1u : 0u);
-    printf("platform_mouse=%u\n", caps.has_mouse ? 1u : 0u);
-    printf("platform_gamepad=%u\n", caps.has_gamepad ? 1u : 0u);
-    printf("platform_hr_timer=%u\n", caps.has_high_res_timer ? 1u : 0u);
-    ext = dsys_query_extension(DSYS_EXTENSION_DPI, 1u);
-    printf("platform_ext_dpi=%s\n", (ext && caps.has_windows) ? "available" : "missing");
-    ext = dsys_query_extension(DSYS_EXTENSION_WINDOW_MODE, 1u);
-    printf("platform_ext_window_mode=%s\n", (ext && caps.has_windows) ? "available" : "missing");
-    ext = dsys_query_extension(DSYS_EXTENSION_CURSOR, 1u);
-    printf("platform_ext_cursor=%s\n", (ext && caps.has_windows) ? "available" : "missing");
-    ext = dsys_query_extension(DSYS_EXTENSION_CLIPTEXT, 1u);
-    printf("platform_ext_cliptext=%s\n", (ext && caps.has_windows) ? "available" : "missing");
-    ext = dsys_query_extension(DSYS_EXTENSION_TEXT_INPUT, 1u);
-    printf("platform_ext_text_input=%s\n", (ext && caps.has_windows) ? "available" : "missing");
+    dom_app_print_platform_caps(&caps, 0, 1);
 
     count = d_gfx_detect_backends(infos, (u32)(sizeof(infos) / sizeof(infos[0])));
     auto_backend = d_gfx_select_backend();
@@ -198,13 +176,10 @@ static int launcher_print_capabilities(void)
                infos[i].detail);
     }
 
-    if (dsys_ok) {
-        dsys_shutdown();
-    }
     return dsys_ok ? D_APP_EXIT_OK : D_APP_EXIT_FAILURE;
 }
 
-int main(int argc, char** argv)
+int launcher_main(int argc, char** argv)
 {
     const char* control_registry_path = "data/registries/control_capabilities.registry";
     const char* control_enable = 0;
@@ -214,15 +189,29 @@ int main(int argc, char** argv)
     int want_selftest = 0;
     int want_deterministic = 0;
     int want_interactive = 0;
+    dom_app_ui_request ui_req;
+    dom_app_ui_mode ui_mode = DOM_APP_UI_NONE;
     const char* cmd = 0;
     int i;
-
-    if (argc <= 1) {
-        launcher_print_help();
-        return 0;
-    }
+    dom_app_ui_request_init(&ui_req);
 
     for (i = 1; i < argc; ++i) {
+        int ui_consumed = 0;
+        char ui_err[96];
+        int ui_res = dom_app_parse_ui_arg(&ui_req,
+                                          argv[i],
+                                          (i + 1 < argc) ? argv[i + 1] : 0,
+                                          &ui_consumed,
+                                          ui_err,
+                                          sizeof(ui_err));
+        if (ui_res < 0) {
+            fprintf(stderr, "launcher: %s\n", ui_err);
+            return D_APP_EXIT_USAGE;
+        }
+        if (ui_res > 0) {
+            i += ui_consumed - 1;
+            continue;
+        }
         if (strcmp(argv[i], "--help") == 0 || strcmp(argv[i], "-h") == 0) {
             cmd = argv[i];
             break;
@@ -285,14 +274,29 @@ int main(int argc, char** argv)
         fprintf(stderr, "launcher: --smoke requires deterministic mode\n");
         return D_APP_EXIT_USAGE;
     }
-    if (!cmd && !want_build_info && !want_status) {
-        launcher_print_help();
+    ui_mode = dom_app_select_ui_mode(&ui_req, DOM_APP_UI_NONE);
+    if ((ui_mode == DOM_APP_UI_TUI || ui_mode == DOM_APP_UI_GUI) &&
+        (want_build_info || want_status || want_smoke || want_selftest ||
+         (cmd && strcmp(cmd, "--help") != 0 && strcmp(cmd, "-h") != 0 &&
+          strcmp(cmd, "--version") != 0))) {
+        fprintf(stderr, "launcher: --ui=%s cannot combine with CLI commands\n",
+                dom_app_ui_mode_name(ui_mode));
         return D_APP_EXIT_USAGE;
     }
+    if (!cmd && !want_build_info && !want_status && ui_mode == DOM_APP_UI_NONE) {
+        launcher_print_help();
+        return (argc <= 1) ? D_APP_EXIT_OK : D_APP_EXIT_USAGE;
+    }
 
-    if (strcmp(cmd, "--help") == 0 || strcmp(cmd, "-h") == 0) {
+    if (cmd && (strcmp(cmd, "--help") == 0 || strcmp(cmd, "-h") == 0)) {
         launcher_print_help();
         return D_APP_EXIT_OK;
+    }
+    if (ui_mode == DOM_APP_UI_TUI && !cmd && !want_build_info && !want_status) {
+        return launcher_run_tui();
+    }
+    if (ui_mode == DOM_APP_UI_GUI && !cmd && !want_build_info && !want_status) {
+        return launcher_run_gui();
     }
     if (want_build_info || want_status) {
         dom_control_caps caps;
@@ -331,4 +335,9 @@ int main(int argc, char** argv)
     printf("launcher: unknown command '%s'\n", cmd);
     launcher_print_help();
     return D_APP_EXIT_USAGE;
+}
+
+int main(int argc, char** argv)
+{
+    return launcher_main(argc, argv);
 }

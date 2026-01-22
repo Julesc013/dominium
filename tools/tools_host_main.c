@@ -11,6 +11,7 @@ Stub tools host entrypoint; replace with tool router once runtime is wired.
 #include "domino/tui/tui.h"
 #include "dom_contracts/version.h"
 #include "dom_contracts/_internal/dom_build_version.h"
+#include "dominium/app/app_runtime.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -26,6 +27,7 @@ static void tools_print_help(void)
     printf("  --status                    Show tools status\\n");
     printf("  --smoke                     Run deterministic CLI smoke\\n");
     printf("  --selftest                  Alias for --smoke\\n");
+    printf("  --ui=none|tui|gui           Select UI shell (optional)\\n");
     printf("  --tui                       Start tools terminal UI\\n");
     printf("  --deterministic             Use fixed timestep (no wall-clock sleep)\\n");
     printf("  --interactive               Use variable timestep (wall-clock)\\n");
@@ -43,21 +45,9 @@ static void tools_print_version(const char* product_version)
 
 static void tools_print_build_info(const char* product_name, const char* product_version)
 {
-    printf("product=%s\\n", product_name);
-    printf("product_version=%s\\n", product_version);
-    printf("engine_version=%s\\n", DOMINO_VERSION_STRING);
-    printf("game_version=%s\\n", DOMINIUM_GAME_VERSION);
-    printf("build_number=%u\\n", (unsigned int)DOM_BUILD_NUMBER);
-    printf("build_id=%s\\n", DOM_BUILD_ID);
-    printf("git_hash=%s\\n", DOM_GIT_HASH);
-    printf("toolchain_id=%s\\n", DOM_TOOLCHAIN_ID);
-    printf("protocol_law_targets=LAW_TARGETS@1.4.0\\n");
-    printf("protocol_control_caps=CONTROL_CAPS@1.0.0\\n");
-    printf("protocol_authority_tokens=AUTHORITY_TOKEN@1.0.0\\n");
-    printf("abi_dom_build_info=%u\\n", (unsigned int)DOM_BUILD_INFO_ABI_VERSION);
-    printf("abi_dom_caps=%u\\n", (unsigned int)DOM_CAPS_ABI_VERSION);
-    printf("api_dsys=%u\\n", 1u);
-    printf("api_dgfx=%u\\n", (unsigned int)DGFX_PROTOCOL_VERSION);
+    dom_app_build_info info;
+    dom_app_build_info_init(&info, product_name, product_version);
+    dom_app_print_build_info(&info);
 }
 
 static int tools_parse_frame_cap_ms(const char* text, uint32_t* out_value)
@@ -73,81 +63,6 @@ static int tools_parse_frame_cap_ms(const char* text, uint32_t* out_value)
     }
     *out_value = (uint32_t)value;
     return 1;
-}
-
-typedef struct tools_clock {
-    d_app_timing_mode mode;
-    uint64_t app_time_us;
-    uint64_t last_platform_us;
-} tools_clock;
-
-static void tools_clock_init(tools_clock* clock, d_app_timing_mode mode)
-{
-    if (!clock) {
-        return;
-    }
-    clock->mode = mode;
-    clock->app_time_us = 0u;
-    clock->last_platform_us = dsys_time_now_us();
-}
-
-static void tools_clock_advance(tools_clock* clock)
-{
-    uint64_t now;
-    uint64_t delta;
-    if (!clock) {
-        return;
-    }
-    if (clock->mode == D_APP_TIMING_DETERMINISTIC) {
-        clock->app_time_us += (uint64_t)D_APP_FIXED_TIMESTEP_US;
-        return;
-    }
-    now = dsys_time_now_us();
-    delta = (now >= clock->last_platform_us) ? (now - clock->last_platform_us) : 0u;
-    clock->last_platform_us = now;
-    clock->app_time_us += delta;
-}
-
-static void tools_sleep_for_cap(d_app_timing_mode mode, uint32_t frame_cap_ms, uint64_t frame_start_us)
-{
-    uint64_t target_us;
-    uint64_t elapsed;
-    uint64_t remaining;
-    uint32_t sleep_ms;
-    if (mode != D_APP_TIMING_INTERACTIVE || frame_cap_ms == 0u) {
-        return;
-    }
-    target_us = (uint64_t)frame_cap_ms * 1000u;
-    elapsed = dsys_time_now_us() - frame_start_us;
-    if (elapsed >= target_us) {
-        return;
-    }
-    remaining = target_us - elapsed;
-    sleep_ms = (uint32_t)((remaining + 999u) / 1000u);
-    if (sleep_ms > 0u) {
-        dsys_sleep_ms(sleep_ms);
-    }
-}
-
-static void tools_pump_terminal_input(void)
-{
-    int key;
-    dsys_event ev;
-    while ((key = dsys_terminal_poll_key()) != 0) {
-        memset(&ev, 0, sizeof(ev));
-        ev.type = DSYS_EVENT_KEY_DOWN;
-        ev.payload.key.key = (int32_t)key;
-        ev.payload.key.repeat = false;
-        (void)dsys_inject_event(&ev);
-    }
-}
-
-static int tools_exit_code_for_shutdown(dsys_shutdown_reason reason)
-{
-    if (reason == DSYS_SHUTDOWN_SIGNAL || reason == DSYS_SHUTDOWN_CONSOLE) {
-        return D_APP_EXIT_SIGNAL;
-    }
-    return D_APP_EXIT_OK;
 }
 
 typedef enum tools_tui_action {
@@ -227,7 +142,7 @@ static int tools_run_tui(d_app_timing_mode timing_mode, uint32_t frame_cap_ms)
     d_tui_widget* btn_replay = 0;
     d_tui_widget* btn_quit = 0;
     tools_tui_state state;
-    tools_clock clock;
+    dom_app_clock clock;
     dsys_event ev;
     int dsys_ready = 0;
     int terminal_ready = 0;
@@ -248,7 +163,7 @@ static int tools_run_tui(d_app_timing_mode timing_mode, uint32_t frame_cap_ms)
     terminal_ready = 1;
     dsys_lifecycle_init();
     lifecycle_ready = 1;
-    tools_clock_init(&clock, timing_mode);
+    dom_app_clock_init(&clock, timing_mode);
 
     memset(&state, 0, sizeof(state));
     tui = d_tui_create();
@@ -281,7 +196,7 @@ static int tools_run_tui(d_app_timing_mode timing_mode, uint32_t frame_cap_ms)
         if (timing_mode == D_APP_TIMING_INTERACTIVE) {
             frame_start_us = dsys_time_now_us();
         }
-        tools_pump_terminal_input();
+        dom_app_pump_terminal_input();
         while (dsys_poll_event(&ev)) {
             if (ev.type == DSYS_EVENT_QUIT) {
                 dsys_lifecycle_request_shutdown(DSYS_SHUTDOWN_CONSOLE);
@@ -300,10 +215,10 @@ static int tools_run_tui(d_app_timing_mode timing_mode, uint32_t frame_cap_ms)
             normal_exit = 1;
             break;
         }
-        tools_clock_advance(&clock);
+        dom_app_clock_advance(&clock);
         tools_tui_update_status(&state, timing_mode, clock.app_time_us);
         d_tui_render(tui);
-        tools_sleep_for_cap(timing_mode, frame_cap_ms, frame_start_us);
+        dom_app_sleep_for_cap(timing_mode, frame_cap_ms, frame_start_us);
     }
     normal_exit = 1;
 
@@ -320,7 +235,7 @@ cleanup:
             fprintf(stderr, "tools: shutdown=%s\n",
                     dsys_lifecycle_shutdown_reason_text(reason));
             if (normal_exit) {
-                result = tools_exit_code_for_shutdown(reason);
+                result = dom_app_exit_code_for_shutdown(reason);
             }
         } else if (normal_exit) {
             result = D_APP_EXIT_OK;
@@ -345,7 +260,13 @@ cleanup:
     return result;
 }
 
-int main(int argc, char** argv)
+static int tools_run_gui(void)
+{
+    fprintf(stderr, "tools: gui not implemented\n");
+    return D_APP_EXIT_UNAVAILABLE;
+}
+
+int tools_main(int argc, char** argv)
 {
     int want_help = 0;
     int want_version = 0;
@@ -353,21 +274,34 @@ int main(int argc, char** argv)
     int want_status = 0;
     int want_smoke = 0;
     int want_selftest = 0;
-    int want_tui = 0;
     int want_deterministic = 0;
     int want_interactive = 0;
     int timing_mode_set = 0;
     d_app_timing_mode timing_mode = D_APP_TIMING_DETERMINISTIC;
     uint32_t frame_cap_ms = 16u;
+    dom_app_ui_request ui_req;
+    dom_app_ui_mode ui_mode = DOM_APP_UI_NONE;
     const char* cmd = 0;
     int i;
-
-    if (argc <= 1) {
-        tools_print_help();
-        return D_APP_EXIT_OK;
-    }
+    dom_app_ui_request_init(&ui_req);
 
     for (i = 1; i < argc; ++i) {
+        int ui_consumed = 0;
+        char ui_err[96];
+        int ui_res = dom_app_parse_ui_arg(&ui_req,
+                                          argv[i],
+                                          (i + 1 < argc) ? argv[i + 1] : 0,
+                                          &ui_consumed,
+                                          ui_err,
+                                          sizeof(ui_err));
+        if (ui_res < 0) {
+            fprintf(stderr, "tools: %s\n", ui_err);
+            return D_APP_EXIT_USAGE;
+        }
+        if (ui_res > 0) {
+            i += ui_consumed - 1;
+            continue;
+        }
         if (strcmp(argv[i], "--help") == 0 || strcmp(argv[i], "-h") == 0) {
             want_help = 1;
             continue;
@@ -390,10 +324,6 @@ int main(int argc, char** argv)
         }
         if (strcmp(argv[i], "--selftest") == 0) {
             want_selftest = 1;
-            continue;
-        }
-        if (strcmp(argv[i], "--tui") == 0) {
-            want_tui = 1;
             continue;
         }
         if (strcmp(argv[i], "--deterministic") == 0) {
@@ -433,12 +363,19 @@ int main(int argc, char** argv)
         tools_print_version(DOMINIUM_TOOLS_VERSION);
         return D_APP_EXIT_OK;
     }
+    ui_mode = dom_app_select_ui_mode(&ui_req, DOM_APP_UI_NONE);
     if (want_deterministic && want_interactive) {
         fprintf(stderr, "tools: --deterministic and --interactive are mutually exclusive\n");
         return D_APP_EXIT_USAGE;
     }
     if ((want_smoke || want_selftest) && want_interactive) {
         fprintf(stderr, "tools: --smoke requires deterministic mode\n");
+        return D_APP_EXIT_USAGE;
+    }
+    if ((ui_mode == DOM_APP_UI_TUI || ui_mode == DOM_APP_UI_GUI) &&
+        (want_build_info || want_status || want_smoke || want_selftest || cmd)) {
+        fprintf(stderr, "tools: --ui=%s cannot combine with CLI commands\n",
+                dom_app_ui_mode_name(ui_mode));
         return D_APP_EXIT_USAGE;
     }
     if (want_deterministic) {
@@ -450,14 +387,11 @@ int main(int argc, char** argv)
         timing_mode_set = 1;
     }
     if (!timing_mode_set) {
-        timing_mode = want_tui ? D_APP_TIMING_INTERACTIVE : D_APP_TIMING_DETERMINISTIC;
+        timing_mode = (ui_mode == DOM_APP_UI_TUI) ? D_APP_TIMING_INTERACTIVE
+                                                  : D_APP_TIMING_DETERMINISTIC;
     }
     if (timing_mode == D_APP_TIMING_DETERMINISTIC) {
         frame_cap_ms = 0u;
-    }
-    if (want_tui && (want_smoke || want_selftest)) {
-        fprintf(stderr, "tools: --smoke cannot combine with tui mode\n");
-        return D_APP_EXIT_USAGE;
     }
     if (want_smoke || want_selftest) {
         want_status = 1;
@@ -475,8 +409,11 @@ int main(int argc, char** argv)
             return D_APP_EXIT_OK;
         }
     }
-    if (want_tui) {
+    if (ui_mode == DOM_APP_UI_TUI) {
         return tools_run_tui(timing_mode, frame_cap_ms);
+    }
+    if (ui_mode == DOM_APP_UI_GUI) {
+        return tools_run_gui();
     }
     if (!cmd) {
         tools_print_help();
@@ -499,4 +436,9 @@ int main(int argc, char** argv)
     printf("tools: unknown command '%s'\\n", cmd);
     tools_print_help();
     return D_APP_EXIT_USAGE;
+}
+
+int main(int argc, char** argv)
+{
+    return tools_main(argc, argv);
 }

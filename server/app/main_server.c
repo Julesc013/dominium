@@ -10,6 +10,7 @@ Minimal server entrypoint with MP0 loopback/local modes.
 #include "domino/version.h"
 #include "dom_contracts/version.h"
 #include "dom_contracts/_internal/dom_build_version.h"
+#include "dominium/app/app_runtime.h"
 #include "dominium/session/mp0_session.h"
 
 #include <stdio.h>
@@ -26,6 +27,7 @@ static void print_help(void)
     printf("  --status                    Show active control layers\n");
     printf("  --smoke                     Run deterministic CLI smoke\n");
     printf("  --selftest                  Alias for --smoke\n");
+    printf("  --ui=none|tui|gui           Select UI shell (headless default)\n");
     printf("  --deterministic             Use fixed timestep (no wall-clock sleep)\n");
     printf("  --interactive               Use variable timestep (wall-clock)\n");
     printf("  --control-enable=K1,K2       Enable control capabilities (canonical keys)\n");
@@ -41,21 +43,9 @@ static void print_version(const char* product_version)
 
 static void print_build_info(const char* product_name, const char* product_version)
 {
-    printf("product=%s\n", product_name);
-    printf("product_version=%s\n", product_version);
-    printf("engine_version=%s\n", DOMINO_VERSION_STRING);
-    printf("game_version=%s\n", DOMINIUM_GAME_VERSION);
-    printf("build_number=%u\n", (unsigned int)DOM_BUILD_NUMBER);
-    printf("build_id=%s\n", DOM_BUILD_ID);
-    printf("git_hash=%s\n", DOM_GIT_HASH);
-    printf("toolchain_id=%s\n", DOM_TOOLCHAIN_ID);
-    printf("protocol_law_targets=LAW_TARGETS@1.4.0\n");
-    printf("protocol_control_caps=CONTROL_CAPS@1.0.0\n");
-    printf("protocol_authority_tokens=AUTHORITY_TOKEN@1.0.0\n");
-    printf("abi_dom_build_info=%u\n", (unsigned int)DOM_BUILD_INFO_ABI_VERSION);
-    printf("abi_dom_caps=%u\n", (unsigned int)DOM_CAPS_ABI_VERSION);
-    printf("api_dsys=%u\n", 1u);
-    printf("api_dgfx=%u\n", (unsigned int)DGFX_PROTOCOL_VERSION);
+    dom_app_build_info info;
+    dom_app_build_info_init(&info, product_name, product_version);
+    dom_app_print_build_info(&info);
 }
 
 static void print_control_caps(const dom_control_caps* caps)
@@ -209,7 +199,19 @@ static int mp0_run_loopback(void)
     return D_APP_EXIT_OK;
 }
 
-int main(int argc, char** argv)
+static int server_run_tui(void)
+{
+    fprintf(stderr, "server: tui not implemented\n");
+    return D_APP_EXIT_UNAVAILABLE;
+}
+
+static int server_run_gui(void)
+{
+    fprintf(stderr, "server: gui not implemented\n");
+    return D_APP_EXIT_UNAVAILABLE;
+}
+
+int server_main(int argc, char** argv)
 {
     const char* control_registry_path = "data/registries/control_capabilities.registry";
     const char* control_enable = 0;
@@ -223,10 +225,29 @@ int main(int argc, char** argv)
     int want_selftest = 0;
     int want_deterministic = 0;
     int want_interactive = 0;
+    dom_app_ui_request ui_req;
+    dom_app_ui_mode ui_mode = DOM_APP_UI_NONE;
     dom_control_caps control_caps;
     int control_loaded = 0;
     int i;
+    dom_app_ui_request_init(&ui_req);
     for (i = 1; i < argc; ++i) {
+        int ui_consumed = 0;
+        char ui_err[96];
+        int ui_res = dom_app_parse_ui_arg(&ui_req,
+                                          argv[i],
+                                          (i + 1 < argc) ? argv[i + 1] : 0,
+                                          &ui_consumed,
+                                          ui_err,
+                                          sizeof(ui_err));
+        if (ui_res < 0) {
+            fprintf(stderr, "server: %s\n", ui_err);
+            return D_APP_EXIT_USAGE;
+        }
+        if (ui_res > 0) {
+            i += ui_consumed - 1;
+            continue;
+        }
         if (strcmp(argv[i], "--help") == 0 || strcmp(argv[i], "-h") == 0) {
             want_help = 1;
             continue;
@@ -288,6 +309,7 @@ int main(int argc, char** argv)
         print_version(DOMINIUM_GAME_VERSION);
         return D_APP_EXIT_OK;
     }
+    ui_mode = dom_app_select_ui_mode(&ui_req, DOM_APP_UI_NONE);
     if (want_deterministic && want_interactive) {
         fprintf(stderr, "server: --deterministic and --interactive are mutually exclusive\n");
         return D_APP_EXIT_USAGE;
@@ -298,6 +320,12 @@ int main(int argc, char** argv)
     }
     if (want_smoke || want_selftest) {
         want_loopback = 1;
+    }
+    if ((ui_mode == DOM_APP_UI_TUI || ui_mode == DOM_APP_UI_GUI) &&
+        (want_build_info || want_status || want_loopback || want_server_auth)) {
+        fprintf(stderr, "server: --ui=%s cannot combine with CLI actions\n",
+                dom_app_ui_mode_name(ui_mode));
+        return D_APP_EXIT_USAGE;
     }
     if (want_build_info || want_status || control_enable) {
         if (dom_control_caps_init(&control_caps, control_registry_path) != DOM_CONTROL_OK) {
@@ -332,6 +360,18 @@ int main(int argc, char** argv)
         dom_control_caps_free(&control_caps);
         return D_APP_EXIT_OK;
     }
+    if (ui_mode == DOM_APP_UI_TUI) {
+        if (control_loaded) {
+            dom_control_caps_free(&control_caps);
+        }
+        return server_run_tui();
+    }
+    if (ui_mode == DOM_APP_UI_GUI) {
+        if (control_loaded) {
+            dom_control_caps_free(&control_caps);
+        }
+        return server_run_gui();
+    }
     if (want_loopback) {
         if (control_loaded) {
             dom_control_caps_free(&control_caps);
@@ -349,4 +389,9 @@ int main(int argc, char** argv)
         dom_control_caps_free(&control_caps);
     }
     return D_APP_EXIT_OK;
+}
+
+int main(int argc, char** argv)
+{
+    return server_main(argc, argv);
 }
