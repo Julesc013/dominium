@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Dominium IDE Projection Manifest",
+  "type": "object",
+  "required": [
+    "projection_id",
+    "product",
+    "ui_shell",
+    "toolchain_tier",
+    "target_os_family",
+    "target_os_min",
+    "arch",
+    "language_mode",
+    "sdk_pin",
+    "crt_policy",
+    "generator",
+    "input_fingerprint",
+    "output_paths",
+    "regeneration_command",
+    "warnings"
+  ],
+  "properties": {
+    "projection_id": { "type": "string" },
+    "product": { "type": "string" },
+    "ui_shell": { "type": "string" },
+    "toolchain_tier": { "type": "string" },
+    "target_os_family": { "type": "string" },
+    "target_os_min": { "type": "string" },
+    "arch": { "type": "string" },
+    "language_mode": { "type": "string" },
+    "sdk_pin": { "type": "string" },
+    "crt_policy": { "type": "string" },
+    "generator": { "type": "string" },
+    "input_fingerprint": { "type": "string" },
+    "output_paths": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "regeneration_command": { "type": "string" },
+    "warnings": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,21 @@
+{
+  "projection_id": "ide-win-vc6-win9x-client-gui",
+  "product": "client",
+  "ui_shell": "client/ui/win9x",
+  "toolchain_tier": "vc6",
+  "target_os_family": "win9x",
+  "target_os_min": "win98",
+  "arch": "x86_32",
+  "language_mode": "c89_cpp98",
+  "sdk_pin": "vc6_sp6_win9x_sdk",
+  "crt_policy": "static:/MT",
+  "generator": "vc6_dsp_generator",
+  "input_fingerprint": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+  "output_paths": [
+    "ide/win/vc6_win9x/client_gui"
+  ],
+  "regeneration_command": "cmake --preset ide-win-vc6-win9x-client-gui",
+  "warnings": [
+    "legacy tier frozen"
+  ]
+}

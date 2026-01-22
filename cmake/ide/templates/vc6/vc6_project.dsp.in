@@ -1,0 +1,37 @@
+# Microsoft Developer Studio Project File - Name="@DOM_IDE_VC6_PROJECT_NAME@" - Package Owner=<4>
+# Microsoft Developer Studio Generated Build File, Format Version 6.00
+# ** DO NOT EDIT **
+
+# TARGTYPE "@DOM_IDE_VC6_TARGET_TYPE@" @DOM_IDE_VC6_TARGET_HEX@
+
+CFG=@DOM_IDE_VC6_PROJECT_NAME@ - Win32 Debug
+!MESSAGE This is a generated VC6 projection. Do not edit.
+
+# Begin Project
+# PROP AllowPerConfigDependencies 0
+# PROP Scc_ProjName ""
+# PROP Scc_LocalPath ""
+CPP=cl.exe
+RSC=rc.exe
+
+!IF  "$(CFG)" == "@DOM_IDE_VC6_PROJECT_NAME@ - Win32 Debug"
+
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 1
+# PROP Output_Dir "Debug"
+# PROP Intermediate_Dir "Debug"
+
+!ELSEIF  "$(CFG)" == "@DOM_IDE_VC6_PROJECT_NAME@ - Win32 Release"
+
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 0
+# PROP Output_Dir "Release"
+# PROP Intermediate_Dir "Release"
+
+!ENDIF
+
+# Begin Group "Source Files"
+@DOM_IDE_VC6_SOURCE_BLOCK@
+# End Group
+
+# End Project

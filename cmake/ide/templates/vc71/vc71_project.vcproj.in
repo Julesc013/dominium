@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject
+    ProjectType="Visual C++"
+    Version="7.10"
+    Name="@DOM_IDE_VC71_PROJECT_NAME@"
+    ProjectGUID="@DOM_IDE_VC71_PROJECT_GUID@"
+    RootNamespace="@DOM_IDE_VC71_PROJECT_NAME@"
+    Keyword="Win32Proj">
+    <Platforms>
+        <Platform Name="Win32"/>
+    </Platforms>
+    <Configurations>
+        <Configuration
+            Name="Debug|Win32"
+            OutputDirectory="Debug"
+            IntermediateDirectory="Debug"
+            ConfigurationType="@DOM_IDE_VC71_CONFIG_TYPE@"
+            UseOfMFC="0">
+            <Tool Name="VCCLCompilerTool"/>
+            <Tool Name="VCLinkerTool"/>
+        </Configuration>
+        <Configuration
+            Name="Release|Win32"
+            OutputDirectory="Release"
+            IntermediateDirectory="Release"
+            ConfigurationType="@DOM_IDE_VC71_CONFIG_TYPE@"
+            UseOfMFC="0">
+            <Tool Name="VCCLCompilerTool"/>
+            <Tool Name="VCLinkerTool"/>
+        </Configuration>
+    </Configurations>
+    <Files>
+@DOM_IDE_VC71_FILE_BLOCK@
+    </Files>
+</VisualStudioProject>

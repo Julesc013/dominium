@@ -22,6 +22,21 @@ option(DOM_BUILD_TOOLS "Build tools" OFF)
 option(DOM_BUILD_SETUP "Build setup" ON)
 option(DOM_BUILD_LAUNCHER "Build launcher" ON)
 option(DOM_BUILD_GAME "Build game/client/server" ON)
+option(DOM_PROJECTION "Generate IDE projection metadata and outputs" OFF)
+
+set(DOM_PROJECTION_ID "" CACHE STRING "IDE projection identifier")
+set(DOM_PRODUCT "" CACHE STRING "IDE projection product (engine/game/client/server/launcher/setup/tools)")
+set(DOM_PRODUCT_TARGET "" CACHE STRING "IDE projection target override (optional)")
+set(DOM_UI_SHELL "" CACHE STRING "IDE projection UI shell path (or empty)")
+set(DOM_TOOLCHAIN_TIER "" CACHE STRING "IDE projection toolchain tier")
+set(DOM_TARGET_OS_FAMILY "" CACHE STRING "IDE projection OS family")
+set(DOM_TARGET_OS_MIN "" CACHE STRING "IDE projection OS minimum")
+set(DOM_TARGET_ARCH "" CACHE STRING "IDE projection architecture id")
+set(DOM_LANG_MODE "" CACHE STRING "IDE projection language mode")
+set(DOM_SDK_PIN "" CACHE STRING "IDE projection SDK pin")
+set(DOM_CRT_POLICY "" CACHE STRING "IDE projection CRT policy")
+set(DOM_IDE_OUT_DIR "" CACHE STRING "IDE projection output directory (under /ide)")
+set(DOM_IDE_GENERATOR_OVERRIDE "" CACHE STRING "IDE projection generator label (optional)")
 
 enable_testing()
 
@@ -29,11 +44,11 @@ if(WIN32 AND NOT MSVC)
     message(FATAL_ERROR "Windows builds must use the MSVC toolchain (cl.exe).")
 endif()
 if(APPLE)
-    if(NOT CMAKE_GENERATOR STREQUAL "Xcode")
+    if(NOT CMAKE_GENERATOR STREQUAL "Xcode" AND NOT DOM_PROJECTION)
         message(FATAL_ERROR "macOS builds must use the Xcode generator.")
     endif()
 elseif(UNIX)
-    if(NOT CMAKE_C_COMPILER_ID STREQUAL "GNU")
+    if(NOT CMAKE_C_COMPILER_ID STREQUAL "GNU" AND NOT DOM_PROJECTION)
         message(FATAL_ERROR "Linux builds must use GCC (GNU).")
     endif()
 endif()
@@ -168,6 +183,30 @@ add_custom_target(check_switch_on_taxonomy
     COMMENT "Checking switch statements on taxonomy ids/types"
 )
 
+add_custom_target(check_ide_quarantine
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/verify_ide_quarantine.py --repo-root ${CMAKE_SOURCE_DIR}
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    COMMENT "Checking IDE projection quarantine"
+)
+
+add_custom_target(check_ui_shell_purity
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/verify_ui_shell_purity.py --repo-root ${CMAKE_SOURCE_DIR}
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    COMMENT "Checking UI shell purity"
+)
+
+add_custom_target(check_abi_boundaries
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/verify_abi_boundaries.py --repo-root ${CMAKE_SOURCE_DIR}
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    COMMENT "Checking ABI boundary rules"
+)
+
+add_custom_target(check_docs_sanity
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/verify_docs_sanity.py --repo-root ${CMAKE_SOURCE_DIR}
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    COMMENT "Checking documentation sanity"
+)
+
 add_custom_target(check_all)
 add_dependencies(check_all
     all_quality_gates
@@ -178,6 +217,10 @@ add_dependencies(check_all
     check_magic_numbers
     check_forbidden_enums
     check_switch_on_taxonomy
+    check_ide_quarantine
+    check_ui_shell_purity
+    check_abi_boundaries
+    check_docs_sanity
 )
 
 set(DOMINIUM_ENGINE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/engine/include")
@@ -610,6 +653,19 @@ if(DOM_BUILD_LAUNCHER)
 endif()
 if(DOM_BUILD_TOOLS)
     add_subdirectory(tools)
+endif()
+
+if(DOM_PROJECTION)
+    list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/ide")
+    include(IdeCommon)
+    include(IdeToolchainMatrix)
+    include(IdeGenerateVs)
+    include(IdeGenerateXcode)
+    include(IdeGenerateLegacyVc6)
+    include(IdeGenerateLegacyVc71)
+    include(IdeGenerateCodeWarrior)
+    include(IdeProjectionManifest)
+    dom_ide_generate_projection()
 endif()
 
 function(dom_assert_no_link target)
