@@ -1,0 +1,92 @@
+{
+  "schema_id": "dominium.schema.domain",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "domain_id": "org.dominium.base.body.earth_macro.domain.planetary",
+      "domain_type": "domain.spatial",
+      "domain_tags": [
+        "scope.planetary"
+      ],
+      "volumes": [
+        {
+          "volume_id": "org.dominium.base.body.earth_macro.domain.surface.macro",
+          "bounds": {
+            "kind_tag": "bounds.abstract",
+            "units": [
+              "unitless"
+            ],
+            "payload": {
+              "description": "Planetary surface envelope (macro)."
+            }
+          },
+          "provenance_ref": {
+            "provenance_id": "prov.org.dominium.base.body.earth_macro.domain.surface.v1"
+          },
+          "extensions": {
+            "refinement_ceiling": "lod.planetary.macro",
+            "detail_absence": [
+              "no_mesh_geometry"
+            ]
+          }
+        },
+        {
+          "volume_id": "org.dominium.base.body.earth_macro.domain.atmosphere.macro",
+          "bounds": {
+            "kind_tag": "bounds.abstract",
+            "units": [
+              "unitless"
+            ],
+            "payload": {
+              "description": "Atmospheric envelope (macro)."
+            }
+          },
+          "provenance_ref": {
+            "provenance_id": "prov.org.dominium.base.body.earth_macro.domain.atmosphere.v1"
+          },
+          "extensions": {
+            "refinement_ceiling": "lod.planetary.macro",
+            "detail_absence": [
+              "no_pressure_model"
+            ]
+          }
+        },
+        {
+          "volume_id": "org.dominium.base.body.earth_macro.domain.subsurface.macro",
+          "bounds": {
+            "kind_tag": "bounds.abstract",
+            "units": [
+              "unitless"
+            ],
+            "payload": {
+              "description": "Subsurface volume (macro)."
+            }
+          },
+          "provenance_ref": {
+            "provenance_id": "prov.org.dominium.base.body.earth_macro.domain.subsurface.v1"
+          },
+          "extensions": {
+            "refinement_ceiling": "lod.planetary.macro",
+            "detail_absence": [
+              "no_layer_thickness_model"
+            ]
+          }
+        }
+      ],
+      "attached_node_refs": [
+        {
+          "node_id": "org.dominium.base.system.sol.node.planet.earth"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.body.earth_macro.domain.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.planetary.macro",
+        "detail_absence": [
+          "no_explicit_extent"
+        ]
+      }
+    }
+  ]
+}

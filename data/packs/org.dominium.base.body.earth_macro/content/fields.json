@@ -1,0 +1,138 @@
+{
+  "schema_id": "dominium.schema.field",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "field_id": "org.dominium.base.body.earth_macro.field.terrain.macro",
+      "field_type": "field.terrain.macro",
+      "units": [
+        "unitless"
+      ],
+      "resolution": {
+        "lod_tag": "lod.planetary.macro",
+        "metadata": {
+          "scale": "coarse"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.planetary.macro"
+        },
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.planetary.submacro"
+        }
+      ],
+      "knowledge_state": "known",
+      "knowledge_tags": [
+        "macro",
+        "coarse"
+      ],
+      "domain_volume_refs": [
+        {
+          "domain_id": "org.dominium.base.body.earth_macro.domain.planetary",
+          "volume_id": "org.dominium.base.body.earth_macro.domain.surface.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.body.earth_macro.field.terrain.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.planetary.macro",
+        "detail_absence": [
+          "no_micro_topography",
+          "no_erosion_model"
+        ]
+      }
+    },
+    {
+      "field_id": "org.dominium.base.body.earth_macro.field.climate.macro",
+      "field_type": "field.climate.macro",
+      "units": [
+        "unitless"
+      ],
+      "resolution": {
+        "lod_tag": "lod.planetary.macro",
+        "metadata": {
+          "scale": "coarse"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.planetary.macro"
+        },
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.planetary.submacro"
+        }
+      ],
+      "knowledge_state": "inferred",
+      "knowledge_tags": [
+        "macro",
+        "coarse"
+      ],
+      "domain_volume_refs": [
+        {
+          "domain_id": "org.dominium.base.body.earth_macro.domain.planetary",
+          "volume_id": "org.dominium.base.body.earth_macro.domain.surface.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.body.earth_macro.field.climate.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.planetary.macro",
+        "detail_absence": [
+          "no_weather_dynamics",
+          "no_seasonal_model"
+        ]
+      }
+    },
+    {
+      "field_id": "org.dominium.base.body.earth_macro.field.atmosphere.macro",
+      "field_type": "field.atmosphere.macro",
+      "units": [
+        "unitless"
+      ],
+      "resolution": {
+        "lod_tag": "lod.planetary.macro",
+        "metadata": {
+          "scale": "coarse"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.planetary.macro"
+        },
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.planetary.submacro"
+        }
+      ],
+      "knowledge_state": "known",
+      "knowledge_tags": [
+        "macro",
+        "coarse"
+      ],
+      "domain_volume_refs": [
+        {
+          "domain_id": "org.dominium.base.body.earth_macro.domain.planetary",
+          "volume_id": "org.dominium.base.body.earth_macro.domain.atmosphere.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.body.earth_macro.field.atmosphere.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.planetary.macro",
+        "detail_absence": [
+          "no_chemistry_model",
+          "no_weather_dynamics"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "schema_id": "dominium.schema.pack_manifest",
+  "schema_version": "1.0.0",
+  "record": {
+    "pack_id": "org.dominium.base.body.earth_macro",
+    "pack_version": "1.0.0",
+    "pack_format_version": 1,
+    "required_engine_version": "0.0.0",
+    "required_protocol_versions": [
+      {
+        "protocol_id": "dominium.protocol.pack_manifest",
+        "version_constraint": "1"
+      }
+    ],
+    "provides": [
+      {
+        "capability_id": "topology.body.earth"
+      },
+      {
+        "capability_id": "field.terrain.macro"
+      },
+      {
+        "capability_id": "field.climate.macro"
+      },
+      {
+        "capability_id": "field.atmosphere.macro"
+      }
+    ],
+    "dependencies": [],
+    "optional": true,
+    "provenance_ref": {
+      "provenance_id": "prov.org.dominium.base.body.earth_macro.manifest.v1"
+    },
+    "extensions": {
+      "notes": "Macro-only Earth body example; explicit facts with procedural refinement."
+    }
+  }
+}
