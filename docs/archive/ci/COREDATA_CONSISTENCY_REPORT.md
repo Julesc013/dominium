@@ -1,3 +1,12 @@
+# ARCHIVED: COREDATA_CONSISTENCY_REPORT
+
+Archived: point-in-time data consistency report.
+Reason: Historical snapshot; current validation is tracked elsewhere.
+Superseded by:
+- `docs/specs/SPEC_CORE_DATA_VALIDATION.md`
+- `docs/ci/CI_ENFORCEMENT_MATRIX.md`
+Still useful: background on prior core data consistency checks.
+
 # COREDATA_CONSISTENCY_REPORT
 
 Status: draft  

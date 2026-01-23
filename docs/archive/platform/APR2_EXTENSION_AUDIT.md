@@ -1,3 +1,12 @@
+# ARCHIVED: APR2 Extension Audit
+
+Archived: point-in-time extension audit.
+Reason: APR audit snapshot; current platform interfaces supersede it.
+Superseded by:
+- `docs/platform/PLATFORM_RUNTIME.md`
+- `docs/platform/EXTENSIONS.md`
+Still useful: background on early platform extension inventory.
+
 # APR2 Extension Audit
 
 Audit scope: platform runtime extensions, event queue/timing (APR1), renderer

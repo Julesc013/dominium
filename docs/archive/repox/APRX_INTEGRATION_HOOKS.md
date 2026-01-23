@@ -1,3 +1,13 @@
+# ARCHIVED: APRX Integration Hooks (RepoX/TestX)
+
+Archived: point-in-time integration notes.
+Reason: APR integration snapshot; current repo policies supersede it.
+Superseded by:
+- `docs/arch/ARCH_REPO_LAYOUT.md`
+- `docs/policies/IDE_CONTRIBUTION_RULES.md`
+- `docs/ci/CI_ENFORCEMENT_MATRIX.md`
+Still useful: background on early integration hooks.
+
 # APRX Integration Hooks (RepoX/TestX)
 
 This document defines the canonical integration conventions for new products,

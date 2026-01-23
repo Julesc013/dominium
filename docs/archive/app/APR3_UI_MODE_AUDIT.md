@@ -1,3 +1,13 @@
+# ARCHIVED: APR3 UI Mode Audit
+
+Archived: point-in-time UI audit.
+Reason: APR audit snapshot; current UI contracts supersede it.
+Superseded by:
+- `docs/app/UI_MODES.md`
+- `docs/app/GUI_MODE.md`
+- `docs/app/TUI_MODE.md`
+Still useful: background on early UI mode inventory.
+
 # APR3 UI Mode Audit
 
 ## Summary

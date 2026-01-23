@@ -1,3 +1,13 @@
+# ARCHIVED: Phase 2–5 Fixlist (Docs + Enforcement Only)
+
+Archived: point-in-time fixlist.
+Reason: Historical checklist; current enforcement status is tracked elsewhere.
+Superseded by:
+- `docs/ci/CI_ENFORCEMENT_MATRIX.md`
+- `docs/ci/EXECUTION_ENFORCEMENT_CHECKS.md`
+- `docs/arch/INVARIANTS.md`
+Still useful: background on Phase 2–5 remediation notes.
+
 # Phase 2–5 Fixlist (Docs + Enforcement Only)
 
 This list captures required clarifications and missing enforcement hooks.  

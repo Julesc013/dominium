@@ -1,3 +1,12 @@
+# ARCHIVED: APR4 Engine/Game Interface Inventory
+
+Archived: point-in-time interface inventory.
+Reason: APR inventory snapshot; current interfaces are documented elsewhere.
+Superseded by:
+- `docs/specs/CONTRACTS.md`
+- `docs/arch/ARCHITECTURE.md`
+Still useful: background on early interface inventory.
+
 # APR4 Engine/Game Interface Inventory
 
 This inventory captures engine/game public read-only interfaces available to

@@ -1,3 +1,13 @@
+# ARCHIVED: Phase 6 Audit Report (PH6-AUDIT)
+
+Archived: point-in-time audit.
+Reason: Historical enforcement snapshot; current status is tracked elsewhere.
+Superseded by:
+- `docs/ci/CI_ENFORCEMENT_MATRIX.md`
+- `docs/ci/EXECUTION_ENFORCEMENT_CHECKS.md`
+- `docs/arch/INVARIANTS.md`
+Still useful: background on Phase 6 readiness gaps.
+
 # Phase 6 Audit Report (PH6-AUDIT)
 
 Status: PASS

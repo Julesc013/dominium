@@ -1,3 +1,13 @@
+# ARCHIVED: dominium-tools pack
+
+Archived: legacy pack workflow.
+Reason: References deprecated pack layout and `manifest.txt` format.
+Superseded by:
+- `docs/specs/launcher/PACK_SYSTEM.md`
+- `docs/specs/launcher/SPEC_LAUNCHER_PACKS.md`
+- `docs/specs/SPEC_PACKAGES.md`
+Still useful: historical context for early tooling expectations.
+
 # dominium-tools pack
 
 Pack/version builder.

@@ -1,3 +1,12 @@
+# ARCHIVED: Launcher Audit Snapshot (Phase 0)
+
+Archived: point-in-time audit.
+Reason: Historical snapshot; current launcher specs supersede it.
+Superseded by:
+- `docs/specs/launcher/ARCHITECTURE.md`
+- `docs/specs/launcher/SPEC_LAUNCHER.md`
+Still useful: background on early launcher audit notes.
+
 # Launcher Audit Snapshot (Phase 0)
 
 Date: 2026-01-17
