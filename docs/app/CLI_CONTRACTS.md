@@ -37,6 +37,13 @@ Key/value lines include:
 - `--width <px>`, `--height <px>`: window size override
 - `--frame-cap-ms <ms>`: frame cap for interactive loops
 - `--mp0-connect=local`: MP0 local demo (deterministic)
+- `--topology`: report packages tree summary (read-only)
+- `--snapshot`: snapshot metadata (unsupported in APR4; fails loudly)
+- `--events`: event stream summary (unsupported in APR4; fails loudly)
+- `--format <text|json>`: output format for observability commands
+- `--expect-engine-version`, `--expect-game-version`, `--expect-build-id`,
+  `--expect-sim-schema`, `--expect-build-info-abi`, `--expect-caps-abi`,
+  `--expect-gfx-api`: compatibility enforcement for read-only access
 
 ## Server (`server`)
 - `--mp0-loopback`: MP0 loopback (deterministic)
@@ -60,3 +67,7 @@ Key/value lines include:
 - `--ui=none|tui|gui`: select CLI/TUI/GUI shells
 - `--tui`: legacy alias for `--ui=tui` (not used by CLI tests)
 - `--frame-cap-ms <ms>`: frame cap for interactive loops
+- `--format <text|json>`: output format for `inspect`/`validate`
+- `--expect-engine-version`, `--expect-game-version`, `--expect-build-id`,
+  `--expect-sim-schema`, `--expect-build-info-abi`, `--expect-caps-abi`,
+  `--expect-gfx-api`: compatibility enforcement for read-only access
