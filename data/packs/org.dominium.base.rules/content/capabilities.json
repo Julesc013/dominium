@@ -1,0 +1,72 @@
+{
+  "schema_id": "dominium.schema.capability",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "capability_id": "process.template.basic",
+      "capability_tags": [
+        "template",
+        "example"
+      ],
+      "providers": [
+        {
+          "ref_type": "pack",
+          "ref_id": "org.dominium.base.rules"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.rules.cap.process_template.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.template",
+        "detail_absence": [
+          "no_execution_rights"
+        ]
+      }
+    },
+    {
+      "capability_id": "capability.template.basic",
+      "capability_tags": [
+        "template",
+        "example"
+      ],
+      "providers": [
+        {
+          "ref_type": "pack",
+          "ref_id": "org.dominium.base.rules"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.rules.cap.capability_template.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.template",
+        "detail_absence": [
+          "no_execution_rights"
+        ]
+      }
+    },
+    {
+      "capability_id": "institution.template.basic",
+      "capability_tags": [
+        "template",
+        "example"
+      ],
+      "providers": [
+        {
+          "ref_type": "pack",
+          "ref_id": "org.dominium.base.rules"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.rules.cap.institution_template.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.template",
+        "detail_absence": [
+          "no_execution_rights"
+        ]
+      }
+    }
+  ]
+}
