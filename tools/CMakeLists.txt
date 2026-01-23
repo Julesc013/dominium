@@ -32,6 +32,8 @@ set_target_properties(dominium-tools PROPERTIES
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )
+add_executable(dom_tools ALIAS dominium-tools)
+dom_register_product(tools dominium-tools)
 
 add_executable(dom_tool_artifactmeta
     artifactmeta/tool_artifactmeta.c

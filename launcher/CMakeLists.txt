@@ -55,6 +55,8 @@ set_target_properties(launcher_tui PROPERTIES
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )
+add_executable(dom_launcher ALIAS launcher_cli)
+dom_register_product(launcher launcher_cli)
 add_executable(launcher::cli ALIAS launcher_cli)
 add_executable(launcher::gui ALIAS launcher_gui)
 add_executable(launcher::tui ALIAS launcher_tui)

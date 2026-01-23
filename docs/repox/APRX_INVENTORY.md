@@ -34,8 +34,8 @@ Scope: RepoX/TestX enforcement surfaces and integration points for APR* work.
   - build-test/build-test-canary: check_launcher_core_invariants.py, check_layers.py, cmake build + ctest,
     launcher_cli_smoke_matrix.py, support bundle determinism.
   - reproducible-build and portable-packages gates.
-- Build number policy: .dominium_build_number read in root CMake; dom_update_build_number target (ALL)
-  runs setup/packages/scripts/update_build_number.cmake to increment on build. No test-gated bump hook present.
+- Build number policy: .dominium_build_number read in root CMake; dom_update_build_number refreshes
+  generated headers without bumping; dom_bump_build_number and testx_all perform gated bumps after tests.
 
 ## TestX canon surfaces (documents)
 - docs/app/TESTX_INVENTORY.md and docs/app/TESTX_COMPLIANCE.md (app CLI contract + smoke checks).
@@ -56,6 +56,7 @@ Scope: RepoX/TestX enforcement surfaces and integration points for APR* work.
 - No ctest labels found in CMake; test selection is via full ctest or -R regex in scripts/CI.
 
 ## Integration points for APR* work
+- Conventions: `docs/repox/APRX_INTEGRATION_HOOKS.md` defines canonical targets and hooks.
 - Products/backends: follow canonical target patterns in docs/arch/ARCH_BUILD_ENFORCEMENT.md and
   docs/arch/ARCH_REPO_LAYOUT.md; keep add_subdirectory structure.
 - Tests: register via add_test in existing CMakeLists or tests/app; avoid new frameworks;

@@ -116,6 +116,9 @@ installation or repair logic while preserving deterministic boundaries.
 - `docs/guides/BUILD_DIST.md` and `docs/guides/build_output.md` — dist layout and outputs
 - `docs/ci/CI_ENFORCEMENT_MATRIX.md` — CI checks enforcing ARCH0/EXEC*
 - `docs/ci/FUTURE_ENFORCEMENT.md` — FUTURE0 enforcement notes
+- `docs/app/README.md` — application runtime and CLI docs
+- `docs/platform/README.md` — platform runtime and lifecycle docs
+- `docs/render/README.md` — renderer interface and backend docs
 - `docs/specs/SPEC_*.md` — subsystem specifications (see `docs/specs/SPEC_INDEX.md`)
 - `MODDING.md` — modding policy and boundaries
 - `GOVERNANCE.md` — project governance summary
