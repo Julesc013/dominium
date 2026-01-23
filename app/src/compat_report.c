@@ -8,6 +8,7 @@ Compatibility checks for app-layer entrypoints.
 #include "domino/build_info.h"
 #include "domino/caps.h"
 #include "domino/gfx.h"
+#include "domino/io/schema_registry.h"
 #include "domino/version.h"
 #include "dom_contracts/version.h"
 
