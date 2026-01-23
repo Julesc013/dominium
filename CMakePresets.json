@@ -353,10 +353,10 @@
         "DOM_BACKEND_GL1": "OFF",
         "DOM_BACKEND_GL2": "OFF",
         "DOM_BACKEND_VECTOR2D": "OFF",
-        "DOM_FETCH_SDL2": "OFF",
-        "DOM_DISALLOW_DOWNLOADS": "ON",
-        "FETCHCONTENT_FULLY_DISCONNECTED": "ON",
-        "FETCHCONTENT_UPDATES_DISCONNECTED": "ON"
+        "DOM_FETCH_SDL2": "ON",
+        "DOM_DISALLOW_DOWNLOADS": "OFF",
+        "FETCHCONTENT_FULLY_DISCONNECTED": "OFF",
+        "FETCHCONTENT_UPDATES_DISCONNECTED": "OFF"
       }
     },
     {
@@ -620,10 +620,7 @@
     {
       "name": "windows-msvc-vs2026",
       "configurePreset": "windows-msvc-vs2026",
-      "configuration": "Debug",
-      "targets": [
-        "ui_preview_launcher_win32"
-      ]
+      "configuration": "Debug"
     },
     {
       "name": "windows-clangcl-debug",
