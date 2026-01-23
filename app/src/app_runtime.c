@@ -398,7 +398,17 @@ void dom_app_print_build_info(const dom_app_build_info* info)
     printf("protocol_authority_tokens=AUTHORITY_TOKEN@1.0.0\n");
     printf("abi_dom_build_info=%u\n", (unsigned int)DOM_BUILD_INFO_ABI_VERSION);
     printf("abi_dom_caps=%u\n", (unsigned int)DOM_CAPS_ABI_VERSION);
-    printf("api_dsys=%u\n", 1u);
+    printf("api_dsys=%u\n", (unsigned int)DSYS_PROTOCOL_VERSION);
+    printf("platform_ext_window_ex_api=%u\n", (unsigned int)DSYS_EXTENSION_WINDOW_EX_VERSION);
+    printf("platform_ext_error_api=%u\n", (unsigned int)DSYS_EXTENSION_ERROR_VERSION);
+    printf("platform_ext_cliptext_api=%u\n", (unsigned int)DSYS_EXTENSION_CLIPTEXT_VERSION);
+    printf("platform_ext_cursor_api=%u\n", (unsigned int)DSYS_EXTENSION_CURSOR_VERSION);
+    printf("platform_ext_dragdrop_api=%u\n", (unsigned int)DSYS_EXTENSION_DRAGDROP_VERSION);
+    printf("platform_ext_gamepad_api=%u\n", (unsigned int)DSYS_EXTENSION_GAMEPAD_VERSION);
+    printf("platform_ext_power_api=%u\n", (unsigned int)DSYS_EXTENSION_POWER_VERSION);
+    printf("platform_ext_text_input_api=%u\n", (unsigned int)DSYS_EXTENSION_TEXT_INPUT_VERSION);
+    printf("platform_ext_window_mode_api=%u\n", (unsigned int)DSYS_EXTENSION_WINDOW_MODE_VERSION);
+    printf("platform_ext_dpi_api=%u\n", (unsigned int)DSYS_EXTENSION_DPI_VERSION);
     printf("api_dgfx=%u\n", (unsigned int)DGFX_PROTOCOL_VERSION);
 }
 

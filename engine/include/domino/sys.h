@@ -674,6 +674,7 @@ int  dsys_ime_poll(dsys_ime_event* ev);
  *------------------------------------------------------------*/
 
 /* Interface IDs (u32 constants) */
+#define DSYS_PROTOCOL_VERSION 1u
 #define DSYS_IID_CORE_API_V1     ((dom_iid)0x44535901u)
 #define DSYS_IID_FS_API_V1       ((dom_iid)0x44535902u)
 #define DSYS_IID_TIME_API_V1     ((dom_iid)0x44535903u)
@@ -704,6 +705,17 @@ int  dsys_ime_poll(dsys_ime_event* ev);
 #define DSYS_EXTENSION_TEXT_INPUT "dsys.text_input"
 #define DSYS_EXTENSION_WINDOW_MODE "dsys.window_mode"
 #define DSYS_EXTENSION_DPI "dsys.dpi"
+
+#define DSYS_EXTENSION_WINDOW_EX_VERSION 1u
+#define DSYS_EXTENSION_ERROR_VERSION 1u
+#define DSYS_EXTENSION_CLIPTEXT_VERSION 1u
+#define DSYS_EXTENSION_CURSOR_VERSION 1u
+#define DSYS_EXTENSION_DRAGDROP_VERSION 1u
+#define DSYS_EXTENSION_GAMEPAD_VERSION 1u
+#define DSYS_EXTENSION_POWER_VERSION 1u
+#define DSYS_EXTENSION_TEXT_INPUT_VERSION 1u
+#define DSYS_EXTENSION_WINDOW_MODE_VERSION 1u
+#define DSYS_EXTENSION_DPI_VERSION 1u
 
 /* dsys_core_api_v1: Public type used by `sys`. */
 typedef struct dsys_core_api_v1 {

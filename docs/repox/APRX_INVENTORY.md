@@ -50,6 +50,7 @@ Scope: RepoX/TestX enforcement surfaces and integration points for APR* work.
 - tests/app/app_observability_tests.py (readonly output and mismatch refusal paths).
 - tests/app/app_buildmeta_tests.py (artifact metadata JSON fields).
 - tests/app build-time checks: build_include_sanity, build_abi_boundaries, build_arch_checks.
+- tests/integration/test_gui_deps.py (build_test_gui_deps) enforces no direct GUI framework links in tests.
 - Root CMake test: phase6_audit (tools/ci/phase6_audit_checks.py).
 - Engine/game/server/tools tests registered via add_test in their CMakeLists.
 - CI runs full ctest; additional regex runs in setup/packages/scripts/release and build-test jobs.

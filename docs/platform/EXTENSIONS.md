@@ -2,6 +2,8 @@
 
 `dsys_query_extension(name, version)` returns a vtable pointer or NULL. Version
 is an integer; the current version is `1`.
+Version macros are defined in `engine/include/domino/sys.h` as
+`DSYS_EXTENSION_*_VERSION` and are printed in `--build-info`.
 
 Availability rules:
 - NULL return means the extension is unavailable.

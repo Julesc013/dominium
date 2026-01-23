@@ -24,6 +24,10 @@ Key/value lines include:
 - protocol lines: `protocol_law_targets`, `protocol_control_caps`,
   `protocol_authority_tokens`
 - API/ABI lines: `abi_dom_build_info`, `abi_dom_caps`, `api_dsys`, `api_dgfx`
+- Platform extension API lines: `platform_ext_window_ex_api`, `platform_ext_error_api`,
+  `platform_ext_cliptext_api`, `platform_ext_cursor_api`, `platform_ext_dragdrop_api`,
+  `platform_ext_gamepad_api`, `platform_ext_power_api`, `platform_ext_text_input_api`,
+  `platform_ext_window_mode_api`, `platform_ext_dpi_api`
 - Products may append platform capability lines (e.g. `platform_*`,
   `window_default_*`, `dpi_scale_default`).
 
