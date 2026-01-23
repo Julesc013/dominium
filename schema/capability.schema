@@ -1,0 +1,44 @@
+SCHEMA: capability.schema
+schema_id: dominium.schema.capability
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define capability identifiers, tags, providers, and qualifiers.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- Capabilities do NOT imply behavior or access by themselves.
+- Provider references do NOT grant authority.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record capability
+  required:
+    - capability_id: id
+  optional:
+    - capability_tags: [tag]
+    - providers: [provider_ref]
+    - qualifiers: map
+    - provenance_ref: provenance_ref
+    - extensions: map
+
+TYPE DEFINITIONS:
+record provider_ref
+  required:
+    - ref_type: tag
+    - ref_id: id
+  optional:
+    - ref_tags: [tag]
+
+record provenance_ref
+  required:
+    - provenance_id: id

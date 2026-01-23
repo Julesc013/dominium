@@ -1,0 +1,67 @@
+SCHEMA: assembly.schema
+schema_id: dominium.schema.assembly
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define assemblies, part graphs, and interface connections.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- Graph connections do NOT imply behavior or control flow.
+- Subsystems are descriptive groupings only.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record assembly
+  required:
+    - assembly_id: id
+  optional:
+    - parts: [part_ref]
+    - connections: [connection]
+    - subsystems: [subsystem]
+    - capability_refs: [capability_ref]
+    - constraint_tags: [tag]
+    - provenance_ref: provenance_ref
+    - extensions: map
+
+TYPE DEFINITIONS:
+record part_ref
+  required:
+    - part_id: id
+  optional:
+    - ref_tags: [tag]
+
+record connection
+  required:
+    - from_part_id: id
+    - to_part_id: id
+  optional:
+    - interface_tags: [tag]
+    - connection_tags: [tag]
+    - metadata: map
+
+record subsystem
+  required:
+    - subsystem_id: id
+    - part_refs: [part_ref]
+  optional:
+    - subsystem_tags: [tag]
+
+record capability_ref
+  required:
+    - capability_id: id
+  optional:
+    - qualifier_tags: [tag]
+
+record provenance_ref
+  required:
+    - provenance_id: id
