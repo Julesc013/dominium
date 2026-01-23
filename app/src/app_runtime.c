@@ -327,6 +327,38 @@ void dom_app_log(dom_app_log_level level,
     fprintf(stderr, "\n");
 }
 
+static const char* dom_app_default_sku_for_product(const char* product_name)
+{
+    if (!product_name || !product_name[0]) {
+        return "unspecified";
+    }
+    if (strcmp(product_name, "client") == 0) {
+        return "modern_desktop";
+    }
+    if (strcmp(product_name, "server") == 0) {
+        return "headless_server";
+    }
+    if (strcmp(product_name, "launcher") == 0) {
+        return "modern_desktop";
+    }
+    if (strcmp(product_name, "setup") == 0) {
+        return "modern_desktop";
+    }
+    if (strcmp(product_name, "tools") == 0) {
+        return "devtools";
+    }
+    return "unspecified";
+}
+
+static const char* dom_app_build_sku_value(const dom_app_build_info* info)
+{
+    const char* override = DOM_BUILD_SKU;
+    if (override && override[0] && strcmp(override, "auto") != 0) {
+        return override;
+    }
+    return dom_app_default_sku_for_product(info ? info->product_name : "");
+}
+
 void dom_app_build_info_init(dom_app_build_info* info,
                              const char* product_name,
                              const char* product_version)
@@ -344,12 +376,23 @@ void dom_app_print_build_info(const dom_app_build_info* info)
     const char* product_version = info ? info->product_version : "";
     printf("product=%s\n", product_name ? product_name : "");
     printf("product_version=%s\n", product_version ? product_version : "");
+    printf("sku=%s\n", dom_app_build_sku_value(info));
     printf("engine_version=%s\n", DOMINO_VERSION_STRING);
     printf("game_version=%s\n", DOMINIUM_GAME_VERSION);
     printf("build_number=%u\n", (unsigned int)DOM_BUILD_NUMBER);
     printf("build_id=%s\n", DOM_BUILD_ID);
     printf("git_hash=%s\n", DOM_GIT_HASH);
     printf("toolchain_id=%s\n", DOM_TOOLCHAIN_ID);
+    printf("toolchain_family=%s\n", DOM_TOOLCHAIN_FAMILY);
+    printf("toolchain_version=%s\n", DOM_TOOLCHAIN_VERSION);
+    printf("toolchain_stdlib=%s\n", DOM_TOOLCHAIN_STDLIB);
+    printf("toolchain_runtime=%s\n", DOM_TOOLCHAIN_RUNTIME);
+    printf("toolchain_link=%s\n", DOM_TOOLCHAIN_LINK);
+    printf("toolchain_target=%s\n", DOM_TOOLCHAIN_TARGET);
+    printf("toolchain_os=%s\n", DOM_TOOLCHAIN_OS);
+    printf("toolchain_arch=%s\n", DOM_TOOLCHAIN_ARCH);
+    printf("toolchain_os_floor=%s\n", DOM_TOOLCHAIN_OS_FLOOR);
+    printf("toolchain_config=%s\n", DOM_TOOLCHAIN_CONFIG);
     printf("protocol_law_targets=LAW_TARGETS@1.4.0\n");
     printf("protocol_control_caps=CONTROL_CAPS@1.0.0\n");
     printf("protocol_authority_tokens=AUTHORITY_TOKEN@1.0.0\n");
