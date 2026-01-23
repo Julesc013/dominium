@@ -56,6 +56,11 @@ int dom_app_ro_open(dom_app_readonly_adapter* ro,
     ro->core = dom_core_create(&desc);
     if (!ro->core) {
         dom_app_ro_set_error(ro, "core_create failed");
+        if (report) {
+            report->ok = 0;
+            strncpy(report->message, "core_create failed", sizeof(report->message) - 1u);
+            report->message[sizeof(report->message) - 1u] = '\0';
+        }
         return 0;
     }
 
