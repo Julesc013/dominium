@@ -1,0 +1,484 @@
+{
+  "schema_id": "dominium.schema.topology",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "node_id": "org.dominium.base.system.sol.node.planet.earth",
+      "trait_tags": [
+        "topology.body.planetary",
+        "topology.body.planet",
+        "topology.body.earth"
+      ],
+      "domain_volume_refs": [
+        {
+          "domain_id": "org.dominium.base.body.earth_macro.domain.planetary",
+          "volume_id": "org.dominium.base.body.earth_macro.domain.surface.macro"
+        },
+        {
+          "domain_id": "org.dominium.base.body.earth_macro.domain.planetary",
+          "volume_id": "org.dominium.base.body.earth_macro.domain.atmosphere.macro"
+        },
+        {
+          "domain_id": "org.dominium.base.body.earth_macro.domain.planetary",
+          "volume_id": "org.dominium.base.body.earth_macro.domain.subsurface.macro"
+        }
+      ],
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.planetary.macro"
+        },
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.planetary.submacro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.body.earth_macro.earth.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.planetary.macro",
+        "detail_absence": [
+          "no_political_boundaries",
+          "no_population",
+          "no_biological_assumptions"
+        ],
+        "supersedes_pack_ids": [
+          "org.dominium.base.system.sol"
+        ],
+        "supersedes_record_ids": [
+          "org.dominium.base.system.sol.node.planet.earth"
+        ],
+        "link_hint_parent_node_id": "org.dominium.base.system.sol.node.star.sol"
+      }
+    },
+    {
+      "node_id": "org.dominium.base.body.earth_macro.node.continent.africa",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.system.sol.node.planet.earth"
+        }
+      ],
+      "trait_tags": [
+        "topology.structure.continent"
+      ],
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.surface.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.body.earth_macro.continent.africa.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.surface.macro",
+        "detail_absence": [
+          "no_coastlines",
+          "no_topography"
+        ]
+      }
+    },
+    {
+      "node_id": "org.dominium.base.body.earth_macro.node.continent.antarctica",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.system.sol.node.planet.earth"
+        }
+      ],
+      "trait_tags": [
+        "topology.structure.continent"
+      ],
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.surface.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.body.earth_macro.continent.antarctica.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.surface.macro",
+        "detail_absence": [
+          "no_coastlines",
+          "no_topography"
+        ]
+      }
+    },
+    {
+      "node_id": "org.dominium.base.body.earth_macro.node.continent.asia",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.system.sol.node.planet.earth"
+        }
+      ],
+      "trait_tags": [
+        "topology.structure.continent"
+      ],
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.surface.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.body.earth_macro.continent.asia.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.surface.macro",
+        "detail_absence": [
+          "no_coastlines",
+          "no_topography"
+        ]
+      }
+    },
+    {
+      "node_id": "org.dominium.base.body.earth_macro.node.continent.europe",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.system.sol.node.planet.earth"
+        }
+      ],
+      "trait_tags": [
+        "topology.structure.continent"
+      ],
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.surface.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.body.earth_macro.continent.europe.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.surface.macro",
+        "detail_absence": [
+          "no_coastlines",
+          "no_topography"
+        ]
+      }
+    },
+    {
+      "node_id": "org.dominium.base.body.earth_macro.node.continent.north_america",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.system.sol.node.planet.earth"
+        }
+      ],
+      "trait_tags": [
+        "topology.structure.continent"
+      ],
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.surface.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.body.earth_macro.continent.north_america.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.surface.macro",
+        "detail_absence": [
+          "no_coastlines",
+          "no_topography"
+        ]
+      }
+    },
+    {
+      "node_id": "org.dominium.base.body.earth_macro.node.continent.south_america",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.system.sol.node.planet.earth"
+        }
+      ],
+      "trait_tags": [
+        "topology.structure.continent"
+      ],
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.surface.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.body.earth_macro.continent.south_america.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.surface.macro",
+        "detail_absence": [
+          "no_coastlines",
+          "no_topography"
+        ]
+      }
+    },
+    {
+      "node_id": "org.dominium.base.body.earth_macro.node.continent.oceania",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.system.sol.node.planet.earth"
+        }
+      ],
+      "trait_tags": [
+        "topology.structure.continent"
+      ],
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.surface.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.body.earth_macro.continent.oceania.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.surface.macro",
+        "detail_absence": [
+          "no_coastlines",
+          "no_topography"
+        ]
+      }
+    },
+    {
+      "node_id": "org.dominium.base.body.earth_macro.node.ocean.pacific",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.system.sol.node.planet.earth"
+        }
+      ],
+      "trait_tags": [
+        "topology.structure.ocean"
+      ],
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.surface.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.body.earth_macro.ocean.pacific.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.surface.macro",
+        "detail_absence": [
+          "no_bathymetry",
+          "no_currents"
+        ]
+      }
+    },
+    {
+      "node_id": "org.dominium.base.body.earth_macro.node.ocean.atlantic",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.system.sol.node.planet.earth"
+        }
+      ],
+      "trait_tags": [
+        "topology.structure.ocean"
+      ],
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.surface.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.body.earth_macro.ocean.atlantic.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.surface.macro",
+        "detail_absence": [
+          "no_bathymetry",
+          "no_currents"
+        ]
+      }
+    },
+    {
+      "node_id": "org.dominium.base.body.earth_macro.node.ocean.indian",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.system.sol.node.planet.earth"
+        }
+      ],
+      "trait_tags": [
+        "topology.structure.ocean"
+      ],
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.surface.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.body.earth_macro.ocean.indian.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.surface.macro",
+        "detail_absence": [
+          "no_bathymetry",
+          "no_currents"
+        ]
+      }
+    },
+    {
+      "node_id": "org.dominium.base.body.earth_macro.node.ocean.arctic",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.system.sol.node.planet.earth"
+        }
+      ],
+      "trait_tags": [
+        "topology.structure.ocean"
+      ],
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.surface.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.body.earth_macro.ocean.arctic.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.surface.macro",
+        "detail_absence": [
+          "no_bathymetry",
+          "no_currents"
+        ]
+      }
+    },
+    {
+      "node_id": "org.dominium.base.body.earth_macro.node.ocean.southern",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.system.sol.node.planet.earth"
+        }
+      ],
+      "trait_tags": [
+        "topology.structure.ocean"
+      ],
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.surface.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.body.earth_macro.ocean.southern.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.surface.macro",
+        "detail_absence": [
+          "no_bathymetry",
+          "no_currents"
+        ]
+      }
+    },
+    {
+      "node_id": "org.dominium.base.body.earth_macro.node.layer.crust",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.system.sol.node.planet.earth"
+        }
+      ],
+      "trait_tags": [
+        "topology.layer.geological"
+      ],
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.subsurface.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.body.earth_macro.layer.crust.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.subsurface.macro",
+        "detail_absence": [
+          "no_thickness_profile"
+        ]
+      }
+    },
+    {
+      "node_id": "org.dominium.base.body.earth_macro.node.layer.mantle",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.system.sol.node.planet.earth"
+        }
+      ],
+      "trait_tags": [
+        "topology.layer.geological"
+      ],
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.subsurface.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.body.earth_macro.layer.mantle.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.subsurface.macro",
+        "detail_absence": [
+          "no_thickness_profile"
+        ]
+      }
+    },
+    {
+      "node_id": "org.dominium.base.body.earth_macro.node.layer.outer_core",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.system.sol.node.planet.earth"
+        }
+      ],
+      "trait_tags": [
+        "topology.layer.geological"
+      ],
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.subsurface.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.body.earth_macro.layer.outer_core.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.subsurface.macro",
+        "detail_absence": [
+          "no_thickness_profile"
+        ]
+      }
+    },
+    {
+      "node_id": "org.dominium.base.body.earth_macro.node.layer.inner_core",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.system.sol.node.planet.earth"
+        }
+      ],
+      "trait_tags": [
+        "topology.layer.geological"
+      ],
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.subsurface.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.body.earth_macro.layer.inner_core.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.subsurface.macro",
+        "detail_absence": [
+          "no_thickness_profile"
+        ]
+      }
+    }
+  ]
+}
