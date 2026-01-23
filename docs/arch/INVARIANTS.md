@@ -3,6 +3,8 @@
 Status: binding.
 Scope: hard invariants for all systems, documentation, and data.
 
+Canonical summary: `docs/architecture/INVARIANTS.md`.
+
 Each invariant includes why it exists, what breaks if violated, and which
 systems enforce it.
 

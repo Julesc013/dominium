@@ -80,8 +80,8 @@ PERF_CAPS MUST NOT influence the identity digest.
 - PERF_CAPS mismatches only affect presentation/throughput policy.
 
 ## Related specs
-- `docs/SPEC_TIERS.md`
-- `docs/SPEC_LAUNCH_HANDSHAKE_GAME.md`
-- `docs/SPEC_QOS_ASSISTANCE.md`
+- `docs/specs/SPEC_TIERS.md`
+- `docs/specs/launcher/SPEC_LAUNCH_HANDSHAKE_GAME.md`
+- `docs/specs/SPEC_QOS_ASSISTANCE.md`
 - `docs/specs/SPEC_DETERMINISM.md`
-- `docs/SPEC_FEATURE_EPOCH.md`
+- `docs/specs/SPEC_FEATURE_EPOCH.md`

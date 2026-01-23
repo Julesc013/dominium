@@ -27,17 +27,18 @@ DEPENDENCIES:
 --------------------------------
 # Package Specification
 
-The Domino/Dominium core now treats packages as filesystem-backed assets. The
+Packages are filesystem-backed containers for packs resolved by UPS. The
 in-memory registry mirrors what exists on disk and is rebuilt on every
-`dom_core_create`.
+`dom_core_create`. Executables remain content-agnostic and may boot with zero
+packages present.
 
 ## Roots
 - Official/installed content lives under `dsys_get_path(DSYS_PATH_APP_ROOT)`.
 - User-installed mods live under `dsys_get_path(DSYS_PATH_USER_DATA)`.
 - All paths are relative to those roots and use forward slashes in descriptors.
-- Setup/installer tooling is responsible for populating these roots. The package
-  registry is a deterministic scanner over the resulting on-disk layout; it does
-  not define install/repair semantics.
+- Setup/launcher tooling populates these roots. The package registry is a
+  deterministic scanner over the on-disk layout; it does not define install or
+  repair semantics.
 
 ## Layouts
 ### Official content
@@ -71,6 +72,10 @@ around keys/values is trimmed. Supported keys:
 - `deps` – comma-separated list of package ids (names). Resolved on load if the
   referenced package is present.
 - `game_version_min` / `game_version_max` – compatible Dominium version bounds.
+- `capabilities` – comma-separated capability ids declared by the pack.
+
+Note: `manifest.ini` is container metadata. Pack manifests are versioned TLV
+records handled by UPS (see `docs/specs/launcher/PACK_SYSTEM.md`).
 
 ## Registry behaviour
 - On startup the core walks the official root (`data/versions/<game_version>`)

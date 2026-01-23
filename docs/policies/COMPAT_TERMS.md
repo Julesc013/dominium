@@ -1,14 +1,20 @@
 # COMPAT_TERMS — Legacy Terminology Mapping
 
 ## Purpose
-This document maps legacy terms to canonical terminology to keep specs and docs
-consistent.
+Map legacy terms to canonical terminology so specs and docs remain consistent.
+Canonical definitions live in `docs/architecture/TERMINOLOGY.md`.
 
-## Mappings
-- Universe directory → Universe bundle
-- Star system → Cosmo system anchor
-- Physics → Logical mechanics unless explicitly local
+## Mappings (selected)
+- feature (permission sense) -> capability
+- asset bundle -> pack (assets are pack contents)
+- map/layer (authoritative sense) -> field
+- entity (canonical identity sense) -> topology node
+- Universe directory -> Universe bundle
+- Star system -> Cosmo system anchor
+- Physics -> logical mechanics unless explicitly local
 
 ## Rules
-- Prefer canonical terms in new docs and code comments.
+- Prefer canonical terms in new docs and comments.
 - When updating legacy docs, replace mapped terms where possible.
+- If a legacy term must remain, add a local note that points to the canonical
+  term.

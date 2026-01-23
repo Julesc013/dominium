@@ -30,5 +30,8 @@ This index lists app-layer runtime, UI, and test contract documents.
 
 ## TestX / APR compliance
 - `docs/app/TESTX_INVENTORY.md` and `docs/app/TESTX_COMPLIANCE.md`.
-- `docs/app/APR1_TESTX_COMPLIANCE.md`, `docs/app/APR2_TESTX_COMPLIANCE.md`,
-  `docs/app/APR3_TESTX_COMPLIANCE.md`, `docs/app/APR4_TESTX_COMPLIANCE.md`.
+- Archived APR snapshots:
+  `docs/archive/app/APR1_TESTX_COMPLIANCE.md`,
+  `docs/archive/app/APR2_TESTX_COMPLIANCE.md`,
+  `docs/archive/app/APR3_TESTX_COMPLIANCE.md`,
+  `docs/archive/app/APR4_TESTX_COMPLIANCE.md`.

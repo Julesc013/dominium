@@ -31,9 +31,13 @@ DEPENDENCIES:
 This layer defines data-only prototypes and manifests. The engine only sees IDs, tags, and opaque TLV blobs; all domain-specific strings live in pack/mod data, never in core code.
 
 ## Packs and Mods
-- **Pack**: bundle of prototypes and assets. Identified by numeric `id` + `version`. Stored at `DOMINIUM_HOME/repo/packs/<id>/<version>/pack.tlv` with 8-digit, zero-padded version directories (the base pack resides at `.../packs/base/00000001/pack.tlv` and autoloads first when present).
-- **Mod**: extends packs with additional prototypes and metadata. Identified by numeric `id` + `version`, stored under `repo/mods/<id>/<version>/mod.tlv`.
-- Higher layers load these TLVs from disk and pass them to `d_content_load_pack` / `d_content_load_mod`; the content layer performs no file I/O.
+- **Pack**: versioned content bundle resolved by UPS. Identified by numeric `id`
+  + `version`. Location is determined by UPS/launcher; the content layer does no
+  file I/O.
+- **Mod**: extends packs with additional prototypes and metadata. Identified by
+  numeric `id` + `version`; location is determined by UPS/launcher.
+- Higher layers resolve packs and pass TLVs to `d_content_load_pack` /
+  `d_content_load_mod`; the content layer performs no file I/O.
 
 ## Manifests
 - `d_proto_pack_manifest`: `{ id, version, name, description, content_tlv }`.
@@ -51,5 +55,9 @@ This layer defines data-only prototypes and manifests. The engine only sees IDs,
 - Lifecycle: `d_content_register_schemas` → `d_content_init` → repeated `d_content_load_pack/mod` → optional `d_content_debug_dump` for inspection → `d_content_reset`/`d_content_shutdown` when tearing down.
 
 ## Base Pack and compatibility rules
-- The base pack is always loaded before instance-specified packs if present; additional packs/mods extend via new IDs and tags rather than mutating existing meanings.
-- Engine logic stays tag-driven and generic; gameplay semantics belong to the data shipped in packs/mods.
+- Zero-pack boot is valid; no pack is required for executables to start.
+- If a base pack is selected, it loads before instance-specified packs.
+- Additional packs/mods extend via new IDs and tags rather than mutating
+  existing meanings.
+- Engine logic stays tag-driven and generic; gameplay semantics belong to data
+  shipped in packs/mods.
