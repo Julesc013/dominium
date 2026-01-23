@@ -24,6 +24,8 @@ set(ENGINE_CORE_SOURCES
     modules/hydro/d_hydro_validate.c
     modules/input/ime.c
     modules/input/input.c
+    modules/io/dtlv.c
+    modules/io/schema_registry.c
     modules/job/d_job.c
     modules/job/d_job_planner.c
     modules/job/d_job_validate.c
@@ -149,6 +151,7 @@ set(ENGINE_CORE_LEGACY_SOURCES
     modules/core/dg_quant.c
     modules/core/dom_build_info.c
     modules/core/dom_control.c
+    modules/core/dom_sim.c
     modules/core/dom_registry.c
     modules/core/dom_deterministic_math.c
     modules/core/dom_ledger_accounts.c
