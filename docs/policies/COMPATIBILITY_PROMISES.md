@@ -1,7 +1,9 @@
 # COMPATIBILITY_PROMISES (FINAL0)
 
-Status: draft  
+Status: draft
 Version: 1
+
+Canonical policy summary: `docs/architecture/COMPATIBILITY_PHILOSOPHY.md`.
 
 ## Purpose
 Define the compatibility promises for saves, replays, and mods.
@@ -10,6 +12,7 @@ Define the compatibility promises for saves, replays, and mods.
 - Saves must never silently break.
 - Unsupported schema major versions must refuse or migrate deterministically.
 - Save metadata must include schema versions and feature epochs.
+- Save metadata must include authority scope.
 
 ## Replays
 - Replays must be replayable under pinned versions.
@@ -23,6 +26,17 @@ Define the compatibility promises for saves, replays, and mods.
 ## Schema major changes
 - Any schema major bump requires a migration or explicit refusal path.
 - Changes must be recorded in compatibility notes.
+
+## Packs (UPS)
+- Pack resolution is deterministic and independent of filesystem order.
+- Unknown pack tags must be preserved for forward compatibility.
+- Pack capability changes that affect simulation require refusal or migration.
+
+## Explicit degradation (non-sim only)
+- Non-sim capabilities may be disabled (UI, rendering, tooling).
+- Representation tiers may degrade explicitly (explicit -> hybrid -> procedural).
+- Null or headless backends are valid when presentation is unavailable.
+- Authoritative outcomes must not change as a result of degradation.
 
 ## Prohibitions
 - Silent breaking changes.

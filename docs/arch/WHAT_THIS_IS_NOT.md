@@ -7,6 +7,9 @@ Scope: guardrails against common misunderstandings.
 It is not a generic rendering or physics framework; rendering is derived and
 authoritative logic is deterministic and law-gated.
 
+## Not an asset-dependent runtime
+Executables do not embed content; packs are external and optional.
+
 ## Not a step-everything sandbox
 No global scans or per-ACT AI loops; simulation advances via scheduled events.
 

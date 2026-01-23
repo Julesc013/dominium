@@ -4,6 +4,7 @@ This document summarizes the current component boundaries and directory layout
 for Dominium (product layer) and Domino (engine). See
 `docs/arch/DIRECTORY_CONTEXT.md` for the authoritative layout contract and
 `docs/guides/DEPENDENCIES.md` for enforceable dependency rules.
+Conceptual framing lives in `docs/architecture/MENTAL_MODEL.md`.
 
 ## Top-level components
 - `engine/` — Domino engine sources (deterministic core + runtime subsystems).

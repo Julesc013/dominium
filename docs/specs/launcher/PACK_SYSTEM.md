@@ -2,7 +2,9 @@
 
 Doc Version: 1
 
-The pack system defines how packs/mods/runtime components are represented, validated, ordered, and applied to instances without affecting simulation correctness.
+The pack system defines how packs/mods/runtime components are represented,
+validated, ordered, and applied to instances without affecting simulation
+correctness. It is the launcher-facing surface of UPS.
 
 ## Pack Manifest
 
@@ -15,7 +17,7 @@ A pack is described by a versioned TLV “pack manifest” that may declare:
 
 Unknown tags must be skipped and preserved for forward compatibility.
 
-See `docs/SPEC_LAUNCHER_PACKS.md`.
+See `docs/specs/launcher/SPEC_LAUNCHER_PACKS.md`.
 
 ## Deterministic Resolution
 

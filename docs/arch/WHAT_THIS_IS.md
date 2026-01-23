@@ -9,10 +9,14 @@ authority, and time perception.
 
 ## Core identity
 - A deterministic simulation runtime with reproducible outcomes.
+- A truth/perception split where views are derived and authoritative state is
+  explicit.
 - A law-governed simulation OS where authority is data-defined.
 - A multi-scale reality model with explicit existence/refinement and visitability.
 - A product stack (engine + game + client/server + launcher/setup + tools) that
   separates runtime, control plane, and tooling.
+- Content-agnostic executables: all meaning comes from packs resolved by UPS.
+- Zero-asset boot paths for all products.
 
 ## It can host
 - player-only worlds

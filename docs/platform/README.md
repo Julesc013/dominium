@@ -8,4 +8,4 @@ This index lists platform runtime contracts and extensions.
 - `docs/platform/EVENT_QUEUE.md` - event queue ordering and timestamps.
 - `docs/platform/LIFECYCLE_AND_SIGNALS.md` - shutdown and signal handling.
 - `docs/platform/MULTI_WINDOW.md` - multi-window foundations and routing.
-- `docs/platform/APR2_EXTENSION_AUDIT.md` - APR2 extension inventory.
+- `docs/archive/platform/APR2_EXTENSION_AUDIT.md` - archived APR2 extension audit.
