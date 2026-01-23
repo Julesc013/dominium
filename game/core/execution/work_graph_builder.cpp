@@ -7,7 +7,7 @@ ALLOWED DEPENDENCIES: game/include/**, engine/include/** public headers, and C++
 FORBIDDEN DEPENDENCIES: engine internal headers; OS/platform headers.
 DETERMINISM: Stable ordering and stable ID derivation.
 */
-#include "game/core/execution/work_graph_builder.h"
+#include "work_graph_builder.h"
 
 static u64 dom_work_hash_init(void)
 {

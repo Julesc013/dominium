@@ -7,7 +7,7 @@ ALLOWED DEPENDENCIES: game/include/**, engine/include/** public headers, and C++
 FORBIDDEN DEPENDENCIES: engine internal headers; OS/platform headers.
 DETERMINISM: Policy selection is deterministic given identical inputs.
 */
-#include "game/core/execution/policy_bridge.h"
+#include "policy_bridge.h"
 
 #include <string.h>
 

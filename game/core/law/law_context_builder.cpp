@@ -7,7 +7,7 @@ ALLOWED DEPENDENCIES: `game/include/**`, `engine/include/**` public headers, and
 FORBIDDEN DEPENDENCIES: engine internal headers; product-layer runtime code.
 DETERMINISM: Pure mapping; no side effects.
 */
-#include "game/core/law/jurisdiction_resolver.h"
+#include "jurisdiction_resolver.h"
 
 #include <string.h>
 
