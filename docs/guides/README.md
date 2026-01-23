@@ -33,6 +33,11 @@ distinct directories. Start with `docs/arch/` before diving into guides.
 - Release process: `docs/guides/RELEASE_NOTES_PROCESS.md`,
   `docs/guides/release/RELEASE_READINESS_CHECKLIST.md`
 
+## Application / Platform / Render
+- App runtime docs: `docs/app/README.md`
+- Platform runtime docs: `docs/platform/README.md`
+- Renderer docs: `docs/render/README.md`
+
 ## Specs and schemas
 - Spec index: `docs/specs/SPEC_INDEX.md`
 - Execution, existence, domain, travel, time, authority: `schema/*/README.md`

@@ -85,6 +85,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(DominiumBundleRuntime)
 include(DominiumReproducible)
 include(dist_output)
+include(DomIntegration)
 
 find_package(Python3 REQUIRED COMPONENTS Interpreter)
 
@@ -503,6 +504,61 @@ if(DOM_BACKEND_VECTOR2D)
     set(DOM_CFG_BACKEND_VECTOR2D 1)
 endif()
 
+if(NOT TARGET dom_platform_backend_${DOM_PLATFORM})
+    add_library(dom_platform_backend_${DOM_PLATFORM} INTERFACE)
+    set_property(TARGET dom_platform_backend_${DOM_PLATFORM} PROPERTY DOM_PLATFORM_BACKEND_NAME "${DOM_PLATFORM}")
+endif()
+dom_register_platform_backend("${DOM_PLATFORM}")
+
+if(DOM_BACKEND_SOFT AND NOT TARGET dom_render_backend_soft)
+    add_library(dom_render_backend_soft INTERFACE)
+    set_property(TARGET dom_render_backend_soft PROPERTY DOM_RENDER_BACKEND_NAME "soft")
+    set_property(TARGET dom_render_backend_soft PROPERTY DOM_RENDER_BACKEND_AVAILABILITY "available")
+    dom_register_renderer_backend("soft" AVAILABILITY "available")
+endif()
+if(DOM_BACKEND_NULL AND NOT TARGET dom_render_backend_null)
+    add_library(dom_render_backend_null INTERFACE)
+    set_property(TARGET dom_render_backend_null PROPERTY DOM_RENDER_BACKEND_NAME "null")
+    set_property(TARGET dom_render_backend_null PROPERTY DOM_RENDER_BACKEND_AVAILABILITY "available")
+    dom_register_renderer_backend("null" AVAILABILITY "available")
+endif()
+if(DOM_BACKEND_DX9 AND NOT TARGET dom_render_backend_dx9)
+    add_library(dom_render_backend_dx9 INTERFACE)
+    set_property(TARGET dom_render_backend_dx9 PROPERTY DOM_RENDER_BACKEND_NAME "dx9")
+    set_property(TARGET dom_render_backend_dx9 PROPERTY DOM_RENDER_BACKEND_AVAILABILITY "unavailable")
+    dom_register_renderer_backend("dx9" AVAILABILITY "unavailable")
+endif()
+if(DOM_BACKEND_DX11 AND NOT TARGET dom_render_backend_dx11)
+    add_library(dom_render_backend_dx11 INTERFACE)
+    set_property(TARGET dom_render_backend_dx11 PROPERTY DOM_RENDER_BACKEND_NAME "dx11")
+    set_property(TARGET dom_render_backend_dx11 PROPERTY DOM_RENDER_BACKEND_AVAILABILITY "unavailable")
+    dom_register_renderer_backend("dx11" AVAILABILITY "unavailable")
+endif()
+if(DOM_BACKEND_GL1 AND NOT TARGET dom_render_backend_gl1)
+    add_library(dom_render_backend_gl1 INTERFACE)
+    set_property(TARGET dom_render_backend_gl1 PROPERTY DOM_RENDER_BACKEND_NAME "gl1")
+    set_property(TARGET dom_render_backend_gl1 PROPERTY DOM_RENDER_BACKEND_AVAILABILITY "unavailable")
+    dom_register_renderer_backend("gl1" AVAILABILITY "unavailable")
+endif()
+if(DOM_BACKEND_GL2 AND NOT TARGET dom_render_backend_gl2)
+    add_library(dom_render_backend_gl2 INTERFACE)
+    set_property(TARGET dom_render_backend_gl2 PROPERTY DOM_RENDER_BACKEND_NAME "gl2")
+    set_property(TARGET dom_render_backend_gl2 PROPERTY DOM_RENDER_BACKEND_AVAILABILITY "unavailable")
+    dom_register_renderer_backend("gl2" AVAILABILITY "unavailable")
+endif()
+if(DOM_BACKEND_VK1 AND NOT TARGET dom_render_backend_vk1)
+    add_library(dom_render_backend_vk1 INTERFACE)
+    set_property(TARGET dom_render_backend_vk1 PROPERTY DOM_RENDER_BACKEND_NAME "vk1")
+    set_property(TARGET dom_render_backend_vk1 PROPERTY DOM_RENDER_BACKEND_AVAILABILITY "unavailable")
+    dom_register_renderer_backend("vk1" AVAILABILITY "unavailable")
+endif()
+if(DOM_BACKEND_METAL AND NOT TARGET dom_render_backend_metal)
+    add_library(dom_render_backend_metal INTERFACE)
+    set_property(TARGET dom_render_backend_metal PROPERTY DOM_RENDER_BACKEND_NAME "metal")
+    set_property(TARGET dom_render_backend_metal PROPERTY DOM_RENDER_BACKEND_AVAILABILITY "unavailable")
+    dom_register_renderer_backend("metal" AVAILABILITY "unavailable")
+endif()
+
 # Build metadata (best-effort; no network).
 set(DOM_BUILD_NUMBER "0")
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/.dominium_build_number")
@@ -747,12 +803,39 @@ set(DOM_BUILD_NUMBER_FILE "${CMAKE_CURRENT_BINARY_DIR}/generated/build_number.tx
 
 add_custom_target(dom_update_build_number ALL
     COMMAND ${CMAKE_COMMAND}
+        -DDOM_BUILD_NUMBER_BUMP=0
         -DSTATE_FILE=${DOM_BUILD_STATE_FILE}
         -DHEADER_FILE=${DOM_BUILD_HEADER_FILE}
         -DNUMBER_FILE=${DOM_BUILD_NUMBER_FILE}
         -DPROJECT_SEMVER=${DOM_PROJECT_SEMVER}
         -P ${CMAKE_CURRENT_SOURCE_DIR}/setup/packages/scripts/update_build_number.cmake
-    COMMENT "Incrementing global build number"
+    COMMENT "Refreshing build number header (no bump)"
+)
+add_custom_target(dom_bump_build_number
+    COMMAND ${CMAKE_COMMAND}
+        -DDOM_BUILD_NUMBER_BUMP=1
+        -DSTATE_FILE=${DOM_BUILD_STATE_FILE}
+        -DHEADER_FILE=${DOM_BUILD_HEADER_FILE}
+        -DNUMBER_FILE=${DOM_BUILD_NUMBER_FILE}
+        -DPROJECT_SEMVER=${DOM_PROJECT_SEMVER}
+        -P ${CMAKE_CURRENT_SOURCE_DIR}/setup/packages/scripts/update_build_number.cmake
+    COMMENT "Bumping global build number"
+)
+set(_dom_testx_ctest_cmd ${CMAKE_CTEST_COMMAND} --output-on-failure)
+if(CMAKE_CONFIGURATION_TYPES)
+    list(APPEND _dom_testx_ctest_cmd -C $<CONFIG>)
+endif()
+add_custom_target(testx_all
+    COMMAND ${_dom_testx_ctest_cmd}
+    COMMAND ${CMAKE_COMMAND}
+        -DDOM_BUILD_NUMBER_BUMP=1
+        -DSTATE_FILE=${DOM_BUILD_STATE_FILE}
+        -DHEADER_FILE=${DOM_BUILD_HEADER_FILE}
+        -DNUMBER_FILE=${DOM_BUILD_NUMBER_FILE}
+        -DPROJECT_SEMVER=${DOM_PROJECT_SEMVER}
+        -P ${CMAKE_CURRENT_SOURCE_DIR}/setup/packages/scripts/update_build_number.cmake
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    COMMENT "Run TestX and bump build number on success"
 )
 add_compile_definitions(DOM_BUILD_VERSION_GENERATED)
 
@@ -1023,5 +1106,9 @@ set(CPACK_DEBIAN_PACKAGE_SECTION "games")
 set(CPACK_RPM_PACKAGE_LICENSE "MIT")
 set(CPACK_RPM_PACKAGE_URL "https://example.com/dominium")
 include(CPack)
+
+if(DOM_BUILD_TESTS)
+    dom_apply_default_test_labels()
+endif()
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)

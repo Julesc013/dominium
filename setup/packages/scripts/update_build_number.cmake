@@ -6,6 +6,7 @@
 # invoked from CMake via:
 #   cmake -DSTATE_FILE=<path> -DHEADER_FILE=<path> -DNUMBER_FILE=<path> \
 #         -DPROJECT_SEMVER=<semver> -P scripts/update_build_number.cmake
+# Set -DDOM_BUILD_NUMBER_BUMP=1 to increment; defaults to no increment.
 #
 
 if(NOT DEFINED STATE_FILE)
@@ -24,6 +25,16 @@ if(NOT DEFINED PROJECT_SEMVER)
     set(PROJECT_SEMVER "0.0.0")
 endif()
 
+if(NOT DEFINED DOM_BUILD_NUMBER_BUMP)
+    set(DOM_BUILD_NUMBER_BUMP "0")
+endif()
+string(TOLOWER "${DOM_BUILD_NUMBER_BUMP}" _dom_build_bump_lc)
+set(_dom_do_bump 1)
+if(_dom_build_bump_lc STREQUAL "" OR _dom_build_bump_lc STREQUAL "0" OR
+   _dom_build_bump_lc STREQUAL "off" OR _dom_build_bump_lc STREQUAL "false")
+    set(_dom_do_bump 0)
+endif()
+
 # ---------------------------------------------------------------------------
 # Load and increment the persistent build number
 # ---------------------------------------------------------------------------
@@ -36,10 +47,16 @@ if(EXISTS "${STATE_FILE}")
     endif()
 endif()
 
-math(EXPR BUILD_NUMBER "${_current} + 1")
-
-# Persist the new build number immediately to avoid reuse on concurrent targets
-file(WRITE "${STATE_FILE}" "${BUILD_NUMBER}\n")
+if(_dom_do_bump)
+    math(EXPR BUILD_NUMBER "${_current} + 1")
+    # Persist the new build number immediately to avoid reuse on concurrent targets
+    file(WRITE "${STATE_FILE}" "${BUILD_NUMBER}\n")
+else()
+    set(BUILD_NUMBER "${_current}")
+    if(NOT EXISTS "${STATE_FILE}")
+        file(WRITE "${STATE_FILE}" "${BUILD_NUMBER}\n")
+    endif()
+endif()
 
 # ---------------------------------------------------------------------------
 # Parse semantic version parts (fall back to 0 if missing)

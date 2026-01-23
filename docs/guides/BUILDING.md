@@ -72,7 +72,8 @@ ctest --preset vs2026-x64-debug
 ## Build metadata (required)
 - State file: `.dominium_build_number`
 - Generator: `setup/packages/scripts/update_build_number.cmake`
-- Root CMake adds `dom_update_build_number` to `ALL`.
+- Root CMake adds `dom_update_build_number` to `ALL` (refresh only).
+- Gated bump targets: `dom_bump_build_number` or `testx_all` (after tests).
 
 ## Tests and checks
 - `DOM_BUILD_TESTS=ON` enables engine tests (`engine/tests`) and game tests

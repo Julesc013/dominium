@@ -36,6 +36,8 @@ set_target_properties(dominium_server PROPERTIES
 target_include_directories(dominium_server PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
+add_executable(dom_server ALIAS dominium_server)
+dom_register_product(server dominium_server)
 
 if(DOM_BUILD_TESTS)
     add_executable(dominium_server_shard_tests

@@ -55,6 +55,8 @@ set_target_properties(setup_tui PROPERTIES
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )
+add_executable(dom_setup ALIAS setup_cli)
+dom_register_product(setup setup_cli)
 add_executable(setup::cli ALIAS setup_cli)
 add_executable(setup::gui ALIAS setup_gui)
 add_executable(setup::tui ALIAS setup_tui)

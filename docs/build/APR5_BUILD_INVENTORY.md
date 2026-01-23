@@ -6,8 +6,9 @@
   - Windows requires MSVC (`cl.exe`) unless projection builds.
   - macOS requires Xcode generator unless projection builds.
   - Linux requires GCC unless projection builds.
-- Global build number is read from `.dominium_build_number` and incremented by
-  `setup/packages/scripts/update_build_number.cmake` via `dom_update_build_number`.
+- Global build number is read from `.dominium_build_number`; `dom_update_build_number`
+  refreshes generated headers without bumping, while `dom_bump_build_number` (or `testx_all`)
+  performs the gated increment after tests.
 - Build identity is embedded through `cmake/config_base.h.in`:
   `DOM_BUILD_ID`, `DOM_GIT_HASH`, `DOM_TOOLCHAIN_ID`.
 - Baseline header hygiene is enforced by `cmake/BaselineHeaderCheck.cmake`.

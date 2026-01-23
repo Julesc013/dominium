@@ -27,3 +27,5 @@ set_target_properties(dominium_client PROPERTIES
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )
+add_executable(dom_client ALIAS dominium_client)
+dom_register_product(client dominium_client)
