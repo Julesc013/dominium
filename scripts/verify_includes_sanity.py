@@ -134,21 +134,32 @@ SKIP_DIRS = {
     "tests",
 }
 
+SKIP_PATH_PREFIXES = {
+    "tools/validation/fixtures",
+}
+
 
 def iter_source_files():
     for dirpath, dirnames, filenames in os.walk(REPO_ROOT):
         rel_dir = os.path.relpath(dirpath, REPO_ROOT)
+        rel_dir_norm = rel_dir.replace("\\", "/")
         parts = rel_dir.split(os.sep)
         if parts and parts[0] in SKIP_DIRS:
             dirnames[:] = []
             continue
-        dirnames[:] = [d for d in dirnames if d not in SKIP_DIRS]
-        for name in filenames:
-            _, ext = os.path.splitext(name)
-            if ext.lower() not in SOURCE_EXTS:
-                continue
-            full_path = os.path.join(dirpath, name)
-            yield full_path
+        for prefix in SKIP_PATH_PREFIXES:
+            if rel_dir_norm.startswith(prefix):
+                dirnames[:] = []
+                break
+        else:
+            dirnames[:] = [d for d in dirnames if d not in SKIP_DIRS]
+            for name in filenames:
+                _, ext = os.path.splitext(name)
+                if ext.lower() not in SOURCE_EXTS:
+                    continue
+                full_path = os.path.join(dirpath, name)
+                yield full_path
+            continue
 
 
 def product_for_path(path):
