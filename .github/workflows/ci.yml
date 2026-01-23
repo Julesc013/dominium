@@ -3,6 +3,8 @@ name: ci
 on:
   push:
   pull_request:
+  schedule:
+    - cron: "0 5 * * 1"
 
 jobs:
   repo-sanity:
@@ -165,6 +167,76 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: test-${{ matrix.name }}
+          path: |
+            build/${{ matrix.name }}/Testing
+            build/${{ matrix.name }}/*.log
+            build/${{ matrix.name }}/*.txt
+            build/${{ matrix.name }}/ci_artifacts
+
+  build-test-canary:
+    if: github.event_name == 'schedule'
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            name: win32-dx9
+            cmake_args: >-
+              -G Ninja
+              -DCMAKE_BUILD_TYPE=Debug
+              -DDOM_DISALLOW_DOWNLOADS=ON
+              -DFETCHCONTENT_FULLY_DISCONNECTED=ON
+              -DFETCHCONTENT_UPDATES_DISCONNECTED=ON
+              -DDOM_PLATFORM=win32
+              -DDOM_BACKEND_SOFT=ON
+              -DDOM_BACKEND_NULL=OFF
+              -DDOM_BACKEND_DX9=ON
+              -DDOM_ENABLE_NET=ON
+              -DDOM_BUILD_TESTS=ON
+              -DDOM_BUILD_TOOLS=ON
+            ctest_args: ""
+          - os: ubuntu-latest
+            name: linux-clang
+            cmake_args: >-
+              -G Ninja
+              -DCMAKE_BUILD_TYPE=Debug
+              -DCMAKE_C_COMPILER=clang
+              -DCMAKE_CXX_COMPILER=clang++
+              -DDOM_DISALLOW_DOWNLOADS=ON
+              -DFETCHCONTENT_FULLY_DISCONNECTED=ON
+              -DFETCHCONTENT_UPDATES_DISCONNECTED=ON
+              -DDOM_PLATFORM=posix_headless
+              -DDOM_BACKEND_SOFT=ON
+              -DDOM_BACKEND_NULL=OFF
+              -DDOM_ENABLE_NET=ON
+              -DDOM_BUILD_TESTS=ON
+              -DDOM_BUILD_TOOLS=ON
+            ctest_args: ""
+
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Invariant checks (launcher core hardening)
+        run: python setup/packages/scripts/ci/check_launcher_core_invariants.py
+
+      - name: Layer checks (kernel boundaries)
+        run: python setup/packages/scripts/check_layers.py
+
+      - name: Configure
+        run: cmake -S . -B build/${{ matrix.name }} ${{ matrix.cmake_args }}
+
+      - name: Build
+        run: cmake --build build/${{ matrix.name }} --config Debug
+
+      - name: Test
+        run: ctest --test-dir build/${{ matrix.name }} --output-on-failure ${{ matrix.ctest_args }}
+
+      - name: Upload test artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: canary-${{ matrix.name }}
           path: |
             build/${{ matrix.name }}/Testing
             build/${{ matrix.name }}/*.log

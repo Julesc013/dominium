@@ -69,7 +69,12 @@
         "DOM_FETCH_SDL2": "ON",
         "DOM_DISALLOW_DOWNLOADS": "OFF",
         "DOM_ENABLE_AUDIO": "ON",
-        "DOM_ENABLE_NET": "ON"
+        "DOM_ENABLE_NET": "ON",
+        "DOM_TOOLCHAIN_STDLIB": "msvc-stl",
+        "DOM_TOOLCHAIN_RUNTIME": "static:msvc",
+        "DOM_TOOLCHAIN_LINK": "static",
+        "DOM_TARGET_OS_FAMILY": "winnt",
+        "DOM_TARGET_OS_MIN": "win10_1507"
       }
     },
     {
@@ -174,6 +179,52 @@
       "inherits": "msvc-debug"
     },
     {
+      "name": "windows-clangcl-debug",
+      "displayName": "Windows clang-cl Debug",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_C_COMPILER": "clang-cl",
+        "CMAKE_CXX_COMPILER": "clang-cl",
+        "DOM_BUILD_MODE": "Debug",
+        "DOM_PLATFORM": "win32",
+        "DOM_BACKEND_SOFT": "ON",
+        "DOM_BACKEND_NULL": "OFF",
+        "DOM_BACKEND_SDL2": "OFF",
+        "DOM_BACKEND_DX9": "ON",
+        "DOM_BACKEND_GL2": "OFF",
+        "DOM_TOOLCHAIN_STDLIB": "msvc-stl",
+        "DOM_TOOLCHAIN_RUNTIME": "dynamic:msvc",
+        "DOM_TOOLCHAIN_LINK": "dynamic",
+        "DOM_TARGET_OS_FAMILY": "winnt",
+        "DOM_TARGET_OS_MIN": "win10_1507"
+      }
+    },
+    {
+      "name": "windows-mingw-debug",
+      "displayName": "Windows MinGW-w64 Debug",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_C_COMPILER": "x86_64-w64-mingw32-gcc",
+        "CMAKE_CXX_COMPILER": "x86_64-w64-mingw32-g++",
+        "DOM_BUILD_MODE": "Debug",
+        "DOM_PLATFORM": "win32",
+        "DOM_BACKEND_SOFT": "ON",
+        "DOM_BACKEND_NULL": "OFF",
+        "DOM_BACKEND_SDL2": "OFF",
+        "DOM_BACKEND_DX9": "OFF",
+        "DOM_BACKEND_GL2": "OFF",
+        "DOM_TOOLCHAIN_STDLIB": "libstdc++",
+        "DOM_TOOLCHAIN_RUNTIME": "dynamic:mingw",
+        "DOM_TOOLCHAIN_LINK": "dynamic",
+        "DOM_TARGET_OS_FAMILY": "winnt",
+        "DOM_TARGET_OS_MIN": "win7"
+      }
+    },
+    {
       "name": "macos-xcode-debug",
       "displayName": "macOS Xcode Debug",
       "generator": "Xcode",
@@ -183,7 +234,12 @@
         "DOM_PLATFORM": "cocoa",
         "DOM_BACKEND_SDL2": "OFF",
         "DOM_BACKEND_GL2": "OFF",
-        "DOM_BACKEND_DX9": "OFF"
+        "DOM_BACKEND_DX9": "OFF",
+        "DOM_TOOLCHAIN_STDLIB": "libc++",
+        "DOM_TOOLCHAIN_RUNTIME": "dynamic:macos",
+        "DOM_TOOLCHAIN_LINK": "dynamic",
+        "DOM_TARGET_OS_FAMILY": "macosx",
+        "DOM_TARGET_OS_MIN": "11.0"
       }
     },
     {
@@ -204,7 +260,58 @@
         "DOM_PLATFORM": "posix_x11",
         "DOM_BACKEND_SDL2": "OFF",
         "DOM_BACKEND_GL2": "OFF",
-        "DOM_BACKEND_DX9": "OFF"
+        "DOM_BACKEND_DX9": "OFF",
+        "DOM_TOOLCHAIN_STDLIB": "libstdc++",
+        "DOM_TOOLCHAIN_RUNTIME": "dynamic:glibc",
+        "DOM_TOOLCHAIN_LINK": "dynamic",
+        "DOM_TARGET_OS_FAMILY": "linux",
+        "DOM_TARGET_OS_MIN": "glibc_2.17"
+      }
+    },
+    {
+      "name": "linux-clang-debug",
+      "displayName": "Linux Clang Debug",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++",
+        "DOM_BUILD_MODE": "Debug",
+        "DOM_PLATFORM": "posix_headless",
+        "DOM_BACKEND_SOFT": "ON",
+        "DOM_BACKEND_NULL": "OFF",
+        "DOM_BACKEND_SDL2": "OFF",
+        "DOM_BACKEND_GL2": "OFF",
+        "DOM_BACKEND_DX9": "OFF",
+        "DOM_TOOLCHAIN_STDLIB": "libstdc++",
+        "DOM_TOOLCHAIN_RUNTIME": "dynamic:glibc",
+        "DOM_TOOLCHAIN_LINK": "dynamic",
+        "DOM_TARGET_OS_FAMILY": "linux",
+        "DOM_TARGET_OS_MIN": "glibc_2.17"
+      }
+    },
+    {
+      "name": "linux-musl-debug",
+      "displayName": "Linux musl Debug (Canary)",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_C_COMPILER": "musl-gcc",
+        "CMAKE_CXX_COMPILER": "musl-g++",
+        "DOM_BUILD_MODE": "Debug",
+        "DOM_PLATFORM": "posix_headless",
+        "DOM_BACKEND_SOFT": "ON",
+        "DOM_BACKEND_NULL": "OFF",
+        "DOM_BACKEND_SDL2": "OFF",
+        "DOM_BACKEND_GL2": "OFF",
+        "DOM_BACKEND_DX9": "OFF",
+        "DOM_TOOLCHAIN_STDLIB": "libstdc++",
+        "DOM_TOOLCHAIN_RUNTIME": "static:musl",
+        "DOM_TOOLCHAIN_LINK": "static",
+        "DOM_TARGET_OS_FAMILY": "linux",
+        "DOM_TARGET_OS_MIN": "musl_1.2"
       }
     },
     {
@@ -519,6 +626,14 @@
       ]
     },
     {
+      "name": "windows-clangcl-debug",
+      "configurePreset": "windows-clangcl-debug"
+    },
+    {
+      "name": "windows-mingw-debug",
+      "configurePreset": "windows-mingw-debug"
+    },
+    {
       "name": "msvc-win32-dx9",
       "configurePreset": "msvc-win32-dx9",
       "configuration": "Debug"
@@ -539,6 +654,14 @@
     {
       "name": "linux-debug",
       "configurePreset": "linux-debug"
+    },
+    {
+      "name": "linux-clang-debug",
+      "configurePreset": "linux-clang-debug"
+    },
+    {
+      "name": "linux-musl-debug",
+      "configurePreset": "linux-musl-debug"
     },
     {
       "name": "linux-dev",
