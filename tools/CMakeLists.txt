@@ -32,6 +32,21 @@ set_target_properties(dominium-tools PROPERTIES
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )
+
+add_executable(dom_tool_artifactmeta
+    artifactmeta/tool_artifactmeta.c
+)
+target_link_libraries(dom_tool_artifactmeta PRIVATE libs::contracts)
+target_include_directories(dom_tool_artifactmeta PRIVATE
+    ${DOMINIUM_ENGINE_INCLUDE_DIR}
+    ${DOMINIUM_GENERATED_INCLUDE_DIR}
+)
+set_target_properties(dom_tool_artifactmeta PROPERTIES
+    OUTPUT_NAME "dom_tool_artifactmeta"
+    C_STANDARD 90
+    C_STANDARD_REQUIRED ON
+    C_EXTENSIONS OFF
+)
 add_executable(coredata_compile
     coredata_compile_stub.c
 )
