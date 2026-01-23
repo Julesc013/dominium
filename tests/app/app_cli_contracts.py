@@ -30,6 +30,16 @@ BUILD_INFO_KEYS = [
     "abi_dom_build_info=",
     "abi_dom_caps=",
     "api_dsys=",
+    "platform_ext_window_ex_api=",
+    "platform_ext_error_api=",
+    "platform_ext_cliptext_api=",
+    "platform_ext_cursor_api=",
+    "platform_ext_dragdrop_api=",
+    "platform_ext_gamepad_api=",
+    "platform_ext_power_api=",
+    "platform_ext_text_input_api=",
+    "platform_ext_window_mode_api=",
+    "platform_ext_dpi_api=",
     "api_dgfx=",
 ]
 
