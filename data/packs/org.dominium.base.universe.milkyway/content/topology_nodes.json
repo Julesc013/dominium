@@ -1,0 +1,172 @@
+{
+  "schema_id": "dominium.schema.topology",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "node_id": "org.dominium.base.universe.milkyway.node.cluster.local_group",
+      "trait_tags": [
+        "topology.cluster",
+        "topology.cluster.local_group"
+      ],
+      "representation": [
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.galactic.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.universe.milkyway.local_group.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.galactic.macro",
+        "detail_absence": [
+          "no_member_galaxy_catalog",
+          "no_explicit_distances"
+        ],
+        "link_hint_parent_node_id": "org.dominium.base.topology.node.universe"
+      }
+    },
+    {
+      "node_id": "org.dominium.base.universe.milkyway.node.galaxy.milky_way",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.universe.milkyway.node.cluster.local_group"
+        }
+      ],
+      "trait_tags": [
+        "topology.galaxy",
+        "topology.galaxy.milkyway"
+      ],
+      "domain_volume_refs": [
+        {
+          "domain_id": "org.dominium.base.universe.milkyway.domain.galactic",
+          "volume_id": "org.dominium.base.universe.milkyway.domain.galactic.volume.macro"
+        }
+      ],
+      "representation": [
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.galactic.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.universe.milkyway.galaxy.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.galactic.macro",
+        "detail_absence": [
+          "no_explicit_star_catalog",
+          "no_explicit_geometry"
+        ]
+      }
+    },
+    {
+      "node_id": "org.dominium.base.universe.milkyway.node.structure.spiral_arms",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.universe.milkyway.node.galaxy.milky_way"
+        }
+      ],
+      "trait_tags": [
+        "topology.structure",
+        "topology.structure.spiral_arms"
+      ],
+      "representation": [
+        {
+          "tier_tag": "hybrid",
+          "lod_tag": "lod.galactic.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.universe.milkyway.spiral_arms.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.galactic.macro",
+        "detail_absence": [
+          "no_explicit_arm_paths"
+        ]
+      }
+    },
+    {
+      "node_id": "org.dominium.base.universe.milkyway.node.region.core",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.universe.milkyway.node.galaxy.milky_way"
+        }
+      ],
+      "trait_tags": [
+        "topology.region",
+        "topology.region.core"
+      ],
+      "representation": [
+        {
+          "tier_tag": "hybrid",
+          "lod_tag": "lod.galactic.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.universe.milkyway.core.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.galactic.macro",
+        "detail_absence": [
+          "no_explicit_mass_model"
+        ]
+      }
+    },
+    {
+      "node_id": "org.dominium.base.universe.milkyway.node.region.halo",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.universe.milkyway.node.galaxy.milky_way"
+        }
+      ],
+      "trait_tags": [
+        "topology.region",
+        "topology.region.halo"
+      ],
+      "representation": [
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.galactic.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.universe.milkyway.halo.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.galactic.macro",
+        "detail_absence": [
+          "no_explicit_halo_profile"
+        ]
+      }
+    },
+    {
+      "node_id": "org.dominium.base.universe.milkyway.node.region.void",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.universe.milkyway.node.galaxy.milky_way"
+        }
+      ],
+      "trait_tags": [
+        "topology.region",
+        "topology.region.void"
+      ],
+      "representation": [
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.galactic.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.universe.milkyway.voids.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.galactic.macro",
+        "detail_absence": [
+          "no_explicit_void_catalog"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "schema_id": "dominium.schema.domain",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "domain_id": "org.dominium.base.universe.milkyway.domain.galactic",
+      "domain_type": "domain.spatial",
+      "domain_tags": [
+        "scope.galactic"
+      ],
+      "volumes": [
+        {
+          "volume_id": "org.dominium.base.universe.milkyway.domain.galactic.volume.macro",
+          "bounds": {
+            "kind_tag": "bounds.abstract",
+            "units": [
+              "unitless"
+            ],
+            "payload": {
+              "description": "Macro-scale galactic bounds; no explicit geometry."
+            }
+          },
+          "provenance_ref": {
+            "provenance_id": "prov.org.dominium.base.universe.milkyway.domain.volume.v1"
+          },
+          "extensions": {
+            "refinement_ceiling": "lod.galactic.macro",
+            "detail_absence": [
+              "no_metric_geometry"
+            ]
+          }
+        }
+      ],
+      "attached_node_refs": [
+        {
+          "node_id": "org.dominium.base.universe.milkyway.node.galaxy.milky_way"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.universe.milkyway.domain.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.galactic.macro",
+        "detail_absence": [
+          "no_explicit_extent"
+        ]
+      }
+    }
+  ]
+}

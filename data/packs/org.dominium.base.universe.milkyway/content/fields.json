@@ -1,0 +1,50 @@
+{
+  "schema_id": "dominium.schema.field",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "field_id": "org.dominium.base.universe.milkyway.field.importance.index",
+      "field_type": "navigation.importance.index",
+      "units": [
+        "unitless"
+      ],
+      "resolution": {
+        "lod_tag": "lod.galactic.macro",
+        "metadata": {
+          "scale": "coarse"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.galactic.macro"
+        }
+      ],
+      "knowledge_state": "inferred",
+      "knowledge_tags": [
+        "macro",
+        "coarse"
+      ],
+      "domain_volume_refs": [
+        {
+          "domain_id": "org.dominium.base.universe.milkyway.domain.galactic",
+          "volume_id": "org.dominium.base.universe.milkyway.domain.galactic.volume.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.universe.milkyway.importance.v1"
+      },
+      "extensions": {
+        "importance_tags": [
+          "navigation",
+          "research",
+          "hazards"
+        ],
+        "refinement_ceiling": "lod.galactic.macro",
+        "detail_absence": [
+          "no_explicit_weights"
+        ]
+      }
+    }
+  ]
+}
