@@ -1,0 +1,43 @@
+{
+  "schema_id": "dominium.schema.topology",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "node_id": "org.dominium.base.topology.node.universe",
+      "trait_tags": [
+        "topology.universe",
+        "topology.node.basic"
+      ],
+      "domain_volume_refs": [
+        {
+          "domain_id": "org.dominium.base.topology.domain.universe",
+          "volume_id": "org.dominium.base.topology.domain.universe.volume.macro",
+          "ref_tags": [
+            "domain.volume.basic"
+          ]
+        }
+      ],
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.universe.macro",
+          "metadata": {
+            "source": "canonical_pack"
+          }
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.topology.universe.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.universe.macro",
+        "detail_absence": [
+          "no_galaxies_defined",
+          "no_systems_defined",
+          "no_bodies_defined"
+        ],
+        "notes": "Minimal root node for zero-assumption inspection."
+      }
+    }
+  ]
+}
