@@ -24,7 +24,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "domino/core/types.h"
 
 #include "sim/lod/dg_rep.h"
-#include "sim/sched/dg_phase.h"
+#include "execution/scheduler/dg_phase.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -74,4 +74,3 @@ int          dg_representable_rep_invariants_check(const dg_representable *r);
 #endif
 
 #endif /* DG_REPRESENTABLE_H */
-

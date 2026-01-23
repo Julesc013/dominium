@@ -15,7 +15,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include <string.h>
 
 #include "sim/lod/dg_promo.h"
-#include "sim/sched/dg_sched.h"
+#include "execution/scheduler/dg_sched.h"
 
 #include "core/det_invariants.h"
 
