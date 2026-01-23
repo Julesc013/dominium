@@ -13,6 +13,7 @@ Stub launcher CLI entrypoint.
 #include "dom_contracts/version.h"
 #include "dom_contracts/_internal/dom_build_version.h"
 #include "dominium/app/app_runtime.h"
+#include "dominium/app/readonly_adapter.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -157,6 +158,8 @@ static int launcher_print_capabilities(void)
     const char* auto_name;
     int dsys_ok;
     u32 i;
+    dom_app_readonly_adapter ro;
+    dom_app_compat_report compat;
 
     dsys_ok = dom_app_query_platform_caps(&caps);
     if (!dsys_ok) {
@@ -174,6 +177,22 @@ static int launcher_print_capabilities(void)
                infos[i].name,
                infos[i].supported ? 1u : 0u,
                infos[i].detail);
+    }
+
+    dom_app_ro_init(&ro);
+    dom_app_compat_report_init(&compat, "launcher");
+    if (dom_app_ro_open(&ro, 0, &compat)) {
+        printf("readonly_topology=%s\n",
+               dom_app_ro_has_packages_tree(&ro) ? "packages_tree" : "unsupported");
+        printf("readonly_snapshot=unsupported\n");
+        printf("readonly_events=unsupported\n");
+        printf("readonly_replay=unsupported\n");
+        dom_app_ro_close(&ro);
+    } else {
+        printf("readonly_init=failed\n");
+        if (compat.message[0]) {
+            printf("readonly_error=%s\n", compat.message);
+        }
     }
 
     return dsys_ok ? D_APP_EXIT_OK : D_APP_EXIT_FAILURE;
