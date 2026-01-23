@@ -15,7 +15,11 @@ Minimal client entrypoint with MP0 local-connect demo.
 #include "dom_contracts/version.h"
 #include "dom_contracts/_internal/dom_build_version.h"
 #include "dominium/app/app_runtime.h"
+#include "dominium/app/readonly_adapter.h"
+#include "dominium/app/readonly_format.h"
 #include "dominium/session/mp0_session.h"
+#include "client_input_bindings.h"
+#include "readonly_view_model.h"
 #include "client_ui_compositor.h"
 
 #include <stdio.h>
@@ -32,6 +36,10 @@ static void print_help(void)
     printf("  --status                    Show active control layers\n");
     printf("  --smoke                     Run deterministic CLI smoke\n");
     printf("  --selftest                  Alias for --smoke\n");
+    printf("  --topology                  Report packages topology summary\n");
+    printf("  --snapshot                  Report snapshot metadata (if supported)\n");
+    printf("  --events                    Report event stream summary (if supported)\n");
+    printf("  --format <text|json>         Output format for observability\n");
     printf("  --renderer <name>           Select renderer (explicit; no fallback)\n");
     printf("  --ui=none|tui|gui           Select UI shell (gui maps to windowed)\n");
     printf("  --windowed                  Start a windowed client shell\n");
@@ -46,6 +54,13 @@ static void print_help(void)
     printf("  --control-enable=K1,K2       Enable control capabilities (canonical keys)\n");
     printf("  --control-registry <path>    Override control registry path\n");
     printf("  --mp0-connect=local          Run MP0 local client demo\n");
+    printf("  --expect-engine-version <v>  Require engine version match\n");
+    printf("  --expect-game-version <v>    Require game version match\n");
+    printf("  --expect-build-id <id>       Require build id match\n");
+    printf("  --expect-sim-schema <id>     Require sim schema id match\n");
+    printf("  --expect-build-info-abi <v>  Require build-info ABI match\n");
+    printf("  --expect-caps-abi <v>        Require caps ABI match\n");
+    printf("  --expect-gfx-api <v>         Require gfx API match\n");
 }
 
 static void print_version(const char* product_version)
@@ -167,9 +182,66 @@ static int client_parse_frame_cap_ms(const char* text, uint32_t* out_value)
     return 1;
 }
 
+static int client_parse_u32(const char* text, uint32_t* out_value)
+{
+    char* end = 0;
+    unsigned long value;
+    if (!text || !out_value) {
+        return 0;
+    }
+    value = strtoul(text, &end, 10);
+    if (!end || *end != '\0') {
+        return 0;
+    }
+    *out_value = (uint32_t)value;
+    return 1;
+}
+
+static int client_parse_u64(const char* text, uint64_t* out_value)
+{
+    unsigned long long value = 0u;
+    int base = 10;
+    const char* p;
+    if (!text || !out_value) {
+        return 0;
+    }
+    p = text;
+    if (p[0] == '0' && (p[1] == 'x' || p[1] == 'X')) {
+        base = 16;
+        p += 2;
+    }
+    if (*p == '\0') {
+        return 0;
+    }
+    while (*p) {
+        int digit;
+        char c = *p++;
+        if (c >= '0' && c <= '9') {
+            digit = c - '0';
+        } else if (base == 16 && c >= 'a' && c <= 'f') {
+            digit = 10 + (c - 'a');
+        } else if (base == 16 && c >= 'A' && c <= 'F') {
+            digit = 10 + (c - 'A');
+        } else {
+            return 0;
+        }
+        value = value * (unsigned long long)base + (unsigned long long)digit;
+    }
+    *out_value = (uint64_t)value;
+    return 1;
+}
+
 typedef struct client_tui_state {
     d_tui_context* ctx;
     d_tui_widget* status;
+    d_tui_widget* meta;
+    d_tui_widget* core;
+    d_tui_widget* list;
+    dom_app_ro_tree_node nodes[128];
+    char node_text[128][160];
+    const char* node_items[128];
+    uint32_t node_count;
+    int topology_supported;
     int quit;
 } client_tui_state;
 
@@ -195,8 +267,61 @@ static void client_tui_update_status(client_tui_state* state, d_app_timing_mode 
     d_tui_widget_set_text(state->status, buf);
 }
 
+static void client_tui_build_tree(client_tui_state* state,
+                                  const dom_client_ro_view_model* view)
+{
+    uint32_t i;
+    if (!state || !view) {
+        return;
+    }
+    state->node_count = 0u;
+    state->topology_supported = 0;
+    if (!view->has_tree) {
+        return;
+    }
+    state->node_count = view->tree_info.count;
+    state->topology_supported = 1;
+    for (i = 0u; i < state->node_count; ++i) {
+        const dom_app_ro_tree_node* node = &view->nodes[i];
+        state->nodes[i] = *node;
+        int indent = (int)(node->depth * 2u);
+        snprintf(state->node_text[i], sizeof(state->node_text[i]),
+                 "%*s%s", indent, "", node->label);
+        state->node_items[i] = state->node_text[i];
+    }
+}
+
+static void client_tui_update_meta(client_tui_state* state)
+{
+    char buf[160];
+    int sel;
+    if (!state || !state->meta) {
+        return;
+    }
+    if (!state->topology_supported) {
+        d_tui_widget_set_text(state->meta, "topology: unsupported");
+        return;
+    }
+    if (!state->list) {
+        d_tui_widget_set_text(state->meta, "topology: no list");
+        return;
+    }
+    sel = d_tui_list_get_selection(state->list);
+    if (sel < 0 || (uint32_t)sel >= state->node_count) {
+        d_tui_widget_set_text(state->meta, "topology: no selection");
+        return;
+    }
+    snprintf(buf, sizeof(buf),
+             "node=%s depth=%u children=%u snapshot=unsupported",
+             state->nodes[sel].label,
+             (unsigned int)state->nodes[sel].depth,
+             (unsigned int)state->nodes[sel].child_count);
+    d_tui_widget_set_text(state->meta, buf);
+}
+
 static int client_run_windowed(const client_window_config* cfg, const char* renderer,
-                               d_app_timing_mode timing_mode, uint32_t frame_cap_ms)
+                               d_app_timing_mode timing_mode, uint32_t frame_cap_ms,
+                               const dom_app_compat_expect* compat_expect)
 {
     dsys_window_desc desc;
     dsys_window* win = 0;
@@ -214,6 +339,31 @@ static int client_run_windowed(const client_window_config* cfg, const char* rend
     dom_app_clock clock;
     uint64_t frame_start_us = 0u;
     dom_client_ui_compositor ui;
+    dom_app_readonly_adapter ro;
+    dom_client_ro_view_model view;
+    int ro_open = 0;
+
+    dom_client_ui_compositor_init(&ui);
+    if (!client_open_readonly(&ro, compat_expect)) {
+        return D_APP_EXIT_FAILURE;
+    }
+    ro_open = 1;
+    dom_client_ro_view_model_init(&view);
+    if (!dom_client_ro_view_model_load(&view, &ro)) {
+        fprintf(stderr, "client: core info unavailable\n");
+        dom_app_ro_close(&ro);
+        return D_APP_EXIT_FAILURE;
+    }
+    if (view.has_core) {
+        dom_client_ui_compositor_set_summary(&ui,
+                                             view.core_info.package_count,
+                                             view.core_info.instance_count,
+                                             view.has_tree,
+                                             dom_app_ro_snapshots_supported(),
+                                             dom_app_ro_events_supported());
+    }
+    dom_app_ro_close(&ro);
+    ro_open = 0;
 
     if (dsys_init() != DSYS_OK) {
         fprintf(stderr, "client: dsys_init failed (%s)\n", dsys_last_error_text());
@@ -224,7 +374,6 @@ static int client_run_windowed(const client_window_config* cfg, const char* rend
     dsys_lifecycle_init();
     lifecycle_ready = 1;
     dom_app_clock_init(&clock, timing_mode);
-    dom_client_ui_compositor_init(&ui);
 
     memset(&desc, 0, sizeof(desc));
     desc.x = 0;
@@ -279,8 +428,8 @@ static int client_run_windowed(const client_window_config* cfg, const char* rend
                 break;
             }
             if (ev.type == DSYS_EVENT_KEY_DOWN) {
-                int key = ev.payload.key.key;
-                if (key == 'B' || key == 'b') {
+                dom_client_action action = dom_client_input_translate(&ev);
+                if (action == DOM_CLIENT_ACTION_TOGGLE_BORDERLESS) {
                     dsys_window_mode target = (current_mode == DWIN_MODE_BORDERLESS)
                         ? DWIN_MODE_WINDOWED
                         : DWIN_MODE_BORDERLESS;
@@ -292,6 +441,8 @@ static int client_run_windowed(const client_window_config* cfg, const char* rend
                         current_mode = window_mode_api->get_mode(win);
                         fprintf(stderr, "client: window mode=%d\n", (int)current_mode);
                     }
+                } else if (action == DOM_CLIENT_ACTION_TOGGLE_OVERLAY) {
+                    dom_client_ui_compositor_toggle_overlay(&ui);
                 }
             }
             if (ev.type == DSYS_EVENT_WINDOW_RESIZED) {
@@ -307,7 +458,6 @@ static int client_run_windowed(const client_window_config* cfg, const char* rend
             if (ev.type == DSYS_EVENT_DPI_CHANGED) {
                 fprintf(stderr, "client: dpi_scale=%.2f\n", (double)ev.payload.dpi.scale);
             }
-            dom_client_ui_compositor_handle_event(&ui, &ev);
         }
         if (dsys_lifecycle_shutdown_requested()) {
             normal_exit = 1;
@@ -332,6 +482,9 @@ cleanup:
     if (renderer_ready) {
         d_gfx_shutdown();
     }
+    if (ro_open) {
+        dom_app_ro_close(&ro);
+    }
     d_system_set_native_window_handle(0);
     if (win) {
         dsys_window_destroy(win);
@@ -355,12 +508,18 @@ cleanup:
     return result;
 }
 
-static int client_run_tui(d_app_timing_mode timing_mode, uint32_t frame_cap_ms, const char* renderer)
+static int client_run_tui(d_app_timing_mode timing_mode,
+                          uint32_t frame_cap_ms,
+                          const char* renderer,
+                          const dom_app_compat_expect* compat_expect)
 {
     d_tui_context* tui = 0;
     d_tui_widget* root = 0;
     d_tui_widget* title = 0;
     d_tui_widget* status = 0;
+    d_tui_widget* core = 0;
+    d_tui_widget* list = 0;
+    d_tui_widget* meta = 0;
     d_tui_widget* quit_btn = 0;
     client_tui_state state;
     dom_app_clock clock;
@@ -371,18 +530,32 @@ static int client_run_tui(d_app_timing_mode timing_mode, uint32_t frame_cap_ms, 
     int result = D_APP_EXIT_FAILURE;
     int normal_exit = 0;
     uint64_t frame_start_us = 0u;
+    dom_app_readonly_adapter ro;
+    dom_client_ro_view_model view;
 
     if (!client_validate_renderer(renderer)) {
         return D_APP_EXIT_UNAVAILABLE;
     }
 
+    if (!client_open_readonly(&ro, compat_expect)) {
+        return D_APP_EXIT_FAILURE;
+    }
+    dom_client_ro_view_model_init(&view);
+    if (!dom_client_ro_view_model_load(&view, &ro)) {
+        dom_app_ro_close(&ro);
+        fprintf(stderr, "client: core info unavailable\n");
+        return D_APP_EXIT_FAILURE;
+    }
+
     if (dsys_init() != DSYS_OK) {
         fprintf(stderr, "client: dsys_init failed (%s)\n", dsys_last_error_text());
+        dom_app_ro_close(&ro);
         return D_APP_EXIT_FAILURE;
     }
     dsys_ready = 1;
     if (!dsys_terminal_init()) {
         fprintf(stderr, "client: terminal unavailable\n");
+        dom_app_ro_close(&ro);
         goto cleanup;
     }
     terminal_ready = 1;
@@ -394,22 +567,50 @@ static int client_run_tui(d_app_timing_mode timing_mode, uint32_t frame_cap_ms, 
     tui = d_tui_create();
     if (!tui) {
         fprintf(stderr, "client: tui init failed\n");
+        dom_app_ro_close(&ro);
         goto cleanup;
     }
     root = d_tui_panel(tui, D_TUI_LAYOUT_VERTICAL);
     title = d_tui_label(tui, "Dominium client TUI");
     status = d_tui_label(tui, "mode=deterministic app_time_us=0");
+    core = d_tui_label(tui, "core: packages=0 instances=0");
+    client_tui_build_tree(&state, &view);
+    if (state.topology_supported && state.node_count > 0u) {
+        list = d_tui_list(tui, state.node_items, (int)state.node_count);
+    } else {
+        static const char* empty_items[] = { "topology: unsupported" };
+        list = d_tui_list(tui, empty_items, 1);
+    }
+    meta = d_tui_label(tui, "topology: ready");
     quit_btn = d_tui_button(tui, "Quit", client_tui_quit, &state);
-    if (!root || !title || !status || !quit_btn) {
+    if (!root || !title || !status || !core || !list || !meta || !quit_btn) {
         fprintf(stderr, "client: tui widgets failed\n");
+        dom_app_ro_close(&ro);
         goto cleanup;
     }
     d_tui_widget_add(root, title);
     d_tui_widget_add(root, status);
+    d_tui_widget_add(root, core);
+    d_tui_widget_add(root, list);
+    d_tui_widget_add(root, meta);
     d_tui_widget_add(root, quit_btn);
     d_tui_set_root(tui, root);
     state.ctx = tui;
     state.status = status;
+    state.core = core;
+    state.list = list;
+    state.meta = meta;
+
+    {
+        char core_buf[128];
+        snprintf(core_buf, sizeof(core_buf),
+                 "core: packages=%u instances=%u",
+                 (unsigned int)view.core_info.package_count,
+                 (unsigned int)view.core_info.instance_count);
+        d_tui_widget_set_text(core, core_buf);
+    }
+    client_tui_update_meta(&state);
+    dom_app_ro_close(&ro);
 
     while (!dsys_lifecycle_shutdown_requested()) {
         if (timing_mode == D_APP_TIMING_INTERACTIVE) {
@@ -435,6 +636,7 @@ static int client_run_tui(d_app_timing_mode timing_mode, uint32_t frame_cap_ms, 
         }
         dom_app_clock_advance(&clock);
         client_tui_update_status(&state, timing_mode, clock.app_time_us);
+        client_tui_update_meta(&state);
         d_tui_render(tui);
         dom_app_sleep_for_cap(timing_mode, frame_cap_ms, frame_start_us);
     }
@@ -520,6 +722,21 @@ static int client_validate_renderer(const char* renderer)
     return 1;
 }
 
+static int client_open_readonly(dom_app_readonly_adapter* ro,
+                                const dom_app_compat_expect* expect)
+{
+    dom_app_compat_report report;
+    dom_app_compat_report_init(&report, "client");
+    dom_app_ro_init(ro);
+    if (!dom_app_ro_open(ro, expect, &report)) {
+        fprintf(stderr, "client: compatibility failure: %s\n",
+                report.message[0] ? report.message : "unknown");
+        dom_app_compat_print_report(&report, stderr);
+        return 0;
+    }
+    return 1;
+}
+
 int client_main(int argc, char** argv)
 {
     const char* control_registry_path = "data/registries/control_capabilities.registry";
@@ -527,6 +744,9 @@ int client_main(int argc, char** argv)
     const char* renderer = 0;
     dom_app_ui_request ui_req;
     dom_app_ui_mode ui_mode = DOM_APP_UI_NONE;
+    dom_app_output_format output_format = DOM_APP_FORMAT_TEXT;
+    int output_format_set = 0;
+    dom_app_compat_expect compat_expect;
     client_window_config window_cfg;
     d_app_timing_mode timing_mode = D_APP_TIMING_DETERMINISTIC;
     uint32_t frame_cap_ms = 16u;
@@ -534,6 +754,9 @@ int client_main(int argc, char** argv)
     int want_version = 0;
     int want_build_info = 0;
     int want_status = 0;
+    int want_topology = 0;
+    int want_snapshot = 0;
+    int want_events = 0;
     int want_mp0 = 0;
     int want_smoke = 0;
     int want_selftest = 0;
@@ -545,6 +768,7 @@ int client_main(int argc, char** argv)
     int i;
     client_window_defaults(&window_cfg);
     dom_app_ui_request_init(&ui_req);
+    dom_app_compat_expect_init(&compat_expect);
     for (i = 1; i < argc; ++i) {
         int ui_consumed = 0;
         char ui_err[96];
@@ -584,6 +808,35 @@ int client_main(int argc, char** argv)
         }
         if (strcmp(argv[i], "--selftest") == 0) {
             want_selftest = 1;
+            continue;
+        }
+        if (strcmp(argv[i], "--topology") == 0) {
+            want_topology = 1;
+            continue;
+        }
+        if (strcmp(argv[i], "--snapshot") == 0) {
+            want_snapshot = 1;
+            continue;
+        }
+        if (strcmp(argv[i], "--events") == 0) {
+            want_events = 1;
+            continue;
+        }
+        if (strncmp(argv[i], "--format=", 9) == 0) {
+            if (!dom_app_parse_output_format(argv[i] + 9, &output_format)) {
+                fprintf(stderr, "client: invalid --format value\n");
+                return D_APP_EXIT_USAGE;
+            }
+            output_format_set = 1;
+            continue;
+        }
+        if (strcmp(argv[i], "--format") == 0 && i + 1 < argc) {
+            if (!dom_app_parse_output_format(argv[i + 1], &output_format)) {
+                fprintf(stderr, "client: invalid --format value\n");
+                return D_APP_EXIT_USAGE;
+            }
+            output_format_set = 1;
+            i += 1;
             continue;
         }
         if (strcmp(argv[i], "--deterministic") == 0) {
@@ -668,6 +921,123 @@ int client_main(int argc, char** argv)
             i += 1;
             continue;
         }
+        if (strncmp(argv[i], "--expect-engine-version=", 24) == 0) {
+            compat_expect.engine_version = argv[i] + 24;
+            compat_expect.has_engine_version = 1;
+            continue;
+        }
+        if (strcmp(argv[i], "--expect-engine-version") == 0 && i + 1 < argc) {
+            compat_expect.engine_version = argv[i + 1];
+            compat_expect.has_engine_version = 1;
+            i += 1;
+            continue;
+        }
+        if (strncmp(argv[i], "--expect-game-version=", 22) == 0) {
+            compat_expect.game_version = argv[i] + 22;
+            compat_expect.has_game_version = 1;
+            continue;
+        }
+        if (strcmp(argv[i], "--expect-game-version") == 0 && i + 1 < argc) {
+            compat_expect.game_version = argv[i + 1];
+            compat_expect.has_game_version = 1;
+            i += 1;
+            continue;
+        }
+        if (strncmp(argv[i], "--expect-build-id=", 18) == 0) {
+            compat_expect.build_id = argv[i] + 18;
+            compat_expect.has_build_id = 1;
+            continue;
+        }
+        if (strcmp(argv[i], "--expect-build-id") == 0 && i + 1 < argc) {
+            compat_expect.build_id = argv[i + 1];
+            compat_expect.has_build_id = 1;
+            i += 1;
+            continue;
+        }
+        if (strncmp(argv[i], "--expect-sim-schema=", 21) == 0) {
+            uint64_t value = 0;
+            if (!client_parse_u64(argv[i] + 21, &value)) {
+                fprintf(stderr, "client: invalid --expect-sim-schema value\n");
+                return D_APP_EXIT_USAGE;
+            }
+            compat_expect.sim_schema_id = value;
+            compat_expect.has_sim_schema_id = 1;
+            continue;
+        }
+        if (strcmp(argv[i], "--expect-sim-schema") == 0 && i + 1 < argc) {
+            uint64_t value = 0;
+            if (!client_parse_u64(argv[i + 1], &value)) {
+                fprintf(stderr, "client: invalid --expect-sim-schema value\n");
+                return D_APP_EXIT_USAGE;
+            }
+            compat_expect.sim_schema_id = value;
+            compat_expect.has_sim_schema_id = 1;
+            i += 1;
+            continue;
+        }
+        if (strncmp(argv[i], "--expect-build-info-abi=", 25) == 0) {
+            uint32_t value = 0;
+            if (!client_parse_u32(argv[i] + 25, &value)) {
+                fprintf(stderr, "client: invalid --expect-build-info-abi value\n");
+                return D_APP_EXIT_USAGE;
+            }
+            compat_expect.build_info_abi = value;
+            compat_expect.has_build_info_abi = 1;
+            continue;
+        }
+        if (strcmp(argv[i], "--expect-build-info-abi") == 0 && i + 1 < argc) {
+            uint32_t value = 0;
+            if (!client_parse_u32(argv[i + 1], &value)) {
+                fprintf(stderr, "client: invalid --expect-build-info-abi value\n");
+                return D_APP_EXIT_USAGE;
+            }
+            compat_expect.build_info_abi = value;
+            compat_expect.has_build_info_abi = 1;
+            i += 1;
+            continue;
+        }
+        if (strncmp(argv[i], "--expect-caps-abi=", 19) == 0) {
+            uint32_t value = 0;
+            if (!client_parse_u32(argv[i] + 19, &value)) {
+                fprintf(stderr, "client: invalid --expect-caps-abi value\n");
+                return D_APP_EXIT_USAGE;
+            }
+            compat_expect.caps_abi = value;
+            compat_expect.has_caps_abi = 1;
+            continue;
+        }
+        if (strcmp(argv[i], "--expect-caps-abi") == 0 && i + 1 < argc) {
+            uint32_t value = 0;
+            if (!client_parse_u32(argv[i + 1], &value)) {
+                fprintf(stderr, "client: invalid --expect-caps-abi value\n");
+                return D_APP_EXIT_USAGE;
+            }
+            compat_expect.caps_abi = value;
+            compat_expect.has_caps_abi = 1;
+            i += 1;
+            continue;
+        }
+        if (strncmp(argv[i], "--expect-gfx-api=", 17) == 0) {
+            uint32_t value = 0;
+            if (!client_parse_u32(argv[i] + 17, &value)) {
+                fprintf(stderr, "client: invalid --expect-gfx-api value\n");
+                return D_APP_EXIT_USAGE;
+            }
+            compat_expect.gfx_api = value;
+            compat_expect.has_gfx_api = 1;
+            continue;
+        }
+        if (strcmp(argv[i], "--expect-gfx-api") == 0 && i + 1 < argc) {
+            uint32_t value = 0;
+            if (!client_parse_u32(argv[i + 1], &value)) {
+                fprintf(stderr, "client: invalid --expect-gfx-api value\n");
+                return D_APP_EXIT_USAGE;
+            }
+            compat_expect.gfx_api = value;
+            compat_expect.has_gfx_api = 1;
+            i += 1;
+            continue;
+        }
         if (strncmp(argv[i], "--control-enable=", 17) == 0) {
             control_enable = argv[i] + 17;
             continue;
@@ -723,6 +1093,34 @@ int client_main(int argc, char** argv)
     if (want_smoke || want_selftest) {
         want_mp0 = 1;
     }
+    {
+        int observe_count = 0;
+        int want_observe = 0;
+        if (want_topology) {
+            observe_count += 1;
+        }
+        if (want_snapshot) {
+            observe_count += 1;
+        }
+        if (want_events) {
+            observe_count += 1;
+        }
+        want_observe = (observe_count > 0);
+        if (observe_count > 1) {
+            fprintf(stderr, "client: choose only one of --topology, --snapshot, or --events\n");
+            return D_APP_EXIT_USAGE;
+        }
+        if (output_format_set && !want_observe) {
+            fprintf(stderr, "client: --format requires an observability command\n");
+            return D_APP_EXIT_USAGE;
+        }
+        if (want_observe &&
+            (want_build_info || want_status || want_smoke || want_selftest || want_mp0 ||
+             window_cfg.enabled || ui_mode == DOM_APP_UI_TUI)) {
+            fprintf(stderr, "client: observability commands cannot combine with UI or smoke paths\n");
+            return D_APP_EXIT_USAGE;
+        }
+    }
     if (want_mp0 && (window_cfg.enabled || ui_mode == DOM_APP_UI_TUI)) {
         fprintf(stderr, "client: --smoke/mp0 cannot combine with windowed or tui modes\n");
         return D_APP_EXIT_USAGE;
@@ -777,17 +1175,56 @@ int client_main(int argc, char** argv)
         }
         return 0;
     }
+    if (want_topology || want_snapshot || want_events) {
+        dom_app_readonly_adapter ro;
+        dom_client_ro_view_model view;
+        if (control_loaded) {
+            dom_control_caps_free(&control_caps);
+        }
+        if (!client_open_readonly(&ro, &compat_expect)) {
+            return D_APP_EXIT_FAILURE;
+        }
+        if (want_snapshot) {
+            fprintf(stderr, "client: snapshot metadata unsupported\n");
+            dom_app_ro_close(&ro);
+            return D_APP_EXIT_UNAVAILABLE;
+        }
+        if (want_events) {
+            fprintf(stderr, "client: event stream unsupported\n");
+            dom_app_ro_close(&ro);
+            return D_APP_EXIT_UNAVAILABLE;
+        }
+        dom_client_ro_view_model_init(&view);
+        if (!dom_client_ro_view_model_load(&view, &ro)) {
+            fprintf(stderr, "client: core info unavailable\n");
+            dom_app_ro_close(&ro);
+            return D_APP_EXIT_FAILURE;
+        }
+        if (!view.has_tree) {
+            fprintf(stderr, "client: topology unsupported\n");
+            dom_app_ro_close(&ro);
+            return D_APP_EXIT_UNAVAILABLE;
+        }
+        dom_app_ro_print_topology_bundle(output_format,
+                                         &view.core_info,
+                                         "packages_tree",
+                                         view.nodes,
+                                         view.tree_info.count,
+                                         view.tree_info.truncated);
+        dom_app_ro_close(&ro);
+        return D_APP_EXIT_OK;
+    }
     if (ui_mode == DOM_APP_UI_TUI) {
         if (control_loaded) {
             dom_control_caps_free(&control_caps);
         }
-        return client_run_tui(timing_mode, frame_cap_ms, renderer);
+        return client_run_tui(timing_mode, frame_cap_ms, renderer, &compat_expect);
     }
     if (window_cfg.enabled) {
         if (control_loaded) {
             dom_control_caps_free(&control_caps);
         }
-        return client_run_windowed(&window_cfg, renderer, timing_mode, frame_cap_ms);
+        return client_run_windowed(&window_cfg, renderer, timing_mode, frame_cap_ms, &compat_expect);
     }
     if (want_mp0) {
         if (!client_validate_renderer(renderer)) {
