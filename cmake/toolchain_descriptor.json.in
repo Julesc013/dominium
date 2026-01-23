@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "toolchain_id": "@DOM_TOOLCHAIN_ID@",
+  "family": "@DOM_TOOLCHAIN_FAMILY@",
+  "version": "@DOM_TOOLCHAIN_VERSION@",
+  "stdlib": "@DOM_TOOLCHAIN_STDLIB@",
+  "runtime": "@DOM_TOOLCHAIN_RUNTIME@",
+  "link": "@DOM_TOOLCHAIN_LINK@",
+  "target": "@DOM_TOOLCHAIN_TARGET@",
+  "os": "@DOM_TOOLCHAIN_OS@",
+  "arch": "@DOM_TOOLCHAIN_ARCH@",
+  "os_floor": "@DOM_TOOLCHAIN_OS_FLOOR@",
+  "config": "@DOM_TOOLCHAIN_CONFIG@",
+  "compiler": {
+    "c": {
+      "id": "@CMAKE_C_COMPILER_ID@",
+      "version": "@CMAKE_C_COMPILER_VERSION@"
+    },
+    "cxx": {
+      "id": "@CMAKE_CXX_COMPILER_ID@",
+      "version": "@CMAKE_CXX_COMPILER_VERSION@"
+    }
+  },
+  "generator": "@CMAKE_GENERATOR@"
+}

@@ -43,5 +43,16 @@
 #define DOM_BUILD_ID                   "@DOM_BUILD_ID@"
 #define DOM_GIT_HASH                   "@DOM_GIT_HASH@"
 #define DOM_TOOLCHAIN_ID               "@DOM_TOOLCHAIN_ID@"
+#define DOM_BUILD_SKU                  "@DOM_BUILD_SKU@"
+#define DOM_TOOLCHAIN_FAMILY           "@DOM_TOOLCHAIN_FAMILY@"
+#define DOM_TOOLCHAIN_VERSION          "@DOM_TOOLCHAIN_VERSION@"
+#define DOM_TOOLCHAIN_STDLIB           "@DOM_TOOLCHAIN_STDLIB@"
+#define DOM_TOOLCHAIN_RUNTIME          "@DOM_TOOLCHAIN_RUNTIME@"
+#define DOM_TOOLCHAIN_LINK             "@DOM_TOOLCHAIN_LINK@"
+#define DOM_TOOLCHAIN_OS               "@DOM_TOOLCHAIN_OS@"
+#define DOM_TOOLCHAIN_ARCH             "@DOM_TOOLCHAIN_ARCH@"
+#define DOM_TOOLCHAIN_TARGET           "@DOM_TOOLCHAIN_TARGET@"
+#define DOM_TOOLCHAIN_OS_FLOOR         "@DOM_TOOLCHAIN_OS_FLOOR@"
+#define DOM_TOOLCHAIN_CONFIG           "@DOM_TOOLCHAIN_CONFIG@"
 
 #endif /* DOMINO_CONFIG_BASE_H */
