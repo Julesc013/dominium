@@ -33,9 +33,12 @@ The engine exposes the following primitive interfaces:
 - Knowledge/latent state: `engine/include/domino/knowledge_state.h`
 - Deterministic provenance and seed namespaces: `engine/include/domino/provenance.h`
 - Compatibility modes and negotiation inputs: `engine/include/domino/compat_modes.h`
+- Universal Pack System (UPS) manifests and capability resolution: `engine/include/domino/ups.h`
 
 Note: `engine/include/domino/caps.h` is for system/backend selection and MUST
 NOT be used as simulation capability descriptors.
+
+UPS runtime details are defined in `docs/engine/UPS_RUNTIME.md`.
 
 ## Enforcement Status (Explicit)
 
@@ -46,6 +49,7 @@ yet enforced in current engine code:
 - Authority token enforcement on all mutating operations.
 - Snapshot creation and query routing through the snapshot interfaces.
 - Compatibility negotiation applied to runtime/save/mod/pack interactions.
+- UPS manifest loading and capability resolution wired into package/content scanning.
 
 These gaps are deliberate. Enforcing them without a breaking revision would
 change behavior. See `docs/engine/PRIMITIVES.md` for the normative contracts.

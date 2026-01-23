@@ -45,6 +45,13 @@ This document is normative for the game layer. It MUST be read alongside
 - Authoritative operation MUST NOT proceed when required capabilities are missing.
 - Canonical interface: `engine/include/domino/compat_modes.h`
 
+## Universal Pack System (UPS)
+
+- The game MUST register pack manifests with the engine UPS before loading content.
+- The game MUST resolve content by capability, not by file path or pack name.
+- Pack precedence MUST be explicit and data-driven.
+- Canonical interfaces: `engine/include/domino/ups.h`, `game/include/dominium/ups_runtime.h`
+
 ## Enforcement Status (Explicit Gaps)
 
 To preserve current behavior, the following norms are specified but not yet

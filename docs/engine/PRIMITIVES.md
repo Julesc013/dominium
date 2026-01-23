@@ -91,6 +91,14 @@ This document is normative for the engine layer. It MUST be read alongside
 - The engine MUST fail loudly on incompatible inputs.
 - Canonical interface: `engine/include/domino/compat_modes.h`
 
+## Universal Pack System (UPS)
+
+- Pack manifests MUST be loadable without accessing pack contents.
+- Capability resolution MUST be by declared capability only, never by file path.
+- Precedence MUST be explicit and data-driven; the engine MUST NOT hardcode tiers.
+- The engine MUST support zero-pack boot and deterministic inspection.
+- Canonical interface: `engine/include/domino/ups.h`
+
 ## Interface Hygiene and Safety
 
 - Public interfaces MUST use opaque handles and MUST avoid exposing concrete
@@ -108,5 +116,6 @@ enforced in implementation:
 - Authority token checks are not yet applied to all mutations.
 - Snapshot interfaces are not yet wired to existing state views.
 - Compatibility negotiation is not yet mandatory across runtime/save/mod/pack.
+- UPS resolution is not yet wired into legacy package/content scanning.
 
 These gaps MUST be resolved only via explicit breaking revision.
