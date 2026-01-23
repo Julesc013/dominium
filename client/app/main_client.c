@@ -26,6 +26,8 @@ Minimal client entrypoint with MP0 local-connect demo.
 #include <stdlib.h>
 #include <string.h>
 
+static void client_print_platform_caps(void);
+
 static void print_help(void)
 {
     printf("usage: client [options]\n");
@@ -73,7 +75,7 @@ static void print_build_info(const char* product_name, const char* product_versi
     dom_app_build_info info;
     dom_app_build_info_init(&info, product_name, product_version);
     dom_app_print_build_info(&info);
-    print_platform_caps();
+    client_print_platform_caps();
 }
 
 static void print_control_caps(const dom_control_caps* caps)
@@ -98,7 +100,7 @@ static void print_control_caps(const dom_control_caps* caps)
     }
 }
 
-static void print_platform_caps(void)
+static void client_print_platform_caps(void)
 {
     dom_app_platform_caps caps;
     (void)dom_app_query_platform_caps(&caps);
