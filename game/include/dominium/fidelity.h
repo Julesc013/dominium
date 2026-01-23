@@ -12,7 +12,7 @@ DETERMINISM: Deterministic ordering and transitions are mandatory.
 #ifndef DOMINIUM_FIDELITY_H
 #define DOMINIUM_FIDELITY_H
 
-#include "domino/core/types.h"
+#include "domino/execution/task_node.h"
 #include "domino/core/dom_time_core.h"
 #include "dominium/interest_set.h"
 
@@ -20,13 +20,12 @@ DETERMINISM: Deterministic ordering and transitions are mandatory.
 extern "C" {
 #endif
 
-typedef enum dom_fidelity_tier {
-    DOM_FIDELITY_LATENT = 0,
-    DOM_FIDELITY_MACRO = 1,
-    DOM_FIDELITY_MESO = 2,
-    DOM_FIDELITY_MICRO = 3,
-    DOM_FIDELITY_FOCUS = 4
-} dom_fidelity_tier;
+/* Legacy aliases for fidelity tier names. */
+#define DOM_FIDELITY_LATENT DOM_FID_LATENT
+#define DOM_FIDELITY_MACRO  DOM_FID_MACRO
+#define DOM_FIDELITY_MESO   DOM_FID_MESO
+#define DOM_FIDELITY_MICRO  DOM_FID_MICRO
+#define DOM_FIDELITY_FOCUS  DOM_FID_FOCUS
 
 enum {
     DOM_FIDELITY_PIN_VISIBLE = 1u << 0,
