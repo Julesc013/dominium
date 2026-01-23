@@ -1,0 +1,47 @@
+SCHEMA: material.schema
+schema_id: dominium.schema.material
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define materials, composition descriptors, and property traits.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- Composition descriptors do NOT imply chemistry or physics.
+- Property tags do NOT encode behavior.
+- No periodic table assumptions are made.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record material
+  required:
+    - material_id: id
+  optional:
+    - composition: [composition_component]
+    - property_tags: [tag]
+    - phase_tags: [tag]
+    - manufacturability_tags: [tag]
+    - provenance_ref: provenance_ref
+    - extensions: map
+
+TYPE DEFINITIONS:
+record composition_component
+  required:
+    - component_tag: tag
+  optional:
+    - amount: map
+    - unit: tag
+    - metadata: map
+
+record provenance_ref
+  required:
+    - provenance_id: id

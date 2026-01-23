@@ -1,0 +1,66 @@
+SCHEMA: snapshot.schema
+schema_id: dominium.schema.snapshot
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define snapshots, coverage, and provenance metadata.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- Snapshot types do NOT imply access or authority.
+- Cost metadata does NOT enforce runtime policy.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- map: open key/value map; unknown keys preserved.
+
+EXAMPLE TAGS (NON-EXHAUSTIVE):
+- snapshot_type: objective, subjective
+
+REQUIRED SHAPE:
+record snapshot
+  required:
+    - snapshot_id: id
+    - snapshot_type: tag
+    - schema_version: tag
+  optional:
+    - creation_context_ref: context_ref
+    - coverage: coverage
+    - cost_metadata: map
+    - provenance_ref: provenance_ref
+    - extensions: map
+
+TYPE DEFINITIONS:
+record coverage
+  optional:
+    - domain_refs: [domain_ref]
+    - topology_node_refs: [topology_node_ref]
+
+record context_ref
+  required:
+    - context_id: id
+  optional:
+    - context_tags: [tag]
+
+record domain_ref
+  required:
+    - domain_id: id
+  optional:
+    - volume_id: id
+    - ref_tags: [tag]
+
+record topology_node_ref
+  required:
+    - node_id: id
+  optional:
+    - ref_tags: [tag]
+
+record provenance_ref
+  required:
+    - provenance_id: id

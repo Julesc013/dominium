@@ -1,0 +1,71 @@
+SCHEMA: topology.schema
+schema_id: dominium.schema.topology
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define topology nodes, relationships, traits, and attachments.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- Trait tags do NOT imply behavior.
+- Parent/child references do NOT require physical containment.
+- Representation tiers do NOT change simulation logic.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- map: open key/value map; unknown keys preserved.
+
+EXAMPLE TAGS (NON-EXHAUSTIVE):
+- representation.tier_tag: explicit, hybrid, procedural
+
+REQUIRED SHAPE:
+record topology_node
+  required:
+    - node_id: id
+  optional:
+    - parent_refs: [topology_node_ref]
+    - child_refs: [topology_node_ref]
+    - trait_tags: [tag]
+    - domain_volume_refs: [domain_volume_ref]
+    - coord_frame_ref: coord_frame_ref
+    - representation: [representation_tier]
+    - provenance_ref: provenance_ref
+    - extensions: map
+
+TYPE DEFINITIONS:
+record topology_node_ref
+  required:
+    - node_id: id
+  optional:
+    - ref_tags: [tag]
+
+record domain_volume_ref
+  required:
+    - domain_id: id
+    - volume_id: id
+  optional:
+    - ref_tags: [tag]
+
+record coord_frame_ref
+  required:
+    - frame_id: id
+  optional:
+    - frame_tags: [tag]
+    - ref_tags: [tag]
+
+record representation_tier
+  required:
+    - tier_tag: tag
+  optional:
+    - lod_tag: tag
+    - metadata: map
+
+record provenance_ref
+  required:
+    - provenance_id: id
