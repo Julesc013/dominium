@@ -1,0 +1,619 @@
+{
+  "schema_id": "dominium.schema.topology",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "node_id": "org.dominium.base.system.sol.node.system",
+      "trait_tags": [
+        "topology.system",
+        "topology.system.sol"
+      ],
+      "domain_volume_refs": [
+        {
+          "domain_id": "org.dominium.base.system.sol.domain.system",
+          "volume_id": "org.dominium.base.system.sol.domain.system.volume.macro"
+        }
+      ],
+      "representation": [
+        {
+          "tier_tag": "hybrid",
+          "lod_tag": "lod.system.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.system.sol.system.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.system.macro",
+        "detail_absence": [
+          "no_population",
+          "no_asset_geometry"
+        ],
+        "formation_tags": [
+          "proto_system",
+          "accretion_disk"
+        ],
+        "link_hint_parent_node_id": "org.dominium.base.universe.milkyway.node.galaxy.milky_way"
+      }
+    },
+    {
+      "node_id": "org.dominium.base.system.sol.node.star.sol",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.system.sol.node.system"
+        }
+      ],
+      "trait_tags": [
+        "topology.star",
+        "topology.star.g_type"
+      ],
+      "domain_volume_refs": [
+        {
+          "domain_id": "org.dominium.base.system.sol.domain.system",
+          "volume_id": "org.dominium.base.system.sol.domain.system.volume.macro"
+        }
+      ],
+      "representation": [
+        {
+          "tier_tag": "hybrid",
+          "lod_tag": "lod.system.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.system.sol.star.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.system.macro",
+        "detail_absence": [
+          "no_surface_model"
+        ],
+        "formation_tags": [
+          "stellar_formation"
+        ]
+      }
+    },
+    {
+      "node_id": "org.dominium.base.system.sol.node.planet.mercury",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.system.sol.node.star.sol"
+        }
+      ],
+      "trait_tags": [
+        "topology.body.planetary",
+        "topology.body.planet"
+      ],
+      "representation": [
+        {
+          "tier_tag": "hybrid",
+          "lod_tag": "lod.body.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.system.sol.planet.mercury.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.body.macro",
+        "detail_absence": [
+          "no_surface_maps",
+          "no_biosphere"
+        ]
+      }
+    },
+    {
+      "node_id": "org.dominium.base.system.sol.node.planet.venus",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.system.sol.node.star.sol"
+        }
+      ],
+      "trait_tags": [
+        "topology.body.planetary",
+        "topology.body.planet"
+      ],
+      "representation": [
+        {
+          "tier_tag": "hybrid",
+          "lod_tag": "lod.body.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.system.sol.planet.venus.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.body.macro",
+        "detail_absence": [
+          "no_surface_maps",
+          "no_biosphere"
+        ]
+      }
+    },
+    {
+      "node_id": "org.dominium.base.system.sol.node.planet.earth",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.system.sol.node.star.sol"
+        }
+      ],
+      "trait_tags": [
+        "topology.body.planetary",
+        "topology.body.planet"
+      ],
+      "representation": [
+        {
+          "tier_tag": "hybrid",
+          "lod_tag": "lod.body.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.system.sol.planet.earth.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.body.macro",
+        "detail_absence": [
+          "no_surface_maps",
+          "no_biosphere"
+        ]
+      }
+    },
+    {
+      "node_id": "org.dominium.base.system.sol.node.planet.mars",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.system.sol.node.star.sol"
+        }
+      ],
+      "trait_tags": [
+        "topology.body.planetary",
+        "topology.body.planet"
+      ],
+      "representation": [
+        {
+          "tier_tag": "hybrid",
+          "lod_tag": "lod.body.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.system.sol.planet.mars.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.body.macro",
+        "detail_absence": [
+          "no_surface_maps",
+          "no_biosphere"
+        ]
+      }
+    },
+    {
+      "node_id": "org.dominium.base.system.sol.node.planet.jupiter",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.system.sol.node.star.sol"
+        }
+      ],
+      "trait_tags": [
+        "topology.body.planetary",
+        "topology.body.planet",
+        "topology.body.gas_giant"
+      ],
+      "representation": [
+        {
+          "tier_tag": "hybrid",
+          "lod_tag": "lod.body.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.system.sol.planet.jupiter.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.body.macro",
+        "detail_absence": [
+          "no_atmosphere_model",
+          "no_biosphere"
+        ]
+      }
+    },
+    {
+      "node_id": "org.dominium.base.system.sol.node.planet.saturn",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.system.sol.node.star.sol"
+        }
+      ],
+      "trait_tags": [
+        "topology.body.planetary",
+        "topology.body.planet",
+        "topology.body.gas_giant"
+      ],
+      "representation": [
+        {
+          "tier_tag": "hybrid",
+          "lod_tag": "lod.body.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.system.sol.planet.saturn.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.body.macro",
+        "detail_absence": [
+          "no_atmosphere_model",
+          "no_biosphere"
+        ]
+      }
+    },
+    {
+      "node_id": "org.dominium.base.system.sol.node.planet.uranus",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.system.sol.node.star.sol"
+        }
+      ],
+      "trait_tags": [
+        "topology.body.planetary",
+        "topology.body.planet",
+        "topology.body.gas_giant"
+      ],
+      "representation": [
+        {
+          "tier_tag": "hybrid",
+          "lod_tag": "lod.body.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.system.sol.planet.uranus.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.body.macro",
+        "detail_absence": [
+          "no_atmosphere_model",
+          "no_biosphere"
+        ]
+      }
+    },
+    {
+      "node_id": "org.dominium.base.system.sol.node.planet.neptune",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.system.sol.node.star.sol"
+        }
+      ],
+      "trait_tags": [
+        "topology.body.planetary",
+        "topology.body.planet",
+        "topology.body.gas_giant"
+      ],
+      "representation": [
+        {
+          "tier_tag": "hybrid",
+          "lod_tag": "lod.body.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.system.sol.planet.neptune.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.body.macro",
+        "detail_absence": [
+          "no_atmosphere_model",
+          "no_biosphere"
+        ]
+      }
+    },
+    {
+      "node_id": "org.dominium.base.system.sol.node.belt.asteroid",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.system.sol.node.system"
+        }
+      ],
+      "trait_tags": [
+        "topology.belt",
+        "topology.belt.asteroid"
+      ],
+      "representation": [
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.system.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.system.sol.belt.asteroid.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.system.macro",
+        "detail_absence": [
+          "no_body_catalog"
+        ]
+      }
+    },
+    {
+      "node_id": "org.dominium.base.system.sol.node.belt.kuiper",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.system.sol.node.system"
+        }
+      ],
+      "trait_tags": [
+        "topology.belt",
+        "topology.belt.kuiper"
+      ],
+      "representation": [
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.system.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.system.sol.belt.kuiper.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.system.macro",
+        "detail_absence": [
+          "no_body_catalog"
+        ]
+      }
+    },
+    {
+      "node_id": "org.dominium.base.system.sol.node.belt.oort",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.system.sol.node.system"
+        }
+      ],
+      "trait_tags": [
+        "topology.belt",
+        "topology.belt.oort"
+      ],
+      "representation": [
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.system.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.system.sol.belt.oort.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.system.macro",
+        "detail_absence": [
+          "no_body_catalog"
+        ]
+      }
+    },
+    {
+      "node_id": "org.dominium.base.system.sol.node.moon.luna",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.system.sol.node.planet.earth"
+        }
+      ],
+      "trait_tags": [
+        "topology.body.moon"
+      ],
+      "representation": [
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.body.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.system.sol.moon.luna.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.body.macro",
+        "detail_absence": [
+          "no_surface_maps"
+        ]
+      }
+    },
+    {
+      "node_id": "org.dominium.base.system.sol.node.moon.phobos",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.system.sol.node.planet.mars"
+        }
+      ],
+      "trait_tags": [
+        "topology.body.moon"
+      ],
+      "representation": [
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.body.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.system.sol.moon.phobos.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.body.macro",
+        "detail_absence": [
+          "no_surface_maps"
+        ]
+      }
+    },
+    {
+      "node_id": "org.dominium.base.system.sol.node.moon.deimos",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.system.sol.node.planet.mars"
+        }
+      ],
+      "trait_tags": [
+        "topology.body.moon"
+      ],
+      "representation": [
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.body.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.system.sol.moon.deimos.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.body.macro",
+        "detail_absence": [
+          "no_surface_maps"
+        ]
+      }
+    },
+    {
+      "node_id": "org.dominium.base.system.sol.node.moon.io",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.system.sol.node.planet.jupiter"
+        }
+      ],
+      "trait_tags": [
+        "topology.body.moon"
+      ],
+      "representation": [
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.body.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.system.sol.moon.io.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.body.macro",
+        "detail_absence": [
+          "no_surface_maps"
+        ]
+      }
+    },
+    {
+      "node_id": "org.dominium.base.system.sol.node.moon.europa",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.system.sol.node.planet.jupiter"
+        }
+      ],
+      "trait_tags": [
+        "topology.body.moon"
+      ],
+      "representation": [
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.body.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.system.sol.moon.europa.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.body.macro",
+        "detail_absence": [
+          "no_surface_maps"
+        ]
+      }
+    },
+    {
+      "node_id": "org.dominium.base.system.sol.node.moon.ganymede",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.system.sol.node.planet.jupiter"
+        }
+      ],
+      "trait_tags": [
+        "topology.body.moon"
+      ],
+      "representation": [
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.body.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.system.sol.moon.ganymede.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.body.macro",
+        "detail_absence": [
+          "no_surface_maps"
+        ]
+      }
+    },
+    {
+      "node_id": "org.dominium.base.system.sol.node.moon.callisto",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.system.sol.node.planet.jupiter"
+        }
+      ],
+      "trait_tags": [
+        "topology.body.moon"
+      ],
+      "representation": [
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.body.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.system.sol.moon.callisto.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.body.macro",
+        "detail_absence": [
+          "no_surface_maps"
+        ]
+      }
+    },
+    {
+      "node_id": "org.dominium.base.system.sol.node.moon.titan",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.system.sol.node.planet.saturn"
+        }
+      ],
+      "trait_tags": [
+        "topology.body.moon"
+      ],
+      "representation": [
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.body.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.system.sol.moon.titan.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.body.macro",
+        "detail_absence": [
+          "no_surface_maps"
+        ]
+      }
+    },
+    {
+      "node_id": "org.dominium.base.system.sol.node.moon.enceladus",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.base.system.sol.node.planet.saturn"
+        }
+      ],
+      "trait_tags": [
+        "topology.body.moon"
+      ],
+      "representation": [
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.body.macro"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.system.sol.moon.enceladus.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.body.macro",
+        "detail_absence": [
+          "no_surface_maps"
+        ]
+      }
+    }
+  ]
+}

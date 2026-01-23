@@ -1,0 +1,50 @@
+{
+  "schema_id": "dominium.schema.domain",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "domain_id": "org.dominium.base.system.sol.domain.system",
+      "domain_type": "domain.spatial",
+      "domain_tags": [
+        "scope.system"
+      ],
+      "volumes": [
+        {
+          "volume_id": "org.dominium.base.system.sol.domain.system.volume.macro",
+          "bounds": {
+            "kind_tag": "bounds.abstract",
+            "units": [
+              "unitless"
+            ],
+            "payload": {
+              "description": "Macro-scale system bounds; no explicit geometry."
+            }
+          },
+          "provenance_ref": {
+            "provenance_id": "prov.org.dominium.base.system.sol.domain.volume.v1"
+          },
+          "extensions": {
+            "refinement_ceiling": "lod.system.macro",
+            "detail_absence": [
+              "no_metric_geometry"
+            ]
+          }
+        }
+      ],
+      "attached_node_refs": [
+        {
+          "node_id": "org.dominium.base.system.sol.node.system"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.system.sol.domain.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.system.macro",
+        "detail_absence": [
+          "no_explicit_extent"
+        ]
+      }
+    }
+  ]
+}
