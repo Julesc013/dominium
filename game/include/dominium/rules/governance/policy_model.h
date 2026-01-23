@@ -14,6 +14,7 @@ DETERMINISM: Policy ordering is stable and deterministic.
 
 #include "domino/core/dom_time_core.h"
 #include "domino/core/types.h"
+#include "domino/sim/dg_due_sched.h"
 
 #ifdef __cplusplus
 extern "C" {

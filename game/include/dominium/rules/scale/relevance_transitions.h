@@ -13,6 +13,7 @@ DETERMINISM: All transitions and ordering are deterministic.
 #include "domino/core/types.h"
 #include "domino/core/dom_time_core.h"
 #include "dominium/interest_set.h"
+#include "dominium/interest_sources.h"
 #include "dominium/fidelity.h"
 
 #ifdef __cplusplus
