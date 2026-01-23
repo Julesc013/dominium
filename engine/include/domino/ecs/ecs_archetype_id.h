@@ -27,21 +27,25 @@ typedef struct dom_archetype_id {
     u64 value;
 } dom_archetype_id;
 
-static inline dom_archetype_id dom_archetype_id_make(u64 value)
+static dom_archetype_id dom_archetype_id_make(u64 value)
 {
     dom_archetype_id id;
-    id.value = value;
+    dom_archetype_id *ptr = &id;
+    ptr->value = value;
     return id;
 }
 
-static inline d_bool dom_archetype_id_equal(dom_archetype_id a, dom_archetype_id b)
+static d_bool dom_archetype_id_equal(dom_archetype_id a, dom_archetype_id b)
 {
-    return (a.value == b.value) ? D_TRUE : D_FALSE;
+    const dom_archetype_id *pa = &a;
+    const dom_archetype_id *pb = &b;
+    return (pa->value == pb->value) ? D_TRUE : D_FALSE;
 }
 
-static inline d_bool dom_archetype_id_is_valid(dom_archetype_id id)
+static d_bool dom_archetype_id_is_valid(dom_archetype_id id)
 {
-    return (id.value != 0u) ? D_TRUE : D_FALSE;
+    const dom_archetype_id *ptr = &id;
+    return (ptr->value != 0u) ? D_TRUE : D_FALSE;
 }
 
 #ifdef __cplusplus
