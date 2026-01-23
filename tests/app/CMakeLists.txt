@@ -11,3 +11,9 @@ add_test(NAME app_cli_contracts
         --tools $<TARGET_FILE:dominium-tools>
         --temp-root ${CMAKE_BINARY_DIR}/tests/app_cli
 )
+
+add_test(NAME app_observability
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/app_observability_tests.py
+        --client $<TARGET_FILE:dominium_client>
+        --tools $<TARGET_FILE:dominium-tools>
+)
