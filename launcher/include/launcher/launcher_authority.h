@@ -8,7 +8,7 @@ REFERENCES: docs/arch/AUTHORITY_AND_ENTITLEMENTS.md
 #ifndef LAUNCHER_AUTHORITY_H
 #define LAUNCHER_AUTHORITY_H
 
-#include "dom_contracts/authority.h"
+#include "dom_contracts/authority_token.h"
 
 #ifdef __cplusplus
 extern "C" {
