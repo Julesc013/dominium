@@ -92,16 +92,33 @@ get_property(_dom_renderer_backends GLOBAL PROPERTY DOM_REGISTERED_RENDER_BACKEN
 if(NOT _dom_renderer_backends)
     set(_dom_renderer_backends "")
 endif()
+get_property(_dom_registered_renderer_tests_pre GLOBAL PROPERTY DOM_REGISTERED_RENDERER_TESTS)
+set(_dom_renderer_tests_seen "")
+if(_dom_registered_renderer_tests_pre)
+    foreach(_dom_entry IN LISTS _dom_registered_renderer_tests_pre)
+        string(REPLACE "|" ";" _dom_entry_parts "${_dom_entry}")
+        list(LENGTH _dom_entry_parts _dom_entry_len)
+        if(_dom_entry_len GREATER 0)
+            list(GET _dom_entry_parts 0 _dom_entry_name)
+            if(_dom_entry_name)
+                list(APPEND _dom_renderer_tests_seen ${_dom_entry_name})
+            endif()
+        endif()
+    endforeach()
+endif()
 foreach(_dom_backend IN LISTS _dom_renderer_backends)
     string(REPLACE "|" ";" _dom_backend_parts "${_dom_backend}")
     list(LENGTH _dom_backend_parts _dom_backend_len)
     if(_dom_backend_len GREATER 0)
         list(GET _dom_backend_parts 0 _dom_backend_name)
         if(_dom_backend_name)
-            dom_register_renderer_tests(${_dom_backend_name}
-                renderer_backend_contracts
-                renderer_backend_contracts
-            )
+            list(FIND _dom_renderer_tests_seen ${_dom_backend_name} _dom_backend_idx)
+            if(_dom_backend_idx EQUAL -1)
+                dom_register_renderer_tests(${_dom_backend_name}
+                    renderer_backend_contracts
+                    renderer_backend_contracts
+                )
+            endif()
         endif()
     endif()
 endforeach()
