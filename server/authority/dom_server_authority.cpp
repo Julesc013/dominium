@@ -4,7 +4,7 @@ MODULE: Server
 PURPOSE: Server-side authority validation and gating (TESTX3).
 NOTES: Deterministic checks only; no secrets embedded here.
 */
-#include "server/authority/dom_server_authority.h"
+#include "dom_server_authority.h"
 #include "dom_contracts/authority_token.h"
 
 #include <string.h>

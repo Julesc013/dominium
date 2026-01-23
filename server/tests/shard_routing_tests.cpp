@@ -611,6 +611,7 @@ static int test_replay_equivalence(void)
     dom_dependency_edge single_edges[4];
     dom_shard_task_mapping single_map[4];
     dom_shard_message single_messages[4];
+    dom_shard_message msg_log_storage_single[4];
     dom_shard_task_splitter splitter_single;
     dom_shard_log single_log;
     dom_shard_event_entry single_events[8];
@@ -669,7 +670,7 @@ static int test_replay_equivalence(void)
     EXPECT(dom_shard_task_splitter_split(&splitter_single, &graph, &registry_single, &ctx, 1u) == 0,
            "split single");
 
-    dom_shard_log_init(&single_log, single_events, 8u, msg_log_storage, 4u);
+    dom_shard_log_init(&single_log, single_events, 8u, msg_log_storage_single, 4u);
     dom_shard_executor_init(&exec_single, 1u, &scheduler, &ctx, &bus, &single_log, accepted_single, 8u);
     EXPECT(dom_shard_executor_execute(&exec_single, &single_graph.graph, &registry_single,
                                       0, 0u) == 0, "exec single");
