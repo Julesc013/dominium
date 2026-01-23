@@ -86,3 +86,66 @@ dom_add_testx(NAME build_test_gui_deps
         --report ${_dom_gui_deps_report}
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )
+
+set(_dom_integration_report "${CMAKE_BINARY_DIR}/tests/integration_meta_report.txt")
+get_property(_dom_renderer_backends GLOBAL PROPERTY DOM_REGISTERED_RENDER_BACKENDS)
+if(NOT _dom_renderer_backends)
+    set(_dom_renderer_backends "")
+endif()
+foreach(_dom_backend IN LISTS _dom_renderer_backends)
+    string(REPLACE "|" ";" _dom_backend_parts "${_dom_backend}")
+    list(LENGTH _dom_backend_parts _dom_backend_len)
+    if(_dom_backend_len GREATER 0)
+        list(GET _dom_backend_parts 0 _dom_backend_name)
+        if(_dom_backend_name)
+            dom_register_renderer_tests(${_dom_backend_name}
+                renderer_backend_contracts
+                renderer_backend_contracts
+            )
+        endif()
+    endif()
+endforeach()
+
+dom_add_testx(NAME renderer_backend_contracts
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/renderer_backend_contracts.py
+        --client $<TARGET_FILE:dominium_client>
+        --launcher $<TARGET_FILE:launcher_cli>
+        --report ${_dom_integration_report}
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME integration_meta
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/integration_meta_test.py
+        --report ${_dom_integration_report}
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+get_property(_dom_registered_products GLOBAL PROPERTY DOM_REGISTERED_PRODUCTS)
+get_property(_dom_registered_product_tests GLOBAL PROPERTY DOM_REGISTERED_PRODUCT_CLI_TESTS)
+get_property(_dom_registered_renderer_tests GLOBAL PROPERTY DOM_REGISTERED_RENDERER_TESTS)
+get_property(_dom_registered_platform_backends GLOBAL PROPERTY DOM_REGISTERED_PLATFORM_BACKENDS)
+get_property(_dom_registered_testx_tests GLOBAL PROPERTY DOM_REGISTERED_TESTX_TESTS)
+if(NOT _dom_registered_products)
+    set(_dom_registered_products "")
+endif()
+if(NOT _dom_registered_product_tests)
+    set(_dom_registered_product_tests "")
+endif()
+if(NOT _dom_registered_renderer_tests)
+    set(_dom_registered_renderer_tests "")
+endif()
+if(NOT _dom_registered_platform_backends)
+    set(_dom_registered_platform_backends "")
+endif()
+if(NOT _dom_registered_testx_tests)
+    set(_dom_registered_testx_tests "")
+endif()
+
+file(WRITE "${_dom_integration_report}" "report_version=1\n")
+file(APPEND "${_dom_integration_report}" "registered_products=${_dom_registered_products}\n")
+file(APPEND "${_dom_integration_report}" "registered_product_cli_tests=${_dom_registered_product_tests}\n")
+file(APPEND "${_dom_integration_report}" "registered_renderer_backends=${_dom_renderer_backends}\n")
+file(APPEND "${_dom_integration_report}" "registered_renderer_tests=${_dom_registered_renderer_tests}\n")
+file(APPEND "${_dom_integration_report}" "registered_platform_backends=${_dom_registered_platform_backends}\n")
+file(APPEND "${_dom_integration_report}" "registered_testx_tests=${_dom_registered_testx_tests}\n")
