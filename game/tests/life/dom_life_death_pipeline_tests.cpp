@@ -283,6 +283,7 @@ static int test_executor_authority_enforcement(void)
     life_death_input input;
     life_death_refusal_code refusal;
     dom_account_id_t accounts[1] = { 21u };
+    const life_estate* estate_ro;
     life_estate* estate;
 
     life_test_context_init(&t, 0, 5);
@@ -296,7 +297,9 @@ static int test_executor_authority_enforcement(void)
     EXPECT(life_handle_death(&t.ctx, &input, &refusal, 0, 0) == 0, "death failed");
     EXPECT(refusal == LIFE_DEATH_REFUSAL_NONE, "unexpected refusal");
 
-    estate = life_estate_find_by_person(&t.estates, 33u);
+    estate_ro = life_estate_find_by_person(&t.estates, 33u);
+    EXPECT(estate_ro != 0, "estate missing");
+    estate = life_estate_find_by_id(&t.estates, estate_ro->estate_id);
     EXPECT(estate != 0, "estate missing");
     estate->has_executor_authority = 0u;
 
