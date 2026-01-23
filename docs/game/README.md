@@ -21,6 +21,7 @@ primitives:
 - Work IR emission: `game/include/dominium/execution/system_iface.h`
 - Process descriptor providers: `game/include/dominium/execution/process_iface.h`
 - Epistemic (subjective) capability views: `game/include/dominium/epistemic.h`
+- UPS pack registration helpers: `game/include/dominium/ups_runtime.h`
 
 ## Enforcement Status (Explicit)
 
@@ -30,6 +31,7 @@ yet enforced in game code:
 - All rule mutations flowing through the process interface.
 - Authority token enforcement on every mutating rule path.
 - Compatibility negotiation applied to pack/mod/save resolution.
+- UPS registry integration into instance selection and pack graphs.
 
 These gaps are deliberate and require an explicit breaking revision.
 
