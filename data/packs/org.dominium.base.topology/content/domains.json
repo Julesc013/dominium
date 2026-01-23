@@ -1,0 +1,53 @@
+{
+  "schema_id": "dominium.schema.domain",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "domain_id": "org.dominium.base.topology.domain.universe",
+      "domain_type": "domain.spatial",
+      "domain_tags": [
+        "scope.universe"
+      ],
+      "volumes": [
+        {
+          "volume_id": "org.dominium.base.topology.domain.universe.volume.macro",
+          "bounds": {
+            "kind_tag": "bounds.abstract",
+            "units": [
+              "unitless"
+            ],
+            "payload": {
+              "description": "Universe-scale placeholder bounds."
+            }
+          },
+          "volume_tags": [
+            "domain.volume.basic"
+          ],
+          "provenance_ref": {
+            "provenance_id": "prov.org.dominium.base.topology.universe.volume.v1"
+          },
+          "extensions": {
+            "refinement_ceiling": "lod.universe.macro",
+            "detail_absence": [
+              "no_metric_geometry"
+            ]
+          }
+        }
+      ],
+      "attached_node_refs": [
+        {
+          "node_id": "org.dominium.base.topology.node.universe"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.topology.universe.domain.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.universe.macro",
+        "detail_absence": [
+          "no_physical_extent_defined"
+        ]
+      }
+    }
+  ]
+}
