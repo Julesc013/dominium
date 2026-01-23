@@ -1,0 +1,38 @@
+{
+  "schema_id": "dominium.schema.pack_manifest",
+  "schema_version": "1.0.0",
+  "record": {
+    "pack_id": "org.dominium.base.system.sol",
+    "pack_version": "1.0.0",
+    "pack_format_version": 1,
+    "required_engine_version": "0.0.0",
+    "required_protocol_versions": [
+      {
+        "protocol_id": "dominium.protocol.pack_manifest",
+        "version_constraint": "1"
+      }
+    ],
+    "provides": [
+      {
+        "capability_id": "topology.system.sol"
+      },
+      {
+        "capability_id": "topology.star.g_type"
+      },
+      {
+        "capability_id": "topology.body.planetary"
+      },
+      {
+        "capability_id": "topology.belt.asteroid"
+      }
+    ],
+    "dependencies": [],
+    "optional": true,
+    "provenance_ref": {
+      "provenance_id": "prov.org.dominium.base.system.sol.manifest.v1"
+    },
+    "extensions": {
+      "notes": "Canonical star system example; macro-only topology."
+    }
+  }
+}
