@@ -428,7 +428,17 @@ int engagement_resolve(const engagement* eng,
                 }
                 return -8;
             }
-            req = ctx->casualty_config;
+            memset(&req, 0, sizeof(req));
+            req.cause_code = ctx->casualty_config.cause_code;
+            req.location_ref = ctx->casualty_config.location_ref;
+            req.policy_id = ctx->casualty_config.policy_id;
+            req.remains_inventory_account_id = ctx->casualty_config.remains_inventory_account_id;
+            req.jurisdiction_id = ctx->casualty_config.jurisdiction_id;
+            req.has_contract = ctx->casualty_config.has_contract;
+            req.allow_finder = ctx->casualty_config.allow_finder;
+            req.jurisdiction_allows = ctx->casualty_config.jurisdiction_allows;
+            req.estate_locked = ctx->casualty_config.estate_locked;
+            req.collapse_remains = ctx->casualty_config.collapse_remains;
             req.act_time = eng->resolution_act;
             if (req.cause_code == 0u) {
                 req.cause_code = LIFE_DEATH_CAUSE_VIOLENCE;
