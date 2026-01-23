@@ -11,12 +11,14 @@ DETERMINISM: Windowing is best-effort; input events are ordered but non-determin
 VERSIONING / ABI / DATA FORMAT NOTES: N/A (implementation file).
 EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
 */
+#define DOMINO_SYS_INTERNAL 1
 #include "domino/system/dsys.h"
 #include "dsys_internal.h"
 
 #if defined(_WIN32)
 #include <windows.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include <io.h>
 
@@ -37,6 +39,7 @@ typedef struct dsys_window_impl {
 } dsys_window_impl;
 
 static LARGE_INTEGER g_win32_perf_freq;
+static uint64_t dsys_win32_time_now_us(void);
 
 static void dsys_win32_push_event(const dsys_event* ev)
 {
