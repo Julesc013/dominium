@@ -1,0 +1,111 @@
+{
+  "schema_id": "dominium.schema.process",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "process_id": "org.dominium.base.rules.process.template.transformative.basic",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "concept",
+          "ref_id": "org.dominium.base.rules.io.template.input"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "concept",
+          "ref_id": "org.dominium.base.rules.io.template.output"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "process.template.basic"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.unspecified"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.rules.process.transformative.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.template",
+        "detail_absence": [
+          "no_behavior",
+          "no_runtime_binding"
+        ],
+        "notes": "Template only; no execution semantics."
+      }
+    },
+    {
+      "process_id": "org.dominium.base.rules.process.template.transactional.basic",
+      "process_class": "transactional",
+      "inputs": [
+        {
+          "ref_type": "concept",
+          "ref_id": "org.dominium.base.rules.io.template.request"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "concept",
+          "ref_id": "org.dominium.base.rules.io.template.response"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "process.template.basic"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.unspecified"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.rules.process.transactional.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.template",
+        "detail_absence": [
+          "no_behavior",
+          "no_runtime_binding"
+        ],
+        "notes": "Template only; no execution semantics."
+      }
+    },
+    {
+      "process_id": "org.dominium.base.rules.process.template.epistemic.basic",
+      "process_class": "epistemic",
+      "inputs": [
+        {
+          "ref_type": "concept",
+          "ref_id": "org.dominium.base.rules.io.template.observation"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "concept",
+          "ref_id": "org.dominium.base.rules.io.template.knowledge"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "process.template.basic"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.unspecified"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.rules.process.epistemic.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.template",
+        "detail_absence": [
+          "no_behavior",
+          "no_runtime_binding"
+        ],
+        "notes": "Template only; no execution semantics."
+      }
+    }
+  ]
+}

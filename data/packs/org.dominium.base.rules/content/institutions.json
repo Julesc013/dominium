@@ -1,0 +1,31 @@
+{
+  "schema_id": "dominium.schema.institution",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "institution_id": "org.dominium.base.rules.institution.template.basic",
+      "legitimacy_source_tags": [
+        "legitimacy.placeholder"
+      ],
+      "enforcement_capability_refs": [
+        {
+          "capability_id": "capability.template.basic"
+        }
+      ],
+      "imposed_constraint_tags": [
+        "constraint.none"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.rules.institution.template.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.template",
+        "detail_absence": [
+          "no_jurisdiction",
+          "no_enforcement_model"
+        ],
+        "notes": "Template only; no operational authority."
+      }
+    }
+  ]
+}
