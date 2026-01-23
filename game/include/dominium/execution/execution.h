@@ -11,5 +11,6 @@ FORBIDDEN DEPENDENCIES: engine internal headers; product-layer runtime code.
 
 #include "dominium/execution/access_ir.h"
 #include "dominium/execution/work_ir_emit.h"
+#include "dominium/execution/process_iface.h"
 
 #endif /* DOMINIUM_EXECUTION_H */
