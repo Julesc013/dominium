@@ -11,6 +11,8 @@ set(ENGINE_CORE_SOURCES
     modules/caps/d_caps_builtin.c
     modules/caps/d_caps_export.c
     modules/compat/compat_core.c
+    modules/compat/compat_modes.c
+    modules/compat/capability_set.c
     modules/content/d_blueprint.c
     modules/content/d_content.c
     modules/content/d_content_schema.c
@@ -33,6 +35,7 @@ set(ENGINE_CORE_SOURCES
     modules/mod/instance.c
     modules/mod/manifest_io.c
     modules/mod/package_registry.c
+    modules/ups/d_ups.c
     modules/net/d_net.c
     modules/net/d_net_apply.c
     modules/net/d_net_cmd.c
@@ -276,6 +279,7 @@ target_include_directories(domino_engine
         ${CMAKE_CURRENT_SOURCE_DIR}/modules/trans
         ${CMAKE_CURRENT_SOURCE_DIR}/modules/tui
         ${CMAKE_CURRENT_SOURCE_DIR}/modules/ui
+        ${CMAKE_CURRENT_SOURCE_DIR}/modules/ups
         ${CMAKE_CURRENT_SOURCE_DIR}/modules/vehicle
         ${CMAKE_CURRENT_SOURCE_DIR}/modules/view
         ${CMAKE_CURRENT_SOURCE_DIR}/modules/world
