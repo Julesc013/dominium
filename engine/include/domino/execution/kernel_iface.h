@@ -26,21 +26,25 @@ typedef struct dom_kernel_op_id {
     u64 value;
 } dom_kernel_op_id;
 
-static inline dom_kernel_op_id dom_kernel_op_id_make(u64 value)
+static dom_kernel_op_id dom_kernel_op_id_make(u64 value)
 {
     dom_kernel_op_id id;
-    id.value = value;
+    dom_kernel_op_id *ptr = &id;
+    ptr->value = value;
     return id;
 }
 
-static inline d_bool dom_kernel_op_id_is_valid(dom_kernel_op_id id)
+static d_bool dom_kernel_op_id_is_valid(dom_kernel_op_id id)
 {
-    return (id.value != 0u) ? D_TRUE : D_FALSE;
+    const dom_kernel_op_id *ptr = &id;
+    return (ptr->value != 0u) ? D_TRUE : D_FALSE;
 }
 
-static inline d_bool dom_kernel_op_id_equal(dom_kernel_op_id a, dom_kernel_op_id b)
+static d_bool dom_kernel_op_id_equal(dom_kernel_op_id a, dom_kernel_op_id b)
 {
-    return (a.value == b.value) ? D_TRUE : D_FALSE;
+    const dom_kernel_op_id *pa = &a;
+    const dom_kernel_op_id *pb = &b;
+    return (pa->value == pb->value) ? D_TRUE : D_FALSE;
 }
 
 typedef enum dom_kernel_backend_id {
