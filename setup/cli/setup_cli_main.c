@@ -1,14 +1,8 @@
 /*
 Stub setup CLI entrypoint.
 */
-#include "domino/build_info.h"
-#include "domino/caps.h"
-#include "domino/config_base.h"
-#include "domino/gfx.h"
-#include "domino/app/runtime.h"
 #include "dom_contracts/version.h"
 #include "dom_contracts/_internal/dom_build_version.h"
-#include "dominium/app/app_runtime.h"
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,6 +14,192 @@ Stub setup CLI entrypoint.
 #endif
 
 #include "dsk/dsk_setup.h"
+
+enum {
+    D_APP_EXIT_OK = 0,
+    D_APP_EXIT_FAILURE = 1,
+    D_APP_EXIT_USAGE = 2,
+    D_APP_EXIT_UNAVAILABLE = 3,
+    D_APP_EXIT_SIGNAL = 130
+};
+
+#define DOM_APP_UI_ENV "DOM_UI"
+#define DOM_APP_UI_ENV_FALLBACK "DOM_UI_MODE"
+
+typedef enum dom_app_ui_mode {
+    DOM_APP_UI_NONE = 0,
+    DOM_APP_UI_TUI,
+    DOM_APP_UI_GUI
+} dom_app_ui_mode;
+
+typedef struct dom_app_ui_request {
+    dom_app_ui_mode mode;
+    int mode_explicit;
+} dom_app_ui_request;
+
+typedef struct dom_app_build_info {
+    const char* product_name;
+    const char* product_version;
+} dom_app_build_info;
+
+static void dom_app_ui_request_init(dom_app_ui_request* req)
+{
+    if (!req) {
+        return;
+    }
+    req->mode = DOM_APP_UI_NONE;
+    req->mode_explicit = 0;
+}
+
+static const char* dom_app_ui_mode_name(dom_app_ui_mode mode)
+{
+    switch (mode) {
+    case DOM_APP_UI_TUI:
+        return "tui";
+    case DOM_APP_UI_GUI:
+        return "gui";
+    case DOM_APP_UI_NONE:
+    default:
+        return "none";
+    }
+}
+
+static dom_app_ui_mode dom_app_ui_parse_value(const char* value, int* ok)
+{
+    if (!value || !*value) {
+        if (ok) {
+            *ok = 0;
+        }
+        return DOM_APP_UI_NONE;
+    }
+    if (strcmp(value, "none") == 0) {
+        if (ok) {
+            *ok = 1;
+        }
+        return DOM_APP_UI_NONE;
+    }
+    if (strcmp(value, "tui") == 0) {
+        if (ok) {
+            *ok = 1;
+        }
+        return DOM_APP_UI_TUI;
+    }
+    if (strcmp(value, "gui") == 0) {
+        if (ok) {
+            *ok = 1;
+        }
+        return DOM_APP_UI_GUI;
+    }
+    if (ok) {
+        *ok = 0;
+    }
+    return DOM_APP_UI_NONE;
+}
+
+static int dom_app_parse_ui_arg(dom_app_ui_request* req,
+                                const char* arg,
+                                const char* next,
+                                int* consumed,
+                                char* err,
+                                size_t err_cap)
+{
+    const char* value = 0;
+    int ok = 0;
+    if (!consumed) {
+        return -1;
+    }
+    *consumed = 0;
+    if (!req || !arg) {
+        return -1;
+    }
+    if (strncmp(arg, "--ui", 4) != 0) {
+        return 0;
+    }
+    if (req->mode_explicit) {
+        if (err && err_cap) {
+            snprintf(err, err_cap, "ui mode already set to %s", dom_app_ui_mode_name(req->mode));
+        }
+        return -1;
+    }
+    if (arg[4] == '\0') {
+        value = next;
+        if (!value || !*value) {
+            if (err && err_cap) {
+                snprintf(err, err_cap, "missing ui mode (none|tui|gui)");
+            }
+            return -1;
+        }
+        *consumed = 2;
+    } else if (arg[4] == '=') {
+        value = arg + 5;
+        if (!value || !*value) {
+            if (err && err_cap) {
+                snprintf(err, err_cap, "missing ui mode (none|tui|gui)");
+            }
+            return -1;
+        }
+        *consumed = 1;
+    } else {
+        return 0;
+    }
+    req->mode = dom_app_ui_parse_value(value, &ok);
+    if (!ok) {
+        if (err && err_cap) {
+            snprintf(err, err_cap, "invalid ui mode '%s'", value);
+        }
+        return -1;
+    }
+    req->mode_explicit = 1;
+    return 1;
+}
+
+static dom_app_ui_mode dom_app_ui_mode_from_env(void)
+{
+    int ok = 0;
+    const char* value = getenv(DOM_APP_UI_ENV);
+    if (!value || !*value) {
+        value = getenv(DOM_APP_UI_ENV_FALLBACK);
+    }
+    if (!value || !*value) {
+        return DOM_APP_UI_NONE;
+    }
+    return dom_app_ui_parse_value(value, &ok);
+}
+
+static dom_app_ui_mode dom_app_select_ui_mode(const dom_app_ui_request* req,
+                                              dom_app_ui_mode default_mode)
+{
+    dom_app_ui_mode env_mode;
+    if (req && req->mode_explicit) {
+        return req->mode;
+    }
+    env_mode = dom_app_ui_mode_from_env();
+    if (env_mode != DOM_APP_UI_NONE) {
+        return env_mode;
+    }
+    return default_mode;
+}
+
+static void dom_app_build_info_init(dom_app_build_info* info,
+                                    const char* product_name,
+                                    const char* product_version)
+{
+    if (!info) {
+        return;
+    }
+    info->product_name = product_name;
+    info->product_version = product_version;
+}
+
+static void dom_app_print_build_info(const dom_app_build_info* info)
+{
+    if (!info) {
+        return;
+    }
+    printf("product=%s\n", info->product_name ? info->product_name : "setup");
+    printf("version=%s\n", info->product_version ? info->product_version : "0.0.0");
+    printf("build=%s\n", DOM_VERSION_BUILD_STR);
+}
 
 static void print_version(const char* product_version)
 {
