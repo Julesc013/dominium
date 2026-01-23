@@ -1,0 +1,35 @@
+{
+  "schema_id": "dominium.schema.pack_manifest",
+  "schema_version": "1.0.0",
+  "record": {
+    "pack_id": "org.dominium.base.scenarios.minimal",
+    "pack_version": "1.0.0",
+    "pack_format_version": 1,
+    "required_engine_version": "0.0.0",
+    "required_protocol_versions": [
+      {
+        "protocol_id": "dominium.protocol.pack_manifest",
+        "version_constraint": "1"
+      }
+    ],
+    "provides": [
+      {
+        "capability_id": "scenario.start.minimal"
+      },
+      {
+        "capability_id": "scenario.autorun.ai"
+      },
+      {
+        "capability_id": "scenario.inspection"
+      }
+    ],
+    "dependencies": [],
+    "optional": true,
+    "provenance_ref": {
+      "provenance_id": "prov.org.dominium.base.scenarios.minimal.manifest.v1"
+    },
+    "extensions": {
+      "notes": "Minimal scenario definitions with explicit pack/capability references."
+    }
+  }
+}

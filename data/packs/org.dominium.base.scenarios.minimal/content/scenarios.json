@@ -1,0 +1,114 @@
+{
+  "schema_id": "dominium.schema.knowledge",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "knowledge_artifact_id": "org.dominium.base.scenarios.minimal.scenario.empty_universe",
+      "knowledge_domain_tag": "scenario.definition",
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.scenarios.minimal.empty_universe.v1"
+      },
+      "extensions": {
+        "scenario_name": "Empty Universe",
+        "pack_refs": [],
+        "required_capabilities": [],
+        "starting_conditions": {
+          "topology": "none",
+          "agents": "none",
+          "mode": "inspection"
+        },
+        "causal_notes": "Verifies zero-asset boot with no packs loaded.",
+        "refinement_ceiling": "lod.scenario.macro",
+        "detail_absence": [
+          "no_entities",
+          "no_agents",
+          "no_packs"
+        ]
+      }
+    },
+    {
+      "knowledge_artifact_id": "org.dominium.base.scenarios.minimal.scenario.zero_agent",
+      "knowledge_domain_tag": "scenario.definition",
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.scenarios.minimal.zero_agent.v1"
+      },
+      "extensions": {
+        "scenario_name": "Zero-Agent Start",
+        "pack_refs": [
+          "org.dominium.base.topology"
+        ],
+        "required_capabilities": [
+          "topology.universe"
+        ],
+        "starting_conditions": {
+          "topology": "minimal_universe",
+          "agents": "none",
+          "mode": "inspection"
+        },
+        "causal_notes": "Defines a minimal universe with no agents present.",
+        "refinement_ceiling": "lod.scenario.macro",
+        "detail_absence": [
+          "no_agents",
+          "no_events"
+        ]
+      }
+    },
+    {
+      "knowledge_artifact_id": "org.dominium.base.scenarios.minimal.scenario.autorun_ai",
+      "knowledge_domain_tag": "scenario.definition",
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.scenarios.minimal.autorun_ai.v1"
+      },
+      "extensions": {
+        "scenario_name": "AI-Only Autorun",
+        "pack_refs": [
+          "org.dominium.base.topology",
+          "org.dominium.base.rules"
+        ],
+        "required_capabilities": [
+          "scenario.autorun.ai",
+          "process.template.basic"
+        ],
+        "starting_conditions": {
+          "topology": "minimal_universe",
+          "agents": "autonomous",
+          "mode": "autorun"
+        },
+        "causal_notes": "Runs without player agents; uses template processes only.",
+        "refinement_ceiling": "lod.scenario.macro",
+        "detail_absence": [
+          "no_player_control",
+          "no_human_assumptions"
+        ]
+      }
+    },
+    {
+      "knowledge_artifact_id": "org.dominium.base.scenarios.minimal.scenario.inspection",
+      "knowledge_domain_tag": "scenario.definition",
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.base.scenarios.minimal.inspection.v1"
+      },
+      "extensions": {
+        "scenario_name": "Inspection Start",
+        "pack_refs": [
+          "org.dominium.base.topology",
+          "org.dominium.base.universe.milkyway",
+          "org.dominium.base.system.sol"
+        ],
+        "required_capabilities": [
+          "scenario.inspection"
+        ],
+        "starting_conditions": {
+          "mode": "inspection",
+          "agents": "none"
+        },
+        "causal_notes": "Read-only inspection of macro topology.",
+        "refinement_ceiling": "lod.scenario.macro",
+        "detail_absence": [
+          "no_agents",
+          "no_mutation"
+        ]
+      }
+    }
+  ]
+}
