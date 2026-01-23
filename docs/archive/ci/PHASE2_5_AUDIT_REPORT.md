@@ -1,3 +1,13 @@
+# ARCHIVED: Phase 2–5 Audit Report (PH2_5-AUDIT)
+
+Archived: point-in-time audit.
+Reason: Historical enforcement snapshot; current status is tracked elsewhere.
+Superseded by:
+- `docs/ci/CI_ENFORCEMENT_MATRIX.md`
+- `docs/ci/EXECUTION_ENFORCEMENT_CHECKS.md`
+- `docs/arch/INVARIANTS.md`
+Still useful: background on Phase 2–5 gaps.
+
 # Phase 2–5 Audit Report (PH2_5-AUDIT)
 
 Status: NEEDS FIX (blockers present)

@@ -1,3 +1,12 @@
+# ARCHIVED: Docs Validation Report (Normalization + Correctness Pass)
+
+Archived: point-in-time validation report.
+Reason: Historical validation snapshot; current status is tracked elsewhere.
+Superseded by:
+- `docs/policies/DOCUMENTATION_STANDARDS.md`
+- `docs/ci/CI_ENFORCEMENT_MATRIX.md`
+Still useful: background on prior documentation checks.
+
 # Docs Validation Report (Normalization + Correctness Pass)
 
 This report records the documentation reconciliation work performed to make the

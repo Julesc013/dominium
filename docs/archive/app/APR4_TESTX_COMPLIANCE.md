@@ -1,3 +1,12 @@
+# ARCHIVED: APR4 TESTX Compliance
+
+Archived: point-in-time compliance snapshot.
+Reason: APR compliance snapshot; current enforcement supersedes it.
+Superseded by:
+- `docs/app/TESTX_COMPLIANCE.md`
+- `docs/ci/CI_ENFORCEMENT_MATRIX.md`
+Still useful: background on TESTX coverage in APR4.
+
 # APR4 TESTX Compliance
 
 APR4 adds CLI-only observability tests. No TUI/GUI paths are required or

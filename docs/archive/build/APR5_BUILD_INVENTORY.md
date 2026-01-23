@@ -1,3 +1,13 @@
+# ARCHIVED: APR5 Build Inventory
+
+Archived: point-in-time build inventory.
+Reason: APR inventory snapshot; current build policy supersedes it.
+Superseded by:
+- `docs/build/CI_MATRIX.md`
+- `docs/build/TOOLCHAIN_MODEL.md`
+- `docs/build/ARTIFACT_IDENTITY_AND_METADATA.md`
+Still useful: background on early build inventory.
+
 # APR5 Build Inventory
 
 ## Build system

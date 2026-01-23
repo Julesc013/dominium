@@ -1,3 +1,13 @@
+# ARCHIVED: APR1 Runtime Audit
+
+Archived: point-in-time audit.
+Reason: APR audit snapshot; current product contracts supersede it.
+Superseded by:
+- `docs/app/README.md`
+- `docs/app/PRODUCT_BOUNDARIES.md`
+- `docs/app/RUNTIME_LOOP.md`
+Still useful: background on early runtime inventory.
+
 # APR1 Runtime Audit
 
 This audit captures current runtime loops, timing sources, shutdown behavior, and determinism risks

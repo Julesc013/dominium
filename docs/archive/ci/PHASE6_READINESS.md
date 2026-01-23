@@ -1,3 +1,13 @@
+# ARCHIVED: Phase 6 Readiness (LIFE/CIV)
+
+Archived: point-in-time readiness checklist.
+Reason: Historical readiness snapshot; current status is tracked elsewhere.
+Superseded by:
+- `docs/ci/CI_ENFORCEMENT_MATRIX.md`
+- `docs/ci/EXECUTION_ENFORCEMENT_CHECKS.md`
+- `docs/arch/INVARIANTS.md`
+Still useful: background on Phase 6 readiness criteria.
+
 # Phase 6 Readiness (LIFE/CIV)
 
 This declaration defines what Phase 6 can safely assume and what it must not assume.

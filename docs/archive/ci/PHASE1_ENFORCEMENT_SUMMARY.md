@@ -1,3 +1,13 @@
+# ARCHIVED: Phase 1 Enforcement Summary
+
+Archived: point-in-time enforcement summary.
+Reason: Historical snapshot; current enforcement status is tracked elsewhere.
+Superseded by:
+- `docs/ci/CI_ENFORCEMENT_MATRIX.md`
+- `docs/ci/EXECUTION_ENFORCEMENT_CHECKS.md`
+- `docs/arch/INVARIANTS.md`
+Still useful: background on early enforcement coverage.
+
 # Phase 1 Enforcement Summary
 
 This summary is a one-page view of what Phase-1 guarantees, forbids, and what later phases can assume.

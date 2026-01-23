@@ -1,3 +1,12 @@
+# ARCHIVED: APR3 TESTX Compliance
+
+Archived: point-in-time compliance snapshot.
+Reason: APR compliance snapshot; current enforcement supersedes it.
+Superseded by:
+- `docs/app/TESTX_COMPLIANCE.md`
+- `docs/ci/CI_ENFORCEMENT_MATRIX.md`
+Still useful: background on TESTX coverage in APR3.
+
 # APR3 TESTX Compliance
 
 TESTX remains CLI-only. No GUI/TUI paths are used by tests.

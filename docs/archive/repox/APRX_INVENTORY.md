@@ -1,3 +1,13 @@
+# ARCHIVED: APRX Inventory (RepoX + TestX)
+
+Archived: point-in-time inventory.
+Reason: APR inventory snapshot; current repo policies supersede it.
+Superseded by:
+- `docs/arch/ARCH_REPO_LAYOUT.md`
+- `docs/policies/IDE_CONTRIBUTION_RULES.md`
+- `docs/ci/CI_ENFORCEMENT_MATRIX.md`
+Still useful: background on early RepoX/TestX inventory.
+
 # APRX Inventory (RepoX + TestX)
 
 Status: discovery

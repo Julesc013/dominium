@@ -1,3 +1,13 @@
+# ARCHIVED: Phase 1 Audit Report (PH1-AUDIT)
+
+Archived: point-in-time audit.
+Reason: Historical enforcement snapshot; current status is tracked elsewhere.
+Superseded by:
+- `docs/ci/CI_ENFORCEMENT_MATRIX.md`
+- `docs/ci/EXECUTION_ENFORCEMENT_CHECKS.md`
+- `docs/arch/INVARIANTS.md`
+Still useful: background on early enforcement gaps.
+
 # Phase 1 Audit Report (PH1-AUDIT)
 
 Status: FAIL (see Summary)
