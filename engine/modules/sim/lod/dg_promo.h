@@ -33,7 +33,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "domino/core/fixed.h"
 
 #include "sim/pkt/dg_pkt_common.h"
-#include "sim/sched/dg_budget.h"
+#include "execution/budgets/dg_budget.h"
 
 #include "sim/lod/dg_rep.h"
 #include "sim/lod/dg_lod_index.h"
