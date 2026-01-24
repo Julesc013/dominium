@@ -1,0 +1,8 @@
+pack_id = org.dominium.examples.false_science
+pack_version = 1.0.0
+pack_format_version = 1
+required_engine_version = 0.0.0
+required_protocols = dominium.protocol.pack_manifest:1
+provides = example.false_science
+optional = true
+optional = true

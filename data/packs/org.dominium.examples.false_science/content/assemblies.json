@@ -1,0 +1,25 @@
+{
+  "schema_id": "dominium.schema.assembly",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "assembly_id": "assembly.examples.false_science.device.v1",
+      "capability_refs": [
+        {
+          "capability_id": "capability.on_planet.manufacturing"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.examples.false_science.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_functional_guarantee"
+        ],
+        "state_tags": [
+          "state.prototype"
+        ]
+      }
+    }
+  ]
+}

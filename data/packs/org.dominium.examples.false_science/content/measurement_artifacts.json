@@ -1,0 +1,35 @@
+{
+  "schema_id": "dominium.schema.measurement_artifact",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "measurement_artifact_id": "meas.examples.false_science.miscalibrated.v1",
+      "measurement_domain_tag": "measurement.false_science",
+      "era_tag": "era.modern",
+      "target_ref": {
+        "node_id": "org.dominium.worldgen.real.earth_macro.node.earth",
+        "domain_id": "org.dominium.examples.false_science.domain.doctrine",
+        "volume_id": "org.dominium.examples.false_science.domain.doctrine.volume.local"
+      },
+      "confidence_desc": {
+        "level_tag": "confidence.low",
+        "kind": "miscalibrated"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.unbounded",
+        "kind": "miscalibrated"
+      },
+      "access_control": {
+        "visibility": "restricted"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.examples.false_science.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_traceable_calibration"
+        ]
+      }
+    }
+  ]
+}
