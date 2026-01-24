@@ -42,5 +42,4 @@ engine. It provides primitives and enforcement, not game behavior.
 ## References
 - `docs/architecture/INVARIANTS.md`
 - `docs/architecture/TERMINOLOGY.md`
-- `docs/arch/INVARIANTS.md`
-- `docs/arch/REALITY_MODEL.md`
+- `docs/architecture/COMPATIBILITY_PHILOSOPHY.md`

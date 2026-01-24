@@ -56,8 +56,8 @@ validation. If requirements are unmet, only Frozen or Transform-only modes are
 allowed.
 
 ## References
-- `docs/policies/COMPATIBILITY_PROMISES.md`
-- `docs/specs/SPEC_CAPABILITIES.md`
-- `docs/specs/SPEC_FEATURE_EPOCH.md`
-- `docs/specs/SPEC_REPLAY.md`
-- `docs/app/COMPATIBILITY_ENFORCEMENT.md`
+- `docs/architecture/INVARIANTS.md`
+- `docs/architecture/TERMINOLOGY.md`
+- `docs/schema/FORWARD_COMPATIBILITY.md`
+- `docs/pack_format/PACK_MANIFEST.md`
+- `docs/content/UPS_OVERVIEW.md`

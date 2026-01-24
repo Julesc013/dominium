@@ -57,7 +57,8 @@ revision.
   that alters simulation results.
 
 ## References (detailed enforcement)
-- `docs/arch/INVARIANTS.md`
-- `docs/arch/EXECUTION_MODEL.md`
-- `docs/arch/REALITY_MODEL.md`
-- `docs/arch/AUTHORITY_MODEL.md`
+- `docs/architecture/INVARIANTS.md`
+- `docs/architecture/TERMINOLOGY.md`
+- `docs/architecture/COMPATIBILITY_PHILOSOPHY.md`
+- `docs/content/UPS_OVERVIEW.md`
+- `docs/audit/PROMPT_G_REPORT.md`
