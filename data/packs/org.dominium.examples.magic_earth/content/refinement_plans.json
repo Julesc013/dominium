@@ -1,0 +1,109 @@
+{
+  "schema_id": "dominium.schema.refinement_plan",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "plan_id": "org.dominium.examples.magic_earth.plan.overlay_v1",
+      "plan_tags": [
+        "example.magic_earth",
+        "worldgen.plan.multi_overlay"
+      ],
+      "plan_domain_scope": {
+        "scope_id": "scope.earth.magic_overlay",
+        "node_id": "org.dominium.worldgen.real.earth_macro.node.earth"
+      },
+      "layers": [
+        {
+          "layer_id": "layer.earth.science.macro",
+          "order_index": 0,
+          "model_refs": [
+            {
+              "model_id": "org.dominium.worldgen.real.earth_macro.model.overlay_v1"
+            }
+          ],
+          "domain_scope": {
+            "scope_id": "scope.earth.science",
+            "node_id": "org.dominium.worldgen.real.earth_macro.node.earth"
+          },
+          "lod_band": {
+            "lod_min_tag": "lod.body.macro",
+            "lod_max_tag": "lod.body.macro"
+          },
+          "field_refs": [
+            {
+              "field_id": "org.dominium.worldgen.real.earth_macro.field.terrain_macro"
+            },
+            {
+              "field_id": "org.dominium.worldgen.real.earth_macro.field.climate_macro"
+            },
+            {
+              "field_id": "org.dominium.worldgen.real.earth_macro.field.atmosphere_macro"
+            }
+          ],
+          "precedence_tag": "precedence.overlay",
+          "failure_modes": [
+            "failure.defer"
+          ]
+        },
+        {
+          "layer_id": "layer.earth.magic",
+          "order_index": 1,
+          "model_refs": [
+            {
+              "model_id": "org.dominium.realities.magic.model.magic_v1"
+            }
+          ],
+          "domain_scope": {
+            "scope_id": "scope.magic.domain",
+            "domain_id": "org.dominium.realities.magic.domain.magic",
+            "volume_id": "org.dominium.realities.magic.domain.magic.volume"
+          },
+          "lod_band": {
+            "lod_min_tag": "lod.magic.macro",
+            "lod_max_tag": "lod.magic.macro"
+          },
+          "field_refs": [
+            {
+              "field_id": "org.dominium.realities.magic.field.mana"
+            },
+            {
+              "field_id": "org.dominium.realities.magic.field.fate"
+            }
+          ],
+          "component_tags": [
+            "field.mana",
+            "field.fate"
+          ],
+          "precedence_tag": "precedence.overlay",
+          "failure_modes": [
+            "failure.defer"
+          ],
+          "extensions": {
+            "required_knowledge_tags": [
+              "knowledge.magic.belief"
+            ],
+            "insufficient_knowledge_behavior": [
+              "degrade_lod",
+              "emit_unknown_placeholders"
+            ]
+          }
+        }
+      ],
+      "precedence_rules": [
+        {
+          "higher_tag": "precedence.overlay",
+          "lower_tag": "precedence.base"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.examples.magic_earth.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_engine_changes"
+        ],
+        "failure_semantics": "degrade_or_freeze"
+      }
+    }
+  ]
+}
