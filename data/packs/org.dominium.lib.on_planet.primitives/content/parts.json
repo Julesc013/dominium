@@ -1,0 +1,407 @@
+{
+  "schema_id": "dominium.schema.part_and_interface",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "part_id": "part.on_planet.beam.basic",
+      "interface_tags": [
+        "interface.mechanical"
+      ],
+      "mass": {
+        "value": 10.0,
+        "unit": "unit.kg"
+      },
+      "volume": {
+        "value": 0.01,
+        "unit": "unit.m3"
+      },
+      "capability_refs": [
+        {
+          "capability_id": "capability.on_planet.construction"
+        }
+      ],
+      "compatibility_tags": [
+        "compatibility.basic"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.part.beam.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_material_spec"
+        ]
+      }
+    },
+    {
+      "part_id": "part.on_planet.panel.basic",
+      "interface_tags": [
+        "interface.mechanical"
+      ],
+      "mass": {
+        "value": 8.0,
+        "unit": "unit.kg"
+      },
+      "volume": {
+        "value": 0.02,
+        "unit": "unit.m3"
+      },
+      "capability_refs": [
+        {
+          "capability_id": "capability.on_planet.construction"
+        }
+      ],
+      "compatibility_tags": [
+        "compatibility.basic"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.part.panel.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_material_spec"
+        ]
+      }
+    },
+    {
+      "part_id": "part.on_planet.joint.basic",
+      "interface_tags": [
+        "interface.mechanical"
+      ],
+      "mass": {
+        "value": 2.0,
+        "unit": "unit.kg"
+      },
+      "volume": {
+        "value": 0.002,
+        "unit": "unit.m3"
+      },
+      "capability_refs": [
+        {
+          "capability_id": "capability.on_planet.construction"
+        }
+      ],
+      "compatibility_tags": [
+        "compatibility.basic"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.part.joint.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_fastener_spec"
+        ]
+      }
+    },
+    {
+      "part_id": "part.on_planet.motor.basic",
+      "interface_tags": [
+        "interface.mechanical",
+        "interface.electrical"
+      ],
+      "mass": {
+        "value": 6.0,
+        "unit": "unit.kg"
+      },
+      "volume": {
+        "value": 0.006,
+        "unit": "unit.m3"
+      },
+      "capability_refs": [
+        {
+          "capability_id": "capability.on_planet.transport"
+        }
+      ],
+      "compatibility_tags": [
+        "compatibility.basic"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.part.motor.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_performance_curve"
+        ]
+      }
+    },
+    {
+      "part_id": "part.on_planet.pipe.basic",
+      "interface_tags": [
+        "interface.fluid",
+        "interface.mechanical"
+      ],
+      "mass": {
+        "value": 4.0,
+        "unit": "unit.kg"
+      },
+      "volume": {
+        "value": 0.004,
+        "unit": "unit.m3"
+      },
+      "capability_refs": [
+        {
+          "capability_id": "capability.on_planet.network.fluid"
+        }
+      ],
+      "compatibility_tags": [
+        "compatibility.basic"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.part.pipe.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_diameter_spec"
+        ]
+      }
+    },
+    {
+      "part_id": "part.on_planet.duct.basic",
+      "interface_tags": [
+        "interface.thermal",
+        "interface.fluid"
+      ],
+      "mass": {
+        "value": 5.0,
+        "unit": "unit.kg"
+      },
+      "volume": {
+        "value": 0.006,
+        "unit": "unit.m3"
+      },
+      "capability_refs": [
+        {
+          "capability_id": "capability.on_planet.network.thermal"
+        }
+      ],
+      "compatibility_tags": [
+        "compatibility.basic"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.part.duct.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_flow_spec"
+        ]
+      }
+    },
+    {
+      "part_id": "part.on_planet.cable.basic",
+      "interface_tags": [
+        "interface.electrical",
+        "interface.data"
+      ],
+      "mass": {
+        "value": 1.0,
+        "unit": "unit.kg"
+      },
+      "volume": {
+        "value": 0.001,
+        "unit": "unit.m3"
+      },
+      "capability_refs": [
+        {
+          "capability_id": "capability.on_planet.network.electrical"
+        },
+        {
+          "capability_id": "capability.on_planet.network.data"
+        }
+      ],
+      "compatibility_tags": [
+        "compatibility.basic"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.part.cable.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_bandwidth_spec"
+        ]
+      }
+    },
+    {
+      "part_id": "part.on_planet.valve.basic",
+      "interface_tags": [
+        "interface.fluid",
+        "interface.mechanical"
+      ],
+      "mass": {
+        "value": 1.5,
+        "unit": "unit.kg"
+      },
+      "volume": {
+        "value": 0.0015,
+        "unit": "unit.m3"
+      },
+      "capability_refs": [
+        {
+          "capability_id": "capability.on_planet.network.fluid"
+        }
+      ],
+      "compatibility_tags": [
+        "compatibility.basic"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.part.valve.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_control_curve"
+        ]
+      }
+    },
+    {
+      "part_id": "part.on_planet.sensor.basic",
+      "interface_tags": [
+        "interface.data",
+        "interface.electrical"
+      ],
+      "mass": {
+        "value": 0.5,
+        "unit": "unit.kg"
+      },
+      "volume": {
+        "value": 0.0005,
+        "unit": "unit.m3"
+      },
+      "capability_refs": [
+        {
+          "capability_id": "capability.on_planet.survey"
+        }
+      ],
+      "compatibility_tags": [
+        "compatibility.basic"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.part.sensor.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_sensitivity_spec"
+        ]
+      }
+    },
+    {
+      "part_id": "part.on_planet.controller.basic",
+      "interface_tags": [
+        "interface.data",
+        "interface.electrical"
+      ],
+      "mass": {
+        "value": 1.0,
+        "unit": "unit.kg"
+      },
+      "volume": {
+        "value": 0.001,
+        "unit": "unit.m3"
+      },
+      "capability_refs": [
+        {
+          "capability_id": "capability.on_planet.network.data"
+        }
+      ],
+      "compatibility_tags": [
+        "compatibility.basic"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.part.controller.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_compute_profile"
+        ]
+      }
+    },
+    {
+      "part_id": "part.on_planet.power_cell.basic",
+      "interface_tags": [
+        "interface.electrical"
+      ],
+      "mass": {
+        "value": 3.0,
+        "unit": "unit.kg"
+      },
+      "volume": {
+        "value": 0.003,
+        "unit": "unit.m3"
+      },
+      "capability_refs": [
+        {
+          "capability_id": "capability.on_planet.network.electrical"
+        }
+      ],
+      "compatibility_tags": [
+        "compatibility.basic"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.part.power_cell.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_capacity_curve"
+        ]
+      }
+    },
+    {
+      "part_id": "part.on_planet.propulsion.basic",
+      "interface_tags": [
+        "interface.mechanical",
+        "interface.electrical"
+      ],
+      "mass": {
+        "value": 12.0,
+        "unit": "unit.kg"
+      },
+      "volume": {
+        "value": 0.02,
+        "unit": "unit.m3"
+      },
+      "capability_refs": [
+        {
+          "capability_id": "capability.on_planet.transport"
+        }
+      ],
+      "compatibility_tags": [
+        "compatibility.basic"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.part.propulsion.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_thrust_curve"
+        ]
+      }
+    },
+    {
+      "part_id": "part.on_planet.wheel.basic",
+      "interface_tags": [
+        "interface.mechanical"
+      ],
+      "mass": {
+        "value": 4.0,
+        "unit": "unit.kg"
+      },
+      "volume": {
+        "value": 0.01,
+        "unit": "unit.m3"
+      },
+      "capability_refs": [
+        {
+          "capability_id": "capability.on_planet.transport"
+        }
+      ],
+      "compatibility_tags": [
+        "compatibility.basic"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.part.wheel.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_tire_model"
+        ]
+      }
+    }
+  ]
+}

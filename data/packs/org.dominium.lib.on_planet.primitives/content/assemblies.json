@@ -1,0 +1,266 @@
+{
+  "schema_id": "dominium.schema.assembly",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "assembly_id": "assembly.on_planet.structure.frame.basic",
+      "parts": [
+        {
+          "part_id": "part.on_planet.beam.basic"
+        },
+        {
+          "part_id": "part.on_planet.joint.basic"
+        },
+        {
+          "part_id": "part.on_planet.panel.basic"
+        }
+      ],
+      "connections": [
+        {
+          "from_part_id": "part.on_planet.beam.basic",
+          "to_part_id": "part.on_planet.joint.basic",
+          "interface_tags": [
+            "interface.mechanical"
+          ]
+        },
+        {
+          "from_part_id": "part.on_planet.panel.basic",
+          "to_part_id": "part.on_planet.joint.basic",
+          "interface_tags": [
+            "interface.mechanical"
+          ]
+        }
+      ],
+      "subsystems": [
+        {
+          "subsystem_id": "subsystem.on_planet.structure.frame",
+          "part_refs": [
+            {
+              "part_id": "part.on_planet.beam.basic"
+            },
+            {
+              "part_id": "part.on_planet.panel.basic"
+            }
+          ],
+          "subsystem_tags": [
+            "structure.frame"
+          ]
+        }
+      ],
+      "capability_refs": [
+        {
+          "capability_id": "capability.on_planet.construction"
+        }
+      ],
+      "constraint_tags": [
+        "structure.static"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.assembly.structure.frame.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_geometry",
+          "no_load_limits"
+        ]
+      }
+    },
+    {
+      "assembly_id": "assembly.on_planet.foundation.basic",
+      "parts": [
+        {
+          "part_id": "part.on_planet.panel.basic"
+        },
+        {
+          "part_id": "part.on_planet.joint.basic"
+        }
+      ],
+      "connections": [
+        {
+          "from_part_id": "part.on_planet.panel.basic",
+          "to_part_id": "part.on_planet.joint.basic",
+          "interface_tags": [
+            "interface.mechanical"
+          ]
+        }
+      ],
+      "capability_refs": [
+        {
+          "capability_id": "capability.on_planet.construction"
+        }
+      ],
+      "constraint_tags": [
+        "structure.foundation"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.assembly.foundation.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_soil_model"
+        ]
+      }
+    },
+    {
+      "assembly_id": "assembly.on_planet.vehicle.chassis.basic",
+      "parts": [
+        {
+          "part_id": "part.on_planet.beam.basic"
+        },
+        {
+          "part_id": "part.on_planet.joint.basic"
+        },
+        {
+          "part_id": "part.on_planet.wheel.basic"
+        },
+        {
+          "part_id": "part.on_planet.propulsion.basic"
+        },
+        {
+          "part_id": "part.on_planet.controller.basic"
+        },
+        {
+          "part_id": "part.on_planet.power_cell.basic"
+        }
+      ],
+      "connections": [
+        {
+          "from_part_id": "part.on_planet.propulsion.basic",
+          "to_part_id": "part.on_planet.wheel.basic",
+          "interface_tags": [
+            "interface.mechanical"
+          ]
+        },
+        {
+          "from_part_id": "part.on_planet.controller.basic",
+          "to_part_id": "part.on_planet.propulsion.basic",
+          "interface_tags": [
+            "interface.data",
+            "interface.electrical"
+          ]
+        }
+      ],
+      "subsystems": [
+        {
+          "subsystem_id": "subsystem.on_planet.vehicle.mobility",
+          "part_refs": [
+            {
+              "part_id": "part.on_planet.propulsion.basic"
+            },
+            {
+              "part_id": "part.on_planet.wheel.basic"
+            }
+          ],
+          "subsystem_tags": [
+            "vehicle.mobility"
+          ]
+        }
+      ],
+      "capability_refs": [
+        {
+          "capability_id": "capability.on_planet.transport"
+        }
+      ],
+      "constraint_tags": [
+        "vehicle.mobile",
+        "vehicle.planetary"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.assembly.vehicle.chassis.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_control_model"
+        ]
+      }
+    },
+    {
+      "assembly_id": "assembly.on_planet.machine.fabricator.basic",
+      "parts": [
+        {
+          "part_id": "part.on_planet.beam.basic"
+        },
+        {
+          "part_id": "part.on_planet.panel.basic"
+        },
+        {
+          "part_id": "part.on_planet.motor.basic"
+        },
+        {
+          "part_id": "part.on_planet.controller.basic"
+        },
+        {
+          "part_id": "part.on_planet.power_cell.basic"
+        }
+      ],
+      "connections": [
+        {
+          "from_part_id": "part.on_planet.motor.basic",
+          "to_part_id": "part.on_planet.controller.basic",
+          "interface_tags": [
+            "interface.data",
+            "interface.electrical"
+          ]
+        }
+      ],
+      "capability_refs": [
+        {
+          "capability_id": "capability.on_planet.manufacturing"
+        }
+      ],
+      "constraint_tags": [
+        "machine.fabrication"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.assembly.machine.fabricator.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_process_limits"
+        ]
+      }
+    },
+    {
+      "assembly_id": "assembly.on_planet.network.node.basic",
+      "parts": [
+        {
+          "part_id": "part.on_planet.cable.basic"
+        },
+        {
+          "part_id": "part.on_planet.pipe.basic"
+        },
+        {
+          "part_id": "part.on_planet.duct.basic"
+        },
+        {
+          "part_id": "part.on_planet.controller.basic"
+        }
+      ],
+      "capability_refs": [
+        {
+          "capability_id": "capability.on_planet.network.data"
+        },
+        {
+          "capability_id": "capability.on_planet.network.electrical"
+        },
+        {
+          "capability_id": "capability.on_planet.network.fluid"
+        },
+        {
+          "capability_id": "capability.on_planet.network.thermal"
+        }
+      ],
+      "constraint_tags": [
+        "network.node"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.assembly.network.node.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_throughput_model"
+        ]
+      }
+    }
+  ]
+}

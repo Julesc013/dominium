@@ -1,0 +1,118 @@
+{
+  "schema_id": "dominium.schema.institution",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "institution_id": "institution.on_planet.regulator.local",
+      "jurisdiction_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.jurisdiction.local",
+          "volume_id": "domain.on_planet.jurisdiction.volume.local"
+        }
+      ],
+      "legitimacy_source_tags": [
+        "legitimacy.local"
+      ],
+      "enforcement_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.regulation"
+        }
+      ],
+      "imposed_constraint_tags": [
+        "constraint.permit.required"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.institution.regulator.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_procedure_detail"
+        ]
+      }
+    },
+    {
+      "institution_id": "institution.on_planet.registry.ownership",
+      "jurisdiction_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.jurisdiction.local",
+          "volume_id": "domain.on_planet.jurisdiction.volume.local"
+        }
+      ],
+      "legitimacy_source_tags": [
+        "legitimacy.registry"
+      ],
+      "enforcement_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.ownership.registry"
+        }
+      ],
+      "imposed_constraint_tags": [
+        "constraint.transfer.recorded"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.institution.ownership_registry.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_registry_schema"
+        ]
+      }
+    },
+    {
+      "institution_id": "institution.on_planet.inspectorate.basic",
+      "jurisdiction_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.jurisdiction.local",
+          "volume_id": "domain.on_planet.jurisdiction.volume.local"
+        }
+      ],
+      "legitimacy_source_tags": [
+        "legitimacy.audit"
+      ],
+      "enforcement_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.compliance.audit"
+        }
+      ],
+      "imposed_constraint_tags": [
+        "constraint.inspection.allowed"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.institution.inspectorate.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_penalty_model"
+        ]
+      }
+    },
+    {
+      "institution_id": "institution.on_planet.trade.clearinghouse",
+      "jurisdiction_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.jurisdiction.local",
+          "volume_id": "domain.on_planet.jurisdiction.volume.local"
+        }
+      ],
+      "legitimacy_source_tags": [
+        "legitimacy.contract"
+      ],
+      "enforcement_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.trade"
+        }
+      ],
+      "imposed_constraint_tags": [
+        "constraint.contract.recorded"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.institution.trade.clearinghouse.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_settlement_rules"
+        ]
+      }
+    }
+  ]
+}

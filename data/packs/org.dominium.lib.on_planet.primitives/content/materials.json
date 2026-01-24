@@ -1,0 +1,188 @@
+{
+  "schema_id": "dominium.schema.material",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "material_id": "material.on_planet.aggregate.generic",
+      "property_tags": [
+        "material.aggregate",
+        "material.structural"
+      ],
+      "phase_tags": [
+        "phase.solid"
+      ],
+      "manufacturability_tags": [
+        "manufacturing.moldable"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.material.aggregate.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_chemistry"
+        ]
+      }
+    },
+    {
+      "material_id": "material.on_planet.structural.generic",
+      "property_tags": [
+        "material.structural",
+        "material.load_bearing"
+      ],
+      "phase_tags": [
+        "phase.solid"
+      ],
+      "manufacturability_tags": [
+        "manufacturing.formable"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.material.structural.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_alloy_detail"
+        ]
+      }
+    },
+    {
+      "material_id": "material.on_planet.conductive.generic",
+      "property_tags": [
+        "material.conductive"
+      ],
+      "phase_tags": [
+        "phase.solid"
+      ],
+      "manufacturability_tags": [
+        "manufacturing.extrudable"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.material.conductive.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_resistivity_curve"
+        ]
+      }
+    },
+    {
+      "material_id": "material.on_planet.insulating.generic",
+      "property_tags": [
+        "material.insulating"
+      ],
+      "phase_tags": [
+        "phase.solid"
+      ],
+      "manufacturability_tags": [
+        "manufacturing.formable"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.material.insulating.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_thermal_curve"
+        ]
+      }
+    },
+    {
+      "material_id": "material.on_planet.fluid.generic",
+      "property_tags": [
+        "material.fluid"
+      ],
+      "phase_tags": [
+        "phase.fluid"
+      ],
+      "manufacturability_tags": [
+        "manufacturing.pumpable"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.material.fluid.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_viscosity_curve"
+        ]
+      }
+    },
+    {
+      "material_id": "material.on_planet.gas.generic",
+      "property_tags": [
+        "material.gas"
+      ],
+      "phase_tags": [
+        "phase.gas"
+      ],
+      "manufacturability_tags": [
+        "manufacturing.compressible"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.material.gas.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_composition_detail"
+        ]
+      }
+    },
+    {
+      "material_id": "material.on_planet.biotic.generic",
+      "property_tags": [
+        "material.biotic"
+      ],
+      "phase_tags": [
+        "phase.mixed"
+      ],
+      "manufacturability_tags": [
+        "manufacturing.cultivable"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.material.biotic.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_species_detail"
+        ]
+      }
+    },
+    {
+      "material_id": "material.on_planet.ore.generic",
+      "property_tags": [
+        "material.ore"
+      ],
+      "phase_tags": [
+        "phase.solid"
+      ],
+      "manufacturability_tags": [
+        "manufacturing.refinable"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.material.ore.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_composition_detail"
+        ]
+      }
+    },
+    {
+      "material_id": "material.on_planet.tailings.generic",
+      "property_tags": [
+        "material.tailings"
+      ],
+      "phase_tags": [
+        "phase.mixed"
+      ],
+      "manufacturability_tags": [
+        "manufacturing.disposal"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.material.tailings.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_composition_detail"
+        ]
+      }
+    }
+  ]
+}

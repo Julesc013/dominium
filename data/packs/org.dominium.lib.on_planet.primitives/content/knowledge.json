@@ -1,0 +1,102 @@
+{
+  "schema_id": "dominium.schema.knowledge",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "knowledge_artifact_id": "knowledge.on_planet.survey.site",
+      "knowledge_domain_tag": "knowledge.survey",
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.knowledge.survey.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_measurement_schema"
+        ]
+      }
+    },
+    {
+      "knowledge_artifact_id": "knowledge.on_planet.deposit.discovery",
+      "knowledge_domain_tag": "knowledge.deposit",
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.knowledge.deposit.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_sampling_schema"
+        ]
+      }
+    },
+    {
+      "knowledge_artifact_id": "knowledge.on_planet.integrity.report",
+      "knowledge_domain_tag": "knowledge.integrity",
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.knowledge.integrity.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_inspection_schema"
+        ]
+      }
+    },
+    {
+      "knowledge_artifact_id": "knowledge.on_planet.compliance.report",
+      "knowledge_domain_tag": "knowledge.compliance",
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.knowledge.compliance.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_compliance_schema"
+        ]
+      }
+    },
+    {
+      "knowledge_artifact_id": "knowledge.on_planet.trade.contract",
+      "knowledge_domain_tag": "knowledge.contract",
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.knowledge.contract.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_terms_schema"
+        ]
+      }
+    },
+    {
+      "knowledge_artifact_id": "knowledge.on_planet.delivery.schedule",
+      "knowledge_domain_tag": "knowledge.delivery",
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.knowledge.delivery.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_schedule_schema"
+        ]
+      }
+    },
+    {
+      "knowledge_artifact_id": "knowledge.on_planet.maintenance.record",
+      "knowledge_domain_tag": "knowledge.maintenance",
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.knowledge.maintenance.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_maintenance_schema"
+        ]
+      }
+    },
+    {
+      "knowledge_artifact_id": "knowledge.on_planet.failure.report",
+      "knowledge_domain_tag": "knowledge.failure",
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.knowledge.failure.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_failure_schema"
+        ]
+      }
+    }
+  ]
+}

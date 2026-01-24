@@ -1,0 +1,121 @@
+{
+  "schema_id": "dominium.schema.network",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "network_id": "network.on_planet.power.local",
+      "network_type": "network.electrical",
+      "capacity_desc": {
+        "unit": "unit.power",
+        "scale": "local"
+      },
+      "loss_desc": {
+        "unit": "unit.power",
+        "class": "loss.resistive"
+      },
+      "flow_type_tags": [
+        "flow.electrical"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.network.power.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_grid_solver"
+        ]
+      }
+    },
+    {
+      "network_id": "network.on_planet.fluid.local",
+      "network_type": "network.fluid",
+      "capacity_desc": {
+        "unit": "unit.volume_rate",
+        "scale": "local"
+      },
+      "loss_desc": {
+        "unit": "unit.volume_rate",
+        "class": "loss.leakage"
+      },
+      "flow_type_tags": [
+        "flow.fluid"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.network.fluid.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_pressure_model"
+        ]
+      }
+    },
+    {
+      "network_id": "network.on_planet.thermal.local",
+      "network_type": "network.thermal",
+      "capacity_desc": {
+        "unit": "unit.thermal_flow",
+        "scale": "local"
+      },
+      "loss_desc": {
+        "unit": "unit.thermal_flow",
+        "class": "loss.dissipation"
+      },
+      "flow_type_tags": [
+        "flow.thermal"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.network.thermal.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_heat_solver"
+        ]
+      }
+    },
+    {
+      "network_id": "network.on_planet.logistics.local",
+      "network_type": "network.logistics",
+      "capacity_desc": {
+        "unit": "unit.mass_rate",
+        "scale": "local"
+      },
+      "loss_desc": {
+        "unit": "unit.mass_rate",
+        "class": "loss.delay"
+      },
+      "flow_type_tags": [
+        "flow.logistics"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.network.logistics.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_route_solver"
+        ]
+      }
+    },
+    {
+      "network_id": "network.on_planet.data.local",
+      "network_type": "network.data",
+      "capacity_desc": {
+        "unit": "unit.data_rate",
+        "scale": "local"
+      },
+      "loss_desc": {
+        "unit": "unit.data_rate",
+        "class": "loss.latency"
+      },
+      "flow_type_tags": [
+        "flow.data"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.network.data.v1"
+      },
+      "extensions": {
+        "detail_absence": [
+          "no_routing_protocol"
+        ]
+      }
+    }
+  ]
+}
