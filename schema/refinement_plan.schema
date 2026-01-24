@@ -1,0 +1,103 @@
+SCHEMA: refinement_plan.schema
+schema_id: dominium.schema.refinement_plan
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define ordered refinement layers, model references, and refinement ceilings.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- Refinement plans do NOT define algorithms or execution behavior.
+- Precedence does NOT imply authority or truth.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record refinement_plan
+  required:
+    - plan_id: id
+    - layers: [refinement_layer]
+  optional:
+    - plan_tags: [tag]
+    - plan_domain_scope: domain_scope_ref
+    - precedence_rules: [precedence_rule]
+    - refinement_ceilings: [refinement_ceiling]
+    - provenance_ref: provenance_ref
+    - extensions: map
+
+record refinement_layer
+  required:
+    - layer_id: id
+    - order_index: u32
+  optional:
+    - model_refs: [model_ref]
+    - domain_scope: domain_scope_ref
+    - lod_band: lod_band
+    - field_refs: [field_ref]
+    - component_tags: [tag]
+    - precedence_tag: tag
+    - ceiling_refs: [refinement_ceiling_ref]
+    - failure_modes: [tag]
+    - extensions: map
+
+TYPE DEFINITIONS:
+record model_ref
+  required:
+    - model_id: id
+  optional:
+    - ref_tags: [tag]
+
+record domain_scope_ref
+  required:
+    - scope_id: id
+  optional:
+    - node_id: id
+    - domain_id: id
+    - volume_id: id
+    - scope_tags: [tag]
+
+record field_ref
+  required:
+    - field_id: id
+  optional:
+    - field_tags: [tag]
+
+record lod_band
+  required:
+    - lod_min_tag: tag
+    - lod_max_tag: tag
+  optional:
+    - metadata: map
+
+record precedence_rule
+  required:
+    - higher_tag: tag
+    - lower_tag: tag
+  optional:
+    - rule_tags: [tag]
+
+record refinement_ceiling
+  required:
+    - ceiling_id: id
+  optional:
+    - lod_max_tag: tag
+    - field_refs: [field_ref]
+    - component_tags: [tag]
+    - budget: map
+    - ceiling_tags: [tag]
+
+record refinement_ceiling_ref
+  required:
+    - ceiling_id: id
+
+record provenance_ref
+  required:
+    - provenance_id: id
