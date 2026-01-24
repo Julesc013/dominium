@@ -1,0 +1,185 @@
+{
+  "schema_id": "dominium.schema.refinement_plan",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "plan_id": "org.dominium.worldgen.real.milky_way.plan.canonical_v1",
+      "plan_tags": [
+        "worldgen.plan.galaxy.overlay",
+        "worldgen.plan.real_milky_way.canonical"
+      ],
+      "plan_domain_scope": {
+        "scope_id": "scope.galaxy.milky_way.selection",
+        "scope_tags": [
+          "topology.galaxy"
+        ]
+      },
+      "layers": [
+        {
+          "layer_id": "layer.milky_way.mass_distribution",
+          "order_index": 0,
+          "model_refs": [
+            {
+              "model_id": "org.dominium.worldgen.real.milky_way.model.canonical_v1"
+            }
+          ],
+          "domain_scope": {
+            "scope_id": "scope.galaxy.milky_way.selected"
+          },
+          "lod_band": {
+            "lod_min_tag": "lod.galaxy.macro",
+            "lod_max_tag": "lod.galaxy.macro"
+          },
+          "field_refs": [
+            {
+              "field_id": "org.dominium.worldgen.real.milky_way.field.mass_distribution_anchors"
+            }
+          ],
+          "component_tags": [
+            "field.galaxy.mass_distribution_anchors"
+          ],
+          "precedence_tag": "precedence.overlay",
+          "failure_modes": [
+            "failure.defer"
+          ],
+          "extensions": {
+            "known_scope": [
+              "central_mass",
+              "disk_profile"
+            ],
+            "unknown_regions": [
+              "far_side_disk",
+              "outer_halo"
+            ]
+          }
+        },
+        {
+          "layer_id": "layer.milky_way.spiral_arms",
+          "order_index": 1,
+          "model_refs": [
+            {
+              "model_id": "org.dominium.worldgen.real.milky_way.model.canonical_v1"
+            }
+          ],
+          "domain_scope": {
+            "scope_id": "scope.galaxy.milky_way.selected"
+          },
+          "lod_band": {
+            "lod_min_tag": "lod.galaxy.macro",
+            "lod_max_tag": "lod.galaxy.macro"
+          },
+          "field_refs": [
+            {
+              "field_id": "org.dominium.worldgen.real.milky_way.field.spiral_arm_topology"
+            }
+          ],
+          "component_tags": [
+            "field.galaxy.spiral_arm_topology"
+          ],
+          "precedence_tag": "precedence.overlay",
+          "failure_modes": [
+            "failure.defer"
+          ],
+          "extensions": {
+            "known_scope": [
+              "arm_count",
+              "arm_relationships"
+            ],
+            "unknown_regions": [
+              "arm_details"
+            ]
+          }
+        },
+        {
+          "layer_id": "layer.milky_way.halo_bulge",
+          "order_index": 2,
+          "model_refs": [
+            {
+              "model_id": "org.dominium.worldgen.real.milky_way.model.canonical_v1"
+            }
+          ],
+          "domain_scope": {
+            "scope_id": "scope.galaxy.milky_way.selected"
+          },
+          "lod_band": {
+            "lod_min_tag": "lod.galaxy.macro",
+            "lod_max_tag": "lod.galaxy.macro"
+          },
+          "field_refs": [
+            {
+              "field_id": "org.dominium.worldgen.real.milky_way.field.halo_structure"
+            },
+            {
+              "field_id": "org.dominium.worldgen.real.milky_way.field.bulge_structure"
+            }
+          ],
+          "component_tags": [
+            "field.galaxy.halo_structure",
+            "field.galaxy.bulge_structure"
+          ],
+          "precedence_tag": "precedence.overlay",
+          "failure_modes": [
+            "failure.defer"
+          ],
+          "extensions": {
+            "known_scope": [
+              "halo_extent",
+              "bulge_extent"
+            ],
+            "unknown_regions": [
+              "halo_substructure",
+              "bulge_substructure"
+            ]
+          }
+        }
+      ],
+      "precedence_rules": [
+        {
+          "higher_tag": "precedence.overlay",
+          "lower_tag": "precedence.base"
+        }
+      ],
+      "refinement_ceilings": [
+        {
+          "ceiling_id": "ceiling.milky_way.macro",
+          "lod_max_tag": "lod.galaxy.macro",
+          "field_refs": [
+            {
+              "field_id": "org.dominium.worldgen.real.milky_way.field.mass_distribution_anchors"
+            },
+            {
+              "field_id": "org.dominium.worldgen.real.milky_way.field.spiral_arm_topology"
+            },
+            {
+              "field_id": "org.dominium.worldgen.real.milky_way.field.halo_structure"
+            },
+            {
+              "field_id": "org.dominium.worldgen.real.milky_way.field.bulge_structure"
+            }
+          ],
+          "budget": {
+            "cost_units_max": 800,
+            "memory_units_max": 512
+          },
+          "ceiling_tags": [
+            "ceiling.macro"
+          ]
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.milky_way.v1"
+      },
+      "extensions": {
+        "selection_rule": "select_one_by_trait:topology.galaxy",
+        "selection_cardinality": "1",
+        "overlay_only": true,
+        "explicit_unknowns": [
+          "far_side_disk",
+          "outer_halo",
+          "arm_details"
+        ],
+        "failure_semantics": "degrade_or_freeze"
+      }
+    }
+  ]
+}

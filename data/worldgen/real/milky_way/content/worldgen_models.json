@@ -1,0 +1,70 @@
+{
+  "schema_id": "dominium.schema.worldgen_model",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "model_id": "org.dominium.worldgen.real.milky_way.model.canonical_v1",
+      "model_family": "worldgen.family.galaxy_observation_overlay",
+      "applicable_topology_traits": [
+        "topology.galaxy"
+      ],
+      "supported_fields": [
+        {
+          "field_id": "org.dominium.worldgen.real.milky_way.field.mass_distribution_anchors"
+        },
+        {
+          "field_id": "org.dominium.worldgen.real.milky_way.field.spiral_arm_topology"
+        },
+        {
+          "field_id": "org.dominium.worldgen.real.milky_way.field.halo_structure"
+        },
+        {
+          "field_id": "org.dominium.worldgen.real.milky_way.field.bulge_structure"
+        }
+      ],
+      "supported_lod_bands": [
+        {
+          "lod_min_tag": "lod.galaxy.macro",
+          "lod_max_tag": "lod.galaxy.macro"
+        }
+      ],
+      "required_capabilities": [
+        {
+          "capability_id": "worldgen.model.milky_way.canonical"
+        }
+      ],
+      "seed_namespace": "seed.galaxy.milky_way.overlay",
+      "assumptions": [
+        "assumption.overlay_only",
+        "assumption.observational_anchors"
+      ],
+      "validity_bounds": {
+        "lod": "macro",
+        "selection": "single_galaxy"
+      },
+      "failure_modes": [
+        "failure.missing_target",
+        "failure.insufficient_budget",
+        "failure.defer"
+      ],
+      "validation_targets": [
+        {
+          "target_id": "validation.galaxy.milky_way.macro",
+          "schema_id": "dominium.schema.field",
+          "target_tags": [
+            "field.galaxy.mass_distribution_anchors"
+          ]
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.milky_way.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_named_systems",
+          "no_physics_constants"
+        ]
+      }
+    }
+  ]
+}

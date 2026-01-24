@@ -1,0 +1,54 @@
+{
+  "schema_id": "dominium.schema.pack_manifest",
+  "schema_version": "1.0.0",
+  "record": {
+    "pack_id": "org.dominium.worldgen.realdata.milky_way",
+    "pack_version": "1.0.0",
+    "pack_format_version": 1,
+    "required_engine_version": "0.0.0",
+    "required_protocol_versions": [
+      {
+        "protocol_id": "dominium.protocol.pack_manifest",
+        "version_constraint": "1"
+      }
+    ],
+    "provides": [
+      {
+        "capability_id": "refinement.plan.milky_way.canonical"
+      },
+      {
+        "capability_id": "field.galaxy.mass_distribution_anchors"
+      },
+      {
+        "capability_id": "field.galaxy.spiral_arm_topology"
+      },
+      {
+        "capability_id": "field.galaxy.halo_structure"
+      },
+      {
+        "capability_id": "field.galaxy.bulge_structure"
+      },
+      {
+        "capability_id": "worldgen.model.milky_way.canonical"
+      }
+    ],
+    "dependencies": [
+      {
+        "capability_id": "worldgen.model.galaxy_morphology"
+      },
+      {
+        "capability_id": "topology.galaxy"
+      },
+      {
+        "capability_id": "topology.galactic_structure"
+      }
+    ],
+    "optional": true,
+    "provenance_ref": {
+      "provenance_id": "prov.org.dominium.worldgen.realdata.milky_way.manifest.v1"
+    },
+    "extensions": {
+      "notes": "Canonical Milky Way refinement data; optional overlay only."
+    }
+  }
+}
