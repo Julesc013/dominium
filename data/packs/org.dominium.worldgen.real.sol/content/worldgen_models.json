@@ -1,0 +1,58 @@
+{
+  "schema_id": "dominium.schema.worldgen_model",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "model_id": "org.dominium.worldgen.real.sol.model.orbit_override_v1",
+      "model_family": "worldgen.family.orbital_refinement",
+      "applicable_topology_traits": [
+        "topology.star_system"
+      ],
+      "supported_fields": [
+        {
+          "field_id": "org.dominium.worldgen.real.sol.field.orbit_parameters_macro"
+        }
+      ],
+      "supported_lod_bands": [
+        {
+          "lod_min_tag": "lod.system.macro",
+          "lod_max_tag": "lod.system.macro"
+        }
+      ],
+      "required_capabilities": [
+        {
+          "capability_id": "refinement.override.orbits"
+        }
+      ],
+      "seed_namespace": "seed.system.sol.overlay",
+      "assumptions": [
+        "assumption.real_world_calibration"
+      ],
+      "validity_bounds": {
+        "detail_band": "macro_only"
+      },
+      "failure_modes": [
+        "failure.insufficient_budget",
+        "failure.missing_target"
+      ],
+      "validation_targets": [
+        {
+          "target_id": "validation.system.sol.macro",
+          "schema_id": "dominium.schema.field",
+          "target_tags": [
+            "field.orbit_parameters"
+          ]
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.real.sol.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_life_assumptions",
+          "no_civilization_assumptions"
+        ]
+      }
+    }
+  ]
+}

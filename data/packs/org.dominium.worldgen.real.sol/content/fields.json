@@ -1,0 +1,38 @@
+{
+  "schema_id": "dominium.schema.field",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "field_id": "org.dominium.worldgen.real.sol.field.orbit_parameters_macro",
+      "field_type": "field.orbit_parameters",
+      "units": [
+        "unit.orbit_parameters"
+      ],
+      "resolution": {
+        "lod_tag": "lod.system.macro",
+        "metadata": {
+          "scale": "system"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.system.macro",
+          "metadata": {
+            "source": "worldgen.real.sol",
+            "procedural_below_lod": "lod.system.macro"
+          }
+        }
+      ],
+      "knowledge_state": "known",
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.real.sol.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_high_precision_ephemerides"
+        ]
+      }
+    }
+  ]
+}
