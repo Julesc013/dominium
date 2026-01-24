@@ -1,0 +1,133 @@
+{
+  "schema_id": "dominium.schema.refinement_plan",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "plan_id": "org.dominium.worldgen.base.galaxy.plan.v1",
+      "plan_tags": [
+        "worldgen.plan.galaxy.base"
+      ],
+      "plan_domain_scope": {
+        "scope_id": "scope.galaxy.from_filaments",
+        "scope_tags": [
+          "topology.cosmic_filament"
+        ]
+      },
+      "layers": [
+        {
+          "layer_id": "layer.galaxy.generate",
+          "order_index": 0,
+          "model_refs": [
+            {
+              "model_id": "org.dominium.worldgen.base.galaxy.model.morphology_v1"
+            }
+          ],
+          "domain_scope": {
+            "scope_id": "scope.galaxy.generate",
+            "scope_tags": [
+              "topology.galaxy"
+            ]
+          },
+          "lod_band": {
+            "lod_min_tag": "lod.galaxy.macro",
+            "lod_max_tag": "lod.galaxy.macro"
+          },
+          "field_refs": [
+            {
+              "field_id": "org.dominium.worldgen.base.galaxy.field.stellar_density"
+            },
+            {
+              "field_id": "org.dominium.worldgen.base.galaxy.field.metallicity_gradient"
+            }
+          ],
+          "component_tags": [
+            "topology.galaxy"
+          ],
+          "precedence_tag": "precedence.base",
+          "failure_modes": [
+            "failure.defer"
+          ],
+          "extensions": {
+            "not_defined": [
+              "no_named_galaxies"
+            ]
+          }
+        },
+        {
+          "layer_id": "layer.galaxy.structure",
+          "order_index": 1,
+          "model_refs": [
+            {
+              "model_id": "org.dominium.worldgen.base.galaxy.model.morphology_v1"
+            }
+          ],
+          "domain_scope": {
+            "scope_id": "scope.galaxy.structure",
+            "scope_tags": [
+              "topology.galactic_structure"
+            ]
+          },
+          "lod_band": {
+            "lod_min_tag": "lod.galaxy.macro",
+            "lod_max_tag": "lod.galaxy.macro"
+          },
+          "field_refs": [
+            {
+              "field_id": "org.dominium.worldgen.base.galaxy.field.stellar_density"
+            }
+          ],
+          "component_tags": [
+            "topology.galactic_structure"
+          ],
+          "precedence_tag": "precedence.base",
+          "failure_modes": [
+            "failure.defer"
+          ],
+          "extensions": {
+            "not_defined": [
+              "no_named_arms",
+              "no_named_bulges"
+            ]
+          }
+        }
+      ],
+      "precedence_rules": [
+        {
+          "higher_tag": "precedence.base",
+          "lower_tag": "precedence.overlay"
+        }
+      ],
+      "refinement_ceilings": [
+        {
+          "ceiling_id": "ceiling.galaxy.macro",
+          "lod_max_tag": "lod.galaxy.macro",
+          "field_refs": [
+            {
+              "field_id": "org.dominium.worldgen.base.galaxy.field.stellar_density"
+            },
+            {
+              "field_id": "org.dominium.worldgen.base.galaxy.field.metallicity_gradient"
+            }
+          ],
+          "budget": {
+            "cost_units_max": 800,
+            "memory_units_max": 512
+          },
+          "ceiling_tags": [
+            "ceiling.macro"
+          ]
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.base.galaxy.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_named_galaxies",
+          "no_star_systems"
+        ],
+        "failure_semantics": "degrade_or_freeze"
+      }
+    }
+  ]
+}
