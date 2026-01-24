@@ -1,0 +1,344 @@
+{
+  "schema_id": "dominium.schema.process",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "process_id": "process.on_planet.maintenance.wear_accumulate",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.structural.integrity"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.structural.integrity"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.maintenance"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.infrastructure"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.infrastructure.local",
+          "volume_id": "domain.on_planet.infrastructure.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.unsupported_state"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.maintenance.wear_accumulate.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.persistent"
+        },
+        "energy_cost_desc": {
+          "class": "energy.none"
+        },
+        "conservation_tags": [
+          "conservation.energy"
+        ],
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_wear_model"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.maintenance.inspect_condition",
+      "process_class": "epistemic",
+      "inputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.structural.integrity"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.maintenance.record"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.survey"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.observe.infrastructure"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.infrastructure.local",
+          "volume_id": "domain.on_planet.infrastructure.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.maintenance.inspect_condition.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_inspection_schema"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.maintenance.degrade_performance",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.structural.integrity"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.structural.integrity"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.maintenance"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.infrastructure"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.infrastructure.local",
+          "volume_id": "domain.on_planet.infrastructure.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.unsupported_state"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.maintenance.degrade_performance.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.persistent"
+        },
+        "energy_cost_desc": {
+          "class": "energy.none"
+        },
+        "conservation_tags": [
+          "conservation.energy"
+        ],
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_performance_curve"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.maintenance.fail_component",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "assembly",
+          "ref_id": "assembly.on_planet.structure.frame.basic"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.failure.report"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.maintenance"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.infrastructure"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.infrastructure.local",
+          "volume_id": "domain.on_planet.infrastructure.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.none"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.maintenance.fail_component.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.instant"
+        },
+        "energy_cost_desc": {
+          "class": "energy.none"
+        },
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_failure_mode_detail"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.maintenance.repair",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "part",
+          "ref_id": "part.on_planet.joint.basic"
+        },
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.structural.integrity"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.structural.integrity"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.maintenance"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.infrastructure"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.infrastructure.local",
+          "volume_id": "domain.on_planet.infrastructure.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.insufficient_material"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.maintenance.repair.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "conservation_tags": [
+          "conservation.mass",
+          "conservation.energy"
+        ],
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_repair_procedure"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.maintenance.replace_part",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "part",
+          "ref_id": "part.on_planet.panel.basic"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "part",
+          "ref_id": "part.on_planet.panel.basic"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.maintenance"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.infrastructure"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.infrastructure.local",
+          "volume_id": "domain.on_planet.infrastructure.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.insufficient_material"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.maintenance.replace_part.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "conservation_tags": [
+          "conservation.mass",
+          "conservation.energy"
+        ],
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_replacement_rules"
+        ]
+      }
+    }
+  ]
+}
