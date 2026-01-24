@@ -1,0 +1,78 @@
+{
+  "schema_id": "dominium.schema.capability",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "capability_id": "reality.hyperspace",
+      "capability_tags": [
+        "reality.domain"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.hyperspace.v1"
+      }
+    },
+    {
+      "capability_id": "topology.layer.hyperspace",
+      "capability_tags": [
+        "topology.layer"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.hyperspace.v1"
+      }
+    },
+    {
+      "capability_id": "field.hyperspace_metric",
+      "capability_tags": [
+        "field.hyperspace"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.hyperspace.v1"
+      }
+    },
+    {
+      "capability_id": "field.hyperspace_connectivity",
+      "capability_tags": [
+        "field.hyperspace"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.hyperspace.v1"
+      }
+    },
+    {
+      "capability_id": "process.hyperspace.enter",
+      "capability_tags": [
+        "process.hyperspace"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.hyperspace.v1"
+      }
+    },
+    {
+      "capability_id": "process.hyperspace.travel",
+      "capability_tags": [
+        "process.hyperspace"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.hyperspace.v1"
+      }
+    },
+    {
+      "capability_id": "process.hyperspace.exit",
+      "capability_tags": [
+        "process.hyperspace"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.hyperspace.v1"
+      }
+    },
+    {
+      "capability_id": "worldgen.model.hyperspace",
+      "capability_tags": [
+        "worldgen.model"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.hyperspace.v1"
+      }
+    }
+  ]
+}

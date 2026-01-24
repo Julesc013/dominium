@@ -1,0 +1,50 @@
+{
+  "schema_id": "dominium.schema.knowledge",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "knowledge_artifact_id": "knowledge.hyperspace.chart.v1",
+      "knowledge_domain_tag": "knowledge.hyperspace.navigation",
+      "confidence_desc": {
+        "level_tag": "confidence.provisional",
+        "source": "navigation_surveys"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.unbounded"
+      },
+      "diffusion_metadata": {
+        "visibility": "restricted"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.hyperspace.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_objective_guarantee"
+        ]
+      }
+    },
+    {
+      "knowledge_artifact_id": "knowledge.hyperspace.anomaly.v1",
+      "knowledge_domain_tag": "knowledge.hyperspace.anomaly",
+      "confidence_desc": {
+        "level_tag": "confidence.anecdotal",
+        "source": "anomaly_reports"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.unbounded"
+      },
+      "diffusion_metadata": {
+        "visibility": "classified"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.hyperspace.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_repeatability_guarantee"
+        ]
+      }
+    }
+  ]
+}

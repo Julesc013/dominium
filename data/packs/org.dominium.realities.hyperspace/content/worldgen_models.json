@@ -1,0 +1,58 @@
+{
+  "schema_id": "dominium.schema.worldgen_model",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "model_id": "org.dominium.realities.hyperspace.model.hyperspace_v1",
+      "model_family": "worldgen.family.hyperspace",
+      "applicable_topology_traits": [
+        "topology.layer.hyperspace"
+      ],
+      "applicable_domains": [
+        {
+          "domain_id": "org.dominium.realities.hyperspace.domain.hyperspace",
+          "volume_id": "org.dominium.realities.hyperspace.domain.hyperspace.volume"
+        }
+      ],
+      "supported_fields": [
+        {
+          "field_id": "org.dominium.realities.hyperspace.field.metric"
+        },
+        {
+          "field_id": "org.dominium.realities.hyperspace.field.connectivity"
+        }
+      ],
+      "supported_lod_bands": [
+        {
+          "lod_min_tag": "lod.hyperspace.coarse",
+          "lod_max_tag": "lod.hyperspace.fine"
+        }
+      ],
+      "required_capabilities": [
+        {
+          "capability_id": "worldgen.model.hyperspace"
+        }
+      ],
+      "seed_namespace": "seed.hyperspace",
+      "assumptions": [
+        "assumption.non_euclidean",
+        "assumption.layered_adjacency"
+      ],
+      "validity_bounds": {
+        "scope": "layer_only"
+      },
+      "failure_modes": [
+        "failure.inconsistent_bounds",
+        "failure.defer"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.hyperspace.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_physics_requirements"
+        ]
+      }
+    }
+  ]
+}

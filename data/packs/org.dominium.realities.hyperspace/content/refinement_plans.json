@@ -1,0 +1,94 @@
+{
+  "schema_id": "dominium.schema.refinement_plan",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "plan_id": "org.dominium.realities.hyperspace.plan.v1",
+      "plan_tags": [
+        "worldgen.plan.hyperspace.overlay"
+      ],
+      "plan_domain_scope": {
+        "scope_id": "scope.hyperspace.layer",
+        "node_id": "org.dominium.realities.hyperspace.node.layer",
+        "domain_id": "org.dominium.realities.hyperspace.domain.hyperspace"
+      },
+      "layers": [
+        {
+          "layer_id": "layer.hyperspace.metric",
+          "order_index": 0,
+          "model_refs": [
+            {
+              "model_id": "org.dominium.realities.hyperspace.model.hyperspace_v1"
+            }
+          ],
+          "domain_scope": {
+            "scope_id": "scope.hyperspace.layer",
+            "domain_id": "org.dominium.realities.hyperspace.domain.hyperspace",
+            "volume_id": "org.dominium.realities.hyperspace.domain.hyperspace.volume"
+          },
+          "lod_band": {
+            "lod_min_tag": "lod.hyperspace.coarse",
+            "lod_max_tag": "lod.hyperspace.fine"
+          },
+          "field_refs": [
+            {
+              "field_id": "org.dominium.realities.hyperspace.field.metric"
+            },
+            {
+              "field_id": "org.dominium.realities.hyperspace.field.connectivity"
+            }
+          ],
+          "component_tags": [
+            "topology.layer.hyperspace"
+          ],
+          "precedence_tag": "precedence.overlay",
+          "failure_modes": [
+            "failure.defer",
+            "failure.insufficient_budget"
+          ],
+          "extensions": {
+            "not_defined": [
+              "no_guaranteed_routes"
+            ]
+          }
+        }
+      ],
+      "precedence_rules": [
+        {
+          "higher_tag": "precedence.overlay",
+          "lower_tag": "precedence.base"
+        }
+      ],
+      "refinement_ceilings": [
+        {
+          "ceiling_id": "ceiling.hyperspace.fine",
+          "lod_max_tag": "lod.hyperspace.fine",
+          "field_refs": [
+            {
+              "field_id": "org.dominium.realities.hyperspace.field.metric"
+            },
+            {
+              "field_id": "org.dominium.realities.hyperspace.field.connectivity"
+            }
+          ],
+          "budget": {
+            "cost_units_max": 1000,
+            "memory_units_max": 512
+          },
+          "ceiling_tags": [
+            "ceiling.hyperspace"
+          ]
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.hyperspace.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_default_geometry"
+        ],
+        "failure_semantics": "degrade_or_freeze"
+      }
+    }
+  ]
+}

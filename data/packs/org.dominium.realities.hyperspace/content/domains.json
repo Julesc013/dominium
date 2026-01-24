@@ -1,0 +1,35 @@
+{
+  "schema_id": "dominium.schema.domain",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "domain_id": "org.dominium.realities.hyperspace.domain.hyperspace",
+      "domain_type": "domain.hyperspace",
+      "domain_tags": [
+        "domain.hyperspace"
+      ],
+      "volumes": [
+        {
+          "volume_id": "org.dominium.realities.hyperspace.domain.hyperspace.volume",
+          "bounds": {
+            "kind_tag": "bounds.hyperspace",
+            "payload": {
+              "notes": "Abstract hyperspace domain with non_euclidean adjacency."
+            }
+          },
+          "volume_tags": [
+            "domain.volume.hyperspace"
+          ]
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.hyperspace.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_default_metric"
+        ]
+      }
+    }
+  ]
+}
