@@ -1,0 +1,38 @@
+{
+  "schema_id": "dominium.schema.measurement_artifact",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "measurement_artifact_id": "meas.real.sol_system.ephemerides.v1",
+      "measurement_domain_tag": "measurement.system.ephemerides",
+      "era_tag": "era.modern",
+      "target_ref": {
+        "node_id": "node.selected.star_system"
+      },
+      "confidence_desc": {
+        "level_tag": "confidence.high",
+        "kind": "ephemeris"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.bounded",
+        "kind": "ephemeris"
+      },
+      "access_control": {
+        "visibility": "public"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.sol_system.v1"
+      },
+      "extensions": {
+        "validity": {
+          "epoch_start": "era.modern",
+          "epoch_end": "era.modern"
+        },
+        "uncertainty_growth": "growth.outside_epoch",
+        "not_defined": [
+          "no_eternal_truth"
+        ]
+      }
+    }
+  ]
+}

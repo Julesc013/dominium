@@ -1,0 +1,54 @@
+{
+  "schema_id": "dominium.schema.pack_manifest",
+  "schema_version": "1.0.0",
+  "record": {
+    "pack_id": "org.dominium.worldgen.realdata.sol_system",
+    "pack_version": "1.0.0",
+    "pack_format_version": 1,
+    "required_engine_version": "0.0.0",
+    "required_protocol_versions": [
+      {
+        "protocol_id": "dominium.protocol.pack_manifest",
+        "version_constraint": "1"
+      }
+    ],
+    "provides": [
+      {
+        "capability_id": "refinement.plan.sol_system.canonical"
+      },
+      {
+        "capability_id": "field.star.parameters"
+      },
+      {
+        "capability_id": "field.system.body_catalog"
+      },
+      {
+        "capability_id": "field.belt.structure"
+      },
+      {
+        "capability_id": "field.orbit_ephemerides"
+      },
+      {
+        "capability_id": "worldgen.model.sol_system.canonical"
+      }
+    ],
+    "dependencies": [
+      {
+        "capability_id": "worldgen.model.system_formation"
+      },
+      {
+        "capability_id": "topology.star_system"
+      },
+      {
+        "capability_id": "topology.barycenter"
+      }
+    ],
+    "optional": true,
+    "provenance_ref": {
+      "provenance_id": "prov.org.dominium.worldgen.realdata.sol_system.manifest.v1"
+    },
+    "extensions": {
+      "notes": "Canonical Sol system refinement data; time-scoped ephemerides."
+    }
+  }
+}

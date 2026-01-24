@@ -1,0 +1,69 @@
+{
+  "schema_id": "dominium.schema.worldgen_model",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "model_id": "org.dominium.worldgen.real.sol_system.model.canonical_v1",
+      "model_family": "worldgen.family.system_observation_overlay",
+      "applicable_topology_traits": [
+        "topology.star_system"
+      ],
+      "supported_fields": [
+        {
+          "field_id": "org.dominium.worldgen.real.sol_system.field.star_parameters"
+        },
+        {
+          "field_id": "org.dominium.worldgen.real.sol_system.field.body_catalog"
+        },
+        {
+          "field_id": "org.dominium.worldgen.real.sol_system.field.belt_structure"
+        },
+        {
+          "field_id": "org.dominium.worldgen.real.sol_system.field.orbit_ephemerides"
+        }
+      ],
+      "supported_lod_bands": [
+        {
+          "lod_min_tag": "lod.system.macro",
+          "lod_max_tag": "lod.system.macro"
+        }
+      ],
+      "required_capabilities": [
+        {
+          "capability_id": "worldgen.model.sol_system.canonical"
+        }
+      ],
+      "seed_namespace": "seed.system.sol.overlay",
+      "assumptions": [
+        "assumption.overlay_only",
+        "assumption.time_bounded_ephemerides"
+      ],
+      "validity_bounds": {
+        "lod": "macro",
+        "selection": "single_system"
+      },
+      "failure_modes": [
+        "failure.missing_target",
+        "failure.insufficient_budget",
+        "failure.defer"
+      ],
+      "validation_targets": [
+        {
+          "target_id": "validation.system.sol.macro",
+          "schema_id": "dominium.schema.field",
+          "target_tags": [
+            "field.orbit_ephemerides"
+          ]
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.sol_system.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_life_assumptions"
+        ]
+      }
+    }
+  ]
+}

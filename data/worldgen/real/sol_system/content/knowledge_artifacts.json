@@ -1,0 +1,64 @@
+{
+  "schema_id": "dominium.schema.knowledge",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "knowledge_artifact_id": "knowledge.real.sol_system.known.v1",
+      "knowledge_domain_tag": "knowledge.system.known",
+      "confidence_desc": {
+        "level_tag": "confidence.high",
+        "source": "observational_surveys"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.bounded"
+      },
+      "diffusion_metadata": {
+        "visibility": "public"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.sol_system.v1"
+      }
+    },
+    {
+      "knowledge_artifact_id": "knowledge.real.sol_system.inferred.v1",
+      "knowledge_domain_tag": "knowledge.system.inferred",
+      "confidence_desc": {
+        "level_tag": "confidence.provisional",
+        "source": "model_inference"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.unbounded"
+      },
+      "diffusion_metadata": {
+        "visibility": "public"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.sol_system.v1"
+      }
+    },
+    {
+      "knowledge_artifact_id": "knowledge.real.sol_system.ephemeris_scope.v1",
+      "knowledge_domain_tag": "knowledge.system.ephemerides",
+      "confidence_desc": {
+        "level_tag": "confidence.declared",
+        "source": "time_scoped_records"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.unbounded"
+      },
+      "diffusion_metadata": {
+        "visibility": "public"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.sol_system.v1"
+      },
+      "extensions": {
+        "validity": {
+          "epoch_start": "era.modern",
+          "epoch_end": "era.modern"
+        },
+        "uncertainty_growth": "growth.outside_epoch"
+      }
+    }
+  ]
+}
