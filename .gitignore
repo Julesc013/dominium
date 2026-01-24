@@ -299,6 +299,7 @@ venv/
 !/game/**
 !/data/base/**
 !/data/dlc/**
+!/data/packs/**/pack.manifest
 !/data/templates/**
 !/tools/editor/src/**
 !/tools/devkit/**
