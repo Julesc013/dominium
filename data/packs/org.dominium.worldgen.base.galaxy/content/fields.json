@@ -1,0 +1,68 @@
+{
+  "schema_id": "dominium.schema.field",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "field_id": "org.dominium.worldgen.base.galaxy.field.stellar_density",
+      "field_type": "field.stellar_density",
+      "units": [
+        "unit.stellar_density"
+      ],
+      "resolution": {
+        "lod_tag": "lod.galaxy.macro",
+        "metadata": {
+          "scale": "galactic"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.galaxy.macro",
+          "metadata": {
+            "source": "worldgen.base.galaxy"
+          }
+        }
+      ],
+      "knowledge_state": "latent",
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.base.galaxy.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_named_galaxies"
+        ]
+      }
+    },
+    {
+      "field_id": "org.dominium.worldgen.base.galaxy.field.metallicity_gradient",
+      "field_type": "field.metallicity_gradient",
+      "units": [
+        "unit.metallicity"
+      ],
+      "resolution": {
+        "lod_tag": "lod.galaxy.macro",
+        "metadata": {
+          "scale": "galactic"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.galaxy.macro",
+          "metadata": {
+            "source": "worldgen.base.galaxy"
+          }
+        }
+      ],
+      "knowledge_state": "latent",
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.base.galaxy.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_precise_elemental_assumptions"
+        ]
+      }
+    }
+  ]
+}
