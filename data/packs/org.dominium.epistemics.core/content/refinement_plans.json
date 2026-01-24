@@ -1,0 +1,79 @@
+{
+  "schema_id": "dominium.schema.refinement_plan",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "plan_id": "org.dominium.epistemics.core.plan.subjective_gating.v1",
+      "plan_tags": [
+        "worldgen.plan.epistemic_gating"
+      ],
+      "plan_domain_scope": {
+        "scope_id": "scope.epistemic.gating"
+      },
+      "layers": [
+        {
+          "layer_id": "layer.subjective.gate",
+          "order_index": 0,
+          "model_refs": [
+            {
+              "model_id": "org.dominium.epistemics.core.model.epistemic_filter_v1"
+            }
+          ],
+          "domain_scope": {
+            "scope_id": "scope.subjective.refinement"
+          },
+          "lod_band": {
+            "lod_min_tag": "lod.any",
+            "lod_max_tag": "lod.any"
+          },
+          "component_tags": [
+            "knowledge.artifact"
+          ],
+          "precedence_tag": "precedence.gating",
+          "failure_modes": [
+            "failure.insufficient_knowledge"
+          ],
+          "extensions": {
+            "required_knowledge_tags": [
+              "knowledge.verified"
+            ],
+            "insufficient_knowledge_behavior": [
+              "degrade_lod",
+              "emit_unknown_placeholders"
+            ],
+            "forbidden": [
+              "free_refinement"
+            ]
+          }
+        }
+      ],
+      "precedence_rules": [
+        {
+          "higher_tag": "precedence.gating",
+          "lower_tag": "precedence.base"
+        }
+      ],
+      "refinement_ceilings": [
+        {
+          "ceiling_id": "ceiling.subjective.knowledge",
+          "lod_max_tag": "lod.any",
+          "budget": {
+            "cost_units_max": 1000,
+            "memory_units_max": 512
+          },
+          "ceiling_tags": [
+            "ceiling.subjective"
+          ]
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.epistemics.core.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_objective_truth_changes"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "schema_id": "dominium.schema.measurement_artifact",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "measurement_artifact_id": "meas.epistemics.observe.v1",
+      "measurement_domain_tag": "measurement.observation",
+      "era_tag": "era.observation.modern",
+      "timestamp": {
+        "timestamp_kind": "point",
+        "timestamp_tag": "time.unknown"
+      },
+      "target_ref": {
+        "node_id": "target.unknown"
+      },
+      "confidence_desc": {
+        "kind": "observational",
+        "level_tag": "confidence.estimated"
+      },
+      "uncertainty_desc": {
+        "kind": "observational",
+        "bounds_tag": "uncertainty.reported"
+      },
+      "access_control": {
+        "visibility": "public"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.epistemics.core.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_truth_guarantee"
+        ]
+      }
+    },
+    {
+      "measurement_artifact_id": "meas.epistemics.experiment.v1",
+      "measurement_domain_tag": "measurement.experiment",
+      "era_tag": "era.experimental",
+      "timestamp": {
+        "timestamp_kind": "range",
+        "timestamp_tag": "time.unknown"
+      },
+      "target_ref": {
+        "node_id": "target.unknown"
+      },
+      "confidence_desc": {
+        "kind": "experimental",
+        "level_tag": "confidence.estimated"
+      },
+      "uncertainty_desc": {
+        "kind": "experimental",
+        "bounds_tag": "uncertainty.reported"
+      },
+      "access_control": {
+        "visibility": "restricted"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.epistemics.core.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_global_validity"
+        ]
+      }
+    },
+    {
+      "measurement_artifact_id": "meas.epistemics.survey.v1",
+      "measurement_domain_tag": "measurement.survey",
+      "era_tag": "era.observation.modern",
+      "timestamp": {
+        "timestamp_kind": "range",
+        "timestamp_tag": "time.unknown"
+      },
+      "target_ref": {
+        "node_id": "target.unknown"
+      },
+      "confidence_desc": {
+        "kind": "survey",
+        "level_tag": "confidence.estimated"
+      },
+      "uncertainty_desc": {
+        "kind": "survey",
+        "bounds_tag": "uncertainty.reported"
+      },
+      "access_control": {
+        "visibility": "public"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.epistemics.core.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_completeness_guarantee"
+        ]
+      }
+    }
+  ]
+}

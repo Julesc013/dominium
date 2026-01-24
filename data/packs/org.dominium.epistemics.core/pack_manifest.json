@@ -1,0 +1,59 @@
+{
+  "schema_id": "dominium.schema.pack_manifest",
+  "schema_version": "1.0.0",
+  "record": {
+    "pack_id": "org.dominium.epistemics.core",
+    "pack_version": "1.0.0",
+    "pack_format_version": 1,
+    "required_engine_version": "0.0.0",
+    "required_protocol_versions": [
+      {
+        "protocol_id": "dominium.protocol.pack_manifest",
+        "version_constraint": "1"
+      }
+    ],
+    "provides": [
+      {
+        "capability_id": "knowledge.artifact.core"
+      },
+      {
+        "capability_id": "process.epistemic.observe"
+      },
+      {
+        "capability_id": "process.epistemic.measure"
+      },
+      {
+        "capability_id": "process.epistemic.survey"
+      },
+      {
+        "capability_id": "process.epistemic.experiment"
+      },
+      {
+        "capability_id": "process.epistemic.infer"
+      },
+      {
+        "capability_id": "process.epistemic.publish"
+      },
+      {
+        "capability_id": "process.epistemic.suppress"
+      },
+      {
+        "capability_id": "process.epistemic.distort"
+      },
+      {
+        "capability_id": "worldgen.model.epistemic_filter"
+      },
+      {
+        "capability_id": "refinement.gating.epistemic"
+      }
+    ],
+    "dependencies": [],
+    "optional": true,
+    "provenance_ref": {
+      "provenance_id": "prov.org.dominium.epistemics.core.manifest.v1"
+    },
+    "extensions": {
+      "notes": "Core epistemic artifacts and processes; no truth mutation."
+    }
+  }
+}

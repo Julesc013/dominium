@@ -1,0 +1,7 @@
+pack_id = org.dominium.epistemics.core
+pack_version = 1.0.0
+pack_format_version = 1
+required_engine_version = 0.0.0
+required_protocols = dominium.protocol.pack_manifest:1
+provides = knowledge.artifact.core, process.epistemic.observe, process.epistemic.measure, process.epistemic.survey, process.epistemic.experiment, process.epistemic.infer, process.epistemic.publish, process.epistemic.suppress, process.epistemic.distort, worldgen.model.epistemic_filter, refinement.gating.epistemic
+optional = true
