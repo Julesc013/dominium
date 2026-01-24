@@ -1,3 +1,10 @@
+# ARCHIVED — OUTDATED
+
+This document is archived and superseded by `docs/arch/INVARIANTS.md`.
+Reason: EG-H canon designates `docs/arch/` as the authoritative source and
+this file may conflict or duplicate canonical invariants.
+Status: archived for historical reference only.
+
 # Architectural Invariants
 
 Status: canonical.

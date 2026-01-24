@@ -1,3 +1,10 @@
+# ARCHIVED — OUTDATED
+
+This document is archived and superseded by `docs/arch/WHAT_THIS_IS_NOT.md`.
+Reason: EG-H canon designates `docs/arch/` as authoritative; this file may
+conflict or duplicate canonical non-goals.
+Status: archived for historical reference only.
+
 # Non-Goals
 
 Status: canonical.

@@ -1,3 +1,11 @@
+# ARCHIVED — OUTDATED
+
+This document is archived and superseded by `docs/arch/WHAT_THIS_IS.md` and
+`docs/arch/REALITY_MODEL.md`.
+Reason: EG-H canon designates `docs/arch/` as authoritative; this file may
+conflict or duplicate canonical framing.
+Status: archived for historical reference only.
+
 # Mental Model
 
 Status: canonical.
