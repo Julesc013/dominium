@@ -1,0 +1,70 @@
+{
+  "schema_id": "dominium.schema.worldgen_model",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "model_id": "org.dominium.worldgen.real.earth_macro.model.overlay_v1",
+      "model_family": "worldgen.family.planetary_geology",
+      "applicable_topology_traits": [
+        "topology.body.planetary"
+      ],
+      "supported_fields": [
+        {
+          "field_id": "org.dominium.worldgen.real.earth_macro.field.terrain_macro"
+        },
+        {
+          "field_id": "org.dominium.worldgen.real.earth_macro.field.climate_macro"
+        },
+        {
+          "field_id": "org.dominium.worldgen.real.earth_macro.field.atmosphere_macro"
+        }
+      ],
+      "supported_lod_bands": [
+        {
+          "lod_min_tag": "lod.body.macro",
+          "lod_max_tag": "lod.body.macro"
+        }
+      ],
+      "required_capabilities": [
+        {
+          "capability_id": "field.terrain.macro"
+        },
+        {
+          "capability_id": "field.climate.macro"
+        },
+        {
+          "capability_id": "field.atmosphere.macro"
+        }
+      ],
+      "seed_namespace": "seed.body.earth.overlay",
+      "assumptions": [
+        "assumption.real_world_calibration"
+      ],
+      "validity_bounds": {
+        "detail_band": "macro_only"
+      },
+      "failure_modes": [
+        "failure.insufficient_budget",
+        "failure.missing_target"
+      ],
+      "validation_targets": [
+        {
+          "target_id": "validation.earth.macro",
+          "schema_id": "dominium.schema.field",
+          "target_tags": [
+            "field.terrain.macro"
+          ]
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.real.earth_macro.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_biosphere_assumptions",
+          "no_civilization_assumptions"
+        ]
+      }
+    }
+  ]
+}

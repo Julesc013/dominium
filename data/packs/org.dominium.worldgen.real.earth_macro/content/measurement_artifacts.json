@@ -1,0 +1,39 @@
+{
+  "schema_id": "dominium.schema.measurement_artifact",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "measurement_artifact_id": "meas.org.dominium.worldgen.real.earth_macro.anchors.v1",
+      "measurement_domain_tag": "measurement.observation.earth",
+      "era_tag": "era.observation.modern",
+      "target_ref": {
+        "node_id": "org.dominium.worldgen.real.earth_macro.node.earth",
+        "domain_id": "org.dominium.worldgen.real.earth_macro.domain.earth",
+        "volume_id": "org.dominium.worldgen.real.earth_macro.domain.earth.volume"
+      },
+      "confidence_desc": {
+        "kind": "observational",
+        "level_tag": "confidence.estimated"
+      },
+      "uncertainty_desc": {
+        "kind": "observational",
+        "bounds_tag": "uncertainty.reported"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.real.earth_macro.v1"
+      },
+      "extensions": {
+        "anchors": {
+          "continents_tag": "anchor.earth.continents",
+          "oceans_tag": "anchor.earth.oceans",
+          "climate_zones_tag": "anchor.earth.climate_zones",
+          "atmosphere_profile_tag": "anchor.earth.atmosphere"
+        },
+        "not_defined": [
+          "no_weather_events",
+          "no_biosphere_catalogs"
+        ]
+      }
+    }
+  ]
+}

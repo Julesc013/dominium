@@ -1,0 +1,47 @@
+{
+  "schema_id": "dominium.schema.topology",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "node_id": "org.dominium.worldgen.real.earth_macro.node.earth",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.worldgen.real.sol.node.system",
+          "ref_tags": [
+            "ref.optional_parent"
+          ]
+        }
+      ],
+      "trait_tags": [
+        "topology.body.earth",
+        "topology.body.planetary",
+        "refinement.anchor"
+      ],
+      "domain_volume_refs": [
+        {
+          "domain_id": "org.dominium.worldgen.real.earth_macro.domain.earth",
+          "volume_id": "org.dominium.worldgen.real.earth_macro.domain.earth.volume"
+        }
+      ],
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.body.macro",
+          "metadata": {
+            "source": "worldgen.real.earth_macro"
+          }
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.real.earth_macro.v1"
+      },
+      "extensions": {
+        "anchor_role": "refinement_override",
+        "not_defined": [
+          "no_biosphere_assumptions",
+          "no_civilization_assumptions"
+        ]
+      }
+    }
+  ]
+}

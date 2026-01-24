@@ -1,0 +1,104 @@
+{
+  "schema_id": "dominium.schema.refinement_plan",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "plan_id": "org.dominium.worldgen.real.earth_macro.plan.override_v1",
+      "plan_tags": [
+        "worldgen.plan.body.overlay",
+        "worldgen.plan.real_earth_macro"
+      ],
+      "plan_domain_scope": {
+        "scope_id": "scope.body.earth",
+        "node_id": "org.dominium.worldgen.real.earth_macro.node.earth",
+        "scope_tags": [
+          "topology.body.earth"
+        ]
+      },
+      "layers": [
+        {
+          "layer_id": "layer.earth.macro_override",
+          "order_index": 0,
+          "model_refs": [
+            {
+              "model_id": "org.dominium.worldgen.real.earth_macro.model.overlay_v1"
+            }
+          ],
+          "domain_scope": {
+            "scope_id": "scope.earth.macro.override",
+            "node_id": "org.dominium.worldgen.real.earth_macro.node.earth"
+          },
+          "lod_band": {
+            "lod_min_tag": "lod.body.macro",
+            "lod_max_tag": "lod.body.macro"
+          },
+          "field_refs": [
+            {
+              "field_id": "org.dominium.worldgen.real.earth_macro.field.terrain_macro"
+            },
+            {
+              "field_id": "org.dominium.worldgen.real.earth_macro.field.climate_macro"
+            },
+            {
+              "field_id": "org.dominium.worldgen.real.earth_macro.field.atmosphere_macro"
+            }
+          ],
+          "component_tags": [
+            "field.terrain.macro",
+            "field.climate.macro",
+            "field.atmosphere.macro"
+          ],
+          "precedence_tag": "precedence.overlay",
+          "failure_modes": [
+            "failure.defer"
+          ],
+          "extensions": {
+            "not_defined": [
+              "no_micro_detail"
+            ]
+          }
+        }
+      ],
+      "precedence_rules": [
+        {
+          "higher_tag": "precedence.overlay",
+          "lower_tag": "precedence.base"
+        }
+      ],
+      "refinement_ceilings": [
+        {
+          "ceiling_id": "ceiling.earth.macro",
+          "lod_max_tag": "lod.body.macro",
+          "field_refs": [
+            {
+              "field_id": "org.dominium.worldgen.real.earth_macro.field.terrain_macro"
+            },
+            {
+              "field_id": "org.dominium.worldgen.real.earth_macro.field.climate_macro"
+            },
+            {
+              "field_id": "org.dominium.worldgen.real.earth_macro.field.atmosphere_macro"
+            }
+          ],
+          "budget": {
+            "cost_units_max": 500,
+            "memory_units_max": 256
+          },
+          "ceiling_tags": [
+            "ceiling.macro"
+          ]
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.real.earth_macro.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_biosphere_assumptions",
+          "no_civilization_assumptions"
+        ],
+        "failure_semantics": "degrade_or_freeze"
+      }
+    }
+  ]
+}
