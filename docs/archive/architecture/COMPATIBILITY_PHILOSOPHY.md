@@ -1,3 +1,10 @@
+# ARCHIVED — OUTDATED
+
+This document is archived and superseded by `docs/arch/FUTURE_COMPATIBILITY_AND_ARCH.md`.
+Reason: EG-H canon designates `docs/arch/` as authoritative; this file may
+conflict or duplicate canonical compatibility rules.
+Status: archived for historical reference only.
+
 # Compatibility Philosophy
 
 Status: canonical.

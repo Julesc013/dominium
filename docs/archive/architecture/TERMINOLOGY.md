@@ -1,3 +1,10 @@
+# ARCHIVED — OUTDATED
+
+This document is archived and superseded by `docs/arch/GLOSSARY.md`.
+Reason: EG-H canon designates `docs/arch/` as authoritative; this file may
+conflict or duplicate canonical terminology.
+Status: archived for historical reference only.
+
 # Terminology
 
 Status: canonical.
