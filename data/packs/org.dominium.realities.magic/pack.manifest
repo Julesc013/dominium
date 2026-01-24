@@ -1,0 +1,7 @@
+pack_id = org.dominium.realities.magic
+pack_version = 1.0.0
+pack_format_version = 1
+required_engine_version = 0.0.0
+required_protocols = dominium.protocol.pack_manifest:1
+provides = reality.magic, field.mana, field.fate, process.magic.ritual, process.magic.spell, process.magic.divination, institution.magic.order, worldgen.model.magic
+optional = true

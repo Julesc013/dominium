@@ -1,0 +1,81 @@
+{
+  "schema_id": "dominium.schema.capability",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "capability_id": "reality.magic",
+      "capability_tags": [
+        "reality.domain"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.magic.v1"
+      }
+    },
+    {
+      "capability_id": "field.mana",
+      "capability_tags": [
+        "field.magic"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.magic.v1"
+      }
+    },
+    {
+      "capability_id": "field.fate",
+      "capability_tags": [
+        "field.magic"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.magic.v1"
+      }
+    },
+    {
+      "capability_id": "process.magic.ritual",
+      "capability_tags": [
+        "process.magic",
+        "process.ritual"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.magic.v1"
+      }
+    },
+    {
+      "capability_id": "process.magic.spell",
+      "capability_tags": [
+        "process.magic",
+        "process.spell"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.magic.v1"
+      }
+    },
+    {
+      "capability_id": "process.magic.divination",
+      "capability_tags": [
+        "process.magic",
+        "process.epistemic"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.magic.v1"
+      }
+    },
+    {
+      "capability_id": "institution.magic.order",
+      "capability_tags": [
+        "institution.magic"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.magic.v1"
+      }
+    },
+    {
+      "capability_id": "worldgen.model.magic",
+      "capability_tags": [
+        "worldgen.model"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.magic.v1"
+      }
+    }
+  ]
+}

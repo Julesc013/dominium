@@ -1,0 +1,94 @@
+{
+  "schema_id": "dominium.schema.process",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "process_id": "process.magic.ritual.cast",
+      "process_class": "transformative",
+      "required_capability_refs": [
+        {
+          "capability_id": "process.magic.ritual"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.magic"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "org.dominium.realities.magic.domain.magic",
+          "volume_id": "org.dominium.realities.magic.domain.magic.volume"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_capability",
+        "failure.insufficient_budget"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.magic.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_guaranteed_outcome"
+        ]
+      }
+    },
+    {
+      "process_id": "process.magic.spell.weave",
+      "process_class": "transformative",
+      "required_capability_refs": [
+        {
+          "capability_id": "process.magic.spell"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.magic"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "org.dominium.realities.magic.domain.magic",
+          "volume_id": "org.dominium.realities.magic.domain.magic.volume"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_capability",
+        "failure.insufficient_budget"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.magic.v1"
+      },
+      "extensions": {
+        "belief_dependency": "knowledge.belief.magic",
+        "not_defined": [
+          "no_free_effects"
+        ]
+      }
+    },
+    {
+      "process_id": "process.magic.divination",
+      "process_class": "epistemic",
+      "required_capability_refs": [
+        {
+          "capability_id": "process.magic.divination"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.magic"
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_capability",
+        "failure.insufficient_budget"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.magic.v1"
+      },
+      "extensions": {
+        "outputs_knowledge_artifacts": [
+          "knowledge.magic.oracle.v1"
+        ],
+        "not_defined": [
+          "no_objective_truth_mutation"
+        ]
+      }
+    }
+  ]
+}

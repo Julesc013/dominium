@@ -1,0 +1,80 @@
+{
+  "schema_id": "dominium.schema.field",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "field_id": "org.dominium.realities.magic.field.mana",
+      "field_type": "field.mana",
+      "units": [
+        "unit.mana"
+      ],
+      "resolution": {
+        "lod_tag": "lod.magic.macro",
+        "metadata": {
+          "scale": "magic"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.magic.macro",
+          "metadata": {
+            "source": "realities.magic"
+          }
+        }
+      ],
+      "knowledge_state": "latent",
+      "domain_volume_refs": [
+        {
+          "domain_id": "org.dominium.realities.magic.domain.magic",
+          "volume_id": "org.dominium.realities.magic.domain.magic.volume"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.magic.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_physical_equivalence"
+        ]
+      }
+    },
+    {
+      "field_id": "org.dominium.realities.magic.field.fate",
+      "field_type": "field.fate",
+      "units": [
+        "unit.fate"
+      ],
+      "resolution": {
+        "lod_tag": "lod.magic.macro",
+        "metadata": {
+          "scale": "magic"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.magic.macro",
+          "metadata": {
+            "source": "realities.magic"
+          }
+        }
+      ],
+      "knowledge_state": "latent",
+      "domain_volume_refs": [
+        {
+          "domain_id": "org.dominium.realities.magic.domain.magic",
+          "volume_id": "org.dominium.realities.magic.domain.magic.volume"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.magic.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_predestination_guarantee"
+        ]
+      }
+    }
+  ]
+}
