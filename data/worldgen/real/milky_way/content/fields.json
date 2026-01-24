@@ -1,0 +1,149 @@
+{
+  "schema_id": "dominium.schema.field",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "field_id": "org.dominium.worldgen.real.milky_way.field.mass_distribution_anchors",
+      "field_type": "field.galaxy.mass_distribution_anchors",
+      "units": [
+        "unit.mass_density"
+      ],
+      "resolution": {
+        "lod_tag": "lod.galaxy.macro",
+        "metadata": {
+          "scale": "galaxy"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.galaxy.macro",
+          "metadata": {
+            "source": "worldgen.real.milky_way",
+            "procedural_below_lod": "lod.galaxy.macro"
+          }
+        }
+      ],
+      "knowledge_state": "inferred",
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.milky_way.v1"
+      },
+      "extensions": {
+        "known_components": [
+          "central_mass",
+          "disk_profile"
+        ],
+        "unknown_regions": [
+          "far_side_disk",
+          "outer_halo"
+        ]
+      }
+    },
+    {
+      "field_id": "org.dominium.worldgen.real.milky_way.field.spiral_arm_topology",
+      "field_type": "field.galaxy.spiral_arm_topology",
+      "units": [
+        "unit.topology"
+      ],
+      "resolution": {
+        "lod_tag": "lod.galaxy.macro",
+        "metadata": {
+          "scale": "galaxy"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.galaxy.macro",
+          "metadata": {
+            "source": "worldgen.real.milky_way",
+            "procedural_below_lod": "lod.galaxy.macro"
+          }
+        }
+      ],
+      "knowledge_state": "known",
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.milky_way.v1"
+      },
+      "extensions": {
+        "known_components": [
+          "arm_count",
+          "arm_relationships"
+        ],
+        "unknown_regions": [
+          "arm_details"
+        ]
+      }
+    },
+    {
+      "field_id": "org.dominium.worldgen.real.milky_way.field.halo_structure",
+      "field_type": "field.galaxy.halo_structure",
+      "units": [
+        "unit.structure"
+      ],
+      "resolution": {
+        "lod_tag": "lod.galaxy.macro",
+        "metadata": {
+          "scale": "galaxy"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "hybrid",
+          "lod_tag": "lod.galaxy.macro",
+          "metadata": {
+            "source": "worldgen.real.milky_way",
+            "procedural_below_lod": "lod.galaxy.macro"
+          }
+        }
+      ],
+      "knowledge_state": "inferred",
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.milky_way.v1"
+      },
+      "extensions": {
+        "known_components": [
+          "halo_extent"
+        ],
+        "unknown_regions": [
+          "substructure"
+        ]
+      }
+    },
+    {
+      "field_id": "org.dominium.worldgen.real.milky_way.field.bulge_structure",
+      "field_type": "field.galaxy.bulge_structure",
+      "units": [
+        "unit.structure"
+      ],
+      "resolution": {
+        "lod_tag": "lod.galaxy.macro",
+        "metadata": {
+          "scale": "galaxy"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "hybrid",
+          "lod_tag": "lod.galaxy.macro",
+          "metadata": {
+            "source": "worldgen.real.milky_way",
+            "procedural_below_lod": "lod.galaxy.macro"
+          }
+        }
+      ],
+      "knowledge_state": "inferred",
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.milky_way.v1"
+      },
+      "extensions": {
+        "known_components": [
+          "bulge_extent"
+        ],
+        "unknown_regions": [
+          "bulge_substructure"
+        ]
+      }
+    }
+  ]
+}

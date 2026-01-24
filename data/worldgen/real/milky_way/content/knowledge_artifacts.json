@@ -1,0 +1,64 @@
+{
+  "schema_id": "dominium.schema.knowledge",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "knowledge_artifact_id": "knowledge.real.milky_way.known.v1",
+      "knowledge_domain_tag": "knowledge.galaxy.known",
+      "confidence_desc": {
+        "level_tag": "confidence.high",
+        "source": "observational_surveys"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.bounded"
+      },
+      "diffusion_metadata": {
+        "visibility": "public"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.milky_way.v1"
+      }
+    },
+    {
+      "knowledge_artifact_id": "knowledge.real.milky_way.inferred.v1",
+      "knowledge_domain_tag": "knowledge.galaxy.inferred",
+      "confidence_desc": {
+        "level_tag": "confidence.provisional",
+        "source": "model_inference"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.unbounded"
+      },
+      "diffusion_metadata": {
+        "visibility": "public"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.milky_way.v1"
+      }
+    },
+    {
+      "knowledge_artifact_id": "knowledge.real.milky_way.unknown_regions.v1",
+      "knowledge_domain_tag": "knowledge.galaxy.unknown",
+      "confidence_desc": {
+        "level_tag": "confidence.declared",
+        "source": "explicit_unknowns"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.unbounded"
+      },
+      "diffusion_metadata": {
+        "visibility": "public"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.milky_way.v1"
+      },
+      "extensions": {
+        "unknown_regions": [
+          "far_side_disk",
+          "outer_halo",
+          "arm_details"
+        ]
+      }
+    }
+  ]
+}

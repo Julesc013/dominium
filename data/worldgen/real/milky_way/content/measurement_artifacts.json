@@ -1,0 +1,37 @@
+{
+  "schema_id": "dominium.schema.measurement_artifact",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "measurement_artifact_id": "meas.real.milky_way.observation.v1",
+      "measurement_domain_tag": "measurement.galaxy.observation",
+      "era_tag": "era.modern",
+      "target_ref": {
+        "node_id": "node.selected.galaxy"
+      },
+      "confidence_desc": {
+        "level_tag": "confidence.provisional",
+        "kind": "observational"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.unbounded",
+        "kind": "observational"
+      },
+      "access_control": {
+        "visibility": "public"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.milky_way.v1"
+      },
+      "extensions": {
+        "validity": {
+          "epoch_start": "era.modern",
+          "epoch_end": "era.modern"
+        },
+        "not_defined": [
+          "no_universal_coverage"
+        ]
+      }
+    }
+  ]
+}
