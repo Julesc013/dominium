@@ -1,0 +1,38 @@
+{
+  "schema_id": "dominium.schema.pack_manifest",
+  "schema_version": "1.0.0",
+  "record": {
+    "pack_id": "org.dominium.realities.alt_physics",
+    "pack_version": "1.0.0",
+    "pack_format_version": 1,
+    "required_engine_version": "0.0.0",
+    "required_protocol_versions": [
+      {
+        "protocol_id": "dominium.protocol.pack_manifest",
+        "version_constraint": "1"
+      }
+    ],
+    "provides": [
+      {
+        "capability_id": "reality.alt_physics"
+      },
+      {
+        "capability_id": "field.alt_physics.constants"
+      },
+      {
+        "capability_id": "field.alt_physics.conservation"
+      },
+      {
+        "capability_id": "worldgen.model.alt_physics"
+      }
+    ],
+    "dependencies": [],
+    "optional": true,
+    "provenance_ref": {
+      "provenance_id": "prov.org.dominium.realities.alt_physics.manifest.v1"
+    },
+    "extensions": {
+      "notes": "Alternate physics pack; declared constants and conservation rules."
+    }
+  }
+}

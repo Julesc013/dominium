@@ -1,0 +1,34 @@
+{
+  "schema_id": "dominium.schema.measurement_artifact",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "measurement_artifact_id": "meas.alt_physics.calibration.v1",
+      "measurement_domain_tag": "measurement.alt_physics",
+      "era_tag": "era.not_applicable",
+      "target_ref": {
+        "domain_id": "org.dominium.realities.alt_physics.domain.alt_physics",
+        "volume_id": "org.dominium.realities.alt_physics.domain.alt_physics.volume"
+      },
+      "confidence_desc": {
+        "level_tag": "confidence.speculative",
+        "kind": "calibration"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.unbounded",
+        "kind": "calibration"
+      },
+      "access_control": {
+        "visibility": "restricted"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.alt_physics.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_standard_units"
+        ]
+      }
+    }
+  ]
+}

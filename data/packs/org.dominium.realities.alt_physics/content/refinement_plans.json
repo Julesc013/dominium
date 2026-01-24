@@ -1,0 +1,93 @@
+{
+  "schema_id": "dominium.schema.refinement_plan",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "plan_id": "org.dominium.realities.alt_physics.plan.v1",
+      "plan_tags": [
+        "worldgen.plan.alt_physics.overlay"
+      ],
+      "plan_domain_scope": {
+        "scope_id": "scope.alt_physics.domain",
+        "domain_id": "org.dominium.realities.alt_physics.domain.alt_physics",
+        "volume_id": "org.dominium.realities.alt_physics.domain.alt_physics.volume"
+      },
+      "layers": [
+        {
+          "layer_id": "layer.alt_physics.constants",
+          "order_index": 0,
+          "model_refs": [
+            {
+              "model_id": "org.dominium.realities.alt_physics.model.alt_physics_v1"
+            }
+          ],
+          "domain_scope": {
+            "scope_id": "scope.alt_physics.domain",
+            "domain_id": "org.dominium.realities.alt_physics.domain.alt_physics",
+            "volume_id": "org.dominium.realities.alt_physics.domain.alt_physics.volume"
+          },
+          "lod_band": {
+            "lod_min_tag": "lod.physics.coarse",
+            "lod_max_tag": "lod.physics.macro"
+          },
+          "field_refs": [
+            {
+              "field_id": "org.dominium.realities.alt_physics.field.constants"
+            },
+            {
+              "field_id": "org.dominium.realities.alt_physics.field.conservation"
+            }
+          ],
+          "component_tags": [
+            "field.physics.constants",
+            "field.physics.conservation"
+          ],
+          "precedence_tag": "precedence.overlay",
+          "failure_modes": [
+            "failure.defer",
+            "failure.insufficient_budget"
+          ],
+          "extensions": {
+            "limited_applicability": "declared_domains_only"
+          }
+        }
+      ],
+      "precedence_rules": [
+        {
+          "higher_tag": "precedence.overlay",
+          "lower_tag": "precedence.base"
+        }
+      ],
+      "refinement_ceilings": [
+        {
+          "ceiling_id": "ceiling.alt_physics.macro",
+          "lod_max_tag": "lod.physics.macro",
+          "field_refs": [
+            {
+              "field_id": "org.dominium.realities.alt_physics.field.constants"
+            },
+            {
+              "field_id": "org.dominium.realities.alt_physics.field.conservation"
+            }
+          ],
+          "budget": {
+            "cost_units_max": 500,
+            "memory_units_max": 256
+          },
+          "ceiling_tags": [
+            "ceiling.macro"
+          ]
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.alt_physics.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_global_override"
+        ],
+        "failure_semantics": "degrade_or_freeze"
+      }
+    }
+  ]
+}
