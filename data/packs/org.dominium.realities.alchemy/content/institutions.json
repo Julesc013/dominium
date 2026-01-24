@@ -1,0 +1,34 @@
+{
+  "schema_id": "dominium.schema.institution",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "institution_id": "institution.alchemy.order",
+      "jurisdiction_domain_refs": [
+        {
+          "domain_id": "org.dominium.realities.alchemy.domain.alchemy",
+          "volume_id": "org.dominium.realities.alchemy.domain.alchemy.volume"
+        }
+      ],
+      "legitimacy_source_tags": [
+        "legitimacy.tradition"
+      ],
+      "enforcement_capability_refs": [
+        {
+          "capability_id": "institution.alchemy.order"
+        }
+      ],
+      "imposed_constraint_tags": [
+        "constraint.transmutation_protocols"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.alchemy.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_human_assumption"
+        ]
+      }
+    }
+  ]
+}

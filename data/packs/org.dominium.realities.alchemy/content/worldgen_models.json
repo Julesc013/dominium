@@ -1,0 +1,62 @@
+{
+  "schema_id": "dominium.schema.worldgen_model",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "model_id": "org.dominium.realities.alchemy.model.alchemy_v1",
+      "model_family": "worldgen.family.alchemy",
+      "applicable_domains": [
+        {
+          "domain_id": "org.dominium.realities.alchemy.domain.alchemy",
+          "volume_id": "org.dominium.realities.alchemy.domain.alchemy.volume"
+        }
+      ],
+      "supported_fields": [
+        {
+          "field_id": "org.dominium.realities.alchemy.field.alchemical_essence"
+        },
+        {
+          "field_id": "org.dominium.realities.alchemy.field.transmutation_potential"
+        }
+      ],
+      "supported_lod_bands": [
+        {
+          "lod_min_tag": "lod.alchemy.macro",
+          "lod_max_tag": "lod.alchemy.macro"
+        }
+      ],
+      "required_capabilities": [
+        {
+          "capability_id": "worldgen.model.alchemy"
+        }
+      ],
+      "seed_namespace": "seed.alchemy.base",
+      "assumptions": [
+        "assumption.symbolic_correspondence"
+      ],
+      "validity_bounds": {
+        "detail_band": "macro_only"
+      },
+      "failure_modes": [
+        "failure.insufficient_budget"
+      ],
+      "validation_targets": [
+        {
+          "target_id": "validation.alchemy.macro",
+          "schema_id": "dominium.schema.field",
+          "target_tags": [
+            "field.alchemical_essence"
+          ]
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.alchemy.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_physical_equivalence"
+        ]
+      }
+    }
+  ]
+}

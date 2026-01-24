@@ -1,0 +1,34 @@
+{
+  "schema_id": "dominium.schema.measurement_artifact",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "measurement_artifact_id": "meas.alchemy.assay.v1",
+      "measurement_domain_tag": "measurement.alchemy",
+      "era_tag": "era.traditional",
+      "target_ref": {
+        "domain_id": "org.dominium.realities.alchemy.domain.alchemy",
+        "volume_id": "org.dominium.realities.alchemy.domain.alchemy.volume"
+      },
+      "confidence_desc": {
+        "kind": "ritual",
+        "level_tag": "confidence.belief"
+      },
+      "uncertainty_desc": {
+        "kind": "ritual",
+        "bounds_tag": "uncertainty.unbounded"
+      },
+      "access_control": {
+        "visibility": "restricted"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.alchemy.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_objective_validation"
+        ]
+      }
+    }
+  ]
+}

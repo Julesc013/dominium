@@ -1,0 +1,7 @@
+pack_id = org.dominium.realities.alchemy
+pack_version = 1.0.0
+pack_format_version = 1
+required_engine_version = 0.0.0
+required_protocols = dominium.protocol.pack_manifest:1
+provides = reality.alchemy, field.alchemical_essence, field.transmutation_potential, process.alchemy.transmute, process.alchemy.calcine, institution.alchemy.order, worldgen.model.alchemy
+optional = true

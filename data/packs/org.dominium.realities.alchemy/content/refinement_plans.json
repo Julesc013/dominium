@@ -1,0 +1,98 @@
+{
+  "schema_id": "dominium.schema.refinement_plan",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "plan_id": "org.dominium.realities.alchemy.plan.v1",
+      "plan_tags": [
+        "worldgen.plan.alchemy"
+      ],
+      "plan_domain_scope": {
+        "scope_id": "scope.alchemy.domain",
+        "domain_id": "org.dominium.realities.alchemy.domain.alchemy",
+        "volume_id": "org.dominium.realities.alchemy.domain.alchemy.volume"
+      },
+      "layers": [
+        {
+          "layer_id": "layer.alchemy.refine",
+          "order_index": 0,
+          "model_refs": [
+            {
+              "model_id": "org.dominium.realities.alchemy.model.alchemy_v1"
+            }
+          ],
+          "domain_scope": {
+            "scope_id": "scope.alchemy.layer",
+            "domain_id": "org.dominium.realities.alchemy.domain.alchemy",
+            "volume_id": "org.dominium.realities.alchemy.domain.alchemy.volume"
+          },
+          "lod_band": {
+            "lod_min_tag": "lod.alchemy.macro",
+            "lod_max_tag": "lod.alchemy.macro"
+          },
+          "field_refs": [
+            {
+              "field_id": "org.dominium.realities.alchemy.field.alchemical_essence"
+            },
+            {
+              "field_id": "org.dominium.realities.alchemy.field.transmutation_potential"
+            }
+          ],
+          "component_tags": [
+            "field.alchemical_essence",
+            "field.transmutation_potential"
+          ],
+          "precedence_tag": "precedence.overlay",
+          "failure_modes": [
+            "failure.defer"
+          ],
+          "extensions": {
+            "required_knowledge_tags": [
+              "knowledge.alchemy.correspondence"
+            ],
+            "insufficient_knowledge_behavior": [
+              "degrade_lod",
+              "emit_unknown_placeholders"
+            ]
+          }
+        }
+      ],
+      "precedence_rules": [
+        {
+          "higher_tag": "precedence.overlay",
+          "lower_tag": "precedence.base"
+        }
+      ],
+      "refinement_ceilings": [
+        {
+          "ceiling_id": "ceiling.alchemy.macro",
+          "lod_max_tag": "lod.alchemy.macro",
+          "field_refs": [
+            {
+              "field_id": "org.dominium.realities.alchemy.field.alchemical_essence"
+            },
+            {
+              "field_id": "org.dominium.realities.alchemy.field.transmutation_potential"
+            }
+          ],
+          "budget": {
+            "cost_units_max": 300,
+            "memory_units_max": 192
+          },
+          "ceiling_tags": [
+            "ceiling.macro"
+          ]
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.alchemy.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_objective_truth_override"
+        ],
+        "failure_semantics": "degrade_or_freeze"
+      }
+    }
+  ]
+}
