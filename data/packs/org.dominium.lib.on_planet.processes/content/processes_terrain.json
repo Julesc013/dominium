@@ -1,0 +1,724 @@
+{
+  "schema_id": "dominium.schema.process",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "process_id": "process.on_planet.terrain.cut_tree",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.terrain.cover"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "material",
+          "ref_id": "material.on_planet.biotic.generic"
+        },
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.terrain.cover"
+        }
+      ],
+      "waste": [
+        {
+          "ref_type": "material",
+          "ref_id": "material.on_planet.biotic.generic",
+          "io_tags": [
+            "waste.biomass"
+          ]
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.terrain.modify"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.terrain"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.surface.local",
+          "volume_id": "domain.on_planet.surface.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.insufficient_capability",
+        "failure.constraint_violation"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.terrain.cut_tree.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "conservation_tags": [
+          "conservation.mass",
+          "conservation.energy"
+        ],
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "degradation_mode_tags": [
+          "degrade.partial",
+          "degrade.deferred"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_geometry",
+          "no_species_detail"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.terrain.clear_land",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.terrain.cover"
+        },
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.soil.compaction"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.terrain.cover"
+        },
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.soil.compaction"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.terrain.modify"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.terrain"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.surface.local",
+          "volume_id": "domain.on_planet.surface.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.insufficient_capability",
+        "failure.constraint_violation"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.terrain.clear_land.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "conservation_tags": [
+          "conservation.mass",
+          "conservation.energy"
+        ],
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "degradation_mode_tags": [
+          "degrade.partial"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_geometry",
+          "no_tooling_spec"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.terrain.excavate",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.terrain.elevation"
+        },
+        {
+          "ref_type": "material",
+          "ref_id": "material.on_planet.aggregate.generic"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "material",
+          "ref_id": "material.on_planet.aggregate.generic"
+        },
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.terrain.elevation"
+        }
+      ],
+      "waste": [
+        {
+          "ref_type": "material",
+          "ref_id": "material.on_planet.tailings.generic",
+          "io_tags": [
+            "waste.excavation"
+          ]
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.terrain.modify"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.terrain",
+        "authority.mutation.subsurface"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.subsurface.local",
+          "volume_id": "domain.on_planet.subsurface.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.insufficient_capability",
+        "failure.constraint_violation"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.terrain.excavate.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "conservation_tags": [
+          "conservation.mass",
+          "conservation.energy"
+        ],
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "degradation_mode_tags": [
+          "degrade.partial"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_geometry",
+          "no_tooling_spec"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.terrain.grade_surface",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.terrain.elevation"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.terrain.elevation"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.terrain.modify"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.terrain"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.surface.local",
+          "volume_id": "domain.on_planet.surface.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.insufficient_capability"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.terrain.grade_surface.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "conservation_tags": [
+          "conservation.energy"
+        ],
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_geometry"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.terrain.deposit_fill",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "material",
+          "ref_id": "material.on_planet.aggregate.generic"
+        },
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.terrain.elevation"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.terrain.elevation"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.terrain.modify"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.terrain"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.surface.local",
+          "volume_id": "domain.on_planet.surface.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.insufficient_material"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.terrain.deposit_fill.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "conservation_tags": [
+          "conservation.mass",
+          "conservation.energy"
+        ],
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_geometry"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.terrain.compact_soil",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.soil.compaction"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.soil.compaction"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.terrain.modify"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.terrain"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.surface.local",
+          "volume_id": "domain.on_planet.surface.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.terrain.compact_soil.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "conservation_tags": [
+          "conservation.energy"
+        ],
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_soil_model"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.terrain.channel_water",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.hydrology.flow"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.hydrology.flow"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.terrain.modify"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.terrain",
+        "authority.mutation.hydrology"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.surface.local",
+          "volume_id": "domain.on_planet.surface.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.constraint_violation"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.terrain.channel_water.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "conservation_tags": [
+          "conservation.mass",
+          "conservation.energy"
+        ],
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_flow_solver"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.terrain.dam_flow",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.hydrology.flow"
+        },
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.hydrology.storage"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.hydrology.flow"
+        },
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.hydrology.storage"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.terrain.modify"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.hydrology"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.surface.local",
+          "volume_id": "domain.on_planet.surface.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.constraint_violation"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.terrain.dam_flow.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "conservation_tags": [
+          "conservation.mass",
+          "conservation.energy"
+        ],
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_reservoir_geometry"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.terrain.seed_biomass",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "material",
+          "ref_id": "material.on_planet.biotic.generic"
+        },
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.biomass.cover"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.biomass.cover"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.terrain.modify"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.biomass"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.surface.local",
+          "volume_id": "domain.on_planet.surface.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.insufficient_material"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.terrain.seed_biomass.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "conservation_tags": [
+          "conservation.mass",
+          "conservation.energy"
+        ],
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_species_detail"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.terrain.contaminate",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "material",
+          "ref_id": "material.on_planet.tailings.generic"
+        },
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.soil.contamination"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.soil.contamination"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.terrain.modify"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.terrain"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.surface.local",
+          "volume_id": "domain.on_planet.surface.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.terrain.contaminate.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "conservation_tags": [
+          "conservation.mass"
+        ],
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_chemistry_model"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.terrain.remediate",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.soil.contamination"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.soil.contamination"
+        }
+      ],
+      "waste": [
+        {
+          "ref_type": "material",
+          "ref_id": "material.on_planet.tailings.generic",
+          "io_tags": [
+            "waste.remediation"
+          ]
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.terrain.modify"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.terrain"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.surface.local",
+          "volume_id": "domain.on_planet.surface.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.insufficient_capability"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.terrain.remediate.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "conservation_tags": [
+          "conservation.mass",
+          "conservation.energy"
+        ],
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_chemistry_model"
+        ]
+      }
+    }
+  ]
+}
