@@ -1,0 +1,67 @@
+{
+  "schema_id": "dominium.schema.knowledge",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "knowledge_artifact_id": "knowledge.examples.lost_civilization.history_version_a.v1",
+      "knowledge_domain_tag": "knowledge.history.version_a",
+      "confidence_desc": {
+        "level_tag": "confidence.provisional",
+        "source": "fragmentary_records"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.unbounded"
+      },
+      "diffusion_metadata": {
+        "visibility": "public"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.examples.lost_civilization.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_canonical_timeline"
+        ]
+      }
+    },
+    {
+      "knowledge_artifact_id": "knowledge.examples.lost_civilization.history_version_b.v1",
+      "knowledge_domain_tag": "knowledge.history.version_b",
+      "confidence_desc": {
+        "level_tag": "confidence.provisional",
+        "source": "oral_tradition"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.unbounded"
+      },
+      "diffusion_metadata": {
+        "visibility": "public"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.examples.lost_civilization.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_canonical_timeline"
+        ]
+      }
+    },
+    {
+      "knowledge_artifact_id": "knowledge.examples.lost_civilization.artifact_catalog.v1",
+      "knowledge_domain_tag": "knowledge.archaeology.catalog",
+      "confidence_desc": {
+        "level_tag": "confidence.provisional",
+        "source": "field_notes"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.unbounded"
+      },
+      "diffusion_metadata": {
+        "visibility": "restricted"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.examples.lost_civilization.v1"
+      }
+    }
+  ]
+}

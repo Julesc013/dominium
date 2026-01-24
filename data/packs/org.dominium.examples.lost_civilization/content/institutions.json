@@ -1,0 +1,35 @@
+{
+  "schema_id": "dominium.schema.institution",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "institution_id": "institution.examples.lost_civilization.archaeology_guild",
+      "jurisdiction_domain_refs": [
+        {
+          "domain_id": "org.dominium.examples.lost_civilization.domain.site",
+          "volume_id": "org.dominium.examples.lost_civilization.domain.site.volume.primary"
+        }
+      ],
+      "legitimacy_source_tags": [
+        "legitimacy.science",
+        "legitimacy.civic_mandate"
+      ],
+      "enforcement_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.survey"
+        }
+      ],
+      "imposed_constraint_tags": [
+        "constraint.excavation.permit"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.examples.lost_civilization.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_exclusive_claim"
+        ]
+      }
+    }
+  ]
+}

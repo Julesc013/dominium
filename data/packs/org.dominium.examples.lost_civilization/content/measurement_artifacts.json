@@ -1,0 +1,35 @@
+{
+  "schema_id": "dominium.schema.measurement_artifact",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "measurement_artifact_id": "meas.examples.lost_civilization.excavation.v1",
+      "measurement_domain_tag": "measurement.archaeology",
+      "era_tag": "era.modern",
+      "target_ref": {
+        "node_id": "org.dominium.worldgen.real.earth_macro.node.earth",
+        "domain_id": "org.dominium.examples.lost_civilization.domain.site",
+        "volume_id": "org.dominium.examples.lost_civilization.domain.site.volume.primary"
+      },
+      "confidence_desc": {
+        "level_tag": "confidence.provisional",
+        "kind": "field_excavation"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.unbounded",
+        "kind": "field_excavation"
+      },
+      "access_control": {
+        "visibility": "restricted"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.examples.lost_civilization.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_complete_site_map"
+        ]
+      }
+    }
+  ]
+}

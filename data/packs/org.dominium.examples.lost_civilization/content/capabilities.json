@@ -1,0 +1,16 @@
+{
+  "schema_id": "dominium.schema.capability",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "capability_id": "example.lost_civilization",
+      "capability_tags": [
+        "example.world",
+        "example.archaeology"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.examples.lost_civilization.v1"
+      }
+    }
+  ]
+}

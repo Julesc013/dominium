@@ -1,0 +1,21 @@
+{
+  "schema_id": "dominium.schema.assembly",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "assembly_id": "assembly.examples.lost_civilization.ruins.v1",
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.examples.lost_civilization.v1"
+      },
+      "extensions": {
+        "state_tags": [
+          "state.ruined",
+          "state.decayed"
+        ],
+        "not_defined": [
+          "no_restoration_plan"
+        ]
+      }
+    }
+  ]
+}
