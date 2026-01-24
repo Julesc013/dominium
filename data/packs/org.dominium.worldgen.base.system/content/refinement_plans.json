@@ -1,0 +1,91 @@
+{
+  "schema_id": "dominium.schema.refinement_plan",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "plan_id": "org.dominium.worldgen.base.system.plan.v1",
+      "plan_tags": [
+        "worldgen.plan.system.base"
+      ],
+      "plan_domain_scope": {
+        "scope_id": "scope.system.from_galaxies",
+        "scope_tags": [
+          "topology.galaxy"
+        ]
+      },
+      "layers": [
+        {
+          "layer_id": "layer.system.generate",
+          "order_index": 0,
+          "model_refs": [
+            {
+              "model_id": "org.dominium.worldgen.base.system.model.system_formation_v1"
+            }
+          ],
+          "domain_scope": {
+            "scope_id": "scope.star_system",
+            "scope_tags": [
+              "topology.star_system"
+            ]
+          },
+          "lod_band": {
+            "lod_min_tag": "lod.system.macro",
+            "lod_max_tag": "lod.system.macro"
+          },
+          "field_refs": [
+            {
+              "field_id": "org.dominium.worldgen.base.system.field.orbit_parameters"
+            }
+          ],
+          "component_tags": [
+            "topology.star_system",
+            "topology.barycenter"
+          ],
+          "precedence_tag": "precedence.base",
+          "failure_modes": [
+            "failure.defer"
+          ],
+          "extensions": {
+            "not_defined": [
+              "no_planets_guaranteed"
+            ]
+          }
+        }
+      ],
+      "precedence_rules": [
+        {
+          "higher_tag": "precedence.base",
+          "lower_tag": "precedence.overlay"
+        }
+      ],
+      "refinement_ceilings": [
+        {
+          "ceiling_id": "ceiling.system.macro",
+          "lod_max_tag": "lod.system.macro",
+          "field_refs": [
+            {
+              "field_id": "org.dominium.worldgen.base.system.field.orbit_parameters"
+            }
+          ],
+          "budget": {
+            "cost_units_max": 600,
+            "memory_units_max": 384
+          },
+          "ceiling_tags": [
+            "ceiling.macro"
+          ]
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.base.system.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_planet_catalogs",
+          "no_named_systems"
+        ],
+        "failure_semantics": "degrade_or_freeze"
+      }
+    }
+  ]
+}

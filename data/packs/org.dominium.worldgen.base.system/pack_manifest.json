@@ -1,0 +1,35 @@
+{
+  "schema_id": "dominium.schema.pack_manifest",
+  "schema_version": "1.0.0",
+  "record": {
+    "pack_id": "org.dominium.worldgen.base.system",
+    "pack_version": "1.0.0",
+    "pack_format_version": 1,
+    "required_engine_version": "0.0.0",
+    "required_protocol_versions": [
+      {
+        "protocol_id": "dominium.protocol.pack_manifest",
+        "version_constraint": "1"
+      }
+    ],
+    "provides": [
+      {
+        "capability_id": "worldgen.model.system_formation"
+      },
+      {
+        "capability_id": "topology.star_system"
+      },
+      {
+        "capability_id": "topology.barycenter"
+      }
+    ],
+    "dependencies": [],
+    "optional": true,
+    "provenance_ref": {
+      "provenance_id": "prov.org.dominium.worldgen.base.system.manifest.v1"
+    },
+    "extensions": {
+      "notes": "Procedural star system formation; no planets guaranteed."
+    }
+  }
+}

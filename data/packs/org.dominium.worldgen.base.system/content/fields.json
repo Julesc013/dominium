@@ -1,0 +1,37 @@
+{
+  "schema_id": "dominium.schema.field",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "field_id": "org.dominium.worldgen.base.system.field.orbit_parameters",
+      "field_type": "field.orbit_parameters",
+      "units": [
+        "unit.orbit_parameters"
+      ],
+      "resolution": {
+        "lod_tag": "lod.system.macro",
+        "metadata": {
+          "scale": "system"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.system.macro",
+          "metadata": {
+            "source": "worldgen.base.system"
+          }
+        }
+      ],
+      "knowledge_state": "latent",
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.base.system.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_planet_catalogs"
+        ]
+      }
+    }
+  ]
+}
