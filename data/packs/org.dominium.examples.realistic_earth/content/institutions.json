@@ -1,0 +1,69 @@
+{
+  "schema_id": "dominium.schema.institution",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "institution_id": "institution.examples.realistic_earth.science_agency",
+      "jurisdiction_domain_refs": [
+        {
+          "domain_id": "org.dominium.examples.realistic_earth.domain.science",
+          "volume_id": "org.dominium.examples.realistic_earth.domain.science.volume.global"
+        }
+      ],
+      "legitimacy_source_tags": [
+        "legitimacy.empirical",
+        "legitimacy.civic_mandate"
+      ],
+      "enforcement_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.survey"
+        },
+        {
+          "capability_id": "capability.on_planet.regulation"
+        }
+      ],
+      "imposed_constraint_tags": [
+        "constraint.science.peer_review"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.examples.realistic_earth.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_policy_details"
+        ]
+      }
+    },
+    {
+      "institution_id": "institution.examples.realistic_earth.trade_registry",
+      "jurisdiction_domain_refs": [
+        {
+          "domain_id": "org.dominium.examples.realistic_earth.domain.civic",
+          "volume_id": "org.dominium.examples.realistic_earth.domain.civic.volume.local"
+        }
+      ],
+      "legitimacy_source_tags": [
+        "legitimacy.civic_mandate"
+      ],
+      "enforcement_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.trade"
+        },
+        {
+          "capability_id": "capability.on_planet.ownership.registry"
+        }
+      ],
+      "imposed_constraint_tags": [
+        "constraint.trade.recorded"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.examples.realistic_earth.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_currency_assumptions"
+        ]
+      }
+    }
+  ]
+}

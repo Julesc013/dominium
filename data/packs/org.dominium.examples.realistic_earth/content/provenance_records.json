@@ -1,0 +1,25 @@
+{
+  "schema_id": "dominium.schema.knowledge",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "knowledge_artifact_id": "prov.org.dominium.examples.realistic_earth.v1",
+      "knowledge_domain_tag": "provenance.example.realistic_earth",
+      "confidence_desc": {
+        "level_tag": "confidence.declared",
+        "source": "example_pack_declaration"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.unbounded"
+      },
+      "diffusion_metadata": {
+        "visibility": "public"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_engine_assumptions"
+        ]
+      }
+    }
+  ]
+}

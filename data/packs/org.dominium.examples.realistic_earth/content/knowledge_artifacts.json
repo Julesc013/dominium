@@ -1,0 +1,50 @@
+{
+  "schema_id": "dominium.schema.knowledge",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "knowledge_artifact_id": "knowledge.examples.realistic_earth.geology_baseline.v1",
+      "knowledge_domain_tag": "knowledge.geology.baseline",
+      "confidence_desc": {
+        "level_tag": "confidence.high",
+        "source": "instrumented_surveys"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.bounded"
+      },
+      "diffusion_metadata": {
+        "visibility": "public"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.examples.realistic_earth.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_microtopography"
+        ]
+      }
+    },
+    {
+      "knowledge_artifact_id": "knowledge.examples.realistic_earth.climate_baseline.v1",
+      "knowledge_domain_tag": "knowledge.climate.baseline",
+      "confidence_desc": {
+        "level_tag": "confidence.high",
+        "source": "instrumented_surveys"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.bounded"
+      },
+      "diffusion_metadata": {
+        "visibility": "public"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.examples.realistic_earth.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_short_term_weather"
+        ]
+      }
+    }
+  ]
+}
