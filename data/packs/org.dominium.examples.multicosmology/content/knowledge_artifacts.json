@@ -1,0 +1,57 @@
+{
+  "schema_id": "dominium.schema.knowledge",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "knowledge_artifact_id": "knowledge.examples.multicosmology.alt_physics_theory.v1",
+      "knowledge_domain_tag": "knowledge.alt_physics.theory",
+      "confidence_desc": {
+        "level_tag": "confidence.speculative",
+        "source": "model_declaration"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.unbounded"
+      },
+      "diffusion_metadata": {
+        "visibility": "restricted"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.examples.multicosmology.v1"
+      }
+    },
+    {
+      "knowledge_artifact_id": "knowledge.examples.multicosmology.hyperspace_routes.v1",
+      "knowledge_domain_tag": "knowledge.hyperspace.navigation",
+      "confidence_desc": {
+        "level_tag": "confidence.provisional",
+        "source": "survey_charts"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.unbounded"
+      },
+      "diffusion_metadata": {
+        "visibility": "restricted"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.examples.multicosmology.v1"
+      }
+    },
+    {
+      "knowledge_artifact_id": "knowledge.examples.multicosmology.standard_model.v1",
+      "knowledge_domain_tag": "knowledge.physics.standard",
+      "confidence_desc": {
+        "level_tag": "confidence.high",
+        "source": "instrumented_surveys"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.bounded"
+      },
+      "diffusion_metadata": {
+        "visibility": "public"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.examples.multicosmology.v1"
+      }
+    }
+  ]
+}

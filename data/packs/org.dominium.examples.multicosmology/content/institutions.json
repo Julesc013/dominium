@@ -1,0 +1,23 @@
+{
+  "schema_id": "dominium.schema.institution",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "institution_id": "institution.examples.multicosmology.cosmology_council",
+      "legitimacy_source_tags": [
+        "legitimacy.scholarship"
+      ],
+      "imposed_constraint_tags": [
+        "constraint.model_disclosure"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.examples.multicosmology.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_unified_cosmology"
+        ]
+      }
+    }
+  ]
+}
