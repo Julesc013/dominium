@@ -1,0 +1,375 @@
+{
+  "schema_id": "dominium.schema.process",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "process_id": "process.on_planet.mining.discover_deposit",
+      "process_class": "epistemic",
+      "inputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.resource.deposit"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.deposit.discovery"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.survey"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.observe.subsurface"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.subsurface.local",
+          "volume_id": "domain.on_planet.subsurface.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.mining.discover_deposit.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_sampling_schema"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.mining.access_deposit",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.resource.accessibility"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.resource.accessibility"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.mining"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.subsurface"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.subsurface.local",
+          "volume_id": "domain.on_planet.subsurface.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.constraint_violation"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.mining.access_deposit.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "conservation_tags": [
+          "conservation.energy"
+        ],
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_tooling_spec"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.mining.extract_material",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.resource.deposit"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "material",
+          "ref_id": "material.on_planet.ore.generic"
+        }
+      ],
+      "waste": [
+        {
+          "ref_type": "material",
+          "ref_id": "material.on_planet.tailings.generic",
+          "io_tags": [
+            "waste.tailings"
+          ]
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.mining"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.subsurface"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.subsurface.local",
+          "volume_id": "domain.on_planet.subsurface.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.insufficient_capability"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.mining.extract_material.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "conservation_tags": [
+          "conservation.mass",
+          "conservation.energy"
+        ],
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_ore_grade_detail"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.mining.refine_material",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "material",
+          "ref_id": "material.on_planet.ore.generic"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "material",
+          "ref_id": "material.on_planet.structural.generic"
+        },
+        {
+          "ref_type": "material",
+          "ref_id": "material.on_planet.conductive.generic"
+        }
+      ],
+      "waste": [
+        {
+          "ref_type": "material",
+          "ref_id": "material.on_planet.tailings.generic",
+          "io_tags": [
+            "waste.refining"
+          ]
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.refining"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.materials"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.infrastructure.local",
+          "volume_id": "domain.on_planet.infrastructure.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.insufficient_capability"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.mining.refine_material.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "conservation_tags": [
+          "conservation.mass",
+          "conservation.energy"
+        ],
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_process_yield_detail"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.mining.handle_tailings",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "material",
+          "ref_id": "material.on_planet.tailings.generic"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.soil.contamination"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.mining"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.terrain"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.surface.local",
+          "volume_id": "domain.on_planet.surface.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.mining.handle_tailings.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "conservation_tags": [
+          "conservation.mass"
+        ],
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_disposal_model"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.mining.transport_output",
+      "process_class": "transactional",
+      "inputs": [
+        {
+          "ref_type": "material",
+          "ref_id": "material.on_planet.ore.generic"
+        },
+        {
+          "ref_type": "network",
+          "ref_id": "network.on_planet.logistics.local"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "material",
+          "ref_id": "material.on_planet.ore.generic"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.network.logistics"
+        },
+        {
+          "capability_id": "capability.on_planet.transport"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.logistics"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.network.local",
+          "volume_id": "domain.on_planet.network.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.insufficient_capability"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.mining.transport_output.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "conservation_tags": [
+          "conservation.mass",
+          "conservation.energy"
+        ],
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_route_solver"
+        ]
+      }
+    }
+  ]
+}
