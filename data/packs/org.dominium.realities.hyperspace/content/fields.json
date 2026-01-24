@@ -1,0 +1,80 @@
+{
+  "schema_id": "dominium.schema.field",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "field_id": "org.dominium.realities.hyperspace.field.metric",
+      "field_type": "field.hyperspace_metric",
+      "units": [
+        "unit.dimensionless"
+      ],
+      "resolution": {
+        "lod_tag": "lod.hyperspace.macro",
+        "metadata": {
+          "scale": "hyperspace_metric"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.hyperspace.macro",
+          "metadata": {
+            "source": "realities.hyperspace"
+          }
+        }
+      ],
+      "knowledge_state": "latent",
+      "domain_volume_refs": [
+        {
+          "domain_id": "org.dominium.realities.hyperspace.domain.hyperspace",
+          "volume_id": "org.dominium.realities.hyperspace.domain.hyperspace.volume"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.hyperspace.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_metric_semantics"
+        ]
+      }
+    },
+    {
+      "field_id": "org.dominium.realities.hyperspace.field.connectivity",
+      "field_type": "field.hyperspace_connectivity",
+      "units": [
+        "unit.graph_weight"
+      ],
+      "resolution": {
+        "lod_tag": "lod.hyperspace.macro",
+        "metadata": {
+          "scale": "hyperspace_connectivity"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.hyperspace.macro",
+          "metadata": {
+            "source": "realities.hyperspace"
+          }
+        }
+      ],
+      "knowledge_state": "latent",
+      "domain_volume_refs": [
+        {
+          "domain_id": "org.dominium.realities.hyperspace.domain.hyperspace",
+          "volume_id": "org.dominium.realities.hyperspace.domain.hyperspace.volume"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.hyperspace.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_guaranteed_routes"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "schema_id": "dominium.schema.pack_manifest",
+  "schema_version": "1.0.0",
+  "record": {
+    "pack_id": "org.dominium.realities.hyperspace",
+    "pack_version": "1.0.0",
+    "pack_format_version": 1,
+    "required_engine_version": "0.0.0",
+    "required_protocol_versions": [
+      {
+        "protocol_id": "dominium.protocol.pack_manifest",
+        "version_constraint": "1"
+      }
+    ],
+    "provides": [
+      {
+        "capability_id": "reality.hyperspace"
+      },
+      {
+        "capability_id": "topology.layer.hyperspace"
+      },
+      {
+        "capability_id": "field.hyperspace_metric"
+      },
+      {
+        "capability_id": "field.hyperspace_connectivity"
+      },
+      {
+        "capability_id": "process.hyperspace.enter"
+      },
+      {
+        "capability_id": "process.hyperspace.travel"
+      },
+      {
+        "capability_id": "process.hyperspace.exit"
+      },
+      {
+        "capability_id": "worldgen.model.hyperspace"
+      }
+    ],
+    "dependencies": [],
+    "optional": true,
+    "provenance_ref": {
+      "provenance_id": "prov.org.dominium.realities.hyperspace.manifest.v1"
+    },
+    "extensions": {
+      "notes": "Hyperspace reality pack; alternate topology and traversal."
+    }
+  }
+}

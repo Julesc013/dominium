@@ -1,0 +1,37 @@
+{
+  "schema_id": "dominium.schema.topology",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "node_id": "org.dominium.realities.hyperspace.node.layer",
+      "trait_tags": [
+        "topology.layer.hyperspace",
+        "topology.non_euclidean"
+      ],
+      "domain_volume_refs": [
+        {
+          "domain_id": "org.dominium.realities.hyperspace.domain.hyperspace",
+          "volume_id": "org.dominium.realities.hyperspace.domain.hyperspace.volume"
+        }
+      ],
+      "representation": [
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.hyperspace.macro",
+          "metadata": {
+            "source": "realities.hyperspace"
+          }
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.hyperspace.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_default_links"
+        ],
+        "layer_role": "alternate_adjacency"
+      }
+    }
+  ]
+}

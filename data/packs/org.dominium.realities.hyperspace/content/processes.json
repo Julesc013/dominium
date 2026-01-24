@@ -1,0 +1,96 @@
+{
+  "schema_id": "dominium.schema.process",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "process_id": "process.hyperspace.enter",
+      "process_class": "transformative",
+      "required_capability_refs": [
+        {
+          "capability_id": "process.hyperspace.enter"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.hyperspace"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "org.dominium.realities.hyperspace.domain.hyperspace",
+          "volume_id": "org.dominium.realities.hyperspace.domain.hyperspace.volume"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_capability",
+        "failure.boundary_denied"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.hyperspace.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_instant_travel"
+        ]
+      }
+    },
+    {
+      "process_id": "process.hyperspace.travel",
+      "process_class": "transformative",
+      "required_capability_refs": [
+        {
+          "capability_id": "process.hyperspace.travel"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.hyperspace"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "org.dominium.realities.hyperspace.domain.hyperspace",
+          "volume_id": "org.dominium.realities.hyperspace.domain.hyperspace.volume"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.route_unavailable",
+        "failure.insufficient_budget"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.hyperspace.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_safe_route_guarantee"
+        ]
+      }
+    },
+    {
+      "process_id": "process.hyperspace.exit",
+      "process_class": "transformative",
+      "required_capability_refs": [
+        {
+          "capability_id": "process.hyperspace.exit"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.hyperspace"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "org.dominium.realities.hyperspace.domain.hyperspace",
+          "volume_id": "org.dominium.realities.hyperspace.domain.hyperspace.volume"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.boundary_denied",
+        "failure.insufficient_capability"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.hyperspace.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_safe_exit_guarantee"
+        ]
+      }
+    }
+  ]
+}
