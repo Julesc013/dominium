@@ -1,0 +1,65 @@
+{
+  "schema_id": "dominium.schema.worldgen_model",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "model_id": "org.dominium.worldgen.base.body.model.body_formation_v1",
+      "model_family": "worldgen.family.body_formation",
+      "applicable_topology_traits": [
+        "topology.star_system"
+      ],
+      "supported_fields": [
+        {
+          "field_id": "org.dominium.worldgen.base.body.field.mass"
+        },
+        {
+          "field_id": "org.dominium.worldgen.base.body.field.composition"
+        },
+        {
+          "field_id": "org.dominium.worldgen.base.body.field.orbit_parameters"
+        }
+      ],
+      "supported_lod_bands": [
+        {
+          "lod_min_tag": "lod.body.macro",
+          "lod_max_tag": "lod.body.macro"
+        }
+      ],
+      "required_capabilities": [
+        {
+          "capability_id": "worldgen.model.body_formation"
+        }
+      ],
+      "seed_namespace": "seed.body.base",
+      "assumptions": [
+        "assumption.no_life",
+        "assumption.procedural_structure"
+      ],
+      "validity_bounds": {
+        "detail_band": "macro_only"
+      },
+      "failure_modes": [
+        "failure.missing_seed",
+        "failure.insufficient_budget"
+      ],
+      "validation_targets": [
+        {
+          "target_id": "validation.body.macro",
+          "schema_id": "dominium.schema.field",
+          "target_tags": [
+            "field.mass"
+          ]
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.base.body.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_biology",
+          "no_named_bodies"
+        ]
+      }
+    }
+  ]
+}
