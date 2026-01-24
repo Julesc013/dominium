@@ -1,0 +1,90 @@
+{
+  "schema_id": "dominium.schema.refinement_plan",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "plan_id": "org.dominium.worldgen.base.surface_micro.plan.v1",
+      "plan_tags": [
+        "worldgen.plan.surface_micro.base"
+      ],
+      "plan_domain_scope": {
+        "scope_id": "scope.surface.micro",
+        "scope_tags": [
+          "topology.body",
+          "field.microstructure"
+        ]
+      },
+      "layers": [
+        {
+          "layer_id": "layer.surface.micro",
+          "order_index": 0,
+          "model_refs": [
+            {
+              "model_id": "org.dominium.worldgen.base.surface_micro.model.micro_v1"
+            }
+          ],
+          "domain_scope": {
+            "scope_id": "scope.surface.micro.layer"
+          },
+          "lod_band": {
+            "lod_min_tag": "lod.surface.micro",
+            "lod_max_tag": "lod.surface.micro"
+          },
+          "field_refs": [
+            {
+              "field_id": "org.dominium.worldgen.base.surface_micro.field.microstructure"
+            }
+          ],
+          "component_tags": [
+            "field.microstructure"
+          ],
+          "precedence_tag": "precedence.base",
+          "failure_modes": [
+            "failure.defer"
+          ],
+          "extensions": {
+            "refinement_behavior": [
+              "lazy",
+              "bounded",
+              "collapsible"
+            ]
+          }
+        }
+      ],
+      "precedence_rules": [
+        {
+          "higher_tag": "precedence.base",
+          "lower_tag": "precedence.overlay"
+        }
+      ],
+      "refinement_ceilings": [
+        {
+          "ceiling_id": "ceiling.surface.micro",
+          "lod_max_tag": "lod.surface.micro",
+          "field_refs": [
+            {
+              "field_id": "org.dominium.worldgen.base.surface_micro.field.microstructure"
+            }
+          ],
+          "budget": {
+            "cost_units_max": 200,
+            "memory_units_max": 128
+          },
+          "ceiling_tags": [
+            "ceiling.micro"
+          ]
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.base.surface_micro.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_material_catalogs",
+          "no_fixed_granularity"
+        ],
+        "failure_semantics": "degrade_or_freeze"
+      }
+    }
+  ]
+}

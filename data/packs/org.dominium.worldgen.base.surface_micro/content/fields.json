@@ -1,0 +1,42 @@
+{
+  "schema_id": "dominium.schema.field",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "field_id": "org.dominium.worldgen.base.surface_micro.field.microstructure",
+      "field_type": "field.microstructure",
+      "units": [
+        "unit.microstructure"
+      ],
+      "resolution": {
+        "lod_tag": "lod.surface.micro",
+        "metadata": {
+          "scale": "micro"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.surface.micro",
+          "metadata": {
+            "source": "worldgen.base.surface_micro"
+          }
+        }
+      ],
+      "knowledge_state": "latent",
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.base.surface_micro.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_fixed_granularity"
+        ],
+        "refinement_behavior": [
+          "lazy",
+          "bounded",
+          "collapsible"
+        ]
+      }
+    }
+  ]
+}

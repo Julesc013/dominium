@@ -1,0 +1,31 @@
+{
+  "schema_id": "dominium.schema.measurement_artifact",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "measurement_artifact_id": "meas.org.dominium.worldgen.base.surface_micro.baseline",
+      "measurement_domain_tag": "measurement.worldgen.procedural",
+      "era_tag": "era.not_applicable",
+      "target_ref": {
+        "node_id": "org.dominium.worldgen.base.surface_micro.anchor.procedural"
+      },
+      "confidence_desc": {
+        "kind": "procedural",
+        "level_tag": "confidence.declared"
+      },
+      "uncertainty_desc": {
+        "kind": "procedural",
+        "bounds_tag": "uncertainty.unbounded"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.base.surface_micro.v1"
+      },
+      "extensions": {
+        "seed_namespace": "seed.surface.micro",
+        "not_defined": [
+          "no_observational_constraints"
+        ]
+      }
+    }
+  ]
+}
