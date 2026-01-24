@@ -1,0 +1,87 @@
+{
+  "schema_id": "dominium.schema.knowledge",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "knowledge_artifact_id": "knowledge.magic.ritual_text.v1",
+      "knowledge_domain_tag": "knowledge.magic.ritual",
+      "confidence_desc": {
+        "level_tag": "confidence.belief",
+        "source": "ritual_tradition"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.unbounded"
+      },
+      "diffusion_metadata": {
+        "visibility": "restricted",
+        "access_control": "access.institutional"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.magic.v1"
+      },
+      "extensions": {
+        "temporal_scope": {
+          "era_tag": "era.traditional",
+          "timestamp_kind": "unknown"
+        },
+        "not_defined": [
+          "no_claim_of_scientific_validity"
+        ]
+      }
+    },
+    {
+      "knowledge_artifact_id": "knowledge.magic.oracle.v1",
+      "knowledge_domain_tag": "knowledge.magic.divination",
+      "confidence_desc": {
+        "level_tag": "confidence.belief",
+        "source": "divination"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.unbounded"
+      },
+      "diffusion_metadata": {
+        "visibility": "restricted",
+        "access_control": "access.ritual"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.magic.v1"
+      },
+      "extensions": {
+        "temporal_scope": {
+          "era_tag": "era.traditional",
+          "timestamp_kind": "point"
+        },
+        "not_defined": [
+          "no_objective_guarantee"
+        ]
+      }
+    },
+    {
+      "knowledge_artifact_id": "knowledge.magic.belief.v1",
+      "knowledge_domain_tag": "knowledge.magic.belief",
+      "confidence_desc": {
+        "level_tag": "confidence.belief",
+        "source": "collective_belief"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.unbounded"
+      },
+      "diffusion_metadata": {
+        "visibility": "public",
+        "access_control": "access.open"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.magic.v1"
+      },
+      "extensions": {
+        "temporal_scope": {
+          "era_tag": "era.unspecified",
+          "timestamp_kind": "unknown"
+        },
+        "not_defined": [
+          "no_truth_alignment"
+        ]
+      }
+    }
+  ]
+}

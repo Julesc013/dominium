@@ -1,0 +1,64 @@
+{
+  "schema_id": "dominium.schema.worldgen_model",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "model_id": "org.dominium.realities.magic.model.magic_v1",
+      "model_family": "worldgen.family.magic",
+      "applicable_domains": [
+        {
+          "domain_id": "org.dominium.realities.magic.domain.magic",
+          "volume_id": "org.dominium.realities.magic.domain.magic.volume"
+        }
+      ],
+      "supported_fields": [
+        {
+          "field_id": "org.dominium.realities.magic.field.mana"
+        },
+        {
+          "field_id": "org.dominium.realities.magic.field.fate"
+        }
+      ],
+      "supported_lod_bands": [
+        {
+          "lod_min_tag": "lod.magic.macro",
+          "lod_max_tag": "lod.magic.macro"
+        }
+      ],
+      "required_capabilities": [
+        {
+          "capability_id": "worldgen.model.magic"
+        }
+      ],
+      "seed_namespace": "seed.magic.base",
+      "assumptions": [
+        "assumption.magic_domain",
+        "assumption.belief_gated"
+      ],
+      "validity_bounds": {
+        "detail_band": "macro_only"
+      },
+      "failure_modes": [
+        "failure.insufficient_budget",
+        "failure.insufficient_belief"
+      ],
+      "validation_targets": [
+        {
+          "target_id": "validation.magic.macro",
+          "schema_id": "dominium.schema.field",
+          "target_tags": [
+            "field.mana"
+          ]
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.magic.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_physics_assumptions"
+        ]
+      }
+    }
+  ]
+}

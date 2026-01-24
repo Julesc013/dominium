@@ -1,0 +1,35 @@
+{
+  "schema_id": "dominium.schema.domain",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "domain_id": "org.dominium.realities.magic.domain.magic",
+      "domain_type": "domain.magic",
+      "domain_tags": [
+        "domain.magic"
+      ],
+      "volumes": [
+        {
+          "volume_id": "org.dominium.realities.magic.domain.magic.volume",
+          "bounds": {
+            "kind_tag": "bounds.magic",
+            "payload": {
+              "notes": "Abstract magic domain with no spatial assumptions."
+            }
+          },
+          "volume_tags": [
+            "domain.volume.magic"
+          ]
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.magic.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_physical_laws_assumed"
+        ]
+      }
+    }
+  ]
+}
