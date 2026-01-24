@@ -1,0 +1,61 @@
+{
+  "schema_id": "dominium.schema.worldgen_model",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "model_id": "org.dominium.worldgen.real.milkyway.model.override_v1",
+      "model_family": "worldgen.family.galaxy_morphology",
+      "applicable_topology_traits": [
+        "topology.galaxy"
+      ],
+      "supported_fields": [
+        {
+          "field_id": "org.dominium.worldgen.base.galaxy.field.stellar_density"
+        },
+        {
+          "field_id": "org.dominium.worldgen.base.galaxy.field.metallicity_gradient"
+        }
+      ],
+      "supported_lod_bands": [
+        {
+          "lod_min_tag": "lod.galaxy.macro",
+          "lod_max_tag": "lod.galaxy.macro"
+        }
+      ],
+      "required_capabilities": [
+        {
+          "capability_id": "refinement.override.galactic_structure"
+        }
+      ],
+      "seed_namespace": "seed.galaxy.milkyway.overlay",
+      "assumptions": [
+        "assumption.real_world_calibration"
+      ],
+      "validity_bounds": {
+        "detail_band": "macro_only"
+      },
+      "failure_modes": [
+        "failure.insufficient_budget",
+        "failure.missing_target"
+      ],
+      "validation_targets": [
+        {
+          "target_id": "validation.galaxy.milkyway.macro",
+          "schema_id": "dominium.schema.field",
+          "target_tags": [
+            "field.stellar_density"
+          ]
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.real.milkyway.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_planetary_systems",
+          "no_biological_assumptions"
+        ]
+      }
+    }
+  ]
+}

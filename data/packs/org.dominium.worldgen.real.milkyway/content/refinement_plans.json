@@ -1,0 +1,96 @@
+{
+  "schema_id": "dominium.schema.refinement_plan",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "plan_id": "org.dominium.worldgen.real.milkyway.plan.override_v1",
+      "plan_tags": [
+        "worldgen.plan.galaxy.overlay",
+        "worldgen.plan.real_milkyway"
+      ],
+      "plan_domain_scope": {
+        "scope_id": "scope.galaxy.milkyway",
+        "node_id": "org.dominium.worldgen.real.milkyway.node.galaxy",
+        "scope_tags": [
+          "topology.galaxy.milkyway"
+        ]
+      },
+      "layers": [
+        {
+          "layer_id": "layer.galaxy.structure_override",
+          "order_index": 0,
+          "model_refs": [
+            {
+              "model_id": "org.dominium.worldgen.real.milkyway.model.override_v1"
+            }
+          ],
+          "domain_scope": {
+            "scope_id": "scope.galaxy.structure.override",
+            "node_id": "org.dominium.worldgen.real.milkyway.node.galaxy"
+          },
+          "lod_band": {
+            "lod_min_tag": "lod.galaxy.macro",
+            "lod_max_tag": "lod.galaxy.macro"
+          },
+          "field_refs": [
+            {
+              "field_id": "org.dominium.worldgen.base.galaxy.field.stellar_density"
+            },
+            {
+              "field_id": "org.dominium.worldgen.base.galaxy.field.metallicity_gradient"
+            }
+          ],
+          "component_tags": [
+            "topology.galactic_structure"
+          ],
+          "precedence_tag": "precedence.overlay",
+          "failure_modes": [
+            "failure.defer"
+          ],
+          "extensions": {
+            "not_defined": [
+              "no_named_stars"
+            ]
+          }
+        }
+      ],
+      "precedence_rules": [
+        {
+          "higher_tag": "precedence.overlay",
+          "lower_tag": "precedence.base"
+        }
+      ],
+      "refinement_ceilings": [
+        {
+          "ceiling_id": "ceiling.galaxy.milkyway.macro",
+          "lod_max_tag": "lod.galaxy.macro",
+          "field_refs": [
+            {
+              "field_id": "org.dominium.worldgen.base.galaxy.field.stellar_density"
+            },
+            {
+              "field_id": "org.dominium.worldgen.base.galaxy.field.metallicity_gradient"
+            }
+          ],
+          "budget": {
+            "cost_units_max": 500,
+            "memory_units_max": 256
+          },
+          "ceiling_tags": [
+            "ceiling.macro"
+          ]
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.real.milkyway.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_planetary_systems",
+          "no_biological_assumptions"
+        ],
+        "failure_semantics": "degrade_or_freeze"
+      }
+    }
+  ]
+}

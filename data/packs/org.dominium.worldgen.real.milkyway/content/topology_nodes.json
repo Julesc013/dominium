@@ -1,0 +1,41 @@
+{
+  "schema_id": "dominium.schema.topology",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "node_id": "org.dominium.worldgen.real.milkyway.node.galaxy",
+      "parent_refs": [
+        {
+          "node_id": "org.dominium.worldgen.base.cosmology.node.universe",
+          "ref_tags": [
+            "ref.optional_parent"
+          ]
+        }
+      ],
+      "trait_tags": [
+        "topology.galaxy",
+        "topology.galaxy.milkyway",
+        "refinement.anchor"
+      ],
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.galaxy.macro",
+          "metadata": {
+            "source": "worldgen.real.milkyway"
+          }
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.real.milkyway.v1"
+      },
+      "extensions": {
+        "anchor_role": "refinement_override",
+        "not_defined": [
+          "no_named_systems",
+          "no_named_stars"
+        ]
+      }
+    }
+  ]
+}
