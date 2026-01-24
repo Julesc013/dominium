@@ -1,0 +1,50 @@
+{
+  "schema_id": "dominium.schema.knowledge",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "knowledge_artifact_id": "knowledge.examples.magic_earth.rituals.v1",
+      "knowledge_domain_tag": "knowledge.magic.belief",
+      "confidence_desc": {
+        "level_tag": "confidence.belief",
+        "source": "ritual_tradition"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.unbounded"
+      },
+      "diffusion_metadata": {
+        "visibility": "restricted"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.examples.magic_earth.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_objective_validation"
+        ]
+      }
+    },
+    {
+      "knowledge_artifact_id": "knowledge.examples.magic_earth.science_baseline.v1",
+      "knowledge_domain_tag": "knowledge.science.baseline",
+      "confidence_desc": {
+        "level_tag": "confidence.high",
+        "source": "instrumented_surveys"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.bounded"
+      },
+      "diffusion_metadata": {
+        "visibility": "public"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.examples.magic_earth.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_unified_theory"
+        ]
+      }
+    }
+  ]
+}

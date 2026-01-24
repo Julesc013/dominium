@@ -1,0 +1,34 @@
+{
+  "schema_id": "dominium.schema.measurement_artifact",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "measurement_artifact_id": "meas.examples.magic_earth.mana_survey.v1",
+      "measurement_domain_tag": "measurement.magic",
+      "era_tag": "era.traditional",
+      "target_ref": {
+        "domain_id": "org.dominium.realities.magic.domain.magic",
+        "volume_id": "org.dominium.realities.magic.domain.magic.volume"
+      },
+      "confidence_desc": {
+        "level_tag": "confidence.belief",
+        "kind": "ritual"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.unbounded",
+        "kind": "ritual"
+      },
+      "access_control": {
+        "visibility": "restricted"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.examples.magic_earth.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_objective_validation"
+        ]
+      }
+    }
+  ]
+}

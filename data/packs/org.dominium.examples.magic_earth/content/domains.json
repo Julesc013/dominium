@@ -1,0 +1,35 @@
+{
+  "schema_id": "dominium.schema.domain",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "domain_id": "org.dominium.examples.magic_earth.domain.arcane",
+      "domain_type": "domain.arcane",
+      "domain_tags": [
+        "domain.magic"
+      ],
+      "volumes": [
+        {
+          "volume_id": "org.dominium.examples.magic_earth.domain.arcane.volume.local",
+          "bounds": {
+            "kind_tag": "bounds.local",
+            "payload": {
+              "notes": "Localized arcane jurisdiction on Earth."
+            }
+          },
+          "volume_tags": [
+            "domain.volume.arcane"
+          ]
+        }
+      ],
+      "attached_node_refs": [
+        {
+          "node_id": "org.dominium.worldgen.real.earth_macro.node.earth"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.examples.magic_earth.v1"
+      }
+    }
+  ]
+}

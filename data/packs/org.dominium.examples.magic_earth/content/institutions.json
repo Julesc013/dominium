@@ -1,0 +1,63 @@
+{
+  "schema_id": "dominium.schema.institution",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "institution_id": "institution.examples.magic_earth.conclave",
+      "jurisdiction_domain_refs": [
+        {
+          "domain_id": "org.dominium.examples.magic_earth.domain.arcane",
+          "volume_id": "org.dominium.examples.magic_earth.domain.arcane.volume.local"
+        }
+      ],
+      "legitimacy_source_tags": [
+        "legitimacy.arcane",
+        "legitimacy.tradition"
+      ],
+      "enforcement_capability_refs": [
+        {
+          "capability_id": "institution.magic.order"
+        }
+      ],
+      "imposed_constraint_tags": [
+        "constraint.magic.ritual_permit"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.examples.magic_earth.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_universal_magic_law"
+        ]
+      }
+    },
+    {
+      "institution_id": "institution.examples.magic_earth.science_council",
+      "jurisdiction_domain_refs": [
+        {
+          "domain_id": "org.dominium.examples.realistic_earth.domain.science",
+          "volume_id": "org.dominium.examples.realistic_earth.domain.science.volume.global"
+        }
+      ],
+      "legitimacy_source_tags": [
+        "legitimacy.empirical"
+      ],
+      "enforcement_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.survey"
+        }
+      ],
+      "imposed_constraint_tags": [
+        "constraint.science.peer_review"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.examples.magic_earth.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_privileged_model"
+        ]
+      }
+    }
+  ]
+}
