@@ -1,0 +1,249 @@
+{
+  "schema_id": "dominium.schema.domain",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "domain_id": "domain.on_planet.surface.local",
+      "domain_type": "domain.spatial",
+      "domain_tags": [
+        "scope.surface",
+        "scale.on_planet"
+      ],
+      "volumes": [
+        {
+          "volume_id": "domain.on_planet.surface.volume.local",
+          "bounds": {
+            "kind_tag": "bounds.abstract",
+            "units": [
+              "unitless"
+            ],
+            "payload": {
+              "description": "Local surface envelope; geometry unspecified."
+            }
+          },
+          "provenance_ref": {
+            "provenance_id": "prov.on_planet.domain.surface.volume.v1"
+          },
+          "extensions": {
+            "refinement_ceiling": "lod.surface.macro",
+            "detail_absence": [
+              "no_mesh_geometry"
+            ]
+          }
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.domain.surface.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.surface.macro",
+        "detail_absence": [
+          "no_global_extent"
+        ]
+      }
+    },
+    {
+      "domain_id": "domain.on_planet.subsurface.local",
+      "domain_type": "domain.spatial",
+      "domain_tags": [
+        "scope.subsurface",
+        "scale.on_planet"
+      ],
+      "volumes": [
+        {
+          "volume_id": "domain.on_planet.subsurface.volume.local",
+          "bounds": {
+            "kind_tag": "bounds.abstract",
+            "units": [
+              "unitless"
+            ],
+            "payload": {
+              "description": "Local subsurface volume; geometry unspecified."
+            }
+          },
+          "provenance_ref": {
+            "provenance_id": "prov.on_planet.domain.subsurface.volume.v1"
+          },
+          "extensions": {
+            "refinement_ceiling": "lod.subsurface.macro",
+            "detail_absence": [
+              "no_stratigraphy_model"
+            ]
+          }
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.domain.subsurface.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.subsurface.macro",
+        "detail_absence": [
+          "no_global_extent"
+        ]
+      }
+    },
+    {
+      "domain_id": "domain.on_planet.atmosphere.local",
+      "domain_type": "domain.spatial",
+      "domain_tags": [
+        "scope.atmosphere",
+        "scale.on_planet"
+      ],
+      "volumes": [
+        {
+          "volume_id": "domain.on_planet.atmosphere.volume.local",
+          "bounds": {
+            "kind_tag": "bounds.abstract",
+            "units": [
+              "unitless"
+            ],
+            "payload": {
+              "description": "Local atmosphere envelope; geometry unspecified."
+            }
+          },
+          "provenance_ref": {
+            "provenance_id": "prov.on_planet.domain.atmosphere.volume.v1"
+          },
+          "extensions": {
+            "refinement_ceiling": "lod.atmosphere.macro",
+            "detail_absence": [
+              "no_vertical_profile"
+            ]
+          }
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.domain.atmosphere.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.atmosphere.macro",
+        "detail_absence": [
+          "no_global_extent"
+        ]
+      }
+    },
+    {
+      "domain_id": "domain.on_planet.infrastructure.local",
+      "domain_type": "domain.spatial",
+      "domain_tags": [
+        "scope.infrastructure",
+        "scale.on_planet"
+      ],
+      "volumes": [
+        {
+          "volume_id": "domain.on_planet.infrastructure.volume.local",
+          "bounds": {
+            "kind_tag": "bounds.abstract",
+            "units": [
+              "unitless"
+            ],
+            "payload": {
+              "description": "Local infrastructure envelope; geometry unspecified."
+            }
+          },
+          "provenance_ref": {
+            "provenance_id": "prov.on_planet.domain.infrastructure.volume.v1"
+          },
+          "extensions": {
+            "refinement_ceiling": "lod.infrastructure.macro",
+            "detail_absence": [
+              "no_building_geometry"
+            ]
+          }
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.domain.infrastructure.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.infrastructure.macro",
+        "detail_absence": [
+          "no_global_extent"
+        ]
+      }
+    },
+    {
+      "domain_id": "domain.on_planet.network.local",
+      "domain_type": "domain.spatial",
+      "domain_tags": [
+        "scope.network",
+        "scale.on_planet"
+      ],
+      "volumes": [
+        {
+          "volume_id": "domain.on_planet.network.volume.local",
+          "bounds": {
+            "kind_tag": "bounds.abstract",
+            "units": [
+              "unitless"
+            ],
+            "payload": {
+              "description": "Local network envelope; geometry unspecified."
+            }
+          },
+          "provenance_ref": {
+            "provenance_id": "prov.on_planet.domain.network.volume.v1"
+          },
+          "extensions": {
+            "refinement_ceiling": "lod.network.macro",
+            "detail_absence": [
+              "no_topology_geometry"
+            ]
+          }
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.domain.network.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.network.macro",
+        "detail_absence": [
+          "no_global_extent"
+        ]
+      }
+    },
+    {
+      "domain_id": "domain.on_planet.jurisdiction.local",
+      "domain_type": "domain.jurisdictional",
+      "domain_tags": [
+        "scope.jurisdiction",
+        "scale.on_planet"
+      ],
+      "jurisdiction_tags": [
+        "jurisdiction.local"
+      ],
+      "volumes": [
+        {
+          "volume_id": "domain.on_planet.jurisdiction.volume.local",
+          "bounds": {
+            "kind_tag": "bounds.abstract",
+            "units": [
+              "unitless"
+            ],
+            "payload": {
+              "description": "Local jurisdictional envelope; geometry unspecified."
+            }
+          },
+          "provenance_ref": {
+            "provenance_id": "prov.on_planet.domain.jurisdiction.volume.v1"
+          },
+          "extensions": {
+            "refinement_ceiling": "lod.jurisdiction.macro",
+            "detail_absence": [
+              "no_legal_geometry"
+            ]
+          }
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.domain.jurisdiction.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.jurisdiction.macro",
+        "detail_absence": [
+          "no_global_extent"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,493 @@
+{
+  "schema_id": "dominium.schema.field",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "field_id": "field.on_planet.terrain.elevation",
+      "field_type": "field.terrain.elevation",
+      "units": [
+        "unit.m"
+      ],
+      "resolution": {
+        "lod_tag": "lod.surface.macro",
+        "metadata": {
+          "scale": "coarse"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.surface.macro"
+        },
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.surface.submacro"
+        }
+      ],
+      "knowledge_state": "known",
+      "domain_volume_refs": [
+        {
+          "domain_id": "domain.on_planet.surface.local",
+          "volume_id": "domain.on_planet.surface.volume.local"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.field.terrain.elevation.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.surface.macro",
+        "detail_absence": [
+          "no_micro_topography"
+        ]
+      }
+    },
+    {
+      "field_id": "field.on_planet.terrain.cover",
+      "field_type": "field.terrain.cover",
+      "units": [
+        "unitless"
+      ],
+      "resolution": {
+        "lod_tag": "lod.surface.macro"
+      },
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.surface.macro"
+        }
+      ],
+      "knowledge_state": "known",
+      "domain_volume_refs": [
+        {
+          "domain_id": "domain.on_planet.surface.local",
+          "volume_id": "domain.on_planet.surface.volume.local"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.field.terrain.cover.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.surface.macro",
+        "detail_absence": [
+          "no_species_detail"
+        ]
+      }
+    },
+    {
+      "field_id": "field.on_planet.soil.compaction",
+      "field_type": "field.soil.compaction",
+      "units": [
+        "unitless"
+      ],
+      "resolution": {
+        "lod_tag": "lod.surface.macro"
+      },
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.surface.macro"
+        }
+      ],
+      "knowledge_state": "inferred",
+      "domain_volume_refs": [
+        {
+          "domain_id": "domain.on_planet.surface.local",
+          "volume_id": "domain.on_planet.surface.volume.local"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.field.soil.compaction.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.surface.macro",
+        "detail_absence": [
+          "no_particle_model"
+        ]
+      }
+    },
+    {
+      "field_id": "field.on_planet.soil.contamination",
+      "field_type": "field.soil.contamination",
+      "units": [
+        "unitless"
+      ],
+      "resolution": {
+        "lod_tag": "lod.surface.macro"
+      },
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.surface.macro"
+        }
+      ],
+      "knowledge_state": "inferred",
+      "domain_volume_refs": [
+        {
+          "domain_id": "domain.on_planet.surface.local",
+          "volume_id": "domain.on_planet.surface.volume.local"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.field.soil.contamination.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.surface.macro",
+        "detail_absence": [
+          "no_chemistry_model"
+        ]
+      }
+    },
+    {
+      "field_id": "field.on_planet.hydrology.flow",
+      "field_type": "field.hydrology.flow",
+      "units": [
+        "unit.volume_rate"
+      ],
+      "resolution": {
+        "lod_tag": "lod.surface.macro"
+      },
+      "representation": [
+        {
+          "tier_tag": "hybrid",
+          "lod_tag": "lod.surface.macro"
+        }
+      ],
+      "knowledge_state": "inferred",
+      "domain_volume_refs": [
+        {
+          "domain_id": "domain.on_planet.surface.local",
+          "volume_id": "domain.on_planet.surface.volume.local"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.field.hydrology.flow.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.surface.macro",
+        "detail_absence": [
+          "no_channel_geometry"
+        ]
+      }
+    },
+    {
+      "field_id": "field.on_planet.hydrology.storage",
+      "field_type": "field.hydrology.storage",
+      "units": [
+        "unit.volume"
+      ],
+      "resolution": {
+        "lod_tag": "lod.subsurface.macro"
+      },
+      "representation": [
+        {
+          "tier_tag": "hybrid",
+          "lod_tag": "lod.subsurface.macro"
+        }
+      ],
+      "knowledge_state": "inferred",
+      "domain_volume_refs": [
+        {
+          "domain_id": "domain.on_planet.subsurface.local",
+          "volume_id": "domain.on_planet.subsurface.volume.local"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.field.hydrology.storage.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.subsurface.macro",
+        "detail_absence": [
+          "no_aquifer_geometry"
+        ]
+      }
+    },
+    {
+      "field_id": "field.on_planet.biomass.cover",
+      "field_type": "field.biomass.cover",
+      "units": [
+        "unitless"
+      ],
+      "resolution": {
+        "lod_tag": "lod.surface.macro"
+      },
+      "representation": [
+        {
+          "tier_tag": "hybrid",
+          "lod_tag": "lod.surface.macro"
+        }
+      ],
+      "knowledge_state": "inferred",
+      "domain_volume_refs": [
+        {
+          "domain_id": "domain.on_planet.surface.local",
+          "volume_id": "domain.on_planet.surface.volume.local"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.field.biomass.cover.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.surface.macro",
+        "detail_absence": [
+          "no_species_detail"
+        ]
+      }
+    },
+    {
+      "field_id": "field.on_planet.resource.deposit",
+      "field_type": "field.resource.deposit",
+      "units": [
+        "unit.mass"
+      ],
+      "resolution": {
+        "lod_tag": "lod.subsurface.macro"
+      },
+      "representation": [
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.subsurface.macro"
+        }
+      ],
+      "knowledge_state": "latent",
+      "domain_volume_refs": [
+        {
+          "domain_id": "domain.on_planet.subsurface.local",
+          "volume_id": "domain.on_planet.subsurface.volume.local"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.field.resource.deposit.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.subsurface.macro",
+        "detail_absence": [
+          "no_composition_detail"
+        ]
+      }
+    },
+    {
+      "field_id": "field.on_planet.resource.accessibility",
+      "field_type": "field.resource.accessibility",
+      "units": [
+        "unitless"
+      ],
+      "resolution": {
+        "lod_tag": "lod.subsurface.macro"
+      },
+      "representation": [
+        {
+          "tier_tag": "hybrid",
+          "lod_tag": "lod.subsurface.macro"
+        }
+      ],
+      "knowledge_state": "inferred",
+      "domain_volume_refs": [
+        {
+          "domain_id": "domain.on_planet.subsurface.local",
+          "volume_id": "domain.on_planet.subsurface.volume.local"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.field.resource.accessibility.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.subsurface.macro",
+        "detail_absence": [
+          "no_tooling_assumption"
+        ]
+      }
+    },
+    {
+      "field_id": "field.on_planet.structural.integrity",
+      "field_type": "field.structural.integrity",
+      "units": [
+        "unitless"
+      ],
+      "resolution": {
+        "lod_tag": "lod.infrastructure.macro"
+      },
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.infrastructure.macro"
+        }
+      ],
+      "knowledge_state": "inferred",
+      "domain_volume_refs": [
+        {
+          "domain_id": "domain.on_planet.infrastructure.local",
+          "volume_id": "domain.on_planet.infrastructure.volume.local"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.field.structural.integrity.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.infrastructure.macro",
+        "detail_absence": [
+          "no_material_model"
+        ]
+      }
+    },
+    {
+      "field_id": "field.on_planet.network.congestion",
+      "field_type": "field.network.congestion",
+      "units": [
+        "unitless"
+      ],
+      "resolution": {
+        "lod_tag": "lod.network.macro"
+      },
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.network.macro"
+        }
+      ],
+      "knowledge_state": "inferred",
+      "domain_volume_refs": [
+        {
+          "domain_id": "domain.on_planet.network.local",
+          "volume_id": "domain.on_planet.network.volume.local"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.field.network.congestion.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.network.macro",
+        "detail_absence": [
+          "no_flow_solver"
+        ]
+      }
+    },
+    {
+      "field_id": "field.on_planet.atmosphere.composition",
+      "field_type": "field.atmosphere.composition",
+      "units": [
+        "unitless"
+      ],
+      "resolution": {
+        "lod_tag": "lod.atmosphere.macro"
+      },
+      "representation": [
+        {
+          "tier_tag": "hybrid",
+          "lod_tag": "lod.atmosphere.macro"
+        }
+      ],
+      "knowledge_state": "inferred",
+      "domain_volume_refs": [
+        {
+          "domain_id": "domain.on_planet.atmosphere.local",
+          "volume_id": "domain.on_planet.atmosphere.volume.local"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.field.atmosphere.composition.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.atmosphere.macro",
+        "detail_absence": [
+          "no_chemistry_model"
+        ]
+      }
+    },
+    {
+      "field_id": "field.on_planet.atmosphere.pressure",
+      "field_type": "field.atmosphere.pressure",
+      "units": [
+        "unit.pressure"
+      ],
+      "resolution": {
+        "lod_tag": "lod.atmosphere.macro"
+      },
+      "representation": [
+        {
+          "tier_tag": "hybrid",
+          "lod_tag": "lod.atmosphere.macro"
+        }
+      ],
+      "knowledge_state": "inferred",
+      "domain_volume_refs": [
+        {
+          "domain_id": "domain.on_planet.atmosphere.local",
+          "volume_id": "domain.on_planet.atmosphere.volume.local"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.field.atmosphere.pressure.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.atmosphere.macro",
+        "detail_absence": [
+          "no_vertical_profile"
+        ]
+      }
+    },
+    {
+      "field_id": "field.on_planet.climate.albedo",
+      "field_type": "field.climate.albedo",
+      "units": [
+        "unitless"
+      ],
+      "resolution": {
+        "lod_tag": "lod.surface.macro"
+      },
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.surface.macro"
+        }
+      ],
+      "knowledge_state": "inferred",
+      "domain_volume_refs": [
+        {
+          "domain_id": "domain.on_planet.surface.local",
+          "volume_id": "domain.on_planet.surface.volume.local"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.field.climate.albedo.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.surface.macro",
+        "detail_absence": [
+          "no_spectral_model"
+        ]
+      }
+    },
+    {
+      "field_id": "field.on_planet.temperature",
+      "field_type": "field.temperature",
+      "units": [
+        "unit.temperature"
+      ],
+      "resolution": {
+        "lod_tag": "lod.atmosphere.macro"
+      },
+      "representation": [
+        {
+          "tier_tag": "hybrid",
+          "lod_tag": "lod.atmosphere.macro"
+        }
+      ],
+      "knowledge_state": "inferred",
+      "domain_volume_refs": [
+        {
+          "domain_id": "domain.on_planet.atmosphere.local",
+          "volume_id": "domain.on_planet.atmosphere.volume.local"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.field.temperature.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.atmosphere.macro",
+        "detail_absence": [
+          "no_micro_climate"
+        ]
+      }
+    }
+  ]
+}
