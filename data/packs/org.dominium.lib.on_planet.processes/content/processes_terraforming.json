@@ -1,0 +1,456 @@
+{
+  "schema_id": "dominium.schema.process",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "process_id": "process.on_planet.terraforming.alter_atmosphere",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.atmosphere.composition"
+        },
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.atmosphere.pressure"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.atmosphere.composition"
+        },
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.atmosphere.pressure"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.terraforming"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.atmosphere"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.atmosphere.local",
+          "volume_id": "domain.on_planet.atmosphere.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.constraint_violation"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.terraforming.alter_atmosphere.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.long_horizon"
+        },
+        "energy_cost_desc": {
+          "class": "energy.high"
+        },
+        "conservation_tags": [
+          "conservation.mass",
+          "conservation.energy"
+        ],
+        "scale_tags": [
+          "scale.planet"
+        ],
+        "degradation_mode_tags": [
+          "degrade.partial",
+          "degrade.deferred"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_chemistry_model"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.terraforming.inject_gases",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "material",
+          "ref_id": "material.on_planet.gas.generic"
+        },
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.atmosphere.composition"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.atmosphere.composition"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.terraforming"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.atmosphere"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.atmosphere.local",
+          "volume_id": "domain.on_planet.atmosphere.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.insufficient_material"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.terraforming.inject_gases.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.long_horizon"
+        },
+        "energy_cost_desc": {
+          "class": "energy.high"
+        },
+        "conservation_tags": [
+          "conservation.mass",
+          "conservation.energy"
+        ],
+        "scale_tags": [
+          "scale.planet"
+        ],
+        "degradation_mode_tags": [
+          "degrade.partial"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_chemistry_model"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.terraforming.remove_gases",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.atmosphere.composition"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "material",
+          "ref_id": "material.on_planet.gas.generic"
+        },
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.atmosphere.composition"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.terraforming"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.atmosphere"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.atmosphere.local",
+          "volume_id": "domain.on_planet.atmosphere.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.constraint_violation"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.terraforming.remove_gases.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.long_horizon"
+        },
+        "energy_cost_desc": {
+          "class": "energy.high"
+        },
+        "conservation_tags": [
+          "conservation.mass",
+          "conservation.energy"
+        ],
+        "scale_tags": [
+          "scale.planet"
+        ],
+        "degradation_mode_tags": [
+          "degrade.partial"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_chemistry_model"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.terraforming.modify_albedo",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.climate.albedo"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.climate.albedo"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.terraforming"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.climate"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.surface.local",
+          "volume_id": "domain.on_planet.surface.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.terraforming.modify_albedo.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.long_horizon"
+        },
+        "energy_cost_desc": {
+          "class": "energy.high"
+        },
+        "conservation_tags": [
+          "conservation.energy"
+        ],
+        "scale_tags": [
+          "scale.planet"
+        ],
+        "degradation_mode_tags": [
+          "degrade.partial"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_radiative_model"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.terraforming.redistribute_water",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.hydrology.flow"
+        },
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.hydrology.storage"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.hydrology.flow"
+        },
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.hydrology.storage"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.terraforming"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.hydrology"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.surface.local",
+          "volume_id": "domain.on_planet.surface.volume.local"
+        },
+        {
+          "domain_id": "domain.on_planet.subsurface.local",
+          "volume_id": "domain.on_planet.subsurface.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.constraint_violation"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.terraforming.redistribute_water.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.long_horizon"
+        },
+        "energy_cost_desc": {
+          "class": "energy.high"
+        },
+        "conservation_tags": [
+          "conservation.mass",
+          "conservation.energy"
+        ],
+        "scale_tags": [
+          "scale.planet"
+        ],
+        "degradation_mode_tags": [
+          "degrade.partial"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_water_cycle_model"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.terraforming.introduce_biomass",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "material",
+          "ref_id": "material.on_planet.biotic.generic"
+        },
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.biomass.cover"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.biomass.cover"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.terraforming"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.biomass"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.surface.local",
+          "volume_id": "domain.on_planet.surface.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.insufficient_material"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.terraforming.introduce_biomass.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.long_horizon"
+        },
+        "energy_cost_desc": {
+          "class": "energy.high"
+        },
+        "conservation_tags": [
+          "conservation.mass",
+          "conservation.energy"
+        ],
+        "scale_tags": [
+          "scale.planet"
+        ],
+        "degradation_mode_tags": [
+          "degrade.partial"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_species_detail"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.terraforming.climate_feedback",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.temperature"
+        },
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.climate.albedo"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.temperature"
+        },
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.climate.albedo"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.terraforming"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.climate"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.atmosphere.local",
+          "volume_id": "domain.on_planet.atmosphere.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.unsupported_state"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.terraforming.climate_feedback.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.long_horizon"
+        },
+        "energy_cost_desc": {
+          "class": "energy.high"
+        },
+        "conservation_tags": [
+          "conservation.energy"
+        ],
+        "scale_tags": [
+          "scale.planet"
+        ],
+        "degradation_mode_tags": [
+          "degrade.partial"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_feedback_model"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,356 @@
+{
+  "schema_id": "dominium.schema.process",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "process_id": "process.on_planet.trade.negotiate_contract",
+      "process_class": "transactional",
+      "inputs": [
+        {
+          "ref_type": "institution",
+          "ref_id": "institution.on_planet.trade.clearinghouse"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.trade.contract"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.trade"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.trade.negotiate"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.jurisdiction.local",
+          "volume_id": "domain.on_planet.jurisdiction.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.constraint_violation"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.trade.negotiate_contract.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_terms_schema"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.trade.transfer_ownership",
+      "process_class": "transactional",
+      "inputs": [
+        {
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.trade.contract"
+        },
+        {
+          "ref_type": "institution",
+          "ref_id": "institution.on_planet.registry.ownership"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.compliance.report"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.ownership.registry"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.ownership.transfer",
+        "authority.jurisdiction.local"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.jurisdiction.local",
+          "volume_id": "domain.on_planet.jurisdiction.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.constraint_violation"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.trade.transfer_ownership.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_registry_schema"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.trade.schedule_delivery",
+      "process_class": "transactional",
+      "inputs": [
+        {
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.trade.contract"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.delivery.schedule"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.trade"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.trade.schedule"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.jurisdiction.local",
+          "volume_id": "domain.on_planet.jurisdiction.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.trade.schedule_delivery.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_schedule_schema"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.trade.load_transport",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "material",
+          "ref_id": "material.on_planet.structural.generic"
+        },
+        {
+          "ref_type": "assembly",
+          "ref_id": "assembly.on_planet.vehicle.chassis.basic"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "assembly",
+          "ref_id": "assembly.on_planet.vehicle.chassis.basic"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.transport"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.logistics"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.infrastructure.local",
+          "volume_id": "domain.on_planet.infrastructure.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.insufficient_material"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.trade.load_transport.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "conservation_tags": [
+          "conservation.mass",
+          "conservation.energy"
+        ],
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_cargo_schema"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.trade.move_goods",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "assembly",
+          "ref_id": "assembly.on_planet.vehicle.chassis.basic"
+        },
+        {
+          "ref_type": "network",
+          "ref_id": "network.on_planet.logistics.local"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "assembly",
+          "ref_id": "assembly.on_planet.vehicle.chassis.basic"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.transport"
+        },
+        {
+          "capability_id": "capability.on_planet.network.logistics"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.logistics"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.network.local",
+          "volume_id": "domain.on_planet.network.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.insufficient_capability"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.trade.move_goods.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "conservation_tags": [
+          "conservation.energy"
+        ],
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_route_solver"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.trade.unload_and_register",
+      "process_class": "transactional",
+      "inputs": [
+        {
+          "ref_type": "assembly",
+          "ref_id": "assembly.on_planet.vehicle.chassis.basic"
+        },
+        {
+          "ref_type": "institution",
+          "ref_id": "institution.on_planet.registry.ownership"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.compliance.report"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.ownership.registry"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.ownership.transfer",
+        "authority.jurisdiction.local"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.jurisdiction.local",
+          "volume_id": "domain.on_planet.jurisdiction.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.trade.unload_and_register.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_registry_schema"
+        ]
+      }
+    }
+  ]
+}

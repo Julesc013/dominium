@@ -1,0 +1,340 @@
+{
+  "schema_id": "dominium.schema.process",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "process_id": "process.on_planet.regulation.request_permit",
+      "process_class": "transactional",
+      "inputs": [
+        {
+          "ref_type": "institution",
+          "ref_id": "institution.on_planet.regulator.local"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.compliance.report"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.regulation"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.jurisdiction.local"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.jurisdiction.local",
+          "volume_id": "domain.on_planet.jurisdiction.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.regulation.request_permit.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_application_schema"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.regulation.review_compliance",
+      "process_class": "epistemic",
+      "inputs": [
+        {
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.compliance.report"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.compliance.report"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.compliance.audit"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.jurisdiction.local"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.jurisdiction.local",
+          "volume_id": "domain.on_planet.jurisdiction.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.regulation.review_compliance.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_review_schema"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.regulation.issue_or_deny",
+      "process_class": "transactional",
+      "inputs": [
+        {
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.compliance.report"
+        },
+        {
+          "ref_type": "institution",
+          "ref_id": "institution.on_planet.regulator.local"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.compliance.report"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.regulation"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.jurisdiction.local",
+        "authority.permit.issue"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.jurisdiction.local",
+          "volume_id": "domain.on_planet.jurisdiction.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.constraint_violation"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.regulation.issue_or_deny.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_permit_schema"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.regulation.inspect",
+      "process_class": "epistemic",
+      "inputs": [
+        {
+          "ref_type": "institution",
+          "ref_id": "institution.on_planet.inspectorate.basic"
+        },
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.structural.integrity"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.compliance.report"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.compliance.audit"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.jurisdiction.local"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.infrastructure.local",
+          "volume_id": "domain.on_planet.infrastructure.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.regulation.inspect.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_inspection_schema"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.regulation.certify",
+      "process_class": "transactional",
+      "inputs": [
+        {
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.compliance.report"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.compliance.report"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.regulation"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.jurisdiction.local",
+        "authority.certify"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.jurisdiction.local",
+          "volume_id": "domain.on_planet.jurisdiction.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.regulation.certify.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_certificate_schema"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.regulation.penalize_violation",
+      "process_class": "transactional",
+      "inputs": [
+        {
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.compliance.report"
+        },
+        {
+          "ref_type": "institution",
+          "ref_id": "institution.on_planet.regulator.local"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.compliance.report"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.regulation"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.jurisdiction.local",
+        "authority.penalize"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.jurisdiction.local",
+          "volume_id": "domain.on_planet.jurisdiction.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.regulation.penalize_violation.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_penalty_schema"
+        ]
+      }
+    }
+  ]
+}
