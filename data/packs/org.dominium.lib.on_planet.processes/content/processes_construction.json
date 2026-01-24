@@ -1,0 +1,547 @@
+{
+  "schema_id": "dominium.schema.process",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "process_id": "process.on_planet.construction.survey_site",
+      "process_class": "epistemic",
+      "inputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.terrain.elevation"
+        },
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.soil.compaction"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.survey.site"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.survey"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.observe.terrain"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.surface.local",
+          "volume_id": "domain.on_planet.surface.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.insufficient_capability"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.construction.survey_site.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_measurement_schema"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.construction.clear_and_prepare",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.terrain.cover"
+        },
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.soil.compaction"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.terrain.cover"
+        },
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.soil.compaction"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.terrain.modify"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.terrain"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.surface.local",
+          "volume_id": "domain.on_planet.surface.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.constraint_violation"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.construction.clear_prepare.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "conservation_tags": [
+          "conservation.energy"
+        ],
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_tooling_spec"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.construction.establish_foundation",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "material",
+          "ref_id": "material.on_planet.structural.generic"
+        },
+        {
+          "ref_type": "assembly",
+          "ref_id": "assembly.on_planet.foundation.basic"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "assembly",
+          "ref_id": "assembly.on_planet.foundation.basic"
+        },
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.structural.integrity"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.construction"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.infrastructure"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.infrastructure.local",
+          "volume_id": "domain.on_planet.infrastructure.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.insufficient_material"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.construction.establish_foundation.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "conservation_tags": [
+          "conservation.mass",
+          "conservation.energy"
+        ],
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_geometry"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.construction.claim_volume",
+      "process_class": "transactional",
+      "inputs": [
+        {
+          "ref_type": "domain_volume",
+          "ref_id": "domain.on_planet.infrastructure.volume.local"
+        },
+        {
+          "ref_type": "institution",
+          "ref_id": "institution.on_planet.registry.ownership"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.compliance.report"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.ownership.registry"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.ownership.claim",
+        "authority.jurisdiction.local"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.jurisdiction.local",
+          "volume_id": "domain.on_planet.jurisdiction.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.constraint_violation"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.construction.claim_volume.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_registry_schema"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.construction.release_volume",
+      "process_class": "transactional",
+      "inputs": [
+        {
+          "ref_type": "domain_volume",
+          "ref_id": "domain.on_planet.infrastructure.volume.local"
+        },
+        {
+          "ref_type": "institution",
+          "ref_id": "institution.on_planet.registry.ownership"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.compliance.report"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.ownership.registry"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.ownership.release",
+        "authority.jurisdiction.local"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.jurisdiction.local",
+          "volume_id": "domain.on_planet.jurisdiction.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.constraint_violation"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.construction.release_volume.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_registry_schema"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.construction.place_part",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "part",
+          "ref_id": "part.on_planet.beam.basic"
+        },
+        {
+          "ref_type": "part",
+          "ref_id": "part.on_planet.panel.basic"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "assembly",
+          "ref_id": "assembly.on_planet.structure.frame.basic"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.construction"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.infrastructure"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.infrastructure.local",
+          "volume_id": "domain.on_planet.infrastructure.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.insufficient_material"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.construction.place_part.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "conservation_tags": [
+          "conservation.mass"
+        ],
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_geometry"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.construction.connect_interface",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "assembly",
+          "ref_id": "assembly.on_planet.structure.frame.basic"
+        },
+        {
+          "ref_type": "part",
+          "ref_id": "part.on_planet.joint.basic"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "assembly",
+          "ref_id": "assembly.on_planet.structure.frame.basic"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.construction"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.infrastructure"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.infrastructure.local",
+          "volume_id": "domain.on_planet.infrastructure.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.constraint_violation"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.construction.connect_interface.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "conservation_tags": [
+          "conservation.energy"
+        ],
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_interface_schema"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.construction.verify_integrity",
+      "process_class": "epistemic",
+      "inputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.structural.integrity"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.integrity.report"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.survey"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.observe.infrastructure"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.infrastructure.local",
+          "volume_id": "domain.on_planet.infrastructure.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.construction.verify_integrity.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_inspection_schema"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.construction.certify_structure",
+      "process_class": "transactional",
+      "inputs": [
+        {
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.integrity.report"
+        },
+        {
+          "ref_type": "institution",
+          "ref_id": "institution.on_planet.regulator.local"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.compliance.report"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.regulation"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.jurisdiction.local",
+        "authority.certify.structure"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.jurisdiction.local",
+          "volume_id": "domain.on_planet.jurisdiction.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.constraint_violation"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.construction.certify_structure.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_certificate_schema"
+        ]
+      }
+    }
+  ]
+}
