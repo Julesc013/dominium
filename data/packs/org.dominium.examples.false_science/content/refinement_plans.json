@@ -1,0 +1,68 @@
+{
+  "schema_id": "dominium.schema.refinement_plan",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "plan_id": "org.dominium.examples.false_science.plan.subjective_projection_v1",
+      "plan_tags": [
+        "example.false_science",
+        "worldgen.plan.epistemic_projection"
+      ],
+      "plan_domain_scope": {
+        "scope_id": "scope.false_science.projection",
+        "node_id": "org.dominium.worldgen.real.earth_macro.node.earth",
+        "domain_id": "org.dominium.examples.false_science.domain.doctrine",
+        "volume_id": "org.dominium.examples.false_science.domain.doctrine.volume.local"
+      },
+      "layers": [
+        {
+          "layer_id": "layer.false_science.epistemic",
+          "order_index": 0,
+          "model_refs": [
+            {
+              "model_id": "org.dominium.epistemics.core.model.epistemic_filter_v1"
+            }
+          ],
+          "domain_scope": {
+            "scope_id": "scope.false_science.projection",
+            "domain_id": "org.dominium.examples.false_science.domain.doctrine",
+            "volume_id": "org.dominium.examples.false_science.domain.doctrine.volume.local"
+          },
+          "lod_band": {
+            "lod_min_tag": "lod.any",
+            "lod_max_tag": "lod.any"
+          },
+          "component_tags": [
+            "knowledge.false_science.doctrine"
+          ],
+          "precedence_tag": "precedence.gating",
+          "failure_modes": [
+            "failure.insufficient_knowledge"
+          ],
+          "extensions": {
+            "required_knowledge_tags": [
+              "knowledge.false_science.doctrine"
+            ],
+            "insufficient_knowledge_behavior": [
+              "emit_unknown_placeholders"
+            ]
+          }
+        }
+      ],
+      "precedence_rules": [
+        {
+          "higher_tag": "precedence.gating",
+          "lower_tag": "precedence.base"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.examples.false_science.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_objective_truth_override"
+        ]
+      }
+    }
+  ]
+}

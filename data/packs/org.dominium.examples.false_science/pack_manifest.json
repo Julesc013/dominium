@@ -1,0 +1,45 @@
+{
+  "schema_id": "dominium.schema.pack_manifest",
+  "schema_version": "1.0.0",
+  "record": {
+    "pack_id": "org.dominium.examples.false_science",
+    "pack_version": "1.0.0",
+    "pack_format_version": 1,
+    "required_engine_version": "0.0.0",
+    "required_protocol_versions": [
+      {
+        "protocol_id": "dominium.protocol.pack_manifest",
+        "version_constraint": "1"
+      }
+    ],
+    "provides": [
+      {
+        "capability_id": "example.false_science"
+      }
+    ],
+    "dependencies": [
+      {
+        "capability_id": "process.epistemic.infer"
+      },
+      {
+        "capability_id": "process.epistemic.distort"
+      },
+      {
+        "capability_id": "capability.on_planet.manufacturing"
+      },
+      {
+        "capability_id": "capability.on_planet.regulation"
+      },
+      {
+        "capability_id": "topology.body.earth"
+      }
+    ],
+    "optional": true,
+    "provenance_ref": {
+      "provenance_id": "prov.org.dominium.examples.false_science.manifest.v1"
+    },
+    "extensions": {
+      "notes": "Exemplar: wrong scientific model enforced by institutions and processes."
+    }
+  }
+}

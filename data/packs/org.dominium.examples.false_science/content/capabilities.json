@@ -1,0 +1,16 @@
+{
+  "schema_id": "dominium.schema.capability",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "capability_id": "example.false_science",
+      "capability_tags": [
+        "example.world",
+        "example.false_science"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.examples.false_science.v1"
+      }
+    }
+  ]
+}

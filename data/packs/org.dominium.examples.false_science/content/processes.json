@@ -1,0 +1,89 @@
+{
+  "schema_id": "dominium.schema.process",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "process_id": "process.examples.false_science.design",
+      "process_class": "epistemic",
+      "inputs": [
+        {
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.examples.false_science.doctrine.v1"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.examples.false_science.technology_spec.v1"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "process.epistemic.infer"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.epistemic"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "org.dominium.examples.false_science.domain.doctrine",
+          "volume_id": "org.dominium.examples.false_science.domain.doctrine.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_evidence"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.examples.false_science.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_objective_validation"
+        ]
+      }
+    },
+    {
+      "process_id": "process.examples.false_science.build",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.examples.false_science.technology_spec.v1"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "assembly",
+          "ref_id": "assembly.examples.false_science.device.v1"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.manufacturing"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.infrastructure"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "org.dominium.examples.false_science.domain.doctrine",
+          "volume_id": "org.dominium.examples.false_science.domain.doctrine.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_material",
+        "failure.insufficient_capability"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.examples.false_science.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_performance_guarantee"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "schema_id": "dominium.schema.knowledge",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "knowledge_artifact_id": "knowledge.examples.false_science.doctrine.v1",
+      "knowledge_domain_tag": "knowledge.false_science.doctrine",
+      "confidence_desc": {
+        "level_tag": "confidence.declared",
+        "source": "institutional_dogma"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.unbounded"
+      },
+      "diffusion_metadata": {
+        "visibility": "public"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.examples.false_science.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_objective_alignment"
+        ]
+      }
+    },
+    {
+      "knowledge_artifact_id": "knowledge.examples.false_science.suppressed_evidence.v1",
+      "knowledge_domain_tag": "knowledge.false_science.contradiction",
+      "confidence_desc": {
+        "level_tag": "confidence.provisional",
+        "source": "suppressed_surveys"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.unbounded"
+      },
+      "diffusion_metadata": {
+        "visibility": "classified"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.examples.false_science.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_public_visibility"
+        ]
+      }
+    },
+    {
+      "knowledge_artifact_id": "knowledge.examples.false_science.technology_spec.v1",
+      "knowledge_domain_tag": "knowledge.false_science.technology",
+      "confidence_desc": {
+        "level_tag": "confidence.speculative",
+        "source": "model_extrapolation"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.unbounded"
+      },
+      "diffusion_metadata": {
+        "visibility": "restricted"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.examples.false_science.v1"
+      }
+    }
+  ]
+}
