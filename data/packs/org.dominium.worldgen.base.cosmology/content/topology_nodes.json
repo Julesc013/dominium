@@ -1,0 +1,38 @@
+{
+  "schema_id": "dominium.schema.topology",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "node_id": "org.dominium.worldgen.base.cosmology.node.universe",
+      "trait_tags": [
+        "topology.universe"
+      ],
+      "domain_volume_refs": [
+        {
+          "domain_id": "org.dominium.worldgen.base.cosmology.domain.universe",
+          "volume_id": "org.dominium.worldgen.base.cosmology.domain.universe.volume"
+        }
+      ],
+      "representation": [
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.universe.coarse",
+          "metadata": {
+            "source": "worldgen.base.cosmology"
+          }
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.base.cosmology.v1"
+      },
+      "extensions": {
+        "refinement_ceiling": "lod.universe.macro",
+        "not_defined": [
+          "no_named_galaxies",
+          "no_named_systems",
+          "no_physics_constants"
+        ]
+      }
+    }
+  ]
+}

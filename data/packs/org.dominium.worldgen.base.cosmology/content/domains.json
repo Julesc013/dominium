@@ -1,0 +1,36 @@
+{
+  "schema_id": "dominium.schema.domain",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "domain_id": "org.dominium.worldgen.base.cosmology.domain.universe",
+      "domain_type": "domain.cosmology",
+      "domain_tags": [
+        "domain.universe"
+      ],
+      "volumes": [
+        {
+          "volume_id": "org.dominium.worldgen.base.cosmology.domain.universe.volume",
+          "bounds": {
+            "kind_tag": "bounds.unbounded",
+            "payload": {
+              "notes": "Unbounded universe-scale domain."
+            }
+          },
+          "volume_tags": [
+            "domain.volume.universe"
+          ]
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.base.cosmology.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_subdomains_declared",
+          "no_jurisdictions_declared"
+        ]
+      }
+    }
+  ]
+}
