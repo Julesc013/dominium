@@ -1,0 +1,90 @@
+{
+  "schema_id": "dominium.schema.refinement_plan",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "plan_id": "org.dominium.worldgen.real.sol.plan.override_v1",
+      "plan_tags": [
+        "worldgen.plan.system.overlay",
+        "worldgen.plan.real_sol"
+      ],
+      "plan_domain_scope": {
+        "scope_id": "scope.system.sol",
+        "node_id": "org.dominium.worldgen.real.sol.node.system",
+        "scope_tags": [
+          "topology.system.sol"
+        ]
+      },
+      "layers": [
+        {
+          "layer_id": "layer.system.orbit_override",
+          "order_index": 0,
+          "model_refs": [
+            {
+              "model_id": "org.dominium.worldgen.real.sol.model.orbit_override_v1"
+            }
+          ],
+          "domain_scope": {
+            "scope_id": "scope.system.orbit.override",
+            "node_id": "org.dominium.worldgen.real.sol.node.system"
+          },
+          "lod_band": {
+            "lod_min_tag": "lod.system.macro",
+            "lod_max_tag": "lod.system.macro"
+          },
+          "field_refs": [
+            {
+              "field_id": "org.dominium.worldgen.real.sol.field.orbit_parameters_macro"
+            }
+          ],
+          "component_tags": [
+            "topology.star_system"
+          ],
+          "precedence_tag": "precedence.overlay",
+          "failure_modes": [
+            "failure.defer"
+          ],
+          "extensions": {
+            "not_defined": [
+              "no_high_precision_ephemerides"
+            ]
+          }
+        }
+      ],
+      "precedence_rules": [
+        {
+          "higher_tag": "precedence.overlay",
+          "lower_tag": "precedence.base"
+        }
+      ],
+      "refinement_ceilings": [
+        {
+          "ceiling_id": "ceiling.system.sol.macro",
+          "lod_max_tag": "lod.system.macro",
+          "field_refs": [
+            {
+              "field_id": "org.dominium.worldgen.real.sol.field.orbit_parameters_macro"
+            }
+          ],
+          "budget": {
+            "cost_units_max": 400,
+            "memory_units_max": 256
+          },
+          "ceiling_tags": [
+            "ceiling.macro"
+          ]
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.real.sol.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_life_assumptions",
+          "no_civilization_assumptions"
+        ],
+        "failure_semantics": "degrade_or_freeze"
+      }
+    }
+  ]
+}
