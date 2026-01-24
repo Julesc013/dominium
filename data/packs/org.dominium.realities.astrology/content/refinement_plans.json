@@ -1,0 +1,90 @@
+{
+  "schema_id": "dominium.schema.refinement_plan",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "plan_id": "org.dominium.realities.astrology.plan.v1",
+      "plan_tags": [
+        "worldgen.plan.astrology"
+      ],
+      "plan_domain_scope": {
+        "scope_id": "scope.astrology.domain",
+        "domain_id": "org.dominium.realities.astrology.domain.astrology",
+        "volume_id": "org.dominium.realities.astrology.domain.astrology.volume"
+      },
+      "layers": [
+        {
+          "layer_id": "layer.astrology.refine",
+          "order_index": 0,
+          "model_refs": [
+            {
+              "model_id": "org.dominium.realities.astrology.model.astrology_v1"
+            }
+          ],
+          "domain_scope": {
+            "scope_id": "scope.astrology.layer",
+            "domain_id": "org.dominium.realities.astrology.domain.astrology",
+            "volume_id": "org.dominium.realities.astrology.domain.astrology.volume"
+          },
+          "lod_band": {
+            "lod_min_tag": "lod.astrology.macro",
+            "lod_max_tag": "lod.astrology.macro"
+          },
+          "field_refs": [
+            {
+              "field_id": "org.dominium.realities.astrology.field.astrology_signal"
+            }
+          ],
+          "component_tags": [
+            "field.astrology_signal"
+          ],
+          "precedence_tag": "precedence.overlay",
+          "failure_modes": [
+            "failure.defer"
+          ],
+          "extensions": {
+            "required_knowledge_tags": [
+              "knowledge.astrology.mapping"
+            ],
+            "insufficient_knowledge_behavior": [
+              "emit_unknown_placeholders"
+            ]
+          }
+        }
+      ],
+      "precedence_rules": [
+        {
+          "higher_tag": "precedence.overlay",
+          "lower_tag": "precedence.base"
+        }
+      ],
+      "refinement_ceilings": [
+        {
+          "ceiling_id": "ceiling.astrology.macro",
+          "lod_max_tag": "lod.astrology.macro",
+          "field_refs": [
+            {
+              "field_id": "org.dominium.realities.astrology.field.astrology_signal"
+            }
+          ],
+          "budget": {
+            "cost_units_max": 200,
+            "memory_units_max": 128
+          },
+          "ceiling_tags": [
+            "ceiling.macro"
+          ]
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.astrology.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_objective_truth_override"
+        ],
+        "failure_semantics": "degrade_or_freeze"
+      }
+    }
+  ]
+}
