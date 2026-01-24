@@ -1,0 +1,165 @@
+{
+  "schema_id": "dominium.schema.refinement_plan",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "plan_id": "org.dominium.worldgen.real.sol_system.plan.canonical_v1",
+      "plan_tags": [
+        "worldgen.plan.system.overlay",
+        "worldgen.plan.real_sol_system.canonical"
+      ],
+      "plan_domain_scope": {
+        "scope_id": "scope.system.sol.selection",
+        "scope_tags": [
+          "topology.star_system"
+        ]
+      },
+      "layers": [
+        {
+          "layer_id": "layer.sol.star_parameters",
+          "order_index": 0,
+          "model_refs": [
+            {
+              "model_id": "org.dominium.worldgen.real.sol_system.model.canonical_v1"
+            }
+          ],
+          "domain_scope": {
+            "scope_id": "scope.system.sol.selected"
+          },
+          "lod_band": {
+            "lod_min_tag": "lod.system.macro",
+            "lod_max_tag": "lod.system.macro"
+          },
+          "field_refs": [
+            {
+              "field_id": "org.dominium.worldgen.real.sol_system.field.star_parameters"
+            }
+          ],
+          "precedence_tag": "precedence.overlay",
+          "failure_modes": [
+            "failure.defer"
+          ],
+          "extensions": {
+            "known_scope": [
+              "solar_mass",
+              "solar_type"
+            ]
+          }
+        },
+        {
+          "layer_id": "layer.sol.body_catalog",
+          "order_index": 1,
+          "model_refs": [
+            {
+              "model_id": "org.dominium.worldgen.real.sol_system.model.canonical_v1"
+            }
+          ],
+          "domain_scope": {
+            "scope_id": "scope.system.sol.selected"
+          },
+          "lod_band": {
+            "lod_min_tag": "lod.system.macro",
+            "lod_max_tag": "lod.system.macro"
+          },
+          "field_refs": [
+            {
+              "field_id": "org.dominium.worldgen.real.sol_system.field.body_catalog"
+            },
+            {
+              "field_id": "org.dominium.worldgen.real.sol_system.field.belt_structure"
+            }
+          ],
+          "precedence_tag": "precedence.overlay",
+          "failure_modes": [
+            "failure.defer"
+          ],
+          "extensions": {
+            "known_scope": [
+              "major_planets",
+              "major_moons",
+              "asteroid_belt",
+              "kuiper_belt"
+            ],
+            "unknown_components": [
+              "minor_bodies"
+            ]
+          }
+        },
+        {
+          "layer_id": "layer.sol.ephemerides",
+          "order_index": 2,
+          "model_refs": [
+            {
+              "model_id": "org.dominium.worldgen.real.sol_system.model.canonical_v1"
+            }
+          ],
+          "domain_scope": {
+            "scope_id": "scope.system.sol.selected"
+          },
+          "lod_band": {
+            "lod_min_tag": "lod.system.macro",
+            "lod_max_tag": "lod.system.macro"
+          },
+          "field_refs": [
+            {
+              "field_id": "org.dominium.worldgen.real.sol_system.field.orbit_ephemerides"
+            }
+          ],
+          "precedence_tag": "precedence.overlay",
+          "failure_modes": [
+            "failure.defer"
+          ],
+          "extensions": {
+            "temporal_validity": {
+              "epoch_start": "era.modern",
+              "epoch_end": "era.modern"
+            },
+            "uncertainty_growth": "growth.outside_epoch"
+          }
+        }
+      ],
+      "precedence_rules": [
+        {
+          "higher_tag": "precedence.overlay",
+          "lower_tag": "precedence.base"
+        }
+      ],
+      "refinement_ceilings": [
+        {
+          "ceiling_id": "ceiling.sol.system.macro",
+          "lod_max_tag": "lod.system.macro",
+          "field_refs": [
+            {
+              "field_id": "org.dominium.worldgen.real.sol_system.field.star_parameters"
+            },
+            {
+              "field_id": "org.dominium.worldgen.real.sol_system.field.body_catalog"
+            },
+            {
+              "field_id": "org.dominium.worldgen.real.sol_system.field.belt_structure"
+            },
+            {
+              "field_id": "org.dominium.worldgen.real.sol_system.field.orbit_ephemerides"
+            }
+          ],
+          "budget": {
+            "cost_units_max": 700,
+            "memory_units_max": 512
+          },
+          "ceiling_tags": [
+            "ceiling.macro"
+          ]
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.sol_system.v1"
+      },
+      "extensions": {
+        "selection_rule": "select_one_by_trait:topology.star_system",
+        "selection_cardinality": "1",
+        "overlay_only": true,
+        "failure_semantics": "degrade_or_freeze"
+      }
+    }
+  ]
+}

@@ -1,0 +1,147 @@
+{
+  "schema_id": "dominium.schema.field",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "field_id": "org.dominium.worldgen.real.sol_system.field.star_parameters",
+      "field_type": "field.star.parameters",
+      "units": [
+        "unit.mass",
+        "unit.classification"
+      ],
+      "resolution": {
+        "lod_tag": "lod.system.macro",
+        "metadata": {
+          "scale": "system"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.system.macro",
+          "metadata": {
+            "source": "worldgen.real.sol_system",
+            "procedural_below_lod": "lod.system.macro"
+          }
+        }
+      ],
+      "knowledge_state": "known",
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.sol_system.v1"
+      },
+      "extensions": {
+        "known_components": [
+          "solar_mass",
+          "solar_type"
+        ]
+      }
+    },
+    {
+      "field_id": "org.dominium.worldgen.real.sol_system.field.body_catalog",
+      "field_type": "field.system.body_catalog",
+      "units": [
+        "unit.catalog"
+      ],
+      "resolution": {
+        "lod_tag": "lod.system.macro",
+        "metadata": {
+          "scale": "system"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.system.macro",
+          "metadata": {
+            "source": "worldgen.real.sol_system",
+            "procedural_below_lod": "lod.system.macro"
+          }
+        }
+      ],
+      "knowledge_state": "known",
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.sol_system.v1"
+      },
+      "extensions": {
+        "known_components": [
+          "major_planets",
+          "major_moons"
+        ],
+        "unknown_components": [
+          "minor_bodies"
+        ]
+      }
+    },
+    {
+      "field_id": "org.dominium.worldgen.real.sol_system.field.belt_structure",
+      "field_type": "field.belt.structure",
+      "units": [
+        "unit.structure"
+      ],
+      "resolution": {
+        "lod_tag": "lod.system.macro",
+        "metadata": {
+          "scale": "system"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "hybrid",
+          "lod_tag": "lod.system.macro",
+          "metadata": {
+            "source": "worldgen.real.sol_system",
+            "procedural_below_lod": "lod.system.macro"
+          }
+        }
+      ],
+      "knowledge_state": "inferred",
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.sol_system.v1"
+      },
+      "extensions": {
+        "known_components": [
+          "asteroid_belt",
+          "kuiper_belt"
+        ],
+        "unknown_components": [
+          "small_body_distribution"
+        ]
+      }
+    },
+    {
+      "field_id": "org.dominium.worldgen.real.sol_system.field.orbit_ephemerides",
+      "field_type": "field.orbit_ephemerides",
+      "units": [
+        "unit.orbit_parameters"
+      ],
+      "resolution": {
+        "lod_tag": "lod.system.macro",
+        "metadata": {
+          "scale": "system",
+          "temporal": "bounded"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.system.macro",
+          "metadata": {
+            "source": "worldgen.real.sol_system",
+            "procedural_below_lod": "lod.system.macro"
+          }
+        }
+      ],
+      "knowledge_state": "known",
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.sol_system.v1"
+      },
+      "extensions": {
+        "temporal_validity": {
+          "epoch_start": "era.modern",
+          "epoch_end": "era.modern"
+        },
+        "uncertainty_growth": "growth.outside_epoch"
+      }
+    }
+  ]
+}
