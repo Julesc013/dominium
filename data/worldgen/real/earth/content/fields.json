@@ -1,0 +1,369 @@
+{
+  "schema_id": "dominium.schema.field",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "field_id": "org.dominium.worldgen.real.earth.field.continents_macro",
+      "field_type": "field.earth.continents",
+      "units": [
+        "unit.topology"
+      ],
+      "resolution": {
+        "lod_tag": "lod.body.macro",
+        "metadata": {
+          "scale": "planetary"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.body.macro",
+          "metadata": {
+            "source": "worldgen.real.earth",
+            "procedural_below_lod": "lod.body.macro"
+          }
+        }
+      ],
+      "knowledge_state": "known",
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.earth.v1"
+      }
+    },
+    {
+      "field_id": "org.dominium.worldgen.real.earth.field.oceans_macro",
+      "field_type": "field.earth.oceans",
+      "units": [
+        "unit.topology"
+      ],
+      "resolution": {
+        "lod_tag": "lod.body.macro",
+        "metadata": {
+          "scale": "planetary"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.body.macro",
+          "metadata": {
+            "source": "worldgen.real.earth",
+            "procedural_below_lod": "lod.body.macro"
+          }
+        }
+      ],
+      "knowledge_state": "known",
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.earth.v1"
+      }
+    },
+    {
+      "field_id": "org.dominium.worldgen.real.earth.field.axial_tilt_macro",
+      "field_type": "field.earth.axial_tilt",
+      "units": [
+        "unit.angle"
+      ],
+      "resolution": {
+        "lod_tag": "lod.body.macro",
+        "metadata": {
+          "scale": "planetary"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.body.macro",
+          "metadata": {
+            "source": "worldgen.real.earth",
+            "procedural_below_lod": "lod.body.macro"
+          }
+        }
+      ],
+      "knowledge_state": "known",
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.earth.v1"
+      }
+    },
+    {
+      "field_id": "org.dominium.worldgen.real.earth.field.climate_zones_macro",
+      "field_type": "field.earth.climate_zones",
+      "units": [
+        "unit.climate_zone"
+      ],
+      "resolution": {
+        "lod_tag": "lod.body.macro",
+        "metadata": {
+          "scale": "planetary"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.body.macro",
+          "metadata": {
+            "source": "worldgen.real.earth",
+            "procedural_below_lod": "lod.body.macro"
+          }
+        }
+      ],
+      "knowledge_state": "known",
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.earth.v1"
+      }
+    },
+    {
+      "field_id": "org.dominium.worldgen.real.earth.field.geological_layers_macro",
+      "field_type": "field.earth.geological_layers",
+      "units": [
+        "unit.geology_layer"
+      ],
+      "resolution": {
+        "lod_tag": "lod.body.macro",
+        "metadata": {
+          "scale": "planetary"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.body.macro",
+          "metadata": {
+            "source": "worldgen.real.earth",
+            "procedural_below_lod": "lod.body.macro"
+          }
+        }
+      ],
+      "knowledge_state": "known",
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.earth.v1"
+      }
+    },
+    {
+      "field_id": "org.dominium.worldgen.real.earth.field.tectonic_regions",
+      "field_type": "field.earth.tectonic_regions",
+      "units": [
+        "unit.tectonic"
+      ],
+      "resolution": {
+        "lod_tag": "lod.body.regional",
+        "metadata": {
+          "scale": "regional"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.body.regional",
+          "metadata": {
+            "source": "worldgen.real.earth",
+            "procedural_below_lod": "lod.body.regional"
+          }
+        }
+      ],
+      "knowledge_state": "inferred",
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.earth.v1"
+      }
+    },
+    {
+      "field_id": "org.dominium.worldgen.real.earth.field.river_basins",
+      "field_type": "field.earth.river_basins",
+      "units": [
+        "unit.river_basin"
+      ],
+      "resolution": {
+        "lod_tag": "lod.body.regional",
+        "metadata": {
+          "scale": "regional"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.body.regional",
+          "metadata": {
+            "source": "worldgen.real.earth",
+            "procedural_below_lod": "lod.body.regional"
+          }
+        }
+      ],
+      "knowledge_state": "inferred",
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.earth.v1"
+      }
+    },
+    {
+      "field_id": "org.dominium.worldgen.real.earth.field.biome_envelopes",
+      "field_type": "field.earth.biome_envelopes",
+      "units": [
+        "unit.biome"
+      ],
+      "resolution": {
+        "lod_tag": "lod.body.regional",
+        "metadata": {
+          "scale": "regional"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.body.regional",
+          "metadata": {
+            "source": "worldgen.real.earth",
+            "procedural_below_lod": "lod.body.regional"
+          }
+        }
+      ],
+      "knowledge_state": "inferred",
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.earth.v1"
+      }
+    },
+    {
+      "field_id": "org.dominium.worldgen.real.earth.field.mountain_systems",
+      "field_type": "field.earth.mountain_systems",
+      "units": [
+        "unit.mountain"
+      ],
+      "resolution": {
+        "lod_tag": "lod.body.regional",
+        "metadata": {
+          "scale": "regional"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.body.regional",
+          "metadata": {
+            "source": "worldgen.real.earth",
+            "procedural_below_lod": "lod.body.regional"
+          }
+        }
+      ],
+      "knowledge_state": "inferred",
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.earth.v1"
+      }
+    },
+    {
+      "field_id": "org.dominium.worldgen.real.earth.field.elevation_anchors",
+      "field_type": "field.earth.elevation_anchors",
+      "units": [
+        "unit.elevation"
+      ],
+      "resolution": {
+        "lod_tag": "lod.body.local",
+        "metadata": {
+          "scale": "local"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "hybrid",
+          "lod_tag": "lod.body.local",
+          "metadata": {
+            "source": "worldgen.real.earth",
+            "procedural_below_lod": "lod.body.local"
+          }
+        }
+      ],
+      "knowledge_state": "inferred",
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.earth.v1"
+      },
+      "extensions": {
+        "coverage_limit": "available_anchors_only"
+      }
+    },
+    {
+      "field_id": "org.dominium.worldgen.real.earth.field.hydrology_constraints",
+      "field_type": "field.earth.hydrology_constraints",
+      "units": [
+        "unit.hydrology"
+      ],
+      "resolution": {
+        "lod_tag": "lod.body.local",
+        "metadata": {
+          "scale": "local"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "hybrid",
+          "lod_tag": "lod.body.local",
+          "metadata": {
+            "source": "worldgen.real.earth",
+            "procedural_below_lod": "lod.body.local"
+          }
+        }
+      ],
+      "knowledge_state": "inferred",
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.earth.v1"
+      },
+      "extensions": {
+        "coverage_limit": "available_anchors_only"
+      }
+    },
+    {
+      "field_id": "org.dominium.worldgen.real.earth.field.soil_envelopes",
+      "field_type": "field.earth.soil_envelopes",
+      "units": [
+        "unit.soil"
+      ],
+      "resolution": {
+        "lod_tag": "lod.body.local",
+        "metadata": {
+          "scale": "local"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "hybrid",
+          "lod_tag": "lod.body.local",
+          "metadata": {
+            "source": "worldgen.real.earth",
+            "procedural_below_lod": "lod.body.local"
+          }
+        }
+      ],
+      "knowledge_state": "inferred",
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.earth.v1"
+      },
+      "extensions": {
+        "coverage_limit": "available_anchors_only"
+      }
+    },
+    {
+      "field_id": "org.dominium.worldgen.real.earth.field.ecology_envelopes",
+      "field_type": "field.earth.ecology_envelopes",
+      "units": [
+        "unit.ecology"
+      ],
+      "resolution": {
+        "lod_tag": "lod.body.local",
+        "metadata": {
+          "scale": "local"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "hybrid",
+          "lod_tag": "lod.body.local",
+          "metadata": {
+            "source": "worldgen.real.earth",
+            "procedural_below_lod": "lod.body.local"
+          }
+        }
+      ],
+      "knowledge_state": "inferred",
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.earth.v1"
+      },
+      "extensions": {
+        "coverage_limit": "available_anchors_only"
+      }
+    }
+  ]
+}

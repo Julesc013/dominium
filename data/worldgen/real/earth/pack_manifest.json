@@ -1,0 +1,78 @@
+{
+  "schema_id": "dominium.schema.pack_manifest",
+  "schema_version": "1.0.0",
+  "record": {
+    "pack_id": "org.dominium.worldgen.realdata.earth",
+    "pack_version": "1.0.0",
+    "pack_format_version": 1,
+    "required_engine_version": "0.0.0",
+    "required_protocol_versions": [
+      {
+        "protocol_id": "dominium.protocol.pack_manifest",
+        "version_constraint": "1"
+      }
+    ],
+    "provides": [
+      {
+        "capability_id": "refinement.plan.earth.canonical"
+      },
+      {
+        "capability_id": "field.earth.continents"
+      },
+      {
+        "capability_id": "field.earth.oceans"
+      },
+      {
+        "capability_id": "field.earth.axial_tilt"
+      },
+      {
+        "capability_id": "field.earth.climate_zones"
+      },
+      {
+        "capability_id": "field.earth.geological_layers"
+      },
+      {
+        "capability_id": "field.earth.tectonic_regions"
+      },
+      {
+        "capability_id": "field.earth.river_basins"
+      },
+      {
+        "capability_id": "field.earth.biome_envelopes"
+      },
+      {
+        "capability_id": "field.earth.mountain_systems"
+      },
+      {
+        "capability_id": "field.earth.elevation_anchors"
+      },
+      {
+        "capability_id": "field.earth.hydrology_constraints"
+      },
+      {
+        "capability_id": "field.earth.soil_envelopes"
+      },
+      {
+        "capability_id": "field.earth.ecology_envelopes"
+      },
+      {
+        "capability_id": "worldgen.model.earth.canonical"
+      }
+    ],
+    "dependencies": [
+      {
+        "capability_id": "worldgen.model.body_formation"
+      },
+      {
+        "capability_id": "topology.body"
+      }
+    ],
+    "optional": true,
+    "provenance_ref": {
+      "provenance_id": "prov.org.dominium.worldgen.realdata.earth.manifest.v1"
+    },
+    "extensions": {
+      "notes": "Canonical Earth refinement data (macro to local). Optional overlay only."
+    }
+  }
+}

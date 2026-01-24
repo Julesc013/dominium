@@ -1,0 +1,243 @@
+{
+  "schema_id": "dominium.schema.refinement_plan",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "plan_id": "org.dominium.worldgen.real.earth.plan.canonical_v1",
+      "plan_tags": [
+        "worldgen.plan.body.overlay",
+        "worldgen.plan.real_earth.canonical"
+      ],
+      "plan_domain_scope": {
+        "scope_id": "scope.body.earth.selection",
+        "scope_tags": [
+          "topology.body.planetary"
+        ]
+      },
+      "layers": [
+        {
+          "layer_id": "layer.earth.macro",
+          "order_index": 0,
+          "model_refs": [
+            {
+              "model_id": "org.dominium.worldgen.real.earth.model.canonical_v1"
+            }
+          ],
+          "domain_scope": {
+            "scope_id": "scope.body.earth.selected"
+          },
+          "lod_band": {
+            "lod_min_tag": "lod.body.macro",
+            "lod_max_tag": "lod.body.macro"
+          },
+          "field_refs": [
+            {
+              "field_id": "org.dominium.worldgen.real.earth.field.continents_macro"
+            },
+            {
+              "field_id": "org.dominium.worldgen.real.earth.field.oceans_macro"
+            },
+            {
+              "field_id": "org.dominium.worldgen.real.earth.field.axial_tilt_macro"
+            },
+            {
+              "field_id": "org.dominium.worldgen.real.earth.field.climate_zones_macro"
+            },
+            {
+              "field_id": "org.dominium.worldgen.real.earth.field.geological_layers_macro"
+            }
+          ],
+          "precedence_tag": "precedence.overlay",
+          "failure_modes": [
+            "failure.defer"
+          ],
+          "extensions": {
+            "known_scope": [
+              "continents",
+              "oceans",
+              "axial_tilt",
+              "climate_zones",
+              "geological_layers"
+            ]
+          }
+        },
+        {
+          "layer_id": "layer.earth.regional",
+          "order_index": 1,
+          "model_refs": [
+            {
+              "model_id": "org.dominium.worldgen.real.earth.model.canonical_v1"
+            }
+          ],
+          "domain_scope": {
+            "scope_id": "scope.body.earth.selected"
+          },
+          "lod_band": {
+            "lod_min_tag": "lod.body.regional",
+            "lod_max_tag": "lod.body.regional"
+          },
+          "field_refs": [
+            {
+              "field_id": "org.dominium.worldgen.real.earth.field.tectonic_regions"
+            },
+            {
+              "field_id": "org.dominium.worldgen.real.earth.field.river_basins"
+            },
+            {
+              "field_id": "org.dominium.worldgen.real.earth.field.biome_envelopes"
+            },
+            {
+              "field_id": "org.dominium.worldgen.real.earth.field.mountain_systems"
+            }
+          ],
+          "precedence_tag": "precedence.overlay",
+          "failure_modes": [
+            "failure.defer"
+          ],
+          "extensions": {
+            "inferred_scope": [
+              "tectonic_regions",
+              "river_basins",
+              "biome_envelopes",
+              "mountain_systems"
+            ]
+          }
+        },
+        {
+          "layer_id": "layer.earth.local",
+          "order_index": 2,
+          "model_refs": [
+            {
+              "model_id": "org.dominium.worldgen.real.earth.model.canonical_v1"
+            }
+          ],
+          "domain_scope": {
+            "scope_id": "scope.body.earth.selected"
+          },
+          "lod_band": {
+            "lod_min_tag": "lod.body.local",
+            "lod_max_tag": "lod.body.local"
+          },
+          "field_refs": [
+            {
+              "field_id": "org.dominium.worldgen.real.earth.field.elevation_anchors"
+            },
+            {
+              "field_id": "org.dominium.worldgen.real.earth.field.hydrology_constraints"
+            },
+            {
+              "field_id": "org.dominium.worldgen.real.earth.field.soil_envelopes"
+            },
+            {
+              "field_id": "org.dominium.worldgen.real.earth.field.ecology_envelopes"
+            }
+          ],
+          "precedence_tag": "precedence.overlay",
+          "failure_modes": [
+            "failure.defer"
+          ],
+          "extensions": {
+            "bounded_local_anchors": true,
+            "coverage_limit": "available_anchors_only"
+          }
+        }
+      ],
+      "precedence_rules": [
+        {
+          "higher_tag": "precedence.overlay",
+          "lower_tag": "precedence.base"
+        }
+      ],
+      "refinement_ceilings": [
+        {
+          "ceiling_id": "ceiling.earth.macro",
+          "lod_max_tag": "lod.body.macro",
+          "field_refs": [
+            {
+              "field_id": "org.dominium.worldgen.real.earth.field.continents_macro"
+            },
+            {
+              "field_id": "org.dominium.worldgen.real.earth.field.oceans_macro"
+            },
+            {
+              "field_id": "org.dominium.worldgen.real.earth.field.axial_tilt_macro"
+            },
+            {
+              "field_id": "org.dominium.worldgen.real.earth.field.climate_zones_macro"
+            },
+            {
+              "field_id": "org.dominium.worldgen.real.earth.field.geological_layers_macro"
+            }
+          ],
+          "budget": {
+            "cost_units_max": 800,
+            "memory_units_max": 512
+          },
+          "ceiling_tags": [
+            "ceiling.macro"
+          ]
+        },
+        {
+          "ceiling_id": "ceiling.earth.regional",
+          "lod_max_tag": "lod.body.regional",
+          "field_refs": [
+            {
+              "field_id": "org.dominium.worldgen.real.earth.field.tectonic_regions"
+            },
+            {
+              "field_id": "org.dominium.worldgen.real.earth.field.river_basins"
+            },
+            {
+              "field_id": "org.dominium.worldgen.real.earth.field.biome_envelopes"
+            },
+            {
+              "field_id": "org.dominium.worldgen.real.earth.field.mountain_systems"
+            }
+          ],
+          "budget": {
+            "cost_units_max": 800,
+            "memory_units_max": 512
+          },
+          "ceiling_tags": [
+            "ceiling.regional"
+          ]
+        },
+        {
+          "ceiling_id": "ceiling.earth.local",
+          "lod_max_tag": "lod.body.local",
+          "field_refs": [
+            {
+              "field_id": "org.dominium.worldgen.real.earth.field.elevation_anchors"
+            },
+            {
+              "field_id": "org.dominium.worldgen.real.earth.field.hydrology_constraints"
+            },
+            {
+              "field_id": "org.dominium.worldgen.real.earth.field.soil_envelopes"
+            },
+            {
+              "field_id": "org.dominium.worldgen.real.earth.field.ecology_envelopes"
+            }
+          ],
+          "budget": {
+            "cost_units_max": 800,
+            "memory_units_max": 512
+          },
+          "ceiling_tags": [
+            "ceiling.local"
+          ]
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.earth.v1"
+      },
+      "extensions": {
+        "selection_rule": "select_one_by_trait:topology.body.planetary",
+        "selection_cardinality": "1",
+        "overlay_only": true,
+        "below_tier3_procedural": true,
+        "failure_semantics": "degrade_or_freeze"
+      }
+    }
+  ]
+}

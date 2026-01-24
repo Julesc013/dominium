@@ -1,0 +1,77 @@
+{
+  "schema_id": "dominium.schema.knowledge",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "knowledge_artifact_id": "knowledge.real.earth.macro.known.v1",
+      "knowledge_domain_tag": "knowledge.earth.macro",
+      "confidence_desc": {
+        "level_tag": "confidence.high",
+        "source": "observational_surveys"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.bounded"
+      },
+      "diffusion_metadata": {
+        "visibility": "public"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.earth.v1"
+      }
+    },
+    {
+      "knowledge_artifact_id": "knowledge.real.earth.regional.inferred.v1",
+      "knowledge_domain_tag": "knowledge.earth.regional",
+      "confidence_desc": {
+        "level_tag": "confidence.provisional",
+        "source": "model_inference"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.unbounded"
+      },
+      "diffusion_metadata": {
+        "visibility": "public"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.earth.v1"
+      }
+    },
+    {
+      "knowledge_artifact_id": "knowledge.real.earth.local.partial.v1",
+      "knowledge_domain_tag": "knowledge.earth.local",
+      "confidence_desc": {
+        "level_tag": "confidence.provisional",
+        "source": "anchor_measurements"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.unbounded"
+      },
+      "diffusion_metadata": {
+        "visibility": "restricted"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.earth.v1"
+      },
+      "extensions": {
+        "coverage_limit": "available_anchors_only"
+      }
+    },
+    {
+      "knowledge_artifact_id": "knowledge.real.earth.unknown.v1",
+      "knowledge_domain_tag": "knowledge.earth.unknown",
+      "confidence_desc": {
+        "level_tag": "confidence.declared",
+        "source": "explicit_unknowns"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.unbounded"
+      },
+      "diffusion_metadata": {
+        "visibility": "public"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.earth.v1"
+      }
+    }
+  ]
+}
