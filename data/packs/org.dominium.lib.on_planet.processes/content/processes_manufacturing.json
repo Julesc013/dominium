@@ -1,0 +1,311 @@
+{
+  "schema_id": "dominium.schema.process",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "process_id": "process.on_planet.manufacturing.transform_material",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "material",
+          "ref_id": "material.on_planet.structural.generic"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "material",
+          "ref_id": "material.on_planet.structural.generic"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.manufacturing"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.materials"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.infrastructure.local",
+          "volume_id": "domain.on_planet.infrastructure.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.insufficient_capability"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.manufacturing.transform_material.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "conservation_tags": [
+          "conservation.mass",
+          "conservation.energy"
+        ],
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_recipe_schema"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.manufacturing.fabricate_part",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "material",
+          "ref_id": "material.on_planet.structural.generic"
+        },
+        {
+          "ref_type": "part",
+          "ref_id": "part.on_planet.beam.basic"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "part",
+          "ref_id": "part.on_planet.beam.basic"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.manufacturing"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.materials"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.infrastructure.local",
+          "volume_id": "domain.on_planet.infrastructure.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.insufficient_material"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.manufacturing.fabricate_part.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "conservation_tags": [
+          "conservation.mass",
+          "conservation.energy"
+        ],
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_tolerances_schema"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.manufacturing.assemble_subsystem",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "part",
+          "ref_id": "part.on_planet.beam.basic"
+        },
+        {
+          "ref_type": "part",
+          "ref_id": "part.on_planet.joint.basic"
+        },
+        {
+          "ref_type": "assembly",
+          "ref_id": "assembly.on_planet.structure.frame.basic"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "assembly",
+          "ref_id": "assembly.on_planet.structure.frame.basic"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.manufacturing"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.infrastructure"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.infrastructure.local",
+          "volume_id": "domain.on_planet.infrastructure.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.constraint_violation"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.manufacturing.assemble_subsystem.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "conservation_tags": [
+          "conservation.mass",
+          "conservation.energy"
+        ],
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_geometry"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.manufacturing.quality_check",
+      "process_class": "epistemic",
+      "inputs": [
+        {
+          "ref_type": "assembly",
+          "ref_id": "assembly.on_planet.structure.frame.basic"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.integrity.report"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.survey"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.observe.infrastructure"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.infrastructure.local",
+          "volume_id": "domain.on_planet.infrastructure.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.manufacturing.quality_check.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_test_schema"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.manufacturing.scrap_or_rework",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "part",
+          "ref_id": "part.on_planet.beam.basic"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "material",
+          "ref_id": "material.on_planet.aggregate.generic"
+        }
+      ],
+      "waste": [
+        {
+          "ref_type": "material",
+          "ref_id": "material.on_planet.tailings.generic",
+          "io_tags": [
+            "waste.scrap"
+          ]
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.manufacturing"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.materials"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.infrastructure.local",
+          "volume_id": "domain.on_planet.infrastructure.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.manufacturing.scrap_or_rework.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "conservation_tags": [
+          "conservation.mass",
+          "conservation.energy"
+        ],
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_rework_rules"
+        ]
+      }
+    }
+  ]
+}
