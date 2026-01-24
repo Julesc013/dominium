@@ -1,0 +1,39 @@
+{
+  "schema_id": "dominium.schema.process",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "process_id": "process.astrology.interpret",
+      "process_class": "epistemic",
+      "required_capability_refs": [
+        {
+          "capability_id": "process.astrology.interpret"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.astrology"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "org.dominium.realities.astrology.domain.astrology",
+          "volume_id": "org.dominium.realities.astrology.domain.astrology.volume"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_capability",
+        "failure.insufficient_budget"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.astrology.v1"
+      },
+      "extensions": {
+        "outputs_knowledge_artifacts": [
+          "knowledge.astrology.omen.v1"
+        ],
+        "not_defined": [
+          "no_objective_truth_mutation"
+        ]
+      }
+    }
+  ]
+}

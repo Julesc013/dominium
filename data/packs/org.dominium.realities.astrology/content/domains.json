@@ -1,0 +1,35 @@
+{
+  "schema_id": "dominium.schema.domain",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "domain_id": "org.dominium.realities.astrology.domain.astrology",
+      "domain_type": "domain.astrology",
+      "domain_tags": [
+        "domain.astrology"
+      ],
+      "volumes": [
+        {
+          "volume_id": "org.dominium.realities.astrology.domain.astrology.volume",
+          "bounds": {
+            "kind_tag": "bounds.astrology",
+            "payload": {
+              "notes": "Abstract astrology domain."
+            }
+          },
+          "volume_tags": [
+            "domain.volume.astrology"
+          ]
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.astrology.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_truth_guarantee"
+        ]
+      }
+    }
+  ]
+}

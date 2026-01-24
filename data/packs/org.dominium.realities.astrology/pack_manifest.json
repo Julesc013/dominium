@@ -1,0 +1,41 @@
+{
+  "schema_id": "dominium.schema.pack_manifest",
+  "schema_version": "1.0.0",
+  "record": {
+    "pack_id": "org.dominium.realities.astrology",
+    "pack_version": "1.0.0",
+    "pack_format_version": 1,
+    "required_engine_version": "0.0.0",
+    "required_protocol_versions": [
+      {
+        "protocol_id": "dominium.protocol.pack_manifest",
+        "version_constraint": "1"
+      }
+    ],
+    "provides": [
+      {
+        "capability_id": "reality.astrology"
+      },
+      {
+        "capability_id": "field.astrology_signal"
+      },
+      {
+        "capability_id": "process.astrology.interpret"
+      },
+      {
+        "capability_id": "institution.astrology.council"
+      },
+      {
+        "capability_id": "worldgen.model.astrology"
+      }
+    ],
+    "dependencies": [],
+    "optional": true,
+    "provenance_ref": {
+      "provenance_id": "prov.org.dominium.realities.astrology.manifest.v1"
+    },
+    "extensions": {
+      "notes": "Astrology reality pack; epistemic mappings without truth guarantees."
+    }
+  }
+}

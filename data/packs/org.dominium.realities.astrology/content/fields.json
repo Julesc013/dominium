@@ -1,0 +1,43 @@
+{
+  "schema_id": "dominium.schema.field",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "field_id": "org.dominium.realities.astrology.field.astrology_signal",
+      "field_type": "field.astrology_signal",
+      "units": [
+        "unit.symbolic"
+      ],
+      "resolution": {
+        "lod_tag": "lod.astrology.macro",
+        "metadata": {
+          "scale": "symbolic"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.astrology.macro",
+          "metadata": {
+            "source": "realities.astrology"
+          }
+        }
+      ],
+      "knowledge_state": "latent",
+      "domain_volume_refs": [
+        {
+          "domain_id": "org.dominium.realities.astrology.domain.astrology",
+          "volume_id": "org.dominium.realities.astrology.domain.astrology.volume"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.astrology.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_objective_truth_claim"
+        ]
+      }
+    }
+  ]
+}

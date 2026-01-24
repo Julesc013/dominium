@@ -1,0 +1,63 @@
+{
+  "schema_id": "dominium.schema.knowledge",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "knowledge_artifact_id": "knowledge.astrology.omen.v1",
+      "knowledge_domain_tag": "knowledge.astrology.omen",
+      "confidence_desc": {
+        "level_tag": "confidence.belief",
+        "source": "astrological_interpretation"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.unbounded"
+      },
+      "diffusion_metadata": {
+        "visibility": "public",
+        "access_control": "access.open"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.astrology.v1"
+      },
+      "extensions": {
+        "temporal_scope": {
+          "era_tag": "era.traditional",
+          "timestamp_kind": "point"
+        },
+        "not_defined": [
+          "no_truth_alignment"
+        ]
+      }
+    },
+    {
+      "knowledge_artifact_id": "knowledge.astrology.mapping.v1",
+      "knowledge_domain_tag": "knowledge.astrology.mapping",
+      "confidence_desc": {
+        "level_tag": "confidence.belief",
+        "source": "symbolic_system"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.unbounded"
+      },
+      "diffusion_metadata": {
+        "visibility": "restricted",
+        "access_control": "access.institutional"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.astrology.v1"
+      },
+      "extensions": {
+        "temporal_scope": {
+          "era_tag": "era.traditional",
+          "timestamp_kind": "unknown"
+        },
+        "mapping_rules": [
+          "mapping.celestial_state_to_belief"
+        ],
+        "not_defined": [
+          "no_objective_truth_claim"
+        ]
+      }
+    }
+  ]
+}

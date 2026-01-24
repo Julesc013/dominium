@@ -1,0 +1,59 @@
+{
+  "schema_id": "dominium.schema.worldgen_model",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "model_id": "org.dominium.realities.astrology.model.astrology_v1",
+      "model_family": "worldgen.family.astrology",
+      "applicable_domains": [
+        {
+          "domain_id": "org.dominium.realities.astrology.domain.astrology",
+          "volume_id": "org.dominium.realities.astrology.domain.astrology.volume"
+        }
+      ],
+      "supported_fields": [
+        {
+          "field_id": "org.dominium.realities.astrology.field.astrology_signal"
+        }
+      ],
+      "supported_lod_bands": [
+        {
+          "lod_min_tag": "lod.astrology.macro",
+          "lod_max_tag": "lod.astrology.macro"
+        }
+      ],
+      "required_capabilities": [
+        {
+          "capability_id": "worldgen.model.astrology"
+        }
+      ],
+      "seed_namespace": "seed.astrology.base",
+      "assumptions": [
+        "assumption.symbolic_mapping"
+      ],
+      "validity_bounds": {
+        "detail_band": "macro_only"
+      },
+      "failure_modes": [
+        "failure.insufficient_budget"
+      ],
+      "validation_targets": [
+        {
+          "target_id": "validation.astrology.macro",
+          "schema_id": "dominium.schema.field",
+          "target_tags": [
+            "field.astrology_signal"
+          ]
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.astrology.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_objective_truth_claim"
+        ]
+      }
+    }
+  ]
+}
