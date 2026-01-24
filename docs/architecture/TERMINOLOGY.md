@@ -111,6 +111,68 @@ Does NOT mean: an observer-specific view.
 Definition: A snapshot derived for a specific observer or view.
 Does NOT mean: authoritative truth.
 
+## Objective truth
+Definition: The single authoritative simulation state.
+Does NOT mean: a consensus view or subjective projection.
+
+## Subjective truth
+Definition: A knowledge-filtered projection of objective truth.
+Does NOT mean: a forked or competing reality.
+
+## World generation
+Definition: Data-driven refinement and collapse of reality via the refinement
+contract.
+Does NOT mean: a procedural generator or content factory.
+
+## Refinement lattice
+Definition: The ordered set of truth-preserving refinement layers applied to a
+target.
+Does NOT mean: an overwrite hierarchy or ad-hoc procedural pipeline.
+
+## Refinement layer
+Definition: A declared, deterministic layer that adds detail within LOD bounds
+without contradicting existing truth.
+Does NOT mean: a destructive override or unbounded algorithm.
+
+## Refinement ceiling
+Definition: An explicit upper bound on refinement detail or cost for a target.
+Does NOT mean: an implicit default or ignored limit.
+
+## Refinement contract
+Definition: The single data contract that governs all materialization and
+collapse.
+Does NOT mean: a solver implementation or hidden algorithm.
+
+## Refinement request
+Definition: A data-defined request specifying target, LOD band, fields,
+budgets, capabilities, and authority.
+Does NOT mean: an imperative command or side-effecting action.
+
+## Refinement response
+Definition: A data-defined result containing snapshot, provenance, and
+uncertainty metadata.
+Does NOT mean: live mutable state or a renderer output.
+
+## Model family
+Definition: A declarative category of worldgen models with scope, supported
+fields, LOD ranges, and failure modes.
+Does NOT mean: a solver or procedural algorithm.
+
+## Measurement artifact
+Definition: An epistemic record produced by measurement with explicit
+uncertainty and access control.
+Does NOT mean: objective truth or authority.
+
+## Materialization
+Definition: Deterministic production of a snapshot or representation through
+the refinement contract.
+Does NOT mean: unbounded generation or implicit state mutation.
+
+## Collapse
+Definition: Deterministic reduction to a coarser representation without
+changing objective truth.
+Does NOT mean: deletion or alteration of authoritative state.
+
 ## Save
 Definition: A serialized objective snapshot with provenance and authority
 scope.
