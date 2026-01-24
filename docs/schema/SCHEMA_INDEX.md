@@ -28,6 +28,9 @@ cross-cutting schemas and the rules they follow.
 - `schema/institution.schema` - Institutions, jurisdictions, and enforcement tags.
 - `schema/pack_manifest.schema` - Pack identity, versions, and capability dependencies.
 - `schema/save_and_replay.schema` - Save/replay identifiers, pack references, and determinism metadata.
+- `schema/worldgen_model.schema` - Worldgen model families and declared scope.
+- `schema/refinement_plan.schema` - Refinement layers, precedence, and ceilings.
+- `schema/measurement_artifact.schema` - Measurement artifacts and epistemic access metadata.
 
 ## Domain-Specific Schemas
 Domain schemas live under `schema/*/README.md` and are scoped to specific
