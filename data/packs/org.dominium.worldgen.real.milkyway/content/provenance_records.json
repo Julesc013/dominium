@@ -1,0 +1,27 @@
+{
+  "schema_id": "dominium.schema.knowledge",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "knowledge_artifact_id": "prov.org.dominium.worldgen.real.milkyway.v1",
+      "knowledge_domain_tag": "provenance.observational",
+      "confidence_desc": {
+        "source": "astronomy.surveys",
+        "level_tag": "confidence.estimated"
+      },
+      "uncertainty_desc": {
+        "kind": "observational",
+        "bounds_tag": "uncertainty.reported"
+      },
+      "diffusion_metadata": {
+        "visibility": "public"
+      },
+      "extensions": {
+        "era_tag": "era.observation.modern",
+        "not_defined": [
+          "no_detailed_star_catalogs"
+        ]
+      }
+    }
+  ]
+}

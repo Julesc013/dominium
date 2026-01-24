@@ -1,0 +1,36 @@
+{
+  "schema_id": "dominium.schema.measurement_artifact",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "measurement_artifact_id": "meas.org.dominium.worldgen.real.milkyway.anchors.v1",
+      "measurement_domain_tag": "measurement.observation.astronomy",
+      "era_tag": "era.observation.modern",
+      "target_ref": {
+        "node_id": "org.dominium.worldgen.real.milkyway.node.galaxy"
+      },
+      "confidence_desc": {
+        "kind": "observational",
+        "level_tag": "confidence.estimated"
+      },
+      "uncertainty_desc": {
+        "kind": "observational",
+        "bounds_tag": "uncertainty.reported"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.real.milkyway.v1"
+      },
+      "extensions": {
+        "anchors": {
+          "mass_tag": "anchor.milkyway.mass",
+          "spiral_arm_count_tag": "anchor.milkyway.spiral_arm_count",
+          "halo_size_tag": "anchor.milkyway.halo_size"
+        },
+        "not_defined": [
+          "no_star_catalogs",
+          "no_planetary_systems"
+        ]
+      }
+    }
+  ]
+}
