@@ -1,0 +1,238 @@
+{
+  "schema_id": "dominium.schema.process",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "process_id": "process.epistemic.observe",
+      "process_class": "epistemic",
+      "required_capability_refs": [
+        {
+          "capability_id": "process.epistemic.observe"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.epistemic"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "org.dominium.epistemics.core.domain.knowledge",
+          "volume_id": "org.dominium.epistemics.core.domain.knowledge.volume"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.access_denied",
+        "failure.insufficient_budget"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.epistemics.core.v1"
+      },
+      "extensions": {
+        "outputs_knowledge_artifacts": [
+          "knowledge.observation.sample.v1"
+        ],
+        "not_defined": [
+          "no_truth_mutation"
+        ]
+      }
+    },
+    {
+      "process_id": "process.epistemic.measure",
+      "process_class": "epistemic",
+      "required_capability_refs": [
+        {
+          "capability_id": "process.epistemic.measure"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.epistemic"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "org.dominium.epistemics.core.domain.knowledge",
+          "volume_id": "org.dominium.epistemics.core.domain.knowledge.volume"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.instrument_unavailable",
+        "failure.insufficient_budget"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.epistemics.core.v1"
+      },
+      "extensions": {
+        "outputs_measurements": [
+          "meas.epistemics.observe.v1"
+        ],
+        "not_defined": [
+          "no_truth_mutation"
+        ]
+      }
+    },
+    {
+      "process_id": "process.epistemic.survey",
+      "process_class": "epistemic",
+      "required_capability_refs": [
+        {
+          "capability_id": "process.epistemic.survey"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.epistemic"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "org.dominium.epistemics.core.domain.knowledge",
+          "volume_id": "org.dominium.epistemics.core.domain.knowledge.volume"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.scope_too_large",
+        "failure.insufficient_budget"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.epistemics.core.v1"
+      },
+      "extensions": {
+        "outputs_measurements": [
+          "meas.epistemics.survey.v1"
+        ],
+        "not_defined": [
+          "no_truth_mutation"
+        ]
+      }
+    },
+    {
+      "process_id": "process.epistemic.experiment",
+      "process_class": "epistemic",
+      "required_capability_refs": [
+        {
+          "capability_id": "process.epistemic.experiment"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.epistemic"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "org.dominium.epistemics.core.domain.knowledge",
+          "volume_id": "org.dominium.epistemics.core.domain.knowledge.volume"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.instrument_unavailable",
+        "failure.insufficient_budget"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.epistemics.core.v1"
+      },
+      "extensions": {
+        "outputs_measurements": [
+          "meas.epistemics.experiment.v1"
+        ],
+        "not_defined": [
+          "no_truth_mutation"
+        ]
+      }
+    },
+    {
+      "process_id": "process.epistemic.infer",
+      "process_class": "epistemic",
+      "required_capability_refs": [
+        {
+          "capability_id": "process.epistemic.infer"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.epistemic"
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_evidence"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.epistemics.core.v1"
+      },
+      "extensions": {
+        "outputs_knowledge_artifacts": [
+          "knowledge.theory.sample.v1"
+        ],
+        "not_defined": [
+          "no_truth_mutation"
+        ]
+      }
+    },
+    {
+      "process_id": "process.epistemic.publish",
+      "process_class": "epistemic",
+      "required_capability_refs": [
+        {
+          "capability_id": "process.epistemic.publish"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.epistemic"
+      ],
+      "failure_mode_tags": [
+        "failure.access_denied"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.epistemics.core.v1"
+      },
+      "extensions": {
+        "updates_visibility": "public",
+        "not_defined": [
+          "no_truth_mutation"
+        ]
+      }
+    },
+    {
+      "process_id": "process.epistemic.suppress",
+      "process_class": "epistemic",
+      "required_capability_refs": [
+        {
+          "capability_id": "process.epistemic.suppress"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.epistemic"
+      ],
+      "failure_mode_tags": [
+        "failure.access_denied"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.epistemics.core.v1"
+      },
+      "extensions": {
+        "updates_visibility": "restricted",
+        "not_defined": [
+          "no_truth_mutation"
+        ]
+      }
+    },
+    {
+      "process_id": "process.epistemic.distort",
+      "process_class": "epistemic",
+      "required_capability_refs": [
+        {
+          "capability_id": "process.epistemic.distort"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.epistemic"
+      ],
+      "failure_mode_tags": [
+        "failure.access_denied"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.epistemics.core.v1"
+      },
+      "extensions": {
+        "produces_misinformation": [
+          "knowledge.misinformation.sample.v1"
+        ],
+        "not_defined": [
+          "no_truth_mutation"
+        ]
+      }
+    }
+  ]
+}

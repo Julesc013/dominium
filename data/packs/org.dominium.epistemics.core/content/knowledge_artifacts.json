@@ -1,0 +1,223 @@
+{
+  "schema_id": "dominium.schema.knowledge",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "knowledge_artifact_id": "knowledge.observation.sample.v1",
+      "knowledge_domain_tag": "knowledge.observation",
+      "confidence_desc": {
+        "level_tag": "confidence.estimated",
+        "source": "instrumented_observation"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.reported"
+      },
+      "diffusion_metadata": {
+        "visibility": "public",
+        "access_control": "access.open"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.epistemics.core.v1"
+      },
+      "extensions": {
+        "temporal_scope": {
+          "era_tag": "era.observation.modern",
+          "timestamp_kind": "range"
+        },
+        "not_defined": [
+          "no_claims_of_truth"
+        ]
+      }
+    },
+    {
+      "knowledge_artifact_id": "knowledge.survey.sample.v1",
+      "knowledge_domain_tag": "knowledge.survey",
+      "confidence_desc": {
+        "level_tag": "confidence.estimated",
+        "source": "survey_summary"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.reported"
+      },
+      "diffusion_metadata": {
+        "visibility": "restricted",
+        "access_control": "access.institutional"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.epistemics.core.v1"
+      },
+      "extensions": {
+        "temporal_scope": {
+          "era_tag": "era.observation.modern",
+          "timestamp_kind": "point"
+        },
+        "not_defined": [
+          "no_completeness_guarantee"
+        ]
+      }
+    },
+    {
+      "knowledge_artifact_id": "knowledge.map.sample.v1",
+      "knowledge_domain_tag": "knowledge.map",
+      "confidence_desc": {
+        "level_tag": "confidence.low",
+        "source": "manual_mapping"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.high"
+      },
+      "diffusion_metadata": {
+        "visibility": "public",
+        "access_control": "access.open"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.epistemics.core.v1"
+      },
+      "extensions": {
+        "temporal_scope": {
+          "era_tag": "era.unknown",
+          "timestamp_kind": "unknown"
+        },
+        "not_defined": [
+          "no_accuracy_guarantee"
+        ]
+      }
+    },
+    {
+      "knowledge_artifact_id": "knowledge.theory.sample.v1",
+      "knowledge_domain_tag": "knowledge.theory",
+      "confidence_desc": {
+        "level_tag": "confidence.speculative",
+        "source": "theoretical_model"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.unbounded"
+      },
+      "diffusion_metadata": {
+        "visibility": "public",
+        "access_control": "access.open"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.epistemics.core.v1"
+      },
+      "extensions": {
+        "temporal_scope": {
+          "era_tag": "era.unspecified",
+          "timestamp_kind": "unknown"
+        },
+        "not_defined": [
+          "no_empirical_validation"
+        ]
+      }
+    },
+    {
+      "knowledge_artifact_id": "knowledge.myth.sample.v1",
+      "knowledge_domain_tag": "knowledge.myth",
+      "confidence_desc": {
+        "level_tag": "confidence.belief",
+        "source": "oral_tradition"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.unbounded"
+      },
+      "diffusion_metadata": {
+        "visibility": "public",
+        "access_control": "access.open"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.epistemics.core.v1"
+      },
+      "extensions": {
+        "temporal_scope": {
+          "era_tag": "era.traditional",
+          "timestamp_kind": "unknown"
+        },
+        "not_defined": [
+          "no_claims_of_objective_truth"
+        ]
+      }
+    },
+    {
+      "knowledge_artifact_id": "knowledge.classified.sample.v1",
+      "knowledge_domain_tag": "knowledge.classified",
+      "confidence_desc": {
+        "level_tag": "confidence.estimated",
+        "source": "restricted_analysis"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.reported"
+      },
+      "diffusion_metadata": {
+        "visibility": "secret",
+        "access_control": "access.classified"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.epistemics.core.v1"
+      },
+      "extensions": {
+        "temporal_scope": {
+          "era_tag": "era.modern_classified",
+          "timestamp_kind": "range"
+        },
+        "not_defined": [
+          "no_public_access"
+        ]
+      }
+    },
+    {
+      "knowledge_artifact_id": "knowledge.folklore.sample.v1",
+      "knowledge_domain_tag": "knowledge.folklore",
+      "confidence_desc": {
+        "level_tag": "confidence.belief",
+        "source": "folklore"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.unbounded"
+      },
+      "diffusion_metadata": {
+        "visibility": "public",
+        "access_control": "access.open"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.epistemics.core.v1"
+      },
+      "extensions": {
+        "temporal_scope": {
+          "era_tag": "era.traditional",
+          "timestamp_kind": "unknown"
+        },
+        "not_defined": [
+          "no_empirical_basis"
+        ]
+      }
+    },
+    {
+      "knowledge_artifact_id": "knowledge.misinformation.sample.v1",
+      "knowledge_domain_tag": "knowledge.misinformation",
+      "confidence_desc": {
+        "level_tag": "confidence.claimed",
+        "source": "propaganda"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.unbounded"
+      },
+      "diffusion_metadata": {
+        "visibility": "public",
+        "access_control": "access.open"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.epistemics.core.v1"
+      },
+      "extensions": {
+        "truth_status": "false",
+        "temporal_scope": {
+          "era_tag": "era.unspecified",
+          "timestamp_kind": "unknown"
+        },
+        "not_defined": [
+          "no_truth_alignment"
+        ]
+      }
+    }
+  ]
+}

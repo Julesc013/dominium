@@ -1,0 +1,35 @@
+{
+  "schema_id": "dominium.schema.domain",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "domain_id": "org.dominium.epistemics.core.domain.knowledge",
+      "domain_type": "domain.epistemic",
+      "domain_tags": [
+        "domain.knowledge"
+      ],
+      "volumes": [
+        {
+          "volume_id": "org.dominium.epistemics.core.domain.knowledge.volume",
+          "bounds": {
+            "kind_tag": "bounds.epistemic",
+            "payload": {
+              "notes": "Abstract epistemic scope."
+            }
+          },
+          "volume_tags": [
+            "domain.volume.epistemic"
+          ]
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.epistemics.core.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_jurisdiction_assumptions"
+        ]
+      }
+    }
+  ]
+}

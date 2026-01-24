@@ -1,0 +1,114 @@
+{
+  "schema_id": "dominium.schema.capability",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "capability_id": "knowledge.artifact.core",
+      "capability_tags": [
+        "capability.epistemic"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.epistemics.core.v1"
+      }
+    },
+    {
+      "capability_id": "process.epistemic.observe",
+      "capability_tags": [
+        "process.epistemic",
+        "knowledge.observe"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.epistemics.core.v1"
+      }
+    },
+    {
+      "capability_id": "process.epistemic.measure",
+      "capability_tags": [
+        "process.epistemic",
+        "knowledge.measure"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.epistemics.core.v1"
+      }
+    },
+    {
+      "capability_id": "process.epistemic.survey",
+      "capability_tags": [
+        "process.epistemic",
+        "knowledge.survey"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.epistemics.core.v1"
+      }
+    },
+    {
+      "capability_id": "process.epistemic.experiment",
+      "capability_tags": [
+        "process.epistemic",
+        "knowledge.experiment"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.epistemics.core.v1"
+      }
+    },
+    {
+      "capability_id": "process.epistemic.infer",
+      "capability_tags": [
+        "process.epistemic",
+        "knowledge.infer"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.epistemics.core.v1"
+      }
+    },
+    {
+      "capability_id": "process.epistemic.publish",
+      "capability_tags": [
+        "process.epistemic",
+        "knowledge.publish"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.epistemics.core.v1"
+      }
+    },
+    {
+      "capability_id": "process.epistemic.suppress",
+      "capability_tags": [
+        "process.epistemic",
+        "knowledge.suppress"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.epistemics.core.v1"
+      }
+    },
+    {
+      "capability_id": "process.epistemic.distort",
+      "capability_tags": [
+        "process.epistemic",
+        "knowledge.distort"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.epistemics.core.v1"
+      }
+    },
+    {
+      "capability_id": "worldgen.model.epistemic_filter",
+      "capability_tags": [
+        "worldgen.model",
+        "knowledge.gating"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.epistemics.core.v1"
+      }
+    },
+    {
+      "capability_id": "refinement.gating.epistemic",
+      "capability_tags": [
+        "refinement.gating"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.epistemics.core.v1"
+      }
+    }
+  ]
+}

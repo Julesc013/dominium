@@ -1,0 +1,54 @@
+{
+  "schema_id": "dominium.schema.worldgen_model",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "model_id": "org.dominium.epistemics.core.model.epistemic_filter_v1",
+      "model_family": "worldgen.family.epistemic_filter",
+      "supported_components": [
+        "knowledge.artifact"
+      ],
+      "supported_lod_bands": [
+        {
+          "lod_min_tag": "lod.any",
+          "lod_max_tag": "lod.any"
+        }
+      ],
+      "required_capabilities": [
+        {
+          "capability_id": "worldgen.model.epistemic_filter"
+        },
+        {
+          "capability_id": "refinement.gating.epistemic"
+        }
+      ],
+      "seed_namespace": "seed.epistemic.filter",
+      "assumptions": [
+        "assumption.subjective_projection_only"
+      ],
+      "validity_bounds": {
+        "scope": "subjective_only"
+      },
+      "failure_modes": [
+        "failure.insufficient_knowledge"
+      ],
+      "validation_targets": [
+        {
+          "target_id": "validation.epistemic.filter",
+          "schema_id": "dominium.schema.knowledge",
+          "target_tags": [
+            "knowledge.artifact"
+          ]
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.epistemics.core.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_objective_mutation"
+        ]
+      }
+    }
+  ]
+}
