@@ -1,0 +1,410 @@
+{
+  "schema_id": "dominium.schema.process",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "process_id": "process.on_planet.network.register",
+      "process_class": "transactional",
+      "inputs": [
+        {
+          "ref_type": "network",
+          "ref_id": "network.on_planet.data.local"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "network",
+          "ref_id": "network.on_planet.data.local"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.network.data"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.network"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.network.local",
+          "volume_id": "domain.on_planet.network.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.network.register.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_registry_schema"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.network.attach",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "assembly",
+          "ref_id": "assembly.on_planet.network.node.basic"
+        },
+        {
+          "ref_type": "network",
+          "ref_id": "network.on_planet.power.local"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "network",
+          "ref_id": "network.on_planet.power.local"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.network.electrical"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.network"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.network.local",
+          "volume_id": "domain.on_planet.network.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.constraint_violation"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.network.attach.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_interface_schema"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.network.detach",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "assembly",
+          "ref_id": "assembly.on_planet.network.node.basic"
+        },
+        {
+          "ref_type": "network",
+          "ref_id": "network.on_planet.power.local"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "network",
+          "ref_id": "network.on_planet.power.local"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.network.electrical"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.network"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.network.local",
+          "volume_id": "domain.on_planet.network.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.network.detach.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_interface_schema"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.network.route_flow",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "network",
+          "ref_id": "network.on_planet.logistics.local"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "network",
+          "ref_id": "network.on_planet.logistics.local"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.network.logistics"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.network"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.network.local",
+          "volume_id": "domain.on_planet.network.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.insufficient_capability"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.network.route_flow.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "conservation_tags": [
+          "conservation.energy"
+        ],
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_route_solver"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.network.balance_flow",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "network",
+          "ref_id": "network.on_planet.power.local"
+        },
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.network.congestion"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "network",
+          "ref_id": "network.on_planet.power.local"
+        },
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.network.congestion"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.network.electrical"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.network"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.network.local",
+          "volume_id": "domain.on_planet.network.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.network.balance_flow.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "conservation_tags": [
+          "conservation.energy"
+        ],
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_flow_solver"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.network.verify",
+      "process_class": "epistemic",
+      "inputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.network.congestion"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.compliance.report"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.survey"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.observe.network"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.network.local",
+          "volume_id": "domain.on_planet.network.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.network.verify.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_inspection_schema"
+        ]
+      }
+    },
+    {
+      "process_id": "process.on_planet.network.repair",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "network",
+          "ref_id": "network.on_planet.power.local"
+        },
+        {
+          "ref_type": "part",
+          "ref_id": "part.on_planet.cable.basic"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "network",
+          "ref_id": "network.on_planet.power.local"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.maintenance"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.network"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "domain.on_planet.network.local",
+          "volume_id": "domain.on_planet.network.volume.local"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.insufficient_material"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.process.network.repair.v1"
+      },
+      "extensions": {
+        "time_cost_desc": {
+          "class": "time.variable"
+        },
+        "energy_cost_desc": {
+          "class": "energy.variable"
+        },
+        "conservation_tags": [
+          "conservation.mass",
+          "conservation.energy"
+        ],
+        "scale_tags": [
+          "scale.tool",
+          "scale.city",
+          "scale.planet"
+        ],
+        "refinement_ceiling": "lod.process.macro",
+        "detail_absence": [
+          "no_repair_procedure"
+        ]
+      }
+    }
+  ]
+}
