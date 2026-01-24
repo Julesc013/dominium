@@ -1,0 +1,64 @@
+{
+  "schema_id": "dominium.schema.domain",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "domain_id": "org.dominium.examples.realistic_earth.domain.science",
+      "domain_type": "domain.science",
+      "domain_tags": [
+        "domain.science"
+      ],
+      "volumes": [
+        {
+          "volume_id": "org.dominium.examples.realistic_earth.domain.science.volume.global",
+          "bounds": {
+            "kind_tag": "bounds.global",
+            "payload": {
+              "notes": "Global scientific coverage for Earth macro measurements."
+            }
+          },
+          "volume_tags": [
+            "domain.volume.science"
+          ]
+        }
+      ],
+      "attached_node_refs": [
+        {
+          "node_id": "org.dominium.worldgen.real.earth_macro.node.earth"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.examples.realistic_earth.v1"
+      }
+    },
+    {
+      "domain_id": "org.dominium.examples.realistic_earth.domain.civic",
+      "domain_type": "domain.civic",
+      "domain_tags": [
+        "domain.civic"
+      ],
+      "volumes": [
+        {
+          "volume_id": "org.dominium.examples.realistic_earth.domain.civic.volume.local",
+          "bounds": {
+            "kind_tag": "bounds.local",
+            "payload": {
+              "notes": "Local civic jurisdiction for construction and trade examples."
+            }
+          },
+          "volume_tags": [
+            "domain.volume.civic"
+          ]
+        }
+      ],
+      "attached_node_refs": [
+        {
+          "node_id": "org.dominium.worldgen.real.earth_macro.node.earth"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.examples.realistic_earth.v1"
+      }
+    }
+  ]
+}

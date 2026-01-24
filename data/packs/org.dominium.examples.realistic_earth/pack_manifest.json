@@ -1,0 +1,75 @@
+{
+  "schema_id": "dominium.schema.pack_manifest",
+  "schema_version": "1.0.0",
+  "record": {
+    "pack_id": "org.dominium.examples.realistic_earth",
+    "pack_version": "1.0.0",
+    "pack_format_version": 1,
+    "required_engine_version": "0.0.0",
+    "required_protocol_versions": [
+      {
+        "protocol_id": "dominium.protocol.pack_manifest",
+        "version_constraint": "1"
+      }
+    ],
+    "provides": [
+      {
+        "capability_id": "example.realistic_earth"
+      }
+    ],
+    "dependencies": [
+      {
+        "capability_id": "worldgen.model.cosmology"
+      },
+      {
+        "capability_id": "worldgen.model.galaxy_morphology"
+      },
+      {
+        "capability_id": "worldgen.model.system_formation"
+      },
+      {
+        "capability_id": "worldgen.model.body_formation"
+      },
+      {
+        "capability_id": "topology.galaxy.milkyway"
+      },
+      {
+        "capability_id": "topology.system.sol"
+      },
+      {
+        "capability_id": "topology.body.earth"
+      },
+      {
+        "capability_id": "field.terrain.macro"
+      },
+      {
+        "capability_id": "field.climate.macro"
+      },
+      {
+        "capability_id": "field.atmosphere.macro"
+      },
+      {
+        "capability_id": "process.epistemic.measure"
+      },
+      {
+        "capability_id": "capability.on_planet.construction"
+      },
+      {
+        "capability_id": "capability.on_planet.trade"
+      },
+      {
+        "capability_id": "capability.on_planet.regulation"
+      },
+      {
+        "capability_id": "capability.on_planet.ownership.registry"
+      }
+    ],
+    "optional": true,
+    "provenance_ref": {
+      "provenance_id": "prov.org.dominium.examples.realistic_earth.manifest.v1"
+    },
+    "extensions": {
+      "notes": "Exemplar: realistic Earth overlays with scientific epistemics and civic institutions."
+    }
+  }
+}
