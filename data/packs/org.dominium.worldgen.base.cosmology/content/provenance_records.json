@@ -1,0 +1,28 @@
+{
+  "schema_id": "dominium.schema.knowledge",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "knowledge_artifact_id": "prov.org.dominium.worldgen.base.cosmology.v1",
+      "knowledge_domain_tag": "provenance.procedural",
+      "confidence_desc": {
+        "source": "model_family_declaration",
+        "level_tag": "confidence.declared"
+      },
+      "uncertainty_desc": {
+        "kind": "procedural",
+        "bounds_tag": "uncertainty.unbounded"
+      },
+      "diffusion_metadata": {
+        "visibility": "public"
+      },
+      "extensions": {
+        "seed_namespace": "seed.cosmology.base",
+        "not_defined": [
+          "no_physics_assumptions",
+          "no_named_structures"
+        ]
+      }
+    }
+  ]
+}

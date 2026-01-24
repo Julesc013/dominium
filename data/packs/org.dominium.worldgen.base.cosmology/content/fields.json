@@ -1,0 +1,80 @@
+{
+  "schema_id": "dominium.schema.field",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "field_id": "org.dominium.worldgen.base.cosmology.field.mass_density",
+      "field_type": "field.mass_density",
+      "units": [
+        "unit.mass_density"
+      ],
+      "resolution": {
+        "lod_tag": "lod.universe.coarse",
+        "metadata": {
+          "scale": "cosmic"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.universe.coarse",
+          "metadata": {
+            "source": "worldgen.base.cosmology"
+          }
+        }
+      ],
+      "knowledge_state": "latent",
+      "domain_volume_refs": [
+        {
+          "domain_id": "org.dominium.worldgen.base.cosmology.domain.universe",
+          "volume_id": "org.dominium.worldgen.base.cosmology.domain.universe.volume"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.base.cosmology.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_local_variations_declared"
+        ]
+      }
+    },
+    {
+      "field_id": "org.dominium.worldgen.base.cosmology.field.expansion_parameters",
+      "field_type": "field.expansion_parameters",
+      "units": [
+        "unit.dimensionless"
+      ],
+      "resolution": {
+        "lod_tag": "lod.universe.coarse",
+        "metadata": {
+          "scale": "cosmic"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.universe.coarse",
+          "metadata": {
+            "source": "worldgen.base.cosmology"
+          }
+        }
+      ],
+      "knowledge_state": "latent",
+      "domain_volume_refs": [
+        {
+          "domain_id": "org.dominium.worldgen.base.cosmology.domain.universe",
+          "volume_id": "org.dominium.worldgen.base.cosmology.domain.universe.volume"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.base.cosmology.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_physical_constants_declared"
+        ]
+      }
+    }
+  ]
+}

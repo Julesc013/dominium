@@ -1,0 +1,65 @@
+{
+  "schema_id": "dominium.schema.worldgen_model",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "model_id": "org.dominium.worldgen.base.cosmology.model.cosmology_v1",
+      "model_family": "worldgen.family.cosmology",
+      "applicable_topology_traits": [
+        "topology.universe"
+      ],
+      "supported_fields": [
+        {
+          "field_id": "org.dominium.worldgen.base.cosmology.field.mass_density"
+        },
+        {
+          "field_id": "org.dominium.worldgen.base.cosmology.field.expansion_parameters"
+        }
+      ],
+      "supported_lod_bands": [
+        {
+          "lod_min_tag": "lod.universe.coarse",
+          "lod_max_tag": "lod.universe.macro",
+          "metadata": {
+            "scope": "cosmic"
+          }
+        }
+      ],
+      "required_capabilities": [
+        {
+          "capability_id": "worldgen.model.cosmology"
+        }
+      ],
+      "seed_namespace": "seed.cosmology.base",
+      "assumptions": [
+        "assumption.no_physics",
+        "assumption.procedural_truth"
+      ],
+      "validity_bounds": {
+        "detail_band": "macro_only"
+      },
+      "failure_modes": [
+        "failure.missing_seed",
+        "failure.insufficient_budget"
+      ],
+      "validation_targets": [
+        {
+          "target_id": "validation.cosmology.macro",
+          "schema_id": "dominium.schema.field",
+          "target_tags": [
+            "field.mass_density"
+          ]
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.base.cosmology.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_galaxy_models",
+          "no_physics_solver"
+        ]
+      }
+    }
+  ]
+}
