@@ -1,0 +1,80 @@
+{
+  "schema_id": "dominium.schema.field",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "field_id": "org.dominium.realities.alt_physics.field.constants",
+      "field_type": "field.alt_physics.constants",
+      "units": [
+        "unit.dimensionless"
+      ],
+      "resolution": {
+        "lod_tag": "lod.physics.macro",
+        "metadata": {
+          "scale": "physical_constants"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.physics.macro",
+          "metadata": {
+            "source": "realities.alt_physics"
+          }
+        }
+      ],
+      "knowledge_state": "latent",
+      "domain_volume_refs": [
+        {
+          "domain_id": "org.dominium.realities.alt_physics.domain.alt_physics",
+          "volume_id": "org.dominium.realities.alt_physics.domain.alt_physics.volume"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.alt_physics.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_standard_values"
+        ]
+      }
+    },
+    {
+      "field_id": "org.dominium.realities.alt_physics.field.conservation",
+      "field_type": "field.alt_physics.conservation",
+      "units": [
+        "unit.rule_set"
+      ],
+      "resolution": {
+        "lod_tag": "lod.physics.macro",
+        "metadata": {
+          "scale": "conservation_rules"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.physics.macro",
+          "metadata": {
+            "source": "realities.alt_physics"
+          }
+        }
+      ],
+      "knowledge_state": "latent",
+      "domain_volume_refs": [
+        {
+          "domain_id": "org.dominium.realities.alt_physics.domain.alt_physics",
+          "volume_id": "org.dominium.realities.alt_physics.domain.alt_physics.volume"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.alt_physics.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_default_conservation"
+        ]
+      }
+    }
+  ]
+}

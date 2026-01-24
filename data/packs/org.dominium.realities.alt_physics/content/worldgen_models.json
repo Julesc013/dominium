@@ -1,0 +1,56 @@
+{
+  "schema_id": "dominium.schema.worldgen_model",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "model_id": "org.dominium.realities.alt_physics.model.alt_physics_v1",
+      "model_family": "worldgen.family.alt_physics",
+      "applicable_domains": [
+        {
+          "domain_id": "org.dominium.realities.alt_physics.domain.alt_physics",
+          "volume_id": "org.dominium.realities.alt_physics.domain.alt_physics.volume"
+        }
+      ],
+      "supported_fields": [
+        {
+          "field_id": "org.dominium.realities.alt_physics.field.constants"
+        },
+        {
+          "field_id": "org.dominium.realities.alt_physics.field.conservation"
+        }
+      ],
+      "supported_lod_bands": [
+        {
+          "lod_min_tag": "lod.physics.coarse",
+          "lod_max_tag": "lod.physics.macro"
+        }
+      ],
+      "required_capabilities": [
+        {
+          "capability_id": "worldgen.model.alt_physics"
+        }
+      ],
+      "seed_namespace": "seed.alt_physics",
+      "assumptions": [
+        "assumption.alt_constants",
+        "assumption.alt_conservation"
+      ],
+      "validity_bounds": {
+        "scope": "limited_domains",
+        "notes": "Applicable only within declared domain volumes."
+      },
+      "failure_modes": [
+        "failure.inconsistent_bounds",
+        "failure.defer"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.alt_physics.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_default_baseline"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "schema_id": "dominium.schema.domain",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "domain_id": "org.dominium.realities.alt_physics.domain.alt_physics",
+      "domain_type": "domain.alt_physics",
+      "domain_tags": [
+        "domain.alt_physics"
+      ],
+      "volumes": [
+        {
+          "volume_id": "org.dominium.realities.alt_physics.domain.alt_physics.volume",
+          "bounds": {
+            "kind_tag": "bounds.alt_physics",
+            "payload": {
+              "notes": "Abstract alternate physics domain with declared applicability."
+            }
+          },
+          "volume_tags": [
+            "domain.volume.alt_physics"
+          ]
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.alt_physics.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_default_constants"
+        ]
+      }
+    }
+  ]
+}

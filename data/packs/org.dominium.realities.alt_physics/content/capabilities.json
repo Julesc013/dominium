@@ -1,0 +1,42 @@
+{
+  "schema_id": "dominium.schema.capability",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "capability_id": "reality.alt_physics",
+      "capability_tags": [
+        "reality.domain"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.alt_physics.v1"
+      }
+    },
+    {
+      "capability_id": "field.alt_physics.constants",
+      "capability_tags": [
+        "field.physics"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.alt_physics.v1"
+      }
+    },
+    {
+      "capability_id": "field.alt_physics.conservation",
+      "capability_tags": [
+        "field.physics"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.alt_physics.v1"
+      }
+    },
+    {
+      "capability_id": "worldgen.model.alt_physics",
+      "capability_tags": [
+        "worldgen.model"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.alt_physics.v1"
+      }
+    }
+  ]
+}
