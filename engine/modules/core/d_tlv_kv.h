@@ -15,85 +15,9 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
  * Format: tag (u32) + length (u32) + payload bytes.
  * This is used in multiple places for nested parameter blobs.
  */
-#ifndef D_TLV_KV_H
-#define D_TLV_KV_H
+#ifndef DOMINO_CORE_D_TLV_KV_INTERNAL_H
+#define DOMINO_CORE_D_TLV_KV_INTERNAL_H
 
-#include <string.h>
+#include "domino/core/d_tlv_kv.h"
 
-#include "domino/core/types.h"
-#include "domino/core/fixed.h"
-#include "domino/core/d_tlv.h"
-
-static int d_tlv_kv_next(
-    const d_tlv_blob *blob,
-    u32              *offset,
-    u32              *tag,
-    d_tlv_blob       *payload
-) {
-    u32 remaining;
-    u32 len;
-    if (!blob || !offset || !tag || !payload) {
-        return -1;
-    }
-    if (*offset >= blob->len) {
-        return 1;
-    }
-    remaining = blob->len - *offset;
-    if (remaining < 8u || !blob->ptr) {
-        return -1;
-    }
-    memcpy(tag, blob->ptr + *offset, sizeof(u32));
-    memcpy(&len, blob->ptr + *offset + 4u, sizeof(u32));
-    *offset += 8u;
-    if (len > blob->len - *offset) {
-        return -1;
-    }
-    payload->ptr = blob->ptr + *offset;
-    payload->len = len;
-    *offset += len;
-    return 0;
-}
-
-static int d_tlv_kv_read_u32(const d_tlv_blob *payload, u32 *out) {
-    if (!payload || !out || !payload->ptr) {
-        return -1;
-    }
-    if (payload->len != 4u) {
-        return -1;
-    }
-    memcpy(out, payload->ptr, sizeof(u32));
-    return 0;
-}
-
-static int d_tlv_kv_read_u16(const d_tlv_blob *payload, u16 *out) {
-    if (!payload || !out || !payload->ptr) {
-        return -1;
-    }
-    if (payload->len == 2u) {
-        memcpy(out, payload->ptr, sizeof(u16));
-        return 0;
-    }
-    if (payload->len == 4u) {
-        u32 tmp;
-        memcpy(&tmp, payload->ptr, sizeof(u32));
-        *out = (u16)tmp;
-        return 0;
-    }
-    return -1;
-}
-
-static int d_tlv_kv_read_q16_16(const d_tlv_blob *payload, q16_16 *out) {
-    i32 tmp;
-    if (!payload || !out || !payload->ptr) {
-        return -1;
-    }
-    if (payload->len != 4u) {
-        return -1;
-    }
-    memcpy(&tmp, payload->ptr, sizeof(i32));
-    *out = (q16_16)tmp;
-    return 0;
-}
-
-#endif /* D_TLV_KV_H */
-
+#endif /* DOMINO_CORE_D_TLV_KV_INTERNAL_H */
