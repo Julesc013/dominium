@@ -176,6 +176,7 @@ set(ENGINE_CORE_LEGACY_SOURCES
     modules/core/d_registry.c
     modules/core/d_subsystem.c
     modules/core/d_subsystems_init.c
+    modules/core/d_tlv_kv.c
     modules/core/d_tlv_schema.c
     modules/core/event.c
     modules/core/fixed.c
