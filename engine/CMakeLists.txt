@@ -107,6 +107,7 @@ set(ENGINE_CORE_SOURCES
     modules/execution/kernels/simd/simd_kernels.cpp
     modules/execution/kernels/gpu/gpu_caps.cpp
     modules/execution/kernels/gpu/gpu_kernels.cpp
+    modules/ecs/ecs_archetype_id.c
     modules/ecs/storage_iface.cpp
     modules/ecs/component_view.cpp
     modules/ecs/entity_range.cpp
