@@ -1,0 +1,91 @@
+{
+  "schema_id": "dominium.schema.measurement_artifact",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "measurement_artifact_id": "meas.real.earth.macro.v1",
+      "measurement_domain_tag": "measurement.earth.macro",
+      "era_tag": "era.modern",
+      "target_ref": {
+        "node_id": "node.selected.earth"
+      },
+      "confidence_desc": {
+        "level_tag": "confidence.high",
+        "kind": "macro_survey"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.bounded",
+        "kind": "macro_survey"
+      },
+      "access_control": {
+        "visibility": "public"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.earth.v1"
+      },
+      "extensions": {
+        "validity": {
+          "epoch_start": "era.modern",
+          "epoch_end": "era.modern"
+        }
+      }
+    },
+    {
+      "measurement_artifact_id": "meas.real.earth.regional.v1",
+      "measurement_domain_tag": "measurement.earth.regional",
+      "era_tag": "era.modern",
+      "target_ref": {
+        "node_id": "node.selected.earth"
+      },
+      "confidence_desc": {
+        "level_tag": "confidence.provisional",
+        "kind": "regional_survey"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.unbounded",
+        "kind": "regional_survey"
+      },
+      "access_control": {
+        "visibility": "public"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.earth.v1"
+      },
+      "extensions": {
+        "validity": {
+          "epoch_start": "era.modern",
+          "epoch_end": "era.modern"
+        }
+      }
+    },
+    {
+      "measurement_artifact_id": "meas.real.earth.local.v1",
+      "measurement_domain_tag": "measurement.earth.local",
+      "era_tag": "era.modern",
+      "target_ref": {
+        "node_id": "node.selected.earth"
+      },
+      "confidence_desc": {
+        "level_tag": "confidence.provisional",
+        "kind": "local_anchor"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.unbounded",
+        "kind": "local_anchor"
+      },
+      "access_control": {
+        "visibility": "restricted"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.earth.v1"
+      },
+      "extensions": {
+        "validity": {
+          "epoch_start": "era.modern",
+          "epoch_end": "era.modern"
+        },
+        "coverage_limit": "available_anchors_only"
+      }
+    }
+  ]
+}

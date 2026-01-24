@@ -1,0 +1,96 @@
+{
+  "schema_id": "dominium.schema.worldgen_model",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "model_id": "org.dominium.worldgen.real.earth.model.canonical_v1",
+      "model_family": "worldgen.family.planetary_observation_overlay",
+      "applicable_topology_traits": [
+        "topology.body.planetary"
+      ],
+      "supported_fields": [
+        {
+          "field_id": "org.dominium.worldgen.real.earth.field.continents_macro"
+        },
+        {
+          "field_id": "org.dominium.worldgen.real.earth.field.oceans_macro"
+        },
+        {
+          "field_id": "org.dominium.worldgen.real.earth.field.axial_tilt_macro"
+        },
+        {
+          "field_id": "org.dominium.worldgen.real.earth.field.climate_zones_macro"
+        },
+        {
+          "field_id": "org.dominium.worldgen.real.earth.field.geological_layers_macro"
+        },
+        {
+          "field_id": "org.dominium.worldgen.real.earth.field.tectonic_regions"
+        },
+        {
+          "field_id": "org.dominium.worldgen.real.earth.field.river_basins"
+        },
+        {
+          "field_id": "org.dominium.worldgen.real.earth.field.biome_envelopes"
+        },
+        {
+          "field_id": "org.dominium.worldgen.real.earth.field.mountain_systems"
+        },
+        {
+          "field_id": "org.dominium.worldgen.real.earth.field.elevation_anchors"
+        },
+        {
+          "field_id": "org.dominium.worldgen.real.earth.field.hydrology_constraints"
+        },
+        {
+          "field_id": "org.dominium.worldgen.real.earth.field.soil_envelopes"
+        },
+        {
+          "field_id": "org.dominium.worldgen.real.earth.field.ecology_envelopes"
+        }
+      ],
+      "supported_lod_bands": [
+        {
+          "lod_min_tag": "lod.body.macro",
+          "lod_max_tag": "lod.body.local"
+        }
+      ],
+      "required_capabilities": [
+        {
+          "capability_id": "worldgen.model.earth.canonical"
+        }
+      ],
+      "seed_namespace": "seed.body.earth.overlay",
+      "assumptions": [
+        "assumption.overlay_only",
+        "assumption.tiered_refinement"
+      ],
+      "validity_bounds": {
+        "lod_max": "lod.body.local",
+        "selection": "single_body"
+      },
+      "failure_modes": [
+        "failure.missing_target",
+        "failure.insufficient_budget",
+        "failure.defer"
+      ],
+      "validation_targets": [
+        {
+          "target_id": "validation.earth.macro",
+          "schema_id": "dominium.schema.field",
+          "target_tags": [
+            "field.earth.continents"
+          ]
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.realdata.earth.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_civilization_assumptions"
+        ]
+      }
+    }
+  ]
+}
