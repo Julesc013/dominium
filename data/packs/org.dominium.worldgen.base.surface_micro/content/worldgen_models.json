@@ -1,0 +1,54 @@
+{
+  "schema_id": "dominium.schema.worldgen_model",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "model_id": "org.dominium.worldgen.base.surface_micro.model.micro_v1",
+      "model_family": "worldgen.family.surface_micro",
+      "supported_fields": [
+        {
+          "field_id": "org.dominium.worldgen.base.surface_micro.field.microstructure"
+        }
+      ],
+      "supported_lod_bands": [
+        {
+          "lod_min_tag": "lod.surface.micro",
+          "lod_max_tag": "lod.surface.micro"
+        }
+      ],
+      "required_capabilities": [
+        {
+          "capability_id": "worldgen.model.surface_micro"
+        }
+      ],
+      "seed_namespace": "seed.surface.micro",
+      "assumptions": [
+        "assumption.lazy_refinement",
+        "assumption.bounded_detail"
+      ],
+      "validity_bounds": {
+        "detail_band": "micro_only"
+      },
+      "failure_modes": [
+        "failure.insufficient_budget"
+      ],
+      "validation_targets": [
+        {
+          "target_id": "validation.surface.micro",
+          "schema_id": "dominium.schema.field",
+          "target_tags": [
+            "field.microstructure"
+          ]
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.base.surface_micro.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_material_catalogs"
+        ]
+      }
+    }
+  ]
+}
