@@ -84,6 +84,7 @@ set(ENGINE_CORE_SOURCES
     modules/execution/budget_model.cpp
     modules/execution/execution_policy.cpp
     modules/execution/execution_context.cpp
+    modules/execution/kernel_iface.c
     modules/execution/ir/access_set.cpp
     modules/execution/ir/cost_model.cpp
     modules/execution/ir/task_graph.cpp
