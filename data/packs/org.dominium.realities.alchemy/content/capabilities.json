@@ -1,0 +1,69 @@
+{
+  "schema_id": "dominium.schema.capability",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "capability_id": "reality.alchemy",
+      "capability_tags": [
+        "reality.domain"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.alchemy.v1"
+      }
+    },
+    {
+      "capability_id": "field.alchemical_essence",
+      "capability_tags": [
+        "field.alchemy"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.alchemy.v1"
+      }
+    },
+    {
+      "capability_id": "field.transmutation_potential",
+      "capability_tags": [
+        "field.alchemy"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.alchemy.v1"
+      }
+    },
+    {
+      "capability_id": "process.alchemy.transmute",
+      "capability_tags": [
+        "process.alchemy"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.alchemy.v1"
+      }
+    },
+    {
+      "capability_id": "process.alchemy.calcine",
+      "capability_tags": [
+        "process.alchemy"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.alchemy.v1"
+      }
+    },
+    {
+      "capability_id": "institution.alchemy.order",
+      "capability_tags": [
+        "institution.alchemy"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.alchemy.v1"
+      }
+    },
+    {
+      "capability_id": "worldgen.model.alchemy",
+      "capability_tags": [
+        "worldgen.model"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.alchemy.v1"
+      }
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "schema_id": "dominium.schema.field",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "field_id": "org.dominium.realities.alchemy.field.alchemical_essence",
+      "field_type": "field.alchemical_essence",
+      "units": [
+        "unit.essence"
+      ],
+      "resolution": {
+        "lod_tag": "lod.alchemy.macro",
+        "metadata": {
+          "scale": "alchemical"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.alchemy.macro",
+          "metadata": {
+            "source": "realities.alchemy"
+          }
+        }
+      ],
+      "knowledge_state": "latent",
+      "domain_volume_refs": [
+        {
+          "domain_id": "org.dominium.realities.alchemy.domain.alchemy",
+          "volume_id": "org.dominium.realities.alchemy.domain.alchemy.volume"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.alchemy.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_atomic_equivalence"
+        ]
+      }
+    },
+    {
+      "field_id": "org.dominium.realities.alchemy.field.transmutation_potential",
+      "field_type": "field.transmutation_potential",
+      "units": [
+        "unit.potential"
+      ],
+      "resolution": {
+        "lod_tag": "lod.alchemy.macro",
+        "metadata": {
+          "scale": "alchemical"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "procedural",
+          "lod_tag": "lod.alchemy.macro",
+          "metadata": {
+            "source": "realities.alchemy"
+          }
+        }
+      ],
+      "knowledge_state": "latent",
+      "domain_volume_refs": [
+        {
+          "domain_id": "org.dominium.realities.alchemy.domain.alchemy",
+          "volume_id": "org.dominium.realities.alchemy.domain.alchemy.volume"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.alchemy.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_guaranteed_transmutation"
+        ]
+      }
+    }
+  ]
+}

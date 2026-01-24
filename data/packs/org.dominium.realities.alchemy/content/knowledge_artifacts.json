@@ -1,0 +1,64 @@
+{
+  "schema_id": "dominium.schema.knowledge",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "knowledge_artifact_id": "knowledge.alchemy.correspondences.v1",
+      "knowledge_domain_tag": "knowledge.alchemy.correspondence",
+      "confidence_desc": {
+        "level_tag": "confidence.belief",
+        "source": "symbolic_system"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.unbounded"
+      },
+      "diffusion_metadata": {
+        "visibility": "restricted",
+        "access_control": "access.institutional"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.alchemy.v1"
+      },
+      "extensions": {
+        "temporal_scope": {
+          "era_tag": "era.traditional",
+          "timestamp_kind": "unknown"
+        },
+        "symbolic_mappings": [
+          "symbolic.sun.gold",
+          "symbolic.moon.silver"
+        ],
+        "not_defined": [
+          "no_empirical_validation"
+        ]
+      }
+    },
+    {
+      "knowledge_artifact_id": "knowledge.alchemy.transmutation_theory.v1",
+      "knowledge_domain_tag": "knowledge.alchemy.theory",
+      "confidence_desc": {
+        "level_tag": "confidence.speculative",
+        "source": "alchemical_theory"
+      },
+      "uncertainty_desc": {
+        "bounds_tag": "uncertainty.unbounded"
+      },
+      "diffusion_metadata": {
+        "visibility": "restricted",
+        "access_control": "access.institutional"
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.alchemy.v1"
+      },
+      "extensions": {
+        "temporal_scope": {
+          "era_tag": "era.traditional",
+          "timestamp_kind": "unknown"
+        },
+        "not_defined": [
+          "no_physical_equivalence"
+        ]
+      }
+    }
+  ]
+}

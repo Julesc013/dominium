@@ -1,0 +1,68 @@
+{
+  "schema_id": "dominium.schema.process",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "process_id": "process.alchemy.calcine",
+      "process_class": "transformative",
+      "required_capability_refs": [
+        {
+          "capability_id": "process.alchemy.calcine"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.alchemy"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "org.dominium.realities.alchemy.domain.alchemy",
+          "volume_id": "org.dominium.realities.alchemy.domain.alchemy.volume"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_capability",
+        "failure.insufficient_budget"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.alchemy.v1"
+      },
+      "extensions": {
+        "symbolic_stage": "calcination",
+        "not_defined": [
+          "no_physical_equivalence"
+        ]
+      }
+    },
+    {
+      "process_id": "process.alchemy.transmute",
+      "process_class": "transformative",
+      "required_capability_refs": [
+        {
+          "capability_id": "process.alchemy.transmute"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.alchemy"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "org.dominium.realities.alchemy.domain.alchemy",
+          "volume_id": "org.dominium.realities.alchemy.domain.alchemy.volume"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_capability",
+        "failure.insufficient_budget"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.alchemy.v1"
+      },
+      "extensions": {
+        "symbolic_stage": "transmutation",
+        "not_defined": [
+          "no_guaranteed_outcome"
+        ]
+      }
+    }
+  ]
+}

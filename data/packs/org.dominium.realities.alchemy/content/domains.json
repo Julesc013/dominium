@@ -1,0 +1,35 @@
+{
+  "schema_id": "dominium.schema.domain",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "domain_id": "org.dominium.realities.alchemy.domain.alchemy",
+      "domain_type": "domain.alchemy",
+      "domain_tags": [
+        "domain.alchemy"
+      ],
+      "volumes": [
+        {
+          "volume_id": "org.dominium.realities.alchemy.domain.alchemy.volume",
+          "bounds": {
+            "kind_tag": "bounds.alchemy",
+            "payload": {
+              "notes": "Abstract alchemical domain with symbolic correspondences."
+            }
+          },
+          "volume_tags": [
+            "domain.volume.alchemy"
+          ]
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.alchemy.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_physical_equivalence"
+        ]
+      }
+    }
+  ]
+}
