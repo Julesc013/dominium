@@ -1,0 +1,96 @@
+{
+  "schema_id": "dominium.schema.process",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "process_id": "process.examples.lost_civilization.excavate",
+      "process_class": "transformative",
+      "inputs": [
+        {
+          "ref_type": "field",
+          "ref_id": "field.on_planet.terrain.cover"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.examples.lost_civilization.artifact_catalog.v1"
+        },
+        {
+          "ref_type": "assembly",
+          "ref_id": "assembly.examples.lost_civilization.ruins.v1"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.terrain.modify"
+        },
+        {
+          "capability_id": "capability.on_planet.mining"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.mutation.terrain"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "org.dominium.examples.lost_civilization.domain.site",
+          "volume_id": "org.dominium.examples.lost_civilization.domain.site.volume.primary"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_authority",
+        "failure.insufficient_capability"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.examples.lost_civilization.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_complete_reconstruction"
+        ]
+      }
+    },
+    {
+      "process_id": "process.examples.lost_civilization.catalog",
+      "process_class": "epistemic",
+      "inputs": [
+        {
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.examples.lost_civilization.artifact_catalog.v1"
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.examples.lost_civilization.history_version_a.v1"
+        }
+      ],
+      "required_capability_refs": [
+        {
+          "capability_id": "capability.on_planet.survey"
+        }
+      ],
+      "required_authority_tags": [
+        "authority.epistemic"
+      ],
+      "applicable_domain_refs": [
+        {
+          "domain_id": "org.dominium.examples.lost_civilization.domain.site",
+          "volume_id": "org.dominium.examples.lost_civilization.domain.site.volume.primary"
+        }
+      ],
+      "failure_mode_tags": [
+        "failure.insufficient_evidence"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.examples.lost_civilization.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_single_history"
+        ]
+      }
+    }
+  ]
+}

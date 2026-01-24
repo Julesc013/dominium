@@ -1,0 +1,35 @@
+{
+  "schema_id": "dominium.schema.domain",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "domain_id": "org.dominium.examples.lost_civilization.domain.site",
+      "domain_type": "domain.archaeology",
+      "domain_tags": [
+        "domain.archaeology"
+      ],
+      "volumes": [
+        {
+          "volume_id": "org.dominium.examples.lost_civilization.domain.site.volume.primary",
+          "bounds": {
+            "kind_tag": "bounds.local",
+            "payload": {
+              "notes": "Archaeological site boundary with uncertain extent."
+            }
+          },
+          "volume_tags": [
+            "domain.volume.archaeology"
+          ]
+        }
+      ],
+      "attached_node_refs": [
+        {
+          "node_id": "org.dominium.worldgen.real.earth_macro.node.earth"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.examples.lost_civilization.v1"
+      }
+    }
+  ]
+}
