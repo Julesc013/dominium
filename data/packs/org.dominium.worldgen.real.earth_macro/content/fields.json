@@ -1,0 +1,123 @@
+{
+  "schema_id": "dominium.schema.field",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "field_id": "org.dominium.worldgen.real.earth_macro.field.terrain_macro",
+      "field_type": "field.terrain.macro",
+      "units": [
+        "unit.height",
+        "unit.area"
+      ],
+      "resolution": {
+        "lod_tag": "lod.body.macro",
+        "metadata": {
+          "scale": "planetary"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.body.macro",
+          "metadata": {
+            "source": "worldgen.real.earth_macro",
+            "procedural_below_lod": "lod.body.macro"
+          }
+        }
+      ],
+      "knowledge_state": "known",
+      "domain_volume_refs": [
+        {
+          "domain_id": "org.dominium.worldgen.real.earth_macro.domain.earth",
+          "volume_id": "org.dominium.worldgen.real.earth_macro.domain.earth.volume"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.real.earth_macro.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_microtopography"
+        ]
+      }
+    },
+    {
+      "field_id": "org.dominium.worldgen.real.earth_macro.field.climate_macro",
+      "field_type": "field.climate.macro",
+      "units": [
+        "unit.temperature",
+        "unit.humidity"
+      ],
+      "resolution": {
+        "lod_tag": "lod.body.macro",
+        "metadata": {
+          "scale": "planetary"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.body.macro",
+          "metadata": {
+            "source": "worldgen.real.earth_macro",
+            "procedural_below_lod": "lod.body.macro"
+          }
+        }
+      ],
+      "knowledge_state": "known",
+      "domain_volume_refs": [
+        {
+          "domain_id": "org.dominium.worldgen.real.earth_macro.domain.earth",
+          "volume_id": "org.dominium.worldgen.real.earth_macro.domain.earth.volume"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.real.earth_macro.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_short_term_weather"
+        ]
+      }
+    },
+    {
+      "field_id": "org.dominium.worldgen.real.earth_macro.field.atmosphere_macro",
+      "field_type": "field.atmosphere.macro",
+      "units": [
+        "unit.pressure",
+        "unit.composition"
+      ],
+      "resolution": {
+        "lod_tag": "lod.body.macro",
+        "metadata": {
+          "scale": "planetary"
+        }
+      },
+      "representation": [
+        {
+          "tier_tag": "explicit",
+          "lod_tag": "lod.body.macro",
+          "metadata": {
+            "source": "worldgen.real.earth_macro",
+            "procedural_below_lod": "lod.body.macro"
+          }
+        }
+      ],
+      "knowledge_state": "known",
+      "domain_volume_refs": [
+        {
+          "domain_id": "org.dominium.worldgen.real.earth_macro.domain.earth",
+          "volume_id": "org.dominium.worldgen.real.earth_macro.domain.earth.volume"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.real.earth_macro.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_upper_atmosphere_detail"
+        ]
+      }
+    }
+  ]
+}

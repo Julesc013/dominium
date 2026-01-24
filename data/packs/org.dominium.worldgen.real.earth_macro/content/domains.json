@@ -1,0 +1,35 @@
+{
+  "schema_id": "dominium.schema.domain",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "domain_id": "org.dominium.worldgen.real.earth_macro.domain.earth",
+      "domain_type": "domain.planetary",
+      "domain_tags": [
+        "domain.earth"
+      ],
+      "volumes": [
+        {
+          "volume_id": "org.dominium.worldgen.real.earth_macro.domain.earth.volume",
+          "bounds": {
+            "kind_tag": "bounds.planetary_macro",
+            "payload": {
+              "notes": "Macro planetary bounds; no fine geometry."
+            }
+          },
+          "volume_tags": [
+            "domain.volume.earth.macro"
+          ]
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.worldgen.real.earth_macro.v1"
+      },
+      "extensions": {
+        "not_defined": [
+          "no_surface_mesh"
+        ]
+      }
+    }
+  ]
+}
