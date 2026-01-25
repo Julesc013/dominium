@@ -55,9 +55,40 @@ def _make_edge(parent_id, child_id):
     }
 
 
-def _base_worlddef(template_id, template_version, seed, generator_source):
+def _normalize_policy_list(value):
+    if value is None:
+        return []
+    if isinstance(value, list):
+        return [str(item) for item in value if item]
+    if isinstance(value, str):
+        if not value:
+            return []
+        return [value]
+    return []
+
+
+def _apply_policy_sets(worlddef, params):
+    if not params or not isinstance(params, dict):
+        return
+    policy_sets = worlddef.get("policy_sets", {})
+    policy_sets["movement_policies"] = _normalize_policy_list(
+        params.get("policy.movement", policy_sets.get("movement_policies"))
+    )
+    policy_sets["authority_policies"] = _normalize_policy_list(
+        params.get("policy.authority", policy_sets.get("authority_policies"))
+    )
+    policy_sets["mode_policies"] = _normalize_policy_list(
+        params.get("policy.mode", policy_sets.get("mode_policies"))
+    )
+    policy_sets["debug_policies"] = _normalize_policy_list(
+        params.get("policy.debug", policy_sets.get("debug_policies"))
+    )
+    worlddef["policy_sets"] = policy_sets
+
+
+def _base_worlddef(template_id, template_version, seed, generator_source, params=None):
     worlddef_id = f"{template_id}.seed.{seed}"
-    return {
+    worlddef = {
         "schema_id": SCHEMA_ID,
         "schema_version": SCHEMA_VERSION,
         "worlddef_id": worlddef_id,
@@ -88,6 +119,8 @@ def _base_worlddef(template_id, template_version, seed, generator_source):
         },
         "extensions": {}
     }
+    _apply_policy_sets(worlddef, params)
+    return worlddef
 
 
 def generate_empty_universe(params):
@@ -97,7 +130,7 @@ def generate_empty_universe(params):
                 "refusal": _make_refusal(REFUSAL_TEMPLATE,
                                          "invalid seed for template",
                                          {"template_id": "builtin.empty_universe"})}
-    worlddef = _base_worlddef("builtin.empty_universe", "1.0.0", seed, "built_in")
+    worlddef = _base_worlddef("builtin.empty_universe", "1.0.0", seed, "built_in", params)
     worlddef["topology"]["nodes"].append(
         _make_topology_node("universe.root", None, ["topology.universe"], "frame.universe.root")
     )
@@ -111,7 +144,7 @@ def generate_minimal_system(params):
                 "refusal": _make_refusal(REFUSAL_TEMPLATE,
                                          "invalid seed for template",
                                          {"template_id": "builtin.minimal_system"})}
-    worlddef = _base_worlddef("builtin.minimal_system", "1.0.0", seed, "built_in")
+    worlddef = _base_worlddef("builtin.minimal_system", "1.0.0", seed, "built_in", params)
     nodes = worlddef["topology"]["nodes"]
     edges = worlddef["topology"]["edges"]
     nodes.append(_make_topology_node("universe.root", None, ["topology.universe"], "frame.universe.root"))
@@ -132,7 +165,7 @@ def generate_realistic_test_universe(params):
                 "refusal": _make_refusal(REFUSAL_TEMPLATE,
                                          "invalid seed for template",
                                          {"template_id": "builtin.realistic_test_universe"})}
-    worlddef = _base_worlddef("builtin.realistic_test_universe", "1.0.0", seed, "built_in")
+    worlddef = _base_worlddef("builtin.realistic_test_universe", "1.0.0", seed, "built_in", params)
     nodes = worlddef["topology"]["nodes"]
     edges = worlddef["topology"]["edges"]
     nodes.append(_make_topology_node("universe.root", None, ["topology.universe"], "frame.universe.root"))
@@ -197,13 +230,93 @@ def list_templates():
             "version": "1.0.0",
             "description": desc,
             "parameter_schema": {
-                "seed.primary": "u64"
+                "seed.primary": "u64",
+                "policy.movement": "[policy_id]",
+                "policy.authority": "[policy_id]",
+                "policy.mode": "[policy_id]",
+                "policy.debug": "[policy_id]"
             },
             "required_capabilities": [],
             "output_guarantees": guarantees,
             "refusal_conditions": ["seed outside [0, 2^64-1]"]
         })
     return templates
+
+
+def discover_pack_templates(paths):
+    templates = []
+    for root in paths:
+        pack_manifests = sorted(root.rglob("pack_manifest.json"))
+        for manifest in pack_manifests:
+            try:
+                data = load_json(manifest)
+            except Exception:
+                continue
+            record = data.get("record", data)
+            provides = record.get("provides", [])
+            has_registry = any(
+                isinstance(cap, dict) and cap.get("capability_id") == "world.template.registry"
+                for cap in provides
+            )
+            if not has_registry:
+                continue
+            templates_path = manifest.parent / "world_templates.json"
+            if not templates_path.exists():
+                continue
+            try:
+                templates_doc = load_json(templates_path)
+            except Exception:
+                continue
+            for record in templates_doc.get("records", []):
+                entry = dict(record)
+                entry["source"] = "pack"
+                entry["_source"] = str(templates_path)
+                templates.append(entry)
+    return templates
+
+
+def list_all_templates(pack_paths=None):
+    templates = []
+    for entry in list_templates():
+        entry = dict(entry)
+        entry["source"] = "built_in"
+        templates.append(entry)
+    if pack_paths:
+        templates.extend(discover_pack_templates(pack_paths))
+    return templates
+
+
+def load_worlddef(path):
+    return load_json(path)
+
+
+def summarize_worlddef(payload):
+    summary = {}
+    if not isinstance(payload, dict):
+        return summary
+    summary["worlddef_id"] = payload.get("worlddef_id", "")
+    summary["template_id"] = payload.get("provenance", {}).get("template_id", "")
+    spawn = payload.get("spawn_spec", {})
+    summary["spawn_node_id"] = spawn.get("spawn_node_ref", {}).get("node_id", "")
+    summary["spawn_frame_id"] = spawn.get("coordinate_frame_ref", {}).get("frame_id", "")
+    pos = spawn.get("position", {}).get("value", {})
+    ori = spawn.get("orientation", {}).get("value", {})
+    summary["spawn_pos"] = {
+        "x": pos.get("x", 0),
+        "y": pos.get("y", 0),
+        "z": pos.get("z", 0)
+    }
+    summary["spawn_orient"] = {
+        "yaw": ori.get("yaw", 0),
+        "pitch": ori.get("pitch", 0),
+        "roll": ori.get("roll", 0)
+    }
+    summary["policy_sets"] = payload.get("policy_sets", {})
+    nodes = payload.get("topology", {}).get("nodes", [])
+    summary["topology_nodes"] = [
+        node.get("node_id", "") for node in nodes if isinstance(node, dict)
+    ]
+    return summary
 
 
 def run_template(template_id, params=None):
