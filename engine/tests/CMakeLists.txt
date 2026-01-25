@@ -139,6 +139,42 @@ set_target_properties(execution_contract_tests PROPERTIES
 )
 add_test(NAME execution_contract COMMAND execution_contract_tests)
 
+add_executable(agent_foundation_contract_tests
+    agent_foundation_contract_tests.cpp
+)
+target_link_libraries(agent_foundation_contract_tests PRIVATE engine::domino)
+target_compile_definitions(agent_foundation_contract_tests PRIVATE
+    DOMINIUM_REPO_ROOT="${CMAKE_SOURCE_DIR}"
+)
+set_target_properties(agent_foundation_contract_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME agent_foundation_contract COMMAND agent_foundation_contract_tests)
+
+add_executable(agent_mvp_core_tests
+    agent_mvp_core_tests.cpp
+)
+target_link_libraries(agent_mvp_core_tests PRIVATE engine::domino game::dominium)
+set_target_properties(agent_mvp_core_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME agent_mvp_core COMMAND agent_mvp_core_tests)
+
+add_executable(agent_mvp_social_tests
+    agent_mvp_social_tests.cpp
+)
+target_link_libraries(agent_mvp_social_tests PRIVATE engine::domino game::dominium)
+set_target_properties(agent_mvp_social_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME agent_mvp_social COMMAND agent_mvp_social_tests)
+
 add_executable(execution_equivalence_tests
     execution_equivalence_tests.cpp
 )

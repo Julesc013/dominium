@@ -1,0 +1,8 @@
+# INSTITUTION TEMPLATE (BASIC)
+# Optional pattern; safe to remove.
+institution_id = <u64>
+agent_id = <u64>
+authority_mask = <bitmask>
+legitimacy_q16 = <0..65535>
+founded_act = <act_time>
+provenance_id = <u64>

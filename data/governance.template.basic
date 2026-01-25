@@ -1,0 +1,13 @@
+# GOVERNANCE TEMPLATE (BASIC)
+# Optional pattern; safe to remove.
+authority_grant_id = <u64>
+granter_id = <u64>
+grantee_id = <u64>
+authority_mask = <bitmask>
+authority_expiry_act = <act_time>
+constraint_id = <u64>
+institution_id = <u64>
+target_agent_id = <u64 or 0 for all>
+process_kind_mask = <bitmask>
+constraint_mode = deny|allow
+constraint_expiry_act = <act_time>
