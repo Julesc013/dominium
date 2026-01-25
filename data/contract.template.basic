@@ -1,0 +1,11 @@
+# CONTRACT TEMPLATE (BASIC)
+# Optional pattern; safe to remove.
+contract_id = <u64>
+party_a_id = <u64>
+party_b_id = <u64>
+allowed_process_mask_a = <bitmask>
+allowed_process_mask_b = <bitmask>
+required_authority_mask_a = <bitmask>
+required_authority_mask_b = <bitmask>
+expiry_act = <act_time>
+provenance_id = <u64>
