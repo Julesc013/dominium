@@ -143,6 +143,29 @@ set_target_properties(dominium_tools_inspect PROPERTIES
     CXX_EXTENSIONS OFF
 )
 
+add_library(dominium_tools_observability STATIC
+    observability/observation_store.cpp
+    observability/observability_api.cpp
+    observability/world_inspector.cpp
+    observability/agent_inspector.cpp
+    observability/institution_inspector.cpp
+    observability/history_viewer.cpp
+    observability/pack_inspector.cpp
+    observability/determinism_tools.cpp
+    observability/visualization_view.cpp
+)
+target_include_directories(dominium_tools_observability
+    PUBLIC
+        ${DOMINIUM_ENGINE_INCLUDE_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}/observability
+        ${CMAKE_CURRENT_SOURCE_DIR}/inspect
+)
+set_target_properties(dominium_tools_observability PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
 add_executable(dominium_tool0_inspection_tests
     tests/tool0_inspection_tests.cpp
 )
@@ -154,6 +177,19 @@ set_target_properties(dominium_tool0_inspection_tests PROPERTIES
 )
 add_test(NAME dominium_tool0_inspection
     COMMAND $<TARGET_FILE:dominium_tool0_inspection_tests>
+)
+
+add_executable(dominium_vis3_observability_tests
+    tests/vis3_observability_tests.cpp
+)
+target_link_libraries(dominium_vis3_observability_tests PRIVATE dominium_tools_observability)
+set_target_properties(dominium_vis3_observability_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME dominium_vis3_observability
+    COMMAND $<TARGET_FILE:dominium_vis3_observability_tests>
 )
 
 add_executable(dominium_registry_tests
