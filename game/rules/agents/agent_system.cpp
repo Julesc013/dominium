@@ -31,6 +31,11 @@ enum {
     DOM_AGENT_COMPONENT_POPULATION = 5609u,
     DOM_AGENT_COMPONENT_COHORT = 5610u,
     DOM_AGENT_COMPONENT_AUDIT = 5611u,
+    DOM_AGENT_COMPONENT_GOAL_REGISTRY = 5612u,
+    DOM_AGENT_COMPONENT_AUTHORITY = 5613u,
+    DOM_AGENT_COMPONENT_CONSTRAINT = 5614u,
+    DOM_AGENT_COMPONENT_CONTRACT = 5615u,
+    DOM_AGENT_COMPONENT_DELEGATION = 5616u,
     DOM_AGENT_FIELD_DEFAULT = 1u
 };
 
@@ -362,7 +367,7 @@ int AgentSystem::emit_tasks(dom_act_time_t act_now,
                 u64 cost_id;
                 dom_task_node node;
                 dom_cost_model cost;
-                dom_access_range reads[2];
+                dom_access_range reads[9];
                 dom_access_range writes[2];
                 u32 read_count = 0u;
                 u32 write_count = 0u;
@@ -371,9 +376,12 @@ int AgentSystem::emit_tasks(dom_act_time_t act_now,
                 if ((allowed_ops_mask_ & (1u << op)) == 0u) {
                     continue;
                 }
-                if ((op == DOM_AGENT_TASK_EVALUATE_GOALS && (!buffers_->goals || !inputs_->beliefs)) ||
-                    (op == DOM_AGENT_TASK_PLAN_ACTIONS && !buffers_->plans) ||
-                    (op == DOM_AGENT_TASK_VALIDATE_PLAN && (!buffers_->plans || !inputs_->capabilities)) ||
+                if ((op == DOM_AGENT_TASK_EVALUATE_GOALS && (!buffers_->goals || !inputs_->beliefs ||
+                                                           !inputs_->capabilities || !inputs_->goals)) ||
+                    (op == DOM_AGENT_TASK_PLAN_ACTIONS && (!buffers_->plans || !inputs_->beliefs ||
+                                                          !inputs_->capabilities || !inputs_->goals)) ||
+                    (op == DOM_AGENT_TASK_VALIDATE_PLAN && (!buffers_->plans || !inputs_->capabilities ||
+                                                           !inputs_->goals)) ||
                     (op == DOM_AGENT_TASK_EMIT_COMMANDS && !buffers_->commands)) {
                     continue;
                 }
@@ -433,6 +441,22 @@ int AgentSystem::emit_tasks(dom_act_time_t act_now,
                     reads[read_count].set_id = inputs_->belief_set_id;
                     read_count += 1u;
 
+                    reads[read_count].kind = DOM_RANGE_COMPONENT_SET;
+                    reads[read_count].component_id = DOM_AGENT_COMPONENT_CAPABILITY;
+                    reads[read_count].field_id = DOM_AGENT_FIELD_DEFAULT;
+                    reads[read_count].start_id = 0u;
+                    reads[read_count].end_id = 0u;
+                    reads[read_count].set_id = inputs_->capability_set_id;
+                    read_count += 1u;
+
+                    reads[read_count].kind = DOM_RANGE_COMPONENT_SET;
+                    reads[read_count].component_id = DOM_AGENT_COMPONENT_GOAL_REGISTRY;
+                    reads[read_count].field_id = DOM_AGENT_FIELD_DEFAULT;
+                    reads[read_count].start_id = 0u;
+                    reads[read_count].end_id = 0u;
+                    reads[read_count].set_id = inputs_->goal_set_id;
+                    read_count += 1u;
+
                     writes[write_count].kind = DOM_RANGE_COMPONENT_SET;
                     writes[write_count].component_id = DOM_AGENT_COMPONENT_GOAL;
                     writes[write_count].field_id = DOM_AGENT_FIELD_DEFAULT;
@@ -447,6 +471,38 @@ int AgentSystem::emit_tasks(dom_act_time_t act_now,
                     reads[read_count].start_id = 0u;
                     reads[read_count].end_id = 0u;
                     reads[read_count].set_id = buffers_->goal_set_id;
+                    read_count += 1u;
+
+                    reads[read_count].kind = DOM_RANGE_COMPONENT_SET;
+                    reads[read_count].component_id = DOM_AGENT_COMPONENT_SCHEDULE;
+                    reads[read_count].field_id = DOM_AGENT_FIELD_DEFAULT;
+                    reads[read_count].start_id = 0u;
+                    reads[read_count].end_id = 0u;
+                    reads[read_count].set_id = inputs_->schedule_set_id;
+                    read_count += 1u;
+
+                    reads[read_count].kind = DOM_RANGE_COMPONENT_SET;
+                    reads[read_count].component_id = DOM_AGENT_COMPONENT_BELIEF;
+                    reads[read_count].field_id = DOM_AGENT_FIELD_DEFAULT;
+                    reads[read_count].start_id = 0u;
+                    reads[read_count].end_id = 0u;
+                    reads[read_count].set_id = inputs_->belief_set_id;
+                    read_count += 1u;
+
+                    reads[read_count].kind = DOM_RANGE_COMPONENT_SET;
+                    reads[read_count].component_id = DOM_AGENT_COMPONENT_CAPABILITY;
+                    reads[read_count].field_id = DOM_AGENT_FIELD_DEFAULT;
+                    reads[read_count].start_id = 0u;
+                    reads[read_count].end_id = 0u;
+                    reads[read_count].set_id = inputs_->capability_set_id;
+                    read_count += 1u;
+
+                    reads[read_count].kind = DOM_RANGE_COMPONENT_SET;
+                    reads[read_count].component_id = DOM_AGENT_COMPONENT_GOAL_REGISTRY;
+                    reads[read_count].field_id = DOM_AGENT_FIELD_DEFAULT;
+                    reads[read_count].start_id = 0u;
+                    reads[read_count].end_id = 0u;
+                    reads[read_count].set_id = inputs_->goal_set_id;
                     read_count += 1u;
 
                     writes[write_count].kind = DOM_RANGE_COMPONENT_SET;
@@ -472,6 +528,51 @@ int AgentSystem::emit_tasks(dom_act_time_t act_now,
                     reads[read_count].end_id = 0u;
                     reads[read_count].set_id = inputs_->capability_set_id;
                     read_count += 1u;
+
+                    reads[read_count].kind = DOM_RANGE_COMPONENT_SET;
+                    reads[read_count].component_id = DOM_AGENT_COMPONENT_GOAL_REGISTRY;
+                    reads[read_count].field_id = DOM_AGENT_FIELD_DEFAULT;
+                    reads[read_count].start_id = 0u;
+                    reads[read_count].end_id = 0u;
+                    reads[read_count].set_id = inputs_->goal_set_id;
+                    read_count += 1u;
+
+                    if (inputs_->authority && inputs_->authority_set_id != 0u) {
+                        reads[read_count].kind = DOM_RANGE_COMPONENT_SET;
+                        reads[read_count].component_id = DOM_AGENT_COMPONENT_AUTHORITY;
+                        reads[read_count].field_id = DOM_AGENT_FIELD_DEFAULT;
+                        reads[read_count].start_id = 0u;
+                        reads[read_count].end_id = 0u;
+                        reads[read_count].set_id = inputs_->authority_set_id;
+                        read_count += 1u;
+                    }
+                    if (inputs_->constraints && inputs_->constraint_set_id != 0u) {
+                        reads[read_count].kind = DOM_RANGE_COMPONENT_SET;
+                        reads[read_count].component_id = DOM_AGENT_COMPONENT_CONSTRAINT;
+                        reads[read_count].field_id = DOM_AGENT_FIELD_DEFAULT;
+                        reads[read_count].start_id = 0u;
+                        reads[read_count].end_id = 0u;
+                        reads[read_count].set_id = inputs_->constraint_set_id;
+                        read_count += 1u;
+                    }
+                    if (inputs_->contracts && inputs_->contract_set_id != 0u) {
+                        reads[read_count].kind = DOM_RANGE_COMPONENT_SET;
+                        reads[read_count].component_id = DOM_AGENT_COMPONENT_CONTRACT;
+                        reads[read_count].field_id = DOM_AGENT_FIELD_DEFAULT;
+                        reads[read_count].start_id = 0u;
+                        reads[read_count].end_id = 0u;
+                        reads[read_count].set_id = inputs_->contract_set_id;
+                        read_count += 1u;
+                    }
+                    if (inputs_->delegations && inputs_->delegation_set_id != 0u) {
+                        reads[read_count].kind = DOM_RANGE_COMPONENT_SET;
+                        reads[read_count].component_id = DOM_AGENT_COMPONENT_DELEGATION;
+                        reads[read_count].field_id = DOM_AGENT_FIELD_DEFAULT;
+                        reads[read_count].start_id = 0u;
+                        reads[read_count].end_id = 0u;
+                        reads[read_count].set_id = inputs_->delegation_set_id;
+                        read_count += 1u;
+                    }
 
                     writes[write_count].kind = DOM_RANGE_COMPONENT_SET;
                     writes[write_count].component_id = DOM_AGENT_COMPONENT_PLAN;
