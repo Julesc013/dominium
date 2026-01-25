@@ -1,0 +1,6 @@
+# ASSEMBLY TEMPLATE (BASIC)
+# Optional pattern; safe to remove.
+assembly_id = <u64>
+parts = [<part_id>...]
+connections = [{a=<index>, b=<index>, interface_mask=<bitmask>}...]
+grounded_mask = <bitmask>
