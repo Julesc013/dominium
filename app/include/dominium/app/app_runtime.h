@@ -45,6 +45,39 @@ dom_app_ui_mode dom_app_ui_mode_from_env(void);
 dom_app_ui_mode dom_app_select_ui_mode(const dom_app_ui_request* req,
                                        dom_app_ui_mode default_mode);
 
+#define DOM_APP_UI_SCRIPT_MAX 256u
+#define DOM_APP_UI_SCRIPT_MAX_ACTIONS 32u
+#define DOM_APP_UI_LOG_PATH_MAX 260u
+
+typedef struct dom_app_ui_script {
+    char buffer[DOM_APP_UI_SCRIPT_MAX];
+    const char* actions[DOM_APP_UI_SCRIPT_MAX_ACTIONS];
+    uint32_t count;
+    uint32_t index;
+} dom_app_ui_script;
+
+void        dom_app_ui_script_init(dom_app_ui_script* script, const char* text);
+const char* dom_app_ui_script_next(dom_app_ui_script* script);
+
+typedef struct dom_app_ui_run_config {
+    int headless;
+    int headless_set;
+    uint32_t max_frames;
+    int max_frames_set;
+    char script[DOM_APP_UI_SCRIPT_MAX];
+    int script_set;
+    char log_path[DOM_APP_UI_LOG_PATH_MAX];
+    int log_set;
+} dom_app_ui_run_config;
+
+void dom_app_ui_run_config_init(dom_app_ui_run_config* cfg);
+int  dom_app_parse_ui_run_arg(dom_app_ui_run_config* cfg,
+                              const char* arg,
+                              const char* next,
+                              int* consumed,
+                              char* err,
+                              size_t err_cap);
+
 typedef struct dom_app_clock {
     d_app_timing_mode mode;
     uint64_t app_time_us;
