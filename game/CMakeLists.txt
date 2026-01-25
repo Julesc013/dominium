@@ -65,6 +65,15 @@ add_library(dominium_game STATIC
     rules/agents/agent_doctrine_tasks.cpp
     rules/agents/agent_aggregation_tasks.cpp
     rules/agents/agent_system.cpp
+    rules/physical/physical_audit.cpp
+    rules/physical/field_storage.cpp
+    rules/physical/terrain_processes.cpp
+    rules/physical/resource_processes.cpp
+    rules/physical/parts_and_assemblies.cpp
+    rules/physical/construction_processes.cpp
+    rules/physical/network_graph.cpp
+    rules/physical/machine_ops.cpp
+    rules/physical/infrastructure_effects.cpp
     mods/runtime/mod_manifest.cpp
     mods/runtime/mod_graph_resolver.cpp
     mods/runtime/mod_compat.cpp
