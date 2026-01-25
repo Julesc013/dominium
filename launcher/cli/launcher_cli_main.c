@@ -115,8 +115,8 @@ static void launcher_print_help(void)
     printf("  version         Show launcher version\n");
     printf("  list-profiles   List known profiles\n");
     printf("  capabilities    Report platform + renderer availability\n");
-    printf("  start           Start (procedural universe)\n");
-    printf("  load-save       Load save (may be unavailable)\n");
+    printf("  new-world       Create a new world (templates; may be unavailable)\n");
+    printf("  load-world      Load a world save (may be unavailable)\n");
     printf("  inspect-replay  Inspect replay (may be unavailable)\n");
     printf("  tools           Open tools shell (handoff)\n");
     printf("  settings        Show current UI settings\n");

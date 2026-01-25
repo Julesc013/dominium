@@ -4,6 +4,7 @@ add_executable(dominium_client
     app/main_client.c
     input/client_input_bindings.c
     observability/readonly_view_model.c
+    shell/client_shell.c
     ui/client_ui_compositor.c
     presentation/frame_graph_builder.cpp
     presentation/render_prep_system.cpp
@@ -18,6 +19,7 @@ target_include_directories(dominium_client PRIVATE
     ${DOMINIUM_GENERATED_INCLUDE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/input
     ${CMAKE_CURRENT_SOURCE_DIR}/observability
+    ${CMAKE_CURRENT_SOURCE_DIR}/shell
     ${CMAKE_CURRENT_SOURCE_DIR}/ui
 )
 set_target_properties(dominium_client PROPERTIES
