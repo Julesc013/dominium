@@ -113,8 +113,12 @@ u32 dom_agent_aggregate_cohorts_slice(dom_agent_population_item* population,
         }
         cohort->member_count += 1u;
         if (audit) {
-            dom_agent_audit_record(audit, DOM_AGENT_AUDIT_AGGREGATE,
-                                   cohort_id, (i64)cohort->member_count);
+            dom_agent_audit_record(audit,
+                                   item->agent_id,
+                                   DOM_AGENT_AUDIT_AGGREGATE,
+                                   cohort_id,
+                                   0u,
+                                   (i64)cohort->member_count);
         }
     }
     return end - start_index;
@@ -142,8 +146,12 @@ u32 dom_agent_refine_individuals_slice(dom_agent_population_item* population,
         if (item->interest_level >= threshold) {
             item->status = DOM_AGENT_POP_INDIVIDUAL;
             if (audit) {
-                dom_agent_audit_record(audit, DOM_AGENT_AUDIT_REFINE,
-                                       item->agent_id, (i64)item->interest_level);
+                dom_agent_audit_record(audit,
+                                       item->agent_id,
+                                       DOM_AGENT_AUDIT_REFINE,
+                                       item->agent_id,
+                                       0u,
+                                       (i64)item->interest_level);
             }
         }
     }
@@ -172,8 +180,12 @@ u32 dom_agent_collapse_individuals_slice(dom_agent_population_item* population,
         if (item->interest_level <= threshold) {
             item->status = DOM_AGENT_POP_COHORT;
             if (audit) {
-                dom_agent_audit_record(audit, DOM_AGENT_AUDIT_COLLAPSE,
-                                       item->agent_id, (i64)item->interest_level);
+                dom_agent_audit_record(audit,
+                                       item->agent_id,
+                                       DOM_AGENT_AUDIT_COLLAPSE,
+                                       item->agent_id,
+                                       0u,
+                                       (i64)item->interest_level);
             }
         }
     }

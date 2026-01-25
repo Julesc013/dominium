@@ -110,8 +110,12 @@ u32 dom_agent_apply_doctrine_slice(const dom_agent_doctrine_entry* doctrines,
         state.role_id = doctrines[i].role_id;
         state.allowed_action_mask = doctrines[i].allowed_action_mask;
         if (dom_agent_role_buffer_set(roles, &state) == 0 && audit) {
-            dom_agent_audit_record(audit, DOM_AGENT_AUDIT_DOCTRINE_APPLY,
-                                   state.agent_id, (i64)state.role_id);
+            dom_agent_audit_record(audit,
+                                   state.agent_id,
+                                   DOM_AGENT_AUDIT_DOCTRINE_APPLY,
+                                   doctrines[i].doctrine_id,
+                                   state.role_id,
+                                   (i64)state.allowed_action_mask);
         }
     }
     return end - start_index;
@@ -134,8 +138,12 @@ u32 dom_agent_update_roles_slice(dom_agent_role_buffer* roles,
     for (i = start_index; i < end; ++i) {
         dom_agent_role_state* state = &roles->entries[i];
         if (audit) {
-            dom_agent_audit_record(audit, DOM_AGENT_AUDIT_ROLE_UPDATE,
-                                   state->agent_id, (i64)state->role_id);
+            dom_agent_audit_record(audit,
+                                   state->agent_id,
+                                   DOM_AGENT_AUDIT_ROLE_UPDATE,
+                                   state->role_id,
+                                   0u,
+                                   (i64)state->allowed_action_mask);
         }
     }
     return end - start_index;

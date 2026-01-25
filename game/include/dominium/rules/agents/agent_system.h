@@ -35,6 +35,9 @@ typedef struct dom_agent_inputs {
     u32 schedule_count;
     u64 schedule_set_id;
 
+    const agent_goal_registry* goals;
+    u64 goal_set_id;
+
     const dom_agent_belief* beliefs;
     u32 belief_count;
     u64 belief_set_id;
@@ -42,6 +45,18 @@ typedef struct dom_agent_inputs {
     const dom_agent_capability* capabilities;
     u32 capability_count;
     u64 capability_set_id;
+
+    const agent_authority_registry* authority;
+    u64 authority_set_id;
+
+    const agent_constraint_registry* constraints;
+    u64 constraint_set_id;
+
+    const agent_contract_registry* contracts;
+    u64 contract_set_id;
+
+    const agent_delegation_registry* delegations;
+    u64 delegation_set_id;
 
     const dom_agent_doctrine_entry* doctrines;
     u32 doctrine_count;

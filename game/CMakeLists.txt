@@ -46,6 +46,12 @@ add_library(dominium_game STATIC
     rules/agents/agent_planner.cpp
     rules/agents/agent_schedule.cpp
     rules/agents/agent_belief_update.cpp
+    rules/agents/agent_institution.cpp
+    rules/agents/agent_authority.cpp
+    rules/agents/agent_constraint.cpp
+    rules/agents/agent_contract.cpp
+    rules/agents/agent_conflict.cpp
+    rules/agents/agent_history_macro.cpp
     rules/agents/doctrine.cpp
     rules/agents/agent_role.cpp
     rules/agents/delegation.cpp

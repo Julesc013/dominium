@@ -20,15 +20,21 @@ DETERMINISM: Delegation resolution is ordered by delegation_id.
 extern "C" {
 #endif
 
-#define AGENT_COMMAND_BIT(type) (1u << (type))
+typedef enum agent_delegation_kind {
+    AGENT_DELEGATION_GOAL = (1u << 0u),
+    AGENT_DELEGATION_AUTHORITY = (1u << 1u)
+} agent_delegation_kind;
 
 typedef struct agent_delegation {
     u64 delegation_id;
     u64 delegator_ref;
     u64 delegatee_ref;
-    u32 allowed_commands;
+    u32 delegation_kind;
+    u32 allowed_process_mask;
+    u32 authority_mask;
     dom_act_time_t expiry_act;
     u64 provenance_ref;
+    u32 revoked;
 } agent_delegation;
 
 typedef struct agent_delegation_registry {
@@ -49,11 +55,15 @@ int agent_delegation_register(agent_delegation_registry* reg,
                               u64 delegation_id,
                               u64 delegator_ref,
                               u64 delegatee_ref,
-                              u32 allowed_commands,
+                              u32 delegation_kind,
+                              u32 allowed_process_mask,
+                              u32 authority_mask,
                               dom_act_time_t expiry_act,
                               u64 provenance_ref);
-int agent_delegation_allows_command(const agent_delegation* delegation,
-                                    u32 command_type,
+int agent_delegation_revoke(agent_delegation_registry* reg,
+                            u64 delegation_id);
+int agent_delegation_allows_process(const agent_delegation* delegation,
+                                    u32 process_kind,
                                     dom_act_time_t now_act,
                                     agent_refusal_code* out_refusal);
 int agent_delegation_check_plan(const agent_delegation_registry* reg,

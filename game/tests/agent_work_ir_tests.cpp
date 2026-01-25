@@ -47,6 +47,7 @@ static u64 fnv1a_u32(u64 h, u32 v)
 static void init_inputs(dom_agent_inputs* inputs,
                         dom_agent_schedule_item* schedule,
                         u32 schedule_count,
+                        const agent_goal_registry* goals,
                         dom_agent_belief* beliefs,
                         u32 belief_count,
                         dom_agent_capability* capabilities,
@@ -64,6 +65,9 @@ static void init_inputs(dom_agent_inputs* inputs,
     inputs->schedule_count = schedule_count;
     inputs->schedule_set_id = 8701u;
 
+    inputs->goals = goals;
+    inputs->goal_set_id = 8700u;
+
     inputs->beliefs = beliefs;
     inputs->belief_count = belief_count;
     inputs->belief_set_id = 8702u;
@@ -71,6 +75,15 @@ static void init_inputs(dom_agent_inputs* inputs,
     inputs->capabilities = capabilities;
     inputs->capability_count = capability_count;
     inputs->capability_set_id = 8703u;
+
+    inputs->authority = 0;
+    inputs->authority_set_id = 0u;
+    inputs->constraints = 0;
+    inputs->constraint_set_id = 0u;
+    inputs->contracts = 0;
+    inputs->contract_set_id = 0u;
+    inputs->delegations = 0;
+    inputs->delegation_set_id = 0u;
 
     inputs->doctrines = doctrines;
     inputs->doctrine_count = doctrine_count;
@@ -166,8 +179,11 @@ static int execute_agent_graph(const dom_task_graph* graph,
                                                inputs->schedule_count,
                                                params->start_index,
                                                params->count,
+                                               (agent_goal_registry*)inputs->goals,
                                                inputs->beliefs,
                                                inputs->belief_count,
+                                               inputs->capabilities,
+                                               inputs->capability_count,
                                                buffers->goals,
                                                buffers->audit_log);
                 break;
@@ -175,6 +191,13 @@ static int execute_agent_graph(const dom_task_graph* graph,
                 dom_agent_plan_actions_slice(buffers->goals,
                                              params->start_index,
                                              params->count,
+                                             (agent_goal_registry*)inputs->goals,
+                                             inputs->beliefs,
+                                             inputs->belief_count,
+                                             inputs->capabilities,
+                                             inputs->capability_count,
+                                             inputs->schedule,
+                                             inputs->schedule_count,
                                              buffers->plans,
                                              buffers->audit_log);
                 break;
@@ -184,6 +207,11 @@ static int execute_agent_graph(const dom_task_graph* graph,
                                               params->count,
                                               inputs->capabilities,
                                               inputs->capability_count,
+                                              inputs->authority,
+                                              inputs->constraints,
+                                              inputs->contracts,
+                                              inputs->delegations,
+                                              (agent_goal_registry*)inputs->goals,
                                               buffers->audit_log);
                 break;
             case DOM_AGENT_TASK_EMIT_COMMANDS:
@@ -250,7 +278,8 @@ static u64 hash_commands(const dom_agent_command_buffer* commands)
         const dom_agent_command* cmd = &commands->entries[i];
         h = fnv1a_u64(h, cmd->command_id);
         h = fnv1a_u64(h, cmd->agent_id);
-        h = fnv1a_u32(h, cmd->action_code);
+        h = fnv1a_u64(h, cmd->process_id);
+        h = fnv1a_u64(h, cmd->goal_id);
         h = fnv1a_u64(h, cmd->target_id);
     }
     return h;
@@ -280,6 +309,8 @@ static int test_deterministic_planning(void)
     dom_agent_belief beliefs_b[3];
     dom_agent_capability caps_a[2];
     dom_agent_capability caps_b[2];
+    agent_goal goals_storage[4];
+    agent_goal_registry goals;
     dom_agent_inputs inputs_a;
     dom_agent_inputs inputs_b;
     dom_agent_buffers buffers_a;
@@ -331,30 +362,45 @@ static int test_deterministic_planning(void)
 
     memset(beliefs_a, 0, sizeof(beliefs_a));
     beliefs_a[0].agent_id = 101u;
-    beliefs_a[0].belief_code = 5u;
-    beliefs_a[0].weight = 10u;
-    beliefs_a[1].agent_id = 101u;
-    beliefs_a[1].belief_code = 3u;
-    beliefs_a[1].weight = 10u;
-    beliefs_a[2].agent_id = 102u;
-    beliefs_a[2].belief_code = 9u;
-    beliefs_a[2].weight = 7u;
+    beliefs_a[0].knowledge_mask = 0u;
+    beliefs_a[1].agent_id = 102u;
+    beliefs_a[1].knowledge_mask = 0u;
     memcpy(beliefs_b, beliefs_a, sizeof(beliefs_a));
 
     caps_a[0].agent_id = 101u;
-    caps_a[0].allowed_action_mask = (1u << 3u);
+    caps_a[0].capability_mask = 0u;
+    caps_a[0].authority_mask = 0u;
     caps_a[1].agent_id = 102u;
-    caps_a[1].allowed_action_mask = (1u << 9u);
+    caps_a[1].capability_mask = 0u;
+    caps_a[1].authority_mask = 0u;
     memcpy(caps_b, caps_a, sizeof(caps_a));
 
+    agent_goal_registry_init(&goals, goals_storage, 4u, 1u);
+    {
+        agent_goal_desc desc;
+        u64 goal_id = 0u;
+        memset(&desc, 0, sizeof(desc));
+        desc.agent_id = 101u;
+        desc.type = AGENT_GOAL_RESEARCH;
+        desc.base_priority = 10u;
+        agent_goal_register(&goals, &desc, &goal_id);
+        memset(&desc, 0, sizeof(desc));
+        desc.agent_id = 102u;
+        desc.type = AGENT_GOAL_RESEARCH;
+        desc.base_priority = 12u;
+        agent_goal_register(&goals, &desc, &goal_id);
+    }
+
     init_inputs(&inputs_a, schedule_a, 2u,
-                beliefs_a, 3u,
+                &goals,
+                beliefs_a, 2u,
                 caps_a, 2u,
                 0, 0u,
                 0, 0u,
                 0);
     init_inputs(&inputs_b, schedule_b, 2u,
-                beliefs_b, 3u,
+                &goals,
+                beliefs_b, 2u,
                 caps_b, 2u,
                 0, 0u,
                 0, 0u,
@@ -399,6 +445,8 @@ static int test_batch_vs_step_equivalence(void)
     dom_agent_schedule_item schedule[4];
     dom_agent_belief beliefs[4];
     dom_agent_capability caps[4];
+    agent_goal goals_storage[8];
+    agent_goal_registry goals;
     dom_agent_inputs inputs;
     dom_agent_buffers buffers_batch;
     dom_agent_buffers buffers_step;
@@ -451,13 +499,24 @@ static int test_batch_vs_step_equivalence(void)
     }
     for (i = 0u; i < 4u; ++i) {
         beliefs[i].agent_id = schedule[i].agent_id;
-        beliefs[i].belief_code = 10u + i;
-        beliefs[i].weight = 5u + i;
+        beliefs[i].knowledge_mask = 0u;
         caps[i].agent_id = schedule[i].agent_id;
-        caps[i].allowed_action_mask = (1u << ((10u + i) & 31u));
+        caps[i].capability_mask = 0u;
+        caps[i].authority_mask = 0u;
+    }
+
+    agent_goal_registry_init(&goals, goals_storage, 8u, 1u);
+    for (i = 0u; i < 4u; ++i) {
+        agent_goal_desc desc;
+        memset(&desc, 0, sizeof(desc));
+        desc.agent_id = schedule[i].agent_id;
+        desc.type = AGENT_GOAL_RESEARCH;
+        desc.base_priority = 10u + i;
+        agent_goal_register(&goals, &desc, 0);
     }
 
     init_inputs(&inputs, schedule, 4u,
+                &goals,
                 beliefs, 4u,
                 caps, 4u,
                 0, 0u,
@@ -514,9 +573,11 @@ static int test_law_gating(void)
 {
     dom_agent_schedule_item schedule[1];
     dom_agent_belief beliefs[1];
+    agent_goal goals_storage[2];
+    agent_goal_registry goals;
     dom_agent_inputs inputs;
     dom_agent_buffers buffers;
-    dom_agent_goal_buffer goals;
+    dom_agent_goal_buffer goal_buffer;
     dom_agent_goal_choice goal_storage[2];
     dom_agent_plan_buffer plans;
     dom_agent_plan plan_storage[2];
@@ -544,10 +605,20 @@ static int test_law_gating(void)
     memset(schedule, 0, sizeof(schedule));
     schedule[0].agent_id = 300u;
     beliefs[0].agent_id = 300u;
-    beliefs[0].belief_code = 7u;
-    beliefs[0].weight = 5u;
+    beliefs[0].knowledge_mask = 0u;
+
+    agent_goal_registry_init(&goals, goals_storage, 2u, 1u);
+    {
+        agent_goal_desc desc;
+        memset(&desc, 0, sizeof(desc));
+        desc.agent_id = 300u;
+        desc.type = AGENT_GOAL_RESEARCH;
+        desc.base_priority = 5u;
+        agent_goal_register(&goals, &desc, 0);
+    }
 
     init_inputs(&inputs, schedule, 1u,
+                &goals,
                 beliefs, 1u,
                 0, 0u,
                 0, 0u,
@@ -555,7 +626,7 @@ static int test_law_gating(void)
                 0);
 
     EXPECT(init_buffers(&buffers,
-                        &goals, goal_storage, 2u,
+                        &goal_buffer, goal_storage, 2u,
                         &plans, plan_storage, 2u,
                         &commands, command_storage, 2u,
                         &roles, role_storage, 2u,
@@ -647,12 +718,14 @@ static int test_aggregation_determinism(void)
     policy.cohort_limit = 8u;
 
     init_inputs(&inputs_a, 0, 0u,
+                0,
                 0, 0u,
                 0, 0u,
                 0, 0u,
                 population_a, 4u,
                 &policy);
     init_inputs(&inputs_b, 0, 0u,
+                0,
                 0, 0u,
                 0, 0u,
                 0, 0u,
@@ -700,9 +773,11 @@ static int test_disable_agents(void)
     dom_agent_schedule_item schedule[1];
     dom_agent_belief beliefs[1];
     dom_agent_capability caps[1];
+    agent_goal goals_storage[2];
+    agent_goal_registry goals;
     dom_agent_inputs inputs;
     dom_agent_buffers buffers;
-    dom_agent_goal_buffer goals;
+    dom_agent_goal_buffer goal_buffer;
     dom_agent_goal_choice goal_storage[2];
     dom_agent_plan_buffer plans;
     dom_agent_plan plan_storage[2];
@@ -730,12 +805,23 @@ static int test_disable_agents(void)
     memset(schedule, 0, sizeof(schedule));
     schedule[0].agent_id = 501u;
     beliefs[0].agent_id = 501u;
-    beliefs[0].belief_code = 1u;
-    beliefs[0].weight = 2u;
+    beliefs[0].knowledge_mask = 0u;
     caps[0].agent_id = 501u;
-    caps[0].allowed_action_mask = (1u << 1u);
+    caps[0].capability_mask = 0u;
+    caps[0].authority_mask = 0u;
+
+    agent_goal_registry_init(&goals, goals_storage, 2u, 1u);
+    {
+        agent_goal_desc desc;
+        memset(&desc, 0, sizeof(desc));
+        desc.agent_id = 501u;
+        desc.type = AGENT_GOAL_RESEARCH;
+        desc.base_priority = 2u;
+        agent_goal_register(&goals, &desc, 0);
+    }
 
     init_inputs(&inputs, schedule, 1u,
+                &goals,
                 beliefs, 1u,
                 caps, 1u,
                 0, 0u,
@@ -743,7 +829,7 @@ static int test_disable_agents(void)
                 0);
 
     EXPECT(init_buffers(&buffers,
-                        &goals, goal_storage, 2u,
+                        &goal_buffer, goal_storage, 2u,
                         &plans, plan_storage, 2u,
                         &commands, command_storage, 2u,
                         &roles, role_storage, 2u,

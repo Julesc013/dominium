@@ -93,7 +93,9 @@ int agent_delegation_register(agent_delegation_registry* reg,
                               u64 delegation_id,
                               u64 delegator_ref,
                               u64 delegatee_ref,
-                              u32 allowed_commands,
+                              u32 delegation_kind,
+                              u32 allowed_process_mask,
+                              u32 authority_mask,
                               dom_act_time_t expiry_act,
                               u64 provenance_ref)
 {
@@ -119,23 +121,42 @@ int agent_delegation_register(agent_delegation_registry* reg,
     entry->delegation_id = delegation_id;
     entry->delegator_ref = delegator_ref;
     entry->delegatee_ref = delegatee_ref;
-    entry->allowed_commands = allowed_commands;
+    entry->delegation_kind = delegation_kind;
+    entry->allowed_process_mask = allowed_process_mask;
+    entry->authority_mask = authority_mask;
     entry->expiry_act = expiry_act;
     entry->provenance_ref = provenance_ref ? provenance_ref : delegation_id;
+    entry->revoked = 0u;
     reg->count += 1u;
     return 0;
 }
 
-int agent_delegation_allows_command(const agent_delegation* delegation,
-                                    u32 command_type,
+int agent_delegation_revoke(agent_delegation_registry* reg,
+                            u64 delegation_id)
+{
+    agent_delegation* entry = agent_delegation_find(reg, delegation_id);
+    if (!entry) {
+        return -1;
+    }
+    entry->revoked = 1u;
+    return 0;
+}
+
+int agent_delegation_allows_process(const agent_delegation* delegation,
+                                    u32 process_kind,
                                     dom_act_time_t now_act,
                                     agent_refusal_code* out_refusal)
 {
-    u32 bit;
     if (out_refusal) {
         *out_refusal = AGENT_REFUSAL_NONE;
     }
     if (!delegation) {
+        if (out_refusal) {
+            *out_refusal = AGENT_REFUSAL_INSUFFICIENT_AUTHORITY;
+        }
+        return 0;
+    }
+    if (delegation->revoked) {
         if (out_refusal) {
             *out_refusal = AGENT_REFUSAL_INSUFFICIENT_AUTHORITY;
         }
@@ -147,11 +168,10 @@ int agent_delegation_allows_command(const agent_delegation* delegation,
         }
         return 0;
     }
-    if (command_type == AGENT_CMD_NONE) {
+    if (process_kind == 0u || delegation->allowed_process_mask == 0u) {
         return 1;
     }
-    bit = AGENT_COMMAND_BIT(command_type);
-    if ((delegation->allowed_commands & bit) == 0u) {
+    if ((delegation->allowed_process_mask & AGENT_PROCESS_KIND_BIT(process_kind)) == 0u) {
         if (out_refusal) {
             *out_refusal = AGENT_REFUSAL_INSUFFICIENT_AUTHORITY;
         }
@@ -187,7 +207,7 @@ int agent_delegation_check_plan(const agent_delegation_registry* reg,
         return -2;
     }
     for (i = 0u; i < plan->step_count; ++i) {
-        if (!agent_delegation_allows_command(delegation, plan->steps[i].type,
+        if (!agent_delegation_allows_process(delegation, plan->steps[i].process_kind,
                                              now_act, &refusal)) {
             if (out_refusal) {
                 *out_refusal = refusal;
@@ -215,12 +235,12 @@ int agent_cohort_plan_collapse(const agent_plan* plan,
         out_plan->estimated_cost = (u32)cost;
     }
     for (i = 0u; i < out_plan->step_count; ++i) {
-        if (out_plan->steps[i].quantity > 0u) {
-            u64 qty = (u64)out_plan->steps[i].quantity * (u64)cohort_size;
-            if (qty > 0xFFFFFFFFu) {
-                qty = 0xFFFFFFFFu;
+        if (out_plan->steps[i].expected_cost_units > 0u) {
+            u64 cost = (u64)out_plan->steps[i].expected_cost_units * (u64)cohort_size;
+            if (cost > 0xFFFFFFFFu) {
+                cost = 0xFFFFFFFFu;
             }
-            out_plan->steps[i].quantity = (u32)qty;
+            out_plan->steps[i].expected_cost_units = (u32)cost;
         }
     }
     return 0;
