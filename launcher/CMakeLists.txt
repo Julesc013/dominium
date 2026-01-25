@@ -25,6 +25,7 @@ add_library(launcher::launcher ALIAS launcher_core)
 
 add_executable(launcher_cli
     cli/launcher_cli_main.c
+    cli/launcher_ui_shell.c
 )
 target_link_libraries(launcher_cli PRIVATE launcher::launcher)
 target_link_libraries(launcher_cli PRIVATE app::runtime)

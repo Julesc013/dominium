@@ -179,9 +179,7 @@ def main():
         expect_contains=["gui not implemented"],
     )
     ok = ok and run_cmd(
-        [args.launcher, "--ui=gui"],
-        expect_nonzero=True,
-        expect_contains=["gui not implemented"],
+        [args.launcher, "--ui=gui", "--headless", "--renderer", "null", "--ui-frames", "1"],
     )
     ok = ok and run_cmd(
         [args.setup, "--ui=gui"],
@@ -189,9 +187,7 @@ def main():
         expect_contains=["gui not implemented"],
     )
     ok = ok and run_cmd(
-        [args.tools, "--ui=gui"],
-        expect_nonzero=True,
-        expect_contains=["gui not implemented"],
+        [args.tools, "--ui=gui", "--headless", "--renderer", "null", "--ui-frames", "1"],
     )
 
     temp_root = os.path.abspath(args.temp_root)

@@ -201,6 +201,226 @@ dom_app_ui_mode dom_app_select_ui_mode(const dom_app_ui_request* req,
     return default_mode;
 }
 
+static int dom_app_ui_is_sep(char c)
+{
+    return (c == ' ' || c == '\\t' || c == ',' || c == ';' || c == '|' || c == '>');
+}
+
+void dom_app_ui_script_init(dom_app_ui_script* script, const char* text)
+{
+    size_t len;
+    size_t i;
+    char* p;
+    char* end;
+    if (!script) {
+        return;
+    }
+    memset(script, 0, sizeof(*script));
+    if (!text || !text[0]) {
+        return;
+    }
+    len = strlen(text);
+    if (len >= sizeof(script->buffer)) {
+        len = sizeof(script->buffer) - 1u;
+    }
+    memcpy(script->buffer, text, len);
+    script->buffer[len] = '\\0';
+
+    p = script->buffer;
+    end = script->buffer + len;
+    while (p < end) {
+        while (p < end && dom_app_ui_is_sep(*p)) {
+            *p = '\\0';
+            ++p;
+        }
+        if (p >= end || *p == '\\0') {
+            break;
+        }
+        if (script->count >= DOM_APP_UI_SCRIPT_MAX_ACTIONS) {
+            break;
+        }
+        script->actions[script->count++] = p;
+        while (p < end && *p && !dom_app_ui_is_sep(*p)) {
+            ++p;
+        }
+        if (p < end) {
+            *p = '\\0';
+            ++p;
+        }
+    }
+    for (i = 0u; i < script->count; ++i) {
+        if (script->actions[i] && script->actions[i][0] != '\\0') {
+            continue;
+        }
+        script->actions[i] = 0;
+    }
+}
+
+const char* dom_app_ui_script_next(dom_app_ui_script* script)
+{
+    if (!script || script->index >= script->count) {
+        return 0;
+    }
+    return script->actions[script->index++];
+}
+
+static int dom_app_parse_u32(const char* text, uint32_t* out_value)
+{
+    char* end = 0;
+    unsigned long value;
+    if (!text || !out_value) {
+        return 0;
+    }
+    value = strtoul(text, &end, 10);
+    if (!end || *end != '\\0') {
+        return 0;
+    }
+    *out_value = (uint32_t)value;
+    return 1;
+}
+
+void dom_app_ui_run_config_init(dom_app_ui_run_config* cfg)
+{
+    if (!cfg) {
+        return;
+    }
+    memset(cfg, 0, sizeof(*cfg));
+}
+
+int dom_app_parse_ui_run_arg(dom_app_ui_run_config* cfg,
+                             const char* arg,
+                             const char* next,
+                             int* consumed,
+                             char* err,
+                             size_t err_cap)
+{
+    if (consumed) {
+        *consumed = 0;
+    }
+    if (!cfg || !arg) {
+        return 0;
+    }
+    if (strcmp(arg, "--headless") == 0 || strcmp(arg, "--ui-headless") == 0) {
+        cfg->headless = 1;
+        cfg->headless_set = 1;
+        if (consumed) {
+            *consumed = 1;
+        }
+        return 1;
+    }
+    if (strncmp(arg, "--ui-frames=", 12) == 0) {
+        uint32_t value = 0u;
+        if (!dom_app_parse_u32(arg + 12, &value) || value == 0u) {
+            if (err && err_cap > 0u) {
+                snprintf(err, err_cap, "invalid --ui-frames value");
+            }
+            return -1;
+        }
+        cfg->max_frames = value;
+        cfg->max_frames_set = 1;
+        if (consumed) {
+            *consumed = 1;
+        }
+        return 1;
+    }
+    if (strcmp(arg, "--ui-frames") == 0) {
+        uint32_t value = 0u;
+        if (!next || !next[0] || !dom_app_parse_u32(next, &value) || value == 0u) {
+            if (err && err_cap > 0u) {
+                snprintf(err, err_cap, "invalid --ui-frames value");
+            }
+            return -1;
+        }
+        cfg->max_frames = value;
+        cfg->max_frames_set = 1;
+        if (consumed) {
+            *consumed = 2;
+        }
+        return 1;
+    }
+    if (strncmp(arg, "--ui-script=", 12) == 0) {
+        const char* value = arg + 12;
+        size_t len = value ? strlen(value) : 0u;
+        if (!value || len == 0u || len >= sizeof(cfg->script)) {
+            if (err && err_cap > 0u) {
+                snprintf(err, err_cap, "invalid --ui-script value");
+            }
+            return -1;
+        }
+        memcpy(cfg->script, value, len);
+        cfg->script[len] = '\\0';
+        cfg->script_set = 1;
+        if (consumed) {
+            *consumed = 1;
+        }
+        return 1;
+    }
+    if (strcmp(arg, "--ui-script") == 0) {
+        size_t len;
+        if (!next || !next[0]) {
+            if (err && err_cap > 0u) {
+                snprintf(err, err_cap, "missing --ui-script value");
+            }
+            return -1;
+        }
+        len = strlen(next);
+        if (len == 0u || len >= sizeof(cfg->script)) {
+            if (err && err_cap > 0u) {
+                snprintf(err, err_cap, "invalid --ui-script value");
+            }
+            return -1;
+        }
+        memcpy(cfg->script, next, len);
+        cfg->script[len] = '\\0';
+        cfg->script_set = 1;
+        if (consumed) {
+            *consumed = 2;
+        }
+        return 1;
+    }
+    if (strncmp(arg, "--ui-log=", 9) == 0 || strncmp(arg, "--ui-event-log=", 15) == 0) {
+        const char* value = (arg[5] == 'l') ? (arg + 9) : (arg + 15);
+        size_t len = value ? strlen(value) : 0u;
+        if (!value || len == 0u || len >= sizeof(cfg->log_path)) {
+            if (err && err_cap > 0u) {
+                snprintf(err, err_cap, "invalid --ui-log value");
+            }
+            return -1;
+        }
+        memcpy(cfg->log_path, value, len);
+        cfg->log_path[len] = '\\0';
+        cfg->log_set = 1;
+        if (consumed) {
+            *consumed = 1;
+        }
+        return 1;
+    }
+    if (strcmp(arg, "--ui-log") == 0 || strcmp(arg, "--ui-event-log") == 0) {
+        size_t len;
+        if (!next || !next[0]) {
+            if (err && err_cap > 0u) {
+                snprintf(err, err_cap, "missing --ui-log value");
+            }
+            return -1;
+        }
+        len = strlen(next);
+        if (len == 0u || len >= sizeof(cfg->log_path)) {
+            if (err && err_cap > 0u) {
+                snprintf(err, err_cap, "invalid --ui-log value");
+            }
+            return -1;
+        }
+        memcpy(cfg->log_path, next, len);
+        cfg->log_path[len] = '\\0';
+        cfg->log_set = 1;
+        if (consumed) {
+            *consumed = 2;
+        }
+        return 1;
+    }
+    return 0;
+}
+
 void dom_app_clock_init(dom_app_clock* clock, d_app_timing_mode mode)
 {
     if (!clock) {

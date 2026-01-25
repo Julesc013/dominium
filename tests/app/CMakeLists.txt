@@ -18,6 +18,15 @@ dom_register_product_cli_tests(launcher app_cli_contracts app_cli_contracts app_
 dom_register_product_cli_tests(setup app_cli_contracts app_cli_contracts app_cli_contracts)
 dom_register_product_cli_tests(tools app_cli_contracts app_cli_contracts app_cli_contracts)
 
+dom_add_testx(NAME app_ui_contracts
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/app_ui_contracts.py
+        --client $<TARGET_FILE:dominium_client>
+        --launcher $<TARGET_FILE:launcher_cli>
+        --tools $<TARGET_FILE:dominium-tools>
+        --temp-root ${CMAKE_BINARY_DIR}/tests/app_ui
+    LABELS ${DOM_TESTX_LABEL_SMOKE}
+)
+
 dom_add_testx(NAME app_observability
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/app_observability_tests.py
         --client $<TARGET_FILE:dominium_client>
