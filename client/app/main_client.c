@@ -11,7 +11,6 @@ Minimal client entrypoint with MP0 local-connect demo.
 #include "domino/app/runtime.h"
 #include "domino/system/dsys.h"
 #include "domino/system/d_system.h"
-#include "domino/tui/tui.h"
 #include "domino/version.h"
 #include "dom_contracts/version.h"
 #include "dom_contracts/_internal/dom_build_version.h"
@@ -21,6 +20,7 @@ Minimal client entrypoint with MP0 local-connect demo.
 #include "dominium/app/ui_event_log.h"
 #include "dominium/session/mp0_session.h"
 #include "client_input_bindings.h"
+#include "client_shell.h"
 #include "readonly_view_model.h"
 #include "client_ui_compositor.h"
 
@@ -28,6 +28,13 @@ Minimal client entrypoint with MP0 local-connect demo.
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
+#if defined(_WIN32)
+#include <io.h>
+#include <sys/stat.h>
+#else
+#include <dirent.h>
+#include <sys/stat.h>
+#endif
 
 static void client_print_platform_caps(void);
 
@@ -75,17 +82,16 @@ static void print_help(void)
     printf("  --expect-caps-abi <v>        Require caps ABI match\n");
     printf("  --expect-gfx-api <v>         Require gfx API match\n");
     printf("commands:\n");
-    printf("  start           Start (procedural universe)\n");
-    printf("  load-save       Load save (may be unavailable)\n");
-    printf("  inspect-replay  Inspect replay (may be unavailable)\n");
+    printf("  new-world       Create a new world (use built-in templates)\n");
+    printf("  load-world      Load a world save (default path or path=...)\n");
+    printf("  inspect-replay  Inspect a replay or save (path=...)\n");
+    printf("  save            Save current world (default path or path=...)\n");
+    printf("  templates       List available templates\n");
+    printf("  mode            Set navigation mode (policy.mode.*)\n");
+    printf("  where           Show current world status\n");
     printf("  tools           Open tools shell (handoff)\n");
     printf("  settings        Show current UI settings\n");
     printf("  exit            Exit client shell\n");
-    printf("  survey-here     Submit survey intent\n");
-    printf("  extract-here    Submit extract intent\n");
-    printf("  fabricate       Submit fabricate intent\n");
-    printf("  build           Submit build intent\n");
-    printf("  connect-network Submit connect-network intent\n");
 }
 
 static void print_version(const char* product_version)
@@ -375,94 +381,6 @@ static void client_ui_settings_format_lines(const client_ui_settings* settings,
     }
 }
 
-typedef struct client_tui_state {
-    d_tui_context* ctx;
-    d_tui_widget* status;
-    d_tui_widget* meta;
-    d_tui_widget* core;
-    d_tui_widget* list;
-    dom_app_ro_tree_node nodes[128];
-    char node_text[128][160];
-    const char* node_items[128];
-    uint32_t node_count;
-    int topology_supported;
-    int quit;
-} client_tui_state;
-
-static void client_tui_quit(d_tui_widget* self, void* user)
-{
-    client_tui_state* state = (client_tui_state*)user;
-    (void)self;
-    if (state) {
-        state->quit = 1;
-    }
-    dsys_lifecycle_request_shutdown(DSYS_SHUTDOWN_APP_REQUEST);
-}
-
-static void client_tui_update_status(client_tui_state* state, d_app_timing_mode mode, uint64_t app_time_us)
-{
-    char buf[128];
-    const char* mode_text = (mode == D_APP_TIMING_INTERACTIVE) ? "interactive" : "deterministic";
-    if (!state || !state->status) {
-        return;
-    }
-    snprintf(buf, sizeof(buf), "mode=%s app_time_us=%llu",
-             mode_text, (unsigned long long)app_time_us);
-    d_tui_widget_set_text(state->status, buf);
-}
-
-static void client_tui_build_tree(client_tui_state* state,
-                                  const dom_client_ro_view_model* view)
-{
-    uint32_t i;
-    if (!state || !view) {
-        return;
-    }
-    state->node_count = 0u;
-    state->topology_supported = 0;
-    if (!view->has_tree) {
-        return;
-    }
-    state->node_count = view->tree_info.count;
-    state->topology_supported = 1;
-    for (i = 0u; i < state->node_count; ++i) {
-        const dom_app_ro_tree_node* node = &view->nodes[i];
-        state->nodes[i] = *node;
-        int indent = (int)(node->depth * 2u);
-        snprintf(state->node_text[i], sizeof(state->node_text[i]),
-                 "%*s%s", indent, "", node->label);
-        state->node_items[i] = state->node_text[i];
-    }
-}
-
-static void client_tui_update_meta(client_tui_state* state)
-{
-    char buf[160];
-    int sel;
-    if (!state || !state->meta) {
-        return;
-    }
-    if (!state->topology_supported) {
-        d_tui_widget_set_text(state->meta, "topology: unsupported");
-        return;
-    }
-    if (!state->list) {
-        d_tui_widget_set_text(state->meta, "topology: no list");
-        return;
-    }
-    sel = d_tui_list_get_selection(state->list);
-    if (sel < 0 || (uint32_t)sel >= state->node_count) {
-        d_tui_widget_set_text(state->meta, "topology: no selection");
-        return;
-    }
-    snprintf(buf, sizeof(buf),
-             "node=%s depth=%u children=%u snapshot=unsupported",
-             state->nodes[sel].label,
-             (unsigned int)state->nodes[sel].depth,
-             (unsigned int)state->nodes[sel].child_count);
-    d_tui_widget_set_text(state->meta, buf);
-}
-
 static int client_run_windowed_legacy(const client_window_config* cfg, const char* renderer,
                                       d_app_timing_mode timing_mode, uint32_t frame_cap_ms,
                                       const dom_app_compat_expect* compat_expect)
@@ -652,200 +570,50 @@ cleanup:
     return result;
 }
 
-static int client_run_tui_legacy(d_app_timing_mode timing_mode,
-                                 uint32_t frame_cap_ms,
-                                 const char* renderer,
-                                 const dom_app_compat_expect* compat_expect)
-{
-    d_tui_context* tui = 0;
-    d_tui_widget* root = 0;
-    d_tui_widget* title = 0;
-    d_tui_widget* status = 0;
-    d_tui_widget* core = 0;
-    d_tui_widget* list = 0;
-    d_tui_widget* meta = 0;
-    d_tui_widget* quit_btn = 0;
-    client_tui_state state;
-    dom_app_clock clock;
-    dsys_event ev;
-    int dsys_ready = 0;
-    int terminal_ready = 0;
-    int lifecycle_ready = 0;
-    int result = D_APP_EXIT_FAILURE;
-    int normal_exit = 0;
-    uint64_t frame_start_us = 0u;
-    dom_app_readonly_adapter ro;
-    dom_client_ro_view_model view;
-
-    if (!client_validate_renderer(renderer)) {
-        return D_APP_EXIT_UNAVAILABLE;
-    }
-
-    if (!client_open_readonly(&ro, compat_expect)) {
-        return D_APP_EXIT_FAILURE;
-    }
-    dom_client_ro_view_model_init(&view);
-    if (!dom_client_ro_view_model_load(&view, &ro)) {
-        dom_app_ro_close(&ro);
-        fprintf(stderr, "client: core info unavailable\n");
-        return D_APP_EXIT_FAILURE;
-    }
-
-    if (dsys_init() != DSYS_OK) {
-        fprintf(stderr, "client: dsys_init failed (%s)\n", dsys_last_error_text());
-        dom_app_ro_close(&ro);
-        return D_APP_EXIT_FAILURE;
-    }
-    dsys_ready = 1;
-    if (!dsys_terminal_init()) {
-        fprintf(stderr, "client: terminal unavailable\n");
-        dom_app_ro_close(&ro);
-        goto cleanup;
-    }
-    terminal_ready = 1;
-    dsys_lifecycle_init();
-    lifecycle_ready = 1;
-    dom_app_clock_init(&clock, timing_mode);
-
-    memset(&state, 0, sizeof(state));
-    tui = d_tui_create();
-    if (!tui) {
-        fprintf(stderr, "client: tui init failed\n");
-        dom_app_ro_close(&ro);
-        goto cleanup;
-    }
-    root = d_tui_panel(tui, D_TUI_LAYOUT_VERTICAL);
-    title = d_tui_label(tui, "Dominium client TUI");
-    status = d_tui_label(tui, "mode=deterministic app_time_us=0");
-    core = d_tui_label(tui, "core: packages=0 instances=0");
-    client_tui_build_tree(&state, &view);
-    if (state.topology_supported && state.node_count > 0u) {
-        list = d_tui_list(tui, state.node_items, (int)state.node_count);
-    } else {
-        static const char* empty_items[] = { "topology: unsupported" };
-        list = d_tui_list(tui, empty_items, 1);
-    }
-    meta = d_tui_label(tui, "topology: ready");
-    quit_btn = d_tui_button(tui, "Quit", client_tui_quit, &state);
-    if (!root || !title || !status || !core || !list || !meta || !quit_btn) {
-        fprintf(stderr, "client: tui widgets failed\n");
-        dom_app_ro_close(&ro);
-        goto cleanup;
-    }
-    d_tui_widget_add(root, title);
-    d_tui_widget_add(root, status);
-    d_tui_widget_add(root, core);
-    d_tui_widget_add(root, list);
-    d_tui_widget_add(root, meta);
-    d_tui_widget_add(root, quit_btn);
-    d_tui_set_root(tui, root);
-    state.ctx = tui;
-    state.status = status;
-    state.core = core;
-    state.list = list;
-    state.meta = meta;
-
-    {
-        char core_buf[128];
-        snprintf(core_buf, sizeof(core_buf),
-                 "core: packages=%u instances=%u",
-                 (unsigned int)view.core_info.package_count,
-                 (unsigned int)view.core_info.instance_count);
-        d_tui_widget_set_text(core, core_buf);
-    }
-    client_tui_update_meta(&state);
-    dom_app_ro_close(&ro);
-
-    while (!dsys_lifecycle_shutdown_requested()) {
-        if (timing_mode == D_APP_TIMING_INTERACTIVE) {
-            frame_start_us = dsys_time_now_us();
-        }
-        dom_app_pump_terminal_input();
-        while (dsys_poll_event(&ev)) {
-            if (ev.type == DSYS_EVENT_QUIT) {
-                dsys_lifecycle_request_shutdown(DSYS_SHUTDOWN_CONSOLE);
-                break;
-            }
-            if (ev.type == DSYS_EVENT_KEY_DOWN) {
-                if (ev.payload.key.key == 'q' || ev.payload.key.key == 'Q') {
-                    dsys_lifecycle_request_shutdown(DSYS_SHUTDOWN_APP_REQUEST);
-                } else {
-                    d_tui_handle_key(tui, ev.payload.key.key);
-                }
-            }
-        }
-        if (dsys_lifecycle_shutdown_requested()) {
-            normal_exit = 1;
-            break;
-        }
-        dom_app_clock_advance(&clock);
-        client_tui_update_status(&state, timing_mode, clock.app_time_us);
-        client_tui_update_meta(&state);
-        d_tui_render(tui);
-        dom_app_sleep_for_cap(timing_mode, frame_cap_ms, frame_start_us);
-    }
-    normal_exit = 1;
-
-cleanup:
-    if (tui) {
-        d_tui_destroy(tui);
-    }
-    if (terminal_ready) {
-        dsys_terminal_shutdown();
-    }
-    if (lifecycle_ready) {
-        if (dsys_lifecycle_shutdown_requested()) {
-            dsys_shutdown_reason reason = dsys_lifecycle_shutdown_reason();
-            fprintf(stderr, "client: shutdown=%s\n",
-                    dsys_lifecycle_shutdown_reason_text(reason));
-            if (normal_exit) {
-                result = dom_app_exit_code_for_shutdown(reason);
-            }
-        } else if (normal_exit) {
-            result = D_APP_EXIT_OK;
-        }
-        dsys_lifecycle_shutdown();
-    }
-    if (dsys_ready) {
-        dsys_shutdown();
-    }
-    return result;
-}
-
 #define CLIENT_UI_MENU_COUNT 6
 #define CLIENT_UI_STATUS_MAX 180
 #define CLIENT_UI_LABEL_MAX 128
 #define CLIENT_UI_RENDERER_MAX 8
-#define CLIENT_UI_TOPOLOGY_LINES 32
-#define CLIENT_UI_EVENT_LINES 12
+#define CLIENT_UI_EVENT_LINES 16
+#define CLIENT_UI_CONSOLE_MAX 196
+#define CLIENT_UI_MAX_LINES 64
 
 typedef enum client_ui_screen {
     CLIENT_UI_LOADING = 0,
     CLIENT_UI_MAIN_MENU,
-    CLIENT_UI_SETTINGS,
-    CLIENT_UI_PLAYABLE
+    CLIENT_UI_WORLD_CREATE,
+    CLIENT_UI_WORLD_VIEW,
+    CLIENT_UI_REPLAY,
+    CLIENT_UI_TOOLS,
+    CLIENT_UI_SETTINGS
 } client_ui_screen;
 
 typedef enum client_ui_action {
     CLIENT_ACTION_NONE = 0,
-    CLIENT_ACTION_START,
-    CLIENT_ACTION_LOAD_SAVE,
+    CLIENT_ACTION_NEW_WORLD,
+    CLIENT_ACTION_LOAD_WORLD,
     CLIENT_ACTION_INSPECT_REPLAY,
     CLIENT_ACTION_TOOLS,
     CLIENT_ACTION_SETTINGS,
     CLIENT_ACTION_EXIT,
     CLIENT_ACTION_BACK,
+    CLIENT_ACTION_CREATE_WORLD,
+    CLIENT_ACTION_SAVE_WORLD,
     CLIENT_ACTION_RENDERER_NEXT,
     CLIENT_ACTION_SCALE_UP,
     CLIENT_ACTION_SCALE_DOWN,
     CLIENT_ACTION_PALETTE_TOGGLE,
     CLIENT_ACTION_LOG_NEXT,
     CLIENT_ACTION_DEBUG_TOGGLE,
-    CLIENT_ACTION_INTENT_SURVEY,
-    CLIENT_ACTION_INTENT_EXTRACT,
-    CLIENT_ACTION_INTENT_FABRICATE,
-    CLIENT_ACTION_INTENT_BUILD,
-    CLIENT_ACTION_INTENT_CONNECT
+    CLIENT_ACTION_MODE_FREE,
+    CLIENT_ACTION_MODE_ORBIT,
+    CLIENT_ACTION_MODE_SURFACE,
+    CLIENT_ACTION_MOVE_FORWARD,
+    CLIENT_ACTION_MOVE_BACK,
+    CLIENT_ACTION_MOVE_LEFT,
+    CLIENT_ACTION_MOVE_RIGHT,
+    CLIENT_ACTION_MOVE_UP,
+    CLIENT_ACTION_MOVE_DOWN
 } client_ui_action;
 
 typedef struct client_renderer_entry {
@@ -865,25 +633,27 @@ typedef struct client_ui_state {
     int menu_index;
     char action_status[CLIENT_UI_STATUS_MAX];
     char pack_status[CLIENT_UI_STATUS_MAX];
+    char template_status[CLIENT_UI_STATUS_MAX];
+    char determinism_status[32];
     uint32_t package_count;
     uint32_t instance_count;
     char testx_status[32];
     char seed_status[32];
     client_ui_settings settings;
     client_renderer_list renderers;
-    char topology_lines[CLIENT_UI_TOPOLOGY_LINES][CLIENT_UI_LABEL_MAX];
-    int topology_count;
-    int topology_supported;
-    char topology_status[CLIENT_UI_STATUS_MAX];
     char event_lines[CLIENT_UI_EVENT_LINES][CLIENT_UI_LABEL_MAX];
     int event_head;
     int event_count;
+    int console_active;
+    char console_input[CLIENT_UI_CONSOLE_MAX];
+    size_t console_len;
+    dom_client_shell shell;
     uint32_t tick;
 } client_ui_state;
 
 static const char* g_client_menu_items[CLIENT_UI_MENU_COUNT] = {
-    "Start (procedural universe)",
-    "Load Save",
+    "New World",
+    "Load World",
     "Inspect Replay",
     "Tools",
     "Settings",
@@ -976,18 +746,90 @@ static const char* client_env_or_default(const char* key, const char* fallback)
     return fallback;
 }
 
+static uint32_t client_count_pack_manifests(const char* root)
+{
+    uint32_t count = 0u;
+    if (!root || !root[0]) {
+        return 0u;
+    }
+#if defined(_WIN32)
+    {
+        struct _finddata_t data;
+        intptr_t handle;
+        char pattern[260];
+        snprintf(pattern, sizeof(pattern), "%s\\*", root);
+        handle = _findfirst(pattern, &data);
+        if (handle == -1) {
+            return 0u;
+        }
+        do {
+            if ((data.attrib & _A_SUBDIR) != 0) {
+                char manifest[260];
+                FILE* f = 0;
+                if (strcmp(data.name, ".") == 0 || strcmp(data.name, "..") == 0) {
+                    continue;
+                }
+                snprintf(manifest, sizeof(manifest), "%s\\%s\\pack_manifest.json", root, data.name);
+                f = fopen(manifest, "r");
+                if (f) {
+                    fclose(f);
+                    count += 1u;
+                }
+            }
+        } while (_findnext(handle, &data) == 0);
+        _findclose(handle);
+    }
+#else
+    {
+        DIR* dir = opendir(root);
+        struct dirent* entry;
+        if (!dir) {
+            return 0u;
+        }
+        while ((entry = readdir(dir)) != 0) {
+            char path[260];
+            char manifest[260];
+            struct stat st;
+            if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0) {
+                continue;
+            }
+            snprintf(path, sizeof(path), "%s/%s", root, entry->d_name);
+            if (stat(path, &st) != 0) {
+                continue;
+            }
+            if (!S_ISDIR(st.st_mode)) {
+                continue;
+            }
+            snprintf(manifest, sizeof(manifest), "%s/pack_manifest.json", path);
+            {
+                FILE* f = fopen(manifest, "r");
+                if (f) {
+                    fclose(f);
+                    count += 1u;
+                }
+            }
+        }
+        closedir(dir);
+    }
+#endif
+    return count;
+}
+
 static void client_ui_collect_loading(client_ui_state* state,
                                       const dom_app_compat_expect* compat)
 {
     dom_app_readonly_adapter ro;
     dom_app_compat_report report;
     dom_app_ro_core_info core;
+    uint32_t pack_count = 0u;
     if (!state) {
         return;
     }
     state->package_count = 0u;
     state->instance_count = 0u;
-    snprintf(state->pack_status, sizeof(state->pack_status), "pack_status=unknown");
+    pack_count = client_count_pack_manifests("data/packs");
+    snprintf(state->pack_status, sizeof(state->pack_status),
+             "pack_discovery=ok packs=%u", (unsigned int)pack_count);
     dom_app_ro_init(&ro);
     dom_app_compat_report_init(&report, "client");
     if (dom_app_ro_open(&ro, compat, &report)) {
@@ -995,16 +837,20 @@ static void client_ui_collect_loading(client_ui_state* state,
             state->package_count = core.package_count;
             state->instance_count = core.instance_count;
             snprintf(state->pack_status, sizeof(state->pack_status),
-                     "pack_status=ok packages=%u instances=%u",
+                     "pack_discovery=ok packs=%u packages=%u instances=%u",
+                     (unsigned int)pack_count,
                      (unsigned int)core.package_count,
                      (unsigned int)core.instance_count);
         } else {
-            snprintf(state->pack_status, sizeof(state->pack_status), "pack_status=failed");
+            snprintf(state->pack_status, sizeof(state->pack_status),
+                     "pack_discovery=ok packs=%u core=unavailable",
+                     (unsigned int)pack_count);
         }
         dom_app_ro_close(&ro);
     } else {
         snprintf(state->pack_status, sizeof(state->pack_status),
-                 "pack_status=failed %s",
+                 "pack_discovery=ok packs=%u core=unavailable %s",
+                 (unsigned int)pack_count,
                  report.message[0] ? report.message : "compatibility failure");
     }
     strncpy(state->testx_status,
@@ -1026,7 +872,8 @@ static void client_ui_collect_loading(client_ui_state* state,
 
 static void client_ui_state_init(client_ui_state* state,
                                  const client_ui_settings* settings,
-                                 const dom_app_compat_expect* compat)
+                                 const dom_app_compat_expect* compat,
+                                 d_app_timing_mode timing_mode)
 {
     if (!state) {
         return;
@@ -1037,7 +884,9 @@ static void client_ui_state_init(client_ui_state* state,
     state->exit_requested = 0;
     state->loading_ticks = 0;
     state->action_status[0] = '\0';
-    state->topology_status[0] = '\0';
+    state->console_input[0] = '\0';
+    state->console_len = 0u;
+    state->console_active = 0;
     client_renderer_list_init(&state->renderers);
     if (settings) {
         state->settings = *settings;
@@ -1048,12 +897,322 @@ static void client_ui_state_init(client_ui_state* state,
         client_settings_set_renderer(&state->settings,
                                      client_renderer_default(&state->renderers));
     }
-    state->topology_count = 0;
-    state->topology_supported = 0;
     state->event_head = 0;
     state->event_count = 0;
     state->tick = 0u;
+    dom_client_shell_init(&state->shell);
+    snprintf(state->template_status, sizeof(state->template_status),
+             "template_registry=built_in=%u pack_templates=0 total=%u",
+             (unsigned int)state->shell.registry.count,
+             (unsigned int)state->shell.registry.count);
+    snprintf(state->determinism_status, sizeof(state->determinism_status),
+             "determinism=%s",
+             (timing_mode == D_APP_TIMING_INTERACTIVE) ? "interactive" : "deterministic");
     client_ui_collect_loading(state, compat);
+}
+
+static void client_ui_sync_events(client_ui_state* state)
+{
+    if (!state) {
+        return;
+    }
+    dom_client_shell_event_lines(dom_client_shell_events(&state->shell),
+                                 (char*)state->event_lines,
+                                 CLIENT_UI_EVENT_LINES,
+                                 CLIENT_UI_LABEL_MAX,
+                                 &state->event_count);
+    state->event_head = 0;
+}
+
+static void client_ui_add_line(char lines[][CLIENT_UI_LABEL_MAX],
+                               int* count,
+                               int max_lines,
+                               const char* fmt,
+                               ...)
+{
+    va_list args;
+    if (!lines || !count || !fmt) {
+        return;
+    }
+    if (*count >= max_lines) {
+        return;
+    }
+    va_start(args, fmt);
+    vsnprintf(lines[*count], CLIENT_UI_LABEL_MAX, fmt, args);
+    va_end(args);
+    *count += 1;
+}
+
+static int client_policy_has(const dom_shell_policy_set* set, const char* id)
+{
+    uint32_t i;
+    if (!set || !id || !id[0]) {
+        return 0;
+    }
+    for (i = 0u; i < set->count; ++i) {
+        if (strcmp(set->items[i], id) == 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+static void client_policy_toggle(dom_shell_policy_set* set, const char* id)
+{
+    uint32_t i;
+    if (!set || !id || !id[0]) {
+        return;
+    }
+    for (i = 0u; i < set->count; ++i) {
+        if (strcmp(set->items[i], id) == 0) {
+            uint32_t j;
+            for (j = i + 1u; j < set->count; ++j) {
+                memcpy(set->items[j - 1u], set->items[j], DOM_SHELL_POLICY_ID_MAX);
+            }
+            set->count -= 1u;
+            return;
+        }
+    }
+    if (set->count < DOM_SHELL_MAX_POLICIES) {
+        strncpy(set->items[set->count], id, DOM_SHELL_POLICY_ID_MAX - 1u);
+        set->items[set->count][DOM_SHELL_POLICY_ID_MAX - 1u] = '\0';
+        set->count += 1u;
+    }
+}
+
+static void client_ui_build_lines(const client_ui_state* state,
+                                  char lines[][CLIENT_UI_LABEL_MAX],
+                                  int* out_count)
+{
+    int count = 0;
+    char csv[256];
+    if (out_count) {
+        *out_count = 0;
+    }
+    if (!state || !lines) {
+        return;
+    }
+    client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "Dominium Client");
+    if (state->screen == CLIENT_UI_LOADING) {
+        const dom_build_info_v1* build = dom_build_info_v1_get();
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "engine=%s", DOMINO_VERSION_STRING);
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "game=%s", DOMINIUM_GAME_VERSION);
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "build_number=%u", (unsigned int)DOM_BUILD_NUMBER);
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "sim_schema_id=%llu",
+                           (unsigned long long)dom_sim_schema_id());
+        if (build) {
+            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "sim_schema_version=%u",
+                               (unsigned int)build->sim_schema_version);
+            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "content_schema_version=%u",
+                               (unsigned int)build->content_schema_version);
+        } else {
+            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "sim_schema_version=unknown");
+            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "content_schema_version=unknown");
+        }
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "protocol_law_targets=LAW_TARGETS@1.4.0");
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "protocol_control_caps=CONTROL_CAPS@1.0.0");
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "protocol_authority_tokens=AUTHORITY_TOKEN@1.0.0");
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "worlddef_schema_version=%u",
+                           (unsigned int)DOM_SHELL_WORLDDEF_SCHEMA_VERSION);
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s", state->determinism_status);
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s", state->pack_status);
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s", state->template_status);
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "testx=%s", state->testx_status);
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "seed=%s", state->seed_status);
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "Loading complete. Press Enter to continue.");
+    } else if (state->screen == CLIENT_UI_MAIN_MENU) {
+        int i;
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "");
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "Main Menu");
+        for (i = 0; i < CLIENT_UI_MENU_COUNT; ++i) {
+            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s %s",
+                               (i == state->menu_index) ? ">" : " ",
+                               g_client_menu_items[i]);
+        }
+        if (state->action_status[0]) {
+            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s", state->action_status);
+        }
+    } else if (state->screen == CLIENT_UI_WORLD_CREATE) {
+        const dom_shell_registry* reg = dom_client_shell_registry(&state->shell);
+        const dom_shell_template* tmpl = 0;
+        if (reg && reg->count > 0u && state->shell.create_template_index < reg->count) {
+            tmpl = &reg->templates[state->shell.create_template_index];
+        }
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "");
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "New World");
+        if (tmpl) {
+            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "template=%s", tmpl->template_id);
+            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "description=%s", tmpl->description);
+        } else {
+            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "template=none");
+        }
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "seed=%llu (+/- to edit)",
+                           (unsigned long long)state->shell.create_seed);
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "policies:");
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES,
+                           " [1] free=%s",
+                           client_policy_has(&state->shell.create_mode, DOM_SHELL_MODE_FREE) ? "on" : "off");
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES,
+                           " [2] orbit=%s",
+                           client_policy_has(&state->shell.create_mode, DOM_SHELL_MODE_ORBIT) ? "on" : "off");
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES,
+                           " [3] surface=%s",
+                           client_policy_has(&state->shell.create_mode, DOM_SHELL_MODE_SURFACE) ? "on" : "off");
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES,
+                           " [A] authority=%s",
+                           client_policy_has(&state->shell.create_authority, DOM_SHELL_AUTH_POLICY) ? "on" : "off");
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES,
+                           " [D] debug=%s",
+                           state->shell.create_debug.count > 0u ? "on" : "off");
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "Enter=create  B=back  T=next template");
+        if (state->action_status[0]) {
+            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s", state->action_status);
+        }
+    } else if (state->screen == CLIENT_UI_WORLD_VIEW) {
+        const dom_shell_world_state* world = dom_client_shell_world(&state->shell);
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "");
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "World View");
+        if (!world || !world->active) {
+            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "world=inactive");
+        } else {
+            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "worlddef_id=%s", world->summary.worlddef_id);
+            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "template_id=%s", world->summary.template_id);
+            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "node=%s frame=%s",
+                               world->current_node_id, world->summary.spawn_frame_id);
+            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES,
+                               "position=%.2f,%.2f,%.2f",
+                               world->position[0], world->position[1], world->position[2]);
+            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES,
+                               "orientation=%.2f,%.2f,%.2f",
+                               world->orientation[0], world->orientation[1], world->orientation[2]);
+            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "mode=%s",
+                               world->active_mode[0] ? world->active_mode : "none");
+            dom_client_shell_policy_to_csv(&world->summary.authority, csv, sizeof(csv));
+            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "authority=%s", csv[0] ? csv : "none");
+            dom_client_shell_policy_to_csv(&world->summary.movement, csv, sizeof(csv));
+            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "movement=%s", csv[0] ? csv : "none");
+            dom_client_shell_policy_to_csv(&world->summary.mode, csv, sizeof(csv));
+            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "modes=%s", csv[0] ? csv : "none");
+            dom_client_shell_policy_to_csv(&world->summary.debug, csv, sizeof(csv));
+            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "debug=%s", csv[0] ? csv : "none");
+            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "tick=%u", (unsigned int)state->tick);
+        }
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES,
+                           "Keys: WASD move, R/F up/down, 1-3 modes, ` console, B back");
+        if (state->console_active) {
+            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "> %s", state->console_input);
+        }
+        if (state->settings.debug_ui) {
+            int i;
+            int idx = state->event_head;
+            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "Debug: event_tail");
+            for (i = 0; i < state->event_count && count < CLIENT_UI_MAX_LINES; ++i) {
+                client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s",
+                                   state->event_lines[idx]);
+                idx = (idx + 1) % CLIENT_UI_EVENT_LINES;
+            }
+        }
+        if (state->action_status[0]) {
+            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s", state->action_status);
+        }
+    } else if (state->screen == CLIENT_UI_REPLAY) {
+        int i;
+        int idx = state->event_head;
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "");
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "Replay Inspector");
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "Use console: inspect-replay path=...");
+        if (state->console_active) {
+            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "> %s", state->console_input);
+        }
+        for (i = 0; i < state->event_count && count < CLIENT_UI_MAX_LINES; ++i) {
+            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s", state->event_lines[idx]);
+            idx = (idx + 1) % CLIENT_UI_EVENT_LINES;
+        }
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "B=back");
+        if (state->action_status[0]) {
+            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s", state->action_status);
+        }
+    } else if (state->screen == CLIENT_UI_TOOLS) {
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "");
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "Tools");
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "Use tools host: tools_host --help");
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "B=back");
+        if (state->action_status[0]) {
+            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s", state->action_status);
+        }
+    } else if (state->screen == CLIENT_UI_SETTINGS) {
+        char setting_lines[CLIENT_UI_MENU_COUNT][CLIENT_UI_LABEL_MAX];
+        int count_settings = 0;
+        int i;
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "");
+        client_ui_settings_format_lines(&state->settings, (char*)setting_lines,
+                                        CLIENT_UI_MENU_COUNT,
+                                        CLIENT_UI_LABEL_MAX, &count_settings);
+        for (i = 0; i < count_settings && count < CLIENT_UI_MAX_LINES; ++i) {
+            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s", setting_lines[i]);
+        }
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "Keys: R renderer, +/- scale, P palette, L log, D debug, B back");
+        if (state->action_status[0]) {
+            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s", state->action_status);
+        }
+    }
+    if (out_count) {
+        *out_count = count;
+    }
+}
+
+static void client_console_clear(client_ui_state* state)
+{
+    if (!state) {
+        return;
+    }
+    state->console_len = 0u;
+    state->console_input[0] = '\0';
+}
+
+static void client_console_append_text(client_ui_state* state, const char* text)
+{
+    const char* p;
+    if (!state || !text) {
+        return;
+    }
+    p = text;
+    while (*p) {
+        char c = *p++;
+        if (c == '\r' || c == '\n') {
+            continue;
+        }
+        if (state->console_len + 1u >= sizeof(state->console_input)) {
+            break;
+        }
+        if ((unsigned char)c < 32u) {
+            continue;
+        }
+        state->console_input[state->console_len++] = c;
+        state->console_input[state->console_len] = '\0';
+    }
+}
+
+static void client_console_backspace(client_ui_state* state)
+{
+    if (!state || state->console_len == 0u) {
+        return;
+    }
+    state->console_len -= 1u;
+    state->console_input[state->console_len] = '\0';
+}
+
+static void client_console_submit(client_ui_state* state, dom_app_ui_event_log* log)
+{
+    if (!state) {
+        return;
+    }
+    if (state->console_len == 0u) {
+        return;
+    }
+    client_ui_execute_command(state->console_input, &state->settings, log, state,
+                              state->action_status, sizeof(state->action_status), 0);
+    client_console_clear(state);
 }
 
 static void client_ui_cycle_renderer(client_ui_state* state)
@@ -1075,129 +1234,6 @@ static void client_ui_cycle_renderer(client_ui_state* state)
     client_settings_set_renderer(&state->settings, state->renderers.entries[0].name);
 }
 
-static void client_ui_add_event_line(client_ui_state* state, const char* text)
-{
-    int idx;
-    if (!state || !text) {
-        return;
-    }
-    if (state->event_count < CLIENT_UI_EVENT_LINES) {
-        idx = (state->event_head + state->event_count) % CLIENT_UI_EVENT_LINES;
-        state->event_count += 1;
-    } else {
-        idx = state->event_head;
-        state->event_head = (state->event_head + 1) % CLIENT_UI_EVENT_LINES;
-    }
-    strncpy(state->event_lines[idx], text, CLIENT_UI_LABEL_MAX - 1u);
-    state->event_lines[idx][CLIENT_UI_LABEL_MAX - 1u] = '\0';
-}
-
-static void client_ui_log_event(client_ui_state* state,
-                                const char* event_name,
-                                const char* detail)
-{
-    char line[CLIENT_UI_LABEL_MAX];
-    size_t len = 0u;
-    if (!state || !event_name || !event_name[0]) {
-        return;
-    }
-    snprintf(line, sizeof(line), "tick=%u event=%s",
-             (unsigned int)state->tick,
-             event_name);
-    len = strlen(line);
-    if (detail && detail[0] && len + 1u < sizeof(line)) {
-        snprintf(line + len, sizeof(line) - len, " %s", detail);
-    }
-    client_ui_add_event_line(state, line);
-}
-
-static void client_ui_add_topology_line(client_ui_state* state, const char* text)
-{
-    if (!state || !text) {
-        return;
-    }
-    if (state->topology_count >= CLIENT_UI_TOPOLOGY_LINES) {
-        return;
-    }
-    strncpy(state->topology_lines[state->topology_count],
-            text,
-            CLIENT_UI_LABEL_MAX - 1u);
-    state->topology_lines[state->topology_count][CLIENT_UI_LABEL_MAX - 1u] = '\0';
-    state->topology_count += 1;
-}
-
-static void client_ui_build_topology(client_ui_state* state,
-                                     const dom_client_ro_view_model* view)
-{
-    char line[CLIENT_UI_LABEL_MAX];
-    uint32_t i;
-    if (!state || !view) {
-        return;
-    }
-    state->topology_count = 0;
-    state->topology_supported = 0;
-    if (!view->has_tree) {
-        client_ui_add_topology_line(state, "topology=unsupported");
-        return;
-    }
-    state->topology_supported = 1;
-    snprintf(line, sizeof(line), "topology=packages_tree nodes=%u truncated=%u",
-             (unsigned int)view->tree_info.count,
-             (unsigned int)view->tree_info.truncated);
-    client_ui_add_topology_line(state, line);
-    for (i = 0u; i < view->tree_info.count && state->topology_count < CLIENT_UI_TOPOLOGY_LINES; ++i) {
-        int indent = (int)(view->nodes[i].depth * 2u);
-        snprintf(line, sizeof(line), "%*s%s", indent, "", view->nodes[i].label);
-        client_ui_add_topology_line(state, line);
-    }
-    if (view->tree_info.truncated && state->topology_count < CLIENT_UI_TOPOLOGY_LINES) {
-        client_ui_add_topology_line(state, "topology_truncated=1");
-    }
-}
-
-static void client_ui_refresh_playable(client_ui_state* state,
-                                       const dom_app_compat_expect* compat)
-{
-    dom_app_readonly_adapter ro;
-    dom_app_compat_report report;
-    dom_client_ro_view_model view;
-    if (!state) {
-        return;
-    }
-    state->topology_status[0] = '\0';
-    state->topology_count = 0;
-    state->topology_supported = 0;
-    dom_app_ro_init(&ro);
-    dom_app_compat_report_init(&report, "client");
-    if (dom_app_ro_open(&ro, compat, &report)) {
-        dom_client_ro_view_model_init(&view);
-        if (dom_client_ro_view_model_load(&view, &ro)) {
-            client_ui_build_topology(state, &view);
-            snprintf(state->topology_status, sizeof(state->topology_status), "topology=ok");
-        } else {
-            client_ui_add_topology_line(state, "topology=unavailable");
-            snprintf(state->topology_status, sizeof(state->topology_status), "topology=unavailable");
-        }
-        dom_app_ro_close(&ro);
-    } else {
-        client_ui_add_topology_line(state, "topology=unavailable");
-        snprintf(state->topology_status, sizeof(state->topology_status),
-                 "topology=unavailable %s",
-                 report.message[0] ? report.message : "compatibility failure");
-    }
-}
-
-static void client_ui_emit_event(dom_app_ui_event_log* log,
-                                 client_ui_state* ui_state,
-                                 const char* event_name,
-                                 const char* detail)
-{
-    dom_app_ui_event_log_emit(log, event_name, detail);
-    if (ui_state) {
-        client_ui_log_event(ui_state, event_name, detail);
-    }
-}
-
 static int client_ui_execute_command(const char* cmd,
                                      const client_ui_settings* settings,
                                      dom_app_ui_event_log* log,
@@ -1206,6 +1242,9 @@ static int client_ui_execute_command(const char* cmd,
                                      size_t status_cap,
                                      int emit_text)
 {
+    static dom_client_shell cli_shell;
+    static int cli_shell_ready = 0;
+    dom_client_shell* shell = 0;
     if (status && status_cap > 0u) {
         status[0] = '\0';
     }
@@ -1215,38 +1254,19 @@ static int client_ui_execute_command(const char* cmd,
         }
         return D_APP_EXIT_USAGE;
     }
-    if (strcmp(cmd, "start") == 0) {
-        client_ui_emit_event(log, ui_state, "client.start", "mode=procedural");
-        if (status && status_cap > 0u) {
-            snprintf(status, status_cap, "client_start=ok");
+    if (!ui_state) {
+        if (!cli_shell_ready) {
+            dom_client_shell_init(&cli_shell);
+            cli_shell_ready = 1;
         }
-        if (emit_text) {
-            printf("client_start=ok\n");
-        }
-        return D_APP_EXIT_OK;
-    }
-    if (strcmp(cmd, "load-save") == 0 || strcmp(cmd, "load") == 0) {
-        client_ui_emit_event(log, ui_state, "client.load_save", "result=unavailable");
-        if (status && status_cap > 0u) {
-            snprintf(status, status_cap, "client_load_save=unavailable");
-        }
-        if (emit_text) {
-            fprintf(stderr, "client: load-save unavailable\n");
-        }
-        return D_APP_EXIT_UNAVAILABLE;
-    }
-    if (strcmp(cmd, "inspect-replay") == 0 || strcmp(cmd, "replay") == 0) {
-        client_ui_emit_event(log, ui_state, "client.inspect_replay", "result=unavailable");
-        if (status && status_cap > 0u) {
-            snprintf(status, status_cap, "client_inspect_replay=unavailable");
-        }
-        if (emit_text) {
-            fprintf(stderr, "client: inspect-replay unavailable\n");
-        }
-        return D_APP_EXIT_UNAVAILABLE;
+        shell = &cli_shell;
+    } else {
+        shell = &ui_state->shell;
     }
     if (strcmp(cmd, "tools") == 0) {
-        client_ui_emit_event(log, ui_state, "client.tools", "result=ok");
+        if (log) {
+            dom_app_ui_event_log_emit(log, "client.tools", "result=ok");
+        }
         if (status && status_cap > 0u) {
             snprintf(status, status_cap, "client_tools=ok");
         }
@@ -1262,7 +1282,9 @@ static int client_ui_execute_command(const char* cmd,
         client_ui_settings_format_lines(settings, (char*)lines,
                                         CLIENT_UI_MENU_COUNT,
                                         CLIENT_UI_LABEL_MAX, &count);
-        client_ui_emit_event(log, ui_state, "client.settings", "result=ok");
+        if (log) {
+            dom_app_ui_event_log_emit(log, "client.settings", "result=ok");
+        }
         if (status && status_cap > 0u) {
             snprintf(status, status_cap, "client_settings=ok");
         }
@@ -1275,7 +1297,9 @@ static int client_ui_execute_command(const char* cmd,
         return D_APP_EXIT_OK;
     }
     if (strcmp(cmd, "exit") == 0 || strcmp(cmd, "quit") == 0) {
-        client_ui_emit_event(log, ui_state, "client.exit", "result=ok");
+        if (log) {
+            dom_app_ui_event_log_emit(log, "client.exit", "result=ok");
+        }
         if (status && status_cap > 0u) {
             snprintf(status, status_cap, "client_exit=ok");
         }
@@ -1284,63 +1308,7 @@ static int client_ui_execute_command(const char* cmd,
         }
         return D_APP_EXIT_OK;
     }
-    if (strcmp(cmd, "survey-here") == 0 || strcmp(cmd, "survey") == 0 ||
-        strcmp(cmd, "intent-survey") == 0 || strcmp(cmd, "intent-survey-here") == 0) {
-        client_ui_emit_event(log, ui_state, "client.intent_survey_here", "target=here result=queued");
-        if (status && status_cap > 0u) {
-            snprintf(status, status_cap, "client_intent_survey_here=queued");
-        }
-        if (emit_text) {
-            printf("client_intent_survey_here=queued\n");
-        }
-        return D_APP_EXIT_OK;
-    }
-    if (strcmp(cmd, "extract-here") == 0 || strcmp(cmd, "extract") == 0 ||
-        strcmp(cmd, "intent-extract") == 0 || strcmp(cmd, "intent-extract-here") == 0) {
-        client_ui_emit_event(log, ui_state, "client.intent_extract_here", "target=here result=queued");
-        if (status && status_cap > 0u) {
-            snprintf(status, status_cap, "client_intent_extract_here=queued");
-        }
-        if (emit_text) {
-            printf("client_intent_extract_here=queued\n");
-        }
-        return D_APP_EXIT_OK;
-    }
-    if (strcmp(cmd, "fabricate") == 0 || strcmp(cmd, "intent-fabricate") == 0) {
-        client_ui_emit_event(log, ui_state, "client.intent_fabricate", "result=queued");
-        if (status && status_cap > 0u) {
-            snprintf(status, status_cap, "client_intent_fabricate=queued");
-        }
-        if (emit_text) {
-            printf("client_intent_fabricate=queued\n");
-        }
-        return D_APP_EXIT_OK;
-    }
-    if (strcmp(cmd, "build") == 0 || strcmp(cmd, "intent-build") == 0) {
-        client_ui_emit_event(log, ui_state, "client.intent_build", "result=queued");
-        if (status && status_cap > 0u) {
-            snprintf(status, status_cap, "client_intent_build=queued");
-        }
-        if (emit_text) {
-            printf("client_intent_build=queued\n");
-        }
-        return D_APP_EXIT_OK;
-    }
-    if (strcmp(cmd, "connect-network") == 0 || strcmp(cmd, "connect") == 0 ||
-        strcmp(cmd, "intent-connect") == 0 || strcmp(cmd, "intent-connect-network") == 0) {
-        client_ui_emit_event(log, ui_state, "client.intent_connect_network", "result=queued");
-        if (status && status_cap > 0u) {
-            snprintf(status, status_cap, "client_intent_connect_network=queued");
-        }
-        if (emit_text) {
-            printf("client_intent_connect_network=queued\n");
-        }
-        return D_APP_EXIT_OK;
-    }
-    if (status && status_cap > 0u) {
-        snprintf(status, status_cap, "client: unknown command '%s'", cmd);
-    }
-    return D_APP_EXIT_USAGE;
+    return dom_client_shell_execute(shell, cmd, log, status, status_cap, emit_text);
 }
 
 static void client_ui_apply_action(client_ui_state* state,
@@ -1351,24 +1319,38 @@ static void client_ui_apply_action(client_ui_state* state,
     if (!state) {
         return;
     }
+    (void)compat;
     switch (action) {
-    case CLIENT_ACTION_START:
-        client_ui_execute_command("start", &state->settings, log, state,
-                                  state->action_status, sizeof(state->action_status), 0);
-        state->screen = CLIENT_UI_PLAYABLE;
-        client_ui_refresh_playable(state, compat);
+    case CLIENT_ACTION_NEW_WORLD:
+        snprintf(state->action_status, sizeof(state->action_status), "world_create=ready");
+        state->screen = CLIENT_UI_WORLD_CREATE;
         break;
-    case CLIENT_ACTION_LOAD_SAVE:
-        client_ui_execute_command("load-save", &state->settings, log, state,
-                                  state->action_status, sizeof(state->action_status), 0);
+    case CLIENT_ACTION_CREATE_WORLD:
+        dom_client_shell_create_world(&state->shell, log,
+                                      state->action_status, sizeof(state->action_status), 0);
+        if (state->shell.world.active) {
+            state->screen = CLIENT_UI_WORLD_VIEW;
+        }
+        break;
+    case CLIENT_ACTION_LOAD_WORLD:
+        dom_client_shell_load_world(&state->shell, 0, log,
+                                    state->action_status, sizeof(state->action_status), 0);
+        if (state->shell.world.active) {
+            state->screen = CLIENT_UI_WORLD_VIEW;
+        }
+        break;
+    case CLIENT_ACTION_SAVE_WORLD:
+        dom_client_shell_save_world(&state->shell, 0, log,
+                                    state->action_status, sizeof(state->action_status), 0);
         break;
     case CLIENT_ACTION_INSPECT_REPLAY:
-        client_ui_execute_command("inspect-replay", &state->settings, log, state,
-                                  state->action_status, sizeof(state->action_status), 0);
+        snprintf(state->action_status, sizeof(state->action_status), "replay_inspect=ready");
+        state->screen = CLIENT_UI_REPLAY;
         break;
     case CLIENT_ACTION_TOOLS:
         client_ui_execute_command("tools", &state->settings, log, state,
                                   state->action_status, sizeof(state->action_status), 0);
+        state->screen = CLIENT_UI_TOOLS;
         break;
     case CLIENT_ACTION_SETTINGS:
         client_ui_execute_command("settings", &state->settings, log, state,
@@ -1411,25 +1393,59 @@ static void client_ui_apply_action(client_ui_state* state,
         state->settings.debug_ui = state->settings.debug_ui ? 0 : 1;
         client_ui_set_status(state, "settings_debug=%s", state->settings.debug_ui ? "enabled" : "disabled");
         break;
-    case CLIENT_ACTION_INTENT_SURVEY:
-        client_ui_execute_command("survey-here", &state->settings, log, state,
-                                  state->action_status, sizeof(state->action_status), 0);
+    case CLIENT_ACTION_MODE_FREE:
+        if (state->screen == CLIENT_UI_WORLD_VIEW) {
+            dom_client_shell_set_mode(&state->shell, DOM_SHELL_MODE_FREE, log,
+                                      state->action_status, sizeof(state->action_status), 0);
+        } else {
+            client_ui_set_status(state, "mode_set=ignored");
+        }
         break;
-    case CLIENT_ACTION_INTENT_EXTRACT:
-        client_ui_execute_command("extract-here", &state->settings, log, state,
-                                  state->action_status, sizeof(state->action_status), 0);
+    case CLIENT_ACTION_MODE_ORBIT:
+        if (state->screen == CLIENT_UI_WORLD_VIEW) {
+            dom_client_shell_set_mode(&state->shell, DOM_SHELL_MODE_ORBIT, log,
+                                      state->action_status, sizeof(state->action_status), 0);
+        } else {
+            client_ui_set_status(state, "mode_set=ignored");
+        }
         break;
-    case CLIENT_ACTION_INTENT_FABRICATE:
-        client_ui_execute_command("fabricate", &state->settings, log, state,
-                                  state->action_status, sizeof(state->action_status), 0);
+    case CLIENT_ACTION_MODE_SURFACE:
+        if (state->screen == CLIENT_UI_WORLD_VIEW) {
+            dom_client_shell_set_mode(&state->shell, DOM_SHELL_MODE_SURFACE, log,
+                                      state->action_status, sizeof(state->action_status), 0);
+        } else {
+            client_ui_set_status(state, "mode_set=ignored");
+        }
         break;
-    case CLIENT_ACTION_INTENT_BUILD:
-        client_ui_execute_command("build", &state->settings, log, state,
-                                  state->action_status, sizeof(state->action_status), 0);
+    case CLIENT_ACTION_MOVE_FORWARD:
+        if (state->screen == CLIENT_UI_WORLD_VIEW) {
+            dom_client_shell_move(&state->shell, 0.0, 1.0, 0.0, log);
+        }
         break;
-    case CLIENT_ACTION_INTENT_CONNECT:
-        client_ui_execute_command("connect-network", &state->settings, log, state,
-                                  state->action_status, sizeof(state->action_status), 0);
+    case CLIENT_ACTION_MOVE_BACK:
+        if (state->screen == CLIENT_UI_WORLD_VIEW) {
+            dom_client_shell_move(&state->shell, 0.0, -1.0, 0.0, log);
+        }
+        break;
+    case CLIENT_ACTION_MOVE_LEFT:
+        if (state->screen == CLIENT_UI_WORLD_VIEW) {
+            dom_client_shell_move(&state->shell, -1.0, 0.0, 0.0, log);
+        }
+        break;
+    case CLIENT_ACTION_MOVE_RIGHT:
+        if (state->screen == CLIENT_UI_WORLD_VIEW) {
+            dom_client_shell_move(&state->shell, 1.0, 0.0, 0.0, log);
+        }
+        break;
+    case CLIENT_ACTION_MOVE_UP:
+        if (state->screen == CLIENT_UI_WORLD_VIEW) {
+            dom_client_shell_move(&state->shell, 0.0, 0.0, 1.0, log);
+        }
+        break;
+    case CLIENT_ACTION_MOVE_DOWN:
+        if (state->screen == CLIENT_UI_WORLD_VIEW) {
+            dom_client_shell_move(&state->shell, 0.0, 0.0, -1.0, log);
+        }
         break;
     default:
         break;
@@ -1441,9 +1457,13 @@ static client_ui_action client_ui_action_from_token(const char* token)
     if (!token || !token[0]) {
         return CLIENT_ACTION_NONE;
     }
-    if (strcmp(token, "start") == 0) return CLIENT_ACTION_START;
-    if (strcmp(token, "load") == 0 || strcmp(token, "load-save") == 0) return CLIENT_ACTION_LOAD_SAVE;
+    if (strcmp(token, "new-world") == 0 || strcmp(token, "new") == 0) return CLIENT_ACTION_NEW_WORLD;
+    if (strcmp(token, "create-world") == 0 || strcmp(token, "create") == 0) return CLIENT_ACTION_CREATE_WORLD;
+    if (strcmp(token, "load-world") == 0 || strcmp(token, "load-save") == 0 || strcmp(token, "load") == 0) {
+        return CLIENT_ACTION_LOAD_WORLD;
+    }
     if (strcmp(token, "replay") == 0 || strcmp(token, "inspect-replay") == 0) return CLIENT_ACTION_INSPECT_REPLAY;
+    if (strcmp(token, "save") == 0) return CLIENT_ACTION_SAVE_WORLD;
     if (strcmp(token, "tools") == 0) return CLIENT_ACTION_TOOLS;
     if (strcmp(token, "settings") == 0) return CLIENT_ACTION_SETTINGS;
     if (strcmp(token, "exit") == 0 || strcmp(token, "quit") == 0) return CLIENT_ACTION_EXIT;
@@ -1454,24 +1474,15 @@ static client_ui_action client_ui_action_from_token(const char* token)
     if (strcmp(token, "palette") == 0) return CLIENT_ACTION_PALETTE_TOGGLE;
     if (strcmp(token, "log-next") == 0) return CLIENT_ACTION_LOG_NEXT;
     if (strcmp(token, "debug-toggle") == 0) return CLIENT_ACTION_DEBUG_TOGGLE;
-    if (strcmp(token, "survey") == 0 || strcmp(token, "survey-here") == 0 ||
-        strcmp(token, "intent-survey") == 0 || strcmp(token, "intent-survey-here") == 0) {
-        return CLIENT_ACTION_INTENT_SURVEY;
-    }
-    if (strcmp(token, "extract") == 0 || strcmp(token, "extract-here") == 0 ||
-        strcmp(token, "intent-extract") == 0 || strcmp(token, "intent-extract-here") == 0) {
-        return CLIENT_ACTION_INTENT_EXTRACT;
-    }
-    if (strcmp(token, "fabricate") == 0 || strcmp(token, "intent-fabricate") == 0) {
-        return CLIENT_ACTION_INTENT_FABRICATE;
-    }
-    if (strcmp(token, "build") == 0 || strcmp(token, "intent-build") == 0) {
-        return CLIENT_ACTION_INTENT_BUILD;
-    }
-    if (strcmp(token, "connect") == 0 || strcmp(token, "connect-network") == 0 ||
-        strcmp(token, "intent-connect") == 0 || strcmp(token, "intent-connect-network") == 0) {
-        return CLIENT_ACTION_INTENT_CONNECT;
-    }
+    if (strcmp(token, "mode-free") == 0) return CLIENT_ACTION_MODE_FREE;
+    if (strcmp(token, "mode-orbit") == 0) return CLIENT_ACTION_MODE_ORBIT;
+    if (strcmp(token, "mode-surface") == 0) return CLIENT_ACTION_MODE_SURFACE;
+    if (strcmp(token, "move-forward") == 0) return CLIENT_ACTION_MOVE_FORWARD;
+    if (strcmp(token, "move-back") == 0) return CLIENT_ACTION_MOVE_BACK;
+    if (strcmp(token, "move-left") == 0) return CLIENT_ACTION_MOVE_LEFT;
+    if (strcmp(token, "move-right") == 0) return CLIENT_ACTION_MOVE_RIGHT;
+    if (strcmp(token, "move-up") == 0) return CLIENT_ACTION_MOVE_UP;
+    if (strcmp(token, "move-down") == 0) return CLIENT_ACTION_MOVE_DOWN;
     return CLIENT_ACTION_NONE;
 }
 
@@ -1489,35 +1500,6 @@ static void client_gui_draw_text(d_gfx_cmd_buffer* buf, int x, int y,
     d_gfx_cmd_draw_text(buf, &cmd);
 }
 
-static void client_gui_draw_menu(d_gfx_cmd_buffer* buf,
-                                 const char* const* items,
-                                 int count,
-                                 int selected,
-                                 int x,
-                                 int y,
-                                 int line_h,
-                                 d_gfx_color text,
-                                 d_gfx_color highlight)
-{
-    int i;
-    d_gfx_draw_rect_cmd rect;
-    if (!buf || !items) {
-        return;
-    }
-    for (i = 0; i < count; ++i) {
-        int line_y = y + i * line_h;
-        if (i == selected) {
-            rect.x = x - 8;
-            rect.y = line_y - 2;
-            rect.w = 380;
-            rect.h = line_h;
-            rect.color = highlight;
-            d_gfx_cmd_draw_rect(buf, &rect);
-        }
-        client_gui_draw_text(buf, x, line_y, items[i], text);
-    }
-}
-
 static void client_gui_render(const client_ui_state* state,
                               d_gfx_cmd_buffer* buf,
                               int fb_w,
@@ -1526,11 +1508,13 @@ static void client_gui_render(const client_ui_state* state,
     d_gfx_viewport vp;
     d_gfx_color bg = { 0xff, 0x12, 0x12, 0x18 };
     d_gfx_color text = { 0xff, 0xee, 0xee, 0xee };
-    d_gfx_color highlight = { 0xff, 0x2e, 0x2e, 0x3a };
     int width = (fb_w > 0) ? fb_w : 800;
     int height = (fb_h > 0) ? fb_h : 600;
     int y = 24;
     int line_h = 18;
+    int i;
+    char lines[CLIENT_UI_MAX_LINES][CLIENT_UI_LABEL_MAX];
+    int count = 0;
     if (!buf) {
         return;
     }
@@ -1543,134 +1527,10 @@ static void client_gui_render(const client_ui_state* state,
     if (!state) {
         return;
     }
-    client_gui_draw_text(buf, 20, y, "Dominium Client", text);
-    y += line_h;
-    if (state->screen == CLIENT_UI_LOADING) {
-        char line[CLIENT_UI_STATUS_MAX];
-        const dom_build_info_v1* build = dom_build_info_v1_get();
-        snprintf(line, sizeof(line), "engine=%s", DOMINO_VERSION_STRING);
-        client_gui_draw_text(buf, 20, y, line, text); y += line_h;
-        snprintf(line, sizeof(line), "game=%s", DOMINIUM_GAME_VERSION);
-        client_gui_draw_text(buf, 20, y, line, text); y += line_h;
-        snprintf(line, sizeof(line), "build_number=%u", (unsigned int)DOM_BUILD_NUMBER);
-        client_gui_draw_text(buf, 20, y, line, text); y += line_h;
-        snprintf(line, sizeof(line), "sim_schema_id=%llu", (unsigned long long)dom_sim_schema_id());
-        client_gui_draw_text(buf, 20, y, line, text); y += line_h;
-        if (build) {
-            snprintf(line, sizeof(line), "sim_schema_version=%u", (unsigned int)build->sim_schema_version);
-            client_gui_draw_text(buf, 20, y, line, text); y += line_h;
-            snprintf(line, sizeof(line), "content_schema_version=%u", (unsigned int)build->content_schema_version);
-            client_gui_draw_text(buf, 20, y, line, text); y += line_h;
-        } else {
-            client_gui_draw_text(buf, 20, y, "sim_schema_version=unknown", text); y += line_h;
-            client_gui_draw_text(buf, 20, y, "content_schema_version=unknown", text); y += line_h;
-        }
-        client_gui_draw_text(buf, 20, y, "protocol_law_targets=LAW_TARGETS@1.4.0", text); y += line_h;
-        client_gui_draw_text(buf, 20, y, "protocol_control_caps=CONTROL_CAPS@1.0.0", text); y += line_h;
-        client_gui_draw_text(buf, 20, y, "protocol_authority_tokens=AUTHORITY_TOKEN@1.0.0", text); y += line_h;
-        snprintf(line, sizeof(line), "testx=%s", state->testx_status);
-        client_gui_draw_text(buf, 20, y, line, text); y += line_h;
-        client_gui_draw_text(buf, 20, y, state->pack_status, text); y += line_h;
-        snprintf(line, sizeof(line), "seed=%s", state->seed_status);
-        client_gui_draw_text(buf, 20, y, line, text); y += line_h;
-        client_gui_draw_text(buf, 20, y, "Loading complete. Press Enter to continue.", text);
-        return;
-    }
-    if (state->screen == CLIENT_UI_MAIN_MENU) {
+    client_ui_build_lines(state, lines, &count);
+    for (i = 0; i < count; ++i) {
+        client_gui_draw_text(buf, 20, y, lines[i], text);
         y += line_h;
-        client_gui_draw_menu(buf, g_client_menu_items, CLIENT_UI_MENU_COUNT,
-                             state->menu_index, 20, y, line_h, text, highlight);
-        y += (CLIENT_UI_MENU_COUNT + 1) * line_h;
-        if (state->action_status[0]) {
-            client_gui_draw_text(buf, 20, y, state->action_status, text);
-        }
-        return;
-    }
-    if (state->screen == CLIENT_UI_SETTINGS) {
-        char lines[CLIENT_UI_MENU_COUNT][CLIENT_UI_LABEL_MAX];
-        int count = 0;
-        int i;
-        y += line_h;
-        client_ui_settings_format_lines(&state->settings, (char*)lines,
-                                        CLIENT_UI_MENU_COUNT,
-                                        CLIENT_UI_LABEL_MAX, &count);
-        for (i = 0; i < count; ++i) {
-            client_gui_draw_text(buf, 20, y, lines[i], text);
-            y += line_h;
-        }
-        y += line_h;
-        client_gui_draw_text(buf, 20, y, "Keys: R renderer, +/- scale, P palette, L log, D debug, B back", text);
-        y += line_h;
-        if (state->action_status[0]) {
-            client_gui_draw_text(buf, 20, y, state->action_status, text);
-        }
-        return;
-    }
-    if (state->screen == CLIENT_UI_PLAYABLE) {
-        int i;
-        int idx;
-        y += line_h;
-        client_gui_draw_text(buf, 20, y, "Playable Slice 1", text);
-        y += line_h * 2;
-
-        client_gui_draw_text(buf, 20, y, "Topology", text);
-        y += line_h;
-        if (state->topology_count > 0) {
-            for (i = 0; i < state->topology_count; ++i) {
-                client_gui_draw_text(buf, 20, y, state->topology_lines[i], text);
-                y += line_h;
-            }
-        } else if (state->topology_status[0]) {
-            client_gui_draw_text(buf, 20, y, state->topology_status, text);
-            y += line_h;
-        } else {
-            client_gui_draw_text(buf, 20, y, "topology=unknown", text);
-            y += line_h;
-        }
-        y += line_h;
-
-        client_gui_draw_text(buf, 20, y, "Patch Fields", text);
-        y += line_h;
-        client_gui_draw_text(buf, 20, y, "bearing=unknown", text); y += line_h;
-        client_gui_draw_text(buf, 20, y, "moisture=unknown", text); y += line_h;
-        client_gui_draw_text(buf, 20, y, "slope=unknown", text); y += line_h;
-        y += line_h;
-
-        client_gui_draw_text(buf, 20, y, "Agent", text);
-        y += line_h;
-        client_gui_draw_text(buf, 20, y, "goals=unavailable", text); y += line_h;
-        client_gui_draw_text(buf, 20, y, "plan=unavailable", text); y += line_h;
-        client_gui_draw_text(buf, 20, y, "beliefs=unavailable", text); y += line_h;
-        y += line_h;
-
-        client_gui_draw_text(buf, 20, y, "Event Log", text);
-        y += line_h;
-        if (state->event_count > 0) {
-            idx = state->event_head;
-            for (i = 0; i < state->event_count; ++i) {
-                client_gui_draw_text(buf, 20, y, state->event_lines[idx], text);
-                y += line_h;
-                idx = (idx + 1) % CLIENT_UI_EVENT_LINES;
-            }
-        } else {
-            client_gui_draw_text(buf, 20, y, "event_log=empty", text);
-            y += line_h;
-        }
-        y += line_h;
-
-        client_gui_draw_text(buf, 20, y, "Intents", text);
-        y += line_h;
-        client_gui_draw_text(buf, 20, y, "1) survey here", text); y += line_h;
-        client_gui_draw_text(buf, 20, y, "2) extract here", text); y += line_h;
-        client_gui_draw_text(buf, 20, y, "3) fabricate", text); y += line_h;
-        client_gui_draw_text(buf, 20, y, "4) build", text); y += line_h;
-        client_gui_draw_text(buf, 20, y, "5) connect network", text); y += line_h;
-        client_gui_draw_text(buf, 20, y, "Keys: 1-5 intents, B back, Q exit", text); y += line_h;
-
-        if (state->action_status[0]) {
-            client_gui_draw_text(buf, 20, y, state->action_status, text);
-        }
-        return;
     }
 }
 
@@ -1680,8 +1540,6 @@ static int client_run_tui(const dom_app_ui_run_config* run_cfg,
                           uint32_t frame_cap_ms,
                           const dom_app_compat_expect* compat_expect)
 {
-    d_tui_context* tui = 0;
-    d_tui_widget* root = 0;
     client_ui_state ui;
     dom_app_clock clock;
     dsys_event ev;
@@ -1696,8 +1554,11 @@ static int client_run_tui(const dom_app_ui_run_config* run_cfg,
     uint64_t frame_start_us = 0u;
     int max_frames = run_cfg && run_cfg->max_frames_set ? (int)run_cfg->max_frames : 0;
     int frame_count = 0;
+    char lines[CLIENT_UI_MAX_LINES][CLIENT_UI_LABEL_MAX];
+    int line_count = 0;
+    int i;
 
-    client_ui_state_init(&ui, settings, compat_expect);
+    client_ui_state_init(&ui, settings, compat_expect, timing_mode);
     dom_app_ui_event_log_init(&log);
     if (run_cfg && run_cfg->log_set) {
         if (!dom_app_ui_event_log_open(&log, run_cfg->log_path)) {
@@ -1716,7 +1577,7 @@ static int client_run_tui(const dom_app_ui_run_config* run_cfg,
         return D_APP_EXIT_FAILURE;
     }
     dsys_ready = 1;
-    if (!dsys_terminal_init()) {
+    if (dsys_terminal_init() != 0) {
         fprintf(stderr, "client: terminal unavailable\n");
         goto cleanup;
     }
@@ -1730,6 +1591,7 @@ static int client_run_tui(const dom_app_ui_run_config* run_cfg,
             frame_start_us = dsys_time_now_us();
         }
         ui.tick += 1u;
+        dom_client_shell_tick(&ui.shell);
         if (script_ready) {
             const char* token = dom_app_ui_script_next(&script);
             if (token) {
@@ -1744,6 +1606,23 @@ static int client_run_tui(const dom_app_ui_run_config* run_cfg,
             }
             if (ev.type == DSYS_EVENT_KEY_DOWN) {
                 int key = ev.payload.key.key;
+                if (ui.console_active) {
+                    if (key == 27) {
+                        ui.console_active = 0;
+                    } else if (key == 8 || key == 127) {
+                        client_console_backspace(&ui);
+                    } else if (key == '\r' || key == '\n') {
+                        client_console_submit(&ui, &log);
+                    }
+                    continue;
+                }
+                if (key == '`' || key == '~') {
+                    ui.console_active = ui.console_active ? 0 : 1;
+                    if (ui.console_active) {
+                        client_console_clear(&ui);
+                    }
+                    continue;
+                }
                 if (key == 'q' || key == 'Q') {
                     client_ui_apply_action(&ui, CLIENT_ACTION_EXIT, &log, compat_expect);
                 } else if (ui.screen == CLIENT_UI_LOADING && (key == '\r' || key == '\n')) {
@@ -1753,8 +1632,78 @@ static int client_run_tui(const dom_app_ui_run_config* run_cfg,
                         ui.menu_index = (ui.menu_index > 0) ? (ui.menu_index - 1) : (CLIENT_UI_MENU_COUNT - 1);
                     } else if (key == 's' || key == 'S') {
                         ui.menu_index = (ui.menu_index + 1) % CLIENT_UI_MENU_COUNT;
-                    } else if (key == '\r' || key == '\n') {
+                    } else if (key == '\r' || key == '\n' || key == ' ') {
                         client_ui_apply_action(&ui, (client_ui_action)(ui.menu_index + 1), &log, compat_expect);
+                    }
+                } else if (ui.screen == CLIENT_UI_WORLD_CREATE) {
+                    if (key == 'b' || key == 'B') {
+                        client_ui_apply_action(&ui, CLIENT_ACTION_BACK, &log, compat_expect);
+                    } else if (key == 't' || key == 'T' || key == 's' || key == 'S') {
+                        if (ui.shell.registry.count > 0u) {
+                            ui.shell.create_template_index =
+                                (ui.shell.create_template_index + 1u) % ui.shell.registry.count;
+                        }
+                    } else if (key == 'w' || key == 'W') {
+                        if (ui.shell.registry.count > 0u) {
+                            if (ui.shell.create_template_index == 0u) {
+                                ui.shell.create_template_index = ui.shell.registry.count - 1u;
+                            } else {
+                                ui.shell.create_template_index -= 1u;
+                            }
+                        }
+                    } else if (key == '+' || key == '=') {
+                        ui.shell.create_seed += 1u;
+                        client_ui_set_status(&ui, "seed=%llu", (unsigned long long)ui.shell.create_seed);
+                    } else if (key == '-' || key == '_') {
+                        if (ui.shell.create_seed > 0u) {
+                            ui.shell.create_seed -= 1u;
+                            client_ui_set_status(&ui, "seed=%llu", (unsigned long long)ui.shell.create_seed);
+                        }
+                    } else if (key == '1') {
+                        client_policy_toggle(&ui.shell.create_mode, DOM_SHELL_MODE_FREE);
+                    } else if (key == '2') {
+                        client_policy_toggle(&ui.shell.create_mode, DOM_SHELL_MODE_ORBIT);
+                    } else if (key == '3') {
+                        client_policy_toggle(&ui.shell.create_mode, DOM_SHELL_MODE_SURFACE);
+                    } else if (key == 'a' || key == 'A') {
+                        client_policy_toggle(&ui.shell.create_authority, DOM_SHELL_AUTH_POLICY);
+                    } else if (key == 'd' || key == 'D') {
+                        if (ui.shell.create_debug.count > 0u) {
+                            ui.shell.create_debug.count = 0u;
+                        } else {
+                            client_policy_toggle(&ui.shell.create_debug, "policy.debug.readonly");
+                        }
+                    } else if (key == '\r' || key == '\n') {
+                        client_ui_apply_action(&ui, CLIENT_ACTION_CREATE_WORLD, &log, compat_expect);
+                    }
+                } else if (ui.screen == CLIENT_UI_WORLD_VIEW) {
+                    if (key == 'b' || key == 'B') {
+                        client_ui_apply_action(&ui, CLIENT_ACTION_BACK, &log, compat_expect);
+                    } else if (key == '1') {
+                        dom_client_shell_set_mode(&ui.shell, DOM_SHELL_MODE_FREE, &log,
+                                                  ui.action_status, sizeof(ui.action_status), 0);
+                    } else if (key == '2') {
+                        dom_client_shell_set_mode(&ui.shell, DOM_SHELL_MODE_ORBIT, &log,
+                                                  ui.action_status, sizeof(ui.action_status), 0);
+                    } else if (key == '3') {
+                        dom_client_shell_set_mode(&ui.shell, DOM_SHELL_MODE_SURFACE, &log,
+                                                  ui.action_status, sizeof(ui.action_status), 0);
+                    } else if (key == 'w' || key == 'W') {
+                        dom_client_shell_move(&ui.shell, 0.0, 1.0, 0.0, &log);
+                    } else if (key == 's' || key == 'S') {
+                        dom_client_shell_move(&ui.shell, 0.0, -1.0, 0.0, &log);
+                    } else if (key == 'a' || key == 'A') {
+                        dom_client_shell_move(&ui.shell, -1.0, 0.0, 0.0, &log);
+                    } else if (key == 'd' || key == 'D') {
+                        dom_client_shell_move(&ui.shell, 1.0, 0.0, 0.0, &log);
+                    } else if (key == 'r' || key == 'R') {
+                        dom_client_shell_move(&ui.shell, 0.0, 0.0, 1.0, &log);
+                    } else if (key == 'f' || key == 'F') {
+                        dom_client_shell_move(&ui.shell, 0.0, 0.0, -1.0, &log);
+                    }
+                } else if (ui.screen == CLIENT_UI_REPLAY || ui.screen == CLIENT_UI_TOOLS) {
+                    if (key == 'b' || key == 'B') {
+                        client_ui_apply_action(&ui, CLIENT_ACTION_BACK, &log, compat_expect);
                     }
                 } else if (ui.screen == CLIENT_UI_SETTINGS) {
                     if (key == 'b' || key == 'B') {
@@ -1772,23 +1721,15 @@ static int client_run_tui(const dom_app_ui_run_config* run_cfg,
                     } else if (key == 'd' || key == 'D') {
                         client_ui_apply_action(&ui, CLIENT_ACTION_DEBUG_TOGGLE, &log, compat_expect);
                     }
-                } else if (ui.screen == CLIENT_UI_PLAYABLE) {
-                    if (key == '1') {
-                        client_ui_apply_action(&ui, CLIENT_ACTION_INTENT_SURVEY, &log, compat_expect);
-                    } else if (key == '2') {
-                        client_ui_apply_action(&ui, CLIENT_ACTION_INTENT_EXTRACT, &log, compat_expect);
-                    } else if (key == '3') {
-                        client_ui_apply_action(&ui, CLIENT_ACTION_INTENT_FABRICATE, &log, compat_expect);
-                    } else if (key == '4') {
-                        client_ui_apply_action(&ui, CLIENT_ACTION_INTENT_BUILD, &log, compat_expect);
-                    } else if (key == '5') {
-                        client_ui_apply_action(&ui, CLIENT_ACTION_INTENT_CONNECT, &log, compat_expect);
-                    } else if (key == 'b' || key == 'B') {
-                        client_ui_apply_action(&ui, CLIENT_ACTION_BACK, &log, compat_expect);
-                    }
+                }
+            }
+            if (ev.type == DSYS_EVENT_TEXT_INPUT) {
+                if (ui.console_active) {
+                    client_console_append_text(&ui, ev.payload.text.text);
                 }
             }
         }
+        client_ui_sync_events(&ui);
         if (ui.screen == CLIENT_UI_LOADING) {
             ui.loading_ticks += 1;
             if (ui.loading_ticks > 1) {
@@ -1800,119 +1741,11 @@ static int client_run_tui(const dom_app_ui_run_config* run_cfg,
             dsys_lifecycle_request_shutdown(DSYS_SHUTDOWN_APP_REQUEST);
         }
         dom_app_clock_advance(&clock);
-
-        if (tui) {
-            d_tui_destroy(tui);
+        dsys_terminal_clear();
+        client_ui_build_lines(&ui, lines, &line_count);
+        for (i = 0; i < line_count; ++i) {
+            dsys_terminal_draw_text(i, 0, lines[i]);
         }
-        tui = d_tui_create();
-        if (!tui) {
-            fprintf(stderr, "client: tui init failed\n");
-            goto cleanup;
-        }
-        root = d_tui_panel(tui, D_TUI_LAYOUT_VERTICAL);
-        d_tui_widget_add(root, d_tui_label(tui, "Dominium Client TUI"));
-        if (ui.screen == CLIENT_UI_LOADING) {
-            char line[CLIENT_UI_STATUS_MAX];
-            const dom_build_info_v1* build = dom_build_info_v1_get();
-            d_tui_widget_add(root, d_tui_label(tui, "Loading..."));
-            snprintf(line, sizeof(line), "engine=%s", DOMINO_VERSION_STRING);
-            d_tui_widget_add(root, d_tui_label(tui, line));
-            snprintf(line, sizeof(line), "game=%s", DOMINIUM_GAME_VERSION);
-            d_tui_widget_add(root, d_tui_label(tui, line));
-            snprintf(line, sizeof(line), "build_number=%u", (unsigned int)DOM_BUILD_NUMBER);
-            d_tui_widget_add(root, d_tui_label(tui, line));
-            snprintf(line, sizeof(line), "sim_schema_id=%llu", (unsigned long long)dom_sim_schema_id());
-            d_tui_widget_add(root, d_tui_label(tui, line));
-            if (build) {
-                snprintf(line, sizeof(line), "sim_schema_version=%u", (unsigned int)build->sim_schema_version);
-                d_tui_widget_add(root, d_tui_label(tui, line));
-                snprintf(line, sizeof(line), "content_schema_version=%u", (unsigned int)build->content_schema_version);
-                d_tui_widget_add(root, d_tui_label(tui, line));
-            } else {
-                d_tui_widget_add(root, d_tui_label(tui, "sim_schema_version=unknown"));
-                d_tui_widget_add(root, d_tui_label(tui, "content_schema_version=unknown"));
-            }
-            d_tui_widget_add(root, d_tui_label(tui, "protocol_law_targets=LAW_TARGETS@1.4.0"));
-            d_tui_widget_add(root, d_tui_label(tui, "protocol_control_caps=CONTROL_CAPS@1.0.0"));
-            d_tui_widget_add(root, d_tui_label(tui, "protocol_authority_tokens=AUTHORITY_TOKEN@1.0.0"));
-            snprintf(line, sizeof(line), "testx=%s", ui.testx_status);
-            d_tui_widget_add(root, d_tui_label(tui, line));
-            d_tui_widget_add(root, d_tui_label(tui, ui.pack_status));
-            snprintf(line, sizeof(line), "seed=%s", ui.seed_status);
-            d_tui_widget_add(root, d_tui_label(tui, line));
-            d_tui_widget_add(root, d_tui_label(tui, "Press Enter to continue"));
-        } else if (ui.screen == CLIENT_UI_MAIN_MENU) {
-            int i;
-            char line[CLIENT_UI_LABEL_MAX];
-            for (i = 0; i < CLIENT_UI_MENU_COUNT; ++i) {
-                snprintf(line, sizeof(line), "%c %s",
-                         (i == ui.menu_index) ? '>' : ' ',
-                         g_client_menu_items[i]);
-                d_tui_widget_add(root, d_tui_label(tui, line));
-            }
-            if (ui.action_status[0]) {
-                d_tui_widget_add(root, d_tui_label(tui, ui.action_status));
-            }
-        } else if (ui.screen == CLIENT_UI_SETTINGS) {
-            char lines[CLIENT_UI_MENU_COUNT][CLIENT_UI_LABEL_MAX];
-            int count = 0;
-            int i;
-            client_ui_settings_format_lines(&ui.settings, (char*)lines,
-                                            CLIENT_UI_MENU_COUNT,
-                                            CLIENT_UI_LABEL_MAX, &count);
-            for (i = 0; i < count; ++i) {
-                d_tui_widget_add(root, d_tui_label(tui, lines[i]));
-            }
-            d_tui_widget_add(root, d_tui_label(tui, "R renderer, +/- scale, P palette, L log, D debug, B back"));
-            if (ui.action_status[0]) {
-                d_tui_widget_add(root, d_tui_label(tui, ui.action_status));
-            }
-        } else if (ui.screen == CLIENT_UI_PLAYABLE) {
-            int i;
-            int idx;
-            d_tui_widget_add(root, d_tui_label(tui, "Playable Slice 1"));
-            d_tui_widget_add(root, d_tui_label(tui, "Topology"));
-            if (ui.topology_count > 0) {
-                for (i = 0; i < ui.topology_count; ++i) {
-                    d_tui_widget_add(root, d_tui_label(tui, ui.topology_lines[i]));
-                }
-            } else if (ui.topology_status[0]) {
-                d_tui_widget_add(root, d_tui_label(tui, ui.topology_status));
-            } else {
-                d_tui_widget_add(root, d_tui_label(tui, "topology=unknown"));
-            }
-            d_tui_widget_add(root, d_tui_label(tui, "Patch Fields"));
-            d_tui_widget_add(root, d_tui_label(tui, "bearing=unknown"));
-            d_tui_widget_add(root, d_tui_label(tui, "moisture=unknown"));
-            d_tui_widget_add(root, d_tui_label(tui, "slope=unknown"));
-            d_tui_widget_add(root, d_tui_label(tui, "Agent"));
-            d_tui_widget_add(root, d_tui_label(tui, "goals=unavailable"));
-            d_tui_widget_add(root, d_tui_label(tui, "plan=unavailable"));
-            d_tui_widget_add(root, d_tui_label(tui, "beliefs=unavailable"));
-            d_tui_widget_add(root, d_tui_label(tui, "Event Log"));
-            if (ui.event_count > 0) {
-                idx = ui.event_head;
-                for (i = 0; i < ui.event_count; ++i) {
-                    d_tui_widget_add(root, d_tui_label(tui, ui.event_lines[idx]));
-                    idx = (idx + 1) % CLIENT_UI_EVENT_LINES;
-                }
-            } else {
-                d_tui_widget_add(root, d_tui_label(tui, "event_log=empty"));
-            }
-            d_tui_widget_add(root, d_tui_label(tui, "Intents"));
-            d_tui_widget_add(root, d_tui_label(tui, "1) survey here"));
-            d_tui_widget_add(root, d_tui_label(tui, "2) extract here"));
-            d_tui_widget_add(root, d_tui_label(tui, "3) fabricate"));
-            d_tui_widget_add(root, d_tui_label(tui, "4) build"));
-            d_tui_widget_add(root, d_tui_label(tui, "5) connect network"));
-            d_tui_widget_add(root, d_tui_label(tui, "Keys: 1-5 intents, B back, Q exit"));
-            if (ui.action_status[0]) {
-                d_tui_widget_add(root, d_tui_label(tui, ui.action_status));
-            }
-        }
-        d_tui_set_root(tui, root);
-        d_tui_render(tui);
-
         dom_app_sleep_for_cap(timing_mode, frame_cap_ms, frame_start_us);
         frame_count += 1;
         if (max_frames > 0 && frame_count >= max_frames) {
@@ -1922,9 +1755,6 @@ static int client_run_tui(const dom_app_ui_run_config* run_cfg,
     normal_exit = 1;
 
 cleanup:
-    if (tui) {
-        d_tui_destroy(tui);
-    }
     if (terminal_ready) {
         dsys_terminal_shutdown();
     }
@@ -1978,7 +1808,7 @@ static int client_run_gui(const dom_app_ui_run_config* run_cfg,
     int max_frames = run_cfg && run_cfg->max_frames_set ? (int)run_cfg->max_frames : 0;
     int frame_count = 0;
 
-    client_ui_state_init(&ui, settings, compat_expect);
+    client_ui_state_init(&ui, settings, compat_expect, timing_mode);
     dom_app_ui_event_log_init(&log);
     if (run_cfg && run_cfg->log_set) {
         if (!dom_app_ui_event_log_open(&log, run_cfg->log_path)) {
@@ -2075,6 +1905,23 @@ static int client_run_gui(const dom_app_ui_run_config* run_cfg,
             }
             if (ev.type == DSYS_EVENT_KEY_DOWN) {
                 int key = ev.payload.key.key;
+                if (ui.console_active) {
+                    if (key == 27) {
+                        ui.console_active = 0;
+                    } else if (key == 8 || key == 127) {
+                        client_console_backspace(&ui);
+                    } else if (key == '\r' || key == '\n') {
+                        client_console_submit(&ui, &log);
+                    }
+                    continue;
+                }
+                if (key == '`' || key == '~') {
+                    ui.console_active = ui.console_active ? 0 : 1;
+                    if (ui.console_active) {
+                        client_console_clear(&ui);
+                    }
+                    continue;
+                }
                 if (key == 'q' || key == 'Q') {
                     client_ui_apply_action(&ui, CLIENT_ACTION_EXIT, &log, compat_expect);
                 } else if (ui.screen == CLIENT_UI_LOADING && (key == '\r' || key == '\n')) {
@@ -2086,6 +1933,76 @@ static int client_run_gui(const dom_app_ui_run_config* run_cfg,
                         ui.menu_index = (ui.menu_index + 1) % CLIENT_UI_MENU_COUNT;
                     } else if (key == '\r' || key == '\n' || key == ' ') {
                         client_ui_apply_action(&ui, (client_ui_action)(ui.menu_index + 1), &log, compat_expect);
+                    }
+                } else if (ui.screen == CLIENT_UI_WORLD_CREATE) {
+                    if (key == 'b' || key == 'B') {
+                        client_ui_apply_action(&ui, CLIENT_ACTION_BACK, &log, compat_expect);
+                    } else if (key == 't' || key == 'T' || key == 's' || key == 'S') {
+                        if (ui.shell.registry.count > 0u) {
+                            ui.shell.create_template_index =
+                                (ui.shell.create_template_index + 1u) % ui.shell.registry.count;
+                        }
+                    } else if (key == 'w' || key == 'W') {
+                        if (ui.shell.registry.count > 0u) {
+                            if (ui.shell.create_template_index == 0u) {
+                                ui.shell.create_template_index = ui.shell.registry.count - 1u;
+                            } else {
+                                ui.shell.create_template_index -= 1u;
+                            }
+                        }
+                    } else if (key == '+' || key == '=') {
+                        ui.shell.create_seed += 1u;
+                        client_ui_set_status(&ui, "seed=%llu", (unsigned long long)ui.shell.create_seed);
+                    } else if (key == '-' || key == '_') {
+                        if (ui.shell.create_seed > 0u) {
+                            ui.shell.create_seed -= 1u;
+                            client_ui_set_status(&ui, "seed=%llu", (unsigned long long)ui.shell.create_seed);
+                        }
+                    } else if (key == '1') {
+                        client_policy_toggle(&ui.shell.create_mode, DOM_SHELL_MODE_FREE);
+                    } else if (key == '2') {
+                        client_policy_toggle(&ui.shell.create_mode, DOM_SHELL_MODE_ORBIT);
+                    } else if (key == '3') {
+                        client_policy_toggle(&ui.shell.create_mode, DOM_SHELL_MODE_SURFACE);
+                    } else if (key == 'a' || key == 'A') {
+                        client_policy_toggle(&ui.shell.create_authority, DOM_SHELL_AUTH_POLICY);
+                    } else if (key == 'd' || key == 'D') {
+                        if (ui.shell.create_debug.count > 0u) {
+                            ui.shell.create_debug.count = 0u;
+                        } else {
+                            client_policy_toggle(&ui.shell.create_debug, "policy.debug.readonly");
+                        }
+                    } else if (key == '\r' || key == '\n') {
+                        client_ui_apply_action(&ui, CLIENT_ACTION_CREATE_WORLD, &log, compat_expect);
+                    }
+                } else if (ui.screen == CLIENT_UI_WORLD_VIEW) {
+                    if (key == 'b' || key == 'B') {
+                        client_ui_apply_action(&ui, CLIENT_ACTION_BACK, &log, compat_expect);
+                    } else if (key == '1') {
+                        dom_client_shell_set_mode(&ui.shell, DOM_SHELL_MODE_FREE, &log,
+                                                  ui.action_status, sizeof(ui.action_status), 0);
+                    } else if (key == '2') {
+                        dom_client_shell_set_mode(&ui.shell, DOM_SHELL_MODE_ORBIT, &log,
+                                                  ui.action_status, sizeof(ui.action_status), 0);
+                    } else if (key == '3') {
+                        dom_client_shell_set_mode(&ui.shell, DOM_SHELL_MODE_SURFACE, &log,
+                                                  ui.action_status, sizeof(ui.action_status), 0);
+                    } else if (key == 'w' || key == 'W') {
+                        dom_client_shell_move(&ui.shell, 0.0, 1.0, 0.0, &log);
+                    } else if (key == 's' || key == 'S') {
+                        dom_client_shell_move(&ui.shell, 0.0, -1.0, 0.0, &log);
+                    } else if (key == 'a' || key == 'A') {
+                        dom_client_shell_move(&ui.shell, -1.0, 0.0, 0.0, &log);
+                    } else if (key == 'd' || key == 'D') {
+                        dom_client_shell_move(&ui.shell, 1.0, 0.0, 0.0, &log);
+                    } else if (key == 'r' || key == 'R') {
+                        dom_client_shell_move(&ui.shell, 0.0, 0.0, 1.0, &log);
+                    } else if (key == 'f' || key == 'F') {
+                        dom_client_shell_move(&ui.shell, 0.0, 0.0, -1.0, &log);
+                    }
+                } else if (ui.screen == CLIENT_UI_REPLAY || ui.screen == CLIENT_UI_TOOLS) {
+                    if (key == 'b' || key == 'B') {
+                        client_ui_apply_action(&ui, CLIENT_ACTION_BACK, &log, compat_expect);
                     }
                 } else if (ui.screen == CLIENT_UI_SETTINGS) {
                     if (key == 'b' || key == 'B') {
@@ -2103,20 +2020,11 @@ static int client_run_gui(const dom_app_ui_run_config* run_cfg,
                     } else if (key == 'd' || key == 'D') {
                         client_ui_apply_action(&ui, CLIENT_ACTION_DEBUG_TOGGLE, &log, compat_expect);
                     }
-                } else if (ui.screen == CLIENT_UI_PLAYABLE) {
-                    if (key == '1') {
-                        client_ui_apply_action(&ui, CLIENT_ACTION_INTENT_SURVEY, &log, compat_expect);
-                    } else if (key == '2') {
-                        client_ui_apply_action(&ui, CLIENT_ACTION_INTENT_EXTRACT, &log, compat_expect);
-                    } else if (key == '3') {
-                        client_ui_apply_action(&ui, CLIENT_ACTION_INTENT_FABRICATE, &log, compat_expect);
-                    } else if (key == '4') {
-                        client_ui_apply_action(&ui, CLIENT_ACTION_INTENT_BUILD, &log, compat_expect);
-                    } else if (key == '5') {
-                        client_ui_apply_action(&ui, CLIENT_ACTION_INTENT_CONNECT, &log, compat_expect);
-                    } else if (key == 'b' || key == 'B') {
-                        client_ui_apply_action(&ui, CLIENT_ACTION_BACK, &log, compat_expect);
-                    }
+                }
+            }
+            if (ev.type == DSYS_EVENT_TEXT_INPUT) {
+                if (ui.console_active) {
+                    client_console_append_text(&ui, ev.payload.text.text);
                 }
             }
             if (!headless && ev.type == DSYS_EVENT_WINDOW_RESIZED) {
@@ -2126,6 +2034,7 @@ static int client_run_gui(const dom_app_ui_run_config* run_cfg,
                 }
             }
         }
+        client_ui_sync_events(&ui);
         if (ui.screen == CLIENT_UI_LOADING) {
             ui.loading_ticks += 1;
             if (ui.loading_ticks > 1) {

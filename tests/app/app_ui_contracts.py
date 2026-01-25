@@ -105,7 +105,7 @@ def main():
             "--renderer",
             "null",
             "--ui-script",
-            "start,settings,back,exit",
+            "new-world,settings,back,exit",
             "--ui-frames",
             "4",
             "--ui-log",
@@ -113,7 +113,9 @@ def main():
         ]
     )[0]
     nav_text = read_text(nav_log)
-    if "launcher.start" not in nav_text or "launcher.settings" not in nav_text or "launcher.exit" not in nav_text:
+    if ("launcher.new_world" not in nav_text or
+            "launcher.settings" not in nav_text or
+            "launcher.exit" not in nav_text):
         sys.stderr.write("FAIL: launcher navigation log missing events\n")
         ok = False
 
@@ -121,8 +123,8 @@ def main():
     log_cli = os.path.join(temp_root, "launcher_cli.log")
     log_gui = os.path.join(temp_root, "launcher_gui.log")
     ok = ok and compare_event_logs(
-        "launcher.start",
-        [args.launcher, "--ui-log", log_cli, "start"],
+        "launcher.new_world",
+        [args.launcher, "--ui-log", log_cli, "new-world"],
         [
             args.launcher,
             "--ui=gui",
@@ -132,7 +134,22 @@ def main():
             "--ui-log",
             log_gui,
             "--ui-script",
-            "start",
+            "new-world",
+            "--ui-frames",
+            "2",
+        ],
+    )
+    log_tui = os.path.join(temp_root, "launcher_tui.log")
+    ok = ok and compare_event_logs(
+        "launcher.new_world.tui",
+        [args.launcher, "--ui-log", log_cli, "new-world"],
+        [
+            args.launcher,
+            "--ui=tui",
+            "--ui-log",
+            log_tui,
+            "--ui-script",
+            "new-world",
             "--ui-frames",
             "2",
         ],
@@ -157,12 +174,27 @@ def main():
             "2",
         ],
     )
+    log_tui = os.path.join(temp_root, "tools_tui.log")
+    ok = ok and compare_event_logs(
+        "tools.settings.tui",
+        [args.tools, "--ui-log", log_cli, "settings"],
+        [
+            args.tools,
+            "--ui=tui",
+            "--ui-log",
+            log_tui,
+            "--ui-script",
+            "settings",
+            "--ui-frames",
+            "2",
+        ],
+    )
 
     log_cli = os.path.join(temp_root, "client_cli.log")
     log_gui = os.path.join(temp_root, "client_gui.log")
     ok = ok and compare_event_logs(
-        "client.start",
-        [args.client, "--ui-log", log_cli, "start"],
+        "client.world.create",
+        [args.client, "--ui-log", log_cli, "new-world"],
         [
             args.client,
             "--ui=gui",
@@ -172,9 +204,24 @@ def main():
             "--ui-log",
             log_gui,
             "--ui-script",
-            "start",
+            "new-world,create-world",
             "--ui-frames",
-            "2",
+            "3",
+        ],
+    )
+    log_tui = os.path.join(temp_root, "client_tui.log")
+    ok = ok and compare_event_logs(
+        "client.world.create.tui",
+        [args.client, "--ui-log", log_cli, "new-world"],
+        [
+            args.client,
+            "--ui=tui",
+            "--ui-log",
+            log_tui,
+            "--ui-script",
+            "new-world,create-world",
+            "--ui-frames",
+            "3",
         ],
     )
 
@@ -189,7 +236,7 @@ def main():
             "--renderer",
             "null",
             "--ui-script",
-            "start",
+            "settings",
             "--ui-frames",
             "2",
         ]
@@ -235,7 +282,7 @@ def main():
                 "--ui-log",
                 log_a,
                 "--ui-script",
-                "start",
+                "new-world",
                 "--ui-frames",
                 "2",
             ]
@@ -250,7 +297,7 @@ def main():
                 "--ui-log",
                 log_b,
                 "--ui-script",
-                "start",
+                "new-world",
                 "--ui-frames",
                 "2",
             ]

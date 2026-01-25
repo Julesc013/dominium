@@ -58,17 +58,18 @@ static void tools_print_help(void)
     printf("commands:\\n");
     printf("  inspect    Inspect read-only topology and metadata\\n");
     printf("  validate   Validate compatibility/portable metadata\\n");
-    printf("  replay     Replay viewer (unsupported)\\n");
-    printf("  start           Start (unavailable in tools)\\n");
-    printf("  load-save       Load save (unavailable in tools)\\n");
+    printf("  replay     Replay viewer (default replay/save)\\n");
+    printf("  new-world       Create a new world (unavailable in tools)\\n");
+    printf("  load-world      Load save (unavailable in tools)\\n");
     printf("  inspect-replay  Inspect replay (alias for replay)\\n");
+    printf("  snapshot-viewer Snapshot viewer (default save path)\\n");
     printf("  tools           Open tools menu (UI)\\n");
     printf("  settings        Show current UI settings\\n");
     printf("  world-inspector        World inspector (read-only)\\n");
-    printf("  agent-inspector        Agent inspector (unavailable)\\n");
-    printf("  institution-inspector  Institution inspector (unavailable)\\n");
-    printf("  history-viewer         History/replay viewer (unsupported)\\n");
+    printf("  history-viewer         History/replay viewer (default replay/save)\\n");
+    printf("  template-tools         Template diff/validation (see worlddef)\\n");
     printf("  pack-inspector         Pack/capability inspector (read-only)\\n");
+    printf("  worlddef <subcmd>      WorldDefinition CLI bridge (list-templates, generate, validate, diff, equivalence, summarize)\\n");
     printf("  exit            Exit tools\\n");
 }
 
@@ -274,6 +275,11 @@ static void tools_ui_settings_format_lines(const tools_ui_settings* settings,
 #define TOOLS_UI_RENDERER_MAX 8
 #define TOOLS_UI_TOOL_LINES 32
 
+#define TOOLS_SAVE_HEADER "DOMINIUM_SAVE_V1"
+#define TOOLS_REPLAY_HEADER "DOMINIUM_REPLAY_V1"
+#define TOOLS_DEFAULT_SAVE_PATH "data/saves/world.save"
+#define TOOLS_DEFAULT_REPLAY_PATH "data/replays/world.replay"
+
 typedef enum tools_ui_screen {
     TOOLS_UI_LOADING = 0,
     TOOLS_UI_MAIN_MENU,
@@ -285,25 +291,25 @@ typedef enum tools_ui_screen {
 typedef enum tools_ui_tool {
     TOOLS_TOOL_NONE = 0,
     TOOLS_TOOL_WORLD,
-    TOOLS_TOOL_AGENT,
-    TOOLS_TOOL_INSTITUTION,
+    TOOLS_TOOL_SNAPSHOT,
     TOOLS_TOOL_HISTORY,
+    TOOLS_TOOL_TEMPLATE,
     TOOLS_TOOL_PACK
 } tools_ui_tool;
 
 typedef enum tools_ui_action {
     TOOLS_ACTION_NONE = 0,
-    TOOLS_ACTION_START,
-    TOOLS_ACTION_LOAD_SAVE,
+    TOOLS_ACTION_NEW_WORLD,
+    TOOLS_ACTION_LOAD_WORLD,
     TOOLS_ACTION_INSPECT_REPLAY,
     TOOLS_ACTION_TOOLS_MENU,
     TOOLS_ACTION_SETTINGS,
     TOOLS_ACTION_EXIT,
     TOOLS_ACTION_BACK,
     TOOLS_ACTION_WORLD_INSPECTOR,
-    TOOLS_ACTION_AGENT_INSPECTOR,
-    TOOLS_ACTION_INSTITUTION_INSPECTOR,
+    TOOLS_ACTION_SNAPSHOT_VIEWER,
     TOOLS_ACTION_HISTORY_VIEWER,
+    TOOLS_ACTION_TEMPLATE_TOOLS,
     TOOLS_ACTION_PACK_INSPECTOR,
     TOOLS_ACTION_RENDERER_NEXT,
     TOOLS_ACTION_SCALE_UP,
@@ -343,8 +349,8 @@ typedef struct tools_ui_state {
 } tools_ui_state;
 
 static const char* g_tools_main_menu_items[TOOLS_UI_MAIN_MENU_COUNT] = {
-    "Start (procedural universe)",
-    "Load Save",
+    "New World",
+    "Load World",
     "Inspect Replay",
     "Tools",
     "Settings",
@@ -353,9 +359,9 @@ static const char* g_tools_main_menu_items[TOOLS_UI_MAIN_MENU_COUNT] = {
 
 static const char* g_tools_menu_items[TOOLS_UI_TOOLS_MENU_COUNT] = {
     "World Inspector",
-    "Agent Inspector",
-    "Institution Inspector",
-    "History / Replay Viewer",
+    "Snapshot Viewer",
+    "Replay Viewer",
+    "Template Diff / Validate",
     "Pack / Capability Inspector",
     "Back"
 };
@@ -453,7 +459,7 @@ static int tools_run_tui_legacy(d_app_timing_mode timing_mode,
         return D_APP_EXIT_FAILURE;
     }
     dsys_ready = 1;
-    if (!dsys_terminal_init()) {
+    if (dsys_terminal_init() != 0) {
         fprintf(stderr, "tools: terminal unavailable\n");
         goto cleanup;
     }
@@ -549,7 +555,7 @@ cleanup:
         return tools_run_validate(DOM_APP_FORMAT_TEXT, compat_expect);
     }
     if (state.action == TOOLS_TUI_REPLAY) {
-        return tools_run_replay();
+        return tools_run_replay(0, 1);
     }
     return result;
 }
@@ -747,12 +753,12 @@ static const char* tools_ui_tool_key(tools_ui_tool tool)
     switch (tool) {
     case TOOLS_TOOL_WORLD:
         return "tools_world_inspector";
-    case TOOLS_TOOL_AGENT:
-        return "tools_agent_inspector";
-    case TOOLS_TOOL_INSTITUTION:
-        return "tools_institution_inspector";
+    case TOOLS_TOOL_SNAPSHOT:
+        return "tools_snapshot_viewer";
     case TOOLS_TOOL_HISTORY:
         return "tools_history_viewer";
+    case TOOLS_TOOL_TEMPLATE:
+        return "tools_template_tools";
     case TOOLS_TOOL_PACK:
         return "tools_pack_inspector";
     default:
@@ -776,6 +782,174 @@ static void tools_ui_add_tool_line(tools_ui_state* state, const char* text)
     state->tool_line_count += 1;
 }
 
+typedef void (*tools_line_sink)(void* ctx, const char* line);
+
+static void tools_sink_stdout(void* ctx, const char* line)
+{
+    (void)ctx;
+    if (line && line[0]) {
+        printf("%s\n", line);
+    }
+}
+
+static void tools_sink_tool_lines(void* ctx, const char* line)
+{
+    tools_ui_state* state = (tools_ui_state*)ctx;
+    if (state && line && line[0]) {
+        tools_ui_add_tool_line(state, line);
+    }
+}
+
+static int tools_parse_save_summary(const char* path,
+                                    tools_line_sink sink,
+                                    void* ctx,
+                                    char* err,
+                                    size_t err_cap)
+{
+    FILE* f;
+    char line[TOOLS_UI_LABEL_MAX * 2];
+    int have_header = 0;
+    int in_summary = 0;
+    int have_summary = 0;
+
+    if (!path || !path[0]) {
+        if (err && err_cap > 0u) {
+            snprintf(err, err_cap, "save path missing");
+        }
+        return 0;
+    }
+    f = fopen(path, "r");
+    if (!f) {
+        if (err && err_cap > 0u) {
+            snprintf(err, err_cap, "save open failed");
+        }
+        return 0;
+    }
+    while (fgets(line, sizeof(line), f)) {
+        size_t len = strlen(line);
+        while (len > 0u && (line[len - 1u] == '\n' || line[len - 1u] == '\r')) {
+            line[--len] = '\0';
+        }
+        if (!have_header) {
+            if (strcmp(line, TOOLS_SAVE_HEADER) != 0) {
+                fclose(f);
+                if (err && err_cap > 0u) {
+                    snprintf(err, err_cap, "save header mismatch");
+                }
+                return 0;
+            }
+            have_header = 1;
+            continue;
+        }
+        if (strcmp(line, "summary_begin") == 0) {
+            in_summary = 1;
+            continue;
+        }
+        if (strcmp(line, "summary_end") == 0) {
+            in_summary = 0;
+            have_summary = 1;
+            break;
+        }
+        if (!in_summary) {
+            if (strncmp(line, "worlddef_len=", 13) == 0 ||
+                strncmp(line, "worlddef_hash=", 14) == 0) {
+                if (sink) {
+                    sink(ctx, line);
+                }
+            }
+            continue;
+        }
+        if (sink) {
+            sink(ctx, line);
+        }
+    }
+    fclose(f);
+    if (!have_header || !have_summary) {
+        if (err && err_cap > 0u) {
+            snprintf(err, err_cap, "summary missing");
+        }
+        return 0;
+    }
+    return 1;
+}
+
+static int tools_parse_replay_events(const char* path,
+                                     tools_line_sink sink,
+                                     void* ctx,
+                                     char* err,
+                                     size_t err_cap,
+                                     int* out_events)
+{
+    FILE* f;
+    char line[TOOLS_UI_LABEL_MAX * 2];
+    int header_checked = 0;
+    int replay_header = 0;
+    int events = 0;
+
+    if (out_events) {
+        *out_events = 0;
+    }
+    if (!path || !path[0]) {
+        if (err && err_cap > 0u) {
+            snprintf(err, err_cap, "replay path missing");
+        }
+        return 0;
+    }
+    f = fopen(path, "r");
+    if (!f) {
+        if (err && err_cap > 0u) {
+            snprintf(err, err_cap, "replay open failed");
+        }
+        return 0;
+    }
+    while (fgets(line, sizeof(line), f)) {
+        size_t len = strlen(line);
+        while (len > 0u && (line[len - 1u] == '\n' || line[len - 1u] == '\r')) {
+            line[--len] = '\0';
+        }
+        if (!header_checked) {
+            header_checked = 1;
+            if (strcmp(line, TOOLS_SAVE_HEADER) == 0) {
+                replay_header = 0;
+                continue;
+            }
+            if (strcmp(line, TOOLS_REPLAY_HEADER) == 0) {
+                replay_header = 1;
+                continue;
+            }
+            replay_header = 1;
+        }
+        if (!replay_header) {
+            if (strcmp(line, "events_begin") == 0) {
+                replay_header = 2;
+            }
+            continue;
+        }
+        if (replay_header == 2) {
+            if (strcmp(line, "events_end") == 0) {
+                break;
+            }
+        }
+        if (line[0] && sink) {
+            sink(ctx, line);
+        }
+        if (line[0]) {
+            events += 1;
+        }
+    }
+    fclose(f);
+    if (events <= 0) {
+        if (err && err_cap > 0u) {
+            snprintf(err, err_cap, "replay empty");
+        }
+        return 0;
+    }
+    if (out_events) {
+        *out_events = events;
+    }
+    return 1;
+}
+
 static int tools_ui_build_tool_view(tools_ui_state* state,
                                     tools_ui_tool tool,
                                     const dom_app_compat_expect* compat)
@@ -791,6 +965,67 @@ static int tools_ui_build_tool_view(tools_ui_state* state,
     }
     state->tool = tool;
     state->tool_line_count = 0;
+
+    if (tool == TOOLS_TOOL_SNAPSHOT) {
+        char err[96];
+        err[0] = '\0';
+        snprintf(line, sizeof(line), "snapshot_path=%s", TOOLS_DEFAULT_SAVE_PATH);
+        tools_ui_add_tool_line(state, line);
+        ok = tools_parse_save_summary(TOOLS_DEFAULT_SAVE_PATH,
+                                      tools_sink_tool_lines,
+                                      state,
+                                      err,
+                                      sizeof(err));
+        if (!ok) {
+            snprintf(line, sizeof(line), "%s=unavailable", tools_ui_tool_key(tool));
+            tools_ui_add_tool_line(state, line);
+            if (err[0]) {
+                snprintf(line, sizeof(line), "reason=%s", err);
+                tools_ui_add_tool_line(state, line);
+            }
+        }
+        return ok;
+    }
+    if (tool == TOOLS_TOOL_HISTORY) {
+        char err[96];
+        int events = 0;
+        const char* path = TOOLS_DEFAULT_REPLAY_PATH;
+        err[0] = '\0';
+        ok = tools_parse_replay_events(path,
+                                       tools_sink_tool_lines,
+                                       state,
+                                       err,
+                                       sizeof(err),
+                                       &events);
+        if (!ok) {
+            path = TOOLS_DEFAULT_SAVE_PATH;
+            ok = tools_parse_replay_events(path,
+                                           tools_sink_tool_lines,
+                                           state,
+                                           err,
+                                           sizeof(err),
+                                           &events);
+        }
+        snprintf(line, sizeof(line), "replay_path=%s", path);
+        tools_ui_add_tool_line(state, line);
+        if (ok) {
+            snprintf(line, sizeof(line), "events=%d", events);
+            tools_ui_add_tool_line(state, line);
+        } else {
+            snprintf(line, sizeof(line), "%s=unavailable", tools_ui_tool_key(tool));
+            tools_ui_add_tool_line(state, line);
+            if (err[0]) {
+                snprintf(line, sizeof(line), "reason=%s", err);
+                tools_ui_add_tool_line(state, line);
+            }
+        }
+        return ok;
+    }
+    if (tool == TOOLS_TOOL_TEMPLATE) {
+        tools_ui_add_tool_line(state, "template_tools=cli_only");
+        tools_ui_add_tool_line(state, "hint=tools worlddef <subcommand>");
+        return 0;
+    }
 
     if (tool == TOOLS_TOOL_WORLD || tool == TOOLS_TOOL_PACK) {
         dom_app_ro_init(&ro);
@@ -873,17 +1108,20 @@ static void tools_ui_apply_action(tools_ui_state* state,
         return;
     }
     switch (action) {
-    case TOOLS_ACTION_START:
-        tools_ui_set_status(state, "tools_start=unavailable");
-        dom_app_ui_event_log_emit(log, "tools.start", "result=unavailable");
+    case TOOLS_ACTION_NEW_WORLD:
+        tools_ui_set_status(state, "tools_new_world=unavailable");
+        dom_app_ui_event_log_emit(log, "tools.new_world", "result=unavailable");
         break;
-    case TOOLS_ACTION_LOAD_SAVE:
-        tools_ui_set_status(state, "tools_load_save=unavailable");
-        dom_app_ui_event_log_emit(log, "tools.load_save", "result=unavailable");
+    case TOOLS_ACTION_LOAD_WORLD:
+        tools_ui_set_status(state, "tools_load_world=unavailable");
+        dom_app_ui_event_log_emit(log, "tools.load_world", "result=unavailable");
         break;
     case TOOLS_ACTION_INSPECT_REPLAY:
-        tools_ui_set_status(state, "tools_inspect_replay=unavailable");
-        dom_app_ui_event_log_emit(log, "tools.inspect_replay", "result=unavailable");
+        ok = tools_ui_build_tool_view(state, TOOLS_TOOL_HISTORY, compat);
+        state->screen = TOOLS_UI_TOOL_VIEW;
+        tools_ui_set_status(state, "tools_inspect_replay=%s", ok ? "ok" : "unavailable");
+        dom_app_ui_event_log_emit(log, "tools.inspect_replay",
+                                  ok ? "result=ok" : "result=unavailable");
         break;
     case TOOLS_ACTION_TOOLS_MENU:
         state->screen = TOOLS_UI_TOOLS_MENU;
@@ -914,18 +1152,11 @@ static void tools_ui_apply_action(tools_ui_state* state,
         dom_app_ui_event_log_emit(log, "tools.world_inspector",
                                   ok ? "result=ok" : "result=unavailable");
         break;
-    case TOOLS_ACTION_AGENT_INSPECTOR:
-        ok = tools_ui_build_tool_view(state, TOOLS_TOOL_AGENT, compat);
+    case TOOLS_ACTION_SNAPSHOT_VIEWER:
+        ok = tools_ui_build_tool_view(state, TOOLS_TOOL_SNAPSHOT, compat);
         state->screen = TOOLS_UI_TOOL_VIEW;
-        tools_ui_set_status(state, "tools_agent_inspector=%s", ok ? "ok" : "unavailable");
-        dom_app_ui_event_log_emit(log, "tools.agent_inspector",
-                                  ok ? "result=ok" : "result=unavailable");
-        break;
-    case TOOLS_ACTION_INSTITUTION_INSPECTOR:
-        ok = tools_ui_build_tool_view(state, TOOLS_TOOL_INSTITUTION, compat);
-        state->screen = TOOLS_UI_TOOL_VIEW;
-        tools_ui_set_status(state, "tools_institution_inspector=%s", ok ? "ok" : "unavailable");
-        dom_app_ui_event_log_emit(log, "tools.institution_inspector",
+        tools_ui_set_status(state, "tools_snapshot_viewer=%s", ok ? "ok" : "unavailable");
+        dom_app_ui_event_log_emit(log, "tools.snapshot_viewer",
                                   ok ? "result=ok" : "result=unavailable");
         break;
     case TOOLS_ACTION_HISTORY_VIEWER:
@@ -933,6 +1164,13 @@ static void tools_ui_apply_action(tools_ui_state* state,
         state->screen = TOOLS_UI_TOOL_VIEW;
         tools_ui_set_status(state, "tools_history_viewer=%s", ok ? "ok" : "unavailable");
         dom_app_ui_event_log_emit(log, "tools.history_viewer",
+                                  ok ? "result=ok" : "result=unavailable");
+        break;
+    case TOOLS_ACTION_TEMPLATE_TOOLS:
+        ok = tools_ui_build_tool_view(state, TOOLS_TOOL_TEMPLATE, compat);
+        state->screen = TOOLS_UI_TOOL_VIEW;
+        tools_ui_set_status(state, "tools_template_tools=%s", ok ? "ok" : "unavailable");
+        dom_app_ui_event_log_emit(log, "tools.template_tools",
                                   ok ? "result=ok" : "result=unavailable");
         break;
     case TOOLS_ACTION_PACK_INSPECTOR:
@@ -980,19 +1218,21 @@ static tools_ui_action tools_ui_action_from_token(const char* token)
     if (!token || !token[0]) {
         return TOOLS_ACTION_NONE;
     }
-    if (strcmp(token, "start") == 0) return TOOLS_ACTION_START;
-    if (strcmp(token, "load") == 0 || strcmp(token, "load-save") == 0) return TOOLS_ACTION_LOAD_SAVE;
+    if (strcmp(token, "new-world") == 0 || strcmp(token, "start") == 0) return TOOLS_ACTION_NEW_WORLD;
+    if (strcmp(token, "load-world") == 0 || strcmp(token, "load") == 0 || strcmp(token, "load-save") == 0) {
+        return TOOLS_ACTION_LOAD_WORLD;
+    }
     if (strcmp(token, "replay") == 0 || strcmp(token, "inspect-replay") == 0) return TOOLS_ACTION_INSPECT_REPLAY;
     if (strcmp(token, "tools") == 0) return TOOLS_ACTION_TOOLS_MENU;
     if (strcmp(token, "settings") == 0) return TOOLS_ACTION_SETTINGS;
     if (strcmp(token, "exit") == 0 || strcmp(token, "quit") == 0) return TOOLS_ACTION_EXIT;
     if (strcmp(token, "back") == 0) return TOOLS_ACTION_BACK;
     if (strcmp(token, "world") == 0 || strcmp(token, "world-inspector") == 0) return TOOLS_ACTION_WORLD_INSPECTOR;
-    if (strcmp(token, "agent") == 0 || strcmp(token, "agent-inspector") == 0) return TOOLS_ACTION_AGENT_INSPECTOR;
-    if (strcmp(token, "institution") == 0 || strcmp(token, "institution-inspector") == 0) return TOOLS_ACTION_INSTITUTION_INSPECTOR;
+    if (strcmp(token, "snapshot") == 0 || strcmp(token, "snapshot-viewer") == 0) return TOOLS_ACTION_SNAPSHOT_VIEWER;
     if (strcmp(token, "history") == 0 || strcmp(token, "history-viewer") == 0 || strcmp(token, "replay-viewer") == 0) {
         return TOOLS_ACTION_HISTORY_VIEWER;
     }
+    if (strcmp(token, "template-tools") == 0 || strcmp(token, "template") == 0) return TOOLS_ACTION_TEMPLATE_TOOLS;
     if (strcmp(token, "pack") == 0 || strcmp(token, "pack-inspector") == 0) return TOOLS_ACTION_PACK_INSPECTOR;
     if (strcmp(token, "renderer-next") == 0) return TOOLS_ACTION_RENDERER_NEXT;
     if (strcmp(token, "scale-up") == 0) return TOOLS_ACTION_SCALE_UP;
@@ -1203,7 +1443,7 @@ static int tools_run_tui(const dom_app_ui_run_config* run_cfg,
         return D_APP_EXIT_FAILURE;
     }
     dsys_ready = 1;
-    if (!dsys_terminal_init()) {
+    if (dsys_terminal_init() != 0) {
         fprintf(stderr, "tools: terminal unavailable\n");
         goto cleanup;
     }
@@ -1251,9 +1491,9 @@ static int tools_run_tui(const dom_app_ui_run_config* run_cfg,
                         tools_ui_action action = TOOLS_ACTION_BACK;
                         switch (ui.tools_index) {
                         case 0: action = TOOLS_ACTION_WORLD_INSPECTOR; break;
-                        case 1: action = TOOLS_ACTION_AGENT_INSPECTOR; break;
-                        case 2: action = TOOLS_ACTION_INSTITUTION_INSPECTOR; break;
-                        case 3: action = TOOLS_ACTION_HISTORY_VIEWER; break;
+                        case 1: action = TOOLS_ACTION_SNAPSHOT_VIEWER; break;
+                        case 2: action = TOOLS_ACTION_HISTORY_VIEWER; break;
+                        case 3: action = TOOLS_ACTION_TEMPLATE_TOOLS; break;
                         case 4: action = TOOLS_ACTION_PACK_INSPECTOR; break;
                         default: action = TOOLS_ACTION_BACK; break;
                         }
@@ -1554,9 +1794,9 @@ static int tools_run_gui(const dom_app_ui_run_config* run_cfg,
                         tools_ui_action action = TOOLS_ACTION_BACK;
                         switch (ui.tools_index) {
                         case 0: action = TOOLS_ACTION_WORLD_INSPECTOR; break;
-                        case 1: action = TOOLS_ACTION_AGENT_INSPECTOR; break;
-                        case 2: action = TOOLS_ACTION_INSTITUTION_INSPECTOR; break;
-                        case 3: action = TOOLS_ACTION_HISTORY_VIEWER; break;
+                        case 1: action = TOOLS_ACTION_SNAPSHOT_VIEWER; break;
+                        case 2: action = TOOLS_ACTION_HISTORY_VIEWER; break;
+                        case 3: action = TOOLS_ACTION_TEMPLATE_TOOLS; break;
                         case 4: action = TOOLS_ACTION_PACK_INSPECTOR; break;
                         default: action = TOOLS_ACTION_BACK; break;
                         }
@@ -1787,10 +2027,177 @@ static int tools_run_validate(dom_app_output_format format,
     return D_APP_EXIT_OK;
 }
 
-static int tools_run_replay(void)
+static int tools_run_snapshot(const char* path, int emit_text)
 {
-    fprintf(stderr, "tools: replay unsupported\n");
-    return D_APP_EXIT_UNAVAILABLE;
+    char err[96];
+    const char* in_path = (path && path[0]) ? path : TOOLS_DEFAULT_SAVE_PATH;
+    err[0] = '\0';
+    if (emit_text) {
+        printf("snapshot_path=%s\n", in_path);
+    }
+    if (!tools_parse_save_summary(in_path, tools_sink_stdout, 0, err, sizeof(err))) {
+        if (emit_text) {
+            fprintf(stderr, "tools: snapshot unavailable (%s)\n", err[0] ? err : "load failed");
+        }
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    return D_APP_EXIT_OK;
+}
+
+static int tools_run_replay(const char* path, int emit_text)
+{
+    char err[96];
+    int events = 0;
+    const char* in_path = (path && path[0]) ? path : TOOLS_DEFAULT_REPLAY_PATH;
+    err[0] = '\0';
+    if (emit_text) {
+        printf("replay_path=%s\n", in_path);
+    }
+    if (!tools_parse_replay_events(in_path, tools_sink_stdout, 0, err, sizeof(err), &events)) {
+        const char* fallback = TOOLS_DEFAULT_SAVE_PATH;
+        if (!path || !path[0]) {
+            err[0] = '\0';
+            if (emit_text && strcmp(in_path, fallback) != 0) {
+                fprintf(stderr, "tools: replay fallback to %s\n", fallback);
+            }
+            if (emit_text) {
+                printf("replay_path=%s\n", fallback);
+            }
+            if (!tools_parse_replay_events(fallback, tools_sink_stdout, 0, err, sizeof(err), &events)) {
+                if (emit_text) {
+                    fprintf(stderr, "tools: replay unavailable (%s)\n", err[0] ? err : "load failed");
+                }
+                return D_APP_EXIT_UNAVAILABLE;
+            }
+        } else {
+            if (emit_text) {
+                fprintf(stderr, "tools: replay unavailable (%s)\n", err[0] ? err : "load failed");
+            }
+            return D_APP_EXIT_UNAVAILABLE;
+        }
+    }
+    if (emit_text) {
+        printf("events=%d\n", events);
+    }
+    return D_APP_EXIT_OK;
+}
+
+static const char* tools_python_cmd(void)
+{
+    const char* env = getenv("DOM_PYTHON");
+    return (env && env[0]) ? env : "python";
+}
+
+static int tools_cmd_needs_quotes(const char* text)
+{
+    const unsigned char* p = (const unsigned char*)text;
+    if (!text || !text[0]) {
+        return 1;
+    }
+    while (*p) {
+        if (*p == '"' || *p == ' ' || *p == '\t') {
+            return 1;
+        }
+        p++;
+    }
+    return 0;
+}
+
+static int tools_append_arg(char* dst, size_t cap, size_t* io_len, const char* arg)
+{
+    size_t len;
+    size_t pos;
+    if (!dst || cap == 0u || !io_len || !arg) {
+        return 0;
+    }
+    pos = *io_len;
+    if (pos >= cap) {
+        return 0;
+    }
+    if (pos + 1u >= cap) {
+        return 0;
+    }
+    dst[pos++] = ' ';
+    if (tools_cmd_needs_quotes(arg)) {
+        dst[pos++] = '"';
+        while (*arg) {
+            if (pos + 2u >= cap) {
+                return 0;
+            }
+            if (*arg == '"') {
+                dst[pos++] = '\\';
+            }
+            dst[pos++] = *arg++;
+        }
+        if (pos + 1u >= cap) {
+            return 0;
+        }
+        dst[pos++] = '"';
+    } else {
+        len = strlen(arg);
+        if (pos + len >= cap) {
+            return 0;
+        }
+        memcpy(dst + pos, arg, len);
+        pos += len;
+    }
+    dst[pos] = '\0';
+    *io_len = pos;
+    return 1;
+}
+
+static int tools_run_worlddef_cli(int argc, char** argv)
+{
+    char cmd[2048];
+    size_t pos = 0u;
+    int i;
+    int rc;
+    const char* python = tools_python_cmd();
+
+    if (!python || !python[0]) {
+        fprintf(stderr, "tools: python unavailable\n");
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    pos = (size_t)snprintf(cmd, sizeof(cmd),
+                           "%s tools/worldgen_offline/world_definition_cli.py",
+                           python);
+    if (pos >= sizeof(cmd)) {
+        fprintf(stderr, "tools: worlddef command too long\n");
+        return D_APP_EXIT_FAILURE;
+    }
+    for (i = 0; i < argc; ++i) {
+        if (!tools_append_arg(cmd, sizeof(cmd), &pos, argv[i])) {
+            fprintf(stderr, "tools: worlddef command too long\n");
+            return D_APP_EXIT_FAILURE;
+        }
+    }
+    rc = system(cmd);
+    if (rc == 0) {
+        return D_APP_EXIT_OK;
+    }
+    return D_APP_EXIT_FAILURE;
+}
+
+static const char* tools_find_path_arg(int argc, char** argv, int cmd_index)
+{
+    int i;
+    if (!argv || cmd_index < 0) {
+        return 0;
+    }
+    for (i = cmd_index + 1; i < argc; ++i) {
+        const char* arg = argv[i];
+        if (!arg || !arg[0]) {
+            continue;
+        }
+        if (arg[0] == '-') {
+            continue;
+        }
+        if (strncmp(arg, "path=", 5) == 0) {
+            return arg + 5;
+        }
+        return arg;
+    }
+    return 0;
 }
 
 static int tools_ui_execute_command(const char* cmd,
@@ -1813,28 +2220,28 @@ static int tools_ui_execute_command(const char* cmd,
         }
         return D_APP_EXIT_USAGE;
     }
-    if (strcmp(cmd, "start") == 0) {
-        dom_app_ui_event_log_emit(log, "tools.start", "result=unavailable");
+    if (strcmp(cmd, "new-world") == 0 || strcmp(cmd, "start") == 0) {
+        dom_app_ui_event_log_emit(log, "tools.new_world", "result=unavailable");
         if (status && status_cap > 0u) {
-            snprintf(status, status_cap, "tools_start=unavailable");
+            snprintf(status, status_cap, "tools_new_world=unavailable");
         }
         if (emit_text) {
-            fprintf(stderr, "tools: start unavailable\n");
+            fprintf(stderr, "tools: new-world unavailable\n");
         }
         return D_APP_EXIT_UNAVAILABLE;
     }
-    if (strcmp(cmd, "load-save") == 0) {
-        dom_app_ui_event_log_emit(log, "tools.load_save", "result=unavailable");
+    if (strcmp(cmd, "load-world") == 0 || strcmp(cmd, "load-save") == 0 || strcmp(cmd, "load") == 0) {
+        dom_app_ui_event_log_emit(log, "tools.load_world", "result=unavailable");
         if (status && status_cap > 0u) {
-            snprintf(status, status_cap, "tools_load_save=unavailable");
+            snprintf(status, status_cap, "tools_load_world=unavailable");
         }
         if (emit_text) {
-            fprintf(stderr, "tools: load-save unavailable\n");
+            fprintf(stderr, "tools: load-world unavailable\n");
         }
         return D_APP_EXIT_UNAVAILABLE;
     }
     if (strcmp(cmd, "inspect-replay") == 0) {
-        res = tools_run_replay();
+        res = tools_run_replay(0, emit_text);
         result_text = (res == D_APP_EXIT_OK) ? "ok" :
                       (res == D_APP_EXIT_UNAVAILABLE) ? "unavailable" : "failed";
         dom_app_ui_event_log_emit(log, "tools.inspect_replay",
@@ -1887,6 +2294,21 @@ static int tools_ui_execute_command(const char* cmd,
         }
         return D_APP_EXIT_OK;
     }
+    if (strcmp(cmd, "snapshot-viewer") == 0 || strcmp(cmd, "snapshot") == 0) {
+        res = tools_run_snapshot(0, emit_text);
+        result_text = (res == D_APP_EXIT_OK) ? "ok" :
+                      (res == D_APP_EXIT_UNAVAILABLE) ? "unavailable" : "failed";
+        dom_app_ui_event_log_emit(log, "tools.snapshot_viewer",
+                                  (res == D_APP_EXIT_OK) ? "result=ok" :
+                                  (res == D_APP_EXIT_UNAVAILABLE) ? "result=unavailable" : "result=failed");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "tools_snapshot_viewer=%s", result_text);
+        }
+        if (emit_text) {
+            printf("tools_snapshot_viewer=%s\n", result_text);
+        }
+        return res;
+    }
     if (strcmp(cmd, "world-inspector") == 0) {
         res = tools_run_inspect(format, compat);
         result_text = (res == D_APP_EXIT_OK) ? "ok" :
@@ -1902,28 +2324,8 @@ static int tools_ui_execute_command(const char* cmd,
         }
         return res;
     }
-    if (strcmp(cmd, "agent-inspector") == 0) {
-        dom_app_ui_event_log_emit(log, "tools.agent_inspector", "result=unavailable");
-        if (status && status_cap > 0u) {
-            snprintf(status, status_cap, "tools_agent_inspector=unavailable");
-        }
-        if (emit_text) {
-            fprintf(stderr, "tools: agent inspector unavailable\n");
-        }
-        return D_APP_EXIT_UNAVAILABLE;
-    }
-    if (strcmp(cmd, "institution-inspector") == 0) {
-        dom_app_ui_event_log_emit(log, "tools.institution_inspector", "result=unavailable");
-        if (status && status_cap > 0u) {
-            snprintf(status, status_cap, "tools_institution_inspector=unavailable");
-        }
-        if (emit_text) {
-            fprintf(stderr, "tools: institution inspector unavailable\n");
-        }
-        return D_APP_EXIT_UNAVAILABLE;
-    }
     if (strcmp(cmd, "history-viewer") == 0) {
-        res = tools_run_replay();
+        res = tools_run_replay(0, emit_text);
         result_text = (res == D_APP_EXIT_OK) ? "ok" :
                       (res == D_APP_EXIT_UNAVAILABLE) ? "unavailable" : "failed";
         dom_app_ui_event_log_emit(log, "tools.history_viewer",
@@ -1936,6 +2338,16 @@ static int tools_ui_execute_command(const char* cmd,
             printf("tools_history_viewer=%s\n", result_text);
         }
         return res;
+    }
+    if (strcmp(cmd, "template-tools") == 0) {
+        dom_app_ui_event_log_emit(log, "tools.template_tools", "result=unavailable");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "tools_template_tools=unavailable");
+        }
+        if (emit_text) {
+            fprintf(stderr, "tools: template tools use `tools worlddef` subcommands\n");
+        }
+        return D_APP_EXIT_UNAVAILABLE;
     }
     if (strcmp(cmd, "pack-inspector") == 0) {
         res = tools_run_inspect(format, compat);
@@ -1981,6 +2393,7 @@ int tools_main(int argc, char** argv)
     dom_app_ui_event_log ui_log;
     int ui_log_open = 0;
     const char* cmd = 0;
+    int cmd_index = -1;
     int i;
     dom_app_ui_request_init(&ui_req);
     dom_app_ui_run_config_init(&ui_run);
@@ -2278,6 +2691,13 @@ int tools_main(int argc, char** argv)
         if (argv[i][0] != '-') {
             if (!cmd) {
                 cmd = argv[i];
+                cmd_index = i;
+                continue;
+            }
+            if (strcmp(cmd, "worlddef") == 0 ||
+                strcmp(cmd, "replay") == 0 ||
+                strcmp(cmd, "snapshot") == 0 ||
+                strcmp(cmd, "snapshot-viewer") == 0) {
                 continue;
             }
             fprintf(stderr, "tools: unexpected argument '%s'\n", argv[i]);
@@ -2372,7 +2792,15 @@ int tools_main(int argc, char** argv)
         return tools_run_validate(output_format, &compat_expect);
     }
     if (strcmp(cmd, "replay") == 0) {
-        return tools_run_replay();
+        const char* path = tools_find_path_arg(argc, argv, cmd_index);
+        return tools_run_replay(path, 1);
+    }
+    if (strcmp(cmd, "snapshot") == 0 || strcmp(cmd, "snapshot-viewer") == 0) {
+        const char* path = tools_find_path_arg(argc, argv, cmd_index);
+        return tools_run_snapshot(path, 1);
+    }
+    if (strcmp(cmd, "worlddef") == 0) {
+        return tools_run_worlddef_cli(argc - cmd_index - 1, argv + cmd_index + 1);
     }
 
     if (ui_run.log_set && !ui_log_open) {

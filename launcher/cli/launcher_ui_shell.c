@@ -7,6 +7,14 @@ Launcher UI shell implementation.
 #include <stdlib.h>
 #include <string.h>
 
+#if defined(_WIN32)
+#include <io.h>
+#include <sys/stat.h>
+#else
+#include <dirent.h>
+#include <sys/stat.h>
+#endif
+
 #include "domino/build_info.h"
 #include "domino/gfx.h"
 #include "domino/render/backend_detect.h"
@@ -31,8 +39,8 @@ typedef enum launcher_ui_screen {
 
 typedef enum launcher_ui_action {
     LAUNCHER_ACTION_NONE = 0,
-    LAUNCHER_ACTION_START,
-    LAUNCHER_ACTION_LOAD_SAVE,
+    LAUNCHER_ACTION_NEW_WORLD,
+    LAUNCHER_ACTION_LOAD_WORLD,
     LAUNCHER_ACTION_INSPECT_REPLAY,
     LAUNCHER_ACTION_TOOLS,
     LAUNCHER_ACTION_SETTINGS,
@@ -63,6 +71,8 @@ typedef struct launcher_ui_state {
     int menu_index;
     char action_status[LAUNCHER_UI_STATUS_MAX];
     char pack_status[LAUNCHER_UI_STATUS_MAX];
+    char template_status[LAUNCHER_UI_STATUS_MAX];
+    char determinism_status[32];
     uint32_t package_count;
     uint32_t instance_count;
     char testx_status[32];
@@ -72,8 +82,8 @@ typedef struct launcher_ui_state {
 } launcher_ui_state;
 
 static const char* g_launcher_menu_items[LAUNCHER_UI_MENU_COUNT] = {
-    "Start (procedural universe)",
-    "Load Save",
+    "New World",
+    "Load World",
     "Inspect Replay",
     "Tools",
     "Settings",
@@ -157,23 +167,23 @@ int launcher_ui_execute_command(const char* cmd,
         }
         return D_APP_EXIT_USAGE;
     }
-    if (strcmp(cmd, "start") == 0) {
-        dom_app_ui_event_log_emit(log, "launcher.start", "mode=procedural");
+    if (strcmp(cmd, "new-world") == 0 || strcmp(cmd, "start") == 0) {
+        dom_app_ui_event_log_emit(log, "launcher.new_world", "result=unavailable");
         if (status && status_cap > 0u) {
-            snprintf(status, status_cap, "launcher_start=ok");
+            snprintf(status, status_cap, "launcher_new_world=unavailable");
         }
         if (emit_text) {
-            printf("launcher_start=ok\n");
+            fprintf(stderr, "launcher: new-world unavailable\n");
         }
-        return D_APP_EXIT_OK;
+        return D_APP_EXIT_UNAVAILABLE;
     }
-    if (strcmp(cmd, "load-save") == 0) {
-        dom_app_ui_event_log_emit(log, "launcher.load_save", "result=unavailable");
+    if (strcmp(cmd, "load-world") == 0 || strcmp(cmd, "load-save") == 0) {
+        dom_app_ui_event_log_emit(log, "launcher.load_world", "result=unavailable");
         if (status && status_cap > 0u) {
-            snprintf(status, status_cap, "launcher_load_save=unavailable");
+            snprintf(status, status_cap, "launcher_load_world=unavailable");
         }
         if (emit_text) {
-            fprintf(stderr, "launcher: load-save unavailable\n");
+            fprintf(stderr, "launcher: load-world unavailable\n");
         }
         return D_APP_EXIT_UNAVAILABLE;
     }
@@ -307,17 +317,89 @@ static const char* launcher_env_or_default(const char* key, const char* fallback
     return fallback;
 }
 
+static uint32_t launcher_count_pack_manifests(const char* root)
+{
+    uint32_t count = 0u;
+    if (!root || !root[0]) {
+        return 0u;
+    }
+#if defined(_WIN32)
+    {
+        struct _finddata_t data;
+        intptr_t handle;
+        char pattern[260];
+        snprintf(pattern, sizeof(pattern), "%s\\*", root);
+        handle = _findfirst(pattern, &data);
+        if (handle == -1) {
+            return 0u;
+        }
+        do {
+            if ((data.attrib & _A_SUBDIR) != 0) {
+                char manifest[260];
+                FILE* f = 0;
+                if (strcmp(data.name, ".") == 0 || strcmp(data.name, "..") == 0) {
+                    continue;
+                }
+                snprintf(manifest, sizeof(manifest), "%s\\%s\\pack_manifest.json", root, data.name);
+                f = fopen(manifest, "r");
+                if (f) {
+                    fclose(f);
+                    count += 1u;
+                }
+            }
+        } while (_findnext(handle, &data) == 0);
+        _findclose(handle);
+    }
+#else
+    {
+        DIR* dir = opendir(root);
+        struct dirent* entry;
+        if (!dir) {
+            return 0u;
+        }
+        while ((entry = readdir(dir)) != 0) {
+            char path[260];
+            char manifest[260];
+            struct stat st;
+            if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0) {
+                continue;
+            }
+            snprintf(path, sizeof(path), "%s/%s", root, entry->d_name);
+            if (stat(path, &st) != 0) {
+                continue;
+            }
+            if (!S_ISDIR(st.st_mode)) {
+                continue;
+            }
+            snprintf(manifest, sizeof(manifest), "%s/pack_manifest.json", path);
+            {
+                FILE* f = fopen(manifest, "r");
+                if (f) {
+                    fclose(f);
+                    count += 1u;
+                }
+            }
+        }
+        closedir(dir);
+    }
+#endif
+    return count;
+}
+
 static void launcher_ui_collect_loading(launcher_ui_state* state)
 {
     dom_app_readonly_adapter ro;
     dom_app_compat_report report;
     dom_app_ro_core_info core;
+    uint32_t pack_count = 0u;
     if (!state) {
         return;
     }
     state->package_count = 0u;
     state->instance_count = 0u;
-    snprintf(state->pack_status, sizeof(state->pack_status), "pack_status=unknown");
+    pack_count = launcher_count_pack_manifests("data/packs");
+    snprintf(state->pack_status, sizeof(state->pack_status),
+             "pack_discovery=ok packs=%u", (unsigned int)pack_count);
     dom_app_ro_init(&ro);
     dom_app_compat_report_init(&report, "launcher");
     if (dom_app_ro_open(&ro, 0, &report)) {
@@ -325,17 +407,20 @@ static void launcher_ui_collect_loading(launcher_ui_state* state)
             state->package_count = core.package_count;
             state->instance_count = core.instance_count;
             snprintf(state->pack_status, sizeof(state->pack_status),
-                     "pack_status=ok packages=%u instances=%u",
+                     "pack_discovery=ok packs=%u packages=%u instances=%u",
+                     (unsigned int)pack_count,
                      (unsigned int)core.package_count,
                      (unsigned int)core.instance_count);
         } else {
             snprintf(state->pack_status, sizeof(state->pack_status),
-                     "pack_status=failed");
+                     "pack_discovery=ok packs=%u core=unavailable",
+                     (unsigned int)pack_count);
         }
         dom_app_ro_close(&ro);
     } else {
         snprintf(state->pack_status, sizeof(state->pack_status),
-                 "pack_status=failed %s",
+                 "pack_discovery=ok packs=%u core=unavailable %s",
+                 (unsigned int)pack_count,
                  report.message[0] ? report.message : "compatibility failure");
     }
     strncpy(state->testx_status,
@@ -356,7 +441,8 @@ static void launcher_ui_collect_loading(launcher_ui_state* state)
 }
 
 static void launcher_ui_state_init(launcher_ui_state* state,
-                                   const launcher_ui_settings* settings)
+                                   const launcher_ui_settings* settings,
+                                   d_app_timing_mode timing_mode)
 {
     if (!state) {
         return;
@@ -377,6 +463,11 @@ static void launcher_ui_state_init(launcher_ui_state* state,
         launcher_settings_set_renderer(&state->settings,
                                        launcher_renderer_default(&state->renderers));
     }
+    snprintf(state->template_status, sizeof(state->template_status),
+             "template_registry=unavailable");
+    snprintf(state->determinism_status, sizeof(state->determinism_status),
+             "determinism=%s",
+             (timing_mode == D_APP_TIMING_INTERACTIVE) ? "interactive" : "deterministic");
     launcher_ui_collect_loading(state);
 }
 
@@ -408,13 +499,13 @@ static void launcher_ui_apply_action(launcher_ui_state* state,
         return;
     }
     switch (action) {
-    case LAUNCHER_ACTION_START:
-        res = launcher_ui_execute_command("start", &state->settings, log,
+    case LAUNCHER_ACTION_NEW_WORLD:
+        res = launcher_ui_execute_command("new-world", &state->settings, log,
                                           state->action_status, sizeof(state->action_status), 0);
         (void)res;
         break;
-    case LAUNCHER_ACTION_LOAD_SAVE:
-        res = launcher_ui_execute_command("load-save", &state->settings, log,
+    case LAUNCHER_ACTION_LOAD_WORLD:
+        res = launcher_ui_execute_command("load-world", &state->settings, log,
                                           state->action_status, sizeof(state->action_status), 0);
         (void)res;
         break;
@@ -485,8 +576,10 @@ static launcher_ui_action launcher_ui_action_from_token(const char* token)
     if (!token || !token[0]) {
         return LAUNCHER_ACTION_NONE;
     }
-    if (strcmp(token, "start") == 0) return LAUNCHER_ACTION_START;
-    if (strcmp(token, "load") == 0 || strcmp(token, "load-save") == 0) return LAUNCHER_ACTION_LOAD_SAVE;
+    if (strcmp(token, "new-world") == 0 || strcmp(token, "start") == 0) return LAUNCHER_ACTION_NEW_WORLD;
+    if (strcmp(token, "load-world") == 0 || strcmp(token, "load") == 0 || strcmp(token, "load-save") == 0) {
+        return LAUNCHER_ACTION_LOAD_WORLD;
+    }
     if (strcmp(token, "replay") == 0 || strcmp(token, "inspect-replay") == 0) return LAUNCHER_ACTION_INSPECT_REPLAY;
     if (strcmp(token, "tools") == 0) return LAUNCHER_ACTION_TOOLS;
     if (strcmp(token, "settings") == 0) return LAUNCHER_ACTION_SETTINGS;
@@ -592,6 +685,8 @@ static void launcher_gui_render(const launcher_ui_state* state,
         launcher_gui_draw_text(buf, 20, y, "protocol_law_targets=LAW_TARGETS@1.4.0", text); y += line_h;
         launcher_gui_draw_text(buf, 20, y, "protocol_control_caps=CONTROL_CAPS@1.0.0", text); y += line_h;
         launcher_gui_draw_text(buf, 20, y, "protocol_authority_tokens=AUTHORITY_TOKEN@1.0.0", text); y += line_h;
+        launcher_gui_draw_text(buf, 20, y, state->determinism_status, text); y += line_h;
+        launcher_gui_draw_text(buf, 20, y, state->template_status, text); y += line_h;
         snprintf(line, sizeof(line), "testx=%s", state->testx_status);
         launcher_gui_draw_text(buf, 20, y, line, text); y += line_h;
         launcher_gui_draw_text(buf, 20, y, state->pack_status, text); y += line_h;
@@ -654,7 +749,7 @@ int launcher_ui_run_tui(const dom_app_ui_run_config* run_cfg,
     int max_frames = run_cfg && run_cfg->max_frames_set ? (int)run_cfg->max_frames : 0;
     int frame_count = 0;
 
-    launcher_ui_state_init(&ui, settings);
+    launcher_ui_state_init(&ui, settings, timing_mode);
     dom_app_ui_event_log_init(&log);
     if (run_cfg && run_cfg->log_set) {
         if (!dom_app_ui_event_log_open(&log, run_cfg->log_path)) {
@@ -673,7 +768,7 @@ int launcher_ui_run_tui(const dom_app_ui_run_config* run_cfg,
         return D_APP_EXIT_FAILURE;
     }
     dsys_ready = 1;
-    if (!dsys_terminal_init()) {
+    if (dsys_terminal_init() != 0) {
         fprintf(stderr, "launcher: terminal unavailable\n");
         goto cleanup;
     }
@@ -778,6 +873,8 @@ int launcher_ui_run_tui(const dom_app_ui_run_config* run_cfg,
             d_tui_widget_add(root, d_tui_label(tui, "protocol_law_targets=LAW_TARGETS@1.4.0"));
             d_tui_widget_add(root, d_tui_label(tui, "protocol_control_caps=CONTROL_CAPS@1.0.0"));
             d_tui_widget_add(root, d_tui_label(tui, "protocol_authority_tokens=AUTHORITY_TOKEN@1.0.0"));
+            d_tui_widget_add(root, d_tui_label(tui, ui.determinism_status));
+            d_tui_widget_add(root, d_tui_label(tui, ui.template_status));
             snprintf(line, sizeof(line), "testx=%s", ui.testx_status);
             d_tui_widget_add(root, d_tui_label(tui, line));
             d_tui_widget_add(root, d_tui_label(tui, ui.pack_status));
@@ -874,7 +971,7 @@ int launcher_ui_run_gui(const dom_app_ui_run_config* run_cfg,
     int max_frames = run_cfg && run_cfg->max_frames_set ? (int)run_cfg->max_frames : 0;
     int frame_count = 0;
 
-    launcher_ui_state_init(&ui, settings);
+    launcher_ui_state_init(&ui, settings, timing_mode);
     dom_app_ui_event_log_init(&log);
     if (run_cfg && run_cfg->log_set) {
         if (!dom_app_ui_event_log_open(&log, run_cfg->log_path)) {
