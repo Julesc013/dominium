@@ -186,6 +186,17 @@ set_target_properties(physicalization_mvp_tests PROPERTIES
 )
 add_test(NAME physicalization_mvp COMMAND physicalization_mvp_tests)
 
+add_executable(player_embodiment_tests
+    player_embodiment_tests.cpp
+)
+target_link_libraries(player_embodiment_tests PRIVATE engine::domino game::dominium)
+set_target_properties(player_embodiment_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME player_embodiment COMMAND player_embodiment_tests)
+
 add_executable(execution_equivalence_tests
     execution_equivalence_tests.cpp
 )
