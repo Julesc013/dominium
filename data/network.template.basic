@@ -1,0 +1,6 @@
+# NETWORK TEMPLATE (BASIC)
+# Optional pattern; safe to remove.
+network_id = <u64>
+network_type = electrical|thermal|fluid|logistics|data
+nodes = [{node_id=<u64>, capacity_q16=<fixed-point>}...]
+edges = [{edge_id=<u64>, a=<u64>, b=<u64>, capacity_q16=<fixed-point>, loss_q16=<fixed-point>}...]

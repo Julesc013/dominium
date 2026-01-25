@@ -1,0 +1,8 @@
+# PART TEMPLATE (BASIC)
+# Optional pattern; safe to remove.
+part_id = <u64>
+mass_kg_q16 = <fixed-point>
+volume_m3_q16 = <fixed-point>
+interface_mask = <bitmask>
+failure_mode_mask = <bitmask>
+flags = <bitmask>
