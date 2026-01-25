@@ -74,6 +74,7 @@ add_library(dominium_game STATIC
     rules/physical/network_graph.cpp
     rules/physical/machine_ops.cpp
     rules/physical/infrastructure_effects.cpp
+    rules/player/player_intent.cpp
     mods/runtime/mod_manifest.cpp
     mods/runtime/mod_graph_resolver.cpp
     mods/runtime/mod_compat.cpp
