@@ -175,6 +175,17 @@ set_target_properties(agent_mvp_social_tests PROPERTIES
 )
 add_test(NAME agent_mvp_social COMMAND agent_mvp_social_tests)
 
+add_executable(physicalization_mvp_tests
+    physicalization_mvp_tests.cpp
+)
+target_link_libraries(physicalization_mvp_tests PRIVATE engine::domino game::dominium)
+set_target_properties(physicalization_mvp_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME physicalization_mvp COMMAND physicalization_mvp_tests)
+
 add_executable(execution_equivalence_tests
     execution_equivalence_tests.cpp
 )
