@@ -21,6 +21,8 @@ extern "C" {
 
 #define AGENT_PRIORITY_SCALE 1000u
 #define AGENT_NEED_SCALE 1000u
+#define AGENT_CONFIDENCE_MAX 65535u
+#define AGENT_GOAL_MAX_CONDITIONS 4u
 
 typedef enum agent_goal_type {
     AGENT_GOAL_SURVIVE = 0,
@@ -32,6 +34,27 @@ typedef enum agent_goal_type {
 } agent_goal_type;
 
 #define AGENT_GOAL_TYPE_COUNT 6u
+
+typedef enum agent_goal_status {
+    AGENT_GOAL_ACTIVE = 0,
+    AGENT_GOAL_DEFERRED = 1,
+    AGENT_GOAL_ABANDONED = 2,
+    AGENT_GOAL_SATISFIED = 3
+} agent_goal_status;
+
+typedef enum agent_goal_flags {
+    AGENT_GOAL_FLAG_NONE = 0u,
+    AGENT_GOAL_FLAG_ALLOW_UNKNOWN = (1u << 0u),
+    AGENT_GOAL_FLAG_REQUIRE_KNOWLEDGE = (1u << 1u)
+} agent_goal_flags;
+
+typedef enum agent_goal_condition_kind {
+    AGENT_GOAL_COND_NONE = 0,
+    AGENT_GOAL_COND_KNOWLEDGE = 1,
+    AGENT_GOAL_COND_RESOURCE = 2,
+    AGENT_GOAL_COND_THREAT = 3,
+    AGENT_GOAL_COND_DESTINATION = 4
+} agent_goal_condition_kind;
 
 typedef enum agent_refusal_code {
     AGENT_REFUSAL_NONE = 0,
@@ -47,7 +70,9 @@ typedef enum agent_refusal_code {
     AGENT_REFUSAL_AGGREGATION_NOT_ALLOWED = 10,
     AGENT_REFUSAL_REFINEMENT_LIMIT_REACHED = 11,
     AGENT_REFUSAL_COLLAPSE_BLOCKED_BY_INTEREST = 12,
-    AGENT_REFUSAL_AGENT_STATE_INCONSISTENT = 13
+    AGENT_REFUSAL_AGENT_STATE_INCONSISTENT = 13,
+    AGENT_REFUSAL_CONSTRAINT_DENIED = 14,
+    AGENT_REFUSAL_CONTRACT_VIOLATION = 15
 } agent_refusal_code;
 
 enum {
@@ -75,14 +100,57 @@ typedef struct agent_goal_preconditions {
     u32 required_knowledge;
 } agent_goal_preconditions;
 
+typedef struct agent_goal_condition {
+    u32 kind;
+    u64 subject_ref;
+    i32 threshold;
+    u32 flags;
+} agent_goal_condition;
+
 typedef struct agent_goal {
     u64 goal_id;
+    u64 agent_id;
     u32 type;
     u32 base_priority;
+    u32 urgency;
+    u32 acceptable_risk_q16;
+    dom_act_time_t horizon_act;
+    u32 epistemic_confidence_q16;
+    agent_goal_condition conditions[AGENT_GOAL_MAX_CONDITIONS];
+    u32 condition_count;
     agent_goal_preconditions preconditions;
     u32 satisfaction_flags;
     dom_act_time_t expiry_act;
+    u32 status;
+    u32 failure_count;
+    u32 oscillation_count;
+    u32 abandon_after_failures;
+    dom_act_time_t abandon_after_act;
+    dom_act_time_t defer_until_act;
+    u32 conflict_group;
+    u32 flags;
+    dom_act_time_t last_update_act;
 } agent_goal;
+
+typedef struct agent_goal_desc {
+    u64 agent_id;
+    u64 goal_id;
+    u32 type;
+    u32 base_priority;
+    u32 urgency;
+    u32 acceptable_risk_q16;
+    dom_act_time_t horizon_act;
+    u32 epistemic_confidence_q16;
+    const agent_goal_condition* conditions;
+    u32 condition_count;
+    agent_goal_preconditions preconditions;
+    u32 satisfaction_flags;
+    dom_act_time_t expiry_act;
+    u32 abandon_after_failures;
+    dom_act_time_t abandon_after_act;
+    u32 conflict_group;
+    u32 flags;
+} agent_goal_desc;
 
 typedef struct agent_goal_registry {
     agent_goal* goals;
@@ -98,12 +166,15 @@ void agent_goal_registry_init(agent_goal_registry* reg,
 agent_goal* agent_goal_find(agent_goal_registry* reg,
                             u64 goal_id);
 int agent_goal_register(agent_goal_registry* reg,
-                        u64 goal_id,
-                        u32 type,
-                        u32 base_priority,
-                        const agent_goal_preconditions* preconditions,
-                        u32 satisfaction_flags,
-                        dom_act_time_t expiry_act);
+                        const agent_goal_desc* desc,
+                        u64* out_goal_id);
+int agent_goal_set_status(agent_goal* goal,
+                          u32 status,
+                          dom_act_time_t now_act);
+int agent_goal_record_failure(agent_goal* goal,
+                              dom_act_time_t now_act);
+int agent_goal_record_oscillation(agent_goal* goal,
+                                  dom_act_time_t now_act);
 
 const char* agent_refusal_to_string(agent_refusal_code code);
 

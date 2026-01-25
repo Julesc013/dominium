@@ -16,13 +16,18 @@ DETERMINISM: Goal selection uses stable ordering and fixed-point scoring.
 #include <string.h>
 
 static u32 agent_goal_priority_score(const agent_goal* goal,
-                                     const agent_context* ctx)
+                                     const agent_context* ctx,
+                                     u32* out_confidence_q16)
 {
     u64 total = 0u;
+    u32 confidence_q16 = AGENT_CONFIDENCE_MAX;
     if (!goal) {
+        if (out_confidence_q16) {
+            *out_confidence_q16 = 0u;
+        }
         return 0u;
     }
-    total = (u64)goal->base_priority;
+    total = (u64)goal->base_priority + (u64)goal->urgency;
     if (ctx) {
         switch (goal->type) {
             case AGENT_GOAL_SURVIVE:
@@ -34,9 +39,22 @@ static u32 agent_goal_priority_score(const agent_goal* goal,
             default:
                 break;
         }
+        if (ctx->epistemic_confidence_q16 > 0u) {
+            confidence_q16 = ctx->epistemic_confidence_q16;
+        }
+    }
+    if (goal->epistemic_confidence_q16 > 0u &&
+        goal->epistemic_confidence_q16 < confidence_q16) {
+        confidence_q16 = goal->epistemic_confidence_q16;
     }
     if (total > (u64)AGENT_PRIORITY_SCALE) {
         total = (u64)AGENT_PRIORITY_SCALE;
+    }
+    if (confidence_q16 < AGENT_CONFIDENCE_MAX) {
+        total = (total * (u64)confidence_q16) / (u64)AGENT_CONFIDENCE_MAX;
+    }
+    if (out_confidence_q16) {
+        *out_confidence_q16 = confidence_q16;
     }
     return (u32)total;
 }
@@ -48,9 +66,92 @@ static int agent_goal_is_expired(const agent_goal* goal,
         return 1;
     }
     if (goal->expiry_act == 0u) {
-        return 0;
+        if (goal->horizon_act == 0u) {
+            return 0;
+        }
+        return (goal->horizon_act <= now_act) ? 1 : 0;
     }
     return (goal->expiry_act <= now_act) ? 1 : 0;
+}
+
+static int agent_goal_is_active(const agent_goal* goal,
+                                dom_act_time_t now_act)
+{
+    if (!goal) {
+        return 0;
+    }
+    if (goal->status == AGENT_GOAL_ABANDONED || goal->status == AGENT_GOAL_SATISFIED) {
+        return 0;
+    }
+    if (goal->defer_until_act != 0u && goal->defer_until_act > now_act) {
+        return 0;
+    }
+    return agent_goal_is_expired(goal, now_act) ? 0 : 1;
+}
+
+static int agent_goal_conditions_ok(const agent_goal* goal,
+                                    const agent_context* ctx)
+{
+    u32 i;
+    if (!goal || !ctx) {
+        return 0;
+    }
+    if (goal->condition_count == 0u) {
+        return 1;
+    }
+    for (i = 0u; i < goal->condition_count; ++i) {
+        const agent_goal_condition* cond = &goal->conditions[i];
+        switch (cond->kind) {
+            case AGENT_GOAL_COND_KNOWLEDGE:
+                if ((ctx->knowledge_mask & (u32)cond->subject_ref) == 0u) {
+                    return 0;
+                }
+                break;
+            case AGENT_GOAL_COND_RESOURCE:
+                if (ctx->known_resource_ref == 0u ||
+                    (cond->subject_ref != 0u && ctx->known_resource_ref != cond->subject_ref)) {
+                    return 0;
+                }
+                break;
+            case AGENT_GOAL_COND_THREAT:
+                if (ctx->known_threat_ref == 0u ||
+                    (cond->subject_ref != 0u && ctx->known_threat_ref != cond->subject_ref)) {
+                    return 0;
+                }
+                break;
+            case AGENT_GOAL_COND_DESTINATION:
+                if (ctx->known_destination_ref == 0u ||
+                    (cond->subject_ref != 0u && ctx->known_destination_ref != cond->subject_ref)) {
+                    return 0;
+                }
+                break;
+            default:
+                break;
+        }
+    }
+    return 1;
+}
+
+static int agent_goal_risk_ok(const agent_goal* goal,
+                              const agent_context* ctx)
+{
+    u32 risk_estimate_q16;
+    if (!goal || !ctx) {
+        return 0;
+    }
+    if (goal->acceptable_risk_q16 == 0u) {
+        return 1;
+    }
+    if (AGENT_NEED_SCALE == 0u) {
+        return 1;
+    }
+    risk_estimate_q16 = (u32)(((u64)ctx->threat_level * (u64)AGENT_CONFIDENCE_MAX) /
+                              (u64)AGENT_NEED_SCALE);
+    if (risk_estimate_q16 > goal->acceptable_risk_q16 &&
+        ctx->risk_tolerance_q16 < risk_estimate_q16) {
+        return 0;
+    }
+    return 1;
 }
 
 static int agent_goal_preconditions_ok(const agent_goal* goal,
@@ -82,10 +183,16 @@ static int agent_goal_preconditions_ok(const agent_goal* goal,
     }
     if ((ctx->knowledge_mask & goal->preconditions.required_knowledge) !=
         goal->preconditions.required_knowledge) {
-        if (out_refusal) {
-            *out_refusal = AGENT_REFUSAL_INSUFFICIENT_KNOWLEDGE;
+        if (goal->flags & AGENT_GOAL_FLAG_ALLOW_UNKNOWN) {
+            if (out_refusal) {
+                *out_refusal = AGENT_REFUSAL_NONE;
+            }
+        } else {
+            if (out_refusal) {
+                *out_refusal = AGENT_REFUSAL_INSUFFICIENT_KNOWLEDGE;
+            }
+            return 0;
         }
-        return 0;
     }
     return 1;
 }
@@ -150,6 +257,8 @@ static int agent_evaluator_choose_goal_internal(const agent_goal_registry* reg,
     const agent_goal* best_feasible = 0;
     u32 best_priority = 0u;
     u32 best_feasible_priority = 0u;
+    u32 best_confidence_q16 = 0u;
+    u32 best_feasible_confidence_q16 = 0u;
     agent_refusal_code best_refusal = AGENT_REFUSAL_GOAL_NOT_FEASIBLE;
     int filtered_by_doctrine = 0;
     if (!out) {
@@ -157,6 +266,7 @@ static int agent_evaluator_choose_goal_internal(const agent_goal_registry* reg,
     }
     out->goal = 0;
     out->computed_priority = 0u;
+    out->confidence_q16 = 0u;
     out->refusal = AGENT_REFUSAL_GOAL_NOT_FEASIBLE;
     out->applied_doctrine_ref = doctrine ? doctrine->doctrine_id : 0u;
     out->applied_role_ref = applied_role_ref;
@@ -170,11 +280,25 @@ static int agent_evaluator_choose_goal_internal(const agent_goal_registry* reg,
     for (i = 0u; i < reg->count; ++i) {
         const agent_goal* goal = &reg->goals[i];
         u32 priority;
+        u32 confidence_q16 = 0u;
+        if (ctx && goal->agent_id != 0u && ctx->agent_id != 0u &&
+            goal->agent_id != ctx->agent_id) {
+            continue;
+        }
+        if (!agent_goal_is_active(goal, now_act)) {
+            continue;
+        }
         if (doctrine && !agent_doctrine_allows_goal(doctrine, goal->type)) {
             filtered_by_doctrine = 1;
             continue;
         }
-        priority = agent_goal_priority_score(goal, ctx);
+        if (!agent_goal_conditions_ok(goal, ctx)) {
+            continue;
+        }
+        if (!agent_goal_risk_ok(goal, ctx)) {
+            continue;
+        }
+        priority = agent_goal_priority_score(goal, ctx, &confidence_q16);
         if (doctrine) {
             priority = agent_doctrine_apply_priority(doctrine, goal->type, priority);
         }
@@ -182,6 +306,7 @@ static int agent_evaluator_choose_goal_internal(const agent_goal_registry* reg,
             (priority == best_priority && goal->goal_id < best->goal_id)) {
             best = goal;
             best_priority = priority;
+            best_confidence_q16 = confidence_q16;
         }
         if (agent_goal_is_expired(goal, now_act)) {
             continue;
@@ -191,12 +316,14 @@ static int agent_evaluator_choose_goal_internal(const agent_goal_registry* reg,
                 (priority == best_feasible_priority && goal->goal_id < best_feasible->goal_id)) {
                 best_feasible = goal;
                 best_feasible_priority = priority;
+                best_feasible_confidence_q16 = confidence_q16;
             }
         }
     }
     if (best_feasible) {
         out->goal = best_feasible;
         out->computed_priority = best_feasible_priority;
+        out->confidence_q16 = best_feasible_confidence_q16;
         out->refusal = AGENT_REFUSAL_NONE;
         return 0;
     }
@@ -217,6 +344,7 @@ static int agent_evaluator_choose_goal_internal(const agent_goal_registry* reg,
     }
     out->goal = best;
     out->computed_priority = best_priority;
+    out->confidence_q16 = best_confidence_q16;
     out->refusal = best_refusal;
     return -6;
 }

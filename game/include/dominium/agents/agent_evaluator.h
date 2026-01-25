@@ -28,6 +28,8 @@ typedef struct agent_context {
     u32 knowledge_mask;
     u32 hunger_level;
     u32 threat_level;
+    u32 risk_tolerance_q16;
+    u32 epistemic_confidence_q16;
     u64 known_resource_ref;
     u64 known_threat_ref;
     u64 known_destination_ref;
@@ -42,6 +44,7 @@ typedef struct agent_context {
 typedef struct agent_goal_eval_result {
     const agent_goal* goal;
     u32 computed_priority;
+    u32 confidence_q16;
     agent_refusal_code refusal;
     u64 applied_doctrine_ref;
     u64 applied_role_ref;
