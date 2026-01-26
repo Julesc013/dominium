@@ -44,3 +44,11 @@ Audit logs MUST be stored with the migrated artifact (save, replay, or export).
 - Dropping unknown fields.
 - Implicit defaulting for sim-affecting values.
 - In-place mutation without provenance or audit trail.
+
+## Migration Plans (Registry)
+
+- dominium.schema.pack_manifest 1.0.0 -> 2.0.0
+  - Map required_engine_version -> requires_engine.
+  - Map dependencies -> depends.
+  - Preserve unknown fields and extensions.
+  - Refuse if both old and new forms are present but conflict.

@@ -33,7 +33,7 @@ scheduler used by CIV0a survival.
 - Household members are kept in deterministic order.
 - Migration flow application is deterministic and batch-vs-step equivalent.
 
-Determinism tests are listed in `docs/DETERMINISM_TEST_MATRIX.md`.
+Determinism tests are listed in `docs/ci/DETERMINISM_TEST_MATRIX.md`.
 
 ## Integration points
 

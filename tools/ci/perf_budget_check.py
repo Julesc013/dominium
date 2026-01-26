@@ -89,7 +89,7 @@ def main():
     args = parser.parse_args()
 
     run_root = args.run_root or os.environ.get("DOMINIUM_RUN_ROOT") or "."
-    budgets_path = args.budgets or os.path.join(os.getcwd(), "docs", "PERF_BUDGETS.md")
+    budgets_path = args.budgets or os.path.join(os.getcwd(), "docs", "policies", "PERF_BUDGETS.md")
 
     budgets = load_budget_block(budgets_path)
     reports = load_reports(run_root)

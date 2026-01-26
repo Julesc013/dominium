@@ -49,6 +49,6 @@ scalability, or epistemic boundaries.
 
 ## Required Documentation Updates
 - Update or add SPEC_* docs for any new subsystem.
-- Update `docs/DETERMINISM_TEST_MATRIX.md` fixtures.
+- Update `docs/ci/DETERMINISM_TEST_MATRIX.md` fixtures.
 - Update `docs/CI_ENFORCEMENT_MATRIX.md` with new IDs and enforcement stages.
 - Update audit docs if Phase 6 guarantees are affected.

@@ -1,0 +1,59 @@
+SCHEMA: capability_lockfile.schema
+schema_id: dominium.schema.capability_lockfile
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic capability resolution lockfiles.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- Lockfiles do NOT imply authority or behavior changes.
+- Lockfiles do NOT encode file paths.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- integer: non-negative whole number.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record capability_lockfile
+  required:
+    - lock_id: id
+    - lock_format_version: integer
+    - generated_by: tag
+    - resolution_rules: [tag]
+    - missing_mode: tag
+    - resolutions: [capability_resolution]
+    - extensions: map
+  optional:
+    - engine_version: tag
+    - pack_refs: [pack_ref]
+    - provenance_ref: provenance_ref
+    - notes: map
+
+TYPE DEFINITIONS:
+record capability_resolution
+  required:
+    - capability_id: id
+    - provider_pack_id: id
+  optional:
+    - provider_pack_version: tag
+    - provider_manifest_hash: tag
+    - resolution_tags: [tag]
+
+record pack_ref
+  required:
+    - pack_id: id
+  optional:
+    - version_constraint: tag
+    - ref_tags: [tag]
+
+record provenance_ref
+  required:
+    - provenance_id: id

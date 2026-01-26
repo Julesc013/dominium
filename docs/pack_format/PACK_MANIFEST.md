@@ -3,6 +3,10 @@
 This document defines the canonical UPS pack manifest format. It MUST be read
 alongside `schema/pack_manifest.schema` and `docs/content/UPS_OVERVIEW.md`.
 
+Runtime manifests are stored as `pack.toml`. Tooling may use
+`pack_manifest.json` with a direct schema mapping; conversion must preserve
+unknown fields.
+
 ## Format
 
 - Manifest is plain text: one `key = value` pair per line.
@@ -19,7 +23,7 @@ alongside `schema/pack_manifest.schema` and `docs/content/UPS_OVERVIEW.md`.
   - `major.minor.patch` required.
 - `pack_format_version` (integer)
   - Format version for manifest structure.
-- `required_engine_version` (semver)
+- `requires_engine` (semver range)
   - Minimum engine version required to load the pack.
 
 ## Optional Keys
@@ -30,7 +34,7 @@ alongside `schema/pack_manifest.schema` and `docs/content/UPS_OVERVIEW.md`.
 - `provides` (list)
   - Comma-separated capability identifiers.
   - Example: `provides = caps.sim, caps.ui.text`
-- `dependencies` (list)
+- `depends` (list)
   - Comma-separated capability identifiers required by this pack.
 - `optional` (bool)
   - `true` or `false`.

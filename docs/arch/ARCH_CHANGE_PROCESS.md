@@ -21,6 +21,7 @@ Deep changes require explicit, auditable process. No quick fixes.
 - Changes that alter invariants must follow `docs/arch/CHANGE_PROTOCOL.md`.
 - Architectural review is mandatory before merge.
 - Refusal is valid if invariants cannot be preserved.
+- Code reviews MUST include ENTROPY0 checks (`docs/arch/ANTI_ENTROPY_RULES.md`).
 
 ## Forbidden assumptions
 - No direct-to-main changes for architectural shifts.

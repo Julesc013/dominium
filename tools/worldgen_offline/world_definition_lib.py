@@ -83,6 +83,9 @@ def _apply_policy_sets(worlddef, params):
     policy_sets["debug_policies"] = _normalize_policy_list(
         params.get("policy.debug", policy_sets.get("debug_policies"))
     )
+    policy_sets["playtest_policies"] = _normalize_policy_list(
+        params.get("policy.playtest", policy_sets.get("playtest_policies"))
+    )
     worlddef["policy_sets"] = policy_sets
 
 
@@ -102,7 +105,8 @@ def _base_worlddef(template_id, template_version, seed, generator_source, params
             "movement_policies": [],
             "authority_policies": [],
             "mode_policies": [],
-            "debug_policies": []
+            "debug_policies": [],
+            "playtest_policies": []
         },
         "spawn_spec": {
             "spawn_node_ref": {"node_id": "universe.root"},

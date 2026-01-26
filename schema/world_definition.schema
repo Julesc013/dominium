@@ -90,6 +90,7 @@ record policy_sets
     - mode_policies: [policy_ref]
     - debug_policies: [policy_ref]
   optional:
+    - playtest_policies: [policy_ref]
     - extensions: map
 
 record policy_ref

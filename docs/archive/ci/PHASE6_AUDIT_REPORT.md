@@ -18,21 +18,21 @@ determinism, scalability, and epistemic safety. It verifies documentation,
 test assets, and CI enforcement coverage.
 
 ## Audit Inputs
-- `docs/CI_ENFORCEMENT_MATRIX.md`
-- `docs/DETERMINISM_TEST_MATRIX.md`
+- `docs/ci/CI_ENFORCEMENT_MATRIX.md`
+- `docs/ci/DETERMINISM_TEST_MATRIX.md`
 - LIFE specs: `schema/life/SPEC_*.md`
 - CIV specs: `schema/civ/SPEC_*.md`, `schema/governance/SPEC_*.md`,
   `schema/knowledge/SPEC_*.md`, `schema/technology/SPEC_*.md`,
   `schema/scale/SPEC_*.md`
 - CIV/LIFE implementation guides:
-  `docs/CIV0a_SURVIVAL_LOOP.md`,
-  `docs/CIV0_POPULATION_GENESIS.md`,
-  `docs/CIV1_CITIES_INFRA.md`,
-  `docs/CIV2_GOVERNANCE.md`,
-  `docs/CIV3_KNOWLEDGE_TECH.md`,
-  `docs/CIV4_SCALE_AND_LOGISTICS.md`,
-  `docs/OFFLINE_AND_LOCAL_MP.md`
-- GOV0 validation: `docs/VALIDATION_AND_GOVERNANCE.md`
+  `docs/specs/CIV0a_SURVIVAL_LOOP.md`,
+  `docs/specs/CIV0_POPULATION_GENESIS.md`,
+  `docs/specs/CIV1_CITIES_INFRA.md`,
+  `docs/specs/CIV2_GOVERNANCE.md`,
+  `docs/specs/CIV3_KNOWLEDGE_TECH.md`,
+  `docs/specs/CIV4_SCALE_AND_LOGISTICS.md`,
+  `docs/guides/OFFLINE_AND_LOCAL_MP.md`
+- GOV0 validation: `docs/policies/VALIDATION_AND_GOVERNANCE.md`
 
 ## Audit Dimensions (PASS/FAIL)
 - A) LIFE pipeline consistency: PASS
@@ -84,32 +84,32 @@ Status: PASS
 ### CIV0a — Minimal Survival Loop
 Status: PASS
 - Evidence: `game/tests/civ0a/dom_civ0a_survival_tests.cpp`,
-  `docs/CIV0a_SURVIVAL_LOOP.md`.
+  `docs/specs/CIV0a_SURVIVAL_LOOP.md`.
 - Enforcement: `CIV0a-EVENT-001`, `CIV0a-NOGLOB-001`.
 
 ### MP0 — Offline + Local MP Parity
 Status: PASS
 - Evidence: `game/tests/mp0/dom_mp0_parity_tests.cpp`,
-  `docs/OFFLINE_AND_LOCAL_MP.md`.
+  `docs/guides/OFFLINE_AND_LOCAL_MP.md`.
 - Enforcement: `MP0-PARITY-001`, `MP0-LOCKSTEP-001`, `MP0-SERVERAUTH-001`.
 
 ### CIV0 — Cohorts, Households, Migration
 Status: PASS
 - Evidence: `game/tests/civ0/dom_civ0_population_tests.cpp`,
-  `docs/CIV0_POPULATION_GENESIS.md`.
+  `docs/specs/CIV0_POPULATION_GENESIS.md`.
 - Enforcement: `CIV0-NOGLOB-001`, `CIV0-NEXTDUE-001`, `CIV0-DET-001`.
 
 ### CIV1 — Cities, Infrastructure, Production
 Status: PASS
 - Evidence: `game/tests/civ1/dom_civ1_city_infra_tests.cpp`,
-  `docs/CIV1_CITIES_INFRA.md`.
+  `docs/specs/CIV1_CITIES_INFRA.md`.
 - Enforcement: `CIV1-PROD-DET-001`, `CIV1-BATCH-001`,
   `CIV1-LOG-DET-001`, `CIV1-NOGLOB-001`, `CIV1-FID-001`.
 
 ### CIV2 — Governance, Legitimacy, Jurisdictions
 Status: PASS
 - Evidence: `game/tests/civ2/civ2_governance_tests.cpp`,
-  `docs/CIV2_GOVERNANCE.md`.
+  `docs/specs/CIV2_GOVERNANCE.md`.
 - Enforcement: `CIV2-JURIS-DET-001`, `CIV2-NEXTDUE-001`,
   `CIV2-LEGIT-DET-001`, `CIV2-POLICY-T4-001`,
   `CIV2-STAND-RES-001`, `CIV2-EPIS-001`.
@@ -117,7 +117,7 @@ Status: PASS
 ### CIV3 — Knowledge, Science, Tech Diffusion
 Status: PASS
 - Evidence: `game/tests/civ3/dom_civ3_knowledge_tests.cpp`,
-  `docs/CIV3_KNOWLEDGE_TECH.md`.
+  `docs/specs/CIV3_KNOWLEDGE_TECH.md`.
 - Enforcement: `CIV3-RES-DET-001`, `CIV3-BATCH-001`,
   `CIV3-DIFF-DET-001`, `CIV3-SECRECY-001`,
   `CIV3-TECH-001`, `CIV3-NOGLOB-001`.
@@ -125,14 +125,14 @@ Status: PASS
 ### CIV4 — Interplanetary/Interstellar Scaling
 Status: PASS
 - Evidence: `game/tests/civ4/dom_civ4_scale_tests.cpp`,
-  `docs/CIV4_SCALE_AND_LOGISTICS.md`.
+  `docs/specs/CIV4_SCALE_AND_LOGISTICS.md`.
 - Enforcement: `CIV4-FLOW-DET-001`, `CIV4-BATCH-001`,
   `CIV4-INT-001`, `CIV4-WARP-001`, `CIV4-HANDOFF-001`.
 
 ### GOV0 — Validators and Anti-Regression Gates
 Status: PASS
 - Evidence: `tools/validation/validate_all_main.cpp`,
-  `tools/ci/validate_all.py`, `docs/VALIDATION_AND_GOVERNANCE.md`.
+  `tools/ci/validate_all.py`, `docs/policies/VALIDATION_AND_GOVERNANCE.md`.
 - Enforcement: `GOV-VAL-001`, `GOV-VAL-REND-002`,
   `GOV-VAL-EPIS-003`, `GOV-VAL-PROV-004`, `GOV-VAL-PERF-005`.
 

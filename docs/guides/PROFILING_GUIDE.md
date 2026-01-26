@@ -73,7 +73,7 @@ ctest -R engine_perf_budget --output-on-failure
 **MUST**
 - Add the metric to `dsys_perf_metric` in `engine/include/domino/system/dsys_perf.h`.
 - Update metric names in `engine/modules/system/dsys_perf.c`.
-- Update `docs/PERF_BUDGETS.md` if the metric is budgeted.
+- Update `docs/policies/PERF_BUDGETS.md` if the metric is budgeted.
 - Update `docs/CI_ENFORCEMENT_MATRIX.md` if a new gate is introduced.
 
 **MUST NOT**

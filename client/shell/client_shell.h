@@ -23,6 +23,12 @@ extern "C" {
 
 #define DOM_SHELL_MAX_POLICIES 8u
 #define DOM_SHELL_POLICY_ID_MAX 64u
+#define DOM_SHELL_MAX_VARIANTS 16u
+#define DOM_SHELL_VARIANT_ID_MAX 64u
+#define DOM_SHELL_VARIANT_SYSTEM_MAX 48u
+#define DOM_SHELL_VARIANT_DESC_MAX 96u
+#define DOM_SHELL_PLAYTEST_SCENARIO_MAX 8u
+#define DOM_SHELL_METRIC_WINDOW_MAX 64u
 
 #define DOM_SHELL_STATUS_MAX 160u
 
@@ -55,11 +61,102 @@ extern "C" {
 #define DOM_SHELL_MODE_FREE "policy.mode.nav.free"
 #define DOM_SHELL_MODE_ORBIT "policy.mode.nav.orbit"
 #define DOM_SHELL_MODE_SURFACE "policy.mode.nav.surface"
+#define DOM_SHELL_PLAYTEST_SANDBOX "policy.playtest.sandbox"
+#define DOM_SHELL_PLAYTEST_HARDCORE "policy.playtest.hardcore"
+#define DOM_SHELL_PLAYTEST_ACCELERATED "policy.playtest.accelerated_time"
+#define DOM_SHELL_PLAYTEST_CHAOS "policy.playtest.chaos"
+#define DOM_SHELL_PLAYTEST_REGRESSION "policy.playtest.regression"
 
 typedef struct dom_shell_policy_set {
     char items[DOM_SHELL_MAX_POLICIES][DOM_SHELL_POLICY_ID_MAX];
     uint32_t count;
 } dom_shell_policy_set;
+
+typedef enum dom_shell_variant_scope {
+    DOM_SHELL_VARIANT_SCOPE_WORLD = 0,
+    DOM_SHELL_VARIANT_SCOPE_RUN = 1
+} dom_shell_variant_scope;
+
+typedef enum dom_shell_variant_mode {
+    DOM_SHELL_VARIANT_MODE_AUTHORITATIVE = 0,
+    DOM_SHELL_VARIANT_MODE_DEGRADED = 1,
+    DOM_SHELL_VARIANT_MODE_FROZEN = 2,
+    DOM_SHELL_VARIANT_MODE_TRANSFORM_ONLY = 3
+} dom_shell_variant_mode;
+
+typedef struct dom_shell_variant_entry {
+    char system_id[DOM_SHELL_VARIANT_SYSTEM_MAX];
+    char variant_id[DOM_SHELL_VARIANT_ID_MAX];
+    char description[DOM_SHELL_VARIANT_DESC_MAX];
+    char status[24];
+    uint32_t is_default;
+    uint32_t deprecated;
+} dom_shell_variant_entry;
+
+typedef struct dom_shell_variant_registry {
+    dom_shell_variant_entry entries[DOM_SHELL_MAX_VARIANTS];
+    uint32_t count;
+} dom_shell_variant_registry;
+
+typedef struct dom_shell_variant_selection {
+    char system_id[DOM_SHELL_VARIANT_SYSTEM_MAX];
+    char variant_id[DOM_SHELL_VARIANT_ID_MAX];
+    uint32_t scope;
+} dom_shell_variant_selection;
+
+typedef enum dom_shell_playtest_scenario_type {
+    DOM_SHELL_SCENARIO_FIELD = 1
+} dom_shell_playtest_scenario_type;
+
+typedef struct dom_shell_playtest_scenario {
+    uint32_t type;
+    uint32_t field_id;
+    int32_t value_q16;
+    uint32_t known;
+} dom_shell_playtest_scenario;
+
+typedef struct dom_shell_playtest_state {
+    int paused;
+    uint32_t speed;
+    uint64_t seed_override;
+    uint32_t seed_override_set;
+    uint32_t perturb_enabled;
+    uint32_t perturb_strength_q16;
+    uint64_t perturb_seed;
+    dom_shell_playtest_scenario scenarios[DOM_SHELL_PLAYTEST_SCENARIO_MAX];
+    uint32_t scenario_count;
+} dom_shell_playtest_state;
+
+typedef struct dom_shell_metrics_window {
+    uint32_t tick;
+    uint32_t process_attempts;
+    uint32_t process_failures;
+    uint32_t process_refusals;
+    uint32_t command_attempts;
+    uint32_t command_failures;
+    uint32_t network_failures;
+} dom_shell_metrics_window;
+
+typedef struct dom_shell_metrics_state {
+    uint32_t simulate_ticks;
+    uint32_t process_attempts;
+    uint32_t process_failures;
+    uint32_t process_refusals;
+    uint32_t command_attempts;
+    uint32_t command_failures;
+    uint32_t network_failures;
+    uint32_t idle_ticks;
+    uint32_t scenario_injections;
+    uint32_t tick_process_attempts;
+    uint32_t tick_process_failures;
+    uint32_t tick_process_refusals;
+    uint32_t tick_command_attempts;
+    uint32_t tick_command_failures;
+    uint32_t tick_network_failures;
+    dom_shell_metrics_window window[DOM_SHELL_METRIC_WINDOW_MAX];
+    uint32_t window_head;
+    uint32_t window_count;
+} dom_shell_metrics_state;
 
 typedef struct dom_shell_template {
     char template_id[DOM_SHELL_MAX_TEMPLATE_ID];
@@ -85,6 +182,7 @@ typedef struct dom_shell_world_summary {
     dom_shell_policy_set authority;
     dom_shell_policy_set mode;
     dom_shell_policy_set debug;
+    dom_shell_policy_set playtest;
 } dom_shell_world_summary;
 
 typedef struct dom_shell_world_state {
@@ -207,6 +305,16 @@ typedef struct dom_client_shell {
     dom_shell_policy_set create_authority;
     dom_shell_policy_set create_mode;
     dom_shell_policy_set create_debug;
+    dom_shell_policy_set create_playtest;
+    dom_shell_variant_registry variant_registry;
+    dom_shell_variant_selection variants[DOM_SHELL_MAX_VARIANTS];
+    uint32_t variant_count;
+    dom_shell_variant_selection run_variants[DOM_SHELL_MAX_VARIANTS];
+    uint32_t run_variant_count;
+    dom_shell_variant_mode variant_mode;
+    char variant_mode_detail[64];
+    dom_shell_playtest_state playtest;
+    dom_shell_metrics_state metrics;
     uint32_t create_template_index;
     uint64_t create_seed;
     uint32_t tick;

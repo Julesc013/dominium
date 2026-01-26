@@ -1,10 +1,10 @@
 SCHEMA: pack_manifest.schema
 schema_id: dominium.schema.pack_manifest
-schema_version: 1.0.0
+schema_version: 2.0.0
 stability: core
 
 PURPOSE:
-- Define pack identity, versions, and capability dependencies.
+- Define pack identity, versions, provided capabilities, and dependencies.
 
 STABILITY GUARANTEES:
 - Required fields MUST exist.
@@ -14,6 +14,7 @@ STABILITY GUARANTEES:
 NON-SEMANTICS:
 - Version strings are declarative only.
 - Dependencies do NOT imply installation order or behavior.
+- Resolution precedence is external and lockfile-defined.
 
 CONVENTIONS:
 - id: stable namespaced string; opaque.
@@ -25,21 +26,37 @@ CONVENTIONS:
 PACK ID RULES:
 - pack_id MUST use reverse-DNS naming.
 
+PACK VERSION RULES:
+- pack_version MUST use semver (MAJOR.MINOR.PATCH).
+
+ENGINE REQUIREMENT RULES:
+- requires_engine MUST be a semver range string.
+
+DEPENDENCY RULES:
+- depends MUST list capability identifiers, not pack ids.
+
+COMPATIBILITY NOTES:
+- required_engine_version is a deprecated alias of requires_engine.
+- dependencies is a deprecated alias of depends.
+- If both forms are present, they MUST match.
+
 REQUIRED SHAPE:
 record pack_manifest
   required:
     - pack_id: id
     - pack_version: tag
     - pack_format_version: integer
-    - required_engine_version: tag
-    - required_protocol_versions: [protocol_requirement]
+    - requires_engine: tag
     - provides: [capability_ref]
-    - dependencies: [capability_dependency]
+    - depends: [capability_dependency]
+    - extensions: map
   optional:
     - optional: bool
     - pack_tags: [tag]
     - provenance_ref: provenance_ref
-    - extensions: map
+    - required_engine_version: tag
+    - required_protocol_versions: [protocol_requirement]
+    - dependencies: [capability_dependency]
 
 TYPE DEFINITIONS:
 record protocol_requirement

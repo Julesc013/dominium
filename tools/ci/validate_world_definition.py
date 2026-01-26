@@ -37,6 +37,48 @@ def main():
     empty_worlddef, refusal = _generate_builtin(wdlib, "builtin.empty_universe", seed=0)
     _check(empty_worlddef is not None, f"builtin.empty_universe refused: {refusal}", errors)
     if empty_worlddef:
+        expected = {
+            "schema_id": wdlib.SCHEMA_ID,
+            "schema_version": wdlib.SCHEMA_VERSION,
+            "worlddef_id": "builtin.empty_universe.seed.0",
+            "topology": {
+                "root_node_ref": {"node_id": "universe.root"},
+                "nodes": [
+                    {
+                        "node_id": "universe.root",
+                        "trait_tags": ["topology.universe"],
+                        "coord_frame_ref": {"frame_id": "frame.universe.root"},
+                    }
+                ],
+                "edges": [],
+            },
+            "initial_fields": [],
+            "policy_sets": {
+                "movement_policies": [],
+                "authority_policies": [],
+                "mode_policies": [],
+                "debug_policies": [],
+                "playtest_policies": [],
+            },
+            "spawn_spec": {
+                "spawn_node_ref": {"node_id": "universe.root"},
+                "coordinate_frame_ref": {"frame_id": "frame.universe.root"},
+                "position": {"value": {"x": 0, "y": 0, "z": 0}},
+                "orientation": {"value": {"yaw": 0, "pitch": 0, "roll": 0}},
+            },
+            "provenance": {
+                "template_id": "builtin.empty_universe",
+                "template_version": "1.0.0",
+                "generator_source": "built_in",
+                "seed": {"primary": 0},
+                "template_params": {"seed.primary": 0},
+            },
+            "extensions": {},
+        }
+        hash_expected = wdlib.worlddef_hash(expected)
+        hash_empty = wdlib.worlddef_hash(empty_worlddef)
+        _check(hash_empty == hash_expected, "deterministic hash mismatch for empty universe", errors)
+
         round_trip = wdlib.round_trip_json(empty_worlddef)
         _check(round_trip == empty_worlddef, "schema round-trip mismatch for empty universe", errors)
 

@@ -75,7 +75,7 @@ Rules:
 - Governance: `schema/governance/SPEC_LEGITIMACY.md`,
   `schema/governance/SPEC_ENFORCEMENT.md`
 - Logistics: `schema/civ/SPEC_LOGISTICS_FLOWS.md`
-- Survival needs: `docs/CIV0a_SURVIVAL_LOOP.md`,
+- Survival needs: `docs/specs/CIV0a_SURVIVAL_LOOP.md`,
   `schema/civ/SPEC_NEEDS_MINIMAL.md`
 - LIFE pipelines: `schema/life/SPEC_DEATH_AND_ESTATE.md`
 - Knowledge gating: `schema/knowledge/SPEC_SECRECY.md`,
