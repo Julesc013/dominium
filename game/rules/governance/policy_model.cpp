@@ -76,6 +76,9 @@ int policy_register(policy_registry* reg,
     entry = &reg->policies[idx];
     memset(entry, 0, sizeof(*entry));
     *entry = *policy;
+    if (entry->next_due_tick == 0 && entry->schedule.start_act != 0) {
+        entry->next_due_tick = DG_DUE_TICK_NONE;
+    }
     reg->count += 1u;
     return 0;
 }
@@ -103,7 +106,9 @@ dom_act_time_t policy_next_due(const policy_record* policy, dom_act_time_t now_t
         return DG_DUE_TICK_NONE;
     }
     if (policy->next_due_tick != DG_DUE_TICK_NONE) {
-        return policy->next_due_tick;
+        if (policy->next_due_tick != 0 || policy->schedule.start_act == 0) {
+            return policy->next_due_tick;
+        }
     }
     if (now_tick <= policy->schedule.start_act) {
         return policy->schedule.start_act;

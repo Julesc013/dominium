@@ -1,0 +1,102 @@
+{
+  "migration_stub": {
+    "from_version": "0.1.0",
+    "status": "stub",
+    "to_version": "0.1.0"
+  },
+  "record": {
+    "region_records": [
+      {
+        "boundary_ref": "earth_polar_north_boundary",
+        "layer_id": "surface",
+        "parent_region_ref": null,
+        "provenance_ref": "stub_provenance",
+        "region_id": "earth_polar_north_region",
+        "region_tags": [
+          "polar"
+        ],
+        "region_type": "polar",
+        "surface_ref": "earth_land_surface",
+        "volume_ref": null
+      },
+      {
+        "boundary_ref": "earth_polar_south_boundary",
+        "layer_id": "surface",
+        "parent_region_ref": null,
+        "provenance_ref": "stub_provenance",
+        "region_id": "earth_polar_south_region",
+        "region_tags": [
+          "polar"
+        ],
+        "region_type": "polar",
+        "surface_ref": "earth_land_surface",
+        "volume_ref": null
+      }
+    ],
+    "surface_records": [
+      {
+        "biome_tags": [
+          "stub_biome"
+        ],
+        "body_ref": "earth",
+        "climate_map_ref": "earth_land_climate",
+        "coordinate_frame_ref": "earth_frame",
+        "heightmap_ref": "earth_land_height",
+        "provenance_ref": "stub_provenance",
+        "region_ids": [
+          "earth_polar_north_region",
+          "earth_polar_south_region"
+        ],
+        "surface_id": "earth_land_surface",
+        "surface_type": "land"
+      },
+      {
+        "biome_tags": [
+          "stub_biome"
+        ],
+        "body_ref": "earth",
+        "climate_map_ref": "earth_ocean_climate",
+        "coordinate_frame_ref": "earth_frame",
+        "heightmap_ref": "earth_ocean_height",
+        "provenance_ref": "stub_provenance",
+        "region_ids": [],
+        "surface_id": "earth_ocean_surface",
+        "surface_type": "ocean"
+      },
+      {
+        "biome_tags": [],
+        "body_ref": "mars",
+        "climate_map_ref": "mars_climate",
+        "coordinate_frame_ref": "mars_frame",
+        "heightmap_ref": "mars_height",
+        "provenance_ref": "stub_provenance",
+        "region_ids": [],
+        "surface_id": "mars_surface",
+        "surface_type": "rock"
+      },
+      {
+        "biome_tags": [],
+        "body_ref": "moon",
+        "climate_map_ref": "moon_near_climate",
+        "coordinate_frame_ref": "moon_frame",
+        "heightmap_ref": "moon_near_height",
+        "provenance_ref": "stub_provenance",
+        "region_ids": [],
+        "surface_id": "moon_nearside_surface",
+        "surface_type": "rock"
+      },
+      {
+        "biome_tags": [],
+        "body_ref": "moon",
+        "climate_map_ref": "moon_far_climate",
+        "coordinate_frame_ref": "moon_frame",
+        "heightmap_ref": "moon_far_height",
+        "provenance_ref": "stub_provenance",
+        "region_ids": [],
+        "surface_id": "moon_farside_surface",
+        "surface_type": "rock"
+      }
+    ]
+  },
+  "schema_version": "0.1.0"
+}

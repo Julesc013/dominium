@@ -111,8 +111,10 @@ static int test_next_due_tick_enforcement(void)
 
 static int test_legitimacy_batch_equivalence(void)
 {
-    legitimacy_state states[2];
-    legitimacy_registry registry;
+    legitimacy_state states_step[2];
+    legitimacy_state states_batch[2];
+    legitimacy_registry registry_step;
+    legitimacy_registry registry_batch;
     legitimacy_scheduler step;
     legitimacy_scheduler batch;
     legitimacy_event events_step[8];
@@ -124,14 +126,16 @@ static int test_legitimacy_batch_equivalence(void)
     legitimacy_due_user due_users_step[8];
     legitimacy_due_user due_users_batch[8];
 
-    legitimacy_registry_init(&registry, states, 2u);
-    EXPECT(legitimacy_register(&registry, 1u, 500u, 1000u, 700u, 400u, 200u) == 0, "legit reg");
+    legitimacy_registry_init(&registry_step, states_step, 2u);
+    legitimacy_registry_init(&registry_batch, states_batch, 2u);
+    EXPECT(legitimacy_register(&registry_step, 1u, 500u, 1000u, 700u, 400u, 200u) == 0, "legit reg step");
+    EXPECT(legitimacy_register(&registry_batch, 1u, 500u, 1000u, 700u, 400u, 200u) == 0, "legit reg batch");
 
     EXPECT(legitimacy_scheduler_init(&step, due_events_step, 16u, due_entries_step,
-                                     due_users_step, 8u, 0u, events_step, 8u, &registry, 1u) == 0,
+                                     due_users_step, 8u, 0u, events_step, 8u, &registry_step, 1u) == 0,
            "step scheduler init");
     EXPECT(legitimacy_scheduler_init(&batch, due_events_batch, 16u, due_entries_batch,
-                                     due_users_batch, 8u, 0u, events_batch, 8u, &registry, 1u) == 0,
+                                     due_users_batch, 8u, 0u, events_batch, 8u, &registry_batch, 1u) == 0,
            "batch scheduler init");
 
     EXPECT(legitimacy_schedule_event(&step, 1u, 50, 5u) == 0, "step event 1");
@@ -143,7 +147,8 @@ static int test_legitimacy_batch_equivalence(void)
     EXPECT(legitimacy_scheduler_advance(&step, 10u) == 0, "step advance 10");
     EXPECT(legitimacy_scheduler_advance(&batch, 10u) == 0, "batch advance 10");
 
-    EXPECT(registry.states[0].value == 530u, "legitimacy value mismatch");
+    EXPECT(registry_step.states[0].value == registry_batch.states[0].value, "batch equivalence mismatch");
+    EXPECT(registry_step.states[0].value == 530u, "legitimacy value mismatch");
     return 0;
 }
 

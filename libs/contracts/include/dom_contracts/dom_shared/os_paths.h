@@ -14,55 +14,68 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #ifndef DOM_SHARED_OS_PATHS_H
 #define DOM_SHARED_OS_PATHS_H
 
-#include <string>
-#include <vector>
+#include <stddef.h>
 
-namespace dom_shared {
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-std::string os_get_executable_path();       // full path to this executable
-std::string os_get_executable_directory();  // directory containing this executable
+typedef struct dom_shared_string {
+    const char* data;
+    size_t size;
+} dom_shared_string;
 
-std::string os_get_platform_id();           // "win_nt" | "linux" | "mac"
+typedef struct dom_shared_string_list {
+    const dom_shared_string* items;
+    size_t count;
+} dom_shared_string_list;
+
+dom_shared_string os_get_executable_path(void);       // full path to this executable
+dom_shared_string os_get_executable_directory(void);  // directory containing this executable
+
+dom_shared_string os_get_platform_id(void);           // "win_nt" | "linux" | "mac"
 
 // Default install roots for different modes
-std::string os_get_default_per_user_install_root();
+dom_shared_string os_get_default_per_user_install_root(void);
 /* Purpose: Root os get default system install.
  * Parameters: See `docs/CONTRACTS.md#Parameters`.
  * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
  */
-std::string os_get_default_system_install_root();
-std::string os_get_default_portable_install_root(); // usually current dir
+dom_shared_string os_get_default_system_install_root(void);
+dom_shared_string os_get_default_portable_install_root(void); // usually current dir
 
 // Data roots for launcher and game
-std::string os_get_per_user_launcher_data_root();
+dom_shared_string os_get_per_user_launcher_data_root(void);
 /* Purpose: Root os get per user game data.
  * Parameters: See `docs/CONTRACTS.md#Parameters`.
  * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
  */
-std::string os_get_per_user_game_data_root();
+dom_shared_string os_get_per_user_game_data_root(void);
 
 // Default install root search locations for discovery
-std::vector<std::string> os_get_default_install_roots();
+dom_shared_string_list os_get_default_install_roots(void);
 
 /* Purpose: Exists os ensure directory.
  * Parameters: See `docs/CONTRACTS.md#Parameters`.
  * Returns: `true` on success; `false` on failure.
  */
-bool os_ensure_directory_exists(const std::string& path);
+int os_ensure_directory_exists(const char* path);
 /* Purpose: Exists os file.
  * Parameters: See `docs/CONTRACTS.md#Parameters`.
  * Returns: `true` on success; `false` on failure.
  */
-bool os_file_exists(const std::string& path);
+int os_file_exists(const char* path);
 /* Purpose: Exists os directory.
  * Parameters: See `docs/CONTRACTS.md#Parameters`.
  * Returns: `true` on success; `false` on failure.
  */
-bool os_directory_exists(const std::string& path);
+int os_directory_exists(const char* path);
 
 // Join path segments with platform-appropriate separators
-std::string os_path_join(const std::string& a, const std::string& b);
+dom_shared_string os_path_join(const char* a, const char* b);
 
-} // namespace dom_shared
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif

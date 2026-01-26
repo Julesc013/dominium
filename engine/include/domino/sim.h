@@ -34,9 +34,9 @@ typedef struct dom_sim_state {
     uint32_t struct_size;
     uint32_t struct_version;
     uint64_t ticks;
-    double   sim_time_s;
-    double   dt_s;
-    double   ups;          /* target updates per second */
+    uint64_t sim_time_usec;
+    uint32_t dt_usec;
+    uint32_t ups;          /* target updates per second */
     bool     paused;
 } dom_sim_state;
 

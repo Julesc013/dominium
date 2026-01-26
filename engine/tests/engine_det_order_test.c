@@ -67,7 +67,7 @@ static int test_event_queue_ordering(void) {
 static int run_ledger_order(const dom_obligation_id_t *order,
                             u32 count,
                             u64 *out_ids) {
-    dom_ledger ledger;
+    static dom_ledger ledger;
     dom_ledger_posting postings[2];
     dom_ledger_transaction tx;
     dom_time_event ev;

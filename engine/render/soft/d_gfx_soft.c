@@ -14,7 +14,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include <stdlib.h>
 #include <string.h>
 
-#include "render/soft/d_gfx_soft.h"
+#include "soft/d_gfx_soft.h"
 #include "domino/system/d_system.h"
 
 #define D_GFX_SOFT_FONT_SCALE 2

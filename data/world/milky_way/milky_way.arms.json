@@ -1,0 +1,23 @@
+{
+  "migration_stub": {
+    "from_version": "0.1.0",
+    "status": "stub",
+    "to_version": "0.1.0"
+  },
+  "record": {
+    "arm_records": [
+      {
+        "arm_id": "orion_arm",
+        "arm_region_ref": "milky_way_disk",
+        "density_class": "stub",
+        "geometry_model_id": "stub_arm",
+        "geometry_tags": [
+          "stub"
+        ],
+        "name": "Orion",
+        "star_formation_class": "stub"
+      }
+    ]
+  },
+  "schema_version": "0.1.0"
+}

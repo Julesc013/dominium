@@ -14,7 +14,10 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #ifndef D_GFX_NULL_H
 #define D_GFX_NULL_H
 
-#include "render/soft/d_gfx_soft.h"
+#include "domino/gfx.h"
+
+struct d_gfx_backend_soft_s;
+typedef struct d_gfx_backend_soft_s d_gfx_backend_soft;
 
 #ifdef __cplusplus
 extern "C" {

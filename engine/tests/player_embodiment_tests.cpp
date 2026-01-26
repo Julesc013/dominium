@@ -4,6 +4,7 @@ Player embodiment tests (PLAYER-2/TestX).
 #include "dominium/player.h"
 #include "dominium/agents/agent_goal.h"
 #include "dominium/agents/agent_planner.h"
+#include "dominium/physical/physical_process.h"
 
 #include <stdio.h>
 #include <string.h>

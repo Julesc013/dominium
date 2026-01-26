@@ -141,7 +141,7 @@ int tool_event_stream_next(tool_event_stream* stream,
 }
 
 int tool_history_query(const tool_observation_store* store,
-                       const tool_history_query* request,
+                       const tool_history_request* request,
                        const tool_access_context* access,
                        tool_history_view* out_view)
 {
@@ -283,7 +283,7 @@ int tool_pack_view_next(tool_pack_view* view,
 }
 
 int tool_capability_query(const tool_observation_store* store,
-                          const tool_capability_query* request,
+                          const tool_capability_request* request,
                           tool_capability_view* out_view)
 {
     if (!store || !out_view) {

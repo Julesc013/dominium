@@ -151,8 +151,8 @@ static int setup_basic_person(life_test_context* t,
 
 static int test_death_estate_determinism(void)
 {
-    life_test_context a;
-    life_test_context b;
+    static life_test_context a;
+    static life_test_context b;
     life_death_input input;
     life_death_refusal_code refusal;
     u64 estate_id_a = 0u;
@@ -192,7 +192,7 @@ static int test_death_estate_determinism(void)
 
 static int test_ledger_conservation(void)
 {
-    life_test_context t;
+    static life_test_context t;
     dom_account_id_t accounts[2] = { 1u, 2u };
     dom_ledger_posting postings[2];
     dom_ledger_transaction tx;
@@ -244,8 +244,8 @@ static int test_ledger_conservation(void)
 
 static int test_inheritance_schedule_equivalence(void)
 {
-    life_test_context a;
-    life_test_context b;
+    static life_test_context a;
+    static life_test_context b;
     life_death_input input;
     life_death_refusal_code refusal;
     dom_account_id_t accounts[1] = { 11u };
@@ -279,7 +279,7 @@ static int test_inheritance_schedule_equivalence(void)
 
 static int test_executor_authority_enforcement(void)
 {
-    life_test_context t;
+    static life_test_context t;
     life_death_input input;
     life_death_refusal_code refusal;
     dom_account_id_t accounts[1] = { 21u };
@@ -321,7 +321,7 @@ static void notice_counter(void* user, const life_death_notice* notice)
 
 static int test_epistemic_notice_hook(void)
 {
-    life_test_context t;
+    static life_test_context t;
     life_death_input input;
     life_death_refusal_code refusal;
     dom_account_id_t accounts[1] = { 31u };
@@ -396,8 +396,8 @@ static u64 hash_state(const life_death_event_list* deaths,
 
 static int test_replay_equivalence(void)
 {
-    life_test_context a;
-    life_test_context b;
+    static life_test_context a;
+    static life_test_context b;
     life_death_input input;
     life_death_refusal_code refusal;
     dom_account_id_t accounts[2] = { 41u, 42u };

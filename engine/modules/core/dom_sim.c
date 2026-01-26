@@ -13,7 +13,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 */
 #include "core_internal.h"
 
-#define DOM_SIM_DEFAULT_UPS 60.0
+#define DOM_SIM_DEFAULT_UPS 60u
 
 static dom_sim_instance_state* dom_sim_find_state(dom_core* core, dom_instance_id id)
 {
@@ -36,9 +36,9 @@ static void dom_sim_state_init(dom_sim_instance_state* state, dom_instance_id id
     }
     state->id = id;
     state->ticks = 0u;
-    state->sim_time_s = 0.0;
+    state->sim_time_usec = 0u;
     state->ups = DOM_SIM_DEFAULT_UPS;
-    state->dt_s = (DOM_SIM_DEFAULT_UPS > 0.0) ? (1.0 / DOM_SIM_DEFAULT_UPS) : 0.0;
+    state->dt_usec = (state->ups > 0u) ? (1000000u / state->ups) : 0u;
     state->paused = false;
 }
 
@@ -79,7 +79,7 @@ bool dom_sim_tick(dom_core* core, dom_instance_id inst, uint32_t ticks)
     }
     if (!state->paused) {
         state->ticks += (u64)ticks;
-        state->sim_time_s += state->dt_s * (double)ticks;
+        state->sim_time_usec += (u64)state->dt_usec * (u64)ticks;
         core->tick_counter += (u64)ticks;
     }
     return true;
@@ -96,10 +96,10 @@ bool dom_sim_get_state(dom_core* core, dom_instance_id inst, dom_sim_state* out)
         return false;
     }
     out->struct_size = (u32)sizeof(dom_sim_state);
-    out->struct_version = 1u;
+    out->struct_version = 2u;
     out->ticks = state->ticks;
-    out->sim_time_s = state->sim_time_s;
-    out->dt_s = state->dt_s;
+    out->sim_time_usec = state->sim_time_usec;
+    out->dt_usec = state->dt_usec;
     out->ups = state->ups;
     out->paused = state->paused;
     return true;

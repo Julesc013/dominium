@@ -1,0 +1,62 @@
+# CI Enforcement Matrix
+
+This matrix lists the required CI enforcement IDs and their scope notes.
+It is a placeholder index until each check has a full spec reference.
+
+## Required IDs
+- LIFE-CONT-DET-001: Deterministic life continuity
+- LIFE-CONT-AUTH-001: Authority gating for continuity
+- LIFE-CONT-NOFAB-001: No fabrication of continuity artifacts
+- LIFE-DEATH-DET-001: Deterministic death pipeline
+- LIFE-LEDGER-001: Ledger integrity for life events
+- LIFE-INH-SCHED-001: Inheritance scheduling determinism
+- LIFE-ESTATE-AUTH-001: Estate authority enforcement
+- LIFE-EPIS-001: Epistemic boundaries for life state
+- LIFE-REPLAY-001: Replay determinism for life events
+- LIFE-BIRTH-DET-001: Deterministic birth pipeline
+- LIFE-BIRTH-RES-001: Birth resource accounting
+- LIFE-LINEAGE-DET-001: Lineage determinism
+- LIFE-COHORT-001: Cohort consistency rules
+- LIFE-BIRTH-EPIS-001: Epistemic constraints on birth
+- LIFE-BIRTH-BATCH-001: Batch birth determinism
+- LIFE-REM-DET-001: Remains determinism
+- LIFE-REM-DECAY-001: Remains decay determinism
+- LIFE-REM-RIGHTS-001: Rights enforcement for remains
+- LIFE-REM-LEDGER-001: Ledger audit for remains
+- LIFE-REM-EPIS-001: Epistemic rules for remains
+- LIFE-REM-COUNT-001: Remains count conservation
+- CIV0a-EVENT-001: Survival event contract
+- CIV0a-NOGLOB-001: No global scans in survival loop
+- CIV0-NOGLOB-001: No global scans in population genesis
+- CIV0-NEXTDUE-001: Next-due scheduling for civ0
+- CIV0-DET-001: Deterministic civ0 behavior
+- CIV1-PROD-DET-001: Deterministic production chains
+- CIV1-BATCH-001: Batch consistency for civ1
+- CIV1-LOG-DET-001: Deterministic logistics flow
+- CIV1-NOGLOB-001: No global scans in civ1
+- CIV1-FID-001: Fidelity rules for civ1
+- CIV2-JURIS-DET-001: Deterministic jurisdiction resolution
+- CIV2-NEXTDUE-001: Next-due scheduling for civ2
+- CIV2-LEGIT-DET-001: Deterministic legitimacy rules
+- CIV2-POLICY-T4-001: Tier-4 policy enforcement
+- CIV2-STAND-RES-001: Standard resolution governance
+- CIV2-EPIS-001: Epistemic constraints in civ2
+- CIV3-RES-DET-001: Deterministic research
+- CIV3-BATCH-001: Batch consistency for civ3
+- CIV3-DIFF-DET-001: Deterministic diffusion
+- CIV3-SECRECY-001: Secrecy enforcement
+- CIV3-TECH-001: Technology constraints
+- CIV3-NOGLOB-001: No global scans in civ3
+- CIV4-FLOW-DET-001: Deterministic flow
+- CIV4-BATCH-001: Batch consistency for civ4
+- CIV4-INT-001: Interaction boundaries for civ4
+- CIV4-WARP-001: Time warp constraints
+- CIV4-HANDOFF-001: Scale handoff determinism
+- MP0-PARITY-001: MP0 parity requirements
+- MP0-LOCKSTEP-001: MP0 lockstep determinism
+- MP0-SERVERAUTH-001: MP0 server authority
+- GOV-VAL-001: Governance validation baseline
+- GOV-VAL-REND-002: Renderer governance validation
+- GOV-VAL-EPIS-003: Epistemic governance validation
+- GOV-VAL-PROV-004: Provenance governance validation
+- GOV-VAL-PERF-005: Performance governance validation

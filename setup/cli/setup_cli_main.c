@@ -7,13 +7,135 @@ Stub setup CLI entrypoint.
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #if defined(_WIN32)
 #include <direct.h>
 #else
 #include <sys/stat.h>
+#include <unistd.h>
 #endif
 
 #include "dsk/dsk_setup.h"
+
+#ifndef DOMINO_VERSION_STRING
+#define DOMINO_VERSION_STRING "0.0.0"
+#endif
+
+#ifndef DOMINIUM_GAME_VERSION
+#define DOMINIUM_GAME_VERSION "0.0.0"
+#endif
+
+#ifndef DOM_BUILD_SKU
+#define DOM_BUILD_SKU "auto"
+#endif
+
+#ifndef DOM_BUILD_ID
+#define DOM_BUILD_ID "unknown"
+#endif
+
+#ifndef DOM_GIT_HASH
+#define DOM_GIT_HASH "unknown"
+#endif
+
+#ifndef DOM_TOOLCHAIN_ID
+#define DOM_TOOLCHAIN_ID "unknown"
+#endif
+
+#ifndef DOM_TOOLCHAIN_FAMILY
+#define DOM_TOOLCHAIN_FAMILY "unknown"
+#endif
+
+#ifndef DOM_TOOLCHAIN_VERSION
+#define DOM_TOOLCHAIN_VERSION "unknown"
+#endif
+
+#ifndef DOM_TOOLCHAIN_STDLIB
+#define DOM_TOOLCHAIN_STDLIB "unknown"
+#endif
+
+#ifndef DOM_TOOLCHAIN_RUNTIME
+#define DOM_TOOLCHAIN_RUNTIME "unknown"
+#endif
+
+#ifndef DOM_TOOLCHAIN_LINK
+#define DOM_TOOLCHAIN_LINK "unknown"
+#endif
+
+#ifndef DOM_TOOLCHAIN_TARGET
+#define DOM_TOOLCHAIN_TARGET "unknown"
+#endif
+
+#ifndef DOM_TOOLCHAIN_OS
+#define DOM_TOOLCHAIN_OS "unknown"
+#endif
+
+#ifndef DOM_TOOLCHAIN_ARCH
+#define DOM_TOOLCHAIN_ARCH "unknown"
+#endif
+
+#ifndef DOM_TOOLCHAIN_OS_FLOOR
+#define DOM_TOOLCHAIN_OS_FLOOR "unknown"
+#endif
+
+#ifndef DOM_TOOLCHAIN_CONFIG
+#define DOM_TOOLCHAIN_CONFIG "unknown"
+#endif
+
+#ifndef DOM_BUILD_INFO_ABI_VERSION
+#define DOM_BUILD_INFO_ABI_VERSION 0
+#endif
+
+#ifndef DOM_CAPS_ABI_VERSION
+#define DOM_CAPS_ABI_VERSION 0
+#endif
+
+#ifndef DSYS_PROTOCOL_VERSION
+#define DSYS_PROTOCOL_VERSION 0
+#endif
+
+#ifndef DSYS_EXTENSION_WINDOW_EX_VERSION
+#define DSYS_EXTENSION_WINDOW_EX_VERSION 0
+#endif
+
+#ifndef DSYS_EXTENSION_ERROR_VERSION
+#define DSYS_EXTENSION_ERROR_VERSION 0
+#endif
+
+#ifndef DSYS_EXTENSION_CLIPTEXT_VERSION
+#define DSYS_EXTENSION_CLIPTEXT_VERSION 0
+#endif
+
+#ifndef DSYS_EXTENSION_CURSOR_VERSION
+#define DSYS_EXTENSION_CURSOR_VERSION 0
+#endif
+
+#ifndef DSYS_EXTENSION_DRAGDROP_VERSION
+#define DSYS_EXTENSION_DRAGDROP_VERSION 0
+#endif
+
+#ifndef DSYS_EXTENSION_GAMEPAD_VERSION
+#define DSYS_EXTENSION_GAMEPAD_VERSION 0
+#endif
+
+#ifndef DSYS_EXTENSION_POWER_VERSION
+#define DSYS_EXTENSION_POWER_VERSION 0
+#endif
+
+#ifndef DSYS_EXTENSION_TEXT_INPUT_VERSION
+#define DSYS_EXTENSION_TEXT_INPUT_VERSION 0
+#endif
+
+#ifndef DSYS_EXTENSION_WINDOW_MODE_VERSION
+#define DSYS_EXTENSION_WINDOW_MODE_VERSION 0
+#endif
+
+#ifndef DSYS_EXTENSION_DPI_VERSION
+#define DSYS_EXTENSION_DPI_VERSION 0
+#endif
+
+#ifndef DGFX_PROTOCOL_VERSION
+#define DGFX_PROTOCOL_VERSION 0
+#endif
 
 enum {
     D_APP_EXIT_OK = 0,
@@ -36,11 +158,6 @@ typedef struct dom_app_ui_request {
     dom_app_ui_mode mode;
     int mode_explicit;
 } dom_app_ui_request;
-
-typedef struct dom_app_build_info {
-    const char* product_name;
-    const char* product_version;
-} dom_app_build_info;
 
 static void dom_app_ui_request_init(dom_app_ui_request* req)
 {
@@ -180,37 +297,81 @@ static dom_app_ui_mode dom_app_select_ui_mode(const dom_app_ui_request* req,
     return default_mode;
 }
 
-static void dom_app_build_info_init(dom_app_build_info* info,
-                                    const char* product_name,
-                                    const char* product_version)
-{
-    if (!info) {
-        return;
-    }
-    info->product_name = product_name;
-    info->product_version = product_version;
-}
-
-static void dom_app_print_build_info(const dom_app_build_info* info)
-{
-    if (!info) {
-        return;
-    }
-    printf("product=%s\n", info->product_name ? info->product_name : "setup");
-    printf("version=%s\n", info->product_version ? info->product_version : "0.0.0");
-    printf("build=%s\n", DOM_VERSION_BUILD_STR);
-}
-
 static void print_version(const char* product_version)
 {
     printf("setup %s\\n", product_version);
 }
 
+static const char* setup_default_sku_for_product(const char* product_name)
+{
+    if (!product_name || !product_name[0]) {
+        return "unspecified";
+    }
+    if (strcmp(product_name, "client") == 0) {
+        return "modern_desktop";
+    }
+    if (strcmp(product_name, "server") == 0) {
+        return "headless_server";
+    }
+    if (strcmp(product_name, "launcher") == 0) {
+        return "modern_desktop";
+    }
+    if (strcmp(product_name, "setup") == 0) {
+        return "modern_desktop";
+    }
+    if (strcmp(product_name, "tools") == 0) {
+        return "devtools";
+    }
+    return "unspecified";
+}
+
+static const char* setup_build_sku_value(const char* product_name)
+{
+    const char* override = DOM_BUILD_SKU;
+    if (override && override[0] && strcmp(override, "auto") != 0) {
+        return override;
+    }
+    return setup_default_sku_for_product(product_name);
+}
+
 static void print_build_info(const char* product_name, const char* product_version)
 {
-    dom_app_build_info info;
-    dom_app_build_info_init(&info, product_name, product_version);
-    dom_app_print_build_info(&info);
+    printf("product=%s\\n", product_name ? product_name : "");
+    printf("product_version=%s\\n", product_version ? product_version : "");
+    printf("sku=%s\\n", setup_build_sku_value(product_name));
+    printf("engine_version=%s\\n", DOMINO_VERSION_STRING);
+    printf("game_version=%s\\n", DOMINIUM_GAME_VERSION);
+    printf("build_number=%u\\n", (unsigned int)DOM_BUILD_NUMBER);
+    printf("build_id=%s\\n", DOM_BUILD_ID);
+    printf("git_hash=%s\\n", DOM_GIT_HASH);
+    printf("toolchain_id=%s\\n", DOM_TOOLCHAIN_ID);
+    printf("toolchain_family=%s\\n", DOM_TOOLCHAIN_FAMILY);
+    printf("toolchain_version=%s\\n", DOM_TOOLCHAIN_VERSION);
+    printf("toolchain_stdlib=%s\\n", DOM_TOOLCHAIN_STDLIB);
+    printf("toolchain_runtime=%s\\n", DOM_TOOLCHAIN_RUNTIME);
+    printf("toolchain_link=%s\\n", DOM_TOOLCHAIN_LINK);
+    printf("toolchain_target=%s\\n", DOM_TOOLCHAIN_TARGET);
+    printf("toolchain_os=%s\\n", DOM_TOOLCHAIN_OS);
+    printf("toolchain_arch=%s\\n", DOM_TOOLCHAIN_ARCH);
+    printf("toolchain_os_floor=%s\\n", DOM_TOOLCHAIN_OS_FLOOR);
+    printf("toolchain_config=%s\\n", DOM_TOOLCHAIN_CONFIG);
+    printf("protocol_law_targets=LAW_TARGETS@1.4.0\\n");
+    printf("protocol_control_caps=CONTROL_CAPS@1.0.0\\n");
+    printf("protocol_authority_tokens=AUTHORITY_TOKEN@1.0.0\\n");
+    printf("abi_dom_build_info=%u\\n", (unsigned int)DOM_BUILD_INFO_ABI_VERSION);
+    printf("abi_dom_caps=%u\\n", (unsigned int)DOM_CAPS_ABI_VERSION);
+    printf("api_dsys=%u\\n", (unsigned int)DSYS_PROTOCOL_VERSION);
+    printf("platform_ext_window_ex_api=%u\\n", (unsigned int)DSYS_EXTENSION_WINDOW_EX_VERSION);
+    printf("platform_ext_error_api=%u\\n", (unsigned int)DSYS_EXTENSION_ERROR_VERSION);
+    printf("platform_ext_cliptext_api=%u\\n", (unsigned int)DSYS_EXTENSION_CLIPTEXT_VERSION);
+    printf("platform_ext_cursor_api=%u\\n", (unsigned int)DSYS_EXTENSION_CURSOR_VERSION);
+    printf("platform_ext_dragdrop_api=%u\\n", (unsigned int)DSYS_EXTENSION_DRAGDROP_VERSION);
+    printf("platform_ext_gamepad_api=%u\\n", (unsigned int)DSYS_EXTENSION_GAMEPAD_VERSION);
+    printf("platform_ext_power_api=%u\\n", (unsigned int)DSYS_EXTENSION_POWER_VERSION);
+    printf("platform_ext_text_input_api=%u\\n", (unsigned int)DSYS_EXTENSION_TEXT_INPUT_VERSION);
+    printf("platform_ext_window_mode_api=%u\\n", (unsigned int)DSYS_EXTENSION_WINDOW_MODE_VERSION);
+    printf("platform_ext_dpi_api=%u\\n", (unsigned int)DSYS_EXTENSION_DPI_VERSION);
+    printf("api_dgfx=%u\\n", (unsigned int)DGFX_PROTOCOL_VERSION);
 }
 
 typedef struct setup_control_caps {
@@ -473,6 +634,158 @@ static void setup_print_help(void)
     printf("  prepare   Create empty install layout\\n");
 }
 
+static int setup_is_abs_path(const char* path)
+{
+    if (!path || !path[0]) {
+        return 0;
+    }
+    if (path[0] == '/' || path[0] == '\\') {
+        return 1;
+    }
+    if (isalpha((unsigned char)path[0]) && path[1] == ':' &&
+        (path[2] == '/' || path[2] == '\\')) {
+        return 1;
+    }
+    return 0;
+}
+
+static int setup_file_exists(const char* path)
+{
+    FILE* f = 0;
+    if (!path || !path[0]) {
+        return 0;
+    }
+    f = fopen(path, "rb");
+    if (f) {
+        fclose(f);
+        return 1;
+    }
+    return 0;
+}
+
+static int setup_get_cwd(char* buf, size_t cap)
+{
+#if defined(_WIN32)
+    return (_getcwd(buf, (int)cap) != NULL);
+#else
+    return (getcwd(buf, cap) != NULL);
+#endif
+}
+
+static void setup_normalize_path(char* path)
+{
+    char* p;
+    if (!path) {
+        return;
+    }
+    for (p = path; *p; ++p) {
+        if (*p == '\\') {
+            *p = '/';
+        }
+    }
+}
+
+static int setup_pop_dir(char* path)
+{
+    size_t len;
+    char* slash;
+    if (!path || !path[0]) {
+        return 0;
+    }
+    len = strlen(path);
+    while (len > 0 && path[len - 1] == '/') {
+        path[--len] = '\0';
+    }
+    if (len == 0) {
+        return 0;
+    }
+    if (len == 1 && path[0] == '/') {
+        return 0;
+    }
+    if (len == 3 && path[1] == ':' && path[2] == '/') {
+        return 0;
+    }
+    slash = strrchr(path, '/');
+    if (!slash) {
+        return 0;
+    }
+    if (slash == path) {
+        path[1] = '\0';
+        return 1;
+    }
+    if (slash == path + 2 && path[1] == ':') {
+        slash[1] = '\0';
+        return 1;
+    }
+    *slash = '\0';
+    return 1;
+}
+
+static int setup_join_search_path(char* out, size_t cap, const char* base, const char* rel)
+{
+    size_t blen;
+    int written;
+    if (!out || cap == 0u || !base || !rel) {
+        return 0;
+    }
+    blen = strlen(base);
+    if (blen > 0 && base[blen - 1] == '/') {
+        written = snprintf(out, cap, "%s%s", base, rel);
+    } else {
+        written = snprintf(out, cap, "%s/%s", base, rel);
+    }
+    return written > 0 && (size_t)written < cap;
+}
+
+static int setup_find_upward(char* out, size_t cap, const char* rel)
+{
+    char cwd[512];
+    char probe[512];
+    if (!setup_get_cwd(cwd, sizeof(cwd))) {
+        return 0;
+    }
+    setup_normalize_path(cwd);
+    while (1) {
+        if (!setup_join_search_path(probe, sizeof(probe), cwd, rel)) {
+            return 0;
+        }
+        if (setup_file_exists(probe)) {
+            strncpy(out, probe, cap - 1u);
+            out[cap - 1u] = '\0';
+            return 1;
+        }
+        if (!setup_pop_dir(cwd)) {
+            break;
+        }
+    }
+    return 0;
+}
+
+static void setup_resolve_control_registry(char* out, size_t cap, const char* requested)
+{
+    const char* fallback = "data/registries/control_capabilities.registry";
+    const char* path = (requested && requested[0]) ? requested : fallback;
+    if (!out || cap == 0u) {
+        return;
+    }
+    out[0] = '\0';
+    if (setup_is_abs_path(path)) {
+        strncpy(out, path, cap - 1u);
+        out[cap - 1u] = '\0';
+        return;
+    }
+    if (setup_file_exists(path)) {
+        strncpy(out, path, cap - 1u);
+        out[cap - 1u] = '\0';
+        return;
+    }
+    if (setup_find_upward(out, cap, path)) {
+        return;
+    }
+    strncpy(out, path, cap - 1u);
+    out[cap - 1u] = '\0';
+}
+
 static char setup_path_sep(void)
 {
 #if defined(_WIN32)
@@ -505,8 +818,7 @@ static int setup_mkdir(const char* path)
 static int setup_join_path(char* out, size_t cap, const char* root, const char* leaf)
 {
     size_t root_len;
-    size_t leaf_len;
-    size_t total;
+    int written;
     char sep;
     if (!out || cap == 0u || !leaf) {
         return -1;
@@ -515,18 +827,15 @@ static int setup_join_path(char* out, size_t cap, const char* root, const char* 
         root = ".";
     }
     root_len = strlen(root);
-    leaf_len = strlen(leaf);
     sep = setup_path_sep();
-    total = root_len + leaf_len + 2u;
-    if (total > cap) {
+    if (root_len > 0u && root[root_len - 1u] != '/' && root[root_len - 1u] != '\\\\') {
+        written = snprintf(out, cap, "%s%c%s", root, sep, leaf);
+    } else {
+        written = snprintf(out, cap, "%s%s", root, leaf);
+    }
+    if (written <= 0 || (size_t)written >= cap) {
         return -1;
     }
-    memcpy(out, root, root_len);
-    if (root_len > 0u && root[root_len - 1u] != '/' && root[root_len - 1u] != '\\\\') {
-        out[root_len++] = sep;
-    }
-    memcpy(out + root_len, leaf, leaf_len);
-    out[root_len + leaf_len] = '\\0';
     return 0;
 }
 
@@ -573,6 +882,7 @@ static int setup_run_gui(void)
 int setup_main(int argc, char** argv)
 {
     const char* control_registry_path = "data/registries/control_capabilities.registry";
+    char control_registry_buf[512];
     const char* control_enable = 0;
     const char* prepare_root = ".";
     int want_build_info = 0;
@@ -583,6 +893,8 @@ int setup_main(int argc, char** argv)
     int want_interactive = 0;
     dom_app_ui_request ui_req;
     dom_app_ui_mode ui_mode = DOM_APP_UI_NONE;
+    setup_control_caps caps;
+    int control_loaded = 0;
     const char* cmd = 0;
     int i;
 
@@ -661,8 +973,12 @@ int setup_main(int argc, char** argv)
             continue;
         }
         if (argv[i][0] != '-') {
-            cmd = argv[i];
-            break;
+            if (!cmd) {
+                cmd = argv[i];
+                continue;
+            }
+            fprintf(stderr, "setup: unexpected argument '%s'\n", argv[i]);
+            return D_APP_EXIT_USAGE;
         }
     }
     if (want_smoke || want_selftest) {
@@ -702,27 +1018,59 @@ int setup_main(int argc, char** argv)
     if (ui_mode == DOM_APP_UI_GUI && !cmd && !want_build_info && !want_status) {
         return setup_run_gui();
     }
-    if (want_build_info || want_status || (cmd && strcmp(cmd, "status") == 0)) {
-        setup_control_caps caps;
+
+    setup_resolve_control_registry(control_registry_buf,
+                                   sizeof(control_registry_buf),
+                                   control_registry_path);
+    control_registry_path = control_registry_buf;
+
+    if (want_status || (cmd && strcmp(cmd, "status") == 0) || control_enable) {
         if (control_caps_init(&caps, control_registry_path) != 0) {
             fprintf(stderr, "setup: failed to load control registry: %s\\n", control_registry_path);
             return D_APP_EXIT_FAILURE;
         }
+        control_loaded = 1;
         if (enable_control_list(&caps, control_enable) != 0) {
             fprintf(stderr, "setup: invalid control capability list\\n");
             control_free_caps(&caps);
             return D_APP_EXIT_USAGE;
         }
-        if (want_build_info) {
-            print_build_info("setup", DOMINIUM_SETUP_VERSION);
+    }
+    if (want_build_info) {
+        if (!control_loaded && !control_enable) {
+            if (control_caps_init(&caps, control_registry_path) == 0) {
+                control_loaded = 1;
+            }
         }
-        if (cmd && strcmp(cmd, "status") == 0) {
-            int status;
-            printf("setup status: ok (stub)\\n");
-            status = dsk_setup_status();
+        print_build_info("setup", DOMINIUM_SETUP_VERSION);
+        if (control_loaded) {
             print_control_caps(&caps);
             control_free_caps(&caps);
-            return status;
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (cmd && strcmp(cmd, "status") == 0) {
+        int status;
+        if (!control_loaded) {
+            if (control_caps_init(&caps, control_registry_path) != 0) {
+                fprintf(stderr, "setup: failed to load control registry: %s\\n", control_registry_path);
+                return D_APP_EXIT_FAILURE;
+            }
+            control_loaded = 1;
+        }
+        printf("setup status: ok (stub)\\n");
+        status = dsk_setup_status();
+        print_control_caps(&caps);
+        control_free_caps(&caps);
+        return status;
+    }
+    if (want_status) {
+        if (!control_loaded) {
+            if (control_caps_init(&caps, control_registry_path) != 0) {
+                fprintf(stderr, "setup: failed to load control registry: %s\\n", control_registry_path);
+                return D_APP_EXIT_FAILURE;
+            }
+            control_loaded = 1;
         }
         print_control_caps(&caps);
         control_free_caps(&caps);

@@ -1,0 +1,25 @@
+{
+  "migration_stub": {
+    "from_version": "0.1.0",
+    "status": "stub",
+    "to_version": "0.1.0"
+  },
+  "record": {
+    "region_records": [
+      {
+        "boundary_ref": "earth_plate_stub_boundary",
+        "layer_id": "surface",
+        "parent_region_ref": "earth_land_region",
+        "provenance_ref": "stub_provenance",
+        "region_id": "earth_plate_stub",
+        "region_tags": [
+          "plate"
+        ],
+        "region_type": "plate",
+        "surface_ref": "earth_land_surface",
+        "volume_ref": null
+      }
+    ]
+  },
+  "schema_version": "0.1.0"
+}

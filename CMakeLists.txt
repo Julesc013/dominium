@@ -95,7 +95,7 @@ execute_process(
     RESULT_VARIABLE _dom_cmake_sanity_res
 )
 if(NOT _dom_cmake_sanity_res EQUAL 0)
-    message(FATAL_ERROR "CMake global include check failed; remove include_directories() usage.")
+    message(FATAL_ERROR "CMake global include check failed; remove global include directories usage.")
 endif()
 
 set(DOC_RATIO_ENABLE ON CACHE BOOL "Enable documentation ratio quality gate")
@@ -291,7 +291,7 @@ set(DOM_PLATFORM "${_dom_platform_default}" CACHE STRING "Dominium platform back
 set_property(CACHE DOM_PLATFORM PROPERTY STRINGS sdl2 win32 win32_headless null posix_headless posix_x11 posix_wayland cocoa)
 
 option(DOM_BACKEND_SOFT "Enable DGFX software renderer backend" ON)
-option(DOM_BACKEND_NULL "Enable DGFX null renderer backend (headless/CI)" OFF)
+option(DOM_BACKEND_NULL "Enable DGFX null renderer backend (headless/CI)" ON)
 option(DOM_BACKEND_DX9 "Enable DGFX Direct3D 9 renderer backend" OFF)
 option(DOM_BACKEND_DX11 "Enable DGFX Direct3D 11 renderer backend" OFF)
 option(DOM_BACKEND_GL1 "Enable DGFX OpenGL 1.x renderer backend" OFF)
@@ -913,6 +913,10 @@ if(DOM_BUILD_LAUNCHER)
 endif()
 if(DOM_BUILD_TOOLS)
     add_subdirectory(tools)
+endif()
+
+if(DOM_BUILD_TESTS)
+    add_subdirectory(tests)
 endif()
 
 if(DOM_PROJECTION)

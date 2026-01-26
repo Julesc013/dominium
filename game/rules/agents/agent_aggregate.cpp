@@ -141,7 +141,7 @@ int agent_aggregate_set_counts(aggregate_agent* agg,
 int agent_aggregate_refresh_from_individuals(aggregate_agent* agg,
                                              const agent_belief_state* beliefs,
                                              u32 belief_count,
-                                             const agent_goal_status* goals,
+                                             const agent_goal_status_entry* goals,
                                              u32 goal_count)
 {
     if (!agg) {

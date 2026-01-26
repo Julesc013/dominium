@@ -1,0 +1,20 @@
+{
+  "migration_stub": {
+    "from_version": "0.1.0",
+    "status": "stub",
+    "to_version": "0.1.0"
+  },
+  "record": {
+    "biome_tag_records": [
+      {
+        "category": "generic",
+        "provenance_ref": "stub_provenance",
+        "tag_id": "stub_biome"
+      }
+    ],
+    "valid_biome_tags": [
+      "stub_biome"
+    ]
+  },
+  "schema_version": "0.1.0"
+}

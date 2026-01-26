@@ -19,10 +19,10 @@ DETERMINISM: Aggregation is order-independent and deterministic.
 extern "C" {
 #endif
 
-typedef struct agent_goal_status {
+typedef struct agent_goal_status_entry {
     u32 goal_type;
     u32 is_satisfied;
-} agent_goal_status;
+} agent_goal_status_entry;
 
 typedef struct aggregate_goal_summary {
     u32 count;
@@ -31,7 +31,7 @@ typedef struct aggregate_goal_summary {
 } aggregate_goal_summary;
 
 void aggregate_goals_init(aggregate_goal_summary* summary);
-int aggregate_goals_from_status(const agent_goal_status* statuses,
+int aggregate_goals_from_status(const agent_goal_status_entry* statuses,
                                 u32 count,
                                 aggregate_goal_summary* out_summary);
 int aggregate_goals_from_results(const agent_goal_eval_result* results,

@@ -36,19 +36,32 @@ static void dom_app_print_json_string(const char* s)
 int dom_app_parse_output_format(const char* value, dom_app_output_format* out)
 {
     char buf[16];
+    const char* start;
+    const char* end;
     size_t len;
     size_t i;
     if (!value || !out) {
         return 0;
     }
-    len = strlen(value);
+    start = value;
+    while (*start && isspace((unsigned char)*start)) {
+        start++;
+    }
+    if (!start[0]) {
+        return 0;
+    }
+    end = start + strlen(start);
+    while (end > start && isspace((unsigned char)end[-1])) {
+        end--;
+    }
+    len = (size_t)(end - start);
     if (len == 0u || len >= sizeof(buf)) {
         return 0;
     }
     for (i = 0u; i < len; ++i) {
-        buf[i] = (char)tolower((unsigned char)value[i]);
+        buf[i] = (char)tolower((unsigned char)start[i]);
     }
-    buf[len] = '\\0';
+    buf[len] = '\0';
     if (strcmp(buf, "text") == 0) {
         *out = DOM_APP_FORMAT_TEXT;
         return 1;

@@ -10,6 +10,7 @@ ERROR MODEL: Return codes; no exceptions.
 DETERMINISM: Machine wear and failure progression are deterministic.
 */
 #include "dominium/physical/machine_ops.h"
+#include "dominium/physical/physical_process.h"
 
 #include <string.h>
 

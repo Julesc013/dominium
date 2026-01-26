@@ -1,0 +1,36 @@
+{
+  "migration_stub": {
+    "from_version": "0.1.0",
+    "status": "stub",
+    "to_version": "0.1.0"
+  },
+  "record": {
+    "region_records": [
+      {
+        "boundary_ref": "earth_land_region_boundary",
+        "layer_id": "surface",
+        "parent_region_ref": null,
+        "provenance_ref": "stub_provenance",
+        "region_id": "earth_land_region",
+        "region_tags": [],
+        "region_type": "land",
+        "surface_ref": "earth_land_surface",
+        "volume_ref": null
+      },
+      {
+        "boundary_ref": "earth_continent_stub_boundary",
+        "layer_id": "surface",
+        "parent_region_ref": "earth_land_region",
+        "provenance_ref": "stub_provenance",
+        "region_id": "earth_continent_stub",
+        "region_tags": [
+          "continent"
+        ],
+        "region_type": "continent",
+        "surface_ref": "earth_land_surface",
+        "volume_ref": null
+      }
+    ]
+  },
+  "schema_version": "0.1.0"
+}

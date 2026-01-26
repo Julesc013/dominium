@@ -67,7 +67,7 @@ static int mp0_build_commands(dom_mp0_command_queue* queue, dom_mp0_command* sto
 
 static int mp0_run_hash(u64* out_hash)
 {
-    dom_mp0_state state;
+    static dom_mp0_state state;
     dom_mp0_command_queue queue;
     dom_mp0_command storage[DOM_MP0_MAX_COMMANDS];
 

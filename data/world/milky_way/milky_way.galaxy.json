@@ -1,0 +1,25 @@
+{
+  "migration_stub": {
+    "from_version": "0.1.0",
+    "status": "stub",
+    "to_version": "0.1.0"
+  },
+  "record": {
+    "coordinate_frame_ref": "milky_way_frame",
+    "data_source_refs": [
+      "stub_source"
+    ],
+    "galaxy_id": "milky_way_galaxy",
+    "morphology_tags": [
+      "barred_spiral"
+    ],
+    "name": "MilkyWay",
+    "provenance_ref": "stub_provenance",
+    "scale_domain_ref": "galaxy_scale",
+    "system_ids": [
+      "sol_system"
+    ],
+    "universe_ref": "universe_stub"
+  },
+  "schema_version": "0.1.0"
+}

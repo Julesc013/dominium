@@ -30,10 +30,8 @@ Minimal client entrypoint with MP0 local-connect demo.
 #include <stdarg.h>
 #if defined(_WIN32)
 #include <io.h>
-#include <sys/stat.h>
 #else
 #include <dirent.h>
-#include <sys/stat.h>
 #endif
 
 static void client_print_platform_caps(void);
@@ -998,8 +996,7 @@ static void client_ui_build_lines(const client_ui_state* state,
         client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "engine=%s", DOMINO_VERSION_STRING);
         client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "game=%s", DOMINIUM_GAME_VERSION);
         client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "build_number=%u", (unsigned int)DOM_BUILD_NUMBER);
-        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "sim_schema_id=%llu",
-                           (unsigned long long)dom_sim_schema_id());
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "sim_schema_id=unknown");
         if (build) {
             client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "sim_schema_version=%u",
                                (unsigned int)build->sim_schema_version);
@@ -2094,7 +2091,7 @@ cleanup:
 
 static int mp0_run_local_client(void)
 {
-    dom_mp0_state state;
+    static dom_mp0_state state;
     dom_mp0_command_queue queue;
     dom_mp0_command storage[DOM_MP0_MAX_COMMANDS];
     survival_production_action_input gather;
@@ -2677,7 +2674,7 @@ int client_main(int argc, char** argv)
     if (timing_mode == D_APP_TIMING_DETERMINISTIC) {
         frame_cap_ms = 0u;
     }
-    if (want_build_info || want_status || control_enable) {
+    if (want_status || control_enable) {
         if (dom_control_caps_init(&control_caps, control_registry_path) != DOM_CONTROL_OK) {
             fprintf(stderr, "client: failed to load control registry: %s\n", control_registry_path);
             return D_APP_EXIT_FAILURE;
@@ -2690,6 +2687,11 @@ int client_main(int argc, char** argv)
         }
     }
     if (want_build_info) {
+        if (!control_loaded && !control_enable) {
+            if (dom_control_caps_init(&control_caps, control_registry_path) == DOM_CONTROL_OK) {
+                control_loaded = 1;
+            }
+        }
         print_build_info("client", DOMINIUM_GAME_VERSION);
         if (control_loaded) {
             print_control_caps(&control_caps);

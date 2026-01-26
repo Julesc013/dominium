@@ -47,16 +47,16 @@ typedef struct tool_event_stream {
     u32 cursor;
 } tool_event_stream;
 
-typedef struct tool_history_query {
+typedef struct tool_history_request {
     u64 agent_id;
     u64 institution_id;
     u32 required_knowledge;
     u32 flags_mask;
-} tool_history_query;
+} tool_history_request;
 
 typedef struct tool_history_view {
     const tool_observation_store* store;
-    tool_history_query request;
+    tool_history_request request;
     tool_access_context access;
     u32 cursor;
 } tool_history_view;
@@ -95,13 +95,13 @@ typedef struct tool_pack_view {
     u32 cursor;
 } tool_pack_view;
 
-typedef struct tool_capability_query {
+typedef struct tool_capability_request {
     u32 provider_kind;
-} tool_capability_query;
+} tool_capability_request;
 
 typedef struct tool_capability_view {
     const tool_observation_store* store;
-    tool_capability_query request;
+    tool_capability_request request;
     u32 cursor;
 } tool_capability_view;
 
@@ -116,7 +116,7 @@ int tool_event_stream_subscribe(const tool_observation_store* store,
 int tool_event_stream_next(tool_event_stream* stream,
                            tool_observe_event_record* out_event);
 int tool_history_query(const tool_observation_store* store,
-                       const tool_history_query* request,
+                       const tool_history_request* request,
                        const tool_access_context* access,
                        tool_history_view* out_view);
 int tool_history_view_next(tool_history_view* view,
@@ -130,7 +130,7 @@ int tool_pack_manifest_query(const tool_observation_store* store,
 int tool_pack_view_next(tool_pack_view* view,
                         tool_pack_record* out_record);
 int tool_capability_query(const tool_observation_store* store,
-                          const tool_capability_query* request,
+                          const tool_capability_request* request,
                           tool_capability_view* out_view);
 int tool_capability_view_next(tool_capability_view* view,
                               tool_capability_record* out_record);

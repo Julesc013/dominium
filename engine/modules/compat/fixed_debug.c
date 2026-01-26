@@ -1,7 +1,7 @@
 /*
-FILE: source/domino/core/fixed_debug.c
+FILE: source/domino/compat/fixed_debug.c
 MODULE: Domino
-LAYER / SUBSYSTEM: Domino impl / core/fixed_debug
+LAYER / SUBSYSTEM: Domino impl / compat/fixed_debug
 RESPONSIBILITY: Implements `fixed_debug`; owns translation-unit-local helpers/state; does NOT define the public contract (see `include/**`).
 ALLOWED DEPENDENCIES: `include/domino/**`, `source/domino/**`, and C89/C++98 standard headers as needed.
 FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**` (engine must not depend on product layer).

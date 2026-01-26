@@ -12,6 +12,7 @@ VERSIONING / ABI / DATA FORMAT NOTES: N/A (implementation file).
 EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
 */
 #include "render/null/d_gfx_null.h"
+#include "soft/d_gfx_soft.h"
 
 #include "domino/sys.h"
 

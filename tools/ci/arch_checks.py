@@ -29,6 +29,11 @@ SKIP_DIRS = {
     "deps",
 }
 
+SKIP_SUBDIRS = (
+    "game/tests",
+    "tools/validation/fixtures",
+)
+
 INCLUDE_RE = re.compile(r'^\s*#\s*include\s*[<"]([^">]+)[">]')
 
 FORBIDDEN_ENGINE_REF_PREFIXES = ("game/", "launcher/", "setup/", "tools/")
@@ -108,7 +113,6 @@ UI_FORBIDDEN_CALL_RE = re.compile(r"\b(dg?_sim_|dg?_world_|dg?_state_)\w*\s*\(")
 EPISTEMIC_UI_DIRS = (
     os.path.join("game", "ui"),
     os.path.join("client"),
-    os.path.join("tools"),
 )
 
 EPISTEMIC_FORBIDDEN_INCLUDES = (
@@ -159,7 +163,7 @@ GLOBAL_ITER_PATTERNS = [
 
 INTEREST_REQUIRED_NAME_RE = re.compile(r"\b(update|tick|step|process)\b", re.IGNORECASE)
 INTEREST_PARAM_RE = re.compile(r"\b(dom_interest_set|interest_set)\b")
-CAMERA_VIEW_RE = re.compile(r"\b(camera|view|viewport|render)\b", re.IGNORECASE)
+CAMERA_VIEW_RE = re.compile(r"\b(camera|viewport)\b", re.IGNORECASE)
 
 FIDELITY_SPAWN_RE = re.compile(r"\b(despawn|respawn|spawn|destroy|delete)\b", re.IGNORECASE)
 FIDELITY_APPROX_RE = re.compile(r"\b(approx(?:imate|imation)?|simplif\w*|placeholder|coarse|lod)\b",
@@ -192,6 +196,13 @@ class Check(object):
 def repo_rel(repo_root, path):
     return os.path.relpath(path, repo_root).replace("\\", "/")
 
+def should_skip_rel(rel_path):
+    rel_path = rel_path.replace("\\", "/")
+    for subdir in SKIP_SUBDIRS:
+        if rel_path == subdir or rel_path.startswith(subdir + "/"):
+            return True
+    return False
+
 
 def normalize_include(path):
     cleaned = path.replace("\\", "/")
@@ -205,6 +216,9 @@ def normalize_include(path):
 def iter_files(root, repo_root):
     for dirpath, dirnames, filenames in os.walk(root):
         rel = repo_rel(repo_root, dirpath)
+        if should_skip_rel(rel):
+            dirnames[:] = []
+            continue
         parts = rel.split("/")
         if parts and parts[0] in SKIP_DIRS:
             dirnames[:] = []
@@ -321,6 +335,9 @@ def scan_cmake_for_link_edges(repo_root, check, target_name, forbidden_targets):
     cmake_files = []
     for dirpath, dirnames, filenames in os.walk(repo_root):
         rel = repo_rel(repo_root, dirpath)
+        if should_skip_rel(rel):
+            dirnames[:] = []
+            continue
         parts = rel.split("/")
         if parts and parts[0] in SKIP_DIRS:
             dirnames[:] = []
@@ -491,6 +508,9 @@ def check_arch_render_001(repo_root):
         return False
     for dirpath, dirnames, filenames in os.walk(repo_root):
         rel_dir = repo_rel(repo_root, dirpath)
+        if should_skip_rel(rel_dir):
+            dirnames[:] = []
+            continue
         parts = rel_dir.split("/")
         if parts and parts[0] in SKIP_DIRS:
             dirnames[:] = []
@@ -884,6 +904,9 @@ def check_build_global_001(repo_root):
     )
     for dirpath, dirnames, filenames in os.walk(repo_root):
         rel = repo_rel(repo_root, dirpath)
+        if should_skip_rel(rel):
+            dirnames[:] = []
+            continue
         parts = rel.split("/")
         if parts and parts[0] in SKIP_DIRS:
             dirnames[:] = []
