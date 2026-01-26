@@ -138,8 +138,8 @@ static int test_remains_creation_determinism(void)
 
 static int test_decay_schedule_invariance(void)
 {
-    life_remains_test_context a;
-    life_remains_test_context b;
+    static life_remains_test_context a;
+    static life_remains_test_context b;
     u64 id_a = 0u;
     u64 id_b = 0u;
     life_remains* ra;
@@ -170,7 +170,7 @@ static int test_decay_schedule_invariance(void)
 
 static int test_rights_resolution_order(void)
 {
-    life_remains_test_context t;
+    static life_remains_test_context t;
     u64 rights_id = 0u;
     u64 remains_id = 0u;
     u64 claim_id = 0u;
@@ -215,7 +215,7 @@ static int test_rights_resolution_order(void)
 
 static int test_salvage_ledger_conservation(void)
 {
-    life_remains_test_context t;
+    static life_remains_test_context t;
     life_salvage_context ctx;
     dom_account_id_t inventory_account = 100u;
     dom_account_id_t claimant_account = 200u;
@@ -287,7 +287,7 @@ static int test_salvage_ledger_conservation(void)
 
 static int test_epistemic_discovery_gating(void)
 {
-    life_remains_test_context t;
+    static life_remains_test_context t;
     life_salvage_context ctx;
     u64 rights_id = 0u;
     u64 remains_id = 0u;
@@ -328,7 +328,7 @@ static int test_epistemic_discovery_gating(void)
 
 static int test_collapse_refine_preserves_counts(void)
 {
-    life_remains_test_context t;
+    static life_remains_test_context t;
     u64 rights_id = 0u;
     u64 remains_id = 0u;
     u64 aggregate_id = 0u;

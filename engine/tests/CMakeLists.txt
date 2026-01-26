@@ -421,5 +421,3 @@ set_target_properties(streaming_work_ir_tests PROPERTIES
     CXX_EXTENSIONS OFF
 )
 add_test(NAME streaming_work_ir COMMAND streaming_work_ir_tests)
-
-add_subdirectory(${CMAKE_SOURCE_DIR}/tests ${CMAKE_CURRENT_BINARY_DIR}/tests)

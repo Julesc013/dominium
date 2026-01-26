@@ -15,11 +15,6 @@ extern "C" {
 #include "dom_contracts/core_err.h"
 
 #ifdef __cplusplus
-#include <string>
-#include <vector>
-#endif
-
-#ifdef __cplusplus
 extern "C" {
 #endif
 
@@ -130,75 +125,5 @@ u32 core_tlv_crc32(const unsigned char* data, u32 size);
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
-
-#ifdef __cplusplus
-
-namespace dom {
-namespace core_tlv {
-
-/* Canonical TLV record header size (tag + len). */
-enum { CORE_TLV_HEADER_BYTES = 8u };
-/* Guardrail: refuse TLVs with unbounded record counts. */
-enum { CORE_TLV_MAX_RECORDS = 65535u };
-/* Root schema version tag (must appear at most once per root). */
-enum { CORE_TLV_TAG_SCHEMA_VERSION = 1u };
-
-struct TlvRecord {
-    u32 tag;
-    const unsigned char* payload;
-    u32 len;
-};
-
-class TlvReader {
-public:
-    TlvReader(const unsigned char* data, size_t size);
-    bool next(TlvRecord& out);
-    size_t offset() const;
-    size_t remaining() const;
-
-private:
-    const unsigned char* m_data;
-    size_t m_size;
-    size_t m_off;
-    u32 m_record_count;
-};
-
-class TlvWriter {
-public:
-    TlvWriter();
-
-    void reset();
-    const std::vector<unsigned char>& bytes() const;
-
-    void add_bytes(u32 tag, const unsigned char* data, u32 len);
-    void add_u32(u32 tag, u32 value);
-    void add_i32(u32 tag, i32 value);
-    void add_u64(u32 tag, u64 value);
-    void add_string(u32 tag, const std::string& value);
-    void add_container(u32 tag, const std::vector<unsigned char>& payload_tlv);
-
-private:
-    std::vector<unsigned char> m_bytes;
-};
-
-u64 tlv_fnv1a64(const unsigned char* data, size_t len);
-
-void tlv_write_u32_le(unsigned char out[4], u32 v);
-void tlv_write_u64_le(unsigned char out[8], u64 v);
-bool tlv_read_u32_le(const unsigned char* data, u32 len, u32& out_v);
-bool tlv_read_i32_le(const unsigned char* data, u32 len, i32& out_v);
-bool tlv_read_u64_le(const unsigned char* data, u32 len, u64& out_v);
-
-std::string tlv_read_string(const unsigned char* data, u32 len);
-
-bool tlv_read_schema_version_or_default(const unsigned char* data,
-                                        size_t size,
-                                        u32& out_version,
-                                        u32 default_version);
-
-} /* namespace core_tlv */
-} /* namespace dom */
-
-#endif /* __cplusplus */
 
 #endif /* DOMINIUM_CORE_TLV_H */

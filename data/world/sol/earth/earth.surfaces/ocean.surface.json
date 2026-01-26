@@ -1,0 +1,28 @@
+{
+  "migration_stub": {
+    "from_version": "0.1.0",
+    "status": "stub",
+    "to_version": "0.1.0"
+  },
+  "record": {
+    "surface_records": [
+      {
+        "biome_tags": [
+          "stub_biome"
+        ],
+        "body_ref": "earth",
+        "climate_map_ref": "earth_ocean_climate",
+        "coordinate_frame_ref": "earth_frame",
+        "heightmap_ref": "earth_ocean_height",
+        "provenance_ref": "stub_provenance",
+        "region_ids": [
+          "earth_ocean_region",
+          "earth_ocean_stub"
+        ],
+        "surface_id": "earth_ocean_surface",
+        "surface_type": "ocean"
+      }
+    ]
+  },
+  "schema_version": "0.1.0"
+}

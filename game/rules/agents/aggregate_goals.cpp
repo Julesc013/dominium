@@ -21,7 +21,7 @@ void aggregate_goals_init(aggregate_goal_summary* summary)
     memset(summary, 0, sizeof(*summary));
 }
 
-int aggregate_goals_from_status(const agent_goal_status* statuses,
+int aggregate_goals_from_status(const agent_goal_status_entry* statuses,
                                 u32 count,
                                 aggregate_goal_summary* out_summary)
 {

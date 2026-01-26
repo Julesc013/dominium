@@ -1,0 +1,155 @@
+{
+  "migration_stub": {
+    "from_version": "0.1.0",
+    "status": "stub",
+    "to_version": "0.1.0"
+  },
+  "record": {
+    "rail_records": [
+      {
+        "ascending_node_mdeg": 0,
+        "child_body_ref": "mercury",
+        "drift_schedule_ref": "stub_drift",
+        "inclination_mdeg": 0,
+        "parent_body_ref": "sol_star",
+        "period_act": 1000,
+        "phase_offset_act": 0,
+        "rail_frame_ref": "sol_frame",
+        "rail_id": "sol_rail_mercury",
+        "rail_model_id": "stub_orbit",
+        "system_ref": "sol_system"
+      },
+      {
+        "ascending_node_mdeg": 0,
+        "child_body_ref": "venus",
+        "drift_schedule_ref": "stub_drift",
+        "inclination_mdeg": 0,
+        "parent_body_ref": "sol_star",
+        "period_act": 1100,
+        "phase_offset_act": 0,
+        "rail_frame_ref": "sol_frame",
+        "rail_id": "sol_rail_venus",
+        "rail_model_id": "stub_orbit",
+        "system_ref": "sol_system"
+      },
+      {
+        "ascending_node_mdeg": 0,
+        "child_body_ref": "earth",
+        "drift_schedule_ref": "stub_drift",
+        "inclination_mdeg": 0,
+        "parent_body_ref": "sol_star",
+        "period_act": 1200,
+        "phase_offset_act": 0,
+        "rail_frame_ref": "sol_frame",
+        "rail_id": "sol_rail_earth",
+        "rail_model_id": "stub_orbit",
+        "system_ref": "sol_system"
+      },
+      {
+        "ascending_node_mdeg": 0,
+        "child_body_ref": "mars",
+        "drift_schedule_ref": "stub_drift",
+        "inclination_mdeg": 0,
+        "parent_body_ref": "sol_star",
+        "period_act": 1300,
+        "phase_offset_act": 0,
+        "rail_frame_ref": "sol_frame",
+        "rail_id": "sol_rail_mars",
+        "rail_model_id": "stub_orbit",
+        "system_ref": "sol_system"
+      },
+      {
+        "ascending_node_mdeg": 0,
+        "child_body_ref": "jupiter",
+        "drift_schedule_ref": "stub_drift",
+        "inclination_mdeg": 0,
+        "parent_body_ref": "sol_star",
+        "period_act": 1400,
+        "phase_offset_act": 0,
+        "rail_frame_ref": "sol_frame",
+        "rail_id": "sol_rail_jupiter",
+        "rail_model_id": "stub_orbit",
+        "system_ref": "sol_system"
+      },
+      {
+        "ascending_node_mdeg": 0,
+        "child_body_ref": "saturn",
+        "drift_schedule_ref": "stub_drift",
+        "inclination_mdeg": 0,
+        "parent_body_ref": "sol_star",
+        "period_act": 1500,
+        "phase_offset_act": 0,
+        "rail_frame_ref": "sol_frame",
+        "rail_id": "sol_rail_saturn",
+        "rail_model_id": "stub_orbit",
+        "system_ref": "sol_system"
+      },
+      {
+        "ascending_node_mdeg": 0,
+        "child_body_ref": "uranus",
+        "drift_schedule_ref": "stub_drift",
+        "inclination_mdeg": 0,
+        "parent_body_ref": "sol_star",
+        "period_act": 1600,
+        "phase_offset_act": 0,
+        "rail_frame_ref": "sol_frame",
+        "rail_id": "sol_rail_uranus",
+        "rail_model_id": "stub_orbit",
+        "system_ref": "sol_system"
+      },
+      {
+        "ascending_node_mdeg": 0,
+        "child_body_ref": "neptune",
+        "drift_schedule_ref": "stub_drift",
+        "inclination_mdeg": 0,
+        "parent_body_ref": "sol_star",
+        "period_act": 1700,
+        "phase_offset_act": 0,
+        "rail_frame_ref": "sol_frame",
+        "rail_id": "sol_rail_neptune",
+        "rail_model_id": "stub_orbit",
+        "system_ref": "sol_system"
+      },
+      {
+        "ascending_node_mdeg": 0,
+        "child_body_ref": "main_belt",
+        "drift_schedule_ref": "stub_drift",
+        "inclination_mdeg": 0,
+        "parent_body_ref": "sol_star",
+        "period_act": 1800,
+        "phase_offset_act": 0,
+        "rail_frame_ref": "sol_frame",
+        "rail_id": "sol_rail_main_belt",
+        "rail_model_id": "stub_orbit",
+        "system_ref": "sol_system"
+      },
+      {
+        "ascending_node_mdeg": 0,
+        "child_body_ref": "kuiper_belt",
+        "drift_schedule_ref": "stub_drift",
+        "inclination_mdeg": 0,
+        "parent_body_ref": "sol_star",
+        "period_act": 1900,
+        "phase_offset_act": 0,
+        "rail_frame_ref": "sol_frame",
+        "rail_id": "sol_rail_kuiper_belt",
+        "rail_model_id": "stub_orbit",
+        "system_ref": "sol_system"
+      },
+      {
+        "ascending_node_mdeg": 0,
+        "child_body_ref": "oort_belt",
+        "drift_schedule_ref": "stub_drift",
+        "inclination_mdeg": 0,
+        "parent_body_ref": "sol_star",
+        "period_act": 2000,
+        "phase_offset_act": 0,
+        "rail_frame_ref": "sol_frame",
+        "rail_id": "sol_rail_oort_belt",
+        "rail_model_id": "stub_orbit",
+        "system_ref": "sol_system"
+      }
+    ]
+  },
+  "schema_version": "0.1.0"
+}

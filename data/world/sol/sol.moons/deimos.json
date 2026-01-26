@@ -1,0 +1,28 @@
+{
+  "migration_stub": {
+    "from_version": "0.1.0",
+    "status": "stub",
+    "to_version": "0.1.0"
+  },
+  "record": {
+    "body_id": "deimos",
+    "body_tags": [
+      "stub"
+    ],
+    "body_type": "moon",
+    "data_source_refs": [
+      "stub_source"
+    ],
+    "mass_class": "stub",
+    "name": "deimos",
+    "orbital_rail_ref": null,
+    "parent_body_ref": "mars",
+    "provenance_ref": "stub_provenance",
+    "radius_m": 1,
+    "scale_domain_ref": "sol_scale",
+    "surface_refs": [],
+    "system_ref": "sol_system",
+    "volume_refs": []
+  },
+  "schema_version": "0.1.0"
+}

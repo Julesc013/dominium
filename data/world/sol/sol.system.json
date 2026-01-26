@@ -1,0 +1,50 @@
+{
+  "migration_stub": {
+    "from_version": "0.1.0",
+    "status": "stub",
+    "to_version": "0.1.0"
+  },
+  "record": {
+    "belt_ids": [
+      "main_belt",
+      "kuiper_belt",
+      "oort_belt"
+    ],
+    "coordinate_frame_ref": "sol_frame",
+    "data_source_refs": [
+      "stub_source"
+    ],
+    "galaxy_ref": "milky_way_galaxy",
+    "name": "Sol",
+    "orbital_rail_ids": [
+      "sol_rail_mercury",
+      "sol_rail_venus",
+      "sol_rail_earth",
+      "sol_rail_mars",
+      "sol_rail_jupiter",
+      "sol_rail_saturn",
+      "sol_rail_uranus",
+      "sol_rail_neptune",
+      "sol_rail_main_belt",
+      "sol_rail_kuiper_belt",
+      "sol_rail_oort_belt"
+    ],
+    "planet_ids": [
+      "mercury",
+      "venus",
+      "earth",
+      "mars",
+      "jupiter",
+      "saturn",
+      "uranus",
+      "neptune"
+    ],
+    "provenance_ref": "stub_provenance",
+    "scale_domain_ref": "sol_scale",
+    "star_ids": [
+      "sol_star"
+    ],
+    "system_id": "sol_system"
+  },
+  "schema_version": "0.1.0"
+}

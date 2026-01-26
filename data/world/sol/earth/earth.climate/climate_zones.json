@@ -1,0 +1,23 @@
+{
+  "migration_stub": {
+    "from_version": "0.1.0",
+    "status": "stub",
+    "to_version": "0.1.0"
+  },
+  "record": {
+    "climate_zone_records": [
+      {
+        "provenance_ref": "stub_provenance",
+        "region_refs": [
+          "earth_land_region"
+        ],
+        "tag": "temperate",
+        "zone_id": "earth_temperate_zone"
+      }
+    ],
+    "valid_climate_tags": [
+      "temperate"
+    ]
+  },
+  "schema_version": "0.1.0"
+}

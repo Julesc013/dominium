@@ -245,9 +245,13 @@ static int test_no_global_iteration(void)
         input.start_act = 0;
         input.arrival_act = (i == 0u) ? 5 : 1000;
         input.cause_code = 1u;
+        input.flow_id = 1000u + (u64)i;
         EXPECT(population_migration_schedule(&t.migrations, &input, &refusal) == 0, "schedule migration");
-        EXPECT(population_scheduler_register_migration(&t.scheduler,
-                                                       &t.migrations.flows[i]) == 0, "register migration");
+        {
+            population_migration_flow* flow = population_migration_find(&t.migrations, input.flow_id);
+            EXPECT(flow != 0, "migration lookup");
+            EXPECT(population_scheduler_register_migration(&t.scheduler, flow) == 0, "register migration");
+        }
     }
     EXPECT(population_scheduler_advance(&t.scheduler, 5) == 0, "advance to due");
     EXPECT(t.scheduler.processed_last == 1u, "processed unexpected migrations");

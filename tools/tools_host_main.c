@@ -2065,13 +2065,13 @@ static int tools_run_replay(const char* path, int emit_text)
             }
             if (!tools_parse_replay_events(fallback, tools_sink_stdout, 0, err, sizeof(err), &events)) {
                 if (emit_text) {
-                    fprintf(stderr, "tools: replay unavailable (%s)\n", err[0] ? err : "load failed");
+                    fprintf(stderr, "tools: replay unsupported (%s)\n", err[0] ? err : "load failed");
                 }
                 return D_APP_EXIT_UNAVAILABLE;
             }
         } else {
             if (emit_text) {
-                fprintf(stderr, "tools: replay unavailable (%s)\n", err[0] ? err : "load failed");
+                fprintf(stderr, "tools: replay unsupported (%s)\n", err[0] ? err : "load failed");
             }
             return D_APP_EXIT_UNAVAILABLE;
         }
@@ -2753,6 +2753,9 @@ int tools_main(int argc, char** argv)
     }
     if (want_build_info) {
         tools_print_build_info("tools", DOMINIUM_TOOLS_VERSION);
+    }
+    if (want_build_info && !want_status && !want_smoke && !want_selftest && !cmd) {
+        return D_APP_EXIT_OK;
     }
     if (want_status) {
         if (want_smoke || want_selftest) {

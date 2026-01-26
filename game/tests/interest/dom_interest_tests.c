@@ -103,7 +103,7 @@ static int test_latent_universe(void)
     EXPECT(dom_interest_set_reserve(&set, 4u) == 0, "reserve latent failed");
 
     EXPECT(dom_interest_set_add(&set, DOM_INTEREST_TARGET_SYSTEM, 1u, DOM_INTEREST_REASON_PLAYER_FOCUS,
-                                DOM_INTEREST_STRENGTH_HIGH, DOM_INTEREST_PERSISTENT) == 0, "add earth failed");
+                                DOM_INTEREST_STRENGTH_HIGH, DOM_INTEREST_PERSISTENT) == 0, "add system failed");
     dom_interest_set_finalize(&set);
 
     EXPECT(dom_macro_step(&set, &stats) == 0, "macro step failed");

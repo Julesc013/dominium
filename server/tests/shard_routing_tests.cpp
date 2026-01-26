@@ -358,10 +358,20 @@ static u64 hash_unsharded_partition(const dom_shard_log* log,
                                     dom_shard_id shard_id)
 {
     u32 i;
+    u32 count = 0u;
     u64 h = fnv1a_init();
     if (!log) {
         return h;
     }
+    for (i = 0u; i < log->event_count; ++i) {
+        const dom_shard_event_entry* entry = &log->events[i];
+        const dom_task_node* node = find_task(graph, entry->task_id);
+        dom_shard_id owner = dom_shard_find_owner(registry, owner_id_from_access(ctx, node));
+        if (owner == shard_id) {
+            count += 1u;
+        }
+    }
+    h = fnv1a_u32(h, count);
     for (i = 0u; i < log->event_count; ++i) {
         const dom_shard_event_entry* entry = &log->events[i];
         const dom_task_node* node = find_task(graph, entry->task_id);

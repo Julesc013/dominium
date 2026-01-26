@@ -14,9 +14,11 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #ifndef DOM_SHARED_UUID_H
 #define DOM_SHARED_UUID_H
 
-#include <string>
+#include <stddef.h>
 
-namespace dom_shared {
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /* Purpose: Generate a pseudo-random UUIDv4-like identifier string.
  *
@@ -24,7 +26,7 @@ namespace dom_shared {
  * - Lowercase hex string in the form `"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"`.
  *
  * Determinism:
- * - Non-deterministic: current implementation seeds `std::rand()` from wall-clock time on first use.
+ * - Non-deterministic: current implementation seeds a C PRNG from wall-clock time on first use.
  * - Must not be used by deterministic simulation code paths (see `docs/SPEC_DETERMINISM.md`).
  *
  * Thread-safety:
@@ -33,8 +35,10 @@ namespace dom_shared {
  * Security:
  * - Not cryptographically secure; do not use for secrets.
  */
-std::string generate_uuid();
+int dom_shared_generate_uuid(char* out, size_t out_cap);
 
-} // namespace dom_shared
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif

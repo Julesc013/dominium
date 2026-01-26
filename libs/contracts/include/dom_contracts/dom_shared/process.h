@@ -14,57 +14,53 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #ifndef DOM_SHARED_PROCESS_H
 #define DOM_SHARED_PROCESS_H
 
-#include <string>
-#include <vector>
+#include <stddef.h>
 
-namespace dom_shared {
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-struct ProcessOptions {
-    std::string working_directory;
-    bool        inherit_environment;
+typedef struct dom_shared_process_options {
+    const char* working_directory;
+    int         inherit_environment;
+} dom_shared_process_options;
 
-/* Purpose: API entry point for `process`.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
- */
-    ProcessOptions() : working_directory(), inherit_environment(true) {}
-};
-
-struct ProcessHandle {
-    int  pid;           // platform-specific ID
-    void* internal;     // opaque pointer to internal state
-
-/* Purpose: API entry point for `process`.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
- */
-    ProcessHandle() : pid(-1), internal(0) {}
-};
+typedef struct dom_shared_process_handle {
+    int   pid;
+    void* internal;
+} dom_shared_process_handle;
 
 /* Purpose: Process spawn.
  * Parameters: See `docs/CONTRACTS.md#Parameters`.
  * Returns: `true` on success; `false` on failure.
  */
-bool spawn_process(const std::string& executable,
-                   const std::vector<std::string>& args,
-                   const ProcessOptions& options,
-                   ProcessHandle& out_handle);
+int dom_shared_spawn_process(const char* executable,
+                             const char* const* args,
+                             size_t arg_count,
+                             const dom_shared_process_options* options,
+                             dom_shared_process_handle* out_handle);
 
 // Non-blocking check if process is still alive
-bool process_is_running(const ProcessHandle& handle);
+int dom_shared_process_is_running(const dom_shared_process_handle* handle);
 
 // Blocking wait
-int  process_wait(const ProcessHandle& handle);
+int dom_shared_process_wait(const dom_shared_process_handle* handle);
 
 // Simple helpers to read buffered stdout/stderr later if implemented
 // (You can stub them for now; they will be expanded later)
-std::string process_read_stdout(const ProcessHandle& handle);
+size_t dom_shared_process_read_stdout(const dom_shared_process_handle* handle,
+                                      char* out,
+                                      size_t out_cap);
 /* Purpose: Read stderr.
  * Parameters: See `docs/CONTRACTS.md#Parameters`.
  * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
  */
-std::string process_read_stderr(const ProcessHandle& handle);
+size_t dom_shared_process_read_stderr(const dom_shared_process_handle* handle,
+                                      char* out,
+                                      size_t out_cap);
 
-} // namespace dom_shared
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif

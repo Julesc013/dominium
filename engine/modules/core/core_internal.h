@@ -58,9 +58,9 @@ typedef struct dom_instance_record {
 typedef struct dom_sim_instance_state {
     dom_instance_id id;
     uint64_t        ticks;
-    double          sim_time_s;
-    double          dt_s;
-    double          ups;
+    uint64_t        sim_time_usec;
+    uint32_t        dt_usec;
+    uint32_t        ups;
     bool            paused;
 } dom_sim_instance_state;
 

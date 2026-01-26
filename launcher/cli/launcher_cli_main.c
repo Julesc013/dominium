@@ -21,6 +21,12 @@ Stub launcher CLI entrypoint.
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
+#if defined(_WIN32)
+#include <direct.h>
+#else
+#include <unistd.h>
+#endif
 
 #include "launcher/launcher.h"
 #include "launcher/launcher_profile.h"
@@ -144,6 +150,158 @@ static void launcher_print_profiles(void)
     }
 }
 
+static int launcher_is_abs_path(const char* path)
+{
+    if (!path || !path[0]) {
+        return 0;
+    }
+    if (path[0] == '/' || path[0] == '\\') {
+        return 1;
+    }
+    if (isalpha((unsigned char)path[0]) && path[1] == ':' &&
+        (path[2] == '/' || path[2] == '\\')) {
+        return 1;
+    }
+    return 0;
+}
+
+static int launcher_file_exists(const char* path)
+{
+    FILE* f = 0;
+    if (!path || !path[0]) {
+        return 0;
+    }
+    f = fopen(path, "rb");
+    if (f) {
+        fclose(f);
+        return 1;
+    }
+    return 0;
+}
+
+static int launcher_get_cwd(char* buf, size_t cap)
+{
+#if defined(_WIN32)
+    return (_getcwd(buf, (int)cap) != NULL);
+#else
+    return (getcwd(buf, cap) != NULL);
+#endif
+}
+
+static void launcher_normalize_path(char* path)
+{
+    char* p;
+    if (!path) {
+        return;
+    }
+    for (p = path; *p; ++p) {
+        if (*p == '\\') {
+            *p = '/';
+        }
+    }
+}
+
+static int launcher_pop_dir(char* path)
+{
+    size_t len;
+    char* slash;
+    if (!path || !path[0]) {
+        return 0;
+    }
+    len = strlen(path);
+    while (len > 0 && path[len - 1] == '/') {
+        path[--len] = '\0';
+    }
+    if (len == 0) {
+        return 0;
+    }
+    if (len == 1 && path[0] == '/') {
+        return 0;
+    }
+    if (len == 3 && path[1] == ':' && path[2] == '/') {
+        return 0;
+    }
+    slash = strrchr(path, '/');
+    if (!slash) {
+        return 0;
+    }
+    if (slash == path) {
+        path[1] = '\0';
+        return 1;
+    }
+    if (slash == path + 2 && path[1] == ':') {
+        slash[1] = '\0';
+        return 1;
+    }
+    *slash = '\0';
+    return 1;
+}
+
+static int launcher_join_path(char* out, size_t cap, const char* base, const char* rel)
+{
+    size_t blen;
+    int written;
+    if (!out || cap == 0u || !base || !rel) {
+        return 0;
+    }
+    blen = strlen(base);
+    if (blen > 0 && base[blen - 1] == '/') {
+        written = snprintf(out, cap, "%s%s", base, rel);
+    } else {
+        written = snprintf(out, cap, "%s/%s", base, rel);
+    }
+    return written > 0 && (size_t)written < cap;
+}
+
+static int launcher_find_upward(char* out, size_t cap, const char* rel)
+{
+    char cwd[512];
+    char probe[512];
+    if (!launcher_get_cwd(cwd, sizeof(cwd))) {
+        return 0;
+    }
+    launcher_normalize_path(cwd);
+    while (1) {
+        if (!launcher_join_path(probe, sizeof(probe), cwd, rel)) {
+            return 0;
+        }
+        if (launcher_file_exists(probe)) {
+            strncpy(out, probe, cap - 1u);
+            out[cap - 1u] = '\0';
+            return 1;
+        }
+        if (!launcher_pop_dir(cwd)) {
+            break;
+        }
+    }
+    return 0;
+}
+
+static void launcher_resolve_control_registry(char* out, size_t cap, const char* requested)
+{
+    const char* fallback = "data/registries/control_capabilities.registry";
+    const char* path = (requested && requested[0]) ? requested : fallback;
+    if (!out || cap == 0u) {
+        return;
+    }
+    out[0] = '\0';
+    if (launcher_is_abs_path(path)) {
+        strncpy(out, path, cap - 1u);
+        out[cap - 1u] = '\0';
+        return;
+    }
+    if (launcher_file_exists(path)) {
+        strncpy(out, path, cap - 1u);
+        out[cap - 1u] = '\0';
+        return;
+    }
+    if (launcher_find_upward(out, cap, path)) {
+        return;
+    }
+    strncpy(out, path, cap - 1u);
+    out[cap - 1u] = '\0';
+}
+
 static int launcher_parse_ui_scale(const char* text, int* out_value)
 {
     char* end = 0;
@@ -262,6 +420,7 @@ static int launcher_print_capabilities(void)
 int launcher_main(int argc, char** argv)
 {
     const char* control_registry_path = "data/registries/control_capabilities.registry";
+    char control_registry_buf[512];
     const char* control_enable = 0;
     int want_build_info = 0;
     int want_status = 0;
@@ -278,6 +437,8 @@ int launcher_main(int argc, char** argv)
     launcher_ui_settings ui_settings;
     dom_app_ui_event_log ui_log;
     int ui_log_open = 0;
+    dom_control_caps control_caps;
+    int control_loaded = 0;
     const char* cmd = 0;
     int i;
     dom_app_ui_request_init(&ui_req);
@@ -493,22 +654,49 @@ int launcher_main(int argc, char** argv)
     if (ui_mode == DOM_APP_UI_GUI && !cmd && !want_build_info && !want_status) {
         return launcher_ui_run_gui(&ui_run, &ui_settings, timing_mode, frame_cap_ms);
     }
-    if (want_build_info || want_status) {
-        dom_control_caps caps;
-        if (dom_control_caps_init(&caps, control_registry_path) != DOM_CONTROL_OK) {
+
+    launcher_resolve_control_registry(control_registry_buf,
+                                      sizeof(control_registry_buf),
+                                      control_registry_path);
+    control_registry_path = control_registry_buf;
+
+    if (want_status || control_enable) {
+        if (dom_control_caps_init(&control_caps, control_registry_path) != DOM_CONTROL_OK) {
             fprintf(stderr, "launcher: failed to load control registry: %s\n", control_registry_path);
             return D_APP_EXIT_FAILURE;
         }
-        if (enable_control_list(&caps, control_enable) != 0) {
+        control_loaded = 1;
+        if (enable_control_list(&control_caps, control_enable) != 0) {
             fprintf(stderr, "launcher: invalid control capability list\n");
-            dom_control_caps_free(&caps);
+            dom_control_caps_free(&control_caps);
             return D_APP_EXIT_USAGE;
         }
-        if (want_build_info) {
-            print_build_info("launcher", DOMINIUM_LAUNCHER_VERSION);
+    }
+    if (want_build_info) {
+        if (!control_loaded && !control_enable) {
+            if (dom_control_caps_init(&control_caps, control_registry_path) == DOM_CONTROL_OK) {
+                control_loaded = 1;
+            }
         }
-        print_control_caps(&caps);
-        dom_control_caps_free(&caps);
+        print_build_info("launcher", DOMINIUM_LAUNCHER_VERSION);
+        if (control_loaded) {
+            print_control_caps(&control_caps);
+            dom_control_caps_free(&control_caps);
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (want_status) {
+        if (!control_loaded) {
+            if (dom_control_caps_init(&control_caps, control_registry_path) != DOM_CONTROL_OK) {
+                fprintf(stderr, "launcher: failed to load control registry: %s\n", control_registry_path);
+                return D_APP_EXIT_FAILURE;
+            }
+            control_loaded = 1;
+        }
+        print_control_caps(&control_caps);
+        if (control_loaded) {
+            dom_control_caps_free(&control_caps);
+        }
         return D_APP_EXIT_OK;
     }
     if (!cmd) {

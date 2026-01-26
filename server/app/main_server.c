@@ -154,8 +154,8 @@ static int mp0_build_commands(dom_mp0_command_queue* queue, dom_mp0_command* sto
 
 static int mp0_run_server_auth(void)
 {
-    dom_mp0_state server;
-    dom_mp0_state client;
+    static dom_mp0_state server;
+    static dom_mp0_state client;
     dom_mp0_command_queue queue;
     dom_mp0_command storage[DOM_MP0_MAX_COMMANDS];
     u64 hash_server;
@@ -182,7 +182,7 @@ static int mp0_run_server_auth(void)
 
 static int mp0_run_loopback(void)
 {
-    dom_mp0_state state;
+    static dom_mp0_state state;
     dom_mp0_command_queue queue;
     dom_mp0_command storage[DOM_MP0_MAX_COMMANDS];
     u64 hash_state;
@@ -327,7 +327,7 @@ int server_main(int argc, char** argv)
                 dom_app_ui_mode_name(ui_mode));
         return D_APP_EXIT_USAGE;
     }
-    if (want_build_info || want_status || control_enable) {
+    if (want_status || control_enable) {
         if (dom_control_caps_init(&control_caps, control_registry_path) != DOM_CONTROL_OK) {
             fprintf(stderr, "server: failed to load control registry: %s\n", control_registry_path);
             return D_APP_EXIT_FAILURE;
@@ -340,6 +340,11 @@ int server_main(int argc, char** argv)
         }
     }
     if (want_build_info) {
+        if (!control_loaded && !control_enable) {
+            if (dom_control_caps_init(&control_caps, control_registry_path) == DOM_CONTROL_OK) {
+                control_loaded = 1;
+            }
+        }
         print_build_info("server", DOMINIUM_GAME_VERSION);
         if (control_loaded) {
             print_control_caps(&control_caps);

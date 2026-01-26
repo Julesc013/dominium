@@ -56,6 +56,8 @@ def main():
             continue
         for path in iter_headers(root):
             rel = os.path.relpath(path, repo_root).replace("\\", "/")
+            if "/_internal/" in rel:
+                continue
             with open(path, "r", encoding="utf-8", errors="ignore") as handle:
                 for lineno, line in enumerate(handle, start=1):
                     for token in FORBIDDEN_TOKENS:

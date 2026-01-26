@@ -35,7 +35,7 @@ int agent_collapse_apply(aggregate_agent* agg,
 int agent_collapse_from_individuals(aggregate_agent* agg,
                                     const agent_belief_state* beliefs,
                                     u32 belief_count,
-                                    const agent_goal_status* goals,
+                                    const agent_goal_status_entry* goals,
                                     u32 goal_count,
                                     dom_act_time_t now_act,
                                     agent_refusal_code* out_refusal);

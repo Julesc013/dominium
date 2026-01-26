@@ -1,10 +1,10 @@
 /*
-FILE: include/render/soft/d_gfx_soft.h
+FILE: source/domino/render/soft/d_gfx_soft.h
 MODULE: Domino
-LAYER / SUBSYSTEM: Domino API / render/soft/d_gfx_soft
-RESPONSIBILITY: Defines the public contract for `d_gfx_soft`; does NOT provide implementation.
-ALLOWED DEPENDENCIES: `include/domino/**` plus C89/C++98 standard headers as needed.
-FORBIDDEN DEPENDENCIES: `source/**` private headers; keep contracts freestanding and layer-respecting.
+LAYER / SUBSYSTEM: Domino impl / render/soft/d_gfx_soft
+RESPONSIBILITY: Defines the internal contract for `d_gfx_soft`; not part of public API.
+ALLOWED DEPENDENCIES: `include/domino/**`, `source/domino/**`, and C89/C++98 standard headers as needed.
+FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**` (engine must not depend on product layer).
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
 DETERMINISM: See `docs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.

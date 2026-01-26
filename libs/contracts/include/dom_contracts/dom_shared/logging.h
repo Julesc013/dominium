@@ -14,8 +14,6 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #ifndef DOM_SHARED_LOGGING_H
 #define DOM_SHARED_LOGGING_H
 
-#include <string>
-
 namespace dom_shared {
 
 /* Constants for `logging`. */
@@ -31,7 +29,7 @@ enum LogLevel {
  * Parameters: See `docs/CONTRACTS.md#Parameters`.
  */
 void log_set_min_level(LogLevel level);
-void log_set_output_file(const std::string& path); // optional; stdout by default
+void log_set_output_file(const char* path); // optional; stdout by default
 
 /* Purpose: Trace log.
  * Parameters: See `docs/CONTRACTS.md#Parameters`.

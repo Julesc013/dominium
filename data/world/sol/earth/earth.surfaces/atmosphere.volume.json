@@ -1,0 +1,38 @@
+{
+  "migration_stub": {
+    "from_version": "0.1.0",
+    "status": "stub",
+    "to_version": "0.1.0"
+  },
+  "record": {
+    "region_records": [
+      {
+        "boundary_ref": "earth_atmosphere_boundary",
+        "layer_id": "volume",
+        "parent_region_ref": null,
+        "provenance_ref": "stub_provenance",
+        "region_id": "earth_atmosphere_region",
+        "region_tags": [
+          "atmosphere"
+        ],
+        "region_type": "volume",
+        "surface_ref": null,
+        "volume_ref": "earth_atmosphere_volume"
+      }
+    ],
+    "volume_records": [
+      {
+        "body_ref": "earth",
+        "bounds_ref": "earth_atmosphere_bounds",
+        "coordinate_frame_ref": "earth_frame",
+        "provenance_ref": "stub_provenance",
+        "region_ids": [
+          "earth_atmosphere_region"
+        ],
+        "volume_id": "earth_atmosphere_volume",
+        "volume_type": "atmosphere"
+      }
+    ]
+  },
+  "schema_version": "0.1.0"
+}

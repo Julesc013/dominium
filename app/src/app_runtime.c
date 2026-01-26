@@ -224,16 +224,16 @@ void dom_app_ui_script_init(dom_app_ui_script* script, const char* text)
         len = sizeof(script->buffer) - 1u;
     }
     memcpy(script->buffer, text, len);
-    script->buffer[len] = '\\0';
+    script->buffer[len] = '\0';
 
     p = script->buffer;
     end = script->buffer + len;
     while (p < end) {
         while (p < end && dom_app_ui_is_sep(*p)) {
-            *p = '\\0';
+            *p = '\0';
             ++p;
         }
-        if (p >= end || *p == '\\0') {
+        if (p >= end || *p == '\0') {
             break;
         }
         if (script->count >= DOM_APP_UI_SCRIPT_MAX_ACTIONS) {
@@ -244,12 +244,12 @@ void dom_app_ui_script_init(dom_app_ui_script* script, const char* text)
             ++p;
         }
         if (p < end) {
-            *p = '\\0';
+            *p = '\0';
             ++p;
         }
     }
     for (i = 0u; i < script->count; ++i) {
-        if (script->actions[i] && script->actions[i][0] != '\\0') {
+        if (script->actions[i] && script->actions[i][0] != '\0') {
             continue;
         }
         script->actions[i] = 0;
@@ -271,8 +271,20 @@ static int dom_app_parse_u32(const char* text, uint32_t* out_value)
     if (!text || !out_value) {
         return 0;
     }
+    while (*text && isspace((unsigned char)*text)) {
+        text++;
+    }
+    if (!text[0]) {
+        return 0;
+    }
     value = strtoul(text, &end, 10);
-    if (!end || *end != '\\0') {
+    if (!end || end == text) {
+        return 0;
+    }
+    while (*end && isspace((unsigned char)*end)) {
+        end++;
+    }
+    if (*end != '\0') {
         return 0;
     }
     *out_value = (uint32_t)value;
@@ -348,7 +360,7 @@ int dom_app_parse_ui_run_arg(dom_app_ui_run_config* cfg,
             return -1;
         }
         memcpy(cfg->script, value, len);
-        cfg->script[len] = '\\0';
+        cfg->script[len] = '\0';
         cfg->script_set = 1;
         if (consumed) {
             *consumed = 1;
@@ -371,7 +383,7 @@ int dom_app_parse_ui_run_arg(dom_app_ui_run_config* cfg,
             return -1;
         }
         memcpy(cfg->script, next, len);
-        cfg->script[len] = '\\0';
+        cfg->script[len] = '\0';
         cfg->script_set = 1;
         if (consumed) {
             *consumed = 2;
@@ -388,7 +400,7 @@ int dom_app_parse_ui_run_arg(dom_app_ui_run_config* cfg,
             return -1;
         }
         memcpy(cfg->log_path, value, len);
-        cfg->log_path[len] = '\\0';
+        cfg->log_path[len] = '\0';
         cfg->log_set = 1;
         if (consumed) {
             *consumed = 1;
@@ -411,7 +423,7 @@ int dom_app_parse_ui_run_arg(dom_app_ui_run_config* cfg,
             return -1;
         }
         memcpy(cfg->log_path, next, len);
-        cfg->log_path[len] = '\\0';
+        cfg->log_path[len] = '\0';
         cfg->log_set = 1;
         if (consumed) {
             *consumed = 2;

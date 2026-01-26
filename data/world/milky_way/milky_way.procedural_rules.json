@@ -1,0 +1,24 @@
+{
+  "migration_stub": {
+    "from_version": "0.1.0",
+    "status": "stub",
+    "to_version": "0.1.0"
+  },
+  "record": {
+    "rule_sets": [
+      {
+        "age_class": "stub",
+        "applies_to": "region",
+        "density_class": "stub",
+        "hazard_class": "stub",
+        "metallicity_class": "stub",
+        "order_key": 0,
+        "rule_id": "mw_rule_0",
+        "spawn_rate_class": "stub",
+        "target_ref": "milky_way_disk"
+      }
+    ],
+    "seed": 1
+  },
+  "schema_version": "0.1.0"
+}

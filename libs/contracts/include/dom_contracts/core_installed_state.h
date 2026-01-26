@@ -49,56 +49,24 @@ extern "C" {
 #define CORE_TLV_TAG_INSTALLED_STATE_REG_STATUS 0x3033u
 
 #ifdef __cplusplus
-#include <string>
-#include <vector>
+extern "C" {
+#endif
 
-namespace dom {
-namespace core_installed_state {
+typedef struct core_installed_state {
+    u32 struct_size;
+    u32 struct_version;
+} core_installed_state;
 
-enum { CORE_INSTALLED_STATE_TLV_VERSION = CORE_TLV_FRAMED_VERSION };
+void core_installed_state_init(core_installed_state* state);
+void core_installed_state_clear(core_installed_state* state);
+err_t core_installed_state_parse(const unsigned char* data,
+                                u32 size,
+                                core_installed_state* out_state);
+err_t core_installed_state_write(const core_installed_state* state,
+                                core_tlv_framed_buffer_t* out_buf);
 
-struct InstalledStateArtifact {
-    u32 target_root_id;
-    std::string path;
-    u64 digest64;
-    u64 size;
-};
-
-struct InstalledStateRegistration {
-    u16 kind;
-    u16 status;
-    std::string value;
-};
-
-struct InstalledState {
-    std::string product_id;
-    std::string installed_version;
-    std::string selected_splat;
-    u16 install_scope;
-    std::string install_root;
-    std::vector<std::string> install_roots;
-    u16 ownership;
-    std::vector<std::string> installed_components;
-    std::vector<InstalledStateArtifact> artifacts;
-    std::vector<InstalledStateRegistration> registrations;
-    u64 manifest_digest64;
-    u64 request_digest64;
-    u64 previous_state_digest64;
-    std::string import_source;
-    std::vector<std::string> import_details;
-    u32 state_version;
-    std::vector<std::string> migration_applied;
-};
-
-void installed_state_clear(InstalledState* state);
-err_t installed_state_parse(const unsigned char* data,
-                            u32 size,
-                            InstalledState* out_state);
-err_t installed_state_write(const InstalledState* state,
-                            core_tlv_framed_buffer_t* out_buf);
-
-} /* namespace core_installed_state */
-} /* namespace dom */
-#endif /* __cplusplus */
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* DOMINIUM_CORE_INSTALLED_STATE_H */

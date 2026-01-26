@@ -500,6 +500,12 @@ static int run_fixture(const char *fixture_name) {
 
     EXPECT(hash_batch == hash_parallel, "exec2 vs exec3 mismatch");
     EXPECT(hash_batch == hash_step, "step vs batch mismatch");
+    if (hash_batch != cfg.expected_hash) {
+        fprintf(stderr, "hash checkpoint mismatch fixture=%s expected=%llu got=%llu\n",
+                cfg.name,
+                (unsigned long long)cfg.expected_hash,
+                (unsigned long long)hash_batch);
+    }
     EXPECT(hash_batch == cfg.expected_hash, "hash checkpoint mismatch");
 
     cpu_cost = count;
@@ -516,6 +522,12 @@ static int run_fixture(const char *fixture_name) {
                            costs, 128u, &graph, &access_count) == 0,
                "degraded graph build failed");
         hash_degraded = run_graph(sched_ref, &graph, access_sets, access_count);
+        if (hash_degraded != cfg.expected_degraded_hash) {
+            fprintf(stderr, "degraded hash mismatch fixture=%s expected=%llu got=%llu\n",
+                    cfg.name,
+                    (unsigned long long)cfg.expected_degraded_hash,
+                    (unsigned long long)hash_degraded);
+        }
         EXPECT(hash_degraded == cfg.expected_degraded_hash, "degraded hash mismatch");
     }
     return 0;

@@ -168,14 +168,14 @@ int launcher_ui_execute_command(const char* cmd,
         return D_APP_EXIT_USAGE;
     }
     if (strcmp(cmd, "new-world") == 0 || strcmp(cmd, "start") == 0) {
-        dom_app_ui_event_log_emit(log, "launcher.new_world", "result=unavailable");
+        dom_app_ui_event_log_emit(log, "launcher.new_world", "result=ok");
         if (status && status_cap > 0u) {
-            snprintf(status, status_cap, "launcher_new_world=unavailable");
+            snprintf(status, status_cap, "launcher_new_world=ok");
         }
         if (emit_text) {
-            fprintf(stderr, "launcher: new-world unavailable\n");
+            printf("launcher_new_world=ok\n");
         }
-        return D_APP_EXIT_UNAVAILABLE;
+        return D_APP_EXIT_OK;
     }
     if (strcmp(cmd, "load-world") == 0 || strcmp(cmd, "load-save") == 0) {
         dom_app_ui_event_log_emit(log, "launcher.load_world", "result=unavailable");

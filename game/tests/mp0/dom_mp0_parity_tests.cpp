@@ -57,8 +57,8 @@ static int build_command_script(dom_mp0_command_queue* queue)
 
 static int test_offline_loopback_equivalence(void)
 {
-    dom_mp0_state a;
-    dom_mp0_state b;
+    static dom_mp0_state a;
+    static dom_mp0_state b;
     dom_mp0_command commands_storage[DOM_MP0_MAX_COMMANDS];
     dom_mp0_command_queue queue;
     u64 hash_a;
@@ -80,8 +80,8 @@ static int test_offline_loopback_equivalence(void)
 
 static int test_lockstep_parity(void)
 {
-    dom_mp0_state peer_a;
-    dom_mp0_state peer_b;
+    static dom_mp0_state peer_a;
+    static dom_mp0_state peer_b;
     dom_mp0_command commands_storage[DOM_MP0_MAX_COMMANDS];
     dom_mp0_command_queue queue;
     u64 hash_a;
@@ -104,8 +104,8 @@ static int test_lockstep_parity(void)
 
 static int test_server_auth_parity(void)
 {
-    dom_mp0_state server;
-    dom_mp0_state client;
+    static dom_mp0_state server;
+    static dom_mp0_state client;
     dom_mp0_command commands_storage[DOM_MP0_MAX_COMMANDS];
     dom_mp0_command_queue queue;
     u64 hash_server;

@@ -13,6 +13,7 @@ set(ENGINE_CORE_SOURCES
     modules/compat/compat_core.c
     modules/compat/compat_modes.c
     modules/compat/capability_set.c
+    modules/compat/fixed_debug.c
     modules/content/d_blueprint.c
     modules/content/d_content.c
     modules/content/d_content_schema.c
@@ -182,7 +183,6 @@ set(ENGINE_CORE_LEGACY_SOURCES
     modules/core/d_tlv_schema.c
     modules/core/event.c
     modules/core/fixed.c
-    modules/core/fixed_debug.c
     modules/core/fixed_math.c
     modules/core/fs_util.c
     modules/core/inst.c

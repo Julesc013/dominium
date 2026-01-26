@@ -14,34 +14,38 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #ifndef DOM_SHARED_MANIFEST_INSTALL_H
 #define DOM_SHARED_MANIFEST_INSTALL_H
 
-#include <string>
+#include <stddef.h>
 
-namespace dom_shared {
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-struct InstallInfo {
-    std::string install_id;     // uuid
-    std::string install_type;   // "portable"|"per-user"|"system"
-    std::string platform;       // "win_nt"|"linux"|"mac"
-    std::string version;        // e.g. "0.0.0"
-    std::string root_path;      // absolute path to INSTALL_ROOT
-    std::string created_at;     // ISO8601 string
-    std::string created_by;     // "setup"|"portable-zip"|"package"|"unknown"
-};
+typedef struct dom_shared_install_info {
+    char install_id[64];
+    char install_type[32];
+    char platform[16];
+    char version[32];
+    char root_path[260];
+    char created_at[32];
+    char created_by[32];
+} dom_shared_install_info;
 
 /* Purpose: Exists manifest install.
  * Parameters: See `docs/CONTRACTS.md#Parameters`.
  * Returns: `true` on success; `false` on failure.
  */
-bool manifest_install_exists(const std::string& root_path);
+int dom_shared_manifest_install_exists(const char* root_path);
 
 // Attempts to parse INSTALL_ROOT/dominium_install.json
 // On failure, returns false and leaves out_info unchanged.
-bool parse_install_manifest(const std::string& root_path, InstallInfo& out_info);
+int dom_shared_parse_install_manifest(const char* root_path, dom_shared_install_info* out_info);
 
 // Writes INSTALL_ROOT/dominium_install.json with info fields.
 // Returns false on IO/serialization error.
-bool write_install_manifest(const InstallInfo& info);
+int dom_shared_write_install_manifest(const dom_shared_install_info* info);
 
-} // namespace dom_shared
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif
