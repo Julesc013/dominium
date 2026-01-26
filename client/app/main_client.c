@@ -87,6 +87,21 @@ static void print_help(void)
     printf("  templates       List available templates\n");
     printf("  mode            Set navigation mode (policy.mode.*)\n");
     printf("  where           Show current world status\n");
+    printf("  simulate        Advance simulation tick (agent planning)\n");
+    printf("  agents          List agents\n");
+    printf("  agent-add       Add an agent (caps/auth/knowledge)\n");
+    printf("  goals           List goals\n");
+    printf("  goal-add        Add a goal for an agent\n");
+    printf("  delegate        Create a delegation\n");
+    printf("  delegations     List delegations\n");
+    printf("  authority-grant Grant authority\n");
+    printf("  authority-list  List authority grants\n");
+    printf("  constraint-add  Add a constraint\n");
+    printf("  constraint-list List constraints\n");
+    printf("  institution-create Create an institution\n");
+    printf("  institution-list   List institutions\n");
+    printf("  network-create  Create a network\n");
+    printf("  network-list    List networks\n");
     printf("  tools           Open tools shell (handoff)\n");
     printf("  settings        Show current UI settings\n");
     printf("  exit            Exit client shell\n");
@@ -953,6 +968,41 @@ static void client_ui_format_q16(char* out, size_t cap, i32 value)
     snprintf(out, cap, "%.3f", (double)value / 65536.0);
 }
 
+static const char* client_ui_goal_type_name(u32 type)
+{
+    switch (type) {
+        case AGENT_GOAL_SURVEY: return "survey";
+        case AGENT_GOAL_MAINTAIN: return "maintain";
+        case AGENT_GOAL_STABILIZE: return "stabilize";
+        case AGENT_GOAL_SURVIVE: return "survive";
+        case AGENT_GOAL_ACQUIRE: return "acquire";
+        case AGENT_GOAL_DEFEND: return "defend";
+        case AGENT_GOAL_MIGRATE: return "migrate";
+        case AGENT_GOAL_RESEARCH: return "research";
+        case AGENT_GOAL_TRADE: return "trade";
+        default: break;
+    }
+    return "unknown";
+}
+
+static const char* client_ui_network_type_name(u32 type)
+{
+    switch (type) {
+        case DOM_NETWORK_ELECTRICAL: return "electrical";
+        case DOM_NETWORK_THERMAL: return "thermal";
+        case DOM_NETWORK_FLUID: return "fluid";
+        case DOM_NETWORK_LOGISTICS: return "logistics";
+        case DOM_NETWORK_DATA: return "data";
+        default: break;
+    }
+    return "unknown";
+}
+
+static const char* client_ui_network_status_name(u32 status)
+{
+    return (status == DOM_NETWORK_FAILED) ? "failed" : "ok";
+}
+
 static int client_policy_has(const dom_shell_policy_set* set, const char* id)
 {
     uint32_t i;
@@ -1148,6 +1198,100 @@ static void client_ui_build_lines(const client_ui_state* state,
                                        obj_buf,
                                        subj_buf,
                                        (fields->knowledge_mask & DOM_FIELD_BIT(field_id)) ? 1u : 0u);
+                }
+            }
+            if (state->shell.agent_count > 0u && count < CLIENT_UI_MAX_LINES) {
+                u32 i;
+                client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES,
+                                   "agents=%u possessed=%llu",
+                                   (unsigned int)state->shell.agent_count,
+                                   (unsigned long long)state->shell.possessed_agent_id);
+                for (i = 0u; i < state->shell.agent_count && count < CLIENT_UI_MAX_LINES; ++i) {
+                    const dom_shell_agent_record* record = &state->shell.agents[i];
+                    const dom_agent_belief* belief = &state->shell.beliefs[i];
+                    const dom_agent_capability* cap = &state->shell.caps[i];
+                    client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES,
+                                       "agent id=%llu goal=%s refusal=%s know=0x%08x caps=0x%08x auth=0x%08x",
+                                       (unsigned long long)record->agent_id,
+                                       client_ui_goal_type_name(record->last_goal_type),
+                                       agent_refusal_to_string((agent_refusal_code)record->last_refusal),
+                                       (unsigned int)belief->knowledge_mask,
+                                       (unsigned int)cap->capability_mask,
+                                       (unsigned int)cap->authority_mask);
+                }
+            }
+            if (state->shell.delegation_registry.count > 0u && count < CLIENT_UI_MAX_LINES) {
+                u32 i;
+                client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES,
+                                   "delegations=%u",
+                                   (unsigned int)state->shell.delegation_registry.count);
+                for (i = 0u; i < state->shell.delegation_registry.count && count < CLIENT_UI_MAX_LINES; ++i) {
+                    const agent_delegation* del = &state->shell.delegations[i];
+                    client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES,
+                                       "delegation id=%llu delegator=%llu delegatee=%llu revoked=%u",
+                                       (unsigned long long)del->delegation_id,
+                                       (unsigned long long)del->delegator_ref,
+                                       (unsigned long long)del->delegatee_ref,
+                                       (unsigned int)del->revoked);
+                }
+            }
+            if (state->shell.network_count > 0u && count < CLIENT_UI_MAX_LINES) {
+                u32 i;
+                client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES,
+                                   "networks=%u",
+                                   (unsigned int)state->shell.network_count);
+                for (i = 0u; i < state->shell.network_count && count < CLIENT_UI_MAX_LINES; ++i) {
+                    const dom_shell_network_state* net = &state->shell.networks[i];
+                    u32 n;
+                    u32 e;
+                    u32 failed_nodes = 0u;
+                    u32 failed_edges = 0u;
+                    for (n = 0u; n < net->graph.node_count; ++n) {
+                        if (net->nodes[n].status == DOM_NETWORK_FAILED) {
+                            failed_nodes += 1u;
+                        }
+                    }
+                    for (e = 0u; e < net->graph.edge_count; ++e) {
+                        if (net->edges[e].status == DOM_NETWORK_FAILED) {
+                            failed_edges += 1u;
+                        }
+                    }
+                    client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES,
+                                       "network id=%llu type=%s nodes=%u edges=%u failed_nodes=%u failed_edges=%u",
+                                       (unsigned long long)net->network_id,
+                                       client_ui_network_type_name(net->graph.type),
+                                       (unsigned int)net->graph.node_count,
+                                       (unsigned int)net->graph.edge_count,
+                                       (unsigned int)failed_nodes,
+                                       (unsigned int)failed_edges);
+                    for (n = 0u; n < net->graph.node_count && n < 2u && count < CLIENT_UI_MAX_LINES; ++n) {
+                        char stored_buf[32];
+                        char cap_buf[32];
+                        client_ui_format_q16(stored_buf, sizeof(stored_buf), net->nodes[n].stored_q16);
+                        client_ui_format_q16(cap_buf, sizeof(cap_buf), net->nodes[n].capacity_q16);
+                        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES,
+                                           "node id=%llu stored=%s/%s status=%s",
+                                           (unsigned long long)net->nodes[n].node_id,
+                                           stored_buf,
+                                           cap_buf,
+                                           client_ui_network_status_name(net->nodes[n].status));
+                    }
+                    for (n = 0u; n < net->graph.node_count && count < CLIENT_UI_MAX_LINES; ++n) {
+                        if (net->nodes[n].status == DOM_NETWORK_FAILED) {
+                            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES,
+                                               "bottleneck node=%llu status=failed",
+                                               (unsigned long long)net->nodes[n].node_id);
+                            break;
+                        }
+                    }
+                    for (e = 0u; e < net->graph.edge_count && count < CLIENT_UI_MAX_LINES; ++e) {
+                        if (net->edges[e].status == DOM_NETWORK_FAILED) {
+                            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES,
+                                               "bottleneck edge=%llu status=failed",
+                                               (unsigned long long)net->edges[e].edge_id);
+                            break;
+                        }
+                    }
                 }
             }
             if (state->event_count > 0) {

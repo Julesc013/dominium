@@ -30,10 +30,13 @@ typedef enum agent_goal_type {
     AGENT_GOAL_DEFEND = 2,
     AGENT_GOAL_MIGRATE = 3,
     AGENT_GOAL_RESEARCH = 4,
-    AGENT_GOAL_TRADE = 5
+    AGENT_GOAL_TRADE = 5,
+    AGENT_GOAL_SURVEY = 6,
+    AGENT_GOAL_MAINTAIN = 7,
+    AGENT_GOAL_STABILIZE = 8
 } agent_goal_type;
 
-#define AGENT_GOAL_TYPE_COUNT 6u
+#define AGENT_GOAL_TYPE_COUNT 9u
 
 typedef enum agent_goal_status {
     AGENT_GOAL_ACTIVE = 0,
@@ -45,7 +48,8 @@ typedef enum agent_goal_status {
 typedef enum agent_goal_flags {
     AGENT_GOAL_FLAG_NONE = 0u,
     AGENT_GOAL_FLAG_ALLOW_UNKNOWN = (1u << 0u),
-    AGENT_GOAL_FLAG_REQUIRE_KNOWLEDGE = (1u << 1u)
+    AGENT_GOAL_FLAG_REQUIRE_KNOWLEDGE = (1u << 1u),
+    AGENT_GOAL_FLAG_REQUIRE_DELEGATION = (1u << 2u)
 } agent_goal_flags;
 
 typedef enum agent_goal_condition_kind {
@@ -79,19 +83,24 @@ enum {
     AGENT_CAP_MOVE = 1u << 0,
     AGENT_CAP_TRADE = 1u << 1,
     AGENT_CAP_DEFEND = 1u << 2,
-    AGENT_CAP_RESEARCH = 1u << 3
+    AGENT_CAP_RESEARCH = 1u << 3,
+    AGENT_CAP_SURVEY = 1u << 4,
+    AGENT_CAP_MAINTAIN = 1u << 5,
+    AGENT_CAP_LOGISTICS = 1u << 6
 };
 
 enum {
     AGENT_AUTH_BASIC = 1u << 0,
     AGENT_AUTH_TRADE = 1u << 1,
-    AGENT_AUTH_MILITARY = 1u << 2
+    AGENT_AUTH_MILITARY = 1u << 2,
+    AGENT_AUTH_INFRASTRUCTURE = 1u << 3
 };
 
 enum {
     AGENT_KNOW_RESOURCE = 1u << 0,
     AGENT_KNOW_SAFE_ROUTE = 1u << 1,
-    AGENT_KNOW_THREAT = 1u << 2
+    AGENT_KNOW_THREAT = 1u << 2,
+    AGENT_KNOW_INFRA = 1u << 3
 };
 
 typedef struct agent_goal_preconditions {

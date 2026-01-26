@@ -4,6 +4,7 @@ Client shell core implementation.
 #include "client_shell.h"
 
 #include "domino/app/runtime.h"
+#include "dominium/physical/physical_audit.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -20,6 +21,7 @@ Client shell core implementation.
 #define DOM_REFUSAL_PROCESS_EPISTEMIC "PROC-REFUSAL-EPISTEMIC"
 
 #define DOM_SHELL_DEFAULT_SAVE_PATH "data/saves/world.save"
+#define DOM_SHELL_BATCH_SCRIPT_MAX 2048
 
 #define DOM_SHELL_ACCESSIBILITY_MAX_Q16 (5 << 16)
 #define DOM_SHELL_SUPPORT_MIN_Q16 (1 << 16)
@@ -27,6 +29,9 @@ Client shell core implementation.
 #define DOM_SHELL_RESOURCE_AMOUNT_Q16 (1 << 16)
 #define DOM_SHELL_ENERGY_LOAD_Q16 (1 << 16)
 #define DOM_SHELL_ENERGY_CAPACITY_Q16 (4 << 16)
+#define DOM_SHELL_AGENT_BUDGET_BASE 4u
+#define DOM_SHELL_TRANSFER_AMOUNT_Q16 (1 << 16)
+#define DOM_SHELL_MAINTENANCE_AMOUNT_Q16 (1 << 16)
 
 typedef struct dom_shell_builder {
     char* buf;
@@ -232,7 +237,7 @@ static void dom_shell_policy_set_copy(dom_shell_policy_set* dst, const dom_shell
 
 static void dom_shell_policy_set_from_csv(dom_shell_policy_set* set, const char* csv)
 {
-    char buf[512];
+    char buf[DOM_SHELL_BATCH_SCRIPT_MAX];
     char* token;
     char* comma;
     size_t len;
@@ -412,6 +417,352 @@ static uint32_t dom_shell_hash32(uint64_t v)
     return (uint32_t)dom_shell_mix64(v);
 }
 
+static char* dom_shell_trim_token(char* text)
+{
+    char* end;
+    if (!text) {
+        return text;
+    }
+    while (*text && isspace((unsigned char)*text)) {
+        text++;
+    }
+    end = text + strlen(text);
+    while (end > text && isspace((unsigned char)end[-1])) {
+        end--;
+    }
+    *end = '\0';
+    return text;
+}
+
+static void dom_shell_format_mask_hex(char* out, size_t cap, u32 mask)
+{
+    if (!out || cap == 0u) {
+        return;
+    }
+    snprintf(out, cap, "0x%08x", (unsigned int)mask);
+}
+
+static u32 dom_shell_capability_token(const char* token)
+{
+    if (!token || !token[0]) {
+        return 0u;
+    }
+    if (strcmp(token, "move") == 0) return AGENT_CAP_MOVE;
+    if (strcmp(token, "trade") == 0) return AGENT_CAP_TRADE;
+    if (strcmp(token, "defend") == 0) return AGENT_CAP_DEFEND;
+    if (strcmp(token, "research") == 0) return AGENT_CAP_RESEARCH;
+    if (strcmp(token, "survey") == 0) return AGENT_CAP_SURVEY;
+    if (strcmp(token, "maintain") == 0) return AGENT_CAP_MAINTAIN;
+    if (strcmp(token, "logistics") == 0) return AGENT_CAP_LOGISTICS;
+    return 0u;
+}
+
+static u32 dom_shell_authority_token(const char* token)
+{
+    if (!token || !token[0]) {
+        return 0u;
+    }
+    if (strcmp(token, "basic") == 0) return AGENT_AUTH_BASIC;
+    if (strcmp(token, "trade") == 0) return AGENT_AUTH_TRADE;
+    if (strcmp(token, "military") == 0) return AGENT_AUTH_MILITARY;
+    if (strcmp(token, "infra") == 0 || strcmp(token, "infrastructure") == 0) {
+        return AGENT_AUTH_INFRASTRUCTURE;
+    }
+    return 0u;
+}
+
+static u32 dom_shell_knowledge_token(const char* token)
+{
+    if (!token || !token[0]) {
+        return 0u;
+    }
+    if (strcmp(token, "resource") == 0) return AGENT_KNOW_RESOURCE;
+    if (strcmp(token, "route") == 0 || strcmp(token, "safe_route") == 0) return AGENT_KNOW_SAFE_ROUTE;
+    if (strcmp(token, "threat") == 0) return AGENT_KNOW_THREAT;
+    if (strcmp(token, "infra") == 0 || strcmp(token, "infrastructure") == 0) {
+        return AGENT_KNOW_INFRA;
+    }
+    return 0u;
+}
+
+static u32 dom_shell_process_token(const char* token)
+{
+    if (!token || !token[0]) {
+        return 0u;
+    }
+    if (strcmp(token, "move") == 0) return AGENT_PROCESS_KIND_BIT(AGENT_PROCESS_KIND_MOVE);
+    if (strcmp(token, "acquire") == 0) return AGENT_PROCESS_KIND_BIT(AGENT_PROCESS_KIND_ACQUIRE);
+    if (strcmp(token, "defend") == 0) return AGENT_PROCESS_KIND_BIT(AGENT_PROCESS_KIND_DEFEND);
+    if (strcmp(token, "research") == 0) return AGENT_PROCESS_KIND_BIT(AGENT_PROCESS_KIND_RESEARCH);
+    if (strcmp(token, "trade") == 0) return AGENT_PROCESS_KIND_BIT(AGENT_PROCESS_KIND_TRADE);
+    if (strcmp(token, "observe") == 0) return AGENT_PROCESS_KIND_BIT(AGENT_PROCESS_KIND_OBSERVE);
+    if (strcmp(token, "survey") == 0) return AGENT_PROCESS_KIND_BIT(AGENT_PROCESS_KIND_SURVEY);
+    if (strcmp(token, "maintain") == 0) return AGENT_PROCESS_KIND_BIT(AGENT_PROCESS_KIND_MAINTAIN);
+    if (strcmp(token, "transfer") == 0) return AGENT_PROCESS_KIND_BIT(AGENT_PROCESS_KIND_TRANSFER);
+    return 0u;
+}
+
+static u32 dom_shell_parse_mask_csv(const char* csv, u32 (*token_fn)(const char*))
+{
+    char buf[256];
+    char* token;
+    size_t len;
+    u32 mask = 0u;
+    if (!csv || !csv[0]) {
+        return 0u;
+    }
+    len = strlen(csv);
+    if (len >= sizeof(buf)) {
+        len = sizeof(buf) - 1u;
+    }
+    memcpy(buf, csv, len);
+    buf[len] = '\0';
+    token = buf;
+    while (token) {
+        char* comma = strchr(token, ',');
+        if (comma) {
+            *comma = '\0';
+        }
+        token = dom_shell_trim_token(token);
+        if (token && token[0]) {
+            char* end = 0;
+            unsigned long value = strtoul(token, &end, 0);
+            if (end && *end == '\0') {
+                mask |= (u32)value;
+            } else if (token_fn) {
+                mask |= token_fn(token);
+            }
+        }
+        token = comma ? (comma + 1u) : 0;
+    }
+    return mask;
+}
+
+static u32 dom_shell_goal_type_from_string(const char* value)
+{
+    if (!value || !value[0]) {
+        return AGENT_GOAL_SURVEY;
+    }
+    if (strcmp(value, "survey") == 0) return AGENT_GOAL_SURVEY;
+    if (strcmp(value, "maintain") == 0) return AGENT_GOAL_MAINTAIN;
+    if (strcmp(value, "stabilize") == 0) return AGENT_GOAL_STABILIZE;
+    if (strcmp(value, "survive") == 0) return AGENT_GOAL_SURVIVE;
+    if (strcmp(value, "acquire") == 0) return AGENT_GOAL_ACQUIRE;
+    if (strcmp(value, "defend") == 0) return AGENT_GOAL_DEFEND;
+    if (strcmp(value, "migrate") == 0) return AGENT_GOAL_MIGRATE;
+    if (strcmp(value, "research") == 0) return AGENT_GOAL_RESEARCH;
+    if (strcmp(value, "trade") == 0) return AGENT_GOAL_TRADE;
+    return AGENT_GOAL_SURVEY;
+}
+
+static const char* dom_shell_goal_type_name(u32 value)
+{
+    switch (value) {
+        case AGENT_GOAL_SURVIVE: return "survive";
+        case AGENT_GOAL_ACQUIRE: return "acquire";
+        case AGENT_GOAL_DEFEND: return "defend";
+        case AGENT_GOAL_MIGRATE: return "migrate";
+        case AGENT_GOAL_RESEARCH: return "research";
+        case AGENT_GOAL_TRADE: return "trade";
+        case AGENT_GOAL_SURVEY: return "survey";
+        case AGENT_GOAL_MAINTAIN: return "maintain";
+        case AGENT_GOAL_STABILIZE: return "stabilize";
+        default: return "unknown";
+    }
+}
+
+static const char* dom_shell_process_kind_name(u32 value)
+{
+    switch (value) {
+        case AGENT_PROCESS_KIND_MOVE: return "move";
+        case AGENT_PROCESS_KIND_ACQUIRE: return "acquire";
+        case AGENT_PROCESS_KIND_DEFEND: return "defend";
+        case AGENT_PROCESS_KIND_RESEARCH: return "research";
+        case AGENT_PROCESS_KIND_TRADE: return "trade";
+        case AGENT_PROCESS_KIND_OBSERVE: return "observe";
+        case AGENT_PROCESS_KIND_SURVEY: return "survey";
+        case AGENT_PROCESS_KIND_MAINTAIN: return "maintain";
+        case AGENT_PROCESS_KIND_TRANSFER: return "transfer";
+        default: return "unknown";
+    }
+}
+
+static u32 dom_shell_network_type_from_string(const char* value)
+{
+    if (!value || !value[0]) {
+        return DOM_NETWORK_LOGISTICS;
+    }
+    if (strcmp(value, "electrical") == 0) return DOM_NETWORK_ELECTRICAL;
+    if (strcmp(value, "thermal") == 0) return DOM_NETWORK_THERMAL;
+    if (strcmp(value, "fluid") == 0) return DOM_NETWORK_FLUID;
+    if (strcmp(value, "logistics") == 0) return DOM_NETWORK_LOGISTICS;
+    if (strcmp(value, "data") == 0) return DOM_NETWORK_DATA;
+    return DOM_NETWORK_LOGISTICS;
+}
+
+static const char* dom_shell_network_type_name(u32 value)
+{
+    switch (value) {
+        case DOM_NETWORK_ELECTRICAL: return "electrical";
+        case DOM_NETWORK_THERMAL: return "thermal";
+        case DOM_NETWORK_FLUID: return "fluid";
+        case DOM_NETWORK_LOGISTICS: return "logistics";
+        case DOM_NETWORK_DATA: return "data";
+        default: return "unknown";
+    }
+}
+
+static int dom_shell_agent_index(const dom_client_shell* shell, u64 agent_id)
+{
+    u32 i;
+    if (!shell) {
+        return -1;
+    }
+    for (i = 0u; i < shell->agent_count; ++i) {
+        if (shell->agents[i].agent_id == agent_id) {
+            return (int)i;
+        }
+    }
+    return -1;
+}
+
+static int dom_shell_agent_add(dom_client_shell* shell,
+                               u64 agent_id,
+                               u32 capability_mask,
+                               u32 authority_mask,
+                               u32 knowledge_mask)
+{
+    dom_shell_agent_record* record;
+    dom_agent_schedule_item* sched;
+    dom_agent_belief* belief;
+    dom_agent_capability* cap;
+    if (!shell) {
+        return 0;
+    }
+    if (shell->agent_count >= DOM_SHELL_AGENT_MAX) {
+        return 0;
+    }
+    if (agent_id == 0u) {
+        agent_id = shell->next_agent_id++;
+        if (agent_id == 0u) {
+            agent_id = shell->next_agent_id++;
+        }
+    } else {
+        if (dom_shell_agent_index(shell, agent_id) >= 0) {
+            return 0;
+        }
+        if (agent_id >= shell->next_agent_id) {
+            shell->next_agent_id = agent_id + 1u;
+        }
+    }
+    record = &shell->agents[shell->agent_count];
+    sched = &shell->schedules[shell->agent_count];
+    belief = &shell->beliefs[shell->agent_count];
+    cap = &shell->caps[shell->agent_count];
+    memset(record, 0, sizeof(*record));
+    memset(sched, 0, sizeof(*sched));
+    memset(belief, 0, sizeof(*belief));
+    memset(cap, 0, sizeof(*cap));
+    record->agent_id = agent_id;
+    sched->agent_id = agent_id;
+    sched->next_due_tick = (dom_act_time_t)shell->tick;
+    sched->compute_budget = DOM_SHELL_AGENT_BUDGET_BASE;
+    belief->agent_id = agent_id;
+    belief->knowledge_mask = knowledge_mask;
+    belief->hunger_level = 0u;
+    belief->threat_level = 0u;
+    belief->risk_tolerance_q16 = AGENT_CONFIDENCE_MAX;
+    belief->epistemic_confidence_q16 = AGENT_CONFIDENCE_MAX;
+    cap->agent_id = agent_id;
+    cap->capability_mask = capability_mask;
+    cap->authority_mask = authority_mask;
+    shell->agent_count += 1u;
+    if (shell->possessed_agent_id == 0u) {
+        shell->possessed_agent_id = agent_id;
+    }
+    return 1;
+}
+
+static dom_shell_network_state* dom_shell_network_find(dom_client_shell* shell, u64 network_id)
+{
+    u32 i;
+    if (!shell) {
+        return 0;
+    }
+    for (i = 0u; i < shell->network_count; ++i) {
+        if (shell->networks[i].network_id == network_id) {
+            return &shell->networks[i];
+        }
+    }
+    return 0;
+}
+
+static dom_shell_network_state* dom_shell_network_find_for_node(dom_client_shell* shell, u64 node_id)
+{
+    u32 i;
+    if (!shell) {
+        return 0;
+    }
+    for (i = 0u; i < shell->network_count; ++i) {
+        dom_shell_network_state* net = &shell->networks[i];
+        if (dom_network_find_node(&net->graph, node_id)) {
+            return net;
+        }
+    }
+    return 0;
+}
+
+static dom_shell_network_state* dom_shell_network_find_for_nodes(dom_client_shell* shell,
+                                                                 u64 a,
+                                                                 u64 b)
+{
+    u32 i;
+    if (!shell) {
+        return 0;
+    }
+    for (i = 0u; i < shell->network_count; ++i) {
+        dom_shell_network_state* net = &shell->networks[i];
+        if (dom_network_find_node(&net->graph, a) &&
+            dom_network_find_node(&net->graph, b)) {
+            return net;
+        }
+    }
+    return 0;
+}
+
+static dom_shell_network_state* dom_shell_network_create(dom_client_shell* shell,
+                                                         u64 network_id,
+                                                         u32 type)
+{
+    dom_shell_network_state* net;
+    if (!shell) {
+        return 0;
+    }
+    if (shell->network_count >= DOM_SHELL_NETWORK_MAX) {
+        return 0;
+    }
+    if (network_id == 0u) {
+        network_id = shell->next_network_id++;
+        if (network_id == 0u) {
+            network_id = shell->next_network_id++;
+        }
+    } else if (dom_shell_network_find(shell, network_id)) {
+        return 0;
+    } else if (network_id >= shell->next_network_id) {
+        shell->next_network_id = network_id + 1u;
+    }
+    net = &shell->networks[shell->network_count++];
+    memset(net, 0, sizeof(*net));
+    net->network_id = network_id;
+    dom_network_graph_init(&net->graph,
+                           type,
+                           net->nodes,
+                           DOM_SHELL_NETWORK_NODE_MAX,
+                           net->edges,
+                           DOM_SHELL_NETWORK_EDGE_MAX);
+    return net;
+}
+
 static void dom_shell_fields_init(dom_shell_field_state* fields)
 {
     dom_domain_volume_ref domain;
@@ -486,6 +837,72 @@ static void dom_shell_structure_init(dom_shell_structure_state* state)
     state->structure.structure_id = 1u;
     state->structure.built = 0u;
     state->structure.failed = 0u;
+}
+
+static void dom_shell_agents_reset(dom_client_shell* shell)
+{
+    if (!shell) {
+        return;
+    }
+    memset(shell->agents, 0, sizeof(shell->agents));
+    memset(shell->schedules, 0, sizeof(shell->schedules));
+    memset(shell->beliefs, 0, sizeof(shell->beliefs));
+    memset(shell->caps, 0, sizeof(shell->caps));
+    memset(shell->goals, 0, sizeof(shell->goals));
+    memset(shell->delegations, 0, sizeof(shell->delegations));
+    memset(shell->delegation_assignments, 0, sizeof(shell->delegation_assignments));
+    memset(shell->authority_grants, 0, sizeof(shell->authority_grants));
+    memset(shell->constraints, 0, sizeof(shell->constraints));
+    memset(shell->institutions, 0, sizeof(shell->institutions));
+    shell->agent_count = 0u;
+    shell->next_agent_id = 1u;
+    shell->possessed_agent_id = 0u;
+    shell->delegation_assignment_count = 0u;
+    shell->next_delegation_id = 1u;
+    shell->next_authority_id = 1u;
+    shell->next_constraint_id = 1u;
+    shell->next_institution_id = 1u;
+    agent_goal_registry_init(&shell->goal_registry,
+                             shell->goals,
+                             DOM_SHELL_GOAL_MAX,
+                             1u);
+    agent_delegation_registry_init(&shell->delegation_registry,
+                                   shell->delegations,
+                                   DOM_SHELL_DELEGATION_MAX);
+    agent_authority_registry_init(&shell->authority_registry,
+                                  shell->authority_grants,
+                                  DOM_SHELL_AUTH_GRANT_MAX);
+    agent_constraint_registry_init(&shell->constraint_registry,
+                                   shell->constraints,
+                                   DOM_SHELL_CONSTRAINT_MAX);
+    agent_institution_registry_init(&shell->institution_registry,
+                                    shell->institutions,
+                                    DOM_SHELL_INSTITUTION_MAX);
+    dom_agent_goal_buffer_init(&shell->goal_buffer,
+                               shell->goal_choices,
+                               DOM_SHELL_AGENT_MAX);
+    dom_agent_plan_buffer_init(&shell->plan_buffer,
+                               shell->plan_entries,
+                               DOM_SHELL_AGENT_MAX,
+                               1u);
+    dom_agent_command_buffer_init(&shell->command_buffer,
+                                  shell->command_entries,
+                                  (u32)(DOM_SHELL_AGENT_MAX * 2u),
+                                  1u);
+    dom_agent_audit_init(&shell->agent_audit_log,
+                         shell->agent_audit_entries,
+                         DOM_SHELL_AUDIT_MAX,
+                         1u);
+}
+
+static void dom_shell_networks_reset(dom_client_shell* shell)
+{
+    if (!shell) {
+        return;
+    }
+    memset(shell->networks, 0, sizeof(shell->networks));
+    shell->network_count = 0u;
+    shell->next_network_id = 1u;
 }
 
 static int dom_shell_field_index(const dom_shell_field_state* fields, u32 field_id)
@@ -601,10 +1018,506 @@ static void dom_shell_local_reset(dom_client_shell* shell)
     }
     dom_shell_fields_init(&shell->fields);
     dom_shell_structure_init(&shell->structure);
+    dom_shell_agents_reset(shell);
+    dom_shell_networks_reset(shell);
     shell->last_intent[0] = '\0';
     shell->last_plan[0] = '\0';
     shell->next_intent_id = 1u;
     shell->rng_seed = 0u;
+}
+
+static void dom_shell_goal_desc_default(u64 agent_id,
+                                        u32 goal_type,
+                                        agent_goal_desc* desc)
+{
+    if (!desc) {
+        return;
+    }
+    memset(desc, 0, sizeof(*desc));
+    desc->agent_id = agent_id;
+    desc->type = goal_type;
+    desc->base_priority = 10u;
+    desc->urgency = 0u;
+    desc->acceptable_risk_q16 = AGENT_CONFIDENCE_MAX;
+    desc->epistemic_confidence_q16 = AGENT_CONFIDENCE_MAX;
+    desc->flags = 0u;
+    switch (goal_type) {
+        case AGENT_GOAL_SURVEY:
+            desc->preconditions.required_capabilities = AGENT_CAP_SURVEY;
+            desc->preconditions.required_authority = 0u;
+            desc->preconditions.required_knowledge = 0u;
+            desc->flags |= AGENT_GOAL_FLAG_ALLOW_UNKNOWN;
+            break;
+        case AGENT_GOAL_MAINTAIN:
+            desc->preconditions.required_capabilities = AGENT_CAP_MAINTAIN;
+            desc->preconditions.required_authority = AGENT_AUTH_INFRASTRUCTURE;
+            desc->preconditions.required_knowledge = AGENT_KNOW_INFRA;
+            desc->flags |= AGENT_GOAL_FLAG_REQUIRE_KNOWLEDGE;
+            break;
+        case AGENT_GOAL_STABILIZE:
+            desc->preconditions.required_capabilities = AGENT_CAP_LOGISTICS;
+            desc->preconditions.required_authority = AGENT_AUTH_INFRASTRUCTURE;
+            desc->preconditions.required_knowledge = AGENT_KNOW_INFRA;
+            desc->flags |= AGENT_GOAL_FLAG_REQUIRE_KNOWLEDGE;
+            desc->flags |= AGENT_GOAL_FLAG_REQUIRE_DELEGATION;
+            break;
+        default:
+            break;
+    }
+}
+
+static dom_agent_belief* dom_shell_belief_for_agent(dom_client_shell* shell, u64 agent_id)
+{
+    int idx = dom_shell_agent_index(shell, agent_id);
+    if (!shell || idx < 0) {
+        return 0;
+    }
+    return &shell->beliefs[idx];
+}
+
+static dom_agent_capability* dom_shell_cap_for_agent(dom_client_shell* shell, u64 agent_id)
+{
+    int idx = dom_shell_agent_index(shell, agent_id);
+    if (!shell || idx < 0) {
+        return 0;
+    }
+    return &shell->caps[idx];
+}
+
+static dom_agent_schedule_item* dom_shell_schedule_for_agent(dom_client_shell* shell, u64 agent_id)
+{
+    int idx = dom_shell_agent_index(shell, agent_id);
+    if (!shell || idx < 0) {
+        return 0;
+    }
+    return &shell->schedules[idx];
+}
+
+static const agent_plan* dom_shell_plan_for_id(const dom_agent_plan_buffer* plans, u64 plan_id)
+{
+    u32 i;
+    if (!plans || !plans->entries) {
+        return 0;
+    }
+    for (i = 0u; i < plans->count; ++i) {
+        if (plans->entries[i].plan.plan_id == plan_id) {
+            return &plans->entries[i].plan;
+        }
+    }
+    return 0;
+}
+
+static dom_network_edge* dom_shell_network_find_edge_between(dom_network_graph* graph,
+                                                             u64 a,
+                                                             u64 b)
+{
+    u32 i;
+    if (!graph || !graph->edges) {
+        return 0;
+    }
+    for (i = 0u; i < graph->edge_count; ++i) {
+        dom_network_edge* edge = &graph->edges[i];
+        if ((edge->a == a && edge->b == b) || (edge->a == b && edge->b == a)) {
+            return edge;
+        }
+    }
+    return 0;
+}
+
+static const char* dom_shell_network_reason(int rc)
+{
+    switch (rc) {
+        case -2: return "missing";
+        case -3: return "failed";
+        case -4: return "capacity";
+        case -5: return "insufficient_storage";
+        case -6: return "capacity";
+        default: return "unknown";
+    }
+}
+
+static void dom_shell_update_agent_records(dom_client_shell* shell,
+                                           const dom_agent_goal_buffer* goals,
+                                           const dom_agent_plan_buffer* plans)
+{
+    u32 i;
+    if (!shell) {
+        return;
+    }
+    for (i = 0u; i < shell->agent_count; ++i) {
+        dom_shell_agent_record* record = &shell->agents[i];
+        record->last_goal_id = 0u;
+        record->last_goal_type = 0u;
+        record->last_refusal = 0u;
+        if (goals && i < goals->count) {
+            record->last_goal_id = goals->entries[i].goal_id;
+            record->last_refusal = goals->entries[i].refusal;
+        }
+        if (plans && i < plans->count) {
+            if (plans->entries[i].refusal != 0u) {
+                record->last_refusal = plans->entries[i].refusal;
+            }
+        }
+        if (record->last_goal_id != 0u) {
+            agent_goal* goal = agent_goal_find(&shell->goal_registry, record->last_goal_id);
+            if (goal) {
+                record->last_goal_type = goal->type;
+            }
+        }
+    }
+}
+
+static void dom_shell_update_schedule_budget(dom_client_shell* shell, dom_act_time_t now_act)
+{
+    u32 i;
+    if (!shell) {
+        return;
+    }
+    for (i = 0u; i < shell->agent_count; ++i) {
+        shell->schedules[i].next_due_tick = now_act;
+        shell->schedules[i].compute_budget = DOM_SHELL_AGENT_BUDGET_BASE;
+    }
+    for (i = 0u; i < shell->delegation_registry.count; ++i) {
+        const agent_delegation* del = &shell->delegations[i];
+        if (del->revoked) {
+            continue;
+        }
+        if (del->expiry_act != 0u && del->expiry_act <= now_act) {
+            continue;
+        }
+        {
+            int idx = dom_shell_agent_index(shell, del->delegatee_ref);
+            if (idx >= 0 && shell->schedules[idx].compute_budget > 0u) {
+                shell->schedules[idx].compute_budget -= 1u;
+            }
+        }
+    }
+}
+
+static void dom_shell_network_tick_all(dom_client_shell* shell,
+                                       dom_app_ui_event_log* log,
+                                       dom_act_time_t now_act)
+{
+    u32 i;
+    if (!shell) {
+        return;
+    }
+    for (i = 0u; i < shell->network_count; ++i) {
+        dom_shell_network_state* net = &shell->networks[i];
+        u32 node_count = net->graph.node_count;
+        u32 edge_count = net->graph.edge_count;
+        u32 n;
+        u32 e;
+        u32 node_status[DOM_SHELL_NETWORK_NODE_MAX];
+        u32 edge_status[DOM_SHELL_NETWORK_EDGE_MAX];
+        if (node_count > DOM_SHELL_NETWORK_NODE_MAX) {
+            node_count = DOM_SHELL_NETWORK_NODE_MAX;
+        }
+        if (edge_count > DOM_SHELL_NETWORK_EDGE_MAX) {
+            edge_count = DOM_SHELL_NETWORK_EDGE_MAX;
+        }
+        for (n = 0u; n < node_count; ++n) {
+            node_status[n] = net->nodes[n].status;
+        }
+        for (e = 0u; e < edge_count; ++e) {
+            edge_status[e] = net->edges[e].status;
+        }
+        (void)dom_network_tick(&net->graph, 0, now_act);
+        for (n = 0u; n < node_count; ++n) {
+            if (node_status[n] == DOM_NETWORK_OK && net->nodes[n].status == DOM_NETWORK_FAILED) {
+                char detail[160];
+                snprintf(detail, sizeof(detail),
+                         "network_id=%llu node=%llu result=failed reason=threshold",
+                         (unsigned long long)net->network_id,
+                         (unsigned long long)net->nodes[n].node_id);
+                dom_shell_emit(shell, log, "client.network.fail", detail);
+            }
+        }
+        for (e = 0u; e < edge_count; ++e) {
+            if (edge_status[e] == DOM_NETWORK_OK && net->edges[e].status == DOM_NETWORK_FAILED) {
+                char detail[160];
+                snprintf(detail, sizeof(detail),
+                         "network_id=%llu edge=%llu result=failed",
+                         (unsigned long long)net->network_id,
+                         (unsigned long long)net->edges[e].edge_id);
+                dom_shell_emit(shell, log, "client.network.fail", detail);
+            }
+        }
+    }
+}
+
+static void dom_shell_execute_agent_command(dom_client_shell* shell,
+                                            const dom_agent_command* cmd,
+                                            const dom_agent_plan_buffer* plans,
+                                            dom_app_ui_event_log* log)
+{
+    dom_agent_belief* belief;
+    dom_agent_capability* cap;
+    agent_goal* goal;
+    u32 effective_auth = 0u;
+    int success = 0;
+    const char* reason = "unknown";
+    const char* process_name;
+    if (!shell || !cmd) {
+        return;
+    }
+    belief = dom_shell_belief_for_agent(shell, cmd->agent_id);
+    cap = dom_shell_cap_for_agent(shell, cmd->agent_id);
+    goal = agent_goal_find(&shell->goal_registry, cmd->goal_id);
+    process_name = dom_shell_process_kind_name(cmd->process_kind);
+    if (cap) {
+        effective_auth = cap->authority_mask;
+        if (shell->authority_registry.count > 0u) {
+            effective_auth = agent_authority_effective_mask(&shell->authority_registry,
+                                                            cmd->agent_id,
+                                                            effective_auth,
+                                                            (dom_act_time_t)shell->tick);
+        }
+    }
+    if (!belief) {
+        reason = "agent_missing";
+    } else if (cmd->required_authority_mask != 0u &&
+               (effective_auth & cmd->required_authority_mask) != cmd->required_authority_mask) {
+        reason = "insufficient_authority";
+    } else if (cmd->process_kind == AGENT_PROCESS_KIND_SURVEY) {
+        if (shell->network_count == 0u) {
+            reason = "unsupported";
+        } else {
+            belief->knowledge_mask |= AGENT_KNOW_INFRA;
+            belief->epistemic_confidence_q16 = AGENT_CONFIDENCE_MAX;
+            success = 1;
+        }
+    } else if (cmd->process_kind == AGENT_PROCESS_KIND_MAINTAIN) {
+        dom_shell_network_state* net = dom_shell_network_find_for_node(shell, cmd->target_id);
+        if (!net) {
+            reason = "missing";
+        } else {
+            dom_network_node* node = dom_network_find_node(&net->graph, cmd->target_id);
+            if (!node) {
+                reason = "missing";
+            } else {
+                int rc = dom_network_store(&net->graph,
+                                           node->node_id,
+                                           DOM_SHELL_MAINTENANCE_AMOUNT_Q16,
+                                           0,
+                                           (dom_act_time_t)shell->tick);
+                if (rc == 0) {
+                    if (node->status == DOM_NETWORK_FAILED) {
+                        node->status = DOM_NETWORK_OK;
+                    }
+                    success = 1;
+                } else {
+                    reason = dom_shell_network_reason(rc);
+                }
+            }
+        }
+    } else if (cmd->process_kind == AGENT_PROCESS_KIND_TRANSFER) {
+        dom_shell_network_state* net = dom_shell_network_find_for_nodes(shell,
+                                                                        belief ? belief->known_resource_ref : 0u,
+                                                                        cmd->target_id);
+        if (!net) {
+            reason = "missing";
+        } else {
+            u64 from_node = belief ? belief->known_resource_ref : 0u;
+            u64 to_node = cmd->target_id;
+            dom_network_edge* edge = dom_shell_network_find_edge_between(&net->graph, from_node, to_node);
+            u32 prev_status = edge ? edge->status : DOM_NETWORK_OK;
+            int rc = dom_network_transfer(&net->graph,
+                                          from_node,
+                                          to_node,
+                                          DOM_SHELL_TRANSFER_AMOUNT_Q16,
+                                          0,
+                                          (dom_act_time_t)shell->tick);
+            if (rc == 0) {
+                success = 1;
+            } else {
+                reason = dom_shell_network_reason(rc);
+                if (edge && prev_status == DOM_NETWORK_OK && edge->status == DOM_NETWORK_FAILED) {
+                    char detail[160];
+                    snprintf(detail, sizeof(detail),
+                             "network_id=%llu edge=%llu result=failed reason=capacity",
+                             (unsigned long long)net->network_id,
+                             (unsigned long long)edge->edge_id);
+                    dom_shell_emit(shell, log, "client.network.fail", detail);
+                }
+            }
+        }
+    } else {
+        reason = "unsupported";
+    }
+
+    if (success) {
+        if (goal && plans) {
+            const agent_plan* plan = dom_shell_plan_for_id(plans, cmd->plan_id);
+            if (plan && cmd->step_index + 1u >= plan->step_count) {
+                agent_goal_set_status(goal, AGENT_GOAL_SATISFIED, (dom_act_time_t)shell->tick);
+            }
+        }
+        if (cmd->agent_id == shell->possessed_agent_id) {
+            snprintf(shell->last_intent, sizeof(shell->last_intent),
+                     "agent=%llu command=%llu process=%s",
+                     (unsigned long long)cmd->agent_id,
+                     (unsigned long long)cmd->command_id,
+                     process_name);
+            snprintf(shell->last_plan, sizeof(shell->last_plan),
+                     "plan=%llu step=%u process=%s",
+                     (unsigned long long)cmd->plan_id,
+                     (unsigned int)(cmd->step_index + 1u),
+                     process_name);
+        }
+        {
+            char detail[200];
+            snprintf(detail, sizeof(detail),
+                     "agent_id=%llu goal_id=%llu command_id=%llu process=%s result=ok",
+                     (unsigned long long)cmd->agent_id,
+                     (unsigned long long)cmd->goal_id,
+                     (unsigned long long)cmd->command_id,
+                     process_name);
+            dom_shell_emit(shell, log, "client.agent.command", detail);
+        }
+    } else {
+        if (goal) {
+            agent_goal_record_failure(goal, (dom_act_time_t)shell->tick);
+        }
+        {
+            char detail[200];
+            snprintf(detail, sizeof(detail),
+                     "agent_id=%llu goal_id=%llu command_id=%llu process=%s result=failed reason=%s",
+                     (unsigned long long)cmd->agent_id,
+                     (unsigned long long)cmd->goal_id,
+                     (unsigned long long)cmd->command_id,
+                     process_name,
+                     reason);
+            dom_shell_emit(shell, log, "client.agent.command", detail);
+        }
+    }
+}
+
+static int dom_shell_simulate_tick(dom_client_shell* shell,
+                                   dom_app_ui_event_log* log,
+                                   int emit_text)
+{
+    u32 i;
+    u32 commands_executed = 0u;
+    if (!shell || !shell->world.active) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "no active world");
+        dom_shell_set_status(shell, "simulate=refused");
+        return 0;
+    }
+    shell->tick += 1u;
+    dom_agent_goal_buffer_reset(&shell->goal_buffer);
+    dom_agent_plan_buffer_reset(&shell->plan_buffer);
+    dom_agent_command_buffer_reset(&shell->command_buffer);
+    shell->agent_audit_log.count = 0u;
+    dom_agent_audit_set_context(&shell->agent_audit_log,
+                                (dom_act_time_t)shell->tick,
+                                0u);
+    dom_shell_update_schedule_budget(shell, (dom_act_time_t)shell->tick);
+
+    (void)dom_agent_evaluate_goals_slice(shell->schedules,
+                                         shell->agent_count,
+                                         0u,
+                                         shell->agent_count,
+                                         &shell->goal_registry,
+                                         shell->beliefs,
+                                         shell->agent_count,
+                                         shell->caps,
+                                         shell->agent_count,
+                                         &shell->goal_buffer,
+                                         &shell->agent_audit_log);
+    (void)dom_agent_plan_actions_slice(&shell->goal_buffer,
+                                       0u,
+                                       shell->goal_buffer.count,
+                                       &shell->goal_registry,
+                                       shell->beliefs,
+                                       shell->agent_count,
+                                       shell->caps,
+                                       shell->agent_count,
+                                       shell->schedules,
+                                       shell->agent_count,
+                                       &shell->plan_buffer,
+                                       &shell->agent_audit_log);
+    (void)dom_agent_validate_plan_slice(&shell->plan_buffer,
+                                        0u,
+                                        shell->plan_buffer.count,
+                                        shell->caps,
+                                        shell->agent_count,
+                                        &shell->authority_registry,
+                                        &shell->constraint_registry,
+                                        0,
+                                        &shell->delegation_registry,
+                                        &shell->goal_registry,
+                                        &shell->agent_audit_log);
+    for (i = 0u; i < shell->plan_buffer.count; ++i) {
+        const agent_plan* plan = &shell->plan_buffer.entries[i].plan;
+        u32 refusal = shell->plan_buffer.entries[i].refusal;
+        char detail[200];
+        if (!plan || plan->plan_id == 0u) {
+            continue;
+        }
+        if (shell->plan_buffer.entries[i].valid != 0u) {
+            snprintf(detail, sizeof(detail),
+                     "agent_id=%llu goal_id=%llu plan_id=%llu result=ok",
+                     (unsigned long long)plan->agent_id,
+                     (unsigned long long)plan->goal_id,
+                     (unsigned long long)plan->plan_id);
+        } else if (refusal != 0u) {
+            snprintf(detail, sizeof(detail),
+                     "agent_id=%llu goal_id=%llu plan_id=%llu result=refused reason=%s",
+                     (unsigned long long)plan->agent_id,
+                     (unsigned long long)plan->goal_id,
+                     (unsigned long long)plan->plan_id,
+                     agent_refusal_to_string((agent_refusal_code)refusal));
+        } else {
+            snprintf(detail, sizeof(detail),
+                     "agent_id=%llu goal_id=%llu plan_id=%llu result=refused reason=unknown",
+                     (unsigned long long)plan->agent_id,
+                     (unsigned long long)plan->goal_id,
+                     (unsigned long long)plan->plan_id);
+        }
+        dom_shell_emit(shell, log, "client.agent.plan", detail);
+    }
+
+    (void)dom_agent_emit_commands_slice(&shell->plan_buffer,
+                                        0u,
+                                        shell->plan_buffer.count,
+                                        &shell->command_buffer,
+                                        &shell->agent_audit_log);
+    dom_shell_update_agent_records(shell, &shell->goal_buffer, &shell->plan_buffer);
+
+    for (i = 0u; i < shell->command_buffer.count; ++i) {
+        dom_shell_execute_agent_command(shell, &shell->command_buffer.entries[i], &shell->plan_buffer, log);
+        commands_executed += 1u;
+    }
+
+    for (i = 0u; i < shell->plan_buffer.count; ++i) {
+        const agent_plan* plan = &shell->plan_buffer.entries[i].plan;
+        dom_agent_schedule_item* sched = dom_shell_schedule_for_agent(shell, plan->agent_id);
+        if (!sched) {
+            continue;
+        }
+        if (shell->plan_buffer.entries[i].valid != 0u &&
+            plan->step_cursor < plan->step_count) {
+            sched->active_plan_id = plan->plan_id;
+            sched->active_goal_id = plan->goal_id;
+            sched->resume_step = plan->step_cursor;
+            sched->next_due_tick = plan->next_due_tick;
+        } else {
+            sched->active_plan_id = 0u;
+            sched->active_goal_id = 0u;
+            sched->resume_step = 0u;
+        }
+    }
+
+    dom_shell_network_tick_all(shell, log, (dom_act_time_t)shell->tick);
+
+    dom_shell_set_status(shell, "simulate=ok");
+    if (emit_text) {
+        printf("simulate=ok tick=%u commands=%u\n",
+               (unsigned int)shell->tick,
+               (unsigned int)commands_executed);
+    }
+    return 1;
 }
 
 static int dom_shell_field_name_to_id(const dom_shell_field_state* fields,
@@ -1200,6 +2113,8 @@ int dom_client_shell_create_world(dom_client_shell* shell,
     }
     dom_shell_fields_init(&shell->fields);
     dom_shell_structure_init(&shell->structure);
+    dom_shell_agents_reset(shell);
+    dom_shell_networks_reset(shell);
     shell->fields.knowledge_mask = 0u;
     shell->fields.confidence_q16 = 0u;
     shell->fields.uncertainty_q16 = 0u;
@@ -1276,6 +2191,7 @@ static int dom_shell_write_save(dom_client_shell* shell, const char* path, char*
     fprintf(f, "policy.debug=%s\n", csv);
     fprintf(f, "summary_end\n");
     fprintf(f, "local_begin\n");
+    fprintf(f, "tick=%u\n", (unsigned int)shell->tick);
     fprintf(f, "rng_seed=%llu\n", (unsigned long long)shell->rng_seed);
     fprintf(f, "knowledge_mask=0x%08x\n", (unsigned int)shell->fields.knowledge_mask);
     fprintf(f, "confidence_q16=%u\n", (unsigned int)shell->fields.confidence_q16);
@@ -1304,6 +2220,216 @@ static int dom_shell_write_save(dom_client_shell* shell, const char* path, char*
                 edge ? (unsigned int)edge->status : 0u);
     }
     fprintf(f, "local_end\n");
+    fprintf(f, "agents_begin\n");
+    fprintf(f, "next_agent_id=%llu\n", (unsigned long long)shell->next_agent_id);
+    fprintf(f, "possessed_agent_id=%llu\n", (unsigned long long)shell->possessed_agent_id);
+    if (shell->agent_count > 0u) {
+        u32 i;
+        for (i = 0u; i < shell->agent_count; ++i) {
+            const dom_shell_agent_record* record = &shell->agents[i];
+            const dom_agent_schedule_item* sched = &shell->schedules[i];
+            const dom_agent_belief* belief = &shell->beliefs[i];
+            const dom_agent_capability* cap = &shell->caps[i];
+            fprintf(f,
+                    "agent id=%llu caps=%u auth=%u know=%u record_goal_id=%llu record_goal_type=%u "
+                    "record_refusal=%u sched_next=%llu sched_status=%u sched_budget=%u "
+                    "sched_goal=%llu sched_plan=%llu sched_resume=%u hunger=%u threat=%u "
+                    "risk_q16=%u ep_conf=%u resource_ref=%llu threat_ref=%llu dest_ref=%llu\n",
+                    (unsigned long long)record->agent_id,
+                    (unsigned int)cap->capability_mask,
+                    (unsigned int)cap->authority_mask,
+                    (unsigned int)belief->knowledge_mask,
+                    (unsigned long long)record->last_goal_id,
+                    (unsigned int)record->last_goal_type,
+                    (unsigned int)record->last_refusal,
+                    (unsigned long long)sched->next_due_tick,
+                    (unsigned int)sched->status,
+                    (unsigned int)sched->compute_budget,
+                    (unsigned long long)sched->active_goal_id,
+                    (unsigned long long)sched->active_plan_id,
+                    (unsigned int)sched->resume_step,
+                    (unsigned int)belief->hunger_level,
+                    (unsigned int)belief->threat_level,
+                    (unsigned int)belief->risk_tolerance_q16,
+                    (unsigned int)belief->epistemic_confidence_q16,
+                    (unsigned long long)belief->known_resource_ref,
+                    (unsigned long long)belief->known_threat_ref,
+                    (unsigned long long)belief->known_destination_ref);
+        }
+    }
+    fprintf(f, "agents_end\n");
+    fprintf(f, "goals_begin\n");
+    fprintf(f, "next_goal_id=%llu\n", (unsigned long long)shell->goal_registry.next_goal_id);
+    if (shell->goal_registry.count > 0u) {
+        u32 i;
+        for (i = 0u; i < shell->goal_registry.count; ++i) {
+            const agent_goal* goal = &shell->goal_registry.goals[i];
+            u32 c;
+            fprintf(f,
+                    "goal id=%llu agent=%llu type=%u status=%u flags=%u base_priority=%u "
+                    "urgency=%u acceptable_risk_q16=%u horizon_act=%llu epistemic_confidence_q16=%u "
+                    "precond_caps=%u precond_auth=%u precond_know=%u satisfaction_flags=%u "
+                    "expiry_act=%llu failure_count=%u oscillation_count=%u abandon_after_failures=%u "
+                    "abandon_after_act=%llu defer_until_act=%llu conflict_group=%u last_update_act=%llu "
+                    "condition_count=%u",
+                    (unsigned long long)goal->goal_id,
+                    (unsigned long long)goal->agent_id,
+                    (unsigned int)goal->type,
+                    (unsigned int)goal->status,
+                    (unsigned int)goal->flags,
+                    (unsigned int)goal->base_priority,
+                    (unsigned int)goal->urgency,
+                    (unsigned int)goal->acceptable_risk_q16,
+                    (unsigned long long)goal->horizon_act,
+                    (unsigned int)goal->epistemic_confidence_q16,
+                    (unsigned int)goal->preconditions.required_capabilities,
+                    (unsigned int)goal->preconditions.required_authority,
+                    (unsigned int)goal->preconditions.required_knowledge,
+                    (unsigned int)goal->satisfaction_flags,
+                    (unsigned long long)goal->expiry_act,
+                    (unsigned int)goal->failure_count,
+                    (unsigned int)goal->oscillation_count,
+                    (unsigned int)goal->abandon_after_failures,
+                    (unsigned long long)goal->abandon_after_act,
+                    (unsigned long long)goal->defer_until_act,
+                    (unsigned int)goal->conflict_group,
+                    (unsigned long long)goal->last_update_act,
+                    (unsigned int)goal->condition_count);
+            for (c = 0u; c < goal->condition_count && c < AGENT_GOAL_MAX_CONDITIONS; ++c) {
+                const agent_goal_condition* cond = &goal->conditions[c];
+                fprintf(f,
+                        " cond%u=%u,%llu,%d,%u",
+                        (unsigned int)c,
+                        (unsigned int)cond->kind,
+                        (unsigned long long)cond->subject_ref,
+                        (int)cond->threshold,
+                        (unsigned int)cond->flags);
+            }
+            fprintf(f, "\n");
+        }
+    }
+    fprintf(f, "goals_end\n");
+    fprintf(f, "delegations_begin\n");
+    fprintf(f, "next_delegation_id=%llu\n", (unsigned long long)shell->next_delegation_id);
+    if (shell->delegation_registry.count > 0u) {
+        u32 i;
+        for (i = 0u; i < shell->delegation_registry.count; ++i) {
+            const agent_delegation* del = &shell->delegations[i];
+            fprintf(f,
+                    "delegation id=%llu delegator=%llu delegatee=%llu kind=%u process=%u authority=%u "
+                    "expiry=%llu provenance=%llu revoked=%u\n",
+                    (unsigned long long)del->delegation_id,
+                    (unsigned long long)del->delegator_ref,
+                    (unsigned long long)del->delegatee_ref,
+                    (unsigned int)del->delegation_kind,
+                    (unsigned int)del->allowed_process_mask,
+                    (unsigned int)del->authority_mask,
+                    (unsigned long long)del->expiry_act,
+                    (unsigned long long)del->provenance_ref,
+                    (unsigned int)del->revoked);
+        }
+    }
+    fprintf(f, "delegations_end\n");
+    fprintf(f, "authority_begin\n");
+    fprintf(f, "next_authority_id=%llu\n", (unsigned long long)shell->next_authority_id);
+    if (shell->authority_registry.count > 0u) {
+        u32 i;
+        for (i = 0u; i < shell->authority_registry.count; ++i) {
+            const agent_authority_grant* grant = &shell->authority_grants[i];
+            fprintf(f,
+                    "grant id=%llu granter=%llu grantee=%llu authority=%u expiry=%llu provenance=%llu revoked=%u\n",
+                    (unsigned long long)grant->grant_id,
+                    (unsigned long long)grant->granter_id,
+                    (unsigned long long)grant->grantee_id,
+                    (unsigned int)grant->authority_mask,
+                    (unsigned long long)grant->expiry_act,
+                    (unsigned long long)grant->provenance_id,
+                    (unsigned int)grant->revoked);
+        }
+    }
+    fprintf(f, "authority_end\n");
+    fprintf(f, "constraints_begin\n");
+    fprintf(f, "next_constraint_id=%llu\n", (unsigned long long)shell->next_constraint_id);
+    if (shell->constraint_registry.count > 0u) {
+        u32 i;
+        for (i = 0u; i < shell->constraint_registry.count; ++i) {
+            const agent_constraint* constraint = &shell->constraints[i];
+            fprintf(f,
+                    "constraint id=%llu institution=%llu target=%llu process=%u mode=%u expiry=%llu "
+                    "provenance=%llu revoked=%u\n",
+                    (unsigned long long)constraint->constraint_id,
+                    (unsigned long long)constraint->institution_id,
+                    (unsigned long long)constraint->target_agent_id,
+                    (unsigned int)constraint->process_kind_mask,
+                    (unsigned int)constraint->mode,
+                    (unsigned long long)constraint->expiry_act,
+                    (unsigned long long)constraint->provenance_id,
+                    (unsigned int)constraint->revoked);
+        }
+    }
+    fprintf(f, "constraints_end\n");
+    fprintf(f, "institutions_begin\n");
+    fprintf(f, "next_institution_id=%llu\n", (unsigned long long)shell->next_institution_id);
+    if (shell->institution_registry.count > 0u) {
+        u32 i;
+        for (i = 0u; i < shell->institution_registry.count; ++i) {
+            const agent_institution* inst = &shell->institutions[i];
+            fprintf(f,
+                    "institution id=%llu agent=%llu authority=%u legitimacy_q16=%u status=%u "
+                    "founded_act=%llu collapsed_act=%llu provenance=%llu flags=%u\n",
+                    (unsigned long long)inst->institution_id,
+                    (unsigned long long)inst->agent_id,
+                    (unsigned int)inst->authority_mask,
+                    (unsigned int)inst->legitimacy_q16,
+                    (unsigned int)inst->status,
+                    (unsigned long long)inst->founded_act,
+                    (unsigned long long)inst->collapsed_act,
+                    (unsigned long long)inst->provenance_id,
+                    (unsigned int)inst->flags);
+        }
+    }
+    fprintf(f, "institutions_end\n");
+    fprintf(f, "networks_begin\n");
+    fprintf(f, "next_network_id=%llu\n", (unsigned long long)shell->next_network_id);
+    if (shell->network_count > 0u) {
+        u32 i;
+        for (i = 0u; i < shell->network_count; ++i) {
+            const dom_shell_network_state* net = &shell->networks[i];
+            u32 n;
+            u32 e;
+            fprintf(f,
+                    "network id=%llu type=%u nodes=%u edges=%u\n",
+                    (unsigned long long)net->network_id,
+                    (unsigned int)net->graph.type,
+                    (unsigned int)net->graph.node_count,
+                    (unsigned int)net->graph.edge_count);
+            for (n = 0u; n < net->graph.node_count; ++n) {
+                const dom_network_node* node = &net->nodes[n];
+                fprintf(f,
+                        "node network=%llu id=%llu status=%u capacity_q16=%d stored_q16=%d loss_q16=%d min_required_q16=%d\n",
+                        (unsigned long long)net->network_id,
+                        (unsigned long long)node->node_id,
+                        (unsigned int)node->status,
+                        (int)node->capacity_q16,
+                        (int)node->stored_q16,
+                        (int)node->loss_q16,
+                        (int)node->min_required_q16);
+            }
+            for (e = 0u; e < net->graph.edge_count; ++e) {
+                const dom_network_edge* edge = &net->edges[e];
+                fprintf(f,
+                        "edge network=%llu id=%llu a=%llu b=%llu status=%u capacity_q16=%d loss_q16=%d\n",
+                        (unsigned long long)net->network_id,
+                        (unsigned long long)edge->edge_id,
+                        (unsigned long long)edge->a,
+                        (unsigned long long)edge->b,
+                        (unsigned int)edge->status,
+                        (int)edge->capacity_q16,
+                        (int)edge->loss_q16);
+            }
+        }
+    }
+    fprintf(f, "networks_end\n");
     fprintf(f, "events_begin\n");
     if (shell->events.count > 0u) {
         uint32_t i;
@@ -1404,6 +2530,28 @@ static int dom_shell_load_save_file(dom_client_shell* shell, const char* path, c
     int in_local = 0;
     int in_events = 0;
     int have_summary = 0;
+    int in_agents = 0;
+    int in_goals = 0;
+    int in_delegations = 0;
+    int in_authority = 0;
+    int in_constraints = 0;
+    int in_institutions = 0;
+    int in_networks = 0;
+    u64 max_agent_id = 0u;
+    u64 max_goal_id = 0u;
+    u64 max_delegation_id = 0u;
+    u64 max_authority_id = 0u;
+    u64 max_constraint_id = 0u;
+    u64 max_institution_id = 0u;
+    u64 max_network_id = 0u;
+    u64 next_agent_id = 0u;
+    u64 next_goal_id = 0u;
+    u64 next_delegation_id = 0u;
+    u64 next_authority_id = 0u;
+    u64 next_constraint_id = 0u;
+    u64 next_institution_id = 0u;
+    u64 next_network_id = 0u;
+    u64 possessed_agent_id = 0u;
     if (!shell || !path || !path[0]) {
         if (err && err_cap > 0u) {
             snprintf(err, err_cap, "load path missing");
@@ -1419,6 +2567,7 @@ static int dom_shell_load_save_file(dom_client_shell* shell, const char* path, c
     }
     dom_shell_world_reset(&shell->world);
     dom_shell_local_reset(shell);
+    shell->tick = 0u;
     shell->events.head = 0u;
     shell->events.count = 0u;
     while (fgets(line, sizeof(line), f)) {
@@ -1470,6 +2619,62 @@ static int dom_shell_load_save_file(dom_client_shell* shell, const char* path, c
             in_events = 0;
             continue;
         }
+        if (strcmp(line, "agents_begin") == 0) {
+            in_agents = 1;
+            continue;
+        }
+        if (strcmp(line, "agents_end") == 0) {
+            in_agents = 0;
+            continue;
+        }
+        if (strcmp(line, "goals_begin") == 0) {
+            in_goals = 1;
+            continue;
+        }
+        if (strcmp(line, "goals_end") == 0) {
+            in_goals = 0;
+            continue;
+        }
+        if (strcmp(line, "delegations_begin") == 0) {
+            in_delegations = 1;
+            continue;
+        }
+        if (strcmp(line, "delegations_end") == 0) {
+            in_delegations = 0;
+            continue;
+        }
+        if (strcmp(line, "authority_begin") == 0) {
+            in_authority = 1;
+            continue;
+        }
+        if (strcmp(line, "authority_end") == 0) {
+            in_authority = 0;
+            continue;
+        }
+        if (strcmp(line, "constraints_begin") == 0) {
+            in_constraints = 1;
+            continue;
+        }
+        if (strcmp(line, "constraints_end") == 0) {
+            in_constraints = 0;
+            continue;
+        }
+        if (strcmp(line, "institutions_begin") == 0) {
+            in_institutions = 1;
+            continue;
+        }
+        if (strcmp(line, "institutions_end") == 0) {
+            in_institutions = 0;
+            continue;
+        }
+        if (strcmp(line, "networks_begin") == 0) {
+            in_networks = 1;
+            continue;
+        }
+        if (strcmp(line, "networks_end") == 0) {
+            in_networks = 0;
+            continue;
+        }
         if (in_worlddef) {
             strncpy(shell->world.worlddef_json, line, sizeof(shell->world.worlddef_json) - 1u);
             shell->world.worlddef_json[sizeof(shell->world.worlddef_json) - 1u] = '\0';
@@ -1516,6 +2721,10 @@ static int dom_shell_load_save_file(dom_client_shell* shell, const char* path, c
             continue;
         }
         if (in_local) {
+            if (strncmp(line, "tick=", 5) == 0) {
+                shell->tick = (u32)strtoul(line + 5, 0, 10);
+                continue;
+            }
             if (strncmp(line, "rng_seed=", 9) == 0) {
                 (void)dom_shell_parse_u64(line + 9, &shell->rng_seed);
                 continue;
@@ -1568,12 +2777,671 @@ static int dom_shell_load_save_file(dom_client_shell* shell, const char* path, c
             }
             continue;
         }
+        if (in_agents) {
+            if (strncmp(line, "next_agent_id=", 14) == 0) {
+                dom_shell_parse_u64(line + 14, &next_agent_id);
+                continue;
+            }
+            if (strncmp(line, "possessed_agent_id=", 19) == 0) {
+                dom_shell_parse_u64(line + 19, &possessed_agent_id);
+                continue;
+            }
+            if (strncmp(line, "agent ", 6) == 0) {
+                u64 agent_id = 0u;
+                u32 caps = 0u;
+                u32 auth = 0u;
+                u32 know = 0u;
+                u64 record_goal_id = 0u;
+                u32 record_goal_type = 0u;
+                u32 record_refusal = 0u;
+                u64 sched_next = 0u;
+                u32 sched_status = 0u;
+                u32 sched_budget = 0u;
+                u64 sched_goal = 0u;
+                u64 sched_plan = 0u;
+                u32 sched_resume = 0u;
+                u32 hunger = 0u;
+                u32 threat = 0u;
+                u32 risk_q16 = 0u;
+                u32 ep_conf = 0u;
+                u64 resource_ref = 0u;
+                u64 threat_ref = 0u;
+                u64 dest_ref = 0u;
+                char* token = strtok(line + 6, " ");
+                while (token) {
+                    char* eq = strchr(token, '=');
+                    if (eq) {
+                        *eq = '\0';
+                        if (strcmp(token, "id") == 0) {
+                            dom_shell_parse_u64(eq + 1, &agent_id);
+                        } else if (strcmp(token, "caps") == 0) {
+                            caps = (u32)strtoul(eq + 1, 0, 10);
+                        } else if (strcmp(token, "auth") == 0) {
+                            auth = (u32)strtoul(eq + 1, 0, 10);
+                        } else if (strcmp(token, "know") == 0) {
+                            know = (u32)strtoul(eq + 1, 0, 10);
+                        } else if (strcmp(token, "record_goal_id") == 0) {
+                            dom_shell_parse_u64(eq + 1, &record_goal_id);
+                        } else if (strcmp(token, "record_goal_type") == 0) {
+                            record_goal_type = (u32)strtoul(eq + 1, 0, 10);
+                        } else if (strcmp(token, "record_refusal") == 0) {
+                            record_refusal = (u32)strtoul(eq + 1, 0, 10);
+                        } else if (strcmp(token, "sched_next") == 0) {
+                            dom_shell_parse_u64(eq + 1, &sched_next);
+                        } else if (strcmp(token, "sched_status") == 0) {
+                            sched_status = (u32)strtoul(eq + 1, 0, 10);
+                        } else if (strcmp(token, "sched_budget") == 0) {
+                            sched_budget = (u32)strtoul(eq + 1, 0, 10);
+                        } else if (strcmp(token, "sched_goal") == 0) {
+                            dom_shell_parse_u64(eq + 1, &sched_goal);
+                        } else if (strcmp(token, "sched_plan") == 0) {
+                            dom_shell_parse_u64(eq + 1, &sched_plan);
+                        } else if (strcmp(token, "sched_resume") == 0) {
+                            sched_resume = (u32)strtoul(eq + 1, 0, 10);
+                        } else if (strcmp(token, "hunger") == 0) {
+                            hunger = (u32)strtoul(eq + 1, 0, 10);
+                        } else if (strcmp(token, "threat") == 0) {
+                            threat = (u32)strtoul(eq + 1, 0, 10);
+                        } else if (strcmp(token, "risk_q16") == 0) {
+                            risk_q16 = (u32)strtoul(eq + 1, 0, 10);
+                        } else if (strcmp(token, "ep_conf") == 0) {
+                            ep_conf = (u32)strtoul(eq + 1, 0, 10);
+                        } else if (strcmp(token, "resource_ref") == 0) {
+                            dom_shell_parse_u64(eq + 1, &resource_ref);
+                        } else if (strcmp(token, "threat_ref") == 0) {
+                            dom_shell_parse_u64(eq + 1, &threat_ref);
+                        } else if (strcmp(token, "dest_ref") == 0) {
+                            dom_shell_parse_u64(eq + 1, &dest_ref);
+                        }
+                    }
+                    token = strtok(0, " ");
+                }
+                if (agent_id != 0u && dom_shell_agent_add(shell, agent_id, caps, auth, know)) {
+                    int idx = dom_shell_agent_index(shell, agent_id);
+                    if (idx >= 0) {
+                        dom_shell_agent_record* record = &shell->agents[idx];
+                        dom_agent_schedule_item* sched = &shell->schedules[idx];
+                        dom_agent_belief* belief = &shell->beliefs[idx];
+                        dom_agent_capability* cap = &shell->caps[idx];
+                        record->last_goal_id = record_goal_id;
+                        record->last_goal_type = record_goal_type;
+                        record->last_refusal = record_refusal;
+                        sched->next_due_tick = (dom_act_time_t)sched_next;
+                        sched->status = sched_status;
+                        sched->compute_budget = sched_budget;
+                        sched->active_goal_id = sched_goal;
+                        sched->active_plan_id = sched_plan;
+                        sched->resume_step = sched_resume;
+                        belief->knowledge_mask = know;
+                        belief->hunger_level = hunger;
+                        belief->threat_level = threat;
+                        belief->risk_tolerance_q16 = risk_q16;
+                        belief->epistemic_confidence_q16 = ep_conf;
+                        belief->known_resource_ref = resource_ref;
+                        belief->known_threat_ref = threat_ref;
+                        belief->known_destination_ref = dest_ref;
+                        cap->capability_mask = caps;
+                        cap->authority_mask = auth;
+                    }
+                    if (agent_id > max_agent_id) {
+                        max_agent_id = agent_id;
+                    }
+                }
+            }
+            continue;
+        }
+        if (in_goals) {
+            if (strncmp(line, "next_goal_id=", 13) == 0) {
+                dom_shell_parse_u64(line + 13, &next_goal_id);
+                continue;
+            }
+            if (strncmp(line, "goal ", 5) == 0) {
+                agent_goal_desc desc;
+                agent_goal_preconditions preconds;
+                agent_goal_condition conds[AGENT_GOAL_MAX_CONDITIONS];
+                u32 cond_count = 0u;
+                u64 goal_id = 0u;
+                u64 agent_id = 0u;
+                u32 goal_type = 0u;
+                u32 status = 0u;
+                u32 flags = 0u;
+                u32 base_priority = 0u;
+                u32 urgency = 0u;
+                u32 acceptable_risk_q16 = 0u;
+                u64 horizon_act = 0u;
+                u32 ep_conf = 0u;
+                u32 satisfaction_flags = 0u;
+                u64 expiry_act = 0u;
+                u32 failure_count = 0u;
+                u32 oscillation_count = 0u;
+                u32 abandon_after_failures = 0u;
+                u64 abandon_after_act = 0u;
+                u64 defer_until_act = 0u;
+                u32 conflict_group = 0u;
+                u64 last_update_act = 0u;
+                memset(&preconds, 0, sizeof(preconds));
+                memset(conds, 0, sizeof(conds));
+                {
+                    char* token = strtok(line + 5, " ");
+                    while (token) {
+                        char* eq = strchr(token, '=');
+                        if (eq) {
+                            *eq = '\0';
+                            if (strcmp(token, "id") == 0) {
+                                dom_shell_parse_u64(eq + 1, &goal_id);
+                            } else if (strcmp(token, "agent") == 0) {
+                                dom_shell_parse_u64(eq + 1, &agent_id);
+                            } else if (strcmp(token, "type") == 0) {
+                                goal_type = (u32)strtoul(eq + 1, 0, 10);
+                            } else if (strcmp(token, "status") == 0) {
+                                status = (u32)strtoul(eq + 1, 0, 10);
+                            } else if (strcmp(token, "flags") == 0) {
+                                flags = (u32)strtoul(eq + 1, 0, 10);
+                            } else if (strcmp(token, "base_priority") == 0) {
+                                base_priority = (u32)strtoul(eq + 1, 0, 10);
+                            } else if (strcmp(token, "urgency") == 0) {
+                                urgency = (u32)strtoul(eq + 1, 0, 10);
+                            } else if (strcmp(token, "acceptable_risk_q16") == 0) {
+                                acceptable_risk_q16 = (u32)strtoul(eq + 1, 0, 10);
+                            } else if (strcmp(token, "horizon_act") == 0) {
+                                dom_shell_parse_u64(eq + 1, &horizon_act);
+                            } else if (strcmp(token, "epistemic_confidence_q16") == 0) {
+                                ep_conf = (u32)strtoul(eq + 1, 0, 10);
+                            } else if (strcmp(token, "precond_caps") == 0) {
+                                preconds.required_capabilities = (u32)strtoul(eq + 1, 0, 10);
+                            } else if (strcmp(token, "precond_auth") == 0) {
+                                preconds.required_authority = (u32)strtoul(eq + 1, 0, 10);
+                            } else if (strcmp(token, "precond_know") == 0) {
+                                preconds.required_knowledge = (u32)strtoul(eq + 1, 0, 10);
+                            } else if (strcmp(token, "satisfaction_flags") == 0) {
+                                satisfaction_flags = (u32)strtoul(eq + 1, 0, 10);
+                            } else if (strcmp(token, "expiry_act") == 0) {
+                                dom_shell_parse_u64(eq + 1, &expiry_act);
+                            } else if (strcmp(token, "failure_count") == 0) {
+                                failure_count = (u32)strtoul(eq + 1, 0, 10);
+                            } else if (strcmp(token, "oscillation_count") == 0) {
+                                oscillation_count = (u32)strtoul(eq + 1, 0, 10);
+                            } else if (strcmp(token, "abandon_after_failures") == 0) {
+                                abandon_after_failures = (u32)strtoul(eq + 1, 0, 10);
+                            } else if (strcmp(token, "abandon_after_act") == 0) {
+                                dom_shell_parse_u64(eq + 1, &abandon_after_act);
+                            } else if (strcmp(token, "defer_until_act") == 0) {
+                                dom_shell_parse_u64(eq + 1, &defer_until_act);
+                            } else if (strcmp(token, "conflict_group") == 0) {
+                                conflict_group = (u32)strtoul(eq + 1, 0, 10);
+                            } else if (strcmp(token, "last_update_act") == 0) {
+                                dom_shell_parse_u64(eq + 1, &last_update_act);
+                            } else if (strncmp(token, "cond", 4) == 0) {
+                                u32 idx = (u32)strtoul(token + 4, 0, 10);
+                                unsigned int kind = 0u;
+                                unsigned int flags_val = 0u;
+                                unsigned long long subject = 0u;
+                                int threshold = 0;
+                                if (idx < AGENT_GOAL_MAX_CONDITIONS &&
+                                    sscanf(eq + 1, "%u,%llu,%d,%u",
+                                           &kind, &subject, &threshold, &flags_val) == 4) {
+                                    conds[idx].kind = (u32)kind;
+                                    conds[idx].subject_ref = (u64)subject;
+                                    conds[idx].threshold = (i32)threshold;
+                                    conds[idx].flags = (u32)flags_val;
+                                    if (idx + 1u > cond_count) {
+                                        cond_count = idx + 1u;
+                                    }
+                                }
+                            }
+                        }
+                        token = strtok(0, " ");
+                    }
+                }
+                if (agent_id != 0u && goal_id != 0u) {
+                    agent_goal* goal;
+                    memset(&desc, 0, sizeof(desc));
+                    desc.agent_id = agent_id;
+                    desc.goal_id = goal_id;
+                    desc.type = goal_type;
+                    desc.base_priority = base_priority;
+                    desc.urgency = urgency;
+                    desc.acceptable_risk_q16 = acceptable_risk_q16;
+                    desc.horizon_act = (dom_act_time_t)horizon_act;
+                    desc.epistemic_confidence_q16 = ep_conf;
+                    desc.conditions = (cond_count > 0u) ? conds : 0;
+                    desc.condition_count = cond_count;
+                    desc.preconditions = preconds;
+                    desc.satisfaction_flags = satisfaction_flags;
+                    desc.expiry_act = (dom_act_time_t)expiry_act;
+                    desc.abandon_after_failures = abandon_after_failures;
+                    desc.abandon_after_act = (dom_act_time_t)abandon_after_act;
+                    desc.conflict_group = conflict_group;
+                    desc.flags = flags;
+                    if (agent_goal_register(&shell->goal_registry, &desc, 0) == 0) {
+                        goal = agent_goal_find(&shell->goal_registry, goal_id);
+                        if (goal) {
+                            goal->status = status;
+                            goal->flags = flags;
+                            goal->failure_count = failure_count;
+                            goal->oscillation_count = oscillation_count;
+                            goal->abandon_after_failures = abandon_after_failures;
+                            goal->abandon_after_act = (dom_act_time_t)abandon_after_act;
+                            goal->defer_until_act = (dom_act_time_t)defer_until_act;
+                            goal->conflict_group = conflict_group;
+                            goal->last_update_act = (dom_act_time_t)last_update_act;
+                            goal->satisfaction_flags = satisfaction_flags;
+                            goal->expiry_act = (dom_act_time_t)expiry_act;
+                            goal->acceptable_risk_q16 = acceptable_risk_q16;
+                            goal->horizon_act = (dom_act_time_t)horizon_act;
+                            goal->epistemic_confidence_q16 = ep_conf;
+                            goal->preconditions = preconds;
+                        }
+                    }
+                    if (goal_id > max_goal_id) {
+                        max_goal_id = goal_id;
+                    }
+                }
+            }
+            continue;
+        }
+        if (in_delegations) {
+            if (strncmp(line, "next_delegation_id=", 19) == 0) {
+                dom_shell_parse_u64(line + 19, &next_delegation_id);
+                continue;
+            }
+            if (strncmp(line, "delegation ", 11) == 0) {
+                u64 delegation_id = 0u;
+                u64 delegator = 0u;
+                u64 delegatee = 0u;
+                u32 kind = 0u;
+                u32 process_mask = 0u;
+                u32 authority_mask = 0u;
+                u64 expiry_act = 0u;
+                u64 provenance = 0u;
+                u32 revoked = 0u;
+                char* token = strtok(line + 11, " ");
+                while (token) {
+                    char* eq = strchr(token, '=');
+                    if (eq) {
+                        *eq = '\0';
+                        if (strcmp(token, "id") == 0) {
+                            dom_shell_parse_u64(eq + 1, &delegation_id);
+                        } else if (strcmp(token, "delegator") == 0) {
+                            dom_shell_parse_u64(eq + 1, &delegator);
+                        } else if (strcmp(token, "delegatee") == 0) {
+                            dom_shell_parse_u64(eq + 1, &delegatee);
+                        } else if (strcmp(token, "kind") == 0) {
+                            kind = (u32)strtoul(eq + 1, 0, 10);
+                        } else if (strcmp(token, "process") == 0) {
+                            process_mask = (u32)strtoul(eq + 1, 0, 10);
+                        } else if (strcmp(token, "authority") == 0) {
+                            authority_mask = (u32)strtoul(eq + 1, 0, 10);
+                        } else if (strcmp(token, "expiry") == 0) {
+                            dom_shell_parse_u64(eq + 1, &expiry_act);
+                        } else if (strcmp(token, "provenance") == 0) {
+                            dom_shell_parse_u64(eq + 1, &provenance);
+                        } else if (strcmp(token, "revoked") == 0) {
+                            revoked = (u32)strtoul(eq + 1, 0, 10);
+                        }
+                    }
+                    token = strtok(0, " ");
+                }
+                if (delegation_id != 0u &&
+                    agent_delegation_register(&shell->delegation_registry,
+                                              delegation_id,
+                                              delegator,
+                                              delegatee,
+                                              kind,
+                                              process_mask,
+                                              authority_mask,
+                                              (dom_act_time_t)expiry_act,
+                                              provenance) == 0) {
+                    if (revoked) {
+                        agent_delegation_revoke(&shell->delegation_registry, delegation_id);
+                    }
+                    if (delegation_id > max_delegation_id) {
+                        max_delegation_id = delegation_id;
+                    }
+                }
+            }
+            continue;
+        }
+        if (in_authority) {
+            if (strncmp(line, "next_authority_id=", 18) == 0) {
+                dom_shell_parse_u64(line + 18, &next_authority_id);
+                continue;
+            }
+            if (strncmp(line, "grant ", 6) == 0) {
+                u64 grant_id = 0u;
+                u64 granter = 0u;
+                u64 grantee = 0u;
+                u32 mask = 0u;
+                u64 expiry_act = 0u;
+                u64 provenance = 0u;
+                u32 revoked = 0u;
+                char* token = strtok(line + 6, " ");
+                while (token) {
+                    char* eq = strchr(token, '=');
+                    if (eq) {
+                        *eq = '\0';
+                        if (strcmp(token, "id") == 0) {
+                            dom_shell_parse_u64(eq + 1, &grant_id);
+                        } else if (strcmp(token, "granter") == 0) {
+                            dom_shell_parse_u64(eq + 1, &granter);
+                        } else if (strcmp(token, "grantee") == 0) {
+                            dom_shell_parse_u64(eq + 1, &grantee);
+                        } else if (strcmp(token, "authority") == 0) {
+                            mask = (u32)strtoul(eq + 1, 0, 10);
+                        } else if (strcmp(token, "expiry") == 0) {
+                            dom_shell_parse_u64(eq + 1, &expiry_act);
+                        } else if (strcmp(token, "provenance") == 0) {
+                            dom_shell_parse_u64(eq + 1, &provenance);
+                        } else if (strcmp(token, "revoked") == 0) {
+                            revoked = (u32)strtoul(eq + 1, 0, 10);
+                        }
+                    }
+                    token = strtok(0, " ");
+                }
+                if (grant_id != 0u &&
+                    agent_authority_grant_register(&shell->authority_registry,
+                                                   grant_id,
+                                                   granter,
+                                                   grantee,
+                                                   mask,
+                                                   (dom_act_time_t)expiry_act,
+                                                   (dom_provenance_id)provenance) == 0) {
+                    if (revoked) {
+                        agent_authority_grant_revoke(&shell->authority_registry, grant_id);
+                    }
+                    if (grant_id > max_authority_id) {
+                        max_authority_id = grant_id;
+                    }
+                }
+            }
+            continue;
+        }
+        if (in_constraints) {
+            if (strncmp(line, "next_constraint_id=", 19) == 0) {
+                dom_shell_parse_u64(line + 19, &next_constraint_id);
+                continue;
+            }
+            if (strncmp(line, "constraint ", 11) == 0) {
+                u64 constraint_id = 0u;
+                u64 institution_id = 0u;
+                u64 target_id = 0u;
+                u32 process_mask = 0u;
+                u32 mode = 0u;
+                u64 expiry_act = 0u;
+                u64 provenance = 0u;
+                u32 revoked = 0u;
+                char* token = strtok(line + 11, " ");
+                while (token) {
+                    char* eq = strchr(token, '=');
+                    if (eq) {
+                        *eq = '\0';
+                        if (strcmp(token, "id") == 0) {
+                            dom_shell_parse_u64(eq + 1, &constraint_id);
+                        } else if (strcmp(token, "institution") == 0) {
+                            dom_shell_parse_u64(eq + 1, &institution_id);
+                        } else if (strcmp(token, "target") == 0) {
+                            dom_shell_parse_u64(eq + 1, &target_id);
+                        } else if (strcmp(token, "process") == 0) {
+                            process_mask = (u32)strtoul(eq + 1, 0, 10);
+                        } else if (strcmp(token, "mode") == 0) {
+                            mode = (u32)strtoul(eq + 1, 0, 10);
+                        } else if (strcmp(token, "expiry") == 0) {
+                            dom_shell_parse_u64(eq + 1, &expiry_act);
+                        } else if (strcmp(token, "provenance") == 0) {
+                            dom_shell_parse_u64(eq + 1, &provenance);
+                        } else if (strcmp(token, "revoked") == 0) {
+                            revoked = (u32)strtoul(eq + 1, 0, 10);
+                        }
+                    }
+                    token = strtok(0, " ");
+                }
+                if (constraint_id != 0u &&
+                    agent_constraint_register(&shell->constraint_registry,
+                                              constraint_id,
+                                              institution_id,
+                                              target_id,
+                                              process_mask,
+                                              mode,
+                                              (dom_act_time_t)expiry_act,
+                                              (dom_provenance_id)provenance) == 0) {
+                    if (revoked) {
+                        agent_constraint_revoke(&shell->constraint_registry, constraint_id);
+                    }
+                    if (constraint_id > max_constraint_id) {
+                        max_constraint_id = constraint_id;
+                    }
+                }
+            }
+            continue;
+        }
+        if (in_institutions) {
+            if (strncmp(line, "next_institution_id=", 20) == 0) {
+                dom_shell_parse_u64(line + 20, &next_institution_id);
+                continue;
+            }
+            if (strncmp(line, "institution ", 12) == 0) {
+                u64 institution_id = 0u;
+                u64 agent_id = 0u;
+                u32 authority = 0u;
+                u32 legitimacy = 0u;
+                u32 status = 0u;
+                u64 founded_act = 0u;
+                u64 collapsed_act = 0u;
+                u64 provenance = 0u;
+                u32 flags = 0u;
+                char* token = strtok(line + 12, " ");
+                while (token) {
+                    char* eq = strchr(token, '=');
+                    if (eq) {
+                        *eq = '\0';
+                        if (strcmp(token, "id") == 0) {
+                            dom_shell_parse_u64(eq + 1, &institution_id);
+                        } else if (strcmp(token, "agent") == 0) {
+                            dom_shell_parse_u64(eq + 1, &agent_id);
+                        } else if (strcmp(token, "authority") == 0) {
+                            authority = (u32)strtoul(eq + 1, 0, 10);
+                        } else if (strcmp(token, "legitimacy_q16") == 0) {
+                            legitimacy = (u32)strtoul(eq + 1, 0, 10);
+                        } else if (strcmp(token, "status") == 0) {
+                            status = (u32)strtoul(eq + 1, 0, 10);
+                        } else if (strcmp(token, "founded_act") == 0) {
+                            dom_shell_parse_u64(eq + 1, &founded_act);
+                        } else if (strcmp(token, "collapsed_act") == 0) {
+                            dom_shell_parse_u64(eq + 1, &collapsed_act);
+                        } else if (strcmp(token, "provenance") == 0) {
+                            dom_shell_parse_u64(eq + 1, &provenance);
+                        } else if (strcmp(token, "flags") == 0) {
+                            flags = (u32)strtoul(eq + 1, 0, 10);
+                        }
+                    }
+                    token = strtok(0, " ");
+                }
+                if (institution_id != 0u &&
+                    agent_institution_register(&shell->institution_registry,
+                                               institution_id,
+                                               agent_id,
+                                               authority,
+                                               legitimacy,
+                                               (dom_act_time_t)founded_act,
+                                               (dom_provenance_id)provenance) == 0) {
+                    agent_institution* inst = agent_institution_find(&shell->institution_registry,
+                                                                     institution_id);
+                    if (inst) {
+                        inst->status = status;
+                        inst->collapsed_act = (dom_act_time_t)collapsed_act;
+                        inst->flags = flags;
+                    }
+                    if (institution_id > max_institution_id) {
+                        max_institution_id = institution_id;
+                    }
+                }
+            }
+            continue;
+        }
+        if (in_networks) {
+            if (strncmp(line, "next_network_id=", 16) == 0) {
+                dom_shell_parse_u64(line + 16, &next_network_id);
+                continue;
+            }
+            if (strncmp(line, "network ", 8) == 0) {
+                u64 network_id = 0u;
+                u32 type = 0u;
+                char* token = strtok(line + 8, " ");
+                while (token) {
+                    char* eq = strchr(token, '=');
+                    if (eq) {
+                        *eq = '\0';
+                        if (strcmp(token, "id") == 0) {
+                            dom_shell_parse_u64(eq + 1, &network_id);
+                        } else if (strcmp(token, "type") == 0) {
+                            type = (u32)strtoul(eq + 1, 0, 10);
+                        }
+                    }
+                    token = strtok(0, " ");
+                }
+                if (network_id != 0u) {
+                    (void)dom_shell_network_create(shell, network_id, type);
+                    if (network_id > max_network_id) {
+                        max_network_id = network_id;
+                    }
+                }
+            } else if (strncmp(line, "node ", 5) == 0) {
+                u64 network_id = 0u;
+                u64 node_id = 0u;
+                u32 status = DOM_NETWORK_OK;
+                i32 capacity_q16 = 0;
+                i32 stored_q16 = 0;
+                i32 loss_q16 = 0;
+                i32 min_required_q16 = 0;
+                char* token = strtok(line + 5, " ");
+                while (token) {
+                    char* eq = strchr(token, '=');
+                    if (eq) {
+                        *eq = '\0';
+                        if (strcmp(token, "network") == 0) {
+                            dom_shell_parse_u64(eq + 1, &network_id);
+                        } else if (strcmp(token, "id") == 0) {
+                            dom_shell_parse_u64(eq + 1, &node_id);
+                        } else if (strcmp(token, "status") == 0) {
+                            status = (u32)strtoul(eq + 1, 0, 10);
+                        } else if (strcmp(token, "capacity_q16") == 0) {
+                            capacity_q16 = (i32)strtol(eq + 1, 0, 10);
+                        } else if (strcmp(token, "stored_q16") == 0) {
+                            stored_q16 = (i32)strtol(eq + 1, 0, 10);
+                        } else if (strcmp(token, "loss_q16") == 0) {
+                            loss_q16 = (i32)strtol(eq + 1, 0, 10);
+                        } else if (strcmp(token, "min_required_q16") == 0) {
+                            min_required_q16 = (i32)strtol(eq + 1, 0, 10);
+                        }
+                    }
+                    token = strtok(0, " ");
+                }
+                if (network_id != 0u && node_id != 0u) {
+                    dom_shell_network_state* net = dom_shell_network_find(shell, network_id);
+                    if (net) {
+                        dom_network_node* node = dom_network_add_node(&net->graph, node_id, capacity_q16);
+                        if (node) {
+                            node->status = status;
+                            node->stored_q16 = stored_q16;
+                            node->loss_q16 = loss_q16;
+                            node->min_required_q16 = min_required_q16;
+                        }
+                    }
+                }
+            } else if (strncmp(line, "edge ", 5) == 0) {
+                u64 network_id = 0u;
+                u64 edge_id = 0u;
+                u64 a = 0u;
+                u64 b = 0u;
+                u32 status = DOM_NETWORK_OK;
+                i32 capacity_q16 = 0;
+                i32 loss_q16 = 0;
+                char* token = strtok(line + 5, " ");
+                while (token) {
+                    char* eq = strchr(token, '=');
+                    if (eq) {
+                        *eq = '\0';
+                        if (strcmp(token, "network") == 0) {
+                            dom_shell_parse_u64(eq + 1, &network_id);
+                        } else if (strcmp(token, "id") == 0) {
+                            dom_shell_parse_u64(eq + 1, &edge_id);
+                        } else if (strcmp(token, "a") == 0) {
+                            dom_shell_parse_u64(eq + 1, &a);
+                        } else if (strcmp(token, "b") == 0) {
+                            dom_shell_parse_u64(eq + 1, &b);
+                        } else if (strcmp(token, "status") == 0) {
+                            status = (u32)strtoul(eq + 1, 0, 10);
+                        } else if (strcmp(token, "capacity_q16") == 0) {
+                            capacity_q16 = (i32)strtol(eq + 1, 0, 10);
+                        } else if (strcmp(token, "loss_q16") == 0) {
+                            loss_q16 = (i32)strtol(eq + 1, 0, 10);
+                        }
+                    }
+                    token = strtok(0, " ");
+                }
+                if (network_id != 0u && edge_id != 0u) {
+                    dom_shell_network_state* net = dom_shell_network_find(shell, network_id);
+                    if (net) {
+                        dom_network_edge* edge = dom_network_add_edge(&net->graph, edge_id, a, b, capacity_q16, loss_q16);
+                        if (edge) {
+                            edge->status = status;
+                        }
+                    }
+                }
+            }
+            continue;
+        }
         if (in_events) {
             dom_shell_event_ring_add(&shell->events, "replay.event", line);
             continue;
         }
     }
     fclose(f);
+    if (max_agent_id >= shell->next_agent_id) {
+        shell->next_agent_id = max_agent_id + 1u;
+    }
+    if (next_agent_id > shell->next_agent_id) {
+        shell->next_agent_id = next_agent_id;
+    }
+    if (possessed_agent_id != 0u && dom_shell_agent_index(shell, possessed_agent_id) >= 0) {
+        shell->possessed_agent_id = possessed_agent_id;
+    }
+    if (max_goal_id >= shell->goal_registry.next_goal_id) {
+        shell->goal_registry.next_goal_id = max_goal_id + 1u;
+    }
+    if (next_goal_id > shell->goal_registry.next_goal_id) {
+        shell->goal_registry.next_goal_id = next_goal_id;
+    }
+    if (max_delegation_id >= shell->next_delegation_id) {
+        shell->next_delegation_id = max_delegation_id + 1u;
+    }
+    if (next_delegation_id > shell->next_delegation_id) {
+        shell->next_delegation_id = next_delegation_id;
+    }
+    if (max_authority_id >= shell->next_authority_id) {
+        shell->next_authority_id = max_authority_id + 1u;
+    }
+    if (next_authority_id > shell->next_authority_id) {
+        shell->next_authority_id = next_authority_id;
+    }
+    if (max_constraint_id >= shell->next_constraint_id) {
+        shell->next_constraint_id = max_constraint_id + 1u;
+    }
+    if (next_constraint_id > shell->next_constraint_id) {
+        shell->next_constraint_id = next_constraint_id;
+    }
+    if (max_institution_id >= shell->next_institution_id) {
+        shell->next_institution_id = max_institution_id + 1u;
+    }
+    if (next_institution_id > shell->next_institution_id) {
+        shell->next_institution_id = next_institution_id;
+    }
+    if (max_network_id >= shell->next_network_id) {
+        shell->next_network_id = max_network_id + 1u;
+    }
+    if (next_network_id > shell->next_network_id) {
+        shell->next_network_id = next_network_id;
+    }
     if (!have_summary || shell->world.summary.schema_version == 0u) {
         if (err && err_cap > 0u) {
             snprintf(err, err_cap, "summary missing");
@@ -2076,14 +3944,22 @@ static int dom_shell_execute_batch(dom_client_shell* shell,
                                    size_t status_cap,
                                    int emit_text)
 {
-    char buf[512];
+    char* buf = 0;
     char* cursor;
+    size_t script_len = 0u;
     int last = D_APP_EXIT_OK;
     if (!script || !script[0]) {
         return D_APP_EXIT_USAGE;
     }
-    strncpy(buf, script, sizeof(buf) - 1u);
-    buf[sizeof(buf) - 1u] = '\0';
+    script_len = strlen(script);
+    buf = (char*)malloc(script_len + 1u);
+    if (!buf) {
+        if (emit_text) {
+            fprintf(stderr, "client: batch refused (out of memory)\n");
+        }
+        return D_APP_EXIT_FAILURE;
+    }
+    memcpy(buf, script, script_len + 1u);
     cursor = buf;
     while (cursor) {
         char* sep = strchr(cursor, ';');
@@ -2096,6 +3972,7 @@ static int dom_shell_execute_batch(dom_client_shell* shell,
         }
         cursor = sep ? (sep + 1u) : 0;
     }
+    free(buf);
     return last;
 }
 
@@ -2131,8 +4008,13 @@ int dom_client_shell_execute(dom_client_shell* shell,
     }
     if (strcmp(token, "help") == 0) {
         if (emit_text) {
-            printf("commands: templates new-world load save inspect-replay mode where fields events\n");
-            printf("          survey collect assemble connect inspect repair field-set batch exit\n");
+            printf("commands: templates new-world load save inspect-replay mode where fields events batch exit\n");
+            printf("          survey collect assemble connect inspect repair field-set simulate\n");
+            printf("          agent-add agent-list agent-possess agent-release agent-know\n");
+            printf("          goal-add goal-list delegate delegations delegate-revoke\n");
+            printf("          authority-grant authority-revoke authority-list\n");
+            printf("          constraint-add constraint-revoke constraint-list institution-create institution-list\n");
+            printf("          network-create network-node network-edge network-config network-list\n");
         }
         dom_shell_set_status(shell, "help=ok");
         if (status && status_cap > 0u) {
@@ -2290,6 +4172,1147 @@ int dom_client_shell_execute(dom_client_shell* shell,
             }
         }
         dom_shell_set_status(shell, "events=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "agent-add") == 0) {
+        u64 agent_id = 0u;
+        u32 caps = 0u;
+        u32 auth = 0u;
+        u32 know = 0u;
+        u64 resource_ref = 0u;
+        u64 dest_ref = 0u;
+        u64 threat_ref = 0u;
+        int has_caps = 0;
+        int has_auth = 0;
+        int has_know = 0;
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (!eq) {
+                continue;
+            }
+            *eq = '\0';
+            if (strcmp(next, "id") == 0) {
+                (void)dom_shell_parse_u64(eq + 1, &agent_id);
+            } else if (strcmp(next, "caps") == 0) {
+                caps = dom_shell_parse_mask_csv(eq + 1, dom_shell_capability_token);
+                has_caps = 1;
+            } else if (strcmp(next, "auth") == 0 || strcmp(next, "authority") == 0) {
+                auth = dom_shell_parse_mask_csv(eq + 1, dom_shell_authority_token);
+                has_auth = 1;
+            } else if (strcmp(next, "know") == 0 || strcmp(next, "knowledge") == 0) {
+                know = dom_shell_parse_mask_csv(eq + 1, dom_shell_knowledge_token);
+                has_know = 1;
+            } else if (strcmp(next, "resource") == 0) {
+                (void)dom_shell_parse_u64(eq + 1, &resource_ref);
+            } else if (strcmp(next, "dest") == 0 || strcmp(next, "destination") == 0) {
+                (void)dom_shell_parse_u64(eq + 1, &dest_ref);
+            } else if (strcmp(next, "threat") == 0) {
+                (void)dom_shell_parse_u64(eq + 1, &threat_ref);
+            }
+        }
+        if (!has_caps) {
+            caps = 0u;
+        }
+        if (!has_auth) {
+            auth = 0u;
+        }
+        if (!has_know) {
+            know = 0u;
+        }
+        if (resource_ref != 0u || dest_ref != 0u) {
+            know |= AGENT_KNOW_INFRA;
+        }
+        if (!dom_shell_agent_add(shell, agent_id, caps, auth, know)) {
+            dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "agent add failed");
+            dom_shell_set_status(shell, "agent_add=refused");
+            if (status && status_cap > 0u) {
+                snprintf(status, status_cap, "%s", shell->last_status);
+            }
+            return D_APP_EXIT_UNAVAILABLE;
+        }
+        {
+            dom_agent_belief* belief = dom_shell_belief_for_agent(shell,
+                                                                  shell->agents[shell->agent_count - 1u].agent_id);
+            if (belief) {
+                belief->known_resource_ref = resource_ref;
+                belief->known_destination_ref = dest_ref;
+                belief->known_threat_ref = threat_ref;
+            }
+        }
+        dom_shell_set_status(shell, "agent_add=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        if (emit_text) {
+            printf("agent_add=ok agent_id=%llu\n",
+                   (unsigned long long)shell->agents[shell->agent_count - 1u].agent_id);
+        }
+        {
+            char detail[160];
+            snprintf(detail, sizeof(detail),
+                     "agent_id=%llu result=ok",
+                     (unsigned long long)shell->agents[shell->agent_count - 1u].agent_id);
+            dom_shell_emit(shell, log, "client.agent.add", detail);
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "agent-list") == 0 || strcmp(token, "agents") == 0) {
+        if (emit_text) {
+            u32 i;
+            printf("agents=%u\n", (unsigned int)shell->agent_count);
+            for (i = 0u; i < shell->agent_count; ++i) {
+                const dom_shell_agent_record* record = &shell->agents[i];
+                const dom_agent_belief* belief = &shell->beliefs[i];
+                const dom_agent_capability* cap = &shell->caps[i];
+                char cap_buf[16];
+                char auth_buf[16];
+                char know_buf[16];
+                dom_shell_format_mask_hex(cap_buf, sizeof(cap_buf), cap->capability_mask);
+                dom_shell_format_mask_hex(auth_buf, sizeof(auth_buf), cap->authority_mask);
+                dom_shell_format_mask_hex(know_buf, sizeof(know_buf), belief->knowledge_mask);
+                printf("agent id=%llu caps=%s auth=%s know=%s goal=%s refusal=%s possessed=%u\n",
+                       (unsigned long long)record->agent_id,
+                       cap_buf,
+                       auth_buf,
+                       know_buf,
+                       dom_shell_goal_type_name(record->last_goal_type),
+                       agent_refusal_to_string((agent_refusal_code)record->last_refusal),
+                       (shell->possessed_agent_id == record->agent_id) ? 1u : 0u);
+            }
+        }
+        dom_shell_set_status(shell, "agent_list=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "agent-possess") == 0 || strcmp(token, "possess") == 0) {
+        u64 agent_id = 0u;
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (eq) {
+                *eq = '\0';
+                if (strcmp(next, "id") == 0) {
+                    dom_shell_parse_u64(eq + 1, &agent_id);
+                }
+            } else if (agent_id == 0u) {
+                dom_shell_parse_u64(next, &agent_id);
+            }
+        }
+        if (agent_id == 0u || dom_shell_agent_index(shell, agent_id) < 0) {
+            dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "agent missing");
+            dom_shell_set_status(shell, "agent_possess=refused");
+            if (status && status_cap > 0u) {
+                snprintf(status, status_cap, "%s", shell->last_status);
+            }
+            return D_APP_EXIT_UNAVAILABLE;
+        }
+        shell->possessed_agent_id = agent_id;
+        dom_shell_set_status(shell, "agent_possess=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        if (emit_text) {
+            printf("agent_possess=ok agent_id=%llu\n", (unsigned long long)agent_id);
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "agent-release") == 0 || strcmp(token, "release") == 0) {
+        shell->possessed_agent_id = 0u;
+        dom_shell_set_status(shell, "agent_release=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        if (emit_text) {
+            printf("agent_release=ok\n");
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "agent-know") == 0) {
+        u64 agent_id = 0u;
+        u64 resource_ref = 0u;
+        u64 dest_ref = 0u;
+        u64 threat_ref = 0u;
+        u32 know = 0u;
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (!eq) {
+                continue;
+            }
+            *eq = '\0';
+            if (strcmp(next, "id") == 0) {
+                dom_shell_parse_u64(eq + 1, &agent_id);
+            } else if (strcmp(next, "resource") == 0) {
+                dom_shell_parse_u64(eq + 1, &resource_ref);
+            } else if (strcmp(next, "dest") == 0 || strcmp(next, "destination") == 0) {
+                dom_shell_parse_u64(eq + 1, &dest_ref);
+            } else if (strcmp(next, "threat") == 0) {
+                dom_shell_parse_u64(eq + 1, &threat_ref);
+            } else if (strcmp(next, "knowledge") == 0 || strcmp(next, "know") == 0) {
+                know = dom_shell_parse_mask_csv(eq + 1, dom_shell_knowledge_token);
+            }
+        }
+        if (agent_id == 0u) {
+            return D_APP_EXIT_USAGE;
+        }
+        {
+            dom_agent_belief* belief = dom_shell_belief_for_agent(shell, agent_id);
+            if (!belief) {
+                dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "agent missing");
+                dom_shell_set_status(shell, "agent_know=refused");
+                if (status && status_cap > 0u) {
+                    snprintf(status, status_cap, "%s", shell->last_status);
+                }
+                return D_APP_EXIT_UNAVAILABLE;
+            }
+            if (resource_ref != 0u) {
+                belief->known_resource_ref = resource_ref;
+                know |= AGENT_KNOW_INFRA;
+            }
+            if (dest_ref != 0u) {
+                belief->known_destination_ref = dest_ref;
+                know |= AGENT_KNOW_INFRA;
+            }
+            if (threat_ref != 0u) {
+                belief->known_threat_ref = threat_ref;
+                know |= AGENT_KNOW_THREAT;
+            }
+            if (know != 0u) {
+                belief->knowledge_mask |= know;
+            }
+        }
+        dom_shell_set_status(shell, "agent_know=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        if (emit_text) {
+            printf("agent_know=ok agent_id=%llu\n", (unsigned long long)agent_id);
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "goal-add") == 0) {
+        u64 agent_id = 0u;
+        u32 goal_type = AGENT_GOAL_SURVEY;
+        u32 priority = 10u;
+        u32 urgency = 0u;
+        int require_delegation = -1;
+        int allow_unknown = -1;
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (!eq) {
+                continue;
+            }
+            *eq = '\0';
+            if (strcmp(next, "agent") == 0) {
+                dom_shell_parse_u64(eq + 1, &agent_id);
+            } else if (strcmp(next, "type") == 0) {
+                goal_type = dom_shell_goal_type_from_string(eq + 1);
+            } else if (strcmp(next, "priority") == 0) {
+                priority = (u32)strtoul(eq + 1, 0, 10);
+            } else if (strcmp(next, "urgency") == 0) {
+                urgency = (u32)strtoul(eq + 1, 0, 10);
+            } else if (strcmp(next, "require_delegation") == 0) {
+                require_delegation = atoi(eq + 1) ? 1 : 0;
+            } else if (strcmp(next, "allow_unknown") == 0) {
+                allow_unknown = atoi(eq + 1) ? 1 : 0;
+            }
+        }
+        if (agent_id == 0u) {
+            return D_APP_EXIT_USAGE;
+        }
+        {
+            agent_goal_desc desc;
+            u64 goal_id = 0u;
+            dom_shell_goal_desc_default(agent_id, goal_type, &desc);
+            desc.base_priority = priority;
+            desc.urgency = urgency;
+            if (require_delegation == 0) {
+                desc.flags &= ~AGENT_GOAL_FLAG_REQUIRE_DELEGATION;
+            } else if (require_delegation > 0) {
+                desc.flags |= AGENT_GOAL_FLAG_REQUIRE_DELEGATION;
+            }
+            if (allow_unknown == 0) {
+                desc.flags &= ~AGENT_GOAL_FLAG_ALLOW_UNKNOWN;
+            } else if (allow_unknown > 0) {
+                desc.flags |= AGENT_GOAL_FLAG_ALLOW_UNKNOWN;
+            }
+            if (agent_goal_register(&shell->goal_registry, &desc, &goal_id) != 0) {
+                dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "goal add failed");
+                dom_shell_set_status(shell, "goal_add=refused");
+                if (status && status_cap > 0u) {
+                    snprintf(status, status_cap, "%s", shell->last_status);
+                }
+                return D_APP_EXIT_UNAVAILABLE;
+            }
+            dom_shell_set_status(shell, "goal_add=ok");
+            if (status && status_cap > 0u) {
+                snprintf(status, status_cap, "%s", shell->last_status);
+            }
+            if (emit_text) {
+                printf("goal_add=ok goal_id=%llu agent_id=%llu type=%s\n",
+                       (unsigned long long)goal_id,
+                       (unsigned long long)agent_id,
+                       dom_shell_goal_type_name(goal_type));
+            }
+            {
+                char detail[180];
+                snprintf(detail, sizeof(detail),
+                         "goal_id=%llu agent_id=%llu type=%s result=ok",
+                         (unsigned long long)goal_id,
+                         (unsigned long long)agent_id,
+                         dom_shell_goal_type_name(goal_type));
+                dom_shell_emit(shell, log, "client.agent.goal", detail);
+            }
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "goal-list") == 0 || strcmp(token, "goals") == 0) {
+        if (emit_text) {
+            u32 i;
+            printf("goals=%u\n", (unsigned int)shell->goal_registry.count);
+            for (i = 0u; i < shell->goal_registry.count; ++i) {
+                const agent_goal* goal = &shell->goal_registry.goals[i];
+                printf("goal id=%llu agent=%llu type=%s status=%u flags=0x%08x failures=%u\n",
+                       (unsigned long long)goal->goal_id,
+                       (unsigned long long)goal->agent_id,
+                       dom_shell_goal_type_name(goal->type),
+                       (unsigned int)goal->status,
+                       (unsigned int)goal->flags,
+                       (unsigned int)goal->failure_count);
+            }
+        }
+        dom_shell_set_status(shell, "goal_list=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "delegate") == 0) {
+        u64 delegator = 0u;
+        u64 delegatee = 0u;
+        u64 goal_id = 0u;
+        u64 expiry_act = 0u;
+        u64 delegation_id = 0u;
+        u32 process_mask = 0u;
+        u32 authority_mask = 0u;
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (!eq) {
+                continue;
+            }
+            *eq = '\0';
+            if (strcmp(next, "delegator") == 0) {
+                dom_shell_parse_u64(eq + 1, &delegator);
+            } else if (strcmp(next, "delegatee") == 0) {
+                dom_shell_parse_u64(eq + 1, &delegatee);
+            } else if (strcmp(next, "goal") == 0) {
+                dom_shell_parse_u64(eq + 1, &goal_id);
+            } else if (strcmp(next, "expiry") == 0) {
+                dom_shell_parse_u64(eq + 1, &expiry_act);
+            } else if (strcmp(next, "id") == 0) {
+                dom_shell_parse_u64(eq + 1, &delegation_id);
+            } else if (strcmp(next, "process") == 0) {
+                process_mask = dom_shell_parse_mask_csv(eq + 1, dom_shell_process_token);
+            } else if (strcmp(next, "authority") == 0) {
+                authority_mask = dom_shell_parse_mask_csv(eq + 1, dom_shell_authority_token);
+            }
+        }
+        if (delegator == 0u || delegatee == 0u || goal_id == 0u) {
+            return D_APP_EXIT_USAGE;
+        }
+        if (!process_mask) {
+            process_mask = 0xFFFFFFFFu;
+        }
+        {
+            agent_goal* goal = agent_goal_find(&shell->goal_registry, goal_id);
+            dom_agent_capability* cap = dom_shell_cap_for_agent(shell, delegatee);
+            dom_agent_belief* belief = dom_shell_belief_for_agent(shell, delegatee);
+            u32 refusal = AGENT_REFUSAL_NONE;
+            int accepted = 1;
+            if (!goal || goal->agent_id != delegatee) {
+                accepted = 0;
+                refusal = AGENT_REFUSAL_GOAL_NOT_FEASIBLE;
+            } else if (!cap) {
+                accepted = 0;
+                refusal = AGENT_REFUSAL_INSUFFICIENT_CAPABILITY;
+            } else if ((cap->capability_mask & goal->preconditions.required_capabilities) !=
+                       goal->preconditions.required_capabilities) {
+                accepted = 0;
+                refusal = AGENT_REFUSAL_INSUFFICIENT_CAPABILITY;
+            } else if (belief &&
+                       (belief->knowledge_mask & goal->preconditions.required_knowledge) !=
+                       goal->preconditions.required_knowledge &&
+                       (goal->flags & AGENT_GOAL_FLAG_ALLOW_UNKNOWN) == 0u) {
+                accepted = 0;
+                refusal = AGENT_REFUSAL_INSUFFICIENT_KNOWLEDGE;
+            }
+            if (!accepted) {
+                dom_shell_set_refusal(shell, DOM_REFUSAL_PROCESS, agent_refusal_to_string((agent_refusal_code)refusal));
+                dom_shell_set_status(shell, "delegation=refused");
+                if (status && status_cap > 0u) {
+                    snprintf(status, status_cap, "%s", shell->last_status);
+                }
+                if (emit_text) {
+                    printf("delegation=refused goal_id=%llu reason=%s\n",
+                           (unsigned long long)goal_id,
+                           agent_refusal_to_string((agent_refusal_code)refusal));
+                }
+                {
+                    char detail[200];
+                    snprintf(detail, sizeof(detail),
+                             "goal_id=%llu delegator=%llu delegatee=%llu result=refused reason=%s",
+                             (unsigned long long)goal_id,
+                             (unsigned long long)delegator,
+                             (unsigned long long)delegatee,
+                             agent_refusal_to_string((agent_refusal_code)refusal));
+                    dom_shell_emit(shell, log, "client.delegation", detail);
+                }
+                return D_APP_EXIT_UNAVAILABLE;
+            }
+            if (delegation_id == 0u) {
+                delegation_id = shell->next_delegation_id++;
+                if (delegation_id == 0u) {
+                    delegation_id = shell->next_delegation_id++;
+                }
+            } else if (delegation_id >= shell->next_delegation_id) {
+                shell->next_delegation_id = delegation_id + 1u;
+            }
+            if (agent_delegation_register(&shell->delegation_registry,
+                                          delegation_id,
+                                          delegator,
+                                          delegatee,
+                                          AGENT_DELEGATION_GOAL | (authority_mask ? AGENT_DELEGATION_AUTHORITY : 0u),
+                                          process_mask,
+                                          authority_mask,
+                                          (dom_act_time_t)expiry_act,
+                                          0u) != 0) {
+                dom_shell_set_refusal(shell, DOM_REFUSAL_PROCESS, "delegation failed");
+                dom_shell_set_status(shell, "delegation=refused");
+                if (status && status_cap > 0u) {
+                    snprintf(status, status_cap, "%s", shell->last_status);
+                }
+                return D_APP_EXIT_UNAVAILABLE;
+            }
+            dom_shell_set_status(shell, "delegation=ok");
+            if (status && status_cap > 0u) {
+                snprintf(status, status_cap, "%s", shell->last_status);
+            }
+            if (emit_text) {
+                printf("delegation=ok delegation_id=%llu goal_id=%llu delegatee=%llu\n",
+                       (unsigned long long)delegation_id,
+                       (unsigned long long)goal_id,
+                       (unsigned long long)delegatee);
+            }
+            {
+                char detail[200];
+                snprintf(detail, sizeof(detail),
+                         "delegation_id=%llu goal_id=%llu delegator=%llu delegatee=%llu result=accepted",
+                         (unsigned long long)delegation_id,
+                         (unsigned long long)goal_id,
+                         (unsigned long long)delegator,
+                         (unsigned long long)delegatee);
+                dom_shell_emit(shell, log, "client.delegation", detail);
+            }
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "delegations") == 0) {
+        if (emit_text) {
+            u32 i;
+            printf("delegations=%u\n", (unsigned int)shell->delegation_registry.count);
+            for (i = 0u; i < shell->delegation_registry.count; ++i) {
+                const agent_delegation* del = &shell->delegations[i];
+                printf("delegation id=%llu delegator=%llu delegatee=%llu kind=0x%08x process=0x%08x authority=0x%08x revoked=%u\n",
+                       (unsigned long long)del->delegation_id,
+                       (unsigned long long)del->delegator_ref,
+                       (unsigned long long)del->delegatee_ref,
+                       (unsigned int)del->delegation_kind,
+                       (unsigned int)del->allowed_process_mask,
+                       (unsigned int)del->authority_mask,
+                       (unsigned int)del->revoked);
+            }
+        }
+        dom_shell_set_status(shell, "delegations=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "delegate-revoke") == 0) {
+        u64 delegation_id = 0u;
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (eq) {
+                *eq = '\0';
+                if (strcmp(next, "id") == 0) {
+                    dom_shell_parse_u64(eq + 1, &delegation_id);
+                }
+            } else if (delegation_id == 0u) {
+                dom_shell_parse_u64(next, &delegation_id);
+            }
+        }
+        if (delegation_id == 0u) {
+            return D_APP_EXIT_USAGE;
+        }
+        if (agent_delegation_revoke(&shell->delegation_registry, delegation_id) != 0) {
+            dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "delegation not found");
+            dom_shell_set_status(shell, "delegation_revoke=refused");
+            if (status && status_cap > 0u) {
+                snprintf(status, status_cap, "%s", shell->last_status);
+            }
+            return D_APP_EXIT_UNAVAILABLE;
+        }
+        dom_shell_set_status(shell, "delegation_revoke=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        if (emit_text) {
+            printf("delegation_revoke=ok id=%llu\n", (unsigned long long)delegation_id);
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "authority-grant") == 0) {
+        u64 grant_id = 0u;
+        u64 granter = 0u;
+        u64 grantee = 0u;
+        u64 expiry_act = 0u;
+        u32 authority_mask = 0u;
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (!eq) {
+                continue;
+            }
+            *eq = '\0';
+            if (strcmp(next, "id") == 0) {
+                dom_shell_parse_u64(eq + 1, &grant_id);
+            } else if (strcmp(next, "granter") == 0) {
+                dom_shell_parse_u64(eq + 1, &granter);
+            } else if (strcmp(next, "grantee") == 0) {
+                dom_shell_parse_u64(eq + 1, &grantee);
+            } else if (strcmp(next, "authority") == 0 || strcmp(next, "mask") == 0) {
+                authority_mask = dom_shell_parse_mask_csv(eq + 1, dom_shell_authority_token);
+            } else if (strcmp(next, "expiry") == 0) {
+                dom_shell_parse_u64(eq + 1, &expiry_act);
+            }
+        }
+        if (granter == 0u || grantee == 0u) {
+            return D_APP_EXIT_USAGE;
+        }
+        if (grant_id == 0u) {
+            grant_id = shell->next_authority_id++;
+            if (grant_id == 0u) {
+                grant_id = shell->next_authority_id++;
+            }
+        } else if (grant_id >= shell->next_authority_id) {
+            shell->next_authority_id = grant_id + 1u;
+        }
+        if (agent_authority_grant_register(&shell->authority_registry,
+                                           grant_id,
+                                           granter,
+                                           grantee,
+                                           authority_mask,
+                                           (dom_act_time_t)expiry_act,
+                                           0u) != 0) {
+            dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "authority grant failed");
+            dom_shell_set_status(shell, "authority_grant=refused");
+            if (status && status_cap > 0u) {
+                snprintf(status, status_cap, "%s", shell->last_status);
+            }
+            return D_APP_EXIT_UNAVAILABLE;
+        }
+        dom_shell_set_status(shell, "authority_grant=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        if (emit_text) {
+            printf("authority_grant=ok grant_id=%llu grantee=%llu\n",
+                   (unsigned long long)grant_id,
+                   (unsigned long long)grantee);
+        }
+        {
+            char detail[200];
+            snprintf(detail, sizeof(detail),
+                     "grant_id=%llu granter=%llu grantee=%llu authority=0x%08x result=ok",
+                     (unsigned long long)grant_id,
+                     (unsigned long long)granter,
+                     (unsigned long long)grantee,
+                     (unsigned int)authority_mask);
+            dom_shell_emit(shell, log, "client.authority.grant", detail);
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "authority-revoke") == 0) {
+        u64 grant_id = 0u;
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (eq) {
+                *eq = '\0';
+                if (strcmp(next, "id") == 0) {
+                    dom_shell_parse_u64(eq + 1, &grant_id);
+                }
+            } else if (grant_id == 0u) {
+                dom_shell_parse_u64(next, &grant_id);
+            }
+        }
+        if (grant_id == 0u) {
+            return D_APP_EXIT_USAGE;
+        }
+        if (agent_authority_grant_revoke(&shell->authority_registry, grant_id) != 0) {
+            dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "grant not found");
+            dom_shell_set_status(shell, "authority_revoke=refused");
+            if (status && status_cap > 0u) {
+                snprintf(status, status_cap, "%s", shell->last_status);
+            }
+            return D_APP_EXIT_UNAVAILABLE;
+        }
+        dom_shell_set_status(shell, "authority_revoke=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        if (emit_text) {
+            printf("authority_revoke=ok id=%llu\n", (unsigned long long)grant_id);
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "authority-list") == 0) {
+        if (emit_text) {
+            u32 i;
+            printf("authority_grants=%u\n", (unsigned int)shell->authority_registry.count);
+            for (i = 0u; i < shell->authority_registry.count; ++i) {
+                const agent_authority_grant* grant = &shell->authority_grants[i];
+                printf("grant id=%llu granter=%llu grantee=%llu authority=0x%08x revoked=%u\n",
+                       (unsigned long long)grant->grant_id,
+                       (unsigned long long)grant->granter_id,
+                       (unsigned long long)grant->grantee_id,
+                       (unsigned int)grant->authority_mask,
+                       (unsigned int)grant->revoked);
+            }
+        }
+        dom_shell_set_status(shell, "authority_list=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "constraint-add") == 0) {
+        u64 constraint_id = 0u;
+        u64 institution_id = 0u;
+        u64 target_id = 0u;
+        u64 expiry_act = 0u;
+        u32 process_mask = 0u;
+        u32 mode = AGENT_CONSTRAINT_DENY;
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (!eq) {
+                continue;
+            }
+            *eq = '\0';
+            if (strcmp(next, "id") == 0) {
+                dom_shell_parse_u64(eq + 1, &constraint_id);
+            } else if (strcmp(next, "institution") == 0) {
+                dom_shell_parse_u64(eq + 1, &institution_id);
+            } else if (strcmp(next, "target") == 0 || strcmp(next, "agent") == 0) {
+                dom_shell_parse_u64(eq + 1, &target_id);
+            } else if (strcmp(next, "process") == 0) {
+                process_mask = dom_shell_parse_mask_csv(eq + 1, dom_shell_process_token);
+            } else if (strcmp(next, "mode") == 0) {
+                mode = (strcmp(eq + 1, "allow") == 0) ? AGENT_CONSTRAINT_ALLOW : AGENT_CONSTRAINT_DENY;
+            } else if (strcmp(next, "expiry") == 0) {
+                dom_shell_parse_u64(eq + 1, &expiry_act);
+            }
+        }
+        if (institution_id == 0u || target_id == 0u) {
+            return D_APP_EXIT_USAGE;
+        }
+        if (constraint_id == 0u) {
+            constraint_id = shell->next_constraint_id++;
+            if (constraint_id == 0u) {
+                constraint_id = shell->next_constraint_id++;
+            }
+        } else if (constraint_id >= shell->next_constraint_id) {
+            shell->next_constraint_id = constraint_id + 1u;
+        }
+        if (agent_constraint_register(&shell->constraint_registry,
+                                      constraint_id,
+                                      institution_id,
+                                      target_id,
+                                      process_mask,
+                                      mode,
+                                      (dom_act_time_t)expiry_act,
+                                      0u) != 0) {
+            dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "constraint failed");
+            dom_shell_set_status(shell, "constraint_add=refused");
+            if (status && status_cap > 0u) {
+                snprintf(status, status_cap, "%s", shell->last_status);
+            }
+            return D_APP_EXIT_UNAVAILABLE;
+        }
+        dom_shell_set_status(shell, "constraint_add=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        if (emit_text) {
+            printf("constraint_add=ok id=%llu target=%llu\n",
+                   (unsigned long long)constraint_id,
+                   (unsigned long long)target_id);
+        }
+        {
+            char detail[200];
+            snprintf(detail, sizeof(detail),
+                     "constraint_id=%llu institution=%llu target=%llu result=ok",
+                     (unsigned long long)constraint_id,
+                     (unsigned long long)institution_id,
+                     (unsigned long long)target_id);
+            dom_shell_emit(shell, log, "client.constraint.apply", detail);
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "constraint-revoke") == 0) {
+        u64 constraint_id = 0u;
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (eq) {
+                *eq = '\0';
+                if (strcmp(next, "id") == 0) {
+                    dom_shell_parse_u64(eq + 1, &constraint_id);
+                }
+            } else if (constraint_id == 0u) {
+                dom_shell_parse_u64(next, &constraint_id);
+            }
+        }
+        if (constraint_id == 0u) {
+            return D_APP_EXIT_USAGE;
+        }
+        if (agent_constraint_revoke(&shell->constraint_registry, constraint_id) != 0) {
+            dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "constraint not found");
+            dom_shell_set_status(shell, "constraint_revoke=refused");
+            if (status && status_cap > 0u) {
+                snprintf(status, status_cap, "%s", shell->last_status);
+            }
+            return D_APP_EXIT_UNAVAILABLE;
+        }
+        dom_shell_set_status(shell, "constraint_revoke=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        if (emit_text) {
+            printf("constraint_revoke=ok id=%llu\n", (unsigned long long)constraint_id);
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "constraint-list") == 0) {
+        if (emit_text) {
+            u32 i;
+            printf("constraints=%u\n", (unsigned int)shell->constraint_registry.count);
+            for (i = 0u; i < shell->constraint_registry.count; ++i) {
+                const agent_constraint* c = &shell->constraints[i];
+                printf("constraint id=%llu institution=%llu target=%llu process=0x%08x mode=%u revoked=%u\n",
+                       (unsigned long long)c->constraint_id,
+                       (unsigned long long)c->institution_id,
+                       (unsigned long long)c->target_agent_id,
+                       (unsigned int)c->process_kind_mask,
+                       (unsigned int)c->mode,
+                       (unsigned int)c->revoked);
+            }
+        }
+        dom_shell_set_status(shell, "constraint_list=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "institution-create") == 0) {
+        u64 institution_id = 0u;
+        u64 agent_id = 0u;
+        u32 authority_mask = 0u;
+        u32 legitimacy_q16 = AGENT_CONFIDENCE_MAX;
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (!eq) {
+                continue;
+            }
+            *eq = '\0';
+            if (strcmp(next, "id") == 0) {
+                dom_shell_parse_u64(eq + 1, &institution_id);
+            } else if (strcmp(next, "agent") == 0) {
+                dom_shell_parse_u64(eq + 1, &agent_id);
+            } else if (strcmp(next, "authority") == 0) {
+                authority_mask = dom_shell_parse_mask_csv(eq + 1, dom_shell_authority_token);
+            } else if (strcmp(next, "legitimacy") == 0) {
+                i32 value_q16 = 0;
+                if (dom_shell_parse_q16(eq + 1, &value_q16)) {
+                    legitimacy_q16 = (u32)value_q16;
+                }
+            }
+        }
+        if (institution_id == 0u) {
+            institution_id = shell->next_institution_id++;
+            if (institution_id == 0u) {
+                institution_id = shell->next_institution_id++;
+            }
+        } else if (institution_id >= shell->next_institution_id) {
+            shell->next_institution_id = institution_id + 1u;
+        }
+        if (agent_id == 0u) {
+            if (!dom_shell_agent_add(shell, 0u, 0u, 0u, 0u)) {
+                dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "agent create failed");
+                dom_shell_set_status(shell, "institution=refused");
+                if (status && status_cap > 0u) {
+                    snprintf(status, status_cap, "%s", shell->last_status);
+                }
+                return D_APP_EXIT_UNAVAILABLE;
+            }
+            agent_id = shell->agents[shell->agent_count - 1u].agent_id;
+        }
+        if (agent_institution_register(&shell->institution_registry,
+                                       institution_id,
+                                       agent_id,
+                                       authority_mask,
+                                       legitimacy_q16,
+                                       (dom_act_time_t)shell->tick,
+                                       0u) != 0) {
+            dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "institution failed");
+            dom_shell_set_status(shell, "institution=refused");
+            if (status && status_cap > 0u) {
+                snprintf(status, status_cap, "%s", shell->last_status);
+            }
+            return D_APP_EXIT_UNAVAILABLE;
+        }
+        dom_shell_set_status(shell, "institution=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        if (emit_text) {
+            printf("institution=ok id=%llu agent=%llu\n",
+                   (unsigned long long)institution_id,
+                   (unsigned long long)agent_id);
+        }
+        {
+            char detail[200];
+            snprintf(detail, sizeof(detail),
+                     "institution_id=%llu agent_id=%llu result=ok",
+                     (unsigned long long)institution_id,
+                     (unsigned long long)agent_id);
+            dom_shell_emit(shell, log, "client.institution.create", detail);
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "institution-list") == 0) {
+        if (emit_text) {
+            u32 i;
+            printf("institutions=%u\n", (unsigned int)shell->institution_registry.count);
+            for (i = 0u; i < shell->institution_registry.count; ++i) {
+                const agent_institution* inst = &shell->institutions[i];
+                printf("institution id=%llu agent=%llu authority=0x%08x status=%u legitimacy=%u\n",
+                       (unsigned long long)inst->institution_id,
+                       (unsigned long long)inst->agent_id,
+                       (unsigned int)inst->authority_mask,
+                       (unsigned int)inst->status,
+                       (unsigned int)inst->legitimacy_q16);
+            }
+        }
+        dom_shell_set_status(shell, "institution_list=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "network-create") == 0) {
+        u64 network_id = 0u;
+        u32 type = DOM_NETWORK_LOGISTICS;
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (!eq) {
+                continue;
+            }
+            *eq = '\0';
+            if (strcmp(next, "id") == 0) {
+                dom_shell_parse_u64(eq + 1, &network_id);
+            } else if (strcmp(next, "type") == 0) {
+                type = dom_shell_network_type_from_string(eq + 1);
+            }
+        }
+        if (!dom_shell_network_create(shell, network_id, type)) {
+            dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "network create failed");
+            dom_shell_set_status(shell, "network=refused");
+            if (status && status_cap > 0u) {
+                snprintf(status, status_cap, "%s", shell->last_status);
+            }
+            return D_APP_EXIT_UNAVAILABLE;
+        }
+        dom_shell_set_status(shell, "network=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        if (emit_text) {
+            printf("network=ok id=%llu type=%s\n",
+                   (unsigned long long)shell->networks[shell->network_count - 1u].network_id,
+                   dom_shell_network_type_name(type));
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "network-node") == 0) {
+        u64 network_id = 0u;
+        u64 node_id = 0u;
+        i32 capacity_q16 = DOM_SHELL_ENERGY_CAPACITY_Q16;
+        i32 stored_q16 = 0;
+        i32 loss_q16 = 0;
+        i32 min_q16 = 0;
+        u32 status_val = DOM_NETWORK_OK;
+        int has_capacity = 0;
+        int has_stored = 0;
+        int has_loss = 0;
+        int has_min = 0;
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (!eq) {
+                continue;
+            }
+            *eq = '\0';
+            if (strcmp(next, "network") == 0) {
+                dom_shell_parse_u64(eq + 1, &network_id);
+            } else if (strcmp(next, "id") == 0) {
+                dom_shell_parse_u64(eq + 1, &node_id);
+            } else if (strcmp(next, "capacity") == 0) {
+                has_capacity = dom_shell_parse_q16(eq + 1, &capacity_q16);
+            } else if (strcmp(next, "stored") == 0) {
+                has_stored = dom_shell_parse_q16(eq + 1, &stored_q16);
+            } else if (strcmp(next, "loss") == 0) {
+                has_loss = dom_shell_parse_q16(eq + 1, &loss_q16);
+            } else if (strcmp(next, "min") == 0 || strcmp(next, "min_required") == 0) {
+                has_min = dom_shell_parse_q16(eq + 1, &min_q16);
+            } else if (strcmp(next, "status") == 0) {
+                status_val = (u32)strtoul(eq + 1, 0, 10);
+            }
+        }
+        if (network_id == 0u || node_id == 0u) {
+            return D_APP_EXIT_USAGE;
+        }
+        {
+            dom_shell_network_state* net = dom_shell_network_find(shell, network_id);
+            if (!net) {
+                return D_APP_EXIT_UNAVAILABLE;
+            }
+            if (!has_capacity) {
+                capacity_q16 = DOM_SHELL_ENERGY_CAPACITY_Q16;
+            }
+            if (!dom_network_add_node(&net->graph, node_id, capacity_q16)) {
+                dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "node add failed");
+                dom_shell_set_status(shell, "network_node=refused");
+                if (status && status_cap > 0u) {
+                    snprintf(status, status_cap, "%s", shell->last_status);
+                }
+                return D_APP_EXIT_UNAVAILABLE;
+            }
+            if (has_stored || has_loss || has_min) {
+                dom_network_node* node = dom_network_find_node(&net->graph, node_id);
+                if (node) {
+                    if (has_stored) {
+                        node->stored_q16 = stored_q16;
+                    }
+                    if (has_loss) {
+                        node->loss_q16 = loss_q16;
+                    }
+                    if (has_min) {
+                        node->min_required_q16 = min_q16;
+                    }
+                    node->status = status_val;
+                }
+            }
+        }
+        dom_shell_set_status(shell, "network_node=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        if (emit_text) {
+            printf("network_node=ok network=%llu node=%llu\n",
+                   (unsigned long long)network_id,
+                   (unsigned long long)node_id);
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "network-edge") == 0) {
+        u64 network_id = 0u;
+        u64 edge_id = 0u;
+        u64 a = 0u;
+        u64 b = 0u;
+        i32 capacity_q16 = DOM_SHELL_ENERGY_CAPACITY_Q16;
+        i32 loss_q16 = 0;
+        u32 status_val = DOM_NETWORK_OK;
+        int has_capacity = 0;
+        int has_loss = 0;
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (!eq) {
+                continue;
+            }
+            *eq = '\0';
+            if (strcmp(next, "network") == 0) {
+                dom_shell_parse_u64(eq + 1, &network_id);
+            } else if (strcmp(next, "id") == 0) {
+                dom_shell_parse_u64(eq + 1, &edge_id);
+            } else if (strcmp(next, "a") == 0) {
+                dom_shell_parse_u64(eq + 1, &a);
+            } else if (strcmp(next, "b") == 0) {
+                dom_shell_parse_u64(eq + 1, &b);
+            } else if (strcmp(next, "capacity") == 0) {
+                has_capacity = dom_shell_parse_q16(eq + 1, &capacity_q16);
+            } else if (strcmp(next, "loss") == 0) {
+                has_loss = dom_shell_parse_q16(eq + 1, &loss_q16);
+            } else if (strcmp(next, "status") == 0) {
+                status_val = (u32)strtoul(eq + 1, 0, 10);
+            }
+        }
+        if (network_id == 0u || edge_id == 0u || a == 0u || b == 0u) {
+            return D_APP_EXIT_USAGE;
+        }
+        {
+            dom_shell_network_state* net = dom_shell_network_find(shell, network_id);
+            if (!net) {
+                return D_APP_EXIT_UNAVAILABLE;
+            }
+            if (!has_capacity) {
+                capacity_q16 = DOM_SHELL_ENERGY_CAPACITY_Q16;
+            }
+            if (!dom_network_add_edge(&net->graph, edge_id, a, b, capacity_q16, loss_q16)) {
+                dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "edge add failed");
+                dom_shell_set_status(shell, "network_edge=refused");
+                if (status && status_cap > 0u) {
+                    snprintf(status, status_cap, "%s", shell->last_status);
+                }
+                return D_APP_EXIT_UNAVAILABLE;
+            }
+            if (has_loss || status_val != DOM_NETWORK_OK) {
+                dom_network_edge* edge = dom_network_find_edge(&net->graph, edge_id);
+                if (edge) {
+                    if (has_loss) {
+                        edge->loss_q16 = loss_q16;
+                    }
+                    edge->status = status_val;
+                }
+            }
+        }
+        dom_shell_set_status(shell, "network_edge=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        if (emit_text) {
+            printf("network_edge=ok network=%llu edge=%llu\n",
+                   (unsigned long long)network_id,
+                   (unsigned long long)edge_id);
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "network-config") == 0) {
+        u64 network_id = 0u;
+        u64 node_id = 0u;
+        u64 edge_id = 0u;
+        i32 stored_q16 = 0;
+        i32 loss_q16 = 0;
+        i32 min_q16 = 0;
+        u32 status_val = DOM_NETWORK_OK;
+        int has_stored = 0;
+        int has_loss = 0;
+        int has_min = 0;
+        int has_status = 0;
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (!eq) {
+                continue;
+            }
+            *eq = '\0';
+            if (strcmp(next, "network") == 0) {
+                dom_shell_parse_u64(eq + 1, &network_id);
+            } else if (strcmp(next, "node") == 0) {
+                dom_shell_parse_u64(eq + 1, &node_id);
+            } else if (strcmp(next, "edge") == 0) {
+                dom_shell_parse_u64(eq + 1, &edge_id);
+            } else if (strcmp(next, "stored") == 0) {
+                has_stored = dom_shell_parse_q16(eq + 1, &stored_q16);
+            } else if (strcmp(next, "loss") == 0) {
+                has_loss = dom_shell_parse_q16(eq + 1, &loss_q16);
+            } else if (strcmp(next, "min") == 0 || strcmp(next, "min_required") == 0) {
+                has_min = dom_shell_parse_q16(eq + 1, &min_q16);
+            } else if (strcmp(next, "status") == 0) {
+                status_val = (u32)strtoul(eq + 1, 0, 10);
+                has_status = 1;
+            }
+        }
+        if (network_id == 0u) {
+            return D_APP_EXIT_USAGE;
+        }
+        {
+            dom_shell_network_state* net = dom_shell_network_find(shell, network_id);
+            if (!net) {
+                return D_APP_EXIT_UNAVAILABLE;
+            }
+            if (node_id != 0u) {
+                dom_network_node* node = dom_network_find_node(&net->graph, node_id);
+                if (node) {
+                    if (has_stored) node->stored_q16 = stored_q16;
+                    if (has_loss) node->loss_q16 = loss_q16;
+                    if (has_min) node->min_required_q16 = min_q16;
+                    if (has_status) node->status = status_val;
+                }
+            }
+            if (edge_id != 0u) {
+                dom_network_edge* edge = dom_network_find_edge(&net->graph, edge_id);
+                if (edge) {
+                    if (has_loss) edge->loss_q16 = loss_q16;
+                    if (has_status) edge->status = status_val;
+                }
+            }
+        }
+        dom_shell_set_status(shell, "network_config=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        if (emit_text) {
+            printf("network_config=ok network=%llu\n", (unsigned long long)network_id);
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "network-list") == 0 || strcmp(token, "networks") == 0) {
+        if (emit_text) {
+            u32 i;
+            printf("networks=%u\n", (unsigned int)shell->network_count);
+            for (i = 0u; i < shell->network_count; ++i) {
+                const dom_shell_network_state* net = &shell->networks[i];
+                printf("network id=%llu type=%s nodes=%u edges=%u\n",
+                       (unsigned long long)net->network_id,
+                       dom_shell_network_type_name(net->graph.type),
+                       (unsigned int)net->graph.node_count,
+                       (unsigned int)net->graph.edge_count);
+            }
+        }
+        dom_shell_set_status(shell, "network_list=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "simulate") == 0 || strcmp(token, "agent-step") == 0) {
+        u32 ticks = 1u;
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (eq) {
+                *eq = '\0';
+                if (strcmp(next, "ticks") == 0 || strcmp(next, "count") == 0) {
+                    ticks = (u32)strtoul(eq + 1, 0, 10);
+                }
+            } else {
+                ticks = (u32)strtoul(next, 0, 10);
+            }
+        }
+        if (ticks == 0u) {
+            ticks = 1u;
+        }
+        while (ticks--) {
+            (void)dom_shell_simulate_tick(shell, log, emit_text);
+        }
         if (status && status_cap > 0u) {
             snprintf(status, status_cap, "%s", shell->last_status);
         }

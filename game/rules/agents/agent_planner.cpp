@@ -33,6 +33,9 @@ static dom_process_id agent_process_id_for_kind(u32 kind)
         case AGENT_PROCESS_KIND_RESEARCH: return agent_process_id_from_key("PROC.RESEARCH");
         case AGENT_PROCESS_KIND_TRADE: return agent_process_id_from_key("PROC.TRADE");
         case AGENT_PROCESS_KIND_OBSERVE: return agent_process_id_from_key("PROC.OBSERVE");
+        case AGENT_PROCESS_KIND_SURVEY: return agent_process_id_from_key("PROC.SURVEY");
+        case AGENT_PROCESS_KIND_MAINTAIN: return agent_process_id_from_key("PROC.MAINTAIN");
+        case AGENT_PROCESS_KIND_TRANSFER: return agent_process_id_from_key("PROC.TRANSFER");
         default: break;
     }
     return agent_process_id_from_key("PROC.UNKNOWN");
@@ -74,13 +77,6 @@ static int agent_goal_preconditions_ok(const agent_goal* goal,
         goal->preconditions.required_capabilities) {
         if (out_refusal) {
             *out_refusal = AGENT_REFUSAL_INSUFFICIENT_CAPABILITY;
-        }
-        return 0;
-    }
-    if ((ctx->authority_mask & goal->preconditions.required_authority) !=
-        goal->preconditions.required_authority) {
-        if (out_refusal) {
-            *out_refusal = AGENT_REFUSAL_INSUFFICIENT_AUTHORITY;
         }
         return 0;
     }
@@ -346,6 +342,77 @@ int agent_planner_build(const agent_goal* goal,
             if (agent_plan_add_step(out_plan, limit, agent_process_id_for_kind(AGENT_PROCESS_KIND_TRADE),
                                     AGENT_PROCESS_KIND_TRADE,
                                     ctx ? ctx->known_resource_ref : 0u,
+                                    goal->preconditions.required_capabilities,
+                                    goal->preconditions.required_authority,
+                                    1u,
+                                    missing_knowledge,
+                                    confidence_q16,
+                                    (missing_knowledge && (goal->flags & AGENT_GOAL_FLAG_REQUIRE_KNOWLEDGE))
+                                        ? AGENT_REFUSAL_INSUFFICIENT_KNOWLEDGE : 0u) != 0) {
+                if (out_refusal) {
+                    *out_refusal = AGENT_REFUSAL_GOAL_NOT_FEASIBLE;
+                }
+                return -5;
+            }
+            break;
+        case AGENT_GOAL_SURVEY:
+            if (agent_plan_add_step(out_plan, limit, agent_process_id_for_kind(AGENT_PROCESS_KIND_SURVEY),
+                                    AGENT_PROCESS_KIND_SURVEY,
+                                    ctx ? ctx->known_destination_ref : 0u,
+                                    goal->preconditions.required_capabilities,
+                                    goal->preconditions.required_authority,
+                                    1u,
+                                    missing_knowledge,
+                                    confidence_q16,
+                                    (missing_knowledge && (goal->flags & AGENT_GOAL_FLAG_REQUIRE_KNOWLEDGE))
+                                        ? AGENT_REFUSAL_INSUFFICIENT_KNOWLEDGE : 0u) != 0) {
+                if (out_refusal) {
+                    *out_refusal = AGENT_REFUSAL_GOAL_NOT_FEASIBLE;
+                }
+                return -5;
+            }
+            break;
+        case AGENT_GOAL_MAINTAIN:
+            if (agent_plan_add_step(out_plan, limit, agent_process_id_for_kind(AGENT_PROCESS_KIND_SURVEY),
+                                    AGENT_PROCESS_KIND_SURVEY,
+                                    ctx ? ctx->known_resource_ref : 0u,
+                                    goal->preconditions.required_capabilities,
+                                    goal->preconditions.required_authority,
+                                    1u,
+                                    missing_knowledge,
+                                    confidence_q16,
+                                    (missing_knowledge && (goal->flags & AGENT_GOAL_FLAG_REQUIRE_KNOWLEDGE))
+                                        ? AGENT_REFUSAL_INSUFFICIENT_KNOWLEDGE : 0u) != 0 ||
+                agent_plan_add_step(out_plan, limit, agent_process_id_for_kind(AGENT_PROCESS_KIND_MAINTAIN),
+                                    AGENT_PROCESS_KIND_MAINTAIN,
+                                    ctx ? ctx->known_resource_ref : 0u,
+                                    goal->preconditions.required_capabilities,
+                                    goal->preconditions.required_authority,
+                                    1u,
+                                    missing_knowledge,
+                                    confidence_q16,
+                                    (missing_knowledge && (goal->flags & AGENT_GOAL_FLAG_REQUIRE_KNOWLEDGE))
+                                        ? AGENT_REFUSAL_INSUFFICIENT_KNOWLEDGE : 0u) != 0) {
+                if (out_refusal) {
+                    *out_refusal = AGENT_REFUSAL_GOAL_NOT_FEASIBLE;
+                }
+                return -5;
+            }
+            break;
+        case AGENT_GOAL_STABILIZE:
+            if (agent_plan_add_step(out_plan, limit, agent_process_id_for_kind(AGENT_PROCESS_KIND_SURVEY),
+                                    AGENT_PROCESS_KIND_SURVEY,
+                                    ctx ? ctx->known_destination_ref : 0u,
+                                    goal->preconditions.required_capabilities,
+                                    goal->preconditions.required_authority,
+                                    1u,
+                                    missing_knowledge,
+                                    confidence_q16,
+                                    (missing_knowledge && (goal->flags & AGENT_GOAL_FLAG_REQUIRE_KNOWLEDGE))
+                                        ? AGENT_REFUSAL_INSUFFICIENT_KNOWLEDGE : 0u) != 0 ||
+                agent_plan_add_step(out_plan, limit, agent_process_id_for_kind(AGENT_PROCESS_KIND_TRANSFER),
+                                    AGENT_PROCESS_KIND_TRANSFER,
+                                    ctx ? ctx->known_destination_ref : 0u,
                                     goal->preconditions.required_capabilities,
                                     goal->preconditions.required_authority,
                                     1u,
