@@ -36,15 +36,15 @@ REQUIRED_DOCS = [
     "schema/scale/SPEC_INTERPLANETARY_LOGISTICS.md",
     "schema/scale/SPEC_INTERSTELLAR_LOGISTICS.md",
     "schema/scale/SPEC_SCALE_TIME_WARP.md",
-    "docs/CIV0a_SURVIVAL_LOOP.md",
-    "docs/OFFLINE_AND_LOCAL_MP.md",
-    "docs/CIV0_POPULATION_GENESIS.md",
-    "docs/CIV1_CITIES_INFRA.md",
-    "docs/CIV2_GOVERNANCE.md",
-    "docs/CIV3_KNOWLEDGE_TECH.md",
-    "docs/CIV4_SCALE_AND_LOGISTICS.md",
-    "docs/DETERMINISM_TEST_MATRIX.md",
-    "docs/VALIDATION_AND_GOVERNANCE.md",
+    "docs/specs/CIV0a_SURVIVAL_LOOP.md",
+    "docs/guides/OFFLINE_AND_LOCAL_MP.md",
+    "docs/specs/CIV0_POPULATION_GENESIS.md",
+    "docs/specs/CIV1_CITIES_INFRA.md",
+    "docs/specs/CIV2_GOVERNANCE.md",
+    "docs/specs/CIV3_KNOWLEDGE_TECH.md",
+    "docs/specs/CIV4_SCALE_AND_LOGISTICS.md",
+    "docs/ci/DETERMINISM_TEST_MATRIX.md",
+    "docs/policies/VALIDATION_AND_GOVERNANCE.md",
 ]
 
 REQUIRED_TEST_SOURCES = [
@@ -133,12 +133,12 @@ def check_files(repo_root, rel_paths, label, failures):
 
 
 def check_ci_matrix(repo_root, failures):
-    matrix_path = os.path.join(repo_root, "docs", "CI_ENFORCEMENT_MATRIX.md")
+    matrix_path = os.path.join(repo_root, "docs", "ci", "CI_ENFORCEMENT_MATRIX.md")
     try:
         with open(matrix_path, "r", errors="ignore") as handle:
             content = handle.read()
     except IOError:
-        failures.append("CI matrix missing: docs/CI_ENFORCEMENT_MATRIX.md")
+        failures.append("CI matrix missing: docs/ci/CI_ENFORCEMENT_MATRIX.md")
         return
     for check_id in REQUIRED_CI_IDS:
         if check_id not in content:

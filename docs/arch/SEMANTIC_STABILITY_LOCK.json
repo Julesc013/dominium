@@ -1,0 +1,76 @@
+{
+  "lock_id": "dominium.semantic_stability_lock",
+  "lock_version": 1,
+  "entries": [
+    {
+      "id": "field.pack_manifest.pack_id",
+      "kind": "field",
+      "definition": "Reverse-DNS stable identifier for a pack. Identity is immutable and never reused."
+    },
+    {
+      "id": "field.pack_manifest.pack_version",
+      "kind": "field",
+      "definition": "Semver for pack content. Major bumps denote breaking changes; meaning never shifts."
+    },
+    {
+      "id": "field.pack_manifest.pack_format_version",
+      "kind": "field",
+      "definition": "Integer manifest format version that defines parsing and required keys."
+    },
+    {
+      "id": "field.pack_manifest.requires_engine",
+      "kind": "field",
+      "definition": "Engine version range required to load the pack; refusal if unmet."
+    },
+    {
+      "id": "field.pack_manifest.provides",
+      "kind": "field",
+      "definition": "Declared capabilities provided by this pack."
+    },
+    {
+      "id": "field.pack_manifest.depends",
+      "kind": "field",
+      "definition": "Capabilities required by this pack; never pack IDs or file paths."
+    },
+    {
+      "id": "field.pack_manifest.extensions",
+      "kind": "field",
+      "definition": "Opaque extension map that must be preserved across loads and saves."
+    },
+    {
+      "id": "capability.meaning",
+      "kind": "capability",
+      "definition": "An auditable, namespaced permission to perform an action or access an interface."
+    },
+    {
+      "id": "authority.semantics",
+      "kind": "authority",
+      "definition": "Authority gates actions only; it never gates visibility."
+    },
+    {
+      "id": "refusal.code.meaning",
+      "kind": "refusal",
+      "definition": "A refusal code is a stable integer and token that explains why an action was refused."
+    },
+    {
+      "id": "chunk_type.save",
+      "kind": "chunk_type",
+      "definition": "Chunk type identifies the semantic payload of a save/replay chunk."
+    },
+    {
+      "id": "process.io.meaning",
+      "kind": "process",
+      "definition": "Process IO meaning is the semantic contract of inputs and outputs."
+    },
+    {
+      "id": "policy.no_reuse_identifiers",
+      "kind": "policy",
+      "definition": "Identifiers once released must never be reused with new meaning."
+    },
+    {
+      "id": "policy.no_silent_reinterpretation",
+      "kind": "policy",
+      "definition": "Old data cannot be reinterpreted without explicit versioned transform or refusal."
+    }
+  ]
+}

@@ -19,6 +19,8 @@ Client shell core implementation.
 #define DOM_REFUSAL_PROCESS "PROC-REFUSAL"
 #define DOM_REFUSAL_PROCESS_FAIL "PROC-FAIL"
 #define DOM_REFUSAL_PROCESS_EPISTEMIC "PROC-REFUSAL-EPISTEMIC"
+#define DOM_REFUSAL_PLAYTEST "PLAYTEST-REFUSAL"
+#define DOM_REFUSAL_VARIANT "VARIANT-REFUSAL"
 
 #define DOM_SHELL_DEFAULT_SAVE_PATH "data/saves/world.save"
 #define DOM_SHELL_BATCH_SCRIPT_MAX 2048
@@ -318,6 +320,403 @@ static void dom_shell_builder_append_policy_array(dom_shell_builder* b, const do
         }
     }
     dom_shell_builder_append_char(b, ']');
+}
+
+static void dom_shell_playtest_reset(dom_client_shell* shell)
+{
+    if (!shell) {
+        return;
+    }
+    memset(&shell->playtest, 0, sizeof(shell->playtest));
+    shell->playtest.speed = 1u;
+}
+
+static void dom_shell_metrics_reset(dom_client_shell* shell)
+{
+    if (!shell) {
+        return;
+    }
+    memset(&shell->metrics, 0, sizeof(shell->metrics));
+}
+
+static void dom_shell_metrics_begin_tick(dom_client_shell* shell)
+{
+    if (!shell) {
+        return;
+    }
+    shell->metrics.tick_process_attempts = 0u;
+    shell->metrics.tick_process_failures = 0u;
+    shell->metrics.tick_process_refusals = 0u;
+    shell->metrics.tick_command_attempts = 0u;
+    shell->metrics.tick_command_failures = 0u;
+    shell->metrics.tick_network_failures = 0u;
+}
+
+static void dom_shell_metrics_end_tick(dom_client_shell* shell)
+{
+    dom_shell_metrics_window* entry;
+    if (!shell) {
+        return;
+    }
+    shell->metrics.simulate_ticks += 1u;
+    if (shell->metrics.tick_process_attempts == 0u &&
+        shell->metrics.tick_command_attempts == 0u) {
+        shell->metrics.idle_ticks += 1u;
+    }
+    entry = &shell->metrics.window[shell->metrics.window_head];
+    entry->tick = (uint32_t)shell->tick;
+    entry->process_attempts = shell->metrics.tick_process_attempts;
+    entry->process_failures = shell->metrics.tick_process_failures;
+    entry->process_refusals = shell->metrics.tick_process_refusals;
+    entry->command_attempts = shell->metrics.tick_command_attempts;
+    entry->command_failures = shell->metrics.tick_command_failures;
+    entry->network_failures = shell->metrics.tick_network_failures;
+    shell->metrics.window_head = (shell->metrics.window_head + 1u) % DOM_SHELL_METRIC_WINDOW_MAX;
+    if (shell->metrics.window_count < DOM_SHELL_METRIC_WINDOW_MAX) {
+        shell->metrics.window_count += 1u;
+    }
+}
+
+static void dom_shell_playtest_apply_scenarios(dom_client_shell* shell,
+                                               dom_app_ui_event_log* log)
+{
+    u32 i;
+    if (!shell || shell->playtest.scenario_count == 0u) {
+        return;
+    }
+    for (i = 0u; i < shell->playtest.scenario_count; ++i) {
+        const dom_shell_playtest_scenario* scenario = &shell->playtest.scenarios[i];
+        if (scenario->type == DOM_SHELL_SCENARIO_FIELD && scenario->field_id > 0u) {
+            (void)dom_field_set_value(&shell->fields.subjective,
+                                      scenario->field_id, 0u, 0u, scenario->value_q16);
+            if (scenario->known) {
+                shell->fields.knowledge_mask |= DOM_FIELD_BIT(scenario->field_id);
+            }
+            shell->metrics.scenario_injections += 1u;
+            {
+                char detail[160];
+                snprintf(detail, sizeof(detail),
+                         "field_id=%u value=%d known=%u result=ok",
+                         (unsigned int)scenario->field_id,
+                         (int)scenario->value_q16,
+                         (unsigned int)scenario->known);
+                dom_shell_emit(shell, log, "client.playtest.scenario.apply", detail);
+            }
+        }
+    }
+    shell->playtest.scenario_count = 0u;
+}
+
+static void dom_shell_variants_clear(dom_shell_variant_selection* list, uint32_t* count)
+{
+    if (!list || !count) {
+        return;
+    }
+    memset(list, 0, sizeof(dom_shell_variant_selection) * DOM_SHELL_MAX_VARIANTS);
+    *count = 0u;
+}
+
+static void dom_shell_variant_add(dom_shell_variant_registry* reg,
+                                  const char* system_id,
+                                  const char* variant_id,
+                                  const char* description,
+                                  const char* status,
+                                  int is_default,
+                                  int deprecated)
+{
+    dom_shell_variant_entry* entry;
+    if (!reg || !system_id || !variant_id || reg->count >= DOM_SHELL_MAX_VARIANTS) {
+        return;
+    }
+    entry = &reg->entries[reg->count++];
+    memset(entry, 0, sizeof(*entry));
+    strncpy(entry->system_id, system_id, sizeof(entry->system_id) - 1u);
+    strncpy(entry->variant_id, variant_id, sizeof(entry->variant_id) - 1u);
+    if (description && description[0]) {
+        strncpy(entry->description, description, sizeof(entry->description) - 1u);
+    }
+    if (status && status[0]) {
+        strncpy(entry->status, status, sizeof(entry->status) - 1u);
+    }
+    entry->is_default = is_default ? 1u : 0u;
+    entry->deprecated = deprecated ? 1u : 0u;
+}
+
+static void dom_shell_variant_registry_init(dom_shell_variant_registry* reg)
+{
+    if (!reg) {
+        return;
+    }
+    memset(reg, 0, sizeof(*reg));
+    dom_shell_variant_add(reg, "planning", "planning.v1", "baseline planner", "stable", 1, 0);
+    dom_shell_variant_add(reg, "planning", "planning.v1_shadow", "shadow planner", "experimental", 0, 0);
+    dom_shell_variant_add(reg, "delegation", "delegation.v1", "baseline delegation", "stable", 1, 0);
+    dom_shell_variant_add(reg, "delegation", "delegation.v1_shadow", "shadow delegation", "experimental", 0, 0);
+    dom_shell_variant_add(reg, "failure", "failure.v1", "baseline failure propagation", "stable", 1, 0);
+    dom_shell_variant_add(reg, "failure", "failure.v1_shadow", "shadow failure propagation", "experimental", 0, 0);
+    dom_shell_variant_add(reg, "ecology", "ecology.v0", "placeholder ecology", "experimental", 1, 0);
+    dom_shell_variant_add(reg, "trade", "trade.v0", "placeholder trade", "experimental", 1, 0);
+}
+
+static const dom_shell_variant_entry* dom_shell_variant_find_entry(const dom_shell_variant_registry* reg,
+                                                                   const char* system_id,
+                                                                   const char* variant_id)
+{
+    uint32_t i;
+    if (!reg || !system_id || !variant_id) {
+        return 0;
+    }
+    for (i = 0u; i < reg->count; ++i) {
+        const dom_shell_variant_entry* entry = &reg->entries[i];
+        if (strcmp(entry->system_id, system_id) == 0 &&
+            strcmp(entry->variant_id, variant_id) == 0) {
+            return entry;
+        }
+    }
+    return 0;
+}
+
+static const dom_shell_variant_entry* dom_shell_variant_find_default(const dom_shell_variant_registry* reg,
+                                                                     const char* system_id)
+{
+    uint32_t i;
+    const dom_shell_variant_entry* fallback = 0;
+    if (!reg || !system_id) {
+        return 0;
+    }
+    for (i = 0u; i < reg->count; ++i) {
+        const dom_shell_variant_entry* entry = &reg->entries[i];
+        if (strcmp(entry->system_id, system_id) != 0) {
+            continue;
+        }
+        if (!fallback) {
+            fallback = entry;
+        }
+        if (entry->is_default) {
+            return entry;
+        }
+    }
+    return fallback;
+}
+
+static dom_shell_variant_selection* dom_shell_variant_find_selection(dom_shell_variant_selection* list,
+                                                                     uint32_t count,
+                                                                     const char* system_id)
+{
+    uint32_t i;
+    if (!list || !system_id) {
+        return 0;
+    }
+    for (i = 0u; i < count; ++i) {
+        if (strcmp(list[i].system_id, system_id) == 0) {
+            return &list[i];
+        }
+    }
+    return 0;
+}
+
+static const char* dom_shell_variant_mode_name(dom_shell_variant_mode mode)
+{
+    switch (mode) {
+        case DOM_SHELL_VARIANT_MODE_AUTHORITATIVE: return "authoritative";
+        case DOM_SHELL_VARIANT_MODE_DEGRADED: return "degraded";
+        case DOM_SHELL_VARIANT_MODE_FROZEN: return "frozen";
+        case DOM_SHELL_VARIANT_MODE_TRANSFORM_ONLY: return "transform_only";
+        default: return "unknown";
+    }
+}
+
+static dom_shell_variant_mode dom_shell_variant_mode_from_text(const char* text)
+{
+    if (!text || !text[0]) {
+        return DOM_SHELL_VARIANT_MODE_AUTHORITATIVE;
+    }
+    if (strcmp(text, "authoritative") == 0) return DOM_SHELL_VARIANT_MODE_AUTHORITATIVE;
+    if (strcmp(text, "degraded") == 0) return DOM_SHELL_VARIANT_MODE_DEGRADED;
+    if (strcmp(text, "frozen") == 0) return DOM_SHELL_VARIANT_MODE_FROZEN;
+    if (strcmp(text, "transform-only") == 0 || strcmp(text, "transform_only") == 0) {
+        return DOM_SHELL_VARIANT_MODE_TRANSFORM_ONLY;
+    }
+    return DOM_SHELL_VARIANT_MODE_AUTHORITATIVE;
+}
+
+static dom_shell_variant_scope dom_shell_variant_scope_from_text(const char* text)
+{
+    if (!text || !text[0]) {
+        return DOM_SHELL_VARIANT_SCOPE_WORLD;
+    }
+    if (strcmp(text, "run") == 0) return DOM_SHELL_VARIANT_SCOPE_RUN;
+    if (strcmp(text, "world") == 0) return DOM_SHELL_VARIANT_SCOPE_WORLD;
+    return DOM_SHELL_VARIANT_SCOPE_WORLD;
+}
+
+static void dom_shell_variant_set_mode(dom_client_shell* shell, dom_shell_variant_mode mode, const char* detail)
+{
+    if (!shell) {
+        return;
+    }
+    if (mode >= shell->variant_mode) {
+        shell->variant_mode = mode;
+        if (detail && detail[0]) {
+            strncpy(shell->variant_mode_detail, detail, sizeof(shell->variant_mode_detail) - 1u);
+            shell->variant_mode_detail[sizeof(shell->variant_mode_detail) - 1u] = '\0';
+        }
+    }
+}
+
+static int dom_shell_variant_set_internal(dom_client_shell* shell,
+                                          const char* system_id,
+                                          const char* variant_id,
+                                          dom_shell_variant_scope scope,
+                                          int allow_unknown,
+                                          char* err,
+                                          size_t err_cap)
+{
+    dom_shell_variant_selection* list;
+    uint32_t* count;
+    dom_shell_variant_selection* sel;
+    const dom_shell_variant_entry* entry;
+    if (!shell || !system_id || !variant_id || !system_id[0] || !variant_id[0]) {
+        if (err && err_cap > 0u) {
+            snprintf(err, err_cap, "variant system or id missing");
+        }
+        return 0;
+    }
+    entry = dom_shell_variant_find_entry(&shell->variant_registry, system_id, variant_id);
+    if (!entry && !allow_unknown) {
+        if (err && err_cap > 0u) {
+            snprintf(err, err_cap, "variant not found");
+        }
+        return 0;
+    }
+    if (scope == DOM_SHELL_VARIANT_SCOPE_RUN) {
+        list = shell->run_variants;
+        count = &shell->run_variant_count;
+    } else {
+        list = shell->variants;
+        count = &shell->variant_count;
+    }
+    sel = dom_shell_variant_find_selection(list, *count, system_id);
+    if (!sel) {
+        if (*count >= DOM_SHELL_MAX_VARIANTS) {
+            if (err && err_cap > 0u) {
+                snprintf(err, err_cap, "variant list full");
+            }
+            return 0;
+        }
+        sel = &list[*count];
+        memset(sel, 0, sizeof(*sel));
+        strncpy(sel->system_id, system_id, sizeof(sel->system_id) - 1u);
+        *count += 1u;
+    }
+    strncpy(sel->variant_id, variant_id, sizeof(sel->variant_id) - 1u);
+    sel->scope = (uint32_t)scope;
+    if (!entry) {
+        dom_shell_variant_set_mode(shell, DOM_SHELL_VARIANT_MODE_DEGRADED, "missing_variant");
+    }
+    return 1;
+}
+
+static void dom_shell_variants_apply_defaults(dom_client_shell* shell)
+{
+    uint32_t i;
+    if (!shell) {
+        return;
+    }
+    dom_shell_variants_clear(shell->variants, &shell->variant_count);
+    for (i = 0u; i < shell->variant_registry.count; ++i) {
+        const dom_shell_variant_entry* entry = &shell->variant_registry.entries[i];
+        if (!entry->is_default) {
+            continue;
+        }
+        (void)dom_shell_variant_set_internal(shell,
+                                             entry->system_id,
+                                             entry->variant_id,
+                                             DOM_SHELL_VARIANT_SCOPE_WORLD,
+                                             1,
+                                             0,
+                                             0u);
+    }
+}
+
+static const char* dom_shell_variant_resolve(const dom_client_shell* shell, const char* system_id)
+{
+    const dom_shell_variant_selection* sel;
+    const dom_shell_variant_entry* def;
+    if (!shell || !system_id) {
+        return 0;
+    }
+    sel = dom_shell_variant_find_selection((dom_shell_variant_selection*)shell->run_variants,
+                                           shell->run_variant_count,
+                                           system_id);
+    if (sel && sel->variant_id[0]) {
+        return sel->variant_id;
+    }
+    sel = dom_shell_variant_find_selection((dom_shell_variant_selection*)shell->variants,
+                                           shell->variant_count,
+                                           system_id);
+    if (sel && sel->variant_id[0]) {
+        return sel->variant_id;
+    }
+    def = dom_shell_variant_find_default(&shell->variant_registry, system_id);
+    return def ? def->variant_id : 0;
+}
+
+static int dom_shell_playtest_allowed(const dom_client_shell* shell)
+{
+    if (!shell || !shell->world.active) {
+        return 0;
+    }
+    return shell->world.summary.playtest.count > 0u;
+}
+
+static int dom_shell_variants_all_known(const dom_client_shell* shell)
+{
+    uint32_t i;
+    if (!shell) {
+        return 1;
+    }
+    for (i = 0u; i < shell->variant_count; ++i) {
+        const dom_shell_variant_selection* sel = &shell->variants[i];
+        if (!dom_shell_variant_find_entry(&shell->variant_registry, sel->system_id, sel->variant_id)) {
+            return 0;
+        }
+    }
+    for (i = 0u; i < shell->run_variant_count; ++i) {
+        const dom_shell_variant_selection* sel = &shell->run_variants[i];
+        if (!dom_shell_variant_find_entry(&shell->variant_registry, sel->system_id, sel->variant_id)) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+static const char* dom_shell_variant_pick(const dom_client_shell* shell,
+                                          const char* system_id,
+                                          const char* which)
+{
+    const dom_shell_variant_selection* sel;
+    const dom_shell_variant_entry* def;
+    if (!shell || !system_id) {
+        return 0;
+    }
+    if (which && strcmp(which, "run") == 0) {
+        sel = dom_shell_variant_find_selection((dom_shell_variant_selection*)shell->run_variants,
+                                               shell->run_variant_count,
+                                               system_id);
+        return sel && sel->variant_id[0] ? sel->variant_id : "none";
+    }
+    if (which && strcmp(which, "world") == 0) {
+        sel = dom_shell_variant_find_selection((dom_shell_variant_selection*)shell->variants,
+                                               shell->variant_count,
+                                               system_id);
+        return sel && sel->variant_id[0] ? sel->variant_id : "none";
+    }
+    if (which && strcmp(which, "default") == 0) {
+        def = dom_shell_variant_find_default(&shell->variant_registry, system_id);
+        return def ? def->variant_id : "none";
+    }
+    return dom_shell_variant_resolve(shell, system_id);
 }
 
 static uint64_t dom_shell_hash64(const void* data, size_t len)
@@ -1020,6 +1419,12 @@ static void dom_shell_local_reset(dom_client_shell* shell)
     dom_shell_structure_init(&shell->structure);
     dom_shell_agents_reset(shell);
     dom_shell_networks_reset(shell);
+    dom_shell_playtest_reset(shell);
+    dom_shell_metrics_reset(shell);
+    dom_shell_variants_clear(shell->variants, &shell->variant_count);
+    dom_shell_variants_clear(shell->run_variants, &shell->run_variant_count);
+    shell->variant_mode = DOM_SHELL_VARIANT_MODE_AUTHORITATIVE;
+    shell->variant_mode_detail[0] = '\0';
     shell->last_intent[0] = '\0';
     shell->last_plan[0] = '\0';
     shell->next_intent_id = 1u;
@@ -1230,6 +1635,8 @@ static void dom_shell_network_tick_all(dom_client_shell* shell,
                          "network_id=%llu node=%llu result=failed reason=threshold",
                          (unsigned long long)net->network_id,
                          (unsigned long long)net->nodes[n].node_id);
+                shell->metrics.network_failures += 1u;
+                shell->metrics.tick_network_failures += 1u;
                 dom_shell_emit(shell, log, "client.network.fail", detail);
             }
         }
@@ -1240,6 +1647,8 @@ static void dom_shell_network_tick_all(dom_client_shell* shell,
                          "network_id=%llu edge=%llu result=failed",
                          (unsigned long long)net->network_id,
                          (unsigned long long)net->edges[e].edge_id);
+                shell->metrics.network_failures += 1u;
+                shell->metrics.tick_network_failures += 1u;
                 dom_shell_emit(shell, log, "client.network.fail", detail);
             }
         }
@@ -1261,6 +1670,8 @@ static void dom_shell_execute_agent_command(dom_client_shell* shell,
     if (!shell || !cmd) {
         return;
     }
+    shell->metrics.command_attempts += 1u;
+    shell->metrics.tick_command_attempts += 1u;
     belief = dom_shell_belief_for_agent(shell, cmd->agent_id);
     cap = dom_shell_cap_for_agent(shell, cmd->agent_id);
     goal = agent_goal_find(&shell->goal_registry, cmd->goal_id);
@@ -1376,6 +1787,8 @@ static void dom_shell_execute_agent_command(dom_client_shell* shell,
             dom_shell_emit(shell, log, "client.agent.command", detail);
         }
     } else {
+        shell->metrics.command_failures += 1u;
+        shell->metrics.tick_command_failures += 1u;
         if (goal) {
             agent_goal_record_failure(goal, (dom_act_time_t)shell->tick);
         }
@@ -1395,7 +1808,8 @@ static void dom_shell_execute_agent_command(dom_client_shell* shell,
 
 static int dom_shell_simulate_tick(dom_client_shell* shell,
                                    dom_app_ui_event_log* log,
-                                   int emit_text)
+                                   int emit_text,
+                                   int force)
 {
     u32 i;
     u32 commands_executed = 0u;
@@ -1404,7 +1818,20 @@ static int dom_shell_simulate_tick(dom_client_shell* shell,
         dom_shell_set_status(shell, "simulate=refused");
         return 0;
     }
+    if (shell->variant_mode == DOM_SHELL_VARIANT_MODE_FROZEN ||
+        shell->variant_mode == DOM_SHELL_VARIANT_MODE_TRANSFORM_ONLY) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_VARIANT, "variant mode blocks simulation");
+        dom_shell_set_status(shell, "simulate=refused");
+        return 0;
+    }
+    if (shell->playtest.paused && !force) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_PLAYTEST, "playtest paused");
+        dom_shell_set_status(shell, "simulate=refused");
+        return 0;
+    }
+    dom_shell_metrics_begin_tick(shell);
     shell->tick += 1u;
+    dom_shell_playtest_apply_scenarios(shell, log);
     dom_agent_goal_buffer_reset(&shell->goal_buffer);
     dom_agent_plan_buffer_reset(&shell->plan_buffer);
     dom_agent_command_buffer_reset(&shell->command_buffer);
@@ -1511,6 +1938,7 @@ static int dom_shell_simulate_tick(dom_client_shell* shell,
 
     dom_shell_network_tick_all(shell, log, (dom_act_time_t)shell->tick);
 
+    dom_shell_metrics_end_tick(shell);
     dom_shell_set_status(shell, "simulate=ok");
     if (emit_text) {
         printf("simulate=ok tick=%u commands=%u\n",
@@ -1637,6 +2065,7 @@ static int dom_shell_build_worlddef(const char* template_id,
                                     const dom_shell_policy_set* authority,
                                     const dom_shell_policy_set* mode,
                                     const dom_shell_policy_set* debug,
+                                    const dom_shell_policy_set* playtest,
                                     const dom_shell_node_def* nodes,
                                     uint32_t node_count,
                                     const dom_shell_edge_def* edges,
@@ -1702,6 +2131,8 @@ static int dom_shell_build_worlddef(const char* template_id,
     dom_shell_builder_append_policy_array(&b, mode);
     dom_shell_builder_append_text(&b, ",\"debug_policies\":");
     dom_shell_builder_append_policy_array(&b, debug);
+    dom_shell_builder_append_text(&b, ",\"playtest_policies\":");
+    dom_shell_builder_append_policy_array(&b, playtest);
     dom_shell_builder_append_char(&b, '}');
     dom_shell_builder_append_text(&b, ",\"spawn_spec\":{");
     dom_shell_builder_append_text(&b, "\"spawn_node_ref\":{\"node_id\":");
@@ -1748,6 +2179,7 @@ static int dom_shell_build_worlddef(const char* template_id,
         dom_shell_policy_set_copy(&summary->authority, authority);
         dom_shell_policy_set_copy(&summary->mode, mode);
         dom_shell_policy_set_copy(&summary->debug, debug);
+        dom_shell_policy_set_copy(&summary->playtest, playtest);
     }
     return 1;
 }
@@ -1757,6 +2189,7 @@ static int dom_shell_build_empty_universe(uint64_t seed,
                                           const dom_shell_policy_set* authority,
                                           const dom_shell_policy_set* mode,
                                           const dom_shell_policy_set* debug,
+                                          const dom_shell_policy_set* playtest,
                                           char* out_json,
                                           size_t out_cap,
                                           dom_shell_world_summary* summary,
@@ -1767,7 +2200,7 @@ static int dom_shell_build_empty_universe(uint64_t seed,
         { "universe.root", 0, "frame.universe.root", { "topology.universe" }, 1u }
     };
     return dom_shell_build_worlddef("builtin.empty_universe", "1.0.0", seed,
-                                    movement, authority, mode, debug,
+                                    movement, authority, mode, debug, playtest,
                                     nodes, 1u, 0, 0u,
                                     "universe.root", "frame.universe.root",
                                     out_json, out_cap, summary, err, err_cap);
@@ -1778,6 +2211,7 @@ static int dom_shell_build_minimal_system(uint64_t seed,
                                           const dom_shell_policy_set* authority,
                                           const dom_shell_policy_set* mode,
                                           const dom_shell_policy_set* debug,
+                                          const dom_shell_policy_set* playtest,
                                           char* out_json,
                                           size_t out_cap,
                                           dom_shell_world_summary* summary,
@@ -1795,7 +2229,7 @@ static int dom_shell_build_minimal_system(uint64_t seed,
         { "system.minimal", "body.minimal.primary" }
     };
     return dom_shell_build_worlddef("builtin.minimal_system", "1.0.0", seed,
-                                    movement, authority, mode, debug,
+                                    movement, authority, mode, debug, playtest,
                                     nodes, 3u, edges, 2u,
                                     "body.minimal.primary", "frame.body.minimal.primary",
                                     out_json, out_cap, summary, err, err_cap);
@@ -1806,6 +2240,7 @@ static int dom_shell_build_realistic_test(uint64_t seed,
                                           const dom_shell_policy_set* authority,
                                           const dom_shell_policy_set* mode,
                                           const dom_shell_policy_set* debug,
+                                          const dom_shell_policy_set* playtest,
                                           char* out_json,
                                           size_t out_cap,
                                           dom_shell_world_summary* summary,
@@ -1845,7 +2280,7 @@ static int dom_shell_build_realistic_test(uint64_t seed,
         { "system.test", "body.neptune" }
     };
     return dom_shell_build_worlddef("builtin.realistic_test_universe", "1.0.0", seed,
-                                    movement, authority, mode, debug,
+                                    movement, authority, mode, debug, playtest,
                                     nodes, 12u, edges, 11u,
                                     "body.earth", "frame.body.earth",
                                     out_json, out_cap, summary, err, err_cap);
@@ -1857,6 +2292,7 @@ static int dom_shell_generate_builtin(const dom_shell_template* entry,
                                       const dom_shell_policy_set* authority,
                                       const dom_shell_policy_set* mode,
                                       const dom_shell_policy_set* debug,
+                                      const dom_shell_policy_set* playtest,
                                       dom_shell_world_state* world,
                                       char* err,
                                       size_t err_cap)
@@ -1869,17 +2305,17 @@ static int dom_shell_generate_builtin(const dom_shell_template* entry,
         return 0;
     }
     if (strcmp(entry->template_id, "builtin.empty_universe") == 0) {
-        ok = dom_shell_build_empty_universe(seed, movement, authority, mode, debug,
+        ok = dom_shell_build_empty_universe(seed, movement, authority, mode, debug, playtest,
                                             world->worlddef_json,
                                             sizeof(world->worlddef_json),
                                             &world->summary, err, err_cap);
     } else if (strcmp(entry->template_id, "builtin.minimal_system") == 0) {
-        ok = dom_shell_build_minimal_system(seed, movement, authority, mode, debug,
+        ok = dom_shell_build_minimal_system(seed, movement, authority, mode, debug, playtest,
                                             world->worlddef_json,
                                             sizeof(world->worlddef_json),
                                             &world->summary, err, err_cap);
     } else if (strcmp(entry->template_id, "builtin.realistic_test_universe") == 0) {
-        ok = dom_shell_build_realistic_test(seed, movement, authority, mode, debug,
+        ok = dom_shell_build_realistic_test(seed, movement, authority, mode, debug, playtest,
                                             world->worlddef_json,
                                             sizeof(world->worlddef_json),
                                             &world->summary, err, err_cap);
@@ -1904,13 +2340,16 @@ void dom_client_shell_init(dom_client_shell* shell)
     }
     memset(shell, 0, sizeof(*shell));
     dom_shell_registry_init(&shell->registry);
+    dom_shell_variant_registry_init(&shell->variant_registry);
     dom_shell_world_reset(&shell->world);
     dom_shell_policy_set_clear(&shell->create_movement);
     dom_shell_policy_set_clear(&shell->create_authority);
     dom_shell_policy_set_clear(&shell->create_mode);
     dom_shell_policy_set_clear(&shell->create_debug);
+    dom_shell_policy_set_clear(&shell->create_playtest);
     dom_shell_policy_set_add(&shell->create_authority, DOM_SHELL_AUTH_POLICY);
     dom_shell_policy_set_add(&shell->create_mode, DOM_SHELL_MODE_FREE);
+    dom_shell_policy_set_add(&shell->create_playtest, DOM_SHELL_PLAYTEST_SANDBOX);
     shell->create_template_index = 0u;
     shell->create_seed = 0u;
     shell->events.head = 0u;
@@ -1944,7 +2383,6 @@ void dom_client_shell_tick(dom_client_shell* shell)
     if (!shell) {
         return;
     }
-    shell->tick += 1u;
 }
 
 const dom_shell_registry* dom_client_shell_registry(const dom_client_shell* shell)
@@ -2002,6 +2440,10 @@ int dom_client_shell_set_create_policy(dom_client_shell* shell, const char* set_
     }
     if (strcmp(set_name, "policy.debug") == 0 || strcmp(set_name, "debug") == 0) {
         dom_shell_policy_set_from_csv(&shell->create_debug, csv);
+        return 1;
+    }
+    if (strcmp(set_name, "policy.playtest") == 0 || strcmp(set_name, "playtest") == 0) {
+        dom_shell_policy_set_from_csv(&shell->create_playtest, csv);
         return 1;
     }
     return 0;
@@ -2085,6 +2527,7 @@ int dom_client_shell_create_world(dom_client_shell* shell,
                                     &shell->create_authority,
                                     &shell->create_mode,
                                     &shell->create_debug,
+                                    &shell->create_playtest,
                                     &shell->world,
                                     err, sizeof(err))) {
         dom_shell_set_refusal(shell, DOM_REFUSAL_TEMPLATE, err[0] ? err : "template failed");
@@ -2105,6 +2548,9 @@ int dom_client_shell_create_world(dom_client_shell* shell,
             shell->world.summary.spawn_node_id,
             sizeof(shell->world.current_node_id) - 1u);
     dom_shell_sync_world_pose(&shell->world);
+    dom_shell_variants_apply_defaults(shell);
+    shell->variant_mode = DOM_SHELL_VARIANT_MODE_AUTHORITATIVE;
+    shell->variant_mode_detail[0] = '\0';
     shell->world.active_mode[0] = '\0';
     if (shell->world.summary.mode.count > 0u) {
         strncpy(shell->world.active_mode,
@@ -2189,10 +2635,21 @@ static int dom_shell_write_save(dom_client_shell* shell, const char* path, char*
     fprintf(f, "policy.mode=%s\n", csv);
     dom_client_shell_policy_to_csv(&shell->world.summary.debug, csv, sizeof(csv));
     fprintf(f, "policy.debug=%s\n", csv);
+    dom_client_shell_policy_to_csv(&shell->world.summary.playtest, csv, sizeof(csv));
+    fprintf(f, "policy.playtest=%s\n", csv);
     fprintf(f, "summary_end\n");
     fprintf(f, "local_begin\n");
     fprintf(f, "tick=%u\n", (unsigned int)shell->tick);
     fprintf(f, "rng_seed=%llu\n", (unsigned long long)shell->rng_seed);
+    fprintf(f, "playtest_paused=%u\n", shell->playtest.paused ? 1u : 0u);
+    fprintf(f, "playtest_speed=%u\n", (unsigned int)shell->playtest.speed);
+    fprintf(f, "playtest_seed_override_set=%u\n", (unsigned int)shell->playtest.seed_override_set);
+    fprintf(f, "playtest_seed_override=%llu\n", (unsigned long long)shell->playtest.seed_override);
+    fprintf(f, "playtest_perturb_enabled=%u\n", (unsigned int)shell->playtest.perturb_enabled);
+    fprintf(f, "playtest_perturb_strength_q16=%u\n", (unsigned int)shell->playtest.perturb_strength_q16);
+    fprintf(f, "playtest_perturb_seed=%llu\n", (unsigned long long)shell->playtest.perturb_seed);
+    fprintf(f, "variant_mode=%s\n", dom_shell_variant_mode_name(shell->variant_mode));
+    fprintf(f, "variant_mode_detail=%s\n", shell->variant_mode_detail[0] ? shell->variant_mode_detail : "none");
     fprintf(f, "knowledge_mask=0x%08x\n", (unsigned int)shell->fields.knowledge_mask);
     fprintf(f, "confidence_q16=%u\n", (unsigned int)shell->fields.confidence_q16);
     fprintf(f, "uncertainty_q16=%u\n", (unsigned int)shell->fields.uncertainty_q16);
@@ -2216,10 +2673,51 @@ static int dom_shell_write_save(dom_client_shell* shell, const char* path, char*
     fprintf(f, "structure_failed=%u\n", (unsigned int)shell->structure.structure.failed);
     {
         dom_network_edge* edge = dom_network_find_edge(&shell->structure.network, 1u);
-        fprintf(f, "energy_edge_status=%u\n",
-                edge ? (unsigned int)edge->status : 0u);
+    fprintf(f, "energy_edge_status=%u\n",
+            edge ? (unsigned int)edge->status : 0u);
     }
     fprintf(f, "local_end\n");
+    fprintf(f, "variants_begin\n");
+    if (shell->variant_count > 0u) {
+        u32 i;
+        for (i = 0u; i < shell->variant_count; ++i) {
+            const dom_shell_variant_selection* sel = &shell->variants[i];
+            fprintf(f, "variant scope=world system=%s id=%s\n", sel->system_id, sel->variant_id);
+        }
+    }
+    if (shell->run_variant_count > 0u) {
+        u32 i;
+        for (i = 0u; i < shell->run_variant_count; ++i) {
+            const dom_shell_variant_selection* sel = &shell->run_variants[i];
+            fprintf(f, "variant scope=run system=%s id=%s\n", sel->system_id, sel->variant_id);
+        }
+    }
+    fprintf(f, "variants_end\n");
+    fprintf(f, "playtest_scenarios_begin\n");
+    if (shell->playtest.scenario_count > 0u) {
+        u32 i;
+        for (i = 0u; i < shell->playtest.scenario_count; ++i) {
+            const dom_shell_playtest_scenario* sc = &shell->playtest.scenarios[i];
+            fprintf(f,
+                    "scenario type=%u field_id=%u value=%d known=%u\n",
+                    (unsigned int)sc->type,
+                    (unsigned int)sc->field_id,
+                    (int)sc->value_q16,
+                    (unsigned int)sc->known);
+        }
+    }
+    fprintf(f, "playtest_scenarios_end\n");
+    fprintf(f, "metrics_begin\n");
+    fprintf(f, "metrics_simulate_ticks=%u\n", (unsigned int)shell->metrics.simulate_ticks);
+    fprintf(f, "metrics_process_attempts=%u\n", (unsigned int)shell->metrics.process_attempts);
+    fprintf(f, "metrics_process_failures=%u\n", (unsigned int)shell->metrics.process_failures);
+    fprintf(f, "metrics_process_refusals=%u\n", (unsigned int)shell->metrics.process_refusals);
+    fprintf(f, "metrics_command_attempts=%u\n", (unsigned int)shell->metrics.command_attempts);
+    fprintf(f, "metrics_command_failures=%u\n", (unsigned int)shell->metrics.command_failures);
+    fprintf(f, "metrics_network_failures=%u\n", (unsigned int)shell->metrics.network_failures);
+    fprintf(f, "metrics_idle_ticks=%u\n", (unsigned int)shell->metrics.idle_ticks);
+    fprintf(f, "metrics_scenario_injections=%u\n", (unsigned int)shell->metrics.scenario_injections);
+    fprintf(f, "metrics_end\n");
     fprintf(f, "agents_begin\n");
     fprintf(f, "next_agent_id=%llu\n", (unsigned long long)shell->next_agent_id);
     fprintf(f, "possessed_agent_id=%llu\n", (unsigned long long)shell->possessed_agent_id);
@@ -2529,6 +3027,9 @@ static int dom_shell_load_save_file(dom_client_shell* shell, const char* path, c
     int in_summary = 0;
     int in_local = 0;
     int in_events = 0;
+    int in_variants = 0;
+    int in_playtest_scenarios = 0;
+    int in_metrics = 0;
     int have_summary = 0;
     int in_agents = 0;
     int in_goals = 0;
@@ -2609,6 +3110,30 @@ static int dom_shell_load_save_file(dom_client_shell* shell, const char* path, c
         }
         if (strcmp(line, "local_end") == 0) {
             in_local = 0;
+            continue;
+        }
+        if (strcmp(line, "variants_begin") == 0) {
+            in_variants = 1;
+            continue;
+        }
+        if (strcmp(line, "variants_end") == 0) {
+            in_variants = 0;
+            continue;
+        }
+        if (strcmp(line, "playtest_scenarios_begin") == 0) {
+            in_playtest_scenarios = 1;
+            continue;
+        }
+        if (strcmp(line, "playtest_scenarios_end") == 0) {
+            in_playtest_scenarios = 0;
+            continue;
+        }
+        if (strcmp(line, "metrics_begin") == 0) {
+            in_metrics = 1;
+            continue;
+        }
+        if (strcmp(line, "metrics_end") == 0) {
+            in_metrics = 0;
             continue;
         }
         if (strcmp(line, "events_begin") == 0) {
@@ -2717,6 +3242,8 @@ static int dom_shell_load_save_file(dom_client_shell* shell, const char* path, c
                 dom_shell_policy_set_from_csv(&shell->world.summary.mode, val);
             } else if (strcmp(key, "policy.debug") == 0) {
                 dom_shell_policy_set_from_csv(&shell->world.summary.debug, val);
+            } else if (strcmp(key, "policy.playtest") == 0) {
+                dom_shell_policy_set_from_csv(&shell->world.summary.playtest, val);
             }
             continue;
         }
@@ -2727,6 +3254,47 @@ static int dom_shell_load_save_file(dom_client_shell* shell, const char* path, c
             }
             if (strncmp(line, "rng_seed=", 9) == 0) {
                 (void)dom_shell_parse_u64(line + 9, &shell->rng_seed);
+                continue;
+            }
+            if (strncmp(line, "playtest_paused=", 16) == 0) {
+                shell->playtest.paused = (int)strtoul(line + 16, 0, 10);
+                continue;
+            }
+            if (strncmp(line, "playtest_speed=", 15) == 0) {
+                shell->playtest.speed = (u32)strtoul(line + 15, 0, 10);
+                if (shell->playtest.speed == 0u) {
+                    shell->playtest.speed = 1u;
+                }
+                continue;
+            }
+            if (strncmp(line, "playtest_seed_override_set=", 27) == 0) {
+                shell->playtest.seed_override_set = (u32)strtoul(line + 27, 0, 10);
+                continue;
+            }
+            if (strncmp(line, "playtest_seed_override=", 23) == 0) {
+                (void)dom_shell_parse_u64(line + 23, &shell->playtest.seed_override);
+                continue;
+            }
+            if (strncmp(line, "playtest_perturb_enabled=", 25) == 0) {
+                shell->playtest.perturb_enabled = (u32)strtoul(line + 25, 0, 10);
+                continue;
+            }
+            if (strncmp(line, "playtest_perturb_strength_q16=", 30) == 0) {
+                shell->playtest.perturb_strength_q16 = (u32)strtoul(line + 30, 0, 10);
+                continue;
+            }
+            if (strncmp(line, "playtest_perturb_seed=", 22) == 0) {
+                (void)dom_shell_parse_u64(line + 22, &shell->playtest.perturb_seed);
+                continue;
+            }
+            if (strncmp(line, "variant_mode=", 13) == 0) {
+                shell->variant_mode = dom_shell_variant_mode_from_text(line + 13);
+                continue;
+            }
+            if (strncmp(line, "variant_mode_detail=", 20) == 0) {
+                strncpy(shell->variant_mode_detail, line + 20,
+                        sizeof(shell->variant_mode_detail) - 1u);
+                shell->variant_mode_detail[sizeof(shell->variant_mode_detail) - 1u] = '\0';
                 continue;
             }
             if (strncmp(line, "knowledge_mask=", 15) == 0) {
@@ -2773,6 +3341,121 @@ static int dom_shell_load_save_file(dom_client_shell* shell, const char* path, c
                 if (edge) {
                     edge->status = (u32)strtoul(line + 19, 0, 10);
                 }
+                continue;
+            }
+            continue;
+        }
+        if (in_variants) {
+            if (strncmp(line, "variant ", 8) == 0) {
+                char buf[256];
+                char* token = 0;
+                char* scope = 0;
+                char* system_id = 0;
+                char* variant_id = 0;
+                size_t len = strlen(line + 8);
+                if (len >= sizeof(buf)) {
+                    len = sizeof(buf) - 1u;
+                }
+                memcpy(buf, line + 8, len);
+                buf[len] = '\0';
+                token = strtok(buf, " ");
+                while (token) {
+                    char* eq = strchr(token, '=');
+                    if (eq) {
+                        *eq = '\0';
+                        if (strcmp(token, "scope") == 0) {
+                            scope = eq + 1;
+                        } else if (strcmp(token, "system") == 0) {
+                            system_id = eq + 1;
+                        } else if (strcmp(token, "id") == 0) {
+                            variant_id = eq + 1;
+                        }
+                    }
+                    token = strtok(0, " ");
+                }
+                if (system_id && variant_id) {
+                    dom_shell_variant_scope scope_id = dom_shell_variant_scope_from_text(scope);
+                    (void)dom_shell_variant_set_internal(shell,
+                                                         system_id,
+                                                         variant_id,
+                                                         scope_id,
+                                                         1,
+                                                         0,
+                                                         0u);
+                }
+            }
+            continue;
+        }
+        if (in_playtest_scenarios) {
+            if (strncmp(line, "scenario ", 9) == 0) {
+                dom_shell_playtest_scenario scenario;
+                char buf[256];
+                char* token = 0;
+                size_t len = strlen(line + 9);
+                if (len >= sizeof(buf)) {
+                    len = sizeof(buf) - 1u;
+                }
+                memset(&scenario, 0, sizeof(scenario));
+                memcpy(buf, line + 9, len);
+                buf[len] = '\0';
+                token = strtok(buf, " ");
+                while (token) {
+                    char* eq = strchr(token, '=');
+                    if (eq) {
+                        *eq = '\0';
+                        if (strcmp(token, "type") == 0) {
+                            scenario.type = (u32)strtoul(eq + 1, 0, 10);
+                        } else if (strcmp(token, "field_id") == 0) {
+                            scenario.field_id = (u32)strtoul(eq + 1, 0, 10);
+                        } else if (strcmp(token, "value") == 0) {
+                            scenario.value_q16 = (i32)strtol(eq + 1, 0, 10);
+                        } else if (strcmp(token, "known") == 0) {
+                            scenario.known = (u32)strtoul(eq + 1, 0, 10);
+                        }
+                    }
+                    token = strtok(0, " ");
+                }
+                if (shell->playtest.scenario_count < DOM_SHELL_PLAYTEST_SCENARIO_MAX) {
+                    shell->playtest.scenarios[shell->playtest.scenario_count++] = scenario;
+                }
+            }
+            continue;
+        }
+        if (in_metrics) {
+            if (strncmp(line, "metrics_simulate_ticks=", 23) == 0) {
+                shell->metrics.simulate_ticks = (u32)strtoul(line + 23, 0, 10);
+                continue;
+            }
+            if (strncmp(line, "metrics_process_attempts=", 25) == 0) {
+                shell->metrics.process_attempts = (u32)strtoul(line + 25, 0, 10);
+                continue;
+            }
+            if (strncmp(line, "metrics_process_failures=", 25) == 0) {
+                shell->metrics.process_failures = (u32)strtoul(line + 25, 0, 10);
+                continue;
+            }
+            if (strncmp(line, "metrics_process_refusals=", 25) == 0) {
+                shell->metrics.process_refusals = (u32)strtoul(line + 25, 0, 10);
+                continue;
+            }
+            if (strncmp(line, "metrics_command_attempts=", 25) == 0) {
+                shell->metrics.command_attempts = (u32)strtoul(line + 25, 0, 10);
+                continue;
+            }
+            if (strncmp(line, "metrics_command_failures=", 25) == 0) {
+                shell->metrics.command_failures = (u32)strtoul(line + 25, 0, 10);
+                continue;
+            }
+            if (strncmp(line, "metrics_network_failures=", 25) == 0) {
+                shell->metrics.network_failures = (u32)strtoul(line + 25, 0, 10);
+                continue;
+            }
+            if (strncmp(line, "metrics_idle_ticks=", 19) == 0) {
+                shell->metrics.idle_ticks = (u32)strtoul(line + 19, 0, 10);
+                continue;
+            }
+            if (strncmp(line, "metrics_scenario_injections=", 28) == 0) {
+                shell->metrics.scenario_injections = (u32)strtoul(line + 28, 0, 10);
                 continue;
             }
             continue;
@@ -3442,6 +4125,9 @@ static int dom_shell_load_save_file(dom_client_shell* shell, const char* path, c
     if (next_network_id > shell->next_network_id) {
         shell->next_network_id = next_network_id;
     }
+    if (shell->variant_count == 0u) {
+        dom_shell_variants_apply_defaults(shell);
+    }
     if (!have_summary || shell->world.summary.schema_version == 0u) {
         if (err && err_cap > 0u) {
             snprintf(err, err_cap, "summary missing");
@@ -3739,6 +4425,7 @@ static int dom_shell_run_local_process(dom_client_shell* shell,
     u64 intent_id;
     const char* name;
     int rc;
+    uint64_t perturb = 0u;
 
     if (!shell || !shell->world.active) {
         dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "no active world");
@@ -3748,8 +4435,28 @@ static int dom_shell_run_local_process(dom_client_shell* shell,
         }
         return D_APP_EXIT_UNAVAILABLE;
     }
+    if (shell->variant_mode == DOM_SHELL_VARIANT_MODE_FROZEN ||
+        shell->variant_mode == DOM_SHELL_VARIANT_MODE_TRANSFORM_ONLY) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_VARIANT, "variant mode blocks process");
+        dom_shell_set_status(shell, "process=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    if (shell->playtest.paused) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_PLAYTEST, "playtest paused");
+        dom_shell_set_status(shell, "process=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    dom_shell_metrics_begin_tick(shell);
     shell->tick += 1u;
     dom_local_process_desc_default(kind, &desc);
+    shell->metrics.process_attempts += 1u;
+    shell->metrics.tick_process_attempts += 1u;
     if (has_resource) {
         desc.resource_amount_q16 = resource_q16;
     }
@@ -3774,7 +4481,11 @@ static int dom_shell_run_local_process(dom_client_shell* shell,
     world.structure = &shell->structure.structure;
 
     memset(&ctx, 0, sizeof(ctx));
-    ctx.rng_seed = dom_shell_mix64(shell->rng_seed ^ shell->next_intent_id);
+    if (shell->playtest.perturb_enabled) {
+        perturb = dom_shell_mix64(shell->playtest.perturb_seed ^ (uint64_t)shell->tick);
+        perturb ^= (uint64_t)shell->playtest.perturb_strength_q16;
+    }
+    ctx.rng_seed = dom_shell_mix64(shell->rng_seed ^ shell->next_intent_id ^ perturb);
     ctx.knowledge_mask = shell->fields.knowledge_mask;
     ctx.confidence_q16 = shell->fields.confidence_q16;
     ctx.phys.now_act = (dom_act_time_t)shell->tick;
@@ -3816,6 +4527,7 @@ static int dom_shell_run_local_process(dom_client_shell* shell,
                      name, (unsigned long long)intent_id, (unsigned int)shell->tick);
             dom_shell_emit(shell, log, "client.process", detail);
         }
+        dom_shell_metrics_end_tick(shell);
         return D_APP_EXIT_OK;
     }
 
@@ -3823,6 +4535,8 @@ static int dom_shell_run_local_process(dom_client_shell* shell,
         result.process.failure_mode_id == DOM_PHYS_FAIL_NO_AUTHORITY) {
         dom_shell_set_refusal(shell, DOM_REFUSAL_PROCESS, dom_shell_failure_reason(result.process.failure_mode_id));
         dom_shell_set_status(shell, "process=refused");
+        shell->metrics.process_refusals += 1u;
+        shell->metrics.tick_process_refusals += 1u;
         if (status && status_cap > 0u) {
             snprintf(status, status_cap, "%s", shell->last_status);
         }
@@ -3838,6 +4552,7 @@ static int dom_shell_run_local_process(dom_client_shell* shell,
                      dom_shell_failure_reason(result.process.failure_mode_id));
             dom_shell_emit(shell, log, "client.process", detail);
         }
+        dom_shell_metrics_end_tick(shell);
         return D_APP_EXIT_UNAVAILABLE;
     }
 
@@ -3847,6 +4562,8 @@ static int dom_shell_run_local_process(dom_client_shell* shell,
                               : DOM_REFUSAL_PROCESS_FAIL,
                           dom_shell_failure_reason(result.process.failure_mode_id));
     dom_shell_set_status(shell, "process=failed");
+    shell->metrics.process_failures += 1u;
+    shell->metrics.tick_process_failures += 1u;
     if (status && status_cap > 0u) {
         snprintf(status, status_cap, "%s", shell->last_status);
     }
@@ -3865,6 +4582,7 @@ static int dom_shell_run_local_process(dom_client_shell* shell,
                  dom_shell_failure_reason(result.process.failure_mode_id));
         dom_shell_emit(shell, log, "client.process", detail);
     }
+    dom_shell_metrics_end_tick(shell);
     return D_APP_EXIT_OK;
 }
 
@@ -3900,8 +4618,179 @@ static void dom_shell_list_templates(const dom_client_shell* shell, int emit_tex
     }
 }
 
+static int dom_shell_variant_system_seen(char systems[][DOM_SHELL_VARIANT_SYSTEM_MAX],
+                                         uint32_t count,
+                                         const char* system_id)
+{
+    uint32_t i;
+    if (!system_id || !system_id[0]) {
+        return 1;
+    }
+    for (i = 0u; i < count; ++i) {
+        if (strcmp(systems[i], system_id) == 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+static void dom_shell_print_variants(const dom_client_shell* shell, int emit_text)
+{
+    uint32_t i;
+    char systems[DOM_SHELL_MAX_VARIANTS][DOM_SHELL_VARIANT_SYSTEM_MAX];
+    uint32_t system_count = 0u;
+    if (!shell || !emit_text) {
+        return;
+    }
+    printf("variant_registry=%u\n", (unsigned int)shell->variant_registry.count);
+    for (i = 0u; i < shell->variant_registry.count; ++i) {
+        const dom_shell_variant_entry* entry = &shell->variant_registry.entries[i];
+        printf("variant system=%s id=%s status=%s default=%u deprecated=%u\n",
+               entry->system_id,
+               entry->variant_id,
+               entry->status[0] ? entry->status : "unknown",
+               (unsigned int)entry->is_default,
+               (unsigned int)entry->deprecated);
+    }
+    for (i = 0u; i < shell->variant_registry.count; ++i) {
+        const dom_shell_variant_entry* entry = &shell->variant_registry.entries[i];
+        const char* active;
+        if (dom_shell_variant_system_seen(systems, system_count, entry->system_id)) {
+            continue;
+        }
+        strncpy(systems[system_count], entry->system_id, DOM_SHELL_VARIANT_SYSTEM_MAX - 1u);
+        systems[system_count][DOM_SHELL_VARIANT_SYSTEM_MAX - 1u] = '\0';
+        system_count += 1u;
+        active = dom_shell_variant_resolve(shell, entry->system_id);
+        printf("variant_active system=%s id=%s\n",
+               entry->system_id,
+               active ? active : "none");
+    }
+    for (i = 0u; i < shell->variant_count; ++i) {
+        const dom_shell_variant_selection* sel = &shell->variants[i];
+        printf("variant_world system=%s id=%s\n", sel->system_id, sel->variant_id);
+    }
+    for (i = 0u; i < shell->run_variant_count; ++i) {
+        const dom_shell_variant_selection* sel = &shell->run_variants[i];
+        printf("variant_run system=%s id=%s\n", sel->system_id, sel->variant_id);
+    }
+    printf("variant_mode=%s\n", dom_shell_variant_mode_name(shell->variant_mode));
+    if (shell->variant_mode_detail[0]) {
+        printf("variant_mode_detail=%s\n", shell->variant_mode_detail);
+    }
+}
+
+static void dom_shell_metrics_window_sum(const dom_shell_metrics_state* metrics,
+                                         uint32_t window,
+                                         dom_shell_metrics_window* out_sum,
+                                         uint32_t* out_ticks,
+                                         uint32_t* out_idle)
+{
+    uint32_t sample;
+    uint32_t i;
+    if (!metrics || !out_sum) {
+        return;
+    }
+    memset(out_sum, 0, sizeof(*out_sum));
+    if (metrics->window_count == 0u) {
+        if (out_ticks) {
+            *out_ticks = 0u;
+        }
+        if (out_idle) {
+            *out_idle = 0u;
+        }
+        return;
+    }
+    sample = metrics->window_count;
+    if (window > 0u && window < sample) {
+        sample = window;
+    }
+    if (out_ticks) {
+        *out_ticks = sample;
+    }
+    if (out_idle) {
+        *out_idle = 0u;
+    }
+    for (i = 0u; i < sample; ++i) {
+        uint32_t idx = (metrics->window_head + DOM_SHELL_METRIC_WINDOW_MAX - 1u - i) %
+                       DOM_SHELL_METRIC_WINDOW_MAX;
+        const dom_shell_metrics_window* entry = &metrics->window[idx];
+        out_sum->process_attempts += entry->process_attempts;
+        out_sum->process_failures += entry->process_failures;
+        out_sum->process_refusals += entry->process_refusals;
+        out_sum->command_attempts += entry->command_attempts;
+        out_sum->command_failures += entry->command_failures;
+        out_sum->network_failures += entry->network_failures;
+        if (out_idle && entry->process_attempts == 0u && entry->command_attempts == 0u) {
+            *out_idle += 1u;
+        }
+    }
+}
+
+static void dom_shell_print_metrics(const dom_client_shell* shell,
+                                    const char* slice,
+                                    const char* domain,
+                                    uint32_t window,
+                                    const char* policy,
+                                    int emit_text)
+{
+    dom_shell_metrics_window sum;
+    uint32_t ticks = 0u;
+    uint32_t idle = 0u;
+    double failure_rate = 0.0;
+    double bottleneck = 0.0;
+    double idle_rate = 0.0;
+    double institution_stability = 0.0;
+    uint32_t i;
+    char csv[256];
+    if (!shell || !emit_text) {
+        return;
+    }
+    if (!slice || !slice[0]) {
+        slice = "slice4";
+    }
+    if (!domain || !domain[0]) {
+        domain = "global";
+    }
+    if (!policy || !policy[0]) {
+        dom_client_shell_policy_to_csv(&shell->world.summary.playtest, csv, sizeof(csv));
+        policy = csv[0] ? csv : "none";
+    }
+    dom_shell_metrics_window_sum(&shell->metrics, window, &sum, &ticks, &idle);
+    if (sum.process_attempts + sum.command_attempts > 0u) {
+        failure_rate = (double)(sum.process_failures + sum.command_failures) /
+                       (double)(sum.process_attempts + sum.command_attempts);
+    }
+    if (ticks > 0u) {
+        bottleneck = (double)sum.network_failures / (double)ticks;
+        idle_rate = (double)idle / (double)ticks;
+    }
+    if (shell->institution_registry.count > 0u) {
+        double total = 0.0;
+        for (i = 0u; i < shell->institution_registry.count; ++i) {
+            total += (double)shell->institutions[i].legitimacy_q16 / 65536.0;
+        }
+        institution_stability = total / (double)shell->institution_registry.count;
+    }
+    printf("metrics=ok slice=%s domain=%s window=%u policy=%s\n",
+           slice, domain, (unsigned int)window, policy);
+    printf("metrics_ticks=%u\n", (unsigned int)ticks);
+    printf("metrics_process_attempts=%u\n", (unsigned int)sum.process_attempts);
+    printf("metrics_process_failures=%u\n", (unsigned int)sum.process_failures);
+    printf("metrics_process_refusals=%u\n", (unsigned int)sum.process_refusals);
+    printf("metrics_command_attempts=%u\n", (unsigned int)sum.command_attempts);
+    printf("metrics_command_failures=%u\n", (unsigned int)sum.command_failures);
+    printf("metrics_network_failures=%u\n", (unsigned int)sum.network_failures);
+    printf("metrics_idle_ticks=%u\n", (unsigned int)idle);
+    printf("metrics_failure_rate=%.3f\n", failure_rate);
+    printf("metrics_bottleneck_frequency=%.3f\n", bottleneck);
+    printf("metrics_agent_idle_rate=%.3f\n", idle_rate);
+    printf("metrics_institution_stability=%.3f\n", institution_stability);
+}
+
 static void dom_shell_print_world(const dom_client_shell* shell, int emit_text)
 {
+    char csv[256];
     if (!shell || !emit_text) {
         return;
     }
@@ -3918,6 +4807,12 @@ static void dom_shell_print_world(const dom_client_shell* shell, int emit_text)
            shell->world.position[1],
            shell->world.position[2]);
     printf("mode=%s\n", shell->world.active_mode[0] ? shell->world.active_mode : "none");
+    dom_client_shell_policy_to_csv(&shell->world.summary.playtest, csv, sizeof(csv));
+    printf("playtest=%s\n", csv[0] ? csv : "none");
+    printf("variant_mode=%s\n", dom_shell_variant_mode_name(shell->variant_mode));
+    if (shell->variant_mode_detail[0]) {
+        printf("variant_mode_detail=%s\n", shell->variant_mode_detail);
+    }
 }
 
 static char* dom_shell_trim_inplace(char* text)
@@ -4015,6 +4910,9 @@ int dom_client_shell_execute(dom_client_shell* shell,
             printf("          authority-grant authority-revoke authority-list\n");
             printf("          constraint-add constraint-revoke constraint-list institution-create institution-list\n");
             printf("          network-create network-node network-edge network-config network-list\n");
+            printf("          playtest-pause playtest-resume playtest-step playtest-fast-forward playtest-speed\n");
+            printf("          playtest-seed playtest-perturb playtest-scenario metrics\n");
+            printf("          variant-list variant-set variant-diff variant-mode\n");
         }
         dom_shell_set_status(shell, "help=ok");
         if (status && status_cap > 0u) {
@@ -4037,6 +4935,7 @@ int dom_client_shell_execute(dom_client_shell* shell,
         dom_shell_policy_set authority = shell->create_authority;
         dom_shell_policy_set mode = shell->create_mode;
         dom_shell_policy_set debug = shell->create_debug;
+        dom_shell_policy_set playtest = shell->create_playtest;
         while ((next = strtok(0, " \t")) != 0) {
             char* eq = strchr(next, '=');
             if (!eq) {
@@ -4057,6 +4956,8 @@ int dom_client_shell_execute(dom_client_shell* shell,
                 dom_shell_policy_set_from_csv(&mode, eq + 1);
             } else if (strcmp(next, "policy.debug") == 0) {
                 dom_shell_policy_set_from_csv(&debug, eq + 1);
+            } else if (strcmp(next, "policy.playtest") == 0) {
+                dom_shell_policy_set_from_csv(&playtest, eq + 1);
             }
         }
         shell->create_template_index = template_index;
@@ -4065,6 +4966,7 @@ int dom_client_shell_execute(dom_client_shell* shell,
         dom_shell_policy_set_copy(&shell->create_authority, &authority);
         dom_shell_policy_set_copy(&shell->create_mode, &mode);
         dom_shell_policy_set_copy(&shell->create_debug, &debug);
+        dom_shell_policy_set_copy(&shell->create_playtest, &playtest);
         return dom_client_shell_create_world(shell, log, status, status_cap, emit_text);
     }
     if (strcmp(token, "field-set") == 0) {
@@ -5311,11 +6213,588 @@ int dom_client_shell_execute(dom_client_shell* shell,
             ticks = 1u;
         }
         while (ticks--) {
-            (void)dom_shell_simulate_tick(shell, log, emit_text);
+            (void)dom_shell_simulate_tick(shell, log, emit_text, 0);
         }
         if (status && status_cap > 0u) {
             snprintf(status, status_cap, "%s", shell->last_status);
         }
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "playtest") == 0 || strcmp(token, "playtest-status") == 0) {
+        char csv[256];
+        if (!shell || !shell->world.active) {
+            dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "no active world");
+            dom_shell_set_status(shell, "playtest_status=refused");
+            if (status && status_cap > 0u) {
+                snprintf(status, status_cap, "%s", shell->last_status);
+            }
+            return D_APP_EXIT_UNAVAILABLE;
+        }
+        dom_client_shell_policy_to_csv(&shell->world.summary.playtest, csv, sizeof(csv));
+        if (emit_text) {
+            printf("playtest_status=ok\n");
+            printf("playtest_policies=%s\n", csv[0] ? csv : "none");
+            printf("playtest_paused=%u\n", shell->playtest.paused ? 1u : 0u);
+            printf("playtest_speed=%u\n", (unsigned int)shell->playtest.speed);
+            printf("playtest_seed_override_set=%u\n", (unsigned int)shell->playtest.seed_override_set);
+            printf("playtest_seed_override=%llu\n", (unsigned long long)shell->playtest.seed_override);
+            printf("playtest_perturb_enabled=%u\n", (unsigned int)shell->playtest.perturb_enabled);
+            printf("playtest_perturb_strength_q16=%u\n", (unsigned int)shell->playtest.perturb_strength_q16);
+            printf("playtest_perturb_seed=%llu\n", (unsigned long long)shell->playtest.perturb_seed);
+            printf("playtest_scenarios_pending=%u\n", (unsigned int)shell->playtest.scenario_count);
+        }
+        dom_shell_set_status(shell, "playtest_status=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.playtest.status", "result=ok");
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "playtest-pause") == 0) {
+        if (!dom_shell_playtest_allowed(shell)) {
+            dom_shell_set_refusal(shell, DOM_REFUSAL_PLAYTEST, "playtest policy missing");
+            dom_shell_set_status(shell, "playtest_pause=refused");
+            if (status && status_cap > 0u) {
+                snprintf(status, status_cap, "%s", shell->last_status);
+            }
+            return D_APP_EXIT_UNAVAILABLE;
+        }
+        shell->playtest.paused = 1;
+        dom_shell_set_status(shell, "playtest_pause=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        if (emit_text) {
+            printf("playtest_pause=ok\n");
+        }
+        dom_shell_emit(shell, log, "client.playtest.pause", "result=ok");
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "playtest-resume") == 0) {
+        if (!dom_shell_playtest_allowed(shell)) {
+            dom_shell_set_refusal(shell, DOM_REFUSAL_PLAYTEST, "playtest policy missing");
+            dom_shell_set_status(shell, "playtest_resume=refused");
+            if (status && status_cap > 0u) {
+                snprintf(status, status_cap, "%s", shell->last_status);
+            }
+            return D_APP_EXIT_UNAVAILABLE;
+        }
+        shell->playtest.paused = 0;
+        if (shell->playtest.speed == 0u) {
+            shell->playtest.speed = 1u;
+        }
+        dom_shell_set_status(shell, "playtest_resume=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        if (emit_text) {
+            printf("playtest_resume=ok\n");
+        }
+        dom_shell_emit(shell, log, "client.playtest.resume", "result=ok");
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "playtest-step") == 0) {
+        u32 ticks = 1u;
+        if (!dom_shell_playtest_allowed(shell)) {
+            dom_shell_set_refusal(shell, DOM_REFUSAL_PLAYTEST, "playtest policy missing");
+            dom_shell_set_status(shell, "playtest_step=refused");
+            if (status && status_cap > 0u) {
+                snprintf(status, status_cap, "%s", shell->last_status);
+            }
+            return D_APP_EXIT_UNAVAILABLE;
+        }
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (eq) {
+                *eq = '\0';
+                if (strcmp(next, "ticks") == 0 || strcmp(next, "count") == 0) {
+                    ticks = (u32)strtoul(eq + 1, 0, 10);
+                }
+            } else {
+                ticks = (u32)strtoul(next, 0, 10);
+            }
+        }
+        if (ticks == 0u) {
+            ticks = 1u;
+        }
+        while (ticks--) {
+            (void)dom_shell_simulate_tick(shell, log, emit_text, 1);
+        }
+        dom_shell_set_status(shell, "playtest_step=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        if (emit_text) {
+            printf("playtest_step=ok\n");
+        }
+        dom_shell_emit(shell, log, "client.playtest.step", "result=ok");
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "playtest-fast-forward") == 0 || strcmp(token, "playtest-ff") == 0) {
+        u32 ticks = shell->playtest.speed > 0u ? shell->playtest.speed : 1u;
+        if (!dom_shell_playtest_allowed(shell)) {
+            dom_shell_set_refusal(shell, DOM_REFUSAL_PLAYTEST, "playtest policy missing");
+            dom_shell_set_status(shell, "playtest_fast_forward=refused");
+            if (status && status_cap > 0u) {
+                snprintf(status, status_cap, "%s", shell->last_status);
+            }
+            return D_APP_EXIT_UNAVAILABLE;
+        }
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (eq) {
+                *eq = '\0';
+                if (strcmp(next, "ticks") == 0 || strcmp(next, "count") == 0) {
+                    ticks = (u32)strtoul(eq + 1, 0, 10);
+                } else if (strcmp(next, "speed") == 0) {
+                    ticks = (u32)strtoul(eq + 1, 0, 10);
+                    shell->playtest.speed = ticks ? ticks : 1u;
+                }
+            } else {
+                ticks = (u32)strtoul(next, 0, 10);
+            }
+        }
+        if (ticks == 0u) {
+            ticks = 1u;
+        }
+        while (ticks--) {
+            (void)dom_shell_simulate_tick(shell, log, emit_text, 1);
+        }
+        dom_shell_set_status(shell, "playtest_fast_forward=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        if (emit_text) {
+            printf("playtest_fast_forward=ok\n");
+        }
+        dom_shell_emit(shell, log, "client.playtest.fast_forward", "result=ok");
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "playtest-speed") == 0) {
+        u32 speed = 0u;
+        if (!dom_shell_playtest_allowed(shell)) {
+            dom_shell_set_refusal(shell, DOM_REFUSAL_PLAYTEST, "playtest policy missing");
+            dom_shell_set_status(shell, "playtest_speed=refused");
+            if (status && status_cap > 0u) {
+                snprintf(status, status_cap, "%s", shell->last_status);
+            }
+            return D_APP_EXIT_UNAVAILABLE;
+        }
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (eq) {
+                *eq = '\0';
+                if (strcmp(next, "speed") == 0) {
+                    speed = (u32)strtoul(eq + 1, 0, 10);
+                }
+            } else {
+                speed = (u32)strtoul(next, 0, 10);
+            }
+        }
+        if (speed == 0u) {
+            return D_APP_EXIT_USAGE;
+        }
+        shell->playtest.speed = speed;
+        dom_shell_set_status(shell, "playtest_speed=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        if (emit_text) {
+            printf("playtest_speed=ok speed=%u\n", (unsigned int)speed);
+        }
+        {
+            char detail[128];
+            snprintf(detail, sizeof(detail), "speed=%u result=ok", (unsigned int)speed);
+            dom_shell_emit(shell, log, "client.playtest.speed", detail);
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "playtest-seed") == 0) {
+        uint64_t seed = 0u;
+        int has_seed = 0;
+        if (!dom_shell_playtest_allowed(shell)) {
+            dom_shell_set_refusal(shell, DOM_REFUSAL_PLAYTEST, "playtest policy missing");
+            dom_shell_set_status(shell, "playtest_seed=refused");
+            if (status && status_cap > 0u) {
+                snprintf(status, status_cap, "%s", shell->last_status);
+            }
+            return D_APP_EXIT_UNAVAILABLE;
+        }
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (eq) {
+                *eq = '\0';
+                if (strcmp(next, "seed") == 0) {
+                    has_seed = dom_shell_parse_u64(eq + 1, &seed);
+                }
+            } else {
+                has_seed = dom_shell_parse_u64(next, &seed);
+            }
+        }
+        if (!has_seed) {
+            return D_APP_EXIT_USAGE;
+        }
+        shell->rng_seed = seed;
+        shell->playtest.seed_override = seed;
+        shell->playtest.seed_override_set = 1u;
+        dom_shell_set_status(shell, "playtest_seed=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        if (emit_text) {
+            printf("playtest_seed=ok seed=%llu\n", (unsigned long long)seed);
+        }
+        {
+            char detail[128];
+            snprintf(detail, sizeof(detail), "seed=%llu result=ok", (unsigned long long)seed);
+            dom_shell_emit(shell, log, "client.playtest.seed", detail);
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "playtest-perturb") == 0) {
+        int enable = shell->playtest.perturb_enabled ? 1 : 0;
+        int has_strength = 0;
+        i32 strength_q16 = (i32)shell->playtest.perturb_strength_q16;
+        uint64_t seed = shell->playtest.perturb_seed;
+        int has_seed = 0;
+        if (!dom_shell_playtest_allowed(shell)) {
+            dom_shell_set_refusal(shell, DOM_REFUSAL_PLAYTEST, "playtest policy missing");
+            dom_shell_set_status(shell, "playtest_perturb=refused");
+            if (status && status_cap > 0u) {
+                snprintf(status, status_cap, "%s", shell->last_status);
+            }
+            return D_APP_EXIT_UNAVAILABLE;
+        }
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (eq) {
+                *eq = '\0';
+                if (strcmp(next, "enable") == 0 || strcmp(next, "enabled") == 0) {
+                    enable = atoi(eq + 1) ? 1 : 0;
+                } else if (strcmp(next, "strength") == 0) {
+                    if (!dom_shell_parse_q16(eq + 1, &strength_q16)) {
+                        return D_APP_EXIT_USAGE;
+                    }
+                    has_strength = 1;
+                } else if (strcmp(next, "seed") == 0) {
+                    has_seed = dom_shell_parse_u64(eq + 1, &seed);
+                }
+            } else {
+                if (strcmp(next, "on") == 0) {
+                    enable = 1;
+                } else if (strcmp(next, "off") == 0) {
+                    enable = 0;
+                }
+            }
+        }
+        if (!has_strength && strength_q16 == 0) {
+            strength_q16 = (i32)(1 << 16);
+        }
+        if (!has_seed || seed == 0u) {
+            seed = shell->rng_seed;
+        }
+        shell->playtest.perturb_enabled = enable ? 1u : 0u;
+        shell->playtest.perturb_strength_q16 = (u32)strength_q16;
+        shell->playtest.perturb_seed = seed;
+        dom_shell_set_status(shell, "playtest_perturb=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        if (emit_text) {
+            printf("playtest_perturb=ok enabled=%u strength_q16=%u seed=%llu\n",
+                   enable ? 1u : 0u,
+                   (unsigned int)shell->playtest.perturb_strength_q16,
+                   (unsigned long long)shell->playtest.perturb_seed);
+        }
+        {
+            char detail[160];
+            snprintf(detail, sizeof(detail),
+                     "enabled=%u strength_q16=%u seed=%llu result=ok",
+                     enable ? 1u : 0u,
+                     (unsigned int)shell->playtest.perturb_strength_q16,
+                     (unsigned long long)shell->playtest.perturb_seed);
+            dom_shell_emit(shell, log, "client.playtest.perturb", detail);
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "playtest-scenario") == 0) {
+        const char* field_name = 0;
+        u32 field_id = 0u;
+        i32 value_q16 = 0;
+        int has_value = 0;
+        u32 known = 1u;
+        if (!dom_shell_playtest_allowed(shell)) {
+            dom_shell_set_refusal(shell, DOM_REFUSAL_PLAYTEST, "playtest policy missing");
+            dom_shell_set_status(shell, "playtest_scenario=refused");
+            if (status && status_cap > 0u) {
+                snprintf(status, status_cap, "%s", shell->last_status);
+            }
+            return D_APP_EXIT_UNAVAILABLE;
+        }
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (!eq) {
+                continue;
+            }
+            *eq = '\0';
+            if (strcmp(next, "field") == 0) {
+                field_name = eq + 1;
+            } else if (strcmp(next, "field_id") == 0) {
+                field_id = (u32)strtoul(eq + 1, 0, 10);
+            } else if (strcmp(next, "value") == 0) {
+                if (!dom_shell_parse_q16(eq + 1, &value_q16)) {
+                    return D_APP_EXIT_USAGE;
+                }
+                has_value = 1;
+            } else if (strcmp(next, "known") == 0) {
+                known = (u32)strtoul(eq + 1, 0, 10) ? 1u : 0u;
+            }
+        }
+        if (field_id == 0u && field_name) {
+            (void)dom_shell_field_name_to_id(&shell->fields, field_name, &field_id);
+        }
+        if (field_id == 0u || !has_value) {
+            return D_APP_EXIT_USAGE;
+        }
+        if (shell->playtest.scenario_count >= DOM_SHELL_PLAYTEST_SCENARIO_MAX) {
+            dom_shell_set_refusal(shell, DOM_REFUSAL_PLAYTEST, "scenario queue full");
+            dom_shell_set_status(shell, "playtest_scenario=refused");
+            if (status && status_cap > 0u) {
+                snprintf(status, status_cap, "%s", shell->last_status);
+            }
+            return D_APP_EXIT_UNAVAILABLE;
+        }
+        {
+            dom_shell_playtest_scenario scenario;
+            memset(&scenario, 0, sizeof(scenario));
+            scenario.type = DOM_SHELL_SCENARIO_FIELD;
+            scenario.field_id = field_id;
+            scenario.value_q16 = value_q16;
+            scenario.known = known;
+            shell->playtest.scenarios[shell->playtest.scenario_count++] = scenario;
+        }
+        dom_shell_set_status(shell, "playtest_scenario=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        if (emit_text) {
+            printf("playtest_scenario=ok field_id=%u\n", (unsigned int)field_id);
+        }
+        {
+            char detail[160];
+            snprintf(detail, sizeof(detail),
+                     "field_id=%u value=%d known=%u result=queued",
+                     (unsigned int)field_id,
+                     (int)value_q16,
+                     (unsigned int)known);
+            dom_shell_emit(shell, log, "client.playtest.scenario", detail);
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "playtest-policy") == 0) {
+        const char* csv = 0;
+        if (!shell || !shell->world.active) {
+            dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "no active world");
+            dom_shell_set_status(shell, "playtest_policy=refused");
+            if (status && status_cap > 0u) {
+                snprintf(status, status_cap, "%s", shell->last_status);
+            }
+            return D_APP_EXIT_UNAVAILABLE;
+        }
+        if ((next = strtok(0, " \t")) != 0) {
+            if (strncmp(next, "policy.playtest=", 16) == 0) {
+                csv = next + 16;
+            } else if (strncmp(next, "playtest=", 9) == 0) {
+                csv = next + 9;
+            } else {
+                csv = next;
+            }
+        }
+        if (!csv) {
+            return D_APP_EXIT_USAGE;
+        }
+        dom_shell_policy_set_from_csv(&shell->world.summary.playtest, csv);
+        dom_shell_set_status(shell, "playtest_policy=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        if (emit_text) {
+            printf("playtest_policy=ok\n");
+        }
+        dom_shell_emit(shell, log, "client.playtest.policy", "result=ok");
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "variant-list") == 0 || strcmp(token, "variants") == 0) {
+        dom_shell_print_variants(shell, emit_text);
+        dom_shell_set_status(shell, "variant_list=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.variant.list", "result=ok");
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "variant-set") == 0) {
+        const char* system_id = 0;
+        const char* variant_id = 0;
+        dom_shell_variant_scope scope = DOM_SHELL_VARIANT_SCOPE_WORLD;
+        char err_buf[96];
+        err_buf[0] = '\0';
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (!eq) {
+                continue;
+            }
+            *eq = '\0';
+            if (strcmp(next, "system") == 0) {
+                system_id = eq + 1;
+            } else if (strcmp(next, "variant") == 0 || strcmp(next, "id") == 0) {
+                variant_id = eq + 1;
+            } else if (strcmp(next, "scope") == 0) {
+                scope = dom_shell_variant_scope_from_text(eq + 1);
+            }
+        }
+        if (!system_id || !variant_id) {
+            return D_APP_EXIT_USAGE;
+        }
+        if (!dom_shell_variant_set_internal(shell, system_id, variant_id, scope, 0,
+                                            err_buf, sizeof(err_buf))) {
+            dom_shell_set_refusal(shell, DOM_REFUSAL_VARIANT, err_buf[0] ? err_buf : "variant set failed");
+            dom_shell_set_status(shell, "variant_set=refused");
+            if (status && status_cap > 0u) {
+                snprintf(status, status_cap, "%s", shell->last_status);
+            }
+            return D_APP_EXIT_UNAVAILABLE;
+        }
+        if (shell->variant_mode == DOM_SHELL_VARIANT_MODE_DEGRADED &&
+            dom_shell_variants_all_known(shell)) {
+            shell->variant_mode = DOM_SHELL_VARIANT_MODE_AUTHORITATIVE;
+            shell->variant_mode_detail[0] = '\0';
+        }
+        dom_shell_set_status(shell, "variant_set=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        if (emit_text) {
+            printf("variant_set=ok system=%s id=%s scope=%s\n",
+                   system_id, variant_id,
+                   scope == DOM_SHELL_VARIANT_SCOPE_RUN ? "run" : "world");
+        }
+        {
+            char detail[160];
+            snprintf(detail, sizeof(detail),
+                     "system=%s id=%s scope=%s result=ok",
+                     system_id, variant_id,
+                     scope == DOM_SHELL_VARIANT_SCOPE_RUN ? "run" : "world");
+            dom_shell_emit(shell, log, "client.variant.set", detail);
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "variant-mode") == 0) {
+        const char* mode_text = 0;
+        if ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (eq) {
+                *eq = '\0';
+                if (strcmp(next, "mode") == 0) {
+                    mode_text = eq + 1;
+                }
+            } else {
+                mode_text = next;
+            }
+        }
+        if (!mode_text) {
+            return D_APP_EXIT_USAGE;
+        }
+        shell->variant_mode = dom_shell_variant_mode_from_text(mode_text);
+        strncpy(shell->variant_mode_detail, "manual", sizeof(shell->variant_mode_detail) - 1u);
+        dom_shell_set_status(shell, "variant_mode=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        if (emit_text) {
+            printf("variant_mode=ok mode=%s\n", dom_shell_variant_mode_name(shell->variant_mode));
+        }
+        dom_shell_emit(shell, log, "client.variant.mode", "result=ok");
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "variant-diff") == 0) {
+        const char* left = "world";
+        const char* right = "active";
+        char systems[DOM_SHELL_MAX_VARIANTS][DOM_SHELL_VARIANT_SYSTEM_MAX];
+        u32 system_count = 0u;
+        u32 i;
+        int diffs = 0;
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (!eq) {
+                continue;
+            }
+            *eq = '\0';
+            if (strcmp(next, "left") == 0) {
+                left = eq + 1;
+            } else if (strcmp(next, "right") == 0) {
+                right = eq + 1;
+            }
+        }
+        if (emit_text) {
+            for (i = 0u; i < shell->variant_registry.count; ++i) {
+                const dom_shell_variant_entry* entry = &shell->variant_registry.entries[i];
+                const char* l;
+                const char* r;
+                if (dom_shell_variant_system_seen(systems, system_count, entry->system_id)) {
+                    continue;
+                }
+                strncpy(systems[system_count], entry->system_id, DOM_SHELL_VARIANT_SYSTEM_MAX - 1u);
+                systems[system_count][DOM_SHELL_VARIANT_SYSTEM_MAX - 1u] = '\0';
+                system_count += 1u;
+                l = dom_shell_variant_pick(shell, entry->system_id, left);
+                r = dom_shell_variant_pick(shell, entry->system_id, right);
+                if (strcmp(l ? l : "none", r ? r : "none") != 0) {
+                    printf("variant_diff system=%s left=%s right=%s\n",
+                           entry->system_id,
+                           l ? l : "none",
+                           r ? r : "none");
+                    diffs += 1;
+                }
+            }
+            if (diffs == 0) {
+                printf("variant_diff=none\n");
+            }
+        }
+        dom_shell_set_status(shell, "variant_diff=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.variant.diff", "result=ok");
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "metrics") == 0) {
+        const char* slice = 0;
+        const char* domain = 0;
+        const char* policy = 0;
+        u32 window = 0u;
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (!eq) {
+                continue;
+            }
+            *eq = '\0';
+            if (strcmp(next, "slice") == 0) {
+                slice = eq + 1;
+            } else if (strcmp(next, "domain") == 0) {
+                domain = eq + 1;
+            } else if (strcmp(next, "window") == 0) {
+                window = (u32)strtoul(eq + 1, 0, 10);
+            } else if (strcmp(next, "policy") == 0) {
+                policy = eq + 1;
+            }
+        }
+        dom_shell_print_metrics(shell, slice, domain, window, policy, emit_text);
+        dom_shell_set_status(shell, "metrics=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.metrics", "result=ok");
         return D_APP_EXIT_OK;
     }
     if (strcmp(token, "survey") == 0) {

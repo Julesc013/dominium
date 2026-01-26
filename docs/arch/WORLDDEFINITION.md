@@ -7,6 +7,9 @@ Scope: world description contract, creation, and load boundaries.
 A WorldDefinition is a complete, declarative description of an initial world
 state. It is the ONLY thing the engine needs to create or load a world.
 
+WorldDefinition is the ONLY world creation input. Templates must generate
+WorldDefinitions; no other creation path is allowed.
+
 WorldDefinitions are deterministic, serializable, extensible, provenance-
 tracked, and pack-agnostic.
 
@@ -60,6 +63,9 @@ Requirements:
 World creation occurs via templates that output WorldDefinitions. Built-in and
 pack templates register into the same registry, are presented identically, and
 produce the same WorldDefinition format. No provider is privileged.
+
+Built-in and pack templates are equivalent; their outputs are compared by
+deterministic WorldDefinition hash.
 
 The engine MUST NOT infer world structure or defaults outside the
 WorldDefinition. If a field is absent or unknown, the engine must refuse or

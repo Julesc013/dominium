@@ -1,6 +1,6 @@
 SCHEMA: save_and_replay.schema
 schema_id: dominium.schema.save_and_replay
-schema_version: 1.0.0
+schema_version: 1.1.0
 stability: core
 
 PURPOSE:
@@ -29,6 +29,7 @@ record save_record
     - schema_refs: [schema_ref]
   optional:
     - capability_expectations: [capability_ref]
+    - capability_lock_ref: capability_lock_ref
     - determinism_metadata: map
     - provenance_ref: provenance_ref
     - extensions: map
@@ -40,6 +41,7 @@ record replay_record
     - schema_refs: [schema_ref]
   optional:
     - capability_expectations: [capability_ref]
+    - capability_lock_ref: capability_lock_ref
     - determinism_metadata: map
     - provenance_ref: provenance_ref
     - extensions: map
@@ -64,6 +66,13 @@ record capability_ref
     - capability_id: id
   optional:
     - qualifier_tags: [tag]
+
+record capability_lock_ref
+  required:
+    - lock_id: id
+  optional:
+    - lock_hash: tag
+    - lock_tags: [tag]
 
 record provenance_ref
   required:

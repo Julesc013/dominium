@@ -13,7 +13,7 @@ Summary (current audit file counts):
 - ARCHIVED: 22
 - DEPRECATED BUT REFERENCED: 0
  
-- docs\DOCS_AUDIT_PROMPT0.md ; STATUS=UPDATED ; Intent=audit log for Prompt 0 ; Relevance=current audit record ; Conflicts=none ; Actions=created
+- docs\audit\DOCS_AUDIT_PROMPT0.md ; STATUS=UPDATED ; Intent=audit log for Prompt 0 ; Relevance=current audit record ; Conflicts=none ; Actions=created
 - docs\CONTRIBUTING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
 - docs\architecture\TERMINOLOGY.md ; STATUS=UPDATED ; Intent=canonical terminology ; Relevance=current canonical ; Conflicts=none ; Actions=created
 - docs\architecture\NON_GOALS.md ; STATUS=UPDATED ; Intent=explicit non-goals ; Relevance=current canonical ; Conflicts=none ; Actions=created

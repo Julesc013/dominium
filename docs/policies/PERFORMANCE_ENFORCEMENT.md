@@ -99,7 +99,7 @@ Profiling is mandatory and merge-blocking when budgets regress.
 
 **Enforcement**
 - PERF-PROFILE-001 verifies telemetry output presence and required metrics.
-- PERF-BUDGET-002 enforces tier budgets from `docs/PERF_BUDGETS.md`.
+- PERF-BUDGET-002 enforces tier budgets from `docs/policies/PERF_BUDGETS.md`.
 
 **Rationale**
 Budgets and telemetry make regressions observable and prevent performance drift across tiers.
