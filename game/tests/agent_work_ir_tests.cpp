@@ -279,6 +279,7 @@ static u64 hash_commands(const dom_agent_command_buffer* commands)
         h = fnv1a_u64(h, cmd->command_id);
         h = fnv1a_u64(h, cmd->agent_id);
         h = fnv1a_u64(h, cmd->process_id);
+        h = fnv1a_u32(h, cmd->process_kind);
         h = fnv1a_u64(h, cmd->goal_id);
         h = fnv1a_u64(h, cmd->target_id);
     }

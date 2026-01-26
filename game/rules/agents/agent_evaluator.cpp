@@ -174,13 +174,6 @@ static int agent_goal_preconditions_ok(const agent_goal* goal,
         }
         return 0;
     }
-    if ((ctx->authority_mask & goal->preconditions.required_authority) !=
-        goal->preconditions.required_authority) {
-        if (out_refusal) {
-            *out_refusal = AGENT_REFUSAL_INSUFFICIENT_AUTHORITY;
-        }
-        return 0;
-    }
     if ((ctx->knowledge_mask & goal->preconditions.required_knowledge) !=
         goal->preconditions.required_knowledge) {
         if (goal->flags & AGENT_GOAL_FLAG_ALLOW_UNKNOWN) {

@@ -443,6 +443,7 @@ u32 dom_agent_validate_plan_slice(dom_agent_plan_buffer* plans,
 {
     u32 i;
     u32 end;
+    (void)authority;
     if (!plans || !plans->entries || start_index >= plans->count || max_count == 0u) {
         return 0u;
     }
@@ -463,46 +464,28 @@ u32 dom_agent_validate_plan_slice(dom_agent_plan_buffer* plans,
             plan->valid = 0u;
             refusal = AGENT_REFUSAL_INSUFFICIENT_CAPABILITY;
         } else {
-            u32 effective_auth = cap->authority_mask;
-            if (authority) {
-                effective_auth = agent_authority_effective_mask(authority,
-                                                                plan->agent_id,
-                                                                effective_auth,
-                                                                now_act);
-            }
             if ((cap->capability_mask & plan->plan.required_capability_mask) !=
                 plan->plan.required_capability_mask) {
                 plan->valid = 0u;
                 refusal = AGENT_REFUSAL_INSUFFICIENT_CAPABILITY;
-            } else if ((effective_auth & plan->plan.required_authority_mask) !=
-                       plan->plan.required_authority_mask) {
-                u32 missing = plan->plan.required_authority_mask & ~effective_auth;
-                agent_refusal_code del_refusal = AGENT_REFUSAL_NONE;
-                agent_delegation* delegation = 0;
-                u32 step_ok = 1u;
-                if (delegations) {
-                    delegation = agent_delegation_find_for_delegatee((agent_delegation_registry*)delegations,
-                                                                     plan->agent_id, now_act);
-                }
-                if (!delegation ||
-                    (delegation->delegation_kind & AGENT_DELEGATION_AUTHORITY) == 0u ||
-                    (delegation->authority_mask & missing) != missing) {
-                    plan->valid = 0u;
-                    refusal = AGENT_REFUSAL_INSUFFICIENT_AUTHORITY;
-                } else {
-                    u32 s;
-                    for (s = 0u; s < plan->plan.step_count; ++s) {
-                        if (!agent_delegation_allows_process(delegation,
-                                                             plan->plan.steps[s].process_kind,
-                                                             now_act,
-                                                             &del_refusal)) {
-                            step_ok = 0u;
-                            break;
-                        }
-                    }
-                    if (!step_ok) {
+            }
+        }
+
+        if (plan->valid != 0u) {
+            if (goal_registry) {
+                agent_goal* goal = agent_goal_find(goal_registry, plan->plan.goal_id);
+                if (goal && (goal->flags & AGENT_GOAL_FLAG_REQUIRE_DELEGATION)) {
+                    agent_refusal_code del_refusal = AGENT_REFUSAL_NONE;
+                    if (!delegations ||
+                        agent_delegation_check_plan(delegations,
+                                                    plan->agent_id,
+                                                    &plan->plan,
+                                                    now_act,
+                                                    &del_refusal) != 0) {
                         plan->valid = 0u;
-                        refusal = del_refusal;
+                        refusal = (del_refusal != AGENT_REFUSAL_NONE)
+                            ? (u32)del_refusal
+                            : (u32)AGENT_REFUSAL_INSUFFICIENT_AUTHORITY;
                     }
                 }
             }
@@ -616,6 +599,7 @@ u32 dom_agent_emit_commands_slice(dom_agent_plan_buffer* plans,
         cmd.goal_id = plan_entry->plan.goal_id;
         cmd.step_index = plan_entry->plan.step_cursor;
         cmd.process_id = step->process_id;
+        cmd.process_kind = step->process_kind;
         cmd.target_id = step->target_ref;
         cmd.required_capability_mask = step->required_capability_mask;
         cmd.required_authority_mask = step->required_authority_mask;

@@ -37,6 +37,8 @@ typedef struct dom_network_node {
     u32 status;
     i32 capacity_q16;
     i32 stored_q16;
+    i32 loss_q16;
+    i32 min_required_q16;
 } dom_network_node;
 
 typedef struct dom_network_edge {
@@ -84,6 +86,25 @@ int dom_network_route_flow(dom_network_graph* graph,
                            i32 amount_q16,
                            dom_physical_audit_log* audit,
                            dom_act_time_t now_act);
+int dom_network_store(dom_network_graph* graph,
+                      u64 node_id,
+                      i32 amount_q16,
+                      dom_physical_audit_log* audit,
+                      dom_act_time_t now_act);
+int dom_network_withdraw(dom_network_graph* graph,
+                         u64 node_id,
+                         i32 amount_q16,
+                         dom_physical_audit_log* audit,
+                         dom_act_time_t now_act);
+int dom_network_transfer(dom_network_graph* graph,
+                         u64 from_node,
+                         u64 to_node,
+                         i32 amount_q16,
+                         dom_physical_audit_log* audit,
+                         dom_act_time_t now_act);
+int dom_network_tick(dom_network_graph* graph,
+                     dom_physical_audit_log* audit,
+                     dom_act_time_t now_act);
 int dom_network_fail_edge(dom_network_graph* graph,
                           u64 edge_id,
                           dom_physical_audit_log* audit,

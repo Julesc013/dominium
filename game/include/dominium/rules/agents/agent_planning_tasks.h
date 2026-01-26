@@ -143,6 +143,7 @@ typedef struct dom_agent_command {
     u64 goal_id;
     u32 step_index;
     dom_process_id process_id;
+    u32 process_kind;
     u64 target_id;
     u32 required_capability_mask;
     u32 required_authority_mask;

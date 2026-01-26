@@ -9,6 +9,8 @@ Client shell core (world creation, save/load, navigation).
 
 #include "dominium/app/ui_event_log.h"
 #include "dominium/physical/local_processes.h"
+#include "dominium/rules/agents/agent_planning_tasks.h"
+#include "dominium/agents/agent_institution.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -32,6 +34,16 @@ extern "C" {
 #define DOM_SHELL_FIELD_GRID_W 1u
 #define DOM_SHELL_FIELD_GRID_H 1u
 #define DOM_SHELL_INTENT_MAX 160u
+#define DOM_SHELL_AGENT_MAX 8u
+#define DOM_SHELL_GOAL_MAX 32u
+#define DOM_SHELL_DELEGATION_MAX 32u
+#define DOM_SHELL_AUTH_GRANT_MAX 32u
+#define DOM_SHELL_CONSTRAINT_MAX 32u
+#define DOM_SHELL_INSTITUTION_MAX 8u
+#define DOM_SHELL_AUDIT_MAX 128u
+#define DOM_SHELL_NETWORK_MAX 4u
+#define DOM_SHELL_NETWORK_NODE_MAX 16u
+#define DOM_SHELL_NETWORK_EDGE_MAX 24u
 
 #define DOM_SHELL_SAVE_HEADER "DOMINIUM_SAVE_V1"
 #define DOM_SHELL_REPLAY_HEADER "DOMINIUM_REPLAY_V1"
@@ -120,12 +132,77 @@ typedef struct dom_shell_structure_state {
     dom_network_edge edges[4];
 } dom_shell_structure_state;
 
+typedef enum dom_shell_delegation_status {
+    DOM_SHELL_DELEGATION_PENDING = 0,
+    DOM_SHELL_DELEGATION_ACCEPTED = 1,
+    DOM_SHELL_DELEGATION_REFUSED = 2,
+    DOM_SHELL_DELEGATION_REVOKED = 3,
+    DOM_SHELL_DELEGATION_EXPIRED = 4
+} dom_shell_delegation_status;
+
+typedef struct dom_shell_delegation_assignment {
+    u64 delegation_id;
+    u64 goal_id;
+    u64 delegator_id;
+    u64 delegatee_id;
+    u32 status;
+    u32 refusal;
+} dom_shell_delegation_assignment;
+
+typedef struct dom_shell_agent_record {
+    u64 agent_id;
+    u64 last_goal_id;
+    u32 last_goal_type;
+    u32 last_refusal;
+} dom_shell_agent_record;
+
+typedef struct dom_shell_network_state {
+    u64 network_id;
+    dom_network_graph graph;
+    dom_network_node nodes[DOM_SHELL_NETWORK_NODE_MAX];
+    dom_network_edge edges[DOM_SHELL_NETWORK_EDGE_MAX];
+} dom_shell_network_state;
+
 typedef struct dom_client_shell {
     dom_shell_registry registry;
     dom_shell_world_state world;
     dom_shell_event_ring events;
     dom_shell_field_state fields;
     dom_shell_structure_state structure;
+    dom_shell_agent_record agents[DOM_SHELL_AGENT_MAX];
+    u32 agent_count;
+    u64 next_agent_id;
+    u64 possessed_agent_id;
+    dom_agent_schedule_item schedules[DOM_SHELL_AGENT_MAX];
+    dom_agent_belief beliefs[DOM_SHELL_AGENT_MAX];
+    dom_agent_capability caps[DOM_SHELL_AGENT_MAX];
+    agent_goal goals[DOM_SHELL_GOAL_MAX];
+    agent_goal_registry goal_registry;
+    agent_delegation delegations[DOM_SHELL_DELEGATION_MAX];
+    agent_delegation_registry delegation_registry;
+    dom_shell_delegation_assignment delegation_assignments[DOM_SHELL_DELEGATION_MAX];
+    u32 delegation_assignment_count;
+    agent_authority_grant authority_grants[DOM_SHELL_AUTH_GRANT_MAX];
+    agent_authority_registry authority_registry;
+    agent_constraint constraints[DOM_SHELL_CONSTRAINT_MAX];
+    agent_constraint_registry constraint_registry;
+    agent_institution institutions[DOM_SHELL_INSTITUTION_MAX];
+    agent_institution_registry institution_registry;
+    dom_agent_goal_choice goal_choices[DOM_SHELL_AGENT_MAX];
+    dom_agent_goal_buffer goal_buffer;
+    dom_agent_plan plan_entries[DOM_SHELL_AGENT_MAX];
+    dom_agent_plan_buffer plan_buffer;
+    dom_agent_command command_entries[DOM_SHELL_AGENT_MAX * 2u];
+    dom_agent_command_buffer command_buffer;
+    dom_agent_audit_entry agent_audit_entries[DOM_SHELL_AUDIT_MAX];
+    dom_agent_audit_log agent_audit_log;
+    dom_shell_network_state networks[DOM_SHELL_NETWORK_MAX];
+    u32 network_count;
+    u64 next_network_id;
+    u64 next_delegation_id;
+    u64 next_authority_id;
+    u64 next_constraint_id;
+    u64 next_institution_id;
     dom_shell_policy_set create_movement;
     dom_shell_policy_set create_authority;
     dom_shell_policy_set create_mode;
