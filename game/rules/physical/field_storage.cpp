@@ -13,6 +13,24 @@ DETERMINISM: Field queries and updates are deterministic for identical inputs.
 
 #include <string.h>
 
+static const dom_physical_field_desc g_field_descs[] = {
+    { DOM_FIELD_SUPPORT_CAPACITY, "support_capacity", UNIT_FRACTION, DOM_FIELD_VALUE_Q16_16, 0u },
+    { DOM_FIELD_SURFACE_GRADIENT, "surface_gradient", UNIT_FRACTION, DOM_FIELD_VALUE_Q16_16, 0u },
+    { DOM_FIELD_LOCAL_MOISTURE, "local_moisture", UNIT_FRACTION, DOM_FIELD_VALUE_Q16_16, 0u },
+    { DOM_FIELD_ACCESSIBILITY_COST, "accessibility_cost", UNIT_FRACTION, DOM_FIELD_VALUE_Q16_16, 0u },
+    { DOM_FIELD_ELEVATION, "elevation", UNIT_HEIGHT_M, DOM_FIELD_VALUE_Q16_16, 0u },
+    { DOM_FIELD_SOIL_TYPE, "soil_type", UNIT_NONE, DOM_FIELD_VALUE_I32, 0u },
+    { DOM_FIELD_VEGETATION_BIOMASS, "vegetation_biomass", UNIT_FRACTION, DOM_FIELD_VALUE_Q16_16, 0u },
+    { DOM_FIELD_SURFACE_WATER, "surface_water", UNIT_DEPTH_M, DOM_FIELD_VALUE_Q16_16, 0u },
+    { DOM_FIELD_SUBSURFACE_WATER, "subsurface_water", UNIT_DEPTH_M, DOM_FIELD_VALUE_Q16_16, 0u },
+    { DOM_FIELD_POLLUTION, "pollution", UNIT_POLLUTION, DOM_FIELD_VALUE_Q16_16, 0u },
+    { DOM_FIELD_RADIATION, "radiation", UNIT_RADIATION_SV_S, DOM_FIELD_VALUE_Q16_16, 0u },
+    { DOM_FIELD_ORE_DENSITY, "ore_density", UNIT_DENSITY_KG_M3, DOM_FIELD_VALUE_Q16_16, 0u },
+    { DOM_FIELD_FOSSIL_ENERGY, "fossil_energy", UNIT_FRACTION, DOM_FIELD_VALUE_Q16_16, 0u },
+    { DOM_FIELD_GROUNDWATER, "groundwater", UNIT_DEPTH_M, DOM_FIELD_VALUE_Q16_16, 0u },
+    { DOM_FIELD_BIOMASS_POTENTIAL, "biomass_potential", UNIT_FRACTION, DOM_FIELD_VALUE_Q16_16, 0u }
+};
+
 void dom_field_storage_init(dom_field_storage* storage,
                             dom_domain_volume_ref domain,
                             u32 width,
@@ -155,6 +173,17 @@ int dom_field_fill(dom_field_storage* storage,
     count = storage->width * storage->height;
     for (i = 0u; i < count; ++i) {
         layer->values[i] = value;
+    }
+    return 0;
+}
+
+const dom_physical_field_desc* dom_physical_field_desc_get(u32 field_id)
+{
+    size_t i;
+    for (i = 0u; i < (sizeof(g_field_descs) / sizeof(g_field_descs[0])); ++i) {
+        if (g_field_descs[i].field_id == field_id) {
+            return &g_field_descs[i];
+        }
     }
     return 0;
 }

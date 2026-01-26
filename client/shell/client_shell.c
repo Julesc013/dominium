@@ -15,8 +15,18 @@ Client shell core implementation.
 #define DOM_REFUSAL_INVALID "WD-REFUSAL-INVALID"
 #define DOM_REFUSAL_SCHEMA "WD-REFUSAL-SCHEMA"
 #define DOM_REFUSAL_TEMPLATE "WD-REFUSAL-TEMPLATE"
+#define DOM_REFUSAL_PROCESS "PROC-REFUSAL"
+#define DOM_REFUSAL_PROCESS_FAIL "PROC-FAIL"
+#define DOM_REFUSAL_PROCESS_EPISTEMIC "PROC-REFUSAL-EPISTEMIC"
 
 #define DOM_SHELL_DEFAULT_SAVE_PATH "data/saves/world.save"
+
+#define DOM_SHELL_ACCESSIBILITY_MAX_Q16 (5 << 16)
+#define DOM_SHELL_SUPPORT_MIN_Q16 (1 << 16)
+#define DOM_SHELL_SURFACE_MAX_Q16 (10 << 16)
+#define DOM_SHELL_RESOURCE_AMOUNT_Q16 (1 << 16)
+#define DOM_SHELL_ENERGY_LOAD_Q16 (1 << 16)
+#define DOM_SHELL_ENERGY_CAPACITY_Q16 (4 << 16)
 
 typedef struct dom_shell_builder {
     char* buf;
@@ -385,6 +395,246 @@ static void dom_shell_set_refusal(dom_client_shell* shell, const char* code, con
         strncpy(shell->last_refusal_detail, detail, sizeof(shell->last_refusal_detail) - 1u);
         shell->last_refusal_detail[sizeof(shell->last_refusal_detail) - 1u] = '\0';
     }
+}
+
+static uint64_t dom_shell_mix64(uint64_t v)
+{
+    v ^= v >> 33;
+    v *= 0xff51afd7ed558ccdULL;
+    v ^= v >> 33;
+    v *= 0xc4ceb9fe1a85ec53ULL;
+    v ^= v >> 33;
+    return v;
+}
+
+static uint32_t dom_shell_hash32(uint64_t v)
+{
+    return (uint32_t)dom_shell_mix64(v);
+}
+
+static void dom_shell_fields_init(dom_shell_field_state* fields)
+{
+    dom_domain_volume_ref domain;
+    u32 i;
+    if (!fields) {
+        return;
+    }
+    memset(fields, 0, sizeof(*fields));
+    fields->field_ids[0] = DOM_FIELD_SUPPORT_CAPACITY;
+    fields->field_ids[1] = DOM_FIELD_SURFACE_GRADIENT;
+    fields->field_ids[2] = DOM_FIELD_LOCAL_MOISTURE;
+    fields->field_ids[3] = DOM_FIELD_ACCESSIBILITY_COST;
+    fields->field_count = 4u;
+    memset(&domain, 0, sizeof(domain));
+    dom_field_storage_init(&fields->objective,
+                           domain,
+                           DOM_SHELL_FIELD_GRID_W,
+                           DOM_SHELL_FIELD_GRID_H,
+                           0u,
+                           fields->objective_layers,
+                           DOM_SHELL_FIELD_MAX);
+    dom_field_storage_init(&fields->subjective,
+                           domain,
+                           DOM_SHELL_FIELD_GRID_W,
+                           DOM_SHELL_FIELD_GRID_H,
+                           0u,
+                           fields->subjective_layers,
+                           DOM_SHELL_FIELD_MAX);
+    for (i = 0u; i < fields->field_count; ++i) {
+        dom_field_layer_add(&fields->objective,
+                            fields->field_ids[i],
+                            DOM_FIELD_VALUE_Q16_16,
+                            DOM_FIELD_VALUE_UNKNOWN,
+                            DOM_FIELD_VALUE_UNKNOWN,
+                            fields->objective_values[i]);
+        dom_field_layer_add(&fields->subjective,
+                            fields->field_ids[i],
+                            DOM_FIELD_VALUE_Q16_16,
+                            DOM_FIELD_VALUE_UNKNOWN,
+                            DOM_FIELD_VALUE_UNKNOWN,
+                            fields->subjective_values[i]);
+    }
+    fields->knowledge_mask = 0u;
+    fields->confidence_q16 = 0u;
+    fields->uncertainty_q16 = 0u;
+}
+
+static void dom_shell_structure_init(dom_shell_structure_state* state)
+{
+    if (!state) {
+        return;
+    }
+    memset(state, 0, sizeof(*state));
+    dom_assembly_init(&state->assembly,
+                      1u,
+                      state->parts,
+                      (u32)(sizeof(state->parts) / sizeof(state->parts[0])),
+                      state->connections,
+                      (u32)(sizeof(state->connections) / sizeof(state->connections[0])));
+    dom_volume_claim_registry_init(&state->claims,
+                                   state->claim_storage,
+                                   (u32)(sizeof(state->claim_storage) / sizeof(state->claim_storage[0])));
+    dom_network_graph_init(&state->network,
+                           DOM_NETWORK_ELECTRICAL,
+                           state->nodes,
+                           (u32)(sizeof(state->nodes) / sizeof(state->nodes[0])),
+                           state->edges,
+                           (u32)(sizeof(state->edges) / sizeof(state->edges[0])));
+    dom_network_add_node(&state->network, 1u, DOM_SHELL_ENERGY_CAPACITY_Q16);
+    dom_network_add_node(&state->network, 2u, DOM_SHELL_ENERGY_CAPACITY_Q16);
+    dom_network_add_edge(&state->network, 1u, 1u, 2u, DOM_SHELL_ENERGY_CAPACITY_Q16, 0);
+    state->structure.structure_id = 1u;
+    state->structure.built = 0u;
+    state->structure.failed = 0u;
+}
+
+static int dom_shell_field_index(const dom_shell_field_state* fields, u32 field_id)
+{
+    u32 i;
+    if (!fields) {
+        return -1;
+    }
+    for (i = 0u; i < fields->field_count; ++i) {
+        if (fields->field_ids[i] == field_id) {
+            return (int)i;
+        }
+    }
+    return -1;
+}
+
+static i32 dom_shell_latent_value(const dom_client_shell* shell, u32 field_id)
+{
+    uint64_t seed = shell ? shell->rng_seed : 0u;
+    u32 h = dom_shell_hash32(seed ^ ((uint64_t)field_id * 0x9e3779b97f4a7c15ULL));
+    i32 base = 1;
+    i32 span = 4;
+    return (i32)((base + (int)(h % (u32)span)) << 16);
+}
+
+static int dom_shell_objective_value(dom_client_shell* shell, u32 field_id, i32* out_value)
+{
+    i32 value = 0;
+    if (!shell || !out_value) {
+        return 0;
+    }
+    if (dom_field_get_value(&shell->fields.objective, field_id, 0u, 0u, &value) != 0) {
+        return 0;
+    }
+    if (value == DOM_FIELD_VALUE_UNKNOWN) {
+        value = dom_shell_latent_value(shell, field_id);
+        (void)dom_field_set_value(&shell->fields.objective, field_id, 0u, 0u, value);
+    }
+    *out_value = value;
+    return 1;
+}
+
+static int dom_shell_parse_q16(const char* text, i32* out_value)
+{
+    char* end = 0;
+    double value;
+    if (!text || !out_value) {
+        return 0;
+    }
+    value = strtod(text, &end);
+    if (!end || *end != '\0') {
+        return 0;
+    }
+    if (value > 32767.0) {
+        value = 32767.0;
+    }
+    if (value < -32768.0) {
+        value = -32768.0;
+    }
+    *out_value = (i32)(value * 65536.0);
+    return 1;
+}
+
+static const char* dom_shell_process_name(u32 kind)
+{
+    switch (kind) {
+        case DOM_LOCAL_PROCESS_SURVEY: return "survey_local_area";
+        case DOM_LOCAL_PROCESS_COLLECT: return "collect_local_material";
+        case DOM_LOCAL_PROCESS_ASSEMBLE: return "assemble_simple_structure";
+        case DOM_LOCAL_PROCESS_CONNECT_ENERGY: return "connect_energy_source";
+        case DOM_LOCAL_PROCESS_INSPECT: return "inspect_structure";
+        case DOM_LOCAL_PROCESS_REPAIR: return "repair_structure";
+        default: return "unknown";
+    }
+}
+
+static const char* dom_shell_failure_reason(u32 mode_id)
+{
+    switch (mode_id) {
+        case DOM_PHYS_FAIL_NO_CAPABILITY: return "capability";
+        case DOM_PHYS_FAIL_NO_AUTHORITY: return "authority";
+        case DOM_PHYS_FAIL_CONSTRAINT: return "constraint";
+        case DOM_PHYS_FAIL_RESOURCE_EMPTY: return "resources";
+        case DOM_PHYS_FAIL_CAPACITY: return "capacity";
+        case DOM_PHYS_FAIL_UNSUPPORTED: return "unsupported";
+        case DOM_PHYS_FAIL_EPISTEMIC: return "epistemic";
+        default: return "unknown";
+    }
+}
+
+static void dom_shell_refine_required_fields(dom_client_shell* shell, u32 mask)
+{
+    u32 i;
+    if (!shell || mask == 0u) {
+        return;
+    }
+    for (i = 0u; i < 32u; ++i) {
+        u32 bit = (1u << i);
+        i32 value = 0;
+        if ((mask & bit) == 0u) {
+            continue;
+        }
+        if (dom_shell_objective_value(shell, i + 1u, &value)) {
+            (void)value;
+        }
+    }
+}
+
+static void dom_shell_local_reset(dom_client_shell* shell)
+{
+    if (!shell) {
+        return;
+    }
+    dom_shell_fields_init(&shell->fields);
+    dom_shell_structure_init(&shell->structure);
+    shell->last_intent[0] = '\0';
+    shell->last_plan[0] = '\0';
+    shell->next_intent_id = 1u;
+    shell->rng_seed = 0u;
+}
+
+static int dom_shell_field_name_to_id(const dom_shell_field_state* fields,
+                                      const char* name,
+                                      u32* out_id)
+{
+    u32 i;
+    if (!fields || !name || !out_id) {
+        return 0;
+    }
+    for (i = 0u; i < fields->field_count; ++i) {
+        const dom_physical_field_desc* desc = dom_physical_field_desc_get(fields->field_ids[i]);
+        if (desc && desc->name && strcmp(desc->name, name) == 0) {
+            *out_id = desc->field_id;
+            return 1;
+        }
+    }
+    return 0;
+}
+
+static void dom_shell_format_q16(char* out, size_t cap, i32 value)
+{
+    if (!out || cap == 0u) {
+        return;
+    }
+    if (value == DOM_FIELD_VALUE_UNKNOWN) {
+        snprintf(out, cap, "unknown");
+        return;
+    }
+    snprintf(out, cap, "%.3f", (double)value / 65536.0);
 }
 
 static void dom_shell_world_reset(dom_shell_world_state* world)
@@ -757,6 +1007,7 @@ void dom_client_shell_init(dom_client_shell* shell)
     shell->last_status[0] = '\0';
     shell->last_refusal_code[0] = '\0';
     shell->last_refusal_detail[0] = '\0';
+    dom_shell_local_reset(shell);
 }
 
 void dom_client_shell_reset(dom_client_shell* shell)
@@ -772,6 +1023,7 @@ void dom_client_shell_reset(dom_client_shell* shell)
     shell->last_status[0] = '\0';
     shell->last_refusal_code[0] = '\0';
     shell->last_refusal_detail[0] = '\0';
+    dom_shell_local_reset(shell);
 }
 
 void dom_client_shell_tick(dom_client_shell* shell)
@@ -857,6 +1109,25 @@ static int dom_shell_parse_u64(const char* text, uint64_t* out_value)
     return 1;
 }
 
+static int dom_shell_extract_seed(const char* worlddef_id, uint64_t* out_seed)
+{
+    const char* tag = ".seed.";
+    const char* pos;
+    if (!out_seed) {
+        return 0;
+    }
+    *out_seed = 0u;
+    if (!worlddef_id) {
+        return 0;
+    }
+    pos = strstr(worlddef_id, tag);
+    if (!pos) {
+        return 0;
+    }
+    pos += strlen(tag);
+    return dom_shell_parse_u64(pos, out_seed);
+}
+
 static void dom_shell_sync_world_pose(dom_shell_world_state* world)
 {
     if (!world) {
@@ -927,6 +1198,15 @@ int dom_client_shell_create_world(dom_client_shell* shell,
                 shell->world.summary.mode.items[0],
                 sizeof(shell->world.active_mode) - 1u);
     }
+    dom_shell_fields_init(&shell->fields);
+    dom_shell_structure_init(&shell->structure);
+    shell->fields.knowledge_mask = 0u;
+    shell->fields.confidence_q16 = 0u;
+    shell->fields.uncertainty_q16 = 0u;
+    shell->last_intent[0] = '\0';
+    shell->last_plan[0] = '\0';
+    shell->next_intent_id = 1u;
+    shell->rng_seed = shell->create_seed ? shell->create_seed : 1u;
     dom_shell_set_status(shell, "world_create=ok");
     if (status && status_cap > 0u) {
         snprintf(status, status_cap, "%s", shell->last_status);
@@ -995,6 +1275,35 @@ static int dom_shell_write_save(dom_client_shell* shell, const char* path, char*
     dom_client_shell_policy_to_csv(&shell->world.summary.debug, csv, sizeof(csv));
     fprintf(f, "policy.debug=%s\n", csv);
     fprintf(f, "summary_end\n");
+    fprintf(f, "local_begin\n");
+    fprintf(f, "rng_seed=%llu\n", (unsigned long long)shell->rng_seed);
+    fprintf(f, "knowledge_mask=0x%08x\n", (unsigned int)shell->fields.knowledge_mask);
+    fprintf(f, "confidence_q16=%u\n", (unsigned int)shell->fields.confidence_q16);
+    fprintf(f, "uncertainty_q16=%u\n", (unsigned int)shell->fields.uncertainty_q16);
+    if (shell->fields.field_count > 0u) {
+        u32 i;
+        for (i = 0u; i < shell->fields.field_count; ++i) {
+            u32 field_id = shell->fields.field_ids[i];
+            i32 obj = DOM_FIELD_VALUE_UNKNOWN;
+            i32 subj = DOM_FIELD_VALUE_UNKNOWN;
+            (void)dom_field_get_value(&shell->fields.objective, field_id, 0u, 0u, &obj);
+            (void)dom_field_get_value(&shell->fields.subjective, field_id, 0u, 0u, &subj);
+            fprintf(f,
+                    "field id=%u objective=%d subjective=%d known=%u\n",
+                    (unsigned int)field_id,
+                    (int)obj,
+                    (int)subj,
+                    (shell->fields.knowledge_mask & DOM_FIELD_BIT(field_id)) ? 1u : 0u);
+        }
+    }
+    fprintf(f, "structure_built=%u\n", (unsigned int)shell->structure.structure.built);
+    fprintf(f, "structure_failed=%u\n", (unsigned int)shell->structure.structure.failed);
+    {
+        dom_network_edge* edge = dom_network_find_edge(&shell->structure.network, 1u);
+        fprintf(f, "energy_edge_status=%u\n",
+                edge ? (unsigned int)edge->status : 0u);
+    }
+    fprintf(f, "local_end\n");
     fprintf(f, "events_begin\n");
     if (shell->events.count > 0u) {
         uint32_t i;
@@ -1092,6 +1401,7 @@ static int dom_shell_load_save_file(dom_client_shell* shell, const char* path, c
     int have_header = 0;
     int in_worlddef = 0;
     int in_summary = 0;
+    int in_local = 0;
     int in_events = 0;
     int have_summary = 0;
     if (!shell || !path || !path[0]) {
@@ -1108,6 +1418,7 @@ static int dom_shell_load_save_file(dom_client_shell* shell, const char* path, c
         return 0;
     }
     dom_shell_world_reset(&shell->world);
+    dom_shell_local_reset(shell);
     shell->events.head = 0u;
     shell->events.count = 0u;
     while (fgets(line, sizeof(line), f)) {
@@ -1141,6 +1452,14 @@ static int dom_shell_load_save_file(dom_client_shell* shell, const char* path, c
         if (strcmp(line, "summary_end") == 0) {
             in_summary = 0;
             have_summary = 1;
+            continue;
+        }
+        if (strcmp(line, "local_begin") == 0) {
+            in_local = 1;
+            continue;
+        }
+        if (strcmp(line, "local_end") == 0) {
+            in_local = 0;
             continue;
         }
         if (strcmp(line, "events_begin") == 0) {
@@ -1196,6 +1515,59 @@ static int dom_shell_load_save_file(dom_client_shell* shell, const char* path, c
             }
             continue;
         }
+        if (in_local) {
+            if (strncmp(line, "rng_seed=", 9) == 0) {
+                (void)dom_shell_parse_u64(line + 9, &shell->rng_seed);
+                continue;
+            }
+            if (strncmp(line, "knowledge_mask=", 15) == 0) {
+                shell->fields.knowledge_mask = (u32)strtoul(line + 15, 0, 0);
+                continue;
+            }
+            if (strncmp(line, "confidence_q16=", 15) == 0) {
+                shell->fields.confidence_q16 = (u32)strtoul(line + 15, 0, 10);
+                continue;
+            }
+            if (strncmp(line, "uncertainty_q16=", 16) == 0) {
+                shell->fields.uncertainty_q16 = (u32)strtoul(line + 16, 0, 10);
+                continue;
+            }
+            if (strncmp(line, "field ", 6) == 0) {
+                u32 field_id = 0u;
+                int obj = 0;
+                int subj = 0;
+                int known = 0;
+                if (sscanf(line, "field id=%u objective=%d subjective=%d known=%d",
+                           &field_id, &obj, &subj, &known) == 4) {
+                    if (field_id > 0u) {
+                        (void)dom_field_set_value(&shell->fields.objective,
+                                                  field_id, 0u, 0u, (i32)obj);
+                        (void)dom_field_set_value(&shell->fields.subjective,
+                                                  field_id, 0u, 0u, (i32)subj);
+                        if (known) {
+                            shell->fields.knowledge_mask |= DOM_FIELD_BIT(field_id);
+                        }
+                    }
+                }
+                continue;
+            }
+            if (strncmp(line, "structure_built=", 16) == 0) {
+                shell->structure.structure.built = (u32)strtoul(line + 16, 0, 10);
+                continue;
+            }
+            if (strncmp(line, "structure_failed=", 17) == 0) {
+                shell->structure.structure.failed = (u32)strtoul(line + 17, 0, 10);
+                continue;
+            }
+            if (strncmp(line, "energy_edge_status=", 19) == 0) {
+                dom_network_edge* edge = dom_network_find_edge(&shell->structure.network, 1u);
+                if (edge) {
+                    edge->status = (u32)strtoul(line + 19, 0, 10);
+                }
+                continue;
+            }
+            continue;
+        }
         if (in_events) {
             dom_shell_event_ring_add(&shell->events, "replay.event", line);
             continue;
@@ -1218,6 +1590,12 @@ static int dom_shell_load_save_file(dom_client_shell* shell, const char* path, c
         strncpy(shell->world.active_mode,
                 shell->world.summary.mode.items[0],
                 sizeof(shell->world.active_mode) - 1u);
+    }
+    if (shell->rng_seed == 0u) {
+        (void)dom_shell_extract_seed(shell->world.summary.worlddef_id, &shell->rng_seed);
+        if (shell->rng_seed == 0u) {
+            shell->rng_seed = 1u;
+        }
     }
     return 1;
 }
@@ -1441,11 +1819,21 @@ int dom_client_shell_move(dom_client_shell* shell, double dx, double dy, double 
                           dom_app_ui_event_log* log)
 {
     double adjusted_dz = dz;
+    i32 cost_q16 = DOM_FIELD_VALUE_UNKNOWN;
     if (!shell || !shell->world.active) {
         return 0;
     }
     if (!dom_shell_mode_allows_move(shell->world.active_mode, &adjusted_dz)) {
         return 0;
+    }
+    if (dom_shell_objective_value(shell, DOM_FIELD_ACCESSIBILITY_COST, &cost_q16)) {
+        if (cost_q16 != DOM_FIELD_VALUE_UNKNOWN && cost_q16 > DOM_SHELL_ACCESSIBILITY_MAX_Q16) {
+            dom_shell_set_refusal(shell, DOM_REFUSAL_PROCESS, "accessibility");
+            dom_shell_set_status(shell, "move=refused");
+            dom_shell_emit(shell, log, "client.nav.move",
+                           "result=refused reason=accessibility");
+            return 0;
+        }
     }
     shell->world.position[0] += dx;
     shell->world.position[1] += dy;
@@ -1459,6 +1847,157 @@ int dom_client_shell_move(dom_client_shell* shell, double dx, double dy, double 
         dom_shell_emit(shell, log, "client.nav.move", detail);
     }
     return 1;
+}
+
+static int dom_shell_run_local_process(dom_client_shell* shell,
+                                       u32 kind,
+                                       int has_resource,
+                                       i32 resource_q16,
+                                       int has_energy,
+                                       i32 energy_q16,
+                                       int has_min_support,
+                                       i32 min_support_q16,
+                                       int has_max_surface,
+                                       i32 max_surface_q16,
+                                       dom_app_ui_event_log* log,
+                                       char* status,
+                                       size_t status_cap,
+                                       int emit_text)
+{
+    dom_local_process_desc desc;
+    dom_local_process_world world;
+    dom_local_process_context ctx;
+    dom_local_process_result result;
+    u64 intent_id;
+    const char* name;
+    int rc;
+
+    if (!shell || !shell->world.active) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "no active world");
+        dom_shell_set_status(shell, "process=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    shell->tick += 1u;
+    dom_local_process_desc_default(kind, &desc);
+    if (has_resource) {
+        desc.resource_amount_q16 = resource_q16;
+    }
+    if (has_energy) {
+        desc.energy_load_q16 = energy_q16;
+    }
+    if (has_min_support) {
+        desc.min_support_capacity_q16 = min_support_q16;
+    }
+    if (has_max_surface) {
+        desc.max_surface_gradient_q16 = max_surface_q16;
+    }
+
+    dom_shell_refine_required_fields(shell, desc.required_field_mask);
+
+    memset(&world, 0, sizeof(world));
+    world.objective_fields = &shell->fields.objective;
+    world.subjective_fields = &shell->fields.subjective;
+    world.assembly = &shell->structure.assembly;
+    world.claims = &shell->structure.claims;
+    world.network = &shell->structure.network;
+    world.structure = &shell->structure.structure;
+
+    memset(&ctx, 0, sizeof(ctx));
+    ctx.rng_seed = dom_shell_mix64(shell->rng_seed ^ shell->next_intent_id);
+    ctx.knowledge_mask = shell->fields.knowledge_mask;
+    ctx.confidence_q16 = shell->fields.confidence_q16;
+    ctx.phys.now_act = (dom_act_time_t)shell->tick;
+    ctx.phys.capability_mask = DOM_PHYS_CAP_TERRAIN | DOM_PHYS_CAP_EXTRACTION |
+                               DOM_PHYS_CAP_CONSTRUCTION | DOM_PHYS_CAP_NETWORK |
+                               DOM_PHYS_CAP_MACHINE;
+    if (dom_shell_policy_set_contains(&shell->world.summary.authority, DOM_SHELL_AUTH_POLICY)) {
+        ctx.phys.authority_mask = DOM_PHYS_AUTH_TERRAIN | DOM_PHYS_AUTH_EXTRACTION |
+                                  DOM_PHYS_AUTH_CONSTRUCTION | DOM_PHYS_AUTH_NETWORK |
+                                  DOM_PHYS_AUTH_MAINTENANCE;
+    }
+
+    rc = dom_local_process_apply(&world, &desc, 0u, 0u, &ctx, &result);
+    intent_id = shell->next_intent_id++;
+    name = dom_shell_process_name(kind);
+    snprintf(shell->last_intent, sizeof(shell->last_intent),
+             "intent_id=%llu process=%s", (unsigned long long)intent_id, name);
+    snprintf(shell->last_plan, sizeof(shell->last_plan),
+             "plan_id=%llu step=1 process=%s", (unsigned long long)intent_id, name);
+
+    if (rc == 0 && result.process.ok) {
+        if (kind == DOM_LOCAL_PROCESS_SURVEY) {
+            shell->fields.knowledge_mask |= result.surveyed_field_mask;
+            shell->fields.confidence_q16 = result.confidence_q16;
+            shell->fields.uncertainty_q16 = result.uncertainty_q16;
+        }
+        dom_shell_set_status(shell, "process=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        if (emit_text) {
+            printf("process=ok process=%s intent_id=%llu\n",
+                   name, (unsigned long long)intent_id);
+        }
+        {
+            char detail[160];
+            snprintf(detail, sizeof(detail),
+                     "process=%s intent=%llu tick=%u result=ok",
+                     name, (unsigned long long)intent_id, (unsigned int)shell->tick);
+            dom_shell_emit(shell, log, "client.process", detail);
+        }
+        return D_APP_EXIT_OK;
+    }
+
+    if (result.process.failure_mode_id == DOM_PHYS_FAIL_NO_CAPABILITY ||
+        result.process.failure_mode_id == DOM_PHYS_FAIL_NO_AUTHORITY) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_PROCESS, dom_shell_failure_reason(result.process.failure_mode_id));
+        dom_shell_set_status(shell, "process=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        if (emit_text) {
+            printf("process=refused process=%s reason=%s\n",
+                   name, dom_shell_failure_reason(result.process.failure_mode_id));
+        }
+        {
+            char detail[160];
+            snprintf(detail, sizeof(detail),
+                     "process=%s intent=%llu tick=%u result=refused reason=%s",
+                     name, (unsigned long long)intent_id, (unsigned int)shell->tick,
+                     dom_shell_failure_reason(result.process.failure_mode_id));
+            dom_shell_emit(shell, log, "client.process", detail);
+        }
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+
+    dom_shell_set_refusal(shell,
+                          (result.process.failure_mode_id == DOM_PHYS_FAIL_EPISTEMIC)
+                              ? DOM_REFUSAL_PROCESS_EPISTEMIC
+                              : DOM_REFUSAL_PROCESS_FAIL,
+                          dom_shell_failure_reason(result.process.failure_mode_id));
+    dom_shell_set_status(shell, "process=failed");
+    if (status && status_cap > 0u) {
+        snprintf(status, status_cap, "%s", shell->last_status);
+    }
+    if (emit_text) {
+        printf("process=failed process=%s failure=%u reason=%s\n",
+               name,
+               (unsigned int)result.process.failure_mode_id,
+               dom_shell_failure_reason(result.process.failure_mode_id));
+    }
+    {
+        char detail[160];
+        snprintf(detail, sizeof(detail),
+                 "process=%s intent=%llu tick=%u result=failed failure=%u reason=%s",
+                 name, (unsigned long long)intent_id, (unsigned int)shell->tick,
+                 (unsigned int)result.process.failure_mode_id,
+                 dom_shell_failure_reason(result.process.failure_mode_id));
+        dom_shell_emit(shell, log, "client.process", detail);
+    }
+    return D_APP_EXIT_OK;
 }
 
 static int dom_shell_select_template(dom_client_shell* shell, const char* value, uint32_t* out_index)
@@ -1513,6 +2052,53 @@ static void dom_shell_print_world(const dom_client_shell* shell, int emit_text)
     printf("mode=%s\n", shell->world.active_mode[0] ? shell->world.active_mode : "none");
 }
 
+static char* dom_shell_trim_inplace(char* text)
+{
+    char* end;
+    if (!text) {
+        return text;
+    }
+    while (*text && isspace((unsigned char)*text)) {
+        text++;
+    }
+    end = text + strlen(text);
+    while (end > text && isspace((unsigned char)end[-1])) {
+        end--;
+    }
+    *end = '\0';
+    return text;
+}
+
+static int dom_shell_execute_batch(dom_client_shell* shell,
+                                   const char* script,
+                                   dom_app_ui_event_log* log,
+                                   char* status,
+                                   size_t status_cap,
+                                   int emit_text)
+{
+    char buf[512];
+    char* cursor;
+    int last = D_APP_EXIT_OK;
+    if (!script || !script[0]) {
+        return D_APP_EXIT_USAGE;
+    }
+    strncpy(buf, script, sizeof(buf) - 1u);
+    buf[sizeof(buf) - 1u] = '\0';
+    cursor = buf;
+    while (cursor) {
+        char* sep = strchr(cursor, ';');
+        if (sep) {
+            *sep = '\0';
+        }
+        cursor = dom_shell_trim_inplace(cursor);
+        if (cursor && cursor[0]) {
+            last = dom_client_shell_execute(shell, cursor, log, status, status_cap, emit_text);
+        }
+        cursor = sep ? (sep + 1u) : 0;
+    }
+    return last;
+}
+
 int dom_client_shell_execute(dom_client_shell* shell,
                              const char* cmdline,
                              dom_app_ui_event_log* log,
@@ -1529,6 +2115,14 @@ int dom_client_shell_execute(dom_client_shell* shell,
     if (!shell || !cmdline || !cmdline[0]) {
         return D_APP_EXIT_USAGE;
     }
+    if (strncmp(cmdline, "batch", 5) == 0 &&
+        (cmdline[5] == '\0' || isspace((unsigned char)cmdline[5]))) {
+        const char* script = cmdline + 5;
+        while (*script && isspace((unsigned char)*script)) {
+            script++;
+        }
+        return dom_shell_execute_batch(shell, script, log, status, status_cap, emit_text);
+    }
     strncpy(buf, cmdline, sizeof(buf) - 1u);
     buf[sizeof(buf) - 1u] = '\0';
     token = strtok(buf, " \t");
@@ -1537,7 +2131,8 @@ int dom_client_shell_execute(dom_client_shell* shell,
     }
     if (strcmp(token, "help") == 0) {
         if (emit_text) {
-            printf("commands: templates new-world load save inspect-replay mode where exit\n");
+            printf("commands: templates new-world load save inspect-replay mode where fields events\n");
+            printf("          survey collect assemble connect inspect repair field-set batch exit\n");
         }
         dom_shell_set_status(shell, "help=ok");
         if (status && status_cap > 0u) {
@@ -1589,6 +2184,270 @@ int dom_client_shell_execute(dom_client_shell* shell,
         dom_shell_policy_set_copy(&shell->create_mode, &mode);
         dom_shell_policy_set_copy(&shell->create_debug, &debug);
         return dom_client_shell_create_world(shell, log, status, status_cap, emit_text);
+    }
+    if (strcmp(token, "field-set") == 0) {
+        const char* field_name = 0;
+        const char* field_value = 0;
+        u32 field_id = 0u;
+        i32 value_q16 = 0;
+        int value_set = 0;
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (!eq) {
+                continue;
+            }
+            *eq = '\0';
+            if (strcmp(next, "field") == 0) {
+                field_name = eq + 1;
+            } else if (strcmp(next, "field_id") == 0) {
+                field_id = (u32)strtoul(eq + 1, 0, 10);
+            } else if (strcmp(next, "value") == 0) {
+                field_value = eq + 1;
+            }
+        }
+        if (field_id == 0u && field_name) {
+            (void)dom_shell_field_name_to_id(&shell->fields, field_name, &field_id);
+        }
+        if (!field_id || !field_value) {
+            return D_APP_EXIT_USAGE;
+        }
+        if (strcmp(field_value, "unknown") == 0 || strcmp(field_value, "latent") == 0) {
+            value_q16 = DOM_FIELD_VALUE_UNKNOWN;
+            value_set = 1;
+        } else {
+            value_set = dom_shell_parse_q16(field_value, &value_q16);
+        }
+        if (!value_set) {
+            return D_APP_EXIT_USAGE;
+        }
+        if (dom_field_set_value(&shell->fields.objective, field_id, 0u, 0u, value_q16) != 0) {
+            dom_shell_set_refusal(shell, DOM_REFUSAL_PROCESS, "field missing");
+            dom_shell_set_status(shell, "field_set=refused");
+            if (status && status_cap > 0u) {
+                snprintf(status, status_cap, "%s", shell->last_status);
+            }
+            return D_APP_EXIT_UNAVAILABLE;
+        }
+        dom_shell_set_status(shell, "field_set=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        if (emit_text) {
+            char buf[32];
+            dom_shell_format_q16(buf, sizeof(buf), value_q16);
+            printf("field_set=ok field_id=%u value=%s\n", (unsigned int)field_id, buf);
+        }
+        {
+            char detail[128];
+            char buf[32];
+            dom_shell_format_q16(buf, sizeof(buf), value_q16);
+            snprintf(detail, sizeof(detail), "field_id=%u value=%s", (unsigned int)field_id, buf);
+            dom_shell_emit(shell, log, "client.field.set", detail);
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "fields") == 0) {
+        u32 i;
+        if (emit_text) {
+            printf("fields=%u\n", (unsigned int)shell->fields.field_count);
+            printf("knowledge_mask=0x%08x confidence_q16=%u uncertainty_q16=%u\n",
+                   (unsigned int)shell->fields.knowledge_mask,
+                   (unsigned int)shell->fields.confidence_q16,
+                   (unsigned int)shell->fields.uncertainty_q16);
+            for (i = 0u; i < shell->fields.field_count; ++i) {
+                u32 field_id = shell->fields.field_ids[i];
+                i32 obj = DOM_FIELD_VALUE_UNKNOWN;
+                i32 subj = DOM_FIELD_VALUE_UNKNOWN;
+                char obj_buf[32];
+                char subj_buf[32];
+                const dom_physical_field_desc* desc = dom_physical_field_desc_get(field_id);
+                const char* name = desc && desc->name ? desc->name : "field";
+                (void)dom_field_get_value(&shell->fields.objective, field_id, 0u, 0u, &obj);
+                (void)dom_field_get_value(&shell->fields.subjective, field_id, 0u, 0u, &subj);
+                dom_shell_format_q16(obj_buf, sizeof(obj_buf), obj);
+                dom_shell_format_q16(subj_buf, sizeof(subj_buf), subj);
+                printf("field %s objective=%s subjective=%s known=%u\n",
+                       name,
+                       obj_buf,
+                       subj_buf,
+                       (shell->fields.knowledge_mask & DOM_FIELD_BIT(field_id)) ? 1u : 0u);
+            }
+        }
+        dom_shell_set_status(shell, "fields=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "events") == 0) {
+        if (emit_text) {
+            u32 i;
+            u32 idx = shell->events.head;
+            printf("events=%u\n", (unsigned int)shell->events.count);
+            for (i = 0u; i < shell->events.count; ++i) {
+                printf("%s\n", shell->events.lines[idx]);
+                idx = (idx + 1u) % DOM_SHELL_MAX_EVENTS;
+            }
+        }
+        dom_shell_set_status(shell, "events=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "survey") == 0) {
+        return dom_shell_run_local_process(shell,
+                                           DOM_LOCAL_PROCESS_SURVEY,
+                                           0, 0, 0, 0, 0, 0,
+                                           0, 0,
+                                           log, status, status_cap, emit_text);
+    }
+    if (strcmp(token, "collect") == 0) {
+        int has_amount = 0;
+        int has_min_support = 0;
+        int has_max_surface = 0;
+        i32 amount_q16 = 0;
+        i32 min_support_q16 = 0;
+        i32 max_surface_q16 = 0;
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (!eq) {
+                continue;
+            }
+            *eq = '\0';
+            if (strcmp(next, "amount") == 0) {
+                if (!dom_shell_parse_q16(eq + 1, &amount_q16)) {
+                    return D_APP_EXIT_USAGE;
+                }
+                has_amount = 1;
+            } else if (strcmp(next, "min_support") == 0) {
+                if (!dom_shell_parse_q16(eq + 1, &min_support_q16)) {
+                    return D_APP_EXIT_USAGE;
+                }
+                has_min_support = 1;
+            } else if (strcmp(next, "max_gradient") == 0) {
+                if (!dom_shell_parse_q16(eq + 1, &max_surface_q16)) {
+                    return D_APP_EXIT_USAGE;
+                }
+                has_max_surface = 1;
+            }
+        }
+        if (!has_amount) {
+            amount_q16 = DOM_SHELL_RESOURCE_AMOUNT_Q16;
+        }
+        if (!has_min_support) {
+            min_support_q16 = DOM_SHELL_SUPPORT_MIN_Q16;
+        }
+        if (!has_max_surface) {
+            max_surface_q16 = DOM_SHELL_SURFACE_MAX_Q16;
+        }
+        return dom_shell_run_local_process(shell,
+                                           DOM_LOCAL_PROCESS_COLLECT,
+                                           1, amount_q16,
+                                           0, 0,
+                                           1, min_support_q16,
+                                           1, max_surface_q16,
+                                           log, status, status_cap, emit_text);
+    }
+    if (strcmp(token, "assemble") == 0) {
+        int has_min_support = 0;
+        int has_max_surface = 0;
+        i32 min_support_q16 = 0;
+        i32 max_surface_q16 = 0;
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (!eq) {
+                continue;
+            }
+            *eq = '\0';
+            if (strcmp(next, "min_support") == 0) {
+                if (!dom_shell_parse_q16(eq + 1, &min_support_q16)) {
+                    return D_APP_EXIT_USAGE;
+                }
+                has_min_support = 1;
+            } else if (strcmp(next, "max_gradient") == 0) {
+                if (!dom_shell_parse_q16(eq + 1, &max_surface_q16)) {
+                    return D_APP_EXIT_USAGE;
+                }
+                has_max_surface = 1;
+            }
+        }
+        if (!has_min_support) {
+            min_support_q16 = DOM_SHELL_SUPPORT_MIN_Q16;
+        }
+        if (!has_max_surface) {
+            max_surface_q16 = DOM_SHELL_SURFACE_MAX_Q16;
+        }
+        return dom_shell_run_local_process(shell,
+                                           DOM_LOCAL_PROCESS_ASSEMBLE,
+                                           0, 0,
+                                           0, 0,
+                                           1, min_support_q16,
+                                           1, max_surface_q16,
+                                           log, status, status_cap, emit_text);
+    }
+    if (strcmp(token, "connect") == 0) {
+        int has_energy = 0;
+        i32 energy_q16 = 0;
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (!eq) {
+                continue;
+            }
+            *eq = '\0';
+            if (strcmp(next, "energy") == 0) {
+                if (!dom_shell_parse_q16(eq + 1, &energy_q16)) {
+                    return D_APP_EXIT_USAGE;
+                }
+                has_energy = 1;
+            }
+        }
+        if (!has_energy) {
+            energy_q16 = DOM_SHELL_ENERGY_LOAD_Q16;
+        }
+        return dom_shell_run_local_process(shell,
+                                           DOM_LOCAL_PROCESS_CONNECT_ENERGY,
+                                           0, 0,
+                                           1, energy_q16,
+                                           0, 0,
+                                           0, 0,
+                                           log, status, status_cap, emit_text);
+    }
+    if (strcmp(token, "inspect") == 0) {
+        return dom_shell_run_local_process(shell,
+                                           DOM_LOCAL_PROCESS_INSPECT,
+                                           0, 0,
+                                           0, 0,
+                                           0, 0,
+                                           0, 0,
+                                           log, status, status_cap, emit_text);
+    }
+    if (strcmp(token, "repair") == 0) {
+        int has_amount = 0;
+        i32 amount_q16 = 0;
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (!eq) {
+                continue;
+            }
+            *eq = '\0';
+            if (strcmp(next, "amount") == 0) {
+                if (!dom_shell_parse_q16(eq + 1, &amount_q16)) {
+                    return D_APP_EXIT_USAGE;
+                }
+                has_amount = 1;
+            }
+        }
+        if (!has_amount) {
+            amount_q16 = DOM_SHELL_RESOURCE_AMOUNT_Q16;
+        }
+        return dom_shell_run_local_process(shell,
+                                           DOM_LOCAL_PROCESS_REPAIR,
+                                           1, amount_q16,
+                                           0, 0,
+                                           0, 0,
+                                           0, 0,
+                                           log, status, status_cap, emit_text);
     }
     if (strcmp(token, "save") == 0) {
         const char* path = 0;

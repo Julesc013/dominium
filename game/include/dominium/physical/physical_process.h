@@ -43,7 +43,8 @@ enum {
     DOM_PHYS_FAIL_CONSTRAINT = 3,
     DOM_PHYS_FAIL_RESOURCE_EMPTY = 4,
     DOM_PHYS_FAIL_CAPACITY = 5,
-    DOM_PHYS_FAIL_UNSUPPORTED = 6
+    DOM_PHYS_FAIL_UNSUPPORTED = 6,
+    DOM_PHYS_FAIL_EPISTEMIC = 7
 };
 
 typedef struct dom_physical_process_context {
