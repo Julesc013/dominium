@@ -8,6 +8,7 @@ Client shell core (world creation, save/load, navigation).
 #include <stdint.h>
 
 #include "dominium/app/ui_event_log.h"
+#include "dominium/physical/local_processes.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -27,6 +28,10 @@ extern "C" {
 #define DOM_SHELL_EVENT_MAX 160u
 
 #define DOM_SHELL_WORLDDEF_MAX 65536u
+#define DOM_SHELL_FIELD_MAX 8u
+#define DOM_SHELL_FIELD_GRID_W 1u
+#define DOM_SHELL_FIELD_GRID_H 1u
+#define DOM_SHELL_INTENT_MAX 160u
 
 #define DOM_SHELL_SAVE_HEADER "DOMINIUM_SAVE_V1"
 #define DOM_SHELL_REPLAY_HEADER "DOMINIUM_REPLAY_V1"
@@ -89,10 +94,38 @@ typedef struct dom_shell_event_ring {
     uint32_t seq;
 } dom_shell_event_ring;
 
+typedef struct dom_shell_field_state {
+    dom_field_storage objective;
+    dom_field_storage subjective;
+    dom_field_layer objective_layers[DOM_SHELL_FIELD_MAX];
+    dom_field_layer subjective_layers[DOM_SHELL_FIELD_MAX];
+    i32 objective_values[DOM_SHELL_FIELD_MAX][DOM_SHELL_FIELD_GRID_W * DOM_SHELL_FIELD_GRID_H];
+    i32 subjective_values[DOM_SHELL_FIELD_MAX][DOM_SHELL_FIELD_GRID_W * DOM_SHELL_FIELD_GRID_H];
+    u32 field_ids[DOM_SHELL_FIELD_MAX];
+    u32 field_count;
+    u32 knowledge_mask;
+    u32 confidence_q16;
+    u32 uncertainty_q16;
+} dom_shell_field_state;
+
+typedef struct dom_shell_structure_state {
+    dom_local_structure_state structure;
+    dom_assembly assembly;
+    dom_assembly_part parts[4];
+    dom_assembly_connection connections[4];
+    dom_volume_claim_registry claims;
+    dom_volume_claim claim_storage[4];
+    dom_network_graph network;
+    dom_network_node nodes[4];
+    dom_network_edge edges[4];
+} dom_shell_structure_state;
+
 typedef struct dom_client_shell {
     dom_shell_registry registry;
     dom_shell_world_state world;
     dom_shell_event_ring events;
+    dom_shell_field_state fields;
+    dom_shell_structure_state structure;
     dom_shell_policy_set create_movement;
     dom_shell_policy_set create_authority;
     dom_shell_policy_set create_mode;
@@ -103,6 +136,10 @@ typedef struct dom_client_shell {
     char last_status[DOM_SHELL_STATUS_MAX];
     char last_refusal_code[32];
     char last_refusal_detail[DOM_SHELL_STATUS_MAX];
+    char last_intent[DOM_SHELL_INTENT_MAX];
+    char last_plan[DOM_SHELL_INTENT_MAX];
+    uint64_t next_intent_id;
+    uint64_t rng_seed;
 } dom_client_shell;
 
 void dom_client_shell_init(dom_client_shell* shell);

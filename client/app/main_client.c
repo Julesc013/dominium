@@ -941,6 +941,18 @@ static void client_ui_add_line(char lines[][CLIENT_UI_LABEL_MAX],
     *count += 1;
 }
 
+static void client_ui_format_q16(char* out, size_t cap, i32 value)
+{
+    if (!out || cap == 0u) {
+        return;
+    }
+    if (value == DOM_FIELD_VALUE_UNKNOWN) {
+        snprintf(out, cap, "unknown");
+        return;
+    }
+    snprintf(out, cap, "%.3f", (double)value / 65536.0);
+}
+
 static int client_policy_has(const dom_shell_policy_set* set, const char* id)
 {
     uint32_t i;
@@ -1093,6 +1105,59 @@ static void client_ui_build_lines(const client_ui_state* state,
             dom_client_shell_policy_to_csv(&world->summary.debug, csv, sizeof(csv));
             client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "debug=%s", csv[0] ? csv : "none");
             client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "tick=%u", (unsigned int)state->tick);
+            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "intent=%s",
+                               state->shell.last_intent[0] ? state->shell.last_intent : "none");
+            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "plan=%s",
+                               state->shell.last_plan[0] ? state->shell.last_plan : "none");
+            if (state->shell.last_refusal_code[0] &&
+                (strstr(state->shell.last_status, "refused") || strstr(state->shell.last_status, "failed"))) {
+                client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "refusal=%s detail=%s",
+                                   state->shell.last_refusal_code,
+                                   state->shell.last_refusal_detail[0] ? state->shell.last_refusal_detail : "none");
+            } else {
+                client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "refusal=none");
+            }
+            {
+                const dom_shell_field_state* fields = &state->shell.fields;
+                char conf_buf[32];
+                char unc_buf[32];
+                u32 i;
+                client_ui_format_q16(conf_buf, sizeof(conf_buf), (i32)fields->confidence_q16);
+                client_ui_format_q16(unc_buf, sizeof(unc_buf), (i32)fields->uncertainty_q16);
+                client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES,
+                                   "fields=%u knowledge=0x%08x confidence=%s uncertainty=%s",
+                                   (unsigned int)fields->field_count,
+                                   (unsigned int)fields->knowledge_mask,
+                                   conf_buf,
+                                   unc_buf);
+                for (i = 0u; i < fields->field_count && count < CLIENT_UI_MAX_LINES; ++i) {
+                    u32 field_id = fields->field_ids[i];
+                    i32 obj = DOM_FIELD_VALUE_UNKNOWN;
+                    i32 subj = DOM_FIELD_VALUE_UNKNOWN;
+                    char obj_buf[32];
+                    char subj_buf[32];
+                    const dom_physical_field_desc* desc = dom_physical_field_desc_get(field_id);
+                    const char* name = desc && desc->name ? desc->name : "field";
+                    (void)dom_field_get_value(&fields->objective, field_id, 0u, 0u, &obj);
+                    (void)dom_field_get_value(&fields->subjective, field_id, 0u, 0u, &subj);
+                    client_ui_format_q16(obj_buf, sizeof(obj_buf), obj);
+                    client_ui_format_q16(subj_buf, sizeof(subj_buf), subj);
+                    client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES,
+                                       "field %s objective=%s subjective=%s known=%u",
+                                       name,
+                                       obj_buf,
+                                       subj_buf,
+                                       (fields->knowledge_mask & DOM_FIELD_BIT(field_id)) ? 1u : 0u);
+                }
+            }
+            if (state->event_count > 0) {
+                int i;
+                int start = state->event_count > 3 ? (state->event_count - 3) : 0;
+                client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "event_tail:");
+                for (i = start; i < state->event_count && count < CLIENT_UI_MAX_LINES; ++i) {
+                    client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s", state->event_lines[i]);
+                }
+            }
         }
         client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES,
                            "Keys: WASD move, R/F up/down, 1-3 modes, ` console, B back");

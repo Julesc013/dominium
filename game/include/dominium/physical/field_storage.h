@@ -15,6 +15,7 @@ DETERMINISM: Field queries and updates are deterministic for identical inputs.
 #include "domino/core/types.h"
 #include "domino/domain.h"
 #include "domino/dnumeric.h"
+#include "domino/dfield.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -40,8 +41,13 @@ typedef enum dom_physical_field_id {
     DOM_FIELD_ORE_DENSITY = 11,
     DOM_FIELD_FOSSIL_ENERGY = 12,
     DOM_FIELD_GROUNDWATER = 13,
-    DOM_FIELD_BIOMASS_POTENTIAL = 14
+    DOM_FIELD_BIOMASS_POTENTIAL = 14,
+    DOM_FIELD_ACCESSIBILITY_COST = 15
 } dom_physical_field_id;
+
+#define DOM_FIELD_SUPPORT_CAPACITY DOM_FIELD_BEARING_CAPACITY
+#define DOM_FIELD_SURFACE_GRADIENT DOM_FIELD_SLOPE
+#define DOM_FIELD_LOCAL_MOISTURE DOM_FIELD_MOISTURE
 
 #define DOM_FIELD_BIT(id) (1u << ((id) - 1u))
 #define DOM_FIELD_VALUE_UNKNOWN ((i32)0x80000000)
@@ -63,6 +69,14 @@ typedef struct dom_field_storage {
     u32 layer_count;
     u32 layer_capacity;
 } dom_field_storage;
+
+typedef struct dom_physical_field_desc {
+    u32 field_id;
+    const char* name;
+    UnitKind unit;
+    u32 value_type;
+    u32 lod_level;
+} dom_physical_field_desc;
 
 void dom_field_storage_init(dom_field_storage* storage,
                             dom_domain_volume_ref domain,
@@ -92,6 +106,7 @@ int dom_field_set_value(dom_field_storage* storage,
 int dom_field_fill(dom_field_storage* storage,
                    u32 field_id,
                    i32 value);
+const dom_physical_field_desc* dom_physical_field_desc_get(u32 field_id);
 
 #ifdef __cplusplus
 } /* extern "C" */

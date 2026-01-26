@@ -40,6 +40,19 @@ dom_add_testx(NAME slice0_hardcoded_ids
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )
 
+dom_add_testx(NAME slice1_physical_contracts
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/slice1_physical_tests.py
+        --client $<TARGET_FILE:dominium_client>
+        --temp-root ${CMAKE_BINARY_DIR}/tests/slice1_physical
+    LABELS ${DOM_TESTX_LABEL_SMOKE}
+)
+
+dom_add_testx(NAME slice1_hardcoded_constants
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/slice1_hardcoded_constants.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
 dom_add_testx(NAME world_definition_contracts
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/ci/validate_world_definition.py
         --repo-root ${CMAKE_SOURCE_DIR}
