@@ -17,6 +17,7 @@ Stub tools host entrypoint; replace with tool router once runtime is wired.
 #include "dominium/app/readonly_adapter.h"
 #include "dominium/app/readonly_format.h"
 #include "dominium/app/ui_event_log.h"
+#include "scale/scale_cli.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -70,6 +71,7 @@ static void tools_print_help(void)
     printf("  template-tools         Template diff/validation (see worlddef)\\n");
     printf("  pack-inspector         Pack/capability inspector (read-only)\\n");
     printf("  worlddef <subcmd>      WorldDefinition CLI bridge (list-templates, generate, validate, diff, equivalence, summarize)\\n");
+    printf("  scale <subcmd>         Scaling capsule inspect/diff/validate tools\\n");
     printf("  exit            Exit tools\\n");
 }
 
@@ -2804,6 +2806,9 @@ int tools_main(int argc, char** argv)
     }
     if (strcmp(cmd, "worlddef") == 0) {
         return tools_run_worlddef_cli(argc - cmd_index - 1, argv + cmd_index + 1);
+    }
+    if (strcmp(cmd, "scale") == 0) {
+        return tools_run_scale_cli(argc - cmd_index - 1, argv + cmd_index + 1);
     }
 
     if (ui_run.log_set && !ui_log_open) {

@@ -187,6 +187,34 @@ dom_add_testx(NAME scale0_replay_equivalence
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )
 
+dom_add_testx(NAME scale1_collapse_expand_equivalence
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/scale1_collapse_expand_tests.py
+        --tools $<TARGET_FILE:dominium-tools>
+        --family collapse_expand_equivalence
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME scale1_interest_pattern_invariance
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/scale1_collapse_expand_tests.py
+        --tools $<TARGET_FILE:dominium-tools>
+        --family interest_pattern_invariance
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME scale1_thread_count_invariance
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/scale1_collapse_expand_tests.py
+        --tools $<TARGET_FILE:dominium-tools>
+        --family thread_count_invariance
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME scale1_refusal_behavior
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/scale1_collapse_expand_tests.py
+        --tools $<TARGET_FILE:dominium-tools>
+        --family refusal_behavior
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
 dom_add_testx(NAME baseline_sku_contracts
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/baseline_sku_tests.py
         --repo-root ${CMAKE_SOURCE_DIR}

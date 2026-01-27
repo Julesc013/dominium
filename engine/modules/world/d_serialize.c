@@ -118,6 +118,7 @@ static u32 d_tag_for_subsystem(d_subsystem_id id) {
         case D_SUBSYS_RESEARCH: return TAG_SUBSYS_DRESEARCH;
         case D_SUBSYS_ECON:   return TAG_SUBSYS_DECON;
         case D_SUBSYS_POLICY: return TAG_SUBSYS_DPOLICY;
+        case D_SUBSYS_MACRO_CAPSULE: return TAG_SUBSYS_DMACROCAP;
         default:              return 0u;
     }
 }
@@ -140,6 +141,7 @@ static d_subsystem_id d_subsystem_for_tag(u32 tag) {
         case TAG_SUBSYS_DRESEARCH: return D_SUBSYS_RESEARCH;
         case TAG_SUBSYS_DECON:   return D_SUBSYS_ECON;
         case TAG_SUBSYS_DPOLICY: return D_SUBSYS_POLICY;
+        case TAG_SUBSYS_DMACROCAP: return D_SUBSYS_MACRO_CAPSULE;
         default:                 return (d_subsystem_id)0;
     }
 }

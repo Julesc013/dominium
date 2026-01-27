@@ -19,18 +19,25 @@ add_library(tools::shared ALIAS tools_shared)
 
 add_executable(dominium-tools
     tools_host_main.c
+    scale/scale_cli.cpp
 )
 target_link_libraries(dominium-tools PRIVATE tools::shared)
 target_link_libraries(dominium-tools PRIVATE app::runtime)
+target_link_libraries(dominium-tools PRIVATE dominium_game)
 target_include_directories(dominium-tools PRIVATE
     ${DOMINIUM_ENGINE_INCLUDE_DIR}
     ${DOMINIUM_GENERATED_INCLUDE_DIR}
+    ${DOMINIUM_GAME_INCLUDE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}
 )
 set_target_properties(dominium-tools PROPERTIES
     OUTPUT_NAME "tools"
     C_STANDARD 90
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
 )
 add_executable(dom_tools ALIAS dominium-tools)
 dom_register_product(tools dominium-tools)
