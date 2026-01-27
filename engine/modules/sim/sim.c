@@ -109,6 +109,13 @@ d_world* d_world_create_from_config(const d_world_config* cfg) {
     return (d_world*)w;
 }
 
+void d_world_destroy_instance(d_world* world) {
+    if (!world) {
+        return;
+    }
+    d_world_destroy((d_world*)world);
+}
+
 void d_world_tick(d_world* world) {
     struct d_world* w = (struct d_world*)world;
     u32 count;
@@ -429,6 +436,59 @@ static int d_world_extract_config(const d_tlv_blob *payload, d_world_config *out
         offset += tlv_len;
     }
     return -1;
+}
+
+d_world* d_world_clone(const d_world* world) {
+    d_tlv_blob container;
+    d_tlv_blob world_payload;
+    d_world_config cfg;
+    u32 loaded_tick = 0u;
+    struct d_world* cloned = 0;
+    int rc;
+
+    if (!world) {
+        return (d_world*)0;
+    }
+    if (!d_world_register_subsystem()) {
+        return (d_world*)0;
+    }
+
+    container.ptr = (unsigned char*)0;
+    container.len = 0u;
+    rc = d_serialize_save_instance_all((struct d_world*)world, &container);
+    d_world_release_save_blob();
+    if (rc != 0 || (container.len > 0u && !container.ptr)) {
+        if (container.ptr) {
+            free(container.ptr);
+        }
+        return (d_world*)0;
+    }
+
+    if (d_world_find_payload(&container, &world_payload) != 0 ||
+        d_world_extract_config(&world_payload, &cfg, &loaded_tick) != 0) {
+        if (container.ptr) {
+            free(container.ptr);
+        }
+        return (d_world*)0;
+    }
+
+    cloned = (struct d_world*)d_world_create_from_config(&cfg);
+    if (!cloned) {
+        if (container.ptr) {
+            free(container.ptr);
+        }
+        return (d_world*)0;
+    }
+    cloned->tick_count = loaded_tick;
+
+    if (d_serialize_load_instance_all(cloned, &container) != 0) {
+        d_world_destroy((d_world*)cloned);
+        cloned = 0;
+    }
+    if (container.ptr) {
+        free(container.ptr);
+    }
+    return (d_world*)cloned;
 }
 
 static d_world* d_world_load_v1(FILE *f) {

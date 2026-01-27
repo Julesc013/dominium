@@ -10,12 +10,14 @@ add_executable(dominium_server
     shard/shard_domain_index.cpp
     shard/dom_cross_shard_log.cpp
     shard/dom_global_id.cpp
+    shard/dom_shard_lifecycle.cpp
     shard/domain_shard_mapper.cpp
     shard/task_splitter.cpp
     shard/message_bus.cpp
     shard/shard_executor.cpp
     shard/shard_hashing.cpp
     persistence/integrity_checkpoints.cpp
+    persistence/dom_checkpointing.cpp
     persistence/dispute_bundle.cpp
 )
 target_link_libraries(dominium_server PRIVATE
