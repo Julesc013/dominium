@@ -99,6 +99,7 @@ add_library(dominium_game STATIC
     rules/technology/tech_effects.cpp
     rules/technology/tech_activation.cpp
     rules/scale/scale_domains.cpp
+    rules/scale/scale_collapse_expand.cpp
     rules/scale/domain_transitions.cpp
     rules/scale/interplanetary_logistics.cpp
     rules/scale/interstellar_logistics.cpp

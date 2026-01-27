@@ -56,6 +56,8 @@ set(ENGINE_CORE_SOURCES
     modules/res/d_res_validate.c
     modules/research/d_research_state.c
     modules/research/d_research_validate.c
+    modules/scale/d_macro_capsule_store.c
+    modules/scale/d_macro_capsule_subsys.c
     modules/sim/dg_dirtyset.c
     modules/sim/dg_rebuild.c
     modules/sim/dg_rebuild_work.c
@@ -275,6 +277,7 @@ target_include_directories(domino_engine
         ${CMAKE_CURRENT_SOURCE_DIR}/modules/replay
         ${CMAKE_CURRENT_SOURCE_DIR}/modules/res
         ${CMAKE_CURRENT_SOURCE_DIR}/modules/research
+        ${CMAKE_CURRENT_SOURCE_DIR}/modules/scale
         ${CMAKE_CURRENT_SOURCE_DIR}/modules/sim
         ${CMAKE_CURRENT_SOURCE_DIR}/modules/state
         ${CMAKE_CURRENT_SOURCE_DIR}/modules/struct

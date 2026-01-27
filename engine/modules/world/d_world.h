@@ -18,6 +18,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "domino/core/types.h"
 #include "domino/core/fixed.h"
 #include "domino/core/d_tlv.h"
+#include "domino/core/dom_time_core.h"
 #include "domino/core/rng.h"
 
 #ifdef __cplusplus
@@ -43,6 +44,16 @@ typedef struct d_chunk {
     /* Subsystems can attach their own per-chunk indices via their internal tables. */
 } d_chunk;
 
+typedef struct d_macro_capsule_entry {
+    u64 capsule_id;
+    u64 domain_id;
+    dom_act_time_t source_tick;
+    unsigned char* bytes;
+    u32 byte_count;
+    u32 capacity;
+    u32 in_use;
+} d_macro_capsule_entry;
+
 typedef struct d_world {
     d_world_meta meta;
 
@@ -61,6 +72,11 @@ typedef struct d_world {
     u32      tick_count;
     u16     *tile_type;
     q24_8   *tile_height;
+
+    /* Macro capsule save chunks (sorted by capsule_id). */
+    d_macro_capsule_entry* macro_capsules;
+    u32 macro_capsule_count;
+    u32 macro_capsule_capacity;
 
     /* TODO: add spatial indexing, chunk lookup tables, etc. */
 } d_world;

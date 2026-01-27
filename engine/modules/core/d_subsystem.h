@@ -44,6 +44,7 @@ enum {
     D_SUBSYS_RESEARCH = 14, /* research/tech progress */
     D_SUBSYS_ECON   = 15, /* macro-economy metrics */
     D_SUBSYS_POLICY = 16, /* policy/constraints */
+    D_SUBSYS_MACRO_CAPSULE = 17, /* macro capsule save chunks */
     /* Reserve 1000+ for mods/third-party subsystems in the future. */
 };
 

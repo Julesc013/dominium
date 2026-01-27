@@ -86,6 +86,17 @@ set_target_properties(engine_data_validate_test PROPERTIES
 )
 add_test(NAME engine_data_validate COMMAND engine_data_validate_test)
 
+add_executable(macro_capsule_store_tests
+    macro_capsule_store_tests.c
+)
+target_link_libraries(macro_capsule_store_tests PRIVATE engine::domino)
+set_target_properties(macro_capsule_store_tests PROPERTIES
+    C_STANDARD 90
+    C_STANDARD_REQUIRED ON
+    C_EXTENSIONS OFF
+)
+add_test(NAME macro_capsule_store COMMAND macro_capsule_store_tests)
+
 add_executable(execution_ir_tests
     execution_ir_tests.cpp
 )

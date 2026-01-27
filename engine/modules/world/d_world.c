@@ -17,6 +17,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "d_world.h"
 #include "core/d_subsystem.h"
 #include "d_worldgen.h"
+#include "scale/d_macro_capsule_store.h"
 
 /* Forward declaration; implemented in core subsystem init. */
 void d_subsystems_init(void);
@@ -85,6 +86,9 @@ d_world *d_world_create(const d_world_meta *meta) {
     w->tick_count = 0u;
     w->tile_type = (u16 *)0;
     w->tile_height = (q24_8 *)0;
+    w->macro_capsules = (d_macro_capsule_entry*)0;
+    w->macro_capsule_count = 0u;
+    w->macro_capsule_capacity = 0u;
     d_rng_seed(&w->rng, w->worldgen_seed);
 
     if (d_world_reserve_chunks(w, 8u) != 0) {
@@ -101,6 +105,7 @@ void d_world_destroy(d_world *w) {
     if (!w) {
         return;
     }
+    d_macro_capsule_store_free(w);
     if (w->tile_type) {
         free(w->tile_type);
         w->tile_type = (u16 *)0;

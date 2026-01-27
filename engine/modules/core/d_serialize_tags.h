@@ -31,7 +31,8 @@ enum {
     TAG_SUBSYS_DORG    = 0x100C,
     TAG_SUBSYS_DRESEARCH = 0x100D,
     TAG_SUBSYS_DECON   = 0x100E,
-    TAG_SUBSYS_DPOLICY = 0x100F
+    TAG_SUBSYS_DPOLICY = 0x100F,
+    TAG_SUBSYS_DMACROCAP = 0x1010
     /* Reserve 0x2000+ for mod/third-party subsystems */
 };
 
