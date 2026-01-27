@@ -17,6 +17,23 @@ simulation semantics. They only gate admission and scheduling.
 - refinement budget
 - snapshot budget
 - network graph budget
+- collapse/expand budget
+- tier activation budget
+
+## Scaling budgets (required)
+- max active Tier-2 domains
+- max active Tier-1 domains
+- refinement budget per tick
+- planning budget per tick
+- collapse/expand cost budgets
+
+## Budget outcomes (scaling)
+- REFUSE_BUDGET_EXCEEDED: admission or activation refused.
+- DEFER_COLLAPSE: collapse deferred to a later commit boundary.
+- DEFER_EXPANSION: expansion deferred to a later commit boundary.
+
+Deferrals are explicit, logged, and replayable. Refusals and deferrals MUST
+never silently change outcomes.
 
 ## Required behavior
 - Exceeding budget => explicit refusal (REFUSE_BUDGET_EXCEEDED).

@@ -26,6 +26,14 @@ It complements (does not replace) `docs/arch/INVARIANTS.md`.
 | AUTH3-PIRACY-006 | Piracy contained by authority, not DRM. | docs/arch/PIRACY_CONTAINMENT.md | tests/piracy_containment |
 | AUTH3-UPGRADE-007 | Authority upgrades/downgrades do not mutate state. | docs/arch/UPGRADE_AND_CONVERSION.md | tests/authority |
 | AUTH3-SAVE-008 | Saves are tagged by authority scope. | docs/arch/UPGRADE_AND_CONVERSION.md | tests/authority |
+| SCALE0-PROJECTION-001 | Scaling is a semantics-preserving projection. | docs/arch/SCALING_MODEL.md | tests/app/scale0_contract_tests.py |
+| SCALE0-CONSERVE-002 | Conservation across collapse/expand is exact. | docs/arch/INVARIANTS_AND_TOLERANCES.md | tests/app/scale0_contract_tests.py |
+| SCALE0-COMMIT-003 | Collapse/expand only at commit boundaries. | docs/arch/COLLAPSE_EXPAND_CONTRACT.md | tests/app/scale0_contract_tests.py |
+| SCALE0-DETERMINISM-004 | Macro time ordering and scaling are deterministic. | docs/arch/MACRO_TIME_MODEL.md | tests/app/scale0_contract_tests.py |
+| SCALE0-TOLERANCE-005 | Sufficient statistics within declared tolerances. | docs/arch/INVARIANTS_AND_TOLERANCES.md | tests/app/scale0_contract_tests.py |
+| SCALE0-INTEREST-006 | Interest drives activation; no view-based scaling. | docs/arch/INTEREST_MODEL.md | tests/app/scale0_contract_tests.py |
+| SCALE0-NO-EXNIHILO-007 | Expansion cannot create ex nihilo state. | docs/arch/COLLAPSE_EXPAND_CONTRACT.md | tests/app/scale0_contract_tests.py |
+| SCALE0-REPLAY-008 | Replay equivalence across collapse/expand. | docs/arch/MACRO_TIME_MODEL.md | tests/app/scale0_contract_tests.py |
 
 ## Notes
 - Full invariant list lives in `docs/arch/INVARIANTS.md`.

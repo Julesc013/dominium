@@ -145,6 +145,48 @@ dom_add_testx(NAME harden1_docs_contracts
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )
 
+dom_add_testx(NAME scale0_collapse_expand_equivalence
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/scale0_contract_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --family collapse_expand_equivalence
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME scale0_invariant_conservation
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/scale0_contract_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --family invariant_conservation
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME scale0_tolerance_bound
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/scale0_contract_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --family tolerance_bound
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME scale0_interest_pattern_invariance
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/scale0_contract_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --family interest_pattern_invariance
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME scale0_cross_thread_determinism
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/scale0_contract_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --family cross_thread_determinism
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME scale0_replay_equivalence
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/scale0_contract_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --family replay_equivalence
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
 dom_add_testx(NAME baseline_sku_contracts
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/baseline_sku_tests.py
         --repo-root ${CMAKE_SOURCE_DIR}
