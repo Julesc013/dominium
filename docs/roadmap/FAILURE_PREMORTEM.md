@@ -21,6 +21,12 @@ Scope: awareness only; no solutions.
 - Excessive audit or provenance writes.
 - Cross-domain travel and sharding boundaries.
 
+## Distributed determinism failure modes to watch
+- Treating distribution as "different rules" instead of projection.
+- Allowing double-owned domains during shard handoff.
+- Cross-shard messages mutating state outside admission control.
+- Wall-clock coupling leaking into authoritative ordering.
+
 ## Concepts hardest for new contributors
 - Determinism rules and enforcement gates.
 - Law, policy, capability, authority separation.

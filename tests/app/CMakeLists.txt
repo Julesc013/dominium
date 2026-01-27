@@ -271,6 +271,41 @@ dom_add_testx(NAME scale3_long_horizon_stress
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )
 
+dom_add_testx(NAME mmo0_shard_ownership_exclusivity
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/mmo0_distributed_contract_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --family shard_ownership_exclusivity
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME mmo0_cross_shard_message_ordering
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/mmo0_distributed_contract_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --family cross_shard_message_ordering_determinism
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME mmo0_id_collision_contracts
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/mmo0_distributed_contract_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --family id_collision
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME mmo0_join_resync_determinism
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/mmo0_distributed_contract_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --family join_resync_determinism
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME mmo0_legacy_sku_compatibility
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/mmo0_distributed_contract_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --family legacy_sku_compatibility
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
 dom_add_testx(NAME baseline_sku_contracts
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/baseline_sku_tests.py
         --repo-root ${CMAKE_SOURCE_DIR}

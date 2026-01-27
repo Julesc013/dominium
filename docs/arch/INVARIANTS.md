@@ -354,6 +354,75 @@ Enforced by:
 - `docs/arch/MACRO_TIME_MODEL.md`
 - Tests: `tests/app/scale3_budget_tests.py`
 
+## Invariant: The universe is logically single under distribution (MMO0-UNIVERSE-012)
+Why:
+- Distribution must not create alternate histories or outcomes.
+Breaks if violated:
+- Multiplayer outcomes diverge from single-shard truth.
+Enforced by:
+- `docs/arch/DISTRIBUTED_SIM_MODEL.md`
+- `docs/arch/MMO_COMPATIBILITY.md`
+- Tests: `tests/app/mmo0_distributed_contract_tests.py`
+
+## Invariant: Domain ownership is exclusive and commit-boundary only (MMO0-OWNERSHIP-013)
+Why:
+- Double ownership destroys authority, auditability, and determinism.
+Breaks if violated:
+- Conflicting writes, nondeterministic outcomes, and replay failure.
+Enforced by:
+- `docs/arch/DISTRIBUTED_SIM_MODEL.md`
+- `docs/arch/CROSS_SHARD_LOG.md`
+- Tests: `tests/app/mmo0_distributed_contract_tests.py`
+
+## Invariant: Global identifiers are deterministic and collision-free (MMO0-ID-014)
+Why:
+- Identity must survive distribution, replay, and ownership transfer.
+Breaks if violated:
+- Collisions, identity drift, and nondeterministic reconciliation.
+Enforced by:
+- `docs/arch/GLOBAL_ID_MODEL.md`
+- Tests: `tests/app/mmo0_distributed_contract_tests.py`
+
+## Invariant: Cross-shard interaction is append-only, ordered, and idempotent (MMO0-LOG-015)
+Why:
+- Logs are the only lawful way to couple shards without hidden mutation.
+Breaks if violated:
+- Hidden cross-shard state changes and unreplayable outcomes.
+Enforced by:
+- `docs/arch/CROSS_SHARD_LOG.md`
+- `schema/cross_shard_message.schema`
+- Tests: `tests/app/mmo0_distributed_contract_tests.py`
+
+## Invariant: Distributed time and ordering preserve outcomes (MMO0-TIME-016)
+Why:
+- Physical execution order must not change authoritative results.
+Breaks if violated:
+- Cross-thread and cross-shard divergence in final world state.
+Enforced by:
+- `docs/arch/DISTRIBUTED_TIME_MODEL.md`
+- `docs/arch/CROSS_SHARD_LOG.md`
+- Tests: `tests/app/mmo0_distributed_contract_tests.py`
+
+## Invariant: Join/resync is deterministic and capability-safe (MMO0-RESYNC-017)
+Why:
+- Joining and resyncing must not introduce hidden or partial authority.
+Breaks if violated:
+- Inconsistent clients, shard drift, and audit failure.
+Enforced by:
+- `docs/arch/JOIN_RESYNC_CONTRACT.md`
+- `docs/arch/REFUSAL_SEMANTICS.md`
+- Tests: `tests/app/mmo0_distributed_contract_tests.py`
+
+## Invariant: Singleplayer and multiplayer semantics are unified (MMO0-COMPAT-018)
+Why:
+- Divergent logic across modes invalidates determinism guarantees.
+Breaks if violated:
+- SP and MP produce different outcomes for the same intent streams.
+Enforced by:
+- `docs/arch/MMO_COMPATIBILITY.md`
+- `docs/arch/DISTRIBUTED_SIM_MODEL.md`
+- Tests: `tests/app/mmo0_distributed_contract_tests.py`
+
 ## Forbidden assumptions
 - Invariants are optional or "guidelines" rather than binding rules.
 - Convenience exceptions are acceptable without a canon update.
