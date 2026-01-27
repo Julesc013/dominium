@@ -54,6 +54,34 @@ typedef struct d_macro_capsule_entry {
     u32 in_use;
 } d_macro_capsule_entry;
 
+typedef struct d_macro_schedule_entry {
+    u64 domain_id;
+    u64 capsule_id;
+    dom_act_time_t last_event_time;
+    dom_act_time_t next_event_time;
+    dom_act_time_t interval_ticks;
+    u64 order_key_seed;
+    u32 executed_events;
+    u32 narrative_events;
+    dom_act_time_t compacted_through_time;
+    u32 compaction_count;
+    u32 in_use;
+} d_macro_schedule_entry;
+
+typedef struct d_macro_event_entry {
+    u64 event_id;
+    u64 domain_id;
+    u64 capsule_id;
+    dom_act_time_t event_time;
+    u64 order_key;
+    u64 sequence;
+    u32 event_kind;
+    u32 flags;
+    u32 payload0;
+    u32 payload1;
+    u32 in_use;
+} d_macro_event_entry;
+
 typedef struct d_world {
     d_world_meta meta;
 
@@ -77,6 +105,17 @@ typedef struct d_world {
     d_macro_capsule_entry* macro_capsules;
     u32 macro_capsule_count;
     u32 macro_capsule_capacity;
+
+    /* Macro schedule store (sorted by domain_id). */
+    d_macro_schedule_entry* macro_schedules;
+    u32 macro_schedule_count;
+    u32 macro_schedule_capacity;
+
+    /* Macro event queue (sorted by deterministic ordering key). */
+    d_macro_event_entry* macro_events;
+    u32 macro_event_count;
+    u32 macro_event_capacity;
+    u64 macro_event_sequence;
 
     /* TODO: add spatial indexing, chunk lookup tables, etc. */
 } d_world;

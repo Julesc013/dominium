@@ -31,6 +31,18 @@ static u64 scale_hash_u64(u64 hash, u64 value)
     return hash;
 }
 
+static u64 scale_hash_bytes(u64 hash, const unsigned char* bytes, u32 len)
+{
+    if (!bytes) {
+        return hash;
+    }
+    for (u32 i = 0u; i < len; ++i) {
+        hash ^= (u64)bytes[i];
+        hash *= 0x100000001b3ull;
+    }
+    return hash;
+}
+
 static int scale_parse_u32(const char* text, u32* out_value)
 {
     const char* p = text;
@@ -98,6 +110,9 @@ static const char* scale_event_kind_to_string(u32 kind)
     case DOM_SCALE_EVENT_EXPAND: return "expand";
     case DOM_SCALE_EVENT_REFUSAL: return "refusal";
     case DOM_SCALE_EVENT_DEFER: return "defer";
+    case DOM_SCALE_EVENT_MACRO_SCHEDULE: return "macro_schedule";
+    case DOM_SCALE_EVENT_MACRO_EXECUTE: return "macro_execute";
+    case DOM_SCALE_EVENT_MACRO_COMPACT: return "macro_compact";
     default: break;
     }
     return "unknown";
@@ -624,6 +639,791 @@ static int scale_run_refusal(u32 workers, const char* case_name)
     return 0;
 }
 
+static u32 scale_parse_flag_u32(int argc, char** argv, const char* flag, u32 default_value)
+{
+    u32 value = default_value;
+    for (int i = 0; i + 1 < argc; ++i) {
+        if (strcmp(argv[i], flag) != 0) {
+            continue;
+        }
+        u32 parsed = 0u;
+        if (scale_parse_u32(argv[i + 1], &parsed)) {
+            value = parsed;
+        }
+    }
+    return value;
+}
+
+static int scale_parse_flag_bool(int argc, char** argv, const char* flag, int default_value)
+{
+    int value = default_value;
+    for (int i = 0; i + 1 < argc; ++i) {
+        if (strcmp(argv[i], flag) != 0) {
+            continue;
+        }
+        u32 parsed = 0u;
+        if (scale_parse_u32(argv[i + 1], &parsed)) {
+            value = parsed ? 1 : 0;
+        }
+    }
+    return value;
+}
+
+static int scale_compare_resources(const dom_scale_domain_slot* slot,
+                                   const dom_scale_resource_entry* initial,
+                                   u32 initial_count)
+{
+    if (!slot || !initial) {
+        return 0;
+    }
+    if (slot->resources.count != initial_count) {
+        return 0;
+    }
+    for (u32 i = 0u; i < initial_count; ++i) {
+        int found = 0;
+        for (u32 j = 0u; j < slot->resources.count; ++j) {
+            if (slot->resources.entries[j].resource_id == initial[i].resource_id &&
+                slot->resources.entries[j].quantity == initial[i].quantity) {
+                found = 1;
+                break;
+            }
+        }
+        if (!found) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+static int scale_compare_network(const dom_scale_domain_slot* slot,
+                                 const dom_scale_network_node* initial_nodes,
+                                 u32 initial_node_count,
+                                 const dom_scale_network_edge* initial_edges,
+                                 u32 initial_edge_count)
+{
+    if (!slot || !initial_nodes || !initial_edges) {
+        return 0;
+    }
+    if (slot->network.node_count != initial_node_count ||
+        slot->network.edge_count != initial_edge_count) {
+        return 0;
+    }
+    for (u32 i = 0u; i < initial_node_count; ++i) {
+        int found = 0;
+        for (u32 j = 0u; j < slot->network.node_count; ++j) {
+            if (slot->network.nodes[j].node_id == initial_nodes[i].node_id &&
+                slot->network.nodes[j].node_kind == initial_nodes[i].node_kind) {
+                found = 1;
+                break;
+            }
+        }
+        if (!found) {
+            return 0;
+        }
+    }
+    for (u32 i = 0u; i < initial_edge_count; ++i) {
+        int found = 0;
+        for (u32 j = 0u; j < slot->network.edge_count; ++j) {
+            const dom_scale_network_edge* edge = &slot->network.edges[j];
+            if (edge->edge_id == initial_edges[i].edge_id &&
+                edge->from_node_id == initial_edges[i].from_node_id &&
+                edge->to_node_id == initial_edges[i].to_node_id &&
+                edge->capacity_units == initial_edges[i].capacity_units &&
+                edge->buffer_units == initial_edges[i].buffer_units) {
+                found = 1;
+                break;
+            }
+        }
+        if (!found) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+static int scale_compare_agents(const dom_scale_domain_slot* slot, u32 initial_count)
+{
+    if (!slot) {
+        return 0;
+    }
+    return slot->agents.count == initial_count ? 1 : 0;
+}
+
+static u64 scale_macro_state_hash(const d_world* world)
+{
+    u64 hash = scale_fnv1a64_init();
+    dom_macro_capsule_blob blob;
+    dom_macro_schedule_entry schedule;
+    dom_macro_event_entry ev;
+    u32 count = 0u;
+    if (!world) {
+        return 0u;
+    }
+    count = dom_macro_capsule_store_count(world);
+    for (u32 i = 0u; i < count; ++i) {
+        if (dom_macro_capsule_store_get_by_index(world, i, &blob) != 0) {
+            continue;
+        }
+        hash = scale_hash_u64(hash, blob.capsule_id);
+        hash = scale_hash_u64(hash, blob.domain_id);
+        hash = scale_hash_u64(hash, (u64)blob.source_tick);
+        hash = scale_hash_bytes(hash, blob.bytes, blob.byte_count);
+    }
+    count = dom_macro_schedule_store_count(world);
+    for (u32 i = 0u; i < count; ++i) {
+        if (dom_macro_schedule_store_get_by_index(world, i, &schedule) != 0) {
+            continue;
+        }
+        hash = scale_hash_u64(hash, schedule.domain_id);
+        hash = scale_hash_u64(hash, schedule.capsule_id);
+        hash = scale_hash_u64(hash, (u64)schedule.last_event_time);
+        hash = scale_hash_u64(hash, (u64)schedule.next_event_time);
+        hash = scale_hash_u64(hash, (u64)schedule.interval_ticks);
+        hash = scale_hash_u64(hash, schedule.executed_events);
+    }
+    count = dom_macro_event_queue_count(world);
+    for (u32 i = 0u; i < count; ++i) {
+        if (dom_macro_event_queue_get_by_index(world, i, &ev) != 0) {
+            continue;
+        }
+        hash = scale_hash_u64(hash, ev.domain_id);
+        hash = scale_hash_u64(hash, ev.event_id);
+        hash = scale_hash_u64(hash, (u64)ev.event_time);
+        hash = scale_hash_u64(hash, ev.order_key);
+    }
+    return hash;
+}
+
+typedef struct scale_macro_result {
+    u64 macro_hash;
+    u64 micro_hash;
+    u32 invariants_ok;
+    u32 executed_events;
+    u32 queue_count;
+    u32 schedule_count;
+    u32 expand_failures;
+} scale_macro_result;
+
+static void scale_macro_override_interval(dom_scale_context* ctx, dom_act_time_t interval)
+{
+    u32 count;
+    if (!ctx || !ctx->world || interval <= 0) {
+        return;
+    }
+    count = dom_macro_schedule_store_count(ctx->world);
+    for (u32 i = 0u; i < count; ++i) {
+        dom_macro_schedule_entry schedule;
+        if (dom_macro_schedule_store_get_by_index(ctx->world, i, &schedule) != 0) {
+            continue;
+        }
+        schedule.interval_ticks = interval;
+        schedule.next_event_time = schedule.last_event_time + interval;
+        (void)dom_macro_schedule_store_set(ctx->world, &schedule);
+        (void)dom_macro_event_queue_remove_domain(ctx->world, schedule.domain_id);
+    }
+}
+
+static int scale_macro_run(u32 workers,
+                           dom_act_time_t target_tick,
+                           u32 macro_interval,
+                           int compaction_enabled,
+                           scale_macro_result* out_result)
+{
+    const dom_act_time_t start_tick = 0;
+    d_world* world = scale_make_world();
+    dom_scale_context ctx;
+    dom_scale_domain_slot domain_storage[3];
+    dom_interest_state interest_storage[3];
+    dom_scale_event_log event_log;
+    dom_scale_event event_storage[512];
+    dom_scale_commit_token token;
+    dom_scale_macro_policy macro_policy;
+    dom_scale_domain_slot res_slot;
+    dom_scale_domain_slot net_slot;
+    dom_scale_domain_slot agent_slot;
+    dom_scale_resource_entry resources[4];
+    dom_scale_network_node nodes[4];
+    dom_scale_network_edge edges[4];
+    dom_scale_agent_entry agents[8];
+    dom_scale_resource_entry initial_resources[4];
+    dom_scale_network_node initial_nodes[4];
+    dom_scale_network_edge initial_edges[4];
+    u32 initial_agent_count = 0u;
+    scale_macro_result result;
+
+    if (!world) {
+        return 2;
+    }
+
+    dom_scale_event_log_init(&event_log, event_storage, (u32)(sizeof(event_storage) / sizeof(event_storage[0])));
+    dom_scale_context_init(&ctx,
+                           world,
+                           domain_storage,
+                           (u32)(sizeof(domain_storage) / sizeof(domain_storage[0])),
+                           interest_storage,
+                           (u32)(sizeof(interest_storage) / sizeof(interest_storage[0])),
+                           &event_log,
+                           start_tick,
+                           workers);
+    ctx.budget_policy.min_dwell_ticks = 0;
+    ctx.interest_policy.min_dwell_ticks = 0;
+    ctx.budget_policy.macro_event_budget_per_tick = 1000000u;
+    ctx.budget_policy.compaction_budget_per_tick = 1000000u;
+    ctx.budget_policy.macro_queue_limit = 1000000u;
+    ctx.budget_policy.collapse_budget_per_tick = 1000000u;
+    ctx.budget_policy.expand_budget_per_tick = 1000000u;
+    if (compaction_enabled) {
+        ctx.budget_policy.compaction_event_threshold = 16u;
+        ctx.budget_policy.compaction_time_threshold = 256;
+    } else {
+        ctx.budget_policy.compaction_event_threshold = 0u;
+        ctx.budget_policy.compaction_time_threshold = 0;
+    }
+
+    memset(&res_slot, 0, sizeof(res_slot));
+    memset(&net_slot, 0, sizeof(net_slot));
+    memset(&agent_slot, 0, sizeof(agent_slot));
+    (void)scale_init_resource_domain(&res_slot, resources, (u32)(sizeof(resources) / sizeof(resources[0])));
+    scale_init_network_domain(&net_slot,
+                              nodes,
+                              (u32)(sizeof(nodes) / sizeof(nodes[0])),
+                              edges,
+                              (u32)(sizeof(edges) / sizeof(edges[0])));
+    scale_init_agent_domain(&agent_slot, agents, (u32)(sizeof(agents) / sizeof(agents[0])));
+    memcpy(initial_resources, resources, sizeof(initial_resources));
+    memcpy(initial_nodes, nodes, sizeof(initial_nodes));
+    memcpy(initial_edges, edges, sizeof(initial_edges));
+    initial_agent_count = agent_slot.agents.count;
+
+    if (dom_scale_register_domain(&ctx, &res_slot) != 0 ||
+        dom_scale_register_domain(&ctx, &net_slot) != 0 ||
+        dom_scale_register_domain(&ctx, &agent_slot) != 0) {
+        return 2;
+    }
+
+    dom_scale_commit_token_make(&token, start_tick, 0u);
+    (void)dom_scale_collapse_domain(&ctx, &token, res_slot.domain_id, 1u, 0);
+    (void)dom_scale_collapse_domain(&ctx, &token, net_slot.domain_id, 1u, 0);
+    (void)dom_scale_collapse_domain(&ctx, &token, agent_slot.domain_id, 1u, 0);
+
+    dom_scale_macro_policy_default(&macro_policy);
+    if (macro_interval > 0u) {
+        macro_policy.macro_interval_ticks = (dom_act_time_t)macro_interval;
+        scale_macro_override_interval(&ctx, macro_policy.macro_interval_ticks);
+    }
+
+    ctx.now_tick = target_tick;
+    dom_scale_commit_token_make(&token, ctx.now_tick, 0u);
+    (void)dom_scale_macro_advance(&ctx, &token, target_tick, &macro_policy, 0);
+    if (compaction_enabled) {
+        for (u32 i = 0u; i < ctx.domain_count; ++i) {
+            (void)dom_scale_macro_compact(&ctx,
+                                          &token,
+                                          ctx.domains[i].domain_id,
+                                          target_tick,
+                                          &macro_policy,
+                                          0);
+        }
+    }
+
+    memset(&result, 0, sizeof(result));
+    result.macro_hash = scale_macro_state_hash(world);
+    result.queue_count = dom_macro_event_queue_count(world);
+    result.schedule_count = dom_macro_schedule_store_count(world);
+    for (u32 i = 0u; i < result.schedule_count; ++i) {
+        dom_macro_schedule_entry schedule;
+        if (dom_macro_schedule_store_get_by_index(world, i, &schedule) != 0) {
+            continue;
+        }
+        result.executed_events += schedule.executed_events;
+    }
+
+    result.invariants_ok = 1u;
+    result.expand_failures = 0u;
+    for (u32 i = 0u; i < ctx.domain_count; ++i) {
+        dom_scale_operation_result expand_res;
+        memset(&expand_res, 0, sizeof(expand_res));
+        (void)dom_scale_expand_domain(&ctx,
+                                      &token,
+                                      ctx.domains[i].capsule_id,
+                                      DOM_FID_MICRO,
+                                      2u,
+                                      &expand_res);
+        if (expand_res.refusal_code != 0u || expand_res.defer_code != 0u) {
+            result.expand_failures += 1u;
+            result.invariants_ok = 0u;
+        }
+    }
+    result.micro_hash = scale_global_hash(domain_storage, ctx.domain_count, ctx.now_tick, workers);
+    result.invariants_ok = (result.invariants_ok &&
+                            scale_compare_resources(&domain_storage[0], initial_resources, res_slot.resources.count) &&
+                            scale_compare_network(&domain_storage[1],
+                                                  initial_nodes,
+                                                  net_slot.network.node_count,
+                                                  initial_edges,
+                                                  net_slot.network.edge_count) &&
+                            scale_compare_agents(&domain_storage[2], initial_agent_count)) ? 1u : 0u;
+
+    if (out_result) {
+        *out_result = result;
+    }
+    return result.invariants_ok ? 0 : 1;
+}
+
+static int scale_run_macro_long(u32 workers,
+                                dom_act_time_t target_tick,
+                                u32 macro_interval,
+                                int compaction_enabled)
+{
+    scale_macro_result result;
+    int rc = scale_macro_run(workers, target_tick, macro_interval, compaction_enabled, &result);
+    printf("scenario=macro_long ticks=%lld interval=%u compaction=%u workers=%u invariants=%s\n",
+           (long long)target_tick,
+           (unsigned int)macro_interval,
+           (unsigned int)(compaction_enabled ? 1u : 0u),
+           workers,
+           "SCALE0-CONSERVE-002,SCALE0-DETERMINISM-004,SCALE0-REPLAY-008");
+    printf("macro_hash=%llu micro_hash=%llu invariants_ok=%u executed_events=%u queue_count=%u schedule_count=%u expand_failures=%u\n",
+           (unsigned long long)result.macro_hash,
+           (unsigned long long)result.micro_hash,
+           (unsigned int)result.invariants_ok,
+           (unsigned int)result.executed_events,
+           (unsigned int)result.queue_count,
+           (unsigned int)result.schedule_count,
+           (unsigned int)result.expand_failures);
+    return rc;
+}
+
+static int scale_run_macro_compare(u32 workers, dom_act_time_t target_tick, u32 macro_interval)
+{
+    scale_macro_result no_compact;
+    scale_macro_result compact;
+    int rc_a = scale_macro_run(workers, target_tick, macro_interval, 0, &no_compact);
+    int rc_b = scale_macro_run(workers, target_tick, macro_interval, 1, &compact);
+    int macro_match = (no_compact.macro_hash == compact.macro_hash) ? 1 : 0;
+    int micro_match = (no_compact.micro_hash == compact.micro_hash) ? 1 : 0;
+    printf("scenario=macro_compare ticks=%lld interval=%u workers=%u invariants=%s\n",
+           (long long)target_tick,
+           (unsigned int)macro_interval,
+           workers,
+           "SCALE0-DETERMINISM-004,SCALE0-REPLAY-008,SCALE0-CONSERVE-002");
+    printf("macro_hash_a=%llu macro_hash_b=%llu macro_hash_match=%u micro_hash_a=%llu micro_hash_b=%llu micro_hash_match=%u\n",
+           (unsigned long long)no_compact.macro_hash,
+           (unsigned long long)compact.macro_hash,
+           (unsigned int)macro_match,
+           (unsigned long long)no_compact.micro_hash,
+           (unsigned long long)compact.micro_hash,
+           (unsigned int)micro_match);
+    if (rc_a != 0 || rc_b != 0) {
+        return 1;
+    }
+    return (macro_match && micro_match) ? 0 : 1;
+}
+
+static int scale_run_macro_replay(u32 workers, dom_act_time_t target_tick, u32 macro_interval)
+{
+    const dom_act_time_t start_tick = 0;
+    const char* temp_path = "scale_macro_tmp.tlv";
+    d_world* world = scale_make_world();
+    d_world* loaded_world = 0;
+    dom_scale_context ctx;
+    dom_scale_context ctx_loaded;
+    dom_scale_domain_slot domain_storage[3];
+    dom_scale_domain_slot loaded_domain_storage[3];
+    dom_interest_state interest_storage[3];
+    dom_interest_state loaded_interest_storage[3];
+    dom_scale_event_log event_log;
+    dom_scale_event_log loaded_event_log;
+    dom_scale_event event_storage[512];
+    dom_scale_event loaded_event_storage[512];
+    dom_scale_commit_token token;
+    dom_scale_macro_policy macro_policy;
+    dom_scale_domain_slot res_slot;
+    dom_scale_domain_slot net_slot;
+    dom_scale_domain_slot agent_slot;
+    dom_scale_resource_entry resources[4];
+    dom_scale_network_node nodes[4];
+    dom_scale_network_edge edges[4];
+    dom_scale_agent_entry agents[8];
+    dom_scale_resource_entry initial_resources[4];
+    dom_scale_network_node initial_nodes[4];
+    dom_scale_network_edge initial_edges[4];
+    u32 initial_agent_count = 0u;
+    u64 macro_hash = 0u;
+    u64 micro_hash = 0u;
+    u64 replay_micro_hash = 0u;
+    int invariants_ok = 1;
+
+    if (!world) {
+        return 2;
+    }
+
+    dom_scale_event_log_init(&event_log, event_storage, (u32)(sizeof(event_storage) / sizeof(event_storage[0])));
+    dom_scale_context_init(&ctx,
+                           world,
+                           domain_storage,
+                           (u32)(sizeof(domain_storage) / sizeof(domain_storage[0])),
+                           interest_storage,
+                           (u32)(sizeof(interest_storage) / sizeof(interest_storage[0])),
+                           &event_log,
+                           start_tick,
+                           workers);
+    ctx.budget_policy.min_dwell_ticks = 0;
+    ctx.interest_policy.min_dwell_ticks = 0;
+    ctx.budget_policy.macro_event_budget_per_tick = 1000000u;
+    ctx.budget_policy.compaction_budget_per_tick = 1000000u;
+    ctx.budget_policy.macro_queue_limit = 1000000u;
+    ctx.budget_policy.collapse_budget_per_tick = 1000000u;
+    ctx.budget_policy.expand_budget_per_tick = 1000000u;
+
+    memset(&res_slot, 0, sizeof(res_slot));
+    memset(&net_slot, 0, sizeof(net_slot));
+    memset(&agent_slot, 0, sizeof(agent_slot));
+    (void)scale_init_resource_domain(&res_slot, resources, (u32)(sizeof(resources) / sizeof(resources[0])));
+    scale_init_network_domain(&net_slot,
+                              nodes,
+                              (u32)(sizeof(nodes) / sizeof(nodes[0])),
+                              edges,
+                              (u32)(sizeof(edges) / sizeof(edges[0])));
+    scale_init_agent_domain(&agent_slot, agents, (u32)(sizeof(agents) / sizeof(agents[0])));
+    memcpy(initial_resources, resources, sizeof(initial_resources));
+    memcpy(initial_nodes, nodes, sizeof(initial_nodes));
+    memcpy(initial_edges, edges, sizeof(initial_edges));
+    initial_agent_count = agent_slot.agents.count;
+
+    if (dom_scale_register_domain(&ctx, &res_slot) != 0 ||
+        dom_scale_register_domain(&ctx, &net_slot) != 0 ||
+        dom_scale_register_domain(&ctx, &agent_slot) != 0) {
+        return 2;
+    }
+
+    dom_scale_commit_token_make(&token, start_tick, 0u);
+    (void)dom_scale_collapse_domain(&ctx, &token, res_slot.domain_id, 1u, 0);
+    (void)dom_scale_collapse_domain(&ctx, &token, net_slot.domain_id, 1u, 0);
+    (void)dom_scale_collapse_domain(&ctx, &token, agent_slot.domain_id, 1u, 0);
+
+    dom_scale_macro_policy_default(&macro_policy);
+    if (macro_interval > 0u) {
+        macro_policy.macro_interval_ticks = (dom_act_time_t)macro_interval;
+        scale_macro_override_interval(&ctx, macro_policy.macro_interval_ticks);
+    }
+
+    ctx.now_tick = target_tick;
+    dom_scale_commit_token_make(&token, ctx.now_tick, 0u);
+    (void)dom_scale_macro_advance(&ctx, &token, target_tick, &macro_policy, 0);
+    macro_hash = scale_macro_state_hash(world);
+
+    if (!d_world_save_tlv(world, temp_path)) {
+        return 2;
+    }
+
+    for (u32 i = 0u; i < ctx.domain_count; ++i) {
+        dom_scale_operation_result expand_res;
+        memset(&expand_res, 0, sizeof(expand_res));
+        (void)dom_scale_expand_domain(&ctx,
+                                      &token,
+                                      ctx.domains[i].capsule_id,
+                                      DOM_FID_MICRO,
+                                      2u,
+                                      &expand_res);
+        if (expand_res.refusal_code != 0u || expand_res.defer_code != 0u) {
+            invariants_ok = 0;
+        }
+    }
+    micro_hash = scale_global_hash(domain_storage, ctx.domain_count, ctx.now_tick, workers);
+    invariants_ok = invariants_ok &&
+                    scale_compare_resources(&domain_storage[0], initial_resources, res_slot.resources.count) &&
+                    scale_compare_network(&domain_storage[1],
+                                          initial_nodes,
+                                          net_slot.network.node_count,
+                                          initial_edges,
+                                          net_slot.network.edge_count) &&
+                    scale_compare_agents(&domain_storage[2], initial_agent_count);
+
+    loaded_world = d_world_load_tlv(temp_path);
+    (void)remove(temp_path);
+    if (!loaded_world) {
+        return 2;
+    }
+
+    dom_scale_event_log_init(&loaded_event_log,
+                             loaded_event_storage,
+                             (u32)(sizeof(loaded_event_storage) / sizeof(loaded_event_storage[0])));
+    dom_scale_context_init(&ctx_loaded,
+                           loaded_world,
+                           loaded_domain_storage,
+                           (u32)(sizeof(loaded_domain_storage) / sizeof(loaded_domain_storage[0])),
+                           loaded_interest_storage,
+                           (u32)(sizeof(loaded_interest_storage) / sizeof(loaded_interest_storage[0])),
+                           &loaded_event_log,
+                           target_tick,
+                           workers);
+    ctx_loaded.budget_policy.min_dwell_ticks = 0;
+    ctx_loaded.interest_policy.min_dwell_ticks = 0;
+    ctx_loaded.budget_policy.macro_event_budget_per_tick = 1000000u;
+    ctx_loaded.budget_policy.compaction_budget_per_tick = 1000000u;
+    ctx_loaded.budget_policy.macro_queue_limit = 1000000u;
+    ctx_loaded.budget_policy.collapse_budget_per_tick = 1000000u;
+    ctx_loaded.budget_policy.expand_budget_per_tick = 1000000u;
+
+    if (dom_scale_register_domain(&ctx_loaded, &res_slot) != 0 ||
+        dom_scale_register_domain(&ctx_loaded, &net_slot) != 0 ||
+        dom_scale_register_domain(&ctx_loaded, &agent_slot) != 0) {
+        return 2;
+    }
+    if (macro_interval > 0u) {
+        scale_macro_override_interval(&ctx_loaded, macro_policy.macro_interval_ticks);
+    }
+
+    for (u32 i = 0u; i < ctx_loaded.domain_count; ++i) {
+        dom_macro_schedule_entry schedule;
+        if (dom_macro_schedule_store_get(loaded_world, ctx_loaded.domains[i].domain_id, &schedule) == 0) {
+            ctx_loaded.domains[i].tier = DOM_FID_LATENT;
+            ctx_loaded.domains[i].capsule_id = schedule.capsule_id;
+        }
+    }
+
+    dom_scale_commit_token_make(&token, ctx_loaded.now_tick, 0u);
+    (void)dom_scale_macro_advance(&ctx_loaded, &token, target_tick, &macro_policy, 0);
+    for (u32 i = 0u; i < ctx_loaded.domain_count; ++i) {
+        dom_scale_operation_result expand_res;
+        memset(&expand_res, 0, sizeof(expand_res));
+        (void)dom_scale_expand_domain(&ctx_loaded,
+                                      &token,
+                                      ctx_loaded.domains[i].capsule_id,
+                                      DOM_FID_MICRO,
+                                      2u,
+                                      &expand_res);
+        if (expand_res.refusal_code != 0u || expand_res.defer_code != 0u) {
+            invariants_ok = 0;
+        }
+    }
+    replay_micro_hash = scale_global_hash(loaded_domain_storage, ctx_loaded.domain_count, ctx_loaded.now_tick, workers);
+
+    printf("scenario=macro_replay ticks=%lld interval=%u workers=%u invariants=%s\n",
+           (long long)target_tick,
+           (unsigned int)macro_interval,
+           workers,
+           "SCALE0-REPLAY-008,SCALE0-DETERMINISM-004,SCALE0-CONSERVE-002");
+    printf("macro_hash=%llu micro_hash=%llu replay_micro_hash=%llu replay_hash_match=%u invariants_ok=%u\n",
+           (unsigned long long)macro_hash,
+           (unsigned long long)micro_hash,
+           (unsigned long long)replay_micro_hash,
+           (unsigned int)(micro_hash == replay_micro_hash ? 1u : 0u),
+           (unsigned int)(invariants_ok ? 1u : 0u));
+    return (invariants_ok && micro_hash == replay_micro_hash) ? 0 : 1;
+}
+
+static int scale_run_macro_transition(u32 workers, dom_act_time_t target_tick, u32 macro_interval)
+{
+    const dom_act_time_t start_tick = 0;
+    d_world* world = scale_make_world();
+    dom_scale_context ctx;
+    dom_scale_domain_slot domain_storage[3];
+    dom_interest_state interest_storage[3];
+    dom_scale_event_log event_log;
+    dom_scale_event event_storage[512];
+    dom_scale_commit_token token;
+    dom_scale_macro_policy macro_policy;
+    dom_scale_domain_slot res_slot;
+    dom_scale_domain_slot net_slot;
+    dom_scale_domain_slot agent_slot;
+    dom_scale_resource_entry resources[4];
+    dom_scale_network_node nodes[4];
+    dom_scale_network_edge edges[4];
+    dom_scale_agent_entry agents[8];
+    dom_scale_resource_entry initial_resources[4];
+    dom_scale_network_node initial_nodes[4];
+    dom_scale_network_edge initial_edges[4];
+    u32 initial_agent_count = 0u;
+    u32 drift_count = 0u;
+    u32 cycles = 4u;
+
+    if (!world) {
+        return 2;
+    }
+
+    dom_scale_event_log_init(&event_log, event_storage, (u32)(sizeof(event_storage) / sizeof(event_storage[0])));
+    dom_scale_context_init(&ctx,
+                           world,
+                           domain_storage,
+                           (u32)(sizeof(domain_storage) / sizeof(domain_storage[0])),
+                           interest_storage,
+                           (u32)(sizeof(interest_storage) / sizeof(interest_storage[0])),
+                           &event_log,
+                           start_tick,
+                           workers);
+    ctx.budget_policy.min_dwell_ticks = 0;
+    ctx.interest_policy.min_dwell_ticks = 0;
+    ctx.budget_policy.macro_event_budget_per_tick = 1000000u;
+    ctx.budget_policy.compaction_budget_per_tick = 1000000u;
+    ctx.budget_policy.macro_queue_limit = 1000000u;
+    ctx.budget_policy.collapse_budget_per_tick = 1000000u;
+    ctx.budget_policy.expand_budget_per_tick = 1000000u;
+
+    memset(&res_slot, 0, sizeof(res_slot));
+    memset(&net_slot, 0, sizeof(net_slot));
+    memset(&agent_slot, 0, sizeof(agent_slot));
+    (void)scale_init_resource_domain(&res_slot, resources, (u32)(sizeof(resources) / sizeof(resources[0])));
+    scale_init_network_domain(&net_slot,
+                              nodes,
+                              (u32)(sizeof(nodes) / sizeof(nodes[0])),
+                              edges,
+                              (u32)(sizeof(edges) / sizeof(edges[0])));
+    scale_init_agent_domain(&agent_slot, agents, (u32)(sizeof(agents) / sizeof(agents[0])));
+    memcpy(initial_resources, resources, sizeof(initial_resources));
+    memcpy(initial_nodes, nodes, sizeof(initial_nodes));
+    memcpy(initial_edges, edges, sizeof(initial_edges));
+    initial_agent_count = agent_slot.agents.count;
+
+    if (dom_scale_register_domain(&ctx, &res_slot) != 0 ||
+        dom_scale_register_domain(&ctx, &net_slot) != 0 ||
+        dom_scale_register_domain(&ctx, &agent_slot) != 0) {
+        return 2;
+    }
+
+    dom_scale_macro_policy_default(&macro_policy);
+    if (macro_interval > 0u) {
+        macro_policy.macro_interval_ticks = (dom_act_time_t)macro_interval;
+    }
+
+    for (u32 cycle = 0u; cycle < cycles; ++cycle) {
+        ctx.now_tick = (dom_act_time_t)((cycle + 1u) * (target_tick / (dom_act_time_t)cycles));
+        dom_scale_commit_token_make(&token, ctx.now_tick, 0u);
+        (void)dom_scale_collapse_domain(&ctx, &token, res_slot.domain_id, 1u + cycle, 0);
+        (void)dom_scale_collapse_domain(&ctx, &token, net_slot.domain_id, 1u + cycle, 0);
+        (void)dom_scale_collapse_domain(&ctx, &token, agent_slot.domain_id, 1u + cycle, 0);
+        if (macro_interval > 0u) {
+            scale_macro_override_interval(&ctx, macro_policy.macro_interval_ticks);
+        }
+        (void)dom_scale_macro_advance(&ctx, &token, ctx.now_tick, &macro_policy, 0);
+        for (u32 i = 0u; i < ctx.domain_count; ++i) {
+            dom_scale_operation_result expand_res;
+            memset(&expand_res, 0, sizeof(expand_res));
+            (void)dom_scale_expand_domain(&ctx,
+                                          &token,
+                                          ctx.domains[i].capsule_id,
+                                          DOM_FID_MICRO,
+                                          2u + cycle,
+                                          &expand_res);
+            if (expand_res.refusal_code != 0u || expand_res.defer_code != 0u) {
+                drift_count += 1u;
+            }
+        }
+        if (!scale_compare_resources(&domain_storage[0], initial_resources, res_slot.resources.count) ||
+            !scale_compare_network(&domain_storage[1],
+                                   initial_nodes,
+                                   net_slot.network.node_count,
+                                   initial_edges,
+                                   net_slot.network.edge_count) ||
+            !scale_compare_agents(&domain_storage[2], initial_agent_count)) {
+            drift_count += 1u;
+        }
+    }
+
+    printf("scenario=macro_transition ticks=%lld interval=%u workers=%u invariants=%s drift_count=%u\n",
+           (long long)target_tick,
+           (unsigned int)macro_interval,
+           workers,
+           "SCALE0-CONSERVE-002,SCALE0-DETERMINISM-004,SCALE0-INTEREST-006",
+           (unsigned int)drift_count);
+    return drift_count == 0u ? 0 : 1;
+}
+
+static int scale_run_macro_timeline(u32 workers, dom_act_time_t target_tick, u32 macro_interval)
+{
+    const dom_act_time_t start_tick = 0;
+    d_world* world = scale_make_world();
+    dom_scale_context ctx;
+    dom_scale_domain_slot domain_storage[3];
+    dom_interest_state interest_storage[3];
+    dom_scale_event_log event_log;
+    dom_scale_event event_storage[1024];
+    dom_scale_commit_token token;
+    dom_scale_macro_policy macro_policy;
+    dom_scale_domain_slot res_slot;
+    dom_scale_domain_slot net_slot;
+    dom_scale_domain_slot agent_slot;
+    dom_scale_resource_entry resources[4];
+    dom_scale_network_node nodes[4];
+    dom_scale_network_edge edges[4];
+    dom_scale_agent_entry agents[8];
+
+    if (!world) {
+        return 2;
+    }
+
+    dom_scale_event_log_init(&event_log, event_storage, (u32)(sizeof(event_storage) / sizeof(event_storage[0])));
+    dom_scale_context_init(&ctx,
+                           world,
+                           domain_storage,
+                           (u32)(sizeof(domain_storage) / sizeof(domain_storage[0])),
+                           interest_storage,
+                           (u32)(sizeof(interest_storage) / sizeof(interest_storage[0])),
+                           &event_log,
+                           start_tick,
+                           workers);
+    ctx.budget_policy.min_dwell_ticks = 0;
+    ctx.interest_policy.min_dwell_ticks = 0;
+    ctx.budget_policy.macro_event_budget_per_tick = 1000000u;
+    ctx.budget_policy.compaction_budget_per_tick = 1000000u;
+    ctx.budget_policy.macro_queue_limit = 1000000u;
+    ctx.budget_policy.collapse_budget_per_tick = 1000000u;
+    ctx.budget_policy.expand_budget_per_tick = 1000000u;
+    ctx.budget_policy.compaction_event_threshold = 8u;
+    ctx.budget_policy.compaction_time_threshold = 128;
+
+    memset(&res_slot, 0, sizeof(res_slot));
+    memset(&net_slot, 0, sizeof(net_slot));
+    memset(&agent_slot, 0, sizeof(agent_slot));
+    (void)scale_init_resource_domain(&res_slot, resources, (u32)(sizeof(resources) / sizeof(resources[0])));
+    scale_init_network_domain(&net_slot,
+                              nodes,
+                              (u32)(sizeof(nodes) / sizeof(nodes[0])),
+                              edges,
+                              (u32)(sizeof(edges) / sizeof(edges[0])));
+    scale_init_agent_domain(&agent_slot, agents, (u32)(sizeof(agents) / sizeof(agents[0])));
+
+    if (dom_scale_register_domain(&ctx, &res_slot) != 0 ||
+        dom_scale_register_domain(&ctx, &net_slot) != 0 ||
+        dom_scale_register_domain(&ctx, &agent_slot) != 0) {
+        return 2;
+    }
+
+    dom_scale_commit_token_make(&token, start_tick, 0u);
+    (void)dom_scale_collapse_domain(&ctx, &token, res_slot.domain_id, 1u, 0);
+    (void)dom_scale_collapse_domain(&ctx, &token, net_slot.domain_id, 1u, 0);
+    (void)dom_scale_collapse_domain(&ctx, &token, agent_slot.domain_id, 1u, 0);
+
+    dom_scale_macro_policy_default(&macro_policy);
+    if (macro_interval > 0u) {
+        macro_policy.macro_interval_ticks = (dom_act_time_t)macro_interval;
+        scale_macro_override_interval(&ctx, macro_policy.macro_interval_ticks);
+    }
+
+    ctx.now_tick = target_tick;
+    dom_scale_commit_token_make(&token, ctx.now_tick, 0u);
+    (void)dom_scale_macro_advance(&ctx, &token, target_tick, &macro_policy, 0);
+    for (u32 i = 0u; i < ctx.domain_count; ++i) {
+        (void)dom_scale_macro_compact(&ctx,
+                                      &token,
+                                      ctx.domains[i].domain_id,
+                                      target_tick,
+                                      &macro_policy,
+                                      0);
+    }
+
+    printf("scenario=macro_timeline ticks=%lld interval=%u workers=%u invariants=%s macro_hash=%llu queue_count=%u\n",
+           (long long)target_tick,
+           (unsigned int)macro_interval,
+           workers,
+           "SCALE0-DETERMINISM-004,SCALE0-REPLAY-008",
+           (unsigned long long)scale_macro_state_hash(world),
+           (unsigned int)dom_macro_event_queue_count(world));
+    scale_print_timeline(&event_log);
+    return 0;
+}
+
 static void scale_print_help(void)
 {
     printf("scale commands:\n");
@@ -635,6 +1435,11 @@ static void scale_print_help(void)
     printf("  scale interest <A|B> [--workers N]\n");
     printf("  scale thread <resources|network|agents> [--workers N]\n");
     printf("  scale refusal <budget|tier2|unsupported> [--workers N]\n");
+    printf("  scale macro-long <ticks> [--interval N] [--compact 0|1] [--workers N]\n");
+    printf("  scale macro-compare <ticks> [--interval N] [--workers N]\n");
+    printf("  scale macro-replay <ticks> [--interval N] [--workers N]\n");
+    printf("  scale macro-transition <ticks> [--interval N] [--workers N]\n");
+    printf("  scale macro-timeline <ticks> [--interval N] [--workers N]\n");
 }
 
 extern "C" int tools_run_scale_cli(int argc, char** argv)
@@ -710,6 +1515,52 @@ extern "C" int tools_run_scale_cli(int argc, char** argv)
     }
     if (strcmp(subcmd, "refusal") == 0) {
         return scale_run_refusal(workers, value_arg);
+    }
+    if (strcmp(subcmd, "macro-long") == 0) {
+        u32 ticks_u32 = 0u;
+        dom_act_time_t ticks = 36500;
+        u32 interval = scale_parse_flag_u32(argc, argv, "--interval", 256u);
+        int compact_flag = scale_parse_flag_bool(argc, argv, "--compact", 1);
+        if (value_arg && scale_parse_u32(value_arg, &ticks_u32)) {
+            ticks = (dom_act_time_t)ticks_u32;
+        }
+        return scale_run_macro_long(workers, ticks, interval, compact_flag);
+    }
+    if (strcmp(subcmd, "macro-compare") == 0) {
+        u32 ticks_u32 = 0u;
+        dom_act_time_t ticks = 36500;
+        u32 interval = scale_parse_flag_u32(argc, argv, "--interval", 256u);
+        if (value_arg && scale_parse_u32(value_arg, &ticks_u32)) {
+            ticks = (dom_act_time_t)ticks_u32;
+        }
+        return scale_run_macro_compare(workers, ticks, interval);
+    }
+    if (strcmp(subcmd, "macro-replay") == 0) {
+        u32 ticks_u32 = 0u;
+        dom_act_time_t ticks = 36500;
+        u32 interval = scale_parse_flag_u32(argc, argv, "--interval", 256u);
+        if (value_arg && scale_parse_u32(value_arg, &ticks_u32)) {
+            ticks = (dom_act_time_t)ticks_u32;
+        }
+        return scale_run_macro_replay(workers, ticks, interval);
+    }
+    if (strcmp(subcmd, "macro-transition") == 0) {
+        u32 ticks_u32 = 0u;
+        dom_act_time_t ticks = 36500;
+        u32 interval = scale_parse_flag_u32(argc, argv, "--interval", 256u);
+        if (value_arg && scale_parse_u32(value_arg, &ticks_u32)) {
+            ticks = (dom_act_time_t)ticks_u32;
+        }
+        return scale_run_macro_transition(workers, ticks, interval);
+    }
+    if (strcmp(subcmd, "macro-timeline") == 0) {
+        u32 ticks_u32 = 0u;
+        dom_act_time_t ticks = 36500;
+        u32 interval = scale_parse_flag_u32(argc, argv, "--interval", 256u);
+        if (value_arg && scale_parse_u32(value_arg, &ticks_u32)) {
+            ticks = (dom_act_time_t)ticks_u32;
+        }
+        return scale_run_macro_timeline(workers, ticks, interval);
     }
 
     scale_print_help();

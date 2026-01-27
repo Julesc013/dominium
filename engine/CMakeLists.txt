@@ -58,6 +58,10 @@ set(ENGINE_CORE_SOURCES
     modules/research/d_research_validate.c
     modules/scale/d_macro_capsule_store.c
     modules/scale/d_macro_capsule_subsys.c
+    modules/scale/d_macro_schedule_store.c
+    modules/scale/d_macro_schedule_subsys.c
+    modules/scale/d_macro_event_queue_store.c
+    modules/scale/d_macro_event_queue_subsys.c
     modules/sim/dg_dirtyset.c
     modules/sim/dg_rebuild.c
     modules/sim/dg_rebuild_work.c

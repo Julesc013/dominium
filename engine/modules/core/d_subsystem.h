@@ -45,6 +45,8 @@ enum {
     D_SUBSYS_ECON   = 15, /* macro-economy metrics */
     D_SUBSYS_POLICY = 16, /* policy/constraints */
     D_SUBSYS_MACRO_CAPSULE = 17, /* macro capsule save chunks */
+    D_SUBSYS_MACRO_SCHEDULE = 18, /* macro schedule save chunks */
+    D_SUBSYS_MACRO_EVENT_QUEUE = 19, /* macro event queue save chunks */
     /* Reserve 1000+ for mods/third-party subsystems in the future. */
 };
 

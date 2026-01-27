@@ -28,6 +28,8 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "net/d_net.h"
 #include "replay/d_replay.h"
 #include "scale/d_macro_capsule_subsys.h"
+#include "scale/d_macro_schedule_subsys.h"
+#include "scale/d_macro_event_queue_subsys.h"
 
 static int g_subsystems_initialized = 0;
 
@@ -62,6 +64,8 @@ void d_subsystems_init(void) {
     d_net_register_subsystem();
     d_replay_register_subsystem();
     d_macro_capsule_register_subsystem();
+    d_macro_schedule_register_subsystem();
+    d_macro_event_queue_register_subsystem();
     d_subsystems_register_models();
     g_subsystems_initialized = 1;
 }
