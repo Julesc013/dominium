@@ -43,12 +43,30 @@ typedef enum dom_scale_event_kind {
     DOM_SCALE_EVENT_MACRO_COMPACT = 7
 } dom_scale_event_kind;
 
+typedef enum dom_scale_budget_kind {
+    DOM_SCALE_BUDGET_NONE = 0,
+    DOM_SCALE_BUDGET_ACTIVE_DOMAIN = 1,
+    DOM_SCALE_BUDGET_REFINEMENT = 2,
+    DOM_SCALE_BUDGET_COLLAPSE = 3,
+    DOM_SCALE_BUDGET_MACRO_EVENT = 4,
+    DOM_SCALE_BUDGET_AGENT_PLANNING = 5,
+    DOM_SCALE_BUDGET_SNAPSHOT = 6,
+    DOM_SCALE_BUDGET_DEFER_QUEUE = 7
+} dom_scale_budget_kind;
+
 typedef enum dom_scale_refusal_code {
     DOM_SCALE_REFUSE_NONE = 0,
     DOM_SCALE_REFUSE_INVALID_INTENT = 1,
     DOM_SCALE_REFUSE_CAPABILITY_MISSING = 3,
     DOM_SCALE_REFUSE_DOMAIN_FORBIDDEN = 4,
-    DOM_SCALE_REFUSE_BUDGET_EXCEEDED = 7
+    DOM_SCALE_REFUSE_BUDGET_EXCEEDED = 7,
+    DOM_SCALE_REFUSE_ACTIVE_DOMAIN_LIMIT = 701,
+    DOM_SCALE_REFUSE_REFINEMENT_BUDGET = 702,
+    DOM_SCALE_REFUSE_MACRO_EVENT_BUDGET = 703,
+    DOM_SCALE_REFUSE_AGENT_PLANNING_BUDGET = 704,
+    DOM_SCALE_REFUSE_SNAPSHOT_BUDGET = 705,
+    DOM_SCALE_REFUSE_COLLAPSE_BUDGET = 706,
+    DOM_SCALE_REFUSE_DEFER_QUEUE_LIMIT = 707
 } dom_scale_refusal_code;
 
 typedef enum dom_scale_defer_code {
@@ -67,8 +85,11 @@ typedef struct dom_scale_commit_token {
 typedef struct dom_scale_budget_policy {
     u32 max_tier2_domains;
     u32 max_tier1_domains;
+    u32 active_domain_budget;
     u32 refinement_budget_per_tick;
+    u32 refinement_cost_units;
     u32 planning_budget_per_tick;
+    u32 planning_cost_units;
     u32 collapse_budget_per_tick;
     u32 expand_budget_per_tick;
     u32 collapse_cost_units;
@@ -80,8 +101,32 @@ typedef struct dom_scale_budget_policy {
     u32 compaction_cost_units;
     u32 compaction_event_threshold;
     dom_act_time_t compaction_time_threshold;
+    u32 snapshot_budget_per_tick;
+    u32 snapshot_cost_units;
+    u32 deferred_queue_limit;
     dom_act_time_t min_dwell_ticks;
 } dom_scale_budget_policy;
+
+#define DOM_SCALE_DEFER_QUEUE_CAP 128u
+
+typedef enum dom_scale_deferred_kind {
+    DOM_SCALE_DEFERRED_NONE = 0,
+    DOM_SCALE_DEFERRED_COLLAPSE = 1,
+    DOM_SCALE_DEFERRED_EXPAND = 2,
+    DOM_SCALE_DEFERRED_MACRO_EVENT = 3,
+    DOM_SCALE_DEFERRED_PLANNING = 4,
+    DOM_SCALE_DEFERRED_SNAPSHOT = 5
+} dom_scale_deferred_kind;
+
+typedef struct dom_scale_deferred_op {
+    u32 kind; /* dom_scale_deferred_kind */
+    u32 budget_kind; /* dom_scale_budget_kind */
+    u64 domain_id;
+    u64 capsule_id;
+    dom_fidelity_tier target_tier;
+    dom_act_time_t requested_tick;
+    u32 reason_code;
+} dom_scale_deferred_op;
 
 typedef struct dom_scale_budget_state {
     u32 active_tier2_domains;
@@ -92,8 +137,18 @@ typedef struct dom_scale_budget_state {
     u32 expand_used;
     u32 macro_event_used;
     u32 compaction_used;
-    dom_act_time_t macro_budget_tick;
-    dom_act_time_t compaction_budget_tick;
+    u32 snapshot_used;
+    dom_act_time_t budget_tick;
+    u32 deferred_count;
+    u32 deferred_overflow;
+    dom_scale_deferred_op deferred_ops[DOM_SCALE_DEFER_QUEUE_CAP];
+    u32 refusal_active_domain_limit;
+    u32 refusal_refinement_budget;
+    u32 refusal_macro_event_budget;
+    u32 refusal_agent_planning_budget;
+    u32 refusal_snapshot_budget;
+    u32 refusal_collapse_budget;
+    u32 refusal_defer_queue_limit;
 } dom_scale_budget_state;
 
 typedef struct dom_scale_event {
@@ -106,6 +161,12 @@ typedef struct dom_scale_event {
     u32 defer_code; /* dom_scale_defer_code */
     u32 detail_code;
     u32 seed_value;
+    u32 budget_kind; /* dom_scale_budget_kind */
+    u32 budget_limit;
+    u32 budget_used;
+    u32 budget_cost;
+    u32 budget_queue;
+    u32 budget_overflow;
     dom_act_time_t tick;
 } dom_scale_event;
 
@@ -226,6 +287,36 @@ typedef struct dom_scale_macro_policy {
     u32 narrative_stride;
 } dom_scale_macro_policy;
 
+typedef struct dom_scale_budget_snapshot {
+    dom_act_time_t tick;
+    u32 active_tier1_domains;
+    u32 active_tier2_domains;
+    u32 tier1_limit;
+    u32 tier2_limit;
+    u32 refinement_used;
+    u32 refinement_limit;
+    u32 planning_used;
+    u32 planning_limit;
+    u32 collapse_used;
+    u32 collapse_limit;
+    u32 expand_used;
+    u32 expand_limit;
+    u32 macro_event_used;
+    u32 macro_event_limit;
+    u32 snapshot_used;
+    u32 snapshot_limit;
+    u32 deferred_count;
+    u32 deferred_overflow;
+    u32 deferred_limit;
+    u32 refusal_active_domain_limit;
+    u32 refusal_refinement_budget;
+    u32 refusal_macro_event_budget;
+    u32 refusal_agent_planning_budget;
+    u32 refusal_snapshot_budget;
+    u32 refusal_collapse_budget;
+    u32 refusal_defer_queue_limit;
+} dom_scale_budget_snapshot;
+
 void dom_scale_event_log_init(dom_scale_event_log* log,
                               dom_scale_event* storage,
                               u32 capacity);
@@ -283,6 +374,10 @@ int dom_scale_macro_finalize_for_expand(dom_scale_context* ctx,
                                         u64 domain_id,
                                         dom_act_time_t up_to_tick,
                                         const dom_scale_macro_policy* policy);
+int dom_scale_macro_request_reschedule(dom_scale_context* ctx,
+                                       const dom_scale_commit_token* token,
+                                       u64 domain_id,
+                                       u32 reason_code);
 
 int dom_scale_collapse_domain(dom_scale_context* ctx,
                               const dom_scale_commit_token* token,
@@ -301,6 +396,14 @@ u32 dom_scale_apply_interest(dom_scale_context* ctx,
                              const dom_interest_set* interest,
                              dom_scale_operation_result* out_results,
                              u32 result_capacity);
+
+void dom_scale_budget_snapshot_current(const dom_scale_context* ctx,
+                                       dom_scale_budget_snapshot* out_snapshot);
+u32 dom_scale_deferred_count(const dom_scale_context* ctx);
+int dom_scale_deferred_get(const dom_scale_context* ctx,
+                           u32 index,
+                           dom_scale_deferred_op* out_op);
+void dom_scale_deferred_clear(dom_scale_context* ctx);
 
 const char* dom_scale_refusal_to_string(u32 refusal_code);
 const char* dom_scale_defer_to_string(u32 defer_code);

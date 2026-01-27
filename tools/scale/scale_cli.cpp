@@ -8,6 +8,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define SCALE_CONSTCOST_MAX_DOMAINS 64u
+#define SCALE_CONSTCOST_EVENT_CAP 2048u
+
 static u64 scale_fnv1a64_init(void)
 {
     return 0xcbf29ce484222325ull;
@@ -118,6 +121,34 @@ static const char* scale_event_kind_to_string(u32 kind)
     return "unknown";
 }
 
+static const char* scale_budget_kind_to_string(u32 kind)
+{
+    switch (kind) {
+    case DOM_SCALE_BUDGET_ACTIVE_DOMAIN: return "active_domain";
+    case DOM_SCALE_BUDGET_REFINEMENT: return "refinement";
+    case DOM_SCALE_BUDGET_COLLAPSE: return "collapse";
+    case DOM_SCALE_BUDGET_MACRO_EVENT: return "macro_event";
+    case DOM_SCALE_BUDGET_AGENT_PLANNING: return "agent_planning";
+    case DOM_SCALE_BUDGET_SNAPSHOT: return "snapshot";
+    case DOM_SCALE_BUDGET_DEFER_QUEUE: return "defer_queue";
+    default: break;
+    }
+    return "none";
+}
+
+static const char* scale_deferred_kind_to_string(u32 kind)
+{
+    switch (kind) {
+    case DOM_SCALE_DEFERRED_COLLAPSE: return "collapse";
+    case DOM_SCALE_DEFERRED_EXPAND: return "expand";
+    case DOM_SCALE_DEFERRED_MACRO_EVENT: return "macro_event";
+    case DOM_SCALE_DEFERRED_PLANNING: return "planning";
+    case DOM_SCALE_DEFERRED_SNAPSHOT: return "snapshot";
+    default: break;
+    }
+    return "unknown";
+}
+
 static d_world* scale_make_world(void)
 {
     d_world_config cfg;
@@ -141,6 +172,36 @@ static u64 scale_global_hash(dom_scale_domain_slot* domains,
     return hash;
 }
 
+static u64 scale_event_log_hash(const dom_scale_event_log* log)
+{
+    u64 hash = scale_fnv1a64_init();
+    if (!log || !log->events) {
+        return hash;
+    }
+    hash = scale_hash_u64(hash, log->count);
+    hash = scale_hash_u64(hash, log->overflow);
+    for (u32 i = 0u; i < log->count; ++i) {
+        const dom_scale_event* ev = &log->events[i];
+        hash = scale_hash_u64(hash, ev->kind);
+        hash = scale_hash_u64(hash, ev->domain_id);
+        hash = scale_hash_u64(hash, ev->domain_kind);
+        hash = scale_hash_u64(hash, ev->capsule_id);
+        hash = scale_hash_u64(hash, ev->reason_code);
+        hash = scale_hash_u64(hash, ev->refusal_code);
+        hash = scale_hash_u64(hash, ev->defer_code);
+        hash = scale_hash_u64(hash, ev->detail_code);
+        hash = scale_hash_u64(hash, ev->seed_value);
+        hash = scale_hash_u64(hash, ev->budget_kind);
+        hash = scale_hash_u64(hash, ev->budget_limit);
+        hash = scale_hash_u64(hash, ev->budget_used);
+        hash = scale_hash_u64(hash, ev->budget_cost);
+        hash = scale_hash_u64(hash, ev->budget_queue);
+        hash = scale_hash_u64(hash, ev->budget_overflow);
+        hash = scale_hash_u64(hash, (u64)ev->tick);
+    }
+    return hash;
+}
+
 static void scale_print_timeline(const dom_scale_event_log* log)
 {
     if (!log || !log->events) {
@@ -148,14 +209,33 @@ static void scale_print_timeline(const dom_scale_event_log* log)
     }
     for (u32 i = 0u; i < log->count; ++i) {
         const dom_scale_event* ev = &log->events[i];
-        printf("event[%u]=%s tick=%lld domain=%llu capsule=%llu refusal=%s defer=%s\n",
-               i,
-               scale_event_kind_to_string(ev->kind),
-               (long long)ev->tick,
-               (unsigned long long)ev->domain_id,
-               (unsigned long long)ev->capsule_id,
-               dom_scale_refusal_to_string(ev->refusal_code),
-               dom_scale_defer_to_string(ev->defer_code));
+        if (ev->budget_kind != DOM_SCALE_BUDGET_NONE) {
+            printf("event[%u]=%s tick=%lld domain=%llu capsule=%llu refusal=%s defer=%s detail=%u budget=%s used=%u limit=%u cost=%u queue=%u overflow=%u\n",
+                   i,
+                   scale_event_kind_to_string(ev->kind),
+                   (long long)ev->tick,
+                   (unsigned long long)ev->domain_id,
+                   (unsigned long long)ev->capsule_id,
+                   dom_scale_refusal_to_string(ev->refusal_code),
+                   dom_scale_defer_to_string(ev->defer_code),
+                   (unsigned int)ev->detail_code,
+                   scale_budget_kind_to_string(ev->budget_kind),
+                   (unsigned int)ev->budget_used,
+                   (unsigned int)ev->budget_limit,
+                   (unsigned int)ev->budget_cost,
+                   (unsigned int)ev->budget_queue,
+                   (unsigned int)ev->budget_overflow);
+        } else {
+            printf("event[%u]=%s tick=%lld domain=%llu capsule=%llu refusal=%s defer=%s detail=%u\n",
+                   i,
+                   scale_event_kind_to_string(ev->kind),
+                   (long long)ev->tick,
+                   (unsigned long long)ev->domain_id,
+                   (unsigned long long)ev->capsule_id,
+                   dom_scale_refusal_to_string(ev->refusal_code),
+                   dom_scale_defer_to_string(ev->defer_code),
+                   (unsigned int)ev->detail_code);
+        }
     }
 }
 
@@ -184,6 +264,28 @@ static u32 scale_init_resource_domain(dom_scale_domain_slot* slot,
     slot->last_transition_tick = 0;
     slot->resources.entries = entries;
     slot->resources.capacity = capacity;
+    slot->resources.count = count;
+    return count;
+}
+
+static u32 scale_init_resource_domain_with_id(dom_scale_domain_slot* slot,
+                                              dom_scale_resource_entry* entries,
+                                              u32 capacity,
+                                              u64 domain_id,
+                                              u32 quantity_bias)
+{
+    u32 count = scale_init_resource_domain(slot, entries, capacity);
+    if (!slot || count == 0u) {
+        return 0u;
+    }
+    slot->domain_id = domain_id;
+    entries[0].quantity += (u64)quantity_bias;
+    if (count > 1u) {
+        entries[1].quantity += (u64)(quantity_bias % 7u);
+    }
+    if (count > 2u) {
+        entries[2].quantity += (u64)(quantity_bias % 13u);
+    }
     slot->resources.count = count;
     return count;
 }
@@ -580,15 +682,27 @@ static int scale_run_refusal(u32 workers, const char* case_name)
     const dom_act_time_t now_tick = 10;
     d_world* world = scale_make_world();
     dom_scale_context ctx;
-    dom_scale_domain_slot domain_storage[1];
-    dom_interest_state interest_storage[1];
+    dom_scale_domain_slot domain_storage[2];
+    dom_interest_state interest_storage[2];
     dom_scale_event_log event_log;
-    dom_scale_event event_storage[16];
+    dom_scale_event event_storage[64];
     dom_scale_commit_token token;
-    dom_scale_domain_slot slot_init;
-    dom_scale_operation_result result;
+    dom_scale_macro_policy macro_policy;
+    dom_scale_domain_slot slot_a;
+    dom_scale_domain_slot slot_b;
+    dom_scale_operation_result result_a;
+    dom_scale_operation_result result_b;
     dom_scale_resource_entry resources[4];
+    dom_scale_network_node nodes[4];
+    dom_scale_network_edge edges[4];
+    dom_scale_agent_entry agents[8];
     const char* case_token = case_name ? case_name : "budget";
+    u32 log_refusal = 0u;
+    u32 log_defer = 0u;
+
+    if (!world) {
+        return 2;
+    }
 
     dom_scale_event_log_init(&event_log, event_storage, (u32)(sizeof(event_storage) / sizeof(event_storage[0])));
     dom_scale_context_init(&ctx,
@@ -603,13 +717,20 @@ static int scale_run_refusal(u32 workers, const char* case_name)
     ctx.budget_policy.min_dwell_ticks = 0;
     ctx.interest_policy.min_dwell_ticks = 0;
 
-    memset(&slot_init, 0, sizeof(slot_init));
-    (void)scale_init_resource_domain(&slot_init, resources, (u32)(sizeof(resources) / sizeof(resources[0])));
+    memset(&slot_a, 0, sizeof(slot_a));
+    memset(&slot_b, 0, sizeof(slot_b));
+    (void)scale_init_resource_domain(&slot_a, resources, (u32)(sizeof(resources) / sizeof(resources[0])));
+
+    if (case_name && (strcmp(case_name, "planning") == 0 || strcmp(case_name, "agent_planning") == 0)) {
+        (void)scale_init_agent_domain(&slot_a, agents, (u32)(sizeof(agents) / sizeof(agents[0])));
+        case_token = "planning";
+    }
     if (case_name && (strcmp(case_name, "unsupported") == 0 || strcmp(case_name, "unsupported_domain") == 0)) {
-        slot_init.domain_kind = 99u;
+        slot_a.domain_kind = 99u;
+        case_token = "unsupported";
     }
 
-    if (dom_scale_register_domain(&ctx, &slot_init) != 0) {
+    if (dom_scale_register_domain(&ctx, &slot_a) != 0) {
         fprintf(stderr, "scale: refusal register failed\n");
         return 2;
     }
@@ -617,26 +738,541 @@ static int scale_run_refusal(u32 workers, const char* case_name)
     if (!case_name || strcmp(case_name, "budget") == 0) {
         ctx.budget_policy.collapse_budget_per_tick = 1u;
         ctx.budget_policy.collapse_cost_units = 2u;
+        ctx.budget_policy.deferred_queue_limit = 0u;
         case_token = "budget";
-    } else if (case_name && (strcmp(case_name, "tier2") == 0 || strcmp(case_name, "tier2_interest") == 0)) {
+    } else if (strcmp(case_name, "snapshot") == 0) {
+        ctx.budget_policy.collapse_budget_per_tick = 100u;
+        ctx.budget_policy.snapshot_budget_per_tick = 1u;
+        ctx.budget_policy.snapshot_cost_units = 2u;
+        ctx.budget_policy.deferred_queue_limit = 0u;
+        case_token = "snapshot";
+    } else if (strcmp(case_name, "refinement") == 0) {
+        ctx.budget_policy.collapse_budget_per_tick = 100u;
+        ctx.budget_policy.snapshot_budget_per_tick = 100u;
+        ctx.budget_policy.refinement_budget_per_tick = 1u;
+        ctx.budget_policy.refinement_cost_units = 2u;
+        ctx.budget_policy.expand_budget_per_tick = 100u;
+        ctx.budget_policy.deferred_queue_limit = 0u;
+        case_token = "refinement";
+    } else if (strcmp(case_name, "macro") == 0 || strcmp(case_name, "macro_event") == 0) {
+        ctx.budget_policy.collapse_budget_per_tick = 100u;
+        ctx.budget_policy.snapshot_budget_per_tick = 100u;
+        ctx.budget_policy.macro_event_budget_per_tick = 1u;
+        ctx.budget_policy.macro_event_cost_units = 2u;
+        ctx.budget_policy.deferred_queue_limit = 0u;
+        case_token = "macro";
+    } else if (strcmp(case_name, "planning") == 0 || strcmp(case_name, "agent_planning") == 0) {
+        ctx.budget_policy.collapse_budget_per_tick = 100u;
+        ctx.budget_policy.snapshot_budget_per_tick = 100u;
+        ctx.budget_policy.refinement_budget_per_tick = 100u;
+        ctx.budget_policy.expand_budget_per_tick = 100u;
+        ctx.budget_policy.planning_budget_per_tick = 1u;
+        ctx.budget_policy.planning_cost_units = 2u;
+        ctx.budget_policy.deferred_queue_limit = 0u;
+        case_token = "planning";
+    } else if (strcmp(case_name, "active") == 0 || strcmp(case_name, "active_domain") == 0) {
+        ctx.budget_policy.active_domain_budget = 1u;
+        ctx.budget_policy.collapse_budget_per_tick = 100u;
+        ctx.budget_policy.snapshot_budget_per_tick = 100u;
+        ctx.budget_policy.refinement_budget_per_tick = 100u;
+        ctx.budget_policy.expand_budget_per_tick = 100u;
+        ctx.budget_policy.deferred_queue_limit = 0u;
+        scale_init_network_domain(&slot_b,
+                                  nodes,
+                                  (u32)(sizeof(nodes) / sizeof(nodes[0])),
+                                  edges,
+                                  (u32)(sizeof(edges) / sizeof(edges[0])));
+        if (dom_scale_register_domain(&ctx, &slot_b) != 0) {
+            fprintf(stderr, "scale: refusal register failed\n");
+            return 2;
+        }
+        case_token = "active";
+    } else if (strcmp(case_name, "tier2") == 0 || strcmp(case_name, "tier2_interest") == 0) {
         interest_storage[0].state = DOM_REL_HOT;
         interest_storage[0].last_change_tick = now_tick;
         case_token = "tier2";
     }
 
     dom_scale_commit_token_make(&token, now_tick, 0u);
-    memset(&result, 0, sizeof(result));
-    (void)dom_scale_collapse_domain(&ctx, &token, slot_init.domain_id, 1u, &result);
+
+    memset(&result_a, 0, sizeof(result_a));
+    memset(&result_b, 0, sizeof(result_b));
+    (void)dom_scale_collapse_domain(&ctx, &token, slot_a.domain_id, 1u, &result_a);
+
+    if (strcmp(case_token, "refinement") == 0 || strcmp(case_token, "planning") == 0) {
+        (void)dom_scale_expand_domain(&ctx,
+                                      &token,
+                                      ctx.domains[0].capsule_id,
+                                      DOM_FID_MICRO,
+                                      2u,
+                                      &result_a);
+    } else if (strcmp(case_token, "active") == 0) {
+        (void)dom_scale_collapse_domain(&ctx, &token, slot_b.domain_id, 1u, &result_b);
+        (void)dom_scale_expand_domain(&ctx,
+                                      &token,
+                                      ctx.domains[0].capsule_id,
+                                      DOM_FID_MICRO,
+                                      2u,
+                                      &result_a);
+        (void)dom_scale_expand_domain(&ctx,
+                                      &token,
+                                      ctx.domains[1].capsule_id,
+                                      DOM_FID_MICRO,
+                                      3u,
+                                      &result_b);
+    } else if (strcmp(case_token, "macro") == 0) {
+        dom_scale_macro_policy_default(&macro_policy);
+        macro_policy.macro_interval_ticks = 1;
+        scale_macro_override_interval(&ctx, macro_policy.macro_interval_ticks);
+        ctx.now_tick = now_tick + 8;
+        dom_scale_commit_token_make(&token, ctx.now_tick, 0u);
+        (void)dom_scale_macro_advance(&ctx, &token, ctx.now_tick, &macro_policy, 0);
+    }
+
+    for (u32 i = 0u; i < event_log.count; ++i) {
+        const dom_scale_event* ev = &event_log.events[i];
+        if (ev->refusal_code != 0u) {
+            log_refusal = ev->refusal_code;
+        }
+        if (ev->defer_code != 0u) {
+            log_defer = ev->defer_code;
+        }
+    }
+
+    if (result_b.refusal_code != 0u) {
+        log_refusal = result_b.refusal_code;
+    } else if (result_a.refusal_code != 0u) {
+        log_refusal = result_a.refusal_code;
+    }
+    if (result_b.defer_code != 0u) {
+        log_defer = result_b.defer_code;
+    } else if (result_a.defer_code != 0u) {
+        log_defer = result_a.defer_code;
+    }
 
     printf("scenario=refusal case=%s workers=%u invariants=%s refusal=%s refusal_code=%u defer=%s\n",
            case_token,
            workers,
-           "SCALE0-CONSERVE-002,SCALE0-COMMIT-003,SCALE0-REPLAY-008",
-           dom_scale_refusal_to_string(result.refusal_code),
-           (unsigned int)result.refusal_code,
-           dom_scale_defer_to_string(result.defer_code));
+           "SCALE0-CONSERVE-002,SCALE0-COMMIT-003,SCALE0-REPLAY-008,SCALE3-ADMISSION-010",
+           dom_scale_refusal_to_string(log_refusal),
+           (unsigned int)log_refusal,
+           dom_scale_defer_to_string(log_defer));
     scale_print_timeline(&event_log);
     return 0;
+}
+
+static void scale_print_budget_snapshot(const dom_scale_budget_snapshot* snap)
+{
+    if (!snap) {
+        return;
+    }
+    printf("budget.tick=%lld tier2=%u/%u tier1=%u/%u refinement=%u/%u planning=%u/%u collapse=%u/%u expand=%u/%u macro=%u/%u snapshot=%u/%u deferred=%u/%u deferred_overflow=%u refusals_active=%u refusals_refine=%u refusals_macro=%u refusals_planning=%u refusals_snapshot=%u refusals_collapse=%u refusals_defer_limit=%u\n",
+           (long long)snap->tick,
+           (unsigned int)snap->active_tier2_domains,
+           (unsigned int)snap->tier2_limit,
+           (unsigned int)snap->active_tier1_domains,
+           (unsigned int)snap->tier1_limit,
+           (unsigned int)snap->refinement_used,
+           (unsigned int)snap->refinement_limit,
+           (unsigned int)snap->planning_used,
+           (unsigned int)snap->planning_limit,
+           (unsigned int)snap->collapse_used,
+           (unsigned int)snap->collapse_limit,
+           (unsigned int)snap->expand_used,
+           (unsigned int)snap->expand_limit,
+           (unsigned int)snap->macro_event_used,
+           (unsigned int)snap->macro_event_limit,
+           (unsigned int)snap->snapshot_used,
+           (unsigned int)snap->snapshot_limit,
+           (unsigned int)snap->deferred_count,
+           (unsigned int)snap->deferred_limit,
+           (unsigned int)snap->deferred_overflow,
+           (unsigned int)snap->refusal_active_domain_limit,
+           (unsigned int)snap->refusal_refinement_budget,
+           (unsigned int)snap->refusal_macro_event_budget,
+           (unsigned int)snap->refusal_agent_planning_budget,
+           (unsigned int)snap->refusal_snapshot_budget,
+           (unsigned int)snap->refusal_collapse_budget,
+           (unsigned int)snap->refusal_defer_queue_limit);
+}
+
+static void scale_print_deferred_ops(const dom_scale_context* ctx)
+{
+    u32 count;
+    if (!ctx) {
+        return;
+    }
+    count = dom_scale_deferred_count(ctx);
+    printf("deferred.count=%u\n", (unsigned int)count);
+    for (u32 i = 0u; i < count; ++i) {
+        dom_scale_deferred_op op;
+        if (!dom_scale_deferred_get(ctx, i, &op)) {
+            continue;
+        }
+        printf("deferred[%u]=%s budget=%s domain=%llu capsule=%llu tier=%u requested_tick=%lld reason=%u\n",
+               (unsigned int)i,
+               scale_deferred_kind_to_string(op.kind),
+               scale_budget_kind_to_string(op.budget_kind),
+               (unsigned long long)op.domain_id,
+               (unsigned long long)op.capsule_id,
+               (unsigned int)op.target_tier,
+               (long long)op.requested_tick,
+               (unsigned int)op.reason_code);
+    }
+}
+
+static int scale_run_budgets(u32 workers, dom_act_time_t target_tick)
+{
+    const dom_act_time_t start_tick = 0;
+    d_world* world = scale_make_world();
+    dom_scale_context ctx;
+    dom_scale_domain_slot domain_storage[3];
+    dom_interest_state interest_storage[3];
+    dom_scale_event_log event_log;
+    dom_scale_event event_storage[128];
+    dom_scale_commit_token token;
+    dom_scale_macro_policy macro_policy;
+    dom_scale_domain_slot res_slot;
+    dom_scale_domain_slot net_slot;
+    dom_scale_domain_slot agent_slot;
+    dom_scale_resource_entry resources[4];
+    dom_scale_network_node nodes[4];
+    dom_scale_network_edge edges[4];
+    dom_scale_agent_entry agents[8];
+    dom_scale_budget_snapshot snap;
+
+    if (!world) {
+        return 2;
+    }
+
+    dom_scale_event_log_init(&event_log, event_storage, (u32)(sizeof(event_storage) / sizeof(event_storage[0])));
+    dom_scale_context_init(&ctx,
+                           world,
+                           domain_storage,
+                           (u32)(sizeof(domain_storage) / sizeof(domain_storage[0])),
+                           interest_storage,
+                           (u32)(sizeof(interest_storage) / sizeof(interest_storage[0])),
+                           &event_log,
+                           start_tick,
+                           workers);
+    ctx.budget_policy.min_dwell_ticks = 0;
+    ctx.interest_policy.min_dwell_ticks = 0;
+    ctx.budget_policy.collapse_budget_per_tick = 1000u;
+    ctx.budget_policy.refinement_budget_per_tick = 1u;
+    ctx.budget_policy.expand_budget_per_tick = 1u;
+    ctx.budget_policy.macro_event_budget_per_tick = 1u;
+    ctx.budget_policy.planning_budget_per_tick = 1u;
+    ctx.budget_policy.snapshot_budget_per_tick = 1u;
+    ctx.budget_policy.macro_queue_limit = 1024u;
+    ctx.budget_policy.deferred_queue_limit = 16u;
+
+    memset(&res_slot, 0, sizeof(res_slot));
+    memset(&net_slot, 0, sizeof(net_slot));
+    memset(&agent_slot, 0, sizeof(agent_slot));
+    (void)scale_init_resource_domain(&res_slot, resources, (u32)(sizeof(resources) / sizeof(resources[0])));
+    scale_init_network_domain(&net_slot,
+                              nodes,
+                              (u32)(sizeof(nodes) / sizeof(nodes[0])),
+                              edges,
+                              (u32)(sizeof(edges) / sizeof(edges[0])));
+    scale_init_agent_domain(&agent_slot, agents, (u32)(sizeof(agents) / sizeof(agents[0])));
+
+    if (dom_scale_register_domain(&ctx, &res_slot) != 0 ||
+        dom_scale_register_domain(&ctx, &net_slot) != 0 ||
+        dom_scale_register_domain(&ctx, &agent_slot) != 0) {
+        return 2;
+    }
+
+    dom_scale_commit_token_make(&token, start_tick, 0u);
+    (void)dom_scale_collapse_domain(&ctx, &token, res_slot.domain_id, 1u, 0);
+    (void)dom_scale_collapse_domain(&ctx, &token, net_slot.domain_id, 1u, 0);
+    (void)dom_scale_collapse_domain(&ctx, &token, agent_slot.domain_id, 1u, 0);
+
+    dom_scale_macro_policy_default(&macro_policy);
+    ctx.now_tick = target_tick;
+    dom_scale_commit_token_make(&token, ctx.now_tick, 0u);
+    (void)dom_scale_macro_advance(&ctx, &token, target_tick, &macro_policy, 0);
+    for (u32 i = 0u; i < ctx.domain_count; ++i) {
+        dom_scale_operation_result expand_res;
+        memset(&expand_res, 0, sizeof(expand_res));
+        (void)dom_scale_expand_domain(&ctx,
+                                      &token,
+                                      ctx.domains[i].capsule_id,
+                                      DOM_FID_MICRO,
+                                      2u,
+                                      &expand_res);
+    }
+
+    dom_scale_budget_snapshot_current(&ctx, &snap);
+    printf("scenario=budgets ticks=%lld workers=%u invariants=%s\n",
+           (long long)target_tick,
+           workers,
+           "SCALE0-DETERMINISM-004,SCALE0-COMMIT-003,SCALE0-CONSERVE-002");
+    scale_print_budget_snapshot(&snap);
+    scale_print_deferred_ops(&ctx);
+    scale_print_timeline(&event_log);
+    return 0;
+}
+
+static int scale_run_constcost(u32 workers,
+                               u32 domain_count,
+                               u32 active_count,
+                               dom_act_time_t target_tick)
+{
+    const dom_act_time_t start_tick = 0;
+    d_world* world = scale_make_world();
+    dom_scale_context ctx;
+    dom_scale_domain_slot domain_storage[SCALE_CONSTCOST_MAX_DOMAINS];
+    dom_interest_state interest_storage[SCALE_CONSTCOST_MAX_DOMAINS];
+    dom_scale_event_log event_log;
+    dom_scale_event event_storage[SCALE_CONSTCOST_EVENT_CAP];
+    dom_scale_commit_token token;
+    dom_scale_budget_snapshot snap;
+    dom_scale_resource_entry resource_storage[SCALE_CONSTCOST_MAX_DOMAINS][4];
+    u32 expand_failures = 0u;
+    u32 refusal_events = 0u;
+    u32 defer_events = 0u;
+    u32 expand_events = 0u;
+    u64 active_hash = scale_fnv1a64_init();
+    u64 event_hash;
+
+    if (!world) {
+        return 2;
+    }
+    if (domain_count == 0u) {
+        domain_count = 1u;
+    }
+    if (domain_count > SCALE_CONSTCOST_MAX_DOMAINS) {
+        domain_count = SCALE_CONSTCOST_MAX_DOMAINS;
+    }
+    if (active_count == 0u) {
+        active_count = 1u;
+    }
+    if (active_count > domain_count) {
+        active_count = domain_count;
+    }
+
+    dom_scale_event_log_init(&event_log, event_storage, (u32)(sizeof(event_storage) / sizeof(event_storage[0])));
+    dom_scale_context_init(&ctx,
+                           world,
+                           domain_storage,
+                           domain_count,
+                           interest_storage,
+                           domain_count,
+                           &event_log,
+                           start_tick,
+                           workers);
+    ctx.budget_policy.min_dwell_ticks = 0;
+    ctx.interest_policy.min_dwell_ticks = 0;
+    ctx.budget_policy.collapse_budget_per_tick = 1000000u;
+    ctx.budget_policy.snapshot_budget_per_tick = 1000000u;
+    ctx.budget_policy.refinement_budget_per_tick = 1000000u;
+    ctx.budget_policy.expand_budget_per_tick = 1000000u;
+    ctx.budget_policy.macro_event_budget_per_tick = 1000000u;
+    ctx.budget_policy.planning_budget_per_tick = 1000000u;
+    ctx.budget_policy.macro_queue_limit = 1000000u;
+    ctx.budget_policy.deferred_queue_limit = 128u;
+
+    for (u32 i = 0u; i < domain_count; ++i) {
+        dom_scale_domain_slot slot;
+        u64 domain_id = 1001u + (u64)(i * 10u);
+        memset(&slot, 0, sizeof(slot));
+        (void)scale_init_resource_domain_with_id(&slot,
+                                                 resource_storage[i],
+                                                 (u32)(sizeof(resource_storage[i]) / sizeof(resource_storage[i][0])),
+                                                 domain_id,
+                                                 i + 1u);
+        if (dom_scale_register_domain(&ctx, &slot) != 0) {
+            return 2;
+        }
+    }
+
+    dom_scale_commit_token_make(&token, start_tick, 0u);
+    for (u32 i = 0u; i < domain_count; ++i) {
+        (void)dom_scale_collapse_domain(&ctx, &token, ctx.domains[i].domain_id, 1u + i, 0);
+    }
+
+    /* Isolate measurement to active work only. */
+    dom_scale_event_log_clear(&event_log);
+    dom_scale_deferred_clear(&ctx);
+
+    ctx.now_tick = target_tick;
+    ctx.budget_policy.active_domain_budget = active_count;
+    ctx.budget_policy.refinement_budget_per_tick = active_count;
+    ctx.budget_policy.expand_budget_per_tick = active_count;
+    ctx.budget_policy.snapshot_budget_per_tick = active_count;
+    ctx.budget_policy.macro_event_budget_per_tick = 1u;
+    ctx.budget_policy.deferred_queue_limit = 32u;
+    dom_scale_commit_token_make(&token, ctx.now_tick, 0u);
+
+    for (u32 i = 0u; i < active_count; ++i) {
+        dom_scale_operation_result expand_res;
+        memset(&expand_res, 0, sizeof(expand_res));
+        (void)dom_scale_expand_domain(&ctx,
+                                      &token,
+                                      ctx.domains[i].capsule_id,
+                                      DOM_FID_MICRO,
+                                      100u + i,
+                                      &expand_res);
+        if (expand_res.refusal_code != 0u || expand_res.defer_code != 0u) {
+            expand_failures += 1u;
+        }
+    }
+
+    for (u32 i = 0u; i < event_log.count; ++i) {
+        const dom_scale_event* ev = &event_log.events[i];
+        if (ev->kind == DOM_SCALE_EVENT_EXPAND) {
+            expand_events += 1u;
+        }
+        if (ev->refusal_code != 0u) {
+            refusal_events += 1u;
+        }
+        if (ev->defer_code != 0u) {
+            defer_events += 1u;
+        }
+    }
+
+    for (u32 i = 0u; i < active_count; ++i) {
+        active_hash = scale_hash_u64(active_hash,
+                                     dom_scale_domain_hash(&ctx.domains[i], ctx.now_tick, workers));
+    }
+
+    dom_scale_budget_snapshot_current(&ctx, &snap);
+    event_hash = scale_event_log_hash(&event_log);
+
+    printf("scenario=constcost domains=%u active=%u ticks=%lld workers=%u invariants=%s\n",
+           (unsigned int)domain_count,
+           (unsigned int)active_count,
+           (long long)target_tick,
+           workers,
+           "SCALE0-DETERMINISM-004,SCALE3-BUDGET-009,SCALE3-CONSTCOST-011");
+    printf("constcost.event_hash=%llu constcost.active_hash=%llu expand_failures=%u\n",
+           (unsigned long long)event_hash,
+           (unsigned long long)active_hash,
+           (unsigned int)expand_failures);
+    printf("events.total=%u events.expand=%u events.refusal=%u events.defer=%u\n",
+           (unsigned int)event_log.count,
+           (unsigned int)expand_events,
+           (unsigned int)refusal_events,
+           (unsigned int)defer_events);
+    scale_print_budget_snapshot(&snap);
+    return expand_failures == 0u ? 0 : 1;
+}
+
+static int scale_run_stress(u32 workers, u32 domain_count, dom_act_time_t target_tick)
+{
+    const dom_act_time_t start_tick = 0;
+    const u32 steps = 32u;
+    d_world* world = scale_make_world();
+    dom_scale_context ctx;
+    dom_scale_domain_slot domain_storage[SCALE_CONSTCOST_MAX_DOMAINS];
+    dom_interest_state interest_storage[SCALE_CONSTCOST_MAX_DOMAINS];
+    dom_scale_event_log event_log;
+    dom_scale_event event_storage[SCALE_CONSTCOST_EVENT_CAP];
+    dom_scale_commit_token token;
+    dom_scale_macro_policy macro_policy;
+    dom_scale_budget_snapshot snap;
+    dom_scale_resource_entry resource_storage[SCALE_CONSTCOST_MAX_DOMAINS][4];
+    u32 macro_exec_events = 0u;
+    u32 macro_refusals = 0u;
+    u64 event_hash;
+
+    if (!world) {
+        return 2;
+    }
+    if (domain_count == 0u) {
+        domain_count = 1u;
+    }
+    if (domain_count > SCALE_CONSTCOST_MAX_DOMAINS) {
+        domain_count = SCALE_CONSTCOST_MAX_DOMAINS;
+    }
+
+    dom_scale_event_log_init(&event_log, event_storage, (u32)(sizeof(event_storage) / sizeof(event_storage[0])));
+    dom_scale_context_init(&ctx,
+                           world,
+                           domain_storage,
+                           domain_count,
+                           interest_storage,
+                           domain_count,
+                           &event_log,
+                           start_tick,
+                           workers);
+    ctx.budget_policy.min_dwell_ticks = 0;
+    ctx.interest_policy.min_dwell_ticks = 0;
+    ctx.budget_policy.collapse_budget_per_tick = 1000000u;
+    ctx.budget_policy.snapshot_budget_per_tick = 1000000u;
+    ctx.budget_policy.macro_queue_limit = domain_count * 2u;
+    if (ctx.budget_policy.macro_queue_limit < domain_count) {
+        ctx.budget_policy.macro_queue_limit = domain_count;
+    }
+    ctx.budget_policy.deferred_queue_limit = 64u;
+
+    for (u32 i = 0u; i < domain_count; ++i) {
+        dom_scale_domain_slot slot;
+        u64 domain_id = 5001u + (u64)(i * 10u);
+        memset(&slot, 0, sizeof(slot));
+        (void)scale_init_resource_domain_with_id(&slot,
+                                                 resource_storage[i],
+                                                 (u32)(sizeof(resource_storage[i]) / sizeof(resource_storage[i][0])),
+                                                 domain_id,
+                                                 i + 3u);
+        if (dom_scale_register_domain(&ctx, &slot) != 0) {
+            return 2;
+        }
+    }
+
+    dom_scale_commit_token_make(&token, start_tick, 0u);
+    for (u32 i = 0u; i < domain_count; ++i) {
+        (void)dom_scale_collapse_domain(&ctx, &token, ctx.domains[i].domain_id, 7u + i, 0);
+    }
+
+    dom_scale_event_log_clear(&event_log);
+    dom_scale_deferred_clear(&ctx);
+
+    dom_scale_macro_policy_default(&macro_policy);
+    macro_policy.macro_interval_ticks = target_tick > 0 ? (target_tick / (dom_act_time_t)steps) : 1;
+    if (macro_policy.macro_interval_ticks <= 0) {
+        macro_policy.macro_interval_ticks = 1;
+    }
+
+    ctx.budget_policy.macro_event_budget_per_tick = 1u;
+    ctx.budget_policy.snapshot_budget_per_tick = 1u;
+    ctx.budget_policy.refinement_budget_per_tick = 1u;
+    ctx.budget_policy.expand_budget_per_tick = 1u;
+
+    for (u32 step = 1u; step <= steps; ++step) {
+        ctx.now_tick = (dom_act_time_t)((target_tick * (dom_act_time_t)step) / (dom_act_time_t)steps);
+        dom_scale_commit_token_make(&token, ctx.now_tick, 0u);
+        (void)dom_scale_macro_advance(&ctx, &token, ctx.now_tick, &macro_policy, 0);
+    }
+
+    for (u32 i = 0u; i < event_log.count; ++i) {
+        const dom_scale_event* ev = &event_log.events[i];
+        if (ev->kind == DOM_SCALE_EVENT_MACRO_EXECUTE) {
+            macro_exec_events += 1u;
+        }
+        if (ev->refusal_code != 0u) {
+            macro_refusals += 1u;
+        }
+    }
+
+    dom_scale_budget_snapshot_current(&ctx, &snap);
+    event_hash = scale_event_log_hash(&event_log);
+
+    printf("scenario=stress domains=%u ticks=%lld workers=%u invariants=%s\n",
+           (unsigned int)domain_count,
+           (long long)target_tick,
+           workers,
+           "SCALE0-DETERMINISM-004,SCALE3-BUDGET-009,SCALE3-CONSTCOST-011");
+    printf("stress.event_hash=%llu macro_exec_events=%u macro_refusals=%u queue_count=%u schedule_count=%u\n",
+           (unsigned long long)event_hash,
+           (unsigned int)macro_exec_events,
+           (unsigned int)macro_refusals,
+           (unsigned int)dom_macro_event_queue_count(world),
+           (unsigned int)dom_macro_schedule_store_count(world));
+    scale_print_budget_snapshot(&snap);
+
+    return snap.deferred_overflow == 0u ? 0 : 1;
 }
 
 static u32 scale_parse_flag_u32(int argc, char** argv, const char* flag, u32 default_value)
@@ -807,9 +1443,11 @@ typedef struct scale_macro_result {
 static void scale_macro_override_interval(dom_scale_context* ctx, dom_act_time_t interval)
 {
     u32 count;
+    dom_scale_commit_token token;
     if (!ctx || !ctx->world || interval <= 0) {
         return;
     }
+    dom_scale_commit_token_make(&token, ctx->now_tick, 0u);
     count = dom_macro_schedule_store_count(ctx->world);
     for (u32 i = 0u; i < count; ++i) {
         dom_macro_schedule_entry schedule;
@@ -820,6 +1458,7 @@ static void scale_macro_override_interval(dom_scale_context* ctx, dom_act_time_t
         schedule.next_event_time = schedule.last_event_time + interval;
         (void)dom_macro_schedule_store_set(ctx->world, &schedule);
         (void)dom_macro_event_queue_remove_domain(ctx->world, schedule.domain_id);
+        (void)dom_scale_macro_request_reschedule(ctx, &token, schedule.domain_id, 0u);
     }
 }
 
@@ -872,6 +1511,10 @@ static int scale_macro_run(u32 workers,
     ctx.budget_policy.macro_queue_limit = 1000000u;
     ctx.budget_policy.collapse_budget_per_tick = 1000000u;
     ctx.budget_policy.expand_budget_per_tick = 1000000u;
+    ctx.budget_policy.snapshot_budget_per_tick = 1000000u;
+    ctx.budget_policy.refinement_budget_per_tick = 1000000u;
+    ctx.budget_policy.planning_budget_per_tick = 1000000u;
+    ctx.budget_policy.deferred_queue_limit = 128u;
     if (compaction_enabled) {
         ctx.budget_policy.compaction_event_threshold = 16u;
         ctx.budget_policy.compaction_time_threshold = 256;
@@ -1165,6 +1808,10 @@ static int scale_run_macro_replay(u32 workers, dom_act_time_t target_tick, u32 m
     ctx_loaded.budget_policy.macro_queue_limit = 1000000u;
     ctx_loaded.budget_policy.collapse_budget_per_tick = 1000000u;
     ctx_loaded.budget_policy.expand_budget_per_tick = 1000000u;
+    ctx_loaded.budget_policy.snapshot_budget_per_tick = 1000000u;
+    ctx_loaded.budget_policy.refinement_budget_per_tick = 1000000u;
+    ctx_loaded.budget_policy.planning_budget_per_tick = 1000000u;
+    ctx_loaded.budget_policy.deferred_queue_limit = 128u;
 
     if (dom_scale_register_domain(&ctx_loaded, &res_slot) != 0 ||
         dom_scale_register_domain(&ctx_loaded, &net_slot) != 0 ||
@@ -1260,6 +1907,10 @@ static int scale_run_macro_transition(u32 workers, dom_act_time_t target_tick, u
     ctx.budget_policy.macro_queue_limit = 1000000u;
     ctx.budget_policy.collapse_budget_per_tick = 1000000u;
     ctx.budget_policy.expand_budget_per_tick = 1000000u;
+    ctx.budget_policy.snapshot_budget_per_tick = 1000000u;
+    ctx.budget_policy.refinement_budget_per_tick = 1000000u;
+    ctx.budget_policy.planning_budget_per_tick = 1000000u;
+    ctx.budget_policy.deferred_queue_limit = 128u;
 
     memset(&res_slot, 0, sizeof(res_slot));
     memset(&net_slot, 0, sizeof(net_slot));
@@ -1370,6 +2021,10 @@ static int scale_run_macro_timeline(u32 workers, dom_act_time_t target_tick, u32
     ctx.budget_policy.macro_queue_limit = 1000000u;
     ctx.budget_policy.collapse_budget_per_tick = 1000000u;
     ctx.budget_policy.expand_budget_per_tick = 1000000u;
+    ctx.budget_policy.snapshot_budget_per_tick = 1000000u;
+    ctx.budget_policy.refinement_budget_per_tick = 1000000u;
+    ctx.budget_policy.planning_budget_per_tick = 1000000u;
+    ctx.budget_policy.deferred_queue_limit = 128u;
     ctx.budget_policy.compaction_event_threshold = 8u;
     ctx.budget_policy.compaction_time_threshold = 128;
 
@@ -1434,7 +2089,10 @@ static void scale_print_help(void)
     printf("  scale timeline <resources|network|agents> [--workers N]\n");
     printf("  scale interest <A|B> [--workers N]\n");
     printf("  scale thread <resources|network|agents> [--workers N]\n");
-    printf("  scale refusal <budget|tier2|unsupported> [--workers N]\n");
+    printf("  scale refusal <budget|active|refinement|macro|planning|snapshot|tier2|unsupported> [--workers N]\n");
+    printf("  scale budgets <ticks> [--workers N]\n");
+    printf("  scale constcost <domains> [--active N] [--ticks T] [--workers N]\n");
+    printf("  scale stress <domains> [--ticks T] [--workers N]\n");
     printf("  scale macro-long <ticks> [--interval N] [--compact 0|1] [--workers N]\n");
     printf("  scale macro-compare <ticks> [--interval N] [--workers N]\n");
     printf("  scale macro-replay <ticks> [--interval N] [--workers N]\n");
@@ -1515,6 +2173,33 @@ extern "C" int tools_run_scale_cli(int argc, char** argv)
     }
     if (strcmp(subcmd, "refusal") == 0) {
         return scale_run_refusal(workers, value_arg);
+    }
+    if (strcmp(subcmd, "budgets") == 0) {
+        u32 ticks_u32 = 0u;
+        dom_act_time_t ticks = 4096;
+        if (value_arg && scale_parse_u32(value_arg, &ticks_u32)) {
+            ticks = (dom_act_time_t)ticks_u32;
+        }
+        return scale_run_budgets(workers, ticks);
+    }
+    if (strcmp(subcmd, "constcost") == 0) {
+        u32 domains = 32u;
+        u32 active = scale_parse_flag_u32(argc, argv, "--active", 1u);
+        u32 ticks_u32 = scale_parse_flag_u32(argc, argv, "--ticks", 4096u);
+        dom_act_time_t ticks = (dom_act_time_t)ticks_u32;
+        if (value_arg) {
+            (void)scale_parse_u32(value_arg, &domains);
+        }
+        return scale_run_constcost(workers, domains, active, ticks);
+    }
+    if (strcmp(subcmd, "stress") == 0) {
+        u32 domains = 32u;
+        u32 ticks_u32 = scale_parse_flag_u32(argc, argv, "--ticks", 262144u);
+        dom_act_time_t ticks = (dom_act_time_t)ticks_u32;
+        if (value_arg) {
+            (void)scale_parse_u32(value_arg, &domains);
+        }
+        return scale_run_stress(workers, domains, ticks);
     }
     if (strcmp(subcmd, "macro-long") == 0) {
         u32 ticks_u32 = 0u;

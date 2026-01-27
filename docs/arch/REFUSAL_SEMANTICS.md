@@ -27,6 +27,13 @@ refusal:
 5, REFUSE_INTEGRITY_VIOLATION, Integrity signals block the action
 6, REFUSE_RATE_LIMIT, Rate limit exceeded
 7, REFUSE_BUDGET_EXCEEDED, Budget policy refusal
+701, REFUSE_ACTIVE_DOMAIN_LIMIT, Tier-2 active domain budget exceeded
+702, REFUSE_REFINEMENT_BUDGET, Refinement budget exceeded
+703, REFUSE_MACRO_EVENT_BUDGET, Macro event budget exceeded
+704, REFUSE_AGENT_PLANNING_BUDGET, Agent planning budget exceeded
+705, REFUSE_SNAPSHOT_BUDGET, Snapshot/serialization budget exceeded
+706, REFUSE_COLLAPSE_BUDGET, Collapse or compaction budget exceeded
+707, REFUSE_DEFER_QUEUE_LIMIT, Deferred work queue limit exceeded or disabled
 1001, WD-REFUSAL-INVALID, Invalid or incomplete WorldDefinition
 1002, WD-REFUSAL-SCHEMA, Unsupported WorldDefinition schema version
 1003, WD-REFUSAL-CAPABILITY, Missing capability for WorldDefinition

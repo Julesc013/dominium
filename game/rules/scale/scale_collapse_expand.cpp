@@ -35,7 +35,12 @@ enum {
     DOM_SCALE_DETAIL_BUDGET_COMPACTION = 13u,
     DOM_SCALE_DETAIL_MACRO_SCHEDULE = 14u,
     DOM_SCALE_DETAIL_MACRO_EVENT = 15u,
-    DOM_SCALE_DETAIL_MACRO_COMPACTION = 16u
+    DOM_SCALE_DETAIL_MACRO_COMPACTION = 16u,
+    DOM_SCALE_DETAIL_ACTIVE_DOMAIN_LIMIT = 17u,
+    DOM_SCALE_DETAIL_BUDGET_REFINEMENT = 18u,
+    DOM_SCALE_DETAIL_BUDGET_PLANNING = 19u,
+    DOM_SCALE_DETAIL_BUDGET_SNAPSHOT = 20u,
+    DOM_SCALE_DETAIL_DEFER_QUEUE_LIMIT = 21u
 };
 
 static u64 dom_scale_fnv1a64_init(void)
@@ -328,8 +333,11 @@ void dom_scale_budget_policy_default(dom_scale_budget_policy* policy)
     memset(policy, 0, sizeof(*policy));
     policy->max_tier2_domains = 8u;
     policy->max_tier1_domains = 32u;
+    policy->active_domain_budget = 0u;
     policy->refinement_budget_per_tick = 64u;
+    policy->refinement_cost_units = 1u;
     policy->planning_budget_per_tick = 64u;
+    policy->planning_cost_units = 1u;
     policy->collapse_budget_per_tick = 16u;
     policy->expand_budget_per_tick = 16u;
     policy->collapse_cost_units = 1u;
@@ -341,6 +349,9 @@ void dom_scale_budget_policy_default(dom_scale_budget_policy* policy)
     policy->compaction_cost_units = 1u;
     policy->compaction_event_threshold = 256u;
     policy->compaction_time_threshold = 1024;
+    policy->snapshot_budget_per_tick = 32u;
+    policy->snapshot_cost_units = 1u;
+    policy->deferred_queue_limit = 64u;
     policy->min_dwell_ticks = 4;
 }
 
@@ -399,6 +410,29 @@ static void dom_scale_recount_active_tiers(dom_scale_context* ctx)
     }
     ctx->budget_state.active_tier1_domains = tier1;
     ctx->budget_state.active_tier2_domains = tier2;
+}
+
+static u32 dom_scale_find_domain_index(const dom_scale_context* ctx, u64 domain_id)
+{
+    u32 low = 0u;
+    u32 high;
+    if (!ctx || !ctx->domains || ctx->domain_count == 0u) {
+        return 0xFFFFFFFFu;
+    }
+    high = ctx->domain_count;
+    while (low < high) {
+        u32 mid = low + (u32)((high - low) / 2u);
+        u64 mid_id = ctx->domains[mid].domain_id;
+        if (mid_id == domain_id) {
+            return mid;
+        }
+        if (mid_id < domain_id) {
+            low = mid + 1u;
+        } else {
+            high = mid;
+        }
+    }
+    return 0xFFFFFFFFu;
 }
 
 void dom_scale_context_init(dom_scale_context* ctx,
@@ -476,34 +510,32 @@ int dom_scale_register_domain(dom_scale_context* ctx,
 dom_scale_domain_slot* dom_scale_find_domain(dom_scale_context* ctx,
                                              u64 domain_id)
 {
-    u32 i;
+    u32 index;
     if (!ctx || !ctx->domains) {
         return 0;
     }
-    for (i = 0u; i < ctx->domain_count; ++i) {
-        if (ctx->domains[i].domain_id == domain_id) {
-            return &ctx->domains[i];
-        }
-        if (ctx->domains[i].domain_id > domain_id) {
-            break;
-        }
+    index = dom_scale_find_domain_index(ctx, domain_id);
+    if (index == 0xFFFFFFFFu) {
+        return 0;
     }
-    return 0;
+    return &ctx->domains[index];
 }
 
 static dom_interest_state* dom_scale_find_interest_state(dom_scale_context* ctx,
                                                          u64 domain_id)
 {
-    u32 i;
+    u32 index;
     if (!ctx || !ctx->interest_states) {
         return 0;
     }
-    for (i = 0u; i < ctx->domain_count && i < ctx->interest_capacity; ++i) {
-        if (ctx->interest_states[i].target_id == domain_id) {
-            return &ctx->interest_states[i];
-        }
+    index = dom_scale_find_domain_index(ctx, domain_id);
+    if (index == 0xFFFFFFFFu || index >= ctx->interest_capacity) {
+        return 0;
     }
-    return 0;
+    if (ctx->interest_states[index].target_id != domain_id) {
+        return 0;
+    }
+    return &ctx->interest_states[index];
 }
 
 static u64 dom_scale_commit_nonce(dom_act_time_t tick)
@@ -575,6 +607,44 @@ static int dom_scale_domain_supported(u32 domain_kind)
     return 0;
 }
 
+static u32 dom_scale_policy_tier2_limit(const dom_scale_budget_policy* policy)
+{
+    if (!policy) {
+        return 0u;
+    }
+    if (policy->active_domain_budget > 0u) {
+        return policy->active_domain_budget;
+    }
+    return policy->max_tier2_domains;
+}
+
+static u32 dom_scale_policy_deferred_limit(const dom_scale_budget_policy* policy)
+{
+    u32 limit = policy ? policy->deferred_queue_limit : 0u;
+    if (limit > DOM_SCALE_DEFER_QUEUE_CAP) {
+        return DOM_SCALE_DEFER_QUEUE_CAP;
+    }
+    return limit;
+}
+
+static void dom_scale_budget_begin_tick(dom_scale_context* ctx, dom_act_time_t tick)
+{
+    if (!ctx) {
+        return;
+    }
+    if (ctx->budget_state.budget_tick == tick) {
+        return;
+    }
+    ctx->budget_state.budget_tick = tick;
+    ctx->budget_state.refinement_used = 0u;
+    ctx->budget_state.planning_used = 0u;
+    ctx->budget_state.collapse_used = 0u;
+    ctx->budget_state.expand_used = 0u;
+    ctx->budget_state.macro_event_used = 0u;
+    ctx->budget_state.compaction_used = 0u;
+    ctx->budget_state.snapshot_used = 0u;
+}
+
 static int dom_scale_budget_allows_collapse(dom_scale_context* ctx)
 {
     const dom_scale_budget_policy* policy;
@@ -582,6 +652,7 @@ static int dom_scale_budget_allows_collapse(dom_scale_context* ctx)
     if (!ctx) {
         return 0;
     }
+    dom_scale_budget_begin_tick(ctx, ctx->now_tick);
     policy = &ctx->budget_policy;
     cost = policy->collapse_cost_units ? policy->collapse_cost_units : 1u;
     if (policy->collapse_budget_per_tick == 0u) {
@@ -595,27 +666,39 @@ static int dom_scale_budget_allows_expand(dom_scale_context* ctx,
                                           u32* out_detail_code)
 {
     const dom_scale_budget_policy* policy;
-    u32 cost;
+    u32 refine_cost;
+    u32 expand_cost;
+    u32 tier2_limit;
     if (out_detail_code) {
         *out_detail_code = DOM_SCALE_DETAIL_NONE;
     }
     if (!ctx) {
         return 0;
     }
+    dom_scale_budget_begin_tick(ctx, ctx->now_tick);
     policy = &ctx->budget_policy;
-    cost = policy->expand_cost_units ? policy->expand_cost_units : 1u;
+    refine_cost = policy->refinement_cost_units ? policy->refinement_cost_units : 1u;
+    expand_cost = policy->expand_cost_units ? policy->expand_cost_units : 1u;
+    if (policy->refinement_budget_per_tick > 0u &&
+        ctx->budget_state.refinement_used + refine_cost > policy->refinement_budget_per_tick) {
+        if (out_detail_code) {
+            *out_detail_code = DOM_SCALE_DETAIL_BUDGET_REFINEMENT;
+        }
+        return 0;
+    }
     if (policy->expand_budget_per_tick > 0u &&
-        ctx->budget_state.expand_used + cost > policy->expand_budget_per_tick) {
+        ctx->budget_state.expand_used + expand_cost > policy->expand_budget_per_tick) {
         if (out_detail_code) {
             *out_detail_code = DOM_SCALE_DETAIL_BUDGET_EXPAND;
         }
         return 0;
     }
+    tier2_limit = dom_scale_policy_tier2_limit(policy);
     if (dom_scale_is_tier2(target_tier) &&
-        policy->max_tier2_domains > 0u &&
-        ctx->budget_state.active_tier2_domains >= policy->max_tier2_domains) {
+        tier2_limit > 0u &&
+        ctx->budget_state.active_tier2_domains >= tier2_limit) {
         if (out_detail_code) {
-            *out_detail_code = DOM_SCALE_DETAIL_TIER_CAP;
+            *out_detail_code = DOM_SCALE_DETAIL_ACTIVE_DOMAIN_LIMIT;
         }
         return 0;
     }
@@ -630,6 +713,38 @@ static int dom_scale_budget_allows_expand(dom_scale_context* ctx,
     return 1;
 }
 
+static int dom_scale_budget_allows_planning(dom_scale_context* ctx)
+{
+    const dom_scale_budget_policy* policy;
+    u32 cost;
+    if (!ctx) {
+        return 0;
+    }
+    dom_scale_budget_begin_tick(ctx, ctx->now_tick);
+    policy = &ctx->budget_policy;
+    cost = policy->planning_cost_units ? policy->planning_cost_units : 1u;
+    if (policy->planning_budget_per_tick == 0u) {
+        return 1;
+    }
+    return ctx->budget_state.planning_used + cost <= policy->planning_budget_per_tick ? 1 : 0;
+}
+
+static int dom_scale_budget_allows_snapshot(dom_scale_context* ctx)
+{
+    const dom_scale_budget_policy* policy;
+    u32 cost;
+    if (!ctx) {
+        return 0;
+    }
+    dom_scale_budget_begin_tick(ctx, ctx->now_tick);
+    policy = &ctx->budget_policy;
+    cost = policy->snapshot_cost_units ? policy->snapshot_cost_units : 1u;
+    if (policy->snapshot_budget_per_tick == 0u) {
+        return 1;
+    }
+    return ctx->budget_state.snapshot_used + cost <= policy->snapshot_budget_per_tick ? 1 : 0;
+}
+
 static int dom_scale_budget_allows_macro_event(dom_scale_context* ctx, dom_act_time_t event_tick)
 {
     const dom_scale_budget_policy* policy;
@@ -637,10 +752,8 @@ static int dom_scale_budget_allows_macro_event(dom_scale_context* ctx, dom_act_t
     if (!ctx) {
         return 0;
     }
-    if (ctx->budget_state.macro_budget_tick != event_tick) {
-        ctx->budget_state.macro_budget_tick = event_tick;
-        ctx->budget_state.macro_event_used = 0u;
-    }
+    (void)event_tick;
+    dom_scale_budget_begin_tick(ctx, ctx->now_tick);
     policy = &ctx->budget_policy;
     cost = policy->macro_event_cost_units ? policy->macro_event_cost_units : 1u;
     if (policy->macro_event_budget_per_tick == 0u) {
@@ -656,10 +769,8 @@ static int dom_scale_budget_allows_compaction(dom_scale_context* ctx, dom_act_ti
     if (!ctx) {
         return 0;
     }
-    if (ctx->budget_state.compaction_budget_tick != compact_tick) {
-        ctx->budget_state.compaction_budget_tick = compact_tick;
-        ctx->budget_state.compaction_used = 0u;
-    }
+    (void)compact_tick;
+    dom_scale_budget_begin_tick(ctx, ctx->now_tick);
     policy = &ctx->budget_policy;
     cost = policy->compaction_cost_units ? policy->compaction_cost_units : 1u;
     if (policy->compaction_budget_per_tick == 0u) {
@@ -699,6 +810,7 @@ static void dom_scale_budget_consume_collapse(dom_scale_context* ctx)
     if (!ctx) {
         return;
     }
+    dom_scale_budget_begin_tick(ctx, ctx->now_tick);
     policy = &ctx->budget_policy;
     cost = policy->collapse_cost_units ? policy->collapse_cost_units : 1u;
     ctx->budget_state.collapse_used += cost;
@@ -711,9 +823,49 @@ static void dom_scale_budget_consume_expand(dom_scale_context* ctx)
     if (!ctx) {
         return;
     }
+    dom_scale_budget_begin_tick(ctx, ctx->now_tick);
     policy = &ctx->budget_policy;
     cost = policy->expand_cost_units ? policy->expand_cost_units : 1u;
     ctx->budget_state.expand_used += cost;
+}
+
+static void dom_scale_budget_consume_refinement(dom_scale_context* ctx)
+{
+    const dom_scale_budget_policy* policy;
+    u32 cost;
+    if (!ctx) {
+        return;
+    }
+    dom_scale_budget_begin_tick(ctx, ctx->now_tick);
+    policy = &ctx->budget_policy;
+    cost = policy->refinement_cost_units ? policy->refinement_cost_units : 1u;
+    ctx->budget_state.refinement_used += cost;
+}
+
+static void dom_scale_budget_consume_planning(dom_scale_context* ctx)
+{
+    const dom_scale_budget_policy* policy;
+    u32 cost;
+    if (!ctx) {
+        return;
+    }
+    dom_scale_budget_begin_tick(ctx, ctx->now_tick);
+    policy = &ctx->budget_policy;
+    cost = policy->planning_cost_units ? policy->planning_cost_units : 1u;
+    ctx->budget_state.planning_used += cost;
+}
+
+static void dom_scale_budget_consume_snapshot(dom_scale_context* ctx)
+{
+    const dom_scale_budget_policy* policy;
+    u32 cost;
+    if (!ctx) {
+        return;
+    }
+    dom_scale_budget_begin_tick(ctx, ctx->now_tick);
+    policy = &ctx->budget_policy;
+    cost = policy->snapshot_cost_units ? policy->snapshot_cost_units : 1u;
+    ctx->budget_state.snapshot_used += cost;
 }
 
 static void dom_scale_budget_consume_macro_event(dom_scale_context* ctx, dom_act_time_t event_tick)
@@ -723,10 +875,8 @@ static void dom_scale_budget_consume_macro_event(dom_scale_context* ctx, dom_act
     if (!ctx) {
         return;
     }
-    if (ctx->budget_state.macro_budget_tick != event_tick) {
-        ctx->budget_state.macro_budget_tick = event_tick;
-        ctx->budget_state.macro_event_used = 0u;
-    }
+    (void)event_tick;
+    dom_scale_budget_begin_tick(ctx, ctx->now_tick);
     policy = &ctx->budget_policy;
     cost = policy->macro_event_cost_units ? policy->macro_event_cost_units : 1u;
     ctx->budget_state.macro_event_used += cost;
@@ -739,10 +889,8 @@ static void dom_scale_budget_consume_compaction(dom_scale_context* ctx, dom_act_
     if (!ctx) {
         return;
     }
-    if (ctx->budget_state.compaction_budget_tick != compact_tick) {
-        ctx->budget_state.compaction_budget_tick = compact_tick;
-        ctx->budget_state.compaction_used = 0u;
-    }
+    (void)compact_tick;
+    dom_scale_budget_begin_tick(ctx, ctx->now_tick);
     policy = &ctx->budget_policy;
     cost = policy->compaction_cost_units ? policy->compaction_cost_units : 1u;
     ctx->budget_state.compaction_used += cost;
@@ -798,6 +946,284 @@ static void dom_scale_result_init(dom_scale_operation_result* result,
     result->to_tier = DOM_FID_LATENT;
 }
 
+static int dom_scale_deferred_cmp(const dom_scale_deferred_op* a,
+                                  const dom_scale_deferred_op* b)
+{
+    if (!a || !b) {
+        return a ? 1 : (b ? -1 : 0);
+    }
+    if (a->domain_id < b->domain_id) return -1;
+    if (a->domain_id > b->domain_id) return 1;
+    if (a->capsule_id < b->capsule_id) return -1;
+    if (a->capsule_id > b->capsule_id) return 1;
+    if (a->kind < b->kind) return -1;
+    if (a->kind > b->kind) return 1;
+    if (a->requested_tick < b->requested_tick) return -1;
+    if (a->requested_tick > b->requested_tick) return 1;
+    if (a->reason_code < b->reason_code) return -1;
+    if (a->reason_code > b->reason_code) return 1;
+    if (a->budget_kind < b->budget_kind) return -1;
+    if (a->budget_kind > b->budget_kind) return 1;
+    return 0;
+}
+
+static int dom_scale_deferred_enqueue(dom_scale_context* ctx,
+                                      const dom_scale_deferred_op* op)
+{
+    u32 limit;
+    u32 i;
+    if (!ctx || !op) {
+        return 0;
+    }
+    limit = dom_scale_policy_deferred_limit(&ctx->budget_policy);
+    for (i = 0u; i < ctx->budget_state.deferred_count; ++i) {
+        if (dom_scale_deferred_cmp(&ctx->budget_state.deferred_ops[i], op) == 0) {
+            return 1;
+        }
+    }
+    if (ctx->budget_state.deferred_count >= limit ||
+        ctx->budget_state.deferred_count >= DOM_SCALE_DEFER_QUEUE_CAP) {
+        ctx->budget_state.deferred_overflow += 1u;
+        return 0;
+    }
+    i = ctx->budget_state.deferred_count;
+    while (i > 0u && dom_scale_deferred_cmp(&ctx->budget_state.deferred_ops[i - 1u], op) > 0) {
+        ctx->budget_state.deferred_ops[i] = ctx->budget_state.deferred_ops[i - 1u];
+        --i;
+    }
+    ctx->budget_state.deferred_ops[i] = *op;
+    ctx->budget_state.deferred_count += 1u;
+    return 1;
+}
+
+static void dom_scale_deferred_remove_domain(dom_scale_context* ctx, u64 domain_id)
+{
+    u32 i = 0u;
+    if (!ctx) {
+        return;
+    }
+    while (i < ctx->budget_state.deferred_count) {
+        if (ctx->budget_state.deferred_ops[i].domain_id == domain_id) {
+            u32 j;
+            for (j = i + 1u; j < ctx->budget_state.deferred_count; ++j) {
+                ctx->budget_state.deferred_ops[j - 1u] = ctx->budget_state.deferred_ops[j];
+            }
+            ctx->budget_state.deferred_count -= 1u;
+            memset(&ctx->budget_state.deferred_ops[ctx->budget_state.deferred_count],
+                   0,
+                   sizeof(ctx->budget_state.deferred_ops[0]));
+            continue;
+        }
+        ++i;
+    }
+}
+
+static void dom_scale_deferred_remove_kind(dom_scale_context* ctx, u64 domain_id, u32 kind)
+{
+    u32 i = 0u;
+    if (!ctx) {
+        return;
+    }
+    while (i < ctx->budget_state.deferred_count) {
+        if (ctx->budget_state.deferred_ops[i].domain_id == domain_id &&
+            ctx->budget_state.deferred_ops[i].kind == kind) {
+            u32 j;
+            for (j = i + 1u; j < ctx->budget_state.deferred_count; ++j) {
+                ctx->budget_state.deferred_ops[j - 1u] = ctx->budget_state.deferred_ops[j];
+            }
+            ctx->budget_state.deferred_count -= 1u;
+            memset(&ctx->budget_state.deferred_ops[ctx->budget_state.deferred_count],
+                   0,
+                   sizeof(ctx->budget_state.deferred_ops[0]));
+            continue;
+        }
+        ++i;
+    }
+}
+
+static void dom_scale_deferred_remove_match(dom_scale_context* ctx,
+                                            u64 domain_id,
+                                            u32 kind,
+                                            u32 reason_code)
+{
+    u32 i = 0u;
+    if (!ctx) {
+        return;
+    }
+    while (i < ctx->budget_state.deferred_count) {
+        dom_scale_deferred_op* op = &ctx->budget_state.deferred_ops[i];
+        if (op->domain_id == domain_id &&
+            op->kind == kind &&
+            (reason_code == 0u || op->reason_code == reason_code)) {
+            u32 j;
+            for (j = i + 1u; j < ctx->budget_state.deferred_count; ++j) {
+                ctx->budget_state.deferred_ops[j - 1u] = ctx->budget_state.deferred_ops[j];
+            }
+            ctx->budget_state.deferred_count -= 1u;
+            memset(&ctx->budget_state.deferred_ops[ctx->budget_state.deferred_count],
+                   0,
+                   sizeof(ctx->budget_state.deferred_ops[0]));
+            continue;
+        }
+        ++i;
+    }
+}
+
+static u32 dom_scale_budget_kind_from_detail(u32 detail_code)
+{
+    switch (detail_code) {
+    case DOM_SCALE_DETAIL_ACTIVE_DOMAIN_LIMIT:
+    case DOM_SCALE_DETAIL_TIER_CAP:
+        return DOM_SCALE_BUDGET_ACTIVE_DOMAIN;
+    case DOM_SCALE_DETAIL_BUDGET_REFINEMENT:
+    case DOM_SCALE_DETAIL_BUDGET_EXPAND:
+        return DOM_SCALE_BUDGET_REFINEMENT;
+    case DOM_SCALE_DETAIL_BUDGET_COLLAPSE:
+    case DOM_SCALE_DETAIL_BUDGET_COMPACTION:
+        return DOM_SCALE_BUDGET_COLLAPSE;
+    case DOM_SCALE_DETAIL_BUDGET_MACRO_EVENT:
+    case DOM_SCALE_DETAIL_MACRO_QUEUE_LIMIT:
+    case DOM_SCALE_DETAIL_MACRO_SCHEDULE:
+        return DOM_SCALE_BUDGET_MACRO_EVENT;
+    case DOM_SCALE_DETAIL_BUDGET_PLANNING:
+        return DOM_SCALE_BUDGET_AGENT_PLANNING;
+    case DOM_SCALE_DETAIL_BUDGET_SNAPSHOT:
+        return DOM_SCALE_BUDGET_SNAPSHOT;
+    case DOM_SCALE_DETAIL_DEFER_QUEUE_LIMIT:
+        return DOM_SCALE_BUDGET_DEFER_QUEUE;
+    default:
+        break;
+    }
+    return DOM_SCALE_BUDGET_NONE;
+}
+
+static u32 dom_scale_budget_refusal_code(u32 budget_kind, u32 detail_code)
+{
+    (void)detail_code;
+    switch (budget_kind) {
+    case DOM_SCALE_BUDGET_ACTIVE_DOMAIN:
+        return DOM_SCALE_REFUSE_ACTIVE_DOMAIN_LIMIT;
+    case DOM_SCALE_BUDGET_REFINEMENT:
+        return DOM_SCALE_REFUSE_REFINEMENT_BUDGET;
+    case DOM_SCALE_BUDGET_MACRO_EVENT:
+        return DOM_SCALE_REFUSE_MACRO_EVENT_BUDGET;
+    case DOM_SCALE_BUDGET_AGENT_PLANNING:
+        return DOM_SCALE_REFUSE_AGENT_PLANNING_BUDGET;
+    case DOM_SCALE_BUDGET_SNAPSHOT:
+        return DOM_SCALE_REFUSE_SNAPSHOT_BUDGET;
+    case DOM_SCALE_BUDGET_COLLAPSE:
+        return DOM_SCALE_REFUSE_COLLAPSE_BUDGET;
+    case DOM_SCALE_BUDGET_DEFER_QUEUE:
+        return DOM_SCALE_REFUSE_DEFER_QUEUE_LIMIT;
+    default:
+        break;
+    }
+    return DOM_SCALE_REFUSE_BUDGET_EXCEEDED;
+}
+
+static void dom_scale_budget_record_refusal(dom_scale_context* ctx, u32 budget_kind)
+{
+    if (!ctx) {
+        return;
+    }
+    switch (budget_kind) {
+    case DOM_SCALE_BUDGET_ACTIVE_DOMAIN:
+        ctx->budget_state.refusal_active_domain_limit += 1u;
+        break;
+    case DOM_SCALE_BUDGET_REFINEMENT:
+        ctx->budget_state.refusal_refinement_budget += 1u;
+        break;
+    case DOM_SCALE_BUDGET_MACRO_EVENT:
+        ctx->budget_state.refusal_macro_event_budget += 1u;
+        break;
+    case DOM_SCALE_BUDGET_AGENT_PLANNING:
+        ctx->budget_state.refusal_agent_planning_budget += 1u;
+        break;
+    case DOM_SCALE_BUDGET_SNAPSHOT:
+        ctx->budget_state.refusal_snapshot_budget += 1u;
+        break;
+    case DOM_SCALE_BUDGET_COLLAPSE:
+        ctx->budget_state.refusal_collapse_budget += 1u;
+        break;
+    case DOM_SCALE_BUDGET_DEFER_QUEUE:
+        ctx->budget_state.refusal_defer_queue_limit += 1u;
+        break;
+    default:
+        break;
+    }
+}
+
+static void dom_scale_budget_fill_event(dom_scale_context* ctx,
+                                        dom_scale_event* ev,
+                                        u32 detail_code)
+{
+    const dom_scale_budget_policy* policy;
+    u32 budget_kind;
+    if (!ctx || !ev) {
+        return;
+    }
+    dom_scale_budget_begin_tick(ctx, ctx->now_tick);
+    policy = &ctx->budget_policy;
+    budget_kind = dom_scale_budget_kind_from_detail(detail_code);
+    ev->budget_kind = budget_kind;
+    ev->budget_queue = ctx->budget_state.deferred_count;
+    ev->budget_overflow = ctx->budget_state.deferred_overflow;
+    switch (budget_kind) {
+    case DOM_SCALE_BUDGET_ACTIVE_DOMAIN:
+        ev->budget_limit = dom_scale_policy_tier2_limit(policy);
+        ev->budget_used = ctx->budget_state.active_tier2_domains;
+        ev->budget_cost = 1u;
+        break;
+    case DOM_SCALE_BUDGET_REFINEMENT:
+        if (detail_code == DOM_SCALE_DETAIL_BUDGET_EXPAND) {
+            ev->budget_limit = policy->expand_budget_per_tick;
+            ev->budget_used = ctx->budget_state.expand_used;
+            ev->budget_cost = policy->expand_cost_units ? policy->expand_cost_units : 1u;
+        } else {
+            ev->budget_limit = policy->refinement_budget_per_tick;
+            ev->budget_used = ctx->budget_state.refinement_used;
+            ev->budget_cost = policy->refinement_cost_units ? policy->refinement_cost_units : 1u;
+        }
+        break;
+    case DOM_SCALE_BUDGET_COLLAPSE:
+        ev->budget_limit = policy->collapse_budget_per_tick;
+        ev->budget_used = ctx->budget_state.collapse_used;
+        ev->budget_cost = policy->collapse_cost_units ? policy->collapse_cost_units : 1u;
+        break;
+    case DOM_SCALE_BUDGET_MACRO_EVENT:
+        if (detail_code == DOM_SCALE_DETAIL_MACRO_QUEUE_LIMIT && ctx->world) {
+            ev->budget_limit = policy->macro_queue_limit;
+            ev->budget_used = dom_macro_event_queue_count(ctx->world);
+            ev->budget_cost = 1u;
+        } else {
+            ev->budget_limit = policy->macro_event_budget_per_tick;
+            ev->budget_used = ctx->budget_state.macro_event_used;
+            ev->budget_cost = policy->macro_event_cost_units ? policy->macro_event_cost_units : 1u;
+        }
+        break;
+    case DOM_SCALE_BUDGET_AGENT_PLANNING:
+        ev->budget_limit = policy->planning_budget_per_tick;
+        ev->budget_used = ctx->budget_state.planning_used;
+        ev->budget_cost = policy->planning_cost_units ? policy->planning_cost_units : 1u;
+        break;
+    case DOM_SCALE_BUDGET_SNAPSHOT:
+        ev->budget_limit = policy->snapshot_budget_per_tick;
+        ev->budget_used = ctx->budget_state.snapshot_used;
+        ev->budget_cost = policy->snapshot_cost_units ? policy->snapshot_cost_units : 1u;
+        break;
+    case DOM_SCALE_BUDGET_DEFER_QUEUE:
+        ev->budget_limit = dom_scale_policy_deferred_limit(policy);
+        ev->budget_used = ctx->budget_state.deferred_count;
+        ev->budget_cost = 1u;
+        break;
+    default:
+        ev->budget_limit = 0u;
+        ev->budget_used = 0u;
+        ev->budget_cost = 0u;
+        break;
+    }
+}
+
 static void dom_scale_emit_refusal(dom_scale_context* ctx,
                                    u64 domain_id,
                                    u32 domain_kind,
@@ -822,6 +1248,8 @@ static void dom_scale_emit_refusal(dom_scale_context* ctx,
     ev.defer_code = DOM_SCALE_DEFER_NONE;
     ev.detail_code = detail_code;
     ev.tick = ctx->now_tick;
+    dom_scale_budget_fill_event(ctx, &ev, detail_code);
+    dom_scale_budget_record_refusal(ctx, ev.budget_kind);
     dom_scale_event_emit(ctx->event_log, &ev);
 }
 
@@ -849,7 +1277,64 @@ static void dom_scale_emit_defer(dom_scale_context* ctx,
     ev.defer_code = defer_code;
     ev.detail_code = detail_code;
     ev.tick = ctx->now_tick;
+    dom_scale_budget_fill_event(ctx, &ev, detail_code);
     dom_scale_event_emit(ctx->event_log, &ev);
+}
+
+static int dom_scale_enqueue_defer(dom_scale_context* ctx,
+                                   u64 domain_id,
+                                   u32 domain_kind,
+                                   u64 capsule_id,
+                                   dom_fidelity_tier target_tier,
+                                   u32 reason_code,
+                                   u32 defer_code,
+                                   u32 detail_code,
+                                   u32 deferred_kind,
+                                   u32 budget_kind,
+                                   dom_scale_operation_result* out_result)
+{
+    dom_scale_deferred_op op;
+    u32 deferred_limit;
+    if (!ctx) {
+        return 0;
+    }
+    deferred_limit = dom_scale_policy_deferred_limit(&ctx->budget_policy);
+    if (deferred_limit == 0u) {
+        dom_scale_emit_refusal(ctx,
+                               domain_id,
+                               domain_kind,
+                               reason_code,
+                               dom_scale_budget_refusal_code(budget_kind, detail_code),
+                               detail_code,
+                               out_result);
+        return 0;
+    }
+    memset(&op, 0, sizeof(op));
+    op.kind = deferred_kind;
+    op.budget_kind = budget_kind;
+    op.domain_id = domain_id;
+    op.capsule_id = capsule_id;
+    op.target_tier = target_tier;
+    op.requested_tick = ctx->now_tick;
+    op.reason_code = reason_code;
+    if (!dom_scale_deferred_enqueue(ctx, &op)) {
+        dom_scale_emit_refusal(ctx,
+                               domain_id,
+                               domain_kind,
+                               reason_code,
+                               DOM_SCALE_REFUSE_DEFER_QUEUE_LIMIT,
+                               DOM_SCALE_DETAIL_DEFER_QUEUE_LIMIT,
+                               out_result);
+        return 0;
+    }
+    dom_scale_emit_defer(ctx,
+                         domain_id,
+                         domain_kind,
+                         reason_code,
+                         defer_code,
+                         detail_code,
+                         out_result);
+    return 1;
 }
 
 static void dom_scale_emit_collapse(dom_scale_context* ctx,
@@ -965,6 +1450,16 @@ static void dom_scale_emit_macro_compact(dom_scale_context* ctx,
     ev.tick = compact_tick;
     dom_scale_event_emit(ctx->event_log, &ev);
 }
+
+static int dom_scale_expand_apply(dom_scale_context* ctx,
+                                  dom_scale_domain_slot* slot,
+                                  dom_scale_capsule_data data,
+                                  dom_fidelity_tier from_tier,
+                                  dom_fidelity_tier to_tier,
+                                  u32 expand_reason,
+                                  u64 capsule_id,
+                                  u64 capsule_hash,
+                                  dom_scale_operation_result* out_result);
 
 typedef struct dom_scale_role_trait_bucket {
     u32 role_id;
@@ -2946,13 +3441,17 @@ static int dom_scale_macro_schedule_event(dom_scale_context* ctx,
         schedule->next_event_time = event_tick;
     }
     if (!dom_scale_macro_queue_within_limit(ctx, &detail_code)) {
-        dom_scale_emit_refusal(ctx,
-                               slot->domain_id,
-                               slot->domain_kind,
-                               reason_code,
-                               DOM_SCALE_REFUSE_BUDGET_EXCEEDED,
-                               detail_code ? detail_code : DOM_SCALE_DETAIL_MACRO_QUEUE_LIMIT,
-                               0);
+        (void)dom_scale_enqueue_defer(ctx,
+                                      slot->domain_id,
+                                      slot->domain_kind,
+                                      schedule->capsule_id,
+                                      DOM_FID_LATENT,
+                                      reason_code,
+                                      DOM_SCALE_DEFER_MACRO_EVENT,
+                                      detail_code ? detail_code : DOM_SCALE_DETAIL_MACRO_QUEUE_LIMIT,
+                                      DOM_SCALE_DEFERRED_MACRO_EVENT,
+                                      DOM_SCALE_BUDGET_MACRO_EVENT,
+                                      0);
         return 0;
     }
     event_index = schedule->executed_events + 1u;
@@ -2976,15 +3475,20 @@ static int dom_scale_macro_schedule_event(dom_scale_context* ctx,
     ev.payload0 = event_index;
     ev.payload1 = reason_code;
     if (dom_macro_event_queue_schedule(ctx->world, &ev) != 0) {
-        dom_scale_emit_refusal(ctx,
-                               slot->domain_id,
-                               slot->domain_kind,
-                               reason_code,
-                               DOM_SCALE_REFUSE_INVALID_INTENT,
-                               DOM_SCALE_DETAIL_MACRO_SCHEDULE,
-                               0);
+        (void)dom_scale_enqueue_defer(ctx,
+                                      slot->domain_id,
+                                      slot->domain_kind,
+                                      schedule->capsule_id,
+                                      DOM_FID_LATENT,
+                                      reason_code,
+                                      DOM_SCALE_DEFER_MACRO_EVENT,
+                                      DOM_SCALE_DETAIL_MACRO_SCHEDULE,
+                                      DOM_SCALE_DEFERRED_MACRO_EVENT,
+                                      DOM_SCALE_BUDGET_MACRO_EVENT,
+                                      0);
         return 0;
     }
+    dom_scale_deferred_remove_match(ctx, slot->domain_id, DOM_SCALE_DEFERRED_MACRO_EVENT, reason_code);
     dom_scale_emit_macro_schedule(ctx,
                                   slot->domain_id,
                                   slot->domain_kind,
@@ -2999,34 +3503,44 @@ static void dom_scale_macro_reschedule_missing(dom_scale_context* ctx,
                                                const dom_scale_macro_policy* policy,
                                                dom_act_time_t up_to_tick)
 {
-    u32 count;
-    u32 i;
-    dom_macro_schedule_entry schedule;
+    u32 i = 0u;
     if (!ctx || !ctx->world || !policy) {
         return;
     }
-    count = dom_macro_schedule_store_count(ctx->world);
-    for (i = 0u; i < count; ++i) {
+    while (i < ctx->budget_state.deferred_count) {
+        dom_scale_deferred_op op = ctx->budget_state.deferred_ops[i];
         dom_scale_domain_slot* slot;
-        if (dom_macro_schedule_store_get_by_index(ctx->world, i, &schedule) != 0) {
+        dom_macro_schedule_entry schedule;
+        int remove_entry = 0;
+        if (op.kind != DOM_SCALE_DEFERRED_MACRO_EVENT) {
+            ++i;
             continue;
         }
-        slot = dom_scale_find_domain(ctx, schedule.domain_id);
+        slot = dom_scale_find_domain(ctx, op.domain_id);
         if (!slot || slot->capsule_id == 0u || slot->tier != DOM_FID_LATENT) {
+            remove_entry = 1;
+        } else if (dom_macro_schedule_store_get(ctx->world, op.domain_id, &schedule) != 0) {
+            remove_entry = 1;
+        } else {
+            if (schedule.capsule_id != slot->capsule_id) {
+                schedule.capsule_id = slot->capsule_id;
+            }
+            if (dom_scale_macro_domain_has_event(ctx->world, slot->domain_id)) {
+                remove_entry = 1;
+            } else if (schedule.next_event_time <= up_to_tick) {
+                (void)dom_scale_macro_schedule_event(ctx,
+                                                     slot,
+                                                     &schedule,
+                                                     policy,
+                                                     policy->macro_event_kind);
+            }
+            (void)dom_macro_schedule_store_set(ctx->world, &schedule);
+        }
+        if (remove_entry) {
+            dom_scale_deferred_remove_match(ctx, op.domain_id, op.kind, op.reason_code);
             continue;
         }
-        if (schedule.capsule_id != slot->capsule_id) {
-            schedule.capsule_id = slot->capsule_id;
-        }
-        if (!dom_scale_macro_domain_has_event(ctx->world, slot->domain_id) &&
-            schedule.next_event_time <= up_to_tick) {
-            (void)dom_scale_macro_schedule_event(ctx,
-                                                 slot,
-                                                 &schedule,
-                                                 policy,
-                                                 policy->macro_event_kind);
-        }
-        (void)dom_macro_schedule_store_set(ctx->world, &schedule);
+        ++i;
     }
 }
 
@@ -3051,15 +3565,53 @@ static int dom_scale_macro_execute_event(dom_scale_context* ctx,
     }
     reason_code = policy->macro_event_kind;
     if (!dom_scale_budget_allows_macro_event(ctx, ctx->now_tick)) {
-        dom_scale_emit_defer(ctx,
-                             slot->domain_id,
-                             slot->domain_kind,
-                             reason_code,
-                             DOM_SCALE_DEFER_MACRO_EVENT,
-                             DOM_SCALE_DETAIL_BUDGET_MACRO_EVENT,
-                             0);
+        (void)dom_scale_enqueue_defer(ctx,
+                                      slot->domain_id,
+                                      slot->domain_kind,
+                                      schedule->capsule_id,
+                                      DOM_FID_LATENT,
+                                      reason_code,
+                                      DOM_SCALE_DEFER_MACRO_EVENT,
+                                      DOM_SCALE_DETAIL_BUDGET_MACRO_EVENT,
+                                      DOM_SCALE_DEFERRED_MACRO_EVENT,
+                                      DOM_SCALE_BUDGET_MACRO_EVENT,
+                                      0);
         return -1;
     }
+    if (slot->domain_kind == DOM_SCALE_DOMAIN_AGENTS &&
+        !dom_scale_budget_allows_planning(ctx)) {
+        (void)dom_scale_enqueue_defer(ctx,
+                                      slot->domain_id,
+                                      slot->domain_kind,
+                                      schedule->capsule_id,
+                                      DOM_FID_LATENT,
+                                      reason_code,
+                                      DOM_SCALE_DEFER_MACRO_EVENT,
+                                      DOM_SCALE_DETAIL_BUDGET_PLANNING,
+                                      DOM_SCALE_DEFERRED_PLANNING,
+                                      DOM_SCALE_BUDGET_AGENT_PLANNING,
+                                      0);
+        return -1;
+    }
+    if (!dom_scale_budget_allows_snapshot(ctx)) {
+        (void)dom_scale_enqueue_defer(ctx,
+                                      slot->domain_id,
+                                      slot->domain_kind,
+                                      schedule->capsule_id,
+                                      DOM_FID_LATENT,
+                                      reason_code,
+                                      DOM_SCALE_DEFER_MACRO_EVENT,
+                                      DOM_SCALE_DETAIL_BUDGET_SNAPSHOT,
+                                      DOM_SCALE_DEFERRED_SNAPSHOT,
+                                      DOM_SCALE_BUDGET_SNAPSHOT,
+                                      0);
+        return -1;
+    }
+    dom_scale_budget_consume_macro_event(ctx, ctx->now_tick);
+    if (slot->domain_kind == DOM_SCALE_DOMAIN_AGENTS) {
+        dom_scale_budget_consume_planning(ctx);
+    }
+    dom_scale_budget_consume_snapshot(ctx);
     memset(&blob, 0, sizeof(blob));
     dom_scale_capsule_data_init(&data);
     if (!dom_macro_capsule_store_get_blob(ctx->world, schedule->capsule_id, &blob) ||
@@ -3150,7 +3702,6 @@ static int dom_scale_macro_execute_event(dom_scale_context* ctx,
         return 0;
     }
     free(new_bytes);
-    dom_scale_budget_consume_macro_event(ctx, ctx->now_tick);
     dom_scale_emit_macro_execute(ctx,
                                  slot->domain_id,
                                  slot->domain_kind,
@@ -3164,6 +3715,9 @@ static int dom_scale_macro_execute_event(dom_scale_context* ctx,
                                          policy,
                                          reason_code);
     (void)dom_macro_schedule_store_set(ctx->world, schedule);
+    dom_scale_deferred_remove_match(ctx, slot->domain_id, DOM_SCALE_DEFERRED_MACRO_EVENT, reason_code);
+    dom_scale_deferred_remove_match(ctx, slot->domain_id, DOM_SCALE_DEFERRED_PLANNING, reason_code);
+    dom_scale_deferred_remove_match(ctx, slot->domain_id, DOM_SCALE_DEFERRED_SNAPSHOT, reason_code);
     dom_scale_capsule_data_free(&data);
     return 1;
 }
@@ -3232,6 +3786,48 @@ int dom_scale_macro_initialize(dom_scale_context* ctx,
     return 1;
 }
 
+int dom_scale_macro_request_reschedule(dom_scale_context* ctx,
+                                       const dom_scale_commit_token* token,
+                                       u64 domain_id,
+                                       u32 reason_code)
+{
+    dom_scale_macro_policy policy;
+    dom_scale_domain_slot* slot;
+    dom_macro_schedule_entry schedule;
+    if (!ctx || !ctx->world) {
+        return -1;
+    }
+    if (!dom_scale_commit_token_validate(token, ctx->now_tick)) {
+        dom_scale_emit_refusal(ctx,
+                               domain_id,
+                               0u,
+                               reason_code,
+                               DOM_SCALE_REFUSE_INVALID_INTENT,
+                               DOM_SCALE_DETAIL_COMMIT_TICK,
+                               0);
+        return 0;
+    }
+    dom_scale_macro_policy_default(&policy);
+    slot = dom_scale_find_domain(ctx, domain_id);
+    if (!slot || slot->capsule_id == 0u || slot->tier != DOM_FID_LATENT) {
+        return -2;
+    }
+    if (dom_macro_schedule_store_get(ctx->world, domain_id, &schedule) != 0) {
+        return 0;
+    }
+    (void)dom_macro_event_queue_remove_domain(ctx->world, domain_id);
+    if (reason_code == 0u) {
+        reason_code = policy.macro_event_kind;
+    }
+    (void)dom_scale_macro_schedule_event(ctx,
+                                         slot,
+                                         &schedule,
+                                         &policy,
+                                         reason_code);
+    (void)dom_macro_schedule_store_set(ctx->world, &schedule);
+    return 1;
+}
+
 int dom_scale_macro_advance(dom_scale_context* ctx,
                             const dom_scale_commit_token* token,
                             dom_act_time_t up_to_tick,
@@ -3258,6 +3854,7 @@ int dom_scale_macro_advance(dom_scale_context* ctx,
                                0);
         return 0;
     }
+    dom_scale_budget_begin_tick(ctx, ctx->now_tick);
     dom_scale_macro_policy_resolve(policy, &resolved);
     dom_scale_macro_reschedule_missing(ctx, &resolved, up_to_tick);
     memset(&ev, 0, sizeof(ev));
@@ -3316,6 +3913,7 @@ int dom_scale_macro_compact(dom_scale_context* ctx,
                                0);
         return 0;
     }
+    dom_scale_budget_begin_tick(ctx, ctx->now_tick);
     slot = dom_scale_find_domain(ctx, domain_id);
     if (!slot || slot->capsule_id == 0u || slot->tier != DOM_FID_LATENT) {
         return -2;
@@ -3335,15 +3933,35 @@ int dom_scale_macro_compact(dom_scale_context* ctx,
         return 0;
     }
     if (!dom_scale_budget_allows_compaction(ctx, ctx->now_tick)) {
-        dom_scale_emit_defer(ctx,
-                             domain_id,
-                             slot->domain_kind,
-                             reason_code,
-                             DOM_SCALE_DEFER_COMPACTION,
-                             DOM_SCALE_DETAIL_BUDGET_COMPACTION,
-                             0);
+        (void)dom_scale_enqueue_defer(ctx,
+                                      domain_id,
+                                      slot->domain_kind,
+                                      schedule.capsule_id,
+                                      DOM_FID_LATENT,
+                                      reason_code,
+                                      DOM_SCALE_DEFER_COMPACTION,
+                                      DOM_SCALE_DETAIL_BUDGET_COMPACTION,
+                                      DOM_SCALE_DEFERRED_SNAPSHOT,
+                                      DOM_SCALE_BUDGET_COLLAPSE,
+                                      0);
         return 0;
     }
+    if (!dom_scale_budget_allows_snapshot(ctx)) {
+        (void)dom_scale_enqueue_defer(ctx,
+                                      domain_id,
+                                      slot->domain_kind,
+                                      schedule.capsule_id,
+                                      DOM_FID_LATENT,
+                                      reason_code,
+                                      DOM_SCALE_DEFER_COMPACTION,
+                                      DOM_SCALE_DETAIL_BUDGET_SNAPSHOT,
+                                      DOM_SCALE_DEFERRED_SNAPSHOT,
+                                      DOM_SCALE_BUDGET_SNAPSHOT,
+                                      0);
+        return 0;
+    }
+    dom_scale_budget_consume_compaction(ctx, ctx->now_tick);
+    dom_scale_budget_consume_snapshot(ctx);
     (void)dom_macro_event_queue_remove_domain(ctx->world, domain_id);
     (void)dom_scale_macro_schedule_event(ctx,
                                          slot,
@@ -3351,7 +3969,6 @@ int dom_scale_macro_compact(dom_scale_context* ctx,
                                          &resolved,
                                          reason_code);
     (void)dom_macro_schedule_store_set(ctx->world, &schedule);
-    dom_scale_budget_consume_compaction(ctx, ctx->now_tick);
     dom_scale_emit_macro_compact(ctx,
                                  domain_id,
                                  slot->domain_kind,
@@ -3396,13 +4013,17 @@ int dom_scale_macro_finalize_for_expand(dom_scale_context* ctx,
     memset(&next_event, 0, sizeof(next_event));
     if (dom_macro_event_queue_peek_next(ctx->world, &next_event) &&
         next_event.event_time <= up_to_tick) {
-        dom_scale_emit_defer(ctx,
-                             domain_id,
-                             slot->domain_kind,
-                             resolved.macro_event_kind,
-                             DOM_SCALE_DEFER_EXPAND,
-                             DOM_SCALE_DETAIL_BUDGET_MACRO_EVENT,
-                             0);
+        (void)dom_scale_enqueue_defer(ctx,
+                                      domain_id,
+                                      slot->domain_kind,
+                                      slot->capsule_id,
+                                      DOM_FID_MICRO,
+                                      resolved.macro_event_kind,
+                                      DOM_SCALE_DEFER_EXPAND,
+                                      DOM_SCALE_DETAIL_BUDGET_MACRO_EVENT,
+                                      DOM_SCALE_DEFERRED_EXPAND,
+                                      DOM_SCALE_BUDGET_MACRO_EVENT,
+                                      0);
         return 0;
     }
     (void)dom_scale_macro_compact(ctx, token, domain_id, up_to_tick, &resolved, 0);
@@ -3547,6 +4168,7 @@ int dom_scale_collapse_domain(dom_scale_context* ctx,
         return -2;
     }
     dom_scale_result_init(out_result, domain_id, slot->domain_kind, ctx->now_tick);
+    dom_scale_budget_begin_tick(ctx, ctx->now_tick);
     from_tier = slot->tier;
     if (out_result) {
         out_result->from_tier = from_tier;
@@ -3585,26 +4207,50 @@ int dom_scale_collapse_domain(dom_scale_context* ctx,
     if (!dom_scale_dwell_elapsed(ctx->now_tick,
                                  slot->last_transition_tick,
                                  ctx->budget_policy.min_dwell_ticks)) {
-        dom_scale_emit_defer(ctx,
-                             domain_id,
-                             slot->domain_kind,
-                             collapse_reason,
-                             DOM_SCALE_DEFER_COLLAPSE,
-                             DOM_SCALE_DETAIL_DWELL_TICKS,
-                             out_result);
+        (void)dom_scale_enqueue_defer(ctx,
+                                      domain_id,
+                                      slot->domain_kind,
+                                      slot->capsule_id,
+                                      DOM_FID_LATENT,
+                                      collapse_reason,
+                                      DOM_SCALE_DEFER_COLLAPSE,
+                                      DOM_SCALE_DETAIL_DWELL_TICKS,
+                                      DOM_SCALE_DEFERRED_COLLAPSE,
+                                      DOM_SCALE_BUDGET_NONE,
+                                      out_result);
         return 0;
     }
     if (!dom_scale_budget_allows_collapse(ctx)) {
-        dom_scale_emit_refusal(ctx,
-                               domain_id,
-                               slot->domain_kind,
-                               collapse_reason,
-                               DOM_SCALE_REFUSE_BUDGET_EXCEEDED,
-                               DOM_SCALE_DETAIL_BUDGET_COLLAPSE,
-                               out_result);
+        (void)dom_scale_enqueue_defer(ctx,
+                                      domain_id,
+                                      slot->domain_kind,
+                                      slot->capsule_id,
+                                      DOM_FID_LATENT,
+                                      collapse_reason,
+                                      DOM_SCALE_DEFER_COLLAPSE,
+                                      DOM_SCALE_DETAIL_BUDGET_COLLAPSE,
+                                      DOM_SCALE_DEFERRED_COLLAPSE,
+                                      DOM_SCALE_BUDGET_COLLAPSE,
+                                      out_result);
+        return 0;
+    }
+    if (!dom_scale_budget_allows_snapshot(ctx)) {
+        (void)dom_scale_enqueue_defer(ctx,
+                                      domain_id,
+                                      slot->domain_kind,
+                                      slot->capsule_id,
+                                      DOM_FID_LATENT,
+                                      collapse_reason,
+                                      DOM_SCALE_DEFER_COLLAPSE,
+                                      DOM_SCALE_DETAIL_BUDGET_SNAPSHOT,
+                                      DOM_SCALE_DEFERRED_SNAPSHOT,
+                                      DOM_SCALE_BUDGET_SNAPSHOT,
+                                      out_result);
         return 0;
     }
 
+    dom_scale_budget_consume_collapse(ctx);
+    dom_scale_budget_consume_snapshot(ctx);
     hash_before = dom_scale_domain_hash(slot, ctx->now_tick, ctx->worker_count);
     capsule_id = dom_scale_capsule_id(domain_id, slot->domain_kind, ctx->now_tick, collapse_reason);
     seed_base = dom_scale_seed_base(capsule_id, ctx->now_tick);
@@ -3644,7 +4290,6 @@ int dom_scale_collapse_domain(dom_scale_context* ctx,
     slot->tier = to_tier;
     slot->last_transition_tick = ctx->now_tick;
     dom_scale_budget_adjust_for_transition(ctx, from_tier, to_tier);
-    dom_scale_budget_consume_collapse(ctx);
     hash_after = dom_scale_domain_hash(slot, ctx->now_tick, ctx->worker_count);
     if (ctx->world) {
         dom_scale_macro_policy macro_policy;
@@ -3656,6 +4301,8 @@ int dom_scale_collapse_domain(dom_scale_context* ctx,
                                          collapse_reason,
                                          &macro_policy);
     }
+    dom_scale_deferred_remove_match(ctx, domain_id, DOM_SCALE_DEFERRED_COLLAPSE, collapse_reason);
+    dom_scale_deferred_remove_match(ctx, domain_id, DOM_SCALE_DEFERRED_SNAPSHOT, collapse_reason);
 
     if (out_result) {
         out_result->capsule_id = capsule_id;
@@ -3692,16 +4339,12 @@ int dom_scale_expand_domain(dom_scale_context* ctx,
     dom_scale_domain_slot* slot = 0;
     dom_fidelity_tier from_tier = DOM_FID_LATENT;
     dom_fidelity_tier to_tier = target_tier;
-    u32 budget_detail = DOM_SCALE_DETAIL_NONE;
-    u32 saved_tier1 = 0u;
-    u32 saved_tier2 = 0u;
-    u64 hash_before = 0u;
-    u64 hash_after = 0u;
     u64 capsule_hash = 0u;
 
     if (!ctx || !ctx->world) {
         return -1;
     }
+    dom_scale_budget_begin_tick(ctx, ctx->now_tick);
     memset(&blob, 0, sizeof(blob));
     dom_scale_capsule_data_init(&data);
     dom_scale_macro_policy_default(&macro_policy);
@@ -3786,15 +4429,30 @@ int dom_scale_expand_domain(dom_scale_context* ctx,
     if (!dom_scale_dwell_elapsed(ctx->now_tick,
                                  slot->last_transition_tick,
                                  ctx->budget_policy.min_dwell_ticks)) {
-        dom_scale_emit_defer(ctx,
-                             slot->domain_id,
-                             slot->domain_kind,
-                             expand_reason,
-                             DOM_SCALE_DEFER_EXPAND,
-                             DOM_SCALE_DETAIL_DWELL_TICKS,
-                             out_result);
-    dom_scale_capsule_data_free(&data);
-    return 0;
+        (void)dom_scale_enqueue_defer(ctx,
+                                      slot->domain_id,
+                                      slot->domain_kind,
+                                      capsule_id,
+                                      target_tier,
+                                      expand_reason,
+                                      DOM_SCALE_DEFER_EXPAND,
+                                      DOM_SCALE_DETAIL_DWELL_TICKS,
+                                      DOM_SCALE_DEFERRED_EXPAND,
+                                      DOM_SCALE_BUDGET_NONE,
+                                      out_result);
+        dom_scale_capsule_data_free(&data);
+        return 0;
+    }
+
+    return dom_scale_expand_apply(ctx,
+                                  slot,
+                                  data,
+                                  from_tier,
+                                  to_tier,
+                                  expand_reason,
+                                  capsule_id,
+                                  capsule_hash,
+                                  out_result);
 }
 
 static dom_fidelity_tier dom_scale_target_tier_from_relevance(dom_relevance_state state)
@@ -3806,6 +4464,38 @@ static dom_fidelity_tier dom_scale_target_tier_from_relevance(dom_relevance_stat
         return DOM_FID_MESO;
     }
     return DOM_FID_LATENT;
+}
+
+static int dom_scale_transition_cmp(const dom_interest_transition* a,
+                                    const dom_interest_transition* b)
+{
+    if (!a || !b) {
+        return a ? 1 : (b ? -1 : 0);
+    }
+    if (a->target_id < b->target_id) return -1;
+    if (a->target_id > b->target_id) return 1;
+    if (a->to_state < b->to_state) return -1;
+    if (a->to_state > b->to_state) return 1;
+    if (a->from_state < b->from_state) return -1;
+    if (a->from_state > b->from_state) return 1;
+    return 0;
+}
+
+static void dom_scale_transition_sort(dom_interest_transition* transitions, u32 count)
+{
+    u32 i;
+    if (!transitions) {
+        return;
+    }
+    for (i = 1u; i < count; ++i) {
+        dom_interest_transition key = transitions[i];
+        u32 j = i;
+        while (j > 0u && dom_scale_transition_cmp(&transitions[j - 1u], &key) > 0) {
+            transitions[j] = transitions[j - 1u];
+            --j;
+        }
+        transitions[j] = key;
+    }
 }
 
 u32 dom_scale_apply_interest(dom_scale_context* ctx,
@@ -3847,6 +4537,7 @@ u32 dom_scale_apply_interest(dom_scale_context* ctx,
                                    ctx->now_tick,
                                    transitions,
                                    &transition_cap);
+    dom_scale_transition_sort(transitions, transition_cap);
     for (i = 0u; i < transition_cap; ++i) {
         dom_interest_transition* tr = &transitions[i];
         dom_scale_domain_slot* slot = dom_scale_find_domain(ctx, tr->target_id);
@@ -3886,6 +4577,13 @@ const char* dom_scale_refusal_to_string(u32 refusal_code)
     case DOM_SCALE_REFUSE_CAPABILITY_MISSING: return "REFUSE_CAPABILITY_MISSING";
     case DOM_SCALE_REFUSE_DOMAIN_FORBIDDEN: return "REFUSE_DOMAIN_FORBIDDEN";
     case DOM_SCALE_REFUSE_BUDGET_EXCEEDED: return "REFUSE_BUDGET_EXCEEDED";
+    case DOM_SCALE_REFUSE_ACTIVE_DOMAIN_LIMIT: return "REFUSE_ACTIVE_DOMAIN_LIMIT";
+    case DOM_SCALE_REFUSE_REFINEMENT_BUDGET: return "REFUSE_REFINEMENT_BUDGET";
+    case DOM_SCALE_REFUSE_MACRO_EVENT_BUDGET: return "REFUSE_MACRO_EVENT_BUDGET";
+    case DOM_SCALE_REFUSE_AGENT_PLANNING_BUDGET: return "REFUSE_AGENT_PLANNING_BUDGET";
+    case DOM_SCALE_REFUSE_SNAPSHOT_BUDGET: return "REFUSE_SNAPSHOT_BUDGET";
+    case DOM_SCALE_REFUSE_COLLAPSE_BUDGET: return "REFUSE_COLLAPSE_BUDGET";
+    case DOM_SCALE_REFUSE_DEFER_QUEUE_LIMIT: return "REFUSE_DEFER_QUEUE_LIMIT";
     default: break;
     }
     return "REFUSE_NONE";
@@ -3903,6 +4601,92 @@ const char* dom_scale_defer_to_string(u32 defer_code)
     return "DEFER_NONE";
 }
 
+void dom_scale_budget_snapshot_current(const dom_scale_context* ctx,
+                                       dom_scale_budget_snapshot* out_snapshot)
+{
+    if (!out_snapshot) {
+        return;
+    }
+    memset(out_snapshot, 0, sizeof(*out_snapshot));
+    if (!ctx) {
+        return;
+    }
+    out_snapshot->tick = ctx->now_tick;
+    out_snapshot->active_tier1_domains = ctx->budget_state.active_tier1_domains;
+    out_snapshot->active_tier2_domains = ctx->budget_state.active_tier2_domains;
+    out_snapshot->tier1_limit = ctx->budget_policy.max_tier1_domains;
+    out_snapshot->tier2_limit = dom_scale_policy_tier2_limit(&ctx->budget_policy);
+    out_snapshot->refinement_used = ctx->budget_state.refinement_used;
+    out_snapshot->refinement_limit = ctx->budget_policy.refinement_budget_per_tick;
+    out_snapshot->planning_used = ctx->budget_state.planning_used;
+    out_snapshot->planning_limit = ctx->budget_policy.planning_budget_per_tick;
+    out_snapshot->collapse_used = ctx->budget_state.collapse_used;
+    out_snapshot->collapse_limit = ctx->budget_policy.collapse_budget_per_tick;
+    out_snapshot->expand_used = ctx->budget_state.expand_used;
+    out_snapshot->expand_limit = ctx->budget_policy.expand_budget_per_tick;
+    out_snapshot->macro_event_used = ctx->budget_state.macro_event_used;
+    out_snapshot->macro_event_limit = ctx->budget_policy.macro_event_budget_per_tick;
+    out_snapshot->snapshot_used = ctx->budget_state.snapshot_used;
+    out_snapshot->snapshot_limit = ctx->budget_policy.snapshot_budget_per_tick;
+    out_snapshot->deferred_count = ctx->budget_state.deferred_count;
+    out_snapshot->deferred_overflow = ctx->budget_state.deferred_overflow;
+    out_snapshot->deferred_limit = dom_scale_policy_deferred_limit(&ctx->budget_policy);
+    out_snapshot->refusal_active_domain_limit = ctx->budget_state.refusal_active_domain_limit;
+    out_snapshot->refusal_refinement_budget = ctx->budget_state.refusal_refinement_budget;
+    out_snapshot->refusal_macro_event_budget = ctx->budget_state.refusal_macro_event_budget;
+    out_snapshot->refusal_agent_planning_budget = ctx->budget_state.refusal_agent_planning_budget;
+    out_snapshot->refusal_snapshot_budget = ctx->budget_state.refusal_snapshot_budget;
+    out_snapshot->refusal_collapse_budget = ctx->budget_state.refusal_collapse_budget;
+    out_snapshot->refusal_defer_queue_limit = ctx->budget_state.refusal_defer_queue_limit;
+}
+
+u32 dom_scale_deferred_count(const dom_scale_context* ctx)
+{
+    if (!ctx) {
+        return 0u;
+    }
+    return ctx->budget_state.deferred_count;
+}
+
+int dom_scale_deferred_get(const dom_scale_context* ctx,
+                           u32 index,
+                           dom_scale_deferred_op* out_op)
+{
+    if (!ctx || index >= ctx->budget_state.deferred_count) {
+        return 0;
+    }
+    if (out_op) {
+        *out_op = ctx->budget_state.deferred_ops[index];
+    }
+    return 1;
+}
+
+void dom_scale_deferred_clear(dom_scale_context* ctx)
+{
+    if (!ctx) {
+        return;
+    }
+    ctx->budget_state.deferred_count = 0u;
+    ctx->budget_state.deferred_overflow = 0u;
+    memset(ctx->budget_state.deferred_ops, 0, sizeof(ctx->budget_state.deferred_ops));
+}
+
+static int dom_scale_expand_apply(dom_scale_context* ctx,
+                                  dom_scale_domain_slot* slot,
+                                  dom_scale_capsule_data data,
+                                  dom_fidelity_tier from_tier,
+                                  dom_fidelity_tier to_tier,
+                                  u32 expand_reason,
+                                  u64 capsule_id,
+                                  u64 capsule_hash,
+                                  dom_scale_operation_result* out_result)
+{
+    u32 budget_detail = DOM_SCALE_DETAIL_NONE;
+    u32 saved_tier1 = 0u;
+    u32 saved_tier2 = 0u;
+    u64 hash_before = 0u;
+    u64 hash_after = 0u;
+
     saved_tier1 = ctx->budget_state.active_tier1_domains;
     saved_tier2 = ctx->budget_state.active_tier2_domains;
     if (dom_scale_is_tier2(from_tier) && ctx->budget_state.active_tier2_domains > 0u) {
@@ -3911,13 +4695,21 @@ const char* dom_scale_defer_to_string(u32 defer_code)
         ctx->budget_state.active_tier1_domains -= 1u;
     }
     if (!dom_scale_budget_allows_expand(ctx, to_tier, &budget_detail)) {
+        u32 refusal_code = DOM_SCALE_REFUSE_BUDGET_EXCEEDED;
+        if (budget_detail == DOM_SCALE_DETAIL_ACTIVE_DOMAIN_LIMIT ||
+            budget_detail == DOM_SCALE_DETAIL_TIER_CAP) {
+            refusal_code = DOM_SCALE_REFUSE_ACTIVE_DOMAIN_LIMIT;
+        } else if (budget_detail == DOM_SCALE_DETAIL_BUDGET_REFINEMENT ||
+                   budget_detail == DOM_SCALE_DETAIL_BUDGET_EXPAND) {
+            refusal_code = DOM_SCALE_REFUSE_REFINEMENT_BUDGET;
+        }
         ctx->budget_state.active_tier1_domains = saved_tier1;
         ctx->budget_state.active_tier2_domains = saved_tier2;
         dom_scale_emit_refusal(ctx,
                                slot->domain_id,
                                slot->domain_kind,
                                expand_reason,
-                               DOM_SCALE_REFUSE_BUDGET_EXCEEDED,
+                               refusal_code,
                                budget_detail ? budget_detail : DOM_SCALE_DETAIL_BUDGET_EXPAND,
                                out_result);
         dom_scale_capsule_data_free(&data);
@@ -3926,6 +4718,8 @@ const char* dom_scale_defer_to_string(u32 defer_code)
     ctx->budget_state.active_tier1_domains = saved_tier1;
     ctx->budget_state.active_tier2_domains = saved_tier2;
 
+    dom_scale_budget_consume_refinement(ctx);
+    dom_scale_budget_consume_expand(ctx);
     hash_before = dom_scale_domain_hash(slot, ctx->now_tick, ctx->worker_count);
 
     if (slot->domain_kind == DOM_SCALE_DOMAIN_RESOURCES) {
@@ -4098,6 +4892,18 @@ const char* dom_scale_defer_to_string(u32 defer_code)
         u64 inv_hash = 0u;
         u64 stat_hash = 0u;
         u32 count = data.agent_count;
+        if (!dom_scale_budget_allows_planning(ctx)) {
+            dom_scale_capsule_data_free(&data);
+            dom_scale_emit_refusal(ctx,
+                                   slot->domain_id,
+                                   slot->domain_kind,
+                                   expand_reason,
+                                   DOM_SCALE_REFUSE_AGENT_PLANNING_BUDGET,
+                                   DOM_SCALE_DETAIL_BUDGET_PLANNING,
+                                   out_result);
+            return 0;
+        }
+        dom_scale_budget_consume_planning(ctx);
         temp_agents = (dom_scale_agent_entry*)malloc(sizeof(dom_scale_agent_entry) * (size_t)(count ? count : 1u));
         if (!temp_agents) {
             dom_scale_capsule_data_free(&data);
@@ -4168,12 +4974,14 @@ const char* dom_scale_defer_to_string(u32 defer_code)
     slot->tier = to_tier;
     slot->last_transition_tick = ctx->now_tick;
     dom_scale_budget_adjust_for_transition(ctx, from_tier, to_tier);
-    dom_scale_budget_consume_expand(ctx);
     hash_after = dom_scale_domain_hash(slot, ctx->now_tick, ctx->worker_count);
     if (ctx->world) {
         (void)dom_macro_event_queue_remove_domain(ctx->world, slot->domain_id);
         (void)dom_macro_schedule_store_remove(ctx->world, slot->domain_id);
     }
+    dom_scale_deferred_remove_match(ctx, slot->domain_id, DOM_SCALE_DEFERRED_EXPAND, expand_reason);
+    dom_scale_deferred_remove_match(ctx, slot->domain_id, DOM_SCALE_DEFERRED_PLANNING, expand_reason);
+    dom_scale_deferred_remove_match(ctx, slot->domain_id, DOM_SCALE_DEFERRED_SNAPSHOT, expand_reason);
 
     if (out_result) {
         out_result->capsule_id = capsule_id;

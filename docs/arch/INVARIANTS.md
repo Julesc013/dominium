@@ -324,6 +324,36 @@ Enforced by:
 - `docs/arch/REPLAY_FORMAT.md`
 - Tests: `tests/app/scale0_contract_tests.py`
 
+## Invariant: Scaling work is budget-gated (SCALE3-BUDGET-009)
+Why:
+- Budgets are the only lawful way to bound work without changing semantics.
+Breaks if violated:
+- Hidden scaling paths bypass policy and destroy auditability.
+Enforced by:
+- `docs/arch/BUDGET_POLICY.md`
+- `docs/arch/CONSTANT_COST_GUARANTEE.md`
+- Tests: `tests/app/scale3_budget_tests.py`
+
+## Invariant: Admission control is explicit and non-mutating on refusal (SCALE3-ADMISSION-010)
+Why:
+- Refusal and defer semantics are part of determinism and replay guarantees.
+Breaks if violated:
+- Budget pressure silently changes outcomes or corrupts state.
+Enforced by:
+- `docs/arch/BUDGET_POLICY.md`
+- `docs/arch/REFUSAL_SEMANTICS.md`
+- Tests: `tests/app/scale3_budget_tests.py`
+
+## Invariant: Per-commit cost is bounded by active fidelity (SCALE3-CONSTCOST-011)
+Why:
+- Large worlds and deep history must not change active simulation cost.
+Breaks if violated:
+- Cost scales with world size, time span, or collapsed-domain count.
+Enforced by:
+- `docs/arch/CONSTANT_COST_GUARANTEE.md`
+- `docs/arch/MACRO_TIME_MODEL.md`
+- Tests: `tests/app/scale3_budget_tests.py`
+
 ## Forbidden assumptions
 - Invariants are optional or "guidelines" rather than binding rules.
 - Convenience exceptions are acceptable without a canon update.
