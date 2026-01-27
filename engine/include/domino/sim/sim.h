@@ -35,6 +35,8 @@ typedef struct d_world_config {
  * Returns: Non-NULL on success; NULL on failure or when not found.
  */
 d_world* d_world_create_from_config(const d_world_config* cfg);
+/* Purpose: Destroy world instance created by sim APIs. */
+void     d_world_destroy_instance(d_world* world);
 /* Purpose: Tick world.
  * Parameters: See `docs/CONTRACTS.md#Parameters`.
  */
@@ -54,6 +56,8 @@ d_bool   d_world_save_tlv(const d_world* world, const char* path);
  * Returns: Non-NULL on success; NULL on failure or when not found.
  */
 d_world* d_world_load_tlv(const char* path);
+/* Purpose: Deterministically clone a world without file IO. */
+d_world* d_world_clone(const d_world* world);
 
 #ifdef __cplusplus
 } /* extern "C" */

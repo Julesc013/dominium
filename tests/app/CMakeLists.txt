@@ -334,6 +334,34 @@ dom_add_testx(NAME mmo1_legacy_compatibility
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )
 
+dom_add_testx(NAME mmo2_checkpoint_model
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/mmo2_ops_tests.py
+        --tools $<TARGET_FILE:dominium-tools>
+        --family checkpoint_model
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME mmo2_crash_recovery
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/mmo2_ops_tests.py
+        --tools $<TARGET_FILE:dominium-tools>
+        --family crash_recovery
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME mmo2_rolling_updates
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/mmo2_ops_tests.py
+        --tools $<TARGET_FILE:dominium-tools>
+        --family rolling_updates
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME mmo2_cross_shard_log
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/mmo2_ops_tests.py
+        --tools $<TARGET_FILE:dominium-tools>
+        --family cross_shard_log
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
 dom_add_testx(NAME baseline_sku_contracts
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/baseline_sku_tests.py
         --repo-root ${CMAKE_SOURCE_DIR}

@@ -1,0 +1,87 @@
+SCHEMA: checkpoint.schema
+schema_id: dominium.schema.checkpoint
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the deterministic checkpoint container used by MMO-2 ops.
+- Capture sufficient state to resume authoritatively from persisted data only.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+REQUIRED SHAPE:
+record checkpoint
+  required:
+    - schema_version: tag
+    - checkpoint_id: u64
+    - tick: i64
+    - trigger_reason: u32
+    - shard_count: u32
+  optional:
+    - worlddef_hash: u64
+    - capability_lock_hash: u64
+    - runtime_hash: u64
+    - lifecycle_hash: u64
+    - message_sequence: u64
+    - message_applied: u64
+    - macro_events_executed: u64
+    - event_count: u32
+    - event_overflow: u32
+    - lifecycle_log: shard_lifecycle_log
+    - shards: list shard_checkpoint
+    - owners: list domain_owner
+    - messages: list cross_shard_message
+    - idempotency: list cross_shard_idempotency_entry
+    - extensions: map
+
+record shard_checkpoint
+  required:
+    - shard_id: u32
+    - tick: i64
+  optional:
+    - lifecycle_state: u32
+    - version_id: u32
+    - capability_mask: u64
+    - baseline_hash: u64
+    - world_checksum: u64
+    - shard_hash: u64
+    - domain_count: u32
+    - domains: list domain_slot
+    - domain_hashes: list u64
+    - capsule_ids: list u64
+    - budget_state: map
+    - budget_snapshot: budget_snapshot
+    - scale_events: list scale_event
+    - scale_event_hash: u64
+    - scale_event_count: u32
+    - scale_event_overflow: u32
+    - extensions: map
+
+record shard_lifecycle_log
+  required:
+    - count: u32
+  optional:
+    - overflow: u32
+    - entries: list shard_lifecycle_entry
+    - extensions: map
+
+record shard_lifecycle_entry
+  required:
+    - shard_id: u32
+    - tick: i64
+    - from_state: u32
+    - to_state: u32
+  optional:
+    - reason_code: u32
+    - extensions: map
+
+record domain_owner
+  required:
+    - domain_id: u64
+    - owner_shard_id: u32
+  optional:
+    - extensions: map
+

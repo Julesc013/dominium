@@ -14,25 +14,18 @@ DETERMINISM: All ordering, admission, and hashing are stable.
 
 #include "dominium/rules/scale/scale_collapse_expand.h"
 
+#include "server/net/dom_server_types.h"
 #include "server/net/dom_server_protocol.h"
+#include "server/persistence/dom_checkpoint_policy.h"
+#include "server/persistence/dom_checkpointing.h"
 #include "server/shard/dom_cross_shard_log.h"
 #include "server/shard/dom_global_id.h"
+#include "server/shard/dom_shard_lifecycle.h"
 #include "server/shard/shard_api.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#define DOM_SERVER_MAX_SHARDS 4u
-#define DOM_SERVER_MAX_CLIENTS 16u
-#define DOM_SERVER_MAX_DOMAINS_PER_SHARD 3u
-#define DOM_SERVER_MAX_EVENTS 4096u
-#define DOM_SERVER_MAX_INTENTS 1024u
-#define DOM_SERVER_MAX_DEFERRED 256u
-#define DOM_SERVER_MAX_DOMAIN_OWNERS 64u
-#define DOM_SERVER_MAX_MESSAGES 2048u
-#define DOM_SERVER_MAX_IDEMPOTENCY 2048u
-#define DOM_SERVER_MAX_CLIENT_IDEMPOTENCY 256u
 
 typedef struct dom_server_client_policy {
     u32 intents_per_tick;
@@ -45,8 +38,14 @@ typedef struct dom_server_runtime_config {
     dom_act_time_t start_tick;
     u32 shard_count;
     u32 worker_count;
+    u64 worlddef_hash;
+    u64 capability_lock_hash;
     dom_scale_budget_policy scale_budget_policy;
     dom_scale_macro_policy macro_policy;
+    dom_checkpoint_policy checkpoint_policy;
+    u32 shard_version_id;
+    u64 shard_capability_mask;
+    u64 shard_baseline_hash;
     dom_server_client_policy default_client_policy;
     u32 deferred_limit;
 } dom_server_runtime_config;
@@ -59,11 +58,6 @@ typedef struct dom_server_client {
     u64 idempotency_keys[DOM_SERVER_MAX_CLIENT_IDEMPOTENCY];
     u32 idempotency_count;
 } dom_server_client;
-
-typedef struct dom_server_domain_owner {
-    u64 domain_id;
-    dom_shard_id owner_shard_id;
-} dom_server_domain_owner;
 
 typedef struct dom_server_deferred_intent {
     dom_server_intent intent;
@@ -80,6 +74,10 @@ typedef struct dom_server_shard {
     dom_scale_event scale_events[256];
     dom_scale_macro_policy macro_policy;
     dom_global_id_gen id_gen;
+    u32 lifecycle_state;
+    u32 version_id;
+    u64 capability_mask;
+    u64 baseline_hash;
 
     dom_scale_resource_entry resource_entries[8];
     dom_scale_network_node network_nodes[8];
@@ -90,12 +88,22 @@ typedef struct dom_server_shard {
 typedef struct dom_server_runtime {
     dom_server_runtime_config config;
     dom_act_time_t now_tick;
+    dom_act_time_t next_checkpoint_tick;
+    u64 macro_events_executed;
+    u64 last_macro_stride;
+    u32 checkpoints_taken;
 
     dom_server_shard shards[DOM_SERVER_MAX_SHARDS];
     u32 shard_count;
 
     dom_server_client clients[DOM_SERVER_MAX_CLIENTS];
     u32 client_count;
+
+    dom_shard_lifecycle_log lifecycle_log;
+    dom_shard_lifecycle_entry lifecycle_entries[256];
+
+    dom_checkpoint_store checkpoint_store;
+    dom_checkpoint_record checkpoint_records[DOM_CHECKPOINT_MAX_RECORDS];
 
     dom_server_intent intents[DOM_SERVER_MAX_INTENTS];
     u32 intent_count;
@@ -166,6 +174,23 @@ int dom_server_runtime_budget_snapshot(dom_server_runtime* runtime,
 int dom_server_runtime_scale_snapshot(dom_server_runtime* runtime,
                                       dom_shard_id shard_id,
                                       dom_scale_budget_snapshot* out_snapshot);
+
+int dom_server_runtime_checkpoint(dom_server_runtime* runtime,
+                                  u32 trigger_reason);
+int dom_server_runtime_recover_last(dom_server_runtime* runtime,
+                                    u32* out_refusal_code);
+const dom_checkpoint_record* dom_server_runtime_last_checkpoint(const dom_server_runtime* runtime);
+u64 dom_server_runtime_checkpoint_hash(const dom_server_runtime* runtime);
+
+int dom_server_runtime_set_shard_state(dom_server_runtime* runtime,
+                                       dom_shard_id shard_id,
+                                       u32 to_state,
+                                       u32 reason_code);
+int dom_server_runtime_set_shard_version(dom_server_runtime* runtime,
+                                         dom_shard_id shard_id,
+                                         u32 version_id,
+                                         u64 capability_mask,
+                                         u64 baseline_hash);
 
 #ifdef __cplusplus
 } /* extern "C" */

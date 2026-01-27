@@ -28,6 +28,11 @@ const char* dom_server_refusal_to_string(u32 refusal_code)
     case DOM_SERVER_REFUSE_SNAPSHOT_BUDGET: return "REFUSE_SNAPSHOT_BUDGET";
     case DOM_SERVER_REFUSE_COLLAPSE_BUDGET: return "REFUSE_COLLAPSE_BUDGET";
     case DOM_SERVER_REFUSE_DEFER_QUEUE_LIMIT: return "REFUSE_DEFER_QUEUE_LIMIT";
+    case DOM_SERVER_REFUSE_CHECKPOINT_MISSING: return "REFUSE_CHECKPOINT_MISSING";
+    case DOM_SERVER_REFUSE_LOG_TAIL_MISSING: return "REFUSE_LOG_TAIL_MISSING";
+    case DOM_SERVER_REFUSE_SCHEMA_INCOMPATIBLE: return "REFUSE_SCHEMA_INCOMPATIBLE";
+    case DOM_SERVER_REFUSE_SHARD_STATE: return "REFUSE_SHARD_STATE";
+    case DOM_SERVER_REFUSE_CAPABILITY_GAP: return "REFUSE_CAPABILITY_GAP";
     default: break;
     }
     return "REFUSE_UNKNOWN";
@@ -36,4 +41,3 @@ const char* dom_server_refusal_to_string(u32 refusal_code)
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
-

@@ -25,6 +25,8 @@ add_executable(dominium-tools
     ../server/net/dom_server_runtime.cpp
     ../server/shard/dom_cross_shard_log.cpp
     ../server/shard/dom_global_id.cpp
+    ../server/shard/dom_shard_lifecycle.cpp
+    ../server/persistence/dom_checkpointing.cpp
 )
 target_link_libraries(dominium-tools PRIVATE tools::shared)
 target_link_libraries(dominium-tools PRIVATE app::runtime)

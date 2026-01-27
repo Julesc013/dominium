@@ -32,7 +32,12 @@ enum {
     DOM_SERVER_DETAIL_DEST_SHARD = 5u,
     DOM_SERVER_DETAIL_BUDGET_DEFER_LIMIT = 6u,
     DOM_SERVER_DETAIL_IDEMPOTENT_DUP = 7u,
-    DOM_SERVER_DETAIL_MACRO_UNSUPPORTED = 8u
+    DOM_SERVER_DETAIL_MACRO_UNSUPPORTED = 8u,
+    DOM_SERVER_DETAIL_SHARD_STATE = 9u,
+    DOM_SERVER_DETAIL_CHECKPOINT_POLICY = 10u,
+    DOM_SERVER_DETAIL_CHECKPOINT_SCHEMA = 11u,
+    DOM_SERVER_DETAIL_CAPABILITY_GAP = 12u,
+    DOM_SERVER_DETAIL_CHECKPOINT_NONE = 13u
 };
 
 static u64 dom_server_hash_mix(u64 hash, u64 value)
@@ -226,6 +231,19 @@ static dom_server_shard* dom_server_find_shard(dom_server_runtime* runtime, dom_
     return 0;
 }
 
+static int dom_server_capability_overlap(u64 a_mask, u64 b_mask)
+{
+    return (a_mask & b_mask) != 0u ? 1 : 0;
+}
+
+static u64 dom_server_baseline_hash(u32 version_id, u64 capability_mask)
+{
+    u64 hash = 1469598103934665603ULL;
+    hash = dom_server_hash_mix(hash, version_id);
+    hash = dom_server_hash_mix(hash, capability_mask);
+    return hash;
+}
+
 static dom_scale_domain_slot* dom_server_find_domain(dom_server_runtime* runtime,
                                                      dom_server_shard** out_shard,
                                                      u64 domain_id)
@@ -326,6 +344,42 @@ static int dom_server_event_append(dom_server_runtime* runtime,
     }
     runtime->events[runtime->event_count] = out;
     runtime->event_count += 1u;
+    return 0;
+}
+
+static int dom_server_lifecycle_transition(dom_server_runtime* runtime,
+                                           dom_server_shard* shard,
+                                           u32 to_state,
+                                           u32 reason_code)
+{
+    dom_server_event ev;
+    u32 from_state;
+    int rc;
+    if (!runtime || !shard) {
+        return -1;
+    }
+    from_state = shard->lifecycle_state;
+    if (from_state == to_state) {
+        return 0;
+    }
+    rc = dom_shard_lifecycle_log_transition(&runtime->lifecycle_log,
+                                            shard->shard_id,
+                                            runtime->now_tick,
+                                            from_state,
+                                            to_state,
+                                            reason_code);
+    if (rc != 0) {
+        return -2;
+    }
+    shard->lifecycle_state = to_state;
+
+    memset(&ev, 0, sizeof(ev));
+    ev.tick = runtime->now_tick;
+    ev.shard_id = shard->shard_id;
+    ev.event_kind = DOM_SERVER_EVENT_SHARD_LIFECYCLE;
+    ev.detail_code = reason_code;
+    ev.payload_u32 = to_state;
+    (void)dom_server_event_append(runtime, shard, &ev);
     return 0;
 }
 
@@ -549,6 +603,14 @@ static int dom_server_shard_init(dom_server_shard* shard,
 
     shard->macro_policy = config->macro_policy;
     dom_global_id_gen_init(&shard->id_gen, (u16)shard_id);
+    shard->lifecycle_state = DOM_SHARD_LIFECYCLE_INITIALIZING;
+    shard->version_id = config->shard_version_id ? config->shard_version_id : 1u;
+    shard->capability_mask = config->shard_capability_mask
+        ? config->shard_capability_mask
+        : config->default_client_policy.capability_mask;
+    shard->baseline_hash = config->shard_baseline_hash
+        ? config->shard_baseline_hash
+        : dom_server_baseline_hash(shard->version_id, shard->capability_mask);
 
     (void)dom_global_id_next(&shard->id_gen, DOM_SERVER_NS_DOMAIN, &gid, &domain_resource);
     (void)dom_global_id_next(&shard->id_gen, DOM_SERVER_NS_DOMAIN, &gid, &domain_network);
@@ -681,6 +743,7 @@ static int dom_server_apply_message(dom_server_runtime* runtime,
                                     const dom_cross_shard_message* msg)
 {
     dom_server_shard* dest_shard = 0;
+    dom_server_shard* origin_shard = 0;
     dom_scale_budget_snapshot budget_snapshot;
     dom_server_event ev;
     if (!runtime || !msg) {
@@ -690,6 +753,7 @@ static int dom_server_apply_message(dom_server_runtime* runtime,
     if (!dest_shard) {
         return 0;
     }
+    origin_shard = dom_server_find_shard(runtime, msg->origin_shard_id);
     dom_server_scale_begin_tick(&dest_shard->scale_ctx, runtime->now_tick);
     memset(&budget_snapshot, 0, sizeof(budget_snapshot));
     dom_server_capture_scale_budget(&dest_shard->scale_ctx, &budget_snapshot);
@@ -701,6 +765,24 @@ static int dom_server_apply_message(dom_server_runtime* runtime,
     ev.causal_id = msg->message_id;
     ev.event_kind = DOM_SERVER_EVENT_MESSAGE_APPLY;
     ev.intent_kind = DOM_SERVER_INTENT_TRANSFER_OWNERSHIP;
+
+    if (dest_shard->lifecycle_state != DOM_SHARD_LIFECYCLE_ACTIVE &&
+        dest_shard->lifecycle_state != DOM_SHARD_LIFECYCLE_DRAINING) {
+        ev.refusal_code = DOM_SERVER_REFUSE_SHARD_STATE;
+        ev.detail_code = dest_shard->lifecycle_state;
+        ev.scale_budget = budget_snapshot;
+        (void)dom_server_event_append(runtime, dest_shard, &ev);
+        return 0;
+    }
+
+    if (!origin_shard ||
+        !dom_server_capability_overlap(origin_shard->capability_mask, dest_shard->capability_mask)) {
+        ev.refusal_code = DOM_SERVER_REFUSE_CAPABILITY_GAP;
+        ev.detail_code = (u32)msg->origin_shard_id;
+        ev.scale_budget = budget_snapshot;
+        (void)dom_server_event_append(runtime, dest_shard, &ev);
+        return 0;
+    }
 
     if (!dom_server_macro_budget_consume(&dest_shard->scale_ctx, runtime->now_tick)) {
         ev.refusal_code = DOM_SERVER_REFUSE_MACRO_EVENT_BUDGET;
@@ -723,17 +805,60 @@ static int dom_server_apply_message(dom_server_runtime* runtime,
 static int dom_server_handle_transfer(dom_server_runtime* runtime,
                                       dom_server_shard* shard,
                                       const dom_server_intent* intent,
-                                      dom_scale_domain_slot* slot)
+                                      dom_scale_domain_slot* slot,
+                                      u32* out_refusal,
+                                      u32* out_detail)
 {
     dom_cross_shard_message msg;
     dom_global_id gid;
     u64 message_id = 0u;
     dom_shard_id dest_shard_id = (dom_shard_id)intent->payload_u32;
+    dom_server_shard* dest_shard = 0;
+    if (out_refusal) {
+        *out_refusal = DOM_SERVER_REFUSE_NONE;
+    }
+    if (out_detail) {
+        *out_detail = DOM_SERVER_DETAIL_NONE;
+    }
     if (!runtime || !shard || !intent || !slot) {
         return 0;
     }
     if (dest_shard_id == 0u || dest_shard_id > runtime->shard_count) {
         return 0;
+    }
+    dest_shard = dom_server_find_shard(runtime, dest_shard_id);
+    if (!dest_shard) {
+        return 0;
+    }
+    if (dest_shard->lifecycle_state != DOM_SHARD_LIFECYCLE_ACTIVE &&
+        dest_shard->lifecycle_state != DOM_SHARD_LIFECYCLE_DRAINING) {
+        if (out_refusal) {
+            *out_refusal = DOM_SERVER_REFUSE_SHARD_STATE;
+        }
+        if (out_detail) {
+            *out_detail = dest_shard->lifecycle_state;
+        }
+        return 0;
+    }
+    if (!dom_server_capability_overlap(shard->capability_mask, dest_shard->capability_mask)) {
+        if (out_refusal) {
+            *out_refusal = DOM_SERVER_REFUSE_CAPABILITY_GAP;
+        }
+        if (out_detail) {
+            *out_detail = dest_shard_id;
+        }
+        return 0;
+    }
+    if (runtime->config.checkpoint_policy.checkpoint_before_transfer) {
+        if (dom_server_runtime_checkpoint(runtime, DOM_CHECKPOINT_TRIGGER_BEFORE_TRANSFER) != 0) {
+            if (out_refusal) {
+                *out_refusal = DOM_SERVER_REFUSE_CHECKPOINT_MISSING;
+            }
+            if (out_detail) {
+                *out_detail = DOM_SERVER_DETAIL_CHECKPOINT_POLICY;
+            }
+            return 0;
+        }
     }
     memset(&msg, 0, sizeof(msg));
     (void)dom_global_id_next(&shard->id_gen, DOM_SERVER_NS_MESSAGE, &gid, &message_id);
@@ -755,6 +880,27 @@ static int dom_server_handle_transfer(dom_server_runtime* runtime,
     }
     runtime->message_sequence += 1u;
     return 1;
+}
+
+static int dom_server_shard_allows_intent(const dom_server_shard* shard, u32 intent_kind)
+{
+    u32 state = shard ? shard->lifecycle_state : DOM_SHARD_LIFECYCLE_ACTIVE;
+    if (state == 0u) {
+        state = DOM_SHARD_LIFECYCLE_ACTIVE;
+    }
+    if (state == DOM_SHARD_LIFECYCLE_ACTIVE) {
+        return 1;
+    }
+    if (intent_kind == DOM_SERVER_INTENT_OBSERVE) {
+        return state != DOM_SHARD_LIFECYCLE_OFFLINE ? 1 : 0;
+    }
+    if (state == DOM_SHARD_LIFECYCLE_DRAINING) {
+        return (intent_kind == DOM_SERVER_INTENT_COLLAPSE ||
+                intent_kind == DOM_SERVER_INTENT_TRANSFER_OWNERSHIP)
+            ? 1
+            : 0;
+    }
+    return 0;
 }
 
 static void dom_server_emit_intent_event(dom_server_runtime* runtime,
@@ -910,6 +1056,19 @@ static int dom_server_process_intent(dom_server_runtime* runtime,
     dom_scale_commit_token_make(&token, runtime->now_tick, 0u);
     memset(&result, 0, sizeof(result));
     scale_event_start = shard->scale_event_log.count;
+
+    if (!dom_server_shard_allows_intent(shard, intent->intent_kind)) {
+        dom_server_emit_intent_event(runtime,
+                                     shard,
+                                     client,
+                                     intent,
+                                     DOM_SERVER_EVENT_INTENT_REFUSE,
+                                     0,
+                                     scale_event_start,
+                                     DOM_SERVER_REFUSE_SHARD_STATE,
+                                     shard->lifecycle_state);
+        return 0;
+    }
 
     if (intent->intent_kind == DOM_SERVER_INTENT_OBSERVE) {
         dom_server_emit_intent_event(runtime,
@@ -1082,6 +1241,7 @@ static int dom_server_process_intent(dom_server_runtime* runtime,
                                          DOM_SERVER_DETAIL_NONE);
             return 0;
         }
+        runtime->macro_events_executed += (u64)executed;
         dom_server_emit_intent_event(runtime,
                                      shard,
                                      client,
@@ -1096,7 +1256,14 @@ static int dom_server_process_intent(dom_server_runtime* runtime,
     }
 
     if (intent->intent_kind == DOM_SERVER_INTENT_TRANSFER_OWNERSHIP) {
-        if (!dom_server_handle_transfer(runtime, shard, intent, slot)) {
+        u32 transfer_refusal = DOM_SERVER_REFUSE_INVALID_INTENT;
+        u32 transfer_detail = DOM_SERVER_DETAIL_DEST_SHARD;
+        if (!dom_server_handle_transfer(runtime,
+                                        shard,
+                                        intent,
+                                        slot,
+                                        &transfer_refusal,
+                                        &transfer_detail)) {
             dom_server_emit_intent_event(runtime,
                                          shard,
                                          client,
@@ -1104,8 +1271,8 @@ static int dom_server_process_intent(dom_server_runtime* runtime,
                                          DOM_SERVER_EVENT_INTENT_REFUSE,
                                          0,
                                          scale_event_start,
-                                         DOM_SERVER_REFUSE_INVALID_INTENT,
-                                         DOM_SERVER_DETAIL_DEST_SHARD);
+                                         transfer_refusal,
+                                         transfer_detail);
             return 0;
         }
         dom_server_emit_intent_event(runtime,
@@ -1212,6 +1379,62 @@ static void dom_server_retain_future_intents(dom_server_runtime* runtime)
     dom_server_sort_intents(runtime->intents, runtime->intent_count);
 }
 
+static void dom_server_checkpoint_policy_resolve(dom_checkpoint_policy* policy)
+{
+    dom_checkpoint_policy def;
+    if (!policy) {
+        return;
+    }
+    if (policy->interval_ticks == 0u &&
+        policy->macro_event_stride == 0u &&
+        policy->checkpoint_before_transfer == 0u &&
+        policy->max_records == 0u) {
+        dom_checkpoint_policy_default(policy);
+        return;
+    }
+    dom_checkpoint_policy_default(&def);
+    if (policy->max_records == 0u) {
+        policy->max_records = def.max_records;
+    }
+    if (policy->max_records > DOM_CHECKPOINT_MAX_RECORDS) {
+        policy->max_records = DOM_CHECKPOINT_MAX_RECORDS;
+    }
+}
+
+static u64 dom_server_macro_stride_floor(u64 macro_events, u32 stride)
+{
+    if (stride == 0u) {
+        return macro_events;
+    }
+    return (macro_events / (u64)stride) * (u64)stride;
+}
+
+static void dom_server_checkpoint_schedule(dom_server_runtime* runtime)
+{
+    const dom_checkpoint_policy* policy;
+    u64 stride_floor;
+    if (!runtime) {
+        return;
+    }
+    policy = &runtime->config.checkpoint_policy;
+
+    if (policy->interval_ticks > 0u && runtime->now_tick >= runtime->next_checkpoint_tick) {
+        (void)dom_server_runtime_checkpoint(runtime, DOM_CHECKPOINT_TRIGGER_POLICY_TICK);
+        while (policy->interval_ticks > 0u && runtime->now_tick >= runtime->next_checkpoint_tick) {
+            runtime->next_checkpoint_tick += (dom_act_time_t)policy->interval_ticks;
+        }
+    }
+
+    if (policy->macro_event_stride > 0u) {
+        stride_floor = dom_server_macro_stride_floor(runtime->macro_events_executed,
+                                                     policy->macro_event_stride);
+        if (stride_floor > runtime->last_macro_stride) {
+            (void)dom_server_runtime_checkpoint(runtime, DOM_CHECKPOINT_TRIGGER_POLICY_MACRO);
+            runtime->last_macro_stride = stride_floor;
+        }
+    }
+}
+
 void dom_server_runtime_config_default(dom_server_runtime_config* config)
 {
     if (!config) {
@@ -1221,13 +1444,20 @@ void dom_server_runtime_config_default(dom_server_runtime_config* config)
     config->start_tick = 0;
     config->shard_count = 1u;
     config->worker_count = 1u;
+    config->worlddef_hash = 1u;
+    config->capability_lock_hash = 1u;
     dom_scale_budget_policy_default(&config->scale_budget_policy);
     config->scale_budget_policy.min_dwell_ticks = 0;
     dom_scale_macro_policy_default(&config->macro_policy);
+    dom_checkpoint_policy_default(&config->checkpoint_policy);
     config->default_client_policy.intents_per_tick = 16u;
     config->default_client_policy.bytes_per_tick = 1024u;
     config->default_client_policy.inspect_only = 0u;
     config->default_client_policy.capability_mask = 1u;
+    config->shard_version_id = 1u;
+    config->shard_capability_mask = config->default_client_policy.capability_mask;
+    config->shard_baseline_hash = dom_server_baseline_hash(config->shard_version_id,
+                                                            config->shard_capability_mask);
     config->deferred_limit = DOM_SERVER_MAX_DEFERRED;
 }
 
@@ -1249,12 +1479,41 @@ int dom_server_runtime_init(dom_server_runtime* runtime,
     if (local.shard_count > DOM_SERVER_MAX_SHARDS) {
         local.shard_count = DOM_SERVER_MAX_SHARDS;
     }
+    dom_server_checkpoint_policy_resolve(&local.checkpoint_policy);
+    if (local.worlddef_hash == 0u) {
+        local.worlddef_hash = 1u;
+    }
+    if (local.capability_lock_hash == 0u) {
+        local.capability_lock_hash = 1u;
+    }
+    if (local.shard_version_id == 0u) {
+        local.shard_version_id = 1u;
+    }
+    if (local.shard_capability_mask == 0u) {
+        local.shard_capability_mask = local.default_client_policy.capability_mask;
+    }
+    if (local.shard_baseline_hash == 0u) {
+        local.shard_baseline_hash = dom_server_baseline_hash(local.shard_version_id,
+                                                             local.shard_capability_mask);
+    }
     memset(runtime, 0, sizeof(*runtime));
     runtime->config = local;
     runtime->now_tick = local.start_tick;
+    runtime->next_checkpoint_tick = local.start_tick + (dom_act_time_t)local.checkpoint_policy.interval_ticks;
     runtime->shard_count = local.shard_count;
     runtime->message_sequence = 0u;
     runtime->message_applied = 0u;
+    runtime->macro_events_executed = 0u;
+    runtime->last_macro_stride = 0u;
+    runtime->checkpoints_taken = 0u;
+
+    dom_shard_lifecycle_log_init(&runtime->lifecycle_log,
+                                 runtime->lifecycle_entries,
+                                 (u32)(sizeof(runtime->lifecycle_entries) /
+                                       sizeof(runtime->lifecycle_entries[0])));
+    dom_checkpoint_store_init(&runtime->checkpoint_store,
+                              runtime->checkpoint_records,
+                              runtime->config.checkpoint_policy.max_records);
 
     dom_cross_shard_log_init(&runtime->message_log,
                              runtime->message_storage,
@@ -1272,7 +1531,12 @@ int dom_server_runtime_init(dom_server_runtime* runtime,
         dom_server_owner_set(runtime, shard->domain_storage[1].domain_id, shard_id);
         dom_server_owner_set(runtime, shard->domain_storage[2].domain_id, shard_id);
         dom_server_scale_begin_tick(&shard->scale_ctx, runtime->now_tick);
+        (void)dom_server_lifecycle_transition(runtime,
+                                              shard,
+                                              DOM_SHARD_LIFECYCLE_ACTIVE,
+                                              DOM_SERVER_DETAIL_NONE);
     }
+    (void)dom_server_runtime_checkpoint(runtime, DOM_CHECKPOINT_TRIGGER_MANUAL);
     return 0;
 }
 
@@ -1364,6 +1628,7 @@ int dom_server_runtime_tick(dom_server_runtime* runtime, dom_act_time_t tick)
             (void)dom_server_process_intent(runtime, &ready[i]);
         }
         dom_server_retain_future_intents(runtime);
+        dom_server_checkpoint_schedule(runtime);
         if (t == tick) {
             break;
         }
@@ -1462,6 +1727,16 @@ u64 dom_server_runtime_hash(const dom_server_runtime* runtime)
         return hash;
     }
     hash = dom_server_hash_mix(hash, runtime->now_tick);
+    hash = dom_server_hash_mix(hash, runtime->next_checkpoint_tick);
+    hash = dom_server_hash_mix(hash, runtime->macro_events_executed);
+    hash = dom_server_hash_mix(hash, runtime->last_macro_stride);
+    hash = dom_server_hash_mix(hash, runtime->checkpoints_taken);
+    hash = dom_server_hash_mix(hash, runtime->config.worlddef_hash);
+    hash = dom_server_hash_mix(hash, runtime->config.capability_lock_hash);
+    hash = dom_server_hash_mix(hash, runtime->config.checkpoint_policy.interval_ticks);
+    hash = dom_server_hash_mix(hash, runtime->config.checkpoint_policy.macro_event_stride);
+    hash = dom_server_hash_mix(hash, runtime->config.checkpoint_policy.checkpoint_before_transfer);
+    hash = dom_server_hash_mix(hash, runtime->config.checkpoint_policy.max_records);
     hash = dom_server_hash_mix(hash, runtime->shard_count);
     hash = dom_server_hash_mix(hash, runtime->client_count);
     hash = dom_server_hash_mix(hash, runtime->intent_count);
@@ -1471,6 +1746,8 @@ u64 dom_server_runtime_hash(const dom_server_runtime* runtime)
     hash = dom_server_hash_mix(hash, runtime->event_overflow);
     hash = dom_server_hash_mix(hash, runtime->message_sequence);
     hash = dom_server_hash_mix(hash, runtime->message_applied);
+    hash = dom_server_hash_mix(hash, dom_shard_lifecycle_log_hash(&runtime->lifecycle_log));
+    hash = dom_server_hash_mix(hash, dom_checkpoint_store_hash(&runtime->checkpoint_store));
     hash = dom_server_hash_mix(hash, dom_cross_shard_log_hash(&runtime->message_log));
     for (i = 0u; i < runtime->owner_count; ++i) {
         hash = dom_server_hash_mix(hash, runtime->owners[i].domain_id);
@@ -1480,6 +1757,10 @@ u64 dom_server_runtime_hash(const dom_server_runtime* runtime)
         const dom_server_shard* shard = &runtime->shards[i];
         u32 d;
         hash = dom_server_hash_mix(hash, shard->shard_id);
+        hash = dom_server_hash_mix(hash, shard->lifecycle_state);
+        hash = dom_server_hash_mix(hash, shard->version_id);
+        hash = dom_server_hash_mix(hash, shard->capability_mask);
+        hash = dom_server_hash_mix(hash, shard->baseline_hash);
         hash = dom_server_hash_mix(hash, dom_server_scale_event_hash(&shard->scale_event_log));
         for (d = 0u; d < shard->scale_ctx.domain_count; ++d) {
             const dom_scale_domain_slot* slot = &shard->scale_ctx.domains[d];
@@ -1591,6 +1872,264 @@ int dom_server_runtime_scale_snapshot(dom_server_runtime* runtime,
     }
     dom_server_scale_begin_tick(&shard->scale_ctx, runtime->now_tick);
     dom_scale_budget_snapshot_current(&shard->scale_ctx, out_snapshot);
+    return 0;
+}
+
+int dom_server_runtime_checkpoint(dom_server_runtime* runtime,
+                                  u32 trigger_reason)
+{
+    dom_checkpoint_record record;
+    dom_server_event ev;
+    dom_server_shard* event_shard = 0;
+    u32 snapshot_costs[DOM_SERVER_MAX_SHARDS];
+    u32 snapshot_prior[DOM_SERVER_MAX_SHARDS];
+    u32 i;
+    u32 refusal = DOM_SERVER_REFUSE_NONE;
+    u32 detail = trigger_reason;
+    int rc = 0;
+    int budgets_consumed = 0;
+    if (!runtime) {
+        return -1;
+    }
+    memset(&record, 0, sizeof(record));
+    if (runtime->shard_count > 0u) {
+        event_shard = &runtime->shards[0];
+    }
+    if (!runtime->checkpoint_store.records || runtime->checkpoint_store.capacity == 0u) {
+        refusal = DOM_SERVER_REFUSE_CHECKPOINT_MISSING;
+        detail = DOM_SERVER_DETAIL_CHECKPOINT_NONE;
+        rc = -2;
+        goto dom_checkpoint_refuse;
+    }
+
+    for (i = 0u; i < runtime->shard_count; ++i) {
+        dom_server_shard* shard = &runtime->shards[i];
+        const u32 cost = shard->scale_ctx.budget_policy.snapshot_cost_units
+            ? shard->scale_ctx.budget_policy.snapshot_cost_units
+            : 1u;
+        dom_server_scale_begin_tick(&shard->scale_ctx, runtime->now_tick);
+        snapshot_costs[i] = cost;
+        snapshot_prior[i] = shard->scale_ctx.budget_state.snapshot_used;
+        if (shard->scale_ctx.budget_policy.snapshot_budget_per_tick > 0u &&
+            snapshot_prior[i] + cost > shard->scale_ctx.budget_policy.snapshot_budget_per_tick) {
+            refusal = DOM_SERVER_REFUSE_SNAPSHOT_BUDGET;
+            detail = shard->shard_id;
+            event_shard = shard;
+            rc = -3;
+            goto dom_checkpoint_refuse;
+        }
+    }
+
+    for (i = 0u; i < runtime->shard_count; ++i) {
+        runtime->shards[i].scale_ctx.budget_state.snapshot_used =
+            snapshot_prior[i] + snapshot_costs[i];
+    }
+    budgets_consumed = 1;
+
+    rc = dom_checkpoint_capture(&record, runtime, trigger_reason);
+    if (rc != 0) {
+        refusal = DOM_SERVER_REFUSE_INTEGRITY_VIOLATION;
+        detail = DOM_SERVER_DETAIL_CHECKPOINT_SCHEMA;
+        goto dom_checkpoint_refuse;
+    }
+
+    rc = dom_checkpoint_store_record(&runtime->checkpoint_store, &record);
+    if (rc != 0) {
+        refusal = DOM_SERVER_REFUSE_INTEGRITY_VIOLATION;
+        detail = DOM_SERVER_DETAIL_CHECKPOINT_POLICY;
+        goto dom_checkpoint_refuse;
+    }
+
+    runtime->checkpoints_taken += 1u;
+    if (!event_shard && runtime->shard_count > 0u) {
+        event_shard = &runtime->shards[0];
+    }
+    memset(&ev, 0, sizeof(ev));
+    ev.tick = runtime->now_tick;
+    ev.shard_id = event_shard ? event_shard->shard_id : 0u;
+    ev.event_kind = DOM_SERVER_EVENT_CHECKPOINT;
+    ev.detail_code = trigger_reason;
+    ev.payload_u32 = runtime->checkpoints_taken;
+    ev.causal_id = record.manifest.checkpoint_id;
+    if (event_shard) {
+        dom_server_capture_scale_budget(&event_shard->scale_ctx, &ev.scale_budget);
+    }
+    (void)dom_server_event_append(runtime, event_shard, &ev);
+    dom_checkpoint_record_dispose(&record);
+    return 0;
+
+dom_checkpoint_refuse:
+    if (budgets_consumed) {
+        for (i = 0u; i < runtime->shard_count; ++i) {
+            runtime->shards[i].scale_ctx.budget_state.snapshot_used = snapshot_prior[i];
+        }
+    }
+    memset(&ev, 0, sizeof(ev));
+    ev.tick = runtime->now_tick;
+    ev.shard_id = event_shard ? event_shard->shard_id : 0u;
+    ev.event_kind = DOM_SERVER_EVENT_CHECKPOINT;
+    ev.refusal_code = refusal;
+    ev.detail_code = detail;
+    ev.payload_u32 = (u32)((rc < 0) ? (u32)(-rc) : (u32)rc);
+    if (event_shard) {
+        dom_server_capture_scale_budget(&event_shard->scale_ctx, &ev.scale_budget);
+    }
+    (void)dom_server_event_append(runtime, event_shard, &ev);
+    dom_checkpoint_record_dispose(&record);
+    return rc;
+}
+
+const dom_checkpoint_record* dom_server_runtime_last_checkpoint(const dom_server_runtime* runtime)
+{
+    return runtime ? dom_checkpoint_store_last(&runtime->checkpoint_store) : 0;
+}
+
+u64 dom_server_runtime_checkpoint_hash(const dom_server_runtime* runtime)
+{
+    return runtime ? dom_checkpoint_store_hash(&runtime->checkpoint_store) : 0u;
+}
+
+int dom_server_runtime_recover_last(dom_server_runtime* runtime,
+                                    u32* out_refusal_code)
+{
+    const dom_checkpoint_record* record;
+    dom_server_event ev;
+    dom_server_shard* event_shard = 0;
+    u32 refusal = DOM_SERVER_REFUSE_NONE;
+    int rc;
+    u32 i;
+    if (out_refusal_code) {
+        *out_refusal_code = DOM_SERVER_REFUSE_NONE;
+    }
+    if (!runtime) {
+        return -1;
+    }
+    if (runtime->shard_count > 0u) {
+        event_shard = &runtime->shards[0];
+    }
+    record = dom_checkpoint_store_last(&runtime->checkpoint_store);
+    if (!record) {
+        refusal = DOM_SERVER_REFUSE_CHECKPOINT_MISSING;
+        rc = -2;
+        goto dom_recover_log;
+    }
+
+    rc = dom_checkpoint_recover(runtime, record, &refusal);
+    if (rc != 0) {
+        goto dom_recover_log;
+    }
+
+    if (runtime->config.checkpoint_policy.interval_ticks > 0u) {
+        runtime->next_checkpoint_tick =
+            runtime->now_tick + (dom_act_time_t)runtime->config.checkpoint_policy.interval_ticks;
+    }
+    runtime->last_macro_stride = dom_server_macro_stride_floor(runtime->macro_events_executed,
+                                                               runtime->config.checkpoint_policy.macro_event_stride);
+    for (i = 0u; i < runtime->client_count; ++i) {
+        dom_server_client_budget_reset(&runtime->clients[i], runtime->now_tick);
+    }
+    for (i = 0u; i < runtime->shard_count; ++i) {
+        dom_server_scale_begin_tick(&runtime->shards[i].scale_ctx, runtime->now_tick);
+    }
+
+dom_recover_log:
+    memset(&ev, 0, sizeof(ev));
+    ev.tick = runtime->now_tick;
+    ev.shard_id = event_shard ? event_shard->shard_id : 0u;
+    ev.event_kind = DOM_SERVER_EVENT_RECOVER;
+    ev.detail_code = (rc == 0) ? DOM_CHECKPOINT_TRIGGER_RECOVERY : refusal;
+    ev.refusal_code = (rc == 0) ? DOM_SERVER_REFUSE_NONE : refusal;
+    ev.causal_id = record ? record->manifest.checkpoint_id : 0u;
+    ev.payload_u32 = (u32)((rc < 0) ? (u32)(-rc) : (u32)rc);
+    if (event_shard) {
+        dom_server_capture_scale_budget(&event_shard->scale_ctx, &ev.scale_budget);
+    }
+    (void)dom_server_event_append(runtime, event_shard, &ev);
+    if (out_refusal_code) {
+        *out_refusal_code = refusal;
+    }
+    return rc;
+}
+
+int dom_server_runtime_set_shard_state(dom_server_runtime* runtime,
+                                       dom_shard_id shard_id,
+                                       u32 to_state,
+                                       u32 reason_code)
+{
+    dom_server_shard* shard;
+    dom_server_event ev;
+    int rc;
+    if (!runtime || shard_id == 0u) {
+        return -1;
+    }
+    shard = dom_server_find_shard(runtime, shard_id);
+    if (!shard) {
+        return -2;
+    }
+    if (!dom_shard_lifecycle_transition_allowed(shard->lifecycle_state, to_state)) {
+        memset(&ev, 0, sizeof(ev));
+        ev.tick = runtime->now_tick;
+        ev.shard_id = shard->shard_id;
+        ev.event_kind = DOM_SERVER_EVENT_SHARD_LIFECYCLE;
+        ev.refusal_code = DOM_SERVER_REFUSE_SHARD_STATE;
+        ev.detail_code = to_state;
+        ev.payload_u32 = reason_code;
+        dom_server_capture_scale_budget(&shard->scale_ctx, &ev.scale_budget);
+        (void)dom_server_event_append(runtime, shard, &ev);
+        return -3;
+    }
+    rc = dom_server_lifecycle_transition(runtime, shard, to_state, reason_code);
+    if (rc != 0) {
+        memset(&ev, 0, sizeof(ev));
+        ev.tick = runtime->now_tick;
+        ev.shard_id = shard->shard_id;
+        ev.event_kind = DOM_SERVER_EVENT_SHARD_LIFECYCLE;
+        ev.refusal_code = DOM_SERVER_REFUSE_SHARD_STATE;
+        ev.detail_code = to_state;
+        ev.payload_u32 = reason_code;
+        dom_server_capture_scale_budget(&shard->scale_ctx, &ev.scale_budget);
+        (void)dom_server_event_append(runtime, shard, &ev);
+    }
+    return rc;
+}
+
+int dom_server_runtime_set_shard_version(dom_server_runtime* runtime,
+                                         dom_shard_id shard_id,
+                                         u32 version_id,
+                                         u64 capability_mask,
+                                         u64 baseline_hash)
+{
+    dom_server_shard* shard;
+    dom_server_event ev;
+    if (!runtime || shard_id == 0u) {
+        return -1;
+    }
+    shard = dom_server_find_shard(runtime, shard_id);
+    if (!shard) {
+        return -2;
+    }
+    if (version_id == 0u) {
+        version_id = shard->version_id ? shard->version_id : 1u;
+    }
+    if (capability_mask == 0u) {
+        capability_mask = shard->capability_mask;
+    }
+    if (baseline_hash == 0u) {
+        baseline_hash = dom_server_baseline_hash(version_id, capability_mask);
+    }
+    shard->version_id = version_id;
+    shard->capability_mask = capability_mask;
+    shard->baseline_hash = baseline_hash;
+
+    memset(&ev, 0, sizeof(ev));
+    ev.tick = runtime->now_tick;
+    ev.shard_id = shard->shard_id;
+    ev.event_kind = DOM_SERVER_EVENT_ROLLING_UPDATE;
+    ev.detail_code = version_id;
+    ev.payload_u32 = (u32)(capability_mask & 0xFFFFFFFFu);
+    ev.causal_id = baseline_hash;
+    dom_server_capture_scale_budget(&shard->scale_ctx, &ev.scale_budget);
+    (void)dom_server_event_append(runtime, shard, &ev);
     return 0;
 }
 

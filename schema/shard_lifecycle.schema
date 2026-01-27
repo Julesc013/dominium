@@ -1,0 +1,40 @@
+SCHEMA: shard_lifecycle.schema
+schema_id: dominium.schema.shard_lifecycle
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic shard lifecycle states and transition logs.
+- Provide a schema anchor for lifecycle observability tooling.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Unknown fields MUST be preserved.
+- State codes are append-only within a MAJOR version.
+
+REQUIRED SHAPE:
+record shard_lifecycle_entry
+  required:
+    - shard_id: u32
+    - tick: i64
+    - from_state: u32
+    - to_state: u32
+  optional:
+    - reason_code: u32
+    - extensions: map
+
+record shard_lifecycle_log
+  required:
+    - count: u32
+  optional:
+    - overflow: u32
+    - entries: list shard_lifecycle_entry
+    - extensions: map
+
+STATE CODES (CANONICAL):
+- 1: INITIALIZING
+- 2: ACTIVE
+- 3: DRAINING
+- 4: FROZEN
+- 5: OFFLINE
+
