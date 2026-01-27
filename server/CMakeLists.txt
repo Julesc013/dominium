@@ -3,9 +3,13 @@ cmake_minimum_required(VERSION 3.16)
 add_executable(dominium_server
     app/main_server.c
     authority/dom_server_authority.cpp
+    net/dom_server_protocol.cpp
+    net/dom_server_runtime.cpp
     shard/shard_api.cpp
     shard/shard_router.cpp
     shard/shard_domain_index.cpp
+    shard/dom_cross_shard_log.cpp
+    shard/dom_global_id.cpp
     shard/domain_shard_mapper.cpp
     shard/task_splitter.cpp
     shard/message_bus.cpp

@@ -1,0 +1,39 @@
+/*
+FILE: server/net/dom_server_protocol.cpp
+MODULE: Dominium
+LAYER / SUBSYSTEM: Server / net
+RESPONSIBILITY: Deterministic protocol helpers.
+*/
+#include "dom_server_protocol.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+const char* dom_server_refusal_to_string(u32 refusal_code)
+{
+    switch (refusal_code) {
+    case DOM_SERVER_REFUSE_NONE: return "REFUSE_NONE";
+    case DOM_SERVER_REFUSE_INVALID_INTENT: return "REFUSE_INVALID_INTENT";
+    case DOM_SERVER_REFUSE_LAW_FORBIDDEN: return "REFUSE_LAW_FORBIDDEN";
+    case DOM_SERVER_REFUSE_CAPABILITY_MISSING: return "REFUSE_CAPABILITY_MISSING";
+    case DOM_SERVER_REFUSE_DOMAIN_FORBIDDEN: return "REFUSE_DOMAIN_FORBIDDEN";
+    case DOM_SERVER_REFUSE_INTEGRITY_VIOLATION: return "REFUSE_INTEGRITY_VIOLATION";
+    case DOM_SERVER_REFUSE_RATE_LIMIT: return "REFUSE_RATE_LIMIT";
+    case DOM_SERVER_REFUSE_BUDGET_EXCEEDED: return "REFUSE_BUDGET_EXCEEDED";
+    case DOM_SERVER_REFUSE_ACTIVE_DOMAIN_LIMIT: return "REFUSE_ACTIVE_DOMAIN_LIMIT";
+    case DOM_SERVER_REFUSE_REFINEMENT_BUDGET: return "REFUSE_REFINEMENT_BUDGET";
+    case DOM_SERVER_REFUSE_MACRO_EVENT_BUDGET: return "REFUSE_MACRO_EVENT_BUDGET";
+    case DOM_SERVER_REFUSE_AGENT_PLANNING_BUDGET: return "REFUSE_AGENT_PLANNING_BUDGET";
+    case DOM_SERVER_REFUSE_SNAPSHOT_BUDGET: return "REFUSE_SNAPSHOT_BUDGET";
+    case DOM_SERVER_REFUSE_COLLAPSE_BUDGET: return "REFUSE_COLLAPSE_BUDGET";
+    case DOM_SERVER_REFUSE_DEFER_QUEUE_LIMIT: return "REFUSE_DEFER_QUEUE_LIMIT";
+    default: break;
+    }
+    return "REFUSE_UNKNOWN";
+}
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
+
