@@ -306,6 +306,34 @@ dom_add_testx(NAME mmo0_legacy_sku_compatibility
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )
 
+dom_add_testx(NAME mmo1_two_node_determinism
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/mmo1_runtime_tests.py
+        --tools $<TARGET_FILE:dominium-tools>
+        --family two_node_determinism
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME mmo1_join_resync
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/mmo1_runtime_tests.py
+        --tools $<TARGET_FILE:dominium-tools>
+        --family join_resync
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME mmo1_abuse_resistance
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/mmo1_runtime_tests.py
+        --tools $<TARGET_FILE:dominium-tools>
+        --family abuse_resistance
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME mmo1_legacy_compatibility
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/mmo1_runtime_tests.py
+        --tools $<TARGET_FILE:dominium-tools>
+        --family legacy_compatibility
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
 dom_add_testx(NAME baseline_sku_contracts
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/baseline_sku_tests.py
         --repo-root ${CMAKE_SOURCE_DIR}
