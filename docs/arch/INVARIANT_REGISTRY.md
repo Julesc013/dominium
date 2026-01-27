@@ -37,6 +37,13 @@ It complements (does not replace) `docs/arch/INVARIANTS.md`.
 | SCALE3-BUDGET-009 | Scaling work is budget-gated and policy-controlled. | docs/arch/BUDGET_POLICY.md | tests/app/scale3_budget_tests.py |
 | SCALE3-ADMISSION-010 | Budget refusal/defer is explicit and non-mutating. | docs/arch/BUDGET_POLICY.md | tests/app/scale3_budget_tests.py |
 | SCALE3-CONSTCOST-011 | Per-commit cost is bounded by active fidelity only. | docs/arch/CONSTANT_COST_GUARANTEE.md | tests/app/scale3_budget_tests.py |
+| MMO0-UNIVERSE-012 | The universe is logically single under distribution. | docs/arch/DISTRIBUTED_SIM_MODEL.md | tests/app/mmo0_distributed_contract_tests.py |
+| MMO0-OWNERSHIP-013 | Domain ownership is exclusive and commit-boundary only. | docs/arch/DISTRIBUTED_SIM_MODEL.md | tests/app/mmo0_distributed_contract_tests.py |
+| MMO0-ID-014 | Global identifiers are deterministic and collision-free. | docs/arch/GLOBAL_ID_MODEL.md | tests/app/mmo0_distributed_contract_tests.py |
+| MMO0-LOG-015 | Cross-shard interaction uses ordered, append-only logs. | docs/arch/CROSS_SHARD_LOG.md | tests/app/mmo0_distributed_contract_tests.py |
+| MMO0-TIME-016 | Distributed time and ordering preserve outcomes. | docs/arch/DISTRIBUTED_TIME_MODEL.md | tests/app/mmo0_distributed_contract_tests.py |
+| MMO0-RESYNC-017 | Join/resync is deterministic and capability-safe. | docs/arch/JOIN_RESYNC_CONTRACT.md | tests/app/mmo0_distributed_contract_tests.py |
+| MMO0-COMPAT-018 | Singleplayer and multiplayer semantics are unified. | docs/arch/MMO_COMPATIBILITY.md | tests/app/mmo0_distributed_contract_tests.py |
 
 ## Notes
 - Full invariant list lives in `docs/arch/INVARIANTS.md`.
