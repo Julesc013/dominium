@@ -243,6 +243,34 @@ dom_add_testx(NAME scale2_interest_transition_safety
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )
 
+dom_add_testx(NAME scale3_cost_invariance
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/scale3_budget_tests.py
+        --tools $<TARGET_FILE:dominium-tools>
+        --family cost_invariance
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME scale3_budget_enforcement
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/scale3_budget_tests.py
+        --tools $<TARGET_FILE:dominium-tools>
+        --family budget_enforcement
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME scale3_thread_count_invariance
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/scale3_budget_tests.py
+        --tools $<TARGET_FILE:dominium-tools>
+        --family thread_count_invariance
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME scale3_long_horizon_stress
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/scale3_budget_tests.py
+        --tools $<TARGET_FILE:dominium-tools>
+        --family long_horizon_stress
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
 dom_add_testx(NAME baseline_sku_contracts
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/baseline_sku_tests.py
         --repo-root ${CMAKE_SOURCE_DIR}

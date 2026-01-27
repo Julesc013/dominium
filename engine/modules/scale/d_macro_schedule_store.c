@@ -71,29 +71,31 @@ static int d_macro_schedule_reserve(d_world* world, u32 capacity)
 
 static u32 d_macro_schedule_find_index(const d_world* world, u64 domain_id, int* out_found)
 {
-    u32 i;
+    u32 low = 0u;
+    u32 high;
     if (out_found) {
         *out_found = 0;
     }
-    if (!world || !world->macro_schedules) {
+    if (!world || !world->macro_schedules || world->macro_schedule_count == 0u) {
         return 0u;
     }
-    for (i = 0u; i < world->macro_schedule_count; ++i) {
-        const d_macro_schedule_entry* entry = &world->macro_schedules[i];
-        if (!entry->in_use) {
-            continue;
-        }
+    high = world->macro_schedule_count;
+    while (low < high) {
+        u32 mid = low + (u32)((high - low) / 2u);
+        const d_macro_schedule_entry* entry = &world->macro_schedules[mid];
         if (entry->domain_id == domain_id) {
             if (out_found) {
                 *out_found = 1;
             }
-            return i;
+            return mid;
         }
-        if (entry->domain_id > domain_id) {
-            break;
+        if (entry->domain_id < domain_id) {
+            low = mid + 1u;
+        } else {
+            high = mid;
         }
     }
-    return i;
+    return low;
 }
 
 static int d_macro_schedule_insert_at(d_world* world, u32 index)

@@ -114,7 +114,7 @@ def test_thread_count(tools_path):
 
 def test_refusals(tools_path):
     cases = [
-        ("budget", "REFUSE_BUDGET_EXCEEDED", "7"),
+        ("budget", "REFUSE_COLLAPSE_BUDGET", "706"),
         ("tier2", "REFUSE_DOMAIN_FORBIDDEN", "4"),
         ("unsupported", "REFUSE_CAPABILITY_MISSING", "3"),
     ]
@@ -153,4 +153,3 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
-

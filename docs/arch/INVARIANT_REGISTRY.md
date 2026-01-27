@@ -34,6 +34,9 @@ It complements (does not replace) `docs/arch/INVARIANTS.md`.
 | SCALE0-INTEREST-006 | Interest drives activation; no view-based scaling. | docs/arch/INTEREST_MODEL.md | tests/app/scale0_contract_tests.py |
 | SCALE0-NO-EXNIHILO-007 | Expansion cannot create ex nihilo state. | docs/arch/COLLAPSE_EXPAND_CONTRACT.md | tests/app/scale0_contract_tests.py |
 | SCALE0-REPLAY-008 | Replay equivalence across collapse/expand. | docs/arch/MACRO_TIME_MODEL.md | tests/app/scale0_contract_tests.py |
+| SCALE3-BUDGET-009 | Scaling work is budget-gated and policy-controlled. | docs/arch/BUDGET_POLICY.md | tests/app/scale3_budget_tests.py |
+| SCALE3-ADMISSION-010 | Budget refusal/defer is explicit and non-mutating. | docs/arch/BUDGET_POLICY.md | tests/app/scale3_budget_tests.py |
+| SCALE3-CONSTCOST-011 | Per-commit cost is bounded by active fidelity only. | docs/arch/CONSTANT_COST_GUARANTEE.md | tests/app/scale3_budget_tests.py |
 
 ## Notes
 - Full invariant list lives in `docs/arch/INVARIANTS.md`.
