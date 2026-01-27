@@ -1,0 +1,83 @@
+SCHEMA: macro_capsule.schema
+schema_id: dominium.schema.macro_capsule
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic macro capsules for collapse/expand.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- Macro capsules do NOT define algorithms or runtime scheduling.
+- Statistics do NOT override invariants or authority.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- integer: non-negative whole number.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record macro_capsule
+  required:
+    - capsule_id: id
+    - schema_version: tag
+    - invariants: [invariant_value]
+    - statistics: [statistic_value]
+    - provenance: capsule_provenance
+    - reconstruction_seeds: [reconstruction_seed]
+    - extensions: map
+  optional:
+    - capsule_tags: [tag]
+    - schema_refs: [schema_ref]
+    - notes: map
+
+TYPE DEFINITIONS:
+record invariant_value
+  required:
+    - invariant_id: id
+    - value: map
+  optional:
+    - invariant_tags: [tag]
+
+record statistic_value
+  required:
+    - stat_id: id
+    - value: map
+  optional:
+    - tolerance_tag: tag
+    - stat_tags: [tag]
+
+record capsule_provenance
+  required:
+    - source_domain_id: id
+    - source_tick: integer
+    - collapse_reason: tag
+  optional:
+    - source_volume_id: id
+    - source_node_id: id
+    - provenance_ref: provenance_ref
+    - extensions: map
+
+record reconstruction_seed
+  required:
+    - seed_id: id
+    - seed_value: map
+  optional:
+    - algorithm_tag: tag
+    - seed_tags: [tag]
+
+record schema_ref
+  required:
+    - schema_id: id
+    - schema_version: tag
+  optional:
+    - ref_tags: [tag]
+
+record provenance_ref
+  required:
+    - provenance_id: id

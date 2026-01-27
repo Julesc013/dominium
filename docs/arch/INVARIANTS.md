@@ -247,6 +247,83 @@ Enforced by:
 - `schema/tools/README.md`
 - CI: OMNI1-NOTOOLBYPASS-001, TOOL0-NOMUT-004
 
+## Invariant: Scaling is a semantics-preserving projection (SCALE0-PROJECTION-001)
+Why:
+- Macro state must not contradict micro truth.
+Breaks if violated:
+- Expanding a domain changes outcomes or fabricates history.
+Enforced by:
+- `docs/arch/SCALING_MODEL.md`
+- `docs/arch/COLLAPSE_EXPAND_CONTRACT.md`
+- Tests: `tests/app/scale0_contract_tests.py`
+
+## Invariant: Conservation across collapse/expand (SCALE0-CONSERVE-002)
+Why:
+- Totals and obligations must remain exact across fidelity tiers.
+Breaks if violated:
+- Resource/energy/population drift, broken contracts, authority inconsistencies.
+Enforced by:
+- `docs/arch/INVARIANTS_AND_TOLERANCES.md`
+- `docs/arch/COLLAPSE_EXPAND_CONTRACT.md`
+- Tests: `tests/app/scale0_contract_tests.py`
+
+## Invariant: Collapse/expand only at commit boundaries (SCALE0-COMMIT-003)
+Why:
+- Commit boundaries are the only safe points for deterministic transitions.
+Breaks if violated:
+- Mid-commit state changes create nondeterministic outcomes.
+Enforced by:
+- `docs/arch/COLLAPSE_EXPAND_CONTRACT.md`
+- `docs/arch/EXECUTION_MODEL.md`
+- Tests: `tests/app/scale0_contract_tests.py`
+
+## Invariant: Deterministic macro time ordering (SCALE0-DETERMINISM-004)
+Why:
+- Cross-thread determinism and replay depend on stable ordering.
+Breaks if violated:
+- Divergent replays, shard disagreements, and audit failure.
+Enforced by:
+- `docs/arch/MACRO_TIME_MODEL.md`
+- `docs/arch/EXECUTION_REORDERING_POLICY.md`
+- Tests: `tests/app/scale0_contract_tests.py`
+
+## Invariant: Sufficient statistics within declared tolerances (SCALE0-TOLERANCE-005)
+Why:
+- Bounded approximation prevents drift and invalid refinements.
+Breaks if violated:
+- Unbounded error accumulation and invalid expansions.
+Enforced by:
+- `docs/arch/INVARIANTS_AND_TOLERANCES.md`
+- Tests: `tests/app/scale0_contract_tests.py`
+
+## Invariant: Interest drives activation (SCALE0-INTEREST-006)
+Why:
+- Activation must be explicit, deterministic, and auditable.
+Breaks if violated:
+- View-driven activation, hidden work, and nondeterministic scaling.
+Enforced by:
+- `docs/arch/INTEREST_MODEL.md`
+- Tests: `tests/app/scale0_contract_tests.py`
+
+## Invariant: No ex nihilo expansion (SCALE0-NO-EXNIHILO-007)
+Why:
+- Expansion must reconstruct, not invent.
+Breaks if violated:
+- Fabricated entities/resources and broken conservation.
+Enforced by:
+- `docs/arch/COLLAPSE_EXPAND_CONTRACT.md`
+- Tests: `tests/app/scale0_contract_tests.py`
+
+## Invariant: Replay equivalence across collapse/expand (SCALE0-REPLAY-008)
+Why:
+- Save/replay integrity depends on identical macro transitions.
+Breaks if violated:
+- Replays diverge when collapse/expand occurs.
+Enforced by:
+- `docs/arch/MACRO_TIME_MODEL.md`
+- `docs/arch/REPLAY_FORMAT.md`
+- Tests: `tests/app/scale0_contract_tests.py`
+
 ## Forbidden assumptions
 - Invariants are optional or "guidelines" rather than binding rules.
 - Convenience exceptions are acceptable without a canon update.
