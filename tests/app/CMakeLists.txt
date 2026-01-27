@@ -215,6 +215,34 @@ dom_add_testx(NAME scale1_refusal_behavior
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )
 
+dom_add_testx(NAME scale2_long_time_stability
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/scale2_macro_time_tests.py
+        --tools $<TARGET_FILE:dominium-tools>
+        --family long_time_stability
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME scale2_compaction_equivalence
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/scale2_macro_time_tests.py
+        --tools $<TARGET_FILE:dominium-tools>
+        --family compaction_equivalence
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME scale2_replay_equivalence
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/scale2_macro_time_tests.py
+        --tools $<TARGET_FILE:dominium-tools>
+        --family replay_equivalence
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME scale2_interest_transition_safety
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/scale2_macro_time_tests.py
+        --tools $<TARGET_FILE:dominium-tools>
+        --family interest_transition_safety
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
 dom_add_testx(NAME baseline_sku_contracts
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/baseline_sku_tests.py
         --repo-root ${CMAKE_SOURCE_DIR}

@@ -29,7 +29,13 @@ enum {
     DOM_SCALE_DETAIL_DWELL_TICKS = 7u,
     DOM_SCALE_DETAIL_CAPSULE_PARSE = 8u,
     DOM_SCALE_DETAIL_INVARIANT_MISMATCH = 9u,
-    DOM_SCALE_DETAIL_CAPACITY = 10u
+    DOM_SCALE_DETAIL_CAPACITY = 10u,
+    DOM_SCALE_DETAIL_MACRO_QUEUE_LIMIT = 11u,
+    DOM_SCALE_DETAIL_BUDGET_MACRO_EVENT = 12u,
+    DOM_SCALE_DETAIL_BUDGET_COMPACTION = 13u,
+    DOM_SCALE_DETAIL_MACRO_SCHEDULE = 14u,
+    DOM_SCALE_DETAIL_MACRO_EVENT = 15u,
+    DOM_SCALE_DETAIL_MACRO_COMPACTION = 16u
 };
 
 static u64 dom_scale_fnv1a64_init(void)
@@ -328,6 +334,13 @@ void dom_scale_budget_policy_default(dom_scale_budget_policy* policy)
     policy->expand_budget_per_tick = 16u;
     policy->collapse_cost_units = 1u;
     policy->expand_cost_units = 1u;
+    policy->macro_event_budget_per_tick = 64u;
+    policy->macro_event_cost_units = 1u;
+    policy->macro_queue_limit = 4096u;
+    policy->compaction_budget_per_tick = 8u;
+    policy->compaction_cost_units = 1u;
+    policy->compaction_event_threshold = 256u;
+    policy->compaction_time_threshold = 1024;
     policy->min_dwell_ticks = 4;
 }
 
@@ -342,6 +355,17 @@ void dom_scale_interest_policy_default(dom_interest_policy* policy)
     policy->enter_hot = DOM_INTEREST_STRENGTH_HIGH;
     policy->exit_hot = DOM_INTEREST_STRENGTH_MED;
     policy->min_dwell_ticks = 4;
+}
+
+void dom_scale_macro_policy_default(dom_scale_macro_policy* policy)
+{
+    if (!policy) {
+        return;
+    }
+    memset(policy, 0, sizeof(*policy));
+    policy->macro_interval_ticks = 16;
+    policy->macro_event_kind = 1u;
+    policy->narrative_stride = 8u;
 }
 
 static void dom_scale_interest_state_configure(dom_interest_state* state,
@@ -606,6 +630,68 @@ static int dom_scale_budget_allows_expand(dom_scale_context* ctx,
     return 1;
 }
 
+static int dom_scale_budget_allows_macro_event(dom_scale_context* ctx, dom_act_time_t event_tick)
+{
+    const dom_scale_budget_policy* policy;
+    u32 cost;
+    if (!ctx) {
+        return 0;
+    }
+    if (ctx->budget_state.macro_budget_tick != event_tick) {
+        ctx->budget_state.macro_budget_tick = event_tick;
+        ctx->budget_state.macro_event_used = 0u;
+    }
+    policy = &ctx->budget_policy;
+    cost = policy->macro_event_cost_units ? policy->macro_event_cost_units : 1u;
+    if (policy->macro_event_budget_per_tick == 0u) {
+        return 1;
+    }
+    return ctx->budget_state.macro_event_used + cost <= policy->macro_event_budget_per_tick ? 1 : 0;
+}
+
+static int dom_scale_budget_allows_compaction(dom_scale_context* ctx, dom_act_time_t compact_tick)
+{
+    const dom_scale_budget_policy* policy;
+    u32 cost;
+    if (!ctx) {
+        return 0;
+    }
+    if (ctx->budget_state.compaction_budget_tick != compact_tick) {
+        ctx->budget_state.compaction_budget_tick = compact_tick;
+        ctx->budget_state.compaction_used = 0u;
+    }
+    policy = &ctx->budget_policy;
+    cost = policy->compaction_cost_units ? policy->compaction_cost_units : 1u;
+    if (policy->compaction_budget_per_tick == 0u) {
+        return 1;
+    }
+    return ctx->budget_state.compaction_used + cost <= policy->compaction_budget_per_tick ? 1 : 0;
+}
+
+static int dom_scale_macro_queue_within_limit(dom_scale_context* ctx, u32* out_detail_code)
+{
+    const dom_scale_budget_policy* policy;
+    u32 limit;
+    if (out_detail_code) {
+        *out_detail_code = DOM_SCALE_DETAIL_NONE;
+    }
+    if (!ctx || !ctx->world) {
+        return 0;
+    }
+    policy = &ctx->budget_policy;
+    limit = policy->macro_queue_limit;
+    if (limit == 0u) {
+        return 1;
+    }
+    if (dom_macro_event_queue_count(ctx->world) >= limit) {
+        if (out_detail_code) {
+            *out_detail_code = DOM_SCALE_DETAIL_MACRO_QUEUE_LIMIT;
+        }
+        return 0;
+    }
+    return 1;
+}
+
 static void dom_scale_budget_consume_collapse(dom_scale_context* ctx)
 {
     const dom_scale_budget_policy* policy;
@@ -628,6 +714,38 @@ static void dom_scale_budget_consume_expand(dom_scale_context* ctx)
     policy = &ctx->budget_policy;
     cost = policy->expand_cost_units ? policy->expand_cost_units : 1u;
     ctx->budget_state.expand_used += cost;
+}
+
+static void dom_scale_budget_consume_macro_event(dom_scale_context* ctx, dom_act_time_t event_tick)
+{
+    const dom_scale_budget_policy* policy;
+    u32 cost;
+    if (!ctx) {
+        return;
+    }
+    if (ctx->budget_state.macro_budget_tick != event_tick) {
+        ctx->budget_state.macro_budget_tick = event_tick;
+        ctx->budget_state.macro_event_used = 0u;
+    }
+    policy = &ctx->budget_policy;
+    cost = policy->macro_event_cost_units ? policy->macro_event_cost_units : 1u;
+    ctx->budget_state.macro_event_used += cost;
+}
+
+static void dom_scale_budget_consume_compaction(dom_scale_context* ctx, dom_act_time_t compact_tick)
+{
+    const dom_scale_budget_policy* policy;
+    u32 cost;
+    if (!ctx) {
+        return;
+    }
+    if (ctx->budget_state.compaction_budget_tick != compact_tick) {
+        ctx->budget_state.compaction_budget_tick = compact_tick;
+        ctx->budget_state.compaction_used = 0u;
+    }
+    policy = &ctx->budget_policy;
+    cost = policy->compaction_cost_units ? policy->compaction_cost_units : 1u;
+    ctx->budget_state.compaction_used += cost;
 }
 
 static int dom_scale_dwell_elapsed(dom_act_time_t now_tick,
@@ -775,6 +893,76 @@ static void dom_scale_emit_expand(dom_scale_context* ctx,
     ev.reason_code = reason_code;
     ev.seed_value = seed_value;
     ev.tick = ctx->now_tick;
+    dom_scale_event_emit(ctx->event_log, &ev);
+}
+
+static void dom_scale_emit_macro_schedule(dom_scale_context* ctx,
+                                          u64 domain_id,
+                                          u32 domain_kind,
+                                          u64 capsule_id,
+                                          u32 reason_code,
+                                          u32 seed_value,
+                                          u32 detail_code)
+{
+    dom_scale_event ev;
+    if (!ctx || !ctx->event_log) {
+        return;
+    }
+    memset(&ev, 0, sizeof(ev));
+    ev.kind = DOM_SCALE_EVENT_MACRO_SCHEDULE;
+    ev.domain_id = domain_id;
+    ev.domain_kind = domain_kind;
+    ev.capsule_id = capsule_id;
+    ev.reason_code = reason_code;
+    ev.seed_value = seed_value;
+    ev.detail_code = detail_code;
+    ev.tick = ctx->now_tick;
+    dom_scale_event_emit(ctx->event_log, &ev);
+}
+
+static void dom_scale_emit_macro_execute(dom_scale_context* ctx,
+                                         u64 domain_id,
+                                         u32 domain_kind,
+                                         u64 capsule_id,
+                                         dom_act_time_t event_tick,
+                                         u32 seed_value,
+                                         u32 detail_code)
+{
+    dom_scale_event ev;
+    if (!ctx || !ctx->event_log) {
+        return;
+    }
+    memset(&ev, 0, sizeof(ev));
+    ev.kind = DOM_SCALE_EVENT_MACRO_EXECUTE;
+    ev.domain_id = domain_id;
+    ev.domain_kind = domain_kind;
+    ev.capsule_id = capsule_id;
+    ev.seed_value = seed_value;
+    ev.detail_code = detail_code;
+    ev.tick = event_tick;
+    dom_scale_event_emit(ctx->event_log, &ev);
+}
+
+static void dom_scale_emit_macro_compact(dom_scale_context* ctx,
+                                         u64 domain_id,
+                                         u32 domain_kind,
+                                         u64 capsule_id,
+                                         dom_act_time_t compact_tick,
+                                         u32 seed_value,
+                                         u32 detail_code)
+{
+    dom_scale_event ev;
+    if (!ctx || !ctx->event_log) {
+        return;
+    }
+    memset(&ev, 0, sizeof(ev));
+    ev.kind = DOM_SCALE_EVENT_MACRO_COMPACT;
+    ev.domain_id = domain_id;
+    ev.domain_kind = domain_kind;
+    ev.capsule_id = capsule_id;
+    ev.seed_value = seed_value;
+    ev.detail_code = detail_code;
+    ev.tick = compact_tick;
     dom_scale_event_emit(ctx->event_log, &ev);
 }
 
@@ -1306,6 +1494,11 @@ static int dom_scale_reader_read_i64(dom_scale_reader* r, dom_act_time_t* out_va
     return 1;
 }
 
+typedef struct dom_scale_extension_pair {
+    char* key;
+    char* value;
+} dom_scale_extension_pair;
+
 typedef struct dom_scale_capsule_data {
     dom_scale_capsule_summary summary;
     u64 invariant_hash;
@@ -1314,6 +1507,12 @@ typedef struct dom_scale_capsule_data {
     u32 statistic_count;
     u32 schema_len;
     char schema[64];
+    unsigned char* extension_bytes;
+    u32 extension_len;
+    dom_scale_extension_pair* extensions;
+    u32 extension_count;
+    u32 extension_capacity;
+    int extension_parse_ok;
 
     dom_scale_resource_entry* resources;
     u32 resource_count;
@@ -1355,7 +1554,276 @@ static void dom_scale_capsule_data_free(dom_scale_capsule_data* data)
     free(data->nodes);
     free(data->edges);
     free(data->agents);
+    free(data->extension_bytes);
+    if (data->extensions) {
+        u32 i;
+        for (i = 0u; i < data->extension_count; ++i) {
+            free(data->extensions[i].key);
+            free(data->extensions[i].value);
+        }
+        free(data->extensions);
+    }
     memset(data, 0, sizeof(*data));
+}
+
+static char* dom_scale_strdup(const char* text)
+{
+    size_t len;
+    char* copy;
+    if (!text) {
+        return 0;
+    }
+    len = strlen(text);
+    copy = (char*)malloc(len + 1u);
+    if (!copy) {
+        return 0;
+    }
+    memcpy(copy, text, len);
+    copy[len] = '\0';
+    return copy;
+}
+
+static int dom_scale_extension_key_cmp(const char* a, const char* b)
+{
+    if (!a || !b) {
+        return a ? 1 : (b ? -1 : 0);
+    }
+    return strcmp(a, b);
+}
+
+static int dom_scale_extensions_reserve(dom_scale_capsule_data* data, u32 needed)
+{
+    dom_scale_extension_pair* new_pairs;
+    u32 new_capacity;
+    u32 i;
+    if (!data) {
+        return 0;
+    }
+    if (needed <= data->extension_capacity) {
+        return 1;
+    }
+    new_capacity = data->extension_capacity ? data->extension_capacity : 4u;
+    while (new_capacity < needed) {
+        if (new_capacity > 0x7FFFFFFFu) {
+            new_capacity = needed;
+            break;
+        }
+        new_capacity *= 2u;
+    }
+    new_pairs = (dom_scale_extension_pair*)realloc(data->extensions,
+                                                    sizeof(dom_scale_extension_pair) * (size_t)new_capacity);
+    if (!new_pairs) {
+        return 0;
+    }
+    for (i = data->extension_capacity; i < new_capacity; ++i) {
+        new_pairs[i].key = 0;
+        new_pairs[i].value = 0;
+    }
+    data->extensions = new_pairs;
+    data->extension_capacity = new_capacity;
+    return 1;
+}
+
+static int dom_scale_extensions_add_or_update(dom_scale_capsule_data* data,
+                                              const char* key,
+                                              const char* value)
+{
+    u32 i;
+    u32 insert_at = 0u;
+    char* key_copy;
+    char* value_copy;
+    if (!data || !key || !value) {
+        return 0;
+    }
+    for (i = 0u; i < data->extension_count; ++i) {
+        dom_scale_extension_pair* pair = &data->extensions[i];
+        int cmp = dom_scale_extension_key_cmp(pair->key, key);
+        if (cmp == 0) {
+            value_copy = dom_scale_strdup(value);
+            if (!value_copy) {
+                return 0;
+            }
+            free(pair->value);
+            pair->value = value_copy;
+            return 1;
+        }
+        if (cmp > 0) {
+            insert_at = i;
+            break;
+        }
+        insert_at = i + 1u;
+    }
+    if (!dom_scale_extensions_reserve(data, data->extension_count + 1u)) {
+        return 0;
+    }
+    for (i = data->extension_count; i > insert_at; --i) {
+        data->extensions[i] = data->extensions[i - 1u];
+    }
+    key_copy = dom_scale_strdup(key);
+    value_copy = dom_scale_strdup(value);
+    if (!key_copy || !value_copy) {
+        free(key_copy);
+        free(value_copy);
+        return 0;
+    }
+    data->extensions[insert_at].key = key_copy;
+    data->extensions[insert_at].value = value_copy;
+    data->extension_count += 1u;
+    return 1;
+}
+
+static int dom_scale_extensions_add_or_update_u64(dom_scale_capsule_data* data,
+                                                  const char* key,
+                                                  u64 value)
+{
+    char buffer[32];
+    (void)snprintf(buffer, sizeof(buffer), "%llu", (unsigned long long)value);
+    return dom_scale_extensions_add_or_update(data, key, buffer);
+}
+
+static int dom_scale_extensions_add_or_update_i64(dom_scale_capsule_data* data,
+                                                  const char* key,
+                                                  dom_act_time_t value)
+{
+    char buffer[32];
+    (void)snprintf(buffer, sizeof(buffer), "%lld", (long long)value);
+    return dom_scale_extensions_add_or_update(data, key, buffer);
+}
+
+static void dom_scale_extensions_clear(dom_scale_capsule_data* data)
+{
+    u32 i;
+    if (!data) {
+        return;
+    }
+    if (!data->extensions) {
+        data->extension_count = 0u;
+        data->extension_parse_ok = 0;
+        return;
+    }
+    for (i = 0u; i < data->extension_count; ++i) {
+        free(data->extensions[i].key);
+        free(data->extensions[i].value);
+        data->extensions[i].key = 0;
+        data->extensions[i].value = 0;
+    }
+    data->extension_count = 0u;
+    data->extension_parse_ok = 0;
+}
+
+static int dom_scale_extensions_parse(dom_scale_capsule_data* data,
+                                      const unsigned char* bytes,
+                                      u32 len)
+{
+    dom_scale_reader reader;
+    u32 ext_count = 0u;
+    u32 i;
+    if (!data) {
+        return 0;
+    }
+    data->extension_parse_ok = 0;
+    free(data->extension_bytes);
+    data->extension_bytes = 0;
+    data->extension_len = len;
+    if (len > 0u && bytes) {
+        data->extension_bytes = (unsigned char*)malloc((size_t)len);
+        if (!data->extension_bytes) {
+            return 0;
+        }
+        memcpy(data->extension_bytes, bytes, (size_t)len);
+    }
+    dom_scale_extensions_clear(data);
+    if (!bytes || len == 0u) {
+        data->extension_parse_ok = 1;
+        return 1;
+    }
+    dom_scale_reader_init(&reader, bytes, (size_t)len);
+    if (!dom_scale_reader_read_u32(&reader, &ext_count)) {
+        return 1;
+    }
+    for (i = 0u; i < ext_count; ++i) {
+        u32 key_len = 0u;
+        u32 value_len = 0u;
+        char* key = 0;
+        char* value = 0;
+        if (!dom_scale_reader_read_u32(&reader, &key_len) ||
+            key_len == 0u ||
+            key_len > (u32)(len - (u32)reader.pos)) {
+            return 1;
+        }
+        key = (char*)malloc((size_t)key_len + 1u);
+        if (!key) {
+            return 1;
+        }
+        if (!dom_scale_reader_read_bytes(&reader, (unsigned char*)key, (size_t)key_len)) {
+            free(key);
+            return 1;
+        }
+        key[key_len] = '\0';
+        if (!dom_scale_reader_read_u32(&reader, &value_len) ||
+            value_len > (u32)(len - (u32)reader.pos)) {
+            free(key);
+            return 1;
+        }
+        value = (char*)malloc((size_t)value_len + 1u);
+        if (!value) {
+            free(key);
+            return 1;
+        }
+        if (!dom_scale_reader_read_bytes(&reader, (unsigned char*)value, (size_t)value_len)) {
+            free(key);
+            free(value);
+            return 1;
+        }
+        value[value_len] = '\0';
+        (void)dom_scale_extensions_add_or_update(data, key, value);
+        free(key);
+        free(value);
+    }
+    if (!reader.failed && reader.pos == reader.size) {
+        data->extension_parse_ok = 1;
+    }
+    return 1;
+}
+
+static int dom_scale_extensions_ensure_scale1(dom_scale_capsule_data* data)
+{
+    if (!data) {
+        return 0;
+    }
+    return dom_scale_extensions_add_or_update(data, "dominium.scale1", "v1");
+}
+
+static size_t dom_scale_extensions_serialized_len(const dom_scale_capsule_data* data)
+{
+    size_t len = 4u;
+    u32 i;
+    if (!data) {
+        return 0u;
+    }
+    for (i = 0u; i < data->extension_count; ++i) {
+        const dom_scale_extension_pair* pair = &data->extensions[i];
+        size_t key_len = pair->key ? strlen(pair->key) : 0u;
+        size_t value_len = pair->value ? strlen(pair->value) : 0u;
+        len += 4u + key_len;
+        len += 4u + value_len;
+    }
+    return len;
+}
+
+static void dom_scale_writer_write_string(dom_scale_writer* w, const char* text);
+
+static void dom_scale_extensions_write(dom_scale_writer* w,
+                                       const dom_scale_capsule_data* data)
+{
+    u32 i;
+    u32 count = data ? data->extension_count : 0u;
+    dom_scale_writer_write_u32(w, count);
+    for (i = 0u; i < count; ++i) {
+        const dom_scale_extension_pair* pair = &data->extensions[i];
+        dom_scale_writer_write_string(w, pair->key ? pair->key : "");
+        dom_scale_writer_write_string(w, pair->value ? pair->value : "");
+    }
 }
 
 static size_t dom_scale_extension_len(void)
@@ -1941,6 +2409,176 @@ static int dom_scale_serialize_capsule(const dom_scale_domain_slot* slot,
     }
 }
 
+static void dom_scale_slot_from_data(const dom_scale_capsule_data* data,
+                                     dom_scale_domain_slot* slot)
+{
+    if (!data || !slot) {
+        return;
+    }
+    memset(slot, 0, sizeof(*slot));
+    slot->domain_id = data->summary.domain_id;
+    slot->domain_kind = data->summary.domain_kind;
+    if (slot->domain_kind == DOM_SCALE_DOMAIN_RESOURCES) {
+        slot->resources.entries = data->resources;
+        slot->resources.count = data->resource_count;
+        slot->resources.capacity = data->resource_count;
+    } else if (slot->domain_kind == DOM_SCALE_DOMAIN_NETWORK) {
+        slot->network.nodes = data->nodes;
+        slot->network.node_count = data->node_count;
+        slot->network.node_capacity = data->node_count;
+        slot->network.edges = data->edges;
+        slot->network.edge_count = data->edge_count;
+        slot->network.edge_capacity = data->edge_count;
+    } else if (slot->domain_kind == DOM_SCALE_DOMAIN_AGENTS) {
+        slot->agents.entries = data->agents;
+        slot->agents.count = data->agent_count;
+        slot->agents.capacity = data->agent_count;
+    }
+}
+
+static int dom_scale_stat_ids_for_kind(u32 domain_kind,
+                                       const char* const** out_ids,
+                                       u32* out_count)
+{
+    if (!out_ids || !out_count) {
+        return 0;
+    }
+    *out_ids = 0;
+    *out_count = 0u;
+    if (domain_kind == DOM_SCALE_DOMAIN_RESOURCES) {
+        *out_ids = g_scale_stat_ids_resources;
+        *out_count = (u32)(sizeof(g_scale_stat_ids_resources) / sizeof(g_scale_stat_ids_resources[0]));
+        return 1;
+    }
+    if (domain_kind == DOM_SCALE_DOMAIN_NETWORK) {
+        *out_ids = g_scale_stat_ids_network;
+        *out_count = (u32)(sizeof(g_scale_stat_ids_network) / sizeof(g_scale_stat_ids_network[0]));
+        return 1;
+    }
+    if (domain_kind == DOM_SCALE_DOMAIN_AGENTS) {
+        *out_ids = g_scale_stat_ids_agents;
+        *out_count = (u32)(sizeof(g_scale_stat_ids_agents) / sizeof(g_scale_stat_ids_agents[0]));
+        return 1;
+    }
+    return 0;
+}
+
+static int dom_scale_serialize_capsule_from_data(dom_scale_capsule_data* data,
+                                                 unsigned char** out_bytes,
+                                                 u32* out_byte_count,
+                                                 u64* out_invariant_hash,
+                                                 u64* out_statistic_hash,
+                                                 u32* out_invariant_count,
+                                                 u32* out_statistic_count)
+{
+    const char* const* stat_ids = 0;
+    u32 stat_id_count = 0u;
+    u32 invariant_id_count = (u32)(sizeof(g_scale_invariant_ids) / sizeof(g_scale_invariant_ids[0]));
+    size_t schema_len = strlen(DOM_SCALE_MACRO_CAPSULE_SCHEMA);
+    size_t invariant_list_len = dom_scale_string_list_len(g_scale_invariant_ids, invariant_id_count);
+    size_t stat_list_len = 0u;
+    size_t extension_len = 0u;
+    size_t payload_len = 0u;
+    size_t total_len = 0u;
+    unsigned char* bytes = 0;
+    dom_scale_writer writer;
+    dom_scale_domain_slot slot;
+    dom_scale_serialized_domain dom;
+    u64 invariant_hash = 0u;
+    u64 statistic_hash = 0u;
+
+    if (!data || !out_bytes || !out_byte_count) {
+        return -1;
+    }
+    if (!dom_scale_stat_ids_for_kind(data->summary.domain_kind, &stat_ids, &stat_id_count)) {
+        return -2;
+    }
+    stat_list_len = dom_scale_string_list_len(stat_ids, stat_id_count);
+
+    if (!dom_scale_extensions_ensure_scale1(data)) {
+        return -3;
+    }
+
+    dom_scale_slot_from_data(data, &slot);
+    memset(&dom, 0, sizeof(dom));
+    if (!dom_scale_build_serialized_domain(&slot, data->summary.source_tick, &dom)) {
+        return -4;
+    }
+    payload_len = dom.payload_len;
+    invariant_hash = dom.invariant_hash;
+    statistic_hash = dom.statistic_hash;
+    extension_len = dom_scale_extensions_serialized_len(data);
+    total_len = dom_scale_header_size(schema_len, invariant_list_len, stat_list_len) +
+                payload_len + extension_len;
+    bytes = (unsigned char*)malloc(total_len);
+    if (!bytes) {
+        dom_scale_serialized_domain_free(&dom);
+        return -5;
+    }
+
+    dom_scale_writer_init(&writer, bytes, total_len);
+    dom_scale_writer_write_u32(&writer, DOM_SCALE_MACRO_CAPSULE_VERSION);
+    dom_scale_writer_write_string(&writer, DOM_SCALE_MACRO_CAPSULE_SCHEMA);
+    dom_scale_writer_write_u64(&writer, data->summary.capsule_id);
+    dom_scale_writer_write_u64(&writer, data->summary.domain_id);
+    dom_scale_writer_write_u32(&writer, data->summary.domain_kind);
+    dom_scale_writer_write_i64(&writer, data->summary.source_tick);
+    dom_scale_writer_write_u32(&writer, data->summary.collapse_reason);
+    dom_scale_writer_write_u32(&writer, data->summary.seed_base);
+    dom_scale_writer_write_u64(&writer, invariant_hash);
+    dom_scale_writer_write_u64(&writer, statistic_hash);
+    dom_scale_writer_write_string_list(&writer, g_scale_invariant_ids, invariant_id_count);
+    dom_scale_writer_write_string_list(&writer, stat_ids, stat_id_count);
+    dom_scale_writer_write_u32(&writer, (u32)extension_len);
+    if (dom.domain_kind == DOM_SCALE_DOMAIN_RESOURCES) {
+        dom_scale_write_resources_payload(&writer, dom.resources, dom.resource_count);
+    } else if (dom.domain_kind == DOM_SCALE_DOMAIN_NETWORK) {
+        dom_scale_write_network_payload(&writer, dom.nodes, dom.node_count, dom.edges, dom.edge_count);
+    } else if (dom.domain_kind == DOM_SCALE_DOMAIN_AGENTS) {
+        dom_scale_write_agents_payload(&writer,
+                                       dom.agents,
+                                       dom.agent_count,
+                                       dom.role_trait,
+                                       dom.role_trait_count,
+                                       dom.planning,
+                                       dom.planning_count);
+    }
+    dom_scale_extensions_write(&writer, data);
+    if (!writer.failed && writer.used != total_len) {
+        writer.failed = 1;
+    }
+    dom_scale_serialized_domain_free(&dom);
+    if (writer.failed) {
+        free(bytes);
+        return -6;
+    }
+
+    data->invariant_hash = invariant_hash;
+    data->statistic_hash = statistic_hash;
+    data->invariant_count = invariant_id_count;
+    data->statistic_count = stat_id_count;
+    data->summary.invariant_hash = invariant_hash;
+    data->summary.statistic_hash = statistic_hash;
+    data->summary.invariant_count = invariant_id_count;
+    data->summary.statistic_count = stat_id_count;
+
+    *out_bytes = bytes;
+    *out_byte_count = (u32)writer.used;
+    if (out_invariant_hash) {
+        *out_invariant_hash = invariant_hash;
+    }
+    if (out_statistic_hash) {
+        *out_statistic_hash = statistic_hash;
+    }
+    if (out_invariant_count) {
+        *out_invariant_count = invariant_id_count;
+    }
+    if (out_statistic_count) {
+        *out_statistic_count = stat_id_count;
+    }
+    return 0;
+}
+
 static int dom_scale_capsule_parse(const unsigned char* bytes,
                                    u32 byte_count,
                                    dom_scale_capsule_data* out_data)
@@ -2119,6 +2757,14 @@ static int dom_scale_capsule_parse(const unsigned char* bytes,
         dom_scale_capsule_data_free(out_data);
         return 0;
     }
+    if ((size_t)extension_len > reader.size - reader.pos) {
+        dom_scale_capsule_data_free(out_data);
+        return 0;
+    }
+    if (!dom_scale_extensions_parse(out_data, reader.bytes + reader.pos, extension_len)) {
+        dom_scale_capsule_data_free(out_data);
+        return 0;
+    }
     if (!dom_scale_reader_skip(&reader, (size_t)extension_len)) {
         dom_scale_capsule_data_free(out_data);
         return 0;
@@ -2190,6 +2836,577 @@ int dom_scale_capsule_summarize(const unsigned char* bytes,
     *out_summary = data.summary;
     dom_scale_capsule_data_free(&data);
     return 0;
+}
+
+static void dom_scale_macro_policy_resolve(const dom_scale_macro_policy* policy,
+                                           dom_scale_macro_policy* out_policy)
+{
+    if (!out_policy) {
+        return;
+    }
+    dom_scale_macro_policy_default(out_policy);
+    if (!policy) {
+        return;
+    }
+    if (policy->macro_interval_ticks > 0) {
+        out_policy->macro_interval_ticks = policy->macro_interval_ticks;
+    }
+    if (policy->macro_event_kind > 0u) {
+        out_policy->macro_event_kind = policy->macro_event_kind;
+    }
+    if (policy->narrative_stride > 0u) {
+        out_policy->narrative_stride = policy->narrative_stride;
+    }
+}
+
+static u64 dom_scale_macro_order_seed(u64 capsule_id,
+                                      u64 domain_id,
+                                      u32 domain_kind,
+                                      u32 collapse_reason)
+{
+    u64 hash = dom_scale_fnv1a64_init();
+    hash = dom_scale_hash_u64(hash, capsule_id);
+    hash = dom_scale_hash_u64(hash, domain_id);
+    hash = dom_scale_hash_u32(hash, domain_kind);
+    hash = dom_scale_hash_u32(hash, collapse_reason);
+    return hash;
+}
+
+static u64 dom_scale_macro_event_id(u64 domain_id,
+                                    u64 capsule_id,
+                                    dom_act_time_t event_tick,
+                                    u32 event_index,
+                                    u32 event_kind)
+{
+    u64 hash = dom_scale_fnv1a64_init();
+    hash = dom_scale_hash_u64(hash, domain_id);
+    hash = dom_scale_hash_u64(hash, capsule_id);
+    hash = dom_scale_hash_i64(hash, event_tick);
+    hash = dom_scale_hash_u32(hash, event_index);
+    hash = dom_scale_hash_u32(hash, event_kind);
+    if (hash == 0u) {
+        hash = 1u;
+    }
+    return hash;
+}
+
+static u64 dom_scale_macro_order_key(u64 seed, u32 event_index, u32 event_kind)
+{
+    u64 hash = dom_scale_fnv1a64_init();
+    hash = dom_scale_hash_u64(hash, seed);
+    hash = dom_scale_hash_u32(hash, event_index);
+    hash = dom_scale_hash_u32(hash, event_kind);
+    return hash;
+}
+
+static int dom_scale_macro_domain_has_event(const d_world* world, u64 domain_id)
+{
+    u32 count;
+    u32 i;
+    dom_macro_event_entry entry;
+    if (!world || domain_id == 0u) {
+        return 0;
+    }
+    count = dom_macro_event_queue_count(world);
+    for (i = 0u; i < count; ++i) {
+        if (dom_macro_event_queue_get_by_index(world, i, &entry) != 0) {
+            continue;
+        }
+        if (entry.domain_id == domain_id) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+static int dom_scale_macro_schedule_event(dom_scale_context* ctx,
+                                          const dom_scale_domain_slot* slot,
+                                          dom_macro_schedule_entry* schedule,
+                                          const dom_scale_macro_policy* policy,
+                                          u32 reason_code)
+{
+    dom_macro_event_entry ev;
+    dom_act_time_t interval;
+    dom_act_time_t event_tick;
+    u32 event_index;
+    u64 event_id;
+    u64 order_key;
+    u32 detail_code = DOM_SCALE_DETAIL_NONE;
+    if (!ctx || !ctx->world || !slot || !schedule || !policy) {
+        return 0;
+    }
+    interval = schedule->interval_ticks > 0 ? schedule->interval_ticks : policy->macro_interval_ticks;
+    if (interval <= 0) {
+        interval = 1;
+    }
+    schedule->interval_ticks = interval;
+    event_tick = schedule->next_event_time;
+    if (event_tick <= schedule->last_event_time) {
+        event_tick = schedule->last_event_time + interval;
+        schedule->next_event_time = event_tick;
+    }
+    if (!dom_scale_macro_queue_within_limit(ctx, &detail_code)) {
+        dom_scale_emit_refusal(ctx,
+                               slot->domain_id,
+                               slot->domain_kind,
+                               reason_code,
+                               DOM_SCALE_REFUSE_BUDGET_EXCEEDED,
+                               detail_code ? detail_code : DOM_SCALE_DETAIL_MACRO_QUEUE_LIMIT,
+                               0);
+        return 0;
+    }
+    event_index = schedule->executed_events + 1u;
+    event_id = dom_scale_macro_event_id(slot->domain_id,
+                                        schedule->capsule_id,
+                                        event_tick,
+                                        event_index,
+                                        policy->macro_event_kind);
+    order_key = dom_scale_macro_order_key(schedule->order_key_seed,
+                                          event_index,
+                                          policy->macro_event_kind);
+    memset(&ev, 0, sizeof(ev));
+    ev.event_id = event_id;
+    ev.domain_id = slot->domain_id;
+    ev.capsule_id = schedule->capsule_id;
+    ev.event_time = event_tick;
+    ev.order_key = order_key;
+    ev.sequence = event_id;
+    ev.event_kind = policy->macro_event_kind;
+    ev.flags = (policy->narrative_stride > 0u && (event_index % policy->narrative_stride) == 0u) ? 1u : 0u;
+    ev.payload0 = event_index;
+    ev.payload1 = reason_code;
+    if (dom_macro_event_queue_schedule(ctx->world, &ev) != 0) {
+        dom_scale_emit_refusal(ctx,
+                               slot->domain_id,
+                               slot->domain_kind,
+                               reason_code,
+                               DOM_SCALE_REFUSE_INVALID_INTENT,
+                               DOM_SCALE_DETAIL_MACRO_SCHEDULE,
+                               0);
+        return 0;
+    }
+    dom_scale_emit_macro_schedule(ctx,
+                                  slot->domain_id,
+                                  slot->domain_kind,
+                                  schedule->capsule_id,
+                                  reason_code,
+                                  (u32)(schedule->order_key_seed & 0xFFFFFFFFu),
+                                  event_index);
+    return 1;
+}
+
+static void dom_scale_macro_reschedule_missing(dom_scale_context* ctx,
+                                               const dom_scale_macro_policy* policy,
+                                               dom_act_time_t up_to_tick)
+{
+    u32 count;
+    u32 i;
+    dom_macro_schedule_entry schedule;
+    if (!ctx || !ctx->world || !policy) {
+        return;
+    }
+    count = dom_macro_schedule_store_count(ctx->world);
+    for (i = 0u; i < count; ++i) {
+        dom_scale_domain_slot* slot;
+        if (dom_macro_schedule_store_get_by_index(ctx->world, i, &schedule) != 0) {
+            continue;
+        }
+        slot = dom_scale_find_domain(ctx, schedule.domain_id);
+        if (!slot || slot->capsule_id == 0u || slot->tier != DOM_FID_LATENT) {
+            continue;
+        }
+        if (schedule.capsule_id != slot->capsule_id) {
+            schedule.capsule_id = slot->capsule_id;
+        }
+        if (!dom_scale_macro_domain_has_event(ctx->world, slot->domain_id) &&
+            schedule.next_event_time <= up_to_tick) {
+            (void)dom_scale_macro_schedule_event(ctx,
+                                                 slot,
+                                                 &schedule,
+                                                 policy,
+                                                 policy->macro_event_kind);
+        }
+        (void)dom_macro_schedule_store_set(ctx->world, &schedule);
+    }
+}
+
+static int dom_scale_macro_execute_event(dom_scale_context* ctx,
+                                         const dom_scale_macro_policy* policy,
+                                         const dom_macro_event_entry* ev,
+                                         dom_macro_schedule_entry* schedule)
+{
+    dom_scale_domain_slot* slot;
+    dom_macro_capsule_blob blob;
+    dom_scale_capsule_data data;
+    unsigned char* new_bytes = 0;
+    u32 new_size = 0u;
+    u32 reason_code;
+    u32 detail_code = DOM_SCALE_DETAIL_NONE;
+    if (!ctx || !ctx->world || !policy || !ev || !schedule) {
+        return 0;
+    }
+    slot = dom_scale_find_domain(ctx, ev->domain_id);
+    if (!slot || slot->capsule_id == 0u || slot->tier != DOM_FID_LATENT) {
+        return 0;
+    }
+    reason_code = policy->macro_event_kind;
+    if (!dom_scale_budget_allows_macro_event(ctx, ctx->now_tick)) {
+        dom_scale_emit_defer(ctx,
+                             slot->domain_id,
+                             slot->domain_kind,
+                             reason_code,
+                             DOM_SCALE_DEFER_MACRO_EVENT,
+                             DOM_SCALE_DETAIL_BUDGET_MACRO_EVENT,
+                             0);
+        return -1;
+    }
+    memset(&blob, 0, sizeof(blob));
+    dom_scale_capsule_data_init(&data);
+    if (!dom_macro_capsule_store_get_blob(ctx->world, schedule->capsule_id, &blob) ||
+        !dom_scale_capsule_parse(blob.bytes, blob.byte_count, &data)) {
+        dom_scale_emit_refusal(ctx,
+                               slot->domain_id,
+                               slot->domain_kind,
+                               reason_code,
+                               DOM_SCALE_REFUSE_INVALID_INTENT,
+                               DOM_SCALE_DETAIL_MACRO_EVENT,
+                               0);
+        dom_scale_capsule_data_free(&data);
+        return 0;
+    }
+    if (data.summary.domain_kind != slot->domain_kind) {
+        dom_scale_emit_refusal(ctx,
+                               slot->domain_id,
+                               slot->domain_kind,
+                               reason_code,
+                               DOM_SCALE_REFUSE_INVALID_INTENT,
+                               DOM_SCALE_DETAIL_MACRO_EVENT,
+                               0);
+        dom_scale_capsule_data_free(&data);
+        return 0;
+    }
+    if (data.extension_len > 0u && !data.extension_parse_ok) {
+        dom_scale_emit_refusal(ctx,
+                               slot->domain_id,
+                               slot->domain_kind,
+                               reason_code,
+                               DOM_SCALE_REFUSE_CAPABILITY_MISSING,
+                               DOM_SCALE_DETAIL_MACRO_EVENT,
+                               0);
+        dom_scale_capsule_data_free(&data);
+        return 0;
+    }
+
+    schedule->last_event_time = ev->event_time;
+    schedule->executed_events += 1u;
+    schedule->compacted_through_time = schedule->last_event_time;
+    schedule->next_event_time = schedule->last_event_time + schedule->interval_ticks;
+    data.summary.source_tick = schedule->last_event_time;
+    data.summary.seed_base = dom_scale_seed_base(data.summary.capsule_id, data.summary.source_tick);
+
+    (void)dom_scale_extensions_ensure_scale1(&data);
+    (void)dom_scale_extensions_add_or_update_i64(&data,
+                                                 "dominium.scale2.macro_last_tick",
+                                                 schedule->last_event_time);
+    (void)dom_scale_extensions_add_or_update_u64(&data,
+                                                 "dominium.scale2.macro_events",
+                                                 schedule->executed_events);
+    (void)dom_scale_extensions_add_or_update_i64(&data,
+                                                 "dominium.scale2.compacted_through",
+                                                 schedule->compacted_through_time);
+    (void)dom_scale_extensions_add_or_update_i64(&data,
+                                                 "dominium.scale2.macro_interval",
+                                                 schedule->interval_ticks);
+    if (ev->flags & 1u) {
+        schedule->narrative_events += 1u;
+        (void)dom_scale_extensions_add_or_update_u64(&data,
+                                                     "dominium.scale2.narrative_events",
+                                                     schedule->narrative_events);
+    }
+
+    detail_code = schedule->executed_events;
+    if (dom_scale_serialize_capsule_from_data(&data,
+                                              &new_bytes,
+                                              &new_size,
+                                              0,
+                                              0,
+                                              0,
+                                              0) != 0 ||
+        dom_macro_capsule_store_set_blob(ctx->world,
+                                         data.summary.capsule_id,
+                                         data.summary.domain_id,
+                                         data.summary.source_tick,
+                                         new_bytes,
+                                         new_size) != 0) {
+        free(new_bytes);
+        dom_scale_emit_refusal(ctx,
+                               slot->domain_id,
+                               slot->domain_kind,
+                               reason_code,
+                               DOM_SCALE_REFUSE_INVALID_INTENT,
+                               DOM_SCALE_DETAIL_MACRO_EVENT,
+                               0);
+        dom_scale_capsule_data_free(&data);
+        return 0;
+    }
+    free(new_bytes);
+    dom_scale_budget_consume_macro_event(ctx, ctx->now_tick);
+    dom_scale_emit_macro_execute(ctx,
+                                 slot->domain_id,
+                                 slot->domain_kind,
+                                 data.summary.capsule_id,
+                                 schedule->last_event_time,
+                                 data.summary.seed_base,
+                                 detail_code);
+    (void)dom_scale_macro_schedule_event(ctx,
+                                         slot,
+                                         schedule,
+                                         policy,
+                                         reason_code);
+    (void)dom_macro_schedule_store_set(ctx->world, schedule);
+    dom_scale_capsule_data_free(&data);
+    return 1;
+}
+
+int dom_scale_macro_initialize(dom_scale_context* ctx,
+                               const dom_scale_commit_token* token,
+                               u64 domain_id,
+                               u64 capsule_id,
+                               u32 collapse_reason,
+                               const dom_scale_macro_policy* policy)
+{
+    dom_scale_macro_policy resolved;
+    dom_scale_domain_slot* slot;
+    dom_macro_schedule_entry schedule;
+    dom_act_time_t interval;
+    if (!ctx || !ctx->world) {
+        return -1;
+    }
+    if (!dom_scale_commit_token_validate(token, ctx->now_tick)) {
+        dom_scale_emit_refusal(ctx,
+                               domain_id,
+                               0u,
+                               collapse_reason,
+                               DOM_SCALE_REFUSE_INVALID_INTENT,
+                               DOM_SCALE_DETAIL_COMMIT_TICK,
+                               0);
+        return 0;
+    }
+    slot = dom_scale_find_domain(ctx, domain_id);
+    if (!slot || slot->capsule_id == 0u || slot->tier != DOM_FID_LATENT) {
+        return -2;
+    }
+    dom_scale_macro_policy_resolve(policy, &resolved);
+    interval = resolved.macro_interval_ticks > 0 ? resolved.macro_interval_ticks : 1;
+    memset(&schedule, 0, sizeof(schedule));
+    schedule.domain_id = domain_id;
+    schedule.capsule_id = capsule_id;
+    schedule.last_event_time = ctx->now_tick;
+    schedule.interval_ticks = interval;
+    schedule.next_event_time = ctx->now_tick + interval;
+    schedule.order_key_seed = dom_scale_macro_order_seed(capsule_id,
+                                                         domain_id,
+                                                         slot->domain_kind,
+                                                         collapse_reason);
+    schedule.executed_events = 0u;
+    schedule.narrative_events = 0u;
+    schedule.compacted_through_time = ctx->now_tick;
+    schedule.compaction_count = 0u;
+    (void)dom_macro_event_queue_remove_domain(ctx->world, domain_id);
+    if (dom_macro_schedule_store_set(ctx->world, &schedule) != 0) {
+        dom_scale_emit_refusal(ctx,
+                               domain_id,
+                               slot->domain_kind,
+                               collapse_reason,
+                               DOM_SCALE_REFUSE_INVALID_INTENT,
+                               DOM_SCALE_DETAIL_MACRO_SCHEDULE,
+                               0);
+        return 0;
+    }
+    (void)dom_scale_macro_schedule_event(ctx,
+                                         slot,
+                                         &schedule,
+                                         &resolved,
+                                         collapse_reason);
+    (void)dom_macro_schedule_store_set(ctx->world, &schedule);
+    return 1;
+}
+
+int dom_scale_macro_advance(dom_scale_context* ctx,
+                            const dom_scale_commit_token* token,
+                            dom_act_time_t up_to_tick,
+                            const dom_scale_macro_policy* policy,
+                            u32* out_executed)
+{
+    dom_scale_macro_policy resolved;
+    dom_macro_event_entry ev;
+    u32 executed = 0u;
+    int budget_blocked = 0;
+    if (out_executed) {
+        *out_executed = 0u;
+    }
+    if (!ctx || !ctx->world) {
+        return -1;
+    }
+    if (!dom_scale_commit_token_validate(token, ctx->now_tick)) {
+        dom_scale_emit_refusal(ctx,
+                               0u,
+                               0u,
+                               0u,
+                               DOM_SCALE_REFUSE_INVALID_INTENT,
+                               DOM_SCALE_DETAIL_COMMIT_TICK,
+                               0);
+        return 0;
+    }
+    dom_scale_macro_policy_resolve(policy, &resolved);
+    dom_scale_macro_reschedule_missing(ctx, &resolved, up_to_tick);
+    memset(&ev, 0, sizeof(ev));
+    while (dom_macro_event_queue_peek_next(ctx->world, &ev) &&
+           ev.event_time <= up_to_tick) {
+        dom_macro_schedule_entry schedule;
+        int pop_ok;
+        if (!dom_macro_event_queue_pop_next(ctx->world, up_to_tick, &ev)) {
+            break;
+        }
+        if (dom_macro_schedule_store_get(ctx->world, ev.domain_id, &schedule) != 0) {
+            continue;
+        }
+        pop_ok = dom_scale_macro_execute_event(ctx, &resolved, &ev, &schedule);
+        if (pop_ok < 0) {
+            (void)dom_macro_event_queue_schedule(ctx->world, &ev);
+            budget_blocked = 1;
+            break;
+        }
+        if (pop_ok > 0) {
+            executed += 1u;
+        }
+    }
+    if (out_executed) {
+        *out_executed = executed;
+    }
+    (void)budget_blocked;
+    return 0;
+}
+
+int dom_scale_macro_compact(dom_scale_context* ctx,
+                            const dom_scale_commit_token* token,
+                            u64 domain_id,
+                            dom_act_time_t up_to_tick,
+                            const dom_scale_macro_policy* policy,
+                            u32* out_compacted)
+{
+    dom_scale_macro_policy resolved;
+    dom_scale_domain_slot* slot;
+    dom_macro_schedule_entry schedule;
+    u32 reason_code = 0u;
+    int triggered = 0;
+    if (out_compacted) {
+        *out_compacted = 0u;
+    }
+    if (!ctx || !ctx->world) {
+        return -1;
+    }
+    if (!dom_scale_commit_token_validate(token, ctx->now_tick)) {
+        dom_scale_emit_refusal(ctx,
+                               domain_id,
+                               0u,
+                               0u,
+                               DOM_SCALE_REFUSE_INVALID_INTENT,
+                               DOM_SCALE_DETAIL_COMMIT_TICK,
+                               0);
+        return 0;
+    }
+    slot = dom_scale_find_domain(ctx, domain_id);
+    if (!slot || slot->capsule_id == 0u || slot->tier != DOM_FID_LATENT) {
+        return -2;
+    }
+    if (dom_macro_schedule_store_get(ctx->world, domain_id, &schedule) != 0) {
+        return 0;
+    }
+    dom_scale_macro_policy_resolve(policy, &resolved);
+    reason_code = resolved.macro_event_kind;
+    if ((ctx->budget_policy.compaction_event_threshold > 0u &&
+         schedule.executed_events >= ctx->budget_policy.compaction_event_threshold) ||
+        (ctx->budget_policy.compaction_time_threshold > 0 &&
+         up_to_tick - schedule.last_event_time >= ctx->budget_policy.compaction_time_threshold)) {
+        triggered = 1;
+    }
+    if (!triggered) {
+        return 0;
+    }
+    if (!dom_scale_budget_allows_compaction(ctx, ctx->now_tick)) {
+        dom_scale_emit_defer(ctx,
+                             domain_id,
+                             slot->domain_kind,
+                             reason_code,
+                             DOM_SCALE_DEFER_COMPACTION,
+                             DOM_SCALE_DETAIL_BUDGET_COMPACTION,
+                             0);
+        return 0;
+    }
+    (void)dom_macro_event_queue_remove_domain(ctx->world, domain_id);
+    (void)dom_scale_macro_schedule_event(ctx,
+                                         slot,
+                                         &schedule,
+                                         &resolved,
+                                         reason_code);
+    (void)dom_macro_schedule_store_set(ctx->world, &schedule);
+    dom_scale_budget_consume_compaction(ctx, ctx->now_tick);
+    dom_scale_emit_macro_compact(ctx,
+                                 domain_id,
+                                 slot->domain_kind,
+                                 schedule.capsule_id,
+                                 up_to_tick,
+                                 (u32)(schedule.order_key_seed & 0xFFFFFFFFu),
+                                 schedule.executed_events);
+    if (out_compacted) {
+        *out_compacted = 1u;
+    }
+    return 1;
+}
+
+int dom_scale_macro_finalize_for_expand(dom_scale_context* ctx,
+                                        const dom_scale_commit_token* token,
+                                        u64 domain_id,
+                                        dom_act_time_t up_to_tick,
+                                        const dom_scale_macro_policy* policy)
+{
+    dom_scale_macro_policy resolved;
+    dom_scale_domain_slot* slot;
+    dom_macro_event_entry next_event;
+    if (!ctx || !ctx->world) {
+        return -1;
+    }
+    if (!dom_scale_commit_token_validate(token, ctx->now_tick)) {
+        dom_scale_emit_refusal(ctx,
+                               domain_id,
+                               0u,
+                               0u,
+                               DOM_SCALE_REFUSE_INVALID_INTENT,
+                               DOM_SCALE_DETAIL_COMMIT_TICK,
+                               0);
+        return 0;
+    }
+    slot = dom_scale_find_domain(ctx, domain_id);
+    if (!slot || slot->capsule_id == 0u) {
+        return -2;
+    }
+    dom_scale_macro_policy_resolve(policy, &resolved);
+    (void)dom_scale_macro_advance(ctx, token, up_to_tick, &resolved, 0);
+    memset(&next_event, 0, sizeof(next_event));
+    if (dom_macro_event_queue_peek_next(ctx->world, &next_event) &&
+        next_event.event_time <= up_to_tick) {
+        dom_scale_emit_defer(ctx,
+                             domain_id,
+                             slot->domain_kind,
+                             resolved.macro_event_kind,
+                             DOM_SCALE_DEFER_EXPAND,
+                             DOM_SCALE_DETAIL_BUDGET_MACRO_EVENT,
+                             0);
+        return 0;
+    }
+    (void)dom_scale_macro_compact(ctx, token, domain_id, up_to_tick, &resolved, 0);
+    return 1;
 }
 
 static int dom_scale_reconstruct_resources(dom_scale_domain_slot* slot,
@@ -2429,6 +3646,16 @@ int dom_scale_collapse_domain(dom_scale_context* ctx,
     dom_scale_budget_adjust_for_transition(ctx, from_tier, to_tier);
     dom_scale_budget_consume_collapse(ctx);
     hash_after = dom_scale_domain_hash(slot, ctx->now_tick, ctx->worker_count);
+    if (ctx->world) {
+        dom_scale_macro_policy macro_policy;
+        dom_scale_macro_policy_default(&macro_policy);
+        (void)dom_scale_macro_initialize(ctx,
+                                         token,
+                                         domain_id,
+                                         capsule_id,
+                                         collapse_reason,
+                                         &macro_policy);
+    }
 
     if (out_result) {
         out_result->capsule_id = capsule_id;
@@ -2461,6 +3688,7 @@ int dom_scale_expand_domain(dom_scale_context* ctx,
 {
     dom_macro_capsule_blob blob;
     dom_scale_capsule_data data;
+    dom_scale_macro_policy macro_policy;
     dom_scale_domain_slot* slot = 0;
     dom_fidelity_tier from_tier = DOM_FID_LATENT;
     dom_fidelity_tier to_tier = target_tier;
@@ -2476,6 +3704,7 @@ int dom_scale_expand_domain(dom_scale_context* ctx,
     }
     memset(&blob, 0, sizeof(blob));
     dom_scale_capsule_data_init(&data);
+    dom_scale_macro_policy_default(&macro_policy);
     if (!dom_scale_commit_token_validate(token, ctx->now_tick)) {
         dom_scale_emit_refusal(ctx,
                                0u,
@@ -2484,6 +3713,23 @@ int dom_scale_expand_domain(dom_scale_context* ctx,
                                DOM_SCALE_REFUSE_INVALID_INTENT,
                                DOM_SCALE_DETAIL_COMMIT_TICK,
                                out_result);
+        return 0;
+    }
+    if (!dom_macro_capsule_store_get_blob(ctx->world, capsule_id, &blob)) {
+        dom_scale_emit_refusal(ctx,
+                               0u,
+                               0u,
+                               expand_reason,
+                               DOM_SCALE_REFUSE_INVALID_INTENT,
+                               DOM_SCALE_DETAIL_CAPSULE_PARSE,
+                               out_result);
+        return 0;
+    }
+    if (!dom_scale_macro_finalize_for_expand(ctx,
+                                             token,
+                                             blob.domain_id,
+                                             ctx->now_tick,
+                                             &macro_policy)) {
         return 0;
     }
     if (!dom_macro_capsule_store_get_blob(ctx->world, capsule_id, &blob)) {
@@ -2650,6 +3896,8 @@ const char* dom_scale_defer_to_string(u32 defer_code)
     switch (defer_code) {
     case DOM_SCALE_DEFER_COLLAPSE: return "DEFER_COLLAPSE";
     case DOM_SCALE_DEFER_EXPAND: return "DEFER_EXPANSION";
+    case DOM_SCALE_DEFER_MACRO_EVENT: return "DEFER_MACRO_EVENT";
+    case DOM_SCALE_DEFER_COMPACTION: return "DEFER_COMPACTION";
     default: break;
     }
     return "DEFER_NONE";
@@ -2922,6 +4170,10 @@ const char* dom_scale_defer_to_string(u32 defer_code)
     dom_scale_budget_adjust_for_transition(ctx, from_tier, to_tier);
     dom_scale_budget_consume_expand(ctx);
     hash_after = dom_scale_domain_hash(slot, ctx->now_tick, ctx->worker_count);
+    if (ctx->world) {
+        (void)dom_macro_event_queue_remove_domain(ctx->world, slot->domain_id);
+        (void)dom_macro_schedule_store_remove(ctx->world, slot->domain_id);
+    }
 
     if (out_result) {
         out_result->capsule_id = capsule_id;

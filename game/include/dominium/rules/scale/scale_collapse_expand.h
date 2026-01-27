@@ -15,7 +15,9 @@ DETERMINISM: Collapse/expand ordering and results are deterministic and replayab
 #include "domino/core/dom_time_core.h"
 #include "domino/core/types.h"
 #include "domino/execution/task_node.h"
+#include "domino/scale/macro_event_queue.h"
 #include "domino/scale/macro_capsule_store.h"
+#include "domino/scale/macro_schedule_store.h"
 #include "dominium/interest_set.h"
 
 #ifdef __cplusplus
@@ -35,7 +37,10 @@ typedef enum dom_scale_event_kind {
     DOM_SCALE_EVENT_COLLAPSE = 1,
     DOM_SCALE_EVENT_EXPAND = 2,
     DOM_SCALE_EVENT_REFUSAL = 3,
-    DOM_SCALE_EVENT_DEFER = 4
+    DOM_SCALE_EVENT_DEFER = 4,
+    DOM_SCALE_EVENT_MACRO_SCHEDULE = 5,
+    DOM_SCALE_EVENT_MACRO_EXECUTE = 6,
+    DOM_SCALE_EVENT_MACRO_COMPACT = 7
 } dom_scale_event_kind;
 
 typedef enum dom_scale_refusal_code {
@@ -49,7 +54,9 @@ typedef enum dom_scale_refusal_code {
 typedef enum dom_scale_defer_code {
     DOM_SCALE_DEFER_NONE = 0,
     DOM_SCALE_DEFER_COLLAPSE = 1,
-    DOM_SCALE_DEFER_EXPAND = 2
+    DOM_SCALE_DEFER_EXPAND = 2,
+    DOM_SCALE_DEFER_MACRO_EVENT = 3,
+    DOM_SCALE_DEFER_COMPACTION = 4
 } dom_scale_defer_code;
 
 typedef struct dom_scale_commit_token {
@@ -66,6 +73,13 @@ typedef struct dom_scale_budget_policy {
     u32 expand_budget_per_tick;
     u32 collapse_cost_units;
     u32 expand_cost_units;
+    u32 macro_event_budget_per_tick;
+    u32 macro_event_cost_units;
+    u32 macro_queue_limit;
+    u32 compaction_budget_per_tick;
+    u32 compaction_cost_units;
+    u32 compaction_event_threshold;
+    dom_act_time_t compaction_time_threshold;
     dom_act_time_t min_dwell_ticks;
 } dom_scale_budget_policy;
 
@@ -76,6 +90,10 @@ typedef struct dom_scale_budget_state {
     u32 planning_used;
     u32 collapse_used;
     u32 expand_used;
+    u32 macro_event_used;
+    u32 compaction_used;
+    dom_act_time_t macro_budget_tick;
+    dom_act_time_t compaction_budget_tick;
 } dom_scale_budget_state;
 
 typedef struct dom_scale_event {
@@ -202,6 +220,12 @@ typedef struct dom_scale_context {
     u32 worker_count;
 } dom_scale_context;
 
+typedef struct dom_scale_macro_policy {
+    dom_act_time_t macro_interval_ticks;
+    u32 macro_event_kind;
+    u32 narrative_stride;
+} dom_scale_macro_policy;
+
 void dom_scale_event_log_init(dom_scale_event_log* log,
                               dom_scale_event* storage,
                               u32 capacity);
@@ -209,6 +233,7 @@ void dom_scale_event_log_clear(dom_scale_event_log* log);
 
 void dom_scale_budget_policy_default(dom_scale_budget_policy* policy);
 void dom_scale_interest_policy_default(dom_interest_policy* policy);
+void dom_scale_macro_policy_default(dom_scale_macro_policy* policy);
 
 void dom_scale_context_init(dom_scale_context* ctx,
                             d_world* world,
@@ -236,6 +261,28 @@ u64 dom_scale_domain_hash(const dom_scale_domain_slot* slot,
 int dom_scale_capsule_summarize(const unsigned char* bytes,
                                 u32 byte_count,
                                 dom_scale_capsule_summary* out_summary);
+int dom_scale_macro_initialize(dom_scale_context* ctx,
+                               const dom_scale_commit_token* token,
+                               u64 domain_id,
+                               u64 capsule_id,
+                               u32 collapse_reason,
+                               const dom_scale_macro_policy* policy);
+int dom_scale_macro_advance(dom_scale_context* ctx,
+                            const dom_scale_commit_token* token,
+                            dom_act_time_t up_to_tick,
+                            const dom_scale_macro_policy* policy,
+                            u32* out_executed);
+int dom_scale_macro_compact(dom_scale_context* ctx,
+                            const dom_scale_commit_token* token,
+                            u64 domain_id,
+                            dom_act_time_t up_to_tick,
+                            const dom_scale_macro_policy* policy,
+                            u32* out_compacted);
+int dom_scale_macro_finalize_for_expand(dom_scale_context* ctx,
+                                        const dom_scale_commit_token* token,
+                                        u64 domain_id,
+                                        dom_act_time_t up_to_tick,
+                                        const dom_scale_macro_policy* policy);
 
 int dom_scale_collapse_domain(dom_scale_context* ctx,
                               const dom_scale_commit_token* token,
@@ -263,4 +310,3 @@ const char* dom_scale_defer_to_string(u32 defer_code);
 #endif
 
 #endif /* DOMINIUM_RULES_SCALE_COLLAPSE_EXPAND_H */
-

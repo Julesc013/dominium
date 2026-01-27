@@ -1,0 +1,36 @@
+SCHEMA: macro_schedule.schema
+schema_id: dominium.schema.macro_schedule
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic macro schedule state for collapsed domains.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+
+NON-SEMANTICS:
+- Schedules do not define domain mechanics.
+- Schedule state gates execution; it does not grant authority.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- integer: non-negative whole number.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record macro_schedule
+  required:
+    - domain_id: id
+    - capsule_id: id
+    - last_event_time: integer
+    - next_event_time: integer
+    - interval_ticks: integer
+  optional:
+    - executed_events: integer
+    - narrative_events: integer
+    - compacted_through_time: integer
+    - compaction_count: integer
+    - extensions: map
