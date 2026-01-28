@@ -7,10 +7,34 @@ This map locks the project into one mental model. It is written for humans and
 is the authoritative dependency direction statement. "A -> B" means A depends
 on B and must not be inverted.
 
+## Canonical system stack (textual diagram)
+This stack is a navigation and integration view. Dependency direction remains
+authoritative in the sections below.
+
+ENGINE -> GAME -> SERVER/CLIENT -> LAUNCHER/SETUP -> TOOLS
+
 ## Invariants
 - Dependency direction is authoritative and must not be inverted.
 - Engine and game responsibilities remain separated.
 - Law gates and audit are mandatory for authoritative effects.
+- Engine and game are content-agnostic executables; content lives in data.
+- Launcher and setup are orchestration surfaces only.
+- Tools are read-only by default and mutate state only via ToolIntents.
+
+## Responsibilities and forbidden dependencies (quick map)
+Responsibilities:
+- engine: mechanisms, determinism, storage, execution substrate, law gates
+- game: meaning, rules, process emission, law targets, content interpretation
+- server/client: product shells that compose engine + game
+- launcher/setup: orchestration, installation, profiles, compatibility
+- tools: validation, inspection, authoring, and audit-friendly workflows
+
+Forbidden dependencies (summary):
+- engine -> game, launcher, setup, tools, libs contracts
+- game -> launcher, setup, tools, libs contracts
+- launcher/setup/tools -> game rule mutation paths
+- client/server -> launcher, setup, tools
+- tools -> authoritative mutation outside ToolIntents
 
 ## 1) Engine vs Game Boundary
 Engine defines mechanisms; game defines meaning; data defines configuration.

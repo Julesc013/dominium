@@ -1,11 +1,10 @@
-SCHEMA: material.schema
-schema_id: dominium.schema.material
-schema_version: 2.0.0
+SCHEMA: interface.schema
+schema_id: dominium.schema.interface
+schema_version: 1.0.0
 stability: core
 
 PURPOSE:
-- Define materials as trait bundles with manufacturability and failure parameters.
-- This schema is declarative only and does not encode behavior.
+- Define generic interfaces and connectors across modalities.
 
 STABILITY GUARANTEES:
 - Required fields MUST exist.
@@ -14,27 +13,37 @@ STABILITY GUARANTEES:
 - Identifiers are stable and MUST NOT be reused with new meaning.
 
 NON-SEMANTICS:
-- Trait and parameter keys do NOT encode real-world physics.
-- Tags do NOT imply behavior or simulation rules.
-- No era, progression, or balance assumptions are implied.
+- Interface types do NOT imply mechanics or compatibility.
+- Capacity and directionality are descriptive only.
 
 CONVENTIONS:
 - id: stable namespaced string; opaque.
 - tag: namespaced string; unknown values allowed.
+- number: numeric scalar.
 - map: open key/value map; unknown keys preserved.
 
 REQUIRED SHAPE:
-record material
+record interface
   required:
-    - material_id: id
-    - traits: map
-    - manufacturability: map
-    - failure_params: map
+    - interface_id: id
+    - interface_type: tag
+    - directionality: tag
+    - capacity: quantity
     - unit_annotations: map
-    - provenance: provenance
+    - compatibility_rules: map
     - extensions: map
+  optional:
+    - provenance: provenance
 
 TYPE DEFINITIONS:
+record quantity
+  required:
+    - value: number
+    - unit: tag
+  optional:
+    - scale_hint: tag
+    - overflow_behavior: tag
+
 record provenance
   required:
     - provenance_id: id
@@ -47,5 +56,5 @@ MIGRATION:
 - Old data MUST NOT be reinterpreted without explicit transformation or refusal.
 
 UNIT POLICY:
-- Numeric values embedded in maps MUST be accompanied by unit_annotations entries.
-- Unit identifiers MUST follow `docs/arch/UNIT_SYSTEM_POLICY.md`.
+- All numeric values MUST reference a unit tag from `docs/arch/UNIT_SYSTEM_POLICY.md`.
+- Overflow behavior MUST be declared (refusal on overflow).
