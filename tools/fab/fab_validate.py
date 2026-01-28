@@ -226,7 +226,42 @@ def validate_substance(record, idx, issues):
     validate_id(substance_id, issues, f"{path}.substance_id")
 
 
-def validate_pack(data, repo_root):
+def detect_pack_root(input_path):
+    if not isinstance(input_path, str):
+        return None
+    norm = input_path.replace("\\", "/")
+    if norm.endswith("/data/fab_pack.json"):
+        return os.path.dirname(os.path.dirname(input_path))
+    return None
+
+
+def parse_maturity_label(text):
+    if not isinstance(text, str):
+        return None
+    for raw in text.splitlines():
+        line = raw.strip()
+        if line.lower().startswith("maturity:"):
+            value = line.split(":", 1)[1].strip()
+            value = value.rstrip(".")
+            return value.upper()
+    return None
+
+
+def validate_maturity(pack_root, issues):
+    if not pack_root:
+        return
+    readme = os.path.join(pack_root, "docs", "README.md")
+    if not os.path.isfile(readme):
+        add_issue(issues, "maturity_missing", "maturity label missing (docs/README.md)", "docs/README.md")
+        return
+    with open(readme, "r", encoding="utf-8", errors="replace") as handle:
+        text = handle.read()
+    maturity = parse_maturity_label(text)
+    if maturity not in ("PARAMETRIC", "STRUCTURAL", "BOUNDED", "INCOMPLETE"):
+        add_issue(issues, "maturity_invalid", "maturity label invalid or missing", "docs/README.md")
+
+
+def validate_pack(data, repo_root, pack_root=None):
     issues = []
     unit_table = load_units_table(repo_root)
 
@@ -412,6 +447,7 @@ def validate_pack(data, repo_root):
             if haz_id and haz_id not in hazard_ids:
                 add_issue(issues, "ref_hazard_missing", "hazard reference missing", f"substances[{i}].hazards[{j}]")
 
+    validate_maturity(pack_root, issues)
     return issues
 
 
@@ -419,12 +455,15 @@ def main():
     parser = argparse.ArgumentParser(description="Validate FAB-0 data packs.")
     parser.add_argument("--input", required=True)
     parser.add_argument("--repo-root", default=".")
+    parser.add_argument("--pack-root", default=None,
+                        help="Optional pack root to enforce maturity labels (docs/README.md).")
     parser.add_argument("--format", choices=["json", "text"], default="json")
     args = parser.parse_args()
 
     repo_root = os.path.abspath(args.repo_root)
     data = load_json(args.input)
-    issues = validate_pack(data, repo_root)
+    pack_root = args.pack_root or detect_pack_root(args.input)
+    issues = validate_pack(data, repo_root, pack_root=pack_root)
     issues = sorted(issues, key=lambda item: (item.get("path", ""), item.get("code", "")))
 
     ok = len(issues) == 0
