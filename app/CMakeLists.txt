@@ -6,6 +6,7 @@ add_library(dominium_app_runtime STATIC
     src/readonly_adapter.c
     src/readonly_format.c
     src/ui_event_log.c
+    src/ui_presentation.c
 )
 target_include_directories(dominium_app_runtime PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include

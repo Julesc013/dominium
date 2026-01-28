@@ -1,0 +1,13 @@
+DOMINIUM_ACCESSIBILITY_V1
+preset_id=accessibility.high_contrast
+preset_version=1.0.0
+ui_scale_percent=125
+palette=high-contrast
+log_level=info
+ui_density=standard
+verbosity=normal
+keybind_profile_id=default
+reduced_motion=1
+keyboard_only=0
+screen_reader=0
+low_cognitive_load=0

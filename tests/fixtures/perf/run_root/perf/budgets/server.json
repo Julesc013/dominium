@@ -1,0 +1,18 @@
+{
+  "tier": "server",
+  "metrics": {
+    "macro_sim_tick_us_max": 4500,
+    "macro_macro_sched_us_max": 400,
+    "macro_macro_events_max": 800,
+    "macro_event_queue_depth_max": 3000,
+    "meso_interest_set_size_max": 6000,
+    "local_derived_queue_depth_max": 40,
+    "local_derived_job_us_max": 900,
+    "local_render_submit_us_max": 0,
+    "local_stream_bytes_max": 100000,
+    "macro_net_msg_sent_max": 6000,
+    "macro_net_msg_recv_max": 6000,
+    "macro_net_bytes_sent_max": 3000000,
+    "macro_net_bytes_recv_max": 3000000
+  }
+}

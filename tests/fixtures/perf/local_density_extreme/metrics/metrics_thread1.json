@@ -1,0 +1,29 @@
+{
+  "fixture_id": "perf.local_density_extreme",
+  "metrics": {
+    "platform": "fixture",
+    "active_tier2_domains": 1,
+    "active_tier1_domains": 64,
+    "processes_per_tick": 4400,
+    "macro_events_per_tick": 600,
+    "collapse_expand_ops_per_tick": 10,
+    "agent_planning_steps_per_tick": 8000,
+    "macro_time_steps_per_tick": 200,
+    "snapshot_ops_per_tick": 3,
+    "serialization_ops_per_tick": 2,
+    "refusal_counts_total": 8,
+    "refusal_counts_budget": 1,
+    "refusal_counts_capability": 3,
+    "refusal_counts_validation": 4,
+    "refusal_counts_unknown": 0,
+    "memory_peak_kb": 2200000,
+    "memory_plateau_kb": 2180000,
+    "cross_shard_msgs_per_tick": 500,
+    "cross_shard_bytes_per_tick": 120000,
+    "event_hash": "3333333333333333333333333333333333333333333333333333333333333333",
+    "metrics_hash": "4444444444444444444444444444444444444444444444444444444444444444",
+    "replay_hash": "a8f417786f8893d6f7498f806117cf81c9cfc0970c4930454b7fe346664c6af0"
+  },
+  "collapse_expand_invariants_ok": true,
+  "thread_count": 1
+}

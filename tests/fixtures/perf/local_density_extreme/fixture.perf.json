@@ -1,0 +1,33 @@
+{
+  "fixture_id": "perf.local_density_extreme",
+  "scenario_path": "scenario_local_density_extreme.scenario",
+  "variant_path": "variant_local_density_extreme.variant",
+  "replay_stub": "replay.stub",
+  "guards": [
+    "guard.active_tier2_domains_budget",
+    "guard.processes_per_tick_budget",
+    "guard.agent_planning_steps_budget",
+    "guard.snapshot_ops_budget",
+    "guard.serialization_ops_budget"
+  ],
+  "limits": {
+    "processes_per_tick": 4600,
+    "agent_planning_steps_per_tick": 9000,
+    "snapshot_ops_per_tick": 3,
+    "serialization_ops_per_tick": 2
+  },
+  "minimums": {
+    "processes_per_tick": 3000
+  },
+  "metrics": {
+    "thread_counts": [
+      1,
+      4
+    ],
+    "paths": {
+      "1": "metrics/metrics_thread1.json",
+      "4": "metrics/metrics_thread4.json"
+    }
+  },
+  "memory_plateau_tolerance_kb": 30000
+}

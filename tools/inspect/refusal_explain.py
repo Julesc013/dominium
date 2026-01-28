@@ -53,7 +53,7 @@ def load_json(path):
 def load_refusal_table(repo_root):
     candidates = [
         os.path.join(repo_root, "docs", "architecture", "REFUSAL_SEMANTICS.md"),
-        os.path.join(repo_root, "docs", "arch", "REFUSAL_SEMANTICS.md"),
+        os.path.join(repo_root, "docs", "architecture", "REFUSAL_SEMANTICS.md"),
     ]
     for path in candidates:
         if not os.path.isfile(path):

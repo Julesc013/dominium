@@ -1,0 +1,7 @@
+DOMINIUM_SCENARIO_V1
+scenario_id=org.dominium.perf.deep_history
+scenario_version=1.0.0
+world_template=perf.world.deep_history
+world_seed=1003
+policy.authority=policy.authority.perf
+policy.mode=policy.mode.perf.stress

@@ -1,618 +1,618 @@
-# Docs Audit (Prompt 0)  
- 
-This log records status and actions for each file under docs/. 
-Format: - path ; STATUS=... ; Intent=... ; Relevance=... ; Conflicts=... ; Actions=... 
-
-Defaults: Unless overridden per entry, intent is as stated by the file header,
-relevance is assumed current, conflicts are resolved via
-`docs/architecture/TERMINOLOGY.md`, and actions are none.
-
-Summary (current audit file counts):
-- CURRENT: 561
-- UPDATED: 20
-- ARCHIVED: 22
-- DEPRECATED BUT REFERENCED: 0
- 
-- docs\audit\DOCS_AUDIT_PROMPT0.md ; STATUS=UPDATED ; Intent=audit log for Prompt 0 ; Relevance=current audit record ; Conflicts=none ; Actions=created
-- docs\CONTRIBUTING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\architecture\TERMINOLOGY.md ; STATUS=UPDATED ; Intent=canonical terminology ; Relevance=current canonical ; Conflicts=none ; Actions=created
-- docs\architecture\NON_GOALS.md ; STATUS=UPDATED ; Intent=explicit non-goals ; Relevance=current canonical ; Conflicts=none ; Actions=created
-- docs\architecture\MENTAL_MODEL.md ; STATUS=UPDATED ; Intent=core mental model ; Relevance=current canonical ; Conflicts=none ; Actions=created
-- docs\architecture\INVARIANTS.md ; STATUS=UPDATED ; Intent=architectural invariants summary ; Relevance=current canonical ; Conflicts=none ; Actions=created
-- docs\architecture\COMPATIBILITY_PHILOSOPHY.md ; STATUS=UPDATED ; Intent=compatibility philosophy ; Relevance=current canonical ; Conflicts=none ; Actions=created
-- docs\ci\REGRESSION_SUITES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\ci\KNOWN_BLOCKERS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\ci\HYGIENE_QUEUE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\ci\FUTURE_ENFORCEMENT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\ci\EXECUTION_ENFORCEMENT_CHECKS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\ci\DETERMINISM_TEST_MATRIX.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\ci\CODEHYGIENE_RULES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\ci\CI_ENFORCEMENT_MATRIX.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\ci\BUILD_MATRIX.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\.gitignore ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\FIDELITY_DEGRADATION.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\CIV1_CITIES_INFRA.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\CIV0_POPULATION_GENESIS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\CIV0a_SURVIVAL_LOOP.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\AGENT_GOALS_AND_PLANNING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\AGENT_DOCTRINE_AND_ROLES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\AGENT_AGGREGATION_AND_SCALE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\build\TRANSITION_DO_NOTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\build\TOOLCHAIN_MODEL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\build\SKU_MODEL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\build\OS_FLOOR_POLICY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\build\CI_MATRIX.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\build\BOUNDARY_ENFORCEMENT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\build\ARTIFACT_IDENTITY_AND_METADATA.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_CALENDARS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_BUILD.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_BLUEPRINTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_BIOMES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_BACKEND_CONFORMANCE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_ATMOSPHERE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_ASSETS_INSTRUMENTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_ARTIFACT_STORE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_AI_DETERMINISM.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_AI_DECISION_TRACES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_AGGREGATES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_AGENT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_ACTORS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_ACTIONS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_ABI_TEMPLATES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\DATA_FORMATS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\COREDATA_BUILD.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\app\UI_MODES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\app\TUI_MODE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\app\TOOLS_UI_POLICY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\app\TOOLS_OBSERVABILITY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\app\TIMING_AND_CLOCKS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\app\TESTX_INVENTORY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\app\TESTX_COMPLIANCE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\app\RUNTIME_LOOP.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\app\READONLY_ADAPTER.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\app\README.md ; STATUS=UPDATED ; Intent=app docs index ; Relevance=current ; Conflicts=none ; Actions=updated APR references to archive
-- docs\app\PRODUCT_BOUNDARIES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\app\OBSERVABILITY_PIPELINES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\app\NATIVE_UI_POLICY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\app\IDE_WORKFLOW.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\app\HEADLESS_AND_ZERO_PACK.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\app\GUI_MODE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\app\ENGINE_GAME_DIAGNOSTICS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\app\COMPATIBILITY_ENFORCEMENT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\app\CLI_CONTRACTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\app\CLIENT_UI_LAYER.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\app\CLIENT_RENDERER_UI.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\app\CLIENT_READONLY_INTEGRATION.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\app\CLIENT_IDE_START_POINTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\app\ARTIFACT_IDENTITY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\CIV5_WAR_INTERPLANETARY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\CIV5_WAR_ENGAGEMENTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\CIV4_SCALE_AND_LOGISTICS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\CIV3_KNOWLEDGE_TECH.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\CIV2_GOVERNANCE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\CIV5_WAR_SECURITY_FORCES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\CIV5_WAR_OCCUPATION.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\CONTENT_BASE_EXAMPLE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\CONTRACTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\render\SWAPCHAINS_AND_SURFACES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\render\RENDER_INTERFACE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\render\README.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\render\BACKENDS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\README.md ; STATUS=UPDATED ; Intent=docs entrypoint ; Relevance=current orientation ; Conflicts=none ; Actions=created
-- docs\specs\core\TLV_SCHEMA_GOVERNANCE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\core\PROVIDERS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\core\LOGGING_EVENTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\core\JOB_ENGINE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\core\INSTALLED_STATE_CONTRACT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\core\CORE_LIBRARIES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\core\CAPABILITIES_AND_SOLVER.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\archive\specs\TOOL_PACK.md ; STATUS=ARCHIVED ; Intent=legacy tooling doc ; Relevance=historical ; Conflicts=deprecated pack workflow ; Actions=archived with header
-- docs\archive\ci\PHASE6_SEALED.md ; STATUS=ARCHIVED ; Intent=phase seal note ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
-- docs\archive\ci\PHASE6_READINESS.md ; STATUS=ARCHIVED ; Intent=phase readiness checklist ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
-- docs\archive\ci\PHASE6_AUDIT_REPORT.md ; STATUS=ARCHIVED ; Intent=phase audit report ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
-- docs\archive\ci\PHASE2_5_FIXLIST.md ; STATUS=ARCHIVED ; Intent=phase fixlist ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
-- docs\archive\ci\PHASE2_5_AUDIT_REPORT.md ; STATUS=ARCHIVED ; Intent=phase audit report ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
-- docs\archive\ci\PHASE1_ENFORCEMENT_SUMMARY.md ; STATUS=ARCHIVED ; Intent=phase enforcement summary ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
-- docs\archive\ci\PHASE1_AUDIT_REPORT.md ; STATUS=ARCHIVED ; Intent=phase audit report ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
-- docs\archive\ci\DOCS_VALIDATION_REPORT.md ; STATUS=ARCHIVED ; Intent=docs validation report ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
-- docs\archive\ci\COREDATA_CONSISTENCY_REPORT.md ; STATUS=ARCHIVED ; Intent=coredata consistency report ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
-- docs\archive\platform\APR2_EXTENSION_AUDIT.md ; STATUS=ARCHIVED ; Intent=platform extension audit snapshot ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
-- docs\archive\repox\APRX_INVENTORY.md ; STATUS=ARCHIVED ; Intent=RepoX/TestX inventory snapshot ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
-- docs\archive\repox\APRX_INTEGRATION_HOOKS.md ; STATUS=ARCHIVED ; Intent=RepoX/TestX integration hooks snapshot ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
-- docs\specs\launcher\DIAGNOSTICS_BUNDLES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\launcher\DIAGNOSTICS_AND_SUPPORT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\launcher\DEV_UI.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\launcher\CLI.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\launcher\CAPS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\launcher\BUILD_AND_PACKAGING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\launcher\ARTIFACT_STORE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\launcher\ARCHITECTURE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\INTEREST_SET_IMPLEMENTATION.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\policies\VALIDATION_AND_GOVERNANCE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\policies\RENDER_BACKEND_LIFECYCLE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\policies\PERF_BUDGETS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\policies\PERFORMANCE_ENFORCEMENT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\policies\LONG_TERM_SUPPORT_POLICY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\policies\LANGUAGE_POLICY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\policies\IDE_CONTRIBUTION_RULES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\policies\FEATURE_EPOCH_POLICY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\policies\DOCUMENTATION_STANDARDS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\policies\DETERMINISTIC_RNG.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\policies\DETERMINISTIC_ORDERING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\policies\DETERMINISTIC_MATH.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\policies\DETERMINISM_REGRESSION_RULES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\policies\DETERMINISM_HASH_PARTITIONS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\policies\DETERMINISM_GATES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\policies\DETERMINISM_ENFORCEMENT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\policies\DEPRECATION_POLICY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\policies\COMPAT_TERMS.md ; STATUS=UPDATED ; Intent=legacy term mapping ; Relevance=current ; Conflicts=none ; Actions=expanded mappings and pointer to terminology
-- docs\policies\COMPATIBILITY_PROMISES.md ; STATUS=UPDATED ; Intent=compatibility promises ; Relevance=current ; Conflicts=none ; Actions=aligned with compatibility philosophy
-- docs\policies\COMMIT_CONVENTIONS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\policies\CODE_OF_CONDUCT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\launcher\UI_SYSTEM.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\launcher\TUI.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\launcher\TESTING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\launcher\SPEC_LAUNCH_HANDSHAKE_GAME.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\launcher\SPEC_LAUNCHER_TUI.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\launcher\SPEC_LAUNCHER_PROTOCOL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\launcher\SPEC_LAUNCHER_PROFILES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\launcher\SPEC_LAUNCHER_PRELAUNCH_CONFIG.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\launcher\SPEC_LAUNCHER_PACKS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\launcher\SPEC_LAUNCHER_NET.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\launcher\SPEC_LAUNCHER_GUI.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\launcher\SPEC_LAUNCHER_EXT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\launcher\SPEC_LAUNCHER_CORE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\launcher\SPEC_LAUNCHER_CLI.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\launcher\SPEC_LAUNCHER.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\archive\build\APR5_BUILD_INVENTORY.md ; STATUS=ARCHIVED ; Intent=build inventory snapshot ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
-- docs\specs\launcher\SETUP_HANDOFF.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\launcher\SECURITY_AND_TRUST.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\launcher\RECOVERY_AND_SAFE_MODE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\launcher\PACK_SYSTEM.md ; STATUS=UPDATED ; Intent=launcher pack system ; Relevance=current ; Conflicts=none ; Actions=linked to UPS and corrected references
-- docs\specs\launcher\news.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\launcher\LAUNCHER_SETUP_OVERVIEW.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\launcher\INSTANCE_MODEL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\launcher\INSTALLED_STATE_CONTRACT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\launcher\ECOSYSTEM_INTEGRATION.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\PARITY_LOCK_MATRIX.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\PACKAGING_DEFAULTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\OWNERSHIP_MODEL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\OPERATOR_TOOLS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\OPERATIONS_QUICKSTART.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\MACOS_PKG_WRAPPER.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\LINUX_RPM_WRAPPER.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\LINUX_DEB_WRAPPER.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\LEGACY_STATE_IMPORT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\JOB_ENGINE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\INVARIANTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\IDE_WORKFLOWS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\HANDOFF_SNAPSHOT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\FUTURE_BACKLOG.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\FRONTEND_CONTRACT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\FAILPOINTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\EXTENSION_POLICY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\ERROR_TAXONOMY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\DEPRECATION_PLAN.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\DEFAULTS_AND_FLAGS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\CONFORMANCE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\CLI_REFERENCE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\CLI_JSON_SCHEMAS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\BUILD_RULES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\AUDIT_MODEL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\ARCHIVAL_AND_HANDOFF.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\ADDING_FEATURES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\ADAPTER_MATRIX.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\ADAPTERS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\LIFE_REMAINS_SALVAGE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\LIFE_DEATH_PIPELINE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\LIFE_BIRTH_PIPELINE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\SPLAT_REGISTRY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\SPLAT_LIFECYCLE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\SETUP_WINDOWS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\SETUP_RETRO.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\SETUP_MACOS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\SETUP_LINUX.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\SERVICES_FACADES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\SERVICES_ERRORS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\SECURITY_MODEL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\SCHEMA_FREEZE_V1.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\REPRODUCIBLE_BUILDS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\REPRODUCIBILITY_GUARANTEES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\RECOVERY_PLAYBOOK.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\READ_ONLY_LOCK.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\README.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\PLANNING_RULES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\PARITY_WITH_LAUNCHER.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\STATUS_SR5.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\STATUS_SR4.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\STATUS_SR3.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\STATUS_SR2.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\STATUS_SR11.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\STATUS_SR10.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\STATUS_SR1.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\STATE_EVOLUTION.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\SPLAT_SELECTION_RULES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\STATUS_SR9.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\STATUS_SR8.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\STATUS_SR7.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\STATUS_SR6.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\TLV_INSTALL_MANIFEST.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\TLV_INSTALLED_STATE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\STEAM_PROVIDER.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\TLV_INSTALL_PLAN.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\TLV_INSTALL_REQUEST.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_DOMINIUM_RULES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_DOMINIUM_LAYER.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_DOMAINS_FRAMES_PROP.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_DOCTRINE_AUTONOMY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_DGFX_IR_VERSIONING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_DETERMINISM_GRADES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_DETERMINISM.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_DEBUG_UI.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_CROSS_SHARD_MESSAGES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_COSMO_LANE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_COSMO_ECONOMY_EVENTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_COSMO_CORE_DATA.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_CORE_DATA_VALIDATION.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_CORE_DATA_PIPELINE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_CORE_DATA.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_CORE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_CONTRACTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_CONTENT.md ; STATUS=UPDATED ; Intent=content proto spec ; Relevance=current ; Conflicts=none ; Actions=aligned pack semantics with UPS and zero-pack boot
-- docs\specs\SPEC_CONTAINER_TLV.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_CONSTRUCTIONS_V0.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_COMMUNICATION.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_COMMAND_MODEL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_CLIMATE_WEATHER.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_CAPABILITY_REGISTRY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_CAPABILITIES.md ; STATUS=UPDATED ; Intent=capability split spec ; Relevance=current ; Conflicts=none ; Actions=corrected references
-- docs\specs\setup\TLV_JOB_JOURNAL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_ENV.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_ENERGY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_EFFECT_FIELDS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_EDITOR_GUI.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_ECONOMY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_DUI.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_DOMINO_SYS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_DOMINO_SUBSYSTEMS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_DOMINO_SIM.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_DOMINO_MOD.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_DOMINO_GFX.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_DOMINO_AUDIO_UI_INPUT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_FEATURE_EPOCH.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_FACTIONS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_FACADES_BACKENDS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_EVENT_DRIVEN_STEPPING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_EPISTEMIC_INTERFACE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_EPISTEMIC_GATING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_FIELDS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_FIDELITY_PROJECTION.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_FIDELITY_DEGRADATION.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_FS_CONTRACT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_FIELDS_EVENTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_GAME_CLI.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\WHY_NPCS_DONT_POP.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\WHY_ECONOMIES_DONT_FAKE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\WHAT_THIS_IS_NOT.md ; STATUS=UPDATED ; Intent=project non-goals statement ; Relevance=current ; Conflicts=none ; Actions=added asset-independent note
-- docs\arch\WHAT_THIS_IS.md ; STATUS=UPDATED ; Intent=project identity statement ; Relevance=current ; Conflicts=none ; Actions=added UPS/zero-asset/truth-perception notes
-- docs\arch\VISITABILITY_CONSISTENCY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\VISITABILITY_AND_REFINEMENT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\VISITABILITY_AND_REALITY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\UPGRADE_AND_CONVERSION.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\UNKNOWN_UNKNOWNS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\TRAVEL_CAPACITY_AND_COST.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\TRAVEL_AND_MOVEMENT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\TOOLS_AS_CAPABILITIES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\TIME_PERCEPTION_VS_SIMULATION.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\TIME_DILATION_WITHOUT_TIME_WARP.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\TIMELINE_FORKS_AND_HISTORY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\THREAT_MODEL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\SYS_CAPS_AND_EXEC_POLICY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\SPECTATOR_TO_GODMODE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\SPECTATOR_AND_AUDIT_MODES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\SPACE_TIME_EXISTENCE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\SPACE_AND_BOUNDS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\SERVICES_AND_PRODUCTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\SCALE_AND_COMPLEXITY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\REPO_OWNERSHIP_AND_PROJECTIONS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\REPORT_GAME_ARCH_DECISIONS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\REPLAY_AND_TIME_ASYMMETRY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\REGISTRY_PATTERN.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\REFUSAL_AND_EXPLANATION_MODEL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\REFRACTOR_STAGE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\REFINEMENT_CONTRACTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\REALITY_MODEL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\REALITY_LAYER.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\REALITY_FLOW.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\PROJECTION_LIFECYCLE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\PIRACY_CONTAINMENT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\OVERVIEW_ARCHITECTURE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\NO_TELEPORTATION_EXCEPT_BY_CONTRACT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\NO_MAGIC_TELEPORTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\NON_INTERFERENCE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\MOVEMENT_AS_LOGISTICS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\LIFE_AND_POPULATION.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\LEGACY_SUPPORT_STRATEGY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\LAW_ENFORCEMENT_POINTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\INVARIANT_REGISTRY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\INVARIANTS.md ; STATUS=UPDATED ; Intent=detailed invariant list ; Relevance=current ; Conflicts=none ; Actions=added canonical summary reference
-- docs\arch\IDE_AND_TOOLCHAIN_POLICY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\IDENTITY_ACROSS_TIME.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\HARDWARE_EVOLUTION_STRATEGY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\GOVERNANCE_AND_INSTITUTIONS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\GLOSSARY.md ; STATUS=UPDATED ; Intent=canonical glossary ; Relevance=current ; Conflicts=none ; Actions=aligned terms with architecture/TERMINOLOGY
-- docs\arch\GENERATED_CODE_POLICY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\FUTURE_PROOFING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\FUTURE_COMPATIBILITY_AND_ARCH.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\EXTENSION_RULES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\EXOTIC_TRAVEL_AND_REALITY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\EXISTENCE_LIFECYCLE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\EXISTENCE_AND_REALITY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\EXECUTION_SUBSTRATE_AUDIT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\EXECUTION_REORDERING_POLICY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\archive\guides\LAUNCHER_AUDIT.md ; STATUS=ARCHIVED ; Intent=launcher audit snapshot ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
-- docs\arch\EXECUTION_MODEL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\ENFORCEMENT_ESCALATION.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\ECONOMY_AND_LOGISTICS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\DOMAIN_VOLUMES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\DOMAIN_SHARDING_AND_STREAMING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\FIDELITY_PROJECTION_IMPLEMENTATION.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\GOVERNANCE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\TROUBLESHOOTING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\TRANSACTIONS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\TLV_TXN_JOURNAL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\TLV_SETUP_AUDIT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\UI_CONTRACT_MAPPING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\TUI_REFERENCE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\setup\WINDOWS_MSI_WRAPPER.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\DOMAIN_JURISDICTIONS_AND_LAW.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\MODDING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\DISTRIBUTION_PROFILES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\DISTRIBUTION_AND_STOREFRONTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\DIRECTORY_CONTEXT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\DETERMINISTIC_REDUCTION_RULES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\DEMO_AND_TOURIST_MODEL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\DEATH_AND_CONTINUITY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\CONTROL_LAYERS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\COMPONENTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\COLLAPSE_AND_DECAY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\CODE_DATA_BOUNDARY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\CIVILIZATION_MODEL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\CHEATS_ARE_JUST_LAWS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\CHANGE_PROTOCOL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\CANONICAL_SYSTEM_MAP.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\AUTHORITY_MODEL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\AUTHORITY_AND_OMNIPOTENCE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\AUTHORITY_IN_REALITY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\AUTHORITY_AND_ENTITLEMENTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\AUDITABILITY_AND_DISCLOSURE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\ARCH_SPEC_OWNERSHIP.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\ARCH_REPO_LAYOUT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\ARCH_ENFORCEMENT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\ARCH_CHANGE_PROCESS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\ARCH_BUILD_ENFORCEMENT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\ANTI_CHEAT_AS_LAW.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\ANTI_CHEAT_AND_INTEGRITY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\ADOPTION_PROTOCOL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\FORMAT_INSTALL_MANIFEST.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\ARCHITECTURE.md ; STATUS=UPDATED ; Intent=high-level architecture map ; Relevance=current ; Conflicts=none ; Actions=added mental-model reference
-- docs\arch\ARCH0_CONSTITUTION.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\ARCHITECTURE_LAYERS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\arch\ARCHIVAL_AND_PERMANENCE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\archive\app\APR4_TESTX_COMPLIANCE.md ; STATUS=ARCHIVED ; Intent=TESTX compliance snapshot ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
-- docs\archive\app\APR4_ENGINE_GAME_INTERFACE_INVENTORY.md ; STATUS=ARCHIVED ; Intent=engine/game interface inventory ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
-- docs\archive\app\APR3_UI_MODE_AUDIT.md ; STATUS=ARCHIVED ; Intent=UI mode audit snapshot ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
-- docs\archive\app\APR3_TESTX_COMPLIANCE.md ; STATUS=ARCHIVED ; Intent=TESTX compliance snapshot ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
-- docs\archive\app\APR2_TESTX_COMPLIANCE.md ; STATUS=ARCHIVED ; Intent=TESTX compliance snapshot ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
-- docs\archive\app\APR1_TESTX_COMPLIANCE.md ; STATUS=ARCHIVED ; Intent=TESTX compliance snapshot ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
-- docs\archive\app\APR1_RUNTIME_AUDIT.md ; STATUS=ARCHIVED ; Intent=runtime audit snapshot ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
-- docs\specs\SPEC_INSTANCE_LAYOUT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_INPUT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_INFORMATION_MODEL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_INDEX.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_IDENTITY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_HYDROLOGY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_GRAPH_TOOLKIT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_GAME_PRODUCT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_GAME_CONTENT_API.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_KNOWLEDGE_VIS_COMMS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_KNOWLEDGE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_JOB_AI.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_JOBS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_INTEREST_SETS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_LEDGER.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_LANGUAGE_BASELINES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_LANES_AND_BUBBLES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_LOGICAL_TRAVEL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_LOD.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_MACHINES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_MARKETS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\platform\MULTI_WINDOW.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\platform\LIFECYCLE_AND_SIGNALS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\platform\EXTENSIONS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\platform\EVENT_QUEUE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\platform\README.md ; STATUS=UPDATED ; Intent=platform docs index ; Relevance=current ; Conflicts=none ; Actions=updated APR reference to archive
-- docs\platform\PLATFORM_RUNTIME.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\platform\WINDOW_MODES_DPI_INPUT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_MATTER.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\WORLD_CONTENT_GUIDE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\WORK_IR_EMISSION_GUIDE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\WAR_WORK_IR.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\ui_editor\WORKFLOW_END_TO_END.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\ui_editor\TOOL_EDITOR_BOOTSTRAP_CHECKLIST.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\ui_editor\TEST_MINECRAFT_SETUP.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\ui_editor\TEST_MINECRAFT_LAUNCHER.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\ui_editor\SPEC_UI_DOC_TLV.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\ui_editor\SPEC_CODEGEN_ACTIONS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\ui_editor\SPEC_CAPABILITIES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\ui_editor\SPEC_ACTIONS_AND_EVENTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\ui_editor\REPO_MAP_UI_SYSTEM.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\ui_editor\README.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\ui_editor\PHASE_A_DONE_CHECKLIST.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\ui_editor\OPS_FORMAT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\ui_editor\IMPORT_EXPORT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\ui_editor\IDE_LIVE_EDITING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\UI_HANDOFF.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\UI_EPISTEMIC_BOUNDARY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\TOOL_TEST.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\TOOL_REPLAY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\TOOL_ASSETC.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\INTEREST_SYSTEM_WORK_IR.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_MONEY_STANDARDS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\DEPENDENCIES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\INTEGRITY_AND_DISPUTE_REPLAYS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\IMPLEMENTATION_BACKLOG_UNIVERSE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\IMPLEMENTATION_BACKLOG_NO_MODAL_LOADING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\DATA_VALIDATION_GUIDE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\IMPLEMENTATION_BACKLOG_CANON.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\GOVERNANCE_WORK_IR.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\CORE_DATA_GUIDE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\FUTURE_PHASE_GUIDELINES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\EDITOR_BACKENDS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\ECONOMY_WORK_IR.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\DOMAIN_QUERY_AND_BUDGETS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\BUILDING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_PROFILING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_PRODUCTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_POSE_AND_ANCHORS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_PLAY_FLOW.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_PLAYER_CONTINUITY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_PERF_BUDGETS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_PACKETS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_PACKAGES.md ; STATUS=UPDATED ; Intent=package container spec ; Relevance=current ; Conflicts=none ; Actions=aligned with UPS and added capabilities field
-- docs\specs\SPEC_ORBITS_TIMEWARP.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_ORBITS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_NUMERIC.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_NO_MODAL_LOADING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_NET_HANDSHAKE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_NETWORKS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_NETCODE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_NET.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_RENDER_CAPS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_RENDERING_CANON.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_REFERENCE_FRAMES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_REENTRY_THERMAL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_RECIPES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_QOS_ASSISTANCE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_PROVENANCE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_PROPERTY_RIGHTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_RES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_REPLAY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_RENDER_GRAPH.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_RENDER_FEATURES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_SCHEDULING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_RESEARCH.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_SENSORS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\AGENT_WORK_IR.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_MODELS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_MIGRATIONS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_MEDIA_FRAMEWORK.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_MECHANICS_PROFILES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_TIME_STANDARDS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_TIME_KNOWLEDGE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_TIME_FRAMES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_TIME_CORE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_TIERS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_SYSTEM_LOGISTICS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_SYSTEMS_BODIES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_SURFACE_TOPOLOGY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_SURFACE_STREAMING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_STRUCT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_STREAMING_BUDGETS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_STANDARD_RESOLUTION.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_STANDARDS_AND_RENDERERS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_SPACE_GRAPH.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_SPACETIME.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_SMOKE_TESTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_SIM_SCHEDULER.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_SESSIONS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_SIM.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_SHARDING_AUTHORITY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_SHADER_IR.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_SETUP_CORE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\build_output.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\BUILD_DIST.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_SETUP_CLI.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\BUILD_OVERVIEW.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_UNIVERSE_BUNDLE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_UI_WIDGETS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\RELEASE_NOTES_PROCESS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_UI_PROJECTIONS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_UI_CAPABILITIES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_TRANS_STRUCT_DECOR.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_TRANSPORT_NETWORKS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_TRANS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_TOOL_IO.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_TOOLS_CORE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_TOOLS_AS_INSTANCES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_TIME_WARP.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_VM.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_VIEW_UI.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_VEHICLES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_VEHICLE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_VALIDATION.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_UNIVERSE_MODEL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_WORLD_SOURCE_STACK.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_WORLD_COORDS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_WEATHER_CLIMATE_HOOKS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\SPEC_ZONES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\specs\STREAMING_BUDGETS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\NO_MODAL_LOADING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\NO_GLOBAL_ITERATION_GUIDE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\MODDING_GUIDE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\MILESTONES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\KERNEL_BACKEND_SELECTION.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\PROFILES_AND_BUDGETS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\OFFLINE_AND_LOCAL_MP.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\PROFILING_GUIDE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\README.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\TOOLING_OVERVIEW.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\STYLE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\STREAMING_MIGRATION_GUIDE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\SETUP_GAPS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\RENDER_PREP_MIGRATION_GUIDE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\RELEASE_READINESS_CHECKLIST.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\ui_editor\ide\xcode\README.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\book\dominium_book_old.zip ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\dev\dominium_new_addendum.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\dev\dominium_new_build.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\dev\dominium_new_data.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\ui_editor\FLICKER_NOTES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\ui_editor\CAPABILITY_TEST.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\ui_editor\CLI.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\api\RUNTIME_CLI.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\api\LAUNCHER_CLI.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\api\SETUP_CLI.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\dev\dominium_new_data_base.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\release\SETUP_RELEASE_NOTES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\release\RELEASE_READINESS_CHECKLIST.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\release\RECOVERY_PLAYBOOK.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\release\BUILD_AND_PACKAGE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\dev\dominium_new_engine_audio.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\dev\dominium_new_data_templates.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\dev\dominium_new_data_packs.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\dev\dominium_new_data_dlc.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\dev\dominium_new_engine_ecs.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\dev\dominium_new_engine_core.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\dev\dominium_new_engine_net.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\ui_editor\fixtures\fixture_dock.json ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\ui_editor\fixtures\fixture_abs.tlv ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\ui_editor\fixtures\fixture_abs.json ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\ui_editor\fixtures\fixture_legacy_import_expected.json ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\ui_editor\fixtures\fixture_dock.tlv ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\ui_editor\fixtures\fixture_migrate_v1.tlv ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\ui_editor\fixtures\fixture_tabs_split_scroll.tlv ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\ui_editor\fixtures\fixture_tabs_split_scroll.json ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\dev\dominium_new_engine_physics.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\dev\dominium_new_engine_path.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\dev\dominium_new_engine_platform.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\dev\dominium_new_engine_render.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\dev\dominium_new_external.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\dev\dominium_new_engine_ui.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\dev\dominium_new_engine_spatial.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\dev\dominium_new_engine_sim.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\dev\dominium_new_game_launcher.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\dev\dominium_new_game_client.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\dev\dominium_new_game_server.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\dev\dominium_new_mods.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
-- docs\guides\dev\dominium_new_tools.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architecture/TERMINOLOGY.md ; Actions=none
+# Docs Audit (Prompt 0)  
+ 
+This log records status and actions for each file under docs/. 
+Format: - path ; STATUS=... ; Intent=... ; Relevance=... ; Conflicts=... ; Actions=... 
+
+Defaults: Unless overridden per entry, intent is as stated by the file header,
+relevance is assumed current, conflicts are resolved via
+`docs/architectureitecture/TERMINOLOGY.md`, and actions are none.
+
+Summary (current audit file counts):
+- CURRENT: 561
+- UPDATED: 20
+- ARCHIVED: 22
+- DEPRECATED BUT REFERENCED: 0
+ 
+- docs\audit\DOCS_AUDIT_PROMPT0.md ; STATUS=UPDATED ; Intent=audit log for Prompt 0 ; Relevance=current audit record ; Conflicts=none ; Actions=created
+- docs\CONTRIBUTING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\TERMINOLOGY.md ; STATUS=UPDATED ; Intent=canonical terminology ; Relevance=current canonical ; Conflicts=none ; Actions=created
+- docs\architecture\NON_GOALS.md ; STATUS=UPDATED ; Intent=explicit non-goals ; Relevance=current canonical ; Conflicts=none ; Actions=created
+- docs\architecture\MENTAL_MODEL.md ; STATUS=UPDATED ; Intent=core mental model ; Relevance=current canonical ; Conflicts=none ; Actions=created
+- docs\architecture\INVARIANTS.md ; STATUS=UPDATED ; Intent=architectural invariants summary ; Relevance=current canonical ; Conflicts=none ; Actions=created
+- docs\architecture\COMPATIBILITY_PHILOSOPHY.md ; STATUS=UPDATED ; Intent=compatibility philosophy ; Relevance=current canonical ; Conflicts=none ; Actions=created
+- docs\ci\REGRESSION_SUITES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\ci\KNOWN_BLOCKERS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\ci\HYGIENE_QUEUE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\ci\FUTURE_ENFORCEMENT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\ci\EXECUTION_ENFORCEMENT_CHECKS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\ci\DETERMINISM_TEST_MATRIX.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\ci\CODEHYGIENE_RULES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\ci\CI_ENFORCEMENT_MATRIX.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\ci\BUILD_MATRIX.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\.gitignore ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\FIDELITY_DEGRADATION.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\CIV1_CITIES_INFRA.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\CIV0_POPULATION_GENESIS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\CIV0a_SURVIVAL_LOOP.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\AGENT_GOALS_AND_PLANNING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\AGENT_DOCTRINE_AND_ROLES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\AGENT_AGGREGATION_AND_SCALE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\build\TRANSITION_DO_NOTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\build\TOOLCHAIN_MODEL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\build\SKU_MODEL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\build\OS_FLOOR_POLICY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\build\CI_MATRIX.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\build\BOUNDARY_ENFORCEMENT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\build\ARTIFACT_IDENTITY_AND_METADATA.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_CALENDARS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_BUILD.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_BLUEPRINTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_BIOMES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_BACKEND_CONFORMANCE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_ATMOSPHERE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_ASSETS_INSTRUMENTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_ARTIFACT_STORE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_AI_DETERMINISM.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_AI_DECISION_TRACES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_AGGREGATES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_AGENT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_ACTORS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_ACTIONS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_ABI_TEMPLATES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\DATA_FORMATS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\COREDATA_BUILD.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\app\UI_MODES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\app\TUI_MODE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\app\TOOLS_UI_POLICY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\app\TOOLS_OBSERVABILITY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\app\TIMING_AND_CLOCKS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\app\TESTX_INVENTORY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\app\TESTX_COMPLIANCE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\app\RUNTIME_LOOP.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\app\READONLY_ADAPTER.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\app\README.md ; STATUS=UPDATED ; Intent=app docs index ; Relevance=current ; Conflicts=none ; Actions=updated APR references to archive
+- docs\app\PRODUCT_BOUNDARIES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\app\OBSERVABILITY_PIPELINES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\app\NATIVE_UI_POLICY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\app\IDE_WORKFLOW.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\app\HEADLESS_AND_ZERO_PACK.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\app\GUI_MODE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\app\ENGINE_GAME_DIAGNOSTICS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\app\COMPATIBILITY_ENFORCEMENT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\app\CLI_CONTRACTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\app\CLIENT_UI_LAYER.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\app\CLIENT_RENDERER_UI.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\app\CLIENT_READONLY_INTEGRATION.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\app\CLIENT_IDE_START_POINTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\app\ARTIFACT_IDENTITY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\CIV5_WAR_INTERPLANETARY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\CIV5_WAR_ENGAGEMENTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\CIV4_SCALE_AND_LOGISTICS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\CIV3_KNOWLEDGE_TECH.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\CIV2_GOVERNANCE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\CIV5_WAR_SECURITY_FORCES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\CIV5_WAR_OCCUPATION.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\CONTENT_BASE_EXAMPLE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\CONTRACTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\render\SWAPCHAINS_AND_SURFACES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\render\RENDER_INTERFACE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\render\README.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\render\BACKENDS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\README.md ; STATUS=UPDATED ; Intent=docs entrypoint ; Relevance=current orientation ; Conflicts=none ; Actions=created
+- docs\specs\core\TLV_SCHEMA_GOVERNANCE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\core\PROVIDERS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\core\LOGGING_EVENTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\core\JOB_ENGINE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\core\INSTALLED_STATE_CONTRACT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\core\CORE_LIBRARIES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\core\CAPABILITIES_AND_SOLVER.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\archive\specs\TOOL_PACK.md ; STATUS=ARCHIVED ; Intent=legacy tooling doc ; Relevance=historical ; Conflicts=deprecated pack workflow ; Actions=archived with header
+- docs\archive\ci\PHASE6_SEALED.md ; STATUS=ARCHIVED ; Intent=phase seal note ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
+- docs\archive\ci\PHASE6_READINESS.md ; STATUS=ARCHIVED ; Intent=phase readiness checklist ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
+- docs\archive\ci\PHASE6_AUDIT_REPORT.md ; STATUS=ARCHIVED ; Intent=phase audit report ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
+- docs\archive\ci\PHASE2_5_FIXLIST.md ; STATUS=ARCHIVED ; Intent=phase fixlist ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
+- docs\archive\ci\PHASE2_5_AUDIT_REPORT.md ; STATUS=ARCHIVED ; Intent=phase audit report ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
+- docs\archive\ci\PHASE1_ENFORCEMENT_SUMMARY.md ; STATUS=ARCHIVED ; Intent=phase enforcement summary ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
+- docs\archive\ci\PHASE1_AUDIT_REPORT.md ; STATUS=ARCHIVED ; Intent=phase audit report ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
+- docs\archive\ci\DOCS_VALIDATION_REPORT.md ; STATUS=ARCHIVED ; Intent=docs validation report ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
+- docs\archive\ci\COREDATA_CONSISTENCY_REPORT.md ; STATUS=ARCHIVED ; Intent=coredata consistency report ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
+- docs\archive\platform\APR2_EXTENSION_AUDIT.md ; STATUS=ARCHIVED ; Intent=platform extension audit snapshot ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
+- docs\archive\repox\APRX_INVENTORY.md ; STATUS=ARCHIVED ; Intent=RepoX/TestX inventory snapshot ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
+- docs\archive\repox\APRX_INTEGRATION_HOOKS.md ; STATUS=ARCHIVED ; Intent=RepoX/TestX integration hooks snapshot ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
+- docs\specs\launcher\DIAGNOSTICS_BUNDLES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\launcher\DIAGNOSTICS_AND_SUPPORT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\launcher\DEV_UI.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\launcher\CLI.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\launcher\CAPS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\launcher\BUILD_AND_PACKAGING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\launcher\ARTIFACT_STORE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\launcher\ARCHITECTURE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\INTEREST_SET_IMPLEMENTATION.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\policies\VALIDATION_AND_GOVERNANCE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\policies\RENDER_BACKEND_LIFECYCLE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\policies\PERF_BUDGETS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\policies\PERFORMANCE_ENFORCEMENT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\policies\LONG_TERM_SUPPORT_POLICY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\policies\LANGUAGE_POLICY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\policies\IDE_CONTRIBUTION_RULES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\policies\FEATURE_EPOCH_POLICY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\policies\DOCUMENTATION_STANDARDS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\policies\DETERMINISTIC_RNG.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\policies\DETERMINISTIC_ORDERING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\policies\DETERMINISTIC_MATH.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\policies\DETERMINISM_REGRESSION_RULES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\policies\DETERMINISM_HASH_PARTITIONS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\policies\DETERMINISM_GATES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\policies\DETERMINISM_ENFORCEMENT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\policies\DEPRECATION_POLICY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\policies\COMPAT_TERMS.md ; STATUS=UPDATED ; Intent=legacy term mapping ; Relevance=current ; Conflicts=none ; Actions=expanded mappings and pointer to terminology
+- docs\policies\COMPATIBILITY_PROMISES.md ; STATUS=UPDATED ; Intent=compatibility promises ; Relevance=current ; Conflicts=none ; Actions=aligned with compatibility philosophy
+- docs\policies\COMMIT_CONVENTIONS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\policies\CODE_OF_CONDUCT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\launcher\UI_SYSTEM.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\launcher\TUI.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\launcher\TESTING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\launcher\SPEC_LAUNCH_HANDSHAKE_GAME.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\launcher\SPEC_LAUNCHER_TUI.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\launcher\SPEC_LAUNCHER_PROTOCOL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\launcher\SPEC_LAUNCHER_PROFILES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\launcher\SPEC_LAUNCHER_PRELAUNCH_CONFIG.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\launcher\SPEC_LAUNCHER_PACKS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\launcher\SPEC_LAUNCHER_NET.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\launcher\SPEC_LAUNCHER_GUI.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\launcher\SPEC_LAUNCHER_EXT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\launcher\SPEC_LAUNCHER_CORE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\launcher\SPEC_LAUNCHER_CLI.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\launcher\SPEC_LAUNCHER.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\archive\build\APR5_BUILD_INVENTORY.md ; STATUS=ARCHIVED ; Intent=build inventory snapshot ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
+- docs\specs\launcher\SETUP_HANDOFF.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\launcher\SECURITY_AND_TRUST.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\launcher\RECOVERY_AND_SAFE_MODE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\launcher\PACK_SYSTEM.md ; STATUS=UPDATED ; Intent=launcher pack system ; Relevance=current ; Conflicts=none ; Actions=linked to UPS and corrected references
+- docs\specs\launcher\news.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\launcher\LAUNCHER_SETUP_OVERVIEW.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\launcher\INSTANCE_MODEL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\launcher\INSTALLED_STATE_CONTRACT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\launcher\ECOSYSTEM_INTEGRATION.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\PARITY_LOCK_MATRIX.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\PACKAGING_DEFAULTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\OWNERSHIP_MODEL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\OPERATOR_TOOLS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\OPERATIONS_QUICKSTART.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\MACOS_PKG_WRAPPER.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\LINUX_RPM_WRAPPER.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\LINUX_DEB_WRAPPER.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\LEGACY_STATE_IMPORT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\JOB_ENGINE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\INVARIANTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\IDE_WORKFLOWS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\HANDOFF_SNAPSHOT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\FUTURE_BACKLOG.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\FRONTEND_CONTRACT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\FAILPOINTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\EXTENSION_POLICY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\ERROR_TAXONOMY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\DEPRECATION_PLAN.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\DEFAULTS_AND_FLAGS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\CONFORMANCE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\CLI_REFERENCE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\CLI_JSON_SCHEMAS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\BUILD_RULES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\AUDIT_MODEL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\ARCHIVAL_AND_HANDOFF.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\ADDING_FEATURES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\ADAPTER_MATRIX.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\ADAPTERS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\LIFE_REMAINS_SALVAGE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\LIFE_DEATH_PIPELINE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\LIFE_BIRTH_PIPELINE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\SPLAT_REGISTRY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\SPLAT_LIFECYCLE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\SETUP_WINDOWS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\SETUP_RETRO.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\SETUP_MACOS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\SETUP_LINUX.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\SERVICES_FACADES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\SERVICES_ERRORS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\SECURITY_MODEL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\SCHEMA_FREEZE_V1.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\REPRODUCIBLE_BUILDS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\REPRODUCIBILITY_GUARANTEES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\RECOVERY_PLAYBOOK.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\READ_ONLY_LOCK.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\README.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\PLANNING_RULES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\PARITY_WITH_LAUNCHER.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\STATUS_SR5.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\STATUS_SR4.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\STATUS_SR3.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\STATUS_SR2.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\STATUS_SR11.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\STATUS_SR10.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\STATUS_SR1.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\STATE_EVOLUTION.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\SPLAT_SELECTION_RULES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\STATUS_SR9.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\STATUS_SR8.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\STATUS_SR7.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\STATUS_SR6.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\TLV_INSTALL_MANIFEST.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\TLV_INSTALLED_STATE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\STEAM_PROVIDER.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\TLV_INSTALL_PLAN.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\TLV_INSTALL_REQUEST.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_DOMINIUM_RULES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_DOMINIUM_LAYER.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_DOMAINS_FRAMES_PROP.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_DOCTRINE_AUTONOMY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_DGFX_IR_VERSIONING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_DETERMINISM_GRADES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_DETERMINISM.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_DEBUG_UI.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_CROSS_SHARD_MESSAGES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_COSMO_LANE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_COSMO_ECONOMY_EVENTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_COSMO_CORE_DATA.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_CORE_DATA_VALIDATION.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_CORE_DATA_PIPELINE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_CORE_DATA.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_CORE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_CONTRACTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_CONTENT.md ; STATUS=UPDATED ; Intent=content proto spec ; Relevance=current ; Conflicts=none ; Actions=aligned pack semantics with UPS and zero-pack boot
+- docs\specs\SPEC_CONTAINER_TLV.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_CONSTRUCTIONS_V0.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_COMMUNICATION.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_COMMAND_MODEL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_CLIMATE_WEATHER.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_CAPABILITY_REGISTRY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_CAPABILITIES.md ; STATUS=UPDATED ; Intent=capability split spec ; Relevance=current ; Conflicts=none ; Actions=corrected references
+- docs\specs\setup\TLV_JOB_JOURNAL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_ENV.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_ENERGY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_EFFECT_FIELDS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_EDITOR_GUI.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_ECONOMY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_DUI.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_DOMINO_SYS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_DOMINO_SUBSYSTEMS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_DOMINO_SIM.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_DOMINO_MOD.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_DOMINO_GFX.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_DOMINO_AUDIO_UI_INPUT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_FEATURE_EPOCH.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_FACTIONS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_FACADES_BACKENDS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_EVENT_DRIVEN_STEPPING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_EPISTEMIC_INTERFACE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_EPISTEMIC_GATING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_FIELDS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_FIDELITY_PROJECTION.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_FIDELITY_DEGRADATION.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_FS_CONTRACT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_FIELDS_EVENTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_GAME_CLI.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\WHY_NPCS_DONT_POP.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\WHY_ECONOMIES_DONT_FAKE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\WHAT_THIS_IS_NOT.md ; STATUS=UPDATED ; Intent=project non-goals statement ; Relevance=current ; Conflicts=none ; Actions=added asset-independent note
+- docs\architecture\WHAT_THIS_IS.md ; STATUS=UPDATED ; Intent=project identity statement ; Relevance=current ; Conflicts=none ; Actions=added UPS/zero-asset/truth-perception notes
+- docs\architecture\VISITABILITY_CONSISTENCY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\VISITABILITY_AND_REFINEMENT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\VISITABILITY_AND_REALITY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\UPGRADE_AND_CONVERSION.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\UNKNOWN_UNKNOWNS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\TRAVEL_CAPACITY_AND_COST.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\TRAVEL_AND_MOVEMENT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\TOOLS_AS_CAPABILITIES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\TIME_PERCEPTION_VS_SIMULATION.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\TIME_DILATION_WITHOUT_TIME_WARP.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\TIMELINE_FORKS_AND_HISTORY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\THREAT_MODEL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\SYS_CAPS_AND_EXEC_POLICY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\SPECTATOR_TO_GODMODE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\SPECTATOR_AND_AUDIT_MODES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\SPACE_TIME_EXISTENCE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\SPACE_AND_BOUNDS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\SERVICES_AND_PRODUCTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\SCALE_AND_COMPLEXITY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\REPO_OWNERSHIP_AND_PROJECTIONS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\REPORT_GAME_ARCH_DECISIONS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\REPLAY_AND_TIME_ASYMMETRY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\REGISTRY_PATTERN.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\REFUSAL_AND_EXPLANATION_MODEL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\REFRACTOR_STAGE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\REFINEMENT_CONTRACTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\REALITY_MODEL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\REALITY_LAYER.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\REALITY_FLOW.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\PROJECTION_LIFECYCLE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\PIRACY_CONTAINMENT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\OVERVIEW_ARCHITECTURE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\NO_TELEPORTATION_EXCEPT_BY_CONTRACT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\NO_MAGIC_TELEPORTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\NON_INTERFERENCE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\MOVEMENT_AS_LOGISTICS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\LIFE_AND_POPULATION.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\LEGACY_SUPPORT_STRATEGY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\LAW_ENFORCEMENT_POINTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\INVARIANT_REGISTRY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\INVARIANTS.md ; STATUS=UPDATED ; Intent=detailed invariant list ; Relevance=current ; Conflicts=none ; Actions=added canonical summary reference
+- docs\architecture\IDE_AND_TOOLCHAIN_POLICY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\IDENTITY_ACROSS_TIME.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\HARDWARE_EVOLUTION_STRATEGY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\GOVERNANCE_AND_INSTITUTIONS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\GLOSSARY.md ; STATUS=UPDATED ; Intent=canonical glossary ; Relevance=current ; Conflicts=none ; Actions=aligned terms with architecture/TERMINOLOGY
+- docs\architecture\GENERATED_CODE_POLICY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\FUTURE_PROOFING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\FUTURE_COMPATIBILITY_AND_ARCH.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\EXTENSION_RULES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\EXOTIC_TRAVEL_AND_REALITY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\EXISTENCE_LIFECYCLE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\EXISTENCE_AND_REALITY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\EXECUTION_SUBSTRATE_AUDIT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\EXECUTION_REORDERING_POLICY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\archive\guides\LAUNCHER_AUDIT.md ; STATUS=ARCHIVED ; Intent=launcher audit snapshot ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
+- docs\architecture\EXECUTION_MODEL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\ENFORCEMENT_ESCALATION.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\ECONOMY_AND_LOGISTICS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\DOMAIN_VOLUMES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\DOMAIN_SHARDING_AND_STREAMING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\FIDELITY_PROJECTION_IMPLEMENTATION.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\GOVERNANCE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\TROUBLESHOOTING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\TRANSACTIONS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\TLV_TXN_JOURNAL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\TLV_SETUP_AUDIT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\UI_CONTRACT_MAPPING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\TUI_REFERENCE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\setup\WINDOWS_MSI_WRAPPER.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\DOMAIN_JURISDICTIONS_AND_LAW.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\MODDING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\DISTRIBUTION_PROFILES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\DISTRIBUTION_AND_STOREFRONTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\DIRECTORY_CONTEXT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\DETERMINISTIC_REDUCTION_RULES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\DEMO_AND_TOURIST_MODEL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\DEATH_AND_CONTINUITY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\CONTROL_LAYERS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\COMPONENTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\COLLAPSE_AND_DECAY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\CODE_DATA_BOUNDARY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\CIVILIZATION_MODEL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\CHEATS_ARE_JUST_LAWS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\CHANGE_PROTOCOL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\CANONICAL_SYSTEM_MAP.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\AUTHORITY_MODEL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\AUTHORITY_AND_OMNIPOTENCE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\AUTHORITY_IN_REALITY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\AUTHORITY_AND_ENTITLEMENTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\AUDITABILITY_AND_DISCLOSURE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\ARCH_SPEC_OWNERSHIP.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\ARCH_REPO_LAYOUT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\ARCH_ENFORCEMENT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\ARCH_CHANGE_PROCESS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\ARCH_BUILD_ENFORCEMENT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\ANTI_CHEAT_AS_LAW.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\ANTI_CHEAT_AND_INTEGRITY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\ADOPTION_PROTOCOL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\FORMAT_INSTALL_MANIFEST.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\ARCHITECTURE.md ; STATUS=UPDATED ; Intent=high-level architecture map ; Relevance=current ; Conflicts=none ; Actions=added mental-model reference
+- docs\architecture\ARCH0_CONSTITUTION.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\ARCHITECTURE_LAYERS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\architecture\ARCHIVAL_AND_PERMANENCE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\archive\app\APR4_TESTX_COMPLIANCE.md ; STATUS=ARCHIVED ; Intent=TESTX compliance snapshot ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
+- docs\archive\app\APR4_ENGINE_GAME_INTERFACE_INVENTORY.md ; STATUS=ARCHIVED ; Intent=engine/game interface inventory ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
+- docs\archive\app\APR3_UI_MODE_AUDIT.md ; STATUS=ARCHIVED ; Intent=UI mode audit snapshot ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
+- docs\archive\app\APR3_TESTX_COMPLIANCE.md ; STATUS=ARCHIVED ; Intent=TESTX compliance snapshot ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
+- docs\archive\app\APR2_TESTX_COMPLIANCE.md ; STATUS=ARCHIVED ; Intent=TESTX compliance snapshot ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
+- docs\archive\app\APR1_TESTX_COMPLIANCE.md ; STATUS=ARCHIVED ; Intent=TESTX compliance snapshot ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
+- docs\archive\app\APR1_RUNTIME_AUDIT.md ; STATUS=ARCHIVED ; Intent=runtime audit snapshot ; Relevance=historical ; Conflicts=outdated snapshot ; Actions=archived with header
+- docs\specs\SPEC_INSTANCE_LAYOUT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_INPUT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_INFORMATION_MODEL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_INDEX.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_IDENTITY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_HYDROLOGY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_GRAPH_TOOLKIT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_GAME_PRODUCT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_GAME_CONTENT_API.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_KNOWLEDGE_VIS_COMMS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_KNOWLEDGE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_JOB_AI.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_JOBS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_INTEREST_SETS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_LEDGER.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_LANGUAGE_BASELINES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_LANES_AND_BUBBLES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_LOGICAL_TRAVEL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_LOD.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_MACHINES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_MARKETS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\platform\MULTI_WINDOW.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\platform\LIFECYCLE_AND_SIGNALS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\platform\EXTENSIONS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\platform\EVENT_QUEUE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\platform\README.md ; STATUS=UPDATED ; Intent=platform docs index ; Relevance=current ; Conflicts=none ; Actions=updated APR reference to archive
+- docs\platform\PLATFORM_RUNTIME.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\platform\WINDOW_MODES_DPI_INPUT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_MATTER.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\WORLD_CONTENT_GUIDE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\WORK_IR_EMISSION_GUIDE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\WAR_WORK_IR.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\ui_editor\WORKFLOW_END_TO_END.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\ui_editor\TOOL_EDITOR_BOOTSTRAP_CHECKLIST.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\ui_editor\TEST_MINECRAFT_SETUP.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\ui_editor\TEST_MINECRAFT_LAUNCHER.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\ui_editor\SPEC_UI_DOC_TLV.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\ui_editor\SPEC_CODEGEN_ACTIONS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\ui_editor\SPEC_CAPABILITIES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\ui_editor\SPEC_ACTIONS_AND_EVENTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\ui_editor\REPO_MAP_UI_SYSTEM.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\ui_editor\README.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\ui_editor\PHASE_A_DONE_CHECKLIST.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\ui_editor\OPS_FORMAT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\ui_editor\IMPORT_EXPORT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\ui_editor\IDE_LIVE_EDITING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\UI_HANDOFF.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\UI_EPISTEMIC_BOUNDARY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\TOOL_TEST.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\TOOL_REPLAY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\TOOL_ASSETC.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\INTEREST_SYSTEM_WORK_IR.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_MONEY_STANDARDS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\DEPENDENCIES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\INTEGRITY_AND_DISPUTE_REPLAYS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\IMPLEMENTATION_BACKLOG_UNIVERSE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\IMPLEMENTATION_BACKLOG_NO_MODAL_LOADING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\DATA_VALIDATION_GUIDE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\IMPLEMENTATION_BACKLOG_CANON.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\GOVERNANCE_WORK_IR.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\CORE_DATA_GUIDE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\FUTURE_PHASE_GUIDELINES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\EDITOR_BACKENDS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\ECONOMY_WORK_IR.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\DOMAIN_QUERY_AND_BUDGETS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\BUILDING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_PROFILING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_PRODUCTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_POSE_AND_ANCHORS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_PLAY_FLOW.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_PLAYER_CONTINUITY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_PERF_BUDGETS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_PACKETS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_PACKAGES.md ; STATUS=UPDATED ; Intent=package container spec ; Relevance=current ; Conflicts=none ; Actions=aligned with UPS and added capabilities field
+- docs\specs\SPEC_ORBITS_TIMEWARP.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_ORBITS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_NUMERIC.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_NO_MODAL_LOADING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_NET_HANDSHAKE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_NETWORKS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_NETCODE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_NET.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_RENDER_CAPS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_RENDERING_CANON.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_REFERENCE_FRAMES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_REENTRY_THERMAL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_RECIPES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_QOS_ASSISTANCE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_PROVENANCE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_PROPERTY_RIGHTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_RES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_REPLAY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_RENDER_GRAPH.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_RENDER_FEATURES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_SCHEDULING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_RESEARCH.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_SENSORS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\AGENT_WORK_IR.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_MODELS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_MIGRATIONS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_MEDIA_FRAMEWORK.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_MECHANICS_PROFILES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_TIME_STANDARDS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_TIME_KNOWLEDGE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_TIME_FRAMES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_TIME_CORE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_TIERS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_SYSTEM_LOGISTICS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_SYSTEMS_BODIES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_SURFACE_TOPOLOGY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_SURFACE_STREAMING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_STRUCT.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_STREAMING_BUDGETS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_STANDARD_RESOLUTION.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_STANDARDS_AND_RENDERERS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_SPACE_GRAPH.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_SPACETIME.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_SMOKE_TESTS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_SIM_SCHEDULER.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_SESSIONS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_SIM.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_SHARDING_AUTHORITY.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_SHADER_IR.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_SETUP_CORE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\build_output.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\BUILD_DIST.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_SETUP_CLI.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\BUILD_OVERVIEW.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_UNIVERSE_BUNDLE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_UI_WIDGETS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\RELEASE_NOTES_PROCESS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_UI_PROJECTIONS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_UI_CAPABILITIES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_TRANS_STRUCT_DECOR.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_TRANSPORT_NETWORKS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_TRANS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_TOOL_IO.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_TOOLS_CORE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_TOOLS_AS_INSTANCES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_TIME_WARP.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_VM.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_VIEW_UI.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_VEHICLES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_VEHICLE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_VALIDATION.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_UNIVERSE_MODEL.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_WORLD_SOURCE_STACK.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_WORLD_COORDS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_WEATHER_CLIMATE_HOOKS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\SPEC_ZONES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\specs\STREAMING_BUDGETS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\NO_MODAL_LOADING.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\NO_GLOBAL_ITERATION_GUIDE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\MODDING_GUIDE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\MILESTONES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\KERNEL_BACKEND_SELECTION.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\PROFILES_AND_BUDGETS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\OFFLINE_AND_LOCAL_MP.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\PROFILING_GUIDE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\README.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\TOOLING_OVERVIEW.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\STYLE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\STREAMING_MIGRATION_GUIDE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\SETUP_GAPS.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\RENDER_PREP_MIGRATION_GUIDE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\RELEASE_READINESS_CHECKLIST.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\ui_editor\ide\xcode\README.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\book\dominium_book_old.zip ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\dev\dominium_new_addendum.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\dev\dominium_new_build.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\dev\dominium_new_data.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\ui_editor\FLICKER_NOTES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\ui_editor\CAPABILITY_TEST.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\ui_editor\CLI.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\api\RUNTIME_CLI.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\api\LAUNCHER_CLI.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\api\SETUP_CLI.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\dev\dominium_new_data_base.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\release\SETUP_RELEASE_NOTES.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\release\RELEASE_READINESS_CHECKLIST.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\release\RECOVERY_PLAYBOOK.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\release\BUILD_AND_PACKAGE.md ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\dev\dominium_new_engine_audio.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\dev\dominium_new_data_templates.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\dev\dominium_new_data_packs.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\dev\dominium_new_data_dlc.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\dev\dominium_new_engine_ecs.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\dev\dominium_new_engine_core.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\dev\dominium_new_engine_net.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\ui_editor\fixtures\fixture_dock.json ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\ui_editor\fixtures\fixture_abs.tlv ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\ui_editor\fixtures\fixture_abs.json ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\ui_editor\fixtures\fixture_legacy_import_expected.json ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\ui_editor\fixtures\fixture_dock.tlv ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\ui_editor\fixtures\fixture_migrate_v1.tlv ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\ui_editor\fixtures\fixture_tabs_split_scroll.tlv ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\ui_editor\fixtures\fixture_tabs_split_scroll.json ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\dev\dominium_new_engine_physics.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\dev\dominium_new_engine_path.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\dev\dominium_new_engine_platform.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\dev\dominium_new_engine_render.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\dev\dominium_new_external.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\dev\dominium_new_engine_ui.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\dev\dominium_new_engine_spatial.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\dev\dominium_new_engine_sim.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\dev\dominium_new_game_launcher.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\dev\dominium_new_game_client.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\dev\dominium_new_game_server.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\dev\dominium_new_mods.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
+- docs\guides\dev\dominium_new_tools.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none

@@ -1,0 +1,29 @@
+{
+  "fixture_id": "perf.mmo_style_load",
+  "scenario_path": "scenario_mmo_style_load.scenario",
+  "variant_path": "variant_mmo_style_load.variant",
+  "replay_stub": "replay.stub",
+  "guards": [
+    "guard.cross_shard_msgs_budget",
+    "guard.cross_shard_bytes_budget",
+    "guard.agent_planning_steps_budget"
+  ],
+  "limits": {
+    "cross_shard_msgs_per_tick": 8000,
+    "cross_shard_bytes_per_tick": 1000000
+  },
+  "minimums": {
+    "cross_shard_msgs_per_tick": 6000
+  },
+  "metrics": {
+    "thread_counts": [
+      1,
+      4
+    ],
+    "paths": {
+      "1": "metrics/metrics_thread1.json",
+      "4": "metrics/metrics_thread4.json"
+    }
+  },
+  "memory_plateau_tolerance_kb": 25000
+}

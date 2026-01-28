@@ -1,0 +1,18 @@
+{
+  "tier": "baseline",
+  "metrics": {
+    "macro_sim_tick_us_max": 6500,
+    "macro_macro_sched_us_max": 800,
+    "macro_macro_events_max": 400,
+    "macro_event_queue_depth_max": 1500,
+    "meso_interest_set_size_max": 3000,
+    "local_derived_queue_depth_max": 32,
+    "local_derived_job_us_max": 1500,
+    "local_render_submit_us_max": 3000,
+    "local_stream_bytes_max": 200000,
+    "macro_net_msg_sent_max": 1500,
+    "macro_net_msg_recv_max": 1500,
+    "macro_net_bytes_sent_max": 700000,
+    "macro_net_bytes_recv_max": 700000
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "fixture_id": "perf.galaxy_scale_civ",
+  "metrics": {
+    "platform": "fixture",
+    "active_tier2_domains": 12,
+    "active_tier1_domains": 210,
+    "processes_per_tick": 900,
+    "macro_events_per_tick": 1600,
+    "collapse_expand_ops_per_tick": 20,
+    "agent_planning_steps_per_tick": 2500,
+    "macro_time_steps_per_tick": 1200,
+    "snapshot_ops_per_tick": 2,
+    "serialization_ops_per_tick": 1,
+    "refusal_counts_total": 15,
+    "refusal_counts_budget": 5,
+    "refusal_counts_capability": 4,
+    "refusal_counts_validation": 6,
+    "refusal_counts_unknown": 0,
+    "memory_peak_kb": 1500000,
+    "memory_plateau_kb": 1485000,
+    "cross_shard_msgs_per_tick": 3000,
+    "cross_shard_bytes_per_tick": 600000,
+    "event_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+    "metrics_hash": "2222222222222222222222222222222222222222222222222222222222222222",
+    "replay_hash": "a8f417786f8893d6f7498f806117cf81c9cfc0970c4930454b7fe346664c6af0"
+  },
+  "collapse_expand_invariants_ok": true,
+  "thread_count": 4
+}

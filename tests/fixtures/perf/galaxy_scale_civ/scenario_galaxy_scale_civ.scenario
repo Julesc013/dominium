@@ -1,0 +1,7 @@
+DOMINIUM_SCENARIO_V1
+scenario_id=org.dominium.perf.galaxy_scale_civ
+scenario_version=1.0.0
+world_template=perf.world.galaxy_scale_civ
+world_seed=1001
+policy.authority=policy.authority.perf
+policy.mode=policy.mode.perf.stress

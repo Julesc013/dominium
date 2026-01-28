@@ -1,0 +1,70 @@
+SCHEMA: hud_layout.schema
+schema_id: dominium.schema.hud_layout
+schema_version: 1.0.0
+stability: extension
+
+PURPOSE:
+- Define declarative HUD composition for presentation-only overlays.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- HUD layouts do NOT affect simulation or authority.
+- HUD elements are read-only projections of events, fields, and metrics.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- number: numeric scalar (integer or fixed-point).
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record hud_layout
+  required:
+    - hud_id: id
+    - hud_version: tag
+    - hud_format_version: integer
+    - elements: [hud_element]
+    - extensions: map
+  optional:
+    - description: tag
+    - provenance_ref: provenance_ref
+    - notes: map
+
+record hud_element
+  required:
+    - element_id: id
+    - element_type: tag
+    - source: hud_source
+  optional:
+    - position: hud_position
+    - style: map
+    - visibility: map
+    - extensions: map
+
+record hud_source
+  required:
+    - source_type: tag
+  optional:
+    - source_id: id
+    - query: map
+    - extensions: map
+
+record hud_position
+  required:
+    - anchor: tag
+    - x: number
+    - y: number
+  optional:
+    - width: number
+    - height: number
+    - unit: tag
+    - extensions: map
+
+TYPE DEFINITIONS:
+record provenance_ref
+  required:
+    - provenance_id: id

@@ -70,7 +70,7 @@ def main() -> int:
     args = parser.parse_args()
 
     repo_root = os.path.abspath(args.repo_root)
-    ordering_doc = os.path.join(repo_root, "docs", "arch", "DETERMINISTIC_ORDERING_POLICY.md")
+    ordering_doc = os.path.join(repo_root, "docs", "architecture", "DETERMINISTIC_ORDERING_POLICY.md")
     if not os.path.isfile(ordering_doc):
         print("missing ordering policy doc: {}".format(ordering_doc))
         return 1

@@ -1,0 +1,7 @@
+DOMINIUM_SCENARIO_V1
+scenario_id=org.dominium.perf.local_density_extreme
+scenario_version=1.0.0
+world_template=perf.world.local_density_extreme
+world_seed=1002
+policy.authority=policy.authority.perf
+policy.mode=policy.mode.perf.stress

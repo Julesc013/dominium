@@ -1,0 +1,9 @@
+pack_id = "org.dominium.l10n.zz_test"
+pack_version = "1.0.0"
+pack_format_version = 1
+requires_engine = "0.0.0"
+provides = ["org.dominium.l10n.zz_test"]
+depends = []
+optional = true
+pack_tags = ["pack.class.localization"]
+extensions = {}

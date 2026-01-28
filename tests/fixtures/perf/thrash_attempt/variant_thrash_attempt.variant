@@ -1,0 +1,7 @@
+DOMINIUM_VARIANT_V1
+variant_id=org.dominium.perf.variant.thrash_attempt
+variant_version=1.0.0
+policy.perf.profile=perf.profile.thrash_attempt
+variants_begin
+variant scope=perf system=stress id=perf.v1.thrash_attempt
+variants_end

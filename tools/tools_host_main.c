@@ -17,6 +17,7 @@ Stub tools host entrypoint; replace with tool router once runtime is wired.
 #include "dominium/app/readonly_adapter.h"
 #include "dominium/app/readonly_format.h"
 #include "dominium/app/ui_event_log.h"
+#include "dominium/app/ui_presentation.h"
 #include "scale/scale_cli.h"
 #include "mmo/mmo_cli.h"
 
@@ -49,6 +50,9 @@ static void tools_print_help(void)
     printf("  --ui-scale <pct>            UI scale percent (e.g. 100, 125, 150)\\n");
     printf("  --palette <name>            UI palette (default|high-contrast)\\n");
     printf("  --log-verbosity <level>     Logging verbosity (info|warn|error)\\n");
+    printf("  --accessibility-preset <path> Apply accessibility preset (data-only)\\n");
+    printf("  --locale <id>               Select localization id (e.g. en_US)\\n");
+    printf("  --locale-pack <path>        Add localization pack root (can repeat)\\n");
     printf("  --debug-ui                  Enable debug UI flags\\n");
     printf("  --expect-engine-version <v>  Require engine version match\\n");
     printf("  --expect-game-version <v>    Require game version match\\n");
@@ -204,12 +208,66 @@ static int tools_parse_log_level(const char* text, int* out_value)
     return 0;
 }
 
+typedef struct tools_ui_settings tools_ui_settings;
+
+static void tools_apply_accessibility(tools_ui_settings* settings,
+                                      const dom_app_ui_accessibility_preset* preset)
+{
+    if (!settings || !preset) {
+        return;
+    }
+    if (preset->has_ui_scale) {
+        settings->ui_scale_percent = preset->ui_scale_percent;
+    }
+    if (preset->has_palette) {
+        settings->palette = preset->palette;
+    }
+    if (preset->has_log_level) {
+        settings->log_level = preset->log_level;
+    }
+    if (preset->ui_density[0]) {
+        strncpy(settings->ui_density, preset->ui_density, sizeof(settings->ui_density) - 1u);
+        settings->ui_density[sizeof(settings->ui_density) - 1u] = '\0';
+    }
+    if (preset->verbosity[0]) {
+        strncpy(settings->verbosity, preset->verbosity, sizeof(settings->verbosity) - 1u);
+        settings->verbosity[sizeof(settings->verbosity) - 1u] = '\0';
+    }
+    if (preset->keybind_profile_id[0]) {
+        strncpy(settings->keybind_profile_id, preset->keybind_profile_id,
+                sizeof(settings->keybind_profile_id) - 1u);
+        settings->keybind_profile_id[sizeof(settings->keybind_profile_id) - 1u] = '\0';
+    }
+    settings->reduced_motion = preset->reduced_motion ? 1 : 0;
+    settings->keyboard_only = preset->keyboard_only ? 1 : 0;
+    settings->screen_reader = preset->screen_reader ? 1 : 0;
+    settings->low_cognitive_load = preset->low_cognitive_load ? 1 : 0;
+}
+
+static int tools_return_with_locale(int code,
+                                    int locale_active,
+                                    dom_app_ui_locale_table* locale_table)
+{
+    if (locale_active && locale_table) {
+        dom_app_ui_locale_table_free(locale_table);
+    }
+    return code;
+}
+
 typedef struct tools_ui_settings {
     char renderer[16];
     int ui_scale_percent;
     int palette;
     int log_level;
     int debug_ui;
+    char ui_density[24];
+    char verbosity[24];
+    char keybind_profile_id[64];
+    int reduced_motion;
+    int keyboard_only;
+    int screen_reader;
+    int low_cognitive_load;
+    const dom_app_ui_locale_table* locale;
 } tools_ui_settings;
 
 static const char* tools_palette_name(int palette)
@@ -238,6 +296,17 @@ static void tools_ui_settings_init(tools_ui_settings* settings)
     settings->palette = 0;
     settings->log_level = 0;
     settings->debug_ui = 0;
+    strncpy(settings->ui_density, "standard", sizeof(settings->ui_density) - 1u);
+    settings->ui_density[sizeof(settings->ui_density) - 1u] = '\0';
+    strncpy(settings->verbosity, "normal", sizeof(settings->verbosity) - 1u);
+    settings->verbosity[sizeof(settings->verbosity) - 1u] = '\0';
+    strncpy(settings->keybind_profile_id, "default", sizeof(settings->keybind_profile_id) - 1u);
+    settings->keybind_profile_id[sizeof(settings->keybind_profile_id) - 1u] = '\0';
+    settings->reduced_motion = 0;
+    settings->keyboard_only = 0;
+    settings->screen_reader = 0;
+    settings->low_cognitive_load = 0;
+    settings->locale = NULL;
 }
 
 static void tools_ui_settings_format_lines(const tools_ui_settings* settings,
@@ -255,18 +324,67 @@ static void tools_ui_settings_format_lines(const tools_ui_settings* settings,
         return;
     }
     line0 = lines;
-    snprintf(line0 + (line_stride * count++), line_stride,
-             "renderer=%s", settings->renderer[0] ? settings->renderer : "auto");
-    snprintf(line0 + (line_stride * count++), line_stride,
-             "ui_scale=%d%%", settings->ui_scale_percent);
-    snprintf(line0 + (line_stride * count++), line_stride,
-             "palette=%s", tools_palette_name(settings->palette));
-    snprintf(line0 + (line_stride * count++), line_stride,
-             "input_bindings=default");
-    snprintf(line0 + (line_stride * count++), line_stride,
-             "log_verbosity=%s", tools_log_level_name(settings->log_level));
-    snprintf(line0 + (line_stride * count++), line_stride,
-             "debug_ui=%s", settings->debug_ui ? "enabled" : "disabled");
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "renderer=%s", settings->renderer[0] ? settings->renderer : "auto");
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "ui_scale=%d%%", settings->ui_scale_percent);
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "palette=%s", tools_palette_name(settings->palette));
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "log_verbosity=%s", tools_log_level_name(settings->log_level));
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "ui_density=%s", settings->ui_density[0] ? settings->ui_density : "standard");
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "verbosity=%s", settings->verbosity[0] ? settings->verbosity : "normal");
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "keybind_profile_id=%s",
+                 settings->keybind_profile_id[0] ? settings->keybind_profile_id : "default");
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "reduced_motion=%s", settings->reduced_motion ? "enabled" : "disabled");
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "screen_reader=%s", settings->screen_reader ? "enabled" : "disabled");
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "keyboard_only=%s", settings->keyboard_only ? "enabled" : "disabled");
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "low_cognitive_load=%s", settings->low_cognitive_load ? "enabled" : "disabled");
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "debug_ui=%s", settings->debug_ui ? "enabled" : "disabled");
+        count += 1;
+    }
     if (out_count) {
         *out_count = count;
     }
@@ -274,6 +392,7 @@ static void tools_ui_settings_format_lines(const tools_ui_settings* settings,
 
 #define TOOLS_UI_MAIN_MENU_COUNT 6
 #define TOOLS_UI_TOOLS_MENU_COUNT 6
+#define TOOLS_UI_SETTINGS_LINES 12
 #define TOOLS_UI_STATUS_MAX 160
 #define TOOLS_UI_LABEL_MAX 96
 #define TOOLS_UI_RENDERER_MAX 8
@@ -352,23 +471,56 @@ typedef struct tools_ui_state {
     int tool_line_count;
 } tools_ui_state;
 
-static const char* g_tools_main_menu_items[TOOLS_UI_MAIN_MENU_COUNT] = {
-    "New World",
-    "Load World",
-    "Inspect Replay",
-    "Tools",
-    "Settings",
-    "Exit"
+typedef struct tools_ui_menu_item {
+    const char* id;
+    const char* fallback;
+} tools_ui_menu_item;
+
+static const tools_ui_menu_item g_tools_main_menu_items[TOOLS_UI_MAIN_MENU_COUNT] = {
+    { "ui.tools.menu.new_world", "New World" },
+    { "ui.tools.menu.load_world", "Load World" },
+    { "ui.tools.menu.inspect_replay", "Inspect Replay" },
+    { "ui.tools.menu.tools", "Tools" },
+    { "ui.tools.menu.settings", "Settings" },
+    { "ui.tools.menu.exit", "Exit" }
 };
 
-static const char* g_tools_menu_items[TOOLS_UI_TOOLS_MENU_COUNT] = {
-    "World Inspector",
-    "Snapshot Viewer",
-    "Replay Viewer",
-    "Template Diff / Validate",
-    "Pack / Capability Inspector",
-    "Back"
+static const tools_ui_menu_item g_tools_menu_items[TOOLS_UI_TOOLS_MENU_COUNT] = {
+    { "ui.tools.tools_menu.world_inspector", "World Inspector" },
+    { "ui.tools.tools_menu.snapshot_viewer", "Snapshot Viewer" },
+    { "ui.tools.tools_menu.replay_viewer", "Replay Viewer" },
+    { "ui.tools.tools_menu.template_tools", "Template Diff / Validate" },
+    { "ui.tools.tools_menu.pack_inspector", "Pack / Capability Inspector" },
+    { "ui.tools.tools_menu.back", "Back" }
 };
+
+static const char* tools_ui_text(const tools_ui_state* state,
+                                 const char* id,
+                                 const char* fallback)
+{
+    const dom_app_ui_locale_table* locale = state ? state->settings.locale : NULL;
+    return dom_app_ui_locale_text(locale, id, fallback);
+}
+
+static const char* tools_ui_main_menu_text(const tools_ui_state* state, int index)
+{
+    if (!state || index < 0 || index >= TOOLS_UI_MAIN_MENU_COUNT) {
+        return "";
+    }
+    return tools_ui_text(state,
+                         g_tools_main_menu_items[index].id,
+                         g_tools_main_menu_items[index].fallback);
+}
+
+static const char* tools_ui_tools_menu_text(const tools_ui_state* state, int index)
+{
+    if (!state || index < 0 || index >= TOOLS_UI_TOOLS_MENU_COUNT) {
+        return "";
+    }
+    return tools_ui_text(state,
+                         g_tools_menu_items[index].id,
+                         g_tools_menu_items[index].fallback);
+}
 
 typedef enum tools_tui_action {
     TOOLS_TUI_NONE = 0,
@@ -1262,7 +1414,8 @@ static void tools_gui_draw_text(d_gfx_cmd_buffer* buf, int x, int y,
 }
 
 static void tools_gui_draw_menu(d_gfx_cmd_buffer* buf,
-                                const char* const* items,
+                                const tools_ui_state* state,
+                                const tools_ui_menu_item* items,
                                 int count,
                                 int selected,
                                 int x,
@@ -1286,7 +1439,9 @@ static void tools_gui_draw_menu(d_gfx_cmd_buffer* buf,
             rect.color = highlight;
             d_gfx_cmd_draw_rect(buf, &rect);
         }
-        tools_gui_draw_text(buf, x, line_y, items[i], text);
+        tools_gui_draw_text(buf, x, line_y,
+                            tools_ui_text(state, items[i].id, items[i].fallback),
+                            text);
     }
 }
 
@@ -1315,7 +1470,9 @@ static void tools_gui_render(const tools_ui_state* state,
     if (!state) {
         return;
     }
-    tools_gui_draw_text(buf, 20, y, "Dominium Tools", text);
+    tools_gui_draw_text(buf, 20, y,
+                        tools_ui_text(state, "ui.tools.title", "Dominium Tools"),
+                        text);
     y += line_h;
     if (state->screen == TOOLS_UI_LOADING) {
         char line[TOOLS_UI_STATUS_MAX];
@@ -1345,12 +1502,16 @@ static void tools_gui_render(const tools_ui_state* state,
         tools_gui_draw_text(buf, 20, y, state->pack_status, text); y += line_h;
         snprintf(line, sizeof(line), "seed=%s", state->seed_status);
         tools_gui_draw_text(buf, 20, y, line, text); y += line_h;
-        tools_gui_draw_text(buf, 20, y, "Loading complete. Press Enter to continue.", text);
+        tools_gui_draw_text(buf, 20, y,
+                            tools_ui_text(state,
+                                          "ui.tools.loading.ready",
+                                          "Loading complete. Press Enter to continue."),
+                            text);
         return;
     }
     if (state->screen == TOOLS_UI_MAIN_MENU) {
         y += line_h;
-        tools_gui_draw_menu(buf, g_tools_main_menu_items, TOOLS_UI_MAIN_MENU_COUNT,
+        tools_gui_draw_menu(buf, state, g_tools_main_menu_items, TOOLS_UI_MAIN_MENU_COUNT,
                             state->main_index, 20, y, line_h, text, highlight);
         y += (TOOLS_UI_MAIN_MENU_COUNT + 1) * line_h;
         if (state->action_status[0]) {
@@ -1360,7 +1521,7 @@ static void tools_gui_render(const tools_ui_state* state,
     }
     if (state->screen == TOOLS_UI_TOOLS_MENU) {
         y += line_h;
-        tools_gui_draw_menu(buf, g_tools_menu_items, TOOLS_UI_TOOLS_MENU_COUNT,
+        tools_gui_draw_menu(buf, state, g_tools_menu_items, TOOLS_UI_TOOLS_MENU_COUNT,
                             state->tools_index, 20, y, line_h, text, highlight);
         y += (TOOLS_UI_TOOLS_MENU_COUNT + 1) * line_h;
         if (state->action_status[0]) {
@@ -1369,19 +1530,23 @@ static void tools_gui_render(const tools_ui_state* state,
         return;
     }
     if (state->screen == TOOLS_UI_SETTINGS) {
-        char lines[TOOLS_UI_MAIN_MENU_COUNT][TOOLS_UI_LABEL_MAX];
+        char lines[TOOLS_UI_SETTINGS_LINES][TOOLS_UI_LABEL_MAX];
         int count = 0;
         int i;
         y += line_h;
         tools_ui_settings_format_lines(&state->settings, (char*)lines,
-                                       TOOLS_UI_MAIN_MENU_COUNT,
+                                       TOOLS_UI_SETTINGS_LINES,
                                        TOOLS_UI_LABEL_MAX, &count);
         for (i = 0; i < count; ++i) {
             tools_gui_draw_text(buf, 20, y, lines[i], text);
             y += line_h;
         }
         y += line_h;
-        tools_gui_draw_text(buf, 20, y, "Keys: R renderer, +/- scale, P palette, L log, D debug, B back", text);
+        tools_gui_draw_text(buf, 20, y,
+                            tools_ui_text(state,
+                                          "ui.tools.settings.keys",
+                                          "Keys: R renderer, +/- scale, P palette, L log, D debug, B back"),
+                            text);
         y += line_h;
         if (state->action_status[0]) {
             tools_gui_draw_text(buf, 20, y, state->action_status, text);
@@ -1396,7 +1561,11 @@ static void tools_gui_render(const tools_ui_state* state,
             y += line_h;
         }
         y += line_h;
-        tools_gui_draw_text(buf, 20, y, "Keys: B back, Q exit", text);
+        tools_gui_draw_text(buf, 20, y,
+                            tools_ui_text(state,
+                                          "ui.tools.tool_view.keys",
+                                          "Keys: B back, Q exit"),
+                            text);
         if (state->action_status[0]) {
             y += line_h;
             tools_gui_draw_text(buf, 20, y, state->action_status, text);
@@ -1549,11 +1718,19 @@ static int tools_run_tui(const dom_app_ui_run_config* run_cfg,
             goto cleanup;
         }
         root = d_tui_panel(tui, D_TUI_LAYOUT_VERTICAL);
-        d_tui_widget_add(root, d_tui_label(tui, "Dominium Tools TUI"));
+        d_tui_widget_add(root,
+                         d_tui_label(tui,
+                                     tools_ui_text(&ui,
+                                                   "ui.tools.title.tui",
+                                                   "Dominium Tools TUI")));
         if (ui.screen == TOOLS_UI_LOADING) {
             char line[TOOLS_UI_STATUS_MAX];
             const dom_build_info_v1* build = dom_build_info_v1_get();
-            d_tui_widget_add(root, d_tui_label(tui, "Loading..."));
+            d_tui_widget_add(root,
+                             d_tui_label(tui,
+                                         tools_ui_text(&ui,
+                                                       "ui.tools.loading.title",
+                                                       "Loading...")));
             snprintf(line, sizeof(line), "engine=%s", DOMINO_VERSION_STRING);
             d_tui_widget_add(root, d_tui_label(tui, line));
             snprintf(line, sizeof(line), "game=%s", DOMINIUM_GAME_VERSION);
@@ -1579,14 +1756,18 @@ static int tools_run_tui(const dom_app_ui_run_config* run_cfg,
             d_tui_widget_add(root, d_tui_label(tui, ui.pack_status));
             snprintf(line, sizeof(line), "seed=%s", ui.seed_status);
             d_tui_widget_add(root, d_tui_label(tui, line));
-            d_tui_widget_add(root, d_tui_label(tui, "Press Enter to continue"));
+            d_tui_widget_add(root,
+                             d_tui_label(tui,
+                                         tools_ui_text(&ui,
+                                                       "ui.tools.loading.continue",
+                                                       "Press Enter to continue")));
         } else if (ui.screen == TOOLS_UI_MAIN_MENU) {
             int i;
             char line[TOOLS_UI_LABEL_MAX];
             for (i = 0; i < TOOLS_UI_MAIN_MENU_COUNT; ++i) {
                 snprintf(line, sizeof(line), "%c %s",
                          (i == ui.main_index) ? '>' : ' ',
-                         g_tools_main_menu_items[i]);
+                         tools_ui_main_menu_text(&ui, i));
                 d_tui_widget_add(root, d_tui_label(tui, line));
             }
             if (ui.action_status[0]) {
@@ -1598,23 +1779,27 @@ static int tools_run_tui(const dom_app_ui_run_config* run_cfg,
             for (i = 0; i < TOOLS_UI_TOOLS_MENU_COUNT; ++i) {
                 snprintf(line, sizeof(line), "%c %s",
                          (i == ui.tools_index) ? '>' : ' ',
-                         g_tools_menu_items[i]);
+                         tools_ui_tools_menu_text(&ui, i));
                 d_tui_widget_add(root, d_tui_label(tui, line));
             }
             if (ui.action_status[0]) {
                 d_tui_widget_add(root, d_tui_label(tui, ui.action_status));
             }
         } else if (ui.screen == TOOLS_UI_SETTINGS) {
-            char lines[TOOLS_UI_MAIN_MENU_COUNT][TOOLS_UI_LABEL_MAX];
+            char lines[TOOLS_UI_SETTINGS_LINES][TOOLS_UI_LABEL_MAX];
             int count = 0;
             int i;
             tools_ui_settings_format_lines(&ui.settings, (char*)lines,
-                                           TOOLS_UI_MAIN_MENU_COUNT,
+                                           TOOLS_UI_SETTINGS_LINES,
                                            TOOLS_UI_LABEL_MAX, &count);
             for (i = 0; i < count; ++i) {
                 d_tui_widget_add(root, d_tui_label(tui, lines[i]));
             }
-            d_tui_widget_add(root, d_tui_label(tui, "R renderer, +/- scale, P palette, L log, D debug, B back"));
+            d_tui_widget_add(root,
+                             d_tui_label(tui,
+                                         tools_ui_text(&ui,
+                                                       "ui.tools.settings.keys",
+                                                       "R renderer, +/- scale, P palette, L log, D debug, B back")));
             if (ui.action_status[0]) {
                 d_tui_widget_add(root, d_tui_label(tui, ui.action_status));
             }
@@ -1623,7 +1808,11 @@ static int tools_run_tui(const dom_app_ui_run_config* run_cfg,
             for (i = 0; i < ui.tool_line_count; ++i) {
                 d_tui_widget_add(root, d_tui_label(tui, ui.tool_lines[i]));
             }
-            d_tui_widget_add(root, d_tui_label(tui, "B back, Q exit"));
+            d_tui_widget_add(root,
+                             d_tui_label(tui,
+                                         tools_ui_text(&ui,
+                                                       "ui.tools.tool_view.keys",
+                                                       "B back, Q exit")));
             if (ui.action_status[0]) {
                 d_tui_widget_add(root, d_tui_label(tui, ui.action_status));
             }
@@ -2270,11 +2459,11 @@ static int tools_ui_execute_command(const char* cmd,
         return D_APP_EXIT_OK;
     }
     if (strcmp(cmd, "settings") == 0) {
-        char lines[TOOLS_UI_MAIN_MENU_COUNT][TOOLS_UI_LABEL_MAX];
+        char lines[TOOLS_UI_SETTINGS_LINES][TOOLS_UI_LABEL_MAX];
         int count = 0;
         int i;
         tools_ui_settings_format_lines(settings, (char*)lines,
-                                       TOOLS_UI_MAIN_MENU_COUNT,
+                                       TOOLS_UI_SETTINGS_LINES,
                                        TOOLS_UI_LABEL_MAX, &count);
         dom_app_ui_event_log_emit(log, "tools.settings", "result=ok");
         if (status && status_cap > 0u) {
@@ -2385,6 +2574,10 @@ int tools_main(int argc, char** argv)
     int want_deterministic = 0;
     int want_interactive = 0;
     int timing_mode_set = 0;
+    const char* accessibility_preset_path = 0;
+    const char* locale_id = 0;
+    const char* locale_packs[16];
+    int locale_pack_count = 0;
     d_app_timing_mode timing_mode = D_APP_TIMING_DETERMINISTIC;
     uint32_t frame_cap_ms = 16u;
     dom_app_output_format output_format = DOM_APP_FORMAT_TEXT;
@@ -2396,6 +2589,8 @@ int tools_main(int argc, char** argv)
     tools_ui_settings ui_settings;
     dom_app_ui_event_log ui_log;
     int ui_log_open = 0;
+    dom_app_ui_locale_table locale_table;
+    int locale_active = 0;
     const char* cmd = 0;
     int cmd_index = -1;
     int i;
@@ -2404,6 +2599,8 @@ int tools_main(int argc, char** argv)
     dom_app_ui_event_log_init(&ui_log);
     tools_ui_settings_init(&ui_settings);
     dom_app_compat_expect_init(&compat_expect);
+    dom_app_ui_locale_table_init(&locale_table);
+    locale_active = 0;
 
     for (i = 1; i < argc; ++i) {
         int ui_consumed = 0;
@@ -2553,6 +2750,41 @@ int tools_main(int argc, char** argv)
                 return D_APP_EXIT_USAGE;
             }
             ui_settings.log_level = value;
+            i += 1;
+            continue;
+        }
+        if (strncmp(argv[i], "--accessibility-preset=", 24) == 0) {
+            accessibility_preset_path = argv[i] + 24;
+            continue;
+        }
+        if (strcmp(argv[i], "--accessibility-preset") == 0 && i + 1 < argc) {
+            accessibility_preset_path = argv[i + 1];
+            i += 1;
+            continue;
+        }
+        if (strncmp(argv[i], "--locale=", 9) == 0) {
+            locale_id = argv[i] + 9;
+            continue;
+        }
+        if (strcmp(argv[i], "--locale") == 0 && i + 1 < argc) {
+            locale_id = argv[i + 1];
+            i += 1;
+            continue;
+        }
+        if (strncmp(argv[i], "--locale-pack=", 14) == 0) {
+            if (locale_pack_count >= (int)(sizeof(locale_packs) / sizeof(locale_packs[0]))) {
+                fprintf(stderr, "tools: too many --locale-pack entries\n");
+                return D_APP_EXIT_USAGE;
+            }
+            locale_packs[locale_pack_count++] = argv[i] + 14;
+            continue;
+        }
+        if (strcmp(argv[i], "--locale-pack") == 0 && i + 1 < argc) {
+            if (locale_pack_count >= (int)(sizeof(locale_packs) / sizeof(locale_packs[0]))) {
+                fprintf(stderr, "tools: too many --locale-pack entries\n");
+                return D_APP_EXIT_USAGE;
+            }
+            locale_packs[locale_pack_count++] = argv[i + 1];
             i += 1;
             continue;
         }
@@ -2719,25 +2951,58 @@ int tools_main(int argc, char** argv)
         tools_print_version(DOMINIUM_TOOLS_VERSION);
         return D_APP_EXIT_OK;
     }
+
+    if (accessibility_preset_path) {
+        dom_app_ui_accessibility_preset preset;
+        char err[128];
+        dom_app_ui_accessibility_preset_init(&preset);
+        if (!dom_app_ui_accessibility_load_file(&preset, accessibility_preset_path,
+                                                err, sizeof(err))) {
+            fprintf(stderr, "tools: %s\n", err[0] ? err : "invalid accessibility preset");
+            return D_APP_EXIT_USAGE;
+        }
+        tools_apply_accessibility(&ui_settings, &preset);
+    }
+    if (locale_pack_count > 0) {
+        int p;
+        char err[128];
+        if (!locale_id || !locale_id[0]) {
+            fprintf(stderr, "tools: --locale is required with --locale-pack\n");
+            return D_APP_EXIT_USAGE;
+        }
+        for (p = 0; p < locale_pack_count; ++p) {
+            if (!dom_app_ui_locale_table_load_pack(&locale_table,
+                                                   locale_packs[p],
+                                                   locale_id,
+                                                   err,
+                                                   sizeof(err))) {
+                fprintf(stderr, "tools: %s\n", err[0] ? err : "locale load failed");
+                return D_APP_EXIT_USAGE;
+            }
+        }
+        ui_settings.locale = &locale_table;
+        locale_active = 1;
+    }
+
     ui_mode = dom_app_select_ui_mode(&ui_req, DOM_APP_UI_NONE);
     if (want_deterministic && want_interactive) {
         fprintf(stderr, "tools: --deterministic and --interactive are mutually exclusive\n");
-        return D_APP_EXIT_USAGE;
+        return tools_return_with_locale(D_APP_EXIT_USAGE, locale_active, &locale_table);
     }
     if ((want_smoke || want_selftest) && want_interactive) {
         fprintf(stderr, "tools: --smoke requires deterministic mode\n");
-        return D_APP_EXIT_USAGE;
+        return tools_return_with_locale(D_APP_EXIT_USAGE, locale_active, &locale_table);
     }
     if (output_format_set &&
         (want_build_info || want_status || want_smoke || want_selftest)) {
         fprintf(stderr, "tools: --format only applies to inspect/validate/world-inspector/pack-inspector\n");
-        return D_APP_EXIT_USAGE;
+        return tools_return_with_locale(D_APP_EXIT_USAGE, locale_active, &locale_table);
     }
     if ((ui_mode == DOM_APP_UI_TUI || ui_mode == DOM_APP_UI_GUI) &&
         (want_build_info || want_status || want_smoke || want_selftest || cmd)) {
         fprintf(stderr, "tools: --ui=%s cannot combine with CLI commands\n",
                 dom_app_ui_mode_name(ui_mode));
-        return D_APP_EXIT_USAGE;
+        return tools_return_with_locale(D_APP_EXIT_USAGE, locale_active, &locale_table);
     }
     if (want_deterministic) {
         timing_mode = D_APP_TIMING_DETERMINISTIC;
@@ -2761,7 +3026,7 @@ int tools_main(int argc, char** argv)
         tools_print_build_info("tools", DOMINIUM_TOOLS_VERSION);
     }
     if (want_build_info && !want_status && !want_smoke && !want_selftest && !cmd) {
-        return D_APP_EXIT_OK;
+        return tools_return_with_locale(D_APP_EXIT_OK, locale_active, &locale_table);
     }
     if (want_status) {
         if (want_smoke || want_selftest) {
@@ -2770,17 +3035,28 @@ int tools_main(int argc, char** argv)
             printf("tools_status=ok\\n");
         }
         if (!cmd) {
-            return D_APP_EXIT_OK;
+            return tools_return_with_locale(D_APP_EXIT_OK, locale_active, &locale_table);
         }
     }
     if (ui_mode == DOM_APP_UI_TUI) {
-        return tools_run_tui(&ui_run, &ui_settings, timing_mode, frame_cap_ms, &compat_expect);
+        int res = tools_run_tui(&ui_run, &ui_settings, timing_mode, frame_cap_ms, &compat_expect);
+        if (locale_active) {
+            dom_app_ui_locale_table_free(&locale_table);
+        }
+        return res;
     }
     if (ui_mode == DOM_APP_UI_GUI) {
-        return tools_run_gui(&ui_run, &ui_settings, timing_mode, frame_cap_ms, &compat_expect);
+        int res = tools_run_gui(&ui_run, &ui_settings, timing_mode, frame_cap_ms, &compat_expect);
+        if (locale_active) {
+            dom_app_ui_locale_table_free(&locale_table);
+        }
+        return res;
     }
     if (!cmd) {
         tools_print_help();
+        if (locale_active) {
+            dom_app_ui_locale_table_free(&locale_table);
+        }
         return D_APP_EXIT_USAGE;
     }
 
@@ -2790,38 +3066,45 @@ int tools_main(int argc, char** argv)
             strcmp(cmd, "world-inspector") != 0 &&
             strcmp(cmd, "pack-inspector") != 0) {
             fprintf(stderr, "tools: --format only applies to inspect/validate/world-inspector/pack-inspector\n");
-            return D_APP_EXIT_USAGE;
+            return tools_return_with_locale(D_APP_EXIT_USAGE, locale_active, &locale_table);
         }
     }
 
     if (strcmp(cmd, "inspect") == 0) {
-        return tools_run_inspect(output_format, &compat_expect);
+        int res = tools_run_inspect(output_format, &compat_expect);
+        return tools_return_with_locale(res, locale_active, &locale_table);
     }
     if (strcmp(cmd, "validate") == 0) {
-        return tools_run_validate(output_format, &compat_expect);
+        int res = tools_run_validate(output_format, &compat_expect);
+        return tools_return_with_locale(res, locale_active, &locale_table);
     }
     if (strcmp(cmd, "replay") == 0) {
         const char* path = tools_find_path_arg(argc, argv, cmd_index);
-        return tools_run_replay(path, 1);
+        int res = tools_run_replay(path, 1);
+        return tools_return_with_locale(res, locale_active, &locale_table);
     }
     if (strcmp(cmd, "snapshot") == 0 || strcmp(cmd, "snapshot-viewer") == 0) {
         const char* path = tools_find_path_arg(argc, argv, cmd_index);
-        return tools_run_snapshot(path, 1);
+        int res = tools_run_snapshot(path, 1);
+        return tools_return_with_locale(res, locale_active, &locale_table);
     }
     if (strcmp(cmd, "worlddef") == 0) {
-        return tools_run_worlddef_cli(argc - cmd_index - 1, argv + cmd_index + 1);
+        int res = tools_run_worlddef_cli(argc - cmd_index - 1, argv + cmd_index + 1);
+        return tools_return_with_locale(res, locale_active, &locale_table);
     }
     if (strcmp(cmd, "scale") == 0) {
-        return tools_run_scale_cli(argc - cmd_index - 1, argv + cmd_index + 1);
+        int res = tools_run_scale_cli(argc - cmd_index - 1, argv + cmd_index + 1);
+        return tools_return_with_locale(res, locale_active, &locale_table);
     }
     if (strcmp(cmd, "mmo") == 0) {
-        return tools_run_mmo_cli(argc - cmd_index - 1, argv + cmd_index + 1);
+        int res = tools_run_mmo_cli(argc - cmd_index - 1, argv + cmd_index + 1);
+        return tools_return_with_locale(res, locale_active, &locale_table);
     }
 
     if (ui_run.log_set && !ui_log_open) {
         if (!dom_app_ui_event_log_open(&ui_log, ui_run.log_path)) {
             fprintf(stderr, "tools: failed to open ui log\n");
-            return D_APP_EXIT_FAILURE;
+            return tools_return_with_locale(D_APP_EXIT_FAILURE, locale_active, &locale_table);
         }
         ui_log_open = 1;
     }
@@ -2832,6 +3115,9 @@ int tools_main(int argc, char** argv)
                                            status, sizeof(status), 1);
         if (ui_log_open) {
             dom_app_ui_event_log_close(&ui_log);
+        }
+        if (locale_active) {
+            dom_app_ui_locale_table_free(&locale_table);
         }
         if (res != D_APP_EXIT_USAGE) {
             return res;

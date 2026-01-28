@@ -12,7 +12,7 @@ def load_json(path):
 
 
 def load_units_table(repo_root):
-    path = os.path.join(repo_root, "docs", "arch", "UNIT_SYSTEM_POLICY.md")
+    path = os.path.join(repo_root, "docs", "architecture", "UNIT_SYSTEM_POLICY.md")
     if not os.path.isfile(path):
         return {}
     with open(path, "r", encoding="utf-8", errors="replace") as handle:

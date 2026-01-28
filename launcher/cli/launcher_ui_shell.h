@@ -10,6 +10,7 @@ Launcher UI shell helpers (CLI/TUI/GUI parity).
 #include "domino/app/runtime.h"
 #include "dominium/app/app_runtime.h"
 #include "dominium/app/ui_event_log.h"
+#include "dominium/app/ui_presentation.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -21,6 +22,14 @@ typedef struct launcher_ui_settings {
     int palette;
     int log_level;
     int debug_ui;
+    char ui_density[24];
+    char verbosity[24];
+    char keybind_profile_id[64];
+    int reduced_motion;
+    int keyboard_only;
+    int screen_reader;
+    int low_cognitive_load;
+    const dom_app_ui_locale_table* locale;
 } launcher_ui_settings;
 
 void launcher_ui_settings_init(launcher_ui_settings* settings);

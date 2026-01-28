@@ -1,127 +1,127 @@
-schema_id: dominium.schema.server_protocol
-schema_version: 1.0.0
-stability: core
-
-PURPOSE:
-- Define deterministic authoritative networking surfaces for MMO-1.
-- Encode intents, server events, join bundles, and resync bundles.
-
-STABILITY GUARANTEES:
-- Unknown fields MUST be preserved.
-- Ordering keys are explicit and deterministic.
-- Refusal codes follow docs/arch/REFUSAL_SEMANTICS.md.
-
-NON-SEMANTICS:
-- Protocol records do not grant authority to clients.
-- Messages are admission inputs, not direct mutations.
-
-CONVENTIONS:
-- id: stable namespaced string or packed integer id.
-- integer: non-negative whole number.
-- map: open key/value map; unknown keys preserved.
-
-REQUIRED SHAPE:
-record server_protocol
-  required:
-    - intents: [client_intent]
-    - events: [server_event]
-  optional:
-    - joins: [join_bundle]
-    - resyncs: [resync_bundle]
-    - budgets: [budget_summary]
-    - extensions: map
-
-record client_intent
-  required:
-    - intent_id: id
-    - client_id: id
-    - target_shard_id: id
-    - intent_kind: integer
-    - intent_tick: integer
-    - client_tick_ref: integer
-  optional:
-    - domain_id: id
-    - capsule_id: id
-    - idempotency_key: id
-    - payload: map
-    - payload_bytes: integer
-    - extensions: map
-
-record server_event
-  required:
-    - event_id: id
-    - tick: integer
-    - shard_id: id
-    - event_kind: integer
-  optional:
-    - client_id: id
-    - domain_id: id
-    - capsule_id: id
-    - causal_id: id
-    - intent_kind: integer
-    - refusal_code: integer
-    - defer_code: integer
-    - budget_kind: integer
-    - budget_limit: integer
-    - budget_used: integer
-    - budget_cost: integer
-    - detail_code: integer
-    - payload: map
-    - extensions: map
-
-record snapshot_fragment
-  required:
-    - shard_id: id
-    - domain_id: id
-    - domain_kind: integer
-    - tick: integer
-    - tier: integer
-    - domain_hash: integer
-  optional:
-    - capsule_id: id
-    - extensions: map
-
-record join_bundle
-  required:
-    - client_id: id
-    - assigned_shard_id: id
-    - tick: integer
-    - world_hash: integer
-    - capability_hash: integer
-    - snapshot: snapshot_fragment
-    - inspect_only: integer
-    - event_tail_index: integer
-    - message_tail_index: integer
-  optional:
-    - extensions: map
-
-record resync_bundle
-  required:
-    - client_id: id
-    - shard_id: id
-    - tick: integer
-    - world_hash: integer
-    - snapshot: snapshot_fragment
-    - event_tail_index: integer
-    - message_tail_index: integer
-  optional:
-    - refusal_code: integer
-    - extensions: map
-
-record budget_summary
-  required:
-    - tick: integer
-  optional:
-    - active_domains: map
-    - refinement: map
-    - collapse: map
-    - macro_events: map
-    - planning: map
-    - snapshot: map
-    - per_client: map
-    - extensions: map
-
-ORDERING CONTRACT:
-- Intents and events MUST be ordered deterministically by:
-  (intent_tick, shard_id, domain_id, client_id, intent_id) and
-  (tick, shard_id, event_kind, domain_id, event_id).
+schema_id: dominium.schema.server_protocol
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic authoritative networking surfaces for MMO-1.
+- Encode intents, server events, join bundles, and resync bundles.
+
+STABILITY GUARANTEES:
+- Unknown fields MUST be preserved.
+- Ordering keys are explicit and deterministic.
+- Refusal codes follow docs/architecture/REFUSAL_SEMANTICS.md.
+
+NON-SEMANTICS:
+- Protocol records do not grant authority to clients.
+- Messages are admission inputs, not direct mutations.
+
+CONVENTIONS:
+- id: stable namespaced string or packed integer id.
+- integer: non-negative whole number.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record server_protocol
+  required:
+    - intents: [client_intent]
+    - events: [server_event]
+  optional:
+    - joins: [join_bundle]
+    - resyncs: [resync_bundle]
+    - budgets: [budget_summary]
+    - extensions: map
+
+record client_intent
+  required:
+    - intent_id: id
+    - client_id: id
+    - target_shard_id: id
+    - intent_kind: integer
+    - intent_tick: integer
+    - client_tick_ref: integer
+  optional:
+    - domain_id: id
+    - capsule_id: id
+    - idempotency_key: id
+    - payload: map
+    - payload_bytes: integer
+    - extensions: map
+
+record server_event
+  required:
+    - event_id: id
+    - tick: integer
+    - shard_id: id
+    - event_kind: integer
+  optional:
+    - client_id: id
+    - domain_id: id
+    - capsule_id: id
+    - causal_id: id
+    - intent_kind: integer
+    - refusal_code: integer
+    - defer_code: integer
+    - budget_kind: integer
+    - budget_limit: integer
+    - budget_used: integer
+    - budget_cost: integer
+    - detail_code: integer
+    - payload: map
+    - extensions: map
+
+record snapshot_fragment
+  required:
+    - shard_id: id
+    - domain_id: id
+    - domain_kind: integer
+    - tick: integer
+    - tier: integer
+    - domain_hash: integer
+  optional:
+    - capsule_id: id
+    - extensions: map
+
+record join_bundle
+  required:
+    - client_id: id
+    - assigned_shard_id: id
+    - tick: integer
+    - world_hash: integer
+    - capability_hash: integer
+    - snapshot: snapshot_fragment
+    - inspect_only: integer
+    - event_tail_index: integer
+    - message_tail_index: integer
+  optional:
+    - extensions: map
+
+record resync_bundle
+  required:
+    - client_id: id
+    - shard_id: id
+    - tick: integer
+    - world_hash: integer
+    - snapshot: snapshot_fragment
+    - event_tail_index: integer
+    - message_tail_index: integer
+  optional:
+    - refusal_code: integer
+    - extensions: map
+
+record budget_summary
+  required:
+    - tick: integer
+  optional:
+    - active_domains: map
+    - refinement: map
+    - collapse: map
+    - macro_events: map
+    - planning: map
+    - snapshot: map
+    - per_client: map
+    - extensions: map
+
+ORDERING CONTRACT:
+- Intents and events MUST be ordered deterministically by:
+  (intent_tick, shard_id, domain_id, client_id, intent_id) and
+  (tick, shard_id, event_kind, domain_id, event_id).
