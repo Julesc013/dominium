@@ -1,0 +1,109 @@
+{
+  "schema_id": "dominium.schema.world_definition",
+  "schema_version": "1.0.0",
+  "record": {
+    "worlddef_id": "org.dominium.worldgen.minimal.worlddef",
+    "schema_version": 1,
+    "topology": {
+      "root_node_ref": {
+        "node_id": "org.dominium.worldgen.minimal.node.region"
+      },
+      "nodes": [
+        {
+          "node_id": "org.dominium.worldgen.minimal.node.region",
+          "trait_tags": [
+            "org.dominium.topology.region"
+          ],
+          "extensions": {
+            "notes": "single region root"
+          }
+        }
+      ],
+      "edges": [],
+      "extensions": {}
+    },
+    "initial_fields": [
+      {
+        "field_id": "org.dominium.worldgen.minimal.field.terrain",
+        "state_tag": "org.dominium.worldgen.state.flat",
+        "node_ref": {
+          "node_id": "org.dominium.worldgen.minimal.node.region"
+        },
+        "value": {
+          "tag": "org.dominium.worldgen.terrain.flat"
+        },
+        "extensions": {}
+      },
+      {
+        "field_id": "org.dominium.worldgen.minimal.field.climate",
+        "state_tag": "org.dominium.worldgen.state.neutral",
+        "node_ref": {
+          "node_id": "org.dominium.worldgen.minimal.node.region"
+        },
+        "value": {
+          "tag": "org.dominium.worldgen.climate.neutral"
+        },
+        "extensions": {}
+      }
+    ],
+    "policy_sets": {
+      "movement_policies": [
+        {
+          "policy_id": "org.dominium.policy.none"
+        }
+      ],
+      "authority_policies": [
+        {
+          "policy_id": "org.dominium.policy.none"
+        }
+      ],
+      "mode_policies": [
+        {
+          "policy_id": "org.dominium.policy.none"
+        }
+      ],
+      "debug_policies": [
+        {
+          "policy_id": "org.dominium.policy.none"
+        }
+      ],
+      "extensions": {}
+    },
+    "spawn_spec": {
+      "spawn_node_ref": {
+        "node_id": "org.dominium.worldgen.minimal.node.region"
+      },
+      "coordinate_frame_ref": {
+        "frame_id": "org.dominium.coord.frame.local"
+      },
+      "position": {
+        "value": {},
+        "units_tags": [
+          "unit.length.meter"
+        ]
+      },
+      "orientation": {
+        "value": {}
+      },
+      "extensions": {}
+    },
+    "provenance": {
+      "template_id": "org.dominium.worldgen.minimal.template",
+      "template_version": "1.0.0",
+      "generator_source": "org.dominium.generator.manual",
+      "seed": {},
+      "extensions": {}
+    },
+    "capability_expectations": [
+      {
+        "capability_id": "org.dominium.worldgen.minimal"
+      }
+    ],
+    "pack_refs": [
+      {
+        "pack_id": "org.dominium.worldgen.minimal"
+      }
+    ],
+    "extensions": {}
+  }
+}

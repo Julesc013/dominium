@@ -1,0 +1,71 @@
+{
+  "materials": [],
+  "interfaces": [],
+  "parts": [],
+  "assemblies": [],
+  "process_families": [],
+  "instruments": [],
+  "standards": [
+    {
+      "standard_id": "org.dominium.core.standard.tolerance.length.basic",
+      "scope": "org.dominium.standard.scope.length",
+      "tolerance_ranges": {
+        "org.dominium.tolerance.length": 1
+      },
+      "certification_rules": {},
+      "authority_ref": {
+        "authority_id": "org.dominium.authority.generic"
+      },
+      "unit_annotations": {
+        "tolerance_ranges.org.dominium.tolerance.length": {
+          "unit": "unit.length.meter",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {}
+    },
+    {
+      "standard_id": "org.dominium.core.standard.tolerance.mass.basic",
+      "scope": "org.dominium.standard.scope.mass",
+      "tolerance_ranges": {
+        "org.dominium.tolerance.mass": 1
+      },
+      "certification_rules": {},
+      "authority_ref": {
+        "authority_id": "org.dominium.authority.generic"
+      },
+      "unit_annotations": {
+        "tolerance_ranges.org.dominium.tolerance.mass": {
+          "unit": "unit.mass.kilogram",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {}
+    },
+    {
+      "standard_id": "org.dominium.core.standard.interface.fit.basic",
+      "scope": "org.dominium.standard.scope.interface",
+      "tolerance_ranges": {
+        "org.dominium.tolerance.interface": 1
+      },
+      "certification_rules": {},
+      "authority_ref": {
+        "authority_id": "org.dominium.authority.generic"
+      },
+      "unit_annotations": {
+        "tolerance_ranges.org.dominium.tolerance.interface": {
+          "unit": "unit.length.meter",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {}
+    }
+  ],
+  "qualities": [],
+  "batches": [],
+  "hazards": [],
+  "substances": []
+}

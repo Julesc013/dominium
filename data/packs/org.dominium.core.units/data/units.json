@@ -1,0 +1,47 @@
+{
+  "units": [
+    {
+      "unit_id": "unit.time.act_tick",
+      "dimension": "time",
+      "base_unit": "unit.time.act_tick",
+      "scale": 1,
+      "notes": "authoritative act tick"
+    },
+    {
+      "unit_id": "unit.length.meter",
+      "dimension": "length",
+      "base_unit": "unit.length.meter",
+      "scale": 1000000,
+      "notes": "fixed-point micrometers"
+    },
+    {
+      "unit_id": "unit.mass.kilogram",
+      "dimension": "mass",
+      "base_unit": "unit.mass.kilogram",
+      "scale": 1000000,
+      "notes": "fixed-point micro-kilograms"
+    },
+    {
+      "unit_id": "unit.temperature.kelvin",
+      "dimension": "temperature",
+      "base_unit": "unit.temperature.kelvin",
+      "scale": 1000,
+      "notes": "fixed-point milli-kelvin"
+    },
+    {
+      "unit_id": "unit.energy.joule",
+      "dimension": "energy",
+      "base_unit": "unit.energy.joule",
+      "scale": 1000,
+      "notes": "fixed-point milli-joule"
+    },
+    {
+      "unit_id": "unit.currency.credit",
+      "dimension": "currency",
+      "base_unit": "unit.currency.credit",
+      "scale": 100,
+      "notes": "fixed-point centi-credits"
+    }
+  ],
+  "extensions": {}
+}

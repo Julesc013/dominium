@@ -1,0 +1,104 @@
+{
+  "materials": [],
+  "interfaces": [
+    {
+      "interface_id": "org.dominium.core.interface.mechanical.generic",
+      "interface_type": "org.dominium.interface.type.mechanical",
+      "directionality": "org.dominium.interface.dir.bidirectional",
+      "capacity": {
+        "value": 100,
+        "unit": "unit.energy.joule",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "unit_annotations": {},
+      "compatibility_rules": {
+        "allow_degraded": false
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.interfaces.basic.v1"
+      },
+      "extensions": {}
+    },
+    {
+      "interface_id": "org.dominium.core.interface.electrical.generic",
+      "interface_type": "org.dominium.interface.type.electrical",
+      "directionality": "org.dominium.interface.dir.bidirectional",
+      "capacity": {
+        "value": 100,
+        "unit": "unit.energy.joule",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "unit_annotations": {},
+      "compatibility_rules": {
+        "allow_degraded": false
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.interfaces.basic.v1"
+      },
+      "extensions": {}
+    },
+    {
+      "interface_id": "org.dominium.core.interface.fluid.generic",
+      "interface_type": "org.dominium.interface.type.fluid",
+      "directionality": "org.dominium.interface.dir.bidirectional",
+      "capacity": {
+        "value": 100,
+        "unit": "unit.energy.joule",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "unit_annotations": {},
+      "compatibility_rules": {
+        "allow_degraded": false
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.interfaces.basic.v1"
+      },
+      "extensions": {}
+    },
+    {
+      "interface_id": "org.dominium.core.interface.data.generic",
+      "interface_type": "org.dominium.interface.type.data",
+      "directionality": "org.dominium.interface.dir.bidirectional",
+      "capacity": {
+        "value": 100,
+        "unit": "unit.energy.joule",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "unit_annotations": {},
+      "compatibility_rules": {
+        "allow_degraded": false
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.interfaces.basic.v1"
+      },
+      "extensions": {}
+    },
+    {
+      "interface_id": "org.dominium.core.interface.thermal.generic",
+      "interface_type": "org.dominium.interface.type.thermal",
+      "directionality": "org.dominium.interface.dir.bidirectional",
+      "capacity": {
+        "value": 100,
+        "unit": "unit.energy.joule",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "unit_annotations": {},
+      "compatibility_rules": {
+        "allow_degraded": false
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.interfaces.basic.v1"
+      },
+      "extensions": {}
+    }
+  ],
+  "parts": [],
+  "assemblies": [],
+  "process_families": [],
+  "instruments": [],
+  "standards": [],
+  "qualities": [],
+  "batches": [],
+  "hazards": [],
+  "substances": []
+}
