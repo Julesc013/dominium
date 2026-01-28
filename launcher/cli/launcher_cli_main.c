@@ -128,6 +128,7 @@ static void launcher_print_help(void)
     printf("  new-world       Create a new world (templates; may be unavailable)\n");
     printf("  load-world      Load a world save (may be unavailable)\n");
     printf("  inspect-replay  Inspect replay (may be unavailable)\n");
+    printf("  ops <args>      Install/instance operations (delegates to ops_cli)\n");
     printf("  tools           Open tools shell (handoff)\n");
     printf("  settings        Show current UI settings\n");
     printf("  exit            Exit launcher\n");
@@ -357,6 +358,94 @@ static int launcher_parse_log_level(const char* text, int* out_value)
     return 0;
 }
 
+static int launcher_append_quoted(char* buf, size_t cap, const char* arg)
+{
+    size_t len;
+    size_t pos;
+    size_t i;
+    if (!buf || cap == 0u || !arg) {
+        return 0;
+    }
+    len = strlen(buf);
+    if (len + 3u >= cap) {
+        return 0;
+    }
+    pos = len;
+    buf[pos++] = ' ';
+    buf[pos++] = '"';
+    for (i = 0u; arg[i]; ++i) {
+        char c = arg[i];
+        if (c == '"') {
+            if (pos + 2u >= cap) {
+                return 0;
+            }
+            buf[pos++] = '\\';
+            buf[pos++] = '"';
+            continue;
+        }
+        if (pos + 1u >= cap) {
+            return 0;
+        }
+        buf[pos++] = c;
+    }
+    if (pos + 2u >= cap) {
+        return 0;
+    }
+    buf[pos++] = '"';
+    buf[pos] = '\0';
+    return 1;
+}
+
+static int launcher_resolve_ops_script(char* out, size_t cap)
+{
+    const char* rel = "tools/ops/ops_cli.py";
+    if (!out || cap == 0u) {
+        return 0;
+    }
+    out[0] = '\0';
+    if (launcher_find_upward(out, cap, rel)) {
+        return 1;
+    }
+    strncpy(out, rel, cap - 1u);
+    out[cap - 1u] = '\0';
+    return 1;
+}
+
+static int launcher_run_ops(int argc, char** argv, int cmd_index)
+{
+    char script_path[512];
+    char cmd[2048];
+    int i;
+    int rc;
+    if (cmd_index < 0 || argc <= cmd_index) {
+        return D_APP_EXIT_USAGE;
+    }
+    if (!launcher_resolve_ops_script(script_path, sizeof(script_path))) {
+        fprintf(stderr, "launcher: unable to resolve ops cli path\n");
+        return D_APP_EXIT_FAILURE;
+    }
+    if (snprintf(cmd, sizeof(cmd), "python") <= 0) {
+        fprintf(stderr, "launcher: failed to build ops command\n");
+        return D_APP_EXIT_FAILURE;
+    }
+    if (!launcher_append_quoted(cmd, sizeof(cmd), script_path)) {
+        fprintf(stderr, "launcher: ops command too long\n");
+        return D_APP_EXIT_FAILURE;
+    }
+    for (i = cmd_index + 1; i < argc; ++i) {
+        if (!launcher_append_quoted(cmd, sizeof(cmd), argv[i])) {
+            fprintf(stderr, "launcher: ops command too long\n");
+            return D_APP_EXIT_FAILURE;
+        }
+    }
+    rc = system(cmd);
+    if (rc == -1) {
+        fprintf(stderr, "launcher: failed to run ops cli\n");
+        return D_APP_EXIT_FAILURE;
+    }
+    return rc;
+}
+
 static void launcher_apply_accessibility(launcher_ui_settings* settings,
                                          const dom_app_ui_accessibility_preset* preset)
 {
@@ -484,6 +573,7 @@ int launcher_main(int argc, char** argv)
     dom_control_caps control_caps;
     int control_loaded = 0;
     const char* cmd = 0;
+    int cmd_index = -1;
     int i;
     dom_app_ui_request_init(&ui_req);
     dom_app_ui_run_config_init(&ui_run);
@@ -528,10 +618,12 @@ int launcher_main(int argc, char** argv)
         }
         if (strcmp(argv[i], "--help") == 0 || strcmp(argv[i], "-h") == 0) {
             cmd = argv[i];
+            cmd_index = i;
             break;
         }
         if (strcmp(argv[i], "--version") == 0) {
             cmd = argv[i];
+            cmd_index = i;
             break;
         }
         if (strcmp(argv[i], "--build-info") == 0) {
@@ -681,6 +773,7 @@ int launcher_main(int argc, char** argv)
         }
         if (argv[i][0] != '-') {
             cmd = argv[i];
+            cmd_index = i;
             break;
         }
     }
@@ -853,6 +946,13 @@ int launcher_main(int argc, char** argv)
     }
     if (strcmp(cmd, "capabilities") == 0) {
         int res = launcher_print_capabilities();
+        if (locale_active) {
+            dom_app_ui_locale_table_free(&locale_table);
+        }
+        return res;
+    }
+    if (strcmp(cmd, "ops") == 0) {
+        int res = launcher_run_ops(argc, argv, cmd_index);
         if (locale_active) {
             dom_app_ui_locale_table_free(&locale_table);
         }

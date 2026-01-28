@@ -25,6 +25,11 @@ Stub tools host entrypoint; replace with tool router once runtime is wired.
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
+#if defined(_WIN32)
+#include <direct.h>
+#else
+#include <unistd.h>
+#endif
 
 static void tools_print_help(void)
 {
@@ -78,6 +83,7 @@ static void tools_print_help(void)
     printf("  worlddef <subcmd>      WorldDefinition CLI bridge (list-templates, generate, validate, diff, equivalence, summarize)\\n");
     printf("  scale <subcmd>         Scaling capsule inspect/diff/validate tools\\n");
     printf("  mmo <subcmd>           MMO determinism and server runtime tools\\n");
+    printf("  ops <args>             Install/instance operations (delegates to ops_cli)\\n");
     printf("  exit            Exit tools\\n");
 }
 
@@ -206,6 +212,206 @@ static int tools_parse_log_level(const char* text, int* out_value)
         return 1;
     }
     return 0;
+}
+
+static int tools_file_exists(const char* path)
+{
+    FILE* f = 0;
+    if (!path || !path[0]) {
+        return 0;
+    }
+    f = fopen(path, "rb");
+    if (f) {
+        fclose(f);
+        return 1;
+    }
+    return 0;
+}
+
+static int tools_get_cwd(char* buf, size_t cap)
+{
+#if defined(_WIN32)
+    return (_getcwd(buf, (int)cap) != NULL);
+#else
+    return (getcwd(buf, cap) != NULL);
+#endif
+}
+
+static void tools_normalize_path(char* path)
+{
+    char* p;
+    if (!path) {
+        return;
+    }
+    for (p = path; *p; ++p) {
+        if (*p == '\\') {
+            *p = '/';
+        }
+    }
+}
+
+static int tools_pop_dir(char* path)
+{
+    size_t len;
+    char* slash;
+    if (!path || !path[0]) {
+        return 0;
+    }
+    len = strlen(path);
+    while (len > 0 && path[len - 1] == '/') {
+        path[--len] = '\0';
+    }
+    if (len == 0) {
+        return 0;
+    }
+    if (len == 1 && path[0] == '/') {
+        return 0;
+    }
+    if (len == 3 && path[1] == ':' && path[2] == '/') {
+        return 0;
+    }
+    slash = strrchr(path, '/');
+    if (!slash) {
+        return 0;
+    }
+    if (slash == path) {
+        path[1] = '\0';
+        return 1;
+    }
+    if (slash == path + 2 && path[1] == ':') {
+        slash[1] = '\0';
+        return 1;
+    }
+    *slash = '\0';
+    return 1;
+}
+
+static int tools_join_path(char* out, size_t cap, const char* base, const char* rel)
+{
+    size_t blen;
+    int written;
+    if (!out || cap == 0u || !base || !rel) {
+        return 0;
+    }
+    blen = strlen(base);
+    if (blen > 0 && base[blen - 1] == '/') {
+        written = snprintf(out, cap, "%s%s", base, rel);
+    } else {
+        written = snprintf(out, cap, "%s/%s", base, rel);
+    }
+    return written > 0 && (size_t)written < cap;
+}
+
+static int tools_find_upward(char* out, size_t cap, const char* rel)
+{
+    char cwd[512];
+    char probe[512];
+    if (!tools_get_cwd(cwd, sizeof(cwd))) {
+        return 0;
+    }
+    tools_normalize_path(cwd);
+    while (1) {
+        if (!tools_join_path(probe, sizeof(probe), cwd, rel)) {
+            return 0;
+        }
+        if (tools_file_exists(probe)) {
+            strncpy(out, probe, cap - 1u);
+            out[cap - 1u] = '\0';
+            return 1;
+        }
+        if (!tools_pop_dir(cwd)) {
+            break;
+        }
+    }
+    return 0;
+}
+
+static int tools_append_quoted(char* buf, size_t cap, const char* arg)
+{
+    size_t len;
+    size_t pos;
+    size_t i;
+    if (!buf || cap == 0u || !arg) {
+        return 0;
+    }
+    len = strlen(buf);
+    if (len + 3u >= cap) {
+        return 0;
+    }
+    pos = len;
+    buf[pos++] = ' ';
+    buf[pos++] = '"';
+    for (i = 0u; arg[i]; ++i) {
+        char c = arg[i];
+        if (c == '"') {
+            if (pos + 2u >= cap) {
+                return 0;
+            }
+            buf[pos++] = '\\';
+            buf[pos++] = '"';
+            continue;
+        }
+        if (pos + 1u >= cap) {
+            return 0;
+        }
+        buf[pos++] = c;
+    }
+    if (pos + 2u >= cap) {
+        return 0;
+    }
+    buf[pos++] = '"';
+    buf[pos] = '\0';
+    return 1;
+}
+
+static int tools_resolve_ops_script(char* out, size_t cap)
+{
+    const char* rel = "tools/ops/ops_cli.py";
+    if (!out || cap == 0u) {
+        return 0;
+    }
+    out[0] = '\0';
+    if (tools_find_upward(out, cap, rel)) {
+        return 1;
+    }
+    strncpy(out, rel, cap - 1u);
+    out[cap - 1u] = '\0';
+    return 1;
+}
+
+static int tools_run_ops(int argc, char** argv, int cmd_index)
+{
+    char script_path[512];
+    char cmd[2048];
+    int i;
+    int rc;
+    if (cmd_index < 0 || argc <= cmd_index) {
+        return D_APP_EXIT_USAGE;
+    }
+    if (!tools_resolve_ops_script(script_path, sizeof(script_path))) {
+        fprintf(stderr, "tools: unable to resolve ops cli path\n");
+        return D_APP_EXIT_FAILURE;
+    }
+    if (snprintf(cmd, sizeof(cmd), "python") <= 0) {
+        fprintf(stderr, "tools: failed to build ops command\n");
+        return D_APP_EXIT_FAILURE;
+    }
+    if (!tools_append_quoted(cmd, sizeof(cmd), script_path)) {
+        fprintf(stderr, "tools: ops command too long\n");
+        return D_APP_EXIT_FAILURE;
+    }
+    for (i = cmd_index + 1; i < argc; ++i) {
+        if (!tools_append_quoted(cmd, sizeof(cmd), argv[i])) {
+            fprintf(stderr, "tools: ops command too long\n");
+            return D_APP_EXIT_FAILURE;
+        }
+    }
+    rc = system(cmd);
+    if (rc == -1) {
+        fprintf(stderr, "tools: failed to run ops cli\n");
+        return D_APP_EXIT_FAILURE;
+    }
+    return rc;
 }
 
 typedef struct tools_ui_settings tools_ui_settings;
@@ -3098,6 +3304,10 @@ int tools_main(int argc, char** argv)
     }
     if (strcmp(cmd, "mmo") == 0) {
         int res = tools_run_mmo_cli(argc - cmd_index - 1, argv + cmd_index + 1);
+        return tools_return_with_locale(res, locale_active, &locale_table);
+    }
+    if (strcmp(cmd, "ops") == 0) {
+        int res = tools_run_ops(argc, argv, cmd_index);
         return tools_return_with_locale(res, locale_active, &locale_table);
     }
 

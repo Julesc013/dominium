@@ -632,6 +632,7 @@ static void setup_print_help(void)
     printf("  version   Show setup version\\n");
     printf("  status    Show setup status\\n");
     printf("  prepare   Create empty install layout\\n");
+    printf("  ops <args> Install/instance operations (delegates to ops_cli)\\n");
 }
 
 static int setup_is_abs_path(const char* path)
@@ -786,6 +787,94 @@ static void setup_resolve_control_registry(char* out, size_t cap, const char* re
     out[cap - 1u] = '\0';
 }
 
+static int setup_append_quoted(char* buf, size_t cap, const char* arg)
+{
+    size_t len;
+    size_t pos;
+    size_t i;
+    if (!buf || cap == 0u || !arg) {
+        return 0;
+    }
+    len = strlen(buf);
+    if (len + 3u >= cap) {
+        return 0;
+    }
+    pos = len;
+    buf[pos++] = ' ';
+    buf[pos++] = '"';
+    for (i = 0u; arg[i]; ++i) {
+        char c = arg[i];
+        if (c == '"') {
+            if (pos + 2u >= cap) {
+                return 0;
+            }
+            buf[pos++] = '\\';
+            buf[pos++] = '"';
+            continue;
+        }
+        if (pos + 1u >= cap) {
+            return 0;
+        }
+        buf[pos++] = c;
+    }
+    if (pos + 2u >= cap) {
+        return 0;
+    }
+    buf[pos++] = '"';
+    buf[pos] = '\0';
+    return 1;
+}
+
+static int setup_resolve_ops_script(char* out, size_t cap)
+{
+    const char* rel = "tools/ops/ops_cli.py";
+    if (!out || cap == 0u) {
+        return 0;
+    }
+    out[0] = '\0';
+    if (setup_find_upward(out, cap, rel)) {
+        return 1;
+    }
+    strncpy(out, rel, cap - 1u);
+    out[cap - 1u] = '\0';
+    return 1;
+}
+
+static int setup_run_ops(int argc, char** argv, int cmd_index)
+{
+    char script_path[512];
+    char cmd[2048];
+    int i;
+    int rc;
+    if (cmd_index < 0 || argc <= cmd_index) {
+        return D_APP_EXIT_USAGE;
+    }
+    if (!setup_resolve_ops_script(script_path, sizeof(script_path))) {
+        fprintf(stderr, "setup: unable to resolve ops cli path\n");
+        return D_APP_EXIT_FAILURE;
+    }
+    if (snprintf(cmd, sizeof(cmd), "python") <= 0) {
+        fprintf(stderr, "setup: failed to build ops command\n");
+        return D_APP_EXIT_FAILURE;
+    }
+    if (!setup_append_quoted(cmd, sizeof(cmd), script_path)) {
+        fprintf(stderr, "setup: ops command too long\n");
+        return D_APP_EXIT_FAILURE;
+    }
+    for (i = cmd_index + 1; i < argc; ++i) {
+        if (!setup_append_quoted(cmd, sizeof(cmd), argv[i])) {
+            fprintf(stderr, "setup: ops command too long\n");
+            return D_APP_EXIT_FAILURE;
+        }
+    }
+    rc = system(cmd);
+    if (rc == -1) {
+        fprintf(stderr, "setup: failed to run ops cli\n");
+        return D_APP_EXIT_FAILURE;
+    }
+    return rc;
+}
+
 static char setup_path_sep(void)
 {
 #if defined(_WIN32)
@@ -896,6 +985,7 @@ int setup_main(int argc, char** argv)
     setup_control_caps caps;
     int control_loaded = 0;
     const char* cmd = 0;
+    int cmd_index = -1;
     int i;
 
     dom_app_ui_request_init(&ui_req);
@@ -919,10 +1009,12 @@ int setup_main(int argc, char** argv)
         }
         if (strcmp(argv[i], "--help") == 0 || strcmp(argv[i], "-h") == 0) {
             cmd = argv[i];
+            cmd_index = i;
             break;
         }
         if (strcmp(argv[i], "--version") == 0) {
             cmd = argv[i];
+            cmd_index = i;
             break;
         }
         if (strcmp(argv[i], "--build-info") == 0) {
@@ -975,6 +1067,7 @@ int setup_main(int argc, char** argv)
         if (argv[i][0] != '-') {
             if (!cmd) {
                 cmd = argv[i];
+                cmd_index = i;
                 continue;
             }
             fprintf(stderr, "setup: unexpected argument '%s'\n", argv[i]);
@@ -1086,6 +1179,9 @@ int setup_main(int argc, char** argv)
     }
     if (strcmp(cmd, "prepare") == 0) {
         return setup_prepare(prepare_root);
+    }
+    if (strcmp(cmd, "ops") == 0) {
+        return setup_run_ops(argc, argv, cmd_index);
     }
 
     printf("setup: unknown command '%s'\\n", cmd);
