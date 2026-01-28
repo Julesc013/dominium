@@ -1,0 +1,168 @@
+{
+  "materials": [],
+  "interfaces": [],
+  "parts": [],
+  "assemblies": [],
+  "process_families": [
+    {
+      "process_family_id": "org.dominium.core.process_family.certification.issue",
+      "inputs": [],
+      "outputs": [],
+      "wastes": [],
+      "energy_flows": {},
+      "parameter_space": {
+        "org.dominium.param.compliance_threshold": 95
+      },
+      "yield_distribution": {
+        "org.dominium.yield.certify": 850,
+        "org.dominium.yield.reject": 150
+      },
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "parameter_space.org.dominium.param.compliance_threshold": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.certify": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.reject": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Certification issue process."
+      }
+    },
+    {
+      "process_family_id": "org.dominium.core.process_family.certification.revoke",
+      "inputs": [],
+      "outputs": [],
+      "wastes": [],
+      "energy_flows": {},
+      "parameter_space": {
+        "org.dominium.param.revocation_score": 50
+      },
+      "yield_distribution": {
+        "org.dominium.yield.revoke": 200,
+        "org.dominium.yield.keep": 800
+      },
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "parameter_space.org.dominium.param.revocation_score": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.revoke": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.keep": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Certification revocation process."
+      }
+    }
+  ],
+  "instruments": [],
+  "standards": [
+    {
+      "standard_id": "org.dominium.core.standard.certification.basic",
+      "scope": "org.dominium.standard.scope.certification",
+      "tolerance_ranges": {
+        "org.dominium.tolerance.mass": 10
+      },
+      "certification_rules": {
+        "org.dominium.cert.threshold": 90
+      },
+      "authority_ref": {
+        "authority_id": "org.dominium.authority.standards_body.generic"
+      },
+      "unit_annotations": {
+        "tolerance_ranges.org.dominium.tolerance.mass": {
+          "unit": "unit.mass.kilogram",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "certification_rules.org.dominium.cert.threshold": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Baseline certification standard."
+      }
+    },
+    {
+      "standard_id": "org.dominium.core.standard.certification.strict",
+      "scope": "org.dominium.standard.scope.certification",
+      "tolerance_ranges": {
+        "org.dominium.tolerance.mass": 2
+      },
+      "certification_rules": {
+        "org.dominium.cert.threshold": 98
+      },
+      "authority_ref": {
+        "authority_id": "org.dominium.authority.standards_body.generic"
+      },
+      "unit_annotations": {
+        "tolerance_ranges.org.dominium.tolerance.mass": {
+          "unit": "unit.mass.kilogram",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "certification_rules.org.dominium.cert.threshold": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Stricter certification standard."
+      }
+    }
+  ],
+  "qualities": [],
+  "batches": [],
+  "hazards": [],
+  "substances": [],
+  "certification_schemes": [
+    {
+      "scheme_id": "org.dominium.core.certification.scheme.basic",
+      "standard_id": "org.dominium.core.standard.certification.basic",
+      "issue_process_family_id": "org.dominium.core.process_family.certification.issue",
+      "revoke_process_family_id": "org.dominium.core.process_family.certification.revoke",
+      "extensions": {
+        "notes": "Basic certification scheme with issue/revoke hooks."
+      }
+    },
+    {
+      "scheme_id": "org.dominium.core.certification.scheme.strict",
+      "standard_id": "org.dominium.core.standard.certification.strict",
+      "issue_process_family_id": "org.dominium.core.process_family.certification.issue",
+      "revoke_process_family_id": "org.dominium.core.process_family.certification.revoke",
+      "extensions": {
+        "notes": "Strict certification scheme with higher thresholds."
+      }
+    }
+  ],
+  "extensions": {
+    "notes": "Certification standards and scheme templates."
+  }
+}

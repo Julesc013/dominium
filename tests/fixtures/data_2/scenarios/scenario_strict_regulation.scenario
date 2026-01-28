@@ -1,0 +1,16 @@
+DOMINIUM_SCENARIO_V1
+scenario_id=org.dominium.governance.strict_regulation
+scenario_version=1.0.0
+world_template=builtin.minimal_system
+world_seed=2105
+policy.authority=policy.authority.shell
+policy.mode=policy.mode.nav.free
+policy.playtest=policy.playtest.sandbox
+policy.law=policy.law.strict
+policy.enforcement=policy.enforcement.strict
+lockfile_id=org.dominium.lockfile.governance.strict_regulation
+lockfile_hash=hash.governance.strict_regulation
+fields_begin
+fields_end
+agents_begin
+agents_end

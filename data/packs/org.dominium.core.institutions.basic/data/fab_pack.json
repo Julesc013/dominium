@@ -1,0 +1,229 @@
+{
+  "materials": [],
+  "interfaces": [],
+  "parts": [],
+  "assemblies": [],
+  "process_families": [],
+  "instruments": [],
+  "standards": [],
+  "qualities": [],
+  "batches": [],
+  "hazards": [],
+  "substances": [],
+  "institutions": [
+    {
+      "institution_id": "org.dominium.core.institution.inspector.generic",
+      "jurisdiction_domain_refs": [
+        {
+          "domain_id": "org.dominium.domain.any"
+        }
+      ],
+      "legitimacy_source_tags": [
+        "org.dominium.legitimacy.procedure",
+        "org.dominium.legitimacy.transparency"
+      ],
+      "enforcement_capability_refs": [
+        {
+          "capability_id": "org.dominium.core.enforcement"
+        }
+      ],
+      "imposed_constraint_tags": [
+        "org.dominium.constraint.inspection.required"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.core.institutions.basic.v1"
+      },
+      "extensions": {
+        "role_id": "org.dominium.core.institution_role.inspector"
+      }
+    },
+    {
+      "institution_id": "org.dominium.core.institution.standards_body.generic",
+      "jurisdiction_domain_refs": [
+        {
+          "domain_id": "org.dominium.domain.any"
+        }
+      ],
+      "legitimacy_source_tags": [
+        "org.dominium.legitimacy.consensus",
+        "org.dominium.legitimacy.registry"
+      ],
+      "enforcement_capability_refs": [
+        {
+          "capability_id": "org.dominium.core.standards"
+        }
+      ],
+      "imposed_constraint_tags": [
+        "org.dominium.constraint.standard.required"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.core.institutions.basic.v1"
+      },
+      "extensions": {
+        "role_id": "org.dominium.core.institution_role.standards_body"
+      }
+    },
+    {
+      "institution_id": "org.dominium.core.institution.court.generic",
+      "jurisdiction_domain_refs": [
+        {
+          "domain_id": "org.dominium.domain.any"
+        }
+      ],
+      "legitimacy_source_tags": [
+        "org.dominium.legitimacy.appeal",
+        "org.dominium.legitimacy.record"
+      ],
+      "enforcement_capability_refs": [
+        {
+          "capability_id": "org.dominium.core.law"
+        }
+      ],
+      "imposed_constraint_tags": [
+        "org.dominium.constraint.appeal.required"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.core.institutions.basic.v1"
+      },
+      "extensions": {
+        "role_id": "org.dominium.core.institution_role.court"
+      }
+    },
+    {
+      "institution_id": "org.dominium.core.institution.regulator.generic",
+      "jurisdiction_domain_refs": [
+        {
+          "domain_id": "org.dominium.domain.any"
+        }
+      ],
+      "legitimacy_source_tags": [
+        "org.dominium.legitimacy.mandate",
+        "org.dominium.legitimacy.audit"
+      ],
+      "enforcement_capability_refs": [
+        {
+          "capability_id": "org.dominium.core.law"
+        },
+        {
+          "capability_id": "org.dominium.core.enforcement"
+        }
+      ],
+      "imposed_constraint_tags": [
+        "org.dominium.constraint.permit.required"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.core.institutions.basic.v1"
+      },
+      "extensions": {
+        "role_id": "org.dominium.core.institution_role.regulator"
+      }
+    }
+  ],
+  "authority_tokens": [
+    {
+      "authority_token_id": "org.dominium.authority.inspector.generic",
+      "scope": {
+        "jurisdiction_tags": [
+          "org.dominium.jurisdiction.general"
+        ],
+        "scope_tags": [
+          "org.dominium.scope.inspect"
+        ]
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.core.institutions.basic.v1"
+      },
+      "extensions": {}
+    },
+    {
+      "authority_token_id": "org.dominium.authority.standards_body.generic",
+      "scope": {
+        "jurisdiction_tags": [
+          "org.dominium.jurisdiction.general"
+        ],
+        "scope_tags": [
+          "org.dominium.scope.standardize"
+        ]
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.core.institutions.basic.v1"
+      },
+      "extensions": {}
+    },
+    {
+      "authority_token_id": "org.dominium.authority.court.generic",
+      "scope": {
+        "jurisdiction_tags": [
+          "org.dominium.jurisdiction.general"
+        ],
+        "scope_tags": [
+          "org.dominium.scope.adjudicate"
+        ]
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.core.institutions.basic.v1"
+      },
+      "extensions": {}
+    },
+    {
+      "authority_token_id": "org.dominium.authority.regulator.generic",
+      "scope": {
+        "jurisdiction_tags": [
+          "org.dominium.jurisdiction.general"
+        ],
+        "scope_tags": [
+          "org.dominium.scope.permit"
+        ]
+      },
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.core.institutions.basic.v1"
+      },
+      "extensions": {}
+    }
+  ],
+  "institution_roles": [
+    {
+      "role_id": "org.dominium.core.institution_role.inspector",
+      "institution_id": "org.dominium.core.institution.inspector.generic",
+      "scope_tags": [
+        "org.dominium.scope.inspect",
+        "org.dominium.scope.audit"
+      ],
+      "authority_token_id": "org.dominium.authority.inspector.generic",
+      "extensions": {}
+    },
+    {
+      "role_id": "org.dominium.core.institution_role.standards_body",
+      "institution_id": "org.dominium.core.institution.standards_body.generic",
+      "scope_tags": [
+        "org.dominium.scope.standardize",
+        "org.dominium.scope.certify"
+      ],
+      "authority_token_id": "org.dominium.authority.standards_body.generic",
+      "extensions": {}
+    },
+    {
+      "role_id": "org.dominium.core.institution_role.court",
+      "institution_id": "org.dominium.core.institution.court.generic",
+      "scope_tags": [
+        "org.dominium.scope.adjudicate",
+        "org.dominium.scope.appeal"
+      ],
+      "authority_token_id": "org.dominium.authority.court.generic",
+      "extensions": {}
+    },
+    {
+      "role_id": "org.dominium.core.institution_role.regulator",
+      "institution_id": "org.dominium.core.institution.regulator.generic",
+      "scope_tags": [
+        "org.dominium.scope.permit",
+        "org.dominium.scope.enforce"
+      ],
+      "authority_token_id": "org.dominium.authority.regulator.generic",
+      "extensions": {}
+    }
+  ],
+  "extensions": {
+    "notes": "Minimal institutional archetypes with roles and authority references."
+  }
+}

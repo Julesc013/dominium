@@ -1,0 +1,16 @@
+{
+  "schema_id": "dominium.schema.capability_lockfile",
+  "schema_version": "1.0.0",
+  "record": {
+    "lock_id": "org.dominium.lockfile.governance.anarchy",
+    "lock_format_version": 1,
+    "generated_by": "org.dominium.tools.lockgen",
+    "resolution_rules": [
+      "org.dominium.rules.default"
+    ],
+    "missing_mode": "org.dominium.missing.refuse",
+    "pack_refs": [],
+    "resolutions": [],
+    "extensions": {}
+  }
+}

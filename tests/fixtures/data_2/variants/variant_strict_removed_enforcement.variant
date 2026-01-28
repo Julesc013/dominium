@@ -1,0 +1,16 @@
+DOMINIUM_VARIANT_V1
+variant_id=org.dominium.variant.strict_removed_enforcement
+variant_version=1.0.0
+lockfile_id=org.dominium.lockfile.governance.strict_removed_enforcement
+lockfile_hash=hash.governance.strict_removed_enforcement
+policy.law=policy.law.strict
+policy.enforcement=policy.enforcement.degraded
+pack.enable=org.dominium.core.units
+pack.enable=org.dominium.core.institutions.basic
+pack.enable=org.dominium.core.law.basic
+pack.enable=org.dominium.core.contracts.basic
+pack.enable=org.dominium.core.standards.certification
+pack.enable=org.dominium.core.instruments.inspection
+pack.disable=org.dominium.core.enforcement.basic
+param.budget.enforcement=1000
+param.tolerance.generic=1

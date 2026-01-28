@@ -1,0 +1,13 @@
+DOMINIUM_VARIANT_V1
+variant_id=org.dominium.variant.anarchy
+variant_version=1.0.0
+lockfile_id=org.dominium.lockfile.governance.anarchy
+lockfile_hash=hash.governance.anarchy
+policy.law=policy.law.none
+policy.enforcement=policy.enforcement.none
+pack.disable=org.dominium.core.institutions.basic
+pack.disable=org.dominium.core.law.basic
+pack.disable=org.dominium.core.contracts.basic
+pack.disable=org.dominium.core.standards.certification
+pack.disable=org.dominium.core.instruments.inspection
+pack.disable=org.dominium.core.enforcement.basic

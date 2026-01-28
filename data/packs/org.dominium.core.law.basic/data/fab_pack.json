@@ -1,0 +1,277 @@
+{
+  "materials": [],
+  "interfaces": [],
+  "parts": [],
+  "assemblies": [],
+  "process_families": [
+    {
+      "process_family_id": "org.dominium.core.process_family.law.permit.request",
+      "inputs": [],
+      "outputs": [],
+      "wastes": [],
+      "energy_flows": {},
+      "parameter_space": {
+        "org.dominium.param.review_time": 10
+      },
+      "yield_distribution": {
+        "org.dominium.yield.approve": 900,
+        "org.dominium.yield.deny": 100
+      },
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "parameter_space.org.dominium.param.review_time": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.approve": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.deny": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Generic permit request process with approval/denial envelope."
+      }
+    },
+    {
+      "process_family_id": "org.dominium.core.process_family.law.permit.grant",
+      "inputs": [],
+      "outputs": [],
+      "wastes": [],
+      "energy_flows": {},
+      "parameter_space": {},
+      "yield_distribution": {
+        "org.dominium.yield.granted": 1
+      },
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "yield_distribution.org.dominium.yield.granted": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Granting process; outcomes are data-driven."
+      }
+    },
+    {
+      "process_family_id": "org.dominium.core.process_family.law.prohibition.check",
+      "inputs": [],
+      "outputs": [],
+      "wastes": [],
+      "energy_flows": {},
+      "parameter_space": {
+        "org.dominium.param.risk_score": 1
+      },
+      "yield_distribution": {
+        "org.dominium.yield.allow": 950,
+        "org.dominium.yield.refuse": 50
+      },
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "parameter_space.org.dominium.param.risk_score": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.allow": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.refuse": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Generic prohibition check with refusal envelope."
+      }
+    },
+    {
+      "process_family_id": "org.dominium.core.process_family.law.obligation.fulfill",
+      "inputs": [],
+      "outputs": [],
+      "wastes": [],
+      "energy_flows": {},
+      "parameter_space": {
+        "org.dominium.param.deadline": 100
+      },
+      "yield_distribution": {
+        "org.dominium.yield.fulfilled": 900,
+        "org.dominium.yield.unfulfilled": 100
+      },
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "parameter_space.org.dominium.param.deadline": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.fulfilled": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.unfulfilled": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Generic obligation fulfillment envelope."
+      }
+    },
+    {
+      "process_family_id": "org.dominium.core.process_family.law.penalty.apply",
+      "inputs": [],
+      "outputs": [],
+      "wastes": [],
+      "energy_flows": {},
+      "parameter_space": {
+        "org.dominium.param.penalty_units": 500
+      },
+      "yield_distribution": {
+        "org.dominium.yield.applied": 1
+      },
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "parameter_space.org.dominium.param.penalty_units": {
+          "unit": "unit.currency.credit",
+          "scale": 100,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.applied": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Generic penalty process (cost or restriction)."
+      }
+    },
+    {
+      "process_family_id": "org.dominium.core.process_family.law.appeal.submit",
+      "inputs": [],
+      "outputs": [],
+      "wastes": [],
+      "energy_flows": {},
+      "parameter_space": {
+        "org.dominium.param.appeal_window": 50
+      },
+      "yield_distribution": {
+        "org.dominium.yield.accept": 800,
+        "org.dominium.yield.reject": 200
+      },
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "parameter_space.org.dominium.param.appeal_window": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.accept": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.reject": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Appeal submission envelope."
+      }
+    }
+  ],
+  "instruments": [],
+  "standards": [],
+  "qualities": [],
+  "batches": [],
+  "hazards": [],
+  "substances": [],
+  "laws": [
+    {
+      "law_id": "org.dominium.core.law.permit.generic",
+      "law_type": "org.dominium.law.type.permit",
+      "required_process_family_id": "org.dominium.core.process_family.law.permit.request",
+      "grant_process_family_id": "org.dominium.core.process_family.law.permit.grant",
+      "refusal_code": "REFUSE_LAW_FORBIDDEN",
+      "institution_ref": "org.dominium.core.institution.regulator.generic",
+      "constraint_tags": [
+        "org.dominium.constraint.permit.required"
+      ],
+      "unit_annotations": {},
+      "extensions": {
+        "notes": "Permit requirement enforced via request/grant processes."
+      }
+    },
+    {
+      "law_id": "org.dominium.core.law.prohibition.generic",
+      "law_type": "org.dominium.law.type.prohibition",
+      "check_process_family_id": "org.dominium.core.process_family.law.prohibition.check",
+      "refusal_code": "REFUSE_LAW_FORBIDDEN",
+      "penalty_process_family_id": "org.dominium.core.process_family.law.penalty.apply",
+      "institution_ref": "org.dominium.core.institution.regulator.generic",
+      "constraint_tags": [
+        "org.dominium.constraint.prohibition.generic"
+      ],
+      "unit_annotations": {},
+      "extensions": {
+        "notes": "Prohibition enforced via data-driven checks and penalties."
+      }
+    },
+    {
+      "law_id": "org.dominium.core.law.obligation.generic",
+      "law_type": "org.dominium.law.type.obligation",
+      "fulfill_process_family_id": "org.dominium.core.process_family.law.obligation.fulfill",
+      "refusal_code": "REFUSE_LAW_FORBIDDEN",
+      "penalty_process_family_id": "org.dominium.core.process_family.law.penalty.apply",
+      "institution_ref": "org.dominium.core.institution.regulator.generic",
+      "constraint_tags": [
+        "org.dominium.constraint.obligation.generic"
+      ],
+      "unit_annotations": {},
+      "extensions": {
+        "notes": "Obligation fulfilled by process; refusal on breach."
+      }
+    },
+    {
+      "law_id": "org.dominium.core.law.appeal.generic",
+      "law_type": "org.dominium.law.type.appeal",
+      "appeal_process_family_id": "org.dominium.core.process_family.law.appeal.submit",
+      "institution_ref": "org.dominium.core.institution.court.generic",
+      "unit_annotations": {},
+      "extensions": {
+        "notes": "Appeal handled as process; outcome is data-driven."
+      }
+    }
+  ],
+  "extensions": {
+    "notes": "Minimal law kernel expressed as processes, constraints, and refusals."
+  }
+}

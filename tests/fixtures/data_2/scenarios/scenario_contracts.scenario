@@ -1,0 +1,16 @@
+DOMINIUM_SCENARIO_V1
+scenario_id=org.dominium.governance.contracts
+scenario_version=1.0.0
+world_template=builtin.minimal_system
+world_seed=2103
+policy.authority=policy.authority.shell
+policy.mode=policy.mode.nav.free
+policy.playtest=policy.playtest.sandbox
+policy.law=policy.law.light
+policy.enforcement=policy.enforcement.minimal
+lockfile_id=org.dominium.lockfile.governance.contracts
+lockfile_hash=hash.governance.contracts
+fields_begin
+fields_end
+agents_begin
+agents_end
