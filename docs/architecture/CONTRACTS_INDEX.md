@@ -114,6 +114,12 @@ document is binding but still expected to grow or sharpen.
 
 
 
+| `docs/architecture/INSTALL_MODEL.md` | FROZEN | Install manifest and install root contract |
+| `docs/architecture/INSTANCE_MODEL.md` | FROZEN | Instance manifest and data root contract |
+| `docs/architecture/OPS_TRANSACTION_MODEL.md` | FROZEN | Transactional ops model and ops log |
+| `docs/architecture/UPDATE_MODEL.md` | FROZEN | Update channels and rollback guarantees |
+| `docs/architecture/SANDBOX_MODEL.md` | FROZEN | Sandbox meta-law policy |
+| `docs/distribution/PACK_SOURCES.md` | FROZEN | Pack sources and mirrors |
 ## Evolving but binding surfaces
 
 
@@ -227,6 +233,11 @@ Schemas are the authoritative data-shape contracts. Start here:
 
 
 
+- `schema/install.manifest.schema`
+- `schema/instance.manifest.schema`
+- `schema/runtime.descriptor.schema`
+- `schema/pack.sources.schema`
+- `schema/sandbox.policy.schema`
 Refusal code anchors:
 
 

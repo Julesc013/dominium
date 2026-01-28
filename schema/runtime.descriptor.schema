@@ -1,0 +1,56 @@
+SCHEMA: runtime.descriptor.schema
+schema_id: dominium.schema.runtime_descriptor
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define per-process runtime descriptors for diagnostics and correlation.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- Runtime descriptors do not affect simulation outcomes.
+- Runtime descriptors are diagnostic only.
+
+CONVENTIONS:
+- uuid: canonical UUID string (lowercase, hyphenated).
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- timestamp: ISO-8601 UTC string.
+- path_ref: relative or canonical path string.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record runtime_descriptor
+  required:
+    - runtime_id: uuid
+    - install_id: uuid
+    - instance_id: uuid
+    - role: tag
+    - capability_baseline: id
+    - sandbox_policy: id
+    - log_root: path_ref
+    - ipc_endpoints: ipc_endpoints
+    - launched_at: timestamp
+    - extensions: map
+  optional:
+    - runtime_tags: [tag]
+    - provenance_ref: provenance_ref
+    - notes: map
+
+TYPE DEFINITIONS:
+record ipc_endpoints
+  required:
+    - control: tag
+    - telemetry: tag
+  optional:
+    - events: tag
+    - commands: tag
+    - extensions: map
+
+record provenance_ref
+  required:
+    - provenance_id: id

@@ -1,0 +1,51 @@
+SCHEMA: instance.manifest.schema
+schema_id: dominium.schema.instance_manifest
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define portable instance roots and their operational configuration.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- Instances do not imply unique installs.
+- Instances do not imply online connectivity.
+- Instances do not imply content availability.
+
+CONVENTIONS:
+- uuid: canonical UUID string (lowercase, hyphenated).
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- integer: non-negative whole number.
+- timestamp: ISO-8601 UTC string.
+- path_ref: relative or canonical path string (relative to instance root when possible).
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record instance_manifest
+  required:
+    - instance_id: uuid
+    - install_id: uuid
+    - data_root: path_ref
+    - active_profiles: [id]
+    - active_modpacks: [id]
+    - capability_lockfile: path_ref
+    - sandbox_policy_ref: id
+    - update_channel: tag
+    - created_at: timestamp
+    - last_used_at: timestamp
+    - extensions: map
+  optional:
+    - instance_manifest_version: integer
+    - instance_tags: [tag]
+    - provenance_ref: provenance_ref
+    - notes: map
+
+TYPE DEFINITIONS:
+record provenance_ref
+  required:
+    - provenance_id: id

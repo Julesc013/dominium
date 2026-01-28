@@ -112,11 +112,35 @@
     },
     {
       "path": "docs/distribution/LAUNCHER_SETUP_CONTRACT.md",
-      "sha256": "394acf5a1581a4f3353672b1be869ba9a0c13a3a4bbadd76ed600de1b2c6b777"
+      "sha256": "3e1b9a5c5cd5866bfc840aec40caf48e0b36f894a95bfd93333f70323c0e583e"
     },
     {
       "path": "docs/distribution/LEGACY_COMPATIBILITY.md",
       "sha256": "8633d6ad61b69950e0a4c7aa3bc32773bae85b386bfb37208bd9f32d7d967baf"
+    },
+    {
+      "path": "docs/architecture/INSTALL_MODEL.md",
+      "sha256": "d4fa385411ce3e4fb68e2207ee389e4c7b452165c98db3f9b3d15003748890d5"
+    },
+    {
+      "path": "docs/architecture/INSTANCE_MODEL.md",
+      "sha256": "0d38bf3dd8eb7188e1a2ca7d6e5aecd981cdb3b528adda26c2c1fdcdccc99b38"
+    },
+    {
+      "path": "docs/architecture/OPS_TRANSACTION_MODEL.md",
+      "sha256": "b2e39dd3f1bc5f3434bfde30f1d7362c932640b8a1d4d3aa5d899595806c03e6"
+    },
+    {
+      "path": "docs/architecture/UPDATE_MODEL.md",
+      "sha256": "0e0fe11b8ff392b43feb180239e4e5bf98a506a3234c3dce7bb9006dea64e62c"
+    },
+    {
+      "path": "docs/architecture/SANDBOX_MODEL.md",
+      "sha256": "31e0c5fef87725b6e5a18b186c0674096f8036ab8f4803f55364e4ed7610001c"
+    },
+    {
+      "path": "docs/distribution/PACK_SOURCES.md",
+      "sha256": "f9497317c50c18b61700604966af4d89596a05088a099ee468db387dfe769a9c"
     }
   ]
 }
