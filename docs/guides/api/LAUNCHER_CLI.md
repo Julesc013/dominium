@@ -1,32 +1,43 @@
 # dom_launcher CLI
 
-The launcher runs in CLI/TUI/GUI modes; CLI is the reference and shared with TUI/GUI.
-Commands rely on install manifests (`install.manifest.json`). Legacy
-`dominium_install.json` is supported as an adapter only. Install/repair is
-delegated to `dom_setup`.
+The launcher runs in CLI/TUI/GUI modes. CLI is the canonical entrypoint and is
+shared with TUI/GUI intent APIs.
+
+Install and instance management are delegated to the OPS CLI
+(`tools/ops/ops_cli.py`) via the `ops` command. The OPS CLI returns structured
+compatibility reports and refusal payloads.
 
 ## Top-level
-- `dom_launcher --cli` (default), `dom_launcher --tui`, `dom_launcher --gui` (stub).
+- `dom_launcher --ui=none|tui|gui` (default: CLI with `--ui=none`).
 
 ## Commands
-- `installs list`  
-  Discover installs via manifests under default roots and manual paths. Prints `install_id | type | platform | root`.
-- `installs add-path --path=PATH`  
-  Adds a manual install root to the DB for discovery.
+- `version`  
+  Show launcher version.
+- `list-profiles`  
+  List known profiles.
+- `capabilities`  
+  Report platform + renderer availability.
+- `new-world`  
+  Create a new world (template-driven; may be unavailable).
+- `load-world`  
+  Load a world save (may be unavailable).
+- `inspect-replay`  
+  Inspect a replay (may be unavailable).
+- `ops <args>`  
+  Pass-through to OPS CLI for install/instance enumeration and lifecycle:
+  `installs list`, `instances list`, `instances create`, `instances clone`,
+  `instances fork`, `instances activate`.
+- `tools`  
+  Open tools shell (handoff).
+- `settings`  
+  Show current UI settings.
+- `exit`  
+  Exit launcher.
 
-- `instances start --install-id=<id> [--role=client|server|tool] [--display=gui|tui|cli|none] [--universe=PATH]`  
-  Spawns a supervised runtime (stubbed process in current build) with launcher session/instance IDs and display/role flags.
-- `instances list`  
-  Lists instances started in the current launcher session.
-- `instances stop --instance-id=<id>`  
-  Stops a tracked instance (stub termination in current build).
-
-- `plugins list`  
-  Lists registered plugins (stub until plugins are loaded).
-
-## Data
-- Launcher DB: `launcher/db.json` under user config root (or install-local for portable installs). Stores installs and profiles (schema_version `1`).
-- Install discovery uses `dom_setup` path helpers and `dominium_install.json`.
-- Manual install paths from the DB are added to discovery.
-
-See `docs/LAUNCHER_SETUP_OVERVIEW.md` for overall architecture.
+## Data & contracts
+- Install manifest: `install.manifest.json` (`schema/install.manifest.schema`).
+- Instance manifest: `instance.manifest.json` (`schema/instance.manifest.schema`).
+- Ops transactions: `docs/architecture/OPS_TRANSACTION_MODEL.md`.
+- Install/instance model: `docs/architecture/INSTALL_MODEL.md`,
+  `docs/architecture/INSTANCE_MODEL.md`.
+- Launcher/setup contract: `docs/distribution/LAUNCHER_SETUP_CONTRACT.md`.
