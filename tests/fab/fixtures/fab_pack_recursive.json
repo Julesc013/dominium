@@ -1,0 +1,164 @@
+{
+  "materials": [
+    {
+      "material_id": "dominium.game.material.recursive",
+      "traits": {
+        "density": 5000000
+      },
+      "manufacturability": {},
+      "failure_params": {
+        "corrosion": 0
+      },
+      "unit_annotations": {
+        "traits.density": {
+          "unit": "unit.mass.kilogram",
+          "scale": 1000000,
+          "overflow_behavior": "refuse"
+        },
+        "failure_params.corrosion": {
+          "unit": "unit.mass.kilogram",
+          "scale": 1000000,
+          "overflow_behavior": "refuse"
+        }
+      },
+      "provenance": {
+        "provenance_id": "dominium.game.prov.recursive"
+      },
+      "extensions": {}
+    }
+  ],
+  "interfaces": [
+    {
+      "interface_id": "dominium.game.interface.recursive",
+      "interface_type": "mechanical",
+      "directionality": "bidirectional",
+      "capacity": {
+        "value": 100,
+        "unit": "unit.mass.kilogram",
+        "scale_hint": "unit.mass.kilogram",
+        "overflow_behavior": "refuse"
+      },
+      "unit_annotations": {},
+      "compatibility_rules": {
+        "allow_degraded": false
+      },
+      "extensions": {}
+    }
+  ],
+  "parts": [
+    {
+      "part_id": "dominium.game.part.recursive",
+      "material_ref": {
+        "material_id": "dominium.game.material.recursive"
+      },
+      "mass": {
+        "value": 100,
+        "unit": "unit.mass.kilogram",
+        "scale_hint": "unit.mass.kilogram",
+        "overflow_behavior": "refuse"
+      },
+      "volume": {
+        "value": 1,
+        "unit": "unit.length.meter",
+        "scale_hint": "unit.length.meter",
+        "overflow_behavior": "refuse"
+      },
+      "interfaces": [
+        {
+          "interface_id": "dominium.game.interface.recursive"
+        }
+      ],
+      "constraints": [],
+      "quality_requirements": {},
+      "failure_model_ref": {
+        "failure_model_id": "dominium.game.failure.none"
+      },
+      "unit_annotations": {},
+      "extensions": {}
+    }
+  ],
+  "assemblies": [
+    {
+      "assembly_id": "dominium.game.assembly.parent",
+      "nodes": [
+        {
+          "node_id": "dominium.game.node.subassembly",
+          "node_type": "subassembly",
+          "ref_id": "dominium.game.assembly.child"
+        }
+      ],
+      "edges": [],
+      "subsystems": [],
+      "hosted_processes": [
+        {
+          "process_family_id": "dominium.game.process_family.parent"
+        }
+      ],
+      "throughput_limits": {},
+      "maintenance": {},
+      "unit_annotations": {},
+      "extensions": {}
+    },
+    {
+      "assembly_id": "dominium.game.assembly.child",
+      "nodes": [
+        {
+          "node_id": "dominium.game.node.part",
+          "node_type": "part",
+          "ref_id": "dominium.game.part.recursive"
+        }
+      ],
+      "edges": [],
+      "subsystems": [],
+      "hosted_processes": [
+        {
+          "process_family_id": "dominium.game.process_family.child"
+        }
+      ],
+      "throughput_limits": {},
+      "maintenance": {},
+      "unit_annotations": {},
+      "extensions": {}
+    }
+  ],
+  "process_families": [
+    {
+      "process_family_id": "dominium.game.process_family.parent",
+      "inputs": [],
+      "outputs": [],
+      "wastes": [],
+      "parameter_space": [],
+      "yield_distribution": [
+        {
+          "outcome_id": 0,
+          "weight": 1
+        }
+      ],
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {}
+    },
+    {
+      "process_family_id": "dominium.game.process_family.child",
+      "inputs": [],
+      "outputs": [],
+      "wastes": [],
+      "parameter_space": [],
+      "yield_distribution": [
+        {
+          "outcome_id": 0,
+          "weight": 1
+        }
+      ],
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {}
+    }
+  ],
+  "instruments": [],
+  "standards": [],
+  "qualities": [],
+  "batches": [],
+  "hazards": [],
+  "substances": []
+}

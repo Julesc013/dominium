@@ -47,6 +47,8 @@ document is binding but still expected to grow or sharpen.
 | `docs/arch/CHECKPOINTING_MODEL.md` | EVOLVING | Checkpointing and snapshots |
 | `docs/arch/CRASH_RECOVERY.md` | EVOLVING | Recovery contracts |
 | `docs/arch/ROLLING_UPDATES.md` | EVOLVING | Rolling update contracts |
+| `docs/engine/FAB_INTERPRETERS.md` | EVOLVING | Minimal FAB interpreter contract |
+| `docs/game/FAB_EXECUTION_FLOW.md` | EVOLVING | FAB execution flow and guardrails |
 
 ## Schema and contract anchors
 Schemas are the authoritative data-shape contracts. Start here:
@@ -57,17 +59,17 @@ Schemas are the authoritative data-shape contracts. Start here:
 - `schema/process.schema`
 - `schema/save_and_replay.schema`
 - `schema/server_protocol.schema`
- - `schema/material.schema`
- - `schema/part.schema`
- - `schema/assembly.schema`
- - `schema/interface.schema`
- - `schema/process_family.schema`
- - `schema/instrument.schema`
- - `schema/standard.schema`
- - `schema/quality.schema`
- - `schema/batch_lot.schema`
- - `schema/hazard.schema`
- - `schema/substance.schema`
+- `schema/material.schema`
+- `schema/part.schema`
+- `schema/assembly.schema`
+- `schema/interface.schema`
+- `schema/process_family.schema`
+- `schema/instrument.schema`
+- `schema/standard.schema`
+- `schema/quality.schema`
+- `schema/batch_lot.schema`
+- `schema/hazard.schema`
+- `schema/substance.schema`
 
 Refusal code anchors:
 - `docs/arch/REFUSAL_SEMANTICS.md`
