@@ -12,6 +12,14 @@ Guarantee deterministic, portable unit handling across all systems.
 - Conversions are deterministic and rational (no floating point).
 - Unknown units MUST be refused or preserved, never guessed.
 - Schemas MUST include unit tags for unit-bearing fields.
+- Authoritative logic MUST NOT use floating point arithmetic.
+- Presentation layers may use floating point only for display.
+
+## Numeric policy (binding)
+- Quantities are stored as integers plus a declared unit scale.
+- Unit scales are powers of ten unless a schema explicitly declares otherwise.
+- Ordering, comparisons, and budgets operate on integer quantities.
+- Floating point values MUST be converted to fixed-point before admission.
 
 ## Canonical units (initial)
 ```units
@@ -33,6 +41,16 @@ unit.currency.credit, currency, unit.currency.credit, 100, fixed-point centi-cre
 ## Overflow behavior
 - Overflow is a refusal with REFUSE_INVALID_INTENT.
 - No silent saturation.
+
+## Tolerance annotations
+Tolerances must be explicit and unit-aware:
+- A tolerance MUST reference a tolerance identifier and a unit identifier.
+- Tolerance magnitudes are expressed in canonical fixed-point units.
+- If a tolerance is not declared, exact equality is required.
+- Tolerances MUST NOT be evaluated using floating point in authoritative code.
+
+Tolerance policy is defined in:
+- `docs/arch/INVARIANTS_AND_TOLERANCES.md`
 
 ## Enforcement
 - Unit tables are schema-validated and tested for consistency.

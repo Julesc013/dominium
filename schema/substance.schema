@@ -1,11 +1,10 @@
-SCHEMA: material.schema
-schema_id: dominium.schema.material
-schema_version: 2.0.0
+SCHEMA: substance.schema
+schema_id: dominium.schema.substance
+schema_version: 1.0.0
 stability: core
 
 PURPOSE:
-- Define materials as trait bundles with manufacturability and failure parameters.
-- This schema is declarative only and does not encode behavior.
+- Define abstract composition descriptors for substances.
 
 STABILITY GUARANTEES:
 - Required fields MUST exist.
@@ -14,9 +13,8 @@ STABILITY GUARANTEES:
 - Identifiers are stable and MUST NOT be reused with new meaning.
 
 NON-SEMANTICS:
-- Trait and parameter keys do NOT encode real-world physics.
-- Tags do NOT imply behavior or simulation rules.
-- No era, progression, or balance assumptions are implied.
+- Composition descriptors do NOT imply real-world chemistry.
+- Phase tags are descriptive only.
 
 CONVENTIONS:
 - id: stable namespaced string; opaque.
@@ -24,17 +22,24 @@ CONVENTIONS:
 - map: open key/value map; unknown keys preserved.
 
 REQUIRED SHAPE:
-record material
+record substance
   required:
-    - material_id: id
-    - traits: map
-    - manufacturability: map
-    - failure_params: map
+    - substance_id: id
+    - composition: map
+    - hazards: [hazard_ref]
     - unit_annotations: map
-    - provenance: provenance
     - extensions: map
+  optional:
+    - phase: tag
+    - provenance: provenance
 
 TYPE DEFINITIONS:
+record hazard_ref
+  required:
+    - hazard_id: id
+  optional:
+    - qualifier_tags: [tag]
+
 record provenance
   required:
     - provenance_id: id
@@ -47,5 +52,5 @@ MIGRATION:
 - Old data MUST NOT be reinterpreted without explicit transformation or refusal.
 
 UNIT POLICY:
-- Numeric values embedded in maps MUST be accompanied by unit_annotations entries.
-- Unit identifiers MUST follow `docs/arch/UNIT_SYSTEM_POLICY.md`.
+- All numeric values MUST reference a unit tag from `docs/arch/UNIT_SYSTEM_POLICY.md`.
+- Overflow behavior MUST be declared (refusal on overflow).
