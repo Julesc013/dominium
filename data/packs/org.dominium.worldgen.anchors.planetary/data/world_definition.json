@@ -1,0 +1,294 @@
+{
+  "schema_id": "dominium.schema.world_definition",
+  "schema_version": "1.0.0",
+  "record": {
+    "worlddef_id": "org.dominium.worldgen.anchors.planetary.worlddef",
+    "schema_version": 1,
+    "topology": {
+      "root_node_ref": {
+        "node_id": "org.dominium.worldgen.anchors.planetary.node.planet"
+      },
+      "nodes": [
+        {
+          "node_id": "org.dominium.worldgen.anchors.planetary.node.planet",
+          "trait_tags": [
+            "org.dominium.topology.planet"
+          ],
+          "extensions": {
+            "notes": "Abstract planetary root anchor."
+          }
+        },
+        {
+          "node_id": "org.dominium.worldgen.anchors.planetary.node.region.alpha",
+          "trait_tags": [
+            "org.dominium.topology.region"
+          ],
+          "extensions": {
+            "notes": "Region alpha."
+          }
+        },
+        {
+          "node_id": "org.dominium.worldgen.anchors.planetary.node.region.beta",
+          "trait_tags": [
+            "org.dominium.topology.region"
+          ],
+          "extensions": {
+            "notes": "Region beta."
+          }
+        },
+        {
+          "node_id": "org.dominium.worldgen.anchors.planetary.node.tile.alpha.1",
+          "trait_tags": [
+            "org.dominium.topology.tile"
+          ],
+          "extensions": {}
+        },
+        {
+          "node_id": "org.dominium.worldgen.anchors.planetary.node.tile.alpha.2",
+          "trait_tags": [
+            "org.dominium.topology.tile"
+          ],
+          "extensions": {}
+        },
+        {
+          "node_id": "org.dominium.worldgen.anchors.planetary.node.tile.beta.1",
+          "trait_tags": [
+            "org.dominium.topology.tile"
+          ],
+          "extensions": {}
+        },
+        {
+          "node_id": "org.dominium.worldgen.anchors.planetary.node.tile.beta.2",
+          "trait_tags": [
+            "org.dominium.topology.tile"
+          ],
+          "extensions": {}
+        }
+      ],
+      "edges": [
+        {
+          "parent_ref": {
+            "node_id": "org.dominium.worldgen.anchors.planetary.node.planet"
+          },
+          "child_ref": {
+            "node_id": "org.dominium.worldgen.anchors.planetary.node.region.alpha"
+          }
+        },
+        {
+          "parent_ref": {
+            "node_id": "org.dominium.worldgen.anchors.planetary.node.planet"
+          },
+          "child_ref": {
+            "node_id": "org.dominium.worldgen.anchors.planetary.node.region.beta"
+          }
+        },
+        {
+          "parent_ref": {
+            "node_id": "org.dominium.worldgen.anchors.planetary.node.region.alpha"
+          },
+          "child_ref": {
+            "node_id": "org.dominium.worldgen.anchors.planetary.node.tile.alpha.1"
+          }
+        },
+        {
+          "parent_ref": {
+            "node_id": "org.dominium.worldgen.anchors.planetary.node.region.alpha"
+          },
+          "child_ref": {
+            "node_id": "org.dominium.worldgen.anchors.planetary.node.tile.alpha.2"
+          }
+        },
+        {
+          "parent_ref": {
+            "node_id": "org.dominium.worldgen.anchors.planetary.node.region.beta"
+          },
+          "child_ref": {
+            "node_id": "org.dominium.worldgen.anchors.planetary.node.tile.beta.1"
+          }
+        },
+        {
+          "parent_ref": {
+            "node_id": "org.dominium.worldgen.anchors.planetary.node.region.beta"
+          },
+          "child_ref": {
+            "node_id": "org.dominium.worldgen.anchors.planetary.node.tile.beta.2"
+          }
+        }
+      ],
+      "extensions": {}
+    },
+    "initial_fields": [
+      {
+        "field_id": "org.dominium.worldgen.anchors.planetary.field.elevation",
+        "state_tag": "org.dominium.worldgen.state.baseline",
+        "node_ref": {
+          "node_id": "org.dominium.worldgen.anchors.planetary.node.tile.alpha.1"
+        },
+        "value": {
+          "amount": 100
+        },
+        "units": [
+          "unit.length.meter"
+        ],
+        "extensions": {}
+      },
+      {
+        "field_id": "org.dominium.worldgen.anchors.planetary.field.elevation",
+        "state_tag": "org.dominium.worldgen.state.baseline",
+        "node_ref": {
+          "node_id": "org.dominium.worldgen.anchors.planetary.node.tile.alpha.2"
+        },
+        "value": {
+          "amount": 200
+        },
+        "units": [
+          "unit.length.meter"
+        ],
+        "extensions": {}
+      },
+      {
+        "field_id": "org.dominium.worldgen.anchors.planetary.field.elevation",
+        "state_tag": "org.dominium.worldgen.state.baseline",
+        "node_ref": {
+          "node_id": "org.dominium.worldgen.anchors.planetary.node.tile.beta.1"
+        },
+        "value": {
+          "amount": 150
+        },
+        "units": [
+          "unit.length.meter"
+        ],
+        "extensions": {}
+      },
+      {
+        "field_id": "org.dominium.worldgen.anchors.planetary.field.elevation",
+        "state_tag": "org.dominium.worldgen.state.baseline",
+        "node_ref": {
+          "node_id": "org.dominium.worldgen.anchors.planetary.node.tile.beta.2"
+        },
+        "value": {
+          "amount": 50
+        },
+        "units": [
+          "unit.length.meter"
+        ],
+        "extensions": {}
+      },
+      {
+        "field_id": "org.dominium.worldgen.anchors.planetary.field.temperature",
+        "state_tag": "org.dominium.worldgen.state.baseline",
+        "node_ref": {
+          "node_id": "org.dominium.worldgen.anchors.planetary.node.region.alpha"
+        },
+        "value": {
+          "amount": 120000
+        },
+        "units": [
+          "unit.temperature.kelvin"
+        ],
+        "extensions": {}
+      },
+      {
+        "field_id": "org.dominium.worldgen.anchors.planetary.field.temperature",
+        "state_tag": "org.dominium.worldgen.state.baseline",
+        "node_ref": {
+          "node_id": "org.dominium.worldgen.anchors.planetary.node.region.beta"
+        },
+        "value": {
+          "amount": 90000
+        },
+        "units": [
+          "unit.temperature.kelvin"
+        ],
+        "extensions": {}
+      },
+      {
+        "field_id": "org.dominium.worldgen.anchors.planetary.field.moisture",
+        "state_tag": "org.dominium.worldgen.state.baseline",
+        "node_ref": {
+          "node_id": "org.dominium.worldgen.anchors.planetary.node.tile.alpha.1"
+        },
+        "value": {
+          "amount": 700
+        },
+        "units": [
+          "unit.dimensionless.ratio"
+        ],
+        "extensions": {}
+      },
+      {
+        "field_id": "org.dominium.worldgen.anchors.planetary.field.moisture",
+        "state_tag": "org.dominium.worldgen.state.baseline",
+        "node_ref": {
+          "node_id": "org.dominium.worldgen.anchors.planetary.node.tile.beta.1"
+        },
+        "value": {
+          "amount": 200
+        },
+        "units": [
+          "unit.dimensionless.ratio"
+        ],
+        "extensions": {}
+      }
+    ],
+    "policy_sets": {
+      "movement_policies": [
+        {
+          "policy_id": "org.dominium.policy.none"
+        }
+      ],
+      "authority_policies": [
+        {
+          "policy_id": "org.dominium.policy.none"
+        }
+      ],
+      "mode_policies": [
+        {
+          "policy_id": "org.dominium.policy.none"
+        }
+      ],
+      "debug_policies": [
+        {
+          "policy_id": "org.dominium.policy.none"
+        }
+      ],
+      "extensions": {}
+    },
+    "spawn_spec": {
+      "spawn_node_ref": {
+        "node_id": "org.dominium.worldgen.anchors.planetary.node.planet"
+      },
+      "coordinate_frame_ref": {
+        "frame_id": "org.dominium.coord.frame.local"
+      },
+      "position": {
+        "value": {},
+        "units_tags": [
+          "unit.length.meter"
+        ]
+      },
+      "orientation": {
+        "value": {}
+      },
+      "extensions": {}
+    },
+    "provenance": {
+      "template_id": "org.dominium.worldgen.anchors.planetary.template",
+      "template_version": "1.0.0",
+      "generator_source": "org.dominium.generator.manual",
+      "seed": {},
+      "extensions": {}
+    },
+    "capability_expectations": [
+      {
+        "capability_id": "org.dominium.worldgen.planetary"
+      }
+    ],
+    "pack_refs": [
+      {
+        "pack_id": "org.dominium.worldgen.anchors.planetary"
+      }
+    ],
+    "extensions": {}
+  }
+}

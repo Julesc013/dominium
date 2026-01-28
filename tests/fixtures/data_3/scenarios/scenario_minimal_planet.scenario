@@ -1,0 +1,16 @@
+DOMINIUM_SCENARIO_V1
+scenario_id=org.dominium.world.scenario.minimal_planet
+scenario_version=1.0.0
+world_template=org.dominium.worldgen.anchors.planetary.template
+world_seed=3101
+policy.authority=policy.authority.shell
+policy.mode=policy.mode.nav.free
+policy.playtest=policy.playtest.sandbox
+policy.law=policy.law.none
+policy.enforcement=policy.enforcement.none
+lockfile_id=org.dominium.lockfile.world.anchors_planetary
+lockfile_hash=hash.world.anchors_planetary
+fields_begin
+fields_end
+agents_begin
+agents_end

@@ -1,0 +1,173 @@
+{
+  "materials": [],
+  "interfaces": [],
+  "parts": [],
+  "assemblies": [],
+  "process_families": [
+    {
+      "process_family_id": "org.dominium.core.process_family.trade.exchange",
+      "inputs": [
+        {
+          "ref_type": "org.dominium.process_ref.generic",
+          "ref_id": "org.dominium.core.trade.field.market_supply",
+          "quantity": {
+            "value": 10,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "org.dominium.process_ref.generic",
+          "ref_id": "org.dominium.core.trade.field.market_demand",
+          "quantity": {
+            "value": 10,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "wastes": [],
+      "energy_flows": {},
+      "parameter_space": {
+        "org.dominium.param.exchange_rate": 5
+      },
+      "yield_distribution": {
+        "org.dominium.yield.success": 900,
+        "org.dominium.yield.fail": 100
+      },
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "parameter_space.org.dominium.param.exchange_rate": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.success": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.fail": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Market exchange with abstract rates."
+      }
+    },
+    {
+      "process_family_id": "org.dominium.core.process_family.trade.price_adjust",
+      "inputs": [
+        {
+          "ref_type": "org.dominium.process_ref.generic",
+          "ref_id": "org.dominium.core.trade.field.price_signal",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.currency.credit",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "org.dominium.process_ref.generic",
+          "ref_id": "org.dominium.core.trade.field.price_signal",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.currency.credit",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "wastes": [],
+      "energy_flows": {},
+      "parameter_space": {
+        "org.dominium.param.price_elasticity": 2
+      },
+      "yield_distribution": {},
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "parameter_space.org.dominium.param.price_elasticity": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Price formation as parameterized adjustments."
+      }
+    },
+    {
+      "process_family_id": "org.dominium.core.process_family.trade.transport_cost",
+      "inputs": [
+        {
+          "ref_type": "org.dominium.process_ref.generic",
+          "ref_id": "org.dominium.core.trade.field.transport_distance",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.length.meter",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "org.dominium.process_ref.generic",
+          "ref_id": "org.dominium.core.trade.field.transport_cost",
+          "quantity": {
+            "value": 2,
+            "unit": "unit.currency.credit",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "wastes": [],
+      "energy_flows": {},
+      "parameter_space": {
+        "org.dominium.param.cost_factor": 3
+      },
+      "yield_distribution": {},
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "parameter_space.org.dominium.param.cost_factor": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Transport cost as abstract conversion."
+      }
+    }
+  ],
+  "instruments": [],
+  "standards": [],
+  "qualities": [],
+  "batches": [],
+  "hazards": [],
+  "substances": [],
+  "markets": [
+    {
+      "market_id": "org.dominium.core.trade.market.generic",
+      "market_type": "org.dominium.market.generic",
+      "exchange_process_family_id": "org.dominium.core.process_family.trade.exchange",
+      "price_process_family_id": "org.dominium.core.process_family.trade.price_adjust",
+      "extensions": {
+        "notes": "Generic market anchor."
+      }
+    }
+  ],
+  "extensions": {
+    "notes": "Trade as exchange, price adjustment, and transport costs."
+  }
+}

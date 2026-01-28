@@ -1,0 +1,7 @@
+DOMINIUM_VARIANT_V1
+variant_id=org.dominium.world.variant.minimal_planet
+variant_version=1.0.0
+lockfile_id=org.dominium.lockfile.world.anchors_planetary
+lockfile_hash=hash.world.anchors_planetary
+policy.law=policy.law.none
+policy.enforcement=policy.enforcement.none

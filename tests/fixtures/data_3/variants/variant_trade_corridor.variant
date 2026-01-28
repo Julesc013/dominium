@@ -1,0 +1,7 @@
+DOMINIUM_VARIANT_V1
+variant_id=org.dominium.world.variant.trade_corridor
+variant_version=1.0.0
+lockfile_id=org.dominium.lockfile.world.trade_corridor
+lockfile_hash=hash.world.trade_corridor
+policy.law=policy.law.light
+policy.enforcement=policy.enforcement.minimal

@@ -1,0 +1,200 @@
+{
+  "materials": [],
+  "interfaces": [],
+  "parts": [],
+  "assemblies": [],
+  "process_families": [
+    {
+      "process_family_id": "org.dominium.core.process_family.civ_stress.shock",
+      "inputs": [
+        {
+          "ref_type": "org.dominium.process_ref.generic",
+          "ref_id": "org.dominium.core.civ_stress.field.stress_index",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "org.dominium.process_ref.generic",
+          "ref_id": "org.dominium.core.civ_stress.field.stress_index",
+          "quantity": {
+            "value": 2,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "wastes": [],
+      "energy_flows": {
+        "org.dominium.energy.flow": 2
+      },
+      "parameter_space": {
+        "org.dominium.param.shock_intensity": 5
+      },
+      "yield_distribution": {
+        "org.dominium.yield.escalate": 700,
+        "org.dominium.yield.absorb": 300
+      },
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "energy_flows.org.dominium.energy.flow": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.shock_intensity": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.escalate": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.absorb": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Generic stress shock process."
+      }
+    },
+    {
+      "process_family_id": "org.dominium.core.process_family.civ_stress.recovery",
+      "inputs": [
+        {
+          "ref_type": "org.dominium.process_ref.generic",
+          "ref_id": "org.dominium.core.civ_stress.field.stress_index",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "org.dominium.process_ref.generic",
+          "ref_id": "org.dominium.core.civ_stress.field.recovery_index",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "wastes": [],
+      "energy_flows": {
+        "org.dominium.energy.flow": 1
+      },
+      "parameter_space": {
+        "org.dominium.param.recovery_rate": 3
+      },
+      "yield_distribution": {
+        "org.dominium.yield.success": 800,
+        "org.dominium.yield.fail": 200
+      },
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "energy_flows.org.dominium.energy.flow": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.recovery_rate": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.success": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.fail": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Generic recovery process."
+      }
+    },
+    {
+      "process_family_id": "org.dominium.core.process_family.civ_stress.institutional_failure",
+      "inputs": [],
+      "outputs": [],
+      "wastes": [],
+      "energy_flows": {},
+      "parameter_space": {
+        "org.dominium.param.failure_likelihood": 2
+      },
+      "yield_distribution": {
+        "org.dominium.yield.failure": 200,
+        "org.dominium.yield.stable": 800
+      },
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "parameter_space.org.dominium.param.failure_likelihood": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.failure": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.stable": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Institutional failure as parameterized likelihood."
+      }
+    }
+  ],
+  "instruments": [],
+  "standards": [],
+  "qualities": [],
+  "batches": [],
+  "hazards": [],
+  "substances": [],
+  "stress_indicators": [
+    {
+      "indicator_id": "org.dominium.core.civ_stress.indicator.resource_shortage",
+      "field_id": "org.dominium.core.civ_stress.field.stress_index",
+      "indicator_type": "org.dominium.stress.resource_shortage",
+      "extensions": {
+        "notes": "Generic resource shortage indicator."
+      }
+    },
+    {
+      "indicator_id": "org.dominium.core.civ_stress.indicator.conflict_pressure",
+      "field_id": "org.dominium.core.civ_stress.field.stress_index",
+      "indicator_type": "org.dominium.stress.conflict_pressure",
+      "extensions": {
+        "notes": "Generic conflict pressure indicator."
+      }
+    }
+  ],
+  "extensions": {
+    "notes": "Stress, shocks, and recovery without scripts."
+  }
+}

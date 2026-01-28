@@ -1,0 +1,16 @@
+DOMINIUM_SCENARIO_V1
+scenario_id=org.dominium.world.scenario.collapse_and_recovery
+scenario_version=1.0.0
+world_template=org.dominium.worldgen.anchors.planetary.template
+world_seed=3104
+policy.authority=policy.authority.shell
+policy.mode=policy.mode.nav.free
+policy.playtest=policy.playtest.sandbox
+policy.law=policy.law.strict
+policy.enforcement=policy.enforcement.strict
+lockfile_id=org.dominium.lockfile.world.collapse_and_recovery
+lockfile_hash=hash.world.collapse_and_recovery
+fields_begin
+fields_end
+agents_begin
+agents_end

@@ -1,0 +1,286 @@
+{
+  "materials": [],
+  "interfaces": [],
+  "parts": [],
+  "assemblies": [],
+  "process_families": [
+    {
+      "process_family_id": "org.dominium.core.process_family.ecology.growth",
+      "inputs": [
+        {
+          "ref_type": "org.dominium.process_ref.generic",
+          "ref_id": "org.dominium.core.ecology.field.nutrient",
+          "quantity": {
+            "value": 10,
+            "unit": "unit.mass.kilogram",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "org.dominium.process_ref.generic",
+          "ref_id": "org.dominium.core.ecology.field.biomass",
+          "quantity": {
+            "value": 8,
+            "unit": "unit.mass.kilogram",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "wastes": [
+        {
+          "ref_type": "org.dominium.process_ref.generic",
+          "ref_id": "org.dominium.core.ecology.field.waste",
+          "quantity": {
+            "value": 2,
+            "unit": "unit.mass.kilogram",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "energy_flows": {
+        "org.dominium.energy.flow": 5
+      },
+      "parameter_space": {
+        "org.dominium.param.growth_rate": 5,
+        "org.dominium.param.carrying_capacity": 1000
+      },
+      "yield_distribution": {
+        "org.dominium.yield.success": 900,
+        "org.dominium.yield.fail": 100
+      },
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "energy_flows.org.dominium.energy.flow": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.growth_rate": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.carrying_capacity": {
+          "unit": "unit.mass.kilogram",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.success": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.fail": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Generic biomass growth under resource limits."
+      }
+    },
+    {
+      "process_family_id": "org.dominium.core.process_family.ecology.decay",
+      "inputs": [
+        {
+          "ref_type": "org.dominium.process_ref.generic",
+          "ref_id": "org.dominium.core.ecology.field.biomass",
+          "quantity": {
+            "value": 6,
+            "unit": "unit.mass.kilogram",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "org.dominium.process_ref.generic",
+          "ref_id": "org.dominium.core.ecology.field.nutrient",
+          "quantity": {
+            "value": 5,
+            "unit": "unit.mass.kilogram",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "wastes": [
+        {
+          "ref_type": "org.dominium.process_ref.generic",
+          "ref_id": "org.dominium.core.ecology.field.waste",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.mass.kilogram",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "energy_flows": {
+        "org.dominium.energy.flow": 2
+      },
+      "parameter_space": {
+        "org.dominium.param.decay_rate": 4
+      },
+      "yield_distribution": {
+        "org.dominium.yield.success": 950,
+        "org.dominium.yield.fail": 50
+      },
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "energy_flows.org.dominium.energy.flow": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.decay_rate": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.success": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.fail": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Generic decay returning nutrients."
+      }
+    },
+    {
+      "process_family_id": "org.dominium.core.process_family.ecology.reproduction",
+      "inputs": [
+        {
+          "ref_type": "org.dominium.process_ref.generic",
+          "ref_id": "org.dominium.core.ecology.field.biomass",
+          "quantity": {
+            "value": 3,
+            "unit": "unit.mass.kilogram",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "org.dominium.process_ref.generic",
+          "ref_id": "org.dominium.core.ecology.field.biomass",
+          "quantity": {
+            "value": 3,
+            "unit": "unit.mass.kilogram",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "wastes": [],
+      "energy_flows": {
+        "org.dominium.energy.flow": 1
+      },
+      "parameter_space": {
+        "org.dominium.param.reproduction_cost": 2
+      },
+      "yield_distribution": {
+        "org.dominium.yield.success": 800,
+        "org.dominium.yield.fail": 200
+      },
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "energy_flows.org.dominium.energy.flow": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.reproduction_cost": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.success": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.fail": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Reproduction as an abstract process."
+      }
+    },
+    {
+      "process_family_id": "org.dominium.core.process_family.ecology.nutrient_cycle",
+      "inputs": [
+        {
+          "ref_type": "org.dominium.process_ref.generic",
+          "ref_id": "org.dominium.core.ecology.field.waste",
+          "quantity": {
+            "value": 2,
+            "unit": "unit.mass.kilogram",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "org.dominium.process_ref.generic",
+          "ref_id": "org.dominium.core.ecology.field.nutrient",
+          "quantity": {
+            "value": 2,
+            "unit": "unit.mass.kilogram",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "wastes": [],
+      "energy_flows": {
+        "org.dominium.energy.flow": 1
+      },
+      "parameter_space": {
+        "org.dominium.param.cycle_rate": 3
+      },
+      "yield_distribution": {},
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "energy_flows.org.dominium.energy.flow": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.cycle_rate": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Nutrient recycling loop."
+      }
+    }
+  ],
+  "instruments": [],
+  "standards": [],
+  "qualities": [],
+  "batches": [],
+  "hazards": [],
+  "substances": [],
+  "extensions": {
+    "notes": "Ecology modeled as fields and parameterized processes."
+  }
+}

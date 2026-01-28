@@ -1,0 +1,74 @@
+{
+  "schema_id": "dominium.schema.capability_lockfile",
+  "schema_version": "1.0.0",
+  "record": {
+    "lock_id": "org.dominium.lockfile.world.collapse_and_recovery",
+    "lock_format_version": 1,
+    "generated_by": "org.dominium.tools.lockgen",
+    "resolution_rules": [
+      "org.dominium.rules.default"
+    ],
+    "missing_mode": "org.dominium.missing.refuse",
+    "pack_refs": [
+      {
+        "pack_id": "org.dominium.worldgen.anchors.planetary"
+      },
+      {
+        "pack_id": "org.dominium.core.units"
+      },
+      {
+        "pack_id": "org.dominium.core.ecology.basic"
+      },
+      {
+        "pack_id": "org.dominium.core.population.basic"
+      },
+      {
+        "pack_id": "org.dominium.core.settlements.basic"
+      },
+      {
+        "pack_id": "org.dominium.core.infrastructure.basic"
+      },
+      {
+        "pack_id": "org.dominium.core.trade.basic"
+      },
+      {
+        "pack_id": "org.dominium.core.civ_stress.basic"
+      }
+    ],
+    "resolutions": [
+      {
+        "capability_id": "org.dominium.worldgen.planetary",
+        "provider_pack_id": "org.dominium.worldgen.anchors.planetary"
+      },
+      {
+        "capability_id": "org.dominium.core.units",
+        "provider_pack_id": "org.dominium.core.units"
+      },
+      {
+        "capability_id": "org.dominium.core.ecology",
+        "provider_pack_id": "org.dominium.core.ecology.basic"
+      },
+      {
+        "capability_id": "org.dominium.core.population",
+        "provider_pack_id": "org.dominium.core.population.basic"
+      },
+      {
+        "capability_id": "org.dominium.core.settlements",
+        "provider_pack_id": "org.dominium.core.settlements.basic"
+      },
+      {
+        "capability_id": "org.dominium.core.infrastructure",
+        "provider_pack_id": "org.dominium.core.infrastructure.basic"
+      },
+      {
+        "capability_id": "org.dominium.core.trade",
+        "provider_pack_id": "org.dominium.core.trade.basic"
+      },
+      {
+        "capability_id": "org.dominium.core.civ_stress",
+        "provider_pack_id": "org.dominium.core.civ_stress.basic"
+      }
+    ],
+    "extensions": {}
+  }
+}
