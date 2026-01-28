@@ -53,6 +53,14 @@ extern "C" {
 
 #define DOM_SHELL_SAVE_HEADER "DOMINIUM_SAVE_V1"
 #define DOM_SHELL_REPLAY_HEADER "DOMINIUM_REPLAY_V1"
+#define DOM_SHELL_SCENARIO_HEADER "DOMINIUM_SCENARIO_V1"
+#define DOM_SHELL_VARIANT_HEADER "DOMINIUM_VARIANT_V1"
+
+#define DOM_SHELL_SCENARIO_ID_MAX DOM_SHELL_MAX_TEMPLATE_ID
+#define DOM_SHELL_SCENARIO_VERSION_MAX 32u
+#define DOM_SHELL_LOCKFILE_ID_MAX DOM_SHELL_MAX_TEMPLATE_ID
+#define DOM_SHELL_LOCKFILE_HASH_MAX 96u
+#define DOM_SHELL_SCENARIO_VARIANTS_MAX 8u
 
 #define DOM_SHELL_WORLDDEF_SCHEMA_ID "dominium.schema.world_definition"
 #define DOM_SHELL_WORLDDEF_SCHEMA_VERSION 1u
@@ -126,6 +134,15 @@ typedef struct dom_shell_playtest_state {
     dom_shell_playtest_scenario scenarios[DOM_SHELL_PLAYTEST_SCENARIO_MAX];
     uint32_t scenario_count;
 } dom_shell_playtest_state;
+
+typedef struct dom_shell_scenario_state {
+    char scenario_id[DOM_SHELL_SCENARIO_ID_MAX];
+    char scenario_version[DOM_SHELL_SCENARIO_VERSION_MAX];
+    char lockfile_id[DOM_SHELL_LOCKFILE_ID_MAX];
+    char lockfile_hash[DOM_SHELL_LOCKFILE_HASH_MAX];
+    char variant_ids[DOM_SHELL_SCENARIO_VARIANTS_MAX][DOM_SHELL_VARIANT_ID_MAX];
+    uint32_t variant_count;
+} dom_shell_scenario_state;
 
 typedef struct dom_shell_metrics_window {
     uint32_t tick;
@@ -314,6 +331,7 @@ typedef struct dom_client_shell {
     dom_shell_variant_mode variant_mode;
     char variant_mode_detail[64];
     dom_shell_playtest_state playtest;
+    dom_shell_scenario_state scenario;
     dom_shell_metrics_state metrics;
     uint32_t create_template_index;
     uint64_t create_seed;

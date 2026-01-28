@@ -34,6 +34,9 @@ Minimal client entrypoint with MP0 local-connect demo.
 #include <dirent.h>
 #endif
 
+#define CLIENT_UI_DEFAULT_SCENARIO_PATH "data/scenarios/default.scenario"
+#define CLIENT_UI_DEFAULT_VARIANT_PATH "data/variants/default.variant"
+
 static void client_print_platform_caps(void);
 
 static void print_help(void)
@@ -82,8 +85,10 @@ static void print_help(void)
     printf("commands:\n");
     printf("  new-world       Create a new world (use built-in templates)\n");
     printf("  load-world      Load a world save (default path or path=...)\n");
+    printf("  scenario-load   Load a scenario file (path=... variant=...)\n");
     printf("  inspect-replay  Inspect a replay or save (path=...)\n");
     printf("  save            Save current world (default path or path=...)\n");
+    printf("  replay-save     Save replay event stream (default path or path=...)\n");
     printf("  templates       List available templates\n");
     printf("  mode            Set navigation mode (policy.mode.*)\n");
     printf("  where           Show current world status\n");
@@ -612,6 +617,9 @@ typedef enum client_ui_action {
     CLIENT_ACTION_BACK,
     CLIENT_ACTION_CREATE_WORLD,
     CLIENT_ACTION_SAVE_WORLD,
+    CLIENT_ACTION_SCENARIO_LOAD,
+    CLIENT_ACTION_VARIANT_APPLY,
+    CLIENT_ACTION_REPLAY_SAVE,
     CLIENT_ACTION_RENDERER_NEXT,
     CLIENT_ACTION_SCALE_UP,
     CLIENT_ACTION_SCALE_DOWN,
@@ -1549,6 +1557,27 @@ static void client_ui_apply_action(client_ui_state* state,
         dom_client_shell_save_world(&state->shell, 0, log,
                                     state->action_status, sizeof(state->action_status), 0);
         break;
+    case CLIENT_ACTION_SCENARIO_LOAD: {
+        char cmd[256];
+        snprintf(cmd, sizeof(cmd), "scenario-load path=%s", CLIENT_UI_DEFAULT_SCENARIO_PATH);
+        client_ui_execute_command(cmd, &state->settings, log, state,
+                                  state->action_status, sizeof(state->action_status), 0);
+        if (state->shell.world.active) {
+            state->screen = CLIENT_UI_WORLD_VIEW;
+        }
+        break;
+    }
+    case CLIENT_ACTION_VARIANT_APPLY: {
+        char cmd[256];
+        snprintf(cmd, sizeof(cmd), "variant-apply path=%s", CLIENT_UI_DEFAULT_VARIANT_PATH);
+        client_ui_execute_command(cmd, &state->settings, log, state,
+                                  state->action_status, sizeof(state->action_status), 0);
+        break;
+    }
+    case CLIENT_ACTION_REPLAY_SAVE:
+        client_ui_execute_command("replay-save", &state->settings, log, state,
+                                  state->action_status, sizeof(state->action_status), 0);
+        break;
     case CLIENT_ACTION_INSPECT_REPLAY:
         snprintf(state->action_status, sizeof(state->action_status), "replay_inspect=ready");
         state->screen = CLIENT_UI_REPLAY;
@@ -1668,8 +1697,17 @@ static client_ui_action client_ui_action_from_token(const char* token)
     if (strcmp(token, "load-world") == 0 || strcmp(token, "load-save") == 0 || strcmp(token, "load") == 0) {
         return CLIENT_ACTION_LOAD_WORLD;
     }
+    if (strcmp(token, "scenario-load") == 0 || strcmp(token, "load-scenario") == 0) {
+        return CLIENT_ACTION_SCENARIO_LOAD;
+    }
     if (strcmp(token, "replay") == 0 || strcmp(token, "inspect-replay") == 0) return CLIENT_ACTION_INSPECT_REPLAY;
     if (strcmp(token, "save") == 0) return CLIENT_ACTION_SAVE_WORLD;
+    if (strcmp(token, "replay-save") == 0 || strcmp(token, "save-replay") == 0) {
+        return CLIENT_ACTION_REPLAY_SAVE;
+    }
+    if (strcmp(token, "variant-apply") == 0 || strcmp(token, "variant-load") == 0) {
+        return CLIENT_ACTION_VARIANT_APPLY;
+    }
     if (strcmp(token, "tools") == 0) return CLIENT_ACTION_TOOLS;
     if (strcmp(token, "settings") == 0) return CLIENT_ACTION_SETTINGS;
     if (strcmp(token, "exit") == 0 || strcmp(token, "quit") == 0) return CLIENT_ACTION_EXIT;

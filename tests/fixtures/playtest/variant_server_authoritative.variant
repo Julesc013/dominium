@@ -1,0 +1,5 @@
+DOMINIUM_VARIANT_V1
+variant_id=org.dominium.playtest.variant.server_authoritative
+variant_version=1.0.0
+policy.authority=policy.authority.server
+policy.mode=policy.mode.server.authoritative
