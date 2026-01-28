@@ -1,0 +1,345 @@
+{
+  "materials": [
+    {
+      "material_id": "dominium.game.material.test_steel",
+      "traits": {
+        "density": 7800000
+      },
+      "manufacturability": {
+        "forgeable": 1
+      },
+      "failure_params": {
+        "corrosion": 0
+      },
+      "unit_annotations": {
+        "traits.density": {
+          "unit": "unit.mass.kilogram",
+          "scale": 1000000,
+          "overflow_behavior": "refuse"
+        },
+        "failure_params.corrosion": {
+          "unit": "unit.mass.kilogram",
+          "scale": 1000000,
+          "overflow_behavior": "refuse"
+        }
+      },
+      "provenance": {
+        "provenance_id": "dominium.game.prov.test"
+      },
+      "extensions": {}
+    },
+    {
+      "material_id": "dominium.game.material.test_copper",
+      "traits": {
+        "density": 8900000
+      },
+      "manufacturability": {
+        "forgeable": 1
+      },
+      "failure_params": {
+        "corrosion": 0
+      },
+      "unit_annotations": {
+        "traits.density": {
+          "unit": "unit.mass.kilogram",
+          "scale": 1000000,
+          "overflow_behavior": "refuse"
+        },
+        "failure_params.corrosion": {
+          "unit": "unit.mass.kilogram",
+          "scale": 1000000,
+          "overflow_behavior": "refuse"
+        }
+      },
+      "provenance": {
+        "provenance_id": "dominium.game.prov.test"
+      },
+      "extensions": {}
+    }
+  ],
+  "interfaces": [
+    {
+      "interface_id": "dominium.game.interface.mech.slot",
+      "interface_type": "mechanical",
+      "directionality": "bidirectional",
+      "capacity": {
+        "value": 1000,
+        "unit": "unit.mass.kilogram",
+        "scale_hint": "unit.mass.kilogram",
+        "overflow_behavior": "refuse"
+      },
+      "unit_annotations": {},
+      "compatibility_rules": {
+        "allow_degraded": false
+      },
+      "extensions": {}
+    }
+  ],
+  "parts": [
+    {
+      "part_id": "dominium.game.part.block.alpha",
+      "material_ref": {
+        "material_id": "dominium.game.material.test_steel"
+      },
+      "mass": {
+        "value": 1000,
+        "unit": "unit.mass.kilogram",
+        "scale_hint": "unit.mass.kilogram",
+        "overflow_behavior": "refuse"
+      },
+      "volume": {
+        "value": 1,
+        "unit": "unit.length.meter",
+        "scale_hint": "unit.length.meter",
+        "overflow_behavior": "refuse"
+      },
+      "interfaces": [
+        {
+          "interface_id": "dominium.game.interface.mech.slot"
+        }
+      ],
+      "constraints": [],
+      "quality_requirements": {},
+      "failure_model_ref": {
+        "failure_model_id": "dominium.game.failure.none"
+      },
+      "unit_annotations": {},
+      "extensions": {}
+    },
+    {
+      "part_id": "dominium.game.part.block.beta",
+      "material_ref": {
+        "material_id": "dominium.game.material.test_copper"
+      },
+      "mass": {
+        "value": 2000,
+        "unit": "unit.mass.kilogram",
+        "scale_hint": "unit.mass.kilogram",
+        "overflow_behavior": "refuse"
+      },
+      "volume": {
+        "value": 2,
+        "unit": "unit.length.meter",
+        "scale_hint": "unit.length.meter",
+        "overflow_behavior": "refuse"
+      },
+      "interfaces": [
+        {
+          "interface_id": "dominium.game.interface.mech.slot"
+        }
+      ],
+      "constraints": [],
+      "quality_requirements": {},
+      "failure_model_ref": {
+        "failure_model_id": "dominium.game.failure.none"
+      },
+      "unit_annotations": {},
+      "extensions": {}
+    }
+  ],
+  "assemblies": [
+    {
+      "assembly_id": "dominium.game.assembly.alpha",
+      "nodes": [
+        {
+          "node_id": "dominium.game.node.alpha.part1",
+          "node_type": "part",
+          "ref_id": "dominium.game.part.block.alpha"
+        }
+      ],
+      "edges": [
+        {
+          "edge_id": "dominium.game.edge.alpha.link1",
+          "from_node_id": "dominium.game.node.alpha.part1",
+          "to_node_id": "dominium.game.node.alpha.part1",
+          "interface_ref": {
+            "interface_id": "dominium.game.interface.mech.slot"
+          }
+        }
+      ],
+      "subsystems": [],
+      "hosted_processes": [
+        {
+          "process_family_id": "dominium.game.process_family.alpha"
+        }
+      ],
+      "throughput_limits": {},
+      "maintenance": {},
+      "unit_annotations": {},
+      "extensions": {}
+    },
+    {
+      "assembly_id": "dominium.game.assembly.beta",
+      "nodes": [
+        {
+          "node_id": "dominium.game.node.beta.part1",
+          "node_type": "part",
+          "ref_id": "dominium.game.part.block.beta"
+        }
+      ],
+      "edges": [
+        {
+          "edge_id": "dominium.game.edge.beta.link1",
+          "from_node_id": "dominium.game.node.beta.part1",
+          "to_node_id": "dominium.game.node.beta.part1",
+          "interface_ref": {
+            "interface_id": "dominium.game.interface.mech.slot"
+          }
+        }
+      ],
+      "subsystems": [],
+      "hosted_processes": [
+        {
+          "process_family_id": "dominium.game.process_family.alpha"
+        }
+      ],
+      "throughput_limits": {},
+      "maintenance": {},
+      "unit_annotations": {},
+      "extensions": {}
+    }
+  ],
+  "process_families": [
+    {
+      "process_family_id": "dominium.game.process_family.alpha",
+      "inputs": [
+        {
+          "io_id": 1,
+          "resource_id": "dominium.game.resource.raw",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.mass.kilogram",
+            "scale_hint": "unit.mass.kilogram",
+            "overflow_behavior": "refuse"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "io_id": 2,
+          "resource_id": "dominium.game.resource.out",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.mass.kilogram",
+            "scale_hint": "unit.mass.kilogram",
+            "overflow_behavior": "refuse"
+          }
+        }
+      ],
+      "wastes": [],
+      "parameter_space": [],
+      "yield_distribution": [
+        {
+          "outcome_id": 0,
+          "weight": 1
+        }
+      ],
+      "required_instruments": [
+        {
+          "instrument_id": "dominium.game.instrument.basic"
+        }
+      ],
+      "required_standards": [
+        {
+          "standard_id": "dominium.game.standard.basic"
+        }
+      ],
+      "unit_annotations": {}
+    }
+  ],
+  "instruments": [
+    {
+      "instrument_id": "dominium.game.instrument.basic",
+      "measured_quantities": [
+        "unit.mass.kilogram"
+      ],
+      "accuracy": {
+        "value": 1,
+        "unit": "unit.mass.kilogram",
+        "scale_hint": "unit.mass.kilogram",
+        "overflow_behavior": "refuse"
+      },
+      "precision": {
+        "value": 1,
+        "unit": "unit.mass.kilogram",
+        "scale_hint": "unit.mass.kilogram",
+        "overflow_behavior": "refuse"
+      },
+      "calibration_drift": {
+        "value": 0,
+        "unit": "unit.mass.kilogram",
+        "scale_hint": "unit.mass.kilogram",
+        "overflow_behavior": "refuse"
+      },
+      "required_standards": [
+        {
+          "standard_id": "dominium.game.standard.basic"
+        }
+      ],
+      "unit_annotations": {},
+      "extensions": {}
+    }
+  ],
+  "standards": [
+    {
+      "standard_id": "dominium.game.standard.basic",
+      "scope": "unit",
+      "tolerance_ranges": {},
+      "certification_rules": {},
+      "authority_ref": "dominium.game.authority.none",
+      "extensions": {}
+    }
+  ],
+  "qualities": [
+    {
+      "quality_id": "dominium.game.quality.basic",
+      "tolerance_class": "qc.basic",
+      "inspection_methods": [],
+      "pass_fail_criteria": {},
+      "degradation_effects": {},
+      "extensions": {}
+    }
+  ],
+  "batches": [
+    {
+      "batch_id": "dominium.game.batch.alpha",
+      "quantity": {
+        "value": 1,
+        "unit": "unit.mass.kilogram",
+        "scale_hint": "unit.mass.kilogram",
+        "overflow_behavior": "refuse"
+      },
+      "source_process_ref": {
+        "process_family_id": "dominium.game.process_family.alpha"
+      },
+      "quality_ref": {
+        "quality_id": "dominium.game.quality.basic"
+      },
+      "timestamp": 0,
+      "extensions": {}
+    }
+  ],
+  "hazards": [
+    {
+      "hazard_id": "dominium.game.hazard.basic",
+      "hazard_type": "chemical",
+      "trigger_conditions": {},
+      "impact_effects": {},
+      "mitigation_refs": [],
+      "extensions": {}
+    }
+  ],
+  "substances": [
+    {
+      "substance_id": "dominium.game.substance.basic",
+      "composition": {},
+      "phase": "solid",
+      "hazards": [
+        {
+          "hazard_id": "dominium.game.hazard.basic"
+        }
+      ],
+      "extensions": {}
+    }
+  ]
+}

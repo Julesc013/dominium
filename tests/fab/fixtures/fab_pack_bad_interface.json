@@ -1,0 +1,51 @@
+{
+  "materials": [],
+  "interfaces": [
+    {
+      "interface_id": "dominium.game.interface.mech.slot",
+      "interface_type": "mechanical",
+      "directionality": "bidirectional",
+      "capacity": {
+        "value": 1000,
+        "unit": "unit.mass.kilogram",
+        "scale_hint": "unit.mass.kilogram",
+        "overflow_behavior": "refuse"
+      },
+      "unit_annotations": {},
+      "compatibility_rules": {
+        "allow_degraded": false
+      },
+      "extensions": {}
+    }
+  ],
+  "parts": [],
+  "assemblies": [
+    {
+      "assembly_id": "dominium.game.assembly.bad",
+      "nodes": [],
+      "edges": [
+        {
+          "edge_id": "dominium.game.edge.bad.link1",
+          "from_node_id": "dominium.game.node.missing",
+          "to_node_id": "dominium.game.node.missing",
+          "interface_ref": {
+            "interface_id": "dominium.game.interface.missing"
+          }
+        }
+      ],
+      "subsystems": [],
+      "hosted_processes": [],
+      "throughput_limits": {},
+      "maintenance": {},
+      "unit_annotations": {},
+      "extensions": {}
+    }
+  ],
+  "process_families": [],
+  "instruments": [],
+  "standards": [],
+  "qualities": [],
+  "batches": [],
+  "hazards": [],
+  "substances": []
+}
