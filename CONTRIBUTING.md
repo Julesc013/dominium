@@ -1,4 +1,6 @@
-# Dominium — Contributing (Authoritative)
+# Dominium — Contributing (Legacy Pointer)
+
+Canonical guide: `docs/CONTRIBUTING.md`.
 
 This repository is specification-driven: behavioral and format changes must be
 reflected in the spec set under `docs/` and must preserve determinism and hard
