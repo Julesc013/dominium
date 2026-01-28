@@ -1,0 +1,63 @@
+SCHEMA: profile.schema
+schema_id: dominium.schema.profile
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define optional, data-driven launcher profiles and policy presets.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- Profiles are advisory and optional.
+- Profiles do NOT imply pack installation.
+- Profiles do NOT change simulation semantics.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- integer: non-negative whole number.
+- bool: true or false.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record profile
+  required:
+    - profile_id: id
+    - profile_version: tag
+    - profile_format_version: integer
+    - recommended_packs: [pack_ref]
+    - default_world_templates: [template_ref]
+    - ui_density: tag
+    - verbosity: tag
+    - default_law_presets: [tag]
+    - default_meta_law_presets: [tag]
+    - warnings_level: tag
+    - extensions: map
+  optional:
+    - description: tag
+    - profile_tags: [tag]
+    - provenance_ref: provenance_ref
+    - notes: map
+
+TYPE DEFINITIONS:
+record pack_ref
+  required:
+    - pack_id: id
+  optional:
+    - version_constraint: tag
+    - pack_tags: [tag]
+
+record template_ref
+  required:
+    - template_id: id
+  optional:
+    - pack_id: id
+    - template_tags: [tag]
+
+record provenance_ref
+  required:
+    - provenance_id: id

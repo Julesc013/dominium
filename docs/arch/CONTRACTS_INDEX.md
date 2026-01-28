@@ -33,6 +33,9 @@ document is binding but still expected to grow or sharpen.
 | `docs/arch/SEMANTIC_STABILITY_POLICY.md` | FROZEN | No reuse and no silent reinterpretation |
 | `docs/arch/ANTI_ENTROPY_RULES.md` | FROZEN | Anti-entropy requirements |
 | `docs/arch/CAPABILITY_BASELINES.md` | FROZEN | Capability baselines and refusals |
+| `docs/distribution/PACK_TAXONOMY.md` | FROZEN | Canonical pack classes |
+| `docs/distribution/LAUNCHER_SETUP_CONTRACT.md` | FROZEN | Distribution and launcher/setup rules |
+| `docs/distribution/LEGACY_COMPATIBILITY.md` | FROZEN | Legacy compatibility modes |
 
 ## Evolving but binding surfaces
 | Contract | Stability | Notes |
@@ -70,6 +73,7 @@ Schemas are the authoritative data-shape contracts. Start here:
 - `schema/batch_lot.schema`
 - `schema/hazard.schema`
 - `schema/substance.schema`
+- `schema/profile.schema`
 
 Refusal code anchors:
 - `docs/arch/REFUSAL_SEMANTICS.md`
