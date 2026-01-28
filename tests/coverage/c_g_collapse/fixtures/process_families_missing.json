@@ -1,0 +1,5 @@
+[
+  "org.dominium.coverage.c-g.process.collapse",
+  "org.dominium.coverage.c-g.process.degrade",
+  "org.dominium.coverage.c-g.process.recover"
+]

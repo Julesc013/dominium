@@ -1,0 +1,5 @@
+[
+  "org.dominium.coverage.c-e.process.calibrate",
+  "org.dominium.coverage.c-e.process.inspect",
+  "org.dominium.coverage.c-e.process.standardize"
+]

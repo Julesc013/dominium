@@ -1,0 +1,5 @@
+[
+  "org.dominium.coverage.c-b.process.consume",
+  "org.dominium.coverage.c-b.process.repair",
+  "org.dominium.coverage.c-b.process.reproduce"
+]

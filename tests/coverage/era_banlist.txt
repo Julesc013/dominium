@@ -1,0 +1,15 @@
+# Tokens that must never appear in engine/ or game/ runtime code.
+# These are intentionally specific to avoid false positives.
+tech_tree
+tech unlock
+tech_unlock
+tech_unlocked
+era_gate
+era_flag
+era_unlock
+progression_gate
+progression_flag
+date_gate
+year_gate
+milestone_gate
+milestone_unlock

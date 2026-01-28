@@ -1,0 +1,13 @@
+DOMINIUM_SCENARIO_V1
+scenario_id=org.dominium.coverage.c-b.scenario
+scenario_version=1.0.0
+world_template=org.dominium.coverage.c-b.template
+world_seed=1002
+lockfile_id=
+lockfile_hash=
+variants_begin
+variants_end
+fields_begin
+fields_end
+agents_begin
+agents_end

@@ -1,0 +1,36 @@
+{
+  "level_id": "C-G",
+  "level_name": "Systemic stress and collapse",
+  "status": "UNSUPPORTED",
+  "required_schemas": [
+    "schema/budget_policy.schema",
+    "schema/budget_snapshot.schema",
+    "schema/hazard.schema",
+    "schema/institution.schema",
+    "schema/process_family.schema",
+    "schema/refinement_plan.schema",
+    "schema/shard_lifecycle.schema",
+    "schema/world_definition.schema",
+    "schema/worldgen_model.schema"
+  ],
+  "required_process_families": [
+    "org.dominium.coverage.c-g.process.collapse",
+    "org.dominium.coverage.c-g.process.degrade",
+    "org.dominium.coverage.c-g.process.recover"
+  ],
+  "required_capabilities": [
+    "org.dominium.coverage.c-g.collapse",
+    "org.dominium.coverage.c-g.depletion",
+    "org.dominium.coverage.c-g.failure",
+    "org.dominium.coverage.c-g.recovery"
+  ],
+  "required_refusals": [
+    "REFUSE_CAPABILITY_MISSING",
+    "WD-REFUSAL-CAPABILITY"
+  ],
+  "allow_in_principle": true,
+  "determinism_assertions": [
+    "fixtures_sorted_lex",
+    "lists_sorted_lex"
+  ]
+}

@@ -1,0 +1,6 @@
+[
+  "org.dominium.coverage.c-e.instruments",
+  "org.dominium.coverage.c-e.knowledge.symbolic",
+  "org.dominium.coverage.c-e.measurement",
+  "org.dominium.coverage.c-e.standards"
+]

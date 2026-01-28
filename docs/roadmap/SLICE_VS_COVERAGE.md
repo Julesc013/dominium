@@ -17,16 +17,8 @@ Coverage is enforced by TESTX, not gameplay.
 | Slice-2 | Sustain a minimal play loop with persistence and institutional actors. |
 | Slice-3 | Operate the full MVP loop with toolchain parity and enforcement. |
 
-## Coverage ladder (planning)
-Coverage categories are defined and enforced by TESTX. This table is descriptive
-only and must align to TESTX invariants.
+## Coverage ladder (authoritative)
+The canonical coverage ladder is defined in:
+- `docs/roadmap/SIMULATION_COVERAGE_LADDER.md`
 
-| Coverage | Engine can represent |
-| --- | --- |
-| C-A | Existence, time, determinism, and law primitives. |
-| C-B | Space, domains, travel, and scheduling constraints. |
-| C-C | Fields, structures, resources, and material states. |
-| C-D | Agents, institutions, authority, and capability boundaries. |
-| C-E | Economy, logistics, and production chains. |
-| C-F | Epistemics, knowledge diffusion, and history/replay integrity. |
-| C-G | Worldgen refinement across scales with bounded budgets. |
+This document intentionally avoids duplicating the ladder to prevent drift.

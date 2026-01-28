@@ -1,0 +1,37 @@
+{
+  "level_id": "C-E",
+  "level_name": "Symbolic knowledge",
+  "status": "UNSUPPORTED",
+  "required_schemas": [
+    "schema/domain.schema",
+    "schema/instrument.schema",
+    "schema/knowledge.schema",
+    "schema/measurement_artifact.schema",
+    "schema/process_family.schema",
+    "schema/quality.schema",
+    "schema/standard.schema",
+    "schema/topology.schema",
+    "schema/world_definition.schema",
+    "schema/worldgen_model.schema"
+  ],
+  "required_process_families": [
+    "org.dominium.coverage.c-e.process.calibrate",
+    "org.dominium.coverage.c-e.process.inspect",
+    "org.dominium.coverage.c-e.process.standardize"
+  ],
+  "required_capabilities": [
+    "org.dominium.coverage.c-e.instruments",
+    "org.dominium.coverage.c-e.knowledge.symbolic",
+    "org.dominium.coverage.c-e.measurement",
+    "org.dominium.coverage.c-e.standards"
+  ],
+  "required_refusals": [
+    "REFUSE_CAPABILITY_MISSING",
+    "WD-REFUSAL-CAPABILITY"
+  ],
+  "allow_in_principle": true,
+  "determinism_assertions": [
+    "fixtures_sorted_lex",
+    "lists_sorted_lex"
+  ]
+}
