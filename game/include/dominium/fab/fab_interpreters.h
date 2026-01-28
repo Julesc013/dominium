@@ -378,6 +378,9 @@ typedef struct dom_fab_process_context {
     const dom_fab_constraint* constraints;
     u32 constraint_count;
     u32 rng_seed;
+    const char* domain_id;
+    const char* entity_id;
+    const char* stream_id;
 } dom_fab_process_context;
 
 typedef struct dom_fab_process_result {
@@ -391,6 +394,22 @@ typedef struct dom_fab_process_result {
 int dom_fab_process_execute(const dom_fab_process_family* family,
                             const dom_fab_process_context* ctx,
                             dom_fab_process_result* out_result);
+
+u32 dom_fab_seed_compose(u32 base_seed,
+                         const char* domain_id,
+                         const char* entity_id,
+                         const char* stream_id);
+
+u32 dom_fab_sample_bounded_u32(u32 seed,
+                               u32 min_value,
+                               u32 max_value);
+
+int dom_fab_select_outcomes(const dom_fab_weighted_outcome* outcomes,
+                            u32 outcome_count,
+                            u32 seed,
+                            u32 max_outcomes,
+                            u32* out_ids,
+                            u32* out_count);
 
 int dom_fab_process_family_to_desc(const dom_fab_process_family* family,
                                    dom_process_desc* out_desc,

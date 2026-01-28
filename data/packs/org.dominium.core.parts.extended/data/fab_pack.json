@@ -79,7 +79,7 @@
       "directionality": "org.dominium.interface.dir.bidirectional",
       "capacity": {
         "value": 800,
-        "unit": "unit.energy.joule",
+        "unit": "unit.pressure.pascal",
         "overflow_behavior": "org.dominium.overflow.refuse"
       },
       "unit_annotations": {},
@@ -97,7 +97,7 @@
       "directionality": "org.dominium.interface.dir.bidirectional",
       "capacity": {
         "value": 100,
-        "unit": "unit.energy.joule",
+        "unit": "unit.pressure.pascal",
         "overflow_behavior": "org.dominium.overflow.refuse"
       },
       "unit_annotations": {},

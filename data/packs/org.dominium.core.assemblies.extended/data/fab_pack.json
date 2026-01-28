@@ -24,6 +24,10 @@
           "to_node_id": "rotary.joint",
           "interface_ref": {
             "interface_id": "org.dominium.core.interface.mechanical.load.high"
+          },
+          "metadata": {
+            "from_interface_id": "org.dominium.core.interface.mechanical.load.high",
+            "to_interface_id": "org.dominium.core.interface.mechanical.load.low"
           }
         }
       ],
@@ -84,6 +88,10 @@
           "to_node_id": "feed.seal",
           "interface_ref": {
             "interface_id": "org.dominium.core.interface.fluid.flow.output"
+          },
+          "metadata": {
+            "from_interface_id": "org.dominium.core.interface.fluid.flow.output",
+            "to_interface_id": "org.dominium.core.interface.fluid.pressure.high"
           }
         }
       ],
@@ -144,6 +152,10 @@
           "to_node_id": "output.connector",
           "interface_ref": {
             "interface_id": "org.dominium.core.interface.data.multiport"
+          },
+          "metadata": {
+            "from_interface_id": "org.dominium.core.interface.mechanical.load.low",
+            "to_interface_id": "org.dominium.core.interface.data.multiport"
           }
         }
       ],
@@ -379,6 +391,10 @@
           "to_node_id": "frame.joint",
           "interface_ref": {
             "interface_id": "org.dominium.core.interface.mechanical.load.low"
+          },
+          "metadata": {
+            "from_interface_id": "org.dominium.core.interface.mechanical.load.high",
+            "to_interface_id": "org.dominium.core.interface.mechanical.load.low"
           }
         },
         {
@@ -387,6 +403,10 @@
           "to_node_id": "frame.joint",
           "interface_ref": {
             "interface_id": "org.dominium.core.interface.mechanical.load.low"
+          },
+          "metadata": {
+            "from_interface_id": "org.dominium.core.interface.mechanical.load.high",
+            "to_interface_id": "org.dominium.core.interface.mechanical.load.low"
           }
         },
         {
@@ -395,6 +415,10 @@
           "to_node_id": "frame.beam_a",
           "interface_ref": {
             "interface_id": "org.dominium.core.interface.mechanical.load.low"
+          },
+          "metadata": {
+            "from_interface_id": "org.dominium.core.interface.mechanical.load.low",
+            "to_interface_id": "org.dominium.core.interface.mechanical.load.high"
           }
         }
       ],
@@ -442,6 +466,7 @@
         }
       },
       "extensions": {
+        "cycle_policy": "org.dominium.cycle_policy.allow",
         "notes": "Multi-bay frame with explicit cyclic edge for stress testing."
       }
     }

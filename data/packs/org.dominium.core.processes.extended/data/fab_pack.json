@@ -106,27 +106,27 @@
           "overflow_behavior": "org.dominium.overflow.refuse"
         },
         "yield_distribution.org.dominium.yield.primary": {
-          "unit": "unit.mass.kilogram",
-          "scale": 1000000,
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
           "overflow_behavior": "org.dominium.overflow.refuse"
         },
         "yield_distribution.org.dominium.yield.secondary": {
-          "unit": "unit.mass.kilogram",
-          "scale": 1000000,
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
           "overflow_behavior": "org.dominium.overflow.refuse"
         },
         "yield_distribution.org.dominium.yield.waste": {
-          "unit": "unit.mass.kilogram",
-          "scale": 1000000,
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
           "overflow_behavior": "org.dominium.overflow.refuse"
         },
         "failure_modes.org.dominium.failure.overheat": {
-          "unit": "unit.time.act_tick",
+          "unit": "unit.dimensionless.ratio",
           "scale": 1,
           "overflow_behavior": "org.dominium.overflow.refuse"
         },
         "failure_modes.org.dominium.failure.misalignment": {
-          "unit": "unit.time.act_tick",
+          "unit": "unit.dimensionless.ratio",
           "scale": 1,
           "overflow_behavior": "org.dominium.overflow.refuse"
         }
@@ -214,17 +214,17 @@
           "overflow_behavior": "org.dominium.overflow.refuse"
         },
         "yield_distribution.org.dominium.yield.refined": {
-          "unit": "unit.mass.kilogram",
-          "scale": 1000000,
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
           "overflow_behavior": "org.dominium.overflow.refuse"
         },
         "yield_distribution.org.dominium.yield.waste": {
-          "unit": "unit.mass.kilogram",
-          "scale": 1000000,
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
           "overflow_behavior": "org.dominium.overflow.refuse"
         },
         "failure_modes.org.dominium.failure.contamination": {
-          "unit": "unit.time.act_tick",
+          "unit": "unit.dimensionless.ratio",
           "scale": 1,
           "overflow_behavior": "org.dominium.overflow.refuse"
         }
@@ -328,22 +328,22 @@
           "overflow_behavior": "org.dominium.overflow.refuse"
         },
         "yield_distribution.org.dominium.yield.pass": {
-          "unit": "unit.mass.kilogram",
-          "scale": 1000000,
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
           "overflow_behavior": "org.dominium.overflow.refuse"
         },
         "yield_distribution.org.dominium.yield.fail": {
-          "unit": "unit.mass.kilogram",
-          "scale": 1000000,
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
           "overflow_behavior": "org.dominium.overflow.refuse"
         },
         "failure_modes.org.dominium.failure.misalignment": {
-          "unit": "unit.time.act_tick",
+          "unit": "unit.dimensionless.ratio",
           "scale": 1,
           "overflow_behavior": "org.dominium.overflow.refuse"
         },
         "failure_modes.org.dominium.failure.calibration": {
-          "unit": "unit.time.act_tick",
+          "unit": "unit.dimensionless.ratio",
           "scale": 1,
           "overflow_behavior": "org.dominium.overflow.refuse"
         }

@@ -36,6 +36,20 @@
       "notes": "fixed-point milli-joule"
     },
     {
+      "unit_id": "unit.dimensionless.ratio",
+      "dimension": "dimensionless",
+      "base_unit": "unit.dimensionless.ratio",
+      "scale": 1,
+      "notes": "unitless ratio/weight"
+    },
+    {
+      "unit_id": "unit.pressure.pascal",
+      "dimension": "pressure",
+      "base_unit": "unit.pressure.pascal",
+      "scale": 1000,
+      "notes": "fixed-point milli-pascal"
+    },
+    {
       "unit_id": "unit.currency.credit",
       "dimension": "currency",
       "base_unit": "unit.currency.credit",
