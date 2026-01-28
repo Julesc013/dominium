@@ -1,0 +1,7 @@
+DOMINIUM_L10N_V1
+locale_id=zz_TEST
+ui.client.title=Dominium Client ZZ
+ui.client.menu.new_world=Start ZZ
+ui.client.menu.load_world=Load ZZ
+ui.launcher.title=Dominium Launcher ZZ
+ui.tools.title=Dominium Tools ZZ

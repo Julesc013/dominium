@@ -50,7 +50,7 @@ def main():
     args = parser.parse_args()
 
     repo_root = os.path.abspath(args.repo_root)
-    mod_doc = os.path.join(repo_root, "docs", "arch", "MOD_ECOSYSTEM_RULES.md")
+    mod_doc = os.path.join(repo_root, "docs", "architecture", "MOD_ECOSYSTEM_RULES.md")
     if not os.path.isfile(mod_doc):
         print("missing mod ecosystem doc")
         return 1

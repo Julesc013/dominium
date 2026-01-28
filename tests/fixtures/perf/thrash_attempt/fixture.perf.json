@@ -1,0 +1,31 @@
+{
+  "fixture_id": "perf.thrash_attempt",
+  "scenario_path": "scenario_thrash_attempt.scenario",
+  "variant_path": "variant_thrash_attempt.variant",
+  "replay_stub": "replay.stub",
+  "guards": [
+    "guard.collapse_expand_ops_budget",
+    "guard.active_tier1_domains_budget",
+    "guard.active_tier2_domains_budget"
+  ],
+  "limits": {
+    "collapse_expand_ops_per_tick": 120,
+    "active_tier2_domains": 32,
+    "active_tier1_domains": 200
+  },
+  "minimums": {
+    "collapse_expand_ops_per_tick": 80
+  },
+  "metrics": {
+    "thread_counts": [
+      1,
+      4
+    ],
+    "paths": {
+      "1": "metrics/metrics_thread1.json",
+      "4": "metrics/metrics_thread4.json"
+    }
+  },
+  "memory_plateau_tolerance_kb": 30000,
+  "expected_refusal_budget_min": 10
+}

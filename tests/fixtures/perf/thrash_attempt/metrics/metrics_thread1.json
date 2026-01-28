@@ -1,0 +1,29 @@
+{
+  "fixture_id": "perf.thrash_attempt",
+  "metrics": {
+    "platform": "fixture",
+    "active_tier2_domains": 32,
+    "active_tier1_domains": 180,
+    "processes_per_tick": 1500,
+    "macro_events_per_tick": 1200,
+    "collapse_expand_ops_per_tick": 120,
+    "agent_planning_steps_per_tick": 6000,
+    "macro_time_steps_per_tick": 800,
+    "snapshot_ops_per_tick": 5,
+    "serialization_ops_per_tick": 3,
+    "refusal_counts_total": 40,
+    "refusal_counts_budget": 25,
+    "refusal_counts_capability": 5,
+    "refusal_counts_validation": 10,
+    "refusal_counts_unknown": 0,
+    "memory_peak_kb": 2600000,
+    "memory_plateau_kb": 2580000,
+    "cross_shard_msgs_per_tick": 2000,
+    "cross_shard_bytes_per_tick": 500000,
+    "event_hash": "7777777777777777777777777777777777777777777777777777777777777777",
+    "metrics_hash": "8888888888888888888888888888888888888888888888888888888888888888",
+    "replay_hash": "a8f417786f8893d6f7498f806117cf81c9cfc0970c4930454b7fe346664c6af0"
+  },
+  "collapse_expand_invariants_ok": true,
+  "thread_count": 1
+}

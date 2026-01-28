@@ -18,6 +18,7 @@ Stub launcher CLI entrypoint.
 #include "dominium/app/app_runtime.h"
 #include "dominium/app/readonly_adapter.h"
 #include "dominium/app/ui_event_log.h"
+#include "dominium/app/ui_presentation.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -114,6 +115,9 @@ static void launcher_print_help(void)
     printf("  --ui-scale <pct>            UI scale percent (e.g. 100, 125, 150)\n");
     printf("  --palette <name>            UI palette (default|high-contrast)\n");
     printf("  --log-verbosity <level>     Logging verbosity (info|warn|error)\n");
+    printf("  --accessibility-preset <path> Apply accessibility preset (data-only)\n");
+    printf("  --locale <id>               Select localization id (e.g. en_US)\n");
+    printf("  --locale-pack <path>        Add localization pack root (can repeat)\n");
     printf("  --debug-ui                  Enable debug UI flags\n");
     printf("  --control-enable=K1,K2       Enable control capabilities (canonical keys)\n");
     printf("  --control-registry <path>    Override control registry path\n");
@@ -353,6 +357,40 @@ static int launcher_parse_log_level(const char* text, int* out_value)
     return 0;
 }
 
+static void launcher_apply_accessibility(launcher_ui_settings* settings,
+                                         const dom_app_ui_accessibility_preset* preset)
+{
+    if (!settings || !preset) {
+        return;
+    }
+    if (preset->has_ui_scale) {
+        settings->ui_scale_percent = preset->ui_scale_percent;
+    }
+    if (preset->has_palette) {
+        settings->palette = preset->palette;
+    }
+    if (preset->has_log_level) {
+        settings->log_level = preset->log_level;
+    }
+    if (preset->ui_density[0]) {
+        strncpy(settings->ui_density, preset->ui_density, sizeof(settings->ui_density) - 1u);
+        settings->ui_density[sizeof(settings->ui_density) - 1u] = '\0';
+    }
+    if (preset->verbosity[0]) {
+        strncpy(settings->verbosity, preset->verbosity, sizeof(settings->verbosity) - 1u);
+        settings->verbosity[sizeof(settings->verbosity) - 1u] = '\0';
+    }
+    if (preset->keybind_profile_id[0]) {
+        strncpy(settings->keybind_profile_id, preset->keybind_profile_id,
+                sizeof(settings->keybind_profile_id) - 1u);
+        settings->keybind_profile_id[sizeof(settings->keybind_profile_id) - 1u] = '\0';
+    }
+    settings->reduced_motion = preset->reduced_motion ? 1 : 0;
+    settings->keyboard_only = preset->keyboard_only ? 1 : 0;
+    settings->screen_reader = preset->screen_reader ? 1 : 0;
+    settings->low_cognitive_load = preset->low_cognitive_load ? 1 : 0;
+}
+
 /* UI shell implementations live in launcher_ui_shell.c */
 
 static const char* launcher_backend_name_for(d_gfx_backend_type backend,
@@ -422,6 +460,10 @@ int launcher_main(int argc, char** argv)
     const char* control_registry_path = "data/registries/control_capabilities.registry";
     char control_registry_buf[512];
     const char* control_enable = 0;
+    const char* accessibility_preset_path = 0;
+    const char* locale_id = 0;
+    const char* locale_packs[16];
+    int locale_pack_count = 0;
     int want_build_info = 0;
     int want_status = 0;
     int want_smoke = 0;
@@ -437,6 +479,8 @@ int launcher_main(int argc, char** argv)
     launcher_ui_settings ui_settings;
     dom_app_ui_event_log ui_log;
     int ui_log_open = 0;
+    dom_app_ui_locale_table locale_table;
+    int locale_active = 0;
     dom_control_caps control_caps;
     int control_loaded = 0;
     const char* cmd = 0;
@@ -445,6 +489,8 @@ int launcher_main(int argc, char** argv)
     dom_app_ui_run_config_init(&ui_run);
     launcher_ui_settings_init(&ui_settings);
     dom_app_ui_event_log_init(&ui_log);
+    dom_app_ui_locale_table_init(&locale_table);
+    locale_active = 0;
 
     for (i = 1; i < argc; ++i) {
         int ui_consumed = 0;
@@ -580,6 +626,41 @@ int launcher_main(int argc, char** argv)
             i += 1;
             continue;
         }
+        if (strncmp(argv[i], "--accessibility-preset=", 24) == 0) {
+            accessibility_preset_path = argv[i] + 24;
+            continue;
+        }
+        if (strcmp(argv[i], "--accessibility-preset") == 0 && i + 1 < argc) {
+            accessibility_preset_path = argv[i + 1];
+            i += 1;
+            continue;
+        }
+        if (strncmp(argv[i], "--locale=", 9) == 0) {
+            locale_id = argv[i] + 9;
+            continue;
+        }
+        if (strcmp(argv[i], "--locale") == 0 && i + 1 < argc) {
+            locale_id = argv[i + 1];
+            i += 1;
+            continue;
+        }
+        if (strncmp(argv[i], "--locale-pack=", 14) == 0) {
+            if (locale_pack_count >= (int)(sizeof(locale_packs) / sizeof(locale_packs[0]))) {
+                fprintf(stderr, "launcher: too many --locale-pack entries\n");
+                return D_APP_EXIT_USAGE;
+            }
+            locale_packs[locale_pack_count++] = argv[i] + 14;
+            continue;
+        }
+        if (strcmp(argv[i], "--locale-pack") == 0 && i + 1 < argc) {
+            if (locale_pack_count >= (int)(sizeof(locale_packs) / sizeof(locale_packs[0]))) {
+                fprintf(stderr, "launcher: too many --locale-pack entries\n");
+                return D_APP_EXIT_USAGE;
+            }
+            locale_packs[locale_pack_count++] = argv[i + 1];
+            i += 1;
+            continue;
+        }
         if (strcmp(argv[i], "--debug-ui") == 0) {
             ui_settings.debug_ui = 1;
             continue;
@@ -648,11 +729,52 @@ int launcher_main(int argc, char** argv)
         launcher_print_help();
         return D_APP_EXIT_OK;
     }
+
+    if (accessibility_preset_path) {
+        dom_app_ui_accessibility_preset preset;
+        char err[128];
+        dom_app_ui_accessibility_preset_init(&preset);
+        if (!dom_app_ui_accessibility_load_file(&preset, accessibility_preset_path,
+                                                err, sizeof(err))) {
+            fprintf(stderr, "launcher: %s\n", err[0] ? err : "invalid accessibility preset");
+            return D_APP_EXIT_USAGE;
+        }
+        launcher_apply_accessibility(&ui_settings, &preset);
+    }
+    if (locale_pack_count > 0) {
+        int p;
+        char err[128];
+        if (!locale_id || !locale_id[0]) {
+            fprintf(stderr, "launcher: --locale is required with --locale-pack\n");
+            return D_APP_EXIT_USAGE;
+        }
+        for (p = 0; p < locale_pack_count; ++p) {
+            if (!dom_app_ui_locale_table_load_pack(&locale_table,
+                                                   locale_packs[p],
+                                                   locale_id,
+                                                   err,
+                                                   sizeof(err))) {
+                fprintf(stderr, "launcher: %s\n", err[0] ? err : "locale load failed");
+                return D_APP_EXIT_USAGE;
+            }
+        }
+        ui_settings.locale = &locale_table;
+        locale_active = 1;
+    }
+
     if (ui_mode == DOM_APP_UI_TUI && !cmd && !want_build_info && !want_status) {
-        return launcher_ui_run_tui(&ui_run, &ui_settings, timing_mode, frame_cap_ms);
+        int res = launcher_ui_run_tui(&ui_run, &ui_settings, timing_mode, frame_cap_ms);
+        if (locale_active) {
+            dom_app_ui_locale_table_free(&locale_table);
+        }
+        return res;
     }
     if (ui_mode == DOM_APP_UI_GUI && !cmd && !want_build_info && !want_status) {
-        return launcher_ui_run_gui(&ui_run, &ui_settings, timing_mode, frame_cap_ms);
+        int res = launcher_ui_run_gui(&ui_run, &ui_settings, timing_mode, frame_cap_ms);
+        if (locale_active) {
+            dom_app_ui_locale_table_free(&locale_table);
+        }
+        return res;
     }
 
     launcher_resolve_control_registry(control_registry_buf,
@@ -683,12 +805,18 @@ int launcher_main(int argc, char** argv)
             print_control_caps(&control_caps);
             dom_control_caps_free(&control_caps);
         }
+        if (locale_active) {
+            dom_app_ui_locale_table_free(&locale_table);
+        }
         return D_APP_EXIT_OK;
     }
     if (want_status) {
         if (!control_loaded) {
             if (dom_control_caps_init(&control_caps, control_registry_path) != DOM_CONTROL_OK) {
                 fprintf(stderr, "launcher: failed to load control registry: %s\n", control_registry_path);
+                if (locale_active) {
+                    dom_app_ui_locale_table_free(&locale_table);
+                }
                 return D_APP_EXIT_FAILURE;
             }
             control_loaded = 1;
@@ -697,22 +825,38 @@ int launcher_main(int argc, char** argv)
         if (control_loaded) {
             dom_control_caps_free(&control_caps);
         }
+        if (locale_active) {
+            dom_app_ui_locale_table_free(&locale_table);
+        }
         return D_APP_EXIT_OK;
     }
     if (!cmd) {
         launcher_print_help();
+        if (locale_active) {
+            dom_app_ui_locale_table_free(&locale_table);
+        }
         return D_APP_EXIT_USAGE;
     }
     if (strcmp(cmd, "--version") == 0 || strcmp(cmd, "version") == 0) {
         print_version(DOMINIUM_LAUNCHER_VERSION);
+        if (locale_active) {
+            dom_app_ui_locale_table_free(&locale_table);
+        }
         return D_APP_EXIT_OK;
     }
     if (strcmp(cmd, "list-profiles") == 0) {
         launcher_print_profiles();
+        if (locale_active) {
+            dom_app_ui_locale_table_free(&locale_table);
+        }
         return D_APP_EXIT_OK;
     }
     if (strcmp(cmd, "capabilities") == 0) {
-        return launcher_print_capabilities();
+        int res = launcher_print_capabilities();
+        if (locale_active) {
+            dom_app_ui_locale_table_free(&locale_table);
+        }
+        return res;
     }
 
     if (ui_run.log_set && !ui_log_open) {
@@ -728,6 +872,9 @@ int launcher_main(int argc, char** argv)
                                               status, sizeof(status), 1);
         if (ui_log_open) {
             dom_app_ui_event_log_close(&ui_log);
+        }
+        if (locale_active) {
+            dom_app_ui_locale_table_free(&locale_table);
         }
         if (res != D_APP_EXIT_USAGE) {
             return res;

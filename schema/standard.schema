@@ -1,49 +1,49 @@
-SCHEMA: standard.schema
-schema_id: dominium.schema.standard
-schema_version: 1.0.0
-stability: core
-
-PURPOSE:
-- Define standards, certifications, and tolerance frameworks.
-
-STABILITY GUARANTEES:
-- Required fields MUST exist.
-- Records are open maps; unknown fields MUST be preserved.
-- No field removal or renaming without a MAJOR version bump.
-- Identifiers are stable and MUST NOT be reused with new meaning.
-
-NON-SEMANTICS:
-- Standards do NOT imply legal enforcement by themselves.
-- Certification rules are declarative only.
-
-CONVENTIONS:
-- id: stable namespaced string; opaque.
-- tag: namespaced string; unknown values allowed.
-- map: open key/value map; unknown keys preserved.
-
-REQUIRED SHAPE:
-record standard
-  required:
-    - standard_id: id
-    - scope: tag
-    - tolerance_ranges: map
-    - certification_rules: map
-    - authority_ref: authority_ref
-    - unit_annotations: map
-    - extensions: map
-
-TYPE DEFINITIONS:
-record authority_ref
-  required:
-    - authority_id: id
-  optional:
-    - qualifier_tags: [tag]
-    - metadata: map
-
-MIGRATION:
-- Transform-only migrations are permitted via versioned transforms.
-- Old data MUST NOT be reinterpreted without explicit transformation or refusal.
-
-UNIT POLICY:
-- All numeric values MUST reference a unit tag from `docs/arch/UNIT_SYSTEM_POLICY.md`.
-- Overflow behavior MUST be declared (refusal on overflow).
+SCHEMA: standard.schema
+schema_id: dominium.schema.standard
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define standards, certifications, and tolerance frameworks.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+- Identifiers are stable and MUST NOT be reused with new meaning.
+
+NON-SEMANTICS:
+- Standards do NOT imply legal enforcement by themselves.
+- Certification rules are declarative only.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record standard
+  required:
+    - standard_id: id
+    - scope: tag
+    - tolerance_ranges: map
+    - certification_rules: map
+    - authority_ref: authority_ref
+    - unit_annotations: map
+    - extensions: map
+
+TYPE DEFINITIONS:
+record authority_ref
+  required:
+    - authority_id: id
+  optional:
+    - qualifier_tags: [tag]
+    - metadata: map
+
+MIGRATION:
+- Transform-only migrations are permitted via versioned transforms.
+- Old data MUST NOT be reinterpreted without explicit transformation or refusal.
+
+UNIT POLICY:
+- All numeric values MUST reference a unit tag from `docs/architecture/UNIT_SYSTEM_POLICY.md`.
+- Overflow behavior MUST be declared (refusal on overflow).

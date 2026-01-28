@@ -45,7 +45,7 @@ def main():
     repo_root = os.path.abspath(args.repo_root)
 
     refusal_codes = parse_refusal_codes(
-        os.path.join(repo_root, "docs", "arch", "REFUSAL_SEMANTICS.md")
+        os.path.join(repo_root, "docs", "architecture", "REFUSAL_SEMANTICS.md")
     )
 
     ok = True

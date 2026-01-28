@@ -6,7 +6,7 @@ from typing import Iterable, List, Sequence, Tuple
 
 
 SCAN_DIRS = (
-    ("docs", "arch"),
+    ("docs", "architecture"),
     ("docs", "roadmap"),
     ("schema",),
     ("tests", "contract"),

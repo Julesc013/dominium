@@ -1,0 +1,32 @@
+{
+  "fixture_id": "perf.galaxy_scale_civ",
+  "scenario_path": "scenario_galaxy_scale_civ.scenario",
+  "variant_path": "variant_galaxy_scale_civ.variant",
+  "replay_stub": "replay.stub",
+  "guards": [
+    "guard.active_tier2_domains_budget",
+    "guard.active_tier1_domains_budget",
+    "guard.macro_events_per_tick_budget",
+    "guard.cross_shard_bytes_budget"
+  ],
+  "limits": {
+    "active_tier2_domains": 16,
+    "macro_events_per_tick": 1800,
+    "cross_shard_bytes_per_tick": 700000
+  },
+  "minimums": {
+    "macro_events_per_tick": 1200,
+    "active_tier1_domains": 150
+  },
+  "metrics": {
+    "thread_counts": [
+      1,
+      4
+    ],
+    "paths": {
+      "1": "metrics/metrics_thread1.json",
+      "4": "metrics/metrics_thread4.json"
+    }
+  },
+  "memory_plateau_tolerance_kb": 25000
+}

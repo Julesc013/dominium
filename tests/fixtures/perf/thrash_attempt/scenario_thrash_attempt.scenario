@@ -1,0 +1,7 @@
+DOMINIUM_SCENARIO_V1
+scenario_id=org.dominium.perf.thrash_attempt
+scenario_version=1.0.0
+world_template=perf.world.thrash_attempt
+world_seed=1004
+policy.authority=policy.authority.perf
+policy.mode=policy.mode.perf.stress

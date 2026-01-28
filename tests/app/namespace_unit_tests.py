@@ -39,7 +39,7 @@ def main():
     args = parser.parse_args()
 
     repo_root = os.path.abspath(args.repo_root)
-    unit_doc = os.path.join(repo_root, "docs", "arch", "UNIT_SYSTEM_POLICY.md")
+    unit_doc = os.path.join(repo_root, "docs", "architecture", "UNIT_SYSTEM_POLICY.md")
     if not os.path.isfile(unit_doc):
         print("missing unit system policy doc")
         return 1

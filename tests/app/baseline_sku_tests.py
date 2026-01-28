@@ -29,8 +29,8 @@ def main():
     args = parser.parse_args()
 
     repo_root = os.path.abspath(args.repo_root)
-    baseline_doc = os.path.join(repo_root, "docs", "arch", "CAPABILITY_BASELINES.md")
-    sku_doc = os.path.join(repo_root, "docs", "arch", "SKU_MATRIX.md")
+    baseline_doc = os.path.join(repo_root, "docs", "architecture", "CAPABILITY_BASELINES.md")
+    sku_doc = os.path.join(repo_root, "docs", "architecture", "SKU_MATRIX.md")
     schema_path = os.path.join(repo_root, "schema", "capability_baseline.schema")
 
     if not os.path.isfile(baseline_doc):

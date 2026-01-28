@@ -1,0 +1,16 @@
+cmake_minimum_required(VERSION 3.16)
+
+find_package(Python3 REQUIRED COMPONENTS Interpreter)
+
+dom_add_testx(NAME perf_fixture_contracts
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/perf_fixture_contracts.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME perf_budget_regression
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/perf_budget_gate_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --temp-root ${CMAKE_BINARY_DIR}/tests/perf_budget
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)

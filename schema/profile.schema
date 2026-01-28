@@ -1,6 +1,6 @@
 SCHEMA: profile.schema
 schema_id: dominium.schema.profile
-schema_version: 1.0.0
+schema_version: 1.1.0
 stability: core
 
 PURPOSE:
@@ -41,6 +41,10 @@ record profile
     - description: tag
     - profile_tags: [tag]
     - provenance_ref: provenance_ref
+    - accessibility_preset_ids: [id]
+    - localization_locale_id: tag
+    - hud_layout_id: id
+    - keybind_profile_id: id
     - notes: map
 
 TYPE DEFINITIONS:

@@ -27,6 +27,7 @@ Launcher UI shell implementation.
 #include "dominium/app/readonly_adapter.h"
 
 #define LAUNCHER_UI_MENU_COUNT 6
+#define LAUNCHER_UI_SETTINGS_LINES 12
 #define LAUNCHER_UI_STATUS_MAX 160
 #define LAUNCHER_UI_LABEL_MAX 96
 #define LAUNCHER_UI_RENDERER_MAX 8
@@ -81,14 +82,37 @@ typedef struct launcher_ui_state {
     launcher_renderer_list renderers;
 } launcher_ui_state;
 
-static const char* g_launcher_menu_items[LAUNCHER_UI_MENU_COUNT] = {
-    "New World",
-    "Load World",
-    "Inspect Replay",
-    "Tools",
-    "Settings",
-    "Exit"
+typedef struct launcher_ui_menu_item {
+    const char* id;
+    const char* fallback;
+} launcher_ui_menu_item;
+
+static const launcher_ui_menu_item g_launcher_menu_items[LAUNCHER_UI_MENU_COUNT] = {
+    { "ui.launcher.menu.new_world", "New World" },
+    { "ui.launcher.menu.load_world", "Load World" },
+    { "ui.launcher.menu.inspect_replay", "Inspect Replay" },
+    { "ui.launcher.menu.tools", "Tools" },
+    { "ui.launcher.menu.settings", "Settings" },
+    { "ui.launcher.menu.exit", "Exit" }
 };
+
+static const char* launcher_ui_text(const launcher_ui_state* state,
+                                    const char* id,
+                                    const char* fallback)
+{
+    const dom_app_ui_locale_table* locale = state ? state->settings.locale : NULL;
+    return dom_app_ui_locale_text(locale, id, fallback);
+}
+
+static const char* launcher_ui_menu_text(const launcher_ui_state* state, int index)
+{
+    if (!state || index < 0 || index >= LAUNCHER_UI_MENU_COUNT) {
+        return "";
+    }
+    return launcher_ui_text(state,
+                            g_launcher_menu_items[index].id,
+                            g_launcher_menu_items[index].fallback);
+}
 
 static const char* launcher_palette_name(int palette)
 {
@@ -116,6 +140,17 @@ void launcher_ui_settings_init(launcher_ui_settings* settings)
     settings->palette = 0;
     settings->log_level = 0;
     settings->debug_ui = 0;
+    strncpy(settings->ui_density, "standard", sizeof(settings->ui_density) - 1u);
+    settings->ui_density[sizeof(settings->ui_density) - 1u] = '\0';
+    strncpy(settings->verbosity, "normal", sizeof(settings->verbosity) - 1u);
+    settings->verbosity[sizeof(settings->verbosity) - 1u] = '\0';
+    strncpy(settings->keybind_profile_id, "default", sizeof(settings->keybind_profile_id) - 1u);
+    settings->keybind_profile_id[sizeof(settings->keybind_profile_id) - 1u] = '\0';
+    settings->reduced_motion = 0;
+    settings->keyboard_only = 0;
+    settings->screen_reader = 0;
+    settings->low_cognitive_load = 0;
+    settings->locale = NULL;
 }
 
 void launcher_ui_settings_format_lines(const launcher_ui_settings* settings,
@@ -133,18 +168,67 @@ void launcher_ui_settings_format_lines(const launcher_ui_settings* settings,
         return;
     }
     line0 = lines;
-    snprintf(line0 + (line_stride * count++), line_stride,
-             "renderer=%s", settings->renderer[0] ? settings->renderer : "auto");
-    snprintf(line0 + (line_stride * count++), line_stride,
-             "ui_scale=%d%%", settings->ui_scale_percent);
-    snprintf(line0 + (line_stride * count++), line_stride,
-             "palette=%s", launcher_palette_name(settings->palette));
-    snprintf(line0 + (line_stride * count++), line_stride,
-             "input_bindings=default");
-    snprintf(line0 + (line_stride * count++), line_stride,
-             "log_verbosity=%s", launcher_log_level_name(settings->log_level));
-    snprintf(line0 + (line_stride * count++), line_stride,
-             "debug_ui=%s", settings->debug_ui ? "enabled" : "disabled");
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "renderer=%s", settings->renderer[0] ? settings->renderer : "auto");
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "ui_scale=%d%%", settings->ui_scale_percent);
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "palette=%s", launcher_palette_name(settings->palette));
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "log_verbosity=%s", launcher_log_level_name(settings->log_level));
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "ui_density=%s", settings->ui_density[0] ? settings->ui_density : "standard");
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "verbosity=%s", settings->verbosity[0] ? settings->verbosity : "normal");
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "keybind_profile_id=%s",
+                 settings->keybind_profile_id[0] ? settings->keybind_profile_id : "default");
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "reduced_motion=%s", settings->reduced_motion ? "enabled" : "disabled");
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "screen_reader=%s", settings->screen_reader ? "enabled" : "disabled");
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "keyboard_only=%s", settings->keyboard_only ? "enabled" : "disabled");
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "low_cognitive_load=%s", settings->low_cognitive_load ? "enabled" : "disabled");
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "debug_ui=%s", settings->debug_ui ? "enabled" : "disabled");
+        count += 1;
+    }
     if (out_count) {
         *out_count = count;
     }
@@ -208,11 +292,11 @@ int launcher_ui_execute_command(const char* cmd,
         return D_APP_EXIT_OK;
     }
     if (strcmp(cmd, "settings") == 0) {
-        char lines[LAUNCHER_UI_MENU_COUNT][LAUNCHER_UI_LABEL_MAX];
+        char lines[LAUNCHER_UI_SETTINGS_LINES][LAUNCHER_UI_LABEL_MAX];
         int count = 0;
         int i;
         launcher_ui_settings_format_lines(settings, (char*)lines,
-                                          LAUNCHER_UI_MENU_COUNT,
+                                          LAUNCHER_UI_SETTINGS_LINES,
                                           LAUNCHER_UI_LABEL_MAX, &count);
         dom_app_ui_event_log_emit(log, "launcher.settings", "result=ok");
         if (status && status_cap > 0u) {
@@ -631,7 +715,7 @@ static void launcher_gui_draw_menu(d_gfx_cmd_buffer* buf,
             rect.color = highlight;
             d_gfx_cmd_draw_rect(buf, &rect);
         }
-        launcher_gui_draw_text(buf, x, line_y, g_launcher_menu_items[i], text);
+        launcher_gui_draw_text(buf, x, line_y, launcher_ui_menu_text(state, i), text);
     }
 }
 
@@ -660,7 +744,9 @@ static void launcher_gui_render(const launcher_ui_state* state,
     if (!state) {
         return;
     }
-    launcher_gui_draw_text(buf, 20, y, "Dominium Launcher", text);
+    launcher_gui_draw_text(buf, 20, y,
+                           launcher_ui_text(state, "ui.launcher.title", "Dominium Launcher"),
+                           text);
     y += line_h;
     if (state->screen == LAUNCHER_UI_LOADING) {
         char line[LAUNCHER_UI_STATUS_MAX];
@@ -692,7 +778,11 @@ static void launcher_gui_render(const launcher_ui_state* state,
         launcher_gui_draw_text(buf, 20, y, state->pack_status, text); y += line_h;
         snprintf(line, sizeof(line), "seed=%s", state->seed_status);
         launcher_gui_draw_text(buf, 20, y, line, text); y += line_h;
-        launcher_gui_draw_text(buf, 20, y, "Loading complete. Press Enter to continue.", text);
+        launcher_gui_draw_text(buf, 20, y,
+                               launcher_ui_text(state,
+                                                "ui.launcher.loading.ready",
+                                                "Loading complete. Press Enter to continue."),
+                               text);
         return;
     }
     if (state->screen == LAUNCHER_UI_MENU) {
@@ -705,19 +795,23 @@ static void launcher_gui_render(const launcher_ui_state* state,
         return;
     }
     if (state->screen == LAUNCHER_UI_SETTINGS) {
-        char lines[LAUNCHER_UI_MENU_COUNT][LAUNCHER_UI_LABEL_MAX];
+        char lines[LAUNCHER_UI_SETTINGS_LINES][LAUNCHER_UI_LABEL_MAX];
         int count = 0;
         int i;
         y += line_h;
         launcher_ui_settings_format_lines(&state->settings, (char*)lines,
-                                          LAUNCHER_UI_MENU_COUNT,
+                                          LAUNCHER_UI_SETTINGS_LINES,
                                           LAUNCHER_UI_LABEL_MAX, &count);
         for (i = 0; i < count; ++i) {
             launcher_gui_draw_text(buf, 20, y, lines[i], text);
             y += line_h;
         }
         y += line_h;
-        launcher_gui_draw_text(buf, 20, y, "Keys: R renderer, +/- scale, P palette, L log, D debug, B back", text);
+        launcher_gui_draw_text(buf, 20, y,
+                               launcher_ui_text(state,
+                                                "ui.launcher.settings.keys",
+                                                "Keys: R renderer, +/- scale, P palette, L log, D debug, B back"),
+                               text);
         y += line_h;
         if (state->action_status[0]) {
             launcher_gui_draw_text(buf, 20, y, state->action_status, text);
@@ -847,12 +941,19 @@ int launcher_ui_run_tui(const dom_app_ui_run_config* run_cfg,
             goto cleanup;
         }
         root = d_tui_panel(tui, D_TUI_LAYOUT_VERTICAL);
-        title = d_tui_label(tui, "Dominium Launcher TUI");
+        title = d_tui_label(tui,
+                            launcher_ui_text(&ui,
+                                             "ui.launcher.title.tui",
+                                             "Dominium Launcher TUI"));
         d_tui_widget_add(root, title);
         if (ui.screen == LAUNCHER_UI_LOADING) {
             char line[LAUNCHER_UI_STATUS_MAX];
             const dom_build_info_v1* build = dom_build_info_v1_get();
-            d_tui_widget_add(root, d_tui_label(tui, "Loading..."));
+            d_tui_widget_add(root,
+                             d_tui_label(tui,
+                                         launcher_ui_text(&ui,
+                                                          "ui.launcher.loading.title",
+                                                          "Loading...")));
             snprintf(line, sizeof(line), "engine=%s", DOMINO_VERSION_STRING);
             d_tui_widget_add(root, d_tui_label(tui, line));
             snprintf(line, sizeof(line), "game=%s", DOMINIUM_GAME_VERSION);
@@ -880,11 +981,15 @@ int launcher_ui_run_tui(const dom_app_ui_run_config* run_cfg,
             d_tui_widget_add(root, d_tui_label(tui, ui.pack_status));
             snprintf(line, sizeof(line), "seed=%s", ui.seed_status);
             d_tui_widget_add(root, d_tui_label(tui, line));
-            d_tui_widget_add(root, d_tui_label(tui, "Press Enter to continue"));
+            d_tui_widget_add(root,
+                             d_tui_label(tui,
+                                         launcher_ui_text(&ui,
+                                                          "ui.launcher.loading.continue",
+                                                          "Press Enter to continue")));
         } else if (ui.screen == LAUNCHER_UI_MENU) {
             int i;
             for (i = 0; i < LAUNCHER_UI_MENU_COUNT; ++i) {
-                d_tui_widget* btn = d_tui_button(tui, g_launcher_menu_items[i], 0, 0);
+                d_tui_widget* btn = d_tui_button(tui, launcher_ui_menu_text(&ui, i), 0, 0);
                 if (btn) {
                     d_tui_widget_add(root, btn);
                 }
@@ -893,16 +998,20 @@ int launcher_ui_run_tui(const dom_app_ui_run_config* run_cfg,
                 d_tui_widget_add(root, d_tui_label(tui, ui.action_status));
             }
         } else if (ui.screen == LAUNCHER_UI_SETTINGS) {
-            char lines[LAUNCHER_UI_MENU_COUNT][LAUNCHER_UI_LABEL_MAX];
+            char lines[LAUNCHER_UI_SETTINGS_LINES][LAUNCHER_UI_LABEL_MAX];
             int count = 0;
             int i;
             launcher_ui_settings_format_lines(&ui.settings, (char*)lines,
-                                              LAUNCHER_UI_MENU_COUNT,
+                                              LAUNCHER_UI_SETTINGS_LINES,
                                               LAUNCHER_UI_LABEL_MAX, &count);
             for (i = 0; i < count; ++i) {
                 d_tui_widget_add(root, d_tui_label(tui, lines[i]));
             }
-            d_tui_widget_add(root, d_tui_label(tui, "R renderer, +/- scale, P palette, L log, D debug, B back"));
+            d_tui_widget_add(root,
+                             d_tui_label(tui,
+                                         launcher_ui_text(&ui,
+                                                          "ui.launcher.settings.keys",
+                                                          "R renderer, +/- scale, P palette, L log, D debug, B back")));
             if (ui.action_status[0]) {
                 d_tui_widget_add(root, d_tui_label(tui, ui.action_status));
             }

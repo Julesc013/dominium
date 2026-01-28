@@ -1,0 +1,29 @@
+{
+  "fixture_id": "perf.deep_history",
+  "metrics": {
+    "platform": "fixture",
+    "active_tier2_domains": 8,
+    "active_tier1_domains": 128,
+    "processes_per_tick": 700,
+    "macro_events_per_tick": 900,
+    "collapse_expand_ops_per_tick": 40,
+    "agent_planning_steps_per_tick": 3000,
+    "macro_time_steps_per_tick": 2000,
+    "snapshot_ops_per_tick": 4,
+    "serialization_ops_per_tick": 2,
+    "refusal_counts_total": 12,
+    "refusal_counts_budget": 2,
+    "refusal_counts_capability": 5,
+    "refusal_counts_validation": 5,
+    "refusal_counts_unknown": 0,
+    "memory_peak_kb": 1800000,
+    "memory_plateau_kb": 1788000,
+    "cross_shard_msgs_per_tick": 1200,
+    "cross_shard_bytes_per_tick": 300000,
+    "event_hash": "5555555555555555555555555555555555555555555555555555555555555555",
+    "metrics_hash": "6666666666666666666666666666666666666666666666666666666666666666",
+    "replay_hash": "a8f417786f8893d6f7498f806117cf81c9cfc0970c4930454b7fe346664c6af0"
+  },
+  "collapse_expand_invariants_ok": true,
+  "thread_count": 1
+}

@@ -112,10 +112,10 @@ def main():
     args = parser.parse_args()
 
     repo_root = os.path.abspath(args.repo_root)
-    policy_path = os.path.join(repo_root, "docs", "arch", "SEMANTIC_STABILITY_POLICY.md")
-    lock_path = os.path.join(repo_root, "docs", "arch", "SEMANTIC_STABILITY_LOCK.json")
-    anti_path = os.path.join(repo_root, "docs", "arch", "ANTI_ENTROPY_RULES.md")
-    review_path = os.path.join(repo_root, "docs", "arch", "ARCH_CHANGE_PROCESS.md")
+    policy_path = os.path.join(repo_root, "docs", "architecture", "SEMANTIC_STABILITY_POLICY.md")
+    lock_path = os.path.join(repo_root, "docs", "architecture", "SEMANTIC_STABILITY_LOCK.json")
+    anti_path = os.path.join(repo_root, "docs", "architecture", "ANTI_ENTROPY_RULES.md")
+    review_path = os.path.join(repo_root, "docs", "architecture", "ARCH_CHANGE_PROCESS.md")
 
     if not os.path.isfile(policy_path):
         print("missing policy doc: {}".format(policy_path))

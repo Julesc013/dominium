@@ -18,6 +18,7 @@ Minimal client entrypoint with MP0 local-connect demo.
 #include "dominium/app/readonly_adapter.h"
 #include "dominium/app/readonly_format.h"
 #include "dominium/app/ui_event_log.h"
+#include "dominium/app/ui_presentation.h"
 #include "dominium/session/mp0_session.h"
 #include "client_input_bindings.h"
 #include "client_shell.h"
@@ -71,6 +72,9 @@ static void print_help(void)
     printf("  --ui-scale <pct>            UI scale percent (e.g. 100, 125, 150)\n");
     printf("  --palette <name>            UI palette (default|high-contrast)\n");
     printf("  --log-verbosity <level>     Logging verbosity (info|warn|error)\n");
+    printf("  --accessibility-preset <path> Apply accessibility preset (data-only)\n");
+    printf("  --locale <id>               Select localization id (e.g. en_US)\n");
+    printf("  --locale-pack <path>        Add localization pack root (can repeat)\n");
     printf("  --debug-ui                  Enable debug UI flags\n");
     printf("  --control-enable=K1,K2       Enable control capabilities (canonical keys)\n");
     printf("  --control-registry <path>    Override control registry path\n");
@@ -331,12 +335,56 @@ static int client_parse_log_level(const char* text, int* out_value)
     return 0;
 }
 
+typedef struct client_ui_settings client_ui_settings;
+
+static void client_apply_accessibility(client_ui_settings* settings,
+                                       const dom_app_ui_accessibility_preset* preset)
+{
+    if (!settings || !preset) {
+        return;
+    }
+    if (preset->has_ui_scale) {
+        settings->ui_scale_percent = preset->ui_scale_percent;
+    }
+    if (preset->has_palette) {
+        settings->palette = preset->palette;
+    }
+    if (preset->has_log_level) {
+        settings->log_level = preset->log_level;
+    }
+    if (preset->ui_density[0]) {
+        strncpy(settings->ui_density, preset->ui_density, sizeof(settings->ui_density) - 1u);
+        settings->ui_density[sizeof(settings->ui_density) - 1u] = '\0';
+    }
+    if (preset->verbosity[0]) {
+        strncpy(settings->verbosity, preset->verbosity, sizeof(settings->verbosity) - 1u);
+        settings->verbosity[sizeof(settings->verbosity) - 1u] = '\0';
+    }
+    if (preset->keybind_profile_id[0]) {
+        strncpy(settings->keybind_profile_id, preset->keybind_profile_id,
+                sizeof(settings->keybind_profile_id) - 1u);
+        settings->keybind_profile_id[sizeof(settings->keybind_profile_id) - 1u] = '\0';
+    }
+    settings->reduced_motion = preset->reduced_motion ? 1 : 0;
+    settings->keyboard_only = preset->keyboard_only ? 1 : 0;
+    settings->screen_reader = preset->screen_reader ? 1 : 0;
+    settings->low_cognitive_load = preset->low_cognitive_load ? 1 : 0;
+}
+
 typedef struct client_ui_settings {
     char renderer[16];
     int ui_scale_percent;
     int palette;
     int log_level;
     int debug_ui;
+    char ui_density[24];
+    char verbosity[24];
+    char keybind_profile_id[64];
+    int reduced_motion;
+    int keyboard_only;
+    int screen_reader;
+    int low_cognitive_load;
+    const dom_app_ui_locale_table* locale;
 } client_ui_settings;
 
 static const char* client_palette_name(int palette)
@@ -365,6 +413,17 @@ static void client_ui_settings_init(client_ui_settings* settings)
     settings->palette = 0;
     settings->log_level = 0;
     settings->debug_ui = 0;
+    strncpy(settings->ui_density, "standard", sizeof(settings->ui_density) - 1u);
+    settings->ui_density[sizeof(settings->ui_density) - 1u] = '\0';
+    strncpy(settings->verbosity, "normal", sizeof(settings->verbosity) - 1u);
+    settings->verbosity[sizeof(settings->verbosity) - 1u] = '\0';
+    strncpy(settings->keybind_profile_id, "default", sizeof(settings->keybind_profile_id) - 1u);
+    settings->keybind_profile_id[sizeof(settings->keybind_profile_id) - 1u] = '\0';
+    settings->reduced_motion = 0;
+    settings->keyboard_only = 0;
+    settings->screen_reader = 0;
+    settings->low_cognitive_load = 0;
+    settings->locale = NULL;
 }
 
 static void client_ui_settings_format_lines(const client_ui_settings* settings,
@@ -382,18 +441,67 @@ static void client_ui_settings_format_lines(const client_ui_settings* settings,
         return;
     }
     line0 = lines;
-    snprintf(line0 + (line_stride * count++), line_stride,
-             "renderer=%s", settings->renderer[0] ? settings->renderer : "auto");
-    snprintf(line0 + (line_stride * count++), line_stride,
-             "ui_scale=%d%%", settings->ui_scale_percent);
-    snprintf(line0 + (line_stride * count++), line_stride,
-             "palette=%s", client_palette_name(settings->palette));
-    snprintf(line0 + (line_stride * count++), line_stride,
-             "input_bindings=default");
-    snprintf(line0 + (line_stride * count++), line_stride,
-             "log_verbosity=%s", client_log_level_name(settings->log_level));
-    snprintf(line0 + (line_stride * count++), line_stride,
-             "debug_ui=%s", settings->debug_ui ? "enabled" : "disabled");
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "renderer=%s", settings->renderer[0] ? settings->renderer : "auto");
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "ui_scale=%d%%", settings->ui_scale_percent);
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "palette=%s", client_palette_name(settings->palette));
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "log_verbosity=%s", client_log_level_name(settings->log_level));
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "ui_density=%s", settings->ui_density[0] ? settings->ui_density : "standard");
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "verbosity=%s", settings->verbosity[0] ? settings->verbosity : "normal");
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "keybind_profile_id=%s",
+                 settings->keybind_profile_id[0] ? settings->keybind_profile_id : "default");
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "reduced_motion=%s", settings->reduced_motion ? "enabled" : "disabled");
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "screen_reader=%s", settings->screen_reader ? "enabled" : "disabled");
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "keyboard_only=%s", settings->keyboard_only ? "enabled" : "disabled");
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "low_cognitive_load=%s", settings->low_cognitive_load ? "enabled" : "disabled");
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "debug_ui=%s", settings->debug_ui ? "enabled" : "disabled");
+        count += 1;
+    }
     if (out_count) {
         *out_count = count;
     }
@@ -589,6 +697,7 @@ cleanup:
 }
 
 #define CLIENT_UI_MENU_COUNT 6
+#define CLIENT_UI_SETTINGS_LINES 12
 #define CLIENT_UI_STATUS_MAX 180
 #define CLIENT_UI_LABEL_MAX 128
 #define CLIENT_UI_RENDERER_MAX 8
@@ -672,14 +781,37 @@ typedef struct client_ui_state {
     uint32_t tick;
 } client_ui_state;
 
-static const char* g_client_menu_items[CLIENT_UI_MENU_COUNT] = {
-    "New World",
-    "Load World",
-    "Inspect Replay",
-    "Tools",
-    "Settings",
-    "Exit"
+typedef struct client_ui_menu_item {
+    const char* id;
+    const char* fallback;
+} client_ui_menu_item;
+
+static const client_ui_menu_item g_client_menu_items[CLIENT_UI_MENU_COUNT] = {
+    { "ui.client.menu.new_world", "New World" },
+    { "ui.client.menu.load_world", "Load World" },
+    { "ui.client.menu.inspect_replay", "Inspect Replay" },
+    { "ui.client.menu.tools", "Tools" },
+    { "ui.client.menu.settings", "Settings" },
+    { "ui.client.menu.exit", "Exit" }
 };
+
+static const char* client_ui_text(const client_ui_state* state,
+                                  const char* id,
+                                  const char* fallback)
+{
+    const dom_app_ui_locale_table* locale = state ? state->settings.locale : NULL;
+    return dom_app_ui_locale_text(locale, id, fallback);
+}
+
+static const char* client_ui_menu_text(const client_ui_state* state, int index)
+{
+    if (!state || index < 0 || index >= CLIENT_UI_MENU_COUNT) {
+        return "";
+    }
+    return client_ui_text(state,
+                          g_client_menu_items[index].id,
+                          g_client_menu_items[index].fallback);
+}
 
 static void client_ui_set_status(client_ui_state* state, const char* fmt, ...)
 {
@@ -1060,7 +1192,8 @@ static void client_ui_build_lines(const client_ui_state* state,
     if (!state || !lines) {
         return;
     }
-    client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "Dominium Client");
+    client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s",
+                       client_ui_text(state, "ui.client.title", "Dominium Client"));
     if (state->screen == CLIENT_UI_LOADING) {
         const dom_build_info_v1* build = dom_build_info_v1_get();
         client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "engine=%s", DOMINO_VERSION_STRING);
@@ -1086,15 +1219,19 @@ static void client_ui_build_lines(const client_ui_state* state,
         client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s", state->template_status);
         client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "testx=%s", state->testx_status);
         client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "seed=%s", state->seed_status);
-        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "Loading complete. Press Enter to continue.");
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s",
+                           client_ui_text(state,
+                                          "ui.client.loading.ready",
+                                          "Loading complete. Press Enter to continue."));
     } else if (state->screen == CLIENT_UI_MAIN_MENU) {
         int i;
         client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "");
-        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "Main Menu");
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s",
+                           client_ui_text(state, "ui.client.menu.title", "Main Menu"));
         for (i = 0; i < CLIENT_UI_MENU_COUNT; ++i) {
             client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s %s",
                                (i == state->menu_index) ? ">" : " ",
-                               g_client_menu_items[i]);
+                               client_ui_menu_text(state, i));
         }
         if (state->action_status[0]) {
             client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s", state->action_status);
@@ -1106,7 +1243,8 @@ static void client_ui_build_lines(const client_ui_state* state,
             tmpl = &reg->templates[state->shell.create_template_index];
         }
         client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "");
-        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "New World");
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s",
+                           client_ui_text(state, "ui.client.new_world.title", "New World"));
         if (tmpl) {
             client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "template=%s", tmpl->template_id);
             client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "description=%s", tmpl->description);
@@ -1115,7 +1253,8 @@ static void client_ui_build_lines(const client_ui_state* state,
         }
         client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "seed=%llu (+/- to edit)",
                            (unsigned long long)state->shell.create_seed);
-        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "policies:");
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s",
+                           client_ui_text(state, "ui.client.new_world.policies", "policies:"));
         client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES,
                            " [1] free=%s",
                            client_policy_has(&state->shell.create_mode, DOM_SHELL_MODE_FREE) ? "on" : "off");
@@ -1131,14 +1270,18 @@ static void client_ui_build_lines(const client_ui_state* state,
         client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES,
                            " [D] debug=%s",
                            state->shell.create_debug.count > 0u ? "on" : "off");
-        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "Enter=create  B=back  T=next template");
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s",
+                           client_ui_text(state,
+                                          "ui.client.new_world.keys",
+                                          "Enter=create  B=back  T=next template"));
         if (state->action_status[0]) {
             client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s", state->action_status);
         }
     } else if (state->screen == CLIENT_UI_WORLD_VIEW) {
         const dom_shell_world_state* world = dom_client_shell_world(&state->shell);
         client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "");
-        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "World View");
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s",
+                           client_ui_text(state, "ui.client.world_view.title", "World View"));
         if (!world || !world->active) {
             client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "world=inactive");
         } else {
@@ -1305,7 +1448,8 @@ static void client_ui_build_lines(const client_ui_state* state,
             if (state->event_count > 0) {
                 int i;
                 int start = state->event_count > 3 ? (state->event_count - 3) : 0;
-                client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "event_tail:");
+                client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s",
+                                   client_ui_text(state, "ui.client.events.tail", "event_tail:"));
                 for (i = start; i < state->event_count && count < CLIENT_UI_MAX_LINES; ++i) {
                     client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s", state->event_lines[i]);
                 }
@@ -1319,7 +1463,8 @@ static void client_ui_build_lines(const client_ui_state* state,
         if (state->settings.debug_ui) {
             int i;
             int idx = state->event_head;
-            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "Debug: event_tail");
+            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s",
+                               client_ui_text(state, "ui.client.debug.event_tail", "Debug: event_tail"));
             for (i = 0; i < state->event_count && count < CLIENT_UI_MAX_LINES; ++i) {
                 client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s",
                                    state->event_lines[idx]);
@@ -1333,8 +1478,12 @@ static void client_ui_build_lines(const client_ui_state* state,
         int i;
         int idx = state->event_head;
         client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "");
-        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "Replay Inspector");
-        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "Use console: inspect-replay path=...");
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s",
+                           client_ui_text(state, "ui.client.replay.title", "Replay Inspector"));
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s",
+                           client_ui_text(state,
+                                          "ui.client.replay.hint",
+                                          "Use console: inspect-replay path=..."));
         if (state->console_active) {
             client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "> %s", state->console_input);
         }
@@ -1342,30 +1491,39 @@ static void client_ui_build_lines(const client_ui_state* state,
             client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s", state->event_lines[idx]);
             idx = (idx + 1) % CLIENT_UI_EVENT_LINES;
         }
-        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "B=back");
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s",
+                           client_ui_text(state, "ui.client.back", "B=back"));
         if (state->action_status[0]) {
             client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s", state->action_status);
         }
     } else if (state->screen == CLIENT_UI_TOOLS) {
         client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "");
-        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "Tools");
-        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "Use tools host: tools_host --help");
-        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "B=back");
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s",
+                           client_ui_text(state, "ui.client.tools.title", "Tools"));
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s",
+                           client_ui_text(state,
+                                          "ui.client.tools.hint",
+                                          "Use tools host: tools_host --help"));
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s",
+                           client_ui_text(state, "ui.client.back", "B=back"));
         if (state->action_status[0]) {
             client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s", state->action_status);
         }
     } else if (state->screen == CLIENT_UI_SETTINGS) {
-        char setting_lines[CLIENT_UI_MENU_COUNT][CLIENT_UI_LABEL_MAX];
+        char setting_lines[CLIENT_UI_SETTINGS_LINES][CLIENT_UI_LABEL_MAX];
         int count_settings = 0;
         int i;
         client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "");
         client_ui_settings_format_lines(&state->settings, (char*)setting_lines,
-                                        CLIENT_UI_MENU_COUNT,
+                                        CLIENT_UI_SETTINGS_LINES,
                                         CLIENT_UI_LABEL_MAX, &count_settings);
         for (i = 0; i < count_settings && count < CLIENT_UI_MAX_LINES; ++i) {
             client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s", setting_lines[i]);
         }
-        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "Keys: R renderer, +/- scale, P palette, L log, D debug, B back");
+        client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s",
+                           client_ui_text(state,
+                                          "ui.client.settings.keys",
+                                          "Keys: R renderer, +/- scale, P palette, L log, D debug, B back"));
         if (state->action_status[0]) {
             client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s", state->action_status);
         }
@@ -1490,11 +1648,11 @@ static int client_ui_execute_command(const char* cmd,
         return D_APP_EXIT_OK;
     }
     if (strcmp(cmd, "settings") == 0) {
-        char lines[CLIENT_UI_MENU_COUNT][CLIENT_UI_LABEL_MAX];
+        char lines[CLIENT_UI_SETTINGS_LINES][CLIENT_UI_LABEL_MAX];
         int count = 0;
         int i;
         client_ui_settings_format_lines(settings, (char*)lines,
-                                        CLIENT_UI_MENU_COUNT,
+                                        CLIENT_UI_SETTINGS_LINES,
                                         CLIENT_UI_LABEL_MAX, &count);
         if (log) {
             dom_app_ui_event_log_emit(log, "client.settings", "result=ok");
@@ -2409,6 +2567,10 @@ int client_main(int argc, char** argv)
 {
     const char* control_registry_path = "data/registries/control_capabilities.registry";
     const char* control_enable = 0;
+    const char* accessibility_preset_path = 0;
+    const char* locale_id = 0;
+    const char* locale_packs[16];
+    int locale_pack_count = 0;
     const char* renderer = 0;
     dom_app_ui_request ui_req;
     dom_app_ui_mode ui_mode = DOM_APP_UI_NONE;
@@ -2416,6 +2578,8 @@ int client_main(int argc, char** argv)
     client_ui_settings ui_settings;
     dom_app_ui_event_log ui_log;
     int ui_log_open = 0;
+    dom_app_ui_locale_table locale_table;
+    int locale_active = 0;
     dom_app_output_format output_format = DOM_APP_FORMAT_TEXT;
     int output_format_set = 0;
     dom_app_compat_expect compat_expect;
@@ -2445,6 +2609,8 @@ int client_main(int argc, char** argv)
     client_ui_settings_init(&ui_settings);
     dom_app_ui_event_log_init(&ui_log);
     dom_app_compat_expect_init(&compat_expect);
+    dom_app_ui_locale_table_init(&locale_table);
+    locale_active = 0;
     for (i = 1; i < argc; ++i) {
         int ui_consumed = 0;
         char ui_err[96];
@@ -2670,6 +2836,41 @@ int client_main(int argc, char** argv)
             i += 1;
             continue;
         }
+        if (strncmp(argv[i], "--accessibility-preset=", 24) == 0) {
+            accessibility_preset_path = argv[i] + 24;
+            continue;
+        }
+        if (strcmp(argv[i], "--accessibility-preset") == 0 && i + 1 < argc) {
+            accessibility_preset_path = argv[i + 1];
+            i += 1;
+            continue;
+        }
+        if (strncmp(argv[i], "--locale=", 9) == 0) {
+            locale_id = argv[i] + 9;
+            continue;
+        }
+        if (strcmp(argv[i], "--locale") == 0 && i + 1 < argc) {
+            locale_id = argv[i + 1];
+            i += 1;
+            continue;
+        }
+        if (strncmp(argv[i], "--locale-pack=", 14) == 0) {
+            if (locale_pack_count >= (int)(sizeof(locale_packs) / sizeof(locale_packs[0]))) {
+                fprintf(stderr, "client: too many --locale-pack entries\n");
+                return D_APP_EXIT_USAGE;
+            }
+            locale_packs[locale_pack_count++] = argv[i] + 14;
+            continue;
+        }
+        if (strcmp(argv[i], "--locale-pack") == 0 && i + 1 < argc) {
+            if (locale_pack_count >= (int)(sizeof(locale_packs) / sizeof(locale_packs[0]))) {
+                fprintf(stderr, "client: too many --locale-pack entries\n");
+                return D_APP_EXIT_USAGE;
+            }
+            locale_packs[locale_pack_count++] = argv[i + 1];
+            i += 1;
+            continue;
+        }
         if (strcmp(argv[i], "--debug-ui") == 0) {
             ui_settings.debug_ui = 1;
             continue;
@@ -2826,6 +3027,39 @@ int client_main(int argc, char** argv)
         print_version(DOMINIUM_GAME_VERSION);
         return 0;
     }
+
+    if (accessibility_preset_path) {
+        dom_app_ui_accessibility_preset preset;
+        char err[128];
+        dom_app_ui_accessibility_preset_init(&preset);
+        if (!dom_app_ui_accessibility_load_file(&preset, accessibility_preset_path,
+                                                err, sizeof(err))) {
+            fprintf(stderr, "client: %s\n", err[0] ? err : "invalid accessibility preset");
+            return D_APP_EXIT_USAGE;
+        }
+        client_apply_accessibility(&ui_settings, &preset);
+    }
+    if (locale_pack_count > 0) {
+        int p;
+        char err[128];
+        if (!locale_id || !locale_id[0]) {
+            fprintf(stderr, "client: --locale is required with --locale-pack\n");
+            return D_APP_EXIT_USAGE;
+        }
+        for (p = 0; p < locale_pack_count; ++p) {
+            if (!dom_app_ui_locale_table_load_pack(&locale_table,
+                                                   locale_packs[p],
+                                                   locale_id,
+                                                   err,
+                                                   sizeof(err))) {
+                fprintf(stderr, "client: %s\n", err[0] ? err : "locale load failed");
+                return D_APP_EXIT_USAGE;
+            }
+        }
+        ui_settings.locale = &locale_table;
+        locale_active = 1;
+    }
+
     ui_mode = dom_app_select_ui_mode(&ui_req, DOM_APP_UI_NONE);
     if (window_cfg.enabled) {
         if (ui_req.mode_explicit && ui_mode != DOM_APP_UI_GUI) {
@@ -2944,12 +3178,18 @@ int client_main(int argc, char** argv)
             print_control_caps(&control_caps);
             dom_control_caps_free(&control_caps);
         }
+        if (locale_active) {
+            dom_app_ui_locale_table_free(&locale_table);
+        }
         return 0;
     }
     if (want_status) {
         if (!control_loaded) {
             if (dom_control_caps_init(&control_caps, control_registry_path) != DOM_CONTROL_OK) {
                 fprintf(stderr, "client: failed to load control registry: %s\n", control_registry_path);
+                if (locale_active) {
+                    dom_app_ui_locale_table_free(&locale_table);
+                }
                 return D_APP_EXIT_FAILURE;
             }
             control_loaded = 1;
@@ -2957,6 +3197,9 @@ int client_main(int argc, char** argv)
         print_control_caps(&control_caps);
         if (control_loaded) {
             dom_control_caps_free(&control_caps);
+        }
+        if (locale_active) {
+            dom_app_ui_locale_table_free(&locale_table);
         }
         return 0;
     }
@@ -2967,27 +3210,42 @@ int client_main(int argc, char** argv)
             dom_control_caps_free(&control_caps);
         }
         if (!client_open_readonly(&ro, &compat_expect)) {
+            if (locale_active) {
+                dom_app_ui_locale_table_free(&locale_table);
+            }
             return D_APP_EXIT_FAILURE;
         }
         if (want_snapshot) {
             fprintf(stderr, "client: snapshot metadata unsupported\n");
             dom_app_ro_close(&ro);
+            if (locale_active) {
+                dom_app_ui_locale_table_free(&locale_table);
+            }
             return D_APP_EXIT_UNAVAILABLE;
         }
         if (want_events) {
             fprintf(stderr, "client: event stream unsupported\n");
             dom_app_ro_close(&ro);
+            if (locale_active) {
+                dom_app_ui_locale_table_free(&locale_table);
+            }
             return D_APP_EXIT_UNAVAILABLE;
         }
         dom_client_ro_view_model_init(&view);
         if (!dom_client_ro_view_model_load(&view, &ro)) {
             fprintf(stderr, "client: core info unavailable\n");
             dom_app_ro_close(&ro);
+            if (locale_active) {
+                dom_app_ui_locale_table_free(&locale_table);
+            }
             return D_APP_EXIT_FAILURE;
         }
         if (!view.has_tree) {
             fprintf(stderr, "client: topology unsupported\n");
             dom_app_ro_close(&ro);
+            if (locale_active) {
+                dom_app_ui_locale_table_free(&locale_table);
+            }
             return D_APP_EXIT_UNAVAILABLE;
         }
         dom_app_ro_print_topology_bundle(output_format,
@@ -2997,6 +3255,9 @@ int client_main(int argc, char** argv)
                                          view.tree_info.count,
                                          view.tree_info.truncated);
         dom_app_ro_close(&ro);
+        if (locale_active) {
+            dom_app_ui_locale_table_free(&locale_table);
+        }
         return D_APP_EXIT_OK;
     }
     if (cmd) {
@@ -3019,41 +3280,68 @@ int client_main(int argc, char** argv)
                 dom_app_ui_event_log_close(&ui_log);
             }
             if (res != D_APP_EXIT_USAGE) {
+                if (locale_active) {
+                    dom_app_ui_locale_table_free(&locale_table);
+                }
                 return res;
             }
         }
         printf("client: unknown command '%s'\\n", cmd);
         print_help();
+        if (locale_active) {
+            dom_app_ui_locale_table_free(&locale_table);
+        }
         return D_APP_EXIT_USAGE;
     }
     if (ui_mode == DOM_APP_UI_TUI) {
         if (control_loaded) {
             dom_control_caps_free(&control_caps);
         }
-        return client_run_tui(&ui_run, &ui_settings, timing_mode, frame_cap_ms, &compat_expect);
+        {
+            int res = client_run_tui(&ui_run, &ui_settings, timing_mode, frame_cap_ms, &compat_expect);
+            if (locale_active) {
+                dom_app_ui_locale_table_free(&locale_table);
+            }
+            return res;
+        }
     }
     if (window_cfg.enabled) {
         if (control_loaded) {
             dom_control_caps_free(&control_caps);
         }
-        return client_run_gui(&ui_run, &ui_settings, &window_cfg,
-                              timing_mode, frame_cap_ms, &compat_expect);
+        {
+            int res = client_run_gui(&ui_run, &ui_settings, &window_cfg,
+                                     timing_mode, frame_cap_ms, &compat_expect);
+            if (locale_active) {
+                dom_app_ui_locale_table_free(&locale_table);
+            }
+            return res;
+        }
     }
     if (want_mp0) {
         if (!client_validate_renderer(renderer)) {
             if (control_loaded) {
                 dom_control_caps_free(&control_caps);
             }
+            if (locale_active) {
+                dom_app_ui_locale_table_free(&locale_table);
+            }
             return D_APP_EXIT_UNAVAILABLE;
         }
         if (control_loaded) {
             dom_control_caps_free(&control_caps);
+        }
+        if (locale_active) {
+            dom_app_ui_locale_table_free(&locale_table);
         }
         return mp0_run_local_client();
     }
     printf("Dominium client stub. Use --help.\\n");
     if (control_loaded) {
         dom_control_caps_free(&control_caps);
+    }
+    if (locale_active) {
+        dom_app_ui_locale_table_free(&locale_table);
     }
     return 0;
 }
