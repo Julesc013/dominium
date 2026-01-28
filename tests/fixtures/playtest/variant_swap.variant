@@ -1,0 +1,7 @@
+DOMINIUM_VARIANT_V1
+variant_id=org.dominium.playtest.variant.swap
+variant_version=1.0.0
+policy.playtest=policy.playtest.regression
+variants_begin
+variant scope=world system=planning id=planning.v1_shadow
+variants_end

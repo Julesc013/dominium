@@ -23,6 +23,7 @@ Client shell core implementation.
 #define DOM_REFUSAL_VARIANT "VARIANT-REFUSAL"
 
 #define DOM_SHELL_DEFAULT_SAVE_PATH "data/saves/world.save"
+#define DOM_SHELL_DEFAULT_REPLAY_PATH "data/saves/session.replay"
 #define DOM_SHELL_BATCH_SCRIPT_MAX 2048
 
 #define DOM_SHELL_ACCESSIBILITY_MAX_Q16 (5 << 16)
@@ -54,6 +55,66 @@ typedef struct dom_shell_edge_def {
     const char* parent_id;
     const char* child_id;
 } dom_shell_edge_def;
+
+typedef struct dom_shell_scenario_field {
+    u32 field_id;
+    i32 value_q16;
+    u32 known;
+} dom_shell_scenario_field;
+
+typedef struct dom_shell_scenario_agent {
+    u64 agent_id;
+    u32 caps;
+    u32 auth;
+    u32 know;
+    u64 resource_ref;
+    u64 dest_ref;
+    u64 threat_ref;
+} dom_shell_scenario_agent;
+
+typedef struct dom_shell_scenario_desc {
+    char scenario_id[DOM_SHELL_SCENARIO_ID_MAX];
+    char scenario_version[DOM_SHELL_SCENARIO_VERSION_MAX];
+    char world_template[DOM_SHELL_MAX_TEMPLATE_ID];
+    char lockfile_id[DOM_SHELL_LOCKFILE_ID_MAX];
+    char lockfile_hash[DOM_SHELL_LOCKFILE_HASH_MAX];
+    dom_shell_policy_set movement;
+    dom_shell_policy_set authority;
+    dom_shell_policy_set mode;
+    dom_shell_policy_set debug;
+    dom_shell_policy_set playtest;
+    dom_shell_variant_selection variants[DOM_SHELL_MAX_VARIANTS];
+    u32 variant_count;
+    u64 world_seed;
+    u32 world_seed_set;
+} dom_shell_scenario_desc;
+
+typedef struct dom_shell_variant_desc {
+    char variant_id[DOM_SHELL_VARIANT_ID_MAX];
+    char variant_version[DOM_SHELL_SCENARIO_VERSION_MAX];
+    char lockfile_id[DOM_SHELL_LOCKFILE_ID_MAX];
+    char lockfile_hash[DOM_SHELL_LOCKFILE_HASH_MAX];
+    dom_shell_policy_set movement;
+    dom_shell_policy_set authority;
+    dom_shell_policy_set mode;
+    dom_shell_policy_set debug;
+    dom_shell_policy_set playtest;
+    dom_shell_variant_selection variants[DOM_SHELL_MAX_VARIANTS];
+    u32 variant_count;
+    u64 world_seed;
+    u32 world_seed_set;
+    u32 movement_set;
+    u32 authority_set;
+    u32 mode_set;
+    u32 debug_set;
+    u32 playtest_set;
+    u32 lockfile_id_set;
+    u32 lockfile_hash_set;
+} dom_shell_variant_desc;
+
+static void dom_shell_scenario_variants_to_csv(const dom_shell_scenario_state* scenario,
+                                               char* out,
+                                               size_t out_cap);
 
 static void dom_shell_builder_init(dom_shell_builder* b, char* buf, size_t cap)
 {
@@ -329,6 +390,14 @@ static void dom_shell_playtest_reset(dom_client_shell* shell)
     }
     memset(&shell->playtest, 0, sizeof(shell->playtest));
     shell->playtest.speed = 1u;
+}
+
+static void dom_shell_scenario_reset(dom_client_shell* shell)
+{
+    if (!shell) {
+        return;
+    }
+    memset(&shell->scenario, 0, sizeof(shell->scenario));
 }
 
 static void dom_shell_metrics_reset(dom_client_shell* shell)
@@ -1420,6 +1489,7 @@ static void dom_shell_local_reset(dom_client_shell* shell)
     dom_shell_agents_reset(shell);
     dom_shell_networks_reset(shell);
     dom_shell_playtest_reset(shell);
+    dom_shell_scenario_reset(shell);
     dom_shell_metrics_reset(shell);
     dom_shell_variants_clear(shell->variants, &shell->variant_count);
     dom_shell_variants_clear(shell->run_variants, &shell->run_variant_count);
@@ -2509,6 +2579,7 @@ int dom_client_shell_create_world(dom_client_shell* shell,
     }
     shell->last_refusal_code[0] = '\0';
     shell->last_refusal_detail[0] = '\0';
+    dom_shell_scenario_reset(shell);
     if (shell->create_template_index >= shell->registry.count) {
         dom_shell_set_refusal(shell, DOM_REFUSAL_TEMPLATE, "template index out of range");
         dom_shell_set_status(shell, "world_create=refused");
@@ -2942,6 +3013,62 @@ static int dom_shell_write_save(dom_client_shell* shell, const char* path, char*
     return 1;
 }
 
+static int dom_shell_write_replay(dom_client_shell* shell, const char* path, char* err, size_t err_cap)
+{
+    FILE* f;
+    char csv[256];
+    if (!shell || !path || !path[0]) {
+        if (err && err_cap > 0u) {
+            snprintf(err, err_cap, "replay path missing");
+        }
+        return 0;
+    }
+    f = fopen(path, "w");
+    if (!f) {
+        if (err && err_cap > 0u) {
+            snprintf(err, err_cap, "replay open failed");
+        }
+        return 0;
+    }
+    fprintf(f, "%s\n", DOM_SHELL_REPLAY_HEADER);
+    fprintf(f, "meta_begin\n");
+    fprintf(f, "scenario_id=%s\n", shell->scenario.scenario_id);
+    fprintf(f, "scenario_version=%s\n", shell->scenario.scenario_version);
+    dom_shell_scenario_variants_to_csv(&shell->scenario, csv, sizeof(csv));
+    fprintf(f, "scenario_variants=%s\n", csv);
+    fprintf(f, "lockfile_id=%s\n", shell->scenario.lockfile_id);
+    fprintf(f, "lockfile_hash=%s\n", shell->scenario.lockfile_hash);
+    fprintf(f, "meta_end\n");
+    fprintf(f, "variants_begin\n");
+    if (shell->variant_count > 0u) {
+        u32 i;
+        for (i = 0u; i < shell->variant_count; ++i) {
+            const dom_shell_variant_selection* sel = &shell->variants[i];
+            fprintf(f, "variant scope=world system=%s id=%s\n", sel->system_id, sel->variant_id);
+        }
+    }
+    if (shell->run_variant_count > 0u) {
+        u32 i;
+        for (i = 0u; i < shell->run_variant_count; ++i) {
+            const dom_shell_variant_selection* sel = &shell->run_variants[i];
+            fprintf(f, "variant scope=run system=%s id=%s\n", sel->system_id, sel->variant_id);
+        }
+    }
+    fprintf(f, "variants_end\n");
+    fprintf(f, "events_begin\n");
+    if (shell->events.count > 0u) {
+        u32 i;
+        u32 idx = shell->events.head;
+        for (i = 0u; i < shell->events.count; ++i) {
+            fprintf(f, "%s\n", shell->events.lines[idx]);
+            idx = (idx + 1u) % DOM_SHELL_MAX_EVENTS;
+        }
+    }
+    fprintf(f, "events_end\n");
+    fclose(f);
+    return 1;
+}
+
 int dom_client_shell_save_world(dom_client_shell* shell,
                                 const char* path,
                                 dom_app_ui_event_log* log,
@@ -2990,6 +3117,58 @@ int dom_client_shell_save_world(dom_client_shell* shell,
     return D_APP_EXIT_OK;
 }
 
+static int dom_client_shell_save_replay(dom_client_shell* shell,
+                                        const char* path,
+                                        dom_app_ui_event_log* log,
+                                        char* status,
+                                        size_t status_cap,
+                                        int emit_text)
+{
+    char err[96];
+    const char* out_path = path && path[0] ? path : DOM_SHELL_DEFAULT_REPLAY_PATH;
+    if (!shell) {
+        return D_APP_EXIT_FAILURE;
+    }
+    if (shell->events.count == 0u) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "no events");
+        dom_shell_set_status(shell, "replay_save=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        if (emit_text) {
+            fprintf(stderr, "client: replay refused (no events)\n");
+        }
+        dom_shell_emit(shell, log, "client.replay.save", "result=refused reason=no_events");
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    err[0] = '\0';
+    if (!dom_shell_write_replay(shell, out_path, err, sizeof(err))) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, err[0] ? err : "replay failed");
+        dom_shell_set_status(shell, "replay_save=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        if (emit_text) {
+            fprintf(stderr, "client: replay refused (%s)\n", err[0] ? err : "replay failed");
+        }
+        dom_shell_emit(shell, log, "client.replay.save", "result=refused");
+        return D_APP_EXIT_FAILURE;
+    }
+    dom_shell_set_status(shell, "replay_save=ok");
+    if (status && status_cap > 0u) {
+        snprintf(status, status_cap, "%s", shell->last_status);
+    }
+    if (emit_text) {
+        printf("replay_save=ok path=%s\n", out_path);
+    }
+    {
+        char detail[160];
+        snprintf(detail, sizeof(detail), "path=%s result=ok", out_path);
+        dom_shell_emit(shell, log, "client.replay.save", detail);
+    }
+    return D_APP_EXIT_OK;
+}
+
 static int dom_shell_parse_vec3(const char* text, double* out_values)
 {
     char buf[96];
@@ -3016,6 +3195,663 @@ static int dom_shell_parse_vec3(const char* text, double* out_values)
         token = comma ? (comma + 1u) : 0;
     }
     return (i == 3);
+}
+
+static void dom_shell_scenario_desc_init(dom_shell_scenario_desc* desc, const dom_client_shell* shell)
+{
+    if (!desc) {
+        return;
+    }
+    memset(desc, 0, sizeof(*desc));
+    if (!shell) {
+        return;
+    }
+    dom_shell_policy_set_copy(&desc->movement, &shell->create_movement);
+    dom_shell_policy_set_copy(&desc->authority, &shell->create_authority);
+    dom_shell_policy_set_copy(&desc->mode, &shell->create_mode);
+    dom_shell_policy_set_copy(&desc->debug, &shell->create_debug);
+    dom_shell_policy_set_copy(&desc->playtest, &shell->create_playtest);
+    desc->world_seed = shell->create_seed;
+    if (shell->create_template_index < shell->registry.count) {
+        const dom_shell_template* entry = &shell->registry.templates[shell->create_template_index];
+        strncpy(desc->world_template, entry->template_id, sizeof(desc->world_template) - 1u);
+        desc->world_template[sizeof(desc->world_template) - 1u] = '\0';
+    }
+}
+
+static void dom_shell_variant_desc_init(dom_shell_variant_desc* desc)
+{
+    if (!desc) {
+        return;
+    }
+    memset(desc, 0, sizeof(*desc));
+}
+
+static void dom_shell_scenario_add_variant_id(dom_client_shell* shell, const char* variant_id)
+{
+    uint32_t i;
+    if (!shell || !variant_id || !variant_id[0]) {
+        return;
+    }
+    for (i = 0u; i < shell->scenario.variant_count; ++i) {
+        if (strcmp(shell->scenario.variant_ids[i], variant_id) == 0) {
+            return;
+        }
+    }
+    if (shell->scenario.variant_count >= DOM_SHELL_SCENARIO_VARIANTS_MAX) {
+        return;
+    }
+    strncpy(shell->scenario.variant_ids[shell->scenario.variant_count],
+            variant_id,
+            sizeof(shell->scenario.variant_ids[shell->scenario.variant_count]) - 1u);
+    shell->scenario.variant_ids[shell->scenario.variant_count][DOM_SHELL_VARIANT_ID_MAX - 1u] = '\0';
+    shell->scenario.variant_count += 1u;
+}
+
+static void dom_shell_scenario_variants_from_csv(dom_client_shell* shell, const char* csv)
+{
+    char buf[256];
+    char* token;
+    size_t len;
+    if (!shell || !csv || !csv[0]) {
+        return;
+    }
+    len = strlen(csv);
+    if (len >= sizeof(buf)) {
+        len = sizeof(buf) - 1u;
+    }
+    memcpy(buf, csv, len);
+    buf[len] = '\0';
+    token = strtok(buf, ",");
+    while (token) {
+        char* trimmed = dom_shell_trim_token(token);
+        if (trimmed && trimmed[0]) {
+            dom_shell_scenario_add_variant_id(shell, trimmed);
+        }
+        token = strtok(0, ",");
+    }
+}
+
+static void dom_shell_scenario_variants_to_csv(const dom_shell_scenario_state* scenario,
+                                               char* out,
+                                               size_t out_cap)
+{
+    size_t pos = 0u;
+    uint32_t i;
+    if (!out || out_cap == 0u) {
+        return;
+    }
+    out[0] = '\0';
+    if (!scenario || scenario->variant_count == 0u) {
+        return;
+    }
+    for (i = 0u; i < scenario->variant_count; ++i) {
+        const char* id = scenario->variant_ids[i];
+        size_t len;
+        if (!id || !id[0]) {
+            continue;
+        }
+        len = strlen(id);
+        if (len + 1u > out_cap - pos) {
+            break;
+        }
+        if (pos > 0u) {
+            out[pos++] = ',';
+        }
+        if (len >= out_cap - pos) {
+            break;
+        }
+        memcpy(out + pos, id, len);
+        pos += len;
+        out[pos] = '\0';
+    }
+}
+
+static int dom_shell_parse_variant_line(const char* line,
+                                        dom_shell_variant_selection* out_sel,
+                                        char* err,
+                                        size_t err_cap)
+{
+    char buf[256];
+    char* token;
+    char* scope = 0;
+    char* system_id = 0;
+    char* variant_id = 0;
+    size_t len;
+    if (!line || !out_sel) {
+        if (err && err_cap > 0u) {
+            snprintf(err, err_cap, "variant line missing");
+        }
+        return 0;
+    }
+    if (strncmp(line, "variant ", 8) != 0) {
+        if (err && err_cap > 0u) {
+            snprintf(err, err_cap, "variant line invalid");
+        }
+        return 0;
+    }
+    len = strlen(line + 8);
+    if (len >= sizeof(buf)) {
+        len = sizeof(buf) - 1u;
+    }
+    memcpy(buf, line + 8, len);
+    buf[len] = '\0';
+    token = strtok(buf, " ");
+    while (token) {
+        char* eq = strchr(token, '=');
+        if (eq) {
+            *eq = '\0';
+            if (strcmp(token, "scope") == 0) {
+                scope = eq + 1;
+            } else if (strcmp(token, "system") == 0) {
+                system_id = eq + 1;
+            } else if (strcmp(token, "id") == 0) {
+                variant_id = eq + 1;
+            }
+        }
+        token = strtok(0, " ");
+    }
+    if (!system_id || !variant_id || !system_id[0] || !variant_id[0]) {
+        if (err && err_cap > 0u) {
+            snprintf(err, err_cap, "variant fields missing");
+        }
+        return 0;
+    }
+    memset(out_sel, 0, sizeof(*out_sel));
+    strncpy(out_sel->system_id, system_id, sizeof(out_sel->system_id) - 1u);
+    out_sel->system_id[sizeof(out_sel->system_id) - 1u] = '\0';
+    strncpy(out_sel->variant_id, variant_id, sizeof(out_sel->variant_id) - 1u);
+    out_sel->variant_id[sizeof(out_sel->variant_id) - 1u] = '\0';
+    out_sel->scope = (uint32_t)dom_shell_variant_scope_from_text(scope);
+    return 1;
+}
+
+static int dom_shell_apply_field(dom_client_shell* shell,
+                                 const dom_shell_scenario_field* field,
+                                 char* err,
+                                 size_t err_cap)
+{
+    if (!shell || !field || field->field_id == 0u) {
+        if (err && err_cap > 0u) {
+            snprintf(err, err_cap, "field missing");
+        }
+        return 0;
+    }
+    if (dom_field_set_value(&shell->fields.objective,
+                            field->field_id, 0u, 0u, field->value_q16) != 0) {
+        if (err && err_cap > 0u) {
+            snprintf(err, err_cap, "field objective set failed");
+        }
+        return 0;
+    }
+    if (dom_field_set_value(&shell->fields.subjective,
+                            field->field_id, 0u, 0u, field->value_q16) != 0) {
+        if (err && err_cap > 0u) {
+            snprintf(err, err_cap, "field subjective set failed");
+        }
+        return 0;
+    }
+    if (field->known) {
+        shell->fields.knowledge_mask |= DOM_FIELD_BIT(field->field_id);
+    }
+    return 1;
+}
+
+static int dom_shell_apply_agent_spawn(dom_client_shell* shell,
+                                       const dom_shell_scenario_agent* agent,
+                                       char* err,
+                                       size_t err_cap)
+{
+    u64 agent_id;
+    u32 know;
+    dom_agent_belief* belief;
+    if (!shell || !agent) {
+        if (err && err_cap > 0u) {
+            snprintf(err, err_cap, "agent missing");
+        }
+        return 0;
+    }
+    know = agent->know;
+    if (agent->resource_ref != 0u || agent->dest_ref != 0u) {
+        know |= AGENT_KNOW_INFRA;
+    }
+    if (!dom_shell_agent_add(shell, agent->agent_id, agent->caps, agent->auth, know)) {
+        if (err && err_cap > 0u) {
+            snprintf(err, err_cap, "agent add failed");
+        }
+        return 0;
+    }
+    agent_id = agent->agent_id;
+    if (agent_id == 0u && shell->agent_count > 0u) {
+        agent_id = shell->agents[shell->agent_count - 1u].agent_id;
+    }
+    belief = dom_shell_belief_for_agent(shell, agent_id);
+    if (belief) {
+        belief->known_resource_ref = agent->resource_ref;
+        belief->known_destination_ref = agent->dest_ref;
+        belief->known_threat_ref = agent->threat_ref;
+    }
+    return 1;
+}
+
+static int dom_shell_load_scenario_file(dom_client_shell* shell,
+                                        const char* path,
+                                        dom_shell_scenario_desc* desc,
+                                        dom_shell_scenario_field* fields,
+                                        uint32_t* field_count,
+                                        dom_shell_scenario_agent* agents,
+                                        uint32_t* agent_count,
+                                        char* err,
+                                        size_t err_cap)
+{
+    FILE* f;
+    char line[512];
+    int header_checked = 0;
+    int in_variants = 0;
+    int in_fields = 0;
+    int in_agents = 0;
+    if (!shell || !path || !path[0] || !desc || !fields || !field_count || !agents || !agent_count) {
+        if (err && err_cap > 0u) {
+            snprintf(err, err_cap, "scenario path missing");
+        }
+        return 0;
+    }
+    *field_count = 0u;
+    *agent_count = 0u;
+    dom_shell_scenario_desc_init(desc, shell);
+    f = fopen(path, "r");
+    if (!f) {
+        if (err && err_cap > 0u) {
+            snprintf(err, err_cap, "scenario open failed");
+        }
+        return 0;
+    }
+    while (fgets(line, sizeof(line), f)) {
+        size_t len = strlen(line);
+        while (len > 0u && (line[len - 1u] == '\n' || line[len - 1u] == '\r')) {
+            line[--len] = '\0';
+        }
+        if (!line[0] || line[0] == '#' || line[0] == ';') {
+            continue;
+        }
+        if (!header_checked) {
+            if (strcmp(line, DOM_SHELL_SCENARIO_HEADER) != 0) {
+                fclose(f);
+                if (err && err_cap > 0u) {
+                    snprintf(err, err_cap, "scenario header mismatch");
+                }
+                return 0;
+            }
+            header_checked = 1;
+            continue;
+        }
+        if (strcmp(line, "variants_begin") == 0) {
+            in_variants = 1;
+            continue;
+        }
+        if (strcmp(line, "variants_end") == 0) {
+            in_variants = 0;
+            continue;
+        }
+        if (strcmp(line, "fields_begin") == 0) {
+            in_fields = 1;
+            continue;
+        }
+        if (strcmp(line, "fields_end") == 0) {
+            in_fields = 0;
+            continue;
+        }
+        if (strcmp(line, "agents_begin") == 0) {
+            in_agents = 1;
+            continue;
+        }
+        if (strcmp(line, "agents_end") == 0) {
+            in_agents = 0;
+            continue;
+        }
+        if (in_variants) {
+            if (strncmp(line, "variant ", 8) == 0) {
+                dom_shell_variant_selection sel;
+                char parse_err[96];
+                parse_err[0] = '\0';
+                if (!dom_shell_parse_variant_line(line, &sel, parse_err, sizeof(parse_err))) {
+                    fclose(f);
+                    if (err && err_cap > 0u) {
+                        snprintf(err, err_cap, "%s", parse_err[0] ? parse_err : "variant invalid");
+                    }
+                    return 0;
+                }
+                if (desc->variant_count >= DOM_SHELL_MAX_VARIANTS) {
+                    fclose(f);
+                    if (err && err_cap > 0u) {
+                        snprintf(err, err_cap, "scenario variants full");
+                    }
+                    return 0;
+                }
+                desc->variants[desc->variant_count++] = sel;
+            }
+            continue;
+        }
+        if (in_fields) {
+            if (strncmp(line, "field ", 6) == 0) {
+                dom_shell_scenario_field field;
+                char buf[256];
+                char* token;
+                char* value = 0;
+                size_t field_len = strlen(line + 6);
+                if (field_len >= sizeof(buf)) {
+                    field_len = sizeof(buf) - 1u;
+                }
+                memset(&field, 0, sizeof(field));
+                memcpy(buf, line + 6, field_len);
+                buf[field_len] = '\0';
+                token = strtok(buf, " ");
+                while (token) {
+                    char* eq = strchr(token, '=');
+                    if (eq) {
+                        *eq = '\0';
+                        if (strcmp(token, "id") == 0 || strcmp(token, "field_id") == 0) {
+                            field.field_id = (u32)strtoul(eq + 1, 0, 10);
+                        } else if (strcmp(token, "value") == 0) {
+                            value = eq + 1;
+                        } else if (strcmp(token, "known") == 0) {
+                            field.known = (u32)strtoul(eq + 1, 0, 10) ? 1u : 0u;
+                        }
+                    }
+                    token = strtok(0, " ");
+                }
+                if (!value || field.field_id == 0u) {
+                    fclose(f);
+                    if (err && err_cap > 0u) {
+                        snprintf(err, err_cap, "scenario field invalid");
+                    }
+                    return 0;
+                }
+                if (strcmp(value, "unknown") == 0 || strcmp(value, "latent") == 0) {
+                    field.value_q16 = DOM_FIELD_VALUE_UNKNOWN;
+                } else if (!dom_shell_parse_q16(value, &field.value_q16)) {
+                    fclose(f);
+                    if (err && err_cap > 0u) {
+                        snprintf(err, err_cap, "scenario field value invalid");
+                    }
+                    return 0;
+                }
+                if (*field_count >= DOM_SHELL_FIELD_MAX) {
+                    fclose(f);
+                    if (err && err_cap > 0u) {
+                        snprintf(err, err_cap, "scenario fields full");
+                    }
+                    return 0;
+                }
+                fields[(*field_count)++] = field;
+            }
+            continue;
+        }
+        if (in_agents) {
+            if (strncmp(line, "agent ", 6) == 0) {
+                dom_shell_scenario_agent agent;
+                char buf[256];
+                char* token;
+                size_t agent_len = strlen(line + 6);
+                if (agent_len >= sizeof(buf)) {
+                    agent_len = sizeof(buf) - 1u;
+                }
+                memset(&agent, 0, sizeof(agent));
+                memcpy(buf, line + 6, agent_len);
+                buf[agent_len] = '\0';
+                token = strtok(buf, " ");
+                while (token) {
+                    char* eq = strchr(token, '=');
+                    if (eq) {
+                        *eq = '\0';
+                        if (strcmp(token, "id") == 0) {
+                            dom_shell_parse_u64(eq + 1, &agent.agent_id);
+                        } else if (strcmp(token, "caps") == 0) {
+                            agent.caps = dom_shell_parse_mask_csv(eq + 1, dom_shell_capability_token);
+                        } else if (strcmp(token, "auth") == 0 || strcmp(token, "authority") == 0) {
+                            agent.auth = dom_shell_parse_mask_csv(eq + 1, dom_shell_authority_token);
+                        } else if (strcmp(token, "know") == 0 || strcmp(token, "knowledge") == 0) {
+                            agent.know = dom_shell_parse_mask_csv(eq + 1, dom_shell_knowledge_token);
+                        } else if (strcmp(token, "resource") == 0) {
+                            dom_shell_parse_u64(eq + 1, &agent.resource_ref);
+                        } else if (strcmp(token, "dest") == 0 || strcmp(token, "destination") == 0) {
+                            dom_shell_parse_u64(eq + 1, &agent.dest_ref);
+                        } else if (strcmp(token, "threat") == 0) {
+                            dom_shell_parse_u64(eq + 1, &agent.threat_ref);
+                        }
+                    }
+                    token = strtok(0, " ");
+                }
+                if (*agent_count >= DOM_SHELL_AGENT_MAX) {
+                    fclose(f);
+                    if (err && err_cap > 0u) {
+                        snprintf(err, err_cap, "scenario agents full");
+                    }
+                    return 0;
+                }
+                agents[(*agent_count)++] = agent;
+            }
+            continue;
+        }
+        if (strncmp(line, "scenario_id=", 12) == 0) {
+            strncpy(desc->scenario_id, line + 12, sizeof(desc->scenario_id) - 1u);
+            desc->scenario_id[sizeof(desc->scenario_id) - 1u] = '\0';
+            continue;
+        }
+        if (strncmp(line, "scenario_version=", 17) == 0) {
+            strncpy(desc->scenario_version, line + 17, sizeof(desc->scenario_version) - 1u);
+            desc->scenario_version[sizeof(desc->scenario_version) - 1u] = '\0';
+            continue;
+        }
+        if (strncmp(line, "world_template=", 15) == 0) {
+            strncpy(desc->world_template, line + 15, sizeof(desc->world_template) - 1u);
+            desc->world_template[sizeof(desc->world_template) - 1u] = '\0';
+            continue;
+        }
+        if (strncmp(line, "world_seed=", 11) == 0) {
+            if (!dom_shell_parse_u64(line + 11, &desc->world_seed)) {
+                fclose(f);
+                if (err && err_cap > 0u) {
+                    snprintf(err, err_cap, "scenario seed invalid");
+                }
+                return 0;
+            }
+            desc->world_seed_set = 1u;
+            continue;
+        }
+        if (strncmp(line, "policy.movement=", 16) == 0) {
+            dom_shell_policy_set_from_csv(&desc->movement, line + 16);
+            continue;
+        }
+        if (strncmp(line, "policy.authority=", 17) == 0) {
+            dom_shell_policy_set_from_csv(&desc->authority, line + 17);
+            continue;
+        }
+        if (strncmp(line, "policy.mode=", 12) == 0) {
+            dom_shell_policy_set_from_csv(&desc->mode, line + 12);
+            continue;
+        }
+        if (strncmp(line, "policy.debug=", 13) == 0) {
+            dom_shell_policy_set_from_csv(&desc->debug, line + 13);
+            continue;
+        }
+        if (strncmp(line, "policy.playtest=", 16) == 0) {
+            dom_shell_policy_set_from_csv(&desc->playtest, line + 16);
+            continue;
+        }
+        if (strncmp(line, "lockfile_id=", 12) == 0) {
+            strncpy(desc->lockfile_id, line + 12, sizeof(desc->lockfile_id) - 1u);
+            desc->lockfile_id[sizeof(desc->lockfile_id) - 1u] = '\0';
+            continue;
+        }
+        if (strncmp(line, "lockfile_hash=", 14) == 0) {
+            strncpy(desc->lockfile_hash, line + 14, sizeof(desc->lockfile_hash) - 1u);
+            desc->lockfile_hash[sizeof(desc->lockfile_hash) - 1u] = '\0';
+            continue;
+        }
+    }
+    fclose(f);
+    if (!header_checked) {
+        if (err && err_cap > 0u) {
+            snprintf(err, err_cap, "scenario header missing");
+        }
+        return 0;
+    }
+    return 1;
+}
+
+static int dom_shell_load_variant_file(dom_client_shell* shell,
+                                       const char* path,
+                                       dom_shell_variant_desc* desc,
+                                       char* err,
+                                       size_t err_cap)
+{
+    FILE* f;
+    char line[512];
+    int header_checked = 0;
+    int in_variants = 0;
+    if (!shell || !path || !path[0] || !desc) {
+        if (err && err_cap > 0u) {
+            snprintf(err, err_cap, "variant path missing");
+        }
+        return 0;
+    }
+    dom_shell_variant_desc_init(desc);
+    f = fopen(path, "r");
+    if (!f) {
+        if (err && err_cap > 0u) {
+            snprintf(err, err_cap, "variant open failed");
+        }
+        return 0;
+    }
+    while (fgets(line, sizeof(line), f)) {
+        size_t len = strlen(line);
+        while (len > 0u && (line[len - 1u] == '\n' || line[len - 1u] == '\r')) {
+            line[--len] = '\0';
+        }
+        if (!line[0] || line[0] == '#' || line[0] == ';') {
+            continue;
+        }
+        if (!header_checked) {
+            if (strcmp(line, DOM_SHELL_VARIANT_HEADER) != 0) {
+                fclose(f);
+                if (err && err_cap > 0u) {
+                    snprintf(err, err_cap, "variant header mismatch");
+                }
+                return 0;
+            }
+            header_checked = 1;
+            continue;
+        }
+        if (strcmp(line, "variants_begin") == 0) {
+            in_variants = 1;
+            continue;
+        }
+        if (strcmp(line, "variants_end") == 0) {
+            in_variants = 0;
+            continue;
+        }
+        if (in_variants) {
+            if (strncmp(line, "variant ", 8) == 0) {
+                dom_shell_variant_selection sel;
+                char parse_err[96];
+                parse_err[0] = '\0';
+                if (!dom_shell_parse_variant_line(line, &sel, parse_err, sizeof(parse_err))) {
+                    fclose(f);
+                    if (err && err_cap > 0u) {
+                        snprintf(err, err_cap, "%s", parse_err[0] ? parse_err : "variant invalid");
+                    }
+                    return 0;
+                }
+                if (desc->variant_count >= DOM_SHELL_MAX_VARIANTS) {
+                    fclose(f);
+                    if (err && err_cap > 0u) {
+                        snprintf(err, err_cap, "variant list full");
+                    }
+                    return 0;
+                }
+                desc->variants[desc->variant_count++] = sel;
+            }
+            continue;
+        }
+        if (strncmp(line, "variant_id=", 11) == 0) {
+            strncpy(desc->variant_id, line + 11, sizeof(desc->variant_id) - 1u);
+            desc->variant_id[sizeof(desc->variant_id) - 1u] = '\0';
+            continue;
+        }
+        if (strncmp(line, "variant_version=", 16) == 0) {
+            strncpy(desc->variant_version, line + 16, sizeof(desc->variant_version) - 1u);
+            desc->variant_version[sizeof(desc->variant_version) - 1u] = '\0';
+            continue;
+        }
+        if (strncmp(line, "world_seed=", 11) == 0) {
+            if (!dom_shell_parse_u64(line + 11, &desc->world_seed)) {
+                fclose(f);
+                if (err && err_cap > 0u) {
+                    snprintf(err, err_cap, "variant seed invalid");
+                }
+                return 0;
+            }
+            desc->world_seed_set = 1u;
+            continue;
+        }
+        if (strncmp(line, "seed=", 5) == 0) {
+            if (!dom_shell_parse_u64(line + 5, &desc->world_seed)) {
+                fclose(f);
+                if (err && err_cap > 0u) {
+                    snprintf(err, err_cap, "variant seed invalid");
+                }
+                return 0;
+            }
+            desc->world_seed_set = 1u;
+            continue;
+        }
+        if (strncmp(line, "policy.movement=", 16) == 0) {
+            dom_shell_policy_set_from_csv(&desc->movement, line + 16);
+            desc->movement_set = 1u;
+            continue;
+        }
+        if (strncmp(line, "policy.authority=", 17) == 0) {
+            dom_shell_policy_set_from_csv(&desc->authority, line + 17);
+            desc->authority_set = 1u;
+            continue;
+        }
+        if (strncmp(line, "policy.mode=", 12) == 0) {
+            dom_shell_policy_set_from_csv(&desc->mode, line + 12);
+            desc->mode_set = 1u;
+            continue;
+        }
+        if (strncmp(line, "policy.debug=", 13) == 0) {
+            dom_shell_policy_set_from_csv(&desc->debug, line + 13);
+            desc->debug_set = 1u;
+            continue;
+        }
+        if (strncmp(line, "policy.playtest=", 16) == 0) {
+            dom_shell_policy_set_from_csv(&desc->playtest, line + 16);
+            desc->playtest_set = 1u;
+            continue;
+        }
+        if (strncmp(line, "lockfile_id=", 12) == 0) {
+            strncpy(desc->lockfile_id, line + 12, sizeof(desc->lockfile_id) - 1u);
+            desc->lockfile_id[sizeof(desc->lockfile_id) - 1u] = '\0';
+            desc->lockfile_id_set = 1u;
+            continue;
+        }
+        if (strncmp(line, "lockfile_hash=", 14) == 0) {
+            strncpy(desc->lockfile_hash, line + 14, sizeof(desc->lockfile_hash) - 1u);
+            desc->lockfile_hash[sizeof(desc->lockfile_hash) - 1u] = '\0';
+            desc->lockfile_hash_set = 1u;
+            continue;
+        }
+    }
+    fclose(f);
+    if (!header_checked) {
+        if (err && err_cap > 0u) {
+            snprintf(err, err_cap, "variant header missing");
+        }
+        return 0;
+    }
+    return 1;
 }
 
 static int dom_shell_load_save_file(dom_client_shell* shell, const char* path, char* err, size_t err_cap)
@@ -4200,7 +5036,11 @@ static int dom_shell_load_replay_file(dom_client_shell* shell, const char* path,
     FILE* f;
     char line[DOM_SHELL_EVENT_MAX];
     int header_checked = 0;
-    int replay_header = 0;
+    int format = 0;
+    int in_events = 0;
+    int saw_events_section = 0;
+    int in_meta = 0;
+    int in_variants = 0;
     if (!shell || !path || !path[0]) {
         if (err && err_cap > 0u) {
             snprintf(err, err_cap, "replay path missing");
@@ -4216,6 +5056,11 @@ static int dom_shell_load_replay_file(dom_client_shell* shell, const char* path,
     }
     shell->events.head = 0u;
     shell->events.count = 0u;
+    dom_shell_variants_clear(shell->variants, &shell->variant_count);
+    dom_shell_variants_clear(shell->run_variants, &shell->run_variant_count);
+    shell->variant_mode = DOM_SHELL_VARIANT_MODE_AUTHORITATIVE;
+    shell->variant_mode_detail[0] = '\0';
+    dom_shell_scenario_reset(shell);
     while (fgets(line, sizeof(line), f)) {
         size_t len = strlen(line);
         while (len > 0u && (line[len - 1u] == '\n' || line[len - 1u] == '\r')) {
@@ -4224,29 +5069,92 @@ static int dom_shell_load_replay_file(dom_client_shell* shell, const char* path,
         if (!header_checked) {
             header_checked = 1;
             if (strcmp(line, DOM_SHELL_SAVE_HEADER) == 0) {
-                replay_header = 0;
+                format = 0;
                 continue;
             }
             if (strcmp(line, DOM_SHELL_REPLAY_HEADER) == 0) {
-                replay_header = 1;
+                format = 1;
                 continue;
             }
-            replay_header = 1;
+            format = 1;
         }
-        if (!replay_header) {
-            if (strcmp(line, "events_begin") == 0) {
-                replay_header = 2;
+        if (strcmp(line, "meta_begin") == 0) {
+            in_meta = 1;
+            continue;
+        }
+        if (strcmp(line, "meta_end") == 0) {
+            in_meta = 0;
+            continue;
+        }
+        if (strcmp(line, "variants_begin") == 0) {
+            in_variants = 1;
+            continue;
+        }
+        if (strcmp(line, "variants_end") == 0) {
+            in_variants = 0;
+            continue;
+        }
+        if (strcmp(line, "events_begin") == 0) {
+            in_events = 1;
+            saw_events_section = 1;
+            continue;
+        }
+        if (strcmp(line, "events_end") == 0) {
+            in_events = 0;
+            continue;
+        }
+        if (in_meta) {
+            if (strncmp(line, "scenario_id=", 12) == 0) {
+                strncpy(shell->scenario.scenario_id, line + 12,
+                        sizeof(shell->scenario.scenario_id) - 1u);
+                shell->scenario.scenario_id[sizeof(shell->scenario.scenario_id) - 1u] = '\0';
+            } else if (strncmp(line, "scenario_version=", 17) == 0) {
+                strncpy(shell->scenario.scenario_version, line + 17,
+                        sizeof(shell->scenario.scenario_version) - 1u);
+                shell->scenario.scenario_version[sizeof(shell->scenario.scenario_version) - 1u] = '\0';
+            } else if (strncmp(line, "scenario_variants=", 18) == 0) {
+                dom_shell_scenario_variants_from_csv(shell, line + 18);
+            } else if (strncmp(line, "lockfile_id=", 12) == 0) {
+                strncpy(shell->scenario.lockfile_id, line + 12,
+                        sizeof(shell->scenario.lockfile_id) - 1u);
+                shell->scenario.lockfile_id[sizeof(shell->scenario.lockfile_id) - 1u] = '\0';
+            } else if (strncmp(line, "lockfile_hash=", 14) == 0) {
+                strncpy(shell->scenario.lockfile_hash, line + 14,
+                        sizeof(shell->scenario.lockfile_hash) - 1u);
+                shell->scenario.lockfile_hash[sizeof(shell->scenario.lockfile_hash) - 1u] = '\0';
             }
             continue;
         }
-        if (replay_header == 2) {
-            if (strcmp(line, "events_end") == 0) {
-                break;
+        if (in_variants) {
+            if (strncmp(line, "variant ", 8) == 0) {
+                dom_shell_variant_selection sel;
+                if (dom_shell_parse_variant_line(line, &sel, 0, 0u)) {
+                    (void)dom_shell_variant_set_internal(shell,
+                                                         sel.system_id,
+                                                         sel.variant_id,
+                                                         (dom_shell_variant_scope)sel.scope,
+                                                         1,
+                                                         0,
+                                                         0u);
+                }
             }
-            dom_shell_event_ring_add(&shell->events, "replay.event", line);
             continue;
         }
-        dom_shell_event_ring_add(&shell->events, "replay.event", line);
+        if (format == 0) {
+            if (in_events && line[0]) {
+                dom_shell_event_ring_add(&shell->events, "replay.event", line);
+            }
+            continue;
+        }
+        if (format == 1) {
+            if (saw_events_section) {
+                if (in_events && line[0]) {
+                    dom_shell_event_ring_add(&shell->events, "replay.event", line);
+                }
+            } else if (line[0]) {
+                dom_shell_event_ring_add(&shell->events, "replay.event", line);
+            }
+        }
     }
     fclose(f);
     if (shell->events.count == 0u) {
@@ -4815,6 +5723,80 @@ static void dom_shell_print_world(const dom_client_shell* shell, int emit_text)
     }
 }
 
+static void dom_shell_print_scenario(const dom_client_shell* shell, int emit_text)
+{
+    char csv[256];
+    if (!shell || !emit_text) {
+        return;
+    }
+    dom_shell_scenario_variants_to_csv(&shell->scenario, csv, sizeof(csv));
+    printf("scenario_id=%s\n", shell->scenario.scenario_id[0] ? shell->scenario.scenario_id : "none");
+    printf("scenario_version=%s\n",
+           shell->scenario.scenario_version[0] ? shell->scenario.scenario_version : "none");
+    printf("scenario_variants=%s\n", csv[0] ? csv : "none");
+    printf("lockfile_id=%s\n", shell->scenario.lockfile_id[0] ? shell->scenario.lockfile_id : "none");
+    printf("lockfile_hash=%s\n",
+           shell->scenario.lockfile_hash[0] ? shell->scenario.lockfile_hash : "none");
+}
+
+static void dom_shell_print_refusal(const dom_client_shell* shell, int emit_text)
+{
+    if (!shell || !emit_text) {
+        return;
+    }
+    printf("refusal_code=%s\n", shell->last_refusal_code[0] ? shell->last_refusal_code : "none");
+    printf("refusal_detail=%s\n", shell->last_refusal_detail[0] ? shell->last_refusal_detail : "none");
+}
+
+static void dom_shell_print_budgets(const dom_client_shell* shell, int emit_text)
+{
+    u32 i;
+    if (!shell || !emit_text) {
+        return;
+    }
+    printf("budgets=%u\n", (unsigned int)shell->agent_count);
+    for (i = 0u; i < shell->agent_count; ++i) {
+        const dom_shell_agent_record* record = &shell->agents[i];
+        const dom_agent_schedule_item* sched = &shell->schedules[i];
+        printf("budget agent_id=%llu next_due=%llu status=%u compute_budget=%u active_goal=%llu "
+               "active_plan=%llu resume_step=%u\n",
+               (unsigned long long)record->agent_id,
+               (unsigned long long)sched->next_due_tick,
+               (unsigned int)sched->status,
+               (unsigned int)sched->compute_budget,
+               (unsigned long long)sched->active_goal_id,
+               (unsigned long long)sched->active_plan_id,
+               (unsigned int)sched->resume_step);
+    }
+}
+
+static void dom_shell_print_structure(const dom_client_shell* shell, int emit_text)
+{
+    if (!shell || !emit_text) {
+        return;
+    }
+    if (!shell->world.active) {
+        printf("structure=inactive\n");
+        return;
+    }
+    printf("structure_id=%llu built=%u failed=%u\n",
+           (unsigned long long)shell->structure.structure.structure_id,
+           (unsigned int)shell->structure.structure.built,
+           (unsigned int)shell->structure.structure.failed);
+    printf("assembly_id=%llu parts=%u connections=%u grounded_mask=0x%08x\n",
+           (unsigned long long)shell->structure.assembly.assembly_id,
+           (unsigned int)shell->structure.assembly.part_count,
+           (unsigned int)shell->structure.assembly.connection_count,
+           (unsigned int)shell->structure.assembly.grounded_mask);
+    printf("claims=%u capacity=%u\n",
+           (unsigned int)shell->structure.claims.count,
+           (unsigned int)shell->structure.claims.capacity);
+    printf("network_type=%u nodes=%u edges=%u\n",
+           (unsigned int)shell->structure.network.type,
+           (unsigned int)shell->structure.network.node_count,
+           (unsigned int)shell->structure.network.edge_count);
+}
+
 static char* dom_shell_trim_inplace(char* text)
 {
     char* end;
@@ -4903,7 +5885,8 @@ int dom_client_shell_execute(dom_client_shell* shell,
     }
     if (strcmp(token, "help") == 0) {
         if (emit_text) {
-            printf("commands: templates new-world load save inspect-replay mode where fields events batch exit\n");
+            printf("commands: templates new-world scenario-load scenario-status load save replay-save inspect-replay\n");
+            printf("          mode where refusal budgets structure fields events batch exit\n");
             printf("          survey collect assemble connect inspect repair field-set simulate\n");
             printf("          agent-add agent-list agent-possess agent-release agent-know\n");
             printf("          goal-add goal-list delegate delegations delegate-revoke\n");
@@ -4912,7 +5895,7 @@ int dom_client_shell_execute(dom_client_shell* shell,
             printf("          network-create network-node network-edge network-config network-list\n");
             printf("          playtest-pause playtest-resume playtest-step playtest-fast-forward playtest-speed\n");
             printf("          playtest-seed playtest-perturb playtest-scenario metrics\n");
-            printf("          variant-list variant-set variant-diff variant-mode\n");
+            printf("          variant-apply variant-list variant-set variant-diff variant-mode\n");
         }
         dom_shell_set_status(shell, "help=ok");
         if (status && status_cap > 0u) {
@@ -4968,6 +5951,257 @@ int dom_client_shell_execute(dom_client_shell* shell,
         dom_shell_policy_set_copy(&shell->create_debug, &debug);
         dom_shell_policy_set_copy(&shell->create_playtest, &playtest);
         return dom_client_shell_create_world(shell, log, status, status_cap, emit_text);
+    }
+    if (strcmp(token, "scenario-load") == 0 || strcmp(token, "load-scenario") == 0) {
+        const char* path = 0;
+        const char* variant_paths[DOM_SHELL_SCENARIO_VARIANTS_MAX];
+        u32 variant_path_count = 0u;
+        dom_shell_scenario_desc desc;
+        dom_shell_scenario_field fields[DOM_SHELL_FIELD_MAX];
+        dom_shell_scenario_agent agents[DOM_SHELL_AGENT_MAX];
+        dom_shell_variant_selection variant_overrides[DOM_SHELL_MAX_VARIANTS];
+        u32 variant_override_count = 0u;
+        char variant_ids[DOM_SHELL_SCENARIO_VARIANTS_MAX][DOM_SHELL_VARIANT_ID_MAX];
+        u32 variant_id_count = 0u;
+        u32 field_count = 0u;
+        u32 agent_count = 0u;
+        u32 i;
+        u32 template_index = shell->create_template_index;
+        char err_buf[96];
+        err_buf[0] = '\0';
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (eq) {
+                *eq = '\0';
+                if (strcmp(next, "path") == 0 || strcmp(next, "scenario") == 0) {
+                    path = eq + 1;
+                } else if (strcmp(next, "variant") == 0) {
+                    if (variant_path_count < DOM_SHELL_SCENARIO_VARIANTS_MAX) {
+                        variant_paths[variant_path_count++] = eq + 1;
+                    }
+                }
+            } else if (!path) {
+                path = next;
+            }
+        }
+        if (!path) {
+            return D_APP_EXIT_USAGE;
+        }
+        if (!dom_shell_load_scenario_file(shell,
+                                          path,
+                                          &desc,
+                                          fields,
+                                          &field_count,
+                                          agents,
+                                          &agent_count,
+                                          err_buf,
+                                          sizeof(err_buf))) {
+            dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, err_buf[0] ? err_buf : "scenario load failed");
+            dom_shell_set_status(shell, "scenario_load=refused");
+            if (status && status_cap > 0u) {
+                snprintf(status, status_cap, "%s", shell->last_status);
+            }
+            if (emit_text) {
+                fprintf(stderr, "client: scenario refused (%s)\n",
+                        err_buf[0] ? err_buf : "scenario load failed");
+            }
+            dom_shell_emit(shell, log, "client.scenario.load", "result=refused");
+            return D_APP_EXIT_UNAVAILABLE;
+        }
+        for (i = 0u; i < variant_path_count; ++i) {
+            dom_shell_variant_desc vdesc;
+            if (!dom_shell_load_variant_file(shell, variant_paths[i], &vdesc, err_buf, sizeof(err_buf))) {
+                dom_shell_set_refusal(shell, DOM_REFUSAL_VARIANT, err_buf[0] ? err_buf : "variant load failed");
+                dom_shell_set_status(shell, "scenario_load=refused");
+                if (status && status_cap > 0u) {
+                    snprintf(status, status_cap, "%s", shell->last_status);
+                }
+                if (emit_text) {
+                    fprintf(stderr, "client: scenario refused (%s)\n",
+                            err_buf[0] ? err_buf : "variant load failed");
+                }
+                dom_shell_emit(shell, log, "client.scenario.load", "result=refused");
+                return D_APP_EXIT_UNAVAILABLE;
+            }
+            if (vdesc.world_seed_set) {
+                desc.world_seed = vdesc.world_seed;
+            }
+            if (vdesc.movement_set) {
+                desc.movement = vdesc.movement;
+            }
+            if (vdesc.authority_set) {
+                desc.authority = vdesc.authority;
+            }
+            if (vdesc.mode_set) {
+                desc.mode = vdesc.mode;
+            }
+            if (vdesc.debug_set) {
+                desc.debug = vdesc.debug;
+            }
+            if (vdesc.playtest_set) {
+                desc.playtest = vdesc.playtest;
+            }
+            if (vdesc.lockfile_id_set) {
+                strncpy(desc.lockfile_id, vdesc.lockfile_id, sizeof(desc.lockfile_id) - 1u);
+                desc.lockfile_id[sizeof(desc.lockfile_id) - 1u] = '\0';
+            }
+            if (vdesc.lockfile_hash_set) {
+                strncpy(desc.lockfile_hash, vdesc.lockfile_hash, sizeof(desc.lockfile_hash) - 1u);
+                desc.lockfile_hash[sizeof(desc.lockfile_hash) - 1u] = '\0';
+            }
+            if (vdesc.variant_id[0]) {
+                u32 seen = 0u;
+                u32 j;
+                for (j = 0u; j < variant_id_count; ++j) {
+                    if (strcmp(variant_ids[j], vdesc.variant_id) == 0) {
+                        seen = 1u;
+                        break;
+                    }
+                }
+                if (!seen) {
+                    if (variant_id_count >= DOM_SHELL_SCENARIO_VARIANTS_MAX) {
+                        dom_shell_set_refusal(shell, DOM_REFUSAL_VARIANT, "scenario variant ids full");
+                        dom_shell_set_status(shell, "scenario_load=refused");
+                        if (status && status_cap > 0u) {
+                            snprintf(status, status_cap, "%s", shell->last_status);
+                        }
+                        dom_shell_emit(shell, log, "client.scenario.load", "result=refused");
+                        return D_APP_EXIT_UNAVAILABLE;
+                    }
+                    strncpy(variant_ids[variant_id_count],
+                            vdesc.variant_id,
+                            sizeof(variant_ids[variant_id_count]) - 1u);
+                    variant_ids[variant_id_count][DOM_SHELL_VARIANT_ID_MAX - 1u] = '\0';
+                    variant_id_count += 1u;
+                }
+            }
+            if (vdesc.variant_count > 0u) {
+                u32 j;
+                for (j = 0u; j < vdesc.variant_count; ++j) {
+                    if (variant_override_count >= DOM_SHELL_MAX_VARIANTS) {
+                        dom_shell_set_refusal(shell, DOM_REFUSAL_VARIANT, "scenario variant overrides full");
+                        dom_shell_set_status(shell, "scenario_load=refused");
+                        if (status && status_cap > 0u) {
+                            snprintf(status, status_cap, "%s", shell->last_status);
+                        }
+                        dom_shell_emit(shell, log, "client.scenario.load", "result=refused");
+                        return D_APP_EXIT_UNAVAILABLE;
+                    }
+                    variant_overrides[variant_override_count++] = vdesc.variants[j];
+                }
+            }
+        }
+        if (desc.world_template[0]) {
+            if (!dom_shell_select_template(shell, desc.world_template, &template_index)) {
+                dom_shell_set_refusal(shell, DOM_REFUSAL_TEMPLATE, "template not found");
+                dom_shell_set_status(shell, "scenario_load=refused");
+                if (status && status_cap > 0u) {
+                    snprintf(status, status_cap, "%s", shell->last_status);
+                }
+                return D_APP_EXIT_UNAVAILABLE;
+            }
+        }
+        shell->create_template_index = template_index;
+        shell->create_seed = desc.world_seed;
+        dom_shell_policy_set_copy(&shell->create_movement, &desc.movement);
+        dom_shell_policy_set_copy(&shell->create_authority, &desc.authority);
+        dom_shell_policy_set_copy(&shell->create_mode, &desc.mode);
+        dom_shell_policy_set_copy(&shell->create_debug, &desc.debug);
+        dom_shell_policy_set_copy(&shell->create_playtest, &desc.playtest);
+        {
+            int rc = dom_client_shell_create_world(shell, log, status, status_cap, emit_text);
+            if (rc != D_APP_EXIT_OK) {
+                dom_shell_set_status(shell, "scenario_load=refused");
+                if (status && status_cap > 0u) {
+                    snprintf(status, status_cap, "%s", shell->last_status);
+                }
+                return rc;
+            }
+        }
+        for (i = 0u; i < field_count; ++i) {
+            if (!dom_shell_apply_field(shell, &fields[i], err_buf, sizeof(err_buf))) {
+                dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, err_buf[0] ? err_buf : "field apply failed");
+                dom_shell_set_status(shell, "scenario_load=refused");
+                if (status && status_cap > 0u) {
+                    snprintf(status, status_cap, "%s", shell->last_status);
+                }
+                return D_APP_EXIT_UNAVAILABLE;
+            }
+        }
+        for (i = 0u; i < agent_count; ++i) {
+            if (!dom_shell_apply_agent_spawn(shell, &agents[i], err_buf, sizeof(err_buf))) {
+                dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, err_buf[0] ? err_buf : "agent apply failed");
+                dom_shell_set_status(shell, "scenario_load=refused");
+                if (status && status_cap > 0u) {
+                    snprintf(status, status_cap, "%s", shell->last_status);
+                }
+                return D_APP_EXIT_UNAVAILABLE;
+            }
+        }
+        for (i = 0u; i < desc.variant_count; ++i) {
+            if (!dom_shell_variant_set_internal(shell,
+                                                desc.variants[i].system_id,
+                                                desc.variants[i].variant_id,
+                                                (dom_shell_variant_scope)desc.variants[i].scope,
+                                                1,
+                                                err_buf,
+                                                sizeof(err_buf))) {
+                dom_shell_set_refusal(shell, DOM_REFUSAL_VARIANT, err_buf[0] ? err_buf : "variant set failed");
+                dom_shell_set_status(shell, "scenario_load=refused");
+                if (status && status_cap > 0u) {
+                    snprintf(status, status_cap, "%s", shell->last_status);
+                }
+                return D_APP_EXIT_UNAVAILABLE;
+            }
+        }
+        for (i = 0u; i < variant_override_count; ++i) {
+            if (!dom_shell_variant_set_internal(shell,
+                                                variant_overrides[i].system_id,
+                                                variant_overrides[i].variant_id,
+                                                (dom_shell_variant_scope)variant_overrides[i].scope,
+                                                1,
+                                                err_buf,
+                                                sizeof(err_buf))) {
+                dom_shell_set_refusal(shell, DOM_REFUSAL_VARIANT, err_buf[0] ? err_buf : "variant set failed");
+                dom_shell_set_status(shell, "scenario_load=refused");
+                if (status && status_cap > 0u) {
+                    snprintf(status, status_cap, "%s", shell->last_status);
+                }
+                return D_APP_EXIT_UNAVAILABLE;
+            }
+        }
+        if (shell->variant_mode == DOM_SHELL_VARIANT_MODE_DEGRADED &&
+            dom_shell_variants_all_known(shell)) {
+            shell->variant_mode = DOM_SHELL_VARIANT_MODE_AUTHORITATIVE;
+            shell->variant_mode_detail[0] = '\0';
+        }
+        dom_shell_scenario_reset(shell);
+        strncpy(shell->scenario.scenario_id, desc.scenario_id, sizeof(shell->scenario.scenario_id) - 1u);
+        shell->scenario.scenario_id[sizeof(shell->scenario.scenario_id) - 1u] = '\0';
+        strncpy(shell->scenario.scenario_version, desc.scenario_version,
+                sizeof(shell->scenario.scenario_version) - 1u);
+        shell->scenario.scenario_version[sizeof(shell->scenario.scenario_version) - 1u] = '\0';
+        strncpy(shell->scenario.lockfile_id, desc.lockfile_id, sizeof(shell->scenario.lockfile_id) - 1u);
+        shell->scenario.lockfile_id[sizeof(shell->scenario.lockfile_id) - 1u] = '\0';
+        strncpy(shell->scenario.lockfile_hash, desc.lockfile_hash, sizeof(shell->scenario.lockfile_hash) - 1u);
+        shell->scenario.lockfile_hash[sizeof(shell->scenario.lockfile_hash) - 1u] = '\0';
+        for (i = 0u; i < variant_id_count; ++i) {
+            dom_shell_scenario_add_variant_id(shell, variant_ids[i]);
+        }
+        dom_shell_set_status(shell, "scenario_load=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        if (emit_text) {
+            printf("scenario_load=ok path=%s\n", path);
+        }
+        {
+            char detail[200];
+            snprintf(detail, sizeof(detail), "path=%s scenario_id=%s result=ok",
+                     path, shell->scenario.scenario_id[0] ? shell->scenario.scenario_id : "none");
+            dom_shell_emit(shell, log, "client.scenario.load", detail);
+        }
+        return D_APP_EXIT_OK;
     }
     if (strcmp(token, "field-set") == 0) {
         const char* field_name = 0;
@@ -6624,6 +7858,126 @@ int dom_client_shell_execute(dom_client_shell* shell,
         dom_shell_emit(shell, log, "client.playtest.policy", "result=ok");
         return D_APP_EXIT_OK;
     }
+    if (strcmp(token, "variant-apply") == 0 || strcmp(token, "variant-load") == 0) {
+        const char* path = 0;
+        dom_shell_variant_desc desc;
+        u32 i;
+        char err_buf[96];
+        err_buf[0] = '\0';
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (eq) {
+                *eq = '\0';
+                if (strcmp(next, "path") == 0 || strcmp(next, "variant") == 0) {
+                    path = eq + 1;
+                }
+            } else if (!path) {
+                path = next;
+            }
+        }
+        if (!path) {
+            return D_APP_EXIT_USAGE;
+        }
+        if (!dom_shell_load_variant_file(shell, path, &desc, err_buf, sizeof(err_buf))) {
+            dom_shell_set_refusal(shell, DOM_REFUSAL_VARIANT, err_buf[0] ? err_buf : "variant load failed");
+            dom_shell_set_status(shell, "variant_apply=refused");
+            if (status && status_cap > 0u) {
+                snprintf(status, status_cap, "%s", shell->last_status);
+            }
+            if (emit_text) {
+                fprintf(stderr, "client: variant refused (%s)\n",
+                        err_buf[0] ? err_buf : "variant load failed");
+            }
+            dom_shell_emit(shell, log, "client.variant.apply", "result=refused");
+            return D_APP_EXIT_UNAVAILABLE;
+        }
+        for (i = 0u; i < desc.variant_count; ++i) {
+            if (!dom_shell_variant_set_internal(shell,
+                                                desc.variants[i].system_id,
+                                                desc.variants[i].variant_id,
+                                                (dom_shell_variant_scope)desc.variants[i].scope,
+                                                1,
+                                                err_buf,
+                                                sizeof(err_buf))) {
+                dom_shell_set_refusal(shell, DOM_REFUSAL_VARIANT, err_buf[0] ? err_buf : "variant set failed");
+                dom_shell_set_status(shell, "variant_apply=refused");
+                if (status && status_cap > 0u) {
+                    snprintf(status, status_cap, "%s", shell->last_status);
+                }
+                return D_APP_EXIT_UNAVAILABLE;
+            }
+        }
+        if (shell->variant_mode == DOM_SHELL_VARIANT_MODE_DEGRADED &&
+            dom_shell_variants_all_known(shell)) {
+            shell->variant_mode = DOM_SHELL_VARIANT_MODE_AUTHORITATIVE;
+            shell->variant_mode_detail[0] = '\0';
+        }
+        if (desc.movement_set) {
+            dom_shell_policy_set_copy(&shell->create_movement, &desc.movement);
+            if (shell->world.active) {
+                dom_shell_policy_set_copy(&shell->world.summary.movement, &desc.movement);
+            }
+        }
+        if (desc.authority_set) {
+            dom_shell_policy_set_copy(&shell->create_authority, &desc.authority);
+            if (shell->world.active) {
+                dom_shell_policy_set_copy(&shell->world.summary.authority, &desc.authority);
+            }
+        }
+        if (desc.mode_set) {
+            dom_shell_policy_set_copy(&shell->create_mode, &desc.mode);
+            if (shell->world.active) {
+                dom_shell_policy_set_copy(&shell->world.summary.mode, &desc.mode);
+                shell->world.active_mode[0] = '\0';
+                if (desc.mode.count > 0u) {
+                    strncpy(shell->world.active_mode,
+                            desc.mode.items[0],
+                            sizeof(shell->world.active_mode) - 1u);
+                    shell->world.active_mode[sizeof(shell->world.active_mode) - 1u] = '\0';
+                }
+            }
+        }
+        if (desc.debug_set) {
+            dom_shell_policy_set_copy(&shell->create_debug, &desc.debug);
+            if (shell->world.active) {
+                dom_shell_policy_set_copy(&shell->world.summary.debug, &desc.debug);
+            }
+        }
+        if (desc.playtest_set) {
+            dom_shell_policy_set_copy(&shell->create_playtest, &desc.playtest);
+            if (shell->world.active) {
+                dom_shell_policy_set_copy(&shell->world.summary.playtest, &desc.playtest);
+            }
+        }
+        if (desc.world_seed_set) {
+            shell->create_seed = desc.world_seed;
+        }
+        if (desc.lockfile_id_set) {
+            strncpy(shell->scenario.lockfile_id, desc.lockfile_id, sizeof(shell->scenario.lockfile_id) - 1u);
+            shell->scenario.lockfile_id[sizeof(shell->scenario.lockfile_id) - 1u] = '\0';
+        }
+        if (desc.lockfile_hash_set) {
+            strncpy(shell->scenario.lockfile_hash, desc.lockfile_hash, sizeof(shell->scenario.lockfile_hash) - 1u);
+            shell->scenario.lockfile_hash[sizeof(shell->scenario.lockfile_hash) - 1u] = '\0';
+        }
+        if (desc.variant_id[0]) {
+            dom_shell_scenario_add_variant_id(shell, desc.variant_id);
+        }
+        dom_shell_set_status(shell, "variant_apply=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        if (emit_text) {
+            printf("variant_apply=ok id=%s\n", desc.variant_id[0] ? desc.variant_id : "none");
+        }
+        {
+            char detail[160];
+            snprintf(detail, sizeof(detail), "path=%s id=%s result=ok",
+                     path, desc.variant_id[0] ? desc.variant_id : "none");
+            dom_shell_emit(shell, log, "client.variant.apply", detail);
+        }
+        return D_APP_EXIT_OK;
+    }
     if (strcmp(token, "variant-list") == 0 || strcmp(token, "variants") == 0) {
         dom_shell_print_variants(shell, emit_text);
         dom_shell_set_status(shell, "variant_list=ok");
@@ -6962,6 +8316,17 @@ int dom_client_shell_execute(dom_client_shell* shell,
         }
         return dom_client_shell_save_world(shell, path, log, status, status_cap, emit_text);
     }
+    if (strcmp(token, "replay-save") == 0 || strcmp(token, "save-replay") == 0) {
+        const char* path = 0;
+        if ((next = strtok(0, " \t")) != 0) {
+            if (strncmp(next, "path=", 5) == 0) {
+                path = next + 5;
+            } else {
+                path = next;
+            }
+        }
+        return dom_client_shell_save_replay(shell, path, log, status, status_cap, emit_text);
+    }
     if (strcmp(token, "load") == 0 || strcmp(token, "load-save") == 0 || strcmp(token, "load-world") == 0) {
         const char* path = 0;
         if ((next = strtok(0, " \t")) != 0) {
@@ -6994,6 +8359,38 @@ int dom_client_shell_execute(dom_client_shell* shell,
     if (strcmp(token, "where") == 0 || strcmp(token, "status") == 0) {
         dom_shell_print_world(shell, emit_text);
         dom_shell_set_status(shell, "world_status=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "scenario-status") == 0 || strcmp(token, "scenario-info") == 0) {
+        dom_shell_print_scenario(shell, emit_text);
+        dom_shell_set_status(shell, "scenario_status=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "refusal") == 0 || strcmp(token, "refusal-status") == 0) {
+        dom_shell_print_refusal(shell, emit_text);
+        dom_shell_set_status(shell, "refusal_status=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "budgets") == 0 || strcmp(token, "budget-list") == 0) {
+        dom_shell_print_budgets(shell, emit_text);
+        dom_shell_set_status(shell, "budgets=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "structure") == 0 || strcmp(token, "assembly") == 0) {
+        dom_shell_print_structure(shell, emit_text);
+        dom_shell_set_status(shell, "structure=ok");
         if (status && status_cap > 0u) {
             snprintf(status, status_cap, "%s", shell->last_status);
         }

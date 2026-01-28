@@ -54,7 +54,7 @@ Key/value lines include:
 - `--expect-engine-version`, `--expect-game-version`, `--expect-build-id`,
   `--expect-sim-schema`, `--expect-build-info-abi`, `--expect-caps-abi`,
   `--expect-gfx-api`: compatibility enforcement for read-only access
-- Commands: `start`, `load-save`, `inspect-replay`, `tools`, `settings`, `exit`,
+- Commands: `start`, `load-save`, `scenario-load`, `replay-save`, `inspect-replay`, `tools`, `settings`, `exit`,
   `survey-here`, `extract-here`, `fabricate`, `build`, `connect-network`
 
 ## Server (`server`)

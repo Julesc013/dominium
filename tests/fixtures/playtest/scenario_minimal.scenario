@@ -1,0 +1,16 @@
+DOMINIUM_SCENARIO_V1
+scenario_id=org.dominium.playtest.minimal
+scenario_version=1.0.0
+world_template=builtin.minimal_system
+world_seed=42
+policy.authority=policy.authority.shell
+policy.mode=policy.mode.nav.free
+policy.playtest=policy.playtest.sandbox
+lockfile_id=org.dominium.lockfile.playtest
+lockfile_hash=hash.playtest.minimal
+fields_begin
+field id=4 value=1.0 known=1
+fields_end
+agents_begin
+agent id=100 caps=survey auth=infra know=infra
+agents_end
