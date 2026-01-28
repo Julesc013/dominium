@@ -139,6 +139,18 @@
       "sha256": "31e0c5fef87725b6e5a18b186c0674096f8036ab8f4803f55364e4ed7610001c"
     },
     {
+      "path": "docs/architecture/COMPATIBILITY_MODEL.md",
+      "sha256": "66c00ea72f45a478010170f60ce3de3ee4e2b2622785f9647f75f7b1514c26f6"
+    },
+    {
+      "path": "docs/architecture/LIVE_EVOLUTION_MODEL.md",
+      "sha256": "eee9eb2b0e77ff7587342315b873fff3acd1f66b01ea297b1a6292d9d93b3828"
+    },
+    {
+      "path": "docs/architecture/LEGACY_SUPPORT_MODEL.md",
+      "sha256": "f4b2a280a6f034a732b0876abf5d967a52b2f15d156d4ea27c49aacb7686411d"
+    },
+    {
       "path": "docs/distribution/PACK_SOURCES.md",
       "sha256": "f9497317c50c18b61700604966af4d89596a05088a099ee468db387dfe769a9c"
     }

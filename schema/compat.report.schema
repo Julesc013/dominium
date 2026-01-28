@@ -1,0 +1,53 @@
+SCHEMA: compat.report.schema
+schema_id: dominium.schema.compat_report
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the canonical compatibility report emitted by load/join/run/update/migrate.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- compat_report does not grant authority or mutate state.
+- compat_report does not imply successful execution.
+
+CONVENTIONS:
+- uuid: canonical UUID string (lowercase, hyphenated).
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- integer: non-negative whole number.
+- timestamp: ISO-8601 UTC string.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record compat_report
+  required:
+    - context: tag
+    - install_id: uuid
+    - instance_id: uuid
+    - runtime_id: uuid
+    - capability_baseline: id
+    - required_capabilities: [id]
+    - provided_capabilities: [id]
+    - missing_capabilities: [id]
+    - compatibility_mode: tag
+    - refusal_codes: [tag]
+    - mitigation_hints: [tag]
+    - timestamp: timestamp
+    - extensions: map
+  optional:
+    - refusal: refusal_payload
+    - notes: map
+
+TYPE DEFINITIONS:
+record refusal_payload
+  required:
+    - code_id: integer
+    - code: tag
+    - message: tag
+    - details: map
+    - explanation_classification: tag

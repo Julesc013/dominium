@@ -119,6 +119,9 @@ document is binding but still expected to grow or sharpen.
 | `docs/architecture/OPS_TRANSACTION_MODEL.md` | FROZEN | Transactional ops model and ops log |
 | `docs/architecture/UPDATE_MODEL.md` | FROZEN | Update channels and rollback guarantees |
 | `docs/architecture/SANDBOX_MODEL.md` | FROZEN | Sandbox meta-law policy |
+| `docs/architecture/COMPATIBILITY_MODEL.md` | FROZEN | Compat report and mode selection |
+| `docs/architecture/LIVE_EVOLUTION_MODEL.md` | FROZEN | Rolling updates and rollback safety |
+| `docs/architecture/LEGACY_SUPPORT_MODEL.md` | FROZEN | Legacy binaries and degraded modes |
 | `docs/distribution/PACK_SOURCES.md` | FROZEN | Pack sources and mirrors |
 ## Evolving but binding surfaces
 
@@ -238,6 +241,7 @@ Schemas are the authoritative data-shape contracts. Start here:
 - `schema/runtime.descriptor.schema`
 - `schema/pack.sources.schema`
 - `schema/sandbox.policy.schema`
+- `schema/compat.report.schema`
 Refusal code anchors:
 
 

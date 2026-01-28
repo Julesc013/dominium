@@ -8,6 +8,21 @@ import tempfile
 
 
 OPS_CLI = os.path.join("tools", "ops", "ops_cli.py")
+REQUIRED_COMPAT_FIELDS = [
+    "context",
+    "install_id",
+    "instance_id",
+    "runtime_id",
+    "capability_baseline",
+    "required_capabilities",
+    "provided_capabilities",
+    "missing_capabilities",
+    "compatibility_mode",
+    "refusal_codes",
+    "mitigation_hints",
+    "timestamp",
+    "extensions",
+]
 
 
 def run_ops(args, env=None):
@@ -66,12 +81,20 @@ def make_sandbox_policy(path, allowed, denied):
 def assert_ok(result, payload, label):
     if result != 0 or payload.get("result") != "ok":
         raise AssertionError("{} failed: {}".format(label, payload))
+    report = payload.get("compat_report", {})
+    for field in REQUIRED_COMPAT_FIELDS:
+        if field not in report:
+            raise AssertionError("{} missing compat field {}".format(label, field))
 
 
 def assert_refused(result, payload, code_id, label):
     if result == 0:
         raise AssertionError("{} expected refusal".format(label))
-    refusal = payload.get("compat_report", {}).get("refusal", {})
+    report = payload.get("compat_report", {})
+    for field in REQUIRED_COMPAT_FIELDS:
+        if field not in report:
+            raise AssertionError("{} missing compat field {}".format(label, field))
+    refusal = report.get("refusal", {})
     if refusal.get("code_id") != code_id:
         raise AssertionError("{} refusal mismatch: {}".format(label, refusal))
 
