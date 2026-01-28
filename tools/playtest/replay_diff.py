@@ -3,7 +3,7 @@ import json
 import os
 import sys
 
-from playtest_lib import parse_replay, hash_events
+from playtest_lib import parse_replay, hash_events, parse_event_line
 
 
 def normalize_variants(variants):
@@ -19,6 +19,32 @@ def diff_events(left_events, right_events):
     for idx, (lval, rval) in enumerate(zip(left_events, right_events)):
         if lval != rval:
             return {"count_left": len(left_events), "count_right": len(right_events), "first_diff": idx}
+    return None
+
+
+def extract_refusal_events(events):
+    extracted = []
+    for idx, line in enumerate(events):
+        parsed = parse_event_line(line)
+        name = (parsed.get("name") or "").lower()
+        detail_map = parsed.get("detail_map") or {}
+        if "refusal" in name or "refuse" in name or "refusal_code" in detail_map:
+            extracted.append({
+                "index": idx,
+                "seq": parsed.get("seq"),
+                "event": parsed.get("name"),
+                "refusal_code": detail_map.get("refusal_code") or detail_map.get("code"),
+                "detail": parsed.get("detail"),
+            })
+    return extracted
+
+
+def diff_refusals(left_refusals, right_refusals):
+    if len(left_refusals) != len(right_refusals):
+        return {"count_left": len(left_refusals), "count_right": len(right_refusals), "first_diff": None}
+    for idx, (lval, rval) in enumerate(zip(left_refusals, right_refusals)):
+        if lval != rval:
+            return {"count_left": len(left_refusals), "count_right": len(right_refusals), "first_diff": idx}
     return None
 
 
@@ -66,6 +92,11 @@ def main():
         event_diff = diff_events(left["events"], right["events"])
         if event_diff:
             diffs["events"] = event_diff
+        left_refusals = extract_refusal_events(left["events"])
+        right_refusals = extract_refusal_events(right["events"])
+        refusal_diff = diff_refusals(left_refusals, right_refusals)
+        if refusal_diff:
+            diffs["refusals"] = refusal_diff
 
     payload = {
         "ok": not diffs,
