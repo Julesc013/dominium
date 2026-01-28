@@ -1,0 +1,140 @@
+{
+  "materials": [
+    {
+      "material_id": "dominium.test.material.cycle",
+      "traits": {},
+      "manufacturability": {},
+      "failure_params": {},
+      "unit_annotations": {},
+      "provenance": {
+        "provenance_id": "dominium.test.prov.cycle"
+      },
+      "extensions": {}
+    }
+  ],
+  "interfaces": [
+    {
+      "interface_id": "dominium.test.interface.loop",
+      "interface_type": "org.dominium.interface.type.mechanical",
+      "directionality": "org.dominium.interface.dir.bidirectional",
+      "capacity": {
+        "value": 10,
+        "unit": "unit.mass.kilogram",
+        "overflow_behavior": "refuse"
+      },
+      "unit_annotations": {},
+      "compatibility_rules": {
+        "allow_degraded": false
+      },
+      "extensions": {}
+    }
+  ],
+  "parts": [
+    {
+      "part_id": "dominium.test.part.cycle.a",
+      "material_ref": {
+        "material_id": "dominium.test.material.cycle"
+      },
+      "mass": {
+        "value": 1,
+        "unit": "unit.mass.kilogram",
+        "overflow_behavior": "refuse"
+      },
+      "volume": {
+        "value": 1,
+        "unit": "unit.length.meter",
+        "overflow_behavior": "refuse"
+      },
+      "interfaces": [
+        {
+          "interface_id": "dominium.test.interface.loop"
+        }
+      ],
+      "constraints": [],
+      "quality_requirements": {},
+      "failure_model_ref": {
+        "failure_model_id": "dominium.test.failure.none"
+      },
+      "unit_annotations": {},
+      "extensions": {}
+    },
+    {
+      "part_id": "dominium.test.part.cycle.b",
+      "material_ref": {
+        "material_id": "dominium.test.material.cycle"
+      },
+      "mass": {
+        "value": 1,
+        "unit": "unit.mass.kilogram",
+        "overflow_behavior": "refuse"
+      },
+      "volume": {
+        "value": 1,
+        "unit": "unit.length.meter",
+        "overflow_behavior": "refuse"
+      },
+      "interfaces": [
+        {
+          "interface_id": "dominium.test.interface.loop"
+        }
+      ],
+      "constraints": [],
+      "quality_requirements": {},
+      "failure_model_ref": {
+        "failure_model_id": "dominium.test.failure.none"
+      },
+      "unit_annotations": {},
+      "extensions": {}
+    }
+  ],
+  "assemblies": [
+    {
+      "assembly_id": "dominium.test.assembly.cycle.allowed",
+      "nodes": [
+        {
+          "node_id": "dominium.test.node.cycle.a",
+          "node_type": "part",
+          "ref_id": "dominium.test.part.cycle.a"
+        },
+        {
+          "node_id": "dominium.test.node.cycle.b",
+          "node_type": "part",
+          "ref_id": "dominium.test.part.cycle.b"
+        }
+      ],
+      "edges": [
+        {
+          "edge_id": "dominium.test.edge.cycle.a_to_b",
+          "from_node_id": "dominium.test.node.cycle.a",
+          "to_node_id": "dominium.test.node.cycle.b",
+          "interface_ref": {
+            "interface_id": "dominium.test.interface.loop"
+          }
+        },
+        {
+          "edge_id": "dominium.test.edge.cycle.b_to_a",
+          "from_node_id": "dominium.test.node.cycle.b",
+          "to_node_id": "dominium.test.node.cycle.a",
+          "interface_ref": {
+            "interface_id": "dominium.test.interface.loop"
+          }
+        }
+      ],
+      "subsystems": [],
+      "hosted_processes": [],
+      "throughput_limits": {},
+      "maintenance": {},
+      "unit_annotations": {},
+      "extensions": {
+        "cycle_policy": "org.dominium.cycle_policy.allow"
+      }
+    }
+  ],
+  "process_families": [],
+  "instruments": [],
+  "standards": [],
+  "qualities": [],
+  "batches": [],
+  "hazards": [],
+  "substances": []
+}

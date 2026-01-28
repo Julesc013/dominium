@@ -51,6 +51,80 @@ def id_set(records, key):
     return out
 
 
+def id_tail(value):
+    if not isinstance(value, str):
+        return ""
+    return value.split(".")[-1].lower()
+
+
+def part_interface_ids(part):
+    out = set()
+    if not isinstance(part, dict):
+        return out
+    for ref in normalize_list(part.get("interfaces")):
+        iface_id = None
+        if isinstance(ref, dict):
+            iface_id = ref.get("interface_id")
+        elif isinstance(ref, str):
+            iface_id = ref
+        if isinstance(iface_id, str):
+            out.add(iface_id)
+    return out
+
+
+def resolve_edge_interface_ids(edge):
+    if not isinstance(edge, dict):
+        return None, None, None
+    iface_ref = edge.get("interface_ref", {})
+    iface_id = None
+    if isinstance(iface_ref, dict):
+        iface_id = iface_ref.get("interface_id")
+    if not isinstance(iface_id, str):
+        iface_id = edge.get("interface_id") if isinstance(edge.get("interface_id"), str) else None
+    meta = edge.get("metadata", {})
+    from_id = meta.get("from_interface_id") if isinstance(meta, dict) else None
+    to_id = meta.get("to_interface_id") if isinstance(meta, dict) else None
+    return iface_id, from_id or iface_id, to_id or iface_id
+
+
+
+
+def detect_cycle(node_ids, edges):
+    adj = {node_id: [] for node_id in node_ids}
+    for edge in edges:
+        if not isinstance(edge, dict):
+            continue
+        src = edge.get("from_node_id")
+        dst = edge.get("to_node_id")
+        if src in adj and dst in adj:
+            adj[src].append(dst)
+    state = {node_id: 0 for node_id in node_ids}
+
+    def dfs(node_id):
+        if state[node_id] == 1:
+            return True
+        if state[node_id] == 2:
+            return False
+        state[node_id] = 1
+        for nxt in adj.get(node_id, []):
+            if dfs(nxt):
+                return True
+        state[node_id] = 2
+        return False
+
+    for node_id in node_ids:
+        if dfs(node_id):
+            return True
+    return False
+
+
+def cycle_policy_allows(value):
+    if not isinstance(value, str):
+        return False
+    tail = id_tail(value)
+    return tail in ("allow", "allowed", "permit", "permitted")
+
+
 def validate_material(record, idx, issues, unit_table):
     path = f"materials[{idx}]"
     material_id = record.get("material_id")
@@ -176,6 +250,8 @@ def validate_pack(data, repo_root):
     hazards = normalize_list(data.get("hazards"))
     substances = normalize_list(data.get("substances"))
 
+    part_map = {part.get("part_id"): part for part in parts if isinstance(part, dict)}
+
     for i, rec in enumerate(materials):
         if isinstance(rec, dict):
             validate_material(rec, i, issues, unit_table)
@@ -234,11 +310,15 @@ def validate_pack(data, repo_root):
     for i, assembly in enumerate(assemblies):
         if not isinstance(assembly, dict):
             continue
+        node_map = {}
         for j, node in enumerate(normalize_list(assembly.get("nodes"))):
             if not isinstance(node, dict):
                 continue
             node_type = str(node.get("node_type", "")).lower()
             ref_id = node.get("ref_id")
+            node_id = node.get("node_id")
+            if isinstance(node_id, str):
+                node_map[node_id] = node
             if node_type == "part":
                 if ref_id not in id_set(parts, "part_id"):
                     add_issue(issues, "ref_part_missing", "part reference missing", f"assemblies[{i}].nodes[{j}]")
@@ -250,10 +330,54 @@ def validate_pack(data, repo_root):
         for j, edge in enumerate(normalize_list(assembly.get("edges"))):
             if not isinstance(edge, dict):
                 continue
-            iface_ref = edge.get("interface_ref", {})
-            iface_id = iface_ref.get("interface_id") if isinstance(iface_ref, dict) else None
-            if iface_id and iface_id not in interface_ids:
-                add_issue(issues, "ref_interface_missing", "interface reference missing", f"assemblies[{i}].edges[{j}]")
+            from_node_id = edge.get("from_node_id")
+            to_node_id = edge.get("to_node_id")
+            if from_node_id and from_node_id not in node_map:
+                add_issue(issues, "ref_node_missing", "edge from-node missing", f"assemblies[{i}].edges[{j}].from_node_id")
+            if to_node_id and to_node_id not in node_map:
+                add_issue(issues, "ref_node_missing", "edge to-node missing", f"assemblies[{i}].edges[{j}].to_node_id")
+
+            iface_id, from_iface_id, to_iface_id = resolve_edge_interface_ids(edge)
+            for label, iface in (("interface_id", iface_id),
+                                 ("from_interface_id", from_iface_id),
+                                 ("to_interface_id", to_iface_id)):
+                if iface and iface not in interface_ids:
+                    add_issue(issues, "ref_interface_missing", "interface reference missing",
+                              f"assemblies[{i}].edges[{j}].{label}")
+
+            if isinstance(from_node_id, str) and from_iface_id:
+                node = node_map.get(from_node_id)
+                node_type = str(node.get("node_type", "")).lower() if isinstance(node, dict) else ""
+                ref_id = node.get("ref_id") if isinstance(node, dict) else None
+                if node_type == "part":
+                    iface_set = part_interface_ids(part_map.get(ref_id))
+                else:
+                    iface_set = set()
+                if from_iface_id and iface_set and from_iface_id not in iface_set:
+                    add_issue(issues, "ref_interface_missing", "interface missing on from-node",
+                              f"assemblies[{i}].edges[{j}].from_node_id")
+
+            if isinstance(to_node_id, str) and to_iface_id:
+                node = node_map.get(to_node_id)
+                node_type = str(node.get("node_type", "")).lower() if isinstance(node, dict) else ""
+                ref_id = node.get("ref_id") if isinstance(node, dict) else None
+                if node_type == "part":
+                    iface_set = part_interface_ids(part_map.get(ref_id))
+                else:
+                    iface_set = set()
+                if to_iface_id and iface_set and to_iface_id not in iface_set:
+                    add_issue(issues, "ref_interface_missing", "interface missing on to-node",
+                              f"assemblies[{i}].edges[{j}].to_node_id")
+
+        node_ids = list(node_map.keys())
+        edges = normalize_list(assembly.get("edges"))
+        extensions = assembly.get("extensions", {}) if isinstance(assembly.get("extensions"), dict) else {}
+        cycle_policy = extensions.get("cycle_policy")
+        if cycle_policy is not None and not cycle_policy_allows(cycle_policy) and id_tail(cycle_policy) not in (
+                "forbid", "forbidden", "deny", "denied"):
+            add_issue(issues, "cycle_policy_invalid", "cycle_policy invalid", f"assemblies[{i}].extensions.cycle_policy")
+        if node_ids and detect_cycle(node_ids, edges) and not cycle_policy_allows(cycle_policy):
+            add_issue(issues, "cycle_forbidden", "assembly contains forbidden cycle", f"assemblies[{i}].edges")
         for j, proc in enumerate(normalize_list(assembly.get("hosted_processes"))):
             if isinstance(proc, dict):
                 proc_id = proc.get("process_family_id")

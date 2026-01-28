@@ -1291,6 +1291,89 @@ static u32 fab_select_outcome(const dom_fab_process_family* family,
     return 0u;
 }
 
+u32 dom_fab_seed_compose(u32 base_seed,
+                         const char* domain_id,
+                         const char* entity_id,
+                         const char* stream_id)
+{
+    u32 seed = base_seed;
+    if (domain_id && *domain_id) {
+        seed ^= fab_hash32(domain_id);
+    }
+    if (entity_id && *entity_id) {
+        seed ^= fab_hash32(entity_id);
+    }
+    if (stream_id && *stream_id) {
+        seed ^= fab_hash32(stream_id);
+    }
+    return seed;
+}
+
+u32 dom_fab_sample_bounded_u32(u32 seed,
+                               u32 min_value,
+                               u32 max_value)
+{
+    d_rng_state rng;
+    if (min_value > max_value) {
+        u32 tmp = min_value;
+        min_value = max_value;
+        max_value = tmp;
+    }
+    if (min_value == max_value) {
+        return min_value;
+    }
+    d_rng_seed(&rng, seed);
+    return min_value + (d_rng_next_u32(&rng) % (max_value - min_value + 1u));
+}
+
+int dom_fab_select_outcomes(const dom_fab_weighted_outcome* outcomes,
+                            u32 outcome_count,
+                            u32 seed,
+                            u32 max_outcomes,
+                            u32* out_ids,
+                            u32* out_count)
+{
+    d_rng_state rng;
+    u32* weights;
+    u32 total = 0u;
+    u32 count = 0u;
+    u32 i;
+    if (out_count) {
+        *out_count = 0u;
+    }
+    if (!out_ids || !out_count) {
+        return -1;
+    }
+    if (!outcomes || outcome_count == 0u || max_outcomes == 0u) {
+        return 0;
+    }
+    weights = (u32*)malloc(sizeof(u32) * (size_t)outcome_count);
+    if (!weights) {
+        return -2;
+    }
+    for (i = 0u; i < outcome_count; ++i) {
+        weights[i] = outcomes[i].weight;
+        total += outcomes[i].weight;
+    }
+    d_rng_seed(&rng, seed);
+    while (count < max_outcomes && total > 0u) {
+        u32 roll = d_rng_next_u32(&rng) % total;
+        u32 acc = 0u;
+        for (i = 0u; i < outcome_count; ++i) {
+            acc += weights[i];
+            if (roll < acc) {
+                out_ids[count++] = outcomes[i].outcome_id;
+                total -= weights[i];
+                weights[i] = 0u;
+                break;
+            }
+        }
+    }
+    free(weights);
+    *out_count = count;
+    return 0;
+}
+
 static void fab_sort_io_indices(const dom_fab_process_io* io,
                                 u32 count,
                                 u32* indices)
@@ -1382,7 +1465,11 @@ int dom_fab_process_execute(const dom_fab_process_family* family,
     }
 
     {
-        u32 seed = (ctx ? ctx->rng_seed : 0u) ^ fab_hash32(family->process_family_id);
+        u32 seed = dom_fab_seed_compose(ctx ? ctx->rng_seed : 0u,
+                                        ctx ? ctx->domain_id : 0,
+                                        ctx ? ctx->entity_id : 0,
+                                        ctx ? ctx->stream_id : 0);
+        seed ^= fab_hash32(family->process_family_id);
         u32 outcome_id = fab_select_outcome(family, seed);
         out_result->outcome_id = outcome_id;
         if (outcome_id != 0u) {
