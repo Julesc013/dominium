@@ -1,0 +1,16 @@
+DOMINIUM_SCENARIO_V1
+scenario_id=org.dominium.governance.strict_removed_enforcement
+scenario_version=1.0.0
+world_template=builtin.minimal_system
+world_seed=2106
+policy.authority=policy.authority.shell
+policy.mode=policy.mode.nav.free
+policy.playtest=policy.playtest.sandbox
+policy.law=policy.law.strict
+policy.enforcement=policy.enforcement.degraded
+lockfile_id=org.dominium.lockfile.governance.strict_removed_enforcement
+lockfile_hash=hash.governance.strict_removed_enforcement
+fields_begin
+fields_end
+agents_begin
+agents_end

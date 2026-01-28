@@ -1,0 +1,220 @@
+{
+  "materials": [],
+  "interfaces": [],
+  "parts": [],
+  "assemblies": [],
+  "process_families": [
+    {
+      "process_family_id": "org.dominium.core.process_family.enforcement.investigate",
+      "inputs": [],
+      "outputs": [],
+      "wastes": [],
+      "energy_flows": {},
+      "parameter_space": {
+        "org.dominium.param.error_rate": 5,
+        "org.dominium.param.bias_factor": 2,
+        "org.dominium.param.corruption_likelihood": 1
+      },
+      "yield_distribution": {
+        "org.dominium.yield.confirm": 700,
+        "org.dominium.yield.dismiss": 300
+      },
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "parameter_space.org.dominium.param.error_rate": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.bias_factor": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.corruption_likelihood": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.confirm": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.dismiss": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Investigation process with error/bias/corruption parameters."
+      }
+    },
+    {
+      "process_family_id": "org.dominium.core.process_family.enforcement.sanction.apply",
+      "inputs": [],
+      "outputs": [],
+      "wastes": [],
+      "energy_flows": {},
+      "parameter_space": {
+        "org.dominium.param.sanction_units": 400
+      },
+      "yield_distribution": {
+        "org.dominium.yield.applied": 900,
+        "org.dominium.yield.waived": 100
+      },
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "parameter_space.org.dominium.param.sanction_units": {
+          "unit": "unit.currency.credit",
+          "scale": 100,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.applied": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.waived": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Sanction application process."
+      }
+    },
+    {
+      "process_family_id": "org.dominium.core.process_family.enforcement.appeal.review",
+      "inputs": [],
+      "outputs": [],
+      "wastes": [],
+      "energy_flows": {},
+      "parameter_space": {
+        "org.dominium.param.appeal_window": 60
+      },
+      "yield_distribution": {
+        "org.dominium.yield.uphold": 750,
+        "org.dominium.yield.reverse": 250
+      },
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "parameter_space.org.dominium.param.appeal_window": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.uphold": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.reverse": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Appeal review process for reversals."
+      }
+    }
+  ],
+  "instruments": [],
+  "standards": [],
+  "qualities": [],
+  "batches": [],
+  "hazards": [],
+  "substances": [],
+  "enforcement_actions": [
+    {
+      "action_id": "org.dominium.core.enforcement.action.investigate",
+      "process_family_id": "org.dominium.core.process_family.enforcement.investigate",
+      "refusal_code": "REFUSE_LAW_FORBIDDEN",
+      "extensions": {
+        "notes": "Investigate suspected violations."
+      }
+    },
+    {
+      "action_id": "org.dominium.core.enforcement.action.sanction",
+      "process_family_id": "org.dominium.core.process_family.enforcement.sanction.apply",
+      "refusal_code": "REFUSE_LAW_FORBIDDEN",
+      "extensions": {
+        "notes": "Apply sanctions following confirmed violations."
+      }
+    },
+    {
+      "action_id": "org.dominium.core.enforcement.action.appeal_review",
+      "process_family_id": "org.dominium.core.process_family.enforcement.appeal.review",
+      "refusal_code": "REFUSE_LAW_FORBIDDEN",
+      "extensions": {
+        "notes": "Review appeals and reversals."
+      }
+    }
+  ],
+  "enforcement_profiles": [
+    {
+      "profile_id": "org.dominium.core.enforcement.profile.baseline",
+      "error_rate": 5,
+      "bias_factor": 2,
+      "corruption_likelihood": 1,
+      "unit_annotations": {
+        "error_rate": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "bias_factor": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "corruption_likelihood": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Baseline enforcement profile."
+      }
+    },
+    {
+      "profile_id": "org.dominium.core.enforcement.profile.strict",
+      "error_rate": 2,
+      "bias_factor": 1,
+      "corruption_likelihood": 0,
+      "unit_annotations": {
+        "error_rate": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "bias_factor": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "corruption_likelihood": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Stricter enforcement profile with lower corruption."
+      }
+    }
+  ],
+  "extensions": {
+    "notes": "Enforcement actions, evidence handling, and corruption parameters."
+  }
+}

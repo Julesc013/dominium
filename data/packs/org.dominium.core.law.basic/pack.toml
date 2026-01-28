@@ -1,0 +1,9 @@
+pack_id = "org.dominium.core.law.basic"
+pack_version = "1.0.0"
+pack_format_version = 1
+requires_engine = "0.0.0"
+provides = ["org.dominium.core.law"]
+depends = ["org.dominium.core.institutions", "org.dominium.core.units"]
+optional = true
+pack_tags = ["pack.class.core_ontology"]
+extensions = {}

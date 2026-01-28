@@ -1,0 +1,12 @@
+DOMINIUM_VARIANT_V1
+variant_id=org.dominium.variant.light_regulation
+variant_version=1.0.0
+lockfile_id=org.dominium.lockfile.governance.light_regulation
+lockfile_hash=hash.governance.light_regulation
+policy.law=policy.law.light
+policy.enforcement=policy.enforcement.minimal
+pack.enable=org.dominium.core.units
+pack.enable=org.dominium.core.institutions.basic
+pack.enable=org.dominium.core.law.basic
+param.budget.enforcement=100
+param.tolerance.generic=5

@@ -1,0 +1,165 @@
+{
+  "materials": [],
+  "interfaces": [],
+  "parts": [],
+  "assemblies": [],
+  "process_families": [
+    {
+      "process_family_id": "org.dominium.core.process_family.inspection.perform",
+      "inputs": [],
+      "outputs": [],
+      "wastes": [],
+      "energy_flows": {},
+      "parameter_space": {
+        "org.dominium.param.inspection_time": 30
+      },
+      "yield_distribution": {
+        "org.dominium.yield.pass": 800,
+        "org.dominium.yield.fail": 200
+      },
+      "failure_modes": {},
+      "required_instruments": [
+        {
+          "instrument_id": "org.dominium.core.instrument.inspection.basic"
+        }
+      ],
+      "required_standards": [
+        {
+          "standard_id": "org.dominium.core.standard.certification.basic"
+        }
+      ],
+      "unit_annotations": {
+        "parameter_space.org.dominium.param.inspection_time": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.pass": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.fail": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Generic inspection process."
+      }
+    }
+  ],
+  "instruments": [
+    {
+      "instrument_id": "org.dominium.core.instrument.inspection.basic",
+      "measured_quantities": [
+        {
+          "quantity_tag": "org.dominium.quantity.compliance_ratio",
+          "unit": "unit.dimensionless.ratio"
+        }
+      ],
+      "accuracy": {
+        "value": 90,
+        "unit": "unit.dimensionless.ratio",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "precision": {
+        "value": 85,
+        "unit": "unit.dimensionless.ratio",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "calibration_drift": {
+        "value": 5,
+        "unit": "unit.dimensionless.ratio",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "required_standards": [
+        {
+          "standard_id": "org.dominium.core.standard.certification.basic"
+        }
+      ],
+      "unit_annotations": {},
+      "extensions": {
+        "notes": "Baseline inspection instrument."
+      }
+    },
+    {
+      "instrument_id": "org.dominium.core.instrument.inspection.precise",
+      "measured_quantities": [
+        {
+          "quantity_tag": "org.dominium.quantity.compliance_ratio",
+          "unit": "unit.dimensionless.ratio"
+        }
+      ],
+      "accuracy": {
+        "value": 98,
+        "unit": "unit.dimensionless.ratio",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "precision": {
+        "value": 95,
+        "unit": "unit.dimensionless.ratio",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "calibration_drift": {
+        "value": 2,
+        "unit": "unit.dimensionless.ratio",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "required_standards": [
+        {
+          "standard_id": "org.dominium.core.standard.certification.strict"
+        }
+      ],
+      "unit_annotations": {},
+      "extensions": {
+        "notes": "High-precision inspection instrument."
+      }
+    }
+  ],
+  "standards": [],
+  "qualities": [],
+  "batches": [],
+  "hazards": [],
+  "substances": [],
+  "inspection_procedures": [
+    {
+      "procedure_id": "org.dominium.core.inspection.procedure.basic",
+      "instrument_id": "org.dominium.core.instrument.inspection.basic",
+      "standard_id": "org.dominium.core.standard.certification.basic",
+      "inspection_process_family_id": "org.dominium.core.process_family.inspection.perform",
+      "evidence_artifact_id": "org.dominium.core.evidence.inspection.basic",
+      "extensions": {
+        "notes": "Basic inspection procedure with evidence artifact."
+      }
+    },
+    {
+      "procedure_id": "org.dominium.core.inspection.procedure.strict",
+      "instrument_id": "org.dominium.core.instrument.inspection.precise",
+      "standard_id": "org.dominium.core.standard.certification.strict",
+      "inspection_process_family_id": "org.dominium.core.process_family.inspection.perform",
+      "evidence_artifact_id": "org.dominium.core.evidence.inspection.strict",
+      "extensions": {
+        "notes": "Strict inspection procedure with higher accuracy."
+      }
+    }
+  ],
+  "evidence_artifacts": [
+    {
+      "artifact_id": "org.dominium.core.evidence.inspection.basic",
+      "artifact_type": "org.dominium.evidence.type.record",
+      "format_tag": "org.dominium.evidence.format.simple",
+      "extensions": {}
+    },
+    {
+      "artifact_id": "org.dominium.core.evidence.inspection.strict",
+      "artifact_type": "org.dominium.evidence.type.record",
+      "format_tag": "org.dominium.evidence.format.detailed",
+      "extensions": {}
+    }
+  ],
+  "extensions": {
+    "notes": "Inspection instruments and procedures with evidence artifacts."
+  }
+}

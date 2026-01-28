@@ -1,0 +1,16 @@
+DOMINIUM_SCENARIO_V1
+scenario_id=org.dominium.governance.certification
+scenario_version=1.0.0
+world_template=builtin.minimal_system
+world_seed=2104
+policy.authority=policy.authority.shell
+policy.mode=policy.mode.nav.free
+policy.playtest=policy.playtest.sandbox
+policy.law=policy.law.light
+policy.enforcement=policy.enforcement.audit
+lockfile_id=org.dominium.lockfile.governance.certification
+lockfile_hash=hash.governance.certification
+fields_begin
+fields_end
+agents_begin
+agents_end

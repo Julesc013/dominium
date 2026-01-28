@@ -1,0 +1,13 @@
+DOMINIUM_VARIANT_V1
+variant_id=org.dominium.variant.certification
+variant_version=1.0.0
+lockfile_id=org.dominium.lockfile.governance.certification
+lockfile_hash=hash.governance.certification
+policy.law=policy.law.light
+policy.enforcement=policy.enforcement.audit
+pack.enable=org.dominium.core.units
+pack.enable=org.dominium.core.institutions.basic
+pack.enable=org.dominium.core.law.basic
+pack.enable=org.dominium.core.standards.certification
+pack.enable=org.dominium.core.instruments.inspection
+param.tolerance.generic=2
