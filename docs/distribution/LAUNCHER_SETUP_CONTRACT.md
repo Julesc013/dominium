@@ -43,11 +43,14 @@ Setup installs binaries and creates a data root. It MUST NOT:
 Setup MAY:
 - Create empty pack/mod directories.
 - Validate basic filesystem permissions.
+ - Emit install and instance manifests (`docs/architecture/INSTALL_MODEL.md`,
+   `docs/architecture/INSTANCE_MODEL.md`).
 
 ## Launcher Responsibilities
 Launcher is read-only by default and must:
 - Discover packs present on disk.
 - Validate manifest compatibility and report issues.
+- Operate relative to explicit install/instance manifests.
 - Generate capability lockfiles on save/world creation.
 - Respect existing lockfiles without silent changes.
 - Offer profile-based recommendations (data-driven; see `schema/profile.schema`).
@@ -57,6 +60,9 @@ Launcher MUST NOT:
 - Assume any pack is present.
 - Require network access.
 - Alter simulation semantics.
+
+## Pack sources
+Pack resolution uses ordered sources defined by `docs/distribution/PACK_SOURCES.md`.
 
 ## Lockfiles and Determinism
 Lockfiles are authoritative for capability resolution and must be deterministic.

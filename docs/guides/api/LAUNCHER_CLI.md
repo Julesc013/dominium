@@ -1,6 +1,9 @@
 # dom_launcher CLI
 
-The launcher runs in CLI/TUI/GUI modes; CLI is the reference and shared with TUI/GUI. Commands rely on install manifests (`dominium_install.json`) and delegate install/repair to `dom_setup`.
+The launcher runs in CLI/TUI/GUI modes; CLI is the reference and shared with TUI/GUI.
+Commands rely on install manifests (`install.manifest.json`). Legacy
+`dominium_install.json` is supported as an adapter only. Install/repair is
+delegated to `dom_setup`.
 
 ## Top-level
 - `dom_launcher --cli` (default), `dom_launcher --tui`, `dom_launcher --gui` (stub).
