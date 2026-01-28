@@ -1,0 +1,214 @@
+{
+  "materials": [],
+  "interfaces": [],
+  "parts": [
+    {
+      "part_id": "org.dominium.core.part.beam.generic",
+      "material_ref": {
+        "material_id": "org.dominium.core.material.solid.generic"
+      },
+      "mass": {
+        "value": 10,
+        "unit": "unit.mass.kilogram",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "volume": {
+        "value": 1,
+        "unit": "unit.length.meter",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "interfaces": [
+        {
+          "interface_id": "org.dominium.core.interface.mechanical.generic"
+        }
+      ],
+      "constraints": [
+        {
+          "constraint_id": "org.dominium.core.constraint.load.basic",
+          "constraint_tags": [
+            "org.dominium.constraint.simple"
+          ]
+        }
+      ],
+      "quality_requirements": {
+        "org.dominium.quality.class": "org.dominium.quality.basic"
+      },
+      "failure_model_ref": {
+        "failure_model_id": "org.dominium.core.failure_model.none"
+      },
+      "unit_annotations": {},
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.parts.basic.v1"
+      },
+      "extensions": {}
+    },
+    {
+      "part_id": "org.dominium.core.part.panel.generic",
+      "material_ref": {
+        "material_id": "org.dominium.core.material.solid.generic"
+      },
+      "mass": {
+        "value": 5,
+        "unit": "unit.mass.kilogram",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "volume": {
+        "value": 1,
+        "unit": "unit.length.meter",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "interfaces": [
+        {
+          "interface_id": "org.dominium.core.interface.mechanical.generic"
+        }
+      ],
+      "constraints": [
+        {
+          "constraint_id": "org.dominium.core.constraint.load.basic",
+          "constraint_tags": [
+            "org.dominium.constraint.simple"
+          ]
+        }
+      ],
+      "quality_requirements": {
+        "org.dominium.quality.class": "org.dominium.quality.basic"
+      },
+      "failure_model_ref": {
+        "failure_model_id": "org.dominium.core.failure_model.none"
+      },
+      "unit_annotations": {},
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.parts.basic.v1"
+      },
+      "extensions": {}
+    },
+    {
+      "part_id": "org.dominium.core.part.wire.generic",
+      "material_ref": {
+        "material_id": "org.dominium.core.material.metal.generic"
+      },
+      "mass": {
+        "value": 1,
+        "unit": "unit.mass.kilogram",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "volume": {
+        "value": 1,
+        "unit": "unit.length.meter",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "interfaces": [
+        {
+          "interface_id": "org.dominium.core.interface.electrical.generic"
+        }
+      ],
+      "constraints": [
+        {
+          "constraint_id": "org.dominium.core.constraint.signal.basic",
+          "constraint_tags": [
+            "org.dominium.constraint.simple"
+          ]
+        }
+      ],
+      "quality_requirements": {
+        "org.dominium.quality.class": "org.dominium.quality.basic"
+      },
+      "failure_model_ref": {
+        "failure_model_id": "org.dominium.core.failure_model.none"
+      },
+      "unit_annotations": {},
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.parts.basic.v1"
+      },
+      "extensions": {}
+    },
+    {
+      "part_id": "org.dominium.core.part.pipe.generic",
+      "material_ref": {
+        "material_id": "org.dominium.core.material.solid.generic"
+      },
+      "mass": {
+        "value": 3,
+        "unit": "unit.mass.kilogram",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "volume": {
+        "value": 1,
+        "unit": "unit.length.meter",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "interfaces": [
+        {
+          "interface_id": "org.dominium.core.interface.fluid.generic"
+        }
+      ],
+      "constraints": [
+        {
+          "constraint_id": "org.dominium.core.constraint.flow.basic",
+          "constraint_tags": [
+            "org.dominium.constraint.simple"
+          ]
+        }
+      ],
+      "quality_requirements": {
+        "org.dominium.quality.class": "org.dominium.quality.basic"
+      },
+      "failure_model_ref": {
+        "failure_model_id": "org.dominium.core.failure_model.none"
+      },
+      "unit_annotations": {},
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.parts.basic.v1"
+      },
+      "extensions": {}
+    },
+    {
+      "part_id": "org.dominium.core.part.fastener.generic",
+      "material_ref": {
+        "material_id": "org.dominium.core.material.metal.generic"
+      },
+      "mass": {
+        "value": 1,
+        "unit": "unit.mass.kilogram",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "volume": {
+        "value": 1,
+        "unit": "unit.length.meter",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "interfaces": [
+        {
+          "interface_id": "org.dominium.core.interface.mechanical.generic"
+        }
+      ],
+      "constraints": [
+        {
+          "constraint_id": "org.dominium.core.constraint.load.basic",
+          "constraint_tags": [
+            "org.dominium.constraint.simple"
+          ]
+        }
+      ],
+      "quality_requirements": {
+        "org.dominium.quality.class": "org.dominium.quality.basic"
+      },
+      "failure_model_ref": {
+        "failure_model_id": "org.dominium.core.failure_model.none"
+      },
+      "unit_annotations": {},
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.parts.basic.v1"
+      },
+      "extensions": {}
+    }
+  ],
+  "assemblies": [],
+  "process_families": [],
+  "instruments": [],
+  "standards": [],
+  "qualities": [],
+  "batches": [],
+  "hazards": [],
+  "substances": []
+}

@@ -1,0 +1,202 @@
+{
+  "materials": [
+    {
+      "material_id": "org.dominium.core.material.solid.generic",
+      "traits": {
+        "org.dominium.trait.density": 1000,
+        "org.dominium.trait.elasticity": 500,
+        "org.dominium.trait.conductivity": 100
+      },
+      "manufacturability": {
+        "org.dominium.mfg.forgeable": false,
+        "org.dominium.mfg.printable": true,
+        "org.dominium.mfg.castable": false
+      },
+      "failure_params": {
+        "org.dominium.failure.fatigue_rate": 1
+      },
+      "unit_annotations": {
+        "traits.org.dominium.trait.density": {
+          "unit": "unit.mass.kilogram",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "traits.org.dominium.trait.elasticity": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "traits.org.dominium.trait.conductivity": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "failure_params.org.dominium.failure.fatigue_rate": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.materials.basic.v1",
+        "provenance_tags": [
+          "org.dominium.provenance.core"
+        ]
+      },
+      "extensions": {
+        "notes": "Abstract solid baseline."
+      }
+    },
+    {
+      "material_id": "org.dominium.core.material.fluid.generic",
+      "traits": {
+        "org.dominium.trait.density": 700,
+        "org.dominium.trait.elasticity": 200,
+        "org.dominium.trait.conductivity": 150
+      },
+      "manufacturability": {
+        "org.dominium.mfg.forgeable": false,
+        "org.dominium.mfg.printable": true,
+        "org.dominium.mfg.castable": true
+      },
+      "failure_params": {
+        "org.dominium.failure.fatigue_rate": 1
+      },
+      "unit_annotations": {
+        "traits.org.dominium.trait.density": {
+          "unit": "unit.mass.kilogram",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "traits.org.dominium.trait.elasticity": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "traits.org.dominium.trait.conductivity": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "failure_params.org.dominium.failure.fatigue_rate": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.materials.basic.v1",
+        "provenance_tags": [
+          "org.dominium.provenance.core"
+        ]
+      },
+      "extensions": {
+        "notes": "Abstract fluid baseline."
+      }
+    },
+    {
+      "material_id": "org.dominium.core.material.gas.generic",
+      "traits": {
+        "org.dominium.trait.density": 100,
+        "org.dominium.trait.elasticity": 50,
+        "org.dominium.trait.conductivity": 80
+      },
+      "manufacturability": {
+        "org.dominium.mfg.forgeable": false,
+        "org.dominium.mfg.printable": false,
+        "org.dominium.mfg.castable": true
+      },
+      "failure_params": {
+        "org.dominium.failure.fatigue_rate": 1
+      },
+      "unit_annotations": {
+        "traits.org.dominium.trait.density": {
+          "unit": "unit.mass.kilogram",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "traits.org.dominium.trait.elasticity": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "traits.org.dominium.trait.conductivity": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "failure_params.org.dominium.failure.fatigue_rate": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.materials.basic.v1",
+        "provenance_tags": [
+          "org.dominium.provenance.core"
+        ]
+      },
+      "extensions": {
+        "notes": "Abstract gas baseline."
+      }
+    },
+    {
+      "material_id": "org.dominium.core.material.metal.generic",
+      "traits": {
+        "org.dominium.trait.density": 1200,
+        "org.dominium.trait.elasticity": 700,
+        "org.dominium.trait.conductivity": 300
+      },
+      "manufacturability": {
+        "org.dominium.mfg.forgeable": true,
+        "org.dominium.mfg.printable": true,
+        "org.dominium.mfg.castable": true
+      },
+      "failure_params": {
+        "org.dominium.failure.fatigue_rate": 1
+      },
+      "unit_annotations": {
+        "traits.org.dominium.trait.density": {
+          "unit": "unit.mass.kilogram",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "traits.org.dominium.trait.elasticity": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "traits.org.dominium.trait.conductivity": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "failure_params.org.dominium.failure.fatigue_rate": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.materials.basic.v1",
+        "provenance_tags": [
+          "org.dominium.provenance.core"
+        ]
+      },
+      "extensions": {
+        "notes": "Abstract metal baseline."
+      }
+    }
+  ],
+  "interfaces": [],
+  "parts": [],
+  "assemblies": [],
+  "process_families": [],
+  "instruments": [],
+  "standards": [],
+  "qualities": [],
+  "batches": [],
+  "hazards": [],
+  "substances": []
+}
