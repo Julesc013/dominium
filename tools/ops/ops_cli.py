@@ -11,6 +11,8 @@ from typing import Optional, Dict, List, Tuple
 DEFAULT_INSTALL_MANIFEST = "install.manifest.json"
 DEFAULT_INSTANCE_MANIFEST = "instance.manifest.json"
 DEFAULT_ACTIVE_INSTANCE = "active.instance.json"
+DEFAULT_CAPABILITY_BASELINE = "BASELINE_MAINLINE_CORE"
+NULL_UUID = "00000000-0000-0000-0000-000000000000"
 
 
 def now_timestamp(deterministic: bool) -> str:
@@ -61,11 +63,44 @@ def refusal_payload(code_id: int, code: str, message: str,
     }
 
 
-def compat_report(result: str, message: str = "",
-                  refusal: Optional[Dict[str, object]] = None) -> Dict[str, object]:
+def sorted_unique(values: Optional[List[str]]) -> List[str]:
+    if not values:
+        return []
+    return sorted({value for value in values if value})
+
+
+def build_compat_report(context: str,
+                        install_id: Optional[str],
+                        instance_id: Optional[str],
+                        runtime_id: Optional[str],
+                        capability_baseline: Optional[str],
+                        required_capabilities: Optional[List[str]],
+                        provided_capabilities: Optional[List[str]],
+                        missing_capabilities: Optional[List[str]],
+                        compatibility_mode: str,
+                        refusal_codes: Optional[List[str]],
+                        mitigation_hints: Optional[List[str]],
+                        deterministic: bool,
+                        refusal: Optional[Dict[str, object]] = None) -> Dict[str, object]:
+    required = sorted_unique(required_capabilities)
+    provided = sorted_unique(provided_capabilities)
+    missing = sorted_unique(missing_capabilities)
+    if missing_capabilities is None:
+        missing = sorted(set(required) - set(provided))
     payload = {
-        "result": result,
-        "message": message,
+        "context": context,
+        "install_id": install_id or NULL_UUID,
+        "instance_id": instance_id or NULL_UUID,
+        "runtime_id": runtime_id or NULL_UUID,
+        "capability_baseline": capability_baseline or DEFAULT_CAPABILITY_BASELINE,
+        "required_capabilities": required,
+        "provided_capabilities": provided,
+        "missing_capabilities": missing,
+        "compatibility_mode": compatibility_mode,
+        "refusal_codes": sorted_unique(refusal_codes),
+        "mitigation_hints": sorted_unique(mitigation_hints),
+        "timestamp": now_timestamp(deterministic),
+        "extensions": {},
     }
     if refusal:
         payload["refusal"] = refusal
@@ -249,6 +284,134 @@ def list_instance_manifests(search_roots: List[str],
     return results
 
 
+def capabilities_from_manifest(manifest: Optional[dict]) -> List[str]:
+    if not manifest:
+        return []
+    return sorted_unique(manifest.get("supported_capabilities") or [])
+
+
+def compat_client_server(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]:
+    client_caps = set(sorted_unique(args.client_cap))
+    server_caps = set(sorted_unique(args.server_cap))
+    required = sorted_unique(args.required_cap)
+    overlap = sorted(client_caps & server_caps)
+    missing_server = sorted(set(required) - server_caps)
+    missing_client = sorted(set(required) - client_caps)
+    refusal = None
+    refusal_codes: List[str] = []
+    mitigation: List[str] = []
+    mode = "full"
+    missing = sorted(set(required) - set(overlap))
+
+    if not overlap:
+        mode = "refuse"
+        refusal_codes = ["REFUSE_CAPABILITY_MISSING"]
+        refusal = refusal_payload(3, "REFUSE_CAPABILITY_MISSING",
+                                  "client/server capability overlap is empty",
+                                  {"required": required})
+        mitigation = ["install overlapping capability packs on both sides"]
+    elif missing_server:
+        mode = "refuse"
+        refusal_codes = ["REFUSE_CAPABILITY_MISSING"]
+        refusal = refusal_payload(3, "REFUSE_CAPABILITY_MISSING",
+                                  "server missing required capabilities",
+                                  {"missing": missing_server})
+        mitigation = ["update server capabilities to meet requirements"]
+    elif missing_client:
+        mode = "degraded"
+        mitigation = ["update client capabilities to restore full mode"]
+
+    report = build_compat_report(
+        context=args.context,
+        install_id=args.install_id,
+        instance_id=args.instance_id,
+        runtime_id=args.runtime_id,
+        capability_baseline=args.capability_baseline,
+        required_capabilities=required,
+        provided_capabilities=overlap,
+        missing_capabilities=missing,
+        compatibility_mode=mode,
+        refusal_codes=refusal_codes,
+        mitigation_hints=mitigation,
+        deterministic=args.deterministic,
+        refusal=refusal,
+    )
+    result = "refused" if mode == "refuse" else "ok"
+    return (3 if mode == "refuse" else 0), {"result": result, "compat_report": report}
+
+
+def compat_shard_transfer(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]:
+    source_caps = set(sorted_unique(args.source_cap))
+    target_caps = set(sorted_unique(args.target_cap))
+    required = sorted_unique(args.required_cap)
+    overlap = sorted(source_caps & target_caps)
+    missing_source = sorted(set(required) - source_caps)
+    missing_target = sorted(set(required) - target_caps)
+    refusal = None
+    refusal_codes: List[str] = []
+    mitigation: List[str] = []
+    mode = "full"
+    missing = sorted(set(required) - set(overlap))
+
+    if not overlap:
+        mode = "refuse"
+        refusal_codes = ["REFUSE_CAPABILITY_MISSING"]
+        refusal = refusal_payload(3, "REFUSE_CAPABILITY_MISSING",
+                                  "shard capability overlap is empty",
+                                  {"required": required})
+        mitigation = ["align shard capability baselines"]
+    elif missing_source or missing_target:
+        mode = "refuse"
+        refusal_codes = ["REFUSE_CAPABILITY_MISSING"]
+        refusal = refusal_payload(3, "REFUSE_CAPABILITY_MISSING",
+                                  "shard missing required capabilities",
+                                  {"missing_source": missing_source, "missing_target": missing_target})
+        mitigation = ["update shards to share required capabilities"]
+
+    report = build_compat_report(
+        context=args.context,
+        install_id=args.install_id,
+        instance_id=args.instance_id,
+        runtime_id=args.runtime_id,
+        capability_baseline=args.capability_baseline,
+        required_capabilities=required,
+        provided_capabilities=overlap,
+        missing_capabilities=missing,
+        compatibility_mode=mode,
+        refusal_codes=refusal_codes,
+        mitigation_hints=mitigation,
+        deterministic=args.deterministic,
+        refusal=refusal,
+    )
+    result = "refused" if mode == "refuse" else "ok"
+    return (3 if mode == "refuse" else 0), {"result": result, "compat_report": report}
+
+
+def compat_tools(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]:
+    tool_caps = sorted_unique(args.tool_cap)
+    required = sorted_unique(args.required_cap)
+    missing = sorted(set(required) - set(tool_caps))
+    mode = "full" if not missing else "inspect-only"
+    mitigation = [] if not missing else ["update tools or use newer build for full support"]
+
+    report = build_compat_report(
+        context=args.context,
+        install_id=args.install_id,
+        instance_id=args.instance_id,
+        runtime_id=args.runtime_id,
+        capability_baseline=args.capability_baseline,
+        required_capabilities=required,
+        provided_capabilities=tool_caps,
+        missing_capabilities=missing,
+        compatibility_mode=mode,
+        refusal_codes=[],
+        mitigation_hints=mitigation,
+        deterministic=args.deterministic,
+        refusal=None,
+    )
+    return 0, {"result": "ok", "compat_report": report}
+
+
 def resolve_data_root(instance_root: str, data_root: str) -> str:
     if not data_root:
         return instance_root
@@ -268,18 +431,49 @@ def create_instance(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]:
     deterministic = args.deterministic
     tx_id = args.transaction_id or str(uuid.uuid4())
     sandbox = load_sandbox_policy(args.sandbox_policy) if args.sandbox_policy else {}
+    provided_caps = capabilities_from_manifest(install_manifest)
 
     if not install_id:
         refusal = refusal_payload(1, "REFUSE_INVALID_INTENT",
                                   "install manifest missing install_id",
                                   {"manifest": os.path.basename(args.install_manifest)})
-        return 3, {"result": "refused", "compat_report": compat_report("refused", refusal=refusal)}
+        report = build_compat_report(
+            context="update",
+            install_id=None,
+            instance_id=instance_id,
+            runtime_id=None,
+            capability_baseline=args.capability_baseline,
+            required_capabilities=[],
+            provided_capabilities=provided_caps,
+            missing_capabilities=[],
+            compatibility_mode="refuse",
+            refusal_codes=[refusal.get("code")],
+            mitigation_hints=[],
+            deterministic=deterministic,
+            refusal=refusal,
+        )
+        return 3, {"result": "refused", "compat_report": report}
 
     if not sandbox_allows(sandbox, instance_root):
         refusal = refusal_payload(2, "REFUSE_LAW_FORBIDDEN",
                                   "sandbox denies instance root",
                                   {"path": os.path.basename(instance_root)})
-        return 3, {"result": "refused", "compat_report": compat_report("refused", refusal=refusal)}
+        report = build_compat_report(
+            context="update",
+            install_id=install_id,
+            instance_id=instance_id,
+            runtime_id=None,
+            capability_baseline=args.capability_baseline,
+            required_capabilities=[],
+            provided_capabilities=provided_caps,
+            missing_capabilities=[],
+            compatibility_mode="refuse",
+            refusal_codes=[refusal.get("code")],
+            mitigation_hints=[],
+            deterministic=deterministic,
+            refusal=refusal,
+        )
+        return 3, {"result": "refused", "compat_report": report}
 
     ensure_dir(instance_root)
     begin_transaction(instance_root, "instances.create", tx_id, deterministic)
@@ -291,7 +485,22 @@ def create_instance(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]:
                                   "instance manifest already exists",
                                   {"manifest": DEFAULT_INSTANCE_MANIFEST})
         rollback_transaction(instance_root, "instances.create", tx_id, refusal, deterministic)
-        return 3, {"result": "refused", "compat_report": compat_report("refused", refusal=refusal)}
+        report = build_compat_report(
+            context="update",
+            install_id=install_id,
+            instance_id=instance_id,
+            runtime_id=None,
+            capability_baseline=args.capability_baseline,
+            required_capabilities=[],
+            provided_capabilities=provided_caps,
+            missing_capabilities=[],
+            compatibility_mode="refuse",
+            refusal_codes=[refusal.get("code")],
+            mitigation_hints=[],
+            deterministic=deterministic,
+            refusal=refusal,
+        )
+        return 3, {"result": "refused", "compat_report": report}
 
     payload = {
         "instance_id": instance_id,
@@ -315,13 +524,43 @@ def create_instance(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]:
         if os.path.exists(tmp_path):
             os.remove(tmp_path)
         rollback_transaction(instance_root, "instances.create", tx_id, refusal, deterministic)
-        return 3, {"result": "refused", "compat_report": compat_report("refused", refusal=refusal)}
+        report = build_compat_report(
+            context="update",
+            install_id=install_id,
+            instance_id=instance_id,
+            runtime_id=None,
+            capability_baseline=args.capability_baseline,
+            required_capabilities=[],
+            provided_capabilities=provided_caps,
+            missing_capabilities=[],
+            compatibility_mode="refuse",
+            refusal_codes=[refusal.get("code")],
+            mitigation_hints=[],
+            deterministic=deterministic,
+            refusal=refusal,
+        )
+        return 3, {"result": "refused", "compat_report": report}
 
     os.replace(tmp_path, manifest_path)
     commit_transaction(instance_root, "instances.create", tx_id, deterministic)
+    report = build_compat_report(
+        context="update",
+        install_id=install_id,
+        instance_id=instance_id,
+        runtime_id=None,
+        capability_baseline=args.capability_baseline,
+        required_capabilities=[],
+        provided_capabilities=provided_caps,
+        missing_capabilities=[],
+        compatibility_mode="full",
+        refusal_codes=[],
+        mitigation_hints=[],
+        deterministic=deterministic,
+        refusal=None,
+    )
     return 0, {
         "result": "ok",
-        "compat_report": compat_report("ok"),
+        "compat_report": report,
         "instance_manifest": manifest_path.replace("\\", "/"),
         "transaction_id": tx_id,
     }
@@ -335,7 +574,22 @@ def clone_instance(args: argparse.Namespace, fork_only: bool) -> Tuple[int, Dict
         refusal = refusal_payload(1, "REFUSE_INVALID_INTENT",
                                   "source instance missing install_id",
                                   {"manifest": os.path.basename(args.source_manifest)})
-        return 3, {"result": "refused", "compat_report": compat_report("refused", refusal=refusal)}
+        report = build_compat_report(
+            context="update",
+            install_id=None,
+            instance_id=args.instance_id,
+            runtime_id=None,
+            capability_baseline=args.capability_baseline,
+            required_capabilities=[],
+            provided_capabilities=capabilities_from_manifest(source_manifest),
+            missing_capabilities=[],
+            compatibility_mode="refuse",
+            refusal_codes=[refusal.get("code")],
+            mitigation_hints=[],
+            deterministic=args.deterministic,
+            refusal=refusal,
+        )
+        return 3, {"result": "refused", "compat_report": report}
 
     instance_id = args.instance_id or str(uuid.uuid4())
     target_root = args.data_root
@@ -347,13 +601,43 @@ def clone_instance(args: argparse.Namespace, fork_only: bool) -> Tuple[int, Dict
         refusal = refusal_payload(2, "REFUSE_LAW_FORBIDDEN",
                                   "sandbox denies instance root",
                                   {"path": os.path.basename(target_root)})
-        return 3, {"result": "refused", "compat_report": compat_report("refused", refusal=refusal)}
+        report = build_compat_report(
+            context="update",
+            install_id=install_id,
+            instance_id=instance_id,
+            runtime_id=None,
+            capability_baseline=args.capability_baseline,
+            required_capabilities=[],
+            provided_capabilities=capabilities_from_manifest(source_manifest),
+            missing_capabilities=[],
+            compatibility_mode="refuse",
+            refusal_codes=[refusal.get("code")],
+            mitigation_hints=[],
+            deterministic=deterministic,
+            refusal=refusal,
+        )
+        return 3, {"result": "refused", "compat_report": report}
 
     if os.path.exists(target_root):
         refusal = refusal_payload(5, "REFUSE_INTEGRITY_VIOLATION",
                                   "target instance root already exists",
                                   {"path": os.path.basename(target_root)})
-        return 3, {"result": "refused", "compat_report": compat_report("refused", refusal=refusal)}
+        report = build_compat_report(
+            context="update",
+            install_id=install_id,
+            instance_id=instance_id,
+            runtime_id=None,
+            capability_baseline=args.capability_baseline,
+            required_capabilities=[],
+            provided_capabilities=capabilities_from_manifest(source_manifest),
+            missing_capabilities=[],
+            compatibility_mode="refuse",
+            refusal_codes=[refusal.get("code")],
+            mitigation_hints=[],
+            deterministic=deterministic,
+            refusal=refusal,
+        )
+        return 3, {"result": "refused", "compat_report": report}
 
     ensure_dir(target_root)
     begin_transaction(target_root, "instances.fork" if fork_only else "instances.clone", tx_id, deterministic)
@@ -377,12 +661,42 @@ def clone_instance(args: argparse.Namespace, fork_only: bool) -> Tuple[int, Dict
                                   "simulated commit failure", {})
         shutil.rmtree(target_root, ignore_errors=True)
         rollback_transaction(target_root, "instances.fork" if fork_only else "instances.clone", tx_id, refusal, deterministic)
-        return 3, {"result": "refused", "compat_report": compat_report("refused", refusal=refusal)}
+        report = build_compat_report(
+            context="update",
+            install_id=install_id,
+            instance_id=instance_id,
+            runtime_id=None,
+            capability_baseline=args.capability_baseline,
+            required_capabilities=[],
+            provided_capabilities=capabilities_from_manifest(source_manifest),
+            missing_capabilities=[],
+            compatibility_mode="refuse",
+            refusal_codes=[refusal.get("code")],
+            mitigation_hints=[],
+            deterministic=deterministic,
+            refusal=refusal,
+        )
+        return 3, {"result": "refused", "compat_report": report}
 
     commit_transaction(target_root, "instances.fork" if fork_only else "instances.clone", tx_id, deterministic)
+    report = build_compat_report(
+        context="update",
+        install_id=install_id,
+        instance_id=instance_id,
+        runtime_id=None,
+        capability_baseline=args.capability_baseline,
+        required_capabilities=[],
+        provided_capabilities=capabilities_from_manifest(source_manifest),
+        missing_capabilities=[],
+        compatibility_mode="full",
+        refusal_codes=[],
+        mitigation_hints=[],
+        deterministic=deterministic,
+        refusal=None,
+    )
     return 0, {
         "result": "ok",
-        "compat_report": compat_report("ok"),
+        "compat_report": report,
         "instance_manifest": manifest_path.replace("\\", "/"),
         "transaction_id": tx_id,
     }
@@ -396,12 +710,29 @@ def activate_instance(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]
     deterministic = args.deterministic
     tx_id = args.transaction_id or str(uuid.uuid4())
     sandbox = load_sandbox_policy(args.sandbox_policy) if args.sandbox_policy else {}
+    install_id = install_manifest.get("install_id")
+    provided_caps = capabilities_from_manifest(install_manifest)
 
     if not sandbox_allows(sandbox, install_root):
         refusal = refusal_payload(2, "REFUSE_LAW_FORBIDDEN",
                                   "sandbox denies install root",
                                   {"path": os.path.basename(install_root)})
-        return 3, {"result": "refused", "compat_report": compat_report("refused", refusal=refusal)}
+        report = build_compat_report(
+            context="update",
+            install_id=install_id,
+            instance_id=instance_id,
+            runtime_id=None,
+            capability_baseline=args.capability_baseline,
+            required_capabilities=[],
+            provided_capabilities=provided_caps,
+            missing_capabilities=[],
+            compatibility_mode="refuse",
+            refusal_codes=[refusal.get("code")],
+            mitigation_hints=[],
+            deterministic=deterministic,
+            refusal=refusal,
+        )
+        return 3, {"result": "refused", "compat_report": report}
 
     ensure_dir(install_root)
     begin_transaction(install_root, "instances.activate", tx_id, deterministic)
@@ -416,9 +747,24 @@ def activate_instance(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]
     active_path = os.path.join(install_root, DEFAULT_ACTIVE_INSTANCE)
     write_json(active_path, payload)
     commit_transaction(install_root, "instances.activate", tx_id, deterministic)
+    report = build_compat_report(
+        context="update",
+        install_id=install_id,
+        instance_id=instance_id,
+        runtime_id=None,
+        capability_baseline=args.capability_baseline,
+        required_capabilities=[],
+        provided_capabilities=provided_caps,
+        missing_capabilities=[],
+        compatibility_mode="full",
+        refusal_codes=[],
+        mitigation_hints=[],
+        deterministic=deterministic,
+        refusal=None,
+    )
     return 0, {
         "result": "ok",
-        "compat_report": compat_report("ok"),
+        "compat_report": report,
         "active_instance": active_path.replace("\\", "/"),
         "transaction_id": tx_id,
     }
@@ -429,6 +775,7 @@ def main() -> int:
     parser.add_argument("--format", default="json", choices=["json", "text"])
     parser.add_argument("--deterministic", action="store_true")
     parser.add_argument("--transaction-id", default=None)
+    parser.add_argument("--capability-baseline", default=DEFAULT_CAPABILITY_BASELINE)
     sub = parser.add_subparsers(dest="section")
 
     installs = sub.add_parser("installs")
@@ -477,13 +824,57 @@ def main() -> int:
     instances_activate.add_argument("--instance-manifest", required=True)
     instances_activate.add_argument("--sandbox-policy", default=None)
 
+    compat = sub.add_parser("compat")
+    compat_sub = compat.add_subparsers(dest="cmd")
+
+    compat_cs = compat_sub.add_parser("client-server")
+    compat_cs.add_argument("--client-cap", action="append", default=[])
+    compat_cs.add_argument("--server-cap", action="append", default=[])
+    compat_cs.add_argument("--required-cap", action="append", default=[])
+    compat_cs.add_argument("--context", default="join")
+    compat_cs.add_argument("--install-id", default=None)
+    compat_cs.add_argument("--instance-id", default=None)
+    compat_cs.add_argument("--runtime-id", default=None)
+
+    compat_shard = compat_sub.add_parser("shard-transfer")
+    compat_shard.add_argument("--source-cap", action="append", default=[])
+    compat_shard.add_argument("--target-cap", action="append", default=[])
+    compat_shard.add_argument("--required-cap", action="append", default=[])
+    compat_shard.add_argument("--context", default="update")
+    compat_shard.add_argument("--install-id", default=None)
+    compat_shard.add_argument("--instance-id", default=None)
+    compat_shard.add_argument("--runtime-id", default=None)
+
+    compat_tools_cmd = compat_sub.add_parser("tools")
+    compat_tools_cmd.add_argument("--tool-cap", action="append", default=[])
+    compat_tools_cmd.add_argument("--required-cap", action="append", default=[])
+    compat_tools_cmd.add_argument("--context", default="load")
+    compat_tools_cmd.add_argument("--install-id", default=None)
+    compat_tools_cmd.add_argument("--instance-id", default=None)
+    compat_tools_cmd.add_argument("--runtime-id", default=None)
+
     args = parser.parse_args()
 
     if args.section == "installs" and args.cmd == "list":
         installs = list_install_manifests(args.search)
+        report = build_compat_report(
+            context="load",
+            install_id=None,
+            instance_id=None,
+            runtime_id=None,
+            capability_baseline=args.capability_baseline,
+            required_capabilities=[],
+            provided_capabilities=[],
+            missing_capabilities=[],
+            compatibility_mode="inspect-only",
+            refusal_codes=[],
+            mitigation_hints=[],
+            deterministic=args.deterministic,
+            refusal=None,
+        )
         output = {
             "result": "ok",
-            "compat_report": compat_report("ok"),
+            "compat_report": report,
             "installs": installs,
         }
         print(json.dumps(output, indent=2))
@@ -491,9 +882,24 @@ def main() -> int:
 
     if args.section == "instances" and args.cmd == "list":
         instances = list_instance_manifests(args.search, args.install_id)
+        report = build_compat_report(
+            context="load",
+            install_id=args.install_id,
+            instance_id=None,
+            runtime_id=None,
+            capability_baseline=args.capability_baseline,
+            required_capabilities=[],
+            provided_capabilities=[],
+            missing_capabilities=[],
+            compatibility_mode="inspect-only",
+            refusal_codes=[],
+            mitigation_hints=[],
+            deterministic=args.deterministic,
+            refusal=None,
+        )
         output = {
             "result": "ok",
-            "compat_report": compat_report("ok"),
+            "compat_report": report,
             "instances": instances,
         }
         print(json.dumps(output, indent=2))
@@ -518,6 +924,21 @@ def main() -> int:
 
     if args.section == "instances" and args.cmd == "activate":
         code, output = activate_instance(args)
+        print(json.dumps(output, indent=2))
+        return code
+
+    if args.section == "compat" and args.cmd == "client-server":
+        code, output = compat_client_server(args)
+        print(json.dumps(output, indent=2))
+        return code
+
+    if args.section == "compat" and args.cmd == "shard-transfer":
+        code, output = compat_shard_transfer(args)
+        print(json.dumps(output, indent=2))
+        return code
+
+    if args.section == "compat" and args.cmd == "tools":
+        code, output = compat_tools(args)
         print(json.dumps(output, indent=2))
         return code
 
