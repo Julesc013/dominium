@@ -1,0 +1,16 @@
+DOMINIUM_SCENARIO_V1
+scenario_id=org.dominium.world.scenario.trade_corridor
+scenario_version=1.0.0
+world_template=org.dominium.worldgen.anchors.planetary.template
+world_seed=3103
+policy.authority=policy.authority.shell
+policy.mode=policy.mode.nav.free
+policy.playtest=policy.playtest.sandbox
+policy.law=policy.law.light
+policy.enforcement=policy.enforcement.minimal
+lockfile_id=org.dominium.lockfile.world.trade_corridor
+lockfile_hash=hash.world.trade_corridor
+fields_begin
+fields_end
+agents_begin
+agents_end

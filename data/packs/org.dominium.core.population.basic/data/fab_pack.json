@@ -1,0 +1,243 @@
+{
+  "materials": [],
+  "interfaces": [],
+  "parts": [],
+  "assemblies": [],
+  "process_families": [
+    {
+      "process_family_id": "org.dominium.core.process_family.population.birth",
+      "inputs": [
+        {
+          "ref_type": "org.dominium.process_ref.generic",
+          "ref_id": "org.dominium.core.population.field.need.food",
+          "quantity": {
+            "value": 5,
+            "unit": "unit.mass.kilogram",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "org.dominium.process_ref.generic",
+          "ref_id": "org.dominium.core.population.field.population_count",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "wastes": [],
+      "energy_flows": {
+        "org.dominium.energy.flow": 1
+      },
+      "parameter_space": {
+        "org.dominium.param.birth_rate": 3
+      },
+      "yield_distribution": {
+        "org.dominium.yield.success": 800,
+        "org.dominium.yield.fail": 200
+      },
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "energy_flows.org.dominium.energy.flow": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.birth_rate": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.success": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.fail": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Birth as a resource-limited process."
+      }
+    },
+    {
+      "process_family_id": "org.dominium.core.process_family.population.death",
+      "inputs": [
+        {
+          "ref_type": "org.dominium.process_ref.generic",
+          "ref_id": "org.dominium.core.population.field.population_count",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "outputs": [],
+      "wastes": [],
+      "energy_flows": {
+        "org.dominium.energy.flow": 1
+      },
+      "parameter_space": {
+        "org.dominium.param.death_rate": 2
+      },
+      "yield_distribution": {
+        "org.dominium.yield.success": 900,
+        "org.dominium.yield.fail": 100
+      },
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "energy_flows.org.dominium.energy.flow": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.death_rate": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.success": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.fail": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Death as a parameterized process."
+      }
+    },
+    {
+      "process_family_id": "org.dominium.core.process_family.population.migration",
+      "inputs": [
+        {
+          "ref_type": "org.dominium.process_ref.generic",
+          "ref_id": "org.dominium.core.population.field.population_count",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "org.dominium.process_ref.generic",
+          "ref_id": "org.dominium.core.population.field.population_count",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "wastes": [],
+      "energy_flows": {
+        "org.dominium.energy.flow": 2
+      },
+      "parameter_space": {
+        "org.dominium.param.migration_cost": 4
+      },
+      "yield_distribution": {
+        "org.dominium.yield.success": 850,
+        "org.dominium.yield.fail": 150
+      },
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "energy_flows.org.dominium.energy.flow": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.migration_cost": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.success": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.fail": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Migration as a process with abstract cost."
+      }
+    },
+    {
+      "process_family_id": "org.dominium.core.process_family.population.role_shift",
+      "inputs": [
+        {
+          "ref_type": "org.dominium.process_ref.generic",
+          "ref_id": "org.dominium.core.population.field.role_distribution",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "org.dominium.process_ref.generic",
+          "ref_id": "org.dominium.core.population.field.role_distribution",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "wastes": [],
+      "energy_flows": {},
+      "parameter_space": {
+        "org.dominium.param.role_shift_rate": 1
+      },
+      "yield_distribution": {},
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "parameter_space.org.dominium.param.role_shift_rate": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Role distribution changes without assuming any era."
+      }
+    }
+  ],
+  "instruments": [],
+  "standards": [],
+  "qualities": [],
+  "batches": [],
+  "hazards": [],
+  "substances": [],
+  "extensions": {
+    "notes": "Population modeled as fields and parameterized processes."
+  }
+}

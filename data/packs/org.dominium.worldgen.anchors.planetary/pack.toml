@@ -1,0 +1,9 @@
+pack_id = "org.dominium.worldgen.anchors.planetary"
+pack_version = "1.0.0"
+pack_format_version = 1
+requires_engine = "0.0.0"
+provides = ["org.dominium.worldgen.planetary"]
+depends = []
+optional = true
+pack_tags = ["pack.class.worldgen"]
+extensions = {}

@@ -1,0 +1,204 @@
+{
+  "schema_id": "dominium.schema.world_definition",
+  "schema_version": "1.0.0",
+  "record": {
+    "worlddef_id": "org.dominium.worldgen.anchors.system.worlddef",
+    "schema_version": 1,
+    "topology": {
+      "root_node_ref": {
+        "node_id": "org.dominium.worldgen.anchors.system.node.system"
+      },
+      "nodes": [
+        {
+          "node_id": "org.dominium.worldgen.anchors.system.node.system",
+          "trait_tags": [
+            "org.dominium.topology.system"
+          ],
+          "extensions": {
+            "notes": "Abstract system root anchor."
+          }
+        },
+        {
+          "node_id": "org.dominium.worldgen.anchors.system.node.primary",
+          "trait_tags": [
+            "org.dominium.topology.body"
+          ],
+          "extensions": {
+            "notes": "Primary body anchor."
+          }
+        },
+        {
+          "node_id": "org.dominium.worldgen.anchors.system.node.orbiting.alpha",
+          "trait_tags": [
+            "org.dominium.topology.body"
+          ],
+          "extensions": {
+            "notes": "Orbiting body alpha."
+          }
+        },
+        {
+          "node_id": "org.dominium.worldgen.anchors.system.node.orbiting.beta",
+          "trait_tags": [
+            "org.dominium.topology.body"
+          ],
+          "extensions": {
+            "notes": "Orbiting body beta."
+          }
+        }
+      ],
+      "edges": [
+        {
+          "parent_ref": {
+            "node_id": "org.dominium.worldgen.anchors.system.node.system"
+          },
+          "child_ref": {
+            "node_id": "org.dominium.worldgen.anchors.system.node.primary"
+          },
+          "edge_tags": [
+            "org.dominium.topology.relationship.primary"
+          ]
+        },
+        {
+          "parent_ref": {
+            "node_id": "org.dominium.worldgen.anchors.system.node.system"
+          },
+          "child_ref": {
+            "node_id": "org.dominium.worldgen.anchors.system.node.orbiting.alpha"
+          },
+          "edge_tags": [
+            "org.dominium.topology.relationship.orbit"
+          ]
+        },
+        {
+          "parent_ref": {
+            "node_id": "org.dominium.worldgen.anchors.system.node.system"
+          },
+          "child_ref": {
+            "node_id": "org.dominium.worldgen.anchors.system.node.orbiting.beta"
+          },
+          "edge_tags": [
+            "org.dominium.topology.relationship.orbit"
+          ]
+        }
+      ],
+      "extensions": {}
+    },
+    "initial_fields": [
+      {
+        "field_id": "org.dominium.worldgen.anchors.system.field.energy_input",
+        "state_tag": "org.dominium.worldgen.state.baseline",
+        "node_ref": {
+          "node_id": "org.dominium.worldgen.anchors.system.node.orbiting.alpha"
+        },
+        "value": {
+          "amount": 1200
+        },
+        "units": [
+          "unit.energy.joule"
+        ],
+        "extensions": {}
+      },
+      {
+        "field_id": "org.dominium.worldgen.anchors.system.field.energy_input",
+        "state_tag": "org.dominium.worldgen.state.baseline",
+        "node_ref": {
+          "node_id": "org.dominium.worldgen.anchors.system.node.orbiting.beta"
+        },
+        "value": {
+          "amount": 800
+        },
+        "units": [
+          "unit.energy.joule"
+        ],
+        "extensions": {}
+      },
+      {
+        "field_id": "org.dominium.worldgen.anchors.system.field.orbital_index",
+        "state_tag": "org.dominium.worldgen.state.baseline",
+        "node_ref": {
+          "node_id": "org.dominium.worldgen.anchors.system.node.orbiting.alpha"
+        },
+        "value": {
+          "amount": 1
+        },
+        "units": [
+          "unit.dimensionless.ratio"
+        ],
+        "extensions": {}
+      },
+      {
+        "field_id": "org.dominium.worldgen.anchors.system.field.orbital_index",
+        "state_tag": "org.dominium.worldgen.state.baseline",
+        "node_ref": {
+          "node_id": "org.dominium.worldgen.anchors.system.node.orbiting.beta"
+        },
+        "value": {
+          "amount": 2
+        },
+        "units": [
+          "unit.dimensionless.ratio"
+        ],
+        "extensions": {}
+      }
+    ],
+    "policy_sets": {
+      "movement_policies": [
+        {
+          "policy_id": "org.dominium.policy.none"
+        }
+      ],
+      "authority_policies": [
+        {
+          "policy_id": "org.dominium.policy.none"
+        }
+      ],
+      "mode_policies": [
+        {
+          "policy_id": "org.dominium.policy.none"
+        }
+      ],
+      "debug_policies": [
+        {
+          "policy_id": "org.dominium.policy.none"
+        }
+      ],
+      "extensions": {}
+    },
+    "spawn_spec": {
+      "spawn_node_ref": {
+        "node_id": "org.dominium.worldgen.anchors.system.node.system"
+      },
+      "coordinate_frame_ref": {
+        "frame_id": "org.dominium.coord.frame.local"
+      },
+      "position": {
+        "value": {},
+        "units_tags": [
+          "unit.length.meter"
+        ]
+      },
+      "orientation": {
+        "value": {}
+      },
+      "extensions": {}
+    },
+    "provenance": {
+      "template_id": "org.dominium.worldgen.anchors.system.template",
+      "template_version": "1.0.0",
+      "generator_source": "org.dominium.generator.manual",
+      "seed": {},
+      "extensions": {}
+    },
+    "capability_expectations": [
+      {
+        "capability_id": "org.dominium.worldgen.system"
+      }
+    ],
+    "pack_refs": [
+      {
+        "pack_id": "org.dominium.worldgen.anchors.system"
+      }
+    ],
+    "extensions": {}
+  }
+}

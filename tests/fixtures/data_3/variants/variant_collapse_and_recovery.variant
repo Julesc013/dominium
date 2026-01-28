@@ -1,0 +1,7 @@
+DOMINIUM_VARIANT_V1
+variant_id=org.dominium.world.variant.collapse_and_recovery
+variant_version=1.0.0
+lockfile_id=org.dominium.lockfile.world.collapse_and_recovery
+lockfile_hash=hash.world.collapse_and_recovery
+policy.law=policy.law.strict
+policy.enforcement=policy.enforcement.strict
