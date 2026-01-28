@@ -1,0 +1,39 @@
+{
+  "level_id": "C-B",
+  "level_name": "Simple life",
+  "status": "UNSUPPORTED",
+  "required_schemas": [
+    "schema/assembly.schema",
+    "schema/batch_lot.schema",
+    "schema/domain.schema",
+    "schema/field.schema",
+    "schema/material.schema",
+    "schema/part.schema",
+    "schema/process_family.schema",
+    "schema/quality.schema",
+    "schema/substance.schema",
+    "schema/topology.schema",
+    "schema/world_definition.schema",
+    "schema/worldgen_model.schema"
+  ],
+  "required_process_families": [
+    "org.dominium.coverage.c-b.process.consume",
+    "org.dominium.coverage.c-b.process.repair",
+    "org.dominium.coverage.c-b.process.reproduce"
+  ],
+  "required_capabilities": [
+    "org.dominium.coverage.c-b.growth",
+    "org.dominium.coverage.c-b.processes",
+    "org.dominium.coverage.c-b.reproduction",
+    "org.dominium.coverage.c-b.resources"
+  ],
+  "required_refusals": [
+    "REFUSE_CAPABILITY_MISSING",
+    "WD-REFUSAL-CAPABILITY"
+  ],
+  "allow_in_principle": true,
+  "determinism_assertions": [
+    "fixtures_sorted_lex",
+    "lists_sorted_lex"
+  ]
+}

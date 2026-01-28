@@ -1,0 +1,6 @@
+[
+  "org.dominium.coverage.c-g.collapse",
+  "org.dominium.coverage.c-g.depletion",
+  "org.dominium.coverage.c-g.failure",
+  "org.dominium.coverage.c-g.recovery"
+]

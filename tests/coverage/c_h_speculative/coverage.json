@@ -1,0 +1,35 @@
+{
+  "level_id": "C-H",
+  "level_name": "Post-human or speculative",
+  "status": "UNSUPPORTED",
+  "required_schemas": [
+    "schema/cross_shard_message.schema",
+    "schema/macro_capsule.schema",
+    "schema/macro_event_queue.schema",
+    "schema/macro_schedule.schema",
+    "schema/process_family.schema",
+    "schema/topology.schema",
+    "schema/world_definition.schema",
+    "schema/worldgen_model.schema"
+  ],
+  "required_process_families": [
+    "org.dominium.coverage.c-h.process.alternate-physics",
+    "org.dominium.coverage.c-h.process.meta-civilization",
+    "org.dominium.coverage.c-h.process.nonhuman-cognition"
+  ],
+  "required_capabilities": [
+    "org.dominium.coverage.c-h.alternate-physics",
+    "org.dominium.coverage.c-h.meta-civilizations",
+    "org.dominium.coverage.c-h.nonhuman-cognition",
+    "org.dominium.coverage.c-h.speculative-systems"
+  ],
+  "required_refusals": [
+    "REFUSE_CAPABILITY_MISSING",
+    "WD-REFUSAL-CAPABILITY"
+  ],
+  "allow_in_principle": true,
+  "determinism_assertions": [
+    "fixtures_sorted_lex",
+    "lists_sorted_lex"
+  ]
+}

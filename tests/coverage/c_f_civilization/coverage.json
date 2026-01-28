@@ -1,0 +1,39 @@
+{
+  "level_id": "C-F",
+  "level_name": "Civilization",
+  "status": "UNSUPPORTED",
+  "required_schemas": [
+    "schema/authority.schema",
+    "schema/capability_lockfile.schema",
+    "schema/domain.schema",
+    "schema/institution.schema",
+    "schema/knowledge.schema",
+    "schema/process_family.schema",
+    "schema/refinement_plan.schema",
+    "schema/standard.schema",
+    "schema/topology.schema",
+    "schema/world_definition.schema",
+    "schema/worldgen_model.schema"
+  ],
+  "required_process_families": [
+    "org.dominium.coverage.c-f.process.adjudicate",
+    "org.dominium.coverage.c-f.process.exchange",
+    "org.dominium.coverage.c-f.process.infra-maintain",
+    "org.dominium.coverage.c-f.process.logistics"
+  ],
+  "required_capabilities": [
+    "org.dominium.coverage.c-f.infrastructure",
+    "org.dominium.coverage.c-f.law",
+    "org.dominium.coverage.c-f.logistics",
+    "org.dominium.coverage.c-f.trade"
+  ],
+  "required_refusals": [
+    "REFUSE_CAPABILITY_MISSING",
+    "WD-REFUSAL-CAPABILITY"
+  ],
+  "allow_in_principle": true,
+  "determinism_assertions": [
+    "fixtures_sorted_lex",
+    "lists_sorted_lex"
+  ]
+}

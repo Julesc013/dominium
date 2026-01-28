@@ -1,0 +1,35 @@
+{
+  "level_id": "C-A",
+  "level_name": "Abiotic world",
+  "status": "PARTIAL",
+  "required_schemas": [
+    "schema/domain.schema",
+    "schema/field.schema",
+    "schema/interface.schema",
+    "schema/material.schema",
+    "schema/process_family.schema",
+    "schema/topology.schema",
+    "schema/world_definition.schema",
+    "schema/worldgen_model.schema"
+  ],
+  "required_process_families": [
+    "org.dominium.coverage.c-a.process.decay",
+    "org.dominium.coverage.c-a.process.transfer",
+    "org.dominium.coverage.c-a.process.transform"
+  ],
+  "required_capabilities": [
+    "org.dominium.coverage.c-a.fields",
+    "org.dominium.coverage.c-a.materials",
+    "org.dominium.coverage.c-a.processes",
+    "org.dominium.coverage.c-a.worldgen"
+  ],
+  "required_refusals": [
+    "REFUSE_CAPABILITY_MISSING",
+    "WD-REFUSAL-CAPABILITY"
+  ],
+  "allow_in_principle": true,
+  "determinism_assertions": [
+    "fixtures_sorted_lex",
+    "lists_sorted_lex"
+  ]
+}
