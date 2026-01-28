@@ -1,4 +1,7 @@
-# Application Docs Index
+# Application Docs Index
+
+Status: non-normative.
+Canonical contracts live in `docs/architecture/CONTRACTS_INDEX.md`.
 
 This index lists app-layer runtime, UI, and test contract documents.
 
@@ -28,10 +31,9 @@ This index lists app-layer runtime, UI, and test contract documents.
 - `docs/app/IDE_WORKFLOW.md` - IDE build/run guidance.
 - `docs/app/CLIENT_IDE_START_POINTS.md` - stable client extension points.
 
-## TestX / APR compliance
-- `docs/app/TESTX_INVENTORY.md` and `docs/app/TESTX_COMPLIANCE.md`.
-- Archived APR snapshots:
-  `docs/architectureive/app/APR1_TESTX_COMPLIANCE.md`,
-  `docs/architectureive/app/APR2_TESTX_COMPLIANCE.md`,
-  `docs/architectureive/app/APR3_TESTX_COMPLIANCE.md`,
-  `docs/architectureive/app/APR4_TESTX_COMPLIANCE.md`.
+## TestX / APR compliance
+- `docs/app/TESTX_INVENTORY.md` and `docs/app/TESTX_COMPLIANCE.md`.
+- Archived APR snapshots: `docs/archive/app/APR1_TESTX_COMPLIANCE.md`,
+  `docs/archive/app/APR2_TESTX_COMPLIANCE.md`,
+  `docs/archive/app/APR3_TESTX_COMPLIANCE.md`,
+  `docs/archive/app/APR4_TESTX_COMPLIANCE.md`.

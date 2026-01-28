@@ -1,0 +1,24 @@
+{
+  "archives": [
+    {
+      "path": "docs/archive",
+      "readme": "docs/archive/README.md",
+      "status": "archived"
+    },
+    {
+      "path": "legacy",
+      "readme": "legacy/README.md",
+      "status": "archived"
+    },
+    {
+      "path": "labs",
+      "readme": "labs/README.md",
+      "status": "quarantined"
+    },
+    {
+      "path": "tmp",
+      "readme": "tmp/README.md",
+      "status": "quarantined"
+    }
+  ]
+}
