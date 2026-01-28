@@ -1,0 +1,152 @@
+{
+  "materials": [],
+  "interfaces": [],
+  "parts": [],
+  "assemblies": [],
+  "process_families": [],
+  "instruments": [],
+  "standards": [],
+  "qualities": [],
+  "batches": [],
+  "hazards": [
+    {
+      "hazard_id": "org.dominium.core.hazard.chemical.reactive",
+      "hazard_type": "org.dominium.hazard.type.chemical",
+      "trigger_conditions": {
+        "org.dominium.trigger.temperature_above": 500,
+        "org.dominium.trigger.concentration_above": 300
+      },
+      "impact_effects": {
+        "org.dominium.impact.corrosion_rate": 4,
+        "org.dominium.impact.heat_release": 200
+      },
+      "mitigation_refs": [
+        {
+          "mitigation_id": "org.dominium.mitigation.generic.seal"
+        }
+      ],
+      "unit_annotations": {
+        "trigger_conditions.org.dominium.trigger.temperature_above": {
+          "unit": "unit.temperature.kelvin",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "trigger_conditions.org.dominium.trigger.concentration_above": {
+          "unit": "unit.mass.kilogram",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "impact_effects.org.dominium.impact.corrosion_rate": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "impact_effects.org.dominium.impact.heat_release": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {}
+    },
+    {
+      "hazard_id": "org.dominium.core.hazard.mechanical.fatigue",
+      "hazard_type": "org.dominium.hazard.type.mechanical",
+      "trigger_conditions": {
+        "org.dominium.trigger.cycle_count": 1000,
+        "org.dominium.trigger.load_above": 600
+      },
+      "impact_effects": {
+        "org.dominium.impact.fracture_rate": 5
+      },
+      "mitigation_refs": [
+        {
+          "mitigation_id": "org.dominium.mitigation.generic.inspect"
+        }
+      ],
+      "unit_annotations": {
+        "trigger_conditions.org.dominium.trigger.cycle_count": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "trigger_conditions.org.dominium.trigger.load_above": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "impact_effects.org.dominium.impact.fracture_rate": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {}
+    },
+    {
+      "hazard_id": "org.dominium.core.hazard.thermal.overheat",
+      "hazard_type": "org.dominium.hazard.type.thermal",
+      "trigger_conditions": {
+        "org.dominium.trigger.temperature_above": 800
+      },
+      "impact_effects": {
+        "org.dominium.impact.deformation_rate": 3,
+        "org.dominium.impact.capacity_drop": 100
+      },
+      "mitigation_refs": [
+        {
+          "mitigation_id": "org.dominium.mitigation.generic.cooling"
+        }
+      ],
+      "unit_annotations": {
+        "trigger_conditions.org.dominium.trigger.temperature_above": {
+          "unit": "unit.temperature.kelvin",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "impact_effects.org.dominium.impact.deformation_rate": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "impact_effects.org.dominium.impact.capacity_drop": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {}
+    },
+    {
+      "hazard_id": "org.dominium.core.hazard.cascade.multi_stage",
+      "hazard_type": "org.dominium.hazard.type.mechanical",
+      "trigger_conditions": {
+        "org.dominium.trigger.degradation_level": 7
+      },
+      "impact_effects": {
+        "org.dominium.impact.cascade_probability": 2
+      },
+      "mitigation_refs": [
+        {
+          "mitigation_id": "org.dominium.mitigation.generic.shutdown"
+        }
+      ],
+      "unit_annotations": {
+        "trigger_conditions.org.dominium.trigger.degradation_level": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "impact_effects.org.dominium.impact.cascade_probability": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Cascading hazard intended to stress chain reactions."
+      }
+    }
+  ],
+  "substances": []
+}

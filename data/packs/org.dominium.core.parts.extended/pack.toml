@@ -1,0 +1,14 @@
+pack_id = "org.dominium.core.parts.extended"
+pack_version = "1.0.0"
+pack_format_version = 1
+requires_engine = "0.0.0"
+provides = [
+  "org.dominium.core.interfaces",
+  "org.dominium.core.interfaces.extended",
+  "org.dominium.core.parts",
+  "org.dominium.core.parts.extended"
+]
+depends = ["org.dominium.core.materials.extended"]
+optional = true
+pack_tags = ["pack.class.core_ontology"]
+extensions = {}

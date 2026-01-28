@@ -1,0 +1,456 @@
+{
+  "materials": [],
+  "interfaces": [],
+  "parts": [],
+  "assemblies": [
+    {
+      "assembly_id": "org.dominium.core.assembly.sub.rotary_stage",
+      "nodes": [
+        {
+          "node_id": "rotary.beam",
+          "node_type": "part",
+          "ref_id": "org.dominium.core.part.beam.long"
+        },
+        {
+          "node_id": "rotary.joint",
+          "node_type": "part",
+          "ref_id": "org.dominium.core.part.joint.flex"
+        }
+      ],
+      "edges": [
+        {
+          "edge_id": "rotary.link",
+          "from_node_id": "rotary.beam",
+          "to_node_id": "rotary.joint",
+          "interface_ref": {
+            "interface_id": "org.dominium.core.interface.mechanical.load.high"
+          }
+        }
+      ],
+      "subsystems": [
+        {
+          "subsystem_id": "rotary.core",
+          "node_refs": [
+            {
+              "node_id": "rotary.beam"
+            },
+            {
+              "node_id": "rotary.joint"
+            }
+          ]
+        }
+      ],
+      "hosted_processes": [],
+      "throughput_limits": {
+        "org.dominium.throughput.mass": 50
+      },
+      "maintenance": {
+        "org.dominium.maintenance.interval": 100
+      },
+      "unit_annotations": {
+        "throughput_limits.org.dominium.throughput.mass": {
+          "unit": "unit.mass.kilogram",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "maintenance.org.dominium.maintenance.interval": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Simple rotary stage subassembly."
+      }
+    },
+    {
+      "assembly_id": "org.dominium.core.assembly.sub.feed_stage",
+      "nodes": [
+        {
+          "node_id": "feed.valve",
+          "node_type": "part",
+          "ref_id": "org.dominium.core.part.valve.one_way"
+        },
+        {
+          "node_id": "feed.seal",
+          "node_type": "part",
+          "ref_id": "org.dominium.core.part.seal.high_pressure"
+        }
+      ],
+      "edges": [
+        {
+          "edge_id": "feed.flow",
+          "from_node_id": "feed.valve",
+          "to_node_id": "feed.seal",
+          "interface_ref": {
+            "interface_id": "org.dominium.core.interface.fluid.flow.output"
+          }
+        }
+      ],
+      "subsystems": [
+        {
+          "subsystem_id": "feed.core",
+          "node_refs": [
+            {
+              "node_id": "feed.valve"
+            },
+            {
+              "node_id": "feed.seal"
+            }
+          ]
+        }
+      ],
+      "hosted_processes": [],
+      "throughput_limits": {
+        "org.dominium.throughput.mass": 25
+      },
+      "maintenance": {
+        "org.dominium.maintenance.interval": 80
+      },
+      "unit_annotations": {
+        "throughput_limits.org.dominium.throughput.mass": {
+          "unit": "unit.mass.kilogram",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "maintenance.org.dominium.maintenance.interval": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Feed stage with asymmetric flow."
+      }
+    },
+    {
+      "assembly_id": "org.dominium.core.assembly.sub.output_stage",
+      "nodes": [
+        {
+          "node_id": "output.panel",
+          "node_type": "part",
+          "ref_id": "org.dominium.core.part.panel.layered"
+        },
+        {
+          "node_id": "output.connector",
+          "node_type": "part",
+          "ref_id": "org.dominium.core.part.connector.multi_port"
+        }
+      ],
+      "edges": [
+        {
+          "edge_id": "output.data",
+          "from_node_id": "output.panel",
+          "to_node_id": "output.connector",
+          "interface_ref": {
+            "interface_id": "org.dominium.core.interface.data.multiport"
+          }
+        }
+      ],
+      "subsystems": [
+        {
+          "subsystem_id": "output.core",
+          "node_refs": [
+            {
+              "node_id": "output.panel"
+            },
+            {
+              "node_id": "output.connector"
+            }
+          ]
+        }
+      ],
+      "hosted_processes": [],
+      "throughput_limits": {
+        "org.dominium.throughput.mass": 30
+      },
+      "maintenance": {
+        "org.dominium.maintenance.interval": 120
+      },
+      "unit_annotations": {
+        "throughput_limits.org.dominium.throughput.mass": {
+          "unit": "unit.mass.kilogram",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "maintenance.org.dominium.maintenance.interval": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Output stage with multi-port connector."
+      }
+    },
+    {
+      "assembly_id": "org.dominium.core.assembly.machine.lathe_like",
+      "nodes": [
+        {
+          "node_id": "lathe.rotary",
+          "node_type": "subassembly",
+          "ref_id": "org.dominium.core.assembly.sub.rotary_stage"
+        },
+        {
+          "node_id": "lathe.feed",
+          "node_type": "subassembly",
+          "ref_id": "org.dominium.core.assembly.sub.feed_stage"
+        },
+        {
+          "node_id": "lathe.output",
+          "node_type": "subassembly",
+          "ref_id": "org.dominium.core.assembly.sub.output_stage"
+        }
+      ],
+      "edges": [
+        {
+          "edge_id": "lathe.rotary_to_feed",
+          "from_node_id": "lathe.rotary",
+          "to_node_id": "lathe.feed",
+          "interface_ref": {
+            "interface_id": "org.dominium.core.interface.mechanical.axial.output"
+          }
+        },
+        {
+          "edge_id": "lathe.feed_to_output",
+          "from_node_id": "lathe.feed",
+          "to_node_id": "lathe.output",
+          "interface_ref": {
+            "interface_id": "org.dominium.core.interface.data.multiport"
+          }
+        }
+      ],
+      "subsystems": [
+        {
+          "subsystem_id": "lathe.motion",
+          "node_refs": [
+            {
+              "node_id": "lathe.rotary"
+            }
+          ]
+        },
+        {
+          "subsystem_id": "lathe.transfer",
+          "node_refs": [
+            {
+              "node_id": "lathe.feed"
+            },
+            {
+              "node_id": "lathe.output"
+            }
+          ]
+        }
+      ],
+      "hosted_processes": [
+        {
+          "process_family_id": "org.dominium.core.process_family.extended.transform.multi-stage"
+        },
+        {
+          "process_family_id": "org.dominium.core.process_family.extended.assemble.precision-sensitive"
+        }
+      ],
+      "throughput_limits": {
+        "org.dominium.throughput.mass": 120
+      },
+      "maintenance": {
+        "org.dominium.maintenance.interval": 200
+      },
+      "unit_annotations": {
+        "throughput_limits.org.dominium.throughput.mass": {
+          "unit": "unit.mass.kilogram",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "maintenance.org.dominium.maintenance.interval": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Nested assembly with multiple hosted processes."
+      }
+    },
+    {
+      "assembly_id": "org.dominium.core.assembly.machine.multi_stage_processor",
+      "nodes": [
+        {
+          "node_id": "processor.stage_a",
+          "node_type": "subassembly",
+          "ref_id": "org.dominium.core.assembly.machine.lathe_like"
+        },
+        {
+          "node_id": "processor.stage_b",
+          "node_type": "subassembly",
+          "ref_id": "org.dominium.core.assembly.machine.lathe_like"
+        },
+        {
+          "node_id": "processor.connector",
+          "node_type": "part",
+          "ref_id": "org.dominium.core.part.connector.multi_port"
+        }
+      ],
+      "edges": [
+        {
+          "edge_id": "processor.link_a",
+          "from_node_id": "processor.stage_a",
+          "to_node_id": "processor.stage_b",
+          "interface_ref": {
+            "interface_id": "org.dominium.core.interface.mechanical.load.low"
+          }
+        },
+        {
+          "edge_id": "processor.link_b",
+          "from_node_id": "processor.stage_b",
+          "to_node_id": "processor.connector",
+          "interface_ref": {
+            "interface_id": "org.dominium.core.interface.data.multiport"
+          }
+        }
+      ],
+      "subsystems": [
+        {
+          "subsystem_id": "processor.chain",
+          "node_refs": [
+            {
+              "node_id": "processor.stage_a"
+            },
+            {
+              "node_id": "processor.stage_b"
+            }
+          ]
+        }
+      ],
+      "hosted_processes": [
+        {
+          "process_family_id": "org.dominium.core.process_family.extended.refine.with-losses"
+        }
+      ],
+      "throughput_limits": {
+        "org.dominium.throughput.mass": 200
+      },
+      "maintenance": {
+        "org.dominium.maintenance.interval": 160
+      },
+      "unit_annotations": {
+        "throughput_limits.org.dominium.throughput.mass": {
+          "unit": "unit.mass.kilogram",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "maintenance.org.dominium.maintenance.interval": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Deep nesting with shared subassemblies."
+      }
+    },
+    {
+      "assembly_id": "org.dominium.core.assembly.structure.multi_bay_frame",
+      "nodes": [
+        {
+          "node_id": "frame.beam_a",
+          "node_type": "part",
+          "ref_id": "org.dominium.core.part.beam.long"
+        },
+        {
+          "node_id": "frame.beam_b",
+          "node_type": "part",
+          "ref_id": "org.dominium.core.part.beam.long"
+        },
+        {
+          "node_id": "frame.joint",
+          "node_type": "part",
+          "ref_id": "org.dominium.core.part.joint.flex"
+        },
+        {
+          "node_id": "frame.panel",
+          "node_type": "part",
+          "ref_id": "org.dominium.core.part.panel.layered"
+        }
+      ],
+      "edges": [
+        {
+          "edge_id": "frame.link_a",
+          "from_node_id": "frame.beam_a",
+          "to_node_id": "frame.joint",
+          "interface_ref": {
+            "interface_id": "org.dominium.core.interface.mechanical.load.low"
+          }
+        },
+        {
+          "edge_id": "frame.link_b",
+          "from_node_id": "frame.beam_b",
+          "to_node_id": "frame.joint",
+          "interface_ref": {
+            "interface_id": "org.dominium.core.interface.mechanical.load.low"
+          }
+        },
+        {
+          "edge_id": "frame.link_cycle",
+          "from_node_id": "frame.joint",
+          "to_node_id": "frame.beam_a",
+          "interface_ref": {
+            "interface_id": "org.dominium.core.interface.mechanical.load.low"
+          }
+        }
+      ],
+      "subsystems": [
+        {
+          "subsystem_id": "frame.primary",
+          "node_refs": [
+            {
+              "node_id": "frame.beam_a"
+            },
+            {
+              "node_id": "frame.beam_b"
+            },
+            {
+              "node_id": "frame.joint"
+            }
+          ]
+        },
+        {
+          "subsystem_id": "frame.cladding",
+          "node_refs": [
+            {
+              "node_id": "frame.panel"
+            }
+          ]
+        }
+      ],
+      "hosted_processes": [],
+      "throughput_limits": {
+        "org.dominium.throughput.mass": 300
+      },
+      "maintenance": {
+        "org.dominium.maintenance.interval": 220
+      },
+      "unit_annotations": {
+        "throughput_limits.org.dominium.throughput.mass": {
+          "unit": "unit.mass.kilogram",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "maintenance.org.dominium.maintenance.interval": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Multi-bay frame with explicit cyclic edge for stress testing."
+      }
+    }
+  ],
+  "process_families": [],
+  "instruments": [],
+  "standards": [],
+  "qualities": [],
+  "batches": [],
+  "hazards": [],
+  "substances": []
+}

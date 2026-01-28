@@ -1,0 +1,218 @@
+{
+  "materials": [],
+  "interfaces": [],
+  "parts": [],
+  "assemblies": [],
+  "process_families": [],
+  "instruments": [],
+  "standards": [],
+  "qualities": [
+    {
+      "quality_id": "org.dominium.core.quality.class.standard",
+      "tolerance_class": "org.dominium.tolerance.class.standard",
+      "inspection_methods": [
+        "org.dominium.inspection.visual",
+        "org.dominium.inspection.mass_check"
+      ],
+      "pass_fail_criteria": {
+        "org.dominium.criteria.max_variance": 5
+      },
+      "degradation_effects": {
+        "org.dominium.degradation.rate": 1
+      },
+      "unit_annotations": {
+        "pass_fail_criteria.org.dominium.criteria.max_variance": {
+          "unit": "unit.length.meter",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "degradation_effects.org.dominium.degradation.rate": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {}
+    },
+    {
+      "quality_id": "org.dominium.core.quality.class.tight",
+      "tolerance_class": "org.dominium.tolerance.class.tight",
+      "inspection_methods": [
+        "org.dominium.inspection.calibrated",
+        "org.dominium.inspection.mass_check"
+      ],
+      "pass_fail_criteria": {
+        "org.dominium.criteria.max_variance": 2,
+        "org.dominium.criteria.max_mass_delta": 1
+      },
+      "degradation_effects": {
+        "org.dominium.degradation.rate": 2
+      },
+      "unit_annotations": {
+        "pass_fail_criteria.org.dominium.criteria.max_variance": {
+          "unit": "unit.length.meter",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "pass_fail_criteria.org.dominium.criteria.max_mass_delta": {
+          "unit": "unit.mass.kilogram",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "degradation_effects.org.dominium.degradation.rate": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {}
+    },
+    {
+      "quality_id": "org.dominium.core.quality.class.strict",
+      "tolerance_class": "org.dominium.tolerance.class.strict",
+      "inspection_methods": [
+        "org.dominium.inspection.precision",
+        "org.dominium.inspection.thermal"
+      ],
+      "pass_fail_criteria": {
+        "org.dominium.criteria.max_variance": 1,
+        "org.dominium.criteria.max_temperature_delta": 2
+      },
+      "degradation_effects": {
+        "org.dominium.degradation.rate": 3
+      },
+      "unit_annotations": {
+        "pass_fail_criteria.org.dominium.criteria.max_variance": {
+          "unit": "unit.length.meter",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "pass_fail_criteria.org.dominium.criteria.max_temperature_delta": {
+          "unit": "unit.temperature.kelvin",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "degradation_effects.org.dominium.degradation.rate": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {}
+    },
+    {
+      "quality_id": "org.dominium.core.quality.class.flex",
+      "tolerance_class": "org.dominium.tolerance.class.flex",
+      "inspection_methods": [
+        "org.dominium.inspection.visual",
+        "org.dominium.inspection.flex"
+      ],
+      "pass_fail_criteria": {
+        "org.dominium.criteria.max_variance": 4,
+        "org.dominium.criteria.max_flex_delta": 3
+      },
+      "degradation_effects": {
+        "org.dominium.degradation.rate": 1
+      },
+      "unit_annotations": {
+        "pass_fail_criteria.org.dominium.criteria.max_variance": {
+          "unit": "unit.length.meter",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "pass_fail_criteria.org.dominium.criteria.max_flex_delta": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "degradation_effects.org.dominium.degradation.rate": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {}
+    },
+    {
+      "quality_id": "org.dominium.core.quality.class.flow",
+      "tolerance_class": "org.dominium.tolerance.class.flow",
+      "inspection_methods": [
+        "org.dominium.inspection.flow",
+        "org.dominium.inspection.leak"
+      ],
+      "pass_fail_criteria": {
+        "org.dominium.criteria.max_leak_rate": 2
+      },
+      "degradation_effects": {
+        "org.dominium.degradation.rate": 2
+      },
+      "unit_annotations": {
+        "pass_fail_criteria.org.dominium.criteria.max_leak_rate": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "degradation_effects.org.dominium.degradation.rate": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {}
+    }
+  ],
+  "batches": [
+    {
+      "batch_id": "org.dominium.core.batch.lot.alpha",
+      "quantity": {
+        "value": 50,
+        "unit": "unit.mass.kilogram",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "source_process_ref": {
+        "process_family_id": "org.dominium.core.process_family.extended.transform.multi-stage"
+      },
+      "quality_ref": {
+        "quality_id": "org.dominium.core.quality.class.standard"
+      },
+      "timestamp": {
+        "act_tick": 500
+      },
+      "unit_annotations": {
+        "timestamp.act_tick": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {}
+    },
+    {
+      "batch_id": "org.dominium.core.batch.lot.beta",
+      "quantity": {
+        "value": 20,
+        "unit": "unit.mass.kilogram",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "source_process_ref": {
+        "process_family_id": "org.dominium.core.process_family.extended.refine.with-losses"
+      },
+      "quality_ref": {
+        "quality_id": "org.dominium.core.quality.class.tight"
+      },
+      "timestamp": {
+        "act_tick": 800
+      },
+      "unit_annotations": {
+        "timestamp.act_tick": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {}
+    }
+  ],
+  "hazards": [],
+  "substances": []
+}

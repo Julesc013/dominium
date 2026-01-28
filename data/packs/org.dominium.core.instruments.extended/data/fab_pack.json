@@ -1,0 +1,122 @@
+{
+  "materials": [],
+  "interfaces": [],
+  "parts": [],
+  "assemblies": [],
+  "process_families": [],
+  "instruments": [
+    {
+      "instrument_id": "org.dominium.core.instrument.calibration.basic",
+      "measured_quantities": [
+        {
+          "quantity_tag": "org.dominium.quantity.length",
+          "unit": "unit.length.meter"
+        }
+      ],
+      "accuracy": {
+        "value": 5,
+        "unit": "unit.length.meter",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "precision": {
+        "value": 2,
+        "unit": "unit.length.meter",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "calibration_drift": {
+        "value": 1,
+        "unit": "unit.time.act_tick",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "required_standards": [
+        {
+          "standard_id": "org.dominium.core.standard.tolerance.length.loose"
+        }
+      ],
+      "unit_annotations": {},
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.instruments.extended.v1"
+      },
+      "extensions": {
+        "notes": "Baseline calibration tool with coarse accuracy."
+      }
+    },
+    {
+      "instrument_id": "org.dominium.core.instrument.calibration.precise",
+      "measured_quantities": [
+        {
+          "quantity_tag": "org.dominium.quantity.length",
+          "unit": "unit.length.meter"
+        }
+      ],
+      "accuracy": {
+        "value": 1,
+        "unit": "unit.length.meter",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "precision": {
+        "value": 1,
+        "unit": "unit.length.meter",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "calibration_drift": {
+        "value": 1,
+        "unit": "unit.time.act_tick",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "required_standards": [
+        {
+          "standard_id": "org.dominium.core.standard.tolerance.length.tight"
+        }
+      ],
+      "unit_annotations": {},
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.instruments.extended.v1"
+      },
+      "extensions": {
+        "notes": "High-precision calibration tool."
+      }
+    },
+    {
+      "instrument_id": "org.dominium.core.instrument.measure.mass.low_accuracy",
+      "measured_quantities": [
+        {
+          "quantity_tag": "org.dominium.quantity.mass",
+          "unit": "unit.mass.kilogram"
+        }
+      ],
+      "accuracy": {
+        "value": 10,
+        "unit": "unit.mass.kilogram",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "precision": {
+        "value": 5,
+        "unit": "unit.mass.kilogram",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "calibration_drift": {
+        "value": 2,
+        "unit": "unit.time.act_tick",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "required_standards": [
+        {
+          "standard_id": "org.dominium.core.standard.tolerance.mass.loose"
+        }
+      ],
+      "unit_annotations": {},
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.instruments.extended.v1"
+      },
+      "extensions": {
+        "notes": "Mass measurement with limited accuracy."
+      }
+    }
+  ],
+  "standards": [],
+  "qualities": [],
+  "batches": [],
+  "hazards": [],
+  "substances": []
+}

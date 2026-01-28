@@ -1,0 +1,13 @@
+pack_id = "org.dominium.core.assemblies.extended"
+pack_version = "1.0.0"
+pack_format_version = 1
+requires_engine = "0.0.0"
+provides = ["org.dominium.core.assemblies.extended"]
+depends = [
+  "org.dominium.core.interfaces.extended",
+  "org.dominium.core.parts.extended",
+  "org.dominium.core.processes.extended"
+]
+optional = true
+pack_tags = ["pack.class.core_ontology"]
+extensions = {}

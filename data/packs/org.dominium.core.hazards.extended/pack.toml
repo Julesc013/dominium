@@ -1,0 +1,9 @@
+pack_id = "org.dominium.core.hazards.extended"
+pack_version = "1.0.0"
+pack_format_version = 1
+requires_engine = "0.0.0"
+provides = ["org.dominium.core.hazards.extended"]
+depends = []
+optional = true
+pack_tags = ["pack.class.core_ontology"]
+extensions = {}

@@ -1,0 +1,498 @@
+{
+  "materials": [],
+  "interfaces": [
+    {
+      "interface_id": "org.dominium.core.interface.mechanical.load.high",
+      "interface_type": "org.dominium.interface.type.mechanical",
+      "directionality": "org.dominium.interface.dir.bidirectional",
+      "capacity": {
+        "value": 1000,
+        "unit": "unit.energy.joule",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "unit_annotations": {},
+      "compatibility_rules": {
+        "allow_degraded": false
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.parts.extended.interfaces.v1"
+      },
+      "extensions": {}
+    },
+    {
+      "interface_id": "org.dominium.core.interface.mechanical.load.low",
+      "interface_type": "org.dominium.interface.type.mechanical",
+      "directionality": "org.dominium.interface.dir.bidirectional",
+      "capacity": {
+        "value": 100,
+        "unit": "unit.energy.joule",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "unit_annotations": {},
+      "compatibility_rules": {
+        "allow_degraded": true
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.parts.extended.interfaces.v1"
+      },
+      "extensions": {}
+    },
+    {
+      "interface_id": "org.dominium.core.interface.mechanical.axial.input",
+      "interface_type": "org.dominium.interface.type.mechanical",
+      "directionality": "org.dominium.interface.dir.input",
+      "capacity": {
+        "value": 500,
+        "unit": "unit.energy.joule",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "unit_annotations": {},
+      "compatibility_rules": {
+        "allow_degraded": false
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.parts.extended.interfaces.v1"
+      },
+      "extensions": {}
+    },
+    {
+      "interface_id": "org.dominium.core.interface.mechanical.axial.output",
+      "interface_type": "org.dominium.interface.type.mechanical",
+      "directionality": "org.dominium.interface.dir.output",
+      "capacity": {
+        "value": 500,
+        "unit": "unit.energy.joule",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "unit_annotations": {},
+      "compatibility_rules": {
+        "allow_degraded": false
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.parts.extended.interfaces.v1"
+      },
+      "extensions": {}
+    },
+    {
+      "interface_id": "org.dominium.core.interface.fluid.pressure.high",
+      "interface_type": "org.dominium.interface.type.fluid",
+      "directionality": "org.dominium.interface.dir.bidirectional",
+      "capacity": {
+        "value": 800,
+        "unit": "unit.energy.joule",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "unit_annotations": {},
+      "compatibility_rules": {
+        "allow_degraded": false
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.parts.extended.interfaces.v1"
+      },
+      "extensions": {}
+    },
+    {
+      "interface_id": "org.dominium.core.interface.fluid.pressure.low",
+      "interface_type": "org.dominium.interface.type.fluid",
+      "directionality": "org.dominium.interface.dir.bidirectional",
+      "capacity": {
+        "value": 100,
+        "unit": "unit.energy.joule",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "unit_annotations": {},
+      "compatibility_rules": {
+        "allow_degraded": true
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.parts.extended.interfaces.v1"
+      },
+      "extensions": {}
+    },
+    {
+      "interface_id": "org.dominium.core.interface.fluid.flow.input",
+      "interface_type": "org.dominium.interface.type.fluid",
+      "directionality": "org.dominium.interface.dir.input",
+      "capacity": {
+        "value": 400,
+        "unit": "unit.energy.joule",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "unit_annotations": {},
+      "compatibility_rules": {
+        "allow_degraded": false
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.parts.extended.interfaces.v1"
+      },
+      "extensions": {}
+    },
+    {
+      "interface_id": "org.dominium.core.interface.fluid.flow.output",
+      "interface_type": "org.dominium.interface.type.fluid",
+      "directionality": "org.dominium.interface.dir.output",
+      "capacity": {
+        "value": 400,
+        "unit": "unit.energy.joule",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "unit_annotations": {},
+      "compatibility_rules": {
+        "allow_degraded": false
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.parts.extended.interfaces.v1"
+      },
+      "extensions": {}
+    },
+    {
+      "interface_id": "org.dominium.core.interface.data.multiport",
+      "interface_type": "org.dominium.interface.type.data",
+      "directionality": "org.dominium.interface.dir.bidirectional",
+      "capacity": {
+        "value": 400,
+        "unit": "unit.energy.joule",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "unit_annotations": {},
+      "compatibility_rules": {
+        "allow_degraded": false
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.parts.extended.interfaces.v1"
+      },
+      "extensions": {}
+    },
+    {
+      "interface_id": "org.dominium.core.interface.electrical.asym.input",
+      "interface_type": "org.dominium.interface.type.electrical",
+      "directionality": "org.dominium.interface.dir.input",
+      "capacity": {
+        "value": 200,
+        "unit": "unit.energy.joule",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "unit_annotations": {},
+      "compatibility_rules": {
+        "allow_degraded": false
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.parts.extended.interfaces.v1"
+      },
+      "extensions": {}
+    },
+    {
+      "interface_id": "org.dominium.core.interface.electrical.asym.output",
+      "interface_type": "org.dominium.interface.type.electrical",
+      "directionality": "org.dominium.interface.dir.output",
+      "capacity": {
+        "value": 200,
+        "unit": "unit.energy.joule",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "unit_annotations": {},
+      "compatibility_rules": {
+        "allow_degraded": false
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.parts.extended.interfaces.v1"
+      },
+      "extensions": {}
+    },
+    {
+      "interface_id": "org.dominium.core.interface.thermal.sink",
+      "interface_type": "org.dominium.interface.type.thermal",
+      "directionality": "org.dominium.interface.dir.input",
+      "capacity": {
+        "value": 300,
+        "unit": "unit.energy.joule",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "unit_annotations": {},
+      "compatibility_rules": {
+        "allow_degraded": false
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.parts.extended.interfaces.v1"
+      },
+      "extensions": {}
+    }
+  ],
+  "parts": [
+    {
+      "part_id": "org.dominium.core.part.beam.long",
+      "material_ref": {
+        "material_id": "org.dominium.core.material.solid.high_strength"
+      },
+      "mass": {
+        "value": 100,
+        "unit": "unit.mass.kilogram",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "volume": {
+        "value": 10,
+        "unit": "unit.length.meter",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "interfaces": [
+        {
+          "interface_id": "org.dominium.core.interface.mechanical.load.high"
+        }
+      ],
+      "constraints": [
+        {
+          "constraint_id": "org.dominium.core.constraint.load.heavy",
+          "constraint_tags": [
+            "org.dominium.constraint.structural"
+          ]
+        }
+      ],
+      "quality_requirements": {
+        "org.dominium.quality.class": "org.dominium.quality.class.strict"
+      },
+      "failure_model_ref": {
+        "failure_model_id": "org.dominium.core.failure_model.generic"
+      },
+      "unit_annotations": {},
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.parts.extended.v1"
+      },
+      "extensions": {}
+    },
+    {
+      "part_id": "org.dominium.core.part.joint.flex",
+      "material_ref": {
+        "material_id": "org.dominium.core.material.solid.elastic"
+      },
+      "mass": {
+        "value": 20,
+        "unit": "unit.mass.kilogram",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "volume": {
+        "value": 3,
+        "unit": "unit.length.meter",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "interfaces": [
+        {
+          "interface_id": "org.dominium.core.interface.mechanical.axial.input"
+        },
+        {
+          "interface_id": "org.dominium.core.interface.mechanical.axial.output"
+        },
+        {
+          "interface_id": "org.dominium.core.interface.mechanical.load.low"
+        }
+      ],
+      "constraints": [
+        {
+          "constraint_id": "org.dominium.core.constraint.flex.basic",
+          "constraint_tags": [
+            "org.dominium.constraint.joint"
+          ]
+        }
+      ],
+      "quality_requirements": {
+        "org.dominium.quality.class": "org.dominium.quality.class.flex"
+      },
+      "failure_model_ref": {
+        "failure_model_id": "org.dominium.core.failure_model.flex"
+      },
+      "unit_annotations": {},
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.parts.extended.v1"
+      },
+      "extensions": {}
+    },
+    {
+      "part_id": "org.dominium.core.part.seal.high_pressure",
+      "material_ref": {
+        "material_id": "org.dominium.core.material.composite.layered"
+      },
+      "mass": {
+        "value": 8,
+        "unit": "unit.mass.kilogram",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "volume": {
+        "value": 2,
+        "unit": "unit.length.meter",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "interfaces": [
+        {
+          "interface_id": "org.dominium.core.interface.fluid.pressure.high"
+        },
+        {
+          "interface_id": "org.dominium.core.interface.thermal.sink"
+        }
+      ],
+      "constraints": [
+        {
+          "constraint_id": "org.dominium.core.constraint.seal.high_pressure",
+          "constraint_tags": [
+            "org.dominium.constraint.fluid"
+          ]
+        }
+      ],
+      "quality_requirements": {
+        "org.dominium.quality.class": "org.dominium.quality.class.tight"
+      },
+      "failure_model_ref": {
+        "failure_model_id": "org.dominium.core.failure_model.seal"
+      },
+      "unit_annotations": {},
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.parts.extended.v1"
+      },
+      "extensions": {}
+    },
+    {
+      "part_id": "org.dominium.core.part.connector.multi_port",
+      "material_ref": {
+        "material_id": "org.dominium.core.material.solid.high_strength"
+      },
+      "mass": {
+        "value": 15,
+        "unit": "unit.mass.kilogram",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "volume": {
+        "value": 4,
+        "unit": "unit.length.meter",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "interfaces": [
+        {
+          "interface_id": "org.dominium.core.interface.data.multiport"
+        },
+        {
+          "interface_id": "org.dominium.core.interface.electrical.asym.input"
+        },
+        {
+          "interface_id": "org.dominium.core.interface.electrical.asym.output"
+        },
+        {
+          "interface_id": "org.dominium.core.interface.fluid.pressure.low"
+        },
+        {
+          "interface_id": "org.dominium.core.interface.thermal.sink"
+        }
+      ],
+      "constraints": [
+        {
+          "constraint_id": "org.dominium.core.constraint.multiport.basic",
+          "constraint_tags": [
+            "org.dominium.constraint.multi"
+          ]
+        }
+      ],
+      "quality_requirements": {
+        "org.dominium.quality.class": "org.dominium.quality.class.standard"
+      },
+      "failure_model_ref": {
+        "failure_model_id": "org.dominium.core.failure_model.connector"
+      },
+      "unit_annotations": {},
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.parts.extended.v1"
+      },
+      "extensions": {}
+    },
+    {
+      "part_id": "org.dominium.core.part.valve.one_way",
+      "material_ref": {
+        "material_id": "org.dominium.core.material.solid.brittle"
+      },
+      "mass": {
+        "value": 12,
+        "unit": "unit.mass.kilogram",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "volume": {
+        "value": 2,
+        "unit": "unit.length.meter",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "interfaces": [
+        {
+          "interface_id": "org.dominium.core.interface.fluid.flow.input"
+        },
+        {
+          "interface_id": "org.dominium.core.interface.fluid.flow.output"
+        }
+      ],
+      "constraints": [
+        {
+          "constraint_id": "org.dominium.core.constraint.flow.one_way",
+          "constraint_tags": [
+            "org.dominium.constraint.flow"
+          ]
+        }
+      ],
+      "quality_requirements": {
+        "org.dominium.quality.class": "org.dominium.quality.class.flow"
+      },
+      "failure_model_ref": {
+        "failure_model_id": "org.dominium.core.failure_model.valve"
+      },
+      "unit_annotations": {},
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.parts.extended.v1"
+      },
+      "extensions": {}
+    },
+    {
+      "part_id": "org.dominium.core.part.panel.layered",
+      "material_ref": {
+        "material_id": "org.dominium.core.material.composite.layered"
+      },
+      "mass": {
+        "value": 25,
+        "unit": "unit.mass.kilogram",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "volume": {
+        "value": 6,
+        "unit": "unit.length.meter",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "interfaces": [
+        {
+          "interface_id": "org.dominium.core.interface.mechanical.load.low"
+        },
+        {
+          "interface_id": "org.dominium.core.interface.thermal.sink"
+        }
+      ],
+      "constraints": [
+        {
+          "constraint_id": "org.dominium.core.constraint.panel.layered",
+          "constraint_tags": [
+            "org.dominium.constraint.structural"
+          ]
+        }
+      ],
+      "quality_requirements": {
+        "org.dominium.quality.class": "org.dominium.quality.class.standard"
+      },
+      "failure_model_ref": {
+        "failure_model_id": "org.dominium.core.failure_model.panel"
+      },
+      "unit_annotations": {},
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.parts.extended.v1"
+      },
+      "extensions": {}
+    }
+  ],
+  "assemblies": [],
+  "process_families": [],
+  "instruments": [],
+  "standards": [],
+  "qualities": [],
+  "batches": [],
+  "hazards": [],
+  "substances": []
+}
