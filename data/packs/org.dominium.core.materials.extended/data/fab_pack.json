@@ -1,0 +1,452 @@
+{
+  "materials": [
+    {
+      "material_id": "org.dominium.core.material.solid.high_strength",
+      "traits": {
+        "org.dominium.trait.density": 1600,
+        "org.dominium.trait.elasticity": 1400,
+        "org.dominium.trait.hardness": 1200,
+        "org.dominium.trait.conductivity": 250,
+        "org.dominium.trait.temperature_sensitivity": 20,
+        "org.dominium.trait.pressure_sensitivity": 15
+      },
+      "manufacturability": {
+        "org.dominium.mfg.forgeable": true,
+        "org.dominium.mfg.printable": false,
+        "org.dominium.mfg.castable": true
+      },
+      "failure_params": {
+        "org.dominium.failure.fatigue_rate": 2,
+        "org.dominium.failure.creep_rate": 1,
+        "org.dominium.failure.fracture_rate": 1
+      },
+      "unit_annotations": {
+        "traits.org.dominium.trait.density": {
+          "unit": "unit.mass.kilogram",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "traits.org.dominium.trait.elasticity": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "traits.org.dominium.trait.hardness": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "traits.org.dominium.trait.conductivity": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "traits.org.dominium.trait.temperature_sensitivity": {
+          "unit": "unit.temperature.kelvin",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "traits.org.dominium.trait.pressure_sensitivity": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "failure_params.org.dominium.failure.fatigue_rate": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "failure_params.org.dominium.failure.creep_rate": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "failure_params.org.dominium.failure.fracture_rate": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.materials.extended.v1",
+        "provenance_tags": [
+          "org.dominium.provenance.core"
+        ]
+      },
+      "extensions": {
+        "notes": "High-strength solid with sensitivity to environmental parameters."
+      }
+    },
+    {
+      "material_id": "org.dominium.core.material.solid.brittle",
+      "traits": {
+        "org.dominium.trait.density": 1100,
+        "org.dominium.trait.elasticity": 300,
+        "org.dominium.trait.hardness": 1500,
+        "org.dominium.trait.conductivity": 60,
+        "org.dominium.trait.brittleness": 900,
+        "org.dominium.trait.temperature_sensitivity": 40
+      },
+      "manufacturability": {
+        "org.dominium.mfg.forgeable": false,
+        "org.dominium.mfg.printable": true,
+        "org.dominium.mfg.castable": true
+      },
+      "failure_params": {
+        "org.dominium.failure.fracture_rate": 5,
+        "org.dominium.failure.fatigue_rate": 3,
+        "org.dominium.failure.creep_rate": 2
+      },
+      "unit_annotations": {
+        "traits.org.dominium.trait.density": {
+          "unit": "unit.mass.kilogram",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "traits.org.dominium.trait.elasticity": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "traits.org.dominium.trait.hardness": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "traits.org.dominium.trait.conductivity": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "traits.org.dominium.trait.brittleness": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "traits.org.dominium.trait.temperature_sensitivity": {
+          "unit": "unit.temperature.kelvin",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "failure_params.org.dominium.failure.fracture_rate": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "failure_params.org.dominium.failure.fatigue_rate": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "failure_params.org.dominium.failure.creep_rate": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.materials.extended.v1",
+        "provenance_tags": [
+          "org.dominium.provenance.core"
+        ]
+      },
+      "extensions": {
+        "notes": "High hardness with low elasticity to stress brittle failure modes."
+      }
+    },
+    {
+      "material_id": "org.dominium.core.material.solid.elastic",
+      "traits": {
+        "org.dominium.trait.density": 900,
+        "org.dominium.trait.elasticity": 1600,
+        "org.dominium.trait.hardness": 200,
+        "org.dominium.trait.conductivity": 40,
+        "org.dominium.trait.rebound_rate": 800,
+        "org.dominium.trait.temperature_sensitivity": 30
+      },
+      "manufacturability": {
+        "org.dominium.mfg.forgeable": false,
+        "org.dominium.mfg.printable": true,
+        "org.dominium.mfg.castable": false
+      },
+      "failure_params": {
+        "org.dominium.failure.fatigue_rate": 1,
+        "org.dominium.failure.creep_rate": 2,
+        "org.dominium.failure.hysteresis_rate": 3
+      },
+      "unit_annotations": {
+        "traits.org.dominium.trait.density": {
+          "unit": "unit.mass.kilogram",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "traits.org.dominium.trait.elasticity": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "traits.org.dominium.trait.hardness": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "traits.org.dominium.trait.conductivity": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "traits.org.dominium.trait.rebound_rate": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "traits.org.dominium.trait.temperature_sensitivity": {
+          "unit": "unit.temperature.kelvin",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "failure_params.org.dominium.failure.fatigue_rate": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "failure_params.org.dominium.failure.creep_rate": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "failure_params.org.dominium.failure.hysteresis_rate": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.materials.extended.v1",
+        "provenance_tags": [
+          "org.dominium.provenance.core"
+        ]
+      },
+      "extensions": {
+        "notes": "High elasticity with low hardness to stress rebound vs fatigue."
+      }
+    },
+    {
+      "material_id": "org.dominium.core.material.fluid.viscous",
+      "traits": {
+        "org.dominium.trait.density": 850,
+        "org.dominium.trait.viscosity": 1200,
+        "org.dominium.trait.conductivity": 30,
+        "org.dominium.trait.flow_resistance": 500,
+        "org.dominium.trait.temperature_sensitivity": 60
+      },
+      "manufacturability": {
+        "org.dominium.mfg.forgeable": false,
+        "org.dominium.mfg.printable": true,
+        "org.dominium.mfg.castable": true
+      },
+      "failure_params": {
+        "org.dominium.failure.shear_breakdown_rate": 4,
+        "org.dominium.failure.separation_rate": 2
+      },
+      "unit_annotations": {
+        "traits.org.dominium.trait.density": {
+          "unit": "unit.mass.kilogram",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "traits.org.dominium.trait.viscosity": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "traits.org.dominium.trait.conductivity": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "traits.org.dominium.trait.flow_resistance": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "traits.org.dominium.trait.temperature_sensitivity": {
+          "unit": "unit.temperature.kelvin",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "failure_params.org.dominium.failure.shear_breakdown_rate": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "failure_params.org.dominium.failure.separation_rate": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.materials.extended.v1",
+        "provenance_tags": [
+          "org.dominium.provenance.core"
+        ]
+      },
+      "extensions": {
+        "notes": "Viscous fluid with high flow resistance and shear sensitivity."
+      }
+    },
+    {
+      "material_id": "org.dominium.core.material.fluid.corrosive",
+      "traits": {
+        "org.dominium.trait.density": 700,
+        "org.dominium.trait.viscosity": 400,
+        "org.dominium.trait.conductivity": 80,
+        "org.dominium.trait.corrosiveness": 1200,
+        "org.dominium.trait.temperature_sensitivity": 70
+      },
+      "manufacturability": {
+        "org.dominium.mfg.forgeable": false,
+        "org.dominium.mfg.printable": false,
+        "org.dominium.mfg.castable": true
+      },
+      "failure_params": {
+        "org.dominium.failure.corrosion_rate": 6,
+        "org.dominium.failure.volatility_rate": 3
+      },
+      "unit_annotations": {
+        "traits.org.dominium.trait.density": {
+          "unit": "unit.mass.kilogram",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "traits.org.dominium.trait.viscosity": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "traits.org.dominium.trait.conductivity": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "traits.org.dominium.trait.corrosiveness": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "traits.org.dominium.trait.temperature_sensitivity": {
+          "unit": "unit.temperature.kelvin",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "failure_params.org.dominium.failure.corrosion_rate": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "failure_params.org.dominium.failure.volatility_rate": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.materials.extended.v1",
+        "provenance_tags": [
+          "org.dominium.provenance.core"
+        ]
+      },
+      "extensions": {
+        "notes": "Corrosive fluid with elevated degradation parameters."
+      }
+    },
+    {
+      "material_id": "org.dominium.core.material.composite.layered",
+      "traits": {
+        "org.dominium.trait.density": 1000,
+        "org.dominium.trait.elasticity": 900,
+        "org.dominium.trait.hardness": 600,
+        "org.dominium.trait.layer_thickness": 2,
+        "org.dominium.trait.layer_bond_strength": 700,
+        "org.dominium.trait.anisotropy": 500
+      },
+      "manufacturability": {
+        "org.dominium.mfg.forgeable": false,
+        "org.dominium.mfg.printable": true,
+        "org.dominium.mfg.castable": true
+      },
+      "failure_params": {
+        "org.dominium.failure.delamination_rate": 5,
+        "org.dominium.failure.fatigue_rate": 2,
+        "org.dominium.failure.creep_rate": 2
+      },
+      "unit_annotations": {
+        "traits.org.dominium.trait.density": {
+          "unit": "unit.mass.kilogram",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "traits.org.dominium.trait.elasticity": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "traits.org.dominium.trait.hardness": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "traits.org.dominium.trait.layer_thickness": {
+          "unit": "unit.length.meter",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "traits.org.dominium.trait.layer_bond_strength": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "traits.org.dominium.trait.anisotropy": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "failure_params.org.dominium.failure.delamination_rate": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "failure_params.org.dominium.failure.fatigue_rate": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "failure_params.org.dominium.failure.creep_rate": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.materials.extended.v1",
+        "provenance_tags": [
+          "org.dominium.provenance.core"
+        ]
+      },
+      "extensions": {
+        "notes": "Layered composite with explicit delamination parameters."
+      }
+    }
+  ],
+  "interfaces": [],
+  "parts": [],
+  "assemblies": [],
+  "process_families": [],
+  "instruments": [],
+  "standards": [],
+  "qualities": [],
+  "batches": [],
+  "hazards": [],
+  "substances": []
+}

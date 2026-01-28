@@ -1,0 +1,365 @@
+{
+  "materials": [],
+  "interfaces": [],
+  "parts": [],
+  "assemblies": [],
+  "process_families": [
+    {
+      "process_family_id": "org.dominium.core.process_family.extended.transform.multi-stage",
+      "inputs": [
+        {
+          "ref_type": "org.dominium.process_ref.generic",
+          "ref_id": "org.dominium.core.process.input.raw_a",
+          "quantity": {
+            "value": 2,
+            "unit": "unit.mass.kilogram",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        },
+        {
+          "ref_type": "org.dominium.process_ref.generic",
+          "ref_id": "org.dominium.core.process.input.raw_b",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.mass.kilogram",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "org.dominium.process_ref.generic",
+          "ref_id": "org.dominium.core.process.output.primary",
+          "quantity": {
+            "value": 2,
+            "unit": "unit.mass.kilogram",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        },
+        {
+          "ref_type": "org.dominium.process_ref.generic",
+          "ref_id": "org.dominium.core.process.output.secondary",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.mass.kilogram",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "wastes": [
+        {
+          "ref_type": "org.dominium.process_ref.generic",
+          "ref_id": "org.dominium.core.process.waste.heat",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.mass.kilogram",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "energy_flows": {
+        "org.dominium.energy.input": 500,
+        "org.dominium.energy.loss": 200
+      },
+      "parameter_space": {
+        "org.dominium.param.temperature.target": 500,
+        "org.dominium.param.duration": 120
+      },
+      "yield_distribution": {
+        "org.dominium.yield.primary": 850,
+        "org.dominium.yield.secondary": 100,
+        "org.dominium.yield.waste": 50
+      },
+      "failure_modes": {
+        "org.dominium.failure.overheat": 5,
+        "org.dominium.failure.misalignment": 3
+      },
+      "required_instruments": [
+        {
+          "instrument_id": "org.dominium.core.instrument.calibration.basic"
+        }
+      ],
+      "required_standards": [
+        {
+          "standard_id": "org.dominium.core.standard.tolerance.length.tight"
+        }
+      ],
+      "unit_annotations": {
+        "energy_flows.org.dominium.energy.input": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "energy_flows.org.dominium.energy.loss": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.temperature.target": {
+          "unit": "unit.temperature.kelvin",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.duration": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.primary": {
+          "unit": "unit.mass.kilogram",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.secondary": {
+          "unit": "unit.mass.kilogram",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.waste": {
+          "unit": "unit.mass.kilogram",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "failure_modes.org.dominium.failure.overheat": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "failure_modes.org.dominium.failure.misalignment": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.processes.extended.v1"
+      },
+      "extensions": {
+        "notes": "Multi-stage transform with explicit waste and failure envelope."
+      }
+    },
+    {
+      "process_family_id": "org.dominium.core.process_family.extended.refine.with-losses",
+      "inputs": [
+        {
+          "ref_type": "org.dominium.process_ref.generic",
+          "ref_id": "org.dominium.core.process.input.bulk",
+          "quantity": {
+            "value": 5,
+            "unit": "unit.mass.kilogram",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "org.dominium.process_ref.generic",
+          "ref_id": "org.dominium.core.process.output.refined",
+          "quantity": {
+            "value": 3,
+            "unit": "unit.mass.kilogram",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "wastes": [
+        {
+          "ref_type": "org.dominium.process_ref.generic",
+          "ref_id": "org.dominium.core.process.waste.slurry",
+          "quantity": {
+            "value": 2,
+            "unit": "unit.mass.kilogram",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "energy_flows": {
+        "org.dominium.energy.input": 600,
+        "org.dominium.energy.loss": 250
+      },
+      "parameter_space": {
+        "org.dominium.param.duration": 200
+      },
+      "yield_distribution": {
+        "org.dominium.yield.refined": 700,
+        "org.dominium.yield.waste": 300
+      },
+      "failure_modes": {
+        "org.dominium.failure.contamination": 4
+      },
+      "required_instruments": [
+        {
+          "instrument_id": "org.dominium.core.instrument.measure.mass.low_accuracy"
+        }
+      ],
+      "required_standards": [
+        {
+          "standard_id": "org.dominium.core.standard.tolerance.mass.loose"
+        }
+      ],
+      "unit_annotations": {
+        "energy_flows.org.dominium.energy.input": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "energy_flows.org.dominium.energy.loss": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.duration": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.refined": {
+          "unit": "unit.mass.kilogram",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.waste": {
+          "unit": "unit.mass.kilogram",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "failure_modes.org.dominium.failure.contamination": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.processes.extended.v1"
+      },
+      "extensions": {
+        "notes": "Refinement process with explicit losses and contamination risk."
+      }
+    },
+    {
+      "process_family_id": "org.dominium.core.process_family.extended.assemble.precision-sensitive",
+      "inputs": [
+        {
+          "ref_type": "org.dominium.process_ref.generic",
+          "ref_id": "org.dominium.core.process.input.component_a",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.mass.kilogram",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        },
+        {
+          "ref_type": "org.dominium.process_ref.generic",
+          "ref_id": "org.dominium.core.process.input.component_b",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.mass.kilogram",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "org.dominium.process_ref.generic",
+          "ref_id": "org.dominium.core.process.output.assembly",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.mass.kilogram",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "wastes": [
+        {
+          "ref_type": "org.dominium.process_ref.generic",
+          "ref_id": "org.dominium.core.process.waste.scrap",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.mass.kilogram",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "energy_flows": {
+        "org.dominium.energy.input": 300,
+        "org.dominium.energy.loss": 100
+      },
+      "parameter_space": {
+        "org.dominium.param.alignment": 10,
+        "org.dominium.param.duration": 80
+      },
+      "yield_distribution": {
+        "org.dominium.yield.pass": 900,
+        "org.dominium.yield.fail": 100
+      },
+      "failure_modes": {
+        "org.dominium.failure.misalignment": 6,
+        "org.dominium.failure.calibration": 2
+      },
+      "required_instruments": [
+        {
+          "instrument_id": "org.dominium.core.instrument.calibration.precise"
+        }
+      ],
+      "required_standards": [
+        {
+          "standard_id": "org.dominium.core.standard.tolerance.interface.tight"
+        }
+      ],
+      "unit_annotations": {
+        "energy_flows.org.dominium.energy.input": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "energy_flows.org.dominium.energy.loss": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.alignment": {
+          "unit": "unit.length.meter",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.duration": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.pass": {
+          "unit": "unit.mass.kilogram",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.fail": {
+          "unit": "unit.mass.kilogram",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "failure_modes.org.dominium.failure.misalignment": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "failure_modes.org.dominium.failure.calibration": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.processes.extended.v1"
+      },
+      "extensions": {
+        "notes": "Precision-sensitive assembly with explicit pass/fail yield."
+      }
+    }
+  ],
+  "instruments": [],
+  "standards": [],
+  "qualities": [],
+  "batches": [],
+  "hazards": [],
+  "substances": []
+}

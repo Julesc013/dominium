@@ -1,0 +1,140 @@
+{
+  "materials": [],
+  "interfaces": [],
+  "parts": [],
+  "assemblies": [],
+  "process_families": [],
+  "instruments": [],
+  "standards": [
+    {
+      "standard_id": "org.dominium.core.standard.tolerance.length.tight",
+      "scope": "org.dominium.standard.scope.length",
+      "tolerance_ranges": {
+        "org.dominium.tolerance.length": 1
+      },
+      "certification_rules": {},
+      "authority_ref": {
+        "authority_id": "org.dominium.authority.generic"
+      },
+      "unit_annotations": {
+        "tolerance_ranges.org.dominium.tolerance.length": {
+          "unit": "unit.length.meter",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Tight length tolerance."
+      }
+    },
+    {
+      "standard_id": "org.dominium.core.standard.tolerance.length.loose",
+      "scope": "org.dominium.standard.scope.length",
+      "tolerance_ranges": {
+        "org.dominium.tolerance.length": 5
+      },
+      "certification_rules": {},
+      "authority_ref": {
+        "authority_id": "org.dominium.authority.generic"
+      },
+      "unit_annotations": {
+        "tolerance_ranges.org.dominium.tolerance.length": {
+          "unit": "unit.length.meter",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Loose length tolerance."
+      }
+    },
+    {
+      "standard_id": "org.dominium.core.standard.tolerance.mass.loose",
+      "scope": "org.dominium.standard.scope.mass",
+      "tolerance_ranges": {
+        "org.dominium.tolerance.mass": 5
+      },
+      "certification_rules": {},
+      "authority_ref": {
+        "authority_id": "org.dominium.authority.generic"
+      },
+      "unit_annotations": {
+        "tolerance_ranges.org.dominium.tolerance.mass": {
+          "unit": "unit.mass.kilogram",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Loose mass tolerance."
+      }
+    },
+    {
+      "standard_id": "org.dominium.core.standard.tolerance.interface.tight",
+      "scope": "org.dominium.standard.scope.interface",
+      "tolerance_ranges": {
+        "org.dominium.tolerance.interface": 1
+      },
+      "certification_rules": {},
+      "authority_ref": {
+        "authority_id": "org.dominium.authority.generic"
+      },
+      "unit_annotations": {
+        "tolerance_ranges.org.dominium.tolerance.interface": {
+          "unit": "unit.length.meter",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Tight interface fit."
+      }
+    },
+    {
+      "standard_id": "org.dominium.core.standard.tolerance.interface.loose",
+      "scope": "org.dominium.standard.scope.interface",
+      "tolerance_ranges": {
+        "org.dominium.tolerance.interface": 4
+      },
+      "certification_rules": {},
+      "authority_ref": {
+        "authority_id": "org.dominium.authority.generic"
+      },
+      "unit_annotations": {
+        "tolerance_ranges.org.dominium.tolerance.interface": {
+          "unit": "unit.length.meter",
+          "scale": 1000000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Loose interface fit."
+      }
+    },
+    {
+      "standard_id": "org.dominium.core.standard.tolerance.thermal.strict",
+      "scope": "org.dominium.standard.scope.temperature",
+      "tolerance_ranges": {
+        "org.dominium.tolerance.temperature": 2
+      },
+      "certification_rules": {},
+      "authority_ref": {
+        "authority_id": "org.dominium.authority.generic"
+      },
+      "unit_annotations": {
+        "tolerance_ranges.org.dominium.tolerance.temperature": {
+          "unit": "unit.temperature.kelvin",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Strict temperature tolerance."
+      }
+    }
+  ],
+  "qualities": [],
+  "batches": [],
+  "hazards": [],
+  "substances": []
+}

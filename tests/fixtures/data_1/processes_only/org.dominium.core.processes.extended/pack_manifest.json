@@ -1,0 +1,40 @@
+{
+  "schema_id": "dominium.schema.pack_manifest",
+  "schema_version": "2.0.0",
+  "record": {
+    "pack_id": "org.dominium.core.processes.extended",
+    "pack_version": "1.0.0",
+    "pack_format_version": 1,
+    "requires_engine": "0.0.0",
+    "required_engine_version": "0.0.0",
+    "provides": [
+      {
+        "capability_id": "org.dominium.core.processes"
+      },
+      {
+        "capability_id": "org.dominium.core.processes.extended"
+      }
+    ],
+    "depends": [
+      {
+        "capability_id": "org.dominium.core.instruments.extended"
+      },
+      {
+        "capability_id": "org.dominium.core.standards.extended"
+      }
+    ],
+    "dependencies": [
+      {
+        "capability_id": "org.dominium.core.instruments.extended"
+      },
+      {
+        "capability_id": "org.dominium.core.standards.extended"
+      }
+    ],
+    "optional": true,
+    "pack_tags": [
+      "pack.class.core_ontology"
+    ],
+    "extensions": {}
+  }
+}
