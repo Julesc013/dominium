@@ -10,6 +10,7 @@ The Dominium UX is CLI-first, deterministic, and presentation-only. All UI surfa
 - Refusals are explicit, explainable, and consistent.
 
 ## Primary Documents
+- docs/ui/UX_RULES.md
 - docs/ui/CLI_CANON.md
 - docs/ui/LOCALIZATION_MODEL.md
 - docs/accessibility/ACCESSIBILITY_MODEL.md

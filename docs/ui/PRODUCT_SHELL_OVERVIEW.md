@@ -1,5 +1,7 @@
 # Product Shell Overview
 
+Acceptance criteria live in `docs/architecture/PRODUCT_SHELL_CONTRACT.md`.
+
 This document describes the SLICE-0 product shell UI across CLI/TUI/GUI.
 All modes are state machines and share the same commands and refusal semantics.
 UI is non-authoritative: it requests intent and displays results.

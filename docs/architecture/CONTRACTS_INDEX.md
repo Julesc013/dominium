@@ -147,6 +147,10 @@ document is binding but still expected to grow or sharpen.
 
 
 | `docs/architecture/DIRECTORY_STRUCTURE.md` | EVOLVING | Canonical tree and runtime root |
+| `docs/architecture/PRODUCT_SHELL_CONTRACT.md` | EVOLVING | Product shell acceptance contract |
+| `docs/architecture/CHECKPOINTS.md` | EVOLVING | Acceptance checkpoints |
+| `docs/ui/UX_RULES.md` | EVOLVING | Global UX rules (CLI/TUI/GUI) |
+| `docs/dev/DEBUG_AND_DIAGNOSTICS_MODEL.md` | EVOLVING | Debug and diagnostics model |
 
 
 | `docs/architecture/MACRO_TIME_MODEL.md` | EVOLVING | Macro stepping rules |
