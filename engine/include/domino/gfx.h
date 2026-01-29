@@ -256,6 +256,8 @@ typedef enum dgfx_backend_t {
     DGFX_BACKEND_SDL1,
     DGFX_BACKEND_SDL2,
     DGFX_BACKEND_WAYLAND,
+    DGFX_BACKEND_DX12,
+    DGFX_BACKEND_GL4,
     DGFX_BACKEND_COUNT
 } dgfx_backend_t;
 

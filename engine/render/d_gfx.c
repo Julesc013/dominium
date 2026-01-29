@@ -714,14 +714,14 @@ static const d_gfx_backend_soft* dgfx_choose_backend(const char* backend_name, c
         return d_gfx_stub_register_dx11();
     }
 #endif
-#if DOM_BACKEND_SOFT
+#if DOM_BACKEND_DX12
     if (strcmp(backend_name, "dx12") == 0) {
         if (out_name) *out_name = "dx12";
         if (out_reason) *out_reason = "soft-backed stub";
         return d_gfx_stub_register_dx12();
     }
 #endif
-#if DOM_BACKEND_GL2
+#if DOM_BACKEND_GL1
     if (strcmp(backend_name, "gl1") == 0) {
         if (out_name) *out_name = "gl1";
         if (out_reason) *out_reason = "soft-backed stub";
@@ -733,6 +733,13 @@ static const d_gfx_backend_soft* dgfx_choose_backend(const char* backend_name, c
         if (out_name) *out_name = "gl2";
         if (out_reason) *out_reason = "soft-backed stub";
         return d_gfx_stub_register_gl2();
+    }
+#endif
+#if DOM_BACKEND_GL4
+    if (strcmp(backend_name, "gl4") == 0) {
+        if (out_name) *out_name = "gl4";
+        if (out_reason) *out_reason = "soft-backed stub";
+        return d_gfx_stub_register_gl4();
     }
 #endif
 #if DOM_BACKEND_VK1
@@ -828,9 +835,19 @@ static const d_gfx_backend_soft* dgfx_choose_backend(const char* backend_name, c
         return d_gfx_stub_register_sdl2();
     }
     if (strcmp(backend_name, "opengl") == 0 || strcmp(backend_name, "gl") == 0) {
+#if DOM_BACKEND_GL4
+        if (out_name) *out_name = "gl4";
+        if (out_reason) *out_reason = "soft-backed stub";
+        return d_gfx_stub_register_gl4();
+#elif DOM_BACKEND_GL2
         if (out_name) *out_name = "gl2";
         if (out_reason) *out_reason = "soft-backed stub";
         return d_gfx_stub_register_gl2();
+#elif DOM_BACKEND_GL1
+        if (out_name) *out_name = "gl1";
+        if (out_reason) *out_reason = "soft-backed stub";
+        return d_gfx_stub_register_gl1();
+#endif
     }
     if (strcmp(backend_name, "vulkan") == 0 || strcmp(backend_name, "vk") == 0) {
         if (out_name) *out_name = "vk1";
@@ -838,9 +855,19 @@ static const d_gfx_backend_soft* dgfx_choose_backend(const char* backend_name, c
         return d_gfx_stub_register_vk1();
     }
     if (strcmp(backend_name, "d3d") == 0 || strcmp(backend_name, "direct3d") == 0) {
+#if DOM_BACKEND_DX12
+        if (out_name) *out_name = "dx12";
+        if (out_reason) *out_reason = "soft-backed stub";
+        return d_gfx_stub_register_dx12();
+#elif DOM_BACKEND_DX11
         if (out_name) *out_name = "dx11";
         if (out_reason) *out_reason = "soft-backed stub";
         return d_gfx_stub_register_dx11();
+#elif DOM_BACKEND_DX9
+        if (out_name) *out_name = "dx9";
+        if (out_reason) *out_reason = "soft-backed stub";
+        return d_gfx_stub_register_dx9();
+#endif
     }
 #endif
 
@@ -872,6 +899,11 @@ int d_gfx_init(const char *backend_name)
         chosen = dgfx_choose_backend("soft", &chosen_name, &chosen_reason);
 #endif
         if (!chosen) {
+#if DOM_BACKEND_DX12
+            chosen = dgfx_choose_backend("dx12", &chosen_name, &chosen_reason);
+#endif
+        }
+        if (!chosen) {
 #if DOM_BACKEND_DX11
             chosen = dgfx_choose_backend("dx11", &chosen_name, &chosen_reason);
 #endif
@@ -879,6 +911,11 @@ int d_gfx_init(const char *backend_name)
         if (!chosen) {
 #if DOM_BACKEND_DX9
             chosen = dgfx_choose_backend("dx9", &chosen_name, &chosen_reason);
+#endif
+        }
+        if (!chosen) {
+#if DOM_BACKEND_GL4
+            chosen = dgfx_choose_backend("gl4", &chosen_name, &chosen_reason);
 #endif
         }
         if (!chosen) {
@@ -1111,8 +1148,10 @@ int dgfx_init(const dgfx_desc *desc)
         if (desc->backend == DGFX_BACKEND_SOFT) backend_name = "soft";
         else if (desc->backend == DGFX_BACKEND_DX9) backend_name = "dx9";
         else if (desc->backend == DGFX_BACKEND_DX11) backend_name = "dx11";
+        else if (desc->backend == DGFX_BACKEND_DX12) backend_name = "dx12";
         else if (desc->backend == DGFX_BACKEND_GL2) backend_name = "gl2";
         else if (desc->backend == DGFX_BACKEND_GL1) backend_name = "gl1";
+        else if (desc->backend == DGFX_BACKEND_GL4) backend_name = "gl4";
         else if (desc->backend == DGFX_BACKEND_VK1) backend_name = "vk1";
         else if (desc->backend == DGFX_BACKEND_METAL) backend_name = "metal";
         else if (desc->backend == DGFX_BACKEND_NULL) backend_name = "null";

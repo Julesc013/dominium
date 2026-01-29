@@ -66,6 +66,7 @@ DEFINE_STUB_BACKEND(dx11)
 DEFINE_STUB_BACKEND(dx12)
 DEFINE_STUB_BACKEND(gl1)
 DEFINE_STUB_BACKEND(gl2)
+DEFINE_STUB_BACKEND(gl4)
 DEFINE_STUB_BACKEND(vk1)
 DEFINE_STUB_BACKEND(metal)
 DEFINE_STUB_BACKEND(vesa)
@@ -91,6 +92,7 @@ const d_gfx_backend_soft* d_gfx_stub_register_dx11(void)  { return &g_stub_dx11;
 const d_gfx_backend_soft* d_gfx_stub_register_dx12(void)  { return &g_stub_dx12; }
 const d_gfx_backend_soft* d_gfx_stub_register_gl1(void)   { return &g_stub_gl1; }
 const d_gfx_backend_soft* d_gfx_stub_register_gl2(void)   { return &g_stub_gl2; }
+const d_gfx_backend_soft* d_gfx_stub_register_gl4(void)   { return &g_stub_gl4; }
 const d_gfx_backend_soft* d_gfx_stub_register_vk1(void)   { return &g_stub_vk1; }
 const d_gfx_backend_soft* d_gfx_stub_register_metal(void) { return &g_stub_metal; }
 const d_gfx_backend_soft* d_gfx_stub_register_vesa(void)  { return &g_stub_vesa; }
@@ -122,6 +124,7 @@ int d_gfx_stub_uses_soft(const d_gfx_backend_soft* backend)
            backend == &g_stub_dx12 ||
            backend == &g_stub_gl1 ||
            backend == &g_stub_gl2 ||
+           backend == &g_stub_gl4 ||
            backend == &g_stub_vk1 ||
            backend == &g_stub_metal ||
            backend == &g_stub_vesa ||

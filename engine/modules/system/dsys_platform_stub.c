@@ -2,7 +2,7 @@
 FILE: source/domino/system/dsys_platform_stub.c
 MODULE: Domino
 LAYER / SUBSYSTEM: Domino impl / system/dsys_platform_stub
-RESPONSIBILITY: Provides stub backend for Cocoa (UI-capable future platform).
+RESPONSIBILITY: Provides stub backends for X11/Wayland/SDL1/Cocoa (UI-capable future platforms).
 ALLOWED DEPENDENCIES: `include/domino/**`, `source/domino/**`, and C89/C++98 standard headers.
 FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**`.
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
@@ -381,9 +381,15 @@ static dsys_backend_vtable dsys_stub_vtable_named(const char* name)
     return vt;
 }
 
+static dsys_backend_vtable g_x11_vt;
+static dsys_backend_vtable g_wayland_vt;
 static dsys_backend_vtable g_cocoa_vt;
+static dsys_backend_vtable g_sdl1_vt;
 
+static dsys_caps dsys_caps_x11(void) { return dsys_stub_get_caps("x11"); }
+static dsys_caps dsys_caps_wayland(void) { return dsys_stub_get_caps("wayland"); }
 static dsys_caps dsys_caps_cocoa(void) { return dsys_stub_get_caps("cocoa"); }
+static dsys_caps dsys_caps_sdl1(void) { return dsys_stub_get_caps("sdl1"); }
 
 static const dsys_backend_vtable* dsys_stub_get_named(dsys_backend_vtable* slot, dsys_caps (*caps_fn)(void))
 {
@@ -394,4 +400,7 @@ static const dsys_backend_vtable* dsys_stub_get_named(dsys_backend_vtable* slot,
     return slot;
 }
 
+const dsys_backend_vtable* dsys_x11_get_vtable(void)     { return dsys_stub_get_named(&g_x11_vt, dsys_caps_x11); }
+const dsys_backend_vtable* dsys_wayland_get_vtable(void) { return dsys_stub_get_named(&g_wayland_vt, dsys_caps_wayland); }
 const dsys_backend_vtable* dsys_cocoa_get_vtable(void)   { return dsys_stub_get_named(&g_cocoa_vt, dsys_caps_cocoa); }
+const dsys_backend_vtable* dsys_sdl1_get_vtable(void)    { return dsys_stub_get_named(&g_sdl1_vt, dsys_caps_sdl1); }

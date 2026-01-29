@@ -334,10 +334,16 @@ static int dsys_str_ieq(const char* a, const char* b)
 
 static const char* dsys_compiled_backend_name(void)
 {
-#if defined(DSYS_BACKEND_POSIX)
+#if defined(DSYS_BACKEND_X11)
+    return "x11";
+#elif defined(DSYS_BACKEND_WAYLAND)
+    return "wayland";
+#elif defined(DSYS_BACKEND_POSIX)
     return "posix_headless";
 #elif defined(DSYS_BACKEND_COCOA)
     return "cocoa";
+#elif defined(DSYS_BACKEND_SDL1)
+    return "sdl1";
 #elif defined(DSYS_BACKEND_SDL2)
     return "sdl2";
 #elif defined(DSYS_BACKEND_WIN32_HEADLESS)
@@ -374,9 +380,9 @@ dom_caps_result dom_dsys_register_caps_backends(void)
     desc.backend_priority = 100u;
 
     desc.required_hw_flags = 0u;
-#if defined(DSYS_BACKEND_WIN32) || defined(DSYS_BACKEND_WIN32_HEADLESS) || defined(DSYS_BACKEND_WIN16)
+#if defined(DSYS_BACKEND_WIN32) || defined(DSYS_BACKEND_WIN32_HEADLESS)
     desc.required_hw_flags |= DOM_HW_OS_WIN32;
-#elif defined(DSYS_BACKEND_COCOA) || defined(DSYS_BACKEND_CARBON)
+#elif defined(DSYS_BACKEND_COCOA)
     desc.required_hw_flags |= DOM_HW_OS_APPLE;
 #elif defined(DSYS_BACKEND_POSIX) || defined(DSYS_BACKEND_X11) || defined(DSYS_BACKEND_WAYLAND)
     desc.required_hw_flags |= DOM_HW_OS_UNIX;
@@ -764,7 +770,17 @@ dsys_result dsys_init(void)
     dsys_clear_last_error();
     dsys_event_queue_reset();
     dsys_window_registry_reset();
-#if defined(DSYS_BACKEND_POSIX)
+#if defined(DSYS_BACKEND_X11)
+    {
+        extern const dsys_backend_vtable* dsys_x11_get_vtable(void);
+        g_dsys = dsys_x11_get_vtable();
+    }
+#elif defined(DSYS_BACKEND_WAYLAND)
+    {
+        extern const dsys_backend_vtable* dsys_wayland_get_vtable(void);
+        g_dsys = dsys_wayland_get_vtable();
+    }
+#elif defined(DSYS_BACKEND_POSIX)
     {
         extern const dsys_backend_vtable* dsys_posix_get_vtable(void);
         g_dsys = dsys_posix_get_vtable();
@@ -773,6 +789,11 @@ dsys_result dsys_init(void)
     {
         extern const dsys_backend_vtable* dsys_cocoa_get_vtable(void);
         g_dsys = dsys_cocoa_get_vtable();
+    }
+#elif defined(DSYS_BACKEND_SDL1)
+    {
+        extern const dsys_backend_vtable* dsys_sdl1_get_vtable(void);
+        g_dsys = dsys_sdl1_get_vtable();
     }
 #elif defined(DSYS_BACKEND_SDL2)
     {

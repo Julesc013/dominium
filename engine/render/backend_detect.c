@@ -105,7 +105,17 @@ u32 d_gfx_detect_backends(d_gfx_backend_info* out_list, u32 max_count)
     }
 
     if (count < max_count) {
-        int built = DOM_BACKEND_SOFT ? 1 : 0;
+        int built = DOM_BACKEND_DX12 ? 1 : 0;
+        d_gfx_backend_info_set(
+            &out_list[count++],
+            D_GFX_BACKEND_DX12,
+            built,
+            "dx12",
+            built ? "Soft-backed stub (software raster)" : "Disabled at build");
+    }
+
+    if (count < max_count) {
+        int built = DOM_BACKEND_GL1 ? 1 : 0;
         d_gfx_backend_info_set(
             &out_list[count++],
             D_GFX_BACKEND_GL1,
@@ -121,6 +131,16 @@ u32 d_gfx_detect_backends(d_gfx_backend_info* out_list, u32 max_count)
             D_GFX_BACKEND_GL2,
             built,
             "gl2",
+            built ? "Soft-backed stub (software raster)" : "Disabled at build");
+    }
+
+    if (count < max_count) {
+        int built = DOM_BACKEND_GL4 ? 1 : 0;
+        d_gfx_backend_info_set(
+            &out_list[count++],
+            D_GFX_BACKEND_GL4,
+            built,
+            "gl4",
             built ? "Soft-backed stub (software raster)" : "Disabled at build");
     }
 
@@ -183,8 +203,10 @@ d_gfx_backend_type d_gfx_select_backend(void)
     d_gfx_backend_info infos[D_GFX_BACKEND_MAX];
     const d_gfx_backend_type preferred[] = {
         D_GFX_BACKEND_SOFT,
+        D_GFX_BACKEND_DX12,
         D_GFX_BACKEND_DX11,
         D_GFX_BACKEND_DX9,
+        D_GFX_BACKEND_GL4,
         D_GFX_BACKEND_GL2,
         D_GFX_BACKEND_VK1,
         D_GFX_BACKEND_METAL,

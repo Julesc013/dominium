@@ -56,7 +56,7 @@ All platforms expose the same abstract interfaces:
 ## Backend Selection & Modularity
 
 - Build-time selection is explicit via `DOMINO_SYS_BACKEND`:
-  auto, win32, win32_headless, posix_headless, sdl2, cocoa, null.
+  auto, win32, win32_headless, posix_headless, x11, wayland, sdl1, sdl2, cocoa, null.
 - Runtime selection (`dom_sys_select_backend`) may only choose compiled backends.
 - Headless stubs are permitted as long as they obey this contract and remain presentation-only.
 
@@ -64,6 +64,9 @@ Current focus (this phase):
 
 - win32 / win32_headless (full + headless)
 - posix_headless (headless POSIX baseline)
+- x11 (stub, headless-safe)
+- wayland (stub, headless-safe)
+- sdl1 (stub, headless-safe)
 - sdl2 (stub, headless-safe)
 - cocoa (stub, headless-safe)
 - null (verification/CI)
