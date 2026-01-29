@@ -56,6 +56,12 @@ dom_add_testx(NAME const_archive_presence
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )
 
+dom_add_testx(NAME const_product_shell_contracts
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/product_shell/product_shell_contract_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
 dom_add_testx(NAME const_frozen_contract_hashes
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/frozen_contracts_guard.py
         --repo-root ${CMAKE_SOURCE_DIR}
