@@ -2,7 +2,7 @@
 FILE: source/domino/system/dsys_platform_stub.c
 MODULE: Domino
 LAYER / SUBSYSTEM: Domino impl / system/dsys_platform_stub
-RESPONSIBILITY: Provides stub backends for legacy/optional platforms (X11/Wayland/Cocoa/etc.).
+RESPONSIBILITY: Provides stub backend for Cocoa (UI-capable future platform).
 ALLOWED DEPENDENCIES: `include/domino/**`, `source/domino/**`, and C89/C++98 standard headers.
 FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**`.
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
@@ -381,27 +381,9 @@ static dsys_backend_vtable dsys_stub_vtable_named(const char* name)
     return vt;
 }
 
-static dsys_backend_vtable g_x11_vt;
-static dsys_backend_vtable g_wayland_vt;
 static dsys_backend_vtable g_cocoa_vt;
-static dsys_backend_vtable g_carbon_vt;
-static dsys_backend_vtable g_sdl1_vt;
-static dsys_backend_vtable g_dos16_vt;
-static dsys_backend_vtable g_dos32_vt;
-static dsys_backend_vtable g_win16_vt;
-static dsys_backend_vtable g_cpm80_vt;
-static dsys_backend_vtable g_cpm86_vt;
 
-static dsys_caps dsys_caps_x11(void) { return dsys_stub_get_caps("x11"); }
-static dsys_caps dsys_caps_wayland(void) { return dsys_stub_get_caps("wayland"); }
 static dsys_caps dsys_caps_cocoa(void) { return dsys_stub_get_caps("cocoa"); }
-static dsys_caps dsys_caps_carbon(void) { return dsys_stub_get_caps("carbon"); }
-static dsys_caps dsys_caps_sdl1(void) { return dsys_stub_get_caps("sdl1"); }
-static dsys_caps dsys_caps_dos16(void) { return dsys_stub_get_caps("dos16"); }
-static dsys_caps dsys_caps_dos32(void) { return dsys_stub_get_caps("dos32"); }
-static dsys_caps dsys_caps_win16(void) { return dsys_stub_get_caps("win16"); }
-static dsys_caps dsys_caps_cpm80(void) { return dsys_stub_get_caps("cpm80"); }
-static dsys_caps dsys_caps_cpm86(void) { return dsys_stub_get_caps("cpm86"); }
 
 static const dsys_backend_vtable* dsys_stub_get_named(dsys_backend_vtable* slot, dsys_caps (*caps_fn)(void))
 {
@@ -412,13 +394,4 @@ static const dsys_backend_vtable* dsys_stub_get_named(dsys_backend_vtable* slot,
     return slot;
 }
 
-const dsys_backend_vtable* dsys_x11_get_vtable(void)     { return dsys_stub_get_named(&g_x11_vt, dsys_caps_x11); }
-const dsys_backend_vtable* dsys_wayland_get_vtable(void) { return dsys_stub_get_named(&g_wayland_vt, dsys_caps_wayland); }
 const dsys_backend_vtable* dsys_cocoa_get_vtable(void)   { return dsys_stub_get_named(&g_cocoa_vt, dsys_caps_cocoa); }
-const dsys_backend_vtable* dsys_carbon_get_vtable(void)  { return dsys_stub_get_named(&g_carbon_vt, dsys_caps_carbon); }
-const dsys_backend_vtable* dsys_sdl1_get_vtable(void)    { return dsys_stub_get_named(&g_sdl1_vt, dsys_caps_sdl1); }
-const dsys_backend_vtable* dsys_dos16_get_vtable(void)   { return dsys_stub_get_named(&g_dos16_vt, dsys_caps_dos16); }
-const dsys_backend_vtable* dsys_dos32_get_vtable(void)   { return dsys_stub_get_named(&g_dos32_vt, dsys_caps_dos32); }
-const dsys_backend_vtable* dsys_win16_get_vtable(void)   { return dsys_stub_get_named(&g_win16_vt, dsys_caps_win16); }
-const dsys_backend_vtable* dsys_cpm80_get_vtable(void)   { return dsys_stub_get_named(&g_cpm80_vt, dsys_caps_cpm80); }
-const dsys_backend_vtable* dsys_cpm86_get_vtable(void)   { return dsys_stub_get_named(&g_cpm86_vt, dsys_caps_cpm86); }

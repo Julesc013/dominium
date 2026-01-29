@@ -334,28 +334,10 @@ static int dsys_str_ieq(const char* a, const char* b)
 
 static const char* dsys_compiled_backend_name(void)
 {
-#if defined(DSYS_BACKEND_CPM80)
-    return "cpm80";
-#elif defined(DSYS_BACKEND_CPM86)
-    return "cpm86";
-#elif defined(DSYS_BACKEND_DOS16)
-    return "dos16";
-#elif defined(DSYS_BACKEND_DOS32)
-    return "dos32";
-#elif defined(DSYS_BACKEND_WIN16)
-    return "win16";
-#elif defined(DSYS_BACKEND_POSIX)
+#if defined(DSYS_BACKEND_POSIX)
     return "posix_headless";
 #elif defined(DSYS_BACKEND_COCOA)
     return "cocoa";
-#elif defined(DSYS_BACKEND_CARBON)
-    return "carbon";
-#elif defined(DSYS_BACKEND_WAYLAND)
-    return "wayland";
-#elif defined(DSYS_BACKEND_X11)
-    return "x11";
-#elif defined(DSYS_BACKEND_SDL1)
-    return "sdl1";
 #elif defined(DSYS_BACKEND_SDL2)
     return "sdl2";
 #elif defined(DSYS_BACKEND_WIN32_HEADLESS)
@@ -782,32 +764,7 @@ dsys_result dsys_init(void)
     dsys_clear_last_error();
     dsys_event_queue_reset();
     dsys_window_registry_reset();
-#if defined(DSYS_BACKEND_CPM80)
-    {
-        extern const dsys_backend_vtable* dsys_cpm80_get_vtable(void);
-        g_dsys = dsys_cpm80_get_vtable();
-    }
-#elif defined(DSYS_BACKEND_CPM86)
-    {
-        extern const dsys_backend_vtable* dsys_cpm86_get_vtable(void);
-        g_dsys = dsys_cpm86_get_vtable();
-    }
-#elif defined(DSYS_BACKEND_DOS16)
-    {
-        extern const dsys_backend_vtable* dsys_dos16_get_vtable(void);
-        g_dsys = dsys_dos16_get_vtable();
-    }
-#elif defined(DSYS_BACKEND_DOS32)
-    {
-        extern const dsys_backend_vtable* dsys_dos32_get_vtable(void);
-        g_dsys = dsys_dos32_get_vtable();
-    }
-#elif defined(DSYS_BACKEND_WIN16)
-    {
-        extern const dsys_backend_vtable* dsys_win16_get_vtable(void);
-        g_dsys = dsys_win16_get_vtable();
-    }
-#elif defined(DSYS_BACKEND_POSIX)
+#if defined(DSYS_BACKEND_POSIX)
     {
         extern const dsys_backend_vtable* dsys_posix_get_vtable(void);
         g_dsys = dsys_posix_get_vtable();
@@ -816,26 +773,6 @@ dsys_result dsys_init(void)
     {
         extern const dsys_backend_vtable* dsys_cocoa_get_vtable(void);
         g_dsys = dsys_cocoa_get_vtable();
-    }
-#elif defined(DSYS_BACKEND_CARBON)
-    {
-        extern const dsys_backend_vtable* dsys_carbon_get_vtable(void);
-        g_dsys = dsys_carbon_get_vtable();
-    }
-#elif defined(DSYS_BACKEND_WAYLAND)
-    {
-        extern const dsys_backend_vtable* dsys_wayland_get_vtable(void);
-        g_dsys = dsys_wayland_get_vtable();
-    }
-#elif defined(DSYS_BACKEND_X11)
-    {
-        extern const dsys_backend_vtable* dsys_x11_get_vtable(void);
-        g_dsys = dsys_x11_get_vtable();
-    }
-#elif defined(DSYS_BACKEND_SDL1)
-    {
-        extern const dsys_backend_vtable* dsys_sdl1_get_vtable(void);
-        g_dsys = dsys_sdl1_get_vtable();
     }
 #elif defined(DSYS_BACKEND_SDL2)
     {
