@@ -14,14 +14,14 @@ DETERMINISM: All ordering, admission, and hashing are stable.
 
 #include "dominium/rules/scale/scale_collapse_expand.h"
 
-#include "server/net/dom_server_types.h"
-#include "server/net/dom_server_protocol.h"
-#include "server/persistence/dom_checkpoint_policy.h"
-#include "server/persistence/dom_checkpointing.h"
-#include "server/shard/dom_cross_shard_log.h"
-#include "server/shard/dom_global_id.h"
-#include "server/shard/dom_shard_lifecycle.h"
-#include "server/shard/shard_api.h"
+#include "net/dom_server_types.h"
+#include "net/dom_server_protocol.h"
+#include "persistence/dom_checkpoint_policy.h"
+#include "persistence/dom_checkpointing.h"
+#include "shard/dom_cross_shard_log.h"
+#include "shard/dom_global_id.h"
+#include "shard/dom_shard_lifecycle.h"
+#include "shard/shard_api.h"
 
 #ifdef __cplusplus
 extern "C" {

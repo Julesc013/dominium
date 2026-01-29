@@ -17,7 +17,8 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "domino/core/types.h"
 #include "domino/core/fixed.h"
 #include "domino/core/rng.h"
-#include "world/d_world.h"
+
+typedef struct d_world d_world;
 
 #ifdef __cplusplus
 extern "C" {

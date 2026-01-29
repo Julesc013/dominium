@@ -115,6 +115,10 @@ typedef struct dom_shell_variant_desc {
 static void dom_shell_scenario_variants_to_csv(const dom_shell_scenario_state* scenario,
                                                char* out,
                                                size_t out_cap);
+static void dom_shell_emit(dom_client_shell* shell,
+                           dom_app_ui_event_log* log,
+                           const char* event_name,
+                           const char* detail);
 
 static void dom_shell_builder_init(dom_shell_builder* b, char* buf, size_t cap)
 {

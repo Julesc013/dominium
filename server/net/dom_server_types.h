@@ -10,7 +10,7 @@ RESPONSIBILITY: Shared deterministic server sizing constants and small structs.
 #include "domino/core/types.h"
 #include "domino/core/dom_time_core.h"
 
-#include "server/shard/shard_api.h"
+#include "shard/shard_api.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -37,4 +37,3 @@ typedef struct dom_server_domain_owner {
 #endif
 
 #endif /* DOMINIUM_SERVER_NET_DOM_SERVER_TYPES_H */
-

@@ -516,7 +516,21 @@ static int tools_run_share(int argc, char** argv, int cmd_index)
     return rc;
 }
 
-typedef struct tools_ui_settings tools_ui_settings;
+typedef struct tools_ui_settings {
+    char renderer[16];
+    int ui_scale_percent;
+    int palette;
+    int log_level;
+    int debug_ui;
+    char ui_density[24];
+    char verbosity[24];
+    char keybind_profile_id[64];
+    int reduced_motion;
+    int keyboard_only;
+    int screen_reader;
+    int low_cognitive_load;
+    const dom_app_ui_locale_table* locale;
+} tools_ui_settings;
 
 static void tools_apply_accessibility(tools_ui_settings* settings,
                                       const dom_app_ui_accessibility_preset* preset)
@@ -561,22 +575,6 @@ static int tools_return_with_locale(int code,
     }
     return code;
 }
-
-typedef struct tools_ui_settings {
-    char renderer[16];
-    int ui_scale_percent;
-    int palette;
-    int log_level;
-    int debug_ui;
-    char ui_density[24];
-    char verbosity[24];
-    char keybind_profile_id[64];
-    int reduced_motion;
-    int keyboard_only;
-    int screen_reader;
-    int low_cognitive_load;
-    const dom_app_ui_locale_table* locale;
-} tools_ui_settings;
 
 static const char* tools_palette_name(int palette)
 {

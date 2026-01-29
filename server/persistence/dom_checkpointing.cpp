@@ -6,7 +6,7 @@ RESPONSIBILITY: Deterministic MMO checkpoint capture, storage, and recovery.
 */
 #include "dom_checkpointing.h"
 
-#include "server/net/dom_server_runtime.h"
+#include "net/dom_server_runtime.h"
 
 #include <string.h>
 

@@ -336,7 +336,7 @@ static int dom_server_event_append(dom_server_runtime* runtime,
         return -2;
     }
     if (shard) {
-        if (dom_global_id_next(&shard->id_gen, DOM_SERVER_NS_EVENT, &id, &packed) == 0) {
+        if (dom_global_id_gen_next(&shard->id_gen, DOM_SERVER_NS_EVENT, &id, &packed) == 0) {
             out.event_id = packed;
         }
     } else {
@@ -612,9 +612,9 @@ static int dom_server_shard_init(dom_server_shard* shard,
         ? config->shard_baseline_hash
         : dom_server_baseline_hash(shard->version_id, shard->capability_mask);
 
-    (void)dom_global_id_next(&shard->id_gen, DOM_SERVER_NS_DOMAIN, &gid, &domain_resource);
-    (void)dom_global_id_next(&shard->id_gen, DOM_SERVER_NS_DOMAIN, &gid, &domain_network);
-    (void)dom_global_id_next(&shard->id_gen, DOM_SERVER_NS_DOMAIN, &gid, &domain_agents);
+    (void)dom_global_id_gen_next(&shard->id_gen, DOM_SERVER_NS_DOMAIN, &gid, &domain_resource);
+    (void)dom_global_id_gen_next(&shard->id_gen, DOM_SERVER_NS_DOMAIN, &gid, &domain_network);
+    (void)dom_global_id_gen_next(&shard->id_gen, DOM_SERVER_NS_DOMAIN, &gid, &domain_agents);
 
     dom_server_resource_domain(&shard->domain_storage[0],
                                shard->resource_entries,
@@ -861,7 +861,7 @@ static int dom_server_handle_transfer(dom_server_runtime* runtime,
         }
     }
     memset(&msg, 0, sizeof(msg));
-    (void)dom_global_id_next(&shard->id_gen, DOM_SERVER_NS_MESSAGE, &gid, &message_id);
+    (void)dom_global_id_gen_next(&shard->id_gen, DOM_SERVER_NS_MESSAGE, &gid, &message_id);
     msg.message_id = message_id;
     msg.idempotency_key = intent->idempotency_key ? intent->idempotency_key : intent->intent_id;
     msg.origin_shard_id = shard->shard_id;
@@ -1593,7 +1593,7 @@ int dom_server_runtime_submit_intent(dom_server_runtime* runtime,
     }
     local.payload_bytes = payload_bytes;
     if (local.intent_id == 0u) {
-        (void)dom_global_id_next(&shard->id_gen, DOM_SERVER_NS_INTENT, &gid, &packed);
+        (void)dom_global_id_gen_next(&shard->id_gen, DOM_SERVER_NS_INTENT, &gid, &packed);
         local.intent_id = packed;
     }
     runtime->intents[runtime->intent_count++] = local;

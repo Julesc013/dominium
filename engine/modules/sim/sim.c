@@ -22,6 +22,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "core/d_serialize_tags.h"
 #include "domino/core/d_tlv.h"
 #include "world/d_serialize.h"
+#include "world/d_world.h"
 #include "domino/sim/sim.h"
 
 #define TLV_WORLD_CONFIG 1
