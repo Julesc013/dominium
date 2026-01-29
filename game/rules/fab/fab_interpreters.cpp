@@ -11,6 +11,8 @@ DETERMINISM: FAB evaluation is deterministic for identical inputs.
 */
 #include "dominium/fab/fab_interpreters.h"
 
+#include "domino/core/rng_model.h"
+
 #include <ctype.h>
 #include <string.h>
 #include <stdlib.h>
@@ -54,6 +56,18 @@ static int fab_str_icmp(const char* a, const char* b)
 static int fab_str_eq(const char* a, const char* b)
 {
     return fab_str_icmp(a, b) == 0;
+}
+
+static const char* g_fab_stream_default = "noise.stream.fab.process.outcome";
+static const char* g_fab_stream_sample = "noise.stream.fab.sample.bounded";
+static const char* g_fab_stream_outcomes = "noise.stream.fab.process.outcomes";
+
+static const char* fab_stream_or_default(const char* stream_id, const char* fallback)
+{
+    if (stream_id && *stream_id) {
+        return stream_id;
+    }
+    return fallback;
 }
 
 static const char* fab_id_tail(const char* s)
@@ -1263,9 +1277,11 @@ static int fab_params_find(const dom_fab_param_value* params,
 }
 
 static u32 fab_select_outcome(const dom_fab_process_family* family,
-                              u32 seed)
+                              u32 seed,
+                              const char* stream_id)
 {
     d_rng_state rng;
+    const char* stream = fab_stream_or_default(stream_id, g_fab_stream_default);
     u32 total = 0u;
     u32 i;
     if (!family || !family->yield_distribution || family->yield_count == 0u) {
@@ -1277,7 +1293,7 @@ static u32 fab_select_outcome(const dom_fab_process_family* family,
     if (total == 0u) {
         return 0u;
     }
-    d_rng_seed(&rng, seed);
+    d_rng_state_from_seed(&rng, seed, stream);
     {
         u32 roll = d_rng_next_u32(&rng) % total;
         u32 acc = 0u;
@@ -1297,14 +1313,23 @@ u32 dom_fab_seed_compose(u32 base_seed,
                          const char* stream_id)
 {
     u32 seed = base_seed;
+    const char* stream = fab_stream_or_default(stream_id, g_fab_stream_default);
+    u32 stream_hash = 0u;
+    if (stream && *stream) {
+        D_DET_GUARD_RNG_STREAM_NAME(stream);
+        stream_hash = d_rng_hash_str32(stream);
+        if (!stream_id || !*stream_id) {
+            seed ^= stream_hash; /* pre-adjust to preserve legacy seed behavior */
+        }
+    }
     if (domain_id && *domain_id) {
-        seed ^= fab_hash32(domain_id);
+        seed ^= d_rng_hash_str32(domain_id);
     }
     if (entity_id && *entity_id) {
-        seed ^= fab_hash32(entity_id);
+        seed ^= d_rng_hash_str32(entity_id);
     }
-    if (stream_id && *stream_id) {
-        seed ^= fab_hash32(stream_id);
+    if (stream_hash) {
+        seed ^= stream_hash;
     }
     return seed;
 }
@@ -1322,7 +1347,7 @@ u32 dom_fab_sample_bounded_u32(u32 seed,
     if (min_value == max_value) {
         return min_value;
     }
-    d_rng_seed(&rng, seed);
+    d_rng_state_from_seed(&rng, seed, g_fab_stream_sample);
     return min_value + (d_rng_next_u32(&rng) % (max_value - min_value + 1u));
 }
 
@@ -1355,7 +1380,7 @@ int dom_fab_select_outcomes(const dom_fab_weighted_outcome* outcomes,
         weights[i] = outcomes[i].weight;
         total += outcomes[i].weight;
     }
-    d_rng_seed(&rng, seed);
+    d_rng_state_from_seed(&rng, seed, g_fab_stream_outcomes);
     while (count < max_outcomes && total > 0u) {
         u32 roll = d_rng_next_u32(&rng) % total;
         u32 acc = 0u;
@@ -1465,12 +1490,13 @@ int dom_fab_process_execute(const dom_fab_process_family* family,
     }
 
     {
+        const char* stream = fab_stream_or_default(ctx ? ctx->stream_id : 0, g_fab_stream_default);
         u32 seed = dom_fab_seed_compose(ctx ? ctx->rng_seed : 0u,
                                         ctx ? ctx->domain_id : 0,
                                         ctx ? ctx->entity_id : 0,
                                         ctx ? ctx->stream_id : 0);
         seed ^= fab_hash32(family->process_family_id);
-        u32 outcome_id = fab_select_outcome(family, seed);
+        u32 outcome_id = fab_select_outcome(family, seed, stream);
         out_result->outcome_id = outcome_id;
         if (outcome_id != 0u) {
             out_result->ok = 0;

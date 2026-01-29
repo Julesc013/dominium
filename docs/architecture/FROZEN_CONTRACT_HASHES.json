@@ -1,6 +1,4 @@
 {
-  "lock_id": "dominium.frozen_contract_hashes",
-  "lock_version": 1,
   "entries": [
     {
       "path": "docs/architecture/ARCH0_CONSTITUTION.md",
@@ -71,6 +69,22 @@
       "sha256": "f089f69f4601f49013aef28eea3fcd0cf2806627de0523b4c49cf9324e579c3a"
     },
     {
+      "path": "docs/architecture/RNG_MODEL.md",
+      "sha256": "286779ef1f3cd6a134c31ea15942aca818f26e26ff22dca7be4a13f435f25dc9"
+    },
+    {
+      "path": "docs/architecture/REDUCTION_MODEL.md",
+      "sha256": "92df458150f88df03511ccfd1f41650cdb5ee33a098a780d5821e749731b3337"
+    },
+    {
+      "path": "docs/architecture/FLOAT_POLICY.md",
+      "sha256": "877f4dca96ded5ffedeebdf542554919953938675b4a5036ede78c82246d89d6"
+    },
+    {
+      "path": "docs/architecture/SIGNAL_MODEL.md",
+      "sha256": "cdd10636d5a18749130b8da6fb3a8ce76c1d1bc676ee5b0865924931aa18aaea"
+    },
+    {
       "path": "docs/architecture/LAW_ENFORCEMENT_POINTS.md",
       "sha256": "0d7557b9ccda25b6acd45a96419d989ffb6bce9dc65af33ff16ecfaeb3dcf5cb"
     },
@@ -119,6 +133,10 @@
       "sha256": "49a6758f76e620b4ec7d02afb6948a5869194b0bfcec57f1113f888c0276df85"
     },
     {
+      "path": "docs/architecture/BUGREPORT_MODEL.md",
+      "sha256": "9eb2b0d0e75dbd2801d74e681b2baf412bc55c9e923ac182af69d66a19b5780c"
+    },
+    {
       "path": "docs/distribution/PACK_TAXONOMY.md",
       "sha256": "5303853a22cdcb265c4fa7a9c0e49e1c629a790ab7753cd0705aba18c0c0234d"
     },
@@ -165,6 +183,11 @@
     {
       "path": "docs/distribution/PACK_SOURCES.md",
       "sha256": "f9497317c50c18b61700604966af4d89596a05088a099ee468db387dfe769a9c"
+    },
+    {
+      "path": "docs/architecture/LOCKLIST.md",
+      "sha256": "bcce31dda34057bf6366376638598c59c3ed6ba349fddef8f341899f72ae742b"
     }
-  ]
+  ],
+  "generated_at": "2026-01-29T05:49:46.925302Z"
 }

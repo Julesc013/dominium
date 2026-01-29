@@ -177,6 +177,7 @@ set(ENGINE_CORE_LEGACY_SOURCES
     modules/core/dom_time_events.c
     modules/core/dom_time_frames.c
     modules/core/det_order.c
+    modules/core/det_reduce.c
     modules/core/d_account.c
     modules/core/d_container_state.c
     modules/core/d_model.c
@@ -198,6 +199,7 @@ set(ENGINE_CORE_LEGACY_SOURCES
     modules/core/pkg.c
     modules/core/rng.c
     modules/core/rng_streams.c
+    modules/core/rng_model.c
     modules/core/spacetime.c
     modules/core/types.c
     modules/core/view.c

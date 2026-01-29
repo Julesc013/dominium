@@ -1,0 +1,206 @@
+{
+  "signals": [
+    {
+      "signal_id": "org.dominium.signal.digital.boolean",
+      "signal_type": "org.dominium.signal.type.digital",
+      "unit": "unit.dimensionless.ratio",
+      "value_representation": "org.dominium.signal.value.boolean",
+      "bandwidth": {
+        "value": 1,
+        "unit": "unit.time.act_tick",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "noise_profile_ref": "org.dominium.signal.noise.none",
+      "latency_profile_ref": "org.dominium.signal.latency.tick",
+      "sampling_policy": "org.dominium.signal.sample.per_tick",
+      "unit_annotations": {
+        "bandwidth.value": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.signals.basic.v1"
+      },
+      "extensions": {
+        "notes": "Abstract boolean signal."
+      }
+    },
+    {
+      "signal_id": "org.dominium.signal.analog.scalar",
+      "signal_type": "org.dominium.signal.type.analog",
+      "unit": "unit.dimensionless.ratio",
+      "value_representation": "org.dominium.signal.value.fixed",
+      "bandwidth": {
+        "value": 1,
+        "unit": "unit.time.act_tick",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "noise_profile_ref": "org.dominium.signal.noise.low",
+      "latency_profile_ref": "org.dominium.signal.latency.tick",
+      "sampling_policy": "org.dominium.signal.sample.per_tick",
+      "unit_annotations": {
+        "bandwidth.value": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.signals.basic.v1"
+      },
+      "extensions": {
+        "notes": "Abstract analog scalar signal."
+      }
+    },
+    {
+      "signal_id": "org.dominium.signal.symbolic.stream",
+      "signal_type": "org.dominium.signal.type.symbolic",
+      "unit": "unit.dimensionless.ratio",
+      "value_representation": "org.dominium.signal.value.symbol_stream",
+      "bandwidth": {
+        "value": 1,
+        "unit": "unit.time.act_tick",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "noise_profile_ref": "org.dominium.signal.noise.medium",
+      "latency_profile_ref": "org.dominium.signal.latency.tick",
+      "sampling_policy": "org.dominium.signal.sample.per_tick",
+      "unit_annotations": {
+        "bandwidth.value": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.signals.basic.v1"
+      },
+      "extensions": {
+        "notes": "Abstract symbol stream signal."
+      }
+    }
+  ],
+  "signal_interfaces": [
+    {
+      "interface_id": "org.dominium.signal.interface.digital.bus",
+      "signal_type": "org.dominium.signal.type.digital",
+      "directionality": "org.dominium.signal.direction.bidirectional",
+      "capacity": {
+        "value": 1,
+        "unit": "unit.dimensionless.ratio",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "impedance_class": "org.dominium.signal.impedance.generic",
+      "compatibility_rules": {
+        "org.dominium.signal.compat.degraded_ok": true
+      },
+      "unit_annotations": {
+        "capacity.value": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.signals.basic.v1"
+      },
+      "extensions": {
+        "notes": "Generic digital bus."
+      }
+    },
+    {
+      "interface_id": "org.dominium.signal.interface.analog.scalar",
+      "signal_type": "org.dominium.signal.type.analog",
+      "directionality": "org.dominium.signal.direction.bidirectional",
+      "capacity": {
+        "value": 1,
+        "unit": "unit.dimensionless.ratio",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "impedance_class": "org.dominium.signal.impedance.generic",
+      "compatibility_rules": {
+        "org.dominium.signal.compat.degraded_ok": true
+      },
+      "unit_annotations": {
+        "capacity.value": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.signals.basic.v1"
+      },
+      "extensions": {
+        "notes": "Generic analog connector."
+      }
+    }
+  ],
+  "noise_profiles": [
+    {
+      "noise_profile_id": "org.dominium.signal.noise.none",
+      "profile_type": "org.dominium.signal.noise.none",
+      "parameters": {
+        "org.dominium.signal.noise.floor": 0
+      },
+      "unit_annotations": {
+        "parameters.org.dominium.signal.noise.floor": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {}
+    },
+    {
+      "noise_profile_id": "org.dominium.signal.noise.low",
+      "profile_type": "org.dominium.signal.noise.low",
+      "parameters": {
+        "org.dominium.signal.noise.floor": 1
+      },
+      "unit_annotations": {
+        "parameters.org.dominium.signal.noise.floor": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {}
+    },
+    {
+      "noise_profile_id": "org.dominium.signal.noise.medium",
+      "profile_type": "org.dominium.signal.noise.medium",
+      "parameters": {
+        "org.dominium.signal.noise.floor": 2
+      },
+      "unit_annotations": {
+        "parameters.org.dominium.signal.noise.floor": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {}
+    }
+  ],
+  "latency_profiles": [
+    {
+      "latency_profile_id": "org.dominium.signal.latency.tick",
+      "profile_type": "org.dominium.signal.latency.fixed",
+      "parameters": {
+        "org.dominium.signal.latency.ticks": 1
+      },
+      "unit_annotations": {
+        "parameters.org.dominium.signal.latency.ticks": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {}
+    }
+  ],
+  "extensions": {}
+}

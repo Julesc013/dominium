@@ -1,0 +1,755 @@
+{
+  "materials": [],
+  "interfaces": [],
+  "parts": [],
+  "assemblies": [],
+  "process_families": [
+    {
+      "process_family_id": "org.dominium.process.signal.sample",
+      "inputs": [
+        {
+          "ref_type": "org.dominium.signal.ref.field",
+          "ref_id": "org.dominium.signal.analog.scalar",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "org.dominium.signal.ref.field",
+          "ref_id": "org.dominium.signal.digital.boolean",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "wastes": [],
+      "energy_flows": {
+        "org.dominium.energy.signal.sample": 1
+      },
+      "parameter_space": {
+        "org.dominium.param.latency_ticks": 1,
+        "org.dominium.param.noise_floor": 1
+      },
+      "yield_distribution": {},
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "energy_flows.org.dominium.energy.signal.sample": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.latency_ticks": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.noise_floor": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.signals.basic.v1"
+      },
+      "extensions": {
+        "notes": "Discrete sampling of analog into digital."
+      }
+    },
+    {
+      "process_family_id": "org.dominium.process.signal.route",
+      "inputs": [
+        {
+          "ref_type": "org.dominium.signal.ref.field",
+          "ref_id": "org.dominium.signal.digital.boolean",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "org.dominium.signal.ref.field",
+          "ref_id": "org.dominium.signal.digital.boolean",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "wastes": [],
+      "energy_flows": {
+        "org.dominium.energy.signal.route": 1
+      },
+      "parameter_space": {
+        "org.dominium.param.latency_ticks": 1,
+        "org.dominium.param.noise_floor": 1
+      },
+      "yield_distribution": {},
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "energy_flows.org.dominium.energy.signal.route": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.latency_ticks": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.noise_floor": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.signals.basic.v1"
+      },
+      "extensions": {
+        "notes": "Deterministic routing with explicit latency."
+      }
+    },
+    {
+      "process_family_id": "org.dominium.process.signal.threshold",
+      "inputs": [
+        {
+          "ref_type": "org.dominium.signal.ref.field",
+          "ref_id": "org.dominium.signal.analog.scalar",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "org.dominium.signal.ref.field",
+          "ref_id": "org.dominium.signal.digital.boolean",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "wastes": [],
+      "energy_flows": {
+        "org.dominium.energy.signal.threshold": 1
+      },
+      "parameter_space": {
+        "org.dominium.param.latency_ticks": 1,
+        "org.dominium.param.noise_floor": 1
+      },
+      "yield_distribution": {},
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "energy_flows.org.dominium.energy.signal.threshold": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.latency_ticks": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.noise_floor": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.signals.basic.v1"
+      },
+      "extensions": {
+        "notes": "Thresholding and symbolization."
+      }
+    },
+    {
+      "process_family_id": "org.dominium.process.signal.filter",
+      "inputs": [
+        {
+          "ref_type": "org.dominium.signal.ref.field",
+          "ref_id": "org.dominium.signal.analog.scalar",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "org.dominium.signal.ref.field",
+          "ref_id": "org.dominium.signal.analog.scalar",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "wastes": [],
+      "energy_flows": {
+        "org.dominium.energy.signal.filter": 1
+      },
+      "parameter_space": {
+        "org.dominium.param.latency_ticks": 1,
+        "org.dominium.param.noise_floor": 1
+      },
+      "yield_distribution": {},
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "energy_flows.org.dominium.energy.signal.filter": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.latency_ticks": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.noise_floor": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.signals.basic.v1"
+      },
+      "extensions": {
+        "notes": "Discrete filter envelope."
+      }
+    },
+    {
+      "process_family_id": "org.dominium.process.signal.integrate",
+      "inputs": [
+        {
+          "ref_type": "org.dominium.signal.ref.field",
+          "ref_id": "org.dominium.signal.analog.scalar",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "org.dominium.signal.ref.field",
+          "ref_id": "org.dominium.signal.analog.scalar",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "wastes": [],
+      "energy_flows": {
+        "org.dominium.energy.signal.integrate": 1
+      },
+      "parameter_space": {
+        "org.dominium.param.latency_ticks": 1,
+        "org.dominium.param.noise_floor": 1
+      },
+      "yield_distribution": {},
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "energy_flows.org.dominium.energy.signal.integrate": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.latency_ticks": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.noise_floor": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.signals.basic.v1"
+      },
+      "extensions": {
+        "notes": "Discrete integration."
+      }
+    },
+    {
+      "process_family_id": "org.dominium.process.signal.modulate",
+      "inputs": [
+        {
+          "ref_type": "org.dominium.signal.ref.field",
+          "ref_id": "org.dominium.signal.digital.boolean",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "org.dominium.signal.ref.field",
+          "ref_id": "org.dominium.signal.analog.scalar",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "wastes": [],
+      "energy_flows": {
+        "org.dominium.energy.signal.modulate": 1
+      },
+      "parameter_space": {
+        "org.dominium.param.latency_ticks": 1,
+        "org.dominium.param.noise_floor": 1
+      },
+      "yield_distribution": {},
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "energy_flows.org.dominium.energy.signal.modulate": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.latency_ticks": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.noise_floor": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.signals.basic.v1"
+      },
+      "extensions": {
+        "notes": "Symbolic modulation."
+      }
+    },
+    {
+      "process_family_id": "org.dominium.process.signal.demodulate",
+      "inputs": [
+        {
+          "ref_type": "org.dominium.signal.ref.field",
+          "ref_id": "org.dominium.signal.analog.scalar",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "org.dominium.signal.ref.field",
+          "ref_id": "org.dominium.signal.digital.boolean",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "wastes": [],
+      "energy_flows": {
+        "org.dominium.energy.signal.demodulate": 1
+      },
+      "parameter_space": {
+        "org.dominium.param.latency_ticks": 1,
+        "org.dominium.param.noise_floor": 1
+      },
+      "yield_distribution": {},
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "energy_flows.org.dominium.energy.signal.demodulate": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.latency_ticks": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.noise_floor": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.signals.basic.v1"
+      },
+      "extensions": {
+        "notes": "Symbolic demodulation."
+      }
+    },
+    {
+      "process_family_id": "org.dominium.process.signal.quantize",
+      "inputs": [
+        {
+          "ref_type": "org.dominium.signal.ref.field",
+          "ref_id": "org.dominium.signal.analog.scalar",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "org.dominium.signal.ref.field",
+          "ref_id": "org.dominium.signal.digital.boolean",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "wastes": [],
+      "energy_flows": {
+        "org.dominium.energy.signal.quantize": 1
+      },
+      "parameter_space": {
+        "org.dominium.param.latency_ticks": 1,
+        "org.dominium.param.noise_floor": 1
+      },
+      "yield_distribution": {},
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "energy_flows.org.dominium.energy.signal.quantize": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.latency_ticks": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.noise_floor": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.signals.basic.v1"
+      },
+      "extensions": {
+        "notes": "Quantization with explicit noise."
+      }
+    },
+    {
+      "process_family_id": "org.dominium.process.signal.record",
+      "inputs": [
+        {
+          "ref_type": "org.dominium.signal.ref.field",
+          "ref_id": "org.dominium.signal.symbolic.stream",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "org.dominium.signal.ref.field",
+          "ref_id": "org.dominium.signal.symbolic.stream",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "wastes": [],
+      "energy_flows": {
+        "org.dominium.energy.signal.record": 1
+      },
+      "parameter_space": {
+        "org.dominium.param.latency_ticks": 1,
+        "org.dominium.param.noise_floor": 1
+      },
+      "yield_distribution": {},
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "energy_flows.org.dominium.energy.signal.record": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.latency_ticks": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.noise_floor": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.signals.basic.v1"
+      },
+      "extensions": {
+        "notes": "Record and forward signal stream."
+      }
+    },
+    {
+      "process_family_id": "org.dominium.process.signal.compare",
+      "inputs": [
+        {
+          "ref_type": "org.dominium.signal.ref.field",
+          "ref_id": "org.dominium.signal.digital.boolean",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        },
+        {
+          "ref_type": "org.dominium.signal.ref.field",
+          "ref_id": "org.dominium.signal.digital.boolean",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "org.dominium.signal.ref.field",
+          "ref_id": "org.dominium.signal.digital.boolean",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "wastes": [],
+      "energy_flows": {
+        "org.dominium.energy.signal.compare": 1
+      },
+      "parameter_space": {
+        "org.dominium.param.latency_ticks": 1,
+        "org.dominium.param.noise_floor": 1
+      },
+      "yield_distribution": {},
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "energy_flows.org.dominium.energy.signal.compare": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.latency_ticks": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.noise_floor": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.signals.basic.v1"
+      },
+      "extensions": {
+        "notes": "Symbolic comparison."
+      }
+    },
+    {
+      "process_family_id": "org.dominium.process.signal.encrypt",
+      "inputs": [
+        {
+          "ref_type": "org.dominium.signal.ref.field",
+          "ref_id": "org.dominium.signal.symbolic.stream",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "org.dominium.signal.ref.field",
+          "ref_id": "org.dominium.signal.symbolic.stream",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "wastes": [],
+      "energy_flows": {
+        "org.dominium.energy.signal.encrypt": 1
+      },
+      "parameter_space": {
+        "org.dominium.param.latency_ticks": 1,
+        "org.dominium.param.noise_floor": 1,
+        "org.dominium.param.key_length": 1
+      },
+      "yield_distribution": {},
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "energy_flows.org.dominium.energy.signal.encrypt": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.latency_ticks": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.noise_floor": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.key_length": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.signals.basic.v1"
+      },
+      "extensions": {
+        "notes": "Symbolic encryption placeholder."
+      }
+    },
+    {
+      "process_family_id": "org.dominium.process.signal.decrypt",
+      "inputs": [
+        {
+          "ref_type": "org.dominium.signal.ref.field",
+          "ref_id": "org.dominium.signal.symbolic.stream",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "org.dominium.signal.ref.field",
+          "ref_id": "org.dominium.signal.symbolic.stream",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "wastes": [],
+      "energy_flows": {
+        "org.dominium.energy.signal.decrypt": 1
+      },
+      "parameter_space": {
+        "org.dominium.param.latency_ticks": 1,
+        "org.dominium.param.noise_floor": 1,
+        "org.dominium.param.key_length": 1
+      },
+      "yield_distribution": {},
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "energy_flows.org.dominium.energy.signal.decrypt": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.latency_ticks": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.noise_floor": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.key_length": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.signals.basic.v1"
+      },
+      "extensions": {
+        "notes": "Symbolic decryption placeholder."
+      }
+    }
+  ],
+  "instruments": [],
+  "standards": [],
+  "qualities": [],
+  "batches": [],
+  "hazards": [],
+  "substances": []
+}
