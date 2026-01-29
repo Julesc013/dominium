@@ -129,6 +129,7 @@ static void launcher_print_help(void)
     printf("  load-world      Load a world save (may be unavailable)\n");
     printf("  inspect-replay  Inspect replay (may be unavailable)\n");
     printf("  ops <args>      Install/instance operations (delegates to ops_cli)\n");
+    printf("  share <args>    Bundle export/import/inspect (delegates to share_cli)\n");
     printf("  tools           Open tools shell (handoff)\n");
     printf("  settings        Show current UI settings\n");
     printf("  exit            Exit launcher\n");
@@ -441,6 +442,56 @@ static int launcher_run_ops(int argc, char** argv, int cmd_index)
     rc = system(cmd);
     if (rc == -1) {
         fprintf(stderr, "launcher: failed to run ops cli\n");
+        return D_APP_EXIT_FAILURE;
+    }
+    return rc;
+}
+
+static int launcher_resolve_share_script(char* out, size_t cap)
+{
+    const char* rel = "tools/share/share_cli.py";
+    if (!out || cap == 0u) {
+        return 0;
+    }
+    out[0] = '\0';
+    if (launcher_find_upward(out, cap, rel)) {
+        return 1;
+    }
+    strncpy(out, rel, cap - 1u);
+    out[cap - 1u] = '\0';
+    return 1;
+}
+
+static int launcher_run_share(int argc, char** argv, int cmd_index)
+{
+    char script_path[512];
+    char cmd[2048];
+    int i;
+    int rc;
+    if (cmd_index < 0 || argc <= cmd_index) {
+        return D_APP_EXIT_USAGE;
+    }
+    if (!launcher_resolve_share_script(script_path, sizeof(script_path))) {
+        fprintf(stderr, "launcher: unable to resolve share cli path\n");
+        return D_APP_EXIT_FAILURE;
+    }
+    if (snprintf(cmd, sizeof(cmd), "python") <= 0) {
+        fprintf(stderr, "launcher: failed to build share command\n");
+        return D_APP_EXIT_FAILURE;
+    }
+    if (!launcher_append_quoted(cmd, sizeof(cmd), script_path)) {
+        fprintf(stderr, "launcher: share command too long\n");
+        return D_APP_EXIT_FAILURE;
+    }
+    for (i = cmd_index + 1; i < argc; ++i) {
+        if (!launcher_append_quoted(cmd, sizeof(cmd), argv[i])) {
+            fprintf(stderr, "launcher: share command too long\n");
+            return D_APP_EXIT_FAILURE;
+        }
+    }
+    rc = system(cmd);
+    if (rc == -1) {
+        fprintf(stderr, "launcher: failed to run share cli\n");
         return D_APP_EXIT_FAILURE;
     }
     return rc;
@@ -953,6 +1004,13 @@ int launcher_main(int argc, char** argv)
     }
     if (strcmp(cmd, "ops") == 0) {
         int res = launcher_run_ops(argc, argv, cmd_index);
+        if (locale_active) {
+            dom_app_ui_locale_table_free(&locale_table);
+        }
+        return res;
+    }
+    if (strcmp(cmd, "share") == 0) {
+        int res = launcher_run_share(argc, argv, cmd_index);
         if (locale_active) {
             dom_app_ui_locale_table_free(&locale_table);
         }

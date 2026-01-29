@@ -102,6 +102,7 @@ document is binding but still expected to grow or sharpen.
 | `docs/architecture/CAPABILITY_BASELINES.md` | FROZEN | Capability baselines and refusals |
 | `docs/architecture/AI_INTENT_MODEL.md` | FROZEN | AI intent production and modes |
 | `docs/architecture/AI_BUDGET_MODEL.md` | FROZEN | AI budget classes and fairness |
+| `docs/architecture/BUNDLE_MODEL.md` | FROZEN | Shareable bundle container and rules |
 
 
 | `docs/distribution/PACK_TAXONOMY.md` | FROZEN | Canonical pack classes |
@@ -245,6 +246,7 @@ Schemas are the authoritative data-shape contracts. Start here:
 - `schema/sandbox.policy.schema`
 - `schema/compat.report.schema`
 - `schema/ai.profile.schema`
+- `schema/bundle.container.schema`
 Refusal code anchors:
 
 
