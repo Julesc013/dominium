@@ -38,6 +38,8 @@ All backends expose identical abstract interfaces and identical UI semantics.
 - vector / ASCII / simple raster
 - zero GPU assumptions
 
+Current focus (this phase): null + software renderers are fully implemented and validated. GPU and legacy backends are deferred; they may exist as soft-backed stubs when cheap to maintain, but should not be considered complete until their phase.
+
 ### GPU renderers (capability-gated)
 
 - OpenGL
