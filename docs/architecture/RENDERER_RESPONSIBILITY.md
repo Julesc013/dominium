@@ -51,6 +51,12 @@ Each GPU renderer must:
 - report capabilities explicitly
 - never change semantics
 
+### Backend stubs (capability-gated)
+
+- GPU backends may ship as soft-backed stubs when APIs/drivers are unavailable.
+- Stubs must be deterministic and presentation-only.
+- Stubs must still report capabilities honestly and refuse unsupported features explicitly.
+
 ### Bare‑metal / minimal renderer
 
 - framebuffer-only

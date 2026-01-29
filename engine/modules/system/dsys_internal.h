@@ -83,6 +83,9 @@ struct dsys_dir_iter_t {
     DIR*  dir;
     char  base[260];
 #endif
+    dsys_dir_entry* entries;
+    uint32_t        entry_count;
+    uint32_t        entry_index;
 };
 
 struct dsys_process_t {

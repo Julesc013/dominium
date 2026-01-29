@@ -79,9 +79,9 @@ u32 d_gfx_detect_backends(d_gfx_backend_info* out_list, u32 max_count)
         d_gfx_backend_info_set(
             &out_list[count++],
             D_GFX_BACKEND_DX9,
-            0,
+            built,
             "dx9",
-            built ? "Stubbed backend (unavailable)" : "Disabled at build");
+            built ? "Soft-backed stub (software raster)" : "Disabled at build");
     }
 
     if (count < max_count) {
@@ -89,9 +89,9 @@ u32 d_gfx_detect_backends(d_gfx_backend_info* out_list, u32 max_count)
         d_gfx_backend_info_set(
             &out_list[count++],
             D_GFX_BACKEND_DX11,
-            0,
+            built,
             "dx11",
-            built ? "Stubbed backend (unavailable)" : "Disabled at build");
+            built ? "Soft-backed stub (software raster)" : "Disabled at build");
     }
 
     if (count < max_count) {
@@ -99,9 +99,9 @@ u32 d_gfx_detect_backends(d_gfx_backend_info* out_list, u32 max_count)
         d_gfx_backend_info_set(
             &out_list[count++],
             D_GFX_BACKEND_GL2,
-            0,
+            built,
             "gl2",
-            built ? "Stubbed backend (unavailable)" : "Disabled at build");
+            built ? "Soft-backed stub (software raster)" : "Disabled at build");
     }
 
     if (count < max_count) {
@@ -109,9 +109,9 @@ u32 d_gfx_detect_backends(d_gfx_backend_info* out_list, u32 max_count)
         d_gfx_backend_info_set(
             &out_list[count++],
             D_GFX_BACKEND_VK1,
-            0,
+            built,
             "vk1",
-            built ? "Stubbed backend (unavailable)" : "Disabled at build");
+            built ? "Soft-backed stub (software raster)" : "Disabled at build");
     }
 
     if (count < max_count) {
@@ -119,9 +119,29 @@ u32 d_gfx_detect_backends(d_gfx_backend_info* out_list, u32 max_count)
         d_gfx_backend_info_set(
             &out_list[count++],
             D_GFX_BACKEND_METAL,
-            0,
+            built,
             "metal",
-            built ? "Stubbed backend (unavailable)" : "Disabled at build");
+            built ? "Soft-backed stub (software raster)" : "Disabled at build");
+    }
+
+    if (count < max_count) {
+        int built = DOM_BACKEND_SOFT ? 1 : 0;
+        d_gfx_backend_info_set(
+            &out_list[count++],
+            D_GFX_BACKEND_VESA,
+            built,
+            "vesa",
+            built ? "Soft-backed stub (bare-metal)" : "Disabled at build");
+    }
+
+    if (count < max_count) {
+        int built = DOM_BACKEND_SOFT ? 1 : 0;
+        d_gfx_backend_info_set(
+            &out_list[count++],
+            D_GFX_BACKEND_VGA,
+            built,
+            "vga",
+            built ? "Soft-backed stub (bare-metal)" : "Disabled at build");
     }
 
     return count;

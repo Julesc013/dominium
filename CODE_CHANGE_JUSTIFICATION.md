@@ -15,3 +15,13 @@ Reason: Enforce named RNG streams, deterministic reduction order, and determinis
 
 Why can this not be data? Determinism enforcement and RNG stream derivation must occur inside
 authoritative execution paths and cannot be expressed solely via data packs or schemas.
+
+### 2026-01-29 — PLATFORM/RENDERER modular backends + deterministic dir ordering
+
+Touched: engine/, docs/architecture/
+
+Reason: Implement modular platform backends (win32/posix/sdl2 stubs) and capability-gated renderer backends
+with deterministic directory iteration and presentation-only behavior.
+
+Why can this not be data? Platform and renderer integration is OS/runtime code that cannot be represented
+as data packs; deterministic filesystem iteration and backend dispatch must be enforced in code.
