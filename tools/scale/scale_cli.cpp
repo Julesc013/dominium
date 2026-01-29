@@ -4,6 +4,9 @@
 #include "dominium/interest_set.h"
 #include "dominium/rules/scale/scale_collapse_expand.h"
 
+static void scale_macro_override_interval(dom_scale_context* ctx,
+                                          dom_act_time_t interval);
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

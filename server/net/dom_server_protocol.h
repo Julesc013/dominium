@@ -13,7 +13,7 @@ DETERMINISM: All enums and payload shapes are stable and replayable.
 
 #include "dominium/rules/scale/scale_collapse_expand.h"
 
-#include "server/shard/shard_api.h"
+#include "shard/shard_api.h"
 
 #ifdef __cplusplus
 extern "C" {

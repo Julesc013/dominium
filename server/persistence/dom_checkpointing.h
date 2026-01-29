@@ -11,11 +11,11 @@ RESPONSIBILITY: Deterministic MMO checkpoint capture and recovery helpers.
 #include "domino/core/dom_time_core.h"
 #include "domino/sim/sim.h"
 
-#include "server/persistence/dom_checkpoint_policy.h"
-#include "server/net/dom_server_protocol.h"
-#include "server/net/dom_server_types.h"
-#include "server/shard/dom_cross_shard_log.h"
-#include "server/shard/dom_shard_lifecycle.h"
+#include "persistence/dom_checkpoint_policy.h"
+#include "net/dom_server_protocol.h"
+#include "net/dom_server_types.h"
+#include "shard/dom_cross_shard_log.h"
+#include "shard/dom_shard_lifecycle.h"
 
 #ifdef __cplusplus
 extern "C" {

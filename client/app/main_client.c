@@ -335,7 +335,21 @@ static int client_parse_log_level(const char* text, int* out_value)
     return 0;
 }
 
-typedef struct client_ui_settings client_ui_settings;
+typedef struct client_ui_settings {
+    char renderer[16];
+    int ui_scale_percent;
+    int palette;
+    int log_level;
+    int debug_ui;
+    char ui_density[24];
+    char verbosity[24];
+    char keybind_profile_id[64];
+    int reduced_motion;
+    int keyboard_only;
+    int screen_reader;
+    int low_cognitive_load;
+    const dom_app_ui_locale_table* locale;
+} client_ui_settings;
 
 static void client_apply_accessibility(client_ui_settings* settings,
                                        const dom_app_ui_accessibility_preset* preset)
@@ -370,22 +384,6 @@ static void client_apply_accessibility(client_ui_settings* settings,
     settings->screen_reader = preset->screen_reader ? 1 : 0;
     settings->low_cognitive_load = preset->low_cognitive_load ? 1 : 0;
 }
-
-typedef struct client_ui_settings {
-    char renderer[16];
-    int ui_scale_percent;
-    int palette;
-    int log_level;
-    int debug_ui;
-    char ui_density[24];
-    char verbosity[24];
-    char keybind_profile_id[64];
-    int reduced_motion;
-    int keyboard_only;
-    int screen_reader;
-    int low_cognitive_load;
-    const dom_app_ui_locale_table* locale;
-} client_ui_settings;
 
 static const char* client_palette_name(int palette)
 {
