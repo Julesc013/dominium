@@ -53,6 +53,12 @@ All platforms expose the same abstract interfaces:
 - no windowing
 - used for testing and verification
 
+## Backend Selection & Modularity
+
+- Build-time selection is explicit via `DOMINO_SYS_BACKEND` (auto|win32|win32_headless|posix_headless|sdl2|null).
+- Runtime selection (`dom_sys_select_backend`) may only choose compiled backends.
+- Headless stubs are permitted as long as they obey this contract and remain presentation-only.
+
 ## Filesystem & Path Rules
 
 - No absolute paths are stored in simulation artifacts.

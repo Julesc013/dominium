@@ -23,6 +23,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "domino/sys.h"
 #include "soft/d_gfx_soft.h"
 #include "render/null/d_gfx_null.h"
+#include "render/stub/d_gfx_stub.h"
 
 /* Backbuffer defaults */
 static i32 g_backbuffer_w = 800;
@@ -33,6 +34,7 @@ static u32 g_backend_op_mask = 0u;
 
 static const d_gfx_backend_soft *g_backend = 0;
 static d_gfx_cmd_buffer g_frame_cmd_buffer;
+static int g_backend_uses_soft = 0;
 
 static dom_abi_result dgfx_ir_query_interface(dom_iid iid, void** out_iface);
 
@@ -442,7 +444,7 @@ int d_gfx_bind_surface(void* native_window, i32 width, i32 height)
 #if DOM_BACKEND_SOFT
     d_gfx_soft_set_native_window(native_window);
     d_gfx_soft_set_framebuffer_size(g_backbuffer_w, g_backbuffer_h);
-    if (g_backend == d_gfx_soft_register_backend()) {
+    if (g_backend && g_backend_uses_soft) {
         if (g_backend->shutdown) {
             g_backend->shutdown();
         }
@@ -701,36 +703,70 @@ static const d_gfx_backend_soft* dgfx_choose_backend(const char* backend_name, c
 #if DOM_BACKEND_DX9
     if (strcmp(backend_name, "dx9") == 0) {
         if (out_name) *out_name = "dx9";
-        if (out_reason) *out_reason = "unavailable (stubbed)";
-        return 0;
+        if (out_reason) *out_reason = "soft-backed stub";
+        return d_gfx_stub_register_dx9();
     }
 #endif
 #if DOM_BACKEND_DX11
     if (strcmp(backend_name, "dx11") == 0) {
         if (out_name) *out_name = "dx11";
-        if (out_reason) *out_reason = "unavailable (stubbed)";
-        return 0;
+        if (out_reason) *out_reason = "soft-backed stub";
+        return d_gfx_stub_register_dx11();
     }
 #endif
 #if DOM_BACKEND_GL2
     if (strcmp(backend_name, "gl2") == 0) {
         if (out_name) *out_name = "gl2";
-        if (out_reason) *out_reason = "unavailable (stubbed)";
-        return 0;
+        if (out_reason) *out_reason = "soft-backed stub";
+        return d_gfx_stub_register_gl2();
     }
 #endif
 #if DOM_BACKEND_VK1
     if (strcmp(backend_name, "vk1") == 0) {
         if (out_name) *out_name = "vk1";
-        if (out_reason) *out_reason = "unavailable (stubbed)";
-        return 0;
+        if (out_reason) *out_reason = "soft-backed stub";
+        return d_gfx_stub_register_vk1();
     }
 #endif
 #if DOM_BACKEND_METAL
     if (strcmp(backend_name, "metal") == 0) {
         if (out_name) *out_name = "metal";
-        if (out_reason) *out_reason = "unavailable (stubbed)";
-        return 0;
+        if (out_reason) *out_reason = "soft-backed stub";
+        return d_gfx_stub_register_metal();
+    }
+#endif
+
+#if DOM_BACKEND_SOFT
+    if (strcmp(backend_name, "dx7") == 0) {
+        if (out_name) *out_name = "dx7";
+        if (out_reason) *out_reason = "soft-backed stub";
+        return d_gfx_stub_register_dx7();
+    }
+    if (strcmp(backend_name, "vesa") == 0 || strcmp(backend_name, "vga") == 0 ||
+        strcmp(backend_name, "baremetal") == 0 || strcmp(backend_name, "bare") == 0) {
+        if (strcmp(backend_name, "vga") == 0) {
+            if (out_name) *out_name = "vga";
+            if (out_reason) *out_reason = "soft-backed stub";
+            return d_gfx_stub_register_vga();
+        }
+        if (out_name) *out_name = "vesa";
+        if (out_reason) *out_reason = "soft-backed stub";
+        return d_gfx_stub_register_vesa();
+    }
+    if (strcmp(backend_name, "opengl") == 0 || strcmp(backend_name, "gl") == 0) {
+        if (out_name) *out_name = "gl2";
+        if (out_reason) *out_reason = "soft-backed stub";
+        return d_gfx_stub_register_gl2();
+    }
+    if (strcmp(backend_name, "vulkan") == 0 || strcmp(backend_name, "vk") == 0) {
+        if (out_name) *out_name = "vk1";
+        if (out_reason) *out_reason = "soft-backed stub";
+        return d_gfx_stub_register_vk1();
+    }
+    if (strcmp(backend_name, "d3d") == 0 || strcmp(backend_name, "direct3d") == 0) {
+        if (out_name) *out_name = "dx11";
+        if (out_reason) *out_reason = "soft-backed stub";
+        return d_gfx_stub_register_dx11();
     }
 #endif
 
@@ -809,6 +845,7 @@ int d_gfx_init(const char *backend_name)
     g_backend = chosen;
     g_backend_name = chosen_name ? chosen_name : (have_request ? backend_name : "soft");
     g_backend_op_mask = dgfx_caps_mask_for_backend(g_backend_name);
+    g_backend_uses_soft = d_gfx_stub_uses_soft(chosen);
     return 1;
 }
 
@@ -820,6 +857,7 @@ void d_gfx_shutdown(void)
     g_backend = 0;
     g_backend_name = 0;
     g_backend_op_mask = 0u;
+    g_backend_uses_soft = 0;
     if (g_frame_cmd_buffer.cmds) {
         free(g_frame_cmd_buffer.cmds);
         g_frame_cmd_buffer.cmds = (d_gfx_cmd *)0;

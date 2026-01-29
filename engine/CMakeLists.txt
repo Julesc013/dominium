@@ -218,13 +218,18 @@ set(ENGINE_RENDER_SOURCES
     render/backend_detect.c
     render/soft/d_gfx_soft.c
     render/null/d_gfx_null.c
+    render/stub/d_gfx_stub.c
 )
 
 set(ENGINE_SYSTEM_SOURCES
     modules/system/dsys_guard.c
+    modules/system/dsys_dir_sorted.c
     modules/system/dsys_perf.c
     modules/system/dsys_stub.c
     modules/system/dsys_term.c
+    modules/system/dsys_posix.c
+    modules/system/dsys_sdl2_stub.c
+    modules/system/dsys_win32_headless.c
     modules/system/d_system.c
     modules/system/d_system_input.c
     modules/system/sys.c
@@ -330,8 +335,34 @@ set_target_properties(domino_engine PROPERTIES
     CXX_EXTENSIONS OFF
 )
 
-if(WIN32)
+set(DOMINO_SYS_BACKEND "auto" CACHE STRING "System backend (auto|win32|win32_headless|posix_headless|sdl2|null)")
+set_property(CACHE DOMINO_SYS_BACKEND PROPERTY STRINGS auto win32 win32_headless posix_headless sdl2 null)
+
+if(DOMINO_SYS_BACKEND STREQUAL "auto")
+    if(WIN32)
+        set(_dom_sys_backend "win32")
+    else()
+        set(_dom_sys_backend "posix_headless")
+    endif()
+else()
+    set(_dom_sys_backend "${DOMINO_SYS_BACKEND}")
+endif()
+
+if(_dom_sys_backend STREQUAL "win32")
     target_compile_definitions(domino_engine PRIVATE DSYS_BACKEND_WIN32)
+elseif(_dom_sys_backend STREQUAL "win32_headless")
+    target_compile_definitions(domino_engine PRIVATE DSYS_BACKEND_WIN32_HEADLESS)
+elseif(_dom_sys_backend STREQUAL "posix_headless")
+    target_compile_definitions(domino_engine PRIVATE DSYS_BACKEND_POSIX)
+elseif(_dom_sys_backend STREQUAL "sdl2")
+    target_compile_definitions(domino_engine PRIVATE DSYS_BACKEND_SDL2)
+elseif(_dom_sys_backend STREQUAL "null")
+    target_compile_definitions(domino_engine PRIVATE DSYS_BACKEND_NULL)
+else()
+    message(FATAL_ERROR "Unknown DOMINO_SYS_BACKEND: ${DOMINO_SYS_BACKEND}")
+endif()
+
+if(WIN32)
     target_link_libraries(domino_engine PRIVATE user32 gdi32)
 else()
     target_link_libraries(domino_engine PRIVATE m)

@@ -1,3 +1,16 @@
 {
-  "overrides": []
+  "overrides": [
+    {
+      "id": "OVR-2026-01-29-PLATFORM",
+      "invariant": "LOCKLIST.PLATFORM_RUNTIME_LAYER",
+      "reason": "Implement modular platform backends + deterministic directory iteration while keeping simulation semantics unchanged.",
+      "expires": "2026-03-31"
+    },
+    {
+      "id": "OVR-2026-01-29-RENDERER",
+      "invariant": "LOCKLIST.RENDERER_LAYER",
+      "reason": "Implement capability-gated renderer backends/stubs with deterministic presentation-only behavior.",
+      "expires": "2026-03-31"
+    }
+  ]
 }

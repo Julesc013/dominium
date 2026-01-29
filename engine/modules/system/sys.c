@@ -16,6 +16,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "domino/system/dsys_guard.h"
 #include "domino/caps.h"
 #include "dsys_internal.h"
+#include "dsys_dir_sorted.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -688,124 +689,32 @@ static int null_file_close(void* fh)
 static dsys_dir_iter* null_dir_open(const char* path)
 {
     dsys_dir_iter* it;
+    dsys_dir_entry* entries = NULL;
+    uint32_t count = 0u;
 
     if (!path) {
         return NULL;
     }
 
-#if defined(_WIN32)
-    {
-        size_t len;
-
-        it = (dsys_dir_iter*)malloc(sizeof(dsys_dir_iter));
-        if (!it) {
-            return NULL;
-        }
-        len = strlen(path);
-        if (len + 3u >= sizeof(it->pattern)) {
-            free(it);
-            return NULL;
-        }
-        memcpy(it->pattern, path, len);
-        if (len == 0u || (path[len - 1u] != '/' && path[len - 1u] != '\\')) {
-            it->pattern[len] = '\\';
-            len += 1u;
-        }
-        it->pattern[len] = '*';
-        it->pattern[len + 1u] = '\0';
-        it->handle = _findfirst(it->pattern, &it->data);
-        if (it->handle == -1) {
-            free(it);
-            return NULL;
-        }
-        it->first_pending = 1;
-        return it;
+    if (!dsys_dir_collect_sorted(path, &entries, &count)) {
+        return NULL;
     }
-#else
-    {
-        DIR* dir;
-        size_t len;
 
-        dir = opendir(path);
-        if (!dir) {
-            return NULL;
-        }
-        it = (dsys_dir_iter*)malloc(sizeof(dsys_dir_iter));
-        if (!it) {
-            closedir(dir);
-            return NULL;
-        }
-        it->dir = dir;
-        len = strlen(path);
-        if (len >= sizeof(it->base)) {
-            len = sizeof(it->base) - 1u;
-        }
-        memcpy(it->base, path, len);
-        it->base[len] = '\0';
-        return it;
+    it = (dsys_dir_iter*)malloc(sizeof(dsys_dir_iter));
+    if (!it) {
+        free(entries);
+        return NULL;
     }
-#endif
+    memset(it, 0, sizeof(*it));
+    it->entries = entries;
+    it->entry_count = count;
+    it->entry_index = 0u;
+    return it;
 }
 
 static bool null_dir_next(dsys_dir_iter* it, dsys_dir_entry* out)
 {
-    if (!it || !out) {
-        return false;
-    }
-
-#if defined(_WIN32)
-    {
-        int res;
-
-        if (it->first_pending) {
-            it->first_pending = 0;
-            res = 0;
-        } else {
-            res = _findnext(it->handle, &it->data);
-        }
-        if (res != 0) {
-            return false;
-        }
-
-        strncpy(out->name, it->data.name, sizeof(out->name) - 1u);
-        out->name[sizeof(out->name) - 1u] = '\0';
-        out->is_dir = (it->data.attrib & _A_SUBDIR) != 0 ? true : false;
-        return true;
-    }
-#else
-    {
-        struct dirent* ent;
-        struct stat    st;
-        char           full_path[260];
-        size_t         base_len;
-        size_t         name_len;
-
-        ent = readdir(it->dir);
-        if (!ent) {
-            return false;
-        }
-
-        strncpy(out->name, ent->d_name, sizeof(out->name) - 1u);
-        out->name[sizeof(out->name) - 1u] = '\0';
-
-        out->is_dir = false;
-        base_len = strlen(it->base);
-        name_len = strlen(out->name);
-        if (base_len + name_len + 2u < sizeof(full_path)) {
-            memcpy(full_path, it->base, base_len);
-            if (base_len > 0u && full_path[base_len - 1u] != '/') {
-                full_path[base_len] = '/';
-                base_len += 1u;
-            }
-            memcpy(full_path + base_len, out->name, name_len);
-            full_path[base_len + name_len] = '\0';
-            if (stat(full_path, &st) == 0 && S_ISDIR(st.st_mode)) {
-                out->is_dir = true;
-            }
-        }
-        return true;
-    }
-#endif
+    return dsys_dir_next_sorted(it, out);
 }
 
 static void null_dir_close(dsys_dir_iter* it)
@@ -813,16 +722,7 @@ static void null_dir_close(dsys_dir_iter* it)
     if (!it) {
         return;
     }
-
-#if defined(_WIN32)
-    if (it->handle != -1) {
-        _findclose(it->handle);
-    }
-#else
-    if (it->dir) {
-        closedir(it->dir);
-    }
-#endif
+    dsys_dir_free_sorted(it);
     free(it);
 }
 

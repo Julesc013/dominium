@@ -14,6 +14,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #define DOMINO_SYS_INTERNAL 1
 #include "domino/system/dsys.h"
 #include "dsys_internal.h"
+#include "dsys_dir_sorted.h"
 
 #if defined(_WIN32)
 #include <windows.h>
@@ -792,56 +793,32 @@ static int dsys_win32_file_close(void* fh)
 static dsys_dir_iter* dsys_win32_dir_open(const char* path)
 {
     dsys_dir_iter* it;
-    size_t len;
+    dsys_dir_entry* entries = NULL;
+    uint32_t count = 0u;
 
     if (!path) {
         return NULL;
     }
 
+    if (!dsys_dir_collect_sorted(path, &entries, &count)) {
+        return NULL;
+    }
+
     it = (dsys_dir_iter*)malloc(sizeof(dsys_dir_iter));
     if (!it) {
+        free(entries);
         return NULL;
     }
-    len = strlen(path);
-    if (len + 3u >= sizeof(it->pattern)) {
-        free(it);
-        return NULL;
-    }
-    memcpy(it->pattern, path, len);
-    if (len == 0u || (path[len - 1u] != '/' && path[len - 1u] != '\\')) {
-        it->pattern[len] = '\\';
-        len += 1u;
-    }
-    it->pattern[len] = '*';
-    it->pattern[len + 1u] = '\0';
-    it->handle = _findfirst(it->pattern, &it->data);
-    if (it->handle == -1) {
-        free(it);
-        return NULL;
-    }
-    it->first_pending = 1;
+    memset(it, 0, sizeof(*it));
+    it->entries = entries;
+    it->entry_count = count;
+    it->entry_index = 0u;
     return it;
 }
 
 static bool dsys_win32_dir_next(dsys_dir_iter* it, dsys_dir_entry* out)
 {
-    int res;
-    if (!it || !out) {
-        return false;
-    }
-    if (it->first_pending) {
-        it->first_pending = 0;
-        res = 0;
-    } else {
-        res = _findnext(it->handle, &it->data);
-    }
-    if (res != 0) {
-        return false;
-    }
-    strncpy(out->name, it->data.name, sizeof(out->name) - 1u);
-    out->name[sizeof(out->name) - 1u] = '\0';
-    out->is_dir = (it->data.attrib & _A_SUBDIR) != 0 ? true : false;
-    return true;
+    return dsys_dir_next_sorted(it, out);
 }
 
 static void dsys_win32_dir_close(dsys_dir_iter* it)
@@ -849,9 +826,7 @@ static void dsys_win32_dir_close(dsys_dir_iter* it)
     if (!it) {
         return;
     }
-    if (it->handle != -1) {
-        _findclose(it->handle);
-    }
+    dsys_dir_free_sorted(it);
     free(it);
 }
 
