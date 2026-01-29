@@ -27,8 +27,14 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 int  dsys_internal_event_push(const dsys_event* ev);
 int  dsys_internal_event_pop(dsys_event* out);
 
-#if defined(DSYS_BACKEND_COCOA)
+#if defined(DSYS_BACKEND_X11)
+#include "plat/x11/x11_sys.h"
+#elif defined(DSYS_BACKEND_WAYLAND)
+#include "plat/wayland/wayland_sys.h"
+#elif defined(DSYS_BACKEND_COCOA)
 #include "plat/cocoa/cocoa_sys.h"
+#elif defined(DSYS_BACKEND_SDL1)
+#include "plat/sdl1/sdl1_sys.h"
 #elif defined(DSYS_BACKEND_POSIX)
 #include "plat/posix/posix_sys.h"
 #else

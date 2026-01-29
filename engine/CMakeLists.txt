@@ -336,8 +336,8 @@ set_target_properties(domino_engine PROPERTIES
     CXX_EXTENSIONS OFF
 )
 
-set(DOMINO_SYS_BACKEND "auto" CACHE STRING "System backend (auto|win32|win32_headless|posix_headless|sdl2|cocoa|null)")
-set_property(CACHE DOMINO_SYS_BACKEND PROPERTY STRINGS auto win32 win32_headless posix_headless sdl2 cocoa null)
+set(DOMINO_SYS_BACKEND "auto" CACHE STRING "System backend (auto|win32|win32_headless|posix_headless|x11|wayland|sdl1|sdl2|cocoa|null)")
+set_property(CACHE DOMINO_SYS_BACKEND PROPERTY STRINGS auto win32 win32_headless posix_headless x11 wayland sdl1 sdl2 cocoa null)
 
 if(DOMINO_SYS_BACKEND STREQUAL "auto")
     if(WIN32)
@@ -355,6 +355,12 @@ elseif(_dom_sys_backend STREQUAL "win32_headless")
     target_compile_definitions(domino_engine PRIVATE DSYS_BACKEND_WIN32_HEADLESS)
 elseif(_dom_sys_backend STREQUAL "posix_headless")
     target_compile_definitions(domino_engine PRIVATE DSYS_BACKEND_POSIX)
+elseif(_dom_sys_backend STREQUAL "x11")
+    target_compile_definitions(domino_engine PRIVATE DSYS_BACKEND_X11)
+elseif(_dom_sys_backend STREQUAL "wayland")
+    target_compile_definitions(domino_engine PRIVATE DSYS_BACKEND_WAYLAND)
+elseif(_dom_sys_backend STREQUAL "sdl1")
+    target_compile_definitions(domino_engine PRIVATE DSYS_BACKEND_SDL1)
 elseif(_dom_sys_backend STREQUAL "sdl2")
     target_compile_definitions(domino_engine PRIVATE DSYS_BACKEND_SDL2)
 elseif(_dom_sys_backend STREQUAL "cocoa")

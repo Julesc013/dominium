@@ -27,6 +27,7 @@ const d_gfx_backend_soft* d_gfx_stub_register_dx11(void);
 const d_gfx_backend_soft* d_gfx_stub_register_dx12(void);
 const d_gfx_backend_soft* d_gfx_stub_register_gl1(void);
 const d_gfx_backend_soft* d_gfx_stub_register_gl2(void);
+const d_gfx_backend_soft* d_gfx_stub_register_gl4(void);
 const d_gfx_backend_soft* d_gfx_stub_register_vk1(void);
 const d_gfx_backend_soft* d_gfx_stub_register_metal(void);
 const d_gfx_backend_soft* d_gfx_stub_register_vesa(void);
