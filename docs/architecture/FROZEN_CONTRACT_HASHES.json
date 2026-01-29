@@ -115,6 +115,10 @@
       "sha256": "12771ba67ab9602c8d7af2df1cf64dd9383c3fdf0e12a09698db6201f7729415"
     },
     {
+      "path": "docs/architecture/BUNDLE_MODEL.md",
+      "sha256": "49a6758f76e620b4ec7d02afb6948a5869194b0bfcec57f1113f888c0276df85"
+    },
+    {
       "path": "docs/distribution/PACK_TAXONOMY.md",
       "sha256": "5303853a22cdcb265c4fa7a9c0e49e1c629a790ab7753cd0705aba18c0c0234d"
     },

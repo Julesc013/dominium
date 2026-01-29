@@ -85,6 +85,7 @@ static void tools_print_help(void)
     printf("  mmo <subcmd>           MMO determinism and server runtime tools\\n");
     printf("  ops <args>             Install/instance operations (delegates to ops_cli)\\n");
     printf("  ai <args>              AI agent inspection (delegates to ai_cli)\\n");
+    printf("  share <args>           Bundle export/import/inspect (delegates to share_cli)\\n");
     printf("  exit            Exit tools\\n");
 }
 
@@ -460,6 +461,56 @@ static int tools_run_ai(int argc, char** argv, int cmd_index)
     rc = system(cmd);
     if (rc == -1) {
         fprintf(stderr, "tools: failed to run ai cli\\n");
+        return D_APP_EXIT_FAILURE;
+    }
+    return rc;
+}
+
+static int tools_resolve_share_script(char* out, size_t cap)
+{
+    const char* rel = "tools/share/share_cli.py";
+    if (!out || cap == 0u) {
+        return 0;
+    }
+    out[0] = '\\0';
+    if (tools_find_upward(out, cap, rel)) {
+        return 1;
+    }
+    strncpy(out, rel, cap - 1u);
+    out[cap - 1u] = '\\0';
+    return 1;
+}
+
+static int tools_run_share(int argc, char** argv, int cmd_index)
+{
+    char script_path[512];
+    char cmd[2048];
+    int i;
+    int rc;
+    if (cmd_index < 0 || argc <= cmd_index) {
+        return D_APP_EXIT_USAGE;
+    }
+    if (!tools_resolve_share_script(script_path, sizeof(script_path))) {
+        fprintf(stderr, "tools: unable to resolve share cli path\\n");
+        return D_APP_EXIT_FAILURE;
+    }
+    if (snprintf(cmd, sizeof(cmd), "python") <= 0) {
+        fprintf(stderr, "tools: failed to build share command\\n");
+        return D_APP_EXIT_FAILURE;
+    }
+    if (!tools_append_quoted(cmd, sizeof(cmd), script_path)) {
+        fprintf(stderr, "tools: share command too long\\n");
+        return D_APP_EXIT_FAILURE;
+    }
+    for (i = cmd_index + 1; i < argc; ++i) {
+        if (!tools_append_quoted(cmd, sizeof(cmd), argv[i])) {
+            fprintf(stderr, "tools: share command too long\\n");
+            return D_APP_EXIT_FAILURE;
+        }
+    }
+    rc = system(cmd);
+    if (rc == -1) {
+        fprintf(stderr, "tools: failed to run share cli\\n");
         return D_APP_EXIT_FAILURE;
     }
     return rc;
@@ -3363,6 +3414,10 @@ int tools_main(int argc, char** argv)
     }
     if (strcmp(cmd, "ai") == 0) {
         int res = tools_run_ai(argc, argv, cmd_index);
+        return tools_return_with_locale(res, locale_active, &locale_table);
+    }
+    if (strcmp(cmd, "share") == 0) {
+        int res = tools_run_share(argc, argv, cmd_index);
         return tools_return_with_locale(res, locale_active, &locale_table);
     }
 

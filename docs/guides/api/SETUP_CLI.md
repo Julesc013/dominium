@@ -14,6 +14,9 @@ does not mutate simulation state.
   Pass-through to OPS CLI for install/instance management. Use for:
   `installs list`, `instances list`, `instances create`, `instances clone`,
   `instances fork`, `instances activate`.
+- `share <args>`  
+  Pass-through to share CLI for bundle export/import/inspect:
+  `export`, `inspect`, `import`.
 
 ## Data & contracts
 - Install manifest: `install.manifest.json` (`schema/install.manifest.schema`).

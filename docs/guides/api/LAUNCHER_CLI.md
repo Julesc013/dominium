@@ -27,6 +27,9 @@ compatibility reports and refusal payloads.
   Pass-through to OPS CLI for install/instance enumeration and lifecycle:
   `installs list`, `instances list`, `instances create`, `instances clone`,
   `instances fork`, `instances activate`.
+- `share <args>`  
+  Pass-through to share CLI for bundle export/import/inspect:
+  `export`, `inspect`, `import`.
 - `tools`  
   Open tools shell (handoff).
 - `settings`  
