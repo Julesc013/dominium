@@ -186,11 +186,15 @@
     },
     {
       "path": "docs/architecture/LOCKLIST.md",
-      "sha256": "236c9ca941c0e6b401cf7dea9aaab038f211546a98d2d9674677c4b0b5583acf"
+      "sha256": "6583b0b16eeb1fc4d74eb4f858449a55f39a8ab8524125bfe1c7023a200a4f5f"
     },
     {
       "path": "docs/architecture/PLATFORM_RESPONSIBILITY.md",
       "sha256": "c37f764400e0207bd9ea262ac3629c226f0c715e796aa4b528cd547868049744"
+    },
+    {
+      "path": "docs/architecture/RENDERER_RESPONSIBILITY.md",
+      "sha256": "9888fae465265d958823dbda750b7fce660c853a1c19973d45aa77c421ac1a82"
     }
   ],
   "generated_at": "2026-01-29T05:49:46.925302Z"
