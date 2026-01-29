@@ -14,6 +14,7 @@ release branches. Overrides must be visible in CI output.
 - Capability scope boundaries (engine/game/client/launcher/setup/tools/ops).
 - Save and replay container invariants.
 - Engine ABI and public headers.
+- Platform runtime layer (platform/sys/launcher/setup/tools runtime surfaces).
 - Authority model and refusal semantics.
 - Collapse / expand contract and macro capsule invariants.
 
