@@ -133,6 +133,7 @@ document is binding but still expected to grow or sharpen.
 | `docs/distribution/PACK_SOURCES.md` | FROZEN | Pack sources and mirrors |
 | `docs/architecture/LOCKLIST.md` | FROZEN | Frozen seams, reserved surfaces, and override policy |
 | `docs/architecture/PLATFORM_RESPONSIBILITY.md` | FROZEN | Platform runtime scope and invariants |
+| `docs/architecture/RENDERER_RESPONSIBILITY.md` | FROZEN | Renderer scope and determinism invariants |
 ## Evolving but binding surfaces
 
 
