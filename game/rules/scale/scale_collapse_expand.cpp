@@ -11,7 +11,7 @@ DETERMINISM: Collapse/expand results are stable across threads and replay.
 */
 #include "dominium/rules/scale/scale_collapse_expand.h"
 
-#include "domino/core/rng.h"
+#include "domino/core/rng_model.h"
 
 #include <stdarg.h>
 #include <stdio.h>
@@ -42,6 +42,11 @@ enum {
     DOM_SCALE_DETAIL_BUDGET_SNAPSHOT = 20u,
     DOM_SCALE_DETAIL_DEFER_QUEUE_LIMIT = 21u
 };
+
+static const char* g_scale_rng_stream_agents_reconstruct =
+    "noise.stream.scale.agents.reconstruct";
+static const char* g_scale_rng_state_ext_agents_reconstruct =
+    "rng.state.noise.stream.scale.agents.reconstruct";
 
 static u64 dom_scale_fnv1a64_init(void)
 {
@@ -144,6 +149,43 @@ static int dom_scale_parse_i64(const char* text, dom_act_time_t* out_value)
     }
     *out_value = neg ? (dom_act_time_t)(-(i64)value) : (dom_act_time_t)value;
     return 1;
+}
+
+static int dom_scale_parse_u64_strict(const char* text, u64* out_value)
+{
+    const char* p;
+    u64 value = 0u;
+    if (!text || !out_value || *text == '\0') {
+        return 0;
+    }
+    p = text;
+    while (*p) {
+        char c = *p++;
+        if (c < '0' || c > '9') {
+            return 0;
+        }
+        value = value * 10u + (u64)(c - '0');
+    }
+    *out_value = value;
+    return 1;
+}
+
+static u32 dom_scale_rng_state_from_seed(u32 base_seed, u64 domain_id, const char* stream_name)
+{
+    d_rng_state rng;
+    u32 adjusted = base_seed;
+    u32 domain_fold = d_rng_fold_u64(domain_id);
+    u32 stream_hash = d_rng_hash_str32(stream_name);
+    adjusted ^= domain_fold;
+    adjusted ^= stream_hash;
+    d_rng_state_from_context(&rng,
+                             (u64)adjusted,
+                             domain_id,
+                             0u,
+                             0u,
+                             stream_name,
+                             D_RNG_MIX_DOMAIN | D_RNG_MIX_STREAM);
+    return rng.state;
 }
 
 static int dom_scale_is_tier2(dom_fidelity_tier tier)
@@ -2008,6 +2050,8 @@ typedef struct dom_scale_capsule_data {
     u32 extension_count;
     u32 extension_capacity;
     int extension_parse_ok;
+    u32 rng_state_agents_reconstruct;
+    int rng_state_agents_present;
 
     dom_scale_resource_entry* resources;
     u32 resource_count;
@@ -2185,6 +2229,33 @@ static int dom_scale_extensions_add_or_update_i64(dom_scale_capsule_data* data,
     return dom_scale_extensions_add_or_update(data, key, buffer);
 }
 
+static const char* dom_scale_extensions_get(const dom_scale_capsule_data* data,
+                                            const char* key)
+{
+    u32 i;
+    if (!data || !data->extensions || !key) {
+        return 0;
+    }
+    for (i = 0u; i < data->extension_count; ++i) {
+        const dom_scale_extension_pair* pair = &data->extensions[i];
+        if (dom_scale_extension_key_cmp(pair->key, key) == 0) {
+            return pair->value;
+        }
+    }
+    return 0;
+}
+
+static int dom_scale_extensions_get_u64(const dom_scale_capsule_data* data,
+                                        const char* key,
+                                        u64* out_value)
+{
+    const char* text = dom_scale_extensions_get(data, key);
+    if (!text || !out_value) {
+        return 0;
+    }
+    return dom_scale_parse_u64_strict(text, out_value);
+}
+
 static void dom_scale_extensions_clear(dom_scale_capsule_data* data)
 {
     u32 i;
@@ -2289,6 +2360,25 @@ static int dom_scale_extensions_ensure_scale1(dom_scale_capsule_data* data)
     return dom_scale_extensions_add_or_update(data, "dominium.scale1", "v1");
 }
 
+static int dom_scale_extensions_ensure_rng_state(dom_scale_capsule_data* data)
+{
+    u32 rng_state;
+    if (!data) {
+        return 0;
+    }
+    if (data->summary.domain_kind != DOM_SCALE_DOMAIN_AGENTS) {
+        return 1;
+    }
+    rng_state = dom_scale_rng_state_from_seed(data->summary.seed_base,
+                                              data->summary.domain_id,
+                                              g_scale_rng_stream_agents_reconstruct);
+    data->rng_state_agents_reconstruct = rng_state;
+    data->rng_state_agents_present = 1;
+    return dom_scale_extensions_add_or_update_u64(data,
+                                                  g_scale_rng_state_ext_agents_reconstruct,
+                                                  rng_state);
+}
+
 static size_t dom_scale_extensions_serialized_len(const dom_scale_capsule_data* data)
 {
     size_t len = 4u;
@@ -2321,26 +2411,40 @@ static void dom_scale_extensions_write(dom_scale_writer* w,
     }
 }
 
-static size_t dom_scale_extension_len(void)
+static size_t dom_scale_extension_len(const char* rng_state_value)
 {
     const char* key = "dominium.scale1";
     const char* value = "v1";
+    const char* rng_key = g_scale_rng_state_ext_agents_reconstruct;
+    int has_rng = (rng_state_value && *rng_state_value) ? 1 : 0;
     size_t len = 0u;
     len += 4u; /* ext_count */
     len += 4u + strlen(key);
     len += 4u + strlen(value);
+    if (has_rng) {
+        len += 4u + strlen(rng_key);
+        len += 4u + strlen(rng_state_value);
+    }
     return len;
 }
 
-static void dom_scale_write_extensions(dom_scale_writer* w)
+static void dom_scale_write_extensions(dom_scale_writer* w, const char* rng_state_value)
 {
     const char* key = "dominium.scale1";
     const char* value = "v1";
-    dom_scale_writer_write_u32(w, 1u);
+    const char* rng_key = g_scale_rng_state_ext_agents_reconstruct;
+    int has_rng = (rng_state_value && *rng_state_value) ? 1 : 0;
+    dom_scale_writer_write_u32(w, has_rng ? 2u : 1u);
     dom_scale_writer_write_u32(w, (u32)strlen(key));
     dom_scale_writer_write_bytes(w, (const unsigned char*)key, strlen(key));
     dom_scale_writer_write_u32(w, (u32)strlen(value));
     dom_scale_writer_write_bytes(w, (const unsigned char*)value, strlen(value));
+    if (has_rng) {
+        dom_scale_writer_write_u32(w, (u32)strlen(rng_key));
+        dom_scale_writer_write_bytes(w, (const unsigned char*)rng_key, strlen(rng_key));
+        dom_scale_writer_write_u32(w, (u32)strlen(rng_state_value));
+        dom_scale_writer_write_bytes(w, (const unsigned char*)rng_state_value, strlen(rng_state_value));
+    }
 }
 
 static const char* g_scale_invariant_ids[] = {
@@ -2808,13 +2912,15 @@ static int dom_scale_serialize_capsule(const dom_scale_domain_slot* slot,
     size_t schema_len = strlen(DOM_SCALE_MACRO_CAPSULE_SCHEMA);
     size_t invariant_list_len = dom_scale_string_list_len(g_scale_invariant_ids, invariant_id_count);
     size_t stat_list_len = 0u;
-    size_t extension_len = dom_scale_extension_len();
+    size_t extension_len = 0u;
     size_t payload_len = 0u;
     size_t total_len = 0u;
     unsigned char* bytes = 0;
     dom_scale_writer writer;
     u64 invariant_hash = 0u;
     u64 statistic_hash = 0u;
+    char rng_state_value[32];
+    const char* rng_value_ptr = 0;
 
     if (!slot || !out_bytes || !out_byte_count) {
         return -1;
@@ -2842,6 +2948,14 @@ static int dom_scale_serialize_capsule(const dom_scale_domain_slot* slot,
         payload_len = dom.payload_len;
         invariant_hash = dom.invariant_hash;
         statistic_hash = dom.statistic_hash;
+        if (slot->domain_kind == DOM_SCALE_DOMAIN_AGENTS) {
+            u32 rng_state = dom_scale_rng_state_from_seed(seed_base,
+                                                          slot->domain_id,
+                                                          g_scale_rng_stream_agents_reconstruct);
+            (void)snprintf(rng_state_value, sizeof(rng_state_value), "%u", rng_state);
+            rng_value_ptr = rng_state_value;
+        }
+        extension_len = dom_scale_extension_len(rng_value_ptr);
         total_len = dom_scale_header_size(schema_len, invariant_list_len, stat_list_len) +
                     payload_len + extension_len;
         bytes = (unsigned char*)malloc(total_len);
@@ -2876,7 +2990,7 @@ static int dom_scale_serialize_capsule(const dom_scale_domain_slot* slot,
                                            dom.planning,
                                            dom.planning_count);
         }
-        dom_scale_write_extensions(&writer);
+        dom_scale_write_extensions(&writer, rng_value_ptr);
         if (!writer.failed && writer.used != total_len) {
             writer.failed = 1;
         }
@@ -2991,6 +3105,9 @@ static int dom_scale_serialize_capsule_from_data(dom_scale_capsule_data* data,
     stat_list_len = dom_scale_string_list_len(stat_ids, stat_id_count);
 
     if (!dom_scale_extensions_ensure_scale1(data)) {
+        return -3;
+    }
+    if (!dom_scale_extensions_ensure_rng_state(data)) {
         return -3;
     }
 
@@ -3259,6 +3376,16 @@ static int dom_scale_capsule_parse(const unsigned char* bytes,
     if (!dom_scale_extensions_parse(out_data, reader.bytes + reader.pos, extension_len)) {
         dom_scale_capsule_data_free(out_data);
         return 0;
+    }
+    {
+        u64 rng_state = 0u;
+        if (dom_scale_extensions_get_u64(out_data,
+                                         g_scale_rng_state_ext_agents_reconstruct,
+                                         &rng_state) &&
+            rng_state <= 0xFFFFFFFFu) {
+            out_data->rng_state_agents_reconstruct = (u32)rng_state;
+            out_data->rng_state_agents_present = 1;
+        }
     }
     if (!dom_scale_reader_skip(&reader, (size_t)extension_len)) {
         dom_scale_capsule_data_free(out_data);
@@ -4120,7 +4247,14 @@ static int dom_scale_reconstruct_agents(dom_scale_domain_slot* slot,
         d_rng_state rng;
         u32 seed = data->summary.seed_base ? data->summary.seed_base
                                            : dom_scale_seed_base(data->summary.capsule_id, ctx->now_tick);
-        d_rng_seed(&rng, seed);
+        D_DET_GUARD_RNG_STREAM_NAME(g_scale_rng_stream_agents_reconstruct);
+        if (data->rng_state_agents_present) {
+            rng.state = data->rng_state_agents_reconstruct ? data->rng_state_agents_reconstruct : 1u;
+        } else {
+            rng.state = dom_scale_rng_state_from_seed(seed,
+                                                      slot->domain_id,
+                                                      g_scale_rng_stream_agents_reconstruct);
+        }
         for (i = 0u; i < count; ++i) {
             u32 r = d_rng_next_u32(&rng);
             temp[i].agent_id = ((slot->domain_id & 0xFFFFFFFFull) << 32) ^ (u64)(r ^ (i + 1u));

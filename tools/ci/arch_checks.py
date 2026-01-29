@@ -97,6 +97,12 @@ RNG_STD_RE = re.compile(
     r"\bstd::(random_device|mt19937|mt19937_64|seed_seq|uniform_|normal_|"
     r"bernoulli|binomial|poisson)\b"
 )
+RNG_SEED_CALL_RE = re.compile(r"\bd_rng_(seed|stream_seed|streams_seed)\s*\(")
+RNG_SEED_ALLOWLIST = {
+    "engine/modules/core/rng.c",
+    "engine/modules/core/rng_streams.c",
+    "engine/modules/core/rng_model.c",
+}
 
 UNORDERED_RE = re.compile(r"\bunordered_(map|set|multimap|multiset)\b")
 
@@ -748,6 +754,27 @@ def check_det_rng_002(repo_root):
     return check
 
 
+def check_det_rng_003(repo_root):
+    check = Check(
+        "DET-RNG-003",
+        "anonymous RNG seeding in authoritative zones (forbidden)",
+        "Use domino/core/rng_model.h helpers that require named RNG streams.",
+    )
+
+    for rel_dir in AUTHORITATIVE_DIRS:
+        root = os.path.join(repo_root, rel_dir)
+        if not os.path.isdir(root):
+            continue
+        for path in iter_files(root, repo_root):
+            rel = repo_rel(repo_root, path)
+            if rel in RNG_SEED_ALLOWLIST:
+                continue
+            for idx, code in iter_code_lines(path):
+                if RNG_SEED_CALL_RE.search(code):
+                    check.add_violation(rel, idx, "d_rng_seed usage")
+    return check
+
+
 def check_det_ord_004(repo_root):
     check = Check(
         "DET-ORD-004",
@@ -946,6 +973,7 @@ def run_checks(repo_root, strict=False):
         check_det_float_003(repo_root),
         check_det_time_001(repo_root),
         check_det_rng_002(repo_root),
+        check_det_rng_003(repo_root),
         check_det_ord_004(repo_root),
         check_perf_global_002(repo_root),
         check_scale_int_001(repo_root),

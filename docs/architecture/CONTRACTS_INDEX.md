@@ -79,6 +79,10 @@ document is binding but still expected to grow or sharpen.
 
 
 | `docs/architecture/DETERMINISTIC_REDUCTION_RULES.md` | FROZEN | Deterministic reduction operators |
+| `docs/architecture/RNG_MODEL.md` | FROZEN | Named RNG streams and derivation |
+| `docs/architecture/REDUCTION_MODEL.md` | FROZEN | Deterministic reduction merge order |
+| `docs/architecture/FLOAT_POLICY.md` | FROZEN | Floating point quarantine zones |
+| `docs/architecture/SIGNAL_MODEL.md` | FROZEN | Signal fields, interfaces, and computation rules |
 
 
 | `docs/architecture/LAW_ENFORCEMENT_POINTS.md` | FROZEN | Mandatory law gates |
@@ -103,6 +107,7 @@ document is binding but still expected to grow or sharpen.
 | `docs/architecture/AI_INTENT_MODEL.md` | FROZEN | AI intent production and modes |
 | `docs/architecture/AI_BUDGET_MODEL.md` | FROZEN | AI budget classes and fairness |
 | `docs/architecture/BUNDLE_MODEL.md` | FROZEN | Shareable bundle container and rules |
+| `docs/architecture/BUGREPORT_MODEL.md` | FROZEN | Bugreport bundle contents and rules |
 
 
 | `docs/distribution/PACK_TAXONOMY.md` | FROZEN | Canonical pack classes |
@@ -126,6 +131,7 @@ document is binding but still expected to grow or sharpen.
 | `docs/architecture/LIVE_EVOLUTION_MODEL.md` | FROZEN | Rolling updates and rollback safety |
 | `docs/architecture/LEGACY_SUPPORT_MODEL.md` | FROZEN | Legacy binaries and degraded modes |
 | `docs/distribution/PACK_SOURCES.md` | FROZEN | Pack sources and mirrors |
+| `docs/architecture/LOCKLIST.md` | FROZEN | Frozen seams, reserved surfaces, and override policy |
 ## Evolving but binding surfaces
 
 
@@ -247,6 +253,9 @@ Schemas are the authoritative data-shape contracts. Start here:
 - `schema/compat.report.schema`
 - `schema/ai.profile.schema`
 - `schema/bundle.container.schema`
+- `schema/bugreport.bundle.schema`
+- `schema/signal.field.schema`
+- `schema/signal.interface.schema`
 Refusal code anchors:
 
 
@@ -264,6 +273,7 @@ Ordering anchors:
 
 - `docs/architecture/DETERMINISTIC_ORDERING_POLICY.md`
 
+- `docs/architecture/REDUCTION_MODEL.md`
 
 - `docs/architecture/EXECUTION_REORDERING_POLICY.md`
 
@@ -281,6 +291,7 @@ Contract enforcement lives under:
 
 
 - `tests/contract/`
+ - `tests/invariant/`
 
 
 - `tests/app/` (legacy and adjacent contract checks)

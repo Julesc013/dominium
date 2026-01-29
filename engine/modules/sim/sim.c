@@ -17,7 +17,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 
 #include "domino/core/types.h"
 #include "domino/core/fixed.h"
-#include "domino/core/rng.h"
+#include "domino/core/rng_model.h"
 #include "core/d_subsystem.h"
 #include "core/d_serialize_tags.h"
 #include "domino/core/d_tlv.h"
@@ -32,6 +32,20 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #define WORLD_MAGIC_3 'L'
 #define WORLD_VERSION        2
 #define WORLD_VERSION_LEGACY 1
+
+static const char* g_world_rng_stream = "noise.stream.world.seed.base";
+
+static void d_world_rng_seed_named(d_rng_state* rng, u32 seed)
+{
+    u32 adjusted = seed ^ d_rng_hash_str32(g_world_rng_stream);
+    d_rng_state_from_context(rng,
+                             (u64)adjusted,
+                             0u,
+                             0u,
+                             0u,
+                             g_world_rng_stream,
+                             D_RNG_MIX_STREAM);
+}
 
 static int g_world_subsystem_registered = 0;
 static unsigned char *g_world_save_blob = (unsigned char *)0;
@@ -95,7 +109,7 @@ d_world* d_world_create_from_config(const d_world_config* cfg) {
     w->width = cfg->width;
     w->height = cfg->height;
     w->tick_count = 0u;
-    d_rng_seed(&w->rng, cfg->seed);
+    d_world_rng_seed_named(&w->rng, cfg->seed);
 
     count = w->width * w->height;
     w->tile_type = (u16*)malloc(sizeof(u16) * count);
@@ -333,7 +347,7 @@ static int d_world_load_instance_subsys(struct d_world *w, const struct d_tlv_bl
                 return -1;
             }
             w->meta.seed = cfg_seed;
-            d_rng_seed(&w->rng, w->meta.seed);
+            d_world_rng_seed_named(&w->rng, w->meta.seed);
             cfg_read = 1;
         } else if (tlv_type == TLV_WORLD_TILES) {
             u32 count;

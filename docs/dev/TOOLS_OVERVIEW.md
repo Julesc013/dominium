@@ -33,13 +33,19 @@ All tools are CLI-first. TUI/GUI shells must invoke these tools with identical a
   - Example:
     - `python tools/inspect/refusal_explain.py --input tmp/fab_validate.json --data data/packs/org.dominium.core.parts.basic/data/fab_pack.json --format json`
 
-## Diff & Comparison
-- `tools/fab/fab_diff.py`
-  - Diffs two FAB packs and reports compatibility impact.
-  - Example:
-    - `python tools/fab/fab_diff.py --left data/packs/org.dominium.core.parts.basic --right data/packs/org.dominium.core.parts.extended --format json`
-- `tools/playtest/replay_diff.py`
-  - Diffs two replays and reports event/refusal divergence.
+## Diff & Comparison
+- `tools/fab/fab_diff.py`
+  - Diffs two FAB packs and reports compatibility impact.
+  - Example:
+    - `python tools/fab/fab_diff.py --left data/packs/org.dominium.core.parts.basic --right data/packs/org.dominium.core.parts.extended --format json`
+- `tools/playtest/replay_diff.py`
+  - Diffs two replays and reports event/refusal divergence.
+
+## Bugreporting
+- `tools/bugreport/bugreport_cli.py`
+  - Creates and inspects reproducible bugreport bundles with replay context.
+  - Example:
+    - `python tools/bugreport/bugreport_cli.py create --replay-bundle tmp/replay_bundle --install-manifest tmp/install.manifest.json --instance-manifest tmp/instance.manifest.json --runtime-descriptor tmp/runtime.descriptor.json --compat-report tmp/compat_report.json --ops-log tmp/ops.log --out tmp/bugreport_bundle`
 
 ## Determinism & Safety
 - Tools are read-only and must never mutate simulation state.

@@ -15,6 +15,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include <string.h>
 
 #include "d_world.h"
+#include "domino/core/rng_model.h"
 #include "core/d_subsystem.h"
 #include "d_worldgen.h"
 #include "scale/d_macro_capsule_store.h"
@@ -23,6 +24,20 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 
 /* Forward declaration; implemented in core subsystem init. */
 void d_subsystems_init(void);
+
+static const char* g_world_rng_stream = "noise.stream.world.seed.base";
+
+static void d_world_rng_seed_named(d_rng_state* rng, u32 seed)
+{
+    u32 adjusted = seed ^ d_rng_hash_str32(g_world_rng_stream);
+    d_rng_state_from_context(rng,
+                             (u64)adjusted,
+                             0u,
+                             0u,
+                             0u,
+                             g_world_rng_stream,
+                             D_RNG_MIX_STREAM);
+}
 
 static int d_world_reserve_chunks(d_world *w, u32 capacity) {
     d_chunk *new_chunks;
@@ -98,7 +113,7 @@ d_world *d_world_create(const d_world_meta *meta) {
     w->macro_event_count = 0u;
     w->macro_event_capacity = 0u;
     w->macro_event_sequence = 0u;
-    d_rng_seed(&w->rng, w->worldgen_seed);
+    d_world_rng_seed_named(&w->rng, w->worldgen_seed);
 
     if (d_world_reserve_chunks(w, 8u) != 0) {
         free(w);
