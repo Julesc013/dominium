@@ -24,11 +24,25 @@ extern "C" {
 const d_gfx_backend_soft* d_gfx_stub_register_dx7(void);
 const d_gfx_backend_soft* d_gfx_stub_register_dx9(void);
 const d_gfx_backend_soft* d_gfx_stub_register_dx11(void);
+const d_gfx_backend_soft* d_gfx_stub_register_dx12(void);
+const d_gfx_backend_soft* d_gfx_stub_register_gl1(void);
 const d_gfx_backend_soft* d_gfx_stub_register_gl2(void);
 const d_gfx_backend_soft* d_gfx_stub_register_vk1(void);
 const d_gfx_backend_soft* d_gfx_stub_register_metal(void);
 const d_gfx_backend_soft* d_gfx_stub_register_vesa(void);
 const d_gfx_backend_soft* d_gfx_stub_register_vga(void);
+const d_gfx_backend_soft* d_gfx_stub_register_cga(void);
+const d_gfx_backend_soft* d_gfx_stub_register_ega(void);
+const d_gfx_backend_soft* d_gfx_stub_register_xga(void);
+const d_gfx_backend_soft* d_gfx_stub_register_herc(void);
+const d_gfx_backend_soft* d_gfx_stub_register_mda(void);
+const d_gfx_backend_soft* d_gfx_stub_register_gdi(void);
+const d_gfx_backend_soft* d_gfx_stub_register_quickdraw(void);
+const d_gfx_backend_soft* d_gfx_stub_register_quartz(void);
+const d_gfx_backend_soft* d_gfx_stub_register_x11(void);
+const d_gfx_backend_soft* d_gfx_stub_register_cocoa(void);
+const d_gfx_backend_soft* d_gfx_stub_register_sdl1(void);
+const d_gfx_backend_soft* d_gfx_stub_register_sdl2(void);
 
 /* True if backend is soft-backed (soft or stub). */
 int d_gfx_stub_uses_soft(const d_gfx_backend_soft* backend);

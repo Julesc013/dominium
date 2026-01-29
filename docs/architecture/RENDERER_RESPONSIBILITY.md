@@ -56,6 +56,7 @@ Each GPU renderer must:
 - GPU backends may ship as soft-backed stubs when APIs/drivers are unavailable.
 - Stubs must be deterministic and presentation-only.
 - Stubs must still report capabilities honestly and refuse unsupported features explicitly.
+- Legacy backends (VGA/CGA/EGA/XGA, QuickDraw, GDI, etc.) may be implemented as soft-backed stubs.
 
 ### Bare‑metal / minimal renderer
 

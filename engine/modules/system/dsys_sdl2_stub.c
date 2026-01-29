@@ -221,7 +221,8 @@ static bool dsys_sdl2_get_path(dsys_path_kind kind, char* buf, size_t buf_size)
 
     if (!src) {
 #if defined(_WIN32)
-        if (_getcwd(cwd, sizeof(cwd)) != NULL) {
+        DWORD len = GetCurrentDirectoryA((DWORD)sizeof(cwd), cwd);
+        if (len > 0 && len < sizeof(cwd)) {
             src = cwd;
         }
 #else

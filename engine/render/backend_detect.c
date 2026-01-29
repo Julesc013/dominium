@@ -57,6 +57,16 @@ u32 d_gfx_detect_backends(d_gfx_backend_info* out_list, u32 max_count)
     }
 
     if (count < max_count) {
+        int built = DOM_BACKEND_SOFT ? 1 : 0;
+        d_gfx_backend_info_set(
+            &out_list[count++],
+            D_GFX_BACKEND_DX7,
+            built,
+            "dx7",
+            built ? "Soft-backed stub (legacy)" : "Disabled at build");
+    }
+
+    if (count < max_count) {
         d_gfx_backend_info_set(
             &out_list[count++],
             D_GFX_BACKEND_SOFT,
@@ -92,6 +102,16 @@ u32 d_gfx_detect_backends(d_gfx_backend_info* out_list, u32 max_count)
             built,
             "dx11",
             built ? "Soft-backed stub (software raster)" : "Disabled at build");
+    }
+
+    if (count < max_count) {
+        int built = DOM_BACKEND_SOFT ? 1 : 0;
+        d_gfx_backend_info_set(
+            &out_list[count++],
+            D_GFX_BACKEND_GL1,
+            built,
+            "gl1",
+            built ? "Soft-backed stub (legacy OpenGL)" : "Disabled at build");
     }
 
     if (count < max_count) {
