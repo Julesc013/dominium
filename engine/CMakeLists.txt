@@ -225,6 +225,7 @@ set(ENGINE_SYSTEM_SOURCES
     modules/system/dsys_guard.c
     modules/system/dsys_dir_sorted.c
     modules/system/dsys_perf.c
+    modules/system/dsys_platform_stub.c
     modules/system/dsys_stub.c
     modules/system/dsys_term.c
     modules/system/dsys_posix.c
@@ -335,8 +336,8 @@ set_target_properties(domino_engine PROPERTIES
     CXX_EXTENSIONS OFF
 )
 
-set(DOMINO_SYS_BACKEND "auto" CACHE STRING "System backend (auto|win32|win32_headless|posix_headless|sdl2|null)")
-set_property(CACHE DOMINO_SYS_BACKEND PROPERTY STRINGS auto win32 win32_headless posix_headless sdl2 null)
+set(DOMINO_SYS_BACKEND "auto" CACHE STRING "System backend (auto|win32|win32_headless|posix_headless|sdl2|null|x11|wayland|cocoa|carbon|sdl1|dos16|dos32|win16|cpm80|cpm86)")
+set_property(CACHE DOMINO_SYS_BACKEND PROPERTY STRINGS auto win32 win32_headless posix_headless sdl2 null x11 wayland cocoa carbon sdl1 dos16 dos32 win16 cpm80 cpm86)
 
 if(DOMINO_SYS_BACKEND STREQUAL "auto")
     if(WIN32)
@@ -356,6 +357,26 @@ elseif(_dom_sys_backend STREQUAL "posix_headless")
     target_compile_definitions(domino_engine PRIVATE DSYS_BACKEND_POSIX)
 elseif(_dom_sys_backend STREQUAL "sdl2")
     target_compile_definitions(domino_engine PRIVATE DSYS_BACKEND_SDL2)
+elseif(_dom_sys_backend STREQUAL "x11")
+    target_compile_definitions(domino_engine PRIVATE DSYS_BACKEND_X11)
+elseif(_dom_sys_backend STREQUAL "wayland")
+    target_compile_definitions(domino_engine PRIVATE DSYS_BACKEND_WAYLAND)
+elseif(_dom_sys_backend STREQUAL "cocoa")
+    target_compile_definitions(domino_engine PRIVATE DSYS_BACKEND_COCOA)
+elseif(_dom_sys_backend STREQUAL "carbon")
+    target_compile_definitions(domino_engine PRIVATE DSYS_BACKEND_CARBON)
+elseif(_dom_sys_backend STREQUAL "sdl1")
+    target_compile_definitions(domino_engine PRIVATE DSYS_BACKEND_SDL1)
+elseif(_dom_sys_backend STREQUAL "dos16")
+    target_compile_definitions(domino_engine PRIVATE DSYS_BACKEND_DOS16)
+elseif(_dom_sys_backend STREQUAL "dos32")
+    target_compile_definitions(domino_engine PRIVATE DSYS_BACKEND_DOS32)
+elseif(_dom_sys_backend STREQUAL "win16")
+    target_compile_definitions(domino_engine PRIVATE DSYS_BACKEND_WIN16)
+elseif(_dom_sys_backend STREQUAL "cpm80")
+    target_compile_definitions(domino_engine PRIVATE DSYS_BACKEND_CPM80)
+elseif(_dom_sys_backend STREQUAL "cpm86")
+    target_compile_definitions(domino_engine PRIVATE DSYS_BACKEND_CPM86)
 elseif(_dom_sys_backend STREQUAL "null")
     target_compile_definitions(domino_engine PRIVATE DSYS_BACKEND_NULL)
 else()

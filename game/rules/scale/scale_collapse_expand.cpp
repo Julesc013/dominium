@@ -1493,6 +1493,8 @@ static void dom_scale_emit_macro_compact(dom_scale_context* ctx,
     dom_scale_event_emit(ctx->event_log, &ev);
 }
 
+typedef struct dom_scale_capsule_data dom_scale_capsule_data;
+
 static int dom_scale_expand_apply(dom_scale_context* ctx,
                                   dom_scale_domain_slot* slot,
                                   dom_scale_capsule_data data,
@@ -2036,7 +2038,7 @@ typedef struct dom_scale_extension_pair {
     char* value;
 } dom_scale_extension_pair;
 
-typedef struct dom_scale_capsule_data {
+struct dom_scale_capsule_data {
     dom_scale_capsule_summary summary;
     u64 invariant_hash;
     u64 statistic_hash;
@@ -2074,7 +2076,7 @@ typedef struct dom_scale_capsule_data {
 
     dom_scale_agent_entry* agents;
     u32 agent_count;
-} dom_scale_capsule_data;
+};
 
 static void dom_scale_capsule_data_init(dom_scale_capsule_data* data)
 {

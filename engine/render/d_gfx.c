@@ -23,7 +23,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "domino/sys.h"
 #include "soft/d_gfx_soft.h"
 #include "render/null/d_gfx_null.h"
-#include "render/stub/d_gfx_stub.h"
+#include "stub/d_gfx_stub.h"
 
 /* Backbuffer defaults */
 static i32 g_backbuffer_w = 800;
@@ -714,6 +714,20 @@ static const d_gfx_backend_soft* dgfx_choose_backend(const char* backend_name, c
         return d_gfx_stub_register_dx11();
     }
 #endif
+#if DOM_BACKEND_SOFT
+    if (strcmp(backend_name, "dx12") == 0) {
+        if (out_name) *out_name = "dx12";
+        if (out_reason) *out_reason = "soft-backed stub";
+        return d_gfx_stub_register_dx12();
+    }
+#endif
+#if DOM_BACKEND_GL2
+    if (strcmp(backend_name, "gl1") == 0) {
+        if (out_name) *out_name = "gl1";
+        if (out_reason) *out_reason = "soft-backed stub";
+        return d_gfx_stub_register_gl1();
+    }
+#endif
 #if DOM_BACKEND_GL2
     if (strcmp(backend_name, "gl2") == 0) {
         if (out_name) *out_name = "gl2";
@@ -752,6 +766,66 @@ static const d_gfx_backend_soft* dgfx_choose_backend(const char* backend_name, c
         if (out_name) *out_name = "vesa";
         if (out_reason) *out_reason = "soft-backed stub";
         return d_gfx_stub_register_vesa();
+    }
+    if (strcmp(backend_name, "cga") == 0) {
+        if (out_name) *out_name = "cga";
+        if (out_reason) *out_reason = "soft-backed stub";
+        return d_gfx_stub_register_cga();
+    }
+    if (strcmp(backend_name, "ega") == 0) {
+        if (out_name) *out_name = "ega";
+        if (out_reason) *out_reason = "soft-backed stub";
+        return d_gfx_stub_register_ega();
+    }
+    if (strcmp(backend_name, "xga") == 0) {
+        if (out_name) *out_name = "xga";
+        if (out_reason) *out_reason = "soft-backed stub";
+        return d_gfx_stub_register_xga();
+    }
+    if (strcmp(backend_name, "herc") == 0 || strcmp(backend_name, "hercules") == 0) {
+        if (out_name) *out_name = "herc";
+        if (out_reason) *out_reason = "soft-backed stub";
+        return d_gfx_stub_register_herc();
+    }
+    if (strcmp(backend_name, "mda") == 0) {
+        if (out_name) *out_name = "mda";
+        if (out_reason) *out_reason = "soft-backed stub";
+        return d_gfx_stub_register_mda();
+    }
+    if (strcmp(backend_name, "gdi") == 0) {
+        if (out_name) *out_name = "gdi";
+        if (out_reason) *out_reason = "soft-backed stub";
+        return d_gfx_stub_register_gdi();
+    }
+    if (strcmp(backend_name, "quickdraw") == 0) {
+        if (out_name) *out_name = "quickdraw";
+        if (out_reason) *out_reason = "soft-backed stub";
+        return d_gfx_stub_register_quickdraw();
+    }
+    if (strcmp(backend_name, "quartz") == 0) {
+        if (out_name) *out_name = "quartz";
+        if (out_reason) *out_reason = "soft-backed stub";
+        return d_gfx_stub_register_quartz();
+    }
+    if (strcmp(backend_name, "x11") == 0) {
+        if (out_name) *out_name = "x11";
+        if (out_reason) *out_reason = "soft-backed stub";
+        return d_gfx_stub_register_x11();
+    }
+    if (strcmp(backend_name, "cocoa") == 0) {
+        if (out_name) *out_name = "cocoa";
+        if (out_reason) *out_reason = "soft-backed stub";
+        return d_gfx_stub_register_cocoa();
+    }
+    if (strcmp(backend_name, "sdl1") == 0) {
+        if (out_name) *out_name = "sdl1";
+        if (out_reason) *out_reason = "soft-backed stub";
+        return d_gfx_stub_register_sdl1();
+    }
+    if (strcmp(backend_name, "sdl2") == 0) {
+        if (out_name) *out_name = "sdl2";
+        if (out_reason) *out_reason = "soft-backed stub";
+        return d_gfx_stub_register_sdl2();
     }
     if (strcmp(backend_name, "opengl") == 0 || strcmp(backend_name, "gl") == 0) {
         if (out_name) *out_name = "gl2";
@@ -1038,9 +1112,25 @@ int dgfx_init(const dgfx_desc *desc)
         else if (desc->backend == DGFX_BACKEND_DX9) backend_name = "dx9";
         else if (desc->backend == DGFX_BACKEND_DX11) backend_name = "dx11";
         else if (desc->backend == DGFX_BACKEND_GL2) backend_name = "gl2";
+        else if (desc->backend == DGFX_BACKEND_GL1) backend_name = "gl1";
         else if (desc->backend == DGFX_BACKEND_VK1) backend_name = "vk1";
         else if (desc->backend == DGFX_BACKEND_METAL) backend_name = "metal";
         else if (desc->backend == DGFX_BACKEND_NULL) backend_name = "null";
+        else if (desc->backend == DGFX_BACKEND_DX7) backend_name = "dx7";
+        else if (desc->backend == DGFX_BACKEND_GDI) backend_name = "gdi";
+        else if (desc->backend == DGFX_BACKEND_VESA) backend_name = "vesa";
+        else if (desc->backend == DGFX_BACKEND_VGA) backend_name = "vga";
+        else if (desc->backend == DGFX_BACKEND_CGA) backend_name = "cga";
+        else if (desc->backend == DGFX_BACKEND_EGA) backend_name = "ega";
+        else if (desc->backend == DGFX_BACKEND_XGA) backend_name = "xga";
+        else if (desc->backend == DGFX_BACKEND_HERC) backend_name = "herc";
+        else if (desc->backend == DGFX_BACKEND_MDA) backend_name = "mda";
+        else if (desc->backend == DGFX_BACKEND_QUICKDRAW) backend_name = "quickdraw";
+        else if (desc->backend == DGFX_BACKEND_QUARTZ) backend_name = "quartz";
+        else if (desc->backend == DGFX_BACKEND_X11) backend_name = "x11";
+        else if (desc->backend == DGFX_BACKEND_COCOA) backend_name = "cocoa";
+        else if (desc->backend == DGFX_BACKEND_SDL1) backend_name = "sdl1";
+        else if (desc->backend == DGFX_BACKEND_SDL2) backend_name = "sdl2";
         else if (desc->backend != 0) {
             return 0;
         }

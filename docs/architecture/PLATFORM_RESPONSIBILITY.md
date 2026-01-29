@@ -55,9 +55,12 @@ All platforms expose the same abstract interfaces:
 
 ## Backend Selection & Modularity
 
-- Build-time selection is explicit via `DOMINO_SYS_BACKEND` (auto|win32|win32_headless|posix_headless|sdl2|null).
+- Build-time selection is explicit via `DOMINO_SYS_BACKEND`:
+  auto, win32, win32_headless, posix_headless, sdl2, null, x11, wayland,
+  cocoa, carbon, sdl1, dos16, dos32, win16, cpm80, cpm86.
 - Runtime selection (`dom_sys_select_backend`) may only choose compiled backends.
 - Headless stubs are permitted as long as they obey this contract and remain presentation-only.
+- Legacy backends (dos16/dos32/win16/cpm*) may be provided as stubs that expose only filesystem + time.
 
 ## Filesystem & Path Rules
 

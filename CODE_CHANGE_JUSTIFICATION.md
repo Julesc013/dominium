@@ -25,3 +25,12 @@ with deterministic directory iteration and presentation-only behavior.
 
 Why can this not be data? Platform and renderer integration is OS/runtime code that cannot be represented
 as data packs; deterministic filesystem iteration and backend dispatch must be enforced in code.
+
+### 2026-01-29 — SCALE collapse/expand type forward declaration fix
+
+Touched: game/
+
+Reason: Ensure dom_scale_capsule_data is declared before use so scale collapse/expand compiles cleanly.
+
+Why can this not be data? This is a compile-time type safety fix inside authoritative code and cannot be
+expressed or corrected via data packs or schemas.
