@@ -186,7 +186,11 @@
     },
     {
       "path": "docs/architecture/LOCKLIST.md",
-      "sha256": "bcce31dda34057bf6366376638598c59c3ed6ba349fddef8f341899f72ae742b"
+      "sha256": "236c9ca941c0e6b401cf7dea9aaab038f211546a98d2d9674677c4b0b5583acf"
+    },
+    {
+      "path": "docs/architecture/PLATFORM_RESPONSIBILITY.md",
+      "sha256": "c37f764400e0207bd9ea262ac3629c226f0c715e796aa4b528cd547868049744"
     }
   ],
   "generated_at": "2026-01-29T05:49:46.925302Z"
