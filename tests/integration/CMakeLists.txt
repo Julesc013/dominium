@@ -200,6 +200,13 @@ dom_add_testx(NAME signal_scaling
     LABELS ${DOM_TESTX_LABEL_SMOKE}
 )
 
+dom_add_testx(NAME terrain_geometry
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/terrain_geometry_tests.py
+        --tool $<TARGET_FILE:dom_tool_terrain>
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_SMOKE}
+)
+
 get_property(_dom_registered_products GLOBAL PROPERTY DOM_REGISTERED_PRODUCTS)
 get_property(_dom_registered_product_tests GLOBAL PROPERTY DOM_REGISTERED_PRODUCT_CLI_TESTS)
 get_property(_dom_registered_renderer_tests GLOBAL PROPERTY DOM_REGISTERED_RENDERER_TESTS)
