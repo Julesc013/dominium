@@ -9,9 +9,11 @@ This document enumerates the canonical build presets defined in
   `DOM_BACKEND_GL2=ON`, `DOM_BACKEND_DX9=ON`, `DOM_FETCH_SDL2=ON`.
 - `baseline-debug` / `baseline-release`:
   strict baseline (C90/C++98), `DOM_ENABLE_MODERN=OFF`, `DOM_PLATFORM=sdl2`,
-  `DOM_BACKEND_SOFT=ON`, `DOM_DISALLOW_DOWNLOADS=ON`, `DOM_FETCH_SDL2=OFF`.
+  `DOM_BACKEND_SOFT=ON`, `DOM_BACKEND_NULL=ON`, `DOM_BACKEND_SDL2=ON`,
+  `DOM_DISALLOW_DOWNLOADS=OFF`, `DOM_FETCH_SDL2=ON`.
 - `modern-debug` / `modern-release`:
-  baseline plus `DOM_ENABLE_MODERN=ON` and additional backends (`GL2`/`DX9`).
+  baseline plus `DOM_ENABLE_MODERN=ON`; debug enables `GL2` + `DX9`, release
+  enables `DX9` (GL2 remains OFF).
 
 ## Windows variants
 - `msvc-debug` / `msvc-release`: MSVC base presets with output directory overrides.
