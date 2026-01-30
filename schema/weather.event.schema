@@ -1,0 +1,46 @@
+SCHEMA: weather.event.schema
+schema_id: dominium.schema.weather.event
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic, scheduled weather events.
+- Events are replayable; effects are applied via provider queries.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- Event records do NOT define simulation algorithms.
+- No erosion, fluids, or life behavior is implied.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- integer: non-negative whole number.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record weather_event
+  required:
+    - event_id: id
+    - event_type: tag
+    - affected_domain_ref: id
+    - start_tick: integer
+    - duration_ticks: integer
+    - intensity: number
+    - rng_stream_ref: id
+    - extensions: map
+  optional:
+    - region: map
+    - metadata: map
+
+MIGRATION:
+- Transform-only migrations are permitted via versioned transforms.
+- Old data MUST NOT be reinterpreted without explicit transformation or refusal.
+
+UNIT POLICY:
+- `start_tick` and `duration_ticks` use `unit.time.act_tick`.
+- `intensity` uses `unit.dimensionless.ratio`.

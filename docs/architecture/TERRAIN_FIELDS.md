@@ -34,6 +34,10 @@ All fields:
 - `climate.precipitation_range`
 - `climate.seasonality`
 - `climate.wind_prevailing`
+- `climate.temperature_current`
+- `climate.precipitation_current`
+- `env.surface_wetness`
+- `env.wind_current`
 - `env.wind`
 - `env.precipitation`
 - `eco.vegetation_density`
