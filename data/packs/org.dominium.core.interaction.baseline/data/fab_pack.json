@@ -1,0 +1,183 @@
+{
+  "materials": [],
+  "interfaces": [],
+  "parts": [
+    {
+      "part_id": "org.dominium.core.interaction.marker",
+      "material_ref": {
+        "material_id": "org.dominium.core.material.solid.generic"
+      },
+      "mass": {
+        "value": 1,
+        "unit": "unit.mass.kilogram",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "volume": {
+        "value": 1,
+        "unit": "unit.length.meter",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "interfaces": [
+        {
+          "interface_id": "org.dominium.core.interface.data.generic"
+        }
+      ],
+      "constraints": [
+        {
+          "constraint_id": "org.dominium.core.constraint.load.basic",
+          "constraint_tags": [
+            "org.dominium.constraint.simple"
+          ]
+        }
+      ],
+      "quality_requirements": {
+        "org.dominium.quality.class": "org.dominium.quality.basic"
+      },
+      "failure_model_ref": {
+        "failure_model_id": "org.dominium.core.failure_model.none"
+      },
+      "unit_annotations": {},
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.interaction.baseline.v1"
+      },
+      "extensions": {
+        "interaction_role": "marker",
+        "maturity": "BOUNDED"
+      }
+    },
+    {
+      "part_id": "org.dominium.core.interaction.beacon",
+      "material_ref": {
+        "material_id": "org.dominium.core.material.metal.generic"
+      },
+      "mass": {
+        "value": 2,
+        "unit": "unit.mass.kilogram",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "volume": {
+        "value": 1,
+        "unit": "unit.length.meter",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "interfaces": [
+        {
+          "interface_id": "org.dominium.core.interface.electrical.generic"
+        }
+      ],
+      "constraints": [
+        {
+          "constraint_id": "org.dominium.core.constraint.signal.basic",
+          "constraint_tags": [
+            "org.dominium.constraint.simple"
+          ]
+        }
+      ],
+      "quality_requirements": {
+        "org.dominium.quality.class": "org.dominium.quality.basic"
+      },
+      "failure_model_ref": {
+        "failure_model_id": "org.dominium.core.failure_model.none"
+      },
+      "unit_annotations": {},
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.interaction.baseline.v1"
+      },
+      "extensions": {
+        "interaction_role": "signal_emitter",
+        "signal_default": "off",
+        "maturity": "STRUCTURAL"
+      }
+    },
+    {
+      "part_id": "org.dominium.core.interaction.indicator",
+      "material_ref": {
+        "material_id": "org.dominium.core.material.solid.generic"
+      },
+      "mass": {
+        "value": 2,
+        "unit": "unit.mass.kilogram",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "volume": {
+        "value": 1,
+        "unit": "unit.length.meter",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "interfaces": [
+        {
+          "interface_id": "org.dominium.core.interface.electrical.generic"
+        }
+      ],
+      "constraints": [
+        {
+          "constraint_id": "org.dominium.core.constraint.signal.basic",
+          "constraint_tags": [
+            "org.dominium.constraint.simple"
+          ]
+        }
+      ],
+      "quality_requirements": {
+        "org.dominium.quality.class": "org.dominium.quality.basic"
+      },
+      "failure_model_ref": {
+        "failure_model_id": "org.dominium.core.failure_model.none"
+      },
+      "unit_annotations": {},
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.interaction.baseline.v1"
+      },
+      "extensions": {
+        "interaction_role": "signal_receiver",
+        "signal_default": "off",
+        "maturity": "STRUCTURAL"
+      }
+    }
+  ],
+  "assemblies": [],
+  "process_families": [],
+  "instruments": [
+    {
+      "instrument_id": "org.dominium.core.instrument.measure.baseline",
+      "measured_quantities": [
+        {
+          "quantity_tag": "org.dominium.quantity.length",
+          "unit": "unit.length.meter"
+        }
+      ],
+      "accuracy": {
+        "value": 1,
+        "unit": "unit.length.meter",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "precision": {
+        "value": 1,
+        "unit": "unit.length.meter",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "calibration_drift": {
+        "value": 1,
+        "unit": "unit.time.act_tick",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "required_standards": [
+        {
+          "standard_id": "org.dominium.core.standard.tolerance.length.basic"
+        }
+      ],
+      "unit_annotations": {},
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.interaction.baseline.v1"
+      },
+      "extensions": {
+        "notes": "Baseline position/distance measurement instrument.",
+        "maturity": "BOUNDED"
+      }
+    }
+  ],
+  "standards": [],
+  "qualities": [],
+  "batches": [],
+  "hazards": [],
+  "substances": []
+}

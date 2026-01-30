@@ -53,6 +53,7 @@
     "authority_policies": {{authority_policies}},
     "mode_policies": {{mode_policies}},
     "debug_policies": {{debug_policies}},
+    "interaction_policies": {{interaction_policies}},
     "playtest_policies": {{playtest_policies}},
     "camera_policies": {{camera_policies}}
   },

@@ -50,6 +50,8 @@ extern "C" {
 #define DOM_SHELL_NETWORK_MAX 4u
 #define DOM_SHELL_NETWORK_NODE_MAX 16u
 #define DOM_SHELL_NETWORK_EDGE_MAX 24u
+#define DOM_SHELL_INTERACTION_MAX_OBJECTS 64u
+#define DOM_SHELL_INTERACTION_TOOL_MAX 32u
 
 #define DOM_SHELL_SAVE_HEADER "DOMINIUM_SAVE_V1"
 #define DOM_SHELL_REPLAY_HEADER "DOMINIUM_REPLAY_V1"
@@ -203,6 +205,7 @@ typedef struct dom_shell_world_summary {
     dom_shell_policy_set authority;
     dom_shell_policy_set mode;
     dom_shell_policy_set debug;
+    dom_shell_policy_set interaction;
     dom_shell_policy_set playtest;
     dom_shell_policy_set camera;
 } dom_shell_world_summary;
@@ -255,6 +258,24 @@ typedef struct dom_shell_structure_state {
     dom_network_edge edges[4];
 } dom_shell_structure_state;
 
+typedef struct dom_shell_interaction_object {
+    u64 object_id;
+    char type_id[DOM_SHELL_MAX_TEMPLATE_ID];
+    double position[3];
+    int signal_state;
+    char provenance_id[DOM_SHELL_MAX_TEMPLATE_ID];
+} dom_shell_interaction_object;
+
+typedef struct dom_shell_interaction_state {
+    dom_shell_interaction_object objects[DOM_SHELL_INTERACTION_MAX_OBJECTS];
+    u32 object_count;
+    u64 next_object_id;
+    char selected_object_id[DOM_SHELL_MAX_TEMPLATE_ID];
+    char selected_tool[DOM_SHELL_INTERACTION_TOOL_MAX];
+    int preview_active;
+    dom_shell_interaction_object preview;
+} dom_shell_interaction_state;
+
 typedef enum dom_shell_delegation_status {
     DOM_SHELL_DELEGATION_PENDING = 0,
     DOM_SHELL_DELEGATION_ACCEPTED = 1,
@@ -292,6 +313,7 @@ typedef struct dom_client_shell {
     dom_shell_event_ring events;
     dom_shell_field_state fields;
     dom_shell_structure_state structure;
+    dom_shell_interaction_state interactions;
     dom_shell_agent_record agents[DOM_SHELL_AGENT_MAX];
     u32 agent_count;
     u64 next_agent_id;
@@ -330,6 +352,7 @@ typedef struct dom_client_shell {
     dom_shell_policy_set create_authority;
     dom_shell_policy_set create_mode;
     dom_shell_policy_set create_debug;
+    dom_shell_policy_set create_interaction;
     dom_shell_policy_set create_playtest;
     dom_shell_policy_set create_camera;
     dom_shell_variant_registry variant_registry;

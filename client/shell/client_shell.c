@@ -23,6 +23,22 @@ Client shell core implementation.
 #define DOM_REFUSAL_PROCESS_EPISTEMIC "PROC-REFUSAL-EPISTEMIC"
 #define DOM_REFUSAL_PLAYTEST "PLAYTEST-REFUSAL"
 #define DOM_REFUSAL_VARIANT "VARIANT-REFUSAL"
+#define DOM_SHELL_INTERACTION_PACK_ID "org.dominium.core.interaction.baseline"
+#define DOM_SHELL_INTERACTION_PROVENANCE "prov.org.dominium.core.interaction.baseline.v1"
+#define DOM_SHELL_INTERACTION_OBJ_MARKER "org.dominium.core.interaction.marker"
+#define DOM_SHELL_INTERACTION_OBJ_BEACON "org.dominium.core.interaction.beacon"
+#define DOM_SHELL_INTERACTION_OBJ_INDICATOR "org.dominium.core.interaction.indicator"
+#define DOM_SHELL_INTERACTION_TOOL_PLACE "place"
+#define DOM_SHELL_INTERACTION_TOOL_REMOVE "remove"
+#define DOM_SHELL_INTERACTION_TOOL_SIGNAL "signal"
+#define DOM_SHELL_INTERACTION_TOOL_MEASURE "measure"
+#define DOM_SHELL_INTERACTION_TOOL_INSPECT "inspect"
+#define DOM_SHELL_POLICY_INTERACTION_PLACE "policy.interaction.place"
+#define DOM_SHELL_POLICY_INTERACTION_REMOVE "policy.interaction.remove"
+#define DOM_SHELL_POLICY_INTERACTION_SIGNAL "policy.interaction.signal"
+#define DOM_SHELL_POLICY_INTERACTION_MEASURE "policy.interaction.measure"
+#define DOM_SHELL_POLICY_INTERACTION_INSPECT "policy.interaction.inspect"
+#define DOM_SHELL_POLICY_INTERACTION_RADIUS_PREFIX "policy.interaction.radius="
 
 #define DOM_SHELL_DEFAULT_SAVE_PATH "data/saves/world.save"
 #define DOM_SHELL_DEFAULT_REPLAY_PATH "data/saves/session.replay"
@@ -59,6 +75,19 @@ typedef struct dom_shell_edge_def {
     const char* child_id;
 } dom_shell_edge_def;
 
+typedef struct dom_shell_interaction_def {
+    const char* type_id;
+    const char* kind;
+    const char* provenance_id;
+    int signal_capable;
+} dom_shell_interaction_def;
+
+static const dom_shell_interaction_def dom_shell_interaction_defs[] = {
+    { DOM_SHELL_INTERACTION_OBJ_MARKER, "marker", DOM_SHELL_INTERACTION_PROVENANCE, 0 },
+    { DOM_SHELL_INTERACTION_OBJ_BEACON, "beacon", DOM_SHELL_INTERACTION_PROVENANCE, 1 },
+    { DOM_SHELL_INTERACTION_OBJ_INDICATOR, "indicator", DOM_SHELL_INTERACTION_PROVENANCE, 1 }
+};
+
 typedef struct dom_shell_scenario_field {
     u32 field_id;
     i32 value_q16;
@@ -85,6 +114,7 @@ typedef struct dom_shell_scenario_desc {
     dom_shell_policy_set authority;
     dom_shell_policy_set mode;
     dom_shell_policy_set debug;
+    dom_shell_policy_set interaction;
     dom_shell_policy_set playtest;
     dom_shell_variant_selection variants[DOM_SHELL_MAX_VARIANTS];
     u32 variant_count;
@@ -101,6 +131,7 @@ typedef struct dom_shell_variant_desc {
     dom_shell_policy_set authority;
     dom_shell_policy_set mode;
     dom_shell_policy_set debug;
+    dom_shell_policy_set interaction;
     dom_shell_policy_set playtest;
     dom_shell_variant_selection variants[DOM_SHELL_MAX_VARIANTS];
     u32 variant_count;
@@ -110,6 +141,7 @@ typedef struct dom_shell_variant_desc {
     u32 authority_set;
     u32 mode_set;
     u32 debug_set;
+    u32 interaction_set;
     u32 playtest_set;
     u32 lockfile_id_set;
     u32 lockfile_hash_set;
@@ -405,6 +437,105 @@ static int dom_shell_policy_set_to_json(const dom_shell_policy_set* set, char* o
         return 0;
     }
     return 1;
+}
+
+static const dom_shell_interaction_def* dom_shell_interaction_find_def(const char* type_id)
+{
+    uint32_t i;
+    if (!type_id || !type_id[0]) {
+        return 0;
+    }
+    for (i = 0u; i < (uint32_t)(sizeof(dom_shell_interaction_defs) /
+                               sizeof(dom_shell_interaction_defs[0])); ++i) {
+        if (strcmp(dom_shell_interaction_defs[i].type_id, type_id) == 0) {
+            return &dom_shell_interaction_defs[i];
+        }
+    }
+    return 0;
+}
+
+static int dom_shell_interaction_tool_valid(const char* tool)
+{
+    if (!tool || !tool[0]) {
+        return 0;
+    }
+    return strcmp(tool, DOM_SHELL_INTERACTION_TOOL_PLACE) == 0 ||
+           strcmp(tool, DOM_SHELL_INTERACTION_TOOL_REMOVE) == 0 ||
+           strcmp(tool, DOM_SHELL_INTERACTION_TOOL_SIGNAL) == 0 ||
+           strcmp(tool, DOM_SHELL_INTERACTION_TOOL_MEASURE) == 0 ||
+           strcmp(tool, DOM_SHELL_INTERACTION_TOOL_INSPECT) == 0;
+}
+
+static void dom_shell_interaction_reset(dom_shell_interaction_state* state)
+{
+    if (!state) {
+        return;
+    }
+    memset(state, 0, sizeof(*state));
+    state->next_object_id = 1u;
+    strncpy(state->selected_object_id, DOM_SHELL_INTERACTION_OBJ_MARKER,
+            sizeof(state->selected_object_id) - 1u);
+    strncpy(state->selected_tool, DOM_SHELL_INTERACTION_TOOL_PLACE,
+            sizeof(state->selected_tool) - 1u);
+}
+
+static int dom_shell_interaction_radius_m(const dom_shell_policy_set* set, double* out_radius)
+{
+    size_t prefix_len = strlen(DOM_SHELL_POLICY_INTERACTION_RADIUS_PREFIX);
+    uint32_t i;
+    if (!set || set->count == 0u) {
+        return 0;
+    }
+    for (i = 0u; i < set->count; ++i) {
+        const char* item = set->items[i];
+        if (strncmp(item, DOM_SHELL_POLICY_INTERACTION_RADIUS_PREFIX, prefix_len) == 0) {
+            double radius = strtod(item + prefix_len, 0);
+            if (radius > 0.0) {
+                if (out_radius) {
+                    *out_radius = radius;
+                }
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+
+static int dom_shell_interaction_check_radius(const dom_client_shell* shell, const double* pos)
+{
+    double radius = 0.0;
+    double dx;
+    double dy;
+    double dz;
+    if (!shell || !shell->world.active || !pos) {
+        return 0;
+    }
+    if (!dom_shell_interaction_radius_m(&shell->world.summary.interaction, &radius)) {
+        return 1;
+    }
+    dx = pos[0] - shell->world.position[0];
+    dy = pos[1] - shell->world.position[1];
+    dz = pos[2] - shell->world.position[2];
+    return (sqrt(dx * dx + dy * dy + dz * dz) <= radius) ? 1 : 0;
+}
+
+static dom_shell_interaction_object* dom_shell_interaction_find_object(dom_shell_interaction_state* state,
+                                                                      u64 object_id,
+                                                                      u32* out_index)
+{
+    u32 i;
+    if (!state || object_id == 0u) {
+        return 0;
+    }
+    for (i = 0u; i < state->object_count; ++i) {
+        if (state->objects[i].object_id == object_id) {
+            if (out_index) {
+                *out_index = i;
+            }
+            return &state->objects[i];
+        }
+    }
+    return 0;
 }
 
 static void dom_shell_playtest_reset(dom_client_shell* shell)
@@ -1510,6 +1641,7 @@ static void dom_shell_local_reset(dom_client_shell* shell)
     }
     dom_shell_fields_init(&shell->fields);
     dom_shell_structure_init(&shell->structure);
+    dom_shell_interaction_reset(&shell->interactions);
     dom_shell_agents_reset(shell);
     dom_shell_networks_reset(shell);
     dom_shell_playtest_reset(shell);
@@ -2398,6 +2530,7 @@ static int dom_shell_build_worlddef(const char* template_id,
                                     const dom_shell_policy_set* authority,
                                     const dom_shell_policy_set* mode,
                                     const dom_shell_policy_set* debug,
+                                    const dom_shell_policy_set* interaction,
                                     const dom_shell_policy_set* playtest,
                                     const dom_shell_policy_set* camera,
                                     const dom_shell_node_def* nodes,
@@ -2465,6 +2598,8 @@ static int dom_shell_build_worlddef(const char* template_id,
     dom_shell_builder_append_policy_array(&b, mode);
     dom_shell_builder_append_text(&b, ",\"debug_policies\":");
     dom_shell_builder_append_policy_array(&b, debug);
+    dom_shell_builder_append_text(&b, ",\"interaction_policies\":");
+    dom_shell_builder_append_policy_array(&b, interaction);
     dom_shell_builder_append_text(&b, ",\"playtest_policies\":");
     dom_shell_builder_append_policy_array(&b, playtest);
     dom_shell_builder_append_text(&b, ",\"camera_policies\":");
@@ -2516,6 +2651,7 @@ static int dom_shell_build_worlddef(const char* template_id,
         dom_shell_policy_set_copy(&summary->authority, authority);
         dom_shell_policy_set_copy(&summary->mode, mode);
         dom_shell_policy_set_copy(&summary->debug, debug);
+        dom_shell_policy_set_copy(&summary->interaction, interaction);
         dom_shell_policy_set_copy(&summary->playtest, playtest);
         dom_shell_policy_set_copy(&summary->camera, camera);
     }
@@ -2527,6 +2663,7 @@ static int dom_shell_build_empty_universe(uint64_t seed,
                                           const dom_shell_policy_set* authority,
                                           const dom_shell_policy_set* mode,
                                           const dom_shell_policy_set* debug,
+                                          const dom_shell_policy_set* interaction,
                                           const dom_shell_policy_set* playtest,
                                           const dom_shell_policy_set* camera,
                                           char* out_json,
@@ -2539,7 +2676,7 @@ static int dom_shell_build_empty_universe(uint64_t seed,
         { "universe.root", 0, "frame.universe.root", { "topology.universe" }, 1u }
     };
     return dom_shell_build_worlddef("builtin.empty_universe", "1.0.0", seed,
-                                    movement, authority, mode, debug, playtest, camera,
+                                    movement, authority, mode, debug, interaction, playtest, camera,
                                     nodes, 1u, 0, 0u,
                                     "universe.root", "frame.universe.root",
                                     out_json, out_cap, summary, err, err_cap);
@@ -2550,6 +2687,7 @@ static int dom_shell_build_minimal_system(uint64_t seed,
                                           const dom_shell_policy_set* authority,
                                           const dom_shell_policy_set* mode,
                                           const dom_shell_policy_set* debug,
+                                          const dom_shell_policy_set* interaction,
                                           const dom_shell_policy_set* playtest,
                                           const dom_shell_policy_set* camera,
                                           char* out_json,
@@ -2569,7 +2707,7 @@ static int dom_shell_build_minimal_system(uint64_t seed,
         { "system.minimal", "body.minimal.primary" }
     };
     return dom_shell_build_worlddef("builtin.minimal_system", "1.0.0", seed,
-                                    movement, authority, mode, debug, playtest, camera,
+                                    movement, authority, mode, debug, interaction, playtest, camera,
                                     nodes, 3u, edges, 2u,
                                     "body.minimal.primary", "frame.body.minimal.primary",
                                     out_json, out_cap, summary, err, err_cap);
@@ -2580,6 +2718,7 @@ static int dom_shell_build_realistic_test(uint64_t seed,
                                           const dom_shell_policy_set* authority,
                                           const dom_shell_policy_set* mode,
                                           const dom_shell_policy_set* debug,
+                                          const dom_shell_policy_set* interaction,
                                           const dom_shell_policy_set* playtest,
                                           const dom_shell_policy_set* camera,
                                           char* out_json,
@@ -2621,7 +2760,7 @@ static int dom_shell_build_realistic_test(uint64_t seed,
         { "system.test", "body.neptune" }
     };
     return dom_shell_build_worlddef("builtin.realistic_test_universe", "1.0.0", seed,
-                                    movement, authority, mode, debug, playtest, camera,
+                                    movement, authority, mode, debug, interaction, playtest, camera,
                                     nodes, 12u, edges, 11u,
                                     "body.earth", "frame.body.earth",
                                     out_json, out_cap, summary, err, err_cap);
@@ -2632,6 +2771,7 @@ static int dom_shell_build_exploration_baseline(uint64_t seed,
                                                 const dom_shell_policy_set* authority,
                                                 const dom_shell_policy_set* mode,
                                                 const dom_shell_policy_set* debug,
+                                                const dom_shell_policy_set* interaction,
                                                 const dom_shell_policy_set* playtest,
                                                 const dom_shell_policy_set* camera,
                                                 char* out_json,
@@ -2651,6 +2791,7 @@ static int dom_shell_build_exploration_baseline(uint64_t seed,
     char authority_json[256];
     char mode_json[256];
     char debug_json[256];
+    char interaction_json[256];
     char playtest_json[256];
     char camera_json[256];
     double earth_radius_m = 6371000.0;
@@ -2685,6 +2826,7 @@ static int dom_shell_build_exploration_baseline(uint64_t seed,
         !dom_shell_policy_set_to_json(authority, authority_json, sizeof(authority_json)) ||
         !dom_shell_policy_set_to_json(mode, mode_json, sizeof(mode_json)) ||
         !dom_shell_policy_set_to_json(debug, debug_json, sizeof(debug_json)) ||
+        !dom_shell_policy_set_to_json(interaction, interaction_json, sizeof(interaction_json)) ||
         !dom_shell_policy_set_to_json(playtest, playtest_json, sizeof(playtest_json)) ||
         !dom_shell_policy_set_to_json(camera, camera_json, sizeof(camera_json))) {
         if (err && err_cap > 0u) {
@@ -2727,8 +2869,9 @@ static int dom_shell_build_exploration_baseline(uint64_t seed,
         !dom_shell_replace_token(dst, "{{authority_policies}}", authority_json, src, sizeof(buf_b)) ||
         !dom_shell_replace_token(src, "{{mode_policies}}", mode_json, dst, sizeof(buf_b)) ||
         !dom_shell_replace_token(dst, "{{debug_policies}}", debug_json, src, sizeof(buf_b)) ||
-        !dom_shell_replace_token(src, "{{playtest_policies}}", playtest_json, dst, sizeof(buf_b)) ||
-        !dom_shell_replace_token(dst, "{{camera_policies}}", camera_json, src, sizeof(buf_b))) {
+        !dom_shell_replace_token(src, "{{interaction_policies}}", interaction_json, dst, sizeof(buf_b)) ||
+        !dom_shell_replace_token(dst, "{{playtest_policies}}", playtest_json, src, sizeof(buf_b)) ||
+        !dom_shell_replace_token(src, "{{camera_policies}}", camera_json, dst, sizeof(buf_b))) {
         if (err && err_cap > 0u) {
             snprintf(err, err_cap, "template policy replace failed");
         }
@@ -2762,6 +2905,7 @@ static int dom_shell_build_exploration_baseline(uint64_t seed,
         dom_shell_policy_set_copy(&summary->authority, authority);
         dom_shell_policy_set_copy(&summary->mode, mode);
         dom_shell_policy_set_copy(&summary->debug, debug);
+        dom_shell_policy_set_copy(&summary->interaction, interaction);
         dom_shell_policy_set_copy(&summary->playtest, playtest);
         dom_shell_policy_set_copy(&summary->camera, camera);
     }
@@ -2774,6 +2918,7 @@ static int dom_shell_generate_builtin(const dom_shell_template* entry,
                                       const dom_shell_policy_set* authority,
                                       const dom_shell_policy_set* mode,
                                       const dom_shell_policy_set* debug,
+                                      const dom_shell_policy_set* interaction,
                                       const dom_shell_policy_set* playtest,
                                       const dom_shell_policy_set* camera,
                                       dom_shell_world_state* world,
@@ -2788,22 +2933,26 @@ static int dom_shell_generate_builtin(const dom_shell_template* entry,
         return 0;
     }
     if (strcmp(entry->template_id, "builtin.empty_universe") == 0) {
-        ok = dom_shell_build_empty_universe(seed, movement, authority, mode, debug, playtest, camera,
+        ok = dom_shell_build_empty_universe(seed, movement, authority, mode, debug, interaction,
+                                            playtest, camera,
                                             world->worlddef_json,
                                             sizeof(world->worlddef_json),
                                             &world->summary, err, err_cap);
     } else if (strcmp(entry->template_id, "builtin.minimal_system") == 0) {
-        ok = dom_shell_build_minimal_system(seed, movement, authority, mode, debug, playtest, camera,
+        ok = dom_shell_build_minimal_system(seed, movement, authority, mode, debug, interaction,
+                                            playtest, camera,
                                             world->worlddef_json,
                                             sizeof(world->worlddef_json),
                                             &world->summary, err, err_cap);
     } else if (strcmp(entry->template_id, "builtin.realistic_test_universe") == 0) {
-        ok = dom_shell_build_realistic_test(seed, movement, authority, mode, debug, playtest, camera,
+        ok = dom_shell_build_realistic_test(seed, movement, authority, mode, debug, interaction,
+                                            playtest, camera,
                                             world->worlddef_json,
                                             sizeof(world->worlddef_json),
                                             &world->summary, err, err_cap);
     } else if (strcmp(entry->template_id, "world.template.exploration_baseline") == 0) {
-        ok = dom_shell_build_exploration_baseline(seed, movement, authority, mode, debug, playtest, camera,
+        ok = dom_shell_build_exploration_baseline(seed, movement, authority, mode, debug, interaction,
+                                                  playtest, camera,
                                                   world->worlddef_json,
                                                   sizeof(world->worlddef_json),
                                                   &world->summary, err, err_cap);
@@ -2834,6 +2983,7 @@ void dom_client_shell_init(dom_client_shell* shell)
     dom_shell_policy_set_clear(&shell->create_authority);
     dom_shell_policy_set_clear(&shell->create_mode);
     dom_shell_policy_set_clear(&shell->create_debug);
+    dom_shell_policy_set_clear(&shell->create_interaction);
     dom_shell_policy_set_clear(&shell->create_playtest);
     dom_shell_policy_set_clear(&shell->create_camera);
     dom_shell_policy_set_add(&shell->create_movement, "policy.movement.walk");
@@ -2844,6 +2994,11 @@ void dom_client_shell_init(dom_client_shell* shell)
     dom_shell_policy_set_add(&shell->create_mode, DOM_SHELL_MODE_ORBIT);
     dom_shell_policy_set_add(&shell->create_mode, DOM_SHELL_MODE_SURFACE);
     dom_shell_policy_set_add(&shell->create_debug, "policy.debug.readonly");
+    dom_shell_policy_set_add(&shell->create_interaction, DOM_SHELL_POLICY_INTERACTION_PLACE);
+    dom_shell_policy_set_add(&shell->create_interaction, DOM_SHELL_POLICY_INTERACTION_REMOVE);
+    dom_shell_policy_set_add(&shell->create_interaction, DOM_SHELL_POLICY_INTERACTION_SIGNAL);
+    dom_shell_policy_set_add(&shell->create_interaction, DOM_SHELL_POLICY_INTERACTION_MEASURE);
+    dom_shell_policy_set_add(&shell->create_interaction, DOM_SHELL_POLICY_INTERACTION_INSPECT);
     dom_shell_policy_set_add(&shell->create_playtest, DOM_SHELL_PLAYTEST_SANDBOX);
     dom_shell_policy_set_add(&shell->create_camera, DOM_SHELL_CAMERA_FIRST);
     dom_shell_policy_set_add(&shell->create_camera, DOM_SHELL_CAMERA_THIRD);
@@ -2940,6 +3095,10 @@ int dom_client_shell_set_create_policy(dom_client_shell* shell, const char* set_
         dom_shell_policy_set_from_csv(&shell->create_debug, csv);
         return 1;
     }
+    if (strcmp(set_name, "policy.interaction") == 0 || strcmp(set_name, "interaction") == 0) {
+        dom_shell_policy_set_from_csv(&shell->create_interaction, csv);
+        return 1;
+    }
     if (strcmp(set_name, "policy.playtest") == 0 || strcmp(set_name, "playtest") == 0) {
         dom_shell_policy_set_from_csv(&shell->create_playtest, csv);
         return 1;
@@ -3012,6 +3171,7 @@ int dom_client_shell_create_world(dom_client_shell* shell,
     shell->last_refusal_code[0] = '\0';
     shell->last_refusal_detail[0] = '\0';
     dom_shell_scenario_reset(shell);
+    dom_shell_interaction_reset(&shell->interactions);
     if (shell->create_template_index >= shell->registry.count) {
         dom_shell_set_refusal(shell, DOM_REFUSAL_TEMPLATE, "template index out of range");
         dom_shell_set_status(shell, "world_create=refused");
@@ -3030,6 +3190,7 @@ int dom_client_shell_create_world(dom_client_shell* shell,
                                     &shell->create_authority,
                                     &shell->create_mode,
                                     &shell->create_debug,
+                                    &shell->create_interaction,
                                     &shell->create_playtest,
                                     &shell->create_camera,
                                     &shell->world,
@@ -3252,6 +3413,8 @@ static int dom_shell_write_save(dom_client_shell* shell, const char* path, char*
     fprintf(f, "policy.mode=%s\n", csv);
     dom_client_shell_policy_to_csv(&shell->world.summary.debug, csv, sizeof(csv));
     fprintf(f, "policy.debug=%s\n", csv);
+    dom_client_shell_policy_to_csv(&shell->world.summary.interaction, csv, sizeof(csv));
+    fprintf(f, "policy.interaction=%s\n", csv);
     dom_client_shell_policy_to_csv(&shell->world.summary.playtest, csv, sizeof(csv));
     fprintf(f, "policy.playtest=%s\n", csv);
     dom_client_shell_policy_to_csv(&shell->world.summary.camera, csv, sizeof(csv));
@@ -3309,6 +3472,31 @@ static int dom_shell_write_save(dom_client_shell* shell, const char* path, char*
             edge ? (unsigned int)edge->status : 0u);
     }
     fprintf(f, "local_end\n");
+    fprintf(f, "interactions_begin\n");
+    fprintf(f, "interaction_next_id=%llu\n",
+            (unsigned long long)(shell->interactions.next_object_id ? shell->interactions.next_object_id : 1u));
+    fprintf(f, "interaction_selected_type=%s\n",
+            shell->interactions.selected_object_id[0] ? shell->interactions.selected_object_id
+                                                      : DOM_SHELL_INTERACTION_OBJ_MARKER);
+    fprintf(f, "interaction_tool=%s\n",
+            shell->interactions.selected_tool[0] ? shell->interactions.selected_tool
+                                                : DOM_SHELL_INTERACTION_TOOL_PLACE);
+    if (shell->interactions.object_count > 0u) {
+        u32 i;
+        for (i = 0u; i < shell->interactions.object_count; ++i) {
+            const dom_shell_interaction_object* obj = &shell->interactions.objects[i];
+            fprintf(f,
+                    "interaction_object id=%llu type=%s pos=%.3f,%.3f,%.3f signal=%d provenance=%s\n",
+                    (unsigned long long)obj->object_id,
+                    obj->type_id,
+                    obj->position[0],
+                    obj->position[1],
+                    obj->position[2],
+                    obj->signal_state,
+                    obj->provenance_id);
+        }
+    }
+    fprintf(f, "interactions_end\n");
     fprintf(f, "variants_begin\n");
     if (shell->variant_count > 0u) {
         u32 i;
@@ -3787,6 +3975,7 @@ static void dom_shell_scenario_desc_init(dom_shell_scenario_desc* desc, const do
     dom_shell_policy_set_copy(&desc->authority, &shell->create_authority);
     dom_shell_policy_set_copy(&desc->mode, &shell->create_mode);
     dom_shell_policy_set_copy(&desc->debug, &shell->create_debug);
+    dom_shell_policy_set_copy(&desc->interaction, &shell->create_interaction);
     dom_shell_policy_set_copy(&desc->playtest, &shell->create_playtest);
     desc->world_seed = shell->create_seed;
     if (shell->create_template_index < shell->registry.count) {
@@ -4252,6 +4441,10 @@ static int dom_shell_load_scenario_file(dom_client_shell* shell,
             dom_shell_policy_set_from_csv(&desc->debug, line + 13);
             continue;
         }
+        if (strncmp(line, "policy.interaction=", 19) == 0) {
+            dom_shell_policy_set_from_csv(&desc->interaction, line + 19);
+            continue;
+        }
         if (strncmp(line, "policy.playtest=", 16) == 0) {
             dom_shell_policy_set_from_csv(&desc->playtest, line + 16);
             continue;
@@ -4403,6 +4596,11 @@ static int dom_shell_load_variant_file(dom_client_shell* shell,
             desc->debug_set = 1u;
             continue;
         }
+        if (strncmp(line, "policy.interaction=", 19) == 0) {
+            dom_shell_policy_set_from_csv(&desc->interaction, line + 19);
+            desc->interaction_set = 1u;
+            continue;
+        }
         if (strncmp(line, "policy.playtest=", 16) == 0) {
             dom_shell_policy_set_from_csv(&desc->playtest, line + 16);
             desc->playtest_set = 1u;
@@ -4439,6 +4637,7 @@ static int dom_shell_load_save_file(dom_client_shell* shell, const char* path, c
     int in_worlddef = 0;
     int in_summary = 0;
     int in_local = 0;
+    int in_interactions = 0;
     int in_events = 0;
     int in_variants = 0;
     int in_playtest_scenarios = 0;
@@ -4458,6 +4657,7 @@ static int dom_shell_load_save_file(dom_client_shell* shell, const char* path, c
     int in_constraints = 0;
     int in_institutions = 0;
     int in_networks = 0;
+    int have_interaction_next = 0;
     u64 max_agent_id = 0u;
     u64 max_goal_id = 0u;
     u64 max_delegation_id = 0u;
@@ -4465,6 +4665,7 @@ static int dom_shell_load_save_file(dom_client_shell* shell, const char* path, c
     u64 max_constraint_id = 0u;
     u64 max_institution_id = 0u;
     u64 max_network_id = 0u;
+    u64 max_interaction_id = 0u;
     u64 next_agent_id = 0u;
     u64 next_goal_id = 0u;
     u64 next_delegation_id = 0u;
@@ -4530,6 +4731,14 @@ static int dom_shell_load_save_file(dom_client_shell* shell, const char* path, c
         }
         if (strcmp(line, "local_end") == 0) {
             in_local = 0;
+            continue;
+        }
+        if (strcmp(line, "interactions_begin") == 0) {
+            in_interactions = 1;
+            continue;
+        }
+        if (strcmp(line, "interactions_end") == 0) {
+            in_interactions = 0;
             continue;
         }
         if (strcmp(line, "variants_begin") == 0) {
@@ -4664,6 +4873,8 @@ static int dom_shell_load_save_file(dom_client_shell* shell, const char* path, c
                 dom_shell_policy_set_from_csv(&shell->world.summary.mode, val);
             } else if (strcmp(key, "policy.debug") == 0) {
                 dom_shell_policy_set_from_csv(&shell->world.summary.debug, val);
+            } else if (strcmp(key, "policy.interaction") == 0) {
+                dom_shell_policy_set_from_csv(&shell->world.summary.interaction, val);
             } else if (strcmp(key, "policy.playtest") == 0) {
                 dom_shell_policy_set_from_csv(&shell->world.summary.playtest, val);
             } else if (strcmp(key, "policy.camera") == 0) {
@@ -4923,6 +5134,83 @@ static int dom_shell_load_save_file(dom_client_shell* shell, const char* path, c
             }
             if (strncmp(line, "metrics_scenario_injections=", 28) == 0) {
                 shell->metrics.scenario_injections = (u32)strtoul(line + 28, 0, 10);
+                continue;
+            }
+            continue;
+        }
+        if (in_interactions) {
+            if (strncmp(line, "interaction_next_id=", 20) == 0) {
+                dom_shell_parse_u64(line + 20, &shell->interactions.next_object_id);
+                if (shell->interactions.next_object_id == 0u) {
+                    shell->interactions.next_object_id = 1u;
+                }
+                have_interaction_next = 1;
+                continue;
+            }
+            if (strncmp(line, "interaction_selected_type=", 26) == 0) {
+                strncpy(shell->interactions.selected_object_id, line + 26,
+                        sizeof(shell->interactions.selected_object_id) - 1u);
+                shell->interactions.selected_object_id[
+                    sizeof(shell->interactions.selected_object_id) - 1u] = '\0';
+                continue;
+            }
+            if (strncmp(line, "interaction_tool=", 17) == 0) {
+                strncpy(shell->interactions.selected_tool, line + 17,
+                        sizeof(shell->interactions.selected_tool) - 1u);
+                shell->interactions.selected_tool[sizeof(shell->interactions.selected_tool) - 1u] = '\0';
+                continue;
+            }
+            if (strncmp(line, "interaction_object ", 19) == 0) {
+                dom_shell_interaction_object obj;
+                char buf[256];
+                char* token;
+                size_t len = strlen(line + 19);
+                if (len >= sizeof(buf)) {
+                    len = sizeof(buf) - 1u;
+                }
+                memset(&obj, 0, sizeof(obj));
+                memcpy(buf, line + 19, len);
+                buf[len] = '\0';
+                token = strtok(buf, " ");
+                while (token) {
+                    char* eq = strchr(token, '=');
+                    if (eq) {
+                        *eq = '\0';
+                        if (strcmp(token, "id") == 0) {
+                            dom_shell_parse_u64(eq + 1, &obj.object_id);
+                        } else if (strcmp(token, "type") == 0) {
+                            strncpy(obj.type_id, eq + 1, sizeof(obj.type_id) - 1u);
+                            obj.type_id[sizeof(obj.type_id) - 1u] = '\0';
+                        } else if (strcmp(token, "pos") == 0) {
+                            dom_shell_parse_vec3(eq + 1, obj.position);
+                        } else if (strcmp(token, "signal") == 0) {
+                            obj.signal_state = (int)strtoul(eq + 1, 0, 10);
+                        } else if (strcmp(token, "provenance") == 0) {
+                            strncpy(obj.provenance_id, eq + 1, sizeof(obj.provenance_id) - 1u);
+                            obj.provenance_id[sizeof(obj.provenance_id) - 1u] = '\0';
+                        }
+                    }
+                    token = strtok(0, " ");
+                }
+                if (obj.object_id == 0u || !obj.type_id[0]) {
+                    continue;
+                }
+                if (!obj.provenance_id[0]) {
+                    strncpy(obj.provenance_id, DOM_SHELL_INTERACTION_PROVENANCE,
+                            sizeof(obj.provenance_id) - 1u);
+                    obj.provenance_id[sizeof(obj.provenance_id) - 1u] = '\0';
+                }
+                if (shell->interactions.object_count >= DOM_SHELL_INTERACTION_MAX_OBJECTS) {
+                    fclose(f);
+                    if (err && err_cap > 0u) {
+                        snprintf(err, err_cap, "interaction objects full");
+                    }
+                    return 0;
+                }
+                shell->interactions.objects[shell->interactions.object_count++] = obj;
+                if (obj.object_id > max_interaction_id) {
+                    max_interaction_id = obj.object_id;
+                }
                 continue;
             }
             continue;
@@ -5592,6 +5880,22 @@ static int dom_shell_load_save_file(dom_client_shell* shell, const char* path, c
     if (next_network_id > shell->next_network_id) {
         shell->next_network_id = next_network_id;
     }
+    if (!shell->interactions.selected_object_id[0]) {
+        strncpy(shell->interactions.selected_object_id, DOM_SHELL_INTERACTION_OBJ_MARKER,
+                sizeof(shell->interactions.selected_object_id) - 1u);
+        shell->interactions.selected_object_id[sizeof(shell->interactions.selected_object_id) - 1u] = '\0';
+    }
+    if (!dom_shell_interaction_tool_valid(shell->interactions.selected_tool)) {
+        strncpy(shell->interactions.selected_tool, DOM_SHELL_INTERACTION_TOOL_PLACE,
+                sizeof(shell->interactions.selected_tool) - 1u);
+        shell->interactions.selected_tool[sizeof(shell->interactions.selected_tool) - 1u] = '\0';
+    }
+    if (!have_interaction_next || shell->interactions.next_object_id <= max_interaction_id) {
+        shell->interactions.next_object_id = max_interaction_id + 1u;
+        if (shell->interactions.next_object_id == 0u) {
+            shell->interactions.next_object_id = 1u;
+        }
+    }
     if (shell->variant_count == 0u) {
         dom_shell_variants_apply_defaults(shell);
     }
@@ -6103,6 +6407,640 @@ static int dom_client_shell_toggle_hud(dom_client_shell* shell,
     }
     dom_shell_emit(shell, log, "client.hud.toggle",
                    shell->world.hud_enabled ? "enabled=1" : "enabled=0");
+    return D_APP_EXIT_OK;
+}
+
+static int dom_shell_interaction_policy_allowed(const dom_client_shell* shell, const char* policy_id)
+{
+    if (!shell || !shell->world.active || !policy_id || !policy_id[0]) {
+        return 0;
+    }
+    if (shell->world.summary.interaction.count == 0u) {
+        return 0;
+    }
+    return dom_shell_policy_set_contains(&shell->world.summary.interaction, policy_id);
+}
+
+static u64 dom_shell_interaction_default_id(const dom_shell_interaction_state* state)
+{
+    if (!state || state->object_count == 0u) {
+        return 0u;
+    }
+    return state->objects[state->object_count - 1u].object_id;
+}
+
+static int dom_shell_interaction_select(dom_client_shell* shell,
+                                        const char* type_id,
+                                        dom_app_ui_event_log* log,
+                                        char* status,
+                                        size_t status_cap,
+                                        int emit_text)
+{
+    const dom_shell_interaction_def* def;
+    if (!shell || !shell->world.active) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "no active world");
+        dom_shell_set_status(shell, "interaction_select=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    def = dom_shell_interaction_find_def(type_id);
+    if (!def) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "interaction type unknown");
+        dom_shell_set_status(shell, "interaction_select=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.interaction.select", "result=refused reason=type");
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    strncpy(shell->interactions.selected_object_id, def->type_id,
+            sizeof(shell->interactions.selected_object_id) - 1u);
+    shell->interactions.selected_object_id[sizeof(shell->interactions.selected_object_id) - 1u] = '\0';
+    dom_shell_set_status(shell, "interaction_select=ok");
+    if (status && status_cap > 0u) {
+        snprintf(status, status_cap, "%s", shell->last_status);
+    }
+    if (emit_text) {
+        printf("interaction_select=ok type=%s\n", def->type_id);
+    }
+    {
+        char detail[160];
+        snprintf(detail, sizeof(detail), "type=%s result=ok", def->type_id);
+        dom_shell_emit(shell, log, "client.interaction.select", detail);
+    }
+    return D_APP_EXIT_OK;
+}
+
+static int dom_shell_interaction_tool_select(dom_client_shell* shell,
+                                             const char* tool_id,
+                                             dom_app_ui_event_log* log,
+                                             char* status,
+                                             size_t status_cap,
+                                             int emit_text)
+{
+    if (!shell || !shell->world.active) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "no active world");
+        dom_shell_set_status(shell, "interaction_tool=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    if (!dom_shell_interaction_tool_valid(tool_id)) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "interaction tool unknown");
+        dom_shell_set_status(shell, "interaction_tool=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.interaction.tool", "result=refused reason=tool");
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    strncpy(shell->interactions.selected_tool, tool_id,
+            sizeof(shell->interactions.selected_tool) - 1u);
+    shell->interactions.selected_tool[sizeof(shell->interactions.selected_tool) - 1u] = '\0';
+    dom_shell_set_status(shell, "interaction_tool=ok");
+    if (status && status_cap > 0u) {
+        snprintf(status, status_cap, "%s", shell->last_status);
+    }
+    if (emit_text) {
+        printf("interaction_tool=ok tool=%s\n", tool_id);
+    }
+    {
+        char detail[160];
+        snprintf(detail, sizeof(detail), "tool=%s result=ok", tool_id);
+        dom_shell_emit(shell, log, "client.interaction.tool", detail);
+    }
+    return D_APP_EXIT_OK;
+}
+
+static int dom_shell_interaction_place_internal(dom_client_shell* shell,
+                                                const char* type_id,
+                                                const double* pos,
+                                                int has_pos,
+                                                int preview,
+                                                dom_app_ui_event_log* log,
+                                                char* status,
+                                                size_t status_cap,
+                                                int emit_text)
+{
+    const dom_shell_interaction_def* def;
+    dom_shell_interaction_object obj;
+    double position[3];
+    const char* selected;
+    if (!shell || !shell->world.active) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "no active world");
+        dom_shell_set_status(shell, preview ? "interaction_preview=refused" : "interaction_place=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    if (!dom_shell_interaction_policy_allowed(shell, DOM_SHELL_POLICY_INTERACTION_PLACE)) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_SCHEMA, "interaction place blocked");
+        dom_shell_set_status(shell, preview ? "interaction_preview=refused" : "interaction_place=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, preview ? "client.interaction.preview" : "client.interaction.place",
+                       "result=refused reason=policy");
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    selected = (type_id && type_id[0]) ? type_id : shell->interactions.selected_object_id;
+    if (!selected || !selected[0]) {
+        selected = DOM_SHELL_INTERACTION_OBJ_MARKER;
+    }
+    def = dom_shell_interaction_find_def(selected);
+    if (!def) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "interaction type unknown");
+        dom_shell_set_status(shell, preview ? "interaction_preview=refused" : "interaction_place=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, preview ? "client.interaction.preview" : "client.interaction.place",
+                       "result=refused reason=type");
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    if (has_pos && pos) {
+        position[0] = pos[0];
+        position[1] = pos[1];
+        position[2] = pos[2];
+    } else {
+        position[0] = shell->world.position[0];
+        position[1] = shell->world.position[1];
+        position[2] = shell->world.position[2];
+    }
+    if (!dom_shell_interaction_check_radius(shell, position)) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_SCHEMA, "interaction radius");
+        dom_shell_set_status(shell, preview ? "interaction_preview=refused" : "interaction_place=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, preview ? "client.interaction.preview" : "client.interaction.place",
+                       "result=refused reason=radius");
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    memset(&obj, 0, sizeof(obj));
+    strncpy(obj.type_id, def->type_id, sizeof(obj.type_id) - 1u);
+    obj.position[0] = position[0];
+    obj.position[1] = position[1];
+    obj.position[2] = position[2];
+    obj.signal_state = 0;
+    strncpy(obj.provenance_id, def->provenance_id ? def->provenance_id : DOM_SHELL_INTERACTION_PROVENANCE,
+            sizeof(obj.provenance_id) - 1u);
+    obj.provenance_id[sizeof(obj.provenance_id) - 1u] = '\0';
+    if (preview) {
+        shell->interactions.preview = obj;
+        shell->interactions.preview_active = 1;
+        dom_shell_set_status(shell, "interaction_preview=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        if (emit_text) {
+            printf("interaction_preview=ok type=%s pos=%.3f,%.3f,%.3f\n",
+                   obj.type_id, obj.position[0], obj.position[1], obj.position[2]);
+        }
+        {
+            char detail[200];
+            snprintf(detail, sizeof(detail),
+                     "type=%s pos=%.3f,%.3f,%.3f result=ok",
+                     obj.type_id, obj.position[0], obj.position[1], obj.position[2]);
+            dom_shell_emit(shell, log, "client.interaction.preview", detail);
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (shell->interactions.object_count >= DOM_SHELL_INTERACTION_MAX_OBJECTS) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "interaction objects full");
+        dom_shell_set_status(shell, "interaction_place=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.interaction.place", "result=refused reason=capacity");
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    if (shell->interactions.next_object_id == 0u) {
+        shell->interactions.next_object_id = 1u;
+    }
+    obj.object_id = shell->interactions.next_object_id++;
+    shell->interactions.objects[shell->interactions.object_count++] = obj;
+    shell->interactions.preview_active = 0;
+    dom_shell_set_status(shell, "interaction_place=ok");
+    if (status && status_cap > 0u) {
+        snprintf(status, status_cap, "%s", shell->last_status);
+    }
+    if (emit_text) {
+        printf("interaction_place=ok id=%llu type=%s pos=%.3f,%.3f,%.3f\n",
+               (unsigned long long)obj.object_id,
+               obj.type_id,
+               obj.position[0],
+               obj.position[1],
+               obj.position[2]);
+    }
+    {
+        char detail[200];
+        snprintf(detail, sizeof(detail),
+                 "id=%llu type=%s pos=%.3f,%.3f,%.3f result=ok",
+                 (unsigned long long)obj.object_id,
+                 obj.type_id,
+                 obj.position[0],
+                 obj.position[1],
+                 obj.position[2]);
+        dom_shell_emit(shell, log, "client.interaction.place", detail);
+    }
+    return D_APP_EXIT_OK;
+}
+
+static int dom_shell_interaction_confirm(dom_client_shell* shell,
+                                         dom_app_ui_event_log* log,
+                                         char* status,
+                                         size_t status_cap,
+                                         int emit_text)
+{
+    dom_shell_interaction_object obj;
+    if (!shell || !shell->world.active) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "no active world");
+        dom_shell_set_status(shell, "interaction_confirm=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    if (!shell->interactions.preview_active) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "no preview");
+        dom_shell_set_status(shell, "interaction_confirm=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.interaction.place", "result=refused reason=no_preview");
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    if (!dom_shell_interaction_policy_allowed(shell, DOM_SHELL_POLICY_INTERACTION_PLACE)) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_SCHEMA, "interaction place blocked");
+        dom_shell_set_status(shell, "interaction_confirm=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.interaction.place", "result=refused reason=policy");
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    if (!dom_shell_interaction_check_radius(shell, shell->interactions.preview.position)) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_SCHEMA, "interaction radius");
+        dom_shell_set_status(shell, "interaction_confirm=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.interaction.place", "result=refused reason=radius");
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    if (shell->interactions.object_count >= DOM_SHELL_INTERACTION_MAX_OBJECTS) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "interaction objects full");
+        dom_shell_set_status(shell, "interaction_confirm=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.interaction.place", "result=refused reason=capacity");
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    if (shell->interactions.next_object_id == 0u) {
+        shell->interactions.next_object_id = 1u;
+    }
+    obj = shell->interactions.preview;
+    obj.object_id = shell->interactions.next_object_id++;
+    shell->interactions.objects[shell->interactions.object_count++] = obj;
+    shell->interactions.preview_active = 0;
+    dom_shell_set_status(shell, "interaction_confirm=ok");
+    if (status && status_cap > 0u) {
+        snprintf(status, status_cap, "%s", shell->last_status);
+    }
+    if (emit_text) {
+        printf("interaction_confirm=ok id=%llu type=%s\n",
+               (unsigned long long)obj.object_id, obj.type_id);
+    }
+    {
+        char detail[200];
+        snprintf(detail, sizeof(detail),
+                 "id=%llu type=%s pos=%.3f,%.3f,%.3f result=ok",
+                 (unsigned long long)obj.object_id,
+                 obj.type_id,
+                 obj.position[0],
+                 obj.position[1],
+                 obj.position[2]);
+        dom_shell_emit(shell, log, "client.interaction.place", detail);
+    }
+    return D_APP_EXIT_OK;
+}
+
+static int dom_shell_interaction_remove(dom_client_shell* shell,
+                                        u64 object_id,
+                                        dom_app_ui_event_log* log,
+                                        char* status,
+                                        size_t status_cap,
+                                        int emit_text)
+{
+    u32 idx = 0u;
+    dom_shell_interaction_object* obj;
+    if (!shell || !shell->world.active) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "no active world");
+        dom_shell_set_status(shell, "interaction_remove=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    if (!dom_shell_interaction_policy_allowed(shell, DOM_SHELL_POLICY_INTERACTION_REMOVE)) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_SCHEMA, "interaction remove blocked");
+        dom_shell_set_status(shell, "interaction_remove=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.interaction.remove", "result=refused reason=policy");
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    if (object_id == 0u) {
+        object_id = dom_shell_interaction_default_id(&shell->interactions);
+    }
+    obj = dom_shell_interaction_find_object(&shell->interactions, object_id, &idx);
+    if (!obj) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "interaction object missing");
+        dom_shell_set_status(shell, "interaction_remove=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.interaction.remove", "result=refused reason=missing");
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    if (!dom_shell_interaction_check_radius(shell, obj->position)) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_SCHEMA, "interaction radius");
+        dom_shell_set_status(shell, "interaction_remove=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.interaction.remove", "result=refused reason=radius");
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    if (idx + 1u < shell->interactions.object_count) {
+        shell->interactions.objects[idx] = shell->interactions.objects[shell->interactions.object_count - 1u];
+    }
+    if (shell->interactions.object_count > 0u) {
+        shell->interactions.object_count -= 1u;
+    }
+    dom_shell_set_status(shell, "interaction_remove=ok");
+    if (status && status_cap > 0u) {
+        snprintf(status, status_cap, "%s", shell->last_status);
+    }
+    if (emit_text) {
+        printf("interaction_remove=ok id=%llu\n", (unsigned long long)object_id);
+    }
+    {
+        char detail[128];
+        snprintf(detail, sizeof(detail), "id=%llu result=ok", (unsigned long long)object_id);
+        dom_shell_emit(shell, log, "client.interaction.remove", detail);
+    }
+    return D_APP_EXIT_OK;
+}
+
+static int dom_shell_interaction_signal(dom_client_shell* shell,
+                                        u64 object_id,
+                                        dom_app_ui_event_log* log,
+                                        char* status,
+                                        size_t status_cap,
+                                        int emit_text)
+{
+    dom_shell_interaction_object* obj;
+    const dom_shell_interaction_def* def;
+    if (!shell || !shell->world.active) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "no active world");
+        dom_shell_set_status(shell, "interaction_signal=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    if (!dom_shell_interaction_policy_allowed(shell, DOM_SHELL_POLICY_INTERACTION_SIGNAL)) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_SCHEMA, "interaction signal blocked");
+        dom_shell_set_status(shell, "interaction_signal=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.interaction.signal", "result=refused reason=policy");
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    if (object_id == 0u) {
+        object_id = dom_shell_interaction_default_id(&shell->interactions);
+    }
+    obj = dom_shell_interaction_find_object(&shell->interactions, object_id, 0);
+    if (!obj) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "interaction object missing");
+        dom_shell_set_status(shell, "interaction_signal=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.interaction.signal", "result=refused reason=missing");
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    def = dom_shell_interaction_find_def(obj->type_id);
+    if (!def || !def->signal_capable) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "interaction signal unsupported");
+        dom_shell_set_status(shell, "interaction_signal=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.interaction.signal", "result=refused reason=unsupported");
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    if (!dom_shell_interaction_check_radius(shell, obj->position)) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_SCHEMA, "interaction radius");
+        dom_shell_set_status(shell, "interaction_signal=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.interaction.signal", "result=refused reason=radius");
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    obj->signal_state = obj->signal_state ? 0 : 1;
+    dom_shell_set_status(shell, "interaction_signal=ok");
+    if (status && status_cap > 0u) {
+        snprintf(status, status_cap, "%s", shell->last_status);
+    }
+    if (emit_text) {
+        printf("interaction_signal=ok id=%llu state=%d\n",
+               (unsigned long long)obj->object_id, obj->signal_state);
+    }
+    {
+        char detail[160];
+        snprintf(detail, sizeof(detail), "id=%llu state=%d result=ok",
+                 (unsigned long long)obj->object_id, obj->signal_state);
+        dom_shell_emit(shell, log, "client.interaction.signal", detail);
+    }
+    return D_APP_EXIT_OK;
+}
+
+static int dom_shell_interaction_measure(dom_client_shell* shell,
+                                         u64 object_id,
+                                         const double* pos,
+                                         int has_pos,
+                                         dom_app_ui_event_log* log,
+                                         char* status,
+                                         size_t status_cap,
+                                         int emit_text)
+{
+    double target[3];
+    double dx;
+    double dy;
+    double dz;
+    double dist;
+    const char* target_label = "pos";
+    if (!shell || !shell->world.active) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "no active world");
+        dom_shell_set_status(shell, "interaction_measure=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    if (!dom_shell_interaction_policy_allowed(shell, DOM_SHELL_POLICY_INTERACTION_MEASURE)) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_SCHEMA, "interaction measure blocked");
+        dom_shell_set_status(shell, "interaction_measure=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.interaction.measure", "result=refused reason=policy");
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    if (object_id == 0u && !has_pos) {
+        object_id = dom_shell_interaction_default_id(&shell->interactions);
+    }
+    if (object_id != 0u) {
+        const dom_shell_interaction_object* obj = dom_shell_interaction_find_object(&shell->interactions,
+                                                                                   object_id,
+                                                                                   0);
+        if (!obj) {
+            dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "interaction object missing");
+            dom_shell_set_status(shell, "interaction_measure=refused");
+            if (status && status_cap > 0u) {
+                snprintf(status, status_cap, "%s", shell->last_status);
+            }
+            dom_shell_emit(shell, log, "client.interaction.measure", "result=refused reason=missing");
+            return D_APP_EXIT_UNAVAILABLE;
+        }
+        target[0] = obj->position[0];
+        target[1] = obj->position[1];
+        target[2] = obj->position[2];
+        target_label = "object";
+    } else if (has_pos && pos) {
+        target[0] = pos[0];
+        target[1] = pos[1];
+        target[2] = pos[2];
+    } else {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "interaction target missing");
+        dom_shell_set_status(shell, "interaction_measure=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.interaction.measure", "result=refused reason=target");
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    if (!dom_shell_interaction_check_radius(shell, target)) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_SCHEMA, "interaction radius");
+        dom_shell_set_status(shell, "interaction_measure=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.interaction.measure", "result=refused reason=radius");
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    dx = target[0] - shell->world.position[0];
+    dy = target[1] - shell->world.position[1];
+    dz = target[2] - shell->world.position[2];
+    dist = sqrt(dx * dx + dy * dy + dz * dz);
+    dom_shell_set_status(shell, "interaction_measure=ok");
+    if (status && status_cap > 0u) {
+        snprintf(status, status_cap, "%s", shell->last_status);
+    }
+    if (emit_text) {
+        printf("interaction_measure=ok target=%s distance=%.3f\n", target_label, dist);
+    }
+    {
+        char detail[160];
+        if (object_id != 0u) {
+            snprintf(detail, sizeof(detail), "target=object id=%llu distance=%.3f result=ok",
+                     (unsigned long long)object_id, dist);
+        } else {
+            snprintf(detail, sizeof(detail), "target=pos distance=%.3f result=ok", dist);
+        }
+        dom_shell_emit(shell, log, "client.interaction.measure", detail);
+    }
+    return D_APP_EXIT_OK;
+}
+
+static int dom_shell_interaction_inspect(dom_client_shell* shell,
+                                         u64 object_id,
+                                         dom_app_ui_event_log* log,
+                                         char* status,
+                                         size_t status_cap,
+                                         int emit_text)
+{
+    const dom_shell_interaction_object* obj;
+    if (!shell || !shell->world.active) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "no active world");
+        dom_shell_set_status(shell, "interaction_inspect=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    if (!dom_shell_interaction_policy_allowed(shell, DOM_SHELL_POLICY_INTERACTION_INSPECT)) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_SCHEMA, "interaction inspect blocked");
+        dom_shell_set_status(shell, "interaction_inspect=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.interaction.inspect", "result=refused reason=policy");
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    if (object_id == 0u) {
+        object_id = dom_shell_interaction_default_id(&shell->interactions);
+    }
+    obj = dom_shell_interaction_find_object(&shell->interactions, object_id, 0);
+    if (!obj) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "interaction object missing");
+        dom_shell_set_status(shell, "interaction_inspect=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.interaction.inspect", "result=refused reason=missing");
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    if (!dom_shell_interaction_check_radius(shell, obj->position)) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_SCHEMA, "interaction radius");
+        dom_shell_set_status(shell, "interaction_inspect=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.interaction.inspect", "result=refused reason=radius");
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    dom_shell_set_status(shell, "interaction_inspect=ok");
+    if (status && status_cap > 0u) {
+        snprintf(status, status_cap, "%s", shell->last_status);
+    }
+    if (emit_text) {
+        printf("interaction_inspect=ok id=%llu type=%s pos=%.3f,%.3f,%.3f signal=%d provenance=%s\n",
+               (unsigned long long)obj->object_id,
+               obj->type_id,
+               obj->position[0],
+               obj->position[1],
+               obj->position[2],
+               obj->signal_state,
+               obj->provenance_id);
+    }
+    {
+        char detail[200];
+        snprintf(detail, sizeof(detail), "id=%llu type=%s result=ok",
+                 (unsigned long long)obj->object_id, obj->type_id);
+        dom_shell_emit(shell, log, "client.interaction.inspect", detail);
+    }
     return D_APP_EXIT_OK;
 }
 
@@ -6620,11 +7558,56 @@ static void dom_shell_print_world(const dom_client_shell* shell, int emit_text)
     printf("camera=%s\n", shell->world.camera_mode[0] ? shell->world.camera_mode : "none");
     printf("inspect=%s\n", shell->world.inspect_enabled ? "on" : "off");
     printf("hud=%s\n", shell->world.hud_enabled ? "on" : "off");
+    dom_client_shell_policy_to_csv(&shell->world.summary.interaction, csv, sizeof(csv));
+    printf("interaction=%s\n", csv[0] ? csv : "none");
+    printf("interaction_objects=%u\n", (unsigned int)shell->interactions.object_count);
+    printf("interaction_selected_type=%s\n",
+           shell->interactions.selected_object_id[0] ? shell->interactions.selected_object_id
+                                                     : DOM_SHELL_INTERACTION_OBJ_MARKER);
+    printf("interaction_tool=%s\n",
+           shell->interactions.selected_tool[0] ? shell->interactions.selected_tool
+                                               : DOM_SHELL_INTERACTION_TOOL_PLACE);
     dom_client_shell_policy_to_csv(&shell->world.summary.playtest, csv, sizeof(csv));
     printf("playtest=%s\n", csv[0] ? csv : "none");
     printf("variant_mode=%s\n", dom_shell_variant_mode_name(shell->variant_mode));
     if (shell->variant_mode_detail[0]) {
         printf("variant_mode_detail=%s\n", shell->variant_mode_detail);
+    }
+}
+
+static void dom_shell_print_interactions(const dom_client_shell* shell, int emit_text)
+{
+    uint32_t i;
+    if (!shell || !emit_text) {
+        return;
+    }
+    printf("interaction_count=%u\n", (unsigned int)shell->interactions.object_count);
+    printf("interaction_next_id=%llu\n", (unsigned long long)shell->interactions.next_object_id);
+    printf("interaction_selected_type=%s\n",
+           shell->interactions.selected_object_id[0] ? shell->interactions.selected_object_id
+                                                     : DOM_SHELL_INTERACTION_OBJ_MARKER);
+    printf("interaction_tool=%s\n",
+           shell->interactions.selected_tool[0] ? shell->interactions.selected_tool
+                                               : DOM_SHELL_INTERACTION_TOOL_PLACE);
+    if (shell->interactions.preview_active) {
+        printf("interaction_preview type=%s pos=%.3f,%.3f,%.3f signal=%d provenance=%s\n",
+               shell->interactions.preview.type_id,
+               shell->interactions.preview.position[0],
+               shell->interactions.preview.position[1],
+               shell->interactions.preview.position[2],
+               shell->interactions.preview.signal_state,
+               shell->interactions.preview.provenance_id);
+    }
+    for (i = 0u; i < shell->interactions.object_count; ++i) {
+        const dom_shell_interaction_object* obj = &shell->interactions.objects[i];
+        printf("interaction_object id=%llu type=%s pos=%.3f,%.3f,%.3f signal=%d provenance=%s\n",
+               (unsigned long long)obj->object_id,
+               obj->type_id,
+               obj->position[0],
+               obj->position[1],
+               obj->position[2],
+               obj->signal_state,
+               obj->provenance_id);
     }
 }
 
@@ -6792,6 +7775,8 @@ int dom_client_shell_execute(dom_client_shell* shell,
         if (emit_text) {
             printf("commands: templates new-world scenario-load scenario-status load save replay-save inspect-replay\n");
             printf("          mode camera camera-next move spawn domain inspect-toggle hud-toggle\n");
+            printf("          interaction-list object-list object-inspect object-select tool-select\n");
+            printf("          place-preview place-confirm place remove signal-toggle measure\n");
             printf("          where refusal budgets structure fields events batch exit\n");
             printf("          survey collect assemble connect inspect repair field-set simulate\n");
             printf("          agent-add agent-list agent-possess agent-release agent-know\n");
@@ -6824,6 +7809,7 @@ int dom_client_shell_execute(dom_client_shell* shell,
         dom_shell_policy_set authority = shell->create_authority;
         dom_shell_policy_set mode = shell->create_mode;
         dom_shell_policy_set debug = shell->create_debug;
+        dom_shell_policy_set interaction = shell->create_interaction;
         dom_shell_policy_set playtest = shell->create_playtest;
         dom_shell_policy_set camera = shell->create_camera;
         while ((next = strtok(0, " \t")) != 0) {
@@ -6846,6 +7832,8 @@ int dom_client_shell_execute(dom_client_shell* shell,
                 dom_shell_policy_set_from_csv(&mode, eq + 1);
             } else if (strcmp(next, "policy.debug") == 0) {
                 dom_shell_policy_set_from_csv(&debug, eq + 1);
+            } else if (strcmp(next, "policy.interaction") == 0) {
+                dom_shell_policy_set_from_csv(&interaction, eq + 1);
             } else if (strcmp(next, "policy.playtest") == 0) {
                 dom_shell_policy_set_from_csv(&playtest, eq + 1);
             } else if (strcmp(next, "policy.camera") == 0) {
@@ -6858,6 +7846,7 @@ int dom_client_shell_execute(dom_client_shell* shell,
         dom_shell_policy_set_copy(&shell->create_authority, &authority);
         dom_shell_policy_set_copy(&shell->create_mode, &mode);
         dom_shell_policy_set_copy(&shell->create_debug, &debug);
+        dom_shell_policy_set_copy(&shell->create_interaction, &interaction);
         dom_shell_policy_set_copy(&shell->create_playtest, &playtest);
         dom_shell_policy_set_copy(&shell->create_camera, &camera);
         return dom_client_shell_create_world(shell, log, status, status_cap, emit_text);
@@ -7017,6 +8006,7 @@ int dom_client_shell_execute(dom_client_shell* shell,
         dom_shell_policy_set_copy(&shell->create_authority, &desc.authority);
         dom_shell_policy_set_copy(&shell->create_mode, &desc.mode);
         dom_shell_policy_set_copy(&shell->create_debug, &desc.debug);
+        dom_shell_policy_set_copy(&shell->create_interaction, &desc.interaction);
         dom_shell_policy_set_copy(&shell->create_playtest, &desc.playtest);
         {
             int rc = dom_client_shell_create_world(shell, log, status, status_cap, emit_text);
@@ -8853,6 +9843,12 @@ int dom_client_shell_execute(dom_client_shell* shell,
                 dom_shell_policy_set_copy(&shell->world.summary.debug, &desc.debug);
             }
         }
+        if (desc.interaction_set) {
+            dom_shell_policy_set_copy(&shell->create_interaction, &desc.interaction);
+            if (shell->world.active) {
+                dom_shell_policy_set_copy(&shell->world.summary.interaction, &desc.interaction);
+            }
+        }
         if (desc.playtest_set) {
             dom_shell_policy_set_copy(&shell->create_playtest, &desc.playtest);
             if (shell->world.active) {
@@ -9378,6 +10374,164 @@ int dom_client_shell_execute(dom_client_shell* shell,
     }
     if (strcmp(token, "hud-toggle") == 0 || strcmp(token, "hud") == 0) {
         return dom_client_shell_toggle_hud(shell, log, status, status_cap, emit_text);
+    }
+    if (strcmp(token, "interaction-list") == 0 || strcmp(token, "object-list") == 0 ||
+        strcmp(token, "objects") == 0) {
+        if (!shell || !shell->world.active) {
+            dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "no active world");
+            dom_shell_set_status(shell, "interaction_list=refused");
+            if (status && status_cap > 0u) {
+                snprintf(status, status_cap, "%s", shell->last_status);
+            }
+            return D_APP_EXIT_UNAVAILABLE;
+        }
+        dom_shell_print_interactions(shell, emit_text);
+        dom_shell_set_status(shell, "interaction_list=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.interaction.list", "result=ok");
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "object-select") == 0 || strcmp(token, "select-object") == 0) {
+        const char* type_id = 0;
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (eq) {
+                *eq = '\0';
+                if (strcmp(next, "type") == 0 || strcmp(next, "object") == 0) {
+                    type_id = eq + 1;
+                }
+            } else if (!type_id) {
+                type_id = next;
+            }
+        }
+        if (!type_id) {
+            return D_APP_EXIT_USAGE;
+        }
+        return dom_shell_interaction_select(shell, type_id, log, status, status_cap, emit_text);
+    }
+    if (strcmp(token, "tool-select") == 0) {
+        const char* tool_id = 0;
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (eq) {
+                *eq = '\0';
+                if (strcmp(next, "tool") == 0) {
+                    tool_id = eq + 1;
+                }
+            } else if (!tool_id) {
+                tool_id = next;
+            }
+        }
+        if (!tool_id) {
+            return D_APP_EXIT_USAGE;
+        }
+        return dom_shell_interaction_tool_select(shell, tool_id, log, status, status_cap, emit_text);
+    }
+    if (strcmp(token, "place-preview") == 0 || strcmp(token, "object-preview") == 0) {
+        const char* type_id = 0;
+        double pos[3];
+        int has_pos = 0;
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (eq) {
+                *eq = '\0';
+                if (strcmp(next, "type") == 0 || strcmp(next, "object") == 0) {
+                    type_id = eq + 1;
+                } else if (strcmp(next, "pos") == 0) {
+                    has_pos = dom_shell_parse_vec3(eq + 1, pos);
+                }
+            } else if (!type_id) {
+                type_id = next;
+            }
+        }
+        return dom_shell_interaction_place_internal(shell, type_id, pos, has_pos, 1,
+                                                   log, status, status_cap, emit_text);
+    }
+    if (strcmp(token, "place-confirm") == 0 || strcmp(token, "object-confirm") == 0) {
+        return dom_shell_interaction_confirm(shell, log, status, status_cap, emit_text);
+    }
+    if (strcmp(token, "place") == 0 || strcmp(token, "object-place") == 0) {
+        const char* type_id = 0;
+        double pos[3];
+        int has_pos = 0;
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (eq) {
+                *eq = '\0';
+                if (strcmp(next, "type") == 0 || strcmp(next, "object") == 0) {
+                    type_id = eq + 1;
+                } else if (strcmp(next, "pos") == 0) {
+                    has_pos = dom_shell_parse_vec3(eq + 1, pos);
+                }
+            } else if (!type_id) {
+                type_id = next;
+            }
+        }
+        return dom_shell_interaction_place_internal(shell, type_id, pos, has_pos, 0,
+                                                   log, status, status_cap, emit_text);
+    }
+    if (strcmp(token, "remove") == 0 || strcmp(token, "object-remove") == 0) {
+        u64 object_id = 0u;
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (eq) {
+                *eq = '\0';
+                if (strcmp(next, "id") == 0 || strcmp(next, "object_id") == 0 ||
+                    strcmp(next, "object") == 0) {
+                    dom_shell_parse_u64(eq + 1, &object_id);
+                }
+            }
+        }
+        return dom_shell_interaction_remove(shell, object_id, log, status, status_cap, emit_text);
+    }
+    if (strcmp(token, "signal-toggle") == 0 || strcmp(token, "toggle-signal") == 0) {
+        u64 object_id = 0u;
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (eq) {
+                *eq = '\0';
+                if (strcmp(next, "id") == 0 || strcmp(next, "object_id") == 0 ||
+                    strcmp(next, "object") == 0) {
+                    dom_shell_parse_u64(eq + 1, &object_id);
+                }
+            }
+        }
+        return dom_shell_interaction_signal(shell, object_id, log, status, status_cap, emit_text);
+    }
+    if (strcmp(token, "measure") == 0) {
+        u64 object_id = 0u;
+        double pos[3];
+        int has_pos = 0;
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (eq) {
+                *eq = '\0';
+                if (strcmp(next, "id") == 0 || strcmp(next, "object_id") == 0 ||
+                    strcmp(next, "object") == 0) {
+                    dom_shell_parse_u64(eq + 1, &object_id);
+                } else if (strcmp(next, "pos") == 0) {
+                    has_pos = dom_shell_parse_vec3(eq + 1, pos);
+                }
+            }
+        }
+        return dom_shell_interaction_measure(shell, object_id, pos, has_pos,
+                                            log, status, status_cap, emit_text);
+    }
+    if (strcmp(token, "object-inspect") == 0 || strcmp(token, "inspect-object") == 0) {
+        u64 object_id = 0u;
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (eq) {
+                *eq = '\0';
+                if (strcmp(next, "id") == 0 || strcmp(next, "object_id") == 0 ||
+                    strcmp(next, "object") == 0) {
+                    dom_shell_parse_u64(eq + 1, &object_id);
+                }
+            }
+        }
+        return dom_shell_interaction_inspect(shell, object_id, log, status, status_cap, emit_text);
     }
     if (strcmp(token, "domain") == 0 || strcmp(token, "focus") == 0) {
         const char* node_id = strtok(0, " \t");
