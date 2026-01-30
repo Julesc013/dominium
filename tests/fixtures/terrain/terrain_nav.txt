@@ -1,0 +1,14 @@
+DOMINIUM_TERRAIN_NAV_V1
+# latlon turns, altitude in local units (slab maps turns to +/- half-extent)
+latlon=0.00,0.00,0
+latlon=0.00,0.05,0
+latlon=0.00,0.10,0
+latlon=0.00,0.15,0
+latlon=0.05,0.00,0
+latlon=-0.05,0.00,0
+latlon=0.10,0.10,0
+latlon=-0.10,0.20,0
+latlon=0.15,-0.05,0
+latlon=-0.15,-0.10,0
+latlon=0.20,0.00,0
+latlon=-0.20,0.05,0

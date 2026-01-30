@@ -313,6 +313,10 @@ venv/
 !/external/licenses/**
 !/source/dominium/setup/core/include/dsu/dsu_config.h
 
+# Re-ignore script caches under /scripts after allow-list.
+/scripts/**/__pycache__/
+/scripts/**/__pycache__/**
+
 
 # ---------------------------------------------------------------------
 # END OF FILE
