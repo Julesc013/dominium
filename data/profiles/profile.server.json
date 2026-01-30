@@ -1,0 +1,30 @@
+{
+  "schema_id": "dominium.schema.profile",
+  "schema_version": "1.1.0",
+  "record": {
+    "profile_id": "org.dominium.profile.server",
+    "profile_version": "1.0.0",
+    "profile_format_version": 1,
+    "description": "Server-first defaults for headless or authoritative runs.",
+    "recommended_packs": [
+      {
+        "pack_id": "org.dominium.server.baseline"
+      }
+    ],
+    "default_world_templates": [
+      {
+        "template_id": "org.dominium.template.server.baseline"
+      }
+    ],
+    "ui_density": "org.dominium.ui.density.compact",
+    "verbosity": "org.dominium.ui.verbosity.normal",
+    "default_law_presets": [
+      "org.dominium.law.server"
+    ],
+    "default_meta_law_presets": [
+      "org.dominium.meta_law.server"
+    ],
+    "warnings_level": "org.dominium.warnings.standard",
+    "extensions": {}
+  }
+}

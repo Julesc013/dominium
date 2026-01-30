@@ -1,0 +1,33 @@
+{
+  "schema_id": "dominium.schema.profile",
+  "schema_version": "1.1.0",
+  "record": {
+    "profile_id": "org.dominium.profile.hardcore",
+    "profile_version": "1.0.0",
+    "profile_format_version": 1,
+    "description": "Strict defaults with higher consequences and reduced hints.",
+    "recommended_packs": [
+      {
+        "pack_id": "org.dominium.rules.hardcore"
+      },
+      {
+        "pack_id": "org.dominium.worldgen.full"
+      }
+    ],
+    "default_world_templates": [
+      {
+        "template_id": "org.dominium.template.standard"
+      }
+    ],
+    "ui_density": "org.dominium.ui.density.compact",
+    "verbosity": "org.dominium.ui.verbosity.minimal",
+    "default_law_presets": [
+      "org.dominium.law.strict"
+    ],
+    "default_meta_law_presets": [
+      "org.dominium.meta_law.strict"
+    ],
+    "warnings_level": "org.dominium.warnings.strict",
+    "extensions": {}
+  }
+}

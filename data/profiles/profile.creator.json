@@ -1,0 +1,33 @@
+{
+  "schema_id": "dominium.schema.profile",
+  "schema_version": "1.1.0",
+  "record": {
+    "profile_id": "org.dominium.profile.creator",
+    "profile_version": "1.0.0",
+    "profile_format_version": 1,
+    "description": "Creator-focused defaults with richer tooling hints.",
+    "recommended_packs": [
+      {
+        "pack_id": "org.dominium.tools.creator"
+      },
+      {
+        "pack_id": "org.dominium.worldgen.dev"
+      }
+    ],
+    "default_world_templates": [
+      {
+        "template_id": "org.dominium.template.sandbox"
+      }
+    ],
+    "ui_density": "org.dominium.ui.density.spacious",
+    "verbosity": "org.dominium.ui.verbosity.verbose",
+    "default_law_presets": [
+      "org.dominium.law.creator"
+    ],
+    "default_meta_law_presets": [
+      "org.dominium.meta_law.creator"
+    ],
+    "warnings_level": "org.dominium.warnings.standard",
+    "extensions": {}
+  }
+}

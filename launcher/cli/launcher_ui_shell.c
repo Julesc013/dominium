@@ -31,6 +31,9 @@ Launcher UI shell implementation.
 #define LAUNCHER_UI_STATUS_MAX 160
 #define LAUNCHER_UI_LABEL_MAX 96
 #define LAUNCHER_UI_RENDERER_MAX 8
+#define LAUNCHER_UI_DIAG_LINES 4
+#define LAUNCHER_UI_MAX_ROOTS 6
+#define LAUNCHER_UI_PATH_MAX 260
 
 typedef enum launcher_ui_screen {
     LAUNCHER_UI_LOADING = 0,
@@ -72,12 +75,19 @@ typedef struct launcher_ui_state {
     int menu_index;
     char action_status[LAUNCHER_UI_STATUS_MAX];
     char pack_status[LAUNCHER_UI_STATUS_MAX];
+    char install_status[LAUNCHER_UI_STATUS_MAX];
+    char profile_status[LAUNCHER_UI_STATUS_MAX];
     char template_status[LAUNCHER_UI_STATUS_MAX];
     char determinism_status[32];
     uint32_t package_count;
     uint32_t instance_count;
+    uint32_t install_count;
+    uint32_t instance_manifest_count;
+    uint32_t profile_count;
     char testx_status[32];
     char seed_status[32];
+    char diagnostics_lines[LAUNCHER_UI_DIAG_LINES][LAUNCHER_UI_LABEL_MAX];
+    int diagnostics_count;
     launcher_ui_settings settings;
     launcher_renderer_list renderers;
 } launcher_ui_state;
@@ -293,11 +303,14 @@ int launcher_ui_execute_command(const char* cmd,
     }
     if (strcmp(cmd, "settings") == 0) {
         char lines[LAUNCHER_UI_SETTINGS_LINES][LAUNCHER_UI_LABEL_MAX];
+        char diag[LAUNCHER_UI_DIAG_LINES][LAUNCHER_UI_LABEL_MAX];
         int count = 0;
+        int diag_count = 0;
         int i;
         launcher_ui_settings_format_lines(settings, (char*)lines,
                                           LAUNCHER_UI_SETTINGS_LINES,
                                           LAUNCHER_UI_LABEL_MAX, &count);
+        diag_count = launcher_ui_collect_diagnostics_lines(diag, LAUNCHER_UI_DIAG_LINES);
         dom_app_ui_event_log_emit(log, "launcher.settings", "result=ok");
         if (status && status_cap > 0u) {
             snprintf(status, status_cap, "launcher_settings=ok");
@@ -306,6 +319,9 @@ int launcher_ui_execute_command(const char* cmd,
             printf("launcher_settings=ok\n");
             for (i = 0; i < count; ++i) {
                 printf("%s\n", lines[i]);
+            }
+            for (i = 0; i < diag_count; ++i) {
+                printf("%s\n", diag[i]);
             }
         }
         return D_APP_EXIT_OK;
@@ -399,6 +415,218 @@ static const char* launcher_env_or_default(const char* key, const char* fallback
         return value;
     }
     return fallback;
+}
+
+static int launcher_ui_collect_diagnostics_lines(char lines[][LAUNCHER_UI_LABEL_MAX], int max_lines)
+{
+    const char* data_root = launcher_env_or_default("DOM_DATA_ROOT", "");
+    if (!data_root || !data_root[0]) {
+        data_root = launcher_env_or_default("DOM_INSTANCE_ROOT", "data");
+    }
+    int count = 0;
+    if (!lines || max_lines <= 0) {
+        return 0;
+    }
+    if (count < max_lines) {
+        snprintf(lines[count++], LAUNCHER_UI_LABEL_MAX, "instance_data_path=%s", data_root);
+    }
+    if (count < max_lines) {
+        snprintf(lines[count++], LAUNCHER_UI_LABEL_MAX, "logs_path=%s/logs", data_root);
+    }
+    if (count < max_lines) {
+        snprintf(lines[count++], LAUNCHER_UI_LABEL_MAX, "replays_path=%s/replays", data_root);
+    }
+    if (count < max_lines) {
+        snprintf(lines[count++], LAUNCHER_UI_LABEL_MAX, "bugreports_path=%s/bugreports", data_root);
+    }
+    return count;
+}
+
+static void launcher_ui_collect_diagnostics(launcher_ui_state* state)
+{
+    if (!state) {
+        return;
+    }
+    state->diagnostics_count = launcher_ui_collect_diagnostics_lines(state->diagnostics_lines,
+                                                                      LAUNCHER_UI_DIAG_LINES);
+}
+
+static int launcher_ui_ends_with(const char* text, const char* suffix)
+{
+    size_t text_len;
+    size_t suffix_len;
+    if (!text || !suffix) {
+        return 0;
+    }
+    text_len = strlen(text);
+    suffix_len = strlen(suffix);
+    if (suffix_len > text_len) {
+        return 0;
+    }
+    return strcmp(text + (text_len - suffix_len), suffix) == 0;
+}
+
+static int launcher_ui_file_exists(const char* path)
+{
+    FILE* f = 0;
+    if (!path || !path[0]) {
+        return 0;
+    }
+    f = fopen(path, "rb");
+    if (f) {
+        fclose(f);
+        return 1;
+    }
+    return 0;
+}
+
+static int launcher_split_roots(const char* text,
+                                char roots[][LAUNCHER_UI_PATH_MAX],
+                                int max_roots)
+{
+    char token[LAUNCHER_UI_PATH_MAX];
+    int count = 0;
+    size_t len = 0;
+    const char* p = text;
+    if (!text || !text[0] || !roots || max_roots <= 0) {
+        return 0;
+    }
+    while (1) {
+        char c = *p++;
+        if (c == ';' || c == ':' || c == ',' || c == '\0') {
+            if (len > 0 && count < max_roots) {
+                token[len] = '\0';
+                strncpy(roots[count], token, LAUNCHER_UI_PATH_MAX - 1u);
+                roots[count][LAUNCHER_UI_PATH_MAX - 1u] = '\0';
+                count += 1;
+            }
+            len = 0;
+            if (c == '\0') {
+                break;
+            }
+            continue;
+        }
+        if (len + 1u < sizeof(token)) {
+            token[len++] = c;
+        }
+    }
+    return count;
+}
+
+static uint32_t launcher_count_manifest_recursive(const char* root, const char* filename)
+{
+    uint32_t count = 0u;
+    if (!root || !root[0] || !filename || !filename[0]) {
+        return 0u;
+    }
+    if (launcher_ui_file_exists(root)) {
+        return launcher_ui_ends_with(root, filename) ? 1u : 0u;
+    }
+#if defined(_WIN32)
+    {
+        struct _finddata_t data;
+        intptr_t handle;
+        char pattern[LAUNCHER_UI_PATH_MAX];
+        char manifest[LAUNCHER_UI_PATH_MAX];
+        snprintf(manifest, sizeof(manifest), "%s\\%s", root, filename);
+        if (launcher_ui_file_exists(manifest)) {
+            count += 1u;
+        }
+        snprintf(pattern, sizeof(pattern), "%s\\*", root);
+        handle = _findfirst(pattern, &data);
+        if (handle == -1) {
+            return count;
+        }
+        do {
+            if ((data.attrib & _A_SUBDIR) != 0) {
+                if (strcmp(data.name, ".") == 0 || strcmp(data.name, "..") == 0) {
+                    continue;
+                }
+                snprintf(manifest, sizeof(manifest), "%s\\%s", root, data.name);
+                count += launcher_count_manifest_recursive(manifest, filename);
+            }
+        } while (_findnext(handle, &data) == 0);
+        _findclose(handle);
+    }
+#else
+    {
+        DIR* dir = opendir(root);
+        struct dirent* entry;
+        if (!dir) {
+            return count;
+        }
+        {
+            char manifest[LAUNCHER_UI_PATH_MAX];
+            snprintf(manifest, sizeof(manifest), "%s/%s", root, filename);
+            if (launcher_ui_file_exists(manifest)) {
+                count += 1u;
+            }
+        }
+        while ((entry = readdir(dir)) != 0) {
+            char path[LAUNCHER_UI_PATH_MAX];
+            struct stat st;
+            if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0) {
+                continue;
+            }
+            snprintf(path, sizeof(path), "%s/%s", root, entry->d_name);
+            if (stat(path, &st) != 0) {
+                continue;
+            }
+            if (!S_ISDIR(st.st_mode)) {
+                continue;
+            }
+            count += launcher_count_manifest_recursive(path, filename);
+        }
+        closedir(dir);
+    }
+#endif
+    return count;
+}
+
+static uint32_t launcher_count_profiles(const char* root)
+{
+    uint32_t count = 0u;
+    if (!root || !root[0]) {
+        return 0u;
+    }
+#if defined(_WIN32)
+    {
+        struct _finddata_t data;
+        intptr_t handle;
+        char pattern[LAUNCHER_UI_PATH_MAX];
+        snprintf(pattern, sizeof(pattern), "%s\\*.json", root);
+        handle = _findfirst(pattern, &data);
+        if (handle == -1) {
+            return 0u;
+        }
+        do {
+            if ((data.attrib & _A_SUBDIR) == 0) {
+                count += 1u;
+            }
+        } while (_findnext(handle, &data) == 0);
+        _findclose(handle);
+    }
+#else
+    {
+        DIR* dir = opendir(root);
+        struct dirent* entry;
+        if (!dir) {
+            return 0u;
+        }
+        while ((entry = readdir(dir)) != 0) {
+            size_t len;
+            if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0) {
+                continue;
+            }
+            len = strlen(entry->d_name);
+            if (len >= 5 && strcmp(entry->d_name + (len - 5), ".json") == 0) {
+                count += 1u;
+            }
+        }
+        closedir(dir);
+    }
+#endif
+    return count;
 }
 
 static uint32_t launcher_count_pack_manifests(const char* root)
@@ -507,6 +735,56 @@ static void launcher_ui_collect_loading(launcher_ui_state* state)
                  (unsigned int)pack_count,
                  report.message[0] ? report.message : "compatibility failure");
     }
+    {
+        char install_roots[LAUNCHER_UI_MAX_ROOTS][LAUNCHER_UI_PATH_MAX];
+        char instance_roots[LAUNCHER_UI_MAX_ROOTS][LAUNCHER_UI_PATH_MAX];
+        const char* install_env = getenv("DOM_INSTALL_SEARCH");
+        const char* instance_env = getenv("DOM_INSTANCE_SEARCH");
+        const char* profile_env = launcher_env_or_default("DOM_PROFILE_ROOT", "data/profiles");
+        if (!install_env || !install_env[0]) {
+            install_env = getenv("DOM_INSTALL_ROOT");
+        }
+        if (!instance_env || !instance_env[0]) {
+            instance_env = getenv("DOM_INSTANCE_ROOT");
+        }
+        int install_root_count = launcher_split_roots(install_env,
+                                                      install_roots,
+                                                      LAUNCHER_UI_MAX_ROOTS);
+        int instance_root_count = launcher_split_roots(instance_env,
+                                                       instance_roots,
+                                                       LAUNCHER_UI_MAX_ROOTS);
+        int i;
+        if (install_root_count <= 0) {
+            strncpy(install_roots[0], ".", LAUNCHER_UI_PATH_MAX - 1u);
+            install_roots[0][LAUNCHER_UI_PATH_MAX - 1u] = '\0';
+            install_root_count = 1;
+        }
+        if (instance_root_count <= 0) {
+            for (i = 0; i < install_root_count && i < LAUNCHER_UI_MAX_ROOTS; ++i) {
+                strncpy(instance_roots[i], install_roots[i], LAUNCHER_UI_PATH_MAX - 1u);
+                instance_roots[i][LAUNCHER_UI_PATH_MAX - 1u] = '\0';
+            }
+            instance_root_count = install_root_count;
+        }
+        state->install_count = 0u;
+        state->instance_manifest_count = 0u;
+        for (i = 0; i < install_root_count; ++i) {
+            state->install_count += launcher_count_manifest_recursive(install_roots[i],
+                                                                      "install.manifest.json");
+        }
+        for (i = 0; i < instance_root_count; ++i) {
+            state->instance_manifest_count += launcher_count_manifest_recursive(instance_roots[i],
+                                                                                "instance.manifest.json");
+        }
+        state->profile_count = launcher_count_profiles(profile_env);
+        snprintf(state->install_status, sizeof(state->install_status),
+                 "install_discovery=ok installs=%u instances=%u",
+                 (unsigned int)state->install_count,
+                 (unsigned int)state->instance_manifest_count);
+        snprintf(state->profile_status, sizeof(state->profile_status),
+                 "profile_discovery=ok profiles=%u",
+                 (unsigned int)state->profile_count);
+    }
     strncpy(state->testx_status,
             launcher_env_or_default("DOM_TESTX_STATUS", "unknown"),
             sizeof(state->testx_status) - 1u);
@@ -553,6 +831,7 @@ static void launcher_ui_state_init(launcher_ui_state* state,
              "determinism=%s",
              (timing_mode == D_APP_TIMING_INTERACTIVE) ? "interactive" : "deterministic");
     launcher_ui_collect_loading(state);
+    launcher_ui_collect_diagnostics(state);
 }
 
 static void launcher_ui_cycle_renderer(launcher_ui_state* state)
@@ -776,6 +1055,8 @@ static void launcher_gui_render(const launcher_ui_state* state,
         snprintf(line, sizeof(line), "testx=%s", state->testx_status);
         launcher_gui_draw_text(buf, 20, y, line, text); y += line_h;
         launcher_gui_draw_text(buf, 20, y, state->pack_status, text); y += line_h;
+        launcher_gui_draw_text(buf, 20, y, state->install_status, text); y += line_h;
+        launcher_gui_draw_text(buf, 20, y, state->profile_status, text); y += line_h;
         snprintf(line, sizeof(line), "seed=%s", state->seed_status);
         launcher_gui_draw_text(buf, 20, y, line, text); y += line_h;
         launcher_gui_draw_text(buf, 20, y,
@@ -804,6 +1085,10 @@ static void launcher_gui_render(const launcher_ui_state* state,
                                           LAUNCHER_UI_LABEL_MAX, &count);
         for (i = 0; i < count; ++i) {
             launcher_gui_draw_text(buf, 20, y, lines[i], text);
+            y += line_h;
+        }
+        for (i = 0; i < state->diagnostics_count; ++i) {
+            launcher_gui_draw_text(buf, 20, y, state->diagnostics_lines[i], text);
             y += line_h;
         }
         y += line_h;
@@ -979,6 +1264,8 @@ int launcher_ui_run_tui(const dom_app_ui_run_config* run_cfg,
             snprintf(line, sizeof(line), "testx=%s", ui.testx_status);
             d_tui_widget_add(root, d_tui_label(tui, line));
             d_tui_widget_add(root, d_tui_label(tui, ui.pack_status));
+            d_tui_widget_add(root, d_tui_label(tui, ui.install_status));
+            d_tui_widget_add(root, d_tui_label(tui, ui.profile_status));
             snprintf(line, sizeof(line), "seed=%s", ui.seed_status);
             d_tui_widget_add(root, d_tui_label(tui, line));
             d_tui_widget_add(root,
@@ -1006,6 +1293,9 @@ int launcher_ui_run_tui(const dom_app_ui_run_config* run_cfg,
                                               LAUNCHER_UI_LABEL_MAX, &count);
             for (i = 0; i < count; ++i) {
                 d_tui_widget_add(root, d_tui_label(tui, lines[i]));
+            }
+            for (i = 0; i < ui.diagnostics_count; ++i) {
+                d_tui_widget_add(root, d_tui_label(tui, ui.diagnostics_lines[i]));
             }
             d_tui_widget_add(root,
                              d_tui_label(tui,
