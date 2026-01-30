@@ -4,7 +4,7 @@ The world creation UI is a thin shell over the template registry.
 It does not infer or mutate the generated WorldDefinition.
 
 Core steps:
-1) Enumerate templates from the registry (built-in and pack-provided).
+1) Enumerate templates from the built-in registry (zero packs required).
 2) Select a template.
 3) Edit parameters declared by the template:
    - seed(s)
@@ -14,12 +14,13 @@ Core steps:
 5) Write the WorldDefinition into a save file.
 
 Constraints:
+- No content packs are required to create a world.
 - No hardcoded topology, bodies, or spawn locations.
 - No implicit defaults beyond what the template declares.
 - Policy layers are explicit and recorded in the WorldDefinition.
 - Template provenance is preserved (template_id, version, generator source, seed).
 
-Built-in templates (MVP):
+Built-in templates (MVP, zero-asset):
 - Empty Universe
 - Minimal System
 - Realistic Test Universe (labels only; no asset assumptions)
