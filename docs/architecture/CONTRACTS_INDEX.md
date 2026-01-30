@@ -158,6 +158,11 @@ document is binding but still expected to grow or sharpen.
 | `docs/architecture/CHECKPOINTS.md` | EVOLVING | Acceptance checkpoints |
 | `docs/ui/UX_RULES.md` | EVOLVING | Global UX rules (CLI/TUI/GUI) |
 | `docs/ui/LAUNCHER_WALKTHROUGH.md` | EVOLVING | Launcher walkthrough and parity |
+| `docs/ui/CLIENT_OUT_OF_GAME_SCOPE.md` | EVOLVING | Client out-of-game scope (zero-asset) |
+| `docs/ui/CLIENT_MENU_GUIDE.md` | EVOLVING | Client menu behavior and rules |
+| `docs/ui/WORLD_CREATION_FLOW.md` | EVOLVING | World creation flow contract |
+| `docs/ui/SETTINGS_GUIDE.md` | EVOLVING | Settings contract and constraints |
+| `docs/ui/DEBUG_AND_INSPECT.md` | EVOLVING | Debug/inspect access contract |
 | `docs/dev/DEBUG_AND_DIAGNOSTICS_MODEL.md` | EVOLVING | Debug and diagnostics model |
 
 
