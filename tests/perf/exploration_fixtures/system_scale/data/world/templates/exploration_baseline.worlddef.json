@@ -1,0 +1,217 @@
+{
+  "schema_id": "dominium.schema.world_definition",
+  "schema_version": 1,
+  "worlddef_id": "world.template.exploration_baseline.seed.{{seed}}",
+  "topology": {
+    "root_node_ref": { "node_id": "universe.root" },
+    "nodes": [
+      {
+        "node_id": "universe.root",
+        "trait_tags": ["topology.universe"],
+        "coord_frame_ref": { "frame_id": "frame.universe.root" }
+      },
+      {
+        "node_id": "galaxy.milky_way",
+        "parent_refs": [{ "node_id": "universe.root" }],
+        "trait_tags": ["topology.galaxy"],
+        "coord_frame_ref": { "frame_id": "frame.galaxy.milky_way" }
+      },
+      {
+        "node_id": "system.sol",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system"],
+        "coord_frame_ref": { "frame_id": "frame.system.sol" }
+      },
+      {
+        "node_id": "body.sun",
+        "parent_refs": [{ "node_id": "system.sol" }],
+        "trait_tags": ["topology.body", "body.sphere", "body.star"],
+        "coord_frame_ref": { "frame_id": "frame.body.sun" }
+      },
+      {
+        "node_id": "body.earth",
+        "parent_refs": [{ "node_id": "system.sol" }],
+        "trait_tags": ["topology.body", "body.sphere", "body.planet", "body.spawn", "body.earth"],
+        "coord_frame_ref": { "frame_id": "frame.body.earth" },
+        "extensions": {
+          "radius_m": 6371000,
+          "surface_tag": "surface.abstract_shell"
+        }
+      },
+      {
+        "node_id": "body.mercury",
+        "parent_refs": [{ "node_id": "system.sol" }],
+        "trait_tags": ["topology.body", "body.sphere", "body.planet"],
+        "coord_frame_ref": { "frame_id": "frame.body.mercury" }
+      },
+      {
+        "node_id": "body.venus",
+        "parent_refs": [{ "node_id": "system.sol" }],
+        "trait_tags": ["topology.body", "body.sphere", "body.planet"],
+        "coord_frame_ref": { "frame_id": "frame.body.venus" }
+      },
+      {
+        "node_id": "body.mars",
+        "parent_refs": [{ "node_id": "system.sol" }],
+        "trait_tags": ["topology.body", "body.sphere", "body.planet"],
+        "coord_frame_ref": { "frame_id": "frame.body.mars" }
+      },
+      {
+        "node_id": "body.jupiter",
+        "parent_refs": [{ "node_id": "system.sol" }],
+        "trait_tags": ["topology.body", "body.sphere", "body.planet"],
+        "coord_frame_ref": { "frame_id": "frame.body.jupiter" }
+      },
+      {
+        "node_id": "body.saturn",
+        "parent_refs": [{ "node_id": "system.sol" }],
+        "trait_tags": ["topology.body", "body.sphere", "body.planet"],
+        "coord_frame_ref": { "frame_id": "frame.body.saturn" }
+      },
+      {
+        "node_id": "body.uranus",
+        "parent_refs": [{ "node_id": "system.sol" }],
+        "trait_tags": ["topology.body", "body.sphere", "body.planet"],
+        "coord_frame_ref": { "frame_id": "frame.body.uranus" }
+      },
+      {
+        "node_id": "body.neptune",
+        "parent_refs": [{ "node_id": "system.sol" }],
+        "trait_tags": ["topology.body", "body.sphere", "body.planet"],
+        "coord_frame_ref": { "frame_id": "frame.body.neptune" }
+      },
+      {
+        "node_id": "body.ceres",
+        "parent_refs": [{ "node_id": "system.sol" }],
+        "trait_tags": ["topology.body", "body.sphere", "body.dwarf"],
+        "coord_frame_ref": { "frame_id": "frame.body.ceres" }
+      },
+      {
+        "node_id": "body.vesta",
+        "parent_refs": [{ "node_id": "system.sol" }],
+        "trait_tags": ["topology.body", "body.sphere", "body.asteroid"],
+        "coord_frame_ref": { "frame_id": "frame.body.vesta" }
+      },
+      {
+        "node_id": "body.io",
+        "parent_refs": [{ "node_id": "system.sol" }],
+        "trait_tags": ["topology.body", "body.sphere", "body.moon"],
+        "coord_frame_ref": { "frame_id": "frame.body.io" }
+      },
+      {
+        "node_id": "body.europa",
+        "parent_refs": [{ "node_id": "system.sol" }],
+        "trait_tags": ["topology.body", "body.sphere", "body.moon"],
+        "coord_frame_ref": { "frame_id": "frame.body.europa" }
+      },
+      {
+        "node_id": "body.ganymede",
+        "parent_refs": [{ "node_id": "system.sol" }],
+        "trait_tags": ["topology.body", "body.sphere", "body.moon"],
+        "coord_frame_ref": { "frame_id": "frame.body.ganymede" }
+      },
+      {
+        "node_id": "body.callisto",
+        "parent_refs": [{ "node_id": "system.sol" }],
+        "trait_tags": ["topology.body", "body.sphere", "body.moon"],
+        "coord_frame_ref": { "frame_id": "frame.body.callisto" }
+      },
+      {
+        "node_id": "body.titan",
+        "parent_refs": [{ "node_id": "system.sol" }],
+        "trait_tags": ["topology.body", "body.sphere", "body.moon"],
+        "coord_frame_ref": { "frame_id": "frame.body.titan" }
+      },
+      {
+        "node_id": "body.enceladus",
+        "parent_refs": [{ "node_id": "system.sol" }],
+        "trait_tags": ["topology.body", "body.sphere", "body.moon"],
+        "coord_frame_ref": { "frame_id": "frame.body.enceladus" }
+      },
+      {
+        "node_id": "body.triton",
+        "parent_refs": [{ "node_id": "system.sol" }],
+        "trait_tags": ["topology.body", "body.sphere", "body.moon"],
+        "coord_frame_ref": { "frame_id": "frame.body.triton" }
+      },
+      {
+        "node_id": "body.pluto",
+        "parent_refs": [{ "node_id": "system.sol" }],
+        "trait_tags": ["topology.body", "body.sphere", "body.dwarf"],
+        "coord_frame_ref": { "frame_id": "frame.body.pluto" }
+      },
+      {
+        "node_id": "body.eris",
+        "parent_refs": [{ "node_id": "system.sol" }],
+        "trait_tags": ["topology.body", "body.sphere", "body.dwarf"],
+        "coord_frame_ref": { "frame_id": "frame.body.eris" }
+      },
+      {
+        "node_id": "body.haumea",
+        "parent_refs": [{ "node_id": "system.sol" }],
+        "trait_tags": ["topology.body", "body.sphere", "body.dwarf"],
+        "coord_frame_ref": { "frame_id": "frame.body.haumea" }
+      },
+      {
+        "node_id": "body.makemake",
+        "parent_refs": [{ "node_id": "system.sol" }],
+        "trait_tags": ["topology.body", "body.sphere", "body.dwarf"],
+        "coord_frame_ref": { "frame_id": "frame.body.makemake" }
+      }
+    ],
+    "edges": [
+      { "parent_ref": { "node_id": "universe.root" }, "child_ref": { "node_id": "galaxy.milky_way" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.sol" } },
+      { "parent_ref": { "node_id": "system.sol" }, "child_ref": { "node_id": "body.sun" } },
+      { "parent_ref": { "node_id": "system.sol" }, "child_ref": { "node_id": "body.earth" } },
+      { "parent_ref": { "node_id": "system.sol" }, "child_ref": { "node_id": "body.mercury" } },
+      { "parent_ref": { "node_id": "system.sol" }, "child_ref": { "node_id": "body.venus" } },
+      { "parent_ref": { "node_id": "system.sol" }, "child_ref": { "node_id": "body.mars" } },
+      { "parent_ref": { "node_id": "system.sol" }, "child_ref": { "node_id": "body.jupiter" } },
+      { "parent_ref": { "node_id": "system.sol" }, "child_ref": { "node_id": "body.saturn" } },
+      { "parent_ref": { "node_id": "system.sol" }, "child_ref": { "node_id": "body.uranus" } },
+      { "parent_ref": { "node_id": "system.sol" }, "child_ref": { "node_id": "body.neptune" } },
+      { "parent_ref": { "node_id": "system.sol" }, "child_ref": { "node_id": "body.ceres" } },
+      { "parent_ref": { "node_id": "system.sol" }, "child_ref": { "node_id": "body.vesta" } },
+      { "parent_ref": { "node_id": "system.sol" }, "child_ref": { "node_id": "body.io" } },
+      { "parent_ref": { "node_id": "system.sol" }, "child_ref": { "node_id": "body.europa" } },
+      { "parent_ref": { "node_id": "system.sol" }, "child_ref": { "node_id": "body.ganymede" } },
+      { "parent_ref": { "node_id": "system.sol" }, "child_ref": { "node_id": "body.callisto" } },
+      { "parent_ref": { "node_id": "system.sol" }, "child_ref": { "node_id": "body.titan" } },
+      { "parent_ref": { "node_id": "system.sol" }, "child_ref": { "node_id": "body.enceladus" } },
+      { "parent_ref": { "node_id": "system.sol" }, "child_ref": { "node_id": "body.triton" } },
+      { "parent_ref": { "node_id": "system.sol" }, "child_ref": { "node_id": "body.pluto" } },
+      { "parent_ref": { "node_id": "system.sol" }, "child_ref": { "node_id": "body.eris" } },
+      { "parent_ref": { "node_id": "system.sol" }, "child_ref": { "node_id": "body.haumea" } },
+      { "parent_ref": { "node_id": "system.sol" }, "child_ref": { "node_id": "body.makemake" } }
+    ],
+    "extensions": {}
+  },
+  "initial_fields": [],
+  "policy_sets": {
+    "movement_policies": {{movement_policies}},
+    "authority_policies": {{authority_policies}},
+    "mode_policies": {{mode_policies}},
+    "debug_policies": {{debug_policies}},
+    "playtest_policies": {{playtest_policies}},
+    "camera_policies": {{camera_policies}}
+  },
+  "spawn_spec": {
+    "spawn_node_ref": { "node_id": "body.earth" },
+    "coordinate_frame_ref": { "frame_id": "frame.body.earth" },
+    "position": { "value": { "x": {{spawn_x}}, "y": {{spawn_y}}, "z": {{spawn_z}} } },
+    "orientation": { "value": { "yaw": 0, "pitch": 0, "roll": 0 } }
+  },
+  "provenance": {
+    "template_id": "world.template.exploration_baseline",
+    "template_version": "1.0.0",
+    "generator_source": "data.template",
+    "seed": { "primary": {{seed}} },
+    "template_params": { "seed.primary": {{seed}} }
+  },
+  "extensions": {
+    "earth_radius_m": 6371000,
+    "camera_modes": {{camera_policies}},
+    "hud_default": "on"
+  }
+}
