@@ -69,6 +69,9 @@ extern "C" {
 #define DOM_SHELL_MODE_FREE "policy.mode.nav.free"
 #define DOM_SHELL_MODE_ORBIT "policy.mode.nav.orbit"
 #define DOM_SHELL_MODE_SURFACE "policy.mode.nav.surface"
+#define DOM_SHELL_CAMERA_FIRST "camera.first_person"
+#define DOM_SHELL_CAMERA_THIRD "camera.third_person"
+#define DOM_SHELL_CAMERA_FREE "camera.free"
 #define DOM_SHELL_PLAYTEST_SANDBOX "policy.playtest.sandbox"
 #define DOM_SHELL_PLAYTEST_HARDCORE "policy.playtest.hardcore"
 #define DOM_SHELL_PLAYTEST_ACCELERATED "policy.playtest.accelerated_time"
@@ -195,16 +198,21 @@ typedef struct dom_shell_world_summary {
     char spawn_frame_id[DOM_SHELL_MAX_TEMPLATE_ID];
     double spawn_pos[3];
     double spawn_orient[3];
+    double earth_radius_m;
     dom_shell_policy_set movement;
     dom_shell_policy_set authority;
     dom_shell_policy_set mode;
     dom_shell_policy_set debug;
     dom_shell_policy_set playtest;
+    dom_shell_policy_set camera;
 } dom_shell_world_summary;
 
 typedef struct dom_shell_world_state {
     int active;
     char active_mode[DOM_SHELL_POLICY_ID_MAX];
+    char camera_mode[DOM_SHELL_POLICY_ID_MAX];
+    int inspect_enabled;
+    int hud_enabled;
     char current_node_id[DOM_SHELL_MAX_TEMPLATE_ID];
     double position[3];
     double orientation[3];
@@ -323,6 +331,7 @@ typedef struct dom_client_shell {
     dom_shell_policy_set create_mode;
     dom_shell_policy_set create_debug;
     dom_shell_policy_set create_playtest;
+    dom_shell_policy_set create_camera;
     dom_shell_variant_registry variant_registry;
     dom_shell_variant_selection variants[DOM_SHELL_MAX_VARIANTS];
     uint32_t variant_count;
