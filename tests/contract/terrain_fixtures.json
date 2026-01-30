@@ -1,0 +1,381 @@
+{
+  "truth_field": "terrain.phi",
+  "terrain_field_stack": {
+    "stack_id": "terrain.stack.fixture.1",
+    "domain_id": "domain.fixture.terrain",
+    "volume_id": "volume.fixture.terrain",
+    "required_field_ids": [
+      "terrain.phi",
+      "terrain.material_primary",
+      "terrain.support_capacity",
+      "env.temperature",
+      "env.moisture",
+      "terrain.roughness",
+      "travel.cost"
+    ],
+    "fields": [
+      {
+        "field_id": "terrain.phi",
+        "field_type": "field.sdf",
+        "unit": "unit.length.meter",
+        "lod_policy": "lod.terrain.core",
+        "provider_chain_id": "terrain.chain.fixture.1",
+        "epistemic_state": "knowledge.known",
+        "unit_annotations": {
+          "phi": "unit.length.meter"
+        },
+        "maturity": "maturity.experimental",
+        "extensions": {}
+      },
+      {
+        "field_id": "terrain.material_primary",
+        "field_type": "field.categorical",
+        "unit": "unit.dimensionless.ratio",
+        "lod_policy": "lod.terrain.core",
+        "provider_chain_id": "terrain.chain.fixture.1",
+        "epistemic_state": "knowledge.known",
+        "unit_annotations": {},
+        "maturity": "maturity.experimental",
+        "extensions": {}
+      },
+      {
+        "field_id": "terrain.support_capacity",
+        "field_type": "field.scalar",
+        "unit": "unit.pressure.pascal",
+        "lod_policy": "lod.terrain.core",
+        "provider_chain_id": "terrain.chain.fixture.1",
+        "epistemic_state": "knowledge.known",
+        "unit_annotations": {
+          "support_capacity": "unit.pressure.pascal"
+        },
+        "maturity": "maturity.experimental",
+        "extensions": {}
+      },
+      {
+        "field_id": "env.temperature",
+        "field_type": "field.scalar",
+        "unit": "unit.temperature.kelvin",
+        "lod_policy": "lod.terrain.env",
+        "provider_chain_id": "terrain.chain.fixture.1",
+        "epistemic_state": "knowledge.latent",
+        "unit_annotations": {
+          "temperature": "unit.temperature.kelvin"
+        },
+        "maturity": "maturity.experimental",
+        "extensions": {}
+      },
+      {
+        "field_id": "env.moisture",
+        "field_type": "field.scalar",
+        "unit": "unit.dimensionless.ratio",
+        "lod_policy": "lod.terrain.env",
+        "provider_chain_id": "terrain.chain.fixture.1",
+        "epistemic_state": "knowledge.latent",
+        "unit_annotations": {
+          "moisture": "unit.dimensionless.ratio"
+        },
+        "maturity": "maturity.experimental",
+        "extensions": {}
+      },
+      {
+        "field_id": "terrain.roughness",
+        "field_type": "field.scalar",
+        "unit": "unit.dimensionless.ratio",
+        "lod_policy": "lod.terrain.core",
+        "provider_chain_id": "terrain.chain.fixture.1",
+        "epistemic_state": "knowledge.known",
+        "unit_annotations": {
+          "roughness": "unit.dimensionless.ratio"
+        },
+        "maturity": "maturity.experimental",
+        "extensions": {}
+      },
+      {
+        "field_id": "travel.cost",
+        "field_type": "field.scalar",
+        "unit": "unit.dimensionless.ratio",
+        "lod_policy": "lod.terrain.travel",
+        "provider_chain_id": "terrain.chain.fixture.1",
+        "epistemic_state": "knowledge.known",
+        "unit_annotations": {
+          "travel_cost": "unit.dimensionless.ratio"
+        },
+        "maturity": "maturity.experimental",
+        "extensions": {}
+      }
+    ],
+    "unit_annotations": {
+      "phi": "unit.length.meter",
+      "support_capacity": "unit.pressure.pascal",
+      "temperature": "unit.temperature.kelvin",
+      "moisture": "unit.dimensionless.ratio",
+      "roughness": "unit.dimensionless.ratio",
+      "travel_cost": "unit.dimensionless.ratio"
+    },
+    "provenance": {
+      "provenance_id": "prov.terrain.fixture.1"
+    },
+    "maturity": "maturity.experimental",
+    "extensions": {}
+  },
+  "provider_chain": {
+    "chain_id": "terrain.chain.fixture.1",
+    "providers": [
+      {
+        "provider_id": "terrain.provider.base.1",
+        "provider_type": "provider.procedural.base",
+        "capability_id": "capability.terrain.base",
+        "field_ids": [
+          "terrain.phi",
+          "terrain.material_primary"
+        ],
+        "stage_order": 10,
+        "unit_annotations": {
+          "center": "unit.length.meter",
+          "radius": "unit.length.meter",
+          "stage_order": "unit.dimensionless.ratio"
+        },
+        "payload": {
+          "shape": "sphere",
+          "center": [0, 0, 0],
+          "radius": 2000
+        },
+        "provenance": {
+          "provenance_id": "prov.terrain.provider.base.1"
+        },
+        "maturity": "maturity.experimental",
+        "extensions": {}
+      },
+      {
+        "provider_id": "terrain.provider.anchor.1",
+        "provider_type": "provider.anchor",
+        "capability_id": "capability.terrain.anchor",
+        "field_ids": [
+          "terrain.phi"
+        ],
+        "stage_order": 20,
+        "unit_annotations": {
+          "stage_order": "unit.dimensionless.ratio"
+        },
+        "provenance": {
+          "provenance_id": "prov.terrain.provider.anchor.1"
+        },
+        "maturity": "maturity.experimental",
+        "extensions": {}
+      },
+      {
+        "provider_id": "terrain.provider.sim.1",
+        "provider_type": "provider.simulation",
+        "capability_id": "capability.terrain.sim",
+        "field_ids": [
+          "terrain.support_capacity",
+          "env.temperature",
+          "env.moisture",
+          "terrain.roughness",
+          "travel.cost"
+        ],
+        "stage_order": 30,
+        "unit_annotations": {
+          "stage_order": "unit.dimensionless.ratio"
+        },
+        "provenance": {
+          "provenance_id": "prov.terrain.provider.sim.1"
+        },
+        "maturity": "maturity.experimental",
+        "extensions": {}
+      },
+      {
+        "provider_id": "terrain.provider.player.overlay.1",
+        "provider_type": "provider.overlay.player",
+        "capability_id": "capability.terrain.player_edit",
+        "field_ids": [
+          "terrain.phi",
+          "terrain.material_primary"
+        ],
+        "stage_order": 40,
+        "unit_annotations": {
+          "stage_order": "unit.dimensionless.ratio"
+        },
+        "provenance": {
+          "provenance_id": "prov.terrain.provider.player.1"
+        },
+        "maturity": "maturity.experimental",
+        "extensions": {}
+      },
+      {
+        "provider_id": "terrain.provider.tool.overlay.1",
+        "provider_type": "provider.overlay.tool",
+        "capability_id": "capability.terrain.tool_edit",
+        "field_ids": [
+          "terrain.phi",
+          "terrain.material_primary"
+        ],
+        "stage_order": 50,
+        "unit_annotations": {
+          "stage_order": "unit.dimensionless.ratio"
+        },
+        "provenance": {
+          "provenance_id": "prov.terrain.provider.tool.1"
+        },
+        "maturity": "maturity.experimental",
+        "extensions": {}
+      },
+      {
+        "provider_id": "terrain.provider.cache.1",
+        "provider_type": "provider.cache",
+        "capability_id": "capability.terrain.cache",
+        "field_ids": [
+          "terrain.phi"
+        ],
+        "stage_order": 60,
+        "unit_annotations": {
+          "stage_order": "unit.dimensionless.ratio"
+        },
+        "provenance": {
+          "provenance_id": "prov.terrain.provider.cache.1"
+        },
+        "maturity": "maturity.experimental",
+        "extensions": {}
+      }
+    ],
+    "order_policy": "order.terrain.providers",
+    "unit_annotations": {},
+    "provenance": {
+      "provenance_id": "prov.terrain.chain.1"
+    },
+    "maturity": "maturity.experimental",
+    "extensions": {}
+  },
+  "overlays": [
+    {
+      "overlay_id": "overlay.terrain.cut.1",
+      "overlay_type": "delta_phi",
+      "target_field": "terrain.phi",
+      "operation": "cut",
+      "chunks": [
+        {
+          "chunk_id": "chunk.terrain.0"
+        }
+      ],
+      "payload": {
+        "shape": "sphere",
+        "center": [0, 0, 0],
+        "radius": 1000
+      },
+      "process_id": "process.terrain.cut.1",
+      "event_id": "event.terrain.cut.1",
+      "tick_index": 100,
+      "rng_stream": "noise.stream.terrain.overlay.1",
+      "unit_annotations": {
+        "center": "unit.length.meter",
+        "radius": "unit.length.meter",
+        "tick_index": "unit.time.act_tick"
+      },
+      "provenance": {
+        "provenance_id": "prov.terrain.cut.1"
+      },
+      "maturity": "maturity.experimental",
+      "extensions": {}
+    },
+    {
+      "overlay_id": "overlay.terrain.fill.1",
+      "overlay_type": "delta_phi",
+      "target_field": "terrain.phi",
+      "operation": "fill",
+      "chunks": [
+        {
+          "chunk_id": "chunk.terrain.0"
+        }
+      ],
+      "payload": {
+        "shape": "sphere",
+        "center": [0, 0, 0],
+        "radius": 800
+      },
+      "process_id": "process.terrain.fill.1",
+      "event_id": "event.terrain.fill.1",
+      "tick_index": 120,
+      "rng_stream": "noise.stream.terrain.overlay.2",
+      "unit_annotations": {
+        "center": "unit.length.meter",
+        "radius": "unit.length.meter",
+        "tick_index": "unit.time.act_tick"
+      },
+      "provenance": {
+        "provenance_id": "prov.terrain.fill.1"
+      },
+      "maturity": "maturity.experimental",
+      "extensions": {}
+    },
+    {
+      "overlay_id": "overlay.terrain.collapse.1",
+      "overlay_type": "delta_phi",
+      "target_field": "terrain.phi",
+      "operation": "fill",
+      "chunks": [
+        {
+          "chunk_id": "chunk.terrain.0"
+        }
+      ],
+      "payload": {
+        "shape": "sphere",
+        "center": [0, 0, 0],
+        "radius": 300,
+        "purpose": "collapse"
+      },
+      "process_id": "process.terrain.collapse.1",
+      "event_id": "event.terrain.collapse.1",
+      "tick_index": 140,
+      "rng_stream": "noise.stream.terrain.overlay.3",
+      "unit_annotations": {
+        "center": "unit.length.meter",
+        "radius": "unit.length.meter",
+        "tick_index": "unit.time.act_tick"
+      },
+      "provenance": {
+        "provenance_id": "prov.terrain.collapse.1"
+      },
+      "maturity": "maturity.experimental",
+      "extensions": {}
+    }
+  ],
+  "macro_capsule": {
+    "capsule_id": "capsule.terrain.1",
+    "domain_id": "domain.fixture.terrain",
+    "volume_id": "volume.fixture.terrain",
+    "epoch": 1,
+    "summary_fields": {
+      "volume_total": 1000000
+    },
+    "material_summary": {
+      "terrain.material_primary": 1
+    },
+    "roughness_summary": {
+      "mean": 100
+    },
+    "support_envelope": {
+      "min": 10,
+      "max": 1000
+    },
+    "edit_provenance": {
+      "overlays": 3
+    },
+    "rng_cursor": {
+      "stream": "noise.stream.terrain.collapse",
+      "cursor": 42,
+      "seed": 7
+    },
+    "unit_annotations": {
+      "volume_total": "unit.length.meter",
+      "epoch": "unit.dimensionless.ratio",
+      "mean": "unit.dimensionless.ratio",
+      "min": "unit.pressure.pascal",
+      "max": "unit.pressure.pascal"
+    },
+    "provenance": {
+      "provenance_id": "prov.terrain.capsule.1"
+    },
+    "maturity": "maturity.experimental",
+    "extensions": {}
+  }
+}

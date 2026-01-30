@@ -82,16 +82,26 @@ Forbidden dependencies:
 - gameplay logic depending on physical storage layout
 - storage backends altering component semantics or determinism
 
-## 4) Space & Domains
-Domain volumes define where reality exists and which laws apply. Domain queries
-are deterministic, budgeted, and SDF-based.
-
-Dependency direction:
-domain volumes -> reachability + law jurisdictions -> travel + refinement
-
-Forbidden dependencies:
-- implicit world bounds or rectangular assumptions
-- domain checks bypassing domain query API
+## 4) Space & Domains
+Domain volumes define where reality exists and which laws apply. Domain queries
+are deterministic, budgeted, and SDF-based.
+
+Dependency direction:
+domain volumes -> reachability + law jurisdictions -> travel + refinement
+
+Forbidden dependencies:
+- implicit world bounds or rectangular assumptions
+- domain checks bypassing domain query API
+
+Terrain truth (TERRAIN0) is field-defined and provider-resolved.
+
+Dependency direction:
+domain volumes -> terrain field stack -> provider chain -> overlays -> queries
+
+Forbidden dependencies:
+- meshes treated as authoritative truth
+- per-tick global erosion
+- planet/station special casing in terrain truth
 
 ## 5) Existence & Refinement
 Existence states are explicit; transitions are effects. Refinement contracts
