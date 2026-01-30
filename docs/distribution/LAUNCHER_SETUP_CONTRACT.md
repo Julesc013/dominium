@@ -76,3 +76,10 @@ Launcher behavior:
 - Pack manifests are discovered without reading pack contents.
 - Discovery order is deterministic.
 - Absence of packs is valid and must not crash or block UI entry.
+
+## See also
+- `docs/distribution/SETUP_GUARANTEES.md`
+- `docs/distribution/SETUP_GUIDE.md`
+- `docs/distribution/OFFLINE_INSTALL.md`
+- `docs/distribution/UNINSTALL_AND_REPAIR.md`
+- `docs/architecture/SETUP_TRANSACTION_MODEL.md`

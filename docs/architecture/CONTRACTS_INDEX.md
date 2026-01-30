@@ -147,6 +147,11 @@ document is binding but still expected to grow or sharpen.
 
 
 | `docs/architecture/DIRECTORY_STRUCTURE.md` | EVOLVING | Canonical tree and runtime root |
+| `docs/architecture/SETUP_TRANSACTION_MODEL.md` | EVOLVING | Setup transactional model |
+| `docs/distribution/SETUP_GUARANTEES.md` | EVOLVING | Setup guarantees |
+| `docs/distribution/SETUP_GUIDE.md` | EVOLVING | Setup CLI guide |
+| `docs/distribution/OFFLINE_INSTALL.md` | EVOLVING | Offline install policy |
+| `docs/distribution/UNINSTALL_AND_REPAIR.md` | EVOLVING | Uninstall, repair, rollback rules |
 | `docs/architecture/PRODUCT_SHELL_CONTRACT.md` | EVOLVING | Product shell acceptance contract |
 | `docs/architecture/CHECKPOINTS.md` | EVOLVING | Acceptance checkpoints |
 | `docs/ui/UX_RULES.md` | EVOLVING | Global UX rules (CLI/TUI/GUI) |

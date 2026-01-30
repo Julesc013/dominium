@@ -435,6 +435,11 @@ def assemble_artifact(args):
         if setup_base != ("dominium-setup" + _exe_suffix()).lower():
             shutil.copy2(setup_bin, setup_alias)
 
+    # Stage setup CLI script (used by setup frontends for transactional ops).
+    setup_cli_script = os.path.join(repo_root, "tools", "setup", "setup_cli.py")
+    if os.path.isfile(setup_cli_script):
+        shutil.copy2(setup_cli_script, os.path.join(out_dir, "setup", "setup_cli.py"))
+
     # Optional Linux setup frontends/adapters (best-effort copy when built).
     for extra in ("dominium-setup-tui", "dominium-setup-gui", "dominium-setup-linux", "dominium-setup-macos"):
         extra_bin = _try_find_unique_file(build_dir, extra + _exe_suffix(), prefer_subpaths=["source/dominium/setup/"])
