@@ -817,6 +817,16 @@ typedef enum client_ui_action {
     CLIENT_ACTION_INSPECT_TOGGLE,
     CLIENT_ACTION_HUD_TOGGLE,
     CLIENT_ACTION_SPAWN,
+    CLIENT_ACTION_INTERACTION_SELECT_MARKER,
+    CLIENT_ACTION_INTERACTION_SELECT_BEACON,
+    CLIENT_ACTION_INTERACTION_SELECT_INDICATOR,
+    CLIENT_ACTION_INTERACTION_PLACE_PREVIEW,
+    CLIENT_ACTION_INTERACTION_PLACE_CONFIRM,
+    CLIENT_ACTION_INTERACTION_PLACE,
+    CLIENT_ACTION_INTERACTION_REMOVE,
+    CLIENT_ACTION_INTERACTION_SIGNAL,
+    CLIENT_ACTION_INTERACTION_MEASURE,
+    CLIENT_ACTION_INTERACTION_INSPECT,
     CLIENT_ACTION_PROFILE_NEXT,
     CLIENT_ACTION_PROFILE_PREV,
     CLIENT_ACTION_PRESET_NEXT,
@@ -3471,6 +3481,89 @@ static void client_ui_apply_action(client_ui_state* state,
             client_ui_set_status(state, "spawn=ignored");
         }
         break;
+    case CLIENT_ACTION_INTERACTION_SELECT_MARKER:
+        if (state->screen == CLIENT_UI_WORLD_VIEW) {
+            client_ui_execute_command("object-select type=org.dominium.core.interaction.marker",
+                                      &state->settings, log, state,
+                                      state->action_status, sizeof(state->action_status), 0);
+        } else {
+            client_ui_set_status(state, "interaction_select=ignored");
+        }
+        break;
+    case CLIENT_ACTION_INTERACTION_SELECT_BEACON:
+        if (state->screen == CLIENT_UI_WORLD_VIEW) {
+            client_ui_execute_command("object-select type=org.dominium.core.interaction.beacon",
+                                      &state->settings, log, state,
+                                      state->action_status, sizeof(state->action_status), 0);
+        } else {
+            client_ui_set_status(state, "interaction_select=ignored");
+        }
+        break;
+    case CLIENT_ACTION_INTERACTION_SELECT_INDICATOR:
+        if (state->screen == CLIENT_UI_WORLD_VIEW) {
+            client_ui_execute_command("object-select type=org.dominium.core.interaction.indicator",
+                                      &state->settings, log, state,
+                                      state->action_status, sizeof(state->action_status), 0);
+        } else {
+            client_ui_set_status(state, "interaction_select=ignored");
+        }
+        break;
+    case CLIENT_ACTION_INTERACTION_PLACE_PREVIEW:
+        if (state->screen == CLIENT_UI_WORLD_VIEW) {
+            client_ui_execute_command("place-preview", &state->settings, log, state,
+                                      state->action_status, sizeof(state->action_status), 0);
+        } else {
+            client_ui_set_status(state, "interaction_preview=ignored");
+        }
+        break;
+    case CLIENT_ACTION_INTERACTION_PLACE_CONFIRM:
+        if (state->screen == CLIENT_UI_WORLD_VIEW) {
+            client_ui_execute_command("place-confirm", &state->settings, log, state,
+                                      state->action_status, sizeof(state->action_status), 0);
+        } else {
+            client_ui_set_status(state, "interaction_confirm=ignored");
+        }
+        break;
+    case CLIENT_ACTION_INTERACTION_PLACE:
+        if (state->screen == CLIENT_UI_WORLD_VIEW) {
+            client_ui_execute_command("place", &state->settings, log, state,
+                                      state->action_status, sizeof(state->action_status), 0);
+        } else {
+            client_ui_set_status(state, "interaction_place=ignored");
+        }
+        break;
+    case CLIENT_ACTION_INTERACTION_REMOVE:
+        if (state->screen == CLIENT_UI_WORLD_VIEW) {
+            client_ui_execute_command("remove", &state->settings, log, state,
+                                      state->action_status, sizeof(state->action_status), 0);
+        } else {
+            client_ui_set_status(state, "interaction_remove=ignored");
+        }
+        break;
+    case CLIENT_ACTION_INTERACTION_SIGNAL:
+        if (state->screen == CLIENT_UI_WORLD_VIEW) {
+            client_ui_execute_command("signal-toggle", &state->settings, log, state,
+                                      state->action_status, sizeof(state->action_status), 0);
+        } else {
+            client_ui_set_status(state, "interaction_signal=ignored");
+        }
+        break;
+    case CLIENT_ACTION_INTERACTION_MEASURE:
+        if (state->screen == CLIENT_UI_WORLD_VIEW) {
+            client_ui_execute_command("measure", &state->settings, log, state,
+                                      state->action_status, sizeof(state->action_status), 0);
+        } else {
+            client_ui_set_status(state, "interaction_measure=ignored");
+        }
+        break;
+    case CLIENT_ACTION_INTERACTION_INSPECT:
+        if (state->screen == CLIENT_UI_WORLD_VIEW) {
+            client_ui_execute_command("object-inspect", &state->settings, log, state,
+                                      state->action_status, sizeof(state->action_status), 0);
+        } else {
+            client_ui_set_status(state, "interaction_inspect=ignored");
+        }
+        break;
     case CLIENT_ACTION_PROFILE_NEXT: {
         int next = (state->create_profile_index + 1) % CLIENT_UI_PROFILE_COUNT;
         client_ui_apply_profile(state, next);
@@ -3600,6 +3693,30 @@ static client_ui_action client_ui_action_from_token(const char* token)
         return CLIENT_ACTION_HUD_TOGGLE;
     }
     if (strcmp(token, "spawn") == 0) return CLIENT_ACTION_SPAWN;
+    if (strcmp(token, "interaction-select-marker") == 0) return CLIENT_ACTION_INTERACTION_SELECT_MARKER;
+    if (strcmp(token, "interaction-select-beacon") == 0) return CLIENT_ACTION_INTERACTION_SELECT_BEACON;
+    if (strcmp(token, "interaction-select-indicator") == 0) return CLIENT_ACTION_INTERACTION_SELECT_INDICATOR;
+    if (strcmp(token, "interaction-preview") == 0 || strcmp(token, "place-preview") == 0) {
+        return CLIENT_ACTION_INTERACTION_PLACE_PREVIEW;
+    }
+    if (strcmp(token, "interaction-confirm") == 0 || strcmp(token, "place-confirm") == 0) {
+        return CLIENT_ACTION_INTERACTION_PLACE_CONFIRM;
+    }
+    if (strcmp(token, "interaction-place") == 0 || strcmp(token, "place") == 0) {
+        return CLIENT_ACTION_INTERACTION_PLACE;
+    }
+    if (strcmp(token, "interaction-remove") == 0 || strcmp(token, "remove") == 0) {
+        return CLIENT_ACTION_INTERACTION_REMOVE;
+    }
+    if (strcmp(token, "interaction-signal") == 0 || strcmp(token, "signal-toggle") == 0) {
+        return CLIENT_ACTION_INTERACTION_SIGNAL;
+    }
+    if (strcmp(token, "interaction-measure") == 0 || strcmp(token, "measure") == 0) {
+        return CLIENT_ACTION_INTERACTION_MEASURE;
+    }
+    if (strcmp(token, "interaction-inspect") == 0 || strcmp(token, "object-inspect") == 0) {
+        return CLIENT_ACTION_INTERACTION_INSPECT;
+    }
     if (strcmp(token, "profile-next") == 0) return CLIENT_ACTION_PROFILE_NEXT;
     if (strcmp(token, "profile-prev") == 0) return CLIENT_ACTION_PROFILE_PREV;
     if (strcmp(token, "preset-next") == 0 || strcmp(token, "meta-law-next") == 0) {
