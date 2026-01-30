@@ -1,0 +1,9 @@
+pack_id = "org.dominium.core.signals.baseline"
+pack_version = "1.0.0"
+pack_format_version = 1
+requires_engine = "0.0.0"
+provides = ["org.dominium.core.signals", "org.dominium.core.signals.baseline"]
+depends = ["org.dominium.core.units", "org.dominium.core.materials", "org.dominium.core.interfaces", "org.dominium.core.standards"]
+optional = true
+pack_tags = ["pack.class.core_ontology"]
+extensions = {}

@@ -39,6 +39,24 @@ Client shell core implementation.
 #define DOM_SHELL_POLICY_INTERACTION_MEASURE "policy.interaction.measure"
 #define DOM_SHELL_POLICY_INTERACTION_INSPECT "policy.interaction.inspect"
 #define DOM_SHELL_POLICY_INTERACTION_RADIUS_PREFIX "policy.interaction.radius="
+#define DOM_SHELL_SIGNAL_PACK_ID "org.dominium.core.signals.baseline"
+#define DOM_SHELL_SIGNAL_PROVENANCE "prov.org.dominium.core.signals.baseline.v1"
+#define DOM_SHELL_SIGNAL_OBJ_BUTTON "org.dominium.core.signal.button"
+#define DOM_SHELL_SIGNAL_OBJ_LEVER "org.dominium.core.signal.lever"
+#define DOM_SHELL_SIGNAL_OBJ_WIRE "org.dominium.core.signal.wire"
+#define DOM_SHELL_SIGNAL_OBJ_LAMP "org.dominium.core.signal.lamp"
+#define DOM_SHELL_SIGNAL_OBJ_COUNTER "org.dominium.core.signal.counter"
+#define DOM_SHELL_SIGNAL_KIND_BOOL 1
+#define DOM_SHELL_SIGNAL_KIND_INT 2
+#define DOM_SHELL_SIGNAL_ROLE_EMIT 1
+#define DOM_SHELL_SIGNAL_ROLE_TOGGLE 2
+#define DOM_SHELL_SIGNAL_ROLE_ROUTE 3
+#define DOM_SHELL_SIGNAL_ROLE_INDICATE 4
+#define DOM_SHELL_SIGNAL_ROLE_COUNTER 5
+#define DOM_SHELL_SIGNAL_MODE_ROUTE 1
+#define DOM_SHELL_SIGNAL_MODE_THRESHOLD 2
+#define DOM_SHELL_SIGNAL_INT_MIN 0
+#define DOM_SHELL_SIGNAL_INT_MAX 1024
 
 #define DOM_SHELL_DEFAULT_SAVE_PATH "data/saves/world.save"
 #define DOM_SHELL_DEFAULT_REPLAY_PATH "data/saves/session.replay"
@@ -85,7 +103,26 @@ typedef struct dom_shell_interaction_def {
 static const dom_shell_interaction_def dom_shell_interaction_defs[] = {
     { DOM_SHELL_INTERACTION_OBJ_MARKER, "marker", DOM_SHELL_INTERACTION_PROVENANCE, 0 },
     { DOM_SHELL_INTERACTION_OBJ_BEACON, "beacon", DOM_SHELL_INTERACTION_PROVENANCE, 1 },
-    { DOM_SHELL_INTERACTION_OBJ_INDICATOR, "indicator", DOM_SHELL_INTERACTION_PROVENANCE, 1 }
+    { DOM_SHELL_INTERACTION_OBJ_INDICATOR, "indicator", DOM_SHELL_INTERACTION_PROVENANCE, 1 },
+    { DOM_SHELL_SIGNAL_OBJ_BUTTON, "button", DOM_SHELL_SIGNAL_PROVENANCE, 1 },
+    { DOM_SHELL_SIGNAL_OBJ_LEVER, "lever", DOM_SHELL_SIGNAL_PROVENANCE, 1 },
+    { DOM_SHELL_SIGNAL_OBJ_WIRE, "wire", DOM_SHELL_SIGNAL_PROVENANCE, 0 },
+    { DOM_SHELL_SIGNAL_OBJ_LAMP, "lamp", DOM_SHELL_SIGNAL_PROVENANCE, 1 },
+    { DOM_SHELL_SIGNAL_OBJ_COUNTER, "counter", DOM_SHELL_SIGNAL_PROVENANCE, 1 }
+};
+
+typedef struct dom_shell_signal_def {
+    const char* type_id;
+    int kind;
+    int role;
+} dom_shell_signal_def;
+
+static const dom_shell_signal_def dom_shell_signal_defs[] = {
+    { DOM_SHELL_SIGNAL_OBJ_BUTTON, DOM_SHELL_SIGNAL_KIND_BOOL, DOM_SHELL_SIGNAL_ROLE_EMIT },
+    { DOM_SHELL_SIGNAL_OBJ_LEVER, DOM_SHELL_SIGNAL_KIND_BOOL, DOM_SHELL_SIGNAL_ROLE_TOGGLE },
+    { DOM_SHELL_SIGNAL_OBJ_WIRE, DOM_SHELL_SIGNAL_KIND_BOOL, DOM_SHELL_SIGNAL_ROLE_ROUTE },
+    { DOM_SHELL_SIGNAL_OBJ_LAMP, DOM_SHELL_SIGNAL_KIND_BOOL, DOM_SHELL_SIGNAL_ROLE_INDICATE },
+    { DOM_SHELL_SIGNAL_OBJ_COUNTER, DOM_SHELL_SIGNAL_KIND_INT, DOM_SHELL_SIGNAL_ROLE_COUNTER }
 };
 
 typedef struct dom_shell_scenario_field {
@@ -536,6 +573,205 @@ static dom_shell_interaction_object* dom_shell_interaction_find_object(dom_shell
         }
     }
     return 0;
+}
+
+static const dom_shell_signal_def* dom_shell_signal_find_def(const char* type_id)
+{
+    uint32_t i;
+    if (!type_id || !type_id[0]) {
+        return 0;
+    }
+    for (i = 0u; i < (uint32_t)(sizeof(dom_shell_signal_defs) /
+                               sizeof(dom_shell_signal_defs[0])); ++i) {
+        if (strcmp(dom_shell_signal_defs[i].type_id, type_id) == 0) {
+            return &dom_shell_signal_defs[i];
+        }
+    }
+    return 0;
+}
+
+static int dom_shell_signal_is_component(const dom_shell_interaction_object* obj)
+{
+    if (!obj) {
+        return 0;
+    }
+    return dom_shell_signal_find_def(obj->type_id) != 0;
+}
+
+static int dom_shell_signal_normalize_value(int kind, int value)
+{
+    if (kind == DOM_SHELL_SIGNAL_KIND_BOOL) {
+        return value ? 1 : 0;
+    }
+    if (value < DOM_SHELL_SIGNAL_INT_MIN) {
+        return DOM_SHELL_SIGNAL_INT_MIN;
+    }
+    if (value > DOM_SHELL_SIGNAL_INT_MAX) {
+        return DOM_SHELL_SIGNAL_INT_MAX;
+    }
+    return value;
+}
+
+static void dom_shell_signal_reset(dom_shell_signal_state* state)
+{
+    if (!state) {
+        return;
+    }
+    memset(state, 0, sizeof(*state));
+    state->next_event_tick = 1u;
+}
+
+static u64 dom_shell_signal_next_tick(dom_shell_signal_state* state)
+{
+    if (!state) {
+        return 0u;
+    }
+    if (state->next_event_tick == 0u) {
+        state->next_event_tick = 1u;
+    }
+    return state->next_event_tick++;
+}
+
+static void dom_shell_signal_remove_links(dom_shell_signal_state* state, u64 object_id)
+{
+    u32 i = 0u;
+    if (!state || object_id == 0u) {
+        return;
+    }
+    while (i < state->link_count) {
+        const dom_shell_signal_link* link = &state->links[i];
+        if (link->from_id == object_id || link->to_id == object_id) {
+            if (i + 1u < state->link_count) {
+                state->links[i] = state->links[state->link_count - 1u];
+            }
+            state->link_count -= 1u;
+            continue;
+        }
+        i += 1u;
+    }
+}
+
+static int dom_shell_signal_link_exists(const dom_shell_signal_state* state,
+                                        u64 from_id,
+                                        u64 to_id,
+                                        int mode,
+                                        int threshold)
+{
+    u32 i;
+    if (!state) {
+        return 0;
+    }
+    for (i = 0u; i < state->link_count; ++i) {
+        const dom_shell_signal_link* link = &state->links[i];
+        if (link->from_id == from_id && link->to_id == to_id &&
+            link->mode == mode && link->threshold == threshold) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+static int dom_shell_signal_set_value(dom_client_shell* shell,
+                                      dom_shell_interaction_object* obj,
+                                      int value,
+                                      u64 tick,
+                                      dom_app_ui_event_log* log,
+                                      const char* event_name,
+                                      const char* detail)
+{
+    if (!shell || !obj) {
+        return 0;
+    }
+    if (obj->signal_state == value && obj->signal_last_tick != 0u) {
+        return 0;
+    }
+    obj->signal_state = value;
+    obj->signal_last_tick = tick;
+    if (event_name && log) {
+        dom_shell_emit(shell, log, event_name, detail ? detail : "result=ok");
+    }
+    return 1;
+}
+
+static void dom_shell_signal_apply_links(dom_client_shell* shell,
+                                         u64 source_id,
+                                         dom_app_ui_event_log* log,
+                                         int emit_text)
+{
+    u64 queue[DOM_SHELL_INTERACTION_MAX_OBJECTS];
+    u32 head = 0u;
+    u32 tail = 0u;
+    u32 safety = 0u;
+    if (!shell) {
+        return;
+    }
+    queue[tail++] = source_id;
+    while (head < tail && safety < DOM_SHELL_INTERACTION_MAX_OBJECTS) {
+        u64 current_id = queue[head++];
+        u32 i;
+        dom_shell_interaction_object* current = dom_shell_interaction_find_object(&shell->interactions,
+                                                                                  current_id, 0);
+        const dom_shell_signal_def* current_def = current ? dom_shell_signal_find_def(current->type_id) : 0;
+        if (!current || !current_def) {
+            safety += 1u;
+            continue;
+        }
+        for (i = 0u; i < shell->signals.link_count; ++i) {
+            const dom_shell_signal_link* link = &shell->signals.links[i];
+            dom_shell_interaction_object* target;
+            const dom_shell_signal_def* target_def;
+            int next_value;
+            u64 tick;
+            if (link->from_id != current_id) {
+                continue;
+            }
+            target = dom_shell_interaction_find_object(&shell->interactions, link->to_id, 0);
+            target_def = target ? dom_shell_signal_find_def(target->type_id) : 0;
+            if (!target || !target_def) {
+                continue;
+            }
+            if (link->mode == DOM_SHELL_SIGNAL_MODE_THRESHOLD) {
+                next_value = (current->signal_state >= link->threshold) ? 1 : 0;
+            } else {
+                next_value = current->signal_state;
+            }
+            next_value = dom_shell_signal_normalize_value(target_def->kind, next_value);
+            tick = dom_shell_signal_next_tick(&shell->signals);
+            if (dom_shell_signal_set_value(shell, target, next_value, tick, 0, 0, 0)) {
+                char detail[200];
+                if (link->mode == DOM_SHELL_SIGNAL_MODE_THRESHOLD) {
+                    snprintf(detail, sizeof(detail),
+                             "from=%llu to=%llu value=%d threshold=%d result=ok",
+                             (unsigned long long)link->from_id,
+                             (unsigned long long)link->to_id,
+                             next_value,
+                             link->threshold);
+                    dom_shell_emit(shell, log, "client.signal.threshold", detail);
+                } else {
+                    snprintf(detail, sizeof(detail),
+                             "from=%llu to=%llu value=%d result=ok",
+                             (unsigned long long)link->from_id,
+                             (unsigned long long)link->to_id,
+                             next_value);
+                    dom_shell_emit(shell, log, "client.signal.route", detail);
+                }
+                if (target_def->role == DOM_SHELL_SIGNAL_ROLE_INDICATE) {
+                    snprintf(detail, sizeof(detail),
+                             "id=%llu value=%d result=ok",
+                             (unsigned long long)target->object_id,
+                             next_value);
+                    dom_shell_emit(shell, log, "client.signal.indicate", detail);
+                }
+                if (tail < DOM_SHELL_INTERACTION_MAX_OBJECTS) {
+                    queue[tail++] = target->object_id;
+                }
+            }
+        }
+        safety += 1u;
+    }
+    if (emit_text) {
+        (void)emit_text;
+    }
 }
 
 static void dom_shell_playtest_reset(dom_client_shell* shell)
@@ -1642,6 +1878,7 @@ static void dom_shell_local_reset(dom_client_shell* shell)
     dom_shell_fields_init(&shell->fields);
     dom_shell_structure_init(&shell->structure);
     dom_shell_interaction_reset(&shell->interactions);
+    dom_shell_signal_reset(&shell->signals);
     dom_shell_agents_reset(shell);
     dom_shell_networks_reset(shell);
     dom_shell_playtest_reset(shell);
@@ -3486,17 +3723,40 @@ static int dom_shell_write_save(dom_client_shell* shell, const char* path, char*
         for (i = 0u; i < shell->interactions.object_count; ++i) {
             const dom_shell_interaction_object* obj = &shell->interactions.objects[i];
             fprintf(f,
-                    "interaction_object id=%llu type=%s pos=%.3f,%.3f,%.3f signal=%d provenance=%s\n",
+                    "interaction_object id=%llu type=%s pos=%.3f,%.3f,%.3f signal=%d tick=%llu provenance=%s\n",
                     (unsigned long long)obj->object_id,
                     obj->type_id,
                     obj->position[0],
                     obj->position[1],
                     obj->position[2],
                     obj->signal_state,
+                    (unsigned long long)obj->signal_last_tick,
                     obj->provenance_id);
         }
     }
     fprintf(f, "interactions_end\n");
+    fprintf(f, "signals_begin\n");
+    fprintf(f, "signal_next_tick=%llu\n",
+            (unsigned long long)(shell->signals.next_event_tick ? shell->signals.next_event_tick : 1u));
+    if (shell->signals.preview_active) {
+        fprintf(f, "signal_preview from=%llu to=%llu mode=%s threshold=%d\n",
+                (unsigned long long)shell->signals.preview.from_id,
+                (unsigned long long)shell->signals.preview.to_id,
+                shell->signals.preview.mode == DOM_SHELL_SIGNAL_MODE_THRESHOLD ? "threshold" : "route",
+                shell->signals.preview.threshold);
+    }
+    if (shell->signals.link_count > 0u) {
+        u32 i;
+        for (i = 0u; i < shell->signals.link_count; ++i) {
+            const dom_shell_signal_link* link = &shell->signals.links[i];
+            fprintf(f, "signal_link from=%llu to=%llu mode=%s threshold=%d\n",
+                    (unsigned long long)link->from_id,
+                    (unsigned long long)link->to_id,
+                    link->mode == DOM_SHELL_SIGNAL_MODE_THRESHOLD ? "threshold" : "route",
+                    link->threshold);
+        }
+    }
+    fprintf(f, "signals_end\n");
     fprintf(f, "variants_begin\n");
     if (shell->variant_count > 0u) {
         u32 i;
@@ -4638,6 +4898,7 @@ static int dom_shell_load_save_file(dom_client_shell* shell, const char* path, c
     int in_summary = 0;
     int in_local = 0;
     int in_interactions = 0;
+    int in_signals = 0;
     int in_events = 0;
     int in_variants = 0;
     int in_playtest_scenarios = 0;
@@ -4658,6 +4919,7 @@ static int dom_shell_load_save_file(dom_client_shell* shell, const char* path, c
     int in_institutions = 0;
     int in_networks = 0;
     int have_interaction_next = 0;
+    int have_signal_tick = 0;
     u64 max_agent_id = 0u;
     u64 max_goal_id = 0u;
     u64 max_delegation_id = 0u;
@@ -4666,6 +4928,7 @@ static int dom_shell_load_save_file(dom_client_shell* shell, const char* path, c
     u64 max_institution_id = 0u;
     u64 max_network_id = 0u;
     u64 max_interaction_id = 0u;
+    u64 max_signal_tick = 0u;
     u64 next_agent_id = 0u;
     u64 next_goal_id = 0u;
     u64 next_delegation_id = 0u;
@@ -4739,6 +5002,14 @@ static int dom_shell_load_save_file(dom_client_shell* shell, const char* path, c
         }
         if (strcmp(line, "interactions_end") == 0) {
             in_interactions = 0;
+            continue;
+        }
+        if (strcmp(line, "signals_begin") == 0) {
+            in_signals = 1;
+            continue;
+        }
+        if (strcmp(line, "signals_end") == 0) {
+            in_signals = 0;
             continue;
         }
         if (strcmp(line, "variants_begin") == 0) {
@@ -5138,6 +5409,87 @@ static int dom_shell_load_save_file(dom_client_shell* shell, const char* path, c
             }
             continue;
         }
+        if (in_signals) {
+            if (strncmp(line, "signal_next_tick=", 17) == 0) {
+                dom_shell_parse_u64(line + 17, &shell->signals.next_event_tick);
+                if (shell->signals.next_event_tick == 0u) {
+                    shell->signals.next_event_tick = 1u;
+                }
+                have_signal_tick = 1;
+                continue;
+            }
+            if (strncmp(line, "signal_preview ", 15) == 0) {
+                dom_shell_signal_link link;
+                char buf[256];
+                char* token;
+                size_t len = strlen(line + 15);
+                if (len >= sizeof(buf)) {
+                    len = sizeof(buf) - 1u;
+                }
+                memset(&link, 0, sizeof(link));
+                memcpy(buf, line + 15, len);
+                buf[len] = '\0';
+                token = strtok(buf, " ");
+                while (token) {
+                    char* eq = strchr(token, '=');
+                    if (eq) {
+                        *eq = '\0';
+                        if (strcmp(token, "from") == 0) {
+                            dom_shell_parse_u64(eq + 1, &link.from_id);
+                        } else if (strcmp(token, "to") == 0) {
+                            dom_shell_parse_u64(eq + 1, &link.to_id);
+                        } else if (strcmp(token, "mode") == 0) {
+                            link.mode = (strcmp(eq + 1, "threshold") == 0)
+                                            ? DOM_SHELL_SIGNAL_MODE_THRESHOLD
+                                            : DOM_SHELL_SIGNAL_MODE_ROUTE;
+                        } else if (strcmp(token, "threshold") == 0) {
+                            link.threshold = (int)strtol(eq + 1, 0, 10);
+                        }
+                    }
+                    token = strtok(0, " ");
+                }
+                shell->signals.preview = link;
+                shell->signals.preview_active = 1;
+                continue;
+            }
+            if (strncmp(line, "signal_link ", 12) == 0) {
+                dom_shell_signal_link link;
+                char buf[256];
+                char* token;
+                size_t len = strlen(line + 12);
+                if (len >= sizeof(buf)) {
+                    len = sizeof(buf) - 1u;
+                }
+                memset(&link, 0, sizeof(link));
+                memcpy(buf, line + 12, len);
+                buf[len] = '\0';
+                token = strtok(buf, " ");
+                while (token) {
+                    char* eq = strchr(token, '=');
+                    if (eq) {
+                        *eq = '\0';
+                        if (strcmp(token, "from") == 0) {
+                            dom_shell_parse_u64(eq + 1, &link.from_id);
+                        } else if (strcmp(token, "to") == 0) {
+                            dom_shell_parse_u64(eq + 1, &link.to_id);
+                        } else if (strcmp(token, "mode") == 0) {
+                            link.mode = (strcmp(eq + 1, "threshold") == 0)
+                                            ? DOM_SHELL_SIGNAL_MODE_THRESHOLD
+                                            : DOM_SHELL_SIGNAL_MODE_ROUTE;
+                        } else if (strcmp(token, "threshold") == 0) {
+                            link.threshold = (int)strtol(eq + 1, 0, 10);
+                        }
+                    }
+                    token = strtok(0, " ");
+                }
+                if (shell->signals.link_count < DOM_SHELL_SIGNAL_LINK_MAX &&
+                    link.from_id != 0u && link.to_id != 0u) {
+                    shell->signals.links[shell->signals.link_count++] = link;
+                }
+                continue;
+            }
+            continue;
+        }
         if (in_interactions) {
             if (strncmp(line, "interaction_next_id=", 20) == 0) {
                 dom_shell_parse_u64(line + 20, &shell->interactions.next_object_id);
@@ -5185,6 +5537,8 @@ static int dom_shell_load_save_file(dom_client_shell* shell, const char* path, c
                             dom_shell_parse_vec3(eq + 1, obj.position);
                         } else if (strcmp(token, "signal") == 0) {
                             obj.signal_state = (int)strtoul(eq + 1, 0, 10);
+                        } else if (strcmp(token, "tick") == 0) {
+                            dom_shell_parse_u64(eq + 1, &obj.signal_last_tick);
                         } else if (strcmp(token, "provenance") == 0) {
                             strncpy(obj.provenance_id, eq + 1, sizeof(obj.provenance_id) - 1u);
                             obj.provenance_id[sizeof(obj.provenance_id) - 1u] = '\0';
@@ -5210,6 +5564,9 @@ static int dom_shell_load_save_file(dom_client_shell* shell, const char* path, c
                 shell->interactions.objects[shell->interactions.object_count++] = obj;
                 if (obj.object_id > max_interaction_id) {
                     max_interaction_id = obj.object_id;
+                }
+                if (obj.signal_last_tick > max_signal_tick) {
+                    max_signal_tick = obj.signal_last_tick;
                 }
                 continue;
             }
@@ -5896,6 +6253,12 @@ static int dom_shell_load_save_file(dom_client_shell* shell, const char* path, c
             shell->interactions.next_object_id = 1u;
         }
     }
+    if (!have_signal_tick || shell->signals.next_event_tick <= max_signal_tick) {
+        shell->signals.next_event_tick = max_signal_tick + 1u;
+        if (shell->signals.next_event_tick == 0u) {
+            shell->signals.next_event_tick = 1u;
+        }
+    }
     if (shell->variant_count == 0u) {
         dom_shell_variants_apply_defaults(shell);
     }
@@ -6429,6 +6792,41 @@ static u64 dom_shell_interaction_default_id(const dom_shell_interaction_state* s
     return state->objects[state->object_count - 1u].object_id;
 }
 
+static u64 dom_shell_interaction_default_signal_id(const dom_shell_interaction_state* state)
+{
+    if (!state || state->object_count == 0u) {
+        return 0u;
+    }
+    {
+        u32 i = state->object_count;
+        while (i-- > 0u) {
+            const dom_shell_interaction_object* obj = &state->objects[i];
+            const dom_shell_signal_def* def = dom_shell_signal_find_def(obj->type_id);
+            if (!def) {
+                continue;
+            }
+            if (def->role == DOM_SHELL_SIGNAL_ROLE_TOGGLE ||
+                def->role == DOM_SHELL_SIGNAL_ROLE_EMIT ||
+                def->role == DOM_SHELL_SIGNAL_ROLE_COUNTER) {
+                return obj->object_id;
+            }
+        }
+    }
+    return dom_shell_interaction_default_id(state);
+}
+
+static int dom_shell_interaction_default_pair(const dom_shell_interaction_state* state,
+                                              u64* out_from,
+                                              u64* out_to)
+{
+    if (!state || state->object_count < 2u || !out_from || !out_to) {
+        return 0;
+    }
+    *out_to = state->objects[state->object_count - 1u].object_id;
+    *out_from = state->objects[state->object_count - 2u].object_id;
+    return (*out_from != 0u && *out_to != 0u && *out_from != *out_to);
+}
+
 static int dom_shell_interaction_select(dom_client_shell* shell,
                                         const char* type_id,
                                         dom_app_ui_event_log* log,
@@ -6587,6 +6985,7 @@ static int dom_shell_interaction_place_internal(dom_client_shell* shell,
     obj.position[1] = position[1];
     obj.position[2] = position[2];
     obj.signal_state = 0;
+    obj.signal_last_tick = 0u;
     strncpy(obj.provenance_id, def->provenance_id ? def->provenance_id : DOM_SHELL_INTERACTION_PROVENANCE,
             sizeof(obj.provenance_id) - 1u);
     obj.provenance_id[sizeof(obj.provenance_id) - 1u] = '\0';
@@ -6785,6 +7184,12 @@ static int dom_shell_interaction_remove(dom_client_shell* shell,
     if (shell->interactions.object_count > 0u) {
         shell->interactions.object_count -= 1u;
     }
+    dom_shell_signal_remove_links(&shell->signals, object_id);
+    if (shell->signals.preview_active &&
+        (shell->signals.preview.from_id == object_id ||
+         shell->signals.preview.to_id == object_id)) {
+        shell->signals.preview_active = 0;
+    }
     dom_shell_set_status(shell, "interaction_remove=ok");
     if (status && status_cap > 0u) {
         snprintf(status, status_cap, "%s", shell->last_status);
@@ -6827,7 +7232,7 @@ static int dom_shell_interaction_signal(dom_client_shell* shell,
         return D_APP_EXIT_UNAVAILABLE;
     }
     if (object_id == 0u) {
-        object_id = dom_shell_interaction_default_id(&shell->interactions);
+        object_id = dom_shell_interaction_default_signal_id(&shell->interactions);
     }
     obj = dom_shell_interaction_find_object(&shell->interactions, object_id, 0);
     if (!obj) {
@@ -6858,7 +7263,34 @@ static int dom_shell_interaction_signal(dom_client_shell* shell,
         dom_shell_emit(shell, log, "client.interaction.signal", "result=refused reason=radius");
         return D_APP_EXIT_UNAVAILABLE;
     }
-    obj->signal_state = obj->signal_state ? 0 : 1;
+    {
+        const dom_shell_signal_def* signal_def = dom_shell_signal_find_def(obj->type_id);
+        int next_value = obj->signal_state ? 0 : 1;
+        u64 tick = dom_shell_signal_next_tick(&shell->signals);
+        if (signal_def) {
+            if (signal_def->kind == DOM_SHELL_SIGNAL_KIND_BOOL) {
+                next_value = obj->signal_state ? 0 : 1;
+            } else if (signal_def->role == DOM_SHELL_SIGNAL_ROLE_COUNTER) {
+                next_value = obj->signal_state + 1;
+            }
+            next_value = dom_shell_signal_normalize_value(signal_def->kind, next_value);
+            obj->signal_state = next_value;
+            obj->signal_last_tick = tick;
+            if (signal_def->role == DOM_SHELL_SIGNAL_ROLE_TOGGLE ||
+                signal_def->role == DOM_SHELL_SIGNAL_ROLE_EMIT ||
+                signal_def->role == DOM_SHELL_SIGNAL_ROLE_COUNTER) {
+                char detail[160];
+                snprintf(detail, sizeof(detail),
+                         "id=%llu value=%d result=ok",
+                         (unsigned long long)obj->object_id, next_value);
+                dom_shell_emit(shell, log, "client.signal.toggle", detail);
+                dom_shell_signal_apply_links(shell, obj->object_id, log, emit_text);
+            }
+        } else {
+            obj->signal_state = next_value;
+            obj->signal_last_tick = tick;
+        }
+    }
     dom_shell_set_status(shell, "interaction_signal=ok");
     if (status && status_cap > 0u) {
         snprintf(status, status_cap, "%s", shell->last_status);
@@ -7034,6 +7466,25 @@ static int dom_shell_interaction_inspect(dom_client_shell* shell,
                obj->position[2],
                obj->signal_state,
                obj->provenance_id);
+        printf("interaction_signal_tick=%llu\n", (unsigned long long)obj->signal_last_tick);
+        {
+            u32 i;
+            for (i = 0u; i < shell->signals.link_count; ++i) {
+                const dom_shell_signal_link* link = &shell->signals.links[i];
+                if (link->from_id == obj->object_id) {
+                    printf("signal_out to=%llu mode=%s threshold=%d\n",
+                           (unsigned long long)link->to_id,
+                           link->mode == DOM_SHELL_SIGNAL_MODE_THRESHOLD ? "threshold" : "route",
+                           link->threshold);
+                }
+                if (link->to_id == obj->object_id) {
+                    printf("signal_in from=%llu mode=%s threshold=%d\n",
+                           (unsigned long long)link->from_id,
+                           link->mode == DOM_SHELL_SIGNAL_MODE_THRESHOLD ? "threshold" : "route",
+                           link->threshold);
+                }
+            }
+        }
     }
     {
         char detail[200];
@@ -7042,6 +7493,264 @@ static int dom_shell_interaction_inspect(dom_client_shell* shell,
         dom_shell_emit(shell, log, "client.interaction.inspect", detail);
     }
     return D_APP_EXIT_OK;
+}
+
+static int dom_shell_signal_set(dom_client_shell* shell,
+                                u64 object_id,
+                                int value,
+                                dom_app_ui_event_log* log,
+                                char* status,
+                                size_t status_cap,
+                                int emit_text)
+{
+    dom_shell_interaction_object* obj;
+    const dom_shell_signal_def* def;
+    u64 tick;
+    if (!shell || !shell->world.active) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "no active world");
+        dom_shell_set_status(shell, "signal_set=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    if (!dom_shell_interaction_policy_allowed(shell, DOM_SHELL_POLICY_INTERACTION_SIGNAL)) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_SCHEMA, "signal set blocked");
+        dom_shell_set_status(shell, "signal_set=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.signal.emit", "result=refused reason=policy");
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    if (object_id == 0u) {
+        object_id = dom_shell_interaction_default_signal_id(&shell->interactions);
+    }
+    obj = dom_shell_interaction_find_object(&shell->interactions, object_id, 0);
+    if (!obj) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "signal object missing");
+        dom_shell_set_status(shell, "signal_set=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.signal.emit", "result=refused reason=missing");
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    def = dom_shell_signal_find_def(obj->type_id);
+    if (!def) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "signal type unsupported");
+        dom_shell_set_status(shell, "signal_set=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.signal.emit", "result=refused reason=unsupported");
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    if (!dom_shell_interaction_check_radius(shell, obj->position)) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_SCHEMA, "signal radius");
+        dom_shell_set_status(shell, "signal_set=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.signal.emit", "result=refused reason=radius");
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    value = dom_shell_signal_normalize_value(def->kind, value);
+    tick = dom_shell_signal_next_tick(&shell->signals);
+    obj->signal_state = value;
+    obj->signal_last_tick = tick;
+    dom_shell_set_status(shell, "signal_set=ok");
+    if (status && status_cap > 0u) {
+        snprintf(status, status_cap, "%s", shell->last_status);
+    }
+    if (emit_text) {
+        printf("signal_set=ok id=%llu value=%d\n",
+               (unsigned long long)obj->object_id, value);
+    }
+    {
+        char detail[160];
+        snprintf(detail, sizeof(detail),
+                 "id=%llu value=%d result=ok",
+                 (unsigned long long)obj->object_id, value);
+        dom_shell_emit(shell, log, "client.signal.emit", detail);
+    }
+    dom_shell_signal_apply_links(shell, obj->object_id, log, emit_text);
+    return D_APP_EXIT_OK;
+}
+
+static int dom_shell_signal_connect(dom_client_shell* shell,
+                                    u64 from_id,
+                                    u64 to_id,
+                                    int preview,
+                                    int mode,
+                                    int threshold,
+                                    dom_app_ui_event_log* log,
+                                    char* status,
+                                    size_t status_cap,
+                                    int emit_text)
+{
+    dom_shell_interaction_object* from_obj;
+    dom_shell_interaction_object* to_obj;
+    const dom_shell_signal_def* from_def;
+    const dom_shell_signal_def* to_def;
+    dom_shell_signal_link link;
+    if (!shell || !shell->world.active) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "no active world");
+        dom_shell_set_status(shell, preview ? "signal_preview=refused" : "signal_connect=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    if (!dom_shell_interaction_policy_allowed(shell, DOM_SHELL_POLICY_INTERACTION_SIGNAL)) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_SCHEMA, "signal connect blocked");
+        dom_shell_set_status(shell, preview ? "signal_preview=refused" : "signal_connect=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.signal.connect", "result=refused reason=policy");
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    if (from_id == 0u && to_id == 0u) {
+        u64 default_from = 0u;
+        u64 default_to = 0u;
+        if (dom_shell_interaction_default_pair(&shell->interactions, &default_from, &default_to)) {
+            from_id = default_from;
+            to_id = default_to;
+        }
+    }
+    if (from_id == 0u || to_id == 0u || from_id == to_id) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "signal link invalid");
+        dom_shell_set_status(shell, preview ? "signal_preview=refused" : "signal_connect=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    from_obj = dom_shell_interaction_find_object(&shell->interactions, from_id, 0);
+    to_obj = dom_shell_interaction_find_object(&shell->interactions, to_id, 0);
+    if (!from_obj || !to_obj) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "signal object missing");
+        dom_shell_set_status(shell, preview ? "signal_preview=refused" : "signal_connect=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    if (!dom_shell_interaction_check_radius(shell, from_obj->position) ||
+        !dom_shell_interaction_check_radius(shell, to_obj->position)) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_SCHEMA, "signal radius");
+        dom_shell_set_status(shell, preview ? "signal_preview=refused" : "signal_connect=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.signal.connect", "result=refused reason=radius");
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    from_def = dom_shell_signal_find_def(from_obj->type_id);
+    to_def = dom_shell_signal_find_def(to_obj->type_id);
+    if (!from_def || !to_def) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "signal type unsupported");
+        dom_shell_set_status(shell, preview ? "signal_preview=refused" : "signal_connect=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.signal.connect", "result=refused reason=unsupported");
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    if (mode == DOM_SHELL_SIGNAL_MODE_THRESHOLD) {
+        if (from_def->kind != DOM_SHELL_SIGNAL_KIND_INT || to_def->kind != DOM_SHELL_SIGNAL_KIND_BOOL) {
+            dom_shell_set_refusal(shell, DOM_REFUSAL_SCHEMA, "signal threshold kind mismatch");
+            dom_shell_set_status(shell, preview ? "signal_preview=refused" : "signal_connect=refused");
+            if (status && status_cap > 0u) {
+                snprintf(status, status_cap, "%s", shell->last_status);
+            }
+            return D_APP_EXIT_UNAVAILABLE;
+        }
+    } else {
+        if (from_def->kind != to_def->kind) {
+            dom_shell_set_refusal(shell, DOM_REFUSAL_SCHEMA, "signal route kind mismatch");
+            dom_shell_set_status(shell, preview ? "signal_preview=refused" : "signal_connect=refused");
+            if (status && status_cap > 0u) {
+                snprintf(status, status_cap, "%s", shell->last_status);
+            }
+            return D_APP_EXIT_UNAVAILABLE;
+        }
+    }
+    memset(&link, 0, sizeof(link));
+    link.from_id = from_id;
+    link.to_id = to_id;
+    link.mode = mode;
+    link.threshold = threshold;
+    if (preview) {
+        shell->signals.preview = link;
+        shell->signals.preview_active = 1;
+        dom_shell_set_status(shell, "signal_preview=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        if (emit_text) {
+            printf("signal_preview=ok from=%llu to=%llu\n",
+                   (unsigned long long)from_id, (unsigned long long)to_id);
+        }
+        dom_shell_emit(shell, log, "client.signal.preview", "result=ok");
+        return D_APP_EXIT_OK;
+    }
+    if (shell->signals.link_count >= DOM_SHELL_SIGNAL_LINK_MAX ||
+        dom_shell_signal_link_exists(&shell->signals, from_id, to_id, mode, threshold)) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "signal link capacity");
+        dom_shell_set_status(shell, "signal_connect=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.signal.connect", "result=refused reason=capacity");
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    shell->signals.links[shell->signals.link_count++] = link;
+    shell->signals.preview_active = 0;
+    dom_shell_set_status(shell, "signal_connect=ok");
+    if (status && status_cap > 0u) {
+        snprintf(status, status_cap, "%s", shell->last_status);
+    }
+    if (emit_text) {
+        printf("signal_connect=ok from=%llu to=%llu\n",
+               (unsigned long long)from_id, (unsigned long long)to_id);
+    }
+    {
+        char detail[200];
+        snprintf(detail, sizeof(detail),
+                 "from=%llu to=%llu mode=%s result=ok",
+                 (unsigned long long)from_id,
+                 (unsigned long long)to_id,
+                 mode == DOM_SHELL_SIGNAL_MODE_THRESHOLD ? "threshold" : "route");
+        dom_shell_emit(shell, log, "client.signal.connect", detail);
+    }
+    return D_APP_EXIT_OK;
+}
+
+static void dom_shell_print_signals(const dom_client_shell* shell, int emit_text)
+{
+    u32 i;
+    if (!shell || !emit_text) {
+        return;
+    }
+    printf("signal_links=%u\n", (unsigned int)shell->signals.link_count);
+    printf("signal_next_tick=%llu\n", (unsigned long long)shell->signals.next_event_tick);
+    if (shell->signals.preview_active) {
+        printf("signal_preview from=%llu to=%llu mode=%s threshold=%d\n",
+               (unsigned long long)shell->signals.preview.from_id,
+               (unsigned long long)shell->signals.preview.to_id,
+               shell->signals.preview.mode == DOM_SHELL_SIGNAL_MODE_THRESHOLD ? "threshold" : "route",
+               shell->signals.preview.threshold);
+    }
+    for (i = 0u; i < shell->signals.link_count; ++i) {
+        const dom_shell_signal_link* link = &shell->signals.links[i];
+        printf("signal_link from=%llu to=%llu mode=%s threshold=%d\n",
+               (unsigned long long)link->from_id,
+               (unsigned long long)link->to_id,
+               link->mode == DOM_SHELL_SIGNAL_MODE_THRESHOLD ? "threshold" : "route",
+               link->threshold);
+    }
 }
 
 static int dom_client_shell_set_domain(dom_client_shell* shell,
@@ -7567,6 +8276,7 @@ static void dom_shell_print_world(const dom_client_shell* shell, int emit_text)
     printf("interaction_tool=%s\n",
            shell->interactions.selected_tool[0] ? shell->interactions.selected_tool
                                                : DOM_SHELL_INTERACTION_TOOL_PLACE);
+    printf("signal_links=%u\n", (unsigned int)shell->signals.link_count);
     dom_client_shell_policy_to_csv(&shell->world.summary.playtest, csv, sizeof(csv));
     printf("playtest=%s\n", csv[0] ? csv : "none");
     printf("variant_mode=%s\n", dom_shell_variant_mode_name(shell->variant_mode));
@@ -7600,13 +8310,14 @@ static void dom_shell_print_interactions(const dom_client_shell* shell, int emit
     }
     for (i = 0u; i < shell->interactions.object_count; ++i) {
         const dom_shell_interaction_object* obj = &shell->interactions.objects[i];
-        printf("interaction_object id=%llu type=%s pos=%.3f,%.3f,%.3f signal=%d provenance=%s\n",
+        printf("interaction_object id=%llu type=%s pos=%.3f,%.3f,%.3f signal=%d tick=%llu provenance=%s\n",
                (unsigned long long)obj->object_id,
                obj->type_id,
                obj->position[0],
                obj->position[1],
                obj->position[2],
                obj->signal_state,
+               (unsigned long long)obj->signal_last_tick,
                obj->provenance_id);
     }
 }
@@ -7777,6 +8488,7 @@ int dom_client_shell_execute(dom_client_shell* shell,
             printf("          mode camera camera-next move spawn domain inspect-toggle hud-toggle\n");
             printf("          interaction-list object-list object-inspect object-select tool-select\n");
             printf("          place-preview place-confirm place remove signal-toggle measure\n");
+            printf("          signal-list signal-connect signal-threshold signal-set signal-preview\n");
             printf("          where refusal budgets structure fields events batch exit\n");
             printf("          survey collect assemble connect inspect repair field-set simulate\n");
             printf("          agent-add agent-list agent-possess agent-release agent-know\n");
@@ -10532,6 +11244,122 @@ int dom_client_shell_execute(dom_client_shell* shell,
             }
         }
         return dom_shell_interaction_inspect(shell, object_id, log, status, status_cap, emit_text);
+    }
+    if (strcmp(token, "signal-list") == 0 || strcmp(token, "signals") == 0) {
+        if (!shell || !shell->world.active) {
+            dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "no active world");
+            dom_shell_set_status(shell, "signal_list=refused");
+            if (status && status_cap > 0u) {
+                snprintf(status, status_cap, "%s", shell->last_status);
+            }
+            return D_APP_EXIT_UNAVAILABLE;
+        }
+        dom_shell_print_signals(shell, emit_text);
+        dom_shell_set_status(shell, "signal_list=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.signal.list", "result=ok");
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "signal-preview") == 0 || strcmp(token, "signal-connect-preview") == 0) {
+        u64 from_id = 0u;
+        u64 to_id = 0u;
+        int threshold = 1;
+        int mode = DOM_SHELL_SIGNAL_MODE_ROUTE;
+        int mode_set = 0;
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (eq) {
+                *eq = '\0';
+                if (strcmp(next, "from") == 0 || strcmp(next, "source") == 0) {
+                    dom_shell_parse_u64(eq + 1, &from_id);
+                } else if (strcmp(next, "to") == 0 || strcmp(next, "target") == 0) {
+                    dom_shell_parse_u64(eq + 1, &to_id);
+                } else if (strcmp(next, "threshold") == 0) {
+                    threshold = (int)strtol(eq + 1, 0, 10);
+                    if (!mode_set) {
+                        mode = DOM_SHELL_SIGNAL_MODE_THRESHOLD;
+                    }
+                } else if (strcmp(next, "mode") == 0) {
+                    mode = (strcmp(eq + 1, "threshold") == 0)
+                               ? DOM_SHELL_SIGNAL_MODE_THRESHOLD
+                               : DOM_SHELL_SIGNAL_MODE_ROUTE;
+                    mode_set = 1;
+                }
+            }
+        }
+        return dom_shell_signal_connect(shell, from_id, to_id, 1, mode, threshold,
+                                        log, status, status_cap, emit_text);
+    }
+    if (strcmp(token, "signal-connect") == 0) {
+        u64 from_id = 0u;
+        u64 to_id = 0u;
+        int threshold = 1;
+        int mode = DOM_SHELL_SIGNAL_MODE_ROUTE;
+        int mode_set = 0;
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (eq) {
+                *eq = '\0';
+                if (strcmp(next, "from") == 0 || strcmp(next, "source") == 0) {
+                    dom_shell_parse_u64(eq + 1, &from_id);
+                } else if (strcmp(next, "to") == 0 || strcmp(next, "target") == 0) {
+                    dom_shell_parse_u64(eq + 1, &to_id);
+                } else if (strcmp(next, "threshold") == 0) {
+                    threshold = (int)strtol(eq + 1, 0, 10);
+                    if (!mode_set) {
+                        mode = DOM_SHELL_SIGNAL_MODE_THRESHOLD;
+                    }
+                } else if (strcmp(next, "mode") == 0) {
+                    mode = (strcmp(eq + 1, "threshold") == 0)
+                               ? DOM_SHELL_SIGNAL_MODE_THRESHOLD
+                               : DOM_SHELL_SIGNAL_MODE_ROUTE;
+                    mode_set = 1;
+                }
+            }
+        }
+        return dom_shell_signal_connect(shell, from_id, to_id, 0, mode, threshold,
+                                        log, status, status_cap, emit_text);
+    }
+    if (strcmp(token, "signal-threshold") == 0) {
+        u64 from_id = 0u;
+        u64 to_id = 0u;
+        int threshold = 1;
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (eq) {
+                *eq = '\0';
+                if (strcmp(next, "from") == 0 || strcmp(next, "source") == 0) {
+                    dom_shell_parse_u64(eq + 1, &from_id);
+                } else if (strcmp(next, "to") == 0 || strcmp(next, "target") == 0) {
+                    dom_shell_parse_u64(eq + 1, &to_id);
+                } else if (strcmp(next, "threshold") == 0) {
+                    threshold = (int)strtol(eq + 1, 0, 10);
+                }
+            }
+        }
+        return dom_shell_signal_connect(shell, from_id, to_id, 0,
+                                        DOM_SHELL_SIGNAL_MODE_THRESHOLD, threshold,
+                                        log, status, status_cap, emit_text);
+    }
+    if (strcmp(token, "signal-set") == 0 || strcmp(token, "signal-emit") == 0) {
+        u64 object_id = 0u;
+        int value = 0;
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (eq) {
+                *eq = '\0';
+                if (strcmp(next, "id") == 0 || strcmp(next, "object_id") == 0 ||
+                    strcmp(next, "object") == 0) {
+                    dom_shell_parse_u64(eq + 1, &object_id);
+                } else if (strcmp(next, "value") == 0) {
+                    value = (int)strtol(eq + 1, 0, 10);
+                }
+            }
+        }
+        return dom_shell_signal_set(shell, object_id, value,
+                                    log, status, status_cap, emit_text);
     }
     if (strcmp(token, "domain") == 0 || strcmp(token, "focus") == 0) {
         const char* node_id = strtok(0, " \t");

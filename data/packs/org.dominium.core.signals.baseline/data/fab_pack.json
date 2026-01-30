@@ -1,0 +1,500 @@
+{
+  "materials": [],
+  "interfaces": [],
+  "parts": [
+    {
+      "part_id": "org.dominium.core.signal.button",
+      "material_ref": {
+        "material_id": "org.dominium.core.material.solid.generic"
+      },
+      "mass": {
+        "value": 1,
+        "unit": "unit.mass.kilogram",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "volume": {
+        "value": 1,
+        "unit": "unit.length.meter",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "interfaces": [
+        {
+          "interface_id": "org.dominium.core.interface.electrical.generic"
+        }
+      ],
+      "constraints": [
+        {
+          "constraint_id": "org.dominium.core.constraint.signal.basic",
+          "constraint_tags": [
+            "org.dominium.constraint.simple"
+          ]
+        }
+      ],
+      "quality_requirements": {
+        "org.dominium.quality.class": "org.dominium.quality.basic"
+      },
+      "failure_model_ref": {
+        "failure_model_id": "org.dominium.core.failure_model.none"
+      },
+      "unit_annotations": {},
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.signals.baseline.v1"
+      },
+      "extensions": {
+        "signal_role": "emit",
+        "signal_kind": "bool",
+        "signal_default": "off",
+        "maturity": "BOUNDED"
+      }
+    },
+    {
+      "part_id": "org.dominium.core.signal.lever",
+      "material_ref": {
+        "material_id": "org.dominium.core.material.metal.generic"
+      },
+      "mass": {
+        "value": 2,
+        "unit": "unit.mass.kilogram",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "volume": {
+        "value": 1,
+        "unit": "unit.length.meter",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "interfaces": [
+        {
+          "interface_id": "org.dominium.core.interface.electrical.generic"
+        }
+      ],
+      "constraints": [
+        {
+          "constraint_id": "org.dominium.core.constraint.signal.basic",
+          "constraint_tags": [
+            "org.dominium.constraint.simple"
+          ]
+        }
+      ],
+      "quality_requirements": {
+        "org.dominium.quality.class": "org.dominium.quality.basic"
+      },
+      "failure_model_ref": {
+        "failure_model_id": "org.dominium.core.failure_model.none"
+      },
+      "unit_annotations": {},
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.signals.baseline.v1"
+      },
+      "extensions": {
+        "signal_role": "toggle",
+        "signal_kind": "bool",
+        "signal_default": "off",
+        "maturity": "BOUNDED"
+      }
+    },
+    {
+      "part_id": "org.dominium.core.signal.wire",
+      "material_ref": {
+        "material_id": "org.dominium.core.material.solid.generic"
+      },
+      "mass": {
+        "value": 1,
+        "unit": "unit.mass.kilogram",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "volume": {
+        "value": 1,
+        "unit": "unit.length.meter",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "interfaces": [
+        {
+          "interface_id": "org.dominium.core.interface.electrical.generic"
+        }
+      ],
+      "constraints": [
+        {
+          "constraint_id": "org.dominium.core.constraint.signal.basic",
+          "constraint_tags": [
+            "org.dominium.constraint.simple"
+          ]
+        }
+      ],
+      "quality_requirements": {
+        "org.dominium.quality.class": "org.dominium.quality.basic"
+      },
+      "failure_model_ref": {
+        "failure_model_id": "org.dominium.core.failure_model.none"
+      },
+      "unit_annotations": {},
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.signals.baseline.v1"
+      },
+      "extensions": {
+        "signal_role": "route",
+        "signal_kind": "bool",
+        "signal_default": "off",
+        "maturity": "BOUNDED"
+      }
+    },
+    {
+      "part_id": "org.dominium.core.signal.lamp",
+      "material_ref": {
+        "material_id": "org.dominium.core.material.solid.generic"
+      },
+      "mass": {
+        "value": 2,
+        "unit": "unit.mass.kilogram",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "volume": {
+        "value": 1,
+        "unit": "unit.length.meter",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "interfaces": [
+        {
+          "interface_id": "org.dominium.core.interface.electrical.generic"
+        }
+      ],
+      "constraints": [
+        {
+          "constraint_id": "org.dominium.core.constraint.signal.basic",
+          "constraint_tags": [
+            "org.dominium.constraint.simple"
+          ]
+        }
+      ],
+      "quality_requirements": {
+        "org.dominium.quality.class": "org.dominium.quality.basic"
+      },
+      "failure_model_ref": {
+        "failure_model_id": "org.dominium.core.failure_model.none"
+      },
+      "unit_annotations": {},
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.signals.baseline.v1"
+      },
+      "extensions": {
+        "signal_role": "indicate",
+        "signal_kind": "bool",
+        "signal_default": "off",
+        "maturity": "BOUNDED"
+      }
+    },
+    {
+      "part_id": "org.dominium.core.signal.counter",
+      "material_ref": {
+        "material_id": "org.dominium.core.material.metal.generic"
+      },
+      "mass": {
+        "value": 2,
+        "unit": "unit.mass.kilogram",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "volume": {
+        "value": 1,
+        "unit": "unit.length.meter",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "interfaces": [
+        {
+          "interface_id": "org.dominium.core.interface.electrical.generic"
+        }
+      ],
+      "constraints": [
+        {
+          "constraint_id": "org.dominium.core.constraint.signal.basic",
+          "constraint_tags": [
+            "org.dominium.constraint.simple"
+          ]
+        }
+      ],
+      "quality_requirements": {
+        "org.dominium.quality.class": "org.dominium.quality.basic"
+      },
+      "failure_model_ref": {
+        "failure_model_id": "org.dominium.core.failure_model.none"
+      },
+      "unit_annotations": {},
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.signals.baseline.v1"
+      },
+      "extensions": {
+        "signal_role": "counter",
+        "signal_kind": "int",
+        "signal_default": "0",
+        "maturity": "BOUNDED"
+      }
+    }
+  ],
+  "assemblies": [],
+  "process_families": [
+    {
+      "process_family_id": "org.dominium.process.signal.emit",
+      "inputs": [],
+      "outputs": [
+        {
+          "ref_type": "org.dominium.signal.ref.field",
+          "ref_id": "org.dominium.signal.digital.bool",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "wastes": [],
+      "energy_flows": {
+        "org.dominium.energy.signal.emit": 1
+      },
+      "parameter_space": {
+        "org.dominium.param.latency_ticks": 1
+      },
+      "yield_distribution": {},
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "energy_flows.org.dominium.energy.signal.emit": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.latency_ticks": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.signals.baseline.v1"
+      },
+      "extensions": {
+        "notes": "Emit a discrete signal value."
+      }
+    },
+    {
+      "process_family_id": "org.dominium.process.signal.toggle",
+      "inputs": [
+        {
+          "ref_type": "org.dominium.signal.ref.field",
+          "ref_id": "org.dominium.signal.digital.bool",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "org.dominium.signal.ref.field",
+          "ref_id": "org.dominium.signal.digital.bool",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "wastes": [],
+      "energy_flows": {
+        "org.dominium.energy.signal.toggle": 1
+      },
+      "parameter_space": {
+        "org.dominium.param.latency_ticks": 1
+      },
+      "yield_distribution": {},
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "energy_flows.org.dominium.energy.signal.toggle": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.latency_ticks": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.signals.baseline.v1"
+      },
+      "extensions": {
+        "notes": "Toggle a boolean signal."
+      }
+    },
+    {
+      "process_family_id": "org.dominium.process.signal.route",
+      "inputs": [
+        {
+          "ref_type": "org.dominium.signal.ref.field",
+          "ref_id": "org.dominium.signal.digital.bool",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "org.dominium.signal.ref.field",
+          "ref_id": "org.dominium.signal.digital.bool",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "wastes": [],
+      "energy_flows": {
+        "org.dominium.energy.signal.route": 1
+      },
+      "parameter_space": {
+        "org.dominium.param.latency_ticks": 1
+      },
+      "yield_distribution": {},
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "energy_flows.org.dominium.energy.signal.route": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.latency_ticks": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.signals.baseline.v1"
+      },
+      "extensions": {
+        "notes": "Route boolean signals deterministically."
+      }
+    },
+    {
+      "process_family_id": "org.dominium.process.signal.threshold",
+      "inputs": [
+        {
+          "ref_type": "org.dominium.signal.ref.field",
+          "ref_id": "org.dominium.signal.digital.int",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "org.dominium.signal.ref.field",
+          "ref_id": "org.dominium.signal.digital.bool",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "wastes": [],
+      "energy_flows": {
+        "org.dominium.energy.signal.threshold": 1
+      },
+      "parameter_space": {
+        "org.dominium.param.latency_ticks": 1
+      },
+      "yield_distribution": {},
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "energy_flows.org.dominium.energy.signal.threshold": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.latency_ticks": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.signals.baseline.v1"
+      },
+      "extensions": {
+        "notes": "Threshold an integer signal into a boolean."
+      }
+    },
+    {
+      "process_family_id": "org.dominium.process.signal.indicate",
+      "inputs": [
+        {
+          "ref_type": "org.dominium.signal.ref.field",
+          "ref_id": "org.dominium.signal.digital.bool",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "ref_type": "org.dominium.signal.ref.field",
+          "ref_id": "org.dominium.signal.digital.bool",
+          "quantity": {
+            "value": 1,
+            "unit": "unit.dimensionless.ratio",
+            "overflow_behavior": "org.dominium.overflow.refuse"
+          }
+        }
+      ],
+      "wastes": [],
+      "energy_flows": {
+        "org.dominium.energy.signal.indicate": 1
+      },
+      "parameter_space": {
+        "org.dominium.param.latency_ticks": 1
+      },
+      "yield_distribution": {},
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "energy_flows.org.dominium.energy.signal.indicate": {
+          "unit": "unit.energy.joule",
+          "scale": 1000,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "parameter_space.org.dominium.param.latency_ticks": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "provenance": {
+        "provenance_id": "prov.org.dominium.core.signals.baseline.v1"
+      },
+      "extensions": {
+        "notes": "Visual indication of a boolean signal."
+      }
+    }
+  ],
+  "instruments": [],
+  "standards": [],
+  "qualities": [],
+  "batches": [],
+  "hazards": [],
+  "substances": []
+}

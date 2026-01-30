@@ -52,6 +52,7 @@ extern "C" {
 #define DOM_SHELL_NETWORK_EDGE_MAX 24u
 #define DOM_SHELL_INTERACTION_MAX_OBJECTS 64u
 #define DOM_SHELL_INTERACTION_TOOL_MAX 32u
+#define DOM_SHELL_SIGNAL_LINK_MAX 96u
 
 #define DOM_SHELL_SAVE_HEADER "DOMINIUM_SAVE_V1"
 #define DOM_SHELL_REPLAY_HEADER "DOMINIUM_REPLAY_V1"
@@ -263,6 +264,7 @@ typedef struct dom_shell_interaction_object {
     char type_id[DOM_SHELL_MAX_TEMPLATE_ID];
     double position[3];
     int signal_state;
+    u64 signal_last_tick;
     char provenance_id[DOM_SHELL_MAX_TEMPLATE_ID];
 } dom_shell_interaction_object;
 
@@ -275,6 +277,21 @@ typedef struct dom_shell_interaction_state {
     int preview_active;
     dom_shell_interaction_object preview;
 } dom_shell_interaction_state;
+
+typedef struct dom_shell_signal_link {
+    u64 from_id;
+    u64 to_id;
+    int mode;
+    int threshold;
+} dom_shell_signal_link;
+
+typedef struct dom_shell_signal_state {
+    dom_shell_signal_link links[DOM_SHELL_SIGNAL_LINK_MAX];
+    u32 link_count;
+    int preview_active;
+    dom_shell_signal_link preview;
+    u64 next_event_tick;
+} dom_shell_signal_state;
 
 typedef enum dom_shell_delegation_status {
     DOM_SHELL_DELEGATION_PENDING = 0,
@@ -314,6 +331,7 @@ typedef struct dom_client_shell {
     dom_shell_field_state fields;
     dom_shell_structure_state structure;
     dom_shell_interaction_state interactions;
+    dom_shell_signal_state signals;
     dom_shell_agent_record agents[DOM_SHELL_AGENT_MAX];
     u32 agent_count;
     u64 next_agent_id;
