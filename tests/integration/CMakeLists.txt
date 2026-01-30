@@ -184,6 +184,22 @@ dom_add_testx(NAME interaction_scaling
     LABELS ${DOM_TESTX_LABEL_SMOKE}
 )
 
+dom_add_testx(NAME signal_baseline
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/signal_baseline_tests.py
+        --client $<TARGET_FILE:dominium_client>
+        --temp-root ${CMAKE_BINARY_DIR}/tests/signal_baseline
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_SMOKE}
+)
+
+dom_add_testx(NAME signal_scaling
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/signal_scaling_tests.py
+        --client $<TARGET_FILE:dominium_client>
+        --temp-root ${CMAKE_BINARY_DIR}/tests/signal_scaling
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_SMOKE}
+)
+
 get_property(_dom_registered_products GLOBAL PROPERTY DOM_REGISTERED_PRODUCTS)
 get_property(_dom_registered_product_tests GLOBAL PROPERTY DOM_REGISTERED_PRODUCT_CLI_TESTS)
 get_property(_dom_registered_renderer_tests GLOBAL PROPERTY DOM_REGISTERED_RENDERER_TESTS)

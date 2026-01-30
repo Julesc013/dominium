@@ -820,6 +820,11 @@ typedef enum client_ui_action {
     CLIENT_ACTION_INTERACTION_SELECT_MARKER,
     CLIENT_ACTION_INTERACTION_SELECT_BEACON,
     CLIENT_ACTION_INTERACTION_SELECT_INDICATOR,
+    CLIENT_ACTION_INTERACTION_SELECT_SIGNAL_BUTTON,
+    CLIENT_ACTION_INTERACTION_SELECT_SIGNAL_LEVER,
+    CLIENT_ACTION_INTERACTION_SELECT_SIGNAL_WIRE,
+    CLIENT_ACTION_INTERACTION_SELECT_SIGNAL_LAMP,
+    CLIENT_ACTION_INTERACTION_SELECT_SIGNAL_COUNTER,
     CLIENT_ACTION_INTERACTION_PLACE_PREVIEW,
     CLIENT_ACTION_INTERACTION_PLACE_CONFIRM,
     CLIENT_ACTION_INTERACTION_PLACE,
@@ -827,6 +832,11 @@ typedef enum client_ui_action {
     CLIENT_ACTION_INTERACTION_SIGNAL,
     CLIENT_ACTION_INTERACTION_MEASURE,
     CLIENT_ACTION_INTERACTION_INSPECT,
+    CLIENT_ACTION_SIGNAL_LIST,
+    CLIENT_ACTION_SIGNAL_PREVIEW,
+    CLIENT_ACTION_SIGNAL_CONNECT,
+    CLIENT_ACTION_SIGNAL_THRESHOLD,
+    CLIENT_ACTION_SIGNAL_SET,
     CLIENT_ACTION_PROFILE_NEXT,
     CLIENT_ACTION_PROFILE_PREV,
     CLIENT_ACTION_PRESET_NEXT,
@@ -3508,6 +3518,51 @@ static void client_ui_apply_action(client_ui_state* state,
             client_ui_set_status(state, "interaction_select=ignored");
         }
         break;
+    case CLIENT_ACTION_INTERACTION_SELECT_SIGNAL_BUTTON:
+        if (state->screen == CLIENT_UI_WORLD_VIEW) {
+            client_ui_execute_command("object-select type=org.dominium.core.signal.button",
+                                      &state->settings, log, state,
+                                      state->action_status, sizeof(state->action_status), 0);
+        } else {
+            client_ui_set_status(state, "interaction_select=ignored");
+        }
+        break;
+    case CLIENT_ACTION_INTERACTION_SELECT_SIGNAL_LEVER:
+        if (state->screen == CLIENT_UI_WORLD_VIEW) {
+            client_ui_execute_command("object-select type=org.dominium.core.signal.lever",
+                                      &state->settings, log, state,
+                                      state->action_status, sizeof(state->action_status), 0);
+        } else {
+            client_ui_set_status(state, "interaction_select=ignored");
+        }
+        break;
+    case CLIENT_ACTION_INTERACTION_SELECT_SIGNAL_WIRE:
+        if (state->screen == CLIENT_UI_WORLD_VIEW) {
+            client_ui_execute_command("object-select type=org.dominium.core.signal.wire",
+                                      &state->settings, log, state,
+                                      state->action_status, sizeof(state->action_status), 0);
+        } else {
+            client_ui_set_status(state, "interaction_select=ignored");
+        }
+        break;
+    case CLIENT_ACTION_INTERACTION_SELECT_SIGNAL_LAMP:
+        if (state->screen == CLIENT_UI_WORLD_VIEW) {
+            client_ui_execute_command("object-select type=org.dominium.core.signal.lamp",
+                                      &state->settings, log, state,
+                                      state->action_status, sizeof(state->action_status), 0);
+        } else {
+            client_ui_set_status(state, "interaction_select=ignored");
+        }
+        break;
+    case CLIENT_ACTION_INTERACTION_SELECT_SIGNAL_COUNTER:
+        if (state->screen == CLIENT_UI_WORLD_VIEW) {
+            client_ui_execute_command("object-select type=org.dominium.core.signal.counter",
+                                      &state->settings, log, state,
+                                      state->action_status, sizeof(state->action_status), 0);
+        } else {
+            client_ui_set_status(state, "interaction_select=ignored");
+        }
+        break;
     case CLIENT_ACTION_INTERACTION_PLACE_PREVIEW:
         if (state->screen == CLIENT_UI_WORLD_VIEW) {
             client_ui_execute_command("place-preview", &state->settings, log, state,
@@ -3562,6 +3617,46 @@ static void client_ui_apply_action(client_ui_state* state,
                                       state->action_status, sizeof(state->action_status), 0);
         } else {
             client_ui_set_status(state, "interaction_inspect=ignored");
+        }
+        break;
+    case CLIENT_ACTION_SIGNAL_LIST:
+        if (state->screen == CLIENT_UI_WORLD_VIEW) {
+            client_ui_execute_command("signal-list", &state->settings, log, state,
+                                      state->action_status, sizeof(state->action_status), 0);
+        } else {
+            client_ui_set_status(state, "signal_list=ignored");
+        }
+        break;
+    case CLIENT_ACTION_SIGNAL_PREVIEW:
+        if (state->screen == CLIENT_UI_WORLD_VIEW) {
+            client_ui_execute_command("signal-preview", &state->settings, log, state,
+                                      state->action_status, sizeof(state->action_status), 0);
+        } else {
+            client_ui_set_status(state, "signal_preview=ignored");
+        }
+        break;
+    case CLIENT_ACTION_SIGNAL_CONNECT:
+        if (state->screen == CLIENT_UI_WORLD_VIEW) {
+            client_ui_execute_command("signal-connect", &state->settings, log, state,
+                                      state->action_status, sizeof(state->action_status), 0);
+        } else {
+            client_ui_set_status(state, "signal_connect=ignored");
+        }
+        break;
+    case CLIENT_ACTION_SIGNAL_THRESHOLD:
+        if (state->screen == CLIENT_UI_WORLD_VIEW) {
+            client_ui_execute_command("signal-threshold", &state->settings, log, state,
+                                      state->action_status, sizeof(state->action_status), 0);
+        } else {
+            client_ui_set_status(state, "signal_threshold=ignored");
+        }
+        break;
+    case CLIENT_ACTION_SIGNAL_SET:
+        if (state->screen == CLIENT_UI_WORLD_VIEW) {
+            client_ui_execute_command("signal-set value=1", &state->settings, log, state,
+                                      state->action_status, sizeof(state->action_status), 0);
+        } else {
+            client_ui_set_status(state, "signal_set=ignored");
         }
         break;
     case CLIENT_ACTION_PROFILE_NEXT: {
@@ -3696,6 +3791,26 @@ static client_ui_action client_ui_action_from_token(const char* token)
     if (strcmp(token, "interaction-select-marker") == 0) return CLIENT_ACTION_INTERACTION_SELECT_MARKER;
     if (strcmp(token, "interaction-select-beacon") == 0) return CLIENT_ACTION_INTERACTION_SELECT_BEACON;
     if (strcmp(token, "interaction-select-indicator") == 0) return CLIENT_ACTION_INTERACTION_SELECT_INDICATOR;
+    if (strcmp(token, "interaction-select-signal-button") == 0 ||
+        strcmp(token, "interaction-select-button") == 0) {
+        return CLIENT_ACTION_INTERACTION_SELECT_SIGNAL_BUTTON;
+    }
+    if (strcmp(token, "interaction-select-signal-lever") == 0 ||
+        strcmp(token, "interaction-select-lever") == 0) {
+        return CLIENT_ACTION_INTERACTION_SELECT_SIGNAL_LEVER;
+    }
+    if (strcmp(token, "interaction-select-signal-wire") == 0 ||
+        strcmp(token, "interaction-select-wire") == 0) {
+        return CLIENT_ACTION_INTERACTION_SELECT_SIGNAL_WIRE;
+    }
+    if (strcmp(token, "interaction-select-signal-lamp") == 0 ||
+        strcmp(token, "interaction-select-lamp") == 0) {
+        return CLIENT_ACTION_INTERACTION_SELECT_SIGNAL_LAMP;
+    }
+    if (strcmp(token, "interaction-select-signal-counter") == 0 ||
+        strcmp(token, "interaction-select-counter") == 0) {
+        return CLIENT_ACTION_INTERACTION_SELECT_SIGNAL_COUNTER;
+    }
     if (strcmp(token, "interaction-preview") == 0 || strcmp(token, "place-preview") == 0) {
         return CLIENT_ACTION_INTERACTION_PLACE_PREVIEW;
     }
@@ -3716,6 +3831,17 @@ static client_ui_action client_ui_action_from_token(const char* token)
     }
     if (strcmp(token, "interaction-inspect") == 0 || strcmp(token, "object-inspect") == 0) {
         return CLIENT_ACTION_INTERACTION_INSPECT;
+    }
+    if (strcmp(token, "signal-list") == 0 || strcmp(token, "signals") == 0) {
+        return CLIENT_ACTION_SIGNAL_LIST;
+    }
+    if (strcmp(token, "signal-preview") == 0 || strcmp(token, "signal-connect-preview") == 0) {
+        return CLIENT_ACTION_SIGNAL_PREVIEW;
+    }
+    if (strcmp(token, "signal-connect") == 0) return CLIENT_ACTION_SIGNAL_CONNECT;
+    if (strcmp(token, "signal-threshold") == 0) return CLIENT_ACTION_SIGNAL_THRESHOLD;
+    if (strcmp(token, "signal-set") == 0 || strcmp(token, "signal-emit") == 0) {
+        return CLIENT_ACTION_SIGNAL_SET;
     }
     if (strcmp(token, "profile-next") == 0) return CLIENT_ACTION_PROFILE_NEXT;
     if (strcmp(token, "profile-prev") == 0) return CLIENT_ACTION_PROFILE_PREV;
