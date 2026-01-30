@@ -1,0 +1,35 @@
+{
+  "nav_script_template": "load path={save_path}; move dx=1 dy=0 dz=0; camera-next; inspect-toggle; hud-toggle; save path={save2_path}; replay-save path={replay_path}",
+  "status_script_template": "load path={save_path}; where",
+  "ui_script": "load-world,move-forward,camera-next,inspect-toggle,hud-toggle,save,replay-save,exit",
+  "fixtures": [
+    {
+      "id": "exploration.local_only",
+      "root": "local_only",
+      "label": "Local-only (Earth + minimal galaxy metadata)",
+      "expected_nodes": 4,
+      "expected_edges": 3
+    },
+    {
+      "id": "exploration.system_scale",
+      "root": "system_scale",
+      "label": "System-scale (Sol with many bodies)",
+      "expected_nodes": 25,
+      "expected_edges": 24
+    },
+    {
+      "id": "exploration.galaxy_scale",
+      "root": "galaxy_scale",
+      "label": "Galaxy-scale (many collapsed systems)",
+      "expected_nodes": 45,
+      "expected_edges": 44
+    },
+    {
+      "id": "exploration.deep_hierarchy",
+      "root": "deep_hierarchy",
+      "label": "Deep hierarchy (nested coordinate frames)",
+      "expected_nodes": 8,
+      "expected_edges": 7
+    }
+  ]
+}

@@ -14,3 +14,9 @@ dom_add_testx(NAME perf_budget_regression
         --temp-root ${CMAKE_BINARY_DIR}/tests/perf_budget
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )
+
+dom_add_testx(NAME exploration_fixture_contracts
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/exploration_fixture_contracts.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)

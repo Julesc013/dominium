@@ -1,0 +1,357 @@
+{
+  "schema_id": "dominium.schema.world_definition",
+  "schema_version": 1,
+  "worlddef_id": "world.template.exploration_baseline.seed.{{seed}}",
+  "topology": {
+    "root_node_ref": { "node_id": "universe.root" },
+    "nodes": [
+      {
+        "node_id": "universe.root",
+        "trait_tags": ["topology.universe"],
+        "coord_frame_ref": { "frame_id": "frame.universe.root" }
+      },
+      {
+        "node_id": "galaxy.milky_way",
+        "parent_refs": [{ "node_id": "universe.root" }],
+        "trait_tags": ["topology.galaxy"],
+        "coord_frame_ref": { "frame_id": "frame.galaxy.milky_way" }
+      },
+      {
+        "node_id": "system.sol",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system"],
+        "coord_frame_ref": { "frame_id": "frame.system.sol" }
+      },
+      {
+        "node_id": "body.sun",
+        "parent_refs": [{ "node_id": "system.sol" }],
+        "trait_tags": ["topology.body", "body.sphere", "body.star"],
+        "coord_frame_ref": { "frame_id": "frame.body.sun" }
+      },
+      {
+        "node_id": "body.earth",
+        "parent_refs": [{ "node_id": "system.sol" }],
+        "trait_tags": ["topology.body", "body.sphere", "body.planet", "body.spawn", "body.earth"],
+        "coord_frame_ref": { "frame_id": "frame.body.earth" },
+        "extensions": {
+          "radius_m": 6371000,
+          "surface_tag": "surface.abstract_shell"
+        }
+      },
+      {
+        "node_id": "system.stub.001",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.001" }
+      },
+      {
+        "node_id": "system.stub.002",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.002" }
+      },
+      {
+        "node_id": "system.stub.003",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.003" }
+      },
+      {
+        "node_id": "system.stub.004",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.004" }
+      },
+      {
+        "node_id": "system.stub.005",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.005" }
+      },
+      {
+        "node_id": "system.stub.006",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.006" }
+      },
+      {
+        "node_id": "system.stub.007",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.007" }
+      },
+      {
+        "node_id": "system.stub.008",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.008" }
+      },
+      {
+        "node_id": "system.stub.009",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.009" }
+      },
+      {
+        "node_id": "system.stub.010",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.010" }
+      },
+      {
+        "node_id": "system.stub.011",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.011" }
+      },
+      {
+        "node_id": "system.stub.012",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.012" }
+      },
+      {
+        "node_id": "system.stub.013",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.013" }
+      },
+      {
+        "node_id": "system.stub.014",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.014" }
+      },
+      {
+        "node_id": "system.stub.015",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.015" }
+      },
+      {
+        "node_id": "system.stub.016",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.016" }
+      },
+      {
+        "node_id": "system.stub.017",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.017" }
+      },
+      {
+        "node_id": "system.stub.018",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.018" }
+      },
+      {
+        "node_id": "system.stub.019",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.019" }
+      },
+      {
+        "node_id": "system.stub.020",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.020" }
+      },
+      {
+        "node_id": "system.stub.021",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.021" }
+      },
+      {
+        "node_id": "system.stub.022",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.022" }
+      },
+      {
+        "node_id": "system.stub.023",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.023" }
+      },
+      {
+        "node_id": "system.stub.024",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.024" }
+      },
+      {
+        "node_id": "system.stub.025",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.025" }
+      },
+      {
+        "node_id": "system.stub.026",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.026" }
+      },
+      {
+        "node_id": "system.stub.027",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.027" }
+      },
+      {
+        "node_id": "system.stub.028",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.028" }
+      },
+      {
+        "node_id": "system.stub.029",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.029" }
+      },
+      {
+        "node_id": "system.stub.030",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.030" }
+      },
+      {
+        "node_id": "system.stub.031",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.031" }
+      },
+      {
+        "node_id": "system.stub.032",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.032" }
+      },
+      {
+        "node_id": "system.stub.033",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.033" }
+      },
+      {
+        "node_id": "system.stub.034",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.034" }
+      },
+      {
+        "node_id": "system.stub.035",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.035" }
+      },
+      {
+        "node_id": "system.stub.036",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.036" }
+      },
+      {
+        "node_id": "system.stub.037",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.037" }
+      },
+      {
+        "node_id": "system.stub.038",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.038" }
+      },
+      {
+        "node_id": "system.stub.039",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.039" }
+      },
+      {
+        "node_id": "system.stub.040",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system", "system.collapsed"],
+        "coord_frame_ref": { "frame_id": "frame.system.stub.040" }
+      }
+    ],
+    "edges": [
+      { "parent_ref": { "node_id": "universe.root" }, "child_ref": { "node_id": "galaxy.milky_way" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.sol" } },
+      { "parent_ref": { "node_id": "system.sol" }, "child_ref": { "node_id": "body.sun" } },
+      { "parent_ref": { "node_id": "system.sol" }, "child_ref": { "node_id": "body.earth" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.001" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.002" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.003" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.004" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.005" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.006" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.007" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.008" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.009" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.010" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.011" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.012" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.013" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.014" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.015" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.016" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.017" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.018" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.019" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.020" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.021" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.022" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.023" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.024" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.025" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.026" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.027" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.028" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.029" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.030" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.031" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.032" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.033" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.034" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.035" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.036" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.037" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.038" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.039" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.stub.040" } }
+    ],
+    "extensions": {}
+  },
+  "initial_fields": [],
+  "policy_sets": {
+    "movement_policies": {{movement_policies}},
+    "authority_policies": {{authority_policies}},
+    "mode_policies": {{mode_policies}},
+    "debug_policies": {{debug_policies}},
+    "playtest_policies": {{playtest_policies}},
+    "camera_policies": {{camera_policies}}
+  },
+  "spawn_spec": {
+    "spawn_node_ref": { "node_id": "body.earth" },
+    "coordinate_frame_ref": { "frame_id": "frame.body.earth" },
+    "position": { "value": { "x": {{spawn_x}}, "y": {{spawn_y}}, "z": {{spawn_z}} } },
+    "orientation": { "value": { "yaw": 0, "pitch": 0, "roll": 0 } }
+  },
+  "provenance": {
+    "template_id": "world.template.exploration_baseline",
+    "template_version": "1.0.0",
+    "generator_source": "data.template",
+    "seed": { "primary": {{seed}} },
+    "template_params": { "seed.primary": {{seed}} }
+  },
+  "extensions": {
+    "earth_radius_m": 6371000,
+    "camera_modes": {{camera_policies}},
+    "hud_default": "on"
+  }
+}
