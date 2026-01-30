@@ -28,6 +28,12 @@ All fields:
 - `geology.hardness`
 - `geology.fracture_risk`
 - `resource.density.*`
+- `climate.temperature_mean`
+- `climate.temperature_range`
+- `climate.precipitation_mean`
+- `climate.precipitation_range`
+- `climate.seasonality`
+- `climate.wind_prevailing`
 - `env.wind`
 - `env.precipitation`
 - `eco.vegetation_density`
