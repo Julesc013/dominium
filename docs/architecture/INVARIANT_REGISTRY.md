@@ -33,11 +33,16 @@ It complements (does not replace) `docs/architecture/INVARIANTS.md`.
 | SCALE0-TOLERANCE-005 | Sufficient statistics within declared tolerances. | docs/architecture/INVARIANTS_AND_TOLERANCES.md | tests/app/scale0_contract_tests.py |
 | SCALE0-INTEREST-006 | Interest drives activation; no view-based scaling. | docs/architecture/INTEREST_MODEL.md | tests/app/scale0_contract_tests.py |
 | SCALE0-NO-EXNIHILO-007 | Expansion cannot create ex nihilo state. | docs/architecture/COLLAPSE_EXPAND_CONTRACT.md | tests/app/scale0_contract_tests.py |
-| SCALE0-REPLAY-008 | Replay equivalence across collapse/expand. | docs/architecture/MACRO_TIME_MODEL.md | tests/app/scale0_contract_tests.py |
-| SCALE3-BUDGET-009 | Scaling work is budget-gated and policy-controlled. | docs/architecture/BUDGET_POLICY.md | tests/app/scale3_budget_tests.py |
-| SCALE3-ADMISSION-010 | Budget refusal/defer is explicit and non-mutating. | docs/architecture/BUDGET_POLICY.md | tests/app/scale3_budget_tests.py |
-| SCALE3-CONSTCOST-011 | Per-commit cost is bounded by active fidelity only. | docs/architecture/CONSTANT_COST_GUARANTEE.md | tests/app/scale3_budget_tests.py |
-| MMO0-UNIVERSE-012 | The universe is logically single under distribution. | docs/architecture/DISTRIBUTED_SIM_MODEL.md | tests/app/mmo0_distributed_contract_tests.py |
+| SCALE0-REPLAY-008 | Replay equivalence across collapse/expand. | docs/architecture/MACRO_TIME_MODEL.md | tests/app/scale0_contract_tests.py |
+| SCALE3-BUDGET-009 | Scaling work is budget-gated and policy-controlled. | docs/architecture/BUDGET_POLICY.md | tests/app/scale3_budget_tests.py |
+| SCALE3-ADMISSION-010 | Budget refusal/defer is explicit and non-mutating. | docs/architecture/BUDGET_POLICY.md | tests/app/scale3_budget_tests.py |
+| SCALE3-CONSTCOST-011 | Per-commit cost is bounded by active fidelity only. | docs/architecture/CONSTANT_COST_GUARANTEE.md | tests/app/scale3_budget_tests.py |
+| TERRAIN0-TRUTH-001 | Terrain truth is SDF fields; meshes are non-authoritative. | docs/architecture/TERRAIN_TRUTH_MODEL.md | tests/contract/terrain_contract_tests.py |
+| TERRAIN0-PROC-002 | Terrain overlays are process-only and provenance-tagged. | docs/architecture/TERRAIN_OVERLAYS.md | tests/contract/terrain_contract_tests.py |
+| TERRAIN0-NOSPECIAL-003 | Terrain bodies are generic; no planet/station special casing. | docs/architecture/TERRAIN_TRUTH_MODEL.md | tests/contract/terrain_contract_tests.py |
+| TERRAIN0-DECAY-004 | No per-tick global erosion; decay is event-driven. | docs/architecture/DECAY_EROSION_REGEN.md | tests/contract/terrain_contract_tests.py |
+| TERRAIN0-PHI-005 | Terrain collision/truth queries reference phi/SDF. | docs/architecture/TERRAIN_TRUTH_MODEL.md | tests/invariant/terrain_authority_invariant.py |
+| MMO0-UNIVERSE-012 | The universe is logically single under distribution. | docs/architecture/DISTRIBUTED_SIM_MODEL.md | tests/app/mmo0_distributed_contract_tests.py |
 | MMO0-OWNERSHIP-013 | Domain ownership is exclusive and commit-boundary only. | docs/architecture/DISTRIBUTED_SIM_MODEL.md | tests/app/mmo0_distributed_contract_tests.py |
 | MMO0-ID-014 | Global identifiers are deterministic and collision-free. | docs/architecture/GLOBAL_ID_MODEL.md | tests/app/mmo0_distributed_contract_tests.py |
 | MMO0-LOG-015 | Cross-shard interaction uses ordered, append-only logs. | docs/architecture/CROSS_SHARD_LOG.md | tests/app/mmo0_distributed_contract_tests.py |

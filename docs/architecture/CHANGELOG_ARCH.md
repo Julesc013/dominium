@@ -27,3 +27,23 @@ Pointers to major contract families:
 - MMO: `docs/architecture/MMO_COMPATIBILITY.md`
 
 Suggested tag: `arch-stable-1`
+
+## TERRAIN0 (January 30, 2026)
+
+Rationale
+- Lock a single canonical terrain/matter truth model before implementation.
+- Provide schema anchors and TestX guards for future terrain work.
+
+Invariant Impact
+- Reinforces Process-only mutation (PROC0) and deterministic ordering (DET0).
+- Adds terrain-specific guardrails for collapse/expand and epistemic safety.
+
+Migration Plan
+- None. New schemas and contracts are additive and unused by runtime.
+
+Epoch Bump
+- None. No sim-affecting behavior was changed.
+
+CI Update
+- Add TestX contract guard for terrain contracts and fixtures.
+- Add invariant scan for terrain authority violations.

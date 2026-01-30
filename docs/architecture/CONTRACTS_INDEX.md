@@ -175,6 +175,15 @@ document is binding but still expected to grow or sharpen.
 
 | `docs/architecture/MACRO_TIME_MODEL.md` | EVOLVING | Macro stepping rules |
 
+| `docs/architecture/TERRAIN_TRUTH_MODEL.md` | EVOLVING | Terrain truth model (SDF + fields) |
+| `docs/architecture/TERRAIN_FIELDS.md` | EVOLVING | Canonical terrain field stack |
+| `docs/architecture/TERRAIN_PROVIDER_CHAIN.md` | EVOLVING | Provider chain order and composition |
+| `docs/architecture/TERRAIN_OVERLAYS.md` | EVOLVING | Process-only terrain overlays |
+| `docs/architecture/STRUCTURAL_STABILITY_MODEL.md` | EVOLVING | Structural stability and collapse |
+| `docs/architecture/DECAY_EROSION_REGEN.md` | EVOLVING | Event-driven decay/erosion/regeneration |
+| `docs/architecture/TERRAIN_COORDINATES.md` | EVOLVING | Terrain coordinate frames and precision |
+| `docs/architecture/TERRAIN_MACRO_CAPSULE.md` | EVOLVING | Terrain macro capsule contract |
+
 
 | `docs/architecture/DISTRIBUTED_SIM_MODEL.md` | EVOLVING | Distributed simulation details |
 
