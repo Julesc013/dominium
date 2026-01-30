@@ -83,3 +83,5 @@ Launcher behavior:
 - `docs/distribution/OFFLINE_INSTALL.md`
 - `docs/distribution/UNINSTALL_AND_REPAIR.md`
 - `docs/architecture/SETUP_TRANSACTION_MODEL.md`
+- `docs/distribution/LAUNCHER_SCOPE.md`
+- `docs/distribution/LAUNCHER_GUIDE.md`
