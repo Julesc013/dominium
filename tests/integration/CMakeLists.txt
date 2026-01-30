@@ -138,6 +138,14 @@ dom_add_testx(NAME integration_meta
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )
 
+dom_add_testx(NAME server_tools_operational
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/server_tools_operational_tests.py
+        --server $<TARGET_FILE:dominium_server>
+        --tools $<TARGET_FILE:dominium-tools>
+        --temp-root ${CMAKE_BINARY_DIR}/tests/server_tools_operational
+    LABELS ${DOM_TESTX_LABEL_SMOKE}
+)
+
 get_property(_dom_registered_products GLOBAL PROPERTY DOM_REGISTERED_PRODUCTS)
 get_property(_dom_registered_product_tests GLOBAL PROPERTY DOM_REGISTERED_PRODUCT_CLI_TESTS)
 get_property(_dom_registered_renderer_tests GLOBAL PROPERTY DOM_REGISTERED_RENDERER_TESTS)
