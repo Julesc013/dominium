@@ -632,6 +632,15 @@ static void setup_print_help(void)
     printf("  version   Show setup version\\n");
     printf("  status    Show setup status\\n");
     printf("  prepare   Create empty install layout\\n");
+    printf("  install   Perform install (offline-first)\\n");
+    printf("  repair    Repair an existing install\\n");
+    printf("  uninstall Uninstall binaries (preserve data by default)\\n");
+    printf("  rollback  Roll back to previous install snapshot\\n");
+    printf("  export-invocation  Emit invocation payload\\n");
+    printf("  plan      Create a transactional plan\\n");
+    printf("  apply     Apply a transactional plan\\n");
+    printf("  detect    Detect install root status\\n");
+    printf("  manifest  Manifest operations (validate)\\n");
     printf("  ops <args> Install/instance operations (delegates to ops_cli)\\n");
     printf("  share <args> Bundle export/import/inspect (delegates to share_cli)\\n");
 }
@@ -926,6 +935,86 @@ static int setup_run_share(int argc, char** argv, int cmd_index)
     return rc;
 }
 
+static int setup_args_has_prefix(int argc, char** argv, const char* prefix)
+{
+    size_t prefix_len;
+    int i;
+    if (!prefix || !prefix[0]) {
+        return 0;
+    }
+    prefix_len = strlen(prefix);
+    for (i = 1; i < argc; ++i) {
+        if (strncmp(argv[i], prefix, prefix_len) == 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+static int setup_resolve_setup_script(char* out, size_t cap)
+{
+    const char* rel = "tools/setup/setup_cli.py";
+    if (!out || cap == 0u) {
+        return 0;
+    }
+    out[0] = '\0';
+    if (setup_find_upward(out, cap, rel)) {
+        return 1;
+    }
+    rel = "setup/setup_cli.py";
+    if (setup_find_upward(out, cap, rel)) {
+        return 1;
+    }
+    strncpy(out, "tools/setup/setup_cli.py", cap - 1u);
+    out[cap - 1u] = '\0';
+    return 1;
+}
+
+static int setup_run_setup_cli(int argc, char** argv, const char* ui_mode_override)
+{
+    char script_path[512];
+    char cmd[4096];
+    int i;
+    int rc;
+    int have_ui_mode = 0;
+
+    if (!setup_resolve_setup_script(script_path, sizeof(script_path))) {
+        fprintf(stderr, "setup: unable to resolve setup cli path\n");
+        return D_APP_EXIT_FAILURE;
+    }
+    if (snprintf(cmd, sizeof(cmd), "python") <= 0) {
+        fprintf(stderr, "setup: failed to build setup command\n");
+        return D_APP_EXIT_FAILURE;
+    }
+    if (!setup_append_quoted(cmd, sizeof(cmd), script_path)) {
+        fprintf(stderr, "setup: setup command too long\n");
+        return D_APP_EXIT_FAILURE;
+    }
+    have_ui_mode = setup_args_has_prefix(argc, argv, "--ui-mode");
+    for (i = 1; i < argc; ++i) {
+        if (!setup_append_quoted(cmd, sizeof(cmd), argv[i])) {
+            fprintf(stderr, "setup: setup command too long\n");
+            return D_APP_EXIT_FAILURE;
+        }
+    }
+    if (!have_ui_mode && ui_mode_override && ui_mode_override[0]) {
+        if (!setup_append_quoted(cmd, sizeof(cmd), "--ui-mode")) {
+            fprintf(stderr, "setup: setup command too long\n");
+            return D_APP_EXIT_FAILURE;
+        }
+        if (!setup_append_quoted(cmd, sizeof(cmd), ui_mode_override)) {
+            fprintf(stderr, "setup: setup command too long\n");
+            return D_APP_EXIT_FAILURE;
+        }
+    }
+    rc = system(cmd);
+    if (rc == -1) {
+        fprintf(stderr, "setup: failed to run setup cli\n");
+        return D_APP_EXIT_FAILURE;
+    }
+    return rc;
+}
+
 static char setup_path_sep(void)
 {
 #if defined(_WIN32)
@@ -1007,16 +1096,14 @@ static int setup_prepare(const char* root)
     return D_APP_EXIT_OK;
 }
 
-static int setup_run_tui(void)
+static int setup_run_tui(int argc, char** argv)
 {
-    fprintf(stderr, "setup: tui not implemented\\n");
-    return D_APP_EXIT_UNAVAILABLE;
+    return setup_run_setup_cli(argc, argv, "tui");
 }
 
-static int setup_run_gui(void)
+static int setup_run_gui(int argc, char** argv)
 {
-    fprintf(stderr, "setup: gui not implemented\\n");
-    return D_APP_EXIT_UNAVAILABLE;
+    return setup_run_setup_cli(argc, argv, "gui");
 }
 
 int setup_main(int argc, char** argv)
@@ -1086,10 +1173,28 @@ int setup_main(int argc, char** argv)
         }
         if (strcmp(argv[i], "--deterministic") == 0) {
             want_deterministic = 1;
+            if (i + 1 < argc && (strcmp(argv[i + 1], "0") == 0 || strcmp(argv[i + 1], "1") == 0)) {
+                want_deterministic = (strcmp(argv[i + 1], "1") == 0) ? 1 : 0;
+                i += 1;
+            }
+            continue;
+        }
+        if (strncmp(argv[i], "--deterministic=", 16) == 0) {
+            const char* value = argv[i] + 16;
+            want_deterministic = (value && strcmp(value, "0") != 0) ? 1 : 0;
             continue;
         }
         if (strcmp(argv[i], "--interactive") == 0) {
             want_interactive = 1;
+            if (i + 1 < argc && (strcmp(argv[i + 1], "0") == 0 || strcmp(argv[i + 1], "1") == 0)) {
+                want_interactive = (strcmp(argv[i + 1], "1") == 0) ? 1 : 0;
+                i += 1;
+            }
+            continue;
+        }
+        if (strncmp(argv[i], "--interactive=", 14) == 0) {
+            const char* value = argv[i] + 14;
+            want_interactive = (value && strcmp(value, "0") != 0) ? 1 : 0;
             continue;
         }
         if (strncmp(argv[i], "--root=", 7) == 0) {
@@ -1116,13 +1221,9 @@ int setup_main(int argc, char** argv)
             continue;
         }
         if (argv[i][0] != '-') {
-            if (!cmd) {
-                cmd = argv[i];
-                cmd_index = i;
-                continue;
-            }
-            fprintf(stderr, "setup: unexpected argument '%s'\n", argv[i]);
-            return D_APP_EXIT_USAGE;
+            cmd = argv[i];
+            cmd_index = i;
+            break;
         }
     }
     if (want_smoke || want_selftest) {
@@ -1157,10 +1258,10 @@ int setup_main(int argc, char** argv)
         return D_APP_EXIT_OK;
     }
     if (ui_mode == DOM_APP_UI_TUI && !cmd && !want_build_info && !want_status) {
-        return setup_run_tui();
+        return setup_run_tui(argc, argv);
     }
     if (ui_mode == DOM_APP_UI_GUI && !cmd && !want_build_info && !want_status) {
-        return setup_run_gui();
+        return setup_run_gui(argc, argv);
     }
 
     setup_resolve_control_registry(control_registry_buf,
@@ -1236,6 +1337,17 @@ int setup_main(int argc, char** argv)
     }
     if (strcmp(cmd, "share") == 0) {
         return setup_run_share(argc, argv, cmd_index);
+    }
+    if (strcmp(cmd, "install") == 0 ||
+        strcmp(cmd, "repair") == 0 ||
+        strcmp(cmd, "uninstall") == 0 ||
+        strcmp(cmd, "rollback") == 0 ||
+        strcmp(cmd, "export-invocation") == 0 ||
+        strcmp(cmd, "plan") == 0 ||
+        strcmp(cmd, "apply") == 0 ||
+        strcmp(cmd, "detect") == 0 ||
+        strcmp(cmd, "manifest") == 0) {
+        return setup_run_setup_cli(argc, argv, "cli");
     }
 
     printf("setup: unknown command '%s'\\n", cmd);
