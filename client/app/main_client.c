@@ -30,6 +30,7 @@ Minimal client entrypoint with MP0 local-connect demo.
 #include <string.h>
 #include <stdarg.h>
 #include <ctype.h>
+#include <math.h>
 #include <errno.h>
 #if defined(_WIN32)
 #include <direct.h>
@@ -115,6 +116,13 @@ static void print_help(void)
     printf("  replay-pause    Toggle replay pause (UI only)\n");
     printf("  templates       List available templates\n");
     printf("  mode            Set navigation mode (policy.mode.*)\n");
+    printf("  move            Move (dx= dy= dz= or move-forward/back/left/right/up/down)\n");
+    printf("  spawn           Reset to spawn position\n");
+    printf("  camera          Set camera mode (camera.*)\n");
+    printf("  camera-next     Cycle camera modes\n");
+    printf("  inspect-toggle  Toggle inspect overlay\n");
+    printf("  hud-toggle      Toggle HUD\n");
+    printf("  domain          Focus a node id for inspection\n");
     printf("  where           Show current world status\n");
     printf("  simulate        Advance simulation tick (agent planning)\n");
     printf("  agents          List agents\n");
@@ -805,6 +813,10 @@ typedef enum client_ui_action {
     CLIENT_ACTION_MOVE_RIGHT,
     CLIENT_ACTION_MOVE_UP,
     CLIENT_ACTION_MOVE_DOWN,
+    CLIENT_ACTION_CAMERA_NEXT,
+    CLIENT_ACTION_INSPECT_TOGGLE,
+    CLIENT_ACTION_HUD_TOGGLE,
+    CLIENT_ACTION_SPAWN,
     CLIENT_ACTION_PROFILE_NEXT,
     CLIENT_ACTION_PROFILE_PREV,
     CLIENT_ACTION_PRESET_NEXT,
@@ -2176,6 +2188,38 @@ static void client_ui_format_q16(char* out, size_t cap, i32 value)
     snprintf(out, cap, "%.3f", (double)value / 65536.0);
 }
 
+static int client_ui_geo_from_position(const dom_shell_world_state* world,
+                                       double* out_lat_deg,
+                                       double* out_lon_deg,
+                                       double* out_alt_m)
+{
+    const double pi = 3.14159265358979323846;
+    double x;
+    double y;
+    double z;
+    double r;
+    if (!world || world->summary.earth_radius_m <= 0.0) {
+        return 0;
+    }
+    x = world->position[0];
+    y = world->position[1];
+    z = world->position[2];
+    r = sqrt(x * x + y * y + z * z);
+    if (r <= 0.0) {
+        return 0;
+    }
+    if (out_lat_deg) {
+        *out_lat_deg = asin(z / r) * (180.0 / pi);
+    }
+    if (out_lon_deg) {
+        *out_lon_deg = atan2(y, x) * (180.0 / pi);
+    }
+    if (out_alt_m) {
+        *out_alt_m = r - world->summary.earth_radius_m;
+    }
+    return 1;
+}
+
 static const char* client_ui_goal_type_name(u32 type)
 {
     switch (type) {
@@ -2425,6 +2469,10 @@ static void client_ui_build_lines(const client_ui_state* state,
         }
     } else if (state->screen == CLIENT_UI_WORLD_VIEW) {
         const dom_shell_world_state* world = dom_client_shell_world(&state->shell);
+        double lat = 0.0;
+        double lon = 0.0;
+        double alt = 0.0;
+        int has_geo = 0;
         client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "");
         client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "%s",
                            client_ui_text(state, "ui.client.world_view.title", "World View"));
@@ -2443,11 +2491,21 @@ static void client_ui_build_lines(const client_ui_state* state,
             client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES,
                                "position=%.2f,%.2f,%.2f",
                                world->position[0], world->position[1], world->position[2]);
+            has_geo = client_ui_geo_from_position(world, &lat, &lon, &alt);
+            if (has_geo) {
+                client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES,
+                                   "geo_lat_lon_alt=%.3f,%.3f,%.3f", lat, lon, alt);
+            }
             client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES,
                                "orientation=%.2f,%.2f,%.2f",
                                world->orientation[0], world->orientation[1], world->orientation[2]);
             client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "mode=%s",
                                world->active_mode[0] ? world->active_mode : "none");
+            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "camera=%s",
+                               world->camera_mode[0] ? world->camera_mode : "none");
+            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "inspect=%s hud=%s",
+                               world->inspect_enabled ? "on" : "off",
+                               world->hud_enabled ? "on" : "off");
             dom_client_shell_policy_to_csv(&world->summary.authority, csv, sizeof(csv));
             client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "authority=%s", csv[0] ? csv : "none");
             dom_client_shell_policy_to_csv(&world->summary.movement, csv, sizeof(csv));
@@ -2456,6 +2514,8 @@ static void client_ui_build_lines(const client_ui_state* state,
             client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "modes=%s", csv[0] ? csv : "none");
             dom_client_shell_policy_to_csv(&world->summary.debug, csv, sizeof(csv));
             client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "debug=%s", csv[0] ? csv : "none");
+            dom_client_shell_policy_to_csv(&world->summary.camera, csv, sizeof(csv));
+            client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "camera_modes=%s", csv[0] ? csv : "none");
             client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "tick=%u", (unsigned int)state->tick);
             client_ui_add_line(lines, &count, CLIENT_UI_MAX_LINES, "intent=%s",
                                state->shell.last_intent[0] ? state->shell.last_intent : "none");
@@ -3379,6 +3439,38 @@ static void client_ui_apply_action(client_ui_state* state,
             dom_client_shell_move(&state->shell, 0.0, 0.0, -1.0, log);
         }
         break;
+    case CLIENT_ACTION_CAMERA_NEXT:
+        if (state->screen == CLIENT_UI_WORLD_VIEW) {
+            client_ui_execute_command("camera-next", &state->settings, log, state,
+                                      state->action_status, sizeof(state->action_status), 0);
+        } else {
+            client_ui_set_status(state, "camera_set=ignored");
+        }
+        break;
+    case CLIENT_ACTION_INSPECT_TOGGLE:
+        if (state->screen == CLIENT_UI_WORLD_VIEW) {
+            client_ui_execute_command("inspect-toggle", &state->settings, log, state,
+                                      state->action_status, sizeof(state->action_status), 0);
+        } else {
+            client_ui_set_status(state, "inspect=ignored");
+        }
+        break;
+    case CLIENT_ACTION_HUD_TOGGLE:
+        if (state->screen == CLIENT_UI_WORLD_VIEW) {
+            client_ui_execute_command("hud-toggle", &state->settings, log, state,
+                                      state->action_status, sizeof(state->action_status), 0);
+        } else {
+            client_ui_set_status(state, "hud=ignored");
+        }
+        break;
+    case CLIENT_ACTION_SPAWN:
+        if (state->screen == CLIENT_UI_WORLD_VIEW) {
+            client_ui_execute_command("spawn", &state->settings, log, state,
+                                      state->action_status, sizeof(state->action_status), 0);
+        } else {
+            client_ui_set_status(state, "spawn=ignored");
+        }
+        break;
     case CLIENT_ACTION_PROFILE_NEXT: {
         int next = (state->create_profile_index + 1) % CLIENT_UI_PROFILE_COUNT;
         client_ui_apply_profile(state, next);
@@ -3500,6 +3592,14 @@ static client_ui_action client_ui_action_from_token(const char* token)
     if (strcmp(token, "move-right") == 0) return CLIENT_ACTION_MOVE_RIGHT;
     if (strcmp(token, "move-up") == 0) return CLIENT_ACTION_MOVE_UP;
     if (strcmp(token, "move-down") == 0) return CLIENT_ACTION_MOVE_DOWN;
+    if (strcmp(token, "camera-next") == 0) return CLIENT_ACTION_CAMERA_NEXT;
+    if (strcmp(token, "inspect-toggle") == 0 || strcmp(token, "inspect") == 0) {
+        return CLIENT_ACTION_INSPECT_TOGGLE;
+    }
+    if (strcmp(token, "hud-toggle") == 0 || strcmp(token, "hud") == 0) {
+        return CLIENT_ACTION_HUD_TOGGLE;
+    }
+    if (strcmp(token, "spawn") == 0) return CLIENT_ACTION_SPAWN;
     if (strcmp(token, "profile-next") == 0) return CLIENT_ACTION_PROFILE_NEXT;
     if (strcmp(token, "profile-prev") == 0) return CLIENT_ACTION_PROFILE_PREV;
     if (strcmp(token, "preset-next") == 0 || strcmp(token, "meta-law-next") == 0) {
@@ -3744,6 +3844,14 @@ static int client_run_tui(const dom_app_ui_run_config* run_cfg,
                         dom_client_shell_move(&ui.shell, 0.0, 0.0, 1.0, &log);
                     } else if (key == 'f' || key == 'F') {
                         dom_client_shell_move(&ui.shell, 0.0, 0.0, -1.0, &log);
+                    } else if (key == 'c' || key == 'C') {
+                        client_ui_apply_action(&ui, CLIENT_ACTION_CAMERA_NEXT, &log, compat_expect);
+                    } else if (key == 'i' || key == 'I') {
+                        client_ui_apply_action(&ui, CLIENT_ACTION_INSPECT_TOGGLE, &log, compat_expect);
+                    } else if (key == 'h' || key == 'H') {
+                        client_ui_apply_action(&ui, CLIENT_ACTION_HUD_TOGGLE, &log, compat_expect);
+                    } else if (key == 'x' || key == 'X') {
+                        client_ui_apply_action(&ui, CLIENT_ACTION_SPAWN, &log, compat_expect);
                     }
                 } else if (ui.screen == CLIENT_UI_REPLAY) {
                     if (key == 'b' || key == 'B') {
@@ -4099,6 +4207,14 @@ static int client_run_gui(const dom_app_ui_run_config* run_cfg,
                         dom_client_shell_move(&ui.shell, 0.0, 0.0, 1.0, &log);
                     } else if (key == 'f' || key == 'F') {
                         dom_client_shell_move(&ui.shell, 0.0, 0.0, -1.0, &log);
+                    } else if (key == 'c' || key == 'C') {
+                        client_ui_apply_action(&ui, CLIENT_ACTION_CAMERA_NEXT, &log, compat_expect);
+                    } else if (key == 'i' || key == 'I') {
+                        client_ui_apply_action(&ui, CLIENT_ACTION_INSPECT_TOGGLE, &log, compat_expect);
+                    } else if (key == 'h' || key == 'H') {
+                        client_ui_apply_action(&ui, CLIENT_ACTION_HUD_TOGGLE, &log, compat_expect);
+                    } else if (key == 'x' || key == 'X') {
+                        client_ui_apply_action(&ui, CLIENT_ACTION_SPAWN, &log, compat_expect);
                     }
                 } else if (ui.screen == CLIENT_UI_REPLAY) {
                     if (key == 'b' || key == 'B') {

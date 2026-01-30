@@ -1,0 +1,77 @@
+{
+  "schema_id": "dominium.schema.world_definition",
+  "schema_version": 1,
+  "worlddef_id": "world.template.exploration_baseline.seed.{{seed}}",
+  "topology": {
+    "root_node_ref": { "node_id": "universe.root" },
+    "nodes": [
+      {
+        "node_id": "universe.root",
+        "trait_tags": ["topology.universe"],
+        "coord_frame_ref": { "frame_id": "frame.universe.root" }
+      },
+      {
+        "node_id": "galaxy.milky_way",
+        "parent_refs": [{ "node_id": "universe.root" }],
+        "trait_tags": ["topology.galaxy"],
+        "coord_frame_ref": { "frame_id": "frame.galaxy.milky_way" }
+      },
+      {
+        "node_id": "system.sol",
+        "parent_refs": [{ "node_id": "galaxy.milky_way" }],
+        "trait_tags": ["topology.system"],
+        "coord_frame_ref": { "frame_id": "frame.system.sol" }
+      },
+      {
+        "node_id": "body.sun",
+        "parent_refs": [{ "node_id": "system.sol" }],
+        "trait_tags": ["topology.body", "body.sphere", "body.star"],
+        "coord_frame_ref": { "frame_id": "frame.body.sun" }
+      },
+      {
+        "node_id": "body.earth",
+        "parent_refs": [{ "node_id": "system.sol" }],
+        "trait_tags": ["topology.body", "body.sphere", "body.planet", "body.spawn", "body.earth"],
+        "coord_frame_ref": { "frame_id": "frame.body.earth" },
+        "extensions": {
+          "radius_m": 6371000,
+          "surface_tag": "surface.abstract_shell"
+        }
+      }
+    ],
+    "edges": [
+      { "parent_ref": { "node_id": "universe.root" }, "child_ref": { "node_id": "galaxy.milky_way" } },
+      { "parent_ref": { "node_id": "galaxy.milky_way" }, "child_ref": { "node_id": "system.sol" } },
+      { "parent_ref": { "node_id": "system.sol" }, "child_ref": { "node_id": "body.sun" } },
+      { "parent_ref": { "node_id": "system.sol" }, "child_ref": { "node_id": "body.earth" } }
+    ],
+    "extensions": {}
+  },
+  "initial_fields": [],
+  "policy_sets": {
+    "movement_policies": {{movement_policies}},
+    "authority_policies": {{authority_policies}},
+    "mode_policies": {{mode_policies}},
+    "debug_policies": {{debug_policies}},
+    "playtest_policies": {{playtest_policies}},
+    "camera_policies": {{camera_policies}}
+  },
+  "spawn_spec": {
+    "spawn_node_ref": { "node_id": "body.earth" },
+    "coordinate_frame_ref": { "frame_id": "frame.body.earth" },
+    "position": { "value": { "x": {{spawn_x}}, "y": {{spawn_y}}, "z": {{spawn_z}} } },
+    "orientation": { "value": { "yaw": 0, "pitch": 0, "roll": 0 } }
+  },
+  "provenance": {
+    "template_id": "world.template.exploration_baseline",
+    "template_version": "1.0.0",
+    "generator_source": "data.template",
+    "seed": { "primary": {{seed}} },
+    "template_params": { "seed.primary": {{seed}} }
+  },
+  "extensions": {
+    "earth_radius_m": 6371000,
+    "camera_modes": {{camera_policies}},
+    "hud_default": "on"
+  }
+}

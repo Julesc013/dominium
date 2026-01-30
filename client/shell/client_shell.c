@@ -11,6 +11,8 @@ Client shell core implementation.
 #include <stdlib.h>
 #include <stdarg.h>
 #include <ctype.h>
+#include <math.h>
+#include <time.h>
 
 
 #define DOM_REFUSAL_INVALID "WD-REFUSAL-INVALID"
@@ -24,6 +26,7 @@ Client shell core implementation.
 
 #define DOM_SHELL_DEFAULT_SAVE_PATH "data/saves/world.save"
 #define DOM_SHELL_DEFAULT_REPLAY_PATH "data/saves/session.replay"
+#define DOM_SHELL_COMPAT_SUFFIX ".compat_report.json"
 #define DOM_SHELL_BATCH_SCRIPT_MAX 2048
 
 #define DOM_SHELL_ACCESSIBILITY_MAX_Q16 (5 << 16)
@@ -385,6 +388,23 @@ static void dom_shell_builder_append_policy_array(dom_shell_builder* b, const do
         }
     }
     dom_shell_builder_append_char(b, ']');
+}
+
+static int dom_shell_policy_set_to_json(const dom_shell_policy_set* set, char* out, size_t out_cap)
+{
+    dom_shell_builder b;
+    if (!out || out_cap == 0u) {
+        return 0;
+    }
+    dom_shell_builder_init(&b, out, out_cap);
+    dom_shell_builder_append_policy_array(&b, set);
+    if (b.overflow) {
+        if (out_cap > 0u) {
+            out[0] = '\0';
+        }
+        return 0;
+    }
+    return 1;
 }
 
 static void dom_shell_playtest_reset(dom_client_shell* shell)
@@ -2091,7 +2111,16 @@ static void dom_shell_registry_init(dom_shell_registry* reg)
             DOM_SHELL_MAX_TEMPLATE_DESC - 1u);
     strncpy(reg->templates[2].source, "built_in", sizeof(reg->templates[2].source) - 1u);
 
-    reg->count = 3u;
+    strncpy(reg->templates[3].template_id, "world.template.exploration_baseline",
+            DOM_SHELL_MAX_TEMPLATE_ID - 1u);
+    strncpy(reg->templates[3].version, "1.0.0",
+            DOM_SHELL_MAX_TEMPLATE_VERSION - 1u);
+    strncpy(reg->templates[3].description,
+            "Milky Way → Sol → Earth baseline (data template, zero packs).",
+            DOM_SHELL_MAX_TEMPLATE_DESC - 1u);
+    strncpy(reg->templates[3].source, "data", sizeof(reg->templates[3].source) - 1u);
+
+    reg->count = 4u;
 }
 
 static void dom_shell_write_node(dom_shell_builder* b, const dom_shell_node_def* node)
@@ -2132,6 +2161,236 @@ static void dom_shell_write_edge(dom_shell_builder* b, const dom_shell_edge_def*
     dom_shell_builder_append_text(b, "}}");
 }
 
+static void dom_shell_path_join(char* out, size_t out_cap, const char* root, const char* rel)
+{
+    size_t root_len;
+    if (!out || out_cap == 0u) {
+        return;
+    }
+    if (!rel) {
+        rel = "";
+    }
+    if (!root || !root[0]) {
+        snprintf(out, out_cap, "%s", rel);
+        return;
+    }
+    root_len = strlen(root);
+    if (root_len > 0u && (root[root_len - 1u] == '/' || root[root_len - 1u] == '\\')) {
+        snprintf(out, out_cap, "%s%s", root, rel);
+    } else {
+        snprintf(out, out_cap, "%s/%s", root, rel);
+    }
+}
+
+static int dom_shell_read_text_file(const char* path,
+                                    char* out,
+                                    size_t out_cap,
+                                    size_t* out_len,
+                                    char* err,
+                                    size_t err_cap)
+{
+    FILE* f;
+    size_t len;
+    if (out_len) {
+        *out_len = 0u;
+    }
+    if (!path || !path[0] || !out || out_cap == 0u) {
+        if (err && err_cap > 0u) {
+            snprintf(err, err_cap, "template path missing");
+        }
+        return 0;
+    }
+    f = fopen(path, "rb");
+    if (!f) {
+        return 0;
+    }
+    len = fread(out, 1u, out_cap - 1u, f);
+    if (len == out_cap - 1u) {
+        int extra = fgetc(f);
+        if (extra != EOF) {
+            fclose(f);
+            if (err && err_cap > 0u) {
+                snprintf(err, err_cap, "template too large");
+            }
+            return 0;
+        }
+    }
+    if (ferror(f)) {
+        fclose(f);
+        if (err && err_cap > 0u) {
+            snprintf(err, err_cap, "template read failed");
+        }
+        return 0;
+    }
+    out[len] = '\0';
+    if (out_len) {
+        *out_len = len;
+    }
+    fclose(f);
+    return 1;
+}
+
+static int dom_shell_load_template_text(const char* rel_path,
+                                        char* out,
+                                        size_t out_cap,
+                                        size_t* out_len,
+                                        char* err,
+                                        size_t err_cap)
+{
+    const char* install_root = getenv("DOM_INSTALL_ROOT");
+    const char* data_root = getenv("DOM_DATA_ROOT");
+    char path[512];
+    if (!rel_path || !rel_path[0]) {
+        if (err && err_cap > 0u) {
+            snprintf(err, err_cap, "template path missing");
+        }
+        return 0;
+    }
+    if (install_root && install_root[0]) {
+        dom_shell_path_join(path, sizeof(path), install_root, rel_path);
+        if (dom_shell_read_text_file(path, out, out_cap, out_len, 0, 0u)) {
+            return 1;
+        }
+    }
+    if (data_root && data_root[0]) {
+        dom_shell_path_join(path, sizeof(path), data_root, rel_path);
+        if (dom_shell_read_text_file(path, out, out_cap, out_len, 0, 0u)) {
+            return 1;
+        }
+    }
+    dom_shell_path_join(path, sizeof(path), "", rel_path);
+    if (dom_shell_read_text_file(path, out, out_cap, out_len, 0, 0u)) {
+        return 1;
+    }
+    if (err && err_cap > 0u) {
+        snprintf(err, err_cap, "template missing");
+    }
+    return 0;
+}
+
+static int dom_shell_replace_token(const char* input,
+                                   const char* token,
+                                   const char* replacement,
+                                   char* out,
+                                   size_t out_cap)
+{
+    size_t token_len;
+    size_t repl_len;
+    size_t out_len = 0u;
+    const char* cursor;
+    if (!input || !token || !out || out_cap == 0u) {
+        return 0;
+    }
+    token_len = strlen(token);
+    repl_len = replacement ? strlen(replacement) : 0u;
+    cursor = input;
+    while (*cursor) {
+        const char* match = strstr(cursor, token);
+        size_t chunk;
+        if (!match) {
+            chunk = strlen(cursor);
+            if (out_len + chunk + 1u > out_cap) {
+                return 0;
+            }
+            memcpy(out + out_len, cursor, chunk);
+            out_len += chunk;
+            break;
+        }
+        chunk = (size_t)(match - cursor);
+        if (out_len + chunk + repl_len + 1u > out_cap) {
+            return 0;
+        }
+        if (chunk > 0u) {
+            memcpy(out + out_len, cursor, chunk);
+            out_len += chunk;
+        }
+        if (repl_len > 0u) {
+            memcpy(out + out_len, replacement, repl_len);
+            out_len += repl_len;
+        }
+        cursor = match + token_len;
+    }
+    out[out_len] = '\0';
+    return 1;
+}
+
+static int dom_shell_json_find_number(const char* json, const char* key, double* out_value)
+{
+    char needle[96];
+    const char* pos;
+    if (!json || !key || !out_value) {
+        return 0;
+    }
+    snprintf(needle, sizeof(needle), "\"%s\"", key);
+    pos = strstr(json, needle);
+    if (!pos) {
+        return 0;
+    }
+    pos = strchr(pos + strlen(needle), ':');
+    if (!pos) {
+        return 0;
+    }
+    pos++;
+    while (*pos && isspace((unsigned char)*pos)) {
+        pos++;
+    }
+    *out_value = strtod(pos, 0);
+    return 1;
+}
+
+static void dom_shell_spawn_from_seed(uint64_t seed, double radius_m, double* out_pos)
+{
+    uint64_t state = seed ? seed : 1u;
+    int axis;
+    double sign;
+    if (!out_pos) {
+        return;
+    }
+    out_pos[0] = 0.0;
+    out_pos[1] = 0.0;
+    out_pos[2] = 0.0;
+    if (radius_m <= 0.0) {
+        return;
+    }
+    state = state * 6364136223846793005ull + 1442695040888963407ull;
+    axis = (int)(state % 3u);
+    state = state * 6364136223846793005ull + 1442695040888963407ull;
+    sign = (state & 1u) ? 1.0 : -1.0;
+    out_pos[axis] = sign * radius_m;
+}
+
+static int dom_shell_geo_from_position(const dom_shell_world_state* world,
+                                       double* out_lat_deg,
+                                       double* out_lon_deg,
+                                       double* out_alt_m)
+{
+    const double pi = 3.14159265358979323846;
+    double x;
+    double y;
+    double z;
+    double r;
+    if (!world || world->summary.earth_radius_m <= 0.0) {
+        return 0;
+    }
+    x = world->position[0];
+    y = world->position[1];
+    z = world->position[2];
+    r = sqrt(x * x + y * y + z * z);
+    if (r <= 0.0) {
+        return 0;
+    }
+    if (out_lat_deg) {
+        *out_lat_deg = asin(z / r) * (180.0 / pi);
+    }
+    if (out_lon_deg) {
+        *out_lon_deg = atan2(y, x) * (180.0 / pi);
+    }
+    if (out_alt_m) {
+        *out_alt_m = r - world->summary.earth_radius_m;
+    }
+    return 1;
+}
+
 static int dom_shell_build_worlddef(const char* template_id,
                                     const char* template_version,
                                     uint64_t seed,
@@ -2140,6 +2399,7 @@ static int dom_shell_build_worlddef(const char* template_id,
                                     const dom_shell_policy_set* mode,
                                     const dom_shell_policy_set* debug,
                                     const dom_shell_policy_set* playtest,
+                                    const dom_shell_policy_set* camera,
                                     const dom_shell_node_def* nodes,
                                     uint32_t node_count,
                                     const dom_shell_edge_def* edges,
@@ -2207,6 +2467,8 @@ static int dom_shell_build_worlddef(const char* template_id,
     dom_shell_builder_append_policy_array(&b, debug);
     dom_shell_builder_append_text(&b, ",\"playtest_policies\":");
     dom_shell_builder_append_policy_array(&b, playtest);
+    dom_shell_builder_append_text(&b, ",\"camera_policies\":");
+    dom_shell_builder_append_policy_array(&b, camera);
     dom_shell_builder_append_char(&b, '}');
     dom_shell_builder_append_text(&b, ",\"spawn_spec\":{");
     dom_shell_builder_append_text(&b, "\"spawn_node_ref\":{\"node_id\":");
@@ -2249,11 +2511,13 @@ static int dom_shell_build_worlddef(const char* template_id,
         summary->spawn_orient[0] = 0.0;
         summary->spawn_orient[1] = 0.0;
         summary->spawn_orient[2] = 0.0;
+        summary->earth_radius_m = 0.0;
         dom_shell_policy_set_copy(&summary->movement, movement);
         dom_shell_policy_set_copy(&summary->authority, authority);
         dom_shell_policy_set_copy(&summary->mode, mode);
         dom_shell_policy_set_copy(&summary->debug, debug);
         dom_shell_policy_set_copy(&summary->playtest, playtest);
+        dom_shell_policy_set_copy(&summary->camera, camera);
     }
     return 1;
 }
@@ -2264,6 +2528,7 @@ static int dom_shell_build_empty_universe(uint64_t seed,
                                           const dom_shell_policy_set* mode,
                                           const dom_shell_policy_set* debug,
                                           const dom_shell_policy_set* playtest,
+                                          const dom_shell_policy_set* camera,
                                           char* out_json,
                                           size_t out_cap,
                                           dom_shell_world_summary* summary,
@@ -2274,7 +2539,7 @@ static int dom_shell_build_empty_universe(uint64_t seed,
         { "universe.root", 0, "frame.universe.root", { "topology.universe" }, 1u }
     };
     return dom_shell_build_worlddef("builtin.empty_universe", "1.0.0", seed,
-                                    movement, authority, mode, debug, playtest,
+                                    movement, authority, mode, debug, playtest, camera,
                                     nodes, 1u, 0, 0u,
                                     "universe.root", "frame.universe.root",
                                     out_json, out_cap, summary, err, err_cap);
@@ -2286,6 +2551,7 @@ static int dom_shell_build_minimal_system(uint64_t seed,
                                           const dom_shell_policy_set* mode,
                                           const dom_shell_policy_set* debug,
                                           const dom_shell_policy_set* playtest,
+                                          const dom_shell_policy_set* camera,
                                           char* out_json,
                                           size_t out_cap,
                                           dom_shell_world_summary* summary,
@@ -2303,7 +2569,7 @@ static int dom_shell_build_minimal_system(uint64_t seed,
         { "system.minimal", "body.minimal.primary" }
     };
     return dom_shell_build_worlddef("builtin.minimal_system", "1.0.0", seed,
-                                    movement, authority, mode, debug, playtest,
+                                    movement, authority, mode, debug, playtest, camera,
                                     nodes, 3u, edges, 2u,
                                     "body.minimal.primary", "frame.body.minimal.primary",
                                     out_json, out_cap, summary, err, err_cap);
@@ -2315,6 +2581,7 @@ static int dom_shell_build_realistic_test(uint64_t seed,
                                           const dom_shell_policy_set* mode,
                                           const dom_shell_policy_set* debug,
                                           const dom_shell_policy_set* playtest,
+                                          const dom_shell_policy_set* camera,
                                           char* out_json,
                                           size_t out_cap,
                                           dom_shell_world_summary* summary,
@@ -2354,10 +2621,151 @@ static int dom_shell_build_realistic_test(uint64_t seed,
         { "system.test", "body.neptune" }
     };
     return dom_shell_build_worlddef("builtin.realistic_test_universe", "1.0.0", seed,
-                                    movement, authority, mode, debug, playtest,
+                                    movement, authority, mode, debug, playtest, camera,
                                     nodes, 12u, edges, 11u,
                                     "body.earth", "frame.body.earth",
                                     out_json, out_cap, summary, err, err_cap);
+}
+
+static int dom_shell_build_exploration_baseline(uint64_t seed,
+                                                const dom_shell_policy_set* movement,
+                                                const dom_shell_policy_set* authority,
+                                                const dom_shell_policy_set* mode,
+                                                const dom_shell_policy_set* debug,
+                                                const dom_shell_policy_set* playtest,
+                                                const dom_shell_policy_set* camera,
+                                                char* out_json,
+                                                size_t out_cap,
+                                                dom_shell_world_summary* summary,
+                                                char* err,
+                                                size_t err_cap)
+{
+    char template_text[DOM_SHELL_WORLDDEF_MAX];
+    char buf_a[DOM_SHELL_WORLDDEF_MAX];
+    char buf_b[DOM_SHELL_WORLDDEF_MAX];
+    char seed_buf[32];
+    char spawn_x[32];
+    char spawn_y[32];
+    char spawn_z[32];
+    char movement_json[256];
+    char authority_json[256];
+    char mode_json[256];
+    char debug_json[256];
+    char playtest_json[256];
+    char camera_json[256];
+    double earth_radius_m = 6371000.0;
+    double spawn_pos[3];
+    size_t template_len = 0u;
+    char* src = buf_a;
+    char* dst = buf_b;
+    if (!out_json || out_cap == 0u) {
+        if (err && err_cap > 0u) {
+            snprintf(err, err_cap, "worlddef buffer missing");
+        }
+        return 0;
+    }
+    if (!dom_shell_load_template_text("data/world/templates/exploration_baseline.worlddef.json",
+                                      template_text,
+                                      sizeof(template_text),
+                                      &template_len,
+                                      err,
+                                      err_cap)) {
+        return 0;
+    }
+    if (!dom_shell_json_find_number(template_text, "earth_radius_m", &earth_radius_m) ||
+        earth_radius_m <= 0.0) {
+        earth_radius_m = 6371000.0;
+    }
+    dom_shell_spawn_from_seed(seed, earth_radius_m, spawn_pos);
+    snprintf(seed_buf, sizeof(seed_buf), "%llu", (unsigned long long)seed);
+    snprintf(spawn_x, sizeof(spawn_x), "%.3f", spawn_pos[0]);
+    snprintf(spawn_y, sizeof(spawn_y), "%.3f", spawn_pos[1]);
+    snprintf(spawn_z, sizeof(spawn_z), "%.3f", spawn_pos[2]);
+    if (!dom_shell_policy_set_to_json(movement, movement_json, sizeof(movement_json)) ||
+        !dom_shell_policy_set_to_json(authority, authority_json, sizeof(authority_json)) ||
+        !dom_shell_policy_set_to_json(mode, mode_json, sizeof(mode_json)) ||
+        !dom_shell_policy_set_to_json(debug, debug_json, sizeof(debug_json)) ||
+        !dom_shell_policy_set_to_json(playtest, playtest_json, sizeof(playtest_json)) ||
+        !dom_shell_policy_set_to_json(camera, camera_json, sizeof(camera_json))) {
+        if (err && err_cap > 0u) {
+            snprintf(err, err_cap, "policy encoding failed");
+        }
+        return 0;
+    }
+    if (template_len >= sizeof(buf_a)) {
+        if (err && err_cap > 0u) {
+            snprintf(err, err_cap, "template too large");
+        }
+        return 0;
+    }
+    memcpy(buf_a, template_text, template_len + 1u);
+    if (!dom_shell_replace_token(src, "{{seed}}", seed_buf, dst, sizeof(buf_b))) {
+        if (err && err_cap > 0u) {
+            snprintf(err, err_cap, "template seed replace failed");
+        }
+        return 0;
+    }
+    {
+        char* tmp = src;
+        src = dst;
+        dst = tmp;
+    }
+    if (!dom_shell_replace_token(src, "{{spawn_x}}", spawn_x, dst, sizeof(buf_b)) ||
+        !dom_shell_replace_token(dst, "{{spawn_y}}", spawn_y, src, sizeof(buf_b)) ||
+        !dom_shell_replace_token(src, "{{spawn_z}}", spawn_z, dst, sizeof(buf_b))) {
+        if (err && err_cap > 0u) {
+            snprintf(err, err_cap, "template spawn replace failed");
+        }
+        return 0;
+    }
+    {
+        char* tmp = src;
+        src = dst;
+        dst = tmp;
+    }
+    if (!dom_shell_replace_token(src, "{{movement_policies}}", movement_json, dst, sizeof(buf_b)) ||
+        !dom_shell_replace_token(dst, "{{authority_policies}}", authority_json, src, sizeof(buf_b)) ||
+        !dom_shell_replace_token(src, "{{mode_policies}}", mode_json, dst, sizeof(buf_b)) ||
+        !dom_shell_replace_token(dst, "{{debug_policies}}", debug_json, src, sizeof(buf_b)) ||
+        !dom_shell_replace_token(src, "{{playtest_policies}}", playtest_json, dst, sizeof(buf_b)) ||
+        !dom_shell_replace_token(dst, "{{camera_policies}}", camera_json, src, sizeof(buf_b))) {
+        if (err && err_cap > 0u) {
+            snprintf(err, err_cap, "template policy replace failed");
+        }
+        return 0;
+    }
+    if (strlen(src) + 1u > out_cap) {
+        if (err && err_cap > 0u) {
+            snprintf(err, err_cap, "worlddef buffer overflow");
+        }
+        return 0;
+    }
+    memcpy(out_json, src, strlen(src) + 1u);
+    if (summary) {
+        memset(summary, 0, sizeof(*summary));
+        snprintf(summary->worlddef_id, sizeof(summary->worlddef_id),
+                 "world.template.exploration_baseline.seed.%llu",
+                 (unsigned long long)seed);
+        strncpy(summary->template_id, "world.template.exploration_baseline",
+                sizeof(summary->template_id) - 1u);
+        summary->schema_version = DOM_SHELL_WORLDDEF_SCHEMA_VERSION;
+        strncpy(summary->spawn_node_id, "body.earth", sizeof(summary->spawn_node_id) - 1u);
+        strncpy(summary->spawn_frame_id, "frame.body.earth", sizeof(summary->spawn_frame_id) - 1u);
+        summary->spawn_pos[0] = spawn_pos[0];
+        summary->spawn_pos[1] = spawn_pos[1];
+        summary->spawn_pos[2] = spawn_pos[2];
+        summary->spawn_orient[0] = 0.0;
+        summary->spawn_orient[1] = 0.0;
+        summary->spawn_orient[2] = 0.0;
+        summary->earth_radius_m = earth_radius_m;
+        dom_shell_policy_set_copy(&summary->movement, movement);
+        dom_shell_policy_set_copy(&summary->authority, authority);
+        dom_shell_policy_set_copy(&summary->mode, mode);
+        dom_shell_policy_set_copy(&summary->debug, debug);
+        dom_shell_policy_set_copy(&summary->playtest, playtest);
+        dom_shell_policy_set_copy(&summary->camera, camera);
+    }
+    return 1;
 }
 
 static int dom_shell_generate_builtin(const dom_shell_template* entry,
@@ -2367,6 +2775,7 @@ static int dom_shell_generate_builtin(const dom_shell_template* entry,
                                       const dom_shell_policy_set* mode,
                                       const dom_shell_policy_set* debug,
                                       const dom_shell_policy_set* playtest,
+                                      const dom_shell_policy_set* camera,
                                       dom_shell_world_state* world,
                                       char* err,
                                       size_t err_cap)
@@ -2379,20 +2788,25 @@ static int dom_shell_generate_builtin(const dom_shell_template* entry,
         return 0;
     }
     if (strcmp(entry->template_id, "builtin.empty_universe") == 0) {
-        ok = dom_shell_build_empty_universe(seed, movement, authority, mode, debug, playtest,
+        ok = dom_shell_build_empty_universe(seed, movement, authority, mode, debug, playtest, camera,
                                             world->worlddef_json,
                                             sizeof(world->worlddef_json),
                                             &world->summary, err, err_cap);
     } else if (strcmp(entry->template_id, "builtin.minimal_system") == 0) {
-        ok = dom_shell_build_minimal_system(seed, movement, authority, mode, debug, playtest,
+        ok = dom_shell_build_minimal_system(seed, movement, authority, mode, debug, playtest, camera,
                                             world->worlddef_json,
                                             sizeof(world->worlddef_json),
                                             &world->summary, err, err_cap);
     } else if (strcmp(entry->template_id, "builtin.realistic_test_universe") == 0) {
-        ok = dom_shell_build_realistic_test(seed, movement, authority, mode, debug, playtest,
+        ok = dom_shell_build_realistic_test(seed, movement, authority, mode, debug, playtest, camera,
                                             world->worlddef_json,
                                             sizeof(world->worlddef_json),
                                             &world->summary, err, err_cap);
+    } else if (strcmp(entry->template_id, "world.template.exploration_baseline") == 0) {
+        ok = dom_shell_build_exploration_baseline(seed, movement, authority, mode, debug, playtest, camera,
+                                                  world->worlddef_json,
+                                                  sizeof(world->worlddef_json),
+                                                  &world->summary, err, err_cap);
     } else {
         if (err && err_cap > 0u) {
             snprintf(err, err_cap, "template not found");
@@ -2421,9 +2835,19 @@ void dom_client_shell_init(dom_client_shell* shell)
     dom_shell_policy_set_clear(&shell->create_mode);
     dom_shell_policy_set_clear(&shell->create_debug);
     dom_shell_policy_set_clear(&shell->create_playtest);
+    dom_shell_policy_set_clear(&shell->create_camera);
+    dom_shell_policy_set_add(&shell->create_movement, "policy.movement.walk");
+    dom_shell_policy_set_add(&shell->create_movement, "policy.movement.fly");
+    dom_shell_policy_set_add(&shell->create_movement, "policy.movement.orbit");
     dom_shell_policy_set_add(&shell->create_authority, DOM_SHELL_AUTH_POLICY);
     dom_shell_policy_set_add(&shell->create_mode, DOM_SHELL_MODE_FREE);
+    dom_shell_policy_set_add(&shell->create_mode, DOM_SHELL_MODE_ORBIT);
+    dom_shell_policy_set_add(&shell->create_mode, DOM_SHELL_MODE_SURFACE);
+    dom_shell_policy_set_add(&shell->create_debug, "policy.debug.readonly");
     dom_shell_policy_set_add(&shell->create_playtest, DOM_SHELL_PLAYTEST_SANDBOX);
+    dom_shell_policy_set_add(&shell->create_camera, DOM_SHELL_CAMERA_FIRST);
+    dom_shell_policy_set_add(&shell->create_camera, DOM_SHELL_CAMERA_THIRD);
+    dom_shell_policy_set_add(&shell->create_camera, DOM_SHELL_CAMERA_FREE);
     shell->create_template_index = 0u;
     shell->create_seed = 0u;
     shell->events.head = 0u;
@@ -2520,6 +2944,10 @@ int dom_client_shell_set_create_policy(dom_client_shell* shell, const char* set_
         dom_shell_policy_set_from_csv(&shell->create_playtest, csv);
         return 1;
     }
+    if (strcmp(set_name, "policy.camera") == 0 || strcmp(set_name, "camera") == 0) {
+        dom_shell_policy_set_from_csv(&shell->create_camera, csv);
+        return 1;
+    }
     return 0;
 }
 
@@ -2603,6 +3031,7 @@ int dom_client_shell_create_world(dom_client_shell* shell,
                                     &shell->create_mode,
                                     &shell->create_debug,
                                     &shell->create_playtest,
+                                    &shell->create_camera,
                                     &shell->world,
                                     err, sizeof(err))) {
         dom_shell_set_refusal(shell, DOM_REFUSAL_TEMPLATE, err[0] ? err : "template failed");
@@ -2632,6 +3061,18 @@ int dom_client_shell_create_world(dom_client_shell* shell,
                 shell->world.summary.mode.items[0],
                 sizeof(shell->world.active_mode) - 1u);
     }
+    shell->world.camera_mode[0] = '\0';
+    if (shell->world.summary.camera.count > 0u) {
+        strncpy(shell->world.camera_mode,
+                shell->world.summary.camera.items[0],
+                sizeof(shell->world.camera_mode) - 1u);
+    } else {
+        strncpy(shell->world.camera_mode,
+                DOM_SHELL_CAMERA_FREE,
+                sizeof(shell->world.camera_mode) - 1u);
+    }
+    shell->world.inspect_enabled = 0;
+    shell->world.hud_enabled = 1;
     dom_shell_fields_init(&shell->fields);
     dom_shell_structure_init(&shell->structure);
     dom_shell_agents_reset(shell);
@@ -2660,6 +3101,106 @@ int dom_client_shell_create_world(dom_client_shell* shell,
         dom_shell_emit(shell, log, "client.world.create", detail);
     }
     return D_APP_EXIT_OK;
+}
+
+static void dom_shell_utc_timestamp(char* out, size_t cap)
+{
+    time_t now = time(0);
+    struct tm utc_tm;
+    if (!out || cap == 0u) {
+        return;
+    }
+#if defined(_WIN32)
+    if (gmtime_s(&utc_tm, &now) != 0) {
+        snprintf(out, cap, "1970-01-01T00:00:00Z");
+        return;
+    }
+#else
+    if (!gmtime_r(&now, &utc_tm)) {
+        snprintf(out, cap, "1970-01-01T00:00:00Z");
+        return;
+    }
+#endif
+    snprintf(out, cap, "%04d-%02d-%02dT%02d:%02d:%02dZ",
+             utc_tm.tm_year + 1900,
+             utc_tm.tm_mon + 1,
+             utc_tm.tm_mday,
+             utc_tm.tm_hour,
+             utc_tm.tm_min,
+             utc_tm.tm_sec);
+}
+
+static int dom_shell_write_compat_report(const dom_client_shell* shell,
+                                         const char* artifact_path,
+                                         const char* context,
+                                         char* err,
+                                         size_t err_cap)
+{
+    FILE* f;
+    char compat_path[512];
+    char timestamp[32];
+    char json[1024];
+    dom_shell_builder b;
+    if (!shell || !artifact_path || !artifact_path[0]) {
+        if (err && err_cap > 0u) {
+            snprintf(err, err_cap, "compat path missing");
+        }
+        return 0;
+    }
+    if (snprintf(compat_path, sizeof(compat_path), "%s%s", artifact_path, DOM_SHELL_COMPAT_SUFFIX) >=
+        (int)sizeof(compat_path)) {
+        if (err && err_cap > 0u) {
+            snprintf(err, err_cap, "compat path too long");
+        }
+        return 0;
+    }
+    f = fopen(compat_path, "w");
+    if (!f) {
+        if (err && err_cap > 0u) {
+            snprintf(err, err_cap, "compat open failed");
+        }
+        return 0;
+    }
+    dom_shell_utc_timestamp(timestamp, sizeof(timestamp));
+    dom_shell_builder_init(&b, json, sizeof(json));
+    dom_shell_builder_append_char(&b, '{');
+    dom_shell_builder_append_text(&b, "\"context\":");
+    dom_shell_builder_append_json_string(&b, context ? context : "world.save");
+    dom_shell_builder_append_text(&b, ",\"install_id\":\"00000000-0000-0000-0000-000000000000\"");
+    dom_shell_builder_append_text(&b, ",\"instance_id\":\"00000000-0000-0000-0000-000000000000\"");
+    dom_shell_builder_append_text(&b, ",\"runtime_id\":\"00000000-0000-0000-0000-000000000000\"");
+    dom_shell_builder_append_text(&b, ",\"capability_baseline\":");
+    dom_shell_builder_append_json_string(&b, "capability.baseline.client.shell");
+    dom_shell_builder_append_text(&b, ",\"required_capabilities\":[]");
+    dom_shell_builder_append_text(&b, ",\"provided_capabilities\":[]");
+    dom_shell_builder_append_text(&b, ",\"missing_capabilities\":[]");
+    dom_shell_builder_append_text(&b, ",\"compatibility_mode\":\"FULL\"");
+    dom_shell_builder_append_text(&b, ",\"refusal_codes\":[]");
+    dom_shell_builder_append_text(&b, ",\"mitigation_hints\":[]");
+    dom_shell_builder_append_text(&b, ",\"timestamp\":");
+    dom_shell_builder_append_json_string(&b, timestamp);
+    dom_shell_builder_append_text(&b, ",\"extensions\":{");
+    dom_shell_builder_append_text(&b, "\"worlddef_id\":");
+    dom_shell_builder_append_json_string(&b, shell->world.summary.worlddef_id);
+    dom_shell_builder_append_text(&b, ",\"template_id\":");
+    dom_shell_builder_append_json_string(&b, shell->world.summary.template_id);
+    dom_shell_builder_append_text(&b, ",\"worlddef_hash\":");
+    dom_shell_builder_appendf(&b, "\"0x%016llx\"",
+                              (unsigned long long)shell->world.worlddef_hash);
+    dom_shell_builder_append_text(&b, ",\"artifact_path\":");
+    dom_shell_builder_append_json_string(&b, artifact_path);
+    dom_shell_builder_append_text(&b, "}}");
+    if (b.overflow) {
+        fclose(f);
+        if (err && err_cap > 0u) {
+            snprintf(err, err_cap, "compat buffer overflow");
+        }
+        return 0;
+    }
+    fwrite(json, 1u, b.len, f);
+    fputc('\n', f);
+    fclose(f);
+    return 1;
 }
 
 static int dom_shell_write_save(dom_client_shell* shell, const char* path, char* err, size_t err_cap)
@@ -2702,6 +3243,7 @@ static int dom_shell_write_save(dom_client_shell* shell, const char* path, char*
             shell->world.summary.spawn_orient[0],
             shell->world.summary.spawn_orient[1],
             shell->world.summary.spawn_orient[2]);
+    fprintf(f, "earth_radius_m=%.3f\n", shell->world.summary.earth_radius_m);
     dom_client_shell_policy_to_csv(&shell->world.summary.movement, csv, sizeof(csv));
     fprintf(f, "policy.movement=%s\n", csv);
     dom_client_shell_policy_to_csv(&shell->world.summary.authority, csv, sizeof(csv));
@@ -2712,8 +3254,23 @@ static int dom_shell_write_save(dom_client_shell* shell, const char* path, char*
     fprintf(f, "policy.debug=%s\n", csv);
     dom_client_shell_policy_to_csv(&shell->world.summary.playtest, csv, sizeof(csv));
     fprintf(f, "policy.playtest=%s\n", csv);
+    dom_client_shell_policy_to_csv(&shell->world.summary.camera, csv, sizeof(csv));
+    fprintf(f, "policy.camera=%s\n", csv);
     fprintf(f, "summary_end\n");
     fprintf(f, "local_begin\n");
+    fprintf(f, "current_node_id=%s\n", shell->world.current_node_id[0] ? shell->world.current_node_id : "none");
+    fprintf(f, "position=%.3f,%.3f,%.3f\n",
+            shell->world.position[0],
+            shell->world.position[1],
+            shell->world.position[2]);
+    fprintf(f, "orientation=%.3f,%.3f,%.3f\n",
+            shell->world.orientation[0],
+            shell->world.orientation[1],
+            shell->world.orientation[2]);
+    fprintf(f, "active_mode=%s\n", shell->world.active_mode[0] ? shell->world.active_mode : "none");
+    fprintf(f, "camera_mode=%s\n", shell->world.camera_mode[0] ? shell->world.camera_mode : "none");
+    fprintf(f, "inspect_enabled=%u\n", shell->world.inspect_enabled ? 1u : 0u);
+    fprintf(f, "hud_enabled=%u\n", shell->world.hud_enabled ? 1u : 0u);
     fprintf(f, "tick=%u\n", (unsigned int)shell->tick);
     fprintf(f, "rng_seed=%llu\n", (unsigned long long)shell->rng_seed);
     fprintf(f, "playtest_paused=%u\n", shell->playtest.paused ? 1u : 0u);
@@ -3014,6 +3571,9 @@ static int dom_shell_write_save(dom_client_shell* shell, const char* path, char*
     }
     fprintf(f, "events_end\n");
     fclose(f);
+    if (!dom_shell_write_compat_report(shell, path, "world.save", err, err_cap)) {
+        return 0;
+    }
     return 1;
 }
 
@@ -3070,6 +3630,9 @@ static int dom_shell_write_replay(dom_client_shell* shell, const char* path, cha
     }
     fprintf(f, "events_end\n");
     fclose(f);
+    if (!dom_shell_write_compat_report(shell, path, "replay.save", err, err_cap)) {
+        return 0;
+    }
     return 1;
 }
 
@@ -3199,6 +3762,16 @@ static int dom_shell_parse_vec3(const char* text, double* out_values)
         token = comma ? (comma + 1u) : 0;
     }
     return (i == 3);
+}
+
+static int dom_shell_world_has_node(const dom_shell_world_state* world, const char* node_id)
+{
+    char needle[DOM_SHELL_MAX_TEMPLATE_ID + 16];
+    if (!world || !node_id || !node_id[0]) {
+        return 0;
+    }
+    snprintf(needle, sizeof(needle), "\"node_id\":\"%s\"", node_id);
+    return strstr(world->worlddef_json, needle) != 0;
 }
 
 static void dom_shell_scenario_desc_init(dom_shell_scenario_desc* desc, const dom_client_shell* shell)
@@ -3871,6 +4444,13 @@ static int dom_shell_load_save_file(dom_client_shell* shell, const char* path, c
     int in_playtest_scenarios = 0;
     int in_metrics = 0;
     int have_summary = 0;
+    int have_position = 0;
+    int have_orientation = 0;
+    int have_current_node = 0;
+    int have_mode = 0;
+    int have_camera = 0;
+    int have_inspect = 0;
+    int have_hud = 0;
     int in_agents = 0;
     int in_goals = 0;
     int in_delegations = 0;
@@ -4074,6 +4654,8 @@ static int dom_shell_load_save_file(dom_client_shell* shell, const char* path, c
                 dom_shell_parse_vec3(val, shell->world.summary.spawn_pos);
             } else if (strcmp(key, "spawn_orient") == 0) {
                 dom_shell_parse_vec3(val, shell->world.summary.spawn_orient);
+            } else if (strcmp(key, "earth_radius_m") == 0) {
+                shell->world.summary.earth_radius_m = strtod(val, 0);
             } else if (strcmp(key, "policy.movement") == 0) {
                 dom_shell_policy_set_from_csv(&shell->world.summary.movement, val);
             } else if (strcmp(key, "policy.authority") == 0) {
@@ -4084,10 +4666,55 @@ static int dom_shell_load_save_file(dom_client_shell* shell, const char* path, c
                 dom_shell_policy_set_from_csv(&shell->world.summary.debug, val);
             } else if (strcmp(key, "policy.playtest") == 0) {
                 dom_shell_policy_set_from_csv(&shell->world.summary.playtest, val);
+            } else if (strcmp(key, "policy.camera") == 0) {
+                dom_shell_policy_set_from_csv(&shell->world.summary.camera, val);
             }
             continue;
         }
         if (in_local) {
+            if (strncmp(line, "current_node_id=", 16) == 0) {
+                strncpy(shell->world.current_node_id, line + 16,
+                        sizeof(shell->world.current_node_id) - 1u);
+                shell->world.current_node_id[sizeof(shell->world.current_node_id) - 1u] = '\0';
+                have_current_node = 1;
+                continue;
+            }
+            if (strncmp(line, "position=", 9) == 0) {
+                if (dom_shell_parse_vec3(line + 9, shell->world.position)) {
+                    have_position = 1;
+                }
+                continue;
+            }
+            if (strncmp(line, "orientation=", 12) == 0) {
+                if (dom_shell_parse_vec3(line + 12, shell->world.orientation)) {
+                    have_orientation = 1;
+                }
+                continue;
+            }
+            if (strncmp(line, "active_mode=", 12) == 0) {
+                strncpy(shell->world.active_mode, line + 12,
+                        sizeof(shell->world.active_mode) - 1u);
+                shell->world.active_mode[sizeof(shell->world.active_mode) - 1u] = '\0';
+                have_mode = 1;
+                continue;
+            }
+            if (strncmp(line, "camera_mode=", 12) == 0) {
+                strncpy(shell->world.camera_mode, line + 12,
+                        sizeof(shell->world.camera_mode) - 1u);
+                shell->world.camera_mode[sizeof(shell->world.camera_mode) - 1u] = '\0';
+                have_camera = 1;
+                continue;
+            }
+            if (strncmp(line, "inspect_enabled=", 16) == 0) {
+                shell->world.inspect_enabled = (int)strtoul(line + 16, 0, 10);
+                have_inspect = 1;
+                continue;
+            }
+            if (strncmp(line, "hud_enabled=", 12) == 0) {
+                shell->world.hud_enabled = (int)strtoul(line + 12, 0, 10);
+                have_hud = 1;
+                continue;
+            }
             if (strncmp(line, "tick=", 5) == 0) {
                 shell->tick = (u32)strtoul(line + 5, 0, 10);
                 continue;
@@ -4975,15 +5602,61 @@ static int dom_shell_load_save_file(dom_client_shell* shell, const char* path, c
         return 0;
     }
     shell->world.active = 1;
-    strncpy(shell->world.current_node_id,
-            shell->world.summary.spawn_node_id,
-            sizeof(shell->world.current_node_id) - 1u);
-    dom_shell_sync_world_pose(&shell->world);
-    shell->world.active_mode[0] = '\0';
-    if (shell->world.summary.mode.count > 0u) {
-        strncpy(shell->world.active_mode,
-                shell->world.summary.mode.items[0],
-                sizeof(shell->world.active_mode) - 1u);
+    if (have_current_node &&
+        (strcmp(shell->world.current_node_id, "none") == 0 ||
+         !shell->world.current_node_id[0])) {
+        have_current_node = 0;
+    }
+    if (!have_current_node) {
+        strncpy(shell->world.current_node_id,
+                shell->world.summary.spawn_node_id,
+                sizeof(shell->world.current_node_id) - 1u);
+    }
+    if (!have_position) {
+        shell->world.position[0] = shell->world.summary.spawn_pos[0];
+        shell->world.position[1] = shell->world.summary.spawn_pos[1];
+        shell->world.position[2] = shell->world.summary.spawn_pos[2];
+    }
+    if (!have_orientation) {
+        shell->world.orientation[0] = shell->world.summary.spawn_orient[0];
+        shell->world.orientation[1] = shell->world.summary.spawn_orient[1];
+        shell->world.orientation[2] = shell->world.summary.spawn_orient[2];
+    }
+    if (have_mode &&
+        (strcmp(shell->world.active_mode, "none") == 0 ||
+         !shell->world.active_mode[0])) {
+        have_mode = 0;
+    }
+    if (!have_mode) {
+        shell->world.active_mode[0] = '\0';
+        if (shell->world.summary.mode.count > 0u) {
+            strncpy(shell->world.active_mode,
+                    shell->world.summary.mode.items[0],
+                    sizeof(shell->world.active_mode) - 1u);
+        }
+    }
+    if (have_camera &&
+        (strcmp(shell->world.camera_mode, "none") == 0 ||
+         !shell->world.camera_mode[0])) {
+        have_camera = 0;
+    }
+    if (!have_camera) {
+        shell->world.camera_mode[0] = '\0';
+        if (shell->world.summary.camera.count > 0u) {
+            strncpy(shell->world.camera_mode,
+                    shell->world.summary.camera.items[0],
+                    sizeof(shell->world.camera_mode) - 1u);
+        } else {
+            strncpy(shell->world.camera_mode,
+                    DOM_SHELL_CAMERA_FREE,
+                    sizeof(shell->world.camera_mode) - 1u);
+        }
+    }
+    if (!have_hud) {
+        shell->world.hud_enabled = 1;
+    }
+    if (!have_inspect) {
+        shell->world.inspect_enabled = 0;
     }
     if (shell->rng_seed == 0u) {
         (void)dom_shell_extract_seed(shell->world.summary.worlddef_id, &shell->rng_seed);
@@ -5257,6 +5930,221 @@ int dom_client_shell_set_mode(dom_client_shell* shell,
         char detail[128];
         snprintf(detail, sizeof(detail), "mode=%s result=ok", mode_id);
         dom_shell_emit(shell, log, "client.nav.mode", detail);
+    }
+    return D_APP_EXIT_OK;
+}
+
+static int dom_shell_camera_allowed(const dom_shell_policy_set* set, const char* camera_id)
+{
+    if (!camera_id || !camera_id[0]) {
+        return 0;
+    }
+    if (!set || set->count == 0u) {
+        return 1;
+    }
+    return dom_shell_policy_set_contains(set, camera_id);
+}
+
+static int dom_client_shell_set_camera(dom_client_shell* shell,
+                                       const char* camera_id,
+                                       dom_app_ui_event_log* log,
+                                       char* status,
+                                       size_t status_cap,
+                                       int emit_text)
+{
+    if (!shell || !camera_id || !camera_id[0]) {
+        return D_APP_EXIT_USAGE;
+    }
+    if (!shell->world.active) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "no active world");
+        dom_shell_set_status(shell, "camera_set=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    if (!dom_shell_camera_allowed(&shell->world.summary.camera, camera_id)) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_SCHEMA, "camera not allowed");
+        dom_shell_set_status(shell, "camera_set=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.nav.camera", "result=refused reason=policy");
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    strncpy(shell->world.camera_mode, camera_id, sizeof(shell->world.camera_mode) - 1u);
+    dom_shell_set_status(shell, "camera_set=ok");
+    if (status && status_cap > 0u) {
+        snprintf(status, status_cap, "%s", shell->last_status);
+    }
+    if (emit_text) {
+        printf("camera_set=ok camera=%s\n", shell->world.camera_mode);
+    }
+    {
+        char detail[128];
+        snprintf(detail, sizeof(detail), "camera=%s result=ok", camera_id);
+        dom_shell_emit(shell, log, "client.nav.camera", detail);
+    }
+    return D_APP_EXIT_OK;
+}
+
+static int dom_client_shell_camera_next(dom_client_shell* shell,
+                                        dom_app_ui_event_log* log,
+                                        char* status,
+                                        size_t status_cap,
+                                        int emit_text)
+{
+    const dom_shell_policy_set* set;
+    const char* next = 0;
+    uint32_t i;
+    if (!shell || !shell->world.active) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "no active world");
+        dom_shell_set_status(shell, "camera_set=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    set = &shell->world.summary.camera;
+    if (!set || set->count == 0u) {
+        return dom_client_shell_set_camera(shell, DOM_SHELL_CAMERA_FREE, log, status, status_cap, emit_text);
+    }
+    if (shell->world.camera_mode[0]) {
+        for (i = 0u; i < set->count; ++i) {
+            if (strcmp(set->items[i], shell->world.camera_mode) == 0) {
+                next = set->items[(i + 1u) % set->count];
+                break;
+            }
+        }
+    }
+    if (!next) {
+        next = set->items[0];
+    }
+    return dom_client_shell_set_camera(shell, next, log, status, status_cap, emit_text);
+}
+
+static int dom_client_shell_spawn(dom_client_shell* shell,
+                                  dom_app_ui_event_log* log,
+                                  char* status,
+                                  size_t status_cap,
+                                  int emit_text)
+{
+    if (!shell || !shell->world.active) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "no active world");
+        dom_shell_set_status(shell, "spawn=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    strncpy(shell->world.current_node_id,
+            shell->world.summary.spawn_node_id,
+            sizeof(shell->world.current_node_id) - 1u);
+    dom_shell_sync_world_pose(&shell->world);
+    dom_shell_set_status(shell, "spawn=ok");
+    if (status && status_cap > 0u) {
+        snprintf(status, status_cap, "%s", shell->last_status);
+    }
+    if (emit_text) {
+        printf("spawn=ok node=%s\n", shell->world.current_node_id);
+    }
+    dom_shell_emit(shell, log, "client.nav.spawn", "result=ok");
+    return D_APP_EXIT_OK;
+}
+
+static int dom_client_shell_toggle_inspect(dom_client_shell* shell,
+                                           dom_app_ui_event_log* log,
+                                           char* status,
+                                           size_t status_cap,
+                                           int emit_text)
+{
+    if (!shell || !shell->world.active) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "no active world");
+        dom_shell_set_status(shell, "inspect=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    shell->world.inspect_enabled = shell->world.inspect_enabled ? 0 : 1;
+    dom_shell_set_status(shell, shell->world.inspect_enabled ? "inspect=on" : "inspect=off");
+    if (status && status_cap > 0u) {
+        snprintf(status, status_cap, "%s", shell->last_status);
+    }
+    if (emit_text) {
+        printf("%s\n", shell->last_status);
+    }
+    dom_shell_emit(shell, log, "client.inspect.toggle",
+                   shell->world.inspect_enabled ? "enabled=1" : "enabled=0");
+    return D_APP_EXIT_OK;
+}
+
+static int dom_client_shell_toggle_hud(dom_client_shell* shell,
+                                       dom_app_ui_event_log* log,
+                                       char* status,
+                                       size_t status_cap,
+                                       int emit_text)
+{
+    if (!shell || !shell->world.active) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "no active world");
+        dom_shell_set_status(shell, "hud=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    shell->world.hud_enabled = shell->world.hud_enabled ? 0 : 1;
+    dom_shell_set_status(shell, shell->world.hud_enabled ? "hud=on" : "hud=off");
+    if (status && status_cap > 0u) {
+        snprintf(status, status_cap, "%s", shell->last_status);
+    }
+    if (emit_text) {
+        printf("%s\n", shell->last_status);
+    }
+    dom_shell_emit(shell, log, "client.hud.toggle",
+                   shell->world.hud_enabled ? "enabled=1" : "enabled=0");
+    return D_APP_EXIT_OK;
+}
+
+static int dom_client_shell_set_domain(dom_client_shell* shell,
+                                       const char* node_id,
+                                       dom_app_ui_event_log* log,
+                                       char* status,
+                                       size_t status_cap,
+                                       int emit_text)
+{
+    if (!shell || !node_id || !node_id[0]) {
+        return D_APP_EXIT_USAGE;
+    }
+    if (!shell->world.active) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "no active world");
+        dom_shell_set_status(shell, "domain_set=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    if (!dom_shell_world_has_node(&shell->world, node_id)) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "node not found");
+        dom_shell_set_status(shell, "domain_set=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.nav.domain", "result=refused reason=missing");
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    strncpy(shell->world.current_node_id, node_id, sizeof(shell->world.current_node_id) - 1u);
+    dom_shell_set_status(shell, "domain_set=ok");
+    if (status && status_cap > 0u) {
+        snprintf(status, status_cap, "%s", shell->last_status);
+    }
+    if (emit_text) {
+        printf("domain_set=ok node=%s\n", shell->world.current_node_id);
+    }
+    {
+        char detail[128];
+        snprintf(detail, sizeof(detail), "node=%s result=ok", node_id);
+        dom_shell_emit(shell, log, "client.nav.domain", detail);
     }
     return D_APP_EXIT_OK;
 }
@@ -5703,6 +6591,10 @@ static void dom_shell_print_metrics(const dom_client_shell* shell,
 static void dom_shell_print_world(const dom_client_shell* shell, int emit_text)
 {
     char csv[256];
+    double lat = 0.0;
+    double lon = 0.0;
+    double alt = 0.0;
+    int has_geo = 0;
     if (!shell || !emit_text) {
         return;
     }
@@ -5714,11 +6606,20 @@ static void dom_shell_print_world(const dom_client_shell* shell, int emit_text)
     printf("template_id=%s\n", shell->world.summary.template_id);
     printf("spawn_node_id=%s\n", shell->world.summary.spawn_node_id);
     printf("spawn_frame_id=%s\n", shell->world.summary.spawn_frame_id);
+    printf("current_node_id=%s\n",
+           shell->world.current_node_id[0] ? shell->world.current_node_id : "none");
     printf("position=%.2f,%.2f,%.2f\n",
            shell->world.position[0],
            shell->world.position[1],
            shell->world.position[2]);
+    has_geo = dom_shell_geo_from_position(&shell->world, &lat, &lon, &alt);
+    if (has_geo) {
+        printf("geo_lat_lon_alt=%.3f,%.3f,%.3f\n", lat, lon, alt);
+    }
     printf("mode=%s\n", shell->world.active_mode[0] ? shell->world.active_mode : "none");
+    printf("camera=%s\n", shell->world.camera_mode[0] ? shell->world.camera_mode : "none");
+    printf("inspect=%s\n", shell->world.inspect_enabled ? "on" : "off");
+    printf("hud=%s\n", shell->world.hud_enabled ? "on" : "off");
     dom_client_shell_policy_to_csv(&shell->world.summary.playtest, csv, sizeof(csv));
     printf("playtest=%s\n", csv[0] ? csv : "none");
     printf("variant_mode=%s\n", dom_shell_variant_mode_name(shell->variant_mode));
@@ -5890,7 +6791,8 @@ int dom_client_shell_execute(dom_client_shell* shell,
     if (strcmp(token, "help") == 0) {
         if (emit_text) {
             printf("commands: templates new-world scenario-load scenario-status load save replay-save inspect-replay\n");
-            printf("          mode where refusal budgets structure fields events batch exit\n");
+            printf("          mode camera camera-next move spawn domain inspect-toggle hud-toggle\n");
+            printf("          where refusal budgets structure fields events batch exit\n");
             printf("          survey collect assemble connect inspect repair field-set simulate\n");
             printf("          agent-add agent-list agent-possess agent-release agent-know\n");
             printf("          goal-add goal-list delegate delegations delegate-revoke\n");
@@ -5923,6 +6825,7 @@ int dom_client_shell_execute(dom_client_shell* shell,
         dom_shell_policy_set mode = shell->create_mode;
         dom_shell_policy_set debug = shell->create_debug;
         dom_shell_policy_set playtest = shell->create_playtest;
+        dom_shell_policy_set camera = shell->create_camera;
         while ((next = strtok(0, " \t")) != 0) {
             char* eq = strchr(next, '=');
             if (!eq) {
@@ -5945,6 +6848,8 @@ int dom_client_shell_execute(dom_client_shell* shell,
                 dom_shell_policy_set_from_csv(&debug, eq + 1);
             } else if (strcmp(next, "policy.playtest") == 0) {
                 dom_shell_policy_set_from_csv(&playtest, eq + 1);
+            } else if (strcmp(next, "policy.camera") == 0) {
+                dom_shell_policy_set_from_csv(&camera, eq + 1);
             }
         }
         shell->create_template_index = template_index;
@@ -5954,6 +6859,7 @@ int dom_client_shell_execute(dom_client_shell* shell,
         dom_shell_policy_set_copy(&shell->create_mode, &mode);
         dom_shell_policy_set_copy(&shell->create_debug, &debug);
         dom_shell_policy_set_copy(&shell->create_playtest, &playtest);
+        dom_shell_policy_set_copy(&shell->create_camera, &camera);
         return dom_client_shell_create_world(shell, log, status, status_cap, emit_text);
     }
     if (strcmp(token, "scenario-load") == 0 || strcmp(token, "load-scenario") == 0) {
@@ -8352,6 +9258,133 @@ int dom_client_shell_execute(dom_client_shell* shell,
             }
         }
         return dom_client_shell_inspect_replay(shell, path, log, status, status_cap, emit_text);
+    }
+    if (strcmp(token, "spawn") == 0) {
+        return dom_client_shell_spawn(shell, log, status, status_cap, emit_text);
+    }
+    if (strcmp(token, "move") == 0) {
+        double dx = 0.0;
+        double dy = 0.0;
+        double dz = 0.0;
+        int has = 0;
+        while ((next = strtok(0, " \t")) != 0) {
+            if (strncmp(next, "dx=", 3) == 0) {
+                dx = strtod(next + 3, 0);
+                has = 1;
+            } else if (strncmp(next, "dy=", 3) == 0) {
+                dy = strtod(next + 3, 0);
+                has = 1;
+            } else if (strncmp(next, "dz=", 3) == 0) {
+                dz = strtod(next + 3, 0);
+                has = 1;
+            } else if (!strchr(next, '=')) {
+                if (!has) {
+                    dx = strtod(next, 0);
+                    has = 1;
+                } else if (has == 1) {
+                    dy = strtod(next, 0);
+                    has = 2;
+                } else if (has == 2) {
+                    dz = strtod(next, 0);
+                    has = 3;
+                }
+            }
+        }
+        if (!shell || !shell->world.active) {
+            dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "no active world");
+            dom_shell_set_status(shell, "move=refused");
+            if (status && status_cap > 0u) {
+                snprintf(status, status_cap, "%s", shell->last_status);
+            }
+            return D_APP_EXIT_UNAVAILABLE;
+        }
+        if (!has || !dom_client_shell_move(shell, dx, dy, dz, log)) {
+            dom_shell_set_refusal(shell, DOM_REFUSAL_SCHEMA, "move not allowed");
+            dom_shell_set_status(shell, "move=refused");
+            if (status && status_cap > 0u) {
+                snprintf(status, status_cap, "%s", shell->last_status);
+            }
+            return D_APP_EXIT_UNAVAILABLE;
+        }
+        dom_shell_set_status(shell, "move=ok");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        if (emit_text) {
+            printf("move=ok dx=%.2f dy=%.2f dz=%.2f\n", dx, dy, dz);
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "move-forward") == 0) {
+        int moved = dom_client_shell_move(shell, 0.0, 1.0, 0.0, log);
+        dom_shell_set_status(shell, moved ? "move=ok" : "move=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return moved ? D_APP_EXIT_OK : D_APP_EXIT_UNAVAILABLE;
+    }
+    if (strcmp(token, "move-back") == 0) {
+        int moved = dom_client_shell_move(shell, 0.0, -1.0, 0.0, log);
+        dom_shell_set_status(shell, moved ? "move=ok" : "move=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return moved ? D_APP_EXIT_OK : D_APP_EXIT_UNAVAILABLE;
+    }
+    if (strcmp(token, "move-left") == 0) {
+        int moved = dom_client_shell_move(shell, -1.0, 0.0, 0.0, log);
+        dom_shell_set_status(shell, moved ? "move=ok" : "move=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return moved ? D_APP_EXIT_OK : D_APP_EXIT_UNAVAILABLE;
+    }
+    if (strcmp(token, "move-right") == 0) {
+        int moved = dom_client_shell_move(shell, 1.0, 0.0, 0.0, log);
+        dom_shell_set_status(shell, moved ? "move=ok" : "move=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return moved ? D_APP_EXIT_OK : D_APP_EXIT_UNAVAILABLE;
+    }
+    if (strcmp(token, "move-up") == 0) {
+        int moved = dom_client_shell_move(shell, 0.0, 0.0, 1.0, log);
+        dom_shell_set_status(shell, moved ? "move=ok" : "move=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return moved ? D_APP_EXIT_OK : D_APP_EXIT_UNAVAILABLE;
+    }
+    if (strcmp(token, "move-down") == 0) {
+        int moved = dom_client_shell_move(shell, 0.0, 0.0, -1.0, log);
+        dom_shell_set_status(shell, moved ? "move=ok" : "move=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return moved ? D_APP_EXIT_OK : D_APP_EXIT_UNAVAILABLE;
+    }
+    if (strcmp(token, "camera") == 0 || strcmp(token, "camera-set") == 0) {
+        const char* camera_id = strtok(0, " \t");
+        if (!camera_id) {
+            return D_APP_EXIT_USAGE;
+        }
+        return dom_client_shell_set_camera(shell, camera_id, log, status, status_cap, emit_text);
+    }
+    if (strcmp(token, "camera-next") == 0) {
+        return dom_client_shell_camera_next(shell, log, status, status_cap, emit_text);
+    }
+    if (strcmp(token, "inspect-toggle") == 0 || strcmp(token, "inspect") == 0) {
+        return dom_client_shell_toggle_inspect(shell, log, status, status_cap, emit_text);
+    }
+    if (strcmp(token, "hud-toggle") == 0 || strcmp(token, "hud") == 0) {
+        return dom_client_shell_toggle_hud(shell, log, status, status_cap, emit_text);
+    }
+    if (strcmp(token, "domain") == 0 || strcmp(token, "focus") == 0) {
+        const char* node_id = strtok(0, " \t");
+        if (!node_id) {
+            return D_APP_EXIT_USAGE;
+        }
+        return dom_client_shell_set_domain(shell, node_id, log, status, status_cap, emit_text);
     }
     if (strcmp(token, "mode") == 0) {
         const char* mode_id = strtok(0, " \t");
