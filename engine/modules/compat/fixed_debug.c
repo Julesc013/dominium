@@ -14,13 +14,13 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #include "domino/core/fixed.h"
 
 #define Q4_12_MAX_RAW   0x7FFF
-#define Q4_12_MIN_RAW   0x8000
+#define Q4_12_MIN_RAW   (-32768)
 #define Q16_16_MAX_RAW  0x7FFFFFFF
-#define Q16_16_MIN_RAW  0x80000000
+#define Q16_16_MIN_RAW  (-2147483647 - 1)
 #define Q24_8_MAX_RAW   0x7FFFFFFF
-#define Q24_8_MIN_RAW   0x80000000
+#define Q24_8_MIN_RAW   (-2147483647 - 1)
 #define Q48_16_MAX_RAW  0x7FFFFFFFFFFFFFFFLL
-#define Q48_16_MIN_RAW  0x8000000000000000LL
+#define Q48_16_MIN_RAW  (-9223372036854775807LL - 1LL)
 
 double d_q4_12_to_double(q4_12 value) {
     return ((double)value) / (double)(1 << Q4_12_FRAC_BITS);

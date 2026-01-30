@@ -18,13 +18,13 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
  * - avoids non-portable 128-bit compiler extensions by emulating u128 multiply
  */
 #define Q4_12_MAX  ((q4_12)0x7FFF)
-#define Q4_12_MIN  ((q4_12)0x8000)
+#define Q4_12_MIN  ((q4_12)-32768)
 
 #define Q32_MAX    ((i64)0x7FFFFFFF)
-#define Q32_MIN    ((i64)0x80000000)
+#define Q32_MIN    (-2147483647LL - 1LL)
 
 #define Q64_MAX    ((q48_16)0x7FFFFFFFFFFFFFFFLL)
-#define Q64_MIN    ((q48_16)0x8000000000000000LL)
+#define Q64_MIN    ((q48_16)(-9223372036854775807LL - 1LL))
 
 typedef struct d_u128 {
     u64 hi;

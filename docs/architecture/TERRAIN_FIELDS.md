@@ -24,6 +24,10 @@ All fields:
 
 ## Optional / extensible fields
 - `terrain.strata_layers`
+- `geology.strata_layers`
+- `geology.hardness`
+- `geology.fracture_risk`
+- `resource.density.*`
 - `env.wind`
 - `env.precipitation`
 - `eco.vegetation_density`
