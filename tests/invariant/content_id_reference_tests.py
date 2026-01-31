@@ -30,7 +30,7 @@ SKIP_SUBDIRS = (
 )
 
 REVERSE_DNS_RE = re.compile(
-    r'["\']([a-z][a-z0-9]+(?:\.[a-z0-9]+){2,}[a-z0-9]*)["\']',
+    r'["\']((?:org|com|net|io|edu|gov|co|ai|dev)\.[a-z0-9]+(?:\.[a-z0-9]+)+)["\']',
     re.IGNORECASE,
 )
 

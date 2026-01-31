@@ -23,6 +23,18 @@ set_target_properties(engine_det_order_test PROPERTIES
 )
 add_test(NAME engine_det_order COMMAND engine_det_order_test)
 
+add_executable(process_guard_tests
+    process_guard_tests.c
+)
+target_link_libraries(process_guard_tests PRIVATE engine::domino)
+target_compile_definitions(process_guard_tests PRIVATE DOM_PROCESS_GUARD_ENABLED=1)
+set_target_properties(process_guard_tests PROPERTIES
+    C_STANDARD 90
+    C_STANDARD_REQUIRED ON
+    C_EXTENSIONS OFF
+)
+add_test(NAME process_guard COMMAND process_guard_tests)
+
 add_executable(engine_perf_no_modal_test
     engine_perf_no_modal_test.c
 )

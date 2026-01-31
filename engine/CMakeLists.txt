@@ -183,6 +183,7 @@ set(ENGINE_CORE_LEGACY_SOURCES
     modules/core/dom_ledger_events.c
     modules/core/dom_ledger_lots.c
     modules/core/dom_ledger_transactions.c
+    modules/core/process_guard.c
     modules/core/dom_time_astronomy.c
     modules/core/dom_time_core.c
     modules/core/dom_time_events.c

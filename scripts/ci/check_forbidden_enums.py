@@ -5,7 +5,7 @@ import sys
 
 from hygiene_utils import CODE_EXTS, DEFAULT_EXCLUDES, DEFAULT_ROOTS, expand_list, iter_files, read_text, strip_c_comments_and_strings, normalize_path
 
-ENUM_TOKEN_RE = re.compile(r"\b[A-Za-z0-9_]*(CUSTOM|OTHER|UNKNOWN)[A-Za-z0-9_]*\b")
+ENUM_TOKEN_RE = re.compile(r"\b[A-Za-z0-9_]*(CUSTOM|OTHER|UNKNOWN|MISC|UNSPECIFIED)[A-Za-z0-9_]*\b")
 
 
 def scan_file(path, text):
