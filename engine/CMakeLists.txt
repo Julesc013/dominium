@@ -157,6 +157,7 @@ set(ENGINE_CORE_SOURCES
     modules/world/fluid_fields.cpp
     modules/world/information_fields.cpp
     modules/world/hazard_fields.cpp
+    modules/world/risk_fields.cpp
     modules/world/vegetation_fields.cpp
     modules/world/animal_agents.cpp
     modules/world/structure_fields.cpp
