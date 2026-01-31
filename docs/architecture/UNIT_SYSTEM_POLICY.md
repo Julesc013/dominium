@@ -25,8 +25,9 @@ Guarantee deterministic, portable unit handling across all systems.
 ```units
 # unit_id, dimension, base_unit, scale, notes
 unit.time.act_tick, time, unit.time.act_tick, 1, authoritative ACT tick
-unit.length.meter, length, unit.length.meter, 1000000, fixed-point micrometers
-unit.mass.kilogram, mass, unit.mass.kilogram, 1000000, fixed-point micro-kg
+unit.length.meter, length, unit.length.meter, 1000000, fixed-point micrometers
+unit.volume.m3, volume, unit.volume.m3, 1000000, fixed-point micro-cubic-meter
+unit.mass.kilogram, mass, unit.mass.kilogram, 1000000, fixed-point micro-kg
 unit.temperature.kelvin, temperature, unit.temperature.kelvin, 1000, fixed-point milli-kelvin
 unit.energy.joule, energy, unit.energy.joule, 1000, fixed-point milli-joule
 unit.dimensionless.ratio, dimensionless, unit.dimensionless.ratio, 1, unitless ratio/weight

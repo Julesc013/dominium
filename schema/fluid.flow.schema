@@ -1,0 +1,83 @@
+SCHEMA: fluid.flow.schema
+schema_id: dominium.schema.fluid.flow
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic fluid transfers between containment stores.
+- Flows are event-driven and resolved on demand.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+- Identifiers are stable and MUST NOT be reused with new meaning.
+
+NON-SEMANTICS:
+- Flows do NOT mandate continuous solvers.
+- Failure modes do NOT imply probabilistic behavior unless explicitly defined.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- quantity: value + unit tag.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record fluid_flow_catalog
+  required:
+    - catalog_id: id
+    - domain_id: id
+    - flows: [fluid_flow]
+    - unit_annotations: map
+    - provenance: provenance
+    - maturity: tag
+    - extensions: map
+  optional:
+    - metadata: map
+
+record fluid_flow
+  required:
+    - flow_id: id
+    - source_ref: id
+    - sink_ref: id
+    - max_transfer_rate: quantity
+    - efficiency: quantity
+    - latency: quantity
+    - failure_modes: [tag]
+    - unit_annotations: map
+    - maturity: tag
+    - extensions: map
+  optional:
+    - network_id: id
+    - failure_chance: quantity
+    - energy_per_volume: quantity
+    - metadata: map
+
+TYPE DEFINITIONS:
+record quantity
+  required:
+    - value: number
+    - unit: tag
+  optional:
+    - scale_hint: tag
+    - overflow_behavior: tag
+
+record provenance
+  required:
+    - provenance_id: id
+  optional:
+    - provenance_tags: [tag]
+    - metadata: map
+
+MIGRATION:
+- Transform-only migrations are permitted via versioned transforms.
+- Old data MUST NOT be reinterpreted without explicit transformation or refusal.
+
+UNIT POLICY:
+- max_transfer_rate uses `unit.volume.m3` per `unit.time.act_tick`.
+- efficiency uses `unit.dimensionless.ratio`.
+- latency uses `unit.time.act_tick`.
+- failure_chance uses `unit.dimensionless.ratio`.
+- energy_per_volume uses `unit.energy.joule` per `unit.volume.m3`.
+- All numeric values MUST reference a unit tag from `docs/architecture/UNIT_SYSTEM_POLICY.md`.
