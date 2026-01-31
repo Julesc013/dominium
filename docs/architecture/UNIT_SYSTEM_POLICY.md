@@ -46,6 +46,12 @@ unit.reputation.incident_rate, reputation_rate, unit.reputation.incident_rate, 1
 unit.legitimacy.compliance_rate, legitimacy_rate, unit.legitimacy.compliance_rate, 1, symbolic compliance rate (0..1)
 unit.legitimacy.challenge_rate, legitimacy_rate, unit.legitimacy.challenge_rate, 1, symbolic challenge rate (0..1)
 unit.legitimacy.symbolic_support, legitimacy, unit.legitimacy.symbolic_support, 1, symbolic legitimacy support (0..1)
+unit.readiness.level, readiness, unit.readiness.level, 1, symbolic readiness level (0..1)
+unit.morale.level, morale, unit.morale.level, 1, symbolic morale level (0..1)
+unit.morale.decay_per_tick, morale_rate, unit.morale.decay_per_tick, 1, morale decay per ACT tick
+unit.force.capacity, force_capacity, unit.force.capacity, 1, symbolic force capacity units
+unit.order.key, ordering, unit.order.key, 1, deterministic ordering key
+unit.weapon.rate_per_tick, weapon_rate, unit.weapon.rate_per_tick, 1, symbolic weapon rate per ACT tick
 unit.institution.enforcement_capacity, institution_capacity, unit.institution.enforcement_capacity, 1, symbolic enforcement capacity
 unit.institution.resource_budget, institution_budget, unit.institution.resource_budget, 1, symbolic enforcement/resource budget
 unit.institution.capacity_limit, institution_capacity, unit.institution.capacity_limit, 1, symbolic capacity limit

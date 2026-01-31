@@ -31,3 +31,9 @@ Template:
   Change: add logistics and market contracts for T20 economy baseline
   Invariants: INV-SCHEMA-VERSIONED; INV-SCHEMA-UNKNOWN-PRESERVE; INV-SCHEMA-NO-SEMANTIC-REUSE; INV-UNITS-ANNOTATED
   Migration: none (new schemas)
+
+- Date: 2026-01-31
+  Schema(s): schema/conflict.record.schema; schema/conflict.side.schema; schema/conflict.event.schema; schema/security_force.schema; schema/engagement.schema; schema/engagement.outcome.schema; schema/occupation.condition.schema; schema/resistance.event.schema; schema/morale.field.schema; schema/weapon.spec.schema
+  Change: add conflict, engagement, occupation, morale, and weapon contracts for T21 baseline
+  Invariants: INV-SCHEMA-VERSIONED; INV-SCHEMA-UNKNOWN-PRESERVE; INV-SCHEMA-NO-SEMANTIC-REUSE; INV-UNITS-ANNOTATED
+  Migration: none (new schemas)
