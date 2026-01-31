@@ -37,3 +37,9 @@ Template:
   Change: add conflict, engagement, occupation, morale, and weapon contracts for T21 baseline
   Invariants: INV-SCHEMA-VERSIONED; INV-SCHEMA-UNKNOWN-PRESERVE; INV-SCHEMA-NO-SEMANTIC-REUSE; INV-UNITS-ANNOTATED
   Migration: none (new schemas)
+
+- Date: 2026-01-31
+  Schema(s): schema/history.source.schema; schema/history.event.schema; schema/history.epoch.schema; schema/civilization.graph.schema; schema/civilization.node.schema; schema/civilization.edge.schema
+  Change: add history and civilization graph contracts for T22 baseline
+  Invariants: INV-SCHEMA-VERSIONED; INV-SCHEMA-UNKNOWN-PRESERVE; INV-SCHEMA-NO-SEMANTIC-REUSE; INV-UNITS-ANNOTATED
+  Migration: none (new schemas)

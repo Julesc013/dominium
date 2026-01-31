@@ -119,6 +119,13 @@ dom_add_testx(NAME conflict_perf
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )
 
+dom_add_testx(NAME history_perf
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/history_perf_tests.py
+        --tool $<TARGET_FILE:dom_tool_history>
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
 dom_add_testx(NAME knowledge_perf
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/knowledge_perf_tests.py
         --tool $<TARGET_FILE:dom_tool_knowledge>
