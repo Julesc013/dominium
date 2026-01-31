@@ -1,0 +1,80 @@
+SCHEMA: hazard.exposure.schema
+schema_id: dominium.schema.hazard.exposure
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define hazard exposure limits and accumulated exposure records.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+- Identifiers are stable and MUST NOT be reused with new meaning.
+
+NON-SEMANTICS:
+- Exposure records do NOT imply direct damage or combat effects.
+- Limits are advisory thresholds until integrated with later systems.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- quantity: value + unit tag.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record hazard_exposure_catalog
+  required:
+    - catalog_id: id
+    - domain_id: id
+    - exposures: [hazard_exposure]
+    - unit_annotations: map
+    - provenance: provenance
+    - maturity: tag
+    - extensions: map
+  optional:
+    - metadata: map
+
+record hazard_exposure
+  required:
+    - exposure_id: id
+    - hazard_type_id: id
+    - exposure_limit: quantity
+    - sensitivity: quantity
+    - uncertainty: quantity
+    - provenance: provenance
+    - unit_annotations: map
+    - maturity: tag
+    - extensions: map
+  optional:
+    - region_id: id
+    - location_ref: id
+    - exposure_accumulated: quantity
+    - metadata: map
+
+TYPE DEFINITIONS:
+record quantity
+  required:
+    - value: number
+    - unit: tag
+  optional:
+    - scale_hint: tag
+    - overflow_behavior: tag
+
+record provenance
+  required:
+    - provenance_id: id
+  optional:
+    - provenance_tags: [tag]
+    - metadata: map
+
+MIGRATION:
+- Transform-only migrations are permitted via versioned transforms.
+- Old data MUST NOT be reinterpreted without explicit transformation or refusal.
+
+UNIT POLICY:
+- exposure_limit uses `unit.hazard.exposure`.
+- exposure_accumulated uses `unit.hazard.exposure`.
+- sensitivity uses `unit.dimensionless.ratio`.
+- uncertainty uses `unit.dimensionless.ratio`.
+- All numeric values MUST reference a unit tag from `docs/architecture/UNIT_SYSTEM_POLICY.md`.
