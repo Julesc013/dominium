@@ -36,6 +36,9 @@ unit.hazard.intensity, hazard, unit.hazard.intensity, 1, symbolic hazard intensi
 unit.hazard.exposure, hazard, unit.hazard.exposure, 1, symbolic hazard exposure accumulation
 unit.hazard.exposure_per_tick, hazard_rate, unit.hazard.exposure_per_tick, 1, symbolic hazard exposure per ACT tick
 unit.hazard.decay_per_tick, hazard_rate, unit.hazard.decay_per_tick, 1, symbolic hazard decay per ACT tick
+unit.risk.impact, risk, unit.risk.impact, 1, symbolic loss/impact units
+unit.risk.exposure, risk, unit.risk.exposure, 1, symbolic risk exposure accumulation
+unit.risk.exposure_per_tick, risk_rate, unit.risk.exposure_per_tick, 1, symbolic risk exposure per ACT tick
 unit.dimensionless.ratio, dimensionless, unit.dimensionless.ratio, 1, unitless ratio/weight
 unit.pressure.pascal, pressure, unit.pressure.pascal, 1000, fixed-point milli-pascal
 unit.currency.credit, currency, unit.currency.credit, 100, fixed-point centi-credits
