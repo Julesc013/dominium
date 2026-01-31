@@ -84,6 +84,13 @@ dom_add_testx(NAME hazard_perf
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )
 
+dom_add_testx(NAME risk_perf
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/risk_perf_tests.py
+        --tool $<TARGET_FILE:dom_tool_risk>
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
 dom_add_testx(NAME vegetation_perf
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/vegetation_perf_tests.py
         --tool $<TARGET_FILE:dom_tool_vegetation>
