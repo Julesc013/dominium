@@ -228,6 +228,24 @@ if(NOT WIN32)
     target_link_libraries(dom_tool_hazard PRIVATE m)
 endif()
 
+add_executable(dom_tool_risk
+    risk/risk_cli.cpp
+)
+target_link_libraries(dom_tool_risk PRIVATE domino_engine)
+target_include_directories(dom_tool_risk PRIVATE
+    ${DOMINIUM_ENGINE_INCLUDE_DIR}
+    ${DOMINIUM_GENERATED_INCLUDE_DIR}
+)
+set_target_properties(dom_tool_risk PROPERTIES
+    OUTPUT_NAME "dom_tool_risk"
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+if(NOT WIN32)
+    target_link_libraries(dom_tool_risk PRIVATE m)
+endif()
+
 add_executable(dom_tool_vegetation
     vegetation/vegetation_cli.cpp
 )
