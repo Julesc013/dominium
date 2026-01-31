@@ -19,3 +19,9 @@ Template:
   Change: add KNS0 knowledge, skill, and education contracts
   Invariants: INV-SCHEMA-VERSIONED; INV-SCHEMA-UNKNOWN-PRESERVE; INV-SCHEMA-NO-SEMANTIC-REUSE; INV-UNITS-ANNOTATED
   Migration: none (new schemas)
+
+- Date: 2026-01-31
+  Schema(s): schema/institution.entity.schema; schema/institution.scope.schema; schema/institution.capability.schema
+  Change: add institution entities, jurisdiction scopes, and capability contracts
+  Invariants: INV-SCHEMA-VERSIONED; INV-SCHEMA-UNKNOWN-PRESERVE; INV-SCHEMA-NO-SEMANTIC-REUSE; INV-UNITS-ANNOTATED
+  Migration: none (new schemas)

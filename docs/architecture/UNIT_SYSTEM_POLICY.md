@@ -46,6 +46,9 @@ unit.reputation.incident_rate, reputation_rate, unit.reputation.incident_rate, 1
 unit.legitimacy.compliance_rate, legitimacy_rate, unit.legitimacy.compliance_rate, 1, symbolic compliance rate (0..1)
 unit.legitimacy.challenge_rate, legitimacy_rate, unit.legitimacy.challenge_rate, 1, symbolic challenge rate (0..1)
 unit.legitimacy.symbolic_support, legitimacy, unit.legitimacy.symbolic_support, 1, symbolic legitimacy support (0..1)
+unit.institution.enforcement_capacity, institution_capacity, unit.institution.enforcement_capacity, 1, symbolic enforcement capacity
+unit.institution.resource_budget, institution_budget, unit.institution.resource_budget, 1, symbolic enforcement/resource budget
+unit.institution.capacity_limit, institution_capacity, unit.institution.capacity_limit, 1, symbolic capacity limit
 unit.knowledge.confidence, knowledge, unit.knowledge.confidence, 1, symbolic knowledge confidence (0..1)
 unit.knowledge.decay_per_tick, knowledge_rate, unit.knowledge.decay_per_tick, 1, knowledge decay per ACT tick
 unit.skill.variance_reduction, skill, unit.skill.variance_reduction, 1, symbolic variance reduction (0..1)
