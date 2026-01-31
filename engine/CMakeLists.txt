@@ -161,6 +161,7 @@ set(ENGINE_CORE_SOURCES
     modules/world/trust_fields.cpp
     modules/world/institution_fields.cpp
     modules/world/economy_fields.cpp
+    modules/world/conflict_fields.cpp
     modules/world/knowledge_fields.cpp
     modules/world/vegetation_fields.cpp
     modules/world/animal_agents.cpp
