@@ -25,3 +25,9 @@ Template:
   Change: add institution entities, jurisdiction scopes, and capability contracts
   Invariants: INV-SCHEMA-VERSIONED; INV-SCHEMA-UNKNOWN-PRESERVE; INV-SCHEMA-NO-SEMANTIC-REUSE; INV-UNITS-ANNOTATED
   Migration: none (new schemas)
+
+- Date: 2026-01-31
+  Schema(s): schema/logistics.container.schema; schema/logistics.storage.schema; schema/logistics.transport.schema; schema/logistics.job.schema; schema/market.place.schema; schema/market.offer.schema; schema/market.bid.schema; schema/market.transaction.schema
+  Change: add logistics and market contracts for T20 economy baseline
+  Invariants: INV-SCHEMA-VERSIONED; INV-SCHEMA-UNKNOWN-PRESERVE; INV-SCHEMA-NO-SEMANTIC-REUSE; INV-UNITS-ANNOTATED
+  Migration: none (new schemas)

@@ -105,6 +105,13 @@ dom_add_testx(NAME institution_perf
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )
 
+dom_add_testx(NAME economy_perf
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/economy_perf_tests.py
+        --tool $<TARGET_FILE:dom_tool_economy>
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
 dom_add_testx(NAME knowledge_perf
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/knowledge_perf_tests.py
         --tool $<TARGET_FILE:dom_tool_knowledge>
