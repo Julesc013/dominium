@@ -159,6 +159,7 @@ set(ENGINE_CORE_SOURCES
     modules/world/hazard_fields.cpp
     modules/world/risk_fields.cpp
     modules/world/trust_fields.cpp
+    modules/world/institution_fields.cpp
     modules/world/knowledge_fields.cpp
     modules/world/vegetation_fields.cpp
     modules/world/animal_agents.cpp
