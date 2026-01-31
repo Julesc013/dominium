@@ -191,6 +191,24 @@ set_target_properties(dom_tool_structure PROPERTIES
 if(NOT WIN32)
     target_link_libraries(dom_tool_structure PRIVATE m)
 endif()
+
+add_executable(dom_tool_travel
+    travel/travel_cli.cpp
+)
+target_link_libraries(dom_tool_travel PRIVATE domino_engine)
+target_include_directories(dom_tool_travel PRIVATE
+    ${DOMINIUM_ENGINE_INCLUDE_DIR}
+    ${DOMINIUM_GENERATED_INCLUDE_DIR}
+)
+set_target_properties(dom_tool_travel PROPERTIES
+    OUTPUT_NAME "dom_tool_travel"
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+if(NOT WIN32)
+    target_link_libraries(dom_tool_travel PRIVATE m)
+endif()
 add_executable(coredata_compile
     coredata_compile_stub.c
 )
