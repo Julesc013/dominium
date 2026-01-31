@@ -58,7 +58,9 @@ unit.dimensionless.ratio, dimensionless, unit.dimensionless.ratio, 1, unitless r
 unit.pressure.pascal, pressure, unit.pressure.pascal, 1000, fixed-point milli-pascal
 unit.currency.credit, currency, unit.currency.credit, 100, fixed-point centi-credits
 unit.resource.symbol, resource, unit.resource.symbol, 1, symbolic resource unit
-```
+unit.logistics.decay_per_tick, logistics_rate, unit.logistics.decay_per_tick, 1, symbolic spoilage/decay per ACT tick
+unit.market.price, market_price, unit.market.price, 1, symbolic local price unit
+```
 
 ## Conversion rules
 - Convert only through base units.
