@@ -152,6 +152,7 @@ set(ENGINE_CORE_SOURCES
     modules/world/climate_fields.cpp
     modules/world/weather_fields.cpp
     modules/world/geology_fields.cpp
+    modules/world/energy_fields.cpp
     modules/world/vegetation_fields.cpp
     modules/world/animal_agents.cpp
     modules/world/structure_fields.cpp
