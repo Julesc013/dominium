@@ -792,7 +792,7 @@ int dom_fluid_network_query(const dom_fluid_domain* domain,
     }
 
     for (u32 i = 0u; i < domain->pressure_count; ++i) {
-        dom_fluid_pressure* pressure = &domain->pressures[i];
+        const dom_fluid_pressure* pressure = &domain->pressures[i];
         int store_index = dom_fluid_find_store_index(domain, pressure->store_id);
         u32 store_network;
         if (store_index < 0) {
