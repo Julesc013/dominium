@@ -39,6 +39,13 @@ unit.hazard.decay_per_tick, hazard_rate, unit.hazard.decay_per_tick, 1, symbolic
 unit.risk.impact, risk, unit.risk.impact, 1, symbolic loss/impact units
 unit.risk.exposure, risk, unit.risk.exposure, 1, symbolic risk exposure accumulation
 unit.risk.exposure_per_tick, risk_rate, unit.risk.exposure_per_tick, 1, symbolic risk exposure per ACT tick
+unit.trust.level, trust, unit.trust.level, 1, symbolic trust level (0..1)
+unit.trust.decay_per_tick, trust_rate, unit.trust.decay_per_tick, 1, trust decay per ACT tick
+unit.reputation.score, reputation, unit.reputation.score, 1, symbolic reputation score (0..1)
+unit.reputation.incident_rate, reputation_rate, unit.reputation.incident_rate, 1, symbolic incident rate (0..1)
+unit.legitimacy.compliance_rate, legitimacy_rate, unit.legitimacy.compliance_rate, 1, symbolic compliance rate (0..1)
+unit.legitimacy.challenge_rate, legitimacy_rate, unit.legitimacy.challenge_rate, 1, symbolic challenge rate (0..1)
+unit.legitimacy.symbolic_support, legitimacy, unit.legitimacy.symbolic_support, 1, symbolic legitimacy support (0..1)
 unit.dimensionless.ratio, dimensionless, unit.dimensionless.ratio, 1, unitless ratio/weight
 unit.pressure.pascal, pressure, unit.pressure.pascal, 1000, fixed-point milli-pascal
 unit.currency.credit, currency, unit.currency.credit, 100, fixed-point centi-credits

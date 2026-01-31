@@ -1,0 +1,83 @@
+SCHEMA: reputation.profile.schema
+schema_id: dominium.schema.reputation.profile
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define reputation profiles derived from performance, audits, and disputes.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+- Identifiers are stable and MUST NOT be reused with new meaning.
+
+NON-SEMANTICS:
+- Reputation is evidence-based and uncertain, not a hidden stat.
+- Reputation is not a global truth; it is scoped and contextual.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- quantity: value + unit tag.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record reputation_profile_catalog
+  required:
+    - catalog_id: id
+    - domain_id: id
+    - profiles: [reputation_profile]
+    - unit_annotations: map
+    - provenance: provenance
+    - maturity: tag
+    - extensions: map
+  optional:
+    - metadata: map
+
+record reputation_profile
+  required:
+    - profile_id: id
+    - subject_ref: id
+    - historical_performance: quantity
+    - audit_results: quantity
+    - incident_history: quantity
+    - endorsements: quantity
+    - disputes: quantity
+    - uncertainty_envelope: quantity
+    - provenance: provenance
+    - unit_annotations: map
+    - maturity: tag
+    - extensions: map
+  optional:
+    - region_id: id
+    - metadata: map
+
+TYPE DEFINITIONS:
+record quantity
+  required:
+    - value: number
+    - unit: tag
+  optional:
+    - scale_hint: tag
+    - overflow_behavior: tag
+
+record provenance
+  required:
+    - provenance_id: id
+  optional:
+    - provenance_tags: [tag]
+    - metadata: map
+
+MIGRATION:
+- Transform-only migrations are permitted via versioned transforms.
+- Old data MUST NOT be reinterpreted without explicit transformation or refusal.
+
+UNIT POLICY:
+- historical_performance uses `unit.reputation.score`.
+- audit_results uses `unit.reputation.score`.
+- incident_history uses `unit.reputation.incident_rate`.
+- endorsements uses `unit.reputation.score`.
+- disputes uses `unit.reputation.score`.
+- uncertainty_envelope uses `unit.dimensionless.ratio`.
+- All numeric values MUST reference a unit tag from `docs/architecture/UNIT_SYSTEM_POLICY.md`.
