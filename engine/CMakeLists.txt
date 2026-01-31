@@ -165,6 +165,7 @@ set(ENGINE_CORE_SOURCES
     modules/world/history_fields.cpp
     modules/world/knowledge_fields.cpp
     modules/world/standard_fields.cpp
+    modules/world/autonomy_fields.cpp
     modules/world/vegetation_fields.cpp
     modules/world/animal_agents.cpp
     modules/world/structure_fields.cpp
