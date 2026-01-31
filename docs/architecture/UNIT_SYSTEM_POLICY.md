@@ -60,6 +60,11 @@ unit.knowledge.decay_per_tick, knowledge_rate, unit.knowledge.decay_per_tick, 1,
 unit.skill.variance_reduction, skill, unit.skill.variance_reduction, 1, symbolic variance reduction (0..1)
 unit.skill.failure_bias_reduction, skill, unit.skill.failure_bias_reduction, 1, symbolic failure bias reduction (0..1)
 unit.skill.decay_per_tick, skill_rate, unit.skill.decay_per_tick, 1, skill decay per ACT tick
+unit.history.confidence, history, unit.history.confidence, 1, symbolic history confidence (0..1)
+unit.history.uncertainty, history, unit.history.uncertainty, 1, symbolic history uncertainty (0..1)
+unit.history.bias, history, unit.history.bias, 1, symbolic history bias magnitude (0..1)
+unit.history.decay_per_tick, history_rate, unit.history.decay_per_tick, 1, history decay per ACT tick
+unit.history.myth_weight, history, unit.history.myth_weight, 1, symbolic myth amplification weight (0..1)
 unit.dimensionless.ratio, dimensionless, unit.dimensionless.ratio, 1, unitless ratio/weight
 unit.pressure.pascal, pressure, unit.pressure.pascal, 1000, fixed-point milli-pascal
 unit.currency.credit, currency, unit.currency.credit, 100, fixed-point centi-credits

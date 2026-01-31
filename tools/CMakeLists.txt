@@ -318,6 +318,24 @@ if(NOT WIN32)
     target_link_libraries(dom_tool_conflict PRIVATE m)
 endif()
 
+add_executable(dom_tool_history
+    history/history_cli.cpp
+)
+target_link_libraries(dom_tool_history PRIVATE domino_engine)
+target_include_directories(dom_tool_history PRIVATE
+    ${DOMINIUM_ENGINE_INCLUDE_DIR}
+    ${DOMINIUM_GENERATED_INCLUDE_DIR}
+)
+set_target_properties(dom_tool_history PROPERTIES
+    OUTPUT_NAME "dom_tool_history"
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+if(NOT WIN32)
+    target_link_libraries(dom_tool_history PRIVATE m)
+endif()
+
 add_executable(dom_tool_knowledge
     knowledge/knowledge_cli.cpp
 )
