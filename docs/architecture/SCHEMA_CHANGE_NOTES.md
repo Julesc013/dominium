@@ -49,3 +49,9 @@ Template:
   Change: add standards and meta-toolchain contracts for T23 baseline
   Invariants: INV-SCHEMA-VERSIONED; INV-SCHEMA-UNKNOWN-PRESERVE; INV-SCHEMA-NO-SEMANTIC-REUSE; INV-UNITS-ANNOTATED
   Migration: none (new schemas)
+
+- Date: 2026-01-31
+  Schema(s): schema/agent.goal.schema; schema/agent.delegation.schema; schema/agent.autonomy_budget.schema
+  Change: add AI goal, delegation, and autonomy budget contracts for T24 baseline
+  Invariants: INV-SCHEMA-VERSIONED; INV-SCHEMA-UNKNOWN-PRESERVE; INV-SCHEMA-NO-SEMANTIC-REUSE; INV-UNITS-ANNOTATED
+  Migration: none (new schemas)

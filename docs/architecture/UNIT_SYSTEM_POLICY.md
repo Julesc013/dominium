@@ -71,6 +71,8 @@ unit.standard.lock_in_index, standard, unit.standard.lock_in_index, 1, symbolic 
 unit.standard.compatibility_score, standard, unit.standard.compatibility_score, 1, symbolic standard compatibility score (0..1)
 unit.standard.enforcement_level, standard, unit.standard.enforcement_level, 1, symbolic standard enforcement level (0..1)
 unit.toolchain.capacity, toolchain_capacity, unit.toolchain.capacity, 1, symbolic toolchain capacity units
+unit.autonomy.priority, autonomy, unit.autonomy.priority, 1, symbolic autonomy priority (0..1)
+unit.autonomy.planning_budget, autonomy_budget, unit.autonomy.planning_budget, 1, symbolic planning budget units
 unit.dimensionless.ratio, dimensionless, unit.dimensionless.ratio, 1, unitless ratio/weight
 unit.pressure.pascal, pressure, unit.pressure.pascal, 1000, fixed-point milli-pascal
 unit.currency.credit, currency, unit.currency.credit, 100, fixed-point centi-credits

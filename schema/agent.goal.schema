@@ -1,0 +1,78 @@
+SCHEMA: agent.goal.schema
+schema_id: dominium.schema.agent.goal
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define AI-native goals as explicit, inspectable objectives with constraints.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+- Identifiers are stable and MUST NOT be reused with new meaning.
+
+NON-SEMANTICS:
+- Goals do NOT grant permissions or power.
+- Goals do NOT imply automatic success.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- quantity: value + unit tag.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record agent_goal_catalog
+  required:
+    - catalog_id: id
+    - domain_id: id
+    - goals: [agent_goal]
+    - unit_annotations: map
+    - provenance: provenance
+    - maturity: tag
+    - extensions: map
+  optional:
+    - metadata: map
+
+record agent_goal
+  required:
+    - goal_id: id
+    - objective_description_ref: id
+    - success_conditions: [tag]
+    - constraints: [tag]
+    - priority: quantity
+    - expiry_tick: quantity
+    - delegator_ref: id
+    - provenance: provenance
+    - unit_annotations: map
+    - maturity: tag
+    - extensions: map
+  optional:
+    - region_id: id
+    - metadata: map
+
+TYPE DEFINITIONS:
+record quantity
+  required:
+    - value: number
+    - unit: tag
+  optional:
+    - scale_hint: tag
+    - overflow_behavior: tag
+
+record provenance
+  required:
+    - provenance_id: id
+  optional:
+    - provenance_tags: [tag]
+    - metadata: map
+
+MIGRATION:
+- Transform-only migrations are permitted via versioned transforms.
+- Old data MUST NOT be reinterpreted without explicit transformation or refusal.
+
+UNIT POLICY:
+- priority uses `unit.autonomy.priority`.
+- expiry_tick uses `unit.time.act_tick`.
+- All numeric values MUST reference a unit tag from `docs/architecture/UNIT_SYSTEM_POLICY.md`.
