@@ -157,6 +157,7 @@ set(ENGINE_CORE_SOURCES
     modules/world/structure_fields.cpp
     modules/world/travel_fields.cpp
     modules/world/mining_fields.cpp
+    modules/world/crafting_fields.cpp
     modules/world/terrain_mesh.cpp
     modules/world/frame/dg_anchor.c
     modules/world/frame/dg_frame.c
