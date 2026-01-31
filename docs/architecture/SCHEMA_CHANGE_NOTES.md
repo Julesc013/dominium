@@ -14,3 +14,8 @@ Template:
   Invariants: INV-...
   Migration: <required migration steps or "none">
 
+- Date: 2026-01-31
+  Schema(s): schema/knowledge.artifact.schema; schema/skill.profile.schema; schema/education.program.schema
+  Change: add KNS0 knowledge, skill, and education contracts
+  Invariants: INV-SCHEMA-VERSIONED; INV-SCHEMA-UNKNOWN-PRESERVE; INV-SCHEMA-NO-SEMANTIC-REUSE; INV-UNITS-ANNOTATED
+  Migration: none (new schemas)

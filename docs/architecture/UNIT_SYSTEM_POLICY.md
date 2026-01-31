@@ -46,9 +46,15 @@ unit.reputation.incident_rate, reputation_rate, unit.reputation.incident_rate, 1
 unit.legitimacy.compliance_rate, legitimacy_rate, unit.legitimacy.compliance_rate, 1, symbolic compliance rate (0..1)
 unit.legitimacy.challenge_rate, legitimacy_rate, unit.legitimacy.challenge_rate, 1, symbolic challenge rate (0..1)
 unit.legitimacy.symbolic_support, legitimacy, unit.legitimacy.symbolic_support, 1, symbolic legitimacy support (0..1)
+unit.knowledge.confidence, knowledge, unit.knowledge.confidence, 1, symbolic knowledge confidence (0..1)
+unit.knowledge.decay_per_tick, knowledge_rate, unit.knowledge.decay_per_tick, 1, knowledge decay per ACT tick
+unit.skill.variance_reduction, skill, unit.skill.variance_reduction, 1, symbolic variance reduction (0..1)
+unit.skill.failure_bias_reduction, skill, unit.skill.failure_bias_reduction, 1, symbolic failure bias reduction (0..1)
+unit.skill.decay_per_tick, skill_rate, unit.skill.decay_per_tick, 1, skill decay per ACT tick
 unit.dimensionless.ratio, dimensionless, unit.dimensionless.ratio, 1, unitless ratio/weight
-unit.pressure.pascal, pressure, unit.pressure.pascal, 1000, fixed-point milli-pascal
-unit.currency.credit, currency, unit.currency.credit, 100, fixed-point centi-credits
+unit.pressure.pascal, pressure, unit.pressure.pascal, 1000, fixed-point milli-pascal
+unit.currency.credit, currency, unit.currency.credit, 100, fixed-point centi-credits
+unit.resource.symbol, resource, unit.resource.symbol, 1, symbolic resource unit
 ```
 
 ## Conversion rules
