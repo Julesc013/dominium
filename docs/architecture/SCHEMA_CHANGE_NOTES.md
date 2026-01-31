@@ -43,3 +43,9 @@ Template:
   Change: add history and civilization graph contracts for T22 baseline
   Invariants: INV-SCHEMA-VERSIONED; INV-SCHEMA-UNKNOWN-PRESERVE; INV-SCHEMA-NO-SEMANTIC-REUSE; INV-UNITS-ANNOTATED
   Migration: none (new schemas)
+
+- Date: 2026-01-31
+  Schema(s): schema/standard.definition.schema; schema/standard.version.schema; schema/standard.scope.schema; schema/toolchain.graph.schema; schema/meta.tool.schema
+  Change: add standards and meta-toolchain contracts for T23 baseline
+  Invariants: INV-SCHEMA-VERSIONED; INV-SCHEMA-UNKNOWN-PRESERVE; INV-SCHEMA-NO-SEMANTIC-REUSE; INV-UNITS-ANNOTATED
+  Migration: none (new schemas)

@@ -65,6 +65,12 @@ unit.history.uncertainty, history, unit.history.uncertainty, 1, symbolic history
 unit.history.bias, history, unit.history.bias, 1, symbolic history bias magnitude (0..1)
 unit.history.decay_per_tick, history_rate, unit.history.decay_per_tick, 1, history decay per ACT tick
 unit.history.myth_weight, history, unit.history.myth_weight, 1, symbolic myth amplification weight (0..1)
+unit.standard.adoption_rate, standard, unit.standard.adoption_rate, 1, symbolic standard adoption rate (0..1)
+unit.standard.compliance_rate, standard, unit.standard.compliance_rate, 1, symbolic standard compliance rate (0..1)
+unit.standard.lock_in_index, standard, unit.standard.lock_in_index, 1, symbolic standard lock-in index (0..1)
+unit.standard.compatibility_score, standard, unit.standard.compatibility_score, 1, symbolic standard compatibility score (0..1)
+unit.standard.enforcement_level, standard, unit.standard.enforcement_level, 1, symbolic standard enforcement level (0..1)
+unit.toolchain.capacity, toolchain_capacity, unit.toolchain.capacity, 1, symbolic toolchain capacity units
 unit.dimensionless.ratio, dimensionless, unit.dimensionless.ratio, 1, unitless ratio/weight
 unit.pressure.pascal, pressure, unit.pressure.pascal, 1000, fixed-point milli-pascal
 unit.currency.credit, currency, unit.currency.credit, 100, fixed-point centi-credits
