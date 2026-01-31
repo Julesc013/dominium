@@ -49,6 +49,13 @@ dom_add_testx(NAME weather_perf
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )
 
+dom_add_testx(NAME energy_perf
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/energy_perf_tests.py
+        --tool $<TARGET_FILE:dom_tool_energy>
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
 dom_add_testx(NAME vegetation_perf
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/vegetation_perf_tests.py
         --tool $<TARGET_FILE:dom_tool_vegetation>
