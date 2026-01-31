@@ -79,3 +79,45 @@ dom_add_testx(NAME const_terrain_contracts
         --repo-root ${CMAKE_SOURCE_DIR}
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )
+
+dom_add_testx(NAME public_header_c89_compile
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/public_header_c89_compile.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME public_header_cpp98_compile
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/public_header_cpp98_compile.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME schema_roundtrip_unknown_preservation
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/schema_roundtrip_unknown_preservation.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME pack_scope_enforcement_contracts
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/pack_scope_enforcement_contracts.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME compat_report_presence_contracts
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/compat_report_presence_contracts.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME schema_change_notes_required
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/schema_change_notes_required.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME compliance_report_contracts
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/compliance_report_contracts.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)

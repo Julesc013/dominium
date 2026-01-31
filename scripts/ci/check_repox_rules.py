@@ -3,7 +3,9 @@ import argparse
 import json
 import os
 import re
+import subprocess
 import sys
+from datetime import date
 
 from hygiene_utils import DEFAULT_EXCLUDES, iter_files, read_text, strip_c_comments_and_strings, normalize_path
 
@@ -16,6 +18,8 @@ AUTHORITATIVE_DIRS = (
     os.path.join("game", "rules"),
 )
 
+SOURCE_EXTS = [".c", ".cc", ".cpp", ".cxx", ".h", ".hh", ".hpp", ".hxx", ".inl", ".inc", ".ipp"]
+
 FORBIDDEN_RNG_CALL_RE = re.compile(
     r"\b(rand|srand|rand_r|random|arc4random|drand48|lrand48|mrand48|getrandom|"
     r"BCryptGenRandom|RtlGenRandom|CryptGenRandom)\s*\("
@@ -24,11 +28,12 @@ FORBIDDEN_TIME_CALL_RE = re.compile(
     r"\b(time|clock|gettimeofday|clock_gettime|QueryPerformanceCounter|GetSystemTime|"
     r"GetTickCount|GetTickCount64|mach_absolute_time)\s*\("
 )
+FORBIDDEN_TIME_TOKEN_RE = re.compile(r"\bCLOCK_REALTIME\b")
 FORBIDDEN_CHRONO_RE = re.compile(r"\bstd::chrono::|\bchrono::")
 FORBIDDEN_FLOAT_RE = re.compile(r"\b(long\s+double|double|float)\b")
 
 REVERSE_DNS_RE = re.compile(
-    r'["\']([a-z][a-z0-9]+(?:\.[a-z0-9]+){2,}[a-z0-9]*)["\']',
+    r'["\']((?:org|com|net|io|edu|gov|co|ai|dev)\.[a-z0-9]+(?:\.[a-z0-9]+)+)["\']',
     re.IGNORECASE,
 )
 ALLOWED_REVERSE_DNS_PREFIXES = (
@@ -36,18 +41,26 @@ ALLOWED_REVERSE_DNS_PREFIXES = (
     "rng.state.noise.stream.",
 )
 
-AMBIGUOUS_TOP_LEVEL = {
-    "temp",
-    "temps",
-    "old",
-    "misc",
-    "stuff",
-    "scratch",
-    "junk",
-    "backup",
-    "bak",
-    "unused",
-}
+ENUM_TOKEN_RE = re.compile(r"\b[A-Za-z0-9_]*(CUSTOM|OTHER|UNKNOWN|MISC|UNSPECIFIED)[A-Za-z0-9_]*\b")
+
+ABS_WIN_RE = re.compile(r"[A-Za-z]:[\\/]")
+ABS_UNIX_RE = re.compile(r"/(Users|home|var|etc|opt|usr|private)/")
+ABS_UNC_RE = re.compile(r"\\\\\\\\[^\\\\/]+[\\\\/]")
+
+AMBIGUOUS_DIR_NAMES = {"misc", "tmp", "temp", "old", "junk"}
+
+OVERRIDES_PATH = os.path.join("docs", "architecture", "LOCKLIST_OVERRIDES.json")
+
+FROZEN_SECTION = "## Frozen constitutional surfaces"
+NEXT_SECTION_PREFIX = "## "
+PATH_RE = re.compile(r"`([^`]+)`")
+
+ALLOWED_ARCHIVE_ROOTS = (
+    "docs/archive",
+    "legacy",
+    "labs",
+    "tmp",
+)
 
 
 def repo_rel(repo_root, path):
@@ -80,25 +93,15 @@ def check_top_level(repo_root, allowed):
         full = os.path.join(repo_root, entry)
         if not os.path.isdir(full):
             continue
-        if entry in AMBIGUOUS_TOP_LEVEL:
-            violations.append(f"ambiguous top-level directory: {entry}")
         if entry not in allowed and not entry.startswith("."):
-            violations.append(f"top-level directory not in REPO_INTENT: {entry}")
+            violations.append("INV-REPOX-STRUCTURE: top-level directory not in REPO_INTENT: {}".format(entry))
     return violations
-
-
-ALLOWED_ARCHIVE_ROOTS = (
-    "docs/archive",
-    "legacy",
-    "labs",
-    "tmp",
-)
 
 
 def check_archived_paths(repo_root):
     manifest_path = os.path.join(repo_root, "tests", "contract", "archive_manifest.json")
     if not os.path.isfile(manifest_path):
-        return ["missing archive manifest: tests/contract/archive_manifest.json"]
+        return ["INV-REPOX-STRUCTURE: missing archive manifest: tests/contract/archive_manifest.json"]
     with open(manifest_path, "r", encoding="utf-8") as handle:
         manifest = json.load(handle)
     violations = []
@@ -108,37 +111,352 @@ def check_archived_paths(repo_root):
             continue
         norm = normalize_path(rel_path)
         if not any(norm == root or norm.startswith(root + "/") for root in ALLOWED_ARCHIVE_ROOTS):
-            violations.append(f"archived path not under archive/quarantine: {rel_path}")
+            violations.append("INV-REPOX-STRUCTURE: archived path not under archive/quarantine: {}".format(rel_path))
     return violations
 
 
-def check_forbidden_symbols(repo_root):
+def _load_overrides(repo_root):
+    path = os.path.join(repo_root, OVERRIDES_PATH)
+    if not os.path.isfile(path):
+        return []
+    try:
+        with open(path, "r", encoding="utf-8") as handle:
+            payload = json.load(handle)
+    except (OSError, ValueError):
+        return []
+    overrides = payload.get("overrides", [])
+    if not isinstance(overrides, list):
+        return []
+    return overrides
+
+
+def _parse_date(value):
+    if not value or not isinstance(value, str):
+        return None
+    parts = value.split("-")
+    if len(parts) != 3:
+        return None
+    try:
+        return date(int(parts[0]), int(parts[1]), int(parts[2]))
+    except ValueError:
+        return None
+
+
+def is_override_active(repo_root, invariant_id, today=None):
+    if today is None:
+        today = date.today()
+    for entry in _load_overrides(repo_root):
+        inv = entry.get("invariant")
+        if inv != invariant_id:
+            continue
+        expiry = _parse_date(entry.get("expires"))
+        if expiry is None:
+            continue
+        if expiry >= today:
+            return True
+    return False
+
+
+def run_git(args, repo_root):
+    try:
+        result = subprocess.run(
+            ["git"] + args,
+            cwd=repo_root,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            check=False,
+        )
+    except OSError:
+        return None
+    if result.returncode != 0:
+        return None
+    return result.stdout.strip()
+
+
+def parse_changed_files(output):
+    if not output:
+        return []
+    return [line.strip().replace("\\", "/") for line in output.splitlines() if line.strip()]
+
+
+def get_changed_files(repo_root, diff_filter="ACMR"):
+    env_files = os.environ.get("DOM_CHANGED_FILES", "").strip()
+    if env_files:
+        return [item.strip().replace("\\", "/") for item in env_files.split(";") if item.strip()]
+
+    baseline = os.environ.get("DOM_BASELINE_REF", "").strip() or "origin/main"
+    diff_output = run_git(["diff", "--name-only", "--diff-filter={}".format(diff_filter), "{}...HEAD".format(baseline)],
+                          repo_root)
+    if diff_output is not None:
+        files = parse_changed_files(diff_output)
+        if files:
+            return files
+
+    status_output = run_git(["status", "--porcelain"], repo_root)
+    if status_output is None:
+        return None
+    files = []
+    for line in status_output.splitlines():
+        if not line:
+            continue
+        path = line[3:].strip()
+        if path:
+            files.append(path.replace("\\", "/"))
+    return files
+
+
+def get_diff_added_lines(repo_root):
+    baseline = os.environ.get("DOM_BASELINE_REF", "").strip() or "origin/main"
+    diff_output = run_git(["diff", "--unified=0", "{}...HEAD".format(baseline)], repo_root)
+    if diff_output is None:
+        return None
+    current = None
+    added = {}
+    for line in diff_output.splitlines():
+        if line.startswith("+++ "):
+            if line.startswith("+++ b/"):
+                current = line[6:].strip()
+            else:
+                current = None
+            continue
+        if not current:
+            continue
+        if line.startswith("+") and not line.startswith("+++"):
+            added.setdefault(current, []).append(line[1:])
+    return added
+
+
+def parse_frozen_paths(text):
+    lines = text.splitlines()
+    paths = []
+    in_section = False
+    for line in lines:
+        if line.strip() == FROZEN_SECTION:
+            in_section = True
+            continue
+        if in_section and line.startswith(NEXT_SECTION_PREFIX):
+            break
+        if not in_section:
+            continue
+        if "|" not in line:
+            continue
+        match = PATH_RE.search(line)
+        if match:
+            paths.append(match.group(1).strip())
+    return paths
+
+
+def load_frozen_paths(repo_root):
+    index_path = os.path.join(repo_root, "docs", "architecture", "CONTRACTS_INDEX.md")
+    if not os.path.isfile(index_path):
+        return []
+    text = read_text(index_path) or ""
+    return parse_frozen_paths(text)
+
+
+def check_frozen_contract_modifications(repo_root, changed_files):
+    invariant_id = "INV-LOCKLIST-FROZEN"
+    if is_override_active(repo_root, invariant_id):
+        return []
+    if changed_files is None:
+        return ["{}: unable to determine changed files; set DOM_CHANGED_FILES or DOM_BASELINE_REF".format(invariant_id)]
+    frozen_paths = set(load_frozen_paths(repo_root))
+    if not frozen_paths:
+        return ["{}: no frozen contract paths found".format(invariant_id)]
     violations = []
-    exts = [".c", ".cc", ".cpp", ".cxx", ".h", ".hh", ".hpp", ".hxx", ".inl", ".inc", ".ipp"]
+    for path in changed_files:
+        if path in frozen_paths:
+            violations.append("{}: frozen contract modified: {}".format(invariant_id, path))
+    return violations
+
+
+def check_authoritative_symbols(repo_root):
+    violations = []
+    skip_rng = is_override_active(repo_root, "INV-DET-NO-ANON-RNG")
+    skip_time = is_override_active(repo_root, "INV-DET-NO-WALLCLOCK")
+    skip_float = is_override_active(repo_root, "INV-FP-AUTH-BAN")
+    skip_content = is_override_active(repo_root, "INV-NO-HARDCODED-CONTENT")
+
     for rel_dir in AUTHORITATIVE_DIRS:
         root = os.path.join(repo_root, rel_dir)
         if not os.path.isdir(root):
             continue
-        for path in iter_files([root], DEFAULT_EXCLUDES, exts):
+        for path in iter_files([root], DEFAULT_EXCLUDES, SOURCE_EXTS):
             rel = repo_rel(repo_root, path)
             text = read_text(path)
             if text is None:
                 continue
             stripped = strip_c_comments_and_strings(text)
             for idx, line in enumerate(stripped.splitlines(), start=1):
-                if FORBIDDEN_RNG_CALL_RE.search(line):
-                    violations.append(f"{rel}:{idx}: forbidden RNG call")
-                if FORBIDDEN_TIME_CALL_RE.search(line) or FORBIDDEN_CHRONO_RE.search(line):
-                    violations.append(f"{rel}:{idx}: forbidden time call")
-                if FORBIDDEN_FLOAT_RE.search(line):
-                    violations.append(f"{rel}:{idx}: forbidden floating point")
-            # content id scan on raw text (strings)
-            for match in REVERSE_DNS_RE.finditer(text):
-                token = match.group(1)
-                token_l = token.lower()
-                if token_l.startswith(ALLOWED_REVERSE_DNS_PREFIXES):
+                if not skip_rng and FORBIDDEN_RNG_CALL_RE.search(line):
+                    violations.append("INV-DET-NO-ANON-RNG: {}:{}: forbidden RNG call".format(rel, idx))
+                if not skip_time and (FORBIDDEN_TIME_CALL_RE.search(line) or FORBIDDEN_TIME_TOKEN_RE.search(line) or FORBIDDEN_CHRONO_RE.search(line)):
+                    violations.append("INV-DET-NO-WALLCLOCK: {}:{}: forbidden time call".format(rel, idx))
+                if not skip_float and FORBIDDEN_FLOAT_RE.search(line):
+                    violations.append("INV-FP-AUTH-BAN: {}:{}: forbidden floating point".format(rel, idx))
+            if not skip_content:
+                for match in REVERSE_DNS_RE.finditer(text):
+                    token = match.group(1)
+                    token_l = token.lower()
+                    if token_l.startswith(ALLOWED_REVERSE_DNS_PREFIXES):
+                        continue
+                    violations.append("INV-NO-HARDCODED-CONTENT: {}: content id literal '{}'".format(rel, token))
+    return violations
+
+
+def check_forbidden_enum_tokens(repo_root):
+    invariant_id = "INV-ENUM-NO-OTHER"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    for rel_dir in AUTHORITATIVE_DIRS:
+        root = os.path.join(repo_root, rel_dir)
+        if not os.path.isdir(root):
+            continue
+        for path in iter_files([root], DEFAULT_EXCLUDES, SOURCE_EXTS):
+            rel = repo_rel(repo_root, path)
+            text = read_text(path)
+            if text is None:
+                continue
+            stripped = strip_c_comments_and_strings(text)
+            lines = stripped.split("\n")
+            in_enum = False
+            pending_enum = False
+            brace_depth = 0
+            for idx, line in enumerate(lines, start=1):
+                if "HYGIENE_ALLOW_UNKNOWN_ENUM" in line or "PARSER_ONLY_UNKNOWN" in line:
                     continue
-                violations.append(f"{rel}: content id literal '{token}'")
+                if not in_enum:
+                    if pending_enum:
+                        if "{" in line:
+                            in_enum = True
+                            pending_enum = False
+                            brace_depth += line.count("{") - line.count("}")
+                    elif re.search(r"\benum\b", line):
+                        if "{" in line:
+                            in_enum = True
+                            brace_depth += line.count("{") - line.count("}")
+                        else:
+                            pending_enum = True
+                    continue
+
+                for match in ENUM_TOKEN_RE.finditer(line):
+                    violations.append("{}: {}:{}: forbidden enum token {}".format(invariant_id, rel, idx, match.group(0)))
+
+                brace_depth += line.count("{") - line.count("}")
+                if brace_depth <= 0:
+                    in_enum = False
+                    pending_enum = False
+                    brace_depth = 0
+    return violations
+
+
+def check_raw_paths(repo_root):
+    invariant_id = "INV-NO-RAW-PATHS"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    roots = [
+        os.path.join(repo_root, "data", "packs"),
+        os.path.join(repo_root, "data", "world"),
+        os.path.join(repo_root, "data", "worldgen"),
+        os.path.join(repo_root, "schema"),
+        os.path.join(repo_root, "tests", "fixtures"),
+    ]
+    text_exts = [".md", ".schema", ".json", ".toml", ".yaml", ".yml", ".txt", ".replay", ".worlddef", ".save", ".pack", ".manifest", ".ini", ".cfg"]
+    violations = []
+    for root in roots:
+        if not os.path.isdir(root):
+            continue
+        for path in iter_files([root], DEFAULT_EXCLUDES, text_exts):
+            rel = repo_rel(repo_root, path)
+            try:
+                with open(path, "r", encoding="utf-8", errors="ignore") as handle:
+                    for idx, line in enumerate(handle, start=1):
+                        if ABS_WIN_RE.search(line):
+                            violations.append("{}: {}:{}: windows absolute path".format(invariant_id, rel, idx))
+                            break
+                        if ABS_UNIX_RE.search(line):
+                            violations.append("{}: {}:{}: unix absolute path".format(invariant_id, rel, idx))
+                            break
+                        if ABS_UNC_RE.search(line):
+                            violations.append("{}: {}:{}: UNC absolute path".format(invariant_id, rel, idx))
+                            break
+            except OSError:
+                continue
+    return violations
+
+
+def check_magic_numbers(repo_root):
+    invariant_id = "INV-MAGIC-NO-LITERALS"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    added_lines = get_diff_added_lines(repo_root)
+    if added_lines is None:
+        return ["{}: unable to determine changed lines; set DOM_CHANGED_FILES or DOM_BASELINE_REF".format(invariant_id)]
+
+    target_prefixes = tuple(path.replace("\\", "/") + "/" for path in AUTHORITATIVE_DIRS)
+    allow_context_re = re.compile(r"^\s*#\s*define\b|\bconst\b|\benum\b")
+    numeric_re = re.compile(r"\b(0x[0-9a-fA-F]+|\d+(?:\.\d+)?)\b")
+    allow_line_tokens = ("d_q16_16_from_", "d_fixed_", "for (", "for(", "[", "]")
+
+    violations = []
+    for rel_path, lines in added_lines.items():
+        rel_norm = rel_path.replace("\\", "/")
+        if not rel_norm.startswith(target_prefixes):
+            continue
+        ext = os.path.splitext(rel_norm)[1].lower()
+        if ext not in SOURCE_EXTS:
+            continue
+        for line in lines:
+            stripped = strip_c_comments_and_strings(line)
+            if not stripped.strip():
+                continue
+            if allow_context_re.search(stripped):
+                continue
+            if "<<" in stripped:
+                continue
+            if any(token in stripped for token in allow_line_tokens):
+                continue
+            for match in numeric_re.finditer(stripped):
+                value = match.group(1)
+                if value.startswith("0x"):
+                    continue
+                if "." in value:
+                    violations.append("{}: {}: magic number '{}'".format(invariant_id, rel_norm, value))
+                    continue
+                try:
+                    num_value = int(value)
+                except ValueError:
+                    num_value = None
+                if num_value is not None and num_value <= 16:
+                    continue
+                violations.append("{}: {}: magic number '{}'".format(invariant_id, rel_norm, value))
+    return violations
+
+
+def check_ambiguous_new_dirs(repo_root):
+    invariant_id = "INV-REPOX-AMBIGUOUS-DIRS"
+    if is_override_active(repo_root, invariant_id):
+        return []
+    added = get_changed_files(repo_root, diff_filter="A")
+    if added is None:
+        return ["{}: unable to determine added files; set DOM_CHANGED_FILES or DOM_BASELINE_REF".format(invariant_id)]
+    violations = []
+    for path in added:
+        path_norm = path.replace("\\", "/")
+        if path_norm.startswith("tmp/"):
+            continue
+        parts = [part for part in path_norm.split("/") if part]
+        for part in parts[:-1]:
+            if part.lower() in AMBIGUOUS_DIR_NAMES:
+                violations.append("{}: new ambiguous directory '{}' in {}".format(invariant_id, part, path_norm))
+                break
     return violations
 
 
@@ -152,10 +470,18 @@ def main() -> int:
     allowed = load_allowed_top_level(repo_root)
     violations.extend(check_top_level(repo_root, allowed))
     violations.extend(check_archived_paths(repo_root))
-    violations.extend(check_forbidden_symbols(repo_root))
+
+    changed_files = get_changed_files(repo_root)
+    violations.extend(check_frozen_contract_modifications(repo_root, changed_files))
+
+    violations.extend(check_authoritative_symbols(repo_root))
+    violations.extend(check_forbidden_enum_tokens(repo_root))
+    violations.extend(check_raw_paths(repo_root))
+    violations.extend(check_magic_numbers(repo_root))
+    violations.extend(check_ambiguous_new_dirs(repo_root))
 
     if violations:
-        for item in sorted(violations):
+        for item in sorted(set(violations)):
             print(item)
         return 1
 

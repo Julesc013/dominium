@@ -5,16 +5,16 @@ Scope: UPS pack structure, manifest format, and safety rules.
 
 ## Pack structure
 ```
-data/packs/<pack_id>/
-├── pack.toml
-├── data/
+data/packs/<pack_id>/
+├── pack.toml (preferred) or pack.manifest (legacy)
+├── data/ (preferred) or content/ (legacy)
 ├── schema/
 ├── ui/
 └── docs/
 ```
 
 Rules:
-- `pack.toml` is REQUIRED.
+- `pack.toml` is REQUIRED for new packs; legacy packs MAY use `pack.manifest`.
 - No executable code inside packs.
 - No hardcoded paths.
 - No implicit load-order dependencies.
@@ -36,9 +36,10 @@ Required fields (stable):
 Unknown fields MUST be preserved.
 
 ## Format notes
-- `pack.toml` is the runtime manifest format.
-- `pack_manifest.json` is a schema-mapped representation for tooling/source control.
-- Conversion between formats MUST preserve unknown fields.
+- `pack.toml` is the runtime manifest format.
+- `pack_manifest.json` is a schema-mapped representation for tooling/source control.
+- Conversion between formats MUST preserve unknown fields.
+- `content/` is a legacy alias for `data/` and must be migrated over time.
 
 ## Safety
 - Packs MUST be loadable without reading pack contents.
