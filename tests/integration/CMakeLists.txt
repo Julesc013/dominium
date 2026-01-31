@@ -249,6 +249,13 @@ dom_add_testx(NAME fluid_fields
     LABELS ${DOM_TESTX_LABEL_SMOKE}
 )
 
+dom_add_testx(NAME network_fields
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/network_field_tests.py
+        --tool $<TARGET_FILE:dom_tool_network>
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_SMOKE}
+)
+
 dom_add_testx(NAME vegetation_fields
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/vegetation_field_tests.py
         --tool $<TARGET_FILE:dom_tool_vegetation>
