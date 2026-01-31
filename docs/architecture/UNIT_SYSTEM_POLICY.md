@@ -29,8 +29,10 @@ unit.length.meter, length, unit.length.meter, 1000000, fixed-point micrometers
 unit.volume.m3, volume, unit.volume.m3, 1000000, fixed-point micro-cubic-meter
 unit.mass.kilogram, mass, unit.mass.kilogram, 1000000, fixed-point micro-kg
 unit.temperature.kelvin, temperature, unit.temperature.kelvin, 1000, fixed-point milli-kelvin
-unit.energy.joule, energy, unit.energy.joule, 1000, fixed-point milli-joule
-unit.dimensionless.ratio, dimensionless, unit.dimensionless.ratio, 1, unitless ratio/weight
+unit.energy.joule, energy, unit.energy.joule, 1000, fixed-point milli-joule
+unit.data.symbol, data, unit.data.symbol, 1, symbolic data units
+unit.data.symbol_per_tick, data_rate, unit.data.symbol_per_tick, 1, symbolic data units per ACT tick
+unit.dimensionless.ratio, dimensionless, unit.dimensionless.ratio, 1, unitless ratio/weight
 unit.pressure.pascal, pressure, unit.pressure.pascal, 1000, fixed-point milli-pascal
 unit.currency.credit, currency, unit.currency.credit, 100, fixed-point centi-credits
 ```

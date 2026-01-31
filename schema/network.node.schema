@@ -1,0 +1,79 @@
+SCHEMA: network.node.schema
+schema_id: dominium.schema.network.node
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define network nodes with compute/storage capacity and energy/heat costs.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+- Identifiers are stable and MUST NOT be reused with new meaning.
+
+NON-SEMANTICS:
+- Node types do NOT imply routing algorithms.
+- Compute/storage capacity does NOT imply specific machine models.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- quantity: value + unit tag.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record network_node_catalog
+  required:
+    - catalog_id: id
+    - domain_id: id
+    - nodes: [network_node]
+    - unit_annotations: map
+    - provenance: provenance
+    - maturity: tag
+    - extensions: map
+  optional:
+    - metadata: map
+
+record network_node
+  required:
+    - node_id: id
+    - node_type: tag
+    - compute_capacity: quantity
+    - storage_capacity: quantity
+    - energy_per_unit: quantity
+    - heat_per_unit: quantity
+    - unit_annotations: map
+    - maturity: tag
+    - extensions: map
+  optional:
+    - network_id: id
+    - location_ref: id
+    - metadata: map
+
+TYPE DEFINITIONS:
+record quantity
+  required:
+    - value: number
+    - unit: tag
+  optional:
+    - scale_hint: tag
+    - overflow_behavior: tag
+
+record provenance
+  required:
+    - provenance_id: id
+  optional:
+    - provenance_tags: [tag]
+    - metadata: map
+
+MIGRATION:
+- Transform-only migrations are permitted via versioned transforms.
+- Old data MUST NOT be reinterpreted without explicit transformation or refusal.
+
+UNIT POLICY:
+- compute_capacity uses `unit.data.symbol_per_tick`.
+- storage_capacity uses `unit.data.symbol`.
+- energy_per_unit uses `unit.energy.joule` (per data unit).
+- heat_per_unit uses `unit.energy.joule` (per data unit).
+- All numeric values MUST reference a unit tag from `docs/architecture/UNIT_SYSTEM_POLICY.md`.
