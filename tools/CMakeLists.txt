@@ -174,6 +174,24 @@ if(NOT WIN32)
     target_link_libraries(dom_tool_heat PRIVATE m)
 endif()
 
+add_executable(dom_tool_fluid
+    fluid/fluid_cli.cpp
+)
+target_link_libraries(dom_tool_fluid PRIVATE domino_engine)
+target_include_directories(dom_tool_fluid PRIVATE
+    ${DOMINIUM_ENGINE_INCLUDE_DIR}
+    ${DOMINIUM_GENERATED_INCLUDE_DIR}
+)
+set_target_properties(dom_tool_fluid PROPERTIES
+    OUTPUT_NAME "dom_tool_fluid"
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+if(NOT WIN32)
+    target_link_libraries(dom_tool_fluid PRIVATE m)
+endif()
+
 add_executable(dom_tool_vegetation
     vegetation/vegetation_cli.cpp
 )
