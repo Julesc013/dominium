@@ -153,6 +153,7 @@ set(ENGINE_CORE_SOURCES
     modules/world/weather_fields.cpp
     modules/world/geology_fields.cpp
     modules/world/vegetation_fields.cpp
+    modules/world/animal_agents.cpp
     modules/world/terrain_mesh.cpp
     modules/world/frame/dg_anchor.c
     modules/world/frame/dg_frame.c
