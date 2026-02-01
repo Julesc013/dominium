@@ -25,8 +25,11 @@ add_test(NAME engine_det_order COMMAND engine_det_order_test)
 
 add_executable(process_guard_tests
     process_guard_tests.c
+    ${CMAKE_SOURCE_DIR}/engine/modules/core/process_guard.c
 )
-target_link_libraries(process_guard_tests PRIVATE engine::domino)
+target_include_directories(process_guard_tests PRIVATE
+    ${CMAKE_SOURCE_DIR}/engine/include
+)
 target_compile_definitions(process_guard_tests PRIVATE DOM_PROCESS_GUARD_ENABLED=1)
 set_target_properties(process_guard_tests PROPERTIES
     C_STANDARD 90

@@ -36,6 +36,7 @@ Normative contracts live under `docs/architecture/` only. See `docs/architecture
 | `scripts/` | Developer scripts | Non-runtime tooling only | Evolving |
 | `sdk/` | SDK and integration surfaces | Contract-preserving changes only | Evolving |
 | `server/` | Server runtime | Code changes only when explicitly allowed by prompt | Frozen (public contracts), Evolving (internals) |
+| `shared_ui_win32/` | Win32 UI renderer stubs for app shells | Presentation-only changes, no simulation logic | Evolving |
 | `setup/` | Installer/setup workflows | Orchestration-only changes | Evolving |
 | `tests/` | TESTX suites and fixtures | Test-only changes, no runtime behavior | Evolving |
 | `tools/` | Read-only tools and inspectors | Tool-only changes, no simulation authority | Evolving |

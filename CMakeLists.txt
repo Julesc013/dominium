@@ -933,6 +933,7 @@ file(MAKE_DIRECTORY
 add_subdirectory(libs)
 add_subdirectory(engine)
 add_subdirectory(app)
+add_subdirectory(shared_ui_win32)
 if(DOM_BUILD_GAME)
     add_subdirectory(game)
     add_subdirectory(client)

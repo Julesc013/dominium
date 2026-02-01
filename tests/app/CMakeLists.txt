@@ -27,6 +27,25 @@ dom_add_testx(NAME app_ui_contracts
     LABELS ${DOM_TESTX_LABEL_SMOKE}
 )
 
+if(WIN32)
+    dom_add_testx(NAME app_scaffold_contracts
+        COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/app_scaffold_contract_tests.py
+            --repo-root ${CMAKE_SOURCE_DIR}
+            --launcher-gui $<TARGET_FILE:launcher_app_win32>
+            --setup-gui $<TARGET_FILE:setup_app_win32>
+            --client-gui $<TARGET_FILE:client_app_win32>
+            --server-gui $<TARGET_FILE:server_app_win32>
+            --tools-gui $<TARGET_FILE:tools_app_win32>
+        LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+    )
+else()
+    dom_add_testx(NAME app_scaffold_contracts
+        COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/app_scaffold_contract_tests.py
+            --repo-root ${CMAKE_SOURCE_DIR}
+        LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+    )
+endif()
+
 dom_add_testx(NAME slice0_flow_contracts
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/slice0_flow_tests.py
         --client $<TARGET_FILE:dominium_client>
