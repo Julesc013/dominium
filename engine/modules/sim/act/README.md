@@ -12,5 +12,5 @@ Scaffolding for the intent → action → delta pipeline.
 - No UI/tools writing into SIM state directly.
 
 ## Spec
-See `docs/SPEC_ACTIONS.md`, `docs/SPEC_PACKETS.md`, and `docs/SPEC_SIM_SCHEDULER.md`.
+See `docs/specs/SPEC_ACTIONS.md`, `docs/specs/SPEC_PACKETS.md`, and `docs/specs/SPEC_SIM_SCHEDULER.md`.
 

@@ -9,7 +9,7 @@ THREADING MODEL: No internal synchronization; callers must serialize access unle
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
 DETERMINISM: QoS logic must be deterministic and non-authoritative.
 VERSIONING / ABI / DATA FORMAT NOTES: N/A.
-EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
+EXTENSION POINTS: Extend via public headers and relevant `docs/specs/SPEC_*.md` without cross-layer coupling.
 */
 #include <cstdio>
 #include <cstring>

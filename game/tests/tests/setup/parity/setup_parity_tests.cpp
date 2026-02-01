@@ -74,7 +74,7 @@ static int test_kernel_invariants_match_launcher(void) {
         "Persistence is **TLV**",
         "Every run emits an audit record"
     };
-    if (require_markers(root_path("docs/setup/INVARIANTS.md"),
+    if (require_markers(root_path("docs/specs/setup/INVARIANTS.md"),
                         k_setup_markers,
                         sizeof(k_setup_markers) / sizeof(k_setup_markers[0])) != 0) {
         return 1;
@@ -92,7 +92,7 @@ static int test_capability_registry_semantics_match(void) {
     static const char *k_launcher_markers[] = {
         "deterministic capability snapshot build"
     };
-    if (require_markers(root_path("docs/setup/SPLAT_SELECTION_RULES.md"),
+    if (require_markers(root_path("docs/specs/setup/SPLAT_SELECTION_RULES.md"),
                         k_setup_markers,
                         sizeof(k_setup_markers) / sizeof(k_setup_markers[0])) != 0) {
         return 1;
@@ -110,7 +110,7 @@ static int test_job_journal_semantics_match(void) {
     static const char *k_launcher_markers[] = {
         "Job graph + journal TLVs are deterministic"
     };
-    if (require_markers(root_path("docs/setup/JOB_ENGINE.md"),
+    if (require_markers(root_path("docs/specs/setup/JOB_ENGINE.md"),
                         k_setup_markers,
                         sizeof(k_setup_markers) / sizeof(k_setup_markers[0])) != 0) {
         return 1;

@@ -7,7 +7,7 @@ ALLOWED DEPENDENCIES: `include/domino/**` plus C89/C++98 standard headers as nee
 FORBIDDEN DEPENDENCIES: `source/**` private headers; launcher core headers; UI toolkit headers in this contract.
 THREADING MODEL: No internal synchronization; callers must serialize access.
 ERROR MODEL: Return codes/NULL pointers; no exceptions across ABI boundaries.
-DETERMINISM: UI must not influence authoritative simulation; events are explicit inputs; see `docs/SPEC_DUI.md`.
+DETERMINISM: UI must not influence authoritative simulation; events are explicit inputs; see `docs/specs/SPEC_DUI.md`.
 VERSIONING / ABI / DATA FORMAT NOTES: Versioned POD vtable; `DOM_ABI_HEADER`; `query_interface`.
 EXTENSION POINTS: `query_interface` + capability bits; schema/state TLV is skip-unknown.
 */

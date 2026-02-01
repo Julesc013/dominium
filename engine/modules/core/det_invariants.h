@@ -7,9 +7,9 @@ ALLOWED DEPENDENCIES: `include/domino/**`, `source/domino/**`, and C89/C++98 sta
 FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**` (engine must not depend on product layer).
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
-DETERMINISM: See `docs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
+DETERMINISM: See `docs/specs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
 VERSIONING / ABI / DATA FORMAT NOTES: N/A (internal header).
-EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
+EXTENSION POINTS: Extend via public headers and relevant `docs/specs/SPEC_*.md` without cross-layer coupling.
 */
 /* Determinism invariants (C89).
  *
@@ -28,7 +28,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
  *    that depends on insertion order, etc.)
  *  - platform/OS/UI-driven state mutation or time sources
  *
- * See: docs/SPEC_DETERMINISM.md
+ * See: docs/specs/SPEC_DETERMINISM.md
  */
 #ifndef D_DET_INVARIANTS_H
 #define D_DET_INVARIANTS_H
@@ -138,7 +138,7 @@ D_STATIC_ASSERT(d_det_i64_is_8, (sizeof(i64) == 8));
 #define DG_DET_GUARD_SORTED(cond) assert((cond))
 
 /* Marker guard for "no floats in determinism paths"; enforced primarily via
- * regression scans (see docs/DETERMINISM_REGRESSION_RULES.md).
+ * regression scans (see docs/policies/DETERMINISM_REGRESSION_RULES.md).
  */
 #define DG_DET_GUARD_NO_FLOATS() assert(1)
 #else

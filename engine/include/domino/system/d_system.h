@@ -7,9 +7,9 @@ ALLOWED DEPENDENCIES: `include/domino/**` plus C89/C++98 standard headers as nee
 FORBIDDEN DEPENDENCIES: `source/**` private headers; keep contracts freestanding and layer-respecting.
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
-DETERMINISM: See `docs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
-VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
-EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
+DETERMINISM: See `docs/specs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
+VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/specs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
+EXTENSION POINTS: Extend via public headers and relevant `docs/specs/SPEC_*.md` without cross-layer coupling.
 */
 /* Minimal Domino system wrapper (C89). */
 #ifndef D_SYSTEM_H
@@ -22,26 +22,26 @@ extern "C" {
 #endif
 
 /* Purpose: Init system.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 int d_system_init(const char *backend_name);
 /* Purpose: Shutdown system.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void d_system_shutdown(void);
 /* Purpose: Pump events.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 int  d_system_pump_events(void);
 /* Purpose: Sleep ms.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void d_system_sleep_ms(u32 ms);
 /* Purpose: Process spawn.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 int  d_system_process_spawn(const char *path, const char *args);
 
@@ -50,14 +50,14 @@ int  d_system_process_spawn(const char *path, const char *args);
  */
 void* d_system_get_native_window_handle(void);
 /* Purpose: Set native window handle for presentation (external window ownership).
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void d_system_set_native_window_handle(void* handle);
 
 /* Purpose: Present framebuffer.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Notes: native_window may be NULL to use the current platform handle.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 int d_system_present_framebuffer(
     void*       native_window,

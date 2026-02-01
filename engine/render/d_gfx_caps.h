@@ -9,7 +9,7 @@ THREADING MODEL: No internal synchronization; callers must serialize access unle
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
 DETERMINISM: Capability masks are deterministic and fixed per backend build.
 VERSIONING / ABI / DATA FORMAT NOTES: N/A (wrapper only).
-EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
+EXTENSION POINTS: Extend via public headers and relevant `docs/specs/SPEC_*.md` without cross-layer coupling.
 */
 #ifndef DOMINO_RENDER_D_GFX_CAPS_WRAPPER_H
 #define DOMINO_RENDER_D_GFX_CAPS_WRAPPER_H

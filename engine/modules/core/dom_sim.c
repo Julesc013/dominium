@@ -9,7 +9,7 @@ THREADING MODEL: No internal synchronization; callers must serialize access.
 ERROR MODEL: Return codes/false; no exceptions.
 DETERMINISM: State transitions are deterministic given identical inputs.
 VERSIONING / ABI / DATA FORMAT NOTES: Uses public `dom_sim_state` layout.
-EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
+EXTENSION POINTS: Extend via public headers and relevant `docs/specs/SPEC_*.md` without cross-layer coupling.
 */
 #include "core_internal.h"
 

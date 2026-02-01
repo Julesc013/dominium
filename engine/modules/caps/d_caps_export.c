@@ -8,7 +8,7 @@ FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**`.
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
 DETERMINISM: Output is deterministic for the same selection and backend state.
-VERSIONING / ABI / DATA FORMAT NOTES: DTLV container v1; see `docs/SPEC_CONTAINER_TLV.md`.
+VERSIONING / ABI / DATA FORMAT NOTES: DTLV container v1; see `docs/specs/SPEC_CONTAINER_TLV.md`.
 EXTENSION POINTS: Extend by adding TLV tags or new chunk versions.
 */
 #include "domino/caps.h"

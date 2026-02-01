@@ -7,13 +7,13 @@ ALLOWED DEPENDENCIES: `include/domino/**`, `source/domino/**`, and C89/C++98 sta
 FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**` (engine must not depend on product layer).
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
-DETERMINISM: Determinism-friendly (explicit little-endian IO; deterministic directory ordering); see `docs/SPEC_DETERMINISM.md`.
-VERSIONING / ABI / DATA FORMAT NOTES: Implements DTLV container v1 (`docs/SPEC_CONTAINER_TLV.md`); file-backed paths are limited by `dsys_file_seek` (long offsets).
-EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
+DETERMINISM: Determinism-friendly (explicit little-endian IO; deterministic directory ordering); see `docs/specs/SPEC_DETERMINISM.md`.
+VERSIONING / ABI / DATA FORMAT NOTES: Implements DTLV container v1 (`docs/specs/SPEC_CONTAINER_TLV.md`); file-backed paths are limited by `dsys_file_seek` (long offsets).
+EXTENSION POINTS: Extend via public headers and relevant `docs/specs/SPEC_*.md` without cross-layer coupling.
 */
 /* DTLV container implementation (C89).
  *
- * See docs/SPEC_CONTAINER_TLV.md for the authoritative format contract.
+ * See docs/specs/SPEC_CONTAINER_TLV.md for the authoritative format contract.
  */
 
 #include "domino/io/container.h"

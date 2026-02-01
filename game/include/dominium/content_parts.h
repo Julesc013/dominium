@@ -7,9 +7,9 @@ ALLOWED DEPENDENCIES: `include/dominium/**` plus C89/C++98 standard headers as n
 FORBIDDEN DEPENDENCIES: `source/**` private headers; keep contracts freestanding and layer-respecting.
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
-DETERMINISM: See `docs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
-VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
-EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
+DETERMINISM: See `docs/specs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
+VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/specs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
+EXTENSION POINTS: Extend via public headers and relevant `docs/specs/SPEC_*.md` without cross-layer coupling.
 */
 #ifndef DOMINIUM_CONTENT_PARTS_H
 #define DOMINIUM_CONTENT_PARTS_H
@@ -52,28 +52,28 @@ typedef int (*dom_part_visit_fn)(dom_part_id id,
                                  void* user);
 
 /* Purpose: Register parts.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 dom_status           dom_parts_register(const dom_part_desc* desc,
                                         dom_part_id* out_id);
 /* Purpose: Get parts.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: Non-NULL on success; NULL on failure or when not found.
  */
 const dom_part_desc* dom_parts_get(dom_part_id id);
 /* Purpose: Count dom parts.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 uint32_t             dom_parts_count(void);
 /* Purpose: Visit dom parts.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 dom_status           dom_parts_visit(dom_part_visit_fn fn, void* user);
 /* Purpose: Reset dom parts.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void                 dom_parts_reset(void);
 

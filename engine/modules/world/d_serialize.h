@@ -7,9 +7,9 @@ ALLOWED DEPENDENCIES: `include/domino/**`, `source/domino/**`, and C89/C++98 sta
 FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**` (engine must not depend on product layer).
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
-DETERMINISM: Determinism-sensitive (serialized bytes may be replayed/hashed); see `docs/SPEC_DETERMINISM.md`.
-VERSIONING / ABI / DATA FORMAT NOTES: Legacy subsystem TLV stream; see `docs/DATA_FORMATS.md` (Subsystem TLV containers).
-EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
+DETERMINISM: Determinism-sensitive (serialized bytes may be replayed/hashed); see `docs/specs/SPEC_DETERMINISM.md`.
+VERSIONING / ABI / DATA FORMAT NOTES: Legacy subsystem TLV stream; see `docs/specs/DATA_FORMATS.md` (Subsystem TLV containers).
+EXTENSION POINTS: Extend via public headers and relevant `docs/specs/SPEC_*.md` without cross-layer coupling.
 */
 /* Unified subsystem serialization orchestrator (C89). */
 #ifndef D_SERIALIZE_H
@@ -35,7 +35,7 @@ struct d_chunk;
  * Return values / errors:
  *   0 on success; non-zero on failure (subsystem hook errors may be forwarded).
  * Determinism:
- *   Output bytes participate in replay/hash inputs. Encoding notes: `docs/DATA_FORMATS.md`.
+ *   Output bytes participate in replay/hash inputs. Encoding notes: `docs/specs/DATA_FORMATS.md`.
  */
 int d_serialize_save_chunk_all(
     struct d_world    *w,
@@ -69,7 +69,7 @@ int d_serialize_load_chunk_all(
  * Return values / errors:
  *   0 on success; non-zero on failure (subsystem hook errors may be forwarded).
  * Determinism:
- *   Output bytes participate in replay/hash inputs. Encoding notes: `docs/DATA_FORMATS.md`.
+ *   Output bytes participate in replay/hash inputs. Encoding notes: `docs/specs/DATA_FORMATS.md`.
  */
 int d_serialize_save_instance_all(
     struct d_world    *w,

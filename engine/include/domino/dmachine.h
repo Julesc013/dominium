@@ -7,9 +7,9 @@ ALLOWED DEPENDENCIES: `include/domino/**` plus C89/C++98 standard headers as nee
 FORBIDDEN DEPENDENCIES: `source/**` private headers; keep contracts freestanding and layer-respecting.
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
-DETERMINISM: See `docs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
-VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
-EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
+DETERMINISM: See `docs/specs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
+VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/specs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
+EXTENSION POINTS: Extend via public headers and relevant `docs/specs/SPEC_*.md` without cross-layer coupling.
 */
 #ifndef DOMINO_DMACHINE_H
 #define DOMINO_DMACHINE_H
@@ -114,7 +114,7 @@ typedef struct Machine {
 /* Type registry */
 MachineTypeId      dmachine_type_register(const MachineType *def);
 /* Purpose: Get type.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: Non-NULL on success; NULL on failure or when not found.
  */
 const MachineType *dmachine_type_get(MachineTypeId id);
@@ -122,30 +122,30 @@ const MachineType *dmachine_type_get(MachineTypeId id);
 /* Instances */
 MachineId   dmachine_create(MachineTypeId type, AggregateId agg, ElementId element);
 /* Purpose: Get dmachine.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: Non-NULL on success; NULL on failure or when not found.
  */
 Machine    *dmachine_get(MachineId id);
 /* Purpose: Destroy dmachine.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void        dmachine_destroy(MachineId id);
 
 /* Purpose: Tick dmachine.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void        dmachine_tick(MachineId id, SimTick t);
 /* Purpose: Tick all.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void        dmachine_tick_all(SimTick t);
 
 /* Purpose: Set recipe.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void        dmachine_set_recipe(MachineId id, uint32_t recipe_id);
 /* Purpose: Set enabled.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void        dmachine_set_enabled(MachineId id, bool enabled);
 

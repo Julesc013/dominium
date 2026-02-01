@@ -7,9 +7,9 @@ ALLOWED DEPENDENCIES: `include/domino/**` plus C89/C++98 standard headers as nee
 FORBIDDEN DEPENDENCIES: `source/**` private headers; keep contracts freestanding and layer-respecting.
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
-DETERMINISM: Determinism-friendly container framing (explicit little-endian parsing); see `docs/SPEC_CONTAINER_TLV.md`.
-VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
-EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
+DETERMINISM: Determinism-friendly container framing (explicit little-endian parsing); see `docs/specs/SPEC_CONTAINER_TLV.md`.
+VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/specs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
+EXTENSION POINTS: Extend via public headers and relevant `docs/specs/SPEC_*.md` without cross-layer coupling.
 */
 #ifndef DOMINO_IO_CONTAINER_H_INCLUDED
 #define DOMINO_IO_CONTAINER_H_INCLUDED
@@ -17,7 +17,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
  * DTLV container reader/writer (C89/C++98 visible).
  *
  * Implements the public serialization container specified in:
- *   docs/SPEC_CONTAINER_TLV.md
+ *   docs/specs/SPEC_CONTAINER_TLV.md
  *
  * Notes:
  * - All on-disk values are little-endian; parsing is explicit.
@@ -154,7 +154,7 @@ int dtlv_tlv_write(
 /* dtlv_dir_entry
  * Purpose: Parsed directory entry values (host-endian) for a DTLV container.
  * Notes:
- * - Field meanings and on-disk encodings are specified in `docs/SPEC_CONTAINER_TLV.md`.
+ * - Field meanings and on-disk encodings are specified in `docs/specs/SPEC_CONTAINER_TLV.md`.
  * - `crc32` is meaningful only when `flags & DTLV_CHUNK_F_HAS_CRC32` is set.
  */
 typedef struct dtlv_dir_entry {

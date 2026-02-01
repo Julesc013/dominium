@@ -7,9 +7,9 @@ ALLOWED DEPENDENCIES: `include/domino/**` plus C89/C++98 standard headers as nee
 FORBIDDEN DEPENDENCIES: `source/**` private headers; keep contracts freestanding and layer-respecting.
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
-DETERMINISM: See `docs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
-VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
-EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
+DETERMINISM: See `docs/specs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
+VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/specs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
+EXTENSION POINTS: Extend via public headers and relevant `docs/specs/SPEC_*.md` without cross-layer coupling.
 */
 #ifndef DOMINO_SYS_H_INCLUDED
 #define DOMINO_SYS_H_INCLUDED
@@ -86,12 +86,12 @@ int dom_sys_select_backend(const char* name); /* "win32", "sdl2", "x11", "waylan
  *------------------------------------------------------------*/
 int  domino_sys_init(const domino_sys_desc* desc, domino_sys_context** out_ctx);
 /* Purpose: Shutdown sys.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void domino_sys_shutdown(domino_sys_context* ctx);
 
 /* Purpose: Get platform info.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void domino_sys_get_platform_info(domino_sys_context* ctx,
                                   domino_sys_platform_info* out_info);
@@ -109,8 +109,8 @@ typedef struct domino_sys_paths {
 } domino_sys_paths;
 
 /* Purpose: Get paths.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 int domino_sys_get_paths(domino_sys_context* ctx,
                          domino_sys_paths* out_paths);
@@ -121,42 +121,42 @@ int domino_sys_get_paths(domino_sys_context* ctx,
 typedef struct domino_sys_file domino_sys_file;
 
 /* Purpose: Fopen sys.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: Non-NULL on success; NULL on failure or when not found.
  */
 domino_sys_file* domino_sys_fopen(domino_sys_context* ctx,
                                   const char* path,
                                   const char* mode);
 /* Purpose: Fread sys.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 size_t domino_sys_fread(domino_sys_context* ctx,
                         void* buf, size_t size, size_t nmemb,
                         domino_sys_file* f);
 /* Purpose: Fwrite sys.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 size_t domino_sys_fwrite(domino_sys_context* ctx,
                          const void* buf, size_t size, size_t nmemb,
                          domino_sys_file* f);
 /* Purpose: Fclose sys.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 int    domino_sys_fclose(domino_sys_context* ctx,
                          domino_sys_file* f);
 
 /* Purpose: File exists.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 int domino_sys_file_exists(domino_sys_context* ctx,
                            const char* path);
 /* Purpose: Mkdirs sys.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 int domino_sys_mkdirs(domino_sys_context* ctx,
                       const char* path);
@@ -167,21 +167,21 @@ int domino_sys_mkdirs(domino_sys_context* ctx,
 typedef struct domino_sys_dir_iter domino_sys_dir_iter;
 
 /* Purpose: Open sys dir.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: Non-NULL on success; NULL on failure or when not found.
  */
 domino_sys_dir_iter* domino_sys_dir_open(domino_sys_context* ctx,
                                          const char* path);
 /* Purpose: Dir next.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 int domino_sys_dir_next(domino_sys_context* ctx,
                         domino_sys_dir_iter* it,
                         char* name_out, size_t cap,
                         int* is_dir_out);
 /* Purpose: Close sys dir.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void domino_sys_dir_close(domino_sys_context* ctx,
                           domino_sys_dir_iter* it);
@@ -191,12 +191,12 @@ void domino_sys_dir_close(domino_sys_context* ctx,
  *------------------------------------------------------------*/
 double         domino_sys_time_seconds(domino_sys_context* ctx);  /* monotonic if possible */
 /* Purpose: Time millis.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 unsigned long  domino_sys_time_millis(domino_sys_context* ctx);
 /* Purpose: Sleep millis.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void           domino_sys_sleep_millis(domino_sys_context* ctx,
                                        unsigned long ms);
@@ -214,23 +214,23 @@ typedef struct domino_sys_process_desc {
 } domino_sys_process_desc;
 
 /* Purpose: Process spawn.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 int domino_sys_process_spawn(domino_sys_context* ctx,
                              const domino_sys_process_desc* desc,
                              domino_sys_process** out_proc);
 
 /* Purpose: Process wait.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 int domino_sys_process_wait(domino_sys_context* ctx,
                             domino_sys_process* proc,
                             int* exit_code_out);
 
 /* Purpose: Destroy sys process.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void domino_sys_process_destroy(domino_sys_context* ctx,
                                 domino_sys_process* proc);
@@ -246,7 +246,7 @@ typedef enum {
 } domino_log_level;
 
 /* Purpose: Log sys.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void domino_sys_log(domino_sys_context* ctx,
                     domino_log_level level,
@@ -264,28 +264,28 @@ typedef struct domino_term_desc {
 } domino_term_desc;
 
 /* Purpose: Init term.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 int  domino_term_init(domino_sys_context* sys,
                       const domino_term_desc* desc,
                       domino_term_context** out_term);
 /* Purpose: Shutdown term.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void domino_term_shutdown(domino_term_context* term);
 
 /* Purpose: Write term.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 int  domino_term_write(domino_term_context* term,
                        const char* bytes,
                        size_t len);
 
 /* Purpose: Line domino term read.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 int  domino_term_read_line(domino_term_context* term,
                            char* buf,
@@ -325,29 +325,29 @@ typedef struct dsys_caps {
 } dsys_caps;
 
 /* Purpose: Init dsys.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 dsys_result dsys_init(void);
 /* Purpose: Shutdown dsys.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void        dsys_shutdown(void);
 /* Purpose: Caps dsys get.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 dsys_caps   dsys_get_caps(void);
 
 /* Purpose: Callback dsys set log.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void        dsys_set_log_callback(dsys_log_fn fn);
 
 /* Time */
 uint64_t dsys_time_now_us(void);
 /* Purpose: Ms dsys sleep.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void     dsys_sleep_ms(uint32_t ms);
 
@@ -377,61 +377,61 @@ typedef struct dsys_window_state {
 } dsys_window_state;
 
 /* Purpose: Create window.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: Non-NULL on success; NULL on failure or when not found.
  */
 dsys_window* dsys_window_create(const dsys_window_desc* desc);
 /* Purpose: Destroy window.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void         dsys_window_destroy(dsys_window* win);
 /* Purpose: Mode dsys window set.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void         dsys_window_set_mode(dsys_window* win, dsys_window_mode mode);
 /* Purpose: Size dsys window set.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void         dsys_window_set_size(dsys_window* win, int32_t w, int32_t h);
 /* Purpose: Size dsys window get.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void         dsys_window_get_size(dsys_window* win, int32_t* w, int32_t* h);
 /* Purpose: Handle dsys window get native.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void*        dsys_window_get_native_handle(dsys_window* win);
 /* Purpose: Close window should.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 int          dsys_window_should_close(dsys_window* win);
 /* Purpose: Present dsys window.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void         dsys_window_present(dsys_window* win);
 /* Purpose: Show dsys window.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void         dsys_window_show(dsys_window* win);
 /* Purpose: Hide dsys window.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void         dsys_window_hide(dsys_window* win);
 /* Purpose: State dsys window get.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void         dsys_window_get_state(dsys_window* win, dsys_window_state* out_state);
 /* Purpose: Framebuffer size dsys window get.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void         dsys_window_get_framebuffer_size(dsys_window* win, int32_t* w, int32_t* h);
 /* Purpose: Dpi scale dsys window get.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 float        dsys_window_get_dpi_scale(dsys_window* win);
 /* Purpose: Window id dsys window get.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 uint32_t     dsys_window_get_id(dsys_window* win);
 
@@ -470,13 +470,13 @@ typedef struct dsys_event {
 } dsys_event;
 
 /* Purpose: Event dsys poll.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: `true` on success; `false` on failure.
  */
 bool dsys_poll_event(dsys_event* out);
 
 /* Purpose: Inject event into the runtime queue (for TUI/internal events).
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: `true` on success; `false` if the queue is full.
  */
 bool dsys_inject_event(const dsys_event* ev);
@@ -491,28 +491,28 @@ typedef enum dsys_shutdown_reason {
 } dsys_shutdown_reason;
 
 /* Purpose: Install lifecycle/signal handlers.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void dsys_lifecycle_init(void);
 /* Purpose: Uninstall lifecycle/signal handlers.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void dsys_lifecycle_shutdown(void);
 /* Purpose: Request shutdown (set flag only; safe for signal handlers).
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void dsys_lifecycle_request_shutdown(dsys_shutdown_reason reason);
 /* Purpose: Check whether shutdown was requested.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: `true` if shutdown was requested.
  */
 bool dsys_lifecycle_shutdown_requested(void);
 /* Purpose: Read last shutdown reason.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 dsys_shutdown_reason dsys_lifecycle_shutdown_reason(void);
 /* Purpose: Reason text.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: String label for reason.
  */
 const char* dsys_lifecycle_shutdown_reason_text(dsys_shutdown_reason reason);
@@ -527,38 +527,38 @@ typedef enum dsys_path_kind {
 } dsys_path_kind;
 
 /* Purpose: Path dsys get.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: `true` on success; `false` on failure.
  */
 bool   dsys_get_path(dsys_path_kind kind, char* buf, size_t buf_size);
 
 /* Purpose: Open file.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void*  dsys_file_open(const char* path, const char* mode);
 /* Purpose: Read file.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 size_t dsys_file_read(void* fh, void* buf, size_t size);
 /* Purpose: Write file.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 size_t dsys_file_write(void* fh, const void* buf, size_t size);
 /* Purpose: Seek dsys file.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 int    dsys_file_seek(void* fh, long offset, int origin);
 /* Purpose: Tell dsys file.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 long   dsys_file_tell(void* fh);
 /* Purpose: Close file.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 int    dsys_file_close(void* fh);
 
@@ -569,17 +569,17 @@ typedef struct dsys_dir_entry {
 } dsys_dir_entry;
 
 /* Purpose: Open dir.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: Non-NULL on success; NULL on failure or when not found.
  */
 dsys_dir_iter* dsys_dir_open(const char* path);
 /* Purpose: Next dsys dir.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: `true` on success; `false` on failure.
  */
 bool           dsys_dir_next(dsys_dir_iter* it, dsys_dir_entry* out);
 /* Purpose: Close dir.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void           dsys_dir_close(dsys_dir_iter* it);
 
@@ -591,17 +591,17 @@ typedef struct dsys_process_desc {
 } dsys_process_desc;
 
 /* Purpose: Spawn dsys process.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: Non-NULL on success; NULL on failure or when not found.
  */
 dsys_process* dsys_process_spawn(const dsys_process_desc* desc);
 /* Purpose: Wait dsys process.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 int           dsys_process_wait(dsys_process* p);
 /* Purpose: Destroy process.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void          dsys_process_destroy(dsys_process* p);
 
@@ -636,8 +636,8 @@ typedef struct dsys_input_event {
 } dsys_input_event;
 
 /* Purpose: Raw dsys input poll.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 int dsys_input_poll_raw(dsys_input_event* ev);
 
@@ -652,20 +652,20 @@ typedef struct dsys_ime_event {
 } dsys_ime_event;
 
 /* Purpose: Start dsys ime.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void dsys_ime_start(void);
 /* Purpose: Stop dsys ime.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void dsys_ime_stop(void);
 /* Purpose: Cursor dsys ime set.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void dsys_ime_set_cursor(int32_t x, int32_t y);
 /* Purpose: Poll dsys ime.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 int  dsys_ime_poll(dsys_ime_event* ev);
 
@@ -905,23 +905,23 @@ typedef struct dsys_error_api_v1 {
 } dsys_error_api_v1;
 
 /* Purpose: Api dsys get core.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 dsys_result dsys_get_core_api(u32 requested_abi, dsys_core_api_v1* out);
 /* Purpose: Query dsys extension by name + version.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: Extension table pointer or NULL.
  */
 void*      dsys_query_extension(const char* name, u32 version);
 /* Purpose: Last dsys error code.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 dsys_result dsys_last_error_code(void);
 /* Purpose: Last dsys error text.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 const char* dsys_last_error_text(void);
 

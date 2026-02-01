@@ -9,7 +9,7 @@ THREADING MODEL: No internal synchronization; callers must serialize access unle
 ERROR MODEL: Return codes and validation reports; no exceptions.
 DETERMINISM: Validation is deterministic and side-effect free.
 VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `schema/SCHEMA_VALIDATION.md`.
-EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
+EXTENSION POINTS: Extend via public headers and relevant `docs/specs/SPEC_*.md` without cross-layer coupling.
 */
 #ifndef DOMINO_IO_DATA_VALIDATE_H_INCLUDED
 #define DOMINO_IO_DATA_VALIDATE_H_INCLUDED

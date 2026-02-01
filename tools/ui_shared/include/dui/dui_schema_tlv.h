@@ -8,7 +8,7 @@ FORBIDDEN DEPENDENCIES: `source/**` private headers; launcher core headers; UI t
 THREADING MODEL: N/A (data format constants only).
 ERROR MODEL: N/A (data format constants only).
 DETERMINISM: Data-driven UI only; schemas/state are inputs and must not influence simulation.
-VERSIONING / ABI / DATA FORMAT NOTES: TLV format; skip-unknown; see `docs/SPEC_DUI.md`.
+VERSIONING / ABI / DATA FORMAT NOTES: TLV format; skip-unknown; see `docs/specs/SPEC_DUI.md`.
 EXTENSION POINTS: Add new tags and enum values; old readers must skip unknown tags.
 */
 #ifndef DUI_SCHEMA_TLV_H_INCLUDED

@@ -9,7 +9,7 @@ THREADING MODEL: No internal synchronization; callers must serialize access unle
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
 DETERMINISM: Determinism-critical fixed-point math; relies on `source/domino/core/det_invariants.h` (two's complement, arithmetic right shift).
 VERSIONING / ABI / DATA FORMAT NOTES: N/A (implementation file).
-EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
+EXTENSION POINTS: Extend via public headers and relevant `docs/specs/SPEC_*.md` without cross-layer coupling.
 */
 #include "domino/core/fixed.h"
 

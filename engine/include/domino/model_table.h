@@ -7,9 +7,9 @@ ALLOWED DEPENDENCIES: `include/domino/**` plus C89/C++98 standard headers as nee
 FORBIDDEN DEPENDENCIES: `source/**` private headers; keep contracts freestanding and layer-respecting.
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
-DETERMINISM: See `docs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
-VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
-EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
+DETERMINISM: See `docs/specs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
+VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/specs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
+EXTENSION POINTS: Extend via public headers and relevant `docs/specs/SPEC_*.md` without cross-layer coupling.
 */
 #ifndef DOMINO_MODEL_TABLE_H_INCLUDED
 #define DOMINO_MODEL_TABLE_H_INCLUDED
@@ -33,12 +33,12 @@ typedef struct dom_table_meta {
 } dom_table_meta;
 
 /* Purpose: Meta dom table get.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: `true` on success; `false` on failure.
  */
 bool dom_table_get_meta(dom_core* core, const char* table_id, dom_table_meta* meta);
 /* Purpose: Cell dom table get.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: `true` on success; `false` on failure.
  */
 bool dom_table_get_cell(dom_core* core, const char* table_id, uint32_t row, uint32_t col, char* buf, size_t buf_size);

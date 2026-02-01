@@ -7,9 +7,9 @@ ALLOWED DEPENDENCIES: `include/domino/**` plus C89/C++98 standard headers as nee
 FORBIDDEN DEPENDENCIES: `source/**` private headers; keep contracts freestanding and layer-respecting.
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
-DETERMINISM: See `docs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
-VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
-EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
+DETERMINISM: See `docs/specs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
+VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/specs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
+EXTENSION POINTS: Extend via public headers and relevant `docs/specs/SPEC_*.md` without cross-layer coupling.
 */
 #ifndef DOMINO_DSPACE_GRAPH_H
 #define DOMINO_DSPACE_GRAPH_H
@@ -37,23 +37,23 @@ typedef struct {
 } SpaceRoute;
 
 /* Purpose: Register route.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: Id value (0 is commonly used as the invalid/failure sentinel for `*Id` typedefs).
  */
 SpaceRouteId  dspace_route_register(const SpaceRoute *def);
 /* Purpose: Get route.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: Non-NULL on success; NULL on failure or when not found.
  */
 const SpaceRoute *dspace_route_get(SpaceRouteId id);
 /* Purpose: Find route.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: Id value (0 is commonly used as the invalid/failure sentinel for `*Id` typedefs).
  */
 SpaceRouteId  dspace_route_find(SpaceSiteId a, SpaceSiteId b);
 /* Purpose: Neighbors dspace route.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 U32           dspace_route_neighbors(SpaceSiteId site, SpaceRouteId *out_ids, U32 max_out);
 

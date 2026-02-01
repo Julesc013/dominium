@@ -7,9 +7,9 @@ ALLOWED DEPENDENCIES: `include/domino/**` plus C89/C++98 standard headers as nee
 FORBIDDEN DEPENDENCIES: `source/**` private headers; keep contracts freestanding and layer-respecting.
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
-DETERMINISM: See `docs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
-VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
-EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
+DETERMINISM: See `docs/specs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
+VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/specs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
+EXTENSION POINTS: Extend via public headers and relevant `docs/specs/SPEC_*.md` without cross-layer coupling.
 */
 #ifndef DOMINO_DBLUEPRINT_H
 #define DOMINO_DBLUEPRINT_H
@@ -62,28 +62,28 @@ typedef struct {
 } Blueprint;
 
 /* Purpose: Create dblueprint.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: Id value (0 is commonly used as the invalid/failure sentinel for `*Id` typedefs).
  */
 BlueprintId        dblueprint_create(const char *name, U32 elem_capacity);
 /* Purpose: Get dblueprint.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: Non-NULL on success; NULL on failure or when not found.
  */
 Blueprint          *dblueprint_get(BlueprintId id);
 /* Purpose: Destroy dblueprint.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void                dblueprint_destroy(BlueprintId id);
 
 /* Purpose: Add element.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: Id value (0 is commonly used as the invalid/failure sentinel for `*Id` typedefs).
  */
 BlueprintElementId  dblueprint_add_element(BlueprintId id, const BlueprintElement *elem);
 
 /* Purpose: Generate jobs.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void dblueprint_generate_jobs(BlueprintId id);
 

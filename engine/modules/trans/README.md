@@ -17,5 +17,5 @@ TRANS corridor authoring/compile pipeline (`dg_trans_*`).
 - Legacy: `d_trans.*`, `d_trans_spline.*`, `d_trans_mover.*` (compat runtime).
 
 ## Spec
-See `docs/SPEC_TRANS.md`, `docs/SPEC_TRANS_STRUCT_DECOR.md`,
-`docs/SPEC_POSE_AND_ANCHORS.md`, and `docs/SPEC_DETERMINISM.md`.
+See `docs/specs/SPEC_TRANS.md`, `docs/specs/SPEC_TRANS_STRUCT_DECOR.md`,
+`docs/specs/SPEC_POSE_AND_ANCHORS.md`, and `docs/specs/SPEC_DETERMINISM.md`.

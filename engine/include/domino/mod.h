@@ -7,9 +7,9 @@ ALLOWED DEPENDENCIES: `include/domino/**` plus C89/C++98 standard headers as nee
 FORBIDDEN DEPENDENCIES: `source/**` private headers; keep contracts freestanding and layer-respecting.
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
-DETERMINISM: See `docs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
-VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
-EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
+DETERMINISM: See `docs/specs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
+VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/specs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
+EXTENSION POINTS: Extend via public headers and relevant `docs/specs/SPEC_*.md` without cross-layer coupling.
 */
 #ifndef DOMINO_MOD_H_INCLUDED
 #define DOMINO_MOD_H_INCLUDED
@@ -38,12 +38,12 @@ typedef struct dom_mod_vtable {
 typedef bool (*dom_mod_get_vtable_fn)(dom_mod_vtable* out);
 
 /* Purpose: Load all.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: `true` on success; `false` on failure.
  */
 bool dom_mod_load_all(dom_core* core, dom_instance_id inst);
 /* Purpose: Unload all.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void dom_mod_unload_all(dom_core* core, dom_instance_id inst);
 
@@ -66,17 +66,17 @@ typedef struct dom_launcher_ext_v1 {
 /* void: Public type used by `mod`. */
 typedef const dom_launcher_ext_v1* (*dom_mod_get_launcher_ext_fn)(void);
 /* Purpose: Count dom launcher ext.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 uint32_t dom_launcher_ext_count(dom_core* core);
 /* Purpose: Get launcher ext.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: Non-NULL on success; NULL on failure or when not found.
  */
 const dom_launcher_ext_v1* dom_launcher_ext_get(dom_core* core, uint32_t index);
 /* Purpose: Register launcher ext.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: `true` on success; `false` on failure.
  */
 bool dom_launcher_ext_register(dom_core* core, const dom_launcher_ext_v1* ext);
@@ -133,60 +133,60 @@ typedef struct domino_resolve_error {
 } domino_resolve_error;
 
 /* Purpose: Create package registry.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: Non-NULL on success; NULL on failure or when not found.
  */
 domino_package_registry* domino_package_registry_create(void);
 /* Purpose: Destroy package registry.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void domino_package_registry_destroy(domino_package_registry* reg);
 /* Purpose: Sys domino package registry set.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void domino_package_registry_set_sys(domino_package_registry* reg,
                                      domino_sys_context* sys);
 /* Purpose: Roots domino package registry scan.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 int  domino_package_registry_scan_roots(domino_package_registry* reg,
                                         const char* const* roots,
                                         unsigned int root_count);
 /* Purpose: Visit domino package registry.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 int  domino_package_registry_visit(domino_package_registry* reg,
                                    domino_package_visit_fn fn,
                                    void* user);
 /* Purpose: Find package registry.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: Non-NULL on success; NULL on failure or when not found.
  */
 const domino_package_desc* domino_package_registry_find(domino_package_registry* reg,
                                                         const char* id);
 
 /* Purpose: File domino manifest load from.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 int domino_manifest_load_from_file(const char* path,
                                    domino_package_desc* out);
 
 /* Purpose: Load instance.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 int domino_instance_load(const char* path, domino_instance_desc* out);
 /* Purpose: Save instance.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 int domino_instance_save(const char* path, const domino_instance_desc* inst);
 /* Purpose: Resolve domino instance.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 int domino_instance_resolve(domino_package_registry* reg,
                             const domino_instance_desc* inst,
@@ -200,12 +200,12 @@ struct dm_mod_context {
 };
 
 /* Purpose: Create mod.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: Non-NULL on success; NULL on failure or when not found.
  */
 dm_mod_context* dm_mod_create(void);
 /* Purpose: Destroy mod.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void            dm_mod_destroy(dm_mod_context* ctx);
 

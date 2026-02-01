@@ -8,8 +8,8 @@ FORBIDDEN DEPENDENCIES: `source/**` private headers; keep contracts freestanding
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
 DETERMINISM: Matching is deterministic and order-stable (sorted inputs).
-VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/SPEC_ABI_TEMPLATES.md`.
-EXTENSION POINTS: Extend via public headers and relevant `docs/architectureitecture/**`.
+VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/specs/SPEC_ABI_TEMPLATES.md`.
+EXTENSION POINTS: Extend via public headers and relevant `docs/architecture/**`.
 */
 #ifndef DOMINO_CAPABILITY_H
 #define DOMINO_CAPABILITY_H

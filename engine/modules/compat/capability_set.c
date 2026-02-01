@@ -9,7 +9,7 @@ THREADING MODEL: No internal synchronization; callers must serialize access unle
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
 DETERMINISM: Deterministic set membership for sorted inputs.
 VERSIONING / ABI / DATA FORMAT NOTES: N/A (implementation file).
-EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
+EXTENSION POINTS: Extend via public headers and relevant `docs/specs/SPEC_*.md` without cross-layer coupling.
 */
 #include "domino/capability.h"
 

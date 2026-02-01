@@ -7,9 +7,9 @@ ALLOWED DEPENDENCIES: `include/domino/**` plus C89/C++98 standard headers as nee
 FORBIDDEN DEPENDENCIES: `source/**` private headers; keep contracts freestanding and layer-respecting.
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
-DETERMINISM: See `docs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
-VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
-EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
+DETERMINISM: See `docs/specs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
+VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/specs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
+EXTENSION POINTS: Extend via public headers and relevant `docs/specs/SPEC_*.md` without cross-layer coupling.
 */
 /* Domino system abstraction stub (C89). */
 #ifndef DOMINO_SYSTEM_DSYS_H
@@ -34,13 +34,13 @@ typedef struct dsys_process_handle {
 } dsys_process_handle;
 
 /* Purpose: Set log callback.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void dsys_set_log_callback(dsys_log_fn fn);
 
 /* Purpose: Proc spawn.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 dsys_proc_result dsys_proc_spawn(const char* path,
                                  const char* const* argv,
@@ -48,8 +48,8 @@ dsys_proc_result dsys_proc_spawn(const char* path,
                                  dsys_process_handle* out_handle);
 
 /* Purpose: Proc wait.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 dsys_proc_result dsys_proc_wait(dsys_process_handle* handle,
                                 int* out_exit_code);
@@ -57,8 +57,8 @@ dsys_proc_result dsys_proc_wait(dsys_process_handle* handle,
 /* Returns non-zero if process appears to be running under a terminal/console.
    Used only to distinguish CLI-style shell invocation from double-click/desktop launch. */
 /* Purpose: Running in terminal.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 int dsys_running_in_terminal(void);
 
@@ -67,19 +67,19 @@ int dsys_running_in_terminal(void);
  *------------------------------------------------------------*/
 int  dsys_terminal_init(void);
 /* Purpose: Shutdown terminal.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void dsys_terminal_shutdown(void);
 /* Purpose: Terminal clear.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void dsys_terminal_clear(void);
 /* Purpose: Terminal draw text.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void dsys_terminal_draw_text(int row, int col, const char* text);
 /* Purpose: Terminal get size.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void dsys_terminal_get_size(int* rows, int* cols);
 int  dsys_terminal_poll_key(void); /* returns keycode or 0 if none */

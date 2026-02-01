@@ -9,7 +9,7 @@ THREADING MODEL: No internal synchronization; callers must serialize access unle
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
 DETERMINISM: Derived-only; does not alter authoritative state.
 VERSIONING / ABI / DATA FORMAT NOTES: N/A.
-EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md`.
+EXTENSION POINTS: Extend via public headers and relevant `docs/specs/SPEC_*.md`.
 */
 #include <cstdio>
 #include <cstring>

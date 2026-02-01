@@ -7,9 +7,9 @@ ALLOWED DEPENDENCIES: `include/domino/**` plus C89/C++98 standard headers as nee
 FORBIDDEN DEPENDENCIES: `source/**` private headers; keep contracts freestanding and layer-respecting.
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
-DETERMINISM: Determinism-supporting (schema ids and tag sets are hashed/validated); see `docs/SPEC_CONTAINER_TLV.md` and `docs/SPEC_DETERMINISM.md`.
-VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
-EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
+DETERMINISM: Determinism-supporting (schema ids and tag sets are hashed/validated); see `docs/specs/SPEC_CONTAINER_TLV.md` and `docs/specs/SPEC_DETERMINISM.md`.
+VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/specs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
+EXTENSION POINTS: Extend via public headers and relevant `docs/specs/SPEC_*.md` without cross-layer coupling.
 */
 #ifndef DOMINO_IO_SCHEMA_REGISTRY_H_INCLUDED
 #define DOMINO_IO_SCHEMA_REGISTRY_H_INCLUDED
@@ -104,7 +104,7 @@ enum {
  *   tlv_tags/tlv_tag_count: Optional list of chunk-local TLV tag ids used for schema hashing.
  * Notes:
  * - For deterministic schema id hashing, tags are treated as a set (sorted before hashing).
- * - Serialization ABI rules are specified in `docs/SPEC_CONTAINER_TLV.md`.
+ * - Serialization ABI rules are specified in `docs/specs/SPEC_CONTAINER_TLV.md`.
  */
 typedef struct dom_chunk_schema_desc {
     u32        chunk_type_id;

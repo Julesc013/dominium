@@ -7,9 +7,9 @@ ALLOWED DEPENDENCIES: `include/domino/**` plus C89/C++98 standard headers as nee
 FORBIDDEN DEPENDENCIES: `source/**` private headers; keep contracts freestanding and layer-respecting.
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
-DETERMINISM: See `docs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
-VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
-EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
+DETERMINISM: See `docs/specs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
+VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/specs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
+EXTENSION POINTS: Extend via public headers and relevant `docs/specs/SPEC_*.md` without cross-layer coupling.
 */
 #ifndef DOMINO_SIM_H_INCLUDED
 #define DOMINO_SIM_H_INCLUDED
@@ -41,7 +41,7 @@ typedef struct dom_sim_state {
 } dom_sim_state;
 
 /* Purpose: Tick sim.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: `true` on success; `false` on failure.
  */
 bool dom_sim_tick(dom_core* core,
@@ -49,7 +49,7 @@ bool dom_sim_tick(dom_core* core,
                   uint32_t ticks);
 
 /* Purpose: Get state.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: `true` on success; `false` on failure.
  */
 bool dom_sim_get_state(dom_core* core,
@@ -67,16 +67,16 @@ struct dm_sim_config {
 typedef struct dm_sim_context dm_sim_context;
 
 /* Purpose: Create sim.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: Non-NULL on success; NULL on failure or when not found.
  */
 dm_sim_context* dm_sim_create(const struct dm_sim_config* cfg);
 /* Purpose: Destroy sim.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void            dm_sim_destroy(dm_sim_context* sim);
 /* Purpose: Tick sim.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void            dm_sim_tick(dm_sim_context* sim, uint32_t dt_usec);
 
