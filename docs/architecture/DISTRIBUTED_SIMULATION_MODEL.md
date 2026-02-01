@@ -16,6 +16,13 @@ Scope: distributed execution, verification, and commit across SRZs and shards.
 All authoritative outcomes are replayable and auditable.
 Execution backends may vary; semantics must not.
 
+Distribution must not change outcomes and must use the same deterministic code paths
+as single-shard execution.
+
+The universe is logically single and physically distributed.
+Every domain is owned by exactly one shard at a time; double ownership is forbidden.
+Ownership transfers occur only at commit boundaries and are replayable.
+
 ## Roles
 
 SRZs separate three roles:

@@ -159,7 +159,7 @@ def main() -> int:
                     violations.append("{}:{}: d_rng_seed usage".format(rel, idx))
 
     if violations:
-        raise AssertionError("anonymous RNG seeding detected:\n" + "\n".join(violations))
+        raise AssertionError("anonymous RNG seeding detected.\n" + "\n".join(violations))
 
     print("determinism hard-lock tests OK")
     return 0

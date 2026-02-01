@@ -209,7 +209,7 @@ static u64 mmo_state_hash_no_checkpoint(const dom_server_runtime* runtime)
             hash = mmo_hash_mix(hash,
                                 dom_scale_domain_hash(slot,
                                                       runtime->now_tick,
-                                                      shard->scale_ctx.worker_count));
+                                                      1u));
         }
     }
     return hash;
@@ -233,8 +233,8 @@ static u32 mmo_count_refusals(const dom_server_runtime* runtime, u32 refusal_cod
 static int mmo_run_two_node(u32 workers)
 {
     dom_server_runtime_config config;
-    dom_server_runtime a;
-    dom_server_runtime b;
+    dom_server_runtime* a = 0;
+    dom_server_runtime* b = 0;
     u64 domain_a = 0u;
     u64 domain_b = 0u;
     u64 hash_a = 0u;
@@ -243,37 +243,47 @@ static int mmo_run_two_node(u32 workers)
     u32 refusals_b = 0u;
 
     mmo_config_default(&config, 2u, workers);
-    if (dom_server_runtime_init(&a, &config) != 0 ||
-        dom_server_runtime_init(&b, &config) != 0) {
-        fprintf(stderr, "mmo: failed to init runtimes\n");
+    a = (dom_server_runtime*)calloc(1u, sizeof(*a));
+    b = (dom_server_runtime*)calloc(1u, sizeof(*b));
+    if (!a || !b) {
+        fprintf(stderr, "mmo: failed to allocate runtimes\n");
+        free(a);
+        free(b);
         return 2;
     }
-    (void)dom_server_runtime_add_client(&a, 101u, 1u, 0);
-    (void)dom_server_runtime_add_client(&a, 202u, 2u, 0);
-    (void)dom_server_runtime_add_client(&b, 101u, 1u, 0);
-    (void)dom_server_runtime_add_client(&b, 202u, 2u, 0);
+    if (dom_server_runtime_init(a, &config) != 0 ||
+        dom_server_runtime_init(b, &config) != 0) {
+        fprintf(stderr, "mmo: failed to init runtimes\n");
+        free(a);
+        free(b);
+        return 2;
+    }
+    (void)dom_server_runtime_add_client(a, 101u, 1u, 0);
+    (void)dom_server_runtime_add_client(a, 202u, 2u, 0);
+    (void)dom_server_runtime_add_client(b, 101u, 1u, 0);
+    (void)dom_server_runtime_add_client(b, 202u, 2u, 0);
 
-    domain_a = a.shards[0].domain_storage[0].domain_id;
-    domain_b = a.shards[1].domain_storage[0].domain_id;
+    domain_a = a->shards[0].domain_storage[0].domain_id;
+    domain_b = a->shards[1].domain_storage[0].domain_id;
 
-    (void)mmo_submit_intent(&a, 101u, 1u, domain_a, DOM_SERVER_INTENT_COLLAPSE, 11u, 0u, 8u, 1001u, 0);
-    (void)mmo_submit_intent(&a, 202u, 2u, domain_b, DOM_SERVER_INTENT_COLLAPSE, 12u, 0u, 8u, 2001u, 0);
-    (void)mmo_submit_intent(&a, 101u, 1u, domain_a, DOM_SERVER_INTENT_EXPAND, 21u, 0u, 8u, 1002u, 1);
-    (void)mmo_submit_intent(&a, 101u, 1u, domain_a, DOM_SERVER_INTENT_TRANSFER_OWNERSHIP, 0u, 2u, 8u, 3001u, 2);
+    (void)mmo_submit_intent(a, 101u, 1u, domain_a, DOM_SERVER_INTENT_COLLAPSE, 11u, 0u, 8u, 1001u, 0);
+    (void)mmo_submit_intent(a, 202u, 2u, domain_b, DOM_SERVER_INTENT_COLLAPSE, 12u, 0u, 8u, 2001u, 0);
+    (void)mmo_submit_intent(a, 101u, 1u, domain_a, DOM_SERVER_INTENT_EXPAND, 21u, 0u, 8u, 1002u, 1);
+    (void)mmo_submit_intent(a, 101u, 1u, domain_a, DOM_SERVER_INTENT_TRANSFER_OWNERSHIP, 0u, 2u, 8u, 3001u, 2);
 
     /* Submit in a different order; runtime sorting must normalize it. */
-    (void)mmo_submit_intent(&b, 101u, 1u, domain_a, DOM_SERVER_INTENT_TRANSFER_OWNERSHIP, 0u, 2u, 8u, 3001u, 2);
-    (void)mmo_submit_intent(&b, 101u, 1u, domain_a, DOM_SERVER_INTENT_EXPAND, 21u, 0u, 8u, 1002u, 1);
-    (void)mmo_submit_intent(&b, 202u, 2u, domain_b, DOM_SERVER_INTENT_COLLAPSE, 12u, 0u, 8u, 2001u, 0);
-    (void)mmo_submit_intent(&b, 101u, 1u, domain_a, DOM_SERVER_INTENT_COLLAPSE, 11u, 0u, 8u, 1001u, 0);
+    (void)mmo_submit_intent(b, 101u, 1u, domain_a, DOM_SERVER_INTENT_TRANSFER_OWNERSHIP, 0u, 2u, 8u, 3001u, 2);
+    (void)mmo_submit_intent(b, 101u, 1u, domain_a, DOM_SERVER_INTENT_EXPAND, 21u, 0u, 8u, 1002u, 1);
+    (void)mmo_submit_intent(b, 202u, 2u, domain_b, DOM_SERVER_INTENT_COLLAPSE, 12u, 0u, 8u, 2001u, 0);
+    (void)mmo_submit_intent(b, 101u, 1u, domain_a, DOM_SERVER_INTENT_COLLAPSE, 11u, 0u, 8u, 1001u, 0);
 
-    (void)dom_server_runtime_tick(&a, 4);
-    (void)dom_server_runtime_tick(&b, 4);
+    (void)dom_server_runtime_tick(a, 4);
+    (void)dom_server_runtime_tick(b, 4);
 
-    hash_a = dom_server_runtime_hash(&a);
-    hash_b = dom_server_runtime_hash(&b);
-    refusals_a = mmo_count_refusals(&a, DOM_SERVER_REFUSE_NONE);
-    refusals_b = mmo_count_refusals(&b, DOM_SERVER_REFUSE_NONE);
+    hash_a = dom_server_runtime_hash(a);
+    hash_b = dom_server_runtime_hash(b);
+    refusals_a = mmo_count_refusals(a, DOM_SERVER_REFUSE_NONE);
+    refusals_b = mmo_count_refusals(b, DOM_SERVER_REFUSE_NONE);
 
     printf("scenario=two_node workers=%u invariants=%s\n",
            (unsigned int)workers,
@@ -283,20 +293,22 @@ static int mmo_run_two_node(u32 workers)
            (unsigned long long)hash_b,
            (unsigned int)(hash_a == hash_b ? 1u : 0u));
     printf("two_node.owner_hash_a=%llu two_node.owner_hash_b=%llu\n",
-           (unsigned long long)mmo_owner_hash(&a),
-           (unsigned long long)mmo_owner_hash(&b));
+           (unsigned long long)mmo_owner_hash(a),
+           (unsigned long long)mmo_owner_hash(b));
     printf("two_node.events_a=%u two_node.events_b=%u refusals_none_a=%u refusals_none_b=%u\n",
-           (unsigned int)a.event_count,
-           (unsigned int)b.event_count,
+           (unsigned int)a->event_count,
+           (unsigned int)b->event_count,
            (unsigned int)refusals_a,
            (unsigned int)refusals_b);
+    free(a);
+    free(b);
     return (hash_a == hash_b) ? 0 : 1;
 }
 
 static int mmo_run_join_resync(u32 workers)
 {
     dom_server_runtime_config config;
-    dom_server_runtime runtime;
+    dom_server_runtime* runtime = 0;
     dom_server_join_bundle join_bundle;
     dom_server_resync_bundle resync_bundle;
     u64 domain_id = 0u;
@@ -304,20 +316,26 @@ static int mmo_run_join_resync(u32 workers)
     int resync_status = 0;
 
     mmo_config_default(&config, 2u, workers);
-    if (dom_server_runtime_init(&runtime, &config) != 0) {
-        fprintf(stderr, "mmo: failed to init runtime\n");
+    runtime = (dom_server_runtime*)calloc(1u, sizeof(*runtime));
+    if (!runtime) {
+        fprintf(stderr, "mmo: failed to allocate runtime\n");
         return 2;
     }
-    (void)dom_server_runtime_add_client(&runtime, 501u, 1u, 0);
-    domain_id = runtime.shards[0].domain_storage[0].domain_id;
+    if (dom_server_runtime_init(runtime, &config) != 0) {
+        fprintf(stderr, "mmo: failed to init runtime\n");
+        free(runtime);
+        return 2;
+    }
+    (void)dom_server_runtime_add_client(runtime, 501u, 1u, 0);
+    domain_id = runtime->shards[0].domain_storage[0].domain_id;
 
-    (void)mmo_submit_intent(&runtime, 501u, 1u, domain_id, DOM_SERVER_INTENT_COLLAPSE, 9u, 0u, 8u, 9001u, 0);
-    (void)mmo_submit_intent(&runtime, 501u, 1u, domain_id, DOM_SERVER_INTENT_EXPAND, 10u, 0u, 8u, 9002u, 1);
-    (void)dom_server_runtime_tick(&runtime, 3);
+    (void)mmo_submit_intent(runtime, 501u, 1u, domain_id, DOM_SERVER_INTENT_COLLAPSE, 9u, 0u, 8u, 9001u, 0);
+    (void)mmo_submit_intent(runtime, 501u, 1u, domain_id, DOM_SERVER_INTENT_EXPAND, 10u, 0u, 8u, 9002u, 1);
+    (void)dom_server_runtime_tick(runtime, 3);
 
-    (void)dom_server_runtime_join(&runtime, 501u, &join_bundle);
-    resync_status = dom_server_runtime_resync(&runtime, 501u, 1u, 1u, &resync_bundle);
-    hash_after = dom_server_runtime_hash(&runtime);
+    (void)dom_server_runtime_join(runtime, 501u, &join_bundle);
+    resync_status = dom_server_runtime_resync(runtime, 501u, 1u, 1u, &resync_bundle);
+    hash_after = dom_server_runtime_hash(runtime);
 
     printf("scenario=join_resync workers=%u invariants=%s\n",
            (unsigned int)workers,
@@ -334,13 +352,14 @@ static int mmo_run_join_resync(u32 workers)
            (unsigned int)(hash_after == resync_bundle.world_hash ? 1u : 0u),
            (unsigned int)resync_bundle.event_tail_index,
            (unsigned int)resync_bundle.message_tail_index);
+    free(runtime);
     return (hash_after == resync_bundle.world_hash) ? 0 : 1;
 }
 
 static int mmo_run_abuse(u32 workers)
 {
     dom_server_runtime_config config;
-    dom_server_runtime runtime;
+    dom_server_runtime* runtime = 0;
     dom_server_client_policy policy;
     dom_scale_budget_snapshot scale_snapshot;
     u64 domain_id = 0u;
@@ -348,8 +367,14 @@ static int mmo_run_abuse(u32 workers)
     u32 refusal_budget = 0u;
 
     mmo_config_default(&config, 1u, workers);
-    if (dom_server_runtime_init(&runtime, &config) != 0) {
+    runtime = (dom_server_runtime*)calloc(1u, sizeof(*runtime));
+    if (!runtime) {
+        fprintf(stderr, "mmo: failed to allocate runtime\n");
+        return 2;
+    }
+    if (dom_server_runtime_init(runtime, &config) != 0) {
         fprintf(stderr, "mmo: failed to init runtime\n");
+        free(runtime);
         return 2;
     }
     memset(&policy, 0, sizeof(policy));
@@ -357,17 +382,17 @@ static int mmo_run_abuse(u32 workers)
     policy.bytes_per_tick = 4u;
     policy.inspect_only = 0u;
     policy.capability_mask = 1u;
-    (void)dom_server_runtime_add_client(&runtime, 601u, 1u, &policy);
-    domain_id = runtime.shards[0].domain_storage[0].domain_id;
+    (void)dom_server_runtime_add_client(runtime, 601u, 1u, &policy);
+    domain_id = runtime->shards[0].domain_storage[0].domain_id;
 
-    (void)mmo_submit_intent(&runtime, 601u, 1u, domain_id, DOM_SERVER_INTENT_COLLAPSE, 1u, 0u, 4u, 1u, 0);
-    (void)mmo_submit_intent(&runtime, 601u, 1u, domain_id, DOM_SERVER_INTENT_EXPAND, 2u, 0u, 4u, 2u, 0);
-    (void)mmo_submit_intent(&runtime, 601u, 1u, domain_id, DOM_SERVER_INTENT_COLLAPSE, 3u, 0u, 4u, 3u, 0);
-    (void)dom_server_runtime_tick(&runtime, 1);
+    (void)mmo_submit_intent(runtime, 601u, 1u, domain_id, DOM_SERVER_INTENT_COLLAPSE, 1u, 0u, 4u, 1u, 0);
+    (void)mmo_submit_intent(runtime, 601u, 1u, domain_id, DOM_SERVER_INTENT_EXPAND, 2u, 0u, 4u, 2u, 0);
+    (void)mmo_submit_intent(runtime, 601u, 1u, domain_id, DOM_SERVER_INTENT_COLLAPSE, 3u, 0u, 4u, 3u, 0);
+    (void)dom_server_runtime_tick(runtime, 1);
 
-    refusal_rate = mmo_count_refusals(&runtime, DOM_SERVER_REFUSE_RATE_LIMIT);
-    refusal_budget = mmo_count_refusals(&runtime, DOM_SERVER_REFUSE_BUDGET_EXCEEDED);
-    (void)dom_server_runtime_scale_snapshot(&runtime, 1u, &scale_snapshot);
+    refusal_rate = mmo_count_refusals(runtime, DOM_SERVER_REFUSE_RATE_LIMIT);
+    refusal_budget = mmo_count_refusals(runtime, DOM_SERVER_REFUSE_BUDGET_EXCEEDED);
+    (void)dom_server_runtime_scale_snapshot(runtime, 1u, &scale_snapshot);
 
     printf("scenario=abuse workers=%u invariants=%s\n",
            (unsigned int)workers,
@@ -375,19 +400,20 @@ static int mmo_run_abuse(u32 workers)
     printf("abuse.refusal_rate_limit=%u abuse.refusal_budget=%u events=%u\n",
            (unsigned int)refusal_rate,
            (unsigned int)refusal_budget,
-           (unsigned int)runtime.event_count);
+           (unsigned int)runtime->event_count);
     printf("budget.tick=%lld macro_used=%u macro_limit=%u deferred=%u\n",
            (long long)scale_snapshot.tick,
            (unsigned int)scale_snapshot.macro_event_used,
            (unsigned int)scale_snapshot.macro_event_limit,
            (unsigned int)scale_snapshot.deferred_count);
+    free(runtime);
     return (refusal_rate > 0u) ? 0 : 1;
 }
 
 static int mmo_run_legacy(u32 workers)
 {
     dom_server_runtime_config config;
-    dom_server_runtime runtime;
+    dom_server_runtime* runtime = 0;
     dom_server_client_policy policy;
     dom_server_join_bundle join_bundle;
     dom_server_resync_bundle resync_bundle;
@@ -395,8 +421,14 @@ static int mmo_run_legacy(u32 workers)
     u32 refusal_cap = 0u;
 
     mmo_config_default(&config, 1u, workers);
-    if (dom_server_runtime_init(&runtime, &config) != 0) {
+    runtime = (dom_server_runtime*)calloc(1u, sizeof(*runtime));
+    if (!runtime) {
+        fprintf(stderr, "mmo: failed to allocate runtime\n");
+        return 2;
+    }
+    if (dom_server_runtime_init(runtime, &config) != 0) {
         fprintf(stderr, "mmo: failed to init runtime\n");
+        free(runtime);
         return 2;
     }
     memset(&policy, 0, sizeof(policy));
@@ -404,15 +436,15 @@ static int mmo_run_legacy(u32 workers)
     policy.bytes_per_tick = 64u;
     policy.inspect_only = 1u;
     policy.capability_mask = 0u;
-    (void)dom_server_runtime_add_client(&runtime, 701u, 1u, &policy);
-    domain_id = runtime.shards[0].domain_storage[0].domain_id;
+    (void)dom_server_runtime_add_client(runtime, 701u, 1u, &policy);
+    domain_id = runtime->shards[0].domain_storage[0].domain_id;
 
-    (void)mmo_submit_intent(&runtime, 701u, 1u, domain_id, DOM_SERVER_INTENT_COLLAPSE, 1u, 0u, 4u, 7001u, 0);
-    (void)dom_server_runtime_tick(&runtime, 1);
-    refusal_cap = mmo_count_refusals(&runtime, DOM_SERVER_REFUSE_CAPABILITY_MISSING);
+    (void)mmo_submit_intent(runtime, 701u, 1u, domain_id, DOM_SERVER_INTENT_COLLAPSE, 1u, 0u, 4u, 7001u, 0);
+    (void)dom_server_runtime_tick(runtime, 1);
+    refusal_cap = mmo_count_refusals(runtime, DOM_SERVER_REFUSE_CAPABILITY_MISSING);
 
-    (void)dom_server_runtime_join(&runtime, 701u, &join_bundle);
-    (void)dom_server_runtime_resync(&runtime, 701u, 1u, 0u, &resync_bundle);
+    (void)dom_server_runtime_join(runtime, 701u, &join_bundle);
+    (void)dom_server_runtime_resync(runtime, 701u, 1u, 0u, &resync_bundle);
 
     printf("scenario=legacy workers=%u invariants=%s\n",
            (unsigned int)workers,
@@ -423,13 +455,14 @@ static int mmo_run_legacy(u32 workers)
     printf("legacy.resync_refusal=%s legacy.world_hash=%llu\n",
            dom_server_refusal_to_string(resync_bundle.refusal_code),
            (unsigned long long)resync_bundle.world_hash);
+    free(runtime);
     return (refusal_cap > 0u && resync_bundle.refusal_code != 0u) ? 0 : 1;
 }
 
 static int mmo_run_ops_checkpoint(u32 workers)
 {
     dom_server_runtime_config config;
-    dom_server_runtime runtime;
+    dom_server_runtime* runtime = 0;
     const dom_checkpoint_record* record = 0;
     u64 domain_a = 0u;
     u64 domain_b = 0u;
@@ -438,32 +471,40 @@ static int mmo_run_ops_checkpoint(u32 workers)
     u32 i;
 
     mmo_config_default(&config, 2u, workers);
-    if (dom_server_runtime_init(&runtime, &config) != 0) {
-        fprintf(stderr, "mmo: failed to init runtime\n");
+    runtime = (dom_server_runtime*)calloc(1u, sizeof(*runtime));
+    if (!runtime) {
+        fprintf(stderr, "mmo: failed to allocate runtime\n");
         return 2;
     }
-    (void)dom_server_runtime_add_client(&runtime, 801u, 1u, 0);
-    (void)dom_server_runtime_add_client(&runtime, 802u, 2u, 0);
-    domain_a = runtime.shards[0].domain_storage[0].domain_id;
-    domain_b = runtime.shards[1].domain_storage[0].domain_id;
+    if (dom_server_runtime_init(runtime, &config) != 0) {
+        fprintf(stderr, "mmo: failed to init runtime\n");
+        free(runtime);
+        return 2;
+    }
+    (void)dom_server_runtime_add_client(runtime, 801u, 1u, 0);
+    (void)dom_server_runtime_add_client(runtime, 802u, 2u, 0);
+    domain_a = runtime->shards[0].domain_storage[0].domain_id;
+    domain_b = runtime->shards[1].domain_storage[0].domain_id;
 
-    (void)mmo_submit_intent(&runtime, 801u, 1u, domain_a, DOM_SERVER_INTENT_COLLAPSE, 31u, 0u, 8u, 8101u, 0);
-    (void)mmo_submit_intent(&runtime, 801u, 1u, domain_a, DOM_SERVER_INTENT_EXPAND, 32u, 0u, 8u, 8102u, 1);
-    (void)mmo_submit_intent(&runtime, 802u, 2u, domain_b, DOM_SERVER_INTENT_COLLAPSE, 33u, 0u, 8u, 8201u, 0);
-    (void)dom_server_runtime_tick(&runtime, 4);
+    (void)mmo_submit_intent(runtime, 801u, 1u, domain_a, DOM_SERVER_INTENT_COLLAPSE, 31u, 0u, 8u, 8101u, 0);
+    (void)mmo_submit_intent(runtime, 801u, 1u, domain_a, DOM_SERVER_INTENT_EXPAND, 32u, 0u, 8u, 8102u, 1);
+    (void)mmo_submit_intent(runtime, 802u, 2u, domain_b, DOM_SERVER_INTENT_COLLAPSE, 33u, 0u, 8u, 8201u, 0);
+    (void)dom_server_runtime_tick(runtime, 4);
 
-    if (dom_server_runtime_checkpoint(&runtime, DOM_CHECKPOINT_TRIGGER_MANUAL) != 0) {
+    if (dom_server_runtime_checkpoint(runtime, DOM_CHECKPOINT_TRIGGER_MANUAL) != 0) {
         fprintf(stderr, "mmo: checkpoint refused\n");
+        free(runtime);
         return 1;
     }
-    record = dom_server_runtime_last_checkpoint(&runtime);
+    record = dom_server_runtime_last_checkpoint(runtime);
     if (!record) {
         fprintf(stderr, "mmo: no checkpoint record\n");
+        free(runtime);
         return 1;
     }
 
-    state_hash = mmo_state_hash_no_checkpoint(&runtime);
-    store_hash = dom_server_runtime_checkpoint_hash(&runtime);
+    state_hash = mmo_state_hash_no_checkpoint(runtime);
+    store_hash = dom_server_runtime_checkpoint_hash(runtime);
 
     printf("scenario=ops_checkpoint workers=%u invariants=%s\n",
            (unsigned int)workers,
@@ -479,7 +520,7 @@ static int mmo_run_ops_checkpoint(u32 workers)
            (unsigned long long)record->manifest.message_applied,
            (unsigned long long)record->manifest.macro_events_executed,
            (unsigned int)record->lifecycle_count);
-    for (i = 0u; i < runtime.shard_count; ++i) {
+    for (i = 0u; i < runtime->shard_count; ++i) {
         const dom_shard_checkpoint* shard = &record->shards[i];
         printf("shard.%u id=%u state=%s version=%u caps=%llu shard_hash=%llu world_checksum=%llu\n",
                (unsigned int)i,
@@ -490,14 +531,15 @@ static int mmo_run_ops_checkpoint(u32 workers)
                (unsigned long long)shard->shard_hash,
                (unsigned long long)shard->world_checksum);
     }
+    free(runtime);
     return 0;
 }
 
 static int mmo_run_ops_recover(u32 workers)
 {
     dom_server_runtime_config config;
-    dom_server_runtime runtime;
-    dom_server_runtime shadow;
+    dom_server_runtime* runtime = 0;
+    dom_server_runtime* shadow = 0;
     const dom_checkpoint_record* record = 0;
     u64 domain_id = 0u;
     u64 state_hash_checkpoint = 0u;
@@ -508,41 +550,57 @@ static int mmo_run_ops_recover(u32 workers)
     u32 refusal_shadow = DOM_SERVER_REFUSE_NONE;
 
     mmo_config_default(&config, 2u, workers);
-    if (dom_server_runtime_init(&runtime, &config) != 0) {
-        fprintf(stderr, "mmo: failed to init runtime\n");
+    runtime = (dom_server_runtime*)calloc(1u, sizeof(*runtime));
+    shadow = (dom_server_runtime*)calloc(1u, sizeof(*shadow));
+    if (!runtime || !shadow) {
+        fprintf(stderr, "mmo: failed to allocate runtimes\n");
+        free(runtime);
+        free(shadow);
         return 2;
     }
-    (void)dom_server_runtime_add_client(&runtime, 901u, 1u, 0);
-    domain_id = runtime.shards[0].domain_storage[0].domain_id;
+    if (dom_server_runtime_init(runtime, &config) != 0) {
+        fprintf(stderr, "mmo: failed to init runtime\n");
+        free(runtime);
+        free(shadow);
+        return 2;
+    }
+    (void)dom_server_runtime_add_client(runtime, 901u, 1u, 0);
+    domain_id = runtime->shards[0].domain_storage[0].domain_id;
 
-    (void)mmo_submit_intent(&runtime, 901u, 1u, domain_id, DOM_SERVER_INTENT_COLLAPSE, 41u, 0u, 8u, 9101u, 0);
-    (void)mmo_submit_intent(&runtime, 901u, 1u, domain_id, DOM_SERVER_INTENT_EXPAND, 42u, 0u, 8u, 9102u, 1);
-    (void)dom_server_runtime_tick(&runtime, 3);
+    (void)mmo_submit_intent(runtime, 901u, 1u, domain_id, DOM_SERVER_INTENT_COLLAPSE, 41u, 0u, 8u, 9101u, 0);
+    (void)mmo_submit_intent(runtime, 901u, 1u, domain_id, DOM_SERVER_INTENT_EXPAND, 42u, 0u, 8u, 9102u, 1);
+    (void)dom_server_runtime_tick(runtime, 3);
 
-    if (dom_server_runtime_checkpoint(&runtime, DOM_CHECKPOINT_TRIGGER_MANUAL) != 0) {
+    if (dom_server_runtime_checkpoint(runtime, DOM_CHECKPOINT_TRIGGER_MANUAL) != 0) {
         fprintf(stderr, "mmo: checkpoint refused\n");
+        free(runtime);
+        free(shadow);
         return 1;
     }
-    record = dom_server_runtime_last_checkpoint(&runtime);
+    record = dom_server_runtime_last_checkpoint(runtime);
     if (!record) {
         fprintf(stderr, "mmo: no checkpoint record\n");
+        free(runtime);
+        free(shadow);
         return 1;
     }
 
-    state_hash_checkpoint = mmo_state_hash_no_checkpoint(&runtime);
-    (void)mmo_submit_intent(&runtime, 901u, 1u, domain_id, DOM_SERVER_INTENT_COLLAPSE, 43u, 0u, 8u, 9103u, 4);
-    (void)dom_server_runtime_tick(&runtime, 6);
-    state_hash_before = mmo_state_hash_no_checkpoint(&runtime);
+    state_hash_checkpoint = mmo_state_hash_no_checkpoint(runtime);
+    (void)mmo_submit_intent(runtime, 901u, 1u, domain_id, DOM_SERVER_INTENT_COLLAPSE, 43u, 0u, 8u, 9103u, 4);
+    (void)dom_server_runtime_tick(runtime, 6);
+    state_hash_before = mmo_state_hash_no_checkpoint(runtime);
 
-    (void)dom_checkpoint_recover(&runtime, record, &refusal);
-    state_hash_after = mmo_state_hash_no_checkpoint(&runtime);
+    (void)dom_checkpoint_recover(runtime, record, &refusal);
+    state_hash_after = mmo_state_hash_no_checkpoint(runtime);
 
-    if (dom_server_runtime_init(&shadow, &config) != 0) {
+    if (dom_server_runtime_init(shadow, &config) != 0) {
         fprintf(stderr, "mmo: failed to init shadow runtime\n");
+        free(runtime);
+        free(shadow);
         return 2;
     }
-    (void)dom_checkpoint_recover(&shadow, record, &refusal_shadow);
-    state_hash_shadow = mmo_state_hash_no_checkpoint(&shadow);
+    (void)dom_checkpoint_recover(shadow, record, &refusal_shadow);
+    state_hash_shadow = mmo_state_hash_no_checkpoint(shadow);
 
     printf("scenario=ops_recover workers=%u invariants=%s\n",
            (unsigned int)workers,
@@ -554,48 +612,60 @@ static int mmo_run_ops_recover(u32 workers)
            (unsigned long long)state_hash_shadow);
     printf("recover.tick_checkpoint=%lld recover.tick_after=%lld refusal=%s shadow_refusal=%s\n",
            (long long)record->manifest.tick,
-           (long long)runtime.now_tick,
+           (long long)runtime->now_tick,
            dom_server_refusal_to_string(refusal),
            dom_server_refusal_to_string(refusal_shadow));
-
-    return (refusal == DOM_SERVER_REFUSE_NONE &&
-            refusal_shadow == DOM_SERVER_REFUSE_NONE &&
-            runtime.now_tick == record->manifest.tick &&
-            state_hash_after == state_hash_shadow &&
-            state_hash_after == state_hash_checkpoint) ? 0 : 1;
+    {
+        const dom_act_time_t runtime_tick = runtime->now_tick;
+        const dom_act_time_t checkpoint_tick = record->manifest.tick;
+        const int ok = (refusal == DOM_SERVER_REFUSE_NONE &&
+                        refusal_shadow == DOM_SERVER_REFUSE_NONE &&
+                        runtime_tick == checkpoint_tick &&
+                        state_hash_after == state_hash_shadow &&
+                        state_hash_after == state_hash_checkpoint) ? 0 : 1;
+        free(runtime);
+        free(shadow);
+        return ok;
+    }
 }
 
 static int mmo_run_ops_shards(u32 workers)
 {
     dom_server_runtime_config config;
-    dom_server_runtime runtime;
+    dom_server_runtime* runtime = 0;
     u64 domain_id = 0u;
     dom_shard_id owner_after = 0u;
     u32 refusal_gap = 0u;
     u32 refusal_state = 0u;
 
     mmo_config_default(&config, 2u, workers);
-    if (dom_server_runtime_init(&runtime, &config) != 0) {
-        fprintf(stderr, "mmo: failed to init runtime\n");
+    runtime = (dom_server_runtime*)calloc(1u, sizeof(*runtime));
+    if (!runtime) {
+        fprintf(stderr, "mmo: failed to allocate runtime\n");
         return 2;
     }
-    (void)dom_server_runtime_add_client(&runtime, 1001u, 1u, 0);
-    (void)dom_server_runtime_add_client(&runtime, 1002u, 2u, 0);
-    domain_id = runtime.shards[0].domain_storage[0].domain_id;
+    if (dom_server_runtime_init(runtime, &config) != 0) {
+        fprintf(stderr, "mmo: failed to init runtime\n");
+        free(runtime);
+        return 2;
+    }
+    (void)dom_server_runtime_add_client(runtime, 1001u, 1u, 0);
+    (void)dom_server_runtime_add_client(runtime, 1002u, 2u, 0);
+    domain_id = runtime->shards[0].domain_storage[0].domain_id;
 
-    (void)dom_server_runtime_set_shard_version(&runtime, 2u, 2u, 2u, 0u);
-    (void)mmo_submit_intent(&runtime, 1001u, 1u, domain_id, DOM_SERVER_INTENT_TRANSFER_OWNERSHIP, 0u, 2u, 8u, 10011u, 0);
-    (void)dom_server_runtime_tick(&runtime, 2);
-    refusal_gap = mmo_count_refusals(&runtime, DOM_SERVER_REFUSE_CAPABILITY_GAP);
+    (void)dom_server_runtime_set_shard_version(runtime, 2u, 2u, 2u, 0u);
+    (void)mmo_submit_intent(runtime, 1001u, 1u, domain_id, DOM_SERVER_INTENT_TRANSFER_OWNERSHIP, 0u, 2u, 8u, 10011u, 0);
+    (void)dom_server_runtime_tick(runtime, 2);
+    refusal_gap = mmo_count_refusals(runtime, DOM_SERVER_REFUSE_CAPABILITY_GAP);
 
-    (void)dom_server_runtime_set_shard_state(&runtime, 2u, DOM_SHARD_LIFECYCLE_DRAINING, 11u);
-    (void)dom_server_runtime_set_shard_state(&runtime, 2u, DOM_SHARD_LIFECYCLE_ACTIVE, 12u);
-    (void)dom_server_runtime_set_shard_version(&runtime, 2u, 3u, 1u, 0u);
-    (void)mmo_submit_intent(&runtime, 1001u, 1u, domain_id, DOM_SERVER_INTENT_TRANSFER_OWNERSHIP, 0u, 2u, 8u, 10012u, 3);
-    (void)dom_server_runtime_tick(&runtime, 4);
+    (void)dom_server_runtime_set_shard_state(runtime, 2u, DOM_SHARD_LIFECYCLE_DRAINING, 11u);
+    (void)dom_server_runtime_set_shard_state(runtime, 2u, DOM_SHARD_LIFECYCLE_ACTIVE, 12u);
+    (void)dom_server_runtime_set_shard_version(runtime, 2u, 3u, 1u, 0u);
+    (void)mmo_submit_intent(runtime, 1001u, 1u, domain_id, DOM_SERVER_INTENT_TRANSFER_OWNERSHIP, 0u, 2u, 8u, 10012u, 3);
+    (void)dom_server_runtime_tick(runtime, 4);
 
-    owner_after = mmo_owner_for_domain(&runtime, domain_id);
-    refusal_state = mmo_count_refusals(&runtime, DOM_SERVER_REFUSE_SHARD_STATE);
+    owner_after = mmo_owner_for_domain(runtime, domain_id);
+    refusal_state = mmo_count_refusals(runtime, DOM_SERVER_REFUSE_SHARD_STATE);
 
     printf("scenario=ops_shards workers=%u invariants=%s\n",
            (unsigned int)workers,
@@ -604,43 +674,50 @@ static int mmo_run_ops_shards(u32 workers)
            (unsigned int)refusal_gap,
            (unsigned int)refusal_state,
            (unsigned int)owner_after,
-           (unsigned int)runtime.lifecycle_log.count,
-           (unsigned int)runtime.checkpoints_taken);
+           (unsigned int)runtime->lifecycle_log.count,
+           (unsigned int)runtime->checkpoints_taken);
     printf("shard.1 state=%s version=%u caps=%llu\n",
-           dom_shard_lifecycle_state_name(runtime.shards[0].lifecycle_state),
-           (unsigned int)runtime.shards[0].version_id,
-           (unsigned long long)runtime.shards[0].capability_mask);
+           dom_shard_lifecycle_state_name(runtime->shards[0].lifecycle_state),
+           (unsigned int)runtime->shards[0].version_id,
+           (unsigned long long)runtime->shards[0].capability_mask);
     printf("shard.2 state=%s version=%u caps=%llu baseline=%llu\n",
-           dom_shard_lifecycle_state_name(runtime.shards[1].lifecycle_state),
-           (unsigned int)runtime.shards[1].version_id,
-           (unsigned long long)runtime.shards[1].capability_mask,
-           (unsigned long long)runtime.shards[1].baseline_hash);
+           dom_shard_lifecycle_state_name(runtime->shards[1].lifecycle_state),
+           (unsigned int)runtime->shards[1].version_id,
+           (unsigned long long)runtime->shards[1].capability_mask,
+           (unsigned long long)runtime->shards[1].baseline_hash);
 
+    free(runtime);
     return (refusal_gap > 0u && owner_after == 2u) ? 0 : 1;
 }
 
 static int mmo_run_ops_log(u32 workers)
 {
     dom_server_runtime_config config;
-    dom_server_runtime runtime;
+    dom_server_runtime* runtime = 0;
     u64 domain_id = 0u;
     u32 message_before = 0u;
     u32 message_after = 0u;
     dom_shard_id owner_after = 0u;
 
     mmo_config_default(&config, 2u, workers);
-    if (dom_server_runtime_init(&runtime, &config) != 0) {
-        fprintf(stderr, "mmo: failed to init runtime\n");
+    runtime = (dom_server_runtime*)calloc(1u, sizeof(*runtime));
+    if (!runtime) {
+        fprintf(stderr, "mmo: failed to allocate runtime\n");
         return 2;
     }
-    (void)dom_server_runtime_add_client(&runtime, 1101u, 1u, 0);
-    domain_id = runtime.shards[0].domain_storage[0].domain_id;
+    if (dom_server_runtime_init(runtime, &config) != 0) {
+        fprintf(stderr, "mmo: failed to init runtime\n");
+        free(runtime);
+        return 2;
+    }
+    (void)dom_server_runtime_add_client(runtime, 1101u, 1u, 0);
+    domain_id = runtime->shards[0].domain_storage[0].domain_id;
 
-    (void)mmo_submit_intent(&runtime, 1101u, 1u, domain_id, DOM_SERVER_INTENT_TRANSFER_OWNERSHIP, 0u, 2u, 8u, 11011u, 0);
-    (void)dom_server_runtime_tick(&runtime, 0);
-    message_before = runtime.message_log.message_count;
+    (void)mmo_submit_intent(runtime, 1101u, 1u, domain_id, DOM_SERVER_INTENT_TRANSFER_OWNERSHIP, 0u, 2u, 8u, 11011u, 0);
+    (void)dom_server_runtime_tick(runtime, 0);
+    message_before = runtime->message_log.message_count;
     if (message_before > 0u) {
-        const dom_cross_shard_message* msg = &runtime.message_storage[0];
+        const dom_cross_shard_message* msg = &runtime->message_storage[0];
         printf("log.peek id=%llu origin=%u dest=%u delivery=%lld order=%llu\n",
                (unsigned long long)msg->message_id,
                (unsigned int)msg->origin_shard_id,
@@ -649,9 +726,9 @@ static int mmo_run_ops_log(u32 workers)
                (unsigned long long)msg->order_key);
     }
 
-    (void)dom_server_runtime_tick(&runtime, 1);
-    message_after = runtime.message_log.message_count;
-    owner_after = mmo_owner_for_domain(&runtime, domain_id);
+    (void)dom_server_runtime_tick(runtime, 1);
+    message_after = runtime->message_log.message_count;
+    owner_after = mmo_owner_for_domain(runtime, domain_id);
 
     printf("scenario=ops_log workers=%u invariants=%s\n",
            (unsigned int)workers,
@@ -660,8 +737,9 @@ static int mmo_run_ops_log(u32 workers)
            (unsigned int)message_before,
            (unsigned int)message_after,
            (unsigned int)owner_after,
-           (unsigned long long)runtime.message_applied);
+           (unsigned long long)runtime->message_applied);
 
+    free(runtime);
     return (message_before > 0u && message_after == 0u && owner_after == 2u) ? 0 : 1;
 }
 

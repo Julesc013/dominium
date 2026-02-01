@@ -1089,7 +1089,7 @@ Breaks if violated:
 Enforced by:
 
 
-- `docs/architecture/DISTRIBUTED_SIM_MODEL.md`
+- `docs/architecture/DISTRIBUTED_SIMULATION_MODEL.md`
 
 
 - `docs/architecture/MMO_COMPATIBILITY.md`
@@ -1119,7 +1119,7 @@ Breaks if violated:
 Enforced by:
 
 
-- `docs/architecture/DISTRIBUTED_SIM_MODEL.md`
+- `docs/architecture/DISTRIBUTED_SIMULATION_MODEL.md`
 
 
 - `docs/architecture/CROSS_SHARD_LOG.md`
@@ -1269,7 +1269,7 @@ Enforced by:
 - `docs/architecture/MMO_COMPATIBILITY.md`
 
 
-- `docs/architecture/DISTRIBUTED_SIM_MODEL.md`
+- `docs/architecture/DISTRIBUTED_SIMULATION_MODEL.md`
 
 
 - Tests: `tests/app/mmo0_distributed_contract_tests.py`

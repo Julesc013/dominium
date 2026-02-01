@@ -10,9 +10,17 @@ Client shell core implementation.
 #include <string.h>
 #include <stdlib.h>
 #include <stdarg.h>
+#include <errno.h>
 #include <ctype.h>
 #include <math.h>
 #include <time.h>
+#if defined(_WIN32)
+#include <direct.h>
+#endif
+
+#if !defined(_WIN32)
+int mkdir(const char* path, int mode);
+#endif
 
 
 #define DOM_REFUSAL_INVALID "WD-REFUSAL-INVALID"
@@ -58,6 +66,7 @@ Client shell core implementation.
 #define DOM_SHELL_SIGNAL_INT_MIN 0
 #define DOM_SHELL_SIGNAL_INT_MAX 1024
 
+#define DOM_SHELL_PATH_MAX 512
 #define DOM_SHELL_DEFAULT_SAVE_PATH "data/saves/world.save"
 #define DOM_SHELL_DEFAULT_REPLAY_PATH "data/saves/session.replay"
 #define DOM_SHELL_COMPAT_SUFFIX ".compat_report.json"
@@ -3230,7 +3239,6 @@ void dom_client_shell_init(dom_client_shell* shell)
     dom_shell_policy_set_add(&shell->create_mode, DOM_SHELL_MODE_FREE);
     dom_shell_policy_set_add(&shell->create_mode, DOM_SHELL_MODE_ORBIT);
     dom_shell_policy_set_add(&shell->create_mode, DOM_SHELL_MODE_SURFACE);
-    dom_shell_policy_set_add(&shell->create_debug, "policy.debug.readonly");
     dom_shell_policy_set_add(&shell->create_interaction, DOM_SHELL_POLICY_INTERACTION_PLACE);
     dom_shell_policy_set_add(&shell->create_interaction, DOM_SHELL_POLICY_INTERACTION_REMOVE);
     dom_shell_policy_set_add(&shell->create_interaction, DOM_SHELL_POLICY_INTERACTION_SIGNAL);
@@ -3379,6 +3387,130 @@ static int dom_shell_extract_seed(const char* worlddef_id, uint64_t* out_seed)
     }
     pos += strlen(tag);
     return dom_shell_parse_u64(pos, out_seed);
+}
+
+static const char* dom_shell_env_or_default(const char* key, const char* fallback)
+{
+    const char* value = getenv(key);
+    if (value && value[0]) {
+        return value;
+    }
+    return fallback;
+}
+
+static void dom_shell_copy_string(char* out, size_t cap, const char* value)
+{
+    if (!out || cap == 0u) {
+        return;
+    }
+    if (!value) {
+        out[0] = '\0';
+        return;
+    }
+    strncpy(out, value, cap - 1u);
+    out[cap - 1u] = '\0';
+}
+
+static void dom_shell_join_path(char* out, size_t cap, const char* base, const char* leaf)
+{
+    size_t len;
+    if (!out || cap == 0u) {
+        return;
+    }
+    out[0] = '\0';
+    if (!base || !base[0]) {
+        dom_shell_copy_string(out, cap, leaf ? leaf : "");
+        return;
+    }
+    dom_shell_copy_string(out, cap, base);
+    len = strlen(out);
+    if (len + 1u >= cap) {
+        return;
+    }
+    if (len > 0u && out[len - 1u] != '/' && out[len - 1u] != '\\') {
+        out[len++] = '/';
+        out[len] = '\0';
+    }
+    if (leaf && leaf[0] && len + strlen(leaf) < cap) {
+        strncat(out, leaf, cap - len - 1u);
+    }
+}
+
+static int dom_shell_ensure_dir(const char* path)
+{
+    if (!path || !path[0]) {
+        return 0;
+    }
+#if defined(_WIN32)
+    if (_mkdir(path) == 0) {
+        return 1;
+    }
+    if (errno == EEXIST) {
+        return 1;
+    }
+#else
+    if (mkdir(path, 0755) == 0) {
+        return 1;
+    }
+    if (errno == EEXIST) {
+        return 1;
+    }
+#endif
+    return 0;
+}
+
+static int dom_shell_file_exists(const char* path)
+{
+    FILE* f;
+    if (!path || !path[0]) {
+        return 0;
+    }
+    f = fopen(path, "rb");
+    if (f) {
+        fclose(f);
+        return 1;
+    }
+    return 0;
+}
+
+static void dom_shell_default_data_root(char* out, size_t cap)
+{
+    const char* instance_root = dom_shell_env_or_default("DOM_INSTANCE_ROOT", "");
+    const char* data_root = dom_shell_env_or_default("DOM_DATA_ROOT", "");
+    if (!data_root || !data_root[0]) {
+        data_root = (instance_root && instance_root[0]) ? instance_root : "data";
+    }
+    dom_shell_copy_string(out, cap, data_root);
+}
+
+static void dom_shell_build_world_save_path(const char* data_root,
+                                            unsigned long long seed,
+                                            char* out,
+                                            size_t cap)
+{
+    char root[DOM_SHELL_PATH_MAX];
+    char saves_root[DOM_SHELL_PATH_MAX];
+    int attempt = 0;
+    if (!out || cap == 0u) {
+        return;
+    }
+    out[0] = '\0';
+    dom_shell_copy_string(root, sizeof(root), (data_root && data_root[0]) ? data_root : "data");
+    dom_shell_join_path(saves_root, sizeof(saves_root), root, "saves");
+    (void)dom_shell_ensure_dir(root);
+    (void)dom_shell_ensure_dir(saves_root);
+    while (attempt < 100) {
+        if (attempt == 0) {
+            snprintf(out, cap, "%s/world_%llu.save", saves_root, seed);
+        } else {
+            snprintf(out, cap, "%s/world_%llu_%d.save", saves_root, seed, attempt);
+        }
+        if (!dom_shell_file_exists(out)) {
+            return;
+        }
+        attempt += 1;
+    }
+    snprintf(out, cap, "%s/world_%llu.save", saves_root, seed);
 }
 
 static void dom_shell_sync_world_pose(dom_shell_world_state* world)
@@ -8524,6 +8656,8 @@ int dom_client_shell_execute(dom_client_shell* shell,
         dom_shell_policy_set interaction = shell->create_interaction;
         dom_shell_policy_set playtest = shell->create_playtest;
         dom_shell_policy_set camera = shell->create_camera;
+        const char* save_path = 0;
+        int persist_save = 0;
         while ((next = strtok(0, " \t")) != 0) {
             char* eq = strchr(next, '=');
             if (!eq) {
@@ -8536,6 +8670,13 @@ int dom_client_shell_execute(dom_client_shell* shell,
                 }
             } else if (strcmp(next, "seed") == 0) {
                 dom_shell_parse_u64(eq + 1, &seed);
+            } else if (strcmp(next, "path") == 0) {
+                save_path = eq + 1;
+                if (save_path && save_path[0]) {
+                    persist_save = 1;
+                }
+            } else if (strcmp(next, "persist") == 0) {
+                persist_save = (strcmp(eq + 1, "0") != 0);
             } else if (strcmp(next, "policy.movement") == 0) {
                 dom_shell_policy_set_from_csv(&movement, eq + 1);
             } else if (strcmp(next, "policy.authority") == 0) {
@@ -8561,7 +8702,48 @@ int dom_client_shell_execute(dom_client_shell* shell,
         dom_shell_policy_set_copy(&shell->create_interaction, &interaction);
         dom_shell_policy_set_copy(&shell->create_playtest, &playtest);
         dom_shell_policy_set_copy(&shell->create_camera, &camera);
-        return dom_client_shell_create_world(shell, log, status, status_cap, emit_text);
+        {
+            int create_res = dom_client_shell_create_world(shell, log, status, status_cap, emit_text);
+            char save_path_buf[DOM_SHELL_PATH_MAX];
+            char save_status[64];
+            if (create_res != D_APP_EXIT_OK || !shell->world.active) {
+                return create_res;
+            }
+            if (!save_path || !save_path[0]) {
+                char data_root[DOM_SHELL_PATH_MAX];
+                dom_shell_default_data_root(data_root, sizeof(data_root));
+                dom_shell_build_world_save_path(data_root,
+                                                (unsigned long long)shell->create_seed,
+                                                save_path_buf,
+                                                sizeof(save_path_buf));
+                save_path = save_path_buf;
+            }
+            save_status[0] = '\0';
+            {
+                int save_res = dom_client_shell_save_world(shell,
+                                                           save_path,
+                                                           log,
+                                                           save_status,
+                                                           sizeof(save_status),
+                                                           emit_text);
+                if (save_res == D_APP_EXIT_OK && !persist_save) {
+                    char compat_path[DOM_SHELL_PATH_MAX];
+                    snprintf(compat_path, sizeof(compat_path), "%s%s",
+                             save_path, DOM_SHELL_COMPAT_SUFFIX);
+                    (void)remove(save_path);
+                    (void)remove(compat_path);
+                }
+                if (save_res == D_APP_EXIT_OK) {
+                    dom_shell_set_status(shell, "world_create=ok world_save=ok path=%s", save_path);
+                } else {
+                    dom_shell_set_status(shell, "world_create=ok world_save=refused path=%s", save_path);
+                }
+                if (status && status_cap > 0u) {
+                    snprintf(status, status_cap, "%s", shell->last_status);
+                }
+                return save_res;
+            }
+        }
     }
     if (strcmp(token, "scenario-load") == 0 || strcmp(token, "load-scenario") == 0) {
         const char* path = 0;

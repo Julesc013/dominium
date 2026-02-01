@@ -174,7 +174,7 @@ Distributed saves and replays must remain valid canon artifacts:
 
 
 
-- `docs/architecture/DISTRIBUTED_SIM_MODEL.md`
+- `docs/architecture/DISTRIBUTED_SIMULATION_MODEL.md`
 
 
 - `docs/architecture/JOIN_RESYNC_CONTRACT.md`

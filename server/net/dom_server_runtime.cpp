@@ -6,6 +6,7 @@ RESPONSIBILITY: Deterministic authoritative server runtime for MMO-1.
 */
 #include "dom_server_runtime.h"
 
+#include <stdlib.h>
 #include <string.h>
 
 #ifdef __cplusplus
@@ -83,10 +84,11 @@ static u64 dom_server_domain_hash(const dom_scale_domain_slot* slot,
                                   dom_act_time_t tick,
                                   u32 workers)
 {
+    (void)workers;
     if (!slot) {
         return 1469598103934665603ULL;
     }
-    return dom_scale_domain_hash(slot, tick, workers);
+    return dom_scale_domain_hash(slot, tick, 1u);
 }
 
 static u64 dom_server_scale_event_hash(const dom_scale_event_log* log)
@@ -1302,26 +1304,22 @@ static int dom_server_process_intent(dom_server_runtime* runtime,
 
 static void dom_server_process_deferred(dom_server_runtime* runtime)
 {
-    dom_server_deferred_intent pending[DOM_SERVER_MAX_DEFERRED];
     u32 pending_count = 0u;
     u32 i;
     if (!runtime || runtime->deferred_count == 0u) {
         return;
     }
     for (i = 0u; i < runtime->deferred_count; ++i) {
-        dom_server_deferred_intent* item = &runtime->deferred[i];
-        if (item->intent.intent_tick > runtime->now_tick) {
-            pending[pending_count++] = *item;
+        dom_server_deferred_intent item = runtime->deferred[i];
+        if (item.intent.intent_tick > runtime->now_tick) {
+            runtime->deferred[pending_count++] = item;
             continue;
         }
-        if (!dom_server_process_intent(runtime, &item->intent)) {
-            pending[pending_count++] = *item;
+        if (!dom_server_process_intent(runtime, &item.intent)) {
+            runtime->deferred[pending_count++] = item;
         }
     }
     runtime->deferred_count = pending_count;
-    for (i = 0u; i < pending_count; ++i) {
-        runtime->deferred[i] = pending[i];
-    }
     dom_server_sort_deferred(runtime->deferred, runtime->deferred_count);
 }
 
@@ -1341,41 +1339,20 @@ static void dom_server_process_messages(dom_server_runtime* runtime)
     }
 }
 
-static void dom_server_collect_ready_intents(dom_server_runtime* runtime,
-                                             dom_server_intent* out_ready,
-                                             u32* out_ready_count)
-{
-    u32 i;
-    u32 ready_count = 0u;
-    if (!runtime || !out_ready || !out_ready_count) {
-        return;
-    }
-    for (i = 0u; i < runtime->intent_count; ++i) {
-        if (runtime->intents[i].intent_tick <= runtime->now_tick) {
-            out_ready[ready_count++] = runtime->intents[i];
-        }
-    }
-    dom_server_sort_intents(out_ready, ready_count);
-    *out_ready_count = ready_count;
-}
-
 static void dom_server_retain_future_intents(dom_server_runtime* runtime)
 {
-    dom_server_intent future[DOM_SERVER_MAX_INTENTS];
     u32 future_count = 0u;
     u32 i;
     if (!runtime) {
         return;
     }
     for (i = 0u; i < runtime->intent_count; ++i) {
-        if (runtime->intents[i].intent_tick > runtime->now_tick) {
-            future[future_count++] = runtime->intents[i];
+        dom_server_intent intent = runtime->intents[i];
+        if (intent.intent_tick > runtime->now_tick) {
+            runtime->intents[future_count++] = intent;
         }
     }
     runtime->intent_count = future_count;
-    for (i = 0u; i < future_count; ++i) {
-        runtime->intents[i] = future[i];
-    }
     dom_server_sort_intents(runtime->intents, runtime->intent_count);
 }
 
@@ -1611,8 +1588,6 @@ int dom_server_runtime_tick(dom_server_runtime* runtime, dom_act_time_t tick)
         return -2;
     }
     for (t = runtime->now_tick; t <= tick; ++t) {
-        dom_server_intent ready[DOM_SERVER_MAX_INTENTS];
-        u32 ready_count = 0u;
         u32 i;
         runtime->now_tick = t;
         for (i = 0u; i < runtime->client_count; ++i) {
@@ -1623,9 +1598,10 @@ int dom_server_runtime_tick(dom_server_runtime* runtime, dom_act_time_t tick)
         }
         dom_server_process_messages(runtime);
         dom_server_process_deferred(runtime);
-        dom_server_collect_ready_intents(runtime, ready, &ready_count);
-        for (i = 0u; i < ready_count; ++i) {
-            (void)dom_server_process_intent(runtime, &ready[i]);
+        for (i = 0u; i < runtime->intent_count; ++i) {
+            if (runtime->intents[i].intent_tick <= runtime->now_tick) {
+                (void)dom_server_process_intent(runtime, &runtime->intents[i]);
+            }
         }
         dom_server_retain_future_intents(runtime);
         dom_server_checkpoint_schedule(runtime);
@@ -1658,7 +1634,6 @@ int dom_server_runtime_join(dom_server_runtime* runtime,
     out_bundle->client_id = client->client_id;
     out_bundle->assigned_shard_id = shard->shard_id;
     out_bundle->tick = runtime->now_tick;
-    out_bundle->world_hash = dom_server_runtime_hash(runtime);
     out_bundle->capability_hash = dom_server_capability_hash(client);
     dom_server_snapshot_for_shard(shard, &out_bundle->snapshot);
     out_bundle->inspect_only = client->policy.inspect_only;
@@ -1673,6 +1648,7 @@ int dom_server_runtime_join(dom_server_runtime* runtime,
     ev.client_budget = client->budget_state;
     dom_server_capture_scale_budget(&shard->scale_ctx, &ev.scale_budget);
     (void)dom_server_event_append(runtime, shard, &ev);
+    out_bundle->world_hash = dom_server_runtime_hash(runtime);
     return 0;
 }
 
@@ -1701,7 +1677,6 @@ int dom_server_runtime_resync(dom_server_runtime* runtime,
     out_bundle->client_id = client->client_id;
     out_bundle->shard_id = shard->shard_id;
     out_bundle->tick = runtime->now_tick;
-    out_bundle->world_hash = dom_server_runtime_hash(runtime);
     dom_server_snapshot_for_shard(shard, &out_bundle->snapshot);
     out_bundle->event_tail_index = runtime->event_count;
     out_bundle->message_tail_index = (u32)(runtime->message_sequence & 0xFFFFFFFFu);
@@ -1716,6 +1691,7 @@ int dom_server_runtime_resync(dom_server_runtime* runtime,
     ev.client_budget = client->budget_state;
     dom_server_capture_scale_budget(&shard->scale_ctx, &ev.scale_budget);
     (void)dom_server_event_append(runtime, shard, &ev);
+    out_bundle->world_hash = dom_server_runtime_hash(runtime);
     return refusal == DOM_SERVER_REFUSE_NONE ? 0 : 1;
 }
 
@@ -1878,7 +1854,7 @@ int dom_server_runtime_scale_snapshot(dom_server_runtime* runtime,
 int dom_server_runtime_checkpoint(dom_server_runtime* runtime,
                                   u32 trigger_reason)
 {
-    dom_checkpoint_record record;
+    dom_checkpoint_record* record = 0;
     dom_server_event ev;
     dom_server_shard* event_shard = 0;
     u32 snapshot_costs[DOM_SERVER_MAX_SHARDS];
@@ -1891,7 +1867,10 @@ int dom_server_runtime_checkpoint(dom_server_runtime* runtime,
     if (!runtime) {
         return -1;
     }
-    memset(&record, 0, sizeof(record));
+    record = (dom_checkpoint_record*)calloc(1u, sizeof(*record));
+    if (!record) {
+        return -2;
+    }
     if (runtime->shard_count > 0u) {
         event_shard = &runtime->shards[0];
     }
@@ -1926,14 +1905,14 @@ int dom_server_runtime_checkpoint(dom_server_runtime* runtime,
     }
     budgets_consumed = 1;
 
-    rc = dom_checkpoint_capture(&record, runtime, trigger_reason);
+    rc = dom_checkpoint_capture(record, runtime, trigger_reason);
     if (rc != 0) {
         refusal = DOM_SERVER_REFUSE_INTEGRITY_VIOLATION;
         detail = DOM_SERVER_DETAIL_CHECKPOINT_SCHEMA;
         goto dom_checkpoint_refuse;
     }
 
-    rc = dom_checkpoint_store_record(&runtime->checkpoint_store, &record);
+    rc = dom_checkpoint_store_record(&runtime->checkpoint_store, record);
     if (rc != 0) {
         refusal = DOM_SERVER_REFUSE_INTEGRITY_VIOLATION;
         detail = DOM_SERVER_DETAIL_CHECKPOINT_POLICY;
@@ -1950,12 +1929,13 @@ int dom_server_runtime_checkpoint(dom_server_runtime* runtime,
     ev.event_kind = DOM_SERVER_EVENT_CHECKPOINT;
     ev.detail_code = trigger_reason;
     ev.payload_u32 = runtime->checkpoints_taken;
-    ev.causal_id = record.manifest.checkpoint_id;
+    ev.causal_id = record->manifest.checkpoint_id;
     if (event_shard) {
         dom_server_capture_scale_budget(&event_shard->scale_ctx, &ev.scale_budget);
     }
     (void)dom_server_event_append(runtime, event_shard, &ev);
-    dom_checkpoint_record_dispose(&record);
+    dom_checkpoint_record_dispose(record);
+    free(record);
     return 0;
 
 dom_checkpoint_refuse:
@@ -1975,7 +1955,8 @@ dom_checkpoint_refuse:
         dom_server_capture_scale_budget(&event_shard->scale_ctx, &ev.scale_budget);
     }
     (void)dom_server_event_append(runtime, event_shard, &ev);
-    dom_checkpoint_record_dispose(&record);
+    dom_checkpoint_record_dispose(record);
+    free(record);
     return rc;
 }
 

@@ -18,7 +18,7 @@ static int test_store_roundtrip(void)
     dom_macro_capsule_blob blob;
     const unsigned char payload_a[] = "MACRO_CAPSULE_V1\ncapsule_id=1001\nEND_MACRO_CAPSULE\n";
     const unsigned char payload_b[] = "MACRO_CAPSULE_V1\ncapsule_id=2002\next=x.y.z\nEND_MACRO_CAPSULE\n";
-    const char* path = "engine/tests/tmp_macro_capsule.save";
+    const char* path = "tmp_macro_capsule.save";
     int ok = 0;
 
     cfg.seed = 7u;

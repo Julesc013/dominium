@@ -253,7 +253,6 @@ set(ENGINE_SYSTEM_SOURCES
     modules/system/dsys_dir_sorted.c
     modules/system/dsys_perf.c
     modules/system/dsys_platform_stub.c
-    modules/system/dsys_stub.c
     modules/system/dsys_term.c
     modules/system/dsys_posix.c
     modules/system/dsys_sdl2_stub.c

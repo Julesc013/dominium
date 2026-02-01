@@ -547,6 +547,44 @@ static void terrain_make_tile_bounds(const dom_domain_aabb* bounds,
     out_bounds->max = maxp;
 }
 
+static void terrain_pick_outside_point(const dom_domain_aabb* tile_bounds,
+                                       const dom_domain_aabb* domain_bounds,
+                                       const dom_domain_point* origin,
+                                       dom_domain_point* out_point)
+{
+    q16_16 step;
+    if (!tile_bounds || !domain_bounds || !origin || !out_point) {
+        return;
+    }
+    step = d_q16_16_from_int(1);
+    *out_point = *origin;
+
+    if (d_q16_16_add(tile_bounds->max.x, step) <= domain_bounds->max.x) {
+        out_point->x = d_q16_16_add(tile_bounds->max.x, step);
+        return;
+    }
+    if (d_q16_16_sub(tile_bounds->min.x, step) >= domain_bounds->min.x) {
+        out_point->x = d_q16_16_sub(tile_bounds->min.x, step);
+        return;
+    }
+    if (d_q16_16_add(tile_bounds->max.y, step) <= domain_bounds->max.y) {
+        out_point->y = d_q16_16_add(tile_bounds->max.y, step);
+        return;
+    }
+    if (d_q16_16_sub(tile_bounds->min.y, step) >= domain_bounds->min.y) {
+        out_point->y = d_q16_16_sub(tile_bounds->min.y, step);
+        return;
+    }
+    if (d_q16_16_add(tile_bounds->max.z, step) <= domain_bounds->max.z) {
+        out_point->z = d_q16_16_add(tile_bounds->max.z, step);
+        return;
+    }
+    if (d_q16_16_sub(tile_bounds->min.z, step) >= domain_bounds->min.z) {
+        out_point->z = d_q16_16_sub(tile_bounds->min.z, step);
+        return;
+    }
+}
+
 static int terrain_build_tile_desc(const dom_terrain_domain* domain,
                                    const dom_domain_point* point,
                                    u32 resolution,
@@ -850,7 +888,6 @@ static int terrain_run_collapse(const terrain_fixture* fixture,
     dom_terrain_sample outside;
     dom_domain_point outside_point;
     const dom_domain_sdf_source* source;
-    q16_16 tile_size;
     u32 count_before;
     u32 count_after;
     u32 count_final;
@@ -865,10 +902,6 @@ static int terrain_run_collapse(const terrain_fixture* fixture,
         dom_terrain_domain_free(&domain);
         return 1;
     }
-    tile_size = domain.volume.policy.tile_size;
-    if (tile_size <= 0) {
-        tile_size = d_q16_16_from_int(64);
-    }
 
     count_before = dom_terrain_domain_capsule_count(&domain);
     if (!terrain_build_tile_desc(&domain, &nav->points[0], DOM_DOMAIN_RES_COARSE, &desc)) {
@@ -881,11 +914,7 @@ static int terrain_run_collapse(const terrain_fixture* fixture,
     dom_domain_budget_init(&budget, budget_max);
     (void)dom_terrain_sample_query(&domain, &nav->points[0], &budget, &inside);
 
-    outside_point = nav->points[0];
-    outside_point.x = d_q16_16_add(outside_point.x, d_q16_16_mul(tile_size, d_q16_16_from_int(2)));
-    if (outside_point.x > source->bounds.max.x) {
-        outside_point.x = d_q16_16_sub(source->bounds.max.x, d_q16_16_from_int(1));
-    }
+    terrain_pick_outside_point(&desc.bounds, &source->bounds, &nav->points[0], &outside_point);
 
     dom_domain_budget_init(&budget, budget_max);
     (void)dom_terrain_sample_query(&domain, &outside_point, &budget, &outside);

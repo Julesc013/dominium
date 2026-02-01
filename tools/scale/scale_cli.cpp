@@ -442,6 +442,9 @@ static int scale_run_collapse_expand(u32 domain_kind,
     memset(&collapse_res, 0, sizeof(collapse_res));
     memset(&expand_res, 0, sizeof(expand_res));
     (void)dom_scale_collapse_domain(&ctx, &token, slot->domain_id, 1u, &collapse_res);
+    if (collapse_res.capsule_id != 0u) {
+        slot->capsule_id = collapse_res.capsule_id;
+    }
     (void)dom_scale_expand_domain(&ctx, &token, slot->capsule_id, DOM_FID_MICRO, 2u, &expand_res);
     hash_after = dom_scale_domain_hash(slot, now_tick, workers);
     hash_match = (hash_before == hash_after) ? 1 : 0;
@@ -856,7 +859,7 @@ static int scale_run_refusal(u32 workers, const char* case_name)
     printf("scenario=refusal case=%s workers=%u invariants=%s refusal=%s refusal_code=%u defer=%s\n",
            case_token,
            workers,
-           "SCALE0-CONSERVE-002,SCALE0-COMMIT-003,SCALE0-REPLAY-008,SCALE3-ADMISSION-010",
+           "SCALE0-CONSERVE-002,SCALE0-COMMIT-003,SCALE0-REPLAY-008,SCALE3-BUDGET-009,SCALE3-ADMISSION-010",
            dom_scale_refusal_to_string(log_refusal),
            (unsigned int)log_refusal,
            dom_scale_defer_to_string(log_defer));
@@ -1098,6 +1101,8 @@ static int scale_run_constcost(u32 workers,
     /* Isolate measurement to active work only. */
     dom_scale_event_log_clear(&event_log);
     dom_scale_deferred_clear(&ctx);
+    dom_macro_event_queue_clear(world);
+    dom_macro_schedule_store_clear(world);
 
     ctx.now_tick = target_tick;
     ctx.budget_policy.active_domain_budget = active_count;

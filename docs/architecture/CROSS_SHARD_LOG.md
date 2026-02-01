@@ -255,7 +255,7 @@ Cross-shard logs MUST be:
 
 
 
-- `docs/architecture/DISTRIBUTED_SIM_MODEL.md`
+- `docs/architecture/DISTRIBUTED_SIMULATION_MODEL.md`
 
 
 - `docs/architecture/DISTRIBUTED_TIME_MODEL.md`

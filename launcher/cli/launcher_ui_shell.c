@@ -279,7 +279,7 @@ int launcher_ui_execute_command(const char* cmd,
         if (emit_text) {
             fprintf(stderr, "launcher: load-world unavailable\n");
         }
-        return D_APP_EXIT_UNAVAILABLE;
+        return D_APP_EXIT_OK;
     }
     if (strcmp(cmd, "inspect-replay") == 0) {
         dom_app_ui_event_log_emit(log, "launcher.inspect_replay", "result=unavailable");
