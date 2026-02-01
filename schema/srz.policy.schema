@@ -4,7 +4,7 @@ schema_version: 1.0.0
 stability: core
 
 PURPOSE:
-- Define SRZ verification policies and replay parameters.
+- Define SRZ verification policies and deterministic verification budgets.
 
 STABILITY GUARANTEES:
 - Required fields MUST exist.
@@ -13,8 +13,8 @@ STABILITY GUARANTEES:
 - Identifiers are stable and MUST NOT be reused with new meaning.
 
 NON-SEMANTICS:
-- Policies do NOT override zone mode selection.
-- Policies do NOT define execution algorithms.
+- Policies do NOT grant authority beyond assigned SRZs.
+- Policies define verification parameters only.
 
 CONVENTIONS:
 - id: stable namespaced string; opaque.
@@ -40,9 +40,8 @@ record srz_policy
     - policy_id: id
     - verification_policy: tag
     - spot_check_rate: quantity
-    - strict_replay_interval: quantity
-    - max_segment_ticks: quantity
-    - provenance: provenance
+    - strict_interval: quantity
+    - max_segment: quantity
     - unit_annotations: map
     - maturity: tag
     - extensions: map
@@ -72,6 +71,6 @@ MIGRATION:
 
 UNIT POLICY:
 - spot_check_rate uses `unit.dimensionless.ratio`.
-- strict_replay_interval uses `unit.time.act_tick`.
-- max_segment_ticks uses `unit.time.act_tick`.
+- strict_interval uses `unit.time.act_tick`.
+- max_segment uses `unit.count`.
 - All numeric values MUST reference a unit tag from `docs/architecture/UNIT_SYSTEM_POLICY.md`.

@@ -4,7 +4,7 @@ schema_version: 1.0.0
 stability: core
 
 PURPOSE:
-- Define Simulation Responsibility Zones (SRZs) and their verification policies.
+- Define Simulation Responsibility Zones (SRZs), their domains, and execution modes.
 
 STABILITY GUARANTEES:
 - Required fields MUST exist.
@@ -13,9 +13,8 @@ STABILITY GUARANTEES:
 - Identifiers are stable and MUST NOT be reused with new meaning.
 
 NON-SEMANTICS:
-- SRZs do NOT change physics, law, or epistemics.
-- SRZs do NOT grant authority outside existing capabilities.
-- Modes describe execution location and verification only.
+- Zones define execution responsibility, not gameplay rules.
+- Zones do NOT grant authority beyond assigned capabilities.
 
 CONVENTIONS:
 - id: stable namespaced string; opaque.
@@ -39,36 +38,30 @@ record srz_zone_catalog
 record srz_zone
   required:
     - srz_id: id
-    - domain_refs: [domain_ref]
+    - domain_refs: [id]
     - mode: tag
     - verification_policy: tag
-    - escalation_thresholds: [srz_threshold]
-    - deescalation_thresholds: [srz_threshold]
+    - policy_id: id
     - epistemic_scope_ref: id
-    - provenance: provenance
     - unit_annotations: map
+    - provenance: provenance
     - maturity: tag
     - extensions: map
   optional:
-    - policy_ref: id
+    - escalation_thresholds: [srz_threshold]
+    - deescalation_thresholds: [srz_threshold]
     - region_id: id
     - metadata: map
 
-TYPE DEFINITIONS:
-record domain_ref
-  required:
-    - domain_id: id
-  optional:
-    - volume_id: id
-    - ref_tags: [tag]
-
 record srz_threshold
   required:
-    - metric_id: tag
+    - metric: tag
     - value: quantity
+    - extensions: map
   optional:
-    - threshold_tags: [tag]
+    - metadata: map
 
+TYPE DEFINITIONS:
 record quantity
   required:
     - value: number
@@ -89,5 +82,5 @@ MIGRATION:
 - Old data MUST NOT be reinterpreted without explicit transformation or refusal.
 
 UNIT POLICY:
-- srz_threshold.value uses `unit.dimensionless.ratio`.
+- threshold value uses `unit.dimensionless.ratio` unless a metric requires a different unit.
 - All numeric values MUST reference a unit tag from `docs/architecture/UNIT_SYSTEM_POLICY.md`.
